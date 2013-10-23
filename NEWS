@@ -1,3 +1,216 @@
+Overview of changes from GLib 2.38.0 to GLib 2.39.0
+====================================================
+
+ * prep for the 2.40 series (version macros, docs index, etc.)
+
+ * GNotification
+
+   - new API for sending persistent notifications via the desktop shell
+
+   - notifications persist when the application has quit and clicking on
+     them can restart the application with an action (via
+     DBusActivatable)
+
+ * GSubprocess
+
+   - new API for launching subprocesses
+
+   - nice GIO integration like async functions, cancellability, etc.
+
+   - a convenient communicate() API inspired by the same API in Python
+
+   - related: the gspawn API now has a CLOEXEC flag for the created
+     pipes for stdin/stdout/stderr
+
+ * New gapplication(1) commandline tool
+
+   - intended to be used with DBusActivatable apps
+
+   - can be used for launching apps, opening files, invoking application
+     actions and listing apps and actions
+
+   - bash tab completion is supported
+
+ * GDesktopAppInfo changes:
+
+   - g_file_get_path() can implicitly cause a FUSE mount so don't call
+     it until we know we need it (for an app that doesn't support URIs)
+
+   - don't crash when trying to load from a keyfile with
+     DBusActivatable=true
+
+   - remove some dead code, refactor the search path handling a bit and
+     do a large-scale whitespace cleanup (prep work for the pending
+     desktop file index)
+
+ * File monitors
+
+   - fix broken handling of mount point monitoring
+
+   - remove some strange use of GObject::constructor() from the base
+     class and inotify backend
+
+   - fix GFileMonitor to work in the non-default main context even when
+     the main context is not running (or is blocked)
+
+   - add internal private API for easily creating a file monitor in the
+     GLib worker thread
+
+ * GSettings
+
+   - g_settings_list_children: only list viable schemas.  This fixes a
+     longstanding issue where 'gsettings list-recursively' will crash
+     when there are invalid schemas installed
+
+   - don't accept invalid paths on g_settings_new_with_path, etc.
+
+ * GIO
+
+   - GFile now has a thumbnail::is-valid attribute to check if the
+     thumbnail in thumbnail::path needs to be regenerated
+
+   - GDBusProxy now has a flag to control autostarting of services at
+     construction time
+
+   - for GSeekable, properly introduce the concept of "resizable" vs.
+     "fixed-sized" streams in the docs, explaining the expected
+     semantics of the interface in each case
+
+   - fix some cases in GMemoryOutputStream that were violating the above
+     expectations (which may cause a slight API incompatibility)
+
+   - clean up GCredentials code and add support for Hurd and Solaris
+
+   - improve splicing by using different codepaths for the case where we
+     have real _read_async() and _write_async() implementations on the
+     stream vs. the case where they are internally emulated (via
+     dispatching the sync variant of the call in a thread)
+
+ * GKeyFile
+
+   - fix a leak in g_key_file_get_(u)int64 when we fail to parse the
+     value as an integer
+
+   - add long-requested API g_key_file_save_to_file()
+
+ * Portability improvements
+
+   - avoid using O_DIRECTORY on platforms that don't have it
+
+   - be careful about systems that define SOCK_CLOEXEC but don't
+     actually support it (like Hurd)
+
+   - only use SA_RESTART if it exists
+
+ * Other small API changes/additions
+
+   - a pair of functions to support matching strings for the type of
+     search functionality that you'd expect to have with things like
+     GtkSearchBar.  This will also be used by the desktop file index.
+
+   - g_str_is_ascii() with obvious purpose
+
+   - g_test_expect_message() no longer appears to allow you to catch
+     G_LOG_ERROR messages
+
+ * GMainContext/GSource
+
+   - fix handling of overflowing the 'next source id' counter
+
+   - g_source_remove() will not throw a critical in the case that you
+     try to remove a non-existent source.  We expect that there is some
+     code in the wild that will fall afoul of this new critical but
+     considering that we now reuse source IDs, this code is already
+     broken and should probably be fixed.
+
+   - simplify handling of the 'current dispatching source' to not
+     require use of a linked list
+
+ * GObject
+
+   - the long-broken (and leaky) pattern of destroying a just-allocated
+     object from inside of a custom GObject::constructor is now
+     officially completely illegal and will abort the program
+
+ * Unicode: update to 6.3.0
+
+ * Bug fixes
+
+   - g_file_copy() now falls back to pathname queryinfo.  This should
+     clear up the bugs with copying from some GVfs backends (afp,
+     gphoto, archive, at least).
+
+   - fix an out-of-bounds read in the xdgmime code
+
+   - fix a typo in the /org/freedesktop/DBus path on the object manager
+     client
+
+   - skip emitting path_namespace='/' in match rules in order to
+     workaround a bug in the D-Bus daemon and fix our own implementation
+     (which shared exactly the same bug)
+
+   - fix crashes on precondition violations for GParamSpec constructors
+
+   - many other small fixups (see bug list)
+
+  * Many documentation improvements
+
+Bugs fixed:
+ 309224 g_key_file_save_to_file missing
+ 583321 QNX: no SA_RESTART
+ 661576 fix handling of constructors that destroy half-constructed objects
+ 672102 GSubprocess class
+ 684842 Seeks on GMemoryOutputStream don't have opaque semantics
+ 688492 Add a notification API
+ 691581 g_output_stream_real_splice_async doesn't use overriden read/write_async functions
+ 702516 gfileutils: Make -Werror=format-nonliteral happy
+ 704218 New gapplication(1) tool
+ 704593 g_setenv: on some systems (BSD, OSX…), setting a variable to NULL crashes the system
+ 704882 GLocalDirectoryMonitorClass mount_notify field is useless
+ 704887 file monitoring improvements
+ 705029 Support for Solaris credentials
+ 705688 g_settings_list_children: only list viable schemas
+ 706254 Afp backend cannot copy files
+ 707887 Attempting to create GObject Property with underscore prefix segfaults
+ 708042 gapplication: don't rely on cmdline being finalized immediately
+ 708265 add support for GNU/Hurd in GLib D-Bus Library
+ 708266 fix error code checks when SOCK_CLOEXEC is defined but not supported
+ 708529 xdgmime: valgrind warns about invalid reads
+ 708677 incorrect object path 'deskop' used in gio/gdbusobjectmanagerclient.c
+ 708714 Typo in docs of GLIB_VERSION_2_40 macro.
+ 708753 gdesktopappinfo: Call g_file_get_path() on demand
+ 708793 glib build fails with clang < 3.1: error: expected ';' after top level declarator
+ 708828 GDBusProxy: add the ability to call methods on non autostarted proxies
+ 708860 glib-2.38.0 doesn't build on Solaris 10
+ 708972 gnetworking.h in tarball screws up out-of-source builds
+ 709113 [PATCH] Main loop dispatch path has needless linked list
+ 709227 Update to unicode 6.3.0
+ 709301 goutputstream: Add clear warning about short writes to _write_bytes() and async version
+ 709326 GDesktopAppInfo crashes creating a DBusActivatable app without a filename
+ 709440 Fix overloading of "source" and "target" terminology in GBinding
+ 709615 Cannot use g_test_expect_message with g_error
+ 709753 Add helpers for string matches when using GtkSearchBar-like widget
+ 709898 Expose thumbnail validity in GFile attributes
+ 709966 Remove outdated documentation
+ 709994 Minor fix for HACKERS doc to direct hackers to proper help file
+ 709995 Obsolete makefile rules
+ 710002 G_MAXUINT may be assigned as duplicate source id
+ 710313 Memory leak in g_key_file_get_(u)int64 with invalid integer values
+ 710345 [Patches] Fix some redundant-decls
+ 710496 g_locale_to/from_utf8() doc updated.
+ 710625 g_file_error_from_errno: Remove unneeded breaks
+ 710666 Frame clock related bug fixes
+ 710724 gmain: Warn when g_source_remove() fails
+ 710726 Work around D-Bus bug with path_namespace='/' match rules
+
+Translations:
+ Assamese
+ Brazilian Portuguese
+ Indonesian
+ Russian
+ Tamil
+ Traditional Chinese
+
 What's new in Glib 2.38
 ========================
 
