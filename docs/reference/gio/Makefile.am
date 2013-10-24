@@ -118,6 +118,7 @@ content_files =			\
 	gio-querymodules.xml	\
 	glib-compile-schemas.xml\
 	glib-compile-resources.xml	\
+	gapplication.xml	\
 	gsettings.xml		\
 	gresource.xml		\
 	gdbus.xml		\
