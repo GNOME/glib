@@ -176,6 +176,23 @@ schema_tests = \
 	wrong-category.gschema.xml			\
 	$(NULL)
 
+test_programs += thumbnail-verification
+dist_test_data += $(thumbnail_data_files)
+thumbnail_data_files = $(addprefix thumbnails/,$(thumbnail_tests))
+thumbnail_tests = \
+	bad-header.png \
+	empty-key.png \
+	header-and-chunk-size.png \
+	header-only.png \
+	huge-chunk-size.png \
+	mtime-zero.png \
+	no-text-data.png \
+	overlong-value.png \
+	uri-mismatch.png \
+	valid.png \
+	valid-no-size.png \
+	$(NULL)
+
 test_programs += tls-certificate
 tls_certificate_SOURCES = \
 	tls-certificate.c			\

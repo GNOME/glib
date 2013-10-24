@@ -116,6 +116,7 @@ test.gresource
 test_resources.c
 test_resources2.c
 test_resources2.h
+thumbnail-verification
 tls-certificate
 tls-interaction
 unix-fd
