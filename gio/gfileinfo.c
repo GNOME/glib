@@ -1872,7 +1872,7 @@ g_file_info_set_file_type (GFileInfo *info,
  * @info: a #GFileInfo.
  * @is_hidden: a #gboolean.
  *
- * Sets the "is_hidden" attribute in a #GFileInfo according to @is_symlink.
+ * Sets the "is_hidden" attribute in a #GFileInfo according to @is_hidden.
  * See %G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN.
  **/
 void
