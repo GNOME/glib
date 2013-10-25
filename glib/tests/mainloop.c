@@ -1050,6 +1050,47 @@ test_remove_invalid (void)
   g_test_assert_expected_messages ();
 }
 
+static gboolean
+trivial_prepare (GSource *source,
+                 gint    *timeout)
+{
+  *timeout = 0;
+  return TRUE;
+}
+
+static gint n_finalized;
+
+static void
+trivial_finalize (GSource *source)
+{
+  n_finalized++;
+}
+
+static void
+test_unref_while_pending (void)
+{
+  static GSourceFuncs funcs = { trivial_prepare, NULL, NULL, trivial_finalize };
+  GMainContext *context;
+  GSource *source;
+
+  context = g_main_context_new ();
+
+  source = g_source_new (&funcs, sizeof (GSource));
+  g_source_attach (source, context);
+  g_source_unref (source);
+
+  /* Do incomplete main iteration -- get a pending source but don't dispatch it. */
+  g_main_context_prepare (context, NULL);
+  g_main_context_query (context, 0, NULL, NULL, 0);
+  g_main_context_check (context, 1000, NULL, 0);
+
+  /* Destroy the context */
+  g_main_context_unref (context);
+
+  /* Make sure we didn't leak the source */
+  g_assert_cmpint (n_finalized, ==, 1);
+}
+
 #ifdef G_OS_UNIX
 
 #include <glib-unix.h>
@@ -1495,6 +1536,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/ready-time", test_ready_time);
   g_test_add_func ("/mainloop/wakeup", test_wakeup);
   g_test_add_func ("/mainloop/remove-invalid", test_remove_invalid);
+  g_test_add_func ("/mainloop/unref-while-pending", test_unref_while_pending);
 #ifdef G_OS_UNIX
   g_test_add_func ("/mainloop/unix-fd", test_unix_fd);
   g_test_add_func ("/mainloop/unix-fd-source", test_unix_fd_source);

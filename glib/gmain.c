@@ -507,6 +507,7 @@ g_main_context_unref (GMainContext *context)
   GSource *source;
   GList *sl_iter;
   GSourceList *list;
+  gint i;
 
   g_return_if_fail (context != NULL);
   g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0); 
@@ -517,6 +518,10 @@ g_main_context_unref (GMainContext *context)
   G_LOCK (main_context_list);
   main_context_list = g_slist_remove (main_context_list, context);
   G_UNLOCK (main_context_list);
+
+  /* Free pending dispatches */
+  for (i = 0; i < context->pending_dispatches->len; i++)
+    g_source_unref_internal (context->pending_dispatches->pdata[i], context, FALSE);
 
   /* g_source_iter_next() assumes the context is locked. */
   LOCK_CONTEXT (context);
