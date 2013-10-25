@@ -37,6 +37,7 @@
  */
 
 #include "config.h"
+#define _CRT_RAND_S
 
 #include <math.h>
 #include <errno.h>
@@ -56,7 +57,7 @@
 #include "gthread.h"
 
 #ifdef G_OS_WIN32
-#include <process.h>		/* For getpid() */
+#include <stdlib.h>
 #endif
 
 /**
@@ -211,7 +212,8 @@ g_rand_new_with_seed_array (const guint32 *seed, guint seed_length)
  * 
  * Creates a new random number generator initialized with a seed taken
  * either from <filename>/dev/urandom</filename> (if existing) or from 
- * the current time (as a fallback).
+ * the current time (as a fallback).  On Windows, the seed is taken from
+ * rand_s().
  * 
  * Return value: the new #GRand.
  **/
@@ -219,9 +221,9 @@ GRand*
 g_rand_new (void)
 {
   guint32 seed[4];
-  GTimeVal now;
 #ifdef G_OS_UNIX
   static gboolean dev_urandom_exists = TRUE;
+  GTimeVal now;
 
   if (dev_urandom_exists)
     {
@@ -253,9 +255,6 @@ g_rand_new (void)
       else
 	dev_urandom_exists = FALSE;
     }
-#else
-  static gboolean dev_urandom_exists = FALSE;
-#endif
 
   if (!dev_urandom_exists)
     {  
@@ -263,12 +262,14 @@ g_rand_new (void)
       seed[0] = now.tv_sec;
       seed[1] = now.tv_usec;
       seed[2] = getpid ();
-#ifdef G_OS_UNIX
       seed[3] = getppid ();
-#else
-      seed[3] = 0;
-#endif
     }
+#else /* G_OS_WIN32 */
+  gint i;
+
+  for (i = 0; i < G_N_ELEMENTS (seed); i++)
+    rand_s (&seed[i]);
+#endif
 
   return g_rand_new_with_seed_array (seed, 4);
 }
