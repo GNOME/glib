@@ -889,13 +889,19 @@ g_dbus_command_line_new (GDBusMethodInvocation *invocation)
 {
   GDBusCommandLine *gdbcl;
   GVariant *args;
+  GVariant *arguments, *platform_data;
 
   args = g_dbus_method_invocation_get_parameters (invocation);
 
+  arguments = g_variant_get_child_value (args, 1);
+  platform_data = g_variant_get_child_value (args, 2);
   gdbcl = g_object_new (g_dbus_command_line_get_type (),
-                        "arguments", g_variant_get_child_value (args, 1),
-                        "platform-data", g_variant_get_child_value (args, 2),
+                        "arguments", arguments,
+                        "platform-data", platform_data,
                         NULL);
+  g_variant_unref (arguments);
+  g_variant_unref (platform_data);
+
   gdbcl->connection = g_dbus_method_invocation_get_connection (invocation);
   gdbcl->bus_name = g_dbus_method_invocation_get_sender (invocation);
   g_variant_get_child (args, 0, "&o", &gdbcl->object_path);
