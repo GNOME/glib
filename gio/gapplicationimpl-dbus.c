@@ -203,11 +203,19 @@ g_application_impl_method_call (GDBusConnection       *connection,
 
   else if (strcmp (method_name, "Open") == 0)
     {
+      GApplicationFlags flags;
       GVariant *platform_data;
       const gchar *hint;
       GVariant *array;
       GFile **files;
       gint n, i;
+
+      flags = g_application_get_flags (impl->app);
+      if ((flags & G_APPLICATION_HANDLES_OPEN) == 0)
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_NOT_SUPPORTED, "Application does not open files");
+          return;
+        }
 
       /* freedesktop interface has no hint parameter */
       if (g_str_equal (interface_name, "org.freedesktop.Application"))
@@ -246,9 +254,17 @@ g_application_impl_method_call (GDBusConnection       *connection,
 
   else if (strcmp (method_name, "CommandLine") == 0)
     {
+      GApplicationFlags flags;
       GApplicationCommandLine *cmdline;
       GVariant *platform_data;
       int status;
+
+      flags = g_application_get_flags (impl->app);
+      if ((flags & G_APPLICATION_HANDLES_COMMAND_LINE) == 0)
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_NOT_SUPPORTED, "Application does not handle command line arguments");
+          return;
+        }
 
       /* Only on the GtkApplication interface */
 
