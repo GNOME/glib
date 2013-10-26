@@ -471,6 +471,29 @@ g_application_real_local_command_line (GApplication   *application,
                                        gchar        ***arguments,
                                        int            *exit_status)
 {
+  if ((application->priv->flags & (G_APPLICATION_IS_SERVICE | G_APPLICATION_IS_LAUNCHER)) == 0)
+    {
+      if ((*arguments)[0] && (*arguments)[1] && g_str_equal ((*arguments)[1], "--gapplication-service"))
+        {
+          GError *error = NULL;
+
+          if ((*arguments)[2])
+            g_warning ("Additional arguments following --gapplication-service are ignored");
+
+          application->priv->flags |= G_APPLICATION_IS_SERVICE;
+          if (!g_application_register (application, NULL, &error))
+            {
+              g_warning ("%s", error->message);
+              g_error_free (error);
+              *exit_status = 1;
+            }
+          else
+            *exit_status = 0;
+
+          return TRUE;
+        }
+    }
+
   if (application->priv->flags & G_APPLICATION_HANDLES_COMMAND_LINE)
     return FALSE;
 
@@ -1551,6 +1574,23 @@ g_application_open (GApplication  *application,
  * impact of this is is that the wmclass of windows created by Gtk+ will
  * be set accordingly, which helps the window manager determine which
  * application is showing the window.
+ *
+ * Since 2.40, applications that are not explicitly flagged as services
+ * or launchers (ie: neither %G_APPLICATION_IS_SERVICE or
+ * %G_APPLICATION_IS_LAUNCHER are given as flags) will check (from the
+ * default handler for local_command_line) if "--gapplication-service"
+ * was given in the command line.  If this flag is present then normal
+ * commandline processing is interrupted and the
+ * %G_APPLICATION_IS_SERVICE flag is set.  This provides a "compromise"
+ * solution whereby running an application directly from the commandline
+ * will invoke it in the normal way (which can be useful for debugging)
+ * while still allowing applications to be D-Bus activated in service
+ * mode.  The D-Bus service file should invoke the executable with
+ * "--gapplication-service" as the sole commandline argument.  This
+ * approach is suitable for use by most graphical applications but
+ * should not be used from applications like editors that need precise
+ * control over when processes invoked via the commandline will exit and
+ * what their exit status will be.
  *
  * Returns: the exit status
  *
