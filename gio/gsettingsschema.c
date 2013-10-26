@@ -138,6 +138,7 @@
  **/
 struct _GSettingsSchema
 {
+  GSettingsSchemaSource *source;
   const gchar *gettext_domain;
   const gchar *path;
   GQuark *items;
@@ -412,6 +413,7 @@ g_settings_schema_source_lookup (GSettingsSchemaSource *source,
     return NULL;
 
   schema = g_slice_new0 (GSettingsSchema);
+  schema->source = g_settings_schema_source_ref (source);
   schema->ref_count = 1;
   schema->id = g_strdup (schema_id);
   schema->table = table;
@@ -588,6 +590,7 @@ g_settings_schema_unref (GSettingsSchema *schema)
 {
   if (g_atomic_int_dec_and_test (&schema->ref_count))
     {
+      g_settings_schema_source_unref (schema->source);
       gvdb_table_unref (schema->table);
       g_free (schema->items);
       g_free (schema->id);
