@@ -176,26 +176,13 @@ G_DEFINE_BOXED_TYPE (GSettingsSchema, g_settings_schema, g_settings_schema_ref, 
 struct _GSettingsSchemaSource
 {
   GSettingsSchemaSource *parent;
+  gchar *directory;
   GvdbTable *table;
 
   gint ref_count;
 };
 
 static GSettingsSchemaSource *schema_sources;
-
-static void
-prepend_schema_table (GvdbTable *table)
-{
-  GSettingsSchemaSource *source;
-
-  /* we steal the reference from 'schema_sources' for our ->parent */
-  source = g_slice_new (GSettingsSchemaSource);
-  source->parent = schema_sources;
-  source->table = table;
-  source->ref_count = 1;
-
-  schema_sources = source;
-}
 
 /**
  * g_settings_schema_source_ref:
@@ -234,6 +221,7 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
       if (source->parent)
         g_settings_schema_source_unref (source->parent);
       gvdb_table_unref (source->table);
+      g_free (source->directory);
 
       g_slice_free (GSettingsSchemaSource, source);
     }
@@ -297,11 +285,24 @@ g_settings_schema_source_new_from_directory (const gchar            *directory,
     return NULL;
 
   source = g_slice_new (GSettingsSchemaSource);
+  source->directory = g_strdup (directory);
   source->parent = parent ? g_settings_schema_source_ref (parent) : NULL;
   source->table = table;
   source->ref_count = 1;
 
   return source;
+}
+
+static void
+try_prepend_dir (const gchar *directory)
+{
+  GSettingsSchemaSource *source;
+
+  source = g_settings_schema_source_new_from_directory (directory, schema_sources, TRUE, NULL);
+
+  /* If we successfully created it then prepend it to the global list */
+  if (source != NULL)
+    schema_sources = source;
 }
 
 static void
@@ -324,31 +325,15 @@ initialise_schema_sources (void)
 
       while (i--)
         {
-          gchar *filename;
-          GvdbTable *table;
+          gchar *dirname;
 
-          filename = g_build_filename (dirs[i], "glib-2.0", "schemas", "gschemas.compiled", NULL);
-          table = gvdb_table_new (filename, TRUE, NULL);
-
-          if (table != NULL)
-            prepend_schema_table (table);
-
-          g_free (filename);
+          dirname = g_build_filename (dirs[i], "glib-2.0", "schemas", NULL);
+          try_prepend_dir (dirname);
+          g_free (dirname);
         }
 
       if ((path = g_getenv ("GSETTINGS_SCHEMA_DIR")) != NULL)
-        {
-          gchar *filename;
-          GvdbTable *table;
-
-          filename = g_build_filename (path, "gschemas.compiled", NULL);
-          table = gvdb_table_new (filename, TRUE, NULL);
-
-          if (table != NULL)
-            prepend_schema_table (table);
-
-          g_free (filename);
-        }
+        try_prepend_dir (path);
 
       g_once_init_leave (&initialised, TRUE);
     }
