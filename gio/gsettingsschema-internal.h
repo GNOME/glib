@@ -22,7 +22,7 @@
 
 #include "gsettingsschema.h"
 
-typedef struct
+struct _GSettingsSchemaKey
 {
   GSettingsSchema *schema;
   const gchar *name;
@@ -39,7 +39,9 @@ typedef struct
   const GVariantType *type;
   GVariant *minimum, *maximum;
   GVariant *default_value;
-} GSettingsSchemaKey;
+
+  gint ref_count;
+};
 
 const gchar *           g_settings_schema_get_gettext_domain            (GSettingsSchema  *schema);
 GVariantIter *          g_settings_schema_get_value                     (GSettingsSchema  *schema,

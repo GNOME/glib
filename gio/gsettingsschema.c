@@ -1076,3 +1076,76 @@ g_settings_schema_key_from_flags (GSettingsSchemaKey *key,
 
   return g_variant_builder_end (&builder);
 }
+
+G_DEFINE_BOXED_TYPE (GSettingsSchemaKey, g_settings_schema_key, g_settings_schema_key_ref, g_settings_schema_key_unref)
+
+/**
+ * g_settings_schema_key_ref:
+ * @key: a #GSettingsSchemaKey
+ *
+ * Increase the reference count of @key, returning a new reference.
+ *
+ * Returns: a new reference to @key
+ *
+ * Since: 2.40
+ **/
+GSettingsSchemaKey *
+g_settings_schema_key_ref (GSettingsSchemaKey *key)
+{
+  g_return_val_if_fail (key != NULL, NULL);
+
+  g_atomic_int_inc (&key->ref_count);
+
+  return key;
+}
+
+/**
+ * g_settings_schema_key_unref:
+ * @key: a #GSettingsSchemaKey
+ *
+ * Decrease the reference count of @key, possibly freeing it.
+ *
+ * Since: 2.40
+ **/
+void
+g_settings_schema_key_unref (GSettingsSchemaKey *key)
+{
+  g_return_if_fail (key != NULL);
+
+  if (g_atomic_int_dec_and_test (&key->ref_count))
+    {
+      g_settings_schema_key_clear (key);
+
+      g_slice_free (GSettingsSchemaKey, key);
+    }
+}
+
+/**
+ * g_settings_schema_get_key:
+ * @schema: a #GSettingsSchema
+ * @name: the name of a key
+ *
+ * Gets the key named @name from @schema.
+ *
+ * It is a programmer error to request a key that does not exist.  See
+ * g_settings_schema_list_keys().
+ *
+ * Returns: (transfer full): the #GSettingsSchemaKey for @name
+ *
+ * Since: 2.40
+ **/
+GSettingsSchemaKey *
+g_settings_schema_get_key (GSettingsSchema *schema,
+                           const gchar     *name)
+{
+  GSettingsSchemaKey *key;
+
+  g_return_val_if_fail (schema != NULL, NULL);
+  g_return_val_if_fail (name != NULL, NULL);
+
+  key = g_slice_new (GSettingsSchemaKey);
+  g_settings_schema_key_init (key, schema, name);
+  key->ref_count = 1;
+
+  return key;
+}
