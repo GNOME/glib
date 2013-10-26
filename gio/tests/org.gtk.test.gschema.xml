@@ -167,4 +167,22 @@
       <default>0</default>
     </key>
   </schema>
+
+  <schema id="org.gtk.test.descriptions" path="/a/">
+    <key name='a' type='i'>
+      <summary>
+        a paragraph.
+
+        with some whitespace.
+         
+        because not everyone has a great editor.
+
+       	  
+
+
+        lots of space is            as one.    
+      </summary>
+      <default>0</default>
+    </key>
+  </schema>
 </schemalist>

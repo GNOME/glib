@@ -2057,6 +2057,7 @@ test_list_schemas (void)
                             "org.gtk.test.range",
                             "org.gtk.test.range.direct",
                             "org.gtk.test.mapped",
+                            "org.gtk.test.descriptions",
                             NULL));
 }
 
@@ -2331,6 +2332,42 @@ test_memory_backend (void)
   g_object_unref (backend);
 }
 
+static void
+test_read_descriptions (void)
+{
+  GSettingsSchema *schema;
+  GSettingsSchemaKey *key;
+  GSettings *settings;
+  const gchar *str;
+
+  settings = g_settings_new ("org.gtk.test");
+  g_object_get (settings, "settings-schema", &schema, NULL);
+  key = g_settings_schema_get_key (schema, "greeting");
+
+  g_assert_cmpstr (g_settings_schema_key_get_summary (key), ==, "A greeting");
+  g_assert_cmpstr (g_settings_schema_key_get_description (key), ==, "Greeting of the invading martians");
+
+  g_settings_schema_key_unref (key);
+  g_settings_schema_unref (schema);
+
+  g_object_unref (settings);
+
+  settings = g_settings_new ("org.gtk.test.descriptions");
+  g_object_get (settings, "settings-schema", &schema, NULL);
+  key = g_settings_schema_get_key (schema, "a");
+
+  g_assert_cmpstr (g_settings_schema_key_get_summary (key), ==,
+                   "a paragraph.\n\n"
+                   "with some whitespace.\n\n"
+                   "because not everyone has a great editor.\n\n"
+                   "lots of space is as one.");
+
+  g_settings_schema_key_unref (key);
+  g_settings_schema_unref (schema);
+
+  g_object_unref (settings);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2444,6 +2481,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/actions", test_actions);
   g_test_add_func ("/gsettings/null-backend", test_null_backend);
   g_test_add_func ("/gsettings/memory-backend", test_memory_backend);
+  g_test_add_func ("/gsettings/read-descriptions", test_read_descriptions);
 
   result = g_test_run ();
 
