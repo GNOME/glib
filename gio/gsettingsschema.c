@@ -179,6 +179,7 @@ struct _GSettingsSchemaSource
   GSettingsSchemaSource *parent;
   gchar *directory;
   GvdbTable *table;
+  GHashTable **text_tables;
 
   gint ref_count;
 };
@@ -223,6 +224,13 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
         g_settings_schema_source_unref (source->parent);
       gvdb_table_unref (source->table);
       g_free (source->directory);
+
+      if (source->text_tables)
+        {
+          g_hash_table_unref (source->text_tables[0]);
+          g_hash_table_unref (source->text_tables[1]);
+          g_free (source->text_tables);
+        }
 
       g_slice_free (GSettingsSchemaSource, source);
     }
@@ -288,6 +296,7 @@ g_settings_schema_source_new_from_directory (const gchar            *directory,
   source = g_slice_new (GSettingsSchemaSource);
   source->directory = g_strdup (directory);
   source->parent = parent ? g_settings_schema_source_ref (parent) : NULL;
+  source->text_tables = NULL;
   source->table = table;
   source->ref_count = 1;
 
@@ -424,6 +433,283 @@ g_settings_schema_source_lookup (GSettingsSchemaSource *source,
     bind_textdomain_codeset (schema->gettext_domain, "UTF-8");
 
   return schema;
+}
+
+typedef struct
+{
+  GHashTable *summaries;
+  GHashTable *descriptions;
+  GSList     *gettext_domain;
+  GSList     *schema_id;
+  GSList     *key_name;
+  GString    *string;
+} TextTableParseInfo;
+
+static const gchar *
+get_attribute_value (GSList *list)
+{
+  GSList *node;
+
+  for (node = list; node; node = node->next)
+    if (node->data)
+      return node->data;
+
+  return NULL;
+}
+
+static void
+pop_attribute_value (GSList **list)
+{
+  gchar *top;
+
+  top = (*list)->data;
+  *list = g_slist_remove (*list, top);
+
+  g_free (top);
+}
+
+static void
+push_attribute_value (GSList      **list,
+                      const gchar  *value)
+{
+  *list = g_slist_prepend (*list, g_strdup (value));
+}
+
+static void
+start_element (GMarkupParseContext  *context,
+               const gchar          *element_name,
+               const gchar         **attribute_names,
+               const gchar         **attribute_values,
+               gpointer              user_data,
+               GError              **error)
+{
+  TextTableParseInfo *info = user_data;
+  const gchar *gettext_domain = NULL;
+  const gchar *schema_id = NULL;
+  const gchar *key_name = NULL;
+  gint i;
+
+  for (i = 0; attribute_names[i]; i++)
+    {
+      if (g_str_equal (attribute_names[i], "gettext-domain"))
+        gettext_domain = attribute_values[i];
+      else if (g_str_equal (attribute_names[i], "id"))
+        schema_id = attribute_values[i];
+      else if (g_str_equal (attribute_names[i], "name"))
+        key_name = attribute_values[i];
+    }
+
+  push_attribute_value (&info->gettext_domain, gettext_domain);
+  push_attribute_value (&info->schema_id, schema_id);
+  push_attribute_value (&info->key_name, key_name);
+
+  if (info->string)
+    {
+      g_string_free (info->string, TRUE);
+      info->string = NULL;
+    }
+
+  if (g_str_equal (element_name, "summary") || g_str_equal (element_name, "description"))
+    info->string = g_string_new (NULL);
+}
+
+static gchar *
+normalise_whitespace (const gchar *orig)
+{
+  /* We normalise by the same rules as in intltool:
+   *
+   *   sub cleanup {
+   *       s/^\s+//;
+   *       s/\s+$//;
+   *       s/\s+/ /g;
+   *       return $_;
+   *   }
+   *
+   *   $message = join "\n\n", map &cleanup, split/\n\s*\n+/, $message;
+   *
+   * Where \s is an ascii space character.
+   *
+   * We aim for ease of implementation over efficiency -- this code is
+   * not run in normal applications.
+   */
+  static GRegex *cleanup[3];
+  static GRegex *splitter;
+  gchar **lines;
+  gchar *result;
+  gint i;
+
+  if (g_once_init_enter (&splitter))
+    {
+      GRegex *s;
+
+      cleanup[0] = g_regex_new ("^\\s+", 0, 0, 0);
+      cleanup[1] = g_regex_new ("\\s+$", 0, 0, 0);
+      cleanup[2] = g_regex_new ("\\s+", 0, 0, 0);
+      s = g_regex_new ("\\n\\s*\\n+", 0, 0, 0);
+
+      g_once_init_leave (&splitter, s);
+    }
+
+  lines = g_regex_split (splitter, orig, 0);
+  for (i = 0; lines[i]; i++)
+    {
+      gchar *a, *b, *c;
+
+      a = g_regex_replace_literal (cleanup[0], lines[i], -1, 0, "", 0, 0);
+      b = g_regex_replace_literal (cleanup[1], a, -1, 0, "", 0, 0);
+      c = g_regex_replace_literal (cleanup[2], b, -1, 0, " ", 0, 0);
+      g_free (lines[i]);
+      g_free (a);
+      g_free (b);
+      lines[i] = c;
+    }
+
+  result = g_strjoinv ("\n\n", lines);
+  g_strfreev (lines);
+
+  return result;
+}
+
+static void
+end_element (GMarkupParseContext *context,
+             const gchar *element_name,
+             gpointer user_data,
+             GError **error)
+{
+  TextTableParseInfo *info = user_data;
+
+  pop_attribute_value (&info->gettext_domain);
+  pop_attribute_value (&info->schema_id);
+  pop_attribute_value (&info->key_name);
+
+  if (info->string)
+    {
+      GHashTable *source_table = NULL;
+      const gchar *gettext_domain;
+      const gchar *schema_id;
+      const gchar *key_name;
+
+      gettext_domain = get_attribute_value (info->gettext_domain);
+      schema_id = get_attribute_value (info->schema_id);
+      key_name = get_attribute_value (info->key_name);
+
+      if (g_str_equal (element_name, "summary"))
+        source_table = info->summaries;
+      else if (g_str_equal (element_name, "description"))
+        source_table = info->descriptions;
+
+      if (source_table && schema_id && key_name)
+        {
+          GHashTable *schema_table;
+          gchar *normalised;
+
+          schema_table = g_hash_table_lookup (source_table, schema_id);
+
+          if (schema_table == NULL)
+            {
+              schema_table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+              g_hash_table_insert (source_table, g_strdup (schema_id), schema_table);
+            }
+
+          normalised = normalise_whitespace (info->string->str);
+
+          if (gettext_domain)
+            {
+              gchar *translated;
+
+              translated = g_strdup (g_dgettext (gettext_domain, normalised));
+              g_free (normalised);
+              normalised = translated;
+            }
+
+          g_hash_table_insert (schema_table, g_strdup (key_name), normalised);
+        }
+
+      g_string_free (info->string, TRUE);
+      info->string = NULL;
+    }
+}
+
+static void
+text (GMarkupParseContext  *context,
+      const gchar          *text,
+      gsize                 text_len,
+      gpointer              user_data,
+      GError              **error)
+{
+  TextTableParseInfo *info = user_data;
+
+  if (info->string)
+    g_string_append_len (info->string, text, text_len);
+}
+
+static void
+parse_into_text_tables (const gchar *directory,
+                        GHashTable  *summaries,
+                        GHashTable  *descriptions)
+{
+  GMarkupParser parser = { start_element, end_element, text };
+  TextTableParseInfo info = { summaries, descriptions };
+  const gchar *basename;
+  GDir *dir;
+
+  dir = g_dir_open (directory, 0, NULL);
+  while ((basename = g_dir_read_name (dir)))
+    {
+      gchar *filename;
+      gchar *contents;
+      gsize size;
+
+      filename = g_build_filename (directory, basename, NULL);
+      if (g_file_get_contents (filename, &contents, &size, NULL))
+        {
+          GMarkupParseContext *context;
+
+          context = g_markup_parse_context_new (&parser, G_MARKUP_TREAT_CDATA_AS_TEXT, &info, NULL);
+          if (g_markup_parse_context_parse (context, contents, size, NULL))
+            g_markup_parse_context_end_parse (context, NULL);
+          g_markup_parse_context_free (context);
+
+          /* Clean up dangling stuff in case there was an error. */
+          g_slist_free_full (info.gettext_domain, g_free);
+          g_slist_free_full (info.schema_id, g_free);
+          g_slist_free_full (info.key_name, g_free);
+
+          info.gettext_domain = NULL;
+          info.schema_id = NULL;
+          info.key_name = NULL;
+
+          if (info.string)
+            {
+              g_string_free (info.string, TRUE);
+              info.string = NULL;
+            }
+
+          g_free (contents);
+        }
+
+      g_free (filename);
+    }
+}
+
+static GHashTable **
+g_settings_schema_source_get_text_tables (GSettingsSchemaSource *source)
+{
+  if (g_once_init_enter (&source->text_tables))
+    {
+      GHashTable **text_tables;
+
+      text_tables = g_new (GHashTable *, 2);
+      text_tables[0] = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_hash_table_unref);
+      text_tables[1] = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_hash_table_unref);
+
+      if (source->directory)
+        parse_into_text_tables (source->directory, text_tables[0], text_tables[1]);
+
+      g_once_init_leave (&source->text_tables, text_tables);
+    }
+
+  return source->text_tables;
 }
 
 static gboolean
@@ -1141,4 +1427,73 @@ g_settings_schema_get_key (GSettingsSchema *schema,
   key->ref_count = 1;
 
   return key;
+}
+
+/**
+ * g_settings_schema_key_get_summary:
+ * @key: a #GSettingsSchemaKey
+ *
+ * Gets the summary for @key.
+ *
+ * If no summary has been provided in the schema for @key, returns
+ * %NULL.
+ *
+ * The summary is a short description of the purpose of the key; usually
+ * one short sentence.  Summaries can be translated and the value
+ * returned from this function is is the current locale.
+ *
+ * This function is slow.  The summary and description information for
+ * the schemas is not stored in the compiled schema database so this
+ * function has to parse all of the source XML files in the schema
+ * directory.
+ *
+ * Returns: the summary for @key, or %NULL
+ *
+ * Since: 2.34
+ **/
+const gchar *
+g_settings_schema_key_get_summary (GSettingsSchemaKey *key)
+{
+  GHashTable **text_tables;
+  GHashTable *summaries;
+
+  text_tables = g_settings_schema_source_get_text_tables (key->schema->source);
+  summaries = g_hash_table_lookup (text_tables[0], key->schema->id);
+
+  return summaries ? g_hash_table_lookup (summaries, key->name) : NULL;
+}
+
+/**
+ * g_settings_schema_key_get_description:
+ * @key: a #GSettingsSchemaKey
+ *
+ * Gets the description for @key.
+ *
+ * If no description has been provided in the schema for @key, returns
+ * %NULL.
+ *
+ * The description can be one sentence to several paragraphs in length.
+ * Paragraphs are delimited with a double newline.  Descriptions can be
+ * translated and the value returned from this function is is the
+ * current locale.
+ *
+ * This function is slow.  The summary and description information for
+ * the schemas is not stored in the compiled schema database so this
+ * function has to parse all of the source XML files in the schema
+ * directory.
+ *
+ * Returns: the description for @key, or %NULL
+ *
+ * Since: 2.34
+ **/
+const gchar *
+g_settings_schema_key_get_description (GSettingsSchemaKey *key)
+{
+  GHashTable **text_tables;
+  GHashTable *descriptions;
+
+  text_tables = g_settings_schema_source_get_text_tables (key->schema->source);
+  descriptions = g_hash_table_lookup (text_tables[1], key->schema->id);
+
+  return descriptions ? g_hash_table_lookup (descriptions, key->name) : NULL;
 }

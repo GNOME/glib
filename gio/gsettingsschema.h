@@ -77,6 +77,11 @@ GSettingsSchemaKey *    g_settings_schema_key_ref                       (GSettin
 GLIB_AVAILABLE_IN_2_40
 void                    g_settings_schema_key_unref                     (GSettingsSchemaKey     *key);
 
+GLIB_AVAILABLE_IN_2_40
+const gchar *           g_settings_schema_key_get_summary               (GSettingsSchemaKey     *key);
+GLIB_AVAILABLE_IN_2_40
+const gchar *           g_settings_schema_key_get_description           (GSettingsSchemaKey     *key);
+
 G_END_DECLS
 
 #endif /* __G_SETTINGS_SCHEMA_H__ */
