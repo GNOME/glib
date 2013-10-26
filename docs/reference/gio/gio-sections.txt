@@ -2406,8 +2406,15 @@ g_settings_schema_unref
 g_settings_schema_get_id
 g_settings_schema_get_path
 
+<SUBSECTION>
+GSettingsSchemaKey
+g_settings_schema_get_key
+g_settings_schema_key_ref
+g_settings_schema_key_unref
+
 <SUBSECTION Private>
 g_settings_schema_get_type
+g_settings_schema_key_get_type
 g_settings_schema_source_get_type
 </SECTION>
 
