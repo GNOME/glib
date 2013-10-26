@@ -2412,6 +2412,10 @@ g_settings_schema_get_key
 g_settings_schema_key_ref
 g_settings_schema_key_unref
 
+<SUBSECTION>
+g_settings_schema_key_get_summary
+g_settings_schema_key_get_description
+
 <SUBSECTION Private>
 g_settings_schema_get_type
 g_settings_schema_key_get_type
