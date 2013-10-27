@@ -638,7 +638,11 @@ g_subprocess_class_init (GSubprocessClass *class)
  * @argv0: first commandline argument to pass to the subprocess,
  *     followed by more arguments, followed by %NULL
  *
- * Create a new process with the given flags and varargs argument list.
+ * Create a new process with the given flags and varargs argument
+ * list.  By default, matching the g_spawn_async() defaults, the
+ * child's stdin will be set to the system null device, and
+ * stdout/stderr will be inherited from the parent.  You can use
+ * @flags to control this behavior.
  *
  * The argument list must be terminated with %NULL.
  *
