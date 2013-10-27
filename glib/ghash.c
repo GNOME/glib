@@ -1646,6 +1646,46 @@ g_hash_table_get_keys (GHashTable *hash_table)
 }
 
 /**
+ * g_hash_table_get_key_array:
+ * @hash_table: a #GHashTable
+ * @length: (out): the length of the returned array
+ *
+ * Retrieves every key inside @hash_table, as an array.
+ *
+ * The returned array is %NULL-terminated but may contain %NULL as a
+ * key.  Use @length to determine the true length if it's possible that
+ * %NULL was used as the value for a key.
+ *
+ * Note: in the common case of a string-keyed #GHashTable, the return
+ * value of this function can be conveniently cast to (gchar **).
+ *
+ * Returns: a %NULL-terminated array containing each key from the table.
+ *
+ * Since: 2.40
+ **/
+gpointer *
+g_hash_table_get_key_array (GHashTable *hash_table,
+                            guint      *length)
+{
+  gpointer *result;
+  guint i, j = 0;
+
+  result = g_new (gpointer, hash_table->nnodes + 1);
+  for (i = 0; i < hash_table->size; i++)
+    {
+      if (HASH_IS_REAL (hash_table->hashes[i]))
+        result[j++] = hash_table->keys[i];
+    }
+  g_assert_cmpint (j, ==, hash_table->nnodes);
+  result[j] = NULL;
+
+  if (length)
+    *length = j;
+
+  return result;
+}
+
+/**
  * g_hash_table_get_values:
  * @hash_table: a #GHashTable
  *
