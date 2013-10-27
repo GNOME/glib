@@ -2394,6 +2394,7 @@ g_settings_schema_source_unref
 g_settings_schema_source_new_from_directory
 
 <SUBSECTION>
+g_settings_schema_source_list_schemas
 g_settings_schema_source_lookup
 
 <SUBSECTION>

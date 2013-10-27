@@ -72,9 +72,9 @@ struct _GSettings
 GLIB_AVAILABLE_IN_ALL
 GType                   g_settings_get_type                             (void);
 
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_40_FOR(g_settings_schema_source_list_schemas)
 const gchar * const *   g_settings_list_schemas                         (void);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_40_FOR(g_settings_schema_source_list_schemas)
 const gchar * const *   g_settings_list_relocatable_schemas             (void);
 GLIB_AVAILABLE_IN_ALL
 GSettings *             g_settings_new                                  (const gchar        *schema_id);
