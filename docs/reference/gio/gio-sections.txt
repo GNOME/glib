@@ -2413,6 +2413,10 @@ g_settings_schema_key_ref
 g_settings_schema_key_unref
 
 <SUBSECTION>
+g_settings_schema_key_get_value_type
+g_settings_schema_key_get_default_value
+
+<SUBSECTION>
 g_settings_schema_key_get_summary
 g_settings_schema_key_get_description
 

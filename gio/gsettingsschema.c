@@ -1497,3 +1497,38 @@ g_settings_schema_key_get_description (GSettingsSchemaKey *key)
 
   return descriptions ? g_hash_table_lookup (descriptions, key->name) : NULL;
 }
+
+/**
+ * g_settings_schema_key_get_value_type:
+ * @key: a #GSettingsSchemaKey
+ *
+ * Gets the #GVariantType of @key.
+ *
+ * Returns: (transfer none): the type of @key
+ *
+ * Since: 2.40
+ **/
+const GVariantType *
+g_settings_schema_key_get_value_type (GSettingsSchemaKey *key)
+{
+  return g_variant_get_type (key->default_value);
+}
+
+/**
+ * g_settings_schema_key_get_default_value:
+ * @key: a #GSettingsSchemaKey
+ *
+ * Gets the default value for @key.
+ *
+ * Note that this is the default value according to the schema.  System
+ * administrator defaults and lockdown are not visible via this API.
+ *
+ * Returns: (transfer none): the default value for the key
+ *
+ * Since: 2.40
+ **/
+GVariant *
+g_settings_schema_key_get_default_value (GSettingsSchemaKey *key)
+{
+  return key->default_value;
+}

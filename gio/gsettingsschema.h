@@ -78,6 +78,11 @@ GLIB_AVAILABLE_IN_2_40
 void                    g_settings_schema_key_unref                     (GSettingsSchemaKey     *key);
 
 GLIB_AVAILABLE_IN_2_40
+const GVariantType *    g_settings_schema_key_get_value_type            (GSettingsSchemaKey     *key);
+GLIB_AVAILABLE_IN_2_40
+GVariant *              g_settings_schema_key_get_default_value         (GSettingsSchemaKey     *key);
+
+GLIB_AVAILABLE_IN_2_40
 const gchar *           g_settings_schema_key_get_summary               (GSettingsSchemaKey     *key);
 GLIB_AVAILABLE_IN_2_40
 const gchar *           g_settings_schema_key_get_description           (GSettingsSchemaKey     *key);
