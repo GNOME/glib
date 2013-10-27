@@ -1264,6 +1264,33 @@ test_set_insert_corruption (void)
   g_hash_table_unref (hash_table);
 }
 
+static void
+test_set_to_strv (void)
+{
+  GHashTable *set;
+  gchar **strv;
+  guint n;
+
+  set = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+  g_hash_table_add (set, g_strdup ("xyz"));
+  g_hash_table_add (set, g_strdup ("xyz"));
+  g_hash_table_add (set, g_strdup ("abc"));
+  strv = (gchar **) g_hash_table_get_keys_as_array (set, &n);
+  g_hash_table_steal_all (set);
+  g_hash_table_unref (set);
+  g_assert_cmpint (n, ==, 2);
+  n = g_strv_length (strv);
+  g_assert_cmpint (n, ==, 2);
+  if (g_str_equal (strv[0], "abc"))
+    g_assert_cmpstr (strv[1], ==, "xyz");
+  else
+    {
+    g_assert_cmpstr (strv[0], ==, "xyz");
+    g_assert_cmpstr (strv[1], ==, "abc");
+    }
+  g_strfreev (strv);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1291,6 +1318,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/consistency", test_internal_consistency);
   g_test_add_func ("/hash/iter-replace", test_iter_replace);
   g_test_add_func ("/hash/set-insert-corruption", test_set_insert_corruption);
+  g_test_add_func ("/hash/set-to-strv", test_set_to_strv);
 
   return g_test_run ();
 
