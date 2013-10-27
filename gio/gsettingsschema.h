@@ -67,6 +67,9 @@ const gchar *           g_settings_schema_get_path                      (GSettin
 GLIB_AVAILABLE_IN_2_40
 GSettingsSchemaKey *    g_settings_schema_get_key                       (GSettingsSchema        *schema,
                                                                          const gchar            *key);
+GLIB_AVAILABLE_IN_2_40
+gboolean                g_settings_schema_has_key                       (GSettingsSchema        *schema,
+                                                                         const gchar            *key);
 
 #define                 G_TYPE_SETTINGS_SCHEMA_KEY                      (g_settings_schema_key_get_type ())
 GLIB_AVAILABLE_IN_2_40
@@ -81,6 +84,11 @@ GLIB_AVAILABLE_IN_2_40
 const GVariantType *    g_settings_schema_key_get_value_type            (GSettingsSchemaKey     *key);
 GLIB_AVAILABLE_IN_2_40
 GVariant *              g_settings_schema_key_get_default_value         (GSettingsSchemaKey     *key);
+GLIB_AVAILABLE_IN_2_40
+GVariant *              g_settings_schema_key_get_range                 (GSettingsSchemaKey     *key);
+GLIB_AVAILABLE_IN_2_40
+gboolean                g_settings_schema_key_range_check               (GSettingsSchemaKey     *key,
+                                                                         GVariant               *value);
 
 GLIB_AVAILABLE_IN_2_40
 const gchar *           g_settings_schema_key_get_summary               (GSettingsSchemaKey     *key);

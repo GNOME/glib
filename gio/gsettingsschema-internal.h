@@ -46,8 +46,6 @@ struct _GSettingsSchemaKey
 const gchar *           g_settings_schema_get_gettext_domain            (GSettingsSchema  *schema);
 GVariantIter *          g_settings_schema_get_value                     (GSettingsSchema  *schema,
                                                                          const gchar      *key);
-gboolean                g_settings_schema_has_key                       (GSettingsSchema  *schema,
-                                                                         const gchar      *key);
 const GQuark *          g_settings_schema_list                          (GSettingsSchema  *schema,
                                                                          gint             *n_items);
 const gchar *           g_settings_schema_get_string                    (GSettingsSchema  *schema,
@@ -58,8 +56,6 @@ void                    g_settings_schema_key_init                      (GSettin
                                                                          const gchar        *name);
 void                    g_settings_schema_key_clear                     (GSettingsSchemaKey *key);
 gboolean                g_settings_schema_key_type_check                (GSettingsSchemaKey *key,
-                                                                         GVariant           *value);
-gboolean                g_settings_schema_key_range_check               (GSettingsSchemaKey *key,
                                                                          GVariant           *value);
 GVariant *              g_settings_schema_key_range_fixup               (GSettingsSchemaKey *key,
                                                                          GVariant           *value);

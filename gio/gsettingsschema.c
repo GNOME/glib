@@ -949,6 +949,17 @@ g_settings_schema_get_gettext_domain (GSettingsSchema *schema)
   return schema->gettext_domain;
 }
 
+/**
+ * g_settings_schema_has_key:
+ * @schema: a #GSettingsSchema
+ * @name: the name of a key
+ *
+ * Checks if @schema has a key named @name.
+ *
+ * Returns: %TRUE if such a key exists
+ *
+ * Since: 2.40
+ **/
 gboolean
 g_settings_schema_has_key (GSettingsSchema *schema,
                            const gchar     *key)
@@ -1148,39 +1159,6 @@ g_settings_schema_key_type_check (GSettingsSchemaKey *key,
   return g_variant_is_of_type (value, key->type);
 }
 
-gboolean
-g_settings_schema_key_range_check (GSettingsSchemaKey *key,
-                                   GVariant           *value)
-{
-  if (key->minimum == NULL && key->strinfo == NULL)
-    return TRUE;
-
-  if (g_variant_is_container (value))
-    {
-      gboolean ok = TRUE;
-      GVariantIter iter;
-      GVariant *child;
-
-      g_variant_iter_init (&iter, value);
-      while (ok && (child = g_variant_iter_next_value (&iter)))
-        {
-          ok = g_settings_schema_key_range_check (key, child);
-          g_variant_unref (child);
-        }
-
-      return ok;
-    }
-
-  if (key->minimum)
-    {
-      return g_variant_compare (key->minimum, value) <= 0 &&
-             g_variant_compare (value, key->maximum) <= 0;
-    }
-
-  return strinfo_is_string_valid (key->strinfo, key->strinfo_length,
-                                  g_variant_get_string (value, NULL));
-}
-
 GVariant *
 g_settings_schema_key_range_fixup (GSettingsSchemaKey *key,
                                    GVariant           *value)
@@ -1226,7 +1204,6 @@ g_settings_schema_key_range_fixup (GSettingsSchemaKey *key,
                                       g_variant_get_string (value, NULL));
   return target ? g_variant_ref_sink (g_variant_new_string (target)) : NULL;
 }
-
 
 GVariant *
 g_settings_schema_key_get_translated_default (GSettingsSchemaKey *key)
@@ -1511,7 +1488,7 @@ g_settings_schema_key_get_description (GSettingsSchemaKey *key)
 const GVariantType *
 g_settings_schema_key_get_value_type (GSettingsSchemaKey *key)
 {
-  return g_variant_get_type (key->default_value);
+  return key->type;
 }
 
 /**
@@ -1523,12 +1500,140 @@ g_settings_schema_key_get_value_type (GSettingsSchemaKey *key)
  * Note that this is the default value according to the schema.  System
  * administrator defaults and lockdown are not visible via this API.
  *
- * Returns: (transfer none): the default value for the key
+ * Returns: (transfer full): the default value for the key
  *
  * Since: 2.40
  **/
 GVariant *
 g_settings_schema_key_get_default_value (GSettingsSchemaKey *key)
 {
-  return key->default_value;
+  GVariant *value;
+
+  value = g_settings_schema_key_get_translated_default (key);
+
+  if (!value)
+    value = key->default_value;
+
+  return value;
+}
+
+/**
+ * g_settings_schema_key_get_range:
+ * @key: a #GSettingsSchemaKey
+ *
+ * Queries the range of a key.
+ *
+ * This function will return a #GVariant that fully describes the range
+ * of values that are valid for @key.
+ *
+ * The type of #GVariant returned is <literal>(sv)</literal>.  The
+ * string describes the type of range restriction in effect.  The type
+ * and meaning of the value contained in the variant depends on the
+ * string.
+ *
+ * If the string is <literal>'type'</literal> then the variant contains
+ * an empty array.  The element type of that empty array is the expected
+ * type of value and all values of that type are valid.
+ *
+ * If the string is <literal>'enum'</literal> then the variant contains
+ * an array enumerating the possible values.  Each item in the array is
+ * a possible valid value and no other values are valid.
+ *
+ * If the string is <literal>'flags'</literal> then the variant contains
+ * an array.  Each item in the array is a value that may appear zero or
+ * one times in an array to be used as the value for this key.  For
+ * example, if the variant contained the array <literal>['x',
+ * 'y']</literal> then the valid values for the key would be
+ * <literal>[]</literal>, <literal>['x']</literal>,
+ * <literal>['y']</literal>, <literal>['x', 'y']</literal> and
+ * <literal>['y', 'x']</literal>.
+ *
+ * Finally, if the string is <literal>'range'</literal> then the variant
+ * contains a pair of like-typed values -- the minimum and maximum
+ * permissible values for this key.
+ *
+ * This information should not be used by normal programs.  It is
+ * considered to be a hint for introspection purposes.  Normal programs
+ * should already know what is permitted by their own schema.  The
+ * format may change in any way in the future -- but particularly, new
+ * forms may be added to the possibilities described above.
+ *
+ * You should free the returned value with g_variant_unref() when it is
+ * no longer needed.
+ *
+ * Returns: (transfer full): a #GVariant describing the range
+ *
+ * Since: 2.40
+ **/
+GVariant *
+g_settings_schema_key_get_range (GSettingsSchemaKey *key)
+{
+  const gchar *type;
+  GVariant *range;
+
+  if (key->minimum)
+    {
+      range = g_variant_new ("(**)", key->minimum, key->maximum);
+      type = "range";
+    }
+  else if (key->strinfo)
+    {
+      range = strinfo_enumerate (key->strinfo, key->strinfo_length);
+      type = key->is_flags ? "flags" : "enum";
+    }
+  else
+    {
+      range = g_variant_new_array (key->type, NULL, 0);
+      type = "type";
+    }
+
+  return g_variant_ref_sink (g_variant_new ("(sv)", type, range));
+}
+
+/**
+ * g_settings_schema_key_range_check:
+ * @key: a #GSettingsSchemaKey
+ * @value: the value to check
+ *
+ * Checks if the given @value is of the correct type and within the
+ * permitted range for @key.
+ *
+ * It is a programmer error if @value is not of the correct type -- you
+ * must check for this first.
+ *
+ * Returns: %TRUE if @value is valid for @key
+ *
+ * Since: 2.40
+ **/
+gboolean
+g_settings_schema_key_range_check (GSettingsSchemaKey *key,
+                                   GVariant           *value)
+{
+  if (key->minimum == NULL && key->strinfo == NULL)
+    return TRUE;
+
+  if (g_variant_is_container (value))
+    {
+      gboolean ok = TRUE;
+      GVariantIter iter;
+      GVariant *child;
+
+      g_variant_iter_init (&iter, value);
+      while (ok && (child = g_variant_iter_next_value (&iter)))
+        {
+          ok = g_settings_schema_key_range_check (key, child);
+          g_variant_unref (child);
+        }
+
+      return ok;
+    }
+
+  if (key->minimum)
+    {
+      return g_variant_compare (key->minimum, value) <= 0 &&
+             g_variant_compare (value, key->maximum) <= 0;
+    }
+
+  return strinfo_is_string_valid (key->strinfo, key->strinfo_length,
+                                  g_variant_get_string (value, NULL));
 }

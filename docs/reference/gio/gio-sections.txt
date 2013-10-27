@@ -2408,6 +2408,7 @@ g_settings_schema_get_path
 
 <SUBSECTION>
 GSettingsSchemaKey
+g_settings_schema_has_key
 g_settings_schema_get_key
 g_settings_schema_key_ref
 g_settings_schema_key_unref
@@ -2415,6 +2416,8 @@ g_settings_schema_key_unref
 <SUBSECTION>
 g_settings_schema_key_get_value_type
 g_settings_schema_key_get_default_value
+g_settings_schema_key_get_range
+g_settings_schema_key_range_check
 
 <SUBSECTION>
 g_settings_schema_key_get_summary
