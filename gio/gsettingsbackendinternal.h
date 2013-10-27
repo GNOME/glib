@@ -62,6 +62,9 @@ GVariant *              g_settings_backend_read                         (GSettin
                                                                          const gchar                    *key,
                                                                          const GVariantType             *expected_type,
                                                                          gboolean                        default_value);
+GVariant *              g_settings_backend_read_user_value              (GSettingsBackend               *backend,
+                                                                         const gchar                    *key,
+                                                                         const GVariantType             *expected_type);
 gboolean                g_settings_backend_write                        (GSettingsBackend               *backend,
                                                                          const gchar                    *key,
                                                                          GVariant                       *value,

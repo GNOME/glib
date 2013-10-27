@@ -104,6 +104,32 @@ g_delayed_settings_backend_read (GSettingsBackend   *backend,
   return result;
 }
 
+static GVariant *
+g_delayed_settings_backend_read_user_value (GSettingsBackend   *backend,
+                                            const gchar        *key,
+                                            const GVariantType *expected_type)
+{
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
+  gboolean value_found = FALSE;
+  gpointer result = NULL;
+
+  /* If we find an explicit NULL in our changeset then we want to return
+   * NULL (because the user value has been reset).
+   *
+   * Otherwise, chain up.
+   */
+  g_mutex_lock (&delayed->priv->lock);
+  value_found = g_tree_lookup_extended (delayed->priv->delayed, key, NULL, &result);
+  if (result)
+    g_variant_ref (result);
+  g_mutex_unlock (&delayed->priv->lock);
+
+  if (value_found)
+    return result;
+
+  return g_settings_backend_read_user_value (delayed->priv->backend, key, expected_type);
+}
+
 static gboolean
 g_delayed_settings_backend_write (GSettingsBackend *backend,
                                   const gchar      *key,
@@ -429,6 +455,7 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   backend_class->read = g_delayed_settings_backend_read;
+  backend_class->read_user_value = g_delayed_settings_backend_read_user_value;
   backend_class->write = g_delayed_settings_backend_write;
   backend_class->write_tree = g_delayed_settings_backend_write_tree;
   backend_class->reset = g_delayed_settings_backend_reset;

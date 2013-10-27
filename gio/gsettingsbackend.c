@@ -746,6 +746,43 @@ g_settings_backend_read (GSettingsBackend   *backend,
 }
 
 /*< private >
+ * g_settings_backend_read_user_value:
+ * @backend: a #GSettingsBackend implementation
+ * @key: the key to read
+ * @expected_type: a #GVariantType
+ *
+ * Reads the 'user value' of a key.
+ *
+ * This is the value of the key that the user has control over and has
+ * set for themselves.  Put another way: if the user did not set the
+ * value for themselves, then this will return %NULL (even if the
+ * sysadmin has provided a default value).
+ *
+ * Returns: the value that was read, or %NULL
+ */
+GVariant *
+g_settings_backend_read_user_value (GSettingsBackend   *backend,
+                                    const gchar        *key,
+                                    const GVariantType *expected_type)
+{
+  GVariant *value;
+
+  value = G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->read_user_value (backend, key, expected_type);
+
+  if (value != NULL)
+    value = g_variant_take_ref (value);
+
+  if G_UNLIKELY (value && !g_variant_is_of_type (value, expected_type))
+    {
+      g_variant_unref (value);
+      value = NULL;
+    }
+
+  return value;
+}
+
+/*< private >
  * g_settings_backend_write:
  * @backend: a #GSettingsBackend implementation
  * @key: the name of the key
@@ -903,6 +940,14 @@ ignore_subscription (GSettingsBackend *backend,
 {
 }
 
+static GVariant *
+g_settings_backend_real_read_user_value (GSettingsBackend   *backend,
+                                         const gchar        *key,
+                                         const GVariantType *expected_type)
+{
+  return g_settings_backend_read (backend, key, expected_type, FALSE);
+}
+
 static void
 g_settings_backend_init (GSettingsBackend *backend)
 {
@@ -917,6 +962,8 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
 
   class->subscribe = ignore_subscription;
   class->unsubscribe = ignore_subscription;
+
+  class->read_user_value = g_settings_backend_real_read_user_value;
 
   gobject_class->finalize = g_settings_backend_finalize;
 }
