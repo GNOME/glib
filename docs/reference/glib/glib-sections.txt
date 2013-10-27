@@ -2296,6 +2296,7 @@ g_hash_table_remove_all
 g_hash_table_steal_all
 g_hash_table_get_keys
 g_hash_table_get_values
+g_hash_table_get_keys_as_array
 GHRFunc
 g_hash_table_freeze
 g_hash_table_thaw

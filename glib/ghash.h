@@ -119,6 +119,9 @@ GLIB_AVAILABLE_IN_ALL
 GList *     g_hash_table_get_keys          (GHashTable     *hash_table);
 GLIB_AVAILABLE_IN_ALL
 GList *     g_hash_table_get_values        (GHashTable     *hash_table);
+GLIB_AVAILABLE_IN_2_40
+gpointer *  g_hash_table_get_keys_as_array (GHashTable     *hash_table,
+                                            guint          *length);
 
 GLIB_AVAILABLE_IN_ALL
 void        g_hash_table_iter_init         (GHashTableIter *iter,
