@@ -200,6 +200,34 @@ unset_cloexec (int fd)
     }
 }
 
+static int
+dupfd_cloexec (int parent_fd)
+{
+  int fd;
+#ifdef F_DUPFD_CLOEXEC
+  do
+    fd = fcntl (parent_fd, F_DUPFD_CLOEXEC, 3);
+  while (fd == -1 && errno == EINTR);
+#else
+  /* OS X Snow Lion and earlier don't have F_DUPFD_CLOEXEC:
+   * https://bugzilla.gnome.org/show_bug.cgi?id=710962
+   */
+  int result, flags;
+  do
+    fd = fcntl (parent_fd, F_DUPFD, 3);
+  while (fd == -1 && errno == EINTR);
+  flags = fcntl (fd, F_GETFD, 0);
+  if (flags != -1)
+    {
+      flags |= FD_CLOEXEC;
+      do
+        result = fcntl (fd, F_SETFD, flags);
+      while (result == -1 && errno == EINTR);
+    }
+#endif
+  return fd;
+}
+
 /**
  * Based on code derived from
  * gnome-terminal:src/terminal-screen.c:terminal_screen_child_setup(),
@@ -251,9 +279,7 @@ child_setup (gpointer user_data)
           gint parent_fd = g_array_index (child_data->needdup_fd_assignments, int, i);
           gint new_parent_fd;
 
-          do
-            new_parent_fd = fcntl (parent_fd, F_DUPFD_CLOEXEC, 3);
-          while (parent_fd == -1 && errno == EINTR);
+          new_parent_fd = dupfd_cloexec (parent_fd);
 
           g_array_index (child_data->needdup_fd_assignments, int, i) = new_parent_fd;
         }
