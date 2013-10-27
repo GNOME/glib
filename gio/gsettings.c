@@ -1114,6 +1114,106 @@ g_settings_get_value (GSettings   *settings,
 }
 
 /**
+ * g_settings_get_user_value:
+ * @settings: a #GSettings object
+ * @key: the key to check for being set
+ *
+ * Checks the "user value" of a key, if there is one.
+ *
+ * The user value of a key is the last value that was set by the user.
+ *
+ * After calling g_settings_reset() this function should always return
+ * %NULL (assuming something is not wrong with the system
+ * configuration).
+ *
+ * It is possible that g_settings_get_value() will return a different
+ * value than this function.  This can happen in the case that the user
+ * set a value for a key that was subsequently locked down by the system
+ * administrator -- this function will return the user's old value.
+ *
+ * This function may be useful for adding a "reset" option to a UI or
+ * for providing indication that a particular value has been changed.
+ *
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings.
+ *
+ * Returns: (allow none) (transfer full): the user's value, if set
+ *
+ * Since: 2.40
+ **/
+GVariant *
+g_settings_get_user_value (GSettings   *settings,
+                           const gchar *key)
+{
+  GSettingsSchemaKey skey;
+  GVariant *value;
+
+  g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
+  value = g_settings_read_from_backend (settings, &skey, TRUE, FALSE);
+  g_settings_schema_key_clear (&skey);
+
+  return value;
+}
+
+/**
+ * g_settings_get_default_value:
+ * @settings: a #GSettings object
+ * @key: the key to check for being set
+ *
+ * Gets the "default value" of a key.
+ *
+ * This is the value that would be read if g_settings_reset() were to be
+ * called on the key.
+ *
+ * Note that this may be a different value than returned by
+ * g_settings_schema_key_get_default_value() if the system administrator
+ * has provided a default value.
+ *
+ * Comparing the return values of g_settings_get_default_value() and
+ * g_settings_get_value() is not sufficient for determining if a value
+ * has been set because the user may have explicitly set the value to
+ * something that happens to be equal to the default.  The difference
+ * here is that if the default changes in the future, the user's key
+ * will still be set.
+ *
+ * This function may be useful for adding an indication to a UI of what
+ * the default value was before the user set it.
+ *
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings.
+ *
+ * Returns: (allow none) (transfer full): the default value
+ *
+ * Since: 2.40
+ **/
+GVariant *
+g_settings_get_default_value (GSettings   *settings,
+                              const gchar *key)
+{
+  GSettingsSchemaKey skey;
+  GVariant *value;
+
+  g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+
+  g_settings_schema_key_init (&skey, settings->priv->schema, key);
+  value = g_settings_read_from_backend (settings, &skey, FALSE, TRUE);
+
+  if (value == NULL)
+    value = g_settings_schema_key_get_translated_default (&skey);
+
+  if (value == NULL)
+    value = g_variant_ref (skey.default_value);
+
+  g_settings_schema_key_clear (&skey);
+
+  return value;
+}
+
+/**
  * g_settings_get_enum:
  * @settings: a #GSettings object
  * @key: the key to get the value for

@@ -112,6 +112,13 @@ GLIB_AVAILABLE_IN_ALL
 GVariant *              g_settings_get_value                            (GSettings          *settings,
                                                                          const gchar        *key);
 
+GLIB_AVAILABLE_IN_2_40
+GVariant *              g_settings_get_user_value                       (GSettings          *settings,
+                                                                         const gchar        *key);
+GLIB_AVAILABLE_IN_2_40
+GVariant *              g_settings_get_default_value                    (GSettings          *settings,
+                                                                         const gchar        *key);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean                g_settings_set                                  (GSettings          *settings,
                                                                          const gchar        *key,

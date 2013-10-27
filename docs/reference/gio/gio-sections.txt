@@ -2442,6 +2442,8 @@ g_settings_revert
 g_settings_get_has_unapplied
 g_settings_get_child
 g_settings_reset
+g_settings_get_user_value
+g_settings_get_default_value
 
 <SUBSECTION Introspection>
 g_settings_list_schemas
