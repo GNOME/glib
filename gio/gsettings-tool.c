@@ -31,6 +31,10 @@
 #include "glib/glib-private.h"
 #endif
 
+static GSettings               *global_settings;
+const gchar                    *global_key;
+const gchar                    *global_value;
+
 static gboolean
 contained (const gchar * const *items,
            const gchar         *item)
@@ -121,13 +125,12 @@ check_path (const gchar *path)
 }
 
 static gboolean
-check_key (GSettings   *settings,
-           const gchar *key)
+check_key (const gchar *key)
 {
   gboolean good;
   gchar **keys;
 
-  keys = g_settings_list_keys (settings);
+  keys = g_settings_list_keys (global_settings);
   good = contained ((const gchar **) keys, key);
   g_strfreev (keys);
 
@@ -149,52 +152,42 @@ output_list (const gchar * const *list)
 }
 
 static void
-gsettings_print_version (GSettings   *settings,
-                         const gchar *key,
-                         const gchar *value)
+gsettings_print_version (void)
 {
   g_print ("%d.%d.%d\n", glib_major_version, glib_minor_version,
            glib_micro_version);
 }
 
 static void
-gsettings_list_schemas (GSettings   *settings,
-                        const gchar *key,
-                        const gchar *value)
+gsettings_list_schemas (void)
 {
   output_list (g_settings_list_schemas ());
 }
 
 static void
-gsettings_list_relocatable_schemas (GSettings   *settings,
-                                    const gchar *key,
-                                    const gchar *value)
+gsettings_list_relocatable_schemas (void)
 {
   output_list (g_settings_list_relocatable_schemas ());
 }
 
 static void
-gsettings_list_keys (GSettings   *settings,
-                     const gchar *key,
-                     const gchar *value)
+gsettings_list_keys (void)
 {
   gchar **keys;
 
-  keys = g_settings_list_keys (settings);
+  keys = g_settings_list_keys (global_settings);
   output_list ((const gchar **) keys);
   g_strfreev (keys);
 }
 
 static void
-gsettings_list_children (GSettings   *settings,
-                         const gchar *key,
-                         const gchar *value)
+gsettings_list_children (void)
 {
   gchar **children;
   gint max = 0;
   gint i;
 
-  children = g_settings_list_children (settings);
+  children = g_settings_list_children (global_settings);
   for (i = 0; children[i]; i++)
     if (strlen (children[i]) > max)
       max = strlen (children[i]);
@@ -205,7 +198,7 @@ gsettings_list_children (GSettings   *settings,
       GSettingsSchema *schema;
       gchar *path;
 
-      child = g_settings_get_child (settings, children[i]);
+      child = g_settings_get_child (global_settings, children[i]);
       g_object_get (child,
                     "settings-schema", &schema,
                     "path", &path,
@@ -251,27 +244,31 @@ enumerate (GSettings *settings)
 }
 
 static void
-gsettings_list_recursively (GSettings   *settings,
-                            const gchar *key,
-                            const gchar *value)
+list_recursively (GSettings *settings)
 {
-  if (settings)
+  gchar **children;
+  gint i;
+
+  enumerate (settings);
+  children = g_settings_list_children (settings);
+  for (i = 0; children[i]; i++)
     {
-      gchar **children;
-      gint i;
+      GSettings *child;
 
-      enumerate (settings);
-      children = g_settings_list_children (settings);
-      for (i = 0; children[i]; i++)
-        {
-          GSettings *child;
+      child = g_settings_get_child (settings, children[i]);
+      list_recursively (child);
+      g_object_unref (child);
+    }
 
-          child = g_settings_get_child (settings, children[i]);
-          gsettings_list_recursively (child, NULL, NULL);
-          g_object_unref (child);
-        }
+  g_strfreev (children);
+}
 
-      g_strfreev (children);
+static void
+gsettings_list_recursively (void)
+{
+  if (global_settings)
+    {
+      list_recursively (global_settings);
     }
   else
     {
@@ -282,22 +279,22 @@ gsettings_list_recursively (GSettings   *settings,
 
       for (i = 0; schemas[i]; i++)
         {
+          GSettings *settings;
+
           settings = g_settings_new (schemas[i]);
-          gsettings_list_recursively (settings, NULL, NULL);
+          list_recursively (settings);
           g_object_unref (settings);
         }
     }
 }
 
 static void
-gsettings_range (GSettings   *settings,
-                 const gchar *key,
-                 const gchar *value)
+gsettings_range (void)
 {
   GVariant *range, *detail;
   const gchar *type;
 
-  range = g_settings_get_range (settings, key);
+  range = g_settings_get_range (global_settings, global_key);
   g_variant_get (range, "(&sv)", &type, &detail);
 
   if (strcmp (type, "type") == 0)
@@ -343,14 +340,12 @@ gsettings_range (GSettings   *settings,
 }
 
 static void
-gsettings_get (GSettings   *settings,
-               const gchar *key,
-               const gchar *value_)
+gsettings_get (void)
 {
   GVariant *value;
   gchar *printed;
 
-  value = g_settings_get_value (settings, key);
+  value = g_settings_get_value (global_settings, global_key);
   printed = g_variant_print (value, TRUE);
   g_print ("%s\n", printed);
   g_variant_unref (value);
@@ -358,16 +353,14 @@ gsettings_get (GSettings   *settings,
 }
 
 static void
-gsettings_reset (GSettings   *settings,
-                 const gchar *key,
-                 const gchar *value)
+gsettings_reset (void)
 {
-  g_settings_reset (settings, key);
+  g_settings_reset (global_settings, global_key);
   g_settings_sync ();
 }
 
 static void
-reset_all_keys (GSettings   *settings)
+reset_all_keys (GSettings *settings)
 {
   gchar **keys;
   gint i;
@@ -382,21 +375,19 @@ reset_all_keys (GSettings   *settings)
 }
 
 static void
-gsettings_reset_recursively (GSettings   *settings,
-                             const gchar *key,
-                             const gchar *value)
+gsettings_reset_recursively (void)
 {
   gchar **children;
   gint i;
 
-  g_settings_delay (settings);
+  g_settings_delay (global_settings);
 
-  reset_all_keys (settings);
-  children = g_settings_list_children (settings);
+  reset_all_keys (global_settings);
+  children = g_settings_list_children (global_settings);
   for (i = 0; children[i]; i++)
     {
       GSettings *child;
-      child = g_settings_get_child (settings, children[i]);
+      child = g_settings_get_child (global_settings, children[i]);
 
       reset_all_keys (child);
 
@@ -405,57 +396,49 @@ gsettings_reset_recursively (GSettings   *settings,
 
   g_strfreev (children);
 
-  g_settings_apply (settings);
+  g_settings_apply (global_settings);
   g_settings_sync ();
 }
 
 static void
-gsettings_writable (GSettings   *settings,
-                    const gchar *key,
-                    const gchar *value)
+gsettings_writable (void)
 {
   g_print ("%s\n",
-           g_settings_is_writable (settings, key) ?
+           g_settings_is_writable (global_settings, global_key) ?
            "true" : "false");
 }
 
 static void
-value_changed (GSettings   *settings,
-               const gchar *key,
-               gpointer     user_data)
+value_changed (void)
 {
   GVariant *value;
   gchar *printed;
 
-  value = g_settings_get_value (settings, key);
+  value = g_settings_get_value (global_settings, global_key);
   printed = g_variant_print (value, TRUE);
-  g_print ("%s: %s\n", key, printed);
+  g_print ("%s: %s\n", global_key, printed);
   g_variant_unref (value);
   g_free (printed);
 }
 
 static void
-gsettings_monitor (GSettings   *settings,
-                   const gchar *key,
-                   const gchar *value)
+gsettings_monitor (void)
 {
-  if (key)
+  if (global_key)
     {
       gchar *name;
 
-      name = g_strdup_printf ("changed::%s", key);
-      g_signal_connect (settings, name, G_CALLBACK (value_changed), NULL);
+      name = g_strdup_printf ("changed::%s", global_key);
+      g_signal_connect (global_settings, name, G_CALLBACK (value_changed), NULL);
     }
   else
-    g_signal_connect (settings, "changed", G_CALLBACK (value_changed), NULL);
+    g_signal_connect (global_settings, "changed", G_CALLBACK (value_changed), NULL);
 
   g_main_loop_run (g_main_loop_new (NULL, FALSE));
 }
 
 static void
-gsettings_set (GSettings   *settings,
-               const gchar *key,
-               const gchar *value)
+gsettings_set (void)
 {
   const GVariantType *type;
   GError *error = NULL;
@@ -463,10 +446,10 @@ gsettings_set (GSettings   *settings,
   GVariant *new;
   gchar *freeme = NULL;
 
-  existing = g_settings_get_value (settings, key);
+  existing = g_settings_get_value (global_settings, global_key);
   type = g_variant_get_type (existing);
 
-  new = g_variant_parse (type, value, NULL, NULL, &error);
+  new = g_variant_parse (type, global_value, NULL, NULL, &error);
 
   /* If that didn't work and the type is string then we should assume
    * that the user is just trying to set a string directly and forgot
@@ -491,10 +474,10 @@ gsettings_set (GSettings   *settings,
    */
   if (new == NULL &&
       g_variant_type_equal (type, G_VARIANT_TYPE_STRING) &&
-      value[0] != '\'' && value[0] != '"')
+      global_value[0] != '\'' && global_value[0] != '"')
     {
       g_clear_error (&error);
-      new = g_variant_new_string (value);
+      new = g_variant_new_string (global_value);
     }
 
   /* we're done with 'type' now, so we can free 'existing' */
@@ -506,14 +489,14 @@ gsettings_set (GSettings   *settings,
       exit (1);
     }
 
-  if (!g_settings_range_check (settings, key, new))
+  if (!g_settings_range_check (global_settings, global_key, new))
     {
       g_printerr (_("The provided value is outside of the valid range\n"));
       g_variant_unref (new);
       exit (1);
     }
 
-  if (!g_settings_set_value (settings, key, new))
+  if (!g_settings_set_value (global_settings, global_key, new))
     {
       g_printerr (_("The key is not writable\n"));
       exit (1);
@@ -702,11 +685,9 @@ gsettings_help (gboolean     requested,
 int
 main (int argc, char **argv)
 {
-  void (* function) (GSettings *, const gchar *, const gchar *);
+  void (* function) (void);
   GSettingsSchemaSource *schema_source;
   GSettingsSchema *schema;
-  GSettings *settings;
-  const gchar *key;
 
 #ifdef G_OS_WIN32
   gchar *tmp;
@@ -816,40 +797,39 @@ main (int argc, char **argv)
           if (!check_relocatable_schema (schema, parts[0]) || !check_path (parts[1]))
             return 1;
 
-          settings = g_settings_new_full (schema, NULL, parts[1]);
+          global_settings = g_settings_new_full (schema, NULL, parts[1]);
         }
       else
         {
           if (!check_schema (schema, parts[0]))
             return 1;
 
-          settings = g_settings_new_full (schema, NULL, NULL);
+          global_settings = g_settings_new_full (schema, NULL, NULL);
         }
 
       g_strfreev (parts);
     }
   else
     {
-      settings = NULL;
       schema = NULL;
     }
 
   if (argc > 3)
     {
-      if (!check_key (settings, argv[3]))
+      if (!check_key (argv[3]))
         return 1;
 
-      key = argv[3];
+      global_key = argv[3];
     }
-  else
-    key = NULL;
 
-  (* function) (settings, key, argc > 4 ? argv[4] : NULL);
+  if (argc > 4)
+    global_value = argv[4];
 
-  if (settings != NULL)
-    g_object_unref (settings);
+  (* function) ();
+
   if (schema != NULL)
     g_settings_schema_unref (schema);
+  g_clear_object (&global_settings);
 
   g_settings_schema_source_unref (schema_source);
 
