@@ -248,7 +248,7 @@ endif
 
 if OS_UNIX
 appinfo_sources += gdesktopappinfo.c
-platform_libadd += xdgmime/libxdgmime.la $(RESOLVER_LIBADD)
+platform_libadd += xdgmime/libxdgmime.la
 platform_deps += xdgmime/libxdgmime.la
 unix_sources = \
 	gfiledescriptorbased.c  \
