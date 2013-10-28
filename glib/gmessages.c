@@ -922,19 +922,19 @@ g_logv (const gchar   *log_domain,
     {
       GTestExpectedMessage *expected = expected_messages->data;
 
-      expected_messages = g_slist_delete_link (expected_messages,
-                                               expected_messages);
       if (g_strcmp0 (expected->log_domain, log_domain) == 0 &&
           ((log_level & expected->log_level) == expected->log_level) &&
           g_pattern_match_simple (expected->pattern, msg))
         {
+          expected_messages = g_slist_delete_link (expected_messages,
+                                                   expected_messages);
           g_free (expected->log_domain);
           g_free (expected->pattern);
           g_free (expected);
           g_free (msg_alloc);
           return;
         }
-      else
+      else if ((log_level & G_LOG_LEVEL_DEBUG) != G_LOG_LEVEL_DEBUG)
         {
           gchar level_prefix[STRING_BUFFER_SIZE];
           gchar *expected_message;
@@ -1148,6 +1148,9 @@ g_assert_warning (const char *log_domain,
  * g_error() intentionally never returns even if the program doesn't
  * abort; use g_test_trap_subprocess() in this case.
  *
+ * If messages at %G_LOG_LEVEL_DEBUG are emitted, but not explicitly
+ * expected via g_test_expect_message() then they will be ignored.
+ *
  * Since: 2.34
  */
 void
@@ -1196,6 +1199,9 @@ g_test_assert_expected_messages_internal (const char     *domain,
  *
  * Asserts that all messages previously indicated via
  * g_test_expect_message() have been seen and suppressed.
+ *
+ * If messages at %G_LOG_LEVEL_DEBUG are emitted, but not explicitly
+ * expected via g_test_expect_message() then they will be ignored.
  *
  * Since: 2.34
  */
