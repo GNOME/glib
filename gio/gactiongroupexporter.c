@@ -384,7 +384,7 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
       if (!g_action_group_has_action (exporter->action_group, name))
         {
           g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS,
-                                                 "The named action does not exist.");
+                                                 "The named action ('%s') does not exist.", name);
           return;
         }
 
