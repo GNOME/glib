@@ -535,6 +535,11 @@ g_cancellable_cancel (GCancellable *cancellable)
  *
  * See #GCancellable::cancelled for details on how to use this.
  *
+ * Since GLib 2.40, the lock protecting @cancellable is not held when
+ * @callback is invoked.  This lifts a restriction in place for
+ * earlier GLib versions which now makes it easier to write cleanup
+ * code that unconditionally invokes e.g. g_cancellable_cancel().
+ *
  * Returns: The id of the signal handler or 0 if @cancellable has already
  *          been cancelled.
  *
@@ -557,6 +562,8 @@ g_cancellable_connect (GCancellable   *cancellable,
       void (*_callback) (GCancellable *cancellable,
                          gpointer      user_data);
 
+      g_mutex_unlock (&cancellable_mutex);
+
       _callback = (void *)callback;
       id = 0;
 
@@ -571,9 +578,10 @@ g_cancellable_connect (GCancellable   *cancellable,
                                   callback, data,
                                   (GClosureNotify) data_destroy_func,
                                   0);
+
+      g_mutex_unlock (&cancellable_mutex);
     }
 
-  g_mutex_unlock (&cancellable_mutex);
 
   return id;
 }
