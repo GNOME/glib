@@ -185,4 +185,20 @@
       <default>0</default>
     </key>
   </schema>
+
+  <schema id='org.gtk.test.extends.base'>
+    <key name='int32' type='i'>
+      <default>0</default>
+    </key>
+    <key name='string' type='s'>
+      <default>''</default>
+    </key>
+  </schema>
+  <schema id='org.gtk.test.extends.extended' extends='org.gtk.test.extends.base'>
+    <override name="int32">42</override>
+    <key name='another-int32' type='i'>
+      <default>0</default>
+    </key>
+  </schema>
+
 </schemalist>

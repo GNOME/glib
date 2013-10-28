@@ -2044,6 +2044,8 @@ test_list_schemas (void)
 
   g_assert (strv_set_equal ((gchar **)relocs,
                             "org.gtk.test.no-path",
+                            "org.gtk.test.extends.base",
+                            "org.gtk.test.extends.extended",
                             NULL));
 
   g_assert (strv_set_equal ((gchar **)schemas,
@@ -2368,6 +2370,19 @@ test_read_descriptions (void)
   g_object_unref (settings);
 }
 
+static void
+test_extended_schema (void)
+{
+  GSettings *settings;
+  gchar **keys;
+
+  settings = g_settings_new_with_path ("org.gtk.test.extends.extended", "/test/extendes/");
+  keys = g_settings_list_keys (settings);
+  g_assert (strv_set_equal (keys, "int32", "string", "another-int32", NULL));
+  g_strfreev (keys);
+  g_object_unref (settings);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2482,6 +2497,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/null-backend", test_null_backend);
   g_test_add_func ("/gsettings/memory-backend", test_memory_backend);
   g_test_add_func ("/gsettings/read-descriptions", test_read_descriptions);
+  g_test_add_func ("/gsettings/test-extended-schema", test_extended_schema);
 
   result = g_test_run ();
 
