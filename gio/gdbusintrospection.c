@@ -1789,7 +1789,7 @@ g_dbus_node_info_new_for_xml (const gchar  *xml_data,
 
   data = parse_data_new ();
   context = g_markup_parse_context_new (parser,
-                                        0,
+                                        G_MARKUP_IGNORE_QUALIFIED,
                                         data,
                                         (GDestroyNotify) parse_data_free);
 
