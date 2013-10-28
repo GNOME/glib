@@ -45,6 +45,7 @@ struct _GSimpleAction
   GVariantType *parameter_type;
   gboolean      enabled;
   GVariant     *state;
+  gboolean      state_set_already;
 };
 
 typedef GObjectClass GSimpleActionClass;
@@ -232,7 +233,20 @@ g_simple_action_set_property (GObject    *object,
       break;
 
     case PROP_STATE:
-      action->state = g_value_dup_variant (value);
+      /* The first time we see this (during construct) we should just
+       * take the state as it was handed to us.
+       *
+       * After that, we should make sure we go through the same checks
+       * as the C API.
+       */
+      if (!action->state_set_already)
+        {
+          action->state = g_value_dup_variant (value);
+          action->state_set_already = TRUE;
+        }
+      else
+        g_simple_action_set_state (action, g_value_get_variant (value));
+
       break;
 
     default:
@@ -470,7 +484,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
                                                          P_("The state the action is in"),
                                                          G_VARIANT_TYPE_ANY,
                                                          NULL,
-                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                                                          G_PARAM_STATIC_STRINGS));
 }
 
