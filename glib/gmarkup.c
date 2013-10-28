@@ -1038,6 +1038,37 @@ emit_start_element (GMarkupParseContext  *context,
     propagate_error (context, error, tmp_error);
 }
 
+static void
+emit_end_element (GMarkupParseContext  *context,
+                  GError              **error)
+{
+  /* We need to pop the tag stack and call the end_element
+   * function, since this is the close tag
+   */
+  GError *tmp_error = NULL;
+
+  g_assert (context->tag_stack != NULL);
+
+  possibly_finish_subparser (context);
+
+  tmp_error = NULL;
+  if (context->parser->end_element)
+    (* context->parser->end_element) (context,
+                                      current_element (context),
+                                      context->user_data,
+                                      &tmp_error);
+
+  ensure_no_outstanding_subparser (context);
+
+  if (tmp_error)
+    {
+      mark_error (context, tmp_error);
+      g_propagate_error (error, tmp_error);
+    }
+
+  pop_tag (context);
+}
+
 /**
  * g_markup_parse_context_parse:
  * @context: a #GMarkupParseContext
@@ -1184,54 +1215,25 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
 
         case STATE_AFTER_ELISION_SLASH:
           /* Possible next state: AFTER_CLOSE_ANGLE */
+          if (*context->iter == '>')
+            {
+              /* move after the close angle */
+              advance_char (context);
+              context->state = STATE_AFTER_CLOSE_ANGLE;
+              emit_end_element (context, error);
+            }
+          else
+            {
+              gchar buf[8];
 
-          {
-            /* We need to pop the tag stack and call the end_element
-             * function, since this is the close tag
-             */
-            GError *tmp_error = NULL;
-
-            g_assert (context->tag_stack != NULL);
-
-            possibly_finish_subparser (context);
-
-            tmp_error = NULL;
-            if (context->parser->end_element)
-              (* context->parser->end_element) (context,
-                                                current_element (context),
-                                                context->user_data,
-                                                &tmp_error);
-
-            ensure_no_outstanding_subparser (context);
-
-            if (tmp_error)
-              {
-                mark_error (context, tmp_error);
-                g_propagate_error (error, tmp_error);
-              }
-            else
-              {
-                if (*context->iter == '>')
-                  {
-                    /* move after the close angle */
-                    advance_char (context);
-                    context->state = STATE_AFTER_CLOSE_ANGLE;
-                  }
-                else
-                  {
-                    gchar buf[8];
-
-                    set_error (context,
-                               error,
-                               G_MARKUP_ERROR_PARSE,
-                               _("Odd character '%s', expected a '>' character "
-                                 "to end the empty-element tag '%s'"),
-                               utf8_str (context->iter, buf),
-                               current_element (context));
-                  }
-              }
-            pop_tag (context);
-          }
+              set_error (context,
+                         error,
+                         G_MARKUP_ERROR_PARSE,
+                         _("Odd character '%s', expected a '>' character "
+                           "to end the empty-element tag '%s'"),
+                         utf8_str (context->iter, buf),
+                         current_element (context));
+            }
           break;
 
         case STATE_INSIDE_OPEN_TAG_NAME:
@@ -1589,26 +1591,11 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
                 }
               else
                 {
-                  GError *tmp_error;
                   advance_char (context);
                   context->state = STATE_AFTER_CLOSE_ANGLE;
                   context->start = NULL;
 
-                  possibly_finish_subparser (context);
-
-                  /* call the end_element callback */
-                  tmp_error = NULL;
-                  if (context->parser->end_element)
-                    (* context->parser->end_element) (context,
-                                                      close_name->str,
-                                                      context->user_data,
-                                                      &tmp_error);
-
-                  ensure_no_outstanding_subparser (context);
-                  pop_tag (context);
-
-                  if (tmp_error)
-                    propagate_error (context, error, tmp_error);
+                  emit_end_element (context, error);
                 }
               context->partial_chunk = close_name;
               truncate_partial (context);
