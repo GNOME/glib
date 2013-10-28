@@ -96,6 +96,9 @@ static struct test tests[] =
   { "<bool mb='t' ob='f' tri='1'/>", "<bool(1) 1 0 1>" },
   { "<bool mb='y' ob='n' tri='0'/>", "<bool(1) 1 0 0>" },
 
+  { "<bool mb='y' my:attr='q'><my:tag/></bool>", "<bool(1) 1 0 -1>" },
+  { "<bool mb='y' my:attr='q'><my:tag>some <b>text</b> is in here</my:tag></bool>", "<bool(1) 1 0 -1>" },
+
   { "<bool ob='y'/>", "<bool(0) 0 0 -1>",
     G_MARKUP_ERROR_MISSING_ATTRIBUTE, "'mb'" },
 
@@ -147,7 +150,7 @@ test_collect (gconstpointer d)
   gboolean result;
 
   string = g_string_new ("");
-  ctx = g_markup_parse_context_new (&parser, 0, string, NULL);
+  ctx = g_markup_parse_context_new (&parser, G_MARKUP_IGNORE_QUALIFIED, string, NULL);
   result = g_markup_parse_context_parse (ctx,
                                          test->document,
                                          -1, &error);
