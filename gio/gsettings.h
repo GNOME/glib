@@ -96,10 +96,10 @@ GLIB_AVAILABLE_IN_ALL
 gchar **                g_settings_list_children                        (GSettings          *settings);
 GLIB_AVAILABLE_IN_ALL
 gchar **                g_settings_list_keys                            (GSettings          *settings);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_40_FOR(g_settings_schema_key_get_range)
 GVariant *              g_settings_get_range                            (GSettings          *settings,
                                                                          const gchar        *key);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_40_FOR(g_settings_schema_key_range_check)
 gboolean                g_settings_range_check                          (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          GVariant           *value);
