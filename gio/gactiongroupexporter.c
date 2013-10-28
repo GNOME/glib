@@ -380,6 +380,14 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
       GVariant *desc;
 
       g_variant_get (parameters, "(&s)", &name);
+
+      if (!g_action_group_has_action (exporter->action_group, name))
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS,
+                                                 "The named action does not exist.");
+          return;
+        }
+
       desc = g_action_group_describe_action (exporter->action_group, name);
       result = g_variant_new ("(@(bgav))", desc);
     }
