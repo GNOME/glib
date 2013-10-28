@@ -550,7 +550,9 @@ file_changed (GFileMonitor      *monitor,
 {
   GKeyfileSettingsBackend *kfsb = user_data;
 
-  g_keyfile_settings_backend_keyfile_reload (kfsb);
+  /* Ignore file deletions, let the GKeyFile content remain in tact. */
+  if (event_type != G_FILE_MONITOR_EVENT_DELETED)
+    g_keyfile_settings_backend_keyfile_reload (kfsb);
 }
 
 static void
