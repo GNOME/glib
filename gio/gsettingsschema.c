@@ -146,6 +146,8 @@ struct _GSettingsSchema
   GvdbTable *table;
   gchar *id;
 
+  GSettingsSchema *extends;
+
   gint ref_count;
 };
 
@@ -407,6 +409,7 @@ g_settings_schema_source_lookup (GSettingsSchemaSource *source,
 {
   GSettingsSchema *schema;
   GvdbTable *table;
+  const gchar *extends;
 
   g_return_val_if_fail (source != NULL, NULL);
   g_return_val_if_fail (schema_id != NULL, NULL);
@@ -431,6 +434,14 @@ g_settings_schema_source_lookup (GSettingsSchemaSource *source,
 
   if (schema->gettext_domain)
     bind_textdomain_codeset (schema->gettext_domain, "UTF-8");
+
+  extends = g_settings_schema_get_string (schema, ".extends");
+  if (extends)
+    {
+      schema->extends = g_settings_schema_source_lookup (source, extends, TRUE);
+      if (schema->extends == NULL)
+        g_warning ("Schema '%s' extends schema '%s' but we could not find it", schema_id, extends);
+    }
 
   return schema;
 }
@@ -892,6 +903,9 @@ g_settings_schema_unref (GSettingsSchema *schema)
 {
   if (g_atomic_int_dec_and_test (&schema->ref_count))
     {
+      if (schema->extends)
+        g_settings_schema_unref (schema->extends);
+
       g_settings_schema_source_unref (schema->source);
       gvdb_table_unref (schema->table);
       g_free (schema->items);
@@ -921,10 +935,15 @@ GVariantIter *
 g_settings_schema_get_value (GSettingsSchema *schema,
                              const gchar     *key)
 {
+  GSettingsSchema *s = schema;
   GVariantIter *iter;
   GVariant *value;
 
-  value = gvdb_table_get_raw_value (schema->table, key);
+  g_return_val_if_fail (schema != NULL, NULL);
+
+  for (s = schema; s; s = schema->extends)
+    if ((value = gvdb_table_get_raw_value (schema->table, key)))
+      break;
 
   if G_UNLIKELY (value == NULL || !g_variant_is_of_type (value, G_VARIANT_TYPE_TUPLE))
     g_error ("Settings schema '%s' does not contain a key named '%s'", schema->id, key);
@@ -976,79 +995,100 @@ const GQuark *
 g_settings_schema_list (GSettingsSchema *schema,
                         gint            *n_items)
 {
-  gint i, j;
-
   if (schema->items == NULL)
     {
-      gchar **list;
+      GSettingsSchema *s;
+      GHashTableIter iter;
+      GHashTable *items;
+      gpointer name;
       gint len;
+      gint i;
 
-      list = gvdb_table_list (schema->table, "");
-      len = list ? g_strv_length (list) : 0;
+      items = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-      schema->items = g_new (GQuark, len);
-      j = 0;
+      for (s = schema; s; s = s->extends)
+        {
+          gchar **list;
 
-      for (i = 0; i < len; i++)
-        if (list[i][0] != '.')
+          list = gvdb_table_list (s->table, "");
+
+          for (i = 0; list[i]; i++)
+            g_hash_table_add (items, list[i]); /* transfer ownership */
+
+          g_free (list); /* free container only */
+        }
+
+      /* Do a first pass to eliminate child items that do not map to
+       * valid schemas (ie: ones that would crash us if we actually
+       * tried to create them).
+       */
+      g_hash_table_iter_init (&iter, items);
+      while (g_hash_table_iter_next (&iter, &name, NULL))
+        if (g_str_has_suffix (name, "/"))
           {
-            if (g_str_has_suffix (list[i], "/"))
+            GSettingsSchemaSource *source;
+            GVariant *child_schema;
+            GvdbTable *child_table;
+
+            child_schema = gvdb_table_get_raw_value (schema->table, name);
+            if (!child_schema)
+              continue;
+
+            child_table = NULL;
+
+            for (source = schema_sources; source; source = source->parent)
+              if ((child_table = gvdb_table_get_table (source->table, g_variant_get_string (child_schema, NULL))))
+                break;
+
+            g_variant_unref (child_schema);
+
+            /* Schema is not found -> remove it from the list */
+            if (child_table == NULL)
               {
-                /* This is a child.  Check to make sure that
-                 * instantiating the child would actually work before we
-                 * return it from list() and cause a crash.
-                 */
-                GSettingsSchemaSource *source;
-                GVariant *child_schema;
-                GvdbTable *child_table;
-
-                child_schema = gvdb_table_get_raw_value (schema->table, list[i]);
-                if (!child_schema)
-                  continue;
-
-                child_table = NULL;
-
-                for (source = schema_sources; source; source = source->parent)
-                  if ((child_table = gvdb_table_get_table (source->table, g_variant_get_string (child_schema, NULL))))
-                    break;
-
-                g_variant_unref (child_schema);
-
-                /* Schema is not found -> don't add it to the list */
-                if (child_table == NULL)
-                  continue;
-
-                /* Make sure the schema is relocatable or at the
-                 * expected path
-                 */
-                if (gvdb_table_has_value (child_table, ".path"))
-                  {
-                    GVariant *path;
-                    gchar *expected;
-                    gboolean same;
-
-                    path = gvdb_table_get_raw_value (child_table, ".path");
-                    expected = g_strconcat (schema->path, list[i], NULL);
-                    same = g_str_equal (expected, g_variant_get_string (path, NULL));
-                    g_variant_unref (path);
-                    g_free (expected);
-
-                    if (!same)
-                      {
-                        gvdb_table_unref (child_table);
-                        continue;
-                      }
-                  }
-
-                gvdb_table_unref (child_table);
-                /* Else, it's good... */
+                g_hash_table_iter_remove (&iter);
+                continue;
               }
 
-            schema->items[j++] = g_quark_from_string (list[i]);
-          }
-      schema->n_items = j;
+            /* Make sure the schema is relocatable or at the
+             * expected path
+             */
+            if (gvdb_table_has_value (child_table, ".path"))
+              {
+                GVariant *path;
+                gchar *expected;
+                gboolean same;
 
-      g_strfreev (list);
+                path = gvdb_table_get_raw_value (child_table, ".path");
+                expected = g_strconcat (schema->path, name, NULL);
+                same = g_str_equal (expected, g_variant_get_string (path, NULL));
+                g_variant_unref (path);
+                g_free (expected);
+
+                /* Schema is non-relocatable and did not have the
+                 * expected path -> remove it from the list
+                 */
+                if (!same)
+                  g_hash_table_iter_remove (&iter);
+              }
+
+            gvdb_table_unref (child_table);
+          }
+
+      /* Now create the list */
+      len = g_hash_table_size (items);
+      schema->items = g_new (GQuark, len + 1);
+      i = 0;
+      g_hash_table_iter_init (&iter, items);
+
+      while (g_hash_table_iter_next (&iter, &name, NULL))
+        {
+          schema->items[i++] = g_quark_from_string (name);
+          g_hash_table_iter_steal (&iter);
+        }
+      schema->n_items = i;
+      g_assert (i == len);
+
+      g_hash_table_unref (items);
     }
 
   *n_items = schema->n_items;
