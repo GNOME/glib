@@ -31,20 +31,12 @@
 #include "glib/glib-private.h"
 #endif
 
+static GSettingsSchemaSource   *global_schema_source;
 static GSettings               *global_settings;
+static GSettingsSchema         *global_schema;
+static GSettingsSchemaKey      *global_schema_key;
 const gchar                    *global_key;
 const gchar                    *global_value;
-
-static gboolean
-contained (const gchar * const *items,
-           const gchar         *item)
-{
-  while (*items)
-    if (strcmp (*items++, item) == 0)
-      return TRUE;
-
-  return FALSE;
-}
 
 static gboolean
 is_relocatable_schema (GSettingsSchema *schema)
@@ -124,26 +116,8 @@ check_path (const gchar *path)
   return TRUE;
 }
 
-static gboolean
-check_key (const gchar *key)
-{
-  gboolean good;
-  gchar **keys;
-
-  keys = g_settings_list_keys (global_settings);
-  good = contained ((const gchar **) keys, key);
-  g_strfreev (keys);
-
-  if (good)
-    return TRUE;
-
-  g_printerr (_("No such key '%s'\n"), key);
-
-  return FALSE;
-}
-
 static void
-output_list (const gchar * const *list)
+output_list (gchar **list)
 {
   gint i;
 
@@ -161,13 +135,21 @@ gsettings_print_version (void)
 static void
 gsettings_list_schemas (void)
 {
-  output_list (g_settings_list_schemas ());
+  gchar **schemas;
+
+  g_settings_schema_source_list_schemas (global_schema_source, TRUE, &schemas, NULL);
+  output_list (schemas);
+  g_strfreev (schemas);
 }
 
 static void
 gsettings_list_relocatable_schemas (void)
 {
-  output_list (g_settings_list_relocatable_schemas ());
+  gchar **schemas;
+
+  g_settings_schema_source_list_schemas (global_schema_source, TRUE, NULL, &schemas);
+  output_list (schemas);
+  g_strfreev (schemas);
 }
 
 static void
@@ -176,7 +158,7 @@ gsettings_list_keys (void)
   gchar **keys;
 
   keys = g_settings_list_keys (global_settings);
-  output_list ((const gchar **) keys);
+  output_list (keys);
   g_strfreev (keys);
 }
 
@@ -272,10 +254,10 @@ gsettings_list_recursively (void)
     }
   else
     {
-      const gchar * const *schemas;
+      gchar **schemas;
       gint i;
 
-      schemas = g_settings_list_schemas ();
+      g_settings_schema_source_list_schemas (global_schema_source, TRUE, &schemas, NULL);
 
       for (i = 0; schemas[i]; i++)
         {
@@ -285,6 +267,8 @@ gsettings_list_recursively (void)
           list_recursively (settings);
           g_object_unref (settings);
         }
+
+      g_strfreev (schemas);
     }
 }
 
@@ -294,7 +278,7 @@ gsettings_range (void)
   GVariant *range, *detail;
   const gchar *type;
 
-  range = g_settings_get_range (global_settings, global_key);
+  range = g_settings_schema_key_get_range (global_schema_key);
   g_variant_get (range, "(&sv)", &type, &detail);
 
   if (strcmp (type, "type") == 0)
@@ -442,12 +426,10 @@ gsettings_set (void)
 {
   const GVariantType *type;
   GError *error = NULL;
-  GVariant *existing;
   GVariant *new;
   gchar *freeme = NULL;
 
-  existing = g_settings_get_value (global_settings, global_key);
-  type = g_variant_get_type (existing);
+  type = g_settings_schema_key_get_value_type (global_schema_key);
 
   new = g_variant_parse (type, global_value, NULL, NULL, &error);
 
@@ -480,16 +462,13 @@ gsettings_set (void)
       new = g_variant_new_string (global_value);
     }
 
-  /* we're done with 'type' now, so we can free 'existing' */
-  g_variant_unref (existing);
-
   if (new == NULL)
     {
       g_printerr ("%s\n", error->message);
       exit (1);
     }
 
-  if (!g_settings_range_check (global_settings, global_key, new))
+  if (!g_settings_schema_key_range_check (global_schema_key, new))
     {
       g_printerr (_("The provided value is outside of the valid range\n"));
       g_variant_unref (new);
@@ -686,8 +665,6 @@ int
 main (int argc, char **argv)
 {
   void (* function) (void);
-  GSettingsSchemaSource *schema_source;
-  GSettingsSchema *schema;
 
 #ifdef G_OS_WIN32
   gchar *tmp;
@@ -711,17 +688,17 @@ main (int argc, char **argv)
   if (argc < 2)
     return gsettings_help (FALSE, NULL);
 
-  schema_source = g_settings_schema_source_ref (g_settings_schema_source_get_default ());
+  global_schema_source = g_settings_schema_source_ref (g_settings_schema_source_get_default ());
 
   if (argc > 3 && g_str_equal (argv[1], "--schemadir"))
     {
-      GSettingsSchemaSource *parent = schema_source;
+      GSettingsSchemaSource *parent = global_schema_source;
       GError *error = NULL;
 
-      schema_source = g_settings_schema_source_new_from_directory (argv[2], parent, FALSE, &error);
+      global_schema_source = g_settings_schema_source_new_from_directory (argv[2], parent, FALSE, &error);
       g_settings_schema_source_unref (parent);
 
-      if (schema_source == NULL)
+      if (global_schema_source == NULL)
         {
           g_printerr (_("Could not load schemas from %s: %s\n"), argv[2], error->message);
           g_clear_error (&error);
@@ -791,35 +768,35 @@ main (int argc, char **argv)
 
       parts = g_strsplit (argv[2], ":", 2);
 
-      schema = g_settings_schema_source_lookup (schema_source, parts[0], TRUE);
+      global_schema = g_settings_schema_source_lookup (global_schema_source, parts[0], TRUE);
       if (parts[1])
         {
-          if (!check_relocatable_schema (schema, parts[0]) || !check_path (parts[1]))
+          if (!check_relocatable_schema (global_schema, parts[0]) || !check_path (parts[1]))
             return 1;
 
-          global_settings = g_settings_new_full (schema, NULL, parts[1]);
+          global_settings = g_settings_new_full (global_schema, NULL, parts[1]);
         }
       else
         {
-          if (!check_schema (schema, parts[0]))
+          if (!check_schema (global_schema, parts[0]))
             return 1;
 
-          global_settings = g_settings_new_full (schema, NULL, NULL);
+          global_settings = g_settings_new_full (global_schema, NULL, NULL);
         }
 
       g_strfreev (parts);
     }
-  else
-    {
-      schema = NULL;
-    }
 
   if (argc > 3)
     {
-      if (!check_key (argv[3]))
-        return 1;
+      if (!g_settings_schema_has_key (global_schema, argv[3]))
+        {
+          g_printerr (_("No such key '%s'\n"), argv[3]);
+          return 1;
+        }
 
       global_key = argv[3];
+      global_schema_key = g_settings_schema_get_key (global_schema, global_key);
     }
 
   if (argc > 4)
@@ -827,11 +804,11 @@ main (int argc, char **argv)
 
   (* function) ();
 
-  if (schema != NULL)
-    g_settings_schema_unref (schema);
-  g_clear_object (&global_settings);
 
-  g_settings_schema_source_unref (schema_source);
+  g_clear_pointer (&global_schema_source, g_settings_schema_source_unref);
+  g_clear_pointer (&global_schema_key, g_settings_schema_key_unref);
+  g_clear_pointer (&global_schema, g_settings_schema_unref);
+  g_clear_object (&global_settings);
 
   return 0;
 }
