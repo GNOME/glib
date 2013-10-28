@@ -1012,10 +1012,13 @@ g_settings_schema_list (GSettingsSchema *schema,
 
           list = gvdb_table_list (s->table, "");
 
-          for (i = 0; list[i]; i++)
-            g_hash_table_add (items, list[i]); /* transfer ownership */
+          if (list)
+            {
+              for (i = 0; list[i]; i++)
+                g_hash_table_add (items, list[i]); /* transfer ownership */
 
-          g_free (list); /* free container only */
+              g_free (list); /* free container only */
+            }
         }
 
       /* Do a first pass to eliminate child items that do not map to
@@ -1076,15 +1079,12 @@ g_settings_schema_list (GSettingsSchema *schema,
 
       /* Now create the list */
       len = g_hash_table_size (items);
-      schema->items = g_new (GQuark, len + 1);
+      schema->items = g_new (GQuark, len);
       i = 0;
       g_hash_table_iter_init (&iter, items);
 
       while (g_hash_table_iter_next (&iter, &name, NULL))
-        {
-          schema->items[i++] = g_quark_from_string (name);
-          g_hash_table_iter_steal (&iter);
-        }
+        schema->items[i++] = g_quark_from_string (name);
       schema->n_items = i;
       g_assert (i == len);
 
