@@ -246,7 +246,7 @@ call_notify (GDBusConnection     *con,
 
       file = g_file_icon_get_file (G_FILE_ICON (icon));
       g_variant_builder_add (&hints_builder, "{sv}", "image-path",
-                             g_variant_new_take_string (g_file_get_uri (file)));
+                             g_variant_new_take_string (g_file_get_path (file)));
     }
 
   body = g_notification_get_body (notification);
