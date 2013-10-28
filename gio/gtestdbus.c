@@ -758,6 +758,7 @@ g_test_dbus_up (GTestDBus *self)
 
   start_daemon (self);
 
+  g_test_dbus_unset ();
   g_setenv ("DBUS_SESSION_BUS_ADDRESS", self->priv->bus_address, TRUE);
   self->priv->up = TRUE;
 }
@@ -811,7 +812,7 @@ g_test_dbus_down (GTestDBus *self)
   if (connection != NULL)
     _g_object_unref_and_wait_weak_notify (connection);
 
-  g_unsetenv ("DBUS_SESSION_BUS_ADDRESS");
+  g_test_dbus_unset ();
   self->priv->up = FALSE;
 }
 
@@ -830,4 +831,6 @@ g_test_dbus_unset (void)
 {
   g_unsetenv ("DISPLAY");
   g_unsetenv ("DBUS_SESSION_BUS_ADDRESS");
+  g_unsetenv ("DBUS_STARTER_ADDRESS");
+  g_unsetenv ("DBUS_STARTER_BUS_TYPE");
 }
