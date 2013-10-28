@@ -941,8 +941,8 @@ g_settings_schema_get_value (GSettingsSchema *schema,
 
   g_return_val_if_fail (schema != NULL, NULL);
 
-  for (s = schema; s; s = schema->extends)
-    if ((value = gvdb_table_get_raw_value (schema->table, key)))
+  for (s = schema; s; s = s->extends)
+    if ((value = gvdb_table_get_raw_value (s->table, key)))
       break;
 
   if G_UNLIKELY (value == NULL || !g_variant_is_of_type (value, G_VARIANT_TYPE_TUPLE))
