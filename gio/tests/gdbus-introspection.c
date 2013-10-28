@@ -303,23 +303,15 @@ int
 main (int   argc,
       char *argv[])
 {
-  gint ret;
-
   g_test_init (&argc, &argv, NULL);
 
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
-
-  session_bus_up ();
 
   g_test_add_func ("/gdbus/introspection-parser", test_introspection_parser);
   g_test_add_func ("/gdbus/introspection-generate", test_generate);
   g_test_add_func ("/gdbus/introspection-default-direction", test_default_direction);
   g_test_add_func ("/gdbus/introspection-extra-data", test_extra_data);
 
-  ret = g_test_run ();
-
-  session_bus_down ();
-
-  return ret;
+  return session_bus_run ();
 }

@@ -2352,21 +2352,12 @@ int
 main (int   argc,
       char *argv[])
 {
-  gint ret;
-
   g_test_init (&argc, &argv, NULL);
-
-  session_bus_up ();
 
   g_test_add_func ("/gdbus/codegen/annotations", test_annotations);
   g_test_add_func ("/gdbus/codegen/interface_stability", test_interface_stability);
   g_test_add_func ("/gdbus/codegen/object-manager", test_object_manager);
   g_test_add_func ("/gdbus/codegen/property-naming", test_property_naming);
 
-  ret = g_test_run();
-
-  /* tear down bus */
-  session_bus_down ();
-
-  return ret;
+  return session_bus_run ();
 }

@@ -30,6 +30,7 @@ G_BEGIN_DECLS
 void session_bus_up   (void);
 void session_bus_stop (void);
 void session_bus_down (void);
+gint session_bus_run (void);
 
 G_END_DECLS
 

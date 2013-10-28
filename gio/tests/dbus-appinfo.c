@@ -280,11 +280,7 @@ main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
 
-  session_bus_up ();
-
   g_test_add_func ("/appinfo/dbusappinfo", test_dbus_appinfo);
 
-  session_bus_down ();
-
-  return g_test_run ();
+  return session_bus_run ();
 }

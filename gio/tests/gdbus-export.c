@@ -1732,14 +1732,10 @@ int
 main (int   argc,
       char *argv[])
 {
-  gint ret;
-
   g_test_init (&argc, &argv, NULL);
 
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
-
-  session_bus_up ();
 
   g_test_add_func ("/gdbus/object-registration", test_object_registration);
   g_test_add_func ("/gdbus/registered-interfaces", test_registered_interfaces);
@@ -1748,10 +1744,5 @@ main (int   argc,
   /* TODO: check that we spit out correct introspection data */
   /* TODO: check that registering a whole subtree works */
 
-  ret = g_test_run();
-
-  /* tear down bus */
-  session_bus_down ();
-
-  return ret;
+  return session_bus_run ();
 }

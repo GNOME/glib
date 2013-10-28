@@ -47,3 +47,14 @@ session_bus_down (void)
   g_clear_object (&singleton);
 }
 
+gint
+session_bus_run (void)
+{
+  gint ret;
+
+  session_bus_up ();
+  ret = g_test_run ();
+  session_bus_down ();
+
+  return ret;
+}
