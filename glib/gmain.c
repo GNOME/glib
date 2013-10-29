@@ -1110,7 +1110,8 @@ assign_source_id_unlocked (GMainContext   *context,
 
 static guint
 g_source_attach_unlocked (GSource      *source,
-			  GMainContext *context)
+                          GMainContext *context,
+                          gboolean      do_wakeup)
 {
   GSList *tmp_list;
 
@@ -1135,9 +1136,15 @@ g_source_attach_unlocked (GSource      *source,
   tmp_list = source->priv->child_sources;
   while (tmp_list)
     {
-      g_source_attach_unlocked (tmp_list->data, context);
+      g_source_attach_unlocked (tmp_list->data, context, FALSE);
       tmp_list = tmp_list->next;
     }
+
+  /* If another thread has acquired the context, wake it up since it
+   * might be in poll() right now.
+   */
+  if (do_wakeup && context->owner && context->owner != G_THREAD_SELF)
+    g_wakeup_signal (context->wakeup);
 
   return source->source_id;
 }
@@ -1167,13 +1174,7 @@ g_source_attach (GSource      *source,
 
   LOCK_CONTEXT (context);
 
-  result = g_source_attach_unlocked (source, context);
-
-  /* If another thread has acquired the context, wake it up since it
-   * might be in poll() right now.
-   */
-  if (context->owner && context->owner != G_THREAD_SELF)
-    g_wakeup_signal (context->wakeup);
+  result = g_source_attach_unlocked (source, context, TRUE);
 
   UNLOCK_CONTEXT (context);
 
@@ -1432,8 +1433,8 @@ g_source_add_child_source (GSource *source,
 
   if (context)
     {
+      g_source_attach_unlocked (child_source, context, TRUE);
       UNLOCK_CONTEXT (context);
-      g_source_attach (child_source, context);
     }
 }
 
