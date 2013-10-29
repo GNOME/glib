@@ -2505,7 +2505,7 @@ copy_symlink (GFile           *destination,
       if (!tried_delete && (flags & G_FILE_COPY_OVERWRITE) &&
           my_error->domain == G_IO_ERROR && my_error->code == G_IO_ERROR_EXISTS)
         {
-          g_error_free (my_error);
+          g_clear_error (&my_error);
 
           /* Don't overwrite if the destination is a directory */
           info = g_file_query_info (destination, G_FILE_ATTRIBUTE_STANDARD_TYPE,
