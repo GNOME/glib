@@ -450,7 +450,7 @@ test_uri_query_info (void)
   GBytes *data;
   GFile *file;
   GFileInfo *info;
-  const char *content_type;
+  const char *content_type, *mime_type;
 
   loaded_file = g_file_get_contents (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL),
                                      &content, &content_size, NULL);
@@ -471,7 +471,9 @@ test_uri_query_info (void)
 
   content_type = g_file_info_get_content_type (info);
   g_assert (content_type);
-  g_assert_cmpstr (content_type, ==, "text/plain");
+  mime_type = g_content_type_get_mime_type (content_type);
+  g_assert (mime_type);
+  g_assert_cmpstr (mime_type, ==, "text/plain");
 
   g_object_unref (info);
 
