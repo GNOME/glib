@@ -1569,11 +1569,14 @@ class CodeGenerator:
 
         self.c.write('static void %s_proxy_iface_init (%sIface *iface);\n'
                      '\n'%(i.name_lower, i.camel_name))
-        self.c.write('G_DEFINE_TYPE_WITH_CODE (%sProxy, %s_proxy, G_TYPE_DBUS_PROXY,\n'%(i.camel_name, i.name_lower))
         self.c.write('#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38\n')
+        self.c.write('G_DEFINE_TYPE_WITH_CODE (%sProxy, %s_proxy, G_TYPE_DBUS_PROXY,\n'%(i.camel_name, i.name_lower))
         self.c.write('                         G_ADD_PRIVATE (%sProxy)\n'%(i.camel_name))
-        self.c.write('#endif\n')
         self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_proxy_iface_init));\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
+        self.c.write('#else\n')
+        self.c.write('G_DEFINE_TYPE_WITH_CODE (%sProxy, %s_proxy, G_TYPE_DBUS_PROXY,\n'%(i.camel_name, i.name_lower))
+        self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_proxy_iface_init));\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
+        self.c.write('#endif\n')
 
         # finalize
         self.c.write('static void\n'
@@ -2347,11 +2350,14 @@ class CodeGenerator:
         self.c.write('static void %s_skeleton_iface_init (%sIface *iface);\n'
                      %(i.name_lower, i.camel_name))
 
-        self.c.write('G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n'%(i.camel_name, i.name_lower))
         self.c.write('#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38\n')
+        self.c.write('G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n'%(i.camel_name, i.name_lower))
         self.c.write('                         G_ADD_PRIVATE (%sSkeleton)\n'%(i.camel_name))
-        self.c.write('#endif\n')
         self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_skeleton_iface_init));\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
+        self.c.write('#else\n')
+        self.c.write('G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n'%(i.camel_name, i.name_lower))
+        self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_skeleton_iface_init));\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
+        self.c.write('#endif\n')
 
         # finalize
         self.c.write('static void\n'
