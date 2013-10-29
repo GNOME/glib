@@ -185,7 +185,7 @@ g_local_file_input_stream_skip (GInputStream  *stream,
 				GCancellable  *cancellable,
 				GError       **error)
 {
-  off_t res, start;
+  off_t start, end;
   GLocalFileInputStream *file;
 
   file = G_LOCAL_FILE_INPUT_STREAM (stream);
@@ -205,8 +205,8 @@ g_local_file_input_stream_skip (GInputStream  *stream,
       return -1;
     }
   
-  res = lseek (file->priv->fd, count, SEEK_CUR);
-  if (res == -1)
+  end = lseek (file->priv->fd, 0, SEEK_END);
+  if (end == -1)
     {
       int errsv = errno;
 
@@ -217,7 +217,22 @@ g_local_file_input_stream_skip (GInputStream  *stream,
       return -1;
     }
 
-  return res - start;
+  if (end - start > count)
+    {
+      end = lseek (file->priv->fd, count - (end - start), SEEK_CUR);
+      if (end == -1)
+	{
+	  int errsv = errno;
+
+	  g_set_error (error, G_IO_ERROR,
+		       g_io_error_from_errno (errsv),
+		       _("Error seeking in file: %s"),
+		       g_strerror (errsv));
+	  return -1;
+	}
+    }
+
+  return end - start;
 }
 
 static gboolean
