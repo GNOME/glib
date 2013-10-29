@@ -262,7 +262,8 @@ g_application_impl_method_call (GDBusConnection       *connection,
       flags = g_application_get_flags (impl->app);
       if ((flags & G_APPLICATION_HANDLES_COMMAND_LINE) == 0)
         {
-          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_NOT_SUPPORTED, "Application does not handle command line arguments");
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_NOT_SUPPORTED,
+                                                 "Application does not handle command line arguments");
           return;
         }
 

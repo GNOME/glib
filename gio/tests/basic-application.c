@@ -31,28 +31,6 @@ open (GApplication  *application,
   g_print ("\n");
 }
 
-static int
-command_line (GApplication            *application,
-              GApplicationCommandLine *cmdline)
-{
-  gchar **argv;
-  gint argc;
-
-  argv = g_application_command_line_get_arguments (cmdline, &argc);
-
-  g_application_command_line_print (cmdline, "%d + %d = %d\n", 40, 2, 42);
-
-  g_assert_cmpint (argc, ==, 3);
-  g_assert_cmpstr (argv[0], ==, "./cmd");
-  g_assert_cmpstr (argv[1], ==, "40 +");
-  g_assert_cmpstr (argv[2], ==, "2");
-  g_assert (argv[3] == NULL);
-  g_print ("cmdline '%s' '%s'\n", argv[1], argv[2]);
-  g_strfreev (argv);
-
-  return 42;
-}
-
 int
 main (int argc, char **argv)
 {
@@ -67,7 +45,6 @@ main (int argc, char **argv)
                            : 0));
   g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
   g_signal_connect (app, "open", G_CALLBACK (open), NULL);
-  g_signal_connect (app, "command-line", G_CALLBACK (command_line), NULL);
 #ifdef STANDALONE
   g_application_set_inactivity_timeout (app, 10000);
 #else
