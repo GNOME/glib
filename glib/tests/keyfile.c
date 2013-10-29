@@ -68,6 +68,20 @@ check_locale_string_value (GKeyFile    *keyfile,
 }
 
 static void
+check_string_locale_value (GKeyFile    *keyfile,
+                           const gchar *group,
+                           const gchar *key,
+                           const gchar *locale,
+                           const gchar *expected)
+{
+  gchar *value;
+
+  value = g_key_file_get_locale_for_key (keyfile, group, key, locale);
+  g_assert_cmpstr (value, ==, expected);
+  g_free (value);
+}
+
+static void
 check_string_list_value (GKeyFile    *keyfile,
                          const gchar *group,
                          const gchar *key,
@@ -1686,6 +1700,32 @@ test_bytes (void)
   g_key_file_free (kf);
 }
 
+static void
+test_get_locale (void)
+{
+  GKeyFile *kf;
+
+  kf = g_key_file_new ();
+  g_key_file_load_from_data (kf,
+                             "[Group]\n"
+                             "x[fr_CA]=a\n"
+                             "x[fr]=b\n"
+                             "x=c\n",
+                             -1, G_KEY_FILE_KEEP_TRANSLATIONS,
+                             NULL);
+
+  check_locale_string_value (kf, "Group", "x", "fr_CA", "a");
+  check_string_locale_value (kf, "Group", "x", "fr_CA", "fr_CA");
+
+  check_locale_string_value (kf, "Group", "x", "fr_CH", "b");
+  check_string_locale_value (kf, "Group", "x", "fr_CH", "fr");
+
+  check_locale_string_value (kf, "Group", "x", "eo", "c");
+  check_string_locale_value (kf, "Group", "x", "eo", NULL);
+
+  g_key_file_free (kf);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1730,6 +1770,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/utf8", test_utf8);
   g_test_add_func ("/keyfile/roundtrip", test_roundtrip);
   g_test_add_func ("/keyfile/bytes", test_bytes);
+  g_test_add_func ("/keyfile/get-locale", test_get_locale);
 
   return g_test_run ();
 }

@@ -2263,6 +2263,68 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
 }
 
 /**
+ * g_key_file_get_locale_for_key:
+ * @key_file: a #GKeyFile
+ * @group_name: a group name
+ * @key: a key
+ * @locale: (nullable): a locale identifier or %NULL
+ *
+ * Returns the actual locale which the result of
+ * g_key_file_get_locale_string() or g_key_file_get_locale_string_list()
+ * came from.
+ *
+ * If calling g_key_file_get_locale_string() or
+ * g_key_file_get_locale_string_list() with exactly the same @key_file,
+ * @group_name, @key and @locale, the result of those functions will
+ * have originally been tagged with the locale that is the result of
+ * this function.
+ *
+ * Returns: (nullable): the locale from the file, or %NULL if the key was not
+ *   found or the entry in the file was was untranslated
+ *
+ * Since: 2.56
+ */
+gchar *
+g_key_file_get_locale_for_key (GKeyFile    *key_file,
+                               const gchar *group_name,
+                               const gchar *key,
+                               const gchar *locale)
+{
+  gchar **languages_allocated = NULL;
+  const gchar * const *languages;
+  gchar *result = NULL;
+  gsize i;
+
+  g_return_val_if_fail (key_file != NULL, NULL);
+  g_return_val_if_fail (group_name != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+
+  if (locale != NULL)
+    languages = languages_allocated = g_get_locale_variants (locale);
+  else
+    languages = g_get_language_names ();
+
+  for (i = 0; languages[i] != NULL; i++)
+    {
+      gchar *candidate_key, *translated_value;
+
+      candidate_key = g_strdup_printf ("%s[%s]", key, languages[i]);
+      translated_value = g_key_file_get_string (key_file, group_name, candidate_key, NULL);
+      g_free (translated_value);
+      g_free (candidate_key);
+
+      if (translated_value != NULL)
+        break;
+   }
+
+  result = g_strdup (languages[i]);
+
+  g_strfreev (languages_allocated);
+
+  return result;
+}
+
+/**
  * g_key_file_get_locale_string_list:
  * @key_file: a #GKeyFile
  * @group_name: a group name
