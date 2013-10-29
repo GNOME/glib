@@ -164,6 +164,9 @@ void g_assert_warning         (const char *log_domain,
 #define g_warning(...)  g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_WARNING,  \
                                __VA_ARGS__)
+#define g_info(...)     g_log (G_LOG_DOMAIN,         \
+                               G_LOG_LEVEL_INFO,     \
+                               __VA_ARGS__)
 #define g_debug(...)    g_log (G_LOG_DOMAIN,         \
                                G_LOG_LEVEL_DEBUG,    \
                                __VA_ARGS__)
@@ -183,6 +186,9 @@ void g_assert_warning         (const char *log_domain,
                                        format)
 #define g_warning(format...)    g_log (G_LOG_DOMAIN,         \
                                        G_LOG_LEVEL_WARNING,  \
+                                       format)
+#define g_info(format...)       g_log (G_LOG_DOMAIN,         \
+                                       G_LOG_LEVEL_INFO,     \
                                        format)
 #define g_debug(format...)      g_log (G_LOG_DOMAIN,         \
                                        G_LOG_LEVEL_DEBUG,    \
@@ -227,6 +233,15 @@ g_warning (const gchar *format,
   va_list args;
   va_start (args, format);
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, format, args);
+  va_end (args);
+}
+static void
+g_info (const gchar *format,
+        ...)
+{
+  va_list args;
+  va_start (args, format);
+  g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, format, args);
   va_end (args);
 }
 static void

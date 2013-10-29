@@ -146,7 +146,7 @@
  *     and g_return_val_if_fail().
  * @G_LOG_LEVEL_WARNING: log level for warnings, see g_warning()
  * @G_LOG_LEVEL_MESSAGE: log level for messages, see g_message()
- * @G_LOG_LEVEL_INFO: log level for informational messages
+ * @G_LOG_LEVEL_INFO: log level for informational messages, see g_info()
  * @G_LOG_LEVEL_DEBUG: log level for debug messages, see g_debug()
  * @G_LOG_LEVEL_MASK: a mask including all log levels
  *
@@ -225,6 +225,23 @@
  */
 
 /**
+ * g_info:
+ * @...: format string, followed by parameters to insert
+ *     into the format string (as with printf())
+ *
+ * A convenience function/macro to log an informational message. Seldom used.
+ *
+ * If g_log_default_handler() is used as the log handler function, a new-line
+ * character will automatically be appended to @..., and need not be entered
+ * manually.
+ *
+ * Such messages are suppressed by the g_log_default_handler() unless
+ * the G_MESSAGES_DEBUG environment variable is set appropriately.
+ *
+ * Since: 2.40
+ */
+
+/**
  * g_debug:
  * @...: format string, followed by parameters to insert
  *     into the format string (as with printf())
@@ -234,6 +251,9 @@
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
+ *
+ * Such messages are suppressed by the g_log_default_handler() unless
+ * the G_MESSAGES_DEBUG environment variable is set appropriately.
  *
  * Since: 2.6
  */

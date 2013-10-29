@@ -1072,6 +1072,7 @@ g_message
 g_warning
 g_critical
 g_error
+g_info
 g_debug
 
 <SUBSECTION>

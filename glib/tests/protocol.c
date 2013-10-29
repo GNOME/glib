@@ -43,11 +43,8 @@ debug (void)
 static void
 info (void)
 {
-#ifdef g_info
-#error "rewrite this to use g_info()"
-#endif
   if (g_test_subprocess ())
-    g_log (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, "this is a regular g_log(..., G_LOG_LEVEL_INFO, ...) from the test suite");
+    g_info ("this is a regular g_info from the test suite");
 }
 
 static void
