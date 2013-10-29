@@ -552,7 +552,7 @@ initable_init (GInitable     *initable,
     identifier = (guint64) self->pid;
 #endif
 
-    s = snprintf (self->identifier, sizeof self->identifier, "%"G_GUINT64_FORMAT, identifier);
+    s = g_snprintf (self->identifier, sizeof self->identifier, "%"G_GUINT64_FORMAT, identifier);
     g_assert (0 < s && s < sizeof self->identifier);
   }
 
