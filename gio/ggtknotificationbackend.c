@@ -35,8 +35,6 @@ typedef GNotificationBackendClass       GGtkNotificationBackendClass;
 struct _GGtkNotificationBackend
 {
   GNotificationBackend parent;
-
-  GDBusConnection *session_bus;
 };
 
 GType g_gtk_notification_backend_get_type (void);
@@ -45,16 +43,6 @@ G_DEFINE_TYPE_WITH_CODE (GGtkNotificationBackend, g_gtk_notification_backend, G_
   _g_io_modules_ensure_extension_points_registered ();
   g_io_extension_point_implement (G_NOTIFICATION_BACKEND_EXTENSION_POINT_NAME,
                                  g_define_type_id, "gtk", 100))
-
-static void
-g_gtk_notification_backend_dispose (GObject *object)
-{
-  GGtkNotificationBackend *backend = G_GTK_NOTIFICATION_BACKEND (object);
-
-  g_clear_object (&backend->session_bus);
-
-  G_OBJECT_CLASS (g_gtk_notification_backend_parent_class)->dispose (object);
-}
 
 static gboolean
 g_gtk_notification_backend_is_supported (void)
@@ -108,12 +96,11 @@ static void
 g_gtk_notification_backend_withdraw_notification (GNotificationBackend *backend,
                                                   const gchar          *id)
 {
-  GGtkNotificationBackend *self = G_GTK_NOTIFICATION_BACKEND (backend);
   GVariant *params;
 
   params = g_variant_new ("(ss)", g_application_get_application_id (backend->application), id);
 
-  g_dbus_connection_call (self->session_bus, "org.gtk.Notifications",
+  g_dbus_connection_call (backend->dbus_connection, "org.gtk.Notifications",
                           "/org/gtk/Notifications", "org.gtk.Notifications",
                           "RemoveNotification", params, G_VARIANT_TYPE_UNIT,
                           G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
@@ -127,10 +114,7 @@ g_gtk_notification_backend_init (GGtkNotificationBackend *backend)
 static void
 g_gtk_notification_backend_class_init (GGtkNotificationBackendClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
   GNotificationBackendClass *backend_class = G_NOTIFICATION_BACKEND_CLASS (class);
-
-  object_class->dispose = g_gtk_notification_backend_dispose;
 
   backend_class->is_supported = g_gtk_notification_backend_is_supported;
   backend_class->send_notification = g_gtk_notification_backend_send_notification;
