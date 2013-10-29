@@ -1016,10 +1016,11 @@ emit_start_element (GMarkupParseContext  *context,
    *
    * We deal with the end of the subparser from emit_end_element.
    */
-  if (context->flags & G_MARKUP_IGNORE_QUALIFIED && strchr (current_element (context), ':'))
+  if ((context->flags & G_MARKUP_IGNORE_QUALIFIED) && strchr (current_element (context), ':'))
     {
       static const GMarkupParser ignore_parser;
       g_markup_parse_context_push (context, &ignore_parser, NULL);
+      clear_attributes (context);
       return;
     }
 
@@ -1070,7 +1071,7 @@ emit_end_element (GMarkupParseContext  *context,
   possibly_finish_subparser (context);
 
   /* We might have just returned from our ignore subparser */
-  if (context->flags & G_MARKUP_IGNORE_QUALIFIED && strchr (current_element (context), ':'))
+  if ((context->flags & G_MARKUP_IGNORE_QUALIFIED) && strchr (current_element (context), ':'))
     {
       g_markup_parse_context_pop (context);
       pop_tag (context);
