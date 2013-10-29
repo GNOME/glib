@@ -397,6 +397,7 @@ test_programs += \
 	gdbus-test-codegen-old			\
 	gdbus-threading				\
 	gmenumodel				\
+	gnotification				\
 	$(NULL)
 
 gdbus_proxy_threads_CFLAGS = $(AM_CFLAGS) $(DBUS1_CFLAGS)
@@ -424,6 +425,7 @@ nodist_gdbus_test_codegen_old_SOURCES    = gdbus-test-codegen-generated.c gdbus-
 gdbus_test_codegen_old_CPPFLAGS          = $(AM_CPPFLAGS) -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36 -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36
 gdbus_threading_SOURCES                  = $(gdbus_sessionbus_sources) gdbus-threading.c
 gmenumodel_SOURCES                       = $(gdbus_sessionbus_sources) gmenumodel.c
+gnotification_SOURCES                    = $(gdbus_sessionbus_sources) gnotification.c gnotification-server.h gnotification-server.c
 
 gdbus-test-codegen.o: gdbus-test-codegen-generated.h
 gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c: test-codegen.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
