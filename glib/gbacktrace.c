@@ -64,6 +64,8 @@
 #  define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
 #  include <windows.h>
 #  undef STRICT
+#else
+#  include <fcntl.h>
 #endif
 
 #include "gbacktrace.h"
@@ -298,12 +300,19 @@ stack_trace (char **args)
   pid = fork ();
   if (pid == 0)
     {
+      /* Save stderr for printing failure below */
+      int old_err = dup (2);
+      fcntl (old_err, F_SETFD, fcntl (old_err, F_GETFD) | FD_CLOEXEC);
+
       close (0); dup (in_fd[0]);   /* set the stdin to the in pipe */
       close (1); dup (out_fd[1]);  /* set the stdout to the out pipe */
       close (2); dup (out_fd[1]);  /* set the stderr to the out pipe */
 
       execvp (args[0], args);      /* exec gdb */
-      perror ("exec failed");
+
+      /* Print failure to original stderr */
+      close (2); dup (old_err);
+      perror ("exec gdb failed");
       _exit (0);
     }
   else if (pid == (pid_t) -1)
