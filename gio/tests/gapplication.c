@@ -107,17 +107,12 @@ basic (void)
   /* spawn the master */
   spawn ("activated\n"
          "open file:///a file:///b\n"
-         "cmdline '40 +' '2'\n"
          "exit status: 0\n",
          "./app", NULL);
 
   /* send it some files */
   spawn ("exit status: 0\n",
          "./app", "/a", "/b", NULL);
-
-  spawn ("40 + 2 = 42\n"
-         "exit status: 42\n",
-         "./cmd", "40 +", "2", NULL);
 
   g_main_loop_run (main_loop);
 
