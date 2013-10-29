@@ -727,10 +727,9 @@ g_settings_schema_source_get_text_tables (GSettingsSchemaSource *source)
  * g_settings_schema_source_list_schemas:
  * @source: a #GSettingsSchemaSource
  * @recursive: if we should recurse
- * @non_relocatable_schemas: (out) (transfer full): the list of
- *   non-relocatable schemas
- * @relocatable_schemas: (out) (transfer full): the list of relocatable
+ * @non_relocatable: (out) (transfer full): the list of non-relocatable
  *   schemas
+ * @relocatable: (out) (transfer full): the list of relocatable schemas
  *
  * Lists the schemas in a given source.
  *
@@ -750,8 +749,8 @@ g_settings_schema_source_get_text_tables (GSettingsSchemaSource *source)
 void
 g_settings_schema_source_list_schemas (GSettingsSchemaSource   *source,
                                        gboolean                 recursive,
-                                       gchar                 ***non_relocatable_schemas,
-                                       gchar                 ***relocatable_schemas)
+                                       gchar                 ***non_relocatable,
+                                       gchar                 ***relocatable)
 {
   GHashTable *single, *reloc;
   GSettingsSchemaSource *s;
@@ -799,15 +798,15 @@ g_settings_schema_source_list_schemas (GSettingsSchemaSource   *source,
         break;
     }
 
-  if (non_relocatable_schemas)
+  if (non_relocatable)
     {
-      *non_relocatable_schemas = (gchar **) g_hash_table_get_keys_as_array (single, NULL);
+      *non_relocatable = (gchar **) g_hash_table_get_keys_as_array (single, NULL);
       g_hash_table_steal_all (single);
     }
 
-  if (relocatable_schemas)
+  if (relocatable)
     {
-      *relocatable_schemas = (gchar **) g_hash_table_get_keys_as_array (reloc, NULL);
+      *relocatable = (gchar **) g_hash_table_get_keys_as_array (reloc, NULL);
       g_hash_table_steal_all (reloc);
     }
 

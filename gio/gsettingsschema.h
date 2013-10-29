@@ -54,8 +54,8 @@ GSettingsSchema *       g_settings_schema_source_lookup                 (GSettin
 GLIB_AVAILABLE_IN_2_40
 void                    g_settings_schema_source_list_schemas           (GSettingsSchemaSource   *source,
                                                                          gboolean                 recursive,
-                                                                         gchar                 ***non_recursive_schemas,
-                                                                         gchar                 ***recursive_schemas);
+                                                                         gchar                 ***non_relocatable,
+                                                                         gchar                 ***relocatable);
 
 #define                 G_TYPE_SETTINGS_SCHEMA                          (g_settings_schema_get_type ())
 GLIB_AVAILABLE_IN_2_32
