@@ -259,10 +259,6 @@ test_default_direction (void)
   g_dbus_node_info_unref (info);
 }
 
-#if 0
-/* XXX: need to figure out how generous we want to be here */
-/* test that extraneous attributes are ignored
- */
 static void
 test_extra_data (void)
 {
@@ -270,11 +266,18 @@ test_extra_data (void)
   const gchar *data =
   "  <node>"
   "    <interface name='com.example.Frob' version='1.0'>"
-  "      <annotation name='foo' value='bar' extra='bla'/>"
-  "      <method name='PairReturn' anotherattribute='bla'>"
-  "        <annotation name='org.freedesktop.DBus.GLib.Async' value=''/>"
-  "        <arg type='u' name='somenumber' direction='in' spin='left'/>"
-  "        <arg type='s' name='somestring' direction='out'/>"
+  "      <doc:doc><doc:description><doc:para>Blah blah</doc:para></doc:description></doc:doc>"
+  "      <method name='DownloadPackages'>"
+  "        <arg type='u' name='somenumber' direction='in'>"
+  "          <doc:doc><doc:summary><doc:para>"
+  "            See <doc:ulink url='http:///example.com'>example</doc:ulink>"
+  "          </doc:para></doc:summary></doc:doc>"
+  "        </arg>"
+  "        <arg type='s' name='somestring' direction='out'>"
+  "          <doc:doc><doc:summary><doc:para>"
+  "            More docs"
+  "          </doc:para></doc:summary></doc:doc>"
+  "        </arg>"
   "      </method>"
   "      <signal name='HelloWorld'>"
   "        <arg type='s' name='somestring'/>"
@@ -293,7 +296,6 @@ test_extra_data (void)
 
   g_dbus_node_info_unref (info);
 }
-#endif
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -313,10 +315,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/introspection-parser", test_introspection_parser);
   g_test_add_func ("/gdbus/introspection-generate", test_generate);
   g_test_add_func ("/gdbus/introspection-default-direction", test_default_direction);
-#if 0
-  /* XXX: need to figure out how generous we want to be here */
   g_test_add_func ("/gdbus/introspection-extra-data", test_extra_data);
-#endif
 
   ret = g_test_run ();
 
