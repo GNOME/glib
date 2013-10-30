@@ -2083,6 +2083,8 @@ g_local_file_trash (GFile         *file,
     {
       int errsv = errno;
 
+      g_unlink (infofile);
+
       g_free (topdir);
       g_free (trashname);
       g_free (infofile);
