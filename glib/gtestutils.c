@@ -1022,10 +1022,17 @@ g_test_cleanup (void)
 
   if (test_suite_root)
     g_test_suite_free (test_suite_root);
+  g_slist_free (test_paths);
+  g_slist_free (test_paths_skipped);
 
+  g_free (test_argv0_dirname);
   g_free (test_trap_last_stdout);
   g_free (test_trap_last_stderr);
   g_free (test_uri_base);
+  g_free (test_initial_cwd);
+
+  if (test_user_timer)
+    g_timer_destroy (test_user_timer);
 }
 
 /**
