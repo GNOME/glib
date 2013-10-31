@@ -4978,6 +4978,7 @@ unref_unix_signal_handler_unlocked (int signum)
   if (unix_signal_refcount[signum] == 0)
     {
       struct sigaction action;
+      memset (&action, 0, sizeof (action));
       action.sa_handler = SIG_DFL;
       sigemptyset (&action.sa_mask);
       sigaction (signum, &action, NULL);
