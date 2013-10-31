@@ -104,6 +104,8 @@ test_qdata_dup (void)
   b = g_object_replace_qdata (object, quark, s, "s2", NULL, NULL);
   g_assert (b);
 
+  g_free (s);
+
   g_object_unref (object);
 }
 
