@@ -872,6 +872,9 @@ test_emission_hook (void)
   g_signal_remove_emission_hook (simple_id, hook);
   g_signal_emit_by_name (test1, "simple");
   g_assert_cmpint (count, ==, 2);
+
+  g_object_unref (test1);
+  g_object_unref (test2);
 }
 
 static gboolean
@@ -933,6 +936,8 @@ test_introspection (void)
   g_assert (query.signal_flags == G_SIGNAL_RUN_LAST);
   g_assert (query.return_type == G_TYPE_NONE);
   g_assert_cmpuint (query.n_params, ==, 0);
+
+  g_free (ids);
 }
 
 static void
