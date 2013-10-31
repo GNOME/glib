@@ -32,20 +32,18 @@
 static void
 test_private1 (void)
 {
-  GPrivate *private1;
+  static GPrivate private = G_PRIVATE_INIT (NULL);
   gpointer value;
 
-  private1 = g_private_new (NULL);
-
-  value = g_private_get (private1);
+  value = g_private_get (&private);
   g_assert (value == NULL);
 
-  g_private_set (private1, GINT_TO_POINTER(1));
-  value = g_private_get (private1);
+  g_private_set (&private, GINT_TO_POINTER(1));
+  value = g_private_get (&private);
   g_assert_cmpint (GPOINTER_TO_INT (value), ==, 1);
 
-  g_private_set (private1, GINT_TO_POINTER(2));
-  value = g_private_get (private1);
+  g_private_set (&private, GINT_TO_POINTER(2));
+  value = g_private_get (&private);
   g_assert_cmpint (GPOINTER_TO_INT (value), ==, 2);
 }
 
