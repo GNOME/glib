@@ -587,16 +587,13 @@ g_set_error_literal (GError      **err,
                      gint          code,
                      const gchar  *message)
 {
-  GError *new;
-
   if (err == NULL)
     return;
 
-  new = g_error_new_literal (domain, code, message);
   if (*err == NULL)
-    *err = new;
+    *err = g_error_new_literal (domain, code, message);
   else
-    g_warning (ERROR_OVERWRITTEN_WARNING, new->message); 
+    g_warning (ERROR_OVERWRITTEN_WARNING, message);
 }
 
 /**
