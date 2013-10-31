@@ -2249,10 +2249,12 @@ flag_reverse_string (void)
   GOptionEntry entries [] =
     { { "test", 't', G_OPTION_FLAG_REVERSE, G_OPTION_ARG_STRING, &arg, NULL, NULL },
       { NULL } };
-  gchar **argv;
   gint argc;
   gboolean retval;
   GError *error = NULL;
+
+  gchar *args[] = { "program", "--test", "bla" };
+  gchar **argv = args;
 
   if (!g_test_undefined ())
     return;
@@ -2264,12 +2266,11 @@ flag_reverse_string (void)
   g_option_context_add_main_entries (context, entries, NULL);
   g_test_assert_expected_messages ();
 
-  argv = split_string ("program --test bla", &argc);
-
+  argc = G_N_ELEMENTS (args);
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert (retval == TRUE);
   g_assert_no_error (error);
-  g_strfreev (argv);
+  g_free (arg);
   g_option_context_free (context);
 }
 
@@ -2281,10 +2282,12 @@ flag_optional_int (void)
   GOptionEntry entries [] =
     { { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_INT, &arg, NULL, NULL },
       { NULL } };
-  gchar **argv;
   gint argc;
   gboolean retval;
   GError *error = NULL;
+
+  gchar *args[] = { "program", "--test", "5" };
+  gchar **argv = args;
 
   if (!g_test_undefined ())
     return;
@@ -2296,12 +2299,10 @@ flag_optional_int (void)
   g_option_context_add_main_entries (context, entries, NULL);
   g_test_assert_expected_messages ();
 
-  argv = split_string ("program --test 5", &argc);
-
+  argc = G_N_ELEMENTS (args);
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert (retval == TRUE);
   g_assert_no_error (error);
-  g_strfreev (argv);
   g_option_context_free (context);
 }
 
