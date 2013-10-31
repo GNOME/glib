@@ -1082,7 +1082,7 @@ g_date_time_add (GDateTime *datetime,
  * @years: the number of years
  *
  * Creates a copy of @datetime and adds the specified number of years to the
- * copy.
+ * copy. Add negative values to subtract years.
  *
  * Return value: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
@@ -1117,7 +1117,7 @@ g_date_time_add_years (GDateTime *datetime,
  * @months: the number of months
  *
  * Creates a copy of @datetime and adds the specified number of months to the
- * copy.
+ * copy. Add negative values to subtract months.
  *
  * Return value: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
@@ -1160,7 +1160,7 @@ g_date_time_add_months (GDateTime *datetime,
  * @weeks: the number of weeks
  *
  * Creates a copy of @datetime and adds the specified number of weeks to the
- * copy.
+ * copy. Add negative values to subtract weeks.
  *
  * Return value: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
@@ -1182,7 +1182,7 @@ g_date_time_add_weeks (GDateTime *datetime,
  * @days: the number of days
  *
  * Creates a copy of @datetime and adds the specified number of days to the
- * copy.
+ * copy. Add negative values to subtract days.
  *
  * Return value: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
@@ -1206,7 +1206,8 @@ g_date_time_add_days (GDateTime *datetime,
  * @datetime: a #GDateTime
  * @hours: the number of hours to add
  *
- * Creates a copy of @datetime and adds the specified number of hours
+ * Creates a copy of @datetime and adds the specified number of hours.
+ * Add negative values to subtract hours.
  *
  * Return value: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
@@ -1226,6 +1227,7 @@ g_date_time_add_hours (GDateTime *datetime,
  * @minutes: the number of minutes to add
  *
  * Creates a copy of @datetime adding the specified number of minutes.
+ * Add negative values to subtract minutes.
  *
  * Return value: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
@@ -1246,6 +1248,7 @@ g_date_time_add_minutes (GDateTime *datetime,
  * @seconds: the number of seconds to add
  *
  * Creates a copy of @datetime and adds the specified number of seconds.
+ * Add negative values to subtract seconds.
  *
  * Return value: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
@@ -1270,7 +1273,7 @@ g_date_time_add_seconds (GDateTime *datetime,
  * @seconds: the number of seconds to add
  *
  * Creates a new #GDateTime adding the specified values to the current date and
- * time in @datetime.
+ * time in @datetime. Add negative values to subtract.
  *
  * Return value: the newly created #GDateTime that should be freed with
  *   g_date_time_unref().
