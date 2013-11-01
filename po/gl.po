@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-28 01:05+0100\n"
-"PO-Revision-Date: 2013-10-28 01:13+0200\n"
+"POT-Creation-Date: 2013-11-01 14:51+0100\n"
+"PO-Revision-Date: 2013-11-01 12:52+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -28,7 +28,7 @@ msgstr ""
 "X-Generator: Virtaal 0.7.1\n"
 
 #: ../gio/gapplication-tool.c:47 ../gio/gapplication-tool.c:48
-#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:542
+#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:504
 msgid "Print help"
 msgstr "Imprimir axuda"
 
@@ -41,7 +41,7 @@ msgstr "[ORDE]"
 msgid "Print version"
 msgstr "Mostrar versión"
 
-#: ../gio/gapplication-tool.c:52 ../gio/gsettings-tool.c:548
+#: ../gio/gapplication-tool.c:52 ../gio/gsettings-tool.c:510
 msgid "Print version information and exit"
 msgstr "Mostrar información da versión e saír"
 
@@ -52,8 +52,7 @@ msgstr "Listar aplicativos"
 #: ../gio/gapplication-tool.c:55
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
 msgstr ""
-"Lista os aplicativos activábeis por D-Bus instalados (por ficheiros "
-".desktop)"
+"Lista os aplicativos activábeis por D-Bus instalados (por ficheiros .desktop)"
 
 #: ../gio/gapplication-tool.c:57
 msgid "Launch an application"
@@ -103,7 +102,8 @@ msgstr "A orde para imprimir a axuda detallada"
 
 #: ../gio/gapplication-tool.c:73
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
-msgstr "Identificador de aplicativo en formato D-Bus (p.ex.: org.exemplo.visor)"
+msgstr ""
+"Identificador de aplicativo en formato D-Bus (p.ex.: org.exemplo.visor)"
 
 #: ../gio/gapplication-tool.c:74 ../gio/glib-compile-resources.c:592
 #: ../gio/glib-compile-resources.c:623 ../gio/gresource-tool.c:482
@@ -133,7 +133,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Parámetro opcional para a invocación da acción, en formato GVariant"
 
 #: ../gio/gapplication-tool.c:98 ../gio/gresource-tool.c:513
-#: ../gio/gsettings-tool.c:628
+#: ../gio/gsettings-tool.c:590
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -147,7 +147,7 @@ msgid "Usage:\n"
 msgstr "Uso:\n"
 
 #: ../gio/gapplication-tool.c:116 ../gio/gresource-tool.c:538
-#: ../gio/gsettings-tool.c:662
+#: ../gio/gsettings-tool.c:624
 msgid "Arguments:\n"
 msgstr "Argumentos:\n"
 
@@ -178,14 +178,11 @@ msgid ""
 msgstr ""
 "A orde %s require un id de aplicativo ao que seguir directamente\n"
 "\n"
-" "
 
 #: ../gio/gapplication-tool.c:173
 #, c-format
 msgid "invalid application id: '%s'\n"
-msgstr ""
-"id de aplicativo non válido: «%s»\n"
-"  "
+msgstr "id de aplicativo non válido: «%s»\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
 #: ../gio/gapplication-tool.c:184
@@ -210,7 +207,7 @@ msgstr "produciuse un erro ao enviar a mensaxe %s ao aplicativo: %s\n"
 #: ../gio/gapplication-tool.c:315
 #, c-format
 msgid "action name must be given after application id\n"
-msgstr "o nome da acción debe fornecerse logo do id de aplicativo"
+msgstr "o nome da acción debe fornecerse logo do id de aplicativo\n"
 
 #: ../gio/gapplication-tool.c:323
 #, c-format
@@ -279,7 +276,7 @@ msgstr "Non se permite truncar no fluxo base"
 
 #: ../gio/gcancellable.c:314 ../gio/gdbusconnection.c:1897
 #: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
-#: ../gio/glocalfile.c:2183 ../gio/gsimpleasyncresult.c:843
+#: ../gio/glocalfile.c:2185 ../gio/gsimpleasyncresult.c:843
 #: ../gio/gsimpleasyncresult.c:869
 #, c-format
 msgid "Operation was cancelled"
@@ -353,7 +350,7 @@ msgstr "GCredentials non contén un ID de proceso para este SO"
 
 #: ../gio/gcredentials.c:540
 msgid "Credentials spoofing is not possible on this OS"
-msgstr ""
+msgstr "Non é posíbel burlar as credenciais neste SO"
 
 #: ../gio/gdatainputstream.c:306
 msgid "Unexpected early end-of-stream"
@@ -1305,7 +1302,7 @@ msgstr "Operación non permitida"
 msgid "Containing mount does not exist"
 msgstr "O punto de montaxe contido non existe"
 
-#: ../gio/gfile.c:2522 ../gio/glocalfile.c:2339
+#: ../gio/gfile.c:2522 ../gio/glocalfile.c:2341
 msgid "Can't copy over directory"
 msgstr "Non é posíbel copiar sobre o directorio"
 
@@ -1313,7 +1310,7 @@ msgstr "Non é posíbel copiar sobre o directorio"
 msgid "Can't copy directory over directory"
 msgstr "Non é posíbel copiar un directorio sobre o directorio"
 
-#: ../gio/gfile.c:2590 ../gio/glocalfile.c:2348
+#: ../gio/gfile.c:2590 ../gio/glocalfile.c:2350
 msgid "Target file exists"
 msgstr "O ficheiro de destino xa existe"
 
@@ -1546,8 +1543,8 @@ msgstr ""
 "O cartafol da que se ten que ler os ficheiros (o predeterminado é o cartafol "
 "actual)"
 
-#: ../gio/glib-compile-resources.c:593 ../gio/glib-compile-schemas.c:1999
-#: ../gio/glib-compile-schemas.c:2028
+#: ../gio/glib-compile-resources.c:593 ../gio/glib-compile-schemas.c:2000
+#: ../gio/glib-compile-schemas.c:2029
 msgid "DIRECTORY"
 msgstr "DIRECTORIO"
 
@@ -1751,42 +1748,42 @@ msgid "Element <%s> not allowed at the top level"
 msgstr "Non se permite o elemento <%s> no nivel superior"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1757 ../gio/glib-compile-schemas.c:1828
-#: ../gio/glib-compile-schemas.c:1904
+#: ../gio/glib-compile-schemas.c:1758 ../gio/glib-compile-schemas.c:1829
+#: ../gio/glib-compile-schemas.c:1905
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "--strict foi especificado; saíndo.\n"
 
-#: ../gio/glib-compile-schemas.c:1765
+#: ../gio/glib-compile-schemas.c:1766
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "Ignorouse este ficheiro completamente.\n"
 
-#: ../gio/glib-compile-schemas.c:1824
+#: ../gio/glib-compile-schemas.c:1825
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "Ignorando este ficheiro.\n"
 
-#: ../gio/glib-compile-schemas.c:1864
+#: ../gio/glib-compile-schemas.c:1865
 #, c-format
 msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
 "Non existe a clave «%s» no esquema «%s» como se especificou no ficheiro de "
 "sobrescritura «%s»"
 
-#: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
-#: ../gio/glib-compile-schemas.c:1956
+#: ../gio/glib-compile-schemas.c:1871 ../gio/glib-compile-schemas.c:1929
+#: ../gio/glib-compile-schemas.c:1957
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "; ignorando a sobrescritura para esta clave.\n"
 
-#: ../gio/glib-compile-schemas.c:1874 ../gio/glib-compile-schemas.c:1932
-#: ../gio/glib-compile-schemas.c:1960
+#: ../gio/glib-compile-schemas.c:1875 ../gio/glib-compile-schemas.c:1933
+#: ../gio/glib-compile-schemas.c:1961
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr "e --strict foi especificado; saíndo.\n"
 
-#: ../gio/glib-compile-schemas.c:1890
+#: ../gio/glib-compile-schemas.c:1891
 #, c-format
 msgid ""
 "error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
@@ -1794,12 +1791,12 @@ msgstr ""
 "produciuse un erro ao analizar a clave «%s» no esquema «%s» como se "
 "especificou no ficheiro de sobrescritura «%s»: %s."
 
-#: ../gio/glib-compile-schemas.c:1900
+#: ../gio/glib-compile-schemas.c:1901
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "Ignorando a sobrescritura para esta clave.\n"
 
-#: ../gio/glib-compile-schemas.c:1918
+#: ../gio/glib-compile-schemas.c:1919
 #, c-format
 msgid ""
 "override for key '%s' in schema '%s' in override file '%s' is outside the "
@@ -1808,7 +1805,7 @@ msgstr ""
 "a clave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura "
 "«%s» está fora do intervalo indicado no esquema"
 
-#: ../gio/glib-compile-schemas.c:1946
+#: ../gio/glib-compile-schemas.c:1947
 #, c-format
 msgid ""
 "override for key '%s' in schema '%s' in override file '%s' is not in the "
@@ -1817,23 +1814,23 @@ msgstr ""
 "a clave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura "
 "«%s» non está na lista de opcións válidas"
 
-#: ../gio/glib-compile-schemas.c:1999
+#: ../gio/glib-compile-schemas.c:2000
 msgid "where to store the gschemas.compiled file"
 msgstr "onde almacenar o ficheiro compilado de gschemas"
 
-#: ../gio/glib-compile-schemas.c:2000
+#: ../gio/glib-compile-schemas.c:2001
 msgid "Abort on any errors in schemas"
 msgstr "Interromper ao atopar calquera erro nos esquemas"
 
-#: ../gio/glib-compile-schemas.c:2001
+#: ../gio/glib-compile-schemas.c:2002
 msgid "Do not write the gschema.compiled file"
 msgstr "Non escribir o ficheiro compilado de gschema"
 
-#: ../gio/glib-compile-schemas.c:2002
+#: ../gio/glib-compile-schemas.c:2003
 msgid "Do not enforce key name restrictions"
 msgstr "Non respetar as restricións de nome de clave"
 
-#: ../gio/glib-compile-schemas.c:2031
+#: ../gio/glib-compile-schemas.c:2032
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -1843,22 +1840,22 @@ msgstr ""
 "de esquemas. Os ficheiros de esquema deben ter a extensión\n"
 ".gschema.xml e o ficheiro de caché chámase gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:2047
+#: ../gio/glib-compile-schemas.c:2048
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Debería fornecer exactamente un nome de cartafol\n"
 
-#: ../gio/glib-compile-schemas.c:2086
+#: ../gio/glib-compile-schemas.c:2087
 #, c-format
 msgid "No schema files found: "
 msgstr "Non se atoparon ficheiros de esquema: "
 
-#: ../gio/glib-compile-schemas.c:2089
+#: ../gio/glib-compile-schemas.c:2090
 #, c-format
 msgid "doing nothing.\n"
 msgstr "sen facer nada.\n"
 
-#: ../gio/glib-compile-schemas.c:2092
+#: ../gio/glib-compile-schemas.c:2093
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "retirouse o ficheiro de saída existente.\n"
@@ -1892,8 +1889,8 @@ msgstr "Produciuse un erro ao renomear o ficheiro: %s"
 msgid "Can't rename file, filename already exists"
 msgstr "Non é posíbel renomear o ficheiro, o ficheiro xa existe"
 
-#: ../gio/glocalfile.c:1195 ../gio/glocalfile.c:2212 ../gio/glocalfile.c:2241
-#: ../gio/glocalfile.c:2401 ../gio/glocalfileoutputstream.c:553
+#: ../gio/glocalfile.c:1195 ../gio/glocalfile.c:2214 ../gio/glocalfile.c:2243
+#: ../gio/glocalfile.c:2403 ../gio/glocalfileoutputstream.c:553
 msgid "Invalid filename"
 msgstr "O nome do ficheiro non é válido"
 
@@ -1934,56 +1931,56 @@ msgstr "Non é posíbel atopar ou crear o directorio do lixo"
 msgid "Unable to create trashing info file: %s"
 msgstr "Non é posíbel crear a información de lixo para o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2097 ../gio/glocalfile.c:2102 ../gio/glocalfile.c:2182
-#: ../gio/glocalfile.c:2189
+#: ../gio/glocalfile.c:2099 ../gio/glocalfile.c:2104 ../gio/glocalfile.c:2184
+#: ../gio/glocalfile.c:2191
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Non é posíbel mover ao lixo o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2190 ../glib/gregex.c:280
+#: ../gio/glocalfile.c:2192 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "erro interno"
 
-#: ../gio/glocalfile.c:2216
+#: ../gio/glocalfile.c:2218
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Produciuse un erro ao crear o directorio: %s"
 
-#: ../gio/glocalfile.c:2245
+#: ../gio/glocalfile.c:2247
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "O sistema de ficheiros non é compatíbel coas ligazóns simbólicas"
 
-#: ../gio/glocalfile.c:2249
+#: ../gio/glocalfile.c:2251
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Produciuse un erro ao crear a ligazón simbolica: %s"
 
-#: ../gio/glocalfile.c:2311 ../gio/glocalfile.c:2405
+#: ../gio/glocalfile.c:2313 ../gio/glocalfile.c:2407
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Produciuse un erro ao mover o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2334
+#: ../gio/glocalfile.c:2336
 msgid "Can't move directory over directory"
 msgstr "Non é posíbel mover o directorio sobre un directorio"
 
-#: ../gio/glocalfile.c:2361 ../gio/glocalfileoutputstream.c:929
+#: ../gio/glocalfile.c:2363 ../gio/glocalfileoutputstream.c:929
 #: ../gio/glocalfileoutputstream.c:943 ../gio/glocalfileoutputstream.c:958
 #: ../gio/glocalfileoutputstream.c:974 ../gio/glocalfileoutputstream.c:988
 msgid "Backup file creation failed"
 msgstr "Fallou a creación do ficheiro de seguranza"
 
-#: ../gio/glocalfile.c:2380
+#: ../gio/glocalfile.c:2382
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Produciuse un erro ao retirar o ficheiro obxectivo: %s"
 
-#: ../gio/glocalfile.c:2394
+#: ../gio/glocalfile.c:2396
 msgid "Move between mounts not supported"
 msgstr "Non se permite mover entre puntos de montaxe"
 
-#: ../gio/glocalfile.c:2605
+#: ../gio/glocalfile.c:2607
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Non foi posíbel determinar o uso de disco de %s: %s"
@@ -2392,7 +2389,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SECCIÓN   Un nome de sección elf (opcional)\n"
 
-#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:669
+#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:631
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  ORDE   A orde que explicar (opcional)\n"
 
@@ -2425,78 +2422,73 @@ msgstr "CAMIÑO"
 msgid "  PATH      A resource path\n"
 msgstr "  RUTA      Unha ruta dun recurso\n"
 
-#: ../gio/gsettings-tool.c:57 ../gio/gsettings-tool.c:78
+#: ../gio/gsettings-tool.c:53 ../gio/gsettings-tool.c:74
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Non existe o esquema «%s»\n"
 
-#: ../gio/gsettings-tool.c:63
+#: ../gio/gsettings-tool.c:59
 #, c-format
 msgid "Schema '%s' is not relocatable (path must not be specified)\n"
 msgstr "O esquema «%s» non pode reposicionarse (non debe especificar a ruta)\n"
 
-#: ../gio/gsettings-tool.c:84
+#: ../gio/gsettings-tool.c:80
 #, c-format
 msgid "Schema '%s' is relocatable (path must be specified)\n"
 msgstr "O esquema «%s» pode reposicionarse (debe especificarse a ruta)\n"
 
-#: ../gio/gsettings-tool.c:98
+#: ../gio/gsettings-tool.c:94
 #, c-format
 msgid "Empty path given.\n"
 msgstr "Forneceuse unha ruta baleira.\n"
 
-#: ../gio/gsettings-tool.c:104
+#: ../gio/gsettings-tool.c:100
 #, c-format
 msgid "Path must begin with a slash (/)\n"
 msgstr "A ruta debe comezar cunha barra (/)\n"
 
-#: ../gio/gsettings-tool.c:110
+#: ../gio/gsettings-tool.c:106
 #, c-format
 msgid "Path must end with a slash (/)\n"
 msgstr "A ruta debe rematar cunha barra (/)\n"
 
-#: ../gio/gsettings-tool.c:116
+#: ../gio/gsettings-tool.c:112
 #, c-format
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "A ruta non debe conter dúas barras adxacentes (//)\n"
 
-#: ../gio/gsettings-tool.c:137
-#, c-format
-msgid "No such key '%s'\n"
-msgstr "Non existe a clave «%s»\n"
-
-#: ../gio/gsettings-tool.c:511
+#: ../gio/gsettings-tool.c:473
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "O valor fornecido está fora do intervalo válido\n"
 
-#: ../gio/gsettings-tool.c:518
+#: ../gio/gsettings-tool.c:480
 #, c-format
 msgid "The key is not writable\n"
 msgstr "Esta chave non é escribíbel\n"
 
-#: ../gio/gsettings-tool.c:554
+#: ../gio/gsettings-tool.c:516
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Lista dos esquemas instalados (non reposicionábeis)"
 
-#: ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:522
 msgid "List the installed relocatable schemas"
 msgstr "Lista dos esquemas instalados reposicionábeis"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:528
 msgid "List the keys in SCHEMA"
 msgstr "Lista das claves de ESQUEMA"
 
-#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
-#: ../gio/gsettings-tool.c:610
+#: ../gio/gsettings-tool.c:529 ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:572
 msgid "SCHEMA[:PATH]"
 msgstr "ESQUEMA[:RUTA]"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:534
 msgid "List the children of SCHEMA"
 msgstr "Lista dos fillos do SCHEMA"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:540
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2504,45 +2496,45 @@ msgstr ""
 "Lista as clave e valores, recursivamente\n"
 "Se non se fornece un ESQUEMA, lista todas as claves\n"
 
-#: ../gio/gsettings-tool.c:580
+#: ../gio/gsettings-tool.c:542
 msgid "[SCHEMA[:PATH]]"
 msgstr "[ESQUEMA[:RUTA]]"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:547
 msgid "Get the value of KEY"
 msgstr "Obtén o valor de CLAVE"
 
-#: ../gio/gsettings-tool.c:586 ../gio/gsettings-tool.c:592
-#: ../gio/gsettings-tool.c:604 ../gio/gsettings-tool.c:616
+#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
+#: ../gio/gsettings-tool.c:566 ../gio/gsettings-tool.c:578
 msgid "SCHEMA[:PATH] KEY"
 msgstr "ESQUEMA[:RUTA] CLAVE"
 
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:553
 msgid "Query the range of valid values for KEY"
 msgstr "Consulta o intervalo de valores válidos de CLAVE"
 
-#: ../gio/gsettings-tool.c:597
+#: ../gio/gsettings-tool.c:559
 msgid "Set the value of KEY to VALUE"
 msgstr "Estabelece o valor de CLAVE a VALOR"
 
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:560
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "ESQUEMA[:RUTA] CLAVE VALOR"
 
-#: ../gio/gsettings-tool.c:603
+#: ../gio/gsettings-tool.c:565
 msgid "Reset KEY to its default value"
 msgstr "Estabelece a CLAVE ao seu valor predeterminado"
 
-#: ../gio/gsettings-tool.c:609
+#: ../gio/gsettings-tool.c:571
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr ""
 "Restabelecer todas as claves nun ESQUEMA aos seus valores predeterminados"
 
-#: ../gio/gsettings-tool.c:615
+#: ../gio/gsettings-tool.c:577
 msgid "Check if KEY is writable"
 msgstr "Comproba se a CLAVE é escribíbel"
 
-#: ../gio/gsettings-tool.c:621
+#: ../gio/gsettings-tool.c:583
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2552,11 +2544,11 @@ msgstr ""
 "Se non se especifica a CLAVE, monitoriza todos os cambios en ESQUEMA.\n"
 "Use ^C para deter a monitorización.\n"
 
-#: ../gio/gsettings-tool.c:624
+#: ../gio/gsettings-tool.c:586
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "ESQUEMA[:RUTA] [CLAVE]"
 
-#: ../gio/gsettings-tool.c:636
+#: ../gio/gsettings-tool.c:598
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -2603,7 +2595,7 @@ msgstr ""
 "Use 'gsettings help ORDE' para obter máis axuda.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:659
+#: ../gio/gsettings-tool.c:621
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2618,11 +2610,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:665
+#: ../gio/gsettings-tool.c:627
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  CARTAFOL_ESQUEMA: un cartafol para buscar esquemas adicionais\n"
 
-#: ../gio/gsettings-tool.c:673
+#: ../gio/gsettings-tool.c:635
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2630,27 +2622,32 @@ msgstr ""
 "  SCHEMA    O nome do esquema\n"
 "  KEY       A ruta, para os esquemas reposicionábeis\n"
 
-#: ../gio/gsettings-tool.c:678
+#: ../gio/gsettings-tool.c:640
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY       A clave (opcional) no esquema\n"
 
-#: ../gio/gsettings-tool.c:682
+#: ../gio/gsettings-tool.c:644
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       A clave nun esquema\n"
 
-#: ../gio/gsettings-tool.c:686
+#: ../gio/gsettings-tool.c:648
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     O valor a estabelecer\n"
 
-#: ../gio/gsettings-tool.c:745
+#: ../gio/gsettings-tool.c:703
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Non foi posíbel cargar os esquemas desde %s a %s\n"
 
-#: ../gio/gsettings-tool.c:807
+#: ../gio/gsettings-tool.c:765
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Forneceuse un nome de esquema baleiro\n"
+
+#: ../gio/gsettings-tool.c:794
+#, c-format
+msgid "No such key '%s'\n"
+msgstr "Non existe a clave «%s»\n"
 
 #: ../gio/gsocket.c:314
 msgid "Invalid socket, not initialized"
@@ -3801,11 +3798,11 @@ msgstr ""
 "A entidade non remata cun punto e coma, probabelmente usou o carácter & sen "
 "a intención de comezar unha entidade, escriba o & como &amp;"
 
-#: ../glib/gmarkup.c:1119
+#: ../glib/gmarkup.c:1177
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "O documento debe comezar cun elemento (por exemplo <book>)"
 
-#: ../glib/gmarkup.c:1159
+#: ../glib/gmarkup.c:1217
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -3814,7 +3811,7 @@ msgstr ""
 "«%s» non é un carácter válido despois dun carácter '<'; non pode iniciar un "
 "nome de elemento"
 
-#: ../glib/gmarkup.c:1227
+#: ../glib/gmarkup.c:1259
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag "
@@ -3823,7 +3820,7 @@ msgstr ""
 "Carácter estraño «%s», esperábase un carácter '>' para pechar a etiqueta de "
 "elemento baleiro «%s»"
 
-#: ../glib/gmarkup.c:1311
+#: ../glib/gmarkup.c:1340
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -3831,7 +3828,7 @@ msgstr ""
 "Carácter estraño «%s», esperábase un '=' despois do nome do atributo «%s» do "
 "elemento «%s»"
 
-#: ../glib/gmarkup.c:1352
+#: ../glib/gmarkup.c:1381
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -3842,7 +3839,7 @@ msgstr ""
 "etiqueta de comezo do elemento «%s» ou opcionalmente un atributo; quizais "
 "usou un carácter non válido no nome dun atributo"
 
-#: ../glib/gmarkup.c:1396
+#: ../glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -3851,7 +3848,7 @@ msgstr ""
 "Carácter estraño «%s», esperábase unhas comiñas de apertura despois do signo "
 "igual para dar un valor ao atributo «%s» do elemento «%s»"
 
-#: ../glib/gmarkup.c:1529
+#: ../glib/gmarkup.c:1558
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -3860,7 +3857,7 @@ msgstr ""
 "«%s» non é un carácter válido despois dos caracteres '</'; «%s» non pode "
 "comezar o nome dun elemento"
 
-#: ../glib/gmarkup.c:1565
+#: ../glib/gmarkup.c:1594
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -3869,25 +3866,25 @@ msgstr ""
 "«%s» non é un carácter válido despois do nome de elemento de peche «%s»; o "
 "carácter permitido é '>'"
 
-#: ../glib/gmarkup.c:1576
+#: ../glib/gmarkup.c:1605
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Pechouse o elemento «%s», actualmente non hai ningún elemento aberto"
 
-#: ../glib/gmarkup.c:1585
+#: ../glib/gmarkup.c:1614
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Pechouse o elemento «%s», mais o elemento aberto actualmente é «%s»"
 
-#: ../glib/gmarkup.c:1753
+#: ../glib/gmarkup.c:1767
 msgid "Document was empty or contained only whitespace"
 msgstr "O documento estaba baleiro ou só contiña espazos en branco"
 
-#: ../glib/gmarkup.c:1767
+#: ../glib/gmarkup.c:1781
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "O documento rematou inesperadamente despois dun símbolo menor que '<'"
 
-#: ../glib/gmarkup.c:1775 ../glib/gmarkup.c:1820
+#: ../glib/gmarkup.c:1789 ../glib/gmarkup.c:1834
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -3896,7 +3893,7 @@ msgstr ""
 "O documento rematou inesperadamente con elementos aínda abertos - «%s» foi o "
 "último elemento aberto"
 
-#: ../glib/gmarkup.c:1783
+#: ../glib/gmarkup.c:1797
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -3905,21 +3902,21 @@ msgstr ""
 "O documento rematou inesperadamente, esperábase ver un símbolo maior que '>' "
 "que pechase a etiqueta <%s/>"
 
-#: ../glib/gmarkup.c:1789
+#: ../glib/gmarkup.c:1803
 msgid "Document ended unexpectedly inside an element name"
 msgstr "O documento rematou inesperadamente dentro dun nome de elemento"
 
-#: ../glib/gmarkup.c:1795
+#: ../glib/gmarkup.c:1809
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "O documento rematou inesperadamente dentro dun nome de atributo"
 
-#: ../glib/gmarkup.c:1800
+#: ../glib/gmarkup.c:1814
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "O documento rematou inesperadamente dentro dunha etiqueta de comezo de "
 "elemento."
 
-#: ../glib/gmarkup.c:1806
+#: ../glib/gmarkup.c:1820
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -3927,18 +3924,18 @@ msgstr ""
 "O documento rematou inesperadamente despois do signo igual que segue a un "
 "nome de atributo; non hai valor de atributo"
 
-#: ../glib/gmarkup.c:1813
+#: ../glib/gmarkup.c:1827
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "O documento rematou inesperadamente dentro dun valor de atributo"
 
-#: ../glib/gmarkup.c:1829
+#: ../glib/gmarkup.c:1843
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "O documento rematou inesperadamente dentro da etiqueta que pechaba o "
 "elemento «%s»"
 
-#: ../glib/gmarkup.c:1835
+#: ../glib/gmarkup.c:1849
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "O documento rematou inesperadamente dentro dun comentario ou instrución de "
