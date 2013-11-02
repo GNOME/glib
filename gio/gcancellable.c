@@ -728,11 +728,16 @@ g_cancellable_source_new (GCancellable *cancellable)
   if (cancellable)
     {
       cancellable_source->cancellable = g_object_ref (cancellable);
+
+      /* We intentionally don't use g_cancellable_connect() here,
+       * because we don't want the "at most once" behavior.
+       */
       cancellable_source->cancelled_handler =
-          g_cancellable_connect (cancellable,
-                                 G_CALLBACK (cancellable_source_cancelled),
-                                 source,
-                                 NULL);
+        g_signal_connect (cancellable, "cancelled",
+                          G_CALLBACK (cancellable_source_cancelled),
+                          source);
+      if (g_cancellable_is_cancelled (cancellable))
+        g_source_set_ready_time (source, 0);
     }
 
   return source;
