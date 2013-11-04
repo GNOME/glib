@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <unistd.h>
 #ifdef G_OS_UNIX
+#include <unistd.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
 #endif
@@ -20,7 +20,7 @@ write_all (int           fd,
 {
   while (len > 0)
     {
-      ssize_t bytes_written = write (fd, buf, len);
+      gssize bytes_written = write (fd, buf, len);
       if (bytes_written < 0)
 	g_error ("Failed to write to fd %d: %s",
 		 fd, strerror (errno));

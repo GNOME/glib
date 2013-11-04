@@ -28,7 +28,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef G_OS_UNIX
 #include <unistd.h>
+#endif
 
 #include <gio/gio.h>
 

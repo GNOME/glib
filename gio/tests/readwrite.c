@@ -1,8 +1,11 @@
 #include <glib/glib.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
-#include <unistd.h>
 #include <string.h>
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
 
 static const char *original_data = "This is some test data that we can put in a file...";
 static const char *new_data = "new data..";

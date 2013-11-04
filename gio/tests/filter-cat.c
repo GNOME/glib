@@ -23,12 +23,21 @@
 #include <config.h>
 
 #include <stdio.h>
-#include <unistd.h>
 #include <locale.h>
 #include <errno.h>
 
 #include <glib.h>
 #include <gio/gio.h>
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
+
+#ifdef G_OS_WIN32
+#ifndef STDOUT_FILENO
+#define STDOUT_FILENO 1
+#endif
+#endif
 
 static gchar **locations = NULL;
 static char *from_charset = NULL;
@@ -157,7 +166,7 @@ cat (GFile * file)
 	g_input_stream_read (in, buffer, sizeof (buffer) - 1, NULL, &error);
       if (res > 0)
 	{
-	  ssize_t written;
+	  gssize written;
 
 	  p = buffer;
 	  while (res > 0)
