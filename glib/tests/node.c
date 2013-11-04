@@ -27,19 +27,15 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-#ifdef HAVE_UNISTD_H
+#include "glib.h"
+
+#ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
-
-#include "glib.h"
 
 #define C2P(c)          ((gpointer) ((long) (c)))
 #define P2C(p)          ((gchar) ((long) (p)))

@@ -1,9 +1,8 @@
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 
-#include <config.h>
 #include <glib.h>
 #include <string.h>
-#ifdef HAVE_UNISTD_H
+#ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
 #include <glib/gstdio.h>

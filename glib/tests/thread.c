@@ -26,17 +26,14 @@
 #include <sys/time.h>
 #endif
 #include <sys/types.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #ifdef HAVE_SYS_PRCTL_H
 #include <sys/prctl.h>
 #endif
 
-
 #include <glib.h>
 
 #ifndef G_OS_WIN32
+#include <unistd.h>
 #include <sys/resource.h>
 #endif
 
