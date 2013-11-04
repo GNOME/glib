@@ -20,7 +20,6 @@
  */
 
 #include <string.h>
-#include <unistd.h>
 #include <errno.h>
 
 /* We are testing some deprecated APIs here */
@@ -28,6 +27,13 @@
 
 #include <glib.h>
 #include <glib/gstdio.h>
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
 
 #define S G_DIR_SEPARATOR_S
 
@@ -496,6 +502,9 @@ test_mkdir_with_parents (void)
 static void
 test_format_size_for_display (void)
 {
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT));
+#endif
   /* nobody called setlocale(), so we should get "C" behaviour... */
   check_string (g_format_size_for_display (0), "0 bytes");
   check_string (g_format_size_for_display (1), "1 byte");
