@@ -865,6 +865,10 @@ struct _GRealPtrArray
  *
  * Returns the pointer at the given index of the pointer array.
  *
+ * <note><para>
+ * This does not perform bounds checking on the given @index_, so you are
+ * responsible for checking it against the array length.</para></note>
+ *
  * Returns: the pointer at the given index.
  **/
 
