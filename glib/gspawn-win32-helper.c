@@ -25,8 +25,13 @@
 
 /* For _CrtSetReportMode, we don't want Windows CRT (2005 and later)
  * to terminate the process if a bad file descriptor is passed into
- * _get_osfhandle.  The newer MS CRT's are picky
- * on double close()'s and bad file descriptors.
+ * _get_osfhandle().  This is necessary because we use _get_osfhandle()
+ * to check the validity of the fd before we try to call close() on
+ * it as attempting to close an invalid fd will cause the Windows CRT
+ * to abort() this program internally.
+ *
+ * Please see http://msdn.microsoft.com/zh-tw/library/ks2530z6%28v=vs.80%29.aspx
+ * for an explanation on this.
  */
 #if (defined (_MSC_VER) && _MSC_VER >= 1400)
 #include <crtdbg.h>
@@ -161,13 +166,15 @@ protect_wargv (wchar_t  **wargv,
  * This is the (empty) invalid parameter handler
  * that is used for Visual C++ 2005 (and later) builds
  * so that we can use this instead of the system automatically
- * aborting the process, as the newer MS CRTs are more picky
- * about double close()'s and bad/invalid file descriptors.
+ * aborting the process.
  *
  * This is necessary as we use _get_oshandle() to check the validity
  * of the file descriptors as we close them, so when an invalid file
  * descriptor is passed into that function as we check on it, we get
  * -1 as the result, instead of the gspawn helper program aborting.
+ *
+ * Please see http://msdn.microsoft.com/zh-tw/library/ks2530z6%28v=vs.80%29.aspx
+ * for an explanation on this.
  */
 void myInvalidParameterHandler(
    const wchar_t * expression,
@@ -207,10 +214,6 @@ main (int ignored_argc, char **ignored_argv)
   wchar_t **wargv, **wenvp;
   _startupinfo si = { 0 };
   char c;
-
-  /* store up the file descriptors to close */
-  GSList *fd_toclose = NULL;
-  GSList *last_item = NULL;
 
 #if (defined (_MSC_VER) && _MSC_VER >= 1400)
   /* set up our empty invalid parameter handler */
@@ -267,7 +270,7 @@ main (int ignored_argc, char **ignored_argv)
       if (fd != 0)
 	{
 	  dup2 (fd, 0);
-	  fd_toclose = g_slist_append (fd_toclose, GINT_TO_POINTER (fd));
+	  close (fd);
 	}
     }
   else
@@ -276,7 +279,7 @@ main (int ignored_argc, char **ignored_argv)
       if (fd != 0)
 	{
 	  dup2 (fd, 0);
-	  fd_toclose = g_slist_append (fd_toclose, GINT_TO_POINTER (fd));
+	  close (fd);
 	}
     }
 
@@ -288,7 +291,7 @@ main (int ignored_argc, char **ignored_argv)
       if (fd != 1)
 	{
 	  dup2 (fd, 1);
-	  fd_toclose = g_slist_append (fd_toclose, GINT_TO_POINTER (fd));
+	  close (fd);
 	}
     }
   else
@@ -297,7 +300,7 @@ main (int ignored_argc, char **ignored_argv)
       if (fd != 1)
 	{
 	  dup2 (fd, 1);
-	  fd_toclose = g_slist_append (fd_toclose, GINT_TO_POINTER (fd));
+	  close (fd);
 	}
     }
 
@@ -309,7 +312,7 @@ main (int ignored_argc, char **ignored_argv)
       if (fd != 2)
 	{
 	  dup2 (fd, 2);
-	  fd_toclose = g_slist_append (fd_toclose, GINT_TO_POINTER (fd));
+	  close (fd);
 	}
     }
   else
@@ -318,7 +321,7 @@ main (int ignored_argc, char **ignored_argv)
       if (fd != 2)
 	{
 	  dup2 (fd, 2);
-	  fd_toclose = g_slist_append (fd_toclose, GINT_TO_POINTER (fd));
+	  close (fd);
 	}
     }
 
@@ -338,21 +341,7 @@ main (int ignored_argc, char **ignored_argv)
     for (i = 3; i < 1000; i++)	/* FIXME real limit? */
       if (i != child_err_report_fd && i != helper_sync_fd)
         if (_get_osfhandle (i) != -1)
-          fd_toclose = g_slist_append (fd_toclose, GINT_TO_POINTER (i));
-
-  /* ...so we won't get the nasty off-by-1 file descriptor leak */
-  fd_toclose = g_slist_append (fd_toclose, NULL);
-  last_item = g_slist_last (fd_toclose);
-
-  /* now close all the file descriptors as necessary */
-  if (fd_toclose != NULL && last_item != NULL)
-  {
-    for ( ; fd_toclose != last_item; fd_toclose = fd_toclose->next)
-      close (GPOINTER_TO_INT(fd_toclose->data));
-  }
-  g_slist_free (last_item);
-  g_slist_free (fd_toclose);
-
+          close (i);
 
   /* We don't want our child to inherit the error report and
    * helper sync fds.
