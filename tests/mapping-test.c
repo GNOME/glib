@@ -16,18 +16,17 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include "config.h"
-
 #include <stdlib.h>
 #include <string.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #include <sys/types.h>
 #include <signal.h>
 
 #include "glib.h"
 #include "gstdio.h"
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
 
 static gchar *dir, *filename, *displayname, *childname;
 

@@ -24,15 +24,14 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
-#include "config.h"
-
 #include <sys/types.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #include <stdlib.h>
 
 #include <glib.h>
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
 
 #ifdef G_OS_WIN32
 #include <windows.h>

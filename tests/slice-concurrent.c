@@ -19,7 +19,9 @@
  */
 #include <glib.h>
 #include <stdlib.h>
+#ifdef G_OS_UNIX
 #include <unistd.h>
+#endif
 
 #define N_THREADS	8
 #define N_ALLOCS	50000

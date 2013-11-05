@@ -1,6 +1,9 @@
-#include <unistd.h>
 #include <glib.h>
 #include <glib-object.h>
+
+#ifdef G_OS_UNIX
+#include <unistd.h>
+#endif
 
 #define G_TYPE_TEST               (my_test_get_type ())
 #define MY_TEST(test)              (G_TYPE_CHECK_INSTANCE_CAST ((test), G_TYPE_TEST, GTest))

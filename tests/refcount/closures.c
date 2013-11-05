@@ -16,7 +16,10 @@
  * if advised of the possibility of such damage.
  */
 #include <glib-object.h>
+
+#ifdef G_OS_UNIX
 #include <unistd.h>
+#endif
 
 #define TEST_POINTER1   ((gpointer) 47)
 #define TEST_POINTER2   ((gpointer) 49)
