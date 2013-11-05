@@ -24,8 +24,6 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
-#include "config.h"
-
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
 
@@ -39,7 +37,7 @@
 
 #include <gstdio.h>
 
-#ifdef HAVE_UNISTD_H
+#ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
 
@@ -62,14 +60,18 @@ test_mkstemp (void)
   strcpy (template, "foobar");
   fd = g_mkstemp (template);
   if (fd != -1)
-    g_warning ("g_mkstemp works even if template doesn't contain XXXXXX");
-  close (fd);
+    {
+      g_warning ("g_mkstemp works even if template doesn't contain XXXXXX");
+      close (fd);
+    }
 
   strcpy (template, "foobarXXX");
   fd = g_mkstemp (template);
   if (fd != -1)
-    g_warning ("g_mkstemp works even if template contains less than six X");
-  close (fd);
+    {
+      g_warning ("g_mkstemp works even if template contains less than six X");
+      close (fd);
+    }
 
   strcpy (template, "fooXXXXXX");
   fd = g_mkstemp (template);
