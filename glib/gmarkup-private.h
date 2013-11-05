@@ -84,3 +84,14 @@ GLIB_AVAILABLE_IN_ALL
 gboolean
 g_markup_parse_context_parse_slightly (GMarkupParseContext  *context,
                                        GError              **error);
+
+GLIB_AVAILABLE_IN_ALL
+gboolean
+g_markup_collect_attributesv (const gchar         *element_name,
+                              const gchar        **attribute_names,
+                              const gchar        **attribute_values,
+                              GError             **error,
+                              GMarkupCollectType   first_type,
+                              const gchar         *first_attr,
+                              va_list              ap);
+

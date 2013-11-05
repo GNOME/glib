@@ -338,6 +338,27 @@ g_markup_reader_is_text (GMarkupReader *reader)
 }
 
 gboolean
+g_markup_reader_is_whitespace (GMarkupReader *reader)
+{
+  const gchar *data;
+  gsize length;
+  gsize i;
+
+  g_return_val_if_fail (G_IS_MARKUP_READER (reader), FALSE);
+
+  if (reader->state != READER_STATE_TEXT)
+    return FALSE;
+
+
+  data = g_bytes_get_data (reader->content, &length);
+  for (i = 0; i < length; i++)
+    if (!g_ascii_isspace (data[i]))
+      return FALSE;
+
+  return TRUE;
+}
+
+gboolean
 g_markup_reader_is_eof (GMarkupReader *reader)
 {
   g_return_val_if_fail (G_IS_MARKUP_READER (reader), FALSE);
@@ -370,17 +391,27 @@ g_markup_reader_get_attributes (GMarkupReader        *reader,
     *attribute_values = (const gchar * const *) reader->attribute_values;
 }
 
-void
+gboolean
 g_markup_reader_collect_attributes (GMarkupReader       *reader,
                                     GError             **error,
                                     GMarkupCollectType   first_type,
                                     const gchar         *first_name,
                                     ...)
 {
+  gboolean ok;
+  va_list ap;
+
   g_return_if_fail (G_IS_MARKUP_READER (reader));
   g_return_if_fail (reader->state == READER_STATE_START_ELEMENT);
 
-  g_assert_not_reached ();
+  va_start (ap, first_name);
+  ok = g_markup_collect_attributesv (reader->element_name,
+                                     (const gchar **) reader->attribute_names,
+                                     (const gchar **) reader->attribute_values,
+                                     error, first_type, first_name, ap);
+  va_end (ap);
+
+  return ok;
 }
 
 GBytes *
@@ -406,18 +437,21 @@ g_markup_reader_unexpected (GMarkupReader  *reader,
   if (reader->state == READER_STATE_START_ELEMENT)
     {
       if (stack->next)
-        g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-                     "Element <%s> is not valid inside of <%s>", reader->element_name, (gchar *) stack->next->data);
+        g_markup_reader_set_error (reader, error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+                                   "Element <%s> is not valid inside of <%s>",
+                                   reader->element_name, (gchar *) stack->next->data);
       else
-        g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-                     "Element <%s> is not valid at the document toplevel", reader->element_name);
+        g_markup_reader_set_error (reader, error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+                                   "Element <%s> is not valid at the document toplevel",
+                                   reader->element_name);
     }
   else /* TEXT */
     {
       g_assert (stack->next);
 
-      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-                   "Text content is not valid inside of <%s>", (gchar *) stack->next->data);
+      g_markup_reader_set_error (reader, error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+                                 "Text content is not valid inside of <%s>",
+                                 (gchar *) stack->next->data);
     }
 
   /* always 'fail' */
@@ -439,29 +473,117 @@ g_markup_reader_expect_end (GMarkupReader  *reader,
         return TRUE;
 
       if (g_markup_reader_is_passthrough (reader))
-        continue;
+        continue; /* XXX: fixme? */
 
-      if (g_markup_reader_is_text (reader))
-        {
-          const gchar *data;
-          gsize length;
-          gsize i;
-
-          data = g_bytes_get_data (reader->content, &length);
-          for (i = 0; i < length; i++)
-            if (!g_ascii_isspace (data[i]))
-              {
-                const GSList *stack;
-
-                stack = g_markup_parse_context_get_element_stack (reader->context);
-                g_assert (stack->next);
-
-                g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                             "Text content is not valid inside of <%s>", (gchar *) stack->next->data);
-                return FALSE;
-              }
-        }
+      if (!g_markup_reader_is_whitespace (reader))
+        return g_markup_reader_unexpected (reader, error);
     }
 
   return TRUE;
+}
+
+void
+g_markup_reader_set_error (GMarkupReader  *reader,
+                           GError        **error,
+                           GQuark          domain,
+                           gint            code,
+                           const gchar    *format,
+                           ...)
+{
+  va_list ap;
+
+  g_return_if_fail (error == NULL || *error == NULL);
+
+  if (!error)
+    return;
+
+
+  va_start (ap, format);
+  *error = g_error_new_valist (domain, code, format, ap);
+  va_end (ap);
+
+  if (reader->context->flags & G_MARKUP_PREFIX_ERROR_POSITION)
+    g_prefix_error (error, "line %d, column %d: ", reader->context->line_number, reader->context->char_number);
+}
+
+gboolean
+g_markup_reader_collect_elements (GMarkupReader  *reader,
+                                  GCancellable   *cancellable,
+                                  gpointer        user_data,
+                                  GError        **error,
+                                  const gchar    *first_name,
+                                  ...)
+{
+  va_list ap;
+
+  while (g_markup_reader_advance (reader, cancellable, error))
+    {
+      if (g_markup_reader_is_end_element (reader) || g_markup_reader_is_eof (reader))
+        return TRUE;
+
+      if (g_markup_reader_is_start_element (reader, NULL))
+        {
+          const gchar *name = g_markup_reader_get_element_name (reader);
+          const gchar *n;
+
+          va_start (ap, first_name);
+          for (n = first_name; n; n = va_arg (ap, const gchar *))
+            {
+              typedef gboolean (* cb_t) (GMarkupReader *, GCancellable *, gpointer, GError **);
+              cb_t cb = va_arg (ap, cb_t);
+
+              if (g_str_equal (n, name))
+                {
+                  if (!(* cb) (reader, cancellable, user_data, error))
+                    {
+                      va_end (ap);
+                      return FALSE;
+                    }
+                  break;
+                }
+            }
+          va_end (ap);
+        }
+
+      else if (!g_markup_reader_is_whitespace (reader))
+        {
+          g_markup_reader_unexpected (reader, error);
+          break;
+        }
+    }
+
+  return FALSE;
+}
+
+gchar *
+g_markup_reader_collect_text (GMarkupReader  *reader,
+                              GCancellable   *cancellable,
+                              GError        **error)
+{
+  GString *string;
+
+  string = g_string_new (NULL);
+
+  while (g_markup_reader_advance (reader, cancellable, error))
+    {
+      if (g_markup_reader_is_end_element (reader))
+        return g_string_free (string, FALSE);
+
+      if (g_markup_reader_is_text (reader))
+        {
+          GBytes *bytes;
+
+          bytes = g_markup_reader_get_content (reader);
+          g_string_append_len (string, g_bytes_get_data (bytes, NULL), g_bytes_get_size (bytes));
+        }
+      else
+        {
+          g_markup_reader_unexpected (reader, error);
+          break;
+        }
+    }
+
+  g_string_free (string, TRUE);
+
+  return NULL;
 }

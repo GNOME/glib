@@ -67,6 +67,9 @@ GLIB_AVAILABLE_IN_2_40
 gboolean                g_markup_reader_is_text                         (GMarkupReader        *reader);
 
 GLIB_AVAILABLE_IN_2_40
+gboolean                g_markup_reader_is_whitespace                   (GMarkupReader        *reader);
+
+GLIB_AVAILABLE_IN_2_40
 const gchar *           g_markup_reader_get_element_name                (GMarkupReader        *reader);
 
 GLIB_AVAILABLE_IN_2_40
@@ -75,11 +78,19 @@ void                    g_markup_reader_get_attributes                  (GMarkup
                                                                          const gchar * const **attribute_values);
 
 GLIB_AVAILABLE_IN_2_40
-void                    g_markup_reader_collect_attributes              (GMarkupReader        *content,
+gboolean                g_markup_reader_collect_attributes              (GMarkupReader        *reader,
                                                                          GError              **error,
                                                                          GMarkupCollectType    first_type,
                                                                          const gchar          *first_name,
                                                                          ...);
+
+GLIB_AVAILABLE_IN_2_40
+gboolean                g_markup_reader_collect_elements                (GMarkupReader        *reader,
+                                                                         GCancellable         *cancellable,
+                                                                         gpointer              user_data,
+                                                                         GError              **error,
+                                                                         const gchar          *first_name,
+                                                                         ...) G_GNUC_NULL_TERMINATED;
 
 GLIB_AVAILABLE_IN_2_40
 GBytes *                g_markup_reader_get_content                     (GMarkupReader        *reader);
@@ -90,6 +101,17 @@ gboolean                g_markup_reader_unexpected                      (GMarkup
 
 GLIB_AVAILABLE_IN_2_40
 gboolean                g_markup_reader_expect_end                      (GMarkupReader        *reader,
+                                                                         GCancellable         *cancellable,
+                                                                         GError              **error);
+GLIB_AVAILABLE_IN_2_40
+void                    g_markup_reader_set_error                       (GMarkupReader        *reader,
+                                                                         GError              **error,
+                                                                         GQuark                domain,
+                                                                         gint                  code,
+                                                                         const gchar          *format,
+                                                                         ...);
+GLIB_AVAILABLE_IN_2_40
+gchar *                 g_markup_reader_collect_text                    (GMarkupReader        *reader,
                                                                          GCancellable         *cancellable,
                                                                          GError              **error);
 

@@ -21,19 +21,19 @@
 
 #include "config.h"
 
+#include "gmarkup.h"
+#include "gmarkup-private.h"
+
 #include <stdarg.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 
-#include "gmarkup.h"
-
 #include "gatomic.h"
 #include "gslice.h"
 #include "galloca.h"
 #include "gstrfuncs.h"
-#include "gstring.h"
 #include "gtestutils.h"
 #include "glibintl.h"
 #include "gthread.h"
@@ -85,86 +85,6 @@
  */
 
 G_DEFINE_QUARK (g-markup-error-quark, g_markup_error)
-
-typedef enum
-{
-  STATE_START,
-  STATE_AFTER_OPEN_ANGLE,
-  STATE_AFTER_CLOSE_ANGLE,
-  STATE_AFTER_ELISION_SLASH, /* the slash that obviates need for end element */
-  STATE_INSIDE_OPEN_TAG_NAME,
-  STATE_INSIDE_ATTRIBUTE_NAME,
-  STATE_AFTER_ATTRIBUTE_NAME,
-  STATE_BETWEEN_ATTRIBUTES,
-  STATE_AFTER_ATTRIBUTE_EQUALS_SIGN,
-  STATE_INSIDE_ATTRIBUTE_VALUE_SQ,
-  STATE_INSIDE_ATTRIBUTE_VALUE_DQ,
-  STATE_INSIDE_TEXT,
-  STATE_AFTER_CLOSE_TAG_SLASH,
-  STATE_INSIDE_CLOSE_TAG_NAME,
-  STATE_AFTER_CLOSE_TAG_NAME,
-  STATE_INSIDE_PASSTHROUGH,
-  STATE_ERROR
-} GMarkupParseState;
-
-typedef struct
-{
-  const char *prev_element;
-  const GMarkupParser *prev_parser;
-  gpointer prev_user_data;
-} GMarkupRecursionTracker;
-
-struct _GMarkupParseContext
-{
-  const GMarkupParser *parser;
-
-  volatile gint ref_count;
-
-  GMarkupParseFlags flags;
-
-  gint line_number;
-  gint char_number;
-
-  GMarkupParseState state;
-
-  gpointer user_data;
-  GDestroyNotify dnotify;
-
-  /* A piece of character data or an element that
-   * hasn't "ended" yet so we haven't yet called
-   * the callback for it.
-   */
-  GString *partial_chunk;
-  GSList *spare_chunks;
-
-  GSList *tag_stack;
-  GSList *tag_stack_gstr;
-  GSList *spare_list_nodes;
-
-  GString **attr_names;
-  GString **attr_values;
-  gint cur_attr;
-  gint alloc_attrs;
-
-  const gchar *current_text;
-  gssize       current_text_len;
-  const gchar *current_text_end;
-
-  /* used to save the start of the last interesting thingy */
-  const gchar *start;
-
-  const gchar *iter;
-
-  guint document_empty : 1;
-  guint parsing : 1;
-  guint awaiting_pop : 1;
-  gint balance;
-
-  /* subparser support */
-  GSList *subparser_stack; /* (GMarkupRecursionTracker *) */
-  const char *subparser_element;
-  gpointer held_user_data;
-};
 
 /*
  * Helpers to reduce our allocation overhead, we have
@@ -1096,6 +1016,9 @@ emit_end_element (GMarkupParseContext  *context,
   pop_tag (context);
 }
 
+static void             g_markup_parse_context_set_text                 (GMarkupParseContext *context,
+                                                                         const gchar         *text,
+                                                                         gssize               text_len);
 /**
  * g_markup_parse_context_parse:
  * @context: a #GMarkupParseContext
@@ -1127,22 +1050,42 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
   g_return_val_if_fail (context->state != STATE_ERROR, FALSE);
   g_return_val_if_fail (!context->parsing, FALSE);
 
+  g_markup_parse_context_set_text (context, text, text_len);
+
+  while (context->iter != context->current_text_end)
+    if (!g_markup_parse_context_parse_slightly (context, error))
+      break;
+
+  context->parsing = FALSE;
+
+  return context->state != STATE_ERROR;
+}
+
+static void
+g_markup_parse_context_set_text (GMarkupParseContext  *context,
+                                 const gchar          *text,
+                                 gssize                text_len)
+{
   if (text_len < 0)
     text_len = strlen (text);
 
   if (text_len == 0)
-    return TRUE;
+    return;
 
   context->parsing = TRUE;
-
 
   context->current_text = text;
   context->current_text_len = text_len;
   context->current_text_end = context->current_text + text_len;
   context->iter = context->current_text;
   context->start = context->iter;
+}
 
-  while (context->iter != context->current_text_end)
+gboolean
+g_markup_parse_context_parse_slightly (GMarkupParseContext  *context,
+                                       GError              **error)
+{
+  if (context->iter != context->current_text_end)
     {
       switch (context->state)
         {
@@ -1729,8 +1672,6 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
     }
 
  finished:
-  context->parsing = FALSE;
-
   return context->state != STATE_ERROR;
 }
 
@@ -2668,27 +2609,28 @@ g_markup_parse_boolean (const char  *string,
  * Since: 2.16
  **/
 gboolean
-g_markup_collect_attributes (const gchar         *element_name,
-                             const gchar        **attribute_names,
-                             const gchar        **attribute_values,
-                             GError             **error,
-                             GMarkupCollectType   first_type,
-                             const gchar         *first_attr,
-                             ...)
+g_markup_collect_attributesv (const gchar         *element_name,
+                              const gchar        **attribute_names,
+                              const gchar        **attribute_values,
+                              GError             **error,
+                              GMarkupCollectType   first_type,
+                              const gchar         *first_attr,
+                              va_list              ap)
 {
   GMarkupCollectType type;
   const gchar *attr;
   guint64 collected;
   int written;
-  va_list ap;
+  va_list aq;
   int i;
+
+  G_VA_COPY (aq, ap);
 
   type = first_type;
   attr = first_attr;
   collected = 0;
   written = 0;
 
-  va_start (ap, first_attr);
   while (type != G_MARKUP_COLLECT_INVALID)
     {
       gboolean mandatory;
@@ -2733,7 +2675,6 @@ g_markup_collect_attributes (const gchar         *element_name,
                        "element '%s' requires attribute '%s'",
                        element_name, attr);
 
-          va_end (ap);
           goto failure;
         }
 
@@ -2791,7 +2732,6 @@ g_markup_collect_attributes (const gchar         *element_name,
                                "cannot be parsed as a boolean value",
                                element_name, attr, value);
 
-                  va_end (ap);
                   goto failure;
                 }
             }
@@ -2806,7 +2746,6 @@ g_markup_collect_attributes (const gchar         *element_name,
       attr = va_arg (ap, const char *);
       written++;
     }
-  va_end (ap);
 
   /* ensure we collected all the arguments */
   for (i = 0; attribute_names[i]; i++)
@@ -2841,6 +2780,8 @@ g_markup_collect_attributes (const gchar         *element_name,
         goto failure;
       }
 
+  va_end (aq);
+
   return TRUE;
 
 failure:
@@ -2848,12 +2789,11 @@ failure:
   type = first_type;
   attr = first_attr;
 
-  va_start (ap, first_attr);
   while (type != G_MARKUP_COLLECT_INVALID)
     {
       gpointer ptr;
 
-      ptr = va_arg (ap, gpointer);
+      ptr = va_arg (aq, gpointer);
 
       if (ptr != NULL)
         {
@@ -2877,10 +2817,30 @@ failure:
             }
         }
 
-      type = va_arg (ap, GMarkupCollectType);
-      attr = va_arg (ap, const char *);
+      type = va_arg (aq, GMarkupCollectType);
+      attr = va_arg (aq, const char *);
     }
-  va_end (ap);
+  va_end (aq);
 
   return FALSE;
+}
+
+gboolean
+g_markup_collect_attributes (const gchar         *element_name,
+                             const gchar        **attribute_names,
+                             const gchar        **attribute_values,
+                             GError             **error,
+                             GMarkupCollectType   first_type,
+                             const gchar         *first_attr,
+                             ...)
+{
+  gboolean ok;
+  va_list ap;
+
+  va_start (ap, first_attr);
+  ok = g_markup_collect_attributesv (element_name, attribute_names, attribute_values,
+                                     error, first_type, first_attr, ap);
+  va_end (ap);
+
+  return ok;
 }

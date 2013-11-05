@@ -87,6 +87,7 @@
 #include <gio/gioscheduler.h>
 #include <gio/giostream.h>
 #include <gio/gloadableicon.h>
+#include <gio/gmarkupreader.h>
 #include <gio/gmemoryinputstream.h>
 #include <gio/gmemoryoutputstream.h>
 #include <gio/gmount.h>

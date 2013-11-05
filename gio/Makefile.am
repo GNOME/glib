@@ -394,6 +394,7 @@ libgio_2_0_la_SOURCES =		\
 	gioprivate.h		\
 	giowin32-priv.h 	\
 	gloadableicon.c 	\
+	gmarkupreader.c		\
 	gmount.c 		\
 	gmemoryinputstream.c 	\
 	gmemoryoutputstream.c 	\
@@ -569,6 +570,7 @@ gio_headers =			\
 	gioscheduler.h 		\
 	giostream.h		\
 	gloadableicon.h 	\
+	gmarkupreader.h		\
 	gmount.h 		\
 	gmemoryinputstream.h 	\
 	gmemoryoutputstream.h 	\
@@ -685,7 +687,7 @@ gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
 gio-2.0.lib: libgio-2.0.la gio.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gio.def -out:$@
 
-bin_PROGRAMS = gio-querymodules glib-compile-schemas glib-compile-resources gsettings
+bin_PROGRAMS = gio-querymodules glib-compile-schemas glib-compile-resources gsettings new-compiler
 
 glib_compile_resources_LDADD = \
 	$(top_builddir)/glib/libglib-2.0.la \
@@ -708,6 +710,18 @@ gio_querymodules_LDADD	 = \
 
 gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c.pl
 	$(AM_V_GEN) $(srcdir)/data-to-c.pl $(top_srcdir)/glib/gconstructor.h gconstructor_code > $@.tmp && mv $@.tmp $@
+
+new_compiler_LDADD = \
+	$(top_builddir)/glib/libglib-2.0.la \
+	$(top_builddir)/gobject/libgobject-2.0.la	\
+	libgio-2.0.la
+
+new_compiler_SOURCES = \
+	gconstructor_as_data.h \
+	gvdb/gvdb-format.h		\
+	gvdb/gvdb-builder.h		\
+	gvdb/gvdb-builder.c		\
+	new-compiler.c
 
 glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
 glib_compile_schemas_SOURCES = \
