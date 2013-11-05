@@ -8,6 +8,14 @@
 #include <gio/gfiledescriptorbased.h>
 #endif
 
+#ifdef G_OS_WIN32
+#define LINEEND "\r\n"
+#define EXEEXT ".exe"
+#else
+#define LINEEND "\n"
+#define EXEEXT
+#endif
+
 static GPtrArray *
 get_test_subprocess_args (const char *mode,
                           ...) G_GNUC_NULL_TERMINATED;
@@ -199,7 +207,7 @@ test_echo1 (void)
   result = splice_to_string (stdout, error);
   g_assert_no_error (local_error);
 
-  g_assert_cmpstr (result, ==, "hello\nworld!\n");
+  g_assert_cmpstr (result, ==, "hello" LINEEND "world!" LINEEND);
 
   g_free (result);
   g_object_unref (proc);
@@ -336,6 +344,11 @@ test_cat_eof (void)
   gboolean result;
   gchar buffer;
   gssize s;
+
+#ifdef G_OS_WIN32
+  g_test_skip ("This test has not been ported to Win32");
+  return;
+#endif
 
   /* Spawn 'cat' */
   cat = g_subprocess_new (G_SUBPROCESS_FLAGS_STDIN_PIPE | G_SUBPROCESS_FLAGS_STDOUT_PIPE, &error, "cat", NULL);
