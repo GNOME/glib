@@ -44,6 +44,7 @@ G_BEGIN_DECLS
  * @G_CONVERT_ERROR_PARTIAL_INPUT: Partial character sequence at end of input.
  * @G_CONVERT_ERROR_BAD_URI: URI is invalid.
  * @G_CONVERT_ERROR_NOT_ABSOLUTE_PATH: Pathname is not an absolute path.
+ * @G_CONVERT_ERROR_NO_MEMORY: No memory available. Since: 2.40
  *
  * Error codes returned by character set conversion routines.
  */
@@ -54,7 +55,8 @@ typedef enum
   G_CONVERT_ERROR_FAILED,
   G_CONVERT_ERROR_PARTIAL_INPUT,
   G_CONVERT_ERROR_BAD_URI,
-  G_CONVERT_ERROR_NOT_ABSOLUTE_PATH
+  G_CONVERT_ERROR_NOT_ABSOLUTE_PATH,
+  G_CONVERT_ERROR_NO_MEMORY
 } GConvertError;
 
 /**

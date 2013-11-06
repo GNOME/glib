@@ -776,6 +776,16 @@ g_utf8_to_ucs4_fast (const gchar *str,
   return result;
 }
 
+static gpointer
+try_malloc (gsize n_bytes, GError **error)
+{
+    gpointer ptr = g_try_malloc (n_bytes);
+    if (ptr == NULL)
+      g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_MEMORY,
+                           _("Failed to allocate memory"));
+    return ptr;
+}
+
 /**
  * g_utf8_to_ucs4:
  * @str: a UTF-8 encoded string
@@ -840,8 +850,10 @@ g_utf8_to_ucs4 (const gchar *str,
       in = g_utf8_next_char (in);
     }
 
-  result = g_new (gunichar, n_chars + 1);
-  
+  result = try_malloc (sizeof (gunichar) * (n_chars + 1), error);
+  if (result == NULL)
+      goto err_out;
+
   in = str;
   for (i=0; i < n_chars; i++)
     {
@@ -911,7 +923,10 @@ g_ucs4_to_utf8 (const gunichar *str,
       result_length += UTF8_LENGTH (str[i]);
     }
 
-  result = g_malloc (result_length + 1);
+  result = try_malloc (result_length + 1, error);
+  if (result == NULL)
+      goto err_out;
+
   p = result;
 
   i = 0;
@@ -1043,8 +1058,10 @@ g_utf16_to_utf8 (const gunichar2  *str,
   /* At this point, everything is valid, and we just need to convert
    */
   /********** DIFFERENT for UTF8/UCS4 **********/
-  result = g_malloc (n_bytes + 1);
-  
+  result = try_malloc (n_bytes + 1, error);
+  if (result == NULL)
+      goto err_out;
+
   high_surrogate = 0;
   out = result;
   in = str;
@@ -1180,8 +1197,10 @@ g_utf16_to_ucs4 (const gunichar2  *str,
   /* At this point, everything is valid, and we just need to convert
    */
   /********** DIFFERENT for UTF8/UCS4 **********/
-  result = g_malloc (n_bytes + 4);
-  
+  result = try_malloc (n_bytes + 4, error);
+  if (result == NULL)
+      goto err_out;
+
   high_surrogate = 0;
   out = result;
   in = str;
@@ -1310,8 +1329,10 @@ g_utf8_to_utf16 (const gchar *str,
       in = g_utf8_next_char (in);
     }
 
-  result = g_new (gunichar2, n16 + 1);
-  
+  result = try_malloc (sizeof (gunichar2) * (n16 + 1), error);
+  if (result == NULL)
+      goto err_out;
+
   in = str;
   for (i = 0; i < n16;)
     {
@@ -1405,9 +1426,11 @@ g_ucs4_to_utf16 (const gunichar  *str,
 
       i++;
     }
-  
-  result = g_new (gunichar2, n16 + 1);
-  
+
+  result = try_malloc (sizeof (gunichar2) * (n16 + 1), error);
+  if (result == NULL)
+      goto err_out;
+
   for (i = 0, j = 0; j < n16; i++)
     {
       gunichar wc = str[i];
