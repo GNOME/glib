@@ -2643,7 +2643,7 @@ g_local_file_measure_size_of_file (gint           parent_fd,
                                    MeasureState  *state,
                                    GError       **error)
 {
-  struct stat buf;
+  GLocalFileStat buf;
 
   if (g_cancellable_set_error_if_cancelled (state->cancellable, error))
     return FALSE;
