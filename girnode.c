@@ -1151,6 +1151,10 @@ _g_ir_find_node (GIrTypelibBuild  *build,
       target_name = names[1];
     }
 
+  /* find_namespace() may return NULL. */
+  if (target_module == NULL)
+      goto done;
+
   for (l = target_module->entries; l; l = l->next)
     {
       GIrNode *node = (GIrNode *)l->data;
@@ -1162,6 +1166,7 @@ _g_ir_find_node (GIrTypelibBuild  *build,
 	}
     }
 
+done:
   g_strfreev (names);
 
   return return_node;
