@@ -21,7 +21,9 @@
 
 /* We test for errors in optimize-only definitions in gmem.h */
 
+#ifdef __GNUC__
 #pragma GCC optimize (1)
+#endif
 
 #include "glib.h"
 #include <stdlib.h>
@@ -169,6 +171,7 @@ mem_overflow (void)
   CHECK_SUBPROCESS_PASS (realloc_0);
 }
 
+#ifdef __GNUC__
 typedef struct
 {
 } Empty;
@@ -193,6 +196,7 @@ empty_alloc (void)
   g_test_trap_subprocess ("/mem/empty-alloc/subprocess", 0, 0);
   g_test_trap_assert_passed ();
 }
+#endif
 
 int
 main (int   argc,
@@ -224,8 +228,10 @@ main (int   argc,
   g_test_add_func ("/mem/overflow/subprocess/malloc_0", mem_overflow_malloc_0);
   g_test_add_func ("/mem/overflow/subprocess/realloc_0", mem_overflow_realloc_0);
 
+#ifdef __GNUC__
   g_test_add_func ("/mem/empty-alloc", empty_alloc);
   g_test_add_func ("/mem/empty-alloc/subprocess", empty_alloc_subprocess);
+#endif
 
   return g_test_run();
 }
