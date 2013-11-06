@@ -143,8 +143,8 @@ test_basic (void)
 #else /* ! G_CREDENTIALS_SUPPORTED */
 
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-                         "*g_credentials_get_native: Trying to get*"
-                         "credentials but*no support*");
+                         "*g_credentials_get_native: Trying to get "
+                         "credentials *but*no support*");
   bad_native_creds = g_credentials_get_native (creds, G_CREDENTIALS_TYPE_LINUX_UCRED);
   g_test_assert_expected_messages ();
   g_assert_null (bad_native_creds);
