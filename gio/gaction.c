@@ -86,7 +86,7 @@ g_action_default_init (GActionInterface *iface)
    * GAction:name:
    *
    * The name of the action.  This is mostly meaningful for identifying
-   * the action once it has been added to a #GActionGroup.
+   * the action once it has been added to a #GActionGroup. It is immutable.
    *
    * Since: 2.28
    **/
@@ -102,7 +102,8 @@ g_action_default_init (GActionInterface *iface)
    * GAction:parameter-type:
    *
    * The type of the parameter that must be given when activating the
-   * action.
+   * action. This is immutable, and may be %NULL if no parameter is needed when
+   * activating the action.
    *
    * Since: 2.28
    **/
@@ -136,7 +137,7 @@ g_action_default_init (GActionInterface *iface)
    * GAction:state-type:
    *
    * The #GVariantType of the state that the action has, or %NULL if the
-   * action is stateless.
+   * action is stateless. This is immutable.
    *
    * Since: 2.28
    **/
