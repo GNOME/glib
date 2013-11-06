@@ -164,6 +164,8 @@ gboolean    g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo          
 						       gpointer                    pid_callback_data,
 						       GError                    **error);
 
+GLIB_AVAILABLE_IN_2_40
+gchar *** g_desktop_app_info_search (const gchar *search_string);
 
 G_END_DECLS
 
