@@ -32,6 +32,20 @@
 #include <string.h>
 #include "glib.h"
 
+#if defined (_MSC_VER) && (_MSC_VER <= 1800)
+#define isnan(x) _isnan(x)
+
+#ifndef NAN
+static const unsigned long __nan[2] = {0xffffffff, 0x7fffffff};
+#define NAN (*(const float *) __nan)
+#endif
+
+#ifndef INFINITY
+#define INFINITY HUGE_VAL
+#endif
+
+#endif
+
 #define GLIB_TEST_STRING "el dorado "
 
 #define FOR_ALL_CTYPE(macro)	\
@@ -970,24 +984,33 @@ test_strtod (void)
   check_strtod_string ("5.4", 5.4, TRUE, 3);
   check_strtod_string ("5.4,5.5", 5.4, TRUE, 3);
   check_strtod_string ("5,4", 5.0, TRUE, 1);
+#ifndef _MSC_VER
+  /* hex strings for strtod() is a C99 feature which Visual C++ does not support */
   check_strtod_string ("0xa.b", 10.6875, TRUE, 5);
   check_strtod_string ("0xa.bP3", 85.5, TRUE, 7);
   check_strtod_string ("0xa.bp+3", 85.5, TRUE, 8);
   check_strtod_string ("0xa.bp-2", 2.671875, TRUE, 8);
   check_strtod_string ("0xA.BG", 10.6875, TRUE, 5);
+#endif
   /* the following are for #156421 */
-  check_strtod_string ("1e1", 1e1, FALSE, 0); 
+  check_strtod_string ("1e1", 1e1, FALSE, 0);
+#ifndef _MSC_VER
+  /* NAN/-nan/INF/-infinity strings for strtod() are C99 features which Visual C++ does not support */
   check_strtod_string ("NAN", our_nan, FALSE, 0);
   check_strtod_string ("-nan", -our_nan, FALSE, 0);
   check_strtod_string ("INF", our_inf, FALSE, 0);
   check_strtod_string ("-infinity", -our_inf, FALSE, 0);
+#endif
   check_strtod_string ("-.75,0", -0.75, TRUE, 4);
-  
+
+#ifndef _MSC_VER
+  /* the values of d in the following 2 tests generate a C1064 compiler limit error */
   d = 179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0;
   g_assert (d == g_ascii_strtod (g_ascii_dtostr (buffer, sizeof (buffer), d), NULL));
 
   d = -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368.0;
   g_assert (d == g_ascii_strtod (g_ascii_dtostr (buffer, sizeof (buffer), d), NULL));
+#endif
   
   d = pow (2.0, -1024.1);
   g_assert (d == g_ascii_strtod (g_ascii_dtostr (buffer, sizeof (buffer), d), NULL));
@@ -1014,7 +1037,11 @@ test_strtod (void)
   check_strtod_number (0.75, "%5.2f", " 0.75");
   check_strtod_number (-0.75, "%0.2f", "-0.75");
   check_strtod_number (-0.75, "%5.2f", "-0.75");
+#ifdef _MSC_VER
+  check_strtod_number (1e99, "%0.e", "1e+099");
+#else
   check_strtod_number (1e99, "%.0e", "1e+99");
+#endif
 }
 
 static void

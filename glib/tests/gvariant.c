@@ -2195,7 +2195,7 @@ static void
 serialise_tree (TreeInstance       *tree,
                 GVariantSerialised *serialised)
 {
-  GVariantSerialised empty = {  };
+  GVariantSerialised empty = {0, };
 
   *serialised = empty;
   tree_filler (serialised, tree);
@@ -3741,6 +3741,8 @@ test_parses (void)
     g_free (printed);
   }
 
+#ifndef _MSC_VER
+  /* inf/nan strings are C99 features which Visual C++ does not support */
   /* inf/nan mini test */
   {
     const gchar *tests[] = { "inf", "-inf", "nan" };
@@ -3762,6 +3764,7 @@ test_parses (void)
         g_variant_unref (value);
       }
   }
+#endif
 
   g_variant_type_info_assert_no_infos ();
 }
