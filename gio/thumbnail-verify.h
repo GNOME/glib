@@ -23,9 +23,10 @@
 
 #include <glib.h>
 #include <gstdio.h>
+#include "glocalfileinfo.h"
 
 gboolean   thumbnail_verify                   (const gchar            *thumbnail_path,
                                                const gchar            *file_uri,
-                                               const GStatBuf         *file_stat_buf);
+                                               const GLocalFileStat   *file_stat_buf);
 
 #endif /* _thumbnail_verify_h_ */

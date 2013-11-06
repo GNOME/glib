@@ -1283,7 +1283,7 @@ get_content_type (const char          *basename,
 static void
 get_thumbnail_attributes (const char     *path,
                           GFileInfo      *info,
-                          const GStatBuf *stat_buf)
+                          const GLocalFileStat *stat_buf)
 {
   GChecksum *checksum;
   char *uri;

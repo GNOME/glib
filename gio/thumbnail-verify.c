@@ -224,7 +224,7 @@ out:
 gboolean
 thumbnail_verify (const char     *thumbnail_path,
                   const gchar    *file_uri,
-                  const GStatBuf *file_stat_buf)
+                  const GLocalFileStat *file_stat_buf)
 {
   gboolean thumbnail_is_valid = FALSE;
   ExpectedInfo expected_info;
