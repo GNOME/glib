@@ -368,10 +368,13 @@ g_dbus_error_register_error (GQuark       error_domain,
       g_assert (dbus_error_name_to_re == NULL); /* check invariant */
       quark_code_pair_to_re = g_hash_table_new ((GHashFunc) quark_code_pair_hash_func,
                                                 (GEqualFunc) quark_code_pair_equal_func);
+      G_CLEANUP_IN (quark_code_pair_to_re, g_hash_table_unref, G_CLEANUP_PHASE_LATE);
+
       dbus_error_name_to_re = g_hash_table_new_full (g_str_hash,
                                                      g_str_equal,
                                                      NULL,
                                                      (GDestroyNotify) registered_error_free);
+      G_CLEANUP_IN (dbus_error_name_to_re, g_hash_table_unref, G_CLEANUP_PHASE_LATE);
     }
 
   if (g_hash_table_lookup (dbus_error_name_to_re, dbus_error_name) != NULL)

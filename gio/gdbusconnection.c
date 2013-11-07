@@ -2645,7 +2645,10 @@ initable_init (GInitable     *initable,
 
   G_LOCK (message_bus_lock);
   if (alive_connections == NULL)
-    alive_connections = g_hash_table_new (g_direct_hash, g_direct_equal);
+    {
+      alive_connections = g_hash_table_new (g_direct_hash, g_direct_equal);
+      G_CLEANUP_IN (alive_connections, g_hash_table_unref, G_CLEANUP_PHASE_LATE);
+    }
   g_hash_table_insert (alive_connections, connection, connection);
   G_UNLOCK (message_bus_lock);
 
