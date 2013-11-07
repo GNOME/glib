@@ -337,6 +337,7 @@ giowin32include_HEADERS = \
 endif
 
 libgio_2_0_la_SOURCES =		\
+	gappinfoprivate.h	\
 	gappinfo.c 		\
 	gappinfoprivate.h	\
 	gasynchelper.c 		\
