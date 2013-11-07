@@ -117,18 +117,15 @@ tester_init_thread (gpointer data)
 static void
 test_threaded_class_init (void)
 {
-  GThread *thread;
+  GThread *t1, *t2, *t3;
 
   /* pause newly created threads */
   g_mutex_lock (&sync_mutex);
 
   /* create threads */
-  thread = g_thread_create (tester_init_thread, (gpointer) my_tester0_get_type(), TRUE, NULL);
-  g_thread_unref (thread);
-  thread = g_thread_create (tester_init_thread, (gpointer) my_tester1_get_type(), TRUE, NULL);
-  g_thread_unref (thread);
-  thread = g_thread_create (tester_init_thread, (gpointer) my_tester2_get_type(), TRUE, NULL);
-  g_thread_unref (thread);
+  t1 = g_thread_create (tester_init_thread, (gpointer) my_tester0_get_type(), TRUE, NULL);
+  t2 = g_thread_create (tester_init_thread, (gpointer) my_tester1_get_type(), TRUE, NULL);
+  t3 = g_thread_create (tester_init_thread, (gpointer) my_tester2_get_type(), TRUE, NULL);
 
   /* execute threads */
   g_mutex_unlock (&sync_mutex);
@@ -142,6 +139,10 @@ test_threaded_class_init (void)
     g_print ("Total initializers: %u\n", g_atomic_int_get (&mtsafe_call_counter));
   /* ensure non-corrupted counter updates */
   g_assert_cmpint (g_atomic_int_get (&mtsafe_call_counter), ==, unsafe_call_counter);
+
+  g_thread_join (t1);
+  g_thread_join (t2);
+  g_thread_join (t3);
 }
 #endif
 
