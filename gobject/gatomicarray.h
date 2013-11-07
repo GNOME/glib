@@ -35,11 +35,13 @@ struct _GAtomicArray {
 };
 
 void     _g_atomic_array_init   (GAtomicArray *array);
+void     _g_atomic_array_free   (GAtomicArray *array);
 gpointer _g_atomic_array_copy   (GAtomicArray *array,
 				 gsize         header_size,
 				 gsize         additional_element_size);
 void     _g_atomic_array_update (GAtomicArray *array,
 				 gpointer      new_data);
+void     _g_atomic_array_cleanup(void);
 
 #define  G_ATOMIC_ARRAY_GET_LOCKED(_array, _type) ((_type *)((_array)->data))
 

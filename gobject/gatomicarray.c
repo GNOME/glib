@@ -50,6 +50,9 @@ struct _FreeListNode {
   FreeListNode *next;
 };
 
+#define G_ATOMIC_ARRAY_REAL_SIZE_FROM(size) \
+  sizeof (gsize) + MAX (size, sizeof (FreeListNode))
+
 /* This is really a list of array memory blocks, using the
  * first item as the next pointer to chain them together.
  * Protected by array lock */
@@ -75,11 +78,31 @@ freelist_alloc (gsize size, gboolean reuse)
 	}
     }
 
-  real_size = sizeof (gsize) + MAX (size, sizeof (FreeListNode));
+  real_size = G_ATOMIC_ARRAY_REAL_SIZE_FROM (size);
   mem = g_slice_alloc (real_size);
   mem = ((char *) mem) + sizeof (gsize);
   G_ATOMIC_ARRAY_DATA_SIZE (mem) = size;
   return mem;
+}
+
+void
+_g_atomic_array_cleanup (void)
+{
+  FreeListNode *cur, *next;
+
+  cur = freelist;
+  freelist = NULL;
+
+  for (; cur; cur = next)
+    {
+      gsize size, real_size;
+
+      next = cur->next;
+
+      size = G_ATOMIC_ARRAY_DATA_SIZE (cur);
+      real_size = G_ATOMIC_ARRAY_REAL_SIZE_FROM (size);
+      g_slice_free1 (real_size, ((char *) cur) - sizeof (gsize));
+    }
 }
 
 /* must hold array lock */
@@ -165,4 +188,11 @@ _g_atomic_array_update (GAtomicArray *array,
   if (old)
     freelist_free (old);
   G_UNLOCK (array);
+}
+
+void
+_g_atomic_array_free (GAtomicArray *array)
+{
+  if (array->data != NULL)
+    freelist_free (array->data);
 }
