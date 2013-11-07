@@ -202,7 +202,10 @@ GResolver *
 g_resolver_get_default (void)
 {
   if (!default_resolver)
-    default_resolver = g_object_new (G_TYPE_THREADED_RESOLVER, NULL);
+    {
+      default_resolver = g_object_new (G_TYPE_THREADED_RESOLVER, NULL);
+      G_CLEANUP (default_resolver, g_object_unref);
+    }
 
   return g_object_ref (default_resolver);
 }
