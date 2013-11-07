@@ -559,10 +559,13 @@ g_socket_connection_factory_register_type (GType         g_type,
   G_LOCK (connection_factories);
 
   if (connection_factories == NULL)
-    connection_factories = g_hash_table_new_full (connection_factory_hash,
-						  connection_factory_equal,
-						  (GDestroyNotify)g_free,
-						  NULL);
+    {
+      connection_factories = g_hash_table_new_full (connection_factory_hash,
+                                                    connection_factory_equal,
+                                                    (GDestroyNotify)g_free,
+                                                    NULL);
+      G_CLEANUP (connection_factories, g_hash_table_unref);
+    }
 
   factory = g_new0 (ConnectionFactory, 1);
   factory->socket_family = family;
