@@ -199,6 +199,7 @@ static GQuark	            quark_weak_refs = 0;
 static GQuark	            quark_toggle_refs = 0;
 static GQuark               quark_notify_queue;
 static GQuark               quark_in_construction;
+static GQuark               quark_interface_pspecs;
 static GParamSpecPool      *pspec_pool = NULL;
 static gulong	            gobject_signals[LAST_SIGNAL] = { 0, };
 static guint (*floating_flag_handler) (GObject*, gint) = object_floating_flag_handler;
@@ -343,6 +344,9 @@ debug_objects_atexit (void)
 {
   IF_DEBUG (OBJECTS)
     {
+      if (debug_objects_ht == NULL)
+        return; /* deinitialized, do nothing */
+
       G_LOCK (debug_objects);
       g_message ("stale GObjects: %u", debug_objects_count);
       g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
@@ -397,6 +401,7 @@ _g_object_type_init (void)
   IF_DEBUG (OBJECTS)
     {
       debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
+      G_CLEANUP_IN (debug_objects_ht, g_hash_table_unref, G_CLEANUP_PHASE_GRAVEYARD);
 #ifndef G_HAS_CONSTRUCTORS
       g_atexit (debug_objects_atexit);
 #endif /* G_HAS_CONSTRUCTORS */
@@ -422,15 +427,11 @@ g_object_base_class_init (GObjectClass *class)
 }
 
 static void
-g_object_base_class_finalize (GObjectClass *class)
+_g_object_type_free_pspecs (GType type)
 {
   GList *list, *node;
-  
-  _g_signals_destroy (G_OBJECT_CLASS_TYPE (class));
 
-  g_slist_free (class->construct_properties);
-  class->construct_properties = NULL;
-  list = g_param_spec_pool_list_owned (pspec_pool, G_OBJECT_CLASS_TYPE (class));
+  list = g_param_spec_pool_list_owned (pspec_pool, type);
   for (node = list; node; node = node->next)
     {
       GParamSpec *pspec = node->data;
@@ -440,6 +441,17 @@ g_object_base_class_finalize (GObjectClass *class)
       g_param_spec_unref (pspec);
     }
   g_list_free (list);
+}
+
+static void
+g_object_base_class_finalize (GObjectClass *class)
+{
+  _g_signals_destroy (G_OBJECT_CLASS_TYPE (class));
+
+  g_slist_free (class->construct_properties);
+  class->construct_properties = NULL;
+
+  _g_object_type_free_pspecs (G_OBJECT_CLASS_TYPE (class));
 }
 
 static void
@@ -453,7 +465,9 @@ g_object_do_class_init (GObjectClass *class)
   quark_toggle_refs = g_quark_from_static_string ("GObject-toggle-references");
   quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
   quark_in_construction = g_quark_from_static_string ("GObject-in-construction");
+  quark_interface_pspecs = g_quark_from_static_string ("GObject-interface-pspecs");
   pspec_pool = g_param_spec_pool_new (TRUE);
+  G_CLEANUP_IN (pspec_pool, _g_param_spec_pool_cleanup, G_CLEANUP_PHASE_LATE);
 
   class->constructor = g_object_constructor;
   class->constructed = g_object_constructed;
@@ -695,6 +709,14 @@ g_object_class_install_properties (GObjectClass  *oclass,
     }
 }
 
+static void
+free_interface_type_pspecs (gpointer data)
+{
+  GType type = GPOINTER_TO_SIZE (data);
+
+  _g_object_type_free_pspecs (type);
+}
+
 /**
  * g_object_interface_install_property:
  * @g_iface: any interface vtable for the interface, or the default
@@ -736,6 +758,13 @@ g_object_interface_install_property (gpointer      g_iface,
     g_return_if_fail (pspec->flags & G_PARAM_WRITABLE);
 
   install_property_internal (iface_class->g_type, 0, pspec);
+
+  if (!g_type_get_qdata (iface_class->g_type, quark_interface_pspecs))
+    {
+      g_type_set_qdata (iface_class->g_type, quark_interface_pspecs,
+                        GSIZE_TO_POINTER (iface_class->g_type));
+      G_CLEANUP (GSIZE_TO_POINTER (iface_class->g_type), free_interface_type_pspecs);
+    }
 }
 
 /**

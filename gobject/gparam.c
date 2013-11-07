@@ -922,6 +922,13 @@ g_param_spec_pool_new (gboolean type_prefixing)
   return pool;
 }
 
+void
+_g_param_spec_pool_cleanup (GParamSpecPool *pool)
+{
+  g_hash_table_unref (pool->hash_table);
+  g_free (pool);
+}
+
 /**
  * g_param_spec_pool_insert:
  * @pool: a #GParamSpecPool.

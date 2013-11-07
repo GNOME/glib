@@ -821,6 +821,25 @@ signal_key_cmp (gconstpointer node1,
     return G_BSEARCH_ARRAY_CMP (key1->itype, key2->itype);
 }
 
+static void
+signal_cleanup (void)
+{
+  gint i;
+
+  /*
+   * Actual deep contents should have been destroyed by _g_signals_destroy()
+   * calls done earlier.
+   */
+
+  for (i = 1; i < g_n_signal_nodes; i++)
+    g_free (g_signal_nodes[i]);
+  g_free (g_signal_nodes);
+
+  g_bsearch_array_free (g_signal_key_bsa, &g_signal_key_bconfig);
+
+  g_hash_table_unref (g_handler_list_bsa_ht);
+}
+
 void
 _g_signal_init (void)
 {
@@ -835,6 +854,8 @@ _g_signal_init (void)
       g_n_signal_nodes = 1;
       g_signal_nodes = g_renew (SignalNode*, g_signal_nodes, g_n_signal_nodes);
       g_signal_nodes[0] = NULL;
+
+      G_CLEANUP_FUNC_IN (signal_cleanup, G_CLEANUP_PHASE_GRAVEYARD);
     }
   SIGNAL_UNLOCK ();
 }

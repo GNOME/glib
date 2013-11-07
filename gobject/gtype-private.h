@@ -25,6 +25,7 @@
 
 #include "gboxed.h"
 #include "gclosure.h"
+#include "gparam.h"
 
 G_BEGIN_DECLS
 
@@ -73,6 +74,8 @@ void        _g_closure_invoke_va (GClosure       *closure,
 				  GType          *param_types);
 
 gboolean    g_type_is_in_init    (GType type);
+
+void        _g_param_spec_pool_cleanup  (GParamSpecPool *pool);
 
 G_END_DECLS
 
