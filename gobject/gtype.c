@@ -2745,7 +2745,6 @@ g_type_register_static (GType            parent_type,
   
   pnode = lookup_type_node_I (parent_type);
   G_WRITE_LOCK (&type_rw_lock);
-  type_data_ref_Wm (pnode);
   if (check_type_info_I (pnode, NODE_FUNDAMENTAL_TYPE (pnode), type_name, info))
     {
       node = type_node_new_W (pnode, type_name, NULL);
