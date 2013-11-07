@@ -32,6 +32,8 @@
 /* This test tests the macros for defining dynamic types.
  */
 
+G_CLEANUP_DEFINE;
+
 static gboolean loaded = FALSE;
 
 struct _TestIfaceClass

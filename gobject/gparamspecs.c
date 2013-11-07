@@ -1166,13 +1166,14 @@ GType *g_param_spec_types = NULL;
 void
 _g_param_spec_types_init (void)	
 {
-  const guint n_types = 23;
+  static GType types[23];
   GType type, *spec_types, *spec_types_bound;
+  guint i;
 
-  g_param_spec_types = g_new0 (GType, n_types);
+  g_param_spec_types = types;
   spec_types = g_param_spec_types;
-  spec_types_bound = g_param_spec_types + n_types;
-  
+  spec_types_bound = g_param_spec_types + G_N_ELEMENTS (types);
+
   /* G_TYPE_PARAM_CHAR
    */
   {
@@ -1590,6 +1591,9 @@ _g_param_spec_types_init (void)
   }
 
   g_assert (spec_types == spec_types_bound);
+
+  for (i = 0; i < G_N_ELEMENTS (types); i++)
+    g_cleanup_push_type (G_CLEANUP_SCOPE, g_param_spec_types[i]);
 }
 
 /* --- GParamSpec initialization --- */

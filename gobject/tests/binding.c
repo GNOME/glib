@@ -2,6 +2,8 @@
 #include <gstdio.h>
 #include <glib-object.h>
 
+G_CLEANUP_DEFINE;
+
 typedef struct _BindingSource
 {
   GObject parent_instance;

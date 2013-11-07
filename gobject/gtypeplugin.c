@@ -102,6 +102,7 @@ g_type_plugin_get_type (void)
       };
       
       type_plugin_type = g_type_register_static (G_TYPE_INTERFACE, g_intern_static_string ("GTypePlugin"), &type_plugin_info, 0);
+      g_cleanup_push_type (G_CLEANUP_SCOPE, type_plugin_type);
     }
   
   return type_plugin_type;

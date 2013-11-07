@@ -29,6 +29,8 @@
 /* This test tests weak and toggle references
  */
 
+G_CLEANUP_DEFINE;
+
 static GObject *global_object;
 
 static gboolean object_destroyed;

@@ -1,12 +1,16 @@
 #include <glib-object.h>
 
+G_CLEANUP_DEFINE;
+
 static void
 test_registration_serial (void)
 {
   gint serial1, serial2, serial3;
+  GType type;
 
   serial1 = g_type_get_type_registration_serial ();
-  g_pointer_type_register_static ("my+pointer");
+  type = g_pointer_type_register_static ("my+pointer");
+  g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   serial2 = g_type_get_type_registration_serial ();
   g_assert (serial1 != serial2);
   serial3 = g_type_get_type_registration_serial ();

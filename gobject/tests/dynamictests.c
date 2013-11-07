@@ -25,6 +25,8 @@
 /* This test tests the macros for defining dynamic types.
  */
 
+G_CLEANUP_DEFINE;
+
 static GMutex sync_mutex;
 static gboolean loaded = FALSE;
 
@@ -96,6 +98,7 @@ static GType test_module_get_type (void)
 	(GInstanceInitFunc)NULL
       };
     object_type = g_type_register_static (G_TYPE_TYPE_MODULE, "TestModule", &object_info, 0);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, object_type);
   }
   return object_type;
 }

@@ -2,7 +2,7 @@ include $(top_srcdir)/glib-tap.mk
 
 LDADD = ../libgobject-2.0.la $(top_builddir)/glib/libglib-2.0.la
 AM_CPPFLAGS = -g $(gobject_INCLUDES) $(GLIB_DEBUG_FLAGS)
-DEFS = -DG_LOG_DOMAIN=\"GLib-GObject\"
+DEFS = -DG_LOG_DOMAIN=\"GLib-GObject\" -DG_CLEANUP_SCOPE=gobject_tests_cleanup
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
 # -----------------------------------------------------------------------------

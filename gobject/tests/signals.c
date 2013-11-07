@@ -1,6 +1,8 @@
 #include <glib-object.h>
 #include "marshalers.h"
 
+G_CLEANUP_DEFINE;
+
 typedef enum {
   TEST_ENUM_NEGATIVE = -30,
   TEST_ENUM_NONE = 0,
@@ -32,6 +34,7 @@ test_enum_get_type (void)
       };
       GType g_define_type_id =
         g_enum_register_static (g_intern_static_string ("TestEnum"), values);
+      g_cleanup_push_type (G_CLEANUP_SCOPE, g_define_type_id);
       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
@@ -52,6 +55,7 @@ test_unsigned_enum_get_type (void)
       };
       GType g_define_type_id =
         g_enum_register_static (g_intern_static_string ("TestUnsignedEnum"), values);
+      g_cleanup_push_type (G_CLEANUP_SCOPE, g_define_type_id);
       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
@@ -109,7 +113,9 @@ test_class_init (TestClass *klass)
   guint s;
 
   enum_type = g_enum_register_static ("MyEnum", my_enum_values);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, enum_type);
   flags_type = g_flags_register_static ("MyFlag", my_flag_values);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, flags_type);
 
   klass->all_types = all_types_handler;
 

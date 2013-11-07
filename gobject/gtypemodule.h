@@ -211,12 +211,15 @@ type_name##_register_type (GTypeModule *type_module) \
     (GInstanceInitFunc) type_name##_init, \
     NULL    /* value_table */ \
   }; \
+  GType previous = g_type_from_name (#TypeName); \
   type_name##_type_id = g_type_module_register_type (type_module, \
 						     TYPE_PARENT, \
 						     #TypeName, \
 						     &g_define_type_info, \
 						     (GTypeFlags) flags); \
   g_define_type_id = type_name##_type_id; \
+  if (!previous) \
+    g_cleanup_push_type (G_CLEANUP_SCOPE, g_define_type_id); \
   { CODE ; } \
 }
 

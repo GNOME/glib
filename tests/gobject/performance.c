@@ -22,6 +22,8 @@
 #include <glib-object.h>
 #include "testcommon.h"
 
+G_CLEANUP_DEFINE;
+
 #define WARM_UP_N_RUNS 50
 #define ESTIMATE_ROUND_TIME_N_RUNS 5
 #define DEFAULT_TEST_TIME 15 /* seconds */

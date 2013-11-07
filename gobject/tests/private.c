@@ -1,5 +1,7 @@
 #include <glib-object.h>
 
+G_CLEANUP_DEFINE;
+
 typedef struct {
   GObject parent_instance;
 } TestObject;

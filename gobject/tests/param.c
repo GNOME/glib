@@ -2,6 +2,8 @@
 #include <glib-object.h>
 #include <stdlib.h>
 
+G_CLEANUP_DEFINE;
+
 static void
 test_param_value (void)
 {

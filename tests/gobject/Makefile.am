@@ -2,7 +2,7 @@ include $(top_srcdir)/glib.mk
 
 LDADD = $(top_builddir)/glib/libglib-2.0.la $(top_builddir)/gobject/libgobject-2.0.la
 AM_CPPFLAGS = $(gmodule_INCLUDES) $(GLIB_DEBUG_FLAGS)
-DEFS = -DGLIB_DISABLE_DEPRECATION_WARNINGS -DG_LOG_DOMAIN=\"GLib\"
+DEFS = -DGLIB_DISABLE_DEPRECATION_WARNINGS -DG_LOG_DOMAIN=\"GLib\"  -DG_CLEANUP_SCOPE=gobject_tests_cleanup
 AM_CFLAGS = -g
 
 # So far, only two gtester-ified cases

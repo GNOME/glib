@@ -1,5 +1,7 @@
 #include <glib-object.h>
 
+G_CLEANUP_DEFINE;
+
 static const GEnumValue my_enum_values[] =
 {
   { 1, "the first value", "one" },
@@ -17,6 +19,7 @@ test_enum_basic (void)
   GValue value = G_VALUE_INIT;
 
   type = g_enum_register_static ("MyEnum", my_enum_values);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, type);
 
   g_value_init (&value, type);
   g_assert (G_VALUE_HOLDS_ENUM (&value));
@@ -80,6 +83,7 @@ test_flags_basic (void)
   GValue value = G_VALUE_INIT;
 
   type = g_flags_register_static ("MyFlags", my_flag_values);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, type);
 
   g_value_init (&value, type);
   g_assert (G_VALUE_HOLDS_FLAGS (&value));

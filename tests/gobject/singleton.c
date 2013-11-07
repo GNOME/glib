@@ -21,6 +21,8 @@
 #include <glib-object.h>
 #include <string.h>
 
+G_CLEANUP_DEFINE;
+
 /* --- MySingleton class --- */
 typedef struct {
   GObject parent_instance;

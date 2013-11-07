@@ -23,6 +23,8 @@
 #include <glib.h>
 #include <glib-object.h>
 
+G_CLEANUP_DEFINE;
+
 static volatile int mtsafe_call_counter = 0; /* multi thread safe call counter */
 static int          unsafe_call_counter = 0; /* single-threaded call counter */
 static GCond sync_cond;

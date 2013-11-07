@@ -1,5 +1,7 @@
 #include <glib-object.h>
 
+G_CLEANUP_DEFINE;
+
 /* --------------------------------- */
 /* test_object_constructor_singleton */
 

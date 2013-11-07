@@ -35,6 +35,8 @@
  * prop4: Defined in BaseObject, Overridden in DerivedObject
  */
 
+G_CLEANUP_DEFINE;
+
 static GType base_object_get_type (void);
 static GType derived_object_get_type (void);
 

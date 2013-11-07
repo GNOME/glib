@@ -20,6 +20,8 @@
 
 /* see http://bugzilla.gnome.org/show_bug.cgi?id=337128 for the purpose of this test */
 
+G_CLEANUP_DEFINE;
+
 #define MY_G_IMPLEMENT_INTERFACE(TYPE_IFACE, iface_init)       { \
   const GInterfaceInfo g_implement_interface_info = { \
       (GInterfaceInitFunc) iface_init, \

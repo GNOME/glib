@@ -4353,6 +4353,7 @@ gobject_init_ctor (void)
    */
   node = type_node_fundamental_new_W (G_TYPE_NONE, g_intern_static_string ("void"), 0);
   type = NODE_TYPE (node);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   g_assert (type == G_TYPE_NONE);
   
   /* interface fundamental type G_TYPE_INTERFACE (!classed)
@@ -4361,6 +4362,7 @@ gobject_init_ctor (void)
   node = type_node_fundamental_new_W (G_TYPE_INTERFACE, g_intern_static_string ("GInterface"), G_TYPE_FLAG_DERIVABLE);
   type = NODE_TYPE (node);
   type_data_make_W (node, &info, NULL);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   g_assert (type == G_TYPE_INTERFACE);
   
   G_WRITE_UNLOCK (&type_rw_lock);

@@ -47,6 +47,7 @@ g_io_condition_get_type (void)
 	{ 0, NULL, NULL }
       };
       etype = g_flags_register_static ("GIOCondition", values);
+      g_cleanup_push_type (G_CLEANUP_SCOPE, etype);
     }
   return etype;
 }

@@ -1,5 +1,7 @@
 #include <glib-object.h>
 
+G_CLEANUP_DEFINE;
+
 static void
 test_fundamentals (void)
 {

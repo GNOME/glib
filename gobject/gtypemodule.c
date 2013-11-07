@@ -171,8 +171,8 @@ g_type_module_get_type (void)
       };
 
       type_module_type = g_type_register_static (G_TYPE_OBJECT, g_intern_static_string ("GTypeModule"), &type_module_info, G_TYPE_FLAG_ABSTRACT);
-
       g_type_add_interface_static (type_module_type, G_TYPE_TYPE_PLUGIN, &iface_info);
+      g_cleanup_push_type (G_CLEANUP_SCOPE, type_module_type);
     }
   
   return type_module_type;

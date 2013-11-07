@@ -455,8 +455,10 @@ _g_value_types_init (void)
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_CHAR, g_intern_static_string ("gchar"), &info, &finfo, 0);
     g_assert (type == G_TYPE_CHAR);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
     type = g_type_register_fundamental (G_TYPE_UCHAR, g_intern_static_string ("guchar"), &info, &finfo, 0);
     g_assert (type == G_TYPE_UCHAR);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   }
 
   /* G_TYPE_BOOLEAN
@@ -475,6 +477,7 @@ _g_value_types_init (void)
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_BOOLEAN, g_intern_static_string ("gboolean"), &info, &finfo, 0);
     g_assert (type == G_TYPE_BOOLEAN);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   }
   
   /* G_TYPE_INT / G_TYPE_UINT
@@ -493,8 +496,10 @@ _g_value_types_init (void)
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_INT, g_intern_static_string ("gint"), &info, &finfo, 0);
     g_assert (type == G_TYPE_INT);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
     type = g_type_register_fundamental (G_TYPE_UINT, g_intern_static_string ("guint"), &info, &finfo, 0);
     g_assert (type == G_TYPE_UINT);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   }
 
   /* G_TYPE_LONG / G_TYPE_ULONG
@@ -513,8 +518,10 @@ _g_value_types_init (void)
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_LONG, g_intern_static_string ("glong"), &info, &finfo, 0);
     g_assert (type == G_TYPE_LONG);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
     type = g_type_register_fundamental (G_TYPE_ULONG, g_intern_static_string ("gulong"), &info, &finfo, 0);
     g_assert (type == G_TYPE_ULONG);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   }
   
   /* G_TYPE_INT64 / G_TYPE_UINT64
@@ -533,8 +540,10 @@ _g_value_types_init (void)
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_INT64, g_intern_static_string ("gint64"), &info, &finfo, 0);
     g_assert (type == G_TYPE_INT64);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
     type = g_type_register_fundamental (G_TYPE_UINT64, g_intern_static_string ("guint64"), &info, &finfo, 0);
     g_assert (type == G_TYPE_UINT64);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   }
   
   /* G_TYPE_FLOAT
@@ -553,6 +562,7 @@ _g_value_types_init (void)
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_FLOAT, g_intern_static_string ("gfloat"), &info, &finfo, 0);
     g_assert (type == G_TYPE_FLOAT);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   }
   
   /* G_TYPE_DOUBLE
@@ -571,6 +581,7 @@ _g_value_types_init (void)
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_DOUBLE, g_intern_static_string ("gdouble"), &info, &finfo, 0);
     g_assert (type == G_TYPE_DOUBLE);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   }
 
   /* G_TYPE_STRING
@@ -589,6 +600,7 @@ _g_value_types_init (void)
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_STRING, g_intern_static_string ("gchararray"), &info, &finfo, 0);
     g_assert (type == G_TYPE_STRING);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   }
 
   /* G_TYPE_POINTER
@@ -607,6 +619,7 @@ _g_value_types_init (void)
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_POINTER, g_intern_static_string ("gpointer"), &info, &finfo, 0);
     g_assert (type == G_TYPE_POINTER);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   }
 
   /* G_TYPE_VARIANT
@@ -625,6 +638,7 @@ _g_value_types_init (void)
     info.value_table = &value_table;
     type = g_type_register_fundamental (G_TYPE_VARIANT, g_intern_static_string ("GVariant"), &info, &finfo, 0);
     g_assert (type == G_TYPE_VARIANT);
+    g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   }
 }
 

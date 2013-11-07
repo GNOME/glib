@@ -135,6 +135,7 @@ g_binding_flags_get_type (void)
       };
       GType g_define_type_id =
         g_flags_register_static (g_intern_static_string ("GBindingFlags"), values);
+      g_cleanup_push_type (G_CLEANUP_SCOPE, g_define_type_id);
       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 

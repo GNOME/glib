@@ -108,6 +108,7 @@ _g_boxed_type_init (void)
    */
   type = g_type_register_fundamental (G_TYPE_BOXED, g_intern_static_string ("GBoxed"), &info, &finfo,
 				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   g_assert (type == G_TYPE_BOXED);
 }
 
@@ -177,7 +178,7 @@ g_strv_get_type (void)
         g_boxed_type_register_static (g_intern_static_string ("GStrv"),
                                       (GBoxedCopyFunc) g_strdupv,
                                       (GBoxedFreeFunc) g_strfreev);
-
+      g_cleanup_push_type (G_CLEANUP_SCOPE, g_define_type_id);
       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 

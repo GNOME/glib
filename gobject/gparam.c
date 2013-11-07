@@ -137,6 +137,7 @@ _g_param_type_init (void)
    */
   type = g_type_register_fundamental (G_TYPE_PARAM, g_intern_static_string ("GParam"), &param_spec_info, &finfo, G_TYPE_FLAG_ABSTRACT);
   g_assert (type == G_TYPE_PARAM);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   g_param_private_offset = g_type_add_instance_private (type, sizeof (GParamSpecPrivate));
   g_value_register_transform_func (G_TYPE_PARAM, G_TYPE_PARAM, value_param_transform_value);
 }

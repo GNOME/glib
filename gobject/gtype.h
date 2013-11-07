@@ -1446,6 +1446,7 @@ guint     g_type_get_type_registration_serial (void);
  *                                        sizeof (GtkGadget),
  *                                        (GInstanceInitFunc) gtk_gadget_init,
  *                                        0);
+ *       g_cleanup_push_type (g_define_type_id, G_CLEANUP_SCOPE); \
  *       {
  *         const GInterfaceInfo g_implement_interface_info = {
  *           (GInterfaceInitFunc) gtk_gadget_gizmo_init
@@ -1664,6 +1665,13 @@ static void     type_name##_class_intern_init (gpointer klass) \
 }
 #endif /* GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38 */
 
+/* Cleanup the type in the module within which it was defined */
+#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_40
+#define _G_DEFINE_TYPE_CLEANUP()  g_cleanup_push_type (G_CLEANUP_SCOPE, g_define_type_id)
+#else
+#define _G_DEFINE_TYPE_CLEANUP()
+#endif
+
 #define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
 \
 static void     type_name##_init              (TypeName        *self); \
@@ -1693,6 +1701,7 @@ type_name##_get_type (void) \
                                        sizeof (TypeName), \
                                        (GInstanceInitFunc) type_name##_init, \
                                        (GTypeFlags) flags); \
+      _G_DEFINE_TYPE_CLEANUP (); \
       { /* custom code follows */
 #define _G_DEFINE_TYPE_EXTENDED_END()	\
         /* following custom code */	\
@@ -1720,6 +1729,7 @@ type_name##_get_type (void) \
                                        0, \
                                        (GInstanceInitFunc)NULL, \
                                        (GTypeFlags) 0); \
+      _G_DEFINE_TYPE_CLEANUP (); \
       if (TYPE_PREREQ) \
         g_type_interface_add_prerequisite (g_define_type_id, TYPE_PREREQ); \
       { /* custom code follows */
@@ -1790,6 +1800,7 @@ type_name##_get_type (void) \
         ) = g_boxed_type_register_static; \
       GType g_define_type_id = \
         _g_register_boxed (g_intern_static_string (#TypeName), copy_func, free_func); \
+      _G_DEFINE_TYPE_CLEANUP (); \
       { /* custom code follows */
 #else
 #define _G_DEFINE_BOXED_TYPE_BEGIN(TypeName, type_name, copy_func, free_func) \
@@ -1803,6 +1814,7 @@ type_name##_get_type (void) \
         g_boxed_type_register_static (g_intern_static_string (#TypeName), \
                                       (GBoxedCopyFunc) copy_func, \
                                       (GBoxedFreeFunc) free_func); \
+      _G_DEFINE_TYPE_CLEANUP (); \
       { /* custom code follows */
 #endif /* __GNUC__ */
 
@@ -1842,6 +1854,7 @@ type_name##_get_type (void) \
     { \
       GType g_define_type_id = \
         g_pointer_type_register_static (g_intern_static_string (#TypeName)); \
+      _G_DEFINE_TYPE_CLEANUP (); \
       { /* custom code follows */
 
 /* --- protected (for fundamental type implementations) --- */

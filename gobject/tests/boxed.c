@@ -2,6 +2,8 @@
 
 #include <glib-object.h>
 
+G_CLEANUP_DEFINE;
+
 typedef struct _MyBoxed MyBoxed;
 
 struct _MyBoxed

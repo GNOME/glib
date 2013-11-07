@@ -389,6 +389,7 @@ _g_object_type_init (void)
    */
   info.value_table = &value_table;
   type = g_type_register_fundamental (G_TYPE_OBJECT, g_intern_static_string ("GObject"), &info, &finfo, 0);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   g_assert (type == G_TYPE_OBJECT);
   g_value_register_transform_func (G_TYPE_OBJECT, G_TYPE_OBJECT, g_value_object_transform_value);
   

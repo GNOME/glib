@@ -113,6 +113,7 @@ _g_enum_types_init (void)
   info.class_size = sizeof (GEnumClass);
   type = g_type_register_fundamental (G_TYPE_ENUM, g_intern_static_string ("GEnum"), &info, &finfo,
 				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   g_assert (type == G_TYPE_ENUM);
   
   /* G_TYPE_FLAGS
@@ -120,6 +121,7 @@ _g_enum_types_init (void)
   info.class_size = sizeof (GFlagsClass);
   type = g_type_register_fundamental (G_TYPE_FLAGS, g_intern_static_string ("GFlags"), &info, &finfo,
 				      G_TYPE_FLAG_ABSTRACT | G_TYPE_FLAG_VALUE_ABSTRACT);
+  g_cleanup_push_type (G_CLEANUP_SCOPE, type);
   g_assert (type == G_TYPE_FLAGS);
 }
 
