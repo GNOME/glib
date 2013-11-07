@@ -1369,7 +1369,6 @@ param_spec_generic_class_init (gpointer g_class,
   if (info->value_validate)
     class->value_validate = info->value_validate;	/* optional */
   class->values_cmp = info->values_cmp;
-  g_free (class_data);
 }
 
 static void
@@ -1435,6 +1434,7 @@ g_param_type_register_static (const gchar              *name,
   cinfo->value_validate = pspec_info->value_validate;
   cinfo->values_cmp = pspec_info->values_cmp ? pspec_info->values_cmp : default_values_cmp;
   info.class_data = cinfo;
+  G_CLEANUP_IN (cinfo, g_free, G_CLEANUP_PHASE_GRAVEYARD);
 
   return g_type_register_static (G_TYPE_PARAM, name, &info, 0);
 }
