@@ -563,7 +563,10 @@ g_set_error (GError      **err,
   if (*err == NULL)
     *err = new;
   else
-    g_warning (ERROR_OVERWRITTEN_WARNING, new->message); 
+    {
+      g_warning (ERROR_OVERWRITTEN_WARNING, new->message);
+      g_error_free (new);
+    }
 }
 
 /**
@@ -619,7 +622,10 @@ g_propagate_error (GError **dest,
   else
     {
       if (*dest != NULL)
-        g_warning (ERROR_OVERWRITTEN_WARNING, src->message);
+        {
+          g_warning (ERROR_OVERWRITTEN_WARNING, src->message);
+          g_error_free (src);
+        }
       else
         *dest = src;
     }
