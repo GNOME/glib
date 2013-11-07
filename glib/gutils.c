@@ -1144,10 +1144,6 @@ void
 g_set_prgname (const gchar *prgname)
 {
   G_LOCK (g_prgname);
-  /* We want to use remove here because this is a leak and we want that
-   * to show up in valgrind, so we should _not_ free the original string
-   * during cleanup.
-   */
   if (!g_prgname)
     G_CLEANUP_FUNC (cleanup_prgname);
   g_free (g_prgname);
@@ -2058,6 +2054,7 @@ g_get_system_data_dirs (void)
 #endif
 
       g_system_data_dirs = data_dir_vector;
+      G_CLEANUP (g_system_data_dirs, g_strfreev);
     }
   else
     data_dir_vector = g_system_data_dirs;
@@ -2120,6 +2117,7 @@ g_get_system_config_dirs (void)
 #endif
 
       g_system_config_dirs = conf_dir_vector;
+      G_CLEANUP (g_system_config_dirs, g_strfreev);
     }
   else
     conf_dir_vector = g_system_config_dirs;

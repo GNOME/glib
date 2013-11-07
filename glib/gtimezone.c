@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <signal.h>
 
+#include "gcleanup.h"
 #include "gmappedfile.h"
 #include "gtestutils.h"
 #include "gfileutils.h"
@@ -1379,7 +1380,10 @@ g_time_zone_new (const gchar *identifier)
 
   G_LOCK (time_zones);
   if (time_zones == NULL)
-    time_zones = g_hash_table_new (g_str_hash, g_str_equal);
+    {
+      time_zones = g_hash_table_new (g_str_hash, g_str_equal);
+      G_CLEANUP (time_zones, g_hash_table_unref);
+    }
 
   if (identifier)
     {

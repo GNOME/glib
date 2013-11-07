@@ -1303,5 +1303,6 @@ g_data_initialize (void)
   g_return_if_fail (g_dataset_location_ht == NULL);
 
   g_dataset_location_ht = g_hash_table_new (g_direct_hash, NULL);
+  G_CLEANUP (g_dataset_location_ht, g_hash_table_unref);
   g_dataset_cached = NULL;
 }

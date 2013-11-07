@@ -34,6 +34,7 @@
 
 #include <string.h>
 
+#include "gcleanup.h"
 #include "gslice.h"
 #include "ghash.h"
 #include "gquark.h"
@@ -152,6 +153,7 @@ quark_strdup (const gchar *string)
       QUARK_STRING_BLOCK_SIZE - quark_block_offset < len)
     {
       quark_block = g_malloc (QUARK_STRING_BLOCK_SIZE);
+      G_CLEANUP_IN (quark_block, g_free, G_CLEANUP_PHASE_GRAVEYARD);
       quark_block_offset = 0;
     }
 
@@ -279,10 +281,7 @@ quark_new (gchar *string)
       if (quark_seq_id != 0)
         memcpy (quarks_new, quarks, sizeof (char *) * quark_seq_id);
       memset (quarks_new + quark_seq_id, 0, sizeof (char *) * QUARK_BLOCK_SIZE);
-      /* This leaks the old quarks array. Its unfortunate, but it allows
-       * us to do lockless lookup of the arrays, and there shouldn't be that
-       * many quarks in an app
-       */
+      G_CLEANUP_IN (quarks_new, g_free, G_CLEANUP_PHASE_GRAVEYARD);
       g_atomic_pointer_set (&quarks, quarks_new);
     }
   if (!quark_ht)
@@ -291,6 +290,7 @@ quark_new (gchar *string)
       quark_ht = g_hash_table_new (g_str_hash, g_str_equal);
       quarks[quark_seq_id] = NULL;
       g_atomic_int_inc (&quark_seq_id);
+      G_CLEANUP_IN (quark_ht, g_hash_table_unref, G_CLEANUP_PHASE_GRAVEYARD);
     }
 
   quark = quark_seq_id;

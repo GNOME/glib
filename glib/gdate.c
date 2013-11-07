@@ -47,6 +47,7 @@
 
 #include "gdate.h"
 
+#include "gcleanup.h"
 #include "gconvert.h"
 #include "gmem.h"
 #include "gstrfuncs.h"
@@ -889,6 +890,19 @@ typedef struct _GDateParseTokens GDateParseTokens;
 
 #define NUM_LEN 10
 
+static void
+g_date_cleanup (void)
+{
+  int i;
+
+  for (i = 1; i <= 12; i++)
+    {
+      g_clear_pointer (&short_month_names[i], g_free);
+      g_clear_pointer (&long_month_names[i], g_free);
+    }
+  g_clear_pointer (&current_locale, g_free);
+}
+
 /* HOLDS: g_date_global_lock */
 static void
 g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
@@ -985,7 +999,10 @@ g_date_prepare_to_parse (const gchar      *str,
   g_return_if_fail (locale != NULL); /* should not happen */
   
   g_date_clear (&d, 1);              /* clear for scratch use */
-  
+
+  if (current_locale == NULL)
+    G_CLEANUP_FUNC (g_date_cleanup);
+
   if ( (current_locale == NULL) || (strcmp (locale, current_locale) != 0) ) 
     recompute_localeinfo = TRUE;  /* Uh, there used to be a reason for the temporary */
   

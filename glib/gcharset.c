@@ -51,6 +51,7 @@ get_alias_hash (void)
   if (!alias_hash)
     {
       alias_hash = g_hash_table_new (g_str_hash, g_str_equal);
+      G_CLEANUP (alias_hash, g_hash_table_unref);
 
       aliases = _g_locale_get_charset_aliases ();
       while (*aliases != '\0')
