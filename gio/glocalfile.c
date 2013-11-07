@@ -186,6 +186,7 @@ g_local_file_class_init (GLocalFileClass *klass)
 #endif
 
   local_writable_attributes = list;
+  G_CLEANUP (local_writable_attributes, g_file_attribute_info_list_unref);
 }
 
 static void
