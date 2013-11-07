@@ -64,6 +64,7 @@
 #include "glib-init.h"
 #include "gbacktrace.h"
 #include "gcharset.h"
+#include "gcleanup.h"
 #include "gconvert.h"
 #include "genviron.h"
 #include "gmem.h"
@@ -263,7 +264,7 @@ static GMutex         g_messages_lock;
 static GLogDomain    *g_log_domains = NULL;
 static GPrintFunc     glib_print_func = NULL;
 static GPrintFunc     glib_printerr_func = NULL;
-static GPrivate       g_log_depth;
+static GPrivate       g_log_depth = G_PRIVATE_INIT (NULL);
 static gboolean       exit_on_fatal;
 static GLogFunc       default_log_func = g_log_default_handler;
 static gpointer       default_log_data = NULL;
