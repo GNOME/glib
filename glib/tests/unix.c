@@ -183,6 +183,7 @@ nested_idle (gpointer data)
   source = g_unix_signal_source_new (SIGHUP);
   g_source_set_callback (source, on_sig_received, nested, NULL);
   g_source_attach (source, context);
+  g_source_unref (source);
 
   kill (getpid (), SIGHUP);
   g_main_loop_run (nested);
