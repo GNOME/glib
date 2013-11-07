@@ -137,10 +137,18 @@ static GBSearchConfig transform_bconfig = {
 
 
 /* --- functions --- */
+
+static void
+transform_array_cleanup (void)
+{
+  g_bsearch_array_free (transform_array, &transform_bconfig);
+}
+
 void
 _g_value_c_init (void)
 {
   transform_array = g_bsearch_array_create (&transform_bconfig);
+  G_CLEANUP_FUNC (transform_array_cleanup);
 }
 
 static inline void		/* keep this function in sync with gvaluecollector.h and gboxed.c */
