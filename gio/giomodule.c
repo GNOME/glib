@@ -489,7 +489,7 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
 		    g_io_extension_point_register (extension_points[i]);
 		  extension_point->lazy_load_modules =
 		    g_list_prepend (extension_point->lazy_load_modules,
-                                    g_object_ref (module));
+				    module);
 		}
 	    }
 	  else
@@ -497,11 +497,15 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
 	      /* Try to load and init types */
 	      if (g_type_module_use (G_TYPE_MODULE (module)))
 		g_type_module_unuse (G_TYPE_MODULE (module)); /* Unload */
-	      else /* Failure to load */
-                g_printerr ("Failed to load module: %s\n", path);
+	      else
+		{ /* Failure to load */
+		  g_printerr ("Failed to load module: %s\n", path);
+		  g_object_unref (module);
+		  g_free (path);
+		  continue;
+		}
 	    }
 
-          g_object_unref (module);
 	  g_free (path);
 	}
     }
@@ -861,7 +865,8 @@ _g_io_module_get_default (const gchar         *extension_point,
 
  done:
   g_hash_table_insert (default_modules,
-                       g_strdup (extension_point), impl);
+		       g_strdup (extension_point),
+		       impl ? g_object_ref (impl) : NULL);
   g_rec_mutex_unlock (&default_modules_lock);
 
   return impl;
@@ -1093,20 +1098,7 @@ _g_io_modules_ensure_loaded (void)
 static void
 g_io_extension_point_free (GIOExtensionPoint *ep)
 {
-  GList *walk;
-
   g_free (ep->name);
-
-  for (walk = ep->extensions; walk != NULL; walk = walk->next)
-    {
-      GIOExtension *extension = walk->data;
-
-      g_free (extension->name);
-      g_slice_free (GIOExtension, extension);
-    }
-  g_list_free_full (ep->lazy_load_modules, g_object_unref);
-  g_list_free (ep->extensions);
-
   g_free (ep);
 }
 
