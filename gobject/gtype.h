@@ -728,7 +728,6 @@ GLIB_AVAILABLE_IN_ALL
 void		      g_type_query		     (GType	       type,
 						      GTypeQuery      *query);
 
-
 /* --- type registration --- */
 /**
  * GBaseInitFunc:
@@ -1971,6 +1970,10 @@ const gchar *    g_type_name_from_class         (GTypeClass	*g_class);
  */
 #define	G_TYPE_FLAG_RESERVED_ID_BIT	((GType) (1 << 0))
 extern GTypeDebugFlags			_g_type_debug_flags;
+
+GLIB_AVAILABLE_IN_2_40
+void                  g_cleanup_push_type            (GCleanupScope   *cleanup,
+                                                      GType            type);
 
 G_END_DECLS
 
