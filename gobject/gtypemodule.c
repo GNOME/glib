@@ -105,13 +105,13 @@ static void
 g_type_module_dispose (GObject *object)
 {
   GTypeModule *module = G_TYPE_MODULE (object);
-  
-  if (module->type_infos || module->interface_infos)
-    {
-      g_warning (G_STRLOC ": unsolicitated invocation of g_object_run_dispose() on GTypeModule");
 
-      g_object_ref (object);
-    }
+  /* The types themselves will be cleaned up separately */
+  g_slist_free_full (module->type_infos, g_free);
+  module->type_infos = NULL;
+
+  g_slist_free_full (module->interface_infos, g_free);
+  module->interface_infos = NULL;
 
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }

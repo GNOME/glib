@@ -223,6 +223,8 @@ test_multithreaded_dynamic_type_init (void)
   for (i = 0; i < N_THREADS; i++) {
     g_thread_join (threads[i]);
   }
+
+  g_object_unref (module);
 }
 
 enum
@@ -344,6 +346,7 @@ static void
 test_dynamic_interface_properties (void)
 {
   GTypeModule *module;
+  gpointer check;
   DynObj *obj;
   gint val;
 
@@ -354,7 +357,14 @@ test_dynamic_interface_properties (void)
   g_object_get (obj, "foo", &val, NULL);
   g_assert_cmpint (val, ==, 1);
 
+  check = obj;
+  g_object_add_weak_pointer (check, &check);
+
   g_object_unref (obj);
+
+  g_assert (check == NULL);
+
+  g_object_unref (module);
 }
 
 int
