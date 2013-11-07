@@ -1237,15 +1237,18 @@ g_app_info_monitor_fire (void)
 
   g_mutex_lock (&g_app_info_monitor_lock);
 
-  g_hash_table_iter_init (&iter, g_app_info_monitors);
-  while (g_hash_table_iter_next (&iter, &context, NULL))
+  if (g_app_info_monitors)
     {
-      GSource *idle;
+      g_hash_table_iter_init (&iter, g_app_info_monitors);
+      while (g_hash_table_iter_next (&iter, &context, NULL))
+        {
+          GSource *idle;
 
-      idle = g_idle_source_new ();
-      g_source_set_callback (idle, g_app_info_monitor_emit, context, NULL);
-      g_source_attach (idle, context);
-      g_source_unref (idle);
+          idle = g_idle_source_new ();
+          g_source_set_callback (idle, g_app_info_monitor_emit, context, NULL);
+          g_source_attach (idle, context);
+          g_source_unref (idle);
+        }
     }
 
   g_mutex_unlock (&g_app_info_monitor_lock);
