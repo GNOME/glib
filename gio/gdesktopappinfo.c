@@ -264,8 +264,8 @@ const gchar desktop_key_match_category[N_DESKTOP_KEYS] = {
    * use the same number for the two different keys.
    */
   [DESKTOP_KEY_Name]             = 1,
-  [DESKTOP_KEY_GenericName]      = 2,
-  [DESKTOP_KEY_Keywords]         = 3,
+  [DESKTOP_KEY_Keywords]         = 2,
+  [DESKTOP_KEY_GenericName]      = 3,
   [DESKTOP_KEY_X_GNOME_FullName] = 4,
   [DESKTOP_KEY_Comment]          = 5
 };
@@ -3506,6 +3506,8 @@ g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
  * applications that matched @search_string with an equal score.  The
  * outer list is sorted by score so that the first strv contains the
  * best-matching applications, and so on.
+ * The algorithm for determining matches is undefined and may change at
+ * any time.
  *
  * Returns: (array zero-terminated=1) (element-type GStrv) (transfer full): a
  *   list of strvs.  Free each item with g_strfreev() and free the outer
