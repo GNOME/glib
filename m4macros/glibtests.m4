@@ -21,7 +21,7 @@ AC_DEFUN([GLIB_TESTS],
                   *) AC_MSG_ERROR([bad value ${enableval} for --enable-always-build-tests]) ;;
                  esac])
   AM_CONDITIONAL([ENABLE_ALWAYS_BUILD_TESTS], test "$ENABLE_ALWAYS_BUILD_TESTS" = "1")
-  if test "$ENABLE_INSTALLED_TESTS" == "1"; then
+  if test "$ENABLE_INSTALLED_TESTS" = "1"; then
     AC_SUBST(installed_test_metadir, [${datadir}/installed-tests/]AC_PACKAGE_NAME)
     AC_SUBST(installed_testdir, [${libexecdir}/installed-tests/]AC_PACKAGE_NAME)
   fi
