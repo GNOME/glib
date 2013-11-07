@@ -697,7 +697,8 @@ _g_io_module_get_default_type (const gchar *extension_point,
     }
   else
     {
-      default_modules = g_hash_table_new (g_str_hash, g_str_equal);
+      default_modules = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+      G_CLEANUP_IN (default_modules, g_hash_table_unref, G_CLEANUP_PHASE_EARLY);
     }
 
   _g_io_modules_ensure_loaded ();
@@ -821,7 +822,9 @@ _g_io_module_get_default (const gchar         *extension_point,
     }
   else
     {
-      default_modules = g_hash_table_new (g_str_hash, g_str_equal);
+      default_modules = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                               g_free, g_object_unref);
+      G_CLEANUP_IN (default_modules, g_hash_table_unref, G_CLEANUP_PHASE_EARLY);
     }
 
   _g_io_modules_ensure_loaded ();
@@ -1118,10 +1121,12 @@ g_io_extension_point_register (const char *name)
   
   G_LOCK (extension_points);
   if (extension_points == NULL)
-    extension_points = g_hash_table_new_full (g_str_hash,
-					      g_str_equal,
-					      NULL,
-					      (GDestroyNotify)g_io_extension_point_free);
+    {
+      extension_points = g_hash_table_new_full (g_str_hash, g_str_equal, NULL,
+                                                (GDestroyNotify)g_io_extension_point_free);
+      G_CLEANUP_IN (extension_points, g_hash_table_remove_all, G_CLEANUP_PHASE_EARLY);
+      G_CLEANUP_IN (extension_points, g_hash_table_unref, G_CLEANUP_PHASE_LATE);
+    }
 
   ep = g_hash_table_lookup (extension_points, name);
   if (ep != NULL)
