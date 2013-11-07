@@ -29,6 +29,7 @@ GType
       };
       GType g_define_type_id =
         g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
+      g_cleanup_push_type (G_CLEANUP_SCOPE, g_define_type_id);
       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
