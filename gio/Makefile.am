@@ -338,6 +338,7 @@ endif
 
 libgio_2_0_la_SOURCES =		\
 	gappinfo.c 		\
+	gappinfoprivate.h	\
 	gasynchelper.c 		\
 	gasynchelper.h 		\
 	gasyncinitable.c	\
