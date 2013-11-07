@@ -30,6 +30,9 @@
 #endif
 
 #include <glib/gtypes.h>
+#ifdef __sun__
+#include <sys/select.h>
+#endif
 #include <signal.h>
 
 G_BEGIN_DECLS
