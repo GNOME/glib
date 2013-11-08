@@ -363,12 +363,22 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
     </formalpara>
 
     <formalpara>
+      <title><envar>GIO_MODULE_DIR</envar></title>
+
+      <para>
+        When this environment variable is set to a path, GIO will load
+	modules from this alternate directory instead of the directory
+	built into GIO. This is useful when running tests, for example.
+      </para>
+    </formalpara>
+
+    <formalpara>
       <title><envar>GIO_EXTRA_MODULES</envar></title>
 
       <para>
         When this environment variable is set to a path, or a set of
         paths separated by a colon, GIO will attempt to load
-        modules from within the path.
+        additional modules from within the path.
       </para>
     </formalpara>
 
