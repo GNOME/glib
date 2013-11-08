@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static const gchar *test_file;
+static gchar *test_file;
 
 char *test_file_buffer;
 gsize test_file_size;
@@ -199,6 +199,7 @@ main (int argc, char **argv)
   ret = g_test_run();
 
   g_free (test_file_buffer);
+  g_free (test_file);
 
   return ret;
 }
