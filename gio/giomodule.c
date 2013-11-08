@@ -1017,6 +1017,7 @@ _g_io_modules_ensure_loaded (void)
   static gboolean loaded_dirs = FALSE;
   const char *module_path;
   GIOModuleScope *scope;
+  const gchar *module_dir;
 
   _g_io_modules_ensure_extension_points_registered ();
   
@@ -1045,7 +1046,11 @@ _g_io_modules_ensure_loaded (void)
 	}
 
       /* Then load the compiled in path */
-      g_io_modules_scan_all_in_directory_with_scope (GIO_MODULE_DIR, scope);
+      module_dir = g_getenv ("GIO_MODULE_DIR");
+      if (module_dir == NULL)
+        module_dir = GIO_MODULE_DIR;
+
+      g_io_modules_scan_all_in_directory_with_scope (module_dir, scope);
 
       g_io_module_scope_free (scope);
 
