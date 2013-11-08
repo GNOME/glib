@@ -57,7 +57,7 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GCancellable, g_cancellable, G_TYPE_OBJECT)
 
-static GPrivate current_cancellable;
+static GPrivate current_cancellable = G_PRIVATE_INIT (NULL);
 static GMutex cancellable_mutex;
 static GCond cancellable_cond;
 
