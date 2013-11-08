@@ -10,6 +10,7 @@
  *
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
+#define G_CLEANUP_MODULE test
 
 #include <string.h>
 #include <glib/glib.h>
@@ -376,6 +377,8 @@ test_output_async (void)
   g_object_unref (base);
   g_main_loop_unref (loop);
 }
+
+G_CLEANUP_DEFINE
 
 int
 main (int argc, char **argv)
