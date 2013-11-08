@@ -436,9 +436,8 @@ _g_object_type_free_pspecs (GType type)
     {
       GParamSpec *pspec = node->data;
       
-      g_param_spec_pool_remove (pspec_pool, pspec);
       PARAM_SPEC_SET_PARAM_ID (pspec, 0);
-      g_param_spec_unref (pspec);
+      g_param_spec_pool_remove (pspec_pool, pspec);
     }
   g_list_free (list);
 }
@@ -533,6 +532,7 @@ install_property_internal (GType       g_type,
   g_param_spec_ref_sink (pspec);
   PARAM_SPEC_SET_PARAM_ID (pspec, property_id);
   g_param_spec_pool_insert (pspec_pool, pspec, g_type);
+  g_param_spec_unref (pspec);
 }
 
 /**

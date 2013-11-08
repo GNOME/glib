@@ -917,7 +917,8 @@ g_param_spec_pool_new (gboolean type_prefixing)
 
   memcpy (&pool->mutex, &init_mutex, sizeof (init_mutex));
   pool->type_prefixing = type_prefixing != FALSE;
-  pool->hash_table = g_hash_table_new (param_spec_pool_hash, param_spec_pool_equals);
+  pool->hash_table = g_hash_table_new_full (param_spec_pool_hash, param_spec_pool_equals,
+                                            NULL, (GDestroyNotify)g_param_spec_unref);
 
   return pool;
 }
@@ -957,7 +958,7 @@ g_param_spec_pool_insert (GParamSpecPool *pool,
       g_mutex_lock (&pool->mutex);
       pspec->owner_type = owner_type;
       g_param_spec_ref (pspec);
-      g_hash_table_insert (pool->hash_table, pspec, pspec);
+      g_hash_table_add (pool->hash_table, pspec);
       g_mutex_unlock (&pool->mutex);
     }
   else
@@ -983,9 +984,7 @@ g_param_spec_pool_remove (GParamSpecPool *pool,
   if (pool && pspec)
     {
       g_mutex_lock (&pool->mutex);
-      if (g_hash_table_remove (pool->hash_table, pspec))
-	g_param_spec_unref (pspec);
-      else
+      if (!g_hash_table_remove (pool->hash_table, pspec))
 	g_warning (G_STRLOC ": attempt to remove unknown pspec '%s' from pool", pspec->name);
       g_mutex_unlock (&pool->mutex);
     }
