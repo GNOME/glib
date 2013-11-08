@@ -172,13 +172,36 @@ _lookup_attribute (const char *attribute)
 }
 
 static void
+cleanup_fileinfo (void)
+{
+  GHashTableIter iter;
+  NSInfo *ns_info;
+  gpointer value;
+  guint j;
+
+  g_hash_table_iter_init (&iter, ns_hash);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      ns_info = value;
+      for (j = 0; j <= ns_info->attribute_id_counter; j++)
+        g_free (attributes[ns_info->id][j]);
+      g_free (attributes[ns_info->id]);
+    }
+
+  g_free (attributes);
+  g_hash_table_unref (ns_hash);
+  g_hash_table_unref (attribute_hash);
+}
+
+static void
 ensure_attribute_hash (void)
 {
   if (attribute_hash != NULL)
     return;
 
-  ns_hash = g_hash_table_new (g_str_hash, g_str_equal);
+  ns_hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
   attribute_hash = g_hash_table_new (g_str_hash, g_str_equal);
+  G_CLEANUP_FUNC_IN (cleanup_fileinfo, G_CLEANUP_PHASE_LATE);
 
 #define REGISTER_ATTRIBUTE(name) G_STMT_START{\
   guint _u = _lookup_attribute (G_FILE_ATTRIBUTE_ ## name); \
