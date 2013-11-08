@@ -1188,6 +1188,9 @@ main (int   argc,
 
   gint i;
 
+  /* We're testing glib, not other (leaky) stuff */
+  g_setenv ("GIO_MODULE_DIR", "/non-existant", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_bug_base ("http://bugzilla.gnome.org/");

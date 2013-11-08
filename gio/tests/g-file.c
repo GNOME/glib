@@ -508,6 +508,8 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
   
+  /* We're testing glib, not other (leaky) stuff */
+  g_setenv ("GIO_MODULE_DIR", "/non-existant", TRUE);
   
   /*  Testing whether g_file_new_for_path() or g_file_new_for_uri() always returns non-NULL result  */
   g_test_add_func ("/g-file/test_g_file_new_null", test_g_file_new_null);

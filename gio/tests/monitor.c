@@ -176,6 +176,9 @@ test_directory_monitor (void)
 int
 main (int argc, char *argv[])
 {
+  /* We're testing glib, not other (leaky) stuff */
+  g_setenv ("GIO_MODULE_DIR", "/non-existant", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/monitor/directory", test_directory_monitor);

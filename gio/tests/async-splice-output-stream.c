@@ -193,6 +193,9 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
+  /* gvfs leaks like a sieve (mostly on purpose) */
+  g_setenv ("GIO_MODULE_DIR", "/non-existant", TRUE);
+
   g_test_add_func ("/async-splice/copy-chunks", test_copy_chunks);
   g_test_add_func ("/async-splice/copy-chunks-threaded-input",
                    test_copy_chunks_threaded_input);

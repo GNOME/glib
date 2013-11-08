@@ -586,6 +586,9 @@ int
 main (int   argc,
       char *argv[])
 {
+  /* We're testing glib, not other (leaky) stuff */
+  g_setenv ("GIO_MODULE_DIR", "/non-existant", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/icons/to-string", test_g_icon_to_string);

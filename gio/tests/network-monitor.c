@@ -520,6 +520,9 @@ main (int argc, char **argv)
       return 0;
     }
 
+  /* We're testing glib, not other (leaky) stuff */
+  g_setenv ("GIO_MODULE_DIR", "/non-existant", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   init_test (&net127);

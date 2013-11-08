@@ -186,6 +186,9 @@ main (int argc, char **argv)
   GError *error = NULL;
   int ret;
 
+  /* gvfs leaks like a sieve (mostly on purpose) */
+  g_setenv ("GIO_MODULE_DIR", "/non-existant", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   test_file = g_test_build_filename (G_TEST_DIST, "contexts.c", NULL);
