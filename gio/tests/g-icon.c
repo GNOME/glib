@@ -542,6 +542,7 @@ test_file_icon (void)
   g_object_unref (icon2);
   g_object_unref (icon3);
   g_object_unref (icon4);
+  g_object_unref (file);
 }
 
 static void
