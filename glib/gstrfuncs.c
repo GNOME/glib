@@ -865,7 +865,7 @@ g_ascii_strtod (const gchar *nptr,
  * Converts a #gdouble to a string, using the '.' as
  * decimal point.
  *
- * This functions generates enough precision that converting
+ * This function generates enough precision that converting
  * the string back using g_ascii_strtod() gives the same machine-number
  * (on machines with IEEE compatible 64bit doubles). It is
  * guaranteed that the size of the resulting string will never
