@@ -14,9 +14,11 @@
 
 #include <glib.h>
 
+#include "valgrind.h"
+
 /* On smcv's laptop, 1e4 iterations didn't always exhibit the bug, but 1e5
  * iterations exhibited it 10/10 times in practice. YMMV. */
-#define ITERATIONS 100000
+static guint iterations = 100000;
 
 static GStaticPrivate sp;
 static GMutex *mutex;
@@ -56,7 +58,7 @@ testcase (void)
 
   g_mutex_lock (mutex);
 
-  for (i = 0; i < ITERATIONS; i++)
+  for (i = 0; i < iterations; i++)
     {
       GThread *t1;
 
@@ -84,6 +86,10 @@ main (int argc,
 {
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
+
+  /* This stuff is extremely slow in valgrind */
+  if (RUNNING_ON_VALGRIND)
+    iterations = 10;
 
   g_test_add_func ("/glib/642026", testcase);
 
