@@ -2145,7 +2145,11 @@ g_dbus_interface_info_cache_release (GDBusInterfaceInfo *info)
   if (cache->use_count == 0)
     {
       g_hash_table_remove (info_cache, info);
-      /* could nuke info_cache itself if empty */
+      if (g_hash_table_size (info_cache) == 0)
+        {
+          g_hash_table_unref (info_cache);
+          info_cache = NULL;
+        }
     }
  out:
   G_UNLOCK (info_cache_lock);
