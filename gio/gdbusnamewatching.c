@@ -574,6 +574,7 @@ g_bus_watch_name (GBusType                  bus_type,
   if (map_id_to_client == NULL)
     {
       map_id_to_client = g_hash_table_new (g_direct_hash, g_direct_equal);
+      G_CLEANUP_IN (map_id_to_client, g_hash_table_unref, G_CLEANUP_PHASE_LATE);
     }
   g_hash_table_insert (map_id_to_client,
                        GUINT_TO_POINTER (client->id),
