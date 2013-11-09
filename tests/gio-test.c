@@ -343,6 +343,7 @@ main (int    argc,
 				     pipe_to_sub[0], pipe_from_sub[1]);
 	  
 	  system (cmdline);
+          g_free (cmdline);
 #endif
 	  close (pipe_to_sub[0]);
 	  close (pipe_from_sub [1]);
@@ -359,11 +360,16 @@ main (int    argc,
 		   (end.tv_usec - start.tv_usec) / 1000,
 		   pollresult);
 #endif
+          g_io_channel_unref (my_read_channel);
 	}
       
       main_loop = g_main_loop_new (NULL, FALSE);
       
       g_main_loop_run (main_loop);
+
+      g_main_loop_unref (main_loop);
+      g_free (seqtab);
+      g_free (id);
     }
   else if (argc == 3)
     {
