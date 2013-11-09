@@ -93,12 +93,14 @@ _g_object_unref_and_wait_weak_notify (gpointer object)
 
   g_main_loop_run (data.loop);
 
-  g_source_remove (timeout_id);
-
   if (data.timed_out)
     {
       g_warning ("Weak notify timeout, object ref_count=%d\n",
           G_OBJECT (object)->ref_count);
+    }
+  else
+    {
+      g_source_remove (timeout_id);
     }
 
   g_main_loop_unref (data.loop);
