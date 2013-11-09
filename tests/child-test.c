@@ -189,6 +189,8 @@ main (int argc, char *argv[])
   
   g_main_loop_run (main_loop);
 
+  g_main_loop_unref (main_loop);
+
   if (alive > 0)
     {
       g_warning ("%d children still alive\n", alive);
