@@ -416,5 +416,8 @@ main (int argc, char **argv)
       line++;
     }
 
+  g_free (testfile);
+  g_array_free (ucs4, TRUE);
+  g_free (contents);
   return exit_status;
 }
