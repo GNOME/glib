@@ -831,6 +831,8 @@ fail_test (gpointer user_data)
 static void
 test_async (void)
 {
+  guint id;
+
   g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
                             G_DBUS_PROXY_FLAGS_NONE,
                             NULL,                      /* GDBusInterfaceInfo */
@@ -844,8 +846,10 @@ test_async (void)
   /* this is safe; testserver will exit once the bus goes away */
   g_assert (g_spawn_command_line_async (g_test_get_filename (G_TEST_BUILT, "gdbus-testserver", NULL), NULL));
 
-  g_timeout_add (10000, fail_test, NULL);
+  id = g_timeout_add (10000, fail_test, NULL);
   g_main_loop_run (loop);
+
+  g_source_remove (id);
 }
 
 static void
