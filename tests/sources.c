@@ -54,6 +54,7 @@ thread_pool_attach_func (gpointer data,
   GSource *source = data;
 
   g_source_attach (source, context);
+  g_source_unref (source);
 }
 
 static void
@@ -103,7 +104,10 @@ main (int argc, char **argv)
 
   start = g_get_monotonic_time ();
   for (i = 0; i < NSOURCES; i++)
-    g_source_destroy (sources[i]);
+    {
+      g_source_destroy (sources[i]);
+      g_source_unref (sources[i]);
+    }
   end = g_get_monotonic_time ();
   g_print ("Remove in random order: %" G_GINT64_FORMAT "\n",
            (end - start) / 1000);
@@ -136,7 +140,10 @@ main (int argc, char **argv)
 
   start = g_get_monotonic_time ();
   for (i = 0; i < NSOURCES; i++)
-    g_source_destroy (sources[i]);
+    {
+      g_source_destroy (sources[i]);
+      g_source_unref (sources[i]);
+    }
   end = g_get_monotonic_time ();
   g_print ("Remove in random order: %" G_GINT64_FORMAT "\n",
            (end - start) / 1000);
@@ -175,5 +182,6 @@ main (int argc, char **argv)
   /* Make sure they really did get removed */
   g_main_context_iteration (context, FALSE);
 
+  g_free (sources);
   return 0;
 }
