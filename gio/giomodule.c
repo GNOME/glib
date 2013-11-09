@@ -69,7 +69,7 @@
  * organized fashion.  
  *
  * An extension point is identified by a name, and it may optionally
- * require that any implementation must by of a certain type (or derived
+ * require that any implementation must be of a certain type (or derived
  * thereof). Use g_io_extension_point_register() to register an
  * extension point, and g_io_extension_point_set_required_type() to
  * set a required type.
