@@ -290,19 +290,20 @@ on_name_acquired (GDBusConnection *connection,
 {
 }
 
+static GMainLoop *loop;
+
 static void
 on_name_lost (GDBusConnection *connection,
               const gchar     *name,
               gpointer         user_data)
 {
-  exit (1);
+  g_main_loop_quit (user_data);
 }
 
 int
 main (int argc, char *argv[])
 {
   guint owner_id;
-  GMainLoop *loop;
   MyObject *myobj;
 
   /* We are lazy here - we don't want to manually provide
@@ -331,6 +332,7 @@ main (int argc, char *argv[])
   g_dbus_node_info_unref (introspection_data);
 
   g_object_unref (myobj);
+  g_main_loop_unref (loop);
 
   return 0;
 }
