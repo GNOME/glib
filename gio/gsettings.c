@@ -1116,7 +1116,7 @@ g_settings_get_value (GSettings   *settings,
 /**
  * g_settings_get_user_value:
  * @settings: a #GSettings object
- * @key: the key to check for being set
+ * @key: the key to get the user value for
  *
  * Checks the "user value" of a key, if there is one.
  *
@@ -1161,7 +1161,7 @@ g_settings_get_user_value (GSettings   *settings,
 /**
  * g_settings_get_default_value:
  * @settings: a #GSettings object
- * @key: the key to check for being set
+ * @key: the key to get the default value for
  *
  * Gets the "default value" of a key.
  *
