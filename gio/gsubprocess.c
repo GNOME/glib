@@ -120,8 +120,8 @@
  *
  * During initable_init(), if the g_spawn() is successful then we
  * immediately register a child watch and take an extra ref on the
- * subprocess.  That reference doesn't drop until the child has quit,
- * which is why finalize can only happen in the non-running state.  In
+ * subprocess. Normally That reference doesn't drop until the child has
+ * quit, with the exception of when gio is unloaded or cleaned up. In
  * the event that the g_spawn() failed we will still be finalizing a
  * non-running GSubprocess (before returning from g_subprocess_new())
  * with NULL.
@@ -567,6 +567,8 @@ initable_init (GInitable     *initable,
       source = g_child_watch_source_new (self->pid);
       g_source_set_callback (source, (GSourceFunc) g_subprocess_exited, g_object_ref (self), g_object_unref);
       g_source_attach (source, worker_context);
+      g_source_set_name (source, "g_subprocess_exited");
+      g_cleanup_push_source (G_CLEANUP_SCOPE, G_CLEANUP_PHASE_EARLY, source);
       g_source_unref (source);
     }
 
@@ -591,9 +593,35 @@ static void
 g_subprocess_finalize (GObject *object)
 {
   GSubprocess *self = G_SUBPROCESS (object);
+  GSList *tasks;
 
-  g_assert (self->pending_waits == NULL);
-  g_assert (self->pid == 0);
+  /*
+   * Although in normal operation we'll never be finalized for
+   * a running child process ... this can be the case when gio
+   * is being cleaned up. So handle that gracefully.
+   */
+
+  g_mutex_lock (&self->pending_waits_lock);
+
+  self->status = 127;
+  tasks = self->pending_waits;
+  self->pending_waits = NULL;
+  if (self->pid)
+    {
+      g_spawn_close_pid (self->pid);
+      self->pid = 0;
+    }
+
+  g_mutex_unlock (&self->pending_waits_lock);
+
+  /* Signal anyone in g_subprocess_wait_async() to wake up now */
+  while (tasks)
+    {
+      g_task_return_new_error (tasks->data, G_IO_ERROR, G_IO_ERROR_CANCELLED,
+                               _("This process is shutting down"));
+      g_object_unref (tasks->data);
+      tasks = g_slist_delete_link (tasks, tasks);
+    }
 
   g_clear_object (&self->stdin_pipe);
   g_clear_object (&self->stdout_pipe);
