@@ -543,7 +543,6 @@ test_multi_1 (void)
 
 typedef struct {
   gboolean is_utf8;
-  gboolean is_invalid_utf8;
   gboolean running;
   GError *error;
 } TestAsyncCommunicateData;
@@ -566,13 +565,8 @@ on_communicate_complete (GObject               *proc,
   else
     (void) g_subprocess_communicate_finish ((GSubprocess*)proc, result,
                                             &stdout, NULL, &data->error);
-  if (data->is_invalid_utf8)
-    {
-      g_assert_error (data->error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  if (data->error)
       return;
-    }
-
-  g_assert_no_error (data->error);
 
   if (!data->is_utf8)
     {
@@ -594,8 +588,7 @@ on_communicate_complete (GObject               *proc,
 static void
 test_communicate (void)
 {
-  GError *local_error = NULL;
-  GError **error = &local_error;
+  GError *error = NULL;
   GPtrArray *args;
   TestAsyncCommunicateData data = { 0, };
   GSubprocess *proc;
@@ -606,14 +599,13 @@ test_communicate (void)
   args = get_test_subprocess_args ("cat", NULL);
   proc = g_subprocess_newv ((const gchar* const*)args->pdata,
                             G_SUBPROCESS_FLAGS_STDIN_PIPE | G_SUBPROCESS_FLAGS_STDOUT_PIPE,
-                            error);
-  g_assert_no_error (local_error);
+                            &error);
+  g_assert_no_error (error);
   g_ptr_array_free (args, TRUE);
 
   hellostring = "hello world";
   input = g_bytes_new_static (hellostring, strlen (hellostring));
 
-  data.error = local_error;
   g_subprocess_communicate_async (proc, input,
                                   cancellable,
                                   on_communicate_complete, 
@@ -623,7 +615,7 @@ test_communicate (void)
   while (data.running)
     g_main_context_iteration (NULL, TRUE);
 
-  g_assert_no_error (local_error);
+  g_assert_no_error (data.error);
 
   g_object_unref (proc);
 }
@@ -631,8 +623,7 @@ test_communicate (void)
 static void
 test_communicate_utf8 (void)
 {
-  GError *local_error = NULL;
-  GError **error = &local_error;
+  GError *error = NULL;
   GPtrArray *args;
   TestAsyncCommunicateData data = { 0, };
   GSubprocess *proc;
@@ -641,11 +632,10 @@ test_communicate_utf8 (void)
   args = get_test_subprocess_args ("cat", NULL);
   proc = g_subprocess_newv ((const gchar* const*)args->pdata,
                             G_SUBPROCESS_FLAGS_STDIN_PIPE | G_SUBPROCESS_FLAGS_STDOUT_PIPE,
-                            error);
-  g_assert_no_error (local_error);
+                            &error);
+  g_assert_no_error (error);
   g_ptr_array_free (args, TRUE);
 
-  data.error = local_error;
   data.is_utf8 = TRUE;
   g_subprocess_communicate_utf8_async (proc, "hello world",
                                        cancellable,
@@ -656,7 +646,7 @@ test_communicate_utf8 (void)
   while (data.running)
     g_main_context_iteration (NULL, TRUE);
 
-  g_assert_no_error (local_error);
+  g_assert_no_error (data.error);
 
   g_object_unref (proc);
 }
@@ -664,8 +654,7 @@ test_communicate_utf8 (void)
 static void
 test_communicate_utf8_invalid (void)
 {
-  GError *local_error = NULL;
-  GError **error = &local_error;
+  GError *error = NULL;
   GPtrArray *args;
   TestAsyncCommunicateData data = { 0, };
   GSubprocess *proc;
@@ -674,13 +663,11 @@ test_communicate_utf8_invalid (void)
   args = get_test_subprocess_args ("cat", NULL);
   proc = g_subprocess_newv ((const gchar* const*)args->pdata,
                             G_SUBPROCESS_FLAGS_STDIN_PIPE | G_SUBPROCESS_FLAGS_STDOUT_PIPE,
-                            error);
-  g_assert_no_error (local_error);
+                            &error);
+  g_assert_no_error (error);
   g_ptr_array_free (args, TRUE);
 
-  data.error = local_error;
   data.is_utf8 = TRUE;
-  data.is_invalid_utf8 = TRUE;
   g_subprocess_communicate_utf8_async (proc, "\xFF\xFF",
                                        cancellable,
                                        on_communicate_complete, 
@@ -690,7 +677,8 @@ test_communicate_utf8_invalid (void)
   while (data.running)
     g_main_context_iteration (NULL, TRUE);
 
-  g_assert_no_error (local_error);
+  g_assert_error (data.error, G_IO_ERROR, G_IO_ERROR_FAILED);
+  g_error_free (data.error);
 
   g_object_unref (proc);
 }
