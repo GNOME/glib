@@ -215,6 +215,8 @@ int
 main (int   argc,
       char *argv[])
 {
+  gint ret;
+
   g_test_init (&argc, &argv, NULL);
 
   /* all the tests rely on a shared main loop */
@@ -224,5 +226,8 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/connection/flush", test_connection_flush);
   g_test_add_func ("/gdbus/connection/large_message", test_connection_large_message);
-  return g_test_run();
+
+  ret = g_test_run();
+  g_main_loop_unref (loop);
+  return ret;
 }
