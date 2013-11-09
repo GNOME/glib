@@ -30,6 +30,7 @@
 
 #include "gasyncqueue.h"
 #include "gasyncqueueprivate.h"
+#include "gcleanup.h"
 #include "gmain.h"
 #include "gtestutils.h"
 #include "gtimer.h"
@@ -137,6 +138,20 @@ g_thread_pool_queue_push_unlocked (GRealThreadPool *pool,
     g_async_queue_push_unlocked (pool->queue, data);
 }
 
+static void
+ref_and_join_thread (GThread *thread)
+{
+  /*
+   * This is called as a cleanup function, but removed before the thread
+   * is destroyed. So we know the thread is valid here.
+   *
+   * g_thread_join() unrefs, so we need to first ref the thread, in order
+   * to avoid use/after free elsewhere.
+   */
+  g_thread_ref (thread);
+  g_thread_join (thread);
+}
+
 static GRealThreadPool*
 g_thread_pool_wait_for_new_pool (void)
 {
@@ -146,12 +161,21 @@ g_thread_pool_wait_for_new_pool (void)
   gint local_max_idle_time;
   gint last_wakeup_thread_serial;
   gboolean have_relayed_thread_marker = FALSE;
+  gpointer cleanup;
 
   local_max_unused_threads = g_atomic_int_get (&max_unused_threads);
   local_max_idle_time = g_atomic_int_get (&max_idle_time);
   last_wakeup_thread_serial = g_atomic_int_get (&wakeup_thread_serial);
 
   g_atomic_int_inc (&unused_threads);
+
+  /*
+   * While in the unused thread queue, this thread will need cleanup.
+   * Cleaned up again below.
+   */
+
+  cleanup = g_cleanup_push (G_CLEANUP_SCOPE, G_CLEANUP_PHASE_DEFAULT,
+                            (GCleanupFunc)ref_and_join_thread, g_thread_self ());
 
   do
     {
@@ -220,6 +244,8 @@ g_thread_pool_wait_for_new_pool (void)
         }
     }
   while (pool == wakeup_thread_marker);
+
+  g_cleanup_remove (cleanup);
 
   g_atomic_int_add (&unused_threads, -1);
 
@@ -422,6 +448,12 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
   return TRUE;
 }
 
+static void
+stop_all_unused_threads (void)
+{
+  g_thread_pool_set_max_unused_threads (0);
+}
+
 /**
  * g_thread_pool_new:
  * @func: a function to execute in the threads of the new thread pool
@@ -488,7 +520,22 @@ g_thread_pool_new (GFunc      func,
 
   G_LOCK (init);
   if (!unused_thread_queue)
+    {
       unused_thread_queue = g_async_queue_new ();
+
+      /* First stop having unused threads in early phase */
+      G_CLEANUP_FUNC_IN (stop_all_unused_threads, G_CLEANUP_PHASE_EARLY);
+
+      /*
+       * Next any still outstanding unused threads get g_thread_join()'d during
+       * G_CLEANUP_PHASE_DEFAULT. See g_thread_pool_wait_for_new_pool().
+       *
+       * Lastly at the very end destroy the unused_thread_queue. We can do this
+       * very late, as it owns all its own mutexes and doesn't have an item_free_func
+       * callback.
+       */
+      G_CLEANUP_IN (unused_thread_queue, g_async_queue_unref, G_CLEANUP_PHASE_GRAVEYARD);
+    }
   G_UNLOCK (init);
 
   if (retval->pool.exclusive)
