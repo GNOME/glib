@@ -266,6 +266,7 @@ watcher_init (void)
           /* parent */
           close (pipe_fds[0]);
           channel = g_io_channel_unix_new (pipe_fds[1]);
+          G_CLEANUP (channel, g_io_channel_unref);
         }
 
       g_once_init_leave (&started, 1);
