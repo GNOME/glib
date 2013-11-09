@@ -101,6 +101,7 @@ _g_object_unref_and_wait_weak_notify (gpointer object)
           G_OBJECT (object)->ref_count);
     }
 
+  g_main_loop_unref (data.loop);
   return data.timed_out;
 }
 
