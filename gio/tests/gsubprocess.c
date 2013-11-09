@@ -617,6 +617,7 @@ test_communicate (void)
 
   g_assert_no_error (data.error);
 
+  g_bytes_unref (input);
   g_object_unref (proc);
 }
 
@@ -789,6 +790,7 @@ test_stdout_file (void)
   g_free (tmp_contents);
 
   (void) g_file_delete (tmpfile, NULL, NULL);
+  g_object_unref (tmpfile);
   g_free (tmp_file_path);
 }
 
@@ -840,6 +842,7 @@ test_stdout_fd (void)
   g_free (tmp_contents);
 
   (void) g_file_delete (tmpfile, NULL, NULL);
+  g_object_unref (tmpfile);
 }
 
 static void
@@ -897,6 +900,7 @@ test_child_setup (void)
   g_free (tmp_contents);
 
   (void) g_file_delete (tmpfile, NULL, NULL);
+  g_object_unref (tmpfile);
 }
 
 static void
