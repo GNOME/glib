@@ -184,12 +184,14 @@ test_readlink (void)
   data = g_file_read_link (link3, &error);
   g_assert (data == NULL && "could read link3");
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+  g_error_free (error);
 
   error = NULL;
   data = g_file_read_link (filename, &error);
   g_assert (data == NULL && "could read regular file as link");
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
-  
+  g_error_free (error);
+
   remove (filename);
   remove (link1);
   remove (link2);
