@@ -105,7 +105,7 @@ adder_callback (GIOChannel   *source,
   char buf1[32];
   char buf2[32];
 
-  char result[32];
+  char result[32] = { 0, };
 
   AddrData *addr_data = data;
 
@@ -216,8 +216,8 @@ io_pipe (GIOChannel **channels)
 static void
 do_add (GIOChannel *in, gint a, gint b)
 {
-  char buf1[32];
-  char buf2[32];
+  char buf1[32] = { 0, };
+  char buf2[32] = { 0, };
 
   sprintf (buf1, "%d", a);
   sprintf (buf2, "%d", b);
