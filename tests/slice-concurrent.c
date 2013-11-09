@@ -23,6 +23,8 @@
 #include <unistd.h>
 #endif
 
+#include "valgrind.h"
+
 #define N_THREADS	8
 #define N_ALLOCS	50000
 #define MAX_BLOCK_SIZE  64
@@ -97,6 +99,10 @@ int
 main (void)
 {
   int t;
+
+  /* Don't bother testing gslice under valgrind */
+  if (RUNNING_ON_VALGRIND)
+    return 0;
 
   for (t = 0; t < N_THREADS; t++)
     {

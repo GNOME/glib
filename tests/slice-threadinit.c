@@ -20,6 +20,8 @@
  */
 #include <glib.h>
 
+#include "valgrind.h"
+
 #define N_PAGES                 (101)                   /* number of pages to sample */
 #define SAMPLE_SIZE             (7)
 #define PAGE_SIZE               (128)                   /* must be <= minimum GSlice alignment block */
@@ -72,6 +74,10 @@ main (int   argc,
 {
   int j, n_pages = 0;
   void *mps[N_MAGAZINE_PROBES];
+
+  /* Don't bother testing gslice under valgrind */
+  if (RUNNING_ON_VALGRIND)
+    return 0;
 
   /* probe some magazine sizes */
   for (j = 0; j < N_MAGAZINE_PROBES; j++)
