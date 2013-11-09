@@ -198,6 +198,9 @@ test_auth_mechanism (const gchar *allowed_client_mechanism,
 
   g_thread_join (client_thread);
 
+  while (g_main_context_iteration (NULL, FALSE));
+  g_main_loop_unref (loop);
+
   g_object_unref (server);
 }
 
@@ -271,6 +274,7 @@ temp_dbus_keyrings_teardown (void)
   g_dir_close (dir);
   g_assert (rmdir (temp_dbus_keyrings_dir) == 0);
 
+  g_free (temp_dbus_keyrings_dir);
   temp_dbus_keyrings_dir = NULL;
   g_unsetenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR");
   g_unsetenv ("G_DBUS_COOKIE_SHA1_KEYRING_DIR_IGNORE_PERMISSION");
