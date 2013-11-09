@@ -38,6 +38,7 @@ main (int argc, char *argv[])
   str = g_date_time_format (dt, fmt);
   g_print ("%s\n", str);
   g_free (str);
+  g_date_time_unref (dt);
 
   return 0;
 }
