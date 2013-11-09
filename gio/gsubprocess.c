@@ -405,6 +405,7 @@ g_subprocess_exited (GPid     pid,
   while (tasks)
     {
       g_task_return_boolean (tasks->data, TRUE);
+      g_object_unref (tasks->data);
       tasks = g_slist_delete_link (tasks, tasks);
     }
 
@@ -597,7 +598,7 @@ g_subprocess_finalize (GObject *object)
   g_clear_object (&self->stdin_pipe);
   g_clear_object (&self->stdout_pipe);
   g_clear_object (&self->stderr_pipe);
-  g_free (self->argv);
+  g_strfreev (self->argv);
 
   G_OBJECT_CLASS (g_subprocess_parent_class)->finalize (object);
 }
@@ -1467,13 +1468,17 @@ g_subprocess_communicate_state_free (gpointer data)
 {
   CommunicateState *state = data;
 
+  g_clear_object (&state->cancellable);
   g_clear_object (&state->stdin_buf);
   g_clear_object (&state->stdout_buf);
   g_clear_object (&state->stderr_buf);
 
-  if (!g_source_is_destroyed (state->cancellable_source))
-    g_source_destroy (state->cancellable_source);
-  g_source_unref (state->cancellable_source);
+  if (state->cancellable_source)
+    {
+      if (!g_source_is_destroyed (state->cancellable_source))
+        g_source_destroy (state->cancellable_source);
+      g_source_unref (state->cancellable_source);
+    }
 
   g_slice_free (CommunicateState, state);
 }
@@ -1539,6 +1544,7 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
                            g_subprocess_communicate_made_progress, g_object_ref (task));
   state->outstanding_ops++;
 
+  g_object_unref (task);
   return state;
 }
 
