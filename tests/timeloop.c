@@ -148,7 +148,9 @@ create_child (void)
   if (pid > 0)			/* Parent */
     {
       g_io_channel_close (in_channels[0]);
+      g_io_channel_unref (in_channels[0]);
       g_io_channel_close (out_channels[1]);
+      g_io_channel_unref (out_channels[1]);
 
       g_io_add_watch (out_channels[0], G_IO_IN | G_IO_HUP,
 		      input_callback, in_channels[1]);
@@ -212,5 +214,6 @@ main (int argc, char **argv)
 	   difftimeval (&old_usage.ru_stime, &new_usage.ru_stime)) /
 	  (n_iters * n_children));
 
+  g_main_loop_unref (loop);
   return 0;
 }
