@@ -244,13 +244,22 @@ int
 main (int argc, 
       char *argv[])
 {
+  int ret;
+
   dir = g_get_current_dir ();
   filename = g_build_filename (dir, "maptest", NULL);
   displayname = g_filename_display_name (filename);
   childname = g_build_filename (dir, "mapchild", NULL);
 
   if (argc > 1)
-    return child_main (argc, argv);
+    ret = child_main (argc, argv);
   else 
-    return parent_main (argc, argv);
+    ret = parent_main (argc, argv);
+
+  g_free (childname);
+  g_free (filename);
+  g_free (displayname);
+  g_free (dir);
+
+  return ret;
 }
