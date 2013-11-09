@@ -1,9 +1,9 @@
 # GLIB - Library of useful C routines
 
-TESTS_ENVIRONMENT= \
+AM_TESTS_ENVIRONMENT= \
 	G_TEST_SRCDIR="$(abs_srcdir)" 		\
 	G_TEST_BUILDDIR="$(abs_builddir)" 	\
-	G_DEBUG=gc-friendly 			\
+	G_DEBUG="gc-friendly cleanup"		\
 	MALLOC_CHECK_=2 			\
 	MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256))
 TEST_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/tap-driver.sh
@@ -132,3 +132,17 @@ installed_test_meta_DATA = $(installed_testcases:=.test)
 
 CLEANFILES += $(installed_test_meta_DATA)
 endif
+
+VALGRIND_ARGS = \
+	--leak-check=full \
+	--show-leak-kinds=all \
+	--child-silent-after-fork=yes \
+	--suppressions=$(abs_top_srcdir)/build/glib-test.supp \
+	--num-callers=18 \
+	$(NULL)
+
+memcheck-local: $(all_test_programs)
+	$(MAKE) check-am TESTS="$(all_test_programs)" \
+		TESTS_ENVIRONMENT="G_DEBUG='gc-friendly cleanup'" \
+		LOG_COMPILER="libtool --mode=execute valgrind $(VALGRIND_ARGS) --quiet --log-fd=7" \
+		AM_TESTS_FD_REDIRECT="7>&2"

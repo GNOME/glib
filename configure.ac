@@ -65,6 +65,7 @@ cflags_set=${CFLAGS+set}
 
 AM_INIT_AUTOMAKE([1.11 -Wno-portability no-define no-dist-gzip dist-xz tar-ustar])
 AM_MAINTAINER_MODE([enable])
+AM_EXTRA_RECURSIVE_TARGETS([memcheck])
 
 # Support silent build rules. Disable
 # by either passing --disable-silent-rules to configure or passing V=1

@@ -1,0 +1,16 @@
+{
+   glibc-tls-allocation
+   Memcheck:Leak
+   fun:calloc
+   fun:_dl_allocate_tls
+   fun:pthread_create@@GLIBC_2.2.5
+   ...
+}
+
+{
+   pthread-exit
+   Memcheck:Leak
+   ...
+   fun:pthread_exit
+   ...
+}

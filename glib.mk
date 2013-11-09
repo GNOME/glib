@@ -168,3 +168,16 @@ installed_test_meta_DATA = $(installed_testcases:=.test)
 
 CLEANFILES += $(installed_test_meta_DATA)
 endif
+
+VALGRIND_ARGS = \
+	--leak-check=full \
+	--show-leak-kinds=all \
+	--child-silent-after-fork=yes \
+	--suppressions=$(abs_top_srcdir)/build/glib-test.supp \
+	$(NULL)
+
+memcheck-local: $(all_test_programs)
+	$(MAKE) check-am TESTS="$(all_test_programs)" \
+		TESTS_ENVIRONMENT="G_DEBUG='gc-friendly cleanup'" \
+		LOG_COMPILER="libtool --mode=execute valgrind $(VALGRIND_ARGS) --quiet --log-fd=7" \
+		AM_TESTS_FD_REDIRECT="7>&2"
