@@ -190,6 +190,7 @@ adder_thread (gpointer data)
   g_mutex_unlock (&context_array_mutex);
 
   cleanup_crawlers (context);
+  g_main_context_unref (context);
 
   return NULL;
 }
@@ -429,6 +430,9 @@ main (int   argc,
 
   g_main_loop_run (main_loop);
   g_main_loop_unref (main_loop);
+
+  g_ptr_array_unref (crawler_array);
+  g_ptr_array_unref (context_array);
 
   return 0;
 }
