@@ -1201,7 +1201,7 @@ test_object_registration (void)
   num_successful_registrations++;
 
   /* now register a dynamic subtree, spawning objects as they are called */
-  dyna_data = g_ptr_array_new ();
+  dyna_data = g_ptr_array_new_with_free_func (g_free);
   dyna_subtree_registration_id = g_dbus_connection_register_subtree (c,
                                                                      "/foo/dyna",
                                                                      &dynamic_subtree_vtable,
@@ -1221,9 +1221,9 @@ test_object_registration (void)
 
   /* Install three nodes in the dynamic subtree via the dyna_data backdoor and
    * assert that they show up correctly in the introspection data */
-  g_ptr_array_add (dyna_data, "lol");
-  g_ptr_array_add (dyna_data, "cat");
-  g_ptr_array_add (dyna_data, "cheezburger");
+  g_ptr_array_add (dyna_data, g_strdup ("lol"));
+  g_ptr_array_add (dyna_data, g_strdup ("cat"));
+  g_ptr_array_add (dyna_data, g_strdup ("cheezburger"));
   nodes = get_nodes_at (c, "/foo/dyna");
   g_assert (nodes != NULL);
   g_assert_cmpint (g_strv_length (nodes), ==, 3);
@@ -1732,6 +1732,8 @@ int
 main (int   argc,
       char *argv[])
 {
+  gint ret;
+
   g_test_init (&argc, &argv, NULL);
 
   /* all the tests rely on a shared main loop */
@@ -1744,5 +1746,9 @@ main (int   argc,
   /* TODO: check that we spit out correct introspection data */
   /* TODO: check that registering a whole subtree works */
 
-  return session_bus_run ();
+  ret = session_bus_run ();
+
+  g_main_loop_unref (loop);
+
+  return ret;
 }
