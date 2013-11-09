@@ -818,8 +818,14 @@ g_thread_pool_wakeup_and_stop_all (GRealThreadPool *pool)
 
   pool->immediate = TRUE;
 
+  /*
+   * So here we're sending bogus data to the pool threads, which
+   * should cause them each to wake up, and check the above
+   * pool->immediate condition. However we don't want that
+   * data to be sorted (since it'll crash the sorter).
+   */
   for (i = 0; i < pool->num_threads; i++)
-    g_thread_pool_queue_push_unlocked (pool, GUINT_TO_POINTER (1));
+    g_async_queue_push_unlocked (pool->queue, GUINT_TO_POINTER (1));
 }
 
 /**
