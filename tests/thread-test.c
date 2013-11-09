@@ -390,6 +390,11 @@ main (int   argc,
 
   g_thread_use_default_impl = FALSE;
   run_all_tests ();
-  
+
+  /* XXX: And this shows how silly the above non-native tests are */
+  g_static_rw_lock_free (&test_g_static_rw_lock_lock);
+  g_static_rec_mutex_free (&test_g_static_rec_mutex_mutex);
+  g_static_private_free (&test_g_static_private_private2);
+
   return 0;
 }
