@@ -1091,6 +1091,7 @@ send_bogus_message (GDBusConnection *c, guint32 *out_serial)
   error = NULL;
   g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, out_serial, &error);
   g_assert_no_error (error);
+  g_object_unref (m);
 }
 
 static gpointer
@@ -1217,6 +1218,7 @@ int
 main (int   argc,
       char *argv[])
 {
+  int ret;
   g_test_init (&argc, &argv, NULL);
 
   /* all the tests rely on a shared main loop */
@@ -1231,5 +1233,8 @@ main (int   argc,
   g_test_add_func ("/gdbus/connection/signal-match-rules", test_connection_signal_match_rules);
   g_test_add_func ("/gdbus/connection/filter", test_connection_filter);
   g_test_add_func ("/gdbus/connection/serials", test_connection_serials);
-  return g_test_run();
+  ret = g_test_run();
+
+  g_main_loop_unref (loop);
+  return ret;
 }
