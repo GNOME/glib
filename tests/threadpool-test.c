@@ -457,6 +457,8 @@ main (int argc, char *argv[])
 
   main_loop = g_main_loop_new (NULL, FALSE);
   g_main_loop_run (main_loop);
+  g_main_loop_unref (main_loop);
 
+  g_thread_pool_free (idle_pool, FALSE, TRUE);
   return 0;
 }
