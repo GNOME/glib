@@ -834,7 +834,7 @@ on_name_lost (GDBusConnection *connection,
               const gchar     *name,
               gpointer         user_data)
 {
-  exit (1);
+  g_main_loop_quit (user_data);
 }
 
 int
@@ -869,16 +869,17 @@ main (int argc, char *argv[])
   g_hash_table_insert (properties, g_strdup ("foo"), g_variant_ref_sink (g_variant_new_string ("a frobbed string")));
   g_hash_table_insert (properties, g_strdup ("PropertyThatWillBeInvalidated"), g_variant_ref_sink (g_variant_new_string ("InitialValue")));
 
+  loop = g_main_loop_new (NULL, FALSE);
+
   owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                              "com.example.TestService",
                              G_BUS_NAME_OWNER_FLAGS_NONE,
                              on_bus_acquired,
                              on_name_acquired,
                              on_name_lost,
-                             NULL,
+                             loop,
                              NULL);
 
-  loop = g_main_loop_new (NULL, FALSE);
   g_main_loop_run (loop);
 
   g_bus_unown_name (owner_id);
