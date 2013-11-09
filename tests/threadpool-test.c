@@ -243,6 +243,12 @@ test_thread_sort_entry_func (gpointer data, gpointer user_data)
 }
 
 static void
+free_thread_pool (GThreadPool *pool)
+{
+  g_thread_pool_free (pool, TRUE, TRUE);
+}
+
+static void
 test_thread_sort (gboolean sort)
 {
   GThreadPool *pool;
@@ -295,6 +301,7 @@ test_thread_sort (gboolean sort)
 
   g_assert (g_thread_pool_get_max_threads (pool) == max_threads);
   g_assert (g_thread_pool_get_num_threads (pool) == g_thread_pool_get_max_threads (pool));
+  G_CLEANUP (pool, free_thread_pool);
 }
 
 static void
@@ -448,6 +455,8 @@ test_check_start_and_stop (gpointer user_data)
 
   return continue_timeout;
 }
+
+G_CLEANUP_DEFINE;
 
 int
 main (int argc, char *argv[])
