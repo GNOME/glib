@@ -370,6 +370,8 @@ test_static_private5 (void)
     g_thread_join (thread[i]);
 }
 
+G_CLEANUP_DEFINE
+
 int
 main (int argc, char *argv[])
 {

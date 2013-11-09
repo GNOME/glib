@@ -2,7 +2,7 @@ include $(top_srcdir)/glib-tap.mk
 
 LDADD = $(top_builddir)/glib/libglib-2.0.la -lm
 AM_CPPFLAGS = -g $(glib_INCLUDES) $(GLIB_DEBUG_FLAGS)
-DEFS = -DG_LOG_DOMAIN=\"GLib\" -DEXEEXT=\"$(EXEEXT)\"
+DEFS = -DG_LOG_DOMAIN=\"GLib\" -DEXEEXT=\"$(EXEEXT)\" -DG_CLEANUP_SCOPE=tests_cleanup
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
 # These tests corrupt the gcov bookkeeping, so we

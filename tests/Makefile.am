@@ -4,7 +4,7 @@ SUBDIRS = gobject refcount
 
 LDADD = $(top_builddir)/glib/libglib-2.0.la
 AM_CPPFLAGS = $(gmodule_INCLUDES) $(GLIB_DEBUG_FLAGS)
-DEFS = -DGLIB_DISABLE_DEPRECATION_WARNINGS -DG_LOG_DOMAIN=\"GLib\"
+DEFS = -DGLIB_DISABLE_DEPRECATION_WARNINGS -DG_LOG_DOMAIN=\"GLib\" -DG_CLEANUP_SCOPE=tests_cleanup
 AM_CFLAGS = -g
 
 # Some random programs that appear not to be testcases and not used from any testcases
