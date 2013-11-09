@@ -1142,10 +1142,7 @@ test_connection_serials (void)
 
   /* Wait until threads are finished */
   for (i = 0; i < NUM_THREADS; i++)
-    {
       g_thread_join (pool[i]);
-      g_thread_unref (pool[i]);
-    }
 
   /* No calls in between on this thread, should be the last value */
   g_assert_cmpint (g_dbus_connection_get_last_serial (c), ==, 2);
