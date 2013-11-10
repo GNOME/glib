@@ -115,8 +115,9 @@ static void
 test_dynamic_type (void)
 {
   DynamicObjectClass *class;
+  GTypeModule *module;
 
-  test_module_new (module_register);
+  module = test_module_new (module_register);
 
   /* Not loaded until we call ref for the first time */
   class = g_type_class_peek (DYNAMIC_OBJECT_TYPE);
@@ -163,6 +164,8 @@ test_dynamic_type (void)
   g_assert (!class);
   g_assert (!loaded);
 #endif
+
+  g_object_unref (module);
 }
 
 int
