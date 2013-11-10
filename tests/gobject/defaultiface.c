@@ -141,8 +141,9 @@ static void
 test_dynamic_iface (void)
 {
   TestDynamicIfaceClass *dynamic_iface;
+  GTypeModule *module;
 
-  test_module_new (module_register);
+  module = test_module_new (module_register);
 
   /* Not loaded until we call ref for the first time */
   dynamic_iface = g_type_default_interface_peek (TEST_TYPE_DYNAMIC_IFACE);
@@ -179,6 +180,8 @@ test_dynamic_iface (void)
 #if 0
   g_assert (!dynamic_iface_init);
 #endif
+
+  g_object_unref (module);
 }
 
 int
