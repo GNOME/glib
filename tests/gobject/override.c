@@ -374,6 +374,8 @@ test (GType        type,
 
       if (strcmp (ret, expected_retval) != 0)
         failed = TRUE;
+
+      g_free (ret);
     }
 
 #ifndef VERBOSE
@@ -392,6 +394,7 @@ test (GType        type,
     }
 
   g_string_free (test_string, TRUE);
+  g_object_unref (self);
 }
      
 int
