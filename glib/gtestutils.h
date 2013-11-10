@@ -74,7 +74,11 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     #expr); \
                                            } while (0)
-#define g_assert_null(expr)              do { if G_LIKELY ((expr) == NULL) ; else \
+#define g_assert_null(expr)             do { if G_LIKELY ((expr) == NULL) ; else \
+                                               g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                                    #expr); \
+                                           } while (0)
+#define g_assert_nonnull(expr)          do { if G_LIKELY ((expr) != NULL) ; else \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     #expr); \
                                            } while (0)

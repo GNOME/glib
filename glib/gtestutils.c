@@ -392,6 +392,21 @@
  */
 
 /**
+ * g_assert_nonnull:
+ * @expr: the expression to check
+ *
+ * Debugging macro to check an expression is not %NULL.
+ *
+ * If the assertion fails (i.e. the expression is %NULL),
+ * an error message is logged and the application is either
+ * terminated or the testcase marked as failed.
+ *
+ * See g_test_set_nonfatal_assertions().
+ *
+ * Since: 2.40
+ */
+
+/**
  * g_assert_cmpstr:
  * @s1: a string (may be %NULL)
  * @cmp: The comparison operator to use.
