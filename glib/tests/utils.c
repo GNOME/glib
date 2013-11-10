@@ -440,7 +440,6 @@ test_xdg_dirs (void)
 
   g_assert_cmpstr (s, ==, xdg);
 
-  g_strfreev ((gchar **)dirs);
   g_free (s);
 }
 #endif
