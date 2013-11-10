@@ -73,7 +73,8 @@ run_proxy_thread (gpointer data)
       GError *error = NULL;
       GVariant *ret;
 
-      g_print (".");
+      if (!g_test_quiet ())
+        g_print (".");
 
       proxy = g_dbus_proxy_new_sync (connection,
                                      G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START |
@@ -233,6 +234,8 @@ test_proxy (void)
   /* TODO: should call session_bus_down() but that requires waiting
    * for all the oustanding method calls to complete...
    */
+  if (!g_test_quiet ())
+    g_print ("\n");
 }
 
 int
