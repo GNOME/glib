@@ -107,7 +107,7 @@ void    g_test_maximized_result         (double          maximized_quantity,
 GLIB_AVAILABLE_IN_ALL
 void    g_test_init                     (int            *argc,
                                          char         ***argv,
-                                         ...);
+                                         ...) G_GNUC_NULL_TERMINATED;
 /* query testing framework config */
 #define g_test_initialized()            (g_test_config_vars->test_initialized)
 #define g_test_quick()                  (g_test_config_vars->test_quick)

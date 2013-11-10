@@ -54,14 +54,11 @@ int
 main (int   argc,
       char *argv[])
 {
-  /* Note - we can't actually use g_test_* because g_test_init mutates
-   * g_get_prgname() which is exactly what we wanted to test =/
-   */
+  g_test_init (&argc, &argv, "no_g_set_prgname", NULL);
+
 #if defined __linux || defined __OpenBSD__
-  g_print ("/option/argv0: ");
-  test_platform_argv0 ();
-  g_print ("OK\n");
+  g_test_add_func ("/option/argv0", test_platform_argv0);
 #endif
 
-  return 0;
+  return g_test_run ();
 }

@@ -627,6 +627,7 @@ static GTestConfig mutable_test_config_vars = {
   TRUE,         /* test_undefined */
 };
 const GTestConfig * const g_test_config_vars = &mutable_test_config_vars;
+static gboolean  no_g_set_prgname = FALSE;
 
 /* --- functions --- */
 const char*
@@ -1003,7 +1004,9 @@ parse_args (gint    *argc_p,
  *        Changed if any arguments were handled.
  * @argv: Address of the @argv parameter of main().
  *        Any parameters understood by g_test_init() stripped before return.
- * @...: Reserved for future extension. Currently, you must pass %NULL.
+ * @...: %NULL-terminated list of special options. Currently the only
+ *       defined option is <literal>"no_g_set_prgname"</literal>, which
+ *       will cause g_test_init() to not call g_set_prgname().
  *
  * Initialize the GLib testing framework, e.g. by seeding the
  * test random number generator, the name for g_get_prgname()
@@ -1094,9 +1097,10 @@ g_test_init (int    *argc,
 {
   static char seedstr[4 + 4 * 8 + 1];
   va_list args;
-  gpointer vararg1;
+  gpointer option;
   /* make warnings and criticals fatal for all test programs */
   GLogLevelFlags fatal_mask = (GLogLevelFlags) g_log_set_always_fatal ((GLogLevelFlags) G_LOG_FATAL_MASK);
+
   fatal_mask = (GLogLevelFlags) (fatal_mask | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
   g_log_set_always_fatal (fatal_mask);
   /* check caller args */
@@ -1106,9 +1110,12 @@ g_test_init (int    *argc,
   mutable_test_config_vars.test_initialized = TRUE;
 
   va_start (args, argv);
-  vararg1 = va_arg (args, gpointer); /* reserved for future extensions */
+  while ((option = va_arg (args, char *)))
+    {
+      if (g_strcmp0 (option, "no_g_set_prgname") == 0)
+        no_g_set_prgname = TRUE;
+    }
   va_end (args);
-  g_return_if_fail (vararg1 == NULL);
 
   /* setup random seed string */
   g_snprintf (seedstr, sizeof (seedstr), "R02S%08x%08x%08x%08x", g_random_int(), g_random_int(), g_random_int(), g_random_int());
@@ -1116,7 +1123,8 @@ g_test_init (int    *argc,
 
   /* parse args, sets up mode, changes seed, etc. */
   parse_args (argc, argv);
-  if (!g_get_prgname())
+
+  if (!g_get_prgname() && !no_g_set_prgname)
     g_set_prgname ((*argv)[0]);
 
   /* verify GRand reliability, needed for reliable seeds */
