@@ -618,6 +618,9 @@ test_all (void)
 int
 main (int argc, char *argv[])
 {
+  /* Predictable test by not loading random gio modules */
+  g_setenv ("GIO_MODULE_DIR", "/non-existant", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   setup ();
