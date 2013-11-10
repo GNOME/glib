@@ -122,9 +122,6 @@ input_callback (GIOChannel   *source,
     {
       g_io_channel_close (source);
       g_io_channel_close (dest);
-      
-      g_io_channel_unref (source);
-      g_io_channel_unref (dest);
 
       n_active_children--;
       if (n_active_children == 0)
@@ -154,8 +151,15 @@ create_child (void)
 
       source = g_io_create_watch (out_channels[0], G_IO_IN | G_IO_HUP);
       g_source_set_closure (source,
-			    g_cclosure_new (G_CALLBACK (input_callback), in_channels[1], NULL));
+                            g_cclosure_new (G_CALLBACK (input_callback), in_channels[1],
+                                            (GClosureNotify)g_io_channel_unref));
       g_source_attach (source, NULL);
+      g_source_unref (source);
+
+      g_io_channel_unref (in_channels[0]);
+      g_io_channel_unref (out_channels[0]);
+      g_io_channel_unref (out_channels[1]);
+
     }
   else if (pid == 0)		/* Child */
     {
@@ -215,6 +219,8 @@ main (int argc, char **argv)
 	  (difftimeval (&old_usage.ru_utime, &new_usage.ru_utime) +	   
 	   difftimeval (&old_usage.ru_stime, &new_usage.ru_stime)) /
 	  (n_iters * n_children));
+
+  g_main_loop_unref (loop);
 
   return 0;
 }
