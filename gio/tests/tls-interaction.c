@@ -26,6 +26,8 @@
 
 #include "gtesttlsbackend.h"
 
+G_CLEANUP_DEFINE;
+
 static GPtrArray *fixtures = NULL;
 
 typedef struct {

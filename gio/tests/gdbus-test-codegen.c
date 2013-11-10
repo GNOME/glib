@@ -29,6 +29,8 @@
 
 #include "gdbus-test-codegen-generated.h"
 
+G_CLEANUP_DEFINE;
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 static guint

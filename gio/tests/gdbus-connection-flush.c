@@ -31,6 +31,8 @@
 #include "test-io-stream.h"
 #include "test-pipe-unix.h"
 
+G_CLEANUP_DEFINE;
+
 #define MY_TYPE_OUTPUT_STREAM \
         (my_output_stream_get_type ())
 #define MY_OUTPUT_STREAM(o) \

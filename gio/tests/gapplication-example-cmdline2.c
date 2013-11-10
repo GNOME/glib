@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+G_CLEANUP_DEFINE;
+
 static int
 command_line (GApplication            *application,
               GApplicationCommandLine *cmdline)

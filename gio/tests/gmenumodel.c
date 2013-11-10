@@ -2,6 +2,8 @@
 
 #include "gdbus-sessionbus.h"
 
+G_CLEANUP_DEFINE;
+
 /* Markup printing {{{1 */
 
 /* This used to be part of GLib, but it was removed before the stable

@@ -11,7 +11,7 @@ LDADD = \
 	$(top_builddir)/gmodule/libgmodule-2.0.la	\
 	$(top_builddir)/gio/libgio-2.0.la
 AM_CPPFLAGS = $(gio_INCLUDES) $(GLIB_DEBUG_FLAGS) -I$(top_builddir)/gio -I$(top_srcdir)/gio
-DEFS = -DG_LOG_DOMAIN=\"GLib-GIO\" -DTEST_SERVICES=\""$(abs_top_builddir)/gio/tests/services"\"
+DEFS = -DG_LOG_DOMAIN=\"GLib-GIO\" -DTEST_SERVICES=\""$(abs_top_builddir)/gio/tests/services"\" -DG_CLEANUP_SCOPE=gio_tests_cleanup
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
 # -----------------------------------------------------------------------------

@@ -30,6 +30,8 @@
 #include <string.h>
 #include <unistd.h>
 
+G_CLEANUP_DEFINE;
+
 typedef struct {
   GDBusInterfaceSkeleton parent;
   gint number;

@@ -48,6 +48,8 @@
  * (GTestAltProxyResolver) always returns [ proxy_a.uri ].
  */
 
+G_CLEANUP_DEFINE;
+
 typedef struct {
   gchar *proxy_command;
   gchar *supported_protocol;

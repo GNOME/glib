@@ -3,6 +3,8 @@
 #include "gdbusdaemon.h"
 #include <glib/gi18n.h>
 
+G_CLEANUP_DEFINE;
+
 int
 main (int argc, char *argv[])
 {

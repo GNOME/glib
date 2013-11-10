@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+G_CLEANUP_DEFINE;
+
 typedef struct
 {
   GIOStream parent;

@@ -26,6 +26,8 @@
 
 #include "gdbus-tests.h"
 
+G_CLEANUP_DEFINE;
+
 static GDBusConnection *the_connection = NULL;
 
 #define MY_TYPE_OBJECT   (my_object_get_type ())

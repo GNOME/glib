@@ -32,6 +32,8 @@
 
 #include "gtlsconsoleinteraction.h"
 
+G_CLEANUP_DEFINE;
+
 /*
  * WARNING: This is not the example you're looking for [slow hand wave]. This
  * is not industrial strength, it's just for testing. It uses embarassing

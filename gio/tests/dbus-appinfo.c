@@ -24,6 +24,8 @@
 
 #include "gdbus-sessionbus.h"
 
+G_CLEANUP_DEFINE;
+
 static GDesktopAppInfo *appinfo;
 static int current_state;
 static gboolean saw_startup_id;

@@ -3,6 +3,8 @@
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+G_CLEANUP_DEFINE;
+
 /* The object we want to export */
 typedef struct _MyObjectClass MyObjectClass;
 typedef struct _MyObject MyObject;

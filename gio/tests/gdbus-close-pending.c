@@ -41,6 +41,8 @@
 
 #include "gdbus-tests.h"
 
+G_CLEANUP_DEFINE;
+
 #define CLOSE_TIME_MS 1
 #define N_REPEATS_SLOW 5000
 #define N_REPEATS 100

@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+G_CLEANUP_DEFINE;
+
 #define G_TYPE_EXPANDER_CONVERTER         (g_expander_converter_get_type ())
 #define G_EXPANDER_CONVERTER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_EXPANDER_CONVERTER, GExpanderConverter))
 #define G_EXPANDER_CONVERTER_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_EXPANDER_CONVERTER, GExpanderConverterClass))

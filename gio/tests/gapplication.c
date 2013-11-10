@@ -6,6 +6,8 @@
 #include "gdbus-tests.h"
 #include "gdbus-sessionbus.h"
 
+G_CLEANUP_DEFINE;
+
 static gint outstanding_watches;
 static GMainLoop *main_loop;
 

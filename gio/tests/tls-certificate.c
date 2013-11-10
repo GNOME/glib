@@ -26,6 +26,8 @@
 
 #include "gtesttlsbackend.h"
 
+G_CLEANUP_DEFINE;
+
 typedef struct
 {
   gchar *cert_pems[3];

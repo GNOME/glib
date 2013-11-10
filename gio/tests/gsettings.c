@@ -8,6 +8,8 @@
 
 #include "testenum.h"
 
+G_CLEANUP_DEFINE;
+
 static gboolean backend_set;
 
 /* These tests rely on the schemas in org.gtk.test.gschema.xml

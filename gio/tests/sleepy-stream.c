@@ -14,6 +14,8 @@
 #include <gio/gio.h>
 #include <string.h>
 
+G_CLEANUP_DEFINE;
+
 #define MAX_PIECE_SIZE  100
 #define MAX_PIECES       60
 
