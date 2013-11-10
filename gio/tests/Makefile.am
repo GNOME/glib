@@ -233,7 +233,6 @@ gdbus_daemon_SOURCES = \
 
 if OS_UNIX
 test_programs += \
-	basic-application			\
 	contenttype				\
 	file					\
 	gdbus-peer-object-manager		\
@@ -241,6 +240,10 @@ test_programs += \
 	socket-address				\
 	unix-fd					\
 	unix-streams				\
+	$(NULL)
+
+test_extra_programs += \
+	basic-application			\
 	$(NULL)
 
 # Uninstalled because of the check-for-executable logic in DesktopAppInfo unable to find the installed executable
