@@ -36,6 +36,8 @@
  * We test this both for static and for dynamic interfaces.
  */
 
+G_CLEANUP_DEFINE;
+
 /**********************************************************************
  * Static interface tests
  **********************************************************************/

@@ -249,6 +249,8 @@ static DEFINE_TYPE(TestObject, test_object,
 		   test_object_class_init, NULL, NULL,
 		   G_TYPE_OBJECT)
 
+G_CLEANUP_DEFINE
+
 int
 main (int   argc,
       char *argv[])

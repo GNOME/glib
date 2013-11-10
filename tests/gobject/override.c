@@ -396,7 +396,9 @@ test (GType        type,
   g_string_free (test_string, TRUE);
   g_object_unref (self);
 }
-     
+
+G_CLEANUP_DEFINE
+
 int
 main (int argc, char **argv)
 {

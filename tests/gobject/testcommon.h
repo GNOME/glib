@@ -48,6 +48,7 @@ prefix ## _get_type (void)					\
       object_type = g_type_register_static (parent_type,	\
 					    # name,		\
 					    &object_info, 0);	\
+      g_cleanup_push_type (G_CLEANUP_SCOPE, object_type);       \
       interface_decl						\
     }								\
 								\
@@ -79,6 +80,7 @@ prefix ## _get_type (void)					\
       iface_type = g_type_register_static (G_TYPE_INTERFACE,	\
 					    # name,		\
 					    &iface_info, 0);	\
+      g_cleanup_push_type (G_CLEANUP_SCOPE, iface_type);        \
     }								\
   return iface_type;						\
 }
