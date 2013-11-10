@@ -6,13 +6,21 @@
 #include <pthread.h>
 #include <glib.h>
 
-int
-main (int argc, char *argv[])
+static void
+test_rwlock (void)
 {
   GRWLock lock;
 
   g_rw_lock_init (&lock);
   g_rw_lock_clear (&lock);
+}
 
-  return 0;
+int
+main (int argc, char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/include/rwlock", test_rwlock);
+
+  return g_test_run ();
 }
