@@ -100,6 +100,7 @@
  * ]|
  */
 
+G_CLEANUP_DEFINE;
 
 /* --- macros --- */
 #define PARAM_SPEC_PARAM_ID(pspec)		((pspec)->param_id)

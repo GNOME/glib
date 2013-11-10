@@ -8,6 +8,7 @@ SUBDIRS = . tests
 
 AM_CPPFLAGS = 					\
 	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
+	-DG_CLEANUP_SCOPE=gobject_cleanup	\
 	$(glib_INCLUDES)			\
 	$(GLIB_DEBUG_FLAGS)			\
 	-DGOBJECT_COMPILATION
