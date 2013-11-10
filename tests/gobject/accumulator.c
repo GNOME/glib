@@ -303,5 +303,7 @@ main (int   argc,
   g_variant_unref (variant_result);
   g_assert (variant_finalised);
 
+  g_object_unref (object);
+
   return 0;
 }
