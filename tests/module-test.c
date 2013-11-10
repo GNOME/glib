@@ -194,6 +194,9 @@ main (int    argc,
 
   if (!g_module_close (module_b))
     g_error ("error: %s", g_module_error ());
- 
+
+  g_free (plugin_a);
+  g_free (plugin_b);
+  g_module_close (module_self);
   return 0;
 }
