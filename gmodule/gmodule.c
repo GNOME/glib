@@ -193,6 +193,7 @@
  * faster access and because it has special semantics.
  */
 
+G_CLEANUP_DEFINE;
 
 /* --- structures --- */
 struct _GModule
@@ -473,6 +474,13 @@ _g_module_debug_init (void)
 
 static GRecMutex g_module_global_lock;
 
+static void
+cleanup_main_module (void)
+{
+  _g_module_close (main_module->handle, FALSE);
+  g_free (main_module);
+}
+
 GModule*
 g_module_open (const gchar    *file_name,
 	       GModuleFlags    flags)
@@ -508,6 +516,7 @@ g_module_open (const gchar    *file_name,
 	      main_module->is_resident = TRUE;
 	      main_module->unload = NULL;
 	      main_module->next = NULL;
+	      G_CLEANUP_FUNC_IN (cleanup_main_module, G_CLEANUP_PHASE_LATE);
 	    }
 	}
       else

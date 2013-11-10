@@ -14,3 +14,14 @@
    fun:pthread_exit
    ...
 }
+
+{
+   dlopen-leaks-self
+   Memcheck:Leak
+   fun:calloc
+   fun:_dlerror_run
+   fun:dlopen@@*
+   fun:_g_module_self
+   fun:g_module_open
+   ...
+}
