@@ -450,6 +450,7 @@ test_truncate (void)
   g_assert (res);
   g_assert_cmpint (g_memory_output_stream_get_size (base_stream), ==, len);
   g_assert_cmpint (g_memory_output_stream_get_data_size (base_stream), ==, 4);
+  stream_data = g_memory_output_stream_get_data (base_stream);
   g_assert_cmpint (stream_data[0], ==, 0x01);
   g_assert_cmpint (stream_data[1], ==, 0x23);
   g_assert_cmpint (stream_data[2], ==, 0x45);
@@ -461,6 +462,7 @@ test_truncate (void)
   g_assert (res);
   g_assert_cmpint (g_memory_output_stream_get_size (base_stream), ==, 4);
   g_assert_cmpint (g_memory_output_stream_get_data_size (base_stream), ==, 4);
+  stream_data = g_memory_output_stream_get_data (base_stream);
   g_assert_cmpint (stream_data[0], ==, 0x01);
   g_assert_cmpint (stream_data[1], ==, 0x23);
   g_assert_cmpint (stream_data[2], ==, 0x45);
@@ -472,6 +474,7 @@ test_truncate (void)
   g_assert (res);
   g_assert_cmpint (g_memory_output_stream_get_size (base_stream), ==, 6);
   g_assert_cmpint (g_memory_output_stream_get_data_size (base_stream), ==, 4);
+  stream_data = g_memory_output_stream_get_data (base_stream);
   g_assert_cmpint (stream_data[0], ==, 0x01);
   g_assert_cmpint (stream_data[1], ==, 0x23);
   g_assert_cmpint (stream_data[2], ==, 0x45);
@@ -483,6 +486,7 @@ test_truncate (void)
   g_assert (res);
   g_assert_cmpint (g_memory_output_stream_get_size (base_stream), ==, 2);
   g_assert_cmpint (g_memory_output_stream_get_data_size (base_stream), ==, 2);
+  stream_data = g_memory_output_stream_get_data (base_stream);
   g_assert_cmpint (stream_data[0], ==, 0x01);
   g_assert_cmpint (stream_data[1], ==, 0x23);
 
