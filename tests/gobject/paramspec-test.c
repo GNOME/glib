@@ -196,6 +196,7 @@ test_param_spec_override (void)
   g_assert (modified && g_value_get_char (&value) == 40);
 
   g_param_spec_unref (pspec);
+  g_param_spec_unref (ospec);
 }
 
 static void
@@ -220,6 +221,8 @@ test_param_spec_gtype (void)
   g_value_set_gtype (&value, G_TYPE_PARAM_INT);
   modified = g_param_value_validate (pspec, &value);
   g_assert (!modified && g_value_get_gtype (&value) == G_TYPE_PARAM_INT);
+
+  g_param_spec_unref (pspec);
 }
 
 static void
