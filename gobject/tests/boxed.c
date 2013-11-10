@@ -581,7 +581,7 @@ test_boxed_thread (void)
   g_assert (G_VALUE_HOLDS_BOXED (&value));
 
   t = g_thread_self ();
-  g_value_take_boxed (&value, t);
+  g_value_set_boxed (&value, t);
 
   t2 = g_value_get_boxed (&value);
   g_assert (t == t2);
