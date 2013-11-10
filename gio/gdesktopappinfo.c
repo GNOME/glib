@@ -85,6 +85,7 @@ static GList *  get_all_desktop_entries_for_mime_type (const char       *base_mi
                                                        gboolean          include_fallback,
                                                        char            **explicit_default);
 static void     mime_info_cache_reload                (const char       *dir);
+static void     mime_info_cache_cleanup               (void);
 static gboolean g_desktop_app_info_ensure_saved       (GDesktopAppInfo  *info,
                                                        GError          **error);
 
@@ -887,6 +888,27 @@ desktop_file_dir_search (DesktopFileDir *dir,
 /* Lock/unlock and global setup API {{{2 */
 
 static void
+desktop_file_dirs_cleanup (void)
+{
+  gint i;
+
+  g_mutex_lock (&desktop_file_dir_lock);
+
+  for (i = 0; i < n_desktop_file_dirs; i++)
+    {
+      if (desktop_file_dirs[i].is_setup)
+        {
+          g_file_monitor_cancel (G_FILE_MONITOR (desktop_file_dirs[i].monitor));
+          desktop_file_dir_reset (desktop_file_dirs + i);
+        }
+    }
+
+  n_desktop_file_dirs = 0;
+
+  g_mutex_unlock (&desktop_file_dir_lock);
+}
+
+static void
 desktop_file_dirs_lock (void)
 {
   gint i;
@@ -913,6 +935,9 @@ desktop_file_dirs_lock (void)
       n_desktop_file_dirs = tmp->len;
 
       g_array_free (tmp, FALSE);
+
+      G_CLEANUP_FUNC_IN (desktop_file_dirs_cleanup, G_CLEANUP_PHASE_EARLY);
+      G_CLEANUP_IN (desktop_file_dirs, g_free, G_CLEANUP_PHASE_GRAVEYARD);
     }
 
   for (i = 0; i < n_desktop_file_dirs; i++)
@@ -4108,7 +4133,10 @@ mime_info_cache_init (void)
 {
   G_LOCK (mime_info_cache);
   if (mime_info_cache == NULL)
-    mime_info_cache_init_dir_lists ();
+    {
+      mime_info_cache_init_dir_lists ();
+      G_CLEANUP_FUNC (mime_info_cache_cleanup);
+    }
   else
     {
       time_t now;
@@ -4142,6 +4170,15 @@ mime_info_cache_free (MimeInfoCache *cache)
 
   g_list_free_full (cache->dirs, (GDestroyNotify) mime_info_cache_dir_free);
   g_free (cache);
+}
+
+static void
+mime_info_cache_cleanup (void)
+{
+  G_LOCK (mime_info_cache);
+  mime_info_cache_free (mime_info_cache);
+  mime_info_cache = NULL;
+  G_UNLOCK (mime_info_cache);
 }
 
 /**
