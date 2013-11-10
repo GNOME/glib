@@ -563,6 +563,25 @@ test_dash_p (void)
   g_test_trap_assert_stdout_unmatched ("*Test /misc/dash-p/subprocess/hidden*");
 }
 
+static void
+test_nonfatal_subprocess (void)
+{
+  g_test_set_nonfatal_assertions ();
+
+  g_assert_cmpint (4, ==, 5);
+
+  g_print ("The End\n");
+}
+
+static void
+test_nonfatal (void)
+{
+  g_test_trap_subprocess ("/misc/nonfatal/subprocess", 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*4 == 5*");
+  g_test_trap_assert_stdout ("*The End*");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -623,6 +642,9 @@ main (int   argc,
   g_test_add_func ("/misc/dash-p/child/sub2", test_dash_p_child_sub2);
   g_test_add_func ("/misc/dash-p/subprocess/hidden", test_dash_p_hidden);
   g_test_add_func ("/misc/dash-p/subprocess/hidden/sub", test_dash_p_hidden_sub);
+
+  g_test_add_func ("/misc/nonfatal", test_nonfatal);
+  g_test_add_func ("/misc/nonfatal/subprocess", test_nonfatal_subprocess);
 
   return g_test_run();
 }

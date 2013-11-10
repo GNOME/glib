@@ -1754,7 +1754,9 @@ g_test_failed (void)
  * g_assert_true(), g_assert_false(), g_assert_null(), g_assert_no_error(),
  * g_assert_error(), g_test_assert_expected_messages() and the various
  * g_test_trap_assert_*() macros to not abort to program, but instead
- * call g_test_fail() and continue.
+ * call g_test_fail() and continue. (This also changes the behavior of
+ * g_test_fail() so that it will not cause the test program to abort
+ * after completing the failed test.)
  *
  * Note that the g_assert_not_reached() and g_assert() are not
  * affected by this.
@@ -1769,6 +1771,7 @@ g_test_set_nonfatal_assertions (void)
   if (!g_test_config_vars->test_initialized)
     g_error ("g_test_set_nonfatal_assertions called without g_test_init");
   test_nonfatal_assertions = TRUE;
+  test_mode_fatal = FALSE;
 }
 
 /**
@@ -2271,15 +2274,23 @@ g_assertion_message (const char     *domain,
                    " ", message, NULL);
   g_printerr ("**\n%s\n", s);
 
+  g_test_log (G_TEST_LOG_ERROR, s, NULL, 0, NULL);
+
+  if (test_nonfatal_assertions)
+    {
+      g_free (s);
+      g_test_fail ();
+      return;
+    }
+
   /* store assertion message in global variable, so that it can be found in a
    * core dump */
   if (__glib_assert_msg != NULL)
-      /* free the old one */
-      free (__glib_assert_msg);
+    /* free the old one */
+    free (__glib_assert_msg);
   __glib_assert_msg = (char*) malloc (strlen (s) + 1);
   strcpy (__glib_assert_msg, s);
 
-  g_test_log (G_TEST_LOG_ERROR, s, NULL, 0, NULL);
   g_free (s);
   _g_log_abort ();
 }
