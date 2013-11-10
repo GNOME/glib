@@ -131,5 +131,6 @@ main (int   argc,
   g_assert (!callback3_ran);
   g_assert (default_handler_ran);
 
+  g_object_unref (object);
   return 0;
 }
