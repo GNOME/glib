@@ -164,6 +164,9 @@ gint main (gint argc, gchar * argv[])
     g_io_channel_unref(gio_w);
 
     test_small_writes ();
-    
+
+    g_free (filename);
+    g_string_free (buffer, TRUE);
+
     return 0;
 }
