@@ -324,6 +324,7 @@ dist_uninstalled_test_data += \
 	enums.xml.template
 # Generated while running the testcase itself...
 CLEANFILES += \
+	org.gtk.test.gschema.xml	\
 	org.gtk.test.enums.xml		\
 	gsettings.store			\
 	gschemas.compiled		\
