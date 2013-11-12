@@ -1,3 +1,23 @@
+Overview of changes from GLib 2.38.1 to 2.38.2
+===============================================
+
+ * GCancellableSource will now dispatch for each time a cancellable is
+   cancelled (ie: in the case that it was reset) but this is still
+   considered undefined behaviour
+
+ * fix g_source_add_child_source() thread safety issues
+
+ * add workaround for buggy D-Bus daemons when path-matching on '/'
+
+ * fallback to pathname queryinfo to help g_file_copy() work on gvfs
+   filesystems that don't implement query_info_on_read()
+
+ * don't crash if loading a DBusActivatable application from keyfile
+
+ * fix crash when replacing a symlink with another using GIO
+
+ * add a fallback for '-symbolic' icons to the non-symbolic form
+
 Overview of changes from GLib 2.38.0 to 2.38.1
 ===============================================
 
