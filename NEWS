@@ -1,3 +1,138 @@
+Overview of changes from GLib 2.39.0 to GLib 2.39.1
+====================================================
+
+ * GSettings fixes/improvements
+
+   - GSettingsSchema API is now more powerful and consistent
+
+   - new GSettingsSchemaKey API allows accessing metadata for keys:
+     type, default value, range and the long-awaited support for summary
+     and description
+
+   - GSettingsSchemaSource gains support for listing schemas within a
+     source.  Deprecate the global API that did this for the default
+     source.
+
+   - 'gsettings list-schemas' now works properly with --schemadir
+
+   - deprecate a bunch of now-redundant functionality on GSettings
+
+   - add API to GSettings for getting the default value of a key (as set
+     by the sysadmin)
+
+   - add API to GSettings for determining if the user has assigned a
+     particular value to a key (ie: we are not just reading the default)
+
+   - ignore qualified tags and attributes appearing in schema files
+
+ * Applications/Actions
+
+   - make GSimpleAction a bit more strict with respect to state changes
+     that would violate the interface (ie: by changing the state type
+     after construction)
+
+   - throw an error when attempting to 'Describe' a non-existent action
+     via D-Bus instead of returning a bogus description
+
+   - throw an error when attempting to invoke unsupported methods on an
+     Application (eg: 'Open' on an app that doesn't HANDLES_OPEN)
+     instead of emitting a g_critical() in context of the app (which is
+     not itself at fault for the errant call)
+
+ * Appinfo
+
+   - substantially rework GDesktopAppInfo to reduce the amount of disk
+     accesses that are performed in common situations
+
+   - add a new class: GAppInfoMonitor for discovering when applications
+     are installed/removed
+
+   - add a new g_desktop_app_info_search() API for searching for
+     installed applications by name, keywords, etc.
+
+ * GMarkup: add new G_MARKUP_IGNORE_QUALIFIED flag for skipping over
+   "qualified" tags and attributes (those with a colon in the name, such
+   as 'my:tag')
+
+ * GDBus
+
+   - ignore qualified tags, as above
+
+   - GTestDBus: unset all D-Bus addresses (such as STARTER) to ensure
+     that test programs don't pick them up
+
+   - add new session_bus_run() convenience in the tests and use it
+
+ * GRand: use real random data as a seed on win32 and use the
+   timestamp/pid/uid fallback only on UNIX machines where we can't open
+   '/dev/urandom'.  This may cause issues with older mingw32 releases
+   due to a missing prototype for the rand_s() API.
+
+ * Many win32 (and particularly MSVC) portability fixes.  Many
+   additional tests are now runnable when building with MSVC.
+
+ * Due to early testing of the (soon to land) GCleanup framework, a very
+   large number of memory errors have been found and fixed (mostly in
+   the testcases, but some in glib itself).
+
+ * GIO:
+
+   - some more seeking cleanups: particularly on GLocalFileInputStream
+
+   - don't leave a .trashinfo file around if trashing a file fails
+
+   - Add a request_certificate virtual method to GTlsInteraction
+
+Translations updated:
+ Assamese
+ Galician
+ Greek
+ Spanish
+ Tamil
+
+Bugs fixed:
+ 635641 schema compiler should ignore unknown attributes
+ 637257 g_tls_client_connection_gnutls_retrieve_function needs to be able to block
+ 637956 GKeyfileSettingsBackend should ignore file deletions
+ 645453 keys from base schema missing from extended schema
+ 665634 g_dbus_node_info_new_for_xml() errors on unknown attributes in XML files
+ 668232 Unable to get description and summary for a key
+ 668233 Unable to determine if a key is set to the default / what the default value is
+ 680838 Need g_settings_schema_source_get_schemas()
+ 683017 API for accessing GSettings Schema metadata
+ 687185 org.gtk.Actions.Describe doesn't return an error for non-existing action names
+ 687202 If trashing fails, the ".trashinfo" file is not removed
+ 695558 The --schemadir option has no effect
+ 696424 GSimpleAction.state property is not right
+ 697348 GTestDBus should unset DBUS_STARTER_ADDRESS, DBUS_STARTER_BUS_TYPE
+ 710133 Emit backward compatible code with gdbus-codegen
+ 710691 glib-networking: locking during implicit handshake
+ 710738 GRand has lame fallback for Windows
+ 710859 Typo in gio docs
+ 710885 Two fixes for GApplication
+ 710962 error: 'F_DUPFD_CLOEXEC' undeclared (first use in this function)
+ 710964 Add g_hash_table_get_key_array()
+ 710991 test: g_debug messages shouldn't affect g_assert_expected_messages
+ 711016 g_settings_list_keys () segfaults for empty schemas
+ 711048 glocalfileinputstream.c allows skip past end of file
+ 711049 Fix build of GLib-GIO 2.39.x on Windows/MSVC
+ 711064 Adding child source to blocked source can cause a segfault
+ 711070 Copying a symlink over another one segfaults
+ 711099 gapplication test failure
+ 711520 GDesktopAppInfo: allow more than one level of legacy folder prefixes
+ 711556 Add GAppInfoMonitor
+ 711557 Add g_desktop_app_info_search()
+ 711600 trivial portability fix
+ 711632 The desktop-app-info test fails during make check
+ 711754 gmain: Fix use of uninitialized memory in sigaction structure
+ 711755 private: Use threading primitives correctly in private test
+ 711756 gthreadpool: Don't pass bad data to GThreadPool sorter
+ 711768 Fix memory leaks in libgmodule tests
+ 711775 utils: Don't free memory owned by glib in test
+ 711782 boxed: Fix double free in boxed unit tests
+ 711803 gsubprocess: Fix a number of leaks and a segfault
+ 711808 gtestdbus: Fix leak of GMainLoop 
+
 Overview of changes from GLib 2.38.0 to GLib 2.39.0
 ====================================================
 
