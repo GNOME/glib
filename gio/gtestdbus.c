@@ -335,13 +335,15 @@ _g_test_watcher_remove_pid (GPid pid)
  *   </para>
  *   <para>
  *     The first thing you will need is a separate service description file for the
- *     D-Bus daemon. Typically a 'services' subdirectory of your 'tests' directory
+ *     D-Bus daemon. Typically a <filename>services</filename> subdirectory of
+ *     your <filename>tests</filename> directory
  *     is a good place to put this file.
  *   </para>
  *   <para>
  *     The service file should list your service along with an absolute path to the
  *     uninstalled service executable in your source tree. Using autotools we would
- *     achieve this by adding a file such as 'my-server.service.in' in the services
+ *     achieve this by adding a file such as <filename>my-server.service.in</filename>
+ *     in the services
  *     directory and have it processed by configure.
  *     <informalexample><programlisting>
  *     [D-BUS Service]
@@ -358,7 +360,7 @@ _g_test_watcher_remove_pid (GPid pid)
  *   </para>
  *   <para>
  *     Once you have a service definition file which is local to your source tree,
- *     you can proceed to setup a GTest fixture using the GTestDBus scaffolding.
+ *     you can proceed to set up a GTest fixture using the #GTestDBus scaffolding.
  *     <example id="gdbus-test-fixture">
  *       <title>Test Fixture for D-Bus services</title>
  *       <programlisting>
@@ -379,10 +381,10 @@ _g_test_watcher_remove_pid (GPid pid)
  *   </para>
  *   <para>
  *     Most of the time we can work around these obstacles using the environment. Since the
- *     environment is inherited by the D-Bus daemon created by GTestDBus and then in turn
+ *     environment is inherited by the D-Bus daemon created by #GTestDBus and then in turn
  *     inherited by any services the D-Bus daemon activates, using the setup routine for your
  *     fixture is a practical place to help sandbox your runtime environment. For the rather
- *     typical GSettings case we can work around this by setting GSETTINGS_SCHEMA_DIR to the
+ *     typical GSettings case we can work around this by setting <envar>GSETTINGS_SCHEMA_DIR</envar> to the
  *     in tree directory holding your schemas in the above fixture_setup() routine.
  *   </para>
  *   <para>
@@ -517,14 +519,14 @@ g_test_dbus_class_init (GTestDBusClass *klass)
   /**
    * GTestDBus:flags:
    *
-   * #GTestDBusFlags specifying the behaviour of the dbus session
+   * #GTestDBusFlags specifying the behaviour of the D-Bus session.
    *
    * Since: 2.34
    */
   g_object_class_install_property (object_class, PROP_FLAGS,
     g_param_spec_flags ("flags",
-                        P_("dbus session flags"),
-                        P_("Flags specifying the behaviour of the dbus session"),
+                        P_("D-Bus session flags"),
+                        P_("Flags specifying the behaviour of the D-Bus session"),
                         G_TYPE_TEST_DBUS_FLAGS, G_TEST_DBUS_NONE,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
                         G_PARAM_STATIC_STRINGS));
@@ -692,7 +694,7 @@ g_test_dbus_new (GTestDBusFlags flags)
  * g_test_dbus_get_flags:
  * @self: a #GTestDBus
  *
- * Gets the flags of the #GTestDBus object.
+ * Get the flags of the #GTestDBus object.
  *
  * Returns: the value of #GTestDBus:flags property
  */
@@ -708,11 +710,11 @@ g_test_dbus_get_flags (GTestDBus *self)
  * g_test_dbus_get_bus_address:
  * @self: a #GTestDBus
  *
- * Get the address on which dbus-daemon is running. if g_test_dbus_up() has not
+ * Get the address on which dbus-daemon is running. If g_test_dbus_up() has not
  * been called yet, %NULL is returned. This can be used with
- * g_dbus_connection_new_for_address()
+ * g_dbus_connection_new_for_address().
  *
- * Returns: the address of the bus, or %NULL.
+ * Returns: (allow-none): the address of the bus, or %NULL.
  */
 const gchar *
 g_test_dbus_get_bus_address (GTestDBus *self)
@@ -727,7 +729,7 @@ g_test_dbus_get_bus_address (GTestDBus *self)
  * @self: a #GTestDBus
  * @path: path to a directory containing .service files
  *
- * Add a path where dbus-daemon will lookup for .services files. This can't be
+ * Add a path where dbus-daemon will look up .service files. This can't be
  * called after g_test_dbus_up().
  */
 void
