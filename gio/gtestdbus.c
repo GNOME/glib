@@ -556,10 +556,10 @@ write_config_file (GTestDBus *self)
 
   for (i = 0; i < self->priv->service_dirs->len; i++)
     {
-      const gchar *path = g_ptr_array_index (self->priv->service_dirs, i);
+      const gchar *dir_path = g_ptr_array_index (self->priv->service_dirs, i);
 
       g_string_append_printf (contents,
-          "  <servicedir>%s</servicedir>\n", path);
+          "  <servicedir>%s</servicedir>\n", dir_path);
     }
 
   g_string_append (contents,
