@@ -586,7 +586,7 @@ write_config_file (GTestDBus *self)
 static void
 start_daemon (GTestDBus *self)
 {
-  gchar *argv[] = {"dbus-daemon", "--print-address", "--config-file=foo", NULL};
+  const gchar *argv[] = {"dbus-daemon", "--print-address", "--config-file=foo", NULL};
   gchar *config_path;
   gchar *config_arg;
   gint stdout_fd;
@@ -604,7 +604,7 @@ start_daemon (GTestDBus *self)
 
   /* Spawn dbus-daemon */
   g_spawn_async_with_pipes (NULL,
-                            argv,
+                            (gchar **) argv,
                             NULL,
 #ifdef G_OS_WIN32
                             /* We Need this to get the pid returned on win32 */
