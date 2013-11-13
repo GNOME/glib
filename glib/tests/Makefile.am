@@ -30,6 +30,7 @@ test_extra_programs = \
 	$(NULL)
 
 test_programs = \
+	cleanup				\
 	array-test			\
 	asyncqueue			\
 	base64				\
