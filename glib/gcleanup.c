@@ -568,6 +568,49 @@ g_cleanup_clean (GCleanupScope *scope)
     fprintf (stderr, "GLib-Cleanup-DEBUG: cleanup: done\n");
 }
 
+static gint qdata_table_lock = 0;
+static GHashTable *qdata_table = NULL;
+
+void
+g_cleanup_push_qdata (GCleanupScope *cleanup,
+                      GQuark         qdata)
+{
+  g_bit_lock (&qdata_table_lock, 1);
+
+  if (cleanup)
+    {
+      if (!qdata_table)
+        {
+          qdata_table = g_hash_table_new (g_direct_hash, g_direct_equal);
+
+          /* This table gets cleaned up in the glib scope, after all other stuff */
+          g_cleanup_push (G_CLEANUP_SCOPE, 1020, (GCleanupFunc)g_hash_table_unref, qdata_table);
+        }
+
+      g_hash_table_insert (qdata_table, GUINT_TO_POINTER (qdata), cleanup);
+    }
+  else if (qdata_table)
+    {
+      g_hash_table_remove (qdata_table, GUINT_TO_POINTER (qdata));
+    }
+
+  g_bit_unlock (&qdata_table_lock, 1);
+}
+
+GCleanupScope *
+g_cleanup_scope_for_qdata (GQuark qdata)
+{
+  GCleanupScope *scope = NULL;
+
+  g_bit_lock (&qdata_table_lock, 1);
+
+  if (qdata_table)
+    scope = g_hash_table_lookup (qdata_table, GUINT_TO_POINTER (qdata));
+
+  g_bit_unlock (&qdata_table_lock, 1);
+
+  return scope;
+}
 /**
  * G_CLEANUP_DEFINE:
  *

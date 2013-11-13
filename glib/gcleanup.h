@@ -72,6 +72,9 @@ GLIB_AVAILABLE_IN_2_40
 void                    g_cleanup_push_source            (GCleanupScope *cleanup,
                                                           gint           phase,
                                                           GSource       *source);
+GLIB_AVAILABLE_IN_2_40
+void                    g_cleanup_push_qdata             (GCleanupScope *cleanup,
+                                                          GQuark         qdata);
 GLIB_AVAILABLE_IN_2_40 /* NOTE: annotate() very useful for debugging, but might not merge */
 void                    g_cleanup_annotate               (gpointer       cleanup_item,
                                                           const gchar   *func_name);

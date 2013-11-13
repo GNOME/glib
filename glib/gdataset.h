@@ -47,6 +47,9 @@ GLIB_AVAILABLE_IN_ALL
 void     g_datalist_init                (GData            **datalist);
 GLIB_AVAILABLE_IN_ALL
 void     g_datalist_clear               (GData            **datalist);
+#if 0
+xxxx needs to not clear data if in cleanup mode xxxx
+#endif
 GLIB_AVAILABLE_IN_ALL
 gpointer g_datalist_id_get_data         (GData            **datalist,
 					 GQuark             key_id);
@@ -55,6 +58,14 @@ void     g_datalist_id_set_data_full    (GData            **datalist,
 					 GQuark             key_id,
 					 gpointer           data,
 					 GDestroyNotify     destroy_func);
+#if 0
+GLIB_AVAILABLE_IN_ALL
+void     g_datalist_id_set_data_cleanup (GData            **datalist,
+                                         GQuark             key_id,
+                                         gpointer           data,
+                                         GDestroyNotify     destroy_func);
+xxxx specify cleanup xxxx
+#endif
 
 typedef gpointer (*GDuplicateFunc) (gpointer data, gpointer user_data);
 
@@ -70,6 +81,16 @@ gboolean g_datalist_id_replace_data     (GData            **datalist,
                                          gpointer           newval,
                                          GDestroyNotify     destroy,
 					 GDestroyNotify    *old_destroy);
+#if 0
+GLIB_AVAILABLE_IN_2_34
+gboolean g_datalist_id_replace_cleanup  (GData            **datalist,
+                                         GQuark             key_id,
+                                         gpointer           oldval,
+                                         gpointer           newval,
+                                         GDestroyNotify     destroy,
+                                         GDestroyNotify    *old_destroy);
+xxxx specify cleanup xxxxx
+#endif
 
 GLIB_AVAILABLE_IN_ALL
 gpointer g_datalist_id_remove_no_notify (GData            **datalist,

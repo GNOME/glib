@@ -37,6 +37,9 @@
 #include "gdataset.h"
 #include "gbitlock.h"
 
+#include "glib-private.h"
+
+#include "gcleanup.h"
 #include "gslice.h"
 #include "gdatasetprivate.h"
 #include "ghash.h"
@@ -153,11 +156,16 @@
   } while (!g_atomic_pointer_compare_and_exchange ((void**) datalist, _oldv, _newv));   \
 } G_STMT_END
 
+enum {
+  DESTROY_IS_CLEANUP = 1 << 0
+};
+
 /* --- structures --- */
 typedef struct {
   GQuark          key;
+  gint            flags;
   gpointer        data;
-  GDestroyNotify  destroy;
+  gpointer        destroy;
 } GDataElt;
 
 typedef struct _GDataset GDataset;
@@ -219,6 +227,30 @@ g_datalist_unlock (GData **datalist)
   g_pointer_bit_unlock ((void **)datalist, DATALIST_LOCK_BIT);
 }
 
+static inline void
+invoke_destroy_notify (GDataElt *el)
+{
+  GDestroyNotify func;
+
+  if (el->flags & DESTROY_IS_CLEANUP)
+    func = g_cleanup_steal (el->destroy, NULL);
+  else
+    func = el->destroy;
+
+  g_assert (func != NULL);
+  func (el->data);
+}
+
+static inline void
+steal_destroy_notify (GDataElt *el)
+{
+  if (el->flags & DESTROY_IS_CLEANUP)
+    {
+      g_cleanup_steal (el->destroy, NULL);
+      el->destroy = NULL;
+    }
+}
+
 /* Called with the datalist lock held, or the dataset global
  * lock for dataset lists
  */
@@ -237,7 +269,7 @@ g_datalist_clear_i (GData **datalist)
       for (i = 0; i < data->len; i++)
         {
           if (data->data[i].data && data->data[i].destroy)
-            data->data[i].destroy (data->data[i].data);
+            invoke_destroy_notify (data->data + i);
         }
       G_LOCK (g_dataset_global);
 
@@ -274,7 +306,7 @@ g_datalist_clear (GData **datalist)
       for (i = 0; i < data->len; i++)
         {
           if (data->data[i].data && data->data[i].destroy)
-            data->data[i].destroy (data->data[i].data);
+            invoke_destroy_notify (data->data + i);
         }
 
       g_free (data);
@@ -354,6 +386,8 @@ g_data_set_internal (GData	  **datalist,
 {
   GData *d, *old_d;
   GDataElt old, *data, *data_last, *data_end;
+  GCleanupScope *cleanup;
+  gint flags = 0;
 
   g_datalist_lock (datalist);
 
@@ -404,15 +438,22 @@ g_data_set_internal (GData	  **datalist,
 		   * a special hint combination to "steal"
 		   * data without destroy notification
 		   */
-		  if (old.destroy && !new_destroy_func)
-		    {
-		      if (dataset)
-			G_UNLOCK (g_dataset_global);
-		      old.destroy (old.data);
-		      if (dataset)
-			G_LOCK (g_dataset_global);
-		      old.data = NULL;
-		    }
+                  if (old.destroy)
+                      {
+                        if (!new_destroy_func)
+                          {
+                            if (dataset)
+                              G_UNLOCK (g_dataset_global);
+                            invoke_destroy_notify (&old);
+                            if (dataset)
+                              G_UNLOCK (g_dataset_global);
+                            old.data = NULL;
+                          }
+                        else
+                          {
+                            steal_destroy_notify (&old);
+                          }
+                      }
 
 		  return old.data;
 		}
@@ -422,6 +463,10 @@ g_data_set_internal (GData	  **datalist,
     }
   else
     {
+      cleanup = g_cleanup_scope_for_qdata (key_id);
+      if (cleanup)
+        flags |= DESTROY_IS_CLEANUP;
+
       old.data = NULL;
       if (d)
 	{
@@ -431,16 +476,24 @@ g_data_set_internal (GData	  **datalist,
 	    {
 	      if (data->key == key_id)
 		{
+                  data->flags = flags;
+                  data->data = new_data;
+
+                  if (cleanup)
+                    {
+                      new_destroy_func = g_cleanup_push_pointer (cleanup,
+                                                                 G_CLEANUP_PHASE_LATE,
+                                                                 new_destroy_func, &data->data);
+                      g_cleanup_annotate (new_destroy_func, g_quark_to_string (key_id));
+                    }
 		  if (!data->destroy)
 		    {
-		      data->data = new_data;
 		      data->destroy = new_destroy_func;
 		      g_datalist_unlock (datalist);
 		    }
 		  else
 		    {
 		      old = *data;
-		      data->data = new_data;
 		      data->destroy = new_destroy_func;
 
 		      g_datalist_unlock (datalist);
@@ -451,7 +504,7 @@ g_data_set_internal (GData	  **datalist,
 		       */
 		      if (dataset)
 			G_UNLOCK (g_dataset_global);
-		      old.destroy (old.data);
+                      invoke_destroy_notify (&old);
 		      if (dataset)
 			G_LOCK (g_dataset_global);
 		    }
@@ -477,8 +530,18 @@ g_data_set_internal (GData	  **datalist,
       if (old_d != d)
 	G_DATALIST_SET_POINTER (datalist, d);
 
+      d->data[d->len].flags = flags;
       d->data[d->len].key = key_id;
       d->data[d->len].data = new_data;
+
+      if (cleanup)
+        {
+          new_destroy_func = g_cleanup_push_pointer (cleanup,
+                                                     G_CLEANUP_PHASE_LATE,
+                                                     new_destroy_func, &d->data[d->len].data);
+          g_cleanup_annotate (new_destroy_func, g_quark_to_string (key_id));
+        }
+
       d->data[d->len].destroy = new_destroy_func;
       d->len++;
     }

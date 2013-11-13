@@ -36,6 +36,8 @@ gchar *_glib_get_locale_dir    (void);
 GDir * g_dir_open_with_errno (const gchar *path, guint flags);
 GDir * g_dir_new_from_dirp (gpointer dirp);
 
+GCleanupScope *         g_cleanup_scope_for_qdata       (GQuark qdata);
+
 #define GLIB_PRIVATE_CALL(symbol) (glib__private__()->symbol)
 
 typedef struct {
