@@ -842,7 +842,10 @@ ensure_schema_lists (void)
  *
  * Since: 2.26
  *
- * Deprecated:2.40: Use g_settings_schema_source_list_schemas() instead
+ * Deprecated:2.40: Use g_settings_schema_source_list_schemas() instead.
+ * If you used g_settings_list_schemas() to check for the presence of
+ * a particular schema, use g_settings_schema_source_lookup() instead
+ * of your whole loop.
  **/
 const gchar * const *
 g_settings_list_schemas (void)
