@@ -482,9 +482,9 @@ libgio_2_0_la_SOURCES =		\
 EXTRA_DIST += strinfo.c
 
 libgio_2_0_la_LIBADD = \
-	$(top_builddir)/glib/libglib-2.0.la 		\
 	$(top_builddir)/gobject/libgobject-2.0.la 	\
 	$(top_builddir)/gmodule/libgmodule-2.0.la 	\
+	$(top_builddir)/glib/libglib-2.0.la 		\
 	$(platform_libadd) 				\
 	$(ZLIB_LIBS)					\
 	$(SELINUX_LIBS) 				\
@@ -688,10 +688,10 @@ gio-2.0.lib: libgio-2.0.la gio.def
 
 bin_PROGRAMS = gio-querymodules glib-compile-schemas glib-compile-resources gsettings
 
-glib_compile_resources_LDADD = \
-	$(top_builddir)/glib/libglib-2.0.la \
+glib_compile_resources_LDADD = libgio-2.0.la 		\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
-	libgio-2.0.la
+	$(top_builddir)/glib/libglib-2.0.la 		\
+	$(NULL)
 
 glib_compile_resources_SOURCES = \
 	gvdb/gvdb-format.h		\
@@ -700,11 +700,10 @@ glib_compile_resources_SOURCES = \
 	glib-compile-resources.c
 
 gio_querymodules_SOURCES = gio-querymodules.c
-gio_querymodules_LDADD	 = \
-	$(top_builddir)/glib/libglib-2.0.la		\
+gio_querymodules_LDADD	 = libgio-2.0.la 		\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/gmodule/libgmodule-2.0.la	\
-	libgio-2.0.la					\
+	$(top_builddir)/glib/libglib-2.0.la		\
 	$(NULL)
 
 gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c.pl
@@ -718,10 +717,10 @@ glib_compile_schemas_SOURCES = \
 	gvdb/gvdb-builder.c		\
 	glib-compile-schemas.c
 
-gsettings_LDADD = \
-	$(top_builddir)/glib/libglib-2.0.la		\
+gsettings_LDADD = libgio-2.0.la 			\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
-	libgio-2.0.la
+	$(top_builddir)/glib/libglib-2.0.la		\
+	$(NULL)
 gsettings_SOURCES = gsettings-tool.c
 
 schemadir = $(datadir)/glib-2.0/schemas
@@ -732,18 +731,20 @@ dist_schema_DATA = gschema.dtd
 
 bin_PROGRAMS += gdbus
 gdbus_SOURCES = gdbus-tool.c
-gdbus_LDADD = libgio-2.0.la \
-	$(top_builddir)/glib/libglib-2.0.la 		\
-	$(top_builddir)/gobject/libgobject-2.0.la
+gdbus_LDADD = libgio-2.0.la 				\
+	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/glib/libglib-2.0.la		\
+	$(NULL)
 
 if OS_UNIX
 # ------------------------------------------------------------------------
 # gapplication(1) tool
 bin_PROGRAMS += gapplication
 gapplication_SOURCES = gapplication-tool.c
-gapplication_LDADD = libgio-2.0.la \
+gapplication_LDADD = libgio-2.0.la 			\
+	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/glib/libglib-2.0.la		\
-	$(top_builddir)/gobject/libgobject-2.0.la
+	$(NULL)
 endif
 
 completiondir = $(datadir)/bash-completion/completions
@@ -760,9 +761,9 @@ EXTRA_DIST += $(completion_DATA)
 bin_PROGRAMS += gresource
 gresource_SOURCES = gresource-tool.c
 gresource_CPPFLAGS = $(LIBELF_CFLAGS) $(AM_CPPFLAGS)
-gresource_LDADD = libgio-2.0.la \
-	$(top_builddir)/glib/libglib-2.0.la 		\
-	$(top_builddir)/gobject/libgobject-2.0.la \
+gresource_LDADD = libgio-2.0.la				\
+	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/glib/libglib-2.0.la		\
 	$(LIBELF_LIBS)
 
 # ------------------------------------------------------------------------

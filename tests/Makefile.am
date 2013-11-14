@@ -88,21 +88,21 @@ TESTS_ENVIRONMENT = \
 
 test_programs += module-test
 module_test_DEPENDENCIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
-module_test_LDADD = $(LDADD) $(top_builddir)/gmodule/libgmodule-2.0.la
+module_test_LDADD = $(top_builddir)/gmodule/libgmodule-2.0.la $(LDADD)
 module_test_LDFLAGS = $(G_MODULE_LDFLAGS)
 slice_test_SOURCES = slice-test.c memchunks.c
 slice_color_SOURCES = slice-color.c memchunks.c
-slice_threadinit_LDADD = $(LDADD) $(top_builddir)/gthread/libgthread-2.0.la
+slice_threadinit_LDADD = $(top_builddir)/gthread/libgthread-2.0.la $(LDADD)
 
 test_ltlibraries = libmoduletestplugin_a.la libmoduletestplugin_b.la
 
 libmoduletestplugin_a_la_SOURCES = libmoduletestplugin_a.c
 libmoduletestplugin_a_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined)
-libmoduletestplugin_a_la_LIBADD = $(G_MODULE_LIBS) ../glib/libglib-2.0.la ../gmodule/libgmodule-2.0.la
+libmoduletestplugin_a_la_LIBADD = $(G_MODULE_LIBS) ../gmodule/libgmodule-2.0.la ../glib/libglib-2.0.la
 
 libmoduletestplugin_b_la_SOURCES = libmoduletestplugin_b.c
 libmoduletestplugin_b_la_LDFLAGS = $(G_MODULE_LDFLAGS) -avoid-version -module $(no_undefined)
-libmoduletestplugin_b_la_LIBADD = $(G_MODULE_LIBS) ../glib/libglib-2.0.la ../gmodule/libgmodule-2.0.la
+libmoduletestplugin_b_la_LIBADD = $(G_MODULE_LIBS) ../gmodule/libgmodule-2.0.la ../glib/libglib-2.0.la
 
 if !ENABLE_INSTALLED_TESTS
 # see http://lists.gnu.org/archive/html/bug-libtool/2013-05/msg00009.html and gio/tests/Makefile.am
