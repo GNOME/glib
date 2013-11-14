@@ -840,7 +840,7 @@ AC_CHECK_HEADERS([sys/time.h sys/times.h sys/wait.h unistd.h values.h])
 AC_CHECK_HEADERS([sys/select.h sys/types.h stdint.h inttypes.h sched.h malloc.h])
 AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h sys/filio.h])
 AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
-AC_CHECK_HEADERS([sys/uio.h sys/mkdev.h])
+AC_CHECK_HEADERS([sys/uio.h])
 AC_CHECK_HEADERS([linux/magic.h])
 AC_CHECK_HEADERS([sys/prctl.h])
 
@@ -851,6 +851,7 @@ AC_CHECK_HEADERS([sys/mount.h sys/sysctl.h], [], [],
 ])
 AC_CHECK_FUNCS(sysctlbyname)
 
+AC_HEADER_MAJOR
 AC_CHECK_HEADERS([xlocale.h])
 
 # check for structure fields
