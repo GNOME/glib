@@ -1029,6 +1029,7 @@ AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strn
 AC_CHECK_FUNCS(chown lchmod lchown fchmod fchown link utimes getgrgid getpwuid getresuid)
 AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getfsstat getvfsstat fallocate)
 # Check for high-resolution sleep functions
+case $host_os in aix*) ac_cv_func_splice=no ;; esac # AIX splice() is something else
 AC_CHECK_FUNCS(splice)
 AC_CHECK_FUNCS(prlimit)
 
