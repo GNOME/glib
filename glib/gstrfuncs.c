@@ -1761,6 +1761,8 @@ g_ascii_xdigit_value (gchar c)
  * characters include all ASCII letters. If you compare two CP932
  * strings using this function, you will get false matches.
  *
+ * Both @s1 and @s2 must be non-%NULL.
+ *
  * Return value: 0 if the strings match, a negative value if @s1 &lt; @s2,
  *   or a positive value if @s1 &gt; @s2.
  **/
