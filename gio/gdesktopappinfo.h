@@ -165,6 +165,9 @@ gboolean    g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo          
 GLIB_AVAILABLE_IN_2_40
 gchar *** g_desktop_app_info_search (const gchar *search_string);
 
+GLIB_AVAILABLE_IN_2_42
+GList *g_desktop_app_info_get_implementations (const gchar *interface);
+
 G_END_DECLS
 
 #endif /* __G_DESKTOP_APP_INFO_H__ */
