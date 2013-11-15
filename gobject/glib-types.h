@@ -255,6 +255,15 @@ typedef gsize GType;
 #define G_TYPE_KEY_FILE (g_key_file_get_type ())
 
 /**
+ * G_TYPE_MAPPED_FILE:
+ *
+ * The #GType for a boxed type holding a #GMappedFile.
+ *
+ * Since: 2.40
+ */
+#define G_TYPE_MAPPED_FILE (g_mapped_file_get_type ())
+
+/**
  * G_TYPE_THREAD:
  *
  * The #GType for a boxed type holding a #GThread.
@@ -322,6 +331,8 @@ GLIB_AVAILABLE_IN_2_36
 GType   g_checksum_get_type        (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_36
 GType   g_markup_parse_context_get_type (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_40
+GType   g_mapped_file_get_type (void) G_GNUC_CONST;
 
 GLIB_DEPRECATED_FOR('G_TYPE_VARIANT')
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;

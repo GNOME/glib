@@ -155,6 +155,7 @@ G_DEFINE_BOXED_TYPE (GError, g_error, g_error_copy, g_error_free)
 G_DEFINE_BOXED_TYPE (GDateTime, g_date_time, g_date_time_ref, g_date_time_unref);
 G_DEFINE_BOXED_TYPE (GTimeZone, g_time_zone, g_time_zone_ref, g_time_zone_unref);
 G_DEFINE_BOXED_TYPE (GKeyFile, g_key_file, g_key_file_ref, g_key_file_unref)
+G_DEFINE_BOXED_TYPE (GMappedFile, g_mapped_file, g_mapped_file_ref, g_mapped_file_unref)
 
 G_DEFINE_BOXED_TYPE (GMainLoop, g_main_loop, g_main_loop_ref, g_main_loop_unref)
 G_DEFINE_BOXED_TYPE (GMainContext, g_main_context, g_main_context_ref, g_main_context_unref)
