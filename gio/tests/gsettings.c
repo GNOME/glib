@@ -2412,11 +2412,14 @@ main (int argc, char *argv[])
       g_assert (g_file_set_contents ("org.gtk.test.enums.xml", enums, -1, NULL));
       g_free (enums);
 
-      g_assert (g_file_get_contents (SRCDIR "/org.gtk.test.gschema.xml", &schema_text, NULL, NULL));
+      g_assert (g_file_get_contents (SRCDIR "/org.gtk.test.gschema.xml.orig", &schema_text, NULL, NULL));
       g_assert (g_file_set_contents ("org.gtk.test.gschema.xml", schema_text, -1, NULL));
 
       g_remove ("gschemas.compiled");
-      g_assert (g_spawn_command_line_sync ("../glib-compile-schemas .", NULL, NULL, &result, NULL));
+      g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. "
+                                           "--schema-file=org.gtk.test.enums.xml "
+                                           "--schema-file=org.gtk.test.gschema.xml",
+                                           NULL, NULL, &result, NULL));
       g_assert (result == 0);
 
       g_remove ("schema-source/gschemas.compiled");

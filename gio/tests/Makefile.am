@@ -318,7 +318,7 @@ test.mo: de.po
 	cp -f test.mo de/LC_MESSAGES
 EXTRA_DIST += de.po
 dist_uninstalled_test_data += \
-	org.gtk.test.gschema.xml		\
+	org.gtk.test.gschema.xml.orig		\
 	org.gtk.schemasourcecheck.gschema.xml	\
 	testenum.h				\
 	enums.xml.template
