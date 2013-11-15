@@ -1542,6 +1542,9 @@ g_desktop_app_info_launch_uris_as_manager
 g_desktop_app_info_list_actions
 g_desktop_app_info_get_action_name
 g_desktop_app_info_launch_action
+<SUBSECTION>
+g_desktop_app_info_search
+g_desktop_app_info_get_implementations
 <SUBSECTION Standard>
 GDesktopAppInfoClass
 G_TYPE_DESKTOP_APP_INFO
