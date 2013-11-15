@@ -20,3 +20,4 @@ Terminal=false
 Type=Application
 Categories=GNOME;GTK;AudioVideo;Player;Audio;
 StartupNotify=true
+Implements=org.gnome.Shell.SearchProvider2

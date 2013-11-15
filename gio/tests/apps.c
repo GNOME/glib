@@ -51,6 +51,13 @@ main (int argc, char **argv)
         }
       g_free (results);
     }
+  else if (g_str_equal (argv[1], "implementations"))
+    {
+      GList *results;
+
+      results = g_desktop_app_info_get_implementations (argv[2]);
+      print_app_list (results);
+    }
   else if (g_str_equal (argv[1], "show-info"))
     {
       GAppInfo *info;

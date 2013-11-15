@@ -44,3 +44,4 @@ X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=cheese
 X-GNOME-Bugzilla-Component=general
 X-GNOME-Bugzilla-Version=3.11.1
+Implements=org.freedesktop.ImageProvider

@@ -41,3 +41,4 @@ Keywords[en_GB]=Picture;Slideshow;Graphics;
 Keywords[eo]=Bildo;Lumbildprezentado;Grafiko;
 Keywords[pt]=Imagem;Apresentação;Gráficos;
 Keywords[pt_BR]=Fotos;Apresentação de slides;Gráficos;
+Implements=org.gnome.Shell.SearchProvider2

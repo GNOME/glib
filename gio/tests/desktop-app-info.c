@@ -492,7 +492,7 @@ assert_strings_equivalent (const gchar *expected,
   gint i, j;
 
   expected_words = g_strsplit (expected, " ", 0);
-  result_words = g_strsplit (result, " ", 0);
+  result_words = g_strsplit_set (result, " \n", 0);
 
   for (i = 0; expected_words[i]; i++)
     {
@@ -563,6 +563,20 @@ assert_search (const gchar *search_string,
     assert_strings_equivalent (expected_lines[i], result_lines[i]);
   g_strfreev (expected_lines);
   g_strfreev (result_lines);
+  g_free (result);
+}
+
+static void
+assert_implementations (const gchar *interface,
+                        const gchar *expected,
+                        gboolean     with_usr,
+                        gboolean     with_home)
+{
+  gchar *result;
+
+  result = run_apps ("implementations", interface, with_usr, with_home, NULL, NULL);
+  g_strchomp (result);
+  assert_strings_equivalent (expected, result);
   g_free (result);
 }
 
@@ -671,6 +685,28 @@ test_search (void)
                             "kde4-konqbrowser.desktop\n", TRUE, TRUE, "en_US.UTF-8", "eo");
 }
 
+static void
+test_implements (void)
+{
+  /* Make sure we can find our search providers... */
+  assert_implementations ("org.gnome.Shell.SearchProvider2",
+                       "gnome-music.desktop gnome-contacts.desktop eog.desktop",
+                       TRUE, FALSE);
+
+  /* And our image acquisition possibilities... */
+  assert_implementations ("org.freedesktop.ImageProvider",
+                       "cheese.desktop",
+                       TRUE, FALSE);
+
+  /* Make sure the user's eog is properly masking the system one */
+  assert_implementations ("org.gnome.Shell.SearchProvider2",
+                       "gnome-music.desktop gnome-contacts.desktop",
+                       TRUE, TRUE);
+
+  /* Make sure we get nothing if we have nothing */
+  assert_implementations ("org.gnome.Shell.SearchProvider2", "", FALSE, FALSE);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -690,6 +726,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/extra-getters", test_extra_getters);
   g_test_add_func ("/desktop-app-info/actions", test_actions);
   g_test_add_func ("/desktop-app-info/search", test_search);
+  g_test_add_func ("/desktop-app-info/implements", test_implements);
 
   result = g_test_run ();
 
