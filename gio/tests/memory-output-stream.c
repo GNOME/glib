@@ -209,7 +209,7 @@ test_properties (void)
   int i;
   GError *error = NULL;
   gsize data_size_fun;
-  gsize data_size_prop;
+  gsize data_size_prop = 0;
   gpointer data_fun;
   gpointer data_prop;
   gpointer func;
