@@ -62,19 +62,42 @@ G_DEFINE_TYPE_WITH_CODE (GDummyTlsBackend, g_dummy_tls_backend, G_TYPE_OBJECT,
 							 -100))
 
 static void
-g_dummy_tls_backend_init (GDummyTlsBackend *backend)
+g_dummy_tls_backend_init (GDummyTlsBackend *dummy)
 {
+}
+
+static void
+g_dummy_tls_backend_finalize (GObject *object)
+{
+  GDummyTlsBackend *dummy = G_DUMMY_TLS_BACKEND (object);
+
+  g_clear_object (&dummy->database);
+
+  G_OBJECT_CLASS (g_dummy_tls_backend_parent_class)->finalize (object);
 }
 
 static void
 g_dummy_tls_backend_class_init (GDummyTlsBackendClass *backend_class)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (backend_class);
+
+  object_class->finalize = g_dummy_tls_backend_finalize;
 }
 
-static GTlsDatabase*
+static GTlsDatabase *
 g_dummy_tls_backend_get_default_database (GTlsBackend *backend)
 {
-  return g_object_new (_g_dummy_tls_database_get_type (), NULL);
+  GDummyTlsBackend *dummy = G_DUMMY_TLS_BACKEND (backend);
+
+  if (g_once_init_enter (&dummy->database))
+    {
+      GTlsDatabase *tlsdb;
+
+      tlsdb = g_object_new (_g_dummy_tls_database_get_type (), NULL);
+      g_once_init_leave (&dummy->database, tlsdb);
+    }
+
+  return g_object_ref (dummy->database);
 }
 
 static void
