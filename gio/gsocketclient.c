@@ -32,6 +32,7 @@
 #include <gio/gsocketaddressenumerator.h>
 #include <gio/gsocketconnectable.h>
 #include <gio/gsocketconnection.h>
+#include <gio/gioprivate.h>
 #include <gio/gproxyaddressenumerator.h>
 #include <gio/gproxyaddress.h>
 #include <gio/gtask.h>
@@ -796,7 +797,8 @@ g_socket_client_class_init (GSocketClientClass *class)
    *       @client is about to make a connection to a remote host;
    *       either a proxy server or the destination server itself.
    *       @connection is the #GSocketConnection, which is not yet
-   *       connected.
+   *       connected.  Since GLib 2.40, you can access the remote
+   *       address via g_socket_connection_get_remote_address().
    *     </para></listitem>
    *   </varlistentry>
    *   <varlistentry>
@@ -1084,11 +1086,13 @@ g_socket_client_connect (GSocketClient       *client,
 	}
 
       connection = (GIOStream *)g_socket_connection_factory_create_connection (socket);
+      g_socket_connection_set_cached_remote_address ((GSocketConnection*)connection, address);
       g_socket_client_emit_event (client, G_SOCKET_CLIENT_CONNECTING, connectable, connection);
 
       if (g_socket_connection_connect (G_SOCKET_CONNECTION (connection),
 				       address, cancellable, &last_error))
 	{
+          g_socket_connection_set_cached_remote_address ((GSocketConnection*)connection, NULL);
 	  g_socket_client_emit_event (client, G_SOCKET_CLIENT_CONNECTED, connectable, connection);
 	}
       else
@@ -1542,6 +1546,7 @@ g_socket_client_connected_callback (GObject      *source,
       return;
     }
 
+  g_socket_connection_set_cached_remote_address ((GSocketConnection*)data->connection, NULL);
   g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_CONNECTED, data->connectable, data->connection);
 
   /* wrong, but backward compatible */
@@ -1657,6 +1662,7 @@ g_socket_client_enumerator_callback (GObject      *object,
   data->current_addr = address;
   data->connection = (GIOStream *) g_socket_connection_factory_create_connection (socket);
 
+  g_socket_connection_set_cached_remote_address ((GSocketConnection*)data->connection, address);
   g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_CONNECTING, data->connectable, data->connection);
   g_socket_connection_connect_async (G_SOCKET_CONNECTION (data->connection),
 				     address,

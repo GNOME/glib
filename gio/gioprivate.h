@@ -23,11 +23,17 @@
 
 #include "ginputstream.h"
 #include "goutputstream.h"
+#include "gsocketconnection.h"
+#include "gsocketaddress.h"
 
 G_BEGIN_DECLS
 
 gboolean g_input_stream_async_read_is_via_threads (GInputStream *stream);
 gboolean g_output_stream_async_write_is_via_threads (GOutputStream *stream);
+
+void g_socket_connection_set_cached_remote_address (GSocketConnection *connection,
+                                                    GSocketAddress    *address);
+
 
 G_END_DECLS
 

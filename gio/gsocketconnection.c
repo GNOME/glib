@@ -31,6 +31,7 @@
 
 #include "gsocketoutputstream.h"
 #include "gsocketinputstream.h"
+#include "gioprivate.h"
 #include <gio/giostream.h>
 #include <gio/gtask.h>
 #include "gunixconnection.h"
@@ -71,6 +72,8 @@ struct _GSocketConnectionPrivate
   GSocket       *socket;
   GInputStream  *input_stream;
   GOutputStream *output_stream;
+
+  GSocketAddress *cached_remote_address;
 
   gboolean       in_dispose;
 };
@@ -305,6 +308,13 @@ g_socket_connection_get_local_address (GSocketConnection  *connection,
  *
  * Try to get the remote address of a socket connection.
  *
+ * Since GLib 2.40, when used with g_socket_client_connect() or
+ * g_socket_client_connect_async(), during emission of
+ * %G_SOCKET_CLIENT_CONNECTING, this function will return the remote
+ * address that will be used for the connection.  This allows
+ * applications to print e.g. "Connecting to example.com
+ * (10.42.77.3)...".
+ *
  * Returns: (transfer full): a #GSocketAddress or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
@@ -314,7 +324,25 @@ GSocketAddress *
 g_socket_connection_get_remote_address (GSocketConnection  *connection,
 					GError            **error)
 {
+  if (!g_socket_is_connected (connection->priv->socket))
+    {
+      return connection->priv->cached_remote_address ?
+        g_object_ref (connection->priv->cached_remote_address) : NULL;
+    }
   return g_socket_get_remote_address (connection->priv->socket, error);
+}
+
+/* Private API allowing applications to retrieve the resolved address
+ * now, before we start connecting.
+ *
+ * https://bugzilla.gnome.org/show_bug.cgi?id=712547
+ */
+void
+g_socket_connection_set_cached_remote_address (GSocketConnection *connection,
+                                               GSocketAddress    *address)
+{
+  g_clear_object (&connection->priv->cached_remote_address);
+  connection->priv->cached_remote_address = address ? g_object_ref (address) : NULL;
 }
 
 static void
@@ -369,6 +397,8 @@ g_socket_connection_dispose (GObject *object)
   GSocketConnection *connection = G_SOCKET_CONNECTION (object);
 
   connection->priv->in_dispose = TRUE;
+
+  g_clear_object (&connection->priv->cached_remote_address);
 
   G_OBJECT_CLASS (g_socket_connection_parent_class)
     ->dispose (object);
