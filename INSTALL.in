@@ -21,7 +21,7 @@ information.) Information about pkg-config can be found at:
 
   http://www.freedesktop.org/software/pkgconfig/
 
-GNU make (http://www.gnu.org/software/make) is also recommended.
+GNU make (http://www.gnu.org/software/make) is also required.
 
 In order to implement conversions between character sets,
 GLib requires an implementation of the standard iconv() routine.

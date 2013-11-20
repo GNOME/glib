@@ -75,13 +75,13 @@
       </listitem>
       <listitem>
         <para>
-          The GTK+ makefiles will mostly work with different versions
-          of <command>make</command>, however, there tends to be
-          a few incompatibilities, so the GTK+ team recommends
-          installing <ulink url="http://www.gnu.org/software/make">GNU
-          make</ulink> if you don't already have it on your system
-          and using it. (It may be called <command>gmake</command>
-          rather than <command>make</command>.)
+          The GLib Makefiles make use of several features specific to
+          <ulink url="http://www.gnu.org/software/make">GNU
+          make</ulink>, and will not build correctly with other
+          versions of <command>make</command>. You will need to
+          install it if you don't already have it on your system. (It
+          may be called <command>gmake</command> rather than
+          <command>make</command>.)
         </para>
       </listitem>
     </itemizedlist>
