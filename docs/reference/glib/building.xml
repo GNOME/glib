@@ -51,11 +51,12 @@
     <title>Dependencies</title>
     <para>
       Before you can compile the GLib library, you need to have
-      various other tools and libraries installed on your
-      system. The two tools needed during the build process (as
-      differentiated from the tools used in when creating GLib
-      mentioned above such as <application>autoconf</application>)
-      are <command>pkg-config</command> and GNU make.
+      various other tools and libraries installed on your system.
+      Beyond a C compiler (which must implement C90, but does not need
+      to implement C99), the two tools needed during the build process
+      (as differentiated from the tools used in when creating GLib
+      mentioned above such as <application>autoconf</application>) are
+      <command>pkg-config</command> and GNU make.
     </para>
     <itemizedlist>
       <listitem>
@@ -86,7 +87,9 @@
       </listitem>
     </itemizedlist>
     <para>
-      GLib depends on a number of other libraries.
+      A UNIX build of GLib requires that the system implements at
+      least the original 1990 version of POSIX. Beyond this, it
+      depends on a number of other libraries.
     </para>
     <itemizedlist>
       <listitem>

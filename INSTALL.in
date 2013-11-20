@@ -13,6 +13,10 @@ Simple install procedure
 Requirements
 ============
 
+GLib requires a C90-compliant (but not necessarily C99-compliant) C
+compiler and libc. On UNIX-like systems, it also assumes compliance
+with at least the original 1990 version of POSIX.
+
 GLib-2.0 requires pkg-config, which is tool for tracking the
 compilation flags needed for libraries. (For each library, a small .pc
 text file is installed in a standard location that contains the
