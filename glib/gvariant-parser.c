@@ -2428,6 +2428,10 @@ g_variant_parse (const GVariantType  *type,
  * #GVariant pointer will be returned unmodified, without adding any
  * additional references.
  *
+ * Note that the arguments in @app must be of the correct width for their types
+ * specified in @format when collected into the #va_list. See
+ * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
+ *
  * In order to behave correctly in all cases it is necessary for the
  * calling function to g_variant_ref_sink() the return result before
  * returning control to the user that originally provided the pointer.
@@ -2481,6 +2485,10 @@ g_variant_new_parsed_va (const gchar *format,
  * that case, the same arguments are collected from the argument list as
  * g_variant_new() would have collected.
  *
+ * Note that the arguments must be of the correct width for their types
+ * specified in @format. This can be achieved by casting them. See
+ * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
+ *
  * Consider this simple example:
  * |[<!-- language="C" --> 
  *  g_variant_new_parsed ("[('one', 1), ('two', %i), (%s, 3)]", 2, "three");
@@ -2529,6 +2537,10 @@ g_variant_new_parsed (const gchar *format,
  * This call is a convenience wrapper that is exactly equivalent to
  * calling g_variant_new_parsed() followed by
  * g_variant_builder_add_value().
+ *
+ * Note that the arguments must be of the correct width for their types
+ * specified in @format_string. This can be achieved by casting them. See
+ * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
  *
  * This function might be used as follows:
  *

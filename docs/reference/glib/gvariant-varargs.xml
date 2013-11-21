@@ -466,6 +466,7 @@
     </tgroup>
    </informaltable>
 
+   <anchor id='gvariant-varargs'/>
    <para>
     Note that in C, small integer types in variable argument lists are promoted up to <link
     linkend='gint'><type>int</type></link> or <link linkend='guint'><type>unsigned int</type></link> as appropriate, and

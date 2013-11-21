@@ -5168,6 +5168,21 @@ g_variant_valist_get (const gchar **str,
  * 'r'; in essence, a new #GVariant must always be constructed by this
  * function (and not merely passed through it unmodified).
  *
+ * Note that the arguments must be of the correct width for their types
+ * specified in @format_string. This can be achieved by casting them. See
+ * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
+ *
+ * <programlisting>
+ * MyFlags some_flags = FLAG_ONE | FLAG_TWO;
+ * const gchar *some_strings[] = { "a", "b", "c", NULL };
+ * GVariant *new_variant;
+ *
+ * new_variant = g_variant_new ("(t^as)",
+ *                              /<!-- -->* This cast is required. *<!-- -->/
+ *                              (guint64) some_flags,
+ *                              some_strings);
+ * </programlisting>
+ *
  * Returns: a new floating #GVariant instance
  *
  * Since: 2.24
@@ -5213,6 +5228,10 @@ g_variant_new (const gchar *format_string,
  * @app is a pointer to a #va_list.  The arguments, according to
  * @format_string, are collected from this #va_list and the list is left
  * pointing to the argument following the last.
+ *
+ * Note that the arguments in @app must be of the correct width for their types
+ * specified in @format_string when collected into the #va_list. See
+ * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
  *
  * These two generalisations allow mixing of multiple calls to
  * g_variant_new_va() and g_variant_get_va() within a single actual
@@ -5364,6 +5383,10 @@ g_variant_get_va (GVariant     *value,
  *
  * This call is a convenience wrapper that is exactly equivalent to
  * calling g_variant_new() followed by g_variant_builder_add_value().
+ *
+ * Note that the arguments must be of the correct width for their types
+ * specified in @format_string. This can be achieved by casting them. See
+ * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
  *
  * This function might be used as follows:
  *
