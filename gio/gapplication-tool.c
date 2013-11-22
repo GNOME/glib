@@ -336,9 +336,13 @@ app_action (gchar **args)
 
       if (!parameter)
         {
-          g_printerr (_("error parsing action parameter: %s\n"), error->message);
+          gchar *context;
+
+          context = g_variant_parse_error_print_context (error, args[2]);
+          g_printerr (_("error parsing action parameter: %s\n"), context);
           g_variant_builder_clear (&params);
           g_error_free (error);
+          g_free (context);
           return 1;
         }
 
