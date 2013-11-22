@@ -671,18 +671,24 @@ handle_emit (gint        *argc,
                                &error);
       if (value == NULL)
         {
+          gchar *context;
+
+          context = g_variant_parse_error_print_context (error, (*argv)[n]);
           g_error_free (error);
           error = NULL;
           value = _g_variant_parse_me_harder (NULL, (*argv)[n], &error);
           if (value == NULL)
             {
+              /* Use the original non-"parse-me-harder" error */
               g_printerr (_("Error parsing parameter %d: %s\n"),
                           n,
-                          error->message);
+                          context);
               g_error_free (error);
+              g_free (context);
               g_variant_builder_clear (&builder);
               goto out;
             }
+          g_free (context);
         }
       g_variant_builder_add_value (&builder, value);
     }
@@ -973,6 +979,9 @@ handle_call (gint        *argc,
                                &error);
       if (value == NULL)
         {
+          gchar *context;
+
+          context = g_variant_parse_error_print_context (error, (*argv)[n]);
           g_error_free (error);
           error = NULL;
           value = _g_variant_parse_me_harder (type, (*argv)[n], &error);
@@ -984,19 +993,21 @@ handle_call (gint        *argc,
                   g_printerr (_("Error parsing parameter %d of type '%s': %s\n"),
                               n,
                               s,
-                              error->message);
+                              context);
                   g_free (s);
                 }
               else
                 {
                   g_printerr (_("Error parsing parameter %d: %s\n"),
                               n,
-                              error->message);
+                              context);
                 }
               g_error_free (error);
               g_variant_builder_clear (&builder);
+              g_free (context);
               goto out;
             }
+          g_free (context);
         }
       g_variant_builder_add_value (&builder, value);
     }
