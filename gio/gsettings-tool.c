@@ -467,7 +467,10 @@ gsettings_set (void)
 
   if (new == NULL)
     {
-      g_printerr ("%s\n", error->message);
+      gchar *context;
+
+      context = g_variant_parse_error_print_context (error, global_value);
+      g_printerr ("%s", context);
       exit (1);
     }
 
