@@ -2521,23 +2521,23 @@ g_variant_new_parsed (const gchar *format,
  *
  * This function might be used as follows:
  *
- * <programlisting>
+ * |[
  * GVariant *
  * make_pointless_dictionary (void)
  * {
- *   GVariantBuilder *builder;
+ *   GVariantBuilder builder;
  *   int i;
  *
- *   builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
- *   g_variant_builder_add_parsed (builder, "{'width', <%i>}", 600);
- *   g_variant_builder_add_parsed (builder, "{'title', <%s>}", "foo");
- *   g_variant_builder_add_parsed (builder, "{'transparency', <0.5>}");
- *   return g_variant_builder_end (builder);
+ *   g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+ *   g_variant_builder_add_parsed (&builder, "{'width', <%i>}", 600);
+ *   g_variant_builder_add_parsed (&builder, "{'title', <%s>}", "foo");
+ *   g_variant_builder_add_parsed (&builder, "{'transparency', <0.5>}");
+ *   return g_variant_builder_end (&builder);
  * }
- * </programlisting>
+ * ]|
  *
  * Since: 2.26
- **/
+ */
 void
 g_variant_builder_add_parsed (GVariantBuilder *builder,
                               const gchar     *format,

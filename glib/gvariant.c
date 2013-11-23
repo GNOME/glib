@@ -4884,7 +4884,7 @@ g_variant_get_va (GVariant     *value,
 /* Varargs-enabled Utility Functions {{{1 */
 
 /**
- * g_variant_builder_add: (skp)
+ * g_variant_builder_add: (skip)
  * @builder: a #GVariantBuilder
  * @format_string: a #GVariant varargs format string
  * @...: arguments, as per @format_string
@@ -4896,28 +4896,28 @@ g_variant_get_va (GVariant     *value,
  *
  * This function might be used as follows:
  *
- * <programlisting>
+ * |[
  * GVariant *
  * make_pointless_dictionary (void)
  * {
- *   GVariantBuilder *builder;
+ *   GVariantBuilder builder;
  *   int i;
  *
- *   builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
+ *   g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
  *   for (i = 0; i < 16; i++)
  *     {
  *       gchar buf[3];
  *
  *       sprintf (buf, "%d", i);
- *       g_variant_builder_add (builder, "{is}", i, buf);
+ *       g_variant_builder_add (&builder, "{is}", i, buf);
  *     }
  *
- *   return g_variant_builder_end (builder);
+ *   return g_variant_builder_end (&builder);
  * }
- * </programlisting>
+ * ]|
  *
  * Since: 2.24
- **/
+ */
 void
 g_variant_builder_add (GVariantBuilder *builder,
                        const gchar     *format_string,
