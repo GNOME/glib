@@ -5,4 +5,8 @@ provider glib {
 	probe slice__alloc(void*, unsigned int);
 	probe slice__free(void*, unsigned int);
 	probe quark__new(char *, unsigned int);
+	probe main__before_dispatch (char *);
+        probe main__after_dispatch (char *);
+        probe main__source_attach(char*);
+        probe main__source_destroy(char*);
 };

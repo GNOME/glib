@@ -82,3 +82,25 @@ probe glib.slice_free = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_
   n_bytes = $arg2; 
   probestr = sprintf("glib.slice_free(n_bytes=%d) -> %p", n_bytes, mem);
 }
+
+/**
+ *  * probe glib.main_before_dispatch - Called before dispatching a GSource
+ *   * @source: name of the source
+ *    * @callback: address of the callback
+ *     */
+probe glib.main_before_dispatch = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("main__before_dispatch")
+{
+	source = user_string2($arg1, "unnamed");
+	probestr = sprintf("glib.main_before_dispatch(source=%s)", source);
+}
+
+/**
+ *  * probe glib.main_after_dispatch - Called after dispatching a GSource
+ *   * @source: name of the source
+ *    * @callback: address of the callback
+ *     */
+probe glib.main_after_dispatch = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("main__after_dispatch")
+{
+	source = user_string2($arg1, "unnamed");
+	probestr = sprintf("glib.main_after_dispatch(source=%s)", source);
+}
