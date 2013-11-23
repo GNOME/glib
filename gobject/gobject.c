@@ -1162,6 +1162,11 @@ g_object_notify_by_spec_internal (GObject    *object,
  * When possible, eg. when signaling a property change from within the class
  * that registered the property, you should use g_object_notify_by_pspec()
  * instead.
+ *
+ * Note that emission of the notify signal may be blocked with
+ * g_object_freeze_notify(). In this case, the signal emissions are queued
+ * and will be emitted (in reverse order) when g_object_thaw_notify() is
+ * called.
  */
 void
 g_object_notify (GObject     *object,
@@ -1265,7 +1270,8 @@ g_object_notify_by_pspec (GObject    *object,
  * and when it reaches zero, queued "notify" signals are emitted.
  *
  * Duplicate notifications for each property are squashed so that at most one
- * #GObject::notify signal is emitted for each property.
+ * #GObject::notify signal is emitted for each property, in the reverse order
+ * in which they have been queued.
  *
  * It is an error to call this function when the freeze count is zero.
  */
@@ -2193,6 +2199,10 @@ g_object_get_valist (GObject	 *object,
  *  name/value pairs, followed by %NULL
  *
  * Sets properties on an object.
+ *
+ * Note that the "notify" signals are queued and only emitted (in
+ * reverse order) after all properties have been set. See
+ * g_object_freeze_notify().
  */
 void
 g_object_set (gpointer     _object,
