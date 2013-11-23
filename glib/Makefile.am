@@ -145,7 +145,6 @@ libglib_2_0_la_SOURCES = 	\
 	gmarkup.c		\
 	gmem.c			\
 	gmessages.c		\
-	gmessages-private.h	\
 	gmirroringtable.h	\
 	gnode.c			\
 	goption.c		\

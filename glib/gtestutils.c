@@ -21,7 +21,6 @@
 #include "config.h"
 
 #include "gtestutils.h"
-#include "gmessages-private.h"
 #include "gfileutils.h"
 
 #include <sys/types.h>
@@ -56,7 +55,6 @@
 #include "gslice.h"
 #include "gspawn.h"
 #include "glib-private.h"
-#include "gmessages-private.h"
 
 
 /**
@@ -892,7 +890,6 @@ parse_args (gint    *argc_p,
             (void) setrlimit (RLIMIT_CORE, &limit);
           }
 #endif
-          _g_log_set_exit_on_fatal ();
           argv[i] = NULL;
         }
       else if (strcmp ("-p", argv[i]) == 0 || strncmp ("-p=", argv[i], 3) == 0)
@@ -2307,7 +2304,17 @@ g_assertion_message (const char     *domain,
   strcpy (__glib_assert_msg, s);
 
   g_free (s);
-  _g_log_abort ();
+
+  if (test_in_subprocess)
+    {
+      /* If this is a test case subprocess then it probably hit this
+       * assertion on purpose, so just exit() rather than abort()ing,
+       * to avoid triggering any system crash-reporting daemon.
+       */
+      _exit (1);
+    }
+  else
+    abort ();
 }
 
 void
@@ -2324,7 +2331,15 @@ g_assertion_message_expr (const char     *domain,
     s = g_strconcat ("assertion failed: (", expr, ")", NULL);
   g_assertion_message (domain, file, line, func, s);
   g_free (s);
-  abort ();
+
+  /* Normally g_assertion_message() won't return, but we need this for
+   * when test_nonfatal_assertions is set, since
+   * g_assertion_message_expr() is used for always-fatal assertions.
+   */
+  if (test_in_subprocess)
+    _exit (1);
+  else
+    abort ();
 }
 
 void

@@ -56,8 +56,6 @@
 #include <locale.h>
 #include <errno.h>
 
-#include "gmessages-private.h"
-
 #include "glib-init.h"
 #include "gbacktrace.h"
 #include "gcharset.h"
@@ -285,7 +283,6 @@ static GLogDomain    *g_log_domains = NULL;
 static GPrintFunc     glib_print_func = NULL;
 static GPrintFunc     glib_printerr_func = NULL;
 static GPrivate       g_log_depth;
-static gboolean       exit_on_fatal;
 static GLogFunc       default_log_func = g_log_default_handler;
 static gpointer       default_log_data = NULL;
 static GTestLogFatalFunc fatal_log_func = NULL;
@@ -293,11 +290,20 @@ static gpointer          fatal_log_data;
 
 /* --- functions --- */
 
-void
+static void _g_log_abort (void) G_GNUC_NORETURN;
+
+static void
 _g_log_abort (void)
 {
-  if (exit_on_fatal)
-    _exit (1);
+  if (g_test_subprocess ())
+    {
+      /* If this is a test case subprocess then it probably caused
+       * this error message on purpose, so just exit() rather than
+       * abort()ing, to avoid triggering any system crash-reporting
+       * daemon.
+       */
+      _exit (1);
+    }
   else
     abort ();
 }
@@ -1017,11 +1023,7 @@ g_logv (const gchar   *log_domain,
                 && !fatal_log_func (log_domain, test_level, msg, fatal_log_data);
             }
 
-          if ((test_level & G_LOG_FLAG_FATAL) && exit_on_fatal && !masquerade_fatal)
-            {
-              _g_log_abort ();
-            }
-	  else if ((test_level & G_LOG_FLAG_FATAL) && !masquerade_fatal)
+          if ((test_level & G_LOG_FLAG_FATAL) && !masquerade_fatal)
             {
 #ifdef G_OS_WIN32
               if (win32_keep_fatal_message)
@@ -1034,12 +1036,12 @@ g_logv (const gchar   *log_domain,
 	      if (IsDebuggerPresent () && !(test_level & G_LOG_FLAG_RECURSION))
 		G_BREAKPOINT ();
 	      else
-		abort ();
+		_g_log_abort ();
 #else
 	      if (!(test_level & G_LOG_FLAG_RECURSION))
 		G_BREAKPOINT ();
 	      else
-		abort ();
+		_g_log_abort ();
 #endif /* !G_OS_WIN32 */
 	    }
 	  
@@ -1633,10 +1635,4 @@ g_printf_string_upper_bound (const gchar *format,
 {
   gchar c;
   return _g_vsnprintf (&c, 1, format, args) + 1;
-}
-
-void
-_g_log_set_exit_on_fatal (void)
-{
-  exit_on_fatal = TRUE;
 }
