@@ -215,6 +215,44 @@ properties_notify (void)
   g_object_unref (obj);
 }
 
+typedef struct {
+  GParamSpec *pspec[3];
+  gint pos;
+} Notifys;
+
+static void
+on_notify2 (GObject    *gobject,
+            GParamSpec *pspec,
+            Notifys    *n)
+{
+  g_assert (n->pspec[n->pos] == pspec);
+  n->pos++;
+}
+
+static void
+properties_notify_queue (void)
+{
+  TestObject *obj = g_object_new (test_object_get_type (), NULL);
+  Notifys n;
+
+  g_assert (properties[PROP_FOO] != NULL);
+
+  n.pspec[0] = properties[PROP_BAZ];
+  n.pspec[1] = properties[PROP_BAR];
+  n.pspec[2] = properties[PROP_FOO];
+  n.pos = 0;
+
+  g_signal_connect (obj, "notify", G_CALLBACK (on_notify2), &n);
+
+  g_object_freeze_notify (G_OBJECT (obj));
+  g_object_set (obj, "foo", 47, NULL);
+  g_object_set (obj, "bar", TRUE, "foo", 42, "baz", "abc", NULL);
+  g_object_thaw_notify (G_OBJECT (obj));
+  g_assert (n.pos == 3);
+
+  g_object_unref (obj);
+}
+
 static void
 properties_construct (void)
 {
@@ -269,6 +307,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/properties/install", properties_install);
   g_test_add_func ("/properties/notify", properties_notify);
+  g_test_add_func ("/properties/notify-queue", properties_notify_queue);
   g_test_add_func ("/properties/construct", properties_construct);
 
   return g_test_run ();
