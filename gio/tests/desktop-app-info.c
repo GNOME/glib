@@ -527,7 +527,9 @@ assert_strings_equivalent (const gchar *expected,
         if (g_str_equal (expected_words[i], result_words[j]))
           goto got_it;
 
-      g_error ("Unable to find expected string '%s' in result '%s'", expected_words[i], result);
+      g_test_message ("Unable to find expected string '%s' in result '%s'", expected_words[i], result);
+      g_test_fail ();
+
 got_it:
       continue;
     }
@@ -679,12 +681,12 @@ test_search (void)
                "Access and organize files\n", TRUE, TRUE, NULL, NULL);
 
   /* make sure localised searching works properly */
-  assert_search ("foliumi", "kde4-konqbrowser.desktop\n"
-                            "nautilus.desktop\n"
+  assert_search ("foliumi", "nautilus.desktop\n"
+                            "kde4-konqbrowser.desktop\n"
                             "eog.desktop\n", TRUE, FALSE, "en_US.UTF-8", "eo");
   /* the user's eog.desktop has no translations... */
-  assert_search ("foliumi", "kde4-konqbrowser.desktop\n"
-                            "nautilus.desktop\n", TRUE, TRUE, "en_US.UTF-8", "eo");
+  assert_search ("foliumi", "nautilus.desktop\n"
+                            "kde4-konqbrowser.desktop\n", TRUE, TRUE, "en_US.UTF-8", "eo");
 }
 
 int
