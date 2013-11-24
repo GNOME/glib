@@ -600,9 +600,9 @@ AC_CACHE_CHECK([for growing stack pointer],glib_cv_stack_grows,[
 	int main () { volatile int y = 7; a = &y; foo (); return b > a; }
 	void foo (void) { volatile int x = 5; b = &x; }
        	],
-	glib_cv_stack_grows=no
-        ,
 	glib_cv_stack_grows=yes
+        ,
+	glib_cv_stack_grows=no
         ,)
 ])
 
