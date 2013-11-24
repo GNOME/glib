@@ -596,9 +596,8 @@ dnl
 AC_CACHE_CHECK([for growing stack pointer],glib_cv_stack_grows,[
         AC_TRY_RUN([
 	volatile int *a = 0, *b = 0;
-	void foo (void);
-	int main () { volatile int y = 7; a = &y; foo (); return b > a; }
-	void foo (void) { volatile int x = 5; b = &x; }
+	void f (int i) { volatile int x = 5; if (i == 0) b = &x; else f (i - 1); }
+	int main () { volatile int y = 7; a = &y; f (100); return b > a; }
        	],
 	glib_cv_stack_grows=yes
         ,
