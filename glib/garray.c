@@ -1284,7 +1284,7 @@ g_ptr_array_remove_range (GPtrArray *farray,
         array->pdata[array->len + i] = NULL;
     }
 
-  return array;
+  return farray;
 }
 
 /**
