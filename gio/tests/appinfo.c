@@ -15,7 +15,7 @@ test_launch (void)
   const gchar *path;
   gchar *uri;
 
-  if (!g_getenv ("DISPLAY"))
+  if (g_getenv ("DISPLAY") == NULL || g_getenv ("DISPLAY")[0] == '\0')
     {
       g_printerr ("No DISPLAY.  Skipping test.  ");
       return;
