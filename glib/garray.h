@@ -163,7 +163,7 @@ GLIB_AVAILABLE_IN_ALL
 gboolean   g_ptr_array_remove_fast        (GPtrArray        *array,
 					   gpointer          data);
 GLIB_AVAILABLE_IN_ALL
-void       g_ptr_array_remove_range       (GPtrArray        *array,
+GPtrArray *g_ptr_array_remove_range       (GPtrArray        *array,
 					   guint             index_,
 					   guint             length);
 GLIB_AVAILABLE_IN_ALL

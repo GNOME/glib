@@ -1238,18 +1238,20 @@ g_ptr_array_remove_index_fast (GPtrArray *farray,
 
 /**
  * g_ptr_array_remove_range:
- * @array: a @GPtrArray.
- * @index_: the index of the first pointer to remove.
- * @length: the number of pointers to remove.
+ * @array: a @GPtrArray
+ * @index_: the index of the first pointer to remove
+ * @length: the number of pointers to remove
  *
  * Removes the given number of pointers starting at the given index
  * from a #GPtrArray.  The following elements are moved to close the
  * gap. If @array has a non-%NULL #GDestroyNotify function it is called
  * for the removed elements.
  *
+ * Returns: the @array
+ *
  * Since: 2.4
  **/
-void
+GPtrArray *
 g_ptr_array_remove_range (GPtrArray *farray,
                           guint      index_,
                           guint      length)
@@ -1257,9 +1259,9 @@ g_ptr_array_remove_range (GPtrArray *farray,
   GRealPtrArray* array = (GRealPtrArray*) farray;
   guint n;
 
-  g_return_if_fail (array);
-  g_return_if_fail (index_ < array->len);
-  g_return_if_fail (index_ + length <= array->len);
+  g_return_val_if_fail (array != NULL, NULL);
+  g_return_val_if_fail (index_ < array->len, NULL);
+  g_return_val_if_fail (index_ + length <= array->len, NULL);
 
   if (array->element_free_func != NULL)
     {
@@ -1281,6 +1283,8 @@ g_ptr_array_remove_range (GPtrArray *farray,
       for (i = 0; i < length; i++)
         array->pdata[array->len + i] = NULL;
     }
+
+  return array;
 }
 
 /**
