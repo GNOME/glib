@@ -829,8 +829,10 @@ g_hash_table_iter_remove (GHashTableIter *iter)
  * If @key has been taken out of the existing node (ie it is not
  * passed in via a g_hash_table_insert/replace) call, then @reusing_key
  * should be %TRUE.
+ *
+ * Returns: %TRUE if the key did not exist yet
  */
-static void
+static gboolean
 g_hash_table_insert_node (GHashTable *hash_table,
                           guint       node_index,
                           guint       key_hash,
@@ -921,6 +923,8 @@ g_hash_table_insert_node (GHashTable *hash_table,
       if (hash_table->value_destroy_func)
         (* hash_table->value_destroy_func) (value_to_free);
     }
+
+  return !already_exists;
 }
 
 /**
@@ -1138,8 +1142,10 @@ g_hash_table_lookup_extended (GHashTable    *hash_table,
  * Do a lookup of @key. If it is found, replace it with the new
  * @value (and perhaps the new @key). If it is not found, create
  * a new node.
+ *
+ * Returns: %TRUE if the key did not exist yet
  */
-static void
+static gboolean
 g_hash_table_insert_internal (GHashTable *hash_table,
                               gpointer    key,
                               gpointer    value,
@@ -1148,11 +1154,11 @@ g_hash_table_insert_internal (GHashTable *hash_table,
   guint key_hash;
   guint node_index;
 
-  g_return_if_fail (hash_table != NULL);
+  g_return_val_if_fail (hash_table != NULL, FALSE);
 
   node_index = g_hash_table_lookup_node (hash_table, key, &key_hash);
 
-  g_hash_table_insert_node (hash_table, node_index, key_hash, key, value, keep_new_key, FALSE);
+  return g_hash_table_insert_node (hash_table, node_index, key_hash, key, value, keep_new_key, FALSE);
 }
 
 /**
@@ -1169,13 +1175,15 @@ g_hash_table_insert_internal (GHashTable *hash_table,
  * value is freed using that function. If you supplied a
  * @key_destroy_func when creating the #GHashTable, the passed
  * key is freed using that function.
+ *
+ * Returns: %TRUE if the key did not exist yet
  */
-void
+gboolean
 g_hash_table_insert (GHashTable *hash_table,
                      gpointer    key,
                      gpointer    value)
 {
-  g_hash_table_insert_internal (hash_table, key, value, FALSE);
+  return g_hash_table_insert_internal (hash_table, key, value, FALSE);
 }
 
 /**
@@ -1191,13 +1199,15 @@ g_hash_table_insert (GHashTable *hash_table,
  * the #GHashTable, the old value is freed using that function.
  * If you supplied a @key_destroy_func when creating the
  * #GHashTable, the old key is freed using that function.
+ *
+ * Returns: %TRUE of the key did not exist yet
  */
-void
+gboolean
 g_hash_table_replace (GHashTable *hash_table,
                       gpointer    key,
                       gpointer    value)
 {
-  g_hash_table_insert_internal (hash_table, key, value, TRUE);
+  return g_hash_table_insert_internal (hash_table, key, value, TRUE);
 }
 
 /**
@@ -1213,13 +1223,15 @@ g_hash_table_replace (GHashTable *hash_table,
  * corresponding value it is able to be stored more efficiently.  See
  * the discussion in the section description.
  *
+ * Returns: %TRUE if the key did not exist yet
+ *
  * Since: 2.32
- **/
-void
+ */
+gboolean
 g_hash_table_add (GHashTable *hash_table,
                   gpointer    key)
 {
-  g_hash_table_insert_internal (hash_table, key, key, TRUE);
+  return g_hash_table_insert_internal (hash_table, key, key, TRUE);
 }
 
 /**

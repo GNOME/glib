@@ -508,8 +508,10 @@ set_hash_test (void)
   for (i = 2; i < 5000; i += 7)
     {
       char *s = g_strdup_printf ("%d", i);
-      g_hash_table_add (hash_table, s);
+      g_assert (g_hash_table_add (hash_table, s));
     }
+
+  g_assert (!g_hash_table_add (hash_table, g_strdup_printf ("%d", 2)));
 
   i = 0;
   g_hash_table_foreach (hash_table, set_check, &i);
@@ -520,7 +522,11 @@ set_hash_test (void)
   g_assert (!g_hash_table_contains (hash_table, "a"));
 
   /* this will cause the hash table to loose set nature */
-  g_hash_table_insert (hash_table, g_strdup ("a"), "b");
+  g_assert (g_hash_table_insert (hash_table, g_strdup ("a"), "b"));
+  g_assert (!g_hash_table_insert (hash_table, g_strdup ("a"), "b"));
+
+  g_assert (g_hash_table_replace (hash_table, g_strdup ("c"), "d"));
+  g_assert (!g_hash_table_replace (hash_table, g_strdup ("c"), "d"));
 
   g_assert_cmpstr (g_hash_table_lookup (hash_table, "2"), ==, "2");
   g_assert_cmpstr (g_hash_table_lookup (hash_table, "a"), ==, "b");

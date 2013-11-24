@@ -66,15 +66,15 @@ GHashTable* g_hash_table_new_full          (GHashFunc       hash_func,
 GLIB_AVAILABLE_IN_ALL
 void        g_hash_table_destroy           (GHashTable     *hash_table);
 GLIB_AVAILABLE_IN_ALL
-void        g_hash_table_insert            (GHashTable     *hash_table,
+gboolean    g_hash_table_insert            (GHashTable     *hash_table,
                                             gpointer        key,
                                             gpointer        value);
 GLIB_AVAILABLE_IN_ALL
-void        g_hash_table_replace           (GHashTable     *hash_table,
+gboolean    g_hash_table_replace           (GHashTable     *hash_table,
                                             gpointer        key,
                                             gpointer        value);
 GLIB_AVAILABLE_IN_ALL
-void        g_hash_table_add               (GHashTable     *hash_table,
+gboolean    g_hash_table_add               (GHashTable     *hash_table,
                                             gpointer        key);
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_hash_table_remove            (GHashTable     *hash_table,
