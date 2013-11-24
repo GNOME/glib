@@ -75,6 +75,7 @@ static GType enum_type;
 static GType flags_type;
 
 static guint simple_id;
+static guint simple2_id;
 
 typedef struct _Test Test;
 typedef struct _TestClass TestClass;
@@ -116,6 +117,14 @@ test_class_init (TestClass *klass)
   simple_id = g_signal_new ("simple",
                 G_TYPE_FROM_CLASS (klass),
                 G_SIGNAL_RUN_LAST,
+                0,
+                NULL, NULL,
+                NULL,
+                G_TYPE_NONE,
+                0);
+  simple2_id = g_signal_new ("simple-2",
+                G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE,
                 0,
                 NULL, NULL,
                 NULL,
@@ -877,6 +886,42 @@ test_emission_hook (void)
   g_object_unref (test2);
 }
 
+static void
+simple_cb (gpointer instance, gpointer data)
+{
+  GSignalInvocationHint *ihint;
+
+  ihint = g_signal_get_invocation_hint (instance);
+
+  g_assert_cmpstr (g_signal_name (ihint->signal_id), ==, "simple");
+
+  g_signal_emit_by_name (instance, "simple-2");
+}
+
+static void
+simple2_cb (gpointer instance, gpointer data)
+{
+  GSignalInvocationHint *ihint;
+
+  ihint = g_signal_get_invocation_hint (instance);
+
+  g_assert_cmpstr (g_signal_name (ihint->signal_id), ==, "simple-2");
+}
+
+static void
+test_invocation_hint (void)
+{
+  GObject *test;
+
+  test = g_object_new (test_get_type (), NULL);
+
+  g_signal_connect (test, "simple", G_CALLBACK (simple_cb), NULL);
+  g_signal_connect (test, "simple-2", G_CALLBACK (simple2_cb), NULL);
+  g_signal_emit_by_name (test, "simple");
+
+  g_object_unref (test);
+}
+
 static gboolean
 in_set (const gchar *s,
         const gchar *set[])
@@ -901,6 +946,7 @@ test_introspection (void)
   gint i;
   const gchar *names[] = {
     "simple",
+    "simple-2",
     "generic-marshaller-1",
     "generic-marshaller-2",
     "generic-marshaller-enum-return-signed",
@@ -1066,6 +1112,7 @@ main (int argc,
   g_test_add_func ("/gobject/signals/introspection", test_introspection);
   g_test_add_func ("/gobject/signals/block-handler", test_block_handler);
   g_test_add_func ("/gobject/signals/stop-emission", test_stop_emission);
+  g_test_add_func ("/gobject/signals/invocation-hint", test_invocation_hint);
 
   return g_test_run ();
 }
