@@ -168,6 +168,8 @@ strv_set_equal (gchar **strv, ...)
   return res;
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 static void
 test_simple_group (void)
 {
@@ -237,6 +239,8 @@ test_simple_group (void)
   g_object_unref (group);
   g_assert (!a.did_run);
 }
+
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_stateful (void)
@@ -319,6 +323,8 @@ change_volume_state (GSimpleAction *action,
     g_simple_action_set_state (action, value);
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 static void
 test_entries (void)
 {
@@ -387,6 +393,8 @@ test_entries (void)
 
   g_object_unref (actions);
 }
+
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_parse_detailed (void)
@@ -678,6 +686,8 @@ call_describe (gpointer user_data)
   return G_SOURCE_REMOVE;
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 static void
 test_dbus_export (void)
 {
@@ -878,6 +888,8 @@ test_dbus_threaded (void)
 
   session_bus_down ();
 }
+
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_bug679509 (void)
@@ -1088,6 +1100,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/parse-detailed", test_parse_detailed);
   g_test_add_func ("/actions/dbus/export", test_dbus_export);
   g_test_add_func ("/actions/dbus/threaded", test_dbus_threaded);
+  g_test_add_func ("/actions/dbus/bug679509", test_bug679509);
   g_test_add_func ("/actions/property", test_property_actions);
 
   return g_test_run ();
