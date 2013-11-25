@@ -38,8 +38,8 @@
 /**
  * GBytes:
  *
- * A simple refcounted data type representing an immutable byte sequence
- * from an unspecified origin.
+ * A simple refcounted data type representing an immutable sequence of zero or
+ * more bytes from an unspecified origin.
  *
  * The purpose of a #GBytes is to keep the memory region that it holds
  * alive for as long as anyone holds a reference to the bytes.  When
@@ -68,8 +68,8 @@
 
 struct _GBytes
 {
-  gconstpointer data;
-  gsize size;
+  gconstpointer data;  /* may be NULL iff (size == 0) */
+  gsize size;  /* may be 0 */
   gint ref_count;
   GDestroyNotify free_func;
   gpointer user_data;
@@ -77,13 +77,13 @@ struct _GBytes
 
 /**
  * g_bytes_new:
- * @data: (transfer none) (array length=size) (element-type guint8):
+ * @data: (transfer none) (array length=size) (element-type guint8) (allow-none):
  *        the data to be used for the bytes
  * @size: the size of @data
  *
  * Creates a new #GBytes from @data.
  *
- * @data is copied.
+ * @data is copied. If @size is 0, @data may be %NULL.
  *
  * Returns: (transfer full): a new #GBytes
  *
@@ -93,12 +93,14 @@ GBytes *
 g_bytes_new (gconstpointer data,
              gsize         size)
 {
+  g_return_val_if_fail (data != NULL || size == 0, NULL);
+
   return g_bytes_new_take (g_memdup (data, size), size);
 }
 
 /**
  * g_bytes_new_take:
- * @data: (transfer full) (array length=size) (element-type guint8):
+ * @data: (transfer full) (array length=size) (element-type guint8) (allow-none):
           the data to be used for the bytes
  * @size: the size of @data
  *
@@ -112,6 +114,8 @@ g_bytes_new (gconstpointer data,
  *
  * For creating #GBytes with memory from other allocators, see
  * g_bytes_new_with_free_func().
+ *
+ * @data may be %NULL if @size is 0.
  *
  * Returns: (transfer full): a new #GBytes
  *
@@ -127,13 +131,14 @@ g_bytes_new_take (gpointer data,
 
 /**
  * g_bytes_new_static: (skip)
- * @data: (transfer full) (array length=size) (element-type guint8):
+ * @data: (transfer full) (array length=size) (element-type guint8) (allow-none):
           the data to be used for the bytes
  * @size: the size of @data
  *
  * Creates a new #GBytes from static data.
  *
- * @data must be static (ie: never modified or freed).
+ * @data must be static (ie: never modified or freed). It may be %NULL if @size
+ * is 0.
  *
  * Returns: (transfer full): a new #GBytes
  *
@@ -148,7 +153,7 @@ g_bytes_new_static (gconstpointer data,
 
 /**
  * g_bytes_new_with_free_func:
- * @data: (array length=size): the data to be used for the bytes
+ * @data: (array length=size) (allow-none): the data to be used for the bytes
  * @size: the size of @data
  * @free_func: the function to call to release the data
  * @user_data: data to pass to @free_func
@@ -161,6 +166,8 @@ g_bytes_new_static (gconstpointer data,
  * @data must not be modified after this call is made until @free_func has
  * been called to indicate that the bytes is no longer in use.
  *
+ * @data may be %NULL if @size is 0.
+ *
  * Returns: (transfer full): a new #GBytes
  *
  * Since: 2.32
@@ -172,6 +179,8 @@ g_bytes_new_with_free_func (gconstpointer  data,
                             gpointer       user_data)
 {
   GBytes *bytes;
+
+  g_return_val_if_fail (data != NULL || size == 0, NULL);
 
   bytes = g_slice_new (GBytes);
   bytes->data = data;
@@ -204,6 +213,7 @@ g_bytes_new_from_bytes (GBytes  *bytes,
                         gsize    offset,
                         gsize    length)
 {
+  /* Note that length may be 0. */
   g_return_val_if_fail (bytes != NULL, NULL);
   g_return_val_if_fail (offset <= bytes->size, NULL);
   g_return_val_if_fail (offset + length <= bytes->size, NULL);
@@ -221,8 +231,12 @@ g_bytes_new_from_bytes (GBytes  *bytes,
  *
  * This function will always return the same pointer for a given #GBytes.
  *
- * Returns: (transfer none) (array length=size) (type guint8): a pointer to the
- *          byte data
+ * %NULL may be returned if @size is 0. This is not guaranteed, as the #GBytes
+ * may represent an empty string with @data non-%NULL and @size as 0. %NULL will
+ * not be returned if @size is non-zero.
+ *
+ * Returns: (transfer none) (array length=size) (type guint8) (allow-none): a pointer to the
+ *          byte data, or %NULL
  *
  * Since: 2.32
  */
