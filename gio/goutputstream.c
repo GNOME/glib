@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include <string.h>
 #include "goutputstream.h"
 #include "gcancellable.h"
 #include "gasyncresult.h"
@@ -288,6 +289,109 @@ g_output_stream_write_all (GOutputStream  *stream,
     *bytes_written = _bytes_written;
 
   return TRUE;
+}
+
+/**
+ * g_output_stream_printf:
+ * @stream: a #GOutputStream.
+ * @bytes_written: (out): location to store the number of bytes that was
+ *     written to the stream
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @error: location to store the error occurring, or %NULL to ignore
+ * @format: the format string. See the printf() documentation
+ * @...: the parameters to insert into the format string
+ *
+ * This is a utility function around g_output_stream_write_all(). It
+ * uses g_strdup_vprintf() to turn @format and @... into a string that
+ * is then written to @stream.
+ *
+ * See the documentation of g_output_stream_write_all() about the
+ * behavior of the actual write operation.
+ *
+ * Note that partial writes cannot be properly checked with this
+ * function due to the variable length of the written string, if you
+ * need precise control over partial write failures, you need to
+ * create you own printf()-like wrapper around g_output_stream_write()
+ * or g_output_stream_write_all().
+ *
+ * Since: 2.40
+ *
+ * Return value: %TRUE on success, %FALSE if there was an error
+ **/
+gboolean
+g_output_stream_printf (GOutputStream  *stream,
+                        gsize          *bytes_written,
+                        GCancellable   *cancellable,
+                        GError        **error,
+                        const gchar    *format,
+                        ...)
+{
+  va_list  args;
+  gboolean success;
+
+  g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
+  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (stream), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail (format != NULL, FALSE);
+
+  va_start (args, format);
+  success = g_output_stream_vprintf (stream, bytes_written, cancellable,
+                                     error, format, args);
+  va_end (args);
+
+  return success;
+}
+
+/**
+ * g_output_stream_vprintf:
+ * @stream: a #GOutputStream.
+ * @bytes_written: (out): location to store the number of bytes that was
+ *     written to the stream
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @error: location to store the error occurring, or %NULL to ignore
+ * @format: the format string. See the printf() documentation
+ * @args: the parameters to insert into the format string
+ *
+ * This is a utility function around g_output_stream_write_all(). It
+ * uses g_strdup_vprintf() to turn @format and @args into a string that
+ * is then written to @stream.
+ *
+ * See the documentation of g_output_stream_write_all() about the
+ * behavior of the actual write operation.
+ *
+ * Note that partial writes cannot be properly checked with this
+ * function due to the variable length of the written string, if you
+ * need precise control over partial write failures, you need to
+ * create you own printf()-like wrapper around g_output_stream_write()
+ * or g_output_stream_write_all().
+ *
+ * Since: 2.40
+ *
+ * Return value: %TRUE on success, %FALSE if there was an error
+ **/
+gboolean
+g_output_stream_vprintf (GOutputStream  *stream,
+                         gsize          *bytes_written,
+                         GCancellable   *cancellable,
+                         GError        **error,
+                         const gchar    *format,
+                         va_list         args)
+{
+  gchar    *text;
+  gboolean  success;
+
+  g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
+  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (stream), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail (format != NULL, FALSE);
+
+  text = g_strdup_vprintf (format, args);
+  success = g_output_stream_write_all (stream,
+                                       text, strlen (text),
+                                       bytes_written, cancellable, error);
+  g_free (text);
+
+  return success;
 }
 
 /**

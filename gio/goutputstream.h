@@ -149,6 +149,20 @@ gboolean g_output_stream_write_all     (GOutputStream             *stream,
 					gsize                     *bytes_written,
 					GCancellable              *cancellable,
 					GError                   **error);
+GLIB_AVAILABLE_IN_2_40
+gboolean g_output_stream_printf        (GOutputStream             *stream,
+                                        gsize                     *bytes_written,
+                                        GCancellable              *cancellable,
+                                        GError                   **error,
+                                        const gchar               *format,
+                                        ...) G_GNUC_PRINTF (5, 6);
+GLIB_AVAILABLE_IN_2_40
+gboolean g_output_stream_vprintf       (GOutputStream             *stream,
+                                        gsize                     *bytes_written,
+                                        GCancellable              *cancellable,
+                                        GError                   **error,
+                                        const gchar               *format,
+                                        va_list                    args) G_GNUC_PRINTF (5, 0);
 GLIB_AVAILABLE_IN_2_34
 gssize   g_output_stream_write_bytes   (GOutputStream             *stream,
 					GBytes                    *bytes,
