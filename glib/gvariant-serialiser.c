@@ -552,6 +552,7 @@ gvs_fixed_sized_array_is_normal (GVariantSerialised value)
  * normal form and that is the one that the serialiser must produce.
  */
 
+/* bytes may be NULL if (size == 0). */
 static inline gsize
 gvs_read_unaligned_le (guchar *bytes,
                        guint   size)
@@ -563,7 +564,8 @@ gvs_read_unaligned_le (guchar *bytes,
   } tmpvalue;
 
   tmpvalue.integer = 0;
-  memcpy (&tmpvalue.bytes, bytes, size);
+  if (bytes != NULL)
+    memcpy (&tmpvalue.bytes, bytes, size);
 
   return GSIZE_FROM_LE (tmpvalue.integer);
 }
