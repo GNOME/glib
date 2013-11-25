@@ -1561,7 +1561,7 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
 /**
  * g_subprocess_communicate:
  * @subprocess: a #GSubprocess
- * @stdin_buf: data to send to the stdin of the subprocess, or %NULL
+ * @stdin_buf: (allow-none): data to send to the stdin of the subprocess, or %NULL
  * @cancellable: a #GCancellable
  * @stdout_buf: (out): data read from the subprocess stdout
  * @stderr_buf: (out): data read from the subprocess stderr
@@ -1570,7 +1570,7 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
  * Communicate with the subprocess until it terminates, and all input
  * and output has been completed.
  *
- * If @stdin is given, the subprocess must have been created with
+ * If @stdin_buf is given, the subprocess must have been created with
  * %G_SUBPROCESS_FLAGS_STDIN_PIPE.  The given data is fed to the
  * stdin of the subprocess and the pipe is closed (ie: EOF).
  *
@@ -1642,8 +1642,8 @@ g_subprocess_communicate (GSubprocess   *subprocess,
 /**
  * g_subprocess_communicate_async:
  * @subprocess: Self
- * @stdin_buf: Input data
- * @cancellable: Cancellable
+ * @stdin_buf: (allow-none): Input data, or %NULL
+ * @cancellable: (allow-none): Cancellable
  * @callback: Callback
  * @user_data: User data
  *
@@ -1708,7 +1708,7 @@ g_subprocess_communicate_finish (GSubprocess   *subprocess,
 /**
  * g_subprocess_communicate_utf8:
  * @subprocess: a #GSubprocess
- * @stdin_buf: data to send to the stdin of the subprocess, or %NULL
+ * @stdin_buf: (allow-none): data to send to the stdin of the subprocess, or %NULL
  * @cancellable: a #GCancellable
  * @stdout_buf: (out): data read from the subprocess stdout
  * @stderr_buf: (out): data read from the subprocess stderr
@@ -1728,13 +1728,16 @@ g_subprocess_communicate_utf8 (GSubprocess   *subprocess,
   GAsyncResult *result = NULL;
   gboolean success;
   GBytes *stdin_bytes;
+  size_t stdin_buf_len = 0;
 
   g_return_val_if_fail (G_IS_SUBPROCESS (subprocess), FALSE);
   g_return_val_if_fail (stdin_buf == NULL || (subprocess->flags & G_SUBPROCESS_FLAGS_STDIN_PIPE), FALSE);
   g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  stdin_bytes = g_bytes_new (stdin_buf, strlen (stdin_buf));
+  if (stdin_buf != NULL)
+    stdin_buf_len = strlen (stdin_buf);
+  stdin_bytes = g_bytes_new (stdin_buf, stdin_buf_len);
 
   g_subprocess_sync_setup ();
   g_subprocess_communicate_internal (subprocess, TRUE, stdin_bytes, cancellable,
@@ -1750,7 +1753,7 @@ g_subprocess_communicate_utf8 (GSubprocess   *subprocess,
 /**
  * g_subprocess_communicate_utf8_async:
  * @subprocess: Self
- * @stdin_buf: Input data
+ * @stdin_buf: (allow-none): Input data, or %NULL
  * @cancellable: Cancellable
  * @callback: Callback
  * @user_data: User data
@@ -1766,13 +1769,18 @@ g_subprocess_communicate_utf8_async (GSubprocess         *subprocess,
                                      gpointer             user_data)
 {
   GBytes *stdin_bytes;
+  size_t stdin_buf_len = 0;
 
   g_return_if_fail (G_IS_SUBPROCESS (subprocess));
   g_return_if_fail (stdin_buf == NULL || (subprocess->flags & G_SUBPROCESS_FLAGS_STDIN_PIPE));
   g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
-  stdin_bytes = g_bytes_new (stdin_buf, strlen (stdin_buf));
+  if (stdin_buf != NULL)
+    stdin_buf_len = strlen (stdin_buf);
+  stdin_bytes = g_bytes_new (stdin_buf, stdin_buf_len);
+
   g_subprocess_communicate_internal (subprocess, TRUE, stdin_bytes, cancellable, callback, user_data);
+
   g_bytes_unref (stdin_bytes);
 }
 
