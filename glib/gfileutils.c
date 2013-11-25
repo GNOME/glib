@@ -614,7 +614,7 @@ get_contents_stdio (const gchar  *display_filename,
                     GError      **error)
 {
   gchar buf[4096];
-  gsize bytes;
+  gsize bytes;  /* always <= sizeof(buf) */
   gchar *str = NULL;
   gsize total_bytes = 0;
   gsize total_allocated = 0;
@@ -629,12 +629,22 @@ get_contents_stdio (const gchar  *display_filename,
       bytes = fread (buf, 1, sizeof (buf), f);
       save_errno = errno;
 
-      while ((total_bytes + bytes + 1) > total_allocated)
+      if (total_bytes > G_MAXSIZE - bytes)
+          goto file_too_large;
+
+      /* Possibility of overflow eliminated above. */
+      while (total_bytes + bytes >= total_allocated)
         {
           if (str)
-            total_allocated *= 2;
+            {
+              if (total_allocated > G_MAXSIZE / 2)
+                  goto file_too_large;
+              total_allocated *= 2;
+            }
           else
-            total_allocated = MIN (bytes + 1, sizeof (buf));
+            {
+              total_allocated = MIN (bytes + 1, sizeof (buf));
+            }
 
           tmp = g_try_realloc (str, total_allocated);
 
@@ -665,18 +675,8 @@ get_contents_stdio (const gchar  *display_filename,
           goto error;
         }
 
+      g_assert (str != NULL);
       memcpy (str + total_bytes, buf, bytes);
-
-      if (total_bytes + bytes < total_bytes) 
-        {
-          g_set_error (error,
-                       G_FILE_ERROR,
-                       G_FILE_ERROR_FAILED,
-                       _("File \"%s\" is too large"),
-                       display_filename);
-
-          goto error;
-        }
 
       total_bytes += bytes;
     }
@@ -697,6 +697,13 @@ get_contents_stdio (const gchar  *display_filename,
   *contents = str;
 
   return TRUE;
+
+ file_too_large:
+  g_set_error (error,
+               G_FILE_ERROR,
+               G_FILE_ERROR_FAILED,
+               _("File \"%s\" is too large"),
+               display_filename);
 
  error:
 
