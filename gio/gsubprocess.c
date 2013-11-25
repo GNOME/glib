@@ -720,6 +720,13 @@ g_subprocess_newv (const gchar * const  *argv,
                          NULL);
 }
 
+/**
+ * g_subprocess_get_identifier:
+ * @subprocess: a #GSubprocess
+ *
+ * On UNIX, returns the process ID as a decimal string.  On Windows,
+ * returns the result of GetProcessId() also as a string.
+ */
 const gchar *
 g_subprocess_get_identifier (GSubprocess *subprocess)
 {
