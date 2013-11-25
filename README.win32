@@ -67,6 +67,20 @@ you would be allowed by the license to distrubute a GLib linked to
 msvcr70.dll or msvcr80.dll, as those are not part of the operating
 system, but of the MSVC product. msvcrt.dll is part of Windows.
 
+For people using Visual Studio 2005 or later:
+
+If you are building GLib-based libraries or applications, or GLib itself
+and you see a C4819 error (or warning, before C4819 is treated as an error
+in msvc_recommended_pragmas.h), please be advised that this error/warning should
+not be disregarded, as this likely means portions of the build is not being
+done correctly, as this is an issue of Visual Studio running on CJK (East Asian)
+locales.  This is an issue that also affects builds of other projects, such as
+QT, Firefox, LibreOffice/OpenOffice, Pango and GTK+, along with many other projects.
+
+To overcome this problem, please set your system's locale setting for non-Unicode to
+English (United States), reboot, and restart the build, and the code should build
+normally.  See also this GNOME Wiki page [1] that gives a bit further info on this.
+
 Building software that use GLib or GTK+
 =======================================
 
@@ -367,3 +381,4 @@ dependencies order.
       +- plug-ins
           +- python
 
+[1]: https://wiki.gnome.org/Projects/GTK%2B/Win32/MSVCCompilationOfGTKStack under "Preparations"
