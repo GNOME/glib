@@ -898,7 +898,7 @@ try_tcp (GDBusServer  *server,
 
  out:
   g_list_free_full (resolved_addresses, g_object_unref);
-  g_object_unref (resolver);
+  g_clear_object (&resolver);
   return ret;
 }
 
