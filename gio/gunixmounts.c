@@ -418,7 +418,7 @@ _g_get_unix_mounts (void)
       
       mount_entry = g_new0 (GUnixMountEntry, 1);
       mount_entry->mount_path = g_strdup (mntent->mnt_dir);
-      if (strcmp (mntent->mnt_fsname, "/dev/root") == 0)
+      if (g_strcmp0 (mntent->mnt_fsname, "/dev/root") == 0)
         mount_entry->device_path = g_strdup (_resolve_dev_root ());
       else
         mount_entry->device_path = g_strdup (mntent->mnt_fsname);
