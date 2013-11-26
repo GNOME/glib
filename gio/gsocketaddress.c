@@ -386,6 +386,8 @@ g_socket_address_connectable_proxy_enumerate (GSocketConnectable *connectable)
 {
   GSocketAddressEnumerator *addr_enum = NULL;
 
+  g_assert (connectable != NULL);
+
   if (G_IS_INET_SOCKET_ADDRESS (connectable) &&
       !G_IS_PROXY_ADDRESS (connectable))
     {
