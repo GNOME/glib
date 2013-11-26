@@ -183,7 +183,8 @@ g_unix_fd_list_new_from_array (const gint *fds,
   list->priv->fds = g_new (gint, n_fds + 1);
   list->priv->nfd = n_fds;
 
-  memcpy (list->priv->fds, fds, sizeof (gint) * n_fds);
+  if (n_fds > 0)
+    memcpy (list->priv->fds, fds, sizeof (gint) * n_fds);
   list->priv->fds[n_fds] = -1;
 
   return list;
