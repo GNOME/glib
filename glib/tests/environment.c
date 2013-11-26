@@ -17,7 +17,8 @@ test_listenv (void)
 
       parts = g_strsplit (list[i], "=", 2);
       g_assert (g_hash_table_lookup (table, parts[0]) == NULL);
-      g_hash_table_insert (table, parts[0], parts[1]);
+      if (g_strcmp0 (parts[0], ""))
+        g_hash_table_insert (table, parts[0], parts[1]);
       g_free (parts);
     }
   g_strfreev (list);
