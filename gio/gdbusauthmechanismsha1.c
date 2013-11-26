@@ -26,14 +26,15 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/types.h>
+
+#include <glib/gstdio.h>
+
 #ifdef G_OS_UNIX
 #include <unistd.h>
 #endif
 #ifdef G_OS_WIN32
 #include <io.h>
 #endif
-
-#include <glib/gstdio.h>
 
 #include "gdbusauthmechanismsha1.h"
 #include "gcredentials.h"
