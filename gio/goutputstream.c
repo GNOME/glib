@@ -329,11 +329,6 @@ g_output_stream_printf (GOutputStream  *stream,
   va_list  args;
   gboolean success;
 
-  g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
-  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (stream), FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
-  g_return_val_if_fail (format != NULL, FALSE);
-
   va_start (args, format);
   success = g_output_stream_vprintf (stream, bytes_written, cancellable,
                                      error, format, args);
