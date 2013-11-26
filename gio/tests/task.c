@@ -1665,7 +1665,7 @@ legacy_error_return (gpointer user_data)
     }
   else
     {
-      GSimpleAsyncResult *simple = user_data;
+      GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (user_data);
 
       G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
       g_simple_async_result_set_error (simple,
