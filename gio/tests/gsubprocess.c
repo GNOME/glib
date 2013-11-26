@@ -583,10 +583,12 @@ on_communicate_complete (GObject               *proc,
 
   if (!data->is_utf8)
     {
+      g_assert (stdout != NULL);
       stdout_data = g_bytes_get_data (stdout, &stdout_len);
     }
   else
     {
+      g_assert (stdout_str != NULL);
       stdout_data = (guint8*)stdout_str;
       stdout_len = strlen (stdout_str);
     }
