@@ -1325,7 +1325,7 @@ matchlet_match (TreeMatchlet *matchlet,
             result = FALSE;
         }
 
-      g_object_unref (info);
+      g_clear_object (&info);
       g_object_unref (file);
     }
   while (!result);
