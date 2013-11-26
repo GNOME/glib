@@ -284,7 +284,7 @@ g_notification_server_new (void)
 void
 g_notification_server_stop (GNotificationServer *server)
 {
-  g_return_val_if_fail (G_IS_NOTIFICATION_SERVER (server), FALSE);
+  g_return_if_fail (G_IS_NOTIFICATION_SERVER (server));
 
   if (server->name_owner_id)
     {
