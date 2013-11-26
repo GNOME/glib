@@ -777,9 +777,9 @@ g_utf8_to_ucs4_fast (const gchar *str,
 }
 
 static gpointer
-try_malloc (gsize n_bytes, GError **error)
+try_malloc_n (gsize n_blocks, gsize n_block_bytes, GError **error)
 {
-    gpointer ptr = g_try_malloc (n_bytes);
+    gpointer ptr = g_try_malloc_n (n_blocks, n_block_bytes);
     if (ptr == NULL)
       g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_MEMORY,
                            _("Failed to allocate memory"));
@@ -850,7 +850,7 @@ g_utf8_to_ucs4 (const gchar *str,
       in = g_utf8_next_char (in);
     }
 
-  result = try_malloc (sizeof (gunichar) * (n_chars + 1), error);
+  result = try_malloc_n (n_chars + 1, sizeof (gunichar), error);
   if (result == NULL)
       goto err_out;
 
@@ -923,7 +923,7 @@ g_ucs4_to_utf8 (const gunichar *str,
       result_length += UTF8_LENGTH (str[i]);
     }
 
-  result = try_malloc (result_length + 1, error);
+  result = try_malloc_n (result_length + 1, 1, error);
   if (result == NULL)
       goto err_out;
 
@@ -1058,7 +1058,7 @@ g_utf16_to_utf8 (const gunichar2  *str,
   /* At this point, everything is valid, and we just need to convert
    */
   /********** DIFFERENT for UTF8/UCS4 **********/
-  result = try_malloc (n_bytes + 1, error);
+  result = try_malloc_n (n_bytes + 1, 1, error);
   if (result == NULL)
       goto err_out;
 
@@ -1197,7 +1197,7 @@ g_utf16_to_ucs4 (const gunichar2  *str,
   /* At this point, everything is valid, and we just need to convert
    */
   /********** DIFFERENT for UTF8/UCS4 **********/
-  result = try_malloc (n_bytes + 4, error);
+  result = try_malloc_n (n_bytes + 4, 1, error);
   if (result == NULL)
       goto err_out;
 
@@ -1329,7 +1329,7 @@ g_utf8_to_utf16 (const gchar *str,
       in = g_utf8_next_char (in);
     }
 
-  result = try_malloc (sizeof (gunichar2) * (n16 + 1), error);
+  result = try_malloc_n (n16 + 1, sizeof (gunichar2), error);
   if (result == NULL)
       goto err_out;
 
@@ -1427,7 +1427,7 @@ g_ucs4_to_utf16 (const gunichar  *str,
       i++;
     }
 
-  result = try_malloc (sizeof (gunichar2) * (n16 + 1), error);
+  result = try_malloc_n (n16 + 1, sizeof (gunichar2), error);
   if (result == NULL)
       goto err_out;
 
