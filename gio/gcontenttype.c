@@ -1032,10 +1032,15 @@ read_tree_magic_from_directory (const gchar *prefix)
                   match = parse_header (lines[i]);
                   insert_match (match);
                 }
-              else
+              else if (match != NULL)
                 {
                   matchlet = parse_match_line (lines[i], &depth);
                   insert_matchlet (match, matchlet, depth);
+                }
+              else
+                {
+                  g_warning ("%s: header corrupt; skipping\n", filename);
+                  break;
                 }
             }
 
