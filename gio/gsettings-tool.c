@@ -420,7 +420,8 @@ gsettings_monitor (void)
   else
     g_signal_connect (global_settings, "changed", G_CALLBACK (value_changed), NULL);
 
-  g_main_loop_run (g_main_loop_new (NULL, FALSE));
+  for (;;)
+    g_main_context_iteration (NULL, TRUE);
 }
 
 static void
