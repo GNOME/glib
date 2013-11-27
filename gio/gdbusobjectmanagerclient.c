@@ -1006,6 +1006,7 @@ signal_cb (GDBusConnection *connection,
 
   //g_debug ("yay, signal_cb %s %s: %s\n", signal_name, object_path, g_variant_print (parameters, TRUE));
 
+  g_object_ref (manager);
   if (g_strcmp0 (interface_name, "org.freedesktop.DBus.Properties") == 0)
     {
       if (g_strcmp0 (signal_name, "PropertiesChanged") == 0)
@@ -1087,6 +1088,7 @@ signal_cb (GDBusConnection *connection,
           g_object_unref (interface);
         }
     }
+  g_object_unref (manager);
 
  out:
   g_clear_object (&object_proxy);
@@ -1243,6 +1245,7 @@ on_notify_g_name_owner (GObject    *object,
   new_name_owner = g_dbus_proxy_get_name_owner (manager->priv->control_proxy);
   manager->priv->name_owner = NULL;
 
+  g_object_ref (manager);
   if (g_strcmp0 (old_name_owner, new_name_owner) != 0)
     {
       GList *l;
@@ -1319,6 +1322,7 @@ on_notify_g_name_owner (GObject    *object,
 
     }
   g_free (old_name_owner);
+  g_object_unref (manager);
 }
 
 static gboolean
@@ -1543,6 +1547,7 @@ add_interfaces (GDBusObjectManagerClient *manager,
   g_mutex_unlock (&manager->priv->lock);
 
   /* now that we don't hold the lock any more, emit signals */
+  g_object_ref (manager);
   for (l = interface_added_signals; l != NULL; l = l->next)
     {
       interface_proxy = G_DBUS_PROXY (l->data);
@@ -1558,8 +1563,8 @@ add_interfaces (GDBusObjectManagerClient *manager,
                            op);
       g_signal_emit_by_name (manager, "object-added", op);
     }
+  g_object_unref (manager);
   g_object_unref (op);
-
 }
 
 static void
@@ -1592,6 +1597,7 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
   num_interfaces_to_remove = g_strv_length ((gchar **) interface_names);
 
   /* see if we are going to completety remove the object */
+  g_object_ref (manager);
   if (num_interfaces_to_remove == num_interfaces)
     {
       g_object_ref (op);
@@ -1617,6 +1623,7 @@ remove_interfaces (GDBusObjectManagerClient   *manager,
         }
       g_object_unref (op);
     }
+  g_object_unref (manager);
  out:
   ;
 }
