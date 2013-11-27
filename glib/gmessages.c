@@ -307,8 +307,8 @@ _g_log_abort (gboolean breakpoint)
 
   if (breakpoint)
     G_BREAKPOINT ();
-  else
-    abort ();
+
+  abort ();
 }
 
 #ifdef G_OS_WIN32
