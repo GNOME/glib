@@ -840,7 +840,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/param/validate", test_param_validate);
   g_test_add_func ("/param/convert", test_param_convert);
 
-  g_test_add_func ("/param/implement", test_param_implement);
+  if (g_test_slow ())
+    g_test_add_func ("/param/implement", test_param_implement);
+
   for (data.change_this_flag = 0; data.change_this_flag < 16; data.change_this_flag++)
     for (data.change_this_type = 0; data.change_this_type < 3; data.change_this_type++)
       for (data.use_this_flag = 0; data.use_this_flag < 16; data.use_this_flag++)
