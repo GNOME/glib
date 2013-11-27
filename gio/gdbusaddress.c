@@ -1406,6 +1406,8 @@ get_session_address_dbus_launch (GError **error)
 #else
 	  wcscat (args, L",_g_win32_run_session_bus@16");
 #endif
+#elif defined(_WIN64)
+	  wcscat (args, L",g_win32_run_session_bus");
 #else
 	  wcscat (args, L",g_win32_run_session_bus@16");
 #endif
