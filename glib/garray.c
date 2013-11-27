@@ -1383,6 +1383,42 @@ g_ptr_array_add (GPtrArray *farray,
 }
 
 /**
+ * g_ptr_array_insert:
+ * @array: a #GPtrArray.
+ * @index_: the index to place the new element at, or -1 to append.
+ * @data: the pointer to add.
+ *
+ * Inserts an element into the pointer array at the given index. The 
+ * array will grow in size automatically if necessary.
+ *
+ * Since: 2.40
+ **/
+void
+g_ptr_array_insert (GPtrArray *farray,
+                    gint       index_,
+                    gpointer   data)
+{
+  GRealPtrArray* array = (GRealPtrArray*) farray;
+
+  g_return_if_fail (array);
+  g_return_if_fail (index_ >= -1);
+  g_return_if_fail (index_ <= (gint)array->len);
+
+  g_ptr_array_maybe_expand (array, 1);
+
+  if (index_ < 0)
+    index_ = array->len;
+
+  if (index_ < array->len)
+    memmove (&(array->pdata[index_ + 1]),
+             &(array->pdata[index_]),
+             (array->len - index_) * sizeof (gpointer));
+
+  array->len++;
+  array->pdata[index_] = data;
+}
+
+/**
  * g_ptr_array_sort:
  * @array: a #GPtrArray.
  * @compare_func: comparison function.
