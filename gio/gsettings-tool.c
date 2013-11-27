@@ -393,14 +393,16 @@ gsettings_writable (void)
 }
 
 static void
-value_changed (void)
+value_changed (GSettings   *settings,
+               const gchar *key,
+               gpointer     user_data)
 {
   GVariant *value;
   gchar *printed;
 
-  value = g_settings_get_value (global_settings, global_key);
+  value = g_settings_get_value (settings, key);
   printed = g_variant_print (value, TRUE);
-  g_print ("%s: %s\n", global_key, printed);
+  g_print ("%s: %s\n", key, printed);
   g_variant_unref (value);
   g_free (printed);
 }
