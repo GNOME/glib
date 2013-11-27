@@ -290,10 +290,10 @@ static gpointer          fatal_log_data;
 
 /* --- functions --- */
 
-static void _g_log_abort (void) G_GNUC_NORETURN;
+static void _g_log_abort (gboolean breakpoint) G_GNUC_NORETURN;
 
 static void
-_g_log_abort (void)
+_g_log_abort (gboolean breakpoint)
 {
   if (g_test_subprocess ())
     {
@@ -304,6 +304,9 @@ _g_log_abort (void)
        */
       _exit (1);
     }
+
+  if (breakpoint)
+    G_BREAKPOINT ();
   else
     abort ();
 }
@@ -1033,15 +1036,9 @@ g_logv (const gchar   *log_domain,
                   MessageBox (NULL, locale_msg, NULL,
                               MB_ICONERROR|MB_SETFOREGROUND);
                 }
-	      if (IsDebuggerPresent () && !(test_level & G_LOG_FLAG_RECURSION))
-		G_BREAKPOINT ();
-	      else
-		_g_log_abort ();
+	      _g_log_abort (IsDebuggerPresent () && !(test_level & G_LOG_FLAG_RECURSION));
 #else
-	      if (!(test_level & G_LOG_FLAG_RECURSION))
-		G_BREAKPOINT ();
-	      else
-		_g_log_abort ();
+	      _g_log_abort (!(test_level & G_LOG_FLAG_RECURSION));
 #endif /* !G_OS_WIN32 */
 	    }
 	  
@@ -1132,7 +1129,7 @@ g_assert_warning (const char *log_domain,
 	 line, 
 	 pretty_function,
 	 expression);
-  _g_log_abort ();
+  _g_log_abort (FALSE);
 }
 
 /**
