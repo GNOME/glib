@@ -153,11 +153,74 @@ basic (void)
   session_bus_stop ();
 }
 
+struct _GNotification
+{
+  GObject parent;
+
+  gchar *title;
+  gchar *body;
+  GIcon *icon;
+  gboolean urgent;
+  GPtrArray *buttons;
+  gchar *default_action;
+  GVariant *default_action_target;
+};
+
+typedef struct
+{
+  gchar *label;
+  gchar *action_name;
+  GVariant *target;
+} Button;
+
+static void
+test_properties (void)
+{
+  GNotification *n;
+  struct _GNotification *rn;
+  GIcon *icon;
+  const gchar * const *names;
+  Button *b;
+
+  n = g_notification_new ("Test");
+
+  g_notification_set_title (n, "title");
+  g_notification_set_body (n, "body");
+  icon = g_themed_icon_new ("i-c-o-n");
+  g_notification_set_icon (n, icon);
+  g_object_unref (icon);
+  g_notification_set_urgent (n, TRUE);
+  g_notification_add_button (n, "label1", "app.action1::target1");
+  g_notification_set_default_action (n, "app.action2::target2");
+
+  rn = (struct _GNotification *)n;
+
+  g_assert_cmpstr (rn->title, ==, "title");
+  g_assert_cmpstr (rn->body, ==, "body");
+  g_assert (G_IS_THEMED_ICON (rn->icon));
+  names = g_themed_icon_get_names (G_THEMED_ICON (rn->icon));
+  g_assert_cmpstr (names[0], ==, "i-c-o-n");
+  g_assert (names[1] == NULL);
+  g_assert (rn->urgent);
+
+  g_assert_cmpint (rn->buttons->len, ==, 1);
+  b = (Button*)rn->buttons->pdata[0];
+  g_assert_cmpstr (b->label, ==, "label1");
+  g_assert_cmpstr (b->action_name, ==, "app.action1");
+  g_assert_cmpstr (g_variant_get_string (b->target, NULL), ==, "target1");
+
+  g_assert_cmpstr (rn->default_action, ==, "app.action2");
+  g_assert_cmpstr (g_variant_get_string (rn->default_action_target, NULL), ==, "target2");
+
+  g_object_unref (n);
+}
+
 int main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gnotification/basic", basic);
+  g_test_add_func ("/gnotification/properties", test_properties);
 
   return g_test_run ();
 }
