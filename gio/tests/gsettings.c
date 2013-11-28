@@ -2370,6 +2370,40 @@ test_read_descriptions (void)
 }
 
 static void
+test_default_value (void)
+{
+  GSettings *settings;
+  GVariant *v;
+  gchar *str;
+  gchar *default_value;
+
+  settings = g_settings_new ("org.gtk.test");
+
+  g_settings_set (settings, "greeting", "s", "goodbye world");
+
+  v = g_settings_get_user_value (settings, "greeting");
+  str = g_variant_get_string (v, NULL);
+  g_assert_cmpstr (str, ==, "goodbye world");
+  g_variant_unref (v);
+
+  v = g_settings_get_default_value (settings, "greeting");
+  str = g_variant_get_string (v, NULL);
+  g_assert_cmpstr (str, ==, "Hello, earthlings");
+  g_variant_unref (v);
+
+  g_settings_reset (settings, "greeting");
+
+  v = g_settings_get_user_value (settings, "greeting");
+  g_assert_null (v);
+
+  str = g_settings_get_string (settings, "greeting");
+  g_assert_cmpstr (str, ==, "Hello, earthlings");
+  g_free (str);
+
+  g_object_unref (settings);
+}
+
+static void
 test_extended_schema (void)
 {
   GSettings *settings;
@@ -2501,6 +2535,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/memory-backend", test_memory_backend);
   g_test_add_func ("/gsettings/read-descriptions", test_read_descriptions);
   g_test_add_func ("/gsettings/test-extended-schema", test_extended_schema);
+  g_test_add_func ("/gsettings/default-value", test_default_value);
 
   result = g_test_run ();
 
