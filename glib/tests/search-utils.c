@@ -35,6 +35,10 @@ test_search (void)
       { "Jorgen", "Jör", FALSE },
       { "Jörgen", "jor", TRUE },
 
+      /* Turkish special case */
+      { "İstanbul", "ist", TRUE },
+      { "Diyarbakır", "diyarbakir", TRUE },
+
       /* Multi words */
       { "Xavier Claessens", "Xav Cla", TRUE },
       { "Xavier Claessens", "Cla Xav", TRUE },
