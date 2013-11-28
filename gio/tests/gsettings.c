@@ -35,13 +35,29 @@ static void
 test_basic (void)
 {
   gchar *str = NULL;
+  GObject *b;
+  gchar *path;
+  gboolean has_unapplied;
+  gboolean delay_apply;
   GSettings *settings;
 
   settings = g_settings_new ("org.gtk.test");
 
-  g_object_get (settings, "schema", &str, NULL);
+  g_object_get (settings,
+                "schema", &str,
+                "backend", &b,
+                "path", &path,
+                "has-unapplied", &has_unapplied,
+                "delay-apply", &delay_apply,
+                NULL);
   g_assert_cmpstr (str, ==, "org.gtk.test");
+  g_assert (b != NULL);
+  g_assert_cmpstr (path, ==, "/tests/");
+  g_assert (!has_unapplied);
+  g_assert (!delay_apply);
   g_free (str);
+  g_object_unref (b);
+  g_free (path);
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "Hello, earthlings");
@@ -2302,7 +2318,7 @@ test_null_backend (void)
   gboolean writable;
 
   backend = g_null_settings_backend_new ();
-  settings = g_settings_new_with_backend ("org.gtk.test", backend);
+  settings = g_settings_new_with_backend_and_path ("org.gtk.test", backend, "/tests/");
 
   g_object_get (settings, "schema", &str, NULL);
   g_assert_cmpstr (str, ==, "org.gtk.test");
