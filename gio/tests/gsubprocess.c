@@ -779,7 +779,7 @@ test_env (void)
 
   g_assert_null (g_subprocess_launcher_getenv (launcher, "FOUR"));
    
-  proc = g_subprocess_launcher_spawnv (launcher, (const gchar * const *) args->pdata, error);
+  proc = g_subprocess_launcher_spawn (launcher, error, args->pdata[0], "env", NULL);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 
