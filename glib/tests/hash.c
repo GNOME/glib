@@ -241,7 +241,6 @@ not_even_foreach (gpointer key,
   g_assert (i != 3);
 }
 
-
 static gboolean
 remove_even_foreach (gpointer key,
                      gpointer value,
@@ -377,6 +376,35 @@ direct_hash_test (void)
 
       g_assert (rc != 0);
       g_assert ((rc - 42) == i);
+    }
+
+  g_hash_table_destroy (h);
+}
+
+static void
+int_hash_test (void)
+{
+  gint       i, rc;
+  GHashTable     *h;
+  gint     values[20];
+  gint key;
+
+  h = g_hash_table_new (g_int_hash, g_int_equal);
+  g_assert (h != NULL);
+  for (i = 0; i < 20; i++)
+    {
+      values[i] = i + 42;
+      g_hash_table_insert (h, &values[i], GINT_TO_POINTER (i + 42));
+    }
+
+  g_assert (g_hash_table_size (h) == 20);
+
+  for (i = 0; i < 20; i++)
+    {
+      key = i + 42;
+      rc = GPOINTER_TO_INT (g_hash_table_lookup (h, &key));
+
+      g_assert_cmpint (rc, ==, i + 42);
     }
 
   g_hash_table_destroy (h);
@@ -1043,6 +1071,53 @@ test_foreach (void)
   g_hash_table_unref (hash);
 }
 
+static gboolean
+foreach_steal_func (gpointer key, gpointer value, gpointer data)
+{
+  GHashTable *hash2 = data;
+
+  if (strstr ("ace", (gchar*)key))
+    {
+      g_hash_table_insert (hash2, key, value);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+
+static void
+test_foreach_steal (void)
+{
+  GHashTable *hash;
+  GHashTable *hash2;
+
+  hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+  hash2 = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+
+  g_hash_table_insert (hash, g_strdup ("a"), g_strdup ("A"));
+  g_hash_table_insert (hash, g_strdup ("b"), g_strdup ("B"));
+  g_hash_table_insert (hash, g_strdup ("c"), g_strdup ("C"));
+  g_hash_table_insert (hash, g_strdup ("d"), g_strdup ("D"));
+  g_hash_table_insert (hash, g_strdup ("e"), g_strdup ("E"));
+  g_hash_table_insert (hash, g_strdup ("f"), g_strdup ("F"));
+
+  g_hash_table_foreach_steal (hash, foreach_steal_func, hash2);
+
+  g_assert_cmpint (g_hash_table_size (hash), ==, 3);
+  g_assert_cmpint (g_hash_table_size (hash2), ==, 3);
+
+  g_assert_cmpstr (g_hash_table_lookup (hash2, "a"), ==, "A");
+  g_assert_cmpstr (g_hash_table_lookup (hash, "b"), ==, "B");
+  g_assert_cmpstr (g_hash_table_lookup (hash2, "c"), ==, "C");
+  g_assert_cmpstr (g_hash_table_lookup (hash, "d"), ==, "D");
+  g_assert_cmpstr (g_hash_table_lookup (hash2, "e"), ==, "E");
+  g_assert_cmpstr (g_hash_table_lookup (hash, "f"), ==, "F");
+
+  g_hash_table_unref (hash);
+  g_hash_table_unref (hash2);
+}
+
 struct _GHashTable
 {
   gint             size;
@@ -1308,6 +1383,7 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/hash/one", GINT_TO_POINTER (TRUE), second_hash_test);
   g_test_add_data_func ("/hash/honeyman", GINT_TO_POINTER (FALSE), second_hash_test);
   g_test_add_func ("/hash/direct", direct_hash_test);
+  g_test_add_func ("/hash/int", int_hash_test);
   g_test_add_func ("/hash/int64", int64_hash_test);
   g_test_add_func ("/hash/double", double_hash_test);
   g_test_add_func ("/hash/string", string_hash_test);
@@ -1317,6 +1393,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/remove-all", test_remove_all);
   g_test_add_func ("/hash/find", test_find);
   g_test_add_func ("/hash/foreach", test_foreach);
+  g_test_add_func ("/hash/foreach-steal", test_foreach_steal);
 
   /* tests for individual bugs */
   g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);
