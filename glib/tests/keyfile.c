@@ -506,13 +506,15 @@ test_string (void)
   GKeyFile *keyfile;
   GError *error = NULL;
   gchar *value;
-
+  const gchar const *list[3];
   const gchar *data =
     "[valid]\n"
     "key1=\\s\\n\\t\\r\\\\\n"
     "key2=\"quoted\"\n"
     "key3='quoted'\n"
     "key4=\xe2\x89\xa0\xe2\x89\xa0\n"
+    "key5=  leading space\n"
+    "key6=trailing space  \n"
     "[invalid]\n"
     "key1=\\a\\b\\0800xff\n"
     "key2=blabla\\\n";
@@ -523,6 +525,8 @@ test_string (void)
   check_string_value (keyfile, "valid", "key2", "\"quoted\"");
   check_string_value (keyfile, "valid", "key3", "'quoted'");
   check_string_value (keyfile, "valid", "key4", "\xe2\x89\xa0\xe2\x89\xa0");
+  check_string_value (keyfile, "valid", "key5", "leading space");
+  check_string_value (keyfile, "valid", "key6", "trailing space  ");
 
   value = g_key_file_get_string (keyfile, "invalid", "key1", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
@@ -531,6 +535,25 @@ test_string (void)
   value = g_key_file_get_string (keyfile, "invalid", "key2", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
   g_free (value);
+
+  g_key_file_set_string (keyfile, "inserted", "key1", "simple");
+  g_key_file_set_string (keyfile, "inserted", "key2", " leading space");
+  g_key_file_set_string (keyfile, "inserted", "key3", "\tleading tab");
+  g_key_file_set_string (keyfile, "inserted", "key4", "new\nline");
+  g_key_file_set_string (keyfile, "inserted", "key5", "carriage\rreturn");
+  g_key_file_set_string (keyfile, "inserted", "key6", "slash\\yay!");
+  list[0] = "one";
+  list[1] = "two;andahalf";
+  list[2] = "3";
+  g_key_file_set_string_list (keyfile, "inserted", "key7", list, 3);
+
+  check_string_value (keyfile, "inserted", "key1", "simple");
+  check_string_value (keyfile, "inserted", "key2", " leading space");
+  check_string_value (keyfile, "inserted", "key3", "\tleading tab");
+  check_string_value (keyfile, "inserted", "key4", "new\nline");
+  check_string_value (keyfile, "inserted", "key5", "carriage\rreturn");
+  check_string_value (keyfile, "inserted", "key6", "slash\\yay!");
+  check_string_list_value (keyfile, "inserted", "key7", "one", "two;andahalf", "3", NULL);
 
   g_key_file_free (keyfile);
 }
@@ -1333,6 +1356,45 @@ test_load (void)
 }
 
 static void
+test_save (void)
+{
+  GKeyFile *kf;
+  GKeyFile *kf2;
+  static const char data[] =
+    "[bees]\n"
+    "a=1\n"
+    "b=2\n"
+    "c=123456789123456789\n"
+    "d=-123456789123456789\n";
+  gboolean ok;
+  gchar *file;
+  guint64 c;
+  GError *error = NULL;
+
+  kf = g_key_file_new ();
+  ok = g_key_file_load_from_data (kf, data, strlen (data), 0, NULL);
+  g_assert (ok);
+
+  file = g_strdup ("key_file_XXXXXX");
+  g_mkstemp (file);
+  ok = g_key_file_save_to_file (kf, file, &error);
+  g_assert (ok);
+  g_assert_no_error (error);
+
+  kf2 = g_key_file_new ();
+  ok = g_key_file_load_from_file (kf2, file, 0, &error);
+  g_assert (ok);
+  g_assert_no_error (error);
+
+  c = g_key_file_get_uint64 (kf2, "bees", "c", NULL);
+  g_assert (c == G_GUINT64_CONSTANT (123456789123456789));
+
+  g_free (file);
+  g_key_file_free (kf);
+  g_key_file_free (kf2);
+}
+
+static void
 test_load_fail (void)
 {
   GKeyFile *file;
@@ -1598,6 +1660,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/reload", test_reload_idempotency);
   g_test_add_func ("/keyfile/int64", test_int64);
   g_test_add_func ("/keyfile/load", test_load);
+  g_test_add_func ("/keyfile/save", test_save);
   g_test_add_func ("/keyfile/load-fail", test_load_fail);
   g_test_add_func ("/keyfile/non-utf8", test_non_utf8);
   g_test_add_func ("/keyfile/page-boundary", test_page_boundary);
