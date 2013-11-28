@@ -163,6 +163,18 @@ env_mode (int argc, char **argv)
   return 0;
 }
 
+static int
+cwd_mode (int argc, char **argv)
+{
+  char *cwd;
+
+  cwd = g_get_current_dir ();
+  g_print ("%s\n", cwd);
+  g_free (cwd);
+
+  return 0;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -208,6 +220,8 @@ main (int argc, char **argv)
     return write_to_fds (argc, argv);
   else if (strcmp (mode, "env") == 0)
     return env_mode (argc, argv);
+  else if (strcmp (mode, "cwd") == 0)
+    return cwd_mode (argc, argv);
   else
     {
       g_printerr ("Unknown MODE %s\n", argv[1]);

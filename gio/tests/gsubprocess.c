@@ -797,6 +797,35 @@ test_env (void)
   g_object_unref (proc);
 }
 
+static void
+test_cwd (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GSubprocessLauncher *launcher;
+  GSubprocess *proc;
+  GPtrArray *args;
+  GInputStream *stdout;
+  gchar *result;
+
+  args = get_test_subprocess_args ("cwd", NULL);
+  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE);
+  g_subprocess_launcher_set_flags (launcher, G_SUBPROCESS_FLAGS_STDOUT_PIPE);
+  g_subprocess_launcher_set_cwd (launcher, "/tmp");
+
+  proc = g_subprocess_launcher_spawnv (launcher, (const char * const *)args->pdata, error);
+  g_ptr_array_free (args, TRUE);
+  g_assert_no_error (local_error);
+
+  stdout = g_subprocess_get_stdout_pipe (proc);
+
+  result = splice_to_string (stdout, error);
+
+  g_assert_cmpstr (result, ==, "/tmp" LINEEND);
+
+  g_free (result);
+  g_object_unref (proc);
+}
 #ifdef G_OS_UNIX
 static void
 test_stdout_file (void)
@@ -1044,6 +1073,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/communicate-utf8-invalid", test_communicate_utf8_invalid);
   g_test_add_func ("/gsubprocess/terminate", test_terminate);
   g_test_add_func ("/gsubprocess/env", test_env);
+  g_test_add_func ("/gsubprocess/cwd", test_cwd);
 #ifdef G_OS_UNIX
   g_test_add_func ("/gsubprocess/stdout-file", test_stdout_file);
   g_test_add_func ("/gsubprocess/stdout-fd", test_stdout_fd);
