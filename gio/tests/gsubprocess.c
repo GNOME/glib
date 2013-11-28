@@ -756,6 +756,47 @@ test_terminate (void)
   g_object_unref (proc);
 }
 
+static void
+test_env (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GSubprocessLauncher *launcher;
+  GSubprocess *proc;
+  GPtrArray *args;
+  GInputStream *stdout;
+  gchar *result;
+  gchar *envp[] = { "ONE=1", "TWO=1", "THREE=3", "FOUR=1", NULL };
+  gchar **split;
+
+  args = get_test_subprocess_args ("env", NULL);
+  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_NONE);
+  g_subprocess_launcher_set_flags (launcher, G_SUBPROCESS_FLAGS_STDOUT_PIPE);
+  g_subprocess_launcher_set_environ (launcher, envp);
+  g_subprocess_launcher_setenv (launcher, "TWO", "2", TRUE);
+  g_subprocess_launcher_setenv (launcher, "THREE", "1", FALSE);
+  g_subprocess_launcher_unsetenv (launcher, "FOUR");
+
+  g_assert_null (g_subprocess_launcher_getenv (launcher, "FOUR"));
+   
+  proc = g_subprocess_launcher_spawnv (launcher, (const gchar * const *) args->pdata, error);
+  g_ptr_array_free (args, TRUE);
+  g_assert_no_error (local_error);
+
+  stdout = g_subprocess_get_stdout_pipe (proc);
+
+  result = splice_to_string (stdout, error);
+  split = g_strsplit (result, "\n", -1);
+  g_assert_cmpstr (g_environ_getenv (split, "ONE"), ==, "1");
+  g_assert_cmpstr (g_environ_getenv (split, "TWO"), ==, "2");
+  g_assert_cmpstr (g_environ_getenv (split, "THREE"), ==, "3");
+  g_assert_null (g_environ_getenv (split, "FOUR"));
+
+  g_strfreev (split);
+  g_free (result);
+  g_object_unref (proc);
+}
+
 #ifdef G_OS_UNIX
 static void
 test_stdout_file (void)
@@ -1002,6 +1043,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/communicate-utf8", test_communicate_utf8);
   g_test_add_func ("/gsubprocess/communicate-utf8-invalid", test_communicate_utf8_invalid);
   g_test_add_func ("/gsubprocess/terminate", test_terminate);
+  g_test_add_func ("/gsubprocess/env", test_env);
 #ifdef G_OS_UNIX
   g_test_add_func ("/gsubprocess/stdout-file", test_stdout_file);
   g_test_add_func ("/gsubprocess/stdout-fd", test_stdout_fd);

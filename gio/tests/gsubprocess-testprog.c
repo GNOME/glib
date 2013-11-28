@@ -147,6 +147,22 @@ write_to_fds (int argc, char **argv)
   return 0;
 }
 
+static int
+env_mode (int argc, char **argv)
+{
+  char **env;
+  int i;
+
+  env = g_get_environ ();
+
+  for (i = 0; env[i]; i++)
+    g_print ("%s\n", env[i]);
+
+  g_strfreev (env);
+
+  return 0;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -190,6 +206,8 @@ main (int argc, char **argv)
     return sleep_forever_mode (argc, argv);
   else if (strcmp (mode, "write-to-fds") == 0)
     return write_to_fds (argc, argv);
+  else if (strcmp (mode, "env") == 0)
+    return env_mode (argc, argv);
   else
     {
       g_printerr ("Unknown MODE %s\n", argv[1]);
