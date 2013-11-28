@@ -54,7 +54,7 @@ lcov:
 genlcov:
 	rm -f $(top_builddir)/tests/.libs/libmoduletestplugin_*.gcda
 	$(LTP) --directory $(top_builddir) --capture --output-file glib-lcov.info --test-name GLIB_PERF --no-checksum --compat-libtool
-	LANG=C $(LTP_GENHTML) --prefix $(top_builddir) --output-directory glib-lcov --title "GLib Code Coverage" --legend --show-details glib-lcov.info
+	LANG=C $(LTP_GENHTML) --prefix $(top_builddir) --output-directory glib-lcov --title "GLib Code Coverage" --legend --frames --show-details glib-lcov.info
 	@echo "file://$(abs_top_builddir)/glib-lcov/index.html"
 
 lcov-clean:
