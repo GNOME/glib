@@ -2389,11 +2389,26 @@ static void
 test_default_value (void)
 {
   GSettings *settings;
+  GSettingsSchema *schema;
+  GSettingsSchemaKey *key;
   GVariant *v;
-  gchar *str;
-  gchar *default_value;
+  const gchar *str;
 
   settings = g_settings_new ("org.gtk.test");
+  g_object_get (settings, "settings-schema", &schema, NULL);
+  key = g_settings_schema_get_key (schema, "greeting");
+  g_settings_schema_unref (schema);
+  g_settings_schema_key_ref (key);
+
+  g_assert_cmpstr (g_settings_schema_key_get_value_type (key), ==, G_VARIANT_TYPE_STRING);
+
+  v = g_settings_schema_key_get_default_value (key);
+  str = g_variant_get_string (v, NULL);
+  g_assert_cmpstr (str, ==, "Hello, earthlings");
+  g_variant_unref (v);
+
+  g_settings_schema_key_unref (key);
+  g_settings_schema_key_unref (key);
 
   g_settings_set (settings, "greeting", "s", "goodbye world");
 
