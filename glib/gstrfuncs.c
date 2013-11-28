@@ -2944,6 +2944,8 @@ g_str_tokenize_and_fold (const gchar   *string,
 {
   gchar **result;
 
+  g_return_val_if_fail (string != NULL, NULL);
+
   if (ascii_alternates && g_str_is_ascii (string))
     {
       *ascii_alternates = g_new0 (gchar *, 0 + 1);
@@ -3036,6 +3038,9 @@ g_str_match_string (const gchar *search_term,
   gchar **hit_tokens;
   gboolean matched;
   gint i, j;
+
+  g_return_val_if_fail (search_term != NULL, FALSE);
+  g_return_val_if_fail (potential_hit != NULL, FALSE);
 
   term_tokens = g_str_tokenize_and_fold (search_term, NULL, NULL);
   hit_tokens = g_str_tokenize_and_fold (potential_hit, NULL, accept_alternates ? &alternates : NULL);
