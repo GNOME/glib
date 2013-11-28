@@ -3777,6 +3777,11 @@ g_file_make_directory_with_parents (GFile         *file,
 
       g_clear_error (&my_error);
       g_file_make_directory (parent_file, cancellable, &my_error);
+      /* Another process may have created the directory in between the
+       * G_IO_ERROR_NOT_FOUND and now
+       */
+      if (g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_EXISTS))
+        g_clear_error (&my_error);
 
       g_object_unref (work_file);
       work_file = g_object_ref (parent_file);
@@ -3790,6 +3795,8 @@ g_file_make_directory_with_parents (GFile         *file,
   for (l = list; my_error == NULL && l; l = l->next)
     {
       g_file_make_directory ((GFile *) l->data, cancellable, &my_error);
+      if (g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_EXISTS))
+        g_clear_error (&my_error);
     }
 
   if (work_file)
