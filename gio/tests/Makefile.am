@@ -20,6 +20,7 @@ AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 #  Test programs buildable on all platforms
 
 test_programs = \
+	appmonitor				\
 	async-close-output-stream		\
 	async-splice-output-stream		\
 	buffered-input-stream			\
