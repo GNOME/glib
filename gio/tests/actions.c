@@ -103,6 +103,17 @@ test_basic (void)
   g_assert (!a.did_run);
 }
 
+static void
+test_name (void)
+{
+  g_assert (!g_action_name_is_valid (""));
+  g_assert (!g_action_name_is_valid ("("));
+  g_assert (!g_action_name_is_valid ("%abc"));
+  g_assert (!g_action_name_is_valid ("$x1"));
+  g_assert (g_action_name_is_valid ("abc.def"));
+  g_assert (g_action_name_is_valid ("ABC-DEF"));
+}
+
 static gboolean
 strv_has_string (gchar       **haystack,
                  const gchar  *needle)
@@ -404,25 +415,26 @@ test_parse_detailed (void)
     const gchar *expected_name;
     const gchar *expected_target;
     const gchar *expected_error;
+    const gchar *detailed_roundtrip;
   } testcases[] = {
-    { "abc",              "abc",    NULL,       NULL },
-    { " abc",             NULL,     NULL,       "invalid format" },
-    { " abc",             NULL,     NULL,       "invalid format" },
-    { "abc:",             NULL,     NULL,       "invalid format" },
-    { ":abc",             NULL,     NULL,       "invalid format" },
-    { "abc(",             NULL,     NULL,       "invalid format" },
-    { "abc)",             NULL,     NULL,       "invalid format" },
-    { "(abc",             NULL,     NULL,       "invalid format" },
-    { ")abc",             NULL,     NULL,       "invalid format" },
-    { "abc::xyz",         "abc",    "'xyz'",    NULL },
-    { "abc('xyz')",       "abc",    "'xyz'",    NULL },
-    { "abc(42)",          "abc",    "42",       NULL },
-    { "abc(int32 42)",    "abc",    "42",       NULL },
-    { "abc(@i 42)",       "abc",    "42",       NULL },
-    { "abc (42)",         NULL,     NULL,       "invalid format" },
-    { "abc(42abc)",       NULL,     NULL,       "invalid character in number" },
-    { "abc(42, 4)",       "abc",    "(42, 4)",  "expected end of input" },
-    { "abc(42,)",         "abc",    "(42,)",    "expected end of input" }
+    { "abc",              "abc",    NULL,       NULL,             "abc" },
+    { " abc",             NULL,     NULL,       "invalid format", NULL },
+    { " abc",             NULL,     NULL,       "invalid format", NULL },
+    { "abc:",             NULL,     NULL,       "invalid format", NULL },
+    { ":abc",             NULL,     NULL,       "invalid format", NULL },
+    { "abc(",             NULL,     NULL,       "invalid format", NULL },
+    { "abc)",             NULL,     NULL,       "invalid format", NULL },
+    { "(abc",             NULL,     NULL,       "invalid format", NULL },
+    { ")abc",             NULL,     NULL,       "invalid format", NULL },
+    { "abc::xyz",         "abc",    "'xyz'",    NULL,             "abc::xyz" },
+    { "abc('xyz')",       "abc",    "'xyz'",    NULL,             "abc::xyz" },
+    { "abc(42)",          "abc",    "42",       NULL,             "abc(42)" },
+    { "abc(int32 42)",    "abc",    "42",       NULL,             "abc(42)" },
+    { "abc(@i 42)",       "abc",    "42",       NULL,             "abc(42)" },
+    { "abc (42)",         NULL,     NULL,       "invalid format", NULL },
+    { "abc(42abc)",       NULL,     NULL,       "invalid character in number", NULL },
+    { "abc(42, 4)",       "abc",    "(42, 4)",  "expected end of input", NULL },
+    { "abc(42,)",         "abc",    "(42,)",    "expected end of input", NULL }
   };
   gint i;
 
@@ -454,6 +466,16 @@ test_parse_detailed (void)
 
       g_assert_cmpstr (name, ==, testcases[i].expected_name);
       g_assert ((target == NULL) == (testcases[i].expected_target == NULL));
+
+      if (success)
+        {
+          gchar *detailed;
+
+          detailed = g_action_print_detailed_name (name, target);
+          g_assert_cmpstr (detailed, ==, testcases[i].detailed_roundtrip);
+          g_free (detailed);
+        }
+
       if (target)
         {
           GVariant *expected;
@@ -1094,6 +1116,7 @@ main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/actions/basic", test_basic);
+  g_test_add_func ("/actions/name", test_name);
   g_test_add_func ("/actions/simplegroup", test_simple_group);
   g_test_add_func ("/actions/stateful", test_stateful);
   g_test_add_func ("/actions/entries", test_entries);
