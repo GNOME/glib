@@ -513,6 +513,26 @@ test_nullify (void)
   g_assert (p == NULL);
 }
 
+static void
+atexit_func (void)
+{
+  g_print ("atexit called");
+}
+
+static void
+test_atexit_subprocess (void)
+{
+  g_atexit (atexit_func);
+}
+
+static void
+test_atexit (void)
+{
+  g_test_trap_subprocess ("/utils/atexit/subprocess", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*atexit called*");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -558,6 +578,8 @@ main (int   argc,
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
   g_test_add_func ("/utils/misc-mem", test_misc_mem);
   g_test_add_func ("/utils/nullify", test_nullify);
+  g_test_add_func ("/utils/atexit", test_atexit);
+  g_test_add_func ("/utils/atexit/subprocess", test_atexit_subprocess);
 
   return g_test_run ();
 }
