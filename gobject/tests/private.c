@@ -201,9 +201,17 @@ static void
 private_instance (void)
 {
   TestObject *obj = g_object_new (test_object_get_type (), NULL);
+  gpointer class;
+  gint offset;
 
   g_assert_cmpint (test_object_get_dummy_0 (obj), ==, 42);
   g_assert_cmpfloat (test_object_get_dummy_1 (obj), ==, 3.14159f);
+
+  class = g_type_class_ref (test_object_get_type ());
+  offset = g_type_class_get_instance_private_offset (class);
+  g_type_class_unref (class);
+
+  g_assert (offset == TestObject_private_offset);
 
   g_object_unref (obj);
 }
