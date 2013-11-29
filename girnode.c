@@ -1010,10 +1010,10 @@ parse_float_value (const gchar *str)
 static gboolean
 parse_boolean_value (const gchar *str)
 {
-  if (strcmp (str, "TRUE") == 0)
+  if (g_ascii_strcasecmp (str, "TRUE") == 0)
     return TRUE;
 
-  if (strcmp (str, "FALSE") == 0)
+  if (g_ascii_strcasecmp (str, "FALSE") == 0)
     return FALSE;
 
   return parse_int_value (str) ? TRUE : FALSE;
