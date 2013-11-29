@@ -428,6 +428,9 @@ on_activate (GApplication *app)
   state = g_action_group_get_action_state (G_ACTION_GROUP (app), "test");
   g_assert (g_variant_get_boolean (state) == TRUE);
 
+  action = g_action_map_lookup_action (G_ACTION_MAP (app), "test");
+  g_assert (action != NULL);
+
   g_action_map_remove_action (G_ACTION_MAP (app), "test");
 
   actions = g_action_group_list_actions (G_ACTION_GROUP (app));
