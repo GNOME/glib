@@ -806,6 +806,40 @@ test_copy_preserve_mode (void)
 }
 #endif
 
+static void
+test_measure (void)
+{
+  GFile *file;
+  guint64 size;
+  guint64 num_dirs;
+  guint64 num_files;
+  GError *error = NULL;
+  gboolean ok;
+  gchar *path;
+
+  path = g_test_build_filename (G_TEST_DIST, "desktop-files", NULL);
+  file = g_file_new_for_path (path);
+  g_free (path);
+
+  ok = g_file_measure_disk_usage (file,
+                                  G_FILE_MEASURE_NONE,
+                                  NULL,
+                                  NULL,
+                                  NULL,
+                                  &size,
+                                  &num_dirs,
+                                  &num_files,
+                                  &error);
+  g_assert (ok);
+  g_assert_no_error (error);
+
+  g_assert_cmpuint (size, ==, 155648);
+  g_assert_cmpuint (num_dirs, ==, 6);
+  g_assert_cmpuint (num_files, ==, 30);
+
+  g_object_unref (file);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -829,6 +863,7 @@ main (int argc, char *argv[])
 #ifdef G_OS_UNIX
   g_test_add_func ("/file/copy-preserve-mode", test_copy_preserve_mode);
 #endif
+  g_test_add_func ("/file/measure", test_measure);
 
   return g_test_run ();
 }
