@@ -246,6 +246,10 @@ test_simple_group (void)
   action = g_simple_action_group_lookup (group, "bar");
   g_assert (action == NULL);
 
+  simple = g_simple_action_new ("foo", NULL);
+  g_simple_action_group_insert (group, G_ACTION (simple));
+  g_object_unref (simple);
+
   a.did_run = FALSE;
   g_object_unref (group);
   g_assert (!a.did_run);
