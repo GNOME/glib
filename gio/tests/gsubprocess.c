@@ -807,6 +807,7 @@ test_cwd (void)
   GPtrArray *args;
   GInputStream *stdout;
   gchar *result;
+  const char *basename;
 
   args = get_test_subprocess_args ("cwd", NULL);
   launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE);
@@ -821,7 +822,9 @@ test_cwd (void)
 
   result = splice_to_string (stdout, error);
 
-  g_assert_cmpstr (result, ==, "/tmp" LINEEND);
+  basename = g_strrstr (result, "/");
+  g_assert (basename != NULL);
+  g_assert_cmpstr (basename, ==, "/tmp" LINEEND);
 
   g_free (result);
   g_object_unref (proc);
