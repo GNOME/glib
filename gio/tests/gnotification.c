@@ -29,6 +29,7 @@ activate_app (GApplication *application,
               gpointer      user_data)
 {
   GNotification *notification;
+  GIcon *icon;
 
   notification = g_notification_new ("Test");
 
@@ -36,6 +37,17 @@ activate_app (GApplication *application,
   g_application_send_notification (application, "test2", notification);
   g_application_withdraw_notification (application, "test1");
   g_application_send_notification (application, "test3", notification);
+
+  icon = g_themed_icon_new ("i-c-o-n");
+  g_notification_set_icon (notification, icon);
+  g_object_unref (icon);
+
+  g_notification_set_body (notification, "body");
+  g_notification_set_urgent (notification, TRUE);
+  g_notification_set_default_action_and_target (notification, "app.action", "i", 42);
+  g_notification_add_button_with_target (notification, "label", "app.action2", "s", "bla");
+
+  g_application_send_notification (application, "test4", notification);
 
   g_dbus_connection_flush_sync (g_application_get_dbus_connection (application), NULL, NULL);
 
@@ -68,6 +80,10 @@ notification_received (GNotificationServer *server,
 
     case 2:
       g_assert_cmpstr (notification_id, ==, "test3");
+      break;
+
+    case 3:
+      g_assert_cmpstr (notification_id, ==, "test4");
 
       g_notification_server_stop (server);
       break;
@@ -145,7 +161,7 @@ basic (void)
 
   g_main_loop_run (loop);
 
-  g_assert_cmpint (received_count, ==, 3);
+  g_assert_cmpint (received_count, ==, 4);
   g_assert_cmpint (removed_count, ==, 1);
 
   g_object_unref (server);
