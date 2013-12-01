@@ -391,14 +391,14 @@ ensure_builtin_icon_types (void)
 static GIcon *
 g_icon_new_for_string_simple (const gchar *str)
 {
-  gchar *scheme;
+  const gchar *scheme;
   GIcon *icon;
 
   if (str[0] == '.')
     return NULL;
 
   /* handle special GFileIcon and GThemedIcon cases */
-  scheme = g_uri_parse_scheme (str);
+  scheme = g_uri_peek_scheme (str);
   if (scheme != NULL || str[0] == '/' || str[0] == G_DIR_SEPARATOR)
     {
       GFile *location;
@@ -408,8 +408,6 @@ g_icon_new_for_string_simple (const gchar *str)
     }
   else
     icon = g_themed_icon_new (str);
-
-  g_free (scheme);
 
   return icon;
 }

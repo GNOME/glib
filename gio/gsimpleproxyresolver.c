@@ -25,7 +25,6 @@
 #include "gsimpleproxyresolver.h"
 #include "ginetaddress.h"
 #include "ginetaddressmask.h"
-#include "gnetworkingprivate.h"
 #include "gtask.h"
 
 #include "glibintl.h"
@@ -325,10 +324,13 @@ g_simple_proxy_resolver_lookup (GProxyResolver  *proxy_resolver,
   if (priv->ignore_ips || priv->ignore_domains)
     {
       gchar *host = NULL;
-      gushort port;
+      gint port;
 
-      if (_g_uri_parse_authority (uri, &host, &port, NULL) &&
-          ignore_host (resolver, host, port))
+      if (g_uri_split (uri, 0, NULL, NULL,
+                       &host, &port,
+                       NULL, NULL, NULL,
+                       NULL) &&
+          ignore_host (resolver, host, CLAMP (port, 0, 65535)))
         proxy = "direct://";
 
       g_free (host);

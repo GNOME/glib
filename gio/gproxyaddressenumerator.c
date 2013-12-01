@@ -27,7 +27,6 @@
 #include "ginetaddress.h"
 #include "glibintl.h"
 #include "gnetworkaddress.h"
-#include "gnetworkingprivate.h"
 #include "gproxy.h"
 #include "gproxyaddress.h"
 #include "gproxyresolver.h"
@@ -65,7 +64,7 @@ struct _GProxyAddressEnumeratorPrivate
   GSocketAddressEnumerator *addr_enum;
   GSocketAddress           *proxy_address;
   const gchar              *proxy_uri;
-  gchar                    *proxy_type;
+  const gchar              *proxy_type;
   gchar                    *proxy_username;
   gchar                    *proxy_password;
   gboolean                  supports_hostname;
@@ -79,8 +78,6 @@ static void
 save_userinfo (GProxyAddressEnumeratorPrivate *priv,
 	       const gchar *proxy)
 {
-  gchar *userinfo;
-
   if (priv->proxy_username)
     {
       g_free (priv->proxy_username);
@@ -93,23 +90,14 @@ save_userinfo (GProxyAddressEnumeratorPrivate *priv,
       priv->proxy_password = NULL;
     }
   
-  if (_g_uri_parse_authority (proxy, NULL, NULL, &userinfo))
-    {
-      if (userinfo)
-	{
-	  gchar **split = g_strsplit (userinfo, ":", 2);
-
-	  if (split[0] != NULL)
-	    {
-	      priv->proxy_username = g_uri_unescape_string (split[0], NULL);
-	      if (split[1] != NULL)
-		priv->proxy_password = g_uri_unescape_string (split[1], NULL);
-	    }
-
-	  g_strfreev (split);
-	  g_free (userinfo);
-	}
-    }
+  g_uri_split_with_user (proxy, 0,
+                         NULL, /* scheme */
+                         &priv->proxy_username,
+                         &priv->proxy_password,
+                         NULL, /* auth params */
+                         NULL, NULL, /* host, port */
+                         NULL, NULL, NULL, /* path, query, fragment */
+                         NULL);
 }
 
 static void
@@ -124,8 +112,7 @@ next_enumerator (GProxyAddressEnumeratorPrivate *priv)
       GProxy *proxy;
 
       priv->proxy_uri = *priv->next_proxy++;
-      g_free (priv->proxy_type);
-      priv->proxy_type = g_uri_parse_scheme (priv->proxy_uri);
+      priv->proxy_type = g_uri_peek_scheme (priv->proxy_uri);
 
       if (priv->proxy_type == NULL)
 	continue;
@@ -195,7 +182,7 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
   while (result == NULL && (*priv->next_proxy || priv->addr_enum))
     {
       gchar *dest_hostname;
-      gchar *dest_protocol;
+      const gchar *dest_protocol;
       GInetSocketAddress *inetsaddr;
       GInetAddress *inetaddr;
       guint16 port;
@@ -269,7 +256,7 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
 	{
 	  dest_hostname = g_strdup (priv->dest_hostname);
 	}
-      dest_protocol = g_uri_parse_scheme (priv->dest_uri);
+      dest_protocol = g_uri_peek_scheme (priv->dest_uri);
 		 		  
       g_return_val_if_fail (G_IS_INET_SOCKET_ADDRESS (priv->proxy_address),
 			    NULL);
@@ -290,7 +277,6 @@ g_proxy_address_enumerator_next (GSocketAddressEnumerator  *enumerator,
 			     "uri", priv->proxy_uri,
 			     NULL);
       g_free (dest_hostname);
-      g_free (dest_protocol);
 
       if (priv->supports_hostname || priv->next_dest_ip == NULL)
 	{
@@ -338,7 +324,8 @@ return_result (GTask *task)
     }
   else
     {
-      gchar *dest_hostname, *dest_protocol;
+      gchar *dest_hostname;
+      const gchar *dest_protocol;
       GInetSocketAddress *inetsaddr;
       GInetAddress *inetaddr;
       guint16 port;
@@ -359,7 +346,7 @@ return_result (GTask *task)
 	{
 	  dest_hostname = g_strdup (priv->dest_hostname);
 	}
-      dest_protocol = g_uri_parse_scheme (priv->dest_uri);
+      dest_protocol = g_uri_peek_scheme (priv->dest_uri);
 
       g_return_if_fail (G_IS_INET_SOCKET_ADDRESS (priv->proxy_address));
 
@@ -379,7 +366,6 @@ return_result (GTask *task)
 			     "uri", priv->proxy_uri,
 			     NULL);
       g_free (dest_hostname);
-      g_free (dest_protocol);
 
       if (priv->supports_hostname || priv->next_dest_ip == NULL)
 	{
@@ -683,7 +669,6 @@ g_proxy_address_enumerator_finalize (GObject *object)
   if (priv->addr_enum)
     g_object_unref (priv->addr_enum);
 
-  g_free (priv->proxy_type);
   g_free (priv->proxy_username);
   g_free (priv->proxy_password);
 
