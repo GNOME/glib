@@ -279,6 +279,7 @@ usr_desktop_files = \
 	kde4/kate.desktop			\
 	kde4/konqbrowser.desktop		\
 	kde4/okular.desktop			\
+	mimeinfo.cache				\
 	nautilus-autorun-software.desktop	\
 	nautilus-classic.desktop		\
 	nautilus-connect-server.desktop		\
