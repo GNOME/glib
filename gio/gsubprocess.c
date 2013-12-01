@@ -693,7 +693,7 @@ g_subprocess_new (GSubprocessFlags   flags,
 
 /**
  * g_subprocess_newv:
- * @argv: commandline arguments for the subprocess
+ * @argv: (array zero-terminated=1) (element-type utf8): commandline arguments for the subprocess
  * @flags: flags that define the behaviour of the subprocess
  * @error: (allow-none): return location for an error, or %NULL
  *
