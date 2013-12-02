@@ -104,7 +104,6 @@ my_infanticide_object_constructor (GType                  type,
     constructor (type, n_construct_properties, construct_params);
 
   g_object_unref (object);
-  g_assert_not_reached ();
 
   return NULL;
 }
@@ -120,18 +119,21 @@ my_infanticide_object_class_init (MyInfanticideObjectClass *klass)
 static void
 test_object_constructor_infanticide (void)
 {
+  GObject *obj;
+  int i;
+
   g_test_bug ("661576");
 
-  if (g_test_subprocess ())
+  for (i = 0; i < 1000; i++)
     {
-      g_object_new (my_infanticide_object_get_type (), NULL);
-      g_assert_not_reached ();
-      return;
+      g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
+                             "*finalized while still in-construction*");
+      g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_CRITICAL,
+                             "*Custom constructor*returned NULL*");
+      obj = g_object_new (my_infanticide_object_get_type (), NULL);
+      g_assert_null (obj);
+      g_test_assert_expected_messages ();
     }
-  g_test_trap_subprocess (NULL, 0, 0);
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*finalized while still in-construction*");
-  g_test_trap_assert_stderr_unmatched ("*reached*");
 }
 
 /* --------------------------------- */

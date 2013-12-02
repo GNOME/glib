@@ -1023,8 +1023,8 @@ g_object_finalize (GObject *object)
 {
   if (object_in_construction (object))
     {
-      g_error ("object %s %p finalized while still in-construction",
-               G_OBJECT_TYPE_NAME (object), object);
+      g_critical ("object %s %p finalized while still in-construction",
+                  G_OBJECT_TYPE_NAME (object), object);
     }
 
   g_datalist_clear (&object->qdata);
