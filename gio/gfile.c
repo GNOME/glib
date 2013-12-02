@@ -7171,8 +7171,7 @@ g_file_replace_contents (GFile             *file,
 
 typedef struct {
   GTask *task;
-  const char *content;
-  gsize length;
+  GBytes *content;
   gsize pos;
   char *etag;
   gboolean failed;
@@ -7181,6 +7180,7 @@ typedef struct {
 static void
 replace_contents_data_free (ReplaceContentsData *data)
 {
+  g_bytes_unref (data->content);
   g_free (data->etag);
   g_free (data);
 }
@@ -7231,16 +7231,20 @@ replace_contents_write_callback (GObject      *obj,
     }
   else if (write_size > 0)
     {
+      const gchar *content;
+      gsize length;
+
+      content = g_bytes_get_data (data->content, &length);
       data->pos += write_size;
 
-      if (data->pos >= data->length)
+      if (data->pos >= length)
         g_output_stream_close_async (stream, 0,
                                      g_task_get_cancellable (data->task),
                                      replace_contents_close_callback, data);
       else
         g_output_stream_write_async (stream,
-                                     data->content + data->pos,
-                                     data->length - data->pos,
+                                     content + data->pos,
+                                     length - data->pos,
                                      0,
                                      g_task_get_cancellable (data->task),
                                      replace_contents_write_callback,
@@ -7262,9 +7266,13 @@ replace_contents_open_callback (GObject      *obj,
 
   if (stream)
     {
+      const gchar *content;
+      gsize length;
+
+      content = g_bytes_get_data (data->content, &length);
       g_output_stream_write_async (G_OUTPUT_STREAM (stream),
-                                   data->content + data->pos,
-                                   data->length - data->pos,
+                                   content + data->pos,
+                                   length - data->pos,
                                    0,
                                    g_task_get_cancellable (data->task),
                                    replace_contents_write_callback,
@@ -7315,6 +7323,46 @@ g_file_replace_contents_async  (GFile               *file,
                                 GAsyncReadyCallback  callback,
                                 gpointer             user_data)
 {
+  GBytes *bytes;
+
+  bytes = g_bytes_new_static (contents, length);
+  g_file_replace_contents_bytes_async (file, bytes, etag, make_backup, flags,
+      cancellable, callback, user_data);
+  g_bytes_unref (bytes);
+}
+
+/**
+ * g_file_replace_contents_bytes_async:
+ * @file: input #GFile
+ * @contents: a #GBytes
+ * @etag: (allow-none): a new <link linkend="gfile-etag">entity tag</link> for the @file, or %NULL
+ * @make_backup: %TRUE if a backup should be created
+ * @flags: a set of #GFileCreateFlags
+ * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to callback function
+ *
+ * Same as g_file_replace_contents_async() but takes a #GBytes input instead.
+ * This function will keep a ref on @contents until the operation is done.
+ * Unlike g_file_replace_contents_async() this allows forgetting about the
+ * content without waiting for the callback.
+ *
+ * When this operation has completed, @callback will be called with
+ * @user_user data, and the operation can be finalized with
+ * g_file_replace_contents_finish().
+ *
+ * Since: 2.40
+ */
+void
+g_file_replace_contents_bytes_async  (GFile               *file,
+                                      GBytes              *contents,
+                                      const char          *etag,
+                                      gboolean             make_backup,
+                                      GFileCreateFlags     flags,
+                                      GCancellable        *cancellable,
+                                      GAsyncReadyCallback  callback,
+                                      gpointer             user_data)
+{
   ReplaceContentsData *data;
 
   g_return_if_fail (G_IS_FILE (file));
@@ -7322,8 +7370,7 @@ g_file_replace_contents_async  (GFile               *file,
 
   data = g_new0 (ReplaceContentsData, 1);
 
-  data->content = contents;
-  data->length = length;
+  data->content = g_bytes_ref (contents);
 
   data->task = g_task_new (file, cancellable, callback, user_data);
   g_task_set_task_data (data->task, data, (GDestroyNotify)replace_contents_data_free);

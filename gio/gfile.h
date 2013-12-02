@@ -1229,6 +1229,15 @@ void     g_file_replace_contents_async       (GFile                  *file,
 					      GCancellable           *cancellable,
 					      GAsyncReadyCallback     callback,
 					      gpointer                user_data);
+GLIB_AVAILABLE_IN_2_40
+void     g_file_replace_contents_bytes_async (GFile                  *file,
+					      GBytes                 *bytes,
+					      const char             *etag,
+					      gboolean                make_backup,
+					      GFileCreateFlags        flags,
+					      GCancellable           *cancellable,
+					      GAsyncReadyCallback     callback,
+					      gpointer                user_data);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_file_replace_contents_finish      (GFile                  *file,
 					      GAsyncResult           *res,

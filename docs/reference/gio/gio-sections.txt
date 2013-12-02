@@ -187,6 +187,7 @@ g_file_load_partial_contents_async
 g_file_load_partial_contents_finish
 g_file_replace_contents
 g_file_replace_contents_async
+g_file_replace_contents_bytes_async
 g_file_replace_contents_finish
 g_file_copy_attributes
 g_file_create_readwrite
