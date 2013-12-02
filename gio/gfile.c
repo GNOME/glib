@@ -7311,6 +7311,11 @@ replace_contents_open_callback (GObject      *obj,
  *
  * If @make_backup is %TRUE, this function will attempt to
  * make a backup of @file.
+ *
+ * <warning><para>No copy of @content will be made, so it must stay valid until
+ * @callback is called. See g_file_replace_contents_bytes_async() for a #GBytes
+ * version that will automatically hold a reference to the contents (without
+ * copying) for the duration of the call.</para></warning>
  */
 void
 g_file_replace_contents_async  (GFile               *file,
