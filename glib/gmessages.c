@@ -290,7 +290,7 @@ static gpointer          fatal_log_data;
 
 /* --- functions --- */
 
-static void _g_log_abort (gboolean breakpoint) G_GNUC_NORETURN;
+static void _g_log_abort (gboolean breakpoint);
 
 static void
 _g_log_abort (gboolean breakpoint)
@@ -307,8 +307,8 @@ _g_log_abort (gboolean breakpoint)
 
   if (breakpoint)
     G_BREAKPOINT ();
-
-  abort ();
+  else
+    abort ();
 }
 
 #ifdef G_OS_WIN32
@@ -1130,6 +1130,7 @@ g_assert_warning (const char *log_domain,
 	 pretty_function,
 	 expression);
   _g_log_abort (FALSE);
+  abort ();
 }
 
 /**
