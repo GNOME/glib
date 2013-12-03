@@ -105,14 +105,6 @@
 
 
 #define REPORT_BUG      "please report occurrence circumstances to gtk-devel-list@gnome.org"
-#ifdef	G_ENABLE_DEBUG
-#define COND_DEBUG(debug_type, cond)	((_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type) || (cond))
-#define IF_DEBUG(debug_type, cond)	if (COND_DEBUG(debug_type, cond))
-
-static volatile gpointer g_trace_instance_signals = NULL;
-static volatile gpointer g_trap_instance_signals = NULL;
-#endif	/* G_ENABLE_DEBUG */
-
 
 /* --- typedefs --- */
 typedef struct _SignalNode   SignalNode;
@@ -3042,12 +3034,7 @@ g_signal_emitv (const GValue *instance_and_params,
 
   if (node->single_va_closure != NULL &&
       (node->single_va_closure == SINGLE_VA_CLOSURE_EMPTY_MAGIC ||
-       _g_closure_is_void (node->single_va_closure, instance))
-#ifdef	G_ENABLE_DEBUG
-      && !COND_DEBUG (SIGNALS, g_trace_instance_signals != instance &&
-		      g_trap_instance_signals == instance)
-#endif	/* G_ENABLE_DEBUG */
-      )
+       _g_closure_is_void (node->single_va_closure, instance)))
     {
       HandlerList* hlist = handler_list_lookup (node->signal_id, instance);
       if (hlist == NULL || hlist->handlers == NULL)
@@ -3129,12 +3116,7 @@ g_signal_emit_valist (gpointer instance,
   if (!node->single_va_closure_is_valid)
     node_update_single_va_closure (node);
 
-  if (node->single_va_closure != NULL
-#ifdef	G_ENABLE_DEBUG
-      && !COND_DEBUG (SIGNALS, g_trace_instance_signals != instance &&
-		      g_trap_instance_signals == instance)
-#endif	/* G_ENABLE_DEBUG */
-      )
+  if (node->single_va_closure != NULL)
     {
       HandlerList* hlist = handler_list_lookup (node->signal_id, instance);
       Handler *fastpath_handler = NULL;
@@ -3448,18 +3430,6 @@ signal_emit_unlocked_R (SignalNode   *node,
   gulong max_sequential_handler_number;
   gboolean return_value_altered = FALSE;
   
-#ifdef	G_ENABLE_DEBUG
-  IF_DEBUG (SIGNALS, g_trace_instance_signals == instance || g_trap_instance_signals == instance)
-    {
-      g_message ("%s::%s(%u) emitted (instance=%p, signal-node=%p)",
-		 g_type_name (G_TYPE_FROM_INSTANCE (instance)),
-		 node->name, detail,
-		 instance, node);
-      if (g_trap_instance_signals == instance)
-	G_BREAKPOINT ();
-    }
-#endif	/* G_ENABLE_DEBUG */
-
   TRACE(GOBJECT_SIGNAL_EMIT(node->signal_id, detail, instance, G_TYPE_FROM_INSTANCE (instance)));
 
   SIGNAL_LOCK ();
