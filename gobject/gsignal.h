@@ -469,7 +469,7 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * 
  * The handler will be called before the default handler of the signal.
  * 
- * Returns: the handler id
+ * Returns: the handler id (always greater than 0 for successful connections)
  */
 #define g_signal_connect(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (GConnectFlags) 0)
@@ -484,7 +484,7 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * 
  * The handler will be called after the default handler of the signal.
  * 
- * Returns: the handler id
+ * Returns: the handler id (always greater than 0 for successful connections)
  */
 #define g_signal_connect_after(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_AFTER)
@@ -500,7 +500,7 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * The instance on which the signal is emitted and @data will be swapped when 
  * calling the handler.
  * 
- * Returns: the handler id
+ * Returns: the handler id (always greater than 0 for successful connections)
  */
 #define g_signal_connect_swapped(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_SWAPPED)
