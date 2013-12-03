@@ -323,6 +323,12 @@ _g_test_watcher_remove_pid (GPid pid)
  * A helper class for testing code which uses D-Bus without touching the user's
  * session bus.
  *
+ * Note that #GTestDBus modifies the user’s environment, calling setenv(). This
+ * is not thread-safe, so all #GTestDBus calls should be completed before
+ * threads are spawned, or should have appropriate locking to ensure no access
+ * conflicts to environment variables shared between #GTestDBus and other
+ * threads.
+ *
  * <refsect2 id="gio-D-Bus-Test-Scaffolding">
  *   <title>Creating unit tests using GTestDBus</title>
  *   <para>
