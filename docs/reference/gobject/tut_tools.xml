@@ -73,24 +73,17 @@
       The reference counting scheme used by GObject does solve quite 
       a few memory management problems but also introduces new sources of bugs.
       In large applications, finding the exact spot where the reference count
-      of an Object is not properly handled can be very difficult. Hopefully, 
-      there exist a tool named <ulink url="http://refdbg.sf.net/">refdbg</ulink>
-      which can be used to automate the task of tracking down the location
-      of invalid code with regard to reference counting. This application 
-      intercepts the reference counting calls and tries to detect invalid behavior. 
-      It supports a filter-rule mechanism to let you trace only the objects you are 
-      interested in and it can be used together with GDB.
+      of an Object is not properly handled can be very difficult.
     </para>
     <para>
-      <indexterm><primary>g_trap_object_ref</primary></indexterm>
-      Note that if GObject has been compiled with <option>--enable-debug=yes</option>,
-      it exports a trap variable 
+      A useful tool in debugging reference counting problems is to
+      set breakpoints in gdb on g_object_ref() and g_object_unref().
+      Once you know the address of the object you are interested in,
+      you can make the breakpoints conditional:
       <programlisting>
-static volatile GObject *g_trap_object_ref;
+break g_object_ref if _object == 0xcafebabe
+break g_object_unref if _object == 0xcafebabe
       </programlisting>
-      If set to a non-NULL value, <link linkend="g-object-ref">g_object_ref</link>()
-      and <link linkend="g-object-unref">g_object_unref</link>() will be intercepted
-      when called with that value. 
     </para>
   </chapter>
     
