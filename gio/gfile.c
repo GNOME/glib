@@ -3752,7 +3752,7 @@ g_file_make_directory_with_parents (GFile         *file,
     return FALSE;
 
   g_file_make_directory (file, cancellable, &my_error);
-  if (my_error == NULL || my_error->code != G_IO_ERROR_NOT_FOUND)
+  if (!g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
     {
       if (my_error)
         g_propagate_error (error, my_error);
@@ -3761,7 +3761,7 @@ g_file_make_directory_with_parents (GFile         *file,
 
   work_file = g_object_ref (file);
 
-  while (my_error != NULL && my_error->code == G_IO_ERROR_NOT_FOUND)
+  while (g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
     {
       GFile *parent_file;
 
@@ -3780,7 +3780,7 @@ g_file_make_directory_with_parents (GFile         *file,
       g_object_unref (work_file);
       work_file = g_object_ref (parent_file);
 
-      if (my_error != NULL && my_error->code == G_IO_ERROR_NOT_FOUND)
+      if (g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
         list = g_list_prepend (list, parent_file);  /* Transfer ownership of ref */
       else
         g_object_unref (parent_file);
