@@ -121,6 +121,23 @@ a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop (gpointer user_data
 }
 
 static void
+test_connection_bus_failure (void)
+{
+  GDBusConnection *c;
+  GError *error = NULL;
+
+  /*
+   * Check for correct behavior when no bus is present
+   *
+   */
+  c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  g_assert (error != NULL);
+  g_assert (!g_dbus_error_is_remote_error (error));
+  g_assert (c == NULL);
+  g_error_free (error);
+}
+
+static void
 test_connection_life_cycle (void)
 {
   gboolean ret;
@@ -135,16 +152,6 @@ test_connection_life_cycle (void)
   guint registration_id;
 
   error = NULL;
-
-  /*
-   * Check for correct behavior when no bus is present
-   *
-   */
-  c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
-  g_assert (error != NULL);
-  g_assert (!g_dbus_error_is_remote_error (error));
-  g_assert (c == NULL);
-  g_error_free (error);
 
   /*
    *  Check for correct behavior when a bus is present
@@ -1226,6 +1233,9 @@ main (int   argc,
   loop = g_main_loop_new (NULL, FALSE);
 
   g_test_dbus_unset ();
+
+  /* gdbus cleanup is pretty racy due to worker threads, so always do this test first */
+  g_test_add_func ("/gdbus/connection/bus-failure", test_connection_bus_failure);
 
   g_test_add_func ("/gdbus/connection/basic", test_connection_basic);
   g_test_add_func ("/gdbus/connection/life-cycle", test_connection_life_cycle);
