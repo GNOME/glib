@@ -232,7 +232,7 @@
  *       bd->cake = cake;
  *
  *       /&ast; Bail out now if the user has already cancelled &ast;/
- *       if (g_task_return_error_if_cancelled (g_task_get_cancellable (task)))
+ *       if (g_task_return_error_if_cancelled (task))
  *         {
  *           g_object_unref (task);
  *           return;

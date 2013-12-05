@@ -111,7 +111,7 @@ g_cancellable_class_init (GCancellableClass *klass)
    * An example of how to us this:
    * |[
    *     /<!-- -->* Make sure we don't do any unnecessary work if already cancelled *<!-- -->/
-   *     if (g_cancellable_set_error_if_cancelled (cancellable))
+   *     if (g_cancellable_set_error_if_cancelled (cancellable, error))
    *       return;
    *
    *     /<!-- -->* Set up all the data needed to be able to
