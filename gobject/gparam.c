@@ -417,7 +417,7 @@ is_canonical (const gchar *key)
  * @blurb, which should be a somewhat longer description, suitable for
  * e.g. a tooltip. The @nick and @blurb should ideally be localized.
  *
- * Returns: a newly allocated #GParamSpec instance
+ * Returns: (type GObject.ParamSpec): a newly allocated #GParamSpec instance
  */
 gpointer
 g_param_spec_internal (GType        param_type,

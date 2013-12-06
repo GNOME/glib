@@ -132,8 +132,8 @@ g_string_sized_new (gsize dfl_size)
 
 /**
  * g_string_new:
- * @init: (allow-none): the initial text to copy into the string, or %NULL to
- * start with an empty string.
+ * @init: (nullable): the initial text to copy into the string, or %NULL to
+ * start with an empty string
  *
  * Creates a new #GString, initialized with the given string.
  *

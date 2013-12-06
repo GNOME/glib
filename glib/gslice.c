@@ -873,7 +873,11 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * mechanism can be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
- * Returns: a pointer to the allocated block, cast to a pointer to @type
+ * This can never return %NULL as the minimum allocation size from
+ * `sizeof (@type)` is 1 byte.
+ *
+ * Returns: (not nullable): a pointer to the allocated block, cast to a pointer
+ *    to @type
  *
  * Since: 2.10
  */
@@ -892,13 +896,19 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
+ * This can never return %NULL as the minimum allocation size from
+ * `sizeof (@type)` is 1 byte.
+ *
+ * Returns: (not nullable): a pointer to the allocated block, cast to a pointer
+ *    to @type
+ *
  * Since: 2.10
  */
 
 /**
  * g_slice_dup:
  * @type: the type to duplicate, typically a structure name
- * @mem: the memory to copy into the allocated block
+ * @mem: (not nullable): the memory to copy into the allocated block
  *
  * A convenience macro to duplicate a block of memory using
  * the slice allocator.
@@ -910,7 +920,10 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
- * Returns: a pointer to the allocated block, cast to a pointer to @type
+ * This can never return %NULL.
+ *
+ * Returns: (not nullable): a pointer to the allocated block, cast to a pointer
+ *    to @type
  *
  * Since: 2.14
  */
@@ -928,6 +941,8 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * Note that the exact release behaviour can be changed with the
  * [`G_DEBUG=gc-friendly`][G_DEBUG] environment variable, also see
  * [`G_SLICE`][G_SLICE] for related debugging options.
+ *
+ * If @mem is %NULL, this macro does nothing.
  *
  * Since: 2.10
  */
@@ -947,6 +962,8 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * [`G_DEBUG=gc-friendly`][G_DEBUG] environment variable, also see
  * [`G_SLICE`][G_SLICE] for related debugging options.
  *
+ * If @mem_chain is %NULL, this function does nothing.
+ *
  * Since: 2.10
  */
 
@@ -964,7 +981,8 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
- * Returns: a pointer to the allocated memory block
+ * Returns: a pointer to the allocated memory block, which will be %NULL if and
+ *    only if @mem_size is 0
  *
  * Since: 2.10
  */
@@ -1022,7 +1040,8 @@ g_slice_alloc (gsize mem_size)
  * mechanism can be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
- * Returns: a pointer to the allocated block
+ * Returns: a pointer to the allocated block, which will be %NULL if and only
+ *    if @mem_size is 0
  *
  * Since: 2.10
  */
@@ -1043,7 +1062,10 @@ g_slice_alloc0 (gsize mem_size)
  * Allocates a block of memory from the slice allocator
  * and copies @block_size bytes into it from @mem_block.
  *
- * Returns: a pointer to the allocated memory block
+ * @mem_block must be non-%NULL if @block_size is non-zero.
+ *
+ * Returns: a pointer to the allocated memory block, which will be %NULL if and
+ *    only if @mem_size is 0
  *
  * Since: 2.14
  */
@@ -1069,6 +1091,8 @@ g_slice_copy (gsize         mem_size,
  * specified upon allocation. Note that the exact release behaviour
  * can be changed with the [`G_DEBUG=gc-friendly`][G_DEBUG] environment
  * variable, also see [`G_SLICE`][G_SLICE] for related debugging options.
+ *
+ * If @mem_block is %NULL, this function does nothing.
  *
  * Since: 2.10
  */
@@ -1129,6 +1153,8 @@ g_slice_free1 (gsize    mem_size,
  * Note that the exact release behaviour can be changed with the
  * [`G_DEBUG=gc-friendly`][G_DEBUG] environment variable, also see
  * [`G_SLICE`][G_SLICE] for related debugging options.
+ *
+ * If @mem_chain is %NULL, this function does nothing.
  *
  * Since: 2.10
  */

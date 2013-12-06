@@ -422,7 +422,8 @@ g_memory_output_stream_new_resizable (void)
  * Note that the returned pointer may become invalid on the next
  * write or truncate operation on the stream.
  *
- * Returns: (transfer none): pointer to the stream's data
+ * Returns: (transfer none): pointer to the stream's data, or %NULL if the data
+ *    has been stolen
  **/
 gpointer
 g_memory_output_stream_get_data (GMemoryOutputStream *ostream)
@@ -492,7 +493,8 @@ g_memory_output_stream_get_data_size (GMemoryOutputStream *ostream)
  *
  * @ostream must be closed before calling this function.
  *
- * Returns: (transfer full): the stream's data
+ * Returns: (transfer full): the stream's data, or %NULL if it has previously
+ *    been stolen
  *
  * Since: 2.26
  **/

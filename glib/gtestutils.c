@@ -1681,7 +1681,7 @@ find_case (gconstpointer l, gconstpointer s)
 
 /**
  * GTestFixtureFunc:
- * @fixture: the test fixture
+ * @fixture: (not nullable): the test fixture
  * @user_data: the data provided when registering the test
  *
  * The type used for functions that operate on test fixtures.  This is
@@ -2429,6 +2429,14 @@ g_assertion_message (const char     *domain,
     abort ();
 }
 
+/**
+ * g_assertion_message_expr: (skip)
+ * @domain: (nullable):
+ * @file:
+ * @line:
+ * @func:
+ * @expr: (nullable):
+ */
 void
 g_assertion_message_expr (const char     *domain,
                           const char     *file,

@@ -436,8 +436,9 @@ try_steal_and_unref (GBytes         *bytes,
  * g_bytes_new_take() or g_byte_array_free_to_bytes(). In all other cases the
  * data is copied.
  *
- * Returns: (transfer full) (array length=size) (element-type guint8):
- *          a pointer to the same byte data, which should be freed with g_free()
+ * Returns: (transfer full) (array length=size) (element-type guint8)
+ *          (not nullable): a pointer to the same byte data, which should be
+ *          freed with g_free()
  *
  * Since: 2.32
  */

@@ -319,7 +319,8 @@ g_closure_set_meta_va_marshal (GClosure       *closure,
 /**
  * g_closure_set_meta_marshal: (skip)
  * @closure: a #GClosure
- * @marshal_data: context-dependent data to pass to @meta_marshal
+ * @marshal_data: (closure meta_marshal): context-dependent data to pass
+ *  to @meta_marshal
  * @meta_marshal: a #GClosureMarshal function
  *
  * Sets the meta marshaller of @closure.  A meta marshaller wraps
@@ -360,9 +361,11 @@ g_closure_set_meta_marshal (GClosure       *closure,
 /**
  * g_closure_add_marshal_guards: (skip)
  * @closure: a #GClosure
- * @pre_marshal_data: data to pass to @pre_marshal_notify
+ * @pre_marshal_data: (closure pre_marshal_notify): data to pass
+ *  to @pre_marshal_notify
  * @pre_marshal_notify: a function to call before the closure callback
- * @post_marshal_data: data to pass to @post_marshal_notify
+ * @post_marshal_data: (closure post_marshal_notify): data to pass
+ *  to @post_marshal_notify
  * @post_marshal_notify: a function to call after the closure callback
  *
  * Adds a pair of notifiers which get invoked before and after the
@@ -417,7 +420,7 @@ g_closure_add_marshal_guards (GClosure      *closure,
 /**
  * g_closure_add_finalize_notifier: (skip)
  * @closure: a #GClosure
- * @notify_data: data to pass to @notify_func
+ * @notify_data: (closure notify_func): data to pass to @notify_func
  * @notify_func: the callback function to register
  *
  * Registers a finalization notifier which will be called when the
@@ -453,7 +456,7 @@ g_closure_add_finalize_notifier (GClosure      *closure,
 /**
  * g_closure_add_invalidate_notifier: (skip)
  * @closure: a #GClosure
- * @notify_data: data to pass to @notify_func
+ * @notify_data: (closure notify_func): data to pass to @notify_func
  * @notify_func: the callback function to register
  *
  * Registers an invalidation notifier which will be called when the
@@ -921,7 +924,7 @@ _g_closure_set_va_marshal (GClosure       *closure,
 /**
  * g_cclosure_new: (skip)
  * @callback_func: the function to invoke
- * @user_data: user data to pass to @callback_func
+ * @user_data: (closure callback_func): user data to pass to @callback_func
  * @destroy_data: destroy notify to be called when @user_data is no longer used
  *
  * Creates a new closure which invokes @callback_func with @user_data as
@@ -949,7 +952,7 @@ g_cclosure_new (GCallback      callback_func,
 /**
  * g_cclosure_new_swap: (skip)
  * @callback_func: the function to invoke
- * @user_data: user data to pass to @callback_func
+ * @user_data: (closure callback_func): user data to pass to @callback_func
  * @destroy_data: destroy notify to be called when @user_data is no longer used
  *
  * Creates a new closure which invokes @callback_func with @user_data as
@@ -1496,7 +1499,8 @@ g_cclosure_marshal_generic (GClosure     *closure,
  * @return_value: (allow-none): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
- * @instance: the instance on which the closure is invoked.
+ * @instance: (type GObject.TypeInstance): the instance on which the closure is
+ *  invoked.
  * @args_list: va_list of arguments to be passed to the closure.
  * @marshal_data: (allow-none): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and

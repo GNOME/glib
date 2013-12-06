@@ -379,7 +379,7 @@ g_value_set_instance (GValue  *value,
 /**
  * g_value_init_from_instance:
  * @value: An uninitialized #GValue structure.
- * @instance: the instance
+ * @instance: (type GObject.TypeInstance): the instance
  *
  * Initializes and sets @value from an instantiatable type via the
  * value_table's collect_value() function.

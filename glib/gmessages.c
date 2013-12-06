@@ -942,7 +942,8 @@ static GSList *expected_messages = NULL;
 
 /**
  * g_logv:
- * @log_domain: the log domain
+ * @log_domain: (nullable): the log domain, or %NULL for the default ""
+ * application domain
  * @log_level: the log level
  * @format: the message format. See the printf() documentation
  * @args: the parameters to insert into the format string
@@ -1089,7 +1090,8 @@ g_logv (const gchar   *log_domain,
 
 /**
  * g_log:
- * @log_domain: the log domain, usually #G_LOG_DOMAIN
+ * @log_domain: (nullable): the log domain, usually #G_LOG_DOMAIN, or %NULL
+ * for the default
  * @log_level: the log level, either from #GLogLevelFlags
  *     or a user-defined level
  * @format: the message format. See the printf() documentation
@@ -1117,6 +1119,12 @@ g_log (const gchar   *log_domain,
   va_end (args);
 }
 
+/**
+ * g_return_if_fail_warning: (skip)
+ * @log_domain: (nullable):
+ * @pretty_function:
+ * @expression: (nullable):
+ */
 void
 g_return_if_fail_warning (const char *log_domain,
 			  const char *pretty_function,
@@ -1129,6 +1137,14 @@ g_return_if_fail_warning (const char *log_domain,
 	 expression);
 }
 
+/**
+ * g_warn_message: (skip)
+ * @domain: (nullable):
+ * @file:
+ * @line:
+ * @func:
+ * @warnexpr: (nullable):
+ */
 void
 g_warn_message (const char     *domain,
                 const char     *file,
@@ -1379,10 +1395,11 @@ escape_string (GString *string)
 
 /**
  * g_log_default_handler:
- * @log_domain: the log domain of the message
+ * @log_domain: (nullable): the log domain of the message, or %NULL for the
+ * default "" application domain
  * @log_level: the level of the message
- * @message: the message
- * @unused_data: data passed from g_log() which is unused
+ * @message: (nullable): the message
+ * @unused_data: (nullable): data passed from g_log() which is unused
  *
  * The default log handler set up by GLib; g_log_set_default_handler()
  * allows to install an alternate default log handler.

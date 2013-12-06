@@ -322,11 +322,12 @@ g_boxed_type_register_static (const gchar   *name,
 /**
  * g_boxed_copy:
  * @boxed_type: The type of @src_boxed.
- * @src_boxed: The boxed structure to be copied.
+ * @src_boxed: (not nullable): The boxed structure to be copied.
  * 
  * Provide a copy of a boxed structure @src_boxed which is of type @boxed_type.
  * 
- * Returns: (transfer full): The newly created copy of the boxed structure.
+ * Returns: (transfer full) (not nullable): The newly created copy of the boxed
+ *    structure.
  */
 gpointer
 g_boxed_copy (GType         boxed_type,
@@ -383,7 +384,7 @@ g_boxed_copy (GType         boxed_type,
 /**
  * g_boxed_free:
  * @boxed_type: The type of @boxed.
- * @boxed: The boxed structure to be freed.
+ * @boxed: (not nullable): The boxed structure to be freed.
  *
  * Free the boxed structure @boxed which is of type @boxed_type.
  */

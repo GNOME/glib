@@ -129,7 +129,7 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 
 /**
  * g_steal_pointer:
- * @pp: a pointer to a pointer
+ * @pp: (not nullable): a pointer to a pointer
  *
  * Sets @pp to %NULL, returning the value that was there before.
  *

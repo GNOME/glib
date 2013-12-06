@@ -525,7 +525,7 @@ g_error_copy (const GError *error)
 
 /**
  * g_error_matches:
- * @error: (allow-none): a #GError or %NULL
+ * @error: (nullable): a #GError
  * @domain: an error domain
  * @code: an error code
  *
@@ -558,7 +558,7 @@ g_error_matches (const GError *error,
 
 /**
  * g_set_error:
- * @err: (allow-none): a return location for a #GError, or %NULL
+ * @err: (out callee-allocates) (optional): a return location for a #GError
  * @domain: error domain
  * @code: error code
  * @format: printf()-style format
@@ -596,7 +596,7 @@ g_set_error (GError      **err,
 
 /**
  * g_set_error_literal:
- * @err: (allow-none): a return location for a #GError, or %NULL
+ * @err: (out callee-allocates) (optional): a return location for a #GError
  * @domain: error domain
  * @code: error code
  * @message: error message
@@ -697,7 +697,7 @@ g_error_add_prefix (gchar       **string,
 
 /**
  * g_prefix_error:
- * @err: (allow-none): a return location for a #GError, or %NULL
+ * @err: (inout) (optional) (nullable): a return location for a #GError
  * @format: printf()-style format string
  * @...: arguments to @format
  *

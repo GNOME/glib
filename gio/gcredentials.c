@@ -393,7 +393,7 @@ g_credentials_get_native (GCredentials     *credentials,
  * g_credentials_set_native:
  * @credentials: A #GCredentials.
  * @native_type: The type of native credentials to set.
- * @native: A pointer to native credentials.
+ * @native: (not nullable): A pointer to native credentials.
  *
  * Copies the native credentials of type @native_type from @native
  * into @credentials.

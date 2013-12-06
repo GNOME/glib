@@ -118,7 +118,7 @@ g_socket_control_message_get_msg_type (GSocketControlMessage *message)
 /**
  * g_socket_control_message_serialize:
  * @message: a #GSocketControlMessage
- * @data: A buffer to write data to
+ * @data: (not nullable): A buffer to write data to
  *
  * Converts the data in the message to bytes placed in the
  * message.

@@ -453,7 +453,7 @@ g_hook_prepend (GHookList *hook_list,
 /**
  * g_hook_insert_before:
  * @hook_list: a #GHookList
- * @sibling: the #GHook to insert the new #GHook before
+ * @sibling: (nullable): the #GHook to insert the new #GHook before
  * @hook: the #GHook to insert
  *
  * Inserts a #GHook into a #GHookList, before a given #GHook.
@@ -930,7 +930,7 @@ g_hook_find_func (GHookList *hook_list,
  * @hook_list: a #GHookList
  * @need_valids: %TRUE if #GHook elements which have been destroyed
  *     should be skipped
- * @func: the function to find
+ * @func: (not nullable): the function to find
  * @data: the data to find
  *
  * Finds a #GHook in a #GHookList with the given function and data.

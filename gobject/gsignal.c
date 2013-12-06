@@ -2112,7 +2112,8 @@ g_signal_chain_from_overridden (const GValue *instance_and_params,
 
 /**
  * g_signal_chain_from_overridden_handler: (skip)
- * @instance: the instance the signal is being emitted on.
+ * @instance: (type GObject.TypeInstance): the instance the signal is being
+ *    emitted on.
  * @...: parameters to be passed to the parent class closure, followed by a
  *  location for the return value. If the return type of the signal
  *  is #G_TYPE_NONE, the return value location can be omitted.
@@ -3141,7 +3142,8 @@ accumulate (GSignalInvocationHint *ihint,
 
 /**
  * g_signal_emit_valist: (skip)
- * @instance: the instance the signal is being emitted on.
+ * @instance: (type GObject.TypeInstance): the instance the signal is being
+ *    emitted on.
  * @signal_id: the signal id
  * @detail: the detail
  * @var_args: a list of parameters to be passed to the signal, followed by a

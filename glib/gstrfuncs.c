@@ -343,7 +343,7 @@ get_C_locale (void)
 
 /**
  * g_strdup:
- * @str: the string to duplicate
+ * @str: (nullable): the string to duplicate
  *
  * Duplicates a string. If @str is %NULL it returns %NULL.
  * The returned string should be freed with g_free()
@@ -2114,7 +2114,7 @@ out:
 /**
  * g_strescape:
  * @source: a string to escape
- * @exceptions: a string of characters not to escape in @source
+ * @exceptions: (nullable): a string of characters not to escape in @source
  *
  * Escapes the special characters '\b', '\f', '\n', '\r', '\t', '\v', '\'
  * and '&quot;' in the string @source by inserting a '\' before
@@ -2467,7 +2467,7 @@ g_strsplit_set (const gchar *string,
 
 /**
  * g_strfreev:
- * @str_array: a %NULL-terminated array of strings to free
+ * @str_array: (nullable): a %NULL-terminated array of strings to free
  *
  * Frees a %NULL-terminated array of strings, as well as each
  * string it contains.
@@ -2490,14 +2490,14 @@ g_strfreev (gchar **str_array)
 
 /**
  * g_strdupv:
- * @str_array: a %NULL-terminated array of strings
+ * @str_array: (nullable): a %NULL-terminated array of strings
  *
  * Copies %NULL-terminated array of strings. The copy is a deep copy;
  * the new array should be freed by first freeing each string, then
  * the array itself. g_strfreev() does this for you. If called
  * on a %NULL value, g_strdupv() simply returns %NULL.
  *
- * Returns: a new %NULL-terminated array of strings.
+ * Returns: (nullable): a new %NULL-terminated array of strings.
  */
 gchar**
 g_strdupv (gchar **str_array)

@@ -1023,7 +1023,7 @@ g_variant_get_child_value (GVariant *value,
 /**
  * g_variant_store:
  * @value: the #GVariant to store
- * @data: the location to store the serialised data at
+ * @data: (not nullable): the location to store the serialised data at
  *
  * Stores the serialised form of @value at @data.  @data should be
  * large enough.  See g_variant_get_size().

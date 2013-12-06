@@ -872,7 +872,7 @@ strdup_len (const gchar *string,
  *                 nul-terminated (Note that some encodings may allow nul
  *                 bytes to occur inside strings. In that case, using -1
  *                 for the @len parameter is unsafe)
- * @bytes_read:    location to store the number of bytes in the
+ * @bytes_read: (out) (optional): location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
  *                 less than @len if there were partial characters
@@ -880,8 +880,8 @@ strdup_len (const gchar *string,
  *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
  *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the number of bytes stored in the output buffer (not 
- *                 including the terminating nul).
+ * @bytes_written: (out) (optional): the number of bytes stored in the output
+ *                 buffer (not including the terminating nul).
  * @error:         location to store the error occurring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
@@ -915,7 +915,7 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  *                 nul-terminated (Note that some encodings may allow nul
  *                 bytes to occur inside strings. In that case, using -1
  *                 for the @len parameter is unsafe)
- * @bytes_read:    location to store the number of bytes in the
+ * @bytes_read: (out) (optional): location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
  *                 less than @len if there were partial characters
@@ -923,8 +923,8 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
  *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the number of bytes stored in the output buffer (not 
- *                 including the terminating nul).
+ * @bytes_written: (out) (optional): the number of bytes stored in the output
+ *                 buffer (not including the terminating nul).
  * @error:         location to store the error occurring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
@@ -1119,7 +1119,7 @@ get_filename_charset (const gchar **filename_charset)
  *                 nul-terminated (Note that some encodings may allow nul
  *                 bytes to occur inside strings. In that case, using -1
  *                 for the @len parameter is unsafe)
- * @bytes_read:    location to store the number of bytes in the
+ * @bytes_read: (out) (optional): location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
  *                 less than @len if there were partial characters
@@ -1127,8 +1127,8 @@ get_filename_charset (const gchar **filename_charset)
  *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
  *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the number of bytes stored in the output buffer (not 
- *                 including the terminating nul).
+ * @bytes_written: (out) (optional): the number of bytes stored in the output
+ *                 buffer (not including the terminating nul).
  * @error:         location to store the error occurring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
@@ -1191,7 +1191,7 @@ g_filename_to_utf8 (const gchar *opsysstring,
  * @utf8string:    a UTF-8 encoded string.
  * @len:           the length of the string, or -1 if the string is
  *                 nul-terminated.
- * @bytes_read:    (out) (allow-none): location to store the number of bytes in
+ * @bytes_read:    (out) (optional): location to store the number of bytes in
  *                 the input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
  *                 less than @len if there were partial characters
@@ -1530,7 +1530,8 @@ hostname_validate (const char *hostname)
 /**
  * g_filename_from_uri:
  * @uri: a uri describing a filename (escaped, encoded in ASCII).
- * @hostname: (out) (allow-none): Location to store hostname for the URI, or %NULL.
+ * @hostname: (out) (optional) (nullable): Location to store hostname for the
+ *            URI.
  *            If there is no hostname in the URI, %NULL will be
  *            stored in this location.
  * @error: location to store the error occurring, or %NULL to ignore

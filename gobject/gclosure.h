@@ -125,7 +125,8 @@ typedef void  (*GClosureMarshal)	(GClosure	*closure,
  * @return_value: (allow-none): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
- * @instance: the instance on which the closure is invoked.
+ * @instance: (type GObject.TypeInstance): the instance on which the closure is
+ *  invoked.
  * @args: va_list of arguments to be passed to the closure.
  * @marshal_data: (allow-none): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and

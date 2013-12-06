@@ -46,18 +46,18 @@ G_BEGIN_DECLS
 /* --- typedefs --- */
 /**
  * GBoxedCopyFunc:
- * @boxed: The boxed structure to be copied.
+ * @boxed: (not nullable): The boxed structure to be copied.
  *
  * This function is provided by the user and should produce a copy
  * of the passed in boxed structure.
  *
- * Returns: The newly created copy of the boxed structure.
+ * Returns: (not nullable): The newly created copy of the boxed structure.
  */
 typedef gpointer (*GBoxedCopyFunc) (gpointer boxed);
 
 /**
  * GBoxedFreeFunc:
- * @boxed: The boxed structure to be freed.
+ * @boxed: (not nullable): The boxed structure to be freed.
  *
  * This function is provided by the user and should free the boxed
  * structure passed.

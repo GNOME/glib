@@ -301,7 +301,7 @@ guint
 
 /**
  * g_atomic_pointer_get:
- * @atomic: a pointer to a #gpointer-sized value
+ * @atomic: (not nullable): a pointer to a #gpointer-sized value
  *
  * Gets the current value of @atomic.
  *
@@ -320,7 +320,7 @@ gpointer
 
 /**
  * g_atomic_pointer_set:
- * @atomic: a pointer to a #gpointer-sized value
+ * @atomic: (not nullable): a pointer to a #gpointer-sized value
  * @newval: a new value to store
  *
  * Sets the value of @atomic to @newval.
@@ -339,7 +339,7 @@ void
 
 /**
  * g_atomic_pointer_compare_and_exchange:
- * @atomic: a pointer to a #gpointer-sized value
+ * @atomic: (not nullable): a pointer to a #gpointer-sized value
  * @oldval: the value to compare with
  * @newval: the value to conditionally replace with
  *
@@ -368,7 +368,7 @@ gboolean
 
 /**
  * g_atomic_pointer_add:
- * @atomic: a pointer to a #gpointer-sized value
+ * @atomic: (not nullable): a pointer to a #gpointer-sized value
  * @val: the value to add
  *
  * Atomically adds @val to the value of @atomic.
@@ -391,7 +391,7 @@ gssize
 
 /**
  * g_atomic_pointer_and:
- * @atomic: a pointer to a #gpointer-sized value
+ * @atomic: (not nullable): a pointer to a #gpointer-sized value
  * @val: the value to 'and'
  *
  * Performs an atomic bitwise 'and' of the value of @atomic and @val,
@@ -415,7 +415,7 @@ gsize
 
 /**
  * g_atomic_pointer_or:
- * @atomic: a pointer to a #gpointer-sized value
+ * @atomic: (not nullable): a pointer to a #gpointer-sized value
  * @val: the value to 'or'
  *
  * Performs an atomic bitwise 'or' of the value of @atomic and @val,
@@ -439,7 +439,7 @@ gsize
 
 /**
  * g_atomic_pointer_xor:
- * @atomic: a pointer to a #gpointer-sized value
+ * @atomic: (not nullable): a pointer to a #gpointer-sized value
  * @val: the value to 'xor'
  *
  * Performs an atomic bitwise 'xor' of the value of @atomic and @val,

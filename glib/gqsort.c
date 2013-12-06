@@ -282,7 +282,7 @@ msort_r (void *b, size_t n, size_t s, GCompareDataFunc cmp, void *arg)
 
 /**
  * g_qsort_with_data:
- * @pbase: start of array to sort
+ * @pbase: (not nullable): start of array to sort
  * @total_elems: elements in the array
  * @size: size of each element
  * @compare_func: function to compare elements

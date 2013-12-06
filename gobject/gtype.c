@@ -4502,7 +4502,8 @@ gobject_init_ctor (void)
 
 /**
  * g_type_class_add_private:
- * @g_class: class structure for an instantiatable type
+ * @g_class: (type GObject.TypeClass): class structure for an instantiatable
+ *    type
  * @private_size: size of private structure
  *
  * Registers a private structure for an instantiatable type.
@@ -4734,7 +4735,7 @@ g_type_instance_get_private (GTypeInstance *instance,
 
 /**
  * g_type_class_get_instance_private_offset: (skip)
- * @g_class: a #GTypeClass
+ * @g_class: (type GObject.TypeClass): a #GTypeClass
  *
  * Gets the offset of the private data for instances of @g_class.
  *

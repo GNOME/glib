@@ -385,7 +385,7 @@ array_free (GRealArray     *array,
 /**
  * g_array_append_vals:
  * @array: a #GArray
- * @data: a pointer to the elements to append to the end of the array
+ * @data: (not nullable): a pointer to the elements to append to the end of the array
  * @len: the number of elements to append
  *
  * Adds @len elements onto the end of the array.
@@ -430,7 +430,7 @@ g_array_append_vals (GArray       *farray,
 /**
  * g_array_prepend_vals:
  * @array: a #GArray
- * @data: a pointer to the elements to prepend to the start of the array
+ * @data: (not nullable): a pointer to the elements to prepend to the start of the array
  * @len: the number of elements to prepend
  *
  * Adds @len elements onto the start of the array.
@@ -486,7 +486,7 @@ g_array_prepend_vals (GArray        *farray,
  * g_array_insert_vals:
  * @array: a #GArray
  * @index_: the index to place the elements at
- * @data: a pointer to the elements to insert
+ * @data: (not nullable): a pointer to the elements to insert
  * @len: the number of elements to insert
  *
  * Inserts @len elements into a #GArray at the given index.

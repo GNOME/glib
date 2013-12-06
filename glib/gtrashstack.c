@@ -51,7 +51,7 @@
 /**
  * g_trash_stack_push:
  * @stack_p: a #GTrashStack
- * @data_p: the piece of memory to push on the stack
+ * @data_p: (not nullable): the piece of memory to push on the stack
  *
  * Pushes a piece of memory onto a #GTrashStack.
  */

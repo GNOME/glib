@@ -711,9 +711,10 @@ g_file_info_remove_attribute (GFileInfo  *info,
  * g_file_info_get_attribute_data:
  * @info: a #GFileInfo
  * @attribute: a file attribute key
- * @type: (out) (allow-none): return location for the attribute type, or %NULL
- * @value_pp: (out) (allow-none): return location for the attribute value, or %NULL
- * @status: (out) (allow-none): return location for the attribute status, or %NULL
+ * @type: (out) (optional): return location for the attribute type, or %NULL
+ * @value_pp: (out) (optional) (not nullable): return location for the
+ *    attribute value, or %NULL; the attribute value will not be %NULL
+ * @status: (out) (optional): return location for the attribute status, or %NULL
  *
  * Gets the attribute type, value and status for an attribute key.
  *
@@ -1108,7 +1109,7 @@ _g_file_info_set_attribute_by_id (GFileInfo                 *info,
  * @info: a #GFileInfo.
  * @attribute: a file attribute key.
  * @type: a #GFileAttributeType
- * @value_p: pointer to the value
+ * @value_p: (not nullable): pointer to the value
  *
  * Sets the @attribute to contain the given value, if possible. To unset the
  * attribute, use %G_ATTRIBUTE_TYPE_INVALID for @type.

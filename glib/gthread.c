@@ -615,7 +615,8 @@ g_once_impl (GOnce       *once,
 
 /**
  * g_once_init_enter:
- * @location: location of a static initializable variable containing 0
+ * @location: (not nullable): location of a static initializable variable
+ *    containing 0
  *
  * Function to be called when starting a critical initialization
  * section. The argument @location must point to a static
@@ -669,7 +670,8 @@ gboolean
 
 /**
  * g_once_init_leave:
- * @location: location of a static initializable variable containing 0
+ * @location: (not nullable): location of a static initializable variable
+ *    containing 0
  * @result: new non-0 value for *@value_location
  *
  * Counterpart to g_once_init_enter(). Expects a location of a static

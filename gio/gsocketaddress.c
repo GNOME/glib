@@ -192,7 +192,7 @@ g_socket_address_to_native (GSocketAddress  *address,
 
 /**
  * g_socket_address_new_from_native:
- * @native: a pointer to a struct sockaddr
+ * @native: (not nullable): a pointer to a struct sockaddr
  * @len: the size of the memory location pointed to by @native
  *
  * Creates a #GSocketAddress subclass corresponding to the native

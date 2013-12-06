@@ -62,13 +62,13 @@ typedef void		(*GNodeForeachFunc)	(GNode	       *node,
 
 /**
  * GCopyFunc:
- * @src: A pointer to the data which should be copied
+ * @src: (not nullable): A pointer to the data which should be copied
  * @data: Additional data
  *
  * A function of this signature is used to copy the node data 
  * when doing a deep-copy of a tree.
  *
- * Returns: A pointer to the copy
+ * Returns: (not nullable): A pointer to the copy
  *
  * Since: 2.4
  */

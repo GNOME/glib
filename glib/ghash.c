@@ -767,8 +767,8 @@ g_hash_table_iter_init (GHashTableIter *iter,
 /**
  * g_hash_table_iter_next:
  * @iter: an initialized #GHashTableIter
- * @key: (allow-none): a location to store the key, or %NULL
- * @value: (allow-none): a location to store the value, or %NULL
+ * @key: (out) (optional): a location to store the key
+ * @value: (out) (nullable) (optional): a location to store the value
  *
  * Advances @iter and retrieves the key and/or value that are now
  * pointed to as a result of this advancement. If %FALSE is returned,
@@ -1155,8 +1155,9 @@ g_hash_table_lookup (GHashTable    *hash_table,
  * g_hash_table_lookup_extended:
  * @hash_table: a #GHashTable
  * @lookup_key: the key to look up
- * @orig_key: (allow-none): return location for the original key, or %NULL
- * @value: (allow-none): return location for the value associated with the key, or %NULL
+ * @orig_key: (allow-none): return location for the original key
+ * @value: (out) (optional) (nullable): return location for the value associated
+ * with the key
  *
  * Looks up a key in the #GHashTable, returning the original key and the
  * associated value and a #gboolean which is %TRUE if the key was found. This
@@ -1821,8 +1822,8 @@ g_hash_table_get_values (GHashTable *hash_table)
 
 /**
  * g_str_equal:
- * @v1: a key
- * @v2: a key to compare with @v1
+ * @v1: (not nullable): a key
+ * @v2: (not nullable): a key to compare with @v1
  *
  * Compares two strings for byte-by-byte equality and returns %TRUE
  * if they are equal. It can be passed to g_hash_table_new() as the
@@ -1847,7 +1848,7 @@ g_str_equal (gconstpointer v1,
 
 /**
  * g_str_hash:
- * @v: a string key
+ * @v: (not nullable): a string key
  *
  * Converts a string to a hash value.
  *
@@ -1922,8 +1923,8 @@ g_direct_equal (gconstpointer v1,
 
 /**
  * g_int_equal:
- * @v1: a pointer to a #gint key
- * @v2: a pointer to a #gint key to compare with @v1
+ * @v1: (not nullable): a pointer to a #gint key
+ * @v2: (not nullable): a pointer to a #gint key to compare with @v1
  *
  * Compares the two #gint values being pointed to and returns
  * %TRUE if they are equal.
@@ -1946,7 +1947,7 @@ g_int_equal (gconstpointer v1,
 
 /**
  * g_int_hash:
- * @v: a pointer to a #gint key
+ * @v: (not nullable): a pointer to a #gint key
  *
  * Converts a pointer to a #gint to a hash value.
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
@@ -1966,8 +1967,8 @@ g_int_hash (gconstpointer v)
 
 /**
  * g_int64_equal:
- * @v1: a pointer to a #gint64 key
- * @v2: a pointer to a #gint64 key to compare with @v1
+ * @v1: (not nullable): a pointer to a #gint64 key
+ * @v2: (not nullable): a pointer to a #gint64 key to compare with @v1
  *
  * Compares the two #gint64 values being pointed to and returns
  * %TRUE if they are equal.
@@ -1988,7 +1989,7 @@ g_int64_equal (gconstpointer v1,
 
 /**
  * g_int64_hash:
- * @v: a pointer to a #gint64 key
+ * @v: (not nullable): a pointer to a #gint64 key
  *
  * Converts a pointer to a #gint64 to a hash value.
  *
@@ -2008,8 +2009,8 @@ g_int64_hash (gconstpointer v)
 
 /**
  * g_double_equal:
- * @v1: a pointer to a #gdouble key
- * @v2: a pointer to a #gdouble key to compare with @v1
+ * @v1: (not nullable): a pointer to a #gdouble key
+ * @v2: (not nullable): a pointer to a #gdouble key to compare with @v1
  *
  * Compares the two #gdouble values being pointed to and returns
  * %TRUE if they are equal.
@@ -2030,7 +2031,7 @@ g_double_equal (gconstpointer v1,
 
 /**
  * g_double_hash:
- * @v: a pointer to a #gdouble key
+ * @v: (not nullable): a pointer to a #gdouble key
  *
  * Converts a pointer to a #gdouble to a hash value.
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
