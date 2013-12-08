@@ -50,6 +50,11 @@ test_truncate (void)
       g_assert_no_error (error);
     }
 
+  g_test_bug ("720080");
+
+  g_seekable_truncate (G_SEEKABLE (mo), 8192, NULL, &error);
+  g_assert_cmpint (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, 8192);
+
   g_object_unref (o);
   g_object_unref (mo);
 }

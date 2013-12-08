@@ -828,6 +828,8 @@ g_memory_output_stream_truncate (GSeekable     *seekable,
   if (!array_resize (ostream, offset, FALSE, error))
     return FALSE;
 
+  ostream->priv->valid_len = offset;
+
   return TRUE;
 }
 
