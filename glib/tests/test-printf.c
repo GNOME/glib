@@ -189,7 +189,7 @@ test_d (void)
    * those rules right. So we fool gcc into not warning.
    */
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat"
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
   fmt = "% +d";
   res = g_snprintf (buf, 128, fmt, 5);
   g_assert_cmpint (res, ==, 2);
