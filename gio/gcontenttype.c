@@ -408,30 +408,26 @@ g_content_type_get_icon_internal (const gchar *type,
   char *icon_names[3];
   int n = 0;
   GIcon *themed_icon;
-  const char *file_template;
   const char  *xdg_icon;
+  const char *suffix;
 
   g_return_val_if_fail (type != NULL, NULL);
 
   if (symbolic)
-    {
-      file_template = "%s-symbolic";
-    }
+    suffix = "-symbolic";
   else
-    {
-      file_template = "%s";
-    }
+    suffix = "";
 
   G_LOCK (gio_xdgmime);
   xdg_icon = xdg_mime_get_icon (type);
   G_UNLOCK (gio_xdgmime);
    if (xdg_icon != NULL)
-    xdg_mimetype_icon = g_strdup_printf (file_template, xdg_icon);
+    xdg_mimetype_icon = g_strconcat (xdg_icon, suffix, NULL);
 
   if (xdg_mimetype_icon)
     icon_names[n++] = xdg_mimetype_icon;
 
-  mimetype_icon = g_strdup_printf (file_template, type);
+  mimetype_icon = g_strconcat (type, suffix, NULL);
   while ((q = strchr (mimetype_icon, '/')) != NULL)
     *q = '-';
 
@@ -439,7 +435,7 @@ g_content_type_get_icon_internal (const gchar *type,
 
   xdg_mimetype_generic_icon = g_content_type_get_generic_icon_name (type);
   if (xdg_mimetype_generic_icon)
-    generic_mimetype_icon = g_strdup_printf (file_template, xdg_mimetype_generic_icon);
+    generic_mimetype_icon = g_strconcat (xdg_mimetype_generic_icon, suffix, NULL);
   if (generic_mimetype_icon)
     icon_names[n++] = generic_mimetype_icon;
 

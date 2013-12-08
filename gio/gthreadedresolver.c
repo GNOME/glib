@@ -527,26 +527,22 @@ g_resolver_records_from_res_query (const gchar      *rrname,
 
   if (len <= 0)
     {
-      GResolverError errnum;
-      const gchar *format;
-
       if (len == 0 || herr == HOST_NOT_FOUND || herr == NO_DATA)
         {
-          errnum = G_RESOLVER_ERROR_NOT_FOUND;
-          format = _("No DNS record of the requested type for '%s'");
+          g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
+                       _("No DNS record of the requested type for '%s'"), rrname);
         }
       else if (herr == TRY_AGAIN)
         {
-          errnum = G_RESOLVER_ERROR_TEMPORARY_FAILURE;
-          format = _("Temporarily unable to resolve '%s'");
+          g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_TEMPORARY_FAILURE,
+                       _("Temporarily unable to resolve '%s'"), rrname);
         }
       else
         {
-          errnum = G_RESOLVER_ERROR_INTERNAL;
-          format = _("Error resolving '%s'");
+          g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL,
+                       _("Error resolving '%s'"), rrname);
         }
 
-      g_set_error (error, G_RESOLVER_ERROR, errnum, format, rrname);
       return NULL;
     }
 
@@ -711,26 +707,22 @@ g_resolver_records_from_DnsQuery (const gchar  *rrname,
 
   if (status != ERROR_SUCCESS)
     {
-      GResolverError errnum;
-      const gchar *format;
-
       if (status == DNS_ERROR_RCODE_NAME_ERROR)
         {
-          errnum = G_RESOLVER_ERROR_NOT_FOUND;
-          format = _("No DNS record of the requested type for '%s'");
+          g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
+                       _("No DNS record of the requested type for '%s'"), rrname);
         }
       else if (status == DNS_ERROR_RCODE_SERVER_FAILURE)
         {
-          errnum = G_RESOLVER_ERROR_TEMPORARY_FAILURE;
-          format = _("Temporarily unable to resolve '%s'");
+          g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_TEMPORARY_FAILURE,
+                       _("Temporarily unable to resolve '%s'"), rrname);
         }
       else
         {
-          errnum = G_RESOLVER_ERROR_INTERNAL;
-          format = _("Error resolving '%s'");
+          g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL,
+                       _("Error resolving '%s'"), rrname);
         }
 
-      g_set_error (error, G_RESOLVER_ERROR, errnum, format, rrname);
       return NULL;
     }
 
