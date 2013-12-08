@@ -1528,9 +1528,9 @@ g_settings_get (GSettings   *settings,
 
   value = g_settings_get_value (settings, key);
 
-  if (!g_variant_check_format_string (value, format, TRUE))
+  if (strchr (format, '&'))
     {
-      g_critical ("%s: invalid format string for key '%s' from schema '%s'. "
+      g_critical ("%s: the format string may not contain '&' (key '%s' from schema '%s'). "
                   "This call will probably stop working with a future version of glib.",
                   G_STRFUNC, key, g_settings_schema_get_id (settings->priv->schema));
     }
