@@ -2451,6 +2451,11 @@ g_path_get_dirname (const gchar *file_name)
  * The encoding of the returned string is system defined.
  * On Windows, it is always UTF-8.
  *
+ * Since GLib 2.40, this function will return the value of the "PWD"
+ * environment variable if it is set and it happens to be the same as
+ * the current directory.  This can make a difference in the case that
+ * the current directory is the target of a symbolic link.
+ *
  * Returns: the current directory
  */
 gchar *
@@ -2476,10 +2481,17 @@ g_get_current_dir (void)
   return dir;
 
 #else
-
+  const gchar *pwd;
   gchar *buffer = NULL;
   gchar *dir = NULL;
   static gulong max_len = 0;
+  struct stat pwdbuf, dotbuf;
+
+  pwd = g_getenv ("PWD");
+  if (pwd != NULL &&
+      g_stat (".", &dotbuf) == 0 && g_stat (pwd, &pwdbuf) == 0 &&
+      dotbuf.st_dev == pwdbuf.st_dev && dotbuf.st_ino == pwdbuf.st_ino)
+    return g_strdup (pwd);
 
   if (max_len == 0)
     max_len = (G_PATH_LENGTH == -1) ? 2048 : G_PATH_LENGTH;
