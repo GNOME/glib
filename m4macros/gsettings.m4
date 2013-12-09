@@ -6,23 +6,8 @@ dnl
 AC_DEFUN([GLIB_GSETTINGS],
 [
   m4_pattern_allow([AM_V_GEN])
-  AC_ARG_ENABLE(schemas-compile,
-                AS_HELP_STRING([--disable-schemas-compile],
-                               [Disable regeneration of gschemas.compiled on install]),
-                [case ${enableval} in
-                  yes) GSETTINGS_DISABLE_SCHEMAS_COMPILE=""  ;;
-                  no)  GSETTINGS_DISABLE_SCHEMAS_COMPILE="1" ;;
-                  *) AC_MSG_ERROR([bad value ${enableval} for --enable-schemas-compile]) ;;
-                 esac])
-  AC_SUBST([GSETTINGS_DISABLE_SCHEMAS_COMPILE])
   PKG_PROG_PKG_CONFIG([0.16])
-  AC_SUBST(gsettingsschemadir, [${datadir}/glib-2.0/schemas])
-  if test x$cross_compiling != xyes; then
-    GLIB_COMPILE_SCHEMAS=`$PKG_CONFIG --variable glib_compile_schemas gio-2.0`
-  else
-    AC_PATH_PROG(GLIB_COMPILE_SCHEMAS, glib-compile-schemas)
-  fi
-  AC_SUBST(GLIB_COMPILE_SCHEMAS)
+  _GLIB_CONFIG_SCHEMAS
   if test "x$GLIB_COMPILE_SCHEMAS" = "x"; then
     ifelse([$2],,[AC_MSG_ERROR([glib-compile-schemas not found.])],[$2])
   else

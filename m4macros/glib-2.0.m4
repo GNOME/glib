@@ -1,16 +1,54 @@
 # Configure paths for GLIB
 # Owen Taylor     1997-2001
 
+# GLIB_CONFIG([MODULES, [MINIMUM-VERSION, [MAXIMUM-VERSION]]])
+
+# Test for GLib, erroring out if it is not found. If gmodule, gobject,
+# gthread, or gio is specified in MODULES, it will be passed to
+# pkg-config. If MINIMUM-VERSION is specified, then it will require
+# at least that version of GLib, and it will define
+# GLIB_VERSION_MIN_REQUIRED so as to generate deprecation warnings
+# for older functions. If MAXIMUM-VERSION is specified, it will
+# define GLIB_VERSION_MAX_ALLOWED (but it does not actually error
+# out if the found GLib version is larger than that).
+#
+# Defines GLIB_CFLAGS, GLIB_LIBS, GLIB_MKENUMS, GLIB_GENMARSHAL,
+# GOBJECT_QUERY, GLIB_COMPILE_RESOURCES, and GLIB_COMPILE_SCHEMAS.
+#
+# Adds --disable-glibtest and --disable-schemas-compile configure
+# flags.
+AC_DEFUN([GLIB_CONFIG],[
+  _GLIB_CONFIG_INTERNAL($2,,[
+      if test "$GLIB_LIBS" = ""; then
+          if test -n "$2"; then
+              AC_MSG_ERROR(GLib $2 or later is required)
+          else
+              AC_MSG_ERROR(GLib is required)
+          fi
+      fi
+  ],$1)
+
+  _GLIB_CONFIG_SCHEMAS
+
+  if test -n "$2"; then
+      ver=`echo $2 | sed -e 's/\./_/' -e 's/\..*//'`
+      GLIB_CFLAGS="$GLIB_CFLAGS -DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_$ver"
+  fi
+  if test -n "$3"; then
+      ver=`echo $3 | sed -e 's/\./_/' -e 's/\..*//'`
+      GLIB_CFLAGS="$GLIB_CFLAGS -DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_$ver"
+  fi
+])
+
 dnl AM_PATH_GLIB_2_0([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
-dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if gmodule, gobject,
-dnl gthread, or gio is specified in MODULES, pass to pkg-config
-dnl
-AC_DEFUN([AM_PATH_GLIB_2_0],
-[dnl 
-dnl Get the cflags and libraries from pkg-config
-dnl
-AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run a test GLIB program],
-		    , enable_glibtest=yes)
+AC_DEFUN([AM_PATH_GLIB_2_0], [
+m4_warn([obsolete],[AM_PATH_GLIB_2_0 is deprecated; use GLIB_CONFIG])
+_GLIB_CONFIG_INTERNAL($1,$2,$3,$4)
+])
+
+dnl _GLIB_CONFIG_INTERNAL: same args as AM_PATH_GLIB_2_0
+AC_DEFUN([_GLIB_CONFIG_INTERNAL], [
+  AC_ARG_ENABLE(glibtest, AS_HELP_STRING([--disable-glibtest],[do not try to compile and run a test GLIB program]),,enable_glibtest=yes)
 
   pkg_config_args=glib-2.0
   for module in . $4
@@ -44,7 +82,7 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run
   fi
 
   min_glib_version=ifelse([$1], ,2.0.0,$1)
-  AC_MSG_CHECKING(for GLIB - version >= $min_glib_version)
+  AC_MSG_CHECKING(for GLib - version >= $min_glib_version)
 
   if test x$PKG_CONFIG != xno ; then
     ## don't try to run the test against uninstalled libtool libs
@@ -61,10 +99,17 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run
   fi
 
   if test x"$no_glib" = x ; then
-    GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
-    GOBJECT_QUERY=`$PKG_CONFIG --variable=gobject_query glib-2.0`
-    GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
-    GLIB_COMPILE_RESOURCES=`$PKG_CONFIG --variable=glib_compile_resources gio-2.0`
+    if test "$cross_compiling" != yes; then
+      GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
+      GOBJECT_QUERY=`$PKG_CONFIG --variable=gobject_query glib-2.0`
+      GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
+      GLIB_COMPILE_RESOURCES=`$PKG_CONFIG --variable=glib_compile_resources gio-2.0`
+    else
+      AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
+      AC_PATH_PROG(GOBJECT_QUERY, gobject-query)
+      AC_PATH_PROG(GLIB_MKENUMS, glib-mkenums)
+      AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
+    fi
 
     GLIB_CFLAGS=`$PKG_CONFIG --cflags $pkg_config_args`
     GLIB_LIBS=`$PKG_CONFIG --libs $pkg_config_args`
@@ -208,4 +253,24 @@ main ()
   AC_SUBST(GLIB_MKENUMS)
   AC_SUBST(GLIB_COMPILE_RESOURCES)
   rm -f conf.glibtest
+])
+
+AC_DEFUN([_GLIB_CONFIG_SCHEMAS],
+[
+  AC_ARG_ENABLE(schemas-compile,
+                AS_HELP_STRING([--disable-schemas-compile],
+                               [Disable regeneration of gschemas.compiled on install]),
+                [case ${enableval} in
+                  yes) GSETTINGS_DISABLE_SCHEMAS_COMPILE=""  ;;
+                  no)  GSETTINGS_DISABLE_SCHEMAS_COMPILE="1" ;;
+                  *) AC_MSG_ERROR([bad value ${enableval} for --enable-schemas-compile]) ;;
+                 esac])
+  AC_SUBST([GSETTINGS_DISABLE_SCHEMAS_COMPILE])
+  AC_SUBST(gsettingsschemadir, [${datadir}/glib-2.0/schemas])
+  if test "$cross_compiling" != yes; then
+    GLIB_COMPILE_SCHEMAS=`$PKG_CONFIG --variable glib_compile_schemas gio-2.0`
+  else
+    AC_PATH_PROG(GLIB_COMPILE_SCHEMAS, glib-compile-schemas)
+  fi
+  AC_SUBST(GLIB_COMPILE_SCHEMAS)
 ])
