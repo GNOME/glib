@@ -58,6 +58,11 @@
  *
  * Obtain if the type is passed as a reference.
  *
+ * Note that the types of %GI_DIRECTION_OUT and %GI_DIRECTION_INOUT parameters
+ * will only be pointers if the underlying type being transferred is a pointer
+ * (i.e. only if the type of the C function’s formal parameter is a pointer to a
+ * pointer).
+ *
  * Returns: %TRUE if it is a pointer
  */
 gboolean
