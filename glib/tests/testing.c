@@ -575,6 +575,12 @@ test_nonfatal (void)
   g_test_trap_assert_stdout ("*The End*");
 }
 
+static void
+test_skip (void)
+{
+  g_test_skip ("Skipped should count as passed, not failed");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -632,6 +638,8 @@ main (int   argc,
   g_test_add_func ("/misc/dash-p/subprocess/hidden/sub", test_dash_p_hidden_sub);
 
   g_test_add_func ("/misc/nonfatal", test_nonfatal);
+
+  g_test_add_func ("/misc/skip", test_skip);
 
   return g_test_run();
 }

@@ -2117,7 +2117,8 @@ test_case_run (GTestCase *tc)
   g_free (test_uri_base);
   test_uri_base = old_base;
 
-  return success == G_TEST_RUN_SUCCESS;
+  return (success == G_TEST_RUN_SUCCESS ||
+          success == G_TEST_RUN_SKIPPED);
 }
 
 static int
