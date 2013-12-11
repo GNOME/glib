@@ -136,9 +136,6 @@
  * should free any memory and resources allocated for it.
  **/
 
-/* --- defines --- */
-#define	G_QUARK_BLOCK_SIZE			(2048)
-
 #define G_DATALIST_FLAGS_MASK_INTERNAL 0x7
 
 /* datalist pointer accesses have to be carried out atomically */
