@@ -2418,13 +2418,13 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
  * g_desktop_app_info_launch_uris_as_manager:
  * @appinfo: a #GDesktopAppInfo
  * @uris: (element-type utf8): List of URIs
- * @launch_context: a #GAppLaunchContext
+ * @launch_context: (allow-none): a #GAppLaunchContext
  * @spawn_flags: #GSpawnFlags, used for each process
- * @user_setup: (scope call): a #GSpawnChildSetupFunc, used once for
- *     each process.
- * @user_setup_data: (closure user_setup): User data for @user_setup
- * @pid_callback: (scope call): Callback for child processes
- * @pid_callback_data: (closure pid_callback): User data for @callback
+ * @user_setup: (scope call) (allow-none): a #GSpawnChildSetupFunc, used once
+ *     for each process.
+ * @user_setup_data: (closure user_setup) (allow-none): User data for @user_setup
+ * @pid_callback: (scope call) (allow-none): Callback for child processes
+ * @pid_callback_data: (closure pid_callback) (allow-none): User data for @callback
  * @error: return location for a #GError, or %NULL
  *
  * This function performs the equivalent of g_app_info_launch_uris(),
