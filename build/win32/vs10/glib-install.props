@@ -536,9 +536,9 @@ mkdir $(CopyDir)\share\glib-$(ApiVersion)\schemas
 copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas
 
 
-mkdir $(CopyDir)\lib\gdbus-$(ApiVersion)\codegen
+mkdir $(CopyDir)\share\glib-$(ApiVersion)\codegen
 
-copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\lib\gdbus-$(ApiVersion)\codegen
+copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\codegen
 
 </GlibDoInstall>
   </PropertyGroup>
