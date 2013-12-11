@@ -31,7 +31,7 @@ if srcdir is not None:
     path = os.path.join(srcdir, 'gio', 'gdbus-2.0')
 elif os.name == 'nt':
     # Makes gdbus-codegen 'relocatable' at runtime on Windows.
-    path = os.path.join(os.path.dirname(__file__), '..', 'lib', 'gdbus-2.0')
+    path = os.path.join(os.path.dirname(__file__), '..', 'share', 'glib-2.0')
 else:
     path = os.path.join('@datadir@', 'glib-2.0')
 
