@@ -2738,13 +2738,19 @@ g_test_trap_fork (guint64        usec_timeout,
 
 /**
  * g_test_trap_subprocess:
- * @test_path:    Test to run in a subprocess
+ * @test_path: (allow-none): Test to run in a subprocess
  * @usec_timeout: Timeout for the subprocess test in micro seconds.
  * @test_flags:   Flags to modify subprocess behaviour.
  *
  * Respawns the test program to run only @test_path in a subprocess.
  * This can be used for a test case that might not return, or that
- * might abort. @test_path will normally be the name of the parent
+ * might abort.
+ *
+ * If @test_path is %NULL then the same test is re-run in a subprocess.
+ * You can use g_test_subprocess() to determine whether the test is in
+ * a subprocess or not.
+ *
+ * @test_path can also be the name of the parent
  * test, followed by "<literal>/subprocess/</literal>" and then a name
  * for the specific subtest (or just ending with
  * "<literal>/subprocess</literal>" if the test only has one child
@@ -2776,13 +2782,14 @@ g_test_trap_fork (guint64        usec_timeout,
  *   static void
  *   test_create_large_object_subprocess (void)
  *   {
- *     my_object_new (1000000);
- *   }
+ *     if (g_test_subprocess ())
+ *       {
+ *         my_object_new (1000000);
+ *         return;
+ *       }
  *
- *   static void
- *   test_create_large_object (void)
- *   {
- *     g_test_trap_subprocess ("/myobject/create_large_object/subprocess", 0, 0);
+ *     /&ast; Reruns this same test in a subprocess &ast;/
+ *     g_test_trap_subprocess (NULL, 0, 0);
  *     g_test_trap_assert_failed ();
  *     g_test_trap_assert_stderr ("*ERROR*too large*");
  *   }
@@ -2794,12 +2801,6 @@ g_test_trap_fork (guint64        usec_timeout,
  *
  *     g_test_add_func ("/myobject/create_large_object",
  *                      test_create_large_object);
- *     /&ast; Because of the '/subprocess' in the name, this test will
- *      &ast; not be run by the g_test_run () call below.
- *      &ast;/
- *     g_test_add_func ("/myobject/create_large_object/subprocess",
- *                      test_create_large_object_subprocess);
- *
  *     return g_test_run ();
  *   }
  * ]|
@@ -2820,8 +2821,15 @@ g_test_trap_subprocess (const char           *test_path,
   /* Sanity check that they used GTestSubprocessFlags, not GTestTrapFlags */
   g_assert ((test_flags & (G_TEST_TRAP_INHERIT_STDIN | G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR)) == 0);
 
-  if (!g_test_suite_case_exists (g_test_get_root (), test_path))
-    g_error ("g_test_trap_subprocess: test does not exist: %s", test_path);
+  if (test_path)
+    {
+      if (!g_test_suite_case_exists (g_test_get_root (), test_path))
+        g_error ("g_test_trap_subprocess: test does not exist: %s", test_path);
+    }
+  else
+    {
+      test_path = test_run_name;
+    }
 
   if (g_test_verbose ())
     g_print ("GTest: subprocess: %s\n", test_path);
