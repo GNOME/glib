@@ -483,7 +483,9 @@ g_win32_get_package_installation_subdirectory (const gchar *package,
   gchar *prefix;
   gchar *dirname;
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   prefix = g_win32_get_package_installation_directory (package, dll_name);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   dirname = g_build_filename (prefix, subdir, NULL);
   g_free (prefix);
