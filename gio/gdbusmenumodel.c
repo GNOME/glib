@@ -203,7 +203,7 @@ path_identifier_equal (gconstpointer a,
   ConstPathIdentifier *id_b = b;
 
   return id_a->connection == id_b->connection &&
-         g_str_equal (id_a->bus_name, id_b->bus_name) &&
+         g_strcmp0 (id_a->bus_name, id_b->bus_name) == 0 &&
          g_str_equal (id_a->object_path, id_b->object_path);
 }
 
@@ -857,7 +857,8 @@ g_dbus_menu_model_get_from_group (GDBusMenuGroup *group,
 /**
  * g_dbus_menu_model_get:
  * @connection: a #GDBusConnection
- * @bus_name: the bus name which exports the menu model
+ * @bus_name: (nullable): the bus name which exports the menu model
+ *     or %NULL if @connection is not a message bus connection
  * @object_path: the object path at which the menu model is exported
  *
  * Obtains a #GDBusMenuModel for the menu model which is exported
@@ -882,6 +883,8 @@ g_dbus_menu_model_get (GDBusConnection *connection,
   GDBusMenuGroup *group;
   GDBusMenuModel *proxy;
   GMainContext *context;
+
+  g_return_val_if_fail (bus_name != NULL || g_dbus_connection_get_unique_name (connection) == NULL, NULL);
 
   context = g_main_context_get_thread_default ();
   if (context == NULL)
