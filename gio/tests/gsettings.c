@@ -126,11 +126,6 @@ test_unknown_key (void)
  * has not been installed
  */
 static void
-test_no_schema_subprocess (void)
-{
-}
-
-static void
 test_no_schema (void)
 {
   if (!g_test_undefined ())
@@ -2526,7 +2521,6 @@ main (int argc, char *argv[])
   if (!backend_set)
     {
       g_test_add_func ("/gsettings/typesafe-binding", test_typesafe_binding);
-      g_test_add_func ("/gsettings/typesafe-binding/subprocess", test_typesafe_binding_subprocess);
       g_test_add_func ("/gsettings/no-read-binding", test_no_read_binding);
       g_test_add_func ("/gsettings/no-read-binding/subprocess/fail", test_no_read_binding_fail);
       g_test_add_func ("/gsettings/no-read-binding/subprocess/pass", test_no_read_binding_pass);
