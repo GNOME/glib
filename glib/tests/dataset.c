@@ -183,20 +183,20 @@ free_one (gpointer data)
 }
 
 static void
-test_datalist_clear_subprocess (void)
-{
-  g_datalist_init (&list);
-  g_datalist_set_data_full (&list, "one", GINT_TO_POINTER (1), free_one);
-  g_datalist_set_data_full (&list, "two", GINT_TO_POINTER (2), NULL);
-  g_datalist_clear (&list);
-  g_assert (list == NULL);
-}
-
-static void
 test_datalist_clear (void)
 {
   /* Need to use a subprocess because it will deadlock if it fails */
-  g_test_trap_subprocess ("/datalist/recursive-clear/subprocess", 500000, 0);
+  if (g_test_subprocess ())
+    {
+      g_datalist_init (&list);
+      g_datalist_set_data_full (&list, "one", GINT_TO_POINTER (1), free_one);
+      g_datalist_set_data_full (&list, "two", GINT_TO_POINTER (2), NULL);
+      g_datalist_clear (&list);
+      g_assert (list == NULL);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 500000, 0);
   g_test_trap_assert_passed ();
 }
 
@@ -213,7 +213,6 @@ main (int argc, char *argv[])
   g_test_add_func ("/dataset/foreach", test_dataset_foreach);
   g_test_add_func ("/dataset/destroy", test_dataset_destroy);
   g_test_add_func ("/datalist/recursive-clear", test_datalist_clear);
-  g_test_add_func ("/datalist/recursive-clear/subprocess", test_datalist_clear_subprocess);
 
   return g_test_run ();
 }

@@ -134,65 +134,61 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 #endif /* G_OS_UNIX */
 
 static void
-test_subprocess_fail_child (void)
-{
-  g_assert_not_reached ();
-}
-
-static void
 test_subprocess_fail (void)
 {
-  g_test_trap_subprocess ("/trap_subprocess/fail/subprocess", 0, 0);
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*ERROR*test_subprocess_fail_child*should not be reached*");
-}
+  if (g_test_subprocess ())
+    {
+      g_assert_not_reached ();
+      return;
+    }
 
-static void
-test_subprocess_no_such_test_child (void)
-{
-  g_test_trap_subprocess ("/trap_subprocess/this-test-does-not-exist", 0, 0);
-  g_assert_not_reached ();
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*ERROR*test_subprocess_fail*should not be reached*");
 }
 
 static void
 test_subprocess_no_such_test (void)
 {
-  g_test_trap_subprocess ("/trap_subprocess/no-such-test/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      g_test_trap_subprocess ("/trap_subprocess/this-test-does-not-exist", 0, 0);
+      g_assert_not_reached ();
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*test does not exist*");
   g_test_trap_assert_stderr_unmatched ("*should not be reached*");
 }
 
 static void
-test_subprocess_patterns_child (void)
-{
-  g_print ("some stdout text: somagic17\n");
-  g_printerr ("some stderr text: semagic43\n");
-  exit (0);
-}
-
-static void
 test_subprocess_patterns (void)
 {
-  g_test_trap_subprocess ("/trap_subprocess/patterns/subprocess", 0,  0);
+  if (g_test_subprocess ())
+    {
+      g_print ("some stdout text: somagic17\n");
+      g_printerr ("some stderr text: semagic43\n");
+      exit (0);
+    }
+  g_test_trap_subprocess (NULL, 0,  0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*somagic17*");
   g_test_trap_assert_stderr ("*semagic43*");
 }
 
 static void
-test_subprocess_timeout_child (void)
-{
-  /* loop and sleep forever */
-  while (TRUE)
-    g_usleep (1000 * 1000);
-}
-
-static void
 test_subprocess_timeout (void)
 {
+  if (g_test_subprocess ())
+    {
+      /* loop and sleep forever */
+      while (TRUE)
+        g_usleep (1000 * 1000);
+      return;
+    }
   /* allow child to run for only a fraction of a second */
-  g_test_trap_subprocess ("/trap_subprocess/timeout/subprocess", 0.11 * 1000000, 0);
+  g_test_trap_subprocess (NULL, 0.11 * 1000000, 0);
   g_test_trap_assert_failed ();
   g_assert (g_test_trap_reached_timeout ());
 }
@@ -564,19 +560,16 @@ test_dash_p (void)
 }
 
 static void
-test_nonfatal_subprocess (void)
-{
-  g_test_set_nonfatal_assertions ();
-
-  g_assert_cmpint (4, ==, 5);
-
-  g_print ("The End\n");
-}
-
-static void
 test_nonfatal (void)
 {
-  g_test_trap_subprocess ("/misc/nonfatal/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      g_test_set_nonfatal_assertions ();
+      g_assert_cmpint (4, ==, 5);
+      g_print ("The End\n");
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*assertion failed*4 == 5*");
   g_test_trap_assert_stdout ("*The End*");
@@ -607,16 +600,11 @@ main (int   argc,
 #endif
 
   g_test_add_func ("/trap_subprocess/fail", test_subprocess_fail);
-  g_test_add_func ("/trap_subprocess/fail/subprocess", test_subprocess_fail_child);
   g_test_add_func ("/trap_subprocess/no-such-test", test_subprocess_no_such_test);
-  g_test_add_func ("/trap_subprocess/no-such-test/subprocess", test_subprocess_no_such_test_child);
   if (g_test_slow ())
-    {
-      g_test_add_func ("/trap_subprocess/timeout", test_subprocess_timeout);
-      g_test_add_func ("/trap_subprocess/timeout/subprocess", test_subprocess_timeout_child);
-    }
+    g_test_add_func ("/trap_subprocess/timeout", test_subprocess_timeout);
+
   g_test_add_func ("/trap_subprocess/patterns", test_subprocess_patterns);
-  g_test_add_func ("/trap_subprocess/patterns/subprocess", test_subprocess_patterns_child);
 
   g_test_add_func ("/misc/fatal-log-handler", test_fatal_log_handler);
   g_test_add_func ("/misc/fatal-log-handler/subprocess/critical-pass", test_fatal_log_handler_critical_pass);
@@ -644,7 +632,6 @@ main (int   argc,
   g_test_add_func ("/misc/dash-p/subprocess/hidden/sub", test_dash_p_hidden_sub);
 
   g_test_add_func ("/misc/nonfatal", test_nonfatal);
-  g_test_add_func ("/misc/nonfatal/subprocess", test_nonfatal_subprocess);
 
   return g_test_run();
 }

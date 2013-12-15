@@ -118,18 +118,17 @@ my_infanticide_object_class_init (MyInfanticideObjectClass *klass)
 }
 
 static void
-test_object_constructor_infanticide_subprocess (void)
-{
-  g_object_new (my_infanticide_object_get_type (), NULL);
-  g_assert_not_reached ();
-}
-
-static void
 test_object_constructor_infanticide (void)
 {
   g_test_bug ("661576");
 
-  g_test_trap_subprocess ("/object/constructor/infanticide/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      g_object_new (my_infanticide_object_get_type (), NULL);
+      g_assert_not_reached ();
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*finalized while still in-construction*");
   g_test_trap_assert_stderr_unmatched ("*reached*");
@@ -145,7 +144,6 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/object/constructor/singleton", test_object_constructor_singleton);
   g_test_add_func ("/object/constructor/infanticide", test_object_constructor_infanticide);
-  g_test_add_func ("/object/constructor/infanticide/subprocess", test_object_constructor_infanticide_subprocess);
 
   return g_test_run ();
 }

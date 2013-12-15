@@ -99,26 +99,25 @@ test_basic (void)
  * that is not in the schema
  */
 static void
-test_unknown_key_subprocess (void)
-{
-  GSettings *settings;
-  GVariant *value;
-
-  settings = g_settings_new ("org.gtk.test");
-  value = g_settings_get_value (settings, "no_such_key");
-
-  g_assert (value == NULL);
-
-  g_object_unref (settings);
-}
-
-static void
 test_unknown_key (void)
 {
   if (!g_test_undefined ())
     return;
 
-  g_test_trap_subprocess ("/gsettings/unknown-key/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      GSettings *settings;
+      GVariant *value;
+
+      settings = g_settings_new ("org.gtk.test");
+      value = g_settings_get_value (settings, "no_such_key");
+
+      g_assert (value == NULL);
+
+      g_object_unref (settings);
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*does not contain*");
 }
@@ -129,11 +128,6 @@ test_unknown_key (void)
 static void
 test_no_schema_subprocess (void)
 {
-  GSettings *settings;
-
-  settings = g_settings_new ("no.such.schema");
-
-  g_assert (settings == NULL);
 }
 
 static void
@@ -142,7 +136,16 @@ test_no_schema (void)
   if (!g_test_undefined ())
     return;
 
-  g_test_trap_subprocess ("/gsettings/no-schema/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      GSettings *settings;
+
+      settings = g_settings_new ("no.such.schema");
+
+      g_assert (settings == NULL);
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*Settings schema 'no.such.schema' is not installed*");
 }
@@ -180,30 +183,21 @@ test_wrong_type (void)
 
 /* Check errors with explicit paths */
 static void
-test_wrong_path_subprocess (void)
-{
-  GSettings *settings G_GNUC_UNUSED;
-
-  settings = g_settings_new_with_path ("org.gtk.test", "/wrong-path/");
-}
-
-static void
 test_wrong_path (void)
 {
   if (!g_test_undefined ())
     return;
 
-  g_test_trap_subprocess ("/gsettings/wrong-path/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      GSettings *settings G_GNUC_UNUSED;
+
+      settings = g_settings_new_with_path ("org.gtk.test", "/wrong-path/");
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*but path * specified by schema*");
-}
-
-static void
-test_no_path_subprocess (void)
-{
-  GSettings *settings G_GNUC_UNUSED;
-
-  settings = g_settings_new ("org.gtk.test.no-path");
 }
 
 static void
@@ -212,7 +206,14 @@ test_no_path (void)
   if (!g_test_undefined ())
     return;
 
-  g_test_trap_subprocess ("/gsettings/no-path/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      GSettings *settings G_GNUC_UNUSED;
+
+      settings = g_settings_new ("org.gtk.test.no-path");
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*attempting to create schema * without a path**");
 }
@@ -1348,30 +1349,28 @@ test_directional_binding (void)
   g_object_unref (settings);
 }
 
-/* Test that type mismatch is caught when creating a binding
- */
-static void
-test_typesafe_binding_subprocess (void)
-{
-  TestObject *obj;
-  GSettings *settings;
-
-  settings = g_settings_new ("org.gtk.test.binding");
-  obj = test_object_new ();
-
-  g_settings_bind (settings, "string", obj, "int", G_SETTINGS_BIND_DEFAULT);
-
-  g_object_unref (obj);
-  g_object_unref (settings);
-}
-
+/* Test that type mismatch is caught when creating a binding */
 static void
 test_typesafe_binding (void)
 {
   if (!g_test_undefined ())
     return;
 
-  g_test_trap_subprocess ("/gsettings/typesafe-binding/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      TestObject *obj;
+      GSettings *settings;
+
+      settings = g_settings_new ("org.gtk.test.binding");
+      obj = test_object_new ();
+
+      g_settings_bind (settings, "string", obj, "int", G_SETTINGS_BIND_DEFAULT);
+
+      g_object_unref (obj);
+      g_object_unref (settings);
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*not compatible*");
 }
@@ -2500,14 +2499,10 @@ main (int argc, char *argv[])
   if (!backend_set)
     {
       g_test_add_func ("/gsettings/no-schema", test_no_schema);
-      g_test_add_func ("/gsettings/no-schema/subprocess", test_no_schema_subprocess);
       g_test_add_func ("/gsettings/unknown-key", test_unknown_key);
-      g_test_add_func ("/gsettings/unknown-key/subprocess", test_unknown_key_subprocess);
       g_test_add_func ("/gsettings/wrong-type", test_wrong_type);
       g_test_add_func ("/gsettings/wrong-path", test_wrong_path);
-      g_test_add_func ("/gsettings/wrong-path/subprocess", test_wrong_path_subprocess);
       g_test_add_func ("/gsettings/no-path", test_no_path);
-      g_test_add_func ("/gsettings/no-path/subprocess", test_no_path_subprocess);
     }
 
   g_test_add_func ("/gsettings/basic-types", test_basic_types);

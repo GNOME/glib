@@ -610,24 +610,23 @@ test_positional_params (void)
 }
 
 static void
-test_positional_params2_subprocess (void)
-{
-  gint res;
-
-  res = g_printf ("%2$c %1$c\n", 'b', 'a');
-  g_assert_cmpint (res, ==, 4);
-
-  res = g_printf ("%1$*2$.*3$s\n", "abc", 5, 2);
-  g_assert_cmpint (res, ==, 6);
-
-  res = g_printf ("%1$s%1$s\n", "abc");
-  g_assert_cmpint (res, ==, 7);
-}
-
-static void
 test_positional_params2 (void)
 {
-  g_test_trap_subprocess ("/printf/test-positional-params/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      gint res;
+
+      res = g_printf ("%2$c %1$c\n", 'b', 'a');
+      g_assert_cmpint (res, ==, 4);
+
+      res = g_printf ("%1$*2$.*3$s\n", "abc", 5, 2);
+      g_assert_cmpint (res, ==, 6);
+
+      res = g_printf ("%1$s%1$s\n", "abc");
+      g_assert_cmpint (res, ==, 7);
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("a b\n   ab\nabcabc\n");
 }
@@ -652,18 +651,17 @@ test_positional_params3 (void)
 }
 
 static void
-test_percent2_subprocess (void)
-{
-  gint res;
-
-  res = g_printf ("%%");
-  g_assert_cmpint (res, ==, 1);
-}
-
-static void
 test_percent2 (void)
 {
-  g_test_trap_subprocess ("/printf/test-percent/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      gint res;
+
+      res = g_printf ("%%");
+      g_assert_cmpint (res, ==, 1);
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*%*");
 }
@@ -907,9 +905,7 @@ main (int   argc,
   g_test_add_func ("/snprintf/test-64bit", test_64bit);
 
   g_test_add_func ("/printf/test-percent", test_percent2);
-  g_test_add_func ("/printf/test-percent/subprocess", test_percent2_subprocess);
   g_test_add_func ("/printf/test-positional-params", test_positional_params2);
-  g_test_add_func ("/printf/test-positional-params/subprocess", test_positional_params2_subprocess);
   g_test_add_func ("/printf/test-64bit", test_64bit2);
   g_test_add_func ("/printf/test-64bit/subprocess/base", test_64bit2_base);
 #ifdef G_OS_WIN32

@@ -4,15 +4,14 @@
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
 static void
-test_slice_config_subprocess (void)
-{
-  g_slice_set_config (G_SLICE_CONFIG_ALWAYS_MALLOC, TRUE);
-}
-
-static void
 test_slice_config (void)
 {
-  g_test_trap_subprocess ("/slice/config/subprocess", 1000000, 0);
+  if (g_test_subprocess ())
+    {
+      g_slice_set_config (G_SLICE_CONFIG_ALWAYS_MALLOC, TRUE);
+      return;
+    }
+  g_test_trap_subprocess (NULL, 1000000, 0);
   g_test_trap_assert_failed ();
 }
 
@@ -30,7 +29,6 @@ main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/slice/config", test_slice_config);
-  g_test_add_func ("/slice/config/subprocess", test_slice_config_subprocess);
 
   return g_test_run ();
 }

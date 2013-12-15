@@ -261,20 +261,6 @@ test_find_program (void)
 }
 
 static void
-test_debug_help (void)
-{
-  GDebugKey keys[] = {
-    { "key1", 1 },
-    { "key2", 2 },
-    { "key3", 4 },
-  };
-  guint res;
-
-  res = g_parse_debug_string ("help", keys, G_N_ELEMENTS (keys));
-  g_assert_cmpint (res, ==, 0);
-}
-
-static void
 test_debug (void)
 {
   GDebugKey keys[] = {
@@ -308,7 +294,13 @@ test_debug (void)
   res = g_parse_debug_string ("all", keys, G_N_ELEMENTS (keys));
   g_assert_cmpint (res, ==, 7);
 
-  g_test_trap_subprocess ("/utils/debug/subprocess/help", 0, 0);
+  if (g_test_subprocess ())
+    {
+      res = g_parse_debug_string ("help", keys, G_N_ELEMENTS (keys));
+      g_assert_cmpint (res, ==, 0);
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("*Supported debug values: key1 key2 key3 all help*");
 }
@@ -520,15 +512,14 @@ atexit_func (void)
 }
 
 static void
-test_atexit_subprocess (void)
-{
-  g_atexit (atexit_func);
-}
-
-static void
 test_atexit (void)
 {
-  g_test_trap_subprocess ("/utils/atexit/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      g_atexit (atexit_func);
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("*atexit called*");
 }
@@ -563,7 +554,6 @@ main (int   argc,
   g_test_add_func ("/utils/swap", test_swap);
   g_test_add_func ("/utils/find-program", test_find_program);
   g_test_add_func ("/utils/debug", test_debug);
-  g_test_add_func ("/utils/debug/subprocess/help", test_debug_help);
   g_test_add_func ("/utils/codeset", test_codeset);
   g_test_add_func ("/utils/basename", test_basename);
   g_test_add_func ("/utils/gettext", test_gettext);
@@ -579,7 +569,6 @@ main (int   argc,
   g_test_add_func ("/utils/misc-mem", test_misc_mem);
   g_test_add_func ("/utils/nullify", test_nullify);
   g_test_add_func ("/utils/atexit", test_atexit);
-  g_test_add_func ("/utils/atexit/subprocess", test_atexit_subprocess);
 
   return g_test_run ();
 }
