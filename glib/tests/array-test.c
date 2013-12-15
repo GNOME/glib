@@ -369,6 +369,28 @@ pointer_array_add (void)
 }
 
 static void
+pointer_array_insert (void)
+{
+  GPtrArray *gparray;
+  gint i;
+  gint sum = 0;
+  gint index;
+
+  gparray = g_ptr_array_sized_new (1000);
+
+  for (i = 0; i < 10000; i++)
+    {
+      index = g_random_int_range (-1, i + 1);
+      g_ptr_array_insert (gparray, index, GINT_TO_POINTER (i));
+    }
+
+  g_ptr_array_foreach (gparray, sum_up, &sum);
+  g_assert (sum == 49995000);
+
+  g_ptr_array_free (gparray, TRUE);
+}
+
+static void
 pointer_array_ref_count (void)
 {
   GPtrArray *gparray;
@@ -860,6 +882,7 @@ main (int argc, char *argv[])
 
   /* pointer arrays */
   g_test_add_func ("/pointerarray/add", pointer_array_add);
+  g_test_add_func ("/pointerarray/insert", pointer_array_insert);
   g_test_add_func ("/pointerarray/ref-count", pointer_array_ref_count);
   g_test_add_func ("/pointerarray/free-func", pointer_array_free_func);
   g_test_add_func ("/pointerarray/sort", pointer_array_sort);
