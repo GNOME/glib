@@ -31,6 +31,7 @@ test_truncate (void)
   GDataOutputStream *o;
   int i;
   GError *error = NULL;
+  guint8 *data;
 
   g_test_bug ("540423");
 
@@ -42,18 +43,37 @@ test_truncate (void)
       g_data_output_stream_put_byte (o, 1, NULL, &error);
       g_assert_no_error (error);
     }
+  g_assert_cmpint (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, 1000);
   g_seekable_truncate (G_SEEKABLE (mo), 0, NULL, &error);
+  g_assert_cmpuint (g_seekable_tell (G_SEEKABLE (mo)), ==, 1000);
+  
   g_assert_no_error (error);
+  g_assert_cmpint (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, 0);
   for (i = 0; i < 2000; i++)
     {
-      g_data_output_stream_put_byte (o, 1, NULL, &error);
+      g_data_output_stream_put_byte (o, 2, NULL, &error);
       g_assert_no_error (error);
     }
+  g_assert_cmpint (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, 3000);
+
+  data = (guint8 *)g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mo));
+
+  /* The 1's written initially were lost when we truncated to 0
+   * and then started writing at position 1000.
+   */
+  for (i = 0; i < 1000; i++)
+    g_assert_cmpuint (data[i], ==, 0);
+  for (i = 1000; i < 3000; i++)
+    g_assert_cmpuint (data[i], ==, 2);
 
   g_test_bug ("720080");
 
   g_seekable_truncate (G_SEEKABLE (mo), 8192, NULL, &error);
   g_assert_cmpint (g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, 8192);
+
+  data = (guint8 *)g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mo));
+  for (i = 3000; i < 8192; i++)
+    g_assert_cmpuint (data[i], ==, 0);
 
   g_object_unref (o);
   g_object_unref (mo);
