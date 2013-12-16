@@ -525,7 +525,9 @@ g_menu_exporter_remote_free (gpointer data)
       g_menu_exporter_group_unsubscribe (group, GPOINTER_TO_INT (val));
     }
 
-  g_bus_unwatch_name (remote->watch_id);
+  if (remote->watch_id > 0)
+    g_bus_unwatch_name (remote->watch_id);
+
   g_hash_table_unref (remote->watches);
 
   g_slice_free (GMenuExporterRemote, remote);
@@ -556,6 +558,7 @@ struct _GMenuExporter
   guint next_group_id;
 
   GMenuExporterMenu *root;
+  GMenuExporterRemote *peer_remote;
   GHashTable *remotes;
 };
 
@@ -582,16 +585,25 @@ g_menu_exporter_subscribe (GMenuExporter *exporter,
   GVariantIter iter;
   guint32 id;
 
-  remote = g_hash_table_lookup (exporter->remotes, sender);
+  if (sender != NULL)
+    remote = g_hash_table_lookup (exporter->remotes, sender);
+  else
+    remote = exporter->peer_remote;
 
   if (remote == NULL)
     {
-      guint watch_id;
+      if (sender != NULL)
+        {
+          guint watch_id;
 
-      watch_id = g_bus_watch_name_on_connection (exporter->connection, sender, G_BUS_NAME_WATCHER_FLAGS_NONE,
-                                                 NULL, g_menu_exporter_name_vanished, exporter, NULL);
-      remote = g_menu_exporter_remote_new (exporter, watch_id);
-      g_hash_table_insert (exporter->remotes, g_strdup (sender), remote);
+          watch_id = g_bus_watch_name_on_connection (exporter->connection, sender, G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                                     NULL, g_menu_exporter_name_vanished, exporter, NULL);
+          remote = g_menu_exporter_remote_new (exporter, watch_id);
+          g_hash_table_insert (exporter->remotes, g_strdup (sender), remote);
+        }
+      else
+        remote = exporter->peer_remote =
+          g_menu_exporter_remote_new (exporter, 0);
     }
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("(a(uuaa{sv}))"));
@@ -616,7 +628,10 @@ g_menu_exporter_unsubscribe (GMenuExporter *exporter,
   GVariantIter iter;
   guint32 id;
 
-  remote = g_hash_table_lookup (exporter->remotes, sender);
+  if (sender != NULL)
+    remote = g_hash_table_lookup (exporter->remotes, sender);
+  else
+    remote = exporter->peer_remote;
 
   if (remote == NULL)
     return;
@@ -626,7 +641,12 @@ g_menu_exporter_unsubscribe (GMenuExporter *exporter,
     g_menu_exporter_remote_unsubscribe (remote, id);
 
   if (!g_menu_exporter_remote_has_subscriptions (remote))
-    g_hash_table_remove (exporter->remotes, sender);
+    {
+      if (sender != NULL)
+        g_hash_table_remove (exporter->remotes, sender);
+      else
+        g_clear_pointer (&exporter->peer_remote, g_menu_exporter_remote_free);
+    }
 }
 
 static void
@@ -691,6 +711,7 @@ g_menu_exporter_free (gpointer user_data)
   GMenuExporter *exporter = user_data;
 
   g_menu_exporter_menu_free (exporter->root);
+  g_clear_pointer (&exporter->peer_remote, g_menu_exporter_remote_free);
   g_hash_table_unref (exporter->remotes);
   g_hash_table_unref (exporter->groups);
   g_object_unref (exporter->connection);
