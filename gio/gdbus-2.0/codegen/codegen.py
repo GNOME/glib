@@ -2768,7 +2768,12 @@ class CodeGenerator:
         self.c.write('static void\n'
                      '%sobject_notify (GDBusObject *object, GDBusInterface *interface)\n'
                      '{\n'
-                     '  g_object_notify (G_OBJECT (object), ((_ExtendedGDBusInterfaceInfo *) g_dbus_interface_get_info (interface))->hyphen_name);\n'
+                     '  _ExtendedGDBusInterfaceInfo *info = (_ExtendedGDBusInterfaceInfo *) g_dbus_interface_get_info (interface);\n'
+                     '  /* info can be NULL if the other end is using a D-Bus interface we don\'t know\n'
+                     '   * anything about, for example old generated code in this process talking to\n'
+                     '   * newer generated code in the other process. */\n'
+                     '  if (info != NULL)\n'
+                     '    g_object_notify (G_OBJECT (object), info->hyphen_name);\n'
                      '}\n'
                      '\n'
                      %(self.ns_lower))
