@@ -1370,13 +1370,16 @@ test_save (void)
   gchar *file;
   guint64 c;
   GError *error = NULL;
+  int fd;
 
   kf = g_key_file_new ();
   ok = g_key_file_load_from_data (kf, data, strlen (data), 0, NULL);
   g_assert (ok);
 
   file = g_strdup ("key_file_XXXXXX");
-  g_mkstemp (file);
+  fd = g_mkstemp (file);
+  g_assert (fd != -1);
+  close (fd);
   ok = g_key_file_save_to_file (kf, file, &error);
   g_assert (ok);
   g_assert_no_error (error);
