@@ -1,6 +1,11 @@
 import os.path
 import gdb
 import glib
+import sys
+
+if sys.version_info[0] >= 3:
+    long = int
+
 try:
     import gdb.backtrace
     import gdb.command.backtrace

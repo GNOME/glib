@@ -1,4 +1,8 @@
 import gdb
+import sys
+
+if sys.version_info[0] >= 3:
+    long = int
 
 # This is not quite right, as local vars may override symname
 def read_global_var (symname):
