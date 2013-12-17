@@ -1,3 +1,81 @@
+Overview of changes from GLib 2.39.1 to GLib 2.39.2
+===================================================
+
+* Portability
+
+  - Remove alleged support for OS/2
+
+  - Remove alleged support for BeOS
+
+  - Remove alleged support for last-millennium Unixes
+
+  - Require C90 compliance
+
+  - Require POSIX.1 (1990) compliance on Unix
+
+  - Require GNU make
+
+* Bugs fixed:
+ 113075 support "nonnull" attribute
+ 159528 g_ptr_array_remove_range()
+ 307947 The check for growing stack pointer in configure can fail
+ 607016 docs should mention property notification order
+ 671557 Fun with integers and g_key_file_load_from_data()
+ 676761 don't use g_critical for a runtime error
+ 690525 g_file_replace_contents_async doesn't copy its @conten...
+ 691608 Support compilation with clang 3.2
+ 697585 g_variant_builder_add's doc example is leaking
+ 697828 g_hash_table_add() should return a boolean
+ 702862 gdbus-codegen : look for deps in default install path
+ 703522 Reference leak in GvariantBuilder documentation
+ 705902 g_get_current_dir() should check PWD env var and retur...
+ 708274 Added GObject Introspection annotations to genums.c
+ 710519 Portability schmortability
+ 710741 some mainloop instrumentation
+ 710983 Test failures on powerpc
+ 711047 Enable the build of the various test programs on Windo...
+ 711051 Add basic test for the GNotification gtk backend
+ 711088 gbacktrace: Don't close stderr when running gdb
+ 711103 gmessages: Add g_info macro for G_LOG_LEVEL_INFO
+ 711178 appinfo test problems
+ 711546 utf8: report allocation error
+ 711640 gdesktopappinfo: Rank Keywords matches higher than Gen...
+ 711751 Fix memory leaks in libglib tests
+ 711753 gthread-posix: Don't use gslice allocated GRecMutex
+ 711796 glib-tap.mk: fix to actually use the TAP driver
+ 711800 fix g_test_set_nonfatal_assertions()
+ 711801 giomodule: Allow overriding source directory gio modul...
+ 711805 gdbus-connection: Fix race condition in test
+ 711806 gtestdbus: Don't destroy GSource twice
+ 711807 gtestdbus: Properly close server connections
+ 711871 Broken and misleading configure check for growing stack
+ 712136 'O_CLOEXEC' undeclared (first use in this function)
+ 712148 Add system bus support to GTestDBus
+ 712171 gsettings.m4: @GSETTINGS_RULES@: Support srcdir != bui...
+ 712314 AIX port: splice(); major()/minor(); libtool library order
+ 712315 GSettings: More docs for deprecated _list_schemas()
+ 712393 gobject: Box GMappedFile
+ 712547 GSocketClient "event" not useful for determining resol...
+ 715164 Clang static analysis fixes
+ 719395 GPtrArray add g_ptr_array_insert
+ 719402 Crashes when startup
+ 719472 leak in generated proxy-side property-setter
+ 719687 fix or remove g_trap_object_ref
+ 719809 Signal connection ids are always > 0 if successful
+ 719837 gdbus-connection: Work around race in connection tests
+ 719884 Fix documentation typos in GTask and GCancellable examples
+ 719979 g_settings_get: check validity of format string
+ 720080 Truncating a GMemoryOutputStream to a larger size cause...
+ 720210 gdataset: Remove unused define
+ 720236 Allow clean simple use of g_test_trap_subprocess() 
+
+* Translations updates:
+ Italian
+ Lithuanian
+ Simplified Chinese
+ Spanish
+
+
 Overview of changes from GLib 2.39.0 to GLib 2.39.1
 ====================================================
 
