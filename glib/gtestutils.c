@@ -609,7 +609,7 @@ static guint       test_run_forks = 0;
 static guint       test_run_count = 0;
 static GTestResult test_run_success = G_TEST_RUN_FAILURE;
 static gchar      *test_run_msg = NULL;
-static guint       test_skip_count = 0;
+static guint       test_startup_skip_count = 0;
 static GTimer     *test_user_timer = NULL;
 static double      test_user_stamp = 0;
 static GSList     *test_paths = NULL;
@@ -869,11 +869,11 @@ parse_args (gint    *argc_p,
         {
           gchar *equal = argv[i] + 16;
           if (*equal == '=')
-            test_skip_count = g_ascii_strtoull (equal + 1, NULL, 0);
+            test_startup_skip_count = g_ascii_strtoull (equal + 1, NULL, 0);
           else if (i + 1 < argc)
             {
               argv[i++] = NULL;
-              test_skip_count = g_ascii_strtoull (argv[i], NULL, 0);
+              test_startup_skip_count = g_ascii_strtoull (argv[i], NULL, 0);
             }
           argv[i] = NULL;
         }
@@ -2063,7 +2063,7 @@ test_case_run (GTestCase *tc)
         }
     }
 
-  if (++test_run_count <= test_skip_count)
+  if (++test_run_count <= test_startup_skip_count)
     g_test_log (G_TEST_LOG_SKIP_CASE, test_run_name, NULL, 0, NULL);
   else if (test_run_list)
     {
