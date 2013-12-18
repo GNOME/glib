@@ -607,6 +607,7 @@ static gchar      *test_run_name = "";
 static GSList    **test_filename_free_list;
 static guint       test_run_forks = 0;
 static guint       test_run_count = 0;
+static guint       test_skipped_count = 0;
 static GTestResult test_run_success = G_TEST_RUN_FAILURE;
 static gchar      *test_run_msg = NULL;
 static guint       test_startup_skip_count = 0;
@@ -765,6 +766,8 @@ g_test_log (GTestLogType lbit,
             g_print ("Bail out!\n");
           abort();
         }
+      if (largs[0] == G_TEST_RUN_SKIPPED)
+        test_skipped_count++;
       break;
     case G_TEST_LOG_MIN_RESULT:
       if (test_tap_log)
@@ -1516,14 +1519,21 @@ g_test_get_root (void)
  * g_test_run_suite() or g_test_run() may only be called once
  * in a program.
  *
- * Returns: 0 on success
+ * Returns: 0 on success, 1 on failure (assuming it returns at all),
+ *   77 if all tests were skipped with g_test_skip().
  *
  * Since: 2.16
  */
 int
 g_test_run (void)
 {
-  return g_test_run_suite (g_test_get_root());
+  if (g_test_run_suite (g_test_get_root()) != 0)
+    return 1;
+
+  if (test_run_count > 0 && test_run_count == test_skipped_count)
+    return 77;
+  else
+    return 0;
 }
 
 /**

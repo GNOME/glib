@@ -581,10 +581,87 @@ test_skip (void)
   g_test_skip ("Skipped should count as passed, not failed");
 }
 
+static void
+test_pass (void)
+{
+}
+
+static const char *argv0;
+
+static void
+test_skip_all (void)
+{
+  GPtrArray *argv;
+  GError *error = NULL;
+  int status;
+
+  argv = g_ptr_array_new ();
+  g_ptr_array_add (argv, (char *) argv0);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/skip");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 77);
+  g_clear_error (&error);
+
+  g_ptr_array_set_size (argv, 0);
+  g_ptr_array_add (argv, (char *) argv0);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/skip");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/skip-all/subprocess/skip1");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/skip-all/subprocess/skip2");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 77);
+  g_clear_error (&error);
+
+  g_ptr_array_set_size (argv, 0);
+  g_ptr_array_add (argv, (char *) argv0);
+  g_ptr_array_add (argv, "--GTestSubprocess");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/skip");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/skip-all/subprocess/pass");
+  g_ptr_array_add (argv, "-p");
+  g_ptr_array_add (argv, "/misc/skip-all/subprocess/skip1");
+  g_ptr_array_add (argv, NULL);
+
+  g_spawn_sync (NULL, (char **) argv->pdata, NULL,
+                G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+                NULL, NULL, NULL, NULL, &status,
+                &error);
+  g_assert_no_error (error);
+
+  g_spawn_check_exit_status (status, &error);
+  g_assert_no_error (error);
+
+  g_ptr_array_unref (argv);
+}
+
 int
 main (int   argc,
       char *argv[])
 {
+  argv0 = argv[0];
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/random-generator/rand-1", test_rand1);
@@ -640,6 +717,10 @@ main (int   argc,
   g_test_add_func ("/misc/nonfatal", test_nonfatal);
 
   g_test_add_func ("/misc/skip", test_skip);
+  g_test_add_func ("/misc/skip-all", test_skip_all);
+  g_test_add_func ("/misc/skip-all/subprocess/skip1", test_skip);
+  g_test_add_func ("/misc/skip-all/subprocess/skip2", test_skip);
+  g_test_add_func ("/misc/skip-all/subprocess/pass", test_pass);
 
   return g_test_run();
 }
