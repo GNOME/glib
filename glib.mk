@@ -54,6 +54,7 @@ lcov:
 genlcov:
 	$(AM_V_GEN) rm -f $(top_builddir)/tests/.libs/libmoduletestplugin_*.gcda; \
 	  $(LTP) --quiet --directory $(top_builddir) --capture --output-file glib-lcov.info --test-name GLIB_PERF --no-checksum --compat-libtool --ignore-errors source; \
+	  $(LTP) --quiet --output-file glib-lcov.info --remove glib-lcov.info docs/reference/\* /tmp/\*  gio/tests/gdbus-object-manager-example/\* ; \
 	  LANG=C $(LTP_GENHTML) --quiet --prefix $(top_builddir) --output-directory glib-lcov --title "GLib Code Coverage" --legend --frames --show-details glib-lcov.info --ignore-errors source
 	@echo "file://$(abs_top_builddir)/glib-lcov/index.html"
 
@@ -163,7 +164,7 @@ installed_test_meta_DATA = $(installed_testcases:=.test)
 %.test: %$(EXEEXT) Makefile
 	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
 	echo 'Type=session' >> $@.tmp; \
-	echo 'Exec=$(installed_testdir)/$<' >> $@.tmp; \
+	echo 'Exec=$(installed_testdir)/$(notdir $<)' >> $@.tmp; \
 	mv $@.tmp $@)
 
 CLEANFILES += $(installed_test_meta_DATA)
