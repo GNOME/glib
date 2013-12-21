@@ -127,7 +127,7 @@ installed_test_meta_DATA = $(installed_testcases:=.test)
 %.test: %$(EXEEXT) Makefile
 	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
 	echo 'Type=session' >> $@.tmp; \
-	echo 'Exec=$(installed_testdir)/(notdir $<)' >> $@.tmp; \
+	echo 'Exec=$(installed_testdir)/$(notdir $<)' >> $@.tmp; \
 	mv $@.tmp $@)
 
 CLEANFILES += $(installed_test_meta_DATA)
