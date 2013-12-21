@@ -59,9 +59,7 @@ genlcov:
 	@echo "file://$(abs_top_builddir)/glib-lcov/index.html"
 
 lcov-clean:
-	$(AM_V_GEN) $(LTP) --quiet --directory $(top_builddir) -z; \
-	  rm -rf glib-lcov.info glib-lcov; \
-	  find -name '*.gcda' -print | xargs rm
+	$(AM_V_GEN) $(LTP) --quiet --directory $(top_builddir) -z
 
 # run tests in cwd as part of make check
 check-local: test-nonrecursive
