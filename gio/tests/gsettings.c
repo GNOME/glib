@@ -1214,6 +1214,11 @@ test_simple_binding (void)
   g_assert_cmpstr (s, ==, "decaffeinate,unleaded,keep all surfaces clean");
   g_strfreev (strv);
   g_free (s);
+  g_settings_set_strv (settings, "strv", NULL);
+  g_object_get (obj, "strv", &strv, NULL);
+  g_assert (strv != NULL);
+  g_assert_cmpint (g_strv_length (strv), ==, 0);
+  g_strfreev (strv);
 
   g_settings_bind (settings, "enum", obj, "enum", G_SETTINGS_BIND_DEFAULT);
   g_object_set (obj, "enum", TEST_ENUM_BAZ, NULL);
@@ -2387,6 +2392,7 @@ test_default_value (void)
   GSettingsSchemaKey *key;
   GVariant *v;
   const gchar *str;
+  gchar *s;
 
   settings = g_settings_new ("org.gtk.test");
   g_object_get (settings, "settings-schema", &schema, NULL);
@@ -2421,9 +2427,9 @@ test_default_value (void)
   v = g_settings_get_user_value (settings, "greeting");
   g_assert_null (v);
 
-  str = g_settings_get_string (settings, "greeting");
-  g_assert_cmpstr (str, ==, "Hello, earthlings");
-  g_free (str);
+  s = g_settings_get_string (settings, "greeting");
+  g_assert_cmpstr (s, ==, "Hello, earthlings");
+  g_free (s);
 
   g_object_unref (settings);
 }
