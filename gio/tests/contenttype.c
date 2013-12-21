@@ -1,6 +1,18 @@
 #include <gio/gio.h>
 #include <string.h>
 
+#define g_assert_content_type_equals(s1, s2) 			\
+  do { 								\
+    const char *__s1 = (s1), *__s2 = (s2); 			\
+    if (g_content_type_equals (__s1, __s2)) ;		 	\
+    else 							\
+      g_assertion_message_cmpstr (G_LOG_DOMAIN, 		\
+                                  __FILE__, __LINE__, 		\
+                                  G_STRFUNC, 			\
+                                  #s1 " == " #s2, 		\
+                                  __s1, " == ", __s2); 		\
+  } while (0)
+
 static void
 test_guess (void)
 {
@@ -15,41 +27,41 @@ test_guess (void)
 
   res = g_content_type_guess ("/etc/", NULL, 0, &uncertain);
   expected = g_content_type_from_mime_type ("inode/directory");
-  g_assert (g_content_type_equals (expected, res));
+  g_assert_content_type_equals (expected, res);
   g_assert (uncertain);
   g_free (res);
   g_free (expected);
 
   res = g_content_type_guess ("foo.txt", NULL, 0, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
-  g_assert (g_content_type_equals (expected, res));
+  g_assert_content_type_equals (expected, res);
   g_free (res);
   g_free (expected);
 
   res = g_content_type_guess ("foo.desktop", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("application/x-desktop");
-  g_assert (g_content_type_equals (expected, res));
+  g_assert_content_type_equals (expected, res);
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
 
   res = g_content_type_guess ("foo.txt", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
-  g_assert (g_content_type_equals (expected, res));
+  g_assert_content_type_equals (expected, res);
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
 
   res = g_content_type_guess ("foo", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
-  g_assert (g_content_type_equals (expected, res));
+  g_assert_content_type_equals (expected, res);
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
 
   res = g_content_type_guess (NULL, data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("application/x-desktop");
-  g_assert (g_content_type_equals (expected, res));
+  g_assert_content_type_equals (expected, res);
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
@@ -58,29 +70,30 @@ test_guess (void)
    * but looks like text so it can't be Powerpoint */
   res = g_content_type_guess ("test.pot", (guchar *)"ABC abc", 7, &uncertain);
   expected = g_content_type_from_mime_type ("text/x-gettext-translation-template");
-  g_assert (g_content_type_equals (expected, res));
+  g_assert_content_type_equals (expected, res);
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
 
   res = g_content_type_guess ("test.pot", (guchar *)"msgid \"", 7, &uncertain);
   expected = g_content_type_from_mime_type ("text/x-gettext-translation-template");
-  g_assert (g_content_type_equals (expected, res));
+  g_assert_content_type_equals (expected, res);
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
 
   res = g_content_type_guess ("test.pot", (guchar *)"\xCF\xD0\xE0\x11", 4, &uncertain);
   expected = g_content_type_from_mime_type ("application/vnd.ms-powerpoint");
-  g_assert (g_content_type_equals (expected, res));
+  g_assert_content_type_equals (expected, res);
   /* we cannot reliably detect binary powerpoint files as long as there is no
-   * defined MIME magic, so do not check uncertain here */
+   * defined MIME magic, so do not check uncertain here
+   */
   g_free (res);
   g_free (expected);
 
   res = g_content_type_guess ("test.otf", (guchar *)"OTTO", 4, &uncertain);
   expected = g_content_type_from_mime_type ("application/x-font-otf");
-  g_assert (g_content_type_equals (expected, res));
+  g_assert_content_type_equals (expected, res);
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
