@@ -1660,13 +1660,30 @@ test_keyfile (void)
   str = g_key_file_get_string (keyfile, "tests", "farewell", NULL);
   g_assert_cmpstr (str, ==, "'cheerio'");
   g_free (str);
+  g_key_file_free (keyfile);
 
+  g_settings_reset (settings, "greeting");
+  g_settings_apply (settings);
+  keyfile = g_key_file_new ();
+  g_assert (g_key_file_load_from_file (keyfile, "gsettings.store", 0, NULL));
+
+  str = g_key_file_get_string (keyfile, "tests", "greeting", NULL);
+  g_assert (str == NULL);
+
+  called = FALSE;
   g_signal_connect (settings, "changed::greeting", G_CALLBACK (key_changed_cb), &called);
 
   g_key_file_set_string (keyfile, "tests", "greeting", "howdy");
   data = g_key_file_to_data (keyfile, &len, NULL);
   g_file_set_contents ("gsettings.store", data, len, &error);
   g_assert_no_error (error);
+  while (!called)
+    g_main_context_iteration (NULL, FALSE);
+
+  called = FALSE;
+  g_signal_connect (settings, "writable-changed::greeting", G_CALLBACK (key_changed_cb), &called);
+
+  g_chmod ("gsettings.store", 555);
   while (!called)
     g_main_context_iteration (NULL, FALSE);
 
