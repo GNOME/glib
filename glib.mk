@@ -52,15 +52,15 @@ lcov:
 # placing the objects files in the .libs/ directory separate from the *.c
 # we also have to delete tests/.libs/libmoduletestplugin_*.gcda
 genlcov:
-	rm -f $(top_builddir)/tests/.libs/libmoduletestplugin_*.gcda
-	$(LTP) --directory $(top_builddir) --capture --output-file glib-lcov.info --test-name GLIB_PERF --no-checksum --compat-libtool
-	LANG=C $(LTP_GENHTML) --prefix $(top_builddir) --output-directory glib-lcov --title "GLib Code Coverage" --legend --frames --show-details glib-lcov.info
+	$(AM_V_GEN) rm -f $(top_builddir)/tests/.libs/libmoduletestplugin_*.gcda; \
+	  $(LTP) --quiet --directory $(top_builddir) --capture --output-file glib-lcov.info --test-name GLIB_PERF --no-checksum --compat-libtool --ignore-errors source; \
+	  LANG=C $(LTP_GENHTML) --quiet --prefix $(top_builddir) --output-directory glib-lcov --title "GLib Code Coverage" --legend --frames --show-details glib-lcov.info --ignore-errors source
 	@echo "file://$(abs_top_builddir)/glib-lcov/index.html"
 
 lcov-clean:
-	-$(LTP) --directory $(top_builddir) -z
-	-rm -rf glib-lcov.info glib-lcov
-	-find -name '*.gcda' -print | xargs rm
+	$(AM_V_GEN) $(LTP) --quiet --directory $(top_builddir) -z; \
+	  rm -rf glib-lcov.info glib-lcov; \
+	  find -name '*.gcda' -print | xargs rm
 
 # run tests in cwd as part of make check
 check-local: test-nonrecursive

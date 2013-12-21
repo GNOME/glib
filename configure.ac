@@ -2710,15 +2710,15 @@ dnl ************************************
 dnl *** Enable lcov coverage reports ***
 dnl ************************************
 
-AC_ARG_ENABLE(gcov,
-  AS_HELP_STRING([--enable-gcov],
+AC_ARG_ENABLE(coverage,
+  AS_HELP_STRING([--enable-coverage],
 		 [enable coverage testing with gcov]),
   [use_gcov=$enableval], [use_gcov=no])
 
 AS_IF([ test "x$use_gcov" = "xyes"], [
   dnl we need gcc:
   if test "$GCC" != "yes"; then
-    AC_MSG_ERROR([GCC is required for --enable-gcov])
+    AC_MSG_ERROR([GCC is required for --enable-coverage])
   fi
 
   dnl Check if ccache is being used
@@ -2729,7 +2729,7 @@ AS_IF([ test "x$use_gcov" = "xyes"], [
   esac
 
   if test "$gcc_ccache" = "yes" && (test -z "$CCACHE_DISABLE" || test "$CCACHE_DISABLE" != "1"); then
-    AC_MSG_ERROR([ccache must be disabled when --enable-gcov option is used. You can disable ccache by setting environment variable CCACHE_DISABLE=1.])
+    AC_MSG_ERROR([ccache must be disabled when --enable-coverage option is used. You can disable ccache by setting environment variable CCACHE_DISABLE=1.])
   fi
 
   ltp_version_list="1.6 1.7 1.8 1.9 1.10"
