@@ -48,6 +48,7 @@ activate_app (GApplication *application,
   g_notification_add_button_with_target (notification, "label", "app.action2", "s", "bla");
 
   g_application_send_notification (application, "test4", notification);
+  g_application_send_notification (application, NULL, notification);
 
   g_dbus_connection_flush_sync (g_application_get_dbus_connection (application), NULL, NULL);
 
@@ -84,7 +85,11 @@ notification_received (GNotificationServer *server,
 
     case 3:
       g_assert_cmpstr (notification_id, ==, "test4");
+      break;
 
+    case 4:
+      g_assert (g_dbus_is_guid (notification_id));
+ 
       g_notification_server_stop (server);
       break;
     }
@@ -161,7 +166,7 @@ basic (void)
 
   g_main_loop_run (loop);
 
-  g_assert_cmpint (received_count, ==, 4);
+  g_assert_cmpint (received_count, ==, 5);
   g_assert_cmpint (removed_count, ==, 1);
 
   g_object_unref (server);
