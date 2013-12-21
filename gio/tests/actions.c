@@ -990,6 +990,10 @@ test_property_actions (void)
   GPropertyAction *action;
   GSocketClient *client;
   GApplication *app;
+  gchar *name;
+  GVariantType *ptype, *stype;
+  gboolean enabled;
+  GVariant *state;
 
   group = g_simple_action_group_new ();
   g_signal_connect (group, "action-state-changed", G_CALLBACK (state_changed), NULL);
@@ -1004,6 +1008,12 @@ test_property_actions (void)
 
   /* uint... */
   action = g_property_action_new ("keepalive", app, "inactivity-timeout");
+  g_object_get (action, "name", &name, "parameter-type", &ptype, "enabled", &enabled, "state-type", &stype, "state", &state, NULL);
+  g_assert_cmpstr (name, ==, "keepalive");
+  g_assert (enabled);
+  g_free (name);
+  g_variant_unref (state);
+
   g_action_map_add_action (G_ACTION_MAP (group), G_ACTION (action));
   g_object_unref (action);
 
