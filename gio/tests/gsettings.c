@@ -440,6 +440,8 @@ test_delay_apply (void)
   GSettings *settings2;
   gchar *str;
   gboolean writable;
+  GVariant *v;
+  const gchar *s;
 
   settings = g_settings_new ("org.gtk.test");
   settings2 = g_settings_new ("org.gtk.test");
@@ -468,6 +470,11 @@ test_delay_apply (void)
   g_assert_cmpstr (str, ==, "greetings from test_delay_apply");
   g_free (str);
   str = NULL;
+
+  v = g_settings_get_user_value (settings, "greeting");
+  s = g_variant_get_string (v, NULL);
+  g_assert_cmpstr (s, ==, "greetings from test_delay_apply");
+  g_variant_unref (v);
 
   g_settings_get (settings2, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "top o' the morning");
@@ -560,6 +567,42 @@ test_delay_revert (void)
 
   g_object_unref (settings2);
   g_object_unref (settings);
+}
+
+static void
+test_delay_child (void)
+{
+  GSettings *base;
+  GSettings *settings;
+  GSettings *child;
+  guint8 byte;
+  gboolean delay;
+
+  base = g_settings_new ("org.gtk.test.basic-types");
+  g_settings_set (base, "test-byte", "y", 36);
+
+  settings = g_settings_new ("org.gtk.test");
+  g_settings_delay (settings);
+  g_object_get (settings, "delay-apply", &delay, NULL);
+  g_assert (delay);
+
+  child = g_settings_get_child (settings, "basic-types");
+  g_assert (child != NULL);
+
+  g_object_get (child, "delay-apply", &delay, NULL);
+  g_assert (!delay);
+
+  g_settings_get (child, "test-byte", "y", &byte);
+  g_assert_cmpuint (byte, ==, 36);
+
+  g_settings_set (child, "test-byte", "y", 42);
+
+  g_settings_get (base, "test-byte", "y", &byte);
+  g_assert_cmpuint (byte, ==, 42);
+
+  g_object_unref (child);
+  g_object_unref (settings);
+  g_object_unref (base);
 }
 
 static void
@@ -1972,6 +2015,7 @@ test_range (void)
   g_assert_cmpint (g_settings_get_int (direct, "val"), ==, 1);
   g_assert_cmpint (g_settings_get_int (settings, "val"), ==, 33);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   value = g_variant_new_int32 (1);
   g_assert (!g_settings_range_check (settings, "val", value));
   g_variant_unref (value);
@@ -1981,6 +2025,7 @@ test_range (void)
   value = g_variant_new_int32 (45);
   g_assert (!g_settings_range_check (settings, "val", value));
   g_variant_unref (value);
+G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static gboolean
@@ -2054,8 +2099,10 @@ test_list_schemas (void)
   const gchar * const *schemas;
   const gchar * const *relocs;
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   relocs = g_settings_list_relocatable_schemas ();
   schemas = g_settings_list_schemas ();
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   g_assert (strv_set_equal ((gchar **)relocs,
                             "org.gtk.test.no-path",
@@ -2137,6 +2184,7 @@ test_get_range (void)
   GSettings *settings;
   GVariant *range;
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   settings = g_settings_new ("org.gtk.test.range");
   range = g_settings_get_range (settings, "val");
   check_and_free (range, "('range', <(2, 44)>)");
@@ -2157,6 +2205,7 @@ test_get_range (void)
   range = g_settings_get_range (settings, "greeting");
   check_and_free (range, "('type', <@as []>)");
   g_object_unref (settings);
+G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
@@ -2400,7 +2449,7 @@ test_default_value (void)
   g_settings_schema_unref (schema);
   g_settings_schema_key_ref (key);
 
-  g_assert_cmpstr (g_settings_schema_key_get_value_type (key), ==, G_VARIANT_TYPE_STRING);
+  g_assert (g_variant_type_equal (g_settings_schema_key_get_value_type (key), G_VARIANT_TYPE_STRING));
 
   v = g_settings_schema_key_get_default_value (key);
   str = g_variant_get_string (v, NULL);
@@ -2515,6 +2564,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
+  g_test_add_func ("/gsettings/delay-child", test_delay_child);
   g_test_add_func ("/gsettings/atomic", test_atomic);
 
   g_test_add_func ("/gsettings/simple-binding", test_simple_binding);
