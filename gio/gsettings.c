@@ -2215,6 +2215,7 @@ g_settings_get_child (GSettings   *settings,
 
   child_path = g_strconcat (settings->priv->path, child_name, NULL);
   child = g_object_new (G_TYPE_SETTINGS,
+                        "backend", settings->priv->backend,
                         "schema-id", child_schema,
                         "path", child_path,
                         NULL);
