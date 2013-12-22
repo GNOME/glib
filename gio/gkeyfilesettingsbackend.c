@@ -538,7 +538,8 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
   class->get_permission = g_keyfile_settings_backend_get_permission;
   /* No need to implement subscribed/unsubscribe: the only point would be to
    * stop monitoring the file when there's no GSettings anymore, which is no
-   * big win. */
+   * big win.
+   */
 }
 
 static void
@@ -642,8 +643,8 @@ g_keyfile_settings_backend_new (const gchar *filename,
   kfsb->dir = g_file_get_parent (kfsb->file);
   g_file_make_directory_with_parents (kfsb->dir, NULL, NULL);
 
-  kfsb->file_monitor = g_file_monitor_file (kfsb->file, 0, NULL, NULL);
-  kfsb->dir_monitor = g_file_monitor_file (kfsb->dir, 0, NULL, NULL);
+  kfsb->file_monitor = g_file_monitor (kfsb->file, 0, NULL, NULL);
+  kfsb->dir_monitor = g_file_monitor (kfsb->dir, 0, NULL, NULL);
 
   kfsb->prefix_len = strlen (root_path);
   kfsb->prefix = g_strdup (root_path);
