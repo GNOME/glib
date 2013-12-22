@@ -3229,6 +3229,7 @@ G_VARIANT_PARSE_ERROR
 g_variant_parse
 g_variant_new_parsed_va
 g_variant_new_parsed
+g_variant_parse_error_print_context
 
 <SUBSECTION Private>
 g_variant_parse_error_quark

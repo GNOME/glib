@@ -395,6 +395,10 @@ GLIB_AVAILABLE_IN_ALL
 GVariant *                      g_variant_new_parsed_va                 (const gchar          *format,
                                                                          va_list              *app);
 
+GLIB_AVAILABLE_IN_2_40
+gchar *                         g_variant_parse_error_print_context     (GError               *error,
+                                                                         const gchar          *source_str);
+
 GLIB_AVAILABLE_IN_ALL
 gint                            g_variant_compare                       (gconstpointer one,
                                                                          gconstpointer two);
