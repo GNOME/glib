@@ -544,7 +544,6 @@ g_source_remove_by_funcs_user_data
 g_source_remove_by_user_data
 
 <SUBSECTION Private>
-GLIB_HAVE_SYS_POLL_H
 GLIB_HAVE_ALLOCA_H
 alloca
 GLIB_USING_SYSTEM_PRINTF

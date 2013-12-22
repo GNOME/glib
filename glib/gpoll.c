@@ -55,8 +55,8 @@
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif /* HAVE_SYS_TIME_H */
-#ifdef GLIB_HAVE_SYS_POLL_H
-#  include <sys/poll.h>
+#ifdef HAVE_POLL
+#  include <poll.h>
 
 /* The poll() emulation on OS/X doesn't handle fds=NULL, nfds=0,
  * so we prefer our own poll emulation.

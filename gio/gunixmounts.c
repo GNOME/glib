@@ -31,11 +31,8 @@
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
-#ifdef HAVE_SYS_POLL_H
-#include <sys/poll.h>
 #endif
-#endif
-#ifdef HAVE_POLL_H
+#ifdef HAVE_POLL
 #include <poll.h>
 #endif
 #include <stdio.h>

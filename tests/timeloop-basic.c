@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <sys/resource.h>
 #include <sys/time.h>
-#include <sys/poll.h>
+#include <poll.h>
 
 #define TRUE 1
 #define FALSE 0

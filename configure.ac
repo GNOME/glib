@@ -771,7 +771,7 @@ fi
 
 
 # check for header files
-AC_CHECK_HEADERS([sys/param.h sys/poll.h sys/resource.h])
+AC_CHECK_HEADERS([sys/param.h sys/resource.h])
 AC_CHECK_HEADERS([sys/select.h stdint.h inttypes.h sched.h malloc.h])
 AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h sys/filio.h])
 AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
@@ -2429,11 +2429,11 @@ dnl ****************************************
 
 glib_poll_includes=["
 #include <sys/types.h>
-#include <sys/poll.h>
+#include <poll.h>
 "]
 
 AS_IF([ test $ac_cv_header_sys_types_h = yes &&
-   test $ac_cv_header_sys_poll_h = yes ], [
+   test $ac_cv_func_poll = yes ], [
   glib_failed=false
   GLIB_CHECK_VALUE(POLLIN, $glib_poll_includes, glib_failed=true)
   GLIB_CHECK_VALUE(POLLOUT, $glib_poll_includes, glib_failed=true)
@@ -2458,9 +2458,6 @@ AC_RUN_IFELSE([AC_LANG_SOURCE([[
 	#include <stdlib.h>
 	#include <fcntl.h>
 	#include <poll.h>
-	#ifdef HAVE_SYS_POLL_H
-	#include <sys/poll.h>
-	#endif
 	int main(void) {
 	  struct pollfd fds[1];
 	  int fd;
@@ -2803,9 +2800,6 @@ _______EOF
 	if test "$glib_header_alloca_h" = "yes"; then
 	  echo '#define GLIB_HAVE_ALLOCA_H' >> $outfile
 	fi
-	if test x$glib_sys_poll_h = xyes; then
-	  echo '#define GLIB_HAVE_SYS_POLL_H' >> $outfile
-	fi
 	if test x$glib_included_printf != xyes; then
           echo "
 /* Specifies that GLib's g_print*() functions wrap the
@@ -3122,10 +3116,6 @@ if test "x${ac_cv_working_alloca_h+set}" = xset ; then
   glib_header_alloca_h="$ac_cv_working_alloca_h"
 else
   glib_header_alloca_h="$ac_cv_header_alloca_h"
-fi
-
-if test x$ac_cv_header_sys_poll_h = xyes ; then
-  glib_sys_poll_h=yes
 fi
 
 if test x$enable_included_printf = xyes ; then
