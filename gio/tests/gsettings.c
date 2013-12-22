@@ -1627,9 +1627,10 @@ test_keyfile (void)
   gsize len;
   gboolean called = FALSE;
 
-  g_remove ("gsettings.store");
+  g_remove ("keyfile/gsettings.store");
+  g_rmdir ("keyfile");
 
-  kf_backend = g_keyfile_settings_backend_new ("gsettings.store", "/", "root");
+  kf_backend = g_keyfile_settings_backend_new ("keyfile/gsettings.store", "/", "root");
   settings = g_settings_new_with_backend ("org.gtk.test", kf_backend);
   g_object_unref (kf_backend);
 
@@ -1651,7 +1652,7 @@ test_keyfile (void)
   g_settings_apply (settings);
 
   keyfile = g_key_file_new ();
-  g_assert (g_key_file_load_from_file (keyfile, "gsettings.store", 0, NULL));
+  g_assert (g_key_file_load_from_file (keyfile, "keyfile/gsettings.store", 0, NULL));
 
   str = g_key_file_get_string (keyfile, "tests", "greeting", NULL);
   g_assert_cmpstr (str, ==, "'see if this works'");
@@ -1665,7 +1666,7 @@ test_keyfile (void)
   g_settings_reset (settings, "greeting");
   g_settings_apply (settings);
   keyfile = g_key_file_new ();
-  g_assert (g_key_file_load_from_file (keyfile, "gsettings.store", 0, NULL));
+  g_assert (g_key_file_load_from_file (keyfile, "keyfile/gsettings.store", 0, NULL));
 
   str = g_key_file_get_string (keyfile, "tests", "greeting", NULL);
   g_assert (str == NULL);
@@ -1673,24 +1674,36 @@ test_keyfile (void)
   called = FALSE;
   g_signal_connect (settings, "changed::greeting", G_CALLBACK (key_changed_cb), &called);
 
-  g_key_file_set_string (keyfile, "tests", "greeting", "howdy");
+  g_key_file_set_string (keyfile, "tests", "greeting", "'howdy'");
   data = g_key_file_to_data (keyfile, &len, NULL);
-  g_file_set_contents ("gsettings.store", data, len, &error);
+  g_file_set_contents ("keyfile/gsettings.store", data, len, &error);
   g_assert_no_error (error);
   while (!called)
     g_main_context_iteration (NULL, FALSE);
+  g_signal_handlers_disconnect_by_func (settings, key_changed_cb, &called);
 
+  str = g_settings_get_string (settings, "greeting");
+  g_assert_cmpstr (str, ==, "howdy");
+  g_free (str);
+
+  g_settings_set (settings, "farewell", "s", "cheerio");
+  
   called = FALSE;
   g_signal_connect (settings, "writable-changed::greeting", G_CALLBACK (key_changed_cb), &called);
 
-  g_chmod ("gsettings.store", 555);
+  g_chmod ("keyfile", 0500);
   while (!called)
     g_main_context_iteration (NULL, FALSE);
+  g_signal_handlers_disconnect_by_func (settings, key_changed_cb, &called);
+
+  writable = g_settings_is_writable (settings, "greeting");
+  g_assert (!writable);
 
   g_key_file_free (keyfile);
   g_free (data);
 
   g_object_unref (settings);
+  g_chmod ("keyfile", 0777);
 }
 
 /* Test that getting child schemas works
