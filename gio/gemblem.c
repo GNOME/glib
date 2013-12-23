@@ -122,7 +122,8 @@ g_emblem_finalize (GObject *object)
 {
   GEmblem *emblem = G_EMBLEM (object);
 
-  g_object_unref (emblem->icon);
+  if (emblem->icon)
+    g_object_unref (emblem->icon);
 
   (*G_OBJECT_CLASS (g_emblem_parent_class)->finalize) (object);
 }
