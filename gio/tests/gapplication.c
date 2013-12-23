@@ -11,9 +11,34 @@ static GMainLoop *main_loop;
 
 typedef struct
 {
-  const gchar *expected_stdout;
+  gchar *expected_stdout;
   gint stdout_pipe;
+  gchar *expected_stderr;
+  gint stderr_pipe;
 } ChildData;
+
+static void
+check_data (gint fd, const gchar *expected)
+{
+  gssize len, actual;
+  gchar *buffer;
+  
+  len = strlen (expected);
+  buffer = g_alloca (len + 100);
+  actual = read (fd, buffer, len + 100);
+
+  g_assert_cmpint (actual, >=, 0);
+
+  if (actual != len ||
+      memcmp (buffer, expected, len) != 0)
+    {
+      buffer[MIN(len + 100, actual)] = '\0';
+
+      g_error ("\nExpected\n-----\n%s-----\nGot (%s)\n-----\n%s-----\n",
+               expected,
+               (actual > len) ? "truncated" : "full", buffer);
+    }
+}
 
 static void
 child_quit (GPid     pid,
@@ -21,29 +46,21 @@ child_quit (GPid     pid,
             gpointer data)
 {
   ChildData *child = data;
-  gssize expected, actual;
-  gchar *buffer;
 
   g_assert_cmpint (status, ==, 0);
 
   if (--outstanding_watches == 0)
     g_main_loop_quit (main_loop);
 
-  expected = strlen (child->expected_stdout);
-  buffer = g_alloca (expected + 100);
-  actual = read (child->stdout_pipe, buffer, expected + 100);
+  check_data (child->stdout_pipe, child->expected_stdout);
   close (child->stdout_pipe);
+  g_free (child->expected_stdout);
 
-  g_assert_cmpint (actual, >=, 0);
-
-  if (actual != expected ||
-      memcmp (buffer, child->expected_stdout, expected) != 0)
+  if (child->expected_stderr)
     {
-      buffer[MIN(expected + 100, actual)] = '\0';
-
-      g_error ("\nExpected\n-----\n%s-----\nGot (%s)\n-----\n%s-----\n",
-               child->expected_stdout,
-               (actual > expected) ? "truncated" : "full", buffer);
+      check_data (child->stderr_pipe, child->expected_stderr);
+      close (child->stderr_pipe);
+      g_free (child->expected_stderr);
     }
 
   g_slice_free (ChildData, child);
@@ -51,6 +68,7 @@ child_quit (GPid     pid,
 
 static void
 spawn (const gchar *expected_stdout,
+       const gchar *expected_stderr,
        const gchar *first_arg,
        ...)
 {
@@ -62,6 +80,7 @@ spawn (const gchar *expected_stdout,
   va_list ap;
   GPid pid;
   GPollFD fd;
+  gchar **env;
 
   va_start (ap, first_arg);
   array = g_ptr_array_new ();
@@ -70,17 +89,23 @@ spawn (const gchar *expected_stdout,
     g_ptr_array_add (array, g_strdup (arg));
   g_ptr_array_add (array, NULL);
   args = (gchar **) g_ptr_array_free (array, FALSE);
-
   va_end (ap);
 
-  data = g_slice_new (ChildData);
-  data->expected_stdout = expected_stdout;
+  env = g_environ_setenv (g_get_environ (), "TEST", "1", TRUE);
 
-  g_spawn_async_with_pipes (NULL, args, NULL,
+  data = g_slice_new (ChildData);
+  data->expected_stdout = g_strdup (expected_stdout);
+  data->expected_stderr = g_strdup (expected_stderr);
+
+  g_spawn_async_with_pipes (NULL, args, env,
                             G_SPAWN_DO_NOT_REAP_CHILD,
                             NULL, NULL, &pid, NULL,
-                            &data->stdout_pipe, NULL, &error);
+                            &data->stdout_pipe,
+                            expected_stderr ? &data->stderr_pipe : NULL,
+                            &error);
   g_assert_no_error (error);
+
+  g_strfreev (env);
 
   g_child_watch_add (pid, child_quit, data);
   outstanding_watches++;
@@ -99,6 +124,8 @@ basic (void)
 {
   GDBusConnection *c;
 
+  g_assert (outstanding_watches == 0);
+
   session_bus_up ();
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
@@ -107,19 +134,105 @@ basic (void)
   /* spawn the master */
   spawn ("activated\n"
          "open file:///a file:///b\n"
-         "exit status: 0\n",
+         "exit status: 0\n", NULL,
          "./app", NULL);
 
   /* send it some files */
-  spawn ("exit status: 0\n",
+  spawn ("exit status: 0\n", NULL,
          "./app", "/a", "/b", NULL);
 
   g_main_loop_run (main_loop);
 
   g_object_unref (c);
   session_bus_down ();
+
+  g_main_loop_unref (main_loop);
 }
 
+static void
+test_remote_command_line (void)
+{
+  GDBusConnection *c;
+  GFile *file;
+  gchar *replies;
+  gchar *cwd;
+
+  g_assert (outstanding_watches == 0);
+
+  session_bus_up ();
+  c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  main_loop = g_main_loop_new (NULL, 0);
+
+  file = g_file_new_for_commandline_arg ("foo");
+  cwd = g_get_current_dir ();
+
+  replies = g_strconcat ("got ./cmd 0\n",
+                         "got ./cmd 1\n",
+                         "cmdline ./cmd echo --abc -d\n",
+                         "environment TEST=1\n",
+                         "getenv TEST=1\n",
+                         "file ", g_file_get_path (file), "\n",
+                         "properties ok\n",
+                         "cwd ", cwd, "\n",
+                         "busy\n",
+                         "idle\n",
+                         "stdin ok\n",        
+                         "exit status: 0\n",
+                         NULL);
+  g_object_unref (file);
+
+  /* spawn the master */
+  spawn (replies, NULL,
+         "./cmd", NULL);
+
+  g_free (replies);
+
+  /* send it a few commandlines */
+  spawn ("exit status: 0\n", NULL,
+         "./cmd", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./cmd", "echo", "--abc", "-d", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./cmd", "env", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./cmd", "getenv", NULL);
+
+  spawn ("print test\n"
+         "exit status: 0\n", NULL,
+         "./cmd", "print", "test", NULL);
+
+  spawn ("exit status: 0\n", "printerr test\n",
+         "./cmd", "printerr", "test", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./cmd", "file", "foo", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./cmd", "properties", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./cmd", "cwd", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./cmd", "busy", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./cmd", "idle", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./cmd", "stdin", NULL);
+
+  g_main_loop_run (main_loop);
+
+  g_object_unref (c);
+  session_bus_down ();
+
+  g_main_loop_unref (main_loop);
+}
 
 #if 0
 /* Now that we register non-unique apps on the bus we need to fix the
@@ -358,20 +471,21 @@ test_noappid (void)
   g_free (binpath);
 }
 
+static gboolean activated;
+static gboolean quitted;
 
 static gboolean
 quit_app (gpointer user_data)
 {
+  quitted = TRUE;
   g_application_quit (user_data);
   return G_SOURCE_REMOVE;
 }
 
-static gboolean quit_activated;
-
 static void
 quit_activate (GApplication *app)
 {
-  quit_activated = TRUE;
+  activated = TRUE;
   g_application_hold (app);
 
   g_assert (g_application_get_dbus_connection (app) != NULL);
@@ -393,12 +507,15 @@ test_quit (void)
 
   app = g_application_new ("org.gtk.Unimportant",
                            G_APPLICATION_FLAGS_NONE);
+  activated = FALSE;
+  quitted = FALSE;
   g_signal_connect (app, "activate", G_CALLBACK (quit_activate), NULL);
   g_application_run (app, 1, argv);
   g_object_unref (app);
   g_object_unref (c);
 
-  g_assert (quit_activated);
+  g_assert (activated);
+  g_assert (quitted);
 
   session_bus_down ();
   g_free (binpath);
@@ -436,8 +553,6 @@ on_activate (GApplication *app)
   actions = g_action_group_list_actions (G_ACTION_GROUP (app));
   g_assert (g_strv_length (actions) == 0);
   g_strfreev (actions);
-
-  g_idle_add (quit_app, app);
 }
 
 static void
@@ -526,6 +641,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/quit", test_quit);
   g_test_add_func ("/gapplication/actions", test_actions);
   g_test_add_func ("/gapplication/local-command-line", test_local_command_line);
+  g_test_add_func ("/gapplication/remote-command-line", test_remote_command_line);
 
   return g_test_run ();
 }
