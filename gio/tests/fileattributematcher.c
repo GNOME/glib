@@ -19,11 +19,7 @@ test_exact (void)
     {
       matcher = g_file_attribute_matcher_new (exact_matches[i]);
       s = g_file_attribute_matcher_to_string (matcher);
-      if (! g_str_equal (exact_matches[i], s))
-        {
-          g_test_fail ();
-          g_test_message ("matcher should be %s, but is %s", exact_matches[i], s);
-        }
+      g_assert_cmpstr (exact_matches[i], ==, s);
       g_free (s);
       g_file_attribute_matcher_unref (matcher);
     }
@@ -64,11 +60,7 @@ test_equality (void)
     {
       matcher = g_file_attribute_matcher_new (equals[i].actual);
       s = g_file_attribute_matcher_to_string (matcher);
-      if (! g_str_equal (equals[i].expected, s))
-        {
-          g_test_fail ();
-          g_test_message ("matcher for %s should be %s, but is %s", equals[i].actual, equals[i].expected, s);
-        }
+      g_assert_cmpstr (equals[i].expected, ==, s);
       g_free (s);
       g_file_attribute_matcher_unref (matcher);
     }
@@ -149,13 +141,7 @@ test_subtract (void)
       subtract = g_file_attribute_matcher_new (subtractions[i].subtract);
       result = g_file_attribute_matcher_subtract (matcher, subtract);
       s = g_file_attribute_matcher_to_string (result);
-      if (g_strcmp0 (subtractions[i].result, s))
-        {
-          g_test_fail ();
-          g_test_message ("matcher for %s - %s should be %s, but is %s", 
-                          subtractions[i].attributes, subtractions[i].subtract,
-                          subtractions[i].result, s);
-        }
+      g_assert_cmpstr (subtractions[i].result, ==, s);
       g_free (s);
       g_file_attribute_matcher_unref (matcher);
       g_file_attribute_matcher_unref (subtract);
