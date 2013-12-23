@@ -31,6 +31,7 @@ test_programs = \
 	credentials				\
 	data-input-stream			\
 	data-output-stream			\
+	defaultvalue				\
 	fileattributematcher			\
 	filter-streams				\
 	gsubprocess				\
@@ -302,7 +303,7 @@ dist_test_data += \
 	x-content/image-dcf/DCIM/Camera/20130831_203925.jpg \
 	x-content/image-dcf/DCIM/Camera/20130831_203928.jpg \
 	x-content/unix-software/autorun.sh 	\
-	x-content/win32-software/autorun.exe	\	
+	x-content/win32-software/autorun.exe	\
 	$(NULL)
 
 test_extra_programs += \
@@ -527,3 +528,15 @@ test.gresource: test.gresource.xml Makefile $(shell $(glib_compile_resources) --
 EXTRA_DIST += test.gresource.xml test1.txt test2.gresource.xml test2.txt test3.gresource.xml test3.txt test4.gresource.xml
 
 CLEANFILES += test_resources.c test_resources2.[ch] plugin_resources.c test.gresource
+
+BUILT_SOURCES: giotypefuncs.c
+
+giotypefuncs.c: Makefile
+	$(AM_V_GEN) echo '#include <gio/gio.h>' > xgen-giosrc.c && \
+	  echo "G_GNUC_BEGIN_IGNORE_DEPRECATIONS" > xgen-gio && \
+	  ${CPP} $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) xgen-giosrc.c | \
+	  $(GREP) -o '\bg_.*_get_type\b' | \
+	  $(GREP) -v 'g_io_extension_get_type\|g_variant_get_type' | \ 
+	  sort | uniq | \
+	  $(SED) -e 's/^/*tp++ = /' -e 's/$$/ ();/' >> xgen-gio && \
+	  cp xgen-gio $@ # && rm -f xgen-gio xgen-giosrc.c
