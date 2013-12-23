@@ -97,6 +97,13 @@ test_guess (void)
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
+
+  res = g_content_type_guess (NULL, (guchar *)"%!PS-Adobe-2.0 EPSF-1.2", 23, &uncertain);
+  expected = g_content_type_from_mime_type ("image/x-eps");
+  g_assert_content_type_equals (expected, res);
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
 }
 
 static void
@@ -211,6 +218,29 @@ test_icon (void)
   g_free (type);
 }
 
+static void
+test_tree (void)
+{
+  const gchar *tests[] = {
+    "x-content/image-dcf",
+    "x-content/unix-software",
+    "x-content/win32-software"
+  };
+  const gchar *path;
+  GFile *file;
+  gchar **types;
+  gint i;
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    {
+      path = g_test_get_filename (G_TEST_DIST, tests[i], NULL);
+      file = g_file_new_for_path (path);
+      types = g_content_type_guess_for_tree (file);
+      g_assert_content_type_equals (types[0], tests[i]);
+      g_strfreev (types);
+      g_object_unref (file);
+   }
+}
 
 int
 main (int argc, char *argv[])
@@ -224,6 +254,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/contenttype/executable", test_executable);
   g_test_add_func ("/contenttype/description", test_description);
   g_test_add_func ("/contenttype/icon", test_icon);
+  g_test_add_func ("/contenttype/tree", test_tree);
 
   return g_test_run ();
 }

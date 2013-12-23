@@ -299,6 +299,10 @@ dist_test_data += \
 	appinfo-test2.desktop			\
 	file.c					\
 	org.gtk.test.dbusappinfo.desktop	\
+	x-content/image-dcf/DCIM/Camera/20130831_203925.jpg \
+	x-content/image-dcf/DCIM/Camera/20130831_203928.jpg \
+	x-content/unix-software/autorun.sh 	\
+	x-content/win32-software/autorun.exe	\	
 	$(NULL)
 
 test_extra_programs += \
