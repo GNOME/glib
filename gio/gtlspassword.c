@@ -207,7 +207,7 @@ g_tls_password_class_init (GTlsPasswordClass *klass)
 				   g_param_spec_string ("description",
 							P_("Description"),
 							P_("Description of what the password is for"),
-							"",
+							NULL,
 							G_PARAM_READWRITE |
 							G_PARAM_STATIC_STRINGS));
 
@@ -215,7 +215,7 @@ g_tls_password_class_init (GTlsPasswordClass *klass)
 				   g_param_spec_string ("warning",
 							P_("Warning"),
 							P_("Warning about the password"),
-							"",
+							NULL,
 							G_PARAM_READWRITE |
 							G_PARAM_STATIC_STRINGS));
 
