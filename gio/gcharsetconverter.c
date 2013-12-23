@@ -205,9 +205,9 @@ g_charset_converter_init (GCharsetConverter *local)
  * Since: 2.24
  **/
 GCharsetConverter *
-g_charset_converter_new (const gchar  *to_charset,
-			 const gchar  *from_charset,
-			 GError       **error)
+g_charset_converter_new (const gchar *to_charset,
+			 const gchar *from_charset,
+			 GError      **error)
 {
   GCharsetConverter *conv;
 
@@ -236,15 +236,15 @@ g_charset_converter_reset (GConverter *converter)
 }
 
 static GConverterResult
-g_charset_converter_convert (GConverter *converter,
-			     const void *inbuf,
-			     gsize       inbuf_size,
-			     void       *outbuf,
-			     gsize       outbuf_size,
-			     GConverterFlags flags,
-			     gsize      *bytes_read,
-			     gsize      *bytes_written,
-			     GError    **error)
+g_charset_converter_convert (GConverter       *converter,
+			     const void       *inbuf,
+			     gsize             inbuf_size,
+			     void             *outbuf,
+			     gsize             outbuf_size,
+			     GConverterFlags   flags,
+			     gsize            *bytes_read,
+			     gsize            *bytes_written,
+			     GError          **error)
 {
   GCharsetConverter  *conv;
   gsize res;
@@ -430,9 +430,9 @@ g_charset_converter_iface_init (GConverterIface *iface)
 }
 
 static gboolean
-g_charset_converter_initable_init (GInitable *initable,
-				   GCancellable *cancellable,
-				   GError  **error)
+g_charset_converter_initable_init (GInitable     *initable,
+				   GCancellable  *cancellable,
+				   GError       **error)
 {
   GCharsetConverter  *conv;
 
@@ -447,8 +447,7 @@ g_charset_converter_initable_init (GInitable *initable,
       return FALSE;
     }
 
-  conv->iconv =
-    g_iconv_open (conv->to, conv->from);
+  conv->iconv = g_iconv_open (conv->to, conv->from);
 
   if (conv->iconv == (GIConv)-1)
     {
