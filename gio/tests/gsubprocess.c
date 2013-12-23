@@ -58,16 +58,37 @@ test_noop (void)
   GError **error = &local_error;
   GPtrArray *args;
   GSubprocess *proc;
+  const gchar *id;
 
   args = get_test_subprocess_args ("noop", NULL);
   proc = g_subprocess_newv ((const gchar * const *) args->pdata, G_SUBPROCESS_FLAGS_NONE, error);
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
+  id = g_subprocess_get_identifier (proc);
+  g_assert (id != NULL);
 
   g_subprocess_wait_check (proc, NULL, error);
   g_assert_no_error (local_error);
+  g_assert (g_subprocess_get_successful (proc));
 
   g_object_unref (proc);
+}
+
+static void
+check_ready (GObject      *source,
+             GAsyncResult *res,
+             gpointer      user_data)
+{
+  gboolean ret;
+  GError *error = NULL;
+
+  ret = g_subprocess_wait_check_finish (G_SUBPROCESS (source),
+                                        res,
+                                        &error);
+  g_assert (ret);
+  g_assert_no_error (error);
+
+  g_object_unref (source);
 }
 
 static void
@@ -85,10 +106,7 @@ test_noop_all_to_null (void)
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 
-  g_subprocess_wait_check (proc, NULL, error);
-  g_assert_no_error (local_error);
-
-  g_object_unref (proc);
+  g_subprocess_wait_check_async (proc, NULL, check_ready, NULL);
 }
 
 static void
@@ -601,7 +619,7 @@ on_communicate_complete (GObject               *proc,
 }
 
 static void
-test_communicate (void)
+test_communicate_async (void)
 {
   GError *error = NULL;
   GPtrArray *args;
@@ -637,7 +655,45 @@ test_communicate (void)
 }
 
 static void
-test_communicate_utf8 (void)
+test_communicate (void)
+{
+  GError *error = NULL;
+  GPtrArray *args;
+  GSubprocess *proc;
+  GCancellable *cancellable = NULL;
+  GBytes *input;
+  const gchar *hellostring;
+  GBytes *stdout;
+  const gchar *stdout_data;
+  gsize stdout_len;
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE
+                            | G_SUBPROCESS_FLAGS_STDOUT_PIPE
+                            | G_SUBPROCESS_FLAGS_STDERR_MERGE,
+                            &error);
+  g_assert_no_error (error);
+  g_ptr_array_free (args, TRUE);
+
+  hellostring = "hello world";
+  input = g_bytes_new_static (hellostring, strlen (hellostring));
+
+  g_subprocess_communicate (proc, input, cancellable, &stdout, NULL, &error);
+  g_assert_no_error (error);
+  stdout_data = g_bytes_get_data (stdout, &stdout_len);
+
+  g_assert_cmpint (stdout_len, ==, 11);
+  g_assert (memcmp (stdout_data, "hello world", 11) == 0);
+  g_bytes_unref (stdout);
+  
+  g_bytes_unref (input);
+  g_bytes_unref (stdout);
+  g_object_unref (proc);
+}
+
+static void
+test_communicate_utf8_async (void)
 {
   GError *error = NULL;
   GPtrArray *args;
@@ -664,6 +720,36 @@ test_communicate_utf8 (void)
 
   g_assert_no_error (data.error);
 
+  g_object_unref (proc);
+}
+
+static void
+test_communicate_utf8 (void)
+{
+  GError *error = NULL;
+  GPtrArray *args;
+  GSubprocess *proc;
+  GCancellable *cancellable = NULL;
+  const gchar *stdin_buf;
+  gchar *stdout_buf;
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE
+                            | G_SUBPROCESS_FLAGS_STDOUT_PIPE
+                            | G_SUBPROCESS_FLAGS_STDERR_MERGE,
+                            &error);
+  g_assert_no_error (error);
+  g_ptr_array_free (args, TRUE);
+
+  stdin_buf = "hello world";
+
+  g_subprocess_communicate_utf8 (proc, stdin_buf, cancellable, &stdout_buf, NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert (strcmp (stdout_buf, "hello world") == 0);
+  g_free (stdout_buf);
+  
   g_object_unref (proc);
 }
 
@@ -755,6 +841,44 @@ test_terminate (void)
   g_main_loop_unref (loop);
   g_object_unref (proc);
 }
+
+#ifdef G_OS_UNIX
+static gboolean
+send_signal (gpointer user_data)
+{
+  GSubprocess *proc = user_data;
+
+  g_subprocess_send_signal (proc, SIGKILL);
+
+  return FALSE;
+}
+
+static void
+test_signal (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GSubprocess *proc;
+  GPtrArray *args;
+  GMainLoop *loop;
+
+  args = get_test_subprocess_args ("sleep-forever", NULL);
+  proc = g_subprocess_newv ((const gchar * const *) args->pdata, G_SUBPROCESS_FLAGS_NONE, error);
+  g_ptr_array_free (args, TRUE);
+  g_assert_no_error (local_error);
+
+  loop = g_main_loop_new (NULL, TRUE);
+
+  g_subprocess_wait_async (proc, NULL, on_request_quit_exited, loop);
+
+  g_timeout_add_seconds (3, send_signal, proc);
+
+  g_main_loop_run (loop);
+
+  g_main_loop_unref (loop);
+  g_object_unref (proc);
+}
+#endif
 
 static void
 test_env (void)
@@ -1062,6 +1186,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/noop-stdin-inherit", test_noop_stdin_inherit);
 #ifdef G_OS_UNIX
   g_test_add_func ("/gsubprocess/search-path", test_search_path);
+  g_test_add_func ("/gsubprocess/signal", test_signal);
 #endif
   g_test_add_func ("/gsubprocess/exit1", test_exit1);
   g_test_add_func ("/gsubprocess/echo1", test_echo1);
@@ -1072,7 +1197,9 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/cat-eof", test_cat_eof);
   g_test_add_func ("/gsubprocess/multi1", test_multi_1);
   g_test_add_func ("/gsubprocess/communicate", test_communicate);
+  g_test_add_func ("/gsubprocess/communicate-async", test_communicate_async);
   g_test_add_func ("/gsubprocess/communicate-utf8", test_communicate_utf8);
+  g_test_add_func ("/gsubprocess/communicate-utf8-async", test_communicate_utf8_async);
   g_test_add_func ("/gsubprocess/communicate-utf8-invalid", test_communicate_utf8_invalid);
   g_test_add_func ("/gsubprocess/terminate", test_terminate);
   g_test_add_func ("/gsubprocess/env", test_env);
