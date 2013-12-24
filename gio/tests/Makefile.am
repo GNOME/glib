@@ -3,7 +3,7 @@ include $(top_srcdir)/glib-tap.mk
 dist_uninstalled_test_data =
 test_ltlibraries =
 
-SUBDIRS = gdbus-object-manager-example services
+SUBDIRS = gdbus-object-manager-example services modules
 
 LDADD = \
 	$(top_builddir)/gio/libgio-2.0.la		\
@@ -34,6 +34,7 @@ test_programs = \
 	defaultvalue				\
 	fileattributematcher			\
 	filter-streams				\
+	giomodule				\
 	gsubprocess				\
 	g-file					\
 	g-file-info				\
@@ -536,7 +537,7 @@ giotypefuncs.c: Makefile
 	  echo "G_GNUC_BEGIN_IGNORE_DEPRECATIONS" > xgen-gio && \
 	  ${CPP} $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) xgen-giosrc.c | \
 	  $(GREP) -o '\bg_.*_get_type\b' | \
-	  $(GREP) -v 'g_io_extension_get_type\|g_variant_get_type' | \ 
+	  $(GREP) -v 'g_io_extension_get_type\|g_variant_get_type' | \
 	  sort | uniq | \
 	  $(SED) -e 's/^/*tp++ = /' -e 's/$$/ ();/' >> xgen-gio && \
 	  cp xgen-gio $@ # && rm -f xgen-gio xgen-giosrc.c

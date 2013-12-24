@@ -3604,6 +3604,7 @@ gio/tests/Makefile
 gio/tests/gdbus-object-manager-example/Makefile
 gio/tests/services/Makefile
 gio/tests/services/org.gtk.GDBus.Examples.ObjectManager.service
+gio/tests/modules/Makefile
 po/Makefile.in
 docs/Makefile
 docs/reference/Makefile
