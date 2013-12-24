@@ -820,9 +820,9 @@ g_settings_backend_write (GSettingsBackend *backend,
 }
 
 /*< private >
- * g_settings_backend_write_keys:
+ * g_settings_backend_write_tree:
  * @backend: a #GSettingsBackend implementation
- * @values: a #GTree containing key-value pairs to write
+ * @tree: a #GTree containing key-value pairs to write
  * @origin_tag: the origin tag
  *
  * Writes one or more keys.  This call will never block.
