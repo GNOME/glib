@@ -1596,6 +1596,7 @@ codegen_test_peer (void)
   GThread             *service_thread;
   GError              *error = NULL;
   GVariant            *value;
+  const gchar         *s;
 
   /* bring up a server - we run the server in a different thread to avoid deadlocks */
   service_thread = g_thread_new ("codegen_test_peer",
@@ -1659,6 +1660,16 @@ codegen_test_peer (void)
   example_animal_call_poke_sync (animal2, FALSE, TRUE, NULL, &error);
   g_assert_no_error (error);
 
+  /* Some random unrelated call, just to get some test coverage */
+  value = g_dbus_proxy_call_sync (G_DBUS_PROXY (animal2),
+                                  "org.freedesktop.DBus.Peer.GetMachineId",
+                                  NULL, G_DBUS_CALL_FLAGS_NONE, -1,
+                                  NULL, &error);
+  g_assert_no_error (error);
+  g_variant_get (value, "(&s)", &s);
+  g_assert (g_dbus_is_guid (s));
+  g_variant_unref (value);
+  
   /* Poke server and make sure animal is updated */
   value = g_dbus_proxy_call_sync (G_DBUS_PROXY (animal2),
                                   "org.freedesktop.DBus.Peer.Ping",
