@@ -1163,6 +1163,29 @@ test_truncation (gconstpointer data)
   g_free (data0);
 }
 
+static void
+test_converter_basics (void)
+{
+  GConverter *converter;
+  GError *error = NULL;
+  gchar *to;
+  gchar *from;
+
+  converter = (GConverter *)g_charset_converter_new ("utf-8", "latin1", &error);
+  g_assert_no_error (error);
+  g_object_get (converter,
+                "to-charset", &to,
+                "from-charset", &from,
+                NULL);
+
+  g_assert_cmpstr (to, ==, "utf-8");
+  g_assert_cmpstr (from, ==, "latin1");
+
+  g_free (to);
+  g_free (from);
+  g_object_unref (converter);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1192,6 +1215,7 @@ main (int   argc,
 
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
+  g_test_add_func ("/converter/basics", test_converter_basics);
   g_test_add_func ("/converter-input-stream/expander", test_expander);
   g_test_add_func ("/converter-input-stream/compressor", test_compressor);
 
