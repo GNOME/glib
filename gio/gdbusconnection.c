@@ -356,7 +356,7 @@ struct _GDBusConnection
   GMutex init_lock;
 
   /* Set (by loading the contents of /var/lib/dbus/machine-id) the first time
-   * someone calls org.freedesktop.DBus.GetMachineId(). Protected by @lock.
+   * someone calls org.freedesktop.DBus.Peer.GetMachineId(). Protected by @lock.
    */
   gchar *machine_id;
 
