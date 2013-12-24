@@ -110,8 +110,10 @@ GTypeClass*        g_io_extension_ref_class                   (GIOExtension     
  * @module: a #GIOModule.
  *
  * Required API for GIO modules to implement.
- * This function is ran after the module has been loaded into GIO,
- * to initialize the module.
+ *
+ * This function is run after the module has been loaded into GIO,
+ * to initialize the module. Typically, this function will call
+ * g_io_extension_point_implement().
  **/
 GLIB_AVAILABLE_IN_ALL
 void   g_io_module_load   (GIOModule *module);
@@ -121,7 +123,8 @@ void   g_io_module_load   (GIOModule *module);
  * @module: a #GIOModule.
  *
  * Required API for GIO modules to implement.
- * This function is ran when the module is being unloaded from GIO,
+ *
+ * This function is run when the module is being unloaded from GIO,
  * to finalize the module.
  **/
 GLIB_AVAILABLE_IN_ALL
@@ -138,24 +141,25 @@ void   g_io_module_unload (GIOModule *module);
  * This method will not be called in normal use, however it may be
  * called when probing existing modules and recording which extension
  * points that this model is used for. This means we won't have to
- * load and initialze this module unless its needed.
+ * load and initialize this module unless its needed.
  *
  * If this function is not implemented by the module the module will
- * always be loaded, initialized and then unloaded on application startup
- * so that it can register its extension points during init.
+ * always be loaded, initialized and then unloaded on application
+ * startup so that it can register its extension points during init.
  *
- * Note that a module need not actually implement all the extension points
- * that g_io_module_query returns, since the exact list of extension may
- * depend on runtime issues. However all extension points actually implemented
- * must be returned by g_io_module_query() (if defined).
+ * Note that a module need not actually implement all the extension
+ * points that g_io_module_query() returns, since the exact list of
+ * extension may depend on runtime issues. However all extension
+ * points actually implemented must be returned by g_io_module_query()
+ * (if defined).
  *
- * When installing a module that implements g_io_module_query you must
+ * When installing a module that implements g_io_module_query() you must
  * run gio-querymodules in order to build the cache files required for
  * lazy loading.
  *
- * Returns: (transfer full): A %NULL-terminated array of strings, listing the supported
- *     extension points of the module. The array must be suitable for
- *     freeing with g_strfreev().
+ * Returns: (transfer full): A %NULL-terminated array of strings,
+ *     listing the supported extension points of the module. The array
+ *     must be suitable for freeing with g_strfreev().
  *
  * Since: 2.24
  **/
