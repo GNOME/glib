@@ -234,6 +234,43 @@ test_remote_command_line (void)
   g_main_loop_unref (main_loop);
 }
 
+static void
+test_remote_actions (void)
+{
+  GDBusConnection *c;
+
+  g_assert (outstanding_watches == 0);
+
+  session_bus_up ();
+  c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  main_loop = g_main_loop_new (NULL, 0);
+
+  /* spawn the master */
+  spawn ("got ./cmd 0\n"
+         "activate action1\n"
+         "change action2 1\n"
+         "exit status: 0\n", NULL,
+         "./cmd", NULL);
+
+  spawn ("actions quit new action1 action2\n"
+         "exit status: 0\n", NULL,
+         "./actions", "list", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./actions", "activate", NULL);
+
+  spawn ("exit status: 0\n", NULL,
+         "./actions", "set-state", NULL);
+
+  g_main_loop_run (main_loop);
+
+  g_object_unref (c);
+  session_bus_down ();
+
+  g_main_loop_unref (main_loop);
+}
+
 #if 0
 /* Now that we register non-unique apps on the bus we need to fix the
  * following test not to assume that it's safe to create multiple instances
@@ -556,7 +593,7 @@ on_activate (GApplication *app)
 }
 
 static void
-test_actions (void)
+test_local_actions (void)
 {
   char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
   gchar *argv[] = { binpath, NULL };
@@ -639,7 +676,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/properties", properties);
   g_test_add_func ("/gapplication/app-id", appid);
   g_test_add_func ("/gapplication/quit", test_quit);
-  g_test_add_func ("/gapplication/actions", test_actions);
+  g_test_add_func ("/gapplication/local-actions", test_local_actions);
+  g_test_add_func ("/gapplication/remote-actions", test_remote_actions);
   g_test_add_func ("/gapplication/local-command-line", test_local_command_line);
   g_test_add_func ("/gapplication/remote-command-line", test_remote_command_line);
 
