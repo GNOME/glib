@@ -477,6 +477,8 @@ test_uri_query_info (void)
 
   g_object_unref (info);
 
+  g_assert_cmpuint  (g_file_hash (file), !=, 0);
+
   g_object_unref (file);
 
   g_resources_unregister (resource);
