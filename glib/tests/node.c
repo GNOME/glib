@@ -36,22 +36,34 @@
 #define C2P(c)          ((gpointer) ((long) (c)))
 #define P2C(p)          ((gchar) ((long) (p)))
 
+typedef struct {
+  GString *s;
+  gint count;
+} CallbackData;
+
 static gboolean
 node_build_string (GNode    *node,
                    gpointer  data)
 {
-  gchar **p = data;
-  gchar *string;
-  gchar c[2] = "_";
+  CallbackData *d = data;
 
-  c[0] = P2C (node->data);
+  g_string_append_c (d->s, P2C (node->data));
 
-  string = g_strconcat (*p ? *p : "", c, NULL);
-  g_free (*p);
-  *p = string;
+  d->count--;
+
+  if (d->count == 0)
+    return TRUE;
 
   return FALSE;
 }
+
+typedef struct {
+    GTraverseType   traverse;
+    GTraverseFlags  flags;
+    gint            depth;
+    gint            limit;
+    const gchar    *expected;
+} TraverseData;
 
 static void
 traversal_test (void)
@@ -65,7 +77,101 @@ traversal_test (void)
   GNode *node_G;
   GNode *node_J;
   GNode *n;
-  gchar *tstring;
+  TraverseData orders[] = {
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1, -1, "ABCDEFGHIJK" },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        1, -1, "A"           },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        2, -1, "ABF"         },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        3, -1, "ABCDEFG"     },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        3, -1, "ABCDEFG"     },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1, -1, "CDEBHIJKGFA" },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        1, -1, "A"           },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        2, -1, "BFA"         },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        3, -1, "CDEBGFA"     },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1, -1, "CBDEAHGIJKF" },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        1, -1, "A"           },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        2, -1, "BAF"         },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        3, -1, "CBDEAGF"     },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1, -1, "ABFCDEGHIJK" },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        1, -1, "A"           },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        2, -1, "ABF"         },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3, -1, "ABFCDEG"     },
+    { G_LEVEL_ORDER, G_TRAVERSE_LEAFS,     -1, -1, "CDEHIJK"     },
+    { G_LEVEL_ORDER, G_TRAVERSE_NON_LEAFS, -1, -1, "ABFG"        },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1,  1, "A"           },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1,  2, "AB"          },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1,  3, "ABC"         },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1,  4, "ABCD"        },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1,  5, "ABCDE"       },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1,  6, "ABCDEF"      },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1,  7, "ABCDEFG"     },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1,  8, "ABCDEFGH"    },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1,  9, "ABCDEFGHI"   },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,       -1, 10, "ABCDEFGHIJ"  },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        3,  1, "A"           },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        3,  2, "AB"          },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        3,  3, "ABC"         },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        3,  4, "ABCD"        },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        3,  5, "ABCDE"       },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        3,  6, "ABCDEF"      },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        3,  7, "ABCDEFG"     },
+    { G_PRE_ORDER,   G_TRAVERSE_ALL,        3,  8, "ABCDEFG"     },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1,  1, "C"           },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1,  2, "CD"          },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1,  3, "CDE"         },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1,  4, "CDEB"        },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1,  5, "CDEBH"       },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1,  6, "CDEBHI"      },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1,  7, "CDEBHIJ"     },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1,  8, "CDEBHIJK"    },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1,  9, "CDEBHIJKG"   },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,       -1, 10, "CDEBHIJKGF"  },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        3,  1, "C"           },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        3,  2, "CD"          },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        3,  3, "CDE"         },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        3,  4, "CDEB"        },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        3,  5, "CDEBG"       },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        3,  6, "CDEBGF"      },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        3,  7, "CDEBGFA"     },
+    { G_POST_ORDER,  G_TRAVERSE_ALL,        3,  8, "CDEBGFA"     },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1,  1, "C"           },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1,  2, "CB"          },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1,  3, "CBD"         },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1,  4, "CBDE"        },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1,  5, "CBDEA"       },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1,  6, "CBDEAH"      },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1,  7, "CBDEAHG"     },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1,  8, "CBDEAHGI"    },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1,  9, "CBDEAHGIJ"   },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,       -1, 10, "CBDEAHGIJK"  },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        3,  1, "C"           },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        3,  2, "CB"          },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        3,  3, "CBD"         },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        3,  4, "CBDE"        },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        3,  5, "CBDEA"       },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        3,  6, "CBDEAG"      },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        3,  7, "CBDEAGF"     },
+    { G_IN_ORDER,    G_TRAVERSE_ALL,        3,  8, "CBDEAGF"     },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1,  1, "A"           },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1,  2, "AB"          },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1,  3, "ABF"         },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1,  4, "ABFC"        },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1,  5, "ABFCD"       },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1,  6, "ABFCDE"      },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1,  7, "ABFCDEG"     },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1,  8, "ABFCDEGH"    },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1,  9, "ABFCDEGHI"   },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,       -1, 10, "ABFCDEGHIJ"  },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3,  1, "A"           },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3,  2, "AB"          },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3,  3, "ABF"         },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3,  4, "ABFC"        },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3,  5, "ABFCD"       },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3,  6, "ABFCDE"      },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3,  7, "ABFCDEG"     },
+    { G_LEVEL_ORDER, G_TRAVERSE_ALL,        3,  8, "ABFCDEG"     },
+  };
+  gint i;
+  CallbackData data;
 
   root = g_node_new (C2P ('A'));
   node_B = g_node_new (C2P ('B'));
@@ -90,7 +196,7 @@ traversal_test (void)
    *                             / | \       \
    *                           C   D   E       G
    *                                         / /\ \
-   *                                       H  I  J  K
+   *                                        H I J  K
    *
    * for in-order traversal, 'G' is considered to be the "left"
    * child of 'F', which will cause 'F' to be the last node visited.
@@ -106,54 +212,33 @@ traversal_test (void)
   n = g_node_last_sibling (node_E);
   g_assert (n == node_E);
 
-  tstring = NULL;
-  g_node_traverse (root, G_PRE_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==,  "ABCDEFGHIJK");
-  g_free (tstring); tstring = NULL;
-  g_node_traverse (root, G_PRE_ORDER, G_TRAVERSE_ALL, 2, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==,  "ABF");
-  g_free (tstring); tstring = NULL;
-  g_node_traverse (root, G_POST_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "CDEBHIJKGFA");
-  g_free (tstring); tstring = NULL;
-  g_node_traverse (root, G_POST_ORDER, G_TRAVERSE_ALL, 2, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "BFA");
-  g_free (tstring); tstring = NULL;
-  g_node_traverse (root, G_IN_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "CBDEAHGIJKF");
-  g_free (tstring); tstring = NULL;
-  g_node_traverse (root, G_IN_ORDER, G_TRAVERSE_ALL, 2, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "BAF");
-  g_free (tstring); tstring = NULL;
-  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "ABFCDEGHIJK");
-  g_free (tstring); tstring = NULL;
-  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, 2, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "ABF");
-  g_free (tstring); tstring = NULL;
-  
-  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_LEAFS, -1, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "CDEHIJK");
-  g_free (tstring); tstring = NULL;
-  g_node_traverse (root, G_PRE_ORDER, G_TRAVERSE_NON_LEAFS, -1, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "ABFG");
-  g_free (tstring); tstring = NULL;
+  data.s = g_string_new ("");  
+  for (i = 0; i < G_N_ELEMENTS (orders); i++)
+    {
+      g_string_set_size (data.s, 0);
+      data.count = orders[i].limit;
+      g_node_traverse (root, orders[i].traverse, orders[i].flags, orders[i].depth, node_build_string, &data);
+      g_assert_cmpstr (data.s->str, ==,  orders[i].expected);
+    }
 
   g_node_reverse_children (node_B);
   g_node_reverse_children (node_G);
 
-  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "ABFEDCGKJIH");
-  g_free (tstring); tstring = NULL;
+  g_string_set_size (data.s, 0);
+  data.count = -1;
+  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &data);
+  g_assert_cmpstr (data.s->str, ==, "ABFEDCGKJIH");
   
   g_node_append (node_D, g_node_new (C2P ('L')));
-  g_node_append (node_D, g_node_new (C2P ('M')));
+  g_node_insert (node_D, -1, g_node_new (C2P ('M')));
 
-  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "ABFEDCGLMKJIH");
-  g_free (tstring); tstring = NULL;
+  g_string_set_size (data.s, 0);
+  data.count = -1;
+  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &data);
+  g_assert_cmpstr (data.s->str, ==, "ABFEDCGLMKJIH");
 
   g_node_destroy (root);
+  g_string_free (data.s, TRUE);
 }
 
 static void
@@ -166,6 +251,7 @@ construct_test (void)
   GNode *node_F;
   GNode *node_G;
   GNode *node_J;
+  GNode *node_H;
   guint i;
 
   root = g_node_new (C2P ('A'));
@@ -188,9 +274,10 @@ construct_test (void)
   node_G = g_node_new (C2P ('G'));
   g_node_append (node_F, node_G);
   node_J = g_node_new (C2P ('J'));
-  g_node_prepend (node_G, node_J);
+  g_node_insert_after (node_G, NULL, node_J);
   g_node_insert (node_G, 42, g_node_new (C2P ('K')));
-  g_node_insert_data (node_G, 0, C2P ('H'));
+  node_H = g_node_new (C2P ('H'));
+  g_node_insert_after (node_G, NULL, node_H);
   g_node_insert (node_G, 1, g_node_new (C2P ('I')));
 
   /* we have built:                    A
@@ -210,6 +297,8 @@ construct_test (void)
   g_assert_cmpint (g_node_max_height (node_F), ==, 3);
   g_assert_cmpint (g_node_n_children (node_G), ==, 4);
   g_assert (g_node_find_child (root, G_TRAVERSE_ALL, C2P ('F')) == node_F);
+  g_assert (g_node_find_child (node_G, G_TRAVERSE_LEAFS, C2P ('H')) == node_H);
+  g_assert (g_node_find_child (root, G_TRAVERSE_ALL, C2P ('H')) == NULL);
   g_assert (g_node_find (root, G_LEVEL_ORDER, G_TRAVERSE_NON_LEAFS, C2P ('I')) == NULL);
   g_assert (g_node_find (root, G_IN_ORDER, G_TRAVERSE_LEAFS, C2P ('J')) == node_J);
 
@@ -256,7 +345,7 @@ misc_test (void)
   GNode *node_C;
   GNode *node_D;
   GNode *node_E;
-  gchar *tstring;
+  CallbackData data;
 
   root = g_node_new (C2P ('A'));
   node_B = g_node_new (C2P ('B'));
@@ -274,23 +363,27 @@ misc_test (void)
   g_assert (!g_node_is_ancestor (node_B, node_D));
   g_assert (g_node_first_sibling (node_D) == node_B);
   g_assert (g_node_first_sibling (node_E) == node_E);
+  g_assert (g_node_first_sibling (root) == root);
   g_assert_cmpint (g_node_child_index (root, C2P ('B')), ==, 0);
   g_assert_cmpint (g_node_child_index (root, C2P ('C')), ==, 1);
   g_assert_cmpint (g_node_child_index (root, C2P ('D')), ==, 2);
   g_assert_cmpint (g_node_child_index (root, C2P ('E')), ==, -1);
 
-  tstring = NULL;
-  g_node_children_foreach (root, G_TRAVERSE_ALL, (GNodeForeachFunc)node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "BCD");
-  g_free (tstring); tstring = NULL;
+  data.s = g_string_new ("");
+  data.count = -1;
+  g_node_children_foreach (root, G_TRAVERSE_ALL, (GNodeForeachFunc)node_build_string, &data);
+  g_assert_cmpstr (data.s->str, ==, "BCD");
 
-  g_node_children_foreach (root, G_TRAVERSE_LEAVES, (GNodeForeachFunc)node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "BD");
-  g_free (tstring); tstring = NULL;
+  g_string_set_size (data.s, 0);
+  data.count = -1;
+  g_node_children_foreach (root, G_TRAVERSE_LEAVES, (GNodeForeachFunc)node_build_string, &data);
+  g_assert_cmpstr (data.s->str, ==, "BD");
 
-  g_node_children_foreach (root, G_TRAVERSE_NON_LEAVES, (GNodeForeachFunc)node_build_string, &tstring);
-  g_assert_cmpstr (tstring, ==, "C");
-  g_free (tstring); tstring = NULL;
+  g_string_set_size (data.s, 0);
+  data.count = -1;
+  g_node_children_foreach (root, G_TRAVERSE_NON_LEAVES, (GNodeForeachFunc)node_build_string, &data);
+  g_assert_cmpstr (data.s->str, ==, "C");
+  g_string_free (data.s, TRUE);
 
   g_node_destroy (root);
 }
@@ -313,8 +406,9 @@ static void
 unlink_test (void)
 {
   GNode *root;
-  GNode *cnode;
   GNode *node;
+  GNode *bnode;
+  GNode *cnode;
   gchar *expected;
 
   /*
@@ -327,7 +421,7 @@ unlink_test (void)
    */
 
   root = g_node_new (C2P ('a'));
-  node = g_node_append_data (root, C2P ('b'));
+  node = bnode = g_node_append_data (root, C2P ('b'));
   g_node_append_data (node, C2P ('e'));
   g_node_append_data (node, C2P ('f'));
   g_node_append_data (node, C2P ('g'));
@@ -347,8 +441,16 @@ unlink_test (void)
   expected = "abdefgklm";
   g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, check_order, &expected);
 
+  expected = "abd";
+  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, 1, check_order, &expected);
+
   expected = "chij";
   g_node_traverse (cnode, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, check_order, &expected);
+
+  g_node_destroy (bnode);
+
+  expected = "adklm";
+  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, check_order, &expected);
 
   g_node_destroy (root);
   g_node_destroy (cnode);
