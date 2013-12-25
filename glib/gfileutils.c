@@ -606,8 +606,50 @@ g_file_error_from_errno (gint err_no)
     }
 }
 
+static char *
+format_error_message (const gchar  *filename,
+                      const gchar  *format_string) G_GNUC_FORMAT(2);
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
+static char *
+format_error_message (const gchar  *filename,
+                      const gchar  *format_string)
+{
+  gint saved_errno = errno;
+  gchar *display_name;
+  gchar *msg;
+
+  display_name = g_filename_display_name (filename);
+  msg = g_strdup_printf (format_string, display_name, g_strerror (saved_errno));
+  g_free (display_name);
+
+  return msg;
+}
+
+#pragma GCC diagnostic pop
+
+/* format string must have two '%s':
+ *
+ *   - the place for the filename
+ *   - the place for the strerror
+ */
+static void
+set_file_error (GError      **error,
+                const gchar  *filename,
+                const gchar  *format_string)
+{
+  int saved_errno = errno;
+  char *msg = format_error_message (filename, format_string);
+
+  g_set_error_literal (error, G_FILE_ERROR, g_file_error_from_errno (saved_errno),
+                       msg);
+  g_free (msg);
+}
+
 static gboolean
-get_contents_stdio (const gchar  *display_filename,
+get_contents_stdio (const gchar  *filename,
                     FILE         *f,
                     gchar       **contents,
                     gsize        *length,
@@ -619,6 +661,7 @@ get_contents_stdio (const gchar  *display_filename,
   gsize total_bytes = 0;
   gsize total_allocated = 0;
   gchar *tmp;
+  gchar *display_filename;
 
   g_assert (f != NULL);
 
@@ -650,12 +693,14 @@ get_contents_stdio (const gchar  *display_filename,
 
           if (tmp == NULL)
             {
+              display_filename = g_filename_display_name (filename);
               g_set_error (error,
                            G_FILE_ERROR,
                            G_FILE_ERROR_NOMEM,
                            g_dngettext (GETTEXT_PACKAGE, "Could not allocate %lu byte to read file \"%s\"", "Could not allocate %lu bytes to read file \"%s\"", (gulong)total_allocated),
                            (gulong) total_allocated,
 			   display_filename);
+              g_free (display_filename);
 
               goto error;
             }
@@ -665,12 +710,14 @@ get_contents_stdio (const gchar  *display_filename,
 
       if (ferror (f))
         {
+          display_filename = g_filename_display_name (filename);
           g_set_error (error,
                        G_FILE_ERROR,
                        g_file_error_from_errno (save_errno),
                        _("Error reading file '%s': %s"),
                        display_filename,
 		       g_strerror (save_errno));
+          g_free (display_filename);
 
           goto error;
         }
@@ -699,11 +746,13 @@ get_contents_stdio (const gchar  *display_filename,
   return TRUE;
 
  file_too_large:
+  display_filename = g_filename_display_name (filename);
   g_set_error (error,
                G_FILE_ERROR,
                G_FILE_ERROR_FAILED,
                _("File \"%s\" is too large"),
                display_filename);
+  g_free (display_filename);
 
  error:
 
@@ -716,7 +765,7 @@ get_contents_stdio (const gchar  *display_filename,
 #ifndef G_OS_WIN32
 
 static gboolean
-get_contents_regfile (const gchar  *display_filename,
+get_contents_regfile (const gchar  *filename,
                       struct stat  *stat_buf,
                       gint          fd,
                       gchar       **contents,
@@ -727,6 +776,7 @@ get_contents_regfile (const gchar  *display_filename,
   gsize bytes_read;
   gsize size;
   gsize alloc_size;
+  gchar *display_filename;
   
   size = stat_buf->st_size;
 
@@ -735,13 +785,14 @@ get_contents_regfile (const gchar  *display_filename,
 
   if (buf == NULL)
     {
+      display_filename = g_filename_display_name (filename);
       g_set_error (error,
                    G_FILE_ERROR,
                    G_FILE_ERROR_NOMEM,
                            g_dngettext (GETTEXT_PACKAGE, "Could not allocate %lu byte to read file \"%s\"", "Could not allocate %lu bytes to read file \"%s\"", (gulong)alloc_size),
                    (gulong) alloc_size, 
 		   display_filename);
-
+      g_free (display_filename);
       goto error;
     }
   
@@ -759,13 +810,14 @@ get_contents_regfile (const gchar  *display_filename,
 	      int save_errno = errno;
 
               g_free (buf);
+              display_filename = g_filename_display_name (filename);
               g_set_error (error,
                            G_FILE_ERROR,
                            g_file_error_from_errno (save_errno),
                            _("Failed to read from file '%s': %s"),
                            display_filename, 
 			   g_strerror (save_errno));
-
+              g_free (display_filename);
 	      goto error;
             }
         }
@@ -801,22 +853,15 @@ get_contents_posix (const gchar  *filename,
 {
   struct stat stat_buf;
   gint fd;
-  gchar *display_filename = g_filename_display_name (filename);
 
   /* O_BINARY useful on Cygwin */
   fd = open (filename, O_RDONLY|O_BINARY);
 
   if (fd < 0)
     {
-      int save_errno = errno;
-
-      g_set_error (error,
-                   G_FILE_ERROR,
-                   g_file_error_from_errno (save_errno),
-                   _("Failed to open file '%s': %s"),
-                   display_filename, 
-		   g_strerror (save_errno));
-      g_free (display_filename);
+      set_file_error (error,
+                      filename,
+                      _("Failed to open file '%s': %s"));
 
       return FALSE;
     }
@@ -824,29 +869,22 @@ get_contents_posix (const gchar  *filename,
   /* I don't think this will ever fail, aside from ENOMEM, but. */
   if (fstat (fd, &stat_buf) < 0)
     {
-      int save_errno = errno;
-
+      set_file_error (error,
+                      filename,
+                      _("Failed to get attributes of file '%s': fstat() failed: %s"));
       close (fd);
-      g_set_error (error,
-                   G_FILE_ERROR,
-                   g_file_error_from_errno (save_errno),
-                   _("Failed to get attributes of file '%s': fstat() failed: %s"),
-                   display_filename, 
-		   g_strerror (save_errno));
-      g_free (display_filename);
 
       return FALSE;
     }
 
   if (stat_buf.st_size > 0 && S_ISREG (stat_buf.st_mode))
     {
-      gboolean retval = get_contents_regfile (display_filename,
+      gboolean retval = get_contents_regfile (filename,
 					      &stat_buf,
 					      fd,
 					      contents,
 					      length,
 					      error);
-      g_free (display_filename);
 
       return retval;
     }
@@ -859,21 +897,14 @@ get_contents_posix (const gchar  *filename,
       
       if (f == NULL)
         {
-	  int save_errno = errno;
-
-          g_set_error (error,
-                       G_FILE_ERROR,
-                       g_file_error_from_errno (save_errno),
-                       _("Failed to open file '%s': fdopen() failed: %s"),
-                       display_filename, 
-		       g_strerror (save_errno));
-          g_free (display_filename);
+          set_file_error (error,
+                          filename,
+                          _("Failed to open file '%s': fdopen() failed: %s"));
 
           return FALSE;
         }
   
-      retval = get_contents_stdio (display_filename, f, contents, length, error);
-      g_free (display_filename);
+      retval = get_contents_stdio (filename, f, contents, length, error);
 
       return retval;
     }
@@ -889,27 +920,19 @@ get_contents_win32 (const gchar  *filename,
 {
   FILE *f;
   gboolean retval;
-  gchar *display_filename = g_filename_display_name (filename);
-  int save_errno;
   
   f = g_fopen (filename, "rb");
-  save_errno = errno;
 
   if (f == NULL)
     {
-      g_set_error (error,
-                   G_FILE_ERROR,
-                   g_file_error_from_errno (save_errno),
-                   _("Failed to open file '%s': %s"),
-                   display_filename,
-		   g_strerror (save_errno));
-      g_free (display_filename);
+      set_file_error (error,
+                      filename,
+                      _("Failed to open file '%s': %s"));
 
       return FALSE;
     }
   
-  retval = get_contents_stdio (display_filename, f, contents, length, error);
-  g_free (display_filename);
+  retval = get_contents_stdio (filename, f, contents, length, error);
 
   return retval;
 }
@@ -984,49 +1007,6 @@ rename_file (const char  *old_name,
     }
   
   return TRUE;
-}
-
-static char *
-format_error_message (const gchar  *filename,
-                      const gchar  *format_string) G_GNUC_FORMAT(2);
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-
-static char *
-format_error_message (const gchar  *filename,
-                      const gchar  *format_string)
-{
-  gint saved_errno = errno;
-  gchar *display_name;
-  gchar *msg;
-
-  display_name = g_filename_display_name (filename);
-  msg = g_strdup_printf (format_string, display_name, g_strerror (saved_errno));
-  g_free (display_name);
-
-  return msg;
-}
-
-#pragma GCC diagnostic pop
-
-/* format string must have two '%s':
- *
- *   - the place for the filename
- *   - the place for the strerror
- */
-static void
-set_file_error (GError      **error,
-                const gchar  *filename,
-                const gchar  *format_string)
-                      
-{
-  int saved_errno = errno;
-  char *msg = format_error_message (filename, format_string);
-
-  g_set_error_literal (error, G_FILE_ERROR, g_file_error_from_errno (saved_errno),
-                       msg);
-  g_free (msg);
 }
 
 static gchar *
@@ -1237,18 +1217,9 @@ g_file_set_contents (const gchar  *filename,
       
       if (g_unlink (filename) == -1)
 	{
-          gchar *display_filename = g_filename_display_name (filename);
-
-	  int save_errno = errno;
-	  
-	  g_set_error (error,
-		       G_FILE_ERROR,
-		       g_file_error_from_errno (save_errno),
-		       _("Existing file '%s' could not be removed: g_unlink() failed: %s"),
-		       display_filename,
-		       g_strerror (save_errno));
-
-	  g_free (display_filename);
+          set_file_error (error,
+                          filename,
+		          _("Existing file '%s' could not be removed: g_unlink() failed: %s"));
 	  g_unlink (tmp_filename);
 	  retval = FALSE;
 	  goto out;
@@ -1549,15 +1520,9 @@ g_get_tmp_name (const gchar      *tmpl,
   retval = get_tmp_file (fulltemplate, f, flags, mode);
   if (retval == -1)
     {
-      int save_errno = errno;
-      gchar *display_fulltemplate = g_filename_display_name (fulltemplate);
-
-      g_set_error (error,
-                   G_FILE_ERROR,
-                   g_file_error_from_errno (save_errno),
-                   _("Failed to create file '%s': %s"),
-                   display_fulltemplate, g_strerror (save_errno));
-      g_free (display_fulltemplate);
+      set_file_error (error,
+                      fulltemplate,
+                      _("Failed to create file '%s': %s"));
       g_free (fulltemplate);
       return -1;
     }
@@ -2051,27 +2016,20 @@ g_file_read_link (const gchar  *filename,
   while (TRUE) 
     {
       read_size = readlink (filename, buffer, size);
-      if (read_size < 0) {
-	int save_errno = errno;
-	gchar *display_filename = g_filename_display_name (filename);
-
-	g_free (buffer);
-	g_set_error (error,
-		     G_FILE_ERROR,
-		     g_file_error_from_errno (save_errno),
-		     _("Failed to read the symbolic link '%s': %s"),
-		     display_filename, 
-		     g_strerror (save_errno));
-	g_free (display_filename);
+      if (read_size < 0)
+        {
+          set_file_error (error,
+                          filename,
+                          _("Failed to read the symbolic link '%s': %s"));
 	
-	return NULL;
-      }
+          return NULL;
+        }
     
       if (read_size < size) 
-	{
-	  buffer[read_size] = 0;
-	  return buffer;
-	}
+        {
+          buffer[read_size] = 0;
+          return buffer;
+        }
       
       size *= 2;
       buffer = g_realloc (buffer, size);
