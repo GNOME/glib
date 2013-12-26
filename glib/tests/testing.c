@@ -586,6 +586,44 @@ test_pass (void)
 {
 }
 
+static void
+test_fail (void)
+{
+  if (g_test_subprocess ())
+    {
+      g_test_fail ();
+      g_assert (g_test_failed ());
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+}
+
+static void
+test_incomplete (void)
+{
+  if (g_test_subprocess ())
+    {
+      g_test_incomplete ("not done");
+      g_assert (g_test_failed ());
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+}
+
+static void
+test_subprocess_timed_out (void)
+{
+  if (g_test_subprocess ())
+    {
+      g_usleep (1000000);
+      return;
+    }
+  g_test_trap_subprocess (NULL, 50000, 0);
+  g_assert (g_test_trap_reached_timeout ());
+}
+
 static const char *argv0;
 
 static void
@@ -721,6 +759,9 @@ main (int   argc,
   g_test_add_func ("/misc/skip-all/subprocess/skip1", test_skip);
   g_test_add_func ("/misc/skip-all/subprocess/skip2", test_skip);
   g_test_add_func ("/misc/skip-all/subprocess/pass", test_pass);
+  g_test_add_func ("/misc/fail", test_fail);
+  g_test_add_func ("/misc/incomplete", test_incomplete);
+  g_test_add_func ("/misc/timeout", test_subprocess_timed_out);
 
   return g_test_run();
 }
