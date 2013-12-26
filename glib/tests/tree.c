@@ -87,7 +87,12 @@ my_traverse (gpointer key,
              gpointer data)
 {
   char *ch = key;
+
   g_assert ((*ch) > 0);
+
+  if (*ch == 'd')
+    return TRUE;
+
   return FALSE;
 }
 
@@ -297,46 +302,154 @@ test_tree_destroy (void)
   g_tree_unref (tree);
 }
 
+typedef struct {
+  GString *s;
+  gint count;
+} CallbackData;
+
 static gboolean
 traverse_func (gpointer key, gpointer value, gpointer data)
 {
-  gchar *c = value;
-  gchar **p = data;
+  CallbackData *d = data;
 
-  **p = *c;
-  (*p)++;
+  gchar *c = value;
+  g_string_append_c (d->s, *c);
+
+  d->count--;
+
+  if (d->count == 0)
+    return TRUE;
 
   return FALSE;
 }
+
+typedef struct {
+  GTraverseType  traverse;
+  gint           limit;
+  const gchar   *expected;
+} TraverseData;
 
 static void
 test_tree_traverse (void)
 {
   GTree *tree;
   gint i;
-  gchar *p, *result;
+  TraverseData orders[] = {
+    { G_IN_ORDER,   -1, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" },
+    { G_IN_ORDER,    1, "0" },
+    { G_IN_ORDER,    2, "01" },
+    { G_IN_ORDER,    3, "012" },
+    { G_IN_ORDER,    4, "0123" },
+    { G_IN_ORDER,    5, "01234" },
+    { G_IN_ORDER,    6, "012345" },
+    { G_IN_ORDER,    7, "0123456" },
+    { G_IN_ORDER,    8, "01234567" },
+    { G_IN_ORDER,    9, "012345678" },
+    { G_IN_ORDER,   10, "0123456789" },
+    { G_IN_ORDER,   11, "0123456789A" },
+    { G_IN_ORDER,   12, "0123456789AB" },
+    { G_IN_ORDER,   13, "0123456789ABC" },
+    { G_IN_ORDER,   14, "0123456789ABCD" },
+
+    { G_PRE_ORDER,  -1, "VF73102546B98ADCENJHGILKMRPOQTSUldZXWYbachfegjiktpnmorqsxvuwyz" },
+    { G_PRE_ORDER,   1, "V" },
+    { G_PRE_ORDER,   2, "VF" },
+    { G_PRE_ORDER,   3, "VF7" },
+    { G_PRE_ORDER,   4, "VF73" },
+    { G_PRE_ORDER,   5, "VF731" },
+    { G_PRE_ORDER,   6, "VF7310" },
+    { G_PRE_ORDER,   7, "VF73102" },
+    { G_PRE_ORDER,   8, "VF731025" },
+    { G_PRE_ORDER,   9, "VF7310254" },
+    { G_PRE_ORDER,  10, "VF73102546" },
+    { G_PRE_ORDER,  11, "VF73102546B" },
+    { G_PRE_ORDER,  12, "VF73102546B9" },
+    { G_PRE_ORDER,  13, "VF73102546B98" },
+    { G_PRE_ORDER,  14, "VF73102546B98A" },
+
+    { G_POST_ORDER, -1, "02146538A9CEDB7GIHKMLJOQPSUTRNFWYXacbZegfikjhdmonqsrpuwvzyxtlV" },
+    { G_POST_ORDER,  1, "0" },
+    { G_POST_ORDER,  2, "02" },
+    { G_POST_ORDER,  3, "021" },
+    { G_POST_ORDER,  4, "0214" },
+    { G_POST_ORDER,  5, "02146" },
+    { G_POST_ORDER,  6, "021465" },
+    { G_POST_ORDER,  7, "0214653" },
+    { G_POST_ORDER,  8, "02146538" },
+    { G_POST_ORDER,  9, "02146538A" },
+    { G_POST_ORDER, 10, "02146538A9" },
+    { G_POST_ORDER, 11, "02146538A9C" },
+    { G_POST_ORDER, 12, "02146538A9CE" },
+    { G_POST_ORDER, 13, "02146538A9CED" },
+    { G_POST_ORDER, 14, "02146538A9CEDB" }
+  };
+  CallbackData data;
 
   tree = g_tree_new (my_compare);
 
   for (i = 0; chars[i]; i++)
     g_tree_insert (tree, &chars[i], &chars[i]);
 
-  result = g_new0 (gchar, strlen (chars) + 1);
-
-  p = result;
-  g_tree_traverse (tree, traverse_func, G_IN_ORDER, &p);
-  g_assert_cmpstr (result, ==, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
-
-  p = result;
-  g_tree_traverse (tree, traverse_func, G_PRE_ORDER, &p);
-  g_assert_cmpstr (result, ==, "VF73102546B98ADCENJHGILKMRPOQTSUldZXWYbachfegjiktpnmorqsxvuwyz");
-
-  p = result;
-  g_tree_traverse (tree, traverse_func, G_POST_ORDER, &p);
-  g_assert_cmpstr (result, ==, "02146538A9CEDB7GIHKMLJOQPSUTRNFWYXacbZegfikjhdmonqsrpuwvzyxtlV");
+  data.s = g_string_new ("");
+  for (i = 0; i < G_N_ELEMENTS (orders); i++)
+    {
+      g_string_set_size (data.s, 0);
+      data.count = orders[i].limit;
+      g_tree_traverse (tree, traverse_func, orders[i].traverse, &data);
+      g_assert_cmpstr (data.s->str, ==, orders[i].expected);
+    }
 
   g_tree_unref (tree);
-  g_free (result);
+  g_string_free (data.s, TRUE); 
+}
+
+static void
+test_tree_insert (void)
+{
+  GTree *tree;
+  gchar *p;
+  gint i;
+  gchar *scrambled;
+
+  tree = g_tree_new (my_compare);
+
+  for (i = 0; chars[i]; i++)
+    g_tree_insert (tree, &chars[i], &chars[i]);
+  p = chars;
+  g_tree_foreach (tree, check_order, &p);
+
+  g_tree_unref (tree);
+  tree = g_tree_new (my_compare);
+
+  for (i = strlen (chars) - 1; i >= 0; i--)
+    g_tree_insert (tree, &chars[i], &chars[i]);
+  p = chars;
+  g_tree_foreach (tree, check_order, &p);
+
+  g_tree_unref (tree);
+  tree = g_tree_new (my_compare);
+
+  scrambled = g_strdup (chars);
+
+  for (i = 0; i < 30; i++)
+    {
+      gchar tmp;
+      gint a, b;
+
+      a = g_random_int_range (0, strlen (scrambled));
+      b = g_random_int_range (0, strlen (scrambled));
+      tmp = scrambled[a];
+      scrambled[a] = scrambled[b];
+      scrambled[b] = tmp;
+    }
+
+  for (i = 0; scrambled[i]; i++)
+    g_tree_insert (tree, &scrambled[i], &scrambled[i]);
+  p = chars;
+  g_tree_foreach (tree, check_order, &p);
+
+  g_free (scrambled);
+  g_tree_unref (tree);
 }
 
 int
@@ -348,6 +461,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/tree/remove", test_tree_remove);
   g_test_add_func ("/tree/destroy", test_tree_destroy);
   g_test_add_func ("/tree/traverse", test_tree_traverse);
+  g_test_add_func ("/tree/insert", test_tree_insert);
 
   return g_test_run ();
 }
