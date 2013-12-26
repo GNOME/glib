@@ -2930,7 +2930,7 @@ g_test_trap_has_passed (void)
 gboolean
 g_test_trap_reached_timeout (void)
 {
-  return test_trap_last_status != G_TEST_STATUS_TIMED_OUT;
+  return test_trap_last_status == G_TEST_STATUS_TIMED_OUT;
 }
 
 void
