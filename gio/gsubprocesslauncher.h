@@ -56,7 +56,7 @@ GSubprocess *           g_subprocess_launcher_spawnv                    (GSubpro
 
 GLIB_AVAILABLE_IN_2_40
 void                    g_subprocess_launcher_set_environ               (GSubprocessLauncher   *self,
-                                                                         gchar                **environ);
+                                                                         gchar                **env);
 
 GLIB_AVAILABLE_IN_2_40
 void                    g_subprocess_launcher_setenv                    (GSubprocessLauncher   *self,
