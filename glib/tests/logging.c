@@ -173,19 +173,16 @@ test_default_handler (void)
   g_test_trap_assert_stdout ("*LOG-0x400*message7*");
 }
 
-/* test that setting levels as fatal works */
-static void
-test_fatal_log_mask_subprocess (void)
-{
-  g_log_set_fatal_mask ("bu", G_LOG_LEVEL_INFO);
-  g_log ("bu", G_LOG_LEVEL_INFO, "fatal");
-  exit (0);
-}
-
 static void
 test_fatal_log_mask (void)
 {
-  g_test_trap_subprocess ("/logging/fatal-log-mask/subprocess", 0, 0);
+  if (g_test_subprocess ())
+    {
+      g_log_set_fatal_mask ("bu", G_LOG_LEVEL_INFO);
+      g_log ("bu", G_LOG_LEVEL_INFO, "fatal");
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_failed ();
   /* G_LOG_LEVEL_INFO isn't printed by default */
   g_test_trap_assert_stdout_unmatched ("*fatal*");
@@ -284,6 +281,19 @@ bug653052 (void)
   g_return_if_fail (0);
 }
 
+static void
+test_gibberish (void)
+{
+  if (g_test_subprocess ())
+    {
+      g_warning ("bla bla \236\237\190");
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*bla bla \\x9e\\x9f\\u000190*");
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -304,11 +314,11 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/default-handler/subprocess/0x400", test_default_handler_0x400);
   g_test_add_func ("/logging/warnings", test_warnings);
   g_test_add_func ("/logging/fatal-log-mask", test_fatal_log_mask);
-  g_test_add_func ("/logging/fatal-log-mask/subprocess", test_fatal_log_mask_subprocess);
   g_test_add_func ("/logging/set-handler", test_set_handler);
   g_test_add_func ("/logging/print-handler", test_print_handler);
   g_test_add_func ("/logging/printerr-handler", test_printerr_handler);
   g_test_add_func ("/logging/653052", bug653052);
+  g_test_add_func ("/logging/gibberish", test_gibberish);
 
   return g_test_run ();
 }
