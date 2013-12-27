@@ -23,4 +23,4 @@ EXTRA_DIST = \
 	glib-build-defines.vsprops	\
 	glib-install.vsprops	\
 	glib-version-paths.vsprops	\
-	glibprepbuild.vsprops
+	glib-gen-srcs.vsprops

@@ -108,6 +108,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\..\..\config.h.win32"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\..\glib\glibconfig.h.win32"><Filter>Resource Files</Filter></CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
     <ResourceCompile Include="..\..\..\glib\glib.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>

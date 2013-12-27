@@ -41,4 +41,4 @@ EXTRA_DIST = \
 	glib-build-defines.props	\
 	glib-install.props	\
 	glib-version-paths.props	\
-	glibprepbuild.props
+	glib-gen-srcs.props

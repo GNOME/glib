@@ -21,7 +21,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			InheritedPropertySheets=".\glibprepbuild.vsprops;.\glib-build-defines.vsprops"
+			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -52,7 +52,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_ExtPCRE|Win32"
-			InheritedPropertySheets=".\glibprepbuild.vsprops;.\glib-build-defines.vsprops"
+			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
 			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
@@ -84,7 +84,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			InheritedPropertySheets=".\glibprepbuild.vsprops;.\glib-build-defines.vsprops"
+			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -115,7 +115,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug_ExtPCRE|x64"
-			InheritedPropertySheets=".\glibprepbuild.vsprops;.\glib-build-defines.vsprops"
+			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
 			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
@@ -147,7 +147,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			InheritedPropertySheets=".\glibprepbuild.vsprops;.\glib-build-defines.vsprops"
+			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -178,7 +178,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release_ExtPCRE|Win32"
-			InheritedPropertySheets=".\glibprepbuild.vsprops;.\glib-build-defines.vsprops"
+			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
 			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
@@ -210,7 +210,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			InheritedPropertySheets=".\glibprepbuild.vsprops;.\glib-build-defines.vsprops"
+			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -241,7 +241,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release_ExtPCRE|x64"
-			InheritedPropertySheets=".\glibprepbuild.vsprops;.\glib-build-defines.vsprops"
+			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
 			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
@@ -494,6 +494,138 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File RelativePath="..\..\..\config.h.win32">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(GenConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_ExtPCRE|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(GenConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(GenConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_ExtPCRE|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(GenConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(GenConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_ExtPCRE|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(GenConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(GenConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_ExtPCRE|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(GenConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File RelativePath="..\..\..\glib\glibconfig.h.win32">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying glibconfig.h from glibconfig.h.win32..."
+						CommandLine="$(GenGLibConfigH)"
+						Outputs="..\..\..\glib\glibconfig.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_ExtPCRE|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying glibconfig.h from glibconfig.h.win32..."
+						CommandLine="$(GenGLibConfigH)"
+						Outputs="..\..\..\glib\glibconfig.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying glibconfig.h from glibconfig.h.win32..."
+						CommandLine="$(GenGLibConfigH)"
+						Outputs="..\..\..\glib\glibconfig.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_ExtPCRE|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying glibconfig.h from glibconfig.h.win32..."
+						CommandLine="$(GenGLibConfigH)"
+						Outputs="..\..\..\glib\glibconfig.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying glibconfig.h from glibconfig.h.win32..."
+						CommandLine="$(GenGLibConfigH)"
+						Outputs="..\..\..\glib\glibconfig.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug_ExtPCRE|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying glibconfig.h from glibconfig.h.win32..."
+						CommandLine="$(GenGLibConfigH)"
+						Outputs="..\..\..\glib\glibconfig.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying glibconfig.h from glibconfig.h.win32..."
+						CommandLine="$(GenGLibConfigH)"
+						Outputs="..\..\..\glib\glibconfig.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release_ExtPCRE|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying glibconfig.h from glibconfig.h.win32..."
+						CommandLine="$(GenGLibConfigH)"
+						Outputs="..\..\..\glib\glibconfig.h"
+					/>
+				</FileConfiguration>
+			</File>
 			<File RelativePath="..\..\..\glib\glib.rc" />
 		</Filter>
 	</Files>

@@ -20,6 +20,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\..\..\gmodule\gmoduleconf.h.win32"><Filter>Resource Files</Filter></CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
     <ResourceCompile Include="..\..\..\gmodule\gmodule.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
