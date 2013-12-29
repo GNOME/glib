@@ -123,7 +123,7 @@
 
        <varlistentry>
           <term>GDBusMethodInvocation</term>
-          <listitem><para>for handling remove calls</para></listitem>
+          <listitem><para>for handling remote calls</para></listitem>
        </varlistentry>
 
        <varlistentry>
