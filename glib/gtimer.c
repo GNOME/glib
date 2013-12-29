@@ -299,8 +299,8 @@ g_time_val_add (GTimeVal *time_, glong microseconds)
     }
 }
 
-/* converts a broken down date representation, relative to UTC, to
- * a timestamp; it uses timegm() if it's available.
+/* converts a broken down date representation, relative to UTC,
+ * to a timestamp; it uses timegm() if it's available.
  */
 static time_t
 mktime_utc (struct tm *tm)
@@ -360,9 +360,9 @@ g_time_val_from_iso8601 (const gchar *iso_date,
   g_return_val_if_fail (iso_date != NULL, FALSE);
   g_return_val_if_fail (time_ != NULL, FALSE);
 
-  /* Ensure that the first character is a digit,
-   * the first digit of the date, otherwise we don't
-   * have an ISO 8601 date */
+  /* Ensure that the first character is a digit, the first digit
+   * of the date, otherwise we don't have an ISO 8601 date
+   */
   while (g_ascii_isspace (*iso_date))
     iso_date++;
 
@@ -394,12 +394,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
     }
 
   if (*iso_date != 'T')
-    {
-      /* Date only */
-      if (*iso_date == '\0')
-        return TRUE;
-      return FALSE;
-    }
+    return FALSE;
 
   iso_date++;
 

@@ -1347,7 +1347,7 @@ various_string_tests (void)
   g_assert (g_time_val_from_iso8601 (REF_INVALID1, &date) == FALSE);
   g_assert (g_time_val_from_iso8601 (REF_INVALID2, &date) == FALSE);
   g_assert (g_time_val_from_iso8601 (REF_INVALID3, &date) == FALSE);
-  g_assert (g_time_val_from_iso8601 (REF_STR_DATE_ONLY, &date) != FALSE);
+  g_assert (g_time_val_from_iso8601 (REF_STR_DATE_ONLY, &date) == FALSE);
   g_assert (g_time_val_from_iso8601 (REF_STR_UTC, &date) != FALSE);
   if (g_test_verbose())
     g_print ("\t=> UTC stamp = %ld.%06ld (should be: %ld.%06ld) (%ld.%06ld off)\n",
