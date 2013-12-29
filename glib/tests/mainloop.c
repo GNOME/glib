@@ -118,6 +118,7 @@ test_maincontext_basic (void)
   id = g_source_attach (source, ctx);
   g_source_unref (source);
   g_assert (g_source_remove_by_user_data (data));
+  g_assert (!g_source_remove_by_user_data ((gpointer)0x1234));
 
   g_idle_add (cb, data);
   g_assert (g_idle_remove_by_data (data));
@@ -693,6 +694,7 @@ typedef struct {
 
   GSource *timeout1, *timeout2;
   gint64 time1;
+  GTimeVal tv;
 } TimeTestData;
 
 static gboolean
@@ -713,6 +715,10 @@ timeout1_callback (gpointer user_data)
       mtime1 = g_get_monotonic_time ();
       data->time1 = g_source_get_time (source);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+      g_source_get_current_time (source, &data->tv);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
       /* g_source_get_time() does not change during a single callback */
       g_usleep (1000000);
       mtime2 = g_get_monotonic_time ();
@@ -723,6 +729,8 @@ timeout1_callback (gpointer user_data)
     }
   else
     {
+      GTimeVal tv;
+
       /* Second iteration */
       g_assert (g_source_is_destroyed (data->timeout2));
 
@@ -732,6 +740,14 @@ timeout1_callback (gpointer user_data)
        */
       time2 = g_source_get_time (source);
       g_assert_cmpint (data->time1, <, time2);
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+      g_source_get_current_time (source, &tv);
+G_GNUC_END_IGNORE_DEPRECATIONS
+
+      g_assert (tv.tv_sec > data->tv.tv_sec ||
+                (tv.tv_sec == data->tv.tv_sec &&
+                 tv.tv_usec > data->tv.tv_usec));
 
       g_main_loop_quit (data->loop);
     }
@@ -1407,6 +1423,58 @@ test_source_unix_fd_api (void)
 
 #endif
 
+static gboolean
+timeout_cb (gpointer data)
+{
+  GMainLoop *loop = data;
+  GMainContext *context;
+
+  context = g_main_loop_get_context (loop);
+  g_assert (g_main_loop_is_running (loop));
+  g_assert (g_main_context_is_owner (context));
+
+  g_main_loop_quit (loop);
+
+  return G_SOURCE_REMOVE;
+}
+
+static gpointer
+threadf (gpointer data)
+{
+  GMainContext *context = data;
+  GMainLoop *loop;
+  GSource *source;
+
+  loop = g_main_loop_new (context, FALSE);
+  source = g_timeout_source_new (250);
+  g_source_set_callback (source, timeout_cb, loop, NULL);
+  g_source_attach (source, context);
+  g_source_unref (source);
+ 
+  g_main_loop_run (loop);
+
+  g_main_loop_unref (loop);
+
+  return NULL;
+}
+
+static void
+test_mainloop_wait (void)
+{
+  GMainContext *context;
+  GThread *t1, *t2;
+
+  context = g_main_context_new ();
+
+  t1 = g_thread_new ("t1", threadf, context);
+  t2 = g_thread_new ("t2", threadf, context);
+
+  g_thread_join (t1);
+  g_thread_join (t2);
+
+  g_main_context_unref (context);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1431,6 +1499,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/mainloop/unix-fd", test_unix_fd);
   g_test_add_func ("/mainloop/unix-fd-source", test_unix_fd_source);
   g_test_add_func ("/mainloop/source-unix-fd-api", test_source_unix_fd_api);
+  g_test_add_func ("/mainloop/wait", test_mainloop_wait);
 #endif
 
   return g_test_run ();
