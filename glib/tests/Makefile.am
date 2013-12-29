@@ -58,6 +58,7 @@ test_programs = \
 	logging				\
 	mainloop			\
 	mappedfile			\
+	markup				\
 	markup-parse			\
 	markup-collect			\
 	markup-escape			\
