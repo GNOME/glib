@@ -355,7 +355,6 @@ find_first (gpointer key,
   return (*v == *test);
 }
 
-
 static void
 direct_hash_test (void)
 {
@@ -363,6 +362,31 @@ direct_hash_test (void)
   GHashTable     *h;
 
   h = g_hash_table_new (NULL, NULL);
+  g_assert (h != NULL);
+  for (i = 1; i <= 20; i++)
+    g_hash_table_insert (h, GINT_TO_POINTER (i),
+                         GINT_TO_POINTER (i + 42));
+
+  g_assert (g_hash_table_size (h) == 20);
+
+  for (i = 1; i <= 20; i++)
+    {
+      rc = GPOINTER_TO_INT (g_hash_table_lookup (h, GINT_TO_POINTER (i)));
+
+      g_assert (rc != 0);
+      g_assert ((rc - 42) == i);
+    }
+
+  g_hash_table_destroy (h);
+}
+
+static void
+direct_hash_test2 (void)
+{
+  gint       i, rc;
+  GHashTable     *h;
+
+  h = g_hash_table_new (g_direct_hash, g_direct_equal);
   g_assert (h != NULL);
   for (i = 1; i <= 20; i++)
     g_hash_table_insert (h, GINT_TO_POINTER (i),
@@ -1383,6 +1407,7 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/hash/one", GINT_TO_POINTER (TRUE), second_hash_test);
   g_test_add_data_func ("/hash/honeyman", GINT_TO_POINTER (FALSE), second_hash_test);
   g_test_add_func ("/hash/direct", direct_hash_test);
+  g_test_add_func ("/hash/direct2", direct_hash_test2);
   g_test_add_func ("/hash/int", int_hash_test);
   g_test_add_func ("/hash/int64", int64_hash_test);
   g_test_add_func ("/hash/double", double_hash_test);
