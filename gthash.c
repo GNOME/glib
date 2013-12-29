@@ -158,6 +158,8 @@ _gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint
   g_assert (len >= builder->packed_size);
   g_assert ((((unsigned long)mem) & 0x3) == 0);
 
+  memset (mem, 0, len);
+
   *((guint32*) mem) = builder->dirmap_offset;
   packed_mem = (guint8*)(mem + sizeof(guint32));
   cmph_pack (builder->c, packed_mem);
