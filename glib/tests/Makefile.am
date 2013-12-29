@@ -91,6 +91,7 @@ test_programs = \
 	test-printf			\
 	thread				\
 	timeout				\
+	timer				\
 	tree				\
 	utf8-performance		\
 	utf8-pointer			\
