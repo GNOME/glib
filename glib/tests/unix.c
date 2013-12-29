@@ -64,6 +64,38 @@ test_error (void)
   g_clear_error (&error);
 }
 
+static void
+test_nonblocking (void)
+{
+  GError *error = NULL;
+  int pipefd[2];
+  gboolean res;
+  int flags;
+
+  res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  res = g_unix_set_fd_nonblocking (pipefd[0], TRUE, &error);
+  g_assert (res);
+  g_assert_no_error (error);
+ 
+  flags = fcntl (pipefd[0], F_GETFL);
+  g_assert_cmpint (flags, !=, -1);
+  g_assert (flags & O_NONBLOCK);
+
+  res = g_unix_set_fd_nonblocking (pipefd[0], FALSE, &error);
+  g_assert (res);
+  g_assert_no_error (error);
+ 
+  flags = fcntl (pipefd[0], F_GETFL);
+  g_assert_cmpint (flags, !=, -1);
+  g_assert (!(flags & O_NONBLOCK));
+
+  close (pipefd[0]);
+  close (pipefd[1]);
+}
+
 static gboolean sig_received = FALSE;
 static gboolean sig_timeout = FALSE;
 static int sig_counter = 0;
@@ -221,6 +253,7 @@ main (int   argc,
 
   g_test_add_func ("/glib-unix/pipe", test_pipe);
   g_test_add_func ("/glib-unix/error", test_error);
+  g_test_add_func ("/glib-unix/nonblocking", test_nonblocking);
   g_test_add_func ("/glib-unix/sighup", test_sighup);
   g_test_add_func ("/glib-unix/sigterm", test_sigterm);
   g_test_add_func ("/glib-unix/sighup_again", test_sighup);
