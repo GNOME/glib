@@ -19,6 +19,7 @@
 * Authors: Lars Uebernickel <lars@uebernic.de>
 */
 
+#include "config.h"
 #include "gnotificationbackend.h"
 
 #include "giomodule-priv.h"

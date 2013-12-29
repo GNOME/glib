@@ -19,6 +19,8 @@
  * Authors: Lars Uebernickel <lars@uebernic.de>
  */
 
+#include "config.h"
+
 #include "gnotificationbackend.h"
 
 #include "gapplication.h"
