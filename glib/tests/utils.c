@@ -320,6 +320,21 @@ test_codeset (void)
 }
 
 static void
+test_codeset2 (void)
+{
+  if (g_test_subprocess ())
+    {
+      const gchar *c;
+      g_setenv ("CHARSET", "UTF-8", TRUE);
+      g_get_charset (&c);
+      g_assert_cmpstr (c, ==, "UTF-8");
+      return;
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_passed ();
+}
+
+static void
 test_basename (void)
 {
   const gchar *path = "/path/to/a/file/deep/down.sh";
@@ -555,6 +570,7 @@ main (int   argc,
   g_test_add_func ("/utils/find-program", test_find_program);
   g_test_add_func ("/utils/debug", test_debug);
   g_test_add_func ("/utils/codeset", test_codeset);
+  g_test_add_func ("/utils/codeset2", test_codeset2);
   g_test_add_func ("/utils/basename", test_basename);
   g_test_add_func ("/utils/gettext", test_gettext);
   g_test_add_func ("/utils/username", test_username);
