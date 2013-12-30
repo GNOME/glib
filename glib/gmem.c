@@ -556,11 +556,6 @@ static gsize profile_allocs = 0;
 static gsize profile_zinit = 0;
 static gsize profile_frees = 0;
 static GMutex gmem_profile_mutex;
-#ifdef  G_ENABLE_DEBUG
-static volatile gsize g_trap_free_size = 0;
-static volatile gsize g_trap_realloc_size = 0;
-static volatile gsize g_trap_malloc_size = 0;
-#endif  /* G_ENABLE_DEBUG */
 
 #define	PROFILE_TABLE(f1,f2,f3)   ( ( ((f3) << 2) | ((f2) << 1) | (f1) ) * (MEM_PROFILE_TABLE_SIZE + 1))
 
@@ -700,11 +695,6 @@ profiler_try_malloc (gsize n_bytes)
 {
   gsize *p;
 
-#ifdef  G_ENABLE_DEBUG
-  if (g_trap_malloc_size == n_bytes)
-    G_BREAKPOINT ();
-#endif  /* G_ENABLE_DEBUG */
-
   p = malloc (sizeof (gsize) * 2 + n_bytes);
 
   if (p)
@@ -738,11 +728,6 @@ profiler_calloc (gsize n_blocks,
   gsize l = n_blocks * n_block_bytes;
   gsize *p;
 
-#ifdef  G_ENABLE_DEBUG
-  if (g_trap_malloc_size == l)
-    G_BREAKPOINT ();
-#endif  /* G_ENABLE_DEBUG */
-  
   p = calloc (1, sizeof (gsize) * 2 + l);
 
   if (p)
@@ -777,11 +762,6 @@ profiler_free (gpointer mem)
     }
   else
     {
-#ifdef  G_ENABLE_DEBUG
-      if (g_trap_free_size == p[1])
-	G_BREAKPOINT ();
-#endif  /* G_ENABLE_DEBUG */
-
       profiler_log (PROFILER_FREE,
 		    p[1],	/* length */
 		    TRUE);
@@ -802,11 +782,6 @@ profiler_try_realloc (gpointer mem,
   gsize *p = mem;
 
   p -= 2;
-
-#ifdef  G_ENABLE_DEBUG
-  if (g_trap_realloc_size == n_bytes)
-    G_BREAKPOINT ();
-#endif  /* G_ENABLE_DEBUG */
   
   if (mem && p[0])	/* free count */
     {
