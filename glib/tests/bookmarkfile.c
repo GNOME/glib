@@ -16,6 +16,257 @@
 #define TEST_APP_NAME 	"bookmarkfile-test"
 #define TEST_APP_EXEC 	"bookmarkfile-test %f"
 
+static void
+test_load_from_data_dirs (void)
+{
+  GBookmarkFile *bookmark;
+  gboolean res;
+  gchar *path = NULL;
+  GError *error = NULL;
+
+  bookmark = g_bookmark_file_new ();
+
+  res = g_bookmark_file_load_from_data_dirs (bookmark, "no-such-bookmark-file.xbel", &path, &error);
+
+  g_assert (!res);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+  g_assert_null (path);
+
+  g_bookmark_file_free (bookmark);  
+}
+
+static void
+test_to_file (void)
+{
+  GBookmarkFile *bookmark;
+  const gchar *filename;
+  gboolean res;
+  GError *error = NULL;
+  gchar *in, *out;
+
+  bookmark = g_bookmark_file_new ();
+
+  filename = g_test_get_filename (G_TEST_DIST, "bookmarks", "valid-01.xbel", NULL);
+  res = g_bookmark_file_load_from_file (bookmark, filename, &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  res = g_bookmark_file_to_file (bookmark, "out.xbel", &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  res = g_file_get_contents (filename, &in, NULL, &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  res = g_file_get_contents ("out.xbel", &out, NULL, &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  g_assert_cmpstr (in, ==, out);
+  g_free (in);
+  g_free (out);
+
+  g_bookmark_file_free (bookmark);
+}
+
+static void
+test_move_item (void)
+{
+  GBookmarkFile *bookmark;
+  const gchar *filename;
+  gboolean res;
+  GError *error = NULL;
+
+  bookmark = g_bookmark_file_new ();
+
+  filename = g_test_get_filename (G_TEST_DIST, "bookmarks", "valid-01.xbel", NULL);
+  res = g_bookmark_file_load_from_file (bookmark, filename, &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  res = g_bookmark_file_move_item (bookmark,
+                                   "file:///home/zefram/Documents/milan-stuttgart.ps",
+                                   "file:///tmp/schedule.ps",
+                                   &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  res = g_bookmark_file_move_item (bookmark,
+                                   "file:///no-such-file.xbel",
+                                   "file:///tmp/schedule.ps",
+                                   &error);
+  g_assert (!res);
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
+
+  res = g_bookmark_file_move_item (bookmark,
+                                   "file:///tmp/schedule.ps",
+                                   NULL,
+                                   &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  g_bookmark_file_free (bookmark);
+}
+
+static void
+test_misc (void)
+{
+  GBookmarkFile *bookmark;
+  const gchar *filename;
+  gboolean res;
+  GError *error = NULL;
+  gchar *s;
+  time_t now, t;
+  gchar *cmd, *exec;
+  guint count;
+
+  bookmark = g_bookmark_file_new ();
+
+  filename = g_test_get_filename (G_TEST_DIST, "bookmarks", "valid-01.xbel", NULL);
+  res = g_bookmark_file_load_from_file (bookmark, filename, &error);
+  g_assert (res);
+  g_assert_no_error (error);
+
+  res = g_bookmark_file_get_icon (bookmark,
+                                   "file:///home/zefram/Documents/milan-stuttgart.ps",
+                                  NULL,
+                                  NULL,
+                                  &error);
+  g_assert (!res);
+  g_assert_no_error (error);
+
+  res = g_bookmark_file_get_icon (bookmark,
+                                  "file:///tmp/schedule.ps",
+                                  NULL,
+                                  NULL,
+                                  &error);
+  g_assert (!res);
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_clear_error (&error);
+
+  g_bookmark_file_set_description (bookmark,
+                                   "file:///tmp/schedule0.ps",
+                                   "imaginary schedule");
+  s = g_bookmark_file_get_description (bookmark,
+                                       "file:///tmp/schedule0.ps",
+                                       &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (s, ==, "imaginary schedule");
+  g_free (s);
+  s = g_bookmark_file_get_mime_type (bookmark,
+                                     "file:///tmp/schedule0.ps",
+                                     &error);
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_INVALID_VALUE);
+  g_assert_null (s);
+  g_clear_error (&error);
+  res = g_bookmark_file_get_is_private (bookmark,
+                                        "file:///tmp/schedule0.ps",
+                                        &error);
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_INVALID_VALUE);
+  g_clear_error (&error);
+
+  g_bookmark_file_set_mime_type (bookmark, 
+                                 "file:///tmp/schedule1.ps",
+                                 "image/png");
+  s = g_bookmark_file_get_mime_type (bookmark,
+                                     "file:///tmp/schedule1.ps",
+                                     &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (s, ==, "image/png");
+  g_free (s);
+  
+  g_bookmark_file_set_is_private (bookmark,
+                                  "file:///tmp/schedule2.ps",
+                                  TRUE);
+  res = g_bookmark_file_get_is_private (bookmark,
+                                        "file:///tmp/schedule2.ps",
+                                        &error);
+  g_assert_no_error (error);
+  g_assert (res);
+
+  time (&now);
+  g_bookmark_file_set_added (bookmark,
+                             "file:///tmp/schedule3.ps",
+                             (time_t)-1);
+  t = g_bookmark_file_get_added (bookmark,
+                                 "file:///tmp/schedule3.ps",
+                                 &error);
+  g_assert_no_error (error);
+  g_assert (t == now);
+
+  g_bookmark_file_set_modified (bookmark,
+                                "file:///tmp/schedule4.ps",
+                                (time_t)-1);
+  t = g_bookmark_file_get_modified (bookmark,
+                                    "file:///tmp/schedule4.ps",
+                                    &error);
+  g_assert_no_error (error);
+  g_assert (t == now);
+
+  g_bookmark_file_set_visited (bookmark,
+                               "file:///tmp/schedule5.ps",
+                               (time_t)-1);
+  t = g_bookmark_file_get_visited (bookmark,
+                                   "file:///tmp/schedule5.ps",
+                                   &error);
+  g_assert_no_error (error);
+  g_assert (t == now);
+
+  g_bookmark_file_set_icon (bookmark,
+                            "file:///tmp/schedule6.ps",
+                            "application-x-postscript",
+                            "image/png");
+  res = g_bookmark_file_get_icon (bookmark,
+                                  "file:///tmp/schedule6.ps",
+                                  &s,
+                                  NULL, 
+                                  &error);
+  g_assert_no_error (error);
+  g_assert (res);
+  g_assert_cmpstr (s, ==, "application-x-postscript");
+  g_free (s);
+
+  g_bookmark_file_set_icon (bookmark,
+                            "file:///tmp/schedule6.ps",
+                            NULL, NULL);
+  res = g_bookmark_file_get_icon (bookmark,
+                                  "file:///tmp/schedule6.ps",
+                                  &s,
+                                  NULL, 
+                                  &error);
+  g_assert_no_error (error);
+  g_assert (!res);
+
+  res = g_bookmark_file_has_application (bookmark,
+                                         "file:///tmp/schedule7.ps",
+                                         "foo",
+                                         &error);
+  g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
+  g_assert (!res);
+  g_clear_error (&error);
+
+  g_bookmark_file_add_application (bookmark, 
+                                   "file:///tmp/schedule7.ps",
+                                   NULL, NULL);
+  res = g_bookmark_file_get_app_info (bookmark,
+                                      "file:///tmp/schedule7.ps",
+                                      g_get_application_name (),
+                                      &exec, &count, &t,
+                                      &error);
+  g_assert_no_error (error);
+  g_assert (res);
+  cmd = g_strconcat (g_get_prgname (), " file:///tmp/schedule7.ps", NULL);
+  g_assert_cmpstr (exec, ==, cmd);
+  g_free (cmd);
+  g_free (exec);
+  g_assert_cmpuint (count, ==, 1);
+  g_assert (t == now);
+
+  g_bookmark_file_free (bookmark);
+}
+
 static gboolean
 test_load (GBookmarkFile *bookmark,
            const gchar   *filename)
@@ -277,6 +528,11 @@ main (int argc, char *argv[])
       return 0;
     }
 
+  g_test_add_func ("/bookmarks/load-from-data-dirs", test_load_from_data_dirs);
+  g_test_add_func ("/bookmarks/to-file", test_to_file);
+  g_test_add_func ("/bookmarks/move-item", test_move_item);
+  g_test_add_func ("/bookmarks/misc", test_misc);
+
   error = NULL;
   path = g_test_build_filename (G_TEST_DIST, "bookmarks", NULL);
   dir = g_dir_open (path, 0, &error);
@@ -284,6 +540,9 @@ main (int argc, char *argv[])
   g_assert_no_error (error);
   while ((name = g_dir_read_name (dir)) != NULL)
     {
+      if (!g_str_has_suffix (name, ".xbel"))
+        continue;
+
       path = g_strdup_printf ("/bookmarks/parse/%s", name);
       g_test_add_data_func_full (path, g_test_build_filename (G_TEST_DIST, "bookmarks", name, NULL),
                                  test_file, g_free);

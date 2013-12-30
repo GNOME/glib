@@ -15,6 +15,7 @@
         <bookmark:applications>
           <bookmark:application name="populate-recent" exec="populate-recent --info %u" modified="2005-09-30T23:05:28Z" count="1"/>
         </bookmark:applications>
+        <bookmark:icon type="image/png" href="file:///usr/share/icons/gnome/48x48/gnome-mime-application-postscript.png"/>
       </metadata>
     </info>
   </bookmark>
