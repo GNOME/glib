@@ -204,6 +204,19 @@ test_async_queue_timed (void)
   g_assert_cmpint (diff, >=, G_USEC_PER_SEC / 10);
   g_assert_cmpint (diff, <, G_USEC_PER_SEC);
 
+  start = end;
+  g_get_current_time (&tv);
+  g_time_val_add (&tv, G_USEC_PER_SEC / 10);
+  g_async_queue_lock (q);
+  val = g_async_queue_timed_pop_unlocked (q, &tv);
+  g_async_queue_unlock (q);
+  g_assert (val == NULL);
+
+  end = g_get_monotonic_time ();
+  diff = end - start;
+  g_assert_cmpint (diff, >=, G_USEC_PER_SEC / 10);
+  g_assert_cmpint (diff, <, G_USEC_PER_SEC);
+
   g_async_queue_unref (q);
 }
 
