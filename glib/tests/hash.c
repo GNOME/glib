@@ -1396,6 +1396,51 @@ test_set_to_strv (void)
   g_strfreev (strv);
 }
 
+static gboolean
+is_prime (guint p)
+{
+  guint i;
+
+  if (p % 2 == 0)
+    return FALSE;
+
+  i = 3;
+  while (TRUE)
+    {
+      if (i * i > p)
+        return TRUE;
+
+      if (p % i == 0)
+        return FALSE;
+
+      i += 2;       
+    }
+}
+
+static void
+test_primes (void)
+{
+  guint p, q;
+  gdouble r, min, max;
+
+  max = 1.0;
+  min = 10.0;
+  q = 1;
+  while (1) {
+    p = q;
+    q = g_spaced_primes_closest (p);
+    g_assert (is_prime (q));
+    if (p == 1) continue;
+    if (q == p) break;
+    r = q / (gdouble) p;
+    min = MIN (min, r);
+    max = MAX (max, r);
+  };
+
+  g_assert_cmpfloat (1.3, <, min);
+  g_assert_cmpfloat (max, <, 2.0);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1427,6 +1472,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/iter-replace", test_iter_replace);
   g_test_add_func ("/hash/set-insert-corruption", test_set_insert_corruption);
   g_test_add_func ("/hash/set-to-strv", test_set_to_strv);
+  g_test_add_func ("/hash/primes", test_primes);
 
   return g_test_run ();
 
