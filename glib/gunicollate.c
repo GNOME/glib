@@ -397,12 +397,12 @@ g_utf8_collate_key (const gchar *str,
   result_wc = g_new (wchar_t, xfrm_len + 1);
   wcsxfrm (result_wc, (wchar_t *)str_norm, xfrm_len + 1);
 
-  for (i=0; i < xfrm_len; i++)
+  for (i = 0; i < xfrm_len; i++)
     result_len += utf8_encode (NULL, result_wc[i]);
 
   result = g_malloc (result_len + 1);
   result_len = 0;
-  for (i=0; i < xfrm_len; i++)
+  for (i = 0; i < xfrm_len; i++)
     result_len += utf8_encode (result + result_len, result_wc[i]);
 
   result[result_len] = '\0';
@@ -471,9 +471,9 @@ g_utf8_collate_key (const gchar *str,
 }
 
 /* This is a collation key that is very very likely to sort before any
-   collation key that libc strxfrm generates. We use this before any
-   special case (dot or number) to make sure that its sorted before
-   anything else.
+ * collation key that libc strxfrm generates. We use this before any
+ * special case (dot or number) to make sure that its sorted before
+ * anything else.
  */
 #define COLLATION_SENTINEL "\1\1\1"
 
@@ -500,7 +500,7 @@ g_utf8_collate_key (const gchar *str,
  *
  * Since: 2.8
  */
-gchar*
+gchar *
 g_utf8_collate_key_for_filename (const gchar *str,
 				 gssize       len)
 {
