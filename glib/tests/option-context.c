@@ -1965,6 +1965,65 @@ test_basic (void)
   g_option_context_free (context);
 }
 
+typedef struct {
+  gboolean parameter_seen;
+  gboolean summary_seen;
+  gboolean description_seen;
+  gboolean destroyed;
+} TranslateData;
+
+static const gchar *
+translate_func (const gchar *str,
+                gpointer     data)
+{
+  TranslateData *d = data;
+
+  if (strcmp (str, "parameter") == 0)
+    d->parameter_seen = TRUE;
+  else if (strcmp (str, "summary") == 0)
+    d->summary_seen = TRUE;
+  else if (strcmp (str, "description") == 0)
+    d->description_seen = TRUE;
+  
+  return str;
+}
+
+static void
+destroy_notify (gpointer data)
+{
+  TranslateData *d = data;
+
+  d->destroyed = TRUE;
+}
+
+static void
+test_translate (void)
+{
+  GOptionContext *context;
+  gchar *arg = NULL;
+  GOptionEntry entries [] =
+    { { "test", 't', 0, G_OPTION_ARG_STRING, &arg, NULL, NULL },
+      { NULL } };
+  TranslateData data = { 0, };
+  gchar *str;
+
+  context = g_option_context_new ("parameter");
+  g_option_context_add_main_entries (context, entries, NULL);
+  g_option_context_set_summary (context, "summary");
+  g_option_context_set_description (context, "description");
+
+  g_option_context_set_translate_func (context, translate_func, &data, destroy_notify);
+  
+  str = g_option_context_get_help (context, FALSE, NULL);
+  g_free (str);
+  g_option_context_free (context);
+
+  g_assert (data.parameter_seen);
+  g_assert (data.summary_seen);
+  g_assert (data.description_seen);
+  g_assert (data.destroyed);
+}
+
 static void
 test_help (void)
 {
@@ -2320,6 +2379,7 @@ main (int   argc,
   g_test_add_func ("/option/help/no-help-options", test_help_no_help_options);
 
   g_test_add_func ("/option/basic", test_basic);
+  g_test_add_func ("/option/translate", test_translate);
 
   g_test_add_func ("/option/group/captions", test_group_captions);
   for (i = 0; i < 4; i++)
