@@ -62,7 +62,9 @@ static const struct {
 
   /* non-standard dot characters */
   { "example\xe3\x80\x82" "com", "example.com", TRUE, FALSE },
-  { "\xc3\xa9xample\xe3\x80\x82" "com", "xn--xample-9ua.com", TRUE, TRUE }
+  { "\xc3\xa9xample\xe3\x80\x82" "com", "xn--xample-9ua.com", TRUE, TRUE },
+  { "Å.idn.icann.org", "xn--5ca.idn.icann.org", TRUE, TRUE },
+  { "ℵℶℷ\xcd\x8f.idn.icann.org", "xn--4dbcd.idn.icann.org", TRUE, TRUE }
 };
 static const gint num_non_round_trip_names = G_N_ELEMENTS (non_round_trip_names);
 
