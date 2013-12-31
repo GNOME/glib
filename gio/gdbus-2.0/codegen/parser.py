@@ -197,7 +197,7 @@ class DBusXMLParser:
                 if 'name' in attrs:
                     arg_name = attrs['name']
                 arg = dbustypes.Arg(arg_name, attrs['type'])
-                direction = attrs['direction']
+                direction = attrs.get('direction', 'in')
                 if direction == 'in':
                     self._cur_object.in_args.append(arg)
                 elif direction == 'out':
