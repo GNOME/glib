@@ -172,6 +172,10 @@ test_message (void)
   g_assert_cmpint (*line_term, ==, '\n');
   g_assert_cmpint (line_term_len, ==, 1);
 
+  g_assert (g_io_channel_get_close_on_unref (channel));
+  g_assert (g_io_channel_get_encoding (channel) == NULL);
+  g_assert (!g_io_channel_get_buffered (channel));
+
   io_source = g_io_add_watch (channel, G_IO_IN, test_message_cb1, tlb);
   child_source = g_child_watch_add (pid, test_message_cb2, loop);
 
