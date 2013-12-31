@@ -1264,26 +1264,6 @@ start_element_raw_cb (GMarkupParseContext *context,
         	     element_name,
         	     BOOKMARK_GROUP_ELEMENT);
       break;
-    case STATE_ICON:
-      if (IS_ELEMENT_NS (parse_data, element_name, BOOKMARK_NAMESPACE_URI, BOOKMARK_ICON_ELEMENT))
-        {
-          GError *inner_error = NULL;
-          
-          parse_icon_element (context,
-          		      parse_data,
-          		      attribute_names,
-          		      attribute_values,
-          		      &inner_error);
-          if (inner_error)
-            g_propagate_error (error, inner_error);
-        }
-      else
-        g_set_error (error, G_MARKUP_ERROR,
-        	     G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-        	     _("Unexpected tag '%s' inside '%s'"),
-        	     element_name,
-        	     XBEL_METADATA_ELEMENT);
-      break;
     default:
       g_warn_if_reached ();
       break;
