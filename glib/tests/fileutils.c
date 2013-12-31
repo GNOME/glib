@@ -27,10 +27,17 @@
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 
 #include <glib.h>
+
+/* Test our stdio wrappers here */
+#define G_STDIO_NO_WRAP_ON_UNIX
 #include <glib/gstdio.h>
 
 #ifdef G_OS_UNIX
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <utime.h>
 #endif
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -643,17 +650,20 @@ test_dir_make_tmp (void)
 {
   gchar *name;
   GError *error = NULL;
+  gint ret;
 
   name = g_dir_make_tmp ("testXXXXXXtest", &error);
   g_assert_no_error (error);
   g_assert (g_file_test (name, G_FILE_TEST_IS_DIR));
-  g_assert (g_rmdir (name) == 0);
+  ret = g_rmdir (name);
+  g_assert (ret == 0);
   g_free (name);
 
   name = g_dir_make_tmp (NULL, &error);
   g_assert_no_error (error);
   g_assert (g_file_test (name, G_FILE_TEST_IS_DIR));
-  g_assert (g_rmdir (name) == 0);
+  ret = g_rmdir (name);
+  g_assert (ret == 0);
   g_free (name);
 
   name = g_dir_make_tmp ("test/XXXXXX", &error);
@@ -819,6 +829,69 @@ test_read_link (void)
 #endif
 }
 
+static void
+test_stdio_wrappers (void)
+{
+  GStatBuf buf;
+  gchar *cwd, *path;
+  gint ret;
+  struct utimbuf ut;
+  GError *error = NULL;
+
+  g_remove ("mkdir-test/test-create");
+  g_rmdir ("mkdir-test");
+
+  ret = g_stat ("mkdir-test", &buf);
+  g_assert (ret == -1);
+  ret = g_mkdir ("mkdir-test", 0666);
+  g_assert (ret == 0);
+  ret = g_stat ("mkdir-test", &buf);
+  g_assert (ret == 0);
+  g_assert (S_ISDIR (buf.st_mode));
+
+  cwd = g_get_current_dir ();
+  path = g_build_filename (cwd, "mkdir-test", NULL);
+  g_free (cwd);
+  ret = g_chdir (path);
+  g_assert (errno == EACCES);
+  g_assert (ret == -1);
+  ret = g_chmod (path, 0777);
+  g_assert (ret == 0);
+  ret = g_chdir (path);
+  g_assert (ret == 0);
+  cwd = g_get_current_dir ();
+  g_assert (g_str_equal (cwd, path));
+  g_free (cwd);
+  g_free (path);
+
+  ret = g_creat ("test-creat", 0555);
+  g_close (ret, &error);
+  g_assert_no_error (error);
+
+  ret = g_access ("test-creat", F_OK);
+  g_assert (ret == 0);
+
+  ret = g_rename ("test-creat", "test-create");
+  g_assert (ret == 0);
+
+  ret = g_open ("test-create", O_RDONLY, 0666);
+  g_close (ret, &error);
+  g_assert_no_error (error);
+
+  ut.actime = ut.modtime = (time_t)0;
+  ret = g_utime ("test-create", &ut);
+  g_assert (ret == 0);
+
+  ret = g_lstat ("test-create", &buf);
+  g_assert (ret == 0);
+  g_assert (buf.st_atime == (time_t)0);
+  g_assert (buf.st_mtime == (time_t)0);
+
+  g_chdir ("..");
+  g_remove ("mkdir-test/test-create");
+  g_rmdir ("mkdir-test");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -839,6 +912,7 @@ main (int   argc,
   g_test_add_func ("/fileutils/mkdtemp", test_mkdtemp);
   g_test_add_func ("/fileutils/set-contents", test_set_contents);
   g_test_add_func ("/fileutils/read-link", test_read_link);
+  g_test_add_func ("/fileutils/stdio-wrappers", test_stdio_wrappers);
 
   return g_test_run ();
 }
