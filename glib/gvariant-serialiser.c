@@ -920,7 +920,7 @@ gvs_tuple_get_child (GVariantSerialised value,
       child.size = fixed_size;
     }
 
-  else /* G_VARIANT_MEMEBER_ENDING_OFFSET */
+  else /* G_VARIANT_MEMBER_ENDING_OFFSET */
     end = gvs_read_unaligned_le (value.data + value.size -
                                  offset_size * (member_info->i + 2),
                                  offset_size);

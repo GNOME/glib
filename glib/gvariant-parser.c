@@ -2738,7 +2738,7 @@ g_variant_parse_error_print_context (GError      *error,
         goto out;
 
       if (point >= strlen (source_str))
-        /* the error is at the end if the input */
+        /* the error is at the end of the input */
         add_last_line (err, source_str);
       else
         /* otherwise just treat it as a error at a thin range */
