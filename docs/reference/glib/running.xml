@@ -303,8 +303,6 @@ gforeach i in some_list_variable: print *(GtkWidget *)l
 Which would print the contents of each widget in a list of widgets.
 </para>
 
-</refsect2>
-
 <refsect2>
 <title>SystemTap</title>
 
