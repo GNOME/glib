@@ -24,6 +24,7 @@
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 
 #include "glib.h"
+#include "glib-private.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -539,6 +540,15 @@ test_atexit (void)
   g_test_trap_assert_stdout ("*atexit called*");
 }
 
+static void
+test_check_setuid (void)
+{
+  gboolean res;
+
+  res = GLIB_PRIVATE_CALL(g_check_setuid) ();
+  g_assert (!res);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -585,6 +595,7 @@ main (int   argc,
   g_test_add_func ("/utils/misc-mem", test_misc_mem);
   g_test_add_func ("/utils/nullify", test_nullify);
   g_test_add_func ("/utils/atexit", test_atexit);
+  g_test_add_func ("/utils/check-setuid", test_check_setuid);
 
   return g_test_run ();
 }
