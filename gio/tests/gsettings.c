@@ -597,8 +597,9 @@ test_delay_child (void)
 
   g_settings_set (child, "test-byte", "y", 42);
 
+  /* make sure the child was delayed too */
   g_settings_get (base, "test-byte", "y", &byte);
-  g_assert_cmpuint (byte, ==, 42);
+  g_assert_cmpuint (byte, ==, 36);
 
   g_object_unref (child);
   g_object_unref (settings);
