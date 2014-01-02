@@ -795,14 +795,17 @@ test_read_link (void)
 #ifdef G_OS_UNIX
   int ret;
   const gchar *oldpath;
-  const gchar *newpath;
-  const gchar *badpath;
+  gchar *cwd;
+  gchar *newpath;
+  gchar *badpath;
   gchar *path;
   GError *error = NULL;
 
+  cwd = g_get_current_dir ();
+
   oldpath = g_test_get_filename (G_TEST_DIST, "4096-random-bytes", NULL);
-  newpath = g_test_get_filename (G_TEST_DIST, "page-of-junk", NULL);
-  badpath = g_test_get_filename (G_TEST_DIST, "4097-random-bytes", NULL);
+  newpath = g_build_filename (cwd, "page-of-junk", NULL);
+  badpath = g_build_filename (cwd, "4097-random-bytes", NULL);
   remove (newpath);
   ret = symlink (oldpath, newpath);
   g_assert (ret == 0);
@@ -822,6 +825,10 @@ test_read_link (void)
   path = g_file_read_link (oldpath, &error);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
   g_assert_null (path);
+
+  g_free (cwd);
+  g_free (newpath);
+  g_free (badpath);
 
 #endif
 #else
