@@ -2633,7 +2633,7 @@ build_attribute_list_for_copy (GFile                  *file,
 {
   gboolean ret = FALSE;
   GFileAttributeInfoList *attributes = NULL, *namespaces = NULL;
-  GString *s;
+  GString *s = NULL;
   gboolean first;
   int i;
   gboolean copy_all_attributes;
