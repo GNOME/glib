@@ -530,7 +530,7 @@ EXTRA_DIST += test.gresource.xml test1.txt test2.gresource.xml test2.txt test3.g
 
 CLEANFILES += test_resources.c test_resources2.[ch] plugin_resources.c test.gresource
 
-BUILT_SOURCES: giotypefuncs.c
+BUILT_SOURCES += giotypefuncs.c
 
 giotypefuncs.c: Makefile
 	$(AM_V_GEN) echo '#include <gio/gio.h>' > xgen-giosrc.c && \
