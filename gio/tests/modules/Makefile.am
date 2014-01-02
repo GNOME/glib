@@ -7,16 +7,27 @@ LDADD = \
 	$(top_builddir)/glib/libglib-2.0.la             \
 	$(NULL)
 
-
 AM_CPPFLAGS = \
 	$(gio_INCLUDES) $(GLIB_DEBUG_FLAGS) 		\
 	-I$(top_builddir)/gio 				\
-	-I$(top_srcdir)/gio
+	-I$(top_srcdir)/gio				\
+	$(NULL)
 
+modules =						\
+	libtestmodulea.la 				\
+	libtestmoduleb.la				\
+	$(NULL)
+
+if ENABLE_ALWAYS_BUILD_TESTS
+noinst_LTLIBRARIES = $(modules)
+else
+check_LTLIBRARIES = $(modules)
+endif
+
+if ENABLE_INSTALLED_TESTS
 testmoduledir = $(installed_testdir)/modules
-testmodule_LTLIBRARIES = \
-	libtestmodulea.la \
-	libtestmoduleb.la
+testmodule_LTLIBRARIES = $(modules)
+endif
 
 libtestmodulea_la_SOURCES = test-module-a.c
 libtestmodulea_la_LIBADD = $(LDADD)

@@ -542,5 +542,7 @@ giotypefuncs.c: Makefile
 	  $(SED) -e 's/^/*tp++ = /' -e 's/$$/ ();/' >> xgen-gio && \
 	  cp xgen-gio $@ # && rm -f xgen-gio xgen-giosrc.c
 
+if ENABLE_INSTALLED_TESTS
 install-data-hook:
 	$(AM_V_at) chmod a+x $(DESTDIR)$(installed_testdir)/x-content/win32-software/autorun.exe
+endif
