@@ -152,6 +152,8 @@ test_timeval_from_iso8601 (void)
   gboolean success;
   gint i;
 
+  g_unsetenv ("TZ");
+
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
       out.tv_sec = 0;
@@ -182,6 +184,8 @@ test_timeval_to_iso8601 (void)
   gchar *out;
   GTimeVal val;
   gboolean ret;
+
+  g_unsetenv ("TZ");
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
