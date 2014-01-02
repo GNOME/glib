@@ -191,12 +191,12 @@ test_exit_on_close (gconstpointer test_data)
   if (td->exit_on_close == EXPLICITLY_FALSE ||
       td->who_closes == LOCAL)
     {
-      g_test_trap_assert_stdout_unmatched (VANISHED_PATTERN);
+      g_test_trap_assert_stderr_unmatched (VANISHED_PATTERN);
       g_test_trap_assert_passed ();
     }
   else
     {
-      g_test_trap_assert_stdout (VANISHED_PATTERN);
+      g_test_trap_assert_stderr (VANISHED_PATTERN);
       g_test_trap_assert_failed();
     }
 }
