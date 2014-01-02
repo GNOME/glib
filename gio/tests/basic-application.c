@@ -230,8 +230,8 @@ action_cb (gpointer data)
                                               "action2",
                                               g_variant_new_boolean (TRUE));
         }
+      g_application_release (app);
     }
-  g_application_release (app);
 
   return G_SOURCE_REMOVE;
 }
