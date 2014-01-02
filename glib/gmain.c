@@ -4835,7 +4835,20 @@ dispatch_unix_signals_unlocked (void)
    * races.
    */
   for (i = 0; i < NSIG; i++)
-    pending[i] = g_atomic_int_compare_and_exchange (&unix_signal_pending[i], TRUE, FALSE);
+    {
+      /* Be very careful with (the volatile) unix_signal_pending.
+       *
+       * We must ensure that it's not possible that we clear it without
+       * handling the signal.  We therefore must ensure that our pending
+       * array has a field set (ie: we will do something about the
+       * signal) before we clear the item in unix_signal_pending.
+       *
+       * Note specifically: we must check _our_ array.
+       */
+      pending[i] = unix_signal_pending[i];
+      if (pending[i])
+        unix_signal_pending[i] = FALSE;
+    }
 
   /* handle GChildWatchSource instances */
   if (pending[SIGCHLD])
