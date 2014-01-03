@@ -43,8 +43,8 @@
     <title>GObject builder</title>
   
     <para>
-      In order to help a GObject class developper, one obvious idea is
-      to use some sort of templates for the skeletons.  and then run
+      In order to help a GObject class developer, one obvious idea is
+      to use some sort of templates for the skeletons and then run
       them through a special tool to generate the real C files.  <ulink
       url="http://www.5z.com/jirka/gob.html">GOB</ulink> (or GOB2) is
       such a tool. It is a preprocessor which can be used to build
