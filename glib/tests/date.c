@@ -12,6 +12,11 @@
 #include <locale.h>
 #include <time.h>
 
+#ifdef G_OS_WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 static void
 test_basic (void)
 {
@@ -376,6 +381,9 @@ main (int argc, char** argv)
 
   g_setenv ("LANG", "en_US.utf-8", TRUE);
   setlocale (LC_ALL, "");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT));
+#endif
 
   g_test_init (&argc, &argv, NULL);
 
