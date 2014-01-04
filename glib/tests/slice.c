@@ -16,6 +16,7 @@ test_slice_config (void)
   g_test_trap_assert_failed ();
 }
 
+#ifdef G_ENABLE_DEBUG
 static void
 test_slice_nodebug (void)
 {
@@ -73,6 +74,7 @@ test_slice_debug (void)
   else
     g_unsetenv ("G_SLICE");
 }
+#endif
 
 static void
 test_slice_copy (void)
@@ -174,8 +176,10 @@ main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/slice/config", test_slice_config);
+#ifdef G_ENABLE_DEBUG
   g_test_add_func ("/slice/nodebug", test_slice_nodebug);
   g_test_add_func ("/slice/debug", test_slice_debug);
+#endif
   g_test_add_func ("/slice/copy", test_slice_copy);
   g_test_add_func ("/slice/chain", test_chain);
   g_test_add_func ("/slice/allocate", test_allocate);
