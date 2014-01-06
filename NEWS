@@ -330,7 +330,7 @@ Overview of changes from GLib 2.38.0 to GLib 2.39.0
 
    - fix handling of overflowing the 'next source id' counter
 
-   - g_source_remove() will not throw a critical in the case that you
+   - g_source_remove() will now throw a critical in the case that you
      try to remove a non-existent source.  We expect that there is some
      code in the wild that will fall afoul of this new critical but
      considering that we now reuse source IDs, this code is already
