@@ -283,6 +283,7 @@
 #include "libglib.sourcefiles"
 			<File RelativePath="..\..\..\glib\giowin32.c" />
 			<File RelativePath="..\..\..\glib\gspawn-win32.c" />
+			<File RelativePath="..\..\..\glib\gthread-win32.c" />
 			<File RelativePath="..\..\..\glib\gwin32.c" />
 			<Filter
 				Name="libcharset"

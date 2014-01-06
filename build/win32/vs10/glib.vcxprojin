@@ -334,6 +334,7 @@
 #include "libglib.vs10.sourcefiles"
     <ClCompile Include="..\..\..\glib\giowin32.c" />
     <ClCompile Include="..\..\..\glib\gspawn-win32.c" />
+    <ClCompile Include="..\..\..\glib\gthread-win32.c" />
     <ClCompile Include="..\..\..\glib\gwin32.c" />
     <ClCompile Include="..\..\..\glib\libcharset\localcharset.c">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
