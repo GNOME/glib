@@ -3,7 +3,6 @@
 #include <locale.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 static GKeyFile *
 load_data (const gchar   *data,
@@ -1381,7 +1380,9 @@ test_save (void)
   file = g_strdup ("key_file_XXXXXX");
   fd = g_mkstemp (file);
   g_assert (fd != -1);
-  close (fd);
+  ok = g_close (fd, &error);
+  g_assert (ok);
+  g_assert_no_error (error);
   ok = g_key_file_save_to_file (kf, file, &error);
   g_assert (ok);
   g_assert_no_error (error);
