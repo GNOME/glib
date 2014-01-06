@@ -12,7 +12,6 @@ EXTRA_DIST = \
 	gthread.vcproj \
 	gio.vcproj \
 	gio.vcprojin \
-	testglib.vcproj \
 	glib-compile-schemas.vcproj \
 	gsettings.vcproj \
 	glib-compile-resources.vcproj \

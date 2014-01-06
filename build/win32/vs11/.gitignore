@@ -22,8 +22,6 @@ gspawn-win32-helper.vcxproj
 gspawn-win32-helper.vcxproj.filters
 gthread.vcxproj
 gthread.vcxproj.filters
-testglib.vcxproj
-testglib.vcxproj.filters
 install.vcxproj
 glib.sln
 README.txt
