@@ -1519,6 +1519,28 @@ g_test_get_root (void)
  * g_test_run_suite() or g_test_run() may only be called once
  * in a program.
  *
+ * In general, the tests and sub-suites within each suite are run in
+ * the order in which they are defined. However, note that prior to
+ * GLib 2.36, there was a bug in the <literal>g_test_add_*</literal>
+ * functions which caused them to create multiple suites with the same
+ * name, meaning that if you created tests "/foo/simple",
+ * "/bar/simple", and "/foo/using-bar" in that order, they would get
+ * run in that order (since g_test_run() would run the first "/foo"
+ * suite, then the "/bar" suite, then the second "/foo" suite). As of
+ * 2.36, this bug is fixed, and adding the tests in that order would
+ * result in a running order of "/foo/simple", "/foo/using-bar",
+ * "/bar/simple". If this new ordering is sub-optimal (because it puts
+ * more-complicated tests before simpler ones, making it harder to
+ * figure out exactly what has failed), you can fix it by changing the
+ * test paths to group tests by suite in a way that will result in the
+ * desired running order. Eg, "/simple/foo", "/simple/bar",
+ * "/complex/foo-using-bar".
+ *
+ * However, you should never make the actual result of a test depend
+ * on the order that tests are run in. If you need to ensure that some
+ * particular code runs before or after a given test case, use
+ * g_test_add(), which lets you specify setup and teardown functions.
+ *
  * Returns: 0 on success, 1 on failure (assuming it returns at all),
  *   77 if all tests were skipped with g_test_skip().
  *
@@ -2185,7 +2207,9 @@ g_test_run_suite_internal (GTestSuite *suite,
  * Execute the tests within @suite and all nested #GTestSuites.
  * The test suites to be executed are filtered according to
  * test path arguments (-p <replaceable>testpath</replaceable>) 
- * as parsed by g_test_init().
+ * as parsed by g_test_init(). See the g_test_run() documentation
+ * for more information on the order that tests are run in.
+ *
  * g_test_run_suite() or g_test_run() may only be called once
  * in a program.
  *

@@ -67,6 +67,24 @@ and attach the patch to that bug report.
 
 Patches should be in unified diff form. (The -up option to GNU diff.)
 
+Notes about GLib 2.40
+=====================
+
+* g_test_run() no longer runs tests in exactly the order they are
+  registered; instead, it groups them according to test suites (ie,
+  path components) like the documentation always claimed it did. In
+  some cases, this can result in a sub-optimal ordering of tests,
+  relative to the old behavior. The fix is to change the test paths to
+  properly group together the tests that should run together. (eg, if
+  you want to run test_foo_simple(), test_bar_simple(), and
+  test_foo_using_bar() in that order, they should have test paths like
+  "/simple/foo", "/simple/bar", "/complex/foo-using-bar", not
+  "/foo/simple", "/bar/simple", "/foo/using-bar" (which would result
+  in test_foo_using_bar() running before test_bar_simple()).
+
+  (The behavior actually changed in GLib 2.36, but it was not
+  documented at the time, since we didn't realize it mattered.)
+
 Notes about GLib 2.36
 =====================
 
