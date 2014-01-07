@@ -664,6 +664,9 @@ rules_from_windows_time_zone (const gchar *identifier, TimeZoneRule **rules)
   if (RegQueryValueExA (key, "Std", NULL, NULL,
                         (LPBYTE)&(tzi.StandardName), &size) != ERROR_SUCCESS)
     goto failed;
+
+  size = sizeof tzi.DaylightName;
+
   if (RegQueryValueExA (key, "Dlt", NULL, NULL,
                         (LPBYTE)&(tzi.DaylightName), &size) != ERROR_SUCCESS)
     goto failed;
