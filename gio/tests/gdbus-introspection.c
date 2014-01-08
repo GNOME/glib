@@ -163,7 +163,9 @@ test_generate (void)
   "      <method name='Sleep'>"
   "        <arg type='i' name='timeout' direction='in'/>"
   "      </method>"
-  "      <property name='y' type='y' access='readwrite'/>"
+  "      <property name='y' type='y' access='readwrite'>"
+  "        <annotation name='needs-escaping' value='bar&lt;&gt;&apos;&quot;'/>"
+  "      </property>"
   "    </interface>"
   "  </node>";
 
