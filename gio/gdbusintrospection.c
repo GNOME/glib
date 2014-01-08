@@ -583,12 +583,15 @@ g_dbus_annotation_info_generate_xml (GDBusAnnotationInfo *info,
                                      guint                indent,
                                      GString             *string_builder)
 {
+  gchar *tmp;
   guint n;
 
-  g_string_append_printf (string_builder, "%*s<annotation name=\"%s\" value=\"%s\"",
-                          indent, "",
-                          info->key,
-                          info->value);
+  tmp = g_markup_printf_escaped ("%*s<annotation name=\"%s\" value=\"%s\"",
+                                 indent, "",
+                                 info->key,
+                                 info->value);
+  g_string_append (string_builder, tmp);
+  g_free (tmp);
 
   if (info->annotations == NULL)
     {
