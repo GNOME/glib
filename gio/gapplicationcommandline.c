@@ -43,6 +43,7 @@
  * SECTION:gapplicationcommandline
  * @title: GApplicationCommandLine
  * @short_description: A command-line invocation of an application
+ * @include: gio/gio.h
  * @see_also: #GApplication
  *
  * #GApplicationCommandLine represents a command-line invocation of

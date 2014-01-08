@@ -26,6 +26,7 @@
 /**
  * SECTION:gsocketconnectable
  * @short_description: Interface for potential socket endpoints
+ * @include: gio/gio.h
  *
  * Objects that describe one or more potential socket endpoints
  * implement #GSocketConnectable. Callers can then use

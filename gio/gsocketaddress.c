@@ -43,8 +43,9 @@
 
 /**
  * SECTION:gsocketaddress
- * @short_description: Abstract base class representing endpoints for
- * socket communication
+ * @short_description: Abstract base class representing endpoints
+ *     for socket communication
+ * @include: gio/gio.h
  *
  * #GSocketAddress is the equivalent of <type>struct sockaddr</type>
  * in the BSD sockets API. This is an abstract class; use

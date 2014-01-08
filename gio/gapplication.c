@@ -48,6 +48,7 @@
  * SECTION:gapplication
  * @title: GApplication
  * @short_description: Core application class
+ * @include: gio/gio.h
  *
  * A #GApplication is the foundation of an application.  It wraps some
  * low-level platform-specific services and is intended to act as the

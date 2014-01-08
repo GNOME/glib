@@ -27,6 +27,7 @@
  * SECTION:gmenumodel
  * @title: GMenuModel
  * @short_description: An abstract class representing the contents of a menu
+ * @include: gio/gio.h
  * @see_also: #GActionGroup
  *
  * #GMenuModel represents the contents of a menu -- an ordered list of

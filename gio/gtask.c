@@ -27,7 +27,8 @@
 
 /**
  * SECTION:gtask
- * @short_description: Cancellable synchronous or asynchronous task and result
+ * @short_description: Cancellable synchronous or asynchronous task
+ *     and result
  * @include: gio/gio.h
  * @see_also: #GAsyncResult
  *

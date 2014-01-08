@@ -30,6 +30,7 @@
  * SECTION:gsimpleaction
  * @title: GSimpleAction
  * @short_description: A simple GAction implementation
+ * @include: gio/gio.h
  *
  * A #GSimpleAction is the obvious simple implementation of the #GAction
  * interface. This is the easiest way to create an action for purposes of

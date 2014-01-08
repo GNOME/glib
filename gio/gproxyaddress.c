@@ -32,6 +32,7 @@
 /**
  * SECTION:gproxyaddress
  * @short_description: An internet address with proxy information
+ * @include: gio/gio.h
  *
  * Support for proxied #GInetSocketAddress.
  */

@@ -45,6 +45,7 @@ struct _GInetAddressPrivate
 /**
  * SECTION:ginetaddress
  * @short_description: An IPv4/IPv6 address
+ * @include: gio/gio.h
  *
  * #GInetAddress represents an IPv4 or IPv6 internet address. Use
  * g_resolver_lookup_by_name() or g_resolver_lookup_by_name_async() to

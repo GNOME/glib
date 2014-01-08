@@ -31,6 +31,7 @@
 /**
  * SECTION:gproxy
  * @short_description: Interface for proxy handling
+ * @include: gio/gio.h
  *
  * A #GProxy handles connecting to a remote host via a given type of
  * proxy server. It is implemented by the 'gio-proxy' extension point.

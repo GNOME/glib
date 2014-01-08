@@ -33,8 +33,9 @@
 /**
  * SECTION:gpermission
  * @title: GPermission
- * @short_description: An object representing the permission to perform
- *                     a certain action
+ * @short_description: An object representing the permission
+ *     to perform a certain action
+ * @include: gio/gio.h
  *
  * A #GPermission represents the status of the caller's permission to
  * perform a certain action.

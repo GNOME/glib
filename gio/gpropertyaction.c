@@ -31,6 +31,7 @@
  * SECTION:gpropertyaction
  * @title: GPropertyAction
  * @short_description: A GAction reflecting a GObject property
+ * @include: gio/gio.h
  *
  * A #GPropertyAction is a way to get a #GAction with a state value
  * reflecting and controlling the value of a #GObject property.

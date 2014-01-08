@@ -18,6 +18,7 @@
  * SECTION:gsubprocess
  * @title: GSubprocess
  * @short_description: Child processes
+ * @include: gio/gio.h
  * @see_also: #GSubprocessLauncher
  *
  * #GSubprocess allows the creation of and interaction with child

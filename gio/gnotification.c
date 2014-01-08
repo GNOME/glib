@@ -29,6 +29,7 @@
 /**
  * SECTION:gnotification
  * @short_description: User Notifications (pop up messages)
+ * @include: gio/gio.h
  *
  * #GNotification is a mechanism for creating a notification to be shown
  * to the user -- typically as a pop-up notification presented by the

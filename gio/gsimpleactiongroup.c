@@ -31,6 +31,7 @@
  * SECTION:gsimpleactiongroup
  * @title: GSimpleActionGroup
  * @short_description: A simple GActionGroup implementation
+ * @include: gio/gio.h
  *
  * #GSimpleActionGroup is a hash table filled with #GAction objects,
  * implementing the #GActionGroup and #GActionMap interfaces.

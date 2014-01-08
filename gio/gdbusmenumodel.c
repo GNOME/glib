@@ -31,6 +31,7 @@
  * SECTION:gdbusmenumodel
  * @title: GDBusMenuModel
  * @short_description: A D-Bus GMenuModel implementation
+ * @include: gio/gio.h
  * @see_also: <link linkend="gio-GMenuModel-exporter">GMenuModel Exporter</link>
  *
  * #GDBusMenuModel is an implementation of #GMenuModel that can be used

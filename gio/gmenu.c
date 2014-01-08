@@ -32,6 +32,7 @@
  * SECTION:gmenu
  * @title: GMenu
  * @short_description: A simple implementation of GMenuModel
+ * @include: gio/gio.h
  *
  * #GMenu is a simple implementation of #GMenuModel.
  * You populate a #GMenu by adding #GMenuItem instances to it.

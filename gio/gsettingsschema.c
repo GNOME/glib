@@ -32,8 +32,9 @@
 
 /**
  * SECTION:gsettingsschema
- * @short_description: Introspecting and controlling the loading of
- *                     GSettings schemas
+ * @short_description: Introspecting and controlling the loading
+ *     of GSettings schemas
+ * @include: gio/gio.h
  *
  * The #GSettingsSchemaSource and #GSettingsSchema APIs provide a
  * mechanism for advanced control over the loading of schemas and a

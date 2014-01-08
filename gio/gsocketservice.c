@@ -26,6 +26,7 @@
  * SECTION:gsocketservice
  * @title: GSocketService
  * @short_description: Make it easy to implement a network service
+ * @include: gio/gio.h
  * @see_also: #GThreadedSocketService, #GSocketListener.
  *
  * A #GSocketService is an object that represents a service that

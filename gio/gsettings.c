@@ -38,6 +38,7 @@
 /**
  * SECTION:gsettings
  * @short_description: High-level API for application settings
+ * @include: gio/gio.h
  *
  * The #GSettings class provides a convenient API for storing and retrieving
  * application settings.

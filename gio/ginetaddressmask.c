@@ -33,6 +33,7 @@
 /**
  * SECTION:ginetaddressmask
  * @short_description: An IPv4/IPv6 address mask
+ * @include: gio/gio.h
  *
  * #GInetAddressMask represents a range of IPv4 or IPv6 addresses
  * described by a base address and a length indicating how many bits

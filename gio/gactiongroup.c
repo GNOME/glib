@@ -28,6 +28,7 @@
  * SECTION:gactiongroup
  * @title: GActionGroup
  * @short_description: A group of actions
+ * @include: gio/gio.h
  * @see_also: #GAction
  *
  * #GActionGroup represents a group of actions. Actions can be used to

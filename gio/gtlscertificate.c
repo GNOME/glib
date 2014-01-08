@@ -32,6 +32,7 @@
  * SECTION:gtlscertificate
  * @title: GTlsCertificate
  * @short_description: TLS certificate
+ * @include: gio/gio.h
  * @see_also: #GTlsConnection
  *
  * A certificate used for TLS authentication and encryption.

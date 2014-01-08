@@ -32,6 +32,7 @@
  * SECTION:gdbusactiongroup
  * @title: GDBusActionGroup
  * @short_description: A D-Bus GActionGroup implementation
+ * @include: gio/gio.h
  * @see_also: <link linkend="gio-GActionGroup-exporter">GActionGroup exporter</link>
  *
  * #GDBusActionGroup is an implementation of the #GActionGroup

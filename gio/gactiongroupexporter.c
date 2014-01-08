@@ -34,6 +34,7 @@
 /**
  * SECTION:gactiongroupexporter
  * @title: GActionGroup exporter
+ * @include: gio/gio.h
  * @short_description: Export GActionGroups on D-Bus
  * @see_also: #GActionGroup, #GDBusActionGroup
  *

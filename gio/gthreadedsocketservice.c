@@ -26,6 +26,7 @@
  * SECTION:gthreadedsocketservice
  * @title: GThreadedSocketService
  * @short_description: A threaded GSocketService
+ * @include: gio/gio.h
  * @see_also: #GSocketService.
  *
  * A #GThreadedSocketService is a simple subclass of #GSocketService

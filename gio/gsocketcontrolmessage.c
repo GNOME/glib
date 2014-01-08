@@ -16,6 +16,7 @@
  * SECTION:gsocketcontrolmessage
  * @title: GSocketControlMessage
  * @short_description: A GSocket control message
+ * @include: gio/gio.h
  * @see_also: #GSocket.
  *
  * A #GSocketControlMessage is a special-purpose utility message that

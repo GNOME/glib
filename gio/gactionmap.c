@@ -28,6 +28,7 @@
 /**
  * SECTION:gactionmap
  * @title: GActionMap
+ * @include: gio/gio.h
  * @short_description: Interface for action containers
  *
  * The GActionMap interface is implemented by #GActionGroup
