@@ -2325,11 +2325,12 @@ flag_reverse_string (void)
 
   argv = split_string ("program --test bla", &argc);
 
-  retval = g_option_context_parse (context, &argc, &argv, &error);
+  retval = g_option_context_parse_strv (context, &argv, &error);
   g_assert (retval == TRUE);
   g_assert_no_error (error);
   g_strfreev (argv);
   g_option_context_free (context);
+  g_free (arg);
 }
 
 static void
@@ -2357,7 +2358,7 @@ flag_optional_int (void)
 
   argv = split_string ("program --test 5", &argc);
 
-  retval = g_option_context_parse (context, &argc, &argv, &error);
+  retval = g_option_context_parse_strv (context, &argv, &error);
   g_assert (retval == TRUE);
   g_assert_no_error (error);
   g_strfreev (argv);
