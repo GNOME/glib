@@ -204,6 +204,7 @@ struct _GOptionContext
 
   guint            help_enabled   : 1;
   guint            ignore_unknown : 1;
+  guint            strv_mode      : 1;
 
   GOptionGroup    *main_group;
 
@@ -1645,6 +1646,9 @@ free_pending_nulls (GOptionContext *context,
 
       if (perform_nulls)
         {
+          if (context->strv_mode)
+            g_free (*n->ptr);
+
           if (n->value)
             {
               /* Copy back the short options */
@@ -2463,4 +2467,43 @@ g_option_context_get_description (GOptionContext *context)
   g_return_val_if_fail (context != NULL, NULL);
 
   return context->description;
+}
+
+/**
+ * g_option_context_parse_strv:
+ * @context: a #GOptionContext
+ * @arguments: (inout) (array null-terminated=1): a pointer to the command line arguments
+ * @error: a return location for errors
+ *
+ * Parses the command line arguments.
+ *
+ * This function is similar to g_option_context_parse() except that it
+ * respects the normal memory rules when dealing with a strv instead of
+ * assuming that the passed-in array is the argv of the main function.
+ *
+ * In particular, strings that are removed from the arguments list will
+ * be freed using g_free().
+ *
+ * This function is useful if you are trying to use #GOptionContext with
+ * #GApplication.
+ *
+ * Returns: %TRUE if the parsing was successful,
+ *          %FALSE if an error occurred
+ *
+ * Since: 2.40
+ **/
+gboolean
+g_option_context_parse_strv (GOptionContext   *context,
+                             gchar          ***arguments,
+                             GError          **error)
+{
+  gboolean success;
+  gint argc;
+
+  context->strv_mode = TRUE;
+  argc = g_strv_length (*arguments);
+  success = g_option_context_parse (context, &argc, arguments, error);
+  context->strv_mode = FALSE;
+
+  return success;
 }

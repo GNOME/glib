@@ -342,6 +342,10 @@ gboolean        g_option_context_parse            (GOptionContext      *context,
 						   gint                *argc,
 						   gchar             ***argv,
 						   GError             **error);
+GLIB_AVAILABLE_IN_2_40
+gboolean        g_option_context_parse_strv       (GOptionContext      *context,
+                                                   gchar             ***arguments,
+                                                   GError             **error);
 GLIB_AVAILABLE_IN_ALL
 void            g_option_context_set_translate_func (GOptionContext     *context,
 						     GTranslateFunc      func,
