@@ -494,7 +494,8 @@ g_application_real_local_command_line (GApplication   *application,
         }
     }
 
-  if (application->priv->flags & G_APPLICATION_HANDLES_COMMAND_LINE)
+  if ((application->priv->flags & G_APPLICATION_HANDLES_COMMAND_LINE) &&
+      !(application->priv->flags & G_APPLICATION_IS_SERVICE))
     return FALSE;
 
   else
