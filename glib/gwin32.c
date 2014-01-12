@@ -577,3 +577,58 @@ g_win32_locale_filename_from_utf8 (const gchar *utf8filename)
     }
   return retval;
 }
+
+/**
+ * g_win32_get_command_line:
+ *
+ * Gets the command line arguments, on Windows, in the GLib filename
+ * encoding (ie: UTF-8).
+ *
+ * Normally, on Windows, the command line arguments are passed to main()
+ * in the system codepage encoding.  This prevents passing filenames as
+ * arguments if the filenames contain characters that fall outside of
+ * this codepage.  If such filenames are passed, then substitutions
+ * will occur (such as replacing some characters with '?').
+ *
+ * GLib's policy of using UTF-8 as a filename encoding on Windows was
+ * designed to localise the pain of dealing with filenames outside of
+ * the system codepage to one area: dealing with commandline arguments
+ * in main().
+ *
+ * As such, most GLib programs should ignore the value of argv passed to
+ * their main() function and call g_win32_get_command_line() instead.
+ * This will get the "full Unicode" commandline arguments using
+ * GetCommandLineW() and convert it to the GLib filename encoding (which
+ * is UTF-8 on Windows).
+ *
+ * The strings returned by this function are suitable for use with
+ * functions such as g_open() and g_file_new_for_commandline_arg() but
+ * are not suitable for use with g_option_context_parse(), which assumes
+ * that its input will be in the system codepage.  The return value is
+ * suitable for use with g_option_context_parse_strv(), however, which
+ * is a better match anyway because it won't leak memory.
+ *
+ * Unlike argv, the returned value is a normal strv and can (and should)
+ * be freed with g_strfreev() when no longer needed.
+ *
+ * Returns: (transfer full): the commandline arguments in the GLib
+ *   filename encoding (ie: UTF-8)
+ *
+ * Since: 2.40
+ **/
+gchar **
+g_win32_get_command_line (void)
+{
+  gchar **result;
+  LPWSTR *args;
+  gint i, n;
+
+  args = CommandLineToArgvW (GetCommandLineW(), &n);
+
+  result = g_new (gchar *, n + 1);
+  for (i = 0; i < n; i++)
+    result[i] = g_utf16_to_utf8 (args[i], -1, NULL, NULL, NULL);
+  result[i] = NULL;
+
+  return result;
+}

@@ -1994,6 +1994,7 @@ g_completion_free
 <FILE>windows</FILE>
 MAXPATHLEN
 
+g_win32_get_command_line
 g_win32_error_message
 g_win32_getlocale
 g_win32_get_package_installation_directory

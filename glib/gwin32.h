@@ -106,6 +106,9 @@ guint		g_win32_get_windows_version (void);
 GLIB_AVAILABLE_IN_ALL
 gchar*          g_win32_locale_filename_from_utf8 (const gchar *utf8filename);
 
+GLIB_AVAILABLE_IN_2_40
+gchar **        g_win32_get_command_line (void);
+
 /* As of GLib 2.14 we only support NT-based Windows */
 #define G_WIN32_IS_NT_BASED() TRUE
 #define G_WIN32_HAVE_WIDECHAR_API() TRUE
