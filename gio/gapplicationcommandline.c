@@ -348,7 +348,12 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
  *
  * Gets the list of arguments that was passed on the command line.
  *
- * The strings in the array may contain non-utf8 data.
+ * The strings in the array may contain non-UTF-8 data on UNIX (such as
+ * filenames or arguments given in the system locale) but are always in
+ * UTF-8 on Windows.
+ *
+ * If you wish to use the return value with #GOptionContext, you must
+ * use g_option_context_parse_strv().
  *
  * The return value is %NULL-terminated and should be freed using
  * g_strfreev().

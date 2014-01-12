@@ -1505,15 +1505,18 @@ g_application_open (GApplication  *application,
  * is intended to be returned by main(). Although you are expected to pass
  * the @argc, @argv parameters from main() to this function, it is possible
  * to pass %NULL if @argv is not available or commandline handling is not
- * required.
+ * required.  Note that on Windows, @argc and @argv are ignored, and
+ * g_win32_get_command_line() is called internally (for proper support
+ * of Unicode commandline arguments).
  *
  * First, the local_command_line() virtual function is invoked.
  * This function always runs on the local instance. It gets passed a pointer
- * to a %NULL-terminated copy of @argv and is expected to remove the arguments
- * that it handled (shifting up remaining arguments). See
- * <xref linkend="gapplication-example-cmdline2"/> for an example of
- * parsing @argv manually. Alternatively, you may use the #GOptionContext API,
- * after setting <literal>argc = g_strv_length (argv);</literal>.
+ * to a %NULL-terminated copy of the command line and is expected to
+ * remove the arguments that it handled (shifting up remaining
+ * arguments). See <xref linkend="gapplication-example-cmdline2"/> for
+ * an example of parsing @argv manually. Alternatively, you may use the
+ * #GOptionContext API, but you must use g_option_context_parse_strv()
+ * in order to avoid memory leaks and encoding mismatches.
  *
  * The last argument to local_command_line() is a pointer to the @status
  * variable which can used to set the exit status that is returned from
@@ -1604,16 +1607,23 @@ g_application_run (GApplication  *application,
 {
   gchar **arguments;
   int status;
-  gint i;
 
   g_return_val_if_fail (G_IS_APPLICATION (application), 1);
   g_return_val_if_fail (argc == 0 || argv != NULL, 1);
   g_return_val_if_fail (!application->priv->must_quit_now, 1);
 
-  arguments = g_new (gchar *, argc + 1);
-  for (i = 0; i < argc; i++)
-    arguments[i] = g_strdup (argv[i]);
-  arguments[i] = NULL;
+#ifdef G_OS_WIN32
+  arguments = g_win32_get_command_line ();
+#else
+  {
+    gint i;
+
+    arguments = g_new (gchar *, argc + 1);
+    for (i = 0; i < argc; i++)
+      arguments[i] = g_strdup (argv[i]);
+    arguments[i] = NULL;
+  }
+#endif
 
   if (g_get_prgname () == NULL)
     {
