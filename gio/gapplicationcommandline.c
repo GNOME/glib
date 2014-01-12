@@ -211,6 +211,7 @@ enum
 {
   PROP_NONE,
   PROP_ARGUMENTS,
+  PROP_OPTIONS,
   PROP_PLATFORM_DATA,
   PROP_IS_REMOTE
 };
@@ -219,6 +220,8 @@ struct _GApplicationCommandLinePrivate
 {
   GVariant *platform_data;
   GVariant *arguments;
+  GVariant *options;
+  GVariantDict *options_dict;
   gchar *cwd;
 
   gchar **environ;
@@ -252,6 +255,12 @@ grok_platform_data (GApplicationCommandLine *cmdline)
         if (!cmdline->priv->environ)
           cmdline->priv->environ =
             g_variant_dup_bytestring_array (value, NULL);
+      }
+
+    else if (strcmp (key, "options") == 0)
+      {
+        if (!cmdline->priv->options)
+          cmdline->priv->options = g_variant_ref (value);
       }
 }
 
@@ -321,6 +330,11 @@ g_application_command_line_set_property (GObject      *object,
       cmdline->priv->arguments = g_value_dup_variant (value);
       break;
 
+    case PROP_OPTIONS:
+      g_assert (cmdline->priv->options == NULL);
+      cmdline->priv->options = g_value_dup_variant (value);
+      break;
+
     case PROP_PLATFORM_DATA:
       g_assert (cmdline->priv->platform_data == NULL);
       cmdline->priv->platform_data = g_value_dup_variant (value);
@@ -337,6 +351,12 @@ static void
 g_application_command_line_finalize (GObject *object)
 {
   GApplicationCommandLine *cmdline = G_APPLICATION_COMMAND_LINE (object);
+
+  if (cmdline->priv->options_dict)
+    g_variant_dict_unref (cmdline->priv->options_dict);
+
+  if (cmdline->priv->options)
+      g_variant_unref (cmdline->priv->options);
 
   if (cmdline->priv->platform_data)
     g_variant_unref (cmdline->priv->platform_data);
@@ -394,6 +414,13 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
                           G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY |
                           G_PARAM_STATIC_STRINGS));
 
+  g_object_class_install_property (object_class, PROP_OPTIONS,
+    g_param_spec_variant ("options",
+                          P_("Options"),
+                          P_("The options sent along with the commandline"),
+                          G_VARIANT_TYPE_VARDICT, NULL, G_PARAM_WRITABLE |
+                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+
   g_object_class_install_property (object_class, PROP_PLATFORM_DATA,
     g_param_spec_variant ("platform-data",
                           P_("Platform data"),
@@ -448,6 +475,35 @@ g_application_command_line_get_arguments (GApplicationCommandLine *cmdline,
     *argc = len;
 
   return argv;
+}
+
+/**
+ * g_application_command_line_get_options_dict:
+ * @cmdline: a #GApplicationCommandLine
+ *
+ * Gets the options there were passed to g_application_command_line().
+ *
+ * If you did not override local_command_line() then these are the same
+ * options that were parsed according to the #GOptionEntrys added to the
+ * application with g_application_add_main_option_entries() and possibly
+ * modified from your GApplication::handle-local-options handler.
+ *
+ * If no options were sent then an empty dictionary is returned so that
+ * you don't need to check for %NULL.
+ *
+ * Returns: (transfer none): a #GVariantDict with the options
+ *
+ * Since: 2.40
+ **/
+GVariantDict *
+g_application_command_line_get_options_dict (GApplicationCommandLine *cmdline)
+{
+  g_return_val_if_fail (G_IS_APPLICATION_COMMAND_LINE (cmdline), NULL);
+
+  if (!cmdline->priv->options_dict)
+    cmdline->priv->options_dict = g_variant_dict_new (cmdline->priv->options);
+
+  return cmdline->priv->options_dict;
 }
 
 /**

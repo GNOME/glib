@@ -76,6 +76,9 @@ GLIB_AVAILABLE_IN_ALL
 gchar **                g_application_command_line_get_arguments        (GApplicationCommandLine   *cmdline,
                                                                          int                       *argc);
 
+GLIB_AVAILABLE_IN_2_40
+GVariantDict *          g_application_command_line_get_options_dict     (GApplicationCommandLine   *cmdline);
+
 GLIB_AVAILABLE_IN_2_36
 GInputStream *          g_application_command_line_get_stdin            (GApplicationCommandLine   *cmdline);
 

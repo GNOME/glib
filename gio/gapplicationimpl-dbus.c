@@ -700,9 +700,9 @@ g_application_impl_cmdline_done (GObject      *source,
 }
 
 int
-g_application_impl_command_line (GApplicationImpl  *impl,
-                                 gchar            **arguments,
-                                 GVariant          *platform_data)
+g_application_impl_command_line (GApplicationImpl    *impl,
+                                 const gchar * const *arguments,
+                                 GVariant            *platform_data)
 {
   const static GDBusInterfaceVTable vtable = {
     g_application_impl_cmdline_method_call

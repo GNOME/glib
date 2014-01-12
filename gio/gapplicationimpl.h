@@ -31,7 +31,7 @@ void                    g_application_impl_open                         (GApplic
                                                                          GVariant           *platform_data);
 
 int                     g_application_impl_command_line                 (GApplicationImpl   *impl,
-                                                                         gchar             **arguments,
+                                                                         const gchar *const *arguments,
                                                                          GVariant           *platform_data);
 
 void                    g_application_impl_flush                        (GApplicationImpl   *impl);

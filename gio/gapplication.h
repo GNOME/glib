@@ -115,9 +115,11 @@ struct _GApplicationClass
   void                      (* dbus_unregister)     (GApplication              *application,
                                                      GDBusConnection           *connection,
                                                      const gchar               *object_path);
+  gint                      (* handle_local_options)(GApplication              *application,
+                                                     GVariantDict              *options);
 
   /*< private >*/
-  gpointer padding[9];
+  gpointer padding[8];
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -156,6 +158,13 @@ void                    g_application_set_flags                         (GApplic
 GLIB_DEPRECATED
 void                    g_application_set_action_group                  (GApplication             *application,
                                                                          GActionGroup             *action_group);
+
+GLIB_AVAILABLE_IN_2_40
+void                    g_application_add_main_option_entries           (GApplication             *application,
+                                                                         const GOptionEntry       *entries);
+GLIB_AVAILABLE_IN_2_40
+void                    g_application_add_option_group                  (GApplication             *application,
+                                                                         GOptionGroup             *group);
 
 GLIB_AVAILABLE_IN_ALL
 gboolean                g_application_get_is_registered                 (GApplication             *application);
