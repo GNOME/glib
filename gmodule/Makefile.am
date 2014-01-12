@@ -75,8 +75,11 @@ libgmodule_2_0_la_DEPENDENCIES = $(gmodule_win32_res) $(gmodule_def)
 gmodule-win32-res.o: gmodule.rc
 	$(AM_V_GEN) $(WINDRES) gmodule.rc $@
 
+gmodule.def: libgmodule-2.0.la
+	$(AM_V_GEN) dumpbin.exe -exports .libs/libgmodule-2.0-0.dll | awk 'BEGIN { print "EXPORTS" } / +[[:digit:]]+ +[[:xdigit:]]+ +[[:xdigit:]]+/{ print $$4 }' > gmodule.def.tmp && mv gmodule.def.tmp gmodule.def
+
 gmodule-2.0.lib: libgmodule-2.0.la gmodule.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgmodule-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gmodule.def -out:$@
+	$(AM_V_GEN) lib.exe -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgmodule-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gmodule.def -out:$@
 
 .PHONY: files release
 

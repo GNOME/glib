@@ -439,8 +439,11 @@ install-exec-hook:
 
 endif
 
+glib.def: libglib-2.0.la
+	$(AM_V_GEN) dumpbin.exe -exports .libs/libglib-2.0-0.dll | awk 'BEGIN { print "EXPORTS" } / +[[:digit:]]+ +[[:xdigit:]]+ +[[:xdigit:]]+/{ print $$4 }' > glib.def.tmp && mv glib.def.tmp glib.def
+
 glib-2.0.lib: libglib-2.0.la glib.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libglib-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/glib.def -out:$@
+	$(AM_V_GEN) lib.exe -machine:@LIB_EXE_MACHINE_FLAG@ -name:libglib-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/glib.def -out:$@
 
 dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj ../build/win32/vs10/glib.vcxproj ../build/win32/vs10/glib.vcxproj.filters
 	files='$(BUILT_EXTRA_DIST)'; \

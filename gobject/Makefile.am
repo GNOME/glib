@@ -216,8 +216,11 @@ BUILT_EXTRA_DIST += \
 gobject-win32-res.o: gobject.rc
 	$(AM_V_GEN) $(WINDRES) gobject.rc $@
 
+gobject.def: libgobject-2.0.la
+	$(AM_V_GEN) dumpbin.exe -exports .libs/libgobject-2.0-0.dll | awk 'BEGIN { print "EXPORTS" } / +[[:digit:]]+ +[[:xdigit:]]+ +[[:xdigit:]]+/{ print $$4 }' > gobject.def.tmp && mv gobject.def.tmp gobject.def
+
 gobject-2.0.lib: libgobject-2.0.la gobject.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgobject-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gobject.def -out:$@
+	$(AM_V_GEN) lib.exe -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgobject-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gobject.def -out:$@
 
 dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gobject.vcproj ../build/win32/vs10/gobject.vcxproj ../build/win32/vs10/gobject.vcxproj.filters
 	files='$(BUILT_EXTRA_DIST)'; \
