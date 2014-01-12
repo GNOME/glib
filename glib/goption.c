@@ -1158,7 +1158,14 @@ parse_arg (GOptionContext *context,
       {
         gchar *data;
 
+#if G_OS_WIN32
+        if (!context->strv_mode)
+          data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+        else
+          data = g_strdup (value);
+#else
         data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+#endif
 
         if (!data)
           return FALSE;
@@ -1177,7 +1184,14 @@ parse_arg (GOptionContext *context,
       {
         gchar *data;
 
+#if G_OS_WIN32
+        if (!context->strv_mode)
+          data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+        else
+          data = g_strdup (value);
+#else
         data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+#endif
 
         if (!data)
           return FALSE;
@@ -1210,7 +1224,10 @@ parse_arg (GOptionContext *context,
         gchar *data;
 
 #ifdef G_OS_WIN32
-        data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+        if (!context->strv_mode)
+          data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+        else
+          data = g_strdup (value);
 
         if (!data)
           return FALSE;
@@ -1233,7 +1250,10 @@ parse_arg (GOptionContext *context,
         gchar *data;
 
 #ifdef G_OS_WIN32
-        data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+        if (!context->strv_mode)
+          data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+        else
+          data = g_strdup (value);
 
         if (!data)
           return FALSE;
@@ -1290,7 +1310,10 @@ parse_arg (GOptionContext *context,
         else if (entry->flags & G_OPTION_FLAG_FILENAME)
           {
 #ifdef G_OS_WIN32
-            data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+            if (!context->strv_mode)
+              data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
+            else
+              data = g_strdup (value);
 #else
             data = g_strdup (value);
 #endif
@@ -2472,7 +2495,8 @@ g_option_context_get_description (GOptionContext *context)
 /**
  * g_option_context_parse_strv:
  * @context: a #GOptionContext
- * @arguments: (inout) (array null-terminated=1): a pointer to the command line arguments
+ * @arguments: (inout) (array null-terminated=1): a pointer to the
+ *    command line arguments (which must be in UTF-8 on Windows)
  * @error: a return location for errors
  *
  * Parses the command line arguments.
@@ -2483,6 +2507,11 @@ g_option_context_get_description (GOptionContext *context)
  *
  * In particular, strings that are removed from the arguments list will
  * be freed using g_free().
+ *
+ * On Windows, the strings are expected to be in UTF-8.  This is in
+ * contrast to g_option_context_parse() which expects them to be in the
+ * system codepage, which is how they are passed as @argv to main().
+ * See g_win32_get_command_line() for a solution.
  *
  * This function is useful if you are trying to use #GOptionContext with
  * #GApplication.
