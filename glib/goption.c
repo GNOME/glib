@@ -130,6 +130,57 @@
  *
  * }
  * </programlisting></informalexample>
+ *
+ * On UNIX systems, the argv that is passed to main() has no particular
+ * encoding, even to the extent that different parts of it may have
+ * different encodings.  In general, normal arguments and flags will be
+ * in the current locale and filenames should be considered to be opaque
+ * byte strings.  Proper use of %G_OPTION_ARG_FILENAME vs
+ * %G_OPTION_ARG_STRING is therefore important.
+ *
+ * Note that on Windows, filenames do have an encoding, but using
+ * #GOptionContext with the argv as passed to main() will result in a
+ * program that can only accept commandline arguments with characters
+ * from the system codepage.  This can cause problems when attempting to
+ * deal with filenames containing Unicode characters that fall outside
+ * of the codepage.
+ *
+ * A solution to this is to use g_win32_get_command_line() and
+ * g_option_context_parse_strv() which will properly handle full Unicode
+ * filenames.  If you are using #GApplication, this is done
+ * automatically for you.
+ *
+ * The following example shows how you can use #GOptionContext directly
+ * in order to correctly deal with Unicode filenames on Windows:
+ *
+ * |[
+ * int
+ * main (int argc, char **argv)
+ * {
+ *   GError *error = NULL;
+ *   GOptionContext *context;
+ *   gchar **args;
+ *
+ * #ifdef G_OS_WIN32
+ *   args = g_win32_get_command_line ();
+ * #else
+ *   args = g_strdupv (argv);
+ * #endif
+ *
+ *   /&ast; ... setup context ... &ast;/
+ *
+ *   if (!g_option_context_parse_strv (context, &args, &error))
+ *     {
+ *       /&ast; ... error ... &ast;/
+ *     }
+ *
+ *   /&ast; ... &ast;/
+ *
+ *   g_strfreev (args);
+ *
+ *   /&ast; ... &ast;/
+ * }
+ * ]|
  */
 
 #include "config.h"
