@@ -1,3 +1,88 @@
+Overview of changes from GLib 2.39.2 to GLib 2.39.3
+===================================================
+
+No major changes this release -- mostly lots of small fixes and
+improvements in test coverage.
+
+ * fix a crasher in code from gdbus-codegen
+
+ * improvements to gobject gdb helper script
+
+ * portability:
+
+   - fix a deadlock issue with kqueue on FreeBSD
+
+   - work around a quirk in the sunstudio compiler
+
+   - rename a variable to avoid clashing with a macro definition of
+     'environ' on some platforms (like mingw)
+
+   - use POSIX-specified <poll.h> over <sys/poll.h>
+
+   - many improvements to Visual Studio projects and and some build
+     fixes for Windows
+
+ * tests
+   - a very large number of improvements in test coverage
+
+   - don't report skipped tests as failures
+
+   - return 77 if we skip all tests in an executable
+
+   - improve gtest documentation and fix some minor issues
+
+   - fix g_test_trap_reached_timeout() return value
+
+   - remove some dead code uncovered during test coverage expansion
+
+   - Use tap mode for installed tests too, when using tap
+
+ * fix races in unix signal handling
+
+ * make our GVariant-based commandline tools (glib-compile-schemas,
+   gdbus, gapplication) print out GVariant parse errors in context
+
+ * GApplication now has a --gapplication-service command line switch to
+   turn any GApplication into a service
+
+ * improve compatibility of GApplication and GOptionContext
+
+ * fix gsettings.m4 wrt. builddir != srcdir with non-recursive make
+
+ * use a directory monitor in GKeyfileSettingsBackend
+
+ * improve robustness of some GIcon classes
+
+Bugs fixed
+ 141251  poll(2) is in <poll.h>, not <sys/poll.h> per SUS standard
+ 613732  [PATCH] gobject.py: Don't install frame filters when GDB does not support them
+ 708212  g_variant_parser_error_get_quark() has unexpected name.
+ 710965  GApplication: add --gapplication-service switch
+ 711090  periodic failure of spawn-multithreaded async testcase
+ 712171  gsettings.m4: @GSETTINGS_RULES@: Support srcdir != builddir with nonrecursive make
+ 712630  Revert "gsettings m4: check for .xml in src/builddir"
+ 715028  GVariant: add way to print context of parse errors
+ 719344  Fix the various test programs (or GLib itself) on Windows
+ 720263  gtestutils: skipping a test should count as success, not failure
+ 720539  gdbus-codegen: Fix crasher in goa-using apps
+ 720635  Make gdb pretty-printers compatible with Python3
+ 720891  g_settings_get_child does not inherit the backend
+ 721034  glib 2.38.2 cannot be compiled with SunStudio Compiler under Solaris
+ 721059  g_subprocess_launcher_set_environ vs "environ"
+ 721074  kqueue: deadlock
+ 721087  Missing -lselinux in pkg-config --libs --static gio-2.0
+ 721324  Error message is printed to stdout
+ 721624  Regression in GTest framework reorders existing test cases
+ 721625  backwards NEWS entry about g_source_remove change
+ 721796  insufficient escaping in g_dbus_annotation_info_generate_xml()
+ 721947  Improve GApplication ⇔ GOptionContext compatibility 
+
+Translations updated:
+ Brazilian Portuguese
+ Galician
+ Greek
+ Hebrew
+
 Overview of changes from GLib 2.39.1 to GLib 2.39.2
 ===================================================
 
