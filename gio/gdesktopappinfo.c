@@ -4477,7 +4477,7 @@ g_desktop_app_info_get_boolean (GDesktopAppInfo *info,
  *
  * Returns: %TRUE if the @key exists
  *
- * Since: 2.26
+ * Since: 2.36
  */
 gboolean
 g_desktop_app_info_has_key (GDesktopAppInfo *info,
