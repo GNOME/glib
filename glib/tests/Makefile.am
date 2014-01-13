@@ -186,7 +186,7 @@ gtester-xmllint-check: # check testreport xml with xmllint if present
 	${GTESTER} -k --quiet -o tmpsample.xml --test-arg=--gtester-selftest ${GTESTER}
 	${XMLLINT} --version 2>/dev/null; test "$$?" != 0 || ${XMLLINT} --noout tmpsample.xml
 
-CLEANFILES += tmpsample.xml
+CLEANFILES += tmpsample.xml key_file_* out.xbel
 
 check-am: gtester-xmllint-check
 

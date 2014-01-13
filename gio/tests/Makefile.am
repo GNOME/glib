@@ -323,7 +323,7 @@ clean-mimeapps:
 
 uninstalled_test_programs += gsettings gschema-compile
 gsettings_DEPENDENCIES = test.mo
-CLEANFILES += test.mo de/LC_MESSAGES/test.mo
+CLEANFILES += test.mo de/LC_MESSAGES/test.mo keyfile/gsettings.store
 gsettings_CFLAGS = $(AM_CFLAGS) -DSRCDIR=\"$(abs_srcdir)\"
 test.mo: de.po
 	$(AM_V_GEN) $(MSGFMT) -o test.mo $(srcdir)/de.po; \
@@ -541,6 +541,8 @@ giotypefuncs.c: Makefile
 	  sort | uniq | \
 	  $(SED) -e 's/^/*tp++ = /' -e 's/$$/ ();/' >> xgen-gio && \
 	  cp xgen-gio $@ # && rm -f xgen-gio xgen-giosrc.c
+
+CLEANFILES += xgen-giosrc.c xgen-gio giotypefuncs.c
 
 if ENABLE_INSTALLED_TESTS
 install-data-hook:
