@@ -27,12 +27,15 @@ endif
 if ENABLE_INSTALLED_TESTS
 testmoduledir = $(installed_testdir)/modules
 testmodule_LTLIBRARIES = $(modules)
+else
+# See comment in Makefile.am one level up
+rpath_hack = -rpath /
 endif
 
 libtestmodulea_la_SOURCES = test-module-a.c
 libtestmodulea_la_LIBADD = $(LDADD)
-libtestmodulea_la_LDFLAGS = $(LDFLAGS) -no-undefined -avoid-version
+libtestmodulea_la_LDFLAGS = $(LDFLAGS) -no-undefined -avoid-version $(rpath_hack)
 
 libtestmoduleb_la_SOURCES = test-module-b.c
 libtestmoduleb_la_LIBADD = $(LDADD)
-libtestmoduleb_la_LDFLAGS =$(LDFLAGS) -no-undefined -avoid-version
+libtestmoduleb_la_LDFLAGS =$(LDFLAGS) -no-undefined -avoid-version $(rpath_hack)
