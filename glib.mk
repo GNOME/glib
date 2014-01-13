@@ -59,7 +59,9 @@ genlcov:
 	@echo "file://$(abs_top_builddir)/glib-lcov/index.html"
 
 lcov-clean:
-	$(AM_V_GEN) $(LTP) --quiet --directory $(top_builddir) -z
+	if test -n "$(LTP)"; then \
+	  $(LTP) --quiet --directory $(top_builddir) -z; \
+	fi
 
 # run tests in cwd as part of make check
 check-local: test-nonrecursive
