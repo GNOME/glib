@@ -386,6 +386,32 @@ g_slist_concat (GSList *list1, GSList *list2)
   return list1;
 }
 
+static GSList*
+_g_slist_remove_data (GSList        *list,
+                      gconstpointer  data,
+                      gboolean       all)
+{
+  GSList *tmp = NULL;
+  GSList **previous_ptr = &list;
+
+  while (*previous_ptr)
+    {
+      tmp = *previous_ptr;
+      if (tmp->data == data)
+        {
+          *previous_ptr = tmp->next;
+          g_slist_free_1 (tmp);
+          if (!all)
+            break;
+        }
+      else
+        {
+          previous_ptr = &tmp->next;
+        }
+    }
+
+  return list;
+}
 /**
  * g_slist_remove:
  * @list: a #GSList
@@ -401,26 +427,7 @@ GSList*
 g_slist_remove (GSList        *list,
                 gconstpointer  data)
 {
-  GSList *tmp, *prev = NULL;
-
-  tmp = list;
-  while (tmp)
-    {
-      if (tmp->data == data)
-        {
-          if (prev)
-            prev->next = tmp->next;
-          else
-            list = tmp->next;
-
-          g_slist_free_1 (tmp);
-          break;
-        }
-      prev = tmp;
-      tmp = prev->next;
-    }
-
-  return list;
+  return _g_slist_remove_data (list, data, FALSE);
 }
 
 /**
@@ -439,58 +446,27 @@ GSList*
 g_slist_remove_all (GSList        *list,
                     gconstpointer  data)
 {
-  GSList *tmp, *prev = NULL;
-
-  tmp = list;
-  while (tmp)
-    {
-      if (tmp->data == data)
-        {
-          GSList *next = tmp->next;
-
-          if (prev)
-            prev->next = next;
-          else
-            list = next;
-
-          g_slist_free_1 (tmp);
-          tmp = next;
-        }
-      else
-        {
-          prev = tmp;
-          tmp = prev->next;
-        }
-    }
-
-  return list;
+  return _g_slist_remove_data (list, data, TRUE);
 }
 
 static inline GSList*
 _g_slist_remove_link (GSList *list,
                       GSList *link)
 {
-  GSList *tmp;
-  GSList *prev;
+  GSList *tmp = NULL;
+  GSList **previous_ptr = &list;
 
-  prev = NULL;
-  tmp = list;
-
-  while (tmp)
+  while (*previous_ptr)
     {
+      tmp = *previous_ptr;
       if (tmp == link)
         {
-          if (prev)
-            prev->next = tmp->next;
-          if (list == tmp)
-            list = list->next;
-
+          *previous_ptr = tmp->next;
           tmp->next = NULL;
           break;
         }
 
-      prev = tmp;
-      tmp = tmp->next;
+      previous_ptr = &tmp->next;
     }
 
   return list;
