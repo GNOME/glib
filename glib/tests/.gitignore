@@ -33,7 +33,9 @@ keyfile
 list
 logging
 mainloop
+malloc
 mappedfile
+markup
 markup-collect
 markup-escape
 markup-parse
@@ -68,6 +70,7 @@ test-printf
 test-spawn-echo
 thread
 timeout
+timer
 tmpsample.xml
 tree
 unicode

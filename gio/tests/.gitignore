@@ -1,6 +1,7 @@
 actions
 appinfo
 appinfo-test
+appmonitor
 apps
 async-close-output-stream
 async-splice-output-stream
@@ -17,6 +18,7 @@ data-input-stream
 data-output-stream
 dbus-appinfo
 de/
+defaultvalue
 desktop-app-info
 echo-server
 file
@@ -73,6 +75,9 @@ gdbus-test-fixture
 gdbus-testserver
 gdbus-threading
 gio-du
+giomodule
+giotypefuncs.c
+gnotification
 gsubprocess
 gsubprocess-testprog
 g-file
@@ -127,4 +132,5 @@ vfs
 volumemonitor
 xdgdatadir
 xdgdatahome
-gnotification
+xgen-gio
+xgen-giosrc.c
