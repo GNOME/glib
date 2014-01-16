@@ -664,6 +664,7 @@ get_xattrs_from_fd (int                    fd,
 		g_free (escaped_attr);
 	      
 	      get_one_xattr_from_fd (fd, info, gio_attr, attr);
+	      g_free (gio_attr);
 	    }
 	  
 	  len = strlen (attr) + 1;
