@@ -144,17 +144,10 @@ g_string_chunk_new (gsize size)
 void
 g_string_chunk_free (GStringChunk *chunk)
 {
-  GSList *tmp_list;
-
   g_return_if_fail (chunk != NULL);
 
   if (chunk->storage_list)
-    {
-      for (tmp_list = chunk->storage_list; tmp_list; tmp_list = tmp_list->next)
-        g_free (tmp_list->data);
-
-      g_slist_free (chunk->storage_list);
-    }
+    g_slist_free_full (chunk->storage_list, g_free);
 
   if (chunk->const_table)
     g_hash_table_destroy (chunk->const_table);
@@ -175,16 +168,11 @@ g_string_chunk_free (GStringChunk *chunk)
 void
 g_string_chunk_clear (GStringChunk *chunk)
 {
-  GSList *tmp_list;
-
   g_return_if_fail (chunk != NULL);
 
   if (chunk->storage_list)
     {
-      for (tmp_list = chunk->storage_list; tmp_list; tmp_list = tmp_list->next)
-        g_free (tmp_list->data);
-
-      g_slist_free (chunk->storage_list);
+      g_slist_free_full (chunk->storage_list, g_free);
 
       chunk->storage_list = NULL;
       chunk->storage_next = chunk->default_size;
