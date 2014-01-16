@@ -37,7 +37,6 @@
 #include "ghash.h"
 #include "glibintl.h"
 #include "glist.h"
-#include "gslist.h"
 #include "gmain.h"
 #include "gmarkup.h"
 #include "gmem.h"
