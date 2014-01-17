@@ -6462,6 +6462,15 @@ new_for_cmdline_arg (const gchar *arg,
  * This operation never fails, but the returned object might not
  * support any I/O operation if @arg points to a malformed path.
  *
+ * Note that on Windows, this function expects its argument to be in
+ * UTF-8 -- not the system code page.  This means that you
+ * should not use this function with string from argv as it is passed
+ * to main().  g_win32_get_command_line() will return a UTF-8 version of
+ * the commandline.  #GApplication also uses UTF-8 but
+ * g_application_command_line_create_file_for_arg() may be more useful
+ * for you there.  It is also always possible to use this function with
+ * #GOptionContext arguments of type %G_OPTION_ARG_FILENAME.
+ *
  * Returns: (transfer full): a new #GFile.
  *    Free the returned object with g_object_unref().
  */
