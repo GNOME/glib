@@ -3256,7 +3256,7 @@ g_test_build_filename_va (GTestFileType  file_type,
  *
  * In order for this function to work in srcdir != builddir situations,
  * the G_TEST_SRCDIR and G_TEST_BUILDDIR environment variables need to
- * have been defined.  As of 2.38, this is done by the Makefile.decl
+ * have been defined.  As of 2.38, this is done by the glib.mk
  * included in GLib.  Please ensure that your copy is up to date before
  * using this function.
  *
