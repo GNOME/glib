@@ -205,7 +205,28 @@ g_simple_action_activate (GAction  *action,
     g_variant_ref_sink (parameter);
 
   if (simple->enabled)
-    g_signal_emit (simple, g_simple_action_signals[SIGNAL_ACTIVATE], 0, parameter);
+    {
+      /* If the user connected a signal handler then they are responsible
+       * for handling activation.
+       */
+      if (g_signal_has_handler_pending (action, g_simple_action_signals[SIGNAL_ACTIVATE], 0, TRUE))
+        g_signal_emit (action, g_simple_action_signals[SIGNAL_CHANGE_STATE], 0, parameter);
+
+      /* If not, do some reasonable defaults for stateful actions. */
+      else if (simple->state)
+        {
+          /* If we have no parameter and this is a boolean action, toggle. */
+          if (parameter == NULL && g_variant_is_of_type (simple->state, G_VARIANT_TYPE_BOOLEAN))
+            {
+              gboolean was_enabled = g_variant_get_boolean (simple->state);
+              g_simple_action_change_state (action, g_variant_new_boolean (!was_enabled));
+            }
+
+          /* else, if the parameter and state type are the same, do a change-state */
+          else if (g_variant_is_of_type (simple->state, g_variant_get_type (parameter)))
+            g_simple_action_change_state (action, parameter);
+        }
+    }
 
   if (parameter != NULL)
     g_variant_unref (parameter);
@@ -342,6 +363,14 @@ g_simple_action_class_init (GSimpleActionClass *class)
    *
    * @parameter will always be of the expected type.  In the event that
    * an incorrect type was given, no signal will be emitted.
+   *
+   * Since GLib 2.40, if no handler is connected to this signal then the
+   * default behaviour for boolean-stated actions with a %NULL parameter
+   * type is to toggle them via the #GSimpleAction::change-state signal.
+   * For stateful actions where the state type is equal to the parameter
+   * type, the default is to forward them directly to
+   * #GSimpleAction::change-state.  This should allow almost all users
+   * of #GSimpleAction to connect only one handler or the other.
    *
    * Since: 2.28
    */
