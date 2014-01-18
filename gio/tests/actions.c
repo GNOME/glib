@@ -301,6 +301,34 @@ test_stateful (void)
   g_object_unref (action);
 }
 
+static void
+test_default_activate (void)
+{
+  GSimpleAction *action;
+  GVariant *state;
+
+  /* Test changing state via activation with parameter */
+  action = g_simple_action_new_stateful ("foo", G_VARIANT_TYPE_STRING, g_variant_new_string ("hihi"));
+  g_action_activate (G_ACTION (action), g_variant_new_string ("bye"));
+  state = g_action_get_state (G_ACTION (action));
+  g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "bye");
+  g_variant_unref (state);
+  g_object_unref (action);
+
+  /* Test toggling a boolean action via activation with no parameter */
+  action = g_simple_action_new_stateful ("foo", NULL, g_variant_new_boolean (FALSE));
+  g_action_activate (G_ACTION (action), NULL);
+  state = g_action_get_state (G_ACTION (action));
+  g_assert (g_variant_get_boolean (state));
+  g_variant_unref (state);
+  /* and back again */
+  g_action_activate (G_ACTION (action), NULL);
+  state = g_action_get_state (G_ACTION (action));
+  g_assert (!g_variant_get_boolean (state));
+  g_variant_unref (state);
+  g_object_unref (action);
+}
+
 static gboolean foo_activated = FALSE;
 static gboolean bar_activated = FALSE;
 
@@ -1133,6 +1161,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/name", test_name);
   g_test_add_func ("/actions/simplegroup", test_simple_group);
   g_test_add_func ("/actions/stateful", test_stateful);
+  g_test_add_func ("/actions/default-activate", test_default_activate);
   g_test_add_func ("/actions/entries", test_entries);
   g_test_add_func ("/actions/parse-detailed", test_parse_detailed);
   g_test_add_func ("/actions/dbus/export", test_dbus_export);
