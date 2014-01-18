@@ -210,7 +210,7 @@ g_simple_action_activate (GAction  *action,
        * for handling activation.
        */
       if (g_signal_has_handler_pending (action, g_simple_action_signals[SIGNAL_ACTIVATE], 0, TRUE))
-        g_signal_emit (action, g_simple_action_signals[SIGNAL_CHANGE_STATE], 0, parameter);
+        g_signal_emit (action, g_simple_action_signals[SIGNAL_ACTIVATE], 0, parameter);
 
       /* If not, do some reasonable defaults for stateful actions. */
       else if (simple->state)
