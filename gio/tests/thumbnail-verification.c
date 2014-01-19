@@ -22,6 +22,7 @@
  * Author: Philip Withnall <philip.withnall@collabora.co.uk>
  */
 
+#define GIO_COMPILATION 1
 #include "../thumbnail-verify.c"
 
 static void
