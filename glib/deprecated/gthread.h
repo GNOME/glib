@@ -120,6 +120,7 @@ void     g_thread_foreach      (GFunc             thread_func,
                                 gpointer          user_data);
 
 #ifndef G_OS_WIN32
+#include <time.h>
 #include <pthread.h>
 #endif
 
