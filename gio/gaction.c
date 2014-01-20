@@ -51,7 +51,7 @@ G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
  *
  * #GAction is merely the interface to the concept of an action, as
  * described above.  Various implementations of actions exist, including
- * #GSimpleAction and #GtkAction.
+ * #GSimpleAction.
  *
  * In all cases, the implementing class is responsible for storing the
  * name of the action, the parameter type, the enabled state, the
