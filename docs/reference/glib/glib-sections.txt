@@ -2499,7 +2499,6 @@ g_tree_lookup_extended
 g_tree_foreach
 g_tree_traverse
 GTraverseFunc
-GTraverseType
 g_tree_search
 g_tree_remove
 g_tree_steal
@@ -2532,6 +2531,7 @@ g_node_prepend_data
 <SUBSECTION>
 g_node_reverse_children
 g_node_traverse
+GTraverseType
 GTraverseFlags
 GNodeTraverseFunc
 g_node_children_foreach
