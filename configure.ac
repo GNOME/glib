@@ -61,7 +61,7 @@ AC_CONFIG_SRCDIR([glib/glib.h])
 AC_CONFIG_MACRO_DIR([m4macros])
 
 # Save this value here, since automake will set cflags later
-cflags_set=${CFLAGS+set}
+cflags_set=${CFLAGS:+set}
 
 AM_INIT_AUTOMAKE([1.11 -Wno-portability no-define no-dist-gzip dist-xz tar-ustar])
 AM_MAINTAINER_MODE([enable])
@@ -285,7 +285,7 @@ AC_SYS_LARGEFILE
 PKG_PROG_PKG_CONFIG(0.16)
 
 if test "x$enable_debug" = "xyes"; then
-  if test x$cflags_set != xset ; then
+  if test "x$cflags_set" != "x" ; then
       case " $CFLAGS " in
       *[[\ \	]]-g[[\ \	]]*) ;;
       *) CFLAGS="$CFLAGS -g" ;;
