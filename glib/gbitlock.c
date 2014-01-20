@@ -208,12 +208,12 @@ g_bit_lock (volatile gint *address,
 {
 #ifdef USE_ASM_GOTO
  retry:
-  asm volatile goto ("lock bts %1, (%0)\n"
-                     "jc %l[contended]"
-                     : /* no output */
-                     : "r" (address), "r" (lock_bit)
-                     : "cc", "memory"
-                     : contended);
+  __asm__ volatile goto ("lock bts %1, (%0)\n"
+                         "jc %l[contended]"
+                         : /* no output */
+                         : "r" (address), "r" (lock_bit)
+                         : "cc", "memory"
+                         : contended);
   return;
 
  contended:
@@ -281,12 +281,12 @@ g_bit_trylock (volatile gint *address,
 #ifdef USE_ASM_GOTO
   gboolean result;
 
-  asm volatile ("lock bts %2, (%1)\n"
-                "setnc %%al\n"
-                "movzx %%al, %0"
-                : "=r" (result)
-                : "r" (address), "r" (lock_bit)
-                : "cc", "memory");
+  __asm__ volatile ("lock bts %2, (%1)\n"
+                    "setnc %%al\n"
+                    "movzx %%al, %0"
+                    : "=r" (result)
+                    : "r" (address), "r" (lock_bit)
+                    : "cc", "memory");
 
   return result;
 #else
