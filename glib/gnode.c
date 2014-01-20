@@ -820,6 +820,59 @@ g_node_depth_traverse_level (GNode             *node,
  * It calls the given function for each node visited.
  * The traversal can be halted at any point by returning %TRUE from @func.
  */
+
+/**
+ * GTraverseType:
+ * @G_IN_ORDER: vists a node's left child first, then the node itself,
+ *              then its right child. This is the one to use if you
+ *              want the output sorted according to the compare
+ *              function.
+ *              <informalfigure>
+ *                <mediaobject>
+ *                  <imageobject>
+ *                    <imagedata align="right" fileref="Sorted_binary_tree_inorder.svg" format="SVG"/>
+ *                  </imageobject>
+ *                  <caption>In order: A, B, C, D, E, F, G, H, I</caption>
+ *                </mediaobject>
+ *              </informalfigure>
+ * @G_PRE_ORDER: visits a node, then its children.
+ *              <informalfigure>
+ *                <mediaobject>
+ *                  <imageobject>
+ *                    <imagedata align="right" fileref="Sorted_binary_tree_preorder.svg" format="SVG"/>
+ *                  </imageobject>
+ *                  <caption>Pre order: F, B, A, D, C, E, G, I, H</caption>
+ *                </mediaobject>
+ *              </informalfigure>
+ * @G_POST_ORDER: visits the node's children, then the node itself.
+ *              <informalfigure>
+ *                <mediaobject>
+ *                  <imageobject>
+ *                    <imagedata align="right" fileref="Sorted_binary_tree_postorder.svg" format="SVG"/>
+ *                  </imageobject>
+ *                  <caption>Post order: A, C, E, D, B, H, I, G, F</caption>
+ *                </mediaobject>
+ *              </informalfigure>
+ * @G_LEVEL_ORDER: is not implemented for <link
+ *                 linkend="glib-Balanced-Binary-Trees">Balanced Binary
+ *                 Trees</link>.  For <link
+ *                 linkend="glib-N-ary-Trees">N-ary Trees</link>, it
+ *                 vists the root node first, then its children, then
+ *                 its grandchildren, and so on. Note that this is less
+ *                 efficient than the other orders.
+ *              <informalfigure>
+ *                <mediaobject>
+ *                  <imageobject>
+ *                    <imagedata align="right" fileref="Sorted_binary_tree_breadth-first_traversal.svg" format="SVG"/>
+ *                  </imageobject>
+ *                  <caption>Level order: F, B, G, A, D, I, C, E, H</caption>
+ *                </mediaobject>
+ *              </informalfigure>
+ *
+ * Specifies the type of traveral performed by g_tree_traverse(),
+ * g_node_traverse() and g_node_find().
+ */
+
 /**
  * GTraverseFlags:
  * @G_TRAVERSE_LEAVES: only leaf nodes should be visited. This name has
