@@ -2192,8 +2192,10 @@ g_strescape (const gchar *source,
  * of the characters forward.
  *
  * This function doesn't allocate or reallocate any memory;
- * it modifies @string in place. The pointer to @string is
- * returned to allow the nesting of functions.
+ * it modifies @string in place. Therefore, it cannot be used on
+ * statically allocated strings.
+ *
+ * The pointer to @string is returned to allow the nesting of functions.
  *
  * Also see g_strchomp() and g_strstrip().
  *
@@ -2221,12 +2223,14 @@ g_strchug (gchar *string)
  * Removes trailing whitespace from a string.
  *
  * This function doesn't allocate or reallocate any memory;
- * it modifies @string in place. The pointer to @string is
- * returned to allow the nesting of functions.
+ * it modifies @string in place. Therefore, it cannot be used
+ * on statically allocated strings.
+ *
+ * The pointer to @string is returned to allow the nesting of functions.
  *
  * Also see g_strchug() and g_strstrip().
  *
- * Returns: @string.
+ * Returns: @string
  */
 gchar *
 g_strchomp (gchar *string)
