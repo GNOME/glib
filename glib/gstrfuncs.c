@@ -2958,7 +2958,7 @@ split_words (const gchar *value)
  * improve the transliteration if the language of the source string is
  * known.
  *
- * Returns: the folded tokens
+ * Returns: (transfer full) (array zero-terminated=1): the folded tokens
  *
  * Since: 2.40
  **/
