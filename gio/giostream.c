@@ -73,7 +73,6 @@ enum
 struct _GIOStreamPrivate {
   guint closed : 1;
   guint pending : 1;
-  GAsyncReadyCallback outstanding_callback;
 };
 
 static gboolean g_io_stream_real_close        (GIOStream            *stream,
@@ -414,12 +413,25 @@ async_ready_close_callback_wrapper (GObject      *source_object,
                                     gpointer      user_data)
 {
   GIOStream *stream = G_IO_STREAM (source_object);
+  GIOStreamClass *klass = G_IO_STREAM_GET_CLASS (stream);
+  GTask *task = user_data;
+  GError *error = NULL;
+  gboolean success;
 
   stream->priv->closed = TRUE;
   g_io_stream_clear_pending (stream);
-  if (stream->priv->outstanding_callback)
-    (*stream->priv->outstanding_callback) (source_object, res, user_data);
-  g_object_unref (stream);
+
+  if (g_async_result_legacy_propagate_error (res, &error))
+    success = FALSE;
+  else
+    success = klass->close_finish (stream, res, &error);
+
+  if (error)
+    g_task_return_error (task, error);
+  else
+    g_task_return_boolean (task, success);
+
+  g_object_unref (task);
 }
 
 /**
@@ -452,15 +464,14 @@ g_io_stream_close_async (GIOStream           *stream,
 {
   GIOStreamClass *class;
   GError *error = NULL;
+  GTask *task;
 
   g_return_if_fail (G_IS_IO_STREAM (stream));
 
+  task = g_task_new (stream, cancellable, callback, user_data);
+
   if (stream->priv->closed)
     {
-      GTask *task;
-
-      task = g_task_new (stream, cancellable, callback, user_data);
-      g_task_set_source_tag (task, g_io_stream_close_async);
       g_task_return_boolean (task, TRUE);
       g_object_unref (task);
       return;
@@ -468,17 +479,15 @@ g_io_stream_close_async (GIOStream           *stream,
 
   if (!g_io_stream_set_pending (stream, &error))
     {
-      g_task_report_error (stream, callback, user_data,
-                           g_io_stream_close_async,
-                           error);
+      g_task_return_error (task, error);
+      g_object_unref (task);
       return;
     }
 
   class = G_IO_STREAM_GET_CLASS (stream);
-  stream->priv->outstanding_callback = callback;
-  g_object_ref (stream);
+
   class->close_async (stream, io_priority, cancellable,
-		      async_ready_close_callback_wrapper, user_data);
+		      async_ready_close_callback_wrapper, task);
 }
 
 /**
@@ -499,18 +508,10 @@ g_io_stream_close_finish (GIOStream     *stream,
 			  GAsyncResult  *result,
 			  GError       **error)
 {
-  GIOStreamClass *class;
-
   g_return_val_if_fail (G_IS_IO_STREAM (stream), FALSE);
-  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+  g_return_val_if_fail (g_task_is_valid (result, stream), FALSE);
 
-  if (g_async_result_legacy_propagate_error (result, error))
-    return FALSE;
-  else if (g_async_result_is_tagged (result, g_io_stream_close_async))
-    return g_task_propagate_boolean (G_TASK (result), error);
-
-  class = G_IO_STREAM_GET_CLASS (stream);
-  return class->close_finish (stream, result, error);
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 
