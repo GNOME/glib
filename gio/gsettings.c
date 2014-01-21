@@ -1138,7 +1138,7 @@ g_settings_get_value (GSettings   *settings,
  * It is a programmer error to give a @key that isn't contained in the
  * schema for @settings.
  *
- * Returns: (allow none) (transfer full): the user's value, if set
+ * Returns: (allow-none) (transfer full): the user's value, if set
  *
  * Since: 2.40
  **/
@@ -1186,7 +1186,7 @@ g_settings_get_user_value (GSettings   *settings,
  * It is a programmer error to give a @key that isn't contained in the
  * schema for @settings.
  *
- * Returns: (allow none) (transfer full): the default value
+ * Returns: (allow-none) (transfer full): the default value
  *
  * Since: 2.40
  **/
