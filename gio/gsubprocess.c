@@ -749,7 +749,7 @@ g_subprocess_get_identifier (GSubprocess *subprocess)
  * The process must have been created with
  * %G_SUBPROCESS_FLAGS_STDIN_PIPE.
  *
- * Returns: the stdout pipe
+ * Returns: (transfer none): the stdout pipe
  *
  * Since: 2.40
  **/
@@ -772,7 +772,7 @@ g_subprocess_get_stdin_pipe (GSubprocess *subprocess)
  * The process must have been created with
  * %G_SUBPROCESS_FLAGS_STDOUT_PIPE.
  *
- * Returns: the stdout pipe
+ * Returns: (transfer none): the stdout pipe
  *
  * Since: 2.40
  **/
@@ -795,7 +795,7 @@ g_subprocess_get_stdout_pipe (GSubprocess *subprocess)
  * The process must have been created with
  * %G_SUBPROCESS_FLAGS_STDERR_PIPE.
  *
- * Returns: the stderr pipe
+ * Returns: (transfer none): the stderr pipe
  *
  * Since: 2.40
  **/
