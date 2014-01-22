@@ -72,10 +72,10 @@ GLIB_AVAILABLE_IN_2_32
 const gchar *           g_settings_schema_get_path                      (GSettingsSchema        *schema);
 GLIB_AVAILABLE_IN_2_40
 GSettingsSchemaKey *    g_settings_schema_get_key                       (GSettingsSchema        *schema,
-                                                                         const gchar            *key);
+                                                                         const gchar            *name);
 GLIB_AVAILABLE_IN_2_40
 gboolean                g_settings_schema_has_key                       (GSettingsSchema        *schema,
-                                                                         const gchar            *key);
+                                                                         const gchar            *name);
 
 #define                 G_TYPE_SETTINGS_SCHEMA_KEY                      (g_settings_schema_key_get_type ())
 GLIB_AVAILABLE_IN_2_40

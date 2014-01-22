@@ -93,7 +93,7 @@ gboolean                g_action_parse_detailed_name                    (const g
 
 GLIB_AVAILABLE_IN_2_38
 gchar *                 g_action_print_detailed_name                    (const gchar        *action_name,
-                                                                         GVariant           *parameter);
+                                                                         GVariant           *target_value);
 
 G_END_DECLS
 

@@ -1231,7 +1231,7 @@ void     g_file_replace_contents_async       (GFile                  *file,
 					      gpointer                user_data);
 GLIB_AVAILABLE_IN_2_40
 void     g_file_replace_contents_bytes_async (GFile                  *file,
-					      GBytes                 *bytes,
+					      GBytes                 *contents,
 					      const char             *etag,
 					      gboolean                make_backup,
 					      GFileCreateFlags        flags,
