@@ -1209,7 +1209,7 @@ parse_arg (GOptionContext *context,
       {
         gchar *data;
 
-#if G_OS_WIN32
+#ifdef G_OS_WIN32
         if (!context->strv_mode)
           data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
         else
@@ -1235,7 +1235,7 @@ parse_arg (GOptionContext *context,
       {
         gchar *data;
 
-#if G_OS_WIN32
+#ifdef G_OS_WIN32
         if (!context->strv_mode)
           data = g_locale_to_utf8 (value, -1, NULL, NULL, error);
         else
