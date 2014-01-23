@@ -536,7 +536,7 @@ g_object_info_get_signal (GIObjectInfo *info,
  *
  * TODO
  *
- * Returns: Info for the signal with name @name in @info, or %NULL on failure.
+ * Returns: (transfer full): Info for the signal with name @name in @info, or %NULL on failure.
  */
 GISignalInfo *
 g_object_info_find_signal (GIObjectInfo *info,
