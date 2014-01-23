@@ -331,7 +331,7 @@ g_boxed_type_register_static (const gchar   *name,
  * 
  * Provide a copy of a boxed structure @src_boxed which is of type @boxed_type.
  * 
- * Returns: The newly created copy of the boxed structure.
+ * Returns: (transfer full): The newly created copy of the boxed structure.
  */
 gpointer
 g_boxed_copy (GType         boxed_type,
