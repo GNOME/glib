@@ -924,6 +924,9 @@ g_variant_new_dict_entry (GVariant *key,
  * see the section on
  * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
  *
+ * This function is currently implemented with a linear scan.  If you
+ * plan to do many lookups then #GVariantDict may be more efficient.
+ *
  * Returns: %TRUE if a value was unpacked
  *
  * Since: 2.28
@@ -984,6 +987,9 @@ g_variant_lookup (GVariant    *dictionary,
  * If the key is found and the value has the correct type, it is
  * returned.  If @expected_type was specified then any non-%NULL return
  * value will have this type.
+ *
+ * This function is currently implemented with a linear scan.  If you
+ * plan to do many lookups then #GVariantDict may be more efficient.
  *
  * Returns: (transfer full): the value of the dictionary key, or %NULL
  *
@@ -3625,6 +3631,511 @@ g_variant_builder_end (GVariantBuilder *builder)
 
   return value;
 }
+
+/* GVariantDict {{{1 */
+
+/**
+ * GVariantDict: (skip)
+ *
+ * #GVariantDict is a mutable interface to #GVariant dictionaries.
+ *
+ * It can be used for doing a sequence of dictionary lookups in an
+ * efficient way on an existing #GVariant dictionary or it can be used
+ * to construct new dictionaries with a hashtable-like interface.  It
+ * can also be used for taking existing dictionaries and modifying them
+ * in order to create new ones.
+ *
+ * #GVariantDict can only be used with %G_VARIANT_TYPE_VARDICT
+ * dictionaries.
+ *
+ * It is possible to use #GVariantDict allocated on the stack or on the
+ * heap.  When using a stack-allocated #GVariantDict, you begin with a
+ * call to g_variant_dict_init() and free the resources with a call to
+ * g_variant_dict_clear().
+ *
+ * Heap-allocated #GVariantDict follows normal refcounting rules: you
+ * allocate it with g_variant_dict_new() and use g_variant_dict_ref()
+ * and g_variant_dict_unref().
+ *
+ * g_variant_dict_end() is used to convert the #GVariantDict back into a
+ * dictionary-type #GVariant.  When used with stack-allocated instances,
+ * this also implicitly frees all associated memory, but for
+ * heap-allocated instances, you must still call g_variant_dict_unref()
+ * afterwards.
+ *
+ * You will typically want to use a heap-allocated #GVariantDict when
+ * you expose it as part of an API.  For most other uses, the
+ * stack-allocated form will be more convenient.
+ *
+ * Consider the following two examples that do the same thing in each
+ * style: take an existing dictionary and look up the "count" uint32
+ * key, adding 1 to it if it is found, or returning an error if the
+ * key is not found.  Each returns the new dictionary as a floating
+ * #GVariant.
+ *
+ * <example>
+ *  <title>Using stack-allocated #GVariantDict</title>
+ *  <programlisting>
+ *   GVariant *
+ *   add_to_count (GVariant  *orig,
+ *                 GError   **error)
+ *   {
+ *     GVariantDict dict;
+ *     guint32 count;
+ *
+ *     g_variant_dict_init (&amp;dict, orig);
+ *     if (!g_variant_dict_lookup (&amp;dict, "count", "u", &amp;count))
+ *       {
+ *         g_set_error (...);
+ *         g_variant_dict_clear (&amp;dict);
+ *         return NULL;
+ *       }
+ *
+ *     g_variant_dict_insert (&amp;dict, "count", "u", count + 1);
+ *
+ *     return g_variant_dict_end (&amp;dict);
+ *   }
+ *  </programlisting>
+ * </example>
+ *
+ * <example>
+ *  <title>Using heap-allocated #GVariantDict</title>
+ *  <programlisting>
+ *   GVariant *
+ *   add_to_count (GVariant  *orig,
+ *                 GError   **error)
+ *   {
+ *     GVariantDict *dict;
+ *     GVariant *result;
+ *     guint32 count;
+ *
+ *     dict = g_variant_dict_new (orig);
+ *
+ *     if (g_variant_dict_lookup (dict, "count", "u", &amp;count))
+ *       {
+ *         g_variant_dict_insert (dict, "count", "u", count + 1);
+ *         result = g_variant_dict_end (dict);
+ *       }
+ *     else
+ *       {
+ *         g_set_error (...);
+ *         result = NULL;
+ *       }
+ *
+ *     g_variant_dict_unref (dict);
+ *
+ *     return result;
+ *   }
+ *  </programlisting>
+ * </example>
+ *
+ * Since: 2.40
+ **/
+struct stack_dict
+{
+  GHashTable *values;
+  gsize magic;
+};
+
+G_STATIC_ASSERT (sizeof (struct stack_dict) <= sizeof (GVariantDict));
+
+struct heap_dict
+{
+  struct stack_dict dict;
+  gint ref_count;
+  gsize magic;
+};
+
+#define GVSD(d)                 ((struct stack_dict *) (d))
+#define GVHD(d)                 ((struct heap_dict *) (d))
+#define GVSD_MAGIC              ((gsize) 2579507750u)
+#define GVHD_MAGIC              ((gsize) 2450270775u)
+#define is_valid_dict(d)        (d != NULL && \
+                                 GVSD(d)->magic == GVSD_MAGIC)
+#define is_valid_heap_dict(d)   (GVHD(d)->magic == GVHD_MAGIC)
+
+/**
+ * g_variant_dict_new:
+ * @from_asv: (allow-none): the #GVariant with which to initialise the
+ *   dictionary
+ *
+ * Allocates and initialises a new #GVariantDict.
+ *
+ * You should call g_variant_dict_unref() on the return value when it
+ * is no longer needed.  The memory will not be automatically freed by
+ * any other call.
+ *
+ * In some cases it may be easier to place a #GVariantDict directly on
+ * the stack of the calling function and initialise it with
+ * g_variant_dict_init().  This is particularly useful when you are
+ * using #GVariantDict to construct a #GVariant.
+ *
+ * Returns: (transfer full): a #GVariantDict
+ *
+ * Since: 2.40
+ **/
+GVariantDict *
+g_variant_dict_new (GVariant *from_asv)
+{
+  GVariantDict *dict;
+
+  dict = g_slice_alloc (sizeof (struct heap_dict));
+  g_variant_dict_init (dict, from_asv);
+  GVHD(dict)->magic = GVHD_MAGIC;
+  GVHD(dict)->ref_count = 1;
+
+  return dict;
+}
+
+/**
+ * g_variant_dict_init: (skip)
+ * @dict: a #GVariantDict
+ * @from_asv: (allow-none): the initial value for @dict
+ *
+ * Initialises a #GVariantDict structure.
+ *
+ * If @from_asv is given, it is used to initialise the dictionary.
+ *
+ * This function completely ignores the previous contents of @dict.  On
+ * one hand this means that it is valid to pass in completely
+ * uninitialised memory.  On the other hand, this means that if you are
+ * initialising over top of an existing #GVariantDict you need to first
+ * call g_variant_dict_clear() in order to avoid leaking memory.
+ *
+ * You must not call g_variant_dict_ref() or g_variant_dict_unref() on a
+ * #GVariantDict that was initialised with this function.  If you ever
+ * pass a reference to a #GVariantDict outside of the control of your
+ * own code then you should assume that the person receiving that
+ * reference may try to use reference counting; you should use
+ * g_variant_dict_new() instead of this function.
+ *
+ * Since: 2.40
+ **/
+void
+g_variant_dict_init (GVariantDict *dict,
+                     GVariant     *from_asv)
+{
+  GVariantIter iter;
+  gchar *key;
+  GVariant *value;
+
+  GVSD(dict)->values = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify) g_variant_unref);
+  GVSD(dict)->magic = GVSD_MAGIC;
+
+  if (from_asv)
+    {
+      g_variant_iter_init (&iter, from_asv);
+      while (g_variant_iter_next (&iter, "{sv}", &key, &value))
+        g_hash_table_insert (GVSD(dict)->values, key, value);
+    }
+}
+
+/**
+ * g_variant_dict_lookup:
+ * @dict: a #GVariantDict
+ * @key: the key to lookup in the dictionary
+ * @format_string: a GVariant format string
+ * @...: the arguments to unpack the value into
+ *
+ * Looks up a value in a #GVariantDict.
+ *
+ * This function is a wrapper around g_variant_dict_lookup_value() and
+ * g_variant_get().  In the case that %NULL would have been returned,
+ * this function returns %FALSE.  Otherwise, it unpacks the returned
+ * value and returns %TRUE.
+ *
+ * @format_string determines the C types that are used for unpacking
+ * the values and also determines if the values are copied or borrowed,
+ * see the section on
+ * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
+ *
+ * Returns: %TRUE if a value was unpacked
+ *
+ * Since: 2.40
+ **/
+gboolean
+g_variant_dict_lookup (GVariantDict *dict,
+                       const gchar  *key,
+                       const gchar  *format_string,
+                       ...)
+{
+  GVariant *value;
+  va_list ap;
+
+  g_return_val_if_fail (is_valid_dict (dict), FALSE);
+  g_return_val_if_fail (key != NULL, FALSE);
+  g_return_val_if_fail (format_string != NULL, FALSE);
+
+  value = g_hash_table_lookup (GVSD(dict)->values, key);
+
+  if (value == NULL || !g_variant_check_format_string (value, format_string, FALSE))
+    return FALSE;
+
+  va_start (ap, format_string);
+  g_variant_get_va (value, format_string, NULL, &ap);
+  va_end (ap);
+
+  return TRUE;
+}
+
+/**
+ * g_variant_dict_lookup_value:
+ * @dict: a #GVariantDict
+ * @key: the key to lookup in the dictionary
+ * @expected_type: (allow-none): a #GVariantType, or %NULL
+ *
+ * Looks up a value in a #GVariantDict.
+ *
+ * If @key is not found in @dictionary, %NULL is returned.
+ *
+ * The @expected_type string specifies what type of value is expected.
+ * If the value associated with @key has a different type then %NULL is
+ * returned.
+ *
+ * If the key is found and the value has the correct type, it is
+ * returned.  If @expected_type was specified then any non-%NULL return
+ * value will have this type.
+ *
+ * Returns: (transfer full): the value of the dictionary key, or %NULL
+ *
+ * Since: 2.40
+ **/
+GVariant *
+g_variant_dict_lookup_value (GVariantDict       *dict,
+                             const gchar        *key,
+                             const GVariantType *expected_type)
+{
+  GVariant *result;
+
+  g_return_val_if_fail (is_valid_dict (dict), NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+
+  result = g_hash_table_lookup (GVSD(dict)->values, key);
+
+  if (result && (!expected_type || g_variant_is_of_type (result, expected_type)))
+    return g_variant_ref (result);
+
+  return NULL;
+}
+
+/**
+ * g_variant_dict_contains:
+ * @dict: a #GVariantDict
+ * @key: the key to lookup in the dictionary
+ *
+ * Checks if @key exists in @dict.
+ *
+ * Returns: %TRUE if @key is in @dict
+ *
+ * Since: 2.40
+ **/
+gboolean
+g_variant_dict_contains (GVariantDict *dict,
+                         const gchar  *key)
+{
+  g_return_val_if_fail (is_valid_dict (dict), FALSE);
+  g_return_val_if_fail (key != NULL, FALSE);
+
+  return g_hash_table_contains (GVSD(dict)->values, key);
+}
+
+/**
+ * g_variant_dict_insert:
+ * @dict: a #GVariantDict
+ * @key: the key to insert a value for
+ * @format_string: a #GVariant varargs format string
+ * @...: arguments, as per @format_string
+ *
+ * Inserts a value into a #GVariantDict.
+ *
+ * This call is a convenience wrapper that is exactly equivalent to
+ * calling g_variant_new() followed by g_variant_dict_insert_value().
+ *
+ * Since: 2.40
+ **/
+void
+g_variant_dict_insert (GVariantDict *dict,
+                       const gchar  *key,
+                       const gchar  *format_string,
+                       ...)
+{
+  va_list ap;
+
+  g_return_if_fail (is_valid_dict (dict));
+  g_return_if_fail (key != NULL);
+  g_return_if_fail (format_string != NULL);
+
+  va_start (ap, format_string);
+  g_variant_dict_insert_value (dict, key, g_variant_new_va (format_string, NULL, &ap));
+  va_end (ap);
+}
+
+/**
+ * g_variant_dict_insert_value:
+ * @dict: a #GVariantDict
+ * @key: the key to insert a value for
+ * @value: the value to insert
+ *
+ * Inserts (or replaces) a key in a #GVariantDict.
+ *
+ * @value is consumed if it is floating.
+ *
+ * Since: 2.40
+ **/
+void
+g_variant_dict_insert_value (GVariantDict *dict,
+                             const gchar  *key,
+                             GVariant     *value)
+{
+  g_return_if_fail (is_valid_dict (dict));
+  g_return_if_fail (key != NULL);
+  g_return_if_fail (value != NULL);
+
+  g_hash_table_insert (GVSD(dict)->values, g_strdup (key), g_variant_ref_sink (value));
+}
+
+/**
+ * g_variant_dict_remove:
+ * @dict: a #GVariantDict
+ * @key: the key to remove
+ *
+ * Removes a key and its associated value from a #GVariantDict.
+ *
+ * Returns: %TRUE if the key was found and removed
+ *
+ * Since: 2.40
+ **/
+gboolean
+g_variant_dict_remove (GVariantDict *dict,
+                       const gchar  *key)
+{
+  g_return_val_if_fail (is_valid_dict (dict), FALSE);
+  g_return_val_if_fail (key != NULL, FALSE);
+
+  return g_hash_table_remove (GVSD(dict)->values, key);
+}
+
+/**
+ * g_variant_dict_clear:
+ * @dict: a #GVariantDict
+ *
+ * Releases all memory associated with a #GVariantDict without freeing
+ * the #GVariantDict structure itself.
+ *
+ * It typically only makes sense to do this on a stack-allocated
+ * #GVariantDict if you want to abort building the value part-way
+ * through.  This function need not be called if you call
+ * g_variant_dict_end() and it also doesn't need to be called on dicts
+ * allocated with g_variant_dict_new (see g_variant_dict_unref() for
+ * that).
+ *
+ * It is valid to call this function on either an initialised
+ * #GVariantDict or one that was previously cleared by an earlier call
+ * to g_variant_dict_clear() but it is not valid to call this function
+ * on uninitialised memory.
+ *
+ * Since: 2.40
+ **/
+void
+g_variant_dict_clear (GVariantDict *dict)
+{
+  if (GVSD(dict)->magic == 0)
+    /* all-zeros case */
+    return;
+
+  g_return_if_fail (is_valid_dict (dict));
+
+  g_hash_table_unref (GVSD(dict)->values);
+  GVSD(dict)->values = NULL;
+
+  GVSD(dict)->magic = 0;
+}
+
+/**
+ * g_variant_dict_end:
+ * @dict: a #GVariantDict
+ *
+ * Returns the current value of @dict as a #GVariant of type
+ * %G_VARIANT_TYPE_VARDICT, clearing it in the process.
+ *
+ * It is not permissible to use @dict in any way after this call except
+ * for reference counting operations (in the case of a heap-allocated
+ * #GVariantDict) or by reinitialising it with g_variant_dict_init() (in
+ * the case of stack-allocated).
+ *
+ * Returns: (transfer none): a new, floating, #GVariant
+ *
+ * Since: 2.40
+ **/
+GVariant *
+g_variant_dict_end (GVariantDict *dict)
+{
+  GVariantBuilder builder;
+  GHashTableIter iter;
+  gpointer key, value;
+
+  g_return_if_fail (is_valid_dict (dict));
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
+
+  g_hash_table_iter_init (&iter, GVSD(dict)->values);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    g_variant_builder_add (&builder, "{sv}", (const gchar *) key, (GVariant *) value);
+
+  g_variant_dict_clear (dict);
+
+  return g_variant_builder_end (&builder);
+}
+
+/**
+ * g_variant_dict_ref:
+ * @dict: a heap-allocated #GVariantDict
+ *
+ * Increases the reference count on @dict.
+ *
+ * Don't call this on stack-allocated #GVariantDict instances or bad
+ * things will happen.
+ *
+ * Returns: (transfer full): a new reference to @dict
+ *
+ * Since: 2.40
+ **/
+GVariantDict *
+g_variant_dict_ref (GVariantDict *dict)
+{
+  g_return_if_fail (is_valid_heap_dict (dict));
+
+  GVHD(dict)->ref_count++;
+
+  return dict;
+}
+
+/**
+ * g_variant_dict_unref:
+ * @dict: (transfer full): a heap-allocated #GVariantDict
+ *
+ * Decreases the reference count on @dict.
+ *
+ * In the event that there are no more references, releases all memory
+ * associated with the #GVariantDict.
+ *
+ * Don't call this on stack-allocated #GVariantDict instances or bad
+ * things will happen.
+ *
+ * Since: 2.40
+ **/
+void
+g_variant_dict_unref (GVariantDict *dict)
+{
+  g_return_if_fail (is_valid_heap_dict (dict));
+
+  if (--GVHD(dict)->ref_count == 0)
+    {
+      g_variant_dict_clear (dict);
+      g_slice_free (struct heap_dict, (struct heap_dict *) dict);
+    }
+}
+
 
 /* Format strings {{{1 */
 /*< private >

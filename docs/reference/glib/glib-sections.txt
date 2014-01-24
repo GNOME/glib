@@ -3229,6 +3229,21 @@ g_variant_builder_open
 g_variant_builder_close
 
 <SUBSECTION>
+GVariantDict
+g_variant_dict_unref
+g_variant_dict_ref
+g_variant_dict_new
+g_variant_dict_init
+g_variant_dict_clear
+g_variant_dict_contains
+g_variant_dict_lookup
+g_variant_dict_lookup_value
+g_variant_dict_insert
+g_variant_dict_insert_value
+g_variant_dict_remove
+g_variant_dict_end
+
+<SUBSECTION>
 GVariantParseError
 G_VARIANT_PARSE_ERROR
 g_variant_parse
