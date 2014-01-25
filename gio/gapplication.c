@@ -165,14 +165,6 @@
  * </programlisting>
  * </example>
  *
- * <example id="gapplication-example-menu"><title>A GApplication with menus</title>
- * <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-menu.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- * </programlisting>
- * </example>
- *
  * <example id="gapplication-example-dbushooks"><title>Using extra D-Bus hooks with a GApplication</title>
  * <programlisting>
  * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-dbushooks.c">
