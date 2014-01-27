@@ -183,6 +183,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#include <unistd.h>
 
 #if defined __OpenBSD__
 #include <unistd.h>
@@ -248,6 +249,7 @@ struct _GOptionContext
   guint            help_enabled   : 1;
   guint            ignore_unknown : 1;
   guint            strv_mode      : 1;
+  guint            strict_posix   : 1;
 
   GOptionGroup    *main_group;
 
@@ -358,6 +360,14 @@ g_option_context_new (const gchar *parameter_string)
   context = g_new0 (GOptionContext, 1);
 
   context->parameter_string = g_strdup (parameter_string);
+  {
+    const char *argv[] = { "./a", "a", "-a", NULL };
+    /* Check to see if getopt will parse the "-a" or not.  If it finds
+     * no arguments then we are in strict POSIX mode.
+     */
+    optind = 1;
+    context->strict_posix = getopt (3, (char **) argv, "a") != 'a';
+  }
   context->help_enabled = TRUE;
   context->ignore_unknown = FALSE;
 
@@ -481,6 +491,65 @@ g_option_context_get_ignore_unknown_options (GOptionContext *context)
   g_return_val_if_fail (context != NULL, FALSE);
 
   return context->ignore_unknown;
+}
+
+/**
+ * g_option_context_set_strict_posix:
+ * @context: a #GoptionContext
+ *
+ * Sets strict POSIX mode.
+ *
+ * In strict POSIX mode, the first non-argument parameter encountered
+ * (eg: filename) terminates argument processing.  Remaining arguments
+ * are treated as non-options and are not attempted to be parsed.
+ *
+ * If strict POSIX mode is disabled then parsing is done in the GNU way
+ * where option arguments can be freely mixed with non-options.
+ *
+ * As an example, consider "ls foo -l".  With GNU style parsing, this
+ * will list "foo" in long mode.  In strict POSIX style, this will list
+ * the files named "foo" and "-l".
+ *
+ * The default is system-dependent.  In particular, on some systems, it
+ * may be modified by the POSIXLY_CORRECT environment variable.
+ *
+ * It may be useful to force strict POSIX mode when creating "verb
+ * style" command line tools.  For example, the "gsettings" command line
+ * tool supports the global option "--schemadir" as well as many
+ * subcommands ("get", "set", etc.) which each have their own set of
+ * arguments.  Using strict POSIX mode will allow parsing the global
+ * options up to the verb name while leaving the remaining options to be
+ * parsed by the relevant subcommand (which can be determined by
+ * examining the verb name, which should be present in argv[1] after
+ * parsing).
+ *
+ * Since: 2.44
+ **/
+void
+g_option_context_set_strict_posix (GOptionContext *context,
+                                   gboolean        strict_posix)
+{
+  g_return_if_fail (context != NULL);
+
+  context->strict_posix = strict_posix;
+}
+
+/**
+ * g_option_context_get_strict_posix:
+ * @context: a #GoptionContext
+ *
+ * Returns whether strict POSIX code is enabled.
+ *
+ * See g_option_context_set_strict_posix() for more information.
+ *
+ * Since: 2.44
+ **/
+gboolean
+g_option_context_get_strict_posix (GOptionContext *context)
+{
+  g_return_val_if_fail (context != NULL, FALSE);
+
+  return context->strict_posix;
 }
 
 /**
@@ -2060,6 +2129,9 @@ g_option_context_parse (GOptionContext   *context,
             }
           else
             {
+              if (context->strict_posix)
+                stop_parsing = TRUE;
+
               /* Collect remaining args */
               if (context->main_group &&
                   !parse_remaining_arg (context, context->main_group, &i,

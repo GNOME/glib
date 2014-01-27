@@ -310,6 +310,12 @@ void		g_option_context_set_ignore_unknown_options (GOptionContext *context,
 GLIB_AVAILABLE_IN_ALL
 gboolean        g_option_context_get_ignore_unknown_options (GOptionContext *context);
 
+GLIB_AVAILABLE_IN_2_44
+void            g_option_context_set_strict_posix           (GOptionContext *context,
+                                                             gboolean        strict_posix);
+GLIB_AVAILABLE_IN_2_44
+gboolean        g_option_context_get_strict_posix           (GOptionContext *context);
+
 GLIB_AVAILABLE_IN_ALL
 void            g_option_context_add_main_entries (GOptionContext      *context,
 						   const GOptionEntry  *entries,
