@@ -199,6 +199,15 @@ typedef gsize GType;
 #define G_TYPE_VARIANT_BUILDER (g_variant_builder_get_type ())
 
 /**
+ * G_TYPE_VARIANT_DICT:
+ *
+ * The #GType for a boxed type holding a #GVariantDict.
+ *
+ * Since: 2.40
+ */
+#define G_TYPE_VARIANT_DICT (g_variant_dict_get_type ())
+
+/**
  * G_TYPE_MAIN_LOOP:
  *
  * The #GType for a boxed type holding a #GMainLoop.
@@ -313,6 +322,8 @@ GLIB_AVAILABLE_IN_ALL
 GType   g_io_condition_get_type    (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_ALL
 GType   g_variant_builder_get_type (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_40
+GType   g_variant_dict_get_type    (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_ALL
 GType   g_key_file_get_type        (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_30

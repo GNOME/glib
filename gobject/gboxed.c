@@ -147,6 +147,7 @@ G_DEFINE_BOXED_TYPE (GVariantType, g_variant_type, g_variant_type_copy, g_varian
 #undef g_variant_type_get_type
 
 G_DEFINE_BOXED_TYPE (GVariantBuilder, g_variant_builder, g_variant_builder_ref, g_variant_builder_unref)
+G_DEFINE_BOXED_TYPE (GVariantDict, g_variant_dict, g_variant_dict_ref, g_variant_dict_unref)
 
 G_DEFINE_BOXED_TYPE (GError, g_error, g_error_copy, g_error_free)
 

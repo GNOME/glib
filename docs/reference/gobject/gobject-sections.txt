@@ -408,6 +408,7 @@ g_time_zone_get_type
 g_variant_get_gtype
 g_variant_type_get_gtype
 g_variant_builder_get_type
+g_variant_dict_get_type
 g_gtype_get_type
 g_main_context_get_type
 g_main_loop_get_type
