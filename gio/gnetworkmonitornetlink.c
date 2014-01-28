@@ -378,6 +378,16 @@ read_netlink_messages (GSocket      *socket,
 
           if (dest || gateway || oif)
             {
+              /* Unless we're processing the results of a dump, ignore
+               * IPv6 link-local multicast routes, which are added and
+               * removed all the time for some reason.
+               */
+              if (!nl->priv->dump_networks &&
+                  rtmsg->rtm_family == AF_INET6 &&
+                  rtmsg->rtm_dst_len != 0 &&
+                  IN6_IS_ADDR_MC_LINKLOCAL (dest))
+                continue;
+
               if (msg->nlmsg_type == RTM_NEWROUTE)
                 add_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest);
               else
