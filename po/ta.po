@@ -9,25 +9,26 @@
 # I. Felix <ifelix@redhat.com>, 2009.
 # Priyadharsini <priyafelix@gmail.com>, 2009.
 # I Felix <ifelix@redhat.com>, 2011.
-# Shantha kumar <shkumar@redhat.com>, 2012, 2013.
+# Shantha kumar <shkumar@redhat.com>, 2012, 2013, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.ta\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-11-06 15:56+0000\n"
-"PO-Revision-Date: 2013-11-11 14:20+0530\n"
+"POT-Creation-Date: 2014-01-21 17:01+0000\n"
+"PO-Revision-Date: 2014-01-30 15:02+0530\n"
 "Last-Translator: Shantha kumar <shkumar@redhat.com>\n"
-"Language-Team: Tamil <>\n"
+"Language-Team: Tamil <kde-i18n-doc@kde.org>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\\n;\n"
+"X-Generator: Lokalize 1.5\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\\n"
+";\n"
 
 #: ../gio/gapplication-tool.c:47 ../gio/gapplication-tool.c:48
-#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:504
+#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:510
 msgid "Print help"
 msgstr "உதவியை அச்சிடவும்"
 
@@ -37,27 +38,25 @@ msgid "[COMMAND]"
 msgstr "[COMMAND]"
 
 #: ../gio/gapplication-tool.c:51
-#| msgid "Print address"
 msgid "Print version"
 msgstr "அச்சுப் பதிப்பு"
 
-#: ../gio/gapplication-tool.c:52 ../gio/gsettings-tool.c:510
+#: ../gio/gapplication-tool.c:52 ../gio/gsettings-tool.c:516
 msgid "Print version information and exit"
 msgstr "பதிப்பு தகவலை அச்சிட்டு வெளியேறவும்"
 
 #: ../gio/gapplication-tool.c:54
-#| msgid "Can't find application"
 msgid "List applications"
 msgstr "பயன்பாடுகளைப் பட்டியலிடு"
 
 #: ../gio/gapplication-tool.c:55
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
 msgstr ""
-"நிறுவப்பட்டுள்ள D-Bus செயல்படுத்தக்கூடிய பயன்பாடுகளைப் பட்டியலிடு (.desktop கோப்பு "
+"நிறுவப்பட்டுள்ள D-Bus செயல்படுத்தக்கூடிய பயன்பாடுகளைப் பட்டியலிடு (.desktop "
+"கோப்பு "
 "மூலம்)"
 
 #: ../gio/gapplication-tool.c:57
-#| msgid "Can't find application"
 msgid "Launch an application"
 msgstr "ஒரு பயன்பாட்டைத் துவக்கவும்"
 
@@ -87,7 +86,8 @@ msgstr "கிடைக்கும் செயல்களைப் பட்�
 
 #: ../gio/gapplication-tool.c:66
 msgid "List static actions for an application (from .desktop file)"
-msgstr "ஒரு பயன்பாட்டுக்கான நிலையான செயல்களைப் பட்டியலிடு (.desktop கோப்பிலிருந்து)"
+msgstr ""
+"ஒரு பயன்பாட்டுக்கான நிலையான செயல்களைப் பட்டியலிடு (.desktop கோப்பிலிருந்து)"
 
 #: ../gio/gapplication-tool.c:67 ../gio/gapplication-tool.c:73
 msgid "APPID"
@@ -106,8 +106,8 @@ msgstr "விரிவான உதவி அச்சிடப்பட வே
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "D-Bus வடிவமைப்பில் பயன்பாடு அடையாளங்காட்டி (எ.கா: org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:74 ../gio/glib-compile-resources.c:592
-#: ../gio/glib-compile-resources.c:623 ../gio/gresource-tool.c:482
+#: ../gio/gapplication-tool.c:74 ../gio/glib-compile-resources.c:591
+#: ../gio/glib-compile-resources.c:622 ../gio/gresource-tool.c:482
 #: ../gio/gresource-tool.c:548
 msgid "FILE"
 msgstr "FILE"
@@ -115,16 +115,15 @@ msgstr "FILE"
 #: ../gio/gapplication-tool.c:74
 msgid "Optional relative or relative filenames, or URIs to open"
 msgstr ""
-"திறக்க வேண்டிய விரும்பினால் பயன்படுத்தக்கூடிய உறவு அல்லது உறவு கோப்புப் பெயர்கள் அல்லது "
+"திறக்க வேண்டிய விரும்பினால் பயன்படுத்தக்கூடிய உறவு அல்லது உறவு கோப்புப் "
+"பெயர்கள் அல்லது "
 "URIகள்"
 
 #: ../gio/gapplication-tool.c:75
-#| msgid "SECTION"
 msgid "ACTION"
 msgstr "செயல்"
 
 #: ../gio/gapplication-tool.c:75
-#| msgid "Destination name to introspect"
 msgid "The action name to invoke"
 msgstr "தருவிக்க வேண்டிய செயல் பெயர்"
 
@@ -135,10 +134,11 @@ msgstr "அளவுரு"
 #: ../gio/gapplication-tool.c:76
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr ""
-"GVariant வடிவமைப்பில், செயல் தருவித்தலுக்கான விரும்பினால் பயன்படுத்தக்கூடிய அளவுரு"
+"GVariant வடிவமைப்பில், செயல் தருவித்தலுக்கான விரும்பினால் பயன்படுத்தக்கூடிய "
+"அளவுரு"
 
 #: ../gio/gapplication-tool.c:98 ../gio/gresource-tool.c:513
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:596
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -148,12 +148,11 @@ msgstr ""
 "\n"
 
 #: ../gio/gapplication-tool.c:103
-#| msgid "Usage:"
 msgid "Usage:\n"
 msgstr "பயன்பாடு:\n"
 
 #: ../gio/gapplication-tool.c:116 ../gio/gresource-tool.c:538
-#: ../gio/gsettings-tool.c:624
+#: ../gio/gsettings-tool.c:630
 msgid "Arguments:\n"
 msgstr "விவாதங்கள்:\n"
 
@@ -187,7 +186,6 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:173
 #, c-format
-#| msgid "invalid GVariant type string '%s'"
 msgid "invalid application id: '%s'\n"
 msgstr "செல்லுபடியாகாத பயன்பாட்டு id: '%s'\n"
 
@@ -203,13 +201,11 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:264
 #, c-format
-#| msgid "Could not connect to %s: "
 msgid "unable to connect to D-Bus: %s\n"
 msgstr "D-Bus க்கு இணைக்க முடியவில்லை: %s\n"
 
 #: ../gio/gapplication-tool.c:284
 #, c-format
-#| msgid "Error sending message: %s"
 msgid "error sending %s message to application: %s\n"
 msgstr "%s செய்திகளை பயன்பாட்டுக்கு அனுப்புவதில் பிழை: %s\n"
 
@@ -225,35 +221,31 @@ msgid ""
 "action names must consist of only alphanumerics, '-' and '.'\n"
 msgstr ""
 "செல்லுபடியாகாத செயல் பெயர்: '%s'\n"
-"செயல் பெயர்களில் எண்களும் எழுத்துகளும் '-', '.' ஆகிய எழுத்துகளும் மட்டுமே இருக்கலாம்\n"
+"செயல் பெயர்களில் எண்களும் எழுத்துகளும் '-', '.' ஆகிய எழுத்துகளும் மட்டுமே "
+"இருக்கலாம்\n"
 
-#: ../gio/gapplication-tool.c:339
+#: ../gio/gapplication-tool.c:342
 #, c-format
-#| msgid "Error parsing parameter %d: %s\n"
 msgid "error parsing action parameter: %s\n"
 msgstr "செயல் அளவுருவைப் பாகுபடுத்துவதில் பிழை: %s\n"
 
-#: ../gio/gapplication-tool.c:350
+#: ../gio/gapplication-tool.c:354
 #, c-format
 msgid "actions accept a maximum of one parameter\n"
 msgstr "செயல் அதிகபட்சம் ஒரு அளவுருவையே ஏற்கும்\n"
 
-#: ../gio/gapplication-tool.c:405
+#: ../gio/gapplication-tool.c:409
 #, c-format
 msgid "list-actions command takes only the application id"
 msgstr "list-actions கட்டளை பயன்பாட்டு id ஐ மட்டுமே எடுத்துக்கொள்ளும்"
 
-#: ../gio/gapplication-tool.c:415
+#: ../gio/gapplication-tool.c:419
 #, c-format
-#| msgid "Unable to find terminal required for application"
 msgid "unable to find desktop file for application %s\n"
 msgstr "பயன்பாடு %s க்கு டெஸ்க்டாப் கோப்பைக் கண்டறிய முடியவில்லை\n"
 
-#: ../gio/gapplication-tool.c:460
+#: ../gio/gapplication-tool.c:464
 #, c-format
-#| msgid ""
-#| "Unknown command %s\n"
-#| "\n"
 msgid ""
 "unrecognised command: %s\n"
 "\n"
@@ -264,7 +256,7 @@ msgstr ""
 #: ../gio/gbufferedinputstream.c:422 ../gio/gbufferedinputstream.c:501
 #: ../gio/ginputstream.c:175 ../gio/ginputstream.c:367
 #: ../gio/ginputstream.c:605 ../gio/ginputstream.c:823
-#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:722
+#: ../gio/goutputstream.c:202 ../gio/goutputstream.c:826
 #: ../gio/gpollableinputstream.c:207 ../gio/gpollableoutputstream.c:208
 #, c-format
 msgid "Too large count value passed to %s"
@@ -280,7 +272,7 @@ msgid "Cannot truncate GBufferedInputStream"
 msgstr "GBufferedInputStream ஐ தசமமிட முடியவில்லை"
 
 #: ../gio/gbufferedinputstream.c:985 ../gio/ginputstream.c:1013
-#: ../gio/giostream.c:280 ../gio/goutputstream.c:1364
+#: ../gio/giostream.c:280 ../gio/goutputstream.c:1468
 msgid "Stream is already closed"
 msgstr "ஸ்ட்ரீம் ஏற்கனவே மூடப்பட்டது"
 
@@ -288,10 +280,10 @@ msgstr "ஸ்ட்ரீம் ஏற்கனவே மூடப்பட்�
 msgid "Truncate not supported on base stream"
 msgstr "பேஸ் ஸ்ட்ரீமில் ட்ரன்க்கேட் செயலுக்கு ஆதரவில்லை"
 
-#: ../gio/gcancellable.c:314 ../gio/gdbusconnection.c:1897
-#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
-#: ../gio/glocalfile.c:2185 ../gio/gsimpleasyncresult.c:843
-#: ../gio/gsimpleasyncresult.c:869
+#: ../gio/gcancellable.c:314 ../gio/gdbusconnection.c:1893
+#: ../gio/gdbusconnection.c:1985 ../gio/gdbusprivate.c:1418
+#: ../gio/glocalfile.c:2183 ../gio/gsimpleasyncresult.c:836
+#: ../gio/gsimpleasyncresult.c:862
 #, c-format
 msgid "Operation was cancelled"
 msgstr "செயல்பாடு ரத்து செய்யப்பட்டது"
@@ -310,13 +302,13 @@ msgstr "இலக்கில் போதுமான இடம் இல்ல
 
 #: ../gio/gcharsetconverter.c:344 ../gio/gdatainputstream.c:849
 #: ../gio/gdatainputstream.c:1259 ../glib/gconvert.c:464
-#: ../glib/gconvert.c:856 ../glib/giochannel.c:1586 ../glib/giochannel.c:1628
-#: ../glib/giochannel.c:2472 ../glib/gutf8.c:833 ../glib/gutf8.c:1284
+#: ../glib/gconvert.c:856 ../glib/giochannel.c:1582 ../glib/giochannel.c:1624
+#: ../glib/giochannel.c:2468 ../glib/gutf8.c:843 ../glib/gutf8.c:1303
 msgid "Invalid byte sequence in conversion input"
 msgstr "நிலை மாற்றியின் உள்ளீடுக்கு தவறான பைட் வரிசைமுறை"
 
 #: ../gio/gcharsetconverter.c:349 ../glib/gconvert.c:472
-#: ../glib/gconvert.c:781 ../glib/giochannel.c:1593 ../glib/giochannel.c:2484
+#: ../glib/gconvert.c:781 ../glib/giochannel.c:1589 ../glib/giochannel.c:2480
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "மாற்றும் போது பிழை: %s"
@@ -325,13 +317,13 @@ msgstr "மாற்றும் போது பிழை: %s"
 msgid "Cancellable initialization not supported"
 msgstr "ரத்துசெய்யக்கூடிய துவக்குதல் துணைபுரிவதில்லை"
 
-#: ../gio/gcharsetconverter.c:457 ../glib/gconvert.c:344
-#: ../glib/giochannel.c:1414
+#: ../gio/gcharsetconverter.c:456 ../glib/gconvert.c:344
+#: ../glib/giochannel.c:1410
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "வரியுரு வகை '%s' இலிருந்து '%s' க்கு மாற்றுவதற்கு ஆதரவளிப்பு கிடையாது"
 
-#: ../gio/gcharsetconverter.c:461 ../glib/gconvert.c:348
+#: ../gio/gcharsetconverter.c:460 ../glib/gconvert.c:348
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' லிருந்து '%s'க்கு மாற்றியை திறக்க முடியவில்லை"
@@ -363,7 +355,6 @@ msgid "GCredentials does not contain a process ID on this OS"
 msgstr "இந்த OS இல் GCredentials க்கு ஒரு செயலாக்க ID இல்லை"
 
 #: ../gio/gcredentials.c:540
-#| msgid "GCredentials is not implemented on this OS"
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "இந்த OS இல் சான்றளிப்புகளை ஸ்பூஃபிங் செய்ய முடியாது"
 
@@ -411,7 +402,8 @@ msgid ""
 "Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr ""
-"முகவரியின் '%3$s' கூறில் உள்ள விசை/மதிப்பு ஜோடி %1$d, '%2$s' இல் சமக் குறி இல்லை"
+"முகவரியின் '%3$s' கூறில் உள்ள விசை/மதிப்பு ஜோடி %1$d, '%2$s' இல் சமக் குறி "
+"இல்லை"
 
 #: ../gio/gdbusaddress.c:489
 #, c-format
@@ -428,7 +420,8 @@ msgid ""
 "Error in address '%s' - the unix transport requires exactly one of the keys "
 "'path' or 'abstract' to be set"
 msgstr ""
-"முகவரியில் பிழை '%s' - யுனிக்ஸ் போக்குவரத்துசரியாக விசைகளின் ஒரு 'பாதை' அல்லது "
+"முகவரியில் பிழை '%s' - யுனிக்ஸ் போக்குவரத்துசரியாக விசைகளின் ஒரு 'பாதை' "
+"அல்லது "
 "'தடுத்தல்' போன்றவற்றை அமைக்க கோருகிறது"
 
 #: ../gio/gdbusaddress.c:603
@@ -444,7 +437,8 @@ msgstr "முகவரி '%s' இல் பிழை - துறை பண்�
 #: ../gio/gdbusaddress.c:631
 #, c-format
 msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
-msgstr "முகவரி '%s' இல் பிழை - நினைவுக்குறியீடுகோப்பு பண்பு விடுபட்டது அல்லது தவறானது"
+msgstr ""
+"முகவரி '%s' இல் பிழை - நினைவுக்குறியீடுகோப்பு பண்பு விடுபட்டது அல்லது தவறானது"
 
 #: ../gio/gdbusaddress.c:652
 msgid "Error auto-launching: "
@@ -469,7 +463,8 @@ msgstr "தற்சமய கோப்பு '%s' இலிருந்து �
 #, c-format
 msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr ""
-"தற்சமய கோப்பு '%s' இலிருந்து பிழை வாசிக்கிறது, 16 பைட்டுகள் எதிர்பார்க்கப்பட்டது, %d "
+"தற்சமய கோப்பு '%s' இலிருந்து பிழை வாசிக்கிறது, 16 பைட்டுகள் "
+"எதிர்பார்க்கப்பட்டது, %d "
 "பெறப்பட்டது"
 
 #: ../gio/gdbusaddress.c:741
@@ -500,17 +495,19 @@ msgstr "பிழை ஸ்பேனிங் கட்டளை வரி '%s':
 msgid "(Type any character to close this window)\n"
 msgstr "(இந்த சாளரத்தை மூட ஏதேனும் ஒரு எழுத்துக்குறியைத் தட்டச்சு செய்யவும்)\n"
 
-#: ../gio/gdbusaddress.c:1429
+#: ../gio/gdbusaddress.c:1427
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "dbus அமர்வு இயங்கவில்லை தானியக்க தொடக்கம் தோல்வியடைந்தது"
 
-#: ../gio/gdbusaddress.c:1450
+#: ../gio/gdbusaddress.c:1448
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
-msgstr "அமர்வு பஸ் முகவரியை வரையறுக்க முடியவில்லை (இந்த OS க்காக செயல்படுத்தப்படவில்லை)"
+msgstr ""
+"அமர்வு பஸ் முகவரியை வரையறுக்க முடியவில்லை (இந்த OS க்காக "
+"செயல்படுத்தப்படவில்லை)"
 
-#: ../gio/gdbusaddress.c:1549 ../gio/gdbusconnection.c:6908
+#: ../gio/gdbusaddress.c:1547 ../gio/gdbusconnection.c:6904
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -519,7 +516,7 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE சூழல் மாறியிலிருந்து பஸ் முகவரியை வரையறுக்க முடியாது- "
 "தெரியாத மதிப்பு '%s'"
 
-#: ../gio/gdbusaddress.c:1558 ../gio/gdbusconnection.c:6917
+#: ../gio/gdbusaddress.c:1556 ../gio/gdbusconnection.c:6913
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -527,19 +524,22 @@ msgstr ""
 "பஸ் முகவரியை வரையறுக்க முடியவில்லை ஏனெனில் DBUS_STARTER_BUS_TYPE சூழல் மாறி "
 "அமைக்கப்படவில்லை "
 
-#: ../gio/gdbusaddress.c:1568
+#: ../gio/gdbusaddress.c:1566
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "தெரியாத பஸ் வகை %d"
 
 #: ../gio/gdbusauth.c:295
 msgid "Unexpected lack of content trying to read a line"
-msgstr "எதிர்பார்க்கப்படாத உள்ளடக்கத்தின் பற்றாக்குறை ஒரு வரியில் வாசிக்க முயற்சிக்கிறது"
+msgstr ""
+"எதிர்பார்க்கப்படாத உள்ளடக்கத்தின் பற்றாக்குறை ஒரு வரியில் வாசிக்க "
+"முயற்சிக்கிறது"
 
 #: ../gio/gdbusauth.c:339
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr ""
-"எதிர்பார்க்கப்படாத உள்ளடக்கத்தின் பற்றாக்குறை ஒரு வரியில் (பாதுகாப்பாக) வாசிக்க "
+"எதிர்பார்க்கப்படாத உள்ளடக்கத்தின் பற்றாக்குறை ஒரு வரியில் (பாதுகாப்பாக) "
+"வாசிக்க "
 "முயற்சிக்கிறது"
 
 #: ../gio/gdbusauth.c:510
@@ -547,166 +547,175 @@ msgstr ""
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
-"அனைத்து கிடைக்கும் அங்கீகார நுட்பங்கள் வெளியேறப்பட்டது (முயற்சித்தது: %s) (இருப்பவை: %s)"
+"அனைத்து கிடைக்கும் அங்கீகார நுட்பங்கள் வெளியேறப்பட்டது (முயற்சித்தது: %s) "
+"(இருப்பவை: %s)"
 
 #: ../gio/gdbusauth.c:1172
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
-msgstr "GDBusAuthObserver::authorize-authenticated-peer வழியாக ரத்துசெய்யப்பட்டது"
+msgstr ""
+"GDBusAuthObserver::authorize-authenticated-peer வழியாக ரத்துசெய்யப்பட்டது"
 
-#: ../gio/gdbusauthmechanismsha1.c:262
+#: ../gio/gdbusauthmechanismsha1.c:263
 #, c-format
 msgid "Error when getting information for directory '%s': %s"
 msgstr "'%s' கோப்புறைக்கான தகவலைப் பெறுகையில் பிழை: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:274
+#: ../gio/gdbusauthmechanismsha1.c:275
 #, c-format
 msgid ""
 "Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"அடைவிலுள்ள '%s' அனுமதிகள் தவறானது. எதிர்பாக்கப்பட்ட முறைமை 0700, கிடைத்தது 0%o ஆகும்"
+"அடைவிலுள்ள '%s' அனுமதிகள் தவறானது. எதிர்பாக்கப்பட்ட முறைமை 0700, கிடைத்தது 0%"
+"o ஆகும்"
 
-#: ../gio/gdbusauthmechanismsha1.c:295
+#: ../gio/gdbusauthmechanismsha1.c:296
 #, c-format
 msgid "Error creating directory '%s': %s"
 msgstr "பிழை உருவாக்கும் அடைவு '%s': %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:378
+#: ../gio/gdbusauthmechanismsha1.c:379
 #, c-format
 msgid "Error opening keyring '%s' for reading: "
 msgstr "திறக்கும் கீரிங் '%s' க்காக வாசிப்பத்தில் பிழை: "
 
-#: ../gio/gdbusauthmechanismsha1.c:402 ../gio/gdbusauthmechanismsha1.c:715
+#: ../gio/gdbusauthmechanismsha1.c:403 ../gio/gdbusauthmechanismsha1.c:716
 #, c-format
 msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "கீரிங்கின் வரி %d '%s' இல் உள்ளடக்கத்துடன் '%s' தவறானது"
 
-#: ../gio/gdbusauthmechanismsha1.c:416 ../gio/gdbusauthmechanismsha1.c:729
+#: ../gio/gdbusauthmechanismsha1.c:417 ../gio/gdbusauthmechanismsha1.c:730
 #, c-format
 msgid ""
 "First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "வரியின் முதல் டோக்கன் %d கீரிங் '%s'இல் உள்ளடக்கத்துடன் '%s' தவறானது"
 
-#: ../gio/gdbusauthmechanismsha1.c:431 ../gio/gdbusauthmechanismsha1.c:743
+#: ../gio/gdbusauthmechanismsha1.c:432 ../gio/gdbusauthmechanismsha1.c:744
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at '%s' with content '%s' is malformed"
-msgstr "வரியின் இரண்டாவது டோக்கன் %d கீரிங் '%s'இல் உள்ளடக்கத்துடன் '%s' தவறானது"
+msgstr ""
+"வரியின் இரண்டாவது டோக்கன் %d கீரிங் '%s'இல் உள்ளடக்கத்துடன் '%s' தவறானது"
 
-#: ../gio/gdbusauthmechanismsha1.c:455
+#: ../gio/gdbusauthmechanismsha1.c:456
 #, c-format
 msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr "id %d உடன்  '%s' விசைரிங்கில் குக்கீயை தேட முடியவில்லை"
 
-#: ../gio/gdbusauthmechanismsha1.c:533
+#: ../gio/gdbusauthmechanismsha1.c:534
 #, c-format
 msgid "Error deleting stale lock file '%s': %s"
 msgstr "பிழை அழிக்கும் பழைய பூட்டு கோப்பு '%s': %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:565
+#: ../gio/gdbusauthmechanismsha1.c:566
 #, c-format
 msgid "Error creating lock file '%s': %s"
 msgstr "பிழை உருவாக்கும் பூட்டு கோப்பு '%s' : %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:595
+#: ../gio/gdbusauthmechanismsha1.c:596
 #, c-format
 msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr "பிழை மூடும் (இணைப்பில்லாத) பூட்டு கோப்பு '%s': %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:605
+#: ../gio/gdbusauthmechanismsha1.c:606
 #, c-format
 msgid "Error unlinking lock file '%s': %s"
 msgstr "பிழை இணைப்பு நீக்கும் பூட்டு கோப்பு '%s' : %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:682
+#: ../gio/gdbusauthmechanismsha1.c:683
 #, c-format
 msgid "Error opening keyring '%s' for writing: "
 msgstr "எழுதுவதற்காக பிழை திறக்கும் கீரிங் '%s' : "
 
-#: ../gio/gdbusauthmechanismsha1.c:879
+#: ../gio/gdbusauthmechanismsha1.c:880
 #, c-format
 msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(கூடுதலாக, '%s' க்காக வெளியிடும் பூட்டும் தொல்வியுற்றது: %s) "
 
-#: ../gio/gdbusconnection.c:609 ../gio/gdbusconnection.c:2452
+#: ../gio/gdbusconnection.c:605 ../gio/gdbusconnection.c:2448
 msgid "The connection is closed"
 msgstr "இணைப்பு மூடப்பட்டது"
 
-#: ../gio/gdbusconnection.c:1942
+#: ../gio/gdbusconnection.c:1938
 msgid "Timeout was reached"
 msgstr "நேரம்முடிவு பெறப்பட்டது"
 
-#: ../gio/gdbusconnection.c:2574
+#: ../gio/gdbusconnection.c:2570
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
-msgstr "ஒரு கிளையன்ட் -பக்க இணைப்பை உருவாக்கும் போது ஆதரிக்கப்படாத கொடிகள் எதிர்ப்பட்டன"
+msgstr ""
+"ஒரு கிளையன்ட் -பக்க இணைப்பை உருவாக்கும் போது ஆதரிக்கப்படாத கொடிகள் "
+"எதிர்ப்பட்டன"
 
-#: ../gio/gdbusconnection.c:4146 ../gio/gdbusconnection.c:4489
+#: ../gio/gdbusconnection.c:4142 ../gio/gdbusconnection.c:4485
 #, c-format
 msgid ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"'org.freedesktop.DBus.Properties' பொருளில் %s பாதையில் இது போன்ற இடைமுகம் இல்லை"
+"'org.freedesktop.DBus.Properties' பொருளில் %s பாதையில் இது போன்ற இடைமுகம் "
+"இல்லை"
 
-#: ../gio/gdbusconnection.c:4288
+#: ../gio/gdbusconnection.c:4284
 #, c-format
 msgid "No such property '%s'"
 msgstr "'%s' போன்ற பண்பு எதுவும் இல்லை"
 
-#: ../gio/gdbusconnection.c:4300
+#: ../gio/gdbusconnection.c:4296
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "பண்பு '%s' ஐ வாசிக்க முடியவில்லை"
 
-#: ../gio/gdbusconnection.c:4311
+#: ../gio/gdbusconnection.c:4307
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "பண்பு '%s' ஐ எழுத முடியவில்லை"
 
-#: ../gio/gdbusconnection.c:4331
+#: ../gio/gdbusconnection.c:4327
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
-msgstr "பிழை அமைக்கும் பண்பு '%s': எதிர்பார்க்கப்பட்ட வகை '%s' ஆனால் கிடைத்தது '%s' ஆகும்"
+msgstr ""
+"பிழை அமைக்கும் பண்பு '%s': எதிர்பார்க்கப்பட்ட வகை '%s' ஆனால் கிடைத்தது '%s' "
+"ஆகும்"
 
-#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6351
+#: ../gio/gdbusconnection.c:4428 ../gio/gdbusconnection.c:6347
 #, c-format
 msgid "No such interface '%s'"
 msgstr "'%s' போன்ற இடைமுகம் இல்லை"
 
-#: ../gio/gdbusconnection.c:4639
+#: ../gio/gdbusconnection.c:4635
 msgid "No such interface"
 msgstr "இது போன்ற இடைமுகம் இல்லை"
 
-#: ../gio/gdbusconnection.c:4857 ../gio/gdbusconnection.c:6857
+#: ../gio/gdbusconnection.c:4853 ../gio/gdbusconnection.c:6853
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "'%s' பொருளில்  பாதை %s போன்ற இடைமுகம் இல்லை"
 
-#: ../gio/gdbusconnection.c:4954
+#: ../gio/gdbusconnection.c:4950
 #, c-format
 msgid "No such method '%s'"
 msgstr "'%s' போன்ற முறை இல்லை"
 
-#: ../gio/gdbusconnection.c:4985
+#: ../gio/gdbusconnection.c:4981
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "செய்தியின் வகை, '%s', எதிர்பார்க்கப்பட வகை '%s' க்கு பொருந்தவில்லை"
 
-#: ../gio/gdbusconnection.c:5183
+#: ../gio/gdbusconnection.c:5179
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "இடைமுகம் %s க்காக %s இல் ஏற்கனவே ஒரு பொருள் ஏற்றுமதி செய்யப்பட்டது"
 
-#: ../gio/gdbusconnection.c:5381
+#: ../gio/gdbusconnection.c:5377
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "முறை '%s' திரும்பிய வகை '%s', ஆனால் எதிர்பார்க்கப்பட்டது '%s'"
 
-#: ../gio/gdbusconnection.c:6462
+#: ../gio/gdbusconnection.c:6458
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "இடைமுகத்தில் '%s' முறை '%s' உடன் கையெழுத்து '%s' இல்லை"
 
-#: ../gio/gdbusconnection.c:6581
+#: ../gio/gdbusconnection.c:6577
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "ஒரு துணைமரமானது  %s க்காக ஏற்கனவே வெளியேற்றப்பட்டது"
@@ -725,18 +734,21 @@ msgstr "METHOD_RETURN  செய்தி: REPLY_SERIAL தலைப்பு �
 
 #: ../gio/gdbusmessage.c:1305
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
-msgstr "ERROR செய்தி: REPLY_SERIAL அல்லது ERROR_NAME தலைப்பு புலம் விடுபடுகிறது"
+msgstr ""
+"ERROR செய்தி: REPLY_SERIAL அல்லது ERROR_NAME தலைப்பு புலம் விடுபடுகிறது"
 
 #: ../gio/gdbusmessage.c:1318
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
-msgstr "SIGNAL செய்தி: PATH, INTERFACE அல்லது MEMBER தலைப்பு புலம் விடுபடுகிறது"
+msgstr ""
+"SIGNAL செய்தி: PATH, INTERFACE அல்லது MEMBER தலைப்பு புலம் விடுபடுகிறது"
 
 #: ../gio/gdbusmessage.c:1326
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
 msgstr ""
-"SIGNAL செய்தி: PATH தலைப்பு புலம் /org/freedesktop/DBus/Local க்காக முன்பதியப்பட்ட "
+"SIGNAL செய்தி: PATH தலைப்பு புலம் /org/freedesktop/DBus/Local க்காக "
+"முன்பதியப்பட்ட "
 "மதிப்பினை பயன்படுத்துகிறது"
 
 #: ../gio/gdbusmessage.c:1334
@@ -765,7 +777,8 @@ msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
 "(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
-"எதிர்பார்க்கப்பட்ட சரியான UTF-8 சரம் ஆனால்தவறான கைட்டுகள் பைட் ஆஃப்செட் %d இல் கிடைத்தது "
+"எதிர்பார்க்கப்பட்ட சரியான UTF-8 சரம் ஆனால்தவறான கைட்டுகள் பைட் ஆஃப்செட் %d "
+"இல் கிடைத்தது "
 "(சரத்தின் நீளம் %d). சரியான UTF-8 சரமானது '%s' புள்ளி இருக்கும் வரை"
 
 #: ../gio/gdbusmessage.c:1619
@@ -785,20 +798,25 @@ msgid ""
 msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
-"எதிர்கொள்ளப்பட்ட அம்புக்குறியின் நீளம் %u பைட். அதிகபட்ச நீளம் 2<<26 bytes (64 MiB)."
+"எதிர்கொள்ளப்பட்ட அம்புக்குறியின் நீளம் %u பைட். அதிகபட்ச நீளம் 2<<26 bytes "
+"(64 MiB)."
 msgstr[1] ""
-"எதிர்கொள்ளப்பட்ட அம்புக்குறி நீள %u பைட்டுகள். அதிகபட்ச நீளம் 2<<26 bytes (64 MiB)."
+"எதிர்கொள்ளப்பட்ட அம்புக்குறி நீள %u பைட்டுகள். அதிகபட்ச நீளம் 2<<26 bytes (64 "
+"MiB)."
 
 #: ../gio/gdbusmessage.c:1851
 #, c-format
 msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
-msgstr "மாறிக்கான பகுக்கப்பட்ட மதிப்பு '%s' ஆனது ஒரு சரியான D-Bus கையெழுத்திற்கு இல்லை"
+msgstr ""
+"மாறிக்கான பகுக்கப்பட்ட மதிப்பு '%s' ஆனது ஒரு சரியான D-Bus கையெழுத்திற்கு இல்லை"
 
 #: ../gio/gdbusmessage.c:1875
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string '%s' from the D-Bus wire format"
-msgstr "GVariant உடன் சர வகை '%s' இலிருந்து D-Bus ஒயர் வடிவத்தில் வரிசைநீக்கப்பட்ட பிழை"
+msgstr ""
+"GVariant உடன் சர வகை '%s' இலிருந்து D-Bus ஒயர் வடிவத்தில் வரிசைநீக்கப்பட்ட "
+"பிழை"
 
 #: ../gio/gdbusmessage.c:2062
 #, c-format
@@ -812,28 +830,33 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2075
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
-msgstr "தவறான முக்கியமான நெறிமுறை பதிப்பு. எதிர்பார்க்கப்பட்டது 1 ஆனால் %d காணப்பட்டது"
+msgstr ""
+"தவறான முக்கியமான நெறிமுறை பதிப்பு. எதிர்பார்க்கப்பட்டது 1 ஆனால் %d காணப்பட்டது"
 
 #: ../gio/gdbusmessage.c:2131
 #, c-format
 msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
-"கையெழுத்து தலைப்பு கையெழுத்து '%s' உடன் காணப்பட்டது ஆனால் செய்தியின் மூயப்பகுதி "
+"கையெழுத்து தலைப்பு கையெழுத்து '%s' உடன் காணப்பட்டது ஆனால் செய்தியின் "
+"மூயப்பகுதி "
 "காலியாக உள்ளது"
 
 #: ../gio/gdbusmessage.c:2145
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
-msgstr "பகுக்கப்பட்ட மதிப்பு '%s' ஆனது ஒரு சரியான D-Bus கையெழுத்து இல்லை (மையத்திற்கு)"
+msgstr ""
+"பகுக்கப்பட்ட மதிப்பு '%s' ஆனது ஒரு சரியான D-Bus கையெழுத்து இல்லை (மையத்திற்கு)"
 
 #: ../gio/gdbusmessage.c:2175
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] ""
-"கையெழுத்து தலைப்பு எதுவும் செய்தியில் இல்லை ஆனால் செய்தி மையப்பகுதி %u பைட் ஆகும்"
+"கையெழுத்து தலைப்பு எதுவும் செய்தியில் இல்லை ஆனால் செய்தி மையப்பகுதி %u பைட் "
+"ஆகும்"
 msgstr[1] ""
-"கையெழுத்து தலைப்பு எதுவும் செய்தியில் இல்லை ஆனால் செய்தி மையப்பகுதி %u பைட்டுகள் ஆகும்"
+"கையெழுத்து தலைப்பு எதுவும் செய்தியில் இல்லை ஆனால் செய்தி மையப்பகுதி %u "
+"பைட்டுகள் ஆகும்"
 
 #: ../gio/gdbusmessage.c:2185
 msgid "Cannot deserialize message: "
@@ -843,7 +866,9 @@ msgstr "செய்தி வரிசைநீக்க முடியவி�
 #, c-format
 msgid ""
 "Error serializing GVariant with type string '%s' to the D-Bus wire format"
-msgstr "GVariant உடன் சர வகை '%s' இலிருந்து D-Bus ஒயர் வடிவத்தில் வரிசைநீக்கப்பட்ட பிழை"
+msgstr ""
+"GVariant உடன் சர வகை '%s' இலிருந்து D-Bus ஒயர் வடிவத்தில் வரிசைநீக்கப்பட்ட "
+"பிழை"
 
 #: ../gio/gdbusmessage.c:2643
 #, c-format
@@ -851,7 +876,8 @@ msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
 msgstr ""
-"செய்தியானது %d கோப்பு விளக்கிகளை கொண்டுள்ளது ஆனால் புலமானது %d கோப்பு விளக்கியை "
+"செய்தியானது %d கோப்பு விளக்கிகளை கொண்டுள்ளது ஆனால் புலமானது %d கோப்பு "
+"விளக்கியை "
 "சுட்டிக் காட்டுகிறது"
 
 #: ../gio/gdbusmessage.c:2651
@@ -861,7 +887,8 @@ msgstr "செய்தியை வரிசைப்படுத்த மு�
 #: ../gio/gdbusmessage.c:2695
 #, c-format
 msgid "Message body has signature '%s' but there is no signature header"
-msgstr "செய்திப் பகுதி கையெழுத்து '%s' ஐ கொண்டுள்ளது ஆனால் கையெழுத்து தலைப்பு இல்லை"
+msgstr ""
+"செய்திப் பகுதி கையெழுத்து '%s' ஐ கொண்டுள்ளது ஆனால் கையெழுத்து தலைப்பு இல்லை"
 
 #: ../gio/gdbusmessage.c:2705
 #, c-format
@@ -869,13 +896,15 @@ msgid ""
 "Message body has type signature '%s' but signature in the header field is "
 "'%s'"
 msgstr ""
-"செய்திப் பகுதி வகை கையெழுத்து '%s' ஐ கொண்டுள்ளது ஆனால் கையெழுத்து தலைப்பு புலம் '%s' "
+"செய்திப் பகுதி வகை கையெழுத்து '%s' ஐ கொண்டுள்ளது ஆனால் கையெழுத்து தலைப்பு "
+"புலம் '%s' "
 "இல் உள்ளது"
 
 #: ../gio/gdbusmessage.c:2721
 #, c-format
 msgid "Message body is empty but signature in the header field is '(%s)'"
-msgstr "செய்திப் பகுதி காலியாக உள்ளது ஆனால் கையெழுத்து தலைப்பு புலம் '(%s)' இல் உள்ளது"
+msgstr ""
+"செய்திப் பகுதி காலியாக உள்ளது ஆனால் கையெழுத்து தலைப்பு புலம் '(%s)' இல் உள்ளது"
 
 #: ../gio/gdbusmessage.c:3271
 #, c-format
@@ -886,12 +915,12 @@ msgstr "வகை மையத்துடன் '%s' திரும்பு�
 msgid "Error return with empty body"
 msgstr "காலியான மையத்துடன் பிழை திரும்பும்"
 
-#: ../gio/gdbusprivate.c:2069
+#: ../gio/gdbusprivate.c:2066
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "வன்பொருள் விவரத்தொகுப்பைப் பெற முடியவில்லை: %s"
 
-#: ../gio/gdbusprivate.c:2114
+#: ../gio/gdbusprivate.c:2111
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "/var/lib/dbus/machine-id அல்லது /etc/machine-id ஐ ஏற்ற முடியவில்லை: "
 
@@ -910,28 +939,31 @@ msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
-"முறை செயலாக்க முடியவில்லை; ஒரு நன்றாக தெரியும் பெயருடைய ப்ராக்ஸி  ஒரு உரிமையாளர் "
-"இல்லாமல் ப்ராக்ஸியானது G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START கொடியுடன் கட்டப்பட்டது"
+"முறை செயலாக்க முடியவில்லை; ஒரு நன்றாக தெரியும் பெயருடைய ப்ராக்ஸி  ஒரு "
+"உரிமையாளர் "
+"இல்லாமல் ப்ராக்ஸியானது G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START கொடியுடன் "
+"கட்டப்பட்டது"
 
-#: ../gio/gdbusserver.c:709
+#: ../gio/gdbusserver.c:710
 msgid "Abstract name space not supported"
 msgstr "சுருக்க பெயர் இடத்திற்கு துணைபுரிவதில்லை"
 
-#: ../gio/gdbusserver.c:796
+#: ../gio/gdbusserver.c:797
 msgid "Cannot specify nonce file when creating a server"
-msgstr "ஒரு சேவையகத்தை உருவாக்கும் போது நினைவுக்குறியீட்டை குறிப்பிட முடியவில்லை"
+msgstr ""
+"ஒரு சேவையகத்தை உருவாக்கும் போது நினைவுக்குறியீட்டை குறிப்பிட முடியவில்லை"
 
-#: ../gio/gdbusserver.c:874
+#: ../gio/gdbusserver.c:875
 #, c-format
 msgid "Error writing nonce file at '%s': %s"
 msgstr "'%s' இல் பிழை எழுதும் தற்சமய கோப்பு: %s"
 
-#: ../gio/gdbusserver.c:1043
+#: ../gio/gdbusserver.c:1045
 #, c-format
 msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "சரம் '%s' ஒரு சரியான D-Bus GUID இல்லை"
 
-#: ../gio/gdbusserver.c:1083
+#: ../gio/gdbusserver.c:1085
 #, c-format
 msgid "Cannot listen on unsupported transport '%s'"
 msgstr "துணைபுரியாத போக்குவரத்து '%s' ஐ கவனிக்க முடியவில்லை"
@@ -958,13 +990,13 @@ msgstr ""
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 
 #: ../gio/gdbus-tool.c:166 ../gio/gdbus-tool.c:222 ../gio/gdbus-tool.c:294
-#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1022
-#: ../gio/gdbus-tool.c:1456
+#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:707 ../gio/gdbus-tool.c:1033
+#: ../gio/gdbus-tool.c:1467
 #, c-format
 msgid "Error: %s\n"
 msgstr "பிழை: %s\n"
 
-#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1472
+#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1483
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "பிழை பகுக்கும் உள்ளாய்வு XML: %s\n"
@@ -1028,8 +1060,8 @@ msgstr "சிக்னல் மற்றும் இடைமுக பெய
 msgid "Emit a signal."
 msgstr "ஒரு சிக்னலை வெளியிடு."
 
-#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1562
-#: ../gio/gdbus-tool.c:1794
+#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:838 ../gio/gdbus-tool.c:1573
+#: ../gio/gdbus-tool.c:1805
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "பிழை இணைக்கிறது: %s\n"
@@ -1039,8 +1071,8 @@ msgstr "பிழை இணைக்கிறது: %s\n"
 msgid "Error: object path not specified.\n"
 msgstr "பிழை: பொருள் பாதை குறிப்பிடப்படவில்லை\n"
 
-#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1620
-#: ../gio/gdbus-tool.c:1853
+#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:899 ../gio/gdbus-tool.c:1631
+#: ../gio/gdbus-tool.c:1864
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "பிழை: %s ஒரு சரியான பெயர் பாதை இல்லை\n"
@@ -1070,130 +1102,131 @@ msgstr "பிழை: %s ஒரு சரியான நபர் பெயர�
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "பிழை: %s ஆனது ஒரு சரியான ஒத்த பஸ் பெயர் இல்லை.\n"
 
-#: ../gio/gdbus-tool.c:679 ../gio/gdbus-tool.c:992
+#. Use the original non-"parse-me-harder" error
+#: ../gio/gdbus-tool.c:683 ../gio/gdbus-tool.c:1001
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "பிழை பகுக்கும் அளவுரு %d: %s\n"
 
-#: ../gio/gdbus-tool.c:708
+#: ../gio/gdbus-tool.c:714
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "பிழை சுத்தமாக்கும் இணைப்பு: %s\n"
 
-#: ../gio/gdbus-tool.c:735
+#: ../gio/gdbus-tool.c:741
 msgid "Destination name to invoke method on"
 msgstr "இலக்கு பெயரானது முறையை ஆன்னாக்க செயலாக்குகிறது"
 
-#: ../gio/gdbus-tool.c:736
+#: ../gio/gdbus-tool.c:742
 msgid "Object path to invoke method on"
 msgstr "பொருள் பாதை முறையை ஆன்னாக்க செயலாக்குகிறது"
 
-#: ../gio/gdbus-tool.c:737
+#: ../gio/gdbus-tool.c:743
 msgid "Method and interface name"
 msgstr "முறை மற்றும் இடைமுகப் பெயர்"
 
-#: ../gio/gdbus-tool.c:738
+#: ../gio/gdbus-tool.c:744
 msgid "Timeout in seconds"
 msgstr "விநாடிகள் நேரம் முடிந்தது"
 
-#: ../gio/gdbus-tool.c:777
+#: ../gio/gdbus-tool.c:783
 msgid "Invoke a method on a remote object."
 msgstr "ஒரு தொலை பொருளில் ஒரு முறை செயலாற்றுகிறது."
 
-#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1581 ../gio/gdbus-tool.c:1813
+#: ../gio/gdbus-tool.c:858 ../gio/gdbus-tool.c:1592 ../gio/gdbus-tool.c:1824
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "பிழை: இலக்கு குறிப்பிடப்படவில்லை\n"
 
-#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1600
+#: ../gio/gdbus-tool.c:879 ../gio/gdbus-tool.c:1611
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "பிழை: பொருள் பாதை குறிப்பிடப்படவில்லை\n"
 
-#: ../gio/gdbus-tool.c:908
+#: ../gio/gdbus-tool.c:914
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "பிழை: முறைப் பெயர் குறிப்பிடப்படவில்லை\n"
 
-#: ../gio/gdbus-tool.c:919
+#: ../gio/gdbus-tool.c:925
 #, c-format
 msgid "Error: Method name '%s' is invalid\n"
 msgstr "பிழை: முறை பெயர் '%s' தவறானது\n"
 
-#: ../gio/gdbus-tool.c:984
+#: ../gio/gdbus-tool.c:993
 #, c-format
 msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "பிழை பகுக்கும் அளவுரு %d வகை '%s': %s\n"
 
-#: ../gio/gdbus-tool.c:1419
+#: ../gio/gdbus-tool.c:1430
 msgid "Destination name to introspect"
 msgstr "உள்ளாய்விற்கு இலக்கு பெயர்"
 
-#: ../gio/gdbus-tool.c:1420
+#: ../gio/gdbus-tool.c:1431
 msgid "Object path to introspect"
 msgstr "உள்ளாய்விற்கு பொருள் பாதை"
 
-#: ../gio/gdbus-tool.c:1421
+#: ../gio/gdbus-tool.c:1432
 msgid "Print XML"
 msgstr "XML ஐ அச்சிடு"
 
-#: ../gio/gdbus-tool.c:1422
+#: ../gio/gdbus-tool.c:1433
 msgid "Introspect children"
 msgstr "உள்ளாய்வு குழந்தை"
 
-#: ../gio/gdbus-tool.c:1423
+#: ../gio/gdbus-tool.c:1434
 msgid "Only print properties"
 msgstr "அச்சு பண்புகள் மட்டும்"
 
-#: ../gio/gdbus-tool.c:1514
+#: ../gio/gdbus-tool.c:1525
 msgid "Introspect a remote object."
 msgstr "ஒரு தொலை பொருளை உள்ளாயவும்."
 
-#: ../gio/gdbus-tool.c:1712
+#: ../gio/gdbus-tool.c:1723
 msgid "Destination name to monitor"
 msgstr "கணிப்பதற்கான இலக்கு பெயர்"
 
-#: ../gio/gdbus-tool.c:1713
+#: ../gio/gdbus-tool.c:1724
 msgid "Object path to monitor"
 msgstr "கணிப்பதற்கான பொருள் பாதை"
 
-#: ../gio/gdbus-tool.c:1746
+#: ../gio/gdbus-tool.c:1757
 msgid "Monitor a remote object."
 msgstr "ஒரு தொலை பொருளை கணிக்கவும்."
 
-#: ../gio/gdesktopappinfo.c:975 ../gio/gdesktopappinfo.c:4035
+#: ../gio/gdesktopappinfo.c:1421 ../gio/gdesktopappinfo.c:4566
 #: ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "பெயரில்லாதது"
 
-#: ../gio/gdesktopappinfo.c:1394
+#: ../gio/gdesktopappinfo.c:1840
 msgid "Desktop file didn't specify Exec field"
 msgstr "பணிமேடை கோப்பு Exec புலம் குறிப்பிடப்படவில்லை"
 
-#: ../gio/gdesktopappinfo.c:1679
+#: ../gio/gdesktopappinfo.c:2125
 msgid "Unable to find terminal required for application"
 msgstr "விண்ணப்பத்திற்கு தேவைப்படும் முனையத்தை கண்டுபிடிக்க இயலவில்லை"
 
-#: ../gio/gdesktopappinfo.c:2096
+#: ../gio/gdesktopappinfo.c:2542
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "பயனர் விண்ணப்ப கட்டமைப்பு கோப்புறை %sஐ உருவாக்க இயலவில்லை: %s"
 
-#: ../gio/gdesktopappinfo.c:2100
+#: ../gio/gdesktopappinfo.c:2546
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "பயனர் MIME கட்டமைப்பு கோப்புறை %s உருவாக்க இயலவில்லை: %s"
 
-#: ../gio/gdesktopappinfo.c:2340 ../gio/gdesktopappinfo.c:2364
+#: ../gio/gdesktopappinfo.c:2786 ../gio/gdesktopappinfo.c:2810
 msgid "Application information lacks an identifier"
 msgstr "பயன்பாட்டு தகவல் ஒரு அடையாளங்காட்டியை இல்லாமல் செய்கிறது"
 
-#: ../gio/gdesktopappinfo.c:2597
+#: ../gio/gdesktopappinfo.c:3043
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "பயனர் டெஸ்க்டாப் கோப்பு %s உருவாக்க முடியாது"
 
-#: ../gio/gdesktopappinfo.c:2731
+#: ../gio/gdesktopappinfo.c:3177
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%sக்கு தனிபயன் விளக்கம்"
@@ -1221,17 +1254,17 @@ msgstr "இயக்கி துவக்கத்தை செயல்பட�
 msgid "drive doesn't implement stop"
 msgstr "இயக்கி நிறுத்தத்தை செயல்படுத்தப்படுவில்லை"
 
-#: ../gio/gdummytlsbackend.c:168 ../gio/gdummytlsbackend.c:288
-#: ../gio/gdummytlsbackend.c:378
+#: ../gio/gdummytlsbackend.c:191 ../gio/gdummytlsbackend.c:311
+#: ../gio/gdummytlsbackend.c:401
 msgid "TLS support is not available"
 msgstr "TLS துணை கிடைக்கவில்லை"
 
-#: ../gio/gemblem.c:324
+#: ../gio/gemblem.c:325
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
 msgstr "பதிப்பு %d GEmblem குறிமுறையில் கையாள முடியவில்லை"
 
-#: ../gio/gemblem.c:334
+#: ../gio/gemblem.c:335
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "தவறான டோக்கன்களின் எண்ணிக்கை (%d) GEmblem குறிமுறையில்"
@@ -1250,14 +1283,14 @@ msgstr "தவறான டோக்கன் எண்ணிக்கை (%d) G
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon க்காக ஒரு GEmblem எதிர்பார்க்கப்படுகிறது"
 
-#: ../gio/gfile.c:965 ../gio/gfile.c:1204 ../gio/gfile.c:1343
-#: ../gio/gfile.c:1583 ../gio/gfile.c:1638 ../gio/gfile.c:1696
-#: ../gio/gfile.c:1780 ../gio/gfile.c:1837 ../gio/gfile.c:1901
-#: ../gio/gfile.c:1956 ../gio/gfile.c:3607 ../gio/gfile.c:3662
-#: ../gio/gfile.c:3870 ../gio/gfile.c:3912 ../gio/gfile.c:4378
-#: ../gio/gfile.c:4790 ../gio/gfile.c:4875 ../gio/gfile.c:4965
-#: ../gio/gfile.c:5062 ../gio/gfile.c:5149 ../gio/gfile.c:5250
-#: ../gio/gfile.c:7709 ../gio/gfile.c:7799 ../gio/gfile.c:7883
+#: ../gio/gfile.c:962 ../gio/gfile.c:1201 ../gio/gfile.c:1340
+#: ../gio/gfile.c:1580 ../gio/gfile.c:1635 ../gio/gfile.c:1693
+#: ../gio/gfile.c:1777 ../gio/gfile.c:1834 ../gio/gfile.c:1898
+#: ../gio/gfile.c:1953 ../gio/gfile.c:3604 ../gio/gfile.c:3659
+#: ../gio/gfile.c:3867 ../gio/gfile.c:3909 ../gio/gfile.c:4375
+#: ../gio/gfile.c:4787 ../gio/gfile.c:4872 ../gio/gfile.c:4962
+#: ../gio/gfile.c:5059 ../gio/gfile.c:5146 ../gio/gfile.c:5247
+#: ../gio/gfile.c:7767 ../gio/gfile.c:7857 ../gio/gfile.c:7941
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "செயல்பாட்டிற்கு ஆதரவு கிடையாது"
@@ -1272,70 +1305,70 @@ msgstr "செயல்பாட்டிற்கு ஆதரவு கிட�
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1467 ../gio/glocalfile.c:1107 ../gio/glocalfile.c:1118
-#: ../gio/glocalfile.c:1131
+#: ../gio/gfile.c:1464 ../gio/glocalfile.c:1105 ../gio/glocalfile.c:1116
+#: ../gio/glocalfile.c:1129
 msgid "Containing mount does not exist"
 msgstr "கொண்டுள்ள மவுண்ட் இல்லை"
 
-#: ../gio/gfile.c:2522 ../gio/glocalfile.c:2341
+#: ../gio/gfile.c:2519 ../gio/glocalfile.c:2339
 msgid "Can't copy over directory"
 msgstr "அடைவுக்கு மேலாக நகலெடுக்க முடியாது"
 
-#: ../gio/gfile.c:2582
+#: ../gio/gfile.c:2579
 msgid "Can't copy directory over directory"
 msgstr "அடைவுக்கு மேலாக அடைவினை நகலெடுக்க முடியாது"
 
-#: ../gio/gfile.c:2590 ../gio/glocalfile.c:2350
+#: ../gio/gfile.c:2587 ../gio/glocalfile.c:2348
 msgid "Target file exists"
 msgstr "இலக்கு கோப்பு வெளியேற்றப்பட்டது"
 
-#: ../gio/gfile.c:2609
+#: ../gio/gfile.c:2606
 msgid "Can't recursively copy directory"
 msgstr "அடைவை மீண்டும் நகலெடுக்க முடியவில்லை"
 
-#: ../gio/gfile.c:2891
+#: ../gio/gfile.c:2888
 msgid "Splice not supported"
 msgstr "ஸ்ப்லைஸுக்கு துணைபுரியவில்லை"
 
-#: ../gio/gfile.c:2895
+#: ../gio/gfile.c:2892
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "பிழையை பிளக்கும் கோப்பு: %s"
 
-#: ../gio/gfile.c:3026
+#: ../gio/gfile.c:3023
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "மவுன்ட்டுகளுக்கு இடையே நகலெடுத்தலுக்கு (reflink/clone) ஆதரவில்லை"
 
-#: ../gio/gfile.c:3030
+#: ../gio/gfile.c:3027
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "நகலெடுத்தலுக்கு (reflink/clone) ஆதரவில்லை அல்லது செல்லாது"
 
-#: ../gio/gfile.c:3035
+#: ../gio/gfile.c:3032
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "நகலெடுத்தலுக்கு (reflink/clone) ஆதரவில்லை அல்லது செயல்படாது"
 
-#: ../gio/gfile.c:3098
+#: ../gio/gfile.c:3095
 msgid "Can't copy special file"
 msgstr "சிறப்பு கோப்பை நகலெடுக்க முடியவில்லை"
 
-#: ../gio/gfile.c:3860
+#: ../gio/gfile.c:3857
 msgid "Invalid symlink value given"
 msgstr "தவறான symlink மதிப்பு கொடுக்கப்பட்டுள்ளது"
 
-#: ../gio/gfile.c:4022
+#: ../gio/gfile.c:4019
 msgid "Trash not supported"
 msgstr "குப்பை ஆதரவு கிடையாது"
 
-#: ../gio/gfile.c:4135
+#: ../gio/gfile.c:4132
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "'%c' கோப்பின் பெயர்களை பெற்றிருக்கவில்லை"
 
-#: ../gio/gfile.c:6552 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6558 ../gio/gvolume.c:365
 msgid "volume doesn't implement mount"
 msgstr "தொகுதி மவுண்டை செயல்படுத்தவில்லை"
 
-#: ../gio/gfile.c:6661
+#: ../gio/gfile.c:6667
 msgid "No application is registered as handling this file"
 msgstr "இந்த கோப்பைக் கையாள எந்த பதிவு செய்யப்பட்ட விண்ணப்பமும் இல்லை"
 
@@ -1352,12 +1385,12 @@ msgstr "கோப்பு எண்ணிடல் சிறந்த செய
 msgid "File enumerator is already closed"
 msgstr "கோப்பு எண் ஏற்கனவே மூடப்பட்டது"
 
-#: ../gio/gfileicon.c:237
+#: ../gio/gfileicon.c:238
 #, c-format
 msgid "Can't handle version %d of GFileIcon encoding"
 msgstr "GFileIcon குறிமுறை பதிப்பு %d ஐ கையாள முடியவில்லை"
 
-#: ../gio/gfileicon.c:247
+#: ../gio/gfileicon.c:248
 msgid "Malformed input data for GFileIcon"
 msgstr "GFileIcon க்கு தவறான உள்பாடு தரவு"
 
@@ -1414,30 +1447,30 @@ msgstr "வகை %s from_tokens()ஐ  GIcon முகப்பில் செ�
 msgid "Can't handle the supplied version of the icon encoding"
 msgstr "வழங்கப்பட்ட சின்ன குறியீடாக்கத்தின் பதிப்பை கையாள முடியவில்லை"
 
-#: ../gio/ginetaddressmask.c:183
+#: ../gio/ginetaddressmask.c:184
 msgid "No address specified"
 msgstr "முகவரி குறிப்பிடப்படவில்லை"
 
-#: ../gio/ginetaddressmask.c:191
+#: ../gio/ginetaddressmask.c:192
 #, c-format
 msgid "Length %u is too long for address"
 msgstr "முகவரியின் நீளம் %u மிக நீளமானது"
 
-#: ../gio/ginetaddressmask.c:224
+#: ../gio/ginetaddressmask.c:225
 msgid "Address has bits set beyond prefix length"
 msgstr "முகவரியில் முன்னொட்டு நீளத்திற்கும் அதிகமான பிட்டுகள் உள்ளன"
 
-#: ../gio/ginetaddressmask.c:301
+#: ../gio/ginetaddressmask.c:302
 #, c-format
 msgid "Could not parse '%s' as IP address mask"
 msgstr "'%s' ஐ IP முகவரி மூடியாக பாகுபடுத்த முடியவில்லை"
 
-#: ../gio/ginetsocketaddress.c:197 ../gio/ginetsocketaddress.c:214
+#: ../gio/ginetsocketaddress.c:198 ../gio/ginetsocketaddress.c:215
 #: ../gio/gunixsocketaddress.c:211
 msgid "Not enough space for socket address"
 msgstr "சாக்கெட் முகவரிக்கு போதிய இடம் இல்லை"
 
-#: ../gio/ginetsocketaddress.c:229
+#: ../gio/ginetsocketaddress.c:230
 msgid "Unsupported socket address"
 msgstr "துணைபுரியாத சாக்கெட் முகவரி"
 
@@ -1452,107 +1485,114 @@ msgstr "உள்ளீடு ஸ்ட்ரீம் வாசிப்பை 
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:1023 ../gio/giostream.c:290
-#: ../gio/goutputstream.c:1374
+#: ../gio/goutputstream.c:1478
 msgid "Stream has outstanding operation"
 msgstr "ஸ்ட்ரீம் சிறந்த செயல்பாட்டை கொண்டுள்ளது"
 
-#: ../gio/glib-compile-resources.c:145 ../gio/glib-compile-schemas.c:1459
+#: ../gio/glib-compile-resources.c:144 ../gio/glib-compile-schemas.c:1455
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "உருப்படி <%s> உள்ளே அனுமதிக்கப்படுவதில்லை <%s>"
 
-#: ../gio/glib-compile-resources.c:149
+#: ../gio/glib-compile-resources.c:148
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "உருப்படி <%s> மேல்நிலையில் அனுமதிக்கப்படவில்லை"
 
-#: ../gio/glib-compile-resources.c:239
+#: ../gio/glib-compile-resources.c:238
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "%s என்ற கோப்பு வளத்தில் பல முறை உள்ளதாகத் தெரிகிறது"
 
-#: ../gio/glib-compile-resources.c:252
+#: ../gio/glib-compile-resources.c:251
 #, c-format
 msgid "Failed to locate '%s' in any source directory"
 msgstr "எந்த மூலக் கோப்பகத்திலும் '%s' ஐக் கண்டறிய முடியவில்லை"
 
-#: ../gio/glib-compile-resources.c:263
+#: ../gio/glib-compile-resources.c:262
 #, c-format
 msgid "Failed to locate '%s' in current directory"
 msgstr "நடப்பு கோப்பகத்தில் '%s' ஐக் கண்டறிய முடியவில்லை"
 
-#: ../gio/glib-compile-resources.c:291
+#: ../gio/glib-compile-resources.c:290
 #, c-format
 msgid "Unknown processing option \"%s\""
 msgstr "தெரியாத செயலாக்க விருப்பம் \"%s\""
 
-#: ../gio/glib-compile-resources.c:309 ../gio/glib-compile-resources.c:355
+#: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:354
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "தற்காலிகக் கோப்பை உருவாக்குவதில் தோல்வி: %s"
 
-#: ../gio/glib-compile-resources.c:383
+#: ../gio/glib-compile-resources.c:382
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "%s கோப்பை வாசிக்கும் போது பிழை: %s"
 
-#: ../gio/glib-compile-resources.c:403
+#: ../gio/glib-compile-resources.c:402
 #, c-format
 msgid "Error compressing file %s"
 msgstr "%s கோப்பை கம்ப்ரஸ் செய்யும் போது பிழை: "
 
-#: ../gio/glib-compile-resources.c:467 ../gio/glib-compile-schemas.c:1571
+#: ../gio/glib-compile-resources.c:466 ../gio/glib-compile-schemas.c:1567
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "உரை உள்ளே தோன்றாமல் இருக்கலாம் <%s>"
 
-#: ../gio/glib-compile-resources.c:592
+#: ../gio/glib-compile-resources.c:591
 msgid "name of the output file"
 msgstr "வெளியீட்டுக் கோப்பின் பெயர்"
 
-#: ../gio/glib-compile-resources.c:593
+#: ../gio/glib-compile-resources.c:592
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr ""
-"படிக்க வேண்டிய கோப்புகளைக் கொண்டுள்ள கோப்பகங்கள் (நடப்பு கோப்பகத்திற்கு முன்னிருப்பாக "
+"படிக்க வேண்டிய கோப்புகளைக் கொண்டுள்ள கோப்பகங்கள் (நடப்பு கோப்பகத்திற்கு "
+"முன்னிருப்பாக "
 "அமைந்திருப்பது)"
 
-#: ../gio/glib-compile-resources.c:593 ../gio/glib-compile-schemas.c:2000
-#: ../gio/glib-compile-schemas.c:2029
+#: ../gio/glib-compile-resources.c:592 ../gio/glib-compile-schemas.c:1996
+#: ../gio/glib-compile-schemas.c:2025
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
-#: ../gio/glib-compile-resources.c:594
+#: ../gio/glib-compile-resources.c:593
 msgid ""
 "Generate output in the format selected for by the target filename extension"
-msgstr "இலக்கு கோப்புப் பெயர் நீட்சியால் தேர்ந்தெடுக்கப்பட்ட வெளியீட்டு வடிவத்தை உருவாக்கு"
+msgstr ""
+"இலக்கு கோப்புப் பெயர் நீட்சியால் தேர்ந்தெடுக்கப்பட்ட வெளியீட்டு வடிவத்தை "
+"உருவாக்கு"
 
-#: ../gio/glib-compile-resources.c:595
+#: ../gio/glib-compile-resources.c:594
 msgid "Generate source header"
 msgstr "மூலத் தலைப்பை உருவாக்கு"
 
-#: ../gio/glib-compile-resources.c:596
+#: ../gio/glib-compile-resources.c:595
 msgid "Generate sourcecode used to link in the resource file into your code"
-msgstr "உங்கள் குறீயீட்டில் வளக் கோப்பில் இணைக்கப் பயன்படும் மூலக்குறியீட்டை உருவாக்கு"
+msgstr ""
+"உங்கள் குறீயீட்டில் வளக் கோப்பில் இணைக்கப் பயன்படும் மூலக்குறியீட்டை உருவாக்கு"
 
-#: ../gio/glib-compile-resources.c:597
+#: ../gio/glib-compile-resources.c:596
 msgid "Generate dependency list"
 msgstr "சார்நிலைப் பட்டியலை உருவாக்கு"
 
-#: ../gio/glib-compile-resources.c:598
+#: ../gio/glib-compile-resources.c:597
 msgid "Don't automatically create and register resource"
 msgstr "வளத்தை தானாக உருவாக்கி பதிவு செய்ய வேண்டாம்"
 
-#: ../gio/glib-compile-resources.c:599
+#: ../gio/glib-compile-resources.c:598
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
-msgstr "சார்புகளை ஏற்றுமதி செய்ய வேண்டாம்; அவற்றை முன்னறிவிக்கவும் G_GNUC_INTERNAL"
+msgstr ""
+"சார்புகளை ஏற்றுமதி செய்ய வேண்டாம்; அவற்றை முன்னறிவிக்கவும் G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:600
+#: ../gio/glib-compile-resources.c:599
 msgid "C identifier name used for the generated source code"
-msgstr "உருவாக்கப்பட்ட மூலக் குறியீட்டுக்கு C ஐடன்ட்டிஃபயர் பெயர் பயன்படுத்தப்பட்டுள்ளது"
+msgstr ""
+"உருவாக்கப்பட்ட மூலக் குறியீட்டுக்கு C ஐடன்ட்டிஃபயர் பெயர் "
+"பயன்படுத்தப்பட்டுள்ளது"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:625
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1562,125 +1602,128 @@ msgstr ""
 "வள விவரக்குறிப்பு கோப்புக்கு .gresource.xml என்ற நீட்சி இருக்கும்,\n"
 "வளக் கோப்புக்கு .gresource என்ற நீட்சி இருக்கும்."
 
-#: ../gio/glib-compile-resources.c:642
+#: ../gio/glib-compile-resources.c:641
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "நீங்கள் சரியாக ஒரு கோப்புப் பெயரையே கொடுக்க வேண்டும்\n"
 
-#: ../gio/glib-compile-schemas.c:778
+#: ../gio/glib-compile-schemas.c:774
 msgid "empty names are not permitted"
 msgstr "காலி பெயர்கள் அனுமதிக்கப்படுவதில்லை"
 
-#: ../gio/glib-compile-schemas.c:788
+#: ../gio/glib-compile-schemas.c:784
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
 msgstr "தவறான பெயர் '%s': பெயர்கள் ஒரு சிறிய எழுத்தில் ஆரம்பிக்க வேண்டும்"
 
-#: ../gio/glib-compile-schemas.c:800
+#: ../gio/glib-compile-schemas.c:796
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
 "and hyphen ('-') are permitted."
 msgstr ""
-"தவறான பெயர் '%s': தவறான எழுத்து '%c'; சிறிய எழுத்துக்கள், எண்கள் மற்றும் டேஷ் ('-') "
+"தவறான பெயர் '%s': தவறான எழுத்து '%c'; சிறிய எழுத்துக்கள், எண்கள் மற்றும் டேஷ் "
+"('-') "
 "ஆகியவை மட்டுமே அனுமதிக்கப்படும்."
 
-#: ../gio/glib-compile-schemas.c:809
+#: ../gio/glib-compile-schemas.c:805
 #, c-format
 msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
 msgstr "தவறான பெயர் '%s': இரண்டு அடுத்தடுத்த டேஷ்கள் ('--') அனுமதிக்கப்படாது."
 
-#: ../gio/glib-compile-schemas.c:818
+#: ../gio/glib-compile-schemas.c:814
 #, c-format
 msgid "invalid name '%s': the last character may not be a hyphen ('-')."
 msgstr "தவறான பெயர் '%s': கடைசி எழுத்து ஒரு கோடாக இருக்காது ('-')."
 
-#: ../gio/glib-compile-schemas.c:826
+#: ../gio/glib-compile-schemas.c:822
 #, c-format
 msgid "invalid name '%s': maximum length is 1024"
 msgstr "தவறான பெயர் '%s': அதிகபட்ச நீளமானது 1024 ஆகும்"
 
-#: ../gio/glib-compile-schemas.c:895
+#: ../gio/glib-compile-schemas.c:891
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> ஏற்கனவே குறிப்பிடப்பட்டது"
 
-#: ../gio/glib-compile-schemas.c:921
+#: ../gio/glib-compile-schemas.c:917
 msgid "cannot add keys to a 'list-of' schema"
 msgstr "ஒரு திட்டத்தின் 'பட்டியலில்' விசைகளை சேர்க்க முடியாது"
 
-#: ../gio/glib-compile-schemas.c:932
+#: ../gio/glib-compile-schemas.c:928
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> ஏற்கனவே குறிப்பிடப்பட்டது"
 
-#: ../gio/glib-compile-schemas.c:950
+#: ../gio/glib-compile-schemas.c:946
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
 "to modify value"
 msgstr ""
-"<key name='%s'> நிழல்கள் <key name='%s'> இதில் <schema id='%s'>; மாற்று மதிப்பை "
+"<key name='%s'> நிழல்கள் <key name='%s'> இதில் <schema id='%s'>; மாற்று "
+"மதிப்பை "
 "பயன்படுத்தவும் <override> "
 
-#: ../gio/glib-compile-schemas.c:961
+#: ../gio/glib-compile-schemas.c:957
 #, c-format
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr ""
-"சரியாக ஒரு 'வகை', 'enum' அல்லது 'கொடிகள்'  <key> இதற்கு ஒரு பண்பில் குறிப்பிடப்பட்டது"
+"சரியாக ஒரு 'வகை', 'enum' அல்லது 'கொடிகள்'  <key> இதற்கு ஒரு பண்பில் "
+"குறிப்பிடப்பட்டது"
 
-#: ../gio/glib-compile-schemas.c:980
+#: ../gio/glib-compile-schemas.c:976
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> இன்னும் வரையறுக்கப்படவில்லை."
 
-#: ../gio/glib-compile-schemas.c:995
+#: ../gio/glib-compile-schemas.c:991
 #, c-format
 msgid "invalid GVariant type string '%s'"
 msgstr "தவறான GVariant வகை சரம் '%s'"
 
-#: ../gio/glib-compile-schemas.c:1025
+#: ../gio/glib-compile-schemas.c:1021
 msgid "<override> given but schema isn't extending anything"
 msgstr "<override> கொடுக்கப்பட்டது ஆனால் திட்டத்தில் எதுவும் நீடிக்கவில்லை"
 
-#: ../gio/glib-compile-schemas.c:1038
+#: ../gio/glib-compile-schemas.c:1034
 #, c-format
 msgid "no <key name='%s'> to override"
 msgstr "<key name='%s'>க்கு மேலேற்றவில்லை"
 
-#: ../gio/glib-compile-schemas.c:1046
+#: ../gio/glib-compile-schemas.c:1042
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "<override name='%s'> ஏற்கனவே குறிப்பிடப்பட்டது"
 
-#: ../gio/glib-compile-schemas.c:1117
+#: ../gio/glib-compile-schemas.c:1113
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> ஏற்கனவே குறிப்பிடப்பட்டது"
 
-#: ../gio/glib-compile-schemas.c:1129
+#: ../gio/glib-compile-schemas.c:1125
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> இன்னும் இல்லாத திட்டம் '%s' ஐ நீட்டிக்கிறது"
 
-#: ../gio/glib-compile-schemas.c:1145
+#: ../gio/glib-compile-schemas.c:1141
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr "<schema id='%s'> என்பது இன்னும் இல்லாத திட்டம் '%s' இன் பட்டியல்"
 
-#: ../gio/glib-compile-schemas.c:1153
+#: ../gio/glib-compile-schemas.c:1149
 #, c-format
 msgid "Can not be a list of a schema with a path"
 msgstr "ஒரு பாதையுடன் ஒரு திட்டத்தின் பட்டியலிட முடியாது"
 
-#: ../gio/glib-compile-schemas.c:1163
+#: ../gio/glib-compile-schemas.c:1159
 #, c-format
 msgid "Can not extend a schema with a path"
 msgstr "ஒரு பாதையுடன் ஒரு திட்டத்தை நீட்ட முடியாது"
 
-#: ../gio/glib-compile-schemas.c:1173
+#: ../gio/glib-compile-schemas.c:1169
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
@@ -1688,144 +1731,150 @@ msgstr ""
 "<schema id='%s'> ஒரு பட்டியல், எது பட்டியலில் இல்லையோ <schema id='%s'> ஐ "
 "நீட்டிக்கிறது"
 
-#: ../gio/glib-compile-schemas.c:1183
+#: ../gio/glib-compile-schemas.c:1179
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> நீட்டிக்கிறது <schema id='%s' list-of='%s'> ஆனால் "
+"<schema id='%s' list-of='%s'> நீட்டிக்கிறது <schema id='%s' list-of='%s'> "
+"ஆனால் "
 "'%s' ஆனது '%s'ஐ நீட்டிக்கவில்லை"
 
-#: ../gio/glib-compile-schemas.c:1200
+#: ../gio/glib-compile-schemas.c:1196
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
 msgstr "ஒரு பாதை, கொடுக்கப்பட்டால்ர ஒரு ஸ்லாஷ் முடிவுடன் துவக்கப்பட வேண்டும்"
 
-#: ../gio/glib-compile-schemas.c:1207
+#: ../gio/glib-compile-schemas.c:1203
 #, c-format
 msgid "the path of a list must end with ':/'"
 msgstr "ஒரு பட்டியலின் பாதை முடிவுடன் இருக்க வேண்டும் ':/'"
 
-#: ../gio/glib-compile-schemas.c:1239
+#: ../gio/glib-compile-schemas.c:1235
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id ='%s'> ஏற்கனவே குறிப்பிடப்பட்டது"
 
-#: ../gio/glib-compile-schemas.c:1463
+#: ../gio/glib-compile-schemas.c:1459
 #, c-format
 msgid "Element <%s> not allowed at the top level"
 msgstr "கூறு <%s> மேல்நிலையில் அனுமதிக்கப்படாது"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1758 ../gio/glib-compile-schemas.c:1829
-#: ../gio/glib-compile-schemas.c:1905
+#: ../gio/glib-compile-schemas.c:1754 ../gio/glib-compile-schemas.c:1825
+#: ../gio/glib-compile-schemas.c:1901
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "--strict குறிப்பிடப்பட்டது; வெளியேறுகிறது.\n"
 
-#: ../gio/glib-compile-schemas.c:1766
+#: ../gio/glib-compile-schemas.c:1762
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "இந்த முழு கோப்பு புறக்கணிக்கப்படலாம்.\n"
 
-#: ../gio/glib-compile-schemas.c:1825
+#: ../gio/glib-compile-schemas.c:1821
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "இந்த கோப்பை புறக்கணிக்கிறது.\n"
 
-#: ../gio/glib-compile-schemas.c:1865
+#: ../gio/glib-compile-schemas.c:1861
 #, c-format
 msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
-"'%s' திட்டத்தில் '%s' ஆக குறிப்பிடப்படும் புறக்கணிக்கும் கோப்பு '%s' இல் விசை எதுவும் "
+"'%s' திட்டத்தில் '%s' ஆக குறிப்பிடப்படும் புறக்கணிக்கும் கோப்பு '%s' இல் விசை "
+"எதுவும் "
 "இல்லை"
 
-#: ../gio/glib-compile-schemas.c:1871 ../gio/glib-compile-schemas.c:1929
-#: ../gio/glib-compile-schemas.c:1957
+#: ../gio/glib-compile-schemas.c:1867 ../gio/glib-compile-schemas.c:1925
+#: ../gio/glib-compile-schemas.c:1953
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "; புறக்கணிப்பதற்கான இந்த விசையை புறக்கணிக்கிறது.\n"
 
-#: ../gio/glib-compile-schemas.c:1875 ../gio/glib-compile-schemas.c:1933
-#: ../gio/glib-compile-schemas.c:1961
+#: ../gio/glib-compile-schemas.c:1871 ../gio/glib-compile-schemas.c:1929
+#: ../gio/glib-compile-schemas.c:1957
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr " மற்றும் --strict குறிப்பிடப்பட்டது; வெளியேறுகிறது.\n"
 
-#: ../gio/glib-compile-schemas.c:1891
+#: ../gio/glib-compile-schemas.c:1887
 #, c-format
 msgid ""
 "error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
-"'%s' திட்டத்தில் '%s' ஆக குறிப்பிடப்படும் புறக்கணிக்கும் கோப்பில் பிழை பகுக்கும் விசை "
+"'%s' திட்டத்தில் '%s' ஆக குறிப்பிடப்படும் புறக்கணிக்கும் கோப்பில் பிழை "
+"பகுக்கும் விசை "
 "'%s': %s.  "
 
-#: ../gio/glib-compile-schemas.c:1901
+#: ../gio/glib-compile-schemas.c:1897
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "புறக்கணிப்பதற்கான இந்த விசையை புறக்கணிக்கிறது.\n"
 
-#: ../gio/glib-compile-schemas.c:1919
+#: ../gio/glib-compile-schemas.c:1915
 #, c-format
 msgid ""
 "override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
-"ஓவர்ரைடு கோப்பு '%s' இல் உள்ள திட்டம் '%s' இல் உள்ள விசை'%s'திட்டத்தில் கொடுக்கப்பட்டுள்ள "
+"ஓவர்ரைடு கோப்பு '%s' இல் உள்ள திட்டம் '%s' இல் உள்ள விசை'%s'திட்டத்தில் "
+"கொடுக்கப்பட்டுள்ள "
 "வரம்புக்கு வெளியே உள்ளது"
 
-#: ../gio/glib-compile-schemas.c:1947
+#: ../gio/glib-compile-schemas.c:1943
 #, c-format
 msgid ""
 "override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"'%s' திட்டத்திற்கான விசையை புறக்கணித்து '%s' புறக்கணிப்பு கோப்பில் '%s' ஆனது சரியான "
+"'%s' திட்டத்திற்கான விசையை புறக்கணித்து '%s' புறக்கணிப்பு கோப்பில் '%s' ஆனது "
+"சரியான "
 "தேர்வுகளின் பட்டியலில் இல்லை"
 
-#: ../gio/glib-compile-schemas.c:2000
+#: ../gio/glib-compile-schemas.c:1996
 msgid "where to store the gschemas.compiled file"
 msgstr "gschemas.compiled கோப்பில் எங்கே சேமிப்பது"
 
-#: ../gio/glib-compile-schemas.c:2001
+#: ../gio/glib-compile-schemas.c:1997
 msgid "Abort on any errors in schemas"
 msgstr "திட்டங்களிலுள்ள ஏதாவது பிழைகளை ஒதுக்கவும்"
 
-#: ../gio/glib-compile-schemas.c:2002
+#: ../gio/glib-compile-schemas.c:1998
 msgid "Do not write the gschema.compiled file"
 msgstr "gschema.compiled கோப்பில் எழுத முடியாது"
 
-#: ../gio/glib-compile-schemas.c:2003
+#: ../gio/glib-compile-schemas.c:1999
 msgid "Do not enforce key name restrictions"
 msgstr "விசை பெயர் கட்டுப்பாடுகளை வலுயுறுத்த கூடாது"
 
-#: ../gio/glib-compile-schemas.c:2032
+#: ../gio/glib-compile-schemas.c:2028
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
-"அனைத்துGSettings திட்ட கோப்புகளை ஒரு செக்கின் ஒரு திட்டத்தில் தொகுத்தெழுதவும்.\n"
+"அனைத்துGSettings திட்ட கோப்புகளை ஒரு செக்கின் ஒரு திட்டத்தில் "
+"தொகுத்தெழுதவும்.\n"
 "extension .gschema.xml போன்றவற்றை திட்டக் கோப்புகள், மற்றும்\n"
 "gschemas.compiled என அழைக்கப்படும் செக் கோப்பின் கொண்டிருக்க வேண்டும்."
 
-#: ../gio/glib-compile-schemas.c:2048
+#: ../gio/glib-compile-schemas.c:2044
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "நீங்கள் சரியாக ஒரு நேரடி பெயரை கொடுக்க வேண்டும்\n"
 
-#: ../gio/glib-compile-schemas.c:2087
+#: ../gio/glib-compile-schemas.c:2083
 #, c-format
 msgid "No schema files found: "
 msgstr "திட்ட கோப்புகள் எதுவும் காணப்படவில்லை:"
 
-#: ../gio/glib-compile-schemas.c:2090
+#: ../gio/glib-compile-schemas.c:2086
 #, c-format
 msgid "doing nothing.\n"
 msgstr "செய்வதற்கு ஒன்றுமில்லை.\n"
 
-#: ../gio/glib-compile-schemas.c:2093
+#: ../gio/glib-compile-schemas.c:2089
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "இருக்கும் வெளிப்பாடு கோப்பு நீக்கப்பட்டது.\n"
@@ -1834,233 +1883,233 @@ msgstr "இருக்கும் வெளிப்பாடு கோப்�
 msgid "Unable to find default local directory monitor type"
 msgstr "முன்னிருப்பு உள்ளமை அடைவு மானிட்டர் வகையை தேட முடியவில்லை"
 
-#: ../gio/glocalfile.c:608 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:606 ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "செல்லுபடியாகாத கோப்பு பெயர் %s"
 
-#: ../gio/glocalfile.c:985
+#: ../gio/glocalfile.c:983
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "கோப்பு முறைமை தகவலை பெறும் போது பிழை: %s"
 
-#: ../gio/glocalfile.c:1153
+#: ../gio/glocalfile.c:1151
 msgid "Can't rename root directory"
 msgstr "ரூட் அடைவை மறுபெயரிட முடியவில்லை"
 
-#: ../gio/glocalfile.c:1173 ../gio/glocalfile.c:1199
+#: ../gio/glocalfile.c:1171 ../gio/glocalfile.c:1197
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "கோப்பு மறுபெயரிடும் போது பிழை: %s"
 
-#: ../gio/glocalfile.c:1182
+#: ../gio/glocalfile.c:1180
 msgid "Can't rename file, filename already exists"
 msgstr "கோப்பை மறுபெயரிட முடியவில்லை, கோப்புபெயர் ஏற்கனவே உள்ளது"
 
-#: ../gio/glocalfile.c:1195 ../gio/glocalfile.c:2214 ../gio/glocalfile.c:2243
-#: ../gio/glocalfile.c:2403 ../gio/glocalfileoutputstream.c:553
+#: ../gio/glocalfile.c:1193 ../gio/glocalfile.c:2212 ../gio/glocalfile.c:2241
+#: ../gio/glocalfile.c:2401 ../gio/glocalfileoutputstream.c:551
 msgid "Invalid filename"
 msgstr "தவறான கோப்பு பெயர்"
 
-#: ../gio/glocalfile.c:1362 ../gio/glocalfile.c:1386
+#: ../gio/glocalfile.c:1360 ../gio/glocalfile.c:1384
 msgid "Can't open directory"
 msgstr "அடைவை திறக்க இயலவில்லை"
 
-#: ../gio/glocalfile.c:1370
+#: ../gio/glocalfile.c:1368
 #, c-format
 msgid "Error opening file: %s"
 msgstr "கோப்பு திறக்கும் போது பிழை: %s"
 
-#: ../gio/glocalfile.c:1511
+#: ../gio/glocalfile.c:1509
 #, c-format
 msgid "Error removing file: %s"
 msgstr "கோப்பு நீக்கும் போது பிழை: %s"
 
-#: ../gio/glocalfile.c:1891
+#: ../gio/glocalfile.c:1889
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "கோப்பினை குப்பைக்கு அனுப்பும் போது பிழை: %s"
 
-#: ../gio/glocalfile.c:1914
+#: ../gio/glocalfile.c:1912
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "குப்பை அடைவு %sஐ உருவாக்க முடியவில்லை: %s"
 
-#: ../gio/glocalfile.c:1935
+#: ../gio/glocalfile.c:1933
 msgid "Unable to find toplevel directory for trash"
 msgstr "குப்பைக்கு மேல் நிலை அடைவை தேட முடியவில்லை"
 
-#: ../gio/glocalfile.c:2014 ../gio/glocalfile.c:2034
+#: ../gio/glocalfile.c:2012 ../gio/glocalfile.c:2032
 msgid "Unable to find or create trash directory"
 msgstr "குப்பை அடைவை தேட அல்லது உருவாக்க முடியவில்லை"
 
-#: ../gio/glocalfile.c:2068
+#: ../gio/glocalfile.c:2066
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "குப்பை தகவல் கோப்பினை உருவாக்க முடியவில்லை: %s"
 
-#: ../gio/glocalfile.c:2099 ../gio/glocalfile.c:2104 ../gio/glocalfile.c:2184
-#: ../gio/glocalfile.c:2191
+#: ../gio/glocalfile.c:2097 ../gio/glocalfile.c:2102 ../gio/glocalfile.c:2182
+#: ../gio/glocalfile.c:2189
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "கோப்பை இழுக்க முடியவில்லை: %s"
 
-#: ../gio/glocalfile.c:2192 ../glib/gregex.c:280
+#: ../gio/glocalfile.c:2190 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "உள்ளமை தவறு"
 
-#: ../gio/glocalfile.c:2218
+#: ../gio/glocalfile.c:2216
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "அடைவை உருவாக்கும்போது பிழை: %s"
 
-#: ../gio/glocalfile.c:2247
+#: ../gio/glocalfile.c:2245
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "கோப்பு முறைமை அடையாள இணைப்புகளுக்கு துணைபுரியவில்லை"
 
-#: ../gio/glocalfile.c:2251
+#: ../gio/glocalfile.c:2249
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "குறிப்பீட்டின் இணைப்பை ஏற்படுத்துவதுல் பிழை: %s"
 
-#: ../gio/glocalfile.c:2313 ../gio/glocalfile.c:2407
+#: ../gio/glocalfile.c:2311 ../gio/glocalfile.c:2405
 #, c-format
 msgid "Error moving file: %s"
 msgstr "பிழை நகர்த்தும் கோப்பு: %s"
 
-#: ../gio/glocalfile.c:2336
+#: ../gio/glocalfile.c:2334
 msgid "Can't move directory over directory"
 msgstr "அடைவில் அடைவை நகர்த்த முடியவில்லை"
 
-#: ../gio/glocalfile.c:2363 ../gio/glocalfileoutputstream.c:929
-#: ../gio/glocalfileoutputstream.c:943 ../gio/glocalfileoutputstream.c:958
-#: ../gio/glocalfileoutputstream.c:974 ../gio/glocalfileoutputstream.c:988
+#: ../gio/glocalfile.c:2361 ../gio/glocalfileoutputstream.c:927
+#: ../gio/glocalfileoutputstream.c:941 ../gio/glocalfileoutputstream.c:956
+#: ../gio/glocalfileoutputstream.c:972 ../gio/glocalfileoutputstream.c:986
 msgid "Backup file creation failed"
 msgstr "பின்சேமிப்பு கோப்பு உருவாக்க முடியவில்லை"
 
-#: ../gio/glocalfile.c:2382
+#: ../gio/glocalfile.c:2380
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "பிழை நீக்கும் இலக்கு கோப்பு : %s"
 
-#: ../gio/glocalfile.c:2396
+#: ../gio/glocalfile.c:2394
 msgid "Move between mounts not supported"
 msgstr "மவுண்டிற்கிடையே நகர்த்த முடியவில்லை"
 
-#: ../gio/glocalfile.c:2607
+#: ../gio/glocalfile.c:2605
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "%s இன் வட்டுப் பயனீட்டைத் தீர்மானிக்க முடியவில்லை: %s"
 
-#: ../gio/glocalfileinfo.c:724
+#: ../gio/glocalfileinfo.c:723
 msgid "Attribute value must be non-NULL"
 msgstr "அளவுரு மதிப்பு பூஜ்ஜியமாக இருக்கக்கூடாது"
 
-#: ../gio/glocalfileinfo.c:731
+#: ../gio/glocalfileinfo.c:730
 msgid "Invalid attribute type (string expected)"
 msgstr "தவறான அளவுரு வகை (சரம் எதிர்பார்க்கப்பட்டது)"
 
-#: ../gio/glocalfileinfo.c:738
+#: ../gio/glocalfileinfo.c:737
 msgid "Invalid extended attribute name"
 msgstr "பண்பு பெயர் உள்ளே ஆவணம் திடீரென முடிவடைந்தது"
 
-#: ../gio/glocalfileinfo.c:778
+#: ../gio/glocalfileinfo.c:777
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "விரிவான அளவுரு'%s' அமைப்பதில் பிழை: %s"
 
-#: ../gio/glocalfileinfo.c:1559
+#: ../gio/glocalfileinfo.c:1558
 msgid " (invalid encoding)"
 msgstr " (தவறான குறிமுறை)"
 
-#: ../gio/glocalfileinfo.c:1751 ../gio/glocalfileoutputstream.c:807
+#: ../gio/glocalfileinfo.c:1750 ../gio/glocalfileoutputstream.c:805
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "கோப்பு '%s' க்கான தகவலைப் பெறூம் போது பிழை: %s"
 
-#: ../gio/glocalfileinfo.c:2002
+#: ../gio/glocalfileinfo.c:2001
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "கோப்பு டிஸ்க்ரிப்ட்டருக்கான தகவலைப் பெறுவதில் பிழை: %s"
 
-#: ../gio/glocalfileinfo.c:2047
+#: ../gio/glocalfileinfo.c:2046
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "தவறான அளவுரு வகை (uint32 எதிர்ப்பார்க்கப்பட்டது)"
 
-#: ../gio/glocalfileinfo.c:2065
+#: ../gio/glocalfileinfo.c:2064
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "தவறான அளவுரு வகை (uint64 எதிர்பார்க்கப்பட்டது)"
 
-#: ../gio/glocalfileinfo.c:2084 ../gio/glocalfileinfo.c:2103
+#: ../gio/glocalfileinfo.c:2083 ../gio/glocalfileinfo.c:2102
 msgid "Invalid attribute type (byte string expected)"
 msgstr "தவறான அளவுரு வகை (பைட் சரம் எதிர்பார்க்கப்பட்டது)"
 
-#: ../gio/glocalfileinfo.c:2138
+#: ../gio/glocalfileinfo.c:2137
 msgid "Cannot set permissions on symlinks"
 msgstr "symlinksக்கு அனுமதிகளை அமைக்க முடியவில்லை"
 
-#: ../gio/glocalfileinfo.c:2154
+#: ../gio/glocalfileinfo.c:2153
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "பிழை அமைப்பதில் அனுமதி: %s"
 
-#: ../gio/glocalfileinfo.c:2205
+#: ../gio/glocalfileinfo.c:2204
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "மாற்றும் போது பிழை: %s"
 
-#: ../gio/glocalfileinfo.c:2228
+#: ../gio/glocalfileinfo.c:2227
 msgid "symlink must be non-NULL"
 msgstr "symlink பூஜ்ஜியமாக இருக்கக்கூடாது"
 
-#: ../gio/glocalfileinfo.c:2238 ../gio/glocalfileinfo.c:2257
-#: ../gio/glocalfileinfo.c:2268
+#: ../gio/glocalfileinfo.c:2237 ../gio/glocalfileinfo.c:2256
+#: ../gio/glocalfileinfo.c:2267
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "symlink: %s கை அமைப்பதில் பிழை"
 
-#: ../gio/glocalfileinfo.c:2247
+#: ../gio/glocalfileinfo.c:2246
 msgid "Error setting symlink: file is not a symlink"
 msgstr "symlink அமைப்பதில் பிழை: கோப்பு ஒரு symlinkஆக இல்லை"
 
-#: ../gio/glocalfileinfo.c:2373
+#: ../gio/glocalfileinfo.c:2372
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "மாற்றத்தை அமைக்கும் போது அல்லது அணுகல் நேரத்தில் பிழை: %s"
 
-#: ../gio/glocalfileinfo.c:2396
+#: ../gio/glocalfileinfo.c:2395
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux சூழல் பூஜ்ஜியமாக இருக்கக்கூடாது"
 
-#: ../gio/glocalfileinfo.c:2411
+#: ../gio/glocalfileinfo.c:2410
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "SELinux சூழலை அமைப்பதில் பிழை: %s"
 
-#: ../gio/glocalfileinfo.c:2418
+#: ../gio/glocalfileinfo.c:2417
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux இந்த கணினியில் செயல்படுத்தப்படவில்லை"
 
-#: ../gio/glocalfileinfo.c:2510
+#: ../gio/glocalfileinfo.c:2509
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "அளவுரு %s ஐ அமைப்பதில் ஆதரவு கிடையாது"
 
-#: ../gio/glocalfileinputstream.c:172 ../gio/glocalfileoutputstream.c:698
+#: ../gio/glocalfileinputstream.c:170 ../gio/glocalfileoutputstream.c:696
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "கோப்பிலிருந்து வாசிக்கும் போது பிழை: %s"
 
-#: ../gio/glocalfileinputstream.c:203 ../gio/glocalfileinputstream.c:215
-#: ../gio/glocalfileinputstream.c:229 ../gio/glocalfileinputstream.c:337
-#: ../gio/glocalfileoutputstream.c:460 ../gio/glocalfileoutputstream.c:1006
+#: ../gio/glocalfileinputstream.c:201 ../gio/glocalfileinputstream.c:213
+#: ../gio/glocalfileinputstream.c:227 ../gio/glocalfileinputstream.c:335
+#: ../gio/glocalfileoutputstream.c:458 ../gio/glocalfileoutputstream.c:1004
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "கோப்பை பார்க்கும் போது பிழை: %s"
 
-#: ../gio/glocalfileinputstream.c:259 ../gio/glocalfileoutputstream.c:250
-#: ../gio/glocalfileoutputstream.c:344
+#: ../gio/glocalfileinputstream.c:257 ../gio/glocalfileoutputstream.c:248
+#: ../gio/glocalfileoutputstream.c:342
 #, c-format
 msgid "Error closing file: %s"
 msgstr "கோப்பை முடிக்கும் போது பிழை: %s"
@@ -2069,51 +2118,51 @@ msgstr "கோப்பை முடிக்கும் போது பிழ
 msgid "Unable to find default local file monitor type"
 msgstr "முன்னிருப்பு உள்ளமை கோப்பு மானிட்டர் வகையை தேட முடியவில்லை"
 
-#: ../gio/glocalfileoutputstream.c:198 ../gio/glocalfileoutputstream.c:230
-#: ../gio/glocalfileoutputstream.c:719
+#: ../gio/glocalfileoutputstream.c:196 ../gio/glocalfileoutputstream.c:228
+#: ../gio/glocalfileoutputstream.c:717
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "பிழையை எழுதும் கோப்பு: %s"
 
-#: ../gio/glocalfileoutputstream.c:277
+#: ../gio/glocalfileoutputstream.c:275
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "பழைய பின்சேமிப்பு இணைப்பை நீக்குவதில் பிழை: %s"
 
-#: ../gio/glocalfileoutputstream.c:291 ../gio/glocalfileoutputstream.c:304
+#: ../gio/glocalfileoutputstream.c:289 ../gio/glocalfileoutputstream.c:302
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "பின்சேமிப்பு நகலை உருவாக்குவதில் பிழை: %s"
 
-#: ../gio/glocalfileoutputstream.c:322
+#: ../gio/glocalfileoutputstream.c:320
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "மறுபெயரிடப்பட்ட தற்காலிக கோப்பில் பிழை: %s"
 
-#: ../gio/glocalfileoutputstream.c:506 ../gio/glocalfileoutputstream.c:1057
+#: ../gio/glocalfileoutputstream.c:504 ../gio/glocalfileoutputstream.c:1055
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: ../gio/glocalfileoutputstream.c:559 ../gio/glocalfileoutputstream.c:789
-#: ../gio/glocalfileoutputstream.c:1038 ../gio/gsubprocess.c:354
+#: ../gio/glocalfileoutputstream.c:557 ../gio/glocalfileoutputstream.c:787
+#: ../gio/glocalfileoutputstream.c:1036 ../gio/gsubprocess.c:361
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "'%s' பிழையை திறக்கும் கோப்பு: %s"
 
-#: ../gio/glocalfileoutputstream.c:820
+#: ../gio/glocalfileoutputstream.c:818
 msgid "Target file is a directory"
 msgstr "இலக்கு கோப்பு ஒரு அடைவில்லை"
 
-#: ../gio/glocalfileoutputstream.c:825
+#: ../gio/glocalfileoutputstream.c:823
 msgid "Target file is not a regular file"
 msgstr "இலக்கு கோப்பு ஒரு நிரந்தர கோப்பு இல்லை"
 
-#: ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileoutputstream.c:835
 msgid "The file was externally modified"
 msgstr "இந்த கோப்பு வெளியார்ந்து மாற்றப்பட்டுள்ளது"
 
-#: ../gio/glocalfileoutputstream.c:1022
+#: ../gio/glocalfileoutputstream.c:1020
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "பிழையை நீக்கும் பழைய கோப்பு: %s"
@@ -2173,14 +2222,16 @@ msgstr "\"வெளியேறு\" இல் செயல்படுத்த
 #. * don't implement any of unmount or unmount_with_operation.
 #: ../gio/gmount.c:549
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
-msgstr "செயல்படுத்த முடியவில்லை \"ஏற்றநீக்கம்\" அல்லது \"unmount_with_operation\""
+msgstr ""
+"செயல்படுத்த முடியவில்லை \"ஏற்றநீக்கம்\" அல்லது \"unmount_with_operation\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gmount.c:634
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
-msgstr "செயல்படுத்து முடியவில்லை \"வெளியேற்று\" அல்லது \"eject_with_operation\""
+msgstr ""
+"செயல்படுத்து முடியவில்லை \"வெளியேற்று\" அல்லது \"eject_with_operation\""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2230,11 +2281,11 @@ msgstr "பிணைய மானிட்டரை உருவாக்க ம
 msgid "Could not get network status: "
 msgstr "நெட்வொர்க் நிலையைப் பெற முடியவில்லை:"
 
-#: ../gio/goutputstream.c:210 ../gio/goutputstream.c:454
+#: ../gio/goutputstream.c:211 ../gio/goutputstream.c:553
 msgid "Output stream doesn't implement write"
 msgstr "வெளிப்பாடு ஸ்ட்ரீம் எழுதுதலை செயல்படுத்தவில்லை"
 
-#: ../gio/goutputstream.c:415 ../gio/goutputstream.c:928
+#: ../gio/goutputstream.c:514 ../gio/goutputstream.c:1032
 msgid "Source stream is already closed"
 msgstr "மூல ஸ்ட்ரீம் ஏற்கனவே மூடப்பட்டது"
 
@@ -2350,7 +2401,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SECTION   ஒரு (விரும்பினால் பயன்படுத்தும்) elf பிரிவு பெயர்\n"
 
-#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:631
+#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:637
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMMAND   விவரிப்பதற்கான (விருப்பமான) கட்டளை\n"
 
@@ -2373,7 +2424,8 @@ msgstr "[PATH]"
 #: ../gio/gresource-tool.c:561
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr ""
-"  PATH      ஒரு (விரும்பினால் பயன்படுத்தும்) வளப் பாதை (பகுதியாக இருக்கக்கூடும்)\n"
+"  PATH      ஒரு (விரும்பினால் பயன்படுத்தும்) வளப் பாதை (பகுதியாக "
+"இருக்கக்கூடும்)\n"
 
 #: ../gio/gresource-tool.c:562
 msgid "PATH"
@@ -2418,38 +2470,38 @@ msgstr "பாதை ஒரு ஸ்லாஷ் உடன் முடிக�
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "பாதையானது இரண்டு அருகிலுள்ள ஸ்லாஷ்களை கொண்டிருக்க வேண்டும் (//)\n"
 
-#: ../gio/gsettings-tool.c:473
+#: ../gio/gsettings-tool.c:479
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "மதிப்பு வரம்பின் வெளிப்பக்கத்தில் வழங்கப்பட்ட மதிப்பு\n"
 
-#: ../gio/gsettings-tool.c:480
+#: ../gio/gsettings-tool.c:486
 #, c-format
 msgid "The key is not writable\n"
 msgstr "விசை எழுதக்கூடியதல்ல\n"
 
-#: ../gio/gsettings-tool.c:516
+#: ../gio/gsettings-tool.c:522
 msgid "List the installed (non-relocatable) schemas"
 msgstr "நினுவப்பட்ட (மறுஅமைக்க முடியாத) திட்டங்களின் பட்டியல்"
 
-#: ../gio/gsettings-tool.c:522
+#: ../gio/gsettings-tool.c:528
 msgid "List the installed relocatable schemas"
 msgstr "நிறுவப்படக்கூடிய மறுஅமைக்கக்கூடிய திட்டங்களின் பட்டியல்"
 
-#: ../gio/gsettings-tool.c:528
+#: ../gio/gsettings-tool.c:534
 msgid "List the keys in SCHEMA"
 msgstr "திட்டத்தில் விசைகளில் பட்டியல்"
 
-#: ../gio/gsettings-tool.c:529 ../gio/gsettings-tool.c:535
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:535 ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:578
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMA[:PATH]"
 
-#: ../gio/gsettings-tool.c:534
+#: ../gio/gsettings-tool.c:540
 msgid "List the children of SCHEMA"
 msgstr "திட்டத்தின் சேய் பட்டியல்"
 
-#: ../gio/gsettings-tool.c:540
+#: ../gio/gsettings-tool.c:546
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2457,44 +2509,44 @@ msgstr ""
 "விசைகள் மதிப்புகள், சுழல்நிலையின் பட்டியல்\n"
 "SCHEMA கொடுக்கப்படவில்லை எனில், அனைத்து விசைகளையும் பட்டியவிடவும்\n"
 
-#: ../gio/gsettings-tool.c:542
+#: ../gio/gsettings-tool.c:548
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SCHEMA[:PATH]]"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:553
 msgid "Get the value of KEY"
 msgstr "விசையின் மதிப்பை பெறவும்"
 
-#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
-#: ../gio/gsettings-tool.c:566 ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:554 ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:572 ../gio/gsettings-tool.c:584
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:PATH] KEY"
 
-#: ../gio/gsettings-tool.c:553
+#: ../gio/gsettings-tool.c:559
 msgid "Query the range of valid values for KEY"
 msgstr "சரியான மதிப்புகளின் விசைக்கான வரம்பை வினவவும்"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:565
 msgid "Set the value of KEY to VALUE"
 msgstr "விசையின் மதிப்பை மதிப்பிற்கு அமைக்கவும்"
 
-#: ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:566
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMA[:PATH] KEY VALUE"
 
-#: ../gio/gsettings-tool.c:565
+#: ../gio/gsettings-tool.c:571
 msgid "Reset KEY to its default value"
 msgstr "அதனுடைய முன்னிருப்பு மதிப்பிற்கு விசையை மறுஅமைக்கவும்"
 
-#: ../gio/gsettings-tool.c:571
+#: ../gio/gsettings-tool.c:577
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "அதனுடைய முன்னிருப்புகளுக்கு திட்டத்தின் அனைத்து விசைகளை "
 
-#: ../gio/gsettings-tool.c:577
+#: ../gio/gsettings-tool.c:583
 msgid "Check if KEY is writable"
 msgstr "விசை எழுதக்கூடியதாக இருந்தால் சரிபார்க்கவும்"
 
-#: ../gio/gsettings-tool.c:583
+#: ../gio/gsettings-tool.c:589
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2504,32 +2556,11 @@ msgstr ""
 "விசை குறிக்கப்படவில்லை, அனைத்து விசைகளையும் திட்டத்தில் கணிக்கவும்.\n"
 "கணிப்பதை நிறுத்துவதற்கு  ^C ஐ பயன்படுத்தவும்.\n"
 
-#: ../gio/gsettings-tool.c:586
+#: ../gio/gsettings-tool.c:592
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
-#: ../gio/gsettings-tool.c:598
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
-#| "\n"
-#| "Commands:\n"
-#| "  help                      Show this information\n"
-#| "  list-schemas              List installed schemas\n"
-#| "  list-relocatable-schemas  List relocatable schemas\n"
-#| "  list-keys                 List keys in a schema\n"
-#| "  list-children             List children of a schema\n"
-#| "  list-recursively          List keys and values, recursively\n"
-#| "  range                     Queries the range of a key\n"
-#| "  get                       Get the value of a key\n"
-#| "  set                       Set the value of a key\n"
-#| "  reset                     Reset the value of a key\n"
-#| "  reset-recursively         Reset all values in a given schema\n"
-#| "  writable                  Check if a key is writable\n"
-#| "  monitor                   Watch for changes\n"
-#| "\n"
-#| "Use 'gsettings help COMMAND' to get detailed help.\n"
-#| "\n"
+#: ../gio/gsettings-tool.c:604
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -2568,7 +2599,8 @@ msgstr ""
 "  get                       ஒரு விசையின் மதிப்பைப் பெறு\n"
 "  set                       ஒரு விசையின் மதிப்பை அமை\n"
 "  reset                     ஒரு விசையின் மதிப்பை மீட்டமை\n"
-"  reset-recursively         கொடுக்கப்பட்ட திட்டவடிவத்தில் உள்ள எல்லா மதிப்புகளையும் "
+"  reset-recursively         கொடுக்கப்பட்ட திட்டவடிவத்தில் உள்ள எல்லா "
+"மதிப்புகளையும் "
 "மீட்டமை\n"
 "  writable                  ஒரு விசை எழுதக்கூடியதா என சோதி\n"
 "  monitor                   மாற்றங்களைக் கவனி\n"
@@ -2576,7 +2608,7 @@ msgstr ""
 "விவரமான உதவிக்கு 'gsettings help COMMAND' கட்டளையைப் பயன்படுத்தவும்.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:621
+#: ../gio/gsettings-tool.c:627
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2591,11 +2623,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:627
+#: ../gio/gsettings-tool.c:633
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SCHEMADIR கூடுதல் திட்டவடிவங்களைத் தேடுவதற்கான கோப்பகம்\n"
 
-#: ../gio/gsettings-tool.c:635
+#: ../gio/gsettings-tool.c:641
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2603,29 +2635,29 @@ msgstr ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
 
-#: ../gio/gsettings-tool.c:640
+#: ../gio/gsettings-tool.c:646
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY      (விருப்பமான) விசை திட்டத்தினுள் உள்ளது\n"
 
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:650
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       விசை திட்டத்தினுள் உள்ளது\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:654
 msgid "  VALUE     The value to set\n"
 msgstr "மதிப்பு   அமைப்பதற்கான மதிப்பு\n"
 
-#: ../gio/gsettings-tool.c:703
+#: ../gio/gsettings-tool.c:709
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "%s இலிருந்து திட்டங்களை ஏற்ற முடியவில்லை: %s\n"
 
-#: ../gio/gsettings-tool.c:765
+#: ../gio/gsettings-tool.c:771
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "காலி திட்டப்பெயர் கொடுக்கப்பட்டது\n"
 
-#: ../gio/gsettings-tool.c:794
+#: ../gio/gsettings-tool.c:800
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "'%s' போன்ற விசை எதுவும் இல்லை\n"
@@ -2760,38 +2792,38 @@ msgstr "சாக்கெட் சான்றளிப்புகளை வ�
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials இந்த OS க்காக செயல்படுத்தப்படவில்லை"
 
-#: ../gio/gsocketclient.c:177
+#: ../gio/gsocketclient.c:178
 #, c-format
 msgid "Could not connect to proxy server %s: "
 msgstr "பதிலி சேவையகம் %s உடன் இணைக்க முடியவில்லை: "
 
-#: ../gio/gsocketclient.c:191
+#: ../gio/gsocketclient.c:192
 #, c-format
 msgid "Could not connect to %s: "
 msgstr "%s க்கு இணைக்க முடியவில்லை: "
 
-#: ../gio/gsocketclient.c:193
+#: ../gio/gsocketclient.c:194
 msgid "Could not connect: "
 msgstr "இணைக்க முடியவில்லை: "
 
-#: ../gio/gsocketclient.c:1067 ../gio/gsocketclient.c:1631
+#: ../gio/gsocketclient.c:1069 ../gio/gsocketclient.c:1636
 msgid "Unknown error on connect"
 msgstr "இணைப்பில் தெரியாத தவறு"
 
-#: ../gio/gsocketclient.c:1120 ../gio/gsocketclient.c:1569
+#: ../gio/gsocketclient.c:1124 ../gio/gsocketclient.c:1574
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "TCP அல்லாத இணைப்பில் பதிலியைப் பயன்படுத்துதலுக்கு ஆதரவில்லை."
 
-#: ../gio/gsocketclient.c:1146 ../gio/gsocketclient.c:1590
+#: ../gio/gsocketclient.c:1150 ../gio/gsocketclient.c:1595
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "ப்ராக்ஸி '%s' துணைபுரியவில்லை."
 
-#: ../gio/gsocketlistener.c:187
+#: ../gio/gsocketlistener.c:188
 msgid "Listener is already closed"
 msgstr "கேட்பாளர் ஏற்கனவே மூடப்பட்டது"
 
-#: ../gio/gsocketlistener.c:228
+#: ../gio/gsocketlistener.c:229
 msgid "Added socket is closed"
 msgstr "சேர்க்கப்பட்ட சாக்கெட் மூடப்பட்டது"
 
@@ -2898,39 +2930,39 @@ msgstr "'%s'ஐ தீர்க்கும் பிழை: %s"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "'%s' ஐ தலைகீழாக தீர்க்கையில் பிழை: %s"
 
-#: ../gio/gthreadedresolver.c:536 ../gio/gthreadedresolver.c:617
-#: ../gio/gthreadedresolver.c:720 ../gio/gthreadedresolver.c:771
+#: ../gio/gthreadedresolver.c:533 ../gio/gthreadedresolver.c:613
+#: ../gio/gthreadedresolver.c:713 ../gio/gthreadedresolver.c:763
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "'%s' க்கு கோரப்பட்ட வகையிலான DNS பதிவு இல்லை"
 
-#: ../gio/gthreadedresolver.c:541 ../gio/gthreadedresolver.c:725
+#: ../gio/gthreadedresolver.c:538 ../gio/gthreadedresolver.c:718
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "தற்காலிகமாக '%s'ஐ தீர்க்க முடியவில்லை"
 
-#: ../gio/gthreadedresolver.c:546 ../gio/gthreadedresolver.c:730
+#: ../gio/gthreadedresolver.c:543 ../gio/gthreadedresolver.c:723
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "%sஐ தீர்க்கையில் பிழை"
 
-#: ../gio/gtlscertificate.c:248
+#: ../gio/gtlscertificate.c:249
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "PEM தனிப்பட்ட திறப்பை குறிநீக்கம் செய்ய முடியாது"
 
-#: ../gio/gtlscertificate.c:253
+#: ../gio/gtlscertificate.c:254
 msgid "No PEM-encoded private key found"
 msgstr "PEM-மறைகுறியாக்கப்பட்ட தனிப்பட்ட விசை காணப்படவில்லை"
 
-#: ../gio/gtlscertificate.c:263
+#: ../gio/gtlscertificate.c:264
 msgid "Could not parse PEM-encoded private key"
 msgstr "PEM தனிபட்ட விசையை பிரிக்க முடியவில்லை"
 
-#: ../gio/gtlscertificate.c:288
+#: ../gio/gtlscertificate.c:289
 msgid "No PEM-encoded certificate found"
 msgstr "PEM-மறைகுறியாக்கப்பட்ட சான்றிதழை காணப்படவில்லை"
 
-#: ../gio/gtlscertificate.c:297
+#: ../gio/gtlscertificate.c:298
 msgid "Could not parse PEM-encoded certificate"
 msgstr "PEM-மறைகுறியாக்கப்பட்ட சான்றிதழை பகுக்க முடியவில்லை"
 
@@ -2939,14 +2971,16 @@ msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
-"உங்கள் அணுகல் பூட்டப்படுவதற்கு முன் சரியாக கடவுச்சொல்லை உள்ளிடுவதற்கான கடைசி வாய்ப்பாகும்."
+"உங்கள் அணுகல் பூட்டப்படுவதற்கு முன் சரியாக கடவுச்சொல்லை உள்ளிடுவதற்கான கடைசி "
+"வாய்ப்பாகும்."
 
 #: ../gio/gtlspassword.c:115
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr ""
-"உள்ளிடப்பட்ட பல கடவுச்சொல் தவறானது, இது போன்ற தோல்விகளுக்கு பின் உங்கள் அணுகல் பூட்டப்படும்."
+"உள்ளிடப்பட்ட பல கடவுச்சொல் தவறானது, இது போன்ற தோல்விகளுக்கு பின் உங்கள் "
+"அணுகல் பூட்டப்படும்."
 
 #: ../gio/gtlspassword.c:117
 msgid "The password entered is incorrect."
@@ -2982,7 +3016,8 @@ msgstr "சான்றுகளுக்கு பிழையை அனுப�
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr ""
-"SO_PASSCRED ஆனது சாக்கெட்டிற்காக செயல்படுத்தப்பட்டால் பிழை சரிபார்க்கப்படுகிறது: %s"
+"SO_PASSCRED ஆனது சாக்கெட்டிற்காக செயல்படுத்தப்பட்டால் பிழை "
+"சரிபார்க்கப்படுகிறது: %s"
 
 #: ../gio/gunixconnection.c:511
 #, c-format
@@ -2993,7 +3028,8 @@ msgstr "பிழை SO_PASSCRED ஐ செயல்படுத்துகி�
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
-"பெறும் சான்றுகளுக்காக ஆனால் பூஜ்ஜிய பைட்டுகளை வாணிப்பதற்கான ஒரு ஒற்றை பைட்டை வாசிக்க "
+"பெறும் சான்றுகளுக்காக ஆனால் பூஜ்ஜிய பைட்டுகளை வாணிப்பதற்கான ஒரு ஒற்றை பைட்டை "
+"வாசிக்க "
 "எதிர்பார்க்கிறது"
 
 #: ../gio/gunixconnection.c:580
@@ -3016,7 +3052,7 @@ msgstr "கோப்பு விவரிப்பானை வாசிப்�
 msgid "Error closing file descriptor: %s"
 msgstr "கோப்பு விவரிப்பானை மூடுவதில் பிழை: %s"
 
-#: ../gio/gunixmounts.c:1985 ../gio/gunixmounts.c:2038
+#: ../gio/gunixmounts.c:1982 ../gio/gunixmounts.c:2035
 msgid "Filesystem root"
 msgstr "கோப்பு முறைமை ரூட்"
 
@@ -3118,78 +3154,78 @@ msgstr "ஒரு dbus சேவையை இயக்கு"
 msgid "Wrong args\n"
 msgstr "தவறான அளவுருக்கள் (args)\n"
 
-#: ../glib/gbookmarkfile.c:760
+#: ../glib/gbookmarkfile.c:754
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "எதிர்பாராத பண்புக்கூறு '%s' இந்த உறுப்புக்கு '%s'"
 
-#: ../glib/gbookmarkfile.c:771 ../glib/gbookmarkfile.c:842
-#: ../glib/gbookmarkfile.c:852 ../glib/gbookmarkfile.c:959
+#: ../glib/gbookmarkfile.c:765 ../glib/gbookmarkfile.c:836
+#: ../glib/gbookmarkfile.c:846 ../glib/gbookmarkfile.c:953
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "மதிப்பு '%s' க்கு '%s' உறுப்பு எதுவும் இல்லை"
 
-#: ../glib/gbookmarkfile.c:1129 ../glib/gbookmarkfile.c:1194
-#: ../glib/gbookmarkfile.c:1258 ../glib/gbookmarkfile.c:1268
+#: ../glib/gbookmarkfile.c:1123 ../glib/gbookmarkfile.c:1188
+#: ../glib/gbookmarkfile.c:1252 ../glib/gbookmarkfile.c:1262
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "எதிர்பாராத ஒட்டு'%s', ஒட்டு '%s' எதிர்பார்க்கப்பட்டது"
 
-#: ../glib/gbookmarkfile.c:1154 ../glib/gbookmarkfile.c:1168
-#: ../glib/gbookmarkfile.c:1236 ../glib/gbookmarkfile.c:1288
+#: ../glib/gbookmarkfile.c:1148 ../glib/gbookmarkfile.c:1162
+#: ../glib/gbookmarkfile.c:1230
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "'%s' க்குள் எதிர்பாராத ஒட்டு '%s' உள்ளது"
 
-#: ../glib/gbookmarkfile.c:1798
+#: ../glib/gbookmarkfile.c:1772
 msgid "No valid bookmark file found in data dirs"
 msgstr "தரவு அடைவுகளில் சரியான புத்தகக்குறி கோப்பு எதுவும் இல்லை"
 
-#: ../glib/gbookmarkfile.c:1999
+#: ../glib/gbookmarkfile.c:1973
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI '%s' க்கு ஏற்கனவே புத்தகக்குறி உள்ளது"
 
-#: ../glib/gbookmarkfile.c:2045 ../glib/gbookmarkfile.c:2203
-#: ../glib/gbookmarkfile.c:2288 ../glib/gbookmarkfile.c:2368
-#: ../glib/gbookmarkfile.c:2453 ../glib/gbookmarkfile.c:2536
-#: ../glib/gbookmarkfile.c:2614 ../glib/gbookmarkfile.c:2693
-#: ../glib/gbookmarkfile.c:2735 ../glib/gbookmarkfile.c:2832
-#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3386
-#: ../glib/gbookmarkfile.c:3475 ../glib/gbookmarkfile.c:3565
-#: ../glib/gbookmarkfile.c:3693
+#: ../glib/gbookmarkfile.c:2019 ../glib/gbookmarkfile.c:2177
+#: ../glib/gbookmarkfile.c:2262 ../glib/gbookmarkfile.c:2342
+#: ../glib/gbookmarkfile.c:2427 ../glib/gbookmarkfile.c:2510
+#: ../glib/gbookmarkfile.c:2588 ../glib/gbookmarkfile.c:2667
+#: ../glib/gbookmarkfile.c:2709 ../glib/gbookmarkfile.c:2806
+#: ../glib/gbookmarkfile.c:2926 ../glib/gbookmarkfile.c:3116
+#: ../glib/gbookmarkfile.c:3192 ../glib/gbookmarkfile.c:3360
+#: ../glib/gbookmarkfile.c:3449 ../glib/gbookmarkfile.c:3538
+#: ../glib/gbookmarkfile.c:3654
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URIக்கு புத்தகக்குறி எதுவும் இல்லை '%s'"
 
-#: ../glib/gbookmarkfile.c:2377
+#: ../glib/gbookmarkfile.c:2351
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI '%s'க்கு MIME வகை எதுவும் புத்தகக்குறியில் குறிப்பிடப்படவில்லை"
 
-#: ../glib/gbookmarkfile.c:2462
+#: ../glib/gbookmarkfile.c:2436
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI '%s'க்கு புத்தகக்குறியில் தனிபட்ட கொடி எதுவும் குறிப்பிடப்படவில்லை"
 
-#: ../glib/gbookmarkfile.c:2841
+#: ../glib/gbookmarkfile.c:2815
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s'க்கான புத்தகக்குறியில் குழுக்கள் எதுவும் அமைக்கப்படவில்லை"
 
-#: ../glib/gbookmarkfile.c:3239 ../glib/gbookmarkfile.c:3396
+#: ../glib/gbookmarkfile.c:3213 ../glib/gbookmarkfile.c:3370
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "'%s' பெயரிலுள்ள பயன்பாடு  '%s'க்கு ஒரு புத்தகக்குறியை பதிவு செய்தது"
 
-#: ../glib/gbookmarkfile.c:3419
+#: ../glib/gbookmarkfile.c:3393
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "exec வரி '%s'  ஐ யூஆர்ஐ (URI) '%s' உடன் விரிவாக்குதல் தோல்வியுற்றது"
 
-#: ../glib/gconvert.c:503 ../glib/gutf8.c:829 ../glib/gutf8.c:1039
-#: ../glib/gutf8.c:1176 ../glib/gutf8.c:1280
+#: ../glib/gconvert.c:503 ../glib/gutf8.c:839 ../glib/gutf8.c:1054
+#: ../glib/gutf8.c:1193 ../glib/gutf8.c:1299
 msgid "Partial character sequence at end of input"
 msgstr "உள்ளீடின் முடிவில் பூர்த்தியாகாத வரியுரு வரிசைமுறை"
 
@@ -3233,227 +3269,227 @@ msgid "Invalid hostname"
 msgstr "பிழையான விருந்தோம்புப்-பெயர்"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:201
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "காலை"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:203
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "மாலை"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: ../glib/gdatetime.c:210
+#: ../glib/gdatetime.c:206
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%A %d %B %Y %I:%M:%S %p %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:209
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%A %d %B %Y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:216
+#: ../glib/gdatetime.c:212
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%I:%M:%S  %Z"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: ../glib/gdatetime.c:219
+#: ../glib/gdatetime.c:215
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p %Z"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:228
 msgctxt "full month name"
 msgid "January"
 msgstr "ஜனவரி"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:230
 msgctxt "full month name"
 msgid "February"
 msgstr "பிப்ரவரி"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:232
 msgctxt "full month name"
 msgid "March"
 msgstr "மார்ச்"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:234
 msgctxt "full month name"
 msgid "April"
 msgstr "ஏப்ரல்"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:236
 msgctxt "full month name"
 msgid "May"
 msgstr "மே"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:238
 msgctxt "full month name"
 msgid "June"
 msgstr "ஜூன்"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:240
 msgctxt "full month name"
 msgid "July"
 msgstr "ஜூலை"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:242
 msgctxt "full month name"
 msgid "August"
 msgstr "ஆகஸ்ட்"
 
-#: ../glib/gdatetime.c:248
+#: ../glib/gdatetime.c:244
 msgctxt "full month name"
 msgid "September"
 msgstr "செப்டம்பர்"
 
-#: ../glib/gdatetime.c:250
+#: ../glib/gdatetime.c:246
 msgctxt "full month name"
 msgid "October"
 msgstr "அக்டோபர்"
 
-#: ../glib/gdatetime.c:252
+#: ../glib/gdatetime.c:248
 msgctxt "full month name"
 msgid "November"
 msgstr "நவம்பர்"
 
-#: ../glib/gdatetime.c:254
+#: ../glib/gdatetime.c:250
 msgctxt "full month name"
 msgid "December"
 msgstr "டிசம்பர்"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:265
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "ஜன"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:267
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "பிப்"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:269
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "மார்"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:271
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "ஏப்"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:273
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "மே"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:275
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "ஜூன்"
 
-#: ../glib/gdatetime.c:281
+#: ../glib/gdatetime.c:277
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "ஜூலை"
 
-#: ../glib/gdatetime.c:283
+#: ../glib/gdatetime.c:279
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "ஆகஸ்"
 
-#: ../glib/gdatetime.c:285
+#: ../glib/gdatetime.c:281
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "செப்"
 
-#: ../glib/gdatetime.c:287
+#: ../glib/gdatetime.c:283
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "அக்"
 
-#: ../glib/gdatetime.c:289
+#: ../glib/gdatetime.c:285
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "நவ்"
 
-#: ../glib/gdatetime.c:291
+#: ../glib/gdatetime.c:287
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "டிசம்"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:302
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "திங்கள்"
 
-#: ../glib/gdatetime.c:308
+#: ../glib/gdatetime.c:304
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "செவ்வாய்"
 
-#: ../glib/gdatetime.c:310
+#: ../glib/gdatetime.c:306
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "புதன்"
 
-#: ../glib/gdatetime.c:312
+#: ../glib/gdatetime.c:308
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "வியாழன்"
 
-#: ../glib/gdatetime.c:314
+#: ../glib/gdatetime.c:310
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "வெள்ளி"
 
-#: ../glib/gdatetime.c:316
+#: ../glib/gdatetime.c:312
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "சனி"
 
-#: ../glib/gdatetime.c:318
+#: ../glib/gdatetime.c:314
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "ஞாயிறு"
 
-#: ../glib/gdatetime.c:333
+#: ../glib/gdatetime.c:329
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "தி"
 
-#: ../glib/gdatetime.c:335
+#: ../glib/gdatetime.c:331
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "செ"
 
-#: ../glib/gdatetime.c:337
+#: ../glib/gdatetime.c:333
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "பு"
 
-#: ../glib/gdatetime.c:339
+#: ../glib/gdatetime.c:335
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "வி"
 
-#: ../glib/gdatetime.c:341
+#: ../glib/gdatetime.c:337
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "வெ"
 
-#: ../glib/gdatetime.c:343
+#: ../glib/gdatetime.c:339
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "ச"
 
-#: ../glib/gdatetime.c:345
+#: ../glib/gdatetime.c:341
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "ஞா"
@@ -3463,106 +3499,107 @@ msgstr "ஞா"
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' அடைவு திறக்கும்போது பிழை: %s"
 
-#: ../glib/gfileutils.c:646 ../glib/gfileutils.c:734
+#: ../glib/gfileutils.c:700 ../glib/gfileutils.c:792
 #, c-format
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "கோப்பு \"%2$s\" ஐப் படிக்க %1$lu பைட்டை ஒதுக்க முடியவில்லை"
 msgstr[1] "கோப்பு \"%2$s\" ஐப் படிக்க %1$lu பைட்டுகளை ஒதுக்க முடியவில்லை"
 
-#: ../glib/gfileutils.c:661
+#: ../glib/gfileutils.c:717
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "'%s' கோப்பு வாசிக்கும் போது பிழை: %s"
 
-#: ../glib/gfileutils.c:675
+#: ../glib/gfileutils.c:753
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "கோப்பு \"%s\" மிகப்பெரியது"
 
-#: ../glib/gfileutils.c:758
+#: ../glib/gfileutils.c:817
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "'%s' கோப்பிலிருந்து வாசிக்க முடியவில்லை: %s"
 
-#: ../glib/gfileutils.c:809 ../glib/gfileutils.c:896
+#: ../glib/gfileutils.c:864 ../glib/gfileutils.c:930
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "'%s' கோப்பு திறக்க முடியவில்லை: %s"
 
-#: ../glib/gfileutils.c:826
+#: ../glib/gfileutils.c:874
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "'%s' கோப்பின் பண்புகளை பெறமுடியவில்லை: fstat() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:860
+#: ../glib/gfileutils.c:902
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "'%s' கோப்பை திறக்க முடியவில்லை: fdopen() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:968
+#: ../glib/gfileutils.c:998
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr "'%s'கோப்பினை '%s'க்கு மறுபெயரிட முடியவில்லை: g_rename() செயலிழந்தது: %s"
+msgstr ""
+"'%s'கோப்பினை '%s'க்கு மறுபெயரிட முடியவில்லை: g_rename() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:1044 ../glib/gfileutils.c:1551
+#: ../glib/gfileutils.c:1031 ../glib/gfileutils.c:1525
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "'%s' கோப்பை படைக்க முடியவில்லை: %s"
 
-#: ../glib/gfileutils.c:1068
+#: ../glib/gfileutils.c:1055
 #, c-format
 msgid "Failed to write file '%s': write() failed: %s"
 msgstr "கோப்பு '%s' இல் எழுத முடியவில்லை: write() தோல்வியடைந்தது: %s"
 
-#: ../glib/gfileutils.c:1108
+#: ../glib/gfileutils.c:1095
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "கோப்பு '%s' எழுத முடியவில்லை: fsync() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:1240
+#: ../glib/gfileutils.c:1222
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "இருக்கும் கோப்பு '%s' ஐ நீக்க முடியாது: g_unlink() செயலிழந்தது: %s"
 
-#: ../glib/gfileutils.c:1514
+#: ../glib/gfileutils.c:1492
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' படிம அச்சு செல்லுபடியாகாதது; அதனில் '%s' இருக்கக் கூடாது"
 
-#: ../glib/gfileutils.c:1527
+#: ../glib/gfileutils.c:1505
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' படிம அச்சில் XXXXXX இல்லை"
 
-#: ../glib/gfileutils.c:2055
+#: ../glib/gfileutils.c:2023
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "'%s' என்பதன்-குறுக்கம் இணைப்பை வாசிக்க முடியவில்லை: %s"
 
-#: ../glib/gfileutils.c:2076
+#: ../glib/gfileutils.c:2041
 msgid "Symbolic links not supported"
 msgstr "என்பதன்-குறுக்கம் இணைப்புகளுக்கு ஆதரவு கிடையாது"
 
-#: ../glib/giochannel.c:1418
+#: ../glib/giochannel.c:1414
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "'%s' லிருந்து'%s'க்கு மாற்றியை திறக்க முடியவில்லை: %s"
 
-#: ../glib/giochannel.c:1763
+#: ../glib/giochannel.c:1759
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string இல் மூலமாக வாசிக்க முடியாது"
 
-#: ../glib/giochannel.c:1810 ../glib/giochannel.c:2068
-#: ../glib/giochannel.c:2155
+#: ../glib/giochannel.c:1806 ../glib/giochannel.c:2064
+#: ../glib/giochannel.c:2151
 msgid "Leftover unconverted data in read buffer"
 msgstr "வாசிப்புத் தாங்ககத்தில் மாற்றப்படாத மீதித் தரவுகள்"
 
-#: ../glib/giochannel.c:1891 ../glib/giochannel.c:1968
+#: ../glib/giochannel.c:1887 ../glib/giochannel.c:1964
 msgid "Channel terminates in a partial character"
 msgstr "வாய்க்கால் பாதி வரியுருவில் முடிவடைகிறது"
 
-#: ../glib/giochannel.c:1954
+#: ../glib/giochannel.c:1950
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_end இல் மூலமாக வாசிக்க முடியாது"
 
@@ -3579,7 +3616,8 @@ msgstr "ஒரு முறையான கோப்பில்லை"
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"விசை கோப்பு வரி '%s' கொண்டுள்ளது இது விசை-மதிப்பு சோடியை, குழு, அல்லது குறிப்பு அல்ல"
+"விசை கோப்பு வரி '%s' கொண்டுள்ளது இது விசை-மதிப்பு சோடியை, குழு, அல்லது "
+"குறிப்பு அல்ல"
 
 #: ../glib/gkeyfile.c:1215
 #, c-format
@@ -3621,7 +3659,8 @@ msgstr " '%s'மதிப்பினை உடைய '%s'விசை விச
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
-msgstr "%s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
+msgstr ""
+"%s'விசையை விசை கோப்பு கொண்டுள்ளது அது கொண்டுள்ள மதிப்பினை மாற்ற முடியாது."
 
 #: ../glib/gkeyfile.c:2536 ../glib/gkeyfile.c:2904
 #, c-format
@@ -3629,7 +3668,8 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
 "interpreted."
 msgstr ""
-"விசைக் கோப்பில் '%s' குழுவில் '%s' விசை உள்ளது. அது கொண்டுள்ள மதிப்பினை புரிந்துகொள்ள "
+"விசைக் கோப்பில் '%s' குழுவில் '%s' விசை உள்ளது. அது கொண்டுள்ள மதிப்பினை "
+"புரிந்துகொள்ள "
 "முடியாது."
 
 #: ../glib/gkeyfile.c:2614 ../glib/gkeyfile.c:2691
@@ -3673,17 +3713,17 @@ msgstr "மதிப்பு '%s' தசம எண்ணாக செயல்�
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "மதிப்பு '%s' பூலியனாக செயல்பட முடியாது."
 
-#: ../glib/gmappedfile.c:130
+#: ../glib/gmappedfile.c:131
 #, c-format
 msgid "Failed to get attributes of file '%s%s%s%s': fstat() failed: %s"
 msgstr "'%s%s%s%s' கோப்பின் பண்புருக்களைப் பெறமுடியவில்லை: fstat() தோல்வி: %s"
 
-#: ../glib/gmappedfile.c:196
+#: ../glib/gmappedfile.c:197
 #, c-format
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
 msgstr "%s%s%s%s ஐ மேப் செய்வதில் தோல்வி: mmap() தோல்வி: %s"
 
-#: ../glib/gmappedfile.c:262
+#: ../glib/gmappedfile.c:263
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "'%s' கோப்பினை திறக்க முடியவில்லை: open() செயலிழந்தது: %s"
@@ -3719,7 +3759,8 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"'%-.*s'ஐ கூறிட முடியவில்லை,அதன் ஒரு எழுத்துக்குள் ஒரு தசமத்தை கொண்டிருக்க வேண்டும் "
+"'%-.*s'ஐ கூறிட முடியவில்லை,அதன் ஒரு எழுத்துக்குள் ஒரு தசமத்தை கொண்டிருக்க "
+"வேண்டும் "
 "குறிப்பு (&#234; எடுத்துக்காட்டாக) - எனினும் தசமம் மிக பெரியதாக உள்ளது"
 
 #: ../glib/gmarkup.c:694
@@ -3735,13 +3776,15 @@ msgstr ""
 #: ../glib/gmarkup.c:720
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "எழுத்து குறிப்பு '%-.*s' ஒரு அனுமதிக்கப்பட்ட எழுத்தினை குறிமுறையாக்கவில்லை"
+msgstr ""
+"எழுத்து குறிப்பு '%-.*s' ஒரு அனுமதிக்கப்பட்ட எழுத்தினை குறிமுறையாக்கவில்லை"
 
 #: ../glib/gmarkup.c:758
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"வெற்றா பிரதிநிதி '&;' கண்டது; சரியான பிரதிநிதிகள்: &amp; &quot; &lt; &qt; &apos;"
+"வெற்றா பிரதிநிதி '&;' கண்டது; சரியான பிரதிநிதிகள்: &amp; &quot; &lt; &qt; "
+"&apos;"
 
 #: ../glib/gmarkup.c:766
 #, c-format
@@ -3753,7 +3796,8 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"பிரதிநிதி ';' உடன் முடிவடையவில்லை; நீங்கள் பிரதிநிதி ஒன்றை தொடங்க யோசிக்காமல் '&' "
+"பிரதிநிதி ';' உடன் முடிவடையவில்லை; நீங்கள் பிரதிநிதி ஒன்றை தொடங்க யோசிக்காமல் "
+"'&' "
 "பயன்படுத்தி இருக்கலாம் - '&'சை &amp ஆக விடுவி;"
 
 #: ../glib/gmarkup.c:1177
@@ -3766,7 +3810,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'<' வரியுருவை தொடர்ந்து '%s' வர முடியாது; அதைப் பயன்படுத்தி ஓர் உறுப்படியின் பெயரைத் "
+"'<' வரியுருவை தொடர்ந்து '%s' வர முடியாது; அதைப் பயன்படுத்தி ஓர் உறுப்படியின் "
+"பெயரைத் "
 "தொடங்க முடியாது"
 
 #: ../glib/gmarkup.c:1259
@@ -3775,7 +3820,8 @@ msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag "
 "'%s'"
 msgstr ""
-"ஒற்றை வரியுரு '%s', '%s' உறுப்படி தொடங்கல் ஒட்டை ஓர் '>' வரியுரு முடிவு செய்யும் "
+"ஒற்றை வரியுரு '%s', '%s' உறுப்படி தொடங்கல் ஒட்டை ஓர் '>' வரியுரு முடிவு "
+"செய்யும் "
 "என்று எதிர்பார்த்தது"
 
 #: ../glib/gmarkup.c:1340
@@ -3783,7 +3829,8 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"'%s' ஓர் ஒற்றை வரியுரு, பண்பின் பெயர் '%s' பின் ('%s' உறுப்பின்) எதிர்பார்த்தது ஓர் '=' "
+"'%s' ஓர் ஒற்றை வரியுரு, பண்பின் பெயர் '%s' பின் ('%s' உறுப்பின்) "
+"எதிர்பார்த்தது ஓர் '=' "
 "வரியுரு"
 
 #: ../glib/gmarkup.c:1381
@@ -3832,7 +3879,8 @@ msgstr "'%s' உறுப்பு மூடப்பட்டுல்லது
 #: ../glib/gmarkup.c:1614
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "'%s' உறுப்பு மூடப்பட்டுல்லது, அனால் தற்பொது திறந்திறுக்கும் உறுப்பு '%s'"
+msgstr ""
+"'%s' உறுப்பு மூடப்பட்டுல்லது, அனால் தற்பொது திறந்திறுக்கும் உறுப்பு '%s'"
 
 #: ../glib/gmarkup.c:1767
 msgid "Document was empty or contained only whitespace"
@@ -3848,7 +3896,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"உறுப்புகள் திறந்திறுக்கும்போது ஆவணம் திடீரென முடிவடைந்தது - கடைசியாகத் திறக்கப்பட்ட "
+"உறுப்புகள் திறந்திறுக்கும்போது ஆவணம் திடீரென முடிவடைந்தது - கடைசியாகத் "
+"திறக்கப்பட்ட "
 "உறுப்பு '%s'"
 
 #: ../glib/gmarkup.c:1797
@@ -3893,61 +3942,61 @@ msgstr "'%s' என்னும் மூடு-அடையாள ஒட்ட�
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ஆவணம் திடீரென குறிப்புரையுல் அல்லது செயலாக்கம் ஆணையுல் முடிவடைந்தது"
 
-#: ../glib/goption.c:754
+#: ../glib/goption.c:806
 msgid "Usage:"
 msgstr "ஓபயன்பாடு:"
 
-#: ../glib/goption.c:754
+#: ../glib/goption.c:806
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: ../glib/goption.c:870
+#: ../glib/goption.c:922
 msgid "Help Options:"
 msgstr "உதவி விருப்பங்கள்:"
 
-#: ../glib/goption.c:871
+#: ../glib/goption.c:923
 msgid "Show help options"
 msgstr "உதவி விருப்பங்களை காட்டு"
 
-#: ../glib/goption.c:877
+#: ../glib/goption.c:929
 msgid "Show all help options"
 msgstr "அனைத்து உதவி விருப்பங்களை காட்டு"
 
-#: ../glib/goption.c:939
+#: ../glib/goption.c:991
 msgid "Application Options:"
 msgstr "பயன்பாடு விருப்பங்கள்:"
 
-#: ../glib/goption.c:1003 ../glib/goption.c:1073
+#: ../glib/goption.c:1055 ../glib/goption.c:1125
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "'%s' க்கு %sன் இயல் எண் மதிப்பினை கூறிட முடியாது"
 
-#: ../glib/goption.c:1013 ../glib/goption.c:1081
+#: ../glib/goption.c:1065 ../glib/goption.c:1133
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "'%s' க்கு %sன் இயல் எண் மதிப்பு வரையறையை தாண்டியுள்ளது"
 
-#: ../glib/goption.c:1038
+#: ../glib/goption.c:1090
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "இரட்டை மதிப்பு '%s' ஐ %sக்கு கூறிட முடியாது"
 
-#: ../glib/goption.c:1046
+#: ../glib/goption.c:1098
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "இரட்டை மதிப்பு '%s' %sக்கு வரையறையை தாண்டியுள்ளது"
 
-#: ../glib/goption.c:1309 ../glib/goption.c:1388
+#: ../glib/goption.c:1384 ../glib/goption.c:1463
 #, c-format
 msgid "Error parsing option %s"
 msgstr "கூறிடும் போது பிழை: %s"
 
-#: ../glib/goption.c:1419 ../glib/goption.c:1532
+#: ../glib/goption.c:1494 ../glib/goption.c:1607
 #, c-format
 msgid "Missing argument for %s"
 msgstr " %sக்கான விடுபட்ட மதிப்புரு"
 
-#: ../glib/goption.c:1985
+#: ../glib/goption.c:2063
 #, c-format
 msgid "Unknown option %s"
 msgstr "தெரியாத விருப்பம் %s"
@@ -3970,11 +4019,13 @@ msgstr "பின்நோக்கி ஆராயும் எல்லை அ
 
 #: ../glib/gregex.c:278 ../glib/gregex.c:286
 msgid "the pattern contains items not supported for partial matching"
-msgstr "தோரணி உள்ளடக்கங்கள் பகுதி பொருத்தத்துக்கு ஆதரவு தராத உருப்படிகளாக உள்ளன"
+msgstr ""
+"தோரணி உள்ளடக்கங்கள் பகுதி பொருத்தத்துக்கு ஆதரவு தராத உருப்படிகளாக உள்ளன"
 
 #: ../glib/gregex.c:288
 msgid "back references as conditions are not supported for partial matching"
-msgstr "பின்நோக்கும் சமர்பணங்கள் பகுதி பொருத்தத்துக்கு ஆதரவு தராத உருப்படிகளாக உள்ளன"
+msgstr ""
+"பின்நோக்கும் சமர்பணங்கள் பகுதி பொருத்தத்துக்கு ஆதரவு தராத உருப்படிகளாக உள்ளன"
 
 #: ../glib/gregex.c:297
 msgid "recursion limit reached"
@@ -4046,7 +4097,8 @@ msgstr "(? அல்லது (?- க்குப் பிறகு அடை�
 
 #: ../glib/gregex.c:363
 msgid "POSIX named classes are supported only within a class"
-msgstr "POSIX என பெயரிடப்பட்ட வகுப்புகள் வகுப்பிற்குள் மட்டும் தான் துணைபுரியும் "
+msgstr ""
+"POSIX என பெயரிடப்பட்ட வகுப்புகள் வகுப்பிற்குள் மட்டும் தான் துணைபுரியும் "
 
 #: ../glib/gregex.c:366
 msgid "missing terminating )"
@@ -4184,7 +4236,8 @@ msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
 msgstr ""
-"\\g ஐ அடுத்து அடைப்புக்குறிக்குள் இடப்பட்ட அல்லது முக்கோண அடைப்புக் குறிக்குள் இடப்பட்ட "
+"\\g ஐ அடுத்து அடைப்புக்குறிக்குள் இடப்பட்ட அல்லது முக்கோண அடைப்புக் "
+"குறிக்குள் இடப்பட்ட "
 "அல்லது மேற்கோள் குறிக்குள் இடப்பட்ட பெயரோ எண்ணோ அல்லது எளிய எண்ணோ இல்லை"
 
 #: ../glib/gregex.c:480
@@ -4193,7 +4246,8 @@ msgstr "எண்ணுள்ள குறிப்பு பூச்சிய�
 
 #: ../glib/gregex.c:483
 msgid "an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)"
-msgstr "(*ACCEPT), (*FAIL) அல்லது (*COMMIT) க்கு அளவுருவைப் பயன்படுத்த அனுமதியில்லை"
+msgstr ""
+"(*ACCEPT), (*FAIL) அல்லது (*COMMIT) க்கு அளவுருவைப் பயன்படுத்த அனுமதியில்லை"
 
 #: ../glib/gregex.c:486
 msgid "(*VERB) not recognized"
@@ -4217,7 +4271,8 @@ msgstr "JavaScript இணக்கப் பயன்முறையில் ] 
 
 #: ../glib/gregex.c:501
 msgid "different names for subpatterns of the same number are not allowed"
-msgstr "ஒரே எண்ணின் subpatternகளுக்கான இரண்டு வெவ்வேறு பெயர்களுக்கு அனுமதி இல்லை"
+msgstr ""
+"ஒரே எண்ணின் subpatternகளுக்கான இரண்டு வெவ்வேறு பெயர்களுக்கு அனுமதி இல்லை"
 
 #: ../glib/gregex.c:504
 msgid "(*MARK) must have an argument"
@@ -4230,7 +4285,8 @@ msgstr "\\c க்கு அடுத்து ஒரு ASCII எழுத்�
 #: ../glib/gregex.c:510
 msgid "\\k is not followed by a braced, angle-bracketed, or quoted name"
 msgstr ""
-"\\k வை அடுத்து அடைப்புக்குறிக்குள் அமைந்த, அம்பு அடைப்புக்குறிக்குள் அமைந்த அல்லது மேற்கோள் "
+"\\k வை அடுத்து அடைப்புக்குறிக்குள் அமைந்த, அம்பு அடைப்புக்குறிக்குள் அமைந்த "
+"அல்லது மேற்கோள் "
 "குறிக்குள் அமைந்த பெயர் இல்லை"
 
 #: ../glib/gregex.c:513
@@ -4264,7 +4320,8 @@ msgstr "பிசிஆர்ஈ நூலகம் யூடிஎஃப்8 �
 
 #: ../glib/gregex.c:1323
 msgid "PCRE library is compiled with incompatible options"
-msgstr "PCRE லைப்ரரியானது இணக்கமற்ற விருப்பங்களைக் கொண்டு கம்பைல் செய்யப்பட்டுள்ளது"
+msgstr ""
+"PCRE லைப்ரரியானது இணக்கமற்ற விருப்பங்களைக் கொண்டு கம்பைல் செய்யப்பட்டுள்ளது"
 
 #: ../glib/gregex.c:1382
 #, c-format
@@ -4334,7 +4391,8 @@ msgstr "'\\' வரியுருக்கு பின்பு உரை ம�
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"%c க்கு பொருத்தமான மேற்கோள் கண்டுபிடிப்பதட்கு முன் உரை முடிவடைந்தது. (உரை: '%s')"
+"%c க்கு பொருத்தமான மேற்கோள் கண்டுபிடிப்பதட்கு முன் உரை முடிவடைந்தது. (உரை: '%"
+"s')"
 
 #: ../glib/gshell.c:593
 msgid "Text was empty (or contained only whitespace)"
@@ -4348,7 +4406,8 @@ msgstr "(%s) சேய்-செயலில் இருந்து தரவ�
 #: ../glib/gspawn.c:345
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "(%s) சேய்-செயலில் இருந்து தரவு வாசிக்கும் போது, select()'டில் எதிர்பாராத பிழை"
+msgstr ""
+"(%s) சேய்-செயலில் இருந்து தரவு வாசிக்கும் போது, select()'டில் எதிர்பாராத பிழை"
 
 #: ../glib/gspawn.c:430
 #, c-format
@@ -4464,88 +4523,93 @@ msgstr ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 
-#: ../glib/gutf8.c:907
+#: ../glib/gutf8.c:785
+#| msgid "failed to get memory"
+msgid "Failed to allocate memory"
+msgstr "நினைவகத்தை ஒதுக்க முடியவில்லை"
+
+#: ../glib/gutf8.c:919
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 க்கு வரியுரு வீச்சு எல்லைக்கு வெளியே"
 
-#: ../glib/gutf8.c:1007 ../glib/gutf8.c:1016 ../glib/gutf8.c:1146
-#: ../glib/gutf8.c:1155 ../glib/gutf8.c:1294 ../glib/gutf8.c:1390
+#: ../glib/gutf8.c:1022 ../glib/gutf8.c:1031 ../glib/gutf8.c:1163
+#: ../glib/gutf8.c:1172 ../glib/gutf8.c:1313 ../glib/gutf8.c:1411
 msgid "Invalid sequence in conversion input"
 msgstr "உரையாடல் உள்ளீட்டில் தவறான வரிசை"
 
-#: ../glib/gutf8.c:1305 ../glib/gutf8.c:1401
+#: ../glib/gutf8.c:1324 ../glib/gutf8.c:1422
 msgid "Character out of range for UTF-16"
 msgstr "UTF-16 க்கு வரியுரு வீச்சு எல்லைக்கு வெளியே"
 
-#: ../glib/gutils.c:2181 ../glib/gutils.c:2208 ../glib/gutils.c:2314
+#: ../glib/gutils.c:2121 ../glib/gutils.c:2148 ../glib/gutils.c:2254
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u பைட்"
 msgstr[1] "%u பைட்கள்"
 
-#: ../glib/gutils.c:2187
+#: ../glib/gutils.c:2127
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2189
+#: ../glib/gutils.c:2129
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2192
+#: ../glib/gutils.c:2132
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2195
+#: ../glib/gutils.c:2135
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2198
+#: ../glib/gutils.c:2138
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2201
+#: ../glib/gutils.c:2141
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2214
+#: ../glib/gutils.c:2154
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gutils.c:2217 ../glib/gutils.c:2332
+#: ../glib/gutils.c:2157 ../glib/gutils.c:2272
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2220 ../glib/gutils.c:2337
+#: ../glib/gutils.c:2160 ../glib/gutils.c:2277
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2222 ../glib/gutils.c:2342
+#: ../glib/gutils.c:2162 ../glib/gutils.c:2282
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2225 ../glib/gutils.c:2347
+#: ../glib/gutils.c:2165 ../glib/gutils.c:2287
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2228 ../glib/gutils.c:2352
+#: ../glib/gutils.c:2168 ../glib/gutils.c:2292
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2265
+#: ../glib/gutils.c:2205
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4557,7 +4621,7 @@ msgstr[1] "%s பைட்கள்"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2327
+#: ../glib/gutils.c:2267
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
