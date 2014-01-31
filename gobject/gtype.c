@@ -3178,8 +3178,7 @@ g_type_interface_peek_parent (gpointer g_iface)
  * If the type is not currently in use, then the default vtable
  * for the type will be created and initalized by calling
  * the base interface init and default vtable init functions for
- * the type (the @<structfield>base_init</structfield>
- * and <structfield>class_init</structfield> members of #GTypeInfo).
+ * the type (the @base_init and @class_init members of #GTypeInfo).
  * Calling g_type_default_interface_ref() is useful when you
  * want to make sure that signals and properties for an interface
  * have been installed.
@@ -3265,8 +3264,7 @@ g_type_default_interface_peek (GType g_type)
  * interface default vtable @g_iface. If the type is dynamic, then
  * when no one is using the interface and all references have
  * been released, the finalize function for the interface's default
- * vtable (the <structfield>class_finalize</structfield> member of
- * #GTypeInfo) will be called.
+ * vtable (the @class_finalize member of #GTypeInfo) will be called.
  *
  * Since: 2.4
  */

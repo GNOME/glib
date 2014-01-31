@@ -1678,8 +1678,8 @@
 
 /**
  * G_STRUCT_OFFSET:
- * @struct_type: a structure type, e.g. <structname>GtkWidget</structname>
- * @member: a field in the structure, e.g. <structfield>window</structfield>
+ * @struct_type: a structure type, e.g. #GtkWidget
+ * @member: a field in the structure, e.g. @window
  *
  * Returns the offset, in bytes, of a member of a struct.
  *
