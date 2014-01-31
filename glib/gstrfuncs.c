@@ -99,9 +99,9 @@
  * Unlike the standard C library isalnum() function, this only
  * recognizes standard ASCII letters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
- * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
- * cast to #guchar before passing a possibly non-ASCII character in.
+ * the standard library function, this takes a char, not an int,
+ * so don't call it on %EOF, but no need to cast to #guchar before
+ * passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII alphanumeric character
  */
@@ -115,9 +115,9 @@
  * Unlike the standard C library isalpha() function, this only
  * recognizes standard ASCII letters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
- * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
- * cast to #guchar before passing a possibly non-ASCII character in.
+ * the standard library function, this takes a char, not an int,
+ * so don't call it on %EOF, but no need to cast to #guchar before
+ * passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII alphabetic character
  */
@@ -131,9 +131,9 @@
  * Unlike the standard C library iscntrl() function, this only
  * recognizes standard ASCII control characters and ignores the
  * locale, returning %FALSE for all non-ASCII characters. Also,
- * unlike the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
- * cast to #guchar before passing a possibly non-ASCII character in.
+ * unlike the standard library function, this takes a char, not
+ * an int, so don't call it on %EOF, but no need to cast to #guchar
+ * before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII control character.
  */
@@ -145,9 +145,8 @@
  * Determines whether a character is digit (0-9).
  *
  * Unlike the standard C library isdigit() function, this takes
- * a <type>char</type>, not an <type>int</type>, so don't call it
- * on <literal>EOF</literal>, but no need to cast to #guchar before passing a possibly
- * non-ASCII character in.
+ * a char, not an int, so don't call it  on %EOF, but no need to
+ * cast to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII digit.
  */
@@ -161,9 +160,9 @@
  * Unlike the standard C library isgraph() function, this only
  * recognizes standard ASCII characters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
- * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need
- * to cast to #guchar before passing a possibly non-ASCII character in.
+ * the standard library function, this takes a char, not an int,
+ * so don't call it on %EOF, but no need to cast to #guchar before
+ * passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII printing character other than space.
  */
@@ -177,10 +176,9 @@
  * Unlike the standard C library islower() function, this only
  * recognizes standard ASCII letters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
- * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need
- * to worry about casting to #guchar before passing a possibly
- * non-ASCII character in.
+ * the standard library function, this takes a char, not an int,
+ * so don't call it on %EOF, but no need to worry about casting
+ * to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII lower case letter
  */
@@ -194,9 +192,9 @@
  * Unlike the standard C library isprint() function, this only
  * recognizes standard ASCII characters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
- * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need
- * to cast to #guchar before passing a possibly non-ASCII character in.
+ * the standard library function, this takes a char, not an int,
+ * so don't call it on %EOF, but no need to cast to #guchar before
+ * passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII printing character.
  */
@@ -210,9 +208,9 @@
  * Unlike the standard C library ispunct() function, this only
  * recognizes standard ASCII letters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
- * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
- * cast to #guchar before passing a possibly non-ASCII character in.
+ * the standard library function, this takes a char, not an int,
+ * so don't call it on %EOF, but no need to cast to #guchar before
+ * passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII punctuation character.
  */
@@ -226,9 +224,9 @@
  * Unlike the standard C library isspace() function, this only
  * recognizes standard ASCII white-space and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
- * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
- * cast to #guchar before passing a possibly non-ASCII character in.
+ * the standard library function, this takes a char, not an int,
+ * so don't call it on %EOF, but no need to cast to #guchar before
+ * passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII white-space character
  */
@@ -242,10 +240,9 @@
  * Unlike the standard C library isupper() function, this only
  * recognizes standard ASCII letters and ignores the locale,
  * returning %FALSE for all non-ASCII characters. Also, unlike
- * the standard library function, this takes a <type>char</type>,
- * not an <type>int</type>, so don't call it on <literal>EOF</literal>, but no need to
- * worry about casting to #guchar before passing a possibly non-ASCII
- * character in.
+ * the standard library function, this takes a char, not an int,
+ * so don't call it on %EOF, but no need to worry about casting
+ * to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII upper case letter
  */
@@ -257,9 +254,8 @@
  * Determines whether a character is a hexadecimal-digit character.
  *
  * Unlike the standard C library isxdigit() function, this takes
- * a <type>char</type>, not an <type>int</type>, so don't call it
- * on <literal>EOF</literal>, but no need to cast to #guchar before passing a
- * possibly non-ASCII character in.
+ * a char, not an int, so don't call it on %EOF, but no need to
+ * cast to #guchar before passing a possibly non-ASCII character in.
  *
  * Returns: %TRUE if @c is an ASCII hexadecimal-digit character.
  */

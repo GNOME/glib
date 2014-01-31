@@ -44,8 +44,8 @@
 /**
  * GInetSocketAddress:
  *
- * An IPv4 or IPv6 socket address, corresponding to a <type>struct
- * sockaddr_in</type> or <type>struct sockaddr_in6</type>.
+ * An IPv4 or IPv6 socket address, corresponding to a struct
+ * sockaddr_in or struct sockaddr_in6.
  */
 
 struct _GInetSocketAddressPrivate

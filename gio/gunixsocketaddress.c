@@ -55,7 +55,7 @@
  * GUnixSocketAddress:
  *
  * A UNIX-domain (local) socket address, corresponding to a
- * <type>struct sockaddr_un</type>.
+ * struct sockaddr_un.
  */
 
 enum

@@ -64,8 +64,7 @@
  * gpointer:
  *
  * An untyped pointer.
- * #gpointer looks better and is easier to use
- * than <type>void*</type>.
+ * #gpointer looks better and is easier to use than void*.
  */
 
 /**
@@ -81,19 +80,19 @@
 /**
  * gchar:
  *
- * Corresponds to the standard C <type>char</type> type.
+ * Corresponds to the standard C char type.
  */
 
 /**
  * guchar:
  *
- * Corresponds to the standard C <type>unsigned char</type> type.
+ * Corresponds to the standard C unsigned char type.
  */
 
 /**
  * gint:
  *
- * Corresponds to the standard C <type>int</type> type.
+ * Corresponds to the standard C int type.
  * Values of this type can range from #G_MININT to #G_MAXINT.
  */
 
@@ -112,7 +111,7 @@
 /**
  * guint:
  *
- * Corresponds to the standard C <type>unsigned int</type> type.
+ * Corresponds to the standard C unsigned int type.
  * Values of this type can range from 0 to #G_MAXUINT.
  */
 
@@ -125,7 +124,7 @@
 /**
  * gshort:
  *
- * Corresponds to the standard C <type>short</type> type.
+ * Corresponds to the standard C short type.
  * Values of this type can range from #G_MINSHORT to #G_MAXSHORT.
  */
 
@@ -144,7 +143,7 @@
 /**
  * gushort:
  *
- * Corresponds to the standard C <type>unsigned short</type> type.
+ * Corresponds to the standard C unsigned short type.
  * Values of this type can range from 0 to #G_MAXUSHORT.
  */
 
@@ -157,7 +156,7 @@
 /**
  * glong:
  *
- * Corresponds to the standard C <type>long</type> type.
+ * Corresponds to the standard C long type.
  * Values of this type can range from #G_MINLONG to #G_MAXLONG.
  */
 
@@ -176,7 +175,7 @@
 /**
  * gulong:
  *
- * Corresponds to the standard C <type>unsigned long</type> type.
+ * Corresponds to the standard C unsigned long type.
  * Values of this type can range from 0 to #G_MAXULONG.
  */
 
@@ -491,7 +490,7 @@
 /**
  * gfloat:
  *
- * Corresponds to the standard C <type>float</type> type.
+ * Corresponds to the standard C float type.
  * Values of this type can range from -#G_MAXFLOAT to #G_MAXFLOAT.
  */
 
@@ -513,7 +512,7 @@
 /**
  * gdouble:
  *
- * Corresponds to the standard C <type>double</type> type.
+ * Corresponds to the standard C double type.
  * Values of this type can range from -#G_MAXDOUBLE to #G_MAXDOUBLE.
  */
 
@@ -536,7 +535,7 @@
  * gsize:
  *
  * An unsigned integer type of the result of the sizeof operator,
- * corresponding to the <type>size_t</type> type defined in C99.
+ * corresponding to the size_t type defined in C99.
  * This type is wide enough to hold the numeric value of a pointer,
  * so it is usually 32bit wide on a 32bit platform and 64bit wide
  * on a 64bit platform. Values of this type can range from 0 to
@@ -577,7 +576,7 @@
  * gssize:
  *
  * A signed variant of #gsize, corresponding to the
- * <type>ssize_t</type> defined on most platforms.
+ * ssize_t defined on most platforms.
  * Values of this type can range from #G_MINSSIZE
  * to #G_MAXSSIZE.
  *
@@ -614,7 +613,7 @@
  * goffset:
  *
  * A signed integer type that is used for file offsets,
- * corresponding to the C99 type <type>off64_t</type>.
+ * corresponding to the C99 type off64_t.
  * Values of this type can range from #G_MINOFFSET to
  * #G_MAXOFFSET.
  *
@@ -670,7 +669,7 @@
 /**
  * gintptr:
  *
- * Corresponds to the C99 type <type>intptr_t</type>,
+ * Corresponds to the C99 type intptr_t,
  * a signed integer type that can hold any pointer.
  *
  * To print or scan values of this type, use
@@ -701,7 +700,7 @@
 /**
  * guintptr:
  *
- * Corresponds to the C99 type <type>uintptr_t</type>,
+ * Corresponds to the C99 type uintptr_t,
  * an unsigned integer type that can hold any pointer.
  *
  * To print or scan values of this type, use
@@ -1772,15 +1771,14 @@
 
 /**
  * G_VA_COPY:
- * @ap1: the <type>va_list</type> variable to place a copy of @ap2 in
- * @ap2: a <type>va_list</type>
+ * @ap1: the va_list variable to place a copy of @ap2 in
+ * @ap2: a va_list
  *
- * Portable way to copy <type>va_list</type> variables.
+ * Portable way to copy va_list variables.
  *
- * In order to use this function, you must include
- * <filename>string.h</filename> yourself, because this macro may
- * use memmove() and GLib does not include <filename>string.h</filename>
- * for you.
+ * In order to use this function, you must include string.h yourself,
+ * because this macro may use memmove() and GLib does not include
+ * string.h for you.
  */
 
 /**

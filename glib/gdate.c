@@ -1281,7 +1281,7 @@ g_date_set_parse (GDate       *d,
 /**
  * g_date_set_time_t:
  * @date: a #GDate 
- * @timet: <type>time_t</type> value to set
+ * @timet: time_t value to set
  *
  * Sets the value of a date to the date corresponding to a time 
  * specified as a time_t. The time to date conversion is done using 
