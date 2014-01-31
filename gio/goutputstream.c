@@ -786,11 +786,11 @@ async_ready_write_callback_wrapper (GObject      *source_object,
  * For the synchronous, blocking version of this function, see 
  * g_output_stream_write().
  *
- * <warning><para>No copy of @buffer will be made, so it must stay valid until
- * @callback is called. See g_output_stream_write_bytes_async() for a #GBytes
- * version that will automatically hold a reference to the contents (without
- * copying) for the duration of the call.</para></warning>
- **/
+ * Note that no copy of @buffer will be made, so it must stay valid
+ * until @callback is called. See g_output_stream_write_bytes_async()
+ * for a #GBytes version that will automatically hold a reference to
+ * the contents (without copying) for the duration of the call.
+ */
 void
 g_output_stream_write_async (GOutputStream       *stream,
 			     const void          *buffer,

@@ -748,11 +748,10 @@
  * The GLib macros GPOINTER_TO_INT(), GINT_TO_POINTER(), etc. take care
  * to do the right thing on the every platform.
  *
- * <warning><para>You may not store pointers in integers. This is not
- * portable in any way, shape or form. These macros <emphasis>only</emphasis>
- * allow storing integers in pointers, and only preserve 32 bits of the
- * integer; values outside the range of a 32-bit integer will be mangled.
- * </para></warning>
+ * Warning: You may not store pointers in integers. This is not
+ * portable in any way, shape or form. These macros only allow storing
+ * integers in pointers, and only preserve 32 bits of the integer; values
+ * outside the range of a 32-bit integer will be mangled.
  */
 
 /**

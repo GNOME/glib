@@ -65,17 +65,16 @@ g_dbus_interface_get_info (GDBusInterface *interface_)
 
 /**
  * g_dbus_interface_get_object: (skip)
- * @interface_: An exported D-Bus interface.
+ * @interface_: An exported D-Bus interface
  *
  * Gets the #GDBusObject that @interface_ belongs to, if any.
  *
- * <warning>It is not safe to use the returned object if @interface_
- * or the returned object is being used from other threads. See
- * g_dbus_interface_dup_object() for a thread-safe
- * alternative.</warning>
+ * It is not safe to use the returned object if @interface_ or
+ * the returned object is being used from other threads. See
+ * g_dbus_interface_dup_object() for a thread-safe alternative.
  *
  * Returns: (transfer none): A #GDBusObject or %NULL. The returned
- * reference belongs to @interface_ and should not be freed.
+ *     reference belongs to @interface_ and should not be freed.
  *
  * Since: 2.30
  */

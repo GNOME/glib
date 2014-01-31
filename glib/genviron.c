@@ -256,20 +256,18 @@ g_getenv (const gchar *variable)
  * Note that on some systems, when variables are overwritten, the memory
  * used for the previous variables and its value isn't reclaimed.
  *
- * <warning><para>
- * Environment variable handling in UNIX is not thread-safe, and your
- * program may crash if one thread calls g_setenv() while another
- * thread is calling getenv(). (And note that many functions, such as
- * gettext(), call getenv() internally.) This function is only safe to
- * use at the very start of your program, before creating any other
- * threads (or creating objects that create worker threads of their
- * own).
- * </para><para>
+ * You should be mindful fo the fact that environment variable handling
+ * in UNIX is not thread-safe, and your program may crash if one thread
+ * calls g_setenv() while another thread is calling getenv(). (And note
+ * that many functions, such as gettext(), call getenv() internally.)
+ * This function is only safe to use at the very start of your program,
+ * before creating any other threads (or creating objects that create
+ * worker threads of their own).
+ *
  * If you need to set up the environment for a child process, you can
  * use g_get_environ() to get an environment array, modify that with
  * g_environ_setenv() and g_environ_unsetenv(), and then pass that
  * array directly to execvpe(), g_spawn_async(), or the like.
- * </para></warning>
  *
  * Returns: %FALSE if the environment variable couldn't be set.
  *
@@ -323,20 +321,18 @@ extern char **environ;
  * Note that on some systems, when variables are overwritten, the
  * memory used for the previous variables and its value isn't reclaimed.
  *
- * <warning><para>
- * Environment variable handling in UNIX is not thread-safe, and your
- * program may crash if one thread calls g_unsetenv() while another
- * thread is calling getenv(). (And note that many functions, such as
- * gettext(), call getenv() internally.) This function is only safe
- * to use at the very start of your program, before creating any other
- * threads (or creating objects that create worker threads of their
- * own).
- * </para><para>
+ * You should be mindful of the fact that environment variable handling
+ * in UNIX is not thread-safe, and your program may crash if one thread
+ * calls g_unsetenv() while another thread is calling getenv(). (And note
+ * that many functions, such as gettext(), call getenv() internally.) This
+ * function is only safe to use at the very start of your program, before
+ * creating any other threads (or creating objects that create worker
+ * threads of their own).
+ * 
  * If you need to set up the environment for a child process, you can
  * use g_get_environ() to get an environment array, modify that with
  * g_environ_setenv() and g_environ_unsetenv(), and then pass that
  * array directly to execvpe(), g_spawn_async(), or the like.
- * </para></warning>
  *
  * Since: 2.4
  */

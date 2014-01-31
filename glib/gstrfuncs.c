@@ -543,16 +543,15 @@ g_strdup_printf (const gchar *format,
  * @string1: the first string to add, which must not be %NULL
  * @...: a %NULL-terminated list of strings to append to the string
  *
- * Concatenates all of the given strings into one long string.
- * The returned string should be freed with g_free() when no longer needed.
+ * Concatenates all of the given strings into one long string. The
+ * returned string should be freed with g_free() when no longer needed.
+ *
+ * The variable argument list must end with %NULL. If you forget the %NULL,
+ * g_strconcat() will start appending random memory junk to your string.
  *
  * Note that this function is usually not the right function to use to
  * assemble a translated message from pieces, since proper translation
  * often requires the pieces to be reordered.
- *
- * <warning><para>The variable argument list <emphasis>must</emphasis> end
- * with %NULL. If you forget the %NULL, g_strconcat() will start appending
- * random memory junk to your string.</para></warning>
  *
  * Returns: a newly-allocated string containing all the string arguments
  */

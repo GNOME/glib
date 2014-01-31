@@ -66,8 +66,8 @@
  * The following functions allow you to use a portable, fast and good
  * pseudo-random number generator (PRNG).
  * 
- * <warning><para>Do not use this API for cryptographic purposes such as key
- * generation, nonces, salts or one-time pads.</para></warning>
+ * Do not use this API for cryptographic purposes such as key
+ * generation, nonces, salts or one-time pads.
  *
  * This PRNG is suitable for non-cryptographic use such as in games
  * (shuffling a card deck, generating levels), generating data for a
@@ -358,11 +358,11 @@ g_rand_set_seed (GRand* rand, guint32 seed)
  * @seed: array to initialize with
  * @seed_length: length of array
  *
- * Initializes the random number generator by an array of
- * longs.  Array can be of arbitrary size, though only the
+ * Initializes the random number generator by an array of longs.
+ * Array can be of arbitrary size, though only the
  * first 624 values are taken.  This function is useful
  * if you have many low entropy seeds, or if you require more then
- * 32bits of actual entropy for your application.
+ * 32 bits of actual entropy for your application.
  *
  * Since: 2.4
  **/

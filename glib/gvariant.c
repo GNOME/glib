@@ -199,7 +199,7 @@
  *   <para>
  *    Array type info structures are 6 * sizeof (void *), plus the
  *    memory required to store the type string itself.  This means that
- *    on 32bit systems, the cache entry for "a{sv}" would require 30
+ *    on 32-bit systems, the cache entry for "a{sv}" would require 30
  *    bytes of memory (plus malloc overhead).
  *   </para>
  *   <para>
@@ -208,7 +208,7 @@
  *    required to store the type string itself.  A 2-item tuple, for
  *    example, would have a type information structure that consumed
  *    writable memory in the size of 14 * sizeof (void *) (plus type
- *    string)  This means that on 32bit systems, the cache entry for
+ *    string)  This means that on 32-bit systems, the cache entry for
  *    "{sv}" would require 61 bytes of memory (plus malloc overhead).
  *   </para>
  *   <para>
