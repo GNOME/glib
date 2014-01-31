@@ -1761,11 +1761,11 @@ g_date_subtract_years (GDate *d,
  * @year: year to check
  *
  * Returns %TRUE if the year is a leap year.
- * <footnote><para>For the purposes of this function,
- * leap year is every year divisible by 4 unless that year
- * is divisible by 100. If it is divisible by 100 it would
- * be a leap year only if that year is also divisible
- * by 400.</para></footnote>
+ *
+ * For the purposes of this function, leap year is every year
+ * divisible by 4 unless that year is divisible by 100. If it
+ * is divisible by 100 it would be a leap year only if that year
+ * is also divisible by 400.
  *
  * Returns: %TRUE if the year is a leap year
  */

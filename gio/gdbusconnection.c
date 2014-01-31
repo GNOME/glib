@@ -144,14 +144,10 @@
  * an D-Bus client, it is often easier to use the g_bus_own_name(),
  * g_bus_watch_name() or g_dbus_proxy_new_for_bus() APIs.
  *
- * As an exception to the usual GLib rule that a particular object must not be
- * used by two threads at the same time, #GDBusConnection's methods may be
- * called from any thread<footnote>
- * <para>
- *   This is so that g_bus_get() and g_bus_get_sync() can safely return the
- *   same #GDBusConnection when called from any thread.
- * </para>
- * </footnote>.
+ * As an exception to the usual GLib rule that a particular object must not
+ * be used by two threads at the same time, #GDBusConnection's methods may be
+ * called from any thread. This is so that g_bus_get() and g_bus_get_sync()
+ * can safely return the same #GDBusConnection when called from any thread.
  *
  * Most of the ways to obtain a #GDBusConnection automatically initialize it
  * (i.e. connect to D-Bus): for instance, g_dbus_connection_new() and
