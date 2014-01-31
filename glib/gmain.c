@@ -1249,7 +1249,8 @@ g_source_destroy_internal (GSource      *source,
  * 
  * Removes a source from its #GMainContext, if any, and mark it as
  * destroyed.  The source cannot be subsequently added to another
- * context.
+ * context. It is safe to call this on sources which have already been
+ * removed from their context.
  **/
 void
 g_source_destroy (GSource *source)
