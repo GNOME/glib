@@ -174,13 +174,10 @@ g_list_alloc (void)
  * @list: a #GList
  *
  * Frees all of the memory used by a #GList.
- * The freed elements are returned to the slice allocator
+ * The freed elements are returned to the slice allocator.
  *
- * <note><para>
- * If list elements contain dynamically-allocated memory, 
- * you should either use g_list_free_full() or free them manually
- * first.
- * </para></note>
+ * If list elements contain dynamically-allocated memory, you should
+ * either use g_list_free_full() or free them manually first.
  */
 void
 g_list_free (GList *list)
@@ -299,10 +296,8 @@ g_list_append (GList    *list,
  * list = g_list_prepend (list, "first");
  * ]|
  *
- * <note><para>
- * Do not use this function to prepend a new element to a different element
- * than the start of the list. Use g_list_insert_before() instead.
- * </para></note>
+ * Do not use this function to prepend a new element to a different
+ * element than the start of the list. Use g_list_insert_before() instead.
  *
  * Returns: a pointer to the newly prepended element, which is the new 
  *     start of the #GList
@@ -625,12 +620,10 @@ g_list_delete_link (GList *list,
  *
  * Copies a #GList.
  *
- * <note><para>
  * Note that this is a "shallow" copy. If the list elements 
  * consist of pointers to data, the pointers are copied but 
  * the actual data is not. See g_list_copy_deep() if you need
  * to copy the data as well.
- * </para></note>
  *
  * Returns: the start of the new list that holds the same data as @list
  */
@@ -955,11 +948,9 @@ g_list_first (GList *list)
  *
  * Gets the number of elements in a #GList.
  *
- * <note><para>
  * This function iterates over the whole list to count its elements.
- * Use a <link linkend="glib-Double-ended-Queues">GQueue</link> instead
- * of a GList if you regularly need the number of items. 
- * </para></note>
+ * Use a #GQueue instead of a GList if you regularly need the number
+ * of items. 
  *
  * Returns: the number of elements in the #GList
  */
@@ -1071,12 +1062,10 @@ g_list_insert_sorted_real (GList    *list,
  * Inserts a new element into the list, using the given comparison 
  * function to determine its position.
  *
- * <note><para>
  * If you are adding many new elements to a list, and the number of
  * new elements is much larger than the length of the list, use
  * g_list_prepend() to add the new items and sort the list afterwards
- * with g_list_sort() 
- * </para></note>
+ * with g_list_sort().
  *
  * Returns: the (possibly changed) start of the #GList
  */
@@ -1101,12 +1090,10 @@ g_list_insert_sorted (GList        *list,
  * Inserts a new element into the list, using the given comparison 
  * function to determine its position.
  *
- * <note><para>
  * If you are adding many new elements to a list, and the number of
  * new elements is much larger than the length of the list, use
  * g_list_prepend() to add the new items and sort the list afterwards
- * with g_list_sort() 
- * </para></note>
+ * with g_list_sort().
  *
  * Returns: the (possibly changed) start of the #GList
  *

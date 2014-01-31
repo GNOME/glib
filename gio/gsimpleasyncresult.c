@@ -34,12 +34,10 @@
  * SECTION:gsimpleasyncresult
  * @short_description: Simple asynchronous results implementation
  * @include: gio/gio.h
- * @see_also: #GAsyncResult
+ * @see_also: #GAsyncResult, #GTask
  *
- * <note><para>
- *   As of GLib 2.36, #GSimpleAsyncResult is deprecated in favor of
- *   #GTask, which provides a simpler API.
- * </para></note>
+ * As of GLib 2.36, #GSimpleAsyncResult is deprecated in favor of
+ * #GTask, which provides a simpler API.
  *
  * #GSimpleAsyncResult implements #GAsyncResult.
  *

@@ -3561,16 +3561,15 @@ g_key_file_has_key_full (GKeyFile     *key_file,
  * Looks whether the key file has the key @key in the group
  * @group_name.
  *
- * <note>This function does not follow the rules for #GError strictly;
+ * Note that this function does not follow the rules for #GError strictly;
  * the return value both carries meaning and signals an error.  To use
  * this function, you must pass a #GError pointer in @error, and check
- * whether it is not %NULL to see if an error occurred.</note>
+ * whether it is not %NULL to see if an error occurred.
  *
  * Language bindings should use g_key_file_get_value() to test whether
  * or not a key exists.
  *
- * Return value: %TRUE if @key is a part of @group_name, %FALSE
- * otherwise.
+ * Return value: %TRUE if @key is a part of @group_name, %FALSE otherwise
  *
  * Since: 2.6
  **/

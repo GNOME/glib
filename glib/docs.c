@@ -409,11 +409,9 @@
  * for scanning and printing values of type #gint64 or #guint64.
  * It is a string literal.
  *
- * <note><para>
- * Some platforms do not support printing 64 bit integers, even
- * though the types are supported. On such platforms #G_GINT64_MODIFIER
+ * Some platforms do not support printing 64-bit integers, even
+ * though the types are supported. On such platforms %G_GINT64_MODIFIER
  * is not defined.
- * </para></note>
  *
  * Since: 2.4
  */
@@ -424,20 +422,18 @@
  * This is the platform dependent conversion specifier for scanning
  * and printing values of type #gint64. See also #G_GINT16_FORMAT.
  *
- * <note><para>
- * Some platforms do not support scanning and printing 64 bit integers,
- * even though the types are supported. On such platforms #G_GINT64_FORMAT
- * is not defined. Note that scanf() may not support 64 bit integers, even
- * if #G_GINT64_FORMAT is defined. Due to its weak error handling, scanf()
+ * Some platforms do not support scanning and printing 64-bit integers,
+ * even though the types are supported. On such platforms %G_GINT64_FORMAT
+ * is not defined. Note that scanf() may not support 64-bit integers, even
+ * if %G_GINT64_FORMAT is defined. Due to its weak error handling, scanf()
  * is not recommended for parsing anyway; consider using g_ascii_strtoull()
  * instead.
- * </para></note>
  */
 
 /**
  * guint64:
  *
- * An unsigned integer guaranteed to be 64 bits on all platforms.
+ * An unsigned integer guaranteed to be 64-bits on all platforms.
  * Values of this type can range from 0 to #G_MAXUINT64
  * (= 18,446,744,073,709,551,615).
  *
@@ -457,14 +453,12 @@
  * This is the platform dependent conversion specifier for scanning
  * and printing values of type #guint64. See also #G_GINT16_FORMAT.
  *
- * <note><para>
- * Some platforms do not support scanning and printing 64 bit integers,
- * even though the types are supported. On such platforms #G_GUINT64_FORMAT
- * is not defined.  Note that scanf() may not support 64 bit integers, even
- * if #G_GINT64_FORMAT is defined. Due to its weak error handling, scanf()
+ * Some platforms do not support scanning and printing 64-bit integers,
+ * even though the types are supported. On such platforms %G_GUINT64_FORMAT
+ * is not defined.  Note that scanf() may not support 64-bit integers, even
+ * if %G_GINT64_FORMAT is defined. Due to its weak error handling, scanf()
  * is not recommended for parsing anyway; consider using g_ascii_strtoull()
  * instead.
- * </para></note>
  */
 
 /**
@@ -498,7 +492,7 @@
  * The minimum positive value which can be held in a #gfloat.
  *
  * If you are interested in the smallest value which can be held
- * in a #gfloat, use -G_MAXFLOAT.
+ * in a #gfloat, use -%G_MAXFLOAT.
  */
 
 /**
@@ -520,7 +514,7 @@
  * The minimum positive value which can be held in a #gdouble.
  *
  * If you are interested in the smallest value which can be held
- * in a #gdouble, use -G_MAXDOUBLE.
+ * in a #gdouble, use -%G_MAXDOUBLE.
  */
 
 /**
@@ -535,8 +529,8 @@
  * An unsigned integer type of the result of the sizeof operator,
  * corresponding to the size_t type defined in C99.
  * This type is wide enough to hold the numeric value of a pointer,
- * so it is usually 32bit wide on a 32bit platform and 64bit wide
- * on a 64bit platform. Values of this type can range from 0 to
+ * so it is usually 32 bit wide on a 32-bit platform and 64 bit wide
+ * on a 64-bit platform. Values of this type can range from 0 to
  * #G_MAXSIZE.
  *
  * To print or scan values of this type, use
@@ -815,7 +809,7 @@
  * Extracts a #gsize from a pointer. The #gsize must have
  * been stored in the pointer with GSIZE_TO_POINTER().
  */
-
+ 
 /* Byte order {{{1 */
 
 /**
@@ -1419,7 +1413,7 @@
  *
  * Returns: @val converted to the opposite byte order
  */
-
+ 
 /* Numerical Definitions {{{1 */
 
 /**
@@ -1518,7 +1512,7 @@
  *
  * Multiplying the base 2 exponent by this number yields the base 10 exponent.
  */
-
+ 
 /* Macros {{{1 */
 
 /**
@@ -1710,8 +1704,8 @@
  * macro will not work on an array allocated on the heap, only static
  * arrays or arrays on the stack.
  */
-
-/* Miscellaneous Macros {{{1 */
+ 
+/ * Miscellaneous Macros {{{1 */
 
 /**
  * SECTION:macros_misc
@@ -1727,7 +1721,7 @@
  *
  * This macro is used to export function prototypes so they can be linked
  * with an external version when no inlining is performed. The file which
- * implements the functions should define <literal>G_IMPLEMENTS_INLINES</literal>
+ * implements the functions should define %G_IMPLEMENTS_INLINES
  * before including the headers which contain %G_INLINE_FUNC declarations.
  * Since inlining is very compiler-dependent using these macros correctly
  * is very difficult. Their use is strongly discouraged.
@@ -1755,7 +1749,7 @@
  * G_BEGIN_DECLS:
  *
  * Used (along with #G_END_DECLS) to bracket header files. If the
- * compiler in use is a C++ compiler, adds <literal>extern "C"</literal>
+ * compiler in use is a C++ compiler, adds extern "C"
  * around the header.
  */
 
@@ -1763,7 +1757,7 @@
  * G_END_DECLS:
  *
  * Used (along with #G_BEGIN_DECLS) to bracket header files. If the
- * compiler in use is a C++ compiler, adds <literal>extern "C"</literal>
+ * compiler in use is a C++ compiler, adds extern "C"
  * around the header.
  */
 
@@ -1804,7 +1798,7 @@
  * @identifier2: an identifier
  *
  * Yields a new preprocessor pasted identifier
- * <code>identifier1identifier2</code> from its expanded
+ * @identifier1identifier2 from its expanded
  * arguments @identifier1 and @identifier2. For example,
  * the following code:
  * |[
@@ -1828,18 +1822,14 @@
  * G_STATIC_ASSERT:
  * @expr: a constant expression
  *
- * The G_STATIC_ASSERT macro lets the programmer check
+ * The G_STATIC_ASSERT() macro lets the programmer check
  * a condition at compile time, the condition needs to
  * be compile time computable. The macro can be used in
- * any place where a <literal>typedef</literal> is valid.
+ * any place where a typedef is valid.
  *
- * <note><para>
- * A <literal>typedef</literal> is generally allowed in
- * exactly the same places that a variable declaration is
- * allowed. For this reason, you should not use
- * <literal>G_STATIC_ASSERT</literal> in the middle of
- * blocks of code.
- * </para></note>
+ * A typedef is generally allowed in exactly the same places that
+ * a variable declaration is allowed. For this reason, you should
+ * not use G_STATIC_ASSERT() in the middle of blocks of code.
  *
  * The macro should only be used once per source code line.
  *
@@ -1850,15 +1840,14 @@
  * G_STATIC_ASSERT_EXPR:
  * @expr: a constant expression
  *
- * The G_STATIC_ASSERT_EXPR macro lets the programmer check
+ * The G_STATIC_ASSERT_EXPR() macro lets the programmer check
  * a condition at compile time. The condition needs to be
  * compile time computable.
  *
- * Unlike <literal>G_STATIC_ASSERT</literal>, this macro
- * evaluates to an expression and, as such, can be used in
- * the middle of other expressions. Its value should be
- * ignored. This can be accomplished by placing it as
- * the first argument of a comma expression.
+ * Unlike G_STATIC_ASSERT(), this macro evaluates to an expression
+ * and, as such, can be used in the middle of other expressions.
+ * Its value should be ignored. This can be accomplished by placing
+ * it as the first argument of a comma expression.
  *
  * |[
  * #define ADD_ONE_TO_INT(x) \
@@ -1871,41 +1860,37 @@
 /**
  * G_GNUC_EXTENSION:
  *
- * Expands to <literal>__extension__</literal> when <command>gcc</command>
- * is used as the compiler. This simply tells <command>gcc</command> not
- * to warn about the following non-standard code when compiling with the
- * <option>-pedantic</option> option.
+ * Expands to __extension__ when gcc is used as the compiler. This simply
+ * tells gcc not to warn about the following non-standard code when compiling
+ * with the <option>-pedantic</option> option.
  */
 
 /**
  * G_GNUC_CONST:
  *
- * Expands to the GNU C <literal>const</literal> function attribute if
- * the compiler is <command>gcc</command>. Declaring a function as const
- * enables better optimization of calls to the function. A const function
- * doesn't examine any values except its parameters, and has no effects
- * except its return value.
+ * Expands to the GNU C const function attribute if the compiler is gcc.
+ * Declaring a function as const enables better optimization of calls to
+ * the function. A const function doesn't examine any values except its
+ * parameters, and has no effects except its return value.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
  * See the GNU C documentation for more details.
  *
- * <note><para>
  * A function that has pointer arguments and examines the data pointed to
- * must <emphasis>not</emphasis> be declared const. Likewise, a function
- * that calls a non-const function usually must not be const. It doesn't
- * make sense for a const function to return void.
- * </para></note>
+ * must not be declared const. Likewise, a function that calls a non-const
+ * function usually must not be const. It doesn't make sense for a const
+ * function to return void.
  */
 
 /**
  * G_GNUC_PURE:
  *
- * Expands to the GNU C <literal>pure</literal> function attribute if the
- * compiler is <command>gcc</command>. Declaring a function as pure enables
- * better optimization of calls to the function. A pure function has no
- * effects except its return value and the return value depends only on
- * the parameters and/or global variables.
+ * Expands to the GNU C pure function attribute if the compiler is gcc.
+ * Declaring a function as pure enables better optimization of calls to
+ * the function. A pure function has no effects except its return value
+ * and the return value depends only on the parameters and/or global
+ * variables.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
@@ -1915,12 +1900,11 @@
 /**
  * G_GNUC_MALLOC:
  *
- * Expands to the GNU C <literal>malloc</literal> function attribute if the
- * compiler is <command>gcc</command>. Declaring a function as malloc enables
- * better optimization of the function. A function can have the malloc
- * attribute if it returns a pointer which is guaranteed to not alias with
- * any other pointer when the function returns (in practice, this means newly
- * allocated memory).
+ * Expands to the GNU C malloc function attribute if the compiler is gcc.
+ * Declaring a function as malloc enables better optimization of the function.
+ * A function can have the malloc attribute if it returns a pointer which is
+ * guaranteed to not alias with any other pointer when the function returns
+ * (in practice, this means newly allocated memory).
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
@@ -1933,10 +1917,10 @@
  * G_GNUC_ALLOC_SIZE:
  * @x: the index of the argument specifying the allocation size
  *
- * Expands to the GNU C <literal>alloc_size</literal> function attribute
- * if the compiler is a new enough <command>gcc</command>. This attribute
- * tells the compiler that the function returns a pointer to memory of a
- * size that is specified by the @x<!-- -->th function parameter.
+ * Expands to the GNU C alloc_size function attribute if the compiler is
+ * a new enough gcc. This attribute tells the compiler that the function
+ * returns a pointer to memory of a size that is specified by the @xth
+ * function parameter.
  *
  * Place the attribute after the function declaration, just before the
  * semicolon.
@@ -1951,10 +1935,10 @@
  * @x: the index of the argument specifying one factor of the allocation size
  * @y: the index of the argument specifying the second factor of the allocation size
  *
- * Expands to the GNU C <literal>alloc_size</literal> function attribute
- * if the compiler is a new enough <command>gcc</command>. This attribute
- * tells the compiler that the function returns a pointer to memory of a
- * size that is specified by the product of two function parameters.
+ * Expands to the GNU C alloc_size function attribute if the compiler is a
+ * new enough gcc. This attribute tells the compiler that the function returns
+ * a pointer to memory of a size that is specified by the product of two
+ * function parameters.
  *
  * Place the attribute after the function declaration, just before the
  * semicolon.
@@ -1967,11 +1951,10 @@
 /**
  * G_GNUC_DEPRECATED:
  *
- * Expands to the GNU C <literal>deprecated</literal> attribute if the
- * compiler is <command>gcc</command>. It can be used to mark typedefs,
- * variables and functions as deprecated. When called with the
- * <option>-Wdeprecated-declarations</option> option, the compiler will
- * generate warnings when deprecated interfaces are used.
+ * Expands to the GNU C deprecated attribute if the compiler is gcc.
+ * It can be used to mark typedefs, variables and functions as deprecated.
+ * When called with the <option>-Wdeprecated-declarations</option> option,
+ * gcc will generate warnings when deprecated interfaces are used.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
@@ -1986,8 +1969,8 @@
  *     such as the name of a function
  *
  * Like %G_GNUC_DEPRECATED, but names the intended replacement for the
- * deprecated symbol if the version of <command>gcc</command> in use is
- * new enough to support custom deprecation messages.
+ * deprecated symbol if the version of gcc in use is new enough to support
+ * custom deprecation messages.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
@@ -2003,12 +1986,11 @@
 /**
  * G_GNUC_BEGIN_IGNORE_DEPRECATIONS:
  *
- * Tells <command>gcc</command> (if it is a new enough version) to
- * temporarily stop emitting warnings when functions marked with
- * %G_GNUC_DEPRECATED or %G_GNUC_DEPRECATED_FOR are called. This is
- * useful for when you have one deprecated function calling another
- * one, or when you still have regression tests for deprecated
- * functions.
+ * Tells gcc (if it is a new enough version) to temporarily stop emitting
+ * warnings when functions marked with %G_GNUC_DEPRECATED or
+ * %G_GNUC_DEPRECATED_FOR are called. This is useful for when you have
+ * one deprecated function calling another one, or when you still have
+ * regression tests for deprecated functions.
  *
  * Use %G_GNUC_END_IGNORE_DEPRECATIONS to begin warning again. (If you
  * are not compiling with <literal>-Wdeprecated-declarations</literal>
@@ -2024,8 +2006,8 @@
  * G_GNUC_END_IGNORE_DEPRECATIONS:
  *
  * Undoes the effect of %G_GNUC_BEGIN_IGNORE_DEPRECATIONS, telling
- * <command>gcc</command> to begin outputting warnings again
- * (assuming those warnings had been enabled to begin with).
+ * gcc to begin outputting warnings again (assuming those warnings
+ * had been enabled to begin with).
  *
  * This macro can be used either inside or outside of a function body,
  * but must appear on a line by itself.
@@ -2049,8 +2031,8 @@
  * @f: the name of the function that this function was deprecated for
  *
  * This macro is similar to %G_GNUC_DEPRECATED_FOR, and can be used to mark
- * functions declarations as deprecated. Unlike %G_GNUC_DEPRECATED_FOR, it is
- * meant to be portable across different compilers and must be placed
+ * functions declarations as deprecated. Unlike %G_GNUC_DEPRECATED_FOR, it
+ * is meant to be portable across different compilers and must be placed
  * before the function declaration.
  *
  * Since: 2.32
@@ -2079,10 +2061,9 @@
 /**
  * G_GNUC_NORETURN:
  *
- * Expands to the GNU C <literal>noreturn</literal> function attribute
- * if the compiler is <command>gcc</command>. It is used for declaring
- * functions which never return. It enables optimization of the function,
- * and avoids possible compiler warnings.
+ * Expands to the GNU C noreturn function attribute if the compiler is gcc.
+ * It is used for declaring functions which never return. It enables
+ * optimization of the function, and avoids possible compiler warnings.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
@@ -2092,10 +2073,9 @@
 /**
  * G_GNUC_UNUSED:
  *
- * Expands to the GNU C <literal>unused</literal> function attribute if
- * the compiler is <command>gcc</command>. It is used for declaring
- * functions and arguments which may never be used. It avoids possible compiler
- * warnings.
+ * Expands to the GNU C unused function attribute if the compiler is gcc.
+ * It is used for declaring functions and arguments which may never be used.
+ * It avoids possible compiler warnings.
  *
  * For functions, place the attribute after the declaration, just before the
  * semicolon. For arguments, place the attribute at the beginning of the
@@ -2115,11 +2095,10 @@
  *     format string (The arguments are numbered from 1)
  * @arg_idx: the index of the first of the format arguments
  *
- * Expands to the GNU C <literal>format</literal> function attribute
- * if the compiler is <command>gcc</command>. This is used for declaring
- * functions which take a variable number of arguments, with the same
- * syntax as printf(). It allows the compiler to type-check the arguments
- * passed to the function.
+ * Expands to the GNU C format function attribute if the compiler is gcc.
+ * This is used for declaring functions which take a variable number of
+ * arguments, with the same syntax as printf(). It allows the compiler
+ * to type-check the arguments passed to the function.
  *
  * Place the attribute after the function declaration, just before the
  * semicolon.
@@ -2140,25 +2119,25 @@
  *     the format string (The arguments are numbered from 1)
  * @arg_idx: the index of the first of the format arguments
  *
- * Expands to the GNU C <literal>format</literal> function attribute
- * if the compiler is <command>gcc</command>. This is used for declaring
- * functions which take a variable number of arguments, with the same
- * syntax as scanf(). It allows the compiler to type-check the arguments
- * passed to the function. See the GNU C documentation for details.
+ * Expands to the GNU C format function attribute if the compiler is gcc.
+ * This is used for declaring functions which take a variable number of
+ * arguments, with the same syntax as scanf(). It allows the compiler
+ * to type-check the arguments passed to the function.
+ *
+ * See the GNU C documentation for details.
  */
 
 /**
  * G_GNUC_FORMAT:
  * @arg_idx: the index of the argument
  *
- * Expands to the GNU C <literal>format_arg</literal> function attribute
- * if the compiler is <command>gcc</command>. This function attribute
- * specifies that a function takes a format string for a printf(),
- * scanf(), strftime() or strfmon() style function and modifies it,
- * so that the result can be passed to a printf(), scanf(), strftime()
- * or strfmon() style function (with the remaining arguments to the
- * format function the same as they would have been for the unmodified
- * string).
+ * Expands to the GNU C format_arg function attribute if the compiler
+ * is gcc. This function attribute specifies that a function takes a
+ * format string for a printf(), scanf(), strftime() or strfmon() style
+ * function and modifies it, so that the result can be passed to a printf(),
+ * scanf(), strftime() or strfmon() style function (with the remaining
+ * arguments to the format function the same as they would have been
+ * for the unmodified string).
  *
  * Place the attribute after the function declaration, just before the
  * semicolon.
@@ -2173,9 +2152,8 @@
 /**
  * G_GNUC_NULL_TERMINATED:
  *
- * Expands to the GNU C <literal>sentinel</literal> function attribute
- * if the compiler is <command>gcc</command>, or "" if it isn't. This
- * function attribute only applies to variadic functions and instructs
+ * Expands to the GNU C sentinel function attribute if the compiler is gcc.
+ * This function attribute only applies to variadic functions and instructs
  * the compiler to check that the argument list is terminated with an
  * explicit %NULL.
  *
@@ -2189,10 +2167,9 @@
 /**
  * G_GNUC_WARN_UNUSED_RESULT:
  *
- * Expands to the GNU C <literal>warn_unused_result</literal> function
- * attribute if the compiler is <command>gcc</command>, or "" if it isn't.
- * This function attribute makes the compiler emit a warning if the result
- * of a function call is ignored.
+ * Expands to the GNU C warn_unused_result function attribute if the compiler
+ * is gcc. This function attribute makes the compiler emit a warning if the
+ * result of a function call is ignored.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
@@ -2204,30 +2181,28 @@
 /**
  * G_GNUC_FUNCTION:
  *
- * Expands to "" on all modern compilers, and to
- * <literal>__FUNCTION__</literal> on <command>gcc</command> version 2.x.
- * Don't use it.
+ * Expands to "" on all modern compilers, and to  __FUNCTION__ on gcc
+ * version 2.x. Don't use it.
  *
- * Deprecated: 2.16: Use #G_STRFUNC instead
+ * Deprecated: 2.16: Use G_STRFUNC() instead
  */
 
 /**
  * G_GNUC_PRETTY_FUNCTION:
  *
- * Expands to "" on all modern compilers, and to
- * <literal>__PRETTY_FUNCTION__</literal> on <command>gcc</command>
- * version 2.x. Don't use it.
+ * Expands to "" on all modern compilers, and to __PRETTY_FUNCTION__
+ * on gcc version 2.x. Don't use it.
  *
- * Deprecated: 2.16: Use #G_STRFUNC instead
+ * Deprecated: 2.16: Use G_STRFUNC() instead
  */
 
 /**
  * G_GNUC_NO_INSTRUMENT:
  *
- * Expands to the GNU C <literal>no_instrument_function</literal> function
- * attribute if the compiler is <command>gcc</command>. Functions with this
- * attribute will not be instrumented for profiling, when the compiler is
- * called with the <option>-finstrument-functions</option> option.
+ * Expands to the GNU C no_instrument_function function attribute if the
+ * compiler is gcc. Functions with this attribute will not be instrumented
+ * for profiling, when the compiler is called with the
+ * <option>-finstrument-functions</option> option.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
@@ -2244,8 +2219,8 @@
  * details.
  *
  * When using a compiler that supports the GNU C hidden visibility attribute,
- * this macro expands to <literal>__attribute__((visibility("hidden")))</literal>.
- * When using the Sun Studio compiler, it expands to <literal>__hidden</literal>.
+ * this macro expands to __attribute__((visibility("hidden"))).
+ * When using the Sun Studio compiler, it expands to __hidden.
  *
  * Note that for portability, the attribute should be placed before the
  * function declaration. While GCC allows the macro after the declaration,
@@ -2265,10 +2240,10 @@
 /**
  * G_GNUC_MAY_ALIAS:
  *
- * Expands to the GNU C <literal>may_alias</literal> type attribute
- * if the compiler is <command>gcc</command>. Types with this attribute
- * will not be subjected to type-based alias analysis, but are assumed
- * to alias with any other type, just like char.
+ * Expands to the GNU C may_alias type attribute if the compiler is gcc.
+ * Types with this attribute will not be subjected to type-based alias
+ * analysis, but are assumed to alias with any other type, just like char.
+ *
  * See the GNU C documentation for details.
  *
  * Since: 2.14
@@ -2381,6 +2356,6 @@
  *
  * Since: 2.6
  */
-
-/* Epilogue {{{1 */
+ 
+ /* Epilogue {{{1 */
 /* vim: set foldmethod=marker: */

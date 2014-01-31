@@ -128,11 +128,9 @@ g_slist_alloc (void)
  * Frees all of the memory used by a #GSList.
  * The freed elements are returned to the slice allocator.
  *
- * <note><para>
  * If list elements contain dynamically-allocated memory,
  * you should either use g_slist_free_full() or free them manually
  * first.
- * </para></note>
  */
 void
 g_slist_free (GSList *list)
@@ -185,17 +183,13 @@ g_slist_free_full (GSList         *list,
  *
  * Adds a new element on to the end of the list.
  *
- * <note><para>
  * The return value is the new start of the list, which may
  * have changed, so make sure you store the new value.
- * </para></note>
  *
- * <note><para>
  * Note that g_slist_append() has to traverse the entire list
  * to find the end, which is inefficient when adding multiple
  * elements. A common idiom to avoid the inefficiency is to prepend
  * the elements and reverse the list when all elements have been added.
- * </para></note>
  *
  * |[
  * /&ast; Notice that these are initialized to the empty list. &ast;/
@@ -242,10 +236,8 @@ g_slist_append (GSList   *list,
  *
  * Adds a new element on to the start of the list.
  *
- * <note><para>
  * The return value is the new start of the list, which
  * may have changed, so make sure you store the new value.
- * </para></note>
  *
  * |[
  * /&ast; Notice that it is initialized to the empty list. &ast;/
@@ -515,11 +507,11 @@ _g_slist_remove_link (GSList *list,
  * link is set to %NULL, so that it becomes a
  * self-contained list with one element.
  *
- * <note>Removing arbitrary nodes from a singly-linked list
+ * Removing arbitrary nodes from a singly-linked list
  * requires time that is proportional to the length of the list
  * (ie. O(n)). If you find yourself using g_slist_remove_link()
- * frequently, you should consider a different data structure, such
- * as the doubly-linked #GList.</note>
+ * frequently, you should consider a different data structure,
+ * such as the doubly-linked #GList.
  *
  * Returns: the new start of the #GSList, without the element
  */
@@ -539,11 +531,11 @@ g_slist_remove_link (GSList *list,
  * Compare this to g_slist_remove_link() which removes the node
  * without freeing it.
  *
- * <note>Removing arbitrary nodes from a singly-linked list
- * requires time that is proportional to the length of the list
- * (ie. O(n)). If you find yourself using g_slist_delete_link()
- * frequently, you should consider a different data structure, such
- * as the doubly-linked #GList.</note>
+ * Removing arbitrary nodes from a singly-linked list requires time
+ * that is proportional to the length of the list (ie. O(n)). If you
+ * find yourself using g_slist_delete_link() frequently, you should
+ * consider a different data structure, such as the doubly-linked
+ * #GList.
  *
  * Returns: the new head of @list
  */
@@ -563,12 +555,10 @@ g_slist_delete_link (GSList *list,
  *
  * Copies a #GSList.
  *
- * <note><para>
  * Note that this is a "shallow" copy. If the list elements
  * consist of pointers to data, the pointers are copied but
  * the actual data isn't. See g_slist_copy_deep() if you need
  * to copy the data as well.
- * </para></note>
  *
  * Returns: a copy of @list
  */
@@ -828,9 +818,7 @@ g_slist_index (GSList        *list,
  *
  * Gets the last element in a #GSList.
  *
- * <note><para>
  * This function iterates over the whole list.
- * </para></note>
  *
  * Returns: the last element in the #GSList,
  *     or %NULL if the #GSList has no elements
@@ -853,10 +841,8 @@ g_slist_last (GSList *list)
  *
  * Gets the number of elements in a #GSList.
  *
- * <note><para>
  * This function iterates over the whole list to
  * count its elements.
- * </para></note>
  *
  * Returns: the number of elements in the #GSList
  */

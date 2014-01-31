@@ -75,11 +75,8 @@ g_queue_new (void)
  * if @queue was created with g_queue_new(). If queue elements contain
  * dynamically-allocated memory, they should be freed first.
  *
- * <note><para>
- * If queue elements contain dynamically-allocated memory,
- * you should either use g_queue_free_full() or free them manually
- * first.
- * </para></note>
+ * If queue elements contain dynamically-allocated memory, you should
+ * either use g_queue_free_full() or free them manually first.
  **/
 void
 g_queue_free (GQueue *queue)

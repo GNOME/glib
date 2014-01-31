@@ -75,13 +75,11 @@ static gboolean g_settings_has_backend;
  * g_settings_backend_create_tree() is a convenience function to create
  * suitable trees.
  *
- * <note><para>
- * The #GSettingsBackend API is exported to allow third-party
+ * The GSettingsBackend API is exported to allow third-party
  * implementations, but does not carry the same stability guarantees
  * as the public GIO API. For this reason, you have to define the
- * C preprocessor symbol #G_SETTINGS_ENABLE_BACKEND before including
+ * C preprocessor symbol %G_SETTINGS_ENABLE_BACKEND before including
  * <filename>gio/gsettingsbackend.h</filename>
- * </para></note>
  **/
 
 static gboolean

@@ -815,7 +815,6 @@ g_object_interface_find_property (gpointer      g_iface,
  * a property implementation in a parent class or to provide
  * the implementation of a property from an interface.
  *
- * <note>
  * Internally, overriding is implemented by creating a property of type
  * #GParamSpecOverride; generally operations that query the properties of
  * the object class, such as g_object_class_find_property() or
@@ -826,7 +825,6 @@ g_object_interface_find_property (gpointer      g_iface,
  * correct.  For virtually all uses, this makes no difference. If you
  * need to get the overridden property, you can call
  * g_param_spec_get_redirect_target().
- * </note>
  *
  * Since: 2.4
  */

@@ -795,21 +795,19 @@ g_get_real_name (void)
  * If the path given in <envar>HOME</envar> is non-absolute, does not
  * exist, or is not a directory, the result is undefined.
  *
- * <note><para>
- *   Before version 2.36 this function would ignore the
- *   <envar>HOME</envar> environment variable, taking the value from the
- *   <filename>passwd</filename> database instead.  This was changed to
- *   increase the compatibility of GLib with other programs (and the XDG
- *   basedir specification) and to increase testability of programs
- *   based on GLib (by making it easier to run them from test
- *   frameworks).
- * </para><para>
- *   If your program has a strong requirement for either the new or the
- *   old behaviour (and if you don't wish to increase your GLib
- *   dependency to ensure that the new behaviour is in effect) then you
- *   should either directly check the <envar>HOME</envar> environment
- *   variable yourself or unset it before calling any functions in GLib.
- * </para></note>
+ * Before version 2.36 this function would ignore the
+ * <envar>HOME</envar> environment variable, taking the value from the
+ * <filename>passwd</filename> database instead.  This was changed to
+ * increase the compatibility of GLib with other programs (and the XDG
+ * basedir specification) and to increase testability of programs
+ * based on GLib (by making it easier to run them from test
+ * frameworks).
+ *
+ * If your program has a strong requirement for either the new or the
+ * old behaviour (and if you don't wish to increase your GLib
+ * dependency to ensure that the new behaviour is in effect) then you
+ * should either directly check the <envar>HOME</envar> environment
+ * variable yourself or unset it before calling any functions in GLib.
  *
  * Returns: the current user's home directory
  */

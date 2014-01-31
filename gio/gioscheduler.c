@@ -29,14 +29,12 @@
  * @short_description: I/O Scheduler
  * @include: gio/gio.h
  * 
- * <note><para>
- *   As of GLib 2.36, the <literal>g_io_scheduler</literal> methods
- *   are deprecated in favor of #GThreadPool and #GTask.
- * </para></note>
+ * As of GLib 2.36, #GIOScheduler is deprecated in favor of
+ * #GThreadPool and #GTask.
  *
  * Schedules asynchronous I/O operations. #GIOScheduler integrates 
  * into the main event loop (#GMainLoop) and uses threads.
- **/
+ */
 
 struct _GIOSchedulerJob {
   GList *active_link;

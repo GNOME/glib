@@ -390,10 +390,8 @@ g_themed_icon_get_names (GThemedIcon *icon)
  *
  * Append a name to the list of icons from within @icon.
  *
- * <note><para>
  * Note that doing so invalidates the hash computed by prior calls
  * to g_icon_hash().
- * </para></note>
  */
 void
 g_themed_icon_append_name (GThemedIcon *icon, 
@@ -419,10 +417,8 @@ g_themed_icon_append_name (GThemedIcon *icon,
  *
  * Prepend a name to the list of icons from within @icon.
  *
- * <note><para>
  * Note that doing so invalidates the hash computed by prior calls
  * to g_icon_hash().
- * </para></note>
  *
  * Since: 2.18
  */

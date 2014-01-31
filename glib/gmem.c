@@ -66,18 +66,15 @@ static GMemVTable glib_mem_vtable = {
  * 
  * These functions provide support for allocating and freeing memory.
  * 
- * <note>
  * If any call to allocate memory fails, the application is terminated.
  * This also means that there is no need to check if the call succeeded.
- * </note>
  * 
- * <note>
- * It's important to match g_malloc() with g_free(), plain malloc() with free(),
- * and (if you're using C++) new with delete and new[] with delete[]. Otherwise
- * bad things can happen, since these allocators may use different memory
- * pools (and new/delete call constructors and destructors). See also
- * g_mem_set_vtable().
- * </note>
+ * It's important to match g_malloc() (and wrappers such as g_new()) with
+ * g_free(), g_slice_alloc() and wrappers such as g_slice_new()) with
+ * g_slice_free(), plain malloc() with free(), and (if you're using C++)
+ * new with delete and new[] with delete[]. Otherwise bad things can happen,
+ * since these allocators may use different memory pools (and new/delete call
+ * constructors and destructors). See also g_mem_set_vtable().
  */
 
 /* --- functions --- */

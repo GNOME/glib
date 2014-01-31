@@ -520,11 +520,11 @@ g_dngettext (const gchar *domain,
  * See the C_() macro for a different way to mark up translatable strings
  * with context.
  *
- * <note><para>If you are using the Q_() macro, you need to make sure
- * that you pass <option>--keyword=Q_</option> to xgettext when extracting
- * messages. If you are using GNU gettext >= 0.15, you can also use
+ * If you are using the Q_() macro, you need to make sure that you pass
+ * <option>--keyword=Q_</option> to xgettext when extracting messages.
+ * If you are using GNU gettext >= 0.15, you can also use
  * <option>--keyword=Q_:1g</option> to let xgettext split the context
- * string off into a msgctxt line in the po file.</para></note>
+ * string off into a msgctxt line in the po file.
  *
  * Returns: the translated message
  *
@@ -545,10 +545,9 @@ g_dngettext (const gchar *domain,
  * label2 = C_("Body part", "Back");
  * ]|
  *
- * <note><para>If you are using the C_() macro, you need to make sure
- * that you pass <option>--keyword=C_:1c,2</option> to xgettext when
- * extracting messages. Note that this only works with GNU
- * gettext >= 0.15.</para></note>
+ * If you are using the C_() macro, you need to make sure that you pass
+ * <option>--keyword=C_:1c,2</option> to xgettext when extracting messages.
+ * Note that this only works with GNU gettext >= 0.15.
  *
  * Returns: the translated message
  *
@@ -609,11 +608,10 @@ g_dngettext (const gchar *domain,
  * }
  * ]|
  *
- * <note><para>If you are using the NC_() macro, you need to make sure
- * that you pass <option>--keyword=NC_:1c,2</option> to xgettext when
- * extracting messages. Note that this only works with GNU gettext >= 0.15.
- * Intltool has support for the NC_() macro since version 0.40.1.
- * </para></note>
+ * If you are using the NC_() macro, you need to make sure that you pass
+ * <option>--keyword=NC_:1c,2</option> to xgettext when extracting messages.
+ * Note that this only works with GNU gettext >= 0.15. Intltool has support
+ * for the NC_() macro since version 0.40.1.
  *
  * Since: 2.18
  */

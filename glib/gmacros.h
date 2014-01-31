@@ -42,18 +42,16 @@
  * "long long" types even in the presence of '-ansi -pedantic'. 
  */
 #if     __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 8)
-#  define G_GNUC_EXTENSION __extension__
+#define G_GNUC_EXTENSION __extension__
 #else
-#  define G_GNUC_EXTENSION
+#define G_GNUC_EXTENSION
 #endif
 
 /* Provide macros to feature the GCC function attribute.
  */
 #if    __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
-#define G_GNUC_PURE                            \
-  __attribute__((__pure__))
-#define G_GNUC_MALLOC    			\
-  __attribute__((__malloc__))
+#define G_GNUC_PURE __attribute__((__pure__))
+#define G_GNUC_MALLOC __attribute__((__malloc__))
 #else
 #define G_GNUC_PURE
 #define G_GNUC_MALLOC
@@ -99,8 +97,7 @@
 #endif  /* !__GNUC__ */
 
 #if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1)
-#define G_GNUC_DEPRECATED                            \
-  __attribute__((__deprecated__))
+#define G_GNUC_DEPRECATED __attribute__((__deprecated__))
 #else
 #define G_GNUC_DEPRECATED
 #endif /* __GNUC__ */
@@ -130,14 +127,13 @@
 #endif
 
 #if     __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3)
-#  define G_GNUC_MAY_ALIAS __attribute__((may_alias))
+#define G_GNUC_MAY_ALIAS __attribute__((may_alias))
 #else
-#  define G_GNUC_MAY_ALIAS
+#define G_GNUC_MAY_ALIAS
 #endif
 
 #if    __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
-#define G_GNUC_WARN_UNUSED_RESULT 		\
-  __attribute__((warn_unused_result))
+#define G_GNUC_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
 #else
 #define G_GNUC_WARN_UNUSED_RESULT
 #endif /* __GNUC__ */
@@ -185,29 +181,29 @@
 
 /* Provide a string identifying the current code position */
 #if defined(__GNUC__) && (__GNUC__ < 3) && !defined(__cplusplus)
-#  define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__) ":" __PRETTY_FUNCTION__ "()"
+#define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__) ":" __PRETTY_FUNCTION__ "()"
 #else
-#  define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__)
+#define G_STRLOC	__FILE__ ":" G_STRINGIFY (__LINE__)
 #endif
 
 /* Provide a string identifying the current function, non-concatenatable */
 #if defined (__GNUC__) && defined (__cplusplus)
-#  define G_STRFUNC     ((const char*) (__PRETTY_FUNCTION__))
+#define G_STRFUNC     ((const char*) (__PRETTY_FUNCTION__))
 #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-#  define G_STRFUNC     ((const char*) (__func__))
+#define G_STRFUNC     ((const char*) (__func__))
 #elif defined (__GNUC__) || (defined(_MSC_VER) && (_MSC_VER > 1300))
-#  define G_STRFUNC     ((const char*) (__FUNCTION__))
+#define G_STRFUNC     ((const char*) (__FUNCTION__))
 #else
-#  define G_STRFUNC     ((const char*) ("???"))
+#define G_STRFUNC     ((const char*) ("???"))
 #endif
 
 /* Guard C code in headers, while including them from C++ */
 #ifdef  __cplusplus
-# define G_BEGIN_DECLS  extern "C" {
-# define G_END_DECLS    }
+#define G_BEGIN_DECLS  extern "C" {
+#define G_END_DECLS    }
 #else
-# define G_BEGIN_DECLS
-# define G_END_DECLS
+#define G_BEGIN_DECLS
+#define G_END_DECLS
 #endif
 
 /* Provide definitions for some commonly used macros.
@@ -217,9 +213,9 @@
  */
 #ifndef NULL
 #  ifdef __cplusplus
-#    define NULL        (0L)
+#  define NULL        (0L)
 #  else /* !__cplusplus */
-#    define NULL        ((void*) 0)
+#  define NULL        ((void*) 0)
 #  endif /* !__cplusplus */
 #endif
 
@@ -259,10 +255,10 @@
  */
 
 #if defined(__GNUC__)  && __GNUC__ >= 4
-#  define G_STRUCT_OFFSET(struct_type, member) \
+#define G_STRUCT_OFFSET(struct_type, member) \
       ((glong) offsetof (struct_type, member))
 #else
-#  define G_STRUCT_OFFSET(struct_type, member)	\
+#define G_STRUCT_OFFSET(struct_type, member)	\
       ((glong) ((guint8*) &((struct_type*) 0)->member))
 #endif
 
@@ -279,8 +275,8 @@
  * avoid portability issue or side effects when compiled with different compilers.
  */
 #if !(defined (G_STMT_START) && defined (G_STMT_END))
-#  define G_STMT_START  do
-#  define G_STMT_END    while (0)
+#define G_STMT_START  do
+#define G_STMT_END    while (0)
 #endif
 
 /* Deprecated -- do not use. */

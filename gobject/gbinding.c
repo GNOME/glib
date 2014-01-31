@@ -94,10 +94,10 @@
  * either one of the #GObject instances it refers to are finalized, or when
  * the #GBinding instance loses its last reference.
  *
- * <note><para>Bindings for languages with garbage collection can use
+ * Bindings for languages with garbage collection can use
  * g_binding_unbind() to explicitly release a binding between the source
  * and target properties, instead of relying on the last reference on the
- * binding, source, and target instances to drop.</para></note>
+ * binding, source, and target instances to drop.
  *
  * #GBinding is available since GObject 2.26
  */
@@ -704,7 +704,7 @@ g_binding_init (GBinding *binding)
  * g_binding_get_flags:
  * @binding: a #GBinding
  *
- * Retrieves the flags passed when constructing the #GBinding
+ * Retrieves the flags passed when constructing the #GBinding.
  *
  * Return value: the #GBindingFlags used by the #GBinding
  *
@@ -722,7 +722,7 @@ g_binding_get_flags (GBinding *binding)
  * g_binding_get_source:
  * @binding: a #GBinding
  *
- * Retrieves the #GObject instance used as the source of the binding
+ * Retrieves the #GObject instance used as the source of the binding.
  *
  * Return value: (transfer none): the source #GObject
  *
@@ -740,7 +740,7 @@ g_binding_get_source (GBinding *binding)
  * g_binding_get_target:
  * @binding: a #GBinding
  *
- * Retrieves the #GObject instance used as the target of the binding
+ * Retrieves the #GObject instance used as the target of the binding.
  *
  * Return value: (transfer none): the target #GObject
  *
@@ -759,7 +759,7 @@ g_binding_get_target (GBinding *binding)
  * @binding: a #GBinding
  *
  * Retrieves the name of the property of #GBinding:source used as the source
- * of the binding
+ * of the binding.
  *
  * Return value: the name of the source property
  *
@@ -778,7 +778,7 @@ g_binding_get_source_property (GBinding *binding)
  * @binding: a #GBinding
  *
  * Retrieves the name of the property of #GBinding:target used as the target
- * of the binding
+ * of the binding.
  *
  * Return value: the name of the target property
  *
@@ -799,10 +799,10 @@ g_binding_get_target_property (GBinding *binding)
  * Explicitly releases the binding between the source and the target
  * property expressed by @binding.
  *
- * <note>This function will release the reference that is being held on
+ * This function will release the reference that is being held on
  * the @binding instance; if you want to hold on to the #GBinding instance
  * after calling g_binding_unbind(), you will need to hold a reference
- * to it.</note>
+ * to it.
  *
  * Since: 2.38
  */
@@ -822,13 +822,13 @@ g_binding_unbind (GBinding *binding)
  * @target_property: the property on @target to bind
  * @flags: flags to pass to #GBinding
  * @transform_to: (scope notified) (allow-none): the transformation function
- *   from the @source to the @target, or %NULL to use the default
+ *     from the @source to the @target, or %NULL to use the default
  * @transform_from: (scope notified) (allow-none): the transformation function
- *   from the @target to the @source, or %NULL to use the default
+ *     from the @target to the @source, or %NULL to use the default
  * @user_data: custom data to be passed to the transformation functions,
- *   or %NULL
+ *     or %NULL
  * @notify: function to be called when disposing the binding, to free the
- *   resources used by the transformation functions
+ *     resources used by the transformation functions
  *
  * Complete version of g_object_bind_property().
  *
@@ -848,15 +848,15 @@ g_binding_unbind (GBinding *binding)
  *
  * A #GObject can have multiple bindings.
  *
- * <note>The same @user_data parameter will be used for both @transform_to
+ * The same @user_data parameter will be used for both @transform_to
  * and @transform_from transformation functions; the @notify function will
  * be called once, when the binding is removed. If you need different data
  * for each transformation function, please use
- * g_object_bind_property_with_closures() instead.</note>
+ * g_object_bind_property_with_closures() instead.
  *
  * Return value: (transfer none): the #GBinding instance representing the
- *   binding between the two #GObject instances. The binding is released
- *   whenever the #GBinding reference count reaches zero.
+ *     binding between the two #GObject instances. The binding is released
+ *     whenever the #GBinding reference count reaches zero.
  *
  * Since: 2.26
  */
@@ -1036,8 +1036,8 @@ g_object_bind_property_full (gpointer               source,
  * A #GObject can have multiple bindings.
  *
  * Return value: (transfer none): the #GBinding instance representing the
- *   binding between the two #GObject instances. The binding is released
- *   whenever the #GBinding reference count reaches zero.
+ *     binding between the two #GObject instances. The binding is released
+ *     whenever the #GBinding reference count reaches zero.
  *
  * Since: 2.26
  */
@@ -1172,23 +1172,23 @@ bind_with_closures_free_func (gpointer data)
  * @target_property: the property on @target to bind
  * @flags: flags to pass to #GBinding
  * @transform_to: a #GClosure wrapping the transformation function
- *   from the @source to the @target, or %NULL to use the default
+ *     from the @source to the @target, or %NULL to use the default
  * @transform_from: a #GClosure wrapping the transformation function
- *   from the @target to the @source, or %NULL to use the default
+ *     from the @target to the @source, or %NULL to use the default
  *
  * Creates a binding between @source_property on @source and @target_property
  * on @target, allowing you to set the transformation functions to be used by
  * the binding.
  *
  * This function is the language bindings friendly version of
- * g_object_bind_property_full(), using #GClosure<!-- -->s instead of
+ * g_object_bind_property_full(), using #GClosures instead of
  * function pointers.
  *
  * Rename to: g_object_bind_property_full
  *
  * Return value: (transfer none): the #GBinding instance representing the
- *   binding between the two #GObject instances. The binding is released
- *   whenever the #GBinding reference count reaches zero.
+ *     binding between the two #GObject instances. The binding is released
+ *     whenever the #GBinding reference count reaches zero.
  *
  * Since: 2.26
  */

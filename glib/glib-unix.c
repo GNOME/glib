@@ -63,19 +63,17 @@ g_unix_set_error_from_errno (GError **error,
 /**
  * g_unix_open_pipe:
  * @fds: Array of two integers
- * @flags: Bitfield of file descriptor flags, see "man 2 fcntl"
+ * @flags: Bitfield of file descriptor flags, as for fcntl()
  * @error: a #GError
  *
  * Similar to the UNIX pipe() call, but on modern systems like Linux
  * uses the pipe2() system call, which atomically creates a pipe with
- * the configured flags.  The only supported flag currently is
- * <literal>FD_CLOEXEC</literal>.  If for example you want to configure
- * <literal>O_NONBLOCK</literal>, that must still be done separately with
- * fcntl().
+ * the configured flags. The only supported flag currently is
+ * %FD_CLOEXEC. If for example you want to configure %O_NONBLOCK, that
+ * must still be done separately with fcntl().
  *
- * <note>This function does *not* take <literal>O_CLOEXEC</literal>, it takes
- * <literal>FD_CLOEXEC</literal> as if for fcntl(); these are
- * different on Linux/glibc.</note>
+ * This function does not take %O_CLOEXEC, it takes %FD_CLOEXEC as if
+ * for fcntl(); these are different on Linux/glibc.
  *
  * Returns: %TRUE on success, %FALSE if not (and errno will be set).
  *
@@ -138,8 +136,8 @@ g_unix_open_pipe (int     *fds,
  * @error: a #GError
  *
  * Control the non-blocking state of the given file descriptor,
- * according to @nonblock.  On most systems this uses <literal>O_NONBLOCK</literal>, but
- * on some older ones may use <literal>O_NDELAY</literal>.
+ * according to @nonblock. On most systems this uses %O_NONBLOCK, but
+ * on some older ones may use %O_NDELAY.
  *
  * Returns: %TRUE if successful
  *

@@ -907,12 +907,10 @@ g_thread_new_internal (const gchar   *name,
  * Calling <literal>g_thread_exit (retval)</literal> is equivalent to
  * returning @retval from the function @func, as given to g_thread_new().
  *
- * <note><para>
- *   You must only call g_thread_exit() from a thread that you created
- *   yourself with g_thread_new() or related APIs.  You must not call
- *   this function from a thread created with another threading library
- *   or or from within a #GThreadPool.
- * </para></note>
+ * You must only call g_thread_exit() from a thread that you created
+ * yourself with g_thread_new() or related APIs.  You must not call
+ * this function from a thread created with another threading library
+ * or or from within a #GThreadPool.
  */
 void
 g_thread_exit (gpointer retval)
