@@ -82,7 +82,7 @@
  * it must ensure that it is never unloaded, by calling g_module_make_resident().
  *
  * <example>
- * <title>Calling a function defined in a <structname>GModule</structname></title>
+ * <title>Calling a function defined in a GModule</title>
  * <programlisting>
  * /&ast; the function signature for 'say_hello' &ast;/
  * typedef void (* SayHelloFunc) (const char *message);

@@ -73,10 +73,9 @@ typedef struct _GTreeNode  GTreeNode;
 /**
  * GTree:
  *
- * The <structname>GTree</structname> struct is an opaque data
- * structure representing a <link
- * linkend="glib-Balanced-Binary-Trees">Balanced Binary Tree</link>. It
- * should be accessed only by using the following functions.
+ * The #GTree-struct is an opaque data structure representing a <link
+ * linkend="glib-Balanced-Binary-Trees">Balanced Binary Tree</link>.
+ * It should be accessed only by using the following functions.
  */
 struct _GTree
 {

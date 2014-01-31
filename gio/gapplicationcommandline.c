@@ -132,8 +132,8 @@
 /**
  * GApplicationCommandLineClass:
  *
- * The <structname>GApplicationCommandLineClass</structname> structure
- * contains private data only
+ * The #GApplicationCommandLineClass-struct 
+ * contains private data only.
  *
  * Since: 2.28
  **/

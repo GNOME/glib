@@ -4422,10 +4422,9 @@ gobject_init_ctor (void)
  * G_TYPE_INSTANCE_GET_PRIVATE() macro.
  *
  * The following example shows attaching a private structure
- * <structname>MyObjectPrivate</structname> to an object
- * <structname>MyObject</structname> defined in the standard GObject
- * fashion.
- * type's class_init() function.
+ * MyObjectPrivate to an object MyObject defined in the standard
+ * GObject fashion in the type's class_init() function.
+ *
  * Note the use of a structure member "priv" to avoid the overhead
  * of repeatedly calling MY_OBJECT_GET_PRIVATE().
  *

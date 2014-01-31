@@ -117,8 +117,8 @@
  * @tv_usec: microseconds
  *
  * Represents a precise time, with seconds and microseconds.
- * Similar to the <structname>struct timeval</structname> returned by
- * the gettimeofday() UNIX system call.
+ * Similar to the struct timeval returned by the gettimeofday()
+ * UNIX system call.
  *
  * GLib is attempting to unify around the use of 64bit integers to
  * represent microsecond-precision time. As such, this type will be
@@ -137,29 +137,32 @@
  * @year: the day of the day-month-year representation of the date
  *
  * Represents a day between January 1, Year 1 and a few thousand years in
- * the future. None of its members should be accessed directly. If the
- * <structname>GDate</structname> is obtained from g_date_new(), it will
- * be safe to mutate but invalid and thus not safe for calendrical
- * computations. If it's declared on the stack, it will contain garbage
- * so must be initialized with g_date_clear(). g_date_clear() makes the
- * date invalid but sane. An invalid date doesn't represent a day, it's
- * "empty." A date becomes valid after you set it to a Julian day or you
- * set a day, month, and year.
+ * the future. None of its members should be accessed directly.
+ *
+ * If the #GDate-struct is obtained from g_date_new(), it will be safe
+ * to mutate but invalid and thus not safe for calendrical computations.
+ *
+ * If it's declared on the stack, it will contain garbage so must be
+ * initialized with g_date_clear(). g_date_clear() makes the date invalid
+ * but sane. An invalid date doesn't represent a day, it's "empty." A date
+ * becomes valid after you set it to a Julian day or you set a day, month,
+ * and year.
  */
 
 /**
  * GTime:
  *
- * Simply a replacement for <type>time_t</type>. It has been deprecated
- * since it is <emphasis>not</emphasis> equivalent to <type>time_t</type>
- * on 64-bit platforms with a 64-bit <type>time_t</type>.
- * Unrelated to #GTimer.
+ * Simply a replacement for time_t. It has been deprecated
+ * since it is <emphasis>not</emphasis> equivalent to time_t
+ * on 64-bit platforms with a 64-bit time_t. Unrelated to #GTimer.
  *
- * Note that <type>GTime</type> is defined to always be a 32bit integer,
- * unlike <type>time_t</type> which may be 64bit on some systems.
- * Therefore, <type>GTime</type> will overflow in the year 2038, and
- * you cannot use the address of a <type>GTime</type> variable as argument
- * to the UNIX time() function. Instead, do the following:
+ * Note that #GTime is defined to always be a 32bit integer,
+ * unlike time_t which may be 64bit on some systems. Therefore,
+ * #GTime will overflow in the year 2038, and you cannot use the
+ * address of a #GTime variable as argument to the UNIX time()
+ * function.
+ *
+ * Instead, do the following:
  * |[
  * time_t ttime;
  * GTime gtime;
@@ -1936,12 +1939,11 @@ g_date_compare (const GDate *lhs,
 
 /**
  * g_date_to_struct_tm:
- * @date: a #GDate to set the <structname>struct tm</structname> from
- * @tm: <structname>struct tm</structname> to fill
+ * @date: a #GDate to set the struct tm from
+ * @tm: struct tm to fill
  *
- * Fills in the date-related bits of a <structname>struct tm</structname>
- * using the @date value. Initializes the non-date parts with something
- * sane but meaningless.
+ * Fills in the date-related bits of a struct tm using the @date value.
+ * Initializes the non-date parts with something sane but meaningless.
  */
 void        
 g_date_to_struct_tm (const GDate *d, 

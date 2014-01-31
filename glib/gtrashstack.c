@@ -47,7 +47,7 @@
  *     bytes of the element
  *
  * Each piece of memory that is pushed onto the stack
- * is cast to a <structname>GTrashStack*</structname>.
+ * is cast to a GTrashStack*.
  */
 
 /**

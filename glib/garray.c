@@ -1547,9 +1547,9 @@ g_ptr_array_foreach (GPtrArray *array,
  *        elements are added to the #GByteArray.
  * @len: the number of elements in the #GByteArray.
  *
- * The <structname>GByteArray</structname> struct allows access to the
- * public fields of a <structname>GByteArray</structname>.
- **/
+ * The #GByteArray-struct allows access to the public fields of
+ * a #GByteArray.
+ */
 
 /**
  * g_byte_array_new:
