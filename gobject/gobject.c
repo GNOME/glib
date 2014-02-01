@@ -2399,63 +2399,14 @@ g_object_get_property (GObject	   *object,
  *
  * The signal specs expected by this function have the form
  * "modifier::signal_name", where modifier can be one of the following:
- * <variablelist>
- * <varlistentry>
- * <term>signal</term>
- * <listitem><para>
- * equivalent to <literal>g_signal_connect_data (..., NULL, 0)</literal>
- * </para></listitem>
- * </varlistentry>
- * <varlistentry>
- * <term>object_signal</term>
- * <term>object-signal</term>
- * <listitem><para>
- * equivalent to <literal>g_signal_connect_object (..., 0)</literal>
- * </para></listitem>
- * </varlistentry>
- * <varlistentry>
- * <term>swapped_signal</term>
- * <term>swapped-signal</term>
- * <listitem><para>
- * equivalent to <literal>g_signal_connect_data (..., NULL, G_CONNECT_SWAPPED)</literal>
- * </para></listitem>
- * </varlistentry>
- * <varlistentry>
- * <term>swapped_object_signal</term>
- * <term>swapped-object-signal</term>
- * <listitem><para>
- * equivalent to <literal>g_signal_connect_object (..., G_CONNECT_SWAPPED)</literal>
- * </para></listitem>
- * </varlistentry>
- * <varlistentry>
- * <term>signal_after</term>
- * <term>signal-after</term>
- * <listitem><para>
- * equivalent to <literal>g_signal_connect_data (..., NULL, G_CONNECT_AFTER)</literal>
- * </para></listitem>
- * </varlistentry>
- * <varlistentry>
- * <term>object_signal_after</term>
- * <term>object-signal-after</term>
- * <listitem><para>
- * equivalent to <literal>g_signal_connect_object (..., G_CONNECT_AFTER)</literal>
- * </para></listitem>
- * </varlistentry>
- * <varlistentry>
- * <term>swapped_signal_after</term>
- * <term>swapped-signal-after</term>
- * <listitem><para>
- * equivalent to <literal>g_signal_connect_data (..., NULL, G_CONNECT_SWAPPED | G_CONNECT_AFTER)</literal>
- * </para></listitem>
- * </varlistentry>
- * <varlistentry>
- * <term>swapped_object_signal_after</term>
- * <term>swapped-object-signal-after</term>
- * <listitem><para>
- * equivalent to <literal>g_signal_connect_object (..., G_CONNECT_SWAPPED | G_CONNECT_AFTER)</literal>
- * </para></listitem>
- * </varlistentry>
- * </variablelist>
+ * * - signal: equivalent to g_signal_connect_data (..., NULL, 0)
+ * - object-signal, object_signal: equivalent to g_signal_connect_object (..., 0)
+ * - swapped-signal, swapped_signal: equivalent to g_signal_connect_data (..., NULL, G_CONNECT_SWAPPED)
+ * - swapped_object_signal, swapped-object-signal: equivalent to g_signal_connect_object (..., G_CONNECT_SWAPPED)
+ * - signal_after, signal-after: equivalent to g_signal_connect_data (..., NULL, G_CONNECT_AFTER)
+ * - object_signal_after, object-signal-after: equivalent to g_signal_connect_object (..., G_CONNECT_AFTER)
+ * - swapped_signal_after, swapped-signal-after: equivalent to g_signal_connect_data (..., NULL, G_CONNECT_SWAPPED | G_CONNECT_AFTER)
+ * - swapped_object_signal_after, swapped-object-signal-after: equivalent to g_signal_connect_object (..., G_CONNECT_SWAPPED | G_CONNECT_AFTER)
  *
  * |[
  *   menu->toplevel = g_object_connect (g_object_new (GTK_TYPE_WINDOW,

@@ -71,22 +71,17 @@
  *
  * Using closures has a number of important advantages over a simple
  * callback function/data pointer combination:
- * <itemizedlist>
- * <listitem><para>
- * Closures allow the callee to get the types of the callback parameters,
- * which means that language bindings don't have to write individual glue
- * for each callback type.
- * </para></listitem>
- * <listitem><para>
- * The reference counting of #GClosure makes it easy to handle reentrancy
- * right; if a callback is removed while it is being invoked, the closure
- * and its parameters won't be freed until the invocation finishes.
- * </para></listitem>
- * <listitem><para>
- * g_closure_invalidate() and invalidation notifiers allow callbacks to be
- * automatically removed when the objects they point to go away.
- * </para></listitem>
- * </itemizedlist>
+ * 
+ * - Closures allow the callee to get the types of the callback parameters,
+ *   which means that language bindings don't have to write individual glue
+ *   for each callback type.
+ *
+ * - The reference counting of #GClosure makes it easy to handle reentrancy
+ *   right; if a callback is removed while it is being invoked, the closure
+ *   and its parameters won't be freed until the invocation finishes.
+ *
+ * - g_closure_invalidate() and invalidation notifiers allow callbacks to be
+ *   automatically removed when the objects they point to go away.
  */
 
 #define	CLOSURE_MAX_REF_COUNT		((1 << 15) - 1)

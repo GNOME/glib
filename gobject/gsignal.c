@@ -65,23 +65,18 @@
  * certain signal on certain object instances.
  *
  * A signal emission consists of five stages, unless prematurely stopped:
- * <variablelist>
- * <varlistentry><term></term><listitem><para>
- * 	1 - Invocation of the object method handler for %G_SIGNAL_RUN_FIRST signals
- * </para></listitem></varlistentry>
- * <varlistentry><term></term><listitem><para>
- * 	2 - Invocation of normal user-provided signal handlers (where the @after flag is not set)
- * </para></listitem></varlistentry>
- * <varlistentry><term></term><listitem><para>
- * 	3 - Invocation of the object method handler for %G_SIGNAL_RUN_LAST signals
- * </para></listitem></varlistentry>
- * <varlistentry><term></term><listitem><para>
- * 	4 - Invocation of user provided signal handlers (where the @after flag is set)
- * </para></listitem></varlistentry>
- * <varlistentry><term></term><listitem><para>
- * 	5 - Invocation of the object method handler for %G_SIGNAL_RUN_CLEANUP signals
- * </para></listitem></varlistentry>
- * </variablelist>
+ *
+ * 1. Invocation of the object method handler for %G_SIGNAL_RUN_FIRST signals
+ *
+ * 2. Invocation of normal user-provided signal handlers (where the @after
+ *    flag is not set)
+ *
+ * 3. Invocation of the object method handler for %G_SIGNAL_RUN_LAST signals
+ *
+ * 4. Invocation of user provided signal handlers (where the @after flag is set)
+ *
+ * 5. Invocation of the object method handler for %G_SIGNAL_RUN_CLEANUP signals
+ 
  * The user-provided signal handlers are called in the order they were
  * connected in.
  *
