@@ -77,8 +77,7 @@
  * subclass #GDBusProxy, and have more natural properties and signals
  * in your derived class. See <xref linkend="gdbus-example-gdbus-codegen"/>
  * for how this can easily be done using the
- * <command><link linkend="gdbus-codegen">gdbus-codegen</link></command>
- * tool.
+ * <link linkend="gdbus-codegen">gdbus-codegen</link> tool.
  *
  * A #GDBusProxy instance can be used from multiple threads but note
  * that all signals (e.g. #GDBusProxy::g-signal, #GDBusProxy::g-properties-changed

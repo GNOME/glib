@@ -251,8 +251,8 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
  * may be useful to authors of plugin management systems.
  *
  * The directory should contain a file called
- * <filename>gschemas.compiled</filename> as produced by
- * <command>glib-compile-schemas</command>.
+ * <filename>gschemas.compiled</filename> as produced by the
+ * <link linkend="glib-compile-schemas">glib-compile-schemas</link> tool.
  *
  * If @trusted is %TRUE then <filename>gschemas.compiled</filename> is
  * trusted not to be corrupted.  This assumption has a performance

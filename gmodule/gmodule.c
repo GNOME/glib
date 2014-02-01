@@ -57,8 +57,7 @@
  * well as Windows platforms via DLLs.
  *
  * A program which wants to use these functions must be linked to the
- * libraries output by the command
- * <command>pkg-config --libs gmodule-2.0</command>.
+ * libraries output by the command <literal>pkg-config --libs gmodule-2.0</literal>.
  *
  * To use them you must first determine whether dynamic loading
  * is supported on the platform by calling g_module_supported().
