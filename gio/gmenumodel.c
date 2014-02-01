@@ -53,16 +53,15 @@
  *
  * There are 8 "menus" visible in the screenshot: one menubar, two
  * submenus and 5 sections:
- * <itemizedlist>
- * <listitem>the toplevel menubar (containing 4 items)</listitem>
- * <listitem>the View submenu (containing 3 sections)</listitem>
- * <listitem>the first section of the View submenu (containing 2 items)</listitem>
- * <listitem>the second section of the View submenu (containing 1 item)</listitem>
- * <listitem>the final section of the View submenu (containing 1 item)</listitem>
- * <listitem>the Highlight Mode submenu (containing 2 sections)</listitem>
- * <listitem>the Sources section (containing 2 items)</listitem>
- * <listitem>the Markup section (containing 2 items)</listitem>
- * </itemizedlist>
+ *
+ * - the toplevel menubar (containing 4 items)
+ * - the View submenu (containing 3 sections)
+ * - the first section of the View submenu (containing 2 items)
+ * - the second section of the View submenu (containing 1 item)
+ * - the final section of the View submenu (containing 1 item)
+ * - the Highlight Mode submenu (containing 2 sections)
+ * - the Sources section (containing 2 items)
+ * - the Markup section (containing 2 items)
  *
  * <xref linkend="menu-model"/> illustrates the conceptual connection between
  * these 8 menus. Each large block in the figure represents a menu and the
@@ -116,48 +115,37 @@
  * While a wide variety of stateful actions is possible, the following
  * is the minimum that is expected to be supported by all users of exported
  * menu information:
- * <itemizedlist>
- * <listitem>an action with no parameter type and no state</listitem>
- * <listitem>an action with no parameter type and boolean state</listitem>
- * <listitem>an action with string parameter type and string state</listitem>
- * </itemizedlist>
+ * - an action with no parameter type and no state
+ * - an action with no parameter type and boolean state
+ * - an action with string parameter type and string state
  *
- * <formalpara><title>Stateless</title>
- * <para>
+ * ## Stateless 
+ *
  * A stateless action typically corresponds to an ordinary menu item.
- * </para>
- * <para>
- * Selecting such a menu item will activate the action (with no parameter).
- * </para>
- * </formalpara>
  *
- * <formalpara><title>Boolean State</title>
- * <para>
+ * Selecting such a menu item will activate the action (with no parameter).
+ *
+ * ## Boolean State
+ *
  * An action with a boolean state will most typically be used with a "toggle"
  * or "switch" menu item. The state can be set directly, but activating the
  * action (with no parameter) results in the state being toggled.
- * </para>
- * <para>
+ *
  * Selecting a toggle menu item will activate the action. The menu item should
  * be rendered as "checked" when the state is true.
- * </para>
- * </formalpara>
  *
- * <formalpara><title>String Parameter and State</title>
- * <para>
+ * ## String Parameter and State
+ *
  * Actions with string parameters and state will most typically be used to
  * represent an enumerated choice over the items available for a group of
  * radio menu items. Activating the action with a string parameter is
  * equivalent to setting that parameter as the state.
- * </para>
- * <para>
+ *
  * Radio menu items, in addition to being associated with the action, will
  * have a target value. Selecting that menu item will result in activation
  * of the action with the target value as the parameter. The menu item should
  * be rendered as "selected" when the state of the action is equal to the
  * target value of the menu item.
- * </para>
- * </formalpara>
  */
 
 /**
