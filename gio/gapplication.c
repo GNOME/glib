@@ -116,12 +116,15 @@
  * for remote access to exported #GMenuModels.
  *
  * There is a number of different entry points into a GApplication:
- * <itemizedlist>
- * <listitem>via 'Activate' (i.e. just starting the application)</listitem>
- * <listitem>via 'Open' (i.e. opening some files)</listitem>
- * <listitem>by handling a command-line</listitem>
- * <listitem>via activating an action</listitem>
- * </itemizedlist>
+ *
+ * - via 'Activate' (i.e. just starting the application)
+ *
+ * - via 'Open' (i.e. opening some files)
+ *
+ * - by handling a command-line
+ *
+ * - via activating an action
+ *
  * The #GApplication::startup signal lets you handle the application
  * initialization for all of these in a single place.
  *
@@ -918,16 +921,23 @@ get_platform_data (GApplication *application)
  *
  * For convenience, the restrictions on application identifiers are
  * reproduced here:
- * <itemizedlist>
- *   <listitem>Application identifiers must contain only the ASCII characters "[A-Z][a-z][0-9]_-." and must not begin with a digit.</listitem>
- *   <listitem>Application identifiers must contain at least one '.' (period) character (and thus at least three elements).</listitem>
- *   <listitem>Application identifiers must not begin or end with a '.' (period) character.</listitem>
- *   <listitem>Application identifiers must not contain consecutive '.' (period) characters.</listitem>
- *   <listitem>Application identifiers must not exceed 255 characters.</listitem>
- * </itemizedlist>
+ *
+ * - Application identifiers must contain only the ASCII characters
+ *   "[A-Z][a-z][0-9]_-." and must not begin with a digit.
+ *
+ * - Application identifiers must contain at least one '.' (period)
+ *   character (and thus at least three elements).
+ *
+ * - Application identifiers must not begin or end with a '.' (period)
+ *   character.
+ *
+ * - Application identifiers must not contain consecutive '.' (period)
+ *   characters.
+ *
+ * - Application identifiers must not exceed 255 characters.
  *
  * Returns: %TRUE if @application_id is valid
- **/
+ */
 gboolean
 g_application_id_is_valid (const gchar *application_id)
 {
