@@ -39,8 +39,7 @@
 
 /**
  * SECTION:markup
- * @Title: Simple XML Subset Parser
- * @Short_description: parses a subset of XML
+ * @Title: Simple XML Subset Parser * @Short_description: parses a subset of XML
  * @See_also: <ulink url="http://www.w3.org/TR/REC-xml/">XML
  *     Specification</ulink>
  *
@@ -56,31 +55,33 @@
  *
  * GMarkup is not guaranteed to signal an error on all invalid XML;
  * the parser may accept documents that an XML parser would not.
- * However, XML documents which are not well-formed<footnote
- * id="wellformed">Being wellformed is a weaker condition than being
- * valid. See the <ulink url="http://www.w3.org/TR/REC-xml/">XML
- * specification</ulink> for definitions of these terms.</footnote>
- * are not considered valid GMarkup documents.
+ * However, XML documents which are not well-formed (which is a
+ * weaker condition than being valid. See the
+ * <ulink url="http://www.w3.org/TR/REC-xml/">XML specification</ulink>
+ * for definitions of these terms.) are not considered valid GMarkup documents.
  *
  * Simplifications to XML include:
- * <itemizedlist>
- * <listitem>Only UTF-8 encoding is allowed</listitem>
- * <listitem>No user-defined entities</listitem>
- * <listitem>Processing instructions, comments and the doctype declaration
- * are "passed through" but are not interpreted in any way</listitem>
- * <listitem>No DTD or validation.</listitem>
- * </itemizedlist>
+ *
+ * - Only UTF-8 encoding is allowed
+ *
+ * - No user-defined entities
+ *
+ * - Processing instructions, comments and the doctype declaration
+ *   are "passed through" but are not interpreted in any way
+ *
+ * - No DTD or validation
  *
  * The markup format does support:
- * <itemizedlist>
- * <listitem>Elements</listitem>
- * <listitem>Attributes</listitem>
- * <listitem>5 standard entities:
- *   <literal>&amp;amp; &amp;lt; &amp;gt; &amp;quot; &amp;apos;</literal>
- * </listitem>
- * <listitem>Character references</listitem>
- * <listitem>Sections marked as CDATA</listitem>
- * </itemizedlist>
+ *
+ * - Elements
+ *
+ * - Attributes
+ *
+ * - 5 standard entities: &amp;amp; &amp;lt; &amp;gt; &amp;quot; &amp;apos;
+ *
+ * - Character references
+ *
+ * - Sections marked as CDATA
  */
 
 G_DEFINE_QUARK (g-markup-error-quark, g_markup_error)
