@@ -137,12 +137,12 @@
  * <member>g_file_eject_mountable_with_operation() to eject a mountable file.</member>
  * </simplelist>
  *
- * <para id="gfile-etag"><indexterm><primary>entity tag</primary></indexterm>
+ * <para id="gfile-etag">
  * One notable feature of #GFiles are entity tags, or "etags" for
  * short. Entity tags are somewhat like a more abstract version of the
- * traditional mtime, and can be used to quickly determine if the file has
- * been modified from the version on the file system. See the HTTP 1.1
- * <ulink url="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html">specification</ulink>
+ * traditional mtime, and can be used to quickly determine if the file
+ * has been modified from the version on the file system. See the
+ * HTTP 1.1 <ulink url="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html">specification</ulink>
  * for HTTP Etag headers, which are a very similar concept.
  * </para>
  **/
