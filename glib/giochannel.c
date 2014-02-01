@@ -44,15 +44,9 @@
 /**
  * SECTION:iochannels
  * @title: IO Channels
- * @short_description: portable support for using files, pipes and
- *                     sockets
- * @see_also: <para> <variablelist> <varlistentry>
- *            <term>g_io_add_watch(), g_io_add_watch_full(),
- *            g_source_remove()</term> <listitem><para> Convenience
- *            functions for creating #GIOChannel instances and adding
- *            them to the <link linkend="glib-The-Main-Event-Loop">main
- *            event loop</link>. </para></listitem> </varlistentry>
- *            </variablelist> </para>
+ * @short_description: portable support for using files, pipes and sockets
+ * @see_also: g_io_add_watch(), g_io_add_watch_full(), g_source_remove(),
+ *     #GMainLoop
  *
  * The #GIOChannel data type aims to provide a portable method for
  * using file descriptors, pipes, and sockets, and integrating them
@@ -1290,43 +1284,35 @@ g_io_channel_get_buffered (GIOChannel *channel)
  *
  * The encoding can only be set if one of the following conditions
  * is true:
- * <itemizedlist>
- * <listitem><para>
- *    The channel was just created, and has not been written to or read 
- *    from yet.
- * </para></listitem>
- * <listitem><para>
- *    The channel is write-only.
- * </para></listitem>
- * <listitem><para>
- *    The channel is a file, and the file pointer was just
- *    repositioned by a call to g_io_channel_seek_position().
- *    (This flushes all the internal buffers.)
- * </para></listitem>
- * <listitem><para>
- *    The current encoding is %NULL or UTF-8.
- * </para></listitem>
- * <listitem><para>
- *    One of the (new API) read functions has just returned %G_IO_STATUS_EOF
- *    (or, in the case of g_io_channel_read_to_end(), %G_IO_STATUS_NORMAL).
- * </para></listitem>
- * <listitem><para>
- *    One of the functions g_io_channel_read_chars() or 
+ * 
+ * - The channel was just created, and has not been written to or read from yet.
+ *
+ * - The channel is write-only.
+ *
+ * - The channel is a file, and the file pointer was just repositioned
+ *   by a call to g_io_channel_seek_position(). (This flushes all the
+ *   internal buffers.)
+ *
+ * - The current encoding is %NULL or UTF-8.
+ *
+ * - One of the (new API) read functions has just returned %G_IO_STATUS_EOF
+ *   (or, in the case of g_io_channel_read_to_end(), %G_IO_STATUS_NORMAL).
+ * 
+ * -  One of the functions g_io_channel_read_chars() or 
  *    g_io_channel_read_unichar() has returned %G_IO_STATUS_AGAIN or 
  *    %G_IO_STATUS_ERROR. This may be useful in the case of 
  *    %G_CONVERT_ERROR_ILLEGAL_SEQUENCE.
  *    Returning one of these statuses from g_io_channel_read_line(),
  *    g_io_channel_read_line_string(), or g_io_channel_read_to_end()
  *    does not guarantee that the encoding can be changed.
- * </para></listitem>
- * </itemizedlist>
+ *
  * Channels which do not meet one of the above conditions cannot call
  * g_io_channel_seek_position() with an offset of %G_SEEK_CUR, and, if 
  * they are "seekable", cannot call g_io_channel_write_chars() after 
  * calling one of the API "read" functions.
  *
- * Return Value: %G_IO_STATUS_NORMAL if the encoding was successfully set.
- **/
+ * Return Value: %G_IO_STATUS_NORMAL if the encoding was successfully set
+ */
 GIOStatus
 g_io_channel_set_encoding (GIOChannel	*channel,
                            const gchar	*encoding,
