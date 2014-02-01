@@ -160,7 +160,7 @@
  *     source to fire (automatically using the correct #GMainContext
  *     and priority).
  *   </para>
- *
+ *   <para>
  *   Here is an example for chained asynchronous operations:
  *   |[
  *     typedef struct {
@@ -288,6 +288,7 @@
  *       return g_task_propagate_pointer (G_TASK (result), error);
  *     }
  * ]|
+ * </para>
  * </refsect2>
  * <refsect2>
  *   <title>Asynchronous operations from synchronous ones</title>
@@ -297,7 +298,7 @@
  *     which will then dispatch the result back to the caller's
  *     #GMainContext when it completes.
  *   </para>
- *
+ *   <para>
  *   Running a task in a thread:
  *   |[
  *     typedef struct {
@@ -367,6 +368,7 @@
  *       return g_task_propagate_pointer (G_TASK (result), error);
  *     }
  * ]|
+ * </para>
  * </refsect2>
  * <refsect2>
  *   <title>Adding cancellability to uncancellable tasks</title>
@@ -383,7 +385,7 @@
  *     to make "GLib-friendly" asynchronous and cancellable
  *     synchronous variants of blocking APIs.
  *   </para>
- *
+ *   <para>
  *   Cancelling a task:
  *   |[
  *     static void
@@ -475,6 +477,7 @@
  *       return cake;
  *     }
  * ]|
+ * </para>
  * </refsect2>
  * <refsect2>
  *   <title>Porting from <literal>GSimpleAsyncResult</literal></title>

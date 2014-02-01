@@ -347,8 +347,7 @@ _g_test_watcher_remove_pid (GPid pid)
  *     The service file should list your service along with an absolute path to the
  *     uninstalled service executable in your source tree. Using autotools we would
  *     achieve this by adding a file such as <filename>my-server.service.in</filename>
- *     in the services
- *     directory and have it processed by configure.
+ *     in the services directory and have it processed by configure.
  *     |[
  *     [D-BUS Service]
  *     Name=org.gtk.GDBus.Examples.ObjectManager
@@ -365,6 +364,7 @@ _g_test_watcher_remove_pid (GPid pid)
  *   <para>
  *     Once you have a service definition file which is local to your source tree,
  *     you can proceed to set up a GTest fixture using the #GTestDBus scaffolding.
+ *     <example>
  *       <title>Test Fixture for D-Bus services</title>
  *       <programlisting>
  *         <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-test-fixture.c">
