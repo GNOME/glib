@@ -81,19 +81,19 @@ debug_key_matches (const gchar *key,
  * commas, or %NULL.
  * @keys: (array length=nkeys): pointer to an array of #GDebugKey which associate
  *     strings with bit flags.
- * @nkeys: the number of #GDebugKey<!-- -->s in the array.
+ * @nkeys: the number of #GDebugKeys in the array.
  *
  * Parses a string containing debugging options
  * into a %guint containing bit flags. This is used
  * within GDK and GTK+ to parse the debug options passed on the
  * command line or through environment variables.
  *
- * If @string is equal to <code>"all"</code>, all flags are set. Any flags
- * specified along with <code>"all"</code> in @string are inverted; thus,
- * <code>"all,foo,bar"</code> or <code>"foo,bar,all"</code> sets all flags
- * except those corresponding to <code>"foo"</code> and <code>"bar"</code>.
+ * If @string is equal to "all", all flags are set. Any flags
+ * specified along with "all" in @string are inverted; thus,
+ * "all,foo,bar" or "foo,bar,all" sets all flags except those
+ * corresponding to "foo" and "bar".
  *
- * If @string is equal to <code>"help"</code>, all the available keys in @keys
+ * If @string is equal to "help", all the available keys in @keys
  * are printed out to standard error.
  *
  * Returns: the combined set of bit flags.

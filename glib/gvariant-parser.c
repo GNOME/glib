@@ -2486,7 +2486,10 @@ g_variant_new_parsed_va (const gchar *format,
  *
  * In the example, the variable argument parameters are collected and
  * filled in as if they were part of the original string to produce the
- * result of <code>[('one', 1), ('two', 2), ('three', 3)]</code>.
+ * result of
+ * |[
+ * [('one', 1), ('two', 2), ('three', 3)]
+ * ]|
  *
  * This function is intended only to be used with @format as a string
  * literal.  Any parse error is fatal to the calling process.  If you

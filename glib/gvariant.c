@@ -1195,11 +1195,11 @@ g_variant_get_fixed_array (GVariant *value,
  * @value must be an array with fixed-sized elements.  Numeric types are
  * fixed-size as are tuples containing only other fixed-sized types.
  *
- * @element_size must be the size of a single element in the array.  For
- * example, if calling this function for an array of 32 bit integers,
- * you might say <code>sizeof (gint32)</code>.  This value isn't used
- * except for the purpose of a double-check that the form of the
- * serialised data matches the caller's expectation.
+ * @element_size must be the size of a single element in the array.
+ * For example, if calling this function for an array of 32-bit integers,
+ * you might say sizeof(gint32). This value isn't used except for the purpose
+ * of a double-check that the form of the serialised data matches the caller's
+ * expectation.
  *
  * @n_elements, which must be non-%NULL is set equal to the number of
  * items in the array.

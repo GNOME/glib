@@ -1370,9 +1370,8 @@ g_signal_query (guint         signal_id,
  * be used, but they cannot be mixed.
  *
  * If 0 is used for @class_offset subclasses cannot override the class handler
- * in their <code>class_init</code> method by doing
- * <code>super_class->signal_handler = my_signal_handler</code>. Instead they
- * will have to use g_signal_override_class_handler().
+ * in their class_init method by doing super_class->signal_handler = my_signal_handler.
+ * Instead they will have to use g_signal_override_class_handler().
  *
  * If c_marshaller is %NULL, g_cclosure_marshal_generic() will be used as
  * the marshaller for this signal.

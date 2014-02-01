@@ -1452,15 +1452,16 @@ get_session_address_platform_specific (GError **error)
 
 /**
  * g_dbus_address_get_for_bus_sync:
- * @bus_type: A #GBusType.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
+ * @bus_type: a #GBusType
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @error: return location for error or %NULL
  *
  * Synchronously looks up the D-Bus address for the well-known message
  * bus instance specified by @bus_type. This may involve using various
  * platform specific mechanisms.
  *
- * Returns: A valid D-Bus address string for @bus_type or %NULL if @error is set.
+ * Returns: a valid D-Bus address string for @bus_type or %NULL if
+ *     @error is set
  *
  * Since: 2.26
  */
@@ -1594,18 +1595,18 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
 /**
  * g_dbus_address_escape_value:
  * @string: an unescaped string to be included in a D-Bus address
- *  as the value in a key-value pair
+ *     as the value in a key-value pair
  *
  * Escape @string so it can appear in a D-Bus address as the value
  * part of a key-value pair.
  *
- * For instance, if @string is <code>/run/bus-for-:0</code>,
- * this function would return <code>/run/bus-for-%3A0</code>,
+ * For instance, if @string is "/run/bus-for-:0",
+ * this function would return "/run/bus-for-%3A0",
  * which could be used in a D-Bus address like
- * <code>unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-%3A0</code>.
+ * "unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-%3A0".
  *
  * Returns: (transfer full): a copy of @string with all
- *  non-optionally-escaped bytes escaped
+ *     non-optionally-escaped bytes escaped
  *
  * Since: 2.36
  */
