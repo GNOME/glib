@@ -2850,8 +2850,7 @@ g_settings_binding_writable_changed (GSettings   *settings,
  *
  * When the @inverted argument is %TRUE, the binding inverts the
  * value as it passes from the setting to the object, i.e. @property
- * will be set to %TRUE if the key is <emphasis>not</emphasis>
- * writable.
+ * will be set to %TRUE if the key is not writable.
  *
  * Note that the lifecycle of the binding is tied to the object,
  * and that you can have only one binding per object property.

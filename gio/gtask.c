@@ -1190,8 +1190,8 @@ g_task_return (GTask           *task,
  * g_task_set_return_on_cancel() for more details.
  *
  * Other than in that case, @task will be completed when the
- * #GTaskThreadFunc returns, <emphasis>not</emphasis> when it calls
- * a <literal>g_task_return_</literal> function.
+ * #GTaskThreadFunc returns, not when it calls a
+ * <literal>g_task_return_</literal> function.
  *
  * Since: 2.36
  */

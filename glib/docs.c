@@ -737,7 +737,7 @@
  *   p = (void*) 42;
  *   i = (int) p;
  * ]|
- * Again, that example was <emphasis>not</emphasis> correct, don't copy it.
+ * Again, that example was not correct, don't copy it.
  * The problem is that on some systems you need to do this:
  * |[
  *   gpointer p;
@@ -761,9 +761,9 @@
  * Stuffs an integer into a pointer type.
  *
  * Remember, you may not store pointers in integers. This is not portable
- * in any way, shape or form. These macros <emphasis>only</emphasis> allow
- * storing integers in pointers, and only preserve 32 bits of the
- * integer; values outside the range of a 32-bit integer will be mangled.
+ * in any way, shape or form. These macros only allow storing integers in
+ * pointers, and only preserve 32 bits of the integer; values outside the
+ * range of a 32-bit integer will be mangled.
  */
 
 /**
@@ -774,9 +774,9 @@
  * been stored in the pointer with GINT_TO_POINTER().
  *
  * Remember, you may not store pointers in integers. This is not portable
- * in any way, shape or form. These macros <emphasis>only</emphasis> allow
- * storing integers in pointers, and only preserve 32 bits of the
- * integer; values outside the range of a 32-bit integer will be mangled.
+ * in any way, shape or form. These macros only allow storing integers in
+ * pointers, and only preserve 32 bits of the integer; values outside the
+ * range of a 32-bit integer will be mangled.
  */
 
 /**
@@ -1679,19 +1679,17 @@
 /**
  * G_CONST_RETURN:
  *
- * If <literal>G_DISABLE_CONST_RETURNS</literal> is defined, this macro expands
- * to nothing. By default, the macro expands to <literal>const</literal>.
- * The macro should be used in place of <literal>const</literal> for
- * functions that return a value that should not be modified. The
- * purpose of this macro is to allow us to turn on <literal>const</literal>
- * for returned constant strings by default, while allowing programmers
- * who find that annoying to turn it off. This macro should only be used
- * for return values and for <emphasis>out</emphasis> parameters, it doesn't
- * make sense for <emphasis>in</emphasis> parameters.
+ * If %G_DISABLE_CONST_RETURNS is defined, this macro expands
+ * to nothing. By default, the macro expands to const. The macro
+ * can be used in place of const for functions that return a value
+ * that should not be modified. The purpose of this macro is to allow
+ * us to turn on const for returned constant strings by default, while
+ * allowing programmers who find that annoying to turn it off. This macro
+ * should only be used for return values and for "out" parameters, it
+ * doesn't make sense for "in" parameters.
  *
  * Deprecated: 2.30: API providers should replace all existing uses with
- *     <literal>const</literal> and API consumers should adjust their code
- *     accordingly
+ * const and API consumers should adjust their code accordingly
  */
 
 /**

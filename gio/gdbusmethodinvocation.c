@@ -580,7 +580,7 @@ g_dbus_method_invocation_return_value_with_unix_fd_list (GDBusMethodInvocation *
  * applications using GDBus.
  *
  * If you are writing an application intended to be portable,
- * <emphasis>always</emphasis> register errors with g_dbus_error_register_error()
+ * always register errors with g_dbus_error_register_error()
  * or use g_dbus_method_invocation_return_dbus_error().
  *
  * This method will free @invocation, you cannot use it afterwards.

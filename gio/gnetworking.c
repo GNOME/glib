@@ -41,11 +41,10 @@
  * want your code to work under both UNIX and Windows, you will need
  * to take these differences into account.
  *
- * Also, under glibc, certain non-portable functions are only visible
- * in the headers if you define <literal>_GNU_SOURCE</literal> before
- * including them. Note that this symbol must be defined before
- * including <emphasis>any</emphasis> headers, or it may not take
- * effect.
+ * Also, under GNU libc, certain non-portable functions are only visible
+ * in the headers if you define %_GNU_SOURCE before including them. Note
+ * that this symbol must be defined before including any headers, or it
+ * may not take effect.
  */
 
 /**

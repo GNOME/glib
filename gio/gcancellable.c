@@ -90,16 +90,14 @@ g_cancellable_class_init (GCancellableClass *klass)
    *
    * Note that disconnecting from this signal (or any signal) in a
    * multi-threaded program is prone to race conditions. For instance
-   * it is possible that a signal handler may be invoked even
-   * <emphasis>after</emphasis> a call to
-   * g_signal_handler_disconnect() for that handler has already
-   * returned.
+   * it is possible that a signal handler may be invoked even after
+   * a call to g_signal_handler_disconnect() for that handler has
+   * already returned.
    * 
-   * There is also a problem when cancellation happen
-   * right before connecting to the signal. If this happens the
-   * signal will unexpectedly not be emitted, and checking before
-   * connecting to the signal leaves a race condition where this is
-   * still happening.
+   * There is also a problem when cancellation happens right before
+   * connecting to the signal. If this happens the signal will
+   * unexpectedly not be emitted, and checking before connecting to
+   * the signal leaves a race condition where this is still happening.
    *
    * In order to make it safe and easy to connect handlers there
    * are two helper functions: g_cancellable_connect() and

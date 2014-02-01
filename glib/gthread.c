@@ -144,10 +144,9 @@
  * not automatically locked for performance reasons. For example,
  * you must coordinate accesses to the same #GHashTable from multiple
  * threads. The two notable exceptions from this rule are #GMainLoop
- * and #GAsyncQueue, which <emphasis>are</emphasis> thread-safe and
- * need no further application-level locking to be accessed from
- * multiple threads. Most refcounting functions such as g_object_ref()
- * are also thread-safe.
+ * and #GAsyncQueue, which are thread-safe and need no further
+ * application-level locking to be accessed from multiple threads.
+ * Most refcounting functions such as g_object_ref() are also thread-safe.
  */
 
 /* G_LOCK Documentation {{{1 ---------------------------------------------- */

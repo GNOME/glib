@@ -399,13 +399,12 @@ g_output_stream_vprintf (GOutputStream  *stream,
  * bindings or in other cases where the refcounted nature of #GBytes
  * is helpful over a bare pointer interface.
  *
- * However, note that this function <emphasis>may</emphasis> still
- * perform partial writes, just like g_output_stream_write().  If that
- * occurs, to continue writing, you will need to create a new #GBytes
- * containing just the remaining bytes, using
- * g_bytes_new_from_bytes().  Passing the same #GBytes instance
- * multiple times potentially can result in duplicated data in the
- * output stream.
+ * However, note that this function may still perform partial writes,
+ * just like g_output_stream_write().  If that occurs, to continue
+ * writing, you will need to create a new #GBytes containing just the
+ * remaining bytes, using g_bytes_new_from_bytes(). Passing the same
+ * #GBytes instance multiple times potentially can result in duplicated
+ * data in the output stream.
  *
  * Return value: Number of bytes written, or -1 on error
  **/
@@ -897,13 +896,12 @@ write_bytes_callback (GObject      *stream,
  * takes a #GBytes as input.  Due to the refcounted nature of #GBytes,
  * this allows the stream to avoid taking a copy of the data.
  *
- * However, note that this function <emphasis>may</emphasis> still
- * perform partial writes, just like g_output_stream_write_async().
- * If that occurs, to continue writing, you will need to create a new
- * #GBytes containing just the remaining bytes, using
- * g_bytes_new_from_bytes().  Passing the same #GBytes instance
- * multiple times potentially can result in duplicated data in the
- * output stream.
+ * However, note that this function may still perform partial writes,
+ * just like g_output_stream_write_async(). If that occurs, to continue
+ * writing, you will need to create a new #GBytes containing just the
+ * remaining bytes, using g_bytes_new_from_bytes(). Passing the same
+ * #GBytes instance multiple times potentially can result in duplicated
+ * data in the output stream.
  *
  * For the synchronous, blocking version of this function, see
  * g_output_stream_write_bytes().

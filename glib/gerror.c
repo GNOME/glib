@@ -30,18 +30,18 @@
  * GLib provides a standard method of reporting errors from a called
  * function to the calling code. (This is the same problem solved by
  * exceptions in other languages.) It's important to understand that
- * this method is both a <emphasis>data type</emphasis> (the #GError
- * object) and a <emphasis>set of rules.</emphasis> If you use #GError
- * incorrectly, then your code will not properly interoperate with other
- * code that uses #GError, and users of your API will probably get confused.
+ * this method is both a data type (the #GError struct) and a set of
+ * rules. If you use #GError incorrectly, then your code will not
+ * properly interoperate with other code that uses #GError, and users
+ * of your API will probably get confused.
  *
- * First and foremost: <emphasis>#GError should only be used to report
- * recoverable runtime errors, never to report programming
- * errors.</emphasis> If the programmer has screwed up, then you should
- * use g_warning(), g_return_if_fail(), g_assert(), g_error(), or some
- * similar facility. (Incidentally, remember that the g_error() function
- * should <emphasis>only</emphasis> be used for programming errors, it
- * should not be used to print any error reportable via #GError.)
+ * First and foremost: #GError should only be used to report recoverable
+ * runtime errors, never to report programming errors. If the programmer
+ * has screwed up, then you should use g_warning(), g_return_if_fail(),
+ * g_assert(), g_error(), or some similar facility. (Incidentally,
+ * remember that the g_error() function should only be used for
+ * programming errors, it should not be used to print any error
+ * reportable via #GError.)
  *
  * Examples of recoverable runtime errors are "file not found" or
  * "failed to parse input." Examples of programming errors are "NULL
@@ -81,14 +81,13 @@
  *   }
  * ]|
  * Note that <literal>err != NULL</literal> in this example is a
- * <emphasis>reliable</emphasis> indicator of whether
- * g_file_get_contents() failed. Additionally, g_file_get_contents()
- * returns a boolean which indicates whether it was successful.
+ * reliable indicator of whether g_file_get_contents() failed.
+ * Additionally, g_file_get_contents() returns a boolean which
+ * indicates whether it was successful.
  *
  * Because g_file_get_contents() returns %FALSE on failure, if you
  * are only interested in whether it failed and don't need to display
- * an error message, you can pass %NULL for the <literal>error</literal>
- * argument:
+ * an error message, you can pass %NULL for the @error argument:
  * |[
  * if (g_file_get_contents ("foo.txt", &amp;contents, NULL, NULL)) /&ast; ignore errors &ast;/
  *   /&ast; no error occurred &ast;/ ;
@@ -96,21 +95,19 @@
  *   /&ast; error &ast;/ ;
  * ]|
  *
- * The #GError object contains three fields: <literal>domain</literal>
- * indicates the module the error-reporting function is located in,
- * <literal>code</literal> indicates the specific error that occurred,
- * and <literal>message</literal> is a user-readable error message with
+ * The #GError object contains three fields: @domain indicates the module
+ * the error-reporting function is located in, @code indicates the specific
+ * error that occurred, and @message is a user-readable error message with
  * as many details as possible. Several functions are provided to deal
  * with an error received from a called function: g_error_matches()
  * returns %TRUE if the error matches a given domain and code,
  * g_propagate_error() copies an error into an error location (so the
  * calling function will receive it), and g_clear_error() clears an
  * error location by freeing the error and resetting the location to
- * %NULL. To display an error to the user, simply display
- * <literal>error-&gt;message</literal>, perhaps along with additional
- * context known only to the calling function (the file being opened,
- * or whatever -- though in the g_file_get_contents() case,
- * <literal>error-&gt;message</literal> already contains a filename).
+ * %NULL. To display an error to the user, simply display the @message,
+ * perhaps along with additional context known only to the calling
+ * function (the file being opened, or whatever - though in the
+ * g_file_get_contents() case, the @message already contains a filename).
  *
  * When implementing a function that can report errors, the basic
  * tool is g_set_error(). Typically, if a fatal error occurs you
@@ -209,10 +206,10 @@
  *     }
  * }
  * ]|
- * <literal>tmp_error</literal> should be checked immediately after
- * sub_function_that_can_fail(), and either cleared or propagated
- * upward. The rule is: <emphasis>after each error, you must either
- * handle the error, or return it to the calling function</emphasis>.
+ * @tmp_error should be checked immediately after sub_function_that_can_fail(),
+ * and either cleared or propagated upward. The rule is: after each error,
+ * you must either handle the error, or return it to the calling function.
+ *
  * Note that passing %NULL for the error location is the equivalent
  * of handling an error by always doing nothing about it. So the
  * following code is fine, assuming errors in sub_function_that_can_fail()
@@ -238,11 +235,11 @@
  * }
  * ]|
  *
- * Note that passing %NULL for the error location
- * <emphasis>ignores</emphasis> errors; it's equivalent to
+ * Note that passing %NULL for the error location ignores errors; it's
+ * equivalent to
  * <literal>try { sub_function_that_can_fail (); } catch (...) {}</literal>
- * in C++. It does <emphasis>not</emphasis> mean to leave errors
- * unhandled; it means to handle them by doing nothing.
+ * in C++. It does not mean to leave errors unhandled; it means to
+ * handle them by doing nothing.
  *
  * Error domains and codes are conventionally named as follows:
  * <itemizedlist>
@@ -305,12 +302,11 @@
  *   not be affected by whether the caller wants to get a #GError.
  * </para></listitem>
  * <listitem><para>
- *   If a #GError is reported, then your function by definition
- *   <emphasis>had a fatal failure and did not complete whatever
- *   it was supposed to do</emphasis>. If the failure was not fatal,
- *   then you handled it and you should not report it. If it was fatal,
- *   then you must report it and discontinue whatever you were doing
- *   immediately.
+ *   If a #GError is reported, then your function by definition had a
+ *   fatal failure and did not complete whatever it was supposed to do.
+ *   If the failure was not fatal, then you handled it and you should not
+ *   report it. If it was fatal, then you must report it and discontinue
+ *   whatever you were doing immediately.
  * </para></listitem>
  * <listitem><para>
  *   If a #GError is reported, out parameters are not guaranteed to
@@ -331,7 +327,7 @@
  * <listitem><para>
  *   By convention, if you return a boolean value indicating success
  *   then %TRUE means success and %FALSE means failure. If %FALSE is
- *   returned, the error <emphasis>must</emphasis> be set to a non-%NULL
+ *   returned, the error must be set to a non-%NULL
  *   value.
  * </para></listitem>
  * <listitem><para>
@@ -668,16 +664,13 @@ g_error_add_prefix (gchar       **string,
  * @format: printf()-style format string
  * @...: arguments to @format
  *
- * Formats a string according to @format and
- * prefix it to an existing error message.  If
- * @err is %NULL (ie: no error variable) then do
+ * Formats a string according to @format and prefix it to an existing
+ * error message. If @err is %NULL (ie: no error variable) then do
  * nothing.
  *
- * If *@err is %NULL (ie: an error variable is
- * present but there is no error condition) then
- * also do nothing.  Whether or not it makes
- * sense to take advantage of this feature is up
- * to you.
+ * If *@err is %NULL (ie: an error variable is present but there is no
+ * error condition) then also do nothing. Whether or not it makes sense
+ * to take advantage of this feature is up to you.
  *
  * Since: 2.16
  */
@@ -703,9 +696,8 @@ g_prefix_error (GError      **err,
  * @format: printf()-style format string
  * @...: arguments to @format
  *
- * If @dest is %NULL, free @src; otherwise,
- * moves @src into *@dest. *@dest must be %NULL.
- * After the move, add a prefix as with
+ * If @dest is %NULL, free @src; otherwise, moves @src into *@dest.
+ * *@dest must be %NULL. After the move, add a prefix as with
  * g_prefix_error().
  *
  * Since: 2.16

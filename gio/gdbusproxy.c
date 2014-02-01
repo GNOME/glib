@@ -361,7 +361,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * Ensure that interactions with this proxy conform to the given
    * interface. This is mainly to ensure that malformed data received
    * from the other peer is ignored. The given #GDBusInterfaceInfo is
-   * said to be the <emphasis>expected interface</emphasis>.
+   * said to be the "expected interface".
    *
    * The checks performed are:
    * <itemizedlist>

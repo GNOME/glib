@@ -1303,8 +1303,8 @@ g_data_input_stream_read_until_finish (GDataInputStream  *stream,
  * occurrence of any of the stop characters.
  *
  * In contrast to g_data_input_stream_read_until(), this function
- * does <emphasis>not</emphasis> consume the stop character. You have
- * to use g_data_input_stream_read_byte() to get it before calling
+ * does not consume the stop character. You have to use
+ * g_data_input_stream_read_byte() to get it before calling
  * g_data_input_stream_read_upto() again.
  *
  * Note that @stop_chars may contain '\0' if @stop_chars_len is
@@ -1397,8 +1397,8 @@ g_data_input_stream_read_upto (GDataInputStream  *stream,
  * It is an error to have two outstanding calls to this function.
  *
  * In contrast to g_data_input_stream_read_until(), this function
- * does <emphasis>not</emphasis> consume the stop character. You have
- * to use g_data_input_stream_read_byte() to get it before calling
+ * does not consume the stop character. You have to use
+ * g_data_input_stream_read_byte() to get it before calling
  * g_data_input_stream_read_upto() again.
  *
  * Note that @stop_chars may contain '\0' if @stop_chars_len is
@@ -1437,9 +1437,9 @@ g_data_input_stream_read_upto_async (GDataInputStream    *stream,
  * Finish an asynchronous call started by
  * g_data_input_stream_read_upto_async().
  *
- * Note that this function does <emphasis>not</emphasis> consume the
- * stop character. You have to use g_data_input_stream_read_byte() to
- * get it before calling g_data_input_stream_read_upto_async() again.
+ * Note that this function does not consume the stop character. You
+ * have to use g_data_input_stream_read_byte() to get it before calling
+ * g_data_input_stream_read_upto_async() again.
  *
  * Returns: (transfer full): a string with the data that was read
  *     before encountering any of the stop characters. Set @length to

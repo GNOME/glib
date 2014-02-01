@@ -553,8 +553,7 @@ g_log_set_fatal_mask (const gchar   *log_domain,
  * </example>
  *
  * <example>
- * <title>Adding a log handler for <emphasis>all</emphasis> messages from
- * GLib</title>
+ * <title>Adding a log handler for all messages from GLib</title>
  * <programlisting>
  * g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);

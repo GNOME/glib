@@ -38,11 +38,9 @@
  * semantics as the standard glob() function: '*' matches an arbitrary,
  * possibly empty, string, '?' matches an arbitrary character.
  *
- * Note that in contrast to glob(), the '/' character
- * <emphasis>can</emphasis> be matched by the wildcards, there are no
- * '[...]' character ranges and '*' and '?' can
- * <emphasis>not</emphasis> be escaped to include them literally in a
- * pattern.
+ * Note that in contrast to glob(), the '/' character can be matched by
+ * the wildcards, there are no '[...]' character ranges and '*' and '?' can
+ * not be escaped to include them literally in a pattern.
  *
  * When multiple strings must be matched against the same pattern, it
  * is better to compile the pattern to a #GPatternSpec using
@@ -162,7 +160,7 @@ g_pattern_ph_match (const gchar *match_pattern,
  * g_pattern_match:
  * @pspec: a #GPatternSpec
  * @string_length: the length of @string (in bytes, i.e. strlen(),
- *                 <emphasis>not</emphasis> g_utf8_strlen())
+ *     not g_utf8_strlen())
  * @string: the UTF-8 encoded string to match
  * @string_reversed: (allow-none): the reverse of @string or %NULL
  *
@@ -180,10 +178,9 @@ g_pattern_ph_match (const gchar *match_pattern,
  * constructions thereof in the various calls to g_pattern_match().
  *
  * Note also that the reverse of a UTF-8 encoded string can in general
- * <emphasis>not</emphasis> be obtained by g_strreverse(). This works
- * only if the string doesn't contain any multibyte characters. GLib
- * offers the g_utf8_strreverse() function to reverse UTF-8 encoded
- * strings.
+ * not be obtained by g_strreverse(). This works only if the string
+ * does not contain any multibyte characters. GLib offers the
+ * g_utf8_strreverse() function to reverse UTF-8 encoded strings.
  *
  * Returns: %TRUE if @string matches @pspec
  **/

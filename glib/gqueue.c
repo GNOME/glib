@@ -375,8 +375,7 @@ g_queue_push_nth (GQueue   *queue,
 /**
  * g_queue_push_head_link:
  * @queue: a #GQueue
- * @link_: a single #GList element, <emphasis>not</emphasis> a list with
- *     more than one element
+ * @link_: a single #GList element, not a list with more than one element
  *
  * Adds a new element at the head of the queue.
  */
@@ -422,8 +421,7 @@ g_queue_push_tail (GQueue   *queue,
 /**
  * g_queue_push_tail_link:
  * @queue: a #GQueue
- * @link_: a single #GList element, <emphasis>not</emphasis> a list with
- *   more than one element
+ * @link_: a single #GList element, not a list with more than one element
  *
  * Adds a new element at the tail of the queue.
  */
@@ -791,10 +789,10 @@ g_queue_link_index (GQueue *queue,
 /**
  * g_queue_unlink:
  * @queue: a #GQueue
- * @link_: a #GList link that <emphasis>must</emphasis> be part of @queue
+ * @link_: a #GList link that must be part of @queue
  *
- * Unlinks @link_ so that it will no longer be part of @queue. The link is
- * not freed.
+ * Unlinks @link_ so that it will no longer be part of @queue.
+ * The link is not freed.
  *
  * @link_ must be part of @queue.
  * 
@@ -817,7 +815,7 @@ g_queue_unlink (GQueue *queue,
 /**
  * g_queue_delete_link:
  * @queue: a #GQueue
- * @link_: a #GList link that <emphasis>must</emphasis> be part of @queue
+ * @link_: a #GList link that must be part of @queue
  *
  * Removes @link_ from @queue and frees it.
  *
@@ -985,7 +983,7 @@ g_queue_remove_all (GQueue        *queue,
 /**
  * g_queue_insert_before:
  * @queue: a #GQueue
- * @sibling: a #GList link that <emphasis>must</emphasis> be part of @queue
+ * @sibling: a #GList link that must be part of @queue
  * @data: the data to insert
  * 
  * Inserts @data into @queue before @sibling.
@@ -1009,7 +1007,7 @@ g_queue_insert_before (GQueue   *queue,
 /**
  * g_queue_insert_after:
  * @queue: a #GQueue
- * @sibling: a #GList link that <emphasis>must</emphasis> be part of @queue
+ * @sibling: a #GList link that must be part of @queue
  * @data: the data to insert
  *
  * Inserts @data into @queue after @sibling

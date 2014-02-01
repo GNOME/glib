@@ -35,9 +35,9 @@
  *                           G_BINDING_DEFAULT);
  * ]|
  *
- * will cause <emphasis>object2:property-b</emphasis> to be updated every
- * time g_object_set() or the specific accessor changes the value of
- * <emphasis>object1:property-a</emphasis>.
+ * will cause the property named "property-b" of @object2 to be updated
+ * every time g_object_set() or the specific accessor changes the value of
+ * the property "property-a" of @object1.
  *
  * It is possible to create a bidirectional binding between two properties
  * of two #GObject instances, so that if either property changes, the
@@ -65,15 +65,15 @@
  *                                NULL, NULL);
  * ]|
  *
- * will keep the <emphasis>value</emphasis> property of the two adjustments
- * in sync; the <function>celsius_to_fahrenheit</function> function will be
- * called whenever the <emphasis>adjustment1:value</emphasis> property changes
- * and will transform the current value of the property before applying it
- * to the <emphasis>adjustment2:value</emphasis> property; vice versa, the
- * <function>fahrenheit_to_celsius</function> function will be called whenever
- * the <emphasis>adjustment2:value</emphasis> property changes, and will
- * transform the current value of the property before applying it to the
- * <emphasis>adjustment1:value</emphasis>.
+ * will keep the "value" property of the two adjustments in sync; the
+ * @celsius_to_fahrenheit function will be called whenever the "value"
+ * property of @adjustment1 changes and will transform the current value
+ * of the property before applying it to the "value" property of @adjustment2.
+ *
+ * Vice versa, the @fahrenheit_to_celsius function will be called whenever
+ * the "value" property of @adjustment2 changes, and will transform the
+ * current value of the property before applying it to the "value" property
+ * of @adjustment1.
  *
  * Note that #GBinding does not resolve cycles by itself; a cycle like
  *

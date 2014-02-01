@@ -1317,8 +1317,7 @@ g_io_channel_get_buffered (GIOChannel *channel)
  *    %G_CONVERT_ERROR_ILLEGAL_SEQUENCE.
  *    Returning one of these statuses from g_io_channel_read_line(),
  *    g_io_channel_read_line_string(), or g_io_channel_read_to_end()
- *    does <emphasis>not</emphasis> guarantee that the encoding can 
- *    be changed.
+ *    does not guarantee that the encoding can be changed.
  * </para></listitem>
  * </itemizedlist>
  * Channels which do not meet one of the above conditions cannot call

@@ -2199,11 +2199,11 @@ g_option_group_new (const gchar    *name,
  * g_option_group_free:
  * @group: a #GOptionGroup
  *
- * Frees a #GOptionGroup. Note that you must <emphasis>not</emphasis>
- * free groups which have been added to a #GOptionContext.
+ * Frees a #GOptionGroup. Note that you must not free groups
+ * which have been added to a #GOptionContext.
  *
  * Since: 2.6
- **/
+ */
 void
 g_option_group_free (GOptionGroup *group)
 {

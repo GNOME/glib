@@ -562,10 +562,9 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  * #G_TYPE_BOXED derived-types) not in the table above.
  *
  * Note that if @gvalue is of type #G_TYPE_VARIANT and its value is
- * %NULL, the <emphasis>empty</emphasis> #GVariant instance (never
- * %NULL) for @type is returned (e.g. 0 for scalar types, the empty
- * string for string types, <literal>'/'</literal> for object path
- * types, the empty array for any array type and so on).
+ * %NULL, the empty #GVariant instance (never %NULL) for @type is
+ * returned (e.g. 0 for scalar types, the empty string for string types,
+ * '/' for object path types, the empty array for any array type and so on).
  *
  * See the g_dbus_gvariant_to_gvalue() function for how to convert a
  * #GVariant to a #GValue.

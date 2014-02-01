@@ -69,7 +69,7 @@
  * or ISO timestamps or the like. It extrapolates the current Gregorian
  * calendar forward and backward in time; there is no attempt to change
  * the calendar to match time periods or locations. #GDate does not store
- * time information; it represents a <emphasis>day</emphasis>.
+ * time information; it represents a day.
  *
  * The #GDate implementation has several nice features; it is only a
  * 64-bit struct, so storing large numbers of dates is very efficient. It
@@ -87,16 +87,16 @@
  * calling g_date_clear(). A cleared date is sane; it's safe to call
  * g_date_set_dmy() and the other mutator functions to initialize the
  * value of a cleared date. However, a cleared date is initially
- * <emphasis>invalid</emphasis>, meaning that it doesn't represent a day
- * that exists. It is undefined to call any of the date calculation
- * routines on an invalid date. If you obtain a date from a user or other
+ * invalid, meaning that it doesn't represent a day that exists.
+ * It is undefined to call any of the date calculation routines on an
+ * invalid date. If you obtain a date from a user or other
  * unpredictable source, you should check its validity with the
  * g_date_valid() predicate. g_date_valid() is also used to check for
  * errors with g_date_set_parse() and other functions that can
  * fail. Dates can be invalidated by calling g_date_clear() again.
  *
- * <emphasis>It is very important to use the API to access the #GDate
- * struct.</emphasis> Often only the day-month-year or only the Julian
+ * It is very important to use the API to access the #GDate
+ * struct. Often only the day-month-year or only the Julian
  * representation is valid. Sometimes neither is valid. Use the API.
  *
  * GLib also features #GDateTime which represents a precise time.
@@ -151,11 +151,11 @@
  * GTime:
  *
  * Simply a replacement for time_t. It has been deprecated
- * since it is <emphasis>not</emphasis> equivalent to time_t
- * on 64-bit platforms with a 64-bit time_t. Unrelated to #GTimer.
+ * since it is not equivalent to time_t on 64-bit platforms
+ * with a 64-bit time_t. Unrelated to #GTimer.
  *
- * Note that #GTime is defined to always be a 32bit integer,
- * unlike time_t which may be 64bit on some systems. Therefore,
+ * Note that #GTime is defined to always be a 32-bit integer,
+ * unlike time_t which may be 64-bit on some systems. Therefore,
  * #GTime will overflow in the year 2038, and you cannot use the
  * address of a #GTime variable as argument to the UNIX time()
  * function.
@@ -183,8 +183,8 @@
 /**
  * GDateDay:
  *
- * Integer representing a day of the month; between 1 and
- * 31. #G_DATE_BAD_DAY represents an invalid day of the month.
+ * Integer representing a day of the month; between 1 and 31.
+ * #G_DATE_BAD_DAY represents an invalid day of the month.
  */
 
 /**

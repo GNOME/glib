@@ -1000,14 +1000,15 @@ static gchar *g_prgname = NULL;
 /**
  * g_get_prgname:
  *
- * Gets the name of the program. This name should <emphasis>not</emphasis> 
- * be localized, contrast with g_get_application_name().
- * (If you are using GDK or GTK+ the program name is set in gdk_init(), 
+ * Gets the name of the program. This name should not be localized,
+ * in contrast to g_get_application_name().
+ *
+ * If you are using GDK or GTK+ the program name is set in gdk_init(), 
  * which is called by gtk_init(). The program name is found by taking 
- * the last component of <literal>argv[0]</literal>.)
+ * the last component of @argv[0].
  *
  * Returns: the name of the program. The returned string belongs 
- * to GLib and must not be modified or freed.
+ *     to GLib and must not be modified or freed.
  */
 const gchar*
 g_get_prgname (void)
@@ -1048,9 +1049,10 @@ g_get_prgname (void)
  * g_set_prgname:
  * @prgname: the name of the program.
  *
- * Sets the name of the program. This name should <emphasis>not</emphasis> 
- * be localized, contrast with g_set_application_name(). Note that for 
- * thread-safety reasons this function can only be called once.
+ * Sets the name of the program. This name should not be localized,
+ * in contrast to g_set_application_name().
+ *
+ * Note that for thread-safety reasons this function can only be called once.
  */
 void
 g_set_prgname (const gchar *prgname)

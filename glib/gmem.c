@@ -493,13 +493,17 @@ g_mem_is_system_malloc (void)
  * g_mem_set_vtable:
  * @vtable: table of memory allocation routines.
  * 
- * Sets the #GMemVTable to use for memory allocation. You can use this to provide
- * custom memory allocation routines. <emphasis>This function must be called
- * before using any other GLib functions.</emphasis> The @vtable only needs to
- * provide malloc(), realloc(), and free() functions; GLib can provide default
- * implementations of the others. The malloc() and realloc() implementations
- * should return %NULL on failure, GLib will handle error-checking for you.
- * @vtable is copied, so need not persist after this function has been called.
+ * Sets the #GMemVTable to use for memory allocation. You can use this
+ * to provide custom memory allocation routines.
+ *
+ * The @vtable only needs to provide malloc(), realloc(), and free()
+ * functions; GLib can provide default implementations of the others.
+ * The malloc() and realloc() implementations should return %NULL on
+ * failure, GLib will handle error-checking for you. @vtable is copied,
+ * so need not persist after this function has been called.
+ *
+ * Note that this function must be called before using any other GLib
+ * functions.
  */
 void
 g_mem_set_vtable (GMemVTable *vtable)

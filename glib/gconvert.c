@@ -98,12 +98,11 @@
  * that use Glib do the same thing.  If you get a file name from
  * the file system, for example, from readdir(3) or from g_dir_read_name(),
  * and you wish to display the file name to the user, you
- * <emphasis>will</emphasis> need to convert it into UTF-8.  The
- * opposite case is when the user types the name of a file he
- * wishes to save:  the toolkit will give you that string in
- * UTF-8 encoding, and you will need to convert it to the
- * character set used for file names before you can create the
- * file with open(2) or fopen(3).
+ * will need to convert it into UTF-8. The opposite case is when the
+ * user types the name of a file he wishes to save: the toolkit will
+ * give you that string in UTF-8 encoding, and you will need to convert
+ * it to the character set used for file names before you can create the
+ * file with open() or fopen().
  * </para>
  * <para>
  * By default, Glib assumes that file names on disk are in UTF-8
@@ -157,9 +156,9 @@
  * <listitem><para>
  * If you need to display a file name, convert it to UTF-8 first by
  * using g_filename_to_utf8(). If conversion fails, display a string like
- * "<literal>Unknown file name</literal>". <emphasis>Do not</emphasis>
- * convert this string back into the encoding used for file names if you
- * wish to pass it to the file system; use the original file name instead.
+ * "Unknown file name". Do not convert this string back into the encoding
+ * used for file names if you wish to pass it to the file system; use the
+ * original file name instead.
  * For example, the document window of a word processor could display
  * "Unknown file name" in its title bar but still let the user save the
  * file, as it would keep the raw file name internally. This can happen

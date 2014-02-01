@@ -91,13 +91,12 @@
  *
  * Ultimately, #GDBusObjectManagerClient is used to obtain #GDBusProxy
  * instances. All signals (including the
- * <literal>org.freedesktop.DBus.Properties::PropertiesChanged</literal>
- * signal) delivered to #GDBusProxy instances are guaranteed to
- * originate from the name owner. This guarantee along with the
- * behavior described above, means that certain race conditions
- * including the <emphasis><quote>half the proxy is from the old owner
- * and the other half is from the new owner</quote></emphasis> problem
- * cannot happen.
+ * org.freedesktop.DBus.Properties::PropertiesChanged signal)
+ * delivered to #GDBusProxy instances are guaranteed to originate
+ * from the name owner. This guarantee along with the behavior
+ * described above, means that certain race conditions including the
+ * "half the proxy is from the old owner and the other half is from
+ * the new owner" problem cannot happen.
  *
  * To avoid having the application connect to signals on the returned
  * #GDBusObjectProxy and #GDBusProxy objects, the

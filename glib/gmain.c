@@ -688,10 +688,9 @@ static GPrivate thread_context_stack = G_PRIVATE_INIT (free_context_stack);
  * started in this thread to run under @context and deliver their
  * results to its main loop, rather than running under the global
  * default context in the main thread. Note that calling this function
- * changes the context returned by
- * g_main_context_get_thread_default(), <emphasis>not</emphasis> the
- * one returned by g_main_context_default(), so it does not affect the
- * context used by functions like g_idle_add().
+ * changes the context returned by g_main_context_get_thread_default(),
+ * not the one returned by g_main_context_default(), so it does not affect
+ * the context used by functions like g_idle_add().
  *
  * Normally you would call this function shortly after creating a new
  * thread, passing it a #GMainContext which will be run by a

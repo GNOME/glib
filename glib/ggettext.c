@@ -472,8 +472,8 @@ g_dngettext (const gchar *domain,
  *
  * In order to use these macros in an application, you must include
  * <filename>glib/gi18n.h</filename>. For use in a library, you must include
- * <filename>glib/gi18n-lib.h</filename> <emphasis>after</emphasis> defining
- * the GETTEXT_PACKAGE macro suitably for your library:
+ * <filename>glib/gi18n-lib.h</filename> after defining the %GETTEXT_PACKAGE
+ * macro suitably for your library:
  * |[
  * &num;define GETTEXT_PACKAGE "gtk20"
  * &num;include &lt;glib/gi18n-lib.h&gt;

@@ -5110,10 +5110,9 @@ obj_message_func (GDBusConnection *connection,
  *
  * GDBus automatically implements the standard D-Bus interfaces
  * org.freedesktop.DBus.Properties, org.freedesktop.DBus.Introspectable
- * and org.freedesktop.Peer, so you don't have to implement those for
- * the objects you export. You <emphasis>can</emphasis> implement
- * org.freedesktop.DBus.Properties yourself, e.g. to handle getting
- * and setting of properties asynchronously.
+ * and org.freedesktop.Peer, so you don't have to implement those for the
+ * objects you export. You can implement org.freedesktop.DBus.Properties
+ * yourself, e.g. to handle getting and setting of properties asynchronously.
  *
  * Note that the reference count on @interface_info will be
  * incremented by 1 (unless allocated statically, e.g. if the

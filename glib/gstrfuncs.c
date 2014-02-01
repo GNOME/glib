@@ -66,7 +66,7 @@
  * Note that the functions g_printf(), g_fprintf(), g_sprintf(),
  * g_snprintf(), g_vprintf(), g_vfprintf(), g_vsprintf() and g_vsnprintf()
  * are declared in the header <filename>gprintf.h</filename> which is
- * <emphasis>not</emphasis> included in <filename>glib.h</filename>
+ * not included in <filename>glib.h</filename>
  * (otherwise using <filename>glib.h</filename> would drag in
  * <filename>stdio.h</filename>), so you'll have to explicitly include
  * <literal>&lt;glib/gprintf.h&gt;</literal> in order to use the GLib
@@ -75,14 +75,14 @@
  * <para id="string-precision">While you may use the printf() functions
  * to format UTF-8 strings, notice that the precision of a
  * <literal>&percnt;Ns</literal> parameter is interpreted as the
- * number of <emphasis>bytes</emphasis>, not <emphasis>characters</emphasis>
- * to print. On top of that, the GNU libc implementation of the printf()
- * functions has the "feature" that it checks that the string given for
- * the <literal>&percnt;Ns</literal> parameter consists of a whole number
- * of characters in the current encoding. So, unless you are sure you are
- * always going to be in an UTF-8 locale or your know your text is restricted
- * to ASCII, avoid using <literal>&percnt;Ns</literal>. If your intention is
- * to format strings for a certain number of columns, then
+ * number of bytes, not characters to print. On top of that, the GNU
+ * libc implementation of the printf() functions has the "feature" that
+ * it checks that the string given for the <literal>&percnt;Ns</literal>
+ * parameter consists of a whole number of characters in the current
+ * encoding. So, unless you are sure you are always going to be in an
+ * UTF-8 locale or your know your text is restricted to ASCII, avoid
+ * using <literal>&percnt;Ns</literal>. If your intention is to format
+ * strings for a certain number of columns, then
  * <literal>&percnt;Ns</literal> is not a correct solution anyway, since it
  * fails to take wide characters (see g_unichar_iswide()) into account.
  * </para>
@@ -1332,13 +1332,13 @@ g_strlcat (gchar       *dest,
  * Portability wrapper that calls strlcpy() on systems which have it,
  * and emulates strlcpy() otherwise. Copies @src to @dest; @dest is
  * guaranteed to be nul-terminated; @src must be nul-terminated;
- * @dest_size is the buffer size, not the number of chars to copy.
+ * @dest_size is the buffer size, not the number of bytes to copy.
  *
- * At most dest_size - 1 characters will be copied. Always nul-terminates
- * (unless dest_size == 0). This function does <emphasis>not</emphasis>
- * allocate memory. Unlike strncpy(), this function doesn't pad dest (so
- * it's often faster). It returns the size of the attempted result,
- * strlen (src), so if @retval >= @dest_size, truncation occurred.
+ * At most @dest_size - 1 characters will be copied. Always nul-terminates
+ * (unless @dest_size is 0). This function does not allocate memory. Unlike
+ * strncpy(), this function doesn't pad @dest (so it's often faster). It
+ * returns the size of the attempted result, strlen (src), so if
+ * @retval >= @dest_size, truncation occurred.
  *
  * Caveat: strlcpy() is supposedly more secure than strcpy() or strncpy(),
  * but if you really want to avoid screwups, g_strdup() is an even better

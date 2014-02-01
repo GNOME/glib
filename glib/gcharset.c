@@ -438,7 +438,7 @@ append_locale_variants (GPtrArray *array,
  * For example, if @locale is "fr_BE", then the returned list
  * is "fr_BE", "fr".
  *
- * If you need the list of variants for the <emphasis>current locale</emphasis>,
+ * If you need the list of variants for the current locale,
  * use g_get_language_names().
  *
  * Returns: (transfer full) (array zero-terminated=1) (element-type utf8): a newly
