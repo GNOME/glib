@@ -116,7 +116,7 @@ test_parse_host (gconstpointer d)
 #define SCOPE_ID_TEST_ADDR "fe80::42"
 #define SCOPE_ID_TEST_PORT 99
 
-#ifdef HAVE_IF_INDEXTONAME
+#if defined (HAVE_IF_INDEXTONAME) && defined (HAVE_IF_NAMETOINDEX)
 static char SCOPE_ID_TEST_IFNAME[IF_NAMESIZE];
 static int SCOPE_ID_TEST_INDEX;
 #else
@@ -130,8 +130,15 @@ find_ifname_and_index (void)
   if (SCOPE_ID_TEST_INDEX != 0)
     return;
 
-#ifdef HAVE_IF_INDEXTONAME
-  for (SCOPE_ID_TEST_INDEX = 1; SCOPE_ID_TEST_INDEX < 255; SCOPE_ID_TEST_INDEX++) {
+#if defined (HAVE_IF_INDEXTONAME) && defined (HAVE_IF_NAMETOINDEX)
+  SCOPE_ID_TEST_INDEX = if_nametoindex ("lo");
+  if (SCOPE_ID_TEST_INDEX != 0)
+    {
+      g_strlcpy (SCOPE_ID_TEST_IFNAME, "lo", sizeof (SCOPE_ID_TEST_IFNAME));
+      return;
+    }
+
+  for (SCOPE_ID_TEST_INDEX = 1; SCOPE_ID_TEST_INDEX < 1024; SCOPE_ID_TEST_INDEX++) {
     if (if_indextoname (SCOPE_ID_TEST_INDEX, SCOPE_ID_TEST_IFNAME))
       break;
   }
