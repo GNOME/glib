@@ -100,44 +100,37 @@
  * Originally, UNIX did not have threads, and therefore some traditional
  * UNIX APIs are problematic in threaded programs. Some notable examples
  * are
- * <itemizedlist>
- *   <listitem>
- *     C library functions that return data in statically allocated
- *     buffers, such as strtok() or strerror(). For many of these,
- *     there are thread-safe variants with a _r suffix, or you can
- *     look at corresponding GLib APIs (like g_strsplit() or g_strerror()).
- *   </listitem>
- *   <listitem>
- *     setenv() and unsetenv() manipulate the process environment in
- *     a not thread-safe way, and may interfere with getenv() calls
- *     in other threads. Note that getenv() calls may be
- *     <quote>hidden</quote> behind other APIs. For example, GNU gettext()
- *     calls getenv() under the covers. In general, it is best to treat
- *     the environment as readonly. If you absolutely have to modify the
- *     environment, do it early in main(), when no other threads are around yet.
- *   </listitem>
- *   <listitem>
- *     setlocale() changes the locale for the entire process, affecting
- *     all threads. Temporary changes to the locale are often made to
- *     change the behavior of string scanning or formatting functions
- *     like scanf() or printf(). GLib offers a number of string APIs
- *     (like g_ascii_formatd() or g_ascii_strtod()) that can often be
- *     used as an alternative. Or you can use the uselocale() function
- *     to change the locale only for the current thread.
- *   </listitem>
- *   <listitem>
- *     fork() only takes the calling thread into the child's copy of the
- *     process image.  If other threads were executing in critical
- *     sections they could have left mutexes locked which could easily
- *     cause deadlocks in the new child.  For this reason, you should
- *     call exit() or exec() as soon as possible in the child and only
- *     make signal-safe library calls before that.
- *   </listitem>
- *   <listitem>
- *     daemon() uses fork() in a way contrary to what is described
- *     above.  It should not be used with GLib programs.
- *   </listitem>
- * </itemizedlist>
+ * 
+ * - C library functions that return data in statically allocated
+ *   buffers, such as strtok() or strerror(). For many of these,
+ *   there are thread-safe variants with a _r suffix, or you can
+ *   look at corresponding GLib APIs (like g_strsplit() or g_strerror()).
+ *
+ * - setenv() and unsetenv() manipulate the process environment in
+ *   a not thread-safe way, and may interfere with getenv() calls
+ *   in other threads. Note that getenv() calls may be
+ *   <quote>hidden</quote> behind other APIs. For example, GNU gettext()
+ *   calls getenv() under the covers. In general, it is best to treat
+ *   the environment as readonly. If you absolutely have to modify the
+ *   environment, do it early in main(), when no other threads are around yet.
+ *
+ * - setlocale() changes the locale for the entire process, affecting
+ *   all threads. Temporary changes to the locale are often made to
+ *   change the behavior of string scanning or formatting functions
+ *   like scanf() or printf(). GLib offers a number of string APIs
+ *   (like g_ascii_formatd() or g_ascii_strtod()) that can often be
+ *   used as an alternative. Or you can use the uselocale() function
+ *   to change the locale only for the current thread.
+ *
+ * - fork() only takes the calling thread into the child's copy of the
+ *   process image. If other threads were executing in critical
+ *   sections they could have left mutexes locked which could easily
+ *   cause deadlocks in the new child. For this reason, you should
+ *   call exit() or exec() as soon as possible in the child and only
+ *   make signal-safe library calls before that.
+ *
+ * - daemon() uses fork() in a way contrary to what is described
+ *   above. It should not be used with GLib programs.
  *
  * GLib itself is internally completely thread-safe (all global data is
  * automatically locked), but individual data structure instances are
@@ -155,7 +148,7 @@
  * G_LOCK_DEFINE:
  * @name: the name of the lock
  *
- * The <literal>G_LOCK_*</literal> macros provide a convenient interface to #GMutex.
+ * The #G_LOCK_ macros provide a convenient interface to #GMutex.
  * #G_LOCK_DEFINE defines a lock. It can appear in any place where
  * variable definitions may appear in programs, i.e. in the first block
  * of a function or outside of functions. The @name parameter will be
@@ -881,11 +874,11 @@ g_thread_new_internal (const gchar   *name,
  * waiting thread will be woken up and get @retval as the return value
  * of g_thread_join().
  *
- * Calling <literal>g_thread_exit (retval)</literal> is equivalent to
+ * Calling g_thread_exit() with a parameter @retval is equivalent to
  * returning @retval from the function @func, as given to g_thread_new().
  *
  * You must only call g_thread_exit() from a thread that you created
- * yourself with g_thread_new() or related APIs.  You must not call
+ * yourself with g_thread_new() or related APIs. You must not call
  * this function from a thread created with another threading library
  * or or from within a #GThreadPool.
  */
