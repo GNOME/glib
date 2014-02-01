@@ -242,108 +242,86 @@
  * handle them by doing nothing.
  *
  * Error domains and codes are conventionally named as follows:
- * <itemizedlist>
- * <listitem><para>
- *   The error domain is called
- *   <literal>&lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR</literal>,
+ *
+ * - The error domain is called &lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR,
  *   for example %G_SPAWN_ERROR or %G_THREAD_ERROR:
  *   |[
- * #define G_SPAWN_ERROR g_spawn_error_quark ()
+ *   #define G_SPAWN_ERROR g_spawn_error_quark ()
  *
- * GQuark
- * g_spawn_error_quark (void)
- * {
- *   return g_quark_from_static_string ("g-spawn-error-quark");
- * }
+ *   GQuark
+ *   g_spawn_error_quark (void)
+ *   {
+ *       return g_quark_from_static_string ("g-spawn-error-quark");
+ *   }
  *   ]|
- * </para></listitem>
- * <listitem><para>
- *   The quark function for the error domain is called
- *   <literal>&lt;namespace&gt;_&lt;module&gt;_error_quark</literal>,
+ *
+ * - The quark function for the error domain is called
+ *   &lt;namespace&gt;_&lt;module&gt;_error_quark,
  *   for example g_spawn_error_quark() or g_thread_error_quark().
- * </para></listitem>
- * <listitem><para>
- *   The error codes are in an enumeration called
- *   <literal>&lt;Namespace&gt;&lt;Module&gt;Error</literal>;
+ *
+ * - The error codes are in an enumeration called
+ *   &lt;Namespace&gt;&lt;Module&gt;Error;
  *   for example,#GThreadError or #GSpawnError.
- * </para></listitem>
- * <listitem><para>
- *   Members of the error code enumeration are called
- *   <literal>&lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR_&lt;CODE&gt;</literal>,
+ *
+ * - Members of the error code enumeration are called
+ *   &lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR_&lt;CODE&gt;,
  *   for example %G_SPAWN_ERROR_FORK or %G_THREAD_ERROR_AGAIN.
- * </para></listitem>
- * <listitem><para>
- *   If there's a "generic" or "unknown" error code for unrecoverable
+ *
+ * - If there's a "generic" or "unknown" error code for unrecoverable
  *   errors it doesn't make sense to distinguish with specific codes,
- *   it should be called <literal>&lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR_FAILED</literal>,
+ *   it should be called &lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR_FAILED,
  *   for example %G_SPAWN_ERROR_FAILED.
- * </para></listitem>
- * </itemizedlist>
  *
  * Summary of rules for use of #GError:
- * <itemizedlist>
- * <listitem><para>
- *   Do not report programming errors via #GError.
- * </para></listitem>
- * <listitem><para>
- *   The last argument of a function that returns an error should
+ *
+ * - Do not report programming errors via #GError.
+ * 
+ * - The last argument of a function that returns an error should
  *   be a location where a #GError can be placed (i.e. "#GError** error").
  *   If #GError is used with varargs, the #GError** should be the last
  *   argument before the "...".
- * </para></listitem>
- * <listitem><para>
- *   The caller may pass %NULL for the #GError** if they are not interested
+ *
+ * - The caller may pass %NULL for the #GError** if they are not interested
  *   in details of the exact error that occurred.
- * </para></listitem>
- * <listitem><para>
- *   If %NULL is passed for the #GError** argument, then errors should
+ *
+ * - If %NULL is passed for the #GError** argument, then errors should
  *   not be returned to the caller, but your function should still
  *   abort and return if an error occurs. That is, control flow should
  *   not be affected by whether the caller wants to get a #GError.
- * </para></listitem>
- * <listitem><para>
- *   If a #GError is reported, then your function by definition had a
+ *
+ * - If a #GError is reported, then your function by definition had a
  *   fatal failure and did not complete whatever it was supposed to do.
  *   If the failure was not fatal, then you handled it and you should not
  *   report it. If it was fatal, then you must report it and discontinue
  *   whatever you were doing immediately.
- * </para></listitem>
- * <listitem><para>
- *   If a #GError is reported, out parameters are not guaranteed to
+ *
+ * - If a #GError is reported, out parameters are not guaranteed to
  *   be set to any defined value.
- * </para></listitem>
- * <listitem><para>
- *   A #GError* must be initialized to %NULL before passing its address
+ *
+ * - A #GError* must be initialized to %NULL before passing its address
  *   to a function that can report errors.
- * </para></listitem>
- * <listitem><para>
- *   "Piling up" errors is always a bug. That is, if you assign a
+ *
+ * - "Piling up" errors is always a bug. That is, if you assign a
  *   new #GError to a #GError* that is non-%NULL, thus overwriting
  *   the previous error, it indicates that you should have aborted
  *   the operation instead of continuing. If you were able to continue,
  *   you should have cleared the previous error with g_clear_error().
  *   g_set_error() will complain if you pile up errors.
- * </para></listitem>
- * <listitem><para>
- *   By convention, if you return a boolean value indicating success
+ *
+ * - By convention, if you return a boolean value indicating success
  *   then %TRUE means success and %FALSE means failure. If %FALSE is
- *   returned, the error must be set to a non-%NULL
- *   value.
- * </para></listitem>
- * <listitem><para>
- *   A %NULL return value is also frequently used to mean that an error
+ *   returned, the error must be set to a non-%NULL value.
+ * 
+ * - A %NULL return value is also frequently used to mean that an error
  *   occurred. You should make clear in your documentation whether %NULL
  *   is a valid return value in non-error cases; if %NULL is a valid value,
  *   then users must check whether an error was returned to see if the
  *   function succeeded.
- * </para></listitem>
- * <listitem><para>
- *   When implementing a function that can report errors, you may want
+ *
+ * - When implementing a function that can report errors, you may want
  *   to add a check at the top of your function that the error return
  *   location is either %NULL or contains a %NULL error (e.g.
  *   <literal>g_return_if_fail (error == NULL || *error == NULL);</literal>).
- * </para></listitem>
- * </itemizedlist>
  */
 
 #include "config.h"
