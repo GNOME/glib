@@ -370,17 +370,19 @@ _g_dgettext_should_translate (void)
  *
  * This function disables translations if and only if upon its first
  * call all the following conditions hold:
- * <itemizedlist>
- * <listitem>@domain is not %NULL</listitem>
- * <listitem>textdomain() has been called to set a default text domain</listitem>
- * <listitem>there is no translations available for the default text domain
- *           and the current locale</listitem>
- * <listitem>current locale is not "C" or any English locales (those
- *           starting with "en_")</listitem>
- * </itemizedlist>
+ * 
+ * - @domain is not %NULL
+ *
+ * - textdomain() has been called to set a default text domain
+ *
+ * - there is no translations available for the default text domain
+ *   and the current locale
+ *
+ * - current locale is not "C" or any English locales (those
+ *   starting with "en_")
  *
  * Note that this behavior may not be desired for example if an application
- * has its untranslated messages in a language other than English.  In those
+ * has its untranslated messages in a language other than English. In those
  * cases the application should call textdomain() after initializing GTK+.
  *
  * Applications should normally not use this function directly,
