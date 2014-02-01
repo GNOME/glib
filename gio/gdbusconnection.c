@@ -1021,29 +1021,23 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
 
   /**
    * GDBusConnection::closed:
-   * @connection: The #GDBusConnection emitting the signal.
+   * @connection: the #GDBusConnection emitting the signal
    * @remote_peer_vanished: %TRUE if @connection is closed because the
-   * remote peer closed its end of the connection.
-   * @error: (allow-none): A #GError with more details about the event or %NULL.
+   *     remote peer closed its end of the connection
+   * @error: (allow-none): a #GError with more details about the event or %NULL
    *
    * Emitted when the connection is closed.
    *
    * The cause of this event can be
-   * <itemizedlist>
-   * <listitem><para>
-   *    If g_dbus_connection_close() is called. In this case
-   *    @remote_peer_vanished is set to %FALSE and @error is %NULL.
-   * </para></listitem>
-   * <listitem><para>
-   *    If the remote peer closes the connection. In this case
-   *    @remote_peer_vanished is set to %TRUE and @error is set.
-   * </para></listitem>
-   * <listitem><para>
-   *    If the remote peer sends invalid or malformed data. In this
-   *    case @remote_peer_vanished is set to %FALSE and @error
-   *    is set.
-   * </para></listitem>
-   * </itemizedlist>
+   *
+   * - If g_dbus_connection_close() is called. In this case
+   *   @remote_peer_vanished is set to %FALSE and @error is %NULL.
+   *
+   * - If the remote peer closes the connection. In this case
+   *   @remote_peer_vanished is set to %TRUE and @error is set.
+   *
+   * - If the remote peer sends invalid or malformed data. In this
+   *   case @remote_peer_vanished is set to %FALSE and @error is set.
    *
    * Upon receiving this signal, you should give up your reference to
    * @connection. You are guaranteed that this signal is emitted only
@@ -1133,7 +1127,7 @@ g_dbus_connection_get_stream (GDBusConnection *connection)
 
 /**
  * g_dbus_connection_start_message_processing:
- * @connection: A #GDBusConnection.
+ * @connection: a #GDBusConnection
  *
  * If @connection was created with
  * %G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING, this method
@@ -1157,11 +1151,11 @@ g_dbus_connection_start_message_processing (GDBusConnection *connection)
 
 /**
  * g_dbus_connection_is_closed:
- * @connection: A #GDBusConnection.
+ * @connection: a #GDBusConnection
  *
  * Gets whether @connection is closed.
  *
- * Returns: %TRUE if the connection is closed, %FALSE otherwise.
+ * Returns: %TRUE if the connection is closed, %FALSE otherwise
  *
  * Since: 2.26
  */
@@ -1179,11 +1173,11 @@ g_dbus_connection_is_closed (GDBusConnection *connection)
 
 /**
  * g_dbus_connection_get_capabilities:
- * @connection: A #GDBusConnection.
+ * @connection: a #GDBusConnection
  *
  * Gets the capabilities negotiated with the remote peer
  *
- * Returns: Zero or more flags from the #GDBusCapabilityFlags enumeration.
+ * Returns: zero or more flags from the #GDBusCapabilityFlags enumeration
  *
  * Since: 2.26
  */
@@ -1218,26 +1212,25 @@ flush_in_thread_func (GSimpleAsyncResult *res,
 
 /**
  * g_dbus_connection_flush:
- * @connection: A #GDBusConnection.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
- *            satisfied or %NULL if you don't care about the result.
- * @user_data: The data to pass to @callback.
+ * @connection: a #GDBusConnection
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @callback: (allow-none): a #GAsyncReadyCallback to call when the
+ *     request is satisfied or %NULL if you don't care about the result
+ * @user_data: The data to pass to @callback
  *
  * Asynchronously flushes @connection, that is, writes all queued
  * outgoing message to the transport and then flushes the transport
  * (using g_output_stream_flush_async()). This is useful in programs
- * that wants to emit a D-Bus signal and then exit
- * immediately. Without flushing the connection, there is no guarantee
- * that the message has been sent to the networking buffers in the OS
- * kernel.
+ * that wants to emit a D-Bus signal and then exit immediately. Without
+ * flushing the connection, there is no guaranteed that the message has
+ * been sent to the networking buffers in the OS kernel.
  *
  * This is an asynchronous method. When the operation is finished,
  * @callback will be invoked in the <link
  * linkend="g-main-context-push-thread-default">thread-default main
  * loop</link> of the thread you are calling this method from. You can
  * then call g_dbus_connection_flush_finish() to get the result of the
- * operation.  See g_dbus_connection_flush_sync() for the synchronous
+ * operation. See g_dbus_connection_flush_sync() for the synchronous
  * version.
  *
  * Since: 2.26
@@ -1266,13 +1259,14 @@ g_dbus_connection_flush (GDBusConnection     *connection,
 
 /**
  * g_dbus_connection_flush_finish:
- * @connection: A #GDBusConnection.
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_flush().
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @res: a #GAsyncResult obtained from the #GAsyncReadyCallback passed
+ *     to g_dbus_connection_flush()
+ * @error: return location for error or %NULL
  *
  * Finishes an operation started with g_dbus_connection_flush().
  *
- * Returns: %TRUE if the operation succeeded, %FALSE if @error is set.
+ * Returns: %TRUE if the operation succeeded, %FALSE if @error is set
  *
  * Since: 2.26
  */
@@ -1303,16 +1297,16 @@ g_dbus_connection_flush_finish (GDBusConnection  *connection,
 
 /**
  * g_dbus_connection_flush_sync:
- * @connection: A #GDBusConnection.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @error: return location for error or %NULL
  *
  * Synchronously flushes @connection. The calling thread is blocked
  * until this is done. See g_dbus_connection_flush() for the
  * asynchronous version of this method and more details about what it
  * does.
  *
- * Returns: %TRUE if the operation succeeded, %FALSE if @error is set.
+ * Returns: %TRUE if the operation succeeded, %FALSE if @error is set
  *
  * Since: 2.26
  */
@@ -1417,11 +1411,11 @@ schedule_closed_unlocked (GDBusConnection *connection,
 
 /**
  * g_dbus_connection_close:
- * @connection: A #GDBusConnection.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
- *            satisfied or %NULL if you don't care about the result.
- * @user_data: The data to pass to @callback.
+ * @connection: a #GDBusConnection
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @callback: (allow-none): a #GAsyncReadyCallback to call when the request is
+ *     satisfied or %NULL if you don't care about the result
+ * @user_data: The data to pass to @callback
  *
  * Closes @connection. Note that this never causes the process to
  * exit (this might only happen if the other end of a shared message
@@ -1445,7 +1439,7 @@ schedule_closed_unlocked (GDBusConnection *connection,
  * linkend="g-main-context-push-thread-default">thread-default main
  * loop</link> of the thread you are calling this method from. You can
  * then call g_dbus_connection_close_finish() to get the result of the
- * operation.  See g_dbus_connection_close_sync() for the synchronous
+ * operation. See g_dbus_connection_close_sync() for the synchronous
  * version.
  *
  * Since: 2.26
@@ -1477,13 +1471,14 @@ g_dbus_connection_close (GDBusConnection     *connection,
 
 /**
  * g_dbus_connection_close_finish:
- * @connection: A #GDBusConnection.
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_close().
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @res: a #GAsyncResult obtained from the #GAsyncReadyCallback passed
+ *     to g_dbus_connection_close()
+ * @error: return location for error or %NULL
  *
  * Finishes an operation started with g_dbus_connection_close().
  *
- * Returns: %TRUE if the operation succeeded, %FALSE if @error is set.
+ * Returns: %TRUE if the operation succeeded, %FALSE if @error is set
  *
  * Since: 2.26
  */
@@ -1531,23 +1526,23 @@ sync_close_cb (GObject *source_object,
 
 /**
  * g_dbus_connection_close_sync:
- * @connection: A #GDBusConnection.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @error: return location for error or %NULL
  *
  * Synchronously closees @connection. The calling thread is blocked
  * until this is done. See g_dbus_connection_close() for the
  * asynchronous version of this method and more details about what it
  * does.
  *
- * Returns: %TRUE if the operation succeeded, %FALSE if @error is set.
+ * Returns: %TRUE if the operation succeeded, %FALSE if @error is set
  *
  * Since: 2.26
  */
 gboolean
-g_dbus_connection_close_sync (GDBusConnection     *connection,
-                              GCancellable        *cancellable,
-                              GError             **error)
+g_dbus_connection_close_sync (GDBusConnection  *connection,
+                              GCancellable     *cancellable,
+                              GError          **error)
 {
   gboolean ret;
 
@@ -1583,7 +1578,7 @@ g_dbus_connection_close_sync (GDBusConnection     *connection,
 
 /**
  * g_dbus_connection_get_last_serial:
- * @connection: A #GDBusConnection.
+ * @connection: a #GDBusConnection
  *
  * Retrieves the last serial number assigned to a #GDBusMessage on
  * the current thread. This includes messages sent via both low-level
@@ -1592,7 +1587,7 @@ g_dbus_connection_close_sync (GDBusConnection     *connection,
  * g_dbus_connection_call() or g_dbus_proxy_call().
  *
  * Returns: the last used serial or zero when no message has been sent
- * within the current thread.
+ *     within the current thread
  *
  * Since: 2.34
  */
@@ -1716,12 +1711,12 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
 
 /**
  * g_dbus_connection_send_message:
- * @connection: A #GDBusConnection.
- * @message: A #GDBusMessage
- * @flags: Flags affecting how the message is sent.
- * @out_serial: (out) (allow-none): Return location for serial number assigned
- *              to @message when sending it or %NULL.
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @message: a #GDBusMessage
+ * @flags: flags affecting how the message is sent
+ * @out_serial: (out) (allow-none): return location for serial number assigned
+ *     to @message when sending it or %NULL
+ * @error: Return location for error or %NULL
  *
  * Asynchronously sends @message to the peer represented by @connection.
  *
@@ -1744,16 +1739,16 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
  * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
  *
  * Returns: %TRUE if the message was well-formed and queued for
- * transmission, %FALSE if @error is set.
+ *     transmission, %FALSE if @error is set
  *
  * Since: 2.26
  */
 gboolean
-g_dbus_connection_send_message (GDBusConnection   *connection,
-                                GDBusMessage      *message,
-                                GDBusSendMessageFlags flags,
-                                volatile guint32  *out_serial,
-                                GError           **error)
+g_dbus_connection_send_message (GDBusConnection        *connection,
+                                GDBusMessage           *message,
+                                GDBusSendMessageFlags   flags,
+                                volatile guint32       *out_serial,
+                                GError                **error)
 {
   gboolean ret;
 
@@ -2029,17 +2024,17 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
 
 /**
  * g_dbus_connection_send_message_with_reply:
- * @connection: A #GDBusConnection.
- * @message: A #GDBusMessage.
- * @flags: Flags affecting how the message is sent.
- * @timeout_msec: The timeout in milliseconds, -1 to use the default
- *                timeout or %G_MAXINT for no timeout.
- * @out_serial: (out) (allow-none): Return location for serial number assigned
- *              to @message when sending it or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
- *            satisfied or %NULL if you don't care about the result.
- * @user_data: The data to pass to @callback.
+ * @connection: a #GDBusConnection
+ * @message: a #GDBusMessage
+ * @flags: flags affecting how the message is sent
+ * @timeout_msec: the timeout in milliseconds, -1 to use the default
+ *     timeout or %G_MAXINT for no timeout
+ * @out_serial: (out) (allow-none): return location for serial number assigned
+ *     to @message when sending it or %NULL
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @callback: (allow-none): a #GAsyncReadyCallback to call when the request
+ *     is satisfied or %NULL if you don't care about the result
+ * @user_data: The data to pass to @callback
  *
  * Asynchronously sends @message to the peer represented by @connection.
  *
@@ -2071,14 +2066,14 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  * Since: 2.26
  */
 void
-g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
-                                           GDBusMessage        *message,
-                                           GDBusSendMessageFlags flags,
-                                           gint                 timeout_msec,
-                                           volatile guint32    *out_serial,
-                                           GCancellable        *cancellable,
-                                           GAsyncReadyCallback  callback,
-                                           gpointer             user_data)
+g_dbus_connection_send_message_with_reply (GDBusConnection       *connection,
+                                           GDBusMessage          *message,
+                                           GDBusSendMessageFlags  flags,
+                                           gint                   timeout_msec,
+                                           volatile guint32      *out_serial,
+                                           GCancellable          *cancellable,
+                                           GAsyncReadyCallback    callback,
+                                           gpointer               user_data)
 {
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
@@ -2100,8 +2095,9 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
 /**
  * g_dbus_connection_send_message_with_reply_finish:
  * @connection: a #GDBusConnection
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_send_message_with_reply().
- * @error: Return location for error or %NULL.
+ * @res: a #GAsyncResult obtained from the #GAsyncReadyCallback passed to
+ *     g_dbus_connection_send_message_with_reply()
+ * @error: teturn location for error or %NULL
  *
  * Finishes an operation started with g_dbus_connection_send_message_with_reply().
  *
@@ -2114,7 +2110,7 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
  * linkend="gdbus-unix-fd-client"/> for an example of how to use this
  * low-level API to send and receive UNIX file descriptors.
  *
- * Returns: (transfer full): A locked #GDBusMessage or %NULL if @error is set.
+ * Returns: (transfer full): a locked #GDBusMessage or %NULL if @error is set
  *
  * Since: 2.26
  */
@@ -2164,15 +2160,15 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
 
 /**
  * g_dbus_connection_send_message_with_reply_sync:
- * @connection: A #GDBusConnection.
- * @message: A #GDBusMessage.
- * @flags: Flags affecting how the message is sent.
- * @timeout_msec: The timeout in milliseconds, -1 to use the default
- *                timeout or %G_MAXINT for no timeout.
- * @out_serial: (out) (allow-none): Return location for serial number assigned
- *              to @message when sending it or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @message: a #GDBusMessage
+ * @flags: flags affecting how the message is sent.
+ * @timeout_msec: the timeout in milliseconds, -1 to use the default
+ *     timeout or %G_MAXINT for no timeout
+ * @out_serial: (out) (allow-none): return location for serial number
+ *     assigned to @message when sending it or %NULL
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @error: return location for error or %NULL
  *
  * Synchronously sends @message to the peer represented by @connection
  * and blocks the calling thread until a reply is received or the
@@ -2203,18 +2199,19 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * Note that @message must be unlocked, unless @flags contain the
  * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
  *
- * Returns: (transfer full): A locked #GDBusMessage that is the reply to @message or %NULL if @error is set.
+ * Returns: (transfer full): a locked #GDBusMessage that is the reply
+ *     to @message or %NULL if @error is set
  *
  * Since: 2.26
  */
 GDBusMessage *
-g_dbus_connection_send_message_with_reply_sync (GDBusConnection   *connection,
-                                                GDBusMessage      *message,
-                                                GDBusSendMessageFlags flags,
-                                                gint               timeout_msec,
-                                                volatile guint32  *out_serial,
-                                                GCancellable      *cancellable,
-                                                GError           **error)
+g_dbus_connection_send_message_with_reply_sync (GDBusConnection        *connection,
+                                                GDBusMessage           *message,
+                                                GDBusSendMessageFlags   flags,
+                                                gint                    timeout_msec,
+                                                volatile guint32       *out_serial,
+                                                GCancellable           *cancellable,
+                                                GError                **error)
 {
   SendMessageSyncData *data;
   GDBusMessage *reply;
@@ -2713,13 +2710,13 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
 
 /**
  * g_dbus_connection_new:
- * @stream: A #GIOStream.
- * @guid: (allow-none): The GUID to use if a authenticating as a server or %NULL.
- * @flags: Flags describing how to make the connection.
- * @observer: (allow-none): A #GDBusAuthObserver or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
- * @user_data: The data to pass to @callback.
+ * @stream: a #GIOStream
+ * @guid: (allow-none): the GUID to use if a authenticating as a server or %NULL
+ * @flags: flags describing how to make the connection
+ * @observer: (allow-none): a #GDBusAuthObserver or %NULL
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to @callback
  *
  * Asynchronously sets up a D-Bus connection for exchanging D-Bus messages
  * with the end represented by @stream.
@@ -2768,12 +2765,14 @@ g_dbus_connection_new (GIOStream            *stream,
 
 /**
  * g_dbus_connection_new_finish:
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_new().
- * @error: Return location for error or %NULL.
+ * @res: a #GAsyncResult obtained from the #GAsyncReadyCallback
+ *     passed to g_dbus_connection_new().
+ * @error: return location for error or %NULL
  *
  * Finishes an operation started with g_dbus_connection_new().
  *
- * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: a #GDBusConnection or %NULL if @error is set. Free
+ *     with g_object_unref().
  *
  * Since: 2.26
  */
@@ -2801,12 +2800,12 @@ g_dbus_connection_new_finish (GAsyncResult  *res,
 
 /**
  * g_dbus_connection_new_sync:
- * @stream: A #GIOStream.
- * @guid: (allow-none): The GUID to use if a authenticating as a server or %NULL.
- * @flags: Flags describing how to make the connection.
- * @observer: (allow-none): A #GDBusAuthObserver or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
+ * @stream: a #GIOStream
+ * @guid: (allow-none): the GUID to use if a authenticating as a server or %NULL
+ * @flags: flags describing how to make the connection
+ * @observer: (allow-none): a #GDBusAuthObserver or %NULL
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @error: return location for error or %NULL
  *
  * Synchronously sets up a D-Bus connection for exchanging D-Bus messages
  * with the end represented by @stream.
@@ -2824,7 +2823,7 @@ g_dbus_connection_new_finish (GAsyncResult  *res,
  * This is a synchronous failable constructor. See
  * g_dbus_connection_new() for the asynchronous version.
  *
- * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: a #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -2852,12 +2851,12 @@ g_dbus_connection_new_sync (GIOStream             *stream,
 
 /**
  * g_dbus_connection_new_for_address:
- * @address: A D-Bus address.
- * @flags: Flags describing how to make the connection.
- * @observer: (allow-none): A #GDBusAuthObserver or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
- * @user_data: The data to pass to @callback.
+ * @address: a D-Bus address
+ * @flags: flags describing how to make the connection
+ * @observer: (allow-none): a #GDBusAuthObserver or %NULL
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to @callback
  *
  * Asynchronously connects and sets up a D-Bus client connection for
  * exchanging D-Bus messages with an endpoint specified by @address
@@ -2904,12 +2903,14 @@ g_dbus_connection_new_for_address (const gchar          *address,
 
 /**
  * g_dbus_connection_new_for_address_finish:
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_new().
- * @error: Return location for error or %NULL.
+ * @res: a #GAsyncResult obtained from the #GAsyncReadyCallback passed
+ *     to g_dbus_connection_new()
+ * @error: return location for error or %NULL
  *
  * Finishes an operation started with g_dbus_connection_new_for_address().
  *
- * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: a #GDBusConnection or %NULL if @error is set. Free with
+ *     g_object_unref().
  *
  * Since: 2.26
  */
@@ -2937,11 +2938,11 @@ g_dbus_connection_new_for_address_finish (GAsyncResult  *res,
 
 /**
  * g_dbus_connection_new_for_address_sync:
- * @address: A D-Bus address.
- * @flags: Flags describing how to make the connection.
- * @observer: (allow-none): A #GDBusAuthObserver or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
+ * @address: a D-Bus address
+ * @flags: flags describing how to make the connection
+ * @observer: (allow-none): a #GDBusAuthObserver or %NULL
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @error: return location for error or %NULL
  *
  * Synchronously connects and sets up a D-Bus client connection for
  * exchanging D-Bus messages with an endpoint specified by @address
@@ -2959,7 +2960,8 @@ g_dbus_connection_new_for_address_finish (GAsyncResult  *res,
  * If @observer is not %NULL it may be used to control the
  * authentication process.
  *
- * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: a #GDBusConnection or %NULL if @error is set. Free with
+ *     g_object_unref().
  *
  * Since: 2.26
  */
@@ -2985,9 +2987,9 @@ g_dbus_connection_new_for_address_sync (const gchar           *address,
 
 /**
  * g_dbus_connection_set_exit_on_close:
- * @connection: A #GDBusConnection.
- * @exit_on_close: Whether the process should be terminated
- *     when @connection is closed by the remote peer.
+ * @connection: a #GDBusConnection
+ * @exit_on_close: whether the process should be terminated
+ *     when @connection is closed by the remote peer
  *
  * Sets whether the process should be terminated when @connection is
  * closed by the remote peer. See #GDBusConnection:exit-on-close for
@@ -3017,14 +3019,14 @@ g_dbus_connection_set_exit_on_close (GDBusConnection *connection,
 
 /**
  * g_dbus_connection_get_exit_on_close:
- * @connection: A #GDBusConnection.
+ * @connection: a #GDBusConnection
  *
  * Gets whether the process is terminated when @connection is
  * closed by the remote peer. See
  * #GDBusConnection:exit-on-close for more details.
  *
- * Returns: Whether the process is terminated when @connection is
- * closed by the remote peer.
+ * Returns: whether the process is terminated when @connection is
+ *     closed by the remote peer
  *
  * Since: 2.26
  */
@@ -3041,13 +3043,13 @@ g_dbus_connection_get_exit_on_close (GDBusConnection *connection)
 
 /**
  * g_dbus_connection_get_guid:
- * @connection: A #GDBusConnection.
+ * @connection: a #GDBusConnection
  *
  * The GUID of the peer performing the role of server when
  * authenticating. See #GDBusConnection:guid for more details.
  *
  * Returns: The GUID. Do not free this string, it is owned by
- * @connection.
+ *     @connection.
  *
  * Since: 2.26
  */
@@ -3060,15 +3062,15 @@ g_dbus_connection_get_guid (GDBusConnection *connection)
 
 /**
  * g_dbus_connection_get_unique_name:
- * @connection: A #GDBusConnection.
+ * @connection: a #GDBusConnection
  *
  * Gets the unique name of @connection as assigned by the message
  * bus. This can also be used to figure out if @connection is a
  * message bus connection.
  *
- * Returns: The unique name or %NULL if @connection is not a message
- * bus connection. Do not free this string, it is owned by
- * @connection.
+ * Returns: the unique name or %NULL if @connection is not a message
+ *     bus connection. Do not free this string, it is owned by
+ *     @connection.
  *
  * Since: 2.26
  */
@@ -3086,7 +3088,7 @@ g_dbus_connection_get_unique_name (GDBusConnection *connection)
 
 /**
  * g_dbus_connection_get_peer_credentials:
- * @connection: A #GDBusConnection.
+ * @connection: a #GDBusConnection
  *
  * Gets the credentials of the authenticated peer. This will always
  * return %NULL unless @connection acted as a server
@@ -3098,8 +3100,8 @@ g_dbus_connection_get_unique_name (GDBusConnection *connection)
  * each application is a client. So this method will always return
  * %NULL for message bus clients.
  *
- * Returns: (transfer none): A #GCredentials or %NULL if not available. Do not free
- * this object, it is owned by @connection.
+ * Returns: (transfer none): a #GCredentials or %NULL if not available.
+ *     Do not free this object, it is owned by @connection.
  *
  * Since: 2.26
  */
@@ -3121,11 +3123,11 @@ static guint _global_filter_id = 1;
 
 /**
  * g_dbus_connection_add_filter:
- * @connection: A #GDBusConnection.
- * @filter_function: A filter function.
- * @user_data: User data to pass to @filter_function.
- * @user_data_free_func: Function to free @user_data with when filter
- * is removed or %NULL.
+ * @connection: a #GDBusConnection
+ * @filter_function: a filter function
+ * @user_data: user data to pass to @filter_function
+ * @user_data_free_func: function to free @user_data with when filter
+ *     is removed or %NULL
  *
  * Adds a message filter. Filters are handlers that are run on all
  * incoming and outgoing messages, prior to standard dispatch. Filters
@@ -3148,8 +3150,8 @@ static guint _global_filter_id = 1;
  * message. Similary, if a filter consumes an outgoing message, the
  * message will not be sent to the other peer.
  *
- * Returns: A filter identifier that can be used with
- * g_dbus_connection_remove_filter().
+ * Returns: a filter identifier that can be used with
+ *     g_dbus_connection_remove_filter()
  *
  * Since: 2.26
  */
@@ -3397,24 +3399,26 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
 
 /**
  * g_dbus_connection_signal_subscribe:
- * @connection: A #GDBusConnection.
- * @sender: (allow-none): Sender name to match on (unique or well-known name)
- *                        or %NULL to listen from all senders.
+ * @connection: a #GDBusConnection
+ * @sender: (allow-none): sender name to match on (unique or well-known name)
+ *     or %NULL to listen from all senders
  * @interface_name: (allow-none): D-Bus interface name to match on or %NULL to
- *                                match on all interfaces.
- * @member: (allow-none): D-Bus signal name to match on or %NULL to match on all signals.
- * @object_path: (allow-none): Object path to match on or %NULL to match on all object paths.
- * @arg0: (allow-none): Contents of first string argument to match on or %NULL
- *                      to match on all kinds of arguments.
- * @flags: Flags describing how to subscribe to the signal (currently unused).
- * @callback: Callback to invoke when there is a signal matching the requested data.
- * @user_data: User data to pass to @callback.
- * @user_data_free_func: (allow-none): Function to free @user_data with when
- *                       subscription is removed or %NULL.
+ *     match on all interfaces
+ * @member: (allow-none): D-Bus signal name to match on or %NULL to match on
+ *     all signals
+ * @object_path: (allow-none): object path to match on or %NULL to match on
+ *     all object paths
+ * @arg0: (allow-none): contents of first string argument to match on or %NULL
+ *     to match on all kinds of arguments
+ * @flags: flags describing how to subscribe to the signal (currently unused)
+ * @callback: callback to invoke when there is a signal matching the requested data
+ * @user_data: user data to pass to @callback
+ * @user_data_free_func: (allow-none): function to free @user_data with when
+ *     subscription is removed or %NULL
  *
  * Subscribes to signals on @connection and invokes @callback with a
- * whenever the signal is received. Note that @callback
- * will be invoked in the <link
+ * whenever the signal is received. Note that @callback will be invoked
+ * in the <link
  * linkend="g-main-context-push-thread-default">thread-default main
  * loop</link> of the thread you are calling this method from.
  *
@@ -3433,7 +3437,7 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * interpreted as part of a namespace or path.  The first argument
  * of a signal is matched against that part as specified by D-Bus.
  *
- * Returns: A subscription identifier that can be used with g_dbus_connection_signal_unsubscribe().
+ * Returns: a subscription identifier that can be used with g_dbus_connection_signal_unsubscribe()
  *
  * Since: 2.26
  */
@@ -3633,8 +3637,9 @@ unsubscribe_id_internal (GDBusConnection *connection,
 
 /**
  * g_dbus_connection_signal_unsubscribe:
- * @connection: A #GDBusConnection.
- * @subscription_id: A subscription id obtained from g_dbus_connection_signal_subscribe().
+ * @connection: a #GDBusConnection
+ * @subscription_id: a subscription id obtained from
+ *     g_dbus_connection_signal_subscribe()
  *
  * Unsubscribes from signals.
  *
@@ -5075,13 +5080,13 @@ obj_message_func (GDBusConnection *connection,
 
 /**
  * g_dbus_connection_register_object:
- * @connection: A #GDBusConnection.
- * @object_path: The object path to register at.
- * @interface_info: Introspection data for the interface.
- * @vtable: (allow-none): A #GDBusInterfaceVTable to call into or %NULL.
- * @user_data: (allow-none): Data to pass to functions in @vtable.
- * @user_data_free_func: Function to call when the object path is unregistered.
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @object_path: the object path to register at
+ * @interface_info: introspection data for the interface
+ * @vtable: (allow-none): a #GDBusInterfaceVTable to call into or %NULL
+ * @user_data: (allow-none): data to pass to functions in @vtable
+ * @user_data_free_func: function to call when the object path is unregistered
+ * @error: return location for error or %NULL
  *
  * Registers callbacks for exported objects at @object_path with the
  * D-Bus interface that is described in @interface_info.
@@ -5122,18 +5127,18 @@ obj_message_func (GDBusConnection *connection,
  * See <xref linkend="gdbus-server"/> for an example of how to use this method.
  *
  * Returns: 0 if @error is set, otherwise a registration id (never 0)
- * that can be used with g_dbus_connection_unregister_object() .
+ *     that can be used with g_dbus_connection_unregister_object()
  *
  * Since: 2.26
  */
 guint
-g_dbus_connection_register_object (GDBusConnection            *connection,
-                                   const gchar                *object_path,
-                                   GDBusInterfaceInfo         *interface_info,
-                                   const GDBusInterfaceVTable *vtable,
-                                   gpointer                    user_data,
-                                   GDestroyNotify              user_data_free_func,
-                                   GError                    **error)
+g_dbus_connection_register_object (GDBusConnection             *connection,
+                                   const gchar                 *object_path,
+                                   GDBusInterfaceInfo          *interface_info,
+                                   const GDBusInterfaceVTable  *vtable,
+                                   gpointer                     user_data,
+                                   GDestroyNotify               user_data_free_func,
+                                   GError                     **error)
 {
   ExportedObject *eo;
   ExportedInterface *ei;
@@ -5203,12 +5208,13 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
 
 /**
  * g_dbus_connection_unregister_object:
- * @connection: A #GDBusConnection.
- * @registration_id: A registration id obtained from g_dbus_connection_register_object().
+ * @connection: a #GDBusConnection
+ * @registration_id: a registration id obtained from
+ *     g_dbus_connection_register_object()
  *
  * Unregisters an object.
  *
- * Returns: %TRUE if the object was unregistered, %FALSE otherwise.
+ * Returns: %TRUE if the object was unregistered, %FALSE otherwise
  *
  * Since: 2.26
  */
@@ -5253,15 +5259,15 @@ g_dbus_connection_unregister_object (GDBusConnection *connection,
 
 /**
  * g_dbus_connection_emit_signal:
- * @connection: A #GDBusConnection.
- * @destination_bus_name: (allow-none): The unique bus name for the destination
- *                        for the signal or %NULL to emit to all listeners.
- * @object_path: Path of remote object.
- * @interface_name: D-Bus interface to emit a signal on.
- * @signal_name: The name of the signal to emit.
- * @parameters: (allow-none): A #GVariant tuple with parameters for the signal
- *              or %NULL if not passing parameters.
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @destination_bus_name: (allow-none): the unique bus name for the destination
+ *     for the signal or %NULL to emit to all listeners
+ * @object_path: path of remote object
+ * @interface_name: D-Bus interface to emit a signal on
+ * @signal_name: the name of the signal to emit
+ * @parameters: (allow-none): a #GVariant tuple with parameters for the signal
+ *              or %NULL if not passing parameters
+ * @error: Return location for error or %NULL
  *
  * Emits a signal.
  *
@@ -5269,7 +5275,7 @@ g_dbus_connection_unregister_object (GDBusConnection *connection,
  *
  * This can only fail if @parameters is not compatible with the D-Bus protocol.
  *
- * Returns: %TRUE unless @error is set.
+ * Returns: %TRUE unless @error is set
  *
  * Since: 2.26
  */
@@ -5754,23 +5760,23 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
 
 /**
  * g_dbus_connection_call:
- * @connection: A #GDBusConnection.
- * @bus_name: (allow-none): A unique or well-known bus name or %NULL if
- *            @connection is not a message bus connection.
- * @object_path: Path of remote object.
- * @interface_name: D-Bus interface to invoke method on.
- * @method_name: The name of the method to invoke.
- * @parameters: (allow-none): A #GVariant tuple with parameters for the method
- *              or %NULL if not passing parameters.
- * @reply_type: (allow-none): The expected type of the reply, or %NULL.
- * @flags: Flags from the #GDBusCallFlags enumeration.
- * @timeout_msec: The timeout in milliseconds, -1 to use the default
- *                timeout or %G_MAXINT for no timeout.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
- *            satisfied or %NULL if you don't care about the result of the
- *            method invocation.
- * @user_data: The data to pass to @callback.
+ * @connection: a #GDBusConnection
+ * @bus_name: (allow-none): a unique or well-known bus name or %NULL if
+ *     @connection is not a message bus connection
+ * @object_path: path of remote object
+ * @interface_name: D-Bus interface to invoke method on
+ * @method_name: the name of the method to invoke
+ * @parameters: (allow-none): a #GVariant tuple with parameters for the method
+ *     or %NULL if not passing parameters
+ * @reply_type: (allow-none): the expected type of the reply, or %NULL
+ * @flags: flags from the #GDBusCallFlags enumeration
+ * @timeout_msec: the timeout in milliseconds, -1 to use the default
+ *     timeout or %G_MAXINT for no timeout
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @callback: (allow-none): a #GAsyncReadyCallback to call when the request
+ *     is satisfied or %NULL if you don't care about the result of the
+ *     method invocation
+ * @user_data: the data to pass to @callback
  *
  * Asynchronously invokes the @method_name method on the
  * @interface_name D-Bus interface on the remote object at
@@ -5818,32 +5824,32 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
  * Since: 2.26
  */
 void
-g_dbus_connection_call (GDBusConnection        *connection,
-                        const gchar            *bus_name,
-                        const gchar            *object_path,
-                        const gchar            *interface_name,
-                        const gchar            *method_name,
-                        GVariant               *parameters,
-                        const GVariantType     *reply_type,
-                        GDBusCallFlags          flags,
-                        gint                    timeout_msec,
-                        GCancellable           *cancellable,
-                        GAsyncReadyCallback     callback,
-                        gpointer                user_data)
+g_dbus_connection_call (GDBusConnection     *connection,
+                        const gchar         *bus_name,
+                        const gchar         *object_path,
+                        const gchar         *interface_name,
+                        const gchar         *method_name,
+                        GVariant            *parameters,
+                        const GVariantType  *reply_type,
+                        GDBusCallFlags       flags,
+                        gint                 timeout_msec,
+                        GCancellable        *cancellable,
+                        GAsyncReadyCallback  callback,
+                        gpointer             user_data)
 {
   g_dbus_connection_call_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, NULL, cancellable, callback, user_data);
 }
 
 /**
  * g_dbus_connection_call_finish:
- * @connection: A #GDBusConnection.
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_call().
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @res: a #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_call()
+ * @error: return location for error or %NULL
  *
  * Finishes an operation started with g_dbus_connection_call().
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
- * return values. Free with g_variant_unref().
+ *     return values. Free with g_variant_unref().
  *
  * Since: 2.26
  */
@@ -5857,20 +5863,20 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
 
 /**
  * g_dbus_connection_call_sync:
- * @connection: A #GDBusConnection.
- * @bus_name: (allow-none): A unique or well-known bus name or %NULL if
- *            @connection is not a message bus connection.
- * @object_path: Path of remote object.
- * @interface_name: D-Bus interface to invoke method on.
- * @method_name: The name of the method to invoke.
- * @parameters: (allow-none): A #GVariant tuple with parameters for the method
- *              or %NULL if not passing parameters.
- * @reply_type: (allow-none): The expected type of the reply, or %NULL.
- * @flags: Flags from the #GDBusCallFlags enumeration.
- * @timeout_msec: The timeout in milliseconds, -1 to use the default
- *                timeout or %G_MAXINT for no timeout.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @bus_name: (allow-none): a unique or well-known bus name or %NULL if
+ *     @connection is not a message bus connection
+ * @object_path: path of remote object
+ * @interface_name: D-Bus interface to invoke method on
+ * @method_name: the name of the method to invoke
+ * @parameters: (allow-none): a #GVariant tuple with parameters for the method
+ *     or %NULL if not passing parameters
+ * @reply_type: (allow-none): the expected type of the reply, or %NULL
+ * @flags: flags from the #GDBusCallFlags enumeration
+ * @timeout_msec: the timeout in milliseconds, -1 to use the default
+ *     timeout or %G_MAXINT for no timeout
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @error: return location for error or %NULL
  *
  * Synchronously invokes the @method_name method on the
  * @interface_name D-Bus interface on the remote object at
@@ -5910,22 +5916,22 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  * this method.
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
- * return values. Free with g_variant_unref().
+ *     return values. Free with g_variant_unref().
  *
  * Since: 2.26
  */
 GVariant *
-g_dbus_connection_call_sync (GDBusConnection         *connection,
-                             const gchar             *bus_name,
-                             const gchar             *object_path,
-                             const gchar             *interface_name,
-                             const gchar             *method_name,
-                             GVariant                *parameters,
-                             const GVariantType      *reply_type,
-                             GDBusCallFlags           flags,
-                             gint                     timeout_msec,
-                             GCancellable            *cancellable,
-                             GError                 **error)
+g_dbus_connection_call_sync (GDBusConnection     *connection,
+                             const gchar         *bus_name,
+                             const gchar         *object_path,
+                             const gchar         *interface_name,
+                             const gchar         *method_name,
+                             GVariant            *parameters,
+                             const GVariantType  *reply_type,
+                             GDBusCallFlags       flags,
+                             gint                 timeout_msec,
+                             GCancellable        *cancellable,
+                             GError             **error)
 {
   return g_dbus_connection_call_sync_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, NULL, NULL, cancellable, error);
 }
@@ -5936,23 +5942,23 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
 
 /**
  * g_dbus_connection_call_with_unix_fd_list:
- * @connection: A #GDBusConnection.
- * @bus_name: (allow-none): A unique or well-known bus name or %NULL if
- *            @connection is not a message bus connection.
- * @object_path: Path of remote object.
- * @interface_name: D-Bus interface to invoke method on.
- * @method_name: The name of the method to invoke.
- * @parameters: (allow-none): A #GVariant tuple with parameters for the method
- *              or %NULL if not passing parameters.
- * @reply_type: (allow-none): The expected type of the reply, or %NULL.
- * @flags: Flags from the #GDBusCallFlags enumeration.
- * @timeout_msec: The timeout in milliseconds, -1 to use the default
- *                timeout or %G_MAXINT for no timeout.
- * @fd_list: (allow-none): A #GUnixFDList or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
- *            satisfied or %NULL if you don't * care about the result of the
- *            method invocation.
+ * @connection: a #GDBusConnection
+ * @bus_name: (allow-none): a unique or well-known bus name or %NULL if
+ *     @connection is not a message bus connection
+ * @object_path: path of remote object
+ * @interface_name: D-Bus interface to invoke method on
+ * @method_name: the name of the method to invoke
+ * @parameters: (allow-none): a #GVariant tuple with parameters for the method
+ *     or %NULL if not passing parameters
+ * @reply_type: (allow-none): the expected type of the reply, or %NULL
+ * @flags: flags from the #GDBusCallFlags enumeration
+ * @timeout_msec: the timeout in milliseconds, -1 to use the default
+ *     timeout or %G_MAXINT for no timeout
+ * @fd_list: (allow-none): a #GUnixFDList or %NULL
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @callback: (allow-none): a #GAsyncReadyCallback to call when the request is
+ *     satisfied or %NULL if you don't * care about the result of the
+ *     method invocation
  * @user_data: The data to pass to @callback.
  *
  * Like g_dbus_connection_call() but also takes a #GUnixFDList object.
@@ -5962,34 +5968,35 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
  * Since: 2.30
  */
 void
-g_dbus_connection_call_with_unix_fd_list (GDBusConnection        *connection,
-                                          const gchar            *bus_name,
-                                          const gchar            *object_path,
-                                          const gchar            *interface_name,
-                                          const gchar            *method_name,
-                                          GVariant               *parameters,
-                                          const GVariantType     *reply_type,
-                                          GDBusCallFlags          flags,
-                                          gint                    timeout_msec,
-                                          GUnixFDList            *fd_list,
-                                          GCancellable           *cancellable,
-                                          GAsyncReadyCallback     callback,
-                                          gpointer                user_data)
+g_dbus_connection_call_with_unix_fd_list (GDBusConnection     *connection,
+                                          const gchar         *bus_name,
+                                          const gchar         *object_path,
+                                          const gchar         *interface_name,
+                                          const gchar         *method_name,
+                                          GVariant            *parameters,
+                                          const GVariantType  *reply_type,
+                                          GDBusCallFlags       flags,
+                                          gint                 timeout_msec,
+                                          GUnixFDList         *fd_list,
+                                          GCancellable        *cancellable,
+                                          GAsyncReadyCallback  callback,
+                                          gpointer             user_data)
 {
   g_dbus_connection_call_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, fd_list, cancellable, callback, user_data);
 }
 
 /**
  * g_dbus_connection_call_with_unix_fd_list_finish:
- * @connection: A #GDBusConnection.
- * @out_fd_list: (out) (allow-none): Return location for a #GUnixFDList or %NULL.
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_call_with_unix_fd_list().
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @out_fd_list: (out) (allow-none): return location for a #GUnixFDList or %NULL
+ * @res: a #GAsyncResult obtained from the #GAsyncReadyCallback passed to
+ *     g_dbus_connection_call_with_unix_fd_list()
+ * @error: return location for error or %NULL
  *
  * Finishes an operation started with g_dbus_connection_call_with_unix_fd_list().
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
- * return values. Free with g_variant_unref().
+ *     return values. Free with g_variant_unref().
  *
  * Since: 2.30
  */
@@ -6004,46 +6011,46 @@ g_dbus_connection_call_with_unix_fd_list_finish (GDBusConnection  *connection,
 
 /**
  * g_dbus_connection_call_with_unix_fd_list_sync:
- * @connection: A #GDBusConnection.
- * @bus_name: (allow-none): A unique or well-known bus name or %NULL if
- *            @connection is not a message bus connection.
- * @object_path: Path of remote object.
- * @interface_name: D-Bus interface to invoke method on.
- * @method_name: The name of the method to invoke.
- * @parameters: (allow-none): A #GVariant tuple with parameters for the method
- *              or %NULL if not passing parameters.
- * @reply_type: (allow-none): The expected type of the reply, or %NULL.
- * @flags: Flags from the #GDBusCallFlags enumeration.
- * @timeout_msec: The timeout in milliseconds, -1 to use the default
- *                timeout or %G_MAXINT for no timeout.
- * @fd_list: (allow-none): A #GUnixFDList or %NULL.
- * @out_fd_list: (out) (allow-none): Return location for a #GUnixFDList or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @bus_name: (allow-none): a unique or well-known bus name or %NULL
+ *     if @connection is not a message bus connection
+ * @object_path: path of remote object
+ * @interface_name: D-Bus interface to invoke method on
+ * @method_name: the name of the method to invoke
+ * @parameters: (allow-none): a #GVariant tuple with parameters for
+ *     the method or %NULL if not passing parameters
+ * @reply_type: (allow-none): the expected type of the reply, or %NULL
+ * @flags: flags from the #GDBusCallFlags enumeration
+ * @timeout_msec: the timeout in milliseconds, -1 to use the default
+ *     timeout or %G_MAXINT for no timeout
+ * @fd_list: (allow-none): a #GUnixFDList or %NULL
+ * @out_fd_list: (out) (allow-none): return location for a #GUnixFDList or %NULL
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @error: return location for error or %NULL
  *
  * Like g_dbus_connection_call_sync() but also takes and returns #GUnixFDList objects.
  *
  * This method is only available on UNIX.
  *
  * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
- * return values. Free with g_variant_unref().
+ *     return values. Free with g_variant_unref().
  *
  * Since: 2.30
  */
 GVariant *
-g_dbus_connection_call_with_unix_fd_list_sync (GDBusConnection         *connection,
-                                               const gchar             *bus_name,
-                                               const gchar             *object_path,
-                                               const gchar             *interface_name,
-                                               const gchar             *method_name,
-                                               GVariant                *parameters,
-                                               const GVariantType      *reply_type,
-                                               GDBusCallFlags           flags,
-                                               gint                     timeout_msec,
-                                               GUnixFDList             *fd_list,
-                                               GUnixFDList            **out_fd_list,
-                                               GCancellable            *cancellable,
-                                               GError                 **error)
+g_dbus_connection_call_with_unix_fd_list_sync (GDBusConnection     *connection,
+                                               const gchar         *bus_name,
+                                               const gchar         *object_path,
+                                               const gchar         *interface_name,
+                                               const gchar         *method_name,
+                                               GVariant            *parameters,
+                                               const GVariantType  *reply_type,
+                                               GDBusCallFlags       flags,
+                                               gint                 timeout_msec,
+                                               GUnixFDList         *fd_list,
+                                               GUnixFDList        **out_fd_list,
+                                               GCancellable        *cancellable,
+                                               GError             **error)
 {
   return g_dbus_connection_call_sync_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, fd_list, out_fd_list, cancellable, error);
 }
@@ -6491,13 +6498,14 @@ subtree_message_func (GDBusConnection *connection,
 
 /**
  * g_dbus_connection_register_subtree:
- * @connection: A #GDBusConnection.
- * @object_path: The object path to register the subtree at.
- * @vtable: A #GDBusSubtreeVTable to enumerate, introspect and dispatch nodes in the subtree.
- * @flags: Flags used to fine tune the behavior of the subtree.
- * @user_data: Data to pass to functions in @vtable.
- * @user_data_free_func: Function to call when the subtree is unregistered.
- * @error: Return location for error or %NULL.
+ * @connection: a #GDBusConnection
+ * @object_path: the object path to register the subtree at
+ * @vtable: a #GDBusSubtreeVTable to enumerate, introspect and
+ *     dispatch nodes in the subtree
+ * @flags: flags used to fine tune the behavior of the subtree
+ * @user_data: data to pass to functions in @vtable
+ * @user_data_free_func: function to call when the subtree is unregistered
+ * @error: return location for error or %NULL
  *
  * Registers a whole subtree of <quote>dynamic</quote> objects.
  *
@@ -6600,12 +6608,13 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
 
 /**
  * g_dbus_connection_unregister_subtree:
- * @connection: A #GDBusConnection.
- * @registration_id: A subtree registration id obtained from g_dbus_connection_register_subtree().
+ * @connection: a #GDBusConnection
+ * @registration_id: a subtree registration id obtained from
+ *     g_dbus_connection_register_subtree()
  *
  * Unregisters a subtree.
  *
- * Returns: %TRUE if the subtree was unregistered, %FALSE otherwise.
+ * Returns: %TRUE if the subtree was unregistered, %FALSE otherwise
  *
  * Since: 2.26
  */
@@ -6981,9 +6990,9 @@ _g_bus_get_singleton_if_exists (GBusType bus_type)
 
 /**
  * g_bus_get_sync:
- * @bus_type: A #GBusType.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
+ * @bus_type: a #GBusType
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @error: return location for error or %NULL
  *
  * Synchronously connects to the message bus specified by @bus_type.
  * Note that the returned object may shared with other callers,
@@ -7002,7 +7011,8 @@ _g_bus_get_singleton_if_exists (GBusType bus_type)
  * Note that the returned #GDBusConnection object will (usually) have
  * the #GDBusConnection:exit-on-close property set to %TRUE.
  *
- * Returns: (transfer full): A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: (transfer full): a #GDBusConnection or %NULL if @error is set.
+ *     Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -7058,10 +7068,10 @@ bus_get_async_initable_cb (GObject      *source_object,
 
 /**
  * g_bus_get:
- * @bus_type: A #GBusType.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
- * @user_data: The data to pass to @callback.
+ * @bus_type: a #GBusType
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: the data to pass to @callback
  *
  * Asynchronously connects to the message bus specified by @bus_type.
  *
@@ -7110,8 +7120,9 @@ g_bus_get (GBusType             bus_type,
 
 /**
  * g_bus_get_finish:
- * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_bus_get().
- * @error: Return location for error or %NULL.
+ * @res: a #GAsyncResult obtained from the #GAsyncReadyCallback passed
+ *     to g_bus_get()
+ * @error: return location for error or %NULL
  *
  * Finishes an operation started with g_bus_get().
  *
@@ -7124,7 +7135,8 @@ g_bus_get (GBusType             bus_type,
  * Note that the returned #GDBusConnection object will (usually) have
  * the #GDBusConnection:exit-on-close property set to %TRUE.
  *
- * Returns: (transfer full): A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: (transfer full): a #GDBusConnection or %NULL if @error is set.
+ *     Free with g_object_unref().
  *
  * Since: 2.26
  */
