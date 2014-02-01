@@ -45,7 +45,7 @@
  * introduction of maybe (or "nullable") types.  Any type in GVariant can be
  * converted to a maybe type, in which case, "nothing" (or "null") becomes a
  * valid value.  Maybe types have been added by introducing the
- * character "<literal>m</literal>" to type strings.
+ * character "m" to type strings.
  *
  * The second major change is that the GVariant type system supports the
  * concept of "indefinite types" -- types that are less specific than
@@ -53,8 +53,7 @@
  * of "an array of any type" in GVariant, where the D-Bus type system
  * would require you to speak of "an array of integers" or "an array of
  * strings".  Indefinite types have been added by introducing the
- * characters "<literal>*</literal>", "<literal>?</literal>" and
- * "<literal>r</literal>" to type strings.
+ * characters "*", "?" and "r" to type strings.
  *
  * Finally, all arbitrary restrictions relating to the complexity of
  * types are lifted along with the restriction that dictionary entries
@@ -92,67 +91,36 @@
  * that the #GtkWindow is a #GtkBin (since #GtkWindow is a subclass of
  * #GtkBin).
  *
+ * <para id='gvariant-typestrings'>
  * A detailed description of GVariant type strings is given here:
+ * </para>
  *
- * <refsect2 id='gvariant-typestrings'>
- *  <title>GVariant Type Strings</title>
- *  <para>
- *   A GVariant type string can be any of the following:
- *  </para>
- *  <itemizedlist>
- *   <listitem>
- *    <para>
- *     any basic type string (listed below)
- *    </para>
- *   </listitem>
- *   <listitem>
- *    <para>
- *     "<literal>v</literal>", "<literal>r</literal>" or
- *     "<literal>*</literal>"
- *    </para>
- *   </listitem>
- *   <listitem>
- *    <para>
- *     one of the characters '<literal>a</literal>' or
- *     '<literal>m</literal>', followed by another type string
- *    </para>
- *   </listitem>
- *   <listitem>
- *    <para>
- *     the character '<literal>(</literal>', followed by a concatenation
- *     of zero or more other type strings, followed by the character
- *     '<literal>)</literal>'
- *    </para>
- *   </listitem>
- *   <listitem>
- *    <para>
- *     the character '<literal>{</literal>', followed by a basic type
- *     string (see below), followed by another type string, followed by
- *     the character '<literal>}</literal>'
- *    </para>
- *   </listitem>
- *  </itemizedlist>
- *  <para>
- *   A basic type string describes a basic type (as per
- *   g_variant_type_is_basic()) and is always a single
- *   character in length.  The valid basic type strings are
- *   "<literal>b</literal>", "<literal>y</literal>",
- *   "<literal>n</literal>", "<literal>q</literal>",
- *   "<literal>i</literal>", "<literal>u</literal>",
- *   "<literal>x</literal>", "<literal>t</literal>",
- *   "<literal>h</literal>", "<literal>d</literal>",
- *   "<literal>s</literal>", "<literal>o</literal>",
- *   "<literal>g</literal>" and "<literal>?</literal>".
- *  </para>
- *  <para>
- *   The above definition is recursive to arbitrary depth.
- *   "<literal>aaaaai</literal>" and "<literal>(ui(nq((y)))s)</literal>"
- *   are both valid type strings, as is
- *   "<literal>a(aa(ui)(qna{ya(yd)}))</literal>".
- *  </para>
- *  <para>
- *   The meaning of each of the characters is as follows:
- *  </para>
+ * ## GVariant Type Strings
+ *
+ * A GVariant type string can be any of the following:
+ *
+ * - any basic type string (listed below)
+ *
+ * - "v", "r" or "*"
+ *
+ * - one of the characters 'a' or 'm', followed by another type string
+ *
+ * - the character '(', followed by a concatenation of zero or more other
+ *   type strings, followed by the character ')'
+ *
+ * - the character '{', followed by a basic type string (see below),
+ *   followed by another type string, followed by the character '}'
+ *
+ * A basic type string describes a basic type (as per
+ * g_variant_type_is_basic()) and is always a single character in length.
+ * The valid basic type strings are "b", "y", "n", "q", "i", "u", "x", "t",
+ * "h", "d", "s", "o", "g" and "?".
+ *
+ * The above definition is recursive to arbitrary depth. "aaaaai" and
+ * "(ui(nq((y)))s)" are both valid type strings, as is
+ * "a(aa(ui)(qna{ya(yd)}))".
+ *
+ * The meaning of each of the characters is as follows:
  *  <informaltable>
  *   <tgroup cols='2'>
  *    <tbody>
@@ -171,7 +139,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>b</literal>
+ *        b
  *       </para>
  *      </entry>
  *      <entry>
@@ -183,7 +151,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>y</literal>
+ *        y
  *       </para>
  *      </entry>
  *      <entry>
@@ -195,7 +163,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>n</literal>
+ *        n
  *       </para>
  *      </entry>
  *      <entry>
@@ -208,7 +176,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>q</literal>
+ *        q
  *       </para>
  *      </entry>
  *      <entry>
@@ -221,7 +189,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>i</literal>
+ *        i
  *       </para>
  *      </entry>
  *      <entry>
@@ -234,7 +202,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>u</literal>
+ *        u
  *       </para>
  *      </entry>
  *      <entry>
@@ -247,7 +215,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>x</literal>
+ *        x
  *       </para>
  *      </entry>
  *      <entry>
@@ -260,7 +228,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>t</literal>
+ *        t
  *       </para>
  *      </entry>
  *      <entry>
@@ -273,7 +241,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>h</literal>
+ *        h
  *       </para>
  *      </entry>
  *      <entry>
@@ -287,7 +255,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>d</literal>
+ *        d
  *       </para>
  *      </entry>
  *      <entry>
@@ -300,7 +268,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>s</literal>
+ *        s
  *       </para>
  *      </entry>
  *      <entry>
@@ -312,7 +280,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>o</literal>
+ *        o
  *       </para>
  *      </entry>
  *      <entry>
@@ -325,7 +293,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>g</literal>
+ *        g
  *       </para>
  *      </entry>
  *      <entry>
@@ -338,7 +306,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>?</literal>
+ *        ?
  *       </para>
  *      </entry>
  *      <entry>
@@ -351,7 +319,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>v</literal>
+ *        v
  *       </para>
  *      </entry>
  *      <entry>
@@ -364,51 +332,50 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>a</literal>
+ *        a
  *       </para>
  *      </entry>
  *      <entry>
  *       <para>
  *        used as a prefix on another type string to mean an array of
- *        that type; the type string "<literal>ai</literal>", for
- *        example, is the type of an array of 32 bit signed integers.
+ *        that type; the type string "ai", for example, is the type of
+ *        an array of signed 32-bit integers.
  *       </para>
  *      </entry>
  *     </row>
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>m</literal>
+ *        m
  *       </para>
  *      </entry>
  *      <entry>
  *       <para>
  *        used as a prefix on another type string to mean a "maybe", or
- *        "nullable", version of that type; the type string
- *        "<literal>ms</literal>", for example, is the type of a value
- *        that maybe contains a string, or maybe contains nothing.
+ *        "nullable", version of that type; the type string "ms", for example,
+ *        is the type of a value that maybe contains a string, or maybe
+ *        contains nothing.
  *       </para>
  *      </entry>
  *     </row>
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>()</literal>
+ *        ()
  *       </para>
  *      </entry>
  *      <entry>
  *       <para>
  *        used to enclose zero or more other concatenated type strings
- *        to create a tuple type; the type string
- *        "<literal>(is)</literal>", for example, is the type of a pair
- *        of an integer and a string.
+ *        to create a tuple type; the type string "(is)", for example,
+ *        is the type of a pair of an integer and a string.
  *       </para>
  *      </entry>
  *     </row>
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>r</literal>
+ *        r
  *       </para>
  *      </entry>
  *      <entry>
@@ -422,7 +389,7 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>{}</literal>
+ *        {}
  *       </para>
  *      </entry>
  *      <entry>
@@ -430,13 +397,12 @@
  *        used to enclose a basic type string concatenated with another
  *        type string to create a dictionary entry type, which usually
  *        appears inside of an array to form a dictionary; the type
- *        string "<literal>a{sd}</literal>", for example, is the type of
- *        a dictionary that maps strings to double precision floating
- *        point values.
+ *        string "a{sd}", for example, is the type of a dictionary that
+ *        maps strings to double precision floating point values.
  *       </para>
  *       <para>
  *        The first type (the basic type) is the key type and the second
- *        type is the value type.  The reason that the first type is
+ *        type is the value type. The reason that the first type is
  *        restricted to being a basic type is so that it can easily be
  *        hashed.
  *       </para>
@@ -445,14 +411,14 @@
  *     <row>
  *      <entry>
  *       <para>
- *        <literal>*</literal>
+ *        *
  *       </para>
  *      </entry>
  *      <entry>
  *       <para>
  *        the type string of %G_VARIANT_TYPE_ANY; the indefinite type
  *        that is a supertype of all types.  Note that, as with all type
- *        strings, this character represents exactly one type.  It
+ *        strings, this character represents exactly one type. It
  *        cannot be used inside of tuples to mean "any number of items".
  *       </para>
  *      </entry>
@@ -460,24 +426,20 @@
  *    </tbody>
  *   </tgroup>
  *  </informaltable>
- *  <para>
- *   Any type string of a container that contains an indefinite type is,
- *   itself, an indefinite type.  For example, the type string
- *   "<literal>a*</literal>" (corresponding to %G_VARIANT_TYPE_ARRAY) is
- *   an indefinite type that is a supertype of every array type.
- *   "<literal>(*s)</literal>" is a supertype of all tuples that
- *   contain exactly two items where the second item is a string.
- *  </para>
- *  <para>
- *   "<literal>a{?*}</literal>" is an indefinite type that is a
- *   supertype of all arrays containing dictionary entries where the key
- *   is any basic type and the value is any type at all.  This is, by
- *   definition, a dictionary, so this type string corresponds to
- *   %G_VARIANT_TYPE_DICTIONARY.  Note that, due to the restriction that
- *   the key of a dictionary entry must be a basic type,
- *   "<literal>{**}</literal>" is not a valid type string.
- *  </para>
- * </refsect2>
+ *
+ * Any type string of a container that contains an indefinite type is,
+ * itself, an indefinite type. For example, the type string "a*"
+ * (corresponding to %G_VARIANT_TYPE_ARRAY) is an indefinite type
+ * that is a supertype of every array type. "(*s)" is a supertype
+ * of all tuples that contain exactly two items where the second
+ * item is a string.
+ *
+ * "a{?*}" is an indefinite type that is a supertype of all arrays
+ * containing dictionary entries where the key is any basic type and
+ * the value is any type at all.  This is, by definition, a dictionary,
+ * so this type string corresponds to %G_VARIANT_TYPE_DICTIONARY. Note
+ * that, due to the restriction that the key of a dictionary entry must
+ * be a basic type, "{**}" is not a valid type string.
  */
 
 
