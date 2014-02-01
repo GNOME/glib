@@ -74,58 +74,127 @@
  * aspect of this use case is that the process that gets started by git
  * does not return until the editing is done.
  *
- * <example id="gapplication-example-cmdline"><title>Handling commandline arguments with GApplication</title>
- * <para>
- * A simple example where the commandline is completely handled
- * in the #GApplication::command-line handler. The launching instance exits
- * once the signal handler in the primary instance has returned, and the
- * return value of the signal handler becomes the exit status of the launching
- * instance.
- * </para>
- * <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- * </programlisting>
- * </example>
+ * Normally, the commandline is completely handled in the
+ * #GApplication::command-line handler. The launching instance exits
+ * once the signal handler in the primary instance has returned, and
+ * the return value of the signal handler becomes the exit status
+ * of the launching instance.
+ * |[<!-- language="C" -->
+ * static int
+ * command_line (GApplication            *application,
+ *               GApplicationCommandLine *cmdline)
+ * {
+ *   gchar **argv;
+ *   gint argc;
+ *   gint i;
  *
- * <example id="gapplication-example-cmdline2"><title>Split commandline handling</title>
- * <para>
- * An example of split commandline handling. Options that start with
- * <literal>--local-</literal> are handled locally, all other options are
- * passed to the #GApplication::command-line handler which runs in the primary
- * instance.
- * </para>
- * <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline2.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- * </programlisting>
- * </example>
+ *   argv = g_application_command_line_get_arguments (cmdline, &argc);
  *
- * <example id="gapplication-example-cmdline3"><title>Deferred commandline handling</title>
- * <para>
- * An example of deferred commandline handling. Here, the commandline is
- * not completely handled before the #GApplication::command-line handler
- * returns. Instead, we keep a reference to the GApplicationCommandLine
- * object and handle it later(in this example, in an idle). Note that it
- * is necessary to hold the application until you are done with the
- * commandline.
- * </para>
- * <para>
- * This example also shows how to use #GOptionContext for parsing the
- * commandline arguments. Note that it is necessary to disable the
- * built-in help-handling of #GOptionContext, since it calls exit()
- * after printing help, which is not what you want to happen in
- * the primary instance.
- * </para>
- * <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline3.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- * </programlisting>
- * </example>
- **/
+ *   g_application_command_line_print (cmdline,
+ *                                     "This text is written back\n"
+ *                                     "to stdout of the caller\n");
+ *
+ *   for (i = 0; i < argc; i++)
+ *     g_print ("argument %d: %s\n", i, argv[i]);
+ *
+ *   g_strfreev (argv);
+ *
+ *   return 0;
+ * }
+ * ]|
+ * The complete example can be found here: <ulink url="https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline.c">gapplication-example-cmdline.c</ulink>
+ *
+ * In more complicated cases, the handling of the comandline can be
+ * split between the launcher and the primary instance.
+ * |[<!-- language="C" -->
+ * static gboolean
+ *  test_local_cmdline (GApplication   *application,
+ *                      gchar        ***arguments,
+ *                      gint           *exit_status)
+ * {
+ *   gint i, j;
+ *   gchar **argv;
+ *
+ *   argv = *arguments;
+ *
+ *   i = 1;
+ *   while (argv[i])
+ *     {
+ *       if (g_str_has_prefix (argv[i], "--local-"))
+ *         {
+ *           g_print ("handling argument %s locally\n", argv[i]);
+ *           g_free (argv[i]);
+ *           for (j = i; argv[j]; j++)
+ *             argv[j] = argv[j + 1];
+ *         }
+ *       else
+ *         {
+ *           g_print ("not handling argument %s locally\n", argv[i]);
+ *           i++;
+ *         }
+ *     }
+ *
+ *   *exit_status = 0;
+ *
+ *   return FALSE;
+ * }
+ *
+ * static void
+ * test_application_class_init (TestApplicationClass *class)
+ * {
+ *   G_APPLICATION_CLASS (class)->local_command_line = test_local_cmdline;
+ *
+ *   ...
+ * }
+ * ]|
+ * In this example of split commandline handling, options that start
+ * with <literal>--local-</literal> are handled locally, all other
+ * options are passed to the #GApplication::command-line handler
+ * which runs in the primary instance.
+ *
+ * The complete example can be found here: <ulink url="https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline2.c">gapplication-example-cmdline2.c</ulink>
+ *
+ * If handling the commandline requires a lot of work, it may
+ * be better to defer it.
+ * |[<!-- language="C" -->
+ * static gboolean
+ * my_cmdline_handler (gpointer data)
+ * {
+ *   GApplicationCommandLine *cmdline = data;
+ *
+ *   /&ast; do the heavy lifting in an idle &ast;/
+ *
+ *   g_application_command_line_set_exit_status (cmdline, 0);
+ *   g_object_unref (cmdline); /&ast; this releases the application &ast;/
+ *
+ *   return G_SOURCE_REMOVE;
+ * }
+ *
+ * static int
+ * command_line (GApplication            *application,
+ *               GApplicationCommandLine *cmdline)
+ * {
+ *   /&ast; keep the application running until we are done with this commandline &ast;/
+ *   g_application_hold (application);
+ *
+ *   g_object_set_data_full (G_OBJECT (cmdline),
+ *                           "application", application,
+ *                           (GDestroyNotify)g_application_release);
+ *
+ *   g_object_ref (cmdline);
+ *   g_idle_add (my_cmdline_handler, cmdline);
+ *
+ *   return 0;
+ * }
+ * ]|
+ * In this example the commandline is not completely handled before
+ * the #GApplication::command-line handler returns. Instead, we keep
+ * a reference to the #GApplicationCommandLine object and handle it
+ * later (in this example, in an idle). Note that it is necessary to
+ * hold the application until you are done with the commandline.
+ *
+ * The complete example can be found here: <ulink url="https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline3.c">gapplication-example-cmdline3.c</ulink>
+ */
 
 /**
  * GApplicationCommandLineClass:
