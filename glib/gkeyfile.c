@@ -132,20 +132,21 @@
  *
  * This syntax is obviously inspired by the .ini files commonly met
  * on Windows, but there are some important differences:
- * <itemizedlist>
- *   <listitem>.ini files use the ';' character to begin comments,
- *     key files use the '#' character.</listitem>
- *   <listitem>Key files do not allow for ungrouped keys meaning only
- *     comments can precede the first group.</listitem>
- *   <listitem>Key files are always encoded in UTF-8.</listitem>
- *   <listitem>Key and Group names are case-sensitive. For example, a
- *     group called <literal>[GROUP]</literal> is a different from
- *     <literal>[group]</literal>.</listitem>
- *   <listitem>.ini files don't have a strongly typed boolean entry type,
- *     they only have GetProfileInt(). In key files, only
- *     <literal>true</literal> and <literal>false</literal> (in lower case)
- *     are allowed.</listitem>
- *  </itemizedlist>
+ *
+ * - .ini files use the ';' character to begin comments,
+ *   key files use the '#' character.
+ *
+ * - Key files do not allow for ungrouped keys meaning only
+ *   comments can precede the first group.
+ *
+ * - Key files are always encoded in UTF-8.
+ *
+ * - Key and Group names are case-sensitive. For example, a group called
+ *   [GROUP] is a different from [group].
+ *
+ * - .ini files don't have a strongly typed boolean entry type,
+ *    they only have GetProfileInt(). In key files, only
+ *    true and false (in lower case) are allowed.
  *
  * Note that in contrast to the
  * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
