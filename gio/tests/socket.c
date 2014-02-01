@@ -29,6 +29,8 @@
 
 #include "gnetworkingprivate.h"
 
+static gboolean ipv6_supported;
+
 typedef struct {
   GSocket *server;
   GSocket *client;
@@ -338,6 +340,12 @@ test_ipv4_async (void)
 static void
 test_ipv6_async (void)
 {
+  if (!ipv6_supported)
+    {
+      g_test_skip ("No support for IPv6");
+      return;
+    }
+
   test_ip_async (G_SOCKET_FAMILY_IPV6);
 }
 
@@ -420,6 +428,12 @@ test_ipv4_sync (void)
 static void
 test_ipv6_sync (void)
 {
+  if (!ipv6_supported)
+    {
+      g_test_skip ("No support for IPv6");
+      return;
+    }
+
   test_ip_sync (G_SOCKET_FAMILY_IPV6);
 }
 
@@ -545,6 +559,12 @@ test_ipv6_v4mapped (void)
   GSocket *client;
   GSocketAddress *addr, *v4addr;
   GInetAddress *iaddr;
+
+  if (!ipv6_supported)
+    {
+      g_test_skip ("No support for IPv6");
+      return;
+    }
 
   data = create_server (G_SOCKET_FAMILY_IPV6, v4mapped_server_thread, TRUE);
 
@@ -1032,7 +1052,19 @@ int
 main (int   argc,
       char *argv[])
 {
+  GSocket *sock;
+
   g_test_init (&argc, &argv, NULL);
+
+  sock = g_socket_new (G_SOCKET_FAMILY_IPV6,
+                       G_SOCKET_TYPE_STREAM,
+                       G_SOCKET_PROTOCOL_DEFAULT,
+                       NULL);
+  if (sock != NULL)
+    {
+      ipv6_supported = TRUE;
+      g_object_unref (sock);
+    }
 
   g_test_add_func ("/socket/ipv4_sync", test_ipv4_sync);
   g_test_add_func ("/socket/ipv4_async", test_ipv4_async);
