@@ -414,10 +414,8 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
    * of the schemes set with g_simple_proxy_resolver_set_uri_proxy().
    *
    * Note that as a special case, if this URI starts with
-   * "<literal>socks://</literal>", #GSimpleProxyResolver will treat
-   * it as referring to all three of the <literal>socks5</literal>,
-   * <literal>socks4a</literal>, and <literal>socks4</literal> proxy
-   * types.
+   * "socks://", #GSimpleProxyResolver will treat it as referring
+   * to all three of the socks5, socks4a, and socks4 proxy types.
    */
   g_object_class_install_property (object_class, PROP_DEFAULT_PROXY,
 				   g_param_spec_string ("default-proxy",
@@ -435,32 +433,21 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
    *
    * Entries can be in one of 4 formats:
    *
-   * <itemizedlist>
-   *   <listitem>
-   *     A hostname, such as "<literal>example.com</literal>",
-   *     "<literal>.example.com</literal>", or
-   *     "<literal>*.example.com</literal>", any of which match
-   *     "<literal>example.com</literal>" or any subdomain of it.
-   *   </listitem>
-   *   <listitem>
-   *     An IPv4 or IPv6 address, such as
-   *     "<literal>192.168.1.1</literal>", which matches only
-   *     that address.
-   *   </listitem>
-   *   <listitem>
-   *     A hostname or IP address followed by a port, such as
-   *     "<literal>example.com:80</literal>", which matches whatever
-   *     the hostname or IP address would match, but only for URLs
-   *     with the (explicitly) indicated port. In the case of an IPv6
-   *     address, the address part must appear in brackets:
-   *     "<literal>[::1]:443</literal>"
-   *   </listitem>
-   *   <listitem>
-   *     An IP address range, given by a base address and prefix length,
-   *     such as "<literal>fe80::/10</literal>", which matches any
-   *     address in that range.
-   *   </listitem>
-   * </itemizedlist>
+   * - A hostname, such as "example.com", ".example.com", or
+   *   "*.example.com", any of which match "example.com" or
+   *   any subdomain of it.
+   *
+   * - An IPv4 or IPv6 address, such as "192.168.1.1",
+   *   which matches only that address.
+   *
+   * - A hostname or IP address followed by a port, such as
+   *   "example.com:80", which matches whatever the hostname or IP
+   *   address would match, but only for URLs with the (explicitly)
+   *   indicated port. In the case of an IPv6 address, the address
+   *   part must appear in brackets: "[::1]:443"
+   *
+   * - An IP address range, given by a base address and prefix length,
+   *   such as "fe80::/10", which matches any address in that range.
    *
    * Note that when dealing with Unicode hostnames, the matching is
    * done against the ASCII form of the name.
@@ -468,13 +455,10 @@ g_simple_proxy_resolver_class_init (GSimpleProxyResolverClass *resolver_class)
    * Also note that hostname exclusions apply only to connections made
    * to hosts identified by name, and IP address exclusions apply only
    * to connections made to hosts identified by address. That is, if
-   * <literal>example.com</literal> has an address of
-   * <literal>192.168.1.1</literal>, and the :ignore-hosts list
-   * contains only "<literal>192.168.1.1</literal>", then a connection
-   * to "<literal>example.com</literal>" (eg, via a #GNetworkAddress)
-   * will use the proxy, and a connection to
-   * "<literal>192.168.1.1</literal>" (eg, via a #GInetSocketAddress)
-   * will not.
+   * example.com has an address of 192.168.1.1, and the :ignore-hosts list
+   * contains only "192.168.1.1", then a connection to "example.com"
+   * (eg, via a #GNetworkAddress) will use the proxy, and a connection to
+   * "192.168.1.1" (eg, via a #GInetSocketAddress) will not.
    *
    * These rules match the "ignore-hosts"/"noproxy" rules most
    * commonly used by other applications.
@@ -500,9 +484,9 @@ g_simple_proxy_resolver_iface_init (GProxyResolverInterface *iface)
 /**
  * g_simple_proxy_resolver_new:
  * @default_proxy: (allow-none): the default proxy to use, eg
- *   "socks://192.168.1.1"
+ *     "socks://192.168.1.1"
  * @ignore_hosts: (allow-none): an optional list of hosts/IP addresses
- *   to not use a proxy for.
+ *     to not use a proxy for.
  *
  * Creates a new #GSimpleProxyResolver. See
  * #GSimpleProxyResolver:default-proxy and
@@ -532,16 +516,15 @@ g_simple_proxy_resolver_new (const gchar  *default_proxy,
  * don't match #GSimpleProxyResolver:ignore-hosts or a proxy set
  * via g_simple_proxy_resolver_set_uri_proxy().
  *
- * If @default_proxy starts with "<literal>socks://</literal>",
+ * If @default_proxy starts with "socks://",
  * #GSimpleProxyResolver will treat it as referring to all three of
- * the <literal>socks5</literal>, <literal>socks4a</literal>, and
- * <literal>socks4</literal> proxy types.
+ * the socks5, socks4a, and socks4 proxy types.
  *
  * Since: 2.36
  */
 void
-g_simple_proxy_resolver_set_default_proxy (GSimpleProxyResolver  *resolver,
-                                           const gchar           *default_proxy)
+g_simple_proxy_resolver_set_default_proxy (GSimpleProxyResolver *resolver,
+                                           const gchar          *default_proxy)
 {
   g_return_if_fail (G_IS_SIMPLE_PROXY_RESOLVER (resolver));
 
@@ -586,9 +569,8 @@ g_simple_proxy_resolver_set_ignore_hosts (GSimpleProxyResolver  *resolver,
  * #GSimpleProxyResolver:ignore-hosts) will be proxied via @proxy.
  *
  * As with #GSimpleProxyResolver:default-proxy, if @proxy starts with
- * "<literal>socks://</literal>", #GSimpleProxyResolver will treat it
- * as referring to all three of the <literal>socks5</literal>,
- * <literal>socks4a</literal>, and <literal>socks4</literal> proxy
+ * "socks://", #GSimpleProxyResolver will treat it
+ * as referring to all three of the socks5, socks4a, and socks4 proxy
  * types.
  *
  * Since: 2.36
