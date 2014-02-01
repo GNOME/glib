@@ -30,29 +30,27 @@
  * @include: gio/gio.h
  * @see_also: #GAsyncResult
  *
- * <para>
- *   A #GTask represents and manages a cancellable "task".
- * </para>
- * <refsect2>
- *   <title>Asynchronous operations</title>
- *   <para>
- *     The most common usage of #GTask is as a #GAsyncResult, to
- *     manage data during an asynchronous operation. You call
- *     g_task_new() in the "start" method, followed by
- *     g_task_set_task_data() and the like if you need to keep some
- *     additional data associated with the task, and then pass the
- *     task object around through your asynchronous operation.
- *     Eventually, you will call a method such as
- *     g_task_return_pointer() or g_task_return_error(), which will
- *     save the value you give it and then invoke the task's callback
- *     function (waiting until the next iteration of the main
- *     loop first, if necessary). The caller will pass the #GTask back
- *     to the operation's finish function (as a #GAsyncResult), and
- *     you can use g_task_propagate_pointer() or the like to extract
- *     the return value.
- *   </para>
- *   Here is an example for using GTask as a GAsyncResult:
- *   |[
+ * A #GTask represents and manages a cancellable "task".
+ *
+ * ## Asynchronous operations
+ *
+ * The most common usage of #GTask is as a #GAsyncResult, to
+ * manage data during an asynchronous operation. You call
+ * g_task_new() in the "start" method, followed by
+ * g_task_set_task_data() and the like if you need to keep some
+ * additional data associated with the task, and then pass the
+ * task object around through your asynchronous operation.
+ * Eventually, you will call a method such as
+ * g_task_return_pointer() or g_task_return_error(), which will
+ * save the value you give it and then invoke the task's callback
+ * function (waiting until the next iteration of the main
+ * loop first, if necessary). The caller will pass the #GTask back
+ * to the operation's finish function (as a #GAsyncResult), and
+ * you can use g_task_propagate_pointer() or the like to extract
+ * the return value.
+ *
+ * Here is an example for using GTask as a GAsyncResult:
+ * |[
  *     typedef struct {
  *       CakeFrostingType frosting;
  *       char *message;
@@ -145,23 +143,21 @@
  *       return g_task_propagate_pointer (G_TASK (result), error);
  *     }
  * ]|
- * </refsect2>
- * <refsect2>
- *   <title>Chained asynchronous operations</title>
- *   <para>
- *     #GTask also tries to simplify asynchronous operations that
- *     internally chain together several smaller asynchronous
- *     operations. g_task_get_cancellable(), g_task_get_context(), and
- *     g_task_get_priority() allow you to get back the task's
- *     #GCancellable, #GMainContext, and <link
- *     linkend="io-priority">I/O priority</link> when starting a new
- *     subtask, so you don't have to keep track of them yourself.
- *     g_task_attach_source() simplifies the case of waiting for a
- *     source to fire (automatically using the correct #GMainContext
- *     and priority).
- *   </para>
- *   <para>
- *   Here is an example for chained asynchronous operations:
+ *
+ * ## Chained asynchronous operations
+ *
+ * #GTask also tries to simplify asynchronous operations that
+ * internally chain together several smaller asynchronous
+ * operations. g_task_get_cancellable(), g_task_get_context(), and
+ * g_task_get_priority() allow you to get back the task's
+ * #GCancellable, #GMainContext, and <link
+ * linkend="io-priority">I/O priority</link> when starting a new
+ * subtask, so you don't have to keep track of them yourself.
+ * g_task_attach_source() simplifies the case of waiting for a
+ * source to fire (automatically using the correct #GMainContext
+ * and priority).
+ *
+ * Here is an example for chained asynchronous operations:
  *   |[
  *     typedef struct {
  *       Cake *cake;
@@ -288,18 +284,15 @@
  *       return g_task_propagate_pointer (G_TASK (result), error);
  *     }
  * ]|
- * </para>
- * </refsect2>
- * <refsect2>
- *   <title>Asynchronous operations from synchronous ones</title>
- *   <para>
- *     You can use g_task_run_in_thread() to turn a synchronous
- *     operation into an asynchronous one, by running it in a thread
- *     which will then dispatch the result back to the caller's
- *     #GMainContext when it completes.
- *   </para>
- *   <para>
- *   Running a task in a thread:
+ *
+ * ## Asynchronous operations from synchronous ones
+ *
+ * You can use g_task_run_in_thread() to turn a synchronous
+ * operation into an asynchronous one, by running it in a thread
+ * which will then dispatch the result back to the caller's
+ * #GMainContext when it completes.
+ *
+ * Running a task in a thread:
  *   |[
  *     typedef struct {
  *       guint radius;
@@ -368,25 +361,22 @@
  *       return g_task_propagate_pointer (G_TASK (result), error);
  *     }
  * ]|
- * </para>
- * </refsect2>
- * <refsect2>
- *   <title>Adding cancellability to uncancellable tasks</title>
- *   <para>
- *     Finally, g_task_run_in_thread() and g_task_run_in_thread_sync()
- *     can be used to turn an uncancellable operation into a
- *     cancellable one. If you call g_task_set_return_on_cancel(),
- *     passing %TRUE, then if the task's #GCancellable is cancelled,
- *     it will return control back to the caller immediately, while
- *     allowing the task thread to continue running in the background
- *     (and simply discarding its result when it finally does finish).
- *     Provided that the task thread is careful about how it uses
- *     locks and other externally-visible resources, this allows you
- *     to make "GLib-friendly" asynchronous and cancellable
- *     synchronous variants of blocking APIs.
- *   </para>
- *   <para>
- *   Cancelling a task:
+ *
+ * ## Adding cancellability to uncancellable tasks
+ * 
+ * Finally, g_task_run_in_thread() and g_task_run_in_thread_sync()
+ * can be used to turn an uncancellable operation into a
+ * cancellable one. If you call g_task_set_return_on_cancel(),
+ * passing %TRUE, then if the task's #GCancellable is cancelled,
+ * it will return control back to the caller immediately, while
+ * allowing the task thread to continue running in the background
+ * (and simply discarding its result when it finally does finish).
+ * Provided that the task thread is careful about how it uses
+ * locks and other externally-visible resources, this allows you
+ * to make "GLib-friendly" asynchronous and cancellable
+ * synchronous variants of blocking APIs.
+ *
+ * Cancelling a task:
  *   |[
  *     static void
  *     bake_cake_thread (GTask         *task,
@@ -439,7 +429,7 @@
  *                            GAsyncReadyCallback  callback,
  *                            gpointer             user_data)
  *     {
- *       CakeData *cake_data;
+ J*       CakeData *cake_data;
  *       GTask *task;
  *
  *       cake_data = g_slice_new (CakeData);
@@ -477,80 +467,62 @@
  *       return cake;
  *     }
  * ]|
- * </para>
- * </refsect2>
- * <refsect2>
- *   <title>Porting from <literal>GSimpleAsyncResult</literal></title>
- *   <para>
- *     #GTask's API attempts to be simpler than #GSimpleAsyncResult's
- *     in several ways:
- *   </para>
- *   <itemizedlist>
- *     <listitem><para>
- *       You can save task-specific data with g_task_set_task_data(), and
- *       retrieve it later with g_task_get_task_data(). This replaces the
- *       abuse of g_simple_async_result_set_op_res_gpointer() for the same
- *       purpose with #GSimpleAsyncResult.
- *     </para></listitem>
- *     <listitem><para>
- *       In addition to the task data, #GTask also keeps track of the
- *       <link linkend="io-priority">priority</link>, #GCancellable, and
- *       #GMainContext associated with the task, so tasks that consist of
- *       a chain of simpler asynchronous operations will have easy access
- *       to those values when starting each sub-task.
- *     </para></listitem>
- *     <listitem><para>
- *       g_task_return_error_if_cancelled() provides simplified
- *       handling for cancellation. In addition, cancellation
- *       overrides any other #GTask return value by default, like
- *       #GSimpleAsyncResult does when
- *       g_simple_async_result_set_check_cancellable() is called.
- *       (You can use g_task_set_check_cancellable() to turn off that
- *       behavior.) On the other hand, g_task_run_in_thread()
- *       guarantees that it will always run your
- *       <literal>task_func</literal>, even if the task's #GCancellable
- *       is already cancelled before the task gets a chance to run;
- *       you can start your <literal>task_func</literal> with a
- *       g_task_return_error_if_cancelled() check if you need the
- *       old behavior.
- *     </para></listitem>
- *     <listitem><para>
- *       The "return" methods (eg, g_task_return_pointer())
- *       automatically cause the task to be "completed" as well, and
- *       there is no need to worry about the "complete" vs "complete
- *       in idle" distinction. (#GTask automatically figures out
- *       whether the task's callback can be invoked directly, or
- *       if it needs to be sent to another #GMainContext, or delayed
- *       until the next iteration of the current #GMainContext.)
- *     </para></listitem>
- *     <listitem><para>
- *       The "finish" functions for #GTask-based operations are generally
- *       much simpler than #GSimpleAsyncResult ones, normally consisting
- *       of only a single call to g_task_propagate_pointer() or the like.
- *       Since g_task_propagate_pointer() "steals" the return value from
- *       the #GTask, it is not necessary to juggle pointers around to
- *       prevent it from being freed twice.
- *     </para></listitem>
- *     <listitem><para>
- *       With #GSimpleAsyncResult, it was common to call
- *       g_simple_async_result_propagate_error() from the
- *       <literal>_finish()</literal> wrapper function, and have
- *       virtual method implementations only deal with successful
- *       returns. This behavior is deprecated, because it makes it
- *       difficult for a subclass to chain to a parent class's async
- *       methods. Instead, the wrapper function should just be a
- *       simple wrapper, and the virtual method should call an
- *       appropriate <literal>g_task_propagate_</literal> function.
- *       Note that wrapper methods can now use
- *       g_async_result_legacy_propagate_error() to do old-style
- *       #GSimpleAsyncResult error-returning behavior, and
- *       g_async_result_is_tagged() to check if a result is tagged as
- *       having come from the <literal>_async()</literal> wrapper
- *       function (for "short-circuit" results, such as when passing
- *       0 to g_input_stream_read_async()).
- *     </para></listitem>
- *   </itemizedlist>
- * </refsect2>
+ *
+ * ## Porting from GSimpleAsyncResult
+ * 
+ * #GTask's API attempts to be simpler than #GSimpleAsyncResult's
+ * in several ways:
+ * - You can save task-specific data with g_task_set_task_data(), and
+ *   retrieve it later with g_task_get_task_data(). This replaces the
+ *   abuse of g_simple_async_result_set_op_res_gpointer() for the same
+ *   purpose with #GSimpleAsyncResult.
+ * - In addition to the task data, #GTask also keeps track of the
+ *   <link linkend="io-priority">priority</link>, #GCancellable, and
+ *   #GMainContext associated with the task, so tasks that consist of
+ *   a chain of simpler asynchronous operations will have easy access
+ *   to those values when starting each sub-task.
+ * - g_task_return_error_if_cancelled() provides simplified
+ *   handling for cancellation. In addition, cancellation
+ *   overrides any other #GTask return value by default, like
+ *   #GSimpleAsyncResult does when
+ *   g_simple_async_result_set_check_cancellable() is called.
+ *   (You can use g_task_set_check_cancellable() to turn off that
+ *   behavior.) On the other hand, g_task_run_in_thread()
+ *   guarantees that it will always run your
+ *   <literal>task_func</literal>, even if the task's #GCancellable
+ *   is already cancelled before the task gets a chance to run;
+ *   you can start your <literal>task_func</literal> with a
+ *   g_task_return_error_if_cancelled() check if you need the
+ *   old behavior.
+ * - The "return" methods (eg, g_task_return_pointer())
+ *   automatically cause the task to be "completed" as well, and
+ *   there is no need to worry about the "complete" vs "complete
+ *   in idle" distinction. (#GTask automatically figures out
+ *   whether the task's callback can be invoked directly, or
+ *   if it needs to be sent to another #GMainContext, or delayed
+ *   until the next iteration of the current #GMainContext.)
+ * - The "finish" functions for #GTask-based operations are generally
+ *   much simpler than #GSimpleAsyncResult ones, normally consisting
+ *   of only a single call to g_task_propagate_pointer() or the like.
+ *   Since g_task_propagate_pointer() "steals" the return value from
+ *   the #GTask, it is not necessary to juggle pointers around to
+ *   prevent it from being freed twice.
+ * - With #GSimpleAsyncResult, it was common to call
+ *   g_simple_async_result_propagate_error() from the
+ *   <literal>_finish()</literal> wrapper function, and have
+ *   virtual method implementations only deal with successful
+ *   returns. This behavior is deprecated, because it makes it
+ *   difficult for a subclass to chain to a parent class's async
+ *   methods. Instead, the wrapper function should just be a
+ *   simple wrapper, and the virtual method should call an
+ *   appropriate <literal>g_task_propagate_</literal> function.
+ *   Note that wrapper methods can now use
+ *   g_async_result_legacy_propagate_error() to do old-style
+ *   #GSimpleAsyncResult error-returning behavior, and
+ *   g_async_result_is_tagged() to check if a result is tagged as
+ *   having come from the <literal>_async()</literal> wrapper
+ *   function (for "short-circuit" results, such as when passing
+ *   0 to g_input_stream_read_async()).
  */
 
 /**
