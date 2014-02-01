@@ -67,27 +67,19 @@
  * to established concepts found in the other test frameworks (JUnit, NUnit,
  * RUnit), which in turn is based on smalltalk unit testing concepts.
  *
- * <variablelist>
- *   <varlistentry>
- *     <term>Test case</term>
- *     <listitem>Tests (test methods) are grouped together with their
- *       fixture into test cases.</listitem>
- *   </varlistentry>
- *   <varlistentry>
- *     <term>Fixture</term>
- *     <listitem>A test fixture consists of fixture data and setup and
- *       teardown methods to establish the environment for the test
- *       functions. We use fresh fixtures, i.e. fixtures are newly set
- *       up and torn down around each test invocation to avoid dependencies
- *       between tests.</listitem>
- *   </varlistentry>
- *   <varlistentry>
- *     <term>Test suite</term>
- *     <listitem>Test cases can be grouped into test suites, to allow
- *       subsets of the available tests to be run. Test suites can be
- *       grouped into other test suites as well.</listitem>
- *   </varlistentry>
- * </variablelist>
+ * - Test case: Tests (test methods) are grouped together with their
+ *   fixture into test cases.
+ *
+ * - Fixture: A test fixture consists of fixture data and setup and
+ *   teardown methods to establish the environment for the test
+ *   functions. We use fresh fixtures, i.e. fixtures are newly set
+ *   up and torn down around each test invocation to avoid dependencies
+ *   between tests.
+ *
+ * - Test suite: Test cases can be grouped into test suites, to allow
+ *   subsets of the available tests to be run. Test suites can be
+ *   grouped into other test suites as well.
+ *
  * The API is designed to handle creation and registration of test suites
  * and test cases implicitly. A simple call like
  * |[
@@ -1024,82 +1016,32 @@ parse_args (gint    *argc_p,
  * Initialize the GLib testing framework, e.g. by seeding the
  * test random number generator, the name for g_get_prgname()
  * and parsing test related command line args.
+ *
  * So far, the following arguments are understood:
- * <variablelist>
- *   <varlistentry>
- *     <term><option>-l</option></term>
- *     <listitem><para>
- *       List test cases available in a test executable.
- *     </para></listitem>
- *   </varlistentry>
- *   <varlistentry>
- *     <term><option>--seed=<replaceable>RANDOMSEED</replaceable></option></term>
- *     <listitem><para>
- *       Provide a random seed to reproduce test runs using random numbers.
- *     </para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term><option>--verbose</option></term>
- *       <listitem><para>Run tests verbosely.</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term><option>-q</option>, <option>--quiet</option></term>
- *       <listitem><para>Run tests quietly.</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term><option>-p <replaceable>TESTPATH</replaceable></option></term>
- *       <listitem><para>
- *         Execute all tests matching <replaceable>TESTPATH</replaceable>.
- *         This can also be used to force a test to run that would otherwise
- *         be skipped (ie, a test whose name contains "/subprocess").
- *       </para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term><option>-m {perf|slow|thorough|quick|undefined|no-undefined}</option></term>
- *       <listitem><para>
- *         Execute tests according to these test modes:
- *         <variablelist>
- *           <varlistentry>
- *             <term>perf</term>
- *             <listitem><para>
- *               Performance tests, may take long and report results.
- *             </para></listitem>
- *           </varlistentry>
- *           <varlistentry>
- *             <term>slow, thorough</term>
- *             <listitem><para>
- *               Slow and thorough tests, may take quite long and
- *               maximize coverage.
- *             </para></listitem>
- *           </varlistentry>
- *           <varlistentry>
- *             <term>quick</term>
- *             <listitem><para>
- *               Quick tests, should run really quickly and give good coverage.
- *             </para></listitem>
- *           </varlistentry>
- *           <varlistentry>
- *             <term>undefined</term>
- *             <listitem><para>
- *               Tests for undefined behaviour, may provoke programming errors
- *               under g_test_trap_subprocess() or g_test_expect_messages() to check
- *               that appropriate assertions or warnings are given
- *             </para></listitem>
- *           </varlistentry>
- *           <varlistentry>
- *             <term>no-undefined</term>
- *             <listitem><para>
- *               Avoid tests for undefined behaviour
- *             </para></listitem>
- *           </varlistentry>
- *         </variablelist>
- *       </para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term><option>--debug-log</option></term>
- *       <listitem><para>Debug test logging output.</para></listitem>
- *     </varlistentry>
- *  </variablelist>
+ *
+ * - <option>-l</option>: List test cases available in a test executable.
+ * - <option>--seed=SEED</option>: Provide a random seed to reproduce test
+ *   runs using random numbers.
+ * - <option>--verbose</option>: Run tests verbosely.
+ * - <option>-q</option>, <option>--quiet</option>: Run tests quietly.
+ * - <option>-p PATH</option>: Execute all tests matching the given path.
+ *   This can also be used to force a test to run that would otherwise
+ *   be skipped (ie, a test whose name contains "/subprocess").
+ * - <option>-m {perf|slow|thorough|quick|undefined|no-undefined}</option>: Execute tests according to these test modes:
+ *
+ *   <option>perf</option>: Performance tests, may take long and report results.
+ *
+ *   <option>slow</option>, <option>thorough</option>: Slow and thorough tests, may take quite long and maximize coverage.
+ *
+ *   <option>quick</option>: Quick tests, should run really quickly and give good coverage.
+ *
+ *   <option>undefined</option>: Tests for undefined behaviour, may provoke programming errors
+ *   under g_test_trap_subprocess() or g_test_expect_messages() to check
+ *   that appropriate assertions or warnings are given
+ *
+ *   <option>no-undefined</option>: Avoid tests for undefined behaviour
+ *
+ * - <option>--debug-log</option>: Debug test logging output.
  *
  * Since: 2.16
  */
