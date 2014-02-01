@@ -1133,24 +1133,19 @@ write_to_temp_file (const gchar  *contents,
  *
  * This write is atomic in the sense that it is first written to a temporary
  * file which is then renamed to the final name. Notes:
- * <itemizedlist>
- * <listitem>
- *    On Unix, if @filename already exists hard links to @filename will break.
- *    Also since the file is recreated, existing permissions, access control
- *    lists, metadata etc. may be lost. If @filename is a symbolic link,
- *    the link itself will be replaced, not the linked file.
- * </listitem>
- * <listitem>
- *   On Windows renaming a file will not remove an existing file with the
+ *
+ * - On UNIX, if @filename already exists hard links to @filename will break.
+ *   Also since the file is recreated, existing permissions, access control
+ *   lists, metadata etc. may be lost. If @filename is a symbolic link,
+ *   the link itself will be replaced, not the linked file.
+ *
+ * - On Windows renaming a file will not remove an existing file with the
  *   new name, so on Windows there is a race condition between the existing
  *   file being removed and the temporary file being renamed.
- * </listitem>
- * <listitem>
- *   On Windows there is no way to remove a file that is open to some
+ *
+ * - On Windows there is no way to remove a file that is open to some
  *   process, or mapped into memory. Thus, this function will fail if
  *   @filename already exists and is open.
- * </listitem>
- * </itemizedlist>
  *
  * If the call was successful, it returns %TRUE. If the call was not successful,
  * it returns %FALSE and sets @error. The error domain is #G_FILE_ERROR.
@@ -1162,7 +1157,7 @@ write_to_temp_file (const gchar  *contents,
  * Return value: %TRUE on success, %FALSE if an error occurred
  *
  * Since: 2.8
- **/
+ */
 gboolean
 g_file_set_contents (const gchar  *filename,
 		     const gchar  *contents,
