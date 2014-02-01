@@ -269,7 +269,7 @@
  * |[
  *   char buf[G_ASCII_DTOSTR_BUF_SIZE];
  *
- *   fprintf (out, "value=&percnt;s\n", g_ascii_dtostr (buf, sizeof (buf), value));
+ *   fprintf (out, "value=%s\n", g_ascii_dtostr (buf, sizeof (buf), value));
  * ]|
  */
 

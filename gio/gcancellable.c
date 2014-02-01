@@ -106,12 +106,13 @@ g_cancellable_class_init (GCancellableClass *klass)
    *
    * An example of how to us this:
    * |[
-   *     /<!-- -->* Make sure we don't do any unnecessary work if already cancelled *<!-- -->/
+   *     /&ast; Make sure we don't do unnecessary work if already cancelled &ast;/
    *     if (g_cancellable_set_error_if_cancelled (cancellable, error))
    *       return;
    *
-   *     /<!-- -->* Set up all the data needed to be able to
-   *      * handle cancellation of the operation *<!-- -->/
+   *     /&ast; Set up all the data needed to be able to
+   *      &ast; handle cancellation of the operation
+   *      &ast;/
    *     my_data = my_data_new (...);
    *
    *     id = 0;
@@ -120,12 +121,13 @@ g_cancellable_class_init (GCancellableClass *klass)
    *     			      G_CALLBACK (cancelled_handler)
    *     			      data, NULL);
    *
-   *     /<!-- -->* cancellable operation here... *<!-- -->/
+   *     /&ast; cancellable operation here... &ast;/
    *
    *     g_cancellable_disconnect (cancellable, id);
    *
-   *     /<!-- -->* cancelled_handler is never called after this, it
-   *      * is now safe to free the data *<!-- -->/
+   *     /&ast; cancelled_handler is never called after this,
+   *      &ast; it is now safe to free the data
+   *      &ast;/
    *     my_data_free (my_data);  
    * ]|
    *

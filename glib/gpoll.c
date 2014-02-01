@@ -108,7 +108,7 @@ extern gboolean _g_main_poll_debug;
  * file descriptor, but the situation is much more complicated on
  * Windows. If you need to use g_poll() in code that has to run on
  * Windows, the easiest solution is to construct all of your
- * #GPollFD<!-- -->s with g_io_channel_win32_make_pollfd().
+ * #GPollFDs with g_io_channel_win32_make_pollfd().
  *
  * Return value: the number of entries in @fds whose %revents fields
  * were filled in, or 0 if the operation timed out, or -1 on error or

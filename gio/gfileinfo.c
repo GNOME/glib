@@ -2285,7 +2285,7 @@ matcher_optimize (GFileAttributeMatcher *matcher)
  * @attributes: an attribute string to match.
  *
  * Creates a new file attribute matcher, which matches attributes
- * against a given string. #GFileAttributeMatcher<!-- -->s are reference
+ * against a given string. #GFileAttributeMatchers are reference
  * counted structures, and are created with a reference count of 1. If
  * the number of references falls to 0, the #GFileAttributeMatcher is
  * automatically destroyed.

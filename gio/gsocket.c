@@ -103,7 +103,7 @@
  * reasons. For instance, on Windows a socket is always seen as writable
  * until a write returns %G_IO_ERROR_WOULD_BLOCK.
  *
- * #GSocket<!-- -->s can be either connection oriented or datagram based.
+ * #GSockets can be either connection oriented or datagram based.
  * For connection oriented types you must first establish a connection by
  * either connecting to an address or accepting a connection from another
  * address. For connectionless socket types the target/source address is
@@ -3708,7 +3708,7 @@ g_socket_condition_timed_wait (GSocket       *socket,
  * then @vectors is assumed to be terminated by a #GOutputVector with a
  * %NULL buffer pointer.) The #GOutputVector structs describe the buffers
  * that the sent data will be gathered from. Using multiple
- * #GOutputVector<!-- -->s is more memory-efficient than manually copying
+ * #GOutputVectors is more memory-efficient than manually copying
  * data from multiple sources into a single buffer, and more
  * network-efficient than making multiple calls to g_socket_send().
  *

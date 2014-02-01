@@ -121,7 +121,7 @@ g_app_info_dup (GAppInfo *appinfo)
  * @appinfo1: the first #GAppInfo.
  * @appinfo2: the second #GAppInfo.
  *
- * Checks if two #GAppInfo<!-- -->s are equal.
+ * Checks if two #GAppInfos are equal.
  *
  * Returns: %TRUE if @appinfo1 is equal to @appinfo2. %FALSE otherwise.
  **/
@@ -760,8 +760,8 @@ g_app_info_can_delete (GAppInfo *appinfo)
  * Tries to delete a #GAppInfo.
  *
  * On some platforms, there may be a difference between user-defined
- * #GAppInfo<!-- -->s which can be deleted, and system-wide ones which
- * cannot. See g_app_info_can_delete().
+ * #GAppInfos which can be deleted, and system-wide ones which cannot.
+ * See g_app_info_can_delete().
  *
  * Virtual: do_delete
  * Returns: %TRUE if @appinfo has been deleted

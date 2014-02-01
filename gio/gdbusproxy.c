@@ -2976,7 +2976,7 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
  *                     -1,
  *                     NULL,
  *                     (GAsyncReadyCallback) two_strings_done,
- *                     &amp;data);
+ *                     &data);
  * ]|
  *
  * If @proxy has an expected interface (see
@@ -3066,7 +3066,7 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
  *                          G_DBUS_CALL_FLAGS_NONE,
  *                          -1,
  *                          NULL,
- *                          &amp;error);
+ *                          &error);
  * ]|
  *
  * The calling thread is blocked until a reply is received. See

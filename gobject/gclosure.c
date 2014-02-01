@@ -43,13 +43,13 @@
  * A #GClosure represents a callback supplied by the programmer. It
  * will generally comprise a function of some kind and a marshaller
  * used to call it. It is the reponsibility of the marshaller to
- * convert the arguments for the invocation from #GValue<!-- -->s into
+ * convert the arguments for the invocation from #GValues into
  * a suitable form, perform the callback on the converted arguments,
  * and transform the return value back into a #GValue.
  *
  * In the case of C programs, a closure usually just holds a pointer
  * to a function and maybe a data argument, and the marshaller
- * converts between #GValue<!-- --> and native C types. The GObject
+ * converts between #GValue and native C types. The GObject
  * library provides the #GCClosure type for this purpose. Bindings for
  * other languages need marshallers which convert between #GValue<!--
  * -->s and suitable representations in the runtime of the language in
@@ -156,7 +156,7 @@ enum {
  * struct _MyClosure
  * {
  *   GClosure closure;
- *   // extra data goes here
+ *   /&ast; extra data goes here &ast;/
  * };
  *
  * static void
@@ -165,7 +165,7 @@ enum {
  * {
  *   MyClosure *my_closure = (MyClosure *)closure;
  *
- *   // free extra data here
+ *   /&ast; free extra data here &ast;/
  * }
  *
  * MyClosure *my_closure_new (gpointer data)
@@ -176,7 +176,7 @@ enum {
  *   closure = g_closure_new_simple (sizeof (MyClosure), data);
  *   my_closure = (MyClosure *) closure;
  *
- *   // initialize extra data here
+ *   /&ast; initialize extra data here &ast;/
  *
  *   g_closure_add_finalize_notifier (closure, notify_data,
  *                                    my_closure_finalize);
@@ -611,7 +611,7 @@ g_closure_unref (GClosure *closure)
  * |[
  * closure = g_cclosure_new (cb_func, cb_data);
  * g_source_set_closure (source, closure);
- * g_closure_unref (closure); // XXX GObject doesn't really need this
+ * g_closure_unref (closure); /&ast; GObject doesn't really need this &ast;/
  * ]|
  * Because g_source_set_closure() (and similar functions) take ownership of the
  * initial reference count, if it is unowned, we instead can write:
@@ -726,7 +726,7 @@ g_closure_remove_finalize_notifier (GClosure      *closure,
  *                doesn't return a value.
  * @n_param_values: the length of the @param_values array
  * @param_values: (array length=n_param_values): an array of
- *                #GValue<!-- -->s holding the arguments on which to
+ *                #GValues holding the arguments on which to
  *                invoke the callback of @closure
  * @invocation_hint: (allow-none): a context-dependent invocation hint
  *
@@ -1360,7 +1360,7 @@ va_to_ffi_type (GType gtype,
  * @return_gvalue: A #GValue to store the return value. May be %NULL
  *   if the callback of closure doesn't return a value.
  * @n_param_values: The length of the @param_values array.
- * @param_values: An array of #GValue<!-- -->s holding the arguments
+ * @param_values: An array of #GValues holding the arguments
  *   on which to invoke the callback of closure.
  * @invocation_hint: The invocation hint given as the last argument to
  *   g_closure_invoke().

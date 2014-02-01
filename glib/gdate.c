@@ -165,7 +165,7 @@
  * time_t ttime;
  * GTime gtime;
  *
- * time (&amp;ttime);
+ * time (&ttime);
  * gtime = (GTime)ttime;
  * ]|
  */

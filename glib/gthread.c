@@ -252,9 +252,9 @@
  *     static int current_number = 0;
  *     int ret_val;
  *
- *     g_mutex_lock (&amp;mutex);
+ *     g_mutex_lock (&mutex);
  *     ret_val = current_number = calc_next_number (current_number);
- *     g_mutex_unlock (&amp;mutex);
+ *     g_mutex_unlock (&mutex);
  *
  *     return ret_val;
  *   }
@@ -320,10 +320,10 @@
  *     if (!array)
  *       return NULL;
  *
- *     g_rw_lock_reader_lock (&amp;lock);
+ *     g_rw_lock_reader_lock (&lock);
  *     if (index < array->len)
  *       retval = g_ptr_array_index (array, index);
- *     g_rw_lock_reader_unlock (&amp;lock);
+ *     g_rw_lock_reader_unlock (&lock);
  *
  *     return retval;
  *   }
@@ -618,14 +618,14 @@ g_once_impl (GOnce       *once,
  * |[
  *   static gsize initialization_value = 0;
  *
- *   if (g_once_init_enter (&amp;initialization_value))
+ *   if (g_once_init_enter (&initialization_value))
  *     {
- *       gsize setup_value = 42; /&ast;* initialization code here *&ast;/
+ *       gsize setup_value = 42; /&ast; initialization code here &ast;/
  *
- *       g_once_init_leave (&amp;initialization_value, setup_value);
+ *       g_once_init_leave (&initialization_value, setup_value);
  *     }
  *
- *   /&ast;* use initialization_value here *&ast;/
+ *   /&ast; use initialization_value here &ast;/
  * ]|
  *
  * Returns: %TRUE if the initialization section should be entered,

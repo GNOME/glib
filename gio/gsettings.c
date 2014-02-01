@@ -637,7 +637,7 @@ g_settings_class_init (GSettingsClass *class)
    * GSettings::change-event:
    * @settings: the object on which the signal was emitted
    * @keys: (array length=n_keys) (element-type GQuark) (allow-none):
-   *        an array of #GQuark<!-- -->s for the changed keys, or %NULL
+   *        an array of #GQuarks for the changed keys, or %NULL
    * @n_keys: the length of the @keys array, or 0
    *
    * The "change-event" signal is emitted once per change event that

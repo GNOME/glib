@@ -2524,14 +2524,14 @@ g_markup_vprintf_escaped (const gchar *format,
  * might themselves contain markup.
  *
  * |[
- * const char *store = "Fortnum &amp; Mason";
+ * const char *store = "Fortnum & Mason";
  * const char *item = "Tea";
  * char *output;
- * &nbsp;
- * output = g_markup_printf_escaped ("&lt;purchase&gt;"
- *                                   "&lt;store&gt;&percnt;s&lt;/store&gt;"
- *                                   "&lt;item&gt;&percnt;s&lt;/item&gt;"
- *                                   "&lt;/purchase&gt;",
+ * 
+ * output = g_markup_printf_escaped ("<purchase>"
+ *                                   "<store>%s</store>"
+ *                                   "<item>%s</item>"
+ *                                   "</purchase>",
  *                                   store, item);
  * ]|
  *

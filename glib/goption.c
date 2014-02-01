@@ -77,7 +77,7 @@
  *   --rand                   Randomize the data
  * </screen></informalexample>
  *
- * GOption groups options in #GOptionGroup<!-- -->s, which makes it easy to
+ * GOption groups options in #GOptionGroups, which makes it easy to
  * incorporate options from multiple sources. The intended use for this is
  * to let applications collect option groups from the libraries it uses,
  * add them to their #GOptionContext, and parse all options by a single call
@@ -581,7 +581,7 @@ g_option_context_get_main_group (GOptionContext *context)
 /**
  * g_option_context_add_main_entries:
  * @context: a #GOptionContext
- * @entries: a %NULL-terminated array of #GOptionEntry<!-- -->s
+ * @entries: a %NULL-terminated array of #GOptionEntrys
  * @translation_domain: (allow-none): a translation domain to use for translating
  *    the <option>--help</option> output for the options in @entries
  *    with gettext(), or %NULL
@@ -2227,7 +2227,7 @@ g_option_group_free (GOptionGroup *group)
 /**
  * g_option_group_add_entries:
  * @group: a #GOptionGroup
- * @entries: a %NULL-terminated array of #GOptionEntry<!-- -->s
+ * @entries: a %NULL-terminated array of #GOptionEntrys
  *
  * Adds the options specified in @entries to @group.
  *
@@ -2339,7 +2339,7 @@ g_option_group_set_error_hook (GOptionGroup     *group,
  *
  * Sets the function which is used to translate user-visible
  * strings, for <option>--help</option> output. Different
- * groups can use different #GTranslateFunc<!-- -->s. If @func
+ * groups can use different #GTranslateFuncs. If @func
  * is %NULL, strings are not translated.
  *
  * If you are using gettext(), you only need to set the translation

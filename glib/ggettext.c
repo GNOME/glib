@@ -477,8 +477,8 @@ g_dngettext (const gchar *domain,
  * <filename>glib/gi18n-lib.h</filename> after defining the %GETTEXT_PACKAGE
  * macro suitably for your library:
  * |[
- * &num;define GETTEXT_PACKAGE "gtk20"
- * &num;include &lt;glib/gi18n-lib.h&gt;
+ * #define GETTEXT_PACKAGE "gtk20"
+ * #include <glib/gi18n-lib.h>
  * ]|
  * For an application, note that you also have to call bindtextdomain(),
  * bind_textdomain_codeset(), textdomain() and setlocale() early on in your
@@ -602,8 +602,8 @@ g_dngettext (const gchar *domain,
  *   const char *string;
  *   ...
  *   string
- *     = index &gt; 1 ? g_dpgettext2 (NULL, "some context", "a default message")
- *                    : g_dpgettext2 (NULL, "some context", messages[index]);
+ *     = index > 1 ? g_dpgettext2 (NULL, "some context", "a default message")
+ *                 : g_dpgettext2 (NULL, "some context", messages[index]);
  *
  *   fputs (string);
  *   ...

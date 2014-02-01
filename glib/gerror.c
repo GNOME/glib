@@ -65,13 +65,14 @@
  * |[
  * gchar *contents;
  * GError *err = NULL;
- * g_file_get_contents ("foo.txt", &amp;contents, NULL, &amp;err);
- * g_assert ((contents == NULL &amp;&amp; err != NULL) || (contents != NULL &amp;&amp; err == NULL));
+ *
+ * g_file_get_contents ("foo.txt", &contents, NULL, &err);
+ * g_assert ((contents == NULL && err != NULL) || (contents != NULL && err == NULL));
  * if (err != NULL)
  *   {
  *     /&ast; Report error to user, and free error &ast;/
  *     g_assert (contents == NULL);
- *     fprintf (stderr, "Unable to read file: &percnt;s\n", err->message);
+ *     fprintf (stderr, "Unable to read file: %s\n", err->message);
  *     g_error_free (err);
  *   }
  * else
@@ -89,7 +90,7 @@
  * are only interested in whether it failed and don't need to display
  * an error message, you can pass %NULL for the @error argument:
  * |[
- * if (g_file_get_contents ("foo.txt", &amp;contents, NULL, NULL)) /&ast; ignore errors &ast;/
+ * if (g_file_get_contents ("foo.txt", &contents, NULL, NULL)) /&ast; ignore errors &ast;/
  *   /&ast; no error occurred &ast;/ ;
  * else
  *   /&ast; error &ast;/ ;
@@ -122,12 +123,12 @@
  *
  *   fd = open ("file.txt", O_RDONLY);
  *
- *   if (fd &lt; 0)
+ *   if (fd < 0)
  *     {
  *       g_set_error (error,
  *                    FOO_ERROR,                 /&ast; error domain &ast;/
  *                    FOO_ERROR_BLAH,            /&ast; error code &ast;/
- *                    "Failed to open file: &percnt;s", /&ast; error message format string &ast;/
+ *                    "Failed to open file: %s", /&ast; error message format string &ast;/
  *                    g_strerror (errno));
  *       return -1;
  *     }
@@ -171,7 +172,7 @@
  *   g_return_val_if_fail (err == NULL || *err == NULL, FALSE);
  *
  *   tmp_error = NULL;
- *   sub_function_that_can_fail (&amp;tmp_error);
+ *   sub_function_that_can_fail (&tmp_error);
  *
  *   if (tmp_error != NULL)
  *     {
@@ -196,8 +197,8 @@
  *   g_return_val_if_fail (err == NULL || *err == NULL, FALSE);
  *
  *   tmp_error = NULL;
- *   sub_function_that_can_fail (&amp;tmp_error);
- *   other_function_that_can_fail (&amp;tmp_error);
+ *   sub_function_that_can_fail (&tmp_error);
+ *   other_function_that_can_fail (&tmp_error);
  *
  *   if (tmp_error != NULL)
  *     {
@@ -225,7 +226,7 @@
  *   sub_function_that_can_fail (NULL); /&ast; ignore errors &ast;/
  *
  *   tmp_error = NULL;
- *   other_function_that_can_fail (&amp;tmp_error);
+ *   other_function_that_can_fail (&tmp_error);
  *
  *   if (tmp_error != NULL)
  *     {

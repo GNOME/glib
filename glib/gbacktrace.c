@@ -102,7 +102,7 @@ volatile gboolean glib_on_error_halt = TRUE;
  * the g_log() functions.
  *
  * |[
- * &num;include &lt;glib.h&gt;
+ * #include <glib.h>
  *
  * static void
  * log_handler (const gchar   *log_domain,
@@ -124,7 +124,7 @@ volatile gboolean glib_on_error_halt = TRUE;
  *                      G_LOG_LEVEL_CRITICAL,
  *                      log_handler,
  *                      NULL);
- *   /&ast; ... &ast;/
+ *   ...
  * ]|
  *
  * If [E]xit is selected, the application terminates with a call

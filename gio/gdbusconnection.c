@@ -5908,7 +5908,7 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  *                               G_DBUS_CALL_FLAGS_NONE,
  *                               -1,
  *                               NULL,
- *                               &amp;error);
+ *                               &error);
  * ]|
  *
  * The calling thread is blocked until a reply is received. See

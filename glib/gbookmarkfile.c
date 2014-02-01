@@ -79,7 +79,9 @@
  * the bookmark as "private" to the applications and groups that has it
  * registered; the URI and MIME type of an icon, to be used when displaying
  * the bookmark inside a GUI.
- * |[<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../glib/tests/bookmarks.xbel"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>]|
+ * <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../glib/tests/bookmarks.xbel"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>
+ * </programlisting>
  *
  * A bookmark file might contain more than one bookmark; each bookmark
  * is accessed through its URI.

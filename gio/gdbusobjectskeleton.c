@@ -173,9 +173,9 @@ g_dbus_object_skeleton_class_init (GDBusObjectSkeletonClass *klass)
    * Emitted when a method is invoked by a remote caller and used to
    * determine if the method call is authorized.
    *
-   * This signal is like #GDBusInterfaceSkeleton<!-- -->'s
-   * #GDBusInterfaceSkeleton::g-authorize-method signal, except that it is
-   * for the enclosing object.
+   * This signal is like #GDBusInterfaceSkeleton's
+   * #GDBusInterfaceSkeleton::g-authorize-method signal,
+   * except that it is for the enclosing object.
    *
    * The default class handler just returns %TRUE.
    *

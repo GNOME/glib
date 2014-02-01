@@ -446,7 +446,7 @@ g_tls_certificate_new_from_files (const gchar  *cert_file,
  * @file: file containing PEM-encoded certificates to import
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Creates one or more #GTlsCertificate<!-- -->s from the PEM-encoded
+ * Creates one or more #GTlsCertificates from the PEM-encoded
  * data in @file. If @file cannot be read or parsed, the function will
  * return %NULL and set @error. If @file does not contain any
  * PEM-encoded certificates, this will return an empty list and not

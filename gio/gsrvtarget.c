@@ -42,7 +42,7 @@
  * then connect to whatever host was pointed to by that record.
  *
  * You can use g_resolver_lookup_service() or
- * g_resolver_lookup_service_async() to find the #GSrvTarget<!-- -->s
+ * g_resolver_lookup_service_async() to find the #GSrvTargets
  * for a given service. However, if you are simply planning to connect
  * to the remote service, you can use #GNetworkService's
  * #GSocketConnectable interface and not need to worry about
@@ -75,7 +75,7 @@ G_DEFINE_BOXED_TYPE (GSrvTarget, g_srv_target,
  *
  * Creates a new #GSrvTarget with the given parameters.
  *
- * You should not need to use this; normally #GSrvTarget<!-- -->s are
+ * You should not need to use this; normally #GSrvTargets are
  * created by #GResolver.
  *
  * Return value: a new #GSrvTarget.

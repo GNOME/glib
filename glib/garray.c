@@ -75,11 +75,11 @@
  *    &ast; We don't want it zero-terminated or cleared to 0's.
  *    &ast;/
  *   garray = g_array_new (FALSE, FALSE, sizeof (gint));
- *   for (i = 0; i &lt; 10000; i++)
+ *   for (i = 0; i < 10000; i++)
  *     g_array_append_val (garray, i);
- *   for (i = 0; i &lt; 10000; i++)
+ *   for (i = 0; i < 10000; i++)
  *     if (g_array_index (garray, gint, i) != i)
- *       g_print ("ERROR: got &percnt;d instead of &percnt;d\n",
+ *       g_print ("ERROR: got %d instead of %d\n",
  *                g_array_index (garray, gint, i), i);
  *   g_array_free (garray, TRUE);
  * ]|
@@ -125,7 +125,7 @@ struct _GRealArray
  *   /&ast; This gets a pointer to the 4th element
  *    &ast; in the array of EDayViewEvent structs.
  *    &ast;/
- *   event = &amp;g_array_index (events, EDayViewEvent, 3);
+ *   event = &g_array_index (events, EDayViewEvent, 3);
  * ]|
  *
  * Returns: the element of the #GArray at the index given by @i

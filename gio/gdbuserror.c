@@ -336,7 +336,7 @@ static GHashTable *dbus_error_name_to_re = NULL;
  * @dbus_error_name: A D-Bus error name.
  *
  * Creates an association to map between @dbus_error_name and
- * #GError<!-- -->s specified by @error_domain and @error_code.
+ * #GErrors specified by @error_domain and @error_code.
  *
  * This is typically done in the routine that returns the #GQuark for
  * an error domain.
@@ -490,16 +490,17 @@ g_dbus_error_is_remote_error (const GError *error)
 
 /**
  * g_dbus_error_get_remote_error:
- * @error: A #GError.
+ * @error: a #GError
  *
  * Gets the D-Bus error name used for @error, if any.
  *
  * This function is guaranteed to return a D-Bus error name for all
- * #GError<!-- -->s returned from functions handling remote method
- * calls (e.g. g_dbus_connection_call_finish()) unless
+ * #GErrors returned from functions handling remote method calls
+ * (e.g. g_dbus_connection_call_finish()) unless
  * g_dbus_error_strip_remote_error() has been used on @error.
  *
- * Returns: An allocated string or %NULL if the D-Bus error name could not be found. Free with g_free().
+ * Returns: an allocated string or %NULL if the D-Bus error name
+ *     could not be found. Free with g_free().
  *
  * Since: 2.26
  */

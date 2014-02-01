@@ -772,7 +772,7 @@ g_main_context_pop_thread_default (GMainContext *context)
  * operations that want to be able to be run in contexts other than
  * the default one should call this method or
  * g_main_context_ref_thread_default() to get a #GMainContext to add
- * their #GSource<!-- -->s to. (Note that even in single-threaded
+ * their #GSources to. (Note that even in single-threaded
  * programs applications may sometimes want to temporarily push a
  * non-default context, so it is not safe to assume that this will
  * always return %NULL if you are running in the default thread.)
@@ -2873,10 +2873,10 @@ g_main_current_source (void)
  * {
  *   SomeWidget *self = data;
  *    
- *   GDK_THREADS_ENTER (<!-- -->);
- *   /<!-- -->* do stuff with self *<!-- -->/
+ *   GDK_THREADS_ENTER ();
+ *   /&ast; do stuff with self &ast;/
  *   self->idle_id = 0;
- *   GDK_THREADS_LEAVE (<!-- -->);
+ *   GDK_THREADS_LEAVE ();
  *    
  *   return G_SOURCE_REMOVE;
  * }
@@ -2914,7 +2914,7 @@ g_main_current_source (void)
  *   GDK_THREADS_ENTER ();
  *   if (!g_source_is_destroyed (g_main_current_source ()))
  *     {
- *       /<!-- -->* do stuff with self *<!-- -->/
+ *       /&ast; do stuff with self &ast;/
  *     }
  *   GDK_THREADS_LEAVE ();
  *   

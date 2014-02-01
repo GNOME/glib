@@ -541,10 +541,9 @@ g_dbus_object_manager_server_export (GDBusObjectManagerServer  *manager,
  * @object: An object.
  *
  * Like g_dbus_object_manager_server_export() but appends a string of
- * the form <literal>_N</literal> (with N being a natural number) to
- * @object<!-- -->'s object path if an object with the given path
- * already exists. As such, the #GDBusObjectProxy:g-object-path property
- * of @object may be modified.
+ * the form _N (with N being a natural number) to @object's object path
+ * if an object with the given path already exists. As such, the
+ * #GDBusObjectProxy:g-object-path property of @object may be modified.
  *
  * Since: 2.30
  */

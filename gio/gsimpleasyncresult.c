@@ -41,7 +41,7 @@
  *
  * #GSimpleAsyncResult implements #GAsyncResult.
  *
- * GSimpleAsyncResult handles #GAsyncReadyCallback<!-- -->s, error
+ * GSimpleAsyncResult handles #GAsyncReadyCallbacks, error
  * reporting, operation cancellation and the final state of an operation,
  * completely transparent to the application. Results can be returned
  * as a pointer e.g. for functions that return data that is collected
@@ -79,7 +79,7 @@
  * cause a leak if cancelled before being run).
  *
  * GSimpleAsyncResult can integrate into GLib's event loop, #GMainLoop,
- * or it can use #GThread<!-- -->s.
+ * or it can use #GThreads.
  * g_simple_async_result_complete() will finish an I/O task directly
  * from the point where it is called. g_simple_async_result_complete_in_idle()
  * will finish it from an idle handler in the <link

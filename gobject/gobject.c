@@ -572,11 +572,11 @@ g_object_class_install_property (GObjectClass *class,
 /**
  * g_object_class_install_properties:
  * @oclass: a #GObjectClass
- * @n_pspecs: the length of the #GParamSpec<!-- -->s array
- * @pspecs: (array length=n_pspecs): the #GParamSpec<!-- -->s array
+ * @n_pspecs: the length of the #GParamSpecs array
+ * @pspecs: (array length=n_pspecs): the #GParamSpecs array
  *   defining the new properties
  *
- * Installs new properties from an array of #GParamSpec<!-- -->s. This is
+ * Installs new properties from an array of #GParamSpecs. This is
  * usually done in the class initializer.
  *
  * The property id of each property is the index of each #GParamSpec in
@@ -586,7 +586,7 @@ g_object_class_install_property (GObjectClass *class,
  * be used to store a #GParamSpec.
  *
  * This function should be used if you plan to use a static array of
- * #GParamSpec<!-- -->s and g_object_notify_by_pspec(). For instance, this
+ * #GParamSpecs and g_object_notify_by_pspec(). For instance, this
  * class initialization:
  *
  * |[
@@ -2415,7 +2415,7 @@ g_object_get_property (GObject	   *object,
  * 						   NULL),
  * 				     "signal::event", gtk_menu_window_event, menu,
  * 				     "signal::size_request", gtk_menu_window_size_request, menu,
- * 				     "signal::destroy", gtk_widget_destroyed, &amp;menu-&gt;toplevel,
+ * 				     "signal::destroy", gtk_widget_destroyed, &menu->toplevel,
  * 				     NULL);
  * ]|
  *
@@ -2793,7 +2793,7 @@ g_object_ref_sink (gpointer _object)
  * This function is intended for #GObject implementations to re-enforce a
  * <link linkend="floating-ref">floating</link> object reference.
  * Doing this is seldom required: all
- * #GInitiallyUnowned<!-- -->s are created with a floating reference which
+ * #GInitiallyUnowneds are created with a floating reference which
  * usually just needs to be sunken by calling g_object_ref_sink().
  *
  * Since: 2.10
@@ -4067,9 +4067,9 @@ g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
  * objects.
  *
  * If the object's #GObjectClass.dispose method results in additional
- * references to the object being held, any #GWeakRef<!-- -->s taken
+ * references to the object being held, any #GWeakRefs taken
  * before it was disposed will continue to point to %NULL.  If
- * #GWeakRef<!-- -->s are taken after the object is disposed and
+ * #GWeakRefs are taken after the object is disposed and
  * re-referenced, they will continue to point to it until its refcount
  * goes back to zero, at which point they too will be invalidated.
  */

@@ -98,7 +98,7 @@ static gint           quark_block_offset = 0;
  *
  * A convenience macro which defines a function returning the
  * #GQuark for the name @QN. The function will be named
- * @q_n<!-- -->_quark().
+ * @q_n_quark().
  *
  * Note that the quark name will be stringified automatically
  * in the macro, so you shouldn't use double quotes.

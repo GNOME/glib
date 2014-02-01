@@ -278,7 +278,7 @@
  * |[
  * gint16 in;
  * gint32 out;
- * sscanf ("42", "%" G_GINT16_FORMAT, &amp;in)
+ * sscanf ("42", "%" G_GINT16_FORMAT, &in)
  * out = in * 1000;
  * g_print ("%" G_GINT32_FORMAT, out);
  * ]|

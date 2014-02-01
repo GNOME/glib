@@ -81,20 +81,20 @@
  *   else
  *     g_printf ("Uh oh!\n");
  *
- *   /<!-- -->* ... *<!-- -->/
+ *   ...
  *
  * }
  *
  * int main (int argc, void *argv[])
  * {
- *    /<!-- -->* ... *<!-- -->/
+ *    ...
  *
  *    _theoretical_frobnitz_async (theoretical_data,
  *                                 NULL,
  *                                 frobnitz_result_func,
  *                                 NULL);
  *
- *    /<!-- -->* ... *<!-- -->/
+ *    ...
  * }
  * ]|
  *
