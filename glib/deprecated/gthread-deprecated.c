@@ -620,11 +620,11 @@ g_static_mutex_free (GStaticMutex* mutex)
  * Even though #GStaticRecMutex is not opaque, it should only be used
  * with the following functions.
  *
- * All of the <function>g_static_rec_mutex_*</function> functions can
- * be used even if g_thread_init() has not been called. Then they do
- * nothing, apart from <function>g_static_rec_mutex_trylock</function>,
- * which does nothing but returning %TRUE.
- **/
+ * All of the g_static_rec_mutex_* functions can be used even if
+ * g_thread_init() has not been called. Then they do nothing, apart
+ * from g_static_rec_mutex_trylock(), which does nothing but returning
+ * %TRUE.
+ */
 
 /**
  * G_STATIC_REC_MUTEX_INIT:

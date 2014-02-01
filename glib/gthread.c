@@ -266,8 +266,7 @@
  * If a #GMutex is placed in other contexts (eg: embedded in a struct)
  * then it must be explicitly initialised using g_mutex_init().
  *
- * A #GMutex should only be accessed via <function>g_mutex_</function>
- * functions.
+ * A #GMutex should only be accessed via g_mutex_ functions.
  */
 
 /* GRecMutex Documentation {{{1 -------------------------------------- */
@@ -286,7 +285,7 @@
  * g_rec_mutex_init() on it and g_rec_mutex_clear() when done.
  *
  * A GRecMutex should only be accessed with the
- * <function>g_rec_mutex_</function> functions.
+ * g_rec_mutex_ functions.
  *
  * Since: 2.32
  */

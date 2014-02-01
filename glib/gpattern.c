@@ -33,14 +33,14 @@
  * @short_description: matches strings against patterns containing '*'
  *                     (wildcard) and '?' (joker)
  *
- * The <function>g_pattern_match*</function> functions match a string
+ * The g_pattern_match* functions match a string
  * against a pattern containing '*' and '?' wildcards with similar
  * semantics as the standard glob() function: '*' matches an arbitrary,
  * possibly empty, string, '?' matches an arbitrary character.
  *
  * Note that in contrast to glob(), the '/' character can be matched by
- * the wildcards, there are no '[...]' character ranges and '*' and '?' can
- * not be escaped to include them literally in a pattern.
+ * the wildcards, there are no '[...]' character ranges and '*' and '?'
+ * can not be escaped to include them literally in a pattern.
  *
  * When multiple strings must be matched against the same pattern, it
  * is better to compile the pattern to a #GPatternSpec using

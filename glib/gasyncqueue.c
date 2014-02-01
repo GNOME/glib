@@ -90,7 +90,7 @@
  *
  * The GAsyncQueue struct is an opaque data structure which represents
  * an asynchronous queue. It should only be accessed through the
- * <function>g_async_queue_*</function> functions.
+ * g_async_queue_* functions.
  */
 struct _GAsyncQueue
 {
@@ -247,8 +247,8 @@ g_async_queue_unref (GAsyncQueue *queue)
  * Call g_async_queue_unlock() to drop the lock again.
  *
  * While holding the lock, you can only call the
- * <function>g_async_queue_*_unlocked()</function> functions
- * on @queue. Otherwise, deadlock may occur.
+ * g_async_queue_*_unlocked() functions on @queue. Otherwise,
+ * deadlock may occur.
  */
 void
 g_async_queue_lock (GAsyncQueue *queue)

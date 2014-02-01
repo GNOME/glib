@@ -44,7 +44,7 @@
  * @short_description: matches strings against regular expressions
  * @see_also: <xref linkend="glib-regex-syntax"/>
  *
- * The <function>g_regex_*()</function> functions implement regular
+ * The g_regex_*() functions implement regular
  * expression pattern matching using syntax and semantics similar to
  * Perl regular expression.
  *
