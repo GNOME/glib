@@ -1343,23 +1343,14 @@ escape_string (GString *string)
  *
  * The behavior of this log handler can be influenced by a number of
  * environment variables:
- * <variablelist>
- *   <varlistentry>
- *     <term><envar>G_MESSAGES_PREFIXED</envar></term>
- *     <listitem>
- *       A :-separated list of log levels for which messages should
- *       be prefixed by the program name and PID of the aplication.
- *     </listitem>
- *   </varlistentry>
- *   <varlistentry>
- *     <term><envar>G_MESSAGES_DEBUG</envar></term>
- *     <listitem>
- *       A space-separated list of log domains for which debug and
- *       informational messages are printed. By default these
- *       messages are not printed.
- *     </listitem>
- *   </varlistentry>
- * </variablelist>
+ *
+ * - <envar>G_MESSAGES_PREFIXED</envar>: A :-separated list of log levels
+ *   for which messages should be prefixed by the program name and PID of
+ *   the aplication.
+ *
+ * - <envar>G_MESSAGES_DEBUG</envar>: A space-separated list of log domains
+ *   for which debug and informational messages are printed. By default these
+ *   messages are not printed.
  *
  * stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
  * %G_LOG_LEVEL_WARNING and %G_LOG_LEVEL_MESSAGE. stdout is used for
