@@ -29,25 +29,25 @@
  * <literal>testtreemodel -r 1 --max-size 20 --rand --display=:1.0 -vb -- file1 file2</literal>
  *
  * The example demonstrates a number of features of the GOption
- * commandline parser
- * <itemizedlist><listitem><para>
- *   Options can be single letters, prefixed by a single dash. Multiple
- *   short options can be grouped behind a single dash.
- * </para></listitem><listitem><para>
- *   Long options are prefixed by two consecutive dashes.
- * </para></listitem><listitem><para>
- *   Options can have an extra argument, which can be a number, a string or
+ * commandline parser:
+ *
+ * - Options can be single letters, prefixed by a single dash.
+ *
+ * - Multiple short options can be grouped behind a single dash.
+ *
+ * - Long options are prefixed by two consecutive dashes.
+ *
+ * - Options can have an extra argument, which can be a number, a string or
  *   a filename. For long options, the extra argument can be appended with
  *   an equals sign after the option name, which is useful if the extra
  *   argument starts with a dash, which would otherwise cause it to be
  *   interpreted as another option.
- * </para></listitem><listitem><para>
- *   Non-option arguments are returned to the application as rest arguments.
- * </para></listitem><listitem><para>
- *   An argument consisting solely of two dashes turns off further parsing,
+ *
+ * - Non-option arguments are returned to the application as rest arguments.
+ *
+ * - An argument consisting solely of two dashes turns off further parsing,
  *   any remaining arguments (even those starting with a dash) are returned
  *   to the application as rest arguments.
- * </para></listitem></itemizedlist>
  *
  * Another important feature of GOption is that it can automatically
  * generate nicely formatted help output. Unless it is explicitly turned
