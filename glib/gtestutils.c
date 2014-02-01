@@ -645,6 +645,12 @@ typedef enum {
   G_TEST_RUN_FAILURE,
   G_TEST_RUN_INCOMPLETE
 } GTestResult;
+static const char * const g_test_result_names[] = {
+  "OK",
+  "SKIP",
+  "FAIL",
+  "TODO"
+};
 
 /* --- variables --- */
 static int         test_log_fd = -1;
@@ -765,6 +771,7 @@ g_test_log (GTestLogType lbit,
             guint        n_args,
             long double *largs)
 {
+  GTestResult result;
   gboolean fail;
   GTestLogMsg msg;
   gchar *astrings[3] = { NULL, NULL, NULL };
@@ -796,28 +803,29 @@ g_test_log (GTestLogType lbit,
         }
       break;
     case G_TEST_LOG_STOP_CASE:
-      fail = largs[0] != G_TEST_RUN_SUCCESS && largs[0] != G_TEST_RUN_SKIPPED;
+      result = largs[0];
+      fail = result == G_TEST_RUN_FAILURE;
       if (test_tap_log)
         {
           g_print ("%s %d %s", fail ? "not ok" : "ok", test_run_count, string1);
-          if (largs[0] == G_TEST_RUN_INCOMPLETE)
+          if (result == G_TEST_RUN_INCOMPLETE)
             g_print (" # TODO %s\n", string2 ? string2 : "");
-          else if (largs[0] == G_TEST_RUN_SKIPPED)
+          else if (result == G_TEST_RUN_SKIPPED)
             g_print (" # SKIP %s\n", string2 ? string2 : "");
           else
             g_print ("\n");
         }
       else if (g_test_verbose())
-        g_print ("GTest: result: %s\n", fail ? "FAIL" : "OK");
+        g_print ("GTest: result: %s\n", g_test_result_names[result]);
       else if (!g_test_quiet())
-        g_print ("%s\n", fail ? "FAIL" : "OK");
+        g_print ("%s\n", g_test_result_names[result]);
       if (fail && test_mode_fatal)
         {
           if (test_tap_log)
             g_print ("Bail out!\n");
           abort();
         }
-      if (largs[0] == G_TEST_RUN_SKIPPED)
+      if (result == G_TEST_RUN_SKIPPED)
         test_skipped_count++;
       break;
     case G_TEST_LOG_MIN_RESULT:
