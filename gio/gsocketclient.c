@@ -774,80 +774,40 @@ g_socket_client_class_init (GSocketClientClass *class)
    * information about a network connection in the UI. The meanings of
    * the different @event values are as follows:
    *
-   * <variablelist>
-   *   <varlistentry>
-   *     <term>%G_SOCKET_CLIENT_RESOLVING:</term>
-   *     <listitem><para>
-   *       @client is about to look up @connectable in DNS.
-   *       @connection will be %NULL.
-   *     </para></listitem>
-   *   </varlistentry>
-   *   <varlistentry>
-   *     <term>%G_SOCKET_CLIENT_RESOLVED:</term>
-   *     <listitem><para>
-   *       @client has successfully resolved @connectable in DNS.
-   *       @connection will be %NULL.
-   *     </para></listitem>
-   *   </varlistentry>
-   *   <varlistentry>
-   *     <term>%G_SOCKET_CLIENT_CONNECTING:</term>
-   *     <listitem><para>
-   *       @client is about to make a connection to a remote host;
-   *       either a proxy server or the destination server itself.
-   *       @connection is the #GSocketConnection, which is not yet
-   *       connected.  Since GLib 2.40, you can access the remote
-   *       address via g_socket_connection_get_remote_address().
-   *     </para></listitem>
-   *   </varlistentry>
-   *   <varlistentry>
-   *     <term>%G_SOCKET_CLIENT_CONNECTED:</term>
-   *     <listitem><para>
-   *       @client has successfully connected to a remote host.
-   *       @connection is the connected #GSocketConnection.
-   *     </para></listitem>
-   *   </varlistentry>
-   *   <varlistentry>
-   *     <term>%G_SOCKET_CLIENT_PROXY_NEGOTIATING:</term>
-   *     <listitem><para>
-   *       @client is about to negotiate with a proxy to get it to
-   *       connect to @connectable. @connection is the
-   *       #GSocketConnection to the proxy server.
-   *     </para></listitem>
-   *   </varlistentry>
-   *   <varlistentry>
-   *     <term>%G_SOCKET_CLIENT_PROXY_NEGOTIATED:</term>
-   *     <listitem><para>
-   *       @client has negotiated a connection to @connectable through
-   *       a proxy server. @connection is the stream returned from
-   *       g_proxy_connect(), which may or may not be a
-   *       #GSocketConnection.
-   *     </para></listitem>
-   *   </varlistentry>
-   *   <varlistentry>
-   *     <term>%G_SOCKET_CLIENT_TLS_HANDSHAKING:</term>
-   *     <listitem><para>
-   *       @client is about to begin a TLS handshake. @connection is a
-   *       #GTlsClientConnection.
-   *     </para></listitem>
-   *   </varlistentry>
-   *   <varlistentry>
-   *     <term>%G_SOCKET_CLIENT_TLS_HANDSHAKED:</term>
-   *     <listitem><para>
-   *       @client has successfully completed the TLS handshake.
-   *       @connection is a #GTlsClientConnection.
-   *     </para></listitem>
-   *   </varlistentry>
-   *   <varlistentry>
-   *     <term>%G_SOCKET_CLIENT_COMPLETE:</term>
-   *     <listitem><para>
-   *       @client has either successfully connected to @connectable
-   *       (in which case @connection is the #GSocketConnection that
-   *       it will be returning to the caller) or has failed (in which
-   *       case @connection is %NULL and the client is about to return
-   *       an error).
-   *     </para></listitem>
-   *   </varlistentry>
-   * </variablelist>
+   * - %G_SOCKET_CLIENT_RESOLVING: @client is about to look up @connectable
+   *   in DNS. @connection will be %NULL.
+   *
+   * - %G_SOCKET_CLIENT_RESOLVED:  @client has successfully resolved
+   *   @connectable in DNS. @connection will be %NULL.
+   *
+   * - %G_SOCKET_CLIENT_CONNECTING: @client is about to make a connection
+   *   to a remote host; either a proxy server or the destination server
+   *   itself. @connection is the #GSocketConnection, which is not yet
+   *   connected.  Since GLib 2.40, you can access the remote
+   *   address via g_socket_connection_get_remote_address().
+   *
+   * - %G_SOCKET_CLIENT_CONNECTED: @client has successfully connected
+   *   to a remote host. @connection is the connected #GSocketConnection.
+   *
+   * - %G_SOCKET_CLIENT_PROXY_NEGOTIATING: @client is about to negotiate
+   *   with a proxy to get it to connect to @connectable. @connection is
+   *   the #GSocketConnection to the proxy server.
+   *
+   * - %G_SOCKET_CLIENT_PROXY_NEGOTIATED: @client has negotiated a
+   *   connection to @connectable through a proxy server. @connection is
+   *   the stream returned from g_proxy_connect(), which may or may not
+   *   be a #GSocketConnection.
+   *
+   * - %G_SOCKET_CLIENT_TLS_HANDSHAKING: @client is about to begin a TLS
+   *   handshake. @connection is a #GTlsClientConnection.
+   *
+   * - %G_SOCKET_CLIENT_TLS_HANDSHAKED: @client has successfully completed
+   *   the TLS handshake. @connection is a #GTlsClientConnection.
+   *
+   * - %G_SOCKET_CLIENT_COMPLETE: @client has either successfully connected
+   *   to @connectable (in which case @connection is the #GSocketConnection
+   *   that it will be returning to the caller) or has failed (in which
+   *   case @connection is %NULL and the client is about to return an error).
    *
    * Each event except %G_SOCKET_CLIENT_COMPLETE may be emitted
    * multiple times (or not at all) for a given connectable (in
