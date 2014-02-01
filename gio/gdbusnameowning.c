@@ -490,19 +490,19 @@ connection_get_cb (GObject      *source_object,
 
 /**
  * g_bus_own_name_on_connection:
- * @connection: A #GDBusConnection.
- * @name: The well-known name to own.
- * @flags: A set of flags from the #GBusNameOwnerFlags enumeration.
- * @name_acquired_handler: (allow-none): Handler to invoke when @name is acquired or %NULL.
- * @name_lost_handler: (allow-none): Handler to invoke when @name is lost or %NULL.
- * @user_data: User data to pass to handlers.
- * @user_data_free_func: (allow-none): Function for freeing @user_data or %NULL.
+ * @connection: a #GDBusConnection
+ * @name: the well-known name to own
+ * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
+ * @name_acquired_handler: (allow-none): handler to invoke when @name is acquired or %NULL
+ * @name_lost_handler: (allow-none): handler to invoke when @name is lost or %NULL
+ * @user_data: user data to pass to handlers
+ * @user_data_free_func: (allow-none): function for freeing @user_data or %NULL
  *
  * Like g_bus_own_name() but takes a #GDBusConnection instead of a
  * #GBusType.
  *
- * Returns: An identifier (never 0) that an be used with
- * g_bus_unown_name() to stop owning the name.
+ * Returns: an identifier (never 0) that an be used with
+ *     g_bus_unown_name() to stop owning the name
  *
  * Since: 2.26
  */
@@ -552,14 +552,14 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
 
 /**
  * g_bus_own_name:
- * @bus_type: The type of bus to own a name on.
- * @name: The well-known name to own.
- * @flags: A set of flags from the #GBusNameOwnerFlags enumeration.
- * @bus_acquired_handler: (allow-none): Handler to invoke when connected to the bus of type @bus_type or %NULL.
- * @name_acquired_handler: (allow-none): Handler to invoke when @name is acquired or %NULL.
- * @name_lost_handler: (allow-none): Handler to invoke when @name is lost or %NULL.
- * @user_data: User data to pass to handlers.
- * @user_data_free_func: (allow-none): Function for freeing @user_data or %NULL.
+ * @bus_type: the type of bus to own a name on
+ * @name: the well-known name to own
+ * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
+ * @bus_acquired_handler: (allow-none): handler to invoke when connected to the bus of type @bus_type or %NULL
+ * @name_acquired_handler: (allow-none): handler to invoke when @name is acquired or %NULL
+ * @name_lost_handler: (allow-none): handler to invoke when @name is lost or %NULL
+ * @user_data: user data to pass to handlers
+ * @user_data_free_func: (allow-none): function for freeing @user_data or %NULL
  *
  * Starts acquiring @name on the bus specified by @bus_type and calls
  * @name_acquired_handler and @name_lost_handler when the name is
@@ -570,26 +570,25 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  * You are guaranteed that one of the @name_acquired_handler and @name_lost_handler
  * callbacks will be invoked after calling this function - there are three
  * possible cases:
- * <itemizedlist>
- *   <listitem><para>
- *     @name_lost_handler with a %NULL connection (if a connection to the bus can't be made).
- *   </para></listitem>
- *   <listitem><para>
- *     @bus_acquired_handler then @name_lost_handler (if the name can't be obtained)
- *   </para></listitem>
- *   <listitem><para>
- *     @bus_acquired_handler then @name_acquired_handler (if the name was obtained).
- *   </para></listitem>
- * </itemizedlist>
+ * 
+ * - @name_lost_handler with a %NULL connection (if a connection to the bus
+ *   can't be made).
+ *
+ * - @bus_acquired_handler then @name_lost_handler (if the name can't be
+ *   obtained)
+ *
+ * - @bus_acquired_handler then @name_acquired_handler (if the name was
+ *   obtained).
+ *
  * When you are done owning the name, just call g_bus_unown_name()
  * with the owner id this function returns.
  *
  * If the name is acquired or lost (for example another application
  * could acquire the name if you allow replacement or the application
- * currently owning the name exits), the handlers are also invoked. If the
- * #GDBusConnection that is used for attempting to own the name
- * closes, then @name_lost_handler is invoked since it is no
- * longer possible for other processes to access the process.
+ * currently owning the name exits), the handlers are also invoked.
+ * If the #GDBusConnection that is used for attempting to own the name
+ * closes, then @name_lost_handler is invoked since it is no longer
+ * possible for other processes to access the process.
  *
  * You cannot use g_bus_own_name() several times for the same name (unless
  * interleaved with calls to g_bus_unown_name()) - only the first call
@@ -612,8 +611,8 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  * Simply register objects to be exported in @bus_acquired_handler and
  * unregister the objects (if any) in @name_lost_handler.
  *
- * Returns: An identifier (never 0) that an be used with
- * g_bus_unown_name() to stop owning the name.
+ * Returns: an identifier (never 0) that an be used with
+ *     g_bus_unown_name() to stop owning the name.
  *
  * Since: 2.26
  */
@@ -784,33 +783,33 @@ bus_own_name_free_func (gpointer user_data)
 
 /**
  * g_bus_own_name_with_closures:
- * @bus_type: The type of bus to own a name on.
- * @name: The well-known name to own.
- * @flags: A set of flags from the #GBusNameOwnerFlags enumeration.
+ * @bus_type: the type of bus to own a name on
+ * @name: the well-known name to own
+ * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
  * @bus_acquired_closure: (allow-none): #GClosure to invoke when connected to
- * the bus of type @bus_type or %NULL.
+ *     the bus of type @bus_type or %NULL
  * @name_acquired_closure: (allow-none): #GClosure to invoke when @name is
- * acquired or %NULL.
+ *     acquired or %NULL
  * @name_lost_closure: (allow-none): #GClosure to invoke when @name is lost or
- * %NULL.
+ *     %NULL
  *
  * Version of g_bus_own_name() using closures instead of callbacks for
  * easier binding in other languages.
  *
- * Returns: An identifier (never 0) that an be used with
- * g_bus_unown_name() to stop owning the name.
+ * Returns: an identifier (never 0) that an be used with
+ *     g_bus_unown_name() to stop owning the name.
  *
  * Rename to: g_bus_own_name
  *
  * Since: 2.26
  */
 guint
-g_bus_own_name_with_closures (GBusType                  bus_type,
-                              const gchar              *name,
-                              GBusNameOwnerFlags        flags,
-                              GClosure                 *bus_acquired_closure,
-                              GClosure                 *name_acquired_closure,
-                              GClosure                 *name_lost_closure)
+g_bus_own_name_with_closures (GBusType            bus_type,
+                              const gchar        *name,
+                              GBusNameOwnerFlags  flags,
+                              GClosure           *bus_acquired_closure,
+                              GClosure           *name_acquired_closure,
+                              GClosure           *name_lost_closure)
 {
   return g_bus_own_name (bus_type,
           name,
@@ -826,30 +825,30 @@ g_bus_own_name_with_closures (GBusType                  bus_type,
 
 /**
  * g_bus_own_name_on_connection_with_closures:
- * @connection: A #GDBusConnection.
- * @name: The well-known name to own.
- * @flags: A set of flags from the #GBusNameOwnerFlags enumeration.
+ * @connection: a #GDBusConnection
+ * @name: the well-known name to own
+ * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
  * @name_acquired_closure: (allow-none): #GClosure to invoke when @name is
- * acquired or %NULL.
- * @name_lost_closure: (allow-none): #GClosure to invoke when @name is lost or
- * %NULL.
+ *     acquired or %NULL
+ * @name_lost_closure: (allow-none): #GClosure to invoke when @name is lost
+ *     or %NULL
  *
- * Version of g_bus_own_name_on_connection() using closures instead of callbacks for
- * easier binding in other languages.
+ * Version of g_bus_own_name_on_connection() using closures instead of
+ * callbacks for easier binding in other languages.
  *
- * Returns: An identifier (never 0) that an be used with
- * g_bus_unown_name() to stop owning the name.
+ * Returns: an identifier (never 0) that an be used with
+ *     g_bus_unown_name() to stop owning the name.
  *
  * Rename to: g_bus_own_name_on_connection
  *
  * Since: 2.26
  */
 guint
-g_bus_own_name_on_connection_with_closures (GDBusConnection          *connection,
-                                            const gchar              *name,
-                                            GBusNameOwnerFlags        flags,
-                                            GClosure                 *name_acquired_closure,
-                                            GClosure                 *name_lost_closure)
+g_bus_own_name_on_connection_with_closures (GDBusConnection    *connection,
+                                            const gchar        *name,
+                                            GBusNameOwnerFlags  flags,
+                                            GClosure           *name_acquired_closure,
+                                            GClosure           *name_lost_closure)
 {
   return g_bus_own_name_on_connection (connection,
           name,
@@ -864,7 +863,7 @@ g_bus_own_name_on_connection_with_closures (GDBusConnection          *connection
 
 /**
  * g_bus_unown_name:
- * @owner_id: An identifier obtained from g_bus_own_name()
+ * @owner_id: an identifier obtained from g_bus_own_name()
  *
  * Stops owning a name.
  *
