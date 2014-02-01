@@ -57,11 +57,11 @@
  * container = create_container ();
  * container_add_child (container, create_child());
  * ]|
- * If <function>container_add_child()</function> will g_object_ref_sink() the
- * passed in child, no reference of the newly created child is leaked.
- * Without floating references, <function>container_add_child()</function>
- * can only g_object_ref() the new child, so to implement this code without
- * reference leaks, it would have to be written as:
+ * If container_add_child() calls g_object_ref_sink() on the passed-in child,
+ * no reference of the newly created child is leaked. Without floating
+ * references, container_add_child() can only g_object_ref() the new child,
+ * so to implement this code without reference leaks, it would have to be
+ * written as:
  * |[
  * Child *child;
  * container = create_container ();
@@ -69,11 +69,11 @@
  * container_add_child (container, child);
  * g_object_unref (child);
  * ]|
- * The floating reference can be converted into
- * an ordinary reference by calling g_object_ref_sink().
- * For already sunken objects (objects that don't have a floating reference
- * anymore), g_object_ref_sink() is equivalent to g_object_ref() and returns
- * a new reference.
+ * The floating reference can be converted into an ordinary reference by
+ * calling g_object_ref_sink(). For already sunken objects (objects that
+ * don't have a floating reference anymore), g_object_ref_sink() is equivalent
+ * to g_object_ref() and returns a new reference.
+ *
  * Since floating references are useful almost exclusively for C convenience,
  * language bindings that provide automated reference and memory ownership
  * maintenance (such as smart pointers or garbage collection) should not
@@ -2227,12 +2227,9 @@ g_object_set (gpointer     _object,
  * is responsible for freeing the memory in the appropriate manner for
  * the type, for instance by calling g_free() or g_object_unref().
  *
- * <example>
- * <title>Using g_object_get(<!-- -->)</title>
- * An example of using g_object_get() to get the contents
- * of three properties - one of type #G_TYPE_INT,
- * one of type #G_TYPE_STRING, and one of type #G_TYPE_OBJECT:
- * <programlisting>
+ * Here is an example of using g_object_get() to get the contents
+ * of three properties: an integer, a string and an object:
+ * |[
  *  gint intval;
  *  gchar *strval;
  *  GObject *objval;
@@ -2243,12 +2240,11 @@ g_object_set (gpointer     _object,
  *                "obj-property", &objval,
  *                NULL);
  *
- *  // Do something with intval, strval, objval
+ *  /&ast; Do something with intval, strval, objval &ast;/
  *
  *  g_free (strval);
  *  g_object_unref (objval);
- * </programlisting>
- * </example>
+ *  ]|
  */
 void
 g_object_get (gpointer     _object,

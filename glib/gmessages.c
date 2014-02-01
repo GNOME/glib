@@ -535,30 +535,24 @@ g_log_set_fatal_mask (const gchar   *log_domain,
  * you want to set a handler for this log level you must combine it with
  * #G_LOG_FLAG_FATAL.
  *
- * <example>
- * <title>Adding a log handler for all warning messages in the default
- * (application) domain</title>
- * <programlisting>
+ * Here is an example for adding a log handler for all warning messages
+ * in the default domain:
+ * |[
  * g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
- * </programlisting>
- * </example>
+ * ]|
  *
- * <example>
- * <title>Adding a log handler for all critical messages from GTK+</title>
- * <programlisting>
+ * This example adds a log handler for all critical messages from GTK+:
+ * |[
  * g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
- * </programlisting>
- * </example>
+ * ]|
  *
- * <example>
- * <title>Adding a log handler for all messages from GLib</title>
- * <programlisting>
+ * This example adds a log handler for all messages from GLib:
+ * |[
  * g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
- * </programlisting>
- * </example>
+ * ]|
  *
  * Returns: the id of the new handler
  */

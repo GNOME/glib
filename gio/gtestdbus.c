@@ -349,23 +349,22 @@ _g_test_watcher_remove_pid (GPid pid)
  *     achieve this by adding a file such as <filename>my-server.service.in</filename>
  *     in the services
  *     directory and have it processed by configure.
- *     <informalexample><programlisting>
+ *     |[
  *     [D-BUS Service]
  *     Name=org.gtk.GDBus.Examples.ObjectManager
  *     Exec=@abs_top_builddir@/gio/tests/gdbus-example-objectmanager-server
- *     </programlisting></informalexample>
+ *     ]|
  *     You will also need to indicate this service directory in your test
  *     fixtures, so you will need to pass the path while compiling your
  *     test cases. Typically this is done with autotools with an added
  *     preprocessor flag specified to compile your tests such as:
- *     <informalexample><programlisting>
+ *     |[
  *     -DTEST_SERVICES=\""$(abs_top_builddir)/tests/services"\"
- *     </programlisting></informalexample>
+ *     ]|
  *   </para>
  *   <para>
  *     Once you have a service definition file which is local to your source tree,
  *     you can proceed to set up a GTest fixture using the #GTestDBus scaffolding.
- *     <example id="gdbus-test-fixture">
  *       <title>Test Fixture for D-Bus services</title>
  *       <programlisting>
  *         <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-test-fixture.c">
@@ -395,12 +394,12 @@ _g_test_watcher_remove_pid (GPid pid)
  *     The GSettings schemas need to be locally pre-compiled for this to work. This can be achieved
  *     by compiling the schemas locally as a step before running test cases, an autotools setup might
  *     do the following in the directory holding schemas:
- *     <informalexample><programlisting>
+ *     |[
  *     all-am:
  *             $(GLIB_COMPILE_SCHEMAS) .
  *
  *     CLEANFILES += gschemas.compiled
- *     </programlisting></informalexample>
+ *     ]|
  *   </para>
  * </refsect2>
  */

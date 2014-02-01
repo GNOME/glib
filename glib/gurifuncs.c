@@ -165,9 +165,9 @@ g_uri_unescape_string (const char *escaped_string,
  * @uri: a valid URI.
  * 
  * Gets the scheme portion of a URI string. RFC 3986 decodes the scheme as:
- * <programlisting>
+ * |[
  * URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ] 
- * </programlisting>
+ * ]|
  * Common schemes include "file", "http", "svn+ssh", etc.
  * 
  * Returns: The "Scheme" component of the URI, or %NULL on error. 

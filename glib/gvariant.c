@@ -1103,8 +1103,8 @@ g_variant_lookup_value (GVariant           *dictionary,
  * Memory</link>.
  *
  * In particular, arrays of these fixed-sized types can be interpreted
- * as an array of the given C type, with @element_size set to
- * <code>sizeof</code> the appropriate type:
+ * as an array of the given C type, with @element_size set to the size
+ * the appropriate type:
  *
  * <informaltable>
  * <tgroup cols='2'>
@@ -1121,16 +1121,16 @@ g_variant_lookup_value (GVariant           *dictionary,
  * </tgroup>
  * </informaltable>
  *
- * For example, if calling this function for an array of 32 bit integers,
- * you might say <code>sizeof (gint32)</code>.  This value isn't used
- * except for the purpose of a double-check that the form of the
- * serialised data matches the caller's expectation.
+ * For example, if calling this function for an array of 32-bit integers,
+ * you might say sizeof(gint32). This value isn't used except for the purpose
+ * of a double-check that the form of the serialised data matches the caller's
+ * expectation.
  *
  * @n_elements, which must be non-%NULL is set equal to the number of
  * items in the array.
  *
  * Returns: (array length=n_elements) (transfer none): a pointer to
- *          the fixed array
+ *     the fixed array
  *
  * Since: 2.24
  **/
@@ -3070,10 +3070,9 @@ g_variant_iter_free (GVariantIter *iter)
  * Use g_variant_unref() to drop your reference on the return value when
  * you no longer need it.
  *
- * <example>
- *  <title>Iterating with g_variant_iter_next_value()</title>
- *  <programlisting>
- *   /<!-- -->* recursively iterate a container *<!-- -->/
+ * Here is an example for iterating with g_variant_iter_next_value():
+ * |[
+ *   /&ast; recursively iterate a container &ast;/
  *   void
  *   iterate_container_recursive (GVariant *container)
  *   {
@@ -3091,8 +3090,7 @@ g_variant_iter_free (GVariantIter *iter)
  *         g_variant_unref (child);
  *       }
  *   }
- * </programlisting>
- * </example>
+ * ]|
  *
  * Returns: (allow-none) (transfer full): a #GVariant, or %NULL
  *
@@ -4985,13 +4983,9 @@ g_variant_get_child (GVariant    *value,
  * responsibility of the caller to free all of the values returned by
  * the unpacking process.
  *
- * See the section on <link linkend='gvariant-format-strings'>GVariant
- * Format Strings</link>.
- *
- * <example>
- *  <title>Memory management with g_variant_iter_next()</title>
- *  <programlisting>
- *   /<!-- -->* Iterates a dictionary of type 'a{sv}' *<!-- -->/
+ * Here is an example for memory management with g_variant_iter_next():
+ * |[
+ *   /&ast; Iterates a dictionary of type 'a{sv}' &ast;/
  *   void
  *   iterate_dictionary (GVariant *dictionary)
  *   {
@@ -5005,20 +4999,20 @@ g_variant_get_child (GVariant    *value,
  *         g_print ("Item '%s' has type '%s'\n", key,
  *                  g_variant_get_type_string (value));
  *
- *         /<!-- -->* must free data for ourselves *<!-- -->/
+ *         /&ast; must free data for ourselves &ast;/
  *         g_variant_unref (value);
  *         g_free (key);
  *       }
  *   }
- *  </programlisting>
- * </example>
+ * ]|
  *
  * For a solution that is likely to be more convenient to C programmers
  * when dealing with loops, see g_variant_iter_loop().
  *
  * @format_string determines the C types that are used for unpacking
- * the values and also determines if the values are copied or borrowed,
- * see the section on
+ * the values and also determines if the values are copied or borrowed.
+ *
+ * See the section on
  * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
  *
  * Returns: %TRUE if a value was unpacked, or %FALSE if there as no value
@@ -5081,13 +5075,9 @@ g_variant_iter_next (GVariantIter *iter,
  * you must free or unreference all the unpacked values as you would with
  * g_variant_get(). Failure to do so will cause a memory leak.
  *
- * See the section on <link linkend='gvariant-format-strings'>GVariant
- * Format Strings</link>.
- *
- * <example>
- *  <title>Memory management with g_variant_iter_loop()</title>
- *  <programlisting>
- *   /<!-- -->* Iterates a dictionary of type 'a{sv}' *<!-- -->/
+ * Here is an example for memory management with g_variant_iter_loop():
+ * |[
+ *   /&ast; Iterates a dictionary of type 'a{sv}' &ast;/
  *   void
  *   iterate_dictionary (GVariant *dictionary)
  *   {
@@ -5101,12 +5091,12 @@ g_variant_iter_next (GVariantIter *iter,
  *         g_print ("Item '%s' has type '%s'\n", key,
  *                  g_variant_get_type_string (value));
  *
- *         /<!-- -->* no need to free 'key' and 'value' here *<!-- -->/
- *         /<!-- -->* unless breaking out of this loop *<!-- -->/
+ *         /&ast; no need to free 'key' and 'value' here
+ *          &ast; unless breaking out of this loop
+ *          &ast;/
  *       }
  *   }
- *  </programlisting>
- * </example>
+ * ]|
  *
  * For most cases you should use g_variant_iter_next().
  *
@@ -5120,8 +5110,9 @@ g_variant_iter_next (GVariantIter *iter,
  * thereby avoiding the need to free anything as well).
  *
  * @format_string determines the C types that are used for unpacking
- * the values and also determines if the values are copied or borrowed,
- * see the section on
+ * the values and also determines if the values are copied or borrowed.
+ *
+ * See the section on
  * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
  *
  * Returns: %TRUE if a value was unpacked, or %FALSE if there was no

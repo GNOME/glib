@@ -118,8 +118,8 @@
  * access the numeric values corresponding to the string value of enum
  * and flags keys.
  *
- * <example id="schema-default-values"><title>Default values</title>
- * <programlisting><![CDATA[
+ * An example for default value:
+ * |[
  * <schemalist>
  *   <schema id="org.gtk.Test" path="/org/gtk/Test/" gettext-domain="test">
  *
@@ -137,10 +137,10 @@
  *
  *   </schema>
  * </schemalist>
- * ]]></programlisting></example>
+ * ]|
  *
- * <example id="schema-enumerated"><title>Ranges, choices and enumerated types</title>
- * <programlisting><![CDATA[
+ * An example for ranges, choices and enumerated types:
+ * |[
  * <schemalist>
  *
  *   <enum id="org.gtk.Test.myenum">
@@ -183,7 +183,7 @@
  *     </key>
  *   </schema>
  * </schemalist>
- * ]]></programlisting></example>
+ * ]|
  *
  * <refsect2>
  *   <title>Vendor overrides</title>
@@ -197,11 +197,11 @@
  *     directory as the XML schema sources which can override default values.
  *     The schema id serves as the group name in the key file, and the values
  *     are expected in serialized GVariant form, as in the following example:
- *     <informalexample><programlisting>
+ *     |[
  *     [org.gtk.Example]
  *     key1='string'
  *     key2=1.5
- *     </programlisting></informalexample>
+ *     ]|
  *   </para>
  *   <para>
  *     glib-compile-schemas expects schema files to have the extension

@@ -394,13 +394,12 @@ g_simple_action_class_init (GSimpleActionClass *class)
    *
    * If no handler is connected to this signal then the default
    * behaviour is to call g_simple_action_set_state() to set the state
-   * to the requested value.  If you connect a signal handler then no
-   * default action is taken.  If the state should change then you must
+   * to the requested value. If you connect a signal handler then no
+   * default action is taken. If the state should change then you must
    * call g_simple_action_set_state() from the handler.
    *
-   * <example>
-   * <title>Example 'change-state' handler</title>
-   * <programlisting>
+   * An example of a 'change-state' handler:
+   * |[
    * static void
    * change_volume_state (GSimpleAction *action,
    *                      GVariant      *value,
@@ -410,15 +409,14 @@ g_simple_action_class_init (GSimpleActionClass *class)
    *
    *   requested = g_variant_get_int32 (value);
    *
-   *   // Volume only goes from 0 to 10
+   *   /&ast; Volume only goes from 0 to 10 &ast;/
    *   if (0 <= requested && requested <= 10)
    *     g_simple_action_set_state (action, value);
    * }
-   * </programlisting>
-   * </example>
+   * ]|
    *
-   * The handler need not set the state to the requested value.  It
-   * could set it to any value at all, or take some other action.
+   * The handler need not set the state to the requested value.
+   * It could set it to any value at all, or take some other action.
    *
    * Since: 2.30
    */
@@ -434,7 +432,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
   /**
    * GSimpleAction:name:
    *
-   * The name of the action.  This is mostly meaningful for identifying
+   * The name of the action. This is mostly meaningful for identifying
    * the action once it has been added to a #GSimpleActionGroup.
    *
    * Since: 2.28

@@ -87,7 +87,7 @@ g_volume_default_init (GVolumeInterface *iface)
    * GVolume::changed:
    * 
    * Emitted when the volume has been changed.
-   **/
+   */
   g_signal_new (I_("changed"),
 		G_TYPE_VOLUME,
 		G_SIGNAL_RUN_LAST,
@@ -102,7 +102,7 @@ g_volume_default_init (GVolumeInterface *iface)
    * This signal is emitted when the #GVolume have been removed. If
    * the recipient is holding references to the object they should
    * release them so the object can be finalized.
-   **/
+   */
   g_signal_new (I_("removed"),
 		G_TYPE_VOLUME,
 		G_SIGNAL_RUN_LAST,
@@ -114,13 +114,13 @@ g_volume_default_init (GVolumeInterface *iface)
 
 /**
  * g_volume_get_name:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * 
  * Gets the name of @volume.
  * 
  * Returns: the name for the given @volume. The returned string should 
- * be freed with g_free() when no longer needed.
- **/
+ *     be freed with g_free() when no longer needed.
+ */
 char *
 g_volume_get_name (GVolume *volume)
 {
@@ -135,14 +135,14 @@ g_volume_get_name (GVolume *volume)
 
 /**
  * g_volume_get_icon:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * 
  * Gets the icon for @volume.
  * 
  * Returns: (transfer full): a #GIcon.
  *     The returned object should be unreffed with g_object_unref()
  *     when no longer needed.
- **/
+ */
 GIcon *
 g_volume_get_icon (GVolume *volume)
 {
@@ -157,7 +157,7 @@ g_volume_get_icon (GVolume *volume)
 
 /**
  * g_volume_get_symbolic_icon:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * 
  * Gets the symbolic icon for @volume.
  * 
@@ -166,7 +166,7 @@ g_volume_get_icon (GVolume *volume)
  *     when no longer needed.
  *
  * Since: 2.34
- **/
+ */
 GIcon *
 g_volume_get_symbolic_icon (GVolume *volume)
 {
@@ -188,7 +188,7 @@ g_volume_get_symbolic_icon (GVolume *volume)
 
 /**
  * g_volume_get_uuid:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * 
  * Gets the UUID for the @volume. The reference is typically based on
  * the file system UUID for the volume in question and should be
@@ -198,7 +198,7 @@ g_volume_get_symbolic_icon (GVolume *volume)
  * Returns: the UUID for @volume or %NULL if no UUID can be computed.
  *     The returned string should be freed with g_free() 
  *     when no longer needed.
- **/
+ */
 char *
 g_volume_get_uuid (GVolume *volume)
 {
@@ -213,14 +213,14 @@ g_volume_get_uuid (GVolume *volume)
   
 /**
  * g_volume_get_drive:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * 
  * Gets the drive for the @volume.
  * 
- * Returns: (transfer full): a #GDrive or %NULL if @volume is not associated with a drive.
- *     The returned object should be unreffed with g_object_unref()
- *     when no longer needed.
- **/
+ * Returns: (transfer full): a #GDrive or %NULL if @volume is not
+ *     associated with a drive. The returned object should be unreffed
+ *     with g_object_unref() when no longer needed.
+ */
 GDrive *
 g_volume_get_drive (GVolume *volume)
 {
@@ -235,14 +235,14 @@ g_volume_get_drive (GVolume *volume)
 
 /**
  * g_volume_get_mount:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * 
  * Gets the mount for the @volume.
  * 
  * Returns: (transfer full): a #GMount or %NULL if @volume isn't mounted.
  *     The returned object should be unreffed with g_object_unref()
  *     when no longer needed.
- **/
+ */
 GMount *
 g_volume_get_mount (GVolume *volume)
 {
@@ -258,12 +258,12 @@ g_volume_get_mount (GVolume *volume)
 
 /**
  * g_volume_can_mount:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * 
  * Checks if a volume can be mounted.
  * 
- * Returns: %TRUE if the @volume can be mounted. %FALSE otherwise.
- **/
+ * Returns: %TRUE if the @volume can be mounted. %FALSE otherwise
+ */
 gboolean
 g_volume_can_mount (GVolume *volume)
 {
@@ -281,12 +281,12 @@ g_volume_can_mount (GVolume *volume)
 
 /**
  * g_volume_can_eject:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * 
  * Checks if a volume can be ejected.
  * 
- * Returns: %TRUE if the @volume can be ejected. %FALSE otherwise.
- **/
+ * Returns: %TRUE if the @volume can be ejected. %FALSE otherwise
+ */
 gboolean
 g_volume_can_eject (GVolume *volume)
 {
@@ -308,7 +308,7 @@ g_volume_can_eject (GVolume *volume)
  *
  * Returns whether the volume should be automatically mounted.
  * 
- * Returns: %TRUE if the volume should be automatically mounted.
+ * Returns: %TRUE if the volume should be automatically mounted
  */
 gboolean
 g_volume_should_automount (GVolume *volume)
@@ -328,11 +328,11 @@ g_volume_should_automount (GVolume *volume)
 
 /**
  * g_volume_mount:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * @flags: flags affecting the operation
- * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid user interaction.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
+ * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid user interaction
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL
  * @user_data: user data that gets passed to @callback
  * 
  * Mounts a volume. This is an asynchronous operation, and is
@@ -340,7 +340,7 @@ g_volume_should_automount (GVolume *volume)
  * and #GAsyncResult returned in the @callback.
  *
  * Virtual: mount_fn
- **/
+ */
 void
 g_volume_mount (GVolume             *volume,
 		GMountMountFlags     flags,
@@ -381,8 +381,8 @@ g_volume_mount (GVolume             *volume,
  * function; there's no need to listen for the 'mount-added' signal on
  * #GVolumeMonitor.
  * 
- * Returns: %TRUE, %FALSE if operation failed.
- **/
+ * Returns: %TRUE, %FALSE if operation failed
+ */
 gboolean
 g_volume_mount_finish (GVolume       *volume,
                        GAsyncResult  *result,
@@ -404,10 +404,10 @@ g_volume_mount_finish (GVolume       *volume,
 
 /**
  * g_volume_eject:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * @flags: flags affecting the unmount if required for eject
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL
  * @user_data: user data that gets passed to @callback
  * 
  * Ejects a volume. This is an asynchronous operation, and is
@@ -415,7 +415,7 @@ g_volume_mount_finish (GVolume       *volume,
  * and #GAsyncResult returned in the @callback.
  *
  * Deprecated: 2.22: Use g_volume_eject_with_operation() instead.
- **/
+ */
 void
 g_volume_eject (GVolume             *volume,
 		GMountUnmountFlags   flags,
@@ -443,14 +443,14 @@ g_volume_eject (GVolume             *volume,
 
 /**
  * g_volume_eject_finish:
- * @volume: pointer to a #GVolume.
- * @result: a #GAsyncResult.
+ * @volume: pointer to a #GVolume
+ * @result: a #GAsyncResult
  * @error: a #GError location to store an error, or %NULL to ignore
  * 
  * Finishes ejecting a volume. If any errors occurred during the operation,
  * @error will be set to contain the errors and %FALSE will be returned.
  * 
- * Returns: %TRUE, %FALSE if operation failed.
+ * Returns: %TRUE, %FALSE if operation failed
  *
  * Deprecated: 2.22: Use g_volume_eject_with_operation_finish() instead.
  **/
@@ -475,13 +475,13 @@ g_volume_eject_finish (GVolume       *volume,
 
 /**
  * g_volume_eject_with_operation:
- * @volume: a #GVolume.
+ * @volume: a #GVolume
  * @flags: flags affecting the unmount if required for eject
  * @mount_operation: (allow-none): a #GMountOperation or %NULL to
- *     avoid user interaction.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
- * @user_data: user data passed to @callback.
+ *     avoid user interaction
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL
+ * @user_data: user data passed to @callback
  *
  * Ejects a volume. This is an asynchronous operation, and is
  * finished by calling g_volume_eject_with_operation_finish() with the @volume
@@ -523,15 +523,14 @@ g_volume_eject_with_operation (GVolume              *volume,
 
 /**
  * g_volume_eject_with_operation_finish:
- * @volume: a #GVolume.
- * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occurring, or %NULL to
- *     ignore.
+ * @volume: a #GVolume
+ * @result: a #GAsyncResult
+ * @error: a #GError location to store the error occurring, or %NULL
  *
  * Finishes ejecting a volume. If any errors occurred during the operation,
  * @error will be set to contain the errors and %FALSE will be returned.
  *
- * Returns: %TRUE if the volume was successfully ejected. %FALSE otherwise.
+ * Returns: %TRUE if the volume was successfully ejected. %FALSE otherwise
  *
  * Since: 2.22
  **/
@@ -567,8 +566,8 @@ g_volume_eject_with_operation_finish (GVolume        *volume,
  * for more information about volume identifiers.
  *
  * Returns: a newly allocated string containing the
- *   requested identfier, or %NULL if the #GVolume
- *   doesn't have this kind of identifier
+ *     requested identfier, or %NULL if the #GVolume
+ *     doesn't have this kind of identifier
  */
 char *
 g_volume_get_identifier (GVolume    *volume,
@@ -623,23 +622,20 @@ g_volume_enumerate_identifiers (GVolume *volume)
  * either be equal or a prefix of what this function returns. In
  * other words, in code
  *
- * <programlisting>
+ * |[
  *   GMount *mount;
  *   GFile *mount_root
  *   GFile *volume_activation_root;
  *
  *   mount = g_volume_get_mount (volume); /&ast; mounted, so never NULL &ast;/
  *   mount_root = g_mount_get_root (mount);
- *   volume_activation_root = g_volume_get_activation_root(volume); /&ast; assume not NULL &ast;/
- * </programlisting>
- *
+ *   volume_activation_root = g_volume_get_activation_root (volume); /&ast; assume not NULL &ast;/
+ * ]|
  * then the expression
- *
- * <programlisting>
+ * |[
  *   (g_file_has_prefix (volume_activation_root, mount_root) ||
       g_file_equal (volume_activation_root, mount_root))
- * </programlisting>
- *
+ * ]|
  * will always be %TRUE.
  *
  * Activation roots are typically used in #GVolumeMonitor
@@ -647,10 +643,10 @@ g_volume_enumerate_identifiers (GVolume *volume)
  * g_mount_is_shadowed() for more details.
  *
  * Returns: (transfer full): the activation root of @volume or %NULL. Use
- * g_object_unref() to free.
+ *     g_object_unref() to free.
  *
  * Since: 2.18
- **/
+ */
 GFile *
 g_volume_get_activation_root (GVolume *volume)
 {
@@ -667,16 +663,16 @@ g_volume_get_activation_root (GVolume *volume)
 
 /**
  * g_volume_get_sort_key:
- * @volume: A #GVolume.
+ * @volume: a #GVolume
  *
  * Gets the sort key for @volume, if any.
  *
- * Returns: Sorting key for @volume or %NULL if no such key is available.
+ * Returns: Sorting key for @volume or %NULL if no such key is available
  *
  * Since: 2.32
  */
 const gchar *
-g_volume_get_sort_key (GVolume  *volume)
+g_volume_get_sort_key (GVolume *volume)
 {
   const gchar *ret = NULL;
   GVolumeIface *iface;

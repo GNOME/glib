@@ -82,8 +82,8 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * which takes an xml file that describes the bundle, and a set of files that the xml references. These
  * are combined into a binary resource bundle.
  *
- * <example id="resource-example"><title>Example resource description</title>
- * <programlisting><![CDATA[
+ * An example resource description:
+ * |[
  * <?xml version="1.0" encoding="UTF-8"?>
  * <gresources>
  *   <gresource prefix="/org/gtk/Example">
@@ -92,14 +92,14 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *     <file preprocess="xml-stripblanks">menumarkup.xml</file>
  *   </gresource>
  * </gresources>
- * ]]></programlisting></example>
+ * ]|
  *
  * This will create a resource bundle with the following files:
- * <programlisting><![CDATA[
+ * |[
  * /org/gtk/Example/data/splashscreen.png
  * /org/gtk/Example/dialog.ui
  * /org/gtk/Example/menumarkup.xml
- * ]]></programlisting>
+ * ]|
  *
  * Note that all resources in the process share the same namespace, so use java-style
  * path prefixes (like in the above example) to avoid conflicts.

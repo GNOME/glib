@@ -91,8 +91,7 @@
  *
  * Here is a complete example of setting up GOption to parse the example
  * commandline above and produce the example help output.
- *
- * <informalexample><programlisting>
+ * |[
  * static gint repeats = 2;
  * static gint max_size = 8;
  * static gboolean verbose = FALSE;
@@ -127,7 +126,7 @@
  *   /&ast; ... &ast;/
  *
  * }
- * </programlisting></informalexample>
+ * ]|
  *
  * On UNIX systems, the argv that is passed to main() has no particular
  * encoding, even to the extent that different parts of it may have

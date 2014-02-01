@@ -160,9 +160,7 @@ g_action_map_remove_action (GActionMap  *action_map,
  *
  * Each action is constructed as per one #GActionEntry.
  *
- * <example>
- * <title>Using g_action_map_add_action_entries()</title>
- * <programlisting>
+ * |[
  * static void
  * activate_quit (GSimpleAction *simple,
  *                GVariant      *parameter,
@@ -193,8 +191,7 @@ g_action_map_remove_action (GActionMap  *action_map,
  *
  *   return G_ACTION_GROUP (group);
  * }
- * </programlisting>
- * </example>
+ * ]|
  *
  * Since: 2.32
  */

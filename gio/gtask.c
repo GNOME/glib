@@ -51,8 +51,8 @@
  *     you can use g_task_propagate_pointer() or the like to extract
  *     the return value.
  *   </para>
- *   <example id="gtask-async"><title>GTask as a GAsyncResult</title>
- *   <programlisting>
+ *   Here is an example for using GTask as a GAsyncResult:
+ *   |[
  *     typedef struct {
  *       CakeFrostingType frosting;
  *       char *message;
@@ -144,8 +144,7 @@
  *
  *       return g_task_propagate_pointer (G_TASK (result), error);
  *     }
- *   </programlisting>
- *   </example>
+ * ]|
  * </refsect2>
  * <refsect2>
  *   <title>Chained asynchronous operations</title>
@@ -161,8 +160,9 @@
  *     source to fire (automatically using the correct #GMainContext
  *     and priority).
  *   </para>
- *   <example id="gtask-chained"><title>Chained asynchronous operations</title>
- *   <programlisting>
+ *
+ *   Here is an example for chained asynchronous operations:
+ *   |[
  *     typedef struct {
  *       Cake *cake;
  *       CakeFrostingType frosting;
@@ -287,8 +287,7 @@
  *
  *       return g_task_propagate_pointer (G_TASK (result), error);
  *     }
- *   </programlisting>
- *   </example>
+ * ]|
  * </refsect2>
  * <refsect2>
  *   <title>Asynchronous operations from synchronous ones</title>
@@ -298,8 +297,9 @@
  *     which will then dispatch the result back to the caller's
  *     #GMainContext when it completes.
  *   </para>
- *   <example id="gtask-run-in-thread"><title>g_task_run_in_thread()</title>
- *   <programlisting>
+ *
+ *   Running a task in a thread:
+ *   |[
  *     typedef struct {
  *       guint radius;
  *       CakeFlavor flavor;
@@ -366,8 +366,7 @@
  *
  *       return g_task_propagate_pointer (G_TASK (result), error);
  *     }
- *   </programlisting>
- *   </example>
+ * ]|
  * </refsect2>
  * <refsect2>
  *   <title>Adding cancellability to uncancellable tasks</title>
@@ -384,8 +383,9 @@
  *     to make "GLib-friendly" asynchronous and cancellable
  *     synchronous variants of blocking APIs.
  *   </para>
- *   <example id="gtask-cancellable"><title>g_task_set_return_on_cancel()</title>
- *   <programlisting>
+ *
+ *   Cancelling a task:
+ *   |[
  *     static void
  *     bake_cake_thread (GTask         *task,
  *                       gpointer       source_object,
@@ -474,8 +474,7 @@
  *       g_object_unref (task);
  *       return cake;
  *     }
- *   </programlisting>
- *   </example>
+ * ]|
  * </refsect2>
  * <refsect2>
  *   <title>Porting from <literal>GSimpleAsyncResult</literal></title>

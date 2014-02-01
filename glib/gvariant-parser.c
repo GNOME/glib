@@ -2480,10 +2480,9 @@ g_variant_new_parsed_va (const gchar *format,
  * g_variant_new() would have collected.
  *
  * Consider this simple example:
- *
- * <informalexample><programlisting>
+ * |[
  *  g_variant_new_parsed ("[('one', 1), ('two', %i), (%s, 3)]", 2, "three");
- * </programlisting></informalexample>
+ * ]|
  *
  * In the example, the variable argument parameters are collected and
  * filled in as if they were part of the original string to produce the

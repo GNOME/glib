@@ -3065,12 +3065,10 @@ g_type_class_peek_static (GType type)
  * It returns the class structure of the immediate parent type of the
  * class passed in.  Since derived classes hold a reference count on
  * their parent classes as long as they are instantiated, the returned
- * class will always exist. This function is essentially equivalent
- * to:
+ * class will always exist.
  *
- * <programlisting>
- * g_type_class_peek (g_type_parent (G_TYPE_FROM_CLASS (g_class)));
- * </programlisting>
+ * This function is essentially equivalent to:
+ * g_type_class_peek (g_type_parent (G_TYPE_FROM_CLASS (g_class)))
  *
  * Returns: (type GObject.TypeClass) (transfer none): the parent class
  *     of @g_class

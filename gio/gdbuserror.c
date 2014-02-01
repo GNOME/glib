@@ -55,8 +55,8 @@
  * automatically map from D-Bus errors to #GError and back. This
  * is typically done in the function returning the #GQuark for the
  * error domain:
- * <example id="error-registration"><title>Error Registration</title><programlisting>
- * /<!-- -->* foo-bar-error.h: *<!-- -->/
+ * |[
+ * /&ast; foo-bar-error.h: &ast;/
  *
  * #define FOO_BAR_ERROR (foo_bar_error_quark ())
  * GQuark foo_bar_error_quark (void);
@@ -66,10 +66,10 @@
  *   FOO_BAR_ERROR_FAILED,
  *   FOO_BAR_ERROR_ANOTHER_ERROR,
  *   FOO_BAR_ERROR_SOME_THIRD_ERROR,
- *   FOO_BAR_N_ERRORS /<!-- -->*< skip >*<!-- -->/
+ *   FOO_BAR_N_ERRORS /&ast;< skip >&ast;/
  * } FooBarError;
  *
- * /<!-- -->* foo-bar-error.c: *<!-- -->/
+ * /&ast; foo-bar-error.c: &ast;/
  *
  * static const GDBusErrorEntry foo_bar_error_entries[] =
  * {
@@ -78,7 +78,7 @@
  *   {FOO_BAR_ERROR_SOME_THIRD_ERROR, "org.project.Foo.Bar.Error.SomeThirdError"},
  * };
  *
- * /<!-- -->* Ensure that every error code has an associated D-Bus error name *<!-- -->/
+ * /&ast; Ensure that every error code has an associated D-Bus error name &ast;/
  * G_STATIC_ASSERT (G_N_ELEMENTS (foo_bar_error_entries) == FOO_BAR_N_ERRORS);
  *
  * GQuark
@@ -91,15 +91,15 @@
  *                                       G_N_ELEMENTS (foo_bar_error_entries));
  *   return (GQuark) quark_volatile;
  * }
- * </programlisting></example>
+ * ]|
  * With this setup, a D-Bus peer can transparently pass e.g. %FOO_BAR_ERROR_ANOTHER_ERROR and
- * other peers will see the D-Bus error name <literal>org.project.Foo.Bar.Error.AnotherError</literal>.
+ * other peers will see the D-Bus error name org.project.Foo.Bar.Error.AnotherError.
  *
  * If the other peer is using GDBus, and has registered the association with
  * g_dbus_error_register_error_domain() in advance (e.g. by invoking the %FOO_BAR_ERROR quark
  * generation itself in the previous example) the peer will see also %FOO_BAR_ERROR_ANOTHER_ERROR instead
  * of %G_IO_ERROR_DBUS_ERROR. Note that GDBus clients can still recover
- * <literal>org.project.Foo.Bar.Error.AnotherError</literal> using g_dbus_error_get_remote_error().
+ * org.project.Foo.Bar.Error.AnotherError using g_dbus_error_get_remote_error().
  *
  * Note that errors in the %G_DBUS_ERROR error domain is intended only
  * for returning errors from a remote message bus process. Errors

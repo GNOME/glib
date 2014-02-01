@@ -72,7 +72,7 @@
  * <refsect2 id="file-name-encodings">
  * <title>File Name Encodings</title>
  * <para>
- * Historically, Unix has not had a defined encoding for file
+ * Historically, UNIX has not had a defined encoding for file
  * names:  a file name is valid as long as it does not have path
  * separators in it ("/").  However, displaying file names may
  * require conversion:  from the character set in which they were

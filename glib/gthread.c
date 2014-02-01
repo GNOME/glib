@@ -162,12 +162,10 @@
  * mangled to get the name of the #GMutex. This means that you
  * can use names of existing variables as the parameter - e.g. the name
  * of the variable you intend to protect with the lock. Look at our
- * <function>give_me_next_number()</function> example using the
- * <literal>G_LOCK_*</literal> macros:
+ * give_me_next_number() example using the #G_LOCK macros:
  *
- * <example>
- *  <title>Using the <literal>G_LOCK_*</literal> convenience macros</title>
- *  <programlisting>
+ * Here is an example for using the #G_LOCK convenience macros:
+ * |[
  *   G_LOCK_DEFINE (current_number);
  *
  *   int
@@ -182,8 +180,7 @@
  *
  *     return ret_val;
  *   }
- *  </programlisting>
- * </example>
+ * ]|
  */
 
 /**
@@ -234,33 +231,27 @@
  *
  * The #GMutex struct is an opaque data structure to represent a mutex
  * (mutual exclusion). It can be used to protect data against shared
- * access. Take for example the following function:
+ * access.
  *
- * <example>
- *  <title>A function which will not work in a threaded environment</title>
- *  <programlisting>
+ * Take for example the following function:
+ * |[
  *   int
  *   give_me_next_number (void)
  *   {
  *     static int current_number = 0;
  *
- *     /<!-- -->* now do a very complicated calculation to calculate the new
- *      * number, this might for example be a random number generator
- *      *<!-- -->/
+ *     /&ast; now do a very complicated calculation to calculate the new
+ *      &ast; number, this might for example be a random number generator
+ *      &ast;/
  *     current_number = calc_next_number (current_number);
  *
  *     return current_number;
  *   }
- *  </programlisting>
- * </example>
- *
+ * ]|
  * It is easy to see that this won't work in a multi-threaded
  * application. There current_number must be protected against shared
  * access. A #GMutex can be used as a solution to this problem:
- *
- * <example>
- *  <title>Using GMutex to protected a shared variable</title>
- *  <programlisting>
+ * |[
  *   int
  *   give_me_next_number (void)
  *   {
@@ -274,9 +265,7 @@
  *
  *     return ret_val;
  *   }
- *  </programlisting>
- * </example>
- *
+ * ]|
  * Notice that the #GMutex is not initialised to any particular value.
  * Its placement in static storage ensures that it will be initialised
  * to all-zeros, which is appropriate.
@@ -325,9 +314,8 @@
  * simultaneous read-only access (by holding the 'reader' lock via
  * g_rw_lock_reader_lock()).
  *
- * <example>
- *  <title>An array with access functions</title>
- *  <programlisting>
+ * Here is an example for an array with access functions:
+ * |[
  *   GRWLock lock;
  *   GPtrArray *array;
  *
@@ -340,7 +328,7 @@
  *       return NULL;
  *
  *     g_rw_lock_reader_lock (&amp;lock);
- *     if (index &lt; array->len)
+ *     if (index < array->len)
  *       retval = g_ptr_array_index (array, index);
  *     g_rw_lock_reader_unlock (&amp;lock);
  *
@@ -350,35 +338,30 @@
  *   void
  *   my_array_set (guint index, gpointer data)
  *   {
- *     g_rw_lock_writer_lock (&amp;lock);
+ *     g_rw_lock_writer_lock (&lock);
  *
  *     if (!array)
- *       array = g_ptr_array_new (<!-- -->);
+ *       array = g_ptr_array_new ();
  *
  *     if (index >= array->len)
  *       g_ptr_array_set_size (array, index+1);
  *     g_ptr_array_index (array, index) = data;
  *
- *     g_rw_lock_writer_unlock (&amp;lock);
+ *     g_rw_lock_writer_unlock (&lock);
  *   }
- *  </programlisting>
- *  <para>
- *    This example shows an array which can be accessed by many readers
- *    (the <function>my_array_get()</function> function) simultaneously,
- *    whereas the writers (the <function>my_array_set()</function>
- *    function) will only be allowed once at a time and only if no readers
- *    currently access the array. This is because of the potentially
- *    dangerous resizing of the array. Using these functions is fully
- *    multi-thread safe now.
- *  </para>
- * </example>
+ *  ]|
+ * This example shows an array which can be accessed by many readers
+ * (the my_array_get() function) simultaneously, whereas the writers
+ * (the my_array_set() function) will only be allowed one at a time
+ * and only if no readers currently access the array. This is because
+ * of the potentially dangerous resizing of the array. Using these
+ * functions is fully multi-thread safe now.
  *
  * If a #GRWLock is allocated in static storage then it can be used
  * without initialisation.  Otherwise, you should call
  * g_rw_lock_init() on it and g_rw_lock_clear() when done.
  *
- * A GRWLock should only be accessed with the
- * <function>g_rw_lock_</function> functions.
+ * A GRWLock should only be accessed with the g_rw_lock_ functions.
  *
  * Since: 2.32
  */
@@ -399,11 +382,9 @@
  * another thread publishes the data, it can signal one of the waiting
  * threads to wake up to collect the data.
  *
- * <example>
- *  <title>
- *   Using GCond to block a thread until a condition is satisfied
- *  </title>
- *  <programlisting>
+ * Here is an example for using GCond to block a thread until a condition
+ * is satisfied:
+ * |[
  *   gpointer current_data = NULL;
  *   GMutex data_mutex;
  *   GCond data_cond;
@@ -431,21 +412,19 @@
  *
  *     return data;
  *   }
- *  </programlisting>
- * </example>
- *
+ * ]|
  * Whenever a thread calls pop_data() now, it will wait until
  * current_data is non-%NULL, i.e. until some other thread
  * has called push_data().
  *
  * The example shows that use of a condition variable must always be
  * paired with a mutex.  Without the use of a mutex, there would be a
- * race between the check of <varname>current_data</varname> by the
- * while loop in <function>pop_data</function> and waiting.
- * Specifically, another thread could set <varname>pop_data</varname>
- * after the check, and signal the cond (with nobody waiting on it)
- * before the first thread goes to sleep.  #GCond is specifically useful
- * for its ability to release the mutex and go to sleep atomically.
+ * race between the check of @current_data by the while loop in
+ * pop_data() and waiting. Specifically, another thread could set
+ * @current_data after the check, and signal the cond (with nobody
+ * waiting on it) before the first thread goes to sleep. #GCond is
+ * specifically useful for its ability to release the mutex and go
+ * to sleep atomically.
  *
  * It is also important to use the g_cond_wait() and g_cond_wait_until()
  * functions only inside a loop which checks for the condition to be
@@ -453,11 +432,10 @@
  * not be true even after it returns.
  *
  * If a #GCond is allocated in static storage then it can be used
- * without initialisation.  Otherwise, you should call g_cond_init() on
- * it and g_cond_clear() when done.
+ * without initialisation.  Otherwise, you should call g_cond_init()
+ * on it and g_cond_clear() when done.
  *
- * A #GCond should only be accessed via the <function>g_cond_</function>
- * functions.
+ * A #GCond should only be accessed via the g_cond_ functions.
  */
 
 /* GThread Documentation {{{1 ---------------------------------------- */

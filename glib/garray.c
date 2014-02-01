@@ -67,13 +67,13 @@
  *
  * To free an array, use g_array_free().
  *
- * <example>
- *  <title>Using a #GArray to store #gint values</title>
- *  <programlisting>
+ * Here is an example that stores integers in a #GArray:
+ * |[
  *   GArray *garray;
  *   gint i;
- *   /<!-- -->* We create a new array to store gint values.
- *      We don't want it zero-terminated or cleared to 0's. *<!-- -->/
+ *   /&ast; We create a new array to store gint values.
+ *    &ast; We don't want it zero-terminated or cleared to 0's.
+ *    &ast;/
  *   garray = g_array_new (FALSE, FALSE, sizeof (gint));
  *   for (i = 0; i &lt; 10000; i++)
  *     g_array_append_val (garray, i);
@@ -82,8 +82,7 @@
  *       g_print ("ERROR: got &percnt;d instead of &percnt;d\n",
  *                g_array_index (garray, gint, i), i);
  *   g_array_free (garray, TRUE);
- *  </programlisting>
- * </example>
+ * ]|
  */
 
 #define MIN_ARRAY_SIZE  16
@@ -120,15 +119,14 @@ struct _GRealArray
  * Returns the element of a #GArray at the given index. The return
  * value is cast to the given type.
  *
- * <example>
- *  <title>Getting a pointer to an element in a #GArray</title>
- *  <programlisting>
+ * This example gets a pointer to an element in a #GArray:
+ * |[
  *   EDayViewEvent *event;
- *   /<!-- -->* This gets a pointer to the 4th element
- *      in the array of EDayViewEvent structs. *<!-- -->/
+ *   /&ast; This gets a pointer to the 4th element
+ *    &ast; in the array of EDayViewEvent structs.
+ *    &ast;/
  *   event = &amp;g_array_index (events, EDayViewEvent, 3);
- *  </programlisting>
- * </example>
+ * ]|
  *
  * Returns: the element of the #GArray at the index given by @i
  */
@@ -817,25 +815,23 @@ g_array_maybe_expand (GRealArray *array,
  *
  * To free a pointer array, use g_ptr_array_free().
  *
- * <example>
- *  <title>Using a #GPtrArray</title>
- *  <programlisting>
+ * An example using a #GPtrArray:
+ * |[
  *   GPtrArray *gparray;
  *   gchar *string1 = "one", *string2 = "two", *string3 = "three";
  *
- *   gparray = g_ptr_array_new (<!-- -->);
+ *   gparray = g_ptr_array_new ();
  *   g_ptr_array_add (gparray, (gpointer) string1);
  *   g_ptr_array_add (gparray, (gpointer) string2);
  *   g_ptr_array_add (gparray, (gpointer) string3);
  *
  *   if (g_ptr_array_index (gparray, 0) != (gpointer) string1)
- *     g_print ("ERROR: got &percnt;p instead of &percnt;p\n",
+ *     g_print ("ERROR: got %p instead of %p\n",
  *              g_ptr_array_index (gparray, 0), string1);
  *
  *   g_ptr_array_free (gparray, TRUE);
- *  </programlisting>
- * </example>
- **/
+ * ]|
+ */
 
 typedef struct _GRealPtrArray  GRealPtrArray;
 
@@ -1517,17 +1513,16 @@ g_ptr_array_foreach (GPtrArray *array,
  *
  * To free a #GByteArray, use g_byte_array_free().
  *
- * <example>
- *  <title>Using a #GByteArray</title>
- *  <programlisting>
+ * An example for using a #GByteArray:
+ * |[
  *   GByteArray *gbarray;
  *   gint i;
  *
- *   gbarray = g_byte_array_new (<!-- -->);
- *   for (i = 0; i &lt; 10000; i++)
+ *   gbarray = g_byte_array_new ();
+ *   for (i = 0; i < 10000; i++)
  *     g_byte_array_append (gbarray, (guint8*) "abcd", 4);
  *
- *   for (i = 0; i &lt; 10000; i++)
+ *   for (i = 0; i < 10000; i++)
  *     {
  *       g_assert (gbarray->data[4*i] == 'a');
  *       g_assert (gbarray->data[4*i+1] == 'b');
@@ -1536,8 +1531,7 @@ g_ptr_array_foreach (GPtrArray *array,
  *     }
  *
  *   g_byte_array_free (gbarray, TRUE);
- *  </programlisting>
- * </example>
+ * ]|
  *
  * See #GBytes if you are interested in an immutable object representing a
  * sequence of bytes.

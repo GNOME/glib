@@ -804,7 +804,7 @@ g_cond_broadcast (GCond *cond)
  * passed.
  *
  * The following code shows how to correctly perform a timed wait on a
- * condition variable (extended the example presented in the
+ * condition variable (extending the example presented in the
  * documentation for #GCond):
  *
  * |[
@@ -820,12 +820,12 @@ g_cond_broadcast (GCond *cond)
  *   while (!current_data)
  *     if (!g_cond_wait_until (&data_cond, &data_mutex, end_time))
  *       {
- *         // timeout has passed.
+ *         /&ast; timeout has passed. &ast;/
  *         g_mutex_unlock (&data_mutex);
  *         return NULL;
  *       }
  *
- *   // there is data for us
+ *   /&ast; there is data for us &ast;/
  *   data = current_data;
  *   current_data = NULL;
  *
@@ -920,7 +920,7 @@ g_cond_wait_until (GCond  *cond,
  * |[
  * static GPrivate name_key = G_PRIVATE_INIT (g_free);
  *
- * // return value should not be freed
+ * /&ast; return value should not be freed &ast;/
  * const gchar *
  * get_local_name (void)
  * {
@@ -934,7 +934,7 @@ g_cond_wait_until (GCond  *cond,
  * }
  *
  *
- * static GPrivate count_key;   // no free function
+ * static GPrivate count_key;   /&ast; no free function &ast;/
  *
  * gint
  * get_local_count (void)

@@ -447,9 +447,9 @@ g_file_has_uri_scheme (GFile      *file,
  *
  * Gets the URI scheme for a #GFile.
  * RFC 3986 decodes the scheme as:
- * <programlisting>
+ * |[
  * URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
- * </programlisting>
+ * ]|
  * Common schemes include "file", "http", "ftp", etc.
  *
  * This call does no blocking I/O.

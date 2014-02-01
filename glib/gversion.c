@@ -85,17 +85,7 @@
  * @micro: the micro version to check for
  *
  * Checks the version of the GLib library that is being compiled
- * against.
- *
- * <example>
- * <title>Checking the version of the GLib library</title>
- * <programlisting>
- *   if (!GLIB_CHECK_VERSION (1, 2, 0))
- *     g_error ("GLib version 1.2.0 or above is needed");
- * </programlisting>
- * </example>
- *
- * See glib_check_version() for a runtime check.
+ * against. See glib_check_version() for a runtime check.
  *
  * Returns: %TRUE if the version of the GLib header files
  * is the same as or newer than the passed-in version.
@@ -109,9 +99,9 @@ const guint glib_binary_age = GLIB_BINARY_AGE;
 
 /**
  * glib_check_version:
- * @required_major: the required major version.
- * @required_minor: the required minor version.
- * @required_micro: the required micro version.
+ * @required_major: the required major version
+ * @required_minor: the required minor version
+ * @required_micro: the required micro version
  *
  * Checks that the GLib library in use is compatible with the
  * given version. Generally you would pass in the constants
@@ -129,9 +119,9 @@ const guint glib_binary_age = GLIB_BINARY_AGE;
  * (same major version.)
  *
  * Return value: %NULL if the GLib library is compatible with the
- *   given version, or a string describing the version mismatch.
- *   The returned string is owned by GLib and must not be modified
- *   or freed.
+ *     given version, or a string describing the version mismatch.
+ *     The returned string is owned by GLib and must not be modified
+ *     or freed.
  *
  * Since: 2.6
  */

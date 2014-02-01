@@ -789,11 +789,10 @@ enumerate_mimetypes_dir (const char *dir,
  *
  * Gets a list of strings containing all the registered content types
  * known to the system. The list and its data should be freed using
- * <programlisting>
- * g_list_free_full (list, g_free);
- * </programlisting>
+ * g_list_free_full (list, g_free).
  *
- * Returns: (element-type utf8) (transfer full): #GList of the registered content types
+ * Returns: (element-type utf8) (transfer full): list of the registered
+ *     content types
  */
 GList *
 g_content_types_get_registered (void)

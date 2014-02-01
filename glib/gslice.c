@@ -89,32 +89,29 @@
  * friends, as long as objects are not resized during their lifetime and the
  * object size used at allocation time is still available when freeing.
  *
- * <example>
- * <title>Using the slice allocator</title>
- * <programlisting>
+ * Here is an example for using the slice allocator:
+ * |[
  * gchar *mem[10000];
  * gint i;
  *
  * /&ast; Allocate 10000 blocks. &ast;/
- * for (i = 0; i &lt; 10000; i++)
+ * for (i = 0; i < 10000; i++)
  *   {
  *     mem[i] = g_slice_alloc (50);
  *
  *     /&ast; Fill in the memory with some junk. &ast;/
- *     for (j = 0; j &lt; 50; j++)
+ *     for (j = 0; j < 50; j++)
  *       mem[i][j] = i * j;
  *   }
  *
  * /&ast; Now free all of the blocks. &ast;/
- * for (i = 0; i &lt; 10000; i++)
- *   {
- *     g_slice_free1 (50, mem[i]);
- *   }
- * </programlisting></example>
+ * for (i = 0; i < 10000; i++)
+ *   g_slice_free1 (50, mem[i]);
+ * ]|
  *
- * <example>
- * <title>Using the slice allocator with data structures</title>
- * <programlisting>
+ * And here is an example for using the using the slice allocator
+ * with data structures:
+ * |[
  * GRealArray *array;
  *
  * /&ast; Allocate one block, using the g_slice_new() macro. &ast;/
@@ -130,7 +127,7 @@
  *
  * /&ast; We can free the block, so it can be reused. &ast;/
  * g_slice_free (GRealArray, array);
- * </programlisting></example>
+ * ]|
  */
 
 /* the GSlice allocator is split up into 4 layers, roughly modelled after the slab
