@@ -2478,8 +2478,10 @@ g_socket_get_available_bytes (GSocket *socket)
 #ifdef G_OS_WIN32
   const gint bufsize = 64 * 1024;
   static guchar *buf = NULL;
-#endif
+  u_long avail;
+#else
   gint avail;
+#endif
 
   g_return_val_if_fail (G_IS_SOCKET (socket), -1);
 
@@ -2490,10 +2492,20 @@ g_socket_get_available_bytes (GSocket *socket)
   if (ioctl (socket->priv->fd, FIONREAD, &avail) < 0)
     avail = -1;
 #else
-  if (G_UNLIKELY (g_once_init_enter (&buf)))
-    g_once_init_leave (&buf, g_malloc (bufsize));
+  if (socket->priv->type == G_SOCKET_TYPE_DATAGRAM)
+    {
+      if (G_UNLIKELY (g_once_init_enter (&buf)))
+        g_once_init_leave (&buf, g_malloc (bufsize));
 
-  avail = recv (socket->priv->fd, buf, bufsize, MSG_PEEK);
+      avail = recv (socket->priv->fd, buf, bufsize, MSG_PEEK);
+      if (avail == -1 && get_socket_errno () == WSAEWOULDBLOCK)
+        avail = 0;
+    }
+  else
+    {
+      if (ioctlsocket (socket->priv->fd, FIONREAD, &avail) < 0)
+        avail = -1;
+    }
 #endif
 
   return avail;
