@@ -95,7 +95,10 @@
  * by the <link linkend="glib-compile-schemas">glib-compile-schemas</link>
  * utility. The input is a schema description in an XML format that can be
  * described by the following DTD:
- * |[<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/gschema.dtd"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>]|
+ *
+ * <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/gschema.dtd"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>
+ * </programlisting>
  *
  * glib-compile-schemas expects schema files to have the extension <filename>.gschema.xml</filename>
  *
@@ -185,50 +188,41 @@
  * </schemalist>
  * ]|
  *
- * <refsect2>
- *   <title>Vendor overrides</title>
- *   <para>
- *     Default values are defined in the schemas that get installed by
- *     an application. Sometimes, it is necessary for a vendor or distributor
- *     to adjust these defaults. Since patching the XML source for the schema
- *     is inconvenient and error-prone,
- *     <link linkend="glib-compile-schemas">glib-compile-schemas</link> reads
- *     so-called 'vendor override' files. These are keyfiles in the same
- *     directory as the XML schema sources which can override default values.
- *     The schema id serves as the group name in the key file, and the values
- *     are expected in serialized GVariant form, as in the following example:
- *     |[
+ * ## Vendor overrides
+ *
+ * Default values are defined in the schemas that get installed by
+ * an application. Sometimes, it is necessary for a vendor or distributor
+ * to adjust these defaults. Since patching the XML source for the schema
+ * is inconvenient and error-prone,
+ * <link linkend="glib-compile-schemas">glib-compile-schemas</link> reads
+ * so-called 'vendor override' files. These are keyfiles in the same
+ * directory as the XML schema sources which can override default values.
+ * The schema id serves as the group name in the key file, and the values
+ * are expected in serialized GVariant form, as in the following example:
+ * |[
  *     [org.gtk.Example]
  *     key1='string'
  *     key2=1.5
- *     ]|
- *   </para>
- *   <para>
- *     glib-compile-schemas expects schema files to have the extension
- *     <filename>.gschema.override</filename>
- *   </para>
- * </refsect2>
+ * ]|
  *
- * <refsect2>
- *   <title>Binding</title>
- *   <para>
- *     A very convenient feature of GSettings lets you bind #GObject properties
- *     directly to settings, using g_settings_bind(). Once a GObject property
- *     has been bound to a setting, changes on either side are automatically
- *     propagated to the other side. GSettings handles details like
- *     mapping between GObject and GVariant types, and preventing infinite
- *     cycles.
- *   </para>
- *   <para>
- *     This makes it very easy to hook up a preferences dialog to the
- *     underlying settings. To make this even more convenient, GSettings
- *     looks for a boolean property with the name "sensitivity" and
- *     automatically binds it to the writability of the bound setting.
- *     If this 'magic' gets in the way, it can be suppressed with the
- *     #G_SETTINGS_BIND_NO_SENSITIVITY flag.
- *   </para>
- * </refsect2>
- **/
+ * glib-compile-schemas expects schema files to have the extension
+ * <filename>.gschema.override</filename>
+ *
+ * ## Binding
+ *
+ * A very convenient feature of GSettings lets you bind #GObject properties
+ * directly to settings, using g_settings_bind(). Once a GObject property
+ * has been bound to a setting, changes on either side are automatically
+ * propagated to the other side. GSettings handles details like mapping
+ * between GObject and GVariant types, and preventing infinite cycles.
+ *
+ * This makes it very easy to hook up a preferences dialog to the
+ * underlying settings. To make this even more convenient, GSettings
+ * looks for a boolean property with the name "sensitivity" and
+ * automatically binds it to the writability of the bound setting.
+ * If this 'magic' gets in the way, it can be suppressed with the
+ * #G_SETTINGS_BIND_NO_SENSITIVITY flag.
+ */
 
 struct _GSettingsPrivate
 {
