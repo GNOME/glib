@@ -603,7 +603,7 @@ g_file_enumerator_get_container (GFileEnumerator *enumerator)
  * inside loops with g_file_enumerator_next_file().
  *
  * This is a convenience method that's equivalent to:
- * |[
+ * |[<!-- language="C" -->
  *   gchar *name = g_file_info_get_name (info);
  *   GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
  *                                    name);

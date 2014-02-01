@@ -75,7 +75,7 @@
  * g_list_insert() and g_list_insert_sorted().
  *
  * To visit all elements in the list, use a loop over the list:
- * |[
+ * |[<!-- language="C" -->
  * GList *l;
  * for (l = list; l != NULL; l = l->next)
  *   {
@@ -87,7 +87,7 @@
  *
  * To loop over the list and modify it (e.g. remove a certain element)
  * a while loop is more appropriate, for example:
- * |[
+ * |[<!-- language="C" -->
  * GList *l = list;
  * while (l != NULL)
  *   {
@@ -236,7 +236,7 @@ g_list_free_full (GList          *list,
  * to avoid the inefficiency is to use g_list_prepend() and reverse
  * the list with g_list_reverse() when all elements have been added.
  *
- * |[
+ * |[<!-- language="C" -->
  * /&ast; Notice that these are initialized to the empty list. &ast;/
  * GList *string_list = NULL, *number_list = NULL;
  *
@@ -288,7 +288,7 @@ g_list_append (GList    *list,
  * Note that the return value is the new start of the list,
  * which will have changed, so make sure you store the new value. 
  *
- * |[ 
+ * |[<!-- language="C" -->
  * /&ast; Notice that it is initialized to the empty list. &ast;/
  * GList *list = NULL;
  *
@@ -436,7 +436,7 @@ g_list_insert_before (GList    *list,
  *
  * This function is for example used to move an element in the list.
  * The following example moves an element to the top of the list:
- * |[
+ * |[<!-- language="C" -->
  * list = g_list_remove_link (list, llink);
  * list = g_list_concat (llink, list);
  * ]|
@@ -578,7 +578,7 @@ g_list_remove_all (GList         *list,
  * This function is for example used to move an element in the list
  * (see the example for g_list_concat()) or to remove an element in
  * the list before freeing its data:
- * |[
+ * |[<!-- language="C" --> 
  * list = g_list_remove_link (list, llink);
  * free_some_data_that_may_access_the_list_again (llink->data);
  * g_list_free (llink);
@@ -650,12 +650,12 @@ g_list_copy (GList *list)
  * if the copy function takes only one argument.
  *
  * For instance, if @list holds a list of GObjects, you can do:
- * |[
+ * |[<!-- language="C" -->   
  * another_list = g_list_copy_deep (list, (GCopyFunc) g_object_ref, NULL);
  * ]|
  *
  * And, to entirely free the new list, you could do:
- * |[
+ * |[<!-- language="C" --> 
  * g_list_free_full (another_list, g_object_unref);
  * ]|
  *

@@ -68,7 +68,7 @@
  * To free an array, use g_array_free().
  *
  * Here is an example that stores integers in a #GArray:
- * |[
+ * |[<!-- language="C" -->
  *   GArray *garray;
  *   gint i;
  *   /&ast; We create a new array to store gint values.
@@ -120,7 +120,7 @@ struct _GRealArray
  * value is cast to the given type.
  *
  * This example gets a pointer to an element in a #GArray:
- * |[
+ * |[<!-- language="C" -->
  *   EDayViewEvent *event;
  *   /&ast; This gets a pointer to the 4th element
  *    &ast; in the array of EDayViewEvent structs.
@@ -816,7 +816,7 @@ g_array_maybe_expand (GRealArray *array,
  * To free a pointer array, use g_ptr_array_free().
  *
  * An example using a #GPtrArray:
- * |[
+ * |[<!-- language="C" -->
  *   GPtrArray *gparray;
  *   gchar *string1 = "one", *string2 = "two", *string3 = "three";
  *
@@ -1514,7 +1514,7 @@ g_ptr_array_foreach (GPtrArray *array,
  * To free a #GByteArray, use g_byte_array_free().
  *
  * An example for using a #GByteArray:
- * |[
+ * |[<!-- language="C" -->
  *   GByteArray *gbarray;
  *   gint i;
  *

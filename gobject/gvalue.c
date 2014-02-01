@@ -55,7 +55,7 @@
  * The code in the example program below demonstrates #GValue's
  * features.
  *
- * |[
+ * |[<!-- language="C" --> 
  * #include <glib-object.h>
  *
  * static void

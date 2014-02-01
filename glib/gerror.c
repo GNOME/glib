@@ -53,7 +53,7 @@
  *
  * Functions that can fail take a return location for a #GError as their
  * last argument. For example:
- * |[
+ * |[<!-- language="C" -->
  * gboolean g_file_get_contents (const gchar  *filename,
  *                               gchar       **contents,
  *                               gsize        *length,
@@ -62,7 +62,7 @@
  * If you pass a non-%NULL value for the <literal>error</literal>
  * argument, it should point to a location where an error can be placed.
  * For example:
- * |[
+ * |[<!-- language="C" -->
  * gchar *contents;
  * GError *err = NULL;
  *
@@ -89,7 +89,7 @@
  * Because g_file_get_contents() returns %FALSE on failure, if you
  * are only interested in whether it failed and don't need to display
  * an error message, you can pass %NULL for the @error argument:
- * |[
+ * |[<!-- language="C" -->
  * if (g_file_get_contents ("foo.txt", &contents, NULL, NULL)) /&ast; ignore errors &ast;/
  *   /&ast; no error occurred &ast;/ ;
  * else
@@ -115,7 +115,7 @@
  * want to g_set_error(), then return immediately. g_set_error()
  * does nothing if the error location passed to it is %NULL.
  * Here's an example:
- * |[
+ * |[<!-- language="C" -->
  * gint
  * foo_open_file (GError **error)
  * {
@@ -141,7 +141,7 @@
  * function that can report a #GError. If the sub-function indicates
  * fatal errors in some way other than reporting a #GError, such as
  * by returning %TRUE on success, you can simply do the following:
- * |[
+ * |[<!-- language="C" -->
  * gboolean
  * my_function_that_can_fail (GError **err)
  * {
@@ -163,7 +163,7 @@
  * reporting a #GError, you need to create a temporary #GError
  * since the passed-in one may be %NULL. g_propagate_error() is
  * intended for use in this case.
- * |[
+ * |[<!-- language="C" -->
  * gboolean
  * my_function_that_can_fail (GError **err)
  * {
@@ -188,7 +188,7 @@
  * ]|
  *
  * Error pileups are always a bug. For example, this code is incorrect:
- * |[
+ * |[<!-- language="C" -->
  * gboolean
  * my_function_that_can_fail (GError **err)
  * {
@@ -215,7 +215,7 @@
  * of handling an error by always doing nothing about it. So the
  * following code is fine, assuming errors in sub_function_that_can_fail()
  * are not fatal to my_function_that_can_fail():
- * |[
+ * |[<!-- language="C" -->
  * gboolean
  * my_function_that_can_fail (GError **err)
  * {
@@ -246,7 +246,7 @@
  *
  * - The error domain is called &lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR,
  *   for example %G_SPAWN_ERROR or %G_THREAD_ERROR:
- *   |[
+ *   |[<!-- language="C" -->
  *   #define G_SPAWN_ERROR g_spawn_error_quark ()
  *
  *   GQuark

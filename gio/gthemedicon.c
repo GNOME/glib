@@ -257,7 +257,7 @@ g_themed_icon_class_init (GThemedIconClass *klass)
    *
    * For example, if the icon name was "gnome-dev-cdrom-audio", the array 
    * would become
-   * |[
+   * |[<!-- language="C" -->
    * {
    *   "gnome-dev-cdrom-audio",
    *   "gnome-dev-cdrom",
@@ -345,7 +345,7 @@ g_themed_icon_new_from_names (char **iconnames,
  * that can be created by shortening @iconname at '-' characters.
  * 
  * In the following example, @icon1 and @icon2 are equivalent:
- * |[
+ * |[<!-- language="C" -->
  * const char *names[] = { 
  *   "gnome-dev-cdrom-audio",
  *   "gnome-dev-cdrom",

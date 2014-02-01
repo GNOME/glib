@@ -476,7 +476,7 @@ g_dngettext (const gchar *domain,
  * <filename>glib/gi18n.h</filename>. For use in a library, you must include
  * <filename>glib/gi18n-lib.h</filename> after defining the %GETTEXT_PACKAGE
  * macro suitably for your library:
- * |[
+ * |[<!-- language="C" -->
  * #define GETTEXT_PACKAGE "gtk20"
  * #include <glib/gi18n-lib.h>
  * ]|
@@ -542,7 +542,7 @@ g_dngettext (const gchar *domain,
  * used as a context. This is mainly useful for short strings which
  * may need different translations, depending on the context in which
  * they are used.
- * |[
+ * |[<!-- language="C" -->
  * label1 = C_("Navigation", "Back");
  * label2 = C_("Body part", "Back");
  * ]|
@@ -564,7 +564,7 @@ g_dngettext (const gchar *domain,
  * where the translated strings can't be directly used, e.g. in string
  * array initializers. To get the translated string, call gettext()
  * at runtime.
- * |[
+ * |[<!-- language="C" -->
  * {
  *   static const char *messages[] = {
  *     N_("some very meaningful message"),
@@ -593,7 +593,7 @@ g_dngettext (const gchar *domain,
  * be directly used, e.g. in string array initializers. To get the
  * translated string, you should call g_dpgettext2() at runtime.
  *
- * |[
+ * |[<!-- language="C" -->
  * {
  *   static const char *messages[] = {
  *     NC_("some context", "some very meaningful message"),

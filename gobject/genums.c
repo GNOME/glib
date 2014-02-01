@@ -262,7 +262,7 @@ g_flags_register_static (const gchar	   *name,
  * function of a #GTypePlugin implementation, as in the following
  * example:
  *
- * |[
+ * |[<!-- language="C" --> 
  * static void
  * my_enum_complete_type_info (GTypePlugin     *plugin,
  *                             GType            g_type,

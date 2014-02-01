@@ -158,7 +158,7 @@
  * give_me_next_number() example using the #G_LOCK macros:
  *
  * Here is an example for using the #G_LOCK convenience macros:
- * |[
+ * |[<!-- language="C" --> 
  *   G_LOCK_DEFINE (current_number);
  *
  *   int
@@ -227,7 +227,7 @@
  * access.
  *
  * Take for example the following function:
- * |[
+ * |[<!-- language="C" --> 
  *   int
  *   give_me_next_number (void)
  *   {
@@ -244,7 +244,7 @@
  * It is easy to see that this won't work in a multi-threaded
  * application. There current_number must be protected against shared
  * access. A #GMutex can be used as a solution to this problem:
- * |[
+ * |[<!-- language="C" --> 
  *   int
  *   give_me_next_number (void)
  *   {
@@ -307,7 +307,7 @@
  * g_rw_lock_reader_lock()).
  *
  * Here is an example for an array with access functions:
- * |[
+ * |[<!-- language="C" --> 
  *   GRWLock lock;
  *   GPtrArray *array;
  *
@@ -376,7 +376,7 @@
  *
  * Here is an example for using GCond to block a thread until a condition
  * is satisfied:
- * |[
+ * |[<!-- language="C" --> 
  *   gpointer current_data = NULL;
  *   GMutex data_mutex;
  *   GCond data_cond;
@@ -519,7 +519,7 @@ G_LOCK_DEFINE_STATIC (g_thread_new);
  *
  * A #GOnce must be initialized with this macro before it can be used.
  *
- * |[
+ * |[<!-- language="C" --> 
  *   GOnce my_once = G_ONCE_INIT;
  * ]|
  *
@@ -559,7 +559,7 @@ G_LOCK_DEFINE_STATIC (g_thread_new);
  * Calling g_once() recursively on the same #GOnce struct in
  * @func will lead to a deadlock.
  *
- * |[
+ * |[<!-- language="C" --> 
  *   gpointer
  *   get_debug_flags (void)
  *   {
@@ -614,7 +614,7 @@ g_once_impl (GOnce       *once,
  * blocked until initialization completed. To be used in constructs
  * like this:
  *
- * |[
+ * |[<!-- language="C" --> 
  *   static gsize initialization_value = 0;
  *
  *   if (g_once_init_enter (&initialization_value))

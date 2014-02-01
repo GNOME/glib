@@ -367,7 +367,7 @@ g_memory_output_stream_init (GMemoryOutputStream *stream)
  * @size as 0 (allowing #GMemoryOutputStream to do the initial
  * allocation for itself).
  *
- * |[
+ * |[<!-- language="C" -->
  * /&ast; a stream that can grow &ast;/
  * stream = g_memory_output_stream_new (NULL, 0, realloc, free);
  *

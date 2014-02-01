@@ -45,13 +45,13 @@
  * g_value_unset() as the clear function using g_array_set_clear_func(),
  * for instance, the following code:
  *
- * |[
+ * |[<!-- language="C" --> 
  *   GValueArray *array = g_value_array_new (10);
  * ]|
  *
  * can be replaced by:
  *
- * |[
+ * |[<!-- language="C" --> 
  *   GArray *array = g_array_sized_new (FALSE, TRUE, sizeof (GValue), 10);
  *   g_array_set_clear_func (array, (GDestroyNotify) g_value_unset);
  * ]|

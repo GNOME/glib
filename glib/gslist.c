@@ -191,7 +191,7 @@ g_slist_free_full (GSList         *list,
  * elements. A common idiom to avoid the inefficiency is to prepend
  * the elements and reverse the list when all elements have been added.
  *
- * |[
+ * |[<!-- language="C" --> 
  * /&ast; Notice that these are initialized to the empty list. &ast;/
  * GSList *list = NULL, *number_list = NULL;
  *
@@ -239,7 +239,7 @@ g_slist_append (GSList   *list,
  * The return value is the new start of the list, which
  * may have changed, so make sure you store the new value.
  *
- * |[
+ * |[<!-- language="C" --> 
  * /&ast; Notice that it is initialized to the empty list. &ast;/
  * GSList *list = NULL;
  * list = g_slist_prepend (list, "last");
@@ -584,12 +584,12 @@ g_slist_copy (GSList *list)
  * one argument.
  *
  * For instance, if @list holds a list of GObjects, you can do:
- * |[
+ * |[<!-- language="C" --> 
  * another_list = g_slist_copy_deep (list, (GCopyFunc) g_object_ref, NULL);
  * ]|
  *
  * And, to entirely free the new list, you could do:
- * |[
+ * |[<!-- language="C" --> 
  * g_slist_free_full (another_list, g_object_unref);
  * ]|
  *

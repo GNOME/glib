@@ -289,7 +289,7 @@ g_mkdir_with_parents (const gchar *pathname,
  * For example, you might think you could use %G_FILE_TEST_IS_SYMLINK
  * to know whether it is safe to write to a file without being
  * tricked into writing into a different location. It doesn't work!
- * |[
+ * |[<!-- language="C" -->
  * /&ast; DON'T DO THIS &ast;/
  *  if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK)) 
  *    {

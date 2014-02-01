@@ -77,7 +77,7 @@
  * of an extension point has a name, and a priority. Use
  * g_io_extension_point_implement() to implement an extension point.
  * 
- *  |[
+ *  |[<!-- language="C" -->
  *  GIOExtensionPoint *ep;
  *
  *  /&ast; Register an extension point &ast;/
@@ -85,7 +85,7 @@
  *  g_io_extension_point_set_required_type (ep, MY_TYPE_EXAMPLE);
  *  ]|
  *
- *  |[
+ *  |[<!-- language="C" -->
  *  /&ast; Implement an extension point &ast;/
  *  G_DEFINE_TYPE (MyExampleImpl, my_example_impl, MY_TYPE_EXAMPLE);
  *  g_io_extension_point_implement ("my-extension-point",

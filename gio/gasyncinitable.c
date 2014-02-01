@@ -47,7 +47,7 @@
  *
  * A typical implementation might look something like this:
  *
- * |[
+ * |[<!-- language="C" -->
  * enum {
  *    NOT_INITIALIZED,
  *    INITIALIZING,

@@ -101,7 +101,7 @@ volatile gboolean glib_on_error_halt = TRUE;
  * The following example shows how it can be used together with
  * the g_log() functions.
  *
- * |[
+ * |[<!-- language="C" -->
  * #include <glib.h>
  *
  * static void

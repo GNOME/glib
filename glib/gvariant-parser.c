@@ -2480,14 +2480,14 @@ g_variant_new_parsed_va (const gchar *format,
  * g_variant_new() would have collected.
  *
  * Consider this simple example:
- * |[
+ * |[<!-- language="C" --> 
  *  g_variant_new_parsed ("[('one', 1), ('two', %i), (%s, 3)]", 2, "three");
  * ]|
  *
  * In the example, the variable argument parameters are collected and
  * filled in as if they were part of the original string to produce the
  * result of
- * |[
+ * |[<!-- language="C" --> 
  * [('one', 1), ('two', 2), ('three', 3)]
  * ]|
  *
@@ -2530,7 +2530,7 @@ g_variant_new_parsed (const gchar *format,
  *
  * This function might be used as follows:
  *
- * |[
+ * |[<!-- language="C" --> 
  * GVariant *
  * make_pointless_dictionary (void)
  * {

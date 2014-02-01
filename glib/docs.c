@@ -259,7 +259,7 @@
  * and conversion specifier and append a conversion specifier.
  *
  * The following example prints "0x7b";
- * |[
+ * |[<!-- language="C" -->
  * gint16 value = 123;
  * g_print ("%#" G_GINT16_MODIFIER "x", value);
  * ]|
@@ -275,7 +275,7 @@
  * include the percent-sign, such that you can add precision and length
  * modifiers between percent-sign and conversion specifier.
  *
- * |[
+ * |[<!-- language="C" -->
  * gint16 in;
  * gint32 out;
  * sscanf ("42", "%" G_GINT16_FORMAT, &in)
@@ -721,7 +721,7 @@
  * data" to a callback, in the form of a void pointer. From time to time
  * you want to pass an integer instead of a pointer. You could allocate
  * an integer, with something like:
- * |[
+ * |[<!-- language="C" -->
  *   int *ip = g_new (int, 1);
  *   *ip = 42;
  * ]|
@@ -731,7 +731,7 @@
  * Pointers are always at least 32 bits in size (on all platforms GLib
  * intends to support). Thus you can store at least 32-bit integer values
  * in a pointer value. Naively, you might try this, but it's incorrect:
- * |[
+ * |[<!-- language="C" -->
  *   gpointer p;
  *   int i;
  *   p = (void*) 42;
@@ -739,7 +739,7 @@
  * ]|
  * Again, that example was not correct, don't copy it.
  * The problem is that on some systems you need to do this:
- * |[
+ * |[<!-- language="C" -->
  *   gpointer p;
  *   int i;
  *   p = (void*) (long) 42;
@@ -1777,14 +1777,14 @@
  * Accepts a macro or a string and converts it into a string after
  * preprocessor argument expansion. For example, the following code:
  *
- * |[
+ * |[<!-- language="C" -->
  * #define AGE 27
  * const gchar *greeting = G_STRINGIFY (AGE) " today!";
  * ]|
  *
  * is transformed by the preprocessor into (code equivalent to):
  *
- * |[
+ * |[<!-- language="C" -->
  * const gchar *greeting = "27 today!";
  * ]|
  */
@@ -1798,7 +1798,7 @@
  * @identifier1identifier2 from its expanded
  * arguments @identifier1 and @identifier2. For example,
  * the following code:
- * |[
+ * |[<!-- language="C" -->
  * #define GET(traveller,method) G_PASTE(traveller_get_, method) (traveller)
  * const gchar *name = GET (traveller, name);
  * const gchar *quest = GET (traveller, quest);
@@ -1806,7 +1806,7 @@
  * ]|
  *
  * is transformed by the preprocessor into:
- * |[
+ * |[<!-- language="C" -->
  * const gchar *name = traveller_get_name (traveller);
  * const gchar *quest = traveller_get_quest (traveller);
  * GdkColor *favourite = traveller_get_favourite_colour (traveller);
@@ -1846,7 +1846,7 @@
  * Its value should be ignored. This can be accomplished by placing
  * it as the first argument of a comma expression.
  *
- * |[
+ * |[<!-- language="C" -->
  * #define ADD_ONE_TO_INT(x) \
  *   (G_STATIC_ASSERT_EXPR(sizeof (x) == sizeof (int)), ((x) + 1))
  * ]|
@@ -2078,7 +2078,7 @@
  * semicolon. For arguments, place the attribute at the beginning of the
  * argument declaration.
  *
- * |[
+ * |[<!-- language="C" -->
  * void my_unused_function (G_GNUC_UNUSED gint unused_argument,
  *                          gint other_argument) G_GNUC_UNUSED;
  * ]|
@@ -2102,7 +2102,7 @@
  *
  * See the GNU C documentation for more details.
  *
- * |[
+ * |[<!-- language="C" -->
  * gint g_snprintf (gchar  *string,
  *                  gulong       n,
  *                  gchar const *format,
@@ -2141,7 +2141,7 @@
  *
  * See the GNU C documentation for more details.
  *
- * |[
+ * |[<!-- language="C" -->
  * gchar *g_dgettext (gchar *domain_name, gchar *msgid) G_GNUC_FORMAT (2);
  * ]|
  */
@@ -2223,7 +2223,7 @@
  * function declaration. While GCC allows the macro after the declaration,
  * Sun Studio does not.
  *
- * |[
+ * |[<!-- language="C" -->
  * G_GNUC_INTERNAL
  * void _g_log_fallback_handler (const gchar    *log_domain,
  *                               GLogLevelFlags  log_level,
@@ -2253,7 +2253,7 @@
  * Hints the compiler that the expression is likely to evaluate to
  * a true value. The compiler may use this information for optimizations.
  *
- * |[
+ * |[<!-- language="C" -->
  * if (G_LIKELY (random () != 1))
  *   g_print ("not one");
  * ]|
@@ -2270,7 +2270,7 @@
  * Hints the compiler that the expression is unlikely to evaluate to
  * a true value. The compiler may use this information for optimizations.
  *
- * |[
+ * |[<!-- language="C" -->
  * if (G_UNLIKELY (random () == 1))
  *   g_print ("a random one");
  * ]|

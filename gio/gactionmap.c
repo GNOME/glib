@@ -160,7 +160,7 @@ g_action_map_remove_action (GActionMap  *action_map,
  *
  * Each action is constructed as per one #GActionEntry.
  *
- * |[
+ * |[<!-- language="C" -->
  * static void
  * activate_quit (GSimpleAction *simple,
  *                GVariant      *parameter,

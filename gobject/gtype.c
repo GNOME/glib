@@ -4425,7 +4425,7 @@ gobject_init_ctor (void)
  * Note the use of a structure member "priv" to avoid the overhead
  * of repeatedly calling MY_OBJECT_GET_PRIVATE().
  *
- * |[
+ * |[<!-- language="C" --> 
  * typedef struct _MyObject        MyObject;
  * typedef struct _MyObjectPrivate MyObjectPrivate;
  *

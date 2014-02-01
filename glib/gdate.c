@@ -161,7 +161,7 @@
  * function.
  *
  * Instead, do the following:
- * |[
+ * |[<!-- language="C" -->
  * time_t ttime;
  * GTime gtime;
  *
@@ -1286,7 +1286,7 @@ g_date_set_parse (GDate       *d,
  * the user's current timezone.
  *
  * To set the value of a date to the current day, you could write:
- * |[
+ * |[<!-- language="C" -->
  *  g_date_set_time_t (date, time (NULL)); 
  * ]|
  *

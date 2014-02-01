@@ -1996,7 +1996,7 @@ g_markup_parse_context_get_user_data (GMarkupParseContext *context)
  * As an example, see the following implementation of a simple
  * parser that counts the number of tags encountered.
  *
- * |[
+ * |[<!-- language="C" --> 
  * typedef struct
  * {
  *   gint tag_count;
@@ -2038,7 +2038,7 @@ g_markup_parse_context_get_user_data (GMarkupParseContext *context)
  * In order to allow this parser to be easily used as a subparser, the
  * following interface is provided:
  *
- * |[
+ * |[<!-- language="C" --> 
  * void
  * start_counting (GMarkupParseContext *context)
  * {
@@ -2063,7 +2063,7 @@ g_markup_parse_context_get_user_data (GMarkupParseContext *context)
  *
  * The subparser would then be used as follows:
  *
- * |[
+ * |[<!-- language="C" --> 
  * static void start_element (context, element_name, ...)
  * {
  *   if (strcmp (element_name, "count-these") == 0)
@@ -2523,7 +2523,7 @@ g_markup_vprintf_escaped (const gchar *format,
  * output, without having to worry that the strings
  * might themselves contain markup.
  *
- * |[
+ * |[<!-- language="C" --> 
  * const char *store = "Fortnum & Mason";
  * const char *item = "Tea";
  * char *output;

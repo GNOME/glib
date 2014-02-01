@@ -1638,7 +1638,7 @@ g_regex_match_simple (const gchar        *pattern,
  * To retrieve all the non-overlapping matches of the pattern in
  * string you can use g_match_info_next().
  *
- * |[
+ * |[<!-- language="C" --> 
  * static void
  * print_uppercase_words (const gchar *string)
  * {
@@ -1711,7 +1711,7 @@ g_regex_match (const GRegex      *regex,
  * To retrieve all the non-overlapping matches of the pattern in
  * string you can use g_match_info_next().
  *
- * |[
+ * |[<!-- language="C" --> 
  * static void
  * print_uppercase_words (const gchar *string)
  * {
@@ -2834,7 +2834,7 @@ g_regex_replace_literal (const GRegex      *regex,
  *
  * The following example uses g_regex_replace_eval() to replace multiple
  * strings at once:
- * |[
+ * |[<!-- language="C" --> 
  * static gboolean
  * eval_cb (const GMatchInfo *info,
  *          GString          *res,

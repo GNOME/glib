@@ -55,7 +55,7 @@
  * automatically map from D-Bus errors to #GError and back. This
  * is typically done in the function returning the #GQuark for the
  * error domain:
- * |[
+ * |[<!-- language="C" -->
  * /&ast; foo-bar-error.h: &ast;/
  *
  * #define FOO_BAR_ERROR (foo_bar_error_quark ())

@@ -5794,7 +5794,7 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
  *
  * If the @parameters #GVariant is floating, it is consumed. This allows
  * convenient 'inline' use of g_variant_new(), e.g.:
- * |[
+ * |[<!-- language="C" -->
  *  g_dbus_connection_call (connection,
  *                          "org.freedesktop.StringThings",
  *                          "/org/freedesktop/StringThings",
@@ -5895,7 +5895,7 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  *
  * If the @parameters #GVariant is floating, it is consumed.
  * This allows convenient 'inline' use of g_variant_new(), e.g.:
- * |[
+ * |[<!-- language="C" -->
  *  g_dbus_connection_call_sync (connection,
  *                               "org.freedesktop.StringThings",
  *                               "/org/freedesktop/StringThings",

@@ -105,7 +105,7 @@ g_cancellable_class_init (GCancellableClass *klass)
    * like this.
    *
    * An example of how to us this:
-   * |[
+   * |[<!-- language="C" -->
    *     /&ast; Make sure we don't do unnecessary work if already cancelled &ast;/
    *     if (g_cancellable_set_error_if_cancelled (cancellable, error))
    *       return;

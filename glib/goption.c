@@ -91,7 +91,7 @@
  *
  * Here is a complete example of setting up GOption to parse the example
  * commandline above and produce the example help output.
- * |[
+ * |[<!-- language="C" --> 
  * static gint repeats = 2;
  * static gint max_size = 8;
  * static gboolean verbose = FALSE;
@@ -150,7 +150,7 @@
  * The following example shows how you can use #GOptionContext directly
  * in order to correctly deal with Unicode filenames on Windows:
  *
- * |[
+ * |[<!-- language="C" --> 
  * int
  * main (int argc, char **argv)
  * {

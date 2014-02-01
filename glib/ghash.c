@@ -679,7 +679,7 @@ g_hash_table_new_full (GHashFunc      hash_func,
  * Initializes a key/value pair iterator and associates it with
  * @hash_table. Modifying the hash table after calling this function
  * invalidates the returned iterator.
- * |[
+ * |[<!-- language="C" -->
  * GHashTableIter iter;
  * gpointer key, value;
  *

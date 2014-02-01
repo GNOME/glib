@@ -399,7 +399,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
    * call g_simple_action_set_state() from the handler.
    *
    * An example of a 'change-state' handler:
-   * |[
+   * |[<!-- language="C" -->
    * static void
    * change_volume_state (GSimpleAction *action,
    *                      GVariant      *value,

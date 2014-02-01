@@ -3068,7 +3068,7 @@ g_variant_iter_free (GVariantIter *iter)
  * you no longer need it.
  *
  * Here is an example for iterating with g_variant_iter_next_value():
- * |[
+ * |[<!-- language="C" --> 
  *   /&ast; recursively iterate a container &ast;/
  *   void
  *   iterate_container_recursive (GVariant *container)
@@ -4889,7 +4889,7 @@ g_variant_get_va (GVariant     *value,
  *
  * This function might be used as follows:
  *
- * |[
+ * |[<!-- language="C" --> 
  * GVariant *
  * make_pointless_dictionary (void)
  * {
@@ -4981,7 +4981,7 @@ g_variant_get_child (GVariant    *value,
  * the unpacking process.
  *
  * Here is an example for memory management with g_variant_iter_next():
- * |[
+ * |[<!-- language="C" --> 
  *   /&ast; Iterates a dictionary of type 'a{sv}' &ast;/
  *   void
  *   iterate_dictionary (GVariant *dictionary)
@@ -5073,7 +5073,7 @@ g_variant_iter_next (GVariantIter *iter,
  * g_variant_get(). Failure to do so will cause a memory leak.
  *
  * Here is an example for memory management with g_variant_iter_loop():
- * |[
+ * |[<!-- language="C" --> 
  *   /&ast; Iterates a dictionary of type 'a{sv}' &ast;/
  *   void
  *   iterate_dictionary (GVariant *dictionary)

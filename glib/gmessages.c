@@ -538,19 +538,19 @@ g_log_set_fatal_mask (const gchar   *log_domain,
  *
  * Here is an example for adding a log handler for all warning messages
  * in the default domain:
- * |[
+ * |[<!-- language="C" --> 
  * g_log_set_handler (NULL, G_LOG_LEVEL_WARNING | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
  * ]|
  *
  * This example adds a log handler for all critical messages from GTK+:
- * |[
+ * |[<!-- language="C" --> 
  * g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
  * ]|
  *
  * This example adds a log handler for all messages from GLib:
- * |[
+ * |[<!-- language="C" --> 
  * g_log_set_handler ("GLib", G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL
  *                    | G_LOG_FLAG_RECURSION, my_log_handler, NULL);
  * ]|
@@ -1146,7 +1146,7 @@ g_assert_warning (const char *log_domain,
  *
  * For example:
  *
- * |[
+ * |[<!-- language="C" --> 
  *   /&ast; g_main_context_push_thread_default() should fail if the
  *    &ast; context is already owned by another thread.
  *    &ast;/

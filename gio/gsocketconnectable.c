@@ -32,7 +32,7 @@
  * to try out each socket address in turn until one succeeds, as shown
  * in the sample code below.
  *
- * |[
+ * |[<!-- language="C" -->
  * MyConnectionType *
  * connect_to_host (const char    *hostname,
  *                  guint16        port,

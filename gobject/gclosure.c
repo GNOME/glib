@@ -151,7 +151,7 @@ enum {
  * part as a #GClosure. This function is mainly useful when
  * implementing new types of closures.
  *
- * |[
+ * |[<!-- language="C" --> 
  * typedef struct _MyClosure MyClosure;
  * struct _MyClosure
  * {
@@ -608,20 +608,20 @@ g_closure_unref (GClosure *closure)
  * count. If the closure is not floating, g_closure_sink() does
  * nothing. The reason for the existence of the floating state is to
  * prevent cumbersome code sequences like:
- * |[
+ * |[<!-- language="C" --> 
  * closure = g_cclosure_new (cb_func, cb_data);
  * g_source_set_closure (source, closure);
  * g_closure_unref (closure); /&ast; GObject doesn't really need this &ast;/
  * ]|
  * Because g_source_set_closure() (and similar functions) take ownership of the
  * initial reference count, if it is unowned, we instead can write:
- * |[
+ * |[<!-- language="C" --> 
  * g_source_set_closure (source, g_cclosure_new (cb_func, cb_data));
  * ]|
  *
  * Generally, this function is used together with g_closure_ref(). Ane example
  * of storing a closure for later notification looks like:
- * |[
+ * |[<!-- language="C" --> 
  * static GClosure *notify_closure = NULL;
  * void
  * foo_notify_set_closure (GClosure *closure)

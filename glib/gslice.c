@@ -90,7 +90,7 @@
  * object size used at allocation time is still available when freeing.
  *
  * Here is an example for using the slice allocator:
- * |[
+ * |[<!-- language="C" --> 
  * gchar *mem[10000];
  * gint i;
  *
@@ -111,7 +111,7 @@
  *
  * And here is an example for using the using the slice allocator
  * with data structures:
- * |[
+ * |[<!-- language="C" --> 
  * GRealArray *array;
  *
  * /&ast; Allocate one block, using the g_slice_new() macro. &ast;/

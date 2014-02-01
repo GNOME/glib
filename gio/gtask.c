@@ -50,7 +50,7 @@
  * the return value.
  *
  * Here is an example for using GTask as a GAsyncResult:
- * |[
+ * |[<!-- language="C" -->
  *     typedef struct {
  *       CakeFrostingType frosting;
  *       char *message;
@@ -158,7 +158,7 @@
  * and priority).
  *
  * Here is an example for chained asynchronous operations:
- *   |[
+ *   |[<!-- language="C" -->
  *     typedef struct {
  *       Cake *cake;
  *       CakeFrostingType frosting;
@@ -293,7 +293,7 @@
  * #GMainContext when it completes.
  *
  * Running a task in a thread:
- *   |[
+ *   |[<!-- language="C" -->
  *     typedef struct {
  *       guint radius;
  *       CakeFlavor flavor;
@@ -377,7 +377,7 @@
  * synchronous variants of blocking APIs.
  *
  * Cancelling a task:
- *   |[
+ *   |[<!-- language="C" -->
  *     static void
  *     bake_cake_thread (GTask         *task,
  *                       gpointer       source_object,

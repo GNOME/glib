@@ -106,7 +106,7 @@
  * #GAsyncResult.  A typical implementation of an asynchronous operation
  * using GSimpleAsyncResult looks something like this:
  *
- * |[
+ * |[<!-- language="C" -->
  * static void
  * baked_cb (Cake    *cake,
  *           gpointer user_data)

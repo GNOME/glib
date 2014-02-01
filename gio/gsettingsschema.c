@@ -52,7 +52,7 @@
  *
  * Consider the following example:
  *
- * |[
+ * |[<!-- language="C" -->
  * typedef struct
  * {
  *    ...
@@ -109,7 +109,7 @@
  * ships a gschemas.compiled file as part of itself, and then simply do
  * the following:
  *
- * |[
+ * |[<!-- language="C" -->
  * {
  *   GSettings *settings;
  *   gint some_value;

@@ -53,7 +53,7 @@
  * This means that it is not specifically claimed to be "owned" by
  * any code portion. The main motivation for providing floating references is
  * C convenience. In particular, it allows code to be written as:
- * |[
+ * |[<!-- language="C" --> 
  * container = create_container ();
  * container_add_child (container, create_child());
  * ]|
@@ -62,7 +62,7 @@
  * references, container_add_child() can only g_object_ref() the new child,
  * so to implement this code without reference leaks, it would have to be
  * written as:
- * |[
+ * |[<!-- language="C" --> 
  * Child *child;
  * container = create_container ();
  * child = create_child ();
@@ -84,7 +84,7 @@
  * across certain code portions (an example is #GtkMenu), to achieve this,
  * the following sequence can be used:
  *
- * |[
+ * |[<!-- language="C" --> 
  * /&ast; save floating state &ast;/
  * gboolean was_floating = g_object_is_floating (object);
  * g_object_ref_sink (object);
@@ -473,7 +473,7 @@ g_object_do_class_init (GObjectClass *class)
    * This signal is typically used to obtain change notification for a
    * single property, by specifying the property name as a detail in the
    * g_signal_connect() call, like this:
-   * |[
+   * |[<!-- language="C" --> 
    * g_signal_connect (text_view->buffer, "notify::paste-target-list",
    *                   G_CALLBACK (gtk_text_view_target_list_notify),
    *                   text_view)
@@ -589,7 +589,7 @@ g_object_class_install_property (GObjectClass *class,
  * #GParamSpecs and g_object_notify_by_pspec(). For instance, this
  * class initialization:
  *
- * |[
+ * |[<!-- language="C" --> 
  * enum {
  *   PROP_0, PROP_FOO, PROP_BAR, N_PROPERTIES
  * };
@@ -622,7 +622,7 @@ g_object_class_install_property (GObjectClass *class,
  *
  * allows calling g_object_notify_by_pspec() to notify of property changes:
  *
- * |[
+ * |[<!-- language="C" --> 
  * void
  * my_object_set_foo (MyObject *self, gint foo)
  * {
@@ -1209,7 +1209,7 @@ g_object_notify (GObject     *object,
  * instead, is to store the GParamSpec used with
  * g_object_class_install_property() inside a static array, e.g.:
  *
- *|[
+ *|[<!-- language="C" --> 
  *   enum
  *   {
  *     PROP_0,
@@ -1234,7 +1234,7 @@ g_object_notify (GObject     *object,
  *
  * and then notify a change on the "foo" property with:
  *
- * |[
+ * |[<!-- language="C" --> 
  *   g_object_notify_by_pspec (self, properties[PROP_FOO]);
  * ]|
  *
@@ -2229,7 +2229,7 @@ g_object_set (gpointer     _object,
  *
  * Here is an example of using g_object_get() to get the contents
  * of three properties: an integer, a string and an object:
- * |[
+ * |[<!-- language="C" --> 
  *  gint intval;
  *  gchar *strval;
  *  GObject *objval;
@@ -2408,7 +2408,7 @@ g_object_get_property (GObject	   *object,
  * - swapped_signal_after, swapped-signal-after: equivalent to g_signal_connect_data (..., NULL, G_CONNECT_SWAPPED | G_CONNECT_AFTER)
  * - swapped_object_signal_after, swapped-object-signal-after: equivalent to g_signal_connect_object (..., G_CONNECT_SWAPPED | G_CONNECT_AFTER)
  *
- * |[
+ * |[<!-- language="C" --> 
  *   menu->toplevel = g_object_connect (g_object_new (GTK_TYPE_WINDOW,
  * 						   "type", GTK_WINDOW_POPUP,
  * 						   "child", menu,
@@ -3324,7 +3324,7 @@ g_object_set_qdata_full (GObject       *object,
  * set).
  * Usually, calling this function is only required to update
  * user data pointers with a destroy notifier, for example:
- * |[
+ * |[<!-- language="C" --> 
  * void
  * object_add_to_user_list (GObject     *object,
  *                          const gchar *new_string)

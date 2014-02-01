@@ -786,7 +786,7 @@ g_dbus_proxy_get_cached_property (GDBusProxy   *proxy,
  *
  * If the @value #GVariant is floating, it is consumed. This allows
  * convenient 'inline' use of g_variant_new(), e.g.
- * |[
+ * |[<!-- language="C" -->
  *  g_dbus_proxy_set_cached_property (proxy,
  *                                    "SomeProperty",
  *                                    g_variant_new ("(si)",
@@ -2966,7 +2966,7 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
  *
  * If the @parameters #GVariant is floating, it is consumed. This allows
  * convenient 'inline' use of g_variant_new(), e.g.:
- * |[
+ * |[<!-- language="C" -->
  *  g_dbus_proxy_call (proxy,
  *                     "TwoStrings",
  *                     g_variant_new ("(ss)",
@@ -3057,7 +3057,7 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
  *
  * If the @parameters #GVariant is floating, it is consumed. This allows
  * convenient 'inline' use of g_variant_new(), e.g.:
- * |[
+ * |[<!-- language="C" -->
  *  g_dbus_proxy_call_sync (proxy,
  *                          "TwoStrings",
  *                          g_variant_new ("(ss)",

@@ -2741,7 +2741,7 @@ get_dispatch (void)
  * This function is useful in a situation like the following:
  * Imagine an extremely simple "garbage collected" system.
  *
- * |[
+ * |[<!-- language="C" --> 
  * static GList *free_list;
  * 
  * gpointer
@@ -2778,7 +2778,7 @@ get_dispatch (void)
  * doesn't work, since the idle function could be called from a
  * recursive callback. This can be fixed by using g_main_depth()
  *
- * |[
+ * |[<!-- language="C" --> 
  * gpointer
  * allocate_memory (gsize size)
  * { 
@@ -2867,7 +2867,7 @@ g_main_current_source (void)
  * from within idle handlers, but may have freed the object 
  * before the dispatch of your idle handler.
  *
- * |[
+ * |[<!-- language="C" --> 
  * static gboolean 
  * idle_callback (gpointer data)
  * {
@@ -2905,7 +2905,7 @@ g_main_current_source (void)
  * this particular problem, is to check to if the source
  * has already been destroy within the callback.
  *
- * |[
+ * |[<!-- language="C" --> 
  * static gboolean 
  * idle_callback (gpointer data)
  * {
@@ -4321,7 +4321,7 @@ g_main_context_get_poll_func (GMainContext *context)
  * Another related use for this function is when implementing a main
  * loop with a termination condition, computed from multiple threads:
  *
- * |[
+ * |[<!-- language="C" --> 
  *   #define NUM_TASKS 10
  *   static volatile gint tasks_remaining = NUM_TASKS;
  *   ...
@@ -4331,7 +4331,7 @@ g_main_context_get_poll_func (GMainContext *context)
  * ]|
  *  
  * Then in a thread:
- * |[
+ * |[<!-- language="C" --> 
  *   perform_work();
  *
  *   if (g_atomic_int_dec_and_test (&tasks_remaining))

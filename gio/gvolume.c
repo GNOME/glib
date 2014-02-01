@@ -622,7 +622,7 @@ g_volume_enumerate_identifiers (GVolume *volume)
  * either be equal or a prefix of what this function returns. In
  * other words, in code
  *
- * |[
+ * |[<!-- language="C" -->
  *   GMount *mount;
  *   GFile *mount_root
  *   GFile *volume_activation_root;
@@ -632,7 +632,7 @@ g_volume_enumerate_identifiers (GVolume *volume)
  *   volume_activation_root = g_volume_get_activation_root (volume); /&ast; assume not NULL &ast;/
  * ]|
  * then the expression
- * |[
+ * |[<!-- language="C" -->
  *   (g_file_has_prefix (volume_activation_root, mount_root) ||
       g_file_equal (volume_activation_root, mount_root))
  * ]|

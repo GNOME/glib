@@ -141,7 +141,7 @@ g_mutex_get_impl (GMutex *mutex)
  * It is not necessary to initialize a mutex that has been
  * statically allocated.
  *
- * |[
+ * |[<!-- language="C" --> 
  *   typedef struct {
  *     GMutex m;
  *     ...
@@ -313,7 +313,7 @@ g_rec_mutex_get_impl (GRecMutex *rec_mutex)
  * It is not necessary to initialise a recursive mutex that has been
  * statically allocated.
  *
- * |[
+ * |[<!-- language="C" --> 
  *   typedef struct {
  *     GRecMutex m;
  *     ...
@@ -471,7 +471,7 @@ g_rw_lock_get_impl (GRWLock *lock)
  * necessary to initialise a reader-writer lock that has been statically
  * allocated.
  *
- * |[
+ * |[<!-- language="C" --> 
  *   typedef struct {
  *     GRWLock l;
  *     ...
@@ -807,7 +807,7 @@ g_cond_broadcast (GCond *cond)
  * condition variable (extending the example presented in the
  * documentation for #GCond):
  *
- * |[
+ * |[<!-- language="C" --> 
  * gpointer
  * pop_data_timed (void)
  * {
@@ -917,7 +917,7 @@ g_cond_wait_until (GCond  *cond,
  * be properly initialised by default (ie: to all zeros).  See the
  * examples below.
  *
- * |[
+ * |[<!-- language="C" --> 
  * static GPrivate name_key = G_PRIVATE_INIT (g_free);
  *
  * /&ast; return value should not be freed &ast;/

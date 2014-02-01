@@ -57,7 +57,7 @@
  * however, the "_finish()" function may be called at most once.
  *
  * Example of a typical asynchronous operation flow:
- * |[
+ * |[<!-- language="C" -->
  * void _theoretical_frobnitz_async (Theoretical         *t,
  *                                   GCancellable        *c,
  *                                   GAsyncReadyCallback  cb,

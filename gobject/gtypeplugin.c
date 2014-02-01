@@ -33,7 +33,7 @@
  * 1. The type is initially introduced (usually upon loading the module
  *    the first time, or by your main application that knows what modules
  *    introduces what types), like this:
- *    |[
+ *    |[<!-- language="C" --> 
  *    new_type_id = g_type_register_dynamic (parent_type_id,
  *                                           "TypeName",
  *                                           new_type_plugin,

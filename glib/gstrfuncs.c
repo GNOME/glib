@@ -266,7 +266,7 @@
  * on systems with 64bit IEEE-compatible doubles.
  *
  * The typical usage would be something like:
- * |[
+ * |[<!-- language="C" --> 
  *   char buf[G_ASCII_DTOSTR_BUF_SIZE];
  *
  *   fprintf (out, "value=%s\n", g_ascii_dtostr (buf, sizeof (buf), value));
@@ -1927,7 +1927,7 @@ g_strncasecmp (const gchar *s1,
  * changed to the @new_delimiter character. Modifies @string in place,
  * and returns @string itself, not a copy. The return value is to
  * allow nesting such as
- * |[
+ * |[<!-- language="C" --> 
  *   g_ascii_strup (g_strdelimit (str, "abc", '?'))
  * ]|
  *
@@ -1964,7 +1964,7 @@ g_strdelimit (gchar       *string,
  * replaces the character with @substitutor. Modifies @string in place,
  * and return @string itself, not a copy. The return value is to allow
  * nesting such as
- * |[
+ * |[<!-- language="C" --> 
  *   g_ascii_strup (g_strcanon (str, "abc", '?'))
  * ]|
  *

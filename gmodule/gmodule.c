@@ -80,7 +80,7 @@
  * it must ensure that it is never unloaded, by calling g_module_make_resident().
  *
  * Example: Calling a function defined in a GModule
- * |[
+ * |[<!-- language="C" --> 
  * /&ast; the function signature for 'say_hello' &ast;/
  * typedef void (* SayHelloFunc) (const char *message);
  *
