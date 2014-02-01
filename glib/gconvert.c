@@ -346,7 +346,9 @@ close_converter (GIConv cd)
  * g_convert_with_iconv:
  * @str:           the string to convert
  * @len:           the length of the string, or -1 if the string is 
- *                 nul-terminated<footnoteref linkend="nul-unsafe"/>. 
+ *                 nul-terminated (Note that some encodings may allow nul
+ *                 bytes to occur inside strings. In that case, using -1
+ *                 for the @len parameter is unsafe)
  * @converter:     conversion descriptor from g_iconv_open()
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
@@ -363,20 +365,15 @@ close_converter (GIConv cd)
  *
  * Converts a string from one character set to another. 
  * 
- * Note that you should use g_iconv() for streaming 
- * conversions<footnote id="streaming-state">
- *  <para>
+ * Note that you should use g_iconv() for streaming conversions. 
  * Despite the fact that @byes_read can return information about partial 
- * characters, the <literal>g_convert_...</literal> functions
- * are not generally suitable for streaming. If the underlying converter 
- * being used maintains internal state, then this won't be preserved 
- * across successive calls to g_convert(), g_convert_with_iconv() or 
- * g_convert_with_fallback(). (An example of this is the GNU C converter 
- * for CP1255 which does not emit a base character until it knows that 
- * the next character is not a mark that could combine with the base 
- * character.)
- *  </para>
- * </footnote>. 
+ * characters, the g_convert_... functions are not generally suitable
+ * for streaming. If the underlying converter maintains internal state,
+ * then this won't be preserved across successive calls to g_convert(),
+ * g_convert_with_iconv() or g_convert_with_fallback(). (An example of
+ * this is the GNU C converter for CP1255 which does not emit a base
+ * character until it knows that the next character is not a mark that
+ * could combine with the base character.)
  *
  * Return value: If the conversion was successful, a newly allocated
  *               nul-terminated string, which must be freed with
@@ -502,13 +499,9 @@ g_convert_with_iconv (const gchar *str,
  * g_convert:
  * @str:           the string to convert
  * @len:           the length of the string, or -1 if the string is 
- *                 nul-terminated<footnote id="nul-unsafe">
-                     <para>
-                       Note that some encodings may allow nul bytes to 
-                       occur inside strings. In that case, using -1 for 
-                       the @len parameter is unsafe.
-                     </para>
-                   </footnote>. 
+ *                 nul-terminated (Note that some encodings may allow nul
+ *                 bytes to occur inside strings. In that case, using -1
+ *                 for the @len parameter is unsafe)
  * @to_codeset:    name of character set into which to convert @str
  * @from_codeset:  character set of @str.
  * @bytes_read: (out):   location to store the number of bytes in the
@@ -526,8 +519,15 @@ g_convert_with_iconv (const gchar *str,
  *
  * Converts a string from one character set to another.
  *
- * Note that you should use g_iconv() for streaming 
- * conversions<footnoteref linkend="streaming-state"/>.
+ * Note that you should use g_iconv() for streaming conversions. 
+ * Despite the fact that @byes_read can return information about partial 
+ * characters, the g_convert_... functions are not generally suitable
+ * for streaming. If the underlying converter maintains internal state,
+ * then this won't be preserved across successive calls to g_convert(),
+ * g_convert_with_iconv() or g_convert_with_fallback(). (An example of
+ * this is the GNU C converter for CP1255 which does not emit a base
+ * character until it knows that the next character is not a mark that
+ * could combine with the base character.)
  *
  * Return value: If the conversion was successful, a newly allocated
  *               nul-terminated string, which must be freed with
@@ -575,7 +575,9 @@ g_convert (const gchar *str,
  * g_convert_with_fallback:
  * @str:          the string to convert
  * @len:          the length of the string, or -1 if the string is 
- *                nul-terminated<footnoteref linkend="nul-unsafe"/>. 
+ *                 nul-terminated (Note that some encodings may allow nul
+ *                 bytes to occur inside strings. In that case, using -1
+ *                 for the @len parameter is unsafe)
  * @to_codeset:   name of character set into which to convert @str
  * @from_codeset: character set of @str.
  * @fallback:     UTF-8 string to use in place of character not
@@ -601,8 +603,15 @@ g_convert (const gchar *str,
  * to @to_codeset in their iconv() functions, 
  * in which case GLib will simply return that approximate conversion.
  *
- * Note that you should use g_iconv() for streaming 
- * conversions<footnoteref linkend="streaming-state"/>.
+ * Note that you should use g_iconv() for streaming conversions. 
+ * Despite the fact that @byes_read can return information about partial 
+ * characters, the g_convert_... functions are not generally suitable
+ * for streaming. If the underlying converter maintains internal state,
+ * then this won't be preserved across successive calls to g_convert(),
+ * g_convert_with_iconv() or g_convert_with_fallback(). (An example of
+ * this is the GNU C converter for CP1255 which does not emit a base
+ * character until it knows that the next character is not a mark that
+ * could combine with the base character.)
  *
  * Return value: If the conversion was successful, a newly allocated
  *               nul-terminated string, which must be freed with
@@ -860,7 +869,9 @@ strdup_len (const gchar *string,
  * @opsysstring:   a string in the encoding of the current locale. On Windows
  *                 this means the system codepage.
  * @len:           the length of the string, or -1 if the string is
- *                 nul-terminated<footnoteref linkend="nul-unsafe"/>. 
+ *                 nul-terminated (Note that some encodings may allow nul
+ *                 bytes to occur inside strings. In that case, using -1
+ *                 for the @len parameter is unsafe)
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
@@ -902,7 +913,9 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  * g_locale_from_utf8:
  * @utf8string:    a UTF-8 encoded string 
  * @len:           the length of the string, or -1 if the string is
- *                 nul-terminated<footnoteref linkend="nul-unsafe"/>. 
+ *                 nul-terminated (Note that some encodings may allow nul
+ *                 bytes to occur inside strings. In that case, using -1
+ *                 for the @len parameter is unsafe)
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
@@ -1105,7 +1118,9 @@ get_filename_charset (const gchar **filename_charset)
  * g_filename_to_utf8:
  * @opsysstring:   a string in the encoding for filenames
  * @len:           the length of the string, or -1 if the string is
- *                 nul-terminated<footnoteref linkend="nul-unsafe"/>. 
+ *                 nul-terminated (Note that some encodings may allow nul
+ *                 bytes to occur inside strings. In that case, using -1
+ *                 for the @len parameter is unsafe)
  * @bytes_read:    location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
