@@ -93,14 +93,13 @@
  *
  * GSettings uses schemas in a compact binary form that is created
  * by the <link linkend="glib-compile-schemas">glib-compile-schemas</link>
- * utility. The input is a schema description in an XML format that can be
- * described by the following DTD:
+ * utility. The input is a schema description in an XML format.
  *
- * <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/gschema.dtd"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>
- * </programlisting>
+ * A DTD for the gschema XML format can be found here: <ulink url="https://git.gnome.org/browse/glib/tree/gio/gschema.dtd">gschema.dtd</ulink>
  *
- * glib-compile-schemas expects schema files to have the extension <filename>.gschema.xml</filename>
+ * The <link linkend="glib-compile-schemas">glib-compile-schemas</link>
+ * tool expects schema files to have the extension
+ * <filename>.gschema.xml</filename>
  *
  * At runtime, schemas are identified by their id (as specified
  * in the <tag class="attribute">id</tag> attribute of the
