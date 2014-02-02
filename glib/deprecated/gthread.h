@@ -33,6 +33,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef G_DISABLE_DEPRECATED
+
 typedef enum
 {
   G_THREAD_PRIORITY_LOW,
@@ -279,6 +281,8 @@ GLIB_DEPRECATED_IN_2_32
 gboolean        g_cond_timed_wait       (GCond          *cond,
                                          GMutex         *mutex,
                                          GTimeVal       *timeval);
+
+#endif
 
 G_END_DECLS
 

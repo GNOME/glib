@@ -33,6 +33,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef G_DISABLE_DEPRECATED
+
 typedef struct _GCache          GCache;
 
 typedef gpointer        (*GCacheNewFunc)        (gpointer       key);
@@ -65,6 +67,8 @@ GLIB_DEPRECATED
 void     g_cache_value_foreach (GCache            *cache,
                                 GHFunc             func,
                                 gpointer           user_data);
+
+#endif
 
 G_END_DECLS
 

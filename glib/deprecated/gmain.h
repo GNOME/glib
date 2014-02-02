@@ -33,6 +33,8 @@
 
 G_BEGIN_DECLS
 
+#ifndef G_DISABLE_DEPRECATED
+
 /* ============== Compat main loop stuff ================== */
 
 /**
@@ -130,6 +132,7 @@ G_BEGIN_DECLS
  */
 #define g_main_set_poll_func(func)  g_main_context_set_poll_func (NULL, func)
 
+#endif
 
 G_END_DECLS
 
