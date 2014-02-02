@@ -1319,7 +1319,7 @@ g_ptr_array_remove (GPtrArray *array,
     {
       if (array->pdata[i] == data)
         {
-          g_ptr_array_remove_index (farray, i);
+          g_ptr_array_remove_index (array, i);
           return TRUE;
         }
     }
