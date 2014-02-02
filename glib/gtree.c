@@ -71,7 +71,7 @@ typedef struct _GTreeNode  GTreeNode;
 /**
  * GTree:
  *
- * The #GTree-struct is an opaque data structure representing a <link
+ * The GTree struct is an opaque data structure representing a <link
  * linkend="glib-Balanced-Binary-Trees">Balanced Binary Tree</link>.
  * It should be accessed only by using the following functions.
  */
@@ -834,7 +834,7 @@ g_tree_remove_internal (GTree         *tree,
  * is O(log n) (where n is the number of key/value pairs in the tree).
  *
  * Return value: the value corresponding to the key, or %NULL
- *     if the key was not found.
+ *     if the key was not found
  */
 gpointer
 g_tree_lookup (GTree         *tree,
@@ -1004,7 +1004,7 @@ g_tree_traverse (GTree         *tree,
  * pairs that have a larger key.
  *
  * Return value: the value corresponding to the found key, or %NULL
- *     if the key was not found.
+ *     if the key was not found
  */
 gpointer
 g_tree_search (GTree         *tree,
