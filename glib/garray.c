@@ -1310,7 +1310,6 @@ gboolean
 g_ptr_array_remove (GPtrArray *array,
                     gpointer   data)
 {
-  GRealPtrArray *rarray = (GRealPtrArray *)array;
   guint i;
 
   g_return_val_if_fail (array, FALSE);
