@@ -360,13 +360,9 @@ _g_test_watcher_remove_pid (GPid pid)
  *     Once you have a service definition file which is local to your source tree,
  * you can proceed to set up a GTest fixture using the #GTestDBus scaffolding.
  *
- * Here is an example of a test fixture for D-Bus services:
- * <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-test-fixture.c">
- * <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- * </programlisting>
- * 
+ * An example of a test fixture for D-Bus services can be found
+ * here: <ulink url="https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-test-fixture.c">gdbus-test-fixture.c</ulink>
+ *
  * Note that these examples only deal with isolating the D-Bus aspect of your
  * service. To successfully run isolated unit tests on your service you may need
  * some additional modifications to your test case fixture. For example; if your
