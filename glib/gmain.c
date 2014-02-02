@@ -136,8 +136,9 @@
  * GTK+ contains wrappers of some of these functions, e.g. gtk_main(),
  * gtk_main_quit() and gtk_events_pending().
  *
- * <refsect2><title>Creating new source types</title>
- * <para>One of the unusual features of the #GMainLoop functionality
+ * ## Creating new source types
+ *
+ * One of the unusual features of the #GMainLoop functionality
  * is that new types of event source can be created and used in
  * addition to the builtin type of event source. A new event source
  * type is used for handling GDK events. A new source type is created
@@ -147,31 +148,33 @@
  * to the new source type. To create an instance of the new source type,
  * call g_source_new() passing in the size of the derived structure and
  * a table of functions. These #GSourceFuncs determine the behavior of
- * the new source type.</para>
- * <para>New source types basically interact with the main context
+ * the new source type.
+ *
+ * New source types basically interact with the main context
  * in two ways. Their prepare function in #GSourceFuncs can set a timeout
  * to determine the maximum amount of time that the main loop will sleep
  * before checking the source again. In addition, or as well, the source
  * can add file descriptors to the set that the main context checks using
- * g_source_add_poll().</para>
- * </refsect2>
- * <refsect2><title>Customizing the main loop iteration</title>
- * <para>Single iterations of a #GMainContext can be run with
+ * g_source_add_poll().
+ *
+ * ## Customizing the main loop iteration
+ *
+ * Single iterations of a #GMainContext can be run with
  * g_main_context_iteration(). In some cases, more detailed control
  * of exactly how the details of the main loop work is desired, for
  * instance, when integrating the #GMainLoop with an external main loop.
  * In such cases, you can call the component functions of
  * g_main_context_iteration() directly. These functions are
  * g_main_context_prepare(), g_main_context_query(),
- * g_main_context_check() and g_main_context_dispatch().</para>
- * <para>The operation of these functions can best be seen in terms
- * of a state diagram, as shown in <xref linkend="mainloop-states"/>.</para>
+ * g_main_context_check() and g_main_context_dispatch().
+ *
+ * The operation of these functions can best be seen in terms
+ * of a state diagram, as shown in <xref linkend="mainloop-states"/>.
  * <figure id="mainloop-states"><title>States of a Main Context</title>
  * <graphic fileref="mainloop-states.gif" format="GIF"></graphic>
  * </figure>
- * </refsect2>
  *
- * On Unix, the GLib mainloop is incompatible with fork().  Any program
+ * On UNIX, the GLib mainloop is incompatible with fork(). Any program
  * using the mainloop must either exec() or exit() from the child
  * without returning to the mainloop.
  */
