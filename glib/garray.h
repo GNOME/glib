@@ -168,7 +168,7 @@ GLIB_AVAILABLE_IN_ALL
 void       g_ptr_array_add                (GPtrArray        *array,
 					   gpointer          data);
 GLIB_AVAILABLE_IN_2_40
-void       g_ptr_array_insert             (GPtrArray        *farray,
+void       g_ptr_array_insert             (GPtrArray        *array,
                                            gint              index_,
                                            gpointer          data);
 GLIB_AVAILABLE_IN_ALL

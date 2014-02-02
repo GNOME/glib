@@ -96,7 +96,7 @@ typedef struct _GRealArray  GRealArray;
  * @len: the number of elements in the #GArray not including the
  *     possible terminating zero element.
  *
- * Contains the public fields of a #GArray.
+ * Contains the public fields of a GArray.
  */
 struct _GRealArray
 {
@@ -817,19 +817,19 @@ g_array_maybe_expand (GRealArray *array,
  *
  * An example using a #GPtrArray:
  * |[<!-- language="C" -->
- *   GPtrArray *gparray;
+ *   GPtrArray *array;
  *   gchar *string1 = "one", *string2 = "two", *string3 = "three";
  *
  *   gparray = g_ptr_array_new ();
- *   g_ptr_array_add (gparray, (gpointer) string1);
- *   g_ptr_array_add (gparray, (gpointer) string2);
- *   g_ptr_array_add (gparray, (gpointer) string3);
+ *   g_ptr_array_add (array, (gpointer) string1);
+ *   g_ptr_array_add (array, (gpointer) string2);
+ *   g_ptr_array_add (array, (gpointer) string3);
  *
- *   if (g_ptr_array_index (gparray, 0) != (gpointer) string1)
+ *   if (g_ptr_array_index (array, 0) != (gpointer) string1)
  *     g_print ("ERROR: got %p instead of %p\n",
- *              g_ptr_array_index (gparray, 0), string1);
+ *              g_ptr_array_index (array, 0), string1);
  *
- *   g_ptr_array_free (gparray, TRUE);
+ *   g_ptr_array_free (array, TRUE);
  * ]|
  */
 
@@ -845,11 +845,11 @@ typedef struct _GRealPtrArray  GRealPtrArray;
  */
 struct _GRealPtrArray
 {
-  gpointer     *pdata;
-  guint         len;
-  guint         alloc;
-  gint          ref_count;
-  GDestroyNotify element_free_func;
+  gpointer       *pdata;
+  guint           len;
+  guint           alloc;
+  gint            ref_count;
+  GDestroyNotify  element_free_func;
 };
 
 /**
@@ -895,7 +895,9 @@ g_ptr_array_new (void)
 GPtrArray*  
 g_ptr_array_sized_new (guint reserved_size)
 {
-  GRealPtrArray *array = g_slice_new (GRealPtrArray);
+  GRealPtrArray *array;
+
+  array = g_slice_new (GRealPtrArray);
 
   array->pdata = NULL;
   array->len = 0;
@@ -923,13 +925,14 @@ g_ptr_array_sized_new (guint reserved_size)
  *
  * Since: 2.22
  */
-GPtrArray *
+GPtrArray*
 g_ptr_array_new_with_free_func (GDestroyNotify element_free_func)
 {
   GPtrArray *array;
 
   array = g_ptr_array_new ();
   g_ptr_array_set_free_func (array, element_free_func);
+
   return array;
 }
 
@@ -951,7 +954,7 @@ g_ptr_array_new_with_free_func (GDestroyNotify element_free_func)
  *
  * Since: 2.30
  */
-GPtrArray *
+GPtrArray*
 g_ptr_array_new_full (guint          reserved_size,
                       GDestroyNotify element_free_func)
 {
@@ -959,6 +962,7 @@ g_ptr_array_new_full (guint          reserved_size,
 
   array = g_ptr_array_sized_new (reserved_size);
   g_ptr_array_set_free_func (array, element_free_func);
+
   return array;
 }
 
@@ -975,10 +979,10 @@ g_ptr_array_new_full (guint          reserved_size,
  * Since: 2.22
  */
 void
-g_ptr_array_set_free_func (GPtrArray        *array,
-                           GDestroyNotify    element_free_func)
+g_ptr_array_set_free_func (GPtrArray      *array,
+                           GDestroyNotify  element_free_func)
 {
-  GRealPtrArray* rarray = (GRealPtrArray*) array;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
 
   g_return_if_fail (array);
 
@@ -996,10 +1000,10 @@ g_ptr_array_set_free_func (GPtrArray        *array,
  *
  * Since: 2.22
  */
-GPtrArray *
+GPtrArray*
 g_ptr_array_ref (GPtrArray *array)
 {
-  GRealPtrArray *rarray = (GRealPtrArray*) array;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
 
   g_return_val_if_fail (array, NULL);
 
@@ -1024,7 +1028,8 @@ static gpointer *ptr_array_free (GPtrArray *, ArrayFreeFlags);
 void
 g_ptr_array_unref (GPtrArray *array)
 {
-  GRealPtrArray *rarray = (GRealPtrArray*) array;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
+
   g_return_if_fail (array);
 
   if (g_atomic_int_dec_and_test (&rarray->ref_count))
@@ -1051,51 +1056,51 @@ g_ptr_array_unref (GPtrArray *array)
  *     The pointer array should be freed using g_free().
  */
 gpointer*
-g_ptr_array_free (GPtrArray *farray,
+g_ptr_array_free (GPtrArray *array,
                   gboolean   free_segment)
 {
-  GRealPtrArray *array = (GRealPtrArray*) farray;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
   ArrayFreeFlags flags;
 
-  g_return_val_if_fail (array, NULL);
+  g_return_val_if_fail (rarray, NULL);
 
   flags = (free_segment ? FREE_SEGMENT : 0);
 
   /* if others are holding a reference, preserve the wrapper but
    * do free/return the data
    */
-  if (!g_atomic_int_dec_and_test (&array->ref_count))
+  if (!g_atomic_int_dec_and_test (&rarray->ref_count))
     flags |= PRESERVE_WRAPPER;
 
-  return ptr_array_free (farray, flags);
+  return ptr_array_free (array, flags);
 }
 
 static gpointer *
-ptr_array_free (GPtrArray      *farray,
+ptr_array_free (GPtrArray      *array,
                 ArrayFreeFlags  flags)
 {
-  GRealPtrArray *array = (GRealPtrArray*) farray;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
   gpointer *segment;
 
   if (flags & FREE_SEGMENT)
     {
-      if (array->element_free_func != NULL)
-        g_ptr_array_foreach (farray, (GFunc) array->element_free_func, NULL);
-      g_free (array->pdata);
+      if (rarray->element_free_func != NULL)
+        g_ptr_array_foreach (array, (GFunc) rarray->element_free_func, NULL);
+      g_free (rarray->pdata);
       segment = NULL;
     }
   else
-    segment = array->pdata;
+    segment = rarray->pdata;
 
   if (flags & PRESERVE_WRAPPER)
     {
-      array->pdata = NULL;
-      array->len = 0;
-      array->alloc = 0;
+      rarray->pdata = NULL;
+      rarray->len = 0;
+      rarray->alloc = 0;
     }
   else
     {
-      g_slice_free1 (sizeof (GRealPtrArray), array);
+      g_slice_free1 (sizeof (GRealPtrArray), rarray);
     }
 
   return segment;
@@ -1128,30 +1133,30 @@ g_ptr_array_maybe_expand (GRealPtrArray *array,
  * called for the removed elements.
  */
 void
-g_ptr_array_set_size  (GPtrArray *farray,
+g_ptr_array_set_size  (GPtrArray *array,
                        gint       length)
 {
-  GRealPtrArray* array = (GRealPtrArray*) farray;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
 
-  g_return_if_fail (array);
+  g_return_if_fail (rarray);
 
-  if (length > array->len)
+  if (length > rarray->len)
     {
       int i;
-      g_ptr_array_maybe_expand (array, (length - array->len));
+      g_ptr_array_maybe_expand (rarray, (length - rarray->len));
       /* This is not 
        *     memset (array->pdata + array->len, 0,
        *            sizeof (gpointer) * (length - array->len));
        * to make it really portable. Remember (void*)NULL needn't be
        * bitwise zero. It of course is silly not to use memset (..,0,..).
        */
-      for (i = array->len; i < length; i++)
-        array->pdata[i] = NULL;
+      for (i = rarray->len; i < length; i++)
+        rarray->pdata[i] = NULL;
     }
-  else if (length < array->len)
-    g_ptr_array_remove_range (farray, length, array->len - length);
+  else if (length < rarray->len)
+    g_ptr_array_remove_range (array, length, rarray->len - length);
 
-  array->len = length;
+  rarray->len = length;
 }
 
 /**
@@ -1167,29 +1172,29 @@ g_ptr_array_set_size  (GPtrArray *farray,
  * Returns: the pointer which was removed
  */
 gpointer
-g_ptr_array_remove_index (GPtrArray *farray,
+g_ptr_array_remove_index (GPtrArray *array,
                           guint      index_)
 {
-  GRealPtrArray* array = (GRealPtrArray*) farray;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
   gpointer result;
 
-  g_return_val_if_fail (array, NULL);
+  g_return_val_if_fail (rarray, NULL);
 
-  g_return_val_if_fail (index_ < array->len, NULL);
+  g_return_val_if_fail (index_ < rarray->len, NULL);
 
-  result = array->pdata[index_];
+  result = rarray->pdata[index_];
   
-  if (array->element_free_func != NULL)
-    array->element_free_func (array->pdata[index_]);
+  if (rarray->element_free_func != NULL)
+    rarray->element_free_func (rarray->pdata[index_]);
 
-  if (index_ != array->len - 1)
-    memmove (array->pdata + index_, array->pdata + index_ + 1,
-             sizeof (gpointer) * (array->len - index_ - 1));
+  if (index_ != rarray->len - 1)
+    memmove (rarray->pdata + index_, rarray->pdata + index_ + 1,
+             sizeof (gpointer) * (rarray->len - index_ - 1));
   
-  array->len -= 1;
+  rarray->len -= 1;
 
   if (G_UNLIKELY (g_mem_gc_friendly))
-    array->pdata[array->len] = NULL;
+    rarray->pdata[rarray->len] = NULL;
 
   return result;
 }
@@ -1208,28 +1213,28 @@ g_ptr_array_remove_index (GPtrArray *farray,
  * Returns: the pointer which was removed
  */
 gpointer
-g_ptr_array_remove_index_fast (GPtrArray *farray,
+g_ptr_array_remove_index_fast (GPtrArray *array,
                                guint      index_)
 {
-  GRealPtrArray* array = (GRealPtrArray*) farray;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
   gpointer result;
 
-  g_return_val_if_fail (array, NULL);
+  g_return_val_if_fail (rarray, NULL);
 
-  g_return_val_if_fail (index_ < array->len, NULL);
+  g_return_val_if_fail (index_ < rarray->len, NULL);
 
-  result = array->pdata[index_];
+  result = rarray->pdata[index_];
 
-  if (array->element_free_func != NULL)
-    array->element_free_func (array->pdata[index_]);
+  if (rarray->element_free_func != NULL)
+    rarray->element_free_func (rarray->pdata[index_]);
 
-  if (index_ != array->len - 1)
-    array->pdata[index_] = array->pdata[array->len - 1];
+  if (index_ != rarray->len - 1)
+    rarray->pdata[index_] = rarray->pdata[rarray->len - 1];
 
-  array->len -= 1;
+  rarray->len -= 1;
 
   if (G_UNLIKELY (g_mem_gc_friendly))
-    array->pdata[array->len] = NULL;
+    rarray->pdata[rarray->len] = NULL;
 
   return result;
 }
@@ -1241,48 +1246,48 @@ g_ptr_array_remove_index_fast (GPtrArray *farray,
  * @length: the number of pointers to remove
  *
  * Removes the given number of pointers starting at the given index
- * from a #GPtrArray.  The following elements are moved to close the
- * gap. If @array has a non-%NULL #GDestroyNotify function it is called
- * for the removed elements.
+ * from a #GPtrArray. The following elements are moved to close the
+ * gap. If @array has a non-%NULL #GDestroyNotify function it is
+ * called for the removed elements.
  *
  * Returns: the @array
  *
  * Since: 2.4
  */
-GPtrArray *
-g_ptr_array_remove_range (GPtrArray *farray,
+GPtrArray*
+g_ptr_array_remove_range (GPtrArray *array,
                           guint      index_,
                           guint      length)
 {
-  GRealPtrArray* array = (GRealPtrArray*) farray;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
   guint n;
 
-  g_return_val_if_fail (array != NULL, NULL);
-  g_return_val_if_fail (index_ < array->len, NULL);
-  g_return_val_if_fail (index_ + length <= array->len, NULL);
+  g_return_val_if_fail (rarray != NULL, NULL);
+  g_return_val_if_fail (index_ < rarray->len, NULL);
+  g_return_val_if_fail (index_ + length <= rarray->len, NULL);
 
-  if (array->element_free_func != NULL)
+  if (rarray->element_free_func != NULL)
     {
       for (n = index_; n < index_ + length; n++)
-        array->element_free_func (array->pdata[n]);
+        rarray->element_free_func (rarray->pdata[n]);
     }
 
-  if (index_ + length != array->len)
+  if (index_ + length != rarray->len)
     {
-      memmove (&array->pdata[index_],
-               &array->pdata[index_ + length],
-               (array->len - (index_ + length)) * sizeof (gpointer));
+      memmove (&rarray->pdata[index_],
+               &rarray->pdata[index_ + length],
+               (rarray->len - (index_ + length)) * sizeof (gpointer));
     }
 
-  array->len -= length;
+  rarray->len -= length;
   if (G_UNLIKELY (g_mem_gc_friendly))
     {
       guint i;
       for (i = 0; i < length; i++)
-        array->pdata[array->len + i] = NULL;
+        rarray->pdata[rarray->len + i] = NULL;
     }
 
-  return farray;
+  return array;
 }
 
 /**
@@ -1302,10 +1307,10 @@ g_ptr_array_remove_range (GPtrArray *farray,
  *     is not found in the array
  */
 gboolean
-g_ptr_array_remove (GPtrArray *farray,
+g_ptr_array_remove (GPtrArray *array,
                     gpointer   data)
 {
-  GRealPtrArray* array = (GRealPtrArray*) farray;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
   guint i;
 
   g_return_val_if_fail (array, FALSE);
@@ -1339,19 +1344,19 @@ g_ptr_array_remove (GPtrArray *farray,
  * Returns: %TRUE if the pointer was found in the array
  */
 gboolean
-g_ptr_array_remove_fast (GPtrArray *farray,
+g_ptr_array_remove_fast (GPtrArray *array,
                          gpointer   data)
 {
-  GRealPtrArray* array = (GRealPtrArray*) farray;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
   guint i;
 
-  g_return_val_if_fail (array, FALSE);
+  g_return_val_if_fail (rarray, FALSE);
 
-  for (i = 0; i < array->len; i += 1)
+  for (i = 0; i < rarray->len; i += 1)
     {
-      if (array->pdata[i] == data)
+      if (rarray->pdata[i] == data)
         {
-          g_ptr_array_remove_index_fast (farray, i);
+          g_ptr_array_remove_index_fast (array, i);
           return TRUE;
         }
     }
@@ -1368,16 +1373,16 @@ g_ptr_array_remove_fast (GPtrArray *farray,
  * in size automatically if necessary.
  */
 void
-g_ptr_array_add (GPtrArray *farray,
+g_ptr_array_add (GPtrArray *array,
                  gpointer   data)
 {
-  GRealPtrArray* array = (GRealPtrArray*) farray;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
 
-  g_return_if_fail (array);
+  g_return_if_fail (rarray);
 
-  g_ptr_array_maybe_expand (array, 1);
+  g_ptr_array_maybe_expand (rarray, 1);
 
-  array->pdata[array->len++] = data;
+  rarray->pdata[rarray->len++] = data;
 }
 
 /**
@@ -1392,28 +1397,28 @@ g_ptr_array_add (GPtrArray *farray,
  * Since: 2.40
  */
 void
-g_ptr_array_insert (GPtrArray *farray,
+g_ptr_array_insert (GPtrArray *array,
                     gint       index_,
                     gpointer   data)
 {
-  GRealPtrArray* array = (GRealPtrArray*) farray;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
 
-  g_return_if_fail (array);
+  g_return_if_fail (rarray);
   g_return_if_fail (index_ >= -1);
-  g_return_if_fail (index_ <= (gint)array->len);
+  g_return_if_fail (index_ <= (gint)rarray->len);
 
-  g_ptr_array_maybe_expand (array, 1);
+  g_ptr_array_maybe_expand (rarray, 1);
 
   if (index_ < 0)
-    index_ = array->len;
+    index_ = rarray->len;
 
-  if (index_ < array->len)
-    memmove (&(array->pdata[index_ + 1]),
-             &(array->pdata[index_]),
-             (array->len - index_) * sizeof (gpointer));
+  if (index_ < rarray->len)
+    memmove (&(rarray->pdata[index_ + 1]),
+             &(rarray->pdata[index_]),
+             (rarray->len - index_) * sizeof (gpointer));
 
-  array->len++;
-  array->pdata[index_] = data;
+  rarray->len++;
+  rarray->pdata[index_] = data;
 }
 
 /**
@@ -1543,8 +1548,7 @@ g_ptr_array_foreach (GPtrArray *array,
  *     elements are added to the #GByteArray
  * @len: the number of elements in the #GByteArray
  *
- * The #GByteArray-struct allows access to the public fields of
- * a #GByteArray.
+ * Contains the public fields of a GByteArray.
  */
 
 /**
@@ -1557,7 +1561,7 @@ g_ptr_array_foreach (GPtrArray *array,
 GByteArray*
 g_byte_array_new (void)
 {
-  return (GByteArray*) g_array_sized_new (FALSE, FALSE, 1, 0);
+  return (GByteArray *)g_array_sized_new (FALSE, FALSE, 1, 0);
 }
 
 /**
@@ -1572,7 +1576,7 @@ g_byte_array_new (void)
  *
  * Returns: (transfer full): a new #GByteArray
  */
-GByteArray *
+GByteArray*
 g_byte_array_new_take (guint8 *data,
                        gsize   len)
 {
@@ -1604,7 +1608,7 @@ g_byte_array_new_take (guint8 *data,
 GByteArray*
 g_byte_array_sized_new (guint reserved_size)
 {
-  return (GByteArray*) g_array_sized_new (FALSE, FALSE, 1, reserved_size);
+  return (GByteArray *)g_array_sized_new (FALSE, FALSE, 1, reserved_size);
 }
 
 /**
@@ -1624,7 +1628,7 @@ guint8*
 g_byte_array_free (GByteArray *array,
                    gboolean    free_segment)
 {
-  return (guint8*) g_array_free ((GArray*) array, free_segment);
+  return (guint8 *)g_array_free ((GArray *)array, free_segment);
 }
 
 /**
@@ -1645,7 +1649,7 @@ g_byte_array_free (GByteArray *array,
  * Returns: (transfer full): a new immutable #GBytes representing same
  *     byte data that was in the array
  */
-GBytes *
+GBytes*
 g_byte_array_free_to_bytes (GByteArray *array)
 {
   gsize length;
@@ -1660,17 +1664,17 @@ g_byte_array_free_to_bytes (GByteArray *array)
  * g_byte_array_ref:
  * @array: A #GByteArray
  *
- * Atomically increments the reference count of @array by one. This
- * function is MT-safe and may be called from any thread.
+ * Atomically increments the reference count of @array by one.
+ * This function is thread-safe and may be called from any thread.
  *
  * Returns: The passed in #GByteArray
  *
  * Since: 2.22
  */
-GByteArray *
+GByteArray*
 g_byte_array_ref (GByteArray *array)
 {
-  return (GByteArray *) g_array_ref ((GArray *) array);
+  return (GByteArray *)g_array_ref ((GArray *)array);
 }
 
 /**
@@ -1679,7 +1683,7 @@ g_byte_array_ref (GByteArray *array)
  *
  * Atomically decrements the reference count of @array by one. If the
  * reference count drops to 0, all memory allocated by the array is
- * released. This function is MT-safe and may be called from any
+ * released. This function is thread-safe and may be called from any
  * thread.
  *
  * Since: 2.22
@@ -1687,7 +1691,7 @@ g_byte_array_ref (GByteArray *array)
 void
 g_byte_array_unref (GByteArray *array)
 {
-  g_array_unref ((GArray *) array);
+  g_array_unref ((GArray *)array);
 }
 
 /**
@@ -1696,8 +1700,8 @@ g_byte_array_unref (GByteArray *array)
  * @data: the byte data to be added
  * @len: the number of bytes to add
  *
- * Adds the given bytes to the end of the #GByteArray. The array will
- * grow in size automatically if necessary.
+ * Adds the given bytes to the end of the #GByteArray.
+ * The array will grow in size automatically if necessary.
  *
  * Returns: the #GByteArray
  */
@@ -1706,7 +1710,7 @@ g_byte_array_append (GByteArray   *array,
                      const guint8 *data,
                      guint         len)
 {
-  g_array_append_vals ((GArray*) array, (guint8*)data, len);
+  g_array_append_vals ((GArray *)array, (guint8 *)data, len);
 
   return array;
 }
@@ -1717,8 +1721,8 @@ g_byte_array_append (GByteArray   *array,
  * @data: the byte data to be added
  * @len: the number of bytes to add
  *
- * Adds the given data to the start of the #GByteArray. The array will
- * grow in size automatically if necessary.
+ * Adds the given data to the start of the #GByteArray.
+ * The array will grow in size automatically if necessary.
  *
  * Returns: the #GByteArray
  */
@@ -1727,7 +1731,7 @@ g_byte_array_prepend (GByteArray   *array,
                       const guint8 *data,
                       guint         len)
 {
-  g_array_prepend_vals ((GArray*) array, (guint8*)data, len);
+  g_array_prepend_vals ((GArray *)array, (guint8 *)data, len);
 
   return array;
 }
@@ -1745,7 +1749,7 @@ GByteArray*
 g_byte_array_set_size (GByteArray *array,
                        guint       length)
 {
-  g_array_set_size ((GArray*) array, length);
+  g_array_set_size ((GArray *)array, length);
 
   return array;
 }
@@ -1755,8 +1759,8 @@ g_byte_array_set_size (GByteArray *array,
  * @array: a #GByteArray
  * @index_: the index of the byte to remove
  *
- * Removes the byte at the given index from a #GByteArray. The
- * following bytes are moved down one place.
+ * Removes the byte at the given index from a #GByteArray.
+ * The following bytes are moved down one place.
  *
  * Returns: the #GByteArray
  **/
@@ -1764,7 +1768,7 @@ GByteArray*
 g_byte_array_remove_index (GByteArray *array,
                            guint       index_)
 {
-  g_array_remove_index ((GArray*) array, index_);
+  g_array_remove_index ((GArray *)array, index_);
 
   return array;
 }
@@ -1785,7 +1789,7 @@ GByteArray*
 g_byte_array_remove_index_fast (GByteArray *array,
                                 guint       index_)
 {
-  g_array_remove_index_fast ((GArray*) array, index_);
+  g_array_remove_index_fast ((GArray *)array, index_);
 
   return array;
 }
@@ -1812,7 +1816,7 @@ g_byte_array_remove_range (GByteArray *array,
   g_return_val_if_fail (index_ < array->len, NULL);
   g_return_val_if_fail (index_ + length <= array->len, NULL);
 
-  return (GByteArray *)g_array_remove_range ((GArray*) array, index_, length);
+  return (GByteArray *)g_array_remove_range ((GArray *)array, index_, length);
 }
 
 /**
@@ -1835,7 +1839,7 @@ void
 g_byte_array_sort (GByteArray   *array,
                    GCompareFunc  compare_func)
 {
-  g_array_sort ((GArray *) array, compare_func);
+  g_array_sort ((GArray *)array, compare_func);
 }
 
 /**
@@ -1852,5 +1856,5 @@ g_byte_array_sort_with_data (GByteArray       *array,
                              GCompareDataFunc  compare_func,
                              gpointer          user_data)
 {
-  g_array_sort_with_data ((GArray *) array, compare_func, user_data);
+  g_array_sort_with_data ((GArray *)array, compare_func, user_data);
 }
