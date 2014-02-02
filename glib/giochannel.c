@@ -934,38 +934,31 @@ g_io_channel_get_line_term (GIOChannel *channel,
  **/
 /**
  * GIOFlags:
- * @G_IO_FLAG_APPEND: turns on append mode, corresponds to <literal>O_APPEND</literal>
- *                    (see the documentation of the UNIX open()
- *                    syscall).
+ * @G_IO_FLAG_APPEND: turns on append mode, corresponds to %O_APPEND
+ *     (see the documentation of the UNIX open() syscall)
  * @G_IO_FLAG_NONBLOCK: turns on nonblocking mode, corresponds to
- *                      <literal>O_NONBLOCK</literal>/<literal>O_NDELAY</literal>
- *                      (see the documentation of the UNIX open() syscall).
+ *     %O_NONBLOCK/%O_NDELAY (see the documentation of the UNIX open()
+ *     syscall)
  * @G_IO_FLAG_IS_READABLE: indicates that the io channel is readable.
- *                         This flag cannot be changed.
+ *     This flag cannot be changed.
  * @G_IO_FLAG_IS_WRITABLE: indicates that the io channel is writable.
- *                          This flag cannot be changed.
+ *     This flag cannot be changed.
+ * G_IO_FLAG_IS_WRITEABLE: a misspelled version of @G_IO_FLAG_IS_WRITABLE
+ *     that existed before the spelling was fixed in GLib 2.30. It is kept
+ *     here for compatibility reasons. Deprecated since 2.30
  * @G_IO_FLAG_IS_SEEKABLE: indicates that the io channel is seekable,
- *                         i.e. that g_io_channel_seek_position() can
- *                         be used on it.  This flag cannot be changed.
+ *     i.e. that g_io_channel_seek_position() can be used on it.
+ *     This flag cannot be changed.
  * @G_IO_FLAG_MASK: the mask that specifies all the valid flags.
  * @G_IO_FLAG_GET_MASK: the mask of the flags that are returned from
- *                      g_io_channel_get_flags().
+ *     g_io_channel_get_flags()
  * @G_IO_FLAG_SET_MASK: the mask of the flags that the user can modify
- *                      with g_io_channel_set_flags().
+ *     with g_io_channel_set_flags()
  *
  * Specifies properties of a #GIOChannel. Some of the flags can only be
  * read with g_io_channel_get_flags(), but not changed with
  * g_io_channel_set_flags().
- **/
-/**
- * G_IO_FLAG_IS_WRITEABLE:
- *
- * This is a misspelled version of G_IO_FLAG_IS_WRITABLE that existed
- * before the spelling was fixed in GLib 2.30.  It is kept here for
- * compatibility reasons.
- *
- * Deprecated:2.30:Use G_IO_FLAG_IS_WRITABLE instead.
- **/
+ */
 GIOStatus
 g_io_channel_set_flags (GIOChannel  *channel,
                         GIOFlags     flags,
