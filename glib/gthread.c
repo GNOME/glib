@@ -108,11 +108,11 @@
  *
  * - setenv() and unsetenv() manipulate the process environment in
  *   a not thread-safe way, and may interfere with getenv() calls
- *   in other threads. Note that getenv() calls may be
- *   <quote>hidden</quote> behind other APIs. For example, GNU gettext()
- *   calls getenv() under the covers. In general, it is best to treat
- *   the environment as readonly. If you absolutely have to modify the
- *   environment, do it early in main(), when no other threads are around yet.
+ *   in other threads. Note that getenv() calls may be hidden behind
+ *   other APIs. For example, GNU gettext() calls getenv() under the
+ *   covers. In general, it is best to treat the environment as readonly.
+ *   If you absolutely have to modify the environment, do it early in
+ *   main(), when no other threads are around yet.
  *
  * - setlocale() changes the locale for the entire process, affecting
  *   all threads. Temporary changes to the locale are often made to

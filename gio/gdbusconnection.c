@@ -6507,7 +6507,7 @@ subtree_message_func (GDBusConnection *connection,
  * @user_data_free_func: function to call when the subtree is unregistered
  * @error: return location for error or %NULL
  *
- * Registers a whole subtree of <quote>dynamic</quote> objects.
+ * Registers a whole subtree of dynamic objects.
  *
  * The @enumerate and @introspection functions in @vtable are used to
  * convey, to remote callers, what nodes exist in the subtree rooted
@@ -6533,9 +6533,8 @@ subtree_message_func (GDBusConnection *connection,
  * g_dbus_connection_register_object()) in a subtree registered with
  * g_dbus_connection_register_subtree() - if so, the subtree handler
  * is tried as the last resort. One way to think about a subtree
- * handler is to consider it a <quote>fallback handler</quote>
- * for object paths not registered via g_dbus_connection_register_object()
- * or other bindings.
+ * handler is to consider it a fallback handler for object paths not
+ * registered via g_dbus_connection_register_object() or other bindings.
  *
  * Note that @vtable will be copied so you cannot change it after
  * registration.
