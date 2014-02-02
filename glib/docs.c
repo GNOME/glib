@@ -1914,10 +1914,10 @@
  * G_GNUC_ALLOC_SIZE:
  * @x: the index of the argument specifying the allocation size
  *
- * Expands to the GNU C alloc_size function attribute if the compiler is
- * a new enough gcc. This attribute tells the compiler that the function
- * returns a pointer to memory of a size that is specified by the @xth
- * function parameter.
+ * Expands to the GNU C alloc_size function attribute if the compiler
+ * is a new enough gcc. This attribute tells the compiler that the
+ * function returns a pointer to memory of a size that is specified
+ * by the @xth function parameter.
  *
  * Place the attribute after the function declaration, just before the
  * semicolon.
