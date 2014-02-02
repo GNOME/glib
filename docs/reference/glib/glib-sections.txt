@@ -906,7 +906,6 @@ g_io_channel_win32_get_fd
 g_io_channel_error_quark
 g_io_watch_funcs
 G_IO_FLAG_IS_WRITEABLE
-g_io_channel_error_quark
 </SECTION>
 
 <SECTION>
@@ -1105,6 +1104,7 @@ GSpawnChildSetupFunc
 g_spawn_async_with_pipes
 g_spawn_async
 g_spawn_sync
+G_SPAWN_EXIT_ERROR
 g_spawn_check_exit_status
 g_spawn_command_line_async
 g_spawn_command_line_sync
