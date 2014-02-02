@@ -57,7 +57,7 @@
  *     The default behaviour is to call the hooks @destroy function
  * @dummy: unused
  *
- * The #GHookList-struct represents a list of hook functions.
+ * The #GHookList struct represents a list of hook functions.
  */
 
 /**
@@ -154,7 +154,7 @@
  * @destroy: the default @finalize_hook function of a #GHookList calls
  *     this member of the hook that is being finalized
  *
- * The #GHook-struct represents a single hook function in a #GHookList.
+ * The #GHook struct represents a single hook function in a #GHookList.
  */
 
 /**
