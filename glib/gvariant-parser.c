@@ -72,6 +72,8 @@
 G_DEFINE_QUARK (g-variant-parse-error-quark, g_variant_parse_error)
 
 /**
+ * g_variant_parser_get_error_quark:
+ *
  * Deprecated: Use g_variant_parse_error_quark() instead.
  */
 GQuark
