@@ -119,7 +119,7 @@ thread_allocate (gpointer data)
   gint b;
   gint size;
   gpointer p;
-  volatile void **loc;
+  volatile gpointer *loc;
 
   for (i = 0; i < 10000; i++)
     {
