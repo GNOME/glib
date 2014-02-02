@@ -72,19 +72,19 @@
  * <literal>&lt;glib/gprintf.h&gt;</literal> in order to use the GLib
  * printf() functions.
  *
- * <para id="string-precision">While you may use the printf() functions
- * to format UTF-8 strings, notice that the precision of a
- * <literal>&percnt;Ns</literal> parameter is interpreted as the
- * number of bytes, not characters to print. On top of that, the GNU
- * libc implementation of the printf() functions has the "feature" that
- * it checks that the string given for the <literal>&percnt;Ns</literal>
+ * <para id="string-precision">
+ * While you may use the printf() functions to format UTF-8 strings,
+ * notice that the precision of a &percnt;Ns parameter is interpreted
+ * as the number of bytes, not characters to print. On top of that,
+ * the GNU libc implementation of the printf() functions has the
+ * "feature" that it checks that the string given for the &percnt;Ns
  * parameter consists of a whole number of characters in the current
  * encoding. So, unless you are sure you are always going to be in an
  * UTF-8 locale or your know your text is restricted to ASCII, avoid
- * using <literal>&percnt;Ns</literal>. If your intention is to format
- * strings for a certain number of columns, then
- * <literal>&percnt;Ns</literal> is not a correct solution anyway, since it
- * fails to take wide characters (see g_unichar_iswide()) into account.
+ * using &percnt;Ns. If your intention is to format strings for a
+ * certain number of columns, then &percnt;Ns is not a correct solution
+ * anyway, since it fails to take wide characters (see g_unichar_iswide())
+ * into account.
  * </para>
  */
 
@@ -668,12 +668,12 @@ g_strtod (const gchar *nptr,
  * To convert from a #gdouble to a string in a locale-insensitive
  * way, use g_ascii_dtostr().
  *
- * If the correct value would cause overflow, plus or minus <literal>HUGE_VAL</literal>
- * is returned (according to the sign of the value), and <literal>ERANGE</literal> is
- * stored in <literal>errno</literal>. If the correct value would cause underflow,
- * zero is returned and <literal>ERANGE</literal> is stored in <literal>errno</literal>.
+ * If the correct value would cause overflow, plus or minus %HUGE_VAL
+ * is returned (according to the sign of the value), and %ERANGE is
+ * stored in %errno. If the correct value would cause underflow,
+ * zero is returned and %ERANGE is stored in %errno.
  *
- * This function resets <literal>errno</literal> before calling strtod() so that
+ * This function resets %errno before calling strtod() so that
  * you can reliably detect overflow and underflow.
  *
  * Return value: the #gdouble value.
@@ -1506,22 +1506,22 @@ g_ascii_strup (const gchar *str,
 
 /**
  * g_str_is_ascii:
- * @string: a string
+ * @str: a string
  *
- * Determines if a string is pure ASCII.  A string is pure ASCII if it
+ * Determines if a string is pure ASCII. A string is pure ASCII if it
  * contains no bytes with the high bit set.
  *
- * Returns: %TRUE if @string is ascii
+ * Returns: %TRUE if @str is ASCII
  *
  * Since: 2.40
  */
 gboolean
-g_str_is_ascii (const gchar *string)
+g_str_is_ascii (const gchar *str)
 {
   gint i;
 
-  for (i = 0; string[i]; i++)
-    if (string[i] & 0x80)
+  for (i = 0; str[i]; i++)
+    if (str[i] & 0x80)
       return FALSE;
 
   return TRUE;

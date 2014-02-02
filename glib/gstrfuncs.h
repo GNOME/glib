@@ -219,8 +219,7 @@ gchar*	              g_strdup_printf  (const gchar *format,
 					...) G_GNUC_PRINTF (1, 2) G_GNUC_MALLOC;
 GLIB_AVAILABLE_IN_ALL
 gchar*	              g_strdup_vprintf (const gchar *format,
-					va_list      args) G_GNUC_PRINTF(1, 0)
-					G_GNUC_MALLOC;
+					va_list      args) G_GNUC_PRINTF(1, 0) G_GNUC_MALLOC;
 GLIB_AVAILABLE_IN_ALL
 gchar*	              g_strndup	       (const gchar *str,
 					gsize        n) G_GNUC_MALLOC;  
