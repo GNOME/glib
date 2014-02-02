@@ -38,7 +38,6 @@ G_BEGIN_DECLS
  * in place of g_poll(). Thus g_poll() must have the same signature as
  * poll(), meaning GPollFD must have the same layout as struct pollfd.
  *
- *
  * On Win32, the fd in a GPollFD should be Win32 HANDLE (*not* a file
  * descriptor as provided by the C runtime) that can be used by
  * MsgWaitForMultipleObjects. This does *not* include file handles
@@ -77,7 +76,7 @@ typedef gint    (*GPollFunc)    (GPollFD *ufds,
 
 /**
  * GPollFD:
- * @fd: the file descriptor to poll (or a <type>HANDLE</type> on Win32)
+ * @fd: the file descriptor to poll (or a HANDLE on Win32)
  * @events: a bitwise combination from #GIOCondition, specifying which
  *     events should be polled for. Typically for reading from a file
  *     descriptor you would use %G_IO_IN | %G_IO_HUP | %G_IO_ERR, and
@@ -110,9 +109,10 @@ struct _GPollFD
 #endif
 
 GLIB_AVAILABLE_IN_ALL
-gint g_poll (GPollFD *fds,
-	     guint    nfds,
-	     gint     timeout);
+gint
+g_poll (GPollFD *fds,
+	guint    nfds,
+	gint     timeout);
 
 G_END_DECLS
 
