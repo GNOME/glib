@@ -91,10 +91,6 @@
  * that the #GtkWindow is a #GtkBin (since #GtkWindow is a subclass of
  * #GtkBin).
  *
- * <para id='gvariant-typestrings'>
- * A detailed description of GVariant type strings is given here:
- * </para>
- *
  * ## GVariant Type Strings
  *
  * A GVariant type string can be any of the following:
