@@ -1321,6 +1321,164 @@ guint     g_type_get_type_registration_serial (void);
 
 /* --- GType boilerplate --- */
 /**
+ * G_DECLARE_FINAL_TYPE:
+ * @TypeName: The name of the new type, in camel case (like GtkWidget)
+ * @type_name: The name of the new type in lowercase, with words * separated by '_' (like 'gtk_widget')
+ * @MODULE: The name of the module, in all caps (like 'GTK')
+ * @BARENAME: The bare name of the type, in all caps (like 'WIDGET')
+ * @ParentType: the name of the parent type, in camel case (like GtkWidget)
+ *
+ * A convenience macro for emitting the usual declarations in the header file for a type which is not (at the
+ * present time) intended to be subclassed.
+ *
+ * You might use it in a header as follows:
+ *
+ * |[
+ * #ifndef _myapp_window_h_
+ * #define _myapp_window_h_
+ *
+ * #include <gtk/gtk.h>
+ *
+ * #define MY_APP_WINDOW my_app_window_get_type ()
+ * G_DECLARE_FINAL_TYPE (MyAppWindow, my_app_window, GtkWindow, MY_APP, WINDOW)
+ *
+ * MyAppWindow *    my_app_window_new    (void);
+ *
+ * ...
+ *
+ * #endif
+ * ]|
+ *
+ * This results in the following things happening:
+ *
+ * - the usual my_app_window_get_type() function is declared with a return type of #GType
+ *
+ * - the MyAppWindow types is defined as a typedef of struct _MyAppWindow.  The struct itself is not
+ *   defined and should be defined from the .c file before G_DEFINE_TYPE() is used.
+ *
+ * - the MY_APP_WINDOW() cast is emitted as static inline function along with the MY_APP_IS_WINDOW() type
+ *   checking function
+ *
+ * - the MyAppWindowClass type is defined as a struct containing GtkWindowClass.  This is done for the
+ *   convenience of the person defining the type and should not be considered to be part of the ABI.  In
+ *   particular, without a firm declaration of the instance structure, it is not possible to subclass the type
+ *   and therefore the fact that the size of the class structure is exposed is not a concern and it can be
+ *   freely changed at any point in the future.
+ *
+ * Because the type macro (MY_APP_TYPE_WINDOW in the above example) is not a callable, you must continue to
+ * manually define this as a macro for yourself.
+ *
+ * The declaration of the _get_type() function is the first thing emitted by the macro.  This allows this macro
+ * to be used in the usual way with export control and API versioning macros.
+ *
+ * If you want to declare your own class structure, use G_DECLARE_DERIVABLE_TYPE().
+ *
+ * If you are writing a library, it is important to note that it is possible to convert a type from using
+ * G_DECLARE_FINAL_TYPE() to G_DECLARE_DERIVABLE_TYPE() without breaking API or ABI.  As a precaution, you
+ * should therefore use G_DECLARE_FINAL_TYPE() until you are sure that it makes sense for your class to be
+ * subclassed.  Once a class structure has been exposed it is not possible to change its size or remove or
+ * reorder items without breaking the API and/or ABI.
+ *
+ * Since: 2.44
+ **/
+#define G_DECLARE_FINAL_TYPE(ModuleObjName, module_obj_name, MODULE, OBJ_NAME, ParentName) \
+  GType module_obj_name##_get_type (void);                                                               \
+  typedef struct _##ModuleObjName ModuleObjName;                                                         \
+  typedef struct { ParentName##Class parent_class; } ModuleObjName##Class;                               \
+                                                                                                         \
+  static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                                     \
+    return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
+  static inline gboolean MODULE##_IS_##OBJ_NAME (gpointer ptr) {                                         \
+    return G_TYPE_CHECK_INSTANCE_TYPE (ptr, module_obj_name##_get_type ()); }                            \
+
+/**
+ * G_DECLARE_DERIVABLE_TYPE:
+ * @TN: The name of the new type, in Camel case (like GtkWidget)
+ * @t_n: The name of the new type in lowercase, with words
+ *   separated by '_' (like 'gtk_widget')
+ * @MOD: The name of the module, in all caps (like 'GTK')
+ * @NAME: The bare name of the type, in all caps (like 'WIDGET')
+ *
+ * A convenience macro for emitting the usual declarations in the header file for a type which will is intended
+ * to be subclassed.
+ *
+ * You might use it in a header as follows:
+ *
+ * |[
+ * #ifndef _gtk_frobber_h_
+ * #define _gtk_frobber_h_
+ *
+ * #define GTK_TYPE_FROBBER gtk_frobber_get_type ()
+ * GDK_AVAILABLE_IN_3_12
+ * G_DECLARE_DERIVABLE_TYPE (GtkFrobber, gtk_frobber, GtkFrobber, GTK, FROBBER)
+ *
+ * struct _GtkFrobberClass
+ * {
+ *   GtkWidgetClass parent_class;
+ *
+ *   void (* handle_frob)  (GtkFrobber *frobber,
+ *                          guint       n_frobs);
+ *
+ *   gpointer padding[12];
+ * };
+ *
+ * GtkWidget *    gtk_frobber_new   (void);
+ *
+ * ...
+ *
+ * #endif
+ * ]|
+ *
+ * This results in the following things happening:
+ *
+ * - the usual gtk_frobber_get_type() function is declared with a return type of #GType
+ *
+ * - the GtkFrobber struct is created with GtkWidget as the first and only item.  You are expected to use
+ *   a private structure from your .c file to store your instance variables.
+ *
+ * - the GtkFrobberClass type is defined as a typedef to struct _GtkFrobberClass, which is left undefined.
+ *   You should do this from the header file directly after you use the macro.
+ *
+ * - the GTK_FROBBER() and GTK_FROBBER_CLASS() casts are emitted as static inline functions along with
+ *   the GTK_IS_FROBBER() and GTK_IS_FROBBER_CLASS() type checking functions and GTK_FROBBER_GET_CLASS()
+ *   function.
+ *
+ * Because the type macro (GTK_TYPE_FROBBER in the above example) is not a callable, you must continue to
+ * manually define this as a macro for yourself.
+ *
+ * The declaration of the _get_type() function is the first thing emitted by the macro.  This allows this macro
+ * to be used in the usual way with export control and API versioning macros.
+ *
+ * If you are writing a library, it is important to note that it is possible to convert a type from using
+ * G_DECLARE_FINAL_TYPE() to G_DECLARE_DERIVABLE_TYPE() without breaking API or ABI.  As a precaution, you
+ * should therefore use G_DECLARE_FINAL_TYPE() until you are sure that it makes sense for your class to be
+ * subclassed.  Once a class structure has been exposed it is not possible to change its size or remove or
+ * reorder items without breaking the API and/or ABI.  If you want to declare your own class structure, use
+ * G_DECLARE_DERIVABLE_TYPE().  If you want to declare a class without exposing the class or instance
+ * structures, use G_DECLARE_FINAL_TYPE().
+ *
+ * If you must use G_DECLARE_DERIVABLE_TYPE() you should be sure to include some padding at the bottom of your
+ * class structure to leave space for the addition of future virtual functions.
+ *
+ * Since: 2.44
+ **/
+#define G_DECLARE_DERIVABLE_TYPE(ModuleObjName, module_obj_name, MODULE, OBJ_NAME, ParentName) \
+  GType module_obj_name##_get_type (void);                                                               \
+  typedef struct { ParentName parent_instance; } ModuleObjName;                                          \
+  typedef struct _##ModuleObjName##Class ModuleObjName##Class;                                           \
+                                                                                                         \
+  static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                                     \
+    return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
+  static inline ModuleObjName##Class * MODULE##_##OBJ_NAME##_CLASS (gpointer ptr) {                      \
+    return G_TYPE_CHECK_CLASS_CAST (ptr, module_obj_name##_get_type (), ModuleObjName##Class); }         \
+  static inline gboolean MODULE##_IS_##OBJ_NAME (gpointer ptr) {                                         \
+    return G_TYPE_CHECK_INSTANCE_TYPE (ptr, module_obj_name##_get_type ()); }                            \
+  static inline gboolean MODULE##_IS_##OBJ_NAME##_CLASS (gpointer ptr) {                                 \
+    return G_TYPE_CHECK_CLASS_TYPE (ptr, module_obj_name##_get_type ()); }                               \
+  static inline ModuleObjName##Class * MODULE##_##OBJ_NAME##_GET_CLASS (gpointer ptr) {                  \
+    return G_TYPE_INSTANCE_GET_CLASS (ptr, module_obj_name##_get_type (), ModuleObjName##Class); }
+
+/**
  * G_DEFINE_TYPE:
  * @TN: The name of the new type, in Camel case.
  * @t_n: The name of the new type, in lowercase, with words 
