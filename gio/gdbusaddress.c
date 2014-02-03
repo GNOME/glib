@@ -1072,6 +1072,13 @@ get_session_address_dbus_launch (GError **error)
       goto out;
     }
 
+  if (g_getenv ("DISPLAY") == NULL)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   _("Cannot autolaunch D-Bus without X11 $DISPLAY"));
+      goto out;
+    }
+
   /* We're using private libdbus facilities here. When everything
    * (X11, Mac OS X, Windows) is spec'ed out correctly (not even the
    * X11 property is correctly documented right now) we should
