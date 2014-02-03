@@ -437,7 +437,7 @@
  *
  * The #GThread struct represents a running thread. This struct
  * is returned by g_thread_new() or g_thread_try_new(). You can
- * obtain the #GThread struct representing the current thead by
+ * obtain the #GThread struct representing the current thread by
  * calling g_thread_self().
  *
  * GThread is refcounted, see g_thread_ref() and g_thread_unref().
