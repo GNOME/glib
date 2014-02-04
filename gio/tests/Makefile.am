@@ -436,7 +436,7 @@ gmenumodel_SOURCES                       = $(gdbus_sessionbus_sources) gmenumode
 gnotification_SOURCES                    = $(gdbus_sessionbus_sources) gnotification.c gnotification-server.h gnotification-server.c
 
 gdbus-test-codegen.o: gdbus-test-codegen-generated.h
-gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c: test-codegen.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
+gdbus-test-codegen-generated.h: test-codegen.xml Makefile $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen
 	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
 		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
 		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
@@ -455,6 +455,8 @@ gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c: test-codegen.xml 
 		--annotate "org.project.Bar::TestSignal[array_of_strings]" Key8 Value8 \
 		$(srcdir)/test-codegen.xml \
 		$(NULL)
+gdbus-test-codegen-generated.c: gdbus-test-codegen-generated.h
+	@: # Generated as side-effect of .h
 
 EXTRA_DIST += test-codegen.xml
 CLEANFILES += gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml
