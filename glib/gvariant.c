@@ -4074,7 +4074,7 @@ g_variant_dict_end (GVariantDict *dict)
   GHashTableIter iter;
   gpointer key, value;
 
-  g_return_if_fail (is_valid_dict (dict));
+  g_return_val_if_fail (is_valid_dict (dict), NULL);
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
 
@@ -4103,7 +4103,7 @@ g_variant_dict_end (GVariantDict *dict)
 GVariantDict *
 g_variant_dict_ref (GVariantDict *dict)
 {
-  g_return_if_fail (is_valid_heap_dict (dict));
+  g_return_val_if_fail (is_valid_heap_dict (dict), NULL);
 
   GVHD(dict)->ref_count++;
 
