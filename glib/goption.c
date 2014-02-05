@@ -1717,9 +1717,6 @@ free_pending_nulls (GOptionContext *context,
 
       if (perform_nulls)
         {
-          if (context->strv_mode)
-            g_free (*n->ptr);
-
           if (n->value)
             {
               /* Copy back the short options */
@@ -1727,7 +1724,12 @@ free_pending_nulls (GOptionContext *context,
               strcpy (*n->ptr + 1, n->value);
             }
           else
-            *n->ptr = NULL;
+            {
+              if (context->strv_mode)
+                g_free (*n->ptr);
+
+              *n->ptr = NULL;
+            }
         }
 
       g_free (n->value);
