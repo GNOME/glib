@@ -59,7 +59,7 @@
  * #GOptionGroup) and write a text similar to the one shown in the
  * following example to stdout.
  *
- * <informalexample><screen>
+ * |[
  * Usage:
  *   testtreemodel [OPTION...] - test tree model performance
  *  
@@ -75,7 +75,7 @@
  *   -v, --verbose            Be verbose
  *   -b, --beep               Beep when done
  *   --rand                   Randomize the data
- * </screen></informalexample>
+ * ]|
  *
  * GOption groups options in #GOptionGroups, which makes it easy to
  * incorporate options from multiple sources. The intended use for this is
