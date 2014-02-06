@@ -285,7 +285,7 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
   /**
    * GInetSocketAddress:scope_id:
    *
-   * The <literal>sin6_scope_id</literal> field, for IPv6 addresses.
+   * The `sin6_scope_id` field, for IPv6 addresses.
    *
    * Since: 2.32
    */
@@ -370,7 +370,7 @@ g_inet_socket_address_get_port (GInetSocketAddress *address)
  * g_inet_socket_address_get_flowinfo:
  * @address: a %G_SOCKET_FAMILY_IPV6 #GInetSocketAddress
  *
- * Gets the <literal>sin6_flowinfo</literal> field from @address,
+ * Gets the `sin6_flowinfo` field from @address,
  * which must be an IPv6 address.
  *
  * Return value: the flowinfo field
@@ -390,7 +390,7 @@ g_inet_socket_address_get_flowinfo (GInetSocketAddress *address)
  * g_inet_socket_address_get_scope_id:
  * @address: a %G_SOCKET_FAMILY_IPV6 #GInetAddress
  *
- * Gets the <literal>sin6_scope_id</literal> field from @address,
+ * Gets the `sin6_scope_id` field from @address,
  * which must be an IPv6 address.
  *
  * Return value: the scope id field

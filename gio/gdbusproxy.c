@@ -794,20 +794,19 @@ g_dbus_proxy_get_cached_property (GDBusProxy   *proxy,
  *                                                  42));
  * ]|
  *
- * Normally you will not need to use this method since @proxy is
- * tracking changes using the
- * <literal>org.freedesktop.DBus.Properties.PropertiesChanged</literal>
- * D-Bus signal. However, for performance reasons an object may decide
- * to not use this signal for some properties and instead use a
- * proprietary out-of-band mechanism to transmit changes.
+ * Normally you will not need to use this method since @proxy
+ * is tracking changes using the
+ * `org.freedesktop.DBus.Properties.PropertiesChanged`
+ * D-Bus signal. However, for performance reasons an object may
+ * decide to not use this signal for some properties and instead
+ * use a proprietary out-of-band mechanism to transmit changes.
  *
  * As a concrete example, consider an object with a property
- * <literal>ChatroomParticipants</literal> which is an array of
- * strings. Instead of transmitting the same (long) array every time
- * the property changes, it is more efficient to only transmit the
- * delta using e.g. signals <literal>ChatroomParticipantJoined(String
- * name)</literal> and <literal>ChatroomParticipantParted(String
- * name)</literal>.
+ * `ChatroomParticipants` which is an array of strings. Instead of
+ * transmitting the same (long) array every time the property changes,
+ * it is more efficient to only transmit the delta using e.g. signals
+ * `ChatroomParticipantJoined(String name)` and
+ * `ChatroomParticipantParted(String name)`.
  *
  * Since: 2.26
  */
