@@ -52,9 +52,8 @@
  * Another important feature of GOption is that it can automatically
  * generate nicely formatted help output. Unless it is explicitly turned
  * off with g_option_context_set_help_enabled(), GOption will recognize
- * the <option>--help</option>, <option>-?</option>,
- * <option>--help-all</option> and
- * <option>--help-</option><replaceable>groupname</replaceable> options
+ * the `--help`, `-?`, `--help-all` and
+ * `--help-`<replaceable>groupname</replaceable> options
  * (where <replaceable>groupname</replaceable> is the name of a
  * #GOptionGroup) and write a text similar to the one shown in the
  * following example to stdout.
@@ -326,7 +325,7 @@ G_DEFINE_QUARK (g-option-context-error-quark, g_option_error)
 /**
  * g_option_context_new:
  * @parameter_string: (allow-none): a string which is displayed in
- *    the first line of <option>--help</option> output, after the
+ *    the first line of `--help` output, after the
  *    usage summary
  *    <literal><replaceable>programname</replaceable> [OPTION...]</literal>
  *
@@ -408,13 +407,12 @@ void g_option_context_free (GOptionContext *context)
 /**
  * g_option_context_set_help_enabled:
  * @context: a #GOptionContext
- * @help_enabled: %TRUE to enable <option>--help</option>, %FALSE to disable it
+ * @help_enabled: %TRUE to enable `--help`, %FALSE to disable it
  *
- * Enables or disables automatic generation of <option>--help</option>
+ * Enables or disables automatic generation of `--help`
  * output. By default, g_option_context_parse() recognizes
- * <option>--help</option>, <option>-h</option>,
- * <option>-?</option>, <option>--help-all</option>
- * and <option>--help-</option><replaceable>groupname</replaceable> and creates
+ * `--help`, `-h`, `-?`, `--help-all`
+ * and `--help-`<replaceable>groupname</replaceable> and creates
  * suitable output to stdout.
  *
  * Since: 2.6
@@ -432,7 +430,7 @@ void g_option_context_set_help_enabled (GOptionContext *context,
  * g_option_context_get_help_enabled:
  * @context: a #GOptionContext
  *
- * Returns whether automatic <option>--help</option> generation
+ * Returns whether automatic `--help` generation
  * is turned on for @context. See g_option_context_set_help_enabled().
  *
  * Returns: %TRUE if automatic help generation is turned on.
@@ -537,7 +535,7 @@ g_option_context_add_group (GOptionContext *context,
  * Sets a #GOptionGroup as main group of the @context.
  * This has the same effect as calling g_option_context_add_group(),
  * the only difference is that the options in the main group are
- * treated differently when generating <option>--help</option> output.
+ * treated differently when generating `--help` output.
  *
  * Since: 2.6
  **/
@@ -583,7 +581,7 @@ g_option_context_get_main_group (GOptionContext *context)
  * @context: a #GOptionContext
  * @entries: a %NULL-terminated array of #GOptionEntrys
  * @translation_domain: (allow-none): a translation domain to use for translating
- *    the <option>--help</option> output for the options in @entries
+ *    the `--help` output for the options in @entries
  *    with gettext(), or %NULL
  *
  * A convenience function which creates a main group if it doesn't
@@ -755,9 +753,9 @@ context_has_h_entry (GOptionContext *context)
  * @group: (allow-none): the #GOptionGroup to create help for, or %NULL
  *
  * Returns a formatted, translated help text for the given context.
- * To obtain the text produced by <option>--help</option>, call
+ * To obtain the text produced by `--help`, call
  * <literal>g_option_context_get_help (context, TRUE, NULL)</literal>.
- * To obtain the text produced by <option>--help-all</option>, call
+ * To obtain the text produced by `--help-all`, call
  * <literal>g_option_context_get_help (context, FALSE, NULL)</literal>.
  * To obtain the help text for an option group, call
  * <literal>g_option_context_get_help (context, FALSE, group)</literal>.
@@ -1814,7 +1812,7 @@ platform_get_argv0 (void)
  * or some of the options after it start with '-'. In case
  * of an error, @argc and @argv are left unmodified.
  *
- * If automatic <option>--help</option> support is enabled
+ * If automatic `--help` support is enabled
  * (see g_option_context_set_help_enabled()), and the
  * @argv array contains one of the recognized help options,
  * this function will produce help output to stdout and
@@ -2157,11 +2155,11 @@ g_option_context_parse (GOptionContext   *context,
 /**
  * g_option_group_new:
  * @name: the name for the option group, this is used to provide
- *   help for the options in this group with <option>--help-</option>@name
+ *   help for the options in this group with `--help-`@name
  * @description: a description for this group to be shown in
- *   <option>--help</option>. This string is translated using the translation
+ *   `--help`. This string is translated using the translation
  *   domain or translation function of the group
- * @help_description: a description for the <option>--help-</option>@name option.
+ * @help_description: a description for the `--help-`@name option.
  *   This string is translated using the translation domain or translation function
  *   of the group
  * @user_data: (allow-none): user data that will be passed to the pre- and post-parse hooks,
@@ -2339,10 +2337,9 @@ g_option_group_set_error_hook (GOptionGroup     *group,
  * @data: (allow-none): user data to pass to @func, or %NULL
  * @destroy_notify: (allow-none): a function which gets called to free @data, or %NULL
  *
- * Sets the function which is used to translate user-visible
- * strings, for <option>--help</option> output. Different
- * groups can use different #GTranslateFuncs. If @func
- * is %NULL, strings are not translated.
+ * Sets the function which is used to translate user-visible strings,
+ * for `--help` output. Different groups can use different
+ * #GTranslateFuncs. If @func is %NULL, strings are not translated.
  *
  * If you are using gettext(), you only need to set the translation
  * domain, see g_option_group_set_translation_domain().
@@ -2402,8 +2399,8 @@ g_option_group_set_translation_domain (GOptionGroup *group,
  * @destroy_notify: (allow-none): a function which gets called to free @data, or %NULL
  *
  * Sets the function which is used to translate the contexts
- * user-visible strings, for <option>--help</option> output.
- * If @func is %NULL, strings are not translated.
+ * user-visible strings, for `--help` output. If @func is %NULL,
+ * strings are not translated.
  *
  * Note that option groups have their own translation functions,
  * this function only affects the @parameter_string (see g_option_context_new()),
@@ -2456,12 +2453,11 @@ g_option_context_set_translation_domain (GOptionContext *context,
 /**
  * g_option_context_set_summary:
  * @context: a #GOptionContext
- * @summary: (allow-none): a string to be shown in <option>--help</option> output
+ * @summary: (allow-none): a string to be shown in `--help` output
  *  before the list of options, or %NULL
  *
- * Adds a string to be displayed in <option>--help</option> output
- * before the list of options. This is typically a summary of the
- * program functionality.
+ * Adds a string to be displayed in `--help` output before the list
+ * of options. This is typically a summary of the program functionality.
  *
  * Note that the summary is translated (see
  * g_option_context_set_translate_func() and
@@ -2501,12 +2497,11 @@ g_option_context_get_summary (GOptionContext *context)
 /**
  * g_option_context_set_description:
  * @context: a #GOptionContext
- * @description: (allow-none): a string to be shown in <option>--help</option> output
+ * @description: (allow-none): a string to be shown in `--help` output
  *   after the list of options, or %NULL
  *
- * Adds a string to be displayed in <option>--help</option> output
- * after the list of options. This text often includes a bug reporting
- * address.
+ * Adds a string to be displayed in `--help` output after the list
+ * of options. This text often includes a bug reporting address.
  *
  * Note that the summary is translated (see
  * g_option_context_set_translate_func()).

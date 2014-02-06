@@ -1019,29 +1019,29 @@ parse_args (gint    *argc_p,
  *
  * So far, the following arguments are understood:
  *
- * - <option>-l</option>: List test cases available in a test executable.
- * - <option>--seed=SEED</option>: Provide a random seed to reproduce test
+ * - `-l`: List test cases available in a test executable.
+ * - `--seed=SEED`: Provide a random seed to reproduce test
  *   runs using random numbers.
- * - <option>--verbose</option>: Run tests verbosely.
- * - <option>-q</option>, <option>--quiet</option>: Run tests quietly.
- * - <option>-p PATH</option>: Execute all tests matching the given path.
+ * - `--verbose`: Run tests verbosely.
+ * - `-q`, `--quiet`: Run tests quietly.
+ * - `-p PATH`: Execute all tests matching the given path.
  *   This can also be used to force a test to run that would otherwise
  *   be skipped (ie, a test whose name contains "/subprocess").
- * - <option>-m {perf|slow|thorough|quick|undefined|no-undefined}</option>: Execute tests according to these test modes:
+ * - `-m {perf|slow|thorough|quick|undefined|no-undefined}`: Execute tests according to these test modes:
  *
- *   <option>perf</option>: Performance tests, may take long and report results.
+ *   `perf`: Performance tests, may take long and report results.
  *
- *   <option>slow</option>, <option>thorough</option>: Slow and thorough tests, may take quite long and maximize coverage.
+ *   `slow`, `thorough`: Slow and thorough tests, may take quite long and maximize coverage.
  *
- *   <option>quick</option>: Quick tests, should run really quickly and give good coverage.
+ *   `quick`: Quick tests, should run really quickly and give good coverage.
  *
- *   <option>undefined</option>: Tests for undefined behaviour, may provoke programming errors
+ *   `undefined`: Tests for undefined behaviour, may provoke programming errors
  *   under g_test_trap_subprocess() or g_test_expect_messages() to check
  *   that appropriate assertions or warnings are given
  *
- *   <option>no-undefined</option>: Avoid tests for undefined behaviour
+ *   `no-undefined`: Avoid tests for undefined behaviour
  *
- * - <option>--debug-log</option>: Debug test logging output.
+ * - `--debug-log`: Debug test logging output.
  *
  * Since: 2.16
  */
@@ -1778,8 +1778,7 @@ g_test_set_nonfatal_assertions (void)
  *
  * If @testpath includes the component "subprocess" anywhere in it,
  * the test will be skipped by default, and only run if explicitly
- * required via the <option>-p</option> command-line option or
- * g_test_trap_subprocess().
+ * required via the `-p` command-line option or g_test_trap_subprocess().
  *
  * Since: 2.16
  */
@@ -1817,8 +1816,7 @@ g_test_add_func (const char *testpath,
  *
  * If @testpath includes the component "subprocess" anywhere in it,
  * the test will be skipped by default, and only run if explicitly
- * required via the <option>-p</option> command-line option or
- * g_test_trap_subprocess().
+ * required via the `-p` command-line option or g_test_trap_subprocess().
  *
  * Since: 2.16
  */

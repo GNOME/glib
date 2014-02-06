@@ -1859,7 +1859,7 @@
  *
  * Expands to __extension__ when gcc is used as the compiler. This simply
  * tells gcc not to warn about the following non-standard code when compiling
- * with the <option>-pedantic</option> option.
+ * with the `-pedantic` option.
  */
 
 /**
@@ -1950,7 +1950,7 @@
  *
  * Expands to the GNU C deprecated attribute if the compiler is gcc.
  * It can be used to mark typedefs, variables and functions as deprecated.
- * When called with the <option>-Wdeprecated-declarations</option> option,
+ * When called with the `-Wdeprecated-declarations` option,
  * gcc will generate warnings when deprecated interfaces are used.
  *
  * Place the attribute after the declaration, just before the semicolon.
@@ -2199,7 +2199,7 @@
  * Expands to the GNU C no_instrument_function function attribute if the
  * compiler is gcc. Functions with this attribute will not be instrumented
  * for profiling, when the compiler is called with the
- * <option>-finstrument-functions</option> option.
+ * `-finstrument-functions` option.
  *
  * Place the attribute after the declaration, just before the semicolon.
  *
