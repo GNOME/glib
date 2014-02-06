@@ -26,12 +26,12 @@
  * @See_also: g_locale_to_utf8(), g_locale_from_utf8()
  *
  * This section describes a number of functions for dealing with
- * Unicode characters and strings.  There are analogues of the
- * traditional <filename>ctype.h</filename> character classification
- * and case conversion functions, UTF-8 analogues of some string utility
- * functions, functions to perform normalization, case conversion and
- * collation on UTF-8 strings and finally functions to convert between
- * the UTF-8, UTF-16 and UCS-4 encodings of Unicode.
+ * Unicode characters and strings. There are analogues of the
+ * traditional `ctype.h` character classification and case conversion
+ * functions, UTF-8 analogues of some string utility functions,
+ * functions to perform normalization, case conversion and collation
+ * on UTF-8 strings and finally functions to convert between the UTF-8,
+ * UTF-16 and UCS-4 encodings of Unicode.
  *
  * The implementations of the Unicode functions in GLib are based
  * on the Unicode Character Data tables, which are available from

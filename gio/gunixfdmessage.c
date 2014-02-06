@@ -29,10 +29,10 @@
  * stream-oriented UNIX sockets, see g_unix_connection_send_fd() and
  * g_unix_connection_receive_fd().
  *
- * Note that <filename>&lt;gio/gunixfdmessage.h&gt;</filename> belongs to
- * the UNIX-specific GIO interfaces, thus you have to use the
- * <filename>gio-unix-2.0.pc</filename> pkg-config file when using it.
- **/
+ * Note that `<gio/gunixfdmessage.h>` belongs to the UNIX-specific GIO
+ * interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config
+ * file when using it.
+ */
 
 #include "config.h"
 

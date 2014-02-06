@@ -110,8 +110,7 @@
  * encoding for file names in the <link
  * linkend="G_FILENAME_ENCODING">`G_FILENAME_ENCODING`</link>
  * environment variable. For example, if your installation uses
- * ISO-8859-1 for file names, you can put this in your
- * <filename>~/.profile</filename>:
+ * ISO-8859-1 for file names, you can put this in your `~/.profile`
  * <programlisting>
  * export G_FILENAME_ENCODING=ISO-8859-1
  * </programlisting>

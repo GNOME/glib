@@ -188,16 +188,16 @@
 /**
  * GTestTrapFlags:
  * @G_TEST_TRAP_SILENCE_STDOUT: Redirect stdout of the test child to
- *     <filename>/dev/null</filename> so it cannot be observed on the
- *     console during test runs. The actual output is still captured
- *     though to allow later tests with g_test_trap_assert_stdout().
+ *     `/dev/null` so it cannot be observed on the console during test
+ *     runs. The actual output is still captured though to allow later
+ *     tests with g_test_trap_assert_stdout().
  * @G_TEST_TRAP_SILENCE_STDERR: Redirect stderr of the test child to
- *     <filename>/dev/null</filename> so it cannot be observed on the
- *     console during test runs. The actual output is still captured
- *     though to allow later tests with g_test_trap_assert_stderr().
+ *     `/dev/null` so it cannot be observed on the console during test
+ *     runs. The actual output is still captured though to allow later
+ *     tests with g_test_trap_assert_stderr().
  * @G_TEST_TRAP_INHERIT_STDIN: If this flag is given, stdin of the
  *     child process is shared with stdin of its parent process.
- *     It is redirected to <filename>/dev/null</filename> otherwise.
+ *     It is redirected to `/dev/null` otherwise.
  *
  * Test traps are guards around forked tests.
  * These flags determine what traps to set.
@@ -211,7 +211,7 @@
  * GTestSubprocessFlags:
  * @G_TEST_SUBPROCESS_INHERIT_STDIN: If this flag is given, the child
  *     process will inherit the parent's stdin. Otherwise, the child's
- *     stdin is redirected to <filename>/dev/null</filename>.
+ *     stdin is redirected to `/dev/null`.
  * @G_TEST_SUBPROCESS_INHERIT_STDOUT: If this flag is given, the child
  *     process will inherit the parent's stdout. Otherwise, the child's
  *     stdout will not be visible, but it will be captured to allow

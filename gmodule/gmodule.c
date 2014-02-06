@@ -891,8 +891,8 @@ g_module_name (GModule *module)
 
 /**
  * g_module_build_path:
- * @directory: (allow-none): the directory where the module is. This can be %NULL
- *     or the empty string to indicate that the standard platform-specific
+ * @directory: (allow-none): the directory where the module is. This can be
+ *     %NULL or the empty string to indicate that the standard platform-specific
  *     directories will be used, though that is not recommended
  * @module_name: the name of the module
  *
@@ -906,10 +906,9 @@ g_module_name (GModule *module)
  * since the wrong module may be found.
  *
  * For example, calling g_module_build_path() on a Linux system with a
- * @directory of <filename>/lib</filename> and a @module_name of "mylibrary"
- * will return <filename>/lib/libmylibrary.so</filename>. On a Windows system,
- * using <filename>\Windows</filename> as the directory it will return
- * <filename>\Windows\mylibrary.dll</filename>.
+ * @directory of `/lib` and a @module_name of "mylibrary" will return
+ * `/lib/libmylibrary.so`. On a Windows system, using `\Windows` as the
+ * directory it will return `\Windows\mylibrary.dll`.
  *
  * Returns: the complete path of the module, including the standard library
  *     prefix and suffix. This should be freed when no longer needed

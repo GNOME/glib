@@ -79,7 +79,7 @@ static gboolean g_settings_has_backend;
  * implementations, but does not carry the same stability guarantees
  * as the public GIO API. For this reason, you have to define the
  * C preprocessor symbol %G_SETTINGS_ENABLE_BACKEND before including
- * <filename>gio/gsettingsbackend.h</filename>
+ * `gio/gsettingsbackend.h`.
  **/
 
 static gboolean

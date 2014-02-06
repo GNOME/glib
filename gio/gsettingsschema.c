@@ -250,16 +250,15 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
  * This function is not required for normal uses of #GSettings but it
  * may be useful to authors of plugin management systems.
  *
- * The directory should contain a file called
- * <filename>gschemas.compiled</filename> as produced by the
+ * The directory should contain a file called `gschemas.compiled` as
+ * produced by the
  * <link linkend="glib-compile-schemas">glib-compile-schemas</link> tool.
  *
- * If @trusted is %TRUE then <filename>gschemas.compiled</filename> is
- * trusted not to be corrupted.  This assumption has a performance
- * advantage, but can result in crashes or inconsistent behaviour in the
- * case of a corrupted file.  Generally, you should set @trusted to
- * %TRUE for files installed by the system and to %FALSE for files in
- * the home directory.
+ * If @trusted is %TRUE then `gschemas.compiled` is trusted not to be
+ * corrupted. This assumption has a performance advantage, but can result
+ * in crashes or inconsistent behaviour in the case of a corrupted file.
+ * Generally, you should set @trusted to %TRUE for files installed by the
+ * system and to %FALSE for files in the home directory.
  *
  * If @parent is non-%NULL then there are two effects.
  *

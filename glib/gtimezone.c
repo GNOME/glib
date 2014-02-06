@@ -1316,7 +1316,7 @@ rules_from_identifier (const gchar   *identifier,
  * time values to be added to Coordinated Universal Time (UTC) to get
  * the local time.
  *
- * In Unix, the `TZ` environment variable typically corresponds
+ * In UNIX, the `TZ` environment variable typically corresponds
  * to the name of a file in the zoneinfo database, or string in
  * "std offset [dst [offset],start[/time],end[/time]]" (POSIX) format.
  * There  are  no spaces in the specification. The name of standard
@@ -1340,11 +1340,10 @@ rules_from_identifier (const gchar   *identifier,
  *
  * g_time_zone_new_local() calls this function with the value of the
  * `TZ` environment variable. This function itself is independent of
- * the value of `TZ`, but if @identifier is %NULL then
- * <filename>/etc/localtime</filename> will be consulted
- * to discover the correct time zone on Unix and the registry will be
- * consulted or GetTimeZoneInformation() will be used to get the local
- * time zone on Windows.
+ * the value of `TZ`, but if @identifier is %NULL then `/etc/localtime`
+ * will be consulted to discover the correct time zone on UNIX and the
+ * registry will be consulted or GetTimeZoneInformation() will be used
+ * to get the local time zone on Windows.
  *
  * If intervals are not available, only time zone rules from `TZ`
  * environment variable or other means, then they will be computed

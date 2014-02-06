@@ -2319,8 +2319,8 @@
  * @static: empty or "static"
  * @dll_name: the name of the (pointer to the) char array where
  *     the DLL name will be stored. If this is used, you must also
- *     include <filename>windows.h</filename>. If you need a more
- *     complex DLL entry point function, you cannot use this
+ *     include `windows.h`. If you need a more complex DLL entry
+ *     point function, you cannot use this
  *
  * On Windows, this macro defines a DllMain() function that stores
  * the actual DLL name that the code being compiled will be included in.

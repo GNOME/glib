@@ -65,11 +65,9 @@
  *
  * Note that the functions g_printf(), g_fprintf(), g_sprintf(),
  * g_snprintf(), g_vprintf(), g_vfprintf(), g_vsprintf() and g_vsnprintf()
- * are declared in the header <filename>gprintf.h</filename> which is
- * not included in <filename>glib.h</filename>
- * (otherwise using <filename>glib.h</filename> would drag in
- * <filename>stdio.h</filename>), so you'll have to explicitly include
- * <literal>&lt;glib/gprintf.h&gt;</literal> in order to use the GLib
+ * are declared in the header `gprintf.h` which is not included in `glib.h`
+ * (otherwise using `glib.h` would drag in `stdio.h`), so you'll have to
+ * explicitly include `&lt;glib/gprintf.h&gt;` in order to use the GLib
  * printf() functions.
  *
  * <para id="string-precision">

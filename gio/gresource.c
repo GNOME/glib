@@ -45,9 +45,10 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * @short_description: Resource framework
  * @include: gio/gio.h
  *
- * Applications and libraries often contain binary or textual data that is really part of the
- * application, rather than user data. For instance #GtkBuilder .ui files, splashscreen images,
- * GMenu markup xml, CSS files, icons, etc. These are often shipped as files in <filename>$datadir/appname</filename>, or
+ * Applications and libraries often contain binary or textual data that is
+ * really part of the application, rather than user data. For instance
+ * #GtkBuilder .ui files, splashscreen images, GMenu markup xml, CSS files,
+ * icons, etc. These are often shipped as files in `$datadir/appname`, or
  * manually included as literal strings in the code.
  *
  * The #GResource API and the <link linkend="glib-compile-resources">glib-compile-resources</link> program

@@ -45,9 +45,9 @@
  * #GWin32OutputStream implements #GOutputStream for writing to a
  * Windows file handle.
  *
- * Note that <filename>&lt;gio/gwin32outputstream.h&gt;</filename> belongs
- * to the Windows-specific GIO interfaces, thus you have to use the
- * <filename>gio-windows-2.0.pc</filename> pkg-config file when using it.
+ * Note that `<gio/gwin32outputstream.h>` belongs to the Windows-specific GIO
+ * interfaces, thus you have to use the `gio-windows-2.0.pc` pkg-config file
+ * when using it.
  */
 
 enum {

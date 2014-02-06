@@ -764,10 +764,10 @@ g_get_user_name (void)
 /**
  * g_get_real_name:
  *
- * Gets the real name of the user. This usually comes from the user's entry 
- * in the <filename>passwd</filename> file. The encoding of the returned 
- * string is system-defined. (On Windows, it is, however, always UTF-8.) 
- * If the real user name cannot be determined, the string "Unknown" is 
+ * Gets the real name of the user. This usually comes from the user's
+ * entry in the `passwd` file. The encoding of the returned string is
+ * system-defined. (On Windows, it is, however, always UTF-8.) If the
+ * real user name cannot be determined, the string "Unknown" is 
  * returned.
  *
  * Returns: the user's real name.
@@ -789,18 +789,16 @@ g_get_real_name (void)
  *
  * As with most UNIX tools, this function will return the value of the
  * `HOME` environment variable if it is set to an existing absolute path
- * name, falling back to the <filename>passwd</filename>
- * file in the case that it is unset.
+ * name, falling back to the `passwd` file in the case that it is unset.
  *
  * If the path given in `HOME` is non-absolute, does not exist, or is
  * not a directory, the result is undefined.
  *
  * Before version 2.36 this function would ignore the `HOME` environment
- * variable, taking the value from the <filename>passwd</filename>
- * database instead. This was changed to increase the compatibility
- * of GLib with other programs (and the XDG basedir specification)
- * and to increase testability of programs based on GLib (by making
- * it easier to run them from test frameworks).
+ * variable, taking the value from the `passwd` database instead. This was
+ * changed to increase the compatibility of GLib with other programs (and
+ * the XDG basedir specification) and to increase testability of programs
+ * based on GLib (by making it easier to run them from test frameworks).
  *
  * If your program has a strong requirement for either the new or the
  * old behaviour (and if you don't wish to increase your GLib
@@ -1696,10 +1694,10 @@ g_reload_user_special_dirs_cache (void)
  *
  * Returns the full path of a special directory using its logical id.
  *
- * On Unix this is done using the XDG special user directories.
+ * On UNIX this is done using the XDG special user directories.
  * For compatibility with existing practise, %G_USER_DIRECTORY_DESKTOP
- * falls back to <filename>$HOME/Desktop</filename> when XDG special
- * user directories have not been set up. 
+ * falls back to `$HOME/Desktop` when XDG special user directories have
+ * not been set up. 
  *
  * Depending on the platform, the user might be able to change the path
  * of the special directory without requiring the session to restart; GLib

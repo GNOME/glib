@@ -208,8 +208,8 @@ g_rand_new_with_seed_array (const guint32 *seed,
  * g_rand_new:
  * 
  * Creates a new random number generator initialized with a seed taken
- * either from <filename>/dev/urandom</filename> (if existing) or from 
- * the current time (as a fallback).
+ * either from `/dev/urandom` (if existing) or from the current time
+ * (as a fallback).
  *
  * On Windows, the seed is taken from rand_s().
  * 

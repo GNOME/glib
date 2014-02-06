@@ -338,13 +338,13 @@ _g_test_watcher_remove_pid (GPid pid)
  * code tree.
  *
  * The first thing you will need is a separate service description file for the
- * D-Bus daemon. Typically a <filename>services</filename> subdirectory of
- * your <filename>tests</filename> directory is a good place to put this file.
+ * D-Bus daemon. Typically a `services` subdirectory of your `tests` directory
+ * is a good place to put this file.
  *
  * The service file should list your service along with an absolute path to the
  * uninstalled service executable in your source tree. Using autotools we would
- * achieve this by adding a file such as <filename>my-server.service.in</filename>
- * in the services directory and have it processed by configure.
+ * achieve this by adding a file such as `my-server.service.in` in the services
+ * directory and have it processed by configure.
  * |[
  *     [D-BUS Service]
  *     Name=org.gtk.GDBus.Examples.ObjectManager

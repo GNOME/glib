@@ -98,8 +98,7 @@
  * A DTD for the gschema XML format can be found here: <ulink url="https://git.gnome.org/browse/glib/tree/gio/gschema.dtd">gschema.dtd</ulink>
  *
  * The <link linkend="glib-compile-schemas">glib-compile-schemas</link>
- * tool expects schema files to have the extension
- * <filename>.gschema.xml</filename>
+ * tool expects schema files to have the extension `.gschema.xml`.
  *
  * At runtime, schemas are identified by their id (as specified
  * in the <tag class="attribute">id</tag> attribute of the
@@ -205,7 +204,7 @@
  * ]|
  *
  * glib-compile-schemas expects schema files to have the extension
- * <filename>.gschema.override</filename>
+ * `.gschema.override`.
  *
  * ## Binding
  *

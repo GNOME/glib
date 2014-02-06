@@ -63,11 +63,10 @@
  * to an application via the commandline). For this purpose, GIO
  * allows to obtain an 'identifier' for the volume. There can be
  * different kinds of identifiers, such as Hal UDIs, filesystem labels,
- * traditional Unix devices (e.g. <filename>/dev/sda2</filename>),
- * uuids. GIO uses predefind strings as names for the different kinds
- * of identifiers: #G_VOLUME_IDENTIFIER_KIND_HAL_UDI,
- * #G_VOLUME_IDENTIFIER_KIND_LABEL, etc. Use g_volume_get_identifier()
- * to obtain an identifier for a volume.
+ * traditional Unix devices (e.g. `/dev/sda2`), UUIDs. GIO uses predefined
+ * strings as names for the different kinds of identifiers:
+ * #G_VOLUME_IDENTIFIER_KIND_HAL_UDI, #G_VOLUME_IDENTIFIER_KIND_LABEL, etc.
+ * Use g_volume_get_identifier() to obtain an identifier for a volume.
  * </para>
  *
  * Note that #G_VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available
