@@ -89,7 +89,7 @@
  *
  * If used, the expected form of an application identifier is very close
  * to that of of a
- * <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-interface">DBus bus name</ulink>.
+ * [DBus bus name](http://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-interface).
  * Examples include: "com.example.MyApp", "org.example.internal-apps.Calculator".
  * For details on valid application identifiers, see g_application_id_is_valid().
  *

@@ -1428,7 +1428,7 @@
  * sign, mantissa and exponent of IEEE floats and doubles. These unions are
  * defined as appropriate for a given platform. IEEE floats and doubles are
  * supported (used for storage) by at least Intel, PPC and Sparc. See
- * <ulink url="http://en.wikipedia.org/wiki/IEEE_float">IEEE 754-2008</ulink>
+ * [IEEE 754-2008](http://en.wikipedia.org/wiki/IEEE_float)
  * for more information about IEEE number formats.
  */
 

@@ -78,9 +78,8 @@
  *
  * GRand uses the Mersenne Twister PRNG, which was originally
  * developed by Makoto Matsumoto and Takuji Nishimura. Further
- * information can be found at <ulink
- * url="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html">
- * http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html</ulink>.
+ * information can be found at
+ * [this page](http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html).
  *
  * If you just need a random number, you simply call the g_random_*
  * functions, which will create a globally used #GRand and use the

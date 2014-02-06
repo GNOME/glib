@@ -77,14 +77,13 @@
  * key-value pairs, which we call <firstterm>key files</firstterm> for
  * lack of a better name. Several freedesktop.org specifications use
  * key files now, e.g the
- * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
- * Entry Specification</ulink> and the
- * <ulink url="http://freedesktop.org/Standards/icon-theme-spec">Icon
- * Theme Specification</ulink>.
+ * [Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec)
+ * and the
+ * [Icon Theme Specification](http://freedesktop.org/Standards/icon-theme-spec).
  *
  * The syntax of key files is described in detail in the
- * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
- * Entry Specification</ulink>, here is a quick summary: Key files
+ * [Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec),
+ * here is a quick summary: Key files
  * consists of groups of key-value pairs, interspersed with comments.
  *
  * |[
@@ -150,8 +149,8 @@
  *    true and false (in lower case) are allowed.
  *
  * Note that in contrast to the
- * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
- * Entry Specification</ulink>, groups in key files may contain the same
+ * [Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec),
+ * groups in key files may contain the same
  * key multiple times; the last entry wins. Key files may also contain
  * multiple groups with the same name; they are merged together.
  * Another difference is that keys and group names in key files are not
@@ -199,8 +198,8 @@
  * G_KEY_FILE_DESKTOP_GROUP:
  *
  * The name of the main group of a desktop entry file, as defined in the
- * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">Desktop
- * Entry Specification</ulink>. Consult the specification for more
+ * [Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec).
+ * Consult the specification for more
  * details about the meanings of the keys below.
  *
  * Since: 2.14
@@ -368,9 +367,8 @@
  * G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY:
  *
  * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
- * stating whether the application supports the <ulink
- * url="http://www.freedesktop.org/Standards/startup-notification-spec">Startup
- * Notification Protocol Specification</ulink>.
+ * stating whether the application supports the
+ * [Startup Notification Protocol Specification](http://www.freedesktop.org/Standards/startup-notification-spec).
  *
  * Since: 2.14
  */

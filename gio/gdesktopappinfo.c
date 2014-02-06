@@ -58,7 +58,7 @@
  * #GDesktopAppInfo is an implementation of #GAppInfo based on
  * desktop files.
  *
- * Note that `<gio/gdesktopappinfo.h>` belongs to the UNIX-specific
+ * Note that `&lt;gio/gdesktopappinfo.h&gt;` belongs to the UNIX-specific
  * GIO interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config
  * file when using it.
  */
@@ -1310,8 +1310,8 @@ g_desktop_app_info_new_from_filename (const char *filename)
  * data directories (i.e. the directories specified in the `XDG_DATA_HOME`
  * and `XDG_DATA_DIRS` environment variables). GIO also supports the
  * prefix-to-subdirectory mapping that is described in the
- * <ulink url="http://standards.freedesktop.org/menu-spec/latest/">Menu
- * Spec</ulink> (i.e. a desktop id of kde-foo.desktop will match
+ * [Menu Spec](http://standards.freedesktop.org/menu-spec/latest/)
+ * (i.e. a desktop id of kde-foo.desktop will match
  * `/usr/share/applications/kde/foo.desktop`).
  *
  * Returns: a new #GDesktopAppInfo, or %NULL if no desktop file with that id
@@ -2476,8 +2476,9 @@ g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
  * <literal>OnlyShowIn</literal> and <literal>NotShowIn</literal>
  * desktop entry fields.
  *
- * The <ulink url="http://standards.freedesktop.org/menu-spec/latest/">Desktop
- * Menu specification</ulink> recognizes the following:
+ * The 
+ * [Desktop Menu specification](http://standards.freedesktop.org/menu-spec/latest/)
+ * recognizes the following:
  * <simplelist>
  *   <member>GNOME</member>
  *   <member>KDE</member>
@@ -3126,8 +3127,8 @@ g_desktop_app_info_delete (GAppInfo *appinfo)
  * Creates a new #GAppInfo from the given information.
  *
  * Note that for @commandline, the quoting rules of the Exec key of the
- * <ulink url="http://freedesktop.org/Standards/desktop-entry-spec">freedesktop.org Desktop
- * Entry Specification</ulink> are applied. For example, if the @commandline contains
+ * [freedesktop.org Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec)
+ * are applied. For example, if the @commandline contains
  * percent-encoded URIs, the percent-character must be doubled in order to prevent it from
  * being swallowed by Exec key unquoting. See the specification for exact quoting rules.
  *

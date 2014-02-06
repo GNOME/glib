@@ -32,7 +32,7 @@
  * #GFileDescriptorBased is implemented by streams (implementations of
  * #GInputStream or #GOutputStream) that are based on file descriptors.
  *
- * Note that `<gio/gfiledescriptorbased.h>` belongs to the UNIX-specific
+ * Note that `&lt;gio/gfiledescriptorbased.h&gt;` belongs to the UNIX-specific
  * GIO interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config
  * file when using it.
  *

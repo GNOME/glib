@@ -482,11 +482,11 @@ g_time_val_from_iso8601 (const gchar *iso_date,
  * "YYYY-MM-DDTHH:MM:SSZ" or "YYYY-MM-DDTHH:MM:SS.fffffZ".
  *
  * This corresponds to the Internet date/time format defined by
- * <ulink url="https://www.ietf.org/rfc/rfc3339.txt">RFC 3339</ulink>, and
- * to either of the two most-precise formats defined by
- * <ulink url="http://www.w3.org/TR/NOTE-datetime-19980827">the W3C Note
- * "Date and Time Formats"</ulink>. Both of these documents are profiles of
- * ISO 8601.
+ * [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt),
+ * and to either of the two most-precise formats defined by
+ * the W3C Note
+ * [Date and Time Formats](http://www.w3.org/TR/NOTE-datetime-19980827).
+ * Both of these documents are profiles of ISO 8601.
  *
  * Use g_date_time_format() or g_strdup_printf() if a different
  * variation of ISO 8601 format is required.

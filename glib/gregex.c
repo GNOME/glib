@@ -98,7 +98,7 @@
  * '\U' always matches 'U' instead of being an error in the pattern. Finally,
  * pattern matching is modified so that back references to an unset subpattern
  * group produces a match with the empty string instead of an error. See
- * <ulink>man:pcreapi(3)</ulink> for more information.
+ * pcreapi(3) for more information.
  *
  * Creating and manipulating the same #GRegex structure from different
  * threads is not a problem as #GRegex does not modify its internal
@@ -106,8 +106,9 @@
  * is not threadsafe.
  *
  * The regular expressions low-level functionalities are obtained through
- * the excellent <ulink url="http://www.pcre.org/">PCRE</ulink> library
- * written by Philip Hazel.
+ * the excellent
+ * [PCRE](http://www.pcre.org/)
+ * library written by Philip Hazel.
  */
 
 /* Mask of all the possible values for GRegexCompileFlags. */
@@ -878,7 +879,7 @@ g_match_info_get_match_count (const GMatchInfo *match_info)
  * There were formerly some restrictions on the pattern for partial matching.
  * The restrictions no longer apply.
  *
- * See <ulink>man:pcrepartial</ulink> for more information on partial matching.
+ * See pcrepartial(3) for more information on partial matching.
  *
  * Returns: %TRUE if the match was partial, %FALSE otherwise
  *

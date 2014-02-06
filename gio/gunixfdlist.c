@@ -26,7 +26,7 @@
  * the %G_SOCKET_ADDRESS_UNIX family by using g_socket_send_message()
  * and received using g_socket_receive_message().
  *
- * Note that `<gio/gunixfdlist.h>` belongs to the UNIX-specific GIO
+ * Note that `&lt;gio/gunixfdlist.h&gt;` belongs to the UNIX-specific GIO
  * interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config
  * file when using it.
  */

@@ -174,8 +174,8 @@
  * A convenience function/macro to log a warning message.
  *
  * You can make warnings fatal at runtime by setting the `G_DEBUG`
- * environment variable (see <ulink url="glib-running.html">Running
- * GLib Applications</ulink>).
+ * environment variable (see
+ * [Running GLib Applications](glib-running.html)).
  *
  * If g_log_default_handler() is used as the log handler function,
  * a newline character will automatically be appended to @..., and
@@ -196,7 +196,7 @@
  *
  * You can also make critical warnings fatal at runtime by
  * setting the `G_DEBUG` environment variable (see
- * <ulink url="glib-running.html">Running GLib Applications</ulink>).
+ * [Running GLib Applications](glib-running.html)).
  *
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
@@ -450,7 +450,7 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
  *
  * You can also make some message levels fatal at runtime by setting
  * the `G_DEBUG` environment variable (see
- * <ulink url="glib-running.html">Running GLib Applications</ulink>).
+ * [Running GLib Applications](glib-running.html)).
  *
  * Returns: the old fatal mask
  */

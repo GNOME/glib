@@ -35,7 +35,7 @@
  *
  * The implementations of the Unicode functions in GLib are based
  * on the Unicode Character Data tables, which are available from
- * <ulink url="http://www.unicode.org/">www.unicode.org</ulink>.
+ * [www.unicode.org](http://www.unicode.org/).
  * GLib 2.8 supports Unicode 4.0, GLib 2.10 supports Unicode 4.1,
  * GLib 2.12 supports Unicode 5.0, GLib 2.16.3 supports Unicode 5.1,
  * GLib 2.30 supports Unicode 6.0.
@@ -595,7 +595,8 @@ decompose_hangul_step (gunichar  ch,
  * recursively call this function on @a.  Or use
  * g_unichar_fully_decompose().
  *
- * See <ulink url="http://unicode.org/reports/tr15/">UAX#15</ulink>
+ * See
+ * [UAX#15](http://unicode.org/reports/tr15/)
  * for details.
  *
  * Returns: %TRUE if the character could be decomposed
@@ -661,7 +662,8 @@ g_unichar_decompose (gunichar  ch,
  *
  * If @a and @b do not compose a new character, @ch is set to zero.
  *
- * See <ulink url="http://unicode.org/reports/tr15/">UAX#15</ulink>
+ * See
+ * [UAX#15](http://unicode.org/reports/tr15/)
  * for details.
  *
  * Returns: %TRUE if the characters could be composed
@@ -703,7 +705,8 @@ g_unichar_compose (gunichar  a,
  * decompositions, so that is the size recommended. This is provided
  * as %G_UNICHAR_MAX_DECOMPOSITION_LENGTH.
  *
- * See <ulink url="http://unicode.org/reports/tr15/">UAX#15</ulink>
+ * See
+ * [UAX#15](http://unicode.org/reports/tr15/)
  * for details.
  *
  * Return value: the length of the full decomposition.

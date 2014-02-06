@@ -40,8 +40,7 @@
 /**
  * SECTION:markup
  * @Title: Simple XML Subset Parser * @Short_description: parses a subset of XML
- * @See_also: <ulink url="http://www.w3.org/TR/REC-xml/">XML
- *     Specification</ulink>
+ * @See_also: [XML Specification](http://www.w3.org/TR/REC-xml/)
  *
  * The "GMarkup" parser is intended to parse a simple markup format
  * that's a subset of XML. This is a small, efficient, easy-to-use
@@ -57,8 +56,9 @@
  * the parser may accept documents that an XML parser would not.
  * However, XML documents which are not well-formed (which is a
  * weaker condition than being valid. See the
- * <ulink url="http://www.w3.org/TR/REC-xml/">XML specification</ulink>
- * for definitions of these terms.) are not considered valid GMarkup documents.
+ * [XML specification](http://www.w3.org/TR/REC-xml/)
+ * for definitions of these terms.) are not considered valid GMarkup
+ * documents.
  *
  * Simplifications to XML include:
  *

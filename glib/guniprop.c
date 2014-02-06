@@ -492,9 +492,9 @@ g_unichar_iswide (gunichar c)
  * Determines if a character is typically rendered in a double-width
  * cell under legacy East Asian locales.  If a character is wide according to
  * g_unichar_iswide(), then it is also reported wide with this function, but
- * the converse is not necessarily true.  See the
- * <ulink url="http://www.unicode.org/reports/tr11/">Unicode Standard
- * Annex #11</ulink> for details.
+ * the converse is not necessarily true. See the
+ * [Unicode Standard Annex #11](http://www.unicode.org/reports/tr11/)
+ * for details.
  *
  * If a character passes the g_unichar_iswide() test then it will also pass
  * this test, but not the other way around.  Note that some characters may
@@ -1454,8 +1454,9 @@ static const guint32 iso15924_tags[] =
  * big-endian fashion.  That is, the code returned for Arabic is
  * 0x41726162 (0x41 is ASCII code for 'A', 0x72 is ASCII code for 'r', etc).
  *
- * See <ulink url="http://unicode.org/iso15924/codelists.html">Codes for the
- * representation of names of scripts</ulink> for details.
+ * See
+ * [Codes for the representation of names of scripts](http://unicode.org/iso15924/codelists.html)
+ * for details.
  *
  * Return value: the ISO 15924 code for @script, encoded as an integer,
  *   of zero if @script is %G_UNICODE_SCRIPT_INVALID_CODE or
@@ -1485,8 +1486,9 @@ g_unicode_script_to_iso15924 (GUnicodeScript script)
  * big-endian fashion.  That is, the code expected for Arabic is
  * 0x41726162 (0x41 is ASCII code for 'A', 0x72 is ASCII code for 'r', etc).
  *
- * See <ulink url="http://unicode.org/iso15924/codelists.html">Codes for the
- * representation of names of scripts</ulink> for details.
+ * See
+ * [Codes for the representation of names of scripts](http://unicode.org/iso15924/codelists.html)
+ * for details.
  *
  * Return value: the Unicode script for @iso15924, or
  *   of %G_UNICODE_SCRIPT_INVALID_CODE if @iso15924 is zero and

@@ -38,9 +38,9 @@
  * converting between Unicode and ASCII-encoded forms of
  * Internationalized Domain Names (IDNs).
  *
- * The <ulink
- * url="http://www.ietf.org/rfc/rfc3490.txt">Internationalized Domain
- * Names for Applications (IDNA)</ulink> standards allow for the use
+ * The
+ * [Internationalized Domain Names for Applications (IDNA)](http://www.ietf.org/rfc/rfc3490.txt)
+ * standards allow for the use
  * of Unicode domain names in applications, while providing
  * backward-compatibility with the old ASCII-only DNS, by defining an
  * ASCII-Compatible Encoding of any given Unicode name, which can be

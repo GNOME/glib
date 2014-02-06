@@ -40,7 +40,9 @@
  * @include: gio/gio.h
  *
  * A content type is a platform specific string that defines the type
- * of a file. On UNIX it is a <ulink url="http://www.wikipedia.org/wiki/Internet_media_type">mime type</ulink> like "text/plain" or "image/png".
+ * of a file. On UNIX it is a
+ * [mime type](http://www.wikipedia.org/wiki/Internet_media_type)
+ * like "text/plain" or "image/png".
  * On Win32 it is an extension string like ".doc", ".txt" or a perceived
  * string like "audio". Such strings can be looked up in the registry at
  * HKEY_CLASSES_ROOT.
@@ -486,7 +488,8 @@ g_content_type_get_symbolic_icon (const gchar *type)
  *
  * Gets the generic icon name for a content type.
  *
- * See the <ulink url="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</ulink>
+ * See the
+ * [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
  * specification for more on the generic icon name.
  *
  * Returns: (allow-none): the registered generic icon name for the given @type,
@@ -1374,7 +1377,8 @@ match_match (TreeMatch    *match,
  *
  * The types returned all have the form x-content/foo, e.g.
  * x-content/audio-cdda (for audio CDs) or x-content/image-dcf
- * (for a camera memory card). See the <ulink url="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</ulink>
+ * (for a camera memory card). See the
+ * [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
  * specification for more on x-content types.
  *
  * This function is useful in the implementation of

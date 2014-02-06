@@ -34,11 +34,11 @@
  * @short_description: introduction to the GVariant type system
  * @see_also: #GVariantType, #GVariant
  *
- * This section introduces the GVariant type system.  It is based, in
- * large part, on the D-Bus type system, with two major changes and some minor
- * lifting of restrictions.  The <ulink
- * url='http://dbus.freedesktop.org/doc/dbus-specification.html'>DBus
- * specification</ulink>, therefore, provides a significant amount of
+ * This section introduces the GVariant type system. It is based, in
+ * large part, on the D-Bus type system, with two major changes and
+ * some minor lifting of restrictions. The
+ * [D-Bus specification](http://dbus.freedesktop.org/doc/dbus-specification.html),
+ * therefore, provides a significant amount of
  * information that is useful when working with GVariant.
  *
  * The first major change with respect to the D-Bus type system is the

@@ -1351,17 +1351,16 @@ rules_from_identifier (const gchar   *identifier,
  * available and it is greater than 2037, then it will followed
  * instead.
  *
- * See <ulink
- * url='http://tools.ietf.org/html/rfc3339#section-5.6'>RFC3339
- * §5.6</ulink> for a precise definition of valid RFC3339 time offsets
+ * See
+ * [RFC3339 §5.6](http://tools.ietf.org/html/rfc3339#section-5.6)
+ * for a precise definition of valid RFC3339 time offsets
  * (the <literal>time-offset</literal> expansion) and ISO 8601 for the
- * full list of valid time offsets.  See <ulink
- * url='http://www.gnu.org/s/libc/manual/html_node/TZ-Variable.html'>The
- * GNU C Library manual</ulink> for an explanation of the possible
- * values of the `TZ` environment variable.  See <ulink
- * url='http://msdn.microsoft.com/en-us/library/ms912391%28v=winembedded.11%29.aspx'>
- * Microsoft Time Zone Index Values</ulink> for the list of time zones
- * on Windows.
+ * full list of valid time offsets.  See
+ * [The GNU C Library manual](http://www.gnu.org/s/libc/manual/html_node/TZ-Variable.html)
+ * for an explanation of the possible
+ * values of the `TZ` environment variable. See
+ * [Microsoft Time Zone Index Values](http://msdn.microsoft.com/en-us/library/ms912391%28v=winembedded.11%29.aspx)
+ * for the list of time zones on Windows.
  *
  * You should release the return value by calling g_time_zone_unref()
  * when you are done with it.

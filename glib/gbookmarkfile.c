@@ -60,13 +60,12 @@
  * like its MIME type, the application that is registering the bookmark and
  * the icon that should be used to represent the bookmark. The data is stored
  * using the
- * <ulink url="http://www.gnome.org/~ebassi/bookmark-spec">Desktop Bookmark
- * Specification</ulink>.
+ * [Desktop Bookmark Specification](http://www.gnome.org/~ebassi/bookmark-spec).
  *
  * The syntax of the bookmark files is described in detail inside the Desktop
  * Bookmark Specification, here is a quick summary: bookmark files use a
- * sub-class of the <ulink url="">XML Bookmark Exchange Language</ulink>
- * specification, consisting of valid UTF-8 encoded XML, under the
+ * sub-class of the XML Bookmark Exchange Language specification,
+ * consisting of valid UTF-8 encoded XML, under the
  * <literal>xbel</literal> root element; each bookmark is stored inside a
  * <literal>bookmark</literal> element, using its URI: no relative paths can
  * be used inside a bookmark file. The bookmark may have a user defined title
@@ -80,7 +79,8 @@
  * registered; the URI and MIME type of an icon, to be used when displaying
  * the bookmark inside a GUI.
  *
- * Here is an example of a bookmark file: <ulink url="https://git.gnome.org/browse/glib/tree/glib/tests/bookmarks.xbel">bookmarks.xbel</ulink>
+ * Here is an example of a bookmark file:
+ * [bookmarks.xbel](https://git.gnome.org/browse/glib/tree/glib/tests/bookmarks.xbel)
  *
  * A bookmark file might contain more than one bookmark; each bookmark
  * is accessed through its URI.

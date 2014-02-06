@@ -372,9 +372,10 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    *
    * - Properties received via the initial <literal>GetAll()</literal> call
    *   or via the <literal>::PropertiesChanged</literal> signal (on the
-   *   <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">org.freedesktop.DBus.Properties</ulink> interface) or
-   *   set using g_dbus_proxy_set_cached_property() with a type signature
-   *   mismatch are ignored and a warning is logged via g_warning().
+   *   [org.freedesktop.DBus.Properties](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties)
+   *   interface) or set using g_dbus_proxy_set_cached_property()
+   *   with a type signature mismatch are ignored and a warning is
+   *   logged via g_warning().
    *
    * Note that these checks are never done on methods, signals and
    * properties that are not referenced in the given

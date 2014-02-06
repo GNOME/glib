@@ -33,8 +33,8 @@
  * @include: gio/gio.h
  *
  * The #GDBusObjectManager type is the base type for service- and
- * client-side implementations of the standardized <ulink
- * url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager">org.freedesktop.DBus.ObjectManager</ulink>
+ * client-side implementations of the standardized
+ * [org.freedesktop.DBus.ObjectManager](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
  * interface.
  *
  * See #GDBusObjectManagerClient for the client-side implementation

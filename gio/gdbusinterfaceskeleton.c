@@ -208,11 +208,11 @@ g_dbus_interface_skeleton_class_init (GDBusInterfaceSkeletonClass *klass)
    *
    * Note that this signal is emitted in a thread dedicated to
    * handling the method call so handlers are allowed to perform
-   * blocking IO. This means that it is appropriate to call
-   * e.g. <ulink
-   * url="http://hal.freedesktop.org/docs/polkit/PolkitAuthority.html#polkit-authority-check-authorization-sync">polkit_authority_check_authorization_sync()</ulink>
-   * with the <ulink
-   * url="http://hal.freedesktop.org/docs/polkit/PolkitAuthority.html#POLKIT-CHECK-AUTHORIZATION-FLAGS-ALLOW-USER-INTERACTION:CAPS">POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION</ulink> flag set.
+   * blocking IO. This means that it is appropriate to call e.g.
+   * [polkit_authority_check_authorization_sync()](http://hal.freedesktop.org/docs/polkit/PolkitAuthority.html#polkit-authority-check-authorization-sync)
+   * with the
+   * [POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION](http://hal.freedesktop.org/docs/polkit/PolkitAuthority.html#POLKIT-CHECK-AUTHORIZATION-FLAGS-ALLOW-USER-INTERACTION:CAPS)
+   * flag set.
    *
    * If %FALSE is returned then no further handlers are run and the
    * signal handler must take a reference to @invocation and finish

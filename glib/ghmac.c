@@ -42,7 +42,8 @@
  * HMACs should be used when producing a cookie or hash based on data
  * and a key. Simple mechanisms for using SHA1 and other algorithms to
  * digest a key and data together are vulnerable to various security
- * issues. <ulink url="http://en.wikipedia.org/wiki/HMAC">HMAC</ulink>
+ * issues.
+ * [HMAC](http://en.wikipedia.org/wiki/HMAC)
  * uses algorithms like SHA1 in a secure way to produce a digest of a
  * key and data.
  *

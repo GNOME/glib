@@ -767,7 +767,8 @@ g_mount_remount_finish (GMount        *mount,
  * Tries to guess the type of content stored on @mount. Returns one or
  * more textual identifiers of well-known content types (typically
  * prefixed with "x-content/"), e.g. x-content/image-dcf for camera 
- * memory cards. See the <ulink url="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</ulink>
+ * memory cards. See the 
+ * [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
  * specification for more on x-content types.
  *
  * This is an asynchronous operation (see
@@ -854,7 +855,8 @@ g_mount_guess_content_type_finish (GMount        *mount,
  * Tries to guess the type of content stored on @mount. Returns one or
  * more textual identifiers of well-known content types (typically
  * prefixed with "x-content/"), e.g. x-content/image-dcf for camera 
- * memory cards. See the <ulink url="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</ulink>
+ * memory cards. See the 
+ * [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
  * specification for more on x-content types.
  *
  * This is an synchronous operation and as such may block doing IO;

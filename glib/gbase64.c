@@ -37,9 +37,11 @@
  *
  * Base64 is an encoding that allows a sequence of arbitrary bytes to be
  * encoded as a sequence of printable ASCII characters. For the definition
- * of Base64, see <ulink url="http://www.ietf.org/rfc/rfc1421.txt">RFC
- * 1421</ulink> or <ulink url="http://www.ietf.org/rfc/rfc2045.txt">RFC
- * 2045</ulink>. Base64 is most commonly used as a MIME transfer encoding
+ * of Base64, see 
+ * [RFC 1421](http://www.ietf.org/rfc/rfc1421.txt)
+ * or
+ * [RFC 2045](http://www.ietf.org/rfc/rfc2045.txt).
+ * Base64 is most commonly used as a MIME transfer encoding
  * for email.
  *
  * GLib supports incremental encoding using g_base64_encode_step() and

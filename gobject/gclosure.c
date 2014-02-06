@@ -1368,8 +1368,8 @@ va_to_ffi_type (GType gtype,
  *   marshaller, see g_closure_set_marshal() and
  *   g_closure_set_meta_marshal()
  *
- * A generic marshaller function implemented via <ulink
- * url="http://sourceware.org/libffi/">libffi</ulink>.
+ * A generic marshaller function implemented via
+ * [libffi](http://sourceware.org/libffi/).
  *
  * Since: 2.30
  */

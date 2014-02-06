@@ -38,7 +38,7 @@
  * used when registering objects with g_dbus_connection_register_object().
  *
  * The format of D-Bus introspection XML is specified in the
- * <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#introspection-format">D-Bus specification</ulink>.
+ * [D-Bus specification](http://dbus.freedesktop.org/doc/dbus-specification.html#introspection-format)
  */
 
 /* ---------------------------------------------------------------------------------------------------- */
