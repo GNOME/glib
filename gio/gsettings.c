@@ -2172,11 +2172,11 @@ g_settings_is_writable (GSettings   *settings,
 /**
  * g_settings_get_child:
  * @settings: a #GSettings object
- * @name: the name of the 'child' schema
+ * @name: the name of the child schema
  *
- * Creates a 'child' settings object which has a base path of
- * <replaceable>base-path</replaceable>/@name, where
- * <replaceable>base-path</replaceable> is the base path of @settings.
+ * Creates a child settings object which has a base path of
+ * `base-path/@name`, where `base-path` is the base path of
+ * @settings.
  *
  * The schema for the child settings object must have been declared
  * in the schema of @settings using a &lt;child&gt; element.

@@ -52,11 +52,9 @@
  * Another important feature of GOption is that it can automatically
  * generate nicely formatted help output. Unless it is explicitly turned
  * off with g_option_context_set_help_enabled(), GOption will recognize
- * the `--help`, `-?`, `--help-all` and
- * `--help-`<replaceable>groupname</replaceable> options
- * (where <replaceable>groupname</replaceable> is the name of a
- * #GOptionGroup) and write a text similar to the one shown in the
- * following example to stdout.
+ * the `--help`, `-?`, `--help-all` and `--help-groupname` options
+ * (where `groupname` is the name of a #GOptionGroup) and write a text
+ * similar to the one shown in the following example to stdout.
  *
  * |[
  * Usage:
@@ -325,9 +323,8 @@ G_DEFINE_QUARK (g-option-context-error-quark, g_option_error)
 /**
  * g_option_context_new:
  * @parameter_string: (allow-none): a string which is displayed in
- *    the first line of `--help` output, after the
- *    usage summary
- *    `<replaceable>programname</replaceable> [OPTION...]`
+ *    the first line of `--help` output, after the usage summary
+ *    `programname [OPTION...]`
  *
  * Creates a new option context.
  *
@@ -409,11 +406,10 @@ void g_option_context_free (GOptionContext *context)
  * @context: a #GOptionContext
  * @help_enabled: %TRUE to enable `--help`, %FALSE to disable it
  *
- * Enables or disables automatic generation of `--help`
- * output. By default, g_option_context_parse() recognizes
- * `--help`, `-h`, `-?`, `--help-all`
- * and `--help-`<replaceable>groupname</replaceable> and creates
- * suitable output to stdout.
+ * Enables or disables automatic generation of `--help` output.
+ * By default, g_option_context_parse() recognizes `--help`, `-h`,
+ * `-?`, `--help-all` and `--help-groupname` and creates suitable
+ * output to stdout.
  *
  * Since: 2.6
  */

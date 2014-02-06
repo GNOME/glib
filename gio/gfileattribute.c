@@ -207,9 +207,9 @@
  * "xattr::". Keys for the "xattr-sys" namespace are constructed by
  * concatenating "xattr-sys::" with the extended attribute name. All extended
  * attribute values are returned as hex-encoded strings in which bytes outside
- * the ASCII range are encoded as hexadecimal escape sequences of the form
- * \x<replaceable>nn</replaceable>.
- **/
+ * the ASCII range are encoded as escape sequences of the form \x`nn`
+ * where `nn` is a 2-digit hexadecimal number.
+ */
 
 /*
  * _g_file_attribute_value_free:
