@@ -70,7 +70,8 @@
  * explicitly include `&lt;glib/gprintf.h&gt;` in order to use the GLib
  * printf() functions.
  *
- * <para id="string-precision">
+ * ## String precision pitfalls # {#string-precision}
+ *
  * While you may use the printf() functions to format UTF-8 strings,
  * notice that the precision of a &percnt;Ns parameter is interpreted
  * as the number of bytes, not characters to print. On top of that,
@@ -83,7 +84,6 @@
  * certain number of columns, then &percnt;Ns is not a correct solution
  * anyway, since it fails to take wide characters (see g_unichar_iswide())
  * into account.
- * </para>
  */
 
 /**

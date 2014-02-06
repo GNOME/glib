@@ -46,7 +46,8 @@
  * support.  Signals are described in detail in <xref
  * linkend="gobject-Signals"/>.
  *
- * <para id="floating-ref">
+ * ## Floating references # {#floating-ref}
+ *
  * GInitiallyUnowned is derived from GObject. The only difference between
  * the two is that the initial reference of a GInitiallyUnowned is flagged
  * as a "floating" reference. This means that it is not specifically
@@ -78,7 +79,6 @@
  * language bindings that provide automated reference and memory ownership
  * maintenance (such as smart pointers or garbage collection) should not
  * expose floating references in their API.
- * </para>
  *
  * Some object implementations may need to save an objects floating state
  * across certain code portions (an example is #GtkMenu), to achieve this,

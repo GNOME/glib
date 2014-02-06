@@ -102,14 +102,15 @@
  * always called, even in the case of a cancelled operation. On cancellation
  * the result is a %G_IO_ERROR_CANCELLED error.
  *
- * <para id="io-priority">
+ * ## I/O Priority # {#io-priority}
+ *
  * Many I/O-related asynchronous operations have a priority parameter,
  * which is used in certain cases to determine the order in which
  * operations are executed. They are not used to determine system-wide
  * I/O scheduling. Priorities are integers, with lower numbers indicating
  * higher priority. It is recommended to choose priorities between
  * %G_PRIORITY_LOW and %G_PRIORITY_HIGH, with %G_PRIORITY_DEFAULT
- * as a default.</para>
+ * as a default.
  */
 
 typedef GAsyncResultIface GAsyncResultInterface;

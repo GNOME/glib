@@ -57,7 +57,8 @@
  * successfully.  If an @error is present when g_volume_mount_finish()
  * is called, then it will be filled with any error information.
  *
- * <para id="volume-identifier">
+ * ## Volume Identifiers # {#volume-identifier}
+ *
  * It is sometimes necessary to directly access the underlying
  * operating system object behind a volume (e.g. for passing a volume
  * to an application via the commandline). For this purpose, GIO
@@ -67,7 +68,7 @@
  * strings as names for the different kinds of identifiers:
  * #G_VOLUME_IDENTIFIER_KIND_HAL_UDI, #G_VOLUME_IDENTIFIER_KIND_LABEL, etc.
  * Use g_volume_get_identifier() to obtain an identifier for a volume.
- * </para>
+ *
  *
  * Note that #G_VOLUME_IDENTIFIER_KIND_HAL_UDI will only be available
  * when the gvfs hal volume monitor is in use. Other volume monitors

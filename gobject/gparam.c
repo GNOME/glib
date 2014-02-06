@@ -39,13 +39,13 @@
  * #GParamSpec is an object structure that encapsulates the metadata
  * required to specify parameters, such as e.g. #GObject properties.
  *
- * <para id="canonical-parameter-name">
- * Parameter names need to start with a letter (a-z or A-Z). Subsequent
- * characters can be letters, numbers or a '-'.
+ * ## Parameter names # {#canonical-parameter-names}
+ *
+ * Parameter names need to start with a letter (a-z or A-Z).
+ * Subsequent characters can be letters, numbers or a '-'.
  * All other characters are replaced by a '-' during construction.
- * The result of this replacement is called the canonical name of the
- * parameter.
- * </para>
+ * The result of this replacement is called the canonical name of
+ * the parameter.
  */
 
 
