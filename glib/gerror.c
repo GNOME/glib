@@ -309,9 +309,23 @@
  *   g_set_error() will complain if you pile up errors.
  *
  * - By convention, if you return a boolean value indicating success
- *   then %TRUE means success and %FALSE means failure. If %FALSE is
+ *   then %TRUE means success and %FALSE means failure.
+ *   <footnote><para>Avoid creating functions which have a boolean
+ *   return value and a GError parameter, but where the boolean does
+ *   something other than signal whether the GError is set.  Among other
+ *   problems, it requires C callers to allocate a temporary error.  Instead,
+ *   provide a "gboolean *" out parameter. There are functions in GLib
+ *   itself such as g_key_file_has_key() that are deprecated because of this.
+ *   </para></footnote>
+ *   If %FALSE is
  *   returned, the error must be set to a non-%NULL value.
- * 
+ *   <footnote><para>One exception to this is that in situations that are
+ *   already considered to be undefined behaviour (such as when a
+ *   g_return_val_if_fail() check fails), the error need not be set.
+ *   Instead of checking separately whether the error is set, callers
+ *   should ensure that they do not provoke undefined behaviour, then
+ *   assume that the error will be set on failure.</para></footnote>
+ *
  * - A %NULL return value is also frequently used to mean that an error
  *   occurred. You should make clear in your documentation whether %NULL
  *   is a valid return value in non-error cases; if %NULL is a valid value,
