@@ -371,12 +371,14 @@ _g_test_watcher_remove_pid (GPid pid)
  * and schema files are not yet installed, or worse; there is an older version of the
  * schema file sitting in the install location).
  *
- * Most of the time we can work around these obstacles using the environment. Since the
- * environment is inherited by the D-Bus daemon created by #GTestDBus and then in turn
- * inherited by any services the D-Bus daemon activates, using the setup routine for your
- * fixture is a practical place to help sandbox your runtime environment. For the rather
- * typical GSettings case we can work around this by setting <envar>GSETTINGS_SCHEMA_DIR</envar> to the
- * in tree directory holding your schemas in the above fixture_setup() routine.
+ * Most of the time we can work around these obstacles using the
+ * environment. Since the environment is inherited by the D-Bus daemon
+ * created by #GTestDBus and then in turn inherited by any services the
+ * D-Bus daemon activates, using the setup routine for your fixture is
+ * a practical place to help sandbox your runtime environment. For the
+ * rather typical GSettings case we can work around this by setting
+ * `GSETTINGS_SCHEMA_DIR` to the in tree directory holding your schemas
+ * in the above fixture_setup() routine.
  *
  * The GSettings schemas need to be locally pre-compiled for this to work. This can be achieved
  * by compiling the schemas locally as a step before running test cases, an autotools setup might

@@ -72,8 +72,8 @@
  *
  * The pathname argument should be in the GLib file name encoding.
  * On POSIX this is the actual on-disk encoding which might correspond
- * to the locale settings of the process (or the
- * <envar>G_FILENAME_ENCODING</envar> environment variable), or not.
+ * to the locale settings of the process (or the `G_FILENAME_ENCODING`
+ * environment variable), or not.
  *
  * On Windows the GLib file name encoding is UTF-8. Note that the
  * Microsoft C library does not use UTF-8, but has separate APIs for
@@ -309,7 +309,7 @@ g_mkdir_with_parents (const gchar *pathname,
  * %G_FILE_TEST_IS_SYMLINK will always return %FALSE. Testing for
  * %G_FILE_TEST_IS_EXECUTABLE will just check that the file exists and
  * its name indicates that it is executable, checking for well-known
- * extensions and those listed in the <envar>PATHEXT</envar> environment variable.
+ * extensions and those listed in the `PATHEXT` environment variable.
  *
  * Return value: whether a test was %TRUE
  **/

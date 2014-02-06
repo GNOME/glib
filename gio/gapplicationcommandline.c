@@ -67,9 +67,9 @@
  *
  * The main use for #GApplicationCommandLine (and the
  * #GApplication::command-line signal) is 'Emacs server' like use cases:
- * You can set the <envar>EDITOR</envar> environment variable to have
- * e.g. git use your favourite editor to edit commit messages, and if you
- * already have an instance of the editor running, the editing will happen
+ * You can set the `EDITOR` environment variable to have e.g. git use
+ * your favourite editor to edit commit messages, and if you already
+ * have an instance of the editor running, the editing will happen
  * in the running instance, instead of opening a new one. An important
  * aspect of this use case is that the process that gets started by git
  * does not return until the editing is done.

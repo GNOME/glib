@@ -538,17 +538,16 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * g_app_info_launch_uris() instead.
  *
  * The launched application inherits the environment of the launching
- * process, but it can be modified with g_app_launch_context_setenv() and
- * g_app_launch_context_unsetenv().
+ * process, but it can be modified with g_app_launch_context_setenv()
+ * and g_app_launch_context_unsetenv().
  *
- * On UNIX, this function sets the <envar>GIO_LAUNCHED_DESKTOP_FILE</envar>
+ * On UNIX, this function sets the `GIO_LAUNCHED_DESKTOP_FILE`
  * environment variable with the path of the launched desktop file and
- * <envar>GIO_LAUNCHED_DESKTOP_FILE_PID</envar> to the process
- * id of the launched process. This can be used to ignore
- * <envar>GIO_LAUNCHED_DESKTOP_FILE</envar>, should it be inherited
- * by further processes. The <envar>DISPLAY</envar> and
- * <envar>DESKTOP_STARTUP_ID</envar> environment variables are also
- * set, based on information provided in @launch_context.
+ * `GIO_LAUNCHED_DESKTOP_FILE_PID` to the process id of the launched
+ * process. This can be used to ignore `GIO_LAUNCHED_DESKTOP_FILE`,
+ * should it be inherited by further processes. The `DISPLAY` and
+ * `DESKTOP_STARTUP_ID` environment variables are also set, based
+ * on information provided in @launch_context.
  *
  * Returns: %TRUE on successful launch, %FALSE otherwise.
  **/
@@ -951,7 +950,7 @@ g_app_launch_context_get_environment (GAppLaunchContext *context)
  *
  * Gets the display string for the @context. This is used to ensure new
  * applications are started on the same display as the launching
- * application, by setting the <envar>DISPLAY</envar> environment variable.
+ * application, by setting the `DISPLAY` environment variable.
  *
  * Returns: a display string for the display.
  */
@@ -980,8 +979,7 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * @files: (element-type GFile): a #GList of of #GFile objects
  * 
  * Initiates startup notification for the application and returns the
- * <envar>DESKTOP_STARTUP_ID</envar> for the launched operation,
- * if supported.
+ * `DESKTOP_STARTUP_ID` for the launched operation, if supported.
  *
  * Startup notification IDs are defined in the <ulink
  * url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt">

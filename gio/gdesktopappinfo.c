@@ -1306,12 +1306,12 @@ g_desktop_app_info_new_from_filename (const char *filename)
  *
  * A desktop file id is the basename of the desktop file, including the
  * .desktop extension. GIO is looking for a desktop file with this name
- * in the <filename>applications</filename> subdirectories of the XDG data
- * directories (i.e. the directories specified in the
- * <envar>XDG_DATA_HOME</envar> and <envar>XDG_DATA_DIRS</envar> environment
- * variables). GIO also supports the prefix-to-subdirectory mapping that is
- * described in the <ulink url="http://standards.freedesktop.org/menu-spec/latest/">Menu Spec</ulink>
- * (i.e. a desktop id of kde-foo.desktop will match
+ * in the <filename>applications</filename> subdirectories of the XDG
+ * data directories (i.e. the directories specified in the `XDG_DATA_HOME`
+ * and `XDG_DATA_DIRS` environment variables). GIO also supports the
+ * prefix-to-subdirectory mapping that is described in the
+ * <ulink url="http://standards.freedesktop.org/menu-spec/latest/">Menu
+ * Spec</ulink> (i.e. a desktop id of kde-foo.desktop will match
  * <filename>/usr/share/applications/kde/foo.desktop</filename>).
  *
  * Returns: a new #GDesktopAppInfo, or %NULL if no desktop file with that id

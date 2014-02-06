@@ -66,15 +66,16 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * <literal>preprocess</literal> attribute to a comma-separated list of preprocessing options.
  * The only options currently supported are:
  *
- * <literal>xml-stripblanks</literal> which will use the xmllint command to strip
- * ignorable whitespace from the xml file. For this to work, the <envar>XMLLINT</envar>
- * environment variable must be set to the full path to the xmllint executable, or xmllint
- * must be in the PATH; otherwise the preprocessing step is skipped.
+ * <literal>xml-stripblanks</literal> which will use the xmllint command
+ * to strip ignorable whitespace from the xml file. For this to work,
+ * the `XMLLINT` environment variable must be set to the full path to
+ * the xmllint executable, or xmllint must be in the `PATH`; otherwise
+ * the preprocessing step is skipped.
  *
  * <literal>to-pixdata</literal> which will use the gdk-pixbuf-pixdata command to convert
  * images to the GdkPixdata format, which allows you to create pixbufs directly using the data inside
  * the resource file, rather than an (uncompressed) copy if it. For this, the gdk-pixbuf-pixdata
- * program must be in the PATH, or the <envar>GDK_PIXBUF_PIXDATA</envar> environment variable must be
+ * program must be in the PATH, or the `GDK_PIXBUF_PIXDATA` environment variable must be
  * set to the full path to the gdk-pixbuf-pixdata executable; otherwise the resource compiler will
  * abort.
  *

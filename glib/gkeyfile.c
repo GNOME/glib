@@ -118,8 +118,9 @@
  * Key-value pairs generally have the form <literal>key=value</literal>,
  * with the exception of localized strings, which have the form
  * <literal>key[locale]=value</literal>, with a locale identifier of the
- * form <literal>lang_COUNTRY@MODIFIER</literal> where
- * <literal>COUNTRY</literal> and <literal>MODIFIER</literal> are optional.
+ * form <literal>lang_COUNTRY\@MODIFIER</literal>
+ * where <literal>COUNTRY</literal> and <literal>MODIFIER</literal>
+ * are optional.
  * Space before and after the '=' character are ignored. Newline, tab,
  * carriage return and backslash characters in value are escaped as \n,
  * \t, \r, and \\, respectively. To preserve leading spaces in values,

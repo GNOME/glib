@@ -313,15 +313,15 @@ g_find_program_in_path (const gchar *program)
  *  
  * On Windows, if @program does not have a file type suffix, tries
  * with the suffixes .exe, .cmd, .bat and .com, and the suffixes in
- * the <envar>PATHEXT</envar> environment variable. 
+ * the `PATHEXT` environment variable. 
  * 
  * On Windows, it looks for the file in the same way as CreateProcess() 
  * would. This means first in the directory where the executing
  * program was loaded from, then in the current directory, then in the
  * Windows 32-bit system directory, then in the Windows directory, and
- * finally in the directories in the <envar>PATH</envar> environment 
- * variable. If the program is found, the return value contains the 
- * full name including the type suffix.
+ * finally in the directories in the `PATH` environment variable. If
+ * the program is found, the return value contains the full name
+ * including the type suffix.
  *
  * Return value: a newly-allocated string with the absolute path, or %NULL
  **/
@@ -788,26 +788,25 @@ g_get_real_name (void)
  * Gets the current user's home directory.
  *
  * As with most UNIX tools, this function will return the value of the
- * <envar>HOME</envar> environment variable if it is set to an existing
- * absolute path name, falling back to the <filename>passwd</filename>
+ * `HOME` environment variable if it is set to an existing absolute path
+ * name, falling back to the <filename>passwd</filename>
  * file in the case that it is unset.
  *
- * If the path given in <envar>HOME</envar> is non-absolute, does not
- * exist, or is not a directory, the result is undefined.
+ * If the path given in `HOME` is non-absolute, does not exist, or is
+ * not a directory, the result is undefined.
  *
- * Before version 2.36 this function would ignore the
- * <envar>HOME</envar> environment variable, taking the value from the
- * <filename>passwd</filename> database instead.  This was changed to
- * increase the compatibility of GLib with other programs (and the XDG
- * basedir specification) and to increase testability of programs
- * based on GLib (by making it easier to run them from test
- * frameworks).
+ * Before version 2.36 this function would ignore the `HOME` environment
+ * variable, taking the value from the <filename>passwd</filename>
+ * database instead. This was changed to increase the compatibility
+ * of GLib with other programs (and the XDG basedir specification)
+ * and to increase testability of programs based on GLib (by making
+ * it easier to run them from test frameworks).
  *
  * If your program has a strong requirement for either the new or the
  * old behaviour (and if you don't wish to increase your GLib
  * dependency to ensure that the new behaviour is in effect) then you
- * should either directly check the <envar>HOME</envar> environment
- * variable yourself or unset it before calling any functions in GLib.
+ * should either directly check the `HOME` environment variable yourself
+ * or unset it before calling any functions in GLib.
  *
  * Returns: the current user's home directory
  */
@@ -892,17 +891,18 @@ g_get_home_dir (void)
  *
  * Gets the directory to use for temporary files.
  *
- * On UNIX, this is taken from the <envar>TMPDIR</envar> environment
- * variable.  If the variable is not set, <literal>P_tmpdir</literal> is
- * used, as defined by the system C library.  Failing that, a hard-coded
- * default of "/tmp" is returned.
+ * On UNIX, this is taken from the `TMPDIR` environment variable.
+ * If the variable is not set, <literal>P_tmpdir</literal> is
+ * used, as defined by the system C library. Failing that, a
+ * hard-coded default of "/tmp" is returned.
  *
- * On Windows, the <envar>TEMP</envar> environment variable is used,
- * with the root directory of the Windows installation (eg: "C:\") used
+ * On Windows, the `TEMP` environment variable is used, with the
+ * root directory of the Windows installation (eg: "C:\") used
  * as a default.
  *
- * The encoding of the returned string is system-defined. On Windows, it
- * is always UTF-8. The return value is never %NULL or the empty string.
+ * The encoding of the returned string is system-defined. On Windows,
+ * it is always UTF-8. The return value is never %NULL or the empty
+ * string.
  *
  * Returns: the directory to use for temporary files.
  */
@@ -1313,7 +1313,7 @@ g_get_user_cache_dir (void)
  * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
  * XDG Base Directory Specification</ulink>.  This is the directory
- * specified in the <envar>XDG_RUNTIME_DIR</envar> environment variable.
+ * specified in the `XDG_RUNTIME_DIR` environment variable.
  * In the case that this variable is not set, GLib will issue a warning
  * message to stderr and return the value of g_get_user_cache_dir().
  *

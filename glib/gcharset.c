@@ -539,9 +539,9 @@ language_names_cache_free (gpointer data)
  * For example, if LANGUAGE=de:en_US, then the returned list is
  * "de", "en_US", "en", "C".
  *
- * This function consults the environment variables <envar>LANGUAGE</envar>,
- * <envar>LC_ALL</envar>, <envar>LC_MESSAGES</envar> and <envar>LANG</envar>
- * to find the list of locales specified by the user.
+ * This function consults the environment variables `LANGUAGE`, `LC_ALL`,
+ * `LC_MESSAGES` and `LANG` to find the list of locales specified by the
+ * user.
  *
  * Return value: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib
  *    that must not be modified or freed.

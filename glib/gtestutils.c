@@ -320,7 +320,7 @@
  * an error message is logged and the application is terminated.
  *
  * The macro can be turned off in final releases of code by defining
- * <envar>G_DISABLE_ASSERT</envar> when compiling the application.
+ * `G_DISABLE_ASSERT` when compiling the application.
  */
 
 /**
@@ -331,7 +331,7 @@
  * application is terminated.
  *
  * The macro can be turned off in final releases of code by defining
- * <envar>G_DISABLE_ASSERT</envar> when compiling the application.
+ * `G_DISABLE_ASSERT` when compiling the application.
  */
 
 /**

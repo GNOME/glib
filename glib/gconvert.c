@@ -108,7 +108,7 @@
  * want to instruct Glib to use that particular encoding for file
  * names rather than UTF-8. You can do this by specifying the
  * encoding for file names in the <link
- * linkend="G_FILENAME_ENCODING"><envar>G_FILENAME_ENCODING</envar></link>
+ * linkend="G_FILENAME_ENCODING">`G_FILENAME_ENCODING`</link>
  * environment variable. For example, if your installation uses
  * ISO-8859-1 for file names, you can put this in your
  * <filename>~/.profile</filename>:
@@ -118,7 +118,7 @@
  * Glib provides the functions g_filename_to_utf8() and
  * g_filename_from_utf8() to perform the necessary conversions.
  * These functions convert file names from the encoding specified
- * in <envar>G_FILENAME_ENCODING</envar> to UTF-8 and vice-versa.
+ * in `G_FILENAME_ENCODING` to UTF-8 and vice-versa.
  * <xref linkend="file-name-encodings-diagram"/> illustrates how
  * these functions are used to convert between UTF-8 and the
  * encoding for file names in the file system.
@@ -149,17 +149,17 @@
  *
  *    For example, the document window of a word processor could display
  *    "Unknown file name" in its title bar but still let the user save
- *    the file, as it would keep the raw file name internally. This can
- *    happen if the user has not set the <envar>G_FILENAME_ENCODING</envar>
- *    environment variable even though he has files whose names are not
- *    encoded in UTF-8.
+ *    the file, as it would keep the raw file name internally. This
+ *    can happen if the user has not set the `G_FILENAME_ENCODING`
+ *    environment variable even though he has files whose names are
+ *    not encoded in UTF-8.
  *
  * 3. If your user interface lets the user type a file name for saving
  *    or renaming, convert it to the encoding used for file names in
  *    the file system by using g_filename_from_utf8(). Pass the converted
  *    file name to functions like fopen(). If conversion fails, ask the
  *    user to enter a different file name. This can happen if the user
- *    types Japanese characters when <envar>G_FILENAME_ENCODING</envar>
+ *    types Japanese characters when `G_FILENAME_ENCODING`
  *    is set to <literal>ISO-8859-1</literal>, for example.
  */
 
@@ -982,24 +982,23 @@ filename_charset_cache_free (gpointer data)
  * representation of a filename, see g_filename_display_name().
  *
  * On Unix, the character sets are determined by consulting the
- * environment variables <envar>G_FILENAME_ENCODING</envar> and
- * <envar>G_BROKEN_FILENAMES</envar>. On Windows, the character set
- * used in the GLib API is always UTF-8 and said environment variables
- * have no effect.
+ * environment variables `G_FILENAME_ENCODING` and `G_BROKEN_FILENAMES`.
+ * On Windows, the character set used in the GLib API is always UTF-8
+ * and said environment variables have no effect.
  *
- * <envar>G_FILENAME_ENCODING</envar> may be set to a comma-separated list 
- * of character set names. The special token "&commat;locale" is taken to 
- * mean the character set for the <link linkend="setlocale">current 
- * locale</link>. If <envar>G_FILENAME_ENCODING</envar> is not set, but 
- * <envar>G_BROKEN_FILENAMES</envar> is, the character set of the current 
- * locale is taken as the filename encoding. If neither environment variable 
+ * `G_FILENAME_ENCODING` may be set to a comma-separated list of
+ * character set names. The special token "&commat;locale" is taken
+ * to  mean the character set for the <link linkend="setlocale">current 
+ * locale</link>. If `G_FILENAME_ENCODING` is not set, but 
+ * `G_BROKEN_FILENAMES` is, the character set of the current locale
+ * is taken as the filename encoding. If neither environment variable 
  * is set, UTF-8 is taken as the filename encoding, but the character
  * set of the current locale is also put in the list of encodings.
  *
  * The returned @charsets belong to GLib and must not be freed.
  *
  * Note that on Unix, regardless of the locale character set or
- * <envar>G_FILENAME_ENCODING</envar> value, the actual file names present 
+ * `G_FILENAME_ENCODING` value, the actual file names present 
  * on a system might be in any random encoding or just gibberish.
  *
  * Return value: %TRUE if the filename encoding is UTF-8.

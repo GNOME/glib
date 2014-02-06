@@ -363,9 +363,8 @@ initialise_schema_sources (void)
  *
  * The returned source may actually consist of multiple schema sources
  * from different directories, depending on which directories were given
- * in <envar>XDG_DATA_DIRS</envar> and
- * <envar>GSETTINGS_SCHEMA_DIR</envar>.  For this reason, all lookups
- * performed against the default source should probably be done
+ * in `XDG_DATA_DIRS` and `GSETTINGS_SCHEMA_DIR`. For this reason, all
+ * lookups performed against the default source should probably be done
  * recursively.
  *
  * Returns: (transfer none): the default schema source

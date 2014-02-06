@@ -45,7 +45,7 @@ G_STATIC_ASSERT (_g_alignof (GFunc) == _g_alignof (GCompareDataFunc));
 /**
  * g_mem_gc_friendly:
  *
- * This variable is %TRUE if the <envar>G_DEBUG</envar> environment variable
+ * This variable is %TRUE if the `G_DEBUG` environment variable
  * includes the key <literal>gc-friendly</literal>.
  */
 #ifdef ENABLE_GC_FRIENDLY_DEFAULT

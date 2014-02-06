@@ -410,7 +410,7 @@ g_dgettext (const gchar *domain,
  * @category: a locale category
  *
  * This is a variant of g_dgettext() that allows specifying a locale
- * category instead of always using <envar>LC_MESSAGES</envar>. See g_dgettext() for
+ * category instead of always using `LC_MESSAGES`. See g_dgettext() for
  * more information about how this functions differs from calling
  * dcgettext() directly.
  *

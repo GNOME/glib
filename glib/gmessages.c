@@ -173,13 +173,13 @@
  *
  * A convenience function/macro to log a warning message.
  *
- * You can make warnings fatal at runtime by setting the
- * <envar>G_DEBUG</envar> environment variable (see
- * <ulink url="glib-running.html">Running GLib Applications</ulink>).
+ * You can make warnings fatal at runtime by setting the `G_DEBUG`
+ * environment variable (see <ulink url="glib-running.html">Running
+ * GLib Applications</ulink>).
  *
- * If g_log_default_handler() is used as the log handler function, a new-line
- * character will automatically be appended to @..., and need not be entered
- * manually.
+ * If g_log_default_handler() is used as the log handler function,
+ * a newline character will automatically be appended to @..., and
+ * need not be entered manually.
  */
 
 /**
@@ -195,7 +195,7 @@
  * example.
  *
  * You can also make critical warnings fatal at runtime by
- * setting the <envar>G_DEBUG</envar> environment variable (see
+ * setting the `G_DEBUG` environment variable (see
  * <ulink url="glib-running.html">Running GLib Applications</ulink>).
  *
  * If g_log_default_handler() is used as the log handler function, a new-line
@@ -449,7 +449,7 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
  * %G_LOG_LEVEL_ERROR is always fatal.
  *
  * You can also make some message levels fatal at runtime by setting
- * the <envar>G_DEBUG</envar> environment variable (see
+ * the `G_DEBUG` environment variable (see
  * <ulink url="glib-running.html">Running GLib Applications</ulink>).
  *
  * Returns: the old fatal mask
@@ -1345,13 +1345,13 @@ escape_string (GString *string)
  * The behavior of this log handler can be influenced by a number of
  * environment variables:
  *
- * - <envar>G_MESSAGES_PREFIXED</envar>: A :-separated list of log levels
- *   for which messages should be prefixed by the program name and PID of
- *   the aplication.
+ * - `G_MESSAGES_PREFIXED`: A :-separated list of log levels for which
+ *   messages should be prefixed by the program name and PID of the
+ *   aplication.
  *
- * - <envar>G_MESSAGES_DEBUG</envar>: A space-separated list of log domains
- *   for which debug and informational messages are printed. By default these
- *   messages are not printed.
+ * - `G_MESSAGES_DEBUG`: A space-separated list of log domains for
+ *   which debug and informational messages are printed. By default
+ *   these messages are not printed.
  *
  * stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
  * %G_LOG_LEVEL_WARNING and %G_LOG_LEVEL_MESSAGE. stdout is used for

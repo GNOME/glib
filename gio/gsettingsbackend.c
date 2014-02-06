@@ -1007,8 +1007,8 @@ g_settings_backend_verify (gpointer impl)
  * g_settings_backend_get_default:
  *
  * Returns the default #GSettingsBackend. It is possible to override
- * the default by setting the <envar>GSETTINGS_BACKEND</envar>
- * environment variable to the name of a settings backend.
+ * the default by setting the `GSETTINGS_BACKEND` environment variable
+ * to the name of a settings backend.
  *
  * The user gets a reference to the backend.
  *

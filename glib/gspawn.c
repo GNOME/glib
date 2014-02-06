@@ -470,18 +470,18 @@ g_spawn_sync (const gchar          *working_directory,
  *
  * Executes a child program asynchronously (your program will not
  * block waiting for the child to exit). The child program is
- * specified by the only argument that must be provided, @argv. @argv
- * should be a %NULL-terminated array of strings, to be passed as the
- * argument vector for the child. The first string in @argv is of
- * course the name of the program to execute. By default, the name of
- * the program must be a full path. If @flags contains the 
- * %G_SPAWN_SEARCH_PATH flag, the <envar>PATH</envar> environment variable 
- * is used to search for the executable. If @flags contains the
- * %G_SPAWN_SEARCH_PATH_FROM_ENVP flag, the <envar>PATH</envar> variable from 
- * @envp is used to search for the executable.
- * If both the %G_SPAWN_SEARCH_PATH and %G_SPAWN_SEARCH_PATH_FROM_ENVP
- * flags are set, the <envar>PATH</envar> variable from @envp takes precedence 
- * over the environment variable.
+ * specified by the only argument that must be provided, @argv.
+ * @argv should be a %NULL-terminated array of strings, to be passed
+ * as the argument vector for the child. The first string in @argv
+ * is of course the name of the program to execute. By default, the
+ * name of the program must be a full path. If @flags contains the
+ * %G_SPAWN_SEARCH_PATH flag, the `PATH` environment variable is
+ * used to search for the executable. If @flags contains the
+ * %G_SPAWN_SEARCH_PATH_FROM_ENVP flag, the `PATH` variable from 
+ * @envp is used to search for the executable. If both the
+ * %G_SPAWN_SEARCH_PATH and %G_SPAWN_SEARCH_PATH_FROM_ENVP flags
+ * are set, the `PATH` variable from @envp takes precedence over
+ * the environment variable.
  *
  * If the program name is not a full path and %G_SPAWN_SEARCH_PATH flag is not
  * used, then the program will be run from the current directory (or
@@ -543,15 +543,15 @@ g_spawn_sync (const gchar          *working_directory,
  *
  * %G_SPAWN_LEAVE_DESCRIPTORS_OPEN means that the parent's open file
  * descriptors will be inherited by the child; otherwise all descriptors
- * except stdin/stdout/stderr will be closed before calling exec() in the
- * child. %G_SPAWN_SEARCH_PATH means that @argv[0] need not be an absolute
- * path, it will be looked for in the <envar>PATH</envar> environment
- * variable. %G_SPAWN_SEARCH_PATH_FROM_ENVP means need not be an absolute
- * path, it will be looked for in the <envar>PATH</envar> variable from
+ * except stdin/stdout/stderr will be closed before calling exec() in
+ * the child. %G_SPAWN_SEARCH_PATH means that @argv[0] need not be an
+ * absolute path, it will be looked for in the `PATH` environment
+ * variable. %G_SPAWN_SEARCH_PATH_FROM_ENVP means need not be an
+ * absolute path, it will be looked for in the `PATH` variable from
  * @envp. If both %G_SPAWN_SEARCH_PATH and %G_SPAWN_SEARCH_PATH_FROM_ENVP
  * are used, the value from @envp takes precedence over the environment.
- * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output will 
- * be discarded, instead of going to the same location as the parent's 
+ * %G_SPAWN_STDOUT_TO_DEV_NULL means that the child's standard output
+ * will be discarded, instead of going to the same location as the parent's 
  * standard output. If you use this flag, @standard_output must be %NULL.
  * %G_SPAWN_STDERR_TO_DEV_NULL means that the child's standard error
  * will be discarded, instead of going to the same location as the parent's
