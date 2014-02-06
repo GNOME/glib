@@ -157,8 +157,8 @@
  *    the file system by using g_filename_from_utf8(). Pass the converted
  *    file name to functions like fopen(). If conversion fails, ask the
  *    user to enter a different file name. This can happen if the user
- *    types Japanese characters when `G_FILENAME_ENCODING`
- *    is set to <literal>ISO-8859-1</literal>, for example.
+ *    types Japanese characters when `G_FILENAME_ENCODING` is set to
+ *    `ISO-8859-1`, for example.
  */
 
 /* We try to terminate strings in unknown charsets with this many zero bytes

@@ -35,10 +35,10 @@
  * or receive action invocations in the local process from other
  * processes.
  *
- * The interface has <literal>_full</literal> variants of the two
+ * The interface has `_full` variants of the two
  * methods on #GActionGroup used to activate actions:
  * g_action_group_activate_action() and
- * g_action_group_change_action_state().  These variants allow a
+ * g_action_group_change_action_state(). These variants allow a
  * "platform data" #GVariant to be specified: a dictionary providing
  * context for the action invocation (for example: timestamps, startup
  * notification IDs, etc).
@@ -48,7 +48,7 @@
  *
  * Additionally, g_dbus_connection_export_action_group() will check if
  * the exported #GActionGroup implements #GRemoteActionGroup and use the
- * <literal>_full</literal> variants of the calls if available.  This
+ * `_full` variants of the calls if available.  This
  * provides a mechanism by which to receive platform data for action
  * invocations that arrive by way of D-Bus.
  *

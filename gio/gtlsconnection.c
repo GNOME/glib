@@ -677,16 +677,16 @@ g_tls_connection_get_require_close_notify (GTlsConnection *conn)
  *
  * %G_TLS_REHANDSHAKE_SAFELY means that the connection will allow a
  * rehandshake only if the other end of the connection supports the
- * TLS <literal>renegotiation_info</literal> extension. This is the
- * default behavior, but means that rehandshaking will not work
- * against older implementations that do not support that extension.
+ * TLS `renegotiation_info` extension. This is the default behavior,
+ * but means that rehandshaking will not work against older
+ * implementations that do not support that extension.
  *
  * %G_TLS_REHANDSHAKE_UNSAFELY means that the connection will allow
- * rehandshaking even without the
- * <literal>renegotiation_info</literal> extension. On the server side
- * in particular, this is not recommended, since it leaves the server
- * open to certain attacks. However, this mode is necessary if you
- * need to allow renegotiation with older client software.
+ * rehandshaking even without the `renegotiation_info` extension. On
+ * the server side in particular, this is not recommended, since it
+ * leaves the server open to certain attacks. However, this mode is
+ * necessary if you need to allow renegotiation with older client
+ * software.
  *
  * Since: 2.28
  */

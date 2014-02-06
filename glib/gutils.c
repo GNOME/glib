@@ -890,7 +890,7 @@ g_get_home_dir (void)
  * Gets the directory to use for temporary files.
  *
  * On UNIX, this is taken from the `TMPDIR` environment variable.
- * If the variable is not set, <literal>P_tmpdir</literal> is
+ * If the variable is not set, `P_tmpdir` is
  * used, as defined by the system C library. Failing that, a
  * hard-coded default of "/tmp" is returned.
  *

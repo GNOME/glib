@@ -86,7 +86,7 @@
  * is set to the new name owner (this includes emission of the
  * #GObject::notify signal).  Furthermore, you are guaranteed that
  * #GDBusObjectManagerClient:name-owner will alternate between a name owner
- * (e.g. <literal>:1.42</literal>) and %NULL even in the case where
+ * (e.g. `:1.42`) and %NULL even in the case where
  * the name of interest is atomically replaced
  *
  * Ultimately, #GDBusObjectManagerClient is used to obtain #GDBusProxy

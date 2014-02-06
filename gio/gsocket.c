@@ -1856,12 +1856,12 @@ g_socket_listen (GSocket  *socket,
  * used to initiate connections, though this is not normally required.
  *
  * If @socket is a TCP socket, then @allow_reuse controls the setting
- * of the <literal>SO_REUSEADDR</literal> socket option; normally it
- * should be %TRUE for server sockets (sockets that you will
- * eventually call g_socket_accept() on), and %FALSE for client
- * sockets. (Failing to set this flag on a server socket may cause
- * g_socket_bind() to return %G_IO_ERROR_ADDRESS_IN_USE if the server
- * program is stopped and then immediately restarted.)
+ * of the `SO_REUSEADDR` socket option; normally it should be %TRUE for
+ * server sockets (sockets that you will eventually call
+ * g_socket_accept() on), and %FALSE for client sockets. (Failing to
+ * set this flag on a server socket may cause g_socket_bind() to return
+ * %G_IO_ERROR_ADDRESS_IN_USE if the server program is stopped and then
+ * immediately restarted.)
  *
  * If @socket is a UDP socket, then @allow_reuse determines whether or
  * not other UDP sockets can be bound to the same address at the same
@@ -4507,17 +4507,16 @@ g_socket_get_credentials (GSocket   *socket,
 /**
  * g_socket_get_option:
  * @socket: a #GSocket
- * @level: the "API level" of the option (eg, <literal>SOL_SOCKET</literal>)
- * @optname: the "name" of the option (eg, <literal>SO_BROADCAST</literal>)
+ * @level: the "API level" of the option (eg, `SOL_SOCKET`)
+ * @optname: the "name" of the option (eg, `SO_BROADCAST`)
  * @value: (out): return location for the option value
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Gets the value of an integer-valued option on @socket, as with
- * <literal>getsockopt ()</literal>. (If you need to fetch a
- * non-integer-valued option, you will need to call
- * <literal>getsockopt ()</literal> directly.)
+ * getsockopt(). (If you need to fetch a  non-integer-valued option,
+ * you will need to call getsockopt() directly.)
  *
- * The <link linkend="gio-gnetworking.h"><literal>&lt;gio/gnetworking.h&gt;</literal></link>
+ * The <link linkend="gio-gnetworking.h">`&lt;gio/gnetworking.h&gt;`</link>
  * header pulls in system headers that will define most of the
  * standard/portable socket options. For unusual socket protocols or
  * platform-dependent options, you may need to include additional
@@ -4528,9 +4527,8 @@ g_socket_get_credentials (GSocket   *socket,
  * g_socket_get_option() will handle the conversion internally.
  *
  * Returns: success or failure. On failure, @error will be set, and
- *   the system error value (<literal>errno</literal> or
- *   <literal>WSAGetLastError ()</literal>) will still be set to the
- *   result of the <literal>getsockopt ()</literal> call.
+ *   the system error value (`errno` or WSAGetLastError()) will still
+ *   be set to the result of the getsockopt() call.
  *
  * Since: 2.36
  */
@@ -4576,26 +4574,24 @@ g_socket_get_option (GSocket  *socket,
 /**
  * g_socket_set_option:
  * @socket: a #GSocket
- * @level: the "API level" of the option (eg, <literal>SOL_SOCKET</literal>)
- * @optname: the "name" of the option (eg, <literal>SO_BROADCAST</literal>)
+ * @level: the "API level" of the option (eg, `SOL_SOCKET`)
+ * @optname: the "name" of the option (eg, `SO_BROADCAST`)
  * @value: the value to set the option to
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Sets the value of an integer-valued option on @socket, as with
- * <literal>setsockopt ()</literal>. (If you need to set a
- * non-integer-valued option, you will need to call
- * <literal>setsockopt ()</literal> directly.)
+ * setsockopt(). (If you need to set a non-integer-valued option,
+ * you will need to call setsockopt() directly.)
  *
- * The <link linkend="gio-gnetworking.h"><literal>&lt;gio/gnetworking.h&gt;</literal></link>
+ * The <link linkend="gio-gnetworking.h">`&lt;gio/gnetworking.h&gt;`</link>
  * header pulls in system headers that will define most of the
  * standard/portable socket options. For unusual socket protocols or
  * platform-dependent options, you may need to include additional
  * headers.
  *
  * Returns: success or failure. On failure, @error will be set, and
- *   the system error value (<literal>errno</literal> or
- *   <literal>WSAGetLastError ()</literal>) will still be set to the
- *   result of the <literal>setsockopt ()</literal> call.
+ *   the system error value (`errno` or WSAGetLastError()) will still
+ *   be set to the result of the setsockopt() call.
  *
  * Since: 2.36
  */

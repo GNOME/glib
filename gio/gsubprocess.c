@@ -36,16 +36,15 @@
  * comprehensive API for asynchronous I/O, such
  * g_output_stream_splice_async().  This makes GSubprocess
  * significantly more powerful and flexible than equivalent APIs in
- * some other languages such as the <literal>subprocess.py</literal>
+ * some other languages such as the `subprocess.py`
  * included with Python.  For example, using #GSubprocess one could
  * create two child processes, reading standard output from the first,
  * processing it, and writing to the input stream of the second, all
  * without blocking the main loop.
  *
  * A powerful g_subprocess_communicate() API is provided similar to the
- * <literal>communicate()</literal> method of
- * <literal>subprocess.py</literal>.  This enables very easy interaction
- * with a subprocess that has been opened with pipes.
+ * `communicate()` method of `subprocess.py`. This enables very easy
+ * interaction with a subprocess that has been opened with pipes.
  *
  * #GSubprocess defaults to tight control over the file descriptors open
  * in the child process, avoiding dangling-fd issues that are caused by

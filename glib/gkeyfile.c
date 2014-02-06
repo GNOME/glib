@@ -113,11 +113,10 @@
  * in '[' and ']', and ended implicitly by the start of the next group or
  * the end of the file. Each key-value pair must be contained in a group.
  *
- * Key-value pairs generally have the form <literal>key=value</literal>,
- * with the exception of localized strings, which have the form
- * <literal>key[locale]=value</literal>, with a locale identifier of the
- * form <literal>lang_COUNTRY\@MODIFIER</literal>
- * where <literal>COUNTRY</literal> and <literal>MODIFIER</literal>
+ * Key-value pairs generally have the form `key=value`, with the
+ * exception of localized strings, which have the form
+ * `key[locale]=value`, with a locale identifier of the
+ * form `lang_COUNTRY\@MODIFIER` where `COUNTRY` and `MODIFIER`
  * are optional.
  * Space before and after the '=' character are ignored. Newline, tab,
  * carriage return and backslash characters in value are escaped as \n,
@@ -307,7 +306,7 @@
  * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
  * giving the file name of a binary on disk used to determine if the
  * program is actually installed. It is only valid for desktop entries
- * with the <literal>Application</literal> type.
+ * with the `Application` type.
  *
  * Since: 2.14
  */
@@ -317,7 +316,7 @@
  *
  * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
  * giving the command line to execute. It is only valid for desktop
- * entries with the <literal>Application</literal> type.
+ * entries with the `Application` type.
  *
  * Since: 2.14
  */
@@ -327,7 +326,7 @@
   *
   * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
   * containing the working directory to run the program in. It is only
-  * valid for desktop entries with the <literal>Application</literal> type.
+  * valid for desktop entries with the `Application` type.
   *
   * Since: 2.14
   */
@@ -338,7 +337,7 @@
  * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
  * stating whether the program should be run in a terminal window.
  * It is only valid for desktop entries with the
- * <literal>Application</literal> type.
+ * `Application` type.
  *
  * Since: 2.14
  */
@@ -388,7 +387,7 @@
  *
  * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
  * giving the URL to access. It is only valid for desktop entries
- * with the <literal>Link</literal> type.
+ * with the `Link` type.
  *
  * Since: 2.14
  */

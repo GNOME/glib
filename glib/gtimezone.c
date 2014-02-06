@@ -1310,9 +1310,9 @@ rules_from_identifier (const gchar   *identifier,
  * In Windows, @identifier can also be the unlocalized name of a time
  * zone for standard time, for example "Pacific Standard Time".
  *
- * Valid RFC3339 time offsets are <literal>"Z"</literal> (for UTC) or
- * <literal>"±hh:mm"</literal>.  ISO 8601 additionally specifies
- * <literal>"±hhmm"</literal> and <literal>"±hh"</literal>.  Offsets are
+ * Valid RFC3339 time offsets are `"Z"` (for UTC) or
+ * `"±hh:mm"`.  ISO 8601 additionally specifies
+ * `"±hhmm"` and `"±hh"`.  Offsets are
  * time values to be added to Coordinated Universal Time (UTC) to get
  * the local time.
  *
@@ -1323,10 +1323,10 @@ rules_from_identifier (const gchar   *identifier,
  * and daylight savings time zone must be three or more alphabetic
  * characters. Offsets are time values to be added to local time to
  * get Coordinated Universal Time (UTC) and should be
- * <literal>"[±]hh[[:]mm[:ss]]"</literal>.  Dates are either
- * <literal>"Jn"</literal> (Julian day with n between 1 and 365, leap
- * years not counted), <literal>"n"</literal> (zero-based Julian day
- * with n between 0 and 365) or <literal>"Mm.w.d"</literal> (day d
+ * `"[±]hh[[:]mm[:ss]]"`.  Dates are either
+ * `"Jn"` (Julian day with n between 1 and 365, leap
+ * years not counted), `"n"` (zero-based Julian day
+ * with n between 0 and 365) or `"Mm.w.d"` (day d
  * (0 <= d <= 6) of week w (1 <= w <= 5) of month m (1 <= m <= 12), day
  * 0 is a Sunday).  Times are in local wall clock time, the default is
  * 02:00:00.
@@ -1354,7 +1354,7 @@ rules_from_identifier (const gchar   *identifier,
  * See
  * [RFC3339 §5.6](http://tools.ietf.org/html/rfc3339#section-5.6)
  * for a precise definition of valid RFC3339 time offsets
- * (the <literal>time-offset</literal> expansion) and ISO 8601 for the
+ * (the `time-offset` expansion) and ISO 8601 for the
  * full list of valid time offsets.  See
  * [The GNU C Library manual](http://www.gnu.org/s/libc/manual/html_node/TZ-Variable.html)
  * for an explanation of the possible

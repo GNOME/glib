@@ -741,9 +741,9 @@ g_io_channel_get_buffer_condition (GIOChannel *channel)
 
 /**
  * g_io_channel_error_from_errno:
- * @en: an <literal>errno</literal> error number, e.g. <literal>EINVAL</literal>
+ * @en: an `errno` error number, e.g. `EINVAL`
  *
- * Converts an <literal>errno</literal> error number to a #GIOChannelError.
+ * Converts an `errno` error number to a #GIOChannelError.
  *
  * Return value: a #GIOChannelError error number, e.g. 
  *      %G_IO_CHANNEL_ERROR_INVAL.

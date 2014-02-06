@@ -59,9 +59,8 @@
  *                               gsize        *length,
  *                               GError      **error);
  * ]|
- * If you pass a non-%NULL value for the <literal>error</literal>
- * argument, it should point to a location where an error can be placed.
- * For example:
+ * If you pass a non-%NULL value for the `error` argument, it should
+ * point to a location where an error can be placed. For example:
  * |[<!-- language="C" -->
  * gchar *contents;
  * GError *err = NULL;
@@ -81,9 +80,9 @@
  *     g_assert (contents != NULL);
  *   }
  * ]|
- * Note that <literal>err != NULL</literal> in this example is a
- * reliable indicator of whether g_file_get_contents() failed.
- * Additionally, g_file_get_contents() returns a boolean which
+ * Note that `err != NULL` in this example is a reliable indicator
+ * of whether g_file_get_contents() failed. Additionally,
+ * g_file_get_contents() returns a boolean which
  * indicates whether it was successful.
  *
  * Because g_file_get_contents() returns %FALSE on failure, if you
@@ -236,11 +235,11 @@
  * }
  * ]|
  *
- * Note that passing %NULL for the error location ignores errors; it's
- * equivalent to
- * <literal>try { sub_function_that_can_fail (); } catch (...) {}</literal>
- * in C++. It does not mean to leave errors unhandled; it means to
- * handle them by doing nothing.
+ * Note that passing %NULL for the error location ignores errors;
+ * it's equivalent to
+ * `try { sub_function_that_can_fail (); } catch (...) {}`
+ * in C++. It does not mean to leave errors unhandled; it means
+ * to handle them by doing nothing.
  *
  * Error domains and codes are conventionally named as follows:
  *
@@ -322,7 +321,7 @@
  * - When implementing a function that can report errors, you may want
  *   to add a check at the top of your function that the error return
  *   location is either %NULL or contains a %NULL error (e.g.
- *   <literal>g_return_if_fail (error == NULL || *error == NULL);</literal>).
+ *   `g_return_if_fail (error == NULL || *error == NULL);`).
  */
 
 #include "config.h"

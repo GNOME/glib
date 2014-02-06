@@ -178,7 +178,7 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
   /**
    * GDBusAuthObserver::allow-mechanism:
    * @observer: The #GDBusAuthObserver emitting the signal.
-   * @mechanism: The name of the mechanism, e.g. <literal>DBUS_COOKIE_SHA1</literal>.
+   * @mechanism: The name of the mechanism, e.g. `DBUS_COOKIE_SHA1`.
    *
    * Emitted to check if @mechanism is allowed to be used.
    *
@@ -253,7 +253,7 @@ g_dbus_auth_observer_authorize_authenticated_peer (GDBusAuthObserver  *observer,
 /**
  * g_dbus_auth_observer_allow_mechanism:
  * @observer: A #GDBusAuthObserver.
- * @mechanism: The name of the mechanism, e.g. <literal>DBUS_COOKIE_SHA1</literal>.
+ * @mechanism: The name of the mechanism, e.g. `DBUS_COOKIE_SHA1`.
  *
  * Emits the #GDBusAuthObserver::allow-mechanism signal on @observer.
  *

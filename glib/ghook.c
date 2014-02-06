@@ -91,7 +91,7 @@
  *
  * The position of the first bit which is not reserved for internal
  * use be the #GHook implementation, i.e.
- * <literal>1 &lt;&lt; G_HOOK_FLAG_USER_SHIFT</literal> is the first
+ * `1 &lt;&lt; G_HOOK_FLAG_USER_SHIFT` is the first
  * bit which can be used for application-defined flags.
  */
 
@@ -99,7 +99,7 @@
  * G_HOOK:
  * @hook: a pointer
  *
- * Casts a pointer to a <literal>GHook*</literal>.
+ * Casts a pointer to a `GHook*`.
  */
 
 /**
@@ -193,7 +193,7 @@ default_finalize_hook (GHookList *hook_list,
  * g_hook_list_init:
  * @hook_list: a #GHookList
  * @hook_size: the size of each element in the #GHookList,
- *     typically <literal>sizeof (GHook)</literal>
+ *     typically `sizeof (GHook)`.
  *
  * Initializes a #GHookList.
  * This must be called before the #GHookList is used.

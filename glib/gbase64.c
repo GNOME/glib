@@ -81,9 +81,9 @@ static const char base64_alphabet[] =
  * @break_lines is typically used when putting base64-encoded data in emails.
  * It breaks the lines at 72 columns instead of putting all of the text on
  * the same line. This avoids problems with long lines in the email system.
- * Note however that it breaks the lines with <literal>LF</literal>
- * characters, not <literal>CR LF</literal> sequences, so the result cannot
- * be passed directly to SMTP or certain other protocols.
+ * Note however that it breaks the lines with `LF` characters, not
+ * `CR LF` sequences, so the result cannot be passed directly to SMTP
+ * or certain other protocols.
  *
  * Return value: The number of bytes of output that was written
  *

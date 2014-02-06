@@ -2548,12 +2548,11 @@ g_date_time_format_locale (GDateTime   *datetime,
  * - \%C: the century number (year/100) as a 2-digit integer (00-99)
  * - \%d: the day of the month as a decimal number (range 01 to 31)
  * - \%e: the day of the month as a decimal number (range  1 to 31)
- * - \%F: equivalent to <literal>\%Y-\%m-\%d</literal> (the ISO 8601 date
- *   format)
- * - \%g: the last two digits of the ISO 8601 week-based year as a decimal
- *    number (00-99). This works well with \%V and \%u.
- * - \%G: the ISO 8601 week-based year as a decimal number. This works well
- *    with \%V and \%u.
+ * - \%F: equivalent to `\%Y-\%m-\%d` (the ISO 8601 date format)
+ * - \%g: the last two digits of the ISO 8601 week-based year as a
+ *   decimal number (00-99). This works well with \%V and \%u.
+ * - \%G: the ISO 8601 week-based year as a decimal number. This works
+ *   well with \%V and \%u.
  * - \%h: equivalent to \%b
  * - \%H: the hour as a decimal number using a 24-hour clock (range 00 to 23)
  * - \%I: the hour as a decimal number using a 12-hour clock (range 01 to 12)

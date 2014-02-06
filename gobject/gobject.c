@@ -3931,7 +3931,7 @@ g_object_watch_closure (GObject  *object,
 /**
  * g_closure_new_object:
  * @sizeof_closure: the size of the structure to allocate, must be at least
- *  <literal>sizeof (GClosure)</literal>
+ *  `sizeof (GClosure)`
  * @object: a #GObject pointer to store in the @data field of the newly
  *  allocated #GClosure
  *

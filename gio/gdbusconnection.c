@@ -960,11 +960,11 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    * GDBusConnection:exit-on-close:
    *
    * A boolean specifying whether the process will be terminated (by
-   * calling <literal>raise(SIGTERM)</literal>) if the connection
-   * is closed by the remote peer.
+   * calling `raise(SIGTERM)`) if the connection is closed by the
+   * remote peer.
    *
-   * Note that #GDBusConnection objects returned by g_bus_get_finish() and
-   * g_bus_get_sync() will (usually) have this property set to %TRUE.
+   * Note that #GDBusConnection objects returned by g_bus_get_finish()
+   * and g_bus_get_sync() will (usually) have this property set to %TRUE.
    *
    * Since: 2.26
    */
@@ -5097,13 +5097,13 @@ obj_message_func (GDBusConnection *connection,
  *
  * Note that all #GVariant values passed to functions in @vtable will match
  * the signature given in @interface_info - if a remote caller passes
- * incorrect values, the <literal>org.freedesktop.DBus.Error.InvalidArgs</literal>
+ * incorrect values, the `org.freedesktop.DBus.Error.InvalidArgs`
  * is returned to the remote caller.
  *
  * Additionally, if the remote caller attempts to invoke methods or
  * access properties not mentioned in @interface_info the
- * <literal>org.freedesktop.DBus.Error.UnknownMethod</literal> resp.
- * <literal>org.freedesktop.DBus.Error.InvalidArgs</literal> errors
+ * `org.freedesktop.DBus.Error.UnknownMethod` resp.
+ * `org.freedesktop.DBus.Error.InvalidArgs` errors
  * are returned to the caller.
  *
  * It is considered a programming error if the

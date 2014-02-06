@@ -26,7 +26,7 @@
  * for the popt library. It supports short and long commandline options,
  * as shown in the following example:
  *
- * <literal>testtreemodel -r 1 --max-size 20 --rand --display=:1.0 -vb -- file1 file2</literal>
+ * `testtreemodel -r 1 --max-size 20 --rand --display=:1.0 -vb -- file1 file2`
  *
  * The example demonstrates a number of features of the GOption
  * commandline parser:
@@ -327,7 +327,7 @@ G_DEFINE_QUARK (g-option-context-error-quark, g_option_error)
  * @parameter_string: (allow-none): a string which is displayed in
  *    the first line of `--help` output, after the
  *    usage summary
- *    <literal><replaceable>programname</replaceable> [OPTION...]</literal>
+ *    `<replaceable>programname</replaceable> [OPTION...]`
  *
  * Creates a new option context.
  *
@@ -754,11 +754,11 @@ context_has_h_entry (GOptionContext *context)
  *
  * Returns a formatted, translated help text for the given context.
  * To obtain the text produced by `--help`, call
- * <literal>g_option_context_get_help (context, TRUE, NULL)</literal>.
+ * `g_option_context_get_help (context, TRUE, NULL)`.
  * To obtain the text produced by `--help-all`, call
- * <literal>g_option_context_get_help (context, FALSE, NULL)</literal>.
+ * `g_option_context_get_help (context, FALSE, NULL)`.
  * To obtain the help text for an option group, call
- * <literal>g_option_context_get_help (context, FALSE, group)</literal>.
+ * `g_option_context_get_help (context, FALSE, group)`.
  *
  * Returns: A newly allocated string containing the help text
  *
@@ -1816,7 +1816,7 @@ platform_get_argv0 (void)
  * (see g_option_context_set_help_enabled()), and the
  * @argv array contains one of the recognized help options,
  * this function will produce help output to stdout and
- * call <literal>exit (0)</literal>.
+ * call `exit (0)`.
  *
  * Note that function depends on the
  * <link linkend="setlocale">current locale</link> for

@@ -144,7 +144,7 @@ enum {
 /**
  * g_closure_new_simple:
  * @sizeof_closure: the size of the structure to allocate, must be at least
- *                  <literal>sizeof (GClosure)</literal>
+ *                  `sizeof (GClosure)`
  * @data: data to store in the @data field of the newly allocated #GClosure
  *
  * Allocates a struct of the given size and initializes the initial
@@ -848,7 +848,7 @@ _g_closure_invoke_va (GClosure       *closure,
  * @closure: a #GClosure
  * @marshal: a #GClosureMarshal function
  *
- * Sets the marshaller of @closure. The <literal>marshal_data</literal>
+ * Sets the marshaller of @closure. The `marshal_data`
  * of @marshal provides a way for a meta marshaller to provide additional
  * information to the marshaller. (See g_closure_set_meta_marshal().) For
  * GObject's C predefined marshallers (the g_cclosure_marshal_*()
@@ -1578,7 +1578,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, gpointer user_data)`.
  */
 
 /**
@@ -1592,7 +1592,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, gboolean arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, gboolean arg1, gpointer user_data)`.
  */
 
 /**
@@ -1606,7 +1606,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, gchar arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, gchar arg1, gpointer user_data)`.
  */
 
 /**
@@ -1620,7 +1620,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, guchar arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, guchar arg1, gpointer user_data)`.
  */
 
 /**
@@ -1634,7 +1634,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, gint arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, gint arg1, gpointer user_data)`.
  */
 
 /**
@@ -1648,7 +1648,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, guint arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, guint arg1, gpointer user_data)`.
  */
 
 /**
@@ -1662,7 +1662,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, glong arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, glong arg1, gpointer user_data)`.
  */
 
 /**
@@ -1676,7 +1676,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, gulong arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, gulong arg1, gpointer user_data)`.
  */
 
 /**
@@ -1690,7 +1690,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, gint arg1, gpointer user_data)</literal> where the #gint parameter denotes an enumeration type..
+ * `void (*callback) (gpointer instance, gint arg1, gpointer user_data)` where the #gint parameter denotes an enumeration type..
  */
 
 /**
@@ -1704,7 +1704,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, gint arg1, gpointer user_data)</literal> where the #gint parameter denotes a flags type.
+ * `void (*callback) (gpointer instance, gint arg1, gpointer user_data)` where the #gint parameter denotes a flags type.
  */
 
 /**
@@ -1718,7 +1718,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, gfloat arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, gfloat arg1, gpointer user_data)`.
  */
 
 /**
@@ -1732,7 +1732,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, gdouble arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, gdouble arg1, gpointer user_data)`.
  */
 
 /**
@@ -1746,7 +1746,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, const gchar *arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, const gchar *arg1, gpointer user_data)`.
  */
 
 /**
@@ -1760,7 +1760,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, GParamSpec *arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, GParamSpec *arg1, gpointer user_data)`.
  */
 
 /**
@@ -1774,7 +1774,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, GBoxed *arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, GBoxed *arg1, gpointer user_data)`.
  */
 
 /**
@@ -1788,7 +1788,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, gpointer arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, gpointer arg1, gpointer user_data)`.
  */
 
 /**
@@ -1802,7 +1802,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, GObject *arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, GObject *arg1, gpointer user_data)`.
  */
 
 /**
@@ -1816,7 +1816,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, GVariant *arg1, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, GVariant *arg1, gpointer user_data)`.
  *
  * Since: 2.26
  */
@@ -1832,7 +1832,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, guint arg1, gpointer arg2, gpointer user_data)</literal>.
+ * `void (*callback) (gpointer instance, guint arg1, gpointer arg2, gpointer user_data)`.
  */
 
 /**
@@ -1846,7 +1846,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>gboolean (*callback) (gpointer instance, gint arg1, gpointer user_data)</literal> where the #gint parameter
+ * `gboolean (*callback) (gpointer instance, gint arg1, gpointer user_data)` where the #gint parameter
  * denotes a flags type.
  */
 
@@ -1866,7 +1866,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>gchar* (*callback) (gpointer instance, GObject *arg1, gpointer arg2, gpointer user_data)</literal>.
+ * `gchar* (*callback) (gpointer instance, GObject *arg1, gpointer arg2, gpointer user_data)`.
  */
 /**
  * g_cclosure_marshal_BOOLEAN__OBJECT_BOXED_BOXED:
@@ -1879,7 +1879,7 @@ g_cclosure_marshal_generic_va (GClosure *closure,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>gboolean (*callback) (gpointer instance, GBoxed *arg1, GBoxed *arg2, gpointer user_data)</literal>.
+ * `gboolean (*callback) (gpointer instance, GBoxed *arg1, GBoxed *arg2, gpointer user_data)`.
  *
  * Since: 2.26
  */

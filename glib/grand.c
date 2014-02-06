@@ -70,11 +70,10 @@
  * generation, nonces, salts or one-time pads.
  *
  * This PRNG is suitable for non-cryptographic use such as in games
- * (shuffling a card deck, generating levels), generating data for a
- * test suite, etc. If you need random data for cryptographic
- * purposes, it is recommended to use platform-specific APIs such as
- * <literal>/dev/random</literal> on Unix, or CryptGenRandom() on
- * Windows.
+ * (shuffling a card deck, generating levels), generating data for
+ * a test suite, etc. If you need random data for cryptographic
+ * purposes, it is recommended to use platform-specific APIs such
+ * as `/dev/random` on UNIX, or CryptGenRandom() on Windows.
  *
  * GRand uses the Mersenne Twister PRNG, which was originally
  * developed by Makoto Matsumoto and Takuji Nishimura. Further
@@ -93,7 +92,7 @@
  *
  * The g_rand*_range functions will return high quality equally
  * distributed random numbers, whereas for example the
- * <literal>(g_random_int()&percnt;max)</literal> approach often
+ * `(g_random_int()&percnt;max)` approach often
  * doesn't yield equally distributed numbers.
  *
  * GLib changed the seeding algorithm for the pseudo-random number

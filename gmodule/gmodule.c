@@ -57,7 +57,7 @@
  * well as Windows platforms via DLLs.
  *
  * A program which wants to use these functions must be linked to the
- * libraries output by the command <literal>pkg-config --libs gmodule-2.0</literal>.
+ * libraries output by the command `pkg-config --libs gmodule-2.0`.
  *
  * To use them you must first determine whether dynamic loading
  * is supported on the platform by calling g_module_supported().
@@ -75,7 +75,7 @@
  *
  * If your module introduces static data to common subsystems in the running
  * program, e.g. through calling
- * <literal>g_quark_from_static_string ("my-module-stuff")</literal>,
+ * `g_quark_from_static_string ("my-module-stuff")`,
  * it must ensure that it is never unloaded, by calling g_module_make_resident().
  *
  * Example: Calling a function defined in a GModule

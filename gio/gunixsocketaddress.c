@@ -376,7 +376,7 @@ g_unix_socket_address_new_abstract (const gchar *path,
  * zero-padded buffer will be considered the name. (As above, if
  * @path_len is -1, then @path is assumed to be NUL-terminated.) In
  * this case, g_socket_address_get_native_size() will always return
- * the full size of a <literal>struct sockaddr_un</literal>, although
+ * the full size of a `struct sockaddr_un`, although
  * g_unix_socket_address_get_path_len() will still return just the
  * length of @path.
  *

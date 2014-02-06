@@ -258,7 +258,7 @@ g_flags_register_static (const gchar	   *name,
  *  enumeration values. The array is terminated by a struct with all
  *  members being 0.
  *
- * This function is meant to be called from the <literal>complete_type_info</literal>
+ * This function is meant to be called from the `complete_type_info`
  * function of a #GTypePlugin implementation, as in the following
  * example:
  *

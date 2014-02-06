@@ -270,11 +270,11 @@ g_mkdir_with_parents (const gchar *pathname,
  * @test: bitfield of #GFileTest flags
  * 
  * Returns %TRUE if any of the tests in the bitfield @test are
- * %TRUE. For example, <literal>(G_FILE_TEST_EXISTS | 
- * G_FILE_TEST_IS_DIR)</literal> will return %TRUE if the file exists; 
- * the check whether it's a directory doesn't matter since the existence 
- * test is %TRUE. With the current set of available tests, there's no point
- * passing in more than one test at a time.
+ * %TRUE. For example, `(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)`
+ * will return %TRUE if the file exists; the check whether it's a
+ * directory doesn't matter since the existence test is %TRUE. With
+ * the current set of available tests, there's no point passing in
+ * more than one test at a time.
  * 
  * Apart from %G_FILE_TEST_IS_SYMLINK all tests follow symbolic links,
  * so for a symbolic link to a regular file g_file_test() will return
@@ -465,8 +465,8 @@ G_DEFINE_QUARK (g-file-error-quark, g_file_error)
  * @err_no: an "errno" value
  * 
  * Gets a #GFileError constant based on the passed-in @err_no.
- * For example, if you pass in <literal>EEXIST</literal> this function returns
- * #G_FILE_ERROR_EXIST. Unlike <literal>errno</literal> values, you can portably
+ * For example, if you pass in `EEXIST` this function returns
+ * #G_FILE_ERROR_EXIST. Unlike `errno` values, you can portably
  * assume that all #GFileError values will exist.
  *
  * Normally a #GFileError value goes into a #GError returned
@@ -1766,8 +1766,7 @@ g_build_pathv (const gchar  *separator,
  * the same as the number of trailing copies of the separator on
  * the last non-empty element. (Determination of the number of
  * trailing copies is done without stripping leading copies, so
- * if the separator is <literal>ABA</literal>, <literal>ABABA</literal>
- * has 1 trailing copy.)
+ * if the separator is `ABA`, then `ABABA` has 1 trailing copy.)
  *
  * However, if there is only a single non-empty element, and there
  * are no characters in that element not part of the leading or
@@ -1947,15 +1946,14 @@ g_build_filenamev (gchar **args)
  * Creates a filename from a series of elements using the correct
  * separator for filenames.
  *
- * On Unix, this function behaves identically to <literal>g_build_path
- * (G_DIR_SEPARATOR_S, first_element, ....)</literal>.
+ * On Unix, this function behaves identically to `g_build_path
+ * (G_DIR_SEPARATOR_S, first_element, ....)`.
  *
  * On Windows, it takes into account that either the backslash
- * (<literal>\</literal> or slash (<literal>/</literal>) can be used
- * as separator in filenames, but otherwise behaves as on Unix. When
- * file pathname separators need to be inserted, the one that last
- * previously occurred in the parameters (reading from left to right)
- * is used.
+ * (`\` or slash (`/`) can be used as separator in filenames, but
+ * otherwise behaves as on UNIX. When file pathname separators need
+ * to be inserted, the one that last previously occurred in the
+ * parameters (reading from left to right) is used.
  *
  * No attempt is made to force the resulting filename to be an absolute
  * path. If the first element is a relative path, the result will

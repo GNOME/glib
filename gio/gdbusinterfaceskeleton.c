@@ -379,7 +379,7 @@ g_dbus_interface_skeleton_get_properties (GDBusInterfaceSkeleton *interface_)
  *
  * For example, an exported D-Bus interface may queue up property
  * changes and emit the
- * <literal>org.freedesktop.DBus.Properties::PropertiesChanged</literal>
+ * `org.freedesktop.DBus.Properties::Propert``
  * signal later (e.g. in an idle handler). This technique is useful
  * for collapsing multiple property changes into one.
  *

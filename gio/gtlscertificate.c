@@ -138,7 +138,7 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * but cannot be read.
    *
    * PKCS#8 format is supported since 2.32; earlier releases only
-   * support PKCS#1. You can use the <literal>openssl rsa</literal>
+   * support PKCS#1. You can use the `openssl rsa`
    * tool to convert PKCS#8 keys to PKCS#1.
    *
    * Since: 2.28
@@ -155,14 +155,14 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
    * GTlsCertificate:private-key-pem:
    *
    * The PEM (ASCII) encoded representation of the certificate's
-   * private key in either PKCS#1 format ("<literal>BEGIN RSA PRIVATE
-   * KEY</literal>") or unencrypted PKCS#8 format ("<literal>BEGIN
-   * PRIVATE KEY</literal>"). This property (or the
+   * private key in either PKCS#1 format ("`BEGIN RSA PRIVATE
+   * KEY`") or unencrypted PKCS#8 format ("`BEGIN
+   * PRIVATE KEY`"). This property (or the
    * #GTlsCertificate:private-key property) can be set when
    * constructing a key (eg, from a file), but cannot be read.
    *
    * PKCS#8 format is supported since 2.32; earlier releases only
-   * support PKCS#1. You can use the <literal>openssl rsa</literal>
+   * support PKCS#1. You can use the `openssl rsa`
    * tool to convert PKCS#8 keys to PKCS#1.
    *
    * Since: 2.28

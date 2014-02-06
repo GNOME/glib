@@ -267,7 +267,7 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
   /**
    * GInetSocketAddress:flowinfo:
    *
-   * The <literal>sin6_flowinfo</literal> field, for IPv6 addresses.
+   * The `sin6_flowinfo` field, for IPv6 addresses.
    *
    * Since: 2.32
    */

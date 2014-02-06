@@ -170,13 +170,12 @@ g_async_result_get_source_object (GAsyncResult *res)
  * g_simple_async_result_propagate_error(). Otherwise it returns
  * %FALSE.
  *
- * This can be used for legacy error handling in async
- * <literal>_finish ()</literal> wrapper functions that traditionally
- * handled #GSimpleAsyncResult error returns themselves rather than
- * calling into the virtual method. This should not be used in new
- * code; #GAsyncResult errors that are set by virtual methods should
- * also be extracted by virtual methods, to enable subclasses to chain
- * up correctly.
+ * This can be used for legacy error handling in async *_finish()
+ * wrapper functions that traditionally handled #GSimpleAsyncResult
+ * error returns themselves rather than calling into the virtual method.
+ * This should not be used in new code; #GAsyncResult errors that are
+ * set by virtual methods should also be extracted by virtual methods,
+ * to enable subclasses to chain up correctly.
  *
  * Returns: %TRUE if @error is has been filled in with an error from
  *   @res, %FALSE if not.

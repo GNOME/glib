@@ -96,7 +96,7 @@ volatile gboolean glib_on_error_halt = TRUE;
  *     gtk_init() has been called)
  *
  * Prompts the user with
- * <literal>[E]xit, [H]alt, show [S]tack trace or [P]roceed</literal>.
+ * `[E]xit, [H]alt, show [S]tack trace or [P]roceed`.
  * This function is intended to be used for debugging use only.
  * The following example shows how it can be used together with
  * the g_log() functions.

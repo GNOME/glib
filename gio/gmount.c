@@ -946,10 +946,10 @@ get_private (GMount *mount)
  * situation, a #GVolumeMonitor implementation would create two
  * #GVolume objects (for example, one for the camera functionality of
  * the device and one for a SD card reader on the device) with
- * activation URIs <literal>gphoto2://[usb:001,002]/store1/</literal>
- * and <literal>gphoto2://[usb:001,002]/store2/</literal>. When the
+ * activation URIs `gphoto2://[usb:001,002]/store1/`
+ * and `gphoto2://[usb:001,002]/store2/`. When the
  * underlying mount (with root
- * <literal>gphoto2://[usb:001,002]/</literal>) is mounted, said
+ * `gphoto2://[usb:001,002]/`) is mounted, said
  * #GVolumeMonitor implementation would create two #GMount objects
  * (each with their root matching the corresponding volume activation
  * root) that would shadow the original mount.

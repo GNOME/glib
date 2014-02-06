@@ -267,8 +267,8 @@ g_settings_schema_source_unref (GSettingsSchemaSource *source)
  * source, the lookup will recurse to the parent.
  *
  * Second, any references to other schemas specified within this
- * source (ie: <literal>child</literal> or <literal>extends</literal>)
- * references may be resolved from the @parent.
+ * source (ie: `child` or `extends`) references may be resolved
+ * from the @parent.
  *
  * For this second reason, except in very unusual situations, the
  * @parent should probably be given as the default schema source, as
@@ -1592,31 +1592,28 @@ g_settings_schema_key_get_default_value (GSettingsSchemaKey *key)
  * This function will return a #GVariant that fully describes the range
  * of values that are valid for @key.
  *
- * The type of #GVariant returned is <literal>(sv)</literal>.  The
- * string describes the type of range restriction in effect.  The type
- * and meaning of the value contained in the variant depends on the
- * string.
+ * The type of #GVariant returned is `(sv)`. The string describes
+ * the type of range restriction in effect. The type and meaning of
+ * the value contained in the variant depends on the string.
  *
- * If the string is <literal>'type'</literal> then the variant contains
- * an empty array.  The element type of that empty array is the expected
- * type of value and all values of that type are valid.
+ * If the string is `'type'` then the variant contains an empty array.
+ * The element type of that empty array is the expected type of value
+ * and all values of that type are valid.
  *
- * If the string is <literal>'enum'</literal> then the variant contains
- * an array enumerating the possible values.  Each item in the array is
+ * If the string is `'enum'` then the variant contains an array
+ * enumerating the possible values. Each item in the array is
  * a possible valid value and no other values are valid.
  *
- * If the string is <literal>'flags'</literal> then the variant contains
- * an array.  Each item in the array is a value that may appear zero or
- * one times in an array to be used as the value for this key.  For
- * example, if the variant contained the array <literal>['x',
- * 'y']</literal> then the valid values for the key would be
- * <literal>[]</literal>, <literal>['x']</literal>,
- * <literal>['y']</literal>, <literal>['x', 'y']</literal> and
- * <literal>['y', 'x']</literal>.
+ * If the string is `'flags'` then the variant contains an array. Each
+ * item in the array is a value that may appear zero or one times in an
+ * array to be used as the value for this key. For example, if the
+ * variant contained the array `['x', 'y']` then the valid values for
+ * the key would be `[]`, `['x']`, `['y']`, `['x', 'y']` and
+ * `['y', 'x']`.
  *
- * Finally, if the string is <literal>'range'</literal> then the variant
- * contains a pair of like-typed values -- the minimum and maximum
- * permissible values for this key.
+ * Finally, if the string is `'range'` then the variant contains a pair
+ * of like-typed values -- the minimum and maximum permissible values
+ * for this key.
  *
  * This information should not be used by normal programs.  It is
  * considered to be a hint for introspection purposes.  Normal programs

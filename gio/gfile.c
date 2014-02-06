@@ -7609,9 +7609,9 @@ g_file_real_measure_disk_usage_finish (GFile         *file,
  *
  * Recursively measures the disk usage of @file.
  *
- * This is essentially an analog of the '<literal>du</literal>' command,
- * but it also reports the number of directories and non-directory files
- * encountered (including things like symbolic links).
+ * This is essentially an analog of the 'du' command, but it also
+ * reports the number of directories and non-directory files encountered
+ * (including things like symbolic links).
  *
  * By default, errors are only reported against the toplevel file
  * itself.  Errors found while recursing are silently ignored, unless

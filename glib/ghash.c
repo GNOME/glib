@@ -112,7 +112,7 @@
  * and #gchar* respectively.
  *
  * g_direct_hash() is also the appropriate hash function for keys
- * of the form <literal>GINT_TO_POINTER (n)</literal> (or similar macros).
+ * of the form `GINT_TO_POINTER (n)` (or similar macros).
  *
  * <!-- FIXME: Need more here. --> A good hash functions should produce
  * hash values that are evenly distributed over a fairly large range.
@@ -1773,11 +1773,11 @@ g_str_equal (gconstpointer v1,
  *
  * Converts a string to a hash value.
  *
- * This function implements the widely used "djb" hash apparently posted
- * by Daniel Bernstein to comp.lang.c some time ago.  The 32 bit
- * unsigned hash value starts at 5381 and for each byte 'c' in the
- * string, is updated: <literal>hash = hash * 33 + c</literal>.  This
- * function uses the signed value of each byte.
+ * This function implements the widely used "djb" hash apparently
+ * posted by Daniel Bernstein to comp.lang.c some time ago.  The 32
+ * bit unsigned hash value starts at 5381 and for each byte 'c' in
+ * the string, is updated: `hash = hash * 33 + c`. This function
+ * uses the signed value of each byte.
  *
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
  * when using non-%NULL strings as keys in a #GHashTable.
@@ -1805,8 +1805,8 @@ g_str_hash (gconstpointer v)
  * when using opaque pointers compared by pointer value as keys in a
  * #GHashTable.
  *
- * This hash function is also appropriate for keys that are integers stored
- * in pointers, such as <literal>GINT_TO_POINTER (n)</literal>.
+ * This hash function is also appropriate for keys that are integers
+ * stored in pointers, such as `GINT_TO_POINTER (n)`.
  *
  * Returns: a hash value corresponding to the key.
  */
@@ -1823,11 +1823,11 @@ g_direct_hash (gconstpointer v)
  *
  * Compares two #gpointer arguments and returns %TRUE if they are equal.
  * It can be passed to g_hash_table_new() as the @key_equal_func
- * parameter, when using opaque pointers compared by pointer value as keys
- * in a #GHashTable.
+ * parameter, when using opaque pointers compared by pointer value as
+ * keys in a #GHashTable.
  *
- * This equality function is also appropriate for keys that are integers stored
- * in pointers, such as <literal>GINT_TO_POINTER (n)</literal>.
+ * This equality function is also appropriate for keys that are integers
+ * stored in pointers, such as `GINT_TO_POINTER (n)`.
  *
  * Returns: %TRUE if the two keys match.
  */
@@ -1849,9 +1849,9 @@ g_direct_equal (gconstpointer v1,
  * parameter, when using non-%NULL pointers to integers as keys in a
  * #GHashTable.
  *
- * Note that this function acts on pointers to #gint, not on #gint directly:
- * if your hash table's keys are of the form
- * <literal>GINT_TO_POINTER (n)</literal>, use g_direct_equal() instead.
+ * Note that this function acts on pointers to #gint, not on #gint
+ * directly: if your hash table's keys are of the form
+ * `GINT_TO_POINTER (n)`, use g_direct_equal() instead.
  *
  * Returns: %TRUE if the two keys match.
  */
@@ -1870,9 +1870,9 @@ g_int_equal (gconstpointer v1,
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
  * when using non-%NULL pointers to integer values as keys in a #GHashTable.
  *
- * Note that this function acts on pointers to #gint, not on #gint directly:
- * if your hash table's keys are of the form
- * <literal>GINT_TO_POINTER (n)</literal>, use g_direct_hash() instead.
+ * Note that this function acts on pointers to #gint, not on #gint
+ * directly: if your hash table's keys are of the form
+ * `GINT_TO_POINTER (n)`, use g_direct_hash() instead.
  *
  * Returns: a hash value corresponding to the key.
  */

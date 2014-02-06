@@ -41,7 +41,7 @@
 /**
  * GTrashStack:
  * @next: pointer to the previous element of the stack,
- *     gets stored in the first <literal>sizeof (gpointer)</literal>
+ *     gets stored in the first `sizeof (gpointer)`
  *     bytes of the element
  *
  * Each piece of memory that is pushed onto the stack

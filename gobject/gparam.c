@@ -243,8 +243,8 @@ g_param_spec_unref (GParamSpec *pspec)
  * The initial reference count of a newly created #GParamSpec is 1,
  * even though no one has explicitly called g_param_spec_ref() on it
  * yet. So the initial reference count is flagged as "floating", until
- * someone calls <literal>g_param_spec_ref (pspec); g_param_spec_sink
- * (pspec);</literal> in sequence on it, taking over the initial
+ * someone calls `g_param_spec_ref (pspec); g_param_spec_sink
+ * (pspec);` in sequence on it, taking over the initial
  * reference count (thus ending up with a @pspec that has a reference
  * count of 1 still, but is not flagged "floating" anymore).
  */
@@ -520,7 +520,7 @@ g_param_spec_set_qdata (GParamSpec *pspec,
  *  be freed
  *
  * This function works like g_param_spec_set_qdata(), but in addition,
- * a <literal>void (*destroy) (gpointer)</literal> function may be
+ * a `void (*destroy) (gpointer)` function may be
  * specified which is called with @data as argument when the @pspec is
  * finalized, or the data is being overwritten by a call to
  * g_param_spec_set_qdata() with the same @quark.

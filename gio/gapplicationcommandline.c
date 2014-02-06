@@ -149,9 +149,9 @@
  * }
  * ]|
  * In this example of split commandline handling, options that start
- * with <literal>--local-</literal> are handled locally, all other
- * options are passed to the #GApplication::command-line handler
- * which runs in the primary instance.
+ * with `--local-` are handled locally, all other options are passed
+ * to the #GApplication::command-line handler which runs in the primary
+ * instance.
  *
  * The complete example can be found here:
  * [gapplication-example-cmdline2.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-cmdline2.c)

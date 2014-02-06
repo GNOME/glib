@@ -1136,9 +1136,9 @@ g_parse_long_long (const gchar  *nptr,
  * locale-sensitive system strtoull() function.
  *
  * If the correct value would cause overflow, %G_MAXUINT64
- * is returned, and <literal>ERANGE</literal> is stored in <literal>errno</literal>.
+ * is returned, and `ERANGE` is stored in `errno`.
  * If the base is outside the valid range, zero is returned, and
- * <literal>EINVAL</literal> is stored in <literal>errno</literal>.
+ * `EINVAL` is stored in `errno`.
  * If the string conversion fails, zero is returned, and @endptr returns
  * @nptr (if @endptr is non-%NULL).
  *
@@ -1183,9 +1183,9 @@ g_ascii_strtoull (const gchar *nptr,
  * locale-sensitive system strtoll() function.
  *
  * If the correct value would cause overflow, %G_MAXINT64 or %G_MININT64
- * is returned, and <literal>ERANGE</literal> is stored in <literal>errno</literal>.
+ * is returned, and `ERANGE` is stored in `errno`.
  * If the base is outside the valid range, zero is returned, and
- * <literal>EINVAL</literal> is stored in <literal>errno</literal>. If the
+ * `EINVAL` is stored in `errno`. If the
  * string conversion fails, zero is returned, and @endptr returns @nptr
  * (if @endptr is non-%NULL).
  *
@@ -1256,8 +1256,7 @@ g_strerror (gint errnum)
 
 /**
  * g_strsignal:
- * @signum: the signal number. See the <literal>signal</literal>
- *     documentation
+ * @signum: the signal number. See the `signal` documentation
  *
  * Returns a string describing the given signal, e.g. "Segmentation fault".
  * You should use this function in preference to strsignal(), because it
@@ -1592,8 +1591,7 @@ g_strup (gchar *string)
  * @string: the string to reverse
  *
  * Reverses all of the bytes in a string. For example,
- * <literal>g_strreverse ("abcdef")</literal> will result
- * in "fedcba".
+ * `g_strreverse ("abcdef")` will result in "fedcba".
  *
  * Note that g_strreverse() doesn't work on UTF-8 strings
  * containing multibyte characters. For that purpose, use

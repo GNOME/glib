@@ -526,9 +526,8 @@ g_spawn_sync (const gchar          *working_directory,
  * identifiers are different concepts on Windows.
  *
  * @envp is a %NULL-terminated array of strings, where each string
- * has the form <literal>KEY=VALUE</literal>. This will become
- * the child's environment. If @envp is %NULL, the child inherits its
- * parent's environment.
+ * has the form `KEY=VALUE`. This will become the child's environment.
+ * If @envp is %NULL, the child inherits its parent's environment.
  *
  * @flags should be the bitwise OR of any flags you want to affect the
  * function's behaviour. The %G_SPAWN_DO_NOT_REAP_CHILD means that the
@@ -609,9 +608,9 @@ g_spawn_sync (const gchar          *working_directory,
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * If an error is set, the function returns %FALSE. Errors are reported
  * even if they occur in the child (for example if the executable in
- * @argv[0] is not found). Typically the <literal>message</literal> field
- * of returned errors should be displayed to users. Possible errors are
- * those from the #G_SPAWN_ERROR domain.
+ * @argv[0] is not found). Typically the `message` field of returned
+ * errors should be displayed to users. Possible errors are those from
+ * the #G_SPAWN_ERROR domain.
  *
  * If an error occurs, @child_pid, @standard_input, @standard_output,
  * and @standard_error will not be filled with valid values.

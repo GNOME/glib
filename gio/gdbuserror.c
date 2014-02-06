@@ -790,7 +790,7 @@ g_dbus_error_strip_remote_error (GError *error)
  * D-Bus error name will be returned.
  *
  * Otherwise the a name of the form
- * <literal>org.gtk.GDBus.UnmappedGError.Quark._ESCAPED_QUARK_NAME.Code_ERROR_CODE</literal>
+ * `org.gtk.GDBus.UnmappedGError.Quark._ESCAPED_QUARK_NAME.Code_ERROR_CODE`
  * will be used. This allows other GDBus applications to map the error
  * on the wire back to a #GError using g_dbus_error_new_for_dbus_error().
  *

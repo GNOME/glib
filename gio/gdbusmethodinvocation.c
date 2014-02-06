@@ -575,9 +575,8 @@ g_dbus_method_invocation_return_value_with_unix_fd_list (GDBusMethodInvocation *
  * will be returned on the wire. In a nutshell, if the given error is
  * registered using g_dbus_error_register_error() the name given
  * during registration is used. Otherwise, a name of the form
- * <literal>org.gtk.GDBus.UnmappedGError.Quark...</literal> is
- * used. This provides transparent mapping of #GError between
- * applications using GDBus.
+ * `org.gtk.GDBus.UnmappedGError.Quark...` is used. This provides
+ * transparent mapping of #GError between applications using GDBus.
  *
  * If you are writing an application intended to be portable,
  * always register errors with g_dbus_error_register_error()

@@ -370,8 +370,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * - Received signals that have a type signature mismatch are dropped and
    *   a warning is logged via g_warning().
    *
-   * - Properties received via the initial <literal>GetAll()</literal> call
-   *   or via the <literal>::PropertiesChanged</literal> signal (on the
+   * - Properties received via the initial `GetAll()` call or via the 
+   *   `::PropertiesChanged` signal (on the
    *   [org.freedesktop.DBus.Properties](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties)
    *   interface) or set using g_dbus_proxy_set_cached_property()
    *   with a type signature mismatch are ignored and a warning is
@@ -585,8 +585,8 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    * @invalidated_properties will always be empty.
    *
    * This signal corresponds to the
-   * <literal>PropertiesChanged</literal> D-Bus signal on the
-   * <literal>org.freedesktop.DBus.Properties</literal> interface.
+   * `PropertiesChanged` D-Bus signal on the
+   * `org.freedesktop.DBus.Properties` interface.
    *
    * Since: 2.26
    */

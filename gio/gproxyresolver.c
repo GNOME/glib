@@ -97,18 +97,18 @@ g_proxy_resolver_is_supported (GProxyResolver *resolver)
  * @error: return location for a #GError, or %NULL
  *
  * Looks into the system proxy configuration to determine what proxy,
- * if any, to use to connect to @uri. The returned proxy URIs are of the
- * form <literal>&lt;protocol&gt;://[user[:password]@]host:port</literal>
- * or <literal>direct://</literal>, where &lt;protocol&gt; could be
- * http, rtsp, socks or other proxying protocol.
+ * if any, to use to connect to @uri. The returned proxy URIs are of
+ * the form `&lt;protocol&gt;://[user[:password]@]host:port` or
+ * `direct://`, where &lt;protocol&gt; could be http, rtsp, socks
+ * or other proxying protocol.
  *
  * If you don't know what network protocol is being used on the
- * socket, you should use <literal>none</literal> as the URI protocol.
+ * socket, you should use `none` as the URI protocol.
  * In this case, the resolver might still return a generic proxy type
  * (such as SOCKS), but would not return protocol-specific proxy types
  * (such as http).
  *
- * <literal>direct://</literal> is used when no proxy is needed.
+ * `direct://` is used when no proxy is needed.
  * Direct connection should not be attempted unless it is part of the
  * returned array of proxies.
  *

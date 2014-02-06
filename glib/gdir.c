@@ -233,8 +233,7 @@ g_dir_new_from_dirp (gpointer dirp)
  * factors.
  *
  * %NULL may also be returned in case of errors. On Unix, you can
- * check <literal>errno</literal> to find out if %NULL was returned
- * because of an error.
+ * check `errno` to find out if %NULL was returned because of an error.
  *
  * On Unix, the '.' and '..' entries are omitted, and the returned
  * name is in the on-disk encoding.

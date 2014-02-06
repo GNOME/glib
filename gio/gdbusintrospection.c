@@ -780,7 +780,7 @@ g_dbus_property_info_generate_xml (GDBusPropertyInfo *info,
  *
  * This function is typically used for generating introspection XML
  * documents at run-time for handling the
- * <literal>org.freedesktop.DBus.Introspectable.Introspect</literal>
+ * `org.freedesktop.DBus.Introspectable.Introspect`
  * method.
  *
  * Since: 2.26
@@ -828,7 +828,7 @@ g_dbus_interface_info_generate_xml (GDBusInterfaceInfo *info,
  * Appends an XML representation of @info (and its children) to @string_builder.
  *
  * This function is typically used for generating introspection XML documents at run-time for
- * handling the <literal>org.freedesktop.DBus.Introspectable.Introspect</literal> method.
+ * handling the `org.freedesktop.DBus.Introspectable.Introspect`  method.
  *
  * Since: 2.26
  */

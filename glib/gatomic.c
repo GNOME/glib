@@ -58,8 +58,7 @@
  * fall outside of simple reference counting patterns are prone to
  * subtle bugs and occasionally undefined behaviour.  It is also worth
  * noting that since all of these operations require global
- * synchronisation of the entire machine, they can be quite slow.  In
- * the case of performing multiple atomic operations it can often be
+ * synchronisation of the entire machine, they can be quite slow.  In * the case of performing multiple atomic operations it can often be
  * faster to simply acquire a mutex lock around the critical area,
  * perform the operations normally and then release the lock.
  **/
@@ -139,8 +138,7 @@ void
  *
  * Increments the value of @atomic by 1.
  *
- * Think of this operation as an atomic version of
- * <literal>{ *@atomic += 1; }</literal>
+ * Think of this operation as an atomic version of `{ *@atomic += 1; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -159,7 +157,7 @@ void
  * Decrements the value of @atomic by 1.
  *
  * Think of this operation as an atomic version of
- * <literal>{ *@atomic -= 1; return (*@atomic == 0); }</literal>
+ * `{ *@atomic -= 1; return (*@atomic == 0); }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -185,7 +183,7 @@ gboolean
  * This compare and exchange is done atomically.
  *
  * Think of this operation as an atomic version of
- * <literal>{ if (*@atomic == @oldval) { *@atomic = @newval; return TRUE; } else return FALSE; }</literal>
+ * `{ if (*@atomic == @oldval) { *@atomic = @newval; return TRUE; } else return FALSE; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -209,7 +207,7 @@ gboolean
  * Atomically adds @val to the value of @atomic.
  *
  * Think of this operation as an atomic version of
- * <literal>{ tmp = *atomic; *@atomic += @val; return tmp; }</literal>
+ * `{ tmp = *atomic; *@atomic += @val; return tmp; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -238,7 +236,7 @@ gint
  * This call acts as a full compiler and hardware memory barrier.
  *
  * Think of this operation as an atomic version of
- * <literal>{ tmp = *atomic; *@atomic &= @val; return tmp; }</literal>
+ * `{ tmp = *atomic; *@atomic &= @val; return tmp; }`.
  *
  * Returns: the value of @atomic before the operation, unsigned
  *
@@ -260,7 +258,7 @@ guint
  * storing the result back in @atomic.
  *
  * Think of this operation as an atomic version of
- * <literal>{ tmp = *atomic; *@atomic |= @val; return tmp; }</literal>
+ * `{ tmp = *atomic; *@atomic |= @val; return tmp; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -284,7 +282,7 @@ guint
  * storing the result back in @atomic.
  *
  * Think of this operation as an atomic version of
- * <literal>{ tmp = *atomic; *@atomic ^= @val; return tmp; }</literal>
+ * `{ tmp = *atomic; *@atomic ^= @val; return tmp; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -350,7 +348,7 @@ void
  * This compare and exchange is done atomically.
  *
  * Think of this operation as an atomic version of
- * <literal>{ if (*@atomic == @oldval) { *@atomic = @newval; return TRUE; } else return FALSE; }</literal>
+ * `{ if (*@atomic == @oldval) { *@atomic = @newval; return TRUE; } else return FALSE; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -375,7 +373,7 @@ gboolean
  * Atomically adds @val to the value of @atomic.
  *
  * Think of this operation as an atomic version of
- * <literal>{ tmp = *atomic; *@atomic += @val; return tmp; }</literal>
+ * `{ tmp = *atomic; *@atomic += @val; return tmp; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -399,7 +397,7 @@ gssize
  * storing the result back in @atomic.
  *
  * Think of this operation as an atomic version of
- * <literal>{ tmp = *atomic; *@atomic &= @val; return tmp; }</literal>
+ * `{ tmp = *atomic; *@atomic &= @val; return tmp; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -423,7 +421,7 @@ gsize
  * storing the result back in @atomic.
  *
  * Think of this operation as an atomic version of
- * <literal>{ tmp = *atomic; *@atomic |= @val; return tmp; }</literal>
+ * `{ tmp = *atomic; *@atomic |= @val; return tmp; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -447,7 +445,7 @@ gsize
  * storing the result back in @atomic.
  *
  * Think of this operation as an atomic version of
- * <literal>{ tmp = *atomic; *@atomic ^= @val; return tmp; }</literal>
+ * `{ tmp = *atomic; *@atomic ^= @val; return tmp; }`.
  *
  * This call acts as a full compiler and hardware memory barrier.
  *

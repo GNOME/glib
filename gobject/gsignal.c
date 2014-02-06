@@ -2400,8 +2400,8 @@ node_check_deprecated (const SignalNode *node)
  * Connects a #GCallback function to a signal for a particular object. Similar
  * to g_signal_connect(), but allows to provide a #GClosureNotify for the data
  * which will be called when the signal handler is disconnected and no longer
- * used. Specify @connect_flags if you need <literal>..._after()</literal> or
- * <literal>..._swapped()</literal> variants of this function.
+ * used. Specify @connect_flags if you need `..._after()` or
+ * `..._swapped()` variants of this function.
  *
  * Returns: the handler id (always greater than 0 for successful connections)
  */

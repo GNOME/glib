@@ -1990,8 +1990,8 @@
  * regression tests for deprecated functions.
  *
  * Use %G_GNUC_END_IGNORE_DEPRECATIONS to begin warning again. (If you
- * are not compiling with <literal>-Wdeprecated-declarations</literal>
- * then neither macro has any effect.)
+ * are not compiling with `-Wdeprecated-declarations` then neither macro
+ * has any effect.)
  *
  * This macro can be used either inside or outside of a function body,
  * but must appear on a line by itself.

@@ -333,10 +333,10 @@ get_package_directory_from_module (const gchar *module_name)
  *
  * The original intended use of @package was for a short identifier of
  * the package, typically the same identifier as used for
- * <literal>GETTEXT_PACKAGE</literal> in software configured using GNU
+ * `GETTEXT_PACKAGE` in software configured using GNU
  * autotools. The function first looks in the Windows Registry for the
- * value <literal>&num;InstallationDirectory</literal> in the key
- * <literal>&num;HKLM\Software\@package</literal>, and if that value
+ * value `&num;InstallationDirectory` in the key
+ * `&num;HKLM\Software\@package`, and if that value
  * exists and is a string, returns that.
  *
  * It is strongly recommended that packagers of GLib-using libraries

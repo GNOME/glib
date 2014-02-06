@@ -838,7 +838,7 @@ g_main_context_ref_thread_default (void)
  * Creates a new #GSource structure. The size is specified to
  * allow creating structures derived from #GSource that contain
  * additional data. The size passed in must be at least
- * <literal>sizeof (GSource)</literal>.
+ * `sizeof (GSource)`.
  * 
  * The source will not initially be associated with any #GMainContext
  * and must be added to one with g_source_attach() before it will be
@@ -2532,12 +2532,12 @@ g_clock_win32_init (void)
  *
  * Queries the system monotonic time, if available.
  *
- * On POSIX systems with clock_gettime() and <literal>CLOCK_MONOTONIC</literal> this call
+ * On POSIX systems with clock_gettime() and `CLOCK_MONOTONIC` this call
  * is a very shallow wrapper for that.  Otherwise, we make a best effort
  * that probably involves returning the wall clock time (with at least
  * microsecond accuracy, subject to the limitations of the OS kernel).
  *
- * It's important to note that POSIX <literal>CLOCK_MONOTONIC</literal> does
+ * It's important to note that POSIX `CLOCK_MONOTONIC` does
  * not count time spent while the machine is suspended.
  *
  * On Windows, "limitations of the OS kernel" is a rather substantial
@@ -5106,8 +5106,7 @@ g_unix_signal_handler (int signum)
  * executed.
  * 
  * Note that child watch sources can only be used in conjunction with
- * <literal>g_spawn...</literal> when the %G_SPAWN_DO_NOT_REAP_CHILD
- * flag is used.
+ * `g_spawn...` when the %G_SPAWN_DO_NOT_REAP_CHILD flag is used.
  *
  * Note that on platforms where #GPid must be explicitly closed
  * (see g_spawn_close_pid()) @pid must not be closed while the
@@ -5115,9 +5114,9 @@ g_unix_signal_handler (int signum)
  * g_spawn_close_pid() in the callback function for the source.
  *
  * Note further that using g_child_watch_source_new() is not
- * compatible with calling <literal>waitpid</literal> with a
- * nonpositive first argument in the application. Calling waitpid()
- * for individual pids will still work fine.
+ * compatible with calling `waitpid` with a nonpositive first
+ * argument in the application. Calling waitpid() for individual
+ * pids will still work fine.
  * 
  * Return value: the newly-created child watch source
  *

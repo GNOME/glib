@@ -670,7 +670,7 @@ g_variant_ref (GVariant *value)
  * @value: a #GVariant
  *
  * #GVariant uses a floating reference count system.  All functions with
- * names starting with <literal>g_variant_new_</literal> return floating
+ * names starting with `g_variant_new_` return floating
  * references.
  *
  * Calling g_variant_ref_sink() on a #GVariant with a floating reference

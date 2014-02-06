@@ -40,15 +40,13 @@
  * As of GLib 2.20, URIs will always be converted to POSIX paths
  * (using g_file_get_path()) when using g_app_info_launch() even if
  * the application requested an URI and not a POSIX path. For example
- * for an desktop-file based application with Exec key <literal>totem
- * &percnt;U</literal> and a single URI,
- * <literal>sftp://foo/file.avi</literal>, then
- * <literal>/home/user/.gvfs/sftp on foo/file.avi</literal> will be
- * passed. This will only work if a set of suitable GIO extensions
- * (such as gvfs 2.26 compiled with FUSE support), is available and
- * operational; if this is not the case, the URI will be passed
- * unmodified to the application. Some URIs, such as
- * <literal>mailto:</literal>, of course cannot be mapped to a POSIX
+ * for an desktop-file based application with Exec key `totem
+ * &percnt;U` and a single URI, `sftp://foo/file.avi`, then
+ * `/home/user/.gvfs/sftp on foo/file.avi` will be passed. This will
+ * only work if a set of suitable GIO extensions (such as gvfs 2.26
+ * compiled with FUSE support), is available and operational; if this
+ * is not the case, the URI will be passed unmodified to the application.
+ * Some URIs, such as `mailto:`, of course cannot be mapped to a POSIX
  * path (in gvfs there's no FUSE mount for it); such URIs will be
  * passed unmodified to the application.
  *
@@ -61,31 +59,30 @@
  * equal to the result of g_file_get_uri(). The following snippet
  * illustrates this:
  *
- * <programlisting>
+ * |[ 
  * GFile *f;
  * char *uri;
  *
  * file = g_file_new_for_commandline_arg (uri_from_commandline);
  *
  * uri = g_file_get_uri (file);
- * strcmp (uri, uri_from_commandline) == 0; // FALSE
+ * strcmp (uri, uri_from_commandline) == 0;
  * g_free (uri);
  *
  * if (g_file_has_uri_scheme (file, "cdda"))
  *   {
- *     // do something special with uri
+ *     /&ast; do something special with uri &ast;/
  *   }
  * g_object_unref (file);
- * </programlisting>
+ * ]|
  *
- * This code will work when both <literal>cdda://sr0/Track
- * 1.wav</literal> and <literal>/home/user/.gvfs/cdda on sr0/Track
- * 1.wav</literal> is passed to the application. It should be noted
- * that it's generally not safe for applications to rely on the format
- * of a particular URIs. Different launcher applications (e.g. file
- * managers) may have different ideas of what a given URI means.
- *
- **/
+ * This code will work when both `cdda://sr0/Track 1.wav` and
+ * `/home/user/.gvfs/cdda on sr0/Track 1.wav` is passed to the
+ * application. It should be noted that it's generally not safe
+ * for applications to rely on the format of a particular URIs.
+ * Different launcher applications (e.g. file managers) may have
+ * different ideas of what a given URI means.
+ */
 
 typedef GAppInfoIface GAppInfoInterface;
 G_DEFINE_INTERFACE (GAppInfo, g_app_info, G_TYPE_OBJECT)
@@ -926,7 +923,7 @@ g_app_launch_context_unsetenv (GAppLaunchContext *context,
  * Gets the complete environment variable list to be passed to
  * the child process when @context is used to launch an application.
  * This is a %NULL-terminated array of strings, where each string has
- * the form <literal>KEY=VALUE</literal>.
+ * the form `KEY=VALUE`.
  *
  * Return value: (array zero-terminated=1) (transfer full): the
  *     child's environment

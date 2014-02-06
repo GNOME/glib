@@ -489,9 +489,9 @@
  *   (You can use g_task_set_check_cancellable() to turn off that
  *   behavior.) On the other hand, g_task_run_in_thread()
  *   guarantees that it will always run your
- *   <literal>task_func</literal>, even if the task's #GCancellable
+ *   `task_func`, even if the task's #GCancellable
  *   is already cancelled before the task gets a chance to run;
- *   you can start your <literal>task_func</literal> with a
+ *   you can start your `task_func` with a
  *   g_task_return_error_if_cancelled() check if you need the
  *   old behavior.
  * - The "return" methods (eg, g_task_return_pointer())
@@ -509,18 +509,18 @@
  *   prevent it from being freed twice.
  * - With #GSimpleAsyncResult, it was common to call
  *   g_simple_async_result_propagate_error() from the
- *   <literal>_finish()</literal> wrapper function, and have
+ *   `_finish()` wrapper function, and have
  *   virtual method implementations only deal with successful
  *   returns. This behavior is deprecated, because it makes it
  *   difficult for a subclass to chain to a parent class's async
  *   methods. Instead, the wrapper function should just be a
  *   simple wrapper, and the virtual method should call an
- *   appropriate <literal>g_task_propagate_</literal> function.
+ *   appropriate `g_task_propagate_` function.
  *   Note that wrapper methods can now use
  *   g_async_result_legacy_propagate_error() to do old-style
  *   #GSimpleAsyncResult error-returning behavior, and
  *   g_async_result_is_tagged() to check if a result is tagged as
- *   having come from the <literal>_async()</literal> wrapper
+ *   having come from the `_async()` wrapper
  *   function (for "short-circuit" results, such as when passing
  *   0 to g_input_stream_read_async()).
  */
@@ -961,9 +961,9 @@ g_task_ref_source_object (GAsyncResult *res)
  * g_task_get_task_data:
  * @task: a #GTask
  *
- * Gets @task's <literal>task_data</literal>.
+ * Gets @task's `task_data`.
  *
- * Returns: (transfer none): @task's <literal>task_data</literal>.
+ * Returns: (transfer none): @task's `task_data`.
  *
  * Since: 2.36
  */
@@ -1165,7 +1165,7 @@ g_task_return (GTask           *task,
  *
  * Other than in that case, @task will be completed when the
  * #GTaskThreadFunc returns, not when it calls a
- * <literal>g_task_return_</literal> function.
+ * `g_task_return_` function.
  *
  * Since: 2.36
  */
@@ -1349,7 +1349,7 @@ g_task_run_in_thread (GTask           *task,
  * See #GTaskThreadFunc for more details about how @task_func is handled.
  *
  * Normally this is used with tasks created with a %NULL
- * <literal>callback</literal>, but note that even if the task does
+ * `callback`, but note that even if the task does
  * have a callback, it will not be invoked when @task_func returns.
  *
  * Since: 2.36
@@ -1382,8 +1382,7 @@ g_task_run_in_thread_sync (GTask           *task,
  * to wait for a #GSource to trigger. Attaches @source to @task's
  * #GMainContext with @task's <link
  * linkend="io-priority">priority</link>, and sets @source's callback
- * to @callback, with @task as the callback's
- * <literal>user_data</literal>.
+ * to @callback, with @task as the callback's `user_data`.
  *
  * This takes a reference on @task until @source is destroyed.
  *

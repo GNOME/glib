@@ -406,8 +406,8 @@
  * or the testcase marked as failed.
  * The strings are compared using g_strcmp0().
  *
- * The effect of <literal>g_assert_cmpstr (s1, op, s2)</literal> is
- * the same as <literal>g_assert_true (g_strcmp0 (s1, s2) op 0)</literal>.
+ * The effect of `g_assert_cmpstr (s1, op, s2)` is
+ * the same as `g_assert_true (g_strcmp0 (s1, s2) op 0)`.
  * The advantage of this macro is that it can produce a message that
  * includes the actual values of @s1 and @s2.
  *
@@ -427,8 +427,8 @@
  *
  * Debugging macro to compare two integers.
  *
- * The effect of <literal>g_assert_cmpint (n1, op, n2)</literal> is
- * the same as <literal>g_assert_true (n1 op n2)</literal>. The advantage
+ * The effect of `g_assert_cmpint (n1, op, n2)` is
+ * the same as `g_assert_true (n1 op n2)`. The advantage
  * of this macro is that it can produce a message that includes the
  * actual values of @n1 and @n2.
  *
@@ -444,8 +444,8 @@
  *
  * Debugging macro to compare two unsigned integers.
  *
- * The effect of <literal>g_assert_cmpuint (n1, op, n2)</literal> is
- * the same as <literal>g_assert_true (n1 op n2)</literal>. The advantage
+ * The effect of `g_assert_cmpuint (n1, op, n2)` is
+ * the same as `g_assert_true (n1 op n2)`. The advantage
  * of this macro is that it can produce a message that includes the
  * actual values of @n1 and @n2.
  *
@@ -476,8 +476,8 @@
  *
  * Debugging macro to compare two floating point numbers.
  *
- * The effect of <literal>g_assert_cmpfloat (n1, op, n2)</literal> is
- * the same as <literal>g_assert_true (n1 op n2)</literal>. The advantage
+ * The effect of `g_assert_cmpfloat (n1, op, n2)` is
+ * the same as `g_assert_true (n1 op n2)`. The advantage
  * of this macro is that it can produce a message that includes the
  * actual values of @n1 and @n2.
  *
@@ -490,8 +490,8 @@
  *
  * Debugging macro to check that a #GError is not set.
  *
- * The effect of <literal>g_assert_no_error (err)</literal> is
- * the same as <literal>g_assert_true (err == NULL)</literal>. The advantage
+ * The effect of `g_assert_no_error (err)` is
+ * the same as `g_assert_true (err == NULL)`. The advantage
  * of this macro is that it can produce a message that includes
  * the error message and code.
  *
@@ -507,15 +507,15 @@
  * Debugging macro to check that a method has returned
  * the correct #GError.
  *
- * The effect of <literal>g_assert_error (err, dom, c)</literal> is
- * the same as <literal>g_assert_true (err != NULL &amp;&amp; err->domain
- * == dom &amp;&amp; err->code == c)</literal>. The advantage of this
+ * The effect of `g_assert_error (err, dom, c)` is
+ * the same as `g_assert_true (err != NULL &amp;&amp; err->domain
+ * == dom &amp;&amp; err->code == c)`. The advantage of this
  * macro is that it can produce a message that includes the incorrect
  * error message and code.
  *
  * This can only be used to test for a specific error. If you want to
  * test that @err is set, but don't care what it's set to, just use
- * <literal>g_assert (err != NULL)</literal>
+ * `g_assert (err != NULL)`
  *
  * Since: 2.20
  */
@@ -1010,7 +1010,7 @@ parse_args (gint    *argc_p,
  * @argv: Address of the @argv parameter of main().
  *        Any parameters understood by g_test_init() stripped before return.
  * @...: %NULL-terminated list of special options. Currently the only
- *       defined option is <literal>"no_g_set_prgname"</literal>, which
+ *       defined option is `"no_g_set_prgname"`, which
  *       will cause g_test_init() to not call g_set_prgname().
  *
  * Initialize the GLib testing framework, e.g. by seeding the
@@ -1461,7 +1461,7 @@ g_test_get_root (void)
  *
  * In general, the tests and sub-suites within each suite are run in
  * the order in which they are defined. However, note that prior to
- * GLib 2.36, there was a bug in the <literal>g_test_add_*</literal>
+ * GLib 2.36, there was a bug in the `g_test_add_*`
  * functions which caused them to create multiple suites with the same
  * name, meaning that if you created tests "/foo/simple",
  * "/bar/simple", and "/foo/using-bar" in that order, they would get
@@ -2723,12 +2723,11 @@ g_test_trap_fork (guint64        usec_timeout,
  * You can use g_test_subprocess() to determine whether the test is in
  * a subprocess or not.
  *
- * @test_path can also be the name of the parent
- * test, followed by "<literal>/subprocess/</literal>" and then a name
- * for the specific subtest (or just ending with
- * "<literal>/subprocess</literal>" if the test only has one child
- * test); tests with names of this form will automatically be skipped
- * in the parent process.
+ * @test_path can also be the name of the parent test, followed by
+ * "`/subprocess/`" and then a name for the specific subtest (or just
+ * ending with "`/subprocess`" if the test only has one child test);
+ * tests with names of this form will automatically be skipped in the
+ * parent process.
  *
  * If @usec_timeout is non-0, the test subprocess is aborted and
  * considered failing if its run time exceeds it.
@@ -2743,12 +2742,12 @@ g_test_trap_fork (guint64        usec_timeout,
  * cannot be used if @test_flags specifies that the child should
  * inherit the parent stdout/stderr.) 
  *
- * If your <literal>main ()</literal> needs to behave differently in
+ * If your `main ()` needs to behave differently in
  * the subprocess, you can call g_test_subprocess() (after calling
  * g_test_init()) to see whether you are in a subprocess.
  *
  * The following example tests that calling
- * <literal>my_object_new(1000000)</literal> will abort with an error
+ * `my_object_new(1000000)` will abort with an error
  * message.
  *
  * |[<!-- language="C" --> 
@@ -3221,9 +3220,9 @@ g_test_build_filename_va (GTestFileType  file_type,
  * 'built' terminology that automake uses and are explicitly used to
  * distinguish between the 'srcdir' and 'builddir' being separate.  All
  * files in your project should either be dist (in the
- * <literal>DIST_EXTRA</literal> or <literal>dist_schema_DATA</literal>
+ * `DIST_EXTRA` or `dist_schema_DATA`
  * sense, in which case they will always be in the srcdir) or built (in
- * the <literal>BUILT_SOURCES</literal> sense, in which case they will
+ * the `BUILT_SOURCES` sense, in which case they will
  * always be in the builddir).
  *
  * Note: as a general rule of automake, files that are generated only as

@@ -1564,7 +1564,7 @@ g_desktop_app_info_get_nodisplay (GDesktopAppInfo *info)
  *
  * Checks if the application info should be shown in menus that list available
  * applications for a specific name of the desktop, based on the
- * <literal>OnlyShowIn</literal> and <literal>NotShowIn</literal> keys.
+ * `OnlyShowIn` and `NotShowIn` keys.
  *
  * If @desktop_env is %NULL, then the name of the desktop set with
  * g_desktop_app_info_set_desktop_env() is used.
@@ -1573,7 +1573,7 @@ g_desktop_app_info_get_nodisplay (GDesktopAppInfo *info)
  * %NULL for @desktop_env) as well as additional checks.
  *
  * Returns: %TRUE if the @info should be shown in @desktop_env according to the
- * <literal>OnlyShowIn</literal> and <literal>NotShowIn</literal> keys, %FALSE
+ * `OnlyShowIn` and `NotShowIn` keys, %FALSE
  * otherwise.
  *
  * Since: 2.30
@@ -2473,21 +2473,19 @@ g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
  * Sets the name of the desktop that the application is running in.
  * This is used by g_app_info_should_show() and
  * g_desktop_app_info_get_show_in() to evaluate the
- * <literal>OnlyShowIn</literal> and <literal>NotShowIn</literal>
+ * `OnlyShowIn` and `NotShowIn`
  * desktop entry fields.
  *
  * The 
  * [Desktop Menu specification](http://standards.freedesktop.org/menu-spec/latest/)
  * recognizes the following:
- * <simplelist>
- *   <member>GNOME</member>
- *   <member>KDE</member>
- *   <member>ROX</member>
- *   <member>XFCE</member>
- *   <member>LXDE</member>
- *   <member>Unity</member>
- *   <member>Old</member>
- * </simplelist>
+ * - GNOME
+ * - KDE
+ * - ROX
+ * - XFCE
+ * - LXDE
+ * - Unity
+ * - Old
  *
  * Should be called only once; subsequent calls are ignored.
  */
@@ -3587,13 +3585,12 @@ g_desktop_app_info_search (const gchar *search_string)
  * on this system.
  *
  * For desktop files, this includes applications that have
- * <literal>NoDisplay=true</literal> set or are excluded from
- * display by means of <literal>OnlyShowIn</literal> or
- * <literal>NotShowIn</literal>. See g_app_info_should_show().
+ * `NoDisplay=true` set or are excluded from display by means
+ * of `OnlyShowIn` or `NotShowIn`. See g_app_info_should_show().
  * The returned list does not include applications which have
- * the <literal>Hidden</literal> key set.
+ * the `Hidden` key set.
  *
- * Returns: (element-type GAppInfo) (transfer full): a newly allocated #GList of references to #GAppInfo<!---->s.
+ * Returns: (element-type GAppInfo) (transfer full): a newly allocated #GList of references to #GAppInfos.
  **/
 GList *
 g_app_info_get_all (void)

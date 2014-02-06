@@ -87,7 +87,7 @@
  * unlike malloc(), it does not reserve extra space per block. For large block
  * sizes, g_slice_new() and g_slice_alloc() will automatically delegate to the
  * system malloc() implementation. For newly written code it is recommended
- * to use the new <literal>g_slice</literal> API instead of g_malloc() and
+ * to use the new `g_slice` API instead of g_malloc() and
  * friends, as long as objects are not resized during their lifetime and the
  * object size used at allocation time is still available when freeing.
  *
@@ -867,11 +867,11 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * A convenience macro to allocate a block of memory from the
  * slice allocator.
  *
- * It calls g_slice_alloc() with <literal>sizeof (@type)</literal>
- * and casts the returned pointer to a pointer of the given type,
- * avoiding a type cast in the source code.
- * Note that the underlying slice allocation mechanism can
- * be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+ * It calls g_slice_alloc() with `sizeof (@type)` and casts the
+ * returned pointer to a pointer of the given type, avoiding a type
+ * cast in the source code. Note that the underlying slice allocation
+ * mechanism can be changed with the
+ * <link linkend="G_SLICE">G_SLICE=always-malloc</link>
  * environment variable.
  *
  * Returns: a pointer to the allocated block, cast to a pointer to @type
@@ -886,7 +886,7 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * A convenience macro to allocate a block of memory from the
  * slice allocator and set the memory to 0.
  *
- * It calls g_slice_alloc0() with <literal>sizeof (@type)</literal>
+ * It calls g_slice_alloc0() with `sizeof (@type)`
  * and casts the returned pointer to a pointer of the given type,
  * avoiding a type cast in the source code.
  * Note that the underlying slice allocation mechanism can
@@ -904,7 +904,7 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * A convenience macro to duplicate a block of memory using
  * the slice allocator.
  *
- * It calls g_slice_copy() with <literal>sizeof (@type)</literal>
+ * It calls g_slice_copy() with `sizeof (@type)`
  * and casts the returned pointer to a pointer of the given type,
  * avoiding a type cast in the source code.
  * Note that the underlying slice allocation mechanism can
@@ -924,7 +924,7 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * A convenience macro to free a block of memory that has
  * been allocated from the slice allocator.
  *
- * It calls g_slice_free1() using <literal>sizeof (type)</literal>
+ * It calls g_slice_free1() using `sizeof (type)`
  * as the block size.
  * Note that the exact release behaviour can be changed with the
  * <link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment
@@ -959,7 +959,7 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  *
  * Allocates a block of memory from the slice allocator.
  * The block adress handed out can be expected to be aligned
- * to at least <literal>1 * sizeof (void*)</literal>,
+ * to at least 1 * sizeof (void*),
  * though in general slices are 2 * sizeof (void*) bytes aligned,
  * if a malloc() fallback implementation is used instead,
  * the alignment may be reduced in a libc dependent fashion.
