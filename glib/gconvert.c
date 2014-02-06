@@ -122,10 +122,9 @@
  * these functions are used to convert between UTF-8 and the
  * encoding for file names in the file system.
  *
- * <figure id="file-name-encodings-diagram">
- * <title>Conversion between File Name Encodings</title>
- * <graphic fileref="file-name-encodings.png" format="PNG"/>
- * </figure>
+ * ## Conversion between file name encodings # {#file-name-encodings-diagram)
+ *
+ * ![](file-name-encodings.png)
  *
  * ## Checklist for Application Writers
  *

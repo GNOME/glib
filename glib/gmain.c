@@ -168,11 +168,12 @@
  * g_main_context_prepare(), g_main_context_query(),
  * g_main_context_check() and g_main_context_dispatch().
  *
+ * ## State of a Main Context # {#mainloop-states}
+ *
  * The operation of these functions can best be seen in terms
- * of a state diagram, as shown in <xref linkend="mainloop-states"/>.
- * <figure id="mainloop-states"><title>States of a Main Context</title>
- * <graphic fileref="mainloop-states.gif" format="GIF"></graphic>
- * </figure>
+ * of a state diagram, as shown in this image.
+ *
+ * ![](mainloop-states.gif)
  *
  * On UNIX, the GLib mainloop is incompatible with fork(). Any program
  * using the mainloop must either exec() or exit() from the child

@@ -46,10 +46,9 @@
  * As an example, consider the visible portions of the menu in
  * <xref linkend="menu-example"/>.
  *
- * <figure id="menu-example">
- *   <title>An example menu</title>
- *   <graphic fileref="menu-example.png" format="PNG"></graphic>
- * </figure>
+ * ## An example menu # {#menu-example}
+ *
+ * ![](menu-example.png)
  *
  * There are 8 "menus" visible in the screenshot: one menubar, two
  * submenus and 5 sections:
@@ -68,10 +67,9 @@
  * smaller blocks within the large block represent items in that menu. Some
  * items contain references to other menus.
  *
- * <figure id="menu-model">
- *   <title>A menu model</title>
- *   <graphic fileref="menu-model.png" format="PNG"></graphic>
- * </figure>
+ * ## A menu example # {#menu-model}
+ *
+ * ![](menu-model.png)
  *
  * Notice that the separators visible in <xref linkend="menu-example"/>
  * appear nowhere in <xref linkend="menu-model"/>. This is because

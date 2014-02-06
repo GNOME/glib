@@ -401,8 +401,8 @@ g_memdup (gconstpointer mem,
  * %NULL it returns %NULL. The returned value should be freed when no longer
  * needed.
  *
- * To copy a number of characters from a UTF-8 encoded string, use
- * g_utf8_strncpy() instead.
+ * To copy a number of characters from a UTF-8 encoded string,
+ * use g_utf8_strncpy() instead.
  *
  * Returns: a newly-allocated buffer containing the first @n bytes
  *     of @str, nul-terminated
