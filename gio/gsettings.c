@@ -86,10 +86,9 @@
  * Similar to GConf, the default values in GSettings schemas can be
  * localized, but the localized values are stored in gettext catalogs
  * and looked up with the domain that is specified in the
- * <tag class="attribute">gettext-domain</tag> attribute of the
- * <tag class="starttag">schemalist</tag> or <tag class="starttag">schema</tag>
- * elements and the category that is specified in the l10n attribute of the
- * <tag class="starttag">key</tag> element.
+ * gettext-domain attribute of the &lt;schemalist&gt; or &lt;schema&gt;
+ * elements and the category that is specified in the l10n attribute of
+ * the &lt;key&gt; element.
  *
  * GSettings uses schemas in a compact binary form that is created
  * by the <link linkend="glib-compile-schemas">glib-compile-schemas</link>
@@ -101,19 +100,18 @@
  * The <link linkend="glib-compile-schemas">glib-compile-schemas</link>
  * tool expects schema files to have the extension `.gschema.xml`.
  *
- * At runtime, schemas are identified by their id (as specified
- * in the <tag class="attribute">id</tag> attribute of the
- * <tag class="starttag">schema</tag> element). The
- * convention for schema ids is to use a dotted name, similar in
- * style to a D-Bus bus name, e.g. "org.gnome.SessionManager". In particular,
- * if the settings are for a specific service that owns a D-Bus bus name,
- * the D-Bus bus name and schema id should match. For schemas which deal
- * with settings not associated with one named application, the id should
- * not use StudlyCaps, e.g. "org.gnome.font-rendering".
+ * At runtime, schemas are identified by their id (as specified in the
+ * id attribute of the &lt;schema&gt; element). The convention for schema
+ * ids is to use a dotted name, similar in style to a D-Bus bus name,
+ * e.g. "org.gnome.SessionManager". In particular, if the settings are
+ * for a specific service that owns a D-Bus bus name, the D-Bus bus name
+ * and schema id should match. For schemas which deal with settings not
+ * associated with one named application, the id should not use
+ * StudlyCaps, e.g. "org.gnome.font-rendering".
  *
- * In addition to #GVariant types, keys can have types that have enumerated
- * types. These can be described by a <tag class="starttag">choice</tag>,
- * <tag class="starttag">enum</tag> or <tag class="starttag">flags</tag> element, see
+ * In addition to #GVariant types, keys can have types that have
+ * enumerated types. These can be described by a &lt;choice&gt;,
+ * &lt;enum&gt; or &lt;flags&gt; element, see
  * <xref linkend="schema-enumerated"/>. The underlying type of
  * such a key is string, but you can use g_settings_get_enum(),
  * g_settings_set_enum(), g_settings_get_flags(), g_settings_set_flags()
@@ -2181,7 +2179,7 @@ g_settings_is_writable (GSettings   *settings,
  * <replaceable>base-path</replaceable> is the base path of @settings.
  *
  * The schema for the child settings object must have been declared
- * in the schema of @settings using a <tag class="starttag">child</tag> element.
+ * in the schema of @settings using a &lt;child&gt; element.
  *
  * Returns: (transfer full): a 'child' settings object
  *
