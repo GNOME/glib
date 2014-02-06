@@ -4868,6 +4868,8 @@ dispatch_unix_signals_unlocked (void)
               pid_t pid;
               do
                 {
+                  g_assert (source->pid > 0);
+
                   pid = waitpid (source->pid, &source->child_status, WNOHANG);
                   if (pid > 0)
                     {
@@ -5096,7 +5098,7 @@ g_unix_signal_handler (int signum)
 
 /**
  * g_child_watch_source_new:
- * @pid: process to watch. On POSIX the pid of a child process. On
+ * @pid: process to watch. On POSIX the positive pid of a child process. On
  * Windows a handle for a process (which doesn't have to be a child).
  * 
  * Creates a new child_watch source.
@@ -5117,7 +5119,11 @@ g_unix_signal_handler (int signum)
  * compatible with calling `waitpid` with a nonpositive first
  * argument in the application. Calling waitpid() for individual
  * pids will still work fine.
- * 
+ *
+ * Similarly, on POSIX platforms, the @pid passed to this function must
+ * be greater than 0 (i.e. this function must wait for a specific child,
+ * and cannot wait for one of many children by using a nonpositive argument).
+ *
  * Return value: the newly-created child watch source
  *
  * Since: 2.4
@@ -5125,8 +5131,15 @@ g_unix_signal_handler (int signum)
 GSource *
 g_child_watch_source_new (GPid pid)
 {
-  GSource *source = g_source_new (&g_child_watch_funcs, sizeof (GChildWatchSource));
-  GChildWatchSource *child_watch_source = (GChildWatchSource *)source;
+  GSource *source;
+  GChildWatchSource *child_watch_source;
+
+#ifndef G_OS_WIN32
+  g_return_val_if_fail (pid > 0, NULL);
+#endif
+
+  source = g_source_new (&g_child_watch_funcs, sizeof (GChildWatchSource));
+  child_watch_source = (GChildWatchSource *)source;
 
   child_watch_source->pid = pid;
 
@@ -5151,7 +5164,7 @@ g_child_watch_source_new (GPid pid)
  * g_child_watch_add_full:
  * @priority: the priority of the idle source. Typically this will be in the
  *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
- * @pid:      process to watch. On POSIX the pid of a child process. On
+ * @pid:      process to watch. On POSIX the positive pid of a child process. On
  * Windows a handle for a process (which doesn't have to be a child).
  * @function: function to call
  * @data:     data to pass to @function
@@ -5196,6 +5209,9 @@ g_child_watch_add_full (gint            priority,
   guint id;
   
   g_return_val_if_fail (function != NULL, 0);
+#ifndef G_OS_WIN32
+  g_return_val_if_fail (pid > 0, 0);
+#endif
 
   source = g_child_watch_source_new (pid);
 
@@ -5211,8 +5227,9 @@ g_child_watch_add_full (gint            priority,
 
 /**
  * g_child_watch_add:
- * @pid:      process id to watch. On POSIX the pid of a child process. On
- * Windows a handle for a process (which doesn't have to be a child).
+ * @pid:      process id to watch. On POSIX the positive pid of a child
+ * process. On Windows a handle for a process (which doesn't have to be
+ * a child).
  * @function: function to call
  * @data:     data to pass to @function
  * 
