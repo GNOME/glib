@@ -49,10 +49,10 @@
  * <para id="floating-ref">
  * GInitiallyUnowned is derived from GObject. The only difference between
  * the two is that the initial reference of a GInitiallyUnowned is flagged
- * as a <firstterm>floating</firstterm> reference.
- * This means that it is not specifically claimed to be "owned" by
- * any code portion. The main motivation for providing floating references is
- * C convenience. In particular, it allows code to be written as:
+ * as a "floating" reference. This means that it is not specifically
+ * claimed to be "owned" by any code portion. The main motivation for
+ * providing floating references is C convenience. In particular, it
+ * allows code to be written as:
  * |[<!-- language="C" --> 
  * container = create_container ();
  * container_add_child (container, create_child());
@@ -809,11 +809,11 @@ g_object_interface_find_property (gpointer      g_iface,
  * @name: the name of a property registered in a parent class or
  *  in an interface of this class.
  *
- * Registers @property_id as referring to a property with the
- * name @name in a parent class or in an interface implemented
- * by @oclass. This allows this class to <firstterm>override</firstterm>
- * a property implementation in a parent class or to provide
- * the implementation of a property from an interface.
+ * Registers @property_id as referring to a property with the name
+ * @name in a parent class or in an interface implemented by @oclass.
+ * This allows this class to "override" a property implementation in
+ * a parent class or to provide the implementation of a property from
+ * an interface.
  *
  * Internally, overriding is implemented by creating a property of type
  * #GParamSpecOverride; generally operations that query the properties of
@@ -2858,8 +2858,8 @@ toggle_refs_notify (GObject *object,
  * to the proxy object, but when there are other references held to
  * @object, a strong reference is held. The @notify callback is called
  * when the reference from @object to the proxy object should be
- * <firstterm>toggled</firstterm> from strong to weak (@is_last_ref
- * true) or weak to strong (@is_last_ref false).
+ * "toggled" from strong to weak (@is_last_ref true) or weak to strong
+ * (@is_last_ref false).
  *
  * Since a (normal) reference must be held to the object before
  * calling g_object_add_toggle_ref(), the initial state of the reverse

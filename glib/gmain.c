@@ -142,11 +142,11 @@
  * is that new types of event source can be created and used in
  * addition to the builtin type of event source. A new event source
  * type is used for handling GDK events. A new source type is created
- * by <firstterm>deriving</firstterm> from the #GSource structure.
- * The derived type of source is represented by a structure that has
- * the #GSource structure as a first element, and other elements specific
- * to the new source type. To create an instance of the new source type,
- * call g_source_new() passing in the size of the derived structure and
+ * by "deriving" from the #GSource structure. The derived type of
+ * source is represented by a structure that has the #GSource structure
+ * as a first element, and other elements specific to the new source
+ * type. To create an instance of the new source type, call
+ * g_source_new() passing in the size of the derived structure and
  * a table of functions. These #GSourceFuncs determine the behavior of
  * the new source type.
  *

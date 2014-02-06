@@ -36,12 +36,11 @@
  * linkend="glib-Type-Conversion-Macros">Type Conversion Macros</link>,
  * or simply pointers to any type of data.
  *
- * A #GSequence is accessed through <firstterm>iterators</firstterm>,
- * represented by a #GSequenceIter. An iterator represents a position
- * between two elements of the sequence. For example, the
- * <firstterm>begin</firstterm> iterator represents the gap immediately
- * before the first element of the sequence, and the
- * <firstterm>end</firstterm> iterator represents the gap immediately
+ * A #GSequence is accessed through "iterators", represented by a
+ * #GSequenceIter. An iterator represents a position between two
+ * elements of the sequence. For example, the "begin" iterator
+ * represents the gap immediately before the first element of the
+ * sequence, and the "end" iterator represents the gap immediately
  * after the last element. In an empty sequence, the begin and end
  * iterators are the same.
  *
@@ -54,7 +53,7 @@
  *
  * The function g_sequence_get() is used with an iterator to access the
  * element immediately following the gap that the iterator represents.
- * The iterator is said to <firstterm>point</firstterm> to that element.
+ * The iterator is said to "point" to that element.
  *
  * Iterators are stable across most operations on a #GSequence. For
  * example an iterator pointing to some element of a sequence will

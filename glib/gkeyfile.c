@@ -74,9 +74,8 @@
  * @short_description: parses .ini-like config files
  *
  * #GKeyFile lets you parse, edit or create files containing groups of
- * key-value pairs, which we call <firstterm>key files</firstterm> for
- * lack of a better name. Several freedesktop.org specifications use
- * key files now, e.g the
+ * key-value pairs, which we call "key files" for lack of a better name.
+ * Several freedesktop.org specifications use key files now, e.g the
  * [Desktop Entry Specification](http://freedesktop.org/Standards/desktop-entry-spec)
  * and the
  * [Icon Theme Specification](http://freedesktop.org/Standards/icon-theme-spec).

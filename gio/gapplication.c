@@ -55,24 +55,23 @@
  * this class outside of a higher level framework.
  *
  * GApplication provides convenient life cycle management by maintaining
- * a <firstterm>use count</firstterm> for the primary application instance.
- * The use count can be changed using g_application_hold() and
- * g_application_release(). If it drops to zero, the application exits.
- * Higher-level classes such as #GtkApplication employ the use count to
- * ensure that the application stays alive as long as it has any opened
- * windows.
+ * a "use count" for the primary application instance. The use count can
+ * be changed using g_application_hold() and g_application_release(). If
+ * it drops to zero, the application exits. Higher-level classes such as
+ * #GtkApplication employ the use count to ensure that the application
+ * stays alive as long as it has any opened windows.
  *
  * Another feature that GApplication (optionally) provides is process
- * uniqueness.  Applications can make use of this functionality by
- * providing a unique application ID.  If given, only one application
- * with this ID can be running at a time per session.  The session
+ * uniqueness. Applications can make use of this functionality by
+ * providing a unique application ID. If given, only one application
+ * with this ID can be running at a time per session. The session
  * concept is platform-dependent, but corresponds roughly to a graphical
- * desktop login.  When your application is launched again, its
+ * desktop login. When your application is launched again, its
  * arguments are passed through platform communication to the already
- * running program.  The already running instance of the program is
- * called the <firstterm>primary instance</firstterm>; for non-unique
- * applications this is the always the current instance.
- * On Linux, the D-Bus session bus is used for communication.
+ * running program. The already running instance of the program is
+ * called the "primary instance"; for non-unique applications this is
+ * the always the current instance. On Linux, the D-Bus session bus
+ * is used for communication.
  *
  * The use of #GApplication differs from some other commonly-used
  * uniqueness libraries (such as libunique) in important ways. The
@@ -128,14 +127,14 @@
  * The #GApplication::startup signal lets you handle the application
  * initialization for all of these in a single place.
  *
- * Regardless of which of these entry points is used to start the application,
- * GApplication passes some <firstterm id="platform-data">platform
- * data</firstterm> from the launching instance to the primary instance,
- * in the form of a #GVariant dictionary mapping strings to variants.
- * To use platform data, override the @before_emit or @after_emit virtual
- * functions in your #GApplication subclass. When dealing with
- * #GApplicationCommandLine objects, the platform data is directly
- * available via g_application_command_line_get_cwd(),
+ * Regardless of which of these entry points is used to start the
+ * application, GApplication passes some "platform data from the
+ * launching instance to the primary instance, in the form of a
+ * #GVariant dictionary mapping strings to variants. To use platform
+ * data, override the @before_emit or @after_emit virtual functions
+ * in your #GApplication subclass. When dealing with
+ * #GApplicationCommandLine objects, the platform data is
+ * directly available via g_application_command_line_get_cwd(),
  * g_application_command_line_get_environ() and
  * g_application_command_line_get_platform_data().
  *

@@ -601,13 +601,13 @@ g_closure_unref (GClosure *closure)
  *           still being held
  *
  * Takes over the initial ownership of a closure.  Each closure is
- * initially created in a <firstterm>floating</firstterm> state, which
- * means that the initial reference count is not owned by any caller.
- * g_closure_sink() checks to see if the object is still floating, and
- * if so, unsets the floating state and decreases the reference
- * count. If the closure is not floating, g_closure_sink() does
- * nothing. The reason for the existence of the floating state is to
- * prevent cumbersome code sequences like:
+ * initially created in a "floating" state, which means that the initial
+ * reference count is not owned by any caller. g_closure_sink() checks
+ * to see if the object is still floating, and if so, unsets the
+ * floating state and decreases the reference count. If the closure
+ * is not floating, g_closure_sink() does nothing. The reason for the
+ * existence of the floating state is to prevent cumbersome code
+ * sequences like:
  * |[<!-- language="C" --> 
  * closure = g_cclosure_new (cb_func, cb_data);
  * g_source_set_closure (source, closure);

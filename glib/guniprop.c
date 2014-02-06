@@ -1234,10 +1234,10 @@ g_utf8_casefold (const gchar *str,
  * @ch: a Unicode character
  * @mirrored_ch: location to store the mirrored character
  * 
- * In Unicode, some characters are <firstterm>mirrored</firstterm>. This
- * means that their images are mirrored horizontally in text that is laid
- * out from right to left. For instance, "(" would become its mirror image,
- * ")", in right-to-left text.
+ * In Unicode, some characters are "mirrored". This means that their
+ * images are mirrored horizontally in text that is laid out from right
+ * to left. For instance, "(" would become its mirror image, ")", in
+ * right-to-left text.
  *
  * If @ch has the Unicode mirrored property and there is another unicode
  * character that typically has a glyph that is the mirror image of @ch's
