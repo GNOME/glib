@@ -1,7 +1,7 @@
 # Thai translation of glib.
-# Copyright (C) 2005-2013 Free Software Foundation, Inc.
+# Copyright (C) 2005-2014 Free Software Foundation, Inc.
 # This file is distributed under the same license as the glib package.
-# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005-2010, 2013.
+# Theppitak Karoonboonyanan <thep@linux.thai.net>, 2005-2010, 2013-2014.
 #
 #
 msgid ""
@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: glib 2.35.9\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-08 09:14+0000\n"
-"PO-Revision-Date: 2013-08-14 17:06+0700\n"
+"POT-Creation-Date: 2014-02-05 09:50+0000\n"
+"PO-Revision-Date: 2014-02-06 10:16+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
@@ -19,158 +19,378 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../gio/gbufferedinputstream.c:424 ../gio/gbufferedinputstream.c:503
-#: ../gio/ginputstream.c:174 ../gio/ginputstream.c:366
-#: ../gio/ginputstream.c:604 ../gio/ginputstream.c:822
-#: ../gio/goutputstream.c:192 ../gio/goutputstream.c:721
-#: ../gio/gpollableinputstream.c:207 ../gio/gpollableoutputstream.c:208
+#: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
+#: ../gio/gresource-tool.c:473 ../gio/gsettings-tool.c:508
+msgid "Print help"
+msgstr "แสดงวิธีใช้"
+
+#: ../gio/gapplication-tool.c:47 ../gio/gresource-tool.c:474
+#: ../gio/gresource-tool.c:542
+msgid "[COMMAND]"
+msgstr "[คำสั่ง]"
+
+#: ../gio/gapplication-tool.c:49
+msgid "Print version"
+msgstr "แสดงรุ่น"
+
+#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:514
+msgid "Print version information and exit"
+msgstr "แสดงรุ่นของโปรแกรมแล้วจบการทำงาน"
+
+#: ../gio/gapplication-tool.c:52
+msgid "List applications"
+msgstr "แสดงรายชื่อโปรแกรม"
+
+#: ../gio/gapplication-tool.c:53
+msgid "List the installed D-Bus activatable applications (by .desktop files)"
+msgstr "แสดงรายชื่อของโปรแกรมที่สามารถเรียกผ่าน D-Bus (โดยใช้แฟ้ม .desktop) ที่ติดตั้งไว้"
+
+#: ../gio/gapplication-tool.c:55
+msgid "Launch an application"
+msgstr "เรียกโปรแกรมทำงาน"
+
+#: ../gio/gapplication-tool.c:56
+msgid "Launch the application (with optional files to open)"
+msgstr "เรียกโปรแกรมทำงาน (โดยอาจระบุแฟ้มที่จะเปิดด้วยก็ได้)"
+
+#: ../gio/gapplication-tool.c:57
+msgid "APPID [FILE...]"
+msgstr "APPID [แฟ้ม...]"
+
+#: ../gio/gapplication-tool.c:59
+msgid "Activate an action"
+msgstr "เรียกการกระทำ"
+
+#: ../gio/gapplication-tool.c:60
+msgid "Invoke an action on the application"
+msgstr "เรียกการกระทำกับตัวโปรแกรม"
+
+#: ../gio/gapplication-tool.c:61
+msgid "APPID ACTION [PARAMETER]"
+msgstr "APPID การกระทำ [พารามิเตอร์]"
+
+#: ../gio/gapplication-tool.c:63
+msgid "List available actions"
+msgstr "แสดงรายชื่อการกระทำที่ใช้ได้"
+
+#: ../gio/gapplication-tool.c:64
+msgid "List static actions for an application (from .desktop file)"
+msgstr "แสดงรายชื่อการกระทำที่ตายตัวสำหรับโปรแกรมหนึ่งๆ (จากแฟ้ม .desktop)"
+
+#: ../gio/gapplication-tool.c:65 ../gio/gapplication-tool.c:71
+msgid "APPID"
+msgstr "APPID"
+
+#: ../gio/gapplication-tool.c:70 ../gio/gapplication-tool.c:133
+#: ../gio/gdbus-tool.c:90
+msgid "COMMAND"
+msgstr "คำสั่ง"
+
+#: ../gio/gapplication-tool.c:70
+msgid "The command to print detailed help for"
+msgstr "คำสั่งที่ต้องการแสดงรายละเอียดวิธีใช้"
+
+#: ../gio/gapplication-tool.c:71
+msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
+msgstr "ชื่อประจำตัวของโปรแกรมในรูปแบบของ D-Bus (เช่น: org.example.viewer)"
+
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:589
+#: ../gio/glib-compile-resources.c:620 ../gio/gresource-tool.c:480
+#: ../gio/gresource-tool.c:546
+msgid "FILE"
+msgstr "แฟ้ม"
+
+#: ../gio/gapplication-tool.c:72
+msgid "Optional relative or relative filenames, or URIs to open"
+msgstr "ชื่อแฟ้มแบบสัมพัทธ์หรือพาธเต็ม หรือ URI ที่จะเปิด (มีหรือไม่ก็ได้)"
+
+#: ../gio/gapplication-tool.c:73
+msgid "ACTION"
+msgstr "การกระทำ"
+
+#: ../gio/gapplication-tool.c:73
+msgid "The action name to invoke"
+msgstr "การกระทำที่จะเรียก"
+
+#: ../gio/gapplication-tool.c:74
+msgid "PARAMETER"
+msgstr "พารามิเตอร์"
+
+#: ../gio/gapplication-tool.c:74
+msgid "Optional parameter to the action invocation, in GVariant format"
+msgstr "พารามิเตอร์ของการเรียกการกระทำ ในรูปแบบ GVariant (มีหรือไม่ก็ได้)"
+
+#: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:511
+#: ../gio/gsettings-tool.c:594
+#, c-format
+msgid ""
+"Unknown command %s\n"
+"\n"
+msgstr ""
+"ไม่รู้จักคำสั่ง %s\n"
+"\n"
+
+#: ../gio/gapplication-tool.c:101
+msgid "Usage:\n"
+msgstr "วิธีใช้:\n"
+
+#: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:536
+#: ../gio/gsettings-tool.c:628
+msgid "Arguments:\n"
+msgstr "อาร์กิวเมนต์:\n"
+
+#: ../gio/gapplication-tool.c:133
+msgid "[ARGS...]"
+msgstr "[ARGS...]"
+
+#: ../gio/gapplication-tool.c:134
+#, c-format
+msgid "Commands:\n"
+msgstr "คำสั่ง:\n"
+
+#. Translators: do not translate 'help', but please translate 'COMMAND'.
+#: ../gio/gapplication-tool.c:146
+#, c-format
+msgid ""
+"Use '%s help COMMAND' to get detailed help.\n"
+"\n"
+msgstr ""
+"สั่ง '%s help COMMAND' เพื่อดูรายละเอียดวิธีใช้\n"
+"\n"
+
+#: ../gio/gapplication-tool.c:165
+#, c-format
+msgid ""
+"%s command requires an application id to directly follow\n"
+"\n"
+msgstr ""
+"คำสั่ง %s ต้องตามด้วยชื่อประจำตัวของโปรแกรมทันที\n"
+"\n"
+
+#: ../gio/gapplication-tool.c:171
+#, c-format
+msgid "invalid application id: '%s'\n"
+msgstr "ชื่อประจำตัวของโปรแกรมไม่ถูกต้อง: '%s'\n"
+
+#. Translators: %s is replaced with a command name like 'list-actions'
+#: ../gio/gapplication-tool.c:182
+#, c-format
+msgid ""
+"'%s' takes no arguments\n"
+"\n"
+msgstr ""
+"'%s' ไม่ต้องการอาร์กิวเมนต์\n"
+"\n"
+
+#: ../gio/gapplication-tool.c:262
+#, c-format
+msgid "unable to connect to D-Bus: %s\n"
+msgstr "ไม่สามารถเชื่อมต่อกับ D-Bus: %s\n"
+
+#: ../gio/gapplication-tool.c:282
+#, c-format
+msgid "error sending %s message to application: %s\n"
+msgstr "เกิดข้อผิดพลาดขณะส่งข้อความ %s ไปยังโปรแกรม: %s\n"
+
+#: ../gio/gapplication-tool.c:313
+#, c-format
+msgid "action name must be given after application id\n"
+msgstr "ต้องมีชื่อการกระทำตามหลังชื่อประจำตัวของโปรแกรม\n"
+
+#: ../gio/gapplication-tool.c:321
+#, c-format
+msgid ""
+"invalid action name: '%s'\n"
+"action names must consist of only alphanumerics, '-' and '.'\n"
+msgstr ""
+"ชื่อการกระทำไม่ถูกต้อง: '%s'\n"
+"ชื่อการกระทำต้องประกอบด้วยตัวอักษร, ตัวเลข, '-' และ '.' เท่านั้น\n"
+
+#: ../gio/gapplication-tool.c:340
+#, c-format
+msgid "error parsing action parameter: %s\n"
+msgstr "เกิดข้อผิดพลาดขณะแจงพารามิเตอร์ของการกระทำ: %s\n"
+
+#: ../gio/gapplication-tool.c:352
+#, c-format
+msgid "actions accept a maximum of one parameter\n"
+msgstr "การกระทำรับพารามิเตอร์ไม่เกินหนึ่งตัว\n"
+
+#: ../gio/gapplication-tool.c:407
+#, c-format
+msgid "list-actions command takes only the application id"
+msgstr "คำสั่ง list-actions รับเพียงชื่อประจำตัวของโปรแกรมเท่านั้น"
+
+#: ../gio/gapplication-tool.c:417
+#, c-format
+msgid "unable to find desktop file for application %s\n"
+msgstr "หาแฟ้มเดสก์ท็อปสำหรับโปรแกรม %s ไม่พบ\n"
+
+#: ../gio/gapplication-tool.c:462
+#, c-format
+msgid ""
+"unrecognised command: %s\n"
+"\n"
+msgstr ""
+"พบคำสั่งที่ไม่รู้จัก: %s\n"
+"\n"
+
+#: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:499
+#: ../gio/ginputstream.c:173 ../gio/ginputstream.c:365
+#: ../gio/ginputstream.c:603 ../gio/ginputstream.c:821
+#: ../gio/goutputstream.c:200 ../gio/goutputstream.c:823
+#: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "มีการส่งค่า count ที่สูงเกินไปมาให้ %s"
 
-#: ../gio/gbufferedinputstream.c:896 ../gio/gbufferedoutputstream.c:577
-#: ../gio/gdataoutputstream.c:564
+#: ../gio/gbufferedinputstream.c:892 ../gio/gbufferedoutputstream.c:575
+#: ../gio/gdataoutputstream.c:562
 msgid "Seek not supported on base stream"
 msgstr "สตรีมฐานไม่รองรับการเลื่อนตำแหน่งอ่านเขียน"
 
-#: ../gio/gbufferedinputstream.c:942
+#: ../gio/gbufferedinputstream.c:938
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "ไม่สามารถตัดท้าย GBufferedInputStream ทิ้ง"
 
-#: ../gio/gbufferedinputstream.c:987 ../gio/ginputstream.c:1012
-#: ../gio/giostream.c:280 ../gio/goutputstream.c:1323
+#: ../gio/gbufferedinputstream.c:983 ../gio/ginputstream.c:1011
+#: ../gio/giostream.c:278 ../gio/goutputstream.c:1464
 msgid "Stream is already closed"
 msgstr "สตรีมถูกปิดไปแล้ว"
 
-#: ../gio/gbufferedoutputstream.c:614 ../gio/gdataoutputstream.c:594
+#: ../gio/gbufferedoutputstream.c:612 ../gio/gdataoutputstream.c:592
 msgid "Truncate not supported on base stream"
 msgstr "สตรีมฐานไม่รองรับการตัดท้ายทิ้ง"
 
-#: ../gio/gcancellable.c:314 ../gio/gdbusconnection.c:1897
-#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
-#: ../gio/glocalfile.c:2177 ../gio/gsimpleasyncresult.c:843
-#: ../gio/gsimpleasyncresult.c:869
+#: ../gio/gcancellable.c:312 ../gio/gdbusconnection.c:1882
+#: ../gio/gdbusconnection.c:1974 ../gio/gdbusprivate.c:1416
+#: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:832
+#: ../gio/gsimpleasyncresult.c:858
 #, c-format
 msgid "Operation was cancelled"
 msgstr "การกระทำถูกยกเลิก"
 
-#: ../gio/gcharsetconverter.c:262
+#: ../gio/gcharsetconverter.c:260
 msgid "Invalid object, not initialized"
 msgstr "อ็อบเจกต์ผิดพลาด ยังไม่ได้ตั้งค่าเริ่มต้น"
 
-#: ../gio/gcharsetconverter.c:283 ../gio/gcharsetconverter.c:311
+#: ../gio/gcharsetconverter.c:281 ../gio/gcharsetconverter.c:309
 msgid "Incomplete multibyte sequence in input"
 msgstr "มีลำดับไบต์ที่ไม่สมบูรณ์ในข้อมูลเข้า"
 
-#: ../gio/gcharsetconverter.c:317 ../gio/gcharsetconverter.c:326
+#: ../gio/gcharsetconverter.c:315 ../gio/gcharsetconverter.c:324
 msgid "Not enough space in destination"
 msgstr "มีที่ว่างไม่พอที่ปลายทาง"
 
-#: ../gio/gcharsetconverter.c:344 ../gio/gdatainputstream.c:849
-#: ../gio/gdatainputstream.c:1259 ../glib/gconvert.c:467
-#: ../glib/gconvert.c:859 ../glib/giochannel.c:1586 ../glib/giochannel.c:1628
-#: ../glib/giochannel.c:2472 ../glib/gutf8.c:833 ../glib/gutf8.c:1284
+#: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:847
+#: ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:441
+#: ../glib/gconvert.c:845 ../glib/giochannel.c:1558 ../glib/giochannel.c:1600
+#: ../glib/giochannel.c:2444 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
 msgid "Invalid byte sequence in conversion input"
 msgstr "มีลำดับไบต์ที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
 
-#: ../gio/gcharsetconverter.c:349 ../glib/gconvert.c:475
-#: ../glib/gconvert.c:784 ../glib/giochannel.c:1593 ../glib/giochannel.c:2484
+#: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:449
+#: ../glib/gconvert.c:770 ../glib/giochannel.c:1565 ../glib/giochannel.c:2456
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "เกิดข้อผิดพลาดระหว่างแปลงรหัส: %s"
 
-#: ../gio/gcharsetconverter.c:446 ../gio/gsocket.c:990
+#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:992
 msgid "Cancellable initialization not supported"
 msgstr "ไม่รองรับการตั้งค่าเริ่มต้นแบบยกเลิกได้"
 
-#: ../gio/gcharsetconverter.c:457 ../glib/gconvert.c:347
-#: ../glib/giochannel.c:1414
+#: ../gio/gcharsetconverter.c:454 ../glib/gconvert.c:324
+#: ../glib/giochannel.c:1386
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "ไม่รองรับการแปลงรหัสอักขระจาก '%s' ไปเป็น '%s'"
 
-#: ../gio/gcharsetconverter.c:461 ../glib/gconvert.c:351
+#: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:328
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "ไม่สามารถเปิดตัวแปลงรหัสอักขระจาก '%s' ไปเป็น '%s' ได้"
 
-#: ../gio/gcontenttype.c:335
+#: ../gio/gcontenttype.c:333
 #, c-format
 msgid "%s type"
 msgstr "ชนิด %s"
 
-#: ../gio/gcontenttype-win32.c:162
+#: ../gio/gcontenttype-win32.c:160
 msgid "Unknown type"
 msgstr "ชนิดข้อมูลไม่รู้จัก"
 
-#: ../gio/gcontenttype-win32.c:163
+#: ../gio/gcontenttype-win32.c:161
 #, c-format
 msgid "%s filetype"
 msgstr "ชนิดแฟ้ม %s"
 
-#: ../gio/gcredentials.c:264 ../gio/gcredentials.c:528
+#: ../gio/gcredentials.c:291 ../gio/gcredentials.c:542
 msgid "GCredentials is not implemented on this OS"
 msgstr "ยังไม่รองรับ GCredentials ในระบบปฏิบัติการนี้"
 
-#: ../gio/gcredentials.c:438
+#: ../gio/gcredentials.c:443
 msgid "There is no GCredentials support for your platform"
 msgstr "ไม่รองรับ GCredentials สำหรับแพลตฟอร์มของคุณ"
 
-#: ../gio/gcredentials.c:480
+#: ../gio/gcredentials.c:487
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials ไม่มีข้อมูล ID ของโพรเซสในระบบปฏิบัติการนี้"
 
-#: ../gio/gdatainputstream.c:306
+#: ../gio/gcredentials.c:536
+msgid "Credentials spoofing is not possible on this OS"
+msgstr "ไม่สามารถปลอมแปลงข้อมูลลับในระบบปฏิบัติการนี้ได้"
+
+#: ../gio/gdatainputstream.c:304
 msgid "Unexpected early end-of-stream"
 msgstr "พบจุดจบสตรีมก่อนกำหนด"
 
-#: ../gio/gdbusaddress.c:150 ../gio/gdbusaddress.c:238
-#: ../gio/gdbusaddress.c:319
+#: ../gio/gdbusaddress.c:148 ../gio/gdbusaddress.c:236
+#: ../gio/gdbusaddress.c:317
 #, c-format
 msgid "Unsupported key '%s' in address entry '%s'"
 msgstr "ไม่รองรับคีย์ '%s' ในรายการที่อยู่ '%s'"
 
-#: ../gio/gdbusaddress.c:177
+#: ../gio/gdbusaddress.c:175
 #, c-format
 msgid ""
 "Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr "ที่อยู่ '%s' ใช้การไม่ได้ (ต้องมีคีย์ path, tmpdir หรือ abstract ดัวใดตัวหนึ่ง)"
 
-#: ../gio/gdbusaddress.c:190
+#: ../gio/gdbusaddress.c:188
 #, c-format
 msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr "คู่คีย์/ค่าไม่มีความหมายในรายการที่อยู่ '%s'"
 
-#: ../gio/gdbusaddress.c:253 ../gio/gdbusaddress.c:334
+#: ../gio/gdbusaddress.c:251 ../gio/gdbusaddress.c:332
 #, c-format
 msgid "Error in address '%s' - the port attribute is malformed"
 msgstr "พบข้อผิดพลาดในที่อยู่ '%s' - ค่าพอร์ตผิดรูปแบบ"
 
-#: ../gio/gdbusaddress.c:264 ../gio/gdbusaddress.c:345
+#: ../gio/gdbusaddress.c:262 ../gio/gdbusaddress.c:343
 #, c-format
 msgid "Error in address '%s' - the family attribute is malformed"
 msgstr "พบข้อผิดพลาดในที่อยู่ '%s' - ค่า family ผิดรูปแบบ"
 
-#: ../gio/gdbusaddress.c:454
+#: ../gio/gdbusaddress.c:452
 #, c-format
 msgid "Address element '%s' does not contain a colon (:)"
 msgstr "อิลิเมนต์ที่อยู่ '%s' ไม่มีทวิภาค (:)"
 
-#: ../gio/gdbusaddress.c:475
+#: ../gio/gdbusaddress.c:473
 #, c-format
 msgid ""
 "Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
 "sign"
 msgstr "คู่คีย์/ค่าที่ %d ('%s') ในอิลิเมนต์ที่อยู่ '%s' ไม่มีเครื่องหมายเท่ากับ"
 
-#: ../gio/gdbusaddress.c:489
+#: ../gio/gdbusaddress.c:487
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, '%s', in address element "
 "'%s'"
 msgstr "เกิดข้อผิดพลาดขณะถอดรหัสหลีกของคีย์หรือค่าในคู่คีย์/ค่าที่ %d ('%s') ในอิลิเมนต์ที่อยู่ '%s'"
 
-#: ../gio/gdbusaddress.c:567
+#: ../gio/gdbusaddress.c:565
 #, c-format
 msgid ""
 "Error in address '%s' - the unix transport requires exactly one of the keys "
@@ -179,84 +399,84 @@ msgstr ""
 "พบข้อผิดพลาดในที่อยู่ '%s' - ช่องขนส่งของยูนิกซ์ต้องมีการกำหนดคีย์ 'path' หรือ 'abstract' "
 "ตัวใดตัวหนึ่ง"
 
-#: ../gio/gdbusaddress.c:603
+#: ../gio/gdbusaddress.c:601
 #, c-format
 msgid "Error in address '%s' - the host attribute is missing or malformed"
 msgstr "พบข้อผิดพลาดในที่อยู่ '%s' - ค่า host ขาดหายไปหรือผิดรูปแบบ"
 
-#: ../gio/gdbusaddress.c:617
+#: ../gio/gdbusaddress.c:615
 #, c-format
 msgid "Error in address '%s' - the port attribute is missing or malformed"
 msgstr "พบข้อผิดพลาดในที่อยู่ '%s' - ค่า port ขาดหายไปหรือผิดรูปแบบ"
 
-#: ../gio/gdbusaddress.c:631
+#: ../gio/gdbusaddress.c:629
 #, c-format
 msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
 msgstr "พบข้อผิดพลาดในที่อยู่ '%s' - ค่า noncefile ขาดหายไปหรือผิดรูปแบบ"
 
-#: ../gio/gdbusaddress.c:652
+#: ../gio/gdbusaddress.c:650
 msgid "Error auto-launching: "
 msgstr "เกิดข้อผิดพลาดขณะเรียกทำงานอัตโนมัติ: "
 
-#: ../gio/gdbusaddress.c:660
+#: ../gio/gdbusaddress.c:658
 #, c-format
 msgid "Unknown or unsupported transport '%s' for address '%s'"
 msgstr "ไม่รู้จักหรือไม่รองรับการขนส่ง '%s' สำหรับที่อยู่ '%s'"
 
-#: ../gio/gdbusaddress.c:696
+#: ../gio/gdbusaddress.c:694
 #, c-format
 msgid "Error opening nonce file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้มเฉพาะกาล '%s': %s"
 
-#: ../gio/gdbusaddress.c:714
+#: ../gio/gdbusaddress.c:712
 #, c-format
 msgid "Error reading from nonce file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้มเฉพาะกาล '%s': %s"
 
-#: ../gio/gdbusaddress.c:723
+#: ../gio/gdbusaddress.c:721
 #, c-format
 msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้มเฉพาะกาล '%s' ต้องการ 16 ไบต์แต่ได้รับ %d ไบต์"
 
-#: ../gio/gdbusaddress.c:741
+#: ../gio/gdbusaddress.c:739
 #, c-format
 msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr "เกิดข้อผิดพลาดขณะเขียนข้อมูลของแฟ้มเฉพาะกาล '%s' ลงในสตรีม:"
 
-#: ../gio/gdbusaddress.c:960
+#: ../gio/gdbusaddress.c:958
 msgid "The given address is empty"
 msgstr "ที่อยู่ที่กำหนดว่างเปล่า"
 
-#: ../gio/gdbusaddress.c:1030
+#: ../gio/gdbusaddress.c:1028
 #, c-format
 msgid "Cannot spawn a message bus when setuid"
 msgstr "ไม่สามารถสร้างโพรเซสสำหรับบัสข้อความในขณะที่มีการ setuid"
 
-#: ../gio/gdbusaddress.c:1037
+#: ../gio/gdbusaddress.c:1035
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "ไม่สามารถสร้างโพรเซสสำหรับบัสข้อความโดยไม่มี ID ของเครื่อง: "
 
-#: ../gio/gdbusaddress.c:1079
+#: ../gio/gdbusaddress.c:1077
 #, c-format
 msgid "Error spawning command line '%s': "
 msgstr "เกิดข้อผิดพลาดขณะสร้างโพรเซสสำหรับบรรทัดคำสั่ง '%s': "
 
-#: ../gio/gdbusaddress.c:1296
+#: ../gio/gdbusaddress.c:1294
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(กดปุ่มใดๆ เพื่อปิดหน้าต่างนี้)\n"
 
-#: ../gio/gdbusaddress.c:1421
+#: ../gio/gdbusaddress.c:1425
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "dbus ของวาระไม่ได้ทำงานอยู่ และการเรียกทำงานอัตโนมัติก็ล้มเหลว"
 
-#: ../gio/gdbusaddress.c:1442
+#: ../gio/gdbusaddress.c:1446
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "ไม่สามารถกำหนดที่อยู่ของบัสของวาระได้ (ยังไม่รองรับสำหรับระบบปฏิบัติการนี้)"
 
-#: ../gio/gdbusaddress.c:1541 ../gio/gdbusconnection.c:6908
+#: ../gio/gdbusaddress.c:1546 ../gio/gdbusconnection.c:6905
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -265,7 +485,7 @@ msgstr ""
 "ไม่สามารถกำหนดที่อยู่ของบัสจากตัวแปรภาวะแวดล้อม DBUS_STARTER_BUS_TYPE ได้ - ไม่รู้จักค่า "
 "'%s'"
 
-#: ../gio/gdbusaddress.c:1550 ../gio/gdbusconnection.c:6917
+#: ../gio/gdbusaddress.c:1555 ../gio/gdbusconnection.c:6914
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -273,230 +493,230 @@ msgstr ""
 "ไม่สามารถกำหนดที่อยู่ของบัสเนื่องจากไม่มีการกำหนดตัวแปรภาวะแวดล้อม DBUS_STARTER_BUS_TYPE "
 "ไว้"
 
-#: ../gio/gdbusaddress.c:1560
+#: ../gio/gdbusaddress.c:1565
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "ไม่รู้จักชนิดบัส %d"
 
-#: ../gio/gdbusauth.c:295
+#: ../gio/gdbusauth.c:293
 msgid "Unexpected lack of content trying to read a line"
 msgstr "ไม่มีเนื้อหาให้อ่านขณะพยายามอ่านหนึ่งบรรทัด"
 
-#: ../gio/gdbusauth.c:339
+#: ../gio/gdbusauth.c:337
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "ไม่มีเนื้อหาให้อ่านขณะพยายามอ่านหนึ่งบรรทัด (อย่างปลอดภัย)"
 
-#: ../gio/gdbusauth.c:510
+#: ../gio/gdbusauth.c:508
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr "ได้ลองกลไกการยืนยันตัวบุคคลที่มีทั้งหมดแล้ว (ที่ลอง: %s) (ที่มี: %s)"
 
-#: ../gio/gdbusauth.c:1172
+#: ../gio/gdbusauth.c:1170
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "ถูกยกเลิกผ่าน GDBusAuthObserver::authorize-authenticated-peer"
 
-#: ../gio/gdbusauthmechanismsha1.c:262
+#: ../gio/gdbusauthmechanismsha1.c:261
 #, c-format
 msgid "Error when getting information for directory '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลของไดเรกทอรี '%s': %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:274
+#: ../gio/gdbusauthmechanismsha1.c:273
 #, c-format
 msgid ""
 "Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr "การกำหนดสิทธิ์ของไดเรกทอรี '%s' ผิดรูปแบบ ต้องการ 0700 แต่พบ 0%o"
 
-#: ../gio/gdbusauthmechanismsha1.c:295
+#: ../gio/gdbusauthmechanismsha1.c:294
 #, c-format
 msgid "Error creating directory '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้างไดเรกทอรี '%s': %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:378
+#: ../gio/gdbusauthmechanismsha1.c:377
 #, c-format
 msgid "Error opening keyring '%s' for reading: "
 msgstr "เกิดข้อผิดพลาดขณะเปิดพวงกุญแจ '%s' เพื่ออ่าน: "
 
-#: ../gio/gdbusauthmechanismsha1.c:402 ../gio/gdbusauthmechanismsha1.c:715
+#: ../gio/gdbusauthmechanismsha1.c:401 ../gio/gdbusauthmechanismsha1.c:714
 #, c-format
 msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "บรรทัด %d ของพวงกุญแจที่ '%s' ซึ่งมีเนื้อหา '%s' ผิดรูปแบบ"
 
-#: ../gio/gdbusauthmechanismsha1.c:416 ../gio/gdbusauthmechanismsha1.c:729
+#: ../gio/gdbusauthmechanismsha1.c:415 ../gio/gdbusauthmechanismsha1.c:728
 #, c-format
 msgid ""
 "First token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "โทเคนแรกของบรรทัด %d ของพวงกุญแจที่ '%s' ซึ่งมีเนื้อหา '%s' ผิดรูปแบบ"
 
-#: ../gio/gdbusauthmechanismsha1.c:431 ../gio/gdbusauthmechanismsha1.c:743
+#: ../gio/gdbusauthmechanismsha1.c:430 ../gio/gdbusauthmechanismsha1.c:742
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at '%s' with content '%s' is malformed"
 msgstr "โทเคนที่สองของบรรทัด %d ของพวงกุญแจที่ '%s' ซึ่งมีเนื้อหา '%s' ผิดรูปแบบ"
 
-#: ../gio/gdbusauthmechanismsha1.c:455
+#: ../gio/gdbusauthmechanismsha1.c:454
 #, c-format
 msgid "Didn't find cookie with id %d in the keyring at '%s'"
 msgstr "ไม่พบคุกกี้ที่มี ID %d ในพวงกุญแจที่ '%s'"
 
-#: ../gio/gdbusauthmechanismsha1.c:533
+#: ../gio/gdbusauthmechanismsha1.c:532
 #, c-format
 msgid "Error deleting stale lock file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มล็อค '%s' ที่ตาย: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:565
+#: ../gio/gdbusauthmechanismsha1.c:564
 #, c-format
 msgid "Error creating lock file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้างแฟ้มล็อค '%s': %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:595
+#: ../gio/gdbusauthmechanismsha1.c:594
 #, c-format
 msgid "Error closing (unlinked) lock file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะปิดแฟ้มล็อค '%s': %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:605
+#: ../gio/gdbusauthmechanismsha1.c:604
 #, c-format
 msgid "Error unlinking lock file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มล็อค '%s': %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:682
+#: ../gio/gdbusauthmechanismsha1.c:681
 #, c-format
 msgid "Error opening keyring '%s' for writing: "
 msgstr "เกิดข้อผิดพลาดขณะเปิดพวงกุญแจ '%s' เพื่ออ่าน: "
 
-#: ../gio/gdbusauthmechanismsha1.c:879
+#: ../gio/gdbusauthmechanismsha1.c:878
 #, c-format
 msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(นอกจากนี้ การปลดแฟ้มล็อคสำหรับ '%s' ก็ล้มเหลว: %s)"
 
-#: ../gio/gdbusconnection.c:609 ../gio/gdbusconnection.c:2452
+#: ../gio/gdbusconnection.c:599 ../gio/gdbusconnection.c:2439
 msgid "The connection is closed"
 msgstr "การเชื่อมต่อถูกปิดไปแล้ว"
 
-#: ../gio/gdbusconnection.c:1942
+#: ../gio/gdbusconnection.c:1927
 msgid "Timeout was reached"
 msgstr "หมดเวลาคอย"
 
-#: ../gio/gdbusconnection.c:2574
+#: ../gio/gdbusconnection.c:2561
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "พบแฟล็กที่ไม่รองรับขณะสร้างการเชื่อมต่อฝั่งลูกข่าย"
 
-#: ../gio/gdbusconnection.c:4146 ../gio/gdbusconnection.c:4489
+#: ../gio/gdbusconnection.c:4141 ../gio/gdbusconnection.c:4484
 #, c-format
 msgid ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "ไม่มีอินเทอร์เฟซ 'org.freedesktop.DBus.Properties' ในออบเจ็กต์ที่พาธ %s"
 
-#: ../gio/gdbusconnection.c:4288
+#: ../gio/gdbusconnection.c:4283
 #, c-format
 msgid "No such property '%s'"
 msgstr "ไม่มีคุณสมบัติ '%s'"
 
-#: ../gio/gdbusconnection.c:4300
+#: ../gio/gdbusconnection.c:4295
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "คุณสมบัติ '%s' ไม่สามารถอ่านได้"
 
-#: ../gio/gdbusconnection.c:4311
+#: ../gio/gdbusconnection.c:4306
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "คุณสมบัติ '%s' ไม่สามารถเขียนได้"
 
-#: ../gio/gdbusconnection.c:4331
+#: ../gio/gdbusconnection.c:4326
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดคุณสมบัติ '%s': ต้องการชนิด '%s' แต่ได้รับ '%s'"
 
-#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6351
+#: ../gio/gdbusconnection.c:4427 ../gio/gdbusconnection.c:6347
 #, c-format
 msgid "No such interface '%s'"
 msgstr "ไม่มีอินเทอร์เฟซ '%s'"
 
-#: ../gio/gdbusconnection.c:4639
+#: ../gio/gdbusconnection.c:4634
 msgid "No such interface"
 msgstr "ไม่มีอินเทอร์เฟซที่ว่า"
 
-#: ../gio/gdbusconnection.c:4857 ../gio/gdbusconnection.c:6857
+#: ../gio/gdbusconnection.c:4852 ../gio/gdbusconnection.c:6854
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "ไม่มีอินเทอร์เฟซ '%s' ในออบเจ็กต์ที่พาธ %s"
 
-#: ../gio/gdbusconnection.c:4954
+#: ../gio/gdbusconnection.c:4949
 #, c-format
 msgid "No such method '%s'"
 msgstr "ไม่มีเมธอด '%s'"
 
-#: ../gio/gdbusconnection.c:4985
+#: ../gio/gdbusconnection.c:4980
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "ชนิดของข้อความ '%s' ไม่ตรงกับชนิด '%s' ที่ต้องการ"
 
-#: ../gio/gdbusconnection.c:5183
+#: ../gio/gdbusconnection.c:5177
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "มีออบเจ็กต์ที่ส่งออกไปแล้วสำหรับอินเทอร์เฟซ %s ที่ %s"
 
-#: ../gio/gdbusconnection.c:5381
+#: ../gio/gdbusconnection.c:5376
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "เมธอด '%s' คืนค่าชนิด '%s' แต่ควรเป็น '%s'"
 
-#: ../gio/gdbusconnection.c:6462
+#: ../gio/gdbusconnection.c:6458
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "ไม่มีเมธอด '%s' ในอินเทอร์เฟซ '%s' ซึ่งมีลายเซ็น '%s'"
 
-#: ../gio/gdbusconnection.c:6581
+#: ../gio/gdbusconnection.c:6577
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "มีต้นไม้ย่อยที่ส่งออกไปแล้วสำหรับ %s"
 
-#: ../gio/gdbusmessage.c:1271
+#: ../gio/gdbusmessage.c:1269
 msgid "type is INVALID"
 msgstr "ชนิดเป็น INVALID"
 
-#: ../gio/gdbusmessage.c:1282
+#: ../gio/gdbusmessage.c:1280
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "ข้อความ METHOD_CALL: ข้อมูลส่วนหัว PATH หรือ MEMBER ขาดหายไป"
 
-#: ../gio/gdbusmessage.c:1293
+#: ../gio/gdbusmessage.c:1291
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "ข้อความ METHOD_RETURN: ข้อมูลส่วนหัว REPLY_SERIAL ขาดหายไป"
 
-#: ../gio/gdbusmessage.c:1305
+#: ../gio/gdbusmessage.c:1303
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "ข้อความ ERROR: ข้อมูลส่วนหัว REPLY_SERIAL หรือ ERROR_NAME ขาดหายไป"
 
-#: ../gio/gdbusmessage.c:1318
+#: ../gio/gdbusmessage.c:1316
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "ข้อความ SIGNAL: ข้อมูลส่วนหัว PATH, INTERFACE หรือ MEMBER ขาดหายไป"
 
-#: ../gio/gdbusmessage.c:1326
+#: ../gio/gdbusmessage.c:1324
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
 msgstr "ข้อความ SIGNAL: ข้อมูลส่วนหัว PATH ใช้ค่า /org/freedesktop/DBus/Local ที่สงวนไว้"
 
-#: ../gio/gdbusmessage.c:1334
+#: ../gio/gdbusmessage.c:1332
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr ""
 "ข้อความ SIGNAL: ข้อมูลส่วนหัว INTERFACE ใช้ค่า org.freedesktop.DBus.Local ที่สงวนไว้"
 
-#: ../gio/gdbusmessage.c:1383
+#: ../gio/gdbusmessage.c:1381
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "ต้องการอ่าน %lu ไบต์ แต่ได้รับเพียง %lu"
 
-#: ../gio/gdbusmessage.c:1398
+#: ../gio/gdbusmessage.c:1396
 #, c-format
 msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr "ต้องการไบต์ NUL หลังสตริง '%s' แต่พบไบต์ %d"
 
-#: ../gio/gdbusmessage.c:1417
+#: ../gio/gdbusmessage.c:1415
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -505,17 +725,17 @@ msgstr ""
 "ต้องการสตริง UTF-8 ที่ถูกต้องตามรูปแบบ แต่พบไบต์ที่ผิดรูปแบบที่ออฟเซ็ต %d (ความยาวของสตริงคือ "
 "%d) ข้อความ UTF-8 ที่ถูกต้องนับจนถึงจุดดังกล่าวคือ '%s'"
 
-#: ../gio/gdbusmessage.c:1619
+#: ../gio/gdbusmessage.c:1617
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "ค่า '%s' ที่แจงได้ไม่ใช่พาธของออบเจ็กต์ D-Bus ที่ใช้การได้"
 
-#: ../gio/gdbusmessage.c:1643
+#: ../gio/gdbusmessage.c:1641
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "ค่า '%s' ที่แจงได้ไม่ใช่ลายเซ็น D-Bus ที่ใช้การได้"
 
-#: ../gio/gdbusmessage.c:1698
+#: ../gio/gdbusmessage.c:1696
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -523,12 +743,12 @@ msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] "พบแอร์เรย์ความยาว %u ไบต์ ความยาวสูงสุดที่ใช้ได้คือ 2<<26 ไบต์ (64 MiB)"
 
-#: ../gio/gdbusmessage.c:1851
+#: ../gio/gdbusmessage.c:1849
 #, c-format
 msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr "ค่า '%s' ที่แจงได้จาก variant ไม่ใช่ลายเซ็น D-Bus ที่ใช้การได้"
 
-#: ../gio/gdbusmessage.c:1875
+#: ../gio/gdbusmessage.c:1873
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string '%s' from the D-Bus wire format"
@@ -536,39 +756,39 @@ msgstr ""
 "เกิดข้อผิดพลาดขณะถอดลำดับข้อมูล GVariant ด้วยชนิดสตริง '%s' จากรูปแบบการเชื่อมสายของ D-"
 "Bus"
 
-#: ../gio/gdbusmessage.c:2062
+#: ../gio/gdbusmessage.c:2060
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr "ค่าของชนิด endian ไม่ถูกต้อง ต้องการ 0x6c ('l') หรือ 0x42 ('B') แต่พบค่า 0x%02x"
 
-#: ../gio/gdbusmessage.c:2075
+#: ../gio/gdbusmessage.c:2073
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "รุ่นหลักของโพรโทคอลไม่ถูกต้อง ต้องการค่า 1 แต่พบค่า %d"
 
-#: ../gio/gdbusmessage.c:2131
+#: ../gio/gdbusmessage.c:2129
 #, c-format
 msgid "Signature header with signature '%s' found but message body is empty"
 msgstr "พบส่วนหัวลายเซ็นซึ่งมีลายเซ็น '%s' แต่ตัวเนื้อความว่างเปล่า"
 
-#: ../gio/gdbusmessage.c:2145
+#: ../gio/gdbusmessage.c:2143
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr "ค่า '%s' ที่แจงได้ไม่ใช่ลายเซ็น D-Bus ที่ใช้การได้ (สำหรับเนื้อความ)"
 
-#: ../gio/gdbusmessage.c:2175
+#: ../gio/gdbusmessage.c:2173
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] "ไม่พบส่วนหัวลายเซ็นในข้อความ แต่กลับมีเนื้อความยาว %u ไบต์"
 
-#: ../gio/gdbusmessage.c:2185
+#: ../gio/gdbusmessage.c:2183
 msgid "Cannot deserialize message: "
 msgstr "ไม่สามารถถอดลำดับข้อความ: "
 
-#: ../gio/gdbusmessage.c:2506
+#: ../gio/gdbusmessage.c:2504
 #, c-format
 msgid ""
 "Error serializing GVariant with type string '%s' to the D-Bus wire format"
@@ -576,63 +796,63 @@ msgstr ""
 "เกิดข้อผิดพลาดขณะเข้าลำดับข้อมูล GVariant ด้วยชนิดสตริง '%s' ไปเป็นรูปแบบการเชื่อมสายของ D-"
 "Bus"
 
-#: ../gio/gdbusmessage.c:2643
+#: ../gio/gdbusmessage.c:2641
 #, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
 msgstr "ข้อความมี file descriptor %d อัน แต่ข้อมูลส่วนหัวระบุ file descriptor %d อัน"
 
-#: ../gio/gdbusmessage.c:2651
+#: ../gio/gdbusmessage.c:2649
 msgid "Cannot serialize message: "
 msgstr "ไม่สามารถเข้าลำดับข้อความ: "
 
-#: ../gio/gdbusmessage.c:2695
+#: ../gio/gdbusmessage.c:2693
 #, c-format
 msgid "Message body has signature '%s' but there is no signature header"
 msgstr "เนื้อความมีลายเซ็น '%s' แต่กลับไม่มีส่วนหัวลายเซ็น"
 
-#: ../gio/gdbusmessage.c:2705
+#: ../gio/gdbusmessage.c:2703
 #, c-format
 msgid ""
 "Message body has type signature '%s' but signature in the header field is "
 "'%s'"
 msgstr "เนื้อความมีลายเซ็นของชนิดเป็น '%s' แต่ลายเซ็นที่ส่วนหัวกลับเป็น %s"
 
-#: ../gio/gdbusmessage.c:2721
+#: ../gio/gdbusmessage.c:2719
 #, c-format
 msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr "เนื้อความว่างเปล่า แต่ลายเซ็นที่ส่วนหัวเป็น '(%s)'"
 
-#: ../gio/gdbusmessage.c:3271
+#: ../gio/gdbusmessage.c:3269
 #, c-format
 msgid "Error return with body of type '%s'"
 msgstr "ได้รับข้อผิดพลาดโดยมีเนื้อความชนิด '%s'"
 
-#: ../gio/gdbusmessage.c:3279
+#: ../gio/gdbusmessage.c:3277
 msgid "Error return with empty body"
 msgstr "ได้รับข้อผิดพลาดโดยเนื้อความว่างเปล่า"
 
-#: ../gio/gdbusprivate.c:2069
+#: ../gio/gdbusprivate.c:2064
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "อ่านโพรไฟล์ของฮาร์ดแวร์ไม่สำเร็จ: %s"
 
-#: ../gio/gdbusprivate.c:2114
+#: ../gio/gdbusprivate.c:2109
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "ไม่สามารถโหลด /var/lib/dbus/machine-id หรือ /etc/machine-id: "
 
-#: ../gio/gdbusproxy.c:1638
+#: ../gio/gdbusproxy.c:1630
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "เกิดข้อผิดพลาดขณะเรียก StartServiceByName สำหรับ %s: "
 
-#: ../gio/gdbusproxy.c:1661
+#: ../gio/gdbusproxy.c:1653
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "ได้รับคำตอบ %d ที่ไม่คาดหมายจากเมธอด StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2761 ../gio/gdbusproxy.c:2898
+#: ../gio/gdbusproxy.c:2754 ../gio/gdbusproxy.c:2891
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -640,15 +860,15 @@ msgstr ""
 "ไม่สามารถเรียกเมธอด พร็อกซีใช้สำหรับชื่อที่เป็นที่รู้จักโดยไม่มีเจ้าของ "
 "และพร็อกซีถูกสร้างมาโดยใช้แฟล็ก G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: ../gio/gdbusserver.c:709
+#: ../gio/gdbusserver.c:708
 msgid "Abstract name space not supported"
 msgstr "ไม่รองรับ abstract name space"
 
-#: ../gio/gdbusserver.c:796
+#: ../gio/gdbusserver.c:795
 msgid "Cannot specify nonce file when creating a server"
 msgstr "ไม่สามารถระบุแฟ้มเฉพาะกาลขณะสร้างเซิร์ฟเวอร์"
 
-#: ../gio/gdbusserver.c:874
+#: ../gio/gdbusserver.c:873
 #, c-format
 msgid "Error writing nonce file at '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะเขียนแฟ้มเฉพาะกาลที่ '%s': %s"
@@ -663,11 +883,7 @@ msgstr "สตริง '%s' ไม่ใช่ GUID ของ D-Bus ที่�
 msgid "Cannot listen on unsupported transport '%s'"
 msgstr "ไม่สามารถรอรับการเชื่อมต่อผ่านช่องขนส่ง '%s' ที่ไม่รองรับ"
 
-#: ../gio/gdbus-tool.c:92
-msgid "COMMAND"
-msgstr "คำสั่ง"
-
-#: ../gio/gdbus-tool.c:97
+#: ../gio/gdbus-tool.c:95
 #, c-format
 msgid ""
 "Commands:\n"
@@ -688,308 +904,309 @@ msgstr ""
 "\n"
 "ใช้ \"%s คำสั่ง --help\" เพื่อขอดูวิธีใช้ของแต่ละคำสั่ง\n"
 
-#: ../gio/gdbus-tool.c:166 ../gio/gdbus-tool.c:222 ../gio/gdbus-tool.c:294
-#: ../gio/gdbus-tool.c:318 ../gio/gdbus-tool.c:701 ../gio/gdbus-tool.c:1022
-#: ../gio/gdbus-tool.c:1456
+#: ../gio/gdbus-tool.c:164 ../gio/gdbus-tool.c:220 ../gio/gdbus-tool.c:292
+#: ../gio/gdbus-tool.c:316 ../gio/gdbus-tool.c:705 ../gio/gdbus-tool.c:1031
+#: ../gio/gdbus-tool.c:1465
 #, c-format
 msgid "Error: %s\n"
 msgstr "ข้อผิดพลาด: %s\n"
 
-#: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:235 ../gio/gdbus-tool.c:1472
+#: ../gio/gdbus-tool.c:175 ../gio/gdbus-tool.c:233 ../gio/gdbus-tool.c:1481
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "เกิดข้อผิดพลาดขณะแจง XML ของ introspection: %s\n"
 
-#: ../gio/gdbus-tool.c:352
+#: ../gio/gdbus-tool.c:350
 msgid "Connect to the system bus"
 msgstr "เชื่อมต่อไปยังบัสของระบบ"
 
-#: ../gio/gdbus-tool.c:353
+#: ../gio/gdbus-tool.c:351
 msgid "Connect to the session bus"
 msgstr "เชื่อมต่อไปยังบัสของวาระ"
 
-#: ../gio/gdbus-tool.c:354
+#: ../gio/gdbus-tool.c:352
 msgid "Connect to given D-Bus address"
 msgstr "เชื่อมต่อไปยังที่อยู่ D-Bus ที่กำหนด"
 
-#: ../gio/gdbus-tool.c:364
+#: ../gio/gdbus-tool.c:362
 msgid "Connection Endpoint Options:"
 msgstr "ตัวเลือกสำหรับจุดปลายของการเชื่อมต่อ:"
 
-#: ../gio/gdbus-tool.c:365
+#: ../gio/gdbus-tool.c:363
 msgid "Options specifying the connection endpoint"
 msgstr "ตัวเลือกสำหรับระบุจุดปลายของการเชื่อมต่อ"
 
-#: ../gio/gdbus-tool.c:387
+#: ../gio/gdbus-tool.c:385
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "ไม่ได้ระบุจุดปลายของการเชื่อมต่อ"
 
-#: ../gio/gdbus-tool.c:397
+#: ../gio/gdbus-tool.c:395
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "มีการระบุจุดปลายของการเชื่อมต่อหลายจุด"
 
-#: ../gio/gdbus-tool.c:467
+#: ../gio/gdbus-tool.c:465
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr "คำเตือน: ตามข้อมูล introspection แล้ว ไม่มีอินเทอร์เฟซ '%s' อยู่\n"
 
-#: ../gio/gdbus-tool.c:476
+#: ../gio/gdbus-tool.c:474
 #, c-format
 msgid ""
 "Warning: According to introspection data, method '%s' does not exist on "
 "interface '%s'\n"
 msgstr "คำเตือน: ตามข้อมูล introspection แล้ว ไม่มีเมธอด '%s' ในอินเทอร์เฟซ '%s'\n"
 
-#: ../gio/gdbus-tool.c:538
+#: ../gio/gdbus-tool.c:536
 msgid "Optional destination for signal (unique name)"
 msgstr "ปลายทางของสัญญาณ ถ้าต้องการ (เป็นชื่อเอกลักษณ์)"
 
-#: ../gio/gdbus-tool.c:539
+#: ../gio/gdbus-tool.c:537
 msgid "Object path to emit signal on"
 msgstr "พาธของออบเจ็กต์ที่จะยิงสัญญาณไป"
 
-#: ../gio/gdbus-tool.c:540
+#: ../gio/gdbus-tool.c:538
 msgid "Signal and interface name"
 msgstr "สัญญาณและชื่ออินเทอร์เฟซ"
 
-#: ../gio/gdbus-tool.c:572
+#: ../gio/gdbus-tool.c:570
 msgid "Emit a signal."
 msgstr "ยิงสัญญาณ"
 
-#: ../gio/gdbus-tool.c:606 ../gio/gdbus-tool.c:832 ../gio/gdbus-tool.c:1562
-#: ../gio/gdbus-tool.c:1794
+#: ../gio/gdbus-tool.c:604 ../gio/gdbus-tool.c:836 ../gio/gdbus-tool.c:1571
+#: ../gio/gdbus-tool.c:1803
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "เกิดข้อผิดพลาดขณะเชื่อมต่อ: %s\n"
 
-#: ../gio/gdbus-tool.c:618
+#: ../gio/gdbus-tool.c:616
 #, c-format
 msgid "Error: object path not specified.\n"
 msgstr "ข้อผิดพลาด: ไม่ได้ระบุพาธของออบเจ็กต์\n"
 
-#: ../gio/gdbus-tool.c:623 ../gio/gdbus-tool.c:893 ../gio/gdbus-tool.c:1620
-#: ../gio/gdbus-tool.c:1853
+#: ../gio/gdbus-tool.c:621 ../gio/gdbus-tool.c:897 ../gio/gdbus-tool.c:1629
+#: ../gio/gdbus-tool.c:1862
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "ข้อผิดพลาด: %s ไม่ใช่พาธของออบเจ็กต์ที่ใช้ได้\n"
 
-#: ../gio/gdbus-tool.c:629
+#: ../gio/gdbus-tool.c:627
 #, c-format
 msgid "Error: signal not specified.\n"
 msgstr "ข้อผิดพลาด: ไม่ได้ระบุสัญญาณ\n"
 
-#: ../gio/gdbus-tool.c:636
+#: ../gio/gdbus-tool.c:634
 #, c-format
 msgid "Error: signal must be the fully-qualified name.\n"
 msgstr "ข้อผิดพลาด: สัญญาณต้องเป็นชื่อที่มีโดเมนเต็ม\n"
 
-#: ../gio/gdbus-tool.c:644
+#: ../gio/gdbus-tool.c:642
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "ข้อผิดพลาด: %s ไม่ใช่ชื่ออินเทอร์เฟซที่ใช้ได้\n"
 
-#: ../gio/gdbus-tool.c:650
+#: ../gio/gdbus-tool.c:648
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "ข้อผิดพลาด: %s ไม่ใช่ชื่อสมาชิกที่ใช้ได้\n"
 
-#: ../gio/gdbus-tool.c:656
+#: ../gio/gdbus-tool.c:654
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "ข้อผิดพลาด: %s ไม่ใช่ชื่อบัสที่ใช้ได้\n"
 
-#: ../gio/gdbus-tool.c:679 ../gio/gdbus-tool.c:992
+#. Use the original non-"parse-me-harder" error
+#: ../gio/gdbus-tool.c:681 ../gio/gdbus-tool.c:999
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "เกิดข้อผิดพลาดขณะแจงพารามิเตอร์ %d: %s\n"
 
-#: ../gio/gdbus-tool.c:708
+#: ../gio/gdbus-tool.c:712
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "เกิดข้อผิดพลาดขณะปล่อยข้อมูลคงค้างของการเชื่อมต่อ: %s\n"
 
-#: ../gio/gdbus-tool.c:735
+#: ../gio/gdbus-tool.c:739
 msgid "Destination name to invoke method on"
 msgstr "ชื่อปลายทางที่จะเรียกเมธอด"
 
-#: ../gio/gdbus-tool.c:736
+#: ../gio/gdbus-tool.c:740
 msgid "Object path to invoke method on"
 msgstr "พาธของออบเจ็กต์ที่จะเรียกเมธอด"
 
-#: ../gio/gdbus-tool.c:737
+#: ../gio/gdbus-tool.c:741
 msgid "Method and interface name"
 msgstr "ชื่อเมธอดและอินเทอร์เฟซ"
 
-#: ../gio/gdbus-tool.c:738
+#: ../gio/gdbus-tool.c:742
 msgid "Timeout in seconds"
 msgstr "กำหนดเวลาคอยเป็นวินาที"
 
-#: ../gio/gdbus-tool.c:777
+#: ../gio/gdbus-tool.c:781
 msgid "Invoke a method on a remote object."
 msgstr "เรียกเมธอดที่ออบเจ็กต์ระยะไกล"
 
-#: ../gio/gdbus-tool.c:852 ../gio/gdbus-tool.c:1581 ../gio/gdbus-tool.c:1813
+#: ../gio/gdbus-tool.c:856 ../gio/gdbus-tool.c:1590 ../gio/gdbus-tool.c:1822
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "ข้อผิดพลาด: ไม่ได้ระบุปลายทาง\n"
 
-#: ../gio/gdbus-tool.c:873 ../gio/gdbus-tool.c:1600
+#: ../gio/gdbus-tool.c:877 ../gio/gdbus-tool.c:1609
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "ข้อผิดพลาด: ไม่ได้ระบุพาธของออบเจ็กต์\n"
 
-#: ../gio/gdbus-tool.c:908
+#: ../gio/gdbus-tool.c:912
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "ข้อผิดพลาด: ไม่ได้ระบุชื่อเมธอด\n"
 
-#: ../gio/gdbus-tool.c:919
+#: ../gio/gdbus-tool.c:923
 #, c-format
 msgid "Error: Method name '%s' is invalid\n"
 msgstr "ข้อผิดพลาด: ชื่อเมธอด '%s' ไม่ใช่ชื่อที่ใช้ได้\n"
 
-#: ../gio/gdbus-tool.c:984
+#: ../gio/gdbus-tool.c:991
 #, c-format
 msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "เกิดข้อผิดพลาดขณะแจงพารามิเตอร์ %d ซึ่งเป็นชนิด '%s': %s\n"
 
-#: ../gio/gdbus-tool.c:1419
+#: ../gio/gdbus-tool.c:1428
 msgid "Destination name to introspect"
 msgstr "ชื่อปลายทางที่จะสำรวจตรวจตรา"
 
-#: ../gio/gdbus-tool.c:1420
+#: ../gio/gdbus-tool.c:1429
 msgid "Object path to introspect"
 msgstr "พาธของออบเจ็กต์ที่จะสำรวจตรวจตรา"
 
-#: ../gio/gdbus-tool.c:1421
+#: ../gio/gdbus-tool.c:1430
 msgid "Print XML"
 msgstr "แสดง XML"
 
-#: ../gio/gdbus-tool.c:1422
+#: ../gio/gdbus-tool.c:1431
 msgid "Introspect children"
 msgstr "สำรวจตรวจตราออบเจ็กต์ลูกด้วย"
 
-#: ../gio/gdbus-tool.c:1423
+#: ../gio/gdbus-tool.c:1432
 msgid "Only print properties"
 msgstr "แสดงคุณสมบัติเท่านั้น"
 
-#: ../gio/gdbus-tool.c:1514
+#: ../gio/gdbus-tool.c:1523
 msgid "Introspect a remote object."
 msgstr "สำรวจตรวจตราออบเจ็กต์ระยะไกล"
 
-#: ../gio/gdbus-tool.c:1712
+#: ../gio/gdbus-tool.c:1721
 msgid "Destination name to monitor"
 msgstr "ชื่อปลายทางที่จะเฝ้าสังเกต"
 
-#: ../gio/gdbus-tool.c:1713
+#: ../gio/gdbus-tool.c:1722
 msgid "Object path to monitor"
 msgstr "พาธของออบเจ็กต์ที่จะเฝ้าสังเกต"
 
-#: ../gio/gdbus-tool.c:1746
+#: ../gio/gdbus-tool.c:1755
 msgid "Monitor a remote object."
 msgstr "เฝ้าสังเกตออบเจ็กต์ระยะไกล"
 
-#: ../gio/gdesktopappinfo.c:660 ../gio/gdesktopappinfo.c:3793
-#: ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:1419 ../gio/gdesktopappinfo.c:4564
+#: ../gio/gwin32appinfo.c:219
 msgid "Unnamed"
 msgstr "ไม่มีชื่อ"
 
-#: ../gio/gdesktopappinfo.c:1074
+#: ../gio/gdesktopappinfo.c:1838
 msgid "Desktop file didn't specify Exec field"
 msgstr "แฟ้มเดสก์ท็อปไม่ได้ระบุเขตข้อมูล Exec"
 
-#: ../gio/gdesktopappinfo.c:1359
+#: ../gio/gdesktopappinfo.c:2123
 msgid "Unable to find terminal required for application"
 msgstr "หาเทอร์มินัลซึ่งต้องใช้ในการเปิดโปรแกรมไม่พบ"
 
-#: ../gio/gdesktopappinfo.c:1772
+#: ../gio/gdesktopappinfo.c:2540
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้งโปรแกรมของผู้ใช้: %s"
 
-#: ../gio/gdesktopappinfo.c:1776
+#: ../gio/gdesktopappinfo.c:2544
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ %s สำหรับเก็บค่าตั้ง MIME ของผู้ใช้: %s"
 
-#: ../gio/gdesktopappinfo.c:2016 ../gio/gdesktopappinfo.c:2040
+#: ../gio/gdesktopappinfo.c:2784 ../gio/gdesktopappinfo.c:2808
 msgid "Application information lacks an identifier"
 msgstr "ขาดชื่อในข้อมูลเกี่ยวกับโปรแกรม"
 
-#: ../gio/gdesktopappinfo.c:2272
+#: ../gio/gdesktopappinfo.c:3041
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ไม่สามารถสร้างแฟ้มเดสก์ท็อป %s สำหรับผู้ใช้"
 
-#: ../gio/gdesktopappinfo.c:2396
+#: ../gio/gdesktopappinfo.c:3175
 #, c-format
 msgid "Custom definition for %s"
 msgstr "ข้อกำหนดกำหนดเองสำหรับ %s"
 
-#: ../gio/gdrive.c:394
+#: ../gio/gdrive.c:392
 msgid "drive doesn't implement eject"
 msgstr "ไดรว์ไม่รองรับคำสั่งดันแผ่นออก"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gdrive.c:472
+#: ../gio/gdrive.c:470
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "ไดรว์ไม่รองรับคำสั่ง eject หรือ eject_with_operation"
 
-#: ../gio/gdrive.c:548
+#: ../gio/gdrive.c:546
 msgid "drive doesn't implement polling for media"
 msgstr "ไดรว์ไม่รองรับคำสั่งวนตรวจสื่อ"
 
-#: ../gio/gdrive.c:753
+#: ../gio/gdrive.c:751
 msgid "drive doesn't implement start"
 msgstr "ไดรว์ไม่รองรับคำสั่ง start"
 
-#: ../gio/gdrive.c:855
+#: ../gio/gdrive.c:853
 msgid "drive doesn't implement stop"
 msgstr "ไดรว์ไม่รองรับคำสั่ง stop"
 
-#: ../gio/gdummytlsbackend.c:168 ../gio/gdummytlsbackend.c:288
-#: ../gio/gdummytlsbackend.c:378
+#: ../gio/gdummytlsbackend.c:189 ../gio/gdummytlsbackend.c:309
+#: ../gio/gdummytlsbackend.c:399
 msgid "TLS support is not available"
 msgstr "ไม่มีการรองรับ TLS"
 
-#: ../gio/gemblem.c:324
+#: ../gio/gemblem.c:323
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
 msgstr "ไม่สามารถจัดการกับรหัสของ GEmblem รุ่น %d ได้"
 
-#: ../gio/gemblem.c:334
+#: ../gio/gemblem.c:333
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "จำนวนโทเคนในรหัสของ GEmblem (%d) ไม่ถูกต้อง"
 
-#: ../gio/gemblemedicon.c:364
+#: ../gio/gemblemedicon.c:362
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
 msgstr "ไม่สามารถจัดการกับรหัสของ GEmblemedIcon รุ่น %d ได้"
 
-#: ../gio/gemblemedicon.c:374
+#: ../gio/gemblemedicon.c:372
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr "จำนวนโทเคนในรหัสของ GEmblemedIcon (%d) ไม่ถูกต้อง"
 
-#: ../gio/gemblemedicon.c:397
+#: ../gio/gemblemedicon.c:395
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "ต้องการข้อมูล GEmblem สำหรับ GEmblemedIcon"
 
-#: ../gio/gfile.c:938 ../gio/gfile.c:1177 ../gio/gfile.c:1316
-#: ../gio/gfile.c:1556 ../gio/gfile.c:1611 ../gio/gfile.c:1669
-#: ../gio/gfile.c:1753 ../gio/gfile.c:1810 ../gio/gfile.c:1874
-#: ../gio/gfile.c:1929 ../gio/gfile.c:3559 ../gio/gfile.c:3614
-#: ../gio/gfile.c:3822 ../gio/gfile.c:3864 ../gio/gfile.c:4330
-#: ../gio/gfile.c:4742 ../gio/gfile.c:4827 ../gio/gfile.c:4917
-#: ../gio/gfile.c:5014 ../gio/gfile.c:5101 ../gio/gfile.c:5202
-#: ../gio/gfile.c:7381 ../gio/gfile.c:7471 ../gio/gfile.c:7555
-#: ../gio/win32/gwinhttpfile.c:439
+#: ../gio/gfile.c:960 ../gio/gfile.c:1199 ../gio/gfile.c:1338
+#: ../gio/gfile.c:1578 ../gio/gfile.c:1633 ../gio/gfile.c:1691
+#: ../gio/gfile.c:1775 ../gio/gfile.c:1832 ../gio/gfile.c:1896
+#: ../gio/gfile.c:1951 ../gio/gfile.c:3602 ../gio/gfile.c:3657
+#: ../gio/gfile.c:3865 ../gio/gfile.c:3907 ../gio/gfile.c:4373
+#: ../gio/gfile.c:4785 ../gio/gfile.c:4870 ../gio/gfile.c:4960
+#: ../gio/gfile.c:5057 ../gio/gfile.c:5144 ../gio/gfile.c:5245
+#: ../gio/gfile.c:7765 ../gio/gfile.c:7855 ../gio/gfile.c:7939
+#: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "ไม่รองรับการกระทำนี้"
 
@@ -1003,176 +1220,176 @@ msgstr "ไม่รองรับการกระทำนี้"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1440 ../gio/glocalfile.c:1101 ../gio/glocalfile.c:1112
-#: ../gio/glocalfile.c:1125
+#: ../gio/gfile.c:1462 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
+#: ../gio/glocalfile.c:1127
 msgid "Containing mount does not exist"
 msgstr "ไม่มีจุดเมานท์ที่บรรจุแฟ้มอยู่"
 
-#: ../gio/gfile.c:2495 ../gio/glocalfile.c:2333
+#: ../gio/gfile.c:2517 ../gio/glocalfile.c:2337
 msgid "Can't copy over directory"
 msgstr "ไม่สามารถคัดลอกทับไดเรกทอรี"
 
-#: ../gio/gfile.c:2555
+#: ../gio/gfile.c:2577
 msgid "Can't copy directory over directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทับไดเรกทอรี"
 
-#: ../gio/gfile.c:2563 ../gio/glocalfile.c:2342
+#: ../gio/gfile.c:2585 ../gio/glocalfile.c:2346
 msgid "Target file exists"
 msgstr "มีแฟ้มปลายทางอยู่ก่อนแล้ว"
 
-#: ../gio/gfile.c:2582
+#: ../gio/gfile.c:2604
 msgid "Can't recursively copy directory"
 msgstr "ไม่สามารถคัดลอกไดเรกทอรีทั้งยวง"
 
-#: ../gio/gfile.c:2864
+#: ../gio/gfile.c:2886
 msgid "Splice not supported"
 msgstr "ไม่รองรับการต่อถ่าย (splice)"
 
-#: ../gio/gfile.c:2868
+#: ../gio/gfile.c:2890
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "เกิดข้อผิดพลาดขณะต่อถ่าย (splice) แฟ้ม: %s"
 
-#: ../gio/gfile.c:2999
+#: ../gio/gfile.c:3021
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "ไม่รองรับการคัดลอก (เชื่อมโยง/สำเนา) แฟ้มข้ามอุปกรณ์"
 
-#: ../gio/gfile.c:3003
+#: ../gio/gfile.c:3025
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "ไม่รองรับการคัดลอก (เชื่อมโยง/สำเนา) แฟ้ม หรือสั่งการไม่ถูกต้อง"
 
-#: ../gio/gfile.c:3008
+#: ../gio/gfile.c:3030
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "ไม่รองรับการคัดลอก (เชื่อมโยง/สำเนา) แฟ้ม หรือไม่ทำงาน"
 
-#: ../gio/gfile.c:3071
+#: ../gio/gfile.c:3093
 msgid "Can't copy special file"
 msgstr "ไม่สามารถคัดลอกแฟ้มพิเศษได้"
 
-#: ../gio/gfile.c:3812
+#: ../gio/gfile.c:3855
 msgid "Invalid symlink value given"
 msgstr "ได้รับชื่อ symlink ที่ใช้การไม่ได้"
 
-#: ../gio/gfile.c:3974
+#: ../gio/gfile.c:4017
 msgid "Trash not supported"
 msgstr "ไม่รองรับการใช้ถังขยะ"
 
-#: ../gio/gfile.c:4087
+#: ../gio/gfile.c:4130
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ชื่อแฟ้มจะมีอักขระ '%c' ไม่ได้"
 
-#: ../gio/gfile.c:6504 ../gio/gvolume.c:365
+#: ../gio/gfile.c:6556 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "โวลุมไม่รองรับการเมานท์"
 
-#: ../gio/gfile.c:6613
+#: ../gio/gfile.c:6665
 msgid "No application is registered as handling this file"
 msgstr "ไม่มีโปรแกรมที่ลงทะเบียนสำหรับจัดการแฟ้มประเภทนี้ไว้"
 
-#: ../gio/gfileenumerator.c:213
+#: ../gio/gfileenumerator.c:211
 msgid "Enumerator is closed"
 msgstr "ตัวแจงนับถูกปิด"
 
-#: ../gio/gfileenumerator.c:220 ../gio/gfileenumerator.c:279
-#: ../gio/gfileenumerator.c:379 ../gio/gfileenumerator.c:479
+#: ../gio/gfileenumerator.c:218 ../gio/gfileenumerator.c:277
+#: ../gio/gfileenumerator.c:377 ../gio/gfileenumerator.c:477
 msgid "File enumerator has outstanding operation"
 msgstr "ตัวแจงนับแฟ้มมีการกระทำค้างอยู่"
 
-#: ../gio/gfileenumerator.c:370 ../gio/gfileenumerator.c:470
+#: ../gio/gfileenumerator.c:368 ../gio/gfileenumerator.c:468
 msgid "File enumerator is already closed"
 msgstr "ตัวแจงนับแฟ้มถูกปิดไปแล้ว"
 
-#: ../gio/gfileicon.c:237
+#: ../gio/gfileicon.c:236
 #, c-format
 msgid "Can't handle version %d of GFileIcon encoding"
 msgstr "ไม่สามารถจัดการกับรหัสของ GFileIcon รุ่น %d ได้"
 
-#: ../gio/gfileicon.c:247
+#: ../gio/gfileicon.c:246
 msgid "Malformed input data for GFileIcon"
 msgstr "ข้อมูลเข้าของ GFileIcon ผิดรูปแบบ"
 
-#: ../gio/gfileinputstream.c:151 ../gio/gfileinputstream.c:397
-#: ../gio/gfileiostream.c:169 ../gio/gfileoutputstream.c:166
-#: ../gio/gfileoutputstream.c:500
+#: ../gio/gfileinputstream.c:149 ../gio/gfileinputstream.c:395
+#: ../gio/gfileiostream.c:167 ../gio/gfileoutputstream.c:164
+#: ../gio/gfileoutputstream.c:498
 msgid "Stream doesn't support query_info"
 msgstr "สตรีมไม่รองรับ query_info"
 
-#: ../gio/gfileinputstream.c:328 ../gio/gfileiostream.c:382
-#: ../gio/gfileoutputstream.c:374
+#: ../gio/gfileinputstream.c:326 ../gio/gfileiostream.c:380
+#: ../gio/gfileoutputstream.c:372
 msgid "Seek not supported on stream"
 msgstr "สตรีมไม่รองรับการเลื่อนตำแหน่งอ่านเขียน"
 
-#: ../gio/gfileinputstream.c:372
+#: ../gio/gfileinputstream.c:370
 msgid "Truncate not allowed on input stream"
 msgstr "สตรีมข้อมูลเข้าไม่สามารถตัดท้ายทิ้งได้"
 
-#: ../gio/gfileiostream.c:458 ../gio/gfileoutputstream.c:450
+#: ../gio/gfileiostream.c:456 ../gio/gfileoutputstream.c:448
 msgid "Truncate not supported on stream"
 msgstr "สตรีมไม่รองรับการตัดท้ายทิ้ง"
 
-#: ../gio/gicon.c:297
+#: ../gio/gicon.c:290
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "จำนวนโทเคน (%d) ไม่ถูกต้อง"
 
-#: ../gio/gicon.c:317
+#: ../gio/gicon.c:310
 #, c-format
 msgid "No type for class name %s"
 msgstr "ไม่มีชนิดสำหรับคลาสชื่อ %s"
 
-#: ../gio/gicon.c:327
+#: ../gio/gicon.c:320
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "ชนิด %s ไม่ได้ทำอินเทอร์เฟซ GIcon"
 
-#: ../gio/gicon.c:338
+#: ../gio/gicon.c:331
 #, c-format
 msgid "Type %s is not classed"
 msgstr "ชนิด %s ไม่ได้เป็นคลาส"
 
-#: ../gio/gicon.c:352
+#: ../gio/gicon.c:345
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "เลขรุ่นมีรูปแบบไม่ถูกต้อง: %s"
 
-#: ../gio/gicon.c:366
+#: ../gio/gicon.c:359
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "ชนิด %s ไม่ได้ทำ from_tokens() ของอินเทอร์เฟซ GIcon"
 
-#: ../gio/gicon.c:468
+#: ../gio/gicon.c:461
 msgid "Can't handle the supplied version of the icon encoding"
 msgstr "ไม่สามารถจัดการกับรหัสของไอคอนรุ่นที่ระบุได้"
 
-#: ../gio/ginetaddressmask.c:183
+#: ../gio/ginetaddressmask.c:182
 msgid "No address specified"
 msgstr "ไม่ได้ระบุที่อยู่"
 
-#: ../gio/ginetaddressmask.c:191
+#: ../gio/ginetaddressmask.c:190
 #, c-format
 msgid "Length %u is too long for address"
 msgstr "ความยาว %u ยาวเกินไปสำหรับที่อยู่"
 
-#: ../gio/ginetaddressmask.c:224
+#: ../gio/ginetaddressmask.c:223
 msgid "Address has bits set beyond prefix length"
 msgstr "ที่อยู่มีการกำหนดบิตที่เกินความยาวของ prefix"
 
-#: ../gio/ginetaddressmask.c:301
+#: ../gio/ginetaddressmask.c:300
 #, c-format
 msgid "Could not parse '%s' as IP address mask"
 msgstr "ไม่สามารถแจง '%s' ในฐานะแมสก์ของที่อยู่ไอพี"
 
-#: ../gio/ginetsocketaddress.c:197 ../gio/ginetsocketaddress.c:214
-#: ../gio/gunixsocketaddress.c:211
+#: ../gio/ginetsocketaddress.c:196 ../gio/ginetsocketaddress.c:213
+#: ../gio/gunixsocketaddress.c:209
 msgid "Not enough space for socket address"
 msgstr "มีที่ว่างไม่พอสำหรับที่อยู่ซ็อกเก็ต"
 
-#: ../gio/ginetsocketaddress.c:229
+#: ../gio/ginetsocketaddress.c:228
 msgid "Unsupported socket address"
 msgstr "ไม่รองรับที่อยู่ซ็อกเก็ต"
 
-#: ../gio/ginputstream.c:183
+#: ../gio/ginputstream.c:182
 msgid "Input stream doesn't implement read"
 msgstr "สตรีมข้อมูลเข้ายังไม่รองรับการอ่าน"
 
@@ -1182,129 +1399,106 @@ msgstr "สตรีมข้อมูลเข้ายังไม่รอง
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1022 ../gio/giostream.c:290
-#: ../gio/goutputstream.c:1333
+#: ../gio/ginputstream.c:1021 ../gio/giostream.c:288
+#: ../gio/goutputstream.c:1474
 msgid "Stream has outstanding operation"
 msgstr "สตรีมมีการกระทำค้างอยู่"
 
-#: ../gio/glib-compile-resources.c:145 ../gio/glib-compile-schemas.c:1459
+#: ../gio/glib-compile-resources.c:142 ../gio/glib-compile-schemas.c:1453
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "อิลิเมนต์ <%s> ไม่สามารถอยู่ใน <%s> ได้"
 
-#: ../gio/glib-compile-resources.c:149
+#: ../gio/glib-compile-resources.c:146
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "อิลิเมนต์ <%s> ไม่สามารถอยู่ที่ระดับบนสุดได้"
 
-#: ../gio/glib-compile-resources.c:239
+#: ../gio/glib-compile-resources.c:236
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "แฟ้ม %s ปรากฏหลายครั้งในทรัพยากร"
 
-#: ../gio/glib-compile-resources.c:252
+#: ../gio/glib-compile-resources.c:249
 #, c-format
 msgid "Failed to locate '%s' in any source directory"
 msgstr "ไม่พบ '%s' ในไดเรกทอรีซอร์สใดๆ"
 
-#: ../gio/glib-compile-resources.c:263
+#: ../gio/glib-compile-resources.c:260
 #, c-format
 msgid "Failed to locate '%s' in current directory"
 msgstr "ไม่พบ '%s' ในไดเรกทอรีปัจจุบัน"
 
-#: ../gio/glib-compile-resources.c:291
+#: ../gio/glib-compile-resources.c:288
 #, c-format
 msgid "Unknown processing option \"%s\""
 msgstr "ไม่รู้จักตัวเลือก \"%s\" ของการประมวลผล"
 
-#: ../gio/glib-compile-resources.c:310 ../gio/glib-compile-resources.c:370
+#: ../gio/glib-compile-resources.c:306 ../gio/glib-compile-resources.c:352
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "สร้างแฟ้มชั่วคราวไม่สำเร็จ: %s"
 
-#: ../gio/glib-compile-resources.c:340
-#, c-format
-msgid ""
-"Error processing input file with xmllint:\n"
-"%s"
-msgstr ""
-"เกิดข้อผิดพลาดขณะประมวลผลแฟ้มขาเข้าด้วย xmllint:\n"
-"%s"
-
-#: ../gio/glib-compile-resources.c:396
-#, c-format
-msgid ""
-"Error processing input file with to-pixdata:\n"
-"%s"
-msgstr ""
-"เกิดข้อผิดพลาดขณะประมวลผลแฟ้มขาเข้าด้วย to-pixdata:\n"
-"%s"
-
-#: ../gio/glib-compile-resources.c:410
+#: ../gio/glib-compile-resources.c:380
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้ม %s: %s"
 
-#: ../gio/glib-compile-resources.c:430
+#: ../gio/glib-compile-resources.c:400
 #, c-format
 msgid "Error compressing file %s"
 msgstr "เกิดข้อผิดพลาดขณะบีบอัดแฟ้ม %s"
 
-#: ../gio/glib-compile-resources.c:494 ../gio/glib-compile-schemas.c:1571
+#: ../gio/glib-compile-resources.c:464 ../gio/glib-compile-schemas.c:1565
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "ไม่สามารถมีข้อความอยู่ใน <%s> ได้"
 
-#: ../gio/glib-compile-resources.c:619
+#: ../gio/glib-compile-resources.c:589
 msgid "name of the output file"
 msgstr "ชื่อของแฟ้มผลลัพธ์"
 
-#: ../gio/glib-compile-resources.c:619 ../gio/glib-compile-resources.c:650
-#: ../gio/gresource-tool.c:482 ../gio/gresource-tool.c:548
-msgid "FILE"
-msgstr "แฟ้ม"
-
-#: ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:590
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "ไดเรกทอรีที่จะอ่านแฟ้มต่างๆ (ค่าปริยายคือไดเรกทอรีปัจจุบัน)"
 
-#: ../gio/glib-compile-resources.c:620 ../gio/glib-compile-schemas.c:1999
-#: ../gio/glib-compile-schemas.c:2028
+#: ../gio/glib-compile-resources.c:590 ../gio/glib-compile-schemas.c:1994
+#: ../gio/glib-compile-schemas.c:2023
 msgid "DIRECTORY"
 msgstr "ไดเรกทอรี"
 
-#: ../gio/glib-compile-resources.c:621
+#: ../gio/glib-compile-resources.c:591
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "สร้างผลลัพธ์ในรูปแบบที่กำหนดโดยนามสกุลของแฟ้มผลลัพธ์"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:592
 msgid "Generate source header"
 msgstr "สร้างข้อมูลส่วนหัวของซอร์ส"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:593
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "สร้างซอร์สโค้ดที่จะใช้เชื่อมโยงแฟ้มทรัพยากรเข้าในโค้ดของคุณ"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:594
 msgid "Generate dependency list"
 msgstr "สร้างรายชื่อสิ่งที่โค้ดจำเป็นต้องใช้"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:595
 msgid "Don't automatically create and register resource"
 msgstr "ไม่ต้องสร้างและลงทะเบียนทรัพยากรโดยอัตโนมัติ"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:596
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "ไม่ต้องส่งออกฟังก์ชันต่างๆ แต่ประกาศเป็น G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:597
 msgid "C identifier name used for the generated source code"
 msgstr "ชื่ออ้างอิงภาษาซีที่จะใช้ในซอร์สโค้ดที่สร้างขึ้น"
 
-#: ../gio/glib-compile-resources.c:653
+#: ../gio/glib-compile-resources.c:623
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1314,21 +1508,21 @@ msgstr ""
 "แฟ้มข้อกำหนดทรัพยากรจะมีนามสกุลเป็น .gresource.xml\n"
 "และแฟ้มทรัพยากรจะมีนามสกุลเป็น .gresource"
 
-#: ../gio/glib-compile-resources.c:669
+#: ../gio/glib-compile-resources.c:639
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "คุณควรระบุชื่อแฟ้มแฟ้มเดียว\n"
 
-#: ../gio/glib-compile-schemas.c:778
+#: ../gio/glib-compile-schemas.c:772
 msgid "empty names are not permitted"
 msgstr "ห้ามใช้ชื่อว่างเปล่า"
 
-#: ../gio/glib-compile-schemas.c:788
+#: ../gio/glib-compile-schemas.c:782
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
 msgstr "ชื่อ '%s' ใช้ไม่ได้: ชื่อต้องขี้นต้นด้วยตัวพิมพ์เล็ก"
 
-#: ../gio/glib-compile-schemas.c:800
+#: ../gio/glib-compile-schemas.c:794
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
@@ -1337,36 +1531,36 @@ msgstr ""
 "ชื่อ '%s' ใช้ไม่ได้: อักขระ '%c' ใช้ไม่ได้ ใช้ได้เฉพาะตัวพิมพ์เล็ก, ตัวเลข และยัติภังค์ ('-') "
 "เท่านั้น"
 
-#: ../gio/glib-compile-schemas.c:809
+#: ../gio/glib-compile-schemas.c:803
 #, c-format
 msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
 msgstr "ชื่อ '%s' ใช้ไม่ได้: ใช้ยัติภังค์สองตัวติดกัน ('--') ไม่ได้"
 
-#: ../gio/glib-compile-schemas.c:818
+#: ../gio/glib-compile-schemas.c:812
 #, c-format
 msgid "invalid name '%s': the last character may not be a hyphen ('-')."
 msgstr "ชื่อ '%s' ใข้ไม่ได้: อักขระสุดท้ายจะเป็นยัติภังค์ ('-') ไม่ได้"
 
-#: ../gio/glib-compile-schemas.c:826
+#: ../gio/glib-compile-schemas.c:820
 #, c-format
 msgid "invalid name '%s': maximum length is 1024"
 msgstr "ชื่อ '%s' ใช้ไม่ได้: ความยาวสูงสุดคือ 1024"
 
-#: ../gio/glib-compile-schemas.c:895
+#: ../gio/glib-compile-schemas.c:889
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> ถูกระบุไปแล้ว"
 
-#: ../gio/glib-compile-schemas.c:921
+#: ../gio/glib-compile-schemas.c:915
 msgid "cannot add keys to a 'list-of' schema"
 msgstr "ไม่สามารถเพิ่มคีย์ใน schema 'list-of'"
 
-#: ../gio/glib-compile-schemas.c:932
+#: ../gio/glib-compile-schemas.c:926
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> ถูกระบุไปแล้ว"
 
-#: ../gio/glib-compile-schemas.c:950
+#: ../gio/glib-compile-schemas.c:944
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -1375,69 +1569,69 @@ msgstr ""
 "<key name='%s'> ทับซ้อนกับ <key name='%s'> ใน <schema id='%s'>; ใช้ <override> "
 "หากต้องการเปลี่ยนค่า"
 
-#: ../gio/glib-compile-schemas.c:961
+#: ../gio/glib-compile-schemas.c:955
 #, c-format
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr "ต้องระบุ 'type', 'enum' หรือ 'flags' อย่างใดอย่างหนึ่ง ให้เป็นแอตทริบิวต์ของ <key>"
 
-#: ../gio/glib-compile-schemas.c:980
+#: ../gio/glib-compile-schemas.c:974
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> (ยัง) ไม่ได้กำหนด"
 
-#: ../gio/glib-compile-schemas.c:995
+#: ../gio/glib-compile-schemas.c:989
 #, c-format
 msgid "invalid GVariant type string '%s'"
 msgstr "สตริงระบุชนิดของ GVariant '%s' ใช้การไม่ได้"
 
-#: ../gio/glib-compile-schemas.c:1025
+#: ../gio/glib-compile-schemas.c:1019
 msgid "<override> given but schema isn't extending anything"
 msgstr "มี <override> แต่ schema ไม่ได้ขยายสิ่งใดเลย"
 
-#: ../gio/glib-compile-schemas.c:1038
+#: ../gio/glib-compile-schemas.c:1032
 #, c-format
 msgid "no <key name='%s'> to override"
 msgstr "ไม่มี <key name='%s'> ที่จะทับค่า"
 
-#: ../gio/glib-compile-schemas.c:1046
+#: ../gio/glib-compile-schemas.c:1040
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "มีการระบุ <override name='%s'> ไปแล้ว"
 
-#: ../gio/glib-compile-schemas.c:1117
+#: ../gio/glib-compile-schemas.c:1111
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "มีการระบุ <schema id='%s'> ไปแล้ว"
 
-#: ../gio/glib-compile-schemas.c:1129
+#: ../gio/glib-compile-schemas.c:1123
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> ขยาย schema '%s' ที่ยังไม่มีอยู่"
 
-#: ../gio/glib-compile-schemas.c:1145
+#: ../gio/glib-compile-schemas.c:1139
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr "<schema id='%s'> เป็นลิสต์ของ '%s' ที่ยังไม่มีอยู่"
 
-#: ../gio/glib-compile-schemas.c:1153
+#: ../gio/glib-compile-schemas.c:1147
 #, c-format
 msgid "Can not be a list of a schema with a path"
 msgstr "ไม่สามารถเป็นลิสต์ของ schema ที่มีพาธ"
 
-#: ../gio/glib-compile-schemas.c:1163
+#: ../gio/glib-compile-schemas.c:1157
 #, c-format
 msgid "Can not extend a schema with a path"
 msgstr "ไม่สามารถขยาย schema ที่มีพาธ"
 
-#: ../gio/glib-compile-schemas.c:1173
+#: ../gio/glib-compile-schemas.c:1167
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr "<schema id='%s'> เป็นลิสต์ แต่ขยาย <schema id='%s'> ซึ่งไม่ใช่ลิสต์"
 
-#: ../gio/glib-compile-schemas.c:1183
+#: ../gio/glib-compile-schemas.c:1177
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
@@ -1446,72 +1640,72 @@ msgstr ""
 "<schema id='%s' list-of='%s'> ขยาย <schema id='%s' list-of='%s'> แต่ '%s' "
 "ไม่ได้ขยาย '%s'"
 
-#: ../gio/glib-compile-schemas.c:1200
+#: ../gio/glib-compile-schemas.c:1194
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
 msgstr "ถ้ามีการกำหนดพาธ พาธจะต้องขึ้นต้นและลงท้ายด้วยขีดทับ"
 
-#: ../gio/glib-compile-schemas.c:1207
+#: ../gio/glib-compile-schemas.c:1201
 #, c-format
 msgid "the path of a list must end with ':/'"
 msgstr "พาธของลิสต์ต้องลงท้ายด้วย ':/'"
 
-#: ../gio/glib-compile-schemas.c:1239
+#: ../gio/glib-compile-schemas.c:1233
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "มีการระบุ <%s id='%s'> ไปแล้ว"
 
-#: ../gio/glib-compile-schemas.c:1463
+#: ../gio/glib-compile-schemas.c:1457
 #, c-format
 msgid "Element <%s> not allowed at the top level"
 msgstr "อิลิเมนต์ <%s> ไม่สามารถอยู่ที่ระดับบนสุดได้"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1757 ../gio/glib-compile-schemas.c:1828
-#: ../gio/glib-compile-schemas.c:1904
+#: ../gio/glib-compile-schemas.c:1752 ../gio/glib-compile-schemas.c:1823
+#: ../gio/glib-compile-schemas.c:1899
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "มีการระบุ --strict ดังนั้นจะจบการทำงานตรงนี้\n"
 
-#: ../gio/glib-compile-schemas.c:1765
+#: ../gio/glib-compile-schemas.c:1760
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "จะละเลยแฟ้มนี้ทั้งแฟ้ม\n"
 
-#: ../gio/glib-compile-schemas.c:1824
+#: ../gio/glib-compile-schemas.c:1819
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "จะละเลยแฟ้มนี้\n"
 
-#: ../gio/glib-compile-schemas.c:1864
+#: ../gio/glib-compile-schemas.c:1859
 #, c-format
 msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr "ไม่มีคีย์ '%s' ใน schema '%s' ตามที่ระบุในแฟ้มทับค่า '%s'"
 
-#: ../gio/glib-compile-schemas.c:1870 ../gio/glib-compile-schemas.c:1928
-#: ../gio/glib-compile-schemas.c:1956
+#: ../gio/glib-compile-schemas.c:1865 ../gio/glib-compile-schemas.c:1923
+#: ../gio/glib-compile-schemas.c:1951
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "; จะละเลยการทับค่าสำหรับคีย์นี้\n"
 
-#: ../gio/glib-compile-schemas.c:1874 ../gio/glib-compile-schemas.c:1932
-#: ../gio/glib-compile-schemas.c:1960
+#: ../gio/glib-compile-schemas.c:1869 ../gio/glib-compile-schemas.c:1927
+#: ../gio/glib-compile-schemas.c:1955
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr " และมีการระบุ --strict ดังนั้นจะจบการทำงานตรงนี้\n"
 
-#: ../gio/glib-compile-schemas.c:1890
+#: ../gio/glib-compile-schemas.c:1885
 #, c-format
 msgid ""
 "error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr "เกิดข้อผิดพลาดขณะแจงคีย์ '%s' ใน schema '%s' ตามที่ระบุในแฟ้มทับค่า '%s': %s"
 
-#: ../gio/glib-compile-schemas.c:1900
+#: ../gio/glib-compile-schemas.c:1895
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "จะละเลยการทับค่าสำหรับคีย์นี้\n"
 
-#: ../gio/glib-compile-schemas.c:1918
+#: ../gio/glib-compile-schemas.c:1913
 #, c-format
 msgid ""
 "override for key '%s' in schema '%s' in override file '%s' is outside the "
@@ -1519,7 +1713,7 @@ msgid ""
 msgstr ""
 "การทับค่าสำหรับคีย์ '%s' ใน schema '%s' ในแฟ้มทับค่า '%s' อยู่นอกช่วงที่กำหนดใน schema"
 
-#: ../gio/glib-compile-schemas.c:1946
+#: ../gio/glib-compile-schemas.c:1941
 #, c-format
 msgid ""
 "override for key '%s' in schema '%s' in override file '%s' is not in the "
@@ -1527,23 +1721,23 @@ msgid ""
 msgstr ""
 "การทับค่าสำหรับคีย์ '%s' ใน schema '%s' ในแฟ้มทับค่า '%s' ไม่อยู่ในรายชื่อของตัวเลือกที่ใช้ได้"
 
-#: ../gio/glib-compile-schemas.c:1999
+#: ../gio/glib-compile-schemas.c:1994
 msgid "where to store the gschemas.compiled file"
 msgstr "ตำแหน่งที่จะเก็บแฟ้ม gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:2000
+#: ../gio/glib-compile-schemas.c:1995
 msgid "Abort on any errors in schemas"
 msgstr "ล้มเลิกการทำงานเมื่อพบข้อผิดพลาดใดๆ ใน schema"
 
-#: ../gio/glib-compile-schemas.c:2001
+#: ../gio/glib-compile-schemas.c:1996
 msgid "Do not write the gschema.compiled file"
 msgstr "ไม่ต้องเขียนแฟ้ม gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:2002
+#: ../gio/glib-compile-schemas.c:1997
 msgid "Do not enforce key name restrictions"
 msgstr "ไม่ต้องบังคับใช้ข้อกำหนดของชื่อคีย์"
 
-#: ../gio/glib-compile-schemas.c:2031
+#: ../gio/glib-compile-schemas.c:2026
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -1553,462 +1747,459 @@ msgstr ""
 "แฟ้ม schema ต้องมีนามสกุลเป็น .gschema.xml\n"
 "และแฟ้มแคชจะมีชื่อเป็น gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:2047
+#: ../gio/glib-compile-schemas.c:2042
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "คุณต้องระบุชื่อไดเรกทอรีชื่อเดียว\n"
 
-#: ../gio/glib-compile-schemas.c:2086
+#: ../gio/glib-compile-schemas.c:2081
 #, c-format
 msgid "No schema files found: "
 msgstr "ไม่พบแฟ้ม schema: "
 
-#: ../gio/glib-compile-schemas.c:2089
+#: ../gio/glib-compile-schemas.c:2084
 #, c-format
 msgid "doing nothing.\n"
 msgstr "ไม่ทำอะไร\n"
 
-#: ../gio/glib-compile-schemas.c:2092
+#: ../gio/glib-compile-schemas.c:2087
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "ลบแฟ้มผลลัพธ์ที่มีอยู่ทิ้งแล้ว\n"
 
-#: ../gio/glocaldirectorymonitor.c:252
+#: ../gio/glocaldirectorymonitor.c:224
 msgid "Unable to find default local directory monitor type"
 msgstr "ไม่สามารถหาชนิดปริยายของการเฝ้ามองไดเรกทอรีในเครื่อง"
 
-#: ../gio/glocalfile.c:602 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:604 ../gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "ชื่อแฟ้ม %s ผิดรูปแบบ"
 
-#: ../gio/glocalfile.c:979
+#: ../gio/glocalfile.c:981
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลของระบบแฟ้ม: %s"
 
-#: ../gio/glocalfile.c:1147
+#: ../gio/glocalfile.c:1149
 msgid "Can't rename root directory"
 msgstr "ไม่สามารถเปลี่ยนชื่อไดเรกทอรีราก"
 
-#: ../gio/glocalfile.c:1167 ../gio/glocalfile.c:1193
+#: ../gio/glocalfile.c:1169 ../gio/glocalfile.c:1195
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเปลี่ยนชื่อแฟ้ม: %s"
 
-#: ../gio/glocalfile.c:1176
+#: ../gio/glocalfile.c:1178
 msgid "Can't rename file, filename already exists"
 msgstr "ไม่สามารถเปลี่ยนชื่อแฟ้ม เนื่องจากมีแฟ้มชื่อเดียวกันอยู่ก่อนแล้ว"
 
-#: ../gio/glocalfile.c:1189 ../gio/glocalfile.c:2206 ../gio/glocalfile.c:2235
-#: ../gio/glocalfile.c:2395 ../gio/glocalfileoutputstream.c:553
+#: ../gio/glocalfile.c:1191 ../gio/glocalfile.c:2210 ../gio/glocalfile.c:2239
+#: ../gio/glocalfile.c:2399 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "ชื่อแฟ้มผิดรูปแบบ"
 
-#: ../gio/glocalfile.c:1356 ../gio/glocalfile.c:1380
+#: ../gio/glocalfile.c:1358 ../gio/glocalfile.c:1382
 msgid "Can't open directory"
 msgstr "ไม่สามารถเปิดไดเรกทอรี"
 
-#: ../gio/glocalfile.c:1364
+#: ../gio/glocalfile.c:1366
 #, c-format
 msgid "Error opening file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม: %s"
 
-#: ../gio/glocalfile.c:1505
+#: ../gio/glocalfile.c:1507
 #, c-format
 msgid "Error removing file: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้ม: %s"
 
-#: ../gio/glocalfile.c:1885
+#: ../gio/glocalfile.c:1887
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "เกิดข้อผิดพลาดขณะทิ้งแฟ้มลงถังขยะ: %s"
 
-#: ../gio/glocalfile.c:1908
+#: ../gio/glocalfile.c:1910
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "สร้างไดเรกทอรีถังขยะ '%s' ไม่สำเร็จ: %s"
 
-#: ../gio/glocalfile.c:1929
+#: ../gio/glocalfile.c:1931
 msgid "Unable to find toplevel directory for trash"
 msgstr "หาไดเรกทอรีระดับบนสุดสำหรับถังขยะไม่สำเร็จ"
 
-#: ../gio/glocalfile.c:2008 ../gio/glocalfile.c:2028
+#: ../gio/glocalfile.c:2010 ../gio/glocalfile.c:2030
 msgid "Unable to find or create trash directory"
 msgstr "หาหรือสร้างไดเรกทอรีถังขยะไม่สำเร็จ"
 
-#: ../gio/glocalfile.c:2062
+#: ../gio/glocalfile.c:2064
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "สร้างแฟ้มข้อมูลการทิ้งขยะไม่สำเร็จ: %s"
 
-#: ../gio/glocalfile.c:2091 ../gio/glocalfile.c:2096 ../gio/glocalfile.c:2176
-#: ../gio/glocalfile.c:2183
+#: ../gio/glocalfile.c:2095 ../gio/glocalfile.c:2100 ../gio/glocalfile.c:2180
+#: ../gio/glocalfile.c:2187
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "ทิ้งแฟ้มลงถังขยะไม่สำเร็จ: %s"
 
-#: ../gio/glocalfile.c:2184 ../glib/gregex.c:280
+#: ../gio/glocalfile.c:2188 ../glib/gregex.c:280
 msgid "internal error"
 msgstr "ข้อผิดพลาดภายใน"
 
-#: ../gio/glocalfile.c:2210
+#: ../gio/glocalfile.c:2214
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้างไดเรกทอรี: %s"
 
-#: ../gio/glocalfile.c:2239
+#: ../gio/glocalfile.c:2243
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "ระบบแฟ้มไม่รองรับลิงก์สัญลักษณ์"
 
-#: ../gio/glocalfile.c:2243
+#: ../gio/glocalfile.c:2247
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้างลิงก์สัญลักษณ์: %s"
 
-#: ../gio/glocalfile.c:2305 ../gio/glocalfile.c:2399
+#: ../gio/glocalfile.c:2309 ../gio/glocalfile.c:2403
 #, c-format
 msgid "Error moving file: %s"
 msgstr "เกิดข้อผิดพลาดขณะย้ายแฟ้ม: %s"
 
-#: ../gio/glocalfile.c:2328
+#: ../gio/glocalfile.c:2332
 msgid "Can't move directory over directory"
 msgstr "ไม่สามารถย้ายไดเรกทอรีทับไดเรกทอรี"
 
-#: ../gio/glocalfile.c:2355 ../gio/glocalfileoutputstream.c:929
-#: ../gio/glocalfileoutputstream.c:943 ../gio/glocalfileoutputstream.c:958
-#: ../gio/glocalfileoutputstream.c:974 ../gio/glocalfileoutputstream.c:988
+#: ../gio/glocalfile.c:2359 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
+#: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
 msgid "Backup file creation failed"
 msgstr "สร้างแฟ้มสำรองไม่สำเร็จ"
 
-#: ../gio/glocalfile.c:2374
+#: ../gio/glocalfile.c:2378
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มปลายทาง: %s"
 
-#: ../gio/glocalfile.c:2388
+#: ../gio/glocalfile.c:2392
 msgid "Move between mounts not supported"
 msgstr "ไม่รองรับการย้ายแฟ้มข้ามอุปกรณ์"
 
-#: ../gio/glocalfileinfo.c:722
+#: ../gio/glocalfile.c:2603
+#, c-format
+msgid "Could not determine the disk usage of %s: %s"
+msgstr "ไม่สามารถพิจารณาการใช้เนื้อที่ดิสก์ของ %s: %s"
+
+#: ../gio/glocalfileinfo.c:721
 msgid "Attribute value must be non-NULL"
 msgstr "ค่าแอตทริบิวต์ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: ../gio/glocalfileinfo.c:729
+#: ../gio/glocalfileinfo.c:728
 msgid "Invalid attribute type (string expected)"
 msgstr "ชนิดของแอตทริบิวต์ใช้การไม่ได้ (ต้องการสตริง)"
 
-#: ../gio/glocalfileinfo.c:736
+#: ../gio/glocalfileinfo.c:735
 msgid "Invalid extended attribute name"
 msgstr "ชื่อแอตทริบิวต์ส่วนขยายเพิ่มใช้การไม่ได้"
 
-#: ../gio/glocalfileinfo.c:776
+#: ../gio/glocalfileinfo.c:775
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดแอตทริบิวต์ส่วนขยาย '%s': %s"
 
-#: ../gio/glocalfileinfo.c:1544
+#: ../gio/glocalfileinfo.c:1556
 msgid " (invalid encoding)"
 msgstr " (รหัสอักขระไม่ถูกต้อง)"
 
-#: ../gio/glocalfileinfo.c:1736 ../gio/glocalfileoutputstream.c:807
+#: ../gio/glocalfileinfo.c:1748 ../gio/glocalfileoutputstream.c:803
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลเกี่ยวกับแฟ้ม '%s': %s"
 
-#: ../gio/glocalfileinfo.c:1982
+#: ../gio/glocalfileinfo.c:1999
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลเกี่ยวกับ file descriptor: %s"
 
-#: ../gio/glocalfileinfo.c:2027
+#: ../gio/glocalfileinfo.c:2044
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint32)"
 
-#: ../gio/glocalfileinfo.c:2045
+#: ../gio/glocalfileinfo.c:2062
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการ uint64)"
 
-#: ../gio/glocalfileinfo.c:2064 ../gio/glocalfileinfo.c:2083
+#: ../gio/glocalfileinfo.c:2081 ../gio/glocalfileinfo.c:2100
 msgid "Invalid attribute type (byte string expected)"
 msgstr "ชนิดของแอตทริบิวต์ไม่ถูกต้อง (ต้องการสตริงของไบต์)"
 
-#: ../gio/glocalfileinfo.c:2118
+#: ../gio/glocalfileinfo.c:2135
 msgid "Cannot set permissions on symlinks"
 msgstr "ไม่สามารถกำหนดสิทธิ์ให้กับ symlink ได้"
 
-#: ../gio/glocalfileinfo.c:2134
+#: ../gio/glocalfileinfo.c:2151
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดสิทธิ์: %s"
 
-#: ../gio/glocalfileinfo.c:2185
+#: ../gio/glocalfileinfo.c:2202
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดเจ้าของ: %s"
 
-#: ../gio/glocalfileinfo.c:2208
+#: ../gio/glocalfileinfo.c:2225
 msgid "symlink must be non-NULL"
 msgstr "symlink ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: ../gio/glocalfileinfo.c:2218 ../gio/glocalfileinfo.c:2237
-#: ../gio/glocalfileinfo.c:2248
+#: ../gio/glocalfileinfo.c:2235 ../gio/glocalfileinfo.c:2254
+#: ../gio/glocalfileinfo.c:2265
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: %s"
 
-#: ../gio/glocalfileinfo.c:2227
+#: ../gio/glocalfileinfo.c:2244
 msgid "Error setting symlink: file is not a symlink"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด symlink: แฟ้มไม่ใช่ symlink"
 
-#: ../gio/glocalfileinfo.c:2353
+#: ../gio/glocalfileinfo.c:2370
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนดเวลาเปลี่ยนแปลงหรือเข้าถึง: %s"
 
-#: ../gio/glocalfileinfo.c:2376
+#: ../gio/glocalfileinfo.c:2393
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux context ต้องไม่ใช่ตัวชี้ศูนย์"
 
-#: ../gio/glocalfileinfo.c:2391
+#: ../gio/glocalfileinfo.c:2408
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "เกิดข้อผิดพลาดขณะกำหนด SELinux context: %s"
 
-#: ../gio/glocalfileinfo.c:2398
+#: ../gio/glocalfileinfo.c:2415
 msgid "SELinux is not enabled on this system"
 msgstr "ไม่ได้เปิดใช้งาน SELinux ในระบบนี้"
 
-#: ../gio/glocalfileinfo.c:2490
+#: ../gio/glocalfileinfo.c:2507
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "ไม่รองรับการกำหนดแอตทริบิวต์ %s"
 
-#: ../gio/glocalfileinputstream.c:172 ../gio/glocalfileoutputstream.c:698
+#: ../gio/glocalfileinputstream.c:168 ../gio/glocalfileoutputstream.c:694
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านข้อมูลจากแฟ้ม: %s"
 
-#: ../gio/glocalfileinputstream.c:203 ../gio/glocalfileinputstream.c:215
-#: ../gio/glocalfileinputstream.c:322 ../gio/glocalfileoutputstream.c:460
-#: ../gio/glocalfileoutputstream.c:1006
+#: ../gio/glocalfileinputstream.c:199 ../gio/glocalfileinputstream.c:211
+#: ../gio/glocalfileinputstream.c:225 ../gio/glocalfileinputstream.c:333
+#: ../gio/glocalfileoutputstream.c:456 ../gio/glocalfileoutputstream.c:1002
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเลื่อนตำแหน่งอ่านเขียนแฟ้ม: %s"
 
-#: ../gio/glocalfileinputstream.c:244 ../gio/glocalfileoutputstream.c:250
-#: ../gio/glocalfileoutputstream.c:344
+#: ../gio/glocalfileinputstream.c:255 ../gio/glocalfileoutputstream.c:246
+#: ../gio/glocalfileoutputstream.c:340
 #, c-format
 msgid "Error closing file: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิดแฟ้ม: %s"
 
-#: ../gio/glocalfilemonitor.c:176
+#: ../gio/glocalfilemonitor.c:145
 msgid "Unable to find default local file monitor type"
 msgstr "ไม่สามารถหาชนิดปริยายของการเฝ้ามองแฟ้มในเครื่อง"
 
-#: ../gio/glocalfileoutputstream.c:198 ../gio/glocalfileoutputstream.c:230
-#: ../gio/glocalfileoutputstream.c:719
+#: ../gio/glocalfileoutputstream.c:194 ../gio/glocalfileoutputstream.c:226
+#: ../gio/glocalfileoutputstream.c:715
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเขียนข้อมูลลงแฟ้ม: %s"
 
-#: ../gio/glocalfileoutputstream.c:277
+#: ../gio/glocalfileoutputstream.c:273
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มสำรองเก่า: %s"
 
-#: ../gio/glocalfileoutputstream.c:291 ../gio/glocalfileoutputstream.c:304
+#: ../gio/glocalfileoutputstream.c:287 ../gio/glocalfileoutputstream.c:300
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "เกิดข้อผิดพลาดขณะสร้างสำเนาสำรอง: %s"
 
-#: ../gio/glocalfileoutputstream.c:322
+#: ../gio/glocalfileoutputstream.c:318
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "เกิดข้อผิดพลาดขณะเปลี่ยนชื่อแฟ้มสำรอง: %s"
 
-#: ../gio/glocalfileoutputstream.c:506 ../gio/glocalfileoutputstream.c:1057
+#: ../gio/glocalfileoutputstream.c:502 ../gio/glocalfileoutputstream.c:1053
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "เกิดข้อผิดพลาดขณะตัดท้ายแฟ้มทิ้ง: %s"
 
-#: ../gio/glocalfileoutputstream.c:559 ../gio/glocalfileoutputstream.c:789
-#: ../gio/glocalfileoutputstream.c:1038
+#: ../gio/glocalfileoutputstream.c:555 ../gio/glocalfileoutputstream.c:785
+#: ../gio/glocalfileoutputstream.c:1034 ../gio/gsubprocess.c:361
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดแฟ้ม '%s': %s"
 
-#: ../gio/glocalfileoutputstream.c:820
+#: ../gio/glocalfileoutputstream.c:816
 msgid "Target file is a directory"
 msgstr "แฟ้มปลายทางเป็นไดเรกทอรี"
 
-#: ../gio/glocalfileoutputstream.c:825
+#: ../gio/glocalfileoutputstream.c:821
 msgid "Target file is not a regular file"
 msgstr "แฟ้มปลายทางไม่ใช่แฟ้มปกติ"
 
-#: ../gio/glocalfileoutputstream.c:837
+#: ../gio/glocalfileoutputstream.c:833
 msgid "The file was externally modified"
 msgstr "แฟ้มถูกแก้ไขโดยโปรแกรมอื่น"
 
-#: ../gio/glocalfileoutputstream.c:1022
+#: ../gio/glocalfileoutputstream.c:1018
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "เกิดข้อผิดพลาดขณะลบแฟ้มเดิม: %s"
 
-#: ../gio/gmemoryinputstream.c:473 ../gio/gmemoryoutputstream.c:736
+#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:771
 msgid "Invalid GSeekType supplied"
 msgstr "ได้รับค่า GSeekType ที่ใช้การไม่ได้"
 
-#: ../gio/gmemoryinputstream.c:483
+#: ../gio/gmemoryinputstream.c:481
 msgid "Invalid seek request"
 msgstr "คำสั่งเลื่อนตำแหน่งอ่านเขียนผิดเงื่อนไข"
 
-#: ../gio/gmemoryinputstream.c:507
+#: ../gio/gmemoryinputstream.c:505
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "ไม่สามารถตัดท้าย GMemoryInputStream ทิ้ง"
 
-#: ../gio/gmemoryoutputstream.c:541
+#: ../gio/gmemoryoutputstream.c:565
 msgid "Memory output stream not resizable"
 msgstr "สตรีมข้อมูลออกในหน่วยความจำไม่สามารถเปลี่ยนขนาดได้"
 
-#: ../gio/gmemoryoutputstream.c:557
+#: ../gio/gmemoryoutputstream.c:581
 msgid "Failed to resize memory output stream"
 msgstr "เปลี่ยนขนาดสตรีมข้อมูลออกในหน่วยความจำไม่สำเร็จ"
 
-#: ../gio/gmemoryoutputstream.c:645
+#: ../gio/gmemoryoutputstream.c:673
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr "ปริมาณหน่วยความจำที่ต้องการสำหรับการเขียนใหญ่เกินขอบเขตของแอดเดรสที่มี"
 
-#: ../gio/gmemoryoutputstream.c:746
+#: ../gio/gmemoryoutputstream.c:781
 msgid "Requested seek before the beginning of the stream"
 msgstr "มีการร้องขอให้เลื่อนตำแหน่งไปก่อนหน้าจุดเริ่มต้นของสตรีม"
 
-#: ../gio/gmemoryoutputstream.c:755
+#: ../gio/gmemoryoutputstream.c:796
 msgid "Requested seek beyond the end of the stream"
 msgstr "มีการร้องขอให้เลื่อนตำแหน่งเลยจุดสิ้นสุดของสตรีมออกไป"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement unmount.
-#: ../gio/gmount.c:395
+#: ../gio/gmount.c:393
 msgid "mount doesn't implement \"unmount\""
 msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง \"unmount\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
-#: ../gio/gmount.c:471
+#: ../gio/gmount.c:469
 msgid "mount doesn't implement \"eject\""
 msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง \"eject\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: ../gio/gmount.c:549
+#: ../gio/gmount.c:547
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง \"unmount\" หรือ \"unmount_with_operation\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gmount.c:634
+#: ../gio/gmount.c:632
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง \"eject\" หรือ \"eject_with_operation\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: ../gio/gmount.c:722
+#: ../gio/gmount.c:720
 msgid "mount doesn't implement \"remount\""
 msgstr "การเมานท์นี้ยังไม่รองรับคำสั่ง \"remount\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:803
+#: ../gio/gmount.c:801
 msgid "mount doesn't implement content type guessing"
 msgstr "การเมานท์นี้ยังไม่รองรับการเดาชนิดเนื้อหา"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:889
+#: ../gio/gmount.c:887
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "การเมานท์นี้ยังไม่รองรับการเดาชนิดเนื้อหาแบบซิงโครนัส"
 
-#: ../gio/gnetworkaddress.c:353
+#: ../gio/gnetworkaddress.c:351
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "ชื่อโฮสต์ '%s' มี '[' แต่ไม่มี ']'"
 
-#: ../gio/gnetworkmonitorbase.c:191 ../gio/gnetworkmonitorbase.c:294
+#: ../gio/gnetworkmonitorbase.c:189 ../gio/gnetworkmonitorbase.c:292
 msgid "Network unreachable"
 msgstr "ไม่สามารถติดต่อเครือข่ายได้"
 
-#: ../gio/gnetworkmonitorbase.c:229 ../gio/gnetworkmonitorbase.c:259
+#: ../gio/gnetworkmonitorbase.c:227 ../gio/gnetworkmonitorbase.c:257
 msgid "Host unreachable"
 msgstr "ไม่สามารถติดต่อโฮสต์ได้"
 
-#: ../gio/gnetworkmonitornetlink.c:97 ../gio/gnetworkmonitornetlink.c:109
-#: ../gio/gnetworkmonitornetlink.c:128
+#: ../gio/gnetworkmonitornetlink.c:96 ../gio/gnetworkmonitornetlink.c:108
+#: ../gio/gnetworkmonitornetlink.c:127
 #, c-format
 msgid "Could not create network monitor: %s"
 msgstr "ไม่สามารถสร้างตัวเฝ้าสังเกตเครือข่าย: %s"
 
-#: ../gio/gnetworkmonitornetlink.c:118
+#: ../gio/gnetworkmonitornetlink.c:117
 msgid "Could not create network monitor: "
 msgstr "ไม่สามารถสร้างตัวเฝ้าสังเกตเครือข่าย: "
 
-#: ../gio/gnetworkmonitornetlink.c:176
+#: ../gio/gnetworkmonitornetlink.c:175
 msgid "Could not get network status: "
 msgstr "ไม่สามารถอ่านสถานะของเครือข่ายได้: "
 
-#: ../gio/goutputstream.c:201 ../gio/goutputstream.c:453
+#: ../gio/goutputstream.c:209 ../gio/goutputstream.c:550
 msgid "Output stream doesn't implement write"
 msgstr "สตรีมข้อมูลออกยังไม่รองรับการเขียนข้อมูล"
 
-#: ../gio/goutputstream.c:414 ../gio/goutputstream.c:939
+#: ../gio/goutputstream.c:511 ../gio/goutputstream.c:1028
 msgid "Source stream is already closed"
 msgstr "สตรีมต้นทางถูกปิดไปแล้ว"
 
-#: ../gio/gresource.c:291 ../gio/gresource.c:539 ../gio/gresource.c:556
-#: ../gio/gresource.c:677 ../gio/gresource.c:746 ../gio/gresource.c:807
-#: ../gio/gresource.c:887 ../gio/gresourcefile.c:454
-#: ../gio/gresourcefile.c:555 ../gio/gresourcefile.c:657
+#: ../gio/gresource.c:289 ../gio/gresource.c:537 ../gio/gresource.c:554
+#: ../gio/gresource.c:675 ../gio/gresource.c:744 ../gio/gresource.c:805
+#: ../gio/gresource.c:885 ../gio/gresourcefile.c:452
+#: ../gio/gresourcefile.c:553 ../gio/gresourcefile.c:655
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "ไม่มีทรัพยากรอยู่ที่ '%s'"
 
-#: ../gio/gresource.c:456
+#: ../gio/gresource.c:454
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr "คลายบีบอัดทรัพยากรที่ '%s' ไม่สำเร็จ"
 
-#: ../gio/gresourcefile.c:653
+#: ../gio/gresourcefile.c:651
 #, c-format
 msgid "The resource at '%s' is not a directory"
 msgstr "ทรัพยากรที่ '%s' ไม่ใช่ไดเรกทอรี"
 
-#: ../gio/gresourcefile.c:861
+#: ../gio/gresourcefile.c:859
 msgid "Input stream doesn't implement seek"
 msgstr "สตรีมข้อมูลเข้ายังไม่รองรับการเลื่อนตำแหน่งอ่าน/เขียน"
 
-#: ../gio/gresource-tool.c:475 ../gio/gsettings-tool.c:542
-msgid "Print help"
-msgstr "แสดงวิธีใช้"
-
-#: ../gio/gresource-tool.c:476 ../gio/gresource-tool.c:544
-msgid "[COMMAND]"
-msgstr "[คำสั่ง]"
-
-#: ../gio/gresource-tool.c:481
+#: ../gio/gresource-tool.c:479
 msgid "List sections containing resources in an elf FILE"
 msgstr "แสดงรายชื่อหัวข้อย่อยที่บรรจุทรัพยากรในแฟ้ม ELF"
 
-#: ../gio/gresource-tool.c:487
+#: ../gio/gresource-tool.c:485
 msgid ""
 "List resources\n"
 "If SECTION is given, only list resources in this section\n"
@@ -2018,16 +2209,16 @@ msgstr ""
 "ถ้ามีการกำหนดหัวข้อ ก็จะแสดงเฉพาะทรัพยากรที่อยู่ในหัวข้อที่กำหนด\n"
 "ถ้ามีการกำหนดพาธ ก็จะแสดงเฉพาะทรัพยากรที่ตรงตามที่กำหนด"
 
-#: ../gio/gresource-tool.c:490 ../gio/gresource-tool.c:500
+#: ../gio/gresource-tool.c:488 ../gio/gresource-tool.c:498
 msgid "FILE [PATH]"
 msgstr "แฟ้ม [พาธ]"
 
-#: ../gio/gresource-tool.c:491 ../gio/gresource-tool.c:501
-#: ../gio/gresource-tool.c:508
+#: ../gio/gresource-tool.c:489 ../gio/gresource-tool.c:499
+#: ../gio/gresource-tool.c:506
 msgid "SECTION"
 msgstr "หัวข้อ"
 
-#: ../gio/gresource-tool.c:496
+#: ../gio/gresource-tool.c:494
 msgid ""
 "List resources with details\n"
 "If SECTION is given, only list resources in this section\n"
@@ -2039,24 +2230,15 @@ msgstr ""
 "ถ้ามีการกำหนดพาธ ก็จะแสดงเฉพาะทรัพยากรที่ตรงตามที่กำหนด\n"
 "รายละเอียดที่แสดง ได้แก่ หัวข้อ, ขนาด และการบีบอัด เป็นต้น"
 
-#: ../gio/gresource-tool.c:506
+#: ../gio/gresource-tool.c:504
 msgid "Extract a resource file to stdout"
 msgstr "แตกแฟ้มทรัพยากรออกทางเอาต์พุตมาตรฐาน"
 
-#: ../gio/gresource-tool.c:507
+#: ../gio/gresource-tool.c:505
 msgid "FILE PATH"
 msgstr "แฟ้ม พาธ"
 
-#: ../gio/gresource-tool.c:513 ../gio/gsettings-tool.c:628
-#, c-format
-msgid ""
-"Unknown command %s\n"
-"\n"
-msgstr ""
-"ไม่รู้จักคำสั่ง %s\n"
-"\n"
-
-#: ../gio/gresource-tool.c:521
+#: ../gio/gresource-tool.c:519
 msgid ""
 "Usage:\n"
 "  gresource [--section SECTION] COMMAND [ARGS...]\n"
@@ -2084,7 +2266,7 @@ msgstr ""
 "เรียก 'gresource help คำสั่ง' เพื่อดูวิธีใช้อย่างละเอียด\n"
 "\n"
 
-#: ../gio/gresource-tool.c:535
+#: ../gio/gresource-tool.c:533
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2099,23 +2281,19 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:538 ../gio/gsettings-tool.c:661
-msgid "Arguments:\n"
-msgstr "อาร์กิวเมนต์:\n"
-
-#: ../gio/gresource-tool.c:542
+#: ../gio/gresource-tool.c:540
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  หัวข้อ      ชื่อหัวข้อ ELF (ระบุหรือไม่ก็ได้)\n"
 
-#: ../gio/gresource-tool.c:546 ../gio/gsettings-tool.c:668
+#: ../gio/gresource-tool.c:544 ../gio/gsettings-tool.c:635
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  คำสั่ง      คำสั่งที่ต้องการให้อธิบาย (ระบุหรือไม่ก็ได้)\n"
 
-#: ../gio/gresource-tool.c:552
+#: ../gio/gresource-tool.c:550
 msgid "  FILE      An elf file (a binary or a shared library)\n"
 msgstr "  แฟ้ม       แฟ้ม ELF (ไบนารีหรือไลบรารีใช้ร่วม)\n"
 
-#: ../gio/gresource-tool.c:555
+#: ../gio/gresource-tool.c:553
 msgid ""
 "  FILE      An elf file (a binary or a shared library)\n"
 "            or a compiled resource file\n"
@@ -2123,98 +2301,89 @@ msgstr ""
 "  แฟ้ม       แฟ้ม ELF (ไบนารีหรือไลบรารีใช้ร่วม)\n"
 "            หรือทรัพยากรที่คอมไพล์แล้ว\n"
 
-#: ../gio/gresource-tool.c:559
+#: ../gio/gresource-tool.c:557
 msgid "[PATH]"
 msgstr "[พาธ]"
 
-#: ../gio/gresource-tool.c:561
+#: ../gio/gresource-tool.c:559
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  พาธ       พาธของทรัพยากร (ระบุหรือไม่ก็ได้) (อาจระบุเพียงบางส่วนก็ได้)\n"
 
-#: ../gio/gresource-tool.c:562
+#: ../gio/gresource-tool.c:560
 msgid "PATH"
 msgstr "พาธ"
 
-#: ../gio/gresource-tool.c:564
+#: ../gio/gresource-tool.c:562
 msgid "  PATH      A resource path\n"
 msgstr "  พาธ       พาธของทรัพยากร\n"
 
-#: ../gio/gsettings-tool.c:57 ../gio/gsettings-tool.c:78
+#: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "ไม่มี schema '%s'\n"
 
-#: ../gio/gsettings-tool.c:63
+#: ../gio/gsettings-tool.c:57
 #, c-format
 msgid "Schema '%s' is not relocatable (path must not be specified)\n"
 msgstr "schema '%s' ไม่สามารถย้ายที่ได้ (ต้องไม่ระบุพาธ)\n"
 
-#: ../gio/gsettings-tool.c:84
+#: ../gio/gsettings-tool.c:78
 #, c-format
 msgid "Schema '%s' is relocatable (path must be specified)\n"
 msgstr "schema '%s' สามารถย้ายที่ได้ (ต้องระบุพาธ)\n"
 
-#: ../gio/gsettings-tool.c:98
+#: ../gio/gsettings-tool.c:92
 #, c-format
 msgid "Empty path given.\n"
 msgstr "พาธที่กำหนดมาว่างเปล่า\n"
 
-#: ../gio/gsettings-tool.c:104
+#: ../gio/gsettings-tool.c:98
 #, c-format
 msgid "Path must begin with a slash (/)\n"
 msgstr "พาธต้องขึ้นต้นด้วยขีดทับ (/)\n"
 
-#: ../gio/gsettings-tool.c:110
+#: ../gio/gsettings-tool.c:104
 #, c-format
 msgid "Path must end with a slash (/)\n"
 msgstr "พาธต้องลงท้ายด้วยขีดทับ (/)\n"
 
-#: ../gio/gsettings-tool.c:116
+#: ../gio/gsettings-tool.c:110
 #, c-format
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "พาธต้องไม่มีขีดทับสองตัวติดกัน (//)\n"
 
-#: ../gio/gsettings-tool.c:137
-#, c-format
-msgid "No such key '%s'\n"
-msgstr "ไม่มีคีย์ '%s'\n"
-
-#: ../gio/gsettings-tool.c:511
+#: ../gio/gsettings-tool.c:477
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "ค่าที่กำหนดมาอยู่นอกช่วงที่ใช้ได้\n"
 
-#: ../gio/gsettings-tool.c:518
+#: ../gio/gsettings-tool.c:484
 #, c-format
 msgid "The key is not writable\n"
 msgstr "คีย์นี้ไม่สามารถเขียนได้\n"
 
-#: ../gio/gsettings-tool.c:548
-msgid "Print version information and exit"
-msgstr "แสดงรุ่นของโปรแกรมแล้วจบการทำงาน"
-
-#: ../gio/gsettings-tool.c:554
+#: ../gio/gsettings-tool.c:520
 msgid "List the installed (non-relocatable) schemas"
 msgstr "แสดงรายชื่อ schema (ที่ย้ายที่ไม่ได้) ที่ติดตั้งไว้"
 
-#: ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:526
 msgid "List the installed relocatable schemas"
 msgstr "แสดงรายชื่อ schema ที่ย้ายที่ได้ที่ติดตั้งไว้"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:532
 msgid "List the keys in SCHEMA"
 msgstr "แสดงคีย์ต่างๆ ใน SCHEMA"
 
-#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
-#: ../gio/gsettings-tool.c:610
+#: ../gio/gsettings-tool.c:533 ../gio/gsettings-tool.c:539
+#: ../gio/gsettings-tool.c:576
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMA[:PATH]"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:538
 msgid "List the children of SCHEMA"
 msgstr "แสดงโหนดลูกต่างๆ ของ SCHEMA"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:544
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2222,44 +2391,44 @@ msgstr ""
 "แสดงคีย์และค่าต่างๆ แบบไล่ลงทุกลำดับชั้น\n"
 "ถ้าไม่ระบุ SCHEMA ก็จะแสดงคีย์ทั้งหมด\n"
 
-#: ../gio/gsettings-tool.c:580
+#: ../gio/gsettings-tool.c:546
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SCHEMA[:PATH]]"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:551
 msgid "Get the value of KEY"
 msgstr "อ่านค่าของ KEY"
 
-#: ../gio/gsettings-tool.c:586 ../gio/gsettings-tool.c:592
-#: ../gio/gsettings-tool.c:604 ../gio/gsettings-tool.c:616
+#: ../gio/gsettings-tool.c:552 ../gio/gsettings-tool.c:558
+#: ../gio/gsettings-tool.c:570 ../gio/gsettings-tool.c:582
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:PATH] KEY"
 
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:557
 msgid "Query the range of valid values for KEY"
 msgstr "สอบถามช่วงของค่าต่างๆ ที่ใช้ได้สำหรับ KEY"
 
-#: ../gio/gsettings-tool.c:597
+#: ../gio/gsettings-tool.c:563
 msgid "Set the value of KEY to VALUE"
 msgstr "กำหนดค่าของ KEY ให้เป็น VALUE"
 
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:564
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMA[:PATH] KEY VALUE"
 
-#: ../gio/gsettings-tool.c:603
+#: ../gio/gsettings-tool.c:569
 msgid "Reset KEY to its default value"
 msgstr "ล้างค่า KEY ให้เป็นค่าปริยาย"
 
-#: ../gio/gsettings-tool.c:609
+#: ../gio/gsettings-tool.c:575
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "ล้างค่า KEY ทั้งหมดใน SCHEMA ให้เป็นค่าปริยาย"
 
-#: ../gio/gsettings-tool.c:615
+#: ../gio/gsettings-tool.c:581
 msgid "Check if KEY is writable"
 msgstr "ตรวจสอบว่า KEY สามารถเขียนได้หรือไม่"
 
-#: ../gio/gsettings-tool.c:621
+#: ../gio/gsettings-tool.c:587
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2269,13 +2438,14 @@ msgstr ""
 "ถ้าไม่ระบุ KEY ก็จะเฝ้าสังเกตทุกคีย์ใน SCHEMA\n"
 "กด ^C เมื่อต้องการหยุดเฝ้าสังเกต\n"
 
-#: ../gio/gsettings-tool.c:624
+#: ../gio/gsettings-tool.c:590
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
-#: ../gio/gsettings-tool.c:636
+#: ../gio/gsettings-tool.c:602
 msgid ""
 "Usage:\n"
+"  gsettings --version\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
 "\n"
 "Commands:\n"
@@ -2297,6 +2467,7 @@ msgid ""
 "\n"
 msgstr ""
 "วิธีใช้:\n"
+"  gsettings --version\n"
 "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
 "\n"
 "คำสั่ง:\n"
@@ -2314,10 +2485,10 @@ msgstr ""
 "  writable                  ตรวจสอบว่าคีย์สามารถเขียนได้หรือไม่\n"
 "  monitor                   เฝ้าสังเกตการเปลี่ยนแปลง\n"
 "\n"
-"เรียก 'gsettings help คำสั่ง' เพื่อดูวิธีใช้อย่างละเอียด\n"
+"เรียก 'gsettings help <คำสั่ง>' เพื่อดูวิธีใช้อย่างละเอียด\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:658
+#: ../gio/gsettings-tool.c:625
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2332,11 +2503,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:664
+#: ../gio/gsettings-tool.c:631
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SCHEMADIR ไดเรกทอรีที่จะค้นหา schema เพิ่มเติม\n"
 
-#: ../gio/gsettings-tool.c:672
+#: ../gio/gsettings-tool.c:639
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2344,27 +2515,32 @@ msgstr ""
 "  SCHEMA    ชื่อของ schema\n"
 "  PATH      พาธ สำหรับ schema ที่ย้ายที่ได้\n"
 
-#: ../gio/gsettings-tool.c:677
+#: ../gio/gsettings-tool.c:644
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY       คีย์ใน schema (ระบุหรือไม่ก็ได้)\n"
 
-#: ../gio/gsettings-tool.c:681
+#: ../gio/gsettings-tool.c:648
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       คีย์ใน schema\n"
 
-#: ../gio/gsettings-tool.c:685
+#: ../gio/gsettings-tool.c:652
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     ค่าที่จะกำหนด\n"
 
-#: ../gio/gsettings-tool.c:744
+#: ../gio/gsettings-tool.c:707
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "ไม่สามารถโหลด schema จาก %s: %s\n"
 
-#: ../gio/gsettings-tool.c:806
+#: ../gio/gsettings-tool.c:769
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "ชื่อ schema ที่กำหนดมาว่างเปล่า\n"
+
+#: ../gio/gsettings-tool.c:798
+#, c-format
+msgid "No such key '%s'\n"
+msgstr "ไม่มีคีย์ '%s'\n"
 
 #: ../gio/gsocket.c:312
 msgid "Invalid socket, not initialized"
@@ -2379,7 +2555,7 @@ msgstr "ซ็อกเก็ตผิดพลาด ตั้งค่าเ�
 msgid "Socket is already closed"
 msgstr "ซ็อกเก็ตถูกปิดไปแล้ว"
 
-#: ../gio/gsocket.c:335 ../gio/gsocket.c:3510 ../gio/gsocket.c:3565
+#: ../gio/gsocket.c:335 ../gio/gsocket.c:3622 ../gio/gsocket.c:3677
 msgid "Socket I/O timed out"
 msgstr "การอ่าน/เขียนซ็อกเก็ตหมดเวลาคอย"
 
@@ -2401,286 +2577,286 @@ msgstr "มีการระบุ family ที่ไม่รู้จัก"
 msgid "Unknown protocol was specified"
 msgstr "มีการระบุโพรโทคอลที่ไม่รู้จัก"
 
-#: ../gio/gsocket.c:1727
+#: ../gio/gsocket.c:1729
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ไม่สามารถหาที่อยู่ฝั่งนี้ได้: %s"
 
-#: ../gio/gsocket.c:1770
+#: ../gio/gsocket.c:1772
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "ไม่สามารถหาที่อยู่ฝั่งโน้นได้: %s"
 
-#: ../gio/gsocket.c:1831
+#: ../gio/gsocket.c:1833
 #, c-format
 msgid "could not listen: %s"
 msgstr "ไม่สามารถ listen: %s"
 
-#: ../gio/gsocket.c:1903
+#: ../gio/gsocket.c:1932
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "เกิดข้อผิดพลาดขณะ bind กับที่อยู่: %s"
 
-#: ../gio/gsocket.c:1956 ../gio/gsocket.c:1993
+#: ../gio/gsocket.c:2044 ../gio/gsocket.c:2081
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "เกิดข้อผิดพลาดขณะเข้าร่วมกลุ่มมัลติแคสต์: %s"
 
-#: ../gio/gsocket.c:1957 ../gio/gsocket.c:1994
+#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "เกิดข้อผิดพลาดขณะออกจากกลุ่มมัลติแคสต์: %s"
 
-#: ../gio/gsocket.c:1958
+#: ../gio/gsocket.c:2046
 msgid "No support for source-specific multicast"
 msgstr "ไม่รองรับมัลติแคสต์แบบเจาะจงแหล่ง"
 
-#: ../gio/gsocket.c:2177
+#: ../gio/gsocket.c:2265
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "เกิดข้อผิดพลาดขณะรับการเชื่อมต่อ: %s"
 
-#: ../gio/gsocket.c:2298
+#: ../gio/gsocket.c:2386
 msgid "Connection in progress"
 msgstr "กำลังอยู่ระหว่างเชื่อมต่อ"
 
-#: ../gio/gsocket.c:2345
+#: ../gio/gsocket.c:2433
 msgid "Unable to get pending error: "
 msgstr "อ่านข้อผิดพลาดที่คั่งค้างอยู่ไม่สำเร็จ: "
 
-#: ../gio/gsocket.c:2511
+#: ../gio/gsocket.c:2619
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "เกิดข้อผิดพลาดขณะรับข้อมูล: %s"
 
-#: ../gio/gsocket.c:2689
+#: ../gio/gsocket.c:2797
 #, c-format
 msgid "Error sending data: %s"
 msgstr "เกิดข้อผิดพลาดขณะส่งข้อมูล: %s"
 
-#: ../gio/gsocket.c:2803
+#: ../gio/gsocket.c:2911
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "ปิดการทำงานซ็อกเก็ตไม่สำเร็จ: %s"
 
-#: ../gio/gsocket.c:2882
+#: ../gio/gsocket.c:2990
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิดซ็อกเก็ต: %s"
 
-#: ../gio/gsocket.c:3503
+#: ../gio/gsocket.c:3615
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "กำลังรอเงื่อนไขของซ็อกเก็ต: %s"
 
-#: ../gio/gsocket.c:3781 ../gio/gsocket.c:3862
+#: ../gio/gsocket.c:3893 ../gio/gsocket.c:3974
 #, c-format
 msgid "Error sending message: %s"
 msgstr "เกิดข้อผิดพลาดขณะส่งข้อความ: %s"
 
-#: ../gio/gsocket.c:3806
+#: ../gio/gsocket.c:3918
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "ไม่รองรับ GSocketControlMessage บนวินโดวส์"
 
-#: ../gio/gsocket.c:4140 ../gio/gsocket.c:4275
+#: ../gio/gsocket.c:4252 ../gio/gsocket.c:4387
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "เกิดข้อผิดพลาดขณะรับข้อความ: %s"
 
-#: ../gio/gsocket.c:4357
+#: ../gio/gsocket.c:4492
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "อ่านข้อมูลลับของซ็อกเก็ตไม่สำเร็จ: %s"
 
-#: ../gio/gsocket.c:4376
+#: ../gio/gsocket.c:4501
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "ยังไม่รองรับ g_socket_get_credentials สำหรับระบบปฏิบัติการนี้"
 
-#: ../gio/gsocketclient.c:177
+#: ../gio/gsocketclient.c:176
 #, c-format
 msgid "Could not connect to proxy server %s: "
 msgstr "ไม่สามารถเชื่อมต่อไปยังเซิร์ฟเวอร์พร็อกซี %s: "
 
-#: ../gio/gsocketclient.c:191
+#: ../gio/gsocketclient.c:190
 #, c-format
 msgid "Could not connect to %s: "
 msgstr "ไม่สามารถเชื่อมต่อไปยัง %s: "
 
-#: ../gio/gsocketclient.c:193
+#: ../gio/gsocketclient.c:192
 msgid "Could not connect: "
 msgstr "ไม่สามารถเชื่อมต่อ: "
 
-#: ../gio/gsocketclient.c:1067 ../gio/gsocketclient.c:1631
+#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1594
 msgid "Unknown error on connect"
 msgstr "เกิดข้อผิดพลาดไม่ทราบสาเหตุขณะเชื่อมต่อ"
 
-#: ../gio/gsocketclient.c:1120 ../gio/gsocketclient.c:1569
+#: ../gio/gsocketclient.c:1082 ../gio/gsocketclient.c:1532
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "ไม่รองรับการทำพร็อกซีผ่านการเชื่อมต่อที่ไม่ใช่ TCP"
 
-#: ../gio/gsocketclient.c:1146 ../gio/gsocketclient.c:1590
+#: ../gio/gsocketclient.c:1108 ../gio/gsocketclient.c:1553
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "ไม่รองรับโพรโทคอล '%s' สำหรับพร็อกซี"
 
-#: ../gio/gsocketlistener.c:187
+#: ../gio/gsocketlistener.c:186
 msgid "Listener is already closed"
 msgstr "Listener ถูกปิดไปแล้ว"
 
-#: ../gio/gsocketlistener.c:228
+#: ../gio/gsocketlistener.c:227
 msgid "Added socket is closed"
 msgstr "ซ็อกเก็ตที่เพิ่มถูกปิดไปแล้ว"
 
-#: ../gio/gsocks4aproxy.c:120
+#: ../gio/gsocks4aproxy.c:118
 #, c-format
 msgid "SOCKSv4 does not support IPv6 address '%s'"
 msgstr "SOCKSv4 ไม่รองรับที่อยู่ IPv6 '%s'"
 
-#: ../gio/gsocks4aproxy.c:138
+#: ../gio/gsocks4aproxy.c:136
 msgid "Username is too long for SOCKSv4 protocol"
 msgstr "ชื่อผู้ใช้ยาวเกินไปสำหรับโพรโทคอล SOCKSv4"
 
-#: ../gio/gsocks4aproxy.c:155
+#: ../gio/gsocks4aproxy.c:153
 #, c-format
 msgid "Hostname '%s' is too long for SOCKSv4 protocol"
 msgstr "ชื่อโฮสต์ '%s' ยาวเกินไปสำหรับโพรโทคอล SOCKSv4"
 
-#: ../gio/gsocks4aproxy.c:181
+#: ../gio/gsocks4aproxy.c:179
 msgid "The server is not a SOCKSv4 proxy server."
 msgstr "เซิร์ฟเวอร์ไม่ได้เป็นพร็อกซีสำหรับ SOCKSv4"
 
-#: ../gio/gsocks4aproxy.c:188
+#: ../gio/gsocks4aproxy.c:186
 msgid "Connection through SOCKSv4 server was rejected"
 msgstr "การเชื่อมต่อผ่านเซิร์ฟเวอร์ SOCKSv4 ถูกปฏิเสธ"
 
-#: ../gio/gsocks5proxy.c:155 ../gio/gsocks5proxy.c:326
-#: ../gio/gsocks5proxy.c:336
+#: ../gio/gsocks5proxy.c:153 ../gio/gsocks5proxy.c:324
+#: ../gio/gsocks5proxy.c:334
 msgid "The server is not a SOCKSv5 proxy server."
 msgstr "เซิร์ฟเวอร์ไม่ได้เป็นพร็อกซีสำหรับ SOCKSv5"
 
-#: ../gio/gsocks5proxy.c:169
+#: ../gio/gsocks5proxy.c:167
 msgid "The SOCKSv5 proxy requires authentication."
 msgstr "พร็อกซี SOCKSv5 ต้องการการยืนยันตัวบุคคล"
 
-#: ../gio/gsocks5proxy.c:179
+#: ../gio/gsocks5proxy.c:177
 msgid ""
 "The SOCKSv5 proxy requires an authentication method that is not supported by "
 "GLib."
 msgstr "พร็อกซี SOCKSv5 ต้องการการยืนยันตัวบุคคลด้วยวิธีที่ GLib ไม่รองรับ"
 
-#: ../gio/gsocks5proxy.c:208
+#: ../gio/gsocks5proxy.c:206
 msgid "Username or password is too long for SOCKSv5 protocol."
 msgstr "ชื่อผู้ใช้หรือรหัสผ่านยาวเกินไปสำหรับโพรโทคอล SOCKSv5"
 
-#: ../gio/gsocks5proxy.c:238
+#: ../gio/gsocks5proxy.c:236
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr "การยืนยันตัวบุคคลของ SOCKSv5 ล้มเหลว เพราะชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
 
-#: ../gio/gsocks5proxy.c:288
+#: ../gio/gsocks5proxy.c:286
 #, c-format
 msgid "Hostname '%s' is too long for SOCKSv5 protocol"
 msgstr "ชื่อโฮสต์ '%s' ยาวเกินไปสำหรับโพรโทคอล SOCKSv5"
 
-#: ../gio/gsocks5proxy.c:350
+#: ../gio/gsocks5proxy.c:348
 msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "เซิร์ฟเวอร์พร็อกซี SOCKSv5 ใช้ที่อยู่ที่ไม่ทราบชนิด"
 
-#: ../gio/gsocks5proxy.c:357
+#: ../gio/gsocks5proxy.c:355
 msgid "Internal SOCKSv5 proxy server error."
 msgstr "เกิดข้อผิดพลาดภายในของเซิร์ฟเวอร์พร็อกซี SOCKSv5"
 
-#: ../gio/gsocks5proxy.c:363
+#: ../gio/gsocks5proxy.c:361
 msgid "SOCKSv5 connection not allowed by ruleset."
 msgstr "ชุดกฎเกณฑ์ไม่อนุญาตให้เชื่อมต่อ SOCKSv5"
 
-#: ../gio/gsocks5proxy.c:370
+#: ../gio/gsocks5proxy.c:368
 msgid "Host unreachable through SOCKSv5 server."
 msgstr "ไม่สามารถติดต่อโฮสต์ผ่านเซิร์ฟเวอร์ SOCKSv5 ได้"
 
-#: ../gio/gsocks5proxy.c:376
+#: ../gio/gsocks5proxy.c:374
 msgid "Network unreachable through SOCKSv5 proxy."
 msgstr "ไม่สามารถติดต่อเครือข่ายผ่านพร็อกซี SOCKSv5"
 
-#: ../gio/gsocks5proxy.c:382
+#: ../gio/gsocks5proxy.c:380
 msgid "Connection refused through SOCKSv5 proxy."
 msgstr "การเชื่อมต่อผ่านพร็อกซี SOCKSv5 ถูกปฏิเสธ"
 
-#: ../gio/gsocks5proxy.c:388
+#: ../gio/gsocks5proxy.c:386
 msgid "SOCKSv5 proxy does not support 'connect' command."
 msgstr "พร็อกซี SOCKSv5 ไม่รองรับคำสั่ง 'connect'"
 
-#: ../gio/gsocks5proxy.c:394
+#: ../gio/gsocks5proxy.c:392
 msgid "SOCKSv5 proxy does not support provided address type."
 msgstr "พร็อกซี SOCKSv5 ไม่รองรับที่อยู่ชนิดที่กำหนดมา"
 
-#: ../gio/gsocks5proxy.c:400
+#: ../gio/gsocks5proxy.c:398
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "เกิดข้อผิดพลาดไม่ทราบสาเหตุที่พร็อกซี SOCKSv5"
 
-#: ../gio/gthemedicon.c:498
+#: ../gio/gthemedicon.c:518
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "ไม่สามารถจัดการกับรหัสของ GThemedIcon รุ่น %d ได้"
 
-#: ../gio/gthreadedresolver.c:110
+#: ../gio/gthreadedresolver.c:108
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดหาที่อยู่ '%s': %s"
 
-#: ../gio/gthreadedresolver.c:195
+#: ../gio/gthreadedresolver.c:193
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดหาที่อยู่ '%s' ย้อนกลับ: %s"
 
-#: ../gio/gthreadedresolver.c:533 ../gio/gthreadedresolver.c:614
-#: ../gio/gthreadedresolver.c:715 ../gio/gthreadedresolver.c:766
+#: ../gio/gthreadedresolver.c:531 ../gio/gthreadedresolver.c:611
+#: ../gio/gthreadedresolver.c:711 ../gio/gthreadedresolver.c:761
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "ไม่มีระเบียน DNS ชนิดที่ร้องขอสำหรับ '%s'"
 
-#: ../gio/gthreadedresolver.c:538 ../gio/gthreadedresolver.c:720
+#: ../gio/gthreadedresolver.c:536 ../gio/gthreadedresolver.c:716
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "ไม่สามารถเปิดหาที่อยู่ '%s' ได้ชั่วคราว"
 
-#: ../gio/gthreadedresolver.c:543 ../gio/gthreadedresolver.c:725
+#: ../gio/gthreadedresolver.c:541 ../gio/gthreadedresolver.c:721
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "เกิดข้อผิดพลาดขณะเปิดหาที่อยู่ '%s'"
 
-#: ../gio/gtlscertificate.c:248
+#: ../gio/gtlscertificate.c:247
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "ไม่สามารถถอดรหัสลับกุญแจส่วนตัวที่ลงรหัสแบบ PEM"
 
-#: ../gio/gtlscertificate.c:253
+#: ../gio/gtlscertificate.c:252
 msgid "No PEM-encoded private key found"
 msgstr "ไม่พบกุญแจส่วนตัวที่ลงรหัสแบบ PEM"
 
-#: ../gio/gtlscertificate.c:263
+#: ../gio/gtlscertificate.c:262
 msgid "Could not parse PEM-encoded private key"
 msgstr "ไม่สามารถแจงกุญแจส่วนตัวที่ลงรหัสแบบ PEM"
 
-#: ../gio/gtlscertificate.c:288
+#: ../gio/gtlscertificate.c:287
 msgid "No PEM-encoded certificate found"
 msgstr "ไม่พบใบรับรองที่ลงรหัสแบบ PEM"
 
-#: ../gio/gtlscertificate.c:297
+#: ../gio/gtlscertificate.c:296
 msgid "Could not parse PEM-encoded certificate"
 msgstr "ไม่สามารถแจงใบรับรองที่ลงรหัสแบบ PEM"
 
-#: ../gio/gtlspassword.c:113
+#: ../gio/gtlspassword.c:111
 msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr "นี่เป็นโอกาสสุดท้ายที่คุณจะป้อนรหัสผ่านให้ถูกต้อง ก่อนที่การเข้าถึงของคุณจะถูกล็อค"
 
-#: ../gio/gtlspassword.c:115
+#: ../gio/gtlspassword.c:113
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr "รหัสผ่านผิดหลายครั้ง การเข้าถึงของคุณจะถูกล็อคในที่สุดถ้าคุณยังป้อนผิดอยู่"
 
-#: ../gio/gtlspassword.c:117
+#: ../gio/gtlspassword.c:115
 msgid "The password entered is incorrect."
 msgstr "รหัสผ่านไม่ถูกต้อง"
 
@@ -2733,90 +2909,90 @@ msgstr "ไม่ต้องการข้อความควบคุม �
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิด SO_PASSCRED: %s"
 
-#: ../gio/gunixinputstream.c:372 ../gio/gunixinputstream.c:393
+#: ../gio/gunixinputstream.c:370 ../gio/gunixinputstream.c:391
 #, c-format
 msgid "Error reading from file descriptor: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านจาก file descriptor: %s"
 
-#: ../gio/gunixinputstream.c:426 ../gio/gunixoutputstream.c:412
+#: ../gio/gunixinputstream.c:424 ../gio/gunixoutputstream.c:410
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิด file descriptor: %s"
 
-#: ../gio/gunixmounts.c:1985 ../gio/gunixmounts.c:2038
+#: ../gio/gunixmounts.c:1992 ../gio/gunixmounts.c:2045
 msgid "Filesystem root"
 msgstr "รากระบบแฟ้ม"
 
-#: ../gio/gunixoutputstream.c:358 ../gio/gunixoutputstream.c:379
+#: ../gio/gunixoutputstream.c:356 ../gio/gunixoutputstream.c:377
 #, c-format
 msgid "Error writing to file descriptor: %s"
 msgstr "เกิดข้อผิดพลาดขณะเขียนลง file descriptor: %s"
 
-#: ../gio/gunixsocketaddress.c:234
+#: ../gio/gunixsocketaddress.c:232
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "ระบบนี้ไม่รองรับที่อยู่ UNIX domain socket แบบ abstract"
 
-#: ../gio/gvolume.c:439
+#: ../gio/gvolume.c:437
 msgid "volume doesn't implement eject"
 msgstr "โวลุมยังไม่รองรับการดันสื่อออก"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gvolume.c:516
+#: ../gio/gvolume.c:514
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "โวลุมยังไม่รองรับคำสั่ง eject หรือ eject_with_operation"
 
-#: ../gio/gwin32appinfo.c:276
+#: ../gio/gwin32appinfo.c:274
 msgid "Can't find application"
 msgstr "หาโปรแกรมไม่พบ"
 
-#: ../gio/gwin32appinfo.c:308
+#: ../gio/gwin32appinfo.c:306
 #, c-format
 msgid "Error launching application: %s"
 msgstr "เกิดข้อผิดพลาดขณะเรียกโปรแกรม: %s"
 
-#: ../gio/gwin32appinfo.c:344
+#: ../gio/gwin32appinfo.c:342
 msgid "URIs not supported"
 msgstr "ไม่รองรับ URI"
 
-#: ../gio/gwin32appinfo.c:366
+#: ../gio/gwin32appinfo.c:364
 msgid "association changes not supported on win32"
 msgstr "ไม่รองรับการเปลี่ยนแปลงการเชื่อมโยงสำหรับ win32"
 
-#: ../gio/gwin32appinfo.c:378
+#: ../gio/gwin32appinfo.c:376
 msgid "Association creation not supported on win32"
 msgstr "ไม่รองรับการสร้างการเชื่อมโยงสำหรับ win32"
 
-#: ../gio/gwin32inputstream.c:343
+#: ../gio/gwin32inputstream.c:344
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านจาก handle: %s"
 
-#: ../gio/gwin32inputstream.c:375 ../gio/gwin32outputstream.c:362
+#: ../gio/gwin32inputstream.c:388 ../gio/gwin32outputstream.c:375
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "เกิดข้อผิดพลาดขณะปิด handle: %s"
 
-#: ../gio/gwin32outputstream.c:330
+#: ../gio/gwin32outputstream.c:331
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "เกิดข้อผิดพลาดขณะเขียนลง handle: %s"
 
-#: ../gio/gzlibcompressor.c:396 ../gio/gzlibdecompressor.c:349
+#: ../gio/gzlibcompressor.c:394 ../gio/gzlibdecompressor.c:347
 msgid "Not enough memory"
 msgstr "หน่วยความจำไม่พอ"
 
-#: ../gio/gzlibcompressor.c:403 ../gio/gzlibdecompressor.c:356
+#: ../gio/gzlibcompressor.c:401 ../gio/gzlibdecompressor.c:354
 #, c-format
 msgid "Internal error: %s"
 msgstr "ข้อผิดพลาดภายใน: %s"
 
-#: ../gio/gzlibcompressor.c:416 ../gio/gzlibdecompressor.c:370
+#: ../gio/gzlibcompressor.c:414 ../gio/gzlibdecompressor.c:368
 msgid "Need more input"
 msgstr "ต้องการข้อมูลเข้าเพิ่มเติม"
 
-#: ../gio/gzlibdecompressor.c:342
+#: ../gio/gzlibdecompressor.c:340
 msgid "Invalid compressed data"
 msgstr "ข้อมูลบีบอัดผิดรูปแบบ"
 
@@ -2845,450 +3021,450 @@ msgstr "ทำงานเป็นบริการ dbus"
 msgid "Wrong args\n"
 msgstr "อาร์กิวเมนต์ไม่ถูกต้อง\n"
 
-#: ../glib/gbookmarkfile.c:760
+#: ../glib/gbookmarkfile.c:755
 #, c-format
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "พบแอตทริบิวต์ '%s' ที่ไม่ต้องการ สำหรับอิลิเมนต์ '%s'"
 
-#: ../glib/gbookmarkfile.c:771 ../glib/gbookmarkfile.c:842
-#: ../glib/gbookmarkfile.c:852 ../glib/gbookmarkfile.c:959
+#: ../glib/gbookmarkfile.c:766 ../glib/gbookmarkfile.c:837
+#: ../glib/gbookmarkfile.c:847 ../glib/gbookmarkfile.c:954
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "ไม่พบแอตทริบิวต์ '%s' สำหรับอิลิเมนต์ '%s'"
 
-#: ../glib/gbookmarkfile.c:1129 ../glib/gbookmarkfile.c:1194
-#: ../glib/gbookmarkfile.c:1258 ../glib/gbookmarkfile.c:1268
+#: ../glib/gbookmarkfile.c:1124 ../glib/gbookmarkfile.c:1189
+#: ../glib/gbookmarkfile.c:1253 ../glib/gbookmarkfile.c:1263
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "พบแท็ก '%s' ที่ไม่ต้องการ ขณะที่ต้องการแท็ก '%s'"
 
-#: ../glib/gbookmarkfile.c:1154 ../glib/gbookmarkfile.c:1168
-#: ../glib/gbookmarkfile.c:1236 ../glib/gbookmarkfile.c:1288
+#: ../glib/gbookmarkfile.c:1149 ../glib/gbookmarkfile.c:1163
+#: ../glib/gbookmarkfile.c:1231
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "พบแท็ก '%s' ที่ไม่ต้องการภายใน '%s'"
 
-#: ../glib/gbookmarkfile.c:1798
+#: ../glib/gbookmarkfile.c:1773
 msgid "No valid bookmark file found in data dirs"
 msgstr "ไม่พบแฟ้มที่คั่นหน้าที่ใช้การได้ในไดเรกทอรีข้อมูล"
 
-#: ../glib/gbookmarkfile.c:1999
+#: ../glib/gbookmarkfile.c:1974
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "มีที่คั่นหน้าสำหรับ URI '%s' อยู่ก่อนแล้ว"
 
-#: ../glib/gbookmarkfile.c:2045 ../glib/gbookmarkfile.c:2203
-#: ../glib/gbookmarkfile.c:2288 ../glib/gbookmarkfile.c:2368
-#: ../glib/gbookmarkfile.c:2453 ../glib/gbookmarkfile.c:2536
-#: ../glib/gbookmarkfile.c:2614 ../glib/gbookmarkfile.c:2693
-#: ../glib/gbookmarkfile.c:2735 ../glib/gbookmarkfile.c:2832
-#: ../glib/gbookmarkfile.c:2952 ../glib/gbookmarkfile.c:3142
-#: ../glib/gbookmarkfile.c:3218 ../glib/gbookmarkfile.c:3386
-#: ../glib/gbookmarkfile.c:3475 ../glib/gbookmarkfile.c:3565
-#: ../glib/gbookmarkfile.c:3693
+#: ../glib/gbookmarkfile.c:2020 ../glib/gbookmarkfile.c:2178
+#: ../glib/gbookmarkfile.c:2263 ../glib/gbookmarkfile.c:2343
+#: ../glib/gbookmarkfile.c:2428 ../glib/gbookmarkfile.c:2511
+#: ../glib/gbookmarkfile.c:2589 ../glib/gbookmarkfile.c:2668
+#: ../glib/gbookmarkfile.c:2710 ../glib/gbookmarkfile.c:2807
+#: ../glib/gbookmarkfile.c:2927 ../glib/gbookmarkfile.c:3117
+#: ../glib/gbookmarkfile.c:3193 ../glib/gbookmarkfile.c:3361
+#: ../glib/gbookmarkfile.c:3450 ../glib/gbookmarkfile.c:3539
+#: ../glib/gbookmarkfile.c:3655
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "ไม่พบที่คั่นหน้าสำหรับ URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2377
+#: ../glib/gbookmarkfile.c:2352
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "ไม่ได้กำหนดชนิด MIME ไว้ในที่คั่นหน้าสำหรับ URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2462
+#: ../glib/gbookmarkfile.c:2437
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "ไม่ได้กำหนดแฟล็กส่วนตัวไว้ในที่คั่นหน้าสำหรับ URI '%s'"
 
-#: ../glib/gbookmarkfile.c:2841
+#: ../glib/gbookmarkfile.c:2816
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "ไม่ได้กำหนดกลุ่มไว้ในที่คั่นหน้าสำหรับ URI '%s'"
 
-#: ../glib/gbookmarkfile.c:3239 ../glib/gbookmarkfile.c:3396
+#: ../glib/gbookmarkfile.c:3214 ../glib/gbookmarkfile.c:3371
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "ไม่มีโปรแกรมประยุกต์ชื่อ '%s' ที่ลงทะเบียนที่คั่นหน้าสำหรับ '%s' ไว้"
 
-#: ../glib/gbookmarkfile.c:3419
+#: ../glib/gbookmarkfile.c:3394
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "กระจายบรรทัดคำสั่ง '%s' ด้วย URI '%s' ไม่สำเร็จ"
 
-#: ../glib/gconvert.c:506 ../glib/gutf8.c:829 ../glib/gutf8.c:1039
-#: ../glib/gutf8.c:1176 ../glib/gutf8.c:1280
+#: ../glib/gconvert.c:480 ../glib/gutf8.c:833 ../glib/gutf8.c:1044
+#: ../glib/gutf8.c:1181 ../glib/gutf8.c:1285
 msgid "Partial character sequence at end of input"
 msgstr "มีลำดับไบต์ไม่เต็มอักขระอยู่ที่ท้ายข้อมูลเข้า"
 
-#: ../glib/gconvert.c:756
+#: ../glib/gconvert.c:742
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "ไม่สามารถแปลงสตริงซ่อมเสริม '%s' ให้เป็นรหัส '%s' ได้"
 
-#: ../glib/gconvert.c:1574
+#: ../glib/gconvert.c:1568
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI '%s' ไม่ใช่ URI สัมบูรณ์ที่ใช้ scheme \"file\""
 
-#: ../glib/gconvert.c:1584
+#: ../glib/gconvert.c:1578
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI ของแฟ้มท้องถิ่น '%s' ต้องไม่มี '#'"
 
-#: ../glib/gconvert.c:1601
+#: ../glib/gconvert.c:1595
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' ใช้ไม่ได้"
 
-#: ../glib/gconvert.c:1613
+#: ../glib/gconvert.c:1607
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "ชื่อโฮสต์ของ URI '%s' ใช้ไม่ได้"
 
-#: ../glib/gconvert.c:1629
+#: ../glib/gconvert.c:1623
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' มีอักขระหลีกที่ไม่ถูกต้อง"
 
-#: ../glib/gconvert.c:1724
+#: ../glib/gconvert.c:1718
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "ชื่อพาธ '%s' ไม่ใช่พาธเต็ม"
 
-#: ../glib/gconvert.c:1734
+#: ../glib/gconvert.c:1728
 msgid "Invalid hostname"
 msgstr "ชื่อโฮสต์ผิดรูปแบบ"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:201
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:203
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: ../glib/gdatetime.c:210
+#: ../glib/gdatetime.c:206
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %e %b %Ey, %H:%M:%S"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:209
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%Ey"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:216
+#: ../glib/gdatetime.c:212
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: ../glib/gdatetime.c:219
+#: ../glib/gdatetime.c:215
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:228
 msgctxt "full month name"
 msgid "January"
 msgstr "มกราคม"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:230
 msgctxt "full month name"
 msgid "February"
 msgstr "กุมภาพันธ์"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:232
 msgctxt "full month name"
 msgid "March"
 msgstr "มีนาคม"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:234
 msgctxt "full month name"
 msgid "April"
 msgstr "เมษายน"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:236
 msgctxt "full month name"
 msgid "May"
 msgstr "พฤษภาคม"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:238
 msgctxt "full month name"
 msgid "June"
 msgstr "มิถุนายน"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:240
 msgctxt "full month name"
 msgid "July"
 msgstr "กรกฎาคม"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:242
 msgctxt "full month name"
 msgid "August"
 msgstr "สิงหาคม"
 
-#: ../glib/gdatetime.c:248
+#: ../glib/gdatetime.c:244
 msgctxt "full month name"
 msgid "September"
 msgstr "กันยายน"
 
-#: ../glib/gdatetime.c:250
+#: ../glib/gdatetime.c:246
 msgctxt "full month name"
 msgid "October"
 msgstr "ตุลาคม"
 
-#: ../glib/gdatetime.c:252
+#: ../glib/gdatetime.c:248
 msgctxt "full month name"
 msgid "November"
 msgstr "พฤศจิกายน"
 
-#: ../glib/gdatetime.c:254
+#: ../glib/gdatetime.c:250
 msgctxt "full month name"
 msgid "December"
 msgstr "ธันวาคม"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:265
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "ม.ค."
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:267
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "ก.พ."
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:269
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "มี.ค."
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:271
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "เม.ย."
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:273
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "พ.ค."
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:275
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "มิ.ย."
 
-#: ../glib/gdatetime.c:281
+#: ../glib/gdatetime.c:277
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "ก.ค."
 
-#: ../glib/gdatetime.c:283
+#: ../glib/gdatetime.c:279
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "ส.ค."
 
-#: ../glib/gdatetime.c:285
+#: ../glib/gdatetime.c:281
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "ก.ย."
 
-#: ../glib/gdatetime.c:287
+#: ../glib/gdatetime.c:283
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "ต.ค."
 
-#: ../glib/gdatetime.c:289
+#: ../glib/gdatetime.c:285
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "พ.ย."
 
-#: ../glib/gdatetime.c:291
+#: ../glib/gdatetime.c:287
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "ธ.ค."
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:302
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "จันทร์"
 
-#: ../glib/gdatetime.c:308
+#: ../glib/gdatetime.c:304
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "อังคาร"
 
-#: ../glib/gdatetime.c:310
+#: ../glib/gdatetime.c:306
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "พุธ"
 
-#: ../glib/gdatetime.c:312
+#: ../glib/gdatetime.c:308
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "พฤหัสบดี"
 
-#: ../glib/gdatetime.c:314
+#: ../glib/gdatetime.c:310
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "ศุกร์"
 
-#: ../glib/gdatetime.c:316
+#: ../glib/gdatetime.c:312
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "เสาร์"
 
-#: ../glib/gdatetime.c:318
+#: ../glib/gdatetime.c:314
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "อาทิตย์"
 
-#: ../glib/gdatetime.c:333
+#: ../glib/gdatetime.c:329
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "จ."
 
-#: ../glib/gdatetime.c:335
+#: ../glib/gdatetime.c:331
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "อ."
 
-#: ../glib/gdatetime.c:337
+#: ../glib/gdatetime.c:333
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "พ."
 
-#: ../glib/gdatetime.c:339
+#: ../glib/gdatetime.c:335
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "พฤ."
 
-#: ../glib/gdatetime.c:341
+#: ../glib/gdatetime.c:337
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "ศ."
 
-#: ../glib/gdatetime.c:343
+#: ../glib/gdatetime.c:339
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "ส."
 
-#: ../glib/gdatetime.c:345
+#: ../glib/gdatetime.c:341
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "อา."
 
-#: ../glib/gdir.c:120 ../glib/gdir.c:143
+#: ../glib/gdir.c:155
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดไดเรกทอรี '%s': %s"
 
-#: ../glib/gfileutils.c:671 ../glib/gfileutils.c:759
+#: ../glib/gfileutils.c:699 ../glib/gfileutils.c:791
 #, c-format
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "ไม่สามารถจองหน่วยความจำ %lu ไบต์เพื่ออ่านแฟ้ม \"%s\""
 
-#: ../glib/gfileutils.c:686
+#: ../glib/gfileutils.c:716
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "เกิดข้อผิดพลาดขณะอ่านแฟ้ม '%s': %s"
 
-#: ../glib/gfileutils.c:700
+#: ../glib/gfileutils.c:752
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "แฟ้ม \"%s\" ใหญ่เกินไป"
 
-#: ../glib/gfileutils.c:783
+#: ../glib/gfileutils.c:816
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "อ่านข้อมูลจากแฟ้ม '%s' ไม่สำเร็จ: %s"
 
-#: ../glib/gfileutils.c:834 ../glib/gfileutils.c:921
+#: ../glib/gfileutils.c:863 ../glib/gfileutils.c:929
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: %s"
 
-#: ../glib/gfileutils.c:851
+#: ../glib/gfileutils.c:873
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "อ่านแอตทริบิวต์ของแฟ้ม '%s' ไม่สำเร็จ: fstat() ล้มเหลว: %s"
 
-#: ../glib/gfileutils.c:885
+#: ../glib/gfileutils.c:901
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: fdopen() ล้มเหลว: %s"
 
-#: ../glib/gfileutils.c:993
+#: ../glib/gfileutils.c:997
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "เปลี่ยนชื่อแฟ้ม '%s' ไปเป็น '%s' ไม่สำเร็จ: g_rename() ล้มเหลว: %s"
 
-#: ../glib/gfileutils.c:1047 ../glib/gfileutils.c:1554
+#: ../glib/gfileutils.c:1030 ../glib/gfileutils.c:1519
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "สร้างแฟ้ม '%s' ไม่สำเร็จ: %s"
 
-#: ../glib/gfileutils.c:1071
+#: ../glib/gfileutils.c:1054
 #, c-format
 msgid "Failed to write file '%s': write() failed: %s"
 msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: write() ล้มเหลว: %s"
 
-#: ../glib/gfileutils.c:1111
+#: ../glib/gfileutils.c:1094
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "เขียนแฟ้ม '%s' ไม่สำเร็จ: fsync() ล้มเหลว: %s"
 
-#: ../glib/gfileutils.c:1243
+#: ../glib/gfileutils.c:1216
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "ไม่สามารถลบแฟ้ม '%s' ที่มีอยู่ได้: g_unlink() ล้มเหลว: %s"
 
-#: ../glib/gfileutils.c:1517
+#: ../glib/gfileutils.c:1486
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "แม่แบบ '%s' ใช้ไม่ได้ ไม่ควรมี '%s'"
 
-#: ../glib/gfileutils.c:1530
+#: ../glib/gfileutils.c:1499
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "แม่แบบ '%s' ไม่มี XXXXXX"
 
-#: ../glib/gfileutils.c:2058
+#: ../glib/gfileutils.c:2017
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "อ่านลิงก์สัญลักษณ์ '%s' ไม่สำเร็จ: %s"
 
-#: ../glib/gfileutils.c:2079
+#: ../glib/gfileutils.c:2035
 msgid "Symbolic links not supported"
 msgstr "ไม่รองรับลิงก์สัญลักษณ์"
 
-#: ../glib/giochannel.c:1418
+#: ../glib/giochannel.c:1390
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "ไม่สามารถเปิดตัวแปลงรหัสอักขระจาก '%s' ไปเป็น '%s' ได้: %s"
 
-#: ../glib/giochannel.c:1763
+#: ../glib/giochannel.c:1735
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1810 ../glib/giochannel.c:2068
-#: ../glib/giochannel.c:2155
+#: ../glib/giochannel.c:1782 ../glib/giochannel.c:2040
+#: ../glib/giochannel.c:2127
 msgid "Leftover unconverted data in read buffer"
 msgstr "มีข้อมูลตกค้างไม่ได้แปลงอยู่ในบัฟเฟอร์สำหรับอ่าน"
 
-#: ../glib/giochannel.c:1891 ../glib/giochannel.c:1968
+#: ../glib/giochannel.c:1863 ../glib/giochannel.c:1940
 msgid "Channel terminates in a partial character"
 msgstr "แชนเนลจบด้วยข้อมูลไม่เต็มอักขระ"
 
-#: ../glib/giochannel.c:1954
+#: ../glib/giochannel.c:1926
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "ไม่สามารถอ่านข้อมูลแบบดิบใน g_io_channel_read_to_end"
 
@@ -3325,9 +3501,9 @@ msgstr "ชื่อคีย์ผิดรูปแบบ: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "แฟ้มคีย์มีเนื้อหาเป็นรหัสอักขระ '%s' ซึ่งไม่รองรับ"
 
-#: ../glib/gkeyfile.c:1533 ../glib/gkeyfile.c:1695 ../glib/gkeyfile.c:3073
-#: ../glib/gkeyfile.c:3139 ../glib/gkeyfile.c:3265 ../glib/gkeyfile.c:3398
-#: ../glib/gkeyfile.c:3540 ../glib/gkeyfile.c:3770 ../glib/gkeyfile.c:3837
+#: ../glib/gkeyfile.c:1533 ../glib/gkeyfile.c:1695 ../glib/gkeyfile.c:3075
+#: ../glib/gkeyfile.c:3141 ../glib/gkeyfile.c:3267 ../glib/gkeyfile.c:3400
+#: ../glib/gkeyfile.c:3542 ../glib/gkeyfile.c:3771 ../glib/gkeyfile.c:3838
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "แฟ้มคีย์ไม่มีกลุ่ม '%s'"
@@ -3348,63 +3524,63 @@ msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
 
-#: ../glib/gkeyfile.c:2536 ../glib/gkeyfile.c:2902
+#: ../glib/gkeyfile.c:2536 ../glib/gkeyfile.c:2904
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
 "interpreted."
 msgstr "แฟ้มคีย์มีคีย์ '%s' ในกลุ่ม '%s' ซึ่งมีค่าที่ไม่สามารถตีความได้"
 
-#: ../glib/gkeyfile.c:2614 ../glib/gkeyfile.c:2690
+#: ../glib/gkeyfile.c:2614 ../glib/gkeyfile.c:2691
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr "คีย์ '%s' ในกลุ่ม '%s' มีค่า '%s' แต่ต้องการค่า %s"
 
-#: ../glib/gkeyfile.c:3088 ../glib/gkeyfile.c:3280 ../glib/gkeyfile.c:3848
+#: ../glib/gkeyfile.c:3090 ../glib/gkeyfile.c:3282 ../glib/gkeyfile.c:3849
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "แฟ้มคีย์ไม่มีคีย์ '%s' ในกลุ่ม '%s'"
 
-#: ../glib/gkeyfile.c:4080
+#: ../glib/gkeyfile.c:4081
 msgid "Key file contains escape character at end of line"
 msgstr "แฟ้มคีย์มีอักขระหลีกที่ท้ายบรรทัด"
 
-#: ../glib/gkeyfile.c:4102
+#: ../glib/gkeyfile.c:4103
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "แฟ้มคีย์มีลำดับหลีก '%s' ที่ไม่ถูกต้อง"
 
-#: ../glib/gkeyfile.c:4244
+#: ../glib/gkeyfile.c:4245
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลขได้"
 
-#: ../glib/gkeyfile.c:4258
+#: ../glib/gkeyfile.c:4259
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "ค่าจำนวนเต็ม '%s' ออกนอกช่วง"
 
-#: ../glib/gkeyfile.c:4291
+#: ../glib/gkeyfile.c:4292
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นตัวเลข float ได้"
 
-#: ../glib/gkeyfile.c:4315
+#: ../glib/gkeyfile.c:4316
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "ค่า '%s' ไม่สามารถตีความเป็นบูลีนได้"
 
-#: ../glib/gmappedfile.c:130
+#: ../glib/gmappedfile.c:129
 #, c-format
 msgid "Failed to get attributes of file '%s%s%s%s': fstat() failed: %s"
 msgstr "อ่านแอตทริบิวต์ของแฟ้ม '%s%s%s%s' ไม่สำเร็จ: fstat() ล้มเหลว: %s"
 
-#: ../glib/gmappedfile.c:196
+#: ../glib/gmappedfile.c:195
 #, c-format
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
 msgstr "แม็ปแฟ้ม '%s%s%s%s' ไม่สำเร็จ: mmap() ล้มเหลว: %s"
 
-#: ../glib/gmappedfile.c:262
+#: ../glib/gmappedfile.c:261
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "เปิดแฟ้ม '%s' ไม่สำเร็จ: open() ล้มเหลว: %s"
@@ -3475,32 +3651,32 @@ msgstr ""
 "เอนทิตีไม่ได้ปิดด้วยอัฒภาค เป็นไปได้สูงที่คุณอาจใช้ ampersand โดยไม่ได้จงใจให้เริ่มเอนทิตี ถ้าใช่ "
 "ก็จงหลีก ampersand โดยแทนด้วย &amp; เสีย"
 
-#: ../glib/gmarkup.c:1119
+#: ../glib/gmarkup.c:1177
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "เอกสารต้องเริ่มด้วยอิลิเมนต์ (เช่น <book>)"
 
-#: ../glib/gmarkup.c:1159
+#: ../glib/gmarkup.c:1217
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr "'%s' ไม่ใช่อักขระที่ใช้ตามหลัง '<' ได้ จึงไม่สามารถใช้ขึ้นต้นชื่ออิลิเมนต์ได้"
 
-#: ../glib/gmarkup.c:1227
+#: ../glib/gmarkup.c:1259
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag "
 "'%s'"
 msgstr "พบอักขระแปลกปลอม '%s' ในขณะที่มองหาอักขระ '>' ที่จะมาปิดแท็กอิลิเมนต์เปล่า '%s'"
 
-#: ../glib/gmarkup.c:1311
+#: ../glib/gmarkup.c:1340
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหา '=' หลังชื่อแอตทริบิวต์ '%s' ของอิลิเมนต์ '%s'"
 
-#: ../glib/gmarkup.c:1352
+#: ../glib/gmarkup.c:1381
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -3510,7 +3686,7 @@ msgstr ""
 "พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหา '>' หรือ '/' ที่จะมาปิดแท็กตั้งต้นของอิลิเมนต์ "
 "'%s' หรือไม่ก็เป็นแอตทริบิวต์ เป็นไปได้ว่าคุณกำลังใช้อักขระที่ใช้ไม่ได้ในชื่อแอตทริบิวต์"
 
-#: ../glib/gmarkup.c:1396
+#: ../glib/gmarkup.c:1425
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -3519,138 +3695,138 @@ msgstr ""
 "พบอักขระแปลกปลอม '%s' ในขณะที่กำลังมองหาอัญประกาศเปิดหลัง '=' "
 "ในการกำหนดค่าให้กับแอตทริบิวต์ '%s' ของอิลิเมนต์ '%s'"
 
-#: ../glib/gmarkup.c:1529
+#: ../glib/gmarkup.c:1558
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr "'%s' ไม่ใช่อักขระที่ตามหลัง '</' ได้ '%s' ไม่สามารถใช้ขึ้นต้นชื่ออิลิเมนต์ได้"
 
-#: ../glib/gmarkup.c:1565
+#: ../glib/gmarkup.c:1594
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr "'%s' ไม่ใช่อักขระที่ใช้ตามหลังชื่ออิลิเมนต์ '%s' ในแท็กปิดได้ อักขระเดียวที่อนุญาตคือ '>'"
 
-#: ../glib/gmarkup.c:1576
+#: ../glib/gmarkup.c:1605
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "พบการปิดอิลิเมนต์ '%s' แต่ไม่มีอิลิเมนต์ใดเปิดอยู่"
 
-#: ../glib/gmarkup.c:1585
+#: ../glib/gmarkup.c:1614
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "พบการปิดอิลิเมนต์ '%s' แต่อิลิเมนต์ที่เปิดอยู่คือ '%s'"
 
-#: ../glib/gmarkup.c:1753
+#: ../glib/gmarkup.c:1767
 msgid "Document was empty or contained only whitespace"
 msgstr "เอกสารว่างเปล่า หรือมีแต่อักขระช่องว่าง"
 
-#: ../glib/gmarkup.c:1767
+#: ../glib/gmarkup.c:1781
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "เอกสารจบแบบผิดปกติหลังจากวงเล็บแหลม '<'"
 
-#: ../glib/gmarkup.c:1775 ../glib/gmarkup.c:1820
+#: ../glib/gmarkup.c:1789 ../glib/gmarkup.c:1834
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr "เอกสารจบแบบผิดปกติ โดยยังมีอิลิเมนต์เปิดอยู่ - '%s' คืออิลิเมนต์ที่เปิดล่าสุด"
 
-#: ../glib/gmarkup.c:1783
+#: ../glib/gmarkup.c:1797
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr "เอกสารจบแบบผิดปกติ ในขณะที่กำลังมองหาวงเล็บแหลมที่จะมาปิดแท็ก <%s/>"
 
-#: ../glib/gmarkup.c:1789
+#: ../glib/gmarkup.c:1803
 msgid "Document ended unexpectedly inside an element name"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางชื่ออิลิเมนต์"
 
-#: ../glib/gmarkup.c:1795
+#: ../glib/gmarkup.c:1809
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางชื่อแอตทริบิวต์"
 
-#: ../glib/gmarkup.c:1800
+#: ../glib/gmarkup.c:1814
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางแท็กเปิดอิลิเมนต์"
 
-#: ../glib/gmarkup.c:1806
+#: ../glib/gmarkup.c:1820
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr "เอกสารจบแบบผิดปกติหลังจากเครื่องหมาย '=' หลังชื่อแอตทริบิวต์ โดยไม่มีค่าของแอตทริบิวต์"
 
-#: ../glib/gmarkup.c:1813
+#: ../glib/gmarkup.c:1827
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางค่าแอตทริบิวต์"
 
-#: ../glib/gmarkup.c:1829
+#: ../glib/gmarkup.c:1843
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางแท็กปิดสำหรับอิลิเมนต์ '%s'"
 
-#: ../glib/gmarkup.c:1835
+#: ../glib/gmarkup.c:1849
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "เอกสารจบแบบผิดปกติระหว่างกลางหมายเหตุหรือคำสั่งประมวลผล"
 
-#: ../glib/goption.c:754
+#: ../glib/goption.c:803
 msgid "Usage:"
 msgstr "วิธีใช้:"
 
-#: ../glib/goption.c:754
+#: ../glib/goption.c:803
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: ../glib/goption.c:870
+#: ../glib/goption.c:919
 msgid "Help Options:"
 msgstr "ตัวเลือกแสดงวิธีใช้:"
 
-#: ../glib/goption.c:871
+#: ../glib/goption.c:920
 msgid "Show help options"
 msgstr "แสดงวิธีใช้ตัวเลือกต่างๆ"
 
-#: ../glib/goption.c:877
+#: ../glib/goption.c:926
 msgid "Show all help options"
 msgstr "แสดงวิธีใช้ตัวเลือกต่างๆ ทั้งหมด"
 
-#: ../glib/goption.c:939
+#: ../glib/goption.c:988
 msgid "Application Options:"
 msgstr "ตัวเลือกของโปรแกรม:"
 
-#: ../glib/goption.c:1003 ../glib/goption.c:1073
+#: ../glib/goption.c:1052 ../glib/goption.c:1122
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "ไม่สามารถแจงค่าจำนวนเต็ม '%s' สำหรับ %s"
 
-#: ../glib/goption.c:1013 ../glib/goption.c:1081
+#: ../glib/goption.c:1062 ../glib/goption.c:1130
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "ค่าจำนวนเต็ม '%s' สำหรับ %s ออกนอกช่วงที่กำหนด"
 
-#: ../glib/goption.c:1038
+#: ../glib/goption.c:1087
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "ไม่สามารถแจงค่า double '%s' สำหรับ %s"
 
-#: ../glib/goption.c:1046
+#: ../glib/goption.c:1095
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "ค่า double '%s' สำหรับ %s ออกนอกช่วงที่กำหนด"
 
-#: ../glib/goption.c:1309 ../glib/goption.c:1388
+#: ../glib/goption.c:1381 ../glib/goption.c:1460
 #, c-format
 msgid "Error parsing option %s"
 msgstr "เกิดข้อผิดพลาดขณะแจงตัวเลือก: %s"
 
-#: ../glib/goption.c:1419 ../glib/goption.c:1532
+#: ../glib/goption.c:1491 ../glib/goption.c:1604
 #, c-format
 msgid "Missing argument for %s"
 msgstr "ขาดอาร์กิวเมนต์สำหรับ %s"
 
-#: ../glib/goption.c:1985
+#: ../glib/goption.c:2060
 #, c-format
 msgid "Unknown option %s"
 msgstr "ไม่รู้จักตัวเลือก %s"
@@ -4040,89 +4216,89 @@ msgstr "ข้อความจบเสียก่อนจะพบอัญ
 msgid "Text was empty (or contained only whitespace)"
 msgstr "ข้อความว่างเปล่า (หรือมีแต่อักขระช่องว่าง)"
 
-#: ../glib/gspawn.c:202
+#: ../glib/gspawn.c:198
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "อ่านข้อมูลจากโพรเซสลูกไม่สำเร็จ (%s)"
 
-#: ../glib/gspawn.c:345
+#: ../glib/gspawn.c:342
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "เกิดข้อผิดพลาดไม่คาดหมายใน select() ระหว่างอ่านข้อมูลจากโพรเซสลูก (%s)"
 
-#: ../glib/gspawn.c:430
+#: ../glib/gspawn.c:427
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "เกิดข้อผิดพลาดไม่คาดหมายใน waitpid() (%s)"
 
-#: ../glib/gspawn.c:849 ../glib/gspawn-win32.c:1233
+#: ../glib/gspawn.c:839 ../glib/gspawn-win32.c:1233
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "โพรเซสลูกจบการทำงานด้วยรหัส %ld"
 
-#: ../glib/gspawn.c:857
+#: ../glib/gspawn.c:847
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "โพรเซสลูกถูกฆ่าด้วยสัญญาณ %ld"
 
-#: ../glib/gspawn.c:864
+#: ../glib/gspawn.c:854
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "โพรเซสลูกถูกหยุดด้วยสัญญาณ %ld"
 
-#: ../glib/gspawn.c:871
+#: ../glib/gspawn.c:861
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "โพรเซสลูกจบการทำงานแบบไม่ปกติ"
 
-#: ../glib/gspawn.c:1276 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
+#: ../glib/gspawn.c:1266 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "อ่านข้อมูลจากไปป์จากโพรเซสลูกไม่สำเร็จ (%s)"
 
-#: ../glib/gspawn.c:1344
+#: ../glib/gspawn.c:1336
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork ไม่สำเร็จ (%s)"
 
-#: ../glib/gspawn.c:1493 ../glib/gspawn-win32.c:370
+#: ../glib/gspawn.c:1485 ../glib/gspawn-win32.c:370
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "เข้าไปที่ไดเรกทอรี '%s' ไม่สำเร็จ (%s)"
 
-#: ../glib/gspawn.c:1503
+#: ../glib/gspawn.c:1495
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "ดำเนินงานโพรเซสลูก \"%s\" ไม่สำเร็จ (%s)"
 
-#: ../glib/gspawn.c:1513
+#: ../glib/gspawn.c:1505
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "เปลี่ยนทิศทางข้อมูลเข้าหรือออกจากโพรเซสลูกไม่สำเร็จ (%s)"
 
-#: ../glib/gspawn.c:1522
+#: ../glib/gspawn.c:1514
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "fork โพรเซสลูกไม่สำเร็จ (%s)"
 
-#: ../glib/gspawn.c:1530
+#: ../glib/gspawn.c:1522
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "เกิดข้อผิดพลาดไม่ทราบสาเหตุขณะดำเนินงานโพรเซสลูก \"%s\""
 
-#: ../glib/gspawn.c:1554
+#: ../glib/gspawn.c:1546
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "อ่านข้อมูลจากไปป์จากโพรเซสลูกได้ไม่เพียงพอ (%s)"
 
-#: ../glib/gspawn.c:1627 ../glib/gspawn-win32.c:300
-#, c-format
-msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "สร้างไปป์เพื่อสื่อสารกับโพรเซสลูกไม่สำเร็จ (%s)"
-
 #: ../glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
 msgstr "อ่านข้อมูลจากโพรเซสลูกไม่สำเร็จ"
+
+#: ../glib/gspawn-win32.c:300
+#, c-format
+msgid "Failed to create pipe for communicating with child process (%s)"
+msgstr "สร้างไปป์เพื่อสื่อสารกับโพรเซสลูกไม่สำเร็จ (%s)"
 
 #: ../glib/gspawn-win32.c:376 ../glib/gspawn-win32.c:495
 #, c-format
@@ -4163,87 +4339,91 @@ msgid ""
 msgstr ""
 "เกิดข้อผิดพลาดไม่คาดหมายใน g_io_channel_win32_poll() ระหว่างอ่านข้อมูลจากโพรเซสลูก"
 
-#: ../glib/gutf8.c:907
+#: ../glib/gutf8.c:780
+msgid "Failed to allocate memory"
+msgstr "จองหน่วยความจำไม่สำเร็จ"
+
+#: ../glib/gutf8.c:912
 msgid "Character out of range for UTF-8"
 msgstr "อักขระอยู่นอกช่วงของ UTF-8"
 
-#: ../glib/gutf8.c:1007 ../glib/gutf8.c:1016 ../glib/gutf8.c:1146
-#: ../glib/gutf8.c:1155 ../glib/gutf8.c:1294 ../glib/gutf8.c:1390
+#: ../glib/gutf8.c:1012 ../glib/gutf8.c:1021 ../glib/gutf8.c:1151
+#: ../glib/gutf8.c:1160 ../glib/gutf8.c:1299 ../glib/gutf8.c:1396
 msgid "Invalid sequence in conversion input"
 msgstr "มีลำดับข้อมูลที่ไม่ถูกต้องในข้อมูลที่ป้อนให้ตัวแปลงรหัส"
 
-#: ../glib/gutf8.c:1305 ../glib/gutf8.c:1401
+#: ../glib/gutf8.c:1310 ../glib/gutf8.c:1407
 msgid "Character out of range for UTF-16"
 msgstr "อักขระอยู่นอกช่วงของ UTF-16"
 
-#: ../glib/gutils.c:2179 ../glib/gutils.c:2206 ../glib/gutils.c:2310
+#: ../glib/gutils.c:2119 ../glib/gutils.c:2146 ../glib/gutils.c:2252
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u ไบต์"
 
-#: ../glib/gutils.c:2185
+#: ../glib/gutils.c:2125
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2187
+#: ../glib/gutils.c:2127
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2190
+#: ../glib/gutils.c:2130
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2193
+#: ../glib/gutils.c:2133
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2196
+#: ../glib/gutils.c:2136
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2199
+#: ../glib/gutils.c:2139
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2212
+#: ../glib/gutils.c:2152
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gutils.c:2215 ../glib/gutils.c:2328
+#: ../glib/gutils.c:2155 ../glib/gutils.c:2270
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2218 ../glib/gutils.c:2333
+#: ../glib/gutils.c:2158 ../glib/gutils.c:2275
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2220 ../glib/gutils.c:2338
+#: ../glib/gutils.c:2160 ../glib/gutils.c:2280
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2223 ../glib/gutils.c:2343
+#: ../glib/gutils.c:2163 ../glib/gutils.c:2285
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2226 ../glib/gutils.c:2348
+#: ../glib/gutils.c:2166 ../glib/gutils.c:2290
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2263
+#: ../glib/gutils.c:2203
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4254,10 +4434,24 @@ msgstr[0] "%s ไบต์"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2323
+#: ../glib/gutils.c:2265
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid ""
+#~ "Error processing input file with xmllint:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "เกิดข้อผิดพลาดขณะประมวลผลแฟ้มขาเข้าด้วย xmllint:\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "Error processing input file with to-pixdata:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "เกิดข้อผิดพลาดขณะประมวลผลแฟ้มขาเข้าด้วย to-pixdata:\n"
+#~ "%s"
 
 #~ msgid "Unable to get pending error: %s"
 #~ msgstr "ไม่สามารถอ่านข้อผิดพลาดที่คั่งค้างอยู่ได้: %s"
