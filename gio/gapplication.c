@@ -698,9 +698,8 @@ g_application_add_main_option_entries (GApplication       *application,
  *
  * This means that the options from #GOptionGroup are only really usable
  * in the case that the instance of the application being run is the
- * first instance.  Passing options like <literal>--display=</literal>
- * or <literal>--gdk-debug=</literal> on future runs will have no effect
- * on the existing primary instance.
+ * first instance.  Passing options like `--display=` or `--gdk-debug=`
+ * on future runs will have no effect on the existing primary instance.
  *
  * Calling this function will cause the options in the supplied option
  * group to be parsed, but it does not cause you to be "opted in" to the
