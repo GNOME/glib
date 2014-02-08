@@ -3662,9 +3662,9 @@ g_variant_builder_end (GVariantBuilder *builder)
  * key is not found.  Each returns the new dictionary as a floating
  * #GVariant.
  *
- * <example>
- *  <title>Using stack-allocated #GVariantDict</title>
- *  <programlisting>
+ * ## Using a stack-allocated GVariantDict
+ *
+ * |[
  *   GVariant *
  *   add_to_count (GVariant  *orig,
  *                 GError   **error)
@@ -3684,12 +3684,11 @@ g_variant_builder_end (GVariantBuilder *builder)
  *
  *     return g_variant_dict_end (&amp;dict);
  *   }
- *  </programlisting>
- * </example>
+ * ]|
  *
- * <example>
- *  <title>Using heap-allocated #GVariantDict</title>
- *  <programlisting>
+ * ## Using heap-allocated GVariantDict
+ *
+ * |[
  *   GVariant *
  *   add_to_count (GVariant  *orig,
  *                 GError   **error)
@@ -3715,8 +3714,7 @@ g_variant_builder_end (GVariantBuilder *builder)
  *
  *     return result;
  *   }
- *  </programlisting>
- * </example>
+ * ]|
  *
  * Since: 2.40
  **/
