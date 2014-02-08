@@ -117,311 +117,53 @@
  * "a(aa(ui)(qna{ya(yd)}))".
  *
  * The meaning of each of the characters is as follows:
- *  <informaltable>
- *   <tgroup cols='2'>
- *    <tbody>
- *     <row>
- *      <entry>
- *       <para>
- *        <emphasis role='strong'>Character</emphasis>
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        <emphasis role='strong'>Meaning</emphasis>
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        b
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_BOOLEAN; a boolean value.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        y
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_BYTE; a byte.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        n
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_INT16; a signed 16 bit
- *        integer.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        q
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_UINT16; an unsigned 16 bit
- *        integer.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        i
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_INT32; a signed 32 bit
- *        integer.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        u
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_UINT32; an unsigned 32 bit
- *        integer.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        x
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_INT64; a signed 64 bit
- *        integer.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        t
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_UINT64; an unsigned 64 bit
- *        integer.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        h
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_HANDLE; a signed 32 bit
- *        value that, by convention, is used as an index into an array
- *        of file descriptors that are sent alongside a D-Bus message.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        d
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_DOUBLE; a double precision
- *        floating point value.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        s
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_STRING; a string.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        o
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_OBJECT_PATH; a string in
- *        the form of a D-Bus object path.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        g
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_STRING; a string in the
- *        form of a D-Bus type signature.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        ?
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_BASIC; an indefinite type
- *        that is a supertype of any of the basic types.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        v
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_VARIANT; a container type
- *        that contain any other type of value.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        a
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        used as a prefix on another type string to mean an array of
- *        that type; the type string "ai", for example, is the type of
- *        an array of signed 32-bit integers.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        m
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        used as a prefix on another type string to mean a "maybe", or
- *        "nullable", version of that type; the type string "ms", for example,
- *        is the type of a value that maybe contains a string, or maybe
- *        contains nothing.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        ()
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        used to enclose zero or more other concatenated type strings
- *        to create a tuple type; the type string "(is)", for example,
- *        is the type of a pair of an integer and a string.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        r
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_TUPLE; an indefinite type
- *        that is a supertype of any tuple type, regardless of the
- *        number of items.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        {}
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        used to enclose a basic type string concatenated with another
- *        type string to create a dictionary entry type, which usually
- *        appears inside of an array to form a dictionary; the type
- *        string "a{sd}", for example, is the type of a dictionary that
- *        maps strings to double precision floating point values.
- *       </para>
- *       <para>
- *        The first type (the basic type) is the key type and the second
- *        type is the value type. The reason that the first type is
- *        restricted to being a basic type is so that it can easily be
- *        hashed.
- *       </para>
- *      </entry>
- *     </row>
- *     <row>
- *      <entry>
- *       <para>
- *        *
- *       </para>
- *      </entry>
- *      <entry>
- *       <para>
- *        the type string of %G_VARIANT_TYPE_ANY; the indefinite type
- *        that is a supertype of all types.  Note that, as with all type
- *        strings, this character represents exactly one type. It
- *        cannot be used inside of tuples to mean "any number of items".
- *       </para>
- *      </entry>
- *     </row>
- *    </tbody>
- *   </tgroup>
- *  </informaltable>
+ * - `b`: the type string of %G_VARIANT_TYPE_BOOLEAN; a boolean value.
+ * - `y`: the type string of %G_VARIANT_TYPE_BYTE; a byte.
+ * - `n`: the type string of %G_VARIANT_TYPE_INT16; a signed 16 bit integer.
+ * - `q`: the type string of %G_VARIANT_TYPE_UINT16; an unsigned 16 bit integer.
+ * - `i`: the type string of %G_VARIANT_TYPE_INT32; a signed 32 bit integer.
+ * - `u`: the type string of %G_VARIANT_TYPE_UINT32; an unsigned 32 bit integer.
+ * - `x`: the type string of %G_VARIANT_TYPE_INT64; a signed 64 bit integer.
+ * - `t`: the type string of %G_VARIANT_TYPE_UINT64; an unsigned 64 bit integer.
+ * - `h`: the type string of %G_VARIANT_TYPE_HANDLE; a signed 32 bit value
+ *   that, by convention, is used as an index into an array of file
+ *   descriptors that are sent alongside a D-Bus message.
+ * - `d`: the type string of %G_VARIANT_TYPE_DOUBLE; a double precision
+ *   floating point value.
+ * - `s`: the type string of %G_VARIANT_TYPE_STRING; a string.
+ * - `o`: the type string of %G_VARIANT_TYPE_OBJECT_PATH; a string in the form
+ *   of a D-Bus object path.
+ * - `g`: the type string of %G_VARIANT_TYPE_STRING; a string in the form of
+ *   a D-Bus type signature.
+ * - `?`: the type string of %G_VARIANT_TYPE_BASIC; an indefinite type that
+ *   is a supertype of any of the basic types.
+ * - `v`: the type string of %G_VARIANT_TYPE_VARIANT; a container type that
+ *   contain any other type of value.
+ * - `a`: used as a prefix on another type string to mean an array of that
+ *   type; the type string "ai", for example, is the type of an array of
+ *   signed 32-bit integers.
+ * - `m`: used as a prefix on another type string to mean a "maybe", or
+ *   "nullable", version of that type; the type string "ms", for example,
+ *   is the type of a value that maybe contains a string, or maybe contains
+ *   nothing.
+ * - `()`: used to enclose zero or more other concatenated type strings to
+ *   create a tuple type; the type string "(is)", for example, is the type of
+ *   a pair of an integer and a string.
+ * - `r`: the type string of %G_VARIANT_TYPE_TUPLE; an indefinite type that is
+ *   a supertype of any tuple type, regardless of the number of items.
+ * - `{}`: used to enclose a basic type string concatenated with another type
+ *   string to create a dictionary entry type, which usually appears inside of
+ *   an array to form a dictionary; the type string "a{sd}", for example, is
+ *   the type of a dictionary that maps strings to double precision floating
+ *   point values.
+ *
+ *   The first type (the basic type) is the key type and the second type is
+ *   the value type. The reason that the first type is restricted to being a
+ *   basic type is so that it can easily be hashed.
+ * - `*`: the type string of %G_VARIANT_TYPE_ANY; the indefinite type that is
+ *   a supertype of all types.  Note that, as with all type strings, this
+ *   character represents exactly one type. It cannot be used inside of tuples
+ *   to mean "any number of items".
  *
  * Any type string of a container that contains an indefinite type is,
  * itself, an indefinite type. For example, the type string "a*"
