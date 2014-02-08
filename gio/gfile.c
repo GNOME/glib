@@ -76,13 +76,11 @@
  * (see #GInputStream and #GOutputStream).
  *
  * To construct a #GFile, you can use:
- * <simplelist>
- * <member>g_file_new_for_path() if you have a path.</member>
- * <member>g_file_new_for_uri() if you have a URI.</member>
- * <member>g_file_new_for_commandline_arg() for a command line argument.</member>
- * <member>g_file_new_tmp() to create a temporary file from a template.</member>
- * <member>g_file_parse_name() from a UTF-8 string gotten from g_file_get_parse_name().</member>
- * </simplelist>
+ * - g_file_new_for_path() if you have a path.
+ * - g_file_new_for_uri() if you have a URI.
+ * - g_file_new_for_commandline_arg() for a command line argument.
+ * - g_file_new_tmp() to create a temporary file from a template.
+ * - g_file_parse_name() from a UTF-8 string gotten from g_file_get_parse_name().
  *
  * One way to think of a #GFile is as an abstraction of a pathname. For
  * normal files the system pathname is what is stored internally, but as
@@ -131,11 +129,9 @@
  * Some #GFile operations do not have synchronous analogs, as they may
  * take a very long time to finish, and blocking may leave an application
  * unusable. Notable cases include:
- * <simplelist>
- * <member>g_file_mount_mountable() to mount a mountable file.</member>
- * <member>g_file_unmount_mountable_with_operation() to unmount a mountable file.</member>
- * <member>g_file_eject_mountable_with_operation() to eject a mountable file.</member>
- * </simplelist>
+ * - g_file_mount_mountable() to mount a mountable file.
+ * - g_file_unmount_mountable_with_operation() to unmount a mountable file.
+ * - g_file_eject_mountable_with_operation() to eject a mountable file.
  *
  * ## Entity Tags # {#gfile-etag}
  *
