@@ -1074,21 +1074,11 @@ g_variant_lookup_value (GVariant           *dictionary,
  * In particular, arrays of these fixed-sized types can be interpreted
  * as an array of the given C type, with @element_size set to the size
  * the appropriate type:
- *
- * <informaltable>
- * <tgroup cols='2'>
- * <thead><row><entry>element type</entry> <entry>C type</entry></row></thead>
- * <tbody>
- * <row><entry>%G_VARIANT_TYPE_INT16 (etc.)</entry>
- *   <entry>#gint16 (etc.)</entry></row>
- * <row><entry>%G_VARIANT_TYPE_BOOLEAN</entry>
- *   <entry>#guchar (not #gboolean!)</entry></row>
- * <row><entry>%G_VARIANT_TYPE_BYTE</entry> <entry>#guchar</entry></row>
- * <row><entry>%G_VARIANT_TYPE_HANDLE</entry> <entry>#guint32</entry></row>
- * <row><entry>%G_VARIANT_TYPE_DOUBLE</entry> <entry>#gdouble</entry></row>
- * </tbody>
- * </tgroup>
- * </informaltable>
+ * - %G_VARIANT_TYPE_INT16 (etc.): #gint16 (etc.)
+ * - %G_VARIANT_TYPE_BOOLEAN: #guchar (not #gboolean!)
+ * - %G_VARIANT_TYPE_BYTE: #guchar
+ * - %G_VARIANT_TYPE_HANDLE: #guint32
+ * - %G_VARIANT_TYPE_DOUBLE: #gdouble
  *
  * For example, if calling this function for an array of 32-bit integers,
  * you might say sizeof(gint32). This value isn't used except for the purpose
