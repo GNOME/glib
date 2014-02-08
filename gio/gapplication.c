@@ -1344,8 +1344,8 @@ g_application_class_init (GApplicationClass *class)
    * the application first.  You should probably not call
    * g_application_activate() for yourself, however: just return -1 and
    * allow the default handler to do it for you.  This will ensure that
-   * the <literal>--gapplication-service</literal> switch works properly
-   * (ie: no activation in that case).
+   * the `--gapplication-service` switch works properly (i.e. no activation
+   * in that case).
    *
    * Note that this signal is emitted from the default implementation of
    * local_command_line().  If you override that function and don't
@@ -1973,11 +1973,11 @@ g_application_open (GApplication  *application,
  * application can inspect the values of its #GOptionEntrys.
  *
  * #GApplication::handle-local-options is a good place to handle options
- * such as <literal>--version</literal>, where an immediate reply from
- * the local process is desired (instead of communicating with an
- * already-running instance).  A #GApplication::handle-local-options
- * handler can stop further processing by returning a non-negative
- * value, which then becomes the exit status of the process.
+ * such as `--version`, where an immediate reply from the local process is
+ * desired (instead of communicating with an already-running instance).
+ * A #GApplication::handle-local-options handler can stop further processing
+ * by returning a non-negative value, which then becomes the exit status of
+ * the process.
  *
  * What happens next depends on the flags: if
  * %G_APPLICATION_HANDLES_COMMAND_LINE was specified then the remaining
