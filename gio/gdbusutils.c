@@ -497,90 +497,25 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
 
 /**
  * g_dbus_gvalue_to_gvariant:
- * @gvalue: A #GValue to convert to a #GVariant.
- * @type: A #GVariantType.
+ * @gvalue: A #GValue to convert to a #GVariant
+ * @type: A #GVariantType
  *
- * Converts a #GValue to a #GVariant of the type indicated by the @type parameter.
+ * Converts a #GValue to a #GVariant of the type indicated by the @type
+ * parameter.
  *
  * The conversion is using the following rules:
- * <table frame='all'>
- *   <title>#GValue / #GVariant conversion rules</title>
- *   <tgroup cols='2' align='left' colsep='1' rowsep='1'>
- *     <thead>
- *       <row>
- *         <entry>If the #GType for @gvalue is...</entry>
- *         <entry>... then @type must be</entry>
- *       </row>
- *     </thead>
- *     <tbody>
- *       <row>
- *         <entry>#G_TYPE_STRING</entry>
- *         <entry>
- *         ['s'][G-VARIANT-TYPE-STRING:CAPS],
- *         ['o'][G-VARIANT-TYPE-OBJECT-PATH:CAPS],
- *         ['g'][G-VARIANT-TYPE-SIGNATURE:CAPS] or
- *         ['ay'][G-VARIANT-TYPE-BYTESTRING:CAPS]
- *         </entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_STRV</entry>
- *         <entry>
- *         ['as'][G-VARIANT-TYPE-STRING-ARRAY:CAPS],
- *         ['ao'][G-VARIANT-TYPE-OBJECT-PATH-ARRAY:CAPS] or
- *         ['aay'][G-VARIANT-TYPE-BYTESTRING-ARRAY:CAPS]
- *         </entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_BOOLEAN</entry>
- *         <entry>
- *         ['b'][G-VARIANT-TYPE-BOOLEAN:CAPS]
- *         </entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_UCHAR</entry>
- *         <entry>
- *         ['y'][G-VARIANT-TYPE-BYTE:CAPS]
- *         </entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_INT</entry>
- *         <entry>
- *         ['i'][G-VARIANT-TYPE-INT32:CAPS] or
- *         ['n'][G-VARIANT-TYPE-INT16:CAPS]
- *         </entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_UINT</entry>
- *         <entry>
- *         ['u'][G-VARIANT-TYPE-UINT32:CAPS] or
- *         ['q'][G-VARIANT-TYPE-UINT16:CAPS]
- *         </entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_INT64</entry>
- *         <entry>
- *         ['x'][G-VARIANT-TYPE-INT64:CAPS]
- *         </entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_UINT64</entry>
- *         <entry>
- *         ['t'][G-VARIANT-TYPE-UINT64:CAPS]
- *         </entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_DOUBLE</entry>
- *         <entry>
- *         ['d'][G-VARIANT-TYPE-DOUBLE:CAPS]
- *         </entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_VARIANT</entry>
- *         <entry>Any #GVariantType</entry>
- *       </row>
- *     </tbody>
- *   </tgroup>
- * </table>
+ *
+ * - #G_TYPE_STRING: 's', 'o', 'g' or 'ay'
+ * - #G_TYPE_STRV: 'as', 'ao' or 'aay'
+ * - #G_TYPE_BOOLEAN: 'b'
+ * - #G_TYPE_UCHAR: 'y'
+ * - #G_TYPE_INT: 'i', 'n'
+ * - #G_TYPE_UINT: 'u', 'q'
+ * - #G_TYPE_INT64 'x'
+ * - #G_TYPE_UINT64: 't'
+ * - #G_TYPE_DOUBLE: 'd'
+ * - #G_TYPE_VARIANT: Any #GVariantType
+ *
  * This can fail if e.g. @gvalue is of type #G_TYPE_STRING and @type
  * is ['i'][G-VARIANT-TYPE-INT32:CAPS]. It will also fail for any #GType
  * (including e.g. #G_TYPE_OBJECT and #G_TYPE_BOXED derived-types) not
@@ -594,9 +529,9 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  * See the g_dbus_gvariant_to_gvalue() function for how to convert a
  * #GVariant to a #GValue.
  *
- * Returns: A #GVariant (never floating) of #GVariantType
- * @type holding the data from @gvalue or %NULL in case of
- * failure. Free with g_variant_unref().
+ * Returns: A #GVariant (never floating) of #GVariantType @type holding
+ *     the data from @gvalue or %NULL in case of failure. Free with
+ *     g_variant_unref().
  *
  * Since: 2.30
  */
