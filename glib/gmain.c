@@ -240,11 +240,12 @@ struct _GMainContext
 
   gint ref_count;
 
+  GHashTable *sources;              /* guint -> GSource */
+
   GPtrArray *pending_dispatches;
   gint timeout;			/* Timeout for current iteration */
 
   guint next_id;
-  GHashTable *overflow_used_source_ids; /* set<guint> */
   GList *source_lists;
   gint in_check_or_prepare;
 
@@ -546,8 +547,7 @@ g_main_context_unref (GMainContext *context)
     }
   g_list_free (context->source_lists);
 
-  if (context->overflow_used_source_ids)
-    g_hash_table_destroy (context->overflow_used_source_ids);
+  g_hash_table_destroy (context->sources);
 
   g_mutex_clear (&context->mutex);
 
@@ -602,6 +602,7 @@ g_main_context_new (void)
   g_mutex_init (&context->mutex);
   g_cond_init (&context->cond);
 
+  context->sources = g_hash_table_new (NULL, NULL);
   context->owner = NULL;
   context->waiters = NULL;
 
@@ -1059,61 +1060,6 @@ source_remove_from_context (GSource      *source,
       context->source_lists = g_list_remove (context->source_lists, source_list);
       g_slice_free (GSourceList, source_list);
     }
-
-  if (context->overflow_used_source_ids)
-    g_hash_table_remove (context->overflow_used_source_ids,
-                         GUINT_TO_POINTER (source->source_id));
-  
-}
-
-static void
-assign_source_id_unlocked (GMainContext   *context,
-                           GSource        *source)
-{
-  guint id;
-
-  /* Are we about to overflow back to 0? 
-   * See https://bugzilla.gnome.org/show_bug.cgi?id=687098
-   */
-  if (G_UNLIKELY (context->next_id == G_MAXUINT &&
-                  context->overflow_used_source_ids == NULL))
-    {
-      GSourceIter iter;
-      GSource *source;
-
-      context->overflow_used_source_ids = g_hash_table_new (NULL, NULL);
-  
-      g_source_iter_init (&iter, context, FALSE);
-      while (g_source_iter_next (&iter, &source))
-        {
-          g_hash_table_add (context->overflow_used_source_ids,
-                            GUINT_TO_POINTER (source->source_id));
-        }
-      id = G_MAXUINT;
-      g_hash_table_add (context->overflow_used_source_ids, GUINT_TO_POINTER (id));
-    }
-  else if (context->overflow_used_source_ids == NULL)
-    {
-      id = context->next_id++;
-    }
-  else
-    {
-      /*
-       * If we overran G_MAXUINT, we fall back to randomly probing the
-       * source ids for the current context.  This will be slower the more
-       * sources there are, but we're mainly concerned right now about
-       * correctness and code size.  There's time for a more clever solution
-       * later.
-       */
-      do
-        id = g_random_int ();
-      while (id == 0 ||
-             g_hash_table_contains (context->overflow_used_source_ids,
-                                    GUINT_TO_POINTER (id)));
-      g_hash_table_add (context->overflow_used_source_ids, GUINT_TO_POINTER (id));
-    }
-
-  source->source_id = id;
 }
 
 static guint
@@ -1122,10 +1068,21 @@ g_source_attach_unlocked (GSource      *source,
                           gboolean      do_wakeup)
 {
   GSList *tmp_list;
+  guint id;
+
+  /* The counter may have wrapped, so we must ensure that we do not
+   * reuse the source id of an existing source.
+   */
+  do
+    id = context->next_id++;
+  while (id == 0 || g_hash_table_contains (context->sources, GUINT_TO_POINTER (id)));
 
   source->context = context;
-  assign_source_id_unlocked (context, source);
+  source->source_id = id;
   source->ref_count++;
+
+  g_hash_table_insert (context->sources, GUINT_TO_POINTER (id), source);
+
   source_add_to_context (source, context);
 
   if (!SOURCE_BLOCKED (source))
@@ -2021,6 +1978,8 @@ g_source_unref_internal (GSource      *source,
 	  if (!SOURCE_DESTROYED (source))
 	    g_warning (G_STRLOC ": ref_count == 0, but source was still attached to a context!");
 	  source_remove_from_context (source, context);
+
+          g_hash_table_remove (context->sources, GUINT_TO_POINTER (source->source_id));
 	}
 
       if (source->source_funcs->finalize)
