@@ -5157,7 +5157,7 @@ g_variant_valist_get (const gchar **str,
  * specified in @format_string. This can be achieved by casting them. See
  * the [GVariant varargs documentation][gvariant-varargs].
  *
- * <programlisting>
+ * |[
  * MyFlags some_flags = FLAG_ONE | FLAG_TWO;
  * const gchar *some_strings[] = { "a", "b", "c", NULL };
  * GVariant *new_variant;
@@ -5166,7 +5166,7 @@ g_variant_valist_get (const gchar **str,
  *                              /<!-- -->* This cast is required. *<!-- -->/
  *                              (guint64) some_flags,
  *                              some_strings);
- * </programlisting>
+ * ]|
  *
  * Returns: a new floating #GVariant instance
  *
