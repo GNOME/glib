@@ -153,29 +153,14 @@
  * vfunc, to parse them in either the primary instance or the local instance,
  * respectively.
  *
- * <example id="gapplication-example-open"><title>Opening files with a GApplication</title>
- * <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-open.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- * </programlisting>
- * </example>
+ * For an example of opening files with a GApplication, see
+ * [gapplication-example-open.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-open.c).
  *
- * <example id="gapplication-example-actions"><title>A GApplication with actions</title>
- * <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-actions.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- * </programlisting>
- * </example>
+ * For an example of using actions with GApplication, see
+ * [gapplication-example-actions.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-actions.c).
  *
- * <example id="gapplication-example-dbushooks"><title>Using extra D-Bus hooks with a GApplication</title>
- * <programlisting>
- * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-dbushooks.c">
- *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
- * </xi:include>
- * </programlisting>
- * </example>
+ * For an example of using extra D-Bus hooks with GApplication, see
+ * [gapplication-example-dbushooks.c](https://git.gnome.org/browse/glib/tree/gio/tests/gapplication-example-dbushooks.c).
  */
 
 /**
