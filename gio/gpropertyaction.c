@@ -61,10 +61,9 @@
  * the property.
  *
  * The general idea here is to reduce the number of locations where a
- * particular piece of state is kept (and therefore has to be
- * synchronised between).  #GPropertyAction does not have a separate
- * state that is kept in sync with the property value -- its state
- * <em>is</em> the property value.
+ * particular piece of state is kept (and therefore has to be synchronised
+ * between). #GPropertyAction does not have a separate state that is kept
+ * in sync with the property value -- its state is the property value.
  *
  * For example, it might be useful to create a #GAction corresponding to
  * the "visible-child-name" property of a #GtkStack so that the current
