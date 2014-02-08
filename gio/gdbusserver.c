@@ -70,7 +70,8 @@
  * To just export an object on a well-known name on a message bus, such as the
  * session or system bus, you should instead use g_bus_own_name().
  *
- * <example id="gdbus-peer-to-peer"><title>D-Bus peer-to-peer example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-peer.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * An example of peer-to-peer communication with G-DBus can be found
+ * in [gdbus-example-peer.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-peer.c).
  */
 
 /**

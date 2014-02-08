@@ -84,7 +84,8 @@
  * [thread-default main context][g-main-context-push-thread-default]
  * of the thread where the instance was constructed.
  *
- * <example id="gdbus-wellknown-proxy"><title>GDBusProxy for a well-known-name</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-watch-proxy.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * An example using a proxy for a well-known name can be found in
+ * [gdbus-example-watch-proxy.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-proxy.c)
  */
 
 /* lock protecting the mutable properties: name_owner, timeout_msec,

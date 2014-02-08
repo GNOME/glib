@@ -38,7 +38,8 @@
  *
  * Convenience API for owning bus names.
  *
- * <example id="gdbus-owning-names"><title>Simple application owning a name</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-own-name.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * A simple example for owning a name can be found in
+ * [gdbus-example-own-name.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-own-name.c) 
  */
 
 G_LOCK_DEFINE_STATIC (lock);

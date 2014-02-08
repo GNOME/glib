@@ -39,7 +39,8 @@
  *
  * Convenience API for watching bus names.
  *
- * <example id="gdbus-watching-names"><title>Simple application watching a name</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-watch-name.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * A simple example for watching a name can be found in
+ * [gdbus-example-watch-name.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-watch-name.c)
  */
 
 G_LOCK_DEFINE_STATIC (lock);

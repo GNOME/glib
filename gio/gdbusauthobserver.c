@@ -39,10 +39,13 @@
  * signals you are interested in. Note that new signals may be added
  * in the future
  *
+ * ## Controlling Authentication # {#auth-observer}
+ *
  * For example, if you only want to allow D-Bus connections from
  * processes owned by the same uid as the server, you would use a
  * signal handler like the following:
- * <example id="auth-observer"><title>Controlling Authentication</title><programlisting>
+ * 
+ * |[
  * static gboolean
  * on_authorize_authenticated_peer (GDBusAuthObserver *observer,
  *                                  GIOStream         *stream,
@@ -63,7 +66,7 @@
  *
  *   return authorized;
  * }
- * </programlisting></example>
+ * ]|
  */
 
 typedef struct _GDBusAuthObserverClass GDBusAuthObserverClass;

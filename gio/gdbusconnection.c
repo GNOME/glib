@@ -163,13 +163,25 @@
  * #GError, the only valid thing you can do with that #GDBusConnection is to
  * free it with g_object_unref().
  *
- * <example id="gdbus-server"><title>D-Bus server example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-server.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * ## An example D-Bus server # {#gdbus-server}
  *
- * <example id="gdbus-subtree-server"><title>D-Bus subtree example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-subtree.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * Here is an example for a D-Bus server:
+ * [gdbus-example-server.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-server.c)
  *
- * <example id="gdbus-unix-fd-client"><title>D-Bus UNIX File Descriptor example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-unix-fd-client.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * ## An example for exporting a subtree # {#gdbus-subtree-server}
  *
- * <example id="gdbus-export"><title>Exporting a GObject</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-export.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * Here is an example for exporting a subtree:
+ * [gdbus-example-subtree.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-subtree.c)
+ *
+ * ## An example for file descriptor passing # {#gdbus-unix-fd-client}
+ *
+ * Here is an example for passing UNIX file descriptors:
+ * [gdbus-unix-fd-client.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-unix-fd-client.c)
+ *
+ * ## An example for exporting a GObject # {#gdbus-export}
+ *
+ * Here is an example for exporting a #GObject:
+ * [gdbus-example-export.c](https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-export.c)
  */
 
 /* ---------------------------------------------------------------------------------------------------- */
