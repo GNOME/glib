@@ -86,8 +86,7 @@
  *            children are accessed by using the @next pointer of each
  *            child.
  *
- * The #GNode struct represents one node in a
- * <link linkend="glib-N-ary-Trees">N-ary Tree</link>. fields
+ * The #GNode struct represents one node in a [n-ary tree][glib-N-ary-Trees].
  **/
 
 #define g_node_alloc0()         g_slice_new0 (GNode)
@@ -851,10 +850,9 @@ g_node_depth_traverse_level (GNode             *node,
  *                  <caption>Post order: A, C, E, D, B, H, I, G, F</caption>
  *                </mediaobject>
  *              </informalfigure>
- * @G_LEVEL_ORDER: is not implemented for <link
- *                 linkend="glib-Balanced-Binary-Trees">Balanced Binary
- *                 Trees</link>.  For <link
- *                 linkend="glib-N-ary-Trees">N-ary Trees</link>, it
+ * @G_LEVEL_ORDER: is not implemented for
+ *                 [balanced binary trees][glib-Balanced-Binary-Trees].
+ *                 For [n-ary trees][glib-N-ary-Trees], it
  *                 vists the root node first, then its children, then
  *                 its grandchildren, and so on. Note that this is less
  *                 efficient than the other orders.

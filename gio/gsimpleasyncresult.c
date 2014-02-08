@@ -82,9 +82,9 @@
  * or it can use #GThreads.
  * g_simple_async_result_complete() will finish an I/O task directly
  * from the point where it is called. g_simple_async_result_complete_in_idle()
- * will finish it from an idle handler in the <link
- * linkend="g-main-context-push-thread-default">thread-default main
- * context</link>. g_simple_async_result_run_in_thread() will run the
+ * will finish it from an idle handler in the 
+ * [thread-default main context][g-main-context-push-thread-default]
+ * . g_simple_async_result_run_in_thread() will run the
  * job in a separate thread and then deliver the result to the
  * thread-default main context.
  *
@@ -784,9 +784,9 @@ complete_in_idle_cb (gpointer data)
  * g_simple_async_result_complete_in_idle:
  * @simple: a #GSimpleAsyncResult.
  *
- * Completes an asynchronous function in an idle handler in the <link
- * linkend="g-main-context-push-thread-default">thread-default main
- * loop</link> of the thread that @simple was initially created in
+ * Completes an asynchronous function in an idle handler in the
+ * [thread-default main context][g-main-context-push-thread-default]
+ * of the thread that @simple was initially created in
  * (and re-pushes that context around the invocation of the callback).
  *
  * Calling this function takes a reference to @simple for as long as

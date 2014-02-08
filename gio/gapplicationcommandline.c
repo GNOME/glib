@@ -57,7 +57,8 @@
  * The GApplicationCommandLine object can provide the @argc and @argv
  * parameters for use with the #GOptionContext command-line parsing API,
  * with the g_application_command_line_get_arguments() function. See
- * <xref linkend="gapplication-example-cmdline3"/> for an example.
+ * [gapplication-example-cmdline3.c][gapplication-example-cmdline3]
+ * for an example.
  *
  * The exit status of the originally-invoked process may be set and
  * messages can be printed to stdout or stderr of that process.  The

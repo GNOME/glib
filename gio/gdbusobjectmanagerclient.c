@@ -112,7 +112,7 @@
  * #GDBusObjectManagerClient::interface-proxy-signal.
  *
  * Note that all callbacks and signals are emitted in the
- * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
+ * [thread-default main context][g-main-context-push-thread-default]
  * that the #GDBusObjectManagerClient object was constructed
  * in. Additionally, the #GDBusObjectProxy and #GDBusProxy objects
  * originating from the #GDBusObjectManagerClient object will be created in
@@ -505,7 +505,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * connect signals to all interface proxies managed by @manager.
    *
    * This signal is emitted in the
-   * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
+   * [thread-default main context][g-main-context-push-thread-default]
    * that @manager was constructed in.
    *
    * Since: 2.30
@@ -543,7 +543,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * connect signals to all interface proxies managed by @manager.
    *
    * This signal is emitted in the
-   * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
+   * [thread-default main context][g-main-context-push-thread-default]
    * that @manager was constructed in.
    *
    * Since: 2.30
@@ -654,7 +654,7 @@ g_dbus_object_manager_client_new_sync (GDBusConnection               *connection
  *
  * This is an asynchronous failable constructor. When the result is
  * ready, @callback will be invoked in the
- * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
+ * [thread-default main context][g-main-context-push-thread-default]
  * of the thread you are calling this method from. You can
  * then call g_dbus_object_manager_client_new_finish() to get the result. See
  * g_dbus_object_manager_client_new_sync() for the synchronous version.
@@ -807,7 +807,7 @@ g_dbus_object_manager_client_new_for_bus_sync (GBusType                       bu
  *
  * This is an asynchronous failable constructor. When the result is
  * ready, @callback will be invoked in the
- * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
+ * [thread-default main loop][g-main-context-push-thread-default]
  * of the thread you are calling this method from. You can
  * then call g_dbus_object_manager_client_new_for_bus_finish() to get the result. See
  * g_dbus_object_manager_client_new_for_bus_sync() for the synchronous version.

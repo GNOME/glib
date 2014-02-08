@@ -129,8 +129,8 @@
  * GModule:
  *
  * The #GModule struct is an opaque data structure to represent a
- * <link linkend="glib-Dynamic-Loading-of-Modules">Dynamically-Loaded
- * Module</link>. It should only be accessed via the following functions.
+ * [dynamically-loaded module][glib-Dynamic-Loading-of-Modules].
+ * It should only be accessed via the following functions.
  */
 
 /**

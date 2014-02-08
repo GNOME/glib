@@ -31,7 +31,7 @@
  * @title: GDBusActionGroup
  * @short_description: A D-Bus GActionGroup implementation
  * @include: gio/gio.h
- * @see_also: <link linkend="gio-GActionGroup-exporter">GActionGroup exporter</link>
+ * @see_also: [GActionGroup exporter][gio-GActionGroup-exporter]
  *
  * #GDBusActionGroup is an implementation of the #GActionGroup
  * interface that can be used as a proxy for an action group

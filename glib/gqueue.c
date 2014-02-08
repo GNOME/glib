@@ -32,8 +32,8 @@
  * as #GList to store elements.
  *
  * The data contained in each element can be either integer values, by
- * using one of the <link linkend="glib-Type-Conversion-Macros">Type
- * Conversion Macros</link>, or simply pointers to any type of data.
+ * using one of the [Type Conversion Macros][glib-Type-Conversion-Macros],
+ * or simply pointers to any type of data.
  *
  * To create a new GQueue, use g_queue_new().
  *

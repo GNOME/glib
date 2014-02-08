@@ -71,9 +71,9 @@ typedef struct _GTreeNode  GTreeNode;
 /**
  * GTree:
  *
- * The GTree struct is an opaque data structure representing a <link
- * linkend="glib-Balanced-Binary-Trees">Balanced Binary Tree</link>.
- * It should be accessed only by using the following functions.
+ * The GTree struct is an opaque data structure representing a
+ * [balanced binary tree][glib-Balanced-Binary-Trees]. It should be
+ * accessed only by using the following functions.
  */
 struct _GTree
 {
@@ -940,8 +940,7 @@ g_tree_foreach (GTree         *tree,
  * Deprecated:2.2: The order of a balanced tree is somewhat arbitrary.
  *     If you just want to visit all nodes in sorted order, use
  *     g_tree_foreach() instead. If you really need to visit nodes in
- *     a different order, consider using an
- *     <link linkend="glib-N-ary-Trees">N-ary Tree</link>.
+ *     a different order, consider using an [n-ary tree][glib-N-ary-Trees].
  */
 /**
  * GTraverseFunc:

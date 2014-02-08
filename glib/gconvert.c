@@ -104,21 +104,20 @@
  * encoding for their strings, and that is also what they use for
  * the file names they create. However, older file systems may
  * still contain file names created in "older" encodings, such as
- * ISO-8859-1. In this case, for compatibility reasons, you may
- * want to instruct Glib to use that particular encoding for file
- * names rather than UTF-8. You can do this by specifying the
- * encoding for file names in the <link
- * linkend="G_FILENAME_ENCODING">`G_FILENAME_ENCODING`</link>
+ * ISO-8859-1. In this case, for compatibility reasons, you may want
+ * to instruct Glib to use that particular encoding for file names
+ * rather than UTF-8. You can do this by specifying the encoding for
+ * file names in the [`G_FILENAME_ENCODING`][G_FILENAME_ENCODING]
  * environment variable. For example, if your installation uses
  * ISO-8859-1 for file names, you can put this in your `~/.profile`
- * <programlisting>
+ * |[
  * export G_FILENAME_ENCODING=ISO-8859-1
- * </programlisting>
+ * ]|
  * Glib provides the functions g_filename_to_utf8() and
  * g_filename_from_utf8() to perform the necessary conversions.
  * These functions convert file names from the encoding specified
- * in `G_FILENAME_ENCODING` to UTF-8 and vice-versa.
- * <xref linkend="file-name-encodings-diagram"/> illustrates how
+ * in `G_FILENAME_ENCODING` to UTF-8 and vice-versa. This
+ * [diagram][file-name-encodings-diagram] illustrates how
  * these functions are used to convert between UTF-8 and the
  * encoding for file names in the file system.
  *
@@ -885,8 +884,7 @@ strdup_len (const gchar *string,
  * 
  * Converts a string which is in the encoding used for strings by
  * the C runtime (usually the same as that used by the operating
- * system) in the <link linkend="setlocale">current locale</link> into a
- * UTF-8 string.
+ * system) in the [current locale][setlocale] into a UTF-8 string.
  * 
  * Return value: A newly-allocated buffer containing the converted string,
  *               or %NULL on an error, and error will be set.
@@ -929,8 +927,8 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  * 
  * Converts a string from UTF-8 to the encoding used for strings by
  * the C runtime (usually the same as that used by the operating
- * system) in the <link linkend="setlocale">current locale</link>. On
- * Windows this means the system codepage.
+ * system) in the [current locale][setlocale]. On Windows this means
+ * the system codepage.
  * 
  * Return value: A newly-allocated buffer containing the converted string,
  *               or %NULL on an error, and error will be set.
@@ -986,12 +984,12 @@ filename_charset_cache_free (gpointer data)
  *
  * `G_FILENAME_ENCODING` may be set to a comma-separated list of
  * character set names. The special token "&commat;locale" is taken
- * to  mean the character set for the <link linkend="setlocale">current 
- * locale</link>. If `G_FILENAME_ENCODING` is not set, but 
- * `G_BROKEN_FILENAMES` is, the character set of the current locale
- * is taken as the filename encoding. If neither environment variable 
- * is set, UTF-8 is taken as the filename encoding, but the character
- * set of the current locale is also put in the list of encodings.
+ * to  mean the character set for the [current locale][setlocale].
+ * If `G_FILENAME_ENCODING` is not set, but `G_BROKEN_FILENAMES` is,
+ * the character set of the current locale is taken as the filename
+ * encoding. If neither environment variable  is set, UTF-8 is taken
+ * as the filename encoding, but the character set of the current locale
+ * is also put in the list of encodings.
  *
  * The returned @charsets belong to GLib and must not be freed.
  *
@@ -1134,7 +1132,7 @@ get_filename_charset (const gchar **filename_charset)
  * Converts a string which is in the encoding used by GLib for
  * filenames into a UTF-8 string. Note that on Windows GLib uses UTF-8
  * for filenames; on other platforms, this function indirectly depends on 
- * the <link linkend="setlocale">current locale</link>.
+ * the [current locale][setlocale].
  * 
  * Return value: The converted string, or %NULL on an error.
  **/
@@ -1206,7 +1204,7 @@ g_filename_to_utf8 (const gchar *opsysstring,
  * Converts a string from UTF-8 to the encoding GLib uses for
  * filenames. Note that on Windows GLib uses UTF-8 for filenames;
  * on other platforms, this function indirectly depends on the 
- * <link linkend="setlocale">current locale</link>.
+ * [current locale][setlocale].
  * 
  * Return value: (array length=bytes_written) (element-type guint8) (transfer full):
  *               The converted string, or %NULL on an error.

@@ -511,9 +511,9 @@ connection_get_cb (GObject      *source_object,
  * Starts watching @name on the bus specified by @bus_type and calls
  * @name_appeared_handler and @name_vanished_handler when the name is
  * known to have a owner respectively known to lose its
- * owner. Callbacks will be invoked in the <link
- * linkend="g-main-context-push-thread-default">thread-default main
- * loop</link> of the thread you are calling this function from.
+ * owner. Callbacks will be invoked in the
+ * [thread-default main context][g-main-context-push-thread-default]
+ * of the thread you are calling this function from.
  *
  * You are guaranteed that one of the handlers will be invoked after
  * calling this function. When you are done watching the name, just
@@ -532,11 +532,11 @@ connection_get_cb (GObject      *source_object,
  * guaranteed that the next time one of the handlers is invoked, it
  * will be @name_vanished_handler. The reverse is also true.
  *
- * This behavior makes it very simple to write applications that wants
- * to take action when a certain name exists, see <xref
- * linkend="gdbus-watching-names"/>. Basically, the application
- * should create object proxies in @name_appeared_handler and destroy
- * them again (if any) in @name_vanished_handler.
+ * This behavior makes it very simple to write applications that want
+ * to take action when a certain [name exists][gdbus-watching-names].
+ * Basically, the application should create object proxies in
+ * @name_appeared_handler and destroy them again (if any) in
+ * @name_vanished_handler.
  *
  * Returns: An identifier (never 0) that an be used with
  * g_bus_unwatch_name() to stop watching the name.

@@ -30,11 +30,10 @@
  *
  * The #GSequence data structure has the API of a list, but is
  * implemented internally with a balanced binary tree. This means that
- * it is possible to maintain a sorted list of n elements in time O(n
- * log n). The data contained in each element can be either integer
- * values, by using of the <link
- * linkend="glib-Type-Conversion-Macros">Type Conversion Macros</link>,
- * or simply pointers to any type of data.
+ * it is possible to maintain a sorted list of n elements in time O(n log n).
+ * The data contained in each element can be either integer values, by using
+ * of the [Type Conversion Macros][glib-Type-Conversion-Macros], or simply
+ * pointers to any type of data.
  *
  * A #GSequence is accessed through "iterators", represented by a
  * #GSequenceIter. An iterator represents a position between two
@@ -91,7 +90,7 @@ typedef struct _GSequenceNode GSequenceNode;
  * GSequence:
  *
  * The #GSequence struct is an opaque data type representing a
- * <link linkend="glib-Sequences">Sequence</link> data type.
+ * [sequence][glib-Sequences] data type.
  */
 struct _GSequence
 {

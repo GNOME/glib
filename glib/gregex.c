@@ -42,7 +42,7 @@
  * SECTION:gregex
  * @title: Perl-compatible regular expressions
  * @short_description: matches strings against regular expressions
- * @see_also: <xref linkend="glib-regex-syntax"/>
+ * @see_also: [Regular expression syntax][glib-regex-syntax]
  *
  * The g_regex_*() functions implement regular
  * expression pattern matching using syntax and semantics similar to

@@ -2010,7 +2010,8 @@ g_application_open (GApplication  *application,
  * and override local_command_line(). In this case, you most likely want
  * to return %TRUE from your local_command_line() implementation to
  * suppress the default handling. See
- * <xref linkend="gapplication-example-cmdline2"/> for an example.
+ * [gapplication-example-cmdline2.c][gapplication-example-cmdline2]
+ * for an example.
  *
  * If, after the above is done, the use count of the application is zero
  * then the exit status is returned immediately.  If the use count is

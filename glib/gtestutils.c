@@ -59,8 +59,7 @@
  * SECTION:testing
  * @title: Testing
  * @short_description: a test framework
- * @see_also: <link linkend="gtester">gtester</link>,
- *            <link linkend="gtester-report">gtester-report</link>
+ * @see_also: [gtester][gtester], [gtester-report][gtester-report]
  *
  * GLib provides a framework for writing and maintaining unit tests
  * in parallel to the code they are testing. The API is designed according
@@ -253,8 +252,7 @@
 
 /**
  * g_test_trap_assert_stdout:
- * @soutpattern: a glob-style
- *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
+ * @soutpattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
  *
  * Assert that the stdout output of the last test subprocess matches
  * @soutpattern. See g_test_trap_subprocess().
@@ -264,8 +262,7 @@
 
 /**
  * g_test_trap_assert_stdout_unmatched:
- * @soutpattern: a glob-style
- *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
+ * @soutpattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
  *
  * Assert that the stdout output of the last test subprocess
  * does not match @soutpattern. See g_test_trap_subprocess().
@@ -275,8 +272,7 @@
 
 /**
  * g_test_trap_assert_stderr:
- * @serrpattern: a glob-style
- *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
+ * @serrpattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
  *
  * Assert that the stderr output of the last test subprocess
  * matches @serrpattern. See  g_test_trap_subprocess().
@@ -293,8 +289,7 @@
 
 /**
  * g_test_trap_assert_stderr_unmatched:
- * @serrpattern: a glob-style
- *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
+ * @serrpattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
  *
  * Assert that the stderr output of the last test subprocess
  * does not match @serrpattern. See g_test_trap_subprocess().

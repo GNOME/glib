@@ -2325,7 +2325,7 @@ parse (TokenStream  *stream,
  *
  * A single #GVariant is parsed from the content of @text.
  *
- * The format is described <link linkend='gvariant-text'>here</link>.
+ * The format is described [here][gvariant-text].
  *
  * The memory at @limit will never be accessed and the parser behaves as
  * if the character at @limit is the nul terminator.  This has the
@@ -2430,7 +2430,7 @@ g_variant_parse (const GVariantType  *type,
  *
  * Note that the arguments in @app must be of the correct width for their types
  * specified in @format when collected into the #va_list. See
- * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
+ * the [GVariant varargs documentation][gvariant-varargs].
  *
  * In order to behave correctly in all cases it is necessary for the
  * calling function to g_variant_ref_sink() the return result before
@@ -2487,7 +2487,7 @@ g_variant_new_parsed_va (const gchar *format,
  *
  * Note that the arguments must be of the correct width for their types
  * specified in @format. This can be achieved by casting them. See
- * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
+ * the [GVariant varargs documentation][gvariant-varargs].
  *
  * Consider this simple example:
  * |[<!-- language="C" --> 
@@ -2540,7 +2540,7 @@ g_variant_new_parsed (const gchar *format,
  *
  * Note that the arguments must be of the correct width for their types
  * specified in @format_string. This can be achieved by casting them. See
- * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
+ * the [GVariant varargs documentation][gvariant-varargs].
  *
  * This function might be used as follows:
  *

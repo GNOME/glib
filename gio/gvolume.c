@@ -562,8 +562,8 @@ g_volume_eject_with_operation_finish (GVolume        *volume,
  * @kind: the kind of identifier to return
  *
  * Gets the identifier of the given kind for @volume. 
- * See the <link linkend="volume-identifier">introduction</link>
- * for more information about volume identifiers.
+ * See the [introduction][volume-identifier] for more
+ * information about volume identifiers.
  *
  * Returns: a newly allocated string containing the
  *     requested identfier, or %NULL if the #GVolume
@@ -590,9 +590,8 @@ g_volume_get_identifier (GVolume    *volume,
  * g_volume_enumerate_identifiers:
  * @volume: a #GVolume
  * 
- * Gets the kinds of <link linkend="volume-identifier">identifiers</link>
- * that @volume has. Use g_volume_get_identifier() to obtain
- * the identifiers themselves.
+ * Gets the kinds of [identifiers][volume-identifier] that @volume has.
+ * Use g_volume_get_identifier() to obtain the identifiers themselves.
  *
  * Returns: (array zero-terminated=1) (transfer full): a %NULL-terminated array
  *   of strings containing kinds of identifiers. Use g_strfreev() to free.

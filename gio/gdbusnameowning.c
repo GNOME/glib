@@ -563,9 +563,9 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  *
  * Starts acquiring @name on the bus specified by @bus_type and calls
  * @name_acquired_handler and @name_lost_handler when the name is
- * acquired respectively lost. Callbacks will be invoked in the <link
- * linkend="g-main-context-push-thread-default">thread-default main
- * loop</link> of the thread you are calling this function from.
+ * acquired respectively lost. Callbacks will be invoked in the 
+ * [thread-default main context][g-main-context-push-thread-default]
+ * of the thread you are calling this function from.
  *
  * You are guaranteed that one of the @name_acquired_handler and @name_lost_handler
  * callbacks will be invoked after calling this function - there are three
@@ -607,7 +607,7 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  * before @name is requested from the bus.
  *
  * This behavior makes it very simple to write applications that wants
- * to own names and export objects, see <xref linkend="gdbus-owning-names"/>.
+ * to [own names][gdbus-owning-names] and export objects.
  * Simply register objects to be exported in @bus_acquired_handler and
  * unregister the objects (if any) in @name_lost_handler.
  *

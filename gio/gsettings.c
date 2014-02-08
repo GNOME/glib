@@ -91,14 +91,14 @@
  * the &lt;key&gt; element.
  *
  * GSettings uses schemas in a compact binary form that is created
- * by the <link linkend="glib-compile-schemas">glib-compile-schemas</link>
+ * by the [glib-compile-schemas][glib-compile-schemas]
  * utility. The input is a schema description in an XML format.
  *
  * A DTD for the gschema XML format can be found here:
  * [gschema.dtd](https://git.gnome.org/browse/glib/tree/gio/gschema.dtd)
  *
- * The <link linkend="glib-compile-schemas">glib-compile-schemas</link>
- * tool expects schema files to have the extension `.gschema.xml`.
+ * The [glib-compile-schemas][glib-compile-schemas] tool expects schema
+ * files to have the extension `.gschema.xml`.
  *
  * At runtime, schemas are identified by their id (as specified in the
  * id attribute of the &lt;schema&gt; element). The convention for schema
@@ -111,12 +111,11 @@
  *
  * In addition to #GVariant types, keys can have types that have
  * enumerated types. These can be described by a &lt;choice&gt;,
- * &lt;enum&gt; or &lt;flags&gt; element, see
- * <xref linkend="schema-enumerated"/>. The underlying type of
- * such a key is string, but you can use g_settings_get_enum(),
- * g_settings_set_enum(), g_settings_get_flags(), g_settings_set_flags()
- * access the numeric values corresponding to the string value of enum
- * and flags keys.
+ * &lt;enum&gt; or &lt;flags&gt; element, as seen in the
+ * [example][schema-enumerated]. The underlying type of such a key
+ * is string, but you can use g_settings_get_enum(), g_settings_set_enum(),
+ * g_settings_get_flags(), g_settings_set_flags() access the numeric values
+ * corresponding to the string value of enum and flags keys.
  *
  * An example for default value:
  * |[
@@ -191,11 +190,11 @@
  * an application. Sometimes, it is necessary for a vendor or distributor
  * to adjust these defaults. Since patching the XML source for the schema
  * is inconvenient and error-prone,
- * <link linkend="glib-compile-schemas">glib-compile-schemas</link> reads
- * so-called 'vendor override' files. These are keyfiles in the same
- * directory as the XML schema sources which can override default values.
- * The schema id serves as the group name in the key file, and the values
- * are expected in serialized GVariant form, as in the following example:
+ * [glib-compile-schemas][glib-compile-schemas] reads so-called vendor
+ * override' files. These are keyfiles in the same directory as the XML
+ * schema sources which can override default values. The schema id serves
+ * as the group name in the key file, and the values are expected in
+ * serialized GVariant form, as in the following example:
  * |[
  *     [org.gtk.Example]
  *     key1='string'

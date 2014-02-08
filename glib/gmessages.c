@@ -1129,8 +1129,7 @@ g_assert_warning (const char *log_domain,
  * g_test_expect_message:
  * @log_domain: (allow-none): the log domain of the message
  * @log_level: the log level of the message
- * @pattern: a glob-style
- *     <link linkend="glib-Glob-style-pattern-matching">pattern</link>
+ * @pattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
  *
  * Indicates that a message with the given @log_domain and @log_level,
  * with text matching @pattern, is expected to be logged. When this

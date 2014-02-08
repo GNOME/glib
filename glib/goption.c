@@ -1814,8 +1814,7 @@ platform_get_argv0 (void)
  * this function will produce help output to stdout and
  * call `exit (0)`.
  *
- * Note that function depends on the
- * <link linkend="setlocale">current locale</link> for
+ * Note that function depends on the [current locale][setlocale] for
  * automatic character set conversion of string and filename
  * arguments.
  *

@@ -43,8 +43,7 @@
  * it (or, in the case of the 'root' menu, is defined by the context
  * in which it is used).
  *
- * As an example, consider the visible portions of the menu in
- * <xref linkend="menu-example"/>.
+ * As an example, consider the visible portions of this menu:
  *
  * ## An example menu # {#menu-example}
  *
@@ -62,7 +61,7 @@
  * - the Sources section (containing 2 items)
  * - the Markup section (containing 2 items)
  *
- * <xref linkend="menu-model"/> illustrates the conceptual connection between
+ * The [example][menu-model] illustrates the conceptual connection between
  * these 8 menus. Each large block in the figure represents a menu and the
  * smaller blocks within the large block represent items in that menu. Some
  * items contain references to other menus.
@@ -71,8 +70,8 @@
  *
  * ![](menu-model.png)
  *
- * Notice that the separators visible in <xref linkend="menu-example"/>
- * appear nowhere in <xref linkend="menu-model"/>. This is because
+ * Notice that the separators visible in the [example][menu-example]
+ * appear nowhere in the [menu model][menu-model]. This is because
  * separators are not explicitly represented in the menu model. Instead,
  * a separator is inserted between any two non-empty sections of a menu.
  * Section items can have labels just like any other item. In that case,
@@ -83,12 +82,10 @@
  * outside the application. Examples include global menus, jumplists,
  * dash boards, etc. To support such uses, it is necessary to 'export'
  * information about actions and their representation in menus, which
- * is exactly what the
- * <link linkend="gio-GActionGroup-exporter">GActionGroup exporter</link>
- * and the
- * <link linkend="gio-GMenuModel-exporter">GMenuModel exporter</link>
- * do for #GActionGroup and #GMenuModel. The client-side counterparts
- * to make use of the exported information are #GDBusActionGroup and
+ * is exactly what the [GActionGroup exporter][gio-GActionGroup-exporter]
+ * and the [GMenuModel exporter][gio-GMenuModel-exporter] do for
+ * #GActionGroup and #GMenuModel. The client-side counterparts to
+ * make use of the exported information are #GDBusActionGroup and
  * #GDBusMenuModel.
  *
  * The API of #GMenuModel is very generic, with iterators for the

@@ -30,7 +30,7 @@
  * @title: GDBusMenuModel
  * @short_description: A D-Bus GMenuModel implementation
  * @include: gio/gio.h
- * @see_also: <link linkend="gio-GMenuModel-exporter">GMenuModel Exporter</link>
+ * @see_also: [GMenuModel Exporter][gio-GMenuModel-exporter]
  *
  * #GDBusMenuModel is an implementation of #GMenuModel that can be used
  * as a proxy for a menu model that is exported over D-Bus with

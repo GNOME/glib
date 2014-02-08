@@ -870,8 +870,7 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * It calls g_slice_alloc() with `sizeof (@type)` and casts the
  * returned pointer to a pointer of the given type, avoiding a type
  * cast in the source code. Note that the underlying slice allocation
- * mechanism can be changed with the
- * <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+ * mechanism can be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
  * Returns: a pointer to the allocated block, cast to a pointer to @type
@@ -890,7 +889,7 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * and casts the returned pointer to a pointer of the given type,
  * avoiding a type cast in the source code.
  * Note that the underlying slice allocation mechanism can
- * be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+ * be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
  * Since: 2.10
@@ -908,7 +907,7 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * and casts the returned pointer to a pointer of the given type,
  * avoiding a type cast in the source code.
  * Note that the underlying slice allocation mechanism can
- * be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+ * be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
  * Returns: a pointer to the allocated block, cast to a pointer to @type
@@ -927,9 +926,8 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * It calls g_slice_free1() using `sizeof (type)`
  * as the block size.
  * Note that the exact release behaviour can be changed with the
- * <link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment
- * variable, also see <link linkend="G_SLICE">G_SLICE</link> for
- * related debugging options.
+ * [`G_DEBUG=gc-friendly`][G_DEBUG] environment variable, also see
+ * [`G_SLICE`][G_SLICE] for related debugging options.
  *
  * Since: 2.10
  */
@@ -946,9 +944,8 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * a @next pointer (similar to #GSList). The name of the
  * @next field in @type is passed as third argument.
  * Note that the exact release behaviour can be changed with the
- * <link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment
- * variable, also see <link linkend="G_SLICE">G_SLICE</link> for
- * related debugging options.
+ * [`G_DEBUG=gc-friendly`][G_DEBUG] environment variable, also see
+ * [`G_SLICE`][G_SLICE] for related debugging options.
  *
  * Since: 2.10
  */
@@ -964,7 +961,7 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * if a malloc() fallback implementation is used instead,
  * the alignment may be reduced in a libc dependent fashion.
  * Note that the underlying slice allocation mechanism can
- * be changed with the <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+ * be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
  * Returns: a pointer to the allocated memory block
@@ -1022,8 +1019,7 @@ g_slice_alloc (gsize mem_size)
  *
  * Allocates a block of memory via g_slice_alloc() and initializes
  * the returned memory to 0. Note that the underlying slice allocation
- * mechanism can be changed with the
- * <link linkend="G_SLICE">G_SLICE=always-malloc</link>
+ * mechanism can be changed with the [`G_SLICE=always-malloc`][G_SLICE]
  * environment variable.
  *
  * Returns: a pointer to the allocated block
@@ -1071,10 +1067,8 @@ g_slice_copy (gsize         mem_size,
  * The memory must have been allocated via g_slice_alloc() or
  * g_slice_alloc0() and the @block_size has to match the size
  * specified upon allocation. Note that the exact release behaviour
- * can be changed with the
- * <link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment
- * variable, also see <link linkend="G_SLICE">G_SLICE</link> for
- * related debugging options.
+ * can be changed with the [`G_DEBUG=gc-friendly`][G_DEBUG] environment
+ * variable, also see [`G_SLICE`][G_SLICE] for related debugging options.
  *
  * Since: 2.10
  */
@@ -1133,9 +1127,8 @@ g_slice_free1 (gsize    mem_size,
  * @next pointer (similar to #GSList). The offset of the @next
  * field in each block is passed as third argument.
  * Note that the exact release behaviour can be changed with the
- * <link linkend="G_DEBUG">G_DEBUG=gc-friendly</link> environment
- * variable, also see <link linkend="G_SLICE">G_SLICE</link> for
- * related debugging options.
+ * [`G_DEBUG=gc-friendly`][G_DEBUG] environment variable, also see
+ * [`G_SLICE`][G_SLICE] for related debugging options.
  *
  * Since: 2.10
  */

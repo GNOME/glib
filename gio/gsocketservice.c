@@ -47,9 +47,9 @@
  * If you are interested in writing connection handlers that contain
  * blocking code then see #GThreadedSocketService.
  *
- * The socket service runs on the main loop of the <link
- * linkend="g-main-context-push-thread-default-context">thread-default
- * context</link> of the thread it is created in, and is not
+ * The socket service runs on the main loop of the 
+ * [thread-default context][g-main-context-push-thread-default-context]
+ * of the thread it is created in, and is not
  * threadsafe in general. However, the calls to start and stop the
  * service are thread-safe so these can be used from threads that
  * handle incoming clients.

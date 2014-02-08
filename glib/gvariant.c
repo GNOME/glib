@@ -922,7 +922,7 @@ g_variant_new_dict_entry (GVariant *key,
  * @format_string determines the C types that are used for unpacking
  * the values and also determines if the values are copied or borrowed,
  * see the section on
- * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
+ * [GVariant format strings][gvariant-format-strings-pointers].
  *
  * This function is currently implemented with a linear scan.  If you
  * plan to do many lookups then #GVariantDict may be more efficient.
@@ -1069,8 +1069,7 @@ g_variant_lookup_value (GVariant           *dictionary,
  *
  * @element_size must be the size of a single element in the array,
  * as given by the section on
- * <link linkend='gvariant-serialised-data-memory'>Serialised Data
- * Memory</link>.
+ * [serialized data memory][gvariant-serialised-data-memory].
  *
  * In particular, arrays of these fixed-sized types can be interpreted
  * as an array of the given C type, with @element_size set to the size
@@ -2577,7 +2576,7 @@ g_variant_print_string (GVariant *value,
  *
  * Pretty-prints @value in the format understood by g_variant_parse().
  *
- * The format is described <link linkend='gvariant-text'>here</link>.
+ * The format is described [here][gvariant-text].
  *
  * If @type_annotate is %TRUE, then type information is included in
  * the output.
@@ -3844,10 +3843,9 @@ g_variant_dict_init (GVariantDict *dict,
  * this function returns %FALSE.  Otherwise, it unpacks the returned
  * value and returns %TRUE.
  *
- * @format_string determines the C types that are used for unpacking
- * the values and also determines if the values are copied or borrowed,
- * see the section on
- * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
+ * @format_string determines the C types that are used for unpacking the
+ * values and also determines if the values are copied or borrowed, see the
+ * section on [GVariant format strings][gvariant-format-strings-pointers].
  *
  * Returns: %TRUE if a value was unpacked
  *
@@ -4158,8 +4156,7 @@ g_variant_dict_unref (GVariantDict *dict)
  * not be accessed and the effect is otherwise equivalent to if the
  * character at @limit were nul.
  *
- * See the section on <link linkend='gvariant-format-strings'>GVariant
- * Format Strings</link>.
+ * See the section on [GVariant format strings][gvariant-format-strings].
  *
  * Returns: %TRUE if there was a valid format string
  *
@@ -5158,11 +5155,11 @@ g_variant_valist_get (const gchar **str,
  *
  * Think of this function as an analogue to g_strdup_printf().
  *
- * The type of the created instance and the arguments that are
- * expected by this function are determined by @format_string.  See the
- * section on <link linkend='gvariant-format-strings'>GVariant Format
- * Strings</link>.  Please note that the syntax of the format string is
- * very likely to be extended in the future.
+ * The type of the created instance and the arguments that are expected
+ * by this function are determined by @format_string. See the section on
+ * [GVariant format strings][gvariant-format-strings]. Please note that
+ * the syntax of the format string is very likely to be extended in the
+ * future.
  *
  * The first character of the format string must not be '*' '?' '@' or
  * 'r'; in essence, a new #GVariant must always be constructed by this
@@ -5170,7 +5167,7 @@ g_variant_valist_get (const gchar **str,
  *
  * Note that the arguments must be of the correct width for their types
  * specified in @format_string. This can be achieved by casting them. See
- * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
+ * the [GVariant varargs documentation][gvariant-varargs].
  *
  * <programlisting>
  * MyFlags some_flags = FLAG_ONE | FLAG_TWO;
@@ -5229,9 +5226,9 @@ g_variant_new (const gchar *format_string,
  * @format_string, are collected from this #va_list and the list is left
  * pointing to the argument following the last.
  *
- * Note that the arguments in @app must be of the correct width for their types
- * specified in @format_string when collected into the #va_list. See
- * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
+ * Note that the arguments in @app must be of the correct width for their
+ * types specified in @format_string when collected into the #va_list.
+ * See the [GVariant varargs documentation][gvariant-varargs.
  *
  * These two generalisations allow mixing of multiple calls to
  * g_variant_new_va() and g_variant_get_va() within a single actual
@@ -5286,15 +5283,15 @@ g_variant_new_va (const gchar  *format_string,
  * The arguments that are expected by this function are entirely
  * determined by @format_string.  @format_string also restricts the
  * permissible types of @value.  It is an error to give a value with
- * an incompatible type.  See the section on <link
- * linkend='gvariant-format-strings'>GVariant Format Strings</link>.
+ * an incompatible type.  See the section on
+ * [GVariant format strings][gvariant-format-strings].
  * Please note that the syntax of the format string is very likely to be
  * extended in the future.
  *
  * @format_string determines the C types that are used for unpacking
  * the values and also determines if the values are copied or borrowed,
  * see the section on
- * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
+ * [GVariant format strings][gvariant-format-strings-pointers].
  *
  * Since: 2.24
  **/
@@ -5347,7 +5344,7 @@ g_variant_get (GVariant    *value,
  * @format_string determines the C types that are used for unpacking
  * the values and also determines if the values are copied or borrowed,
  * see the section on
- * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
+ * [GVariant format strings][gvariant-format-strings-pointers].
  *
  * Since: 2.24
  **/
@@ -5386,7 +5383,7 @@ g_variant_get_va (GVariant     *value,
  *
  * Note that the arguments must be of the correct width for their types
  * specified in @format_string. This can be achieved by casting them. See
- * the <link linkend='gvariant-varargs'>GVariant varargs documentation</link>.
+ * the [GVariant varargs documentation][gvariant-varargs].
  *
  * This function might be used as follows:
  *
@@ -5442,7 +5439,7 @@ g_variant_builder_add (GVariantBuilder *builder,
  * @format_string determines the C types that are used for unpacking
  * the values and also determines if the values are copied or borrowed,
  * see the section on
- * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
+ * [GVariant format strings][gvariant-format-strings-pointers].
  *
  * Since: 2.24
  **/
@@ -5511,7 +5508,7 @@ g_variant_get_child (GVariant    *value,
  * the values and also determines if the values are copied or borrowed.
  *
  * See the section on
- * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
+ * [GVariant format strings][gvariant-format-strings-pointers].
  *
  * Returns: %TRUE if a value was unpacked, or %FALSE if there as no value
  *
@@ -5611,7 +5608,7 @@ g_variant_iter_next (GVariantIter *iter,
  * the values and also determines if the values are copied or borrowed.
  *
  * See the section on
- * <link linkend='gvariant-format-strings-pointers'>GVariant Format Strings</link>.
+ * [GVariant format strings][gvariant-format-strings-pointers].
  *
  * Returns: %TRUE if a value was unpacked, or %FALSE if there was no
  *          value

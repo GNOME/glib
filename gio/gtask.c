@@ -148,14 +148,13 @@
  *
  * #GTask also tries to simplify asynchronous operations that
  * internally chain together several smaller asynchronous
- * operations. g_task_get_cancellable(), g_task_get_context(), and
- * g_task_get_priority() allow you to get back the task's
- * #GCancellable, #GMainContext, and <link
- * linkend="io-priority">I/O priority</link> when starting a new
- * subtask, so you don't have to keep track of them yourself.
- * g_task_attach_source() simplifies the case of waiting for a
- * source to fire (automatically using the correct #GMainContext
- * and priority).
+ * operations. g_task_get_cancellable(), g_task_get_context(),
+ * and g_task_get_priority() allow you to get back the task's
+ * #GCancellable, #GMainContext, and [I/O priority][io-priority]
+ * when starting a new subtask, so you don't have to keep track
+ * of them yourself. g_task_attach_source() simplifies the case
+ * of waiting for a source to fire (automatically using the correct
+ * #GMainContext and priority).
  *
  * Here is an example for chained asynchronous operations:
  *   |[<!-- language="C" -->
@@ -477,7 +476,7 @@
  *   abuse of g_simple_async_result_set_op_res_gpointer() for the same
  *   purpose with #GSimpleAsyncResult.
  * - In addition to the task data, #GTask also keeps track of the
- *   <link linkend="io-priority">priority</link>, #GCancellable, and
+ *   [priority][io-priority], #GCancellable, and
  *   #GMainContext associated with the task, so tasks that consist of
  *   a chain of simpler asynchronous operations will have easy access
  *   to those values when starting each sub-task.
@@ -634,9 +633,8 @@ g_task_finalize (GObject *object)
  * @callback_data: (closure): user data passed to @callback.
  *
  * Creates a #GTask acting on @source_object, which will eventually be
- * used to invoke @callback in the current <link
- * linkend="g-main-context-push-thread-default">thread-default main
- * context</link>.
+ * used to invoke @callback in the current
+ * [thread-default main context][g-main-context-push-thread-default].
  *
  * Call this in the "start" method of your asynchronous method, and
  * pass the #GTask around throughout the asynchronous operation. You
@@ -783,8 +781,7 @@ g_task_set_task_data (GTask          *task,
 /**
  * g_task_set_priority:
  * @task: the #GTask
- * @priority: the <link linkend="io-priority">priority</link>
- *   of the request.
+ * @priority: the [priority][io-priority] of the request
  *
  * Sets @task's priority. If you do not call this, it will default to
  * %G_PRIORITY_DEFAULT.
@@ -994,9 +991,9 @@ g_task_get_priority (GTask *task)
  * @task: a #GTask
  *
  * Gets the #GMainContext that @task will return its result in (that
- * is, the context that was the <link
- * linkend="g-main-context-push-thread-default">thread-default main
- * context</link> at the point when @task was created).
+ * is, the context that was the
+ * [thread-default main context][g-main-context-push-thread-default]
+ * at the point when @task was created).
  *
  * This will always return a non-%NULL value, even if the task's
  * context is the default #GMainContext.
@@ -1380,9 +1377,8 @@ g_task_run_in_thread_sync (GTask           *task,
  *
  * A utility function for dealing with async operations where you need
  * to wait for a #GSource to trigger. Attaches @source to @task's
- * #GMainContext with @task's <link
- * linkend="io-priority">priority</link>, and sets @source's callback
- * to @callback, with @task as the callback's `user_data`.
+ * #GMainContext with @task's [priority][io-priority], and sets @source's
+ * callback to @callback, with @task as the callback's `user_data`.
  *
  * This takes a reference on @task until @source is destroyed.
  *

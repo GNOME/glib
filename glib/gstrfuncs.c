@@ -485,7 +485,7 @@ g_stpcpy (gchar       *dest,
 /**
  * g_strdup_vprintf:
  * @format: a standard printf() format string, but notice
- *     <link linkend="string-precision">string precision pitfalls</link>
+ *     [string precision pitfalls][string-precision]
  * @args: the list of parameters to insert into the format string
  *
  * Similar to the standard C vsprintf() function but safer, since it
@@ -512,7 +512,7 @@ g_strdup_vprintf (const gchar *format,
 /**
  * g_strdup_printf:
  * @format: a standard printf() format string, but notice
- *     <link linkend="string-precision">string precision pitfalls</link>
+ *     [string precision pitfalls][string-precision]
  * @...: the parameters to insert into the format string
  *
  * Similar to the standard C sprintf() function but safer, since it

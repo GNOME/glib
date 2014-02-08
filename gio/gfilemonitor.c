@@ -45,9 +45,9 @@ static void file_change_free (FileChange *change);
  *
  * To get informed about changes to the file or directory you are
  * monitoring, connect to the #GFileMonitor::changed signal. The
- * signal will be emitted in the <link
- * linkend="g-main-context-push-thread-default">thread-default main
- * context</link> of the thread that the monitor was created in
+ * signal will be emitted in the
+ * [thread-default main context][g-main-context-push-thread-default]
+ * of the thread that the monitor was created in
  * (though if the global default main context is blocked, this may
  * cause notifications to be blocked even if the thread-default
  * context is still running).
@@ -670,9 +670,8 @@ update_rate_limiter_timeout (GFileMonitor *monitor,
  * has taken place. Should be called from file monitor 
  * implementations only.
  *
- * The signal will be emitted from an idle handler (in the <link
- * linkend="g-main-context-push-thread-default">thread-default main
- * context</link>).
+ * The signal will be emitted from an idle handler (in the
+ * [thread-default main context][g-main-context-push-thread-default]).
  **/
 void
 g_file_monitor_emit_event (GFileMonitor      *monitor,

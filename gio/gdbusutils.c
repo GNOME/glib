@@ -515,39 +515,64 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  *     <tbody>
  *       <row>
  *         <entry>#G_TYPE_STRING</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-STRING:CAPS">'s'</link>, <link linkend="G-VARIANT-TYPE-OBJECT-PATH:CAPS">'o'</link>, <link linkend="G-VARIANT-TYPE-SIGNATURE:CAPS">'g'</link> or <link linkend="G-VARIANT-TYPE-BYTESTRING:CAPS">'ay'</link></entry>
+ *         <entry>
+ *         ['s'][G-VARIANT-TYPE-STRING:CAPS],
+ *         ['o'][G-VARIANT-TYPE-OBJECT-PATH:CAPS],
+ *         ['g'][G-VARIANT-TYPE-SIGNATURE:CAPS] or
+ *         ['ay'][G-VARIANT-TYPE-BYTESTRING:CAPS]
+ *         </entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_STRV</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-STRING-ARRAY:CAPS">'as'</link>, <link linkend="G-VARIANT-TYPE-OBJECT-PATH-ARRAY:CAPS">'ao'</link> or <link linkend="G-VARIANT-TYPE-BYTESTRING-ARRAY:CAPS">'aay'</link></entry>
+ *         <entry>
+ *         ['as'][G-VARIANT-TYPE-STRING-ARRAY:CAPS],
+ *         ['ao'][G-VARIANT-TYPE-OBJECT-PATH-ARRAY:CAPS] or
+ *         ['aay'][G-VARIANT-TYPE-BYTESTRING-ARRAY:CAPS]
+ *         </entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_BOOLEAN</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-BOOLEAN:CAPS">'b'</link></entry>
+ *         <entry>
+ *         ['b'][G-VARIANT-TYPE-BOOLEAN:CAPS]
+ *         </entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_UCHAR</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-BYTE:CAPS">'y'</link></entry>
+ *         <entry>
+ *         ['y'][G-VARIANT-TYPE-BYTE:CAPS]
+ *         </entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_INT</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-INT32:CAPS">'i'</link> or <link linkend="G-VARIANT-TYPE-INT16:CAPS">'n'</link></entry>
+ *         <entry>
+ *         ['i'][G-VARIANT-TYPE-INT32:CAPS] or
+ *         ['n'][G-VARIANT-TYPE-INT16:CAPS]
+ *         </entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_UINT</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-UINT32:CAPS">'u'</link> or <link linkend="G-VARIANT-TYPE-UINT16:CAPS">'q'</link></entry>
+ *         <entry>
+ *         ['u'][G-VARIANT-TYPE-UINT32:CAPS] or
+ *         ['q'][G-VARIANT-TYPE-UINT16:CAPS]
+ *         </entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_INT64</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-INT64:CAPS">'x'</link></entry>
+ *         <entry>
+ *         ['x'][G-VARIANT-TYPE-INT64:CAPS]
+ *         </entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_UINT64</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-UINT64:CAPS">'t'</link></entry>
+ *         <entry>
+ *         ['t'][G-VARIANT-TYPE-UINT64:CAPS]
+ *         </entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_DOUBLE</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-DOUBLE:CAPS">'d'</link></entry>
+ *         <entry>
+ *         ['d'][G-VARIANT-TYPE-DOUBLE:CAPS]
+ *         </entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_VARIANT</entry>
@@ -557,9 +582,9 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  *   </tgroup>
  * </table>
  * This can fail if e.g. @gvalue is of type #G_TYPE_STRING and @type
- * is <link linkend="G-VARIANT-TYPE-INT32:CAPS">'i'</link>. It will
- * also fail for any #GType (including e.g. #G_TYPE_OBJECT and
- * #G_TYPE_BOXED derived-types) not in the table above.
+ * is ['i'][G-VARIANT-TYPE-INT32:CAPS]. It will also fail for any #GType
+ * (including e.g. #G_TYPE_OBJECT and #G_TYPE_BOXED derived-types) not
+ * in the table above.
  *
  * Note that if @gvalue is of type #G_TYPE_VARIANT and its value is
  * %NULL, the empty #GVariant instance (never %NULL) for @type is

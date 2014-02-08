@@ -95,8 +95,8 @@
  * GHashTable:
  *
  * The #GHashTable struct is an opaque data structure to represent a
- * <link linkend="glib-Hash-Tables">Hash Table</link>. It should only be
- * accessed via the following functions.
+ * [Hash Table][glib-Hash-Tables]. It should only be accessed via the
+ * following functions.
  */
 
 /**

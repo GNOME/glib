@@ -45,23 +45,21 @@
  * Each element in the list contains a piece of data, together with
  * pointers which link to the previous and next elements in the list.
  * Using these pointers it is possible to move through the list in both
- * directions (unlike the singly-linked <link
- * linkend="glib-Singly-Linked-Lists">#GSList</link> which
- * only allows movement through the list in the forward direction).
+ * directions (unlike the singly-linked [GSList][glib-Singly-Linked-Lists],
+ * which only allows movement through the list in the forward direction).
  *
  * The double linked list does not keep track of the number of items 
  * and does not keep track of both the start and end of the list. If
  * you want fast access to both the start and the end of the list, 
  * and/or the number of items in the list, use a
- * <link linkend="glib-Double-ended-Queues">GQueue</link> instead.
+ * [GQueue][glib-Double-ended-Queues] instead.
  *
  * The data contained in each element can be either integer values, by
- * using one of the <link linkend="glib-Type-Conversion-Macros">Type
- * Conversion Macros</link>, or simply pointers to any type of data.
+ * using one of the [Type Conversion Macros][glib-Type-Conversion-Macros],
+ * or simply pointers to any type of data.
  *
- * List elements are allocated from the <link
- * linkend="glib-Memory-Slices">slice allocator</link>, which is more
- * efficient than allocating elements individually.
+ * List elements are allocated from the [slice allocator][glib-Memory-Slices],
+ * which is more efficient than allocating elements individually.
  *
  * Note that most of the #GList functions expect to be passed a pointer
  * to the first element in the list. The functions which insert
@@ -118,9 +116,8 @@
 /**
  * GList:
  * @data: holds the element's data, which can be a pointer to any kind
- *        of data, or any integer value using the <link
- *        linkend="glib-Type-Conversion-Macros">Type Conversion
- *        Macros</link>.
+ *        of data, or any integer value using the 
+ *        [Type Conversion Macros][glib-Type-Conversion-Macros]
  * @next: contains the link to the next element in the list
  * @prev: contains the link to the previous element in the list
  *

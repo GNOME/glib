@@ -1,60 +1,58 @@
 /* GLIB - Library of useful routines for C programming
- * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, see <http://www.gnu.org/licenses/>.
- */
+	 * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
+	 *
+	 * This library is free software; you can redistribute it and/or
+	 * modify it under the terms of the GNU Lesser General Public
+	 * License as published by the Free Software Foundation; either
+	 * version 2 of the License, or (at your option) any later version.
+	 *
+	 * This library is distributed in the hope that it will be useful,
+	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	 * Lesser General Public License for more details.
+	 *
+	 * You should have received a copy of the GNU Lesser General Public
+	 * License along with this library; if not, see <http://www.gnu.org/licenses/>.
+	 */
 
-/*
- * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GLib Team.  See the ChangeLog
- * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/.
- */
+	/*
+	 * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
+	 * file for a list of people on the GLib Team.  See the ChangeLog
+	 * files for a list of changes.  These files are distributed with
+	 * GLib at ftp://ftp.gtk.org/pub/gtk/.
+	 */
 
-/*
- * MT safe
- */
+	/*
+	 * MT safe
+	 */
 
-#include "config.h"
+	#include "config.h"
 
-#include "gslist.h"
+	#include "gslist.h"
 
-#include "gtestutils.h"
-#include "gslice.h"
+	#include "gtestutils.h"
+	#include "gslice.h"
 
-/**
- * SECTION:linked_lists_single
- * @title: Singly-Linked Lists
- * @short_description: linked lists that can be iterated in one direction
+	/**
+	 * SECTION:linked_lists_single
+	 * @title: Singly-Linked Lists
+	 * @short_description: linked lists that can be iterated in one direction
+	 *
+	 * The #GSList structure and its associated functions provide a
+	 * standard singly-linked list data structure.
+	 *
+	 * Each element in the list contains a piece of data, together with a
+	 * pointer which links to the next element in the list. Using this
+	 * pointer it is possible to move through the list in one direction
+	 * only (unlike the [double-linked lists][glib-Doubly-Linked-Lists],
+	 * which allow movement in both directions).
+	 *
+	 * The data contained in each element can be either integer values, by
+	 * using one of the [Type Conversion Macros][glib-Type-Conversion-Macros],
+	 * or simply pointers to any type of data.
  *
- * The #GSList structure and its associated functions provide a
- * standard singly-linked list data structure.
- *
- * Each element in the list contains a piece of data, together with a
- * pointer which links to the next element in the list. Using this
- * pointer it is possible to move through the list in one direction
- * only (unlike the <link
- * linkend="glib-Doubly-Linked-Lists">Doubly-Linked Lists</link> which
- * allow movement in both directions).
- *
- * The data contained in each element can be either integer values, by
- * using one of the <link linkend="glib-Type-Conversion-Macros">Type
- * Conversion Macros</link>, or simply pointers to any type of data.
- *
- * List elements are allocated from the <link
- * linkend="glib-Memory-Slices">slice allocator</link>, which is more
- * efficient than allocating elements individually.
+ * List elements are allocated from the [slice allocator][glib-Memory-Slices],
+ * which is more efficient than allocating elements individually.
  *
  * Note that most of the #GSList functions expect to be passed a
  * pointer to the first element in the list. The functions which insert
@@ -84,9 +82,8 @@
 /**
  * GSList:
  * @data: holds the element's data, which can be a pointer to any kind
- *        of data, or any integer value using the <link
- *        linkend="glib-Type-Conversion-Macros">Type Conversion
- *        Macros</link>.
+ *        of data, or any integer value using the
+ *        [Type Conversion Macros][glib-Type-Conversion-Macros]
  * @next: contains the link to the next element in the list.
  *
  * The #GSList struct is used for each element in the singly-linked

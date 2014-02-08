@@ -65,7 +65,7 @@ msc_strxfrm_wrapper (char       *string1,
  * @str2: a UTF-8 encoded string
  * 
  * Compares two strings for ordering using the linguistically
- * correct rules for the <link linkend="setlocale">current locale</link>. 
+ * correct rules for the [current locale][setlocale].
  * When sorting a large number of strings, it will be significantly 
  * faster to obtain collation keys with g_utf8_collate_key() and 
  * compare the keys with strcmp() when sorting instead of sorting 
@@ -363,8 +363,7 @@ carbon_collate_key_for_filename (const gchar *str,
  * with strcmp() will always be the same as comparing the two 
  * original keys with g_utf8_collate().
  * 
- * Note that this function depends on the 
- * <link linkend="setlocale">current locale</link>.
+ * Note that this function depends on the [current locale][setlocale].
  * 
  * Return value: a newly allocated string. This string should
  *   be freed with g_free() when you are done with it.
@@ -491,8 +490,7 @@ g_utf8_collate_key (const gchar *str,
  * would like to treat numbers intelligently so that "file1" "file10" "file5"
  * is sorted as "file1" "file5" "file10".
  * 
- * Note that this function depends on the 
- * <link linkend="setlocale">current locale</link>.
+ * Note that this function depends on the [current locale][setlocale].
  *
  * Return value: a newly allocated string. This string should
  *   be freed with g_free() when you are done with it.

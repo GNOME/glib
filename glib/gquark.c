@@ -63,9 +63,8 @@ static gint           quark_block_offset = 0;
  * Given either the string or the #GQuark identifier it is possible to
  * retrieve the other.
  *
- * Quarks are used for both <link
- * linkend="glib-Datasets">Datasets</link> and <link
- * linkend="glib-Keyed-Data-Lists">Keyed Data Lists</link>.
+ * Quarks are used for both [datasets][glib-Datasets] and
+ * [keyed data lists][glib-Keyed-Data-Lists].
  *
  * To create a new quark from a string, use g_quark_from_string() or
  * g_quark_from_static_string().

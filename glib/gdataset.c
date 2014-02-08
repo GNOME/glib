@@ -121,9 +121,9 @@
 /**
  * GData:
  *
- * The #GData struct is an opaque data structure to represent a <link
- * linkend="glib-Keyed-Data-Lists">Keyed Data List</link>. It should
- * only be accessed via the following functions.
+ * The #GData struct is an opaque data structure to represent a
+ * [Keyed Data List][glib-Keyed-Data-Lists]. It should only be
+ * accessed via the following functions.
  **/
 
 /**

@@ -154,11 +154,10 @@ charset_cache_free (gpointer data)
  * g_get_charset:
  * @charset: return location for character set name
  *
- * Obtains the character set for the <link linkend="setlocale">current
- * locale</link>; you might use this character set as an argument to
- * g_convert(), to convert from the current locale's encoding to some
- * other encoding. (Frequently g_locale_to_utf8() and g_locale_from_utf8()
- * are nice shortcuts, though.)
+ * Obtains the character set for the [current locale][setlocale]; you
+ * might use this character set as an argument to g_convert(), to convert
+ * from the current locale's encoding to some other encoding. (Frequently
+ * g_locale_to_utf8() and g_locale_from_utf8() are nice shortcuts, though.)
  *
  * On Windows the character set returned by this function is the
  * so-called system default ANSI code-page. That is the character set

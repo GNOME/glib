@@ -60,7 +60,7 @@
  * SECTION:extensionpoints
  * @short_description: Extension Points
  * @include: gio.h
- * @see_also: <link linkend="extending-gio">Extending GIO</link>
+ * @see_also: [Extending GIO][extending-gio]
  *
  * #GIOExtensionPoint provides a mechanism for modules to extend the
  * functionality of the library or application that loaded it in an 
@@ -102,7 +102,7 @@
  *
  *  To avoid opening all modules just to find out what extension
  *  points they implement, GIO makes use of a caching mechanism,
- *  see <link linkend="gio-querymodules">gio-querymodules</link>.
+ *  see [gio-querymodules][gio-querymodules].
  *  You are expected to run this command after installing a
  *  GIO module.
  *

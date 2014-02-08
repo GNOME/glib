@@ -66,9 +66,9 @@
  * <row><entry>"standard"</entry><entry>The "Standard" namespace. General file
  * information that any application may need should be put in this namespace.
  * Examples include the file's name, type, and size.</entry></row>
- * <row><entry>"etag"</entry><entry>The <link linkend="gfile-etag">"Entity Tag"</link>
- * namespace. Currently, the only key in this namespace is "value", which contains
- * the value of the current entity tag.</entry></row>
+ * <row><entry>"etag"</entry><entry>The [Entity Tag][gfile-etag]
+ * namespace. Currently, the only key in this namespace is "value", which
+ * contains the value of the current entity tag.</entry></row>
  * <row><entry>"id"</entry><entry>The "Identification" namespace. This
  * namespace is used by file managers and applications that list directories
  * to check for loops and to uniquely identify files.</entry></row>
