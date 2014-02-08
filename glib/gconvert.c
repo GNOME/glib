@@ -78,16 +78,16 @@
  * set in which the application operates. Consider the Spanish file name
  * "Presentaci&oacute;n.sxi". If the application which created it uses
  * ISO-8859-1 for its encoding,
- * <programlisting>
+ * |[
  * Character:  P  r  e  s  e  n  t  a  c  i  &oacute;  n  .  s  x  i
  * Hex code:   50 72 65 73 65 6e 74 61 63 69 f3 6e 2e 73 78 69
- * </programlisting>
+ * ]|
  * However, if the application use UTF-8, the actual file name on
  * disk would look like this:
- * <programlisting id="filename-utf-8">
+ * |[
  * Character:  P  r  e  s  e  n  t  a  c  i  &oacute;     n  .  s  x  i
  * Hex code:   50 72 65 73 65 6e 74 61 63 69 c3 b3 6e 2e 73 78 69
- * </programlisting>
+ * ]|
  * Glib uses UTF-8 for its strings, and GUI toolkits like GTK+ that use
  * Glib do the same thing. If you get a file name from the file system,
  * for example, from readdir() or from g_dir_read_name(), and you wish
