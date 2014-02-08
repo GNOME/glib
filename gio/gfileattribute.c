@@ -56,71 +56,62 @@
  * and other possible implementation details (e.g., on a UNIX system, a file
  * attribute key will be registered for the user id for a given file).
  *
- * <para>
- * <table>
- * <title>GFileAttributes Default Namespaces</title>
- * <tgroup cols='2' align='left'><thead>
- * <row><entry>Namspace</entry><entry>Description</entry></row>
- * </thead>
- * <tbody>
- * <row><entry>"standard"</entry><entry>The "Standard" namespace. General file
- * information that any application may need should be put in this namespace.
- * Examples include the file's name, type, and size.</entry></row>
- * <row><entry>"etag"</entry><entry>The [Entity Tag][gfile-etag]
- * namespace. Currently, the only key in this namespace is "value", which
- * contains the value of the current entity tag.</entry></row>
- * <row><entry>"id"</entry><entry>The "Identification" namespace. This
- * namespace is used by file managers and applications that list directories
- * to check for loops and to uniquely identify files.</entry></row>
- * <row><entry>"access"</entry><entry>The "Access" namespace. Used to check
- * if a user has the proper privilidges to access files and perform
- * file operations. Keys in this namespace are made to be generic
- * and easily understood, e.g. the "can_read" key is %TRUE if
- * the current user has permission to read the file. UNIX permissions and
- * NTFS ACLs in Windows should be mapped to these values.</entry></row>
- * <row><entry>"mountable"</entry><entry>The "Mountable" namespace. Includes
- * simple boolean keys for checking if a file or path supports mount operations, e.g.
- * mount, unmount, eject. These are used for files of type %G_FILE_TYPE_MOUNTABLE.</entry></row>
- * <row><entry>"time"</entry><entry>The "Time" namespace. Includes file
- * access, changed, created times. </entry></row>
- * <row><entry>"unix"</entry><entry>The "Unix" namespace. Includes UNIX-specific
- * information and may not be available for all files. Examples include
- * the UNIX "UID", "GID", etc.</entry></row>
- * <row><entry>"dos"</entry><entry>The "DOS" namespace. Includes DOS-specific
- * information and may not be available for all files. Examples include
- * "is_system" for checking if a file is marked as a system file, and "is_archive"
- * for checking if a file is marked as an archive file.</entry></row>
- * <row><entry>"owner"</entry><entry>The "Owner" namespace. Includes information
- * about who owns a file. May not be available for all file systems. Examples include
- * "user" for getting the user name of the file owner. This information is often mapped from
- * some backend specific data such as a unix UID.</entry></row>
- * <row><entry>"thumbnail"</entry><entry>The "Thumbnail" namespace. Includes
- * information about file thumbnails and their location within the file system. Examples of
- * keys in this namespace include "path" to get the location of a thumbnail, "failed"
- * to check if thumbnailing of the file failed, and "is-valid" to check if the thumbnail is
- * outdated.</entry></row>
- * <row><entry>"filesystem"</entry><entry>The "Filesystem" namespace. Gets information
- * about the file system where a file is located, such as its type, how much
- * space is left available, and the overall size of the file system.</entry></row>
- * <row><entry>"gvfs"</entry><entry>The "GVFS" namespace. Keys in this namespace
- * contain information about the current GVFS backend in use. </entry></row>
- * <row><entry>"xattr"</entry><entry>The "xattr" namespace. Gets information
- * about extended user attributes. See attr(5). The "user." prefix of the
- * extended user attribute name is stripped away when constructing keys in
- * this namespace, e.g. "xattr::mime_type" for the extended attribute with
- * the name "user.mime_type". Note that this information is only available
- * if GLib has been built with extended attribute support.</entry></row>
- * <row><entry>"xattr-sys"</entry><entry>The "xattr-sys" namespace.
- * Gets information about extended attributes which are not user-specific.
- * See attr(5). Note that this information is only available if GLib
- * has been built with extended attribute support.</entry></row>
- * <row><entry>"selinux"</entry><entry>The "SELinux" namespace. Includes
- * information about the SELinux context of files. Note that this information
- * is only available if GLib has been built with SELinux support.</entry></row>
- * </tbody>
- * </tgroup>
- * </table>
- * </para>
+ * ## Default Namespaces
+ *
+ * - `"standard"`: The "Standard" namespace. General file information that
+ *   any application may need should be put in this namespace. Examples
+ *   include the file's name, type, and size.
+ * - `"etag`: The [Entity Tag][gfile-etag] namespace. Currently, the only key
+ *   in this namespace is "value", which contains the value of the current
+ *   entity tag.
+ * - `"id"`: The "Identification" namespace. This namespace is used by file
+ *   managers and applications that list directories to check for loops and
+ *   to uniquely identify files.
+ * - `"access"`: The "Access" namespace. Used to check if a user has the
+ *   proper privileges to access files and perform file operations. Keys in
+ *   this namespace are made to be generic and easily understood, e.g. the
+ *   "can_read" key is %TRUE if the current user has permission to read the
+ *   file. UNIX permissions and NTFS ACLs in Windows should be mapped to
+ *   these values.
+ * - `"mountable"`: The "Mountable" namespace. Includes simple boolean keys
+ *   for checking if a file or path supports mount operations, e.g. mount,
+ *   unmount, eject. These are used for files of type %G_FILE_TYPE_MOUNTABLE.
+ * - `"time"`: The "Time" namespace. Includes file access, changed, created
+ *   times.
+ * - `"unix"`: The "Unix" namespace. Includes UNIX-specific information and
+ *   may not be available for all files. Examples include the UNIX "UID",
+ *   "GID", etc.
+ * - `"dos"`: The "DOS" namespace. Includes DOS-specific information and may
+ *   not be available for all files. Examples include "is_system" for checking
+ *   if a file is marked as a system file, and "is_archive" for checking if a
+ *   file is marked as an archive file.
+ * - `"owner"`: The "Owner" namespace. Includes information about who owns a
+ *   file. May not be available for all file systems. Examples include "user"
+ *   for getting the user name of the file owner. This information is often
+ *   mapped from some backend specific data such as a UNIX UID.
+ * - `"thumbnail"`: The "Thumbnail" namespace. Includes information about file
+ *   thumbnails and their location within the file system. Examples of keys in
+ *   this namespace include "path" to get the location of a thumbnail, "failed"
+ *   to check if thumbnailing of the file failed, and "is-valid" to check if
+ *   the thumbnail is outdated.
+ * - `"filesystem"`: The "Filesystem" namespace. Gets information about the
+ *   file system where a file is located, such as its type, how much space is
+ *   left available, and the overall size of the file system.
+ * - `"gvfs"`: The "GVFS" namespace. Keys in this namespace contain information
+ *   about the current GVFS backend in use.
+ * - `"xattr"`: The "xattr" namespace. Gets information about extended
+ *   user attributes. See attr(5). The "user." prefix of the extended user
+ *   attribute name is stripped away when constructing keys in this namespace,
+ *   e.g. "xattr::mime_type" for the extended attribute with the name
+ *   "user.mime_type". Note that this information is only available if
+ *   GLib has been built with extended attribute support.
+ * - `"xattr-sys"`: The "xattr-sys" namespace. Gets information about
+ *   extended attributes which are not user-specific. See attr(5). Note
+ *   that this information is only available if GLib has been built with
+ *   extended attribute support.
+ * - `"selinux"`: The "SELinux" namespace. Includes information about the
+ *   SELinux context of files. Note that this information is only available
+ *   if GLib has been built with SELinux support.
  *
  * Please note that these are not all of the possible namespaces.
  * More namespaces can be added from GIO modules or by individual applications.
@@ -129,77 +120,10 @@
  * <!-- TODO: Implementation note about using extended attributes on supported
  * file systems -->
  *
- * <para><table>
- * <title>GFileAttributes Built-in Keys and Value Types</title>
- * <tgroup cols='3' align='left'><thead>
- * <row><entry>Enum Value</entry><entry>Namespace::Key</entry><entry>Value Type</entry></row>
- * </thead><tbody>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_TYPE</entry><entry>standard::type</entry><entry>uint32 (#GFileType)</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_IS_HIDDEN</entry><entry>standard::is-hidden</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_IS_BACKUP</entry><entry>standard::is-backup</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK</entry><entry>standard::is-symlink</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_IS_VIRTUAL</entry><entry>standard::is-virtual</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_NAME</entry><entry>standard::name</entry><entry>byte string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME</entry><entry>standard::display-name</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_EDIT_NAME</entry><entry>standard::edit-name</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_ICON</entry><entry>standard::icon</entry><entry>object (#GIcon)</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE</entry><entry>standard::content-type</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE</entry><entry>standard::fast-content-type</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_SIZE</entry><entry>standard::size</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_ALLOCATED_SIZE</entry><entry>standard::allocated-size</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET</entry><entry>standard::symlink-target</entry><entry>byte string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_TARGET_URI</entry><entry>standard::target-uri</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER</entry><entry>standard::sort-order</entry><entry>int32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ETAG_VALUE</entry><entry>etag::value</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ID_FILE</entry><entry>id::file</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ID_FILESYSTEM</entry><entry>id::filesystem</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_READ</entry><entry>access::can-read</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE</entry><entry>access::can-write</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE</entry><entry>access::can-execute</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_DELETE</entry><entry>access::can-delete</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_TRASH</entry><entry>access::can-trash</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_ACCESS_CAN_RENAME</entry><entry>access::can-rename</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_MOUNT</entry><entry>mountable::can-mount</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_UNMOUNT</entry><entry>mountable::can-unmount</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_CAN_EJECT</entry><entry>mountable::can-eject</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE</entry><entry>mountable::unix-device</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_UNIX_DEVICE_FILE</entry><entry>mountable::unix-device-file</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_MOUNTABLE_HAL_UDI</entry><entry>mountable::hal-udi</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_MODIFIED</entry><entry>time::modified</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC</entry><entry>time::modified-usec</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_ACCESS</entry><entry>time::access</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_ACCESS_USEC</entry><entry>time::access-usec</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_CHANGED</entry><entry>time::changed</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_CHANGED_USEC</entry><entry>time::changed-usec</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_CREATED</entry><entry>time::created</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_TIME_CREATED_USEC</entry><entry>time::created-usec</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_DEVICE</entry><entry>unix::device</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_INODE</entry><entry>unix::inode</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_MODE</entry><entry>unix::mode</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_NLINK</entry><entry>unix::nlink</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_UID</entry><entry>unix::uid</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_GID</entry><entry>unix::gid</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_RDEV</entry><entry>unix::rdev</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_BLOCK_SIZE</entry><entry>unix::block-size</entry><entry>uint32</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_BLOCKS</entry><entry>unix::blocks</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_UNIX_IS_MOUNTPOINT</entry><entry>unix::is-mountpoint</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_DOS_IS_ARCHIVE</entry><entry>dos::is-archive</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_DOS_IS_SYSTEM</entry><entry>dos::is-system</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_OWNER_USER</entry><entry>owner::user</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_OWNER_USER_REAL</entry><entry>owner::user-real</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_OWNER_GROUP</entry><entry>owner::group</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAIL_PATH</entry><entry>thumbnail::path</entry><entry>bytestring</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAILING_FAILED</entry><entry>thumbnail::failed</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_THUMBNAIL_IS_VALID</entry><entry>thumbnail::is-valid</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_PREVIEW_ICON</entry><entry>preview::icon</entry><entry>object (#GIcon)</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_SIZE</entry><entry>filesystem::size</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_FREE</entry><entry>filesystem::free</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_USED</entry><entry>filesystem::used</entry><entry>uint64</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_TYPE</entry><entry>filesystem::type</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_FILESYSTEM_READONLY</entry><entry>filesystem::readonly</entry><entry>boolean</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_GVFS_BACKEND</entry><entry>gvfs::backend</entry><entry>string</entry></row>
- * <row><entry>%G_FILE_ATTRIBUTE_SELINUX_CONTEXT</entry><entry>selinux::context</entry><entry>string</entry></row>
- * </tbody></tgroup></table></para>
+ * ## Default Keys
+ *
+ * For a list of the built-in keys and their types, see the
+ * [GFileInfo][GFileInfo] documentation.
  *
  * Note that there are no predefined keys in the "xattr" and "xattr-sys"
  * namespaces. Keys for the "xattr" namespace are constructed by stripping
