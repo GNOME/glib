@@ -2039,36 +2039,29 @@ g_source_unref (GSource *source)
 /**
  * g_main_context_find_source_by_id:
  * @context: (allow-none): a #GMainContext (if %NULL, the default context will be used)
- * @source_id: the source ID, as returned by g_source_get_id(). 
- * 
+ * @source_id: the source ID, as returned by g_source_get_id().
+ *
  * Finds a #GSource given a pair of context and ID.
- * 
+ *
  * Returns: (transfer none): the #GSource if found, otherwise, %NULL
  **/
 GSource *
 g_main_context_find_source_by_id (GMainContext *context,
-				  guint         source_id)
+                                  guint         source_id)
 {
-  GSourceIter iter;
   GSource *source;
-  
+
   g_return_val_if_fail (source_id > 0, NULL);
 
   if (context == NULL)
     context = g_main_context_default ();
-  
-  LOCK_CONTEXT (context);
-  
-  g_source_iter_init (&iter, context, FALSE);
-  while (g_source_iter_next (&iter, &source))
-    {
-      if (!SOURCE_DESTROYED (source) &&
-	  source->source_id == source_id)
-	break;
-    }
-  g_source_iter_clear (&iter);
 
+  LOCK_CONTEXT (context);
+  source = g_hash_table_lookup (context->sources, GUINT_TO_POINTER (source_id));
   UNLOCK_CONTEXT (context);
+
+  if (source && SOURCE_DESTROYED (source))
+    source = NULL;
 
   return source;
 }
