@@ -257,7 +257,7 @@ g_value_array_append (GValueArray  *value_array,
 /**
  * g_value_array_insert:
  * @value_array: #GValueArray to add an element to
- * @index_: insertion position, must be &lt;= value_array-&gt;n_values
+ * @index_: insertion position, must be <= value_array-&gt;n_values
  * @value: (allow-none): #GValue to copy into #GValueArray, or %NULL
  *
  * Insert a copy of @value at specified position into @value_array. If @value

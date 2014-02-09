@@ -99,7 +99,7 @@ GTKDOC_LIBS = \
 	$(NULL)
 
 # Extra options to supply to gtkdoc-mkdb
-MKDB_OPTIONS = --output-format=xml --sgml-mode --name-space=g \
+MKDB_OPTIONS = --output-format=xml --name-space=g \
 	--ignore-files='libasyncns tests'
 
 # Images to copy into HTML directory

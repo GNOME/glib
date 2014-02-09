@@ -16,7 +16,7 @@ SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED" \
              --ignore-decorators="G_GNUC_INTERNAL|G_GNUC_WARN_UNUSED_RESULT"
 
 # Extra options to supply to gtkdoc-mkdb
-MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=g
+MKDB_OPTIONS=--output-format=xml --name-space=g
 
 # Used for dependencies
 HFILE_GLOB=$(top_srcdir)/gobject/*.h

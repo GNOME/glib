@@ -66,11 +66,11 @@
  * Desktop Bookmark Specification, here is a quick summary: bookmark
  * files use a sub-class of the XML Bookmark Exchange Language
  * specification, consisting of valid UTF-8 encoded XML, under the
- * &lt;xbel&gt; root element; each bookmark is stored inside a
- * &lt;bookmark&gt; element, using its URI: no relative paths can
+ * <xbel> root element; each bookmark is stored inside a
+ * <bookmark> element, using its URI: no relative paths can
  * be used inside a bookmark file. The bookmark may have a user defined
  * title and description, to be used instead of the URI. Under the
- * &lt;metadata&gt; element, with its owner attribute set to
+ * <metadata> element, with its owner attribute set to
  * `http://freedesktop.org`, is stored the meta-data about a resource
  * pointed by its URI. The meta-data consists of the resource's MIME
  * type; the applications that have registered a bookmark; the groups

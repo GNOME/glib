@@ -393,7 +393,7 @@
  * g_assert_cmpstr:
  * @s1: a string (may be %NULL)
  * @cmp: The comparison operator to use.
- *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+ *     One of ==, !=, <, >, <=, >=.
  * @s2: another string (may be %NULL)
  *
  * Debugging macro to compare two strings. If the comparison fails,
@@ -417,7 +417,7 @@
  * g_assert_cmpint:
  * @n1: an integer
  * @cmp: The comparison operator to use.
- *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+ *     One of ==, !=, <, >, <=, >=.
  * @n2: another integer
  *
  * Debugging macro to compare two integers.
@@ -434,7 +434,7 @@
  * g_assert_cmpuint:
  * @n1: an unsigned integer
  * @cmp: The comparison operator to use.
- *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+ *     One of ==, !=, <, >, <=, >=.
  * @n2: another unsigned integer
  *
  * Debugging macro to compare two unsigned integers.
@@ -451,7 +451,7 @@
  * g_assert_cmphex:
  * @n1: an unsigned integer
  * @cmp: The comparison operator to use.
- *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+ *     One of ==, !=, <, >, <=, >=.
  * @n2: another unsigned integer
  *
  * Debugging macro to compare to unsigned integers.
@@ -466,7 +466,7 @@
  * g_assert_cmpfloat:
  * @n1: an floating point number
  * @cmp: The comparison operator to use.
- *     One of ==, !=, &lt;, &gt;, &lt;=, &gt;=.
+ *     One of ==, !=, <, >, <=, >=.
  * @n2: another floating point number
  *
  * Debugging macro to compare two floating point numbers.
@@ -503,8 +503,8 @@
  * the correct #GError.
  *
  * The effect of `g_assert_error (err, dom, c)` is
- * the same as `g_assert_true (err != NULL &amp;&amp; err->domain
- * == dom &amp;&amp; err->code == c)`. The advantage of this
+ * the same as `g_assert_true (err != NULL && err->domain
+ * == dom && err->code == c)`. The advantage of this
  * macro is that it can produce a message that includes the incorrect
  * error message and code.
  *

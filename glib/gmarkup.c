@@ -77,7 +77,7 @@
  *
  * - Attributes
  *
- * - 5 standard entities: &amp;amp; &amp;lt; &amp;gt; &amp;quot; &amp;apos;
+ * - 5 standard entities: &amp; &lt; &gt; &quot; &apos;
  *
  * - Character references
  *
@@ -631,7 +631,7 @@ unescape_gstring_inplace (GMarkupParseContext  *context,
     normalize_attribute = FALSE;
 
   /*
-   * Meeks' theorum: unescaping can only shrink text.
+   * Meeks' theorem: unescaping can only shrink text.
    * for &lt; etc. this is obvious, for &#xffff; more
    * thought is required, but this is patently so.
    */
@@ -2215,7 +2215,7 @@ append_escaped_text (GString     *str,
  * of line endings and attribute values.
  *
  * Note also that this function will produce character references in
- * the range of &amp;#x1; ... &amp;#x1f; for all control sequences
+ * the range of &#x1; ... &#x1f; for all control sequences
  * except for tabstop, newline and carriage return.  The character
  * references in this range are not valid XML 1.0, but they are
  * valid XML 1.1 and will be accepted by the GMarkup parser.
@@ -2417,9 +2417,9 @@ g_markup_vprintf_escaped (const gchar *format,
    * To find the span of the first argument, we find the first position
    * where the two arguments differ, which tells us that the first
    * argument formatted to "Susan & Fred". We then escape that
-   * to "Susan &amp; Fred" and join up with the intermediate portions
+   * to "Susan & Fred" and join up with the intermediate portions
    * of the format string and the second argument to get
-   * "Susan &amp; Fred ate 5 apples".
+   * "Susan & Fred ate 5 apples".
    */
 
   /* Create the two modified format strings

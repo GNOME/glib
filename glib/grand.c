@@ -92,7 +92,7 @@
  *
  * The g_rand*_range functions will return high quality equally
  * distributed random numbers, whereas for example the
- * `(g_random_int()&percnt;max)` approach often
+ * `(g_random_int()\%max)` approach often
  * doesn't yield equally distributed numbers.
  *
  * GLib changed the seeding algorithm for the pseudo-random number

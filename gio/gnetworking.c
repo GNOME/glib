@@ -28,7 +28,7 @@
  * @short_description: System networking includes
  * @include: gio/gnetworking.h
  *
- * The `&lt;gio/gnetworking.h&gt;` header can be included to get
+ * The `<gio/gnetworking.h>` header can be included to get
  * various low-level networking-related system headers, automatically
  * taking care of certain portability issues for you.
  *

@@ -67,21 +67,21 @@
  * g_snprintf(), g_vprintf(), g_vfprintf(), g_vsprintf() and g_vsnprintf()
  * are declared in the header `gprintf.h` which is not included in `glib.h`
  * (otherwise using `glib.h` would drag in `stdio.h`), so you'll have to
- * explicitly include `&lt;glib/gprintf.h&gt;` in order to use the GLib
+ * explicitly include `<glib/gprintf.h>` in order to use the GLib
  * printf() functions.
  *
  * ## String precision pitfalls # {#string-precision}
  *
  * While you may use the printf() functions to format UTF-8 strings,
- * notice that the precision of a &percnt;Ns parameter is interpreted
+ * notice that the precision of a \%Ns parameter is interpreted
  * as the number of bytes, not characters to print. On top of that,
  * the GNU libc implementation of the printf() functions has the
- * "feature" that it checks that the string given for the &percnt;Ns
+ * "feature" that it checks that the string given for the \%Ns
  * parameter consists of a whole number of characters in the current
  * encoding. So, unless you are sure you are always going to be in an
  * UTF-8 locale or your know your text is restricted to ASCII, avoid
- * using &percnt;Ns. If your intention is to format strings for a
- * certain number of columns, then &percnt;Ns is not a correct solution
+ * using \%Ns. If your intention is to format strings for a
+ * certain number of columns, then \%Ns is not a correct solution
  * anyway, since it fails to take wide characters (see g_unichar_iswide())
  * into account.
  */
@@ -1234,7 +1234,7 @@ g_ascii_strtoll (const gchar *nptr,
  * not all platforms support the strerror() function.
  *
  * Returns: a UTF-8 string describing the error code. If the error code
- *     is unknown, it returns "unknown error (&lt;code&gt;)".
+ *     is unknown, it returns "unknown error (<code>)".
  */
 const gchar *
 g_strerror (gint errnum)
@@ -1264,7 +1264,7 @@ g_strerror (gint errnum)
  * the strsignal() function.
  *
  * Returns: a UTF-8 string describing the signal. If the signal is unknown,
- *     it returns "unknown signal (&lt;signum&gt;)".
+ *     it returns "unknown signal (<signum>)".
  */
 const gchar *
 g_strsignal (gint signum)
@@ -1734,8 +1734,8 @@ g_ascii_xdigit_value (gchar c)
  *
  * Both @s1 and @s2 must be non-%NULL.
  *
- * Return value: 0 if the strings match, a negative value if @s1 &lt; @s2,
- *     or a positive value if @s1 &gt; @s2.
+ * Return value: 0 if the strings match, a negative value if @s1 < @s2,
+ *     or a positive value if @s1 > @s2.
  */
 gint
 g_ascii_strcasecmp (const gchar *s1,
@@ -1775,8 +1775,8 @@ g_ascii_strcasecmp (const gchar *s1,
  * function only on strings known to be in encodings where bytes
  * corresponding to ASCII letters always represent themselves.
  *
- * Return value: 0 if the strings match, a negative value if @s1 &lt; @s2,
- *     or a positive value if @s1 &gt; @s2.
+ * Return value: 0 if the strings match, a negative value if @s1 < @s2,
+ *     or a positive value if @s1 > @s2.
  */
 gint
 g_ascii_strncasecmp (const gchar *s1,
@@ -1812,8 +1812,8 @@ g_ascii_strncasecmp (const gchar *s1,
  * A case-insensitive string comparison, corresponding to the standard
  * strcasecmp() function on platforms which support it.
  *
- * Return value: 0 if the strings match, a negative value if @s1 &lt; @s2,
- *     or a positive value if @s1 &gt; @s2.
+ * Return value: 0 if the strings match, a negative value if @s1 < @s2,
+ *     or a positive value if @s1 > @s2.
  *
  * Deprecated:2.2: See g_strncasecmp() for a discussion of why this
  *     function is deprecated and how to replace it.
@@ -1860,8 +1860,8 @@ g_strcasecmp (const gchar *s1,
  * to g_strcasecmp() except it only compares the first @n characters of
  * the strings.
  *
- * Return value: 0 if the strings match, a negative value if @s1 &lt; @s2,
- *     or a positive value if @s1 &gt; @s2.
+ * Return value: 0 if the strings match, a negative value if @s1 < @s2,
+ *     or a positive value if @s1 > @s2.
  *
  * Deprecated:2.2: The problem with g_strncasecmp() is that it does
  *     the comparison by calling toupper()/tolower(). These functions

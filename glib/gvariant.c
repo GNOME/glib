@@ -2762,9 +2762,9 @@ g_variant_equal (gconstpointer one,
  * If you only require an equality comparison, g_variant_equal() is more
  * general.
  *
- * Returns: negative value if a &lt; b;
+ * Returns: negative value if a < b;
  *          zero if a = b;
- *          positive value if a &gt; b.
+ *          positive value if a > b.
  *
  * Since: 2.26
  **/
@@ -3672,17 +3672,17 @@ g_variant_builder_end (GVariantBuilder *builder)
  *     GVariantDict dict;
  *     guint32 count;
  *
- *     g_variant_dict_init (&amp;dict, orig);
- *     if (!g_variant_dict_lookup (&amp;dict, "count", "u", &amp;count))
+ *     g_variant_dict_init (&dict, orig);
+ *     if (!g_variant_dict_lookup (&dict, "count", "u", &count))
  *       {
  *         g_set_error (...);
- *         g_variant_dict_clear (&amp;dict);
+ *         g_variant_dict_clear (&dict);
  *         return NULL;
  *       }
  *
- *     g_variant_dict_insert (&amp;dict, "count", "u", count + 1);
+ *     g_variant_dict_insert (&dict, "count", "u", count + 1);
  *
- *     return g_variant_dict_end (&amp;dict);
+ *     return g_variant_dict_end (&dict);
  *   }
  * ]|
  *
@@ -3699,7 +3699,7 @@ g_variant_builder_end (GVariantBuilder *builder)
  *
  *     dict = g_variant_dict_new (orig);
  *
- *     if (g_variant_dict_lookup (dict, "count", "u", &amp;count))
+ *     if (g_variant_dict_lookup (dict, "count", "u", &count))
  *       {
  *         g_variant_dict_insert (dict, "count", "u", count + 1);
  *         result = g_variant_dict_end (dict);

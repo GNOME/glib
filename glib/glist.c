@@ -1195,7 +1195,7 @@ g_list_sort_real (GList    *list,
  * value comes before the second, 0 if they are equal, or a positive
  * integer if the first value comes after the second.
  *
- * Returns: negative value if @a &lt; @b; zero if @a = @b; positive
+ * Returns: negative value if @a < @b; zero if @a = @b; positive
  *          value if @a > @b
  */
 GList *
@@ -1227,7 +1227,7 @@ g_list_sort (GList        *list,
  * value comes before the second, 0 if they are equal, or a positive
  * integer if the first value comes after the second.
  *
- * Returns: negative value if @a &lt; @b; zero if @a = @b; positive
+ * Returns: negative value if @a < @b; zero if @a = @b; positive
  *          value if @a > @b
  */
 GList *

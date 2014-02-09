@@ -60,7 +60,7 @@
  *
  * Routines for working with D-Bus addresses. A D-Bus address is a string
  * like "unix:tmpdir=/tmp/my-app-name". The exact format of addresses
- * is explained in detail in the [D-Bus specification](http://dbus.freedesktop.org/doc/dbus-specification.html&num;addresses).
+ * is explained in detail in the [D-Bus specification](http://dbus.freedesktop.org/doc/dbus-specification.html\#addresses).
  */
 
 static gchar *get_session_address_platform_specific (GError **error);

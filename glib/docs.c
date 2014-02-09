@@ -1526,14 +1526,14 @@
  * G_OS_WIN32:
  *
  * This macro is defined only on Windows. So you can bracket
- * Windows-specific code in "&num;ifdef G_OS_WIN32".
+ * Windows-specific code in "\#ifdef G_OS_WIN32".
  */
 
 /**
  * G_OS_UNIX:
  *
  * This macro is defined only on UNIX. So you can bracket
- * UNIX-specific code in "&num;ifdef G_OS_UNIX".
+ * UNIX-specific code in "\#ifdef G_OS_UNIX".
  */
 
 /**

@@ -86,9 +86,9 @@
  * Similar to GConf, the default values in GSettings schemas can be
  * localized, but the localized values are stored in gettext catalogs
  * and looked up with the domain that is specified in the
- * gettext-domain attribute of the &lt;schemalist&gt; or &lt;schema&gt;
+ * gettext-domain attribute of the <schemalist> or <schema>
  * elements and the category that is specified in the l10n attribute of
- * the &lt;key&gt; element.
+ * the <key> element.
  *
  * GSettings uses schemas in a compact binary form that is created
  * by the [glib-compile-schemas][glib-compile-schemas]
@@ -101,7 +101,7 @@
  * files to have the extension `.gschema.xml`.
  *
  * At runtime, schemas are identified by their id (as specified in the
- * id attribute of the &lt;schema&gt; element). The convention for schema
+ * id attribute of the <schema> element). The convention for schema
  * ids is to use a dotted name, similar in style to a D-Bus bus name,
  * e.g. "org.gnome.SessionManager". In particular, if the settings are
  * for a specific service that owns a D-Bus bus name, the D-Bus bus name
@@ -110,8 +110,8 @@
  * StudlyCaps, e.g. "org.gnome.font-rendering".
  *
  * In addition to #GVariant types, keys can have types that have
- * enumerated types. These can be described by a &lt;choice&gt;,
- * &lt;enum&gt; or &lt;flags&gt; element, as seen in the
+ * enumerated types. These can be described by a <choice>,
+ * <enum> or <flags> element, as seen in the
  * [example][schema-enumerated]. The underlying type of such a key
  * is string, but you can use g_settings_get_enum(), g_settings_set_enum(),
  * g_settings_get_flags(), g_settings_set_flags() access the numeric values
@@ -2178,7 +2178,7 @@ g_settings_is_writable (GSettings   *settings,
  * @settings.
  *
  * The schema for the child settings object must have been declared
- * in the schema of @settings using a &lt;child&gt; element.
+ * in the schema of @settings using a <child> element.
  *
  * Returns: (transfer full): a 'child' settings object
  *

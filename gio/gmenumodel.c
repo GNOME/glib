@@ -571,7 +571,7 @@ g_menu_model_get_item_attribute_value (GMenuModel         *model,
  * g_variant_get(), followed by a g_variant_unref().  As such,
  * @format_string must make a complete copy of the data (since the
  * #GVariant may go away after the call to g_variant_unref()).  In
- * particular, no '&amp;' characters are allowed in @format_string.
+ * particular, no '&' characters are allowed in @format_string.
  *
  * Returns: %TRUE if the named attribute was found with the expected
  *     type

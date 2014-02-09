@@ -243,7 +243,7 @@
  *
  * Error domains and codes are conventionally named as follows:
  *
- * - The error domain is called &lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR,
+ * - The error domain is called <NAMESPACE>_<MODULE>_ERROR,
  *   for example %G_SPAWN_ERROR or %G_THREAD_ERROR:
  *   |[<!-- language="C" -->
  *   #define G_SPAWN_ERROR g_spawn_error_quark ()
@@ -256,20 +256,20 @@
  *   ]|
  *
  * - The quark function for the error domain is called
- *   &lt;namespace&gt;_&lt;module&gt;_error_quark,
+ *   <namespace>_<module>_error_quark,
  *   for example g_spawn_error_quark() or g_thread_error_quark().
  *
  * - The error codes are in an enumeration called
- *   &lt;Namespace&gt;&lt;Module&gt;Error;
- *   for example,#GThreadError or #GSpawnError.
+ *   <Namespace><Module>Error;
+ *   for example, #GThreadError or #GSpawnError.
  *
  * - Members of the error code enumeration are called
- *   &lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR_&lt;CODE&gt;,
+ *   <NAMESPACE>_<MODULE>_ERROR_<CODE>,
  *   for example %G_SPAWN_ERROR_FORK or %G_THREAD_ERROR_AGAIN.
  *
  * - If there's a "generic" or "unknown" error code for unrecoverable
  *   errors it doesn't make sense to distinguish with specific codes,
- *   it should be called &lt;NAMESPACE&gt;_&lt;MODULE&gt;_ERROR_FAILED,
+ *   it should be called <NAMESPACE>_<MODULE>_ERROR_FAILED,
  *   for example %G_SPAWN_ERROR_FAILED.
  *
  * Summary of rules for use of #GError:

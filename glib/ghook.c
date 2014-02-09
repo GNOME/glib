@@ -91,7 +91,7 @@
  *
  * The position of the first bit which is not reserved for internal
  * use be the #GHook implementation, i.e.
- * `1 &lt;&lt; G_HOOK_FLAG_USER_SHIFT` is the first
+ * `1 << G_HOOK_FLAG_USER_SHIFT` is the first
  * bit which can be used for application-defined flags.
  */
 
@@ -973,7 +973,7 @@ g_hook_find_func_data (GHookList *hook_list,
  * Defines the type of function used to compare #GHook elements in
  * g_hook_insert_sorted().
  *
- * Returns: a value &lt;= 0 if @new_hook should be before @sibling
+ * Returns: a value <= 0 if @new_hook should be before @sibling
  */
 
 /**
@@ -1035,7 +1035,7 @@ g_hook_insert_sorted (GHookList	      *hook_list,
  * Compares the ids of two #GHook elements, returning a negative value
  * if the second id is greater than the first.
  *
- * Returns: a value &lt;= 0 if the id of @sibling is >= the id of @new_hook
+ * Returns: a value <= 0 if the id of @sibling is >= the id of @new_hook
  */
 gint
 g_hook_compare_ids (GHook *new_hook,

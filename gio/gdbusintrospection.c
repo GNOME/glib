@@ -1757,7 +1757,7 @@ parser_error (GMarkupParseContext *context,
  * Parses @xml_data and returns a #GDBusNodeInfo representing the data.
  *
  * The introspection XML must contain exactly one top-level
- * &lt;node&gt; element.
+ * <node> element.
  *
  * Note that this routine is using a
  * [GMarkup][glib-Simple-XML-Subset-Parser.description]-based

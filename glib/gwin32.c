@@ -335,8 +335,8 @@ get_package_directory_from_module (const gchar *module_name)
  * the package, typically the same identifier as used for
  * `GETTEXT_PACKAGE` in software configured using GNU
  * autotools. The function first looks in the Windows Registry for the
- * value `&num;InstallationDirectory` in the key
- * `&num;HKLM\Software\@package`, and if that value
+ * value `#InstallationDirectory` in the key
+ * `#HKLM\Software\@package`, and if that value
  * exists and is a string, returns that.
  *
  * It is strongly recommended that packagers of GLib-using libraries

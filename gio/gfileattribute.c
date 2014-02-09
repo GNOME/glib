@@ -321,7 +321,7 @@ escape_byte_string (const char *str)
  * Converts a #GFileAttributeValue to a string for display.
  * The returned string should be freed when no longer needed.
  *
- * Returns: a string from the @attr, %NULL on error, or "&lt;invalid&gt;"
+ * Returns: a string from the @attr, %NULL on error, or "<invalid>"
  * if @attr is of type %G_FILE_ATTRIBUTE_TYPE_INVALID.
  */
 char *
