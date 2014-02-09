@@ -156,9 +156,10 @@
  * padding bytes.  That makes a total of 6 + 2 + 3 = 11 bytes.
  *
  * We now require extra padding between the two items in the array.
- * After the 14 bytes of the first item, that's 2 bytes required. We
- * now require 2 framing offsets for an extra two bytes.  14 + 2 + 11
- * + 2 = 29 bytes to encode the entire two-item dictionary.
+ * After the 14 bytes of the first item, that's 2 bytes required.
+ * We now require 2 framing offsets for an extra two
+ * bytes. 14 + 2 + 11 + 2 = 29 bytes to encode the entire two-item
+ * dictionary.
  *
  * ## Type Information Cache
  *
