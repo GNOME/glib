@@ -177,7 +177,7 @@ msgstr ""
 #: ../gio/gapplication-tool.c:171
 #, c-format
 msgid "invalid application id: '%s'\n"
-msgstr "ugyldig program-ID: «%s»"
+msgstr "ugyldig program-ID: «%s»\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
 #: ../gio/gapplication-tool.c:182
