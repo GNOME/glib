@@ -1744,7 +1744,7 @@ typedef enum /*< flags >*/ {
  * example, you may not request both %G_SUBPROCESS_FLAGS_STDOUT_PIPE and
  * %G_SUBPROCESS_FLAGS_STDOUT_SILENCE.
  *
- * Since: 2.36
+ * Since: 2.40
  **/
 typedef enum {
   G_SUBPROCESS_FLAGS_NONE                  = 0,

@@ -518,7 +518,7 @@ typedef struct _GTestDBus GTestDBus;
  *
  * A child process.
  *
- * Since: 2.36
+ * Since: 2.40
  */
 typedef struct _GSubprocess                   GSubprocess;
 /**
