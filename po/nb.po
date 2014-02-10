@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: glib 2.36.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-02-10 08:13+0100\n"
-"PO-Revision-Date: 2014-02-10 08:14+0100\n"
+"PO-Revision-Date: 2014-02-10 16:16+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -66,7 +66,7 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:57
 msgid "APPID [FILE...]"
-msgstr ""
+msgstr "PROGID [FIL …]"
 
 #: ../gio/gapplication-tool.c:59
 msgid "Activate an action"
@@ -74,11 +74,11 @@ msgstr "Aktiver en handling"
 
 #: ../gio/gapplication-tool.c:60
 msgid "Invoke an action on the application"
-msgstr ""
+msgstr "Utfør en handling på programmet"
 
 #: ../gio/gapplication-tool.c:61
 msgid "APPID ACTION [PARAMETER]"
-msgstr ""
+msgstr "PROGID HANDLING [PARAMETER]"
 
 #: ../gio/gapplication-tool.c:63
 msgid "List available actions"
@@ -90,7 +90,7 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:65 ../gio/gapplication-tool.c:71
 msgid "APPID"
-msgstr ""
+msgstr "PROGID"
 
 #: ../gio/gapplication-tool.c:70 ../gio/gapplication-tool.c:133
 #: ../gio/gdbus-tool.c:90
@@ -99,7 +99,7 @@ msgstr "KOMMANDO"
 
 #: ../gio/gapplication-tool.c:70
 msgid "The command to print detailed help for"
-msgstr ""
+msgstr "Vis detaljert hjelp for denne kommandoen"
 
 #: ../gio/gapplication-tool.c:71
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
@@ -120,9 +120,8 @@ msgid "ACTION"
 msgstr "HANDLING"
 
 #: ../gio/gapplication-tool.c:73
-#, fuzzy
 msgid "The action name to invoke"
-msgstr "Målnavn som skal inspiseres"
+msgstr "Handling som skal utføres"
 
 #: ../gio/gapplication-tool.c:74
 msgid "PARAMETER"
@@ -153,7 +152,7 @@ msgstr "Argumenter:\n"
 
 #: ../gio/gapplication-tool.c:133
 msgid "[ARGS...]"
-msgstr ""
+msgstr "[ARGUMENTER …]"
 
 #: ../gio/gapplication-tool.c:134
 #, c-format
@@ -166,7 +165,7 @@ msgstr "Kommandoer:\n"
 msgid ""
 "Use '%s help COMMAND' to get detailed help.\n"
 "\n"
-msgstr ""
+msgstr "Bruk «%s help KOMMANDO» for å  få detaljert hjelp.\n\n"
 
 #: ../gio/gapplication-tool.c:165
 #, c-format
@@ -176,9 +175,9 @@ msgid ""
 msgstr ""
 
 #: ../gio/gapplication-tool.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "invalid application id: '%s'\n"
-msgstr "ugyldig GVariant-typestreng «%s»"
+msgstr "ugyldig program-ID: «%s»"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
 #: ../gio/gapplication-tool.c:182
@@ -186,22 +185,22 @@ msgstr "ugyldig GVariant-typestreng «%s»"
 msgid ""
 "'%s' takes no arguments\n"
 "\n"
-msgstr ""
+msgstr "«%s» tar ingen argumenter\n\n"
 
 #: ../gio/gapplication-tool.c:262
-#, fuzzy, c-format
+#, c-format
 msgid "unable to connect to D-Bus: %s\n"
-msgstr "Kunne ikke koble til «%s»: "
+msgstr "kan ikke koble til D-Bus: %s\n"
 
 #: ../gio/gapplication-tool.c:282
-#, fuzzy, c-format
+#, c-format
 msgid "error sending %s message to application: %s\n"
-msgstr "Feil ved sending av melding: %s"
+msgstr "feil ved sending av %s-melding til program: %s\n"
 
 #: ../gio/gapplication-tool.c:313
 #, c-format
 msgid "action name must be given after application id\n"
-msgstr ""
+msgstr "navn på handling må oppgis etter program-ID\n"
 
 #: ../gio/gapplication-tool.c:321
 #, c-format
@@ -211,9 +210,9 @@ msgid ""
 msgstr ""
 
 #: ../gio/gapplication-tool.c:340
-#, fuzzy, c-format
+#, c-format
 msgid "error parsing action parameter: %s\n"
-msgstr "Feil under tolking av parameter %d: %s\n"
+msgstr "feil under tolking av parameter for handling: %s\n"
 
 #: ../gio/gapplication-tool.c:352
 #, c-format
@@ -226,18 +225,16 @@ msgid "list-actions command takes only the application id"
 msgstr ""
 
 #: ../gio/gapplication-tool.c:417
-#, fuzzy, c-format
+#, c-format
 msgid "unable to find desktop file for application %s\n"
-msgstr "Kan ikke finne terminalen som kreves for programmet"
+msgstr "kan ikke finne skrivebordsfil for program %s\n"
 
 #: ../gio/gapplication-tool.c:462
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "unrecognised command: %s\n"
 "\n"
-msgstr ""
-"Ukjent kommando «%s»\n"
-"\n"
+msgstr "ukjent kommando: %s\n\n"
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
 #: ../gio/ginputstream.c:173 ../gio/ginputstream.c:365
@@ -1933,9 +1930,9 @@ msgid "Move between mounts not supported"
 msgstr "Flytting mellom monteringspunkter er ikke støttet"
 
 #: ../gio/glocalfile.c:2603
-#, fuzzy, c-format
+#, c-format
 msgid "Could not determine the disk usage of %s: %s"
-msgstr "Kunne ikke laste skjema fra %s: %s\n"
+msgstr "Kunne ikke bestemme diskbruk for %s: %s"
 
 #: ../gio/glocalfileinfo.c:721
 msgid "Attribute value must be non-NULL"
@@ -2492,7 +2489,6 @@ msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:STI] [NØKKEL]"
 
 #: ../gio/gsettings-tool.c:602
-#, fuzzy
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -2516,8 +2512,9 @@ msgid ""
 "Use 'gsettings help COMMAND' to get detailed help.\n"
 "\n"
 msgstr ""
-"Bruk\n"
-"  gsettings KOMMANDO [ARGUMENTER …]\n"
+"Bruk:\n"
+"  gsettings --version\n"
+"  gsettings [--schemadir SCHEMAKATALOG KOMMANDO [ARGUMENTER …]\n"
 "\n"
 "Kommandoer\n"
 "  help                     Vis denne informasjonen\n"
@@ -4428,9 +4425,8 @@ msgstr ""
 "underprosess"
 
 #: ../glib/gutf8.c:780
-#, fuzzy
 msgid "Failed to allocate memory"
-msgstr "ikke nok minne"
+msgstr "Klarte ikke å allokere minne"
 
 #: ../glib/gutf8.c:912
 msgid "Character out of range for UTF-8"
