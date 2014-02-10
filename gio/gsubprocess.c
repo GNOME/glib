@@ -71,8 +71,8 @@
  * change of working directory, child setup functions, etc).
  *
  * A typical use of #GSubprocess will involve calling
- * g_subprocess_new(), followed by g_subprocess_wait() or
- * g_subprocess_wait_sync().  After the process exits, the status can be
+ * g_subprocess_new(), followed by g_subprocess_wait_async() or
+ * g_subprocess_wait().  After the process exits, the status can be
  * checked using functions such as g_subprocess_get_if_exited() (which
  * are similar to the familiar WIFEXITED-style POSIX macros).
  *
