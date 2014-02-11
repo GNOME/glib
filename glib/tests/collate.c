@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+static gboolean missing_locale = FALSE;
+
 typedef struct {
   const gchar **input;
   const gchar **sorted;
@@ -44,6 +46,12 @@ do_collate (gboolean for_file, gboolean use_key, const CollateTest *test)
   GArray *line_array;
   Line line;
   gint i;
+
+  if (missing_locale)
+    {
+      g_test_skip ("no en_US locale");
+      return;
+    }
 
   line_array = g_array_new (FALSE, FALSE, sizeof(Line));
   g_array_set_clear_func (line_array, (GDestroyNotify)clear_line);
@@ -253,8 +261,10 @@ main (int argc, char *argv[])
   locale = setlocale (LC_ALL, "");
   if (locale == NULL || strcmp (locale, "en_US") != 0)
     {
-      g_test_message ("No suitable locale, skipping test");
-      return 0;
+      g_test_message ("No suitable locale, skipping tests");
+      missing_locale = TRUE;
+      /* let the tests run to completion so they show up as SKIP'd in TAP
+       * output */
     }
 
   test[0].input = input0;
