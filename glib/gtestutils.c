@@ -1474,8 +1474,11 @@ g_test_get_root (void)
  * particular code runs before or after a given test case, use
  * g_test_add(), which lets you specify setup and teardown functions.
  *
+ * If all tests are skipped, this function will return 0 if
+ * producing TAP output, or 77 (treated as "skip test" by Automake) otherwise.
+ *
  * Returns: 0 on success, 1 on failure (assuming it returns at all),
- *   77 if all tests were skipped with g_test_skip().
+ *   0 or 77 if all tests were skipped with g_test_skip()
  *
  * Since: 2.16
  */
@@ -1484,6 +1487,11 @@ g_test_run (void)
 {
   if (g_test_run_suite (g_test_get_root()) != 0)
     return 1;
+
+  /* 77 is special to Automake's default driver, but not Automake's TAP driver
+   * or Perl's prove(1) TAP driver. */
+  if (test_tap_log)
+    return 0;
 
   if (test_run_count > 0 && test_run_count == test_skipped_count)
     return 77;
