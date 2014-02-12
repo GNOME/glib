@@ -1584,6 +1584,10 @@ static GSourceCallbackFuncs g_source_callback_funcs = {
  * an initial reference count on @callback_data, and thus
  * @callback_funcs->unref will eventually be called once more
  * than @callback_funcs->ref.
+ *
+ * It is safe to call this function multiple times on a source which has already
+ * been attached to a context. The changes will take effect for the next time
+ * the source is dispatched after this call returns.
  **/
 void
 g_source_set_callback_indirect (GSource              *source,
@@ -1640,7 +1644,11 @@ g_source_set_callback_indirect (GSource              *source,
  * on how to handle memory management of @data.
  * 
  * Typically, you won't use this function. Instead use functions specific
- * to the type of source you are using.
+ * to the type of source you are using, such as g_idle_add() or g_timeout_add().
+ *
+ * It is safe to call this function multiple times on a source which has already
+ * been attached to a context. The changes will take effect for the next time
+ * the source is dispatched after this call returns.
  **/
 void
 g_source_set_callback (GSource        *source,
