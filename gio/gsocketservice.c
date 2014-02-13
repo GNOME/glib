@@ -203,6 +203,12 @@ g_socket_service_start (GSocketService *service)
  * This call is thread-safe, so it may be called from a thread
  * handling an incoming client request.
  *
+ * Note that this only stops accepting new connections; it does not
+ * close the listening sockets, and you can call
+ * g_socket_service_start() again later to begin listening again. To
+ * close the listening sockets, call g_socket_listener_close(). (This
+ * will happen automatically when the #GSocketService is finalized.)
+ *
  * Since: 2.22
  */
 void
