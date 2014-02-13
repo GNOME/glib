@@ -1665,8 +1665,7 @@ dnl *****************************
 inotify_support=no
 AC_CHECK_HEADERS([sys/inotify.h],
 [
-	inotify_support=yes
-	AC_CHECK_FUNCS(inotify_init1)
+  AC_CHECK_FUNCS(inotify_init1, [inotify_support=yes], [inotify_support=no])
 ])
 
 AM_CONDITIONAL(HAVE_INOTIFY, [test "$inotify_support" = "yes"])

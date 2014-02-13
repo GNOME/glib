@@ -1055,7 +1055,7 @@ _g_io_modules_ensure_loaded (void)
       /* Initialize types from built-in "modules" */
       g_type_ensure (g_null_settings_backend_get_type ());
       g_type_ensure (g_memory_settings_backend_get_type ());
-#if defined(HAVE_SYS_INOTIFY_H) || defined(HAVE_LINUX_INOTIFY_H)
+#if defined(HAVE_INOTIFY_INIT1)
       g_type_ensure (_g_inotify_directory_monitor_get_type ());
       g_type_ensure (_g_inotify_file_monitor_get_type ());
 #endif
