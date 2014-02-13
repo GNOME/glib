@@ -3204,7 +3204,11 @@ update_condition (GSocket *socket)
 
 typedef struct {
   GSource       source;
+#ifdef G_OS_WIN32
   GPollFD       pollfd;
+#else
+  gpointer      fd_tag;
+#endif
   GSocket      *socket;
   GIOCondition  condition;
 } GSocketSource;
@@ -3219,10 +3223,10 @@ socket_source_prepare (GSource *source,
 
 #ifdef G_OS_WIN32
   socket_source->pollfd.revents = update_condition (socket_source->socket);
-#endif
 
   if ((socket_source->condition & socket_source->pollfd.revents) != 0)
     return TRUE;
+#endif
 
   return FALSE;
 }
@@ -3250,7 +3254,7 @@ socket_source_dispatch (GSource     *source,
 #ifdef G_OS_WIN32
   events = update_condition (socket_source->socket);
 #else
-  events = socket_source->pollfd.revents;
+  events = g_source_query_unix_fd (source, socket_source->fd_tag);
 #endif
 
   timeout = g_source_get_ready_time (source);
@@ -3362,13 +3366,12 @@ socket_source_new (GSocket      *socket,
 #ifdef G_OS_WIN32
   add_condition_watch (socket, &socket_source->condition);
   socket_source->pollfd.fd = (gintptr) socket->priv->event;
-#else
-  socket_source->pollfd.fd = socket->priv->fd;
-#endif
-
   socket_source->pollfd.events = condition;
   socket_source->pollfd.revents = 0;
   g_source_add_poll (source, &socket_source->pollfd);
+#else
+  socket_source->fd_tag = g_source_add_unix_fd (source, socket->priv->fd, condition);
+#endif
 
   if (socket->priv->timeout)
     g_source_set_ready_time (source, g_get_monotonic_time () + socket->priv->timeout * 1000000);
