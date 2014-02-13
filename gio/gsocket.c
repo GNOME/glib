@@ -3213,31 +3213,31 @@ typedef struct {
   GIOCondition  condition;
 } GSocketSource;
 
+#ifdef G_OS_WIN32
 static gboolean
-socket_source_prepare (GSource *source,
-		       gint    *timeout)
+socket_source_prepare_win32 (GSource *source,
+                             gint    *timeout)
 {
   GSocketSource *socket_source = (GSocketSource *)source;
 
   *timeout = -1;
 
-#ifdef G_OS_WIN32
   socket_source->pollfd.revents = update_condition (socket_source->socket);
 
   if ((socket_source->condition & socket_source->pollfd.revents) != 0)
     return TRUE;
-#endif
 
   return FALSE;
 }
 
 static gboolean
-socket_source_check (GSource *source)
+socket_source_check_win32 (GSource *source)
 {
   int timeout;
 
-  return socket_source_prepare (source, &timeout);
+  return socket_source_prepare_win32 (source, &timeout);
 }
+#endif
 
 static gboolean
 socket_source_dispatch (GSource     *source,
@@ -3319,8 +3319,12 @@ socket_source_closure_callback (GSocket      *socket,
 
 static GSourceFuncs socket_source_funcs =
 {
-  socket_source_prepare,
-  socket_source_check,
+#ifdef G_OS_WIN32
+  socket_source_prepare_win32,
+  socket_source_check_win32,
+#else
+  NULL, NULL, /* check, prepare */
+#endif
   socket_source_dispatch,
   socket_source_finalize,
   (GSourceFunc)socket_source_closure_callback,
