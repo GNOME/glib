@@ -1659,6 +1659,10 @@ g_source_set_priority_unlocked (GSource      *source,
  * source will be dispatched if it is ready to be dispatched and no
  * sources at a higher (numerically smaller) priority are ready to be
  * dispatched.
+ *
+ * A child source always has the same priority as its parent.  It is not
+ * permitted to change the priority of a source once it has been added
+ * as a child of another source.
  **/
 void
 g_source_set_priority (GSource  *source,
@@ -1667,6 +1671,7 @@ g_source_set_priority (GSource  *source,
   GMainContext *context;
 
   g_return_if_fail (source != NULL);
+  g_return_if_fail (source->priv->parent_source == NULL);
 
   context = source->context;
 
