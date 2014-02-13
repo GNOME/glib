@@ -428,7 +428,7 @@
  *                            GAsyncReadyCallback  callback,
  *                            gpointer             user_data)
  *     {
- J*       CakeData *cake_data;
+ *       CakeData *cake_data;
  *       GTask *task;
  *
  *       cake_data = g_slice_new (CakeData);
