@@ -3207,7 +3207,6 @@ typedef struct {
   GPollFD       pollfd;
   GSocket      *socket;
   GIOCondition  condition;
-  gint64        timeout_time;
 } GSocketSource;
 
 static gboolean
@@ -3216,22 +3215,7 @@ socket_source_prepare (GSource *source,
 {
   GSocketSource *socket_source = (GSocketSource *)source;
 
-  if (socket_source->timeout_time)
-    {
-      gint64 now;
-
-      now = g_source_get_time (source);
-      /* Round up to ensure that we don't try again too early */
-      *timeout = (socket_source->timeout_time - now + 999) / 1000;
-      if (*timeout < 0)
-        {
-          socket_source->socket->priv->timed_out = TRUE;
-          *timeout = 0;
-          return TRUE;
-        }
-    }
-  else
-    *timeout = -1;
+  *timeout = -1;
 
 #ifdef G_OS_WIN32
   socket_source->pollfd.revents = update_condition (socket_source->socket);
@@ -3259,6 +3243,7 @@ socket_source_dispatch (GSource     *source,
   GSocketSourceFunc func = (GSocketSourceFunc)callback;
   GSocketSource *socket_source = (GSocketSource *)source;
   GSocket *socket = socket_source->socket;
+  gint64 timeout;
   guint events;
   gboolean ret;
 
@@ -3267,17 +3252,20 @@ socket_source_dispatch (GSource     *source,
 #else
   events = socket_source->pollfd.revents;
 #endif
-  if (socket_source->socket->priv->timed_out)
-    socket_source->pollfd.revents |= socket_source->condition & (G_IO_IN | G_IO_OUT);
+
+  timeout = g_source_get_ready_time (source);
+  if (timeout >= 0 && timeout < g_source_get_time (source))
+    {
+      socket->priv->timed_out = TRUE;
+      events |= (G_IO_IN | G_IO_OUT);
+    }
 
   ret = (*func) (socket, events & socket_source->condition, user_data);
 
   if (socket->priv->timeout)
-    socket_source->timeout_time = g_get_monotonic_time () +
-                                  socket->priv->timeout * 1000000;
-
+    g_source_set_ready_time (source, g_get_monotonic_time () + socket->priv->timeout * 1000000);
   else
-    socket_source->timeout_time = 0;
+    g_source_set_ready_time (source, -1);
 
   return ret;
 }
@@ -3383,11 +3371,9 @@ socket_source_new (GSocket      *socket,
   g_source_add_poll (source, &socket_source->pollfd);
 
   if (socket->priv->timeout)
-    socket_source->timeout_time = g_get_monotonic_time () +
-                                  socket->priv->timeout * 1000000;
-
+    g_source_set_ready_time (source, g_get_monotonic_time () + socket->priv->timeout * 1000000);
   else
-    socket_source->timeout_time = 0;
+    g_source_set_ready_time (source, -1);
 
   return source;
 }
