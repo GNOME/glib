@@ -55,9 +55,9 @@
  * To close a stream use g_io_stream_close() which will close the common
  * stream object and also the individual substreams. You can also close
  * the substreams themselves. In most cases this only marks the
- * substream as closed, so further I/O on it fails. However, some streams
- * may support "half-closed" states where one direction of the stream
- * is actually shut down.
+ * substream as closed, so further I/O on it fails but common state in the
+ * #GIOStream may still be open. However, some streams may support
+ * "half-closed" states where one direction of the stream is actually shut down.
  *
  * Since: 2.22
  */
