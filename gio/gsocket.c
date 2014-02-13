@@ -3406,7 +3406,7 @@ socket_source_new (GSocket      *socket,
  * @cancellable: (allow-none): a %GCancellable or %NULL
  *
  * Creates a %GSource that can be attached to a %GMainContext to monitor
- * for the availibility of the specified @condition on the socket.
+ * for the availability of the specified @condition on the socket.
  *
  * The callback on the source is of the #GSocketSourceFunc type.
  *
