@@ -3207,8 +3207,6 @@ typedef struct {
   GPollFD       pollfd;
   GSocket      *socket;
   GIOCondition  condition;
-  GCancellable *cancellable;
-  GPollFD       cancel_pollfd;
   gint64        timeout_time;
 } GSocketSource;
 
@@ -3217,9 +3215,6 @@ socket_source_prepare (GSource *source,
 		       gint    *timeout)
 {
   GSocketSource *socket_source = (GSocketSource *)source;
-
-  if (g_cancellable_is_cancelled (socket_source->cancellable))
-    return TRUE;
 
   if (socket_source->timeout_time)
     {
@@ -3299,12 +3294,6 @@ socket_source_finalize (GSource *source)
 #endif
 
   g_object_unref (socket);
-
-  if (socket_source->cancellable)
-    {
-      g_cancellable_release_fd (socket_source->cancellable);
-      g_object_unref (socket_source->cancellable);
-    }
 }
 
 static gboolean
@@ -3371,11 +3360,14 @@ socket_source_new (GSocket      *socket,
   socket_source->socket = g_object_ref (socket);
   socket_source->condition = condition;
 
-  if (g_cancellable_make_pollfd (cancellable,
-                                 &socket_source->cancel_pollfd))
+  if (cancellable)
     {
-      socket_source->cancellable = g_object_ref (cancellable);
-      g_source_add_poll (source, &socket_source->cancel_pollfd);
+      GSource *cancellable_source;
+
+      cancellable_source = g_cancellable_source_new (cancellable);
+      g_source_add_child_source (source, cancellable_source);
+      g_source_set_dummy_callback (cancellable_source);
+      g_source_unref (cancellable_source);
     }
 
 #ifdef G_OS_WIN32
