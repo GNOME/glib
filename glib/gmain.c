@@ -32,9 +32,6 @@
 #include "config.h"
 #include "glibconfig.h"
 
-#include <sys/epoll.h>
-#include <sys/timerfd.h>
-
 /* Uncomment the next line (and the corresponding line in gpoll.c) to
  * enable debugging printouts if the environment variable
  * G_MAIN_POLL_DEBUG is set to some value.
@@ -198,6 +195,14 @@ typedef enum
   G_SOURCE_BLOCKED = 1 << (G_HOOK_FLAG_USER_SHIFT + 2)
 } GSourceFlags;
 
+typedef struct _GSourceList GSourceList;
+
+struct _GSourceList
+{
+  GSource *head, *tail;
+  gint priority;
+};
+
 typedef struct _GMainWaiter GMainWaiter;
 
 struct _GMainWaiter
@@ -218,102 +223,6 @@ struct _GMainDispatch
 gboolean _g_main_poll_debug = FALSE;
 #endif
 
-/* The GSourceFd structure tracks the relationship of sources, contexts
- * and file descriptors.
- *
- * Each source has a list of GSourceFd, one for each fd.  Each main
- * context also keeps a per-fd list of GSourceFd, possibly with different
- * sources and event masks in each.
- *
- * Because the same structure appears in two different lists, we keep
- * two 'next' pointers.
- *
- * One is created for each call to g_source_add_unix_fd().
- *
- * The number of file descriptors watched per source and the number of
- * sources watching a particular file descriptor are expected to be very
- * small (typically 1:1) which is why we opt to use linked lists here.
- *
- * We also create a GSourceFd object with a %NULL source for things that
- * are not associated with a particular source.  This includes #GPollFDs
- * (even if they originally come from a source) and internally-created
- * things such as GWakeup.
- */
-typedef struct _GSourceFd GSourceFd;
-struct _GSourceFd
-{
-  GSource   *source;
-#ifdef G_OS_WIN32
-  HANDLE    *handle;
-#else
-  gint       fd;
-#endif
-  gshort     events;
-  gshort     revents;
-
-  GSourceFd *context_next;
-  GSourceFd *source_next;
-};
-
-/* GMainContextFd is the object that represents the main context's view
- * of what it needs to do with respect to a single fd.
- *
- * It is used as the user_data pointer to both kevent and epoll.  When
- * running with poll(), it is looked up via hash table.
- *
- * It contains the list of GSourceFd structs that are associated with
- * the fd.
- *
- * The number of file descriptors in the main context is expected to be
- * potentially quite large, which is why we use the hash table for
- * lookups, even when using poll().  The number of sources watching a
- * particular file descriptor is expected to be quite small (usually
- * exactly 1), which is why we use a linked list.
- *
- * In order not to thrash the kernel, we never update the poll list in
- * response to changing priorities -- we must therefore be able to
- * quickly filter the poll results to ignore fds with low priority.
- * Having the highest_priority cached here prevents us from having to
- * iterate the sources list in order to calculate it each time.
- */
-typedef struct
-{
-  GSourceFd *sources;
-
-  gint       highest_priority;      /* cache */
-} GMainContextFd;
-
-/* For GPollFDs that got directly added via the deprecated
- * g_main_context_add_poll() or g_source_add_poll(), we have to deal
- * with the possibility that they may be changed at any time.  We use a
- * GPollFdHolder for this, and we always rescan it each time there may
- * have been a change in order to update the GSourceFd.
- *
- * This constant checking and rechecking is relatively expensive, but
- * those calls are deprecated...
- */
-typedef struct
-{
-  GSourceFd  source_fd;
-  GPollFD   *poll_fd;
-} GPollFdHolder;
-
-#if defined(G_OS_WIN32)
-typedef OVERLAPPED_THINGY GPollEvent;
-#define g_poll_event_get_user_data(gps)  ((gps).ident)
-#define g_poll_event_get_revents(gpe)    1
-#elif defined(HAVE_EPOLL)
-typedef struct epoll_event GPollEvent;
-#define g_poll_event_get_user_data(gpe)  ((gpe).data.ptr)
-#define g_poll_event_get_revents(gpe)    ((gpe).events)
-#elif defined(HAVE_KQUEUE)
-typedef struct kevent GPollEvent;
-#define g_poll_event_get_user_data(gpe)  ((gpe).udata)
-#define g_poll_event_get_revents(gpe)    ((gpe).type READ WRITE)
-#else
-#error uh oh...
-#endif
-
 struct _GMainContext
 {
   /* The following lock is used for both the list of sources
@@ -328,29 +237,21 @@ struct _GMainContext
   gint ref_count;
 
   GHashTable *sources;              /* guint -> GSource */
-  GHashTable *fds;                  /* gint -> GMainContextFd */
-  GSList     *fds_to_free;          /* GMainContextFd */
 
-  GSequence  *impure_sources;       /* sources with prepare/check functions, sorted by priority */
-  gint64      impure_ready_time;    /* time for wakeup based on prepare() funcs */
-  GSList     *poll_holders;         /* GPollFdHolder, for (deprecated) _add_poll() */
+  GPtrArray *pending_dispatches;
+  gint timeout;			/* Timeout for current iteration */
 
-  GSequence  *ready_time_sources;   /* sources with ready_time set, sorted by ready_time */
+  guint next_id;
+  GList *source_lists;
+  gint in_check_or_prepare;
 
-  gint        kqueue_fd;
-  gint        timer_fd;
-  GPollFD     kqueue_rec;
-  gint64      cached_ready_time;
-  gboolean    is_in_poll;
-  GPollEvent *poll_events;
-  gint        n_poll_events;
-
-  GPtrArray  *pending_dispatches;
-
-  guint      next_id;
-  gint       in_check_or_prepare;
+  GPollRec *poll_records, *poll_records_tail;
+  guint n_poll_records;
+  GPollFD *cached_poll_array;
+  guint cached_poll_array_size;
 
   GWakeup *wakeup;
+
   GPollFD wake_up_rec;
 
 /* Flag indicating whether the set of fd's changed during a poll */
@@ -421,8 +322,16 @@ struct _GSourcePrivate
   /* This is currently only used on UNIX, but we always declare it (and
    * let it remain empty on Windows) to avoid #ifdef all over the place.
    */
-  GSourceFd *fds;
+  GSList *fds;
 };
+
+typedef struct _GSourceIter
+{
+  GMainContext *context;
+  gboolean may_modify;
+  GList *current_list;
+  GSource *source;
+} GSourceIter;
 
 #define LOCK_CONTEXT(context) g_mutex_lock (&context->mutex)
 #define UNLOCK_CONTEXT(context) g_mutex_unlock (&context->mutex)
@@ -438,6 +347,7 @@ struct _GSourcePrivate
     else                                                    \
       g_source_unref_internal ((source), (context), TRUE);  \
    } G_STMT_END
+
 
 /* Forward declarations */
 
@@ -463,6 +373,13 @@ static void g_main_context_add_poll_unlocked    (GMainContext *context,
 						 GPollFD      *fd);
 static void g_main_context_remove_poll_unlocked (GMainContext *context,
 						 GPollFD      *fd);
+
+static void     g_source_iter_init  (GSourceIter   *iter,
+				     GMainContext  *context,
+				     gboolean       may_modify);
+static gboolean g_source_iter_next  (GSourceIter   *iter,
+				     GSource      **source);
+static void     g_source_iter_clear (GSourceIter   *iter);
 
 static gboolean g_timeout_dispatch (GSource     *source,
 				    GSourceFunc  callback,
@@ -498,517 +415,8 @@ static GMainContext *glib_worker_context;
 G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
 
-
-static void
-g_source_fd_free (gpointer data)
-{
-  GSourceFd *source_fd = data;
-
-  g_slice_free (GSourceFd, source_fd);
-}
-
-static void
-g_main_context_fd_free (gpointer data)
-{
-  GMainContextFd *context_fd = data;
-
-  g_slice_free (GMainContextFd, context_fd);
-}
-
-static void
-g_main_context_poll_core_add (GMainContext *context,
-                              gint          fd,
-                              guint         events,
-                              gpointer      user_data)
-{
-  if (context->kqueue_fd == -1)
-    {
-      context->kqueue_fd = epoll_create1 (EPOLL_CLOEXEC);
-      g_assert (context->kqueue_fd > 0);
-      context->kqueue_rec.fd = context->kqueue_fd;
-      context->kqueue_rec.events = G_IO_IN;
-      g_main_context_add_poll_unlocked (context, 0, &context->kqueue_rec);
-    }
-
-#ifdef __linux
-  {
-    struct epoll_event event;
-
-    event.data.ptr = user_data;
-    event.events = events;
-
-    epoll_ctl (context->kqueue_fd, EPOLL_CTL_ADD, fd, &event);
-  }
-#else
-#error uh oh...
-#endif
-}
-
-static void
-g_main_context_poll_core_update (GMainContext *context,
-                                 gint          fd,
-                                 guint         events,
-                                 gpointer      user_data)
-{
-#ifdef __linux
-  {
-    struct epoll_event event;
-
-    event.data.ptr = user_data;
-    event.events = events;
-
-    epoll_ctl (context->kqueue_fd, EPOLL_CTL_MOD, fd, &event);
-  }
-#else
-#error uh oh...
-#endif
-}
-
-static void
-g_main_context_poll_core_remove (GMainContext *context,
-                                 gint          fd)
-{
-#ifdef __linux
-  {
-    /* Old Linux kernels have a bug whereby the pointer must be
-     * non-%NULL, even on delete events (where it is ignored).
-     */
-    epoll_ctl (context->kqueue_fd, EPOLL_CTL_DEL, fd, (gpointer) 0x1);
-  }
-#else
-#error uh oh...
-#endif
-}
-
-static void
-g_main_context_poll_core_set_ready_time (GMainContext *context,
-                                         gint64        ready_time)
-{
-  if (ready_time == context->cached_ready_time)
-    return;
-
-  context->cached_ready_time = ready_time;
-
-#ifdef __linux
-  {
-    struct itimerspec its;
-
-    if (context->timer_fd == -1)
-      {
-        context->timer_fd = timerfd_create (CLOCK_MONOTONIC, TFD_CLOEXEC);
-        g_main_context_poll_core_add (context, context->timer_fd, G_IO_IN, NULL);
-      }
-
-    if (ready_time >= 0)
-      {
-        /* Arm */
-        its.it_value.tv_sec = ready_time / G_TIME_SPAN_SECOND;
-        its.it_value.tv_nsec = (ready_time % G_TIME_SPAN_SECOND) * 1000;
-
-        /* 0.0 means disarm, so bump it in that case */
-        if (!its.it_value.tv_sec && !its.it_value.tv_nsec)
-          its.it_value.tv_nsec = 1;
-      }
-    else
-      {
-        /* Disarm */
-        its.it_value.tv_sec = its.it_value.tv_nsec = 0;
-      }
-
-    its.it_interval.tv_sec = its.it_interval.tv_nsec = 0;
-
-    timerfd_settime (context->timer_fd, TFD_TIMER_ABSTIME, &its, NULL);
-  }
-#else
-#error uh oh...
-#endif
-}
-
-static gint
-g_main_context_poll_core_wait (GMainContext *context,
-                               GPollEvent   *events,
-                               gint          max_events,
-                               gboolean      should_block)
-{
-#ifdef __linux
-  return epoll_wait (context->kqueue_fd, events, max_events, should_block ? -1 : 0);
-#else
-#error uh oh..
-#endif
-}
-
-static void
-g_main_context_queue_source_for_dispatch (GMainContext *context,
-                                          GSource      *source)
-{
-  
-}
-
-static void
-g_main_context_collect_events (GMainContext *context,
-                               gboolean      should_block)
-{
-  gint dispatch_priority = G_MAXINT;
-  gint result;
-  gint i;
-
-  UNLOCK_CONTEXT (context);
-
-  /* Even though we don't have the lock here, we have acquired the context
-   * and therefore are the only thread that will be trying to do
-   * this...
-   *
-   * That means we can muck about with the poll_events array with
-   * impunity.
-   */
-again:
-  result = g_main_context_poll_core_wait (context, context->poll_events, context->n_poll_events, should_block);
-
-  /* If we got too many events reported, grow the array and try again.
-   *
-   * This would be incompatible with edge-triggered events, but we don't
-   * support those yet.
-   */
-  if (result >= context->n_poll_events)
-    {
-      context->n_poll_events *= 2;
-      context->poll_events = g_renew (GPollEvent, context->poll_events, context->n_poll_events);
-      goto again;
-    }
-
-  LOCK_CONTEXT (context);
-
-  for (i = 0; i < result; i++)
-    {
-      GMainContextFd *context_fd = g_poll_event_get_user_data (context->poll_events[i]);
-      guint revents = g_poll_event_get_revents (context->poll_events[i]);
-      GSourceFd *sfd;
-
-      if (context_fd != NULL)
-        {
-          /* Quickly skip entries that are below the current dispatch priority */
-          if (context_fd->highest_priority > dispatch_priority)
-            continue;
-
-          for (sfd = context_fd->sources; sfd; sfd = sfd->context_next)
-            {
-              sfd->revents = sfd->events & revents;
-              if (sfd->revents && sfd->source && sfd->source->priority <= dispatch_priority)
-                {
-                  g_main_context_queue_source_for_dispatch (context, sfd->source);
-                  dispatch_priority = sfd->source->priority;
-                }
-            }
-        }
-      else
-        {
-          /* Our timer has fired, which means some of our ready_time-based sources should be ready. */
-          GSequenceIter *iter;
-          guint64 now;
-
-          now = g_get_monotonic_time ();
-
-          for (iter = g_sequence_get_begin_iter (context->ready_time_sources);
-               !g_sequence_iter_is_end (iter);
-               iter = g_sequence_iter_next (iter))
-            {
-              GSource *source = g_sequence_get (iter);
-
-              if (source->priv->ready_time > now)
-                break;
-
-              if (source->priority <= dispatch_priority)
-                {
-                  g_main_context_queue_source_for_dispatch (context, source);
-                  dispatch_priority = source->priority;
-                }
-            }
-        }
-    }
-}
-
-static GMainContextFd *
-g_main_context_get_fd (GMainContext *context,
-                       gint          fd)
-{
-  GMainContextFd *context_fd;
-
-  context_fd = g_hash_table_lookup (context->fds, GUINT_TO_POINTER (fd));
-
-  if (!context_fd)
-    {
-      context_fd = g_slice_new (GMainContextFd);
-      context_fd->highest_priority = G_MAXINT;
-      context_fd->sources = NULL;
-
-      g_hash_table_insert (context->fds, GUINT_TO_POINTER (fd), context_fd);
-    }
-
-  return context_fd;
-}
-
-static guint
-g_main_context_fd_get_events (GMainContextFd *context_fd)
-{
-  GSourceFd *source_fd;
-  guint events = 0;
-
-  for (source_fd = context_fd->sources; source_fd; source_fd = source_fd->context_next)
-    events |= source_fd->events;
-
-  return events;
-}
-
-static void
-g_main_context_add_fd (GMainContext *context,
-                       GSourceFd    *source_fd)
-{
-  GMainContextFd *context_fd;
-  guint old_events;
-  guint events;
-
-  g_assert (source_fd->events);
-
-  /* Find the existing GMainContextFd if it exists, or create a new one */
-  context_fd = g_main_context_get_fd (context, source_fd->fd);
-  old_events = g_main_context_fd_get_events (context_fd);
-
-  /* Perform the update */
-  context_fd->highest_priority = MIN (context_fd->highest_priority, source_fd->source->priority);
-  source_fd->context_next = context_fd->sources;
-  context_fd->sources = source_fd;
-
-  /* If the effective event mask is the same then we are done */
-  events = old_events | source_fd->events;
-  if (events == old_events)
-    return;
-
-  /* Otherwise, we need to update the events.  If there were no events
-   * before, we need to add the fd to the poll.
-   */
-  if (old_events)
-    {
-      /* Update */
-      g_main_context_poll_core_update (context, source_fd->fd, events, context_fd);
-    }
-  else
-    {
-      /* Add */
-      g_main_context_poll_core_add (context, source_fd->fd, events, context_fd);
-    }
-}
-
-static void
-g_main_context_refresh_fd_priority (GMainContext *context,
-                                    GSourceFd    *source_fd)
-{
-  GMainContextFd *context_fd;
-  guint highest_priority;
-  GSourceFd *sfd;
-
-  /* Find the existing GMainContextFd */
-  context_fd = g_main_context_get_fd (context, source_fd->fd);
-
-  for (sfd = context_fd->sources; sfd; sfd = sfd->context_next)
-    highest_priority = MIN (highest_priority, sfd->source->priority);
-
-  context_fd->highest_priority = highest_priority;
-}
-
-static void
-g_main_context_modify_fd (GMainContext *context,
-                          GSourceFd    *source_fd,
-                          guint         new_events)
-{
-  GMainContextFd *context_fd;
-  guint old_events;
-  guint events;
-
-  g_assert (new_events);
-
-  /* Find the existing GMainContextFd */
-  context_fd = g_main_context_get_fd (context, source_fd->fd);
-  old_events = g_main_context_fd_get_events (context_fd);
-
-  /* Update the events mask */
-  source_fd->events = new_events;
-
-  /* See if it affected the overall events for this fd */
-  events = g_main_context_fd_get_events (context_fd);
-
-  /* If nothing changed, just return */
-  if (events == old_events)
-    return;
-
-  g_main_context_poll_core_update (context, source_fd->fd, events, context_fd);
-}
-
-static void
-g_main_context_remove_fd (GMainContext *context,
-                          GSourceFd    *source_fd)
-{
-  GMainContextFd *context_fd;
-  GSourceFd **remove_point;
-  guint other_priority;
-  guint other_events;
-  GSourceFd **ptr;
-
-  /* Find the existing GMainContextFd */
-  context_fd = g_main_context_get_fd (context, source_fd->fd);
-
-  other_priority = G_MAXINT;
-  other_events = 0;
-
-  /* Find the entry in the list */
-  for (ptr = &context_fd->sources; *ptr; ptr = &(*ptr)->context_next)
-    {
-      GSourceFd *sfd = *ptr;
-
-      if (sfd == source_fd)
-        {
-          remove_point = ptr;
-          continue;
-        }
-
-      other_priority = MIN (other_priority, sfd->source->priority);
-      other_events |= sfd->events;
-    }
-  g_assert (remove_point != NULL);
-
-  /* Perform the update */
-  *remove_point = source_fd->context_next;
-  context_fd->highest_priority = other_priority;
-
-  /* If the effective event mask is the same then we are done */
-  if ((source_fd->events | other_events) == other_events)
-    return;
-
-  /* Otherwise, we need to update the events.  If no events are left, we
-   * need to remove the fd from the poll and destroy the GMainContextFd.
-   */
-  if (other_events)
-    {
-      /* Update */
-      g_main_context_poll_core_update (context, source_fd->fd, other_events, context_fd);
-    }
-  else
-    {
-      /* Remove */
-      g_main_context_poll_core_remove (context, source_fd->fd);
-
-      /* ...and destroy */
-      g_assert (context_fd->sources == NULL);
-      g_hash_table_remove (context->fds, GUINT_TO_POINTER (source_fd->fd));
-
-      /* We cannot destroy this directly because we have stored a
-       * pointer to it inside of the kernel.  We just removed that, but
-       * the poll call may have just returned in another thread, with
-       * the pointer reported in the result.
-       *
-       * Since we don't want to validate the pointers all the time, we
-       * must rely on it being valid.  We defer the process of actually
-       * freeing the pointer to the poll thread.
-       */
-      context->fds_to_free = g_slist_prepend (context->fds_to_free, context_fd);
-    }
-}
-
-static gint
-compare_ready_times (gconstpointer a,
-                     gconstpointer b,
-                     gpointer user_data)
-{
-  guint64 rt_a, rt_b;
-
-  rt_a = ((GSource *) a)->priv->ready_time;
-  rt_b = ((GSource *) b)->priv->ready_time;
-
-  if (rt_a > rt_b)
-    return 1;
-  else if (rt_a < rt_b)
-    return -1;
-  else
-    return 0;
-}
-
-static GSequenceIter *
-g_main_context_add_ready_time_source (GMainContext *context,
-                                      GSource      *source)
-{
-  GSequenceIter *iter;
-
-  iter = g_sequence_insert_sorted (context->ready_time_sources, source, compare_ready_times, NULL);
-
-  if (context->cached_ready_time < 0 || source->priv->ready_time < context->cached_ready_time)
-    g_main_context_poll_core_set_ready_time (context, source->priv->ready_time);
-
-  return iter;
-}
-
-static void
-g_main_context_remove_ready_time_source (GMainContext  *context,
-                                         GSource       *source,
-                                         GSequenceIter *iter)
-{
-  gboolean was_first;
-
-  g_assert (source == g_sequence_get (iter));
-
-  was_first = source->priv->ready_time == context->cached_ready_time;
-
-  g_sequence_remove (iter);
-
-  if (was_first)
-    {
-      GSource *first_source;
-      guint64 ready_time;
-
-      first_source = g_sequence_get (g_sequence_get_begin_iter (context->ready_time_sources));
-
-      /* We use unsigned ints so that -1 is treated as 'very large' */
-      ready_time = context->impure_ready_time;
-      if (first_source != NULL)
-        ready_time = MIN (ready_time, (guint64) first_source->priv->ready_time);
-
-      g_main_context_poll_core_set_ready_time (context, ready_time);
-    }
-}
-
-
-static void
-g_main_context_prepare_poll_fd_holders (GMainContext *context)
-{
-  GSList *node;
-
-  for (node = context->poll_holders; node; node = node->next)
-    {
-      GPollFdHolder *holder = node->data;
-
-      if (holder->poll_fd->fd != holder->source_fd.fd || holder->poll_fd->events != holder->source_fd.events)
-        {
-          g_main_context_remove_fd (context, &holder->source_fd);
-          holder->source_fd.fd = holder->poll_fd->fd;
-          holder->source_fd.events = holder->poll_fd->events;
-          g_main_context_add_fd (context, &holder->source_fd);
-        }
-    }
-}
-
-static void
-g_main_context_check_poll_fd_holders (GMainContext *context)
-{
-  GSList *node;
-
-  for (node = context->poll_holders; node; node = node->next)
-    {
-      GPollFdHolder *holder = node->data;
-
-      holder->poll_fd->revents = holder->source_fd.revents;
-      holder->source_fd.revents = 0;
-    }
-}
-
 #ifndef G_OS_WIN32
+
 
 /* UNIX signals work by marking one of these variables then waking the
  * worker context to check on them and dispatch accordingly.
@@ -1098,6 +506,10 @@ poll_rec_list_free (GMainContext *context,
 void
 g_main_context_unref (GMainContext *context)
 {
+  GSourceIter iter;
+  GSource *source;
+  GList *sl_iter;
+  GSourceList *list;
   gint i;
 
   g_return_if_fail (context != NULL);
@@ -1114,23 +526,34 @@ g_main_context_unref (GMainContext *context)
   for (i = 0; i < context->pending_dispatches->len; i++)
     g_source_unref_internal (context->pending_dispatches->pdata[i], context, FALSE);
 
-  g_slist_free (context->impure_sources);
+  /* g_source_iter_next() assumes the context is locked. */
+  LOCK_CONTEXT (context);
+  g_source_iter_init (&iter, context, TRUE);
+  while (g_source_iter_next (&iter, &source))
+    {
+      source->context = NULL;
+      g_source_destroy_internal (source, context, TRUE);
+    }
+  UNLOCK_CONTEXT (context);
+
+  for (sl_iter = context->source_lists; sl_iter; sl_iter = sl_iter->next)
+    {
+      list = sl_iter->data;
+      g_slice_free (GSourceList, list);
+    }
+  g_list_free (context->source_lists);
 
   g_hash_table_destroy (context->sources);
 
   g_mutex_clear (&context->mutex);
 
   g_ptr_array_free (context->pending_dispatches, TRUE);
+  g_free (context->cached_poll_array);
+
+  poll_rec_list_free (context, context->poll_records);
 
   g_wakeup_free (context->wakeup);
   g_cond_clear (&context->cond);
-
-  if (context->kqueue_fd)
-    close (context->kqueue_fd);
-
-  g_hash_table_destroy (context->fds);
-
-  g_slist_free_full (context->fds_to_free, g_main_context_fd_free);
 
   g_free (context);
 }
@@ -1176,18 +599,19 @@ g_main_context_new (void)
   g_cond_init (&context->cond);
 
   context->sources = g_hash_table_new (NULL, NULL);
-  context->fds = g_hash_table_new (NULL, NULL);
   context->owner = NULL;
   context->waiters = NULL;
-  context->kqueue_fd = -1;
 
   context->ref_count = 1;
 
   context->next_id = 1;
   
-  context->impure_sources = NULL;
+  context->source_lists = NULL;
   
   context->poll_func = g_poll;
+  
+  context->cached_poll_array = NULL;
+  context->cached_poll_array_size = 0;
   
   context->pending_dispatches = g_ptr_array_new ();
   
@@ -1448,16 +872,199 @@ g_source_new (GSourceFuncs *source_funcs,
   return source;
 }
 
+/* Holds context's lock */
+static void
+g_source_iter_init (GSourceIter  *iter,
+		    GMainContext *context,
+		    gboolean      may_modify)
+{
+  iter->context = context;
+  iter->current_list = NULL;
+  iter->source = NULL;
+  iter->may_modify = may_modify;
+}
+
+/* Holds context's lock */
+static gboolean
+g_source_iter_next (GSourceIter *iter, GSource **source)
+{
+  GSource *next_source;
+
+  if (iter->source)
+    next_source = iter->source->next;
+  else
+    next_source = NULL;
+
+  if (!next_source)
+    {
+      if (iter->current_list)
+	iter->current_list = iter->current_list->next;
+      else
+	iter->current_list = iter->context->source_lists;
+
+      if (iter->current_list)
+	{
+	  GSourceList *source_list = iter->current_list->data;
+
+	  next_source = source_list->head;
+	}
+    }
+
+  /* Note: unreffing iter->source could potentially cause its
+   * GSourceList to be removed from source_lists (if iter->source is
+   * the only source in its list, and it is destroyed), so we have to
+   * keep it reffed until after we advance iter->current_list, above.
+   */
+
+  if (iter->source && iter->may_modify)
+    SOURCE_UNREF (iter->source, iter->context);
+  iter->source = next_source;
+  if (iter->source && iter->may_modify)
+    iter->source->ref_count++;
+
+  *source = iter->source;
+  return *source != NULL;
+}
+
+/* Holds context's lock. Only necessary to call if you broke out of
+ * the g_source_iter_next() loop early.
+ */
+static void
+g_source_iter_clear (GSourceIter *iter)
+{
+  if (iter->source && iter->may_modify)
+    {
+      SOURCE_UNREF (iter->source, iter->context);
+      iter->source = NULL;
+    }
+}
+
+/* Holds context's lock
+ */
+static GSourceList *
+find_source_list_for_priority (GMainContext *context,
+			       gint          priority,
+			       gboolean      create)
+{
+  GList *iter, *last;
+  GSourceList *source_list;
+
+  last = NULL;
+  for (iter = context->source_lists; iter != NULL; last = iter, iter = iter->next)
+    {
+      source_list = iter->data;
+
+      if (source_list->priority == priority)
+	return source_list;
+
+      if (source_list->priority > priority)
+	{
+	  if (!create)
+	    return NULL;
+
+	  source_list = g_slice_new0 (GSourceList);
+	  source_list->priority = priority;
+	  context->source_lists = g_list_insert_before (context->source_lists,
+							iter,
+							source_list);
+	  return source_list;
+	}
+    }
+
+  if (!create)
+    return NULL;
+
+  source_list = g_slice_new0 (GSourceList);
+  source_list->priority = priority;
+
+  if (!last)
+    context->source_lists = g_list_append (NULL, source_list);
+  else
+    {
+      /* This just appends source_list to the end of
+       * context->source_lists without having to walk the list again.
+       */
+      last = g_list_append (last, source_list);
+    }
+  return source_list;
+}
+
+/* Holds context's lock
+ */
+static void
+source_add_to_context (GSource      *source,
+		       GMainContext *context)
+{
+  GSourceList *source_list;
+  GSource *prev, *next;
+
+  source_list = find_source_list_for_priority (context, source->priority, TRUE);
+
+  if (source->priv->parent_source)
+    {
+      g_assert (source_list->head != NULL);
+
+      /* Put the source immediately before its parent */
+      prev = source->priv->parent_source->prev;
+      next = source->priv->parent_source;
+    }
+  else
+    {
+      prev = source_list->tail;
+      next = NULL;
+    }
+
+  source->next = next;
+  if (next)
+    next->prev = source;
+  else
+    source_list->tail = source;
+  
+  source->prev = prev;
+  if (prev)
+    prev->next = source;
+  else
+    source_list->head = source;
+}
+
+/* Holds context's lock
+ */
+static void
+source_remove_from_context (GSource      *source,
+			    GMainContext *context)
+{
+  GSourceList *source_list;
+
+  source_list = find_source_list_for_priority (context, source->priority, FALSE);
+  g_return_if_fail (source_list != NULL);
+
+  if (source->prev)
+    source->prev->next = source->next;
+  else
+    source_list->head = source->next;
+
+  if (source->next)
+    source->next->prev = source->prev;
+  else
+    source_list->tail = source->prev;
+
+  source->prev = NULL;
+  source->next = NULL;
+
+  if (source_list->head == NULL)
+    {
+      context->source_lists = g_list_remove (context->source_lists, source_list);
+      g_slice_free (GSourceList, source_list);
+    }
+}
+
 static guint
 g_source_attach_unlocked (GSource      *source,
                           GMainContext *context,
                           gboolean      do_wakeup)
 {
   GSList *tmp_list;
-  GSourceFd *sfd;
   guint id;
-
-  /* XXX: impure... */
 
   /* The counter may have wrapped, so we must ensure that we do not
    * reuse the source id of an existing source.
@@ -1472,6 +1079,8 @@ g_source_attach_unlocked (GSource      *source,
 
   g_hash_table_insert (context->sources, GUINT_TO_POINTER (id), source);
 
+  source_add_to_context (source, context);
+
   if (!SOURCE_BLOCKED (source))
     {
       tmp_list = source->poll_fds;
@@ -1481,8 +1090,8 @@ g_source_attach_unlocked (GSource      *source,
           tmp_list = tmp_list->next;
         }
 
-      for (sfd = source->priv->fds; sfd; sfd = sfd->source_next)
-        g_main_context_add_fd (context, sfd);
+      for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+        g_main_context_add_poll_unlocked (context, source->priority, tmp_list->data);
     }
 
   tmp_list = source->priv->child_sources;
@@ -1550,8 +1159,7 @@ g_source_destroy_internal (GSource      *source,
       GSList *tmp_list;
       gpointer old_cb_data;
       GSourceCallbackFuncs *old_cb_funcs;
-      GSourceFd *sfd;
-
+      
       source->flags &= ~G_HOOK_FLAG_ACTIVE;
 
       old_cb_data = source->callback_data;
@@ -1576,9 +1184,9 @@ g_source_destroy_internal (GSource      *source,
 	      tmp_list = tmp_list->next;
 	    }
 
-          for (sfd = source->priv->fds; sfd; sfd = sfd->source_next)
-            g_main_context_remove_fd (context, sfd);
-        }
+          for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+            g_main_context_remove_poll_unlocked (context, tmp_list->data);
+	}
 
       while (source->priv->child_sources)
         g_child_source_remove_internal (source->priv->child_sources->data, context);
@@ -1994,20 +1602,41 @@ g_source_set_priority_unlocked (GSource      *source,
 				gint          priority)
 {
   GSList *tmp_list;
-  GSourceFd *sfd;
-
+  
   g_return_if_fail (source->priv->parent_source == NULL ||
 		    source->priv->parent_source->priority == priority);
+
+  if (context)
+    {
+      /* Remove the source from the context's source and then
+       * add it back after so it is sorted in the correct place
+       */
+      source_remove_from_context (source, source->context);
+    }
 
   source->priority = priority;
 
   if (context)
     {
+      source_add_to_context (source, source->context);
+
       if (!SOURCE_BLOCKED (source))
 	{
-          for (sfd = source->priv->fds; sfd; sfd = sfd->source_next)
-            g_main_context_refresh_fd_priority (context, sfd);
-        }
+	  tmp_list = source->poll_fds;
+	  while (tmp_list)
+	    {
+	      g_main_context_remove_poll_unlocked (context, tmp_list->data);
+	      g_main_context_add_poll_unlocked (context, priority, tmp_list->data);
+	      
+	      tmp_list = tmp_list->next;
+	    }
+
+          for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+            {
+              g_main_context_remove_poll_unlocked (context, tmp_list->data);
+              g_main_context_add_poll_unlocked (context, priority, tmp_list->data);
+            }
+	}
     }
 
   if (source->priv->child_sources)
@@ -2111,16 +1740,15 @@ g_source_set_ready_time (GSource *source,
   if (context)
     LOCK_CONTEXT (context);
 
-  if (context && !SOURCE_BLOCKED (source) && source->priv->ready_time_iter)
-    g_main_context_remove_ready_time_source (context, source);
-
   source->priv->ready_time = ready_time;
 
-  if (context && !SOURCE_BLOCKED (source) && source->priv->ready_time > 0)
-    g_main_context_add_ready_time_source (context, source);
-
   if (context)
-    UNLOCK_CONTEXT (context);
+    {
+      /* Quite likely that we need to change the timeout on the poll */
+      if (!SOURCE_BLOCKED (source))
+        g_wakeup_signal (context->wakeup);
+      UNLOCK_CONTEXT (context);
+    }
 }
 
 /**
@@ -2302,8 +1930,6 @@ g_source_ref (GSource *source)
   return source;
 }
 
-
-
 /* g_source_unref() but possible to call within context lock
  */
 static void
@@ -2352,13 +1978,7 @@ g_source_unref_internal (GSource      *source,
       g_slist_free (source->poll_fds);
       source->poll_fds = NULL;
 
-      while (source->priv->fds)
-        {
-          GSourceFd *sfd = source->priv->fds;
-
-          source->priv->fds = sfd->source_next;
-          g_source_fd_free (sfd);
-        }
+      g_slist_free_full (source->priv->fds, g_free);
 
       g_slice_free (GSourcePrivate, source->priv);
       source->priv = NULL;
@@ -2444,6 +2064,7 @@ g_main_context_find_source_by_funcs_user_data (GMainContext *context,
 					       GSourceFuncs *funcs,
 					       gpointer      user_data)
 {
+  GSourceIter iter;
   GSource *source;
   
   g_return_val_if_fail (funcs != NULL, NULL);
@@ -2638,44 +2259,31 @@ g_source_add_unix_fd (GSource      *source,
                       GIOCondition  events)
 {
   GMainContext *context;
-  GSourceFd *source_fd;
+  GPollFD *poll_fd;
 
   g_return_val_if_fail (source != NULL, NULL);
   g_return_val_if_fail (!SOURCE_DESTROYED (source), NULL);
 
-  source_fd = g_slice_new0 (GSourceFd);
-  source_fd->source = source;
-  source_fd->fd = fd;
-  source_fd->events = events;
+  poll_fd = g_new (GPollFD, 1);
+  poll_fd->fd = fd;
+  poll_fd->events = events;
+  poll_fd->revents = 0;
 
   context = source->context;
 
   if (context)
     LOCK_CONTEXT (context);
 
-  source_fd->source_next = source->priv->fds;
-  source->priv->fds = source_fd;
-
-  if (context && !SOURCE_BLOCKED (source))
-    g_main_context_add_fd (context, source_fd);
+  source->priv->fds = g_slist_prepend (source->priv->fds, poll_fd);
 
   if (context)
-    UNLOCK_CONTEXT (context);
+    {
+      if (!SOURCE_BLOCKED (source))
+        g_main_context_add_poll_unlocked (context, source->priority, poll_fd);
+      UNLOCK_CONTEXT (context);
+    }
 
-  return source_fd;
-}
-
-static gboolean
-g_source_unix_fd_tag_is_valid (GSource  *source,
-                               gpointer  tag)
-{
-  GSourceFd *sfd;
-
-  for (sfd = source->priv->fds; sfd; sfd = sfd->source_next)
-    if (tag == sfd)
-      return TRUE;
-
-  return FALSE;
+  return poll_fd;
 }
 
 /**
@@ -2701,24 +2309,18 @@ g_source_modify_unix_fd (GSource      *source,
                          GIOCondition  new_events)
 {
   GMainContext *context;
-  GSourceFd *source_fd;
+  GPollFD *poll_fd;
 
   g_return_if_fail (source != NULL);
-  g_return_if_fail (g_source_unix_fd_tag_is_valid (source, tag));
+  g_return_if_fail (g_slist_find (source->priv->fds, tag));
 
   context = source->context;
-  source_fd = tag;
+  poll_fd = tag;
+
+  poll_fd->events = new_events;
 
   if (context)
-    LOCK_CONTEXT (context);
-
-  if (context && !SOURCE_BLOCKED (source))
-    g_main_context_modify_fd (context, source_fd, new_events);
-  else
-    source_fd->events = new_events;
-
-  if (context)
-    UNLOCK_CONTEXT (context);
+    g_main_context_wakeup (context);
 }
 
 /**
@@ -2741,32 +2343,28 @@ g_source_remove_unix_fd (GSource  *source,
                          gpointer  tag)
 {
   GMainContext *context;
-  GSourceFd *source_fd;
-  GSourceFd **ptr;
+  GPollFD *poll_fd;
 
   g_return_if_fail (source != NULL);
-  g_return_if_fail (g_source_unix_fd_tag_is_valid (source, tag));
+  g_return_if_fail (g_slist_find (source->priv->fds, tag));
 
   context = source->context;
-  source_fd = tag;
+  poll_fd = tag;
 
   if (context)
     LOCK_CONTEXT (context);
 
-  for (ptr = &source->priv->fds; *ptr; ptr = &(*ptr)->source_next)
-    if (*ptr == source_fd)
-      {
-        *ptr = source_fd->source_next;
-        g_source_fd_free (source_fd);
-      }
-
-  if (context && !SOURCE_BLOCKED (source))
-    g_main_context_remove_fd (context, source_fd);
+  source->priv->fds = g_slist_remove (source->priv->fds, poll_fd);
 
   if (context)
-    UNLOCK_CONTEXT (context);
+    {
+      if (!SOURCE_BLOCKED (source))
+        g_main_context_remove_poll_unlocked (context, poll_fd);
 
-  g_slice_free (GSourceFd, source_fd);
+      UNLOCK_CONTEXT (context);
+    }
+
+  g_free (poll_fd);
 }
 
 /**
@@ -2790,14 +2388,14 @@ GIOCondition
 g_source_query_unix_fd (GSource  *source,
                         gpointer  tag)
 {
-  GSourceFd *source_fd;
+  GPollFD *poll_fd;
 
   g_return_val_if_fail (source != NULL, 0);
-  g_return_if_fail (g_source_unix_fd_tag_is_valid (source, tag));
+  g_return_val_if_fail (g_slist_find (source->priv->fds, tag), 0);
 
-  source_fd = tag;
+  poll_fd = tag;
 
-  return source_fd->revents;
+  return poll_fd->revents;
 }
 #endif /* G_OS_UNIX */
 
@@ -3305,7 +2903,6 @@ static void
 block_source (GSource *source)
 {
   GSList *tmp_list;
-  GSourceFd *sfd;
 
   g_return_if_fail (!SOURCE_BLOCKED (source));
 
@@ -3313,9 +2910,6 @@ block_source (GSource *source)
 
   if (source->context)
     {
-      if (source->priv->ready_time > 0)
-        g_main_context_remove_ready_time_source (context, source);
-
       tmp_list = source->poll_fds;
       while (tmp_list)
         {
@@ -3323,8 +2917,8 @@ block_source (GSource *source)
           tmp_list = tmp_list->next;
         }
 
-      for (sfd = source->priv->fds; sfd; sfd = sfd->source_next)
-        g_main_context_remove_fd (source->context, sfd);
+      for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+        g_main_context_remove_poll_unlocked (source->context, tmp_list->data);
     }
 
   if (source->priv && source->priv->child_sources)
@@ -3343,15 +2937,11 @@ static void
 unblock_source (GSource *source)
 {
   GSList *tmp_list;
-  GSourceFd *sfd;
 
   g_return_if_fail (SOURCE_BLOCKED (source)); /* Source already unblocked */
   g_return_if_fail (!SOURCE_DESTROYED (source));
   
   source->flags &= ~G_SOURCE_BLOCKED;
-
-  if (source->priv->ready_time > 0)
-    g_main_context_add_ready_time_source (context, source);
 
   tmp_list = source->poll_fds;
   while (tmp_list)
@@ -3360,8 +2950,8 @@ unblock_source (GSource *source)
       tmp_list = tmp_list->next;
     }
 
-  for (sfd = source->priv->fds; sfd; sfd = sfd->source_next)
-    g_main_context_add_fd (source->context, sfd);
+  for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
+    g_main_context_add_poll_unlocked (source->context, source->priority, tmp_list->data);
 
   if (source->priv && source->priv->child_sources)
     {
@@ -3403,7 +2993,6 @@ g_main_dispatch (GMainContext *context)
 				GSourceFunc,
 				gpointer);
           GSource *prev_source;
-          GSourceFd *sfd;
 
 	  dispatch = source->source_funcs->dispatch;
 	  cb_funcs = source->callback_funcs;
@@ -3439,9 +3028,6 @@ g_main_dispatch (GMainContext *context)
 
 	  if (cb_funcs)
 	    cb_funcs->unref (cb_data);
-
-          for (sfd = source->priv->fds; sfd; sfd = sfd->source_next)
-            sfd->revents = 0;
 
  	  LOCK_CONTEXT (context);
 	  
@@ -3643,32 +3229,47 @@ g_main_context_prepare (GMainContext *context,
   gint current_priority = G_MAXINT;
   GSource *source;
   GSourceIter iter;
-  gint shortest_timeout = -1;
 
   if (context == NULL)
     context = g_main_context_default ();
-
+  
   LOCK_CONTEXT (context);
 
   context->time_is_fresh = FALSE;
 
   if (context->in_check_or_prepare)
     {
-      g_warning ("g_main_context_prepare() called recursively from within a source's check() or prepare() member.");
+      g_warning ("g_main_context_prepare() called recursively from within a source's check() or "
+		 "prepare() member.");
       UNLOCK_CONTEXT (context);
       return FALSE;
     }
 
+#if 0
+  /* If recursing, finish up current dispatch, before starting over */
+  if (context->pending_dispatches)
+    {
+      if (dispatch)
+	g_main_dispatch (context, &current_time);
+      
+      UNLOCK_CONTEXT (context);
+      return TRUE;
+    }
+#endif
+
   /* If recursing, clear list of pending dispatches */
+
   for (i = 0; i < context->pending_dispatches->len; i++)
     {
       if (context->pending_dispatches->pdata[i])
 	SOURCE_UNREF ((GSource *)context->pending_dispatches->pdata[i], context);
     }
   g_ptr_array_set_size (context->pending_dispatches, 0);
-
+  
   /* Prepare all sources */
 
+  context->timeout = -1;
+  
   g_source_iter_init (&iter, context, TRUE);
   while (g_source_iter_next (&iter, &source))
     {
@@ -3703,6 +3304,31 @@ g_main_context_prepare (GMainContext *context,
               result = FALSE;
             }
 
+          if (result == FALSE && source->priv->ready_time != -1)
+            {
+              if (!context->time_is_fresh)
+                {
+                  context->time = g_get_monotonic_time ();
+                  context->time_is_fresh = TRUE;
+                }
+
+              if (source->priv->ready_time <= context->time)
+                {
+                  source_timeout = 0;
+                  result = TRUE;
+                }
+              else
+                {
+                  gint timeout;
+
+                  /* rounding down will lead to spinning, so always round up */
+                  timeout = (source->priv->ready_time - context->time + 999) / 1000;
+
+                  if (source_timeout < 0 || timeout < source_timeout)
+                    source_timeout = timeout;
+                }
+            }
+
 	  if (result)
 	    {
 	      GSource *ready_source = source;
@@ -3731,8 +3357,6 @@ g_main_context_prepare (GMainContext *context,
 	}
     }
   g_source_iter_clear (&iter);
-
-  g_main_context_prepare_poll_fd_holders (context);
 
   UNLOCK_CONTEXT (context);
   
@@ -3764,17 +3388,48 @@ g_main_context_query (GMainContext *context,
 		      GPollFD      *fds,
 		      gint          n_fds)
 {
-  if (timeout)
-    *timeout = -1;
+  gint n_poll;
+  GPollRec *pollrec;
+  
+  LOCK_CONTEXT (context);
 
-  if (n_fds)
+  pollrec = context->poll_records;
+  n_poll = 0;
+  while (pollrec && max_priority >= pollrec->priority)
     {
-      fds[0].fd = g_main_context_get_fd ();
-      fds[0].events = POLLIN;
-      fds[0].revents = 0;
+      /* We need to include entries with fd->events == 0 in the array because
+       * otherwise if the application changes fd->events behind our back and 
+       * makes it non-zero, we'll be out of sync when we check the fds[] array.
+       * (Changing fd->events after adding an FD wasn't an anticipated use of 
+       * this API, but it occurs in practice.) */
+      if (n_poll < n_fds)
+	{
+	  fds[n_poll].fd = pollrec->fd->fd;
+	  /* In direct contradiction to the Unix98 spec, IRIX runs into
+	   * difficulty if you pass in POLLERR, POLLHUP or POLLNVAL
+	   * flags in the events field of the pollfd while it should
+	   * just ignoring them. So we mask them out here.
+	   */
+	  fds[n_poll].events = pollrec->fd->events & ~(G_IO_ERR|G_IO_HUP|G_IO_NVAL);
+	  fds[n_poll].revents = 0;
+	}
+
+      pollrec = pollrec->next;
+      n_poll++;
     }
 
-  return 1;
+  context->poll_changed = FALSE;
+  
+  if (timeout)
+    {
+      *timeout = context->timeout;
+      if (*timeout != 0)
+        context->time_is_fresh = FALSE;
+    }
+  
+  UNLOCK_CONTEXT (context);
+
+  return n_poll;
 }
 
 /**
@@ -3800,12 +3455,13 @@ g_main_context_check (GMainContext *context,
   GPollRec *pollrec;
   gint n_ready = 0;
   gint i;
-
+   
   LOCK_CONTEXT (context);
 
   if (context->in_check_or_prepare)
     {
-      g_warning ("g_main_context_check() called recursively from within a source's check() or prepare() member.");
+      g_warning ("g_main_context_check() called recursively from within a source's check() or "
+		 "prepare() member.");
       UNLOCK_CONTEXT (context);
       return FALSE;
     }
@@ -3821,34 +3477,17 @@ g_main_context_check (GMainContext *context,
       UNLOCK_CONTEXT (context);
       return FALSE;
     }
-
-  if (context->kqueue_rec.revents)
+  
+  pollrec = context->poll_records;
+  i = 0;
+  while (i < n_fds)
     {
-      struct epoll_event *events;
-      gint max_events, n_events;
-      gint i;
+      if (pollrec->fd->events)
+	pollrec->fd->revents = fds[i].revents;
 
-      max_events = g_hash_table_size (context->fds) + 10;
-      events = g_new (struct epoll_event, max_events);
-
-      n_events = epoll_wait (context->kqueue_fd, events, max_events, 0);
-      g_assert (n_events > 0); /* did revents lie? */
-      g_assert (n_events < max_events); /* XXX could be higher in some extremely theoretical cases... */
-
-      for (i = 0; i < n_events; i++)
-        {
-          GMainContextFd *context_fd = events[i].data.ptr;
-          GSourceFd *sfd;
-
-          if (context_fd->highest_priority > max_priority)
-            continue;
-
-          for (sfd = context_fd->sources; sfd; sfd = sfd->context_next)
-            sfd->revents = (sfd->events | G_IO_ERR | G_IO_HUP | G_IO_NVAL) & events[i].events;
-        }
+      pollrec = pollrec->next;
+      i++;
     }
-
-  g_main_context_check_poll_fd_holders (context);
 
   g_source_iter_init (&iter, context, TRUE);
   while (g_source_iter_next (&iter, &source))
@@ -3881,15 +3520,17 @@ g_main_context_check (GMainContext *context,
 
           if (result == FALSE)
             {
-              GSourceFd *sfd;
+              GSList *tmp_list;
 
               /* If not already explicitly flagged ready by ->check()
                * (or if we have no check) then we can still be ready if
                * any of our fds poll as ready.
                */
-              for (sfd = source->priv->fds; sfd; sfd = sfd->source_next)
+              for (tmp_list = source->priv->fds; tmp_list; tmp_list = tmp_list->next)
                 {
-                  if (sfd->revents)
+                  GPollFD *pollfd = tmp_list->data;
+
+                  if (pollfd->revents)
                     {
                       result = TRUE;
                       break;
@@ -4021,7 +3662,7 @@ g_main_context_iterate (GMainContext *context,
     timeout = 0;
   
   g_main_context_poll (context, timeout, max_priority, fds, nfds);
-
+  
   some_ready = g_main_context_check (context, max_priority, fds, nfds);
   
   if (dispatch)

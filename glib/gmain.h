@@ -484,16 +484,6 @@ void                 g_source_remove_unix_fd (GSource        *source,
 GLIB_AVAILABLE_IN_2_36
 GIOCondition         g_source_query_unix_fd  (GSource        *source,
                                               gpointer        tag);
-#elif defined(G_OS_WIN32)
-GLIB_AVAILABLE_IN_2_40
-gpointer             g_source_add_handle     (GSource        *source,
-                                              HANDLE         *handle);
-GLIB_AVAILABLE_IN_2_40
-gpointer             g_source_remove_handle  (GSource        *source,
-                                              gpointer        tag);
-GLIB_AVAILABLE_IN_2_40
-gboolean             g_source_query_handle   (GSource        *source,
-                                              gpointer        tag);
 #endif
 
 /* Used to implement g_source_connect_closure and internally*/
