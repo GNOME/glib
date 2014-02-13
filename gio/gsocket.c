@@ -3259,17 +3259,18 @@ socket_source_dispatch (GSource     *source,
   GSocketSourceFunc func = (GSocketSourceFunc)callback;
   GSocketSource *socket_source = (GSocketSource *)source;
   GSocket *socket = socket_source->socket;
+  guint events;
   gboolean ret;
 
 #ifdef G_OS_WIN32
-  socket_source->pollfd.revents = update_condition (socket_source->socket);
+  events = update_condition (socket_source->socket);
+#else
+  events = socket_source->pollfd.revents;
 #endif
   if (socket_source->socket->priv->timed_out)
     socket_source->pollfd.revents |= socket_source->condition & (G_IO_IN | G_IO_OUT);
 
-  ret = (*func) (socket,
-		 socket_source->pollfd.revents & socket_source->condition,
-		 user_data);
+  ret = (*func) (socket, events & socket_source->condition, user_data);
 
   if (socket->priv->timeout)
     socket_source->timeout_time = g_get_monotonic_time () +
