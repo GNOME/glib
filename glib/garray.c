@@ -1503,7 +1503,8 @@ g_ptr_array_sort_with_data (GPtrArray        *array,
  * @func: the function to call for each array element
  * @user_data: user data to pass to the function
  * 
- * Calls a function for each element of a #GPtrArray.
+ * Calls a function for each element of a #GPtrArray. @func must not
+ * add elements to or remove elements from the array.
  *
  * Since: 2.4
  */

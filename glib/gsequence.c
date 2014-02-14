@@ -294,7 +294,8 @@ g_sequence_free (GSequence *seq)
  * @user_data: user data passed to @func
  *
  * Calls @func for each item in the range (@begin, @end) passing
- * @user_data to the function.
+ * @user_data to the function. @func must not modify the sequence
+ * itself.
  *
  * Since: 2.14
  */
@@ -335,7 +336,7 @@ g_sequence_foreach_range (GSequenceIter *begin,
  * @user_data: user data passed to @func
  *
  * Calls @func for each item in the sequence passing @user_data
- * to the function.
+ * to the function. @func must not modify the sequence itself.
  *
  * Since: 2.14
  */

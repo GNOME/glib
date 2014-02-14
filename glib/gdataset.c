@@ -1065,8 +1065,12 @@ g_datalist_get_data (GData	 **datalist,
  *
  * Calls the given function for each data element which is associated
  * with the given location. Note that this function is NOT thread-safe.
- * So unless @datalist can be protected from any modifications during
- * invocation of this function, it should not be called.
+ * So unless @dataset_location can be protected from any modifications
+ * during invocation of this function, it should not be called.
+ *
+ * @func can make changes to the dataset, but the iteration will not
+ * reflect changes made during the g_dataset_foreach() call, other
+ * than skipping over elements that are removed.
  **/
 void
 g_dataset_foreach (gconstpointer    dataset_location,
@@ -1104,6 +1108,10 @@ g_dataset_foreach (gconstpointer    dataset_location,
  * function is NOT thread-safe. So unless @datalist can be protected
  * from any modifications during invocation of this function, it should
  * not be called.
+ *
+ * @func can make changes to @datalist, but the iteration will not
+ * reflect changes made during the g_datalist_foreach() call, other
+ * than skipping over elements that are removed.
  **/
 void
 g_datalist_foreach (GData	   **datalist,

@@ -95,6 +95,9 @@ g_queue_free (GQueue *queue)
  * Convenience method, which frees all the memory used by a #GQueue,
  * and calls the specified destroy function on every element's data.
  *
+ * @free_func should not modify the queue (eg, by removing the freed
+ * element from it).
+ *
  * Since: 2.32
  */
 void
@@ -231,6 +234,9 @@ g_queue_copy (GQueue *queue)
  * Calls @func for each element in the queue passing @user_data to the
  * function.
  * 
+ * It is safe for @func to remove the element from @queue, but it must
+ * not modify any part of the queue after that element.
+ *
  * Since: 2.4
  */
 void
