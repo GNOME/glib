@@ -3674,7 +3674,7 @@ g_socket_condition_timed_wait (GSocket       *socket,
 
 	if (timeout != -1)
 	  {
-	    timeout -= (g_get_monotonic_time () - start_time) * 1000;
+	    timeout -= (g_get_monotonic_time () - start_time) / 1000;
 	    if (timeout < 0)
 	      timeout = 0;
 	  }
