@@ -626,9 +626,9 @@ g_volume_enumerate_identifiers (GVolume *volume)
  *   GFile *mount_root
  *   GFile *volume_activation_root;
  *
- *   mount = g_volume_get_mount (volume); /&ast; mounted, so never NULL &ast;/
+ *   mount = g_volume_get_mount (volume); // mounted, so never NULL
  *   mount_root = g_mount_get_root (mount);
- *   volume_activation_root = g_volume_get_activation_root (volume); /&ast; assume not NULL &ast;/
+ *   volume_activation_root = g_volume_get_activation_root (volume); // assume not NULL
  * ]|
  * then the expression
  * |[<!-- language="C" -->

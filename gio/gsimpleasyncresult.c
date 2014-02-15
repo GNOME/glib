@@ -111,9 +111,8 @@
  * baked_cb (Cake    *cake,
  *           gpointer user_data)
  * {
- *   /&ast; In this example, this callback is not given a reference to the cake, so
- *    &ast; the GSimpleAsyncResult has to take a reference to it.
- *    &ast;/
+ *   // In this example, this callback is not given a reference to the cake,
+ *   // so the GSimpleAsyncResult has to take a reference to it.
  *   GSimpleAsyncResult *result = user_data;
  *
  *   if (cake == NULL)
@@ -127,12 +126,11 @@
  *                                                g_object_unref);
  *
  *
- *   /&ast; In this example, we assume that baked_cb is called as a callback from
- *    &ast; the mainloop, so it's safe to complete the operation synchronously here.
- *    &ast; If, however, _baker_prepare_cake () might call its callback without
- *    &ast; first returning to the mainloop — inadvisable, but some APIs do so —
- *    &ast; we would need to use g_simple_async_result_complete_in_idle().
- *    &ast;/
+ *   // In this example, we assume that baked_cb is called as a callback from
+ *   // the mainloop, so it's safe to complete the operation synchronously here.
+ *   // If, however, _baker_prepare_cake () might call its callback without
+ *   // first returning to the mainloop — inadvisable, but some APIs do so —
+ *   // we would need to use g_simple_async_result_complete_in_idle().
  *   g_simple_async_result_complete (result);
  *   g_object_unref (result);
  * }
@@ -171,9 +169,8 @@
  *                                                  g_object_unref);
  *       g_simple_async_result_complete_in_idle (simple);
  *       g_object_unref (simple);
- *       /&ast; Drop the reference returned by _baker_get_cached_cake(); the
- *        &ast; GSimpleAsyncResult has taken its own reference.
- *        &ast;/
+ *       // Drop the reference returned by _baker_get_cached_cake();
+ *       // the GSimpleAsyncResult has taken its own reference.
  *       g_object_unref (cake);
  *       return;
  *     }

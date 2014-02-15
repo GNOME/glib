@@ -120,7 +120,7 @@
  *       exit (1);
  *     }
  *
- *   /&ast; ... &ast;/
+ *   ...
  *
  * }
  * ]|
@@ -161,18 +161,18 @@
  *   args = g_strdupv (argv);
  * #endif
  *
- *   /&ast; ... setup context ... &ast;/
+ *   // set up context
  *
  *   if (!g_option_context_parse_strv (context, &args, &error))
  *     {
- *       /&ast; ... error ... &ast;/
+ *       // error happened
  *     }
  *
- *   /&ast; ... &ast;/
+ *   ...
  *
  *   g_strfreev (args);
  *
- *   /&ast; ... &ast;/
+ *   ...
  * }
  * ]|
  */

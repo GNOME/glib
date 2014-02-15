@@ -80,7 +80,7 @@
  *
  * Example: Calling a function defined in a GModule
  * |[<!-- language="C" --> 
- * /&ast; the function signature for 'say_hello' &ast;/
+ * // the function signature for 'say_hello'
  * typedef void (* SayHelloFunc) (const char *message);
  *
  * gboolean
@@ -115,7 +115,7 @@
  *       return FALSE;
  *     }
  *
- *   /&ast; call our function in the module &ast;/
+ *   // call our function in the module
  *   say_hello ("Hello world!");
  *
  *   if (!g_module_close (module))

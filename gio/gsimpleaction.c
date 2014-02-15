@@ -409,7 +409,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
    *
    *   requested = g_variant_get_int32 (value);
    *
-   *   /&ast; Volume only goes from 0 to 10 &ast;/
+   *   // Volume only goes from 0 to 10
    *   if (0 <= requested && requested <= 10)
    *     g_simple_action_set_state (action, value);
    * }

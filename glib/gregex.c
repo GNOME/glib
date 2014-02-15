@@ -1643,7 +1643,7 @@ g_regex_match_simple (const gchar        *pattern,
  * static void
  * print_uppercase_words (const gchar *string)
  * {
- *   /&ast; Print all uppercase-only words. &ast;/
+ *   // Print all uppercase-only words.
  *   GRegex *regex;
  *   GMatchInfo *match_info;
  *  
@@ -1716,7 +1716,7 @@ g_regex_match (const GRegex      *regex,
  * static void
  * print_uppercase_words (const gchar *string)
  * {
- *   /&ast; Print all uppercase-only words. &ast;/
+ *   // Print all uppercase-only words.
  *   GRegex *regex;
  *   GMatchInfo *match_info;
  *   GError *error = NULL;
@@ -2853,7 +2853,7 @@ g_regex_replace_literal (const GRegex      *regex,
  *    return FALSE;
  * }
  *
- * /&ast; ... &ast;/
+ * ...
  *
  * GRegex *reg;
  * GHashTable *h;
@@ -2870,7 +2870,7 @@ g_regex_replace_literal (const GRegex      *regex,
  * res = g_regex_replace_eval (reg, text, -1, 0, 0, eval_cb, h, NULL);
  * g_hash_table_destroy (h);
  *
- * /&ast; ... &ast;/
+ * ...
  * ]|
  *
  * Returns: a newly allocated string containing the replacements

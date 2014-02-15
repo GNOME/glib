@@ -69,14 +69,14 @@
  * g_assert ((contents == NULL && err != NULL) || (contents != NULL && err == NULL));
  * if (err != NULL)
  *   {
- *     /&ast; Report error to user, and free error &ast;/
+ *     // Report error to user, and free error
  *     g_assert (contents == NULL);
  *     fprintf (stderr, "Unable to read file: %s\n", err->message);
  *     g_error_free (err);
  *   }
  * else
  *   {
- *     /&ast; Use file contents &ast;/
+ *     // Use file contents
  *     g_assert (contents != NULL);
  *   }
  * ]|
@@ -89,10 +89,12 @@
  * are only interested in whether it failed and don't need to display
  * an error message, you can pass %NULL for the @error argument:
  * |[<!-- language="C" -->
- * if (g_file_get_contents ("foo.txt", &contents, NULL, NULL)) /&ast; ignore errors &ast;/
- *   /&ast; no error occurred &ast;/ ;
+ * if (g_file_get_contents ("foo.txt", &contents, NULL, NULL)) // ignore errors
+ *   // no error occurred 
+ *   ;
  * else
- *   /&ast; error &ast;/ ;
+ *   // error
+ *   ;
  * ]|
  *
  * The #GError object contains three fields: @domain indicates the module
@@ -125,9 +127,9 @@
  *   if (fd < 0)
  *     {
  *       g_set_error (error,
- *                    FOO_ERROR,                 /&ast; error domain &ast;/
- *                    FOO_ERROR_BLAH,            /&ast; error code &ast;/
- *                    "Failed to open file: %s", /&ast; error message format string &ast;/
+ *                    FOO_ERROR,                 // error domain
+ *                    FOO_ERROR_BLAH,            // error code
+ *                    "Failed to open file: %s", // error message format string
  *                    g_strerror (errno));
  *       return -1;
  *     }
@@ -148,12 +150,12 @@
  *
  *   if (!sub_function_that_can_fail (err))
  *     {
- *       /&ast; assert that error was set by the sub-function &ast;/
+ *       // assert that error was set by the sub-function
  *       g_assert (err == NULL || *err != NULL);
  *       return FALSE;
  *     }
  *
- *   /&ast; otherwise continue, no error occurred &ast;/
+ *   // otherwise continue, no error occurred
  *   g_assert (err == NULL || *err == NULL);
  * }
  * ]|
@@ -175,14 +177,13 @@
  *
  *   if (tmp_error != NULL)
  *     {
- *       /&ast; store tmp_error in err, if err != NULL,
- *        &ast; otherwise call g_error_free() on tmp_error
- *        &ast;/
+ *       // store tmp_error in err, if err != NULL,
+ *       // otherwise call g_error_free() on tmp_error
  *       g_propagate_error (err, tmp_error);
  *       return FALSE;
  *     }
  *
- *   /&ast; otherwise continue, no error occurred &ast;/
+ *   // otherwise continue, no error occurred
  * }
  * ]|
  *
@@ -222,7 +223,7 @@
  *
  *   g_return_val_if_fail (err == NULL || *err == NULL, FALSE);
  *
- *   sub_function_that_can_fail (NULL); /&ast; ignore errors &ast;/
+ *   sub_function_that_can_fail (NULL); // ignore errors
  *
  *   tmp_error = NULL;
  *   other_function_that_can_fail (&tmp_error);

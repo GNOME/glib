@@ -1146,9 +1146,8 @@ g_assert_warning (const char *log_domain,
  * For example:
  *
  * |[<!-- language="C" --> 
- *   /&ast; g_main_context_push_thread_default() should fail if the
- *    &ast; context is already owned by another thread.
- *    &ast;/
+ *   // g_main_context_push_thread_default() should fail if the
+ *   // context is already owned by another thread.
  *   g_test_expect_message (G_LOG_DOMAIN,
  *                          G_LOG_LEVEL_CRITICAL,
  *                          "assertion*acquired_context*failed");

@@ -155,7 +155,7 @@ enum {
  * struct _MyClosure
  * {
  *   GClosure closure;
- *   /&ast; extra data goes here &ast;/
+ *   // extra data goes here
  * };
  *
  * static void
@@ -164,7 +164,7 @@ enum {
  * {
  *   MyClosure *my_closure = (MyClosure *)closure;
  *
- *   /&ast; free extra data here &ast;/
+ *   // free extra data here
  * }
  *
  * MyClosure *my_closure_new (gpointer data)
@@ -175,7 +175,7 @@ enum {
  *   closure = g_closure_new_simple (sizeof (MyClosure), data);
  *   my_closure = (MyClosure *) closure;
  *
- *   /&ast; initialize extra data here &ast;/
+ *   // initialize extra data here
  *
  *   g_closure_add_finalize_notifier (closure, notify_data,
  *                                    my_closure_finalize);
@@ -609,7 +609,7 @@ g_closure_unref (GClosure *closure)
  * |[<!-- language="C" --> 
  * closure = g_cclosure_new (cb_func, cb_data);
  * g_source_set_closure (source, closure);
- * g_closure_unref (closure); /&ast; GObject doesn't really need this &ast;/
+ * g_closure_unref (closure); // GObject doesn't really need this
  * ]|
  * Because g_source_set_closure() (and similar functions) take ownership of the
  * initial reference count, if it is unowned, we instead can write:

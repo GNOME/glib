@@ -72,37 +72,37 @@
  * main (int   argc,
  *       char *argv[])
  * {
- *   /&ast; GValues must be initialized &ast;/
+ *   // GValues must be initialized
  *   GValue a = G_VALUE_INIT;
  *   GValue b = G_VALUE_INIT;
  *   const gchar *message;
  *
- *   /&ast; The GValue starts empty &ast;/
+ *   // The GValue starts empty
  *   g_assert (!G_VALUE_HOLDS_STRING (&a));
  *
- *   /&ast; Put a string in it &ast;/
+ *   // Put a string in it
  *   g_value_init (&a, G_TYPE_STRING);
  *   g_assert (G_VALUE_HOLDS_STRING (&a));
  *   g_value_set_static_string (&a, "Hello, world!");
  *   g_printf ("%s\n", g_value_get_string (&a));
  *
- *   /&ast; Reset it to its pristine state &ast;/
+ *   // Reset it to its pristine state
  *   g_value_unset (&a);
  *
- *   /&ast; It can then be reused for another type &ast;/
+ *   // It can then be reused for another type
  *   g_value_init (&a, G_TYPE_INT);
  *   g_value_set_int (&a, 42);
  *
- *   /&ast; Attempt to transform it into a GValue of type STRING &ast;/
+ *   // Attempt to transform it into a GValue of type STRING
  *   g_value_init (&b, G_TYPE_STRING);
  *
- *   /&ast; An INT is transformable to a STRING &ast;/
+ *   // An INT is transformable to a STRING
  *   g_assert (g_value_type_transformable (G_TYPE_INT, G_TYPE_STRING));
  *
  *   g_value_transform (&a, &b);
  *   g_printf ("%s\n", g_value_get_string (&b));
  *
- *   /&ast; Attempt to transform it again using a custom transform function &ast;/
+ *   // Attempt to transform it again using a custom transform function
  *   g_value_register_transform_func (G_TYPE_INT, G_TYPE_STRING, int2string);
  *   g_value_transform (&a, &b);
  *   g_printf ("%s\n", g_value_get_string (&b));

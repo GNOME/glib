@@ -687,7 +687,7 @@ g_hash_table_new_full (GHashFunc      hash_func,
  * g_hash_table_iter_init (&iter, hash_table);
  * while (g_hash_table_iter_next (&iter, &key, &value))
  *   {
- *     /&ast; do something with key and value &ast;/
+ *     // do something with key and value
  *   }
  * ]|
  *

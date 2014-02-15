@@ -96,17 +96,17 @@
  * gchar *mem[10000];
  * gint i;
  *
- * /&ast; Allocate 10000 blocks. &ast;/
+ * // Allocate 10000 blocks.
  * for (i = 0; i < 10000; i++)
  *   {
  *     mem[i] = g_slice_alloc (50);
  *
- *     /&ast; Fill in the memory with some junk. &ast;/
+ *     // Fill in the memory with some junk.
  *     for (j = 0; j < 50; j++)
  *       mem[i][j] = i * j;
  *   }
  *
- * /&ast; Now free all of the blocks. &ast;/
+ * // Now free all of the blocks.
  * for (i = 0; i < 10000; i++)
  *   g_slice_free1 (50, mem[i]);
  * ]|
@@ -116,10 +116,10 @@
  * |[<!-- language="C" --> 
  * GRealArray *array;
  *
- * /&ast; Allocate one block, using the g_slice_new() macro. &ast;/
+ * // Allocate one block, using the g_slice_new() macro.
  * array = g_slice_new (GRealArray);
 
- * /&ast; We can now use array just like a normal pointer to a structure. &ast;/
+ * // We can now use array just like a normal pointer to a structure.
  * array->data            = NULL;
  * array->len             = 0;
  * array->alloc           = 0;
@@ -127,7 +127,7 @@
  * array->clear           = (clear ? 1 : 0);
  * array->elt_size        = elt_size;
  *
- * /&ast; We can free the block, so it can be reused. &ast;/
+ * // We can free the block, so it can be reused.
  * g_slice_free (GRealArray, array);
  * ]|
  */

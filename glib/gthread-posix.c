@@ -820,12 +820,12 @@ g_cond_broadcast (GCond *cond)
  *   while (!current_data)
  *     if (!g_cond_wait_until (&data_cond, &data_mutex, end_time))
  *       {
- *         /&ast; timeout has passed. &ast;/
+ *         // timeout has passed.
  *         g_mutex_unlock (&data_mutex);
  *         return NULL;
  *       }
  *
- *   /&ast; there is data for us &ast;/
+ *   // there is data for us
  *   data = current_data;
  *   current_data = NULL;
  *
@@ -920,7 +920,7 @@ g_cond_wait_until (GCond  *cond,
  * |[<!-- language="C" --> 
  * static GPrivate name_key = G_PRIVATE_INIT (g_free);
  *
- * /&ast; return value should not be freed &ast;/
+ * // return value should not be freed
  * const gchar *
  * get_local_name (void)
  * {
@@ -934,7 +934,7 @@ g_cond_wait_until (GCond  *cond,
  * }
  *
  *
- * static GPrivate count_key;   /&ast; no free function &ast;/
+ * static GPrivate count_key;   // no free function
  *
  * gint
  * get_local_count (void)

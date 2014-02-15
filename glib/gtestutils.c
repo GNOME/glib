@@ -2644,7 +2644,7 @@ wait_for_child (GPid pid,
  *       {
  *         g_print ("some stdout text: somagic17\n");
  *         g_printerr ("some stderr text: semagic43\n");
- *         exit (0); /&ast; successful test run &ast;/
+ *         exit (0); // successful test run
  *       }
  *     g_test_trap_assert_passed ();
  *     g_test_trap_assert_stdout ("*somagic17*");
@@ -2761,7 +2761,7 @@ g_test_trap_fork (guint64        usec_timeout,
  *         return;
  *       }
  *
- *     /&ast; Reruns this same test in a subprocess &ast;/
+ *     // Reruns this same test in a subprocess
  *     g_test_trap_subprocess (NULL, 0, 0);
  *     g_test_trap_assert_failed ();
  *     g_test_trap_assert_stderr ("*ERROR*too large*");

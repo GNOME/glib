@@ -106,31 +106,31 @@
  *   there are thread-safe variants with a _r suffix, or you can
  *   look at corresponding GLib APIs (like g_strsplit() or g_strerror()).
  *
- * - setenv() and unsetenv() manipulate the process environment in
- *   a not thread-safe way, and may interfere with getenv() calls
- *   in other threads. Note that getenv() calls may be hidden behind
+ * - The functions setenv() and unsetenv() manipulate the process
+ *   environment in a not thread-safe way, and may interfere with getenv()
+ *   calls in other threads. Note that getenv() calls may be hidden behind
  *   other APIs. For example, GNU gettext() calls getenv() under the
  *   covers. In general, it is best to treat the environment as readonly.
  *   If you absolutely have to modify the environment, do it early in
  *   main(), when no other threads are around yet.
  *
- * - setlocale() changes the locale for the entire process, affecting
- *   all threads. Temporary changes to the locale are often made to
- *   change the behavior of string scanning or formatting functions
+ * - The setlocale() function changes the locale for the entire process,
+ *   affecting all threads. Temporary changes to the locale are often made
+ *   to change the behavior of string scanning or formatting functions
  *   like scanf() or printf(). GLib offers a number of string APIs
  *   (like g_ascii_formatd() or g_ascii_strtod()) that can often be
  *   used as an alternative. Or you can use the uselocale() function
  *   to change the locale only for the current thread.
  *
- * - fork() only takes the calling thread into the child's copy of the
- *   process image. If other threads were executing in critical
+ * - The fork() function only takes the calling thread into the child's
+ *   copy of the process image. If other threads were executing in critical
  *   sections they could have left mutexes locked which could easily
  *   cause deadlocks in the new child. For this reason, you should
  *   call exit() or exec() as soon as possible in the child and only
  *   make signal-safe library calls before that.
  *
- * - daemon() uses fork() in a way contrary to what is described
- *   above. It should not be used with GLib programs.
+ * - The daemon() function uses fork() in a way contrary to what is
+ *   described above. It should not be used with GLib programs.
  *
  * GLib itself is internally completely thread-safe (all global data is
  * automatically locked), but individual data structure instances are
@@ -233,9 +233,8 @@
  *   {
  *     static int current_number = 0;
  *
- *     /&ast; now do a very complicated calculation to calculate the new
- *      &ast; number, this might for example be a random number generator
- *      &ast;/
+ *     // now do a very complicated calculation to calculate the new
+ *     // number, this might for example be a random number generator
  *     current_number = calc_next_number (current_number);
  *
  *     return current_number;
@@ -619,12 +618,12 @@ g_once_impl (GOnce       *once,
  *
  *   if (g_once_init_enter (&initialization_value))
  *     {
- *       gsize setup_value = 42; /&ast; initialization code here &ast;/
+ *       gsize setup_value = 42; // initialization code here
  *
  *       g_once_init_leave (&initialization_value, setup_value);
  *     }
  *
- *   /&ast; use initialization_value here &ast;/
+ *   // use initialization_value here
  * ]|
  *
  * Returns: %TRUE if the initialization section should be entered,

@@ -71,7 +71,7 @@
  *
  * if (g_file_has_uri_scheme (file, "cdda"))
  *   {
- *     /&ast; do something special with uri &ast;/
+ *     // do something special with uri
  *   }
  * g_object_unref (file);
  * ]|

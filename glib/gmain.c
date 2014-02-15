@@ -2879,7 +2879,7 @@ g_main_current_source (void)
  *   SomeWidget *self = data;
  *    
  *   GDK_THREADS_ENTER ();
- *   /&ast; do stuff with self &ast;/
+ *   // do stuff with self
  *   self->idle_id = 0;
  *   GDK_THREADS_LEAVE ();
  *    
@@ -2919,7 +2919,7 @@ g_main_current_source (void)
  *   GDK_THREADS_ENTER ();
  *   if (!g_source_is_destroyed (g_main_current_source ()))
  *     {
- *       /&ast; do stuff with self &ast;/
+ *       // do stuff with self
  *     }
  *   GDK_THREADS_LEAVE ();
  *   

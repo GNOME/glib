@@ -368,13 +368,13 @@ g_memory_output_stream_init (GMemoryOutputStream *stream)
  * allocation for itself).
  *
  * |[<!-- language="C" -->
- * /&ast; a stream that can grow &ast;/
+ * // a stream that can grow
  * stream = g_memory_output_stream_new (NULL, 0, realloc, free);
  *
- * /&ast; another stream that can grow &ast;/
+ * // another stream that can grow
  * stream2 = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
  *
- * /&ast; a fixed-size stream &ast;/
+ * // a fixed-size stream
  * data = malloc (200);
  * stream3 = g_memory_output_stream_new (data, 200, NULL, free);
  * ]|

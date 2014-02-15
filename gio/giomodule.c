@@ -80,13 +80,13 @@
  *  |[<!-- language="C" -->
  *  GIOExtensionPoint *ep;
  *
- *  /&ast; Register an extension point &ast;/
+ *  // Register an extension point
  *  ep = g_io_extension_point_register ("my-extension-point");
  *  g_io_extension_point_set_required_type (ep, MY_TYPE_EXAMPLE);
  *  ]|
  *
  *  |[<!-- language="C" -->
- *  /&ast; Implement an extension point &ast;/
+ *  // Implement an extension point
  *  G_DEFINE_TYPE (MyExampleImpl, my_example_impl, MY_TYPE_EXAMPLE);
  *  g_io_extension_point_implement ("my-extension-point",
  *                                  my_example_impl_get_type (),

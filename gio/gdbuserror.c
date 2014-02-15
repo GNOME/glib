@@ -56,7 +56,7 @@
  * is typically done in the function returning the #GQuark for the
  * error domain:
  * |[<!-- language="C" -->
- * /&ast; foo-bar-error.h: &ast;/
+ * // foo-bar-error.h:
  *
  * #define FOO_BAR_ERROR (foo_bar_error_quark ())
  * GQuark foo_bar_error_quark (void);
@@ -66,10 +66,10 @@
  *   FOO_BAR_ERROR_FAILED,
  *   FOO_BAR_ERROR_ANOTHER_ERROR,
  *   FOO_BAR_ERROR_SOME_THIRD_ERROR,
- *   FOO_BAR_N_ERRORS /&ast;< skip >&ast;/
+ *   FOO_BAR_N_ERRORS / *< skip >* /
  * } FooBarError;
  *
- * /&ast; foo-bar-error.c: &ast;/
+ * // foo-bar-error.c:
  *
  * static const GDBusErrorEntry foo_bar_error_entries[] =
  * {
@@ -78,7 +78,7 @@
  *   {FOO_BAR_ERROR_SOME_THIRD_ERROR, "org.project.Foo.Bar.Error.SomeThirdError"},
  * };
  *
- * /&ast; Ensure that every error code has an associated D-Bus error name &ast;/
+ * // Ensure that every error code has an associated D-Bus error name
  * G_STATIC_ASSERT (G_N_ELEMENTS (foo_bar_error_entries) == FOO_BAR_N_ERRORS);
  *
  * GQuark

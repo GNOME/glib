@@ -71,9 +71,8 @@
  * |[<!-- language="C" -->
  *   GArray *garray;
  *   gint i;
- *   /&ast; We create a new array to store gint values.
- *    &ast; We don't want it zero-terminated or cleared to 0's.
- *    &ast;/
+ *   // We create a new array to store gint values.
+ *   // We don't want it zero-terminated or cleared to 0's.
  *   garray = g_array_new (FALSE, FALSE, sizeof (gint));
  *   for (i = 0; i < 10000; i++)
  *     g_array_append_val (garray, i);
@@ -122,9 +121,8 @@ struct _GRealArray
  * This example gets a pointer to an element in a #GArray:
  * |[<!-- language="C" -->
  *   EDayViewEvent *event;
- *   /&ast; This gets a pointer to the 4th element
- *    &ast; in the array of EDayViewEvent structs.
- *    &ast;/
+ *   // This gets a pointer to the 4th element in the array of
+ *   // EDayViewEvent structs.
  *   event = &g_array_index (events, EDayViewEvent, 3);
  * ]|
  *

@@ -165,10 +165,10 @@
  * {
  *   GApplicationCommandLine *cmdline = data;
  *
- *   /&ast; do the heavy lifting in an idle &ast;/
+ *   // do the heavy lifting in an idle
  *
  *   g_application_command_line_set_exit_status (cmdline, 0);
- *   g_object_unref (cmdline); /&ast; this releases the application &ast;/
+ *   g_object_unref (cmdline); // this releases the application
  *
  *   return G_SOURCE_REMOVE;
  * }
@@ -177,7 +177,7 @@
  * command_line (GApplication            *application,
  *               GApplicationCommandLine *cmdline)
  * {
- *   /&ast; keep the application running until we are done with this commandline &ast;/
+ *   // keep the application running until we are done with this commandline
  *   g_application_hold (application);
  *
  *   g_object_set_data_full (G_OBJECT (cmdline),

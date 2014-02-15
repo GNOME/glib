@@ -84,16 +84,18 @@
  * the following sequence can be used:
  *
  * |[<!-- language="C" --> 
- * /&ast; save floating state &ast;/
+ * // save floating state
  * gboolean was_floating = g_object_is_floating (object);
  * g_object_ref_sink (object);
- * /&ast; protected code portion &ast;/
- * ...;
- * /&ast; restore floating state &ast;/
+ * // protected code portion
+ *
+ * ...
+ *
+ * // restore floating state
  * if (was_floating)
  *   g_object_force_floating (object);
  * else
- *   g_object_unref (object); /&ast; release previously acquired reference &ast;/
+ *   g_object_unref (object); // release previously acquired reference
  * ]|
  */
 
@@ -2239,7 +2241,7 @@ g_object_set (gpointer     _object,
  *                "obj-property", &objval,
  *                NULL);
  *
- *  /&ast; Do something with intval, strval, objval &ast;/
+ *  // Do something with intval, strval, objval
  *
  *  g_free (strval);
  *  g_object_unref (objval);

@@ -290,11 +290,11 @@ g_mkdir_with_parents (const gchar *pathname,
  * to know whether it is safe to write to a file without being
  * tricked into writing into a different location. It doesn't work!
  * |[<!-- language="C" -->
- * /&ast; DON'T DO THIS &ast;/
+ *  // DON'T DO THIS
  *  if (!g_file_test (filename, G_FILE_TEST_IS_SYMLINK)) 
  *    {
  *      fd = g_open (filename, O_WRONLY);
- *      /&ast; write to fd &ast;/
+ *      // write to fd
  *    }
  * ]|
  *

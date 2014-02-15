@@ -189,14 +189,14 @@ g_slist_free_full (GSList         *list,
  * the elements and reverse the list when all elements have been added.
  *
  * |[<!-- language="C" --> 
- * /&ast; Notice that these are initialized to the empty list. &ast;/
+ * // Notice that these are initialized to the empty list.
  * GSList *list = NULL, *number_list = NULL;
  *
- * /&ast; This is a list of strings. &ast;/
+ * // This is a list of strings.
  * list = g_slist_append (list, "first");
  * list = g_slist_append (list, "second");
  *
- * /&ast; This is a list of integers. &ast;/
+ * // This is a list of integers.
  * number_list = g_slist_append (number_list, GINT_TO_POINTER (27));
  * number_list = g_slist_append (number_list, GINT_TO_POINTER (14));
  * ]|
@@ -237,7 +237,7 @@ g_slist_append (GSList   *list,
  * may have changed, so make sure you store the new value.
  *
  * |[<!-- language="C" --> 
- * /&ast; Notice that it is initialized to the empty list. &ast;/
+ * // Notice that it is initialized to the empty list.
  * GSList *list = NULL;
  * list = g_slist_prepend (list, "last");
  * list = g_slist_prepend (list, "first");

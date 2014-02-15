@@ -2069,7 +2069,7 @@ g_markup_parse_context_get_user_data (GMarkupParseContext *context)
  *   if (strcmp (element_name, "count-these") == 0)
  *     start_counting (context);
  *
- *   /&ast; else, handle other tags... &ast;/
+ *   // else, handle other tags...
  * }
  *
  * static void end_element (context, element_name, ...)
@@ -2077,7 +2077,7 @@ g_markup_parse_context_get_user_data (GMarkupParseContext *context)
  *   if (strcmp (element_name, "count-these") == 0)
  *     g_print ("Counted %d tags\n", end_counting (context));
  *
- *   /&ast; else, handle other tags... &ast;/
+ *   // else, handle other tags...
  * }
  * ]|
  *

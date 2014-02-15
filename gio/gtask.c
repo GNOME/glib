@@ -82,7 +82,7 @@
  *       if (!cake_decorate (cake, decoration->frosting, decoration->message, &error))
  *         {
  *           g_object_unref (cake);
- *           /&ast; g_task_return_error() takes ownership of error &ast;/
+ *           // g_task_return_error() takes ownership of error
  *           g_task_return_error (task, error);
  *           g_object_unref (task);
  *           return;
@@ -119,7 +119,7 @@
  *       cake = _baker_get_cached_cake (self, radius, flavor, frosting, message);
  *       if (cake != NULL)
  *         {
- *           /&ast; _baker_get_cached_cake() returns a reffed cake &ast;/
+ *           // _baker_get_cached_cake() returns a reffed cake
  *           g_task_return_pointer (task, cake, g_object_unref);
  *           g_object_unref (task);
  *           return;
@@ -189,9 +189,8 @@
  *           return;
  *         }
  *
- *       /&ast; baking_data_free() will drop its ref on the cake, so
- *        &ast; we have to take another here to give to the caller.
- *        &ast;/
+ *       // baking_data_free() will drop its ref on the cake, so we have to
+ *       // take another here to give to the caller.
  *       g_task_return_pointer (result, g_object_ref (cake), g_object_unref);
  *       g_object_unref (task);
  *     }
@@ -225,7 +224,7 @@
  *
  *       bd->cake = cake;
  *
- *       /&ast; Bail out now if the user has already cancelled &ast;/
+ *       // Bail out now if the user has already cancelled
  *       if (g_task_return_error_if_cancelled (task))
  *         {
  *           g_object_unref (task);
@@ -239,9 +238,8 @@
  *           GSource *source;
  *
  *           source = cake_decorator_wait_source_new (cake);
- *           /&ast; Attach @source to @task's GMainContext and have it call
- *            &ast; decorator_ready() when it is ready.
- *            &ast;/
+ *           // Attach @source to @task's GMainContext and have it call
+ *           // decorator_ready() when it is ready.
  *           g_task_attach_source (task, source,
  *                                 G_CALLBACK (decorator_ready));
  *           g_source_unref (source);
@@ -397,22 +395,20 @@
  *           return;
  *         }
  *
- *       /&ast; If the task has already been cancelled, then we don't
- *        &ast; want to add the cake to the cake cache. Likewise, we don't
- *        &ast; want to have the task get cancelled in the middle of
- *        &ast; updating the cache. g_task_set_return_on_cancel() will
- *        &ast; return %TRUE here if it managed to disable return-on-cancel,
- *        &ast; or %FALSE if the task was cancelled before it could.
- *        &ast;/
+ *       // If the task has already been cancelled, then we don't want to add
+ *       // the cake to the cake cache. Likewise, we don't  want to have the
+ *       // task get cancelled in the middle of updating the cache.
+ *       // g_task_set_return_on_cancel() will return %TRUE here if it managed
+ *       // to disable return-on-cancel, or %FALSE if the task was cancelled
+ *       // before it could.
  *       if (g_task_set_return_on_cancel (task, FALSE))
  *         {
- *           /&ast; If the caller cancels at this point, their
- *            &ast; GAsyncReadyCallback won't be invoked until we return,
- *            &ast; so we don't have to worry that this code will run at
- *            &ast; the same time as that code does. But if there were
- *            &ast; other functions that might look at the cake cache,
- *            &ast; then we'd probably need a GMutex here as well.
- *            &ast;/
+ *           // If the caller cancels at this point, their
+ *           // GAsyncReadyCallback won't be invoked until we return,
+ *           // so we don't have to worry that this code will run at
+ *           // the same time as that code does. But if there were
+ *           // other functions that might look at the cake cache,
+ *           // then we'd probably need a GMutex here as well.
  *           baker_add_cake_to_cache (baker, cake);
  *           g_task_return_pointer (task, cake, g_object_unref);
  *         }
@@ -432,7 +428,8 @@
  *       GTask *task;
  *
  *       cake_data = g_slice_new (CakeData);
- *       /&ast; ... &ast;/
+ *
+ *       ...
  *
  *       task = g_task_new (self, cancellable, callback, user_data);
  *       g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
@@ -454,7 +451,8 @@
  *       Cake *cake;
  *
  *       cake_data = g_slice_new (CakeData);
- *       /&ast; ... &ast;/
+ *
+ *       ...
  *
  *       task = g_task_new (self, cancellable, NULL, NULL);
  *       g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);

@@ -3032,7 +3032,7 @@ g_variant_iter_free (GVariantIter *iter)
  *
  * Here is an example for iterating with g_variant_iter_next_value():
  * |[<!-- language="C" --> 
- *   /&ast; recursively iterate a container &ast;/
+ *   // recursively iterate a container
  *   void
  *   iterate_container_recursive (GVariant *container)
  *   {
@@ -5469,7 +5469,7 @@ g_variant_get_child (GVariant    *value,
  *
  * Here is an example for memory management with g_variant_iter_next():
  * |[<!-- language="C" --> 
- *   /&ast; Iterates a dictionary of type 'a{sv}' &ast;/
+ *   // Iterates a dictionary of type 'a{sv}'
  *   void
  *   iterate_dictionary (GVariant *dictionary)
  *   {
@@ -5483,7 +5483,7 @@ g_variant_get_child (GVariant    *value,
  *         g_print ("Item '%s' has type '%s'\n", key,
  *                  g_variant_get_type_string (value));
  *
- *         /&ast; must free data for ourselves &ast;/
+ *         // must free data for ourselves
  *         g_variant_unref (value);
  *         g_free (key);
  *       }
@@ -5561,7 +5561,7 @@ g_variant_iter_next (GVariantIter *iter,
  *
  * Here is an example for memory management with g_variant_iter_loop():
  * |[<!-- language="C" --> 
- *   /&ast; Iterates a dictionary of type 'a{sv}' &ast;/
+ *   // Iterates a dictionary of type 'a{sv}'
  *   void
  *   iterate_dictionary (GVariant *dictionary)
  *   {
@@ -5575,9 +5575,8 @@ g_variant_iter_next (GVariantIter *iter,
  *         g_print ("Item '%s' has type '%s'\n", key,
  *                  g_variant_get_type_string (value));
  *
- *         /&ast; no need to free 'key' and 'value' here
- *          &ast; unless breaking out of this loop
- *          &ast;/
+ *         // no need to free 'key' and 'value' here
+ *         // unless breaking out of this loop
  *       }
  *   }
  * ]|

@@ -77,7 +77,7 @@
  * GList *l;
  * for (l = list; l != NULL; l = l->next)
  *   {
- *     /&ast; do something with l->data &ast;/
+ *     // do something with l->data
  *   }
  * ]|
  *
@@ -92,7 +92,7 @@
  *     GList *next = l->next;
  *     if (should_be_removed (l))
  *       {
- *         /&ast; possibly free l->data &ast;/
+ *         // possibly free l->data
  *         list = g_list_delete_link (list, l);
  *       }
  *     l = next;
@@ -234,14 +234,14 @@ g_list_free_full (GList          *list,
  * the list with g_list_reverse() when all elements have been added.
  *
  * |[<!-- language="C" -->
- * /&ast; Notice that these are initialized to the empty list. &ast;/
+ * // Notice that these are initialized to the empty list.
  * GList *string_list = NULL, *number_list = NULL;
  *
- * /&ast; This is a list of strings. &ast;/
+ * // This is a list of strings.
  * string_list = g_list_append (string_list, "first");
  * string_list = g_list_append (string_list, "second");
  * 
- * /&ast; This is a list of integers. &ast;/
+ * // This is a list of integers.
  * number_list = g_list_append (number_list, GINT_TO_POINTER (27));
  * number_list = g_list_append (number_list, GINT_TO_POINTER (14));
  * ]|
@@ -286,7 +286,7 @@ g_list_append (GList    *list,
  * which will have changed, so make sure you store the new value. 
  *
  * |[<!-- language="C" -->
- * /&ast; Notice that it is initialized to the empty list. &ast;/
+ * // Notice that it is initialized to the empty list.
  * GList *list = NULL;
  *
  * list = g_list_prepend (list, "last");
