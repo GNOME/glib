@@ -41,17 +41,15 @@ G_BEGIN_DECLS
 /**
  * G_UNIX_ERROR:
  *
- * Error domain for API in the "g_unix_" namespace.  Note that there is
- * no exported enumeration mapping %errno.  Instead, all functions
- * ensure that %errno is relevant.  The code for all #G_UNIX_ERROR is
- * always <literal>0</literal>, and the error message is always
- * generated via g_strerror().
+ * Error domain for API in the g_unix_ namespace. Note that there is no
+ * exported enumeration mapping %errno. Instead, all functions ensure that
+ * %errno is relevant. The code for all #G_UNIX_ERROR is always 0, and the
+ * error message is always generated via g_strerror().
  *
- * It is expected that most code will not look at %errno from these
- * APIs. Important cases where one would want to differentiate between
- * errors are already covered by existing cross-platform GLib API,
- * such as e.g. #GFile wrapping <literal>ENOENT</literal>.  However, it is
- * provided for completeness, at least.
+ * It is expected that most code will not look at %errno from these APIs.
+ * Important cases where one would want to differentiate between errors are
+ * already covered by existing cross-platform GLib API, such as e.g. #GFile
+ * wrapping `ENOENT`. However, it is provided for completeness, at least.
  */
 #define G_UNIX_ERROR (g_unix_error_quark())
 
