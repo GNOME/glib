@@ -610,12 +610,15 @@ g_subprocess_finalize (GObject *object)
   g_clear_object (&self->stderr_pipe);
   g_strfreev (self->argv);
 
+  g_mutex_clear (&self->pending_waits_lock);
+
   G_OBJECT_CLASS (g_subprocess_parent_class)->finalize (object);
 }
 
 static void
 g_subprocess_init (GSubprocess  *self)
 {
+  g_mutex_init (&self->pending_waits_lock);
 }
 
 static void
