@@ -71,7 +71,6 @@ test_d (void)
 {
   gchar buf[128];
   gint res;
-  const gchar *fmt;
 
   /* %d basic formatting */
 
@@ -182,14 +181,24 @@ test_d (void)
   res = g_snprintf (buf, 128, "%03d", -5);
   g_assert_cmpint (res, ==, 3);
   g_assert_cmpstr (buf, ==, "-05");
+}
 
-  /* gcc emits warnings for the following formats, since the C spec
-   * says some of the flags must be ignored. (The " " in "% +d" and
-   * the "0" in "%-03d".) But we need to test that our printf gets
-   * those rules right. So we fool gcc into not warning.
-   */
+/* gcc emits warnings for the following formats, since the C spec
+ * says some of the flags must be ignored. (The " " in "% +d" and
+ * the "0" in "%-03d".) But we need to test that our printf gets
+ * those rules right. So we fool gcc into not warning.
+ *
+ * These have to be in a separate function in order to use #pragma.
+ */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"
+static void
+test_d_invalid (void)
+{
+  const gchar *fmt;
+  gchar buf[128];
+  gint res;
+
   fmt = "% +d";
   res = g_snprintf (buf, 128, fmt, 5);
   g_assert_cmpint (res, ==, 2);
@@ -199,8 +208,8 @@ test_d (void)
   res = g_snprintf (buf, 128, fmt, -5);
   g_assert_cmpint (res, ==, 3);
   g_assert_cmpstr (buf, ==, "-5 ");
-#pragma GCC diagnostic pop
 }
+#pragma GCC diagnostic pop
 
 static void
 test_o (void)
@@ -891,6 +900,7 @@ main (int   argc,
 
   g_test_add_func ("/snprintf/retval-and-trunc", test_retval_and_trunc);
   g_test_add_func ("/snprintf/%d", test_d);
+  g_test_add_func ("/snprintf/%d-invalid", test_d_invalid);
   g_test_add_func ("/snprintf/%o", test_o);
   g_test_add_func ("/snprintf/%u", test_u);
   g_test_add_func ("/snprintf/%x", test_x);
