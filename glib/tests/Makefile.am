@@ -12,6 +12,8 @@ spawn_multithreaded_LDFLAGS = $(patsubst -lgcov,,$(LDFLAGS))
 
 # -----------------------------------------------------------------------------
 
+noinst_PROGRAMS = pollcore
+
 dist_test_data = \
 	keyfiletest.ini			\
 	pages.ini			\
@@ -71,6 +73,7 @@ test_programs = \
 	option-context			\
 	option-argv0			\
 	pattern				\
+	pollcore			\
 	private				\
 	protocol			\
 	queue				\

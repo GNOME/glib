@@ -208,6 +208,22 @@ if OS_UNIX
 libglib_2_0_la_SOURCES += glib-unix.c
 endif
 
+if POLLCORE_KQUEUE
+libglib_2_0_la_SOURCES += gpollcore-kqueue.c
+endif
+
+if POLLCORE_EPOLL
+libglib_2_0_la_SOURCES += gpollcore-epoll.c
+endif
+
+if POLLCORE_WIN32
+libglib_2_0_la_SOURCES += gpollcore-win32.c
+endif
+
+if POLLCORE_POLL
+libglib_2_0_la_SOURCES += gpollcore-poll.c
+endif
+
 if THREADS_WIN32
 libglib_2_0_la_SOURCES += gthread-win32.c
 else

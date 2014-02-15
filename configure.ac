@@ -115,6 +115,22 @@ AC_USE_SYSTEM_EXTENSIONS
 
 AM_CONDITIONAL(HAVE_GCC, [test "$GCC" = "yes"])
 
+pollcore="kqueue"
+
+if test "$pollcore" = "kqueue"; then
+  AC_DEFINE(POLLCORE_KQUEUE, [1], [Defined if we use kqueue])
+elif test "$pollcore" = "epoll"; then
+  AC_DEFINE(POLLCORE_EPOLL,  [1], [Defined if we use epoll])
+elif test "$pollcore" = "win32"; then
+  AC_DEFINE(POLLCORE_WIN32,  [1], [Defined if we use win32 poll core])
+else
+  AC_DEFINE(POLLCORE_POLL,   [1], [Defined to use poll emulation])
+fi
+AM_CONDITIONAL(POLLCORE_KQUEUE, [test "$pollcore" = "kqueue"])
+AM_CONDITIONAL(POLLCORE_EPOLL,  [test "$pollcore" = "epoll"])
+AM_CONDITIONAL(POLLCORE_WIN32,  [test "$pollcore" = "win32"])
+AM_CONDITIONAL(POLLCORE_POLL,   [test "$pollcore" = "poll"])
+
 AC_CANONICAL_HOST
 
 dnl
