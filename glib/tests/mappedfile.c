@@ -85,7 +85,7 @@ test_writable (void)
   const gchar *new = "abcdefghijklmnopqrstuvxyz";
   gchar *tmp_copy_path;
 
-  tmp_copy_path = g_build_filename (g_get_user_runtime_dir (), "glib-test-4096-random-bytes", NULL);
+  tmp_copy_path = g_build_filename (g_get_tmp_dir (), "glib-test-4096-random-bytes", NULL);
 
   g_file_get_contents (g_test_get_filename (G_TEST_DIST, "4096-random-bytes", NULL), &contents, &len, &error);
   g_assert_no_error (error);
@@ -129,7 +129,7 @@ test_writable_fd (void)
   int fd;
   gchar *tmp_copy_path;
 
-  tmp_copy_path = g_build_filename (g_get_user_runtime_dir (), "glib-test-4096-random-bytes", NULL);
+  tmp_copy_path = g_build_filename (g_get_tmp_dir (), "glib-test-4096-random-bytes", NULL);
 
   g_file_get_contents (g_test_get_filename (G_TEST_DIST, "4096-random-bytes", NULL), &contents, &len, &error);
   g_assert_no_error (error);
