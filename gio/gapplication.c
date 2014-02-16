@@ -589,7 +589,8 @@ add_packed_option (GApplication *application,
 /**
  * g_application_add_main_option_entries:
  * @application: a #GApplication
- * @entries: a %NULL-terminated list of #GOptionEntrys
+ * @entries: (array zero-terminated=1) (element-type GOptionEntry) a
+ *           %NULL-terminated list of #GOptionEntrys
  *
  * Adds main option entries to be handled by @application.
  *
