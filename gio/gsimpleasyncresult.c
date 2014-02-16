@@ -907,8 +907,8 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
 /**
  * g_simple_async_result_is_valid:
  * @result: the #GAsyncResult passed to the _finish function.
- * @source: the #GObject passed to the _finish function.
- * @source_tag: the asynchronous function.
+ * @source: (allow-none): the #GObject passed to the _finish function.
+ * @source_tag: (allow-none): the asynchronous function.
  *
  * Ensures that the data passed to the _finish function of an async
  * operation is consistent.  Three checks are performed.
@@ -916,12 +916,12 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
  * First, @result is checked to ensure that it is really a
  * #GSimpleAsyncResult.  Second, @source is checked to ensure that it
  * matches the source object of @result.  Third, @source_tag is
- * checked to ensure that it is either %NULL (as it is when the result was
- * created by g_simple_async_report_error_in_idle() or
- * g_simple_async_report_gerror_in_idle()) or equal to the
- * @source_tag argument given to g_simple_async_result_new() (which, by
- * convention, is a pointer to the _async function corresponding to the
- * _finish function from which this function is called).
+ * checked to ensure that it is equal to the @source_tag argument given
+ * to g_simple_async_result_new() (which, by convention, is a pointer
+ * to the _async function corresponding to the _finish function from
+ * which this function is called).  (Alternatively, if either
+ * @source_tag or @result's source tag is %NULL, then the source tag
+ * check is skipped.)
  *
  * Returns: #TRUE if all checks passed or #FALSE if any failed.
  *
@@ -934,6 +934,7 @@ g_simple_async_result_is_valid (GAsyncResult *result,
 {
   GSimpleAsyncResult *simple;
   GObject *cmp_source;
+  gpointer result_source_tag;
 
   if (!G_IS_SIMPLE_ASYNC_RESULT (result))
     return FALSE;
@@ -949,8 +950,9 @@ g_simple_async_result_is_valid (GAsyncResult *result,
   if (cmp_source != NULL)
     g_object_unref (cmp_source);
 
-  return source_tag == NULL ||
-         source_tag == g_simple_async_result_get_source_tag (simple);
+  result_source_tag = g_simple_async_result_get_source_tag (simple);
+  return source_tag == NULL || result_source_tag == NULL ||
+         source_tag == result_source_tag;
 }
 
 /**
