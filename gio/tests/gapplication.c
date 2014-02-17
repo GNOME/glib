@@ -6,6 +6,15 @@
 #include "gdbus-tests.h"
 #include "gdbus-sessionbus.h"
 
+#if 0
+/* These tests are racy -- there is no guarantee about the order of data
+ * arriving over D-Bus.
+ *
+ * They're also a bit ridiculous -- GApplication was never meant to be
+ * abused in this way...
+ *
+ * We need new tests.
+ */
 static gint outstanding_watches;
 static GMainLoop *main_loop;
 
@@ -270,6 +279,7 @@ test_remote_actions (void)
 
   g_main_loop_unref (main_loop);
 }
+#endif
 
 #if 0
 /* Now that we register non-unique apps on the bus we need to fix the
@@ -670,16 +680,16 @@ main (int argc, char **argv)
   g_test_dbus_unset ();
 
   g_test_add_func ("/gapplication/no-dbus", test_nodbus);
-  g_test_add_func ("/gapplication/basic", basic);
+/*  g_test_add_func ("/gapplication/basic", basic); */
   g_test_add_func ("/gapplication/no-appid", test_noappid);
 /*  g_test_add_func ("/gapplication/non-unique", test_nonunique); */
   g_test_add_func ("/gapplication/properties", properties);
   g_test_add_func ("/gapplication/app-id", appid);
   g_test_add_func ("/gapplication/quit", test_quit);
   g_test_add_func ("/gapplication/local-actions", test_local_actions);
-  g_test_add_func ("/gapplication/remote-actions", test_remote_actions);
+/*  g_test_add_func ("/gapplication/remote-actions", test_remote_actions); */
   g_test_add_func ("/gapplication/local-command-line", test_local_command_line);
-  g_test_add_func ("/gapplication/remote-command-line", test_remote_command_line);
+/*  g_test_add_func ("/gapplication/remote-command-line", test_remote_command_line); */
 
   return g_test_run ();
 }
