@@ -1,3 +1,39 @@
+Overview of changes from GLib 2.39.4 to GLib 2.39.90
+====================================================
+
+* Fixed bugs:
+ 625408 make GVariant dictionaries more useful
+ 660809 document that if you fail a precondition check, documented guarantees do not apply
+ 661576 fix handling of constructors that destroy half-constructed objects
+ 679957 g_inet_address_new_from_string is not able to handle dots and numbers IPv4 addresses
+ 712837 gvariant: Document the need to cast varargs when constructing GVariants
+ 721458 g_simple_async_result_is_valid has a NULL check for the wrong source_tag
+ 721977 improve split handling of command line arguments
+ 722033 win32: fixup lib.exe invocation
+ 723422 Fix g_socket_get_available() with TCP on Windows
+ 723616 gio/tests: fix race when generating code
+ 724001 gsubprocess: Fix a broken link in the documentation
+ 724124 glib/tests/collate.c fails if no en_US locale
+ 724126 intermittent GApplication test failure: /gapplication/local-actions: lines of output permuted
+ 724233 gsocketservice: Note g_socket_listener_close() for closing open sockets
+ 724239 soup_session_queue_message - Connection terminated unexpectedly
+ 724278 gsocketconnection: Document closing connections with g_io_stream_close()
+ 724330 configure.ac: tweak inotify check
+ 724385 gtestutils: make the new assert messages more detailed
+ 724401 gsubprocess: Mutex leak
+ 724417 glib master build broken on OpenBSD
+ 724434 Build failure in gio/gresolver.c
+
+* Updated translations:
+ Brazilian Portuguese
+ Galician
+ Indonesian
+ Italian
+ Kannada
+ Norwegian bokmål
+ Spanish
+ Thai
+
 Overview of changes from GLib 2.39.3 to GLib 2.39.4
 ===================================================
 
