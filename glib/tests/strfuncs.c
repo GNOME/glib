@@ -1355,6 +1355,112 @@ test_strup (void)
   g_free (s);
 }
 
+static void
+test_transliteration (void)
+{
+  gchar *out;
+
+  /* ...to test the defaults */
+  setlocale (LC_ALL, "C");
+
+  /* Test something trivial */
+  out = g_str_to_ascii ("hello", NULL);
+  g_assert_cmpstr (out, ==, "hello");
+  g_free (out);
+
+  /* Test something above 0xffff */
+  out = g_str_to_ascii ("𝐀𝐀𝐀", NULL);
+  g_assert_cmpstr (out, ==, "AAA");
+  g_free (out);
+
+  /* Test something with no good match */
+  out = g_str_to_ascii ("a ∧ ¬a", NULL);
+  g_assert_cmpstr (out, ==, "a ? ?a");
+  g_free (out);
+
+  /* Make sure 'ö' is handled differently per locale */
+  out = g_str_to_ascii ("ö", NULL);
+  g_assert_cmpstr (out, ==, "o");
+  g_free (out);
+
+  out = g_str_to_ascii ("ö", "sv");
+  g_assert_cmpstr (out, ==, "o");
+  g_free (out);
+
+  out = g_str_to_ascii ("ö", "de");
+  g_assert_cmpstr (out, ==, "oe");
+  g_free (out);
+
+  /* Make sure we can find a locale by a wide range of names */
+  out = g_str_to_ascii ("ö", "de_DE");
+  g_assert_cmpstr (out, ==, "oe");
+  g_free (out);
+
+  out = g_str_to_ascii ("ö", "de_DE.UTF-8");
+  g_assert_cmpstr (out, ==, "oe");
+  g_free (out);
+
+  out = g_str_to_ascii ("ö", "de_DE.UTF-8@euro");
+  g_assert_cmpstr (out, ==, "oe");
+  g_free (out);
+
+  out = g_str_to_ascii ("ö", "de@euro");
+  g_assert_cmpstr (out, ==, "oe");
+  g_free (out);
+
+  /* Test some invalid locale names */
+  out = g_str_to_ascii ("ö", "de_DE@euro.UTF-8");
+  g_assert_cmpstr (out, ==, "o");
+  g_free (out);
+
+  out = g_str_to_ascii ("ö", "de@DE@euro");
+  g_assert_cmpstr (out, ==, "o");
+  g_free (out);
+
+  out = g_str_to_ascii ("ö", "doesnotexist");
+  g_assert_cmpstr (out, ==, "o");
+  g_free (out);
+
+  out = g_str_to_ascii ("ö", "thislocalenameistoolong");
+  g_assert_cmpstr (out, ==, "o");
+  g_free (out);
+
+  /* Try a lookup of a locale with a variant */
+  out = g_str_to_ascii ("б", "sr_RS");
+  g_assert_cmpstr (out, ==, "b");
+  g_free (out);
+
+  out = g_str_to_ascii ("б", "sr_RS@latin");
+  g_assert_cmpstr (out, ==, "?");
+  g_free (out);
+
+  /* Ukrainian contains the only multi-character mappings.
+   * Try a string that contains one ('зг') along with a partial
+   * sequence ('з') at the end.
+   */
+  out = g_str_to_ascii ("Зліва направо, згори вниз", "uk");
+  g_assert_cmpstr (out, ==, "Zliva napravo, zghory vnyz");
+  g_free (out);
+
+  /* Try out the other combinations */
+  out = g_str_to_ascii ("Зг", "uk");
+  g_assert_cmpstr (out, ==, "Zgh");
+  g_free (out);
+
+  out = g_str_to_ascii ("зГ", "uk");
+  g_assert_cmpstr (out, ==, "zGH");
+  g_free (out);
+
+  out = g_str_to_ascii ("ЗГ", "uk");
+  g_assert_cmpstr (out, ==, "ZGH");
+  g_free (out);
+
+  /* And a non-combination */
+  out = g_str_to_ascii ("зя", "uk");
+  g_assert_cmpstr (out, ==, "zya");
+  g_free (out);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1389,6 +1495,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strerror", test_strerror);
   g_test_add_func ("/strfuncs/strsignal", test_strsignal);
   g_test_add_func ("/strfuncs/strup", test_strup);
+  g_test_add_func ("/strfuncs/transliteration", test_transliteration);
 
   return g_test_run();
 }
