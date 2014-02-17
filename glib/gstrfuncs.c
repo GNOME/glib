@@ -2961,7 +2961,6 @@ g_str_tokenize_and_fold (const gchar   *string,
 
   result = split_words (string);
 
-  /* TODO: proper iconv transliteration (locale-dependent) */
   if (ascii_alternates)
     {
       gint i, j, n;
@@ -2974,21 +2973,26 @@ g_str_tokenize_and_fold (const gchar   *string,
         {
           if (!g_str_is_ascii (result[i]))
             {
-              gchar *decomposed;
+              gchar *composed;
               gchar *ascii;
-              gint k = 0;
-              gint l = 0;
+              gint k;
 
-              decomposed = g_utf8_normalize (result[i], -1, G_NORMALIZE_ALL);
-              ascii = g_malloc (strlen (decomposed) + 1);
+              composed = g_utf8_normalize (result[i], -1, G_NORMALIZE_ALL_COMPOSE);
 
-              for (k = 0; decomposed[k]; k++)
-                if (~decomposed[k] & 0x80)
-                  ascii[l++] = decomposed[k];
-              ascii[l] = '\0';
+              ascii = g_str_to_ascii (composed, translit_locale);
 
-              (*ascii_alternates)[j++] = ascii;
-              g_free (decomposed);
+              /* Only accept strings that are now entirely alnums */
+              for (k = 0; ascii[k]; k++)
+                if (!g_ascii_isalnum (ascii[k]))
+                  break;
+
+              if (ascii[k] == '\0')
+                /* Made it to the end... */
+                (*ascii_alternates)[j++] = ascii;
+              else
+                g_free (ascii);
+
+              g_free (composed);
             }
         }
 
