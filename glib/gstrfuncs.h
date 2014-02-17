@@ -288,6 +288,10 @@ gchar*                g_stpcpy         (gchar        *dest,
                                         const char   *src);
 
 GLIB_AVAILABLE_IN_2_40
+gchar *                 g_str_to_ascii                                  (const gchar   *str,
+                                                                         const gchar   *from_locale);
+
+GLIB_AVAILABLE_IN_2_40
 gchar **                g_str_tokenize_and_fold                         (const gchar   *string,
                                                                          const gchar   *translit_locale,
                                                                          gchar       ***ascii_alternates);
