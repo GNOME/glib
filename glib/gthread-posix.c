@@ -45,6 +45,7 @@
 #include "gslice.h"
 #include "gmessages.h"
 #include "gstrfuncs.h"
+#include "gmain.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -853,19 +854,41 @@ g_cond_wait_until (GCond  *cond,
   struct timespec ts;
   gint status;
 
-  ts.tv_sec = end_time / 1000000;
-  ts.tv_nsec = (end_time % 1000000) * 1000;
+#ifdef HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP
+  /* end_time is given relative to the monotonic clock as returned by
+   * g_get_monotonic_time().
+   *
+   * Since this pthreads wants the relative time, convert it back again.
+   */
+  {
+    gint64 now = g_get_monotonic_time ();
+    gint64 relative;
 
-#if defined(HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC)
-  if ((status = pthread_cond_timedwait_monotonic (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &ts)) == 0)
-    return TRUE;
-#elif defined(HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC_NP)
-  if ((status = pthread_cond_timedwait_monotonic_np (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &ts)) == 0)
-    return TRUE;
+    if (end_time <= now)
+      return FALSE;
+
+    relative = end_time - now;
+
+    ts.tv_sec = relative / 1000000;
+    ts.tv_nsec = (relative % 1000000) * 1000;
+
+    if ((status = pthread_cond_timedwait_relative_np (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &ts)) == 0)
+      return TRUE;
+  }
+#elif defined (HAVE_PTHREAD_CONDATTR_SETCLOCK) && defined (CLOCK_MONOTONIC)
+  /* This is the exact check we used during init to set the clock to
+   * monotonic, so if we're in this branch, timedwait() will already be
+   * expecting a monotonic clock.
+   */
+  {
+    ts.tv_sec = end_time / 1000000;
+    ts.tv_nsec = (end_time % 1000000) * 1000;
+
+    if ((status = pthread_cond_timedwait (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &ts)) == 0)
+      return TRUE;
+  }
 #else
-  /* Pray that the cond is actually using the monotonic clock */
-  if ((status = pthread_cond_timedwait (g_cond_get_impl (cond), g_mutex_get_impl (mutex), &ts)) == 0)
-    return TRUE;
+#error Cannot support GCond on your platform.
 #endif
 
   if G_UNLIKELY (status != ETIMEDOUT)

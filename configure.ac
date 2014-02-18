@@ -2235,23 +2235,14 @@ AS_IF([ test x"$have_threads" = xposix], [
              AC_DEFINE(HAVE_PTHREAD_CONDATTR_SETCLOCK,1,
                 [Have function pthread_condattr_setclock])],
             [AC_MSG_RESULT(no)])
-        AC_MSG_CHECKING(for pthread_cond_timedwait_monotonic)
+        AC_MSG_CHECKING(for pthread_cond_timedwait_relative_np)
         AC_LINK_IFELSE(
             [AC_LANG_PROGRAM(
                 [#include <pthread.h>],
-                [pthread_cond_timedwait_monotonic(NULL, NULL, NULL)])],
+                [pthread_cond_timedwait_relative_np(NULL, NULL, NULL)])],
             [AC_MSG_RESULT(yes)
-             AC_DEFINE(HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC,1,
-                [Have function pthread_cond_timedwait_monotonic])],
-            [AC_MSG_RESULT(no)])
-        AC_MSG_CHECKING(for pthread_cond_timedwait_monotonic_np)
-        AC_LINK_IFELSE(
-            [AC_LANG_PROGRAM(
-                [#include <pthread.h>],
-                [pthread_cond_timedwait_monotonic_np(NULL, NULL, NULL)])],
-            [AC_MSG_RESULT(yes)
-             AC_DEFINE(HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC_NP,1,
-                [Have function pthread_cond_timedwait_monotonic_np])],
+             AC_DEFINE(HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP,1,
+                [Have function pthread_cond_timedwait_relative_np])],
             [AC_MSG_RESULT(no)])
         CPPFLAGS="$glib_save_CPPFLAGS"
 ])
