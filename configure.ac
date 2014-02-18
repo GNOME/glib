@@ -771,7 +771,7 @@ fi
 
 
 # check for header files
-AC_CHECK_HEADERS([sys/param.h sys/resource.h])
+AC_CHECK_HEADERS([sys/param.h sys/resource.h mach/mach_time.h])
 AC_CHECK_HEADERS([sys/select.h stdint.h inttypes.h sched.h malloc.h])
 AC_CHECK_HEADERS([sys/vfs.h sys/vmount.h sys/statfs.h sys/statvfs.h sys/filio.h])
 AC_CHECK_HEADERS([mntent.h sys/mnttab.h sys/vfstab.h sys/mntctl.h fstab.h])
@@ -2296,7 +2296,6 @@ AC_SUBST(G_THREAD_LIBS_EXTRA)
 
 AC_CHECK_FUNCS(clock_gettime, [], [
   AC_CHECK_LIB(rt, clock_gettime, [
-    AC_DEFINE(HAVE_CLOCK_GETTIME, 1)
     G_THREAD_LIBS="$G_THREAD_LIBS -lrt"
     G_THREAD_LIBS_FOR_GTHREAD="$G_THREAD_LIBS_FOR_GTHREAD -lrt"
   ])

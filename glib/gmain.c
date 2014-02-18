@@ -71,6 +71,10 @@
 #include <windows.h>
 #endif /* G_OS_WIN32 */
 
+#ifdef HAVE_MACH_MACH_TIME_H
+#include <mach/mach_time.h>
+#endif
+
 #include "glib_trace.h"
 
 #include "gmain.h"
@@ -2510,7 +2514,25 @@ g_get_real_time (void)
   return (((gint64) tv.tv_sec) * 1000000) + tv.tv_usec;
 }
 
-#ifdef G_OS_WIN32
+/**
+ * g_get_monotonic_time:
+ *
+ * Queries the system monotonic time.
+ *
+ * The monotonic clock will always increase and doesn't suffer
+ * discontinuities when the user (or NTP) changes the system time.  It
+ * may or may not continue to tick during times where the machine is
+ * suspended.
+ *
+ * We try to use the clock that corresponds as closely as possible to
+ * the passage of time as measured by system calls such as poll() but it
+ * may not always be possible to do this.
+ *
+ * Returns: the monotonic time, in microseconds
+ *
+ * Since: 2.28
+ **/
+#if defined (G_OS_WIN32)
 static ULONGLONG (*g_GetTickCount64) (void) = NULL;
 static guint32 g_win32_tick_epoch = 0;
 
@@ -2525,70 +2547,10 @@ g_clock_win32_init (void)
     g_GetTickCount64 = (void *) GetProcAddress (kernel32, "GetTickCount64");
   g_win32_tick_epoch = ((guint32)GetTickCount()) >> 31;
 }
-#endif
 
-/**
- * g_get_monotonic_time:
- *
- * Queries the system monotonic time, if available.
- *
- * On POSIX systems with clock_gettime() and `CLOCK_MONOTONIC` this call
- * is a very shallow wrapper for that.  Otherwise, we make a best effort
- * that probably involves returning the wall clock time (with at least
- * microsecond accuracy, subject to the limitations of the OS kernel).
- *
- * It's important to note that POSIX `CLOCK_MONOTONIC` does
- * not count time spent while the machine is suspended.
- *
- * On Windows, "limitations of the OS kernel" is a rather substantial
- * statement.  Depending on the configuration of the system, the wall
- * clock time is updated as infrequently as 64 times a second (which
- * is approximately every 16ms). Also, on XP (but not on Vista or later)
- * the monotonic clock is locally monotonic, but may differ in exact
- * value between processes due to timer wrap handling.
- *
- * Returns: the monotonic time, in microseconds
- *
- * Since: 2.28
- **/
 gint64
 g_get_monotonic_time (void)
 {
-#ifdef HAVE_CLOCK_GETTIME
-  /* librt clock_gettime() is our first choice */
-  struct timespec ts;
-
-#ifdef CLOCK_MONOTONIC
-  clock_gettime (CLOCK_MONOTONIC, &ts);
-#else
-  clock_gettime (CLOCK_REALTIME, &ts);
-#endif
-
-  /* In theory monotonic time can have any epoch.
-   *
-   * glib presently assumes the following:
-   *
-   *   1) The epoch comes some time after the birth of Jesus of Nazareth, but
-   *      not more than 10000 years later.
-   *
-   *   2) The current time also falls sometime within this range.
-   *
-   * These two reasonable assumptions leave us with a maximum deviation from
-   * the epoch of 10000 years, or 315569520000000000 seconds.
-   *
-   * If we restrict ourselves to this range then the number of microseconds
-   * will always fit well inside the constraints of a int64 (by a factor of
-   * about 29).
-   *
-   * If you actually hit the following assertion, probably you should file a
-   * bug against your operating system for being excessively silly.
-   **/
-  g_assert (G_GINT64_CONSTANT (-315569520000000000) < ts.tv_sec &&
-            ts.tv_sec < G_GINT64_CONSTANT (315569520000000000));
-
-  return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
-
-#elif defined (G_OS_WIN32)
   guint64 ticks;
   guint32 ticks32;
 
@@ -2622,7 +2584,7 @@ g_get_monotonic_time (void)
    * is to use it to interpolate the lower precision clocks. Firefox does something like
    * this:
    *   https://bugzilla.mozilla.org/show_bug.cgi?id=363258
-   * 
+   *
    * However this seems quite complicated, so we're not doing this right now.
    *
    * The approach we take instead is to use the TGT timer, extending it to 64bit
@@ -2633,7 +2595,7 @@ g_get_monotonic_time (void)
    * This means that:
    *  - We have a globally consistent monotonic clock on Vista and later
    *  - We have a locally monotonic clock on XP
-   *  - Apps that need higher precision in timeouts and clock reads can call 
+   *  - Apps that need higher precision in timeouts and clock reads can call
    *    timeBeginPeriod() to increase it as much as they want
    */
 
@@ -2644,10 +2606,10 @@ g_get_monotonic_time (void)
       ticks = g_GetTickCount64 ();
       ticks32 = timeGetTime();
 
-      /* GTC64 and TGT are sampled at different times, however they 
-       * have the same base and source (msecs since system boot). 
+      /* GTC64 and TGT are sampled at different times, however they
+       * have the same base and source (msecs since system boot).
        * They can differ by as much as -16 to +16 msecs.
-       * We can't just inject the low bits into the 64bit counter 
+       * We can't just inject the low bits into the 64bit counter
        * as one of the counters can have wrapped in 32bit space and
        * the other not. Instead we calculate the signed difference
        * in 32bit space and apply that difference to the 64bit counter.
@@ -2656,9 +2618,9 @@ g_get_monotonic_time (void)
 
       /* We could do some 2's complement hack, but we play it safe */
       if (ticks32 - ticks_as_32bit <= G_MAXINT32)
-	ticks += ticks32 - ticks_as_32bit;
+        ticks += ticks32 - ticks_as_32bit;
       else
-	ticks -= ticks_as_32bit - ticks32;
+        ticks -= ticks_as_32bit - ticks32;
     }
   else
     {
@@ -2686,26 +2648,74 @@ g_get_monotonic_time (void)
        * processes.
        */
       if ((ticks32 >> 31) != (epoch & 1))
-	{
-	  epoch++;
-	  g_atomic_int_set (&g_win32_tick_epoch, epoch);
-	}
+        {
+          epoch++;
+          g_atomic_int_set (&g_win32_tick_epoch, epoch);
+        }
 
 
       ticks = (guint64)ticks32 | ((guint64)epoch) << 31;
     }
 
   return ticks * 1000;
-
-#else /* !HAVE_CLOCK_GETTIME && ! G_OS_WIN32*/
-
-  GTimeVal tv;
-
-  g_get_current_time (&tv);
-
-  return (((gint64) tv.tv_sec) * 1000000) + tv.tv_usec;
-#endif
 }
+#elif defined(HAVE_MACH_MACH_TIME_H) /* Mac OS */
+gint64
+g_get_monotonic_time (void)
+{
+  static mach_timebase_info_data_t timebase_info;
+
+  if (timebase_info.denom == 0)
+    {
+      /* This is a fraction that we must use to scale
+       * mach_absolute_time() by in order to reach nanoseconds.
+       *
+       * We've only ever observed this to be 1/1, but maybe it could be
+       * 1000/1 if mach time is microseconds already, or 1/1000 if
+       * picoseconds.  Try to deal nicely with that.
+       */
+      mach_timebase_info (&timebase_info);
+
+      /* We actually want microseconds... */
+      if (timebase_info.numer % 1000 == 0)
+        timebase_info.numer /= 1000;
+      else
+        timebase_info.denom *= 1000;
+
+      /* We want to make the numer 1 to avoid having to multiply... */
+      if (timebase_info.denom % timebase_info.numer == 0)
+        {
+          timebase_info.denom /= timebase_info.numer;
+          timebase_info.numer = 1;
+        }
+      else
+        {
+          /* We could just multiply by timebase_info.numer below, but why
+           * bother for a case that may never actually exist...
+           *
+           * Plus -- performing the multiplication would risk integer
+           * overflow.  If we ever actually end up in this situation, we
+           * should more carefully evaluate the correct course of action.
+           */
+          mach_timebase_info (&timebase_info); /* Get a fresh copy for a better message */
+          g_error ("Got weird mach timebase info of %d/%d.  Please file a bug against GLib.",
+                   timebase_info.numer, timebase_info.denom);
+        }
+    }
+
+  return mach_absolute_time () / timebase_info.denom;
+}
+#else
+gint64
+g_get_monotonic_time (void)
+{
+  struct timespec ts;
+
+  clock_gettime (CLOCK_MONOTONIC, &ts);
+
+  return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
+}
+#endif
 
 static void
 g_main_dispatch_free (gpointer dispatch)
