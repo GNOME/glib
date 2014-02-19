@@ -156,11 +156,11 @@ guint8 result_sha1_test7[] = {
 
 typedef struct {
   GChecksumType digest_type;
-  gpointer key;
+  gconstpointer key;
   gsize key_len;
-  gpointer data;
+  gconstpointer data;
   gsize data_len;
-  gpointer result;
+  gconstpointer result;
 } HmacCase;
 
 HmacCase hmac_md5_tests[] = {
