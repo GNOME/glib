@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.36.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-10 08:13+0100\n"
-"PO-Revision-Date: 2014-02-10 16:16+0100\n"
+"POT-Creation-Date: 2014-02-19 23:56+0100\n"
+"PO-Revision-Date: 2014-02-19 23:57+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -62,7 +62,7 @@ msgstr "Start et program"
 
 #: ../gio/gapplication-tool.c:56
 msgid "Launch the application (with optional files to open)"
-msgstr ""
+msgstr "Start programmet (med valgfrie filer som skal åpnes)"
 
 #: ../gio/gapplication-tool.c:57
 msgid "APPID [FILE...]"
@@ -165,7 +165,9 @@ msgstr "Kommandoer:\n"
 msgid ""
 "Use '%s help COMMAND' to get detailed help.\n"
 "\n"
-msgstr "Bruk «%s help KOMMANDO» for å  få detaljert hjelp.\n\n"
+msgstr ""
+"Bruk «%s help KOMMANDO» for å  få detaljert hjelp.\n"
+"\n"
 
 #: ../gio/gapplication-tool.c:165
 #, c-format
@@ -185,7 +187,9 @@ msgstr "ugyldig program-ID: «%s»\n"
 msgid ""
 "'%s' takes no arguments\n"
 "\n"
-msgstr "«%s» tar ingen argumenter\n\n"
+msgstr ""
+"«%s» tar ingen argumenter\n"
+"\n"
 
 #: ../gio/gapplication-tool.c:262
 #, c-format
@@ -234,7 +238,9 @@ msgstr "kan ikke finne skrivebordsfil for program %s\n"
 msgid ""
 "unrecognised command: %s\n"
 "\n"
-msgstr "ukjent kommando: %s\n\n"
+msgstr ""
+"ukjent kommando: %s\n"
+"\n"
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
 #: ../gio/ginputstream.c:173 ../gio/ginputstream.c:365
@@ -263,10 +269,10 @@ msgstr "Strømmen er allerede lukket"
 msgid "Truncate not supported on base stream"
 msgstr "Avkorting er ikke støttet på grunnstrøm"
 
-#: ../gio/gcancellable.c:312 ../gio/gdbusconnection.c:1894
+#: ../gio/gcancellable.c:310 ../gio/gdbusconnection.c:1894
 #: ../gio/gdbusconnection.c:1986 ../gio/gdbusprivate.c:1416
-#: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:832
-#: ../gio/gsimpleasyncresult.c:858
+#: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:829
+#: ../gio/gsimpleasyncresult.c:855
 #, c-format
 msgid "Operation was cancelled"
 msgstr "Operasjonen ble avbrutt"
@@ -340,7 +346,7 @@ msgstr "GCredentials har ikke en prosess-ID på dette OSet"
 #: ../gio/gcredentials.c:536
 #, fuzzy
 msgid "Credentials spoofing is not possible on this OS"
-msgstr "GCredentials er ikke implementert på dette OSet"
+msgstr "Credentials er ikke implementert på dette OSet"
 
 #: ../gio/gdatainputstream.c:304
 msgid "Unexpected early end-of-stream"
@@ -2184,7 +2190,7 @@ msgstr "mount implementerer ikke gjetting av innholdstype"
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "mount implementerer ikke synkron gjetting av innholdstype"
 
-#: ../gio/gnetworkaddress.c:351
+#: ../gio/gnetworkaddress.c:339
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Vertsnavn «%s» inneholder «[» men ikke «]»"
@@ -2218,6 +2224,11 @@ msgstr "Ut-strømmen implementerer ikke skriving"
 #: ../gio/goutputstream.c:511 ../gio/goutputstream.c:1028
 msgid "Source stream is already closed"
 msgstr "Kildestrømmen er allerede lukket"
+
+#: ../gio/gresolver.c:316 ../gio/gthreadedresolver.c:108
+#, c-format
+msgid "Error resolving '%s': %s"
+msgstr "Feil under oppslag av «%s»: %s"
 
 #: ../gio/gresource.c:291 ../gio/gresource.c:539 ../gio/gresource.c:556
 #: ../gio/gresource.c:677 ../gio/gresource.c:746 ../gio/gresource.c:807
@@ -2602,7 +2613,7 @@ msgstr "Ugyldig plugg, initiering feilet pga: %s"
 msgid "Socket is already closed"
 msgstr "Pluggen er allerede lukket"
 
-#: ../gio/gsocket.c:335 ../gio/gsocket.c:3622 ../gio/gsocket.c:3677
+#: ../gio/gsocket.c:335 ../gio/gsocket.c:3634 ../gio/gsocket.c:3689
 msgid "Socket I/O timed out"
 msgstr "Tidsavbrudd for I/U mot plugg"
 
@@ -2671,51 +2682,51 @@ msgstr "Tilkobling pågår"
 msgid "Unable to get pending error: "
 msgstr "Kan ikke hente utestående feil: "
 
-#: ../gio/gsocket.c:2619
+#: ../gio/gsocket.c:2631
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Feil ved mottak av data: %s"
 
-#: ../gio/gsocket.c:2797
+#: ../gio/gsocket.c:2809
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Feil ved sending av data: %s"
 
-#: ../gio/gsocket.c:2911
+#: ../gio/gsocket.c:2923
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Kan ikke stenge ned plugg: %s"
 
-#: ../gio/gsocket.c:2990
+#: ../gio/gsocket.c:3002
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Feil ved lukking av plugg: %s"
 
-#: ../gio/gsocket.c:3615
+#: ../gio/gsocket.c:3627
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Venter på tilstand for plugg: %s"
 
-#: ../gio/gsocket.c:3893 ../gio/gsocket.c:3974
+#: ../gio/gsocket.c:3905 ../gio/gsocket.c:3986
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Feil ved sending av melding: %s"
 
-#: ../gio/gsocket.c:3918
+#: ../gio/gsocket.c:3930
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage er ikke støttet på Windows"
 
-#: ../gio/gsocket.c:4252 ../gio/gsocket.c:4387
+#: ../gio/gsocket.c:4264 ../gio/gsocket.c:4399
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Feil ved mottak av melding: %s"
 
-#: ../gio/gsocket.c:4492
+#: ../gio/gsocket.c:4504
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Kunne ikke lese autentiseringsinformasjon for plugg: %s"
 
-#: ../gio/gsocket.c:4501
+#: ../gio/gsocket.c:4513
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ikke implementert for dette OSet"
 
@@ -2845,11 +2856,6 @@ msgstr "Ukjent feil i SOCKSv5-proxy."
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Kan ikke håndtere versjon %d av GThemedIcon-koding"
-
-#: ../gio/gthreadedresolver.c:108
-#, c-format
-msgid "Error resolving '%s': %s"
-msgstr "Feil under oppslag av «%s»: %s"
 
 #: ../gio/gthreadedresolver.c:193
 #, c-format
