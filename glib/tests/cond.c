@@ -25,6 +25,8 @@
 
 #include <glib.h>
 
+#include <unistd.h>
+
 static GCond cond;
 static GMutex mutex;
 static volatile gint next;
@@ -232,6 +234,41 @@ test_cond2 (void)
   barrier_clear (&b);
 }
 
+static void
+test_wait_until (void)
+{
+  gint64 until;
+  GMutex lock;
+  GCond cond;
+
+  /* This test will make sure we don't wait too much or too little.
+   *
+   * We check the 'too long' with a timeout of 60 seconds.
+   *
+   * We check the 'too short' by verifying a guarantee of the API: we
+   * should not wake up until the specified time has passed.
+   */
+  g_mutex_init (&lock);
+  g_cond_init (&cond);
+
+  /* Don't wait forever... */
+  alarm (60);
+
+  until = g_get_monotonic_time () + G_TIME_SPAN_SECOND;
+
+  /* Could still have spurious wakeups, so we must loop... */
+  g_mutex_lock (&lock);
+  while (g_cond_wait_until (&cond, &lock, until))
+    ;
+  g_mutex_unlock (&lock);
+
+  /* Make sure it's after the until time */
+  g_assert_cmpint (until, <=, g_get_monotonic_time ());
+
+  g_mutex_clear (&lock);
+  g_cond_clear (&cond);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -239,6 +276,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/thread/cond1", test_cond1);
   g_test_add_func ("/thread/cond2", test_cond2);
+  g_test_add_func ("/thread/cond/wait-until", test_wait_until);
 
   return g_test_run ();
 }
