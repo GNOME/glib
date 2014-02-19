@@ -49,7 +49,8 @@
  *
  * Both the key and data are arbitrary byte arrays of bytes or characters.
  *
- * Support for HMAC Digests has been added in GLib 2.30.
+ * Support for HMAC Digests has been added in GLib 2.30, and support for SHA-512
+ * in GLib 2.42.
  */
 
 struct _GHmac
@@ -80,6 +81,8 @@ struct _GHmac
  * will be closed and it won't be possible to call g_hmac_update()
  * on it anymore.
  *
+ * Support for digests of type %G_CHECKSUM_SHA512 has been added in GLib 2.42.
+ *
  * Returns: the newly created #GHmac, or %NULL.
  *   Use g_hmac_unref() to free the memory allocated by it.
  *
@@ -107,7 +110,10 @@ g_hmac_new (GChecksumType  digest_type,
       block_size = 64; /* RFC 2104 */
       break;
     case G_CHECKSUM_SHA256:
-      block_size = 64; /* RFC draft-kelly-ipsec-ciph-sha2-01 */
+      block_size = 64; /* RFC 4868 */
+      break;
+    case G_CHECKSUM_SHA512:
+      block_size = 128; /* RFC 4868 */
       break;
     default:
       g_return_val_if_reached (NULL);
