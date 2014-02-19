@@ -308,8 +308,10 @@ handle_ip_address (const char  *hostname,
   /* Reject non-standard IPv4 numbers-and-dots addresses.
    * g_inet_address_new_from_string() will have accepted any "real" IP
    * address, so if inet_aton() succeeds, then it's an address we want
-   * to reject.
+   * to reject.  This check is not necessary for Windows, as getaddrinfo()
+   * already rejects such IPv4 addresses on Windows.
    */
+#ifndef G_OS_WIN32
   if (inet_aton (hostname, &ip4addr))
     {
       g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
@@ -317,6 +319,7 @@ handle_ip_address (const char  *hostname,
                    hostname, gai_strerror (EAI_NONAME));
       return TRUE;
     }
+#endif
 
   return FALSE;
 }
