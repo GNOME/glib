@@ -331,6 +331,8 @@ g_str_to_ascii (const gchar *str,
   GString *result;
   guint item_id;
 
+  g_return_val_if_fail (str != NULL, NULL);
+
   if (g_str_is_ascii (str))
     return g_strdup (str);
 
@@ -339,7 +341,7 @@ g_str_to_ascii (const gchar *str,
   else
     item_id = get_default_item_id ();
 
-  result = g_string_new (NULL);
+  result = g_string_sized_new (strlen (str));
 
   while (*str)
     {
