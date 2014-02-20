@@ -575,7 +575,7 @@ g_main_context_new_with_next_id (guint next_id)
  * 
  * Creates a new #GMainContext structure.
  * 
- * Return value: the new #GMainContext
+ * Returns: the new #GMainContext
  **/
 GMainContext *
 g_main_context_new (void)
@@ -641,7 +641,7 @@ g_main_context_new (void)
  * specified, and corresponds to the "main" main loop. See also
  * g_main_context_get_thread_default().
  * 
- * Return value: (transfer none): the global default main context.
+ * Returns: (transfer none): the global default main context.
  **/
 GMainContext *
 g_main_context_default (void)
@@ -844,7 +844,7 @@ g_main_context_ref_thread_default (void)
  * and must be added to one with g_source_attach() before it will be
  * executed.
  * 
- * Return value: the newly-created #GSource.
+ * Returns: the newly-created #GSource.
  **/
 GSource *
 g_source_new (GSourceFuncs *source_funcs,
@@ -1161,7 +1161,7 @@ g_source_attach_unlocked (GSource      *source,
  * Adds a #GSource to a @context so that it will be executed within
  * that context. Remove it by calling g_source_destroy().
  *
- * Return value: the ID (greater than 0) for the source within the 
+ * Returns: the ID (greater than 0) for the source within the 
  *   #GMainContext. 
  **/
 guint
@@ -1277,7 +1277,7 @@ g_source_destroy (GSource *source)
  * context. The reverse
  * mapping from ID to source is done by g_main_context_find_source_by_id().
  *
- * Return value: the ID (greater than 0) for the source
+ * Returns: the ID (greater than 0) for the source
  **/
 guint
 g_source_get_id (GSource *source)
@@ -1307,7 +1307,7 @@ g_source_get_id (GSource *source)
  * g_main_current_source(). But calling this function on a source
  * whose #GMainContext has been destroyed is an error.
  * 
- * Return value: (transfer none) (allow-none): the #GMainContext with which the
+ * Returns: (transfer none) (allow-none): the #GMainContext with which the
  *               source is associated, or %NULL if the context has not
  *               yet been added to a source.
  **/
@@ -1726,7 +1726,7 @@ g_source_set_priority (GSource  *source,
  * 
  * Gets the priority of a source.
  * 
- * Return value: the priority of the source
+ * Returns: the priority of the source
  **/
 gint
 g_source_get_priority (GSource *source)
@@ -1848,7 +1848,7 @@ g_source_set_can_recurse (GSource  *source,
  * Checks whether a source is allowed to be called recursively.
  * see g_source_set_can_recurse().
  * 
- * Return value: whether recursion is allowed.
+ * Returns: whether recursion is allowed.
  **/
 gboolean
 g_source_get_can_recurse (GSource  *source)
@@ -1901,7 +1901,7 @@ g_source_set_name (GSource    *source,
  * The name may be #NULL if it has never been set with
  * g_source_set_name().
  *
- * Return value: the name of the source
+ * Returns: the name of the source
  * Since: 2.26
  **/
 const char *
@@ -1946,7 +1946,7 @@ g_source_set_name_by_id (guint           tag,
  * 
  * Increases the reference count on a source by one.
  * 
- * Return value: @source
+ * Returns: @source
  **/
 GSource *
 g_source_ref (GSource *source)
@@ -2060,7 +2060,7 @@ g_source_unref (GSource *source)
  * 
  * Finds a #GSource given a pair of context and ID.
  * 
- * Return value: (transfer none): the #GSource if found, otherwise, %NULL
+ * Returns: (transfer none): the #GSource if found, otherwise, %NULL
  **/
 GSource *
 g_main_context_find_source_by_id (GMainContext *context,
@@ -2100,7 +2100,7 @@ g_main_context_find_source_by_id (GMainContext *context,
  * multiple sources exist with the same source function and user data,
  * the first one found will be returned.
  * 
- * Return value: (transfer none): the source, if one was found, otherwise %NULL
+ * Returns: (transfer none): the source, if one was found, otherwise %NULL
  **/
 GSource *
 g_main_context_find_source_by_funcs_user_data (GMainContext *context,
@@ -2149,7 +2149,7 @@ g_main_context_find_source_by_funcs_user_data (GMainContext *context,
  * multiple sources exist with the same user data, the first
  * one found will be returned.
  * 
- * Return value: (transfer none): the source, if one was found, otherwise %NULL
+ * Returns: (transfer none): the source, if one was found, otherwise %NULL
  **/
 GSource *
 g_main_context_find_source_by_user_data (GMainContext *context,
@@ -2202,7 +2202,7 @@ g_main_context_find_source_by_user_data (GMainContext *context,
  *
  * It is a programmer error to attempt to remove a non-existent source.
  *
- * Return value: For historical reasons, this function always returns %TRUE
+ * Returns: For historical reasons, this function always returns %TRUE
  **/
 gboolean
 g_source_remove (guint tag)
@@ -2228,7 +2228,7 @@ g_source_remove (guint tag)
  * data for the callback. If multiple sources exist with the same user
  * data, only one will be destroyed.
  * 
- * Return value: %TRUE if a source was found and removed. 
+ * Returns: %TRUE if a source was found and removed. 
  **/
 gboolean
 g_source_remove_by_user_data (gpointer user_data)
@@ -2254,7 +2254,7 @@ g_source_remove_by_user_data (gpointer user_data)
  * source functions and user data. If multiple sources exist with the
  * same source functions and user data, only one will be destroyed.
  * 
- * Return value: %TRUE if a source was found and removed. 
+ * Returns: %TRUE if a source was found and removed. 
  **/
 gboolean
 g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
@@ -2837,7 +2837,7 @@ get_dispatch (void)
  *    simply return to the main loop and then get called again when
  *    there is more work to do.
  * 
- * Return value: The main loop recursion level in the current thread
+ * Returns: The main loop recursion level in the current thread
  */
 int
 g_main_depth (void)
@@ -2851,7 +2851,7 @@ g_main_depth (void)
  *
  * Returns the currently firing source for this thread.
  * 
- * Return value: (transfer none): The currently firing source or %NULL.
+ * Returns: (transfer none): The currently firing source or %NULL.
  *
  * Since: 2.12
  */
@@ -2927,7 +2927,7 @@ g_main_current_source (void)
  * }
  * ]|
  *
- * Return value: %TRUE if the source has been destroyed
+ * Returns: %TRUE if the source has been destroyed
  *
  * Since: 2.12
  */
@@ -3111,7 +3111,7 @@ g_main_dispatch (GMainContext *context)
  * can call g_main_context_prepare(), g_main_context_query(),
  * g_main_context_check(), g_main_context_dispatch().
  * 
- * Return value: %TRUE if the operation succeeded, and
+ * Returns: %TRUE if the operation succeeded, and
  *   this thread is now the owner of @context.
  **/
 gboolean 
@@ -3195,7 +3195,7 @@ g_main_context_release (GMainContext *context)
  * that owner releases ownership or until @cond is signaled, then
  * try again (once) to become the owner.
  * 
- * Return value: %TRUE if the operation succeeded, and
+ * Returns: %TRUE if the operation succeeded, and
  *   this thread is now the owner of @context.
  **/
 gboolean
@@ -3260,7 +3260,7 @@ g_main_context_wait (GMainContext *context,
  * Prepares to poll sources within a main loop. The resulting information
  * for polling is determined by calling g_main_context_query ().
  * 
- * Return value: %TRUE if some source is ready to be dispatched
+ * Returns: %TRUE if some source is ready to be dispatched
  *               prior to polling.
  **/
 gboolean
@@ -3420,7 +3420,7 @@ g_main_context_prepare (GMainContext *context,
  * 
  * Determines information necessary to poll this main loop.
  * 
- * Return value: the number of records actually stored in @fds,
+ * Returns: the number of records actually stored in @fds,
  *   or, if more than @n_fds records need to be stored, the number
  *   of records that need to be stored.
  **/
@@ -3485,7 +3485,7 @@ g_main_context_query (GMainContext *context,
  * 
  * Passes the results of polling back to the main loop.
  * 
- * Return value: %TRUE if some sources are ready to be dispatched.
+ * Returns: %TRUE if some sources are ready to be dispatched.
  **/
 gboolean
 g_main_context_check (GMainContext *context,
@@ -3724,7 +3724,7 @@ g_main_context_iterate (GMainContext *context,
  *
  * Checks if any sources have pending events for the given context.
  * 
- * Return value: %TRUE if events are pending.
+ * Returns: %TRUE if events are pending.
  **/
 gboolean 
 g_main_context_pending (GMainContext *context)
@@ -3759,7 +3759,7 @@ g_main_context_pending (GMainContext *context)
  * g_main_context_iteration() to return %FALSE, since the wait may
  * be interrupted for other reasons than an event source becoming ready.
  *
- * Return value: %TRUE if events were dispatched.
+ * Returns: %TRUE if events were dispatched.
  **/
 gboolean
 g_main_context_iteration (GMainContext *context, gboolean may_block)
@@ -3785,7 +3785,7 @@ g_main_context_iteration (GMainContext *context, gboolean may_block)
  * 
  * Creates a new #GMainLoop structure.
  * 
- * Return value: a new #GMainLoop.
+ * Returns: a new #GMainLoop.
  **/
 GMainLoop *
 g_main_loop_new (GMainContext *context,
@@ -3812,7 +3812,7 @@ g_main_loop_new (GMainContext *context,
  * 
  * Increases the reference count on a #GMainLoop object by one.
  * 
- * Return value: @loop
+ * Returns: @loop
  **/
 GMainLoop *
 g_main_loop_ref (GMainLoop *loop)
@@ -3943,7 +3943,7 @@ g_main_loop_quit (GMainLoop *loop)
  * 
  * Checks to see if the main loop is currently being run via g_main_loop_run().
  * 
- * Return value: %TRUE if the mainloop is currently being run.
+ * Returns: %TRUE if the mainloop is currently being run.
  **/
 gboolean
 g_main_loop_is_running (GMainLoop *loop)
@@ -3960,7 +3960,7 @@ g_main_loop_is_running (GMainLoop *loop)
  * 
  * Returns the #GMainContext of @loop.
  * 
- * Return value: (transfer none): the #GMainContext of @loop
+ * Returns: (transfer none): the #GMainContext of @loop
  **/
 GMainContext *
 g_main_loop_get_context (GMainLoop *loop)
@@ -4291,7 +4291,7 @@ g_main_context_set_poll_func (GMainContext *context,
  * 
  * Gets the poll function set by g_main_context_set_poll_func().
  * 
- * Return value: the poll function
+ * Returns: the poll function
  **/
 GPollFunc
 g_main_context_get_poll_func (GMainContext *context)
@@ -4468,7 +4468,7 @@ g_timeout_dispatch (GSource     *source,
  * The interval given is in terms of monotonic time, not wall clock
  * time.  See g_get_monotonic_time().
  * 
- * Return value: the newly-created timeout source
+ * Returns: the newly-created timeout source
  **/
 GSource *
 g_timeout_source_new (guint interval)
@@ -4498,7 +4498,7 @@ g_timeout_source_new (guint interval)
  * The interval given in terms of monotonic time, not wall clock time.
  * See g_get_monotonic_time().
  *
- * Return value: the newly-created timeout source
+ * Returns: the newly-created timeout source
  *
  * Since: 2.14	
  **/
@@ -4547,7 +4547,7 @@ g_timeout_source_new_seconds (guint interval)
  * The interval given in terms of monotonic time, not wall clock time.
  * See g_get_monotonic_time().
  * 
- * Return value: the ID (greater than 0) of the event source.
+ * Returns: the ID (greater than 0) of the event source.
  * Rename to: g_timeout_add
  **/
 guint
@@ -4605,7 +4605,7 @@ g_timeout_add_full (gint           priority,
  * The interval given is in terms of monotonic time, not wall clock
  * time.  See g_get_monotonic_time().
  * 
- * Return value: the ID (greater than 0) of the event source.
+ * Returns: the ID (greater than 0) of the event source.
  **/
 guint
 g_timeout_add (guint32        interval,
@@ -4659,7 +4659,7 @@ g_timeout_add (guint32        interval,
  * The interval given is in terms of monotonic time, not wall clock
  * time.  See g_get_monotonic_time().
  * 
- * Return value: the ID (greater than 0) of the event source.
+ * Returns: the ID (greater than 0) of the event source.
  *
  * Rename to: g_timeout_add_seconds
  * Since: 2.14
@@ -4711,7 +4711,7 @@ g_timeout_add_seconds_full (gint           priority,
  * The interval given is in terms of monotonic time, not wall clock
  * time.  See g_get_monotonic_time().
  * 
- * Return value: the ID (greater than 0) of the event source.
+ * Returns: the ID (greater than 0) of the event source.
  *
  * Since: 2.14
  **/
@@ -5124,7 +5124,7 @@ g_unix_signal_handler (int signum)
  * be greater than 0 (i.e. this function must wait for a specific child,
  * and cannot wait for one of many children by using a nonpositive argument).
  *
- * Return value: the newly-created child watch source
+ * Returns: the newly-created child watch source
  *
  * Since: 2.4
  **/
@@ -5193,7 +5193,7 @@ g_child_watch_source_new (GPid pid)
  * using g_source_attach(). You can do these steps manually if you 
  * need greater control.
  *
- * Return value: the ID (greater than 0) of the event source.
+ * Returns: the ID (greater than 0) of the event source.
  *
  * Rename to: g_child_watch_add
  * Since: 2.4
@@ -5252,7 +5252,7 @@ g_child_watch_add_full (gint            priority,
  * using g_source_attach(). You can do these steps manually if you 
  * need greater control.
  *
- * Return value: the ID (greater than 0) of the event source.
+ * Returns: the ID (greater than 0) of the event source.
  *
  * Since: 2.4
  **/
@@ -5308,7 +5308,7 @@ g_idle_dispatch (GSource    *source,
  * %G_PRIORITY_DEFAULT_IDLE, as compared to other sources which
  * have a default priority of %G_PRIORITY_DEFAULT.
  * 
- * Return value: the newly-created idle source
+ * Returns: the newly-created idle source
  **/
 GSource *
 g_idle_source_new (void)
@@ -5337,7 +5337,7 @@ g_idle_source_new (void)
  * and attaches it to the main loop context using g_source_attach(). 
  * You can do these steps manually if you need greater control.
  * 
- * Return value: the ID (greater than 0) of the event source.
+ * Returns: the ID (greater than 0) of the event source.
  * Rename to: g_idle_add
  **/
 guint 
@@ -5378,7 +5378,7 @@ g_idle_add_full (gint           priority,
  * and attaches it to the main loop context using g_source_attach(). 
  * You can do these steps manually if you need greater control.
  * 
- * Return value: the ID (greater than 0) of the event source.
+ * Returns: the ID (greater than 0) of the event source.
  **/
 guint 
 g_idle_add (GSourceFunc    function,
@@ -5393,7 +5393,7 @@ g_idle_add (GSourceFunc    function,
  * 
  * Removes the idle function with the given data.
  * 
- * Return value: %TRUE if an idle source was found and removed.
+ * Returns: %TRUE if an idle source was found and removed.
  **/
 gboolean
 g_idle_remove_by_data (gpointer data)

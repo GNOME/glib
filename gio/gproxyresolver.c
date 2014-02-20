@@ -53,7 +53,7 @@ g_proxy_resolver_default_init (GProxyResolverInterface *iface)
  *
  * Gets the default #GProxyResolver for the system.
  *
- * Return value: (transfer none): the default #GProxyResolver.
+ * Returns: (transfer none): the default #GProxyResolver.
  *
  * Since: 2.26
  */
@@ -73,7 +73,7 @@ g_proxy_resolver_get_default (void)
  * internally; g_proxy_resolver_get_default() will only return a proxy
  * resolver that returns %TRUE for this method.)
  *
- * Return value: %TRUE if @resolver is supported.
+ * Returns: %TRUE if @resolver is supported.
  *
  * Since: 2.26
  */
@@ -112,7 +112,7 @@ g_proxy_resolver_is_supported (GProxyResolver *resolver)
  * Direct connection should not be attempted unless it is part of the
  * returned array of proxies.
  *
- * Return value: (transfer full) (array zero-terminated=1): A
+ * Returns: (transfer full) (array zero-terminated=1): A
  *               NULL-terminated array of proxy URIs. Must be freed
  *               with g_strfreev().
  *
@@ -174,7 +174,7 @@ g_proxy_resolver_lookup_async (GProxyResolver      *resolver,
  * g_proxy_resolver_lookup_async() is complete. See
  * g_proxy_resolver_lookup() for more details.
  *
- * Return value: (transfer full) (array zero-terminated=1): A
+ * Returns: (transfer full) (array zero-terminated=1): A
  *               NULL-terminated array of proxy URIs. Must be freed
  *               with g_strfreev().
  *

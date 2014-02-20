@@ -4188,7 +4188,7 @@ append_desktop_entry (GList      *list,
  *
  * Optionally doesn't list the desktop ids given in the @except
  *
- * Return value: a #GList containing the desktop ids which claim
+ * Returns: a #GList containing the desktop ids which claim
  *    to handle @mime_type.
  */
 static GList *

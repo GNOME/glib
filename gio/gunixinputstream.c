@@ -301,7 +301,7 @@ g_unix_input_stream_set_close_fd (GUnixInputStream *stream,
  * Returns whether the file descriptor of @stream will be
  * closed when the stream is closed.
  *
- * Return value: %TRUE if the file descriptor is closed when done
+ * Returns: %TRUE if the file descriptor is closed when done
  *
  * Since: 2.20
  */
@@ -319,7 +319,7 @@ g_unix_input_stream_get_close_fd (GUnixInputStream *stream)
  *
  * Return the UNIX file descriptor that the stream reads from.
  *
- * Return value: The file descriptor of @stream
+ * Returns: The file descriptor of @stream
  *
  * Since: 2.20
  */

@@ -71,7 +71,7 @@ g_tls_server_connection_default_init (GTlsServerConnectionInterface *iface)
  * Creates a new #GTlsServerConnection wrapping @base_io_stream (which
  * must have pollable input and output streams).
  *
- * Return value: (transfer full) (type GTlsServerConnection): the new
+ * Returns: (transfer full) (type GTlsServerConnection): the new
  * #GTlsServerConnection, or %NULL on error
  *
  * Since: 2.28

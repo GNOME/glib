@@ -129,7 +129,7 @@ g_dir_open_with_errno (const gchar *path,
  * directory can then be retrieved using g_dir_read_name().  Note
  * that the ordering is not defined.
  *
- * Return value: a newly allocated #GDir on success, %NULL on failure.
+ * Returns: a newly allocated #GDir on success, %NULL on failure.
  *   If non-%NULL, you must free the result with g_dir_close()
  *   when you are finished with it.
  **/
@@ -241,7 +241,7 @@ g_dir_new_from_dirp (gpointer dirp)
  * On Windows, as is true of all GLib functions which operate on
  * filenames, the returned name is in UTF-8.
  *
- * Return value: The entry's name or %NULL if there are no
+ * Returns: The entry's name or %NULL if there are no
  *   more entries. The return value is owned by GLib and
  *   must not be modified or freed.
  **/

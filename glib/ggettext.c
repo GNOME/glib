@@ -162,7 +162,7 @@ glib_pgettext (const gchar *msgctxtid,
  *
  * An auxiliary function for gettext() support (see Q_()).
  *
- * Return value: @msgval, unless @msgval is identical to @msgid
+ * Returns: @msgval, unless @msgval is identical to @msgid
  *     and contains a '|' character, in which case a pointer to
  *     the substring of msgid after the first '|' character is returned.
  *

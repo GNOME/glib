@@ -76,7 +76,7 @@ g_environ_find (gchar       **envp,
  * Returns the value of the environment variable @variable in the
  * provided list @envp.
  *
- * Return value: the value of the environment variable, or %NULL if
+ * Returns: the value of the environment variable, or %NULL if
  *     the environment variable is not set in @envp. The returned
  *     string is owned by @envp, and will be freed if @variable is
  *     set or unset again.
@@ -111,7 +111,7 @@ g_environ_getenv (gchar       **envp,
  * Sets the environment variable @variable in the provided list
  * @envp to @value.
  *
- * Return value: (array zero-terminated=1) (transfer full): the
+ * Returns: (array zero-terminated=1) (transfer full): the
  *     updated environment list. Free it using g_strfreev().
  *
  * Since: 2.32
@@ -195,7 +195,7 @@ g_environ_unsetenv_internal (gchar        **envp,
  * Removes the environment variable @variable from the provided
  * environment @envp.
  *
- * Return value: (array zero-terminated=1) (transfer full): the
+ * Returns: (array zero-terminated=1) (transfer full): the
  *     updated environment list. Free it using g_strfreev().
  *
  * Since: 2.32
@@ -229,7 +229,7 @@ g_environ_unsetenv (gchar       **envp,
  * On Windows, in case the environment variable's value contains
  * references to other environment variables, they are expanded.
  *
- * Return value: the value of the environment variable, or %NULL if
+ * Returns: the value of the environment variable, or %NULL if
  *     the environment variable is not found. The returned string
  *     may be overwritten by the next call to g_getenv(), g_setenv()
  *     or g_unsetenv().

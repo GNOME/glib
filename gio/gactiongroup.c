@@ -389,7 +389,7 @@ g_action_group_has_action (GActionGroup *action_group,
  * possible for an action to be removed and for a new action to be added
  * with the same name but a different parameter type.
  *
- * Return value: the parameter type
+ * Returns: the parameter type
  *
  * Since: 2.28
  **/
@@ -463,7 +463,7 @@ g_action_group_get_action_state_type (GActionGroup *action_group,
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Return value: (transfer full): the state range hint
+ * Returns: (transfer full): the state range hint
  *
  * Since: 2.28
  **/
@@ -487,7 +487,7 @@ g_action_group_get_action_state_hint (GActionGroup *action_group,
  * An action must be enabled in order to be activated or in order to
  * have its state changed from outside callers.
  *
- * Return value: whether or not the action is currently enabled
+ * Returns: whether or not the action is currently enabled
  *
  * Since: 2.28
  **/
@@ -515,7 +515,7 @@ g_action_group_get_action_enabled (GActionGroup *action_group,
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Return value: (allow-none): the current state of the action
+ * Returns: (allow-none): the current state of the action
  *
  * Since: 2.28
  **/

@@ -82,7 +82,7 @@ g_tls_file_database_default_init (GTlsFileDatabaseInterface *iface)
  *
  * The certificates in @anchors must be PEM encoded.
  *
- * Return value: (transfer full) (type GTlsFileDatabase): the new
+ * Returns: (transfer full) (type GTlsFileDatabase): the new
  * #GTlsFileDatabase, or %NULL on error
  *
  * Since: 2.30

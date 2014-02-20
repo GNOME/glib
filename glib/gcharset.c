@@ -171,7 +171,7 @@ charset_cache_free (gpointer data)
  * The string returned in @charset is not allocated, and should not be
  * freed.
  *
- * Return value: %TRUE if the returned charset is UTF-8
+ * Returns: %TRUE if the returned charset is UTF-8
  */
 gboolean
 g_get_charset (const char **charset)
@@ -212,7 +212,7 @@ g_get_charset (const char **charset)
  *
  * Gets the character set for the current locale.
  *
- * Return value: a newly allocated string containing the name
+ * Returns: a newly allocated string containing the name
  *     of the character set. This string must be freed with g_free().
  */
 gchar *
@@ -542,7 +542,7 @@ language_names_cache_free (gpointer data)
  * `LC_MESSAGES` and `LANG` to find the list of locales specified by the
  * user.
  *
- * Return value: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib
+ * Returns: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib
  *    that must not be modified or freed.
  *
  * Since: 2.6

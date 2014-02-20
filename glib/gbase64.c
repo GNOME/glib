@@ -85,7 +85,7 @@ static const char base64_alphabet[] =
  * `CR LF` sequences, so the result cannot be passed directly to SMTP
  * or certain other protocols.
  *
- * Return value: The number of bytes of output that was written
+ * Returns: The number of bytes of output that was written
  *
  * Since: 2.12
  */
@@ -192,7 +192,7 @@ g_base64_encode_step (const guchar *in,
  * be written to it. It will need up to 4 bytes, or up to 5 bytes if
  * line-breaking is enabled.
  *
- * Return value: The number of bytes of output that was written
+ * Returns: The number of bytes of output that was written
  *
  * Since: 2.12
  */
@@ -244,7 +244,7 @@ g_base64_encode_close (gboolean  break_lines,
  * Encode a sequence of binary data into its Base-64 stringified
  * representation.
  *
- * Return value: (transfer full): a newly allocated, zero-terminated Base-64
+ * Returns: (transfer full): a newly allocated, zero-terminated Base-64
  *               encoded string representing @data. The returned string must
  *               be freed with g_free().
  *
@@ -311,7 +311,7 @@ static const unsigned char mime_base64_rank[256] = {
  * at least: (@len / 4) * 3 + 3 bytes (+ 3 may be needed in case of non-zero
  * state).
  *
- * Return value: The number of bytes of output that was written
+ * Returns: The number of bytes of output that was written
  *
  * Since: 2.12
  **/
@@ -393,7 +393,7 @@ g_base64_decode_step (const gchar  *in,
  * that the returned binary data is not necessarily zero-terminated,
  * so it should not be used as a character string.
  *
- * Return value: (transfer full) (array length=out_len) (element-type guint8):
+ * Returns: (transfer full) (array length=out_len) (element-type guint8):
  *               newly allocated buffer containing the binary data
  *               that @text represents. The returned buffer must
  *               be freed with g_free().
@@ -432,7 +432,7 @@ g_base64_decode (const gchar *text,
  * Decode a sequence of Base-64 encoded text into binary data
  * by overwriting the input data.
  *
- * Return value: (transfer none): The binary data that @text responds. This pointer
+ * Returns: (transfer none): The binary data that @text responds. This pointer
  *               is the same as the input @text.
  *
  * Since: 2.20

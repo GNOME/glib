@@ -558,7 +558,7 @@ g_option_context_set_main_group (GOptionContext *context,
  *
  * Returns a pointer to the main group of @context.
  *
- * Return value: the main group of @context, or %NULL if @context doesn't
+ * Returns: the main group of @context, or %NULL if @context doesn't
  *  have a main group. Note that group belongs to @context and should
  *  not be modified or freed.
  *
@@ -1818,7 +1818,7 @@ platform_get_argv0 (void)
  * automatic character set conversion of string and filename
  * arguments.
  *
- * Return value: %TRUE if the parsing was successful,
+ * Returns: %TRUE if the parsing was successful,
  *               %FALSE if an error occurred
  *
  * Since: 2.6
@@ -2163,7 +2163,7 @@ g_option_context_parse (GOptionContext   *context,
  *
  * Creates a new #GOptionGroup.
  *
- * Return value: a newly created option group. It should be added
+ * Returns: a newly created option group. It should be added
  *   to a #GOptionContext or freed with g_option_group_free().
  *
  * Since: 2.6

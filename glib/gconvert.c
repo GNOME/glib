@@ -213,7 +213,7 @@ try_to_aliases (const char **to_aliases,
  * GLib provides g_convert() and g_locale_to_utf8() which are likely
  * more convenient than the raw iconv wrappers.
  * 
- * Return value: a "conversion descriptor", or (GIConv)-1 if
+ * Returns: a "conversion descriptor", or (GIConv)-1 if
  *  opening the converter failed.
  **/
 GIConv
@@ -265,7 +265,7 @@ g_iconv_open (const gchar  *to_codeset,
  * GLib provides g_convert() and g_locale_to_utf8() which are likely
  * more convenient than the raw iconv wrappers.
  * 
- * Return value: count of non-reversible conversions, or -1 on error
+ * Returns: count of non-reversible conversions, or -1 on error
  **/
 gsize 
 g_iconv (GIConv   converter,
@@ -292,7 +292,7 @@ g_iconv (GIConv   converter,
  * GLib provides g_convert() and g_locale_to_utf8() which are likely
  * more convenient than the raw iconv wrappers.
  * 
- * Return value: -1 on error, 0 on success
+ * Returns: -1 on error, 0 on success
  **/
 gint
 g_iconv_close (GIConv converter)
@@ -372,7 +372,7 @@ close_converter (GIConv cd)
  * character until it knows that the next character is not a mark that
  * could combine with the base character.)
  *
- * Return value: If the conversion was successful, a newly allocated
+ * Returns: If the conversion was successful, a newly allocated
  *               nul-terminated string, which must be freed with
  *               g_free(). Otherwise %NULL and @error will be set.
  **/
@@ -526,7 +526,7 @@ g_convert_with_iconv (const gchar *str,
  * character until it knows that the next character is not a mark that
  * could combine with the base character.)
  *
- * Return value: If the conversion was successful, a newly allocated
+ * Returns: If the conversion was successful, a newly allocated
  *               nul-terminated string, which must be freed with
  *               g_free(). Otherwise %NULL and @error will be set.
  **/
@@ -610,7 +610,7 @@ g_convert (const gchar *str,
  * character until it knows that the next character is not a mark that
  * could combine with the base character.)
  *
- * Return value: If the conversion was successful, a newly allocated
+ * Returns: If the conversion was successful, a newly allocated
  *               nul-terminated string, which must be freed with
  *               g_free(). Otherwise %NULL and @error will be set.
  **/
@@ -886,7 +886,7 @@ strdup_len (const gchar *string,
  * the C runtime (usually the same as that used by the operating
  * system) in the [current locale][setlocale] into a UTF-8 string.
  * 
- * Return value: A newly-allocated buffer containing the converted string,
+ * Returns: A newly-allocated buffer containing the converted string,
  *               or %NULL on an error, and error will be set.
  **/
 gchar *
@@ -930,7 +930,7 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  * system) in the [current locale][setlocale]. On Windows this means
  * the system codepage.
  * 
- * Return value: A newly-allocated buffer containing the converted string,
+ * Returns: A newly-allocated buffer containing the converted string,
  *               or %NULL on an error, and error will be set.
  **/
 gchar *
@@ -997,7 +997,7 @@ filename_charset_cache_free (gpointer data)
  * `G_FILENAME_ENCODING` value, the actual file names present 
  * on a system might be in any random encoding or just gibberish.
  *
- * Return value: %TRUE if the filename encoding is UTF-8.
+ * Returns: %TRUE if the filename encoding is UTF-8.
  * 
  * Since: 2.6
  */
@@ -1134,7 +1134,7 @@ get_filename_charset (const gchar **filename_charset)
  * for filenames; on other platforms, this function indirectly depends on 
  * the [current locale][setlocale].
  * 
- * Return value: The converted string, or %NULL on an error.
+ * Returns: The converted string, or %NULL on an error.
  **/
 gchar*
 g_filename_to_utf8 (const gchar *opsysstring, 
@@ -1206,7 +1206,7 @@ g_filename_to_utf8 (const gchar *opsysstring,
  * on other platforms, this function indirectly depends on the 
  * [current locale][setlocale].
  * 
- * Return value: (array length=bytes_written) (element-type guint8) (transfer full):
+ * Returns: (array length=bytes_written) (element-type guint8) (transfer full):
  *               The converted string, or %NULL on an error.
  **/
 gchar*
@@ -1536,7 +1536,7 @@ hostname_validate (const char *hostname)
  * Converts an escaped ASCII-encoded URI to a local filename in the
  * encoding used for filenames. 
  * 
- * Return value: (type filename): a newly-allocated string holding
+ * Returns: (type filename): a newly-allocated string holding
  *               the resulting filename, or %NULL on an error.
  **/
 gchar *
@@ -1695,7 +1695,7 @@ g_filename_from_uri (const gchar *uri,
  * Converts an absolute filename to an escaped ASCII-encoded URI, with the path
  * component following Section 3.3. of RFC 2396.
  * 
- * Return value: a newly-allocated string holding the resulting
+ * Returns: a newly-allocated string holding the resulting
  *               URI, or %NULL on an error.
  **/
 gchar *
@@ -1854,7 +1854,7 @@ g_uri_list_extract_uris (const gchar *uri_list)
  * This function is preferred over g_filename_display_name() if you know the
  * whole path, as it allows translation.
  *
- * Return value: a newly allocated string containing
+ * Returns: a newly allocated string containing
  *   a rendition of the basename of the filename in valid UTF-8
  *
  * Since: 2.6
@@ -1893,7 +1893,7 @@ g_filename_display_basename (const gchar *filename)
  * g_filename_display_basename(), since that allows location-based
  * translation of filenames.
  *
- * Return value: a newly allocated string containing
+ * Returns: a newly allocated string containing
  *   a rendition of the filename in valid UTF-8
  *
  * Since: 2.6

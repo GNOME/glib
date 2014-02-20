@@ -85,7 +85,7 @@ g_network_monitor_get_default (void)
  * IPv6. It does not necessarily imply that the public Internet is
  * reachable. See #GNetworkMonitor:network-available for more details.
  *
- * Return value: whether the network is available
+ * Returns: whether the network is available
  *
  * Since: 2.32
  */
@@ -123,7 +123,7 @@ g_network_monitor_get_network_available (GNetworkMonitor *monitor)
  * trying to do multicast DNS on the local network), so if you do not
  * want to block, you should use g_network_monitor_can_reach_async().
  *
- * Return value: %TRUE if @connectable is reachable, %FALSE if not.
+ * Returns: %TRUE if @connectable is reachable, %FALSE if not.
  *
  * Since: 2.32
  */
@@ -208,7 +208,7 @@ g_network_monitor_real_can_reach_finish (GNetworkMonitor  *monitor,
  * Finishes an async network connectivity test.
  * See g_network_monitor_can_reach_async().
  *
- * Return value: %TRUE if network is reachable, %FALSE if not.
+ * Returns: %TRUE if network is reachable, %FALSE if not.
  */
 gboolean
 g_network_monitor_can_reach_finish (GNetworkMonitor     *monitor,

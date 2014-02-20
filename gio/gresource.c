@@ -134,7 +134,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *
  * Gets the #GResource Error Quark.
  *
- * Return value: a #GQuark
+ * Returns: a #GQuark
  *
  * Since: 2.32
  */
@@ -209,7 +209,7 @@ g_resource_new_from_table (GvdbTable *table)
  * If you want to use this resource in the global resource namespace you need
  * to register it with g_resources_register().
  *
- * Return value: (transfer full): a new #GResource, or %NULL on error
+ * Returns: (transfer full): a new #GResource, or %NULL on error
  *
  * Since: 2.32
  **/
@@ -244,7 +244,7 @@ g_resource_new_from_data (GBytes  *data,
  * If you want to use this resource in the global resource namespace you need
  * to register it with g_resources_register().
  *
- * Return value: (transfer full): a new #GResource, or %NULL on error
+ * Returns: (transfer full): a new #GResource, or %NULL on error
  *
  * Since: 2.32
  **/
@@ -1015,7 +1015,7 @@ g_static_resource_fini (GStaticResource *static_resource)
  * [glib-compile-resources][glib-compile-resources]
  * and is not typically used by other code.
  *
- * Return value:  (transfer none): a #GResource
+ * Returns:  (transfer none): a #GResource
  *
  * Since: 2.32
  **/

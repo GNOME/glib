@@ -286,7 +286,7 @@ g_unix_output_stream_set_close_fd (GUnixOutputStream *stream,
  * Returns whether the file descriptor of @stream will be
  * closed when the stream is closed.
  *
- * Return value: %TRUE if the file descriptor is closed when done
+ * Returns: %TRUE if the file descriptor is closed when done
  *
  * Since: 2.20
  */
@@ -304,7 +304,7 @@ g_unix_output_stream_get_close_fd (GUnixOutputStream *stream)
  *
  * Return the UNIX file descriptor that the stream writes to.
  *
- * Return value: The file descriptor of @stream
+ * Returns: The file descriptor of @stream
  *
  * Since: 2.20
  */

@@ -1372,7 +1372,7 @@ sha512_sum_digest (Sha512sum *sha512,
  *
  * Gets the length in bytes of digests of type @checksum_type
  *
- * Return value: the checksum length, or -1 if @checksum_type is
+ * Returns: the checksum length, or -1 if @checksum_type is
  * not supported.
  *
  * Since: 2.16
@@ -1422,7 +1422,7 @@ g_checksum_type_get_length (GChecksumType checksum_type)
  * will be closed and it won't be possible to call g_checksum_update()
  * on it anymore.
  *
- * Return value: (transfer full): the newly created #GChecksum, or %NULL.
+ * Returns: (transfer full): the newly created #GChecksum, or %NULL.
  *   Use g_checksum_free() to free the memory allocated by it.
  *
  * Since: 2.16
@@ -1487,7 +1487,7 @@ g_checksum_reset (GChecksum *checksum)
  * g_checksum_get_string() or g_checksum_get_digest(), the copied
  * checksum will be closed as well.
  *
- * Return value: the copy of the passed #GChecksum. Use g_checksum_free()
+ * Returns: the copy of the passed #GChecksum. Use g_checksum_free()
  *   when finished using it.
  *
  * Since: 2.16
@@ -1588,7 +1588,7 @@ g_checksum_update (GChecksum    *checksum,
  *
  * The hexadecimal characters will be lower case.
  *
- * Return value: the hexadecimal representation of the checksum. The
+ * Returns: the hexadecimal representation of the checksum. The
  *   returned string is owned by the checksum and should not be modified
  *   or freed.
  *
@@ -1720,7 +1720,7 @@ g_checksum_get_digest (GChecksum  *checksum,
  *
  * The hexadecimal string returned will be in lower case.
  *
- * Return value: the digest of the binary data as a string in hexadecimal.
+ * Returns: the digest of the binary data as a string in hexadecimal.
  *   The returned string should be freed with g_free() when done using it.
  *
  * Since: 2.16
@@ -1757,7 +1757,7 @@ g_compute_checksum_for_data (GChecksumType  checksum_type,
  *
  * The hexadecimal string returned will be in lower case.
  *
- * Return value: the checksum as a hexadecimal string. The returned string
+ * Returns: the checksum as a hexadecimal string. The returned string
  *   should be freed with g_free() when done using it.
  *
  * Since: 2.16
@@ -1787,7 +1787,7 @@ g_compute_checksum_for_string (GChecksumType  checksum_type,
  *
  * The hexadecimal string returned will be in lower case.
  *
- * Return value: the digest of the binary data as a string in hexadecimal.
+ * Returns: the digest of the binary data as a string in hexadecimal.
  *   The returned string should be freed with g_free() when done using it.
  *
  * Since: 2.34

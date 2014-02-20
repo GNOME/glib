@@ -285,7 +285,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * need to worry about this, and can simply block in the signal
    * handler until the UI thread returns an answer.
    *
-   * Return value: %TRUE to accept @peer_cert (which will also
+   * Returns: %TRUE to accept @peer_cert (which will also
    * immediately end the signal emission). %FALSE to allow the signal
    * emission to continue, which will cause the handshake to fail if
    * no one else overrides it.
@@ -360,7 +360,7 @@ g_tls_connection_set_use_system_certdb (GTlsConnection *conn,
  * Gets whether @conn uses the system certificate database to verify
  * peer certificates. See g_tls_connection_set_use_system_certdb().
  *
- * Return value: whether @conn uses the system certificate database
+ * Returns: whether @conn uses the system certificate database
  *
  * Deprecated: 2.30: Use g_tls_connection_get_database() instead
  */
@@ -412,7 +412,7 @@ g_tls_connection_set_database (GTlsConnection *conn,
  * Gets the certificate database that @conn uses to verify
  * peer certificates. See g_tls_connection_set_database().
  *
- * Return value: (transfer none): the certificate database that @conn uses or %NULL
+ * Returns: (transfer none): the certificate database that @conn uses or %NULL
  *
  * Since: 2.30
  */
@@ -474,7 +474,7 @@ g_tls_connection_set_certificate (GTlsConnection  *conn,
  * Gets @conn's certificate, as set by
  * g_tls_connection_set_certificate().
  *
- * Return value: (transfer none): @conn's certificate, or %NULL
+ * Returns: (transfer none): @conn's certificate, or %NULL
  *
  * Since: 2.28
  */
@@ -550,7 +550,7 @@ g_tls_connection_get_interaction (GTlsConnection       *conn)
  * (It is not set during the emission of
  * #GTlsConnection::accept-certificate.)
  *
- * Return value: (transfer none): @conn's peer's certificate, or %NULL
+ * Returns: (transfer none): @conn's peer's certificate, or %NULL
  *
  * Since: 2.28
  */
@@ -576,7 +576,7 @@ g_tls_connection_get_peer_certificate (GTlsConnection *conn)
  * certificate, after the handshake has completed. (It is not set
  * during the emission of #GTlsConnection::accept-certificate.)
  *
- * Return value: @conn's peer's certificate errors
+ * Returns: @conn's peer's certificate errors
  *
  * Since: 2.28
  */
@@ -644,7 +644,7 @@ g_tls_connection_set_require_close_notify (GTlsConnection *conn,
  * when the connection is closed. See
  * g_tls_connection_set_require_close_notify() for details.
  *
- * Return value: %TRUE if @conn requires a proper TLS close
+ * Returns: %TRUE if @conn requires a proper TLS close
  * notification.
  *
  * Since: 2.28
@@ -708,7 +708,7 @@ g_tls_connection_set_rehandshake_mode (GTlsConnection       *conn,
  * Gets @conn rehandshaking mode. See
  * g_tls_connection_set_rehandshake_mode() for details.
  *
- * Return value: @conn's rehandshaking mode
+ * Returns: @conn's rehandshaking mode
  *
  * Since: 2.28
  */
@@ -754,7 +754,7 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
  * #GTlsConnection::accept_certificate may be emitted during the
  * handshake.
  *
- * Return value: success or failure
+ * Returns: success or failure
  *
  * Since: 2.28
  */
@@ -804,7 +804,7 @@ g_tls_connection_handshake_async (GTlsConnection       *conn,
  * Finish an asynchronous TLS handshake operation. See
  * g_tls_connection_handshake() for more information.
  *
- * Return value: %TRUE on success, %FALSE on failure, in which
+ * Returns: %TRUE on success, %FALSE on failure, in which
  * case @error will be set.
  *
  * Since: 2.28
@@ -824,7 +824,7 @@ g_tls_connection_handshake_finish (GTlsConnection  *conn,
  *
  * Gets the TLS error quark.
  *
- * Return value: a #GQuark.
+ * Returns: a #GQuark.
  *
  * Since: 2.28
  */
@@ -839,7 +839,7 @@ G_DEFINE_QUARK (g-tls-error-quark, g_tls_error)
  * Used by #GTlsConnection implementations to emit the
  * #GTlsConnection::accept-certificate signal.
  *
- * Return value: %TRUE if one of the signal handlers has returned
+ * Returns: %TRUE if one of the signal handlers has returned
  *     %TRUE to accept @peer_cert
  *
  * Since: 2.28

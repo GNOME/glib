@@ -178,7 +178,7 @@ g_pollable_input_stream_default_read_nonblocking (GPollableInputStream  *stream,
  * to having been cancelled.
  *
  * Virtual: read_nonblocking
- * Return value: the number of bytes read, or -1 on error (including
+ * Returns: the number of bytes read, or -1 on error (including
  *   %G_IO_ERROR_WOULD_BLOCK).
  */
 gssize

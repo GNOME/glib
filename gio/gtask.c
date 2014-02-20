@@ -1058,7 +1058,7 @@ g_task_get_return_on_cancel (GTask *task)
  *
  * Gets @task's source tag. See g_task_set_source_tag().
  *
- * Return value: (transfer none): @task's source tag
+ * Returns: (transfer none): @task's source tag
  *
  * Since: 2.36
  */
@@ -1662,7 +1662,7 @@ g_task_return_new_error (GTask           *task,
  * g_task_return_pointer() for more discussion of exactly what this
  * means).
  *
- * Return value: %TRUE if @task has been cancelled, %FALSE if not
+ * Returns: %TRUE if @task has been cancelled, %FALSE if not
  *
  * Since: 2.36
  */
@@ -1720,7 +1720,7 @@ g_task_had_error (GTask *task)
  * source object (or that @source_object is %NULL and @result has no
  * source object). This can be used in g_return_if_fail() checks.
  *
- * Return value: %TRUE if @result and @source_object are valid, %FALSE
+ * Returns: %TRUE if @result and @source_object are valid, %FALSE
  * if not
  *
  * Since: 2.36

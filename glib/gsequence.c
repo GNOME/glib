@@ -241,7 +241,7 @@ iter_compare (GSequenceIter *node1,
  * be called on all items when the sequence is destroyed and on items that
  * are removed from the sequence.
  *
- * Return value: a new #GSequence
+ * Returns: a new #GSequence
  *
  * Since: 2.14
  **/
@@ -362,7 +362,7 @@ g_sequence_foreach (GSequence *seq,
  * The @begin and @end iterators must both point to the same sequence
  * and @begin must come before or be equal to @end in the sequence.
  *
- * Return value: a #GSequenceIter pointing somewhere in the
+ * Returns: a #GSequenceIter pointing somewhere in the
  *    (@begin, @end) range
  *
  * Since: 2.14
@@ -397,7 +397,7 @@ g_sequence_range_get_midpoint (GSequenceIter *begin,
  *
  * The @a and @b iterators must point into the same sequence.
  *
- * Return value: a negative number if @a comes before @b, 0 if they are
+ * Returns: a negative number if @a comes before @b, 0 if they are
  *     equal, and a positive number if @a comes after @b
  *
  * Since: 2.14
@@ -433,7 +433,7 @@ g_sequence_iter_compare (GSequenceIter *a,
  *
  * Adds a new item to the end of @seq.
  *
- * Return value: an iterator pointing to the new item
+ * Returns: an iterator pointing to the new item
  *
  * Since: 2.14
  */
@@ -460,7 +460,7 @@ g_sequence_append (GSequence *seq,
  *
  * Adds a new item to the front of @seq
  *
- * Return value: an iterator pointing to the new item
+ * Returns: an iterator pointing to the new item
  *
  * Since: 2.14
  */
@@ -489,7 +489,7 @@ g_sequence_prepend (GSequence *seq,
  *
  * Inserts a new item just before the item pointed to by @iter.
  *
- * Return value: an iterator pointing to the new item
+ * Returns: an iterator pointing to the new item
  *
  * Since: 2.14
  */
@@ -690,7 +690,7 @@ g_sequence_sort (GSequence        *seq,
  * if the first item comes before the second, and a positive value
  * if the second  item comes before the first.
  *
- * Return value: a #GSequenceIter pointing to the new item.
+ * Returns: a #GSequenceIter pointing to the new item.
  *
  * Since: 2.14
  */
@@ -772,7 +772,7 @@ g_sequence_sort_changed (GSequenceIter    *iter,
  * you want to add a large amount of data, call g_sequence_sort() after
  * doing unsorted insertions.
  *
- * Return value: an #GSequenceIter pointing to the position where @data
+ * Returns: an #GSequenceIter pointing to the position where @data
  *     would have been inserted according to @cmp_func and @cmp_data
  *
  * Since: 2.14
@@ -819,7 +819,7 @@ g_sequence_search (GSequence        *seq,
  * you want to add a large amount of data, call g_sequence_sort() after
  * doing unsorted insertions.
  *
- * Return value: an #GSequenceIter pointing to the position of the
+ * Returns: an #GSequenceIter pointing to the position of the
  *     first item found equal to @data according to @cmp_func and
  *     @cmp_data, or %NULL if no such item exists
  *
@@ -980,7 +980,7 @@ g_sequence_sort_changed_iter (GSequenceIter            *iter,
  * first iterator comes before the second, and a positive value
  * if the second iterator comes before the first.
  *
- * Return value: a #GSequenceIter pointing to the new item
+ * Returns: a #GSequenceIter pointing to the new item
  *
  * Since: 2.14
  */
@@ -1051,7 +1051,7 @@ g_sequence_insert_sorted_iter (GSequence                *seq,
  * you want to add a large amount of data, call g_sequence_sort() after
  * doing unsorted insertions.
  *
- * Return value: a #GSequenceIter pointing to the position in @seq
+ * Returns: a #GSequenceIter pointing to the position in @seq
  *     where @data would have been inserted according to @iter_cmp
  *     and @cmp_data
  *
@@ -1109,7 +1109,7 @@ g_sequence_search_iter (GSequence                *seq,
  * you want to add a large amount of data, call g_sequence_sort() after
  * doing unsorted insertions.
  *
- * Return value: an #GSequenceIter pointing to the position of
+ * Returns: an #GSequenceIter pointing to the position of
  *     the first item found equal to @data according to @cmp_func
  *     and @cmp_data, or %NULL if no such item exists
  *
@@ -1152,7 +1152,7 @@ g_sequence_lookup_iter (GSequence                *seq,
  *
  * Returns the #GSequence that @iter points into.
  *
- * Return value: the #GSequence that @iter points into
+ * Returns: the #GSequence that @iter points into
  *
  * Since: 2.14
  */
@@ -1177,7 +1177,7 @@ g_sequence_iter_get_sequence (GSequenceIter *iter)
  *
  * Returns the data that @iter points to.
  *
- * Return value: the data that @iter points to
+ * Returns: the data that @iter points to
  *
  * Since: 2.14
  */
@@ -1233,7 +1233,7 @@ g_sequence_set (GSequenceIter *iter,
  *
  * Returns the length of @seq
  *
- * Return value: the length of @seq
+ * Returns: the length of @seq
  *
  * Since: 2.14
  */
@@ -1249,7 +1249,7 @@ g_sequence_get_length (GSequence *seq)
  *
  * Returns the end iterator for @seg
  *
- * Return value: the end iterator for @seq
+ * Returns: the end iterator for @seq
  *
  * Since: 2.14
  */
@@ -1267,7 +1267,7 @@ g_sequence_get_end_iter (GSequence *seq)
  *
  * Returns the begin iterator for @seq.
  *
- * Return value: the begin iterator for @seq.
+ * Returns: the begin iterator for @seq.
  *
  * Since: 2.14
  */
@@ -1302,7 +1302,7 @@ clamp_position (GSequence *seq,
  * Returns the iterator at position @pos. If @pos is negative or larger
  * than the number of items in @seq, the end iterator is returned.
  *
- * Return value: The #GSequenceIter at position @pos
+ * Returns: The #GSequenceIter at position @pos
  *
  * Since: 2.14
  */
@@ -1353,7 +1353,7 @@ g_sequence_move (GSequenceIter *src,
  *
  * Returns whether @iter is the end iterator
  *
- * Return value: Whether @iter is the end iterator
+ * Returns: Whether @iter is the end iterator
  *
  * Since: 2.14
  */
@@ -1371,7 +1371,7 @@ g_sequence_iter_is_end (GSequenceIter *iter)
  *
  * Returns whether @iter is the begin iterator
  *
- * Return value: whether @iter is the begin iterator
+ * Returns: whether @iter is the begin iterator
  *
  * Since: 2.14
  */
@@ -1389,7 +1389,7 @@ g_sequence_iter_is_begin (GSequenceIter *iter)
  *
  * Returns the position of @iter
  *
- * Return value: the position of @iter
+ * Returns: the position of @iter
  *
  * Since: 2.14
  */
@@ -1408,7 +1408,7 @@ g_sequence_iter_get_position (GSequenceIter *iter)
  * Returns an iterator pointing to the next position after @iter.
  * If @iter is the end iterator, the end iterator is returned.
  *
- * Return value: a #GSequenceIter pointing to the next position after @iter
+ * Returns: a #GSequenceIter pointing to the next position after @iter
  *
  * Since: 2.14
  */
@@ -1427,7 +1427,7 @@ g_sequence_iter_next (GSequenceIter *iter)
  * Returns an iterator pointing to the previous position before @iter.
  * If @iter is the begin iterator, the begin iterator is returned.
  *
- * Return value: a #GSequenceIter pointing to the previous position
+ * Returns: a #GSequenceIter pointing to the previous position
  *     before @iter
  *
  * Since: 2.14
@@ -1451,7 +1451,7 @@ g_sequence_iter_prev (GSequenceIter *iter)
  * the begin iterator is returned. If @iter is closer than @delta positions
  * to the end of the sequence, the end iterator is returned.
  *
- * Return value: a #GSequenceIter which is @delta positions away from @iter
+ * Returns: a #GSequenceIter which is @delta positions away from @iter
  *
  * Since: 2.14
  */

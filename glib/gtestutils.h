@@ -374,7 +374,7 @@ void            g_test_log_msg_free     (GTestLogMsg    *tmsg);
  *
  * Specifies the prototype of fatal log handler functions.
  *
- * Return value: %TRUE if the program should abort, %FALSE otherwise
+ * Returns: %TRUE if the program should abort, %FALSE otherwise
  *
  * Since: 2.22
  */

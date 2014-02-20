@@ -171,7 +171,7 @@ struct _GRand
  * 
  * Creates a new random number generator initialized with @seed.
  * 
- * Return value: the new #GRand
+ * Returns: the new #GRand
  **/
 GRand*
 g_rand_new_with_seed (guint32 seed)
@@ -189,7 +189,7 @@ g_rand_new_with_seed (guint32 seed)
  * 
  * Creates a new random number generator initialized with @seed.
  * 
- * Return value: the new #GRand
+ * Returns: the new #GRand
  *
  * Since: 2.4
  */
@@ -211,7 +211,7 @@ g_rand_new_with_seed_array (const guint32 *seed,
  *
  * On Windows, the seed is taken from rand_s().
  * 
- * Return value: the new #GRand
+ * Returns: the new #GRand
  */
 GRand* 
 g_rand_new (void)
@@ -292,7 +292,7 @@ g_rand_free (GRand *rand)
  * This way you can take a snapshot of the random number generator for
  * replaying later.
  *
- * Return value: the new #GRand
+ * Returns: the new #GRand
  *
  * Since: 2.4
  */
@@ -429,7 +429,7 @@ g_rand_set_seed_array (GRand         *rand,
  * Returns the next random #guint32 from @rand_ equally distributed over
  * the range [0..2^32-1].
  *
- * Return value: a random number
+ * Returns: a random number
  */
 guint32
 g_rand_int (GRand *rand)
@@ -478,7 +478,7 @@ g_rand_int (GRand *rand)
  * Returns the next random #gint32 from @rand_ equally distributed over
  * the range [@begin..@end-1].
  *
- * Return value: a random number
+ * Returns: a random number
  */
 gint32 
 g_rand_int_range (GRand  *rand,
@@ -561,7 +561,7 @@ g_rand_int_range (GRand  *rand,
  * Returns the next random #gdouble from @rand_ equally distributed over
  * the range [0..1).
  *
- * Return value: a random number
+ * Returns: a random number
  */
 gdouble 
 g_rand_double (GRand *rand)
@@ -588,7 +588,7 @@ g_rand_double (GRand *rand)
  * Returns the next random #gdouble from @rand_ equally distributed over
  * the range [@begin..@end).
  *
- * Return value: a random number
+ * Returns: a random number
  */
 gdouble 
 g_rand_double_range (GRand   *rand,
@@ -628,7 +628,7 @@ get_global_random (void)
  * Return a random #guint32 equally distributed over the range
  * [0..2^32-1].
  *
- * Return value: a random number
+ * Returns: a random number
  */
 guint32
 g_random_int (void)
@@ -648,7 +648,7 @@ g_random_int (void)
  * Returns a random #gint32 equally distributed over the range
  * [@begin..@end-1].
  *
- * Return value: a random number
+ * Returns: a random number
  */
 gint32 
 g_random_int_range (gint32 begin,
@@ -666,7 +666,7 @@ g_random_int_range (gint32 begin,
  *
  * Returns a random #gdouble equally distributed over the range [0..1).
  *
- * Return value: a random number
+ * Returns: a random number
  */
 gdouble 
 g_random_double (void)
@@ -686,7 +686,7 @@ g_random_double (void)
  * Returns a random #gdouble equally distributed over the range
  * [@begin..@end).
  *
- * Return value: a random number
+ * Returns: a random number
  */
 gdouble 
 g_random_double_range (gdouble begin,

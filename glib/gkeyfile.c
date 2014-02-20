@@ -611,7 +611,7 @@ g_key_file_clear (GKeyFile *key_file)
  * g_key_file_load_from_dirs() or g_key_file_load_from_data_dirs() to
  * read an existing key file.
  *
- * Return value: (transfer full): an empty #GKeyFile.
+ * Returns: (transfer full): an empty #GKeyFile.
  *
  * Since: 2.6
  **/
@@ -814,7 +814,7 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
  * If the file could not be loaded then @error is set to
  * either a #GFileError or #GKeyFileError.
  *
- * Return value: %TRUE if a key file could be loaded, %FALSE otherwise
+ * Returns: %TRUE if a key file could be loaded, %FALSE otherwise
  *
  * Since: 2.6
  **/
@@ -863,7 +863,7 @@ g_key_file_load_from_file (GKeyFile       *key_file,
  * Loads a key file from memory into an empty #GKeyFile structure.  
  * If the object cannot be created then %error is set to a #GKeyFileError. 
  *
- * Return value: %TRUE if a key file could be loaded, %FALSE otherwise
+ * Returns: %TRUE if a key file could be loaded, %FALSE otherwise
  *
  * Since: 2.6
  **/
@@ -924,7 +924,7 @@ g_key_file_load_from_data (GKeyFile       *key_file,
  * be loaded then an %error is set to either a #GFileError or
  * #GKeyFileError.
  *
- * Return value: %TRUE if a key file could be loaded, %FALSE otherwise
+ * Returns: %TRUE if a key file could be loaded, %FALSE otherwise
  *
  * Since: 2.14
  **/
@@ -997,7 +997,7 @@ g_key_file_load_from_dirs (GKeyFile       *key_file,
  * @full_path.  If the file could not be loaded then an %error is
  * set to either a #GFileError or #GKeyFileError.
  *
- * Return value: %TRUE if a key file could be loaded, %FALSE othewise
+ * Returns: %TRUE if a key file could be loaded, %FALSE othewise
  * Since: 2.6
  **/
 gboolean
@@ -1432,7 +1432,7 @@ g_key_file_flush_parse_buffer (GKeyFile  *key_file,
  * Note that this function never reports an error,
  * so it is safe to pass %NULL as @error.
  *
- * Return value: a newly allocated string holding
+ * Returns: a newly allocated string holding
  *   the contents of the #GKeyFile 
  *
  * Since: 2.6
@@ -1502,7 +1502,7 @@ g_key_file_to_data (GKeyFile  *key_file,
  * be found, %NULL is returned and @error is set to
  * #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
- * Return value: (array zero-terminated=1) (transfer full): a newly-allocated %NULL-terminated array of strings.
+ * Returns: (array zero-terminated=1) (transfer full): a newly-allocated %NULL-terminated array of strings.
  *     Use g_strfreev() to free it.
  *
  * Since: 2.6
@@ -1573,7 +1573,7 @@ g_key_file_get_keys (GKeyFile     *key_file,
  *
  * Returns the name of the start group of the file. 
  *
- * Return value: The start group of the key file.
+ * Returns: The start group of the key file.
  *
  * Since: 2.6
  **/
@@ -1597,7 +1597,7 @@ g_key_file_get_start_group (GKeyFile *key_file)
  * The array of returned groups will be %NULL-terminated, so 
  * @length may optionally be %NULL.
  *
- * Return value: (array zero-terminated=1) (transfer full): a newly-allocated %NULL-terminated array of strings.
+ * Returns: (array zero-terminated=1) (transfer full): a newly-allocated %NULL-terminated array of strings.
  *   Use g_strfreev() to free it.
  * Since: 2.6
  **/
@@ -1664,7 +1664,7 @@ g_key_file_get_groups (GKeyFile *key_file,
  * and @error is set to #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
  *
- * Return value: a newly allocated string or %NULL if the specified 
+ * Returns: a newly allocated string or %NULL if the specified 
  *  key cannot be found.
  *
  * Since: 2.6
@@ -1775,7 +1775,7 @@ g_key_file_set_value (GKeyFile    *key_file,
  * event that the @group_name cannot be found, %NULL is returned 
  * and @error is set to #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
- * Return value: a newly allocated string or %NULL if the specified 
+ * Returns: a newly allocated string or %NULL if the specified 
  *   key cannot be found.
  *
  * Since: 2.6
@@ -1886,7 +1886,7 @@ g_key_file_set_string (GKeyFile    *key_file,
  * event that the @group_name cannot be found, %NULL is returned
  * and @error is set to #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
- * Return value: (array zero-terminated=1 length=length) (element-type utf8) (transfer full): 
+ * Returns: (array zero-terminated=1 length=length) (element-type utf8) (transfer full): 
  *  a %NULL-terminated string array or %NULL if the specified 
  *  key cannot be found. The array should be freed with g_strfreev().
  *
@@ -2064,7 +2064,7 @@ g_key_file_set_locale_string (GKeyFile     *key_file,
  * with @key cannot be interpreted or no suitable translation can
  * be found then the untranslated value is returned.
  *
- * Return value: a newly allocated string or %NULL if the specified 
+ * Returns: a newly allocated string or %NULL if the specified 
  *   key cannot be found.
  *
  * Since: 2.6
@@ -2154,7 +2154,7 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
  * returned array is %NULL-terminated, so @length may optionally 
  * be %NULL.
  *
- * Return value: (array zero-terminated=1 length=length) (element-type utf8) (transfer full): a newly allocated %NULL-terminated string array
+ * Returns: (array zero-terminated=1 length=length) (element-type utf8) (transfer full): a newly allocated %NULL-terminated string array
  *   or %NULL if the key isn't found. The string array should be freed
  *   with g_strfreev().
  *
@@ -2274,7 +2274,7 @@ g_key_file_set_locale_string_list (GKeyFile            *key_file,
  * associated with @key cannot be interpreted as a boolean then %FALSE
  * is returned and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the value associated with the key as a boolean, 
+ * Returns: the value associated with the key as a boolean, 
  *    or %FALSE if the key was not found or could not be parsed.
  *
  * Since: 2.6
@@ -2368,7 +2368,7 @@ g_key_file_set_boolean (GKeyFile    *key_file,
  * with @key cannot be interpreted as booleans then %NULL is returned
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: (array length=length) (element-type gboolean) (transfer container):
+ * Returns: (array length=length) (element-type gboolean) (transfer container):
  *    the values associated with the key as a list of booleans, or %NULL if the
  *    key was not found or could not be parsed. The returned list of booleans
  *    should be freed with g_free() when no longer needed.
@@ -2489,7 +2489,7 @@ g_key_file_set_boolean_list (GKeyFile    *key_file,
  * with @key cannot be interpreted as an integer then 0 is returned
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the value associated with the key as an integer, or
+ * Returns: the value associated with the key as an integer, or
  *     0 if the key was not found or could not be parsed.
  *
  * Since: 2.6
@@ -2739,7 +2739,7 @@ g_key_file_set_uint64 (GKeyFile    *key_file,
  * with @key cannot be interpreted as integers then %NULL is returned
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: (array length=length) (element-type gint) (transfer container):
+ * Returns: (array length=length) (element-type gint) (transfer container):
  *     the values associated with the key as a list of integers, or %NULL if
  *     the key was not found or could not be parsed. The returned list of
  *     integers should be freed with g_free() when no longer needed.
@@ -2857,7 +2857,7 @@ g_key_file_set_integer_list (GKeyFile    *key_file,
  * with @key cannot be interpreted as a double then 0.0 is returned
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the value associated with the key as a double, or
+ * Returns: the value associated with the key as a double, or
  *     0.0 if the key was not found or could not be parsed.
  *
  * Since: 2.12
@@ -2952,7 +2952,7 @@ g_key_file_set_double  (GKeyFile    *key_file,
  * with @key cannot be interpreted as doubles then %NULL is returned
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: (array length=length) (element-type gdouble) (transfer container):
+ * Returns: (array length=length) (element-type gdouble) (transfer container):
  *     the values associated with the key as a list of doubles, or %NULL if the
  *     key was not found or could not be parsed. The returned list of doubles
  *     should be freed with g_free() when no longer needed.
@@ -3499,7 +3499,7 @@ g_key_file_remove_comment (GKeyFile     *key_file,
  *
  * Looks whether the key file has the group @group_name.
  *
- * Return value: %TRUE if @group_name is a part of @key_file, %FALSE
+ * Returns: %TRUE if @group_name is a part of @key_file, %FALSE
  * otherwise.
  * Since: 2.6
  **/
@@ -3567,7 +3567,7 @@ g_key_file_has_key_full (GKeyFile     *key_file,
  * Language bindings should use g_key_file_get_value() to test whether
  * or not a key exists.
  *
- * Return value: %TRUE if @key is a part of @group_name, %FALSE otherwise
+ * Returns: %TRUE if @key is a part of @group_name, %FALSE otherwise
  *
  * Since: 2.6
  **/

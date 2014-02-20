@@ -156,7 +156,7 @@ g_tree_node_new (gpointer key,
  * 
  * Creates a new #GTree.
  * 
- * Return value: a newly allocated #GTree
+ * Returns: a newly allocated #GTree
  */
 GTree *
 g_tree_new (GCompareFunc key_compare_func)
@@ -175,7 +175,7 @@ g_tree_new (GCompareFunc key_compare_func)
  * Creates a new #GTree with a comparison function that accepts user data.
  * See g_tree_new() for more details.
  * 
- * Return value: a newly allocated #GTree
+ * Returns: a newly allocated #GTree
  */
 GTree *
 g_tree_new_with_data (GCompareDataFunc key_compare_func,
@@ -202,7 +202,7 @@ g_tree_new_with_data (GCompareDataFunc key_compare_func,
  * to free the memory allocated for the key and value that get called when 
  * removing the entry from the #GTree.
  * 
- * Return value: a newly allocated #GTree
+ * Returns: a newly allocated #GTree
  */
 GTree *
 g_tree_new_full (GCompareDataFunc key_compare_func,
@@ -305,7 +305,7 @@ g_tree_remove_all (GTree *tree)
  *
  * It is safe to call this function from any thread.
  *
- * Return value: the passed in #GTree
+ * Returns: the passed in #GTree
  *
  * Since: 2.22
  */
@@ -833,7 +833,7 @@ g_tree_remove_internal (GTree         *tree,
  * automatically balanced as key/value pairs are added, key lookup
  * is O(log n) (where n is the number of key/value pairs in the tree).
  *
- * Return value: the value corresponding to the key, or %NULL
+ * Returns: the value corresponding to the key, or %NULL
  *     if the key was not found
  */
 gpointer
@@ -861,7 +861,7 @@ g_tree_lookup (GTree         *tree,
  * allocated for the original key, for example before calling
  * g_tree_remove().
  * 
- * Return value: %TRUE if the key was found in the #GTree
+ * Returns: %TRUE if the key was found in the #GTree
  */
 gboolean
 g_tree_lookup_extended (GTree         *tree,
@@ -1002,7 +1002,7 @@ g_tree_traverse (GTree         *tree,
  * @search_func returns 1, searching will proceed among the key/value
  * pairs that have a larger key.
  *
- * Return value: the value corresponding to the found key, or %NULL
+ * Returns: the value corresponding to the found key, or %NULL
  *     if the key was not found
  */
 gpointer
@@ -1028,7 +1028,7 @@ g_tree_search (GTree         *tree,
  * If the #GTree contains only one root node the height is 1.
  * If the root node has children the height is 2, etc.
  * 
- * Return value: the height of @tree
+ * Returns: the height of @tree
  */
 gint
 g_tree_height (GTree *tree)
@@ -1061,7 +1061,7 @@ g_tree_height (GTree *tree)
  * 
  * Gets the number of nodes in a #GTree.
  * 
- * Return value: the number of nodes in @tree
+ * Returns: the number of nodes in @tree
  */
 gint
 g_tree_nnodes (GTree *tree)

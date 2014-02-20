@@ -447,7 +447,7 @@ g_inet_socket_address_get_port (GInetSocketAddress *address)
  * Gets the `sin6_flowinfo` field from @address,
  * which must be an IPv6 address.
  *
- * Return value: the flowinfo field
+ * Returns: the flowinfo field
  *
  * Since: 2.32
  */
@@ -467,7 +467,7 @@ g_inet_socket_address_get_flowinfo (GInetSocketAddress *address)
  * Gets the `sin6_scope_id` field from @address,
  * which must be an IPv6 address.
  *
- * Return value: the scope id field
+ * Returns: the scope id field
  *
  * Since: 2.32
  */

@@ -102,7 +102,7 @@ g_tls_backend_get_default (void)
  * Checks if TLS is supported; if this returns %FALSE for the default
  * #GTlsBackend, it means no "real" TLS backend is available.
  *
- * Return value: whether or not TLS is supported
+ * Returns: whether or not TLS is supported
  *
  * Since: 2.28
  */
@@ -123,7 +123,7 @@ g_tls_backend_supports_tls (GTlsBackend *backend)
  *
  * Gets the default #GTlsDatabase used to verify TLS connections.
  *
- * Return value: (transfer full): the default database, which should be
+ * Returns: (transfer full): the default database, which should be
  *               unreffed when done.
  *
  * Since: 2.30
@@ -146,7 +146,7 @@ g_tls_backend_get_default_database (GTlsBackend *backend)
  *
  * Gets the #GType of @backend's #GTlsCertificate implementation.
  *
- * Return value: the #GType of @backend's #GTlsCertificate
+ * Returns: the #GType of @backend's #GTlsCertificate
  *   implementation.
  *
  * Since: 2.28
@@ -163,7 +163,7 @@ g_tls_backend_get_certificate_type (GTlsBackend *backend)
  *
  * Gets the #GType of @backend's #GTlsClientConnection implementation.
  *
- * Return value: the #GType of @backend's #GTlsClientConnection
+ * Returns: the #GType of @backend's #GTlsClientConnection
  *   implementation.
  *
  * Since: 2.28
@@ -180,7 +180,7 @@ g_tls_backend_get_client_connection_type (GTlsBackend *backend)
  *
  * Gets the #GType of @backend's #GTlsServerConnection implementation.
  *
- * Return value: the #GType of @backend's #GTlsServerConnection
+ * Returns: the #GType of @backend's #GTlsServerConnection
  *   implementation.
  *
  * Since: 2.28
@@ -197,7 +197,7 @@ g_tls_backend_get_server_connection_type (GTlsBackend *backend)
  *
  * Gets the #GType of @backend's #GTlsFileDatabase implementation.
  *
- * Return value: the #GType of backend's #GTlsFileDatabase implementation.
+ * Returns: the #GType of backend's #GTlsFileDatabase implementation.
  *
  * Since: 2.30
  */

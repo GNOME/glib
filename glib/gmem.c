@@ -481,7 +481,7 @@ static gboolean vtable_set = FALSE;
  *
  * A different allocator can be set using g_mem_set_vtable().
  *
- * Return value: if %TRUE, malloc() and g_malloc() can be mixed.
+ * Returns: if %TRUE, malloc() and g_malloc() can be mixed.
  **/
 gboolean
 g_mem_is_system_malloc (void)

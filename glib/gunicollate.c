@@ -71,7 +71,7 @@ msc_strxfrm_wrapper (char       *string1,
  * compare the keys with strcmp() when sorting instead of sorting 
  * the original strings.
  * 
- * Return value: < 0 if @str1 compares before @str2, 
+ * Returns: < 0 if @str1 compares before @str2, 
  *   0 if they compare equal, > 0 if @str1 compares after @str2.
  **/
 gint
@@ -365,7 +365,7 @@ carbon_collate_key_for_filename (const gchar *str,
  * 
  * Note that this function depends on the [current locale][setlocale].
  * 
- * Return value: a newly allocated string. This string should
+ * Returns: a newly allocated string. This string should
  *   be freed with g_free() when you are done with it.
  **/
 gchar *
@@ -492,7 +492,7 @@ g_utf8_collate_key (const gchar *str,
  * 
  * Note that this function depends on the [current locale][setlocale].
  *
- * Return value: a newly allocated string. This string should
+ * Returns: a newly allocated string. This string should
  *   be freed with g_free() when you are done with it.
  *
  * Since: 2.8

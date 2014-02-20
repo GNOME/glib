@@ -292,7 +292,7 @@ completion_check_cache (GCompletion* cmp,
  * You should use this function instead of g_completion_complete() if your 
  * items are UTF-8 strings.
  *
- * Return value: (element-type utf8) (transfer none): the list of items whose strings begin with @prefix. This should
+ * Returns: (element-type utf8) (transfer none): the list of items whose strings begin with @prefix. This should
  * not be changed.
  *
  * Since: 2.4

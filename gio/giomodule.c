@@ -665,7 +665,7 @@ try_class (GIOExtension *extension,
  * The result is cached after it is generated the first time, and
  * the function is thread-safe.
  *
- * Return value: (transfer none): an object implementing
+ * Returns: (transfer none): an object implementing
  *     @extension_point, or %NULL if there are no usable
  *     implementations.
  */
@@ -788,7 +788,7 @@ try_implementation (GIOExtension         *extension,
  * The result is cached after it is generated the first time, and
  * the function is thread-safe.
  *
- * Return value: (transfer none): an object implementing
+ * Returns: (transfer none): an object implementing
  *     @extension_point, or %NULL if there are no usable
  *     implementations.
  */

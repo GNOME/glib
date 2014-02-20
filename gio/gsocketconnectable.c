@@ -100,7 +100,7 @@ g_socket_connectable_default_init (GSocketConnectableInterface *iface)
  *
  * Creates a #GSocketAddressEnumerator for @connectable.
  *
- * Return value: (transfer full): a new #GSocketAddressEnumerator.
+ * Returns: (transfer full): a new #GSocketAddressEnumerator.
  *
  * Since: 2.22
  */
@@ -128,7 +128,7 @@ g_socket_connectable_enumerate (GSocketConnectable *connectable)
  * g_socket_connectable_proxy_enumerate(), this will fall back to
  * calling g_socket_connectable_enumerate().
  *
- * Return value: (transfer full): a new #GSocketAddressEnumerator.
+ * Returns: (transfer full): a new #GSocketAddressEnumerator.
  *
  * Since: 2.26
  */

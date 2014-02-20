@@ -383,7 +383,7 @@ g_string_truncate (GString *string,
  * of the newly added area are undefined. (However, as
  * always, string->str[string->len] will be a nul byte.)
  *
- * Return value: @string
+ * Returns: @string
  */
 GString *
 g_string_set_size (GString *string,
@@ -653,7 +653,7 @@ g_string_append_c (GString *string,
  * Converts a Unicode character into UTF-8, and appends it
  * to the string.
  *
- * Return value: @string
+ * Returns: @string
  */
 GString *
 g_string_append_unichar (GString  *string,
@@ -738,7 +738,7 @@ g_string_prepend_c (GString *string,
  * Converts a Unicode character into UTF-8, and prepends it
  * to the string.
  *
- * Return value: @string
+ * Returns: @string
  */
 GString *
 g_string_prepend_unichar (GString  *string,
@@ -821,7 +821,7 @@ g_string_insert_c (GString *string,
  * Converts a Unicode character into UTF-8, and insert it
  * into the string at the given position.
  *
- * Return value: @string
+ * Returns: @string
  */
 GString *
 g_string_insert_unichar (GString  *string,
@@ -902,7 +902,7 @@ g_string_insert_unichar (GString  *string,
  *
  * Overwrites part of a string, lengthening it if necessary.
  *
- * Return value: @string
+ * Returns: @string
  *
  * Since: 2.14
  */
@@ -925,7 +925,7 @@ g_string_overwrite (GString     *string,
  * Overwrites part of a string, lengthening it if necessary.
  * This function will work with embedded nuls.
  *
- * Return value: @string
+ * Returns: @string
  *
  * Since: 2.14
  */
@@ -1008,7 +1008,7 @@ g_string_erase (GString *string,
  *
  * Converts all uppercase ASCII letters to lowercase ASCII letters.
  *
- * Return value: passed-in @string pointer, with all the
+ * Returns: passed-in @string pointer, with all the
  *     uppercase characters converted to lowercase in place,
  *     with semantics that exactly match g_ascii_tolower().
  */
@@ -1039,7 +1039,7 @@ g_string_ascii_down (GString *string)
  *
  * Converts all lowercase ASCII letters to uppercase ASCII letters.
  *
- * Return value: passed-in @string pointer, with all the
+ * Returns: passed-in @string pointer, with all the
  *     lowercase characters converted to uppercase in place,
  *     with semantics that exactly match g_ascii_toupper().
  */
@@ -1104,7 +1104,7 @@ g_string_down (GString *string)
  *
  * Converts a #GString to uppercase.
  *
- * Return value: @string
+ * Returns: @string
  *
  * Deprecated:2.2: This function uses the locale-specific
  *     toupper() function, which is almost never the right thing.

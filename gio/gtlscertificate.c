@@ -320,7 +320,7 @@ parse_next_pem_certificate (const gchar **data,
  * If @data includes multiple certificates, only the first one will be
  * parsed.
  *
- * Return value: the new certificate, or %NULL if @data is invalid
+ * Returns: the new certificate, or %NULL if @data is invalid
  *
  * Since: 2.28
  */
@@ -368,7 +368,7 @@ g_tls_certificate_new_from_pem  (const gchar  *data,
  * set @error. Otherwise, this behaves like
  * g_tls_certificate_new_from_pem().
  *
- * Return value: the new certificate, or %NULL on error
+ * Returns: the new certificate, or %NULL on error
  *
  * Since: 2.28
  */
@@ -399,7 +399,7 @@ g_tls_certificate_new_from_file (const gchar  *file,
  * function will return %NULL and set @error. Otherwise, this behaves
  * like g_tls_certificate_new_from_pem().
  *
- * Return value: the new certificate, or %NULL on error
+ * Returns: the new certificate, or %NULL on error
  *
  * Since: 2.28
  */
@@ -452,7 +452,7 @@ g_tls_certificate_new_from_files (const gchar  *cert_file,
  * PEM-encoded certificates, this will return an empty list and not
  * set @error.
  *
- * Return value: (element-type Gio.TlsCertificate) (transfer full): a
+ * Returns: (element-type Gio.TlsCertificate) (transfer full): a
  * #GList containing #GTlsCertificate objects. You must free the list
  * and its contents when you are done with it.
  *
@@ -503,7 +503,7 @@ g_tls_certificate_list_new_from_file (const gchar  *file,
  *
  * Gets the #GTlsCertificate representing @cert's issuer, if known
  *
- * Return value: (transfer none): The certificate of @cert's issuer,
+ * Returns: (transfer none): The certificate of @cert's issuer,
  * or %NULL if @cert is self-signed or signed with an unknown
  * certificate.
  *
@@ -547,7 +547,7 @@ g_tls_certificate_get_issuer (GTlsCertificate  *cert)
  * (All other #GTlsCertificateFlags values will always be set or unset
  * as appropriate.)
  *
- * Return value: the appropriate #GTlsCertificateFlags
+ * Returns: the appropriate #GTlsCertificateFlags
  *
  * Since: 2.28
  */
@@ -570,7 +570,7 @@ g_tls_certificate_verify (GTlsCertificate     *cert,
  * their #GTlsCertificate:issuer, #GTlsCertificate:private-key, or
  * #GTlsCertificate:private-key-pem properties differ.
  *
- * Return value: whether the same or not
+ * Returns: whether the same or not
  *
  * Since: 2.34
  */

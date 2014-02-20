@@ -240,7 +240,7 @@ g_win32_input_stream_set_close_handle (GWin32InputStream *stream,
  * Returns whether the handle of @stream will be
  * closed when the stream is closed.
  *
- * Return value: %TRUE if the handle is closed when done
+ * Returns: %TRUE if the handle is closed when done
  *
  * Since: 2.26
  */
@@ -258,7 +258,7 @@ g_win32_input_stream_get_close_handle (GWin32InputStream *stream)
  *
  * Return the Windows file handle that the stream reads from.
  *
- * Return value: The file handle of @stream
+ * Returns: The file handle of @stream
  *
  * Since: 2.26
  */

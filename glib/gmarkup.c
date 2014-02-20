@@ -213,7 +213,7 @@ string_blank (GString *string)
  * the parse context can't continue to parse text (you have to
  * free it and create a new parse context).
  *
- * Return value: a new #GMarkupParseContext
+ * Returns: a new #GMarkupParseContext
  **/
 GMarkupParseContext *
 g_markup_parse_context_new (const GMarkupParser *parser,
@@ -1114,7 +1114,7 @@ emit_end_element (GMarkupParseContext  *context,
  * is reported, no further data may be fed to the #GMarkupParseContext;
  * all errors are fatal.
  *
- * Return value: %FALSE if an error occurred, %TRUE on success
+ * Returns: %FALSE if an error occurred, %TRUE on success
  */
 gboolean
 g_markup_parse_context_parse (GMarkupParseContext  *context,
@@ -1745,7 +1745,7 @@ g_markup_parse_context_parse (GMarkupParseContext  *context,
  * This function reports an error if the document isn't complete,
  * for example if elements are still open.
  *
- * Return value: %TRUE on success, %FALSE if an error was set
+ * Returns: %TRUE on success, %FALSE if an error was set
  */
 gboolean
 g_markup_parse_context_end_parse (GMarkupParseContext  *context,
@@ -2220,7 +2220,7 @@ append_escaped_text (GString     *str,
  * references in this range are not valid XML 1.0, but they are
  * valid XML 1.1 and will be accepted by the GMarkup parser.
  *
- * Return value: a newly allocated string with the escaped text
+ * Returns: a newly allocated string with the escaped text
  */
 gchar*
 g_markup_escape_text (const gchar *text,
@@ -2251,7 +2251,7 @@ g_markup_escape_text (const gchar *text,
  * Partially based on code from printf-parser.c,
  * Copyright (C) 1999-2000, 2002-2003 Free Software Foundation, Inc.
  *
- * Return value: pointer to the next conversion in @format,
+ * Returns: pointer to the next conversion in @format,
  *  or %NULL, if none.
  */
 static const char *
@@ -2375,7 +2375,7 @@ find_conversion (const char  *format,
  * all string and character arguments in the fashion
  * of g_markup_escape_text(). See g_markup_printf_escaped().
  *
- * Return value: newly allocated result from formatting
+ * Returns: newly allocated result from formatting
  *  operation. Free with g_free().
  *
  * Since: 2.4
@@ -2535,7 +2535,7 @@ g_markup_vprintf_escaped (const gchar *format,
  *                                   store, item);
  * ]|
  *
- * Return value: newly allocated result from formatting
+ * Returns: newly allocated result from formatting
  *    operation. Free with g_free().
  *
  * Since: 2.4
@@ -2663,7 +2663,7 @@ g_markup_parse_boolean (const char  *string,
  * %G_MARKUP_ERROR_INVALID_CONTENT). In all of these cases %FALSE
  * will be returned and @error will be set as appropriate.
  *
- * Return value: %TRUE if successful
+ * Returns: %TRUE if successful
  *
  * Since: 2.16
  **/

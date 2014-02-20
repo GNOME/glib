@@ -55,7 +55,7 @@ G_DEFINE_TYPE_WITH_CODE (GWin32VolumeMonitor, g_win32_volume_monitor, G_TYPE_NAT
  * HKLM or HKCU. If neither key exists the result of
  * GetLogicalDrives() is returned.
  *
- * Return value: bitmask with same meaning as returned by GetLogicalDrives()
+ * Returns: bitmask with same meaning as returned by GetLogicalDrives()
  */
 static guint32 
 get_viewable_logical_drives (void)

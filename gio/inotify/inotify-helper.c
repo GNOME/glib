@@ -64,7 +64,7 @@ static GFileMonitorEvent ih_mask_to_EventFlags (guint32 mask);
  * Initializes the inotify backend.  This must be called before
  * any other functions in this module.
  *
- * Return value: #TRUE if initialization succeeded, #FALSE otherwise
+ * Returns: #TRUE if initialization succeeded, #FALSE otherwise
  */
 gboolean
 _ih_startup (void)

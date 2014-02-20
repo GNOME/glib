@@ -1217,7 +1217,7 @@ g_datalist_unset_flags (GData **datalist,
  * Gets flags values packed in together with the datalist.
  * See g_datalist_set_flags().
  * 
- * Return value: the flags of the datalist
+ * Returns: the flags of the datalist
  *
  * Since: 2.8
  **/

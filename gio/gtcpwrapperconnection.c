@@ -157,7 +157,7 @@ g_tcp_wrapper_connection_init (GTcpWrapperConnection *connection)
  *
  * Wraps @base_io_stream and @socket together as a #GSocketConnection.
  *
- * Return value: the new #GSocketConnection.
+ * Returns: the new #GSocketConnection.
  *
  * Since: 2.28
  */
@@ -183,7 +183,7 @@ g_tcp_wrapper_connection_new (GIOStream *base_io_stream,
  *
  * Get's @conn's base #GIOStream
  *
- * Return value: (transfer none): @conn's base #GIOStream
+ * Returns: (transfer none): @conn's base #GIOStream
  */
 GIOStream *
 g_tcp_wrapper_connection_get_base_io_stream (GTcpWrapperConnection *conn)

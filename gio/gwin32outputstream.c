@@ -241,7 +241,7 @@ g_win32_output_stream_set_close_handle (GWin32OutputStream *stream,
  * Returns whether the handle of @stream will be closed when the
  * stream is closed.
  *
- * Return value: %TRUE if the handle is closed when done
+ * Returns: %TRUE if the handle is closed when done
  *
  * Since: 2.26
  */
@@ -259,7 +259,7 @@ g_win32_output_stream_get_close_handle (GWin32OutputStream *stream)
  *
  * Return the Windows handle that the stream writes to.
  *
- * Return value: The handle descriptor of @stream
+ * Returns: The handle descriptor of @stream
  *
  * Since: 2.26
  */

@@ -60,7 +60,7 @@ typedef struct _GBinding        GBinding;
  * @transform_from function of a %G_BINDING_BIDIRECTIONAL binding,
  * then those roles are reversed.
  *
- * Return value: %TRUE if the transformation was successful, and %FALSE
+ * Returns: %TRUE if the transformation was successful, and %FALSE
  *   otherwise
  *
  * Since: 2.26

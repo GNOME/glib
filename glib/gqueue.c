@@ -165,7 +165,7 @@ g_queue_is_empty (GQueue *queue)
  * 
  * Returns the number of items in @queue.
  * 
- * Return value: the number of items in @queue
+ * Returns: the number of items in @queue
  * 
  * Since: 2.4
  */
@@ -202,7 +202,7 @@ g_queue_reverse (GQueue *queue)
  * queue consist of pointers to data, the pointers are copied, but the
  * actual data is not.
  * 
- * Return value: a copy of @queue
+ * Returns: a copy of @queue
  * 
  * Since: 2.4
  */
@@ -259,7 +259,7 @@ g_queue_foreach (GQueue   *queue,
  * 
  * Finds the first link in @queue which contains @data.
  * 
- * Return value: the first link in @queue which contains @data
+ * Returns: the first link in @queue which contains @data
  * 
  * Since: 2.4
  */
@@ -285,7 +285,7 @@ g_queue_find (GQueue        *queue,
  * takes two gconstpointer arguments, the #GQueue element's data as the
  * first argument and the given user data as the second argument.
  * 
- * Return value: the found link, or %NULL if it wasn't found
+ * Returns: the found link, or %NULL if it wasn't found
  * 
  * Since: 2.4
  */
@@ -567,7 +567,7 @@ g_queue_pop_head_link (GQueue *queue)
  * 
  * Returns the first link in @queue.
  * 
- * Return value: the first link in @queue, or %NULL if @queue is empty
+ * Returns: the first link in @queue, or %NULL if @queue is empty
  * 
  * Since: 2.4
  */
@@ -585,7 +585,7 @@ g_queue_peek_head_link (GQueue *queue)
  * 
  * Returns the last link in @queue.
  * 
- * Return value: the last link in @queue, or %NULL if @queue is empty
+ * Returns: the last link in @queue, or %NULL if @queue is empty
  * 
  * Since: 2.4
  */
@@ -637,7 +637,7 @@ g_queue_pop_tail (GQueue *queue)
  * 
  * Removes the @n'th element of @queue and returns its data.
  * 
- * Return value: the element's data, or %NULL if @n is off the end of @queue
+ * Returns: the element's data, or %NULL if @n is off the end of @queue
  * 
  * Since: 2.4
  */
@@ -702,7 +702,7 @@ g_queue_pop_tail_link (GQueue *queue)
  * 
  * Removes and returns the link at the given position.
  * 
- * Return value: the @n'th link, or %NULL if @n is off the end of @queue
+ * Returns: the @n'th link, or %NULL if @n is off the end of @queue
  * 
  * Since: 2.4
  */
@@ -730,7 +730,7 @@ g_queue_pop_nth_link (GQueue *queue,
  * 
  * Returns the link at the given position
  * 
- * Return value: the link at the @n'th position, or %NULL
+ * Returns: the link at the @n'th position, or %NULL
  *     if @n is off the end of the list
  * 
  * Since: 2.4
@@ -772,7 +772,7 @@ g_queue_peek_nth_link (GQueue *queue,
  * 
  * Returns the position of @link_ in @queue.
  * 
- * Return value: the position of @link_, or -1 if the link is
+ * Returns: the position of @link_, or -1 if the link is
  *     not part of @queue
  * 
  * Since: 2.4
@@ -875,7 +875,7 @@ g_queue_peek_tail (GQueue *queue)
  * 
  * Returns the @n'th element of @queue. 
  * 
- * Return value: the data for the @n'th element of @queue,
+ * Returns: the data for the @n'th element of @queue,
  *     or %NULL if @n is off the end of @queue
  * 
  * Since: 2.4
@@ -903,7 +903,7 @@ g_queue_peek_nth (GQueue *queue,
  * 
  * Returns the position of the first element in @queue which contains @data.
  * 
- * Return value: the position of the first element in @queue which
+ * Returns: the position of the first element in @queue which
  *     contains @data, or -1 if no element in @queue contains @data
  * 
  * Since: 2.4
@@ -924,7 +924,7 @@ g_queue_index (GQueue        *queue,
  * 
  * Removes the first element in @queue that contains @data. 
  * 
- * Return value: %TRUE if @data was found and removed from @queue
+ * Returns: %TRUE if @data was found and removed from @queue
  *
  * Since: 2.4
  */
@@ -951,7 +951,7 @@ g_queue_remove (GQueue        *queue,
  * 
  * Remove all elements whose data equals @data from @queue.
  * 
- * Return value: the number of elements removed from @queue
+ * Returns: the number of elements removed from @queue
  *
  * Since: 2.4
  */

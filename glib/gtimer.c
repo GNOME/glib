@@ -344,7 +344,7 @@ mktime_utc (struct tm *tm)
  * zone indicator. (In the absence of any time zone indication, the
  * timestamp is assumed to be in local time.)
  *
- * Return value: %TRUE if the conversion was successful.
+ * Returns: %TRUE if the conversion was successful.
  *
  * Since: 2.12
  */
@@ -491,7 +491,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
  * Use g_date_time_format() or g_strdup_printf() if a different
  * variation of ISO 8601 format is required.
  *
- * Return value: a newly allocated string containing an ISO 8601 date
+ * Returns: a newly allocated string containing an ISO 8601 date
  *
  * Since: 2.12
  */

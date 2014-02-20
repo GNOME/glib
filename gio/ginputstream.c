@@ -149,7 +149,7 @@ g_input_stream_init (GInputStream *stream)
  *
  * On error -1 is returned and @error is set accordingly.
  * 
- * Return value: Number of bytes read, or -1 on error, or 0 on end of file.
+ * Returns: Number of bytes read, or -1 on error, or 0 on end of file.
  **/
 gssize
 g_input_stream_read  (GInputStream  *stream,
@@ -223,7 +223,7 @@ g_input_stream_read  (GInputStream  *stream,
  * is set to indicate the error status, @bytes_read is updated to contain
  * the number of bytes read into @buffer before the error occurred.
  *
- * Return value: %TRUE on success, %FALSE if there was an error
+ * Returns: %TRUE on success, %FALSE if there was an error
  **/
 gboolean
 g_input_stream_read_all (GInputStream  *stream,
@@ -294,7 +294,7 @@ g_input_stream_read_all (GInputStream  *stream,
  *
  * On error %NULL is returned and @error is set accordingly.
  *
- * Return value: a new #GBytes, or %NULL on error
+ * Returns: a new #GBytes, or %NULL on error
  **/
 GBytes *
 g_input_stream_read_bytes (GInputStream  *stream,
@@ -343,7 +343,7 @@ g_input_stream_read_bytes (GInputStream  *stream,
  * operation was partially finished when the operation was cancelled the
  * partial result will be returned, without an error.
  *
- * Return value: Number of bytes skipped, or -1 on error
+ * Returns: Number of bytes skipped, or -1 on error
  **/
 gssize
 g_input_stream_skip (GInputStream  *stream,
@@ -468,7 +468,7 @@ g_input_stream_real_skip (GInputStream  *stream,
  * Cancelling a close will still leave the stream closed, but some streams
  * can use a faster close that doesn't block to e.g. check errors. 
  *
- * Return value: %TRUE on success, %FALSE on failure
+ * Returns: %TRUE on success, %FALSE on failure
  **/
 gboolean
 g_input_stream_close (GInputStream  *stream,
@@ -995,7 +995,7 @@ g_input_stream_has_pending (GInputStream *stream)
  * already set or @stream is closed, it will return %FALSE and set
  * @error.
  *
- * Return value: %TRUE if pending was previously unset and is now set.
+ * Returns: %TRUE if pending was previously unset and is now set.
  **/
 gboolean
 g_input_stream_set_pending (GInputStream *stream, GError **error)

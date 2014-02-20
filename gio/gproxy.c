@@ -55,7 +55,7 @@ g_proxy_default_init (GProxyInterface *iface)
  * Lookup "gio-proxy" extension point for a proxy implementation that supports
  * specified protocol.
  *
- * Return value: (transfer full): return a #GProxy or NULL if protocol
+ * Returns: (transfer full): return a #GProxy or NULL if protocol
  *               is not supported.
  *
  * Since: 2.26
@@ -92,7 +92,7 @@ g_proxy_get_default_for_protocol (const gchar *protocol)
  * does the necessary handshake to connect to @proxy_address, and if
  * required, wraps the #GIOStream to handle proxy payload.
  *
- * Return value: (transfer full): a #GIOStream that will replace @connection. This might
+ * Returns: (transfer full): a #GIOStream that will replace @connection. This might
  *               be the same as @connection, in which case a reference
  *               will be added.
  *
@@ -161,7 +161,7 @@ g_proxy_connect_async (GProxy               *proxy,
  *
  * See g_proxy_connect().
  *
- * Return value: (transfer full): a #GIOStream.
+ * Returns: (transfer full): a #GIOStream.
  *
  * Since: 2.26
  */
@@ -191,7 +191,7 @@ g_proxy_connect_finish (GProxy       *proxy,
  * #GProxyAddress containing the stringified IP address to
  * g_proxy_connect() or g_proxy_connect_async().
  *
- * Return value: %TRUE if hostname resolution is supported.
+ * Returns: %TRUE if hostname resolution is supported.
  *
  * Since: 2.26
  */

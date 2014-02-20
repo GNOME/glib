@@ -379,7 +379,7 @@ g_memory_output_stream_init (GMemoryOutputStream *stream)
  * stream3 = g_memory_output_stream_new (data, 200, NULL, free);
  * ]|
  *
- * Return value: A newly created #GMemoryOutputStream object.
+ * Returns: A newly created #GMemoryOutputStream object.
  **/
 GOutputStream *
 g_memory_output_stream_new (gpointer       data,

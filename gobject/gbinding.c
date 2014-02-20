@@ -706,7 +706,7 @@ g_binding_init (GBinding *binding)
  *
  * Retrieves the flags passed when constructing the #GBinding.
  *
- * Return value: the #GBindingFlags used by the #GBinding
+ * Returns: the #GBindingFlags used by the #GBinding
  *
  * Since: 2.26
  */
@@ -724,7 +724,7 @@ g_binding_get_flags (GBinding *binding)
  *
  * Retrieves the #GObject instance used as the source of the binding.
  *
- * Return value: (transfer none): the source #GObject
+ * Returns: (transfer none): the source #GObject
  *
  * Since: 2.26
  */
@@ -742,7 +742,7 @@ g_binding_get_source (GBinding *binding)
  *
  * Retrieves the #GObject instance used as the target of the binding.
  *
- * Return value: (transfer none): the target #GObject
+ * Returns: (transfer none): the target #GObject
  *
  * Since: 2.26
  */
@@ -761,7 +761,7 @@ g_binding_get_target (GBinding *binding)
  * Retrieves the name of the property of #GBinding:source used as the source
  * of the binding.
  *
- * Return value: the name of the source property
+ * Returns: the name of the source property
  *
  * Since: 2.26
  */
@@ -780,7 +780,7 @@ g_binding_get_source_property (GBinding *binding)
  * Retrieves the name of the property of #GBinding:target used as the target
  * of the binding.
  *
- * Return value: the name of the target property
+ * Returns: the name of the target property
  *
  * Since: 2.26
  */
@@ -854,7 +854,7 @@ g_binding_unbind (GBinding *binding)
  * for each transformation function, please use
  * g_object_bind_property_with_closures() instead.
  *
- * Return value: (transfer none): the #GBinding instance representing the
+ * Returns: (transfer none): the #GBinding instance representing the
  *     binding between the two #GObject instances. The binding is released
  *     whenever the #GBinding reference count reaches zero.
  *
@@ -1035,7 +1035,7 @@ g_object_bind_property_full (gpointer               source,
  *
  * A #GObject can have multiple bindings.
  *
- * Return value: (transfer none): the #GBinding instance representing the
+ * Returns: (transfer none): the #GBinding instance representing the
  *     binding between the two #GObject instances. The binding is released
  *     whenever the #GBinding reference count reaches zero.
  *
@@ -1186,7 +1186,7 @@ bind_with_closures_free_func (gpointer data)
  *
  * Rename to: g_object_bind_property_full
  *
- * Return value: (transfer none): the #GBinding instance representing the
+ * Returns: (transfer none): the #GBinding instance representing the
  *     binding between the two #GObject instances. The binding is released
  *     whenever the #GBinding reference count reaches zero.
  *

@@ -110,7 +110,7 @@ extern gboolean _g_main_poll_debug;
  * Windows, the easiest solution is to construct all of your
  * #GPollFDs with g_io_channel_win32_make_pollfd().
  *
- * Return value: the number of entries in @fds whose %revents fields
+ * Returns: the number of entries in @fds whose %revents fields
  * were filled in, or 0 if the operation timed out, or -1 on error or
  * if the call was interrupted.
  *

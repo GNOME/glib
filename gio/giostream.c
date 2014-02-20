@@ -262,7 +262,7 @@ g_io_stream_has_pending (GIOStream *stream)
  * already set or @stream is closed, it will return %FALSE and set
  * @error.
  *
- * Return value: %TRUE if pending was previously unset and is now set.
+ * Returns: %TRUE if pending was previously unset and is now set.
  *
  * Since: 2.22
  */
@@ -370,7 +370,7 @@ g_io_stream_real_close (GIOStream     *stream,
  * The default implementation of this method just calls close on the
  * individual input/output streams.
  *
- * Return value: %TRUE on success, %FALSE on failure
+ * Returns: %TRUE on success, %FALSE on failure
  *
  * Since: 2.22
  */

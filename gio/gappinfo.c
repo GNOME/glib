@@ -925,7 +925,7 @@ g_app_launch_context_unsetenv (GAppLaunchContext *context,
  * This is a %NULL-terminated array of strings, where each string has
  * the form `KEY=VALUE`.
  *
- * Return value: (array zero-terminated=1) (transfer full): the
+ * Returns: (array zero-terminated=1) (transfer full): the
  *     child's environment
  *
  * Since: 2.32

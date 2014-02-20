@@ -118,7 +118,7 @@ G_DEFINE_QUARK (g-spawn-exit-error-quark, g_spawn_exit_error)
  * process and not its identifier. Process handles and process identifiers
  * are different concepts on Windows.
  *
- * Return value: %TRUE on success, %FALSE if error is set
+ * Returns: %TRUE on success, %FALSE if error is set
  **/
 gboolean
 g_spawn_async (const gchar          *working_directory,
@@ -234,7 +234,7 @@ read_data (GString *str,
  * function for full details on the other parameters and details on
  * how these functions work on Windows.
  * 
- * Return value: %TRUE on success, %FALSE if an error was set
+ * Returns: %TRUE on success, %FALSE if an error was set
  */
 gboolean
 g_spawn_sync (const gchar          *working_directory,
@@ -623,7 +623,7 @@ g_spawn_sync (const gchar          *working_directory,
  * want to use gdk_spawn_on_screen_with_pipes() instead to ensure that
  * the spawned program opens its windows on the right screen.
  * 
- * Return value: %TRUE on success, %FALSE if an error was set
+ * Returns: %TRUE on success, %FALSE if an error was set
  */
 gboolean
 g_spawn_async_with_pipes (const gchar          *working_directory,
@@ -699,7 +699,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
  * separator. You need to enclose such paths with single quotes, like
  * "'c:\\program files\\app\\app.exe' 'e:\\folder\\argument.txt'".
  *
- * Return value: %TRUE on success, %FALSE if an error was set
+ * Returns: %TRUE on success, %FALSE if an error was set
  **/
 gboolean
 g_spawn_command_line_sync (const gchar  *command_line,
@@ -748,7 +748,7 @@ g_spawn_command_line_sync (const gchar  *command_line,
  * 
  * The same concerns on Windows apply as for g_spawn_command_line_sync().
  *
- * Return value: %TRUE on success, %FALSE if error is set
+ * Returns: %TRUE on success, %FALSE if error is set
  **/
 gboolean
 g_spawn_command_line_async (const gchar *command_line,

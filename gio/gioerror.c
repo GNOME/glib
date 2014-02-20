@@ -36,7 +36,7 @@
  *
  * Gets the GIO Error Quark.
  *
- * Return value: a #GQuark.
+ * Returns: a #GQuark.
  **/
 G_DEFINE_QUARK (g-io-error-quark, g_io_error)
 

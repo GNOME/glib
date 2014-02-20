@@ -271,7 +271,7 @@ g_string_chunk_insert_const (GStringChunk *chunk,
  * The characters in the returned string can be changed, if necessary,
  * though you should not change anything after the end of the string.
  *
- * Return value: a pointer to the copy of @string within the #GStringChunk
+ * Returns: a pointer to the copy of @string within the #GStringChunk
  *
  * Since: 2.4
  */

@@ -78,7 +78,7 @@ G_DEFINE_BOXED_TYPE (GSrvTarget, g_srv_target,
  * You should not need to use this; normally #GSrvTargets are
  * created by #GResolver.
  *
- * Return value: a new #GSrvTarget.
+ * Returns: a new #GSrvTarget.
  *
  * Since: 2.22
  */
@@ -104,7 +104,7 @@ g_srv_target_new (const gchar *hostname,
  *
  * Copies @target
  *
- * Return value: a copy of @target
+ * Returns: a copy of @target
  *
  * Since: 2.22
  */
@@ -139,7 +139,7 @@ g_srv_target_free (GSrvTarget *target)
  * check if it contains encoded Unicode segments, and use
  * g_hostname_to_unicode() to convert it if it does.)
  *
- * Return value: @target's hostname
+ * Returns: @target's hostname
  *
  * Since: 2.22
  */
@@ -155,7 +155,7 @@ g_srv_target_get_hostname (GSrvTarget *target)
  *
  * Gets @target's port
  *
- * Return value: @target's port
+ * Returns: @target's port
  *
  * Since: 2.22
  */
@@ -173,7 +173,7 @@ g_srv_target_get_port (GSrvTarget *target)
  * #GResolver already sorts the targets according to the algorithm in
  * RFC 2782.
  *
- * Return value: @target's priority
+ * Returns: @target's priority
  *
  * Since: 2.22
  */
@@ -191,7 +191,7 @@ g_srv_target_get_priority (GSrvTarget *target)
  * #GResolver already sorts the targets according to the algorithm in
  * RFC 2782.
  *
- * Return value: @target's weight
+ * Returns: @target's weight
  *
  * Since: 2.22
  */
@@ -225,7 +225,7 @@ compare_target (gconstpointer a, gconstpointer b)
  *
  * Sorts @targets in place according to the algorithm in RFC 2782.
  *
- * Return value: (transfer full): the head of the sorted list.
+ * Returns: (transfer full): the head of the sorted list.
  *
  * Since: 2.22
  */

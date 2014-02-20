@@ -174,7 +174,7 @@ g_node_unlink (GNode *node)
  * 
  * Recursively copies a #GNode and its data.
  * 
- * Return value: a new #GNode containing copies of the data in @node.
+ * Returns: a new #GNode containing copies of the data in @node.
  *
  * Since: 2.4
  **/

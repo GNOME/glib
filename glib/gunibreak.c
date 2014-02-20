@@ -51,7 +51,7 @@
  * resolution algorithms and normally you would use a function such
  * as pango_break() instead of caring about break types yourself.
  * 
- * Return value: the break type of @c
+ * Returns: the break type of @c
  **/
 GUnicodeBreakType
 g_unichar_break_type (gunichar c)

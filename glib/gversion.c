@@ -118,7 +118,7 @@ const guint glib_binary_age = GLIB_BINARY_AGE;
  * version @required_major.required_minor.@required_micro
  * (same major version.)
  *
- * Return value: %NULL if the GLib library is compatible with the
+ * Returns: %NULL if the GLib library is compatible with the
  *     given version, or a string describing the version mismatch.
  *     The returned string is owned by GLib and must not be modified
  *     or freed.

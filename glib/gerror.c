@@ -396,7 +396,7 @@ g_error_new_valist (GQuark       domain,
  * Creates a new #GError with the given @domain and @code,
  * and a message formatted with @format.
  *
- * Return value: a new #GError
+ * Returns: a new #GError
  */
 GError*
 g_error_new (GQuark       domain,
@@ -428,7 +428,7 @@ g_error_new (GQuark       domain,
  * @message contains text you don't have control over,
  * that could include printf() escape sequences.
  *
- * Return value: a new #GError
+ * Returns: a new #GError
  **/
 GError*
 g_error_new_literal (GQuark         domain,
@@ -471,7 +471,7 @@ g_error_free (GError *error)
  *
  * Makes a copy of @error.
  *
- * Return value: a new #GError
+ * Returns: a new #GError
  */
 GError*
 g_error_copy (const GError *error)
@@ -502,7 +502,7 @@ g_error_copy (const GError *error)
  * otherwise. In particular, when @error is %NULL, %FALSE will
  * be returned.
  *
- * Return value: whether @error has @domain and @code
+ * Returns: whether @error has @domain and @code
  */
 gboolean
 g_error_matches (const GError *error,

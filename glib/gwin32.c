@@ -547,7 +547,7 @@ g_win32_get_windows_version (void)
  * The return value is dynamically allocated and should be freed with
  * g_free() when no longer needed.
  *
- * Return value: The converted filename, or %NULL on conversion
+ * Returns: The converted filename, or %NULL on conversion
  * failure and lack of short names.
  *
  * Since: 2.8

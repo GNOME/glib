@@ -438,7 +438,7 @@ g_date_time_alloc (GTimeZone *tz)
  *
  * Atomically increments the reference count of @datetime by one.
  *
- * Return value: the #GDateTime with the reference count increased
+ * Returns: the #GDateTime with the reference count increased
  *
  * Since: 2.26
  */
@@ -1059,7 +1059,7 @@ g_date_time_new_utc (gint    year,
  *
  * Creates a copy of @datetime and adds the specified timespan to the copy.
  *
- * Return value: the newly created #GDateTime which should be freed with
+ * Returns: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
  *
  * Since: 2.26
@@ -1080,7 +1080,7 @@ g_date_time_add (GDateTime *datetime,
  * Creates a copy of @datetime and adds the specified number of years to the
  * copy. Add negative values to subtract years.
  *
- * Return value: the newly created #GDateTime which should be freed with
+ * Returns: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
  *
  * Since: 2.26
@@ -1115,7 +1115,7 @@ g_date_time_add_years (GDateTime *datetime,
  * Creates a copy of @datetime and adds the specified number of months to the
  * copy. Add negative values to subtract months.
  *
- * Return value: the newly created #GDateTime which should be freed with
+ * Returns: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
  *
  * Since: 2.26
@@ -1158,7 +1158,7 @@ g_date_time_add_months (GDateTime *datetime,
  * Creates a copy of @datetime and adds the specified number of weeks to the
  * copy. Add negative values to subtract weeks.
  *
- * Return value: the newly created #GDateTime which should be freed with
+ * Returns: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
  *
  * Since: 2.26
@@ -1180,7 +1180,7 @@ g_date_time_add_weeks (GDateTime *datetime,
  * Creates a copy of @datetime and adds the specified number of days to the
  * copy. Add negative values to subtract days.
  *
- * Return value: the newly created #GDateTime which should be freed with
+ * Returns: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
  *
  * Since: 2.26
@@ -1205,7 +1205,7 @@ g_date_time_add_days (GDateTime *datetime,
  * Creates a copy of @datetime and adds the specified number of hours.
  * Add negative values to subtract hours.
  *
- * Return value: the newly created #GDateTime which should be freed with
+ * Returns: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
  *
  * Since: 2.26
@@ -1225,7 +1225,7 @@ g_date_time_add_hours (GDateTime *datetime,
  * Creates a copy of @datetime adding the specified number of minutes.
  * Add negative values to subtract minutes.
  *
- * Return value: the newly created #GDateTime which should be freed with
+ * Returns: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
  *
  * Since: 2.26
@@ -1246,7 +1246,7 @@ g_date_time_add_minutes (GDateTime *datetime,
  * Creates a copy of @datetime and adds the specified number of seconds.
  * Add negative values to subtract seconds.
  *
- * Return value: the newly created #GDateTime which should be freed with
+ * Returns: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
  *
  * Since: 2.26
@@ -1271,7 +1271,7 @@ g_date_time_add_seconds (GDateTime *datetime,
  * Creates a new #GDateTime adding the specified values to the current date and
  * time in @datetime. Add negative values to subtract.
  *
- * Return value: the newly created #GDateTime that should be freed with
+ * Returns: the newly created #GDateTime that should be freed with
  *   g_date_time_unref().
  *
  * Since: 2.26
@@ -1367,7 +1367,7 @@ g_date_time_add_full (GDateTime *datetime,
  * A comparison function for #GDateTimes that is suitable
  * as a #GCompareFunc. Both #GDateTimes must be non-%NULL.
  *
- * Return value: -1, 0 or 1 if @dt1 is less than, equal to or greater
+ * Returns: -1, 0 or 1 if @dt1 is less than, equal to or greater
  *   than @dt2.
  *
  * Since: 2.26
@@ -1399,7 +1399,7 @@ g_date_time_compare (gconstpointer dt1,
  * #GTimeSpan that is returned is effectively @end - @begin (ie:
  * positive if the first parameter is larger).
  *
- * Return value: the difference between the two #GDateTime, as a time
+ * Returns: the difference between the two #GDateTime, as a time
  *   span expressed in microseconds.
  *
  * Since: 2.26
@@ -1421,7 +1421,7 @@ g_date_time_difference (GDateTime *end,
  *
  * Hashes @datetime into a #guint, suitable for use within #GHashTable.
  *
- * Return value: a #guint containing the hash
+ * Returns: a #guint containing the hash
  *
  * Since: 2.26
  */
@@ -1441,7 +1441,7 @@ g_date_time_hash (gconstpointer datetime)
  * Equal here means that they represent the same moment after converting
  * them to the same time zone.
  *
- * Return value: %TRUE if @dt1 and @dt2 are equal
+ * Returns: %TRUE if @dt1 and @dt2 are equal
  *
  * Since: 2.26
  */
@@ -1555,7 +1555,7 @@ end:
  *
  * Retrieves the year represented by @datetime in the Gregorian calendar.
  *
- * Return value: the year represented by @datetime
+ * Returns: the year represented by @datetime
  *
  * Since: 2.26
  */
@@ -1578,7 +1578,7 @@ g_date_time_get_year (GDateTime *datetime)
  * Retrieves the month of the year represented by @datetime in the Gregorian
  * calendar.
  *
- * Return value: the month represented by @datetime
+ * Returns: the month represented by @datetime
  *
  * Since: 2.26
  */
@@ -1601,7 +1601,7 @@ g_date_time_get_month (GDateTime *datetime)
  * Retrieves the day of the month represented by @datetime in the gregorian
  * calendar.
  *
- * Return value: the day of the month
+ * Returns: the day of the month
  *
  * Since: 2.26
  */
@@ -1749,7 +1749,7 @@ g_date_time_get_week_of_year (GDateTime *datetime)
  * Retrieves the ISO 8601 day of the week on which @datetime falls (1 is
  * Monday, 2 is Tuesday... 7 is Sunday).
  *
- * Return value: the day of the week
+ * Returns: the day of the week
  *
  * Since: 2.26
  */
@@ -1769,7 +1769,7 @@ g_date_time_get_day_of_week (GDateTime *datetime)
  * Retrieves the day of the year represented by @datetime in the Gregorian
  * calendar.
  *
- * Return value: the day of the year
+ * Returns: the day of the year
  *
  * Since: 2.26
  */
@@ -1792,7 +1792,7 @@ g_date_time_get_day_of_year (GDateTime *datetime)
  *
  * Retrieves the hour of the day represented by @datetime
  *
- * Return value: the hour of the day
+ * Returns: the hour of the day
  *
  * Since: 2.26
  */
@@ -1810,7 +1810,7 @@ g_date_time_get_hour (GDateTime *datetime)
  *
  * Retrieves the minute of the hour represented by @datetime
  *
- * Return value: the minute of the hour
+ * Returns: the minute of the hour
  *
  * Since: 2.26
  */
@@ -1828,7 +1828,7 @@ g_date_time_get_minute (GDateTime *datetime)
  *
  * Retrieves the second of the minute represented by @datetime
  *
- * Return value: the second represented by @datetime
+ * Returns: the second represented by @datetime
  *
  * Since: 2.26
  */
@@ -1846,7 +1846,7 @@ g_date_time_get_second (GDateTime *datetime)
  *
  * Retrieves the microsecond of the date represented by @datetime
  *
- * Return value: the microsecond of the second
+ * Returns: the microsecond of the second
  *
  * Since: 2.26
  */

@@ -101,7 +101,7 @@ static GSourceFuncs pollable_source_funcs =
  * anything on its own; use g_source_add_child_source() to add other
  * sources to it to cause it to trigger.
  *
- * Return value: (transfer full): the new #GSource.
+ * Returns: (transfer full): the new #GSource.
  *
  * Since: 2.28
  */
@@ -134,7 +134,7 @@ g_pollable_source_new (GObject *pollable_stream)
  * g_pollable_source_new(), but also attaching @child_source (with a
  * dummy callback), and @cancellable, if they are non-%NULL.
  *
- * Return value: (transfer full): the new #GSource.
+ * Returns: (transfer full): the new #GSource.
  *
  * Since: 2.34
  */
@@ -289,7 +289,7 @@ g_pollable_stream_write (GOutputStream   *stream,
  * behavior is undefined. If @blocking is %TRUE, then @stream does not
  * need to be a #GPollableOutputStream.
  *
- * Return value: %TRUE on success, %FALSE if there was an error
+ * Returns: %TRUE on success, %FALSE if there was an error
  *
  * Since: 2.34
  */

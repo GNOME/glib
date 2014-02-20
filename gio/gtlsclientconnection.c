@@ -151,7 +151,7 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
  * must have pollable input and output streams) which is assumed to
  * communicate with the server identified by @server_identity.
  *
- * Return value: (transfer full) (type GTlsClientConnection): the new
+ * Returns: (transfer full) (type GTlsClientConnection): the new
  * #GTlsClientConnection, or %NULL on error
  *
  * Since: 2.28
@@ -179,7 +179,7 @@ g_tls_client_connection_new (GIOStream           *base_io_stream,
  *
  * Gets @conn's validation flags
  *
- * Return value: the validation flags
+ * Returns: the validation flags
  *
  * Since: 2.28
  */
@@ -220,7 +220,7 @@ g_tls_client_connection_set_validation_flags (GTlsClientConnection  *conn,
  *
  * Gets @conn's expected server identity
  *
- * Return value: (transfer none): a #GSocketConnectable describing the
+ * Returns: (transfer none): a #GSocketConnectable describing the
  * expected server identity, or %NULL if the expected identity is not
  * known.
  *
@@ -268,7 +268,7 @@ g_tls_client_connection_set_server_identity (GTlsClientConnection *conn,
  * highest-supported version of TLS; see
  * g_tls_client_connection_set_use_ssl3().
  *
- * Return value: whether @conn will use SSL 3.0
+ * Returns: whether @conn will use SSL 3.0
  *
  * Since: 2.28
  */
@@ -317,7 +317,7 @@ g_tls_client_connection_set_use_ssl3 (GTlsClientConnection *conn,
  * Each item in the list is a #GByteArray which contains the complete
  * subject DN of the certificate authority.
  *
- * Return value: (element-type GByteArray) (transfer full): the list of
+ * Returns: (element-type GByteArray) (transfer full): the list of
  * CA DNs. You should unref each element with g_byte_array_unref() and then
  * the free the list with g_list_free().
  *

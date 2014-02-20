@@ -179,7 +179,7 @@ g_pollable_output_stream_default_write_nonblocking (GPollableOutputStream  *stre
  * to having been cancelled.
  *
  * Virtual: write_nonblocking
- * Return value: the number of bytes written, or -1 on error (including
+ * Returns: the number of bytes written, or -1 on error (including
  *   %G_IO_ERROR_WOULD_BLOCK).
  */
 gssize

@@ -458,7 +458,7 @@ g_strnfill (gsize length,
  * This is useful for concatenating multiple strings together
  * without having to repeatedly scan for the end.
  *
- * Return value: a pointer to trailing nul byte.
+ * Returns: a pointer to trailing nul byte.
  **/
 gchar *
 g_stpcpy (gchar       *dest,
@@ -609,7 +609,7 @@ g_strconcat (const gchar *string1, ...)
  * separated lists of values, since the commas may be interpreted as a decimal
  * point in some locales, causing unexpected results.
  *
- * Return value: the #gdouble value.
+ * Returns: the #gdouble value.
  **/
 gdouble
 g_strtod (const gchar *nptr,
@@ -674,7 +674,7 @@ g_strtod (const gchar *nptr,
  * This function resets %errno before calling strtod() so that
  * you can reliably detect overflow and underflow.
  *
- * Return value: the #gdouble value.
+ * Returns: the #gdouble value.
  */
 gdouble
 g_ascii_strtod (const gchar *nptr,
@@ -860,7 +860,7 @@ g_ascii_strtod (const gchar *nptr,
  * guaranteed that the size of the resulting string will never
  * be larger than @G_ASCII_DTOSTR_BUF_SIZE bytes.
  *
- * Return value: The pointer to the buffer with the converted string.
+ * Returns: The pointer to the buffer with the converted string.
  **/
 gchar *
 g_ascii_dtostr (gchar       *buffer,
@@ -889,7 +889,7 @@ g_ascii_dtostr (gchar       *buffer,
  * If you just want to want to serialize the value into a
  * string, use g_ascii_dtostr().
  *
- * Return value: The pointer to the buffer with the converted string.
+ * Returns: The pointer to the buffer with the converted string.
  */
 gchar *
 g_ascii_formatd (gchar       *buffer,
@@ -1142,7 +1142,7 @@ g_parse_long_long (const gchar  *nptr,
  * If the string conversion fails, zero is returned, and @endptr returns
  * @nptr (if @endptr is non-%NULL).
  *
- * Return value: the #guint64 value or zero on error.
+ * Returns: the #guint64 value or zero on error.
  *
  * Since: 2.2
  */
@@ -1189,7 +1189,7 @@ g_ascii_strtoull (const gchar *nptr,
  * string conversion fails, zero is returned, and @endptr returns @nptr
  * (if @endptr is non-%NULL).
  *
- * Return value: the #gint64 value or zero on error.
+ * Returns: the #gint64 value or zero on error.
  *
  * Since: 2.12
  */
@@ -1448,7 +1448,7 @@ g_strlcat (gchar       *dest,
  *
  * Converts all upper case ASCII letters to lower case ASCII letters.
  *
- * Return value: a newly-allocated string, with all the upper case
+ * Returns: a newly-allocated string, with all the upper case
  *     characters in @str converted to lower case, with semantics that
  *     exactly match g_ascii_tolower(). (Note that this is unlike the
  *     old g_strdown(), which modified the string in place.)
@@ -1478,7 +1478,7 @@ g_ascii_strdown (const gchar *str,
  *
  * Converts all lower case ASCII letters to upper case ASCII letters.
  *
- * Return value: a newly allocated string, with all the lower case
+ * Returns: a newly allocated string, with all the lower case
  *     characters in @str converted to upper case, with semantics that
  *     exactly match g_ascii_toupper(). (Note that this is unlike the
  *     old g_strup(), which modified the string in place.)
@@ -1530,7 +1530,7 @@ g_str_is_ascii (const gchar *str)
  *
  * Converts a string to lower case.
  *
- * Return value: the string
+ * Returns: the string
  *
  * Deprecated:2.2: This function is totally broken for the reasons discussed
  * in the g_strncasecmp() docs - use g_ascii_strdown() or g_utf8_strdown()
@@ -1561,7 +1561,7 @@ g_strdown (gchar *string)
  *
  * Converts a string to upper case.
  *
- * Return value: the string
+ * Returns: the string
  *
  * Deprecated:2.2: This function is totally broken for the reasons
  *     discussed in the g_strncasecmp() docs - use g_ascii_strup()
@@ -1640,7 +1640,7 @@ g_strreverse (gchar *string)
  * don't call it on %EOF but no need to worry about casting to #guchar
  * before passing a possibly non-ASCII character in.
  *
- * Return value: the result of converting @c to lower case. If @c is
+ * Returns: the result of converting @c to lower case. If @c is
  *     not an ASCII upper case letter, @c is returned unchanged.
  */
 gchar
@@ -1663,7 +1663,7 @@ g_ascii_tolower (gchar c)
  * don't call it on %EOF but no need to worry about casting to #guchar
  * before passing a possibly non-ASCII character in.
  *
- * Return value: the result of converting @c to upper case. If @c is not
+ * Returns: the result of converting @c to upper case. If @c is not
  *    an ASCII lower case letter, @c is returned unchanged.
  */
 gchar
@@ -1680,7 +1680,7 @@ g_ascii_toupper (gchar c)
  * Differs from g_unichar_digit_value() because it takes a char, so
  * there's no worry about sign extension if characters are signed.
  *
- * Return value: If @c is a decimal digit (according to g_ascii_isdigit()),
+ * Returns: If @c is a decimal digit (according to g_ascii_isdigit()),
  *    its numeric value. Otherwise, -1.
  */
 int
@@ -1700,7 +1700,7 @@ g_ascii_digit_value (gchar c)
  * a char, so there's no worry about sign extension if characters
  * are signed.
  *
- * Return value: If @c is a hex digit (according to g_ascii_isxdigit()),
+ * Returns: If @c is a hex digit (according to g_ascii_isxdigit()),
  *     its numeric value. Otherwise, -1.
  */
 int
@@ -1734,7 +1734,7 @@ g_ascii_xdigit_value (gchar c)
  *
  * Both @s1 and @s2 must be non-%NULL.
  *
- * Return value: 0 if the strings match, a negative value if @s1 < @s2,
+ * Returns: 0 if the strings match, a negative value if @s1 < @s2,
  *     or a positive value if @s1 > @s2.
  */
 gint
@@ -1775,7 +1775,7 @@ g_ascii_strcasecmp (const gchar *s1,
  * function only on strings known to be in encodings where bytes
  * corresponding to ASCII letters always represent themselves.
  *
- * Return value: 0 if the strings match, a negative value if @s1 < @s2,
+ * Returns: 0 if the strings match, a negative value if @s1 < @s2,
  *     or a positive value if @s1 > @s2.
  */
 gint
@@ -1812,7 +1812,7 @@ g_ascii_strncasecmp (const gchar *s1,
  * A case-insensitive string comparison, corresponding to the standard
  * strcasecmp() function on platforms which support it.
  *
- * Return value: 0 if the strings match, a negative value if @s1 < @s2,
+ * Returns: 0 if the strings match, a negative value if @s1 < @s2,
  *     or a positive value if @s1 > @s2.
  *
  * Deprecated:2.2: See g_strncasecmp() for a discussion of why this
@@ -1860,7 +1860,7 @@ g_strcasecmp (const gchar *s1,
  * to g_strcasecmp() except it only compares the first @n characters of
  * the strings.
  *
- * Return value: 0 if the strings match, a negative value if @s1 < @s2,
+ * Returns: 0 if the strings match, a negative value if @s1 < @s2,
  *     or a positive value if @s1 > @s2.
  *
  * Deprecated:2.2: The problem with g_strncasecmp() is that it does
@@ -2253,7 +2253,7 @@ g_strchomp (gchar *string)
  * to represent empty elements, you'll need to check for the empty string
  * before calling g_strsplit().
  *
- * Return value: a newly-allocated %NULL-terminated array of strings. Use
+ * Returns: a newly-allocated %NULL-terminated array of strings. Use
  *    g_strfreev() to free it.
  */
 gchar**
@@ -2338,7 +2338,7 @@ g_strsplit (const gchar *string,
  * Note that this function works on bytes not characters, so it can't be used
  * to delimit UTF-8 strings for anything but ASCII characters.
  *
- * Return value: a newly-allocated %NULL-terminated array of strings. Use
+ * Returns: a newly-allocated %NULL-terminated array of strings. Use
  *    g_strfreev() to free it.
  *
  * Since: 2.4
@@ -2436,7 +2436,7 @@ g_strfreev (gchar **str_array)
  * the array itself. g_strfreev() does this for you. If called
  * on a %NULL value, g_strdupv() simply returns %NULL.
  *
- * Return value: a new %NULL-terminated array of strings.
+ * Returns: a new %NULL-terminated array of strings.
  */
 gchar**
 g_strdupv (gchar **str_array)
@@ -2601,7 +2601,7 @@ g_strjoin (const gchar *separator,
  * of the string @needle, limiting the length of the search
  * to @haystack_len.
  *
- * Return value: a pointer to the found occurrence, or
+ * Returns: a pointer to the found occurrence, or
  *    %NULL if not found.
  */
 gchar *
@@ -2653,7 +2653,7 @@ g_strstr_len (const gchar *haystack,
  * Searches the string @haystack for the last occurrence
  * of the string @needle.
  *
- * Return value: a pointer to the found occurrence, or
+ * Returns: a pointer to the found occurrence, or
  *    %NULL if not found.
  */
 gchar *
@@ -2704,7 +2704,7 @@ g_strrstr (const gchar *haystack,
  * of the string @needle, limiting the length of the search
  * to @haystack_len.
  *
- * Return value: a pointer to the found occurrence, or
+ * Returns: a pointer to the found occurrence, or
  *    %NULL if not found.
  */
 gchar *
@@ -2756,7 +2756,7 @@ g_strrstr_len (const gchar *haystack,
  *
  * Looks whether the string @str ends with @suffix.
  *
- * Return value: %TRUE if @str end with @suffix, %FALSE otherwise.
+ * Returns: %TRUE if @str end with @suffix, %FALSE otherwise.
  *
  * Since: 2.2
  */
@@ -2786,7 +2786,7 @@ g_str_has_suffix (const gchar *str,
  *
  * Looks whether the string @str begins with @prefix.
  *
- * Return value: %TRUE if @str begins with @prefix, %FALSE otherwise.
+ * Returns: %TRUE if @str begins with @prefix, %FALSE otherwise.
  *
  * Since: 2.2
  */
@@ -2816,7 +2816,7 @@ g_str_has_prefix (const gchar *str,
  * Returns the length of the given %NULL-terminated
  * string array @str_array.
  *
- * Return value: length of @str_array.
+ * Returns: length of @str_array.
  *
  * Since: 2.6
  */

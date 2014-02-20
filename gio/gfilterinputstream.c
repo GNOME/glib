@@ -206,7 +206,7 @@ g_filter_input_stream_get_base_stream (GFilterInputStream *stream)
  * Returns whether the base stream will be closed when @stream is
  * closed.
  *
- * Return value: %TRUE if the base stream will be closed.
+ * Returns: %TRUE if the base stream will be closed.
  **/
 gboolean
 g_filter_input_stream_get_close_base_stream (GFilterInputStream *stream)

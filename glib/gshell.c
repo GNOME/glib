@@ -191,7 +191,7 @@ unquote_string_inplace (gchar* str, gchar** end, GError** err)
  * quoting style used is undefined (single or double quotes may be
  * used).
  * 
- * Return value: quoted string
+ * Returns: quoted string
  **/
 gchar*
 g_shell_quote (const gchar *unquoted_string)
@@ -257,7 +257,7 @@ g_shell_quote (const gchar *unquoted_string)
  * be escaped with backslash. Otherwise double quotes preserve things
  * literally.
  *
- * Return value: an unquoted string
+ * Returns: an unquoted string
  **/
 gchar*
 g_shell_unquote (const gchar *quoted_string,
@@ -625,7 +625,7 @@ tokenize_command_line (const gchar *command_line,
  * literally. Possible errors are those from the #G_SHELL_ERROR
  * domain. Free the returned vector with g_strfreev().
  * 
- * Return value: %TRUE on success, %FALSE if error set
+ * Returns: %TRUE on success, %FALSE if error set
  **/
 gboolean
 g_shell_parse_argv (const gchar *command_line,

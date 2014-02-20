@@ -176,7 +176,7 @@ g_output_stream_init (GOutputStream *stream)
  * 
  * Virtual: write_fn
  *
- * Return value: Number of bytes written, or -1 on error
+ * Returns: Number of bytes written, or -1 on error
  **/
 gssize
 g_output_stream_write (GOutputStream  *stream,
@@ -249,7 +249,7 @@ g_output_stream_write (GOutputStream  *stream,
  * is set to indicate the error status, @bytes_written is updated to contain
  * the number of bytes written into the stream before the error occurred.
  *
- * Return value: %TRUE on success, %FALSE if there was an error
+ * Returns: %TRUE on success, %FALSE if there was an error
  **/
 gboolean
 g_output_stream_write_all (GOutputStream  *stream,
@@ -314,7 +314,7 @@ g_output_stream_write_all (GOutputStream  *stream,
  *
  * Since: 2.40
  *
- * Return value: %TRUE on success, %FALSE if there was an error
+ * Returns: %TRUE on success, %FALSE if there was an error
  **/
 gboolean
 g_output_stream_printf (GOutputStream  *stream,
@@ -360,7 +360,7 @@ g_output_stream_printf (GOutputStream  *stream,
  *
  * Since: 2.40
  *
- * Return value: %TRUE on success, %FALSE if there was an error
+ * Returns: %TRUE on success, %FALSE if there was an error
  **/
 gboolean
 g_output_stream_vprintf (GOutputStream  *stream,
@@ -406,7 +406,7 @@ g_output_stream_vprintf (GOutputStream  *stream,
  * #GBytes instance multiple times potentially can result in duplicated
  * data in the output stream.
  *
- * Return value: Number of bytes written, or -1 on error
+ * Returns: Number of bytes written, or -1 on error
  **/
 gssize
 g_output_stream_write_bytes (GOutputStream  *stream,
@@ -441,7 +441,7 @@ g_output_stream_write_bytes (GOutputStream  *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Return value: %TRUE on success, %FALSE on error
+ * Returns: %TRUE on success, %FALSE on error
  **/
 gboolean
 g_output_stream_flush (GOutputStream  *stream,
@@ -692,7 +692,7 @@ g_output_stream_internal_close (GOutputStream  *stream,
  * cancellation (as with any error) there is no guarantee that all written
  * data will reach the target. 
  *
- * Return value: %TRUE on success, %FALSE on failure
+ * Returns: %TRUE on success, %FALSE on failure
  **/
 gboolean
 g_output_stream_close (GOutputStream  *stream,
@@ -1450,7 +1450,7 @@ g_output_stream_has_pending (GOutputStream *stream)
  * already set or @stream is closed, it will return %FALSE and set
  * @error.
  *
- * Return value: %TRUE if pending was previously unset and is now set.
+ * Returns: %TRUE if pending was previously unset and is now set.
  **/
 gboolean
 g_output_stream_set_pending (GOutputStream *stream,

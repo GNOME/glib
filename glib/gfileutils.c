@@ -311,7 +311,7 @@ g_mkdir_with_parents (const gchar *pathname,
  * its name indicates that it is executable, checking for well-known
  * extensions and those listed in the `PATHEXT` environment variable.
  *
- * Return value: whether a test was %TRUE
+ * Returns: whether a test was %TRUE
  **/
 gboolean
 g_file_test (const gchar *filename,
@@ -473,7 +473,7 @@ G_DEFINE_QUARK (g-file-error-quark, g_file_error)
  * from a function that manipulates files. So you would use
  * g_file_error_from_errno() when constructing a #GError.
  * 
- * Return value: #GFileError corresponding to the given @errno
+ * Returns: #GFileError corresponding to the given @errno
  **/
 GFileError
 g_file_error_from_errno (gint err_no)
@@ -957,7 +957,7 @@ get_contents_win32 (const gchar  *filename,
  * codes are those in the #GFileError enumeration. In the error case,
  * @contents is set to %NULL and @length is set to zero.
  *
- * Return value: %TRUE on success, %FALSE if an error occurred
+ * Returns: %TRUE on success, %FALSE if an error occurred
  **/
 gboolean
 g_file_get_contents (const gchar  *filename,
@@ -1154,7 +1154,7 @@ write_to_temp_file (const gchar  *contents,
  * Note that the name for the temporary file is constructed by appending up
  * to 7 characters to @filename.
  *
- * Return value: %TRUE on success, %FALSE if an error occurred
+ * Returns: %TRUE on success, %FALSE if an error occurred
  *
  * Since: 2.8
  */
@@ -1345,7 +1345,7 @@ wrap_g_open (const gchar *filename,
  * in the GLib file name encoding. Most importantly, on Windows it
  * should be in UTF-8.
  *
- * Return value: A pointer to @tmpl, which has been modified
+ * Returns: A pointer to @tmpl, which has been modified
  *     to hold the directory name. In case of errors, %NULL is
  *     returned, and %errno will be set.
  *
@@ -1377,7 +1377,7 @@ g_mkdtemp_full (gchar *tmpl,
  * The string should be in the GLib file name encoding. Most importantly,
  * on Windows it should be in UTF-8.
  *
- * Return value: A pointer to @tmpl, which has been modified
+ * Returns: A pointer to @tmpl, which has been modified
  *     to hold the directory name.  In case of errors, %NULL is
  *     returned and %errno will be set.
  *
@@ -1408,7 +1408,7 @@ g_mkdtemp (gchar *tmpl)
  * The string should be in the GLib file name encoding. Most importantly,
  * on Windows it should be in UTF-8.
  *
- * Return value: A file handle (as from open()) to the file
+ * Returns: A file handle (as from open()) to the file
  *     opened for reading and writing. The file handle should be
  *     closed with close(). In case of errors, -1 is returned
  *     and %errno will be set.
@@ -1440,7 +1440,7 @@ g_mkstemp_full (gchar *tmpl,
  * didn't exist. The string should be in the GLib file name encoding.
  * Most importantly, on Windows it should be in UTF-8.
  *
- * Return value: A file handle (as from open()) to the file
+ * Returns: A file handle (as from open()) to the file
  *     opened for reading and writing. The file is opened in binary
  *     mode on platforms where there is a difference. The file handle
  *     should be closed with close(). In case of errors, -1 is
@@ -1551,7 +1551,7 @@ g_get_tmp_name (const gchar      *tmpl,
  * when not needed any longer. The returned name is in the GLib file
  * name encoding.
  *
- * Return value: A file handle (as from open()) to the file opened for
+ * Returns: A file handle (as from open()) to the file opened for
  *     reading and writing. The file is opened in binary mode on platforms
  *     where there is a difference. The file handle should be closed with
  *     close(). In case of errors, -1 is returned and @error will be set.
@@ -1598,7 +1598,7 @@ g_file_open_tmp (const gchar  *tmpl,
  * Note that in contrast to g_mkdtemp() (and mkdtemp()) @tmpl is not
  * modified, and might thus be a read-only literal string.
  *
- * Return value: (type filename): The actual name used. This string
+ * Returns: (type filename): The actual name used. This string
  *     should be freed with g_free() when not needed any longer and is
  *     is in the GLib file name encoding. In case of errors, %NULL is
  *     returned and @error will be set.
@@ -1729,7 +1729,7 @@ g_build_path_va (const gchar  *separator,
  * as a string array, instead of varargs. This function is mainly
  * meant for language bindings.
  *
- * Return value: a newly-allocated string that must be freed with g_free().
+ * Returns: a newly-allocated string that must be freed with g_free().
  *
  * Since: 2.8
  */
@@ -1777,7 +1777,7 @@ g_build_pathv (const gchar  *separator,
  * copies of the separator, elements consisting only of copies
  * of the separator are ignored.
  * 
- * Return value: a newly-allocated string that must be freed with g_free().
+ * Returns: a newly-allocated string that must be freed with g_free().
  **/
 gchar *
 g_build_path (const gchar *separator,
@@ -1920,7 +1920,7 @@ g_build_pathname_va (const gchar  *first_element,
  * as a string array, instead of varargs. This function is mainly
  * meant for language bindings.
  *
- * Return value: a newly-allocated string that must be freed with g_free().
+ * Returns: a newly-allocated string that must be freed with g_free().
  * 
  * Since: 2.8
  */
@@ -1959,7 +1959,7 @@ g_build_filenamev (gchar **args)
  * path. If the first element is a relative path, the result will
  * be a relative path. 
  * 
- * Return value: a newly-allocated string that must be freed with g_free().
+ * Returns: a newly-allocated string that must be freed with g_free().
  **/
 gchar *
 g_build_filename (const gchar *first_element, 
@@ -2163,7 +2163,7 @@ g_path_skip_root (const gchar *file_name)
  * components. It returns a pointer into the given file name
  * string.
  *
- * Return value: the name of the file without any leading
+ * Returns: the name of the file without any leading
  *     directory components
  *
  * Deprecated:2.2: Use g_path_get_basename() instead, but notice
@@ -2211,7 +2211,7 @@ g_basename (const gchar *file_name)
  * separators (and on Windows, possibly a drive letter), a single
  * separator is returned. If @file_name is empty, it gets ".".
  *
- * Return value: a newly allocated string containing the last
+ * Returns: a newly allocated string containing the last
  *    component of the filename
  */
 gchar *

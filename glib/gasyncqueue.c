@@ -113,7 +113,7 @@ typedef struct
  *
  * Creates a new asynchronous queue.
  *
- * Return value: a new #GAsyncQueue. Free with g_async_queue_unref()
+ * Returns: a new #GAsyncQueue. Free with g_async_queue_unref()
  */
 GAsyncQueue *
 g_async_queue_new (void)
@@ -129,7 +129,7 @@ g_async_queue_new (void)
  * function that is used to free any remaining queue items when
  * the queue is destroyed after the final unref.
  *
- * Return value: a new #GAsyncQueue. Free with g_async_queue_unref()
+ * Returns: a new #GAsyncQueue. Free with g_async_queue_unref()
  *
  * Since: 2.16
  */
@@ -440,7 +440,7 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
  * Pops data from the @queue. If @queue is empty, this function
  * blocks until data becomes available.
  *
- * Return value: data from the queue
+ * Returns: data from the queue
  */
 gpointer
 g_async_queue_pop (GAsyncQueue *queue)
@@ -465,7 +465,7 @@ g_async_queue_pop (GAsyncQueue *queue)
  *
  * This function must be called while holding the @queue's lock.
  *
- * Return value: data from the queue.
+ * Returns: data from the queue.
  */
 gpointer
 g_async_queue_pop_unlocked (GAsyncQueue *queue)
@@ -482,7 +482,7 @@ g_async_queue_pop_unlocked (GAsyncQueue *queue)
  * Tries to pop data from the @queue. If no data is available,
  * %NULL is returned.
  *
- * Return value: data from the queue or %NULL, when no data is
+ * Returns: data from the queue or %NULL, when no data is
  *     available immediately.
  */
 gpointer
@@ -508,7 +508,7 @@ g_async_queue_try_pop (GAsyncQueue *queue)
  *
  * This function must be called while holding the @queue's lock.
  *
- * Return value: data from the queue or %NULL, when no data is
+ * Returns: data from the queue or %NULL, when no data is
  *     available immediately.
  */
 gpointer
@@ -529,7 +529,7 @@ g_async_queue_try_pop_unlocked (GAsyncQueue *queue)
  *
  * If no data is received before the timeout, %NULL is returned.
  *
- * Return value: data from the queue or %NULL, when no data is
+ * Returns: data from the queue or %NULL, when no data is
  *     received before the timeout.
  */
 gpointer
@@ -558,7 +558,7 @@ g_async_queue_timeout_pop (GAsyncQueue *queue,
  *
  * This function must be called while holding the @queue's lock.
  *
- * Return value: data from the queue or %NULL, when no data is
+ * Returns: data from the queue or %NULL, when no data is
  *     received before the timeout.
  */
 gpointer
@@ -583,7 +583,7 @@ g_async_queue_timeout_pop_unlocked (GAsyncQueue *queue,
  * To easily calculate @end_time, a combination of g_get_current_time()
  * and g_time_val_add() can be used.
  *
- * Return value: data from the queue or %NULL, when no data is
+ * Returns: data from the queue or %NULL, when no data is
  *     received before @end_time.
  *
  * Deprecated: use g_async_queue_timeout_pop().
@@ -628,7 +628,7 @@ g_async_queue_timed_pop (GAsyncQueue *queue,
  *
  * This function must be called while holding the @queue's lock.
  *
- * Return value: data from the queue or %NULL, when no data is
+ * Returns: data from the queue or %NULL, when no data is
  *     received before @end_time.
  *
  * Deprecated: use g_async_queue_timeout_pop_unlocked().
@@ -666,7 +666,7 @@ g_async_queue_timed_pop_unlocked (GAsyncQueue *queue,
  * in the queue and n threads waiting. This can happen due to locking
  * of the queue or due to scheduling.
  *
- * Return value: the length of the @queue
+ * Returns: the length of the @queue
  */
 gint
 g_async_queue_length (GAsyncQueue *queue)
@@ -697,7 +697,7 @@ g_async_queue_length (GAsyncQueue *queue)
  *
  * This function must be called while holding the @queue's lock.
  *
- * Return value: the length of the @queue.
+ * Returns: the length of the @queue.
  */
 gint
 g_async_queue_length_unlocked (GAsyncQueue *queue)

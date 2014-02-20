@@ -75,7 +75,7 @@
  * 
  * Determines the canonical combining class of a Unicode character.
  * 
- * Return value: the combining class of the character
+ * Returns: the combining class of the character
  *
  * Since: 2.14
  **/
@@ -224,7 +224,7 @@ find_decomposition (gunichar ch,
  *
  * Computes the canonical decomposition of a Unicode character.  
  * 
- * Return value: a newly allocated string of Unicode characters.
+ * Returns: a newly allocated string of Unicode characters.
  *   @result_len is set to the resulting length of the string.
  *
  * Deprecated: 2.30: Use the more flexible g_unichar_fully_decompose()
@@ -522,7 +522,7 @@ _g_utf8_normalize_wc (const gchar    *str,
  * a legacy encoding or pass it to a system with
  * less capable Unicode handling.
  *
- * Return value: a newly allocated string, that is the
+ * Returns: a newly allocated string, that is the
  *   normalized form of @str, or %NULL if @str is not
  *   valid UTF-8.
  **/
@@ -709,7 +709,7 @@ g_unichar_compose (gunichar  a,
  * [UAX#15](http://unicode.org/reports/tr15/)
  * for details.
  *
- * Return value: the length of the full decomposition.
+ * Returns: the length of the full decomposition.
  *
  * Since: 2.30
  **/
