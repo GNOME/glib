@@ -652,7 +652,8 @@ g_application_add_main_option_entries (GApplication       *application,
 
   for (i = 0; entries[i].long_name; i++)
     {
-      GOptionEntry my_entries[2] = { entries[i], { NULL } };
+      GOptionEntry my_entries[2] = { { NULL }, { NULL } };
+      my_entries[0] = entries[i];
 
       if (!my_entries[0].arg_data)
         add_packed_option (application, &my_entries[0]);
