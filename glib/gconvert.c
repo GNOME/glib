@@ -526,6 +526,9 @@ g_convert_with_iconv (const gchar *str,
  * character until it knows that the next character is not a mark that
  * could combine with the base character.)
  *
+ * Using extensions such as "//TRANSLIT" may not work (or may not work
+ * well) on many platforms.  Consider using g_str_to_ascii() instead.
+ *
  * Returns: If the conversion was successful, a newly allocated
  *               nul-terminated string, which must be freed with
  *               g_free(). Otherwise %NULL and @error will be set.
