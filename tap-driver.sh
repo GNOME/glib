@@ -154,7 +154,7 @@ fi
         -v diag_string="$diag_string" \
 '
 # FIXME: the usages of "cat >&3" below could be optimized when using
-# FIXME: GNU awk, and/on on systems that supports /dev/fd/.
+# FIXME: GNU awk, and/or on systems that supports /dev/fd/.
 
 # Implementation note: in what follows, `result_obj` will be an
 # associative array that (partly) simulates a TAP result object
