@@ -639,8 +639,13 @@ g_cond_impl_new (void)
   gint status;
 
   pthread_condattr_init (&attr);
-#if defined (HAVE_PTHREAD_CONDATTR_SETCLOCK) && defined (CLOCK_MONOTONIC)
-  pthread_condattr_setclock (&attr, CLOCK_MONOTONIC);
+
+#ifdef HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP
+#elif defined (HAVE_PTHREAD_CONDATTR_SETCLOCK) && defined (CLOCK_MONOTONIC)
+  if G_UNLIKELY ((status = pthread_condattr_setclock (&attr, CLOCK_MONOTONIC)) != 0)
+    g_thread_abort (status, "pthread_condattr_setclock");
+#else
+#error Cannot support GCond on your platform.
 #endif
 
   cond = malloc (sizeof (pthread_cond_t));
