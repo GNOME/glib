@@ -809,6 +809,15 @@ iter_remove_or_steal (RealIter *ri, gboolean notify)
  * otherwise you have to make sure that any dynamically allocated
  * values are freed yourself.
  *
+ * It is safe to continue iterating the #GHashTable afterward:
+ * |[
+ * while (g_hash_table_iter_next (&iter, &key, &value))
+ *   {
+ *     if (condition)
+ *       g_hash_table_iter_remove (&iter);
+ *   }
+ * ]|
+ *
  * Since: 2.16
  */
 void
