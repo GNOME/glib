@@ -2715,8 +2715,12 @@ gint64
 g_get_monotonic_time (void)
 {
   struct timespec ts;
+  gint result;
 
-  clock_gettime (CLOCK_MONOTONIC, &ts);
+  result = clock_gettime (CLOCK_MONOTONIC, &ts);
+
+  if G_UNLIKELY (result != 0)
+    g_error ("GLib requires working CLOCK_MONOTONIC");
 
   return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
 }
