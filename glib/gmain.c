@@ -1335,6 +1335,9 @@ g_source_get_context (GSource *source)
  * the @revents field in the #GPollFD struct and return %TRUE if events need
  * to be processed.
  *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
+ *
  * Using this API forces the linear scanning of event sources on each
  * main loop iteration.  Newly-written event sources should try to use
  * g_source_add_unix_fd() instead of this API.
@@ -1371,6 +1374,9 @@ g_source_add_poll (GSource *source,
  * 
  * Removes a file descriptor from the set of file descriptors polled for
  * this source. 
+ *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
  **/
 void
 g_source_remove_poll (GSource *source,
@@ -1416,6 +1422,9 @@ g_source_remove_poll (GSource *source,
  *
  * @source will hold a reference on @child_source while @child_source
  * is attached to it.
+ *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
  *
  * Since: 2.28
  **/
@@ -1472,6 +1481,9 @@ g_child_source_remove_internal (GSource *child_source,
  *     g_source_add_child_source().
  *
  * Detaches @child_source from @source and destroys it.
+ *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
  *
  * Since: 2.28
  **/
@@ -1767,6 +1779,9 @@ g_source_get_priority (GSource *source)
  * other suggests that it would be delivered first, and the ready time
  * for both sources is reached during the same main context iteration
  * then the order of dispatch is undefined.
+ *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
  *
  * Since: 2.36
  **/
@@ -2299,6 +2314,9 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
  * It is not necessary to remove the fd before destroying the source; it
  * will be cleaned up automatically.
  *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
+ *
  * As the name suggests, this function is not available on Windows.
  *
  * Returns: an opaque tag
@@ -2351,6 +2369,9 @@ g_source_add_unix_fd (GSource      *source,
  * If you want to remove a fd, don't set its event mask to zero.
  * Instead, call g_source_remove_unix_fd().
  *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
+ *
  * As the name suggests, this function is not available on Windows.
  *
  * Since: 2.36
@@ -2385,6 +2406,9 @@ g_source_modify_unix_fd (GSource      *source,
  * You only need to call this if you want to remove an fd from being
  * watched while keeping the same source around.  In the normal case you
  * will just want to destroy the source.
+ *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
  *
  * As the name suggests, this function is not available on Windows.
  *
@@ -2429,6 +2453,9 @@ g_source_remove_unix_fd (GSource  *source,
  *
  * The return value of this function is only defined when the function
  * is called from the check or dispatch functions for @source.
+ *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
  *
  * As the name suggests, this function is not available on Windows.
  *
