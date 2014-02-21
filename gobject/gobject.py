@@ -5,16 +5,17 @@ import sys
 
 if sys.version_info[0] >= 3:
     long = int
-
-try:
-    import gdb.backtrace
-    import gdb.command.backtrace
-except ImportError:
-    print(os.path.basename(__file__) + ": gdb was not built with "
-          "custom backtrace support, disabling.")
-    HAVE_GDB_BACKTRACE = 0
 else:
-    HAVE_GDB_BACKTRACE = 1
+    import itertools
+    map = itertools.imap
+
+# FrameDecorator is new in gdb 7.7, so we adapt to its absence.
+try:
+    import gdb.FrameDecorator
+    HAVE_GDB_FRAMEDECORATOR = True
+    FrameDecorator = gdb.FrameDecorator.FrameDecorator
+except ImportError:
+    HAVE_GDB_FRAMEDECORATOR = False
 
 # This is not quite right, as local vars may override symname
 def read_global_var (symname):
@@ -106,21 +107,16 @@ def get_signal_name (id):
         return val[id]["name"].string()
     return None
 
-class DummyFrame:
-    def __init__ (self, frame):
-        self.frame = frame
+def frame_name(frame):
+    return str(frame.function())
 
-    def name (self):
-        return "signal-emission-dummy"
+def frame_var(frame, var):
+    return frame.inferior_frame().read_var(var)
 
-    def describe (self, stream, full):
-        stream.write (" <...>\n")
 
-    def __getattr__ (self, name):
-        return getattr (self.frame, name)
-
-class SignalFrame:
+class SignalFrame(FrameDecorator):
     def __init__ (self, frames):
+        FrameDecorator.__init__(self, frames[-1])
         self.frame = frames[-1]
         self.frames = frames
 
@@ -129,7 +125,7 @@ class SignalFrame:
 
     def read_var (self, frame, name, array = None):
         try:
-            v = frame.read_var (name)
+            v = frame_var (frame, name)
             if v == None or v.is_optimized_out:
                 return None
             if array != None:
@@ -140,7 +136,7 @@ class SignalFrame:
 
     def read_object (self, frame, name, array = None):
         try:
-            v = frame.read_var (name)
+            v = frame_var (frame, name)
             if v == None or v.is_optimized_out:
                 return None
             v = v.cast (gdb.lookup_type("GObject").pointer())
@@ -161,7 +157,7 @@ class SignalFrame:
         if len(array) == 0:
             return "???"
         else:
-            return ' or '.join(set(array))
+            return ' or '.join(set(map(str, array)))
 
     def get_detailed_signal_from_frame(self, frame, signal):
         detail = self.read_var (frame, "detail")
@@ -171,12 +167,12 @@ class SignalFrame:
         else:
             return detail
 
-    def describe (self, stream, full):
+    def function (self):
         instances = []
         signals = []
 
         for frame in self.frames:
-            name = frame.name()
+            name = frame_name(frame)
             if name == "signal_emit_unlocked_R":
                 self.read_object (frame, "instance", instances)
                 node = self.read_var (frame, "node")
@@ -212,12 +208,15 @@ class SignalFrame:
         instance = self.or_join_array (instances)
         signal = self.or_join_array (signals)
 
-        stream.write (" <emit signal %s on instance %s>\n" %  (signal, instance))
+        return "<emit signal %s on instance %s>" %  (signal, instance)
 
-    def __getattr__ (self, name):
-        return getattr (self.frame, name)
+    def elided (self):
+        return self.frames[0:-1]
 
-class GFrameFilter:
+    def describe (self, stream, full):
+        stream.write (" " + self.function () + "\n")
+
+class GFrameDecorator:
     def __init__ (self, iter):
         self.queue = []
         self.iter = iter
@@ -226,20 +225,20 @@ class GFrameFilter:
         return self
 
     def fill (self):
-        while len(self.queue) <= 6:
+        while len(self.queue) <= 8:
             try:
-                f = self.iter.next ()
+                f = next(self.iter)
                 self.queue.append (f)
             except StopIteration:
                 return
 
     def find_signal_emission (self):
         for i in range (min (len(self.queue), 3)):
-            if self.queue[i].name() == "signal_emit_unlocked_R":
+            if frame_name(self.queue[i]) == "signal_emit_unlocked_R":
                 return i
         return -1
 
-    def next (self):
+    def __next__ (self):
         # Ensure we have enough frames for a full signal emission
         self.fill()
 
@@ -253,36 +252,41 @@ class GFrameFilter:
             while True:
                 if start == 0:
                     break
-                prev_name = self.queue[start-1].name()
-                if prev_name.find("_marshal_") or prev_name == "g_closure_invoke":
+                prev_name = frame_name(self.queue[start-1])
+                if prev_name.find("_marshal_") >= 0 or prev_name == "g_closure_invoke":
                     start = start - 1
                 else:
                     break
             end = emission + 1
             while end < len(self.queue):
-                if self.queue[end].name() in ["g_signal_emitv",
-                                              "g_signal_emit_valist",
-                                              "g_signal_emit",
-                                              "g_signal_emit_by_name"]:
+                if frame_name(self.queue[end]) in ["g_signal_emitv",
+                                                   "g_signal_emit_valist",
+                                                   "g_signal_emit",
+                                                   "g_signal_emit_by_name",
+                                                   "_g_closure_invoke_va"]:
                     end = end + 1
                 else:
                     break
 
             signal_frames = self.queue[start:end]
-            new_frames = []
-            for i in range(len(signal_frames)-1):
-                new_frames.append(DummyFrame(signal_frames[i]))
-            new_frames.append(SignalFrame(signal_frames))
-
+            new_frames = [SignalFrame(signal_frames)]
             self.queue[start:end] = new_frames
 
         return self.queue.pop(0)
 
+class GFrameFilter(object):
+    name = 'glib'
+    enabled = True
+    priority = 100
+
+    def filter(self, iterator):
+        return GFrameDecorator(iterator)
 
 def register (obj):
     if obj == None:
         obj = gdb
 
-    if HAVE_GDB_BACKTRACE:
-        gdb.backtrace.push_frame_filter (GFrameFilter)
+    if HAVE_GDB_FRAMEDECORATOR:
+        filter = GFrameFilter()
+        obj.frame_filters[filter.name] = filter
     obj.pretty_printers.append(pretty_printer_lookup)
