@@ -173,6 +173,7 @@ libglib_2_0_la_SOURCES = 	\
 	gtimer.c		\
 	gtimezone.c	 	\
 	gtranslit.c		\
+	gtranslit-data.h	\
 	gtrashstack.c		\
 	gtree.c			\
 	guniprop.c		\
