@@ -3229,6 +3229,18 @@ g_main_context_wait (GMainContext *context,
   if (context == NULL)
     context = g_main_context_default ();
 
+  if G_UNLIKELY (cond != &context->cond || mutex != &context->mutex)
+    {
+      static gboolean warned;
+
+      if (!warned)
+        {
+          g_critical ("WARNING!! g_main_context_wait() will be removed in a future release.  "
+                      "If you see this message, please file a bug immediately.");
+          warned = TRUE;
+        }
+    }
+
   loop_internal_waiter = (mutex == &context->mutex);
   
   if (!loop_internal_waiter)
