@@ -3287,10 +3287,13 @@ g_main_context_wait (GMainContext *context,
  * @context: a #GMainContext
  * @priority: location to store priority of highest priority
  *            source already ready.
- * 
+ *
  * Prepares to poll sources within a main loop. The resulting information
  * for polling is determined by calling g_main_context_query ().
- * 
+ *
+ * You must have successfully acquired the context with
+ * g_main_context_acquire() before you may call this function.
+ *
  * Returns: %TRUE if some source is ready to be dispatched
  *               prior to polling.
  **/
@@ -3448,9 +3451,12 @@ g_main_context_prepare (GMainContext *context,
  * @fds: (out caller-allocates) (array length=n_fds): location to
  *       store #GPollFD records that need to be polled.
  * @n_fds: length of @fds.
- * 
+ *
  * Determines information necessary to poll this main loop.
- * 
+ *
+ * You must have successfully acquired the context with
+ * g_main_context_acquire() before you may call this function.
+ *
  * Returns: the number of records actually stored in @fds,
  *   or, if more than @n_fds records need to be stored, the number
  *   of records that need to be stored.
@@ -3513,9 +3519,12 @@ g_main_context_query (GMainContext *context,
  * @fds: (array length=n_fds): array of #GPollFD's that was passed to
  *       the last call to g_main_context_query()
  * @n_fds: return value of g_main_context_query()
- * 
+ *
  * Passes the results of polling back to the main loop.
- * 
+ *
+ * You must have successfully acquired the context with
+ * g_main_context_acquire() before you may call this function.
+ *
  * Returns: %TRUE if some sources are ready to be dispatched.
  **/
 gboolean
@@ -3659,8 +3668,11 @@ g_main_context_check (GMainContext *context,
 /**
  * g_main_context_dispatch:
  * @context: a #GMainContext
- * 
+ *
  * Dispatches all pending sources.
+ *
+ * You must have successfully acquired the context with
+ * g_main_context_acquire() before you may call this function.
  **/
 void
 g_main_context_dispatch (GMainContext *context)
