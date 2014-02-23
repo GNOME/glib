@@ -600,8 +600,7 @@ g_async_queue_timed_pop (GAsyncQueue *queue,
   if (end_time != NULL)
     {
       m_end_time = g_get_monotonic_time () +
-	((gint64)end_time->tv_sec * G_USEC_PER_SEC + end_time->tv_usec -
-	 g_get_real_time ());
+        ((gint64) end_time->tv_sec * G_USEC_PER_SEC + end_time->tv_usec - g_get_real_time ());
     }
   else
     m_end_time = -1;
@@ -644,8 +643,7 @@ g_async_queue_timed_pop_unlocked (GAsyncQueue *queue,
   if (end_time != NULL)
     {
       m_end_time = g_get_monotonic_time () +
-	(end_time->tv_sec * G_USEC_PER_SEC + end_time->tv_usec -
-	 g_get_real_time ());
+        ((gint64) end_time->tv_sec * G_USEC_PER_SEC + end_time->tv_usec - g_get_real_time ());
     }
   else
     m_end_time = -1;
