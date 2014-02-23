@@ -393,9 +393,6 @@ g_content_type_get_mime_type (const char *type)
   return g_strdup (type);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-
 static GIcon *
 g_content_type_get_icon_internal (const gchar *type,
                                   gboolean     symbolic)
@@ -403,52 +400,49 @@ g_content_type_get_icon_internal (const gchar *type,
   char *mimetype_icon;
   char *generic_mimetype_icon = NULL;
   char *q;
-  char *xdg_mimetype_icon = NULL;
-  char *xdg_mimetype_generic_icon;
-  char *icon_names[3];
+  char *icon_names[6];
   int n = 0;
   GIcon *themed_icon;
   const char  *xdg_icon;
-  const char *suffix;
+  int i;
 
   g_return_val_if_fail (type != NULL, NULL);
-
-  if (symbolic)
-    suffix = "-symbolic";
-  else
-    suffix = "";
 
   G_LOCK (gio_xdgmime);
   xdg_icon = xdg_mime_get_icon (type);
   G_UNLOCK (gio_xdgmime);
-   if (xdg_icon != NULL)
-    xdg_mimetype_icon = g_strconcat (xdg_icon, suffix, NULL);
 
-  if (xdg_mimetype_icon)
-    icon_names[n++] = xdg_mimetype_icon;
+  if (xdg_icon)
+    icon_names[n++] = g_strdup (xdg_icon);
 
-  mimetype_icon = g_strconcat (type, suffix, NULL);
+  mimetype_icon = g_strdup (type);
   while ((q = strchr (mimetype_icon, '/')) != NULL)
     *q = '-';
 
   icon_names[n++] = mimetype_icon;
 
-  xdg_mimetype_generic_icon = g_content_type_get_generic_icon_name (type);
-  if (xdg_mimetype_generic_icon)
-    generic_mimetype_icon = g_strconcat (xdg_mimetype_generic_icon, suffix, NULL);
+  generic_mimetype_icon = g_content_type_get_generic_icon_name (type);
   if (generic_mimetype_icon)
     icon_names[n++] = generic_mimetype_icon;
 
+  if (symbolic)
+    {
+      for (i = 0; i < n; i++)
+        {
+          icon_names[n + i] = icon_names[i];
+          icon_names[i] = g_strconcat (icon_names[i], "-symbolic", NULL);
+        }
+
+      n += n;
+    }
+
   themed_icon = g_themed_icon_new_from_names (icon_names, n);
 
-  g_free (xdg_mimetype_icon);
-  g_free (xdg_mimetype_generic_icon);
-  g_free (mimetype_icon);
-  g_free (generic_mimetype_icon);
+  for (i = 0; i < n; i++)
+    g_free (icon_names[i]);
 
   return themed_icon;
 }
-#pragma GCC diagnostic pop
 
 /**
  * g_content_type_get_icon:
