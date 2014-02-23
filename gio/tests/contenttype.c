@@ -199,6 +199,21 @@ test_description (void)
   g_free (type);
 }
 
+static gboolean
+strv_contains (const gchar * const *strv,
+               const gchar  *s)
+{
+  gint i;
+
+  for (i = 0; strv[i]; i++)
+    {
+      if (g_strcmp0 (strv[i], s) == 0)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 test_icon (void)
 {
@@ -208,12 +223,67 @@ test_icon (void)
   type = g_content_type_from_mime_type ("text/plain");
   icon = g_content_type_get_icon (type);
   g_assert (G_IS_ICON (icon));
+  if (G_IS_THEMED_ICON (icon))
+    {
+      const gchar *const *names;
+
+      names = g_themed_icon_get_names (G_THEMED_ICON (icon));
+      g_assert (strv_contains (names, "text-plain"));
+      g_assert (strv_contains (names, "text-x-generic"));
+    }
   g_object_unref (icon);
   g_free (type);
 
   type = g_content_type_from_mime_type ("application/rtf");
   icon = g_content_type_get_icon (type);
   g_assert (G_IS_ICON (icon));
+  if (G_IS_THEMED_ICON (icon))
+    {
+      const gchar *const *names;
+
+      names = g_themed_icon_get_names (G_THEMED_ICON (icon));
+      g_assert (strv_contains (names, "application-rtf"));
+      g_assert (strv_contains (names, "x-office-document"));
+    }
+  g_object_unref (icon);
+  g_free (type);
+}
+
+static void
+test_symbolic_icon (void)
+{
+  gchar *type;
+  GIcon *icon;
+
+  type = g_content_type_from_mime_type ("text/plain");
+  icon = g_content_type_get_symbolic_icon (type);
+  g_assert (G_IS_ICON (icon));
+  if (G_IS_THEMED_ICON (icon))
+    {
+      const gchar *const *names;
+
+      names = g_themed_icon_get_names (G_THEMED_ICON (icon));
+      g_assert (strv_contains (names, "text-plain-symbolic"));
+      g_assert (strv_contains (names, "text-x-generic-symbolic"));
+      g_assert (strv_contains (names, "text-plain"));
+      g_assert (strv_contains (names, "text-x-generic"));
+    }
+  g_object_unref (icon);
+  g_free (type);
+
+  type = g_content_type_from_mime_type ("application/rtf");
+  icon = g_content_type_get_symbolic_icon (type);
+  g_assert (G_IS_ICON (icon));
+  if (G_IS_THEMED_ICON (icon))
+    {
+      const gchar *const *names;
+
+      names = g_themed_icon_get_names (G_THEMED_ICON (icon));
+      g_assert (strv_contains (names, "application-rtf-symbolic"));
+      g_assert (strv_contains (names, "x-office-document-symbolic"));
+      g_assert (strv_contains (names, "application-rtf"));
+      g_assert (strv_contains (names, "x-office-document"));
+    }
   g_object_unref (icon);
   g_free (type);
 }
@@ -254,6 +324,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/contenttype/executable", test_executable);
   g_test_add_func ("/contenttype/description", test_description);
   g_test_add_func ("/contenttype/icon", test_icon);
+  g_test_add_func ("/contenttype/symbolic-icon", test_symbolic_icon);
   g_test_add_func ("/contenttype/tree", test_tree);
 
   return g_test_run ();
