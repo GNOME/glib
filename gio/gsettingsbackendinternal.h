@@ -39,8 +39,8 @@ typedef struct
   void (* keys_changed)          (GObject             *target,
                                   GSettingsBackend    *backend,
                                   const gchar         *prefix,
-                                  const gchar * const *names,
-                                  gpointer             origin_tag);
+                                  gpointer             origin_tag,
+                                  const gchar * const *names);
   void (* writable_changed)      (GObject             *target,
                                   GSettingsBackend    *backend,
                                   const gchar         *key);
