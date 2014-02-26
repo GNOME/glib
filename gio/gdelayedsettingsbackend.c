@@ -306,8 +306,8 @@ static void
 delayed_backend_keys_changed (GObject             *target,
                               GSettingsBackend    *backend,
                               const gchar         *path,
-                              const gchar * const *items,
-                              gpointer             origin_tag)
+                              gpointer             origin_tag,
+                              const gchar * const *items)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
 

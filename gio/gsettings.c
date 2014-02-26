@@ -357,8 +357,8 @@ static void
 settings_backend_keys_changed (GObject             *target,
                                GSettingsBackend    *backend,
                                const gchar         *path,
-                               const gchar * const *items,
-                               gpointer             origin_tag)
+                               gpointer             origin_tag,
+                               const gchar * const *items)
 {
   GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
