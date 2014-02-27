@@ -39,6 +39,7 @@
 #include "gdate.h"
 
 #ifdef G_OS_WIN32
+
 #define STRICT
 #include <windows.h>
 #endif
@@ -606,6 +607,17 @@ static void
 rule_from_windows_time_zone_info (TimeZoneRule *rule,
                                   TIME_ZONE_INFORMATION *tzi)
 {
+  gchar *std_name, *dlt_name;
+
+  std_name = g_utf16_to_utf8 ((gunichar2 *)tzi->StandardName, -1, NULL, NULL, NULL);
+  g_return_if_fail (std_name != NULL);
+
+  dlt_name = g_utf16_to_utf8 ((gunichar2 *)tzi->DaylightName, -1, NULL, NULL, NULL);
+  if (dlt_name == NULL && std_name != NULL)
+    g_free (std_name);
+
+  g_return_if_fail (dlt_name != NULL);
+
   /* Set offset */
   if (tzi->StandardDate.wMonth)
     {
@@ -622,31 +634,41 @@ rule_from_windows_time_zone_info (TimeZoneRule *rule,
       rule->std_offset = -tzi->Bias * 60;
       rule->dlt_start.mon = 0;
     }
-  strncpy (rule->std_name, (gchar*)tzi->StandardName, NAME_SIZE - 1);
-  strncpy (rule->dlt_name, (gchar*)tzi->DaylightName, NAME_SIZE - 1);
+  strncpy (rule->std_name, std_name, NAME_SIZE - 1);
+  strncpy (rule->dlt_name, dlt_name, NAME_SIZE - 1);
+
+  g_free (std_name);
+  g_free (dlt_name);
 }
 
 static gchar*
 windows_default_tzname (void)
 {
-  const gchar *subkey =
-    "SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation";
+  const gunichar2 *subkey =
+    L"SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation";
   HKEY key;
   gchar *key_name = NULL;
-  if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey, 0,
+  gunichar2 *key_name_w = NULL;
+  if (RegOpenKeyExW (HKEY_LOCAL_MACHINE, subkey, 0,
                      KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
     {
       DWORD size = 0;
-      if (RegQueryValueExA (key, "TimeZoneKeyName", NULL, NULL,
+      if (RegQueryValueExW (key, L"TimeZoneKeyName", NULL, NULL,
                             NULL, &size) == ERROR_SUCCESS)
         {
-          key_name = g_malloc ((gint)size);
-          if (RegQueryValueExA (key, "TimeZoneKeyName", NULL, NULL,
-                                (LPBYTE)key_name, &size) != ERROR_SUCCESS)
+          key_name_w = g_malloc ((gint)size);
+
+          if (key_name_w == NULL ||
+              RegQueryValueExW (key, L"TimeZoneKeyName", NULL, NULL,
+                                (LPBYTE)key_name_w, &size) != ERROR_SUCCESS)
             {
-              g_free (key_name);
+              if (key_name_w != NULL)
+                g_free (key_name_w);
+
               key_name = NULL;
             }
+          else
+            key_name = g_utf16_to_utf8 (key_name_w, -1, NULL, NULL, NULL);
         }
       RegCloseKey (key);
     }
@@ -696,7 +718,8 @@ rules_from_windows_time_zone (const gchar   *identifier,
                               TimeZoneRule **rules)
 {
   HKEY key;
-  gchar *subkey, *subkey_dynamic;
+  gchar *subkey = NULL;
+  gchar *subkey_dynamic = NULL;
   gchar *key_name = NULL;
   const gchar *reg_key =
     "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Time Zones\\";
@@ -704,6 +727,7 @@ rules_from_windows_time_zone (const gchar   *identifier,
   DWORD size;
   guint rules_num = 0;
   RegTZI regtzi, regtzi_prev;
+  gunichar2 *subkey_w, *subkey_dynamic_w;
 
   g_assert (out_identifier != NULL);
   g_assert (rules != NULL);
@@ -721,57 +745,80 @@ rules_from_windows_time_zone (const gchar   *identifier,
     return 0;
 
   subkey = g_strconcat (reg_key, key_name, NULL);
-  subkey_dynamic = g_strconcat (subkey, "\\Dynamic DST", NULL);
+  subkey_w = g_utf8_to_utf16 (subkey, -1, NULL, NULL, NULL);
+  if (subkey_w == NULL)
+    goto utf16_conv_failed;
 
-  if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey, 0,
+  subkey_dynamic = g_strconcat (subkey, "\\Dynamic DST", NULL);
+  subkey_dynamic_w = g_utf8_to_utf16 (subkey_dynamic, -1, NULL, NULL, NULL);
+  if (subkey_dynamic_w == NULL)
+    goto utf16_conv_failed;
+
+  if (RegOpenKeyExW (HKEY_LOCAL_MACHINE, subkey_w, 0,
                      KEY_QUERY_VALUE, &key) != ERROR_SUCCESS)
       return 0;
+
   size = sizeof tzi.StandardName;
-  if (RegQueryValueExA (key, "Std", NULL, NULL,
+  if (RegQueryValueExW (key, L"Std", NULL, NULL,
                         (LPBYTE)&(tzi.StandardName), &size) != ERROR_SUCCESS)
-    goto failed;
+    goto registry_failed;
 
   size = sizeof tzi.DaylightName;
 
-  if (RegQueryValueExA (key, "Dlt", NULL, NULL,
+  if (RegQueryValueExW (key, L"Dlt", NULL, NULL,
                         (LPBYTE)&(tzi.DaylightName), &size) != ERROR_SUCCESS)
-    goto failed;
+    goto registry_failed;
 
   RegCloseKey (key);
-  if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey_dynamic, 0,
+  if (RegOpenKeyExW (HKEY_LOCAL_MACHINE, subkey_dynamic_w, 0,
                      KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
     {
       DWORD first, last;
       int year, i;
       gchar *s;
+      gunichar2 *s_w;
 
       size = sizeof first;
-      if (RegQueryValueExA (key, "FirstEntry", NULL, NULL,
+      if (RegQueryValueExW (key, L"FirstEntry", NULL, NULL,
                             (LPBYTE) &first, &size) != ERROR_SUCCESS)
-        goto failed;
+        goto registry_failed;
 
       size = sizeof last;
-      if (RegQueryValueExA (key, "LastEntry", NULL, NULL,
+      if (RegQueryValueExW (key, L"LastEntry", NULL, NULL,
                             (LPBYTE) &last, &size) != ERROR_SUCCESS)
-        goto failed;
+        goto registry_failed;
 
       rules_num = last - first + 2;
       *rules = g_new0 (TimeZoneRule, rules_num);
 
-      for (year = first, i = 0; year <= last; year++)
+      for (year = first, i = 0; *rules != NULL && year <= last; year++)
         {
+          gboolean failed = FALSE;
           s = g_strdup_printf ("%d", year);
+          s_w = g_utf8_to_utf16 (s, -1, NULL, NULL, NULL);
 
-          size = sizeof regtzi;
-          if (RegQueryValueExA (key, s, NULL, NULL,
-                            (LPBYTE) &regtzi, &size) != ERROR_SUCCESS)
+          if (s_w == NULL)
+            failed = TRUE;
+
+          if (!failed)
+            {
+              size = sizeof regtzi;
+              if (RegQueryValueExW (key, s_w, NULL, NULL,
+                                    (LPBYTE) &regtzi, &size) != ERROR_SUCCESS)
+                failed = TRUE;
+            }
+
+          if (s_w != NULL)
+            g_free (s_w);
+
+          g_free (s);
+
+          if (failed)
             {
               g_free (*rules);
               *rules = NULL;
               break;
             }
-
-          g_free (s);
 
           if (year > first && memcmp (&regtzi_prev, &regtzi, sizeof regtzi) == 0)
               continue;
@@ -785,14 +832,14 @@ rules_from_windows_time_zone (const gchar   *identifier,
 
       rules_num = i + 1;
 
-failed:
+registry_failed:
       RegCloseKey (key);
     }
-  else if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey, 0,
+  else if (RegOpenKeyExW (HKEY_LOCAL_MACHINE, subkey_w, 0,
                           KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
     {
       size = sizeof regtzi;
-      if (RegQueryValueExA (key, "TZI", NULL, NULL,
+      if (RegQueryValueExW (key, L"TZI", NULL, NULL,
                             (LPBYTE) &regtzi, &size) == ERROR_SUCCESS)
         {
           rules_num = 2;
@@ -804,7 +851,16 @@ failed:
       RegCloseKey (key);
     }
 
-  g_free (subkey_dynamic);
+utf16_conv_failed:
+  if (subkey_dynamic_w != NULL)
+    g_free (subkey_dynamic_w);
+
+  if (subkey_dynamic != NULL)
+    g_free (subkey_dynamic);
+
+  if (subkey_w != NULL)
+    g_free (subkey_w);
+
   g_free (subkey);
 
   if (*rules)
