@@ -39,6 +39,7 @@
 #include "gdate.h"
 
 #ifdef G_OS_WIN32
+
 #define STRICT
 #include <windows.h>
 #endif
@@ -606,6 +607,10 @@ static void
 rule_from_windows_time_zone_info (TimeZoneRule *rule,
                                   TIME_ZONE_INFORMATION *tzi)
 {
+  gchar *stdName, *dltName;
+
+  stdName = g_utf16_to_utf8 ((gunichar2 *)tzi->StandardName, -1, NULL, NULL, NULL);
+  dltName = g_utf16_to_utf8 ((gunichar2 *)tzi->DaylightName, -1, NULL, NULL, NULL);
   /* Set offset */
   if (tzi->StandardDate.wMonth)
     {
@@ -622,31 +627,36 @@ rule_from_windows_time_zone_info (TimeZoneRule *rule,
       rule->std_offset = -tzi->Bias * 60;
       rule->dlt_start.mon = 0;
     }
-  strncpy (rule->std_name, (gchar*)tzi->StandardName, NAME_SIZE - 1);
-  strncpy (rule->dlt_name, (gchar*)tzi->DaylightName, NAME_SIZE - 1);
+  strncpy (rule->std_name, stdName, NAME_SIZE - 1);
+  strncpy (rule->dlt_name, dltName, NAME_SIZE - 1);
+  g_free (stdName);
+  g_free (dltName);
 }
 
 static gchar*
 windows_default_tzname (void)
 {
-  const gchar *subkey =
-    "SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation";
+  const gunichar2 *subkey =
+    L"SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation";
   HKEY key;
   gchar *key_name = NULL;
-  if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey, 0,
+  gunichar2 *key_name_w = NULL;
+  if (RegOpenKeyExW (HKEY_LOCAL_MACHINE, subkey, 0,
                      KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
     {
       DWORD size = 0;
-      if (RegQueryValueExA (key, "TimeZoneKeyName", NULL, NULL,
+      if (RegQueryValueExW (key, L"TimeZoneKeyName", NULL, NULL,
                             NULL, &size) == ERROR_SUCCESS)
         {
-          key_name = g_malloc ((gint)size);
-          if (RegQueryValueExA (key, "TimeZoneKeyName", NULL, NULL,
-                                (LPBYTE)key_name, &size) != ERROR_SUCCESS)
+          key_name_w = g_malloc ((gint)size);
+          if (RegQueryValueExW (key, L"TimeZoneKeyName", NULL, NULL,
+                                (LPBYTE)key_name_w, &size) != ERROR_SUCCESS)
             {
-              g_free (key_name);
+              g_free (key_name_w);
               key_name = NULL;
             }
+          else
+            key_name = g_utf16_to_utf8 (key_name_w, -1, NULL, NULL, NULL);
         }
       RegCloseKey (key);
     }
@@ -704,6 +714,13 @@ rules_from_windows_time_zone (const gchar   *identifier,
   DWORD size;
   gint rules_num = 0;
   RegTZI regtzi, regtzi_prev;
+  WCHAR winsyspath[MAX_PATH];
+  gunichar2 *subkey_w, *subkey_dynamic_w;
+  int n;
+
+  n = GetSystemDirectoryW (winsyspath, MAX_PATH);
+  if (n == 0)
+    return 0;
 
   g_assert (out_identifier != NULL);
   g_assert (rules != NULL);
@@ -723,35 +740,54 @@ rules_from_windows_time_zone (const gchar   *identifier,
   subkey = g_strconcat (reg_key, key_name, NULL);
   subkey_dynamic = g_strconcat (subkey, "\\Dynamic DST", NULL);
 
-  if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey, 0,
+  subkey_w = g_utf8_to_utf16 (subkey, -1, NULL, NULL, NULL);
+  subkey_dynamic_w = g_utf8_to_utf16 (subkey_dynamic, -1, NULL, NULL, NULL);
+
+  if (RegOpenKeyExW (HKEY_LOCAL_MACHINE, subkey_w, 0,
                      KEY_QUERY_VALUE, &key) != ERROR_SUCCESS)
       return 0;
-  size = sizeof tzi.StandardName;
-  if (RegQueryValueExA (key, "Std", NULL, NULL,
-                        (LPBYTE)&(tzi.StandardName), &size) != ERROR_SUCCESS)
-    goto failed;
 
+  size = sizeof tzi.StandardName;
+
+  /* use RegLoadMUIStringW() to query MUI_Std from the registry if possible, otherwise
+     fallback to querying Std */
+  if (RegLoadMUIStringW (key, L"MUI_Std", tzi.StandardName,
+                         size, &size, 0, winsyspath) != ERROR_SUCCESS)
+    {
+      size = sizeof tzi.StandardName;
+      if (RegQueryValueExW (key, L"Std", NULL, NULL,
+                            (LPBYTE)&(tzi.StandardName), &size) != ERROR_SUCCESS)
+        goto failed;
+    }
   size = sizeof tzi.DaylightName;
 
-  if (RegQueryValueExA (key, "Dlt", NULL, NULL,
-                        (LPBYTE)&(tzi.DaylightName), &size) != ERROR_SUCCESS)
-    goto failed;
+  /* use RegLoadMUIStringW() to query MUI_Dlt from the registry if possible, otherwise
+     fallback to querying Dlt */
+  if (RegLoadMUIStringW (key, L"MUI_Dlt", tzi.DaylightName,
+                         size, &size, 0, winsyspath) != ERROR_SUCCESS)
+    {
+      size = sizeof tzi.DaylightName;
+      if (RegQueryValueExW (key, L"Dlt", NULL, NULL,
+                            (LPBYTE)&(tzi.DaylightName), &size) != ERROR_SUCCESS)
+        goto failed;
+    }
 
   RegCloseKey (key);
-  if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey_dynamic, 0,
+  if (RegOpenKeyExW (HKEY_LOCAL_MACHINE, subkey_dynamic_w, 0,
                      KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
     {
       DWORD first, last;
       int year, i;
       gchar *s;
+      gunichar2 *s_w;
 
       size = sizeof first;
-      if (RegQueryValueExA (key, "FirstEntry", NULL, NULL,
+      if (RegQueryValueExW (key, L"FirstEntry", NULL, NULL,
                             (LPBYTE) &first, &size) != ERROR_SUCCESS)
         goto failed;
 
       size = sizeof last;
-      if (RegQueryValueExA (key, "LastEntry", NULL, NULL,
+      if (RegQueryValueExW (key, L"LastEntry", NULL, NULL,
                             (LPBYTE) &last, &size) != ERROR_SUCCESS)
         goto failed;
 
@@ -761,9 +797,10 @@ rules_from_windows_time_zone (const gchar   *identifier,
       for (year = first, i = 0; year <= last; year++)
         {
           s = g_strdup_printf ("%d", year);
+          s_w = g_utf8_to_utf16 (s, -1, NULL, NULL, NULL);
 
           size = sizeof regtzi;
-          if (RegQueryValueExA (key, s, NULL, NULL,
+          if (RegQueryValueExW (key, s_w, NULL, NULL,
                             (LPBYTE) &regtzi, &size) != ERROR_SUCCESS)
             {
               g_free (*rules);
@@ -771,6 +808,7 @@ rules_from_windows_time_zone (const gchar   *identifier,
               break;
             }
 
+          g_free (s_w);
           g_free (s);
 
           if (year > first && memcmp (&regtzi_prev, &regtzi, sizeof regtzi) == 0)
@@ -788,11 +826,11 @@ rules_from_windows_time_zone (const gchar   *identifier,
 failed:
       RegCloseKey (key);
     }
-  else if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey, 0,
+  else if (RegOpenKeyExW (HKEY_LOCAL_MACHINE, subkey_w, 0,
                           KEY_QUERY_VALUE, &key) == ERROR_SUCCESS)
     {
       size = sizeof regtzi;
-      if (RegQueryValueExA (key, "TZI", NULL, NULL,
+      if (RegQueryValueExW (key, L"TZI", NULL, NULL,
                             (LPBYTE) &regtzi, &size) == ERROR_SUCCESS)
         {
           rules_num = 2;
@@ -804,6 +842,8 @@ failed:
       RegCloseKey (key);
     }
 
+  g_free (subkey_dynamic_w);
+  g_free (subkey_w);
   g_free (subkey_dynamic);
   g_free (subkey);
 
