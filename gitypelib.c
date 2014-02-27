@@ -1773,10 +1773,17 @@ validate_object_blob (ValidateContext *ctx,
 
   push_context (ctx, get_string_nofail (typelib, blob->name));
 
-  for (i = 0; i < blob->n_fields; i++, offset2 += sizeof (FieldBlob))
+  for (i = 0; i < blob->n_fields; i++)
     {
+      FieldBlob *blob = (FieldBlob*) &typelib->data[offset2];
+
       if (!validate_field_blob (ctx, offset2, error))
 	return FALSE;
+
+      offset2 += sizeof (FieldBlob);
+      /* Special case fields which are callbacks. */
+      if (blob->has_embedded_type)
+        offset2 += sizeof (CallbackBlob);
     }
 
   for (i = 0; i < blob->n_properties; i++, offset2 += sizeof (PropertyBlob))
