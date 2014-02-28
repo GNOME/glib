@@ -358,7 +358,8 @@ void      _g_ir_node_build_typelib   (GIrNode         *node,
 				      GIrNode         *parent,
 				      GIrTypelibBuild *build,
 				      guint32         *offset,
-				      guint32         *offset2);
+				      guint32         *offset2,
+				      guint16         *count2);
 int       _g_ir_node_cmp             (GIrNode    *node,
 				     GIrNode    *other);
 gboolean  _g_ir_node_can_have_member (GIrNode    *node);

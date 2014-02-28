@@ -1645,6 +1645,7 @@ validate_object_blob (ValidateContext *ctx,
   ObjectBlob *blob;
   gint i;
   guint32 offset2;
+  guint16 n_field_callbacks;
 
   header = (Header *)typelib->data;
 
@@ -1774,6 +1775,7 @@ validate_object_blob (ValidateContext *ctx,
 
   push_context (ctx, get_string_nofail (typelib, blob->name));
 
+  n_field_callbacks = 0;
   for (i = 0; i < blob->n_fields; i++)
     {
       FieldBlob *blob = (FieldBlob*) &typelib->data[offset2];
@@ -1783,8 +1785,21 @@ validate_object_blob (ValidateContext *ctx,
 
       offset2 += sizeof (FieldBlob);
       /* Special case fields which are callbacks. */
-      if (blob->has_embedded_type)
+      if (blob->has_embedded_type) {
         offset2 += sizeof (CallbackBlob);
+        n_field_callbacks++;
+      }
+    }
+
+  if (blob->n_field_callbacks != n_field_callbacks)
+    {
+      g_set_error (error,
+                   G_TYPELIB_ERROR,
+                   G_TYPELIB_ERROR_INVALID_BLOB,
+                   "Incorrect number of field callbacks; expected "
+                   G_GUINT16_FORMAT ", got " G_GUINT16_FORMAT,
+                   blob->n_field_callbacks, n_field_callbacks);
+      return FALSE;
     }
 
   for (i = 0; i < blob->n_properties; i++, offset2 += sizeof (PropertyBlob))

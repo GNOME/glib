@@ -342,7 +342,10 @@ g_object_info_get_property (GIObjectInfo *info,
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = g_object_info_get_field_offset(info, blob->n_fields)
+  offset = rinfo->offset + header->object_blob_size
+    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + blob->n_fields * header->field_blob_size
+    + blob->n_field_callbacks * header->callback_blob_size
     + n * header->property_blob_size;
 
   return (GIPropertyInfo *) g_info_new (GI_INFO_TYPE_PROPERTY, (GIBaseInfo*)info,
@@ -397,7 +400,10 @@ g_object_info_get_method (GIObjectInfo *info,
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
 
-  offset = g_object_info_get_field_offset(info, blob->n_fields)
+  offset = rinfo->offset + header->object_blob_size
+    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + blob->n_fields * header->field_blob_size
+    + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size
     + n * header->function_blob_size;
 
@@ -431,7 +437,10 @@ g_object_info_find_method (GIObjectInfo *info,
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = g_object_info_get_field_offset(info, blob->n_fields)
+  offset = rinfo->offset + header->object_blob_size
+    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + blob->n_fields * header->field_blob_size +
+    + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size;
 
   return _g_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
@@ -541,7 +550,10 @@ g_object_info_get_signal (GIObjectInfo *info,
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = g_object_info_get_field_offset(info, blob->n_fields)
+  offset = rinfo->offset + header->object_blob_size
+    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + blob->n_fields * header->field_blob_size
+    + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size
     + n * header->signal_blob_size;
@@ -630,7 +642,10 @@ g_object_info_get_vfunc (GIObjectInfo *info,
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = g_object_info_get_field_offset(info, blob->n_fields)
+  offset = rinfo->offset + header->object_blob_size
+    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + blob->n_fields * header->field_blob_size
+    + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size
     + blob->n_signals * header->signal_blob_size
@@ -671,7 +686,10 @@ g_object_info_find_vfunc (GIObjectInfo *info,
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = g_object_info_get_field_offset(info, blob->n_fields)
+  offset = rinfo->offset + header->object_blob_size
+    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + blob->n_fields * header->field_blob_size
+    + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size
     + blob->n_signals * header->signal_blob_size;
@@ -786,7 +804,10 @@ g_object_info_get_constant (GIObjectInfo *info,
   header = (Header *)rinfo->typelib->data;
   blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  offset = g_object_info_get_field_offset(info, blob->n_fields)
+  offset = rinfo->offset + header->object_blob_size
+    + (blob->n_interfaces + blob->n_interfaces % 2) * 2
+    + blob->n_fields * header->field_blob_size
+    + blob->n_field_callbacks * header->callback_blob_size
     + blob->n_properties * header->property_blob_size
     + blob->n_methods * header->function_blob_size
     + blob->n_signals * header->signal_blob_size

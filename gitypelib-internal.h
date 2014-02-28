@@ -1051,7 +1051,8 @@ typedef struct {
  * @n_constants: The lengths of the arrays.Up to 16bits of padding may be
  *   inserted between the arrays to ensure that they start on a 32bit
  *   boundary.
- * @reserved2: Reserved for future use.
+ * @n_field_callbacks: The number of n_fields which are also callbacks.
+ *   This is used to calculate the fields section size in constant time.
  * @ref_func: String pointing to a function which can be called to increase
  *   the reference count for an instance of this object type.
  * @unref_func: String pointing to a function which can be called to decrease
@@ -1088,7 +1089,7 @@ typedef struct {
   guint16   n_signals;
   guint16   n_vfuncs;
   guint16   n_constants;
-  guint16   reserved2;
+  guint16   n_field_callbacks;
 
   guint32   ref_func;
   guint32   unref_func;

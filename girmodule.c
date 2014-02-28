@@ -508,7 +508,7 @@ _g_ir_module_build_typelib (GIrModule  *module)
 	  build.nodes_with_attributes = nodes_with_attributes;
 	  build.n_attributes = header->n_attributes;
 	  build.data = data;
-	  _g_ir_node_build_typelib (node, NULL, &build, &offset, &offset2);
+	  _g_ir_node_build_typelib (node, NULL, &build, &offset, &offset2, NULL);
 
 	  nodes_with_attributes = build.nodes_with_attributes;
 	  header->n_attributes = build.n_attributes;
