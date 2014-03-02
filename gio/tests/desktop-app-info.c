@@ -654,6 +654,15 @@ test_search (void)
                           "gnome-clocks.desktop\n"
                           "yelp.desktop gnome-contacts.desktop\n", TRUE, TRUE, NULL, NULL);
 
+  /* eog has exec name 'false' in usr only */
+  assert_search ("false", "eog.desktop\n", TRUE, FALSE, NULL, NULL);
+  assert_search ("false", "", FALSE, TRUE, NULL, NULL);
+  assert_search ("false", "", TRUE, TRUE, NULL, NULL);
+  assert_search ("false", "", FALSE, FALSE, NULL, NULL);
+
+  /* make sure we only search the first component */
+  assert_search ("nonsearchable", "", TRUE, FALSE, NULL, NULL);
+
   /* "gnome con" will match only gnome contacts; via the name for
    * "contacts" and the comment for "gnome"
    */

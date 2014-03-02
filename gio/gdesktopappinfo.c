@@ -247,6 +247,7 @@ add_to_table_if_appropriate (GHashTable      *apps,
 enum
 {
   DESKTOP_KEY_Comment,
+  DESKTOP_KEY_Exec,
   DESKTOP_KEY_GenericName,
   DESKTOP_KEY_Keywords,
   DESKTOP_KEY_Name,
@@ -262,10 +263,11 @@ const gchar desktop_key_match_category[N_DESKTOP_KEYS] = {
    * use the same number for the two different keys.
    */
   [DESKTOP_KEY_Name]             = 1,
-  [DESKTOP_KEY_Keywords]         = 2,
-  [DESKTOP_KEY_GenericName]      = 3,
-  [DESKTOP_KEY_X_GNOME_FullName] = 4,
-  [DESKTOP_KEY_Comment]          = 5
+  [DESKTOP_KEY_Exec]             = 2,
+  [DESKTOP_KEY_Keywords]         = 3,
+  [DESKTOP_KEY_GenericName]      = 4,
+  [DESKTOP_KEY_X_GNOME_FullName] = 5,
+  [DESKTOP_KEY_Comment]          = 6
 };
 
 static gchar *
@@ -275,6 +277,8 @@ desktop_key_get_name (guint key_id)
     {
     case DESKTOP_KEY_Comment:
       return "Comment";
+    case DESKTOP_KEY_Exec:
+      return "Exec";
     case DESKTOP_KEY_GenericName:
       return "GenericName";
     case DESKTOP_KEY_Keywords:
@@ -708,17 +712,34 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
 
           for (i = 0; i < G_N_ELEMENTS (desktop_key_match_category); i++)
             {
-              gchar *value;
+              const gchar *value;
+              gchar *raw;
 
               if (!desktop_key_match_category[i])
                 continue;
 
-              value = g_key_file_get_locale_string (key_file, "Desktop Entry", desktop_key_get_name (i), NULL, NULL);
+              raw = g_key_file_get_locale_string (key_file, "Desktop Entry", desktop_key_get_name (i), NULL, NULL);
+              value = raw;
+
+              if (i == DESKTOP_KEY_Exec && raw != NULL)
+                {
+                  /* Special handling: only match basename of first field */
+                  gchar *space;
+                  gchar *slash;
+
+                  /* Remove extra arguments, if any */
+                  space = raw + strcspn (raw, " \t\n"); /* IFS */
+                  *space = '\0';
+
+                  /* Skip the pathname, if any */
+                  if ((slash = strrchr (raw, '/')))
+                    value = slash + 1;
+                }
 
               if (value)
                 memory_index_add_string (dir->memory_index, value, desktop_key_match_category[i], app);
 
-              g_free (value);
+              g_free (raw);
             }
         }
 
