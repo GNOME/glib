@@ -192,9 +192,8 @@ typedef enum
  * assume that instances thereof remain persistent across all signal emissions
  * they are used in. This is only useful for non ref-counted, value-copy types.
  * 
- * To flag a signal argument in this way, add 
- * <literal>| G_SIGNAL_TYPE_STATIC_SCOPE</literal> to the corresponding argument
- * of g_signal_new().
+ * To flag a signal argument in this way, add `| G_SIGNAL_TYPE_STATIC_SCOPE`
+ * to the corresponding argument of g_signal_new().
  * |[
  * g_signal_new ("size_request",
  *   G_TYPE_FROM_CLASS (gobject_class),

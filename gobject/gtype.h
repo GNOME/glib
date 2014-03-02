@@ -57,7 +57,7 @@ G_BEGIN_DECLS
  * G_TYPE_NONE:
  * 
  * A fundamental type which is used as a replacement for the C
- * <literal>void</literal> return type.
+ * void return type.
  */
 #define G_TYPE_NONE			G_TYPE_MAKE_FUNDAMENTAL (1)
 /**
@@ -1476,8 +1476,8 @@ guint     g_type_get_type_registration_serial (void);
  * function.
  *
  * The macro expects the interface initialization function to have the
- * name <literal>t_n ## _default_init</literal>, and the interface
- * structure to have the name <literal>TN ## Interface</literal>.
+ * name `t_n ## _default_init`, and the interface structure to have the
+ * name `TN ## Interface`.
  *
  * Since: 2.24
  */

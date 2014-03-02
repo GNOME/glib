@@ -91,12 +91,10 @@ typedef void  (*GTypePluginCompleteInterfaceInfo) (GTypePlugin     *plugin,
  * @unuse_plugin: Decreases the use count of the plugin.
  * @complete_type_info: Fills in the #GTypeInfo and 
  *  #GTypeValueTable structs for the type. The structs are initialized
- *  with <literal>memset(s, 0, sizeof (s))</literal> before calling 
- *  this function.
+ *  with `memset(s, 0, sizeof (s))` before calling this function.
  * @complete_interface_info: Fills in missing parts of the #GInterfaceInfo 
- *  for the interface. The structs is initialized with 
- *  <literal>memset(s, 0, sizeof (s))</literal> before calling
- *  this function.
+ *  for the interface. The structs is initialized with
+ *  `memset(s, 0, sizeof (s))` before calling this function.
  * 
  * The #GTypePlugin interface is used by the type system in order to handle
  * the lifecycle of dynamically loaded types.

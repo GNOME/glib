@@ -264,7 +264,7 @@ typedef gboolean      (*GSettingsGetMapping)                            (GVarian
 
 /**
  * GSettingsBindFlags:
- * @G_SETTINGS_BIND_DEFAULT: Equivalent to <literal>G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET</literal>
+ * @G_SETTINGS_BIND_DEFAULT: Equivalent to `G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET`
  * @G_SETTINGS_BIND_GET: Update the #GObject property when the setting changes.
  *     It is an error to use this flag if the property is not writable.
  * @G_SETTINGS_BIND_SET: Update the setting when the #GObject property changes.

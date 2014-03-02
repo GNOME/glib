@@ -173,10 +173,9 @@ void	g_value_register_transform_func	(GType		 src_type,
 /**
  * G_VALUE_INIT:
  *
- * A #GValue must be initialized before it can be used.
- * This macro can be used as initializer instead of an explicit
- * <literal>{ 0 }</literal> when declaring a variable,
- * but it cannot be assigned to a variable.
+ * A #GValue must be initialized before it can be used. This macro can
+ * be used as initializer instead of an explicit `{ 0 }` when declaring
+ * a variable, but it cannot be assigned to a variable.
  *
  * |[
  *   GValue value = G_VALUE_INIT;

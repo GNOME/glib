@@ -45,25 +45,25 @@ G_BEGIN_DECLS
  * @G_SPAWN_ERROR_FORK: Fork failed due to lack of memory.
  * @G_SPAWN_ERROR_READ: Read or select on pipes failed.
  * @G_SPAWN_ERROR_CHDIR: Changing to working directory failed.
- * @G_SPAWN_ERROR_ACCES: execv() returned <literal>EACCES</literal>
- * @G_SPAWN_ERROR_PERM: execv() returned <literal>EPERM</literal>
- * @G_SPAWN_ERROR_TOO_BIG: execv() returned <literal>E2BIG</literal>
+ * @G_SPAWN_ERROR_ACCES: execv() returned `EACCES`
+ * @G_SPAWN_ERROR_PERM: execv() returned `EPERM`
+ * @G_SPAWN_ERROR_TOO_BIG: execv() returned `E2BIG`
  * @G_SPAWN_ERROR_2BIG: deprecated alias for %G_SPAWN_ERROR_TOO_BIG
- * @G_SPAWN_ERROR_NOEXEC: execv() returned <literal>ENOEXEC</literal>
- * @G_SPAWN_ERROR_NAMETOOLONG: execv() returned <literal>ENAMETOOLONG</literal>
- * @G_SPAWN_ERROR_NOENT: execv() returned <literal>ENOENT</literal>
- * @G_SPAWN_ERROR_NOMEM: execv() returned <literal>ENOMEM</literal>
- * @G_SPAWN_ERROR_NOTDIR: execv() returned <literal>ENOTDIR</literal>
- * @G_SPAWN_ERROR_LOOP: execv() returned <literal>ELOOP</literal>
- * @G_SPAWN_ERROR_TXTBUSY: execv() returned <literal>ETXTBUSY</literal>
- * @G_SPAWN_ERROR_IO: execv() returned <literal>EIO</literal>
- * @G_SPAWN_ERROR_NFILE: execv() returned <literal>ENFILE</literal>
- * @G_SPAWN_ERROR_MFILE: execv() returned <literal>EMFILE</literal>
- * @G_SPAWN_ERROR_INVAL: execv() returned <literal>EINVAL</literal>
- * @G_SPAWN_ERROR_ISDIR: execv() returned <literal>EISDIR</literal>
- * @G_SPAWN_ERROR_LIBBAD: execv() returned <literal>ELIBBAD</literal>
+ * @G_SPAWN_ERROR_NOEXEC: execv() returned `ENOEXEC`
+ * @G_SPAWN_ERROR_NAMETOOLONG: execv() returned `ENAMETOOLONG`
+ * @G_SPAWN_ERROR_NOENT: execv() returned `ENOENT`
+ * @G_SPAWN_ERROR_NOMEM: execv() returned `ENOMEM`
+ * @G_SPAWN_ERROR_NOTDIR: execv() returned `ENOTDIR`
+ * @G_SPAWN_ERROR_LOOP: execv() returned `ELOOP`
+ * @G_SPAWN_ERROR_TXTBUSY: execv() returned `ETXTBUSY`
+ * @G_SPAWN_ERROR_IO: execv() returned `EIO`
+ * @G_SPAWN_ERROR_NFILE: execv() returned `ENFILE`
+ * @G_SPAWN_ERROR_MFILE: execv() returned `EMFILE`
+ * @G_SPAWN_ERROR_INVAL: execv() returned `EINVAL`
+ * @G_SPAWN_ERROR_ISDIR: execv() returned `EISDIR`
+ * @G_SPAWN_ERROR_LIBBAD: execv() returned `ELIBBAD`
  * @G_SPAWN_ERROR_FAILED: Some other fatal failure,
- *   <literal>error-&gt;message</literal> should explain.
+ *   `error->message` should explain.
  *
  * Error codes returned by spawning processes.
  */
@@ -124,51 +124,48 @@ typedef enum
  * functions.
  *
  * However, even on POSIX, you are extremely limited in what you can
- * safely do from a #GSpawnChildSetupFunc, because any mutexes that
- * were held by other threads in the parent process at the time of the
- * fork() will still be locked in the child process, and they will
- * never be unlocked (since the threads that held them don't exist in
- * the child). POSIX allows only async-signal-safe functions (see
- * <citerefentry><refentrytitle>signal</refentrytitle><manvolnum>7</manvolnum></citerefentry>)
- * to be called in the child between fork() and exec(), which
- * drastically limits the usefulness of child setup functions.
+ * safely do from a #GSpawnChildSetupFunc, because any mutexes that were
+ * held by other threads in the parent process at the time of the fork()
+ * will still be locked in the child process, and they will never be
+ * unlocked (since the threads that held them don't exist in the child).
+ * POSIX allows only async-signal-safe functions (see signal(7)) to be
+ * called in the child between fork() and exec(), which drastically limits
+ * the usefulness of child setup functions.
  *
  * In particular, it is not safe to call any function which may
  * call malloc(), which includes POSIX functions such as setenv().
  * If you need to set up the child environment differently from
  * the parent, you should use g_get_environ(), g_environ_setenv(),
  * and g_environ_unsetenv(), and then pass the complete environment
- * list to the <literal>g_spawn...</literal> function.
+ * list to the `g_spawn...` function.
  */
 typedef void (* GSpawnChildSetupFunc) (gpointer user_data);
 
 /**
  * GSpawnFlags:
  * @G_SPAWN_DEFAULT: no flags, default behaviour
- * @G_SPAWN_LEAVE_DESCRIPTORS_OPEN: the parent's open file descriptors will be
- *   inherited by the child; otherwise all descriptors except stdin/stdout/stderr
- *   will be closed before calling exec() in the child.
- * @G_SPAWN_DO_NOT_REAP_CHILD: the child will not be automatically reaped; you
- *   must use g_child_watch_add() yourself (or call waitpid()
- *   or handle <literal>SIGCHLD</literal> yourself), or the child will become a zombie.
- * @G_SPAWN_SEARCH_PATH: <literal>argv[0]</literal> need not be an absolute path,
- *   it will be looked for in the user's <envar>PATH</envar>.
+ * @G_SPAWN_LEAVE_DESCRIPTORS_OPEN: the parent's open file descriptors will
+ *     be inherited by the child; otherwise all descriptors except stdin,
+ *     stdout and stderr will be closed before calling exec() in the child.
+ * @G_SPAWN_DO_NOT_REAP_CHILD: the child will not be automatically reaped;
+ *     you must use g_child_watch_add() yourself (or call waitpid() or handle
+ *     `SIGCHLD` yourself), or the child will become a zombie.
+ * @G_SPAWN_SEARCH_PATH: `argv[0]` need not be an absolute path, it will be
+ *     looked for in the user's `PATH`.
  * @G_SPAWN_STDOUT_TO_DEV_NULL: the child's standard output will be discarded,
- *   instead of going to the same location as the parent's standard output.
+ *     instead of going to the same location as the parent's standard output.
  * @G_SPAWN_STDERR_TO_DEV_NULL: the child's standard error will be discarded.
  * @G_SPAWN_CHILD_INHERITS_STDIN: the child will inherit the parent's standard
- *   input (by default, the child's standard input is attached to
- *   <filename>/dev/null</filename>).
- * @G_SPAWN_FILE_AND_ARGV_ZERO: the first element of <literal>argv</literal> is
- *   the file to execute, while the remaining elements are the actual argument
- *   vector to pass to the file. Normally g_spawn_async_with_pipes() uses
- *   <literal>argv[0]</literal> as the file to execute, and passes all of
- *   <literal>argv</literal> to the child.
- * @G_SPAWN_SEARCH_PATH_FROM_ENVP: if <literal>argv[0]</literal> is not an abolute path,
- *   it will be looked for in the <envar>PATH</envar> from the passed child 
- *   environment. Since: 2.34
- * @G_SPAWN_CLOEXEC_PIPES: create all pipes with the O_CLOEXEC flag set.
- *   Since: 2.40.
+ *     input (by default, the child's standard input is attached to `/dev/null`).
+ * @G_SPAWN_FILE_AND_ARGV_ZERO: the first element of `argv` is the file to
+ *     execute, while the remaining elements are the actual argument vector
+ *     to pass to the file. Normally g_spawn_async_with_pipes() uses `argv[0]`
+ *     as the file to execute, and passes all of `argv` to the child.
+ * @G_SPAWN_SEARCH_PATH_FROM_ENVP: if `argv[0]` is not an abolute path,
+ *     it will be looked for in the `PATH` from the passed child environment.
+ *     Since: 2.34
+ * @G_SPAWN_CLOEXEC_PIPES: create all pipes with the `O_CLOEXEC` flag set.
+ *     Since: 2.40
  *
  * Flags passed to g_spawn_sync(), g_spawn_async() and g_spawn_async_with_pipes().
  */

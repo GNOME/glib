@@ -79,7 +79,7 @@ GQuark g_markup_error_quark (void);
  * @G_MARKUP_TREAT_CDATA_AS_TEXT: When this flag is set, CDATA marked
  *     sections are not passed literally to the @passthrough function of
  *     the parser. Instead, the content of the section (without the
- *     <literal>&lt;![CDATA[</literal> and <literal>]]&gt;</literal>) is
+ *     `<![CDATA[` and `]]>`) is
  *     passed to the @text function. This flag was added in GLib 2.12
  * @G_MARKUP_PREFIX_ERROR_POSITION: Normally errors caught by GMarkup
  *     itself have line/column information prefixed to them to let the
@@ -119,7 +119,7 @@ typedef struct _GMarkupParser GMarkupParser;
  *     is seen.
  * @end_element: Callback to invoke when the closing tag of an element
  *     is seen. Note that this is also called for empty tags like
- *     <literal>&lt;empty/&gt;</literal>.
+ *     `<empty/>`.
  * @text: Callback to invoke when some text is seen (text is always
  *     inside an element). Note that the text of an element may be spread
  *     over multiple calls of this function. If the

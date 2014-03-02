@@ -53,28 +53,28 @@ typedef struct _GOptionEntry   GOptionEntry;
 
 /**
  * GOptionFlags:
- * @G_OPTION_FLAG_HIDDEN: The option doesn't appear in <option>--help</option>
- *  output.
+ * @G_OPTION_FLAG_HIDDEN: The option doesn't appear in `--help` output.
  * @G_OPTION_FLAG_IN_MAIN: The option appears in the main section of the
- *  <option>--help</option> output, even if it is defined in a group.
- * @G_OPTION_FLAG_REVERSE: For options of the %G_OPTION_ARG_NONE kind, this flag
- *  indicates that the sense of the option is reversed.
+ *     `--help` output, even if it is defined in a group.
+ * @G_OPTION_FLAG_REVERSE: For options of the %G_OPTION_ARG_NONE kind, this
+ *     flag indicates that the sense of the option is reversed.
  * @G_OPTION_FLAG_NO_ARG: For options of the %G_OPTION_ARG_CALLBACK kind,
- *  this flag indicates that the callback does not take any argument
- *  (like a %G_OPTION_ARG_NONE option). Since 2.8
+ *     this flag indicates that the callback does not take any argument
+ *     (like a %G_OPTION_ARG_NONE option). Since 2.8
  * @G_OPTION_FLAG_FILENAME: For options of the %G_OPTION_ARG_CALLBACK
- *  kind, this flag indicates that the argument should be passed to the
- *  callback in the GLib filename encoding rather than UTF-8. Since 2.8
+ *     kind, this flag indicates that the argument should be passed to the
+ *     callback in the GLib filename encoding rather than UTF-8. Since 2.8
  * @G_OPTION_FLAG_OPTIONAL_ARG: For options of the %G_OPTION_ARG_CALLBACK 
- *  kind, this flag indicates that the argument supply is optional. If no argument
- *  is given then data of %GOptionParseFunc will be set to NULL. Since 2.8
- * @G_OPTION_FLAG_NOALIAS: This flag turns off the automatic conflict resolution
- *  which prefixes long option names with <literal>groupname-</literal> if 
- *  there is a conflict. This option should only be used in situations where
- *  aliasing is necessary to model some legacy commandline interface. It is
- *  not safe to use this option, unless all option groups are under your 
- *  direct control. Since 2.8.
- * 
+ *     kind, this flag indicates that the argument supply is optional.
+ *     If no argument is given then data of %GOptionParseFunc will be
+ *     set to NULL. Since 2.8
+ * @G_OPTION_FLAG_NOALIAS: This flag turns off the automatic conflict
+ *     resolution which prefixes long option names with `groupname-` if 
+ *     there is a conflict. This option should only be used in situations
+ *     where aliasing is necessary to model some legacy commandline interface.
+ *     It is not safe to use this option, unless all option groups are under
+ *     your direct control. Since 2.8.
+ *
  * Flags which modify individual options.
  */
 typedef enum
@@ -94,24 +94,24 @@ typedef enum
  * @G_OPTION_ARG_STRING: The option takes a string argument.
  * @G_OPTION_ARG_INT: The option takes an integer argument.
  * @G_OPTION_ARG_CALLBACK: The option provides a callback to parse the
- *  extra argument.
+ *     extra argument.
  * @G_OPTION_ARG_FILENAME: The option takes a filename as argument.
  * @G_OPTION_ARG_STRING_ARRAY: The option takes a string argument, multiple
- *  uses of the option are collected into an array of strings.
+ *     uses of the option are collected into an array of strings.
  * @G_OPTION_ARG_FILENAME_ARRAY: The option takes a filename as argument, 
- *  multiple uses of the option are collected into an array of strings.
+ *     multiple uses of the option are collected into an array of strings.
  * @G_OPTION_ARG_DOUBLE: The option takes a double argument. The argument
- *  can be formatted either for the user's locale or for the "C" locale. Since 2.12
- * @G_OPTION_ARG_INT64: The option takes a 64-bit integer. Like %G_OPTION_ARG_INT
- *  but for larger numbers. The number can be in decimal base, or in hexadecimal
- *  (when prefixed with <literal>0x</literal>, for example, <literal>0xffffffff</literal>).
- *  Since 2.12
+ *     can be formatted either for the user's locale or for the "C" locale.
+ *     Since 2.12
+ * @G_OPTION_ARG_INT64: The option takes a 64-bit integer. Like
+ *     %G_OPTION_ARG_INT but for larger numbers. The number can be in
+ *     decimal base, or in hexadecimal (when prefixed with `0x`, for
+ *     example, `0xffffffff`). Since 2.12
  * 
  * The #GOptionArg enum values determine which type of extra argument the
- * options expect to find. If an option expects an extra argument, it
- * can be specified in several ways; with a short option:
- * <option>-x arg</option>, with a long option: <option>--name arg</option>
- * or combined in a single argument: <option>--name=arg</option>.
+ * options expect to find. If an option expects an extra argument, it can
+ * be specified in several ways; with a short option: `-x arg`, with a long
+ * option: `--name arg` or combined in a single argument: `--name=arg`.
  */
 typedef enum
 {
@@ -213,67 +213,44 @@ GQuark g_option_error_quark (void);
 /**
  * GOptionEntry:
  * @long_name: The long name of an option can be used to specify it
- *  in a commandline as --<replaceable>long_name</replaceable>. Every
- *  option must have a long name. To resolve conflicts if multiple
- *  option groups contain the same long name, it is also possible to
- *  specify the option as 
- *  --<replaceable>groupname</replaceable>-<replaceable>long_name</replaceable>.
+ *     in a commandline as `--long_name`. Every option must have a
+ *     long name. To resolve conflicts if multiple option groups contain
+ *     the same long name, it is also possible to specify the option as 
+ *     `--groupname-long_name`.
  * @short_name: If an option has a short name, it can be specified
- *  -<replaceable>short_name</replaceable> in a commandline. @short_name must be 
- *  a printable ASCII character different from '-', or zero if the option has no
- *  short name.
- * @flags: Flags from #GOptionFlags.
- * @arg: The type of the option, as a #GOptionArg.
- * @arg_data: If the @arg type is %G_OPTION_ARG_CALLBACK, then @arg_data must 
- *  point to a #GOptionArgFunc callback function, which will be called to handle 
- *  the extra argument. Otherwise, @arg_data is a pointer to a location to store 
- *  the value, the required type of the location depends on the @arg type:
- *  <variablelist>
- *  <varlistentry>
- *  <term>%G_OPTION_ARG_NONE</term>
- *  <listitem><para>%gboolean</para></listitem>
- *  </varlistentry>
- *  <varlistentry>
- *  <term>%G_OPTION_ARG_STRING</term>
- *  <listitem><para>%gchar*</para></listitem>
- *  </varlistentry>
- *  <varlistentry>
- *  <term>%G_OPTION_ARG_INT</term>
- *  <listitem><para>%gint</para></listitem>
- *  </varlistentry>
- *  <varlistentry>
- *  <term>%G_OPTION_ARG_FILENAME</term>
- *  <listitem><para>%gchar*</para></listitem>
- *  </varlistentry>
- *  <varlistentry>
- *  <term>%G_OPTION_ARG_STRING_ARRAY</term>
- *  <listitem><para>%gchar**</para></listitem>
- *  </varlistentry>
- *  <varlistentry>
- *  <term>%G_OPTION_ARG_FILENAME_ARRAY</term>
- *  <listitem><para>%gchar**</para></listitem>
- *  </varlistentry>
- *  <varlistentry>
- *  <term>%G_OPTION_ARG_DOUBLE</term>
- *  <listitem><para>%gdouble</para></listitem>
- *  </varlistentry>
- *  </variablelist>
- *  If @arg type is %G_OPTION_ARG_STRING or %G_OPTION_ARG_FILENAME the location
- *  will contain a newly allocated string if the option was given. That string
- *  needs to be freed by the callee using g_free(). Likewise if @arg type is
- *  %G_OPTION_ARG_STRING_ARRAY or %G_OPTION_ARG_FILENAME_ARRAY, the data should
- *  be freed using g_strfreev().
- * @description: the description for the option in <option>--help</option>
- *  output. The @description is translated using the @translate_func of the
- *  group, see g_option_group_set_translation_domain().
+ *     `-short_name` in a commandline. @short_name must be  a printable
+ *     ASCII character different from '-', or zero if the option has no
+ *     short name.
+ * @flags: Flags from #GOptionFlags
+ * @arg: The type of the option, as a #GOptionArg
+ * @arg_data: If the @arg type is %G_OPTION_ARG_CALLBACK, then @arg_data
+ *     must point to a #GOptionArgFunc callback function, which will be
+ *     called to handle the extra argument. Otherwise, @arg_data is a
+ *     pointer to a location to store the value, the required type of
+ *     the location depends on the @arg type:
+ *     - %G_OPTION_ARG_NONE: %gboolean
+ *     - %G_OPTION_ARG_STRING: %gchar*
+ *     - %G_OPTION_ARG_INT: %gint
+ *     - %G_OPTION_ARG_FILENAME: %gchar*
+ *     - %G_OPTION_ARG_STRING_ARRAY: %gchar**
+ *     - %G_OPTION_ARG_FILENAME_ARRAY: %gchar**
+ *     - %G_OPTION_ARG_DOUBLE: %gdouble
+ *     If @arg type is %G_OPTION_ARG_STRING or %G_OPTION_ARG_FILENAME,
+ *     the location will contain a newly allocated string if the option
+ *     was given. That string needs to be freed by the callee using g_free().
+ *     Likewise if @arg type is %G_OPTION_ARG_STRING_ARRAY or
+ *     %G_OPTION_ARG_FILENAME_ARRAY, the data should be freed using g_strfreev().
+ * @description: the description for the option in `--help`
+ *     output. The @description is translated using the @translate_func
+ *     of the group, see g_option_group_set_translation_domain().
  * @arg_description: The placeholder to use for the extra argument parsed
- *  by the option in <option>--help</option>
- *  output. The @arg_description is translated using the @translate_func of the
- *  group, see g_option_group_set_translation_domain().
+ *     by the option in `--help` output. The @arg_description is translated
+ *     using the @translate_func of the group, see
+ *     g_option_group_set_translation_domain().
  * 
- * A <structname>GOptionEntry</structname> defines a single option.
- * To have an effect, they must be added to a #GOptionGroup with
- * g_option_context_add_main_entries() or g_option_group_add_entries().
+ * A GOptionEntry struct defines a single option. To have an effect, they
+ * must be added to a #GOptionGroup with g_option_context_add_main_entries()
+ * or g_option_group_add_entries().
  */
 struct _GOptionEntry
 {
@@ -293,12 +270,12 @@ struct _GOptionEntry
  * 
  * If a long option in the main group has this name, it is not treated as a 
  * regular option. Instead it collects all non-option arguments which would
- * otherwise be left in <literal>argv</literal>. The option must be of type
+ * otherwise be left in `argv`. The option must be of type
  * %G_OPTION_ARG_CALLBACK, %G_OPTION_ARG_STRING_ARRAY
  * or %G_OPTION_ARG_FILENAME_ARRAY.
  * 
  * 
- * Using #G_OPTION_REMAINING instead of simply scanning <literal>argv</literal>
+ * Using #G_OPTION_REMAINING instead of simply scanning `argv`
  * for leftover arguments has the advantage that GOption takes care of 
  * necessary encoding conversions for strings or filenames.
  * 
