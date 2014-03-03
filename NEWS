@@ -1,3 +1,36 @@
+Overview of changes from GLib 2.39.90 to GLib 2.39.91
+=====================================================
+
+This release introduces a hard dependency on present and functioning
+clock_gettime() and CLOCK_MONOTONIC.  It also introduces a dependency on
+pthread_condattr_setclock() unless your system happens to have
+pthread_cond_timedwait_relative_np() (as do Mac OS and Android).  This
+release is known to be broken with at least GNU/Hurd, pending addition
+of working pthread_condattr_setclock(CLOCK_MONOTONIC) there.
+
+New API: g_str_to_ascii()
+
+* Fixed bugs:
+ 670144 unconditional use of CLOCK_MONOTONIC is broken
+ 673607 invalid assumption in g_cond_wait_until() / g_get_monotonic_time() API
+ 710142 Add more impressive transliteration to GLib
+ 722360 make check fails
+ 722604 (partial) Various tests are failing with 2.39.3
+ 723316 g_hash_table_iter_remove() should be explicit whether or not it is safe while iterating the table
+ 724609 Fix build of GIO on Windows
+ 724687 gmain: make monotonic time really monotonic, everywhere
+ 724706 gsource: document priority of child sources
+ 724707 some GSocket source improvements
+ 724839 GMainContext: some source ID cleanups
+ 724858 Dist gtranslit-data.h
+ 724994 Missing icons for bookmarks in file chooser
+ 725023 Can no longer find apps by executable/desktop file name
+
+* Translations:
+ Lithuanian
+ Polish
+ Thai
+
 Overview of changes from GLib 2.39.4 to GLib 2.39.90
 ====================================================
 
