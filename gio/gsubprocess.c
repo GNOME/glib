@@ -1420,7 +1420,7 @@ g_subprocess_communicate_made_progress (GObject      *source_object,
       source == state->stdout_buf ||
       source == state->stderr_buf)
     {
-      if (!g_output_stream_splice_finish ((GOutputStream*)source, result, &error))
+      if (g_output_stream_splice_finish ((GOutputStream*) source, result, &error) == -1)
         goto out;
 
       if (source == state->stdout_buf ||
