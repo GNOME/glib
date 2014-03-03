@@ -108,14 +108,15 @@ static const GMarkupParser silent_parser = {
 };
 
 static int
-test_in_chunks (const gchar *contents,
-                gint         length,
-                gint         chunk_size)
+test_in_chunks (const gchar       *contents,
+                gint               length,
+                gint               chunk_size,
+                GMarkupParseFlags  flags)
 {
   GMarkupParseContext *context;
   int i = 0;
   
-  context = g_markup_parse_context_new (&silent_parser, 0, NULL, NULL);
+  context = g_markup_parse_context_new (&silent_parser, flags, NULL, NULL);
 
   while (i < length)
     {
@@ -145,7 +146,7 @@ test_in_chunks (const gchar *contents,
 }
 
 static int
-test_file (const gchar *filename)
+test_file (const gchar *filename, GMarkupParseFlags flags)
 {
   gchar *contents;
   gsize  length;
@@ -164,7 +165,7 @@ test_file (const gchar *filename)
       return 1;
     }
 
-  context = g_markup_parse_context_new (&parser, 0, NULL, NULL);
+  context = g_markup_parse_context_new (&parser, flags, NULL, NULL);
   g_assert (g_markup_parse_context_get_user_data (context) == NULL);
   g_markup_parse_context_get_position (context, &line, &col);
   g_assert (line == 1 && col == 1);
@@ -186,35 +187,35 @@ test_file (const gchar *filename)
   g_markup_parse_context_free (context);
 
   /* A byte at a time */
-  if (test_in_chunks (contents, length, 1) != 0)
+  if (test_in_chunks (contents, length, 1, flags) != 0)
     {
       g_free (contents);
       return 1;
     }
 
   /* 2 bytes */
-  if (test_in_chunks (contents, length, 2) != 0)
+  if (test_in_chunks (contents, length, 2, flags) != 0)
     {
       g_free (contents);
       return 1;
     }
 
-  /*5 bytes */
-  if (test_in_chunks (contents, length, 5) != 0)
+  /* 5 bytes */
+  if (test_in_chunks (contents, length, 5, flags) != 0)
     {
       g_free (contents);
       return 1;
     }
 
   /* 12 bytes */
-  if (test_in_chunks (contents, length, 12) != 0)
+  if (test_in_chunks (contents, length, 12, flags) != 0)
     {
       g_free (contents);
       return 1;
     }
 
   /* 1024 bytes */
-  if (test_in_chunks (contents, length, 1024) != 0)
+  if (test_in_chunks (contents, length, 1024, flags) != 0)
     {
       g_free (contents);
       return 1;
@@ -226,7 +227,8 @@ test_file (const gchar *filename)
 }
 
 static gchar *
-get_expected_filename (const gchar *filename)
+get_expected_filename (const gchar       *filename,
+                       GMarkupParseFlags  flags)
 {
   gchar *f, *p, *expected;
 
@@ -234,7 +236,11 @@ get_expected_filename (const gchar *filename)
   p = strstr (f, ".gmarkup");
   if (p)
     *p = 0;
-  expected = g_strconcat (f, ".expected", NULL);
+  if (flags == 0)
+    expected = g_strconcat (f, ".expected", NULL);
+  else if (flags == G_MARKUP_TREAT_CDATA_AS_TEXT)
+    expected = g_strconcat (f, ".cdata-as-text", NULL);
+
   g_free (f);
 
   return expected;
@@ -246,27 +252,46 @@ test_parse (gconstpointer d)
   const gchar *filename = d;
   gchar *expected_file;
   gchar *expected;
+  gboolean valid_input;
   GError *error = NULL;
   gint res;
+
+  valid_input = strstr (filename, "valid") != NULL;
+  expected_file = get_expected_filename (filename, 0);
 
   depth = 0;
   string = g_string_sized_new (0);
 
-  res = test_file (filename);
+  res = test_file (filename, 0);
+  g_assert_cmpint (res, ==, valid_input ? 0 : 1);
 
-  if (strstr (filename, "valid"))
-    g_assert_cmpint (res, ==, 0);
-  else
-    g_assert_cmpint (res, ==, 1);
-
-  expected_file = get_expected_filename (filename);
   g_file_get_contents (expected_file, &expected, NULL, &error);
   g_assert_no_error (error);
   g_assert_cmpstr (string->str, ==, expected);
   g_free (expected);
-  g_free (expected_file);
 
   g_string_free (string, TRUE);
+
+  g_free (expected_file);
+
+  expected_file = get_expected_filename (filename, G_MARKUP_TREAT_CDATA_AS_TEXT);
+  if (g_file_test (expected_file, G_FILE_TEST_EXISTS))
+    {
+      depth = 0;
+      string = g_string_sized_new (0);
+
+      res = test_file (filename, G_MARKUP_TREAT_CDATA_AS_TEXT);
+      g_assert_cmpint (res, ==, valid_input ? 0 : 1);
+
+      g_file_get_contents (expected_file, &expected, NULL, &error);
+      g_assert_no_error (error);
+      g_assert_cmpstr (string->str, ==, expected);
+      g_free (expected);
+
+      g_string_free (string, TRUE);
+    }
+
+  g_free (expected_file);
 }
 
 int
@@ -285,8 +310,16 @@ main (int argc, char *argv[])
   /* allow to easily generate expected output for new test cases */
   if (argc > 1)
     {
+      gint arg = 1;
+      GMarkupParseFlags flags = 0;
+
+      if (strcmp (argv[1], "--cdata-as-text") == 0)
+        {
+          flags = G_MARKUP_TREAT_CDATA_AS_TEXT;
+          arg = 2;
+        }
       string = g_string_sized_new (0);
-      test_file (argv[1]);
+      test_file (argv[arg], flags);
       g_print ("%s", string->str);
       return 0;
     }
@@ -298,7 +331,7 @@ main (int argc, char *argv[])
   g_assert_no_error (error);
   while ((name = g_dir_read_name (dir)) != NULL)
     {
-      if (strstr (name, "expected"))
+      if (!strstr (name, "gmarkup"))
         continue;
 
       path = g_strdup_printf ("/markup/parse/%s", name);
