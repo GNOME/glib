@@ -754,6 +754,34 @@ test_communicate_utf8 (void)
 }
 
 static void
+test_communicate_nothing (void)
+{
+  GError *error = NULL;
+  GPtrArray *args;
+  GSubprocess *proc;
+  GCancellable *cancellable = NULL;
+  gchar *stdout_buf;
+
+  args = get_test_subprocess_args ("cat", NULL);
+  proc = g_subprocess_newv ((const gchar* const*)args->pdata,
+                            G_SUBPROCESS_FLAGS_STDIN_PIPE
+                            | G_SUBPROCESS_FLAGS_STDOUT_PIPE
+                            | G_SUBPROCESS_FLAGS_STDERR_MERGE,
+                            &error);
+  g_assert_no_error (error);
+  g_ptr_array_free (args, TRUE);
+
+  g_subprocess_communicate_utf8 (proc, "", cancellable, &stdout_buf, NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpstr (stdout_buf, ==, "");
+
+  g_free (stdout_buf);
+
+  g_object_unref (proc);
+}
+
+static void
 test_communicate_utf8_invalid (void)
 {
   GError *error = NULL;
@@ -1201,6 +1229,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/communicate-utf8", test_communicate_utf8);
   g_test_add_func ("/gsubprocess/communicate-utf8-async", test_communicate_utf8_async);
   g_test_add_func ("/gsubprocess/communicate-utf8-invalid", test_communicate_utf8_invalid);
+  g_test_add_func ("/gsubprocess/communicate-nothing", test_communicate_nothing);
   g_test_add_func ("/gsubprocess/terminate", test_terminate);
   g_test_add_func ("/gsubprocess/env", test_env);
   g_test_add_func ("/gsubprocess/cwd", test_cwd);
