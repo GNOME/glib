@@ -3625,7 +3625,7 @@ g_variant_builder_end (GVariantBuilder *builder)
 /* GVariantDict {{{1 */
 
 /**
- * GVariantDict: (skip)
+ * GVariantDict:
  *
  * #GVariantDict is a mutable interface to #GVariant dictionaries.
  *
