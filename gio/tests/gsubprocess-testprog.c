@@ -175,6 +175,22 @@ cwd_mode (int argc, char **argv)
   return 0;
 }
 
+static int
+printenv_mode (int argc, char **argv)
+{
+  gint i;
+
+  for (i = 2; i < argc; i++)
+    {
+      const gchar *value = g_getenv (argv[i]);
+
+      if (value != NULL)
+        g_print ("%s=%s\n", argv[i], value);
+    }
+
+  return 0;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -222,6 +238,8 @@ main (int argc, char **argv)
     return env_mode (argc, argv);
   else if (strcmp (mode, "cwd") == 0)
     return cwd_mode (argc, argv);
+  else if (strcmp (mode, "printenv") == 0)
+    return printenv_mode (argc, argv);
   else
     {
       g_printerr ("Unknown MODE %s\n", argv[1]);

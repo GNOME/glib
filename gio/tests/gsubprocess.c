@@ -1203,6 +1203,40 @@ test_pass_fd (void)
 
 #endif
 
+static void
+test_launcher_environment (void)
+{
+  GSubprocessLauncher *launcher;
+  GError *error = NULL;
+  GSubprocess *proc;
+  GPtrArray *args;
+  gchar *out;
+
+  g_setenv ("A", "B", TRUE);
+  g_setenv ("C", "D", TRUE);
+
+  launcher = g_subprocess_launcher_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE);
+
+  /* unset a variable */
+  g_subprocess_launcher_unsetenv (launcher, "A");
+
+  /* and set a diffferent one */
+  g_subprocess_launcher_setenv (launcher, "E", "F", TRUE);
+
+  args = get_test_subprocess_args ("printenv", "A", "C", "E", NULL);
+  proc = g_subprocess_launcher_spawnv (launcher, (const gchar **) args->pdata, &error);
+  g_assert_no_error (error);
+  g_assert (proc);
+
+  g_subprocess_communicate_utf8 (proc, NULL, NULL, &out, NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpstr (out, ==, "C=D\nE=F\n");
+  g_free (out);
+
+  g_object_unref (proc);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -1239,6 +1273,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/child-setup", test_child_setup);
   g_test_add_func ("/gsubprocess/pass-fd", test_pass_fd);
 #endif
+  g_test_add_func ("/gsubprocess/launcher-environment", test_launcher_environment);
 
   return g_test_run ();
 }
