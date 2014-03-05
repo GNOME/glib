@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.36.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-19 23:56+0100\n"
-"PO-Revision-Date: 2014-02-19 23:57+0100\n"
+"POT-Creation-Date: 2014-03-05 19:20+0100\n"
+"PO-Revision-Date: 2014-03-05 19:24+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: ../gio/gapplication.c:509
 msgid "Enter GApplication service mode (use from D-Bus service files)"
-msgstr ""
+msgstr "Oppgi tjenestemodus for GApplication (bruk fra D-Bus tjenestefiler)"
 
 #: ../gio/gapplication.c:514
 msgid "GApplication options"
@@ -291,13 +291,13 @@ msgstr "Ikke nok plass i mål"
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:847
 #: ../gio/gdatainputstream.c:1255 ../glib/gconvert.c:438
-#: ../glib/gconvert.c:842 ../glib/giochannel.c:1557 ../glib/giochannel.c:1599
+#: ../glib/gconvert.c:845 ../glib/giochannel.c:1557 ../glib/giochannel.c:1599
 #: ../glib/giochannel.c:2443 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ugyldig bytesekvens i inndata for konvertering"
 
 #: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:446
-#: ../glib/gconvert.c:767 ../glib/giochannel.c:1564 ../glib/giochannel.c:2455
+#: ../glib/gconvert.c:770 ../glib/giochannel.c:1564 ../glib/giochannel.c:2455
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Feil under konvertering: %s"
@@ -344,9 +344,8 @@ msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials har ikke en prosess-ID på dette OSet"
 
 #: ../gio/gcredentials.c:536
-#, fuzzy
 msgid "Credentials spoofing is not possible on this OS"
-msgstr "Credentials er ikke implementert på dette OSet"
+msgstr "Spoofing av Credentials er ikke mulig på dette OSet"
 
 #: ../gio/gdatainputstream.c:304
 msgid "Unexpected early end-of-stream"
@@ -1150,39 +1149,39 @@ msgstr "Objektsti som skal overvåkes"
 msgid "Monitor a remote object."
 msgstr "Overvåk et eksternt objekt."
 
-#: ../gio/gdesktopappinfo.c:1419 ../gio/gdesktopappinfo.c:4562
+#: ../gio/gdesktopappinfo.c:1440 ../gio/gdesktopappinfo.c:4583
 #: ../gio/gwin32appinfo.c:219
 msgid "Unnamed"
 msgstr "Uten navn"
 
-#: ../gio/gdesktopappinfo.c:1838
+#: ../gio/gdesktopappinfo.c:1859
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop-filen hadde ingen verdi i Exec-feltet"
 
-#: ../gio/gdesktopappinfo.c:2123
+#: ../gio/gdesktopappinfo.c:2144
 msgid "Unable to find terminal required for application"
 msgstr "Kan ikke finne terminalen som kreves for programmet"
 
-#: ../gio/gdesktopappinfo.c:2539
+#: ../gio/gdesktopappinfo.c:2560
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Kan ikke opprette konfigurasjonsmappe %s for brukers program: %s"
 
-#: ../gio/gdesktopappinfo.c:2543
+#: ../gio/gdesktopappinfo.c:2564
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan ikke opprette brukers konfigurasjonsmappe %s for MIME: %s"
 
-#: ../gio/gdesktopappinfo.c:2783 ../gio/gdesktopappinfo.c:2807
+#: ../gio/gdesktopappinfo.c:2804 ../gio/gdesktopappinfo.c:2828
 msgid "Application information lacks an identifier"
 msgstr "Programinformasjonen mangler en identifikator"
 
-#: ../gio/gdesktopappinfo.c:3040
+#: ../gio/gdesktopappinfo.c:3061
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan ikke opprette brukers desktop-fil %s"
 
-#: ../gio/gdesktopappinfo.c:3174
+#: ../gio/gdesktopappinfo.c:3195
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Egendefinert definisjon for %s"
@@ -2225,7 +2224,7 @@ msgstr "Ut-strømmen implementerer ikke skriving"
 msgid "Source stream is already closed"
 msgstr "Kildestrømmen er allerede lukket"
 
-#: ../gio/gresolver.c:316 ../gio/gthreadedresolver.c:108
+#: ../gio/gresolver.c:318 ../gio/gthreadedresolver.c:108
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Feil under oppslag av «%s»: %s"
@@ -2613,7 +2612,7 @@ msgstr "Ugyldig plugg, initiering feilet pga: %s"
 msgid "Socket is already closed"
 msgstr "Pluggen er allerede lukket"
 
-#: ../gio/gsocket.c:335 ../gio/gsocket.c:3634 ../gio/gsocket.c:3689
+#: ../gio/gsocket.c:335 ../gio/gsocket.c:3615 ../gio/gsocket.c:3670
 msgid "Socket I/O timed out"
 msgstr "Tidsavbrudd for I/U mot plugg"
 
@@ -2702,31 +2701,31 @@ msgstr "Kan ikke stenge ned plugg: %s"
 msgid "Error closing socket: %s"
 msgstr "Feil ved lukking av plugg: %s"
 
-#: ../gio/gsocket.c:3627
+#: ../gio/gsocket.c:3608
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Venter på tilstand for plugg: %s"
 
-#: ../gio/gsocket.c:3905 ../gio/gsocket.c:3986
+#: ../gio/gsocket.c:3886 ../gio/gsocket.c:3967
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Feil ved sending av melding: %s"
 
-#: ../gio/gsocket.c:3930
+#: ../gio/gsocket.c:3911
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage er ikke støttet på Windows"
 
-#: ../gio/gsocket.c:4264 ../gio/gsocket.c:4399
+#: ../gio/gsocket.c:4245 ../gio/gsocket.c:4380
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Feil ved mottak av melding: %s"
 
-#: ../gio/gsocket.c:4504
+#: ../gio/gsocket.c:4485
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Kunne ikke lese autentiseringsinformasjon for plugg: %s"
 
-#: ../gio/gsocket.c:4513
+#: ../gio/gsocket.c:4494
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ikke implementert for dette OSet"
 
@@ -3157,42 +3156,42 @@ msgstr "Feil under utvidelse av exec-linje «%s» med URI «%s»"
 msgid "Partial character sequence at end of input"
 msgstr "Ufullstendig tegnsekvens ved slutten på inndata"
 
-#: ../glib/gconvert.c:739
+#: ../glib/gconvert.c:742
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Kan ikke konvertere \"fallback\" «%s» til tegnsett «%s»"
 
-#: ../glib/gconvert.c:1563
+#: ../glib/gconvert.c:1566
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI «%s» er ikke en absolutt URI som bruker skjema for filer"
 
-#: ../glib/gconvert.c:1573
+#: ../glib/gconvert.c:1576
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Lokal fil-URI «%s» kan ikke inneholde en «#»"
 
-#: ../glib/gconvert.c:1590
+#: ../glib/gconvert.c:1593
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI «%s» er ugyldig"
 
-#: ../glib/gconvert.c:1602
+#: ../glib/gconvert.c:1605
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Vertsnavnet for URI «%s» er ugyldig"
 
-#: ../glib/gconvert.c:1618
+#: ../glib/gconvert.c:1621
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Vertsnavnet for URI «%s» inneholder ugyldige escape-tegn"
 
-#: ../glib/gconvert.c:1713
+#: ../glib/gconvert.c:1716
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Stinavnet «%s» er ikke en absolutt sti"
 
-#: ../glib/gconvert.c:1723
+#: ../glib/gconvert.c:1726
 msgid "Invalid hostname"
 msgstr "Ugyldig vertsnavn"
 
