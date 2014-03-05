@@ -25,8 +25,6 @@
 
 #include <glib.h>
 
-#include <unistd.h>
-
 static GCond cond;
 static GMutex mutex;
 static volatile gint next;
@@ -250,9 +248,6 @@ test_wait_until (void)
    */
   g_mutex_init (&lock);
   g_cond_init (&cond);
-
-  /* Don't wait forever... */
-  alarm (60);
 
   until = g_get_monotonic_time () + G_TIME_SPAN_SECOND;
 
