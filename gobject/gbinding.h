@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 /**
  * GBinding:
  *
- * <structname>GBinding</structname> is an opaque structure whose members
+ * GBinding is an opaque structure whose members
  * cannot be accessed directly.
  *
  * Since: 2.26

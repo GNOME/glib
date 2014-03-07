@@ -81,9 +81,8 @@ typedef void  (*GTypePluginCompleteInterfaceInfo) (GTypePlugin     *plugin,
 /**
  * GTypePlugin:
  * 
- * The <structname>GTypePlugin</structname> typedef is used as a placeholder 
- * for objects that implement the <structname>GTypePlugin</structname> 
- * interface.
+ * The GTypePlugin typedef is used as a placeholder 
+ * for objects that implement the GTypePlugin interface.
  */
 /**
  * GTypePluginClass:

@@ -40,7 +40,7 @@ typedef struct _GTypeModuleClass GTypeModuleClass;
  * GTypeModule:
  * @name: the name of the module
  * 
- * The members of the <structname>GTypeModule</structname> structure should not 
+ * The members of the GTypeModule structure should not 
  * be accessed directly, except for the @name field.
  */
 struct _GTypeModule 

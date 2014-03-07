@@ -196,7 +196,7 @@ typedef struct _GParamSpecPool  GParamSpecPool;
  * @value_type: the #GValue type for this parameter
  * @owner_type: #GType type that uses (introduces) this parameter
  * 
- * All other fields of the <structname>GParamSpec</structname> struct are private and
+ * All other fields of the GParamSpec struct are private and
  * should not be used directly.
  */
 struct _GParamSpec
@@ -230,8 +230,8 @@ struct _GParamSpec
  * @values_cmp: Compares @value1 with @value2 according to this type
  *  (recommended, the default is memcmp()), see g_param_values_cmp().
  * 
- * The class structure for the <structname>GParamSpec</structname> type.
- * Normally, <structname>GParamSpec</structname> classes are filled by
+ * The class structure for the GParamSpec type.
+ * Normally, GParamSpec classes are filled by
  * g_param_type_register_static().
  */
 struct _GParamSpecClass
@@ -258,7 +258,7 @@ struct _GParamSpecClass
  * @name: the parameter name
  * @value: the parameter value
  * 
- * The <structname>GParameter</structname> struct is an auxiliary structure used
+ * The GParameter struct is an auxiliary structure used
  * to hand parameter name/value pairs to g_object_newv().
  */
 struct _GParameter /* auxiliary structure for _setv() variants */
