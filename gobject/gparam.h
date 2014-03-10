@@ -113,6 +113,7 @@ G_BEGIN_DECLS
  * GParamFlags:
  * @G_PARAM_READABLE: the parameter is readable
  * @G_PARAM_WRITABLE: the parameter is writable
+ * @G_PARAM_READWRITE: alias for %G_PARAM_READABLE | %G_PARAM_WRITABLE
  * @G_PARAM_CONSTRUCT: the parameter will be set upon object construction
  * @G_PARAM_CONSTRUCT_ONLY: the parameter will only be set upon object construction
  * @G_PARAM_LAX_VALIDATION: upon parameter conversion (see g_param_value_convert())
@@ -142,6 +143,7 @@ typedef enum
 {
   G_PARAM_READABLE            = 1 << 0,
   G_PARAM_WRITABLE            = 1 << 1,
+  G_PARAM_READWRITE           = (G_PARAM_READABLE | G_PARAM_WRITABLE),
   G_PARAM_CONSTRUCT	      = 1 << 2,
   G_PARAM_CONSTRUCT_ONLY      = 1 << 3,
   G_PARAM_LAX_VALIDATION      = 1 << 4,
@@ -154,12 +156,6 @@ typedef enum
   /* User defined flags go up to 30 */
   G_PARAM_DEPRECATED          = 1 << 31
 } GParamFlags;
-/**
- * G_PARAM_READWRITE:
- * 
- * #GParamFlags value alias for %G_PARAM_READABLE | %G_PARAM_WRITABLE.
- */
-#define	G_PARAM_READWRITE	(G_PARAM_READABLE | G_PARAM_WRITABLE)
 /**
  * G_PARAM_STATIC_STRINGS:
  * 
