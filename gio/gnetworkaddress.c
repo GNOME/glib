@@ -453,7 +453,7 @@ _g_uri_parse_authority (const char  *uri,
 		        char       **userinfo)
 {
   char *tmp_str;
-  const char *start, *p;
+  const char *start, *p, *at, *delim;
   char c;
 
   g_return_val_if_fail (uri != NULL, FALSE);
@@ -493,7 +493,14 @@ _g_uri_parse_authority (const char  *uri,
 
   start += 2;
 
-  if (strchr (start, '@') != NULL)
+  /* check if the @ sign is part of the authority before attempting to
+   * decode the userinfo */
+  delim = strpbrk (start, "/?#[]");
+  at = strchr (start, '@');
+  if (at && delim && at > delim)
+    at = NULL;
+
+  if (at != NULL)
     {
       /* Decode userinfo:
        * userinfo      = *( unreserved / pct-encoded / sub-delims / ":" )
