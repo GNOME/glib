@@ -42,7 +42,8 @@ static ParseTest uri_tests[] = {
   { "http://[fec0::abcd%em1]/start", "http", "fec0::abcd%em1", 8080, -1 },
   { "http://[fec0::abcd%25em1]/start", "http", "fec0::abcd%em1", 8080, -1 },
   { "http://[fec0::abcd%10]/start", "http", "fec0::abcd%10", 8080, -1 },
-  { "http://[fec0::abcd%25em%31]/start", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT }
+  { "http://[fec0::abcd%25em%31]/start", NULL, NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
+  { "ftp://ftp.gnome.org/start?foo=bar@baz", "ftp", "ftp.gnome.org", 8080, -1 }
 };
 
 static void
