@@ -343,7 +343,9 @@ g_unix_volume_mount_finish (GVolume        *volume,
                             GAsyncResult  *result,
                             GError       **error)
 {
-  return TRUE;
+  g_return_val_if_fail (g_task_is_valid (result, volume), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 static void
@@ -366,7 +368,9 @@ g_unix_volume_eject_finish (GVolume       *volume,
                             GAsyncResult  *result,
                             GError       **error)
 {
-  return TRUE;
+  g_return_val_if_fail (g_task_is_valid (result, volume), FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 static gchar *
