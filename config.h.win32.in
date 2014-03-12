@@ -89,9 +89,6 @@
    */
 /* #undef HAVE_ALLOCA_H */
 
-/* Define to 1 if you have the `atexit' function. */
-#define HAVE_ATEXIT 1
-
 /* Define to 1 if you have the <attr/xattr.h> header file. */
 /* #undef HAVE_ATTR_XATTR_H */
 
@@ -137,12 +134,6 @@
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 /* #undef HAVE_DLFCN_H */
-
-/* Define to 1 if you don't have `vprintf' but do have `_doprnt.' */
-/* #undef HAVE_DOPRNT */
-
-/* define for working do while(0) macros */
-#define HAVE_DOWHILE_MACROS 1
 
 /* Define to 1 if using dtrace probes. */
 /* #undef HAVE_DTRACE */
@@ -321,6 +312,9 @@
 /* Define to 1 if you have the `lstat' function. */
 /* #undef HAVE_LSTAT */
 
+/* Define to 1 if you have the <mach/mach_time.h> header file. */
+/* #undef HAVE_MACH_MACH_TIME_H */
+
 /* Define to 1 if you have the <malloc.h> header file. */
 #define HAVE_MALLOC_H 1
 
@@ -354,6 +348,9 @@
 /* Have non-POSIX function getpwuid_r */
 /* #undef HAVE_NONPOSIX_GETPWUID_R */
 
+/* open option O_DIRECTORY */
+/* #undef HAVE_OPEN_O_DIRECTORY */
+
 /* Define to 1 if you have the `pipe2' function. */
 /* #undef HAVE_PIPE2 */
 
@@ -378,11 +375,8 @@
 /* Have function pthread_condattr_setclock */
 /* #undef HAVE_PTHREAD_CONDATTR_SETCLOCK */
 
-/* Have function pthread_cond_timedwait_monotonic */
-/* #undef HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC */
-
-/* Have function pthread_cond_timedwait_monotonic_np */
-/* #undef HAVE_PTHREAD_COND_TIMEDWAIT_MONOTONIC_NP */
+/* Have function pthread_cond_timedwait_relative_np */
+/* #undef HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP */
 
 /* Define to 1 if the system has the type `ptrdiff_t'. */
 #define HAVE_PTRDIFF_T 1
@@ -561,9 +555,6 @@
 /* Define to 1 if you have the <sys/inotify.h> header file. */
 /* #undef HAVE_SYS_INOTIFY_H */
 
-/* Define to 1 if you have the <sys/mkdev.h> header file. */
-/* #undef HAVE_SYS_MKDEV_H */
-
 /* Define to 1 if you have the <sys/mntctl.h> header file. */
 /* #undef HAVE_SYS_MNTCTL_H */
 
@@ -691,6 +682,14 @@
    */
 #define LT_OBJDIR ".libs/"
 
+/* Define to 1 if `major', `minor', and `makedev' are declared in <mkdev.h>.
+   */
+/* #undef MAJOR_IN_MKDEV */
+
+/* Define to 1 if `major', `minor', and `makedev' are declared in
+   <sysmacros.h>. */
+/* #undef MAJOR_IN_SYSMACROS */
+
 /* didn't find fd_set */
 #define NO_FD_SET 1
 
@@ -717,9 +716,6 @@
 
 /* define if posix_memalign() can allocate any size */
 /* #undef POSIX_MEMALIGN_WITH_COMPLIANT_ALLOCS */
-
-/* whether realloc (NULL,) works */
-#define REALLOC_0_WORKS 1
 
 /* The size of `char', as computed by sizeof. */
 #define SIZEOF_CHAR 1
