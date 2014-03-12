@@ -136,6 +136,7 @@ struct _GSettingsBackendClosure
                     gpointer           origin_tag,
                     gchar            **names);
 
+  GMainContext      *context;
   GObject           *target;
   GSettingsBackend  *backend;
   gchar             *name;
@@ -283,53 +284,48 @@ g_settings_backend_dispatch_signal (GSettingsBackend    *backend,
                                     gpointer             origin_tag,
                                     const gchar * const *names)
 {
-  GSettingsBackendWatch *suffix, *watch, *next;
+  GSettingsBackendWatch *watch;
+  GSList *closures = NULL;
 
   /* We're in a little bit of a tricky situation here.  We need to hold
    * a lock while traversing the list, but we don't want to hold the
    * lock while calling back into user code.
    *
-   * Since we're not holding the lock while we call user code, we can't
-   * render the list immutable.  We can, however, store a pointer to a
-   * given suffix of the list and render that suffix immutable.
-   *
-   * Adds will never modify the suffix since adds always come in the
-   * form of prepends.  We can also prevent removes from modifying the
-   * suffix since removes only happen in response to the last reference
-   * count dropping -- so just add a reference to everything in the
-   * suffix.
+   * We work around this by creating a bunch of GSettingsBackendClosure
+   * objects while holding the lock and dispatching them after.  We
+   * never touch the list without holding the lock.
    */
   g_mutex_lock (&backend->priv->lock);
-  suffix = backend->priv->watches;
-  for (watch = suffix; watch; watch = watch->next)
-    g_object_ref (watch->target);
-  g_mutex_unlock (&backend->priv->lock);
-
-  /* The suffix is now immutable, so this is safe. */
-  for (watch = suffix; watch; watch = next)
+  for (watch = backend->priv->watches; watch; watch = watch->next)
     {
       GSettingsBackendClosure *closure;
 
       closure = g_slice_new (GSettingsBackendClosure);
+      closure->context = watch->context;
       closure->backend = g_object_ref (backend);
-      closure->target = watch->target; /* we took our ref above */
+      closure->target = g_object_ref (watch->target);
       closure->function = G_STRUCT_MEMBER (void *, watch->vtable,
                                            function_offset);
       closure->name = g_strdup (name);
       closure->origin_tag = origin_tag;
       closure->names = g_strdupv ((gchar **) names);
 
-      /* we do this here because 'watch' may not live to the end of this
-       * iteration of the loop (since we may unref the target below).
-       */
-      next = watch->next;
+      closures = g_slist_prepend (closures, closure);
+    }
+  g_mutex_unlock (&backend->priv->lock);
 
-      if (watch->context)
-        g_main_context_invoke (watch->context,
+  while (closures)
+    {
+      GSettingsBackendClosure *closure = closures->data;
+
+      if (closure->context)
+        g_main_context_invoke (closure->context,
                                g_settings_backend_invoke_closure,
                                closure);
       else
         g_settings_backend_invoke_closure (closure);
+
+      closures = g_slist_delete_link (closures, closures);
     }
 }
 
