@@ -2076,28 +2076,6 @@ test_case_run (GTestCase *tc)
   old_free_list = test_filename_free_list;
   test_filename_free_list = &filename_free_list;
 
-  if (strstr (test_run_name, "/subprocess"))
-    {
-      GSList *iter;
-      gboolean found = FALSE;
-
-      for (iter = test_paths; iter; iter = iter->next)
-        {
-          if (!strcmp (test_run_name, iter->data))
-            {
-              found = TRUE;
-              break;
-            }
-        }
-
-      if (!found)
-        {
-          if (g_test_verbose ())
-            g_print ("GTest: skipping: %s\n", test_run_name);
-          goto out;
-        }
-    }
-
   if (++test_run_count <= test_startup_skip_count)
     g_test_log (G_TEST_LOG_SKIP_CASE, test_run_name, NULL, 0, NULL);
   else if (test_run_list)
@@ -2144,7 +2122,6 @@ test_case_run (GTestCase *tc)
       g_timer_destroy (test_run_timer);
     }
 
- out:
   g_slist_free_full (filename_free_list, g_free);
   test_filename_free_list = old_free_list;
   g_free (test_uri_base);
@@ -2163,6 +2140,23 @@ path_has_prefix (const char *path,
   return (strncmp (path, prefix, prefix_len) == 0 &&
           (path[prefix_len] == '\0' ||
            path[prefix_len] == '/'));
+}
+
+static gboolean
+test_should_run (const char *test_path,
+                 const char *cmp_path)
+{
+  if (strstr (test_run_name, "/subprocess"))
+    {
+      if (g_strcmp0 (test_path, cmp_path) == 0)
+        return TRUE;
+
+      if (g_test_verbose ())
+        g_print ("GTest: skipping: %s\n", test_run_name);
+      return FALSE;
+    }
+
+  return !cmp_path || path_has_prefix (test_path, cmp_path);
 }
 
 /* Recurse through @suite, running tests matching @path (or all tests
@@ -2185,7 +2179,7 @@ g_test_run_suite_internal (GTestSuite *suite,
       GTestCase *tc = iter->data;
 
       test_run_name = g_build_path ("/", old_name, tc->name, NULL);
-      if (!path || path_has_prefix (test_run_name, path))
+      if (test_should_run (test_run_name, path))
         {
           if (!test_case_run (tc))
             n_bad++;
