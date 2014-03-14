@@ -2069,14 +2069,13 @@ g_test_queue_destroy (GDestroyNotify destroy_func,
 static gboolean
 test_case_run (GTestCase *tc)
 {
-  gchar *old_name = test_run_name, *old_base = g_strdup (test_uri_base);
+  gchar *old_base = g_strdup (test_uri_base);
   GSList **old_free_list, *filename_free_list = NULL;
   gboolean success = G_TEST_RUN_SUCCESS;
 
   old_free_list = test_filename_free_list;
   test_filename_free_list = &filename_free_list;
 
-  test_run_name = g_strconcat (old_name, "/", tc->name, NULL);
   if (strstr (test_run_name, "/subprocess"))
     {
       GSList *iter;
@@ -2148,8 +2147,6 @@ test_case_run (GTestCase *tc)
  out:
   g_slist_free_full (filename_free_list, g_free);
   test_filename_free_list = old_free_list;
-  g_free (test_run_name);
-  test_run_name = old_name;
   g_free (test_uri_base);
   test_uri_base = old_base;
 
@@ -2174,7 +2171,6 @@ g_test_run_suite_internal (GTestSuite *suite,
   l = strlen (path);
   rest = strchr (path, '/');
   l = rest ? MIN (l, rest - path) : l;
-  test_run_name = suite->name[0] == 0 ? g_strdup (test_run_name) : g_strconcat (old_name, "/", suite->name, NULL);
   reversed = g_slist_reverse (g_slist_copy (suite->cases));
   for (slist = reversed; slist; slist = slist->next)
     {
@@ -2182,8 +2178,10 @@ g_test_run_suite_internal (GTestSuite *suite,
       guint n = l ? strlen (tc->name) : 0;
       if (l == n && !rest && strncmp (path, tc->name, n) == 0)
         {
+          test_run_name = g_build_path ("/", old_name, tc->name, NULL);
           if (!test_case_run (tc))
             n_bad++;
+          g_free (test_run_name);
         }
     }
   g_slist_free (reversed);
@@ -2193,10 +2191,13 @@ g_test_run_suite_internal (GTestSuite *suite,
       GTestSuite *ts = slist->data;
       guint n = l ? strlen (ts->name) : 0;
       if (l == n && strncmp (path, ts->name, n) == 0)
-        n_bad += g_test_run_suite_internal (ts, rest ? rest : "");
+        {
+          test_run_name = g_build_path ("/", old_name, ts->name, NULL);
+          n_bad += g_test_run_suite_internal (ts, rest ? rest : "");
+          g_free (test_run_name);
+        }
     }
   g_slist_free (reversed);
-  g_free (test_run_name);
   test_run_name = old_name;
 
   g_test_log (G_TEST_LOG_STOP_SUITE, suite->name, NULL, 0, NULL);
@@ -2232,6 +2233,8 @@ g_test_run_suite (GTestSuite *suite)
 
   g_test_run_once = FALSE;
 
+  test_run_name = g_strdup_printf ("/%s", suite->name);
+
   if (test_paths)
     my_test_paths = g_slist_copy (test_paths);
   else
@@ -2256,6 +2259,9 @@ g_test_run_suite (GTestSuite *suite)
       if ((!l || l == n) && strncmp (path, suite->name, n) == 0)
         n_bad += g_test_run_suite_internal (suite, rest ? rest : "");
     }
+
+  g_free (test_run_name);
+  test_run_name = NULL;
 
   return n_bad;
 }
