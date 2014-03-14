@@ -1998,7 +1998,7 @@ g_test_suite_add (GTestSuite     *suite,
   g_return_if_fail (suite != NULL);
   g_return_if_fail (test_case != NULL);
 
-  suite->cases = g_slist_prepend (suite->cases, test_case);
+  suite->cases = g_slist_append (suite->cases, test_case);
 }
 
 /**
@@ -2017,7 +2017,7 @@ g_test_suite_add_suite (GTestSuite     *suite,
   g_return_if_fail (suite != NULL);
   g_return_if_fail (nestedsuite != NULL);
 
-  suite->suites = g_slist_prepend (suite->suites, nestedsuite);
+  suite->suites = g_slist_append (suite->suites, nestedsuite);
 }
 
 /**
@@ -2154,50 +2154,55 @@ test_case_run (GTestCase *tc)
           success == G_TEST_RUN_SKIPPED);
 }
 
+static gboolean
+path_has_prefix (const char *path,
+                 const char *prefix)
+{
+  int prefix_len = strlen (prefix);
+
+  return (strncmp (path, prefix, prefix_len) == 0 &&
+          (path[prefix_len] == '\0' ||
+           path[prefix_len] == '/'));
+}
+
+/* Recurse through @suite, running tests matching @path (or all tests
+ * if @path is %NULL).
+ */
 static int
 g_test_run_suite_internal (GTestSuite *suite,
                            const char *path)
 {
-  guint n_bad = 0, l;
-  gchar *rest, *old_name = test_run_name;
-  GSList *slist, *reversed;
+  guint n_bad = 0;
+  gchar *old_name = test_run_name;
+  GSList *iter;
 
   g_return_val_if_fail (suite != NULL, -1);
 
   g_test_log (G_TEST_LOG_START_SUITE, suite->name, NULL, 0, NULL);
 
-  while (path[0] == '/')
-    path++;
-  l = strlen (path);
-  rest = strchr (path, '/');
-  l = rest ? MIN (l, rest - path) : l;
-  reversed = g_slist_reverse (g_slist_copy (suite->cases));
-  for (slist = reversed; slist; slist = slist->next)
+  for (iter = suite->cases; iter; iter = iter->next)
     {
-      GTestCase *tc = slist->data;
-      guint n = l ? strlen (tc->name) : 0;
-      if (l == n && !rest && strncmp (path, tc->name, n) == 0)
+      GTestCase *tc = iter->data;
+
+      test_run_name = g_build_path ("/", old_name, tc->name, NULL);
+      if (!path || path_has_prefix (test_run_name, path))
         {
-          test_run_name = g_build_path ("/", old_name, tc->name, NULL);
           if (!test_case_run (tc))
             n_bad++;
-          g_free (test_run_name);
         }
+      g_free (test_run_name);
     }
-  g_slist_free (reversed);
-  reversed = g_slist_reverse (g_slist_copy (suite->suites));
-  for (slist = reversed; slist; slist = slist->next)
+
+  for (iter = suite->suites; iter; iter = iter->next)
     {
-      GTestSuite *ts = slist->data;
-      guint n = l ? strlen (ts->name) : 0;
-      if (l == n && strncmp (path, ts->name, n) == 0)
-        {
-          test_run_name = g_build_path ("/", old_name, ts->name, NULL);
-          n_bad += g_test_run_suite_internal (ts, rest ? rest : "");
-          g_free (test_run_name);
-        }
+      GTestSuite *ts = iter->data;
+
+      test_run_name = g_build_path ("/", old_name, ts->name, NULL);
+      if (!path || path_has_prefix (path, test_run_name))
+        n_bad += g_test_run_suite_internal (ts, path);
+      g_free (test_run_name);
     }
-  g_slist_free (reversed);
+
   test_run_name = old_name;
 
   g_test_log (G_TEST_LOG_STOP_SUITE, suite->name, NULL, 0, NULL);
@@ -2225,10 +2230,8 @@ g_test_run_suite_internal (GTestSuite *suite,
 int
 g_test_run_suite (GTestSuite *suite)
 {
-  GSList *my_test_paths;
-  guint n_bad = 0;
+  int n_bad = 0;
 
-  g_return_val_if_fail (g_test_config_vars->test_initialized, -1);
   g_return_val_if_fail (g_test_run_once == TRUE, -1);
 
   g_test_run_once = FALSE;
@@ -2236,29 +2239,14 @@ g_test_run_suite (GTestSuite *suite)
   test_run_name = g_strdup_printf ("/%s", suite->name);
 
   if (test_paths)
-    my_test_paths = g_slist_copy (test_paths);
-  else
-    my_test_paths = g_slist_prepend (NULL, "");
-
-  while (my_test_paths)
     {
-      const char *rest, *path = my_test_paths->data;
-      guint l, n = strlen (suite->name);
-      my_test_paths = g_slist_delete_link (my_test_paths, my_test_paths);
-      while (path[0] == '/')
-        path++;
-      if (!n) /* root suite, run unconditionally */
-        {
-          n_bad += g_test_run_suite_internal (suite, path);
-          continue;
-        }
-      /* regular suite, match path */
-      rest = strchr (path, '/');
-      l = strlen (path);
-      l = rest ? MIN (l, rest - path) : l;
-      if ((!l || l == n) && strncmp (path, suite->name, n) == 0)
-        n_bad += g_test_run_suite_internal (suite, rest ? rest : "");
+      GSList *iter;
+
+      for (iter = test_paths; iter; iter = iter->next)
+        n_bad += g_test_run_suite_internal (suite, iter->data);
     }
+  else
+    n_bad = g_test_run_suite_internal (suite, NULL);
 
   g_free (test_run_name);
   test_run_name = NULL;
