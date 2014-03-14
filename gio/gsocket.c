@@ -328,6 +328,13 @@ check_socket (GSocket *socket,
       return FALSE;
     }
 
+  return TRUE;
+}
+
+static gboolean
+check_timeout (GSocket *socket,
+	       GError **error)
+{
   if (socket->priv->timed_out)
     {
       socket->priv->timed_out = FALSE;
@@ -2232,6 +2239,9 @@ g_socket_accept (GSocket       *socket,
   if (!check_socket (socket, error))
     return NULL;
 
+  if (!check_timeout (socket, error))
+    return NULL;
+
   while (TRUE)
     {
       if (socket->priv->blocking &&
@@ -2428,6 +2438,9 @@ g_socket_check_connect_result (GSocket  *socket,
   if (!check_socket (socket, error))
     return FALSE;
 
+  if (!check_timeout (socket, error))
+    return FALSE;
+
   if (!g_socket_get_option (socket, SOL_SOCKET, SO_ERROR, &value, error))
     {
       g_prefix_error (error, _("Unable to get pending error: "));
@@ -2593,6 +2606,9 @@ g_socket_receive_with_blocking (GSocket       *socket,
   g_return_val_if_fail (G_IS_SOCKET (socket) && buffer != NULL, -1);
 
   if (!check_socket (socket, error))
+    return -1;
+
+  if (!check_timeout (socket, error))
     return -1;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
@@ -2768,6 +2784,9 @@ g_socket_send_with_blocking (GSocket       *socket,
   g_return_val_if_fail (G_IS_SOCKET (socket) && buffer != NULL, -1);
 
   if (!check_socket (socket, error))
+    return -1;
+
+  if (!check_timeout (socket, error))
     return -1;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
@@ -3751,6 +3770,9 @@ g_socket_send_message (GSocket                *socket,
   if (!check_socket (socket, error))
     return -1;
 
+  if (!check_timeout (socket, error))
+    return -1;
+
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return -1;
 
@@ -4125,6 +4147,9 @@ g_socket_receive_message (GSocket                 *socket,
   g_return_val_if_fail (G_IS_SOCKET (socket), -1);
 
   if (!check_socket (socket, error))
+    return -1;
+
+  if (!check_timeout (socket, error))
     return -1;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
