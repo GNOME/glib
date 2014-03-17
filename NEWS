@@ -1,3 +1,31 @@
+Overview of changes from GLib 2.39.91 to GLib 2.39.92
+=====================================================
+
+This is a release candidate for 2.40.0.
+
+There are no major changes in this release, but a few serious bugs have
+been fixed.
+
+* Bugs fixed:
+ 710367 Crash in g_settings_backend_dispatch_signal()
+ 723899 G_DEFINE_TYPE() causes compiler warnings with clang due to foo_get_instance_private
+ 724859 Let the test_wait_until() test also run on non-*nix
+ 724916 gio unmount code makes XFCE's Thunar crash
+ 725651 GSubprocessLauncher: Does not copy the calling process environment.
+ 725656 Unskip GVariantDict
+ 725891 gio tests: add codegen to BUILT_SOURCES
+ 726046 Recent commit created symbolic icons issues
+
+* Translations:
+ Chinese
+ French
+ Korean
+ Latvian
+ Norwegian bokmål
+ Portuguese
+ Russian
+ Traditional Chinese
+
 Overview of changes from GLib 2.39.90 to GLib 2.39.91
 =====================================================
 
