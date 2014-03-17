@@ -294,15 +294,15 @@ default_transform (const GValue *value_a,
         {
           if (g_value_transform (value_a, value_b))
             goto done;
-
-          g_warning ("%s: Unable to convert a value of type %s to a "
-                     "value of type %s",
-                     G_STRLOC,
-                     g_type_name (G_VALUE_TYPE (value_a)),
-                     g_type_name (G_VALUE_TYPE (value_b)));
-
-          return FALSE;
         }
+
+      g_warning ("%s: Unable to convert a value of type %s to a "
+                 "value of type %s",
+                 G_STRLOC,
+                 g_type_name (G_VALUE_TYPE (value_a)),
+                 g_type_name (G_VALUE_TYPE (value_b)));
+
+      return FALSE;
     }
   else
     g_value_copy (value_a, value_b);

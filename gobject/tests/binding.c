@@ -612,6 +612,29 @@ binding_unbind (void)
   g_object_unref (target);
 }
 
+static void
+binding_fail (void)
+{
+  BindingSource *source = g_object_new (binding_source_get_type (), NULL);
+  BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
+  GBinding *binding;
+
+  /* double -> boolean is not supported */
+  binding = g_object_bind_property (source, "value",
+                                    target, "toggle",
+                                    G_BINDING_DEFAULT);
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
+
+  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_WARNING,
+                         "*Unable to convert*double*boolean*");
+  g_object_set (source, "value", 1.0, NULL);
+  g_test_assert_expected_messages ();
+
+  g_object_unref (source);
+  g_object_unref (target);
+  g_assert (binding == NULL);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -629,6 +652,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/binding/invert-boolean", binding_invert_boolean);
   g_test_add_func ("/binding/same-object", binding_same_object);
   g_test_add_func ("/binding/unbind", binding_unbind);
+  g_test_add_func ("/binding/fail", binding_fail);
 
   return g_test_run ();
 }
