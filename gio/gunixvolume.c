@@ -309,7 +309,10 @@ eject_mount_do (GVolume              *volume,
   task = g_task_new (volume, cancellable, callback, user_data);
 
   if (g_task_return_error_if_cancelled (task))
-    return;
+    {
+      g_object_unref (task);
+      return;
+    }
 
   subprocess = g_subprocess_newv (argv, G_SUBPROCESS_FLAGS_STDOUT_SILENCE | G_SUBPROCESS_FLAGS_STDERR_PIPE, &error);
   g_assert_no_error (error);

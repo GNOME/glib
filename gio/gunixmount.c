@@ -283,7 +283,10 @@ eject_unmount_do_cb (gpointer user_data)
   argv = g_task_get_task_data (task);
 
   if (g_task_return_error_if_cancelled (task))
-    return G_SOURCE_REMOVE;
+    {
+      g_object_unref (task);
+      return G_SOURCE_REMOVE;
+    }
 
   subprocess = g_subprocess_newv (argv, G_SUBPROCESS_FLAGS_STDOUT_SILENCE | G_SUBPROCESS_FLAGS_STDERR_PIPE, &error);
   g_assert_no_error (error);
