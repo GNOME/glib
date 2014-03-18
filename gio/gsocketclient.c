@@ -1574,7 +1574,10 @@ g_socket_client_enumerator_callback (GObject      *object,
   GError *error = NULL;
 
   if (g_task_return_error_if_cancelled (data->task))
-    return;
+    {
+      g_object_unref (data->task);
+      return;
+    }
 
   address = g_socket_address_enumerator_next_finish (data->enumerator,
 						     result, &error);
