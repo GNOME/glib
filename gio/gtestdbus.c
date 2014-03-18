@@ -566,12 +566,11 @@ write_config_file (GTestDBus *self)
       "  </policy>\n"
       "</busconfig>\n");
 
+  close (fd);
   g_file_set_contents (path, contents->str, contents->len, &error);
   g_assert_no_error (error);
 
   g_string_free (contents, TRUE);
-
-  close (fd);
 
   return path;
 }
