@@ -44,7 +44,10 @@ G_DEFINE_QUARK (g-io-error-quark, g_io_error)
  * g_io_error_from_errno:
  * @err_no: Error number as defined in errno.h.
  *
- * Converts errno.h error codes into GIO error codes.
+ * Converts errno.h error codes into GIO error codes. The fallback
+ * value %G_IO_ERROR_FAILED is returned for error codes not currently
+ * handled (but note that future GLib releases may return a more
+ * specific value instead).
  *
  * Returns: #GIOErrorEnum value for the given errno.h error number.
  **/
@@ -229,9 +232,10 @@ g_io_error_from_errno (gint err_no)
  * g_io_error_from_win32_error:
  * @error_code: Windows error number.
  *
- * Converts some common error codes into GIO error codes. The
- * fallback value G_IO_ERROR_FAILED is returned for error codes not
- * handled.
+ * Converts some common error codes into GIO error codes. The fallback
+ * value %G_IO_ERROR_FAILED is returned for error codes not currently
+ * handled (but note that future GLib releases may return a more
+ * specific value instead).
  *
  * Returns: #GIOErrorEnum value for the given error number.
  *

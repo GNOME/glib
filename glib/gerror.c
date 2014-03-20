@@ -271,7 +271,11 @@
  * - If there's a "generic" or "unknown" error code for unrecoverable
  *   errors it doesn't make sense to distinguish with specific codes,
  *   it should be called <NAMESPACE>_<MODULE>_ERROR_FAILED,
- *   for example %G_SPAWN_ERROR_FAILED.
+ *   for example %G_SPAWN_ERROR_FAILED. In the case of error code
+ *   enumerations that may be extended in future releases, you should
+ *   generally not handle this error code explicitly, but should
+ *   instead treat any unrecognized error code as equivalent to
+ *   FAILED.
  *
  * Summary of rules for use of #GError:
  *
@@ -501,6 +505,13 @@ g_error_copy (const GError *error)
  * Returns %TRUE if @error matches @domain and @code, %FALSE
  * otherwise. In particular, when @error is %NULL, %FALSE will
  * be returned.
+ *
+ * If @domain contains a `FAILED` (or otherwise generic) error code,
+ * you should generally not check for it explicitly, but should
+ * instead treat any not-explicitly-recognized error code as being
+ * equilalent to the `FAILED` code. This way, if the domain is
+ * extended in the future to provide a more specific error code for
+ * a certain case, your code will still work.
  *
  * Returns: whether @error has @domain and @code
  */
