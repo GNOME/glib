@@ -416,7 +416,8 @@ typedef enum {
  */
 /**
  * GIOErrorEnum:
- * @G_IO_ERROR_FAILED: Generic error condition for when any operation fails.
+ * @G_IO_ERROR_FAILED: Generic error condition for when an operation fails
+ *     and no more specific #GIOErrorEnum value is defined.
  * @G_IO_ERROR_NOT_FOUND: File not found.
  * @G_IO_ERROR_EXISTS: File already exists.
  * @G_IO_ERROR_IS_DIRECTORY: File is a directory.
@@ -472,6 +473,19 @@ typedef enum {
  *
  * Error codes returned by GIO functions.
  *
+ * Note that this domain may be extended in future GLib releases. In
+ * general, new error codes either only apply to new APIs, or else
+ * replace #G_IO_ERROR_FAILED in cases that were not explicitly
+ * distinguished before. You should therefore avoid writing code like
+ * |[<!-- language="C" -->
+ * if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED))
+ *   {
+ *     // Assume that this is EPRINTERONFIRE
+ *     ...
+ *   }
+ * ]|
+ * but should instead treat all unrecognized error codes the same as
+ * #G_IO_ERROR_FAILED.
  **/
 typedef enum {
   G_IO_ERROR_FAILED,
