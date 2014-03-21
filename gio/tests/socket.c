@@ -1053,17 +1053,23 @@ main (int   argc,
       char *argv[])
 {
   GSocket *sock;
+  GError *error = NULL;
 
   g_test_init (&argc, &argv, NULL);
 
   sock = g_socket_new (G_SOCKET_FAMILY_IPV6,
                        G_SOCKET_TYPE_STREAM,
                        G_SOCKET_PROTOCOL_DEFAULT,
-                       NULL);
+                       &error);
   if (sock != NULL)
     {
       ipv6_supported = TRUE;
       g_object_unref (sock);
+    }
+  else
+    {
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+      g_clear_error (&error);
     }
 
   g_test_add_func ("/socket/ipv4_sync", test_ipv4_sync);
