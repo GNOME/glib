@@ -432,7 +432,7 @@ typedef enum {
  * @G_IO_ERROR_NO_SPACE: No space left on drive.
  * @G_IO_ERROR_INVALID_ARGUMENT: Invalid argument.
  * @G_IO_ERROR_PERMISSION_DENIED: Permission denied.
- * @G_IO_ERROR_NOT_SUPPORTED: Operation not supported for the current backend.
+ * @G_IO_ERROR_NOT_SUPPORTED: Operation (or one of its parameters) not supported
  * @G_IO_ERROR_NOT_MOUNTED: File isn't mounted.
  * @G_IO_ERROR_ALREADY_MOUNTED: File is already mounted.
  * @G_IO_ERROR_CLOSED: File was closed.

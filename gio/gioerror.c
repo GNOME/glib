@@ -134,7 +134,8 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
-#if defined(ENOTEMPTY) && (!defined (EEXIST) || (ENOTEMPTY != EEXIST))
+    /* ENOTEMPTY == EEXIST on AIX for backward compatibility reasons */
+#if defined (ENOTEMPTY) && (!defined (EEXIST) || (ENOTEMPTY != EEXIST))
     case ENOTEMPTY:
       return G_IO_ERROR_NOT_EMPTY;
       break;
@@ -142,6 +143,37 @@ g_io_error_from_errno (gint err_no)
 
 #ifdef ENOTSUP
     case ENOTSUP:
+      return G_IO_ERROR_NOT_SUPPORTED;
+      break;
+#endif
+
+    /* EOPNOTSUPP == ENOTSUP on Linux, but POSIX considers them distinct */
+#if defined (EOPNOTSUPP) && (!defined (ENOTSUP) || (EOPNOTSUPP != ENOTSUP))
+    case EOPNOTSUPP:
+      return G_IO_ERROR_NOT_SUPPORTED;
+      break;
+#endif
+
+#ifdef EPROTONOSUPPORT
+    case EPROTONOSUPPORT:
+      return G_IO_ERROR_NOT_SUPPORTED;
+      break;
+#endif
+
+#ifdef ESOCKTNOSUPPORT
+    case ESOCKTNOSUPPORT:
+      return G_IO_ERROR_NOT_SUPPORTED;
+      break;
+#endif
+
+#ifdef EPFNOSUPPORT
+    case EPFNOSUPPORT:
+      return G_IO_ERROR_NOT_SUPPORTED;
+      break;
+#endif
+
+#ifdef EAFNOSUPPORT
+    case EAFNOSUPPORT:
       return G_IO_ERROR_NOT_SUPPORTED;
       break;
 #endif
@@ -158,30 +190,17 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
-/* some magic to deal with EWOULDBLOCK and EAGAIN.
- * apparently on HP-UX these are actually defined to different values,
- * but on Linux, for example, they are the same.
- */
-#if defined(EWOULDBLOCK) && defined(EAGAIN) && EWOULDBLOCK == EAGAIN
-    /* we have both and they are the same: only emit one case. */
-    case EAGAIN:
-      return G_IO_ERROR_WOULD_BLOCK;
-      break;
-#else
-    /* else: consider each of them separately.  this handles both the
-     * case of having only one and the case where they are different values.
-     */
-# ifdef EAGAIN
-    case EAGAIN:
-      return G_IO_ERROR_WOULD_BLOCK;
-      break;
-# endif
-
-# ifdef EWOULDBLOCK
+#ifdef EWOULDBLOCK
     case EWOULDBLOCK:
       return G_IO_ERROR_WOULD_BLOCK;
       break;
-# endif
+#endif
+
+    /* EWOULDBLOCK == EAGAIN on most systems, but POSIX considers them distinct */
+#if defined (EAGAIN) && (!defined (EWOULDBLOCK) || (EWOULDBLOCK != EAGAIN))
+    case EAGAIN:
+      return G_IO_ERROR_WOULD_BLOCK;
+      break;
 #endif
 
 #ifdef EMFILE
