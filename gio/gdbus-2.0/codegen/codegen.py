@@ -2520,13 +2520,14 @@ class CodeGenerator:
                          '      skeleton->priv->changed_properties_idle_source = g_idle_source_new ();\n'
                          '      g_source_set_priority (skeleton->priv->changed_properties_idle_source, G_PRIORITY_DEFAULT);\n'
                          '      g_source_set_callback (skeleton->priv->changed_properties_idle_source, _%s_emit_changed, g_object_ref (skeleton), (GDestroyNotify) g_object_unref);\n'
+                         '      g_source_set_name (skeleton->priv->changed_properties_idle_source, "[generated] _%s_emit_changed");\n'
                          '      g_source_attach (skeleton->priv->changed_properties_idle_source, skeleton->priv->context);\n'
                          '      g_source_unref (skeleton->priv->changed_properties_idle_source);\n'
                          '    }\n'
                          '  g_mutex_unlock (&skeleton->priv->lock);\n'
                          '}\n'
                          '\n'
-                         %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper, i.name_lower))
+                         %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper, i.name_lower, i.name_lower))
 
             self.c.write('static void\n'
                          '%s_skeleton_set_property (GObject      *object,\n'

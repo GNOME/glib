@@ -801,6 +801,7 @@ g_simple_async_result_complete_in_idle (GSimpleAsyncResult *simple)
   source = g_idle_source_new ();
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, complete_in_idle_cb, simple, g_object_unref);
+  g_source_set_name (source, "[gio] complete_in_idle_cb");
 
   g_source_attach (source, simple->context);
   g_source_unref (source);
@@ -861,6 +862,7 @@ run_in_thread (GIOSchedulerJob *job,
   source = g_idle_source_new ();
   g_source_set_priority (source, G_PRIORITY_DEFAULT);
   g_source_set_callback (source, complete_in_idle_cb_for_thread, data, NULL);
+  g_source_set_name (source, "[gio] complete_in_idle_cb_for_thread");
 
   g_source_attach (source, simple->context);
   g_source_unref (source);

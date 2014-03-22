@@ -1238,6 +1238,7 @@ g_app_info_monitor_fire (void)
 
           idle = g_idle_source_new ();
           g_source_set_callback (idle, g_app_info_monitor_emit, context, NULL);
+          g_source_set_name (idle, "[gio] g_app_info_monitor_emit");
           g_source_attach (idle, context);
           g_source_unref (idle);
         }

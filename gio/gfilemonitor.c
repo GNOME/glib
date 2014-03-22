@@ -443,6 +443,7 @@ emit_in_idle (GFileMonitor      *monitor,
        * pending idles.
        */
       g_source_set_callback (source, emit_cb, monitor, NULL);
+      g_source_set_name (source, "[gio] emit_cb");
       g_source_attach (source, monitor->priv->context);
     }
   /* We reverse this in the processor */

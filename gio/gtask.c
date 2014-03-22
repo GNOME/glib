@@ -1135,6 +1135,7 @@ g_task_return (GTask           *task,
   /* Otherwise, complete in the next iteration */
   source = g_idle_source_new ();
   g_task_attach_source (task, source, complete_in_idle_cb);
+  g_source_set_name (source, "[gio] complete_in_idle_cb");
   g_source_unref (source);
 }
 

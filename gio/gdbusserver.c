@@ -1012,6 +1012,7 @@ on_run (GSocketService    *service,
                              emit_new_connection_in_idle,
                              data,
                              (GDestroyNotify) emit_idle_data_free);
+      g_source_set_name (idle_source, "[gio] emit_new_connection_in_idle");
       g_source_attach (idle_source, server->main_context_at_construction);
       g_source_unref (idle_source);
     }
