@@ -3143,6 +3143,8 @@ g_main_dispatch (GMainContext *context)
 
       if (!SOURCE_DESTROYED (source))
 	{
+	  GTimer *timer;
+	  gdouble elapsed;
 	  gboolean was_in_call;
 	  gpointer user_data = NULL;
 	  GSourceFunc callback = NULL;
@@ -3180,11 +3182,22 @@ g_main_dispatch (GMainContext *context)
           current->source = source;
           current->depth++;
 
+	  timer = g_timer_new ();
           TRACE (GLIB_MAIN_BEFORE_DISPATCH (g_source_get_name (source), source,
                                             dispatch, callback, user_data));
           need_destroy = !(* dispatch) (source, callback, user_data);
           TRACE (GLIB_MAIN_AFTER_DISPATCH (g_source_get_name (source), source,
                                            dispatch, need_destroy));
+          elapsed = g_timer_elapsed (timer, NULL);
+          g_timer_destroy (timer);
+          if (elapsed >= (1.0 / 60.0))
+            {
+              const char *name;
+              name = g_source_get_name (source);
+              if (name == NULL)
+                g_message ("Source '%p' doesn't have a name", source);
+	      g_message ("Source '%s' took %0.0lf msecs", name, elapsed * 1000.0);
+	    }
 
           current->source = prev_source;
           current->depth--;
