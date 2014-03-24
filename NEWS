@@ -1,3 +1,17 @@
+Overview of changes from GLib 2.39.92 to GLib 2.40.0
+====================================================
+
+There have been no code changes since the release candidate, but there
+have been the following other changes:
+
+ * Disable IPv6 testcases on machines without IPv6
+ * Document that it is a bad idea to match on generic error codes
+
+Translations updated:
+ * Danish
+ * Punjabi
+ * Serbian
+
 Overview of changes from GLib 2.39.91 to GLib 2.39.92
 =====================================================
 
