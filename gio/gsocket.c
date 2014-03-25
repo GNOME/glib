@@ -201,34 +201,10 @@ get_socket_errno (void)
 static GIOErrorEnum
 socket_io_error_from_errno (int err)
 {
-#ifndef G_OS_WIN32
-  return g_io_error_from_errno (err);
+#ifdef G_OS_WIN32
+  return g_io_error_from_win32_error (err);
 #else
-  switch (err)
-    {
-    case WSAEADDRINUSE:
-      return G_IO_ERROR_ADDRESS_IN_USE;
-    case WSAEWOULDBLOCK:
-      return G_IO_ERROR_WOULD_BLOCK;
-    case WSAEACCES:
-      return G_IO_ERROR_PERMISSION_DENIED;
-    case WSA_INVALID_HANDLE:
-    case WSA_INVALID_PARAMETER:
-    case WSAEBADF:
-    case WSAENOTSOCK:
-      return G_IO_ERROR_INVALID_ARGUMENT;
-    case WSAEPROTONOSUPPORT:
-      return G_IO_ERROR_NOT_SUPPORTED;
-    case WSAECANCELLED:
-      return G_IO_ERROR_CANCELLED;
-    case WSAESOCKTNOSUPPORT:
-    case WSAEOPNOTSUPP:
-    case WSAEPFNOSUPPORT:
-    case WSAEAFNOSUPPORT:
-      return G_IO_ERROR_NOT_SUPPORTED;
-    default:
-      return G_IO_ERROR_FAILED;
-    }
+  return g_io_error_from_errno (err);
 #endif
 }
 

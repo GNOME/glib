@@ -22,6 +22,9 @@
 #include <errno.h>
 #include "gioerror.h"
 
+#ifdef G_OS_WIN32
+#include <winsock2.h>
+#endif
 
 /**
  * SECTION:gioerror
@@ -251,10 +254,15 @@ g_io_error_from_errno (gint err_no)
  * g_io_error_from_win32_error:
  * @error_code: Windows error number.
  *
- * Converts some common error codes into GIO error codes. The fallback
- * value %G_IO_ERROR_FAILED is returned for error codes not currently
+ * Converts some common error codes (as returned from GetLastError()
+ * or WSAGetLastError()) into GIO error codes. The fallback value
+ * %G_IO_ERROR_FAILED is returned for error codes not currently
  * handled (but note that future GLib releases may return a more
  * specific value instead).
+ *
+ * You can use g_win32_error_message() to get a localized string
+ * corresponding to @error_code. (But note that unlike g_strerror(),
+ * g_win32_error_message() returns a string that must be freed.)
  *
  * Returns: #GIOErrorEnum value for the given error number.
  *
@@ -263,11 +271,42 @@ g_io_error_from_errno (gint err_no)
 GIOErrorEnum
 g_io_error_from_win32_error (gint error_code)
 {
+  /* Note: Winsock errors are a subset of Win32 error codes as a
+   * whole. (The fact that the Winsock API makes them look like they
+   * aren't is just because the API predates Win32.)
+   */
+
   switch (error_code)
     {
+    case WSAEADDRINUSE:
+      return G_IO_ERROR_ADDRESS_IN_USE;
+
+    case WSAEWOULDBLOCK:
+      return G_IO_ERROR_WOULD_BLOCK;
+
+    case WSAEACCES:
+      return G_IO_ERROR_PERMISSION_DENIED;
+
+    case WSA_INVALID_HANDLE:
+    case WSA_INVALID_PARAMETER:
+    case WSAEBADF:
+    case WSAENOTSOCK:
+      return G_IO_ERROR_INVALID_ARGUMENT;
+
+    case WSAEPROTONOSUPPORT:
+      return G_IO_ERROR_NOT_SUPPORTED;
+
+    case WSAECANCELLED:
+      return G_IO_ERROR_CANCELLED;
+
+    case WSAESOCKTNOSUPPORT:
+    case WSAEOPNOTSUPP:
+    case WSAEPFNOSUPPORT:
+    case WSAEAFNOSUPPORT:
+      return G_IO_ERROR_NOT_SUPPORTED;
+
     default:
       return G_IO_ERROR_FAILED;
-      break;
     }
 }
 
