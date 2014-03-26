@@ -382,10 +382,13 @@ read_netlink_messages (GSocket      *socket,
                * IPv6 link-local multicast routes, which are added and
                * removed all the time for some reason.
                */
+#define UNALIGNED_IN6_IS_ADDR_MC_LINKLOCAL(a)           \
+              ((a[0] == 0xff) && ((a[1] & 0xf) == 0x2))
+
               if (!nl->priv->dump_networks &&
                   rtmsg->rtm_family == AF_INET6 &&
                   rtmsg->rtm_dst_len != 0 &&
-                  IN6_IS_ADDR_MC_LINKLOCAL (dest))
+                  UNALIGNED_IN6_IS_ADDR_MC_LINKLOCAL (dest))
                 continue;
 
               if (msg->nlmsg_type == RTM_NEWROUTE)
