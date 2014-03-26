@@ -366,15 +366,15 @@ g_notification_add_button (GNotification *notification,
  * @notification: a #GNotification
  * @label: label of the button
  * @action: an action name
- * @target_format: (allow-none): a GVariant format string, or %NULL
- * @...: positional parameters, as determined by @format_string
+ * @target_format: (allow-none): a #GVariant format string, or %NULL
+ * @...: positional parameters, as determined by @target_format
  *
  * Adds a button to @notification that activates @action when clicked.
  * @action must be an application-wide action (it must start with "app.").
  *
  * If @target_format is given, it is used to collect remaining
- * positional parameters into a GVariant instance, similar to
- * g_variant_new(). @action will be activated with that GVariant as its
+ * positional parameters into a #GVariant instance, similar to
+ * g_variant_new(). @action will be activated with that #GVariant as its
  * parameter.
  *
  * Since: 2.40
@@ -404,7 +404,7 @@ g_notification_add_button_with_target (GNotification *notification,
  * @notification: a #GNotification
  * @label: label of the button
  * @action: an action name
- * @target: (allow-none): a GVariant to use as @action's parameter, or %NULL
+ * @target: (allow-none): a #GVariant to use as @action's parameter, or %NULL
  *
  * Adds a button to @notification that activates @action when clicked.
  * @action must be an application-wide action (it must start with "app.").
@@ -594,16 +594,16 @@ g_notification_set_default_action (GNotification *notification,
  * g_notification_set_default_action_and_target: (skip)
  * @notification: a #GNotification
  * @action: an action name
- * @target_format: (allow-none): a GVariant format string, or %NULL
- * @...: positional parameters, as determined by @format_string
+ * @target_format: (allow-none): a #GVariant format string, or %NULL
+ * @...: positional parameters, as determined by @target_format
  *
  * Sets the default action of @notification to @action. This action is
  * activated when the notification is clicked on. It must be an
  * application-wide action (it must start with "app.").
  *
  * If @target_format is given, it is used to collect remaining
- * positional parameters into a GVariant instance, similar to
- * g_variant_new(). @action will be activated with that GVariant as its
+ * positional parameters into a #GVariant instance, similar to
+ * g_variant_new(). @action will be activated with that #GVariant as its
  * parameter.
  *
  * When no default action is set, the application that the notification
@@ -634,15 +634,11 @@ g_notification_set_default_action_and_target (GNotification *notification,
  * g_notification_set_default_action_and_target_value: (rename-to g_notification_set_default_action_and_target)
  * @notification: a #GNotification
  * @action: an action name
- * @target: (allow-none): a GVariant to use as @action's parameter, or %NULL
+ * @target: (allow-none): a #GVariant to use as @action's parameter, or %NULL
  *
  * Sets the default action of @notification to @action. This action is
  * activated when the notification is clicked on. It must be an
  * application-wide action (start with "app.").
- *
- * If @target_format is given, it is used to collect remaining
- * positional parameters into a GVariant instance, similar to
- * g_variant_new().
  *
  * If @target is non-%NULL, @action will be activated with @target as
  * its parameter.
