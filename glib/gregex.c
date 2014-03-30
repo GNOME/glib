@@ -2765,7 +2765,7 @@ interpolation_list_needs_match (GList *list)
  * to the captured subexpression with the given name. '\0' refers
  * to the complete match, but '\0' followed by a number is the octal
  * representation of a character. To include a literal '\' in the
- * replacement, write '\\'.
+ * replacement, write '\\\\'.
  *
  * There are also escapes that changes the case of the following text:
  *

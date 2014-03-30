@@ -2114,7 +2114,7 @@ g_file_read_link (const gchar  *filename,
  * an absolute file name one that either begins with a directory
  * separator such as "\Users\tml" or begins with the root on a drive,
  * for example "C:\Windows". The first case also includes UNC paths
- * such as "\\myserver\docs\foo". In all cases, either slashes or
+ * such as "\\\\myserver\docs\foo". In all cases, either slashes or
  * backslashes are accepted.
  *
  * Note that a file name relative to the current drive root does not

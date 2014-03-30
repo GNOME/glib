@@ -119,7 +119,7 @@
  * are optional.
  * Space before and after the '=' character are ignored. Newline, tab,
  * carriage return and backslash characters in value are escaped as \n,
- * \t, \r, and \\, respectively. To preserve leading spaces in values,
+ * \t, \r, and \\\\, respectively. To preserve leading spaces in values,
  * these can also be escaped as \s.
  *
  * Key files can store strings (possibly with localized variants), integers,
