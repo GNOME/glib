@@ -116,7 +116,7 @@
  * Key-value pairs generally have the form `key=value`, with the
  * exception of localized strings, which have the form
  * `key[locale]=value`, with a locale identifier of the
- * form `lang_COUNTRY\@MODIFIER` where `COUNTRY` and `MODIFIER`
+ * form `lang_COUNTRY@MODIFIER` where `COUNTRY` and `MODIFIER`
  * are optional.
  * Space before and after the '=' character are ignored. Newline, tab,
  * carriage return and backslash characters in value are escaped as \n,
