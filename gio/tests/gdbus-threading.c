@@ -419,7 +419,6 @@ test_method_calls_in_thread (void)
   GDBusProxy *proxy;
   GDBusConnection *connection;
   GError *error;
-  gchar *name_owner;
 
   error = NULL;
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION,
@@ -436,10 +435,6 @@ test_method_calls_in_thread (void)
                                  NULL, /* GCancellable */
                                  &error);
   g_assert_no_error (error);
-
-  name_owner = g_dbus_proxy_get_name_owner (proxy);
-  g_assert_cmpstr (name_owner, !=, NULL);
-  g_free (name_owner);
 
   test_method_calls_on_proxy (proxy);
 
@@ -596,8 +591,7 @@ main (int   argc,
   g_assert (g_spawn_command_line_async (path, NULL));
   g_free (path);
 
-  /* wait for the service to come up */
-  usleep (500 * 1000);
+  ensure_gdbus_testserver_up ();
 
   /* Create the connection in the main thread */
   error = NULL;
