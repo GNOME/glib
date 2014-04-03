@@ -1369,6 +1369,9 @@ va_to_ffi_type (GType gtype,
  * A generic marshaller function implemented via
  * [libffi](http://sourceware.org/libffi/).
  *
+ * Normally this function is not passed explicitly to g_signal_new(),
+ * but used automatically by GLib when specifying a %NULL marshaller.
+ *
  * Since: 2.30
  */
 void
