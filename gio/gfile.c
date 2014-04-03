@@ -3271,7 +3271,7 @@ file_copy_fallback (GFile                  *source,
                                        info,
                                        G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
                                        cancellable,
-                                       error);
+                                       NULL);
     }
 
   g_clear_object (&info);
