@@ -1870,6 +1870,7 @@ void
 g_application_release (GApplication *application)
 {
   g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (application->priv->use_count > 0);
 
   application->priv->use_count--;
 
