@@ -498,7 +498,7 @@ g_unichar_iswide (gunichar c)
  *
  * If a character passes the g_unichar_iswide() test then it will also pass
  * this test, but not the other way around.  Note that some characters may
- * pas both this test and g_unichar_iszerowidth().
+ * pass both this test and g_unichar_iszerowidth().
  * 
  * Returns: %TRUE if the character is wide in legacy East Asian locales
  *
