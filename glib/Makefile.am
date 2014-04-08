@@ -9,13 +9,15 @@ include $(top_srcdir)/glib.mk
 # to config.status will not result in changes to glibconfig.h so we
 # avoid touching its timestamp (in order not to rebuild the whole tree).
 #
-DISTCLEANFILES += glibconfig-stamp glibconfig.h
+DISTCLEANFILES += glibconfig-stamp glibconfig.h glibconfig.h.win32
 BUILT_SOURCES += glibconfig-stamp
 configexecincludedir = $(libdir)/glib-2.0/include
 nodist_configexecinclude_HEADERS = glibconfig.h
 glibconfig-stamp: ../config.status
 	$(AM_V_GEN) cd $(top_builddir) && \
 	  $(SHELL) ./config.status glib/glibconfig.h
+	$(AM_V_GEN) cd $(top_builddir) && \
+	  $(SHELL) ./config.status glib/glibconfig.h.win32
 	@touch glibconfig-stamp
 
 
