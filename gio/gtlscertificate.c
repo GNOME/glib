@@ -476,19 +476,24 @@ g_tls_certificate_list_new_from_file (const gchar  *file,
     {
       gchar *cert_pem;
       GTlsCertificate *cert = NULL;
+      GError *parse_error = NULL;
 
-      cert_pem = parse_next_pem_certificate (&p, end, FALSE, error);
+      cert_pem = parse_next_pem_certificate (&p, end, FALSE, &parse_error);
       if (cert_pem)
-	{
-	  cert = g_tls_certificate_new_internal (cert_pem, NULL, error);
-	  g_free (cert_pem);
-	}
+        {
+          cert = g_tls_certificate_new_internal (cert_pem, NULL, &parse_error);
+          g_free (cert_pem);
+        }
       if (!cert)
-	{
-	  g_list_free_full (queue.head, g_object_unref);
-	  queue.head = NULL;
-	  break;
-	}
+        {
+          if (parse_error)
+            {
+              g_propagate_error (error, parse_error);
+              g_list_free_full (queue.head, g_object_unref);
+              queue.head = NULL;
+            }
+          break;
+        }
       g_queue_push_tail (&queue, cert);
     }
 
