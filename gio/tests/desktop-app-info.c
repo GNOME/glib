@@ -114,10 +114,10 @@ test_default (void)
   
   /* check that both are in the list, info2 before info1 */
   info = (GAppInfo *)list->data;
-  g_assert (g_strcmp0 (g_app_info_get_id (info), g_app_info_get_id (info2)) == 0);
+  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
 
   info = (GAppInfo *)list->next->data;
-  g_assert (g_strcmp0 (g_app_info_get_id (info), g_app_info_get_id (info1)) == 0);
+  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info1));
 
   g_list_free_full (list, g_object_unref);
 
@@ -130,13 +130,13 @@ test_default (void)
   
   /* check that all are in the list, info2, info1, info3 */
   info = (GAppInfo *)list->data;
-  g_assert (g_strcmp0 (g_app_info_get_id (info), g_app_info_get_id (info2)) == 0);
+  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
 
   info = (GAppInfo *)list->next->data;
-  g_assert (g_strcmp0 (g_app_info_get_id (info), g_app_info_get_id (info1)) == 0);
+  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info1));
 
   info = (GAppInfo *)list->next->next->data;
-  g_assert (g_strcmp0 (g_app_info_get_id (info), g_app_info_get_id (info3)) == 0);
+  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info3));
 
   g_list_free_full (list, g_object_unref);
 
@@ -149,10 +149,10 @@ test_default (void)
   
   /* check that both are in the list, info2 before info3 */
   info = (GAppInfo *)list->data;
-  g_assert (g_strcmp0 (g_app_info_get_id (info), g_app_info_get_id (info2)) == 0);
+  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
 
   info = (GAppInfo *)list->next->data;
-  g_assert (g_strcmp0 (g_app_info_get_id (info), g_app_info_get_id (info3)) == 0);
+  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info3));
 
   g_list_free_full (list, g_object_unref);
 
