@@ -1030,6 +1030,14 @@ typedef enum
  * Existing file and the operation you're using does not silently overwrite.
  * @G_DBUS_ERROR_UNKNOWN_METHOD:
  * Method name you invoked isn't known by the object you invoked it on.
+ * @G_DBUS_ERROR_UNKNOWN_OBJECT:
+ * Object you invoked a method on isn't known. Since 2.42
+ * @G_DBUS_ERROR_UNKNOWN_INTERFACE:
+ * Interface you invoked a method on isn't known by the object. Since 2.42
+ * @G_DBUS_ERROR_UNKNOWN_PROPERTY:
+ * Property you tried to access isn't known by the object. Since 2.42
+ * @G_DBUS_ERROR_PROPERTY_READ_ONLY:
+ * Property you tried to set is read-only. Since 2.42
  * @G_DBUS_ERROR_TIMED_OUT:
  * Certain timeout errors, e.g. while starting a service. Warning: this is
  * confusingly-named given that %G_DBUS_ERROR_TIMEOUT also exists. We
@@ -1122,7 +1130,11 @@ typedef enum
   G_DBUS_ERROR_INVALID_FILE_CONTENT,             /* org.freedesktop.DBus.Error.InvalidFileContent */
   G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN, /* org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown */
   G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN,           /* org.freedesktop.DBus.Error.AdtAuditDataUnknown */
-  G_DBUS_ERROR_OBJECT_PATH_IN_USE                /* org.freedesktop.DBus.Error.ObjectPathInUse */
+  G_DBUS_ERROR_OBJECT_PATH_IN_USE,               /* org.freedesktop.DBus.Error.ObjectPathInUse */
+  G_DBUS_ERROR_UNKNOWN_OBJECT,                   /* org.freedesktop.DBus.Error.UnknownObject */
+  G_DBUS_ERROR_UNKNOWN_INTERFACE,                /* org.freedesktop.DBus.Error.UnknownInterface */
+  G_DBUS_ERROR_UNKNOWN_PROPERTY,                 /* org.freedesktop.DBus.Error.UnknownProperty */
+  G_DBUS_ERROR_PROPERTY_READ_ONLY,               /* org.freedesktop.DBus.Error.PropertyReadOnly */
 } GDBusError;
 /* Remember to update g_dbus_error_quark() in gdbuserror.c if you extend this enumeration */
 

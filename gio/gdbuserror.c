@@ -150,12 +150,16 @@ static const GDBusErrorEntry g_dbus_error_entries[] =
   {G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown"},
   {G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN,           "org.freedesktop.DBus.Error.AdtAuditDataUnknown"},
   {G_DBUS_ERROR_OBJECT_PATH_IN_USE,               "org.freedesktop.DBus.Error.ObjectPathInUse"},
+  {G_DBUS_ERROR_UNKNOWN_OBJECT,                   "org.freedesktop.DBus.Error.UnknownObject"},
+  {G_DBUS_ERROR_UNKNOWN_INTERFACE,                "org.freedesktop.DBus.Error.UnknownInterface"},
+  {G_DBUS_ERROR_UNKNOWN_PROPERTY,                 "org.freedesktop.DBus.Error.UnknownProperty"},
+  {G_DBUS_ERROR_PROPERTY_READ_ONLY,               "org.freedesktop.DBus.Error.PropertyReadOnly"},
 };
 
 GQuark
 g_dbus_error_quark (void)
 {
-  G_STATIC_ASSERT (G_N_ELEMENTS (g_dbus_error_entries) - 1 == G_DBUS_ERROR_OBJECT_PATH_IN_USE);
+  G_STATIC_ASSERT (G_N_ELEMENTS (g_dbus_error_entries) - 1 == G_DBUS_ERROR_PROPERTY_READ_ONLY);
   static volatile gsize quark_volatile = 0;
   g_dbus_error_register_error_domain ("g-dbus-error-quark",
                                       &quark_volatile,

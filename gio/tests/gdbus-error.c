@@ -73,6 +73,9 @@ test_registered_errors (void)
   check_registered_error ("org.freedesktop.DBus.Error.UnknownMethod",
                           G_DBUS_ERROR,
                           G_DBUS_ERROR_UNKNOWN_METHOD);
+  check_registered_error ("org.freedesktop.DBus.Error.UnknownObject",
+                          G_DBUS_ERROR,
+                          G_DBUS_ERROR_UNKNOWN_OBJECT);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
