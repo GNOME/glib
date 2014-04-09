@@ -78,11 +78,6 @@ enum {
 };
 
 static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface);
-static GList *  get_all_desktop_entries_for_mime_type (const char       *base_mime_type,
-                                                       const char      **except,
-                                                       gboolean          include_fallback,
-                                                       char            **explicit_default);
-static void     mime_info_cache_reload                (const char       *dir);
 static gboolean g_desktop_app_info_ensure_saved       (GDesktopAppInfo  *info,
                                                        GError          **error);
 
@@ -145,14 +140,18 @@ static gchar *g_desktop_env = NULL;
 typedef struct
 {
   gchar                      *path;
+  gboolean                    is_config;
+  gboolean                    is_setup;
   GLocalDirectoryMonitor     *monitor;
   GHashTable                 *app_names;
-  gboolean                    is_setup;
+  GHashTable                 *mime_tweaks;
   GHashTable                 *memory_index;
 } DesktopFileDir;
 
 static DesktopFileDir *desktop_file_dirs;
 static guint           n_desktop_file_dirs;
+static const guint     desktop_file_dir_user_config_index = 0;
+static guint           desktop_file_dir_user_data_index;
 static GMutex          desktop_file_dir_lock;
 
 /* Monitor 'changed' signal handler {{{2 */
@@ -210,6 +209,37 @@ desktop_file_dir_app_name_is_masked (DesktopFileDir *dir,
     }
 
   return FALSE;
+}
+
+static const gchar * const *
+get_lowercase_current_desktops (void)
+{
+  static gchar **result;
+
+  if (g_once_init_enter (&result))
+    {
+      const gchar *envvar;
+      gchar **tmp;
+
+      envvar = g_getenv ("XDG_CURRENT_DESKTOP");
+
+      if (envvar)
+        {
+          gint i, j;
+
+          tmp = g_strsplit (envvar, G_SEARCHPATH_SEPARATOR_S, 0);
+
+          for (i = 0; tmp[i]; i++)
+            for (j = 0; tmp[i][j]; j++)
+              tmp[i][j] = g_ascii_tolower (tmp[i][j]);
+        }
+      else
+        tmp = g_new0 (gchar *, 0 + 1);
+
+      g_once_init_leave (&result, tmp);
+    }
+
+  return (const gchar **) result;
 }
 
 /*< internal >
@@ -517,7 +547,6 @@ merge_directory_results (void)
   static_search_results_size = 0;
 }
 
-
 /* Support for unindexed DesktopFileDirs {{{2 */
 static void
 get_apps_from_dir (GHashTable **apps,
@@ -564,10 +593,246 @@ get_apps_from_dir (GHashTable **apps,
   g_dir_close (dir);
 }
 
+typedef struct
+{
+  gchar **additions;
+  gchar **removals;
+  gchar **defaults;
+} UnindexedMimeTweaks;
+
+static void
+free_mime_tweaks (gpointer data)
+{
+  UnindexedMimeTweaks *tweaks = data;
+
+  g_strfreev (tweaks->additions);
+  g_strfreev (tweaks->removals);
+  g_strfreev (tweaks->defaults);
+
+  g_slice_free (UnindexedMimeTweaks, tweaks);
+}
+
+static UnindexedMimeTweaks *
+desktop_file_dir_unindexed_get_tweaks (DesktopFileDir *dir,
+                                       const gchar    *mime_type)
+{
+  UnindexedMimeTweaks *tweaks;
+  gchar *unaliased_type;
+
+  unaliased_type = _g_unix_content_type_unalias (mime_type);
+  tweaks = g_hash_table_lookup (dir->mime_tweaks, mime_type);
+
+  if (tweaks == NULL)
+    {
+      tweaks = g_slice_new0 (UnindexedMimeTweaks);
+      g_hash_table_insert (dir->mime_tweaks, unaliased_type, tweaks);
+    }
+  else
+    g_free (unaliased_type);
+
+  return tweaks;
+}
+
+/* consumes 'to_add' */
+static void
+expand_strv (gchar         ***strv_ptr,
+             gchar          **to_add,
+             gchar * const   *blacklist)
+{
+  guint strv_len, add_len;
+  gchar **strv;
+  guint i, j;
+
+  if (!*strv_ptr)
+    {
+      *strv_ptr = to_add;
+      return;
+    }
+
+  strv = *strv_ptr;
+  strv_len = g_strv_length (strv);
+  add_len = g_strv_length (to_add);
+  strv = g_renew (gchar *, strv, strv_len + add_len + 1);
+
+  for (i = 0; to_add[i]; i++)
+    {
+      /* Don't add blacklisted strings */
+      if (blacklist)
+        for (j = 0; blacklist[j]; j++)
+          if (g_str_equal (to_add[i], blacklist[j]))
+            goto no_add;
+
+      /* Don't add duplicates already in the list */
+      for (j = 0; strv[j]; j++)
+        if (g_str_equal (to_add[i], strv[j]))
+          goto no_add;
+
+      strv[strv_len++] = to_add[i];
+      continue;
+
+no_add:
+      g_free (to_add[i]);
+    }
+
+  strv[strv_len] = NULL;
+  *strv_ptr = strv;
+
+  g_free (to_add);
+}
+
+static void
+desktop_file_dir_unindexed_read_mimeapps_list (DesktopFileDir *dir,
+                                               const gchar    *filename,
+                                               const gchar    *added_group,
+                                               gboolean        tweaks_permitted)
+{
+  const gchar default_group[] = "Default Applications";
+  const gchar removed_group[] = "Removed Assocations";
+  UnindexedMimeTweaks *tweaks;
+  char **desktop_file_ids;
+  GKeyFile *key_file;
+  gchar **mime_types;
+  int i;
+
+  key_file = g_key_file_new ();
+  if (!g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, NULL))
+    {
+      g_key_file_free (key_file);
+      return;
+    }
+
+  mime_types = g_key_file_get_keys (key_file, added_group, NULL, NULL);
+
+  if G_UNLIKELY (mime_types != NULL && !tweaks_permitted)
+    {
+      g_warning ("%s contains a [%s] group, but it is not permitted here.  Only the non-desktop-specific "
+                 "mimeapps.list file may add or remove associations.", filename, added_group);
+      g_strfreev (mime_types);
+      mime_types = NULL;
+    }
+
+  if (mime_types != NULL)
+    {
+      for (i = 0; mime_types[i] != NULL; i++)
+        {
+          desktop_file_ids = g_key_file_get_string_list (key_file, added_group, mime_types[i], NULL, NULL);
+
+          if (desktop_file_ids)
+            {
+              tweaks = desktop_file_dir_unindexed_get_tweaks (dir, mime_types[i]);
+              expand_strv (&tweaks->additions, desktop_file_ids, tweaks->removals);
+            }
+        }
+
+      g_strfreev (mime_types);
+    }
+
+  mime_types = g_key_file_get_keys (key_file, removed_group, NULL, NULL);
+
+  if G_UNLIKELY (mime_types != NULL && !tweaks_permitted)
+    {
+      g_warning ("%s contains a [%s] group, but it is not permitted here.  Only the non-desktop-specific "
+                 "mimeapps.list file may add or remove associations.", filename, removed_group);
+      g_strfreev (mime_types);
+      mime_types = NULL;
+    }
+
+  if (mime_types != NULL)
+    {
+      for (i = 0; mime_types[i] != NULL; i++)
+        {
+          desktop_file_ids = g_key_file_get_string_list (key_file, removed_group, mime_types[i], NULL, NULL);
+
+          if (desktop_file_ids)
+            {
+              tweaks = desktop_file_dir_unindexed_get_tweaks (dir, mime_types[i]);
+              expand_strv (&tweaks->removals, desktop_file_ids, tweaks->additions);
+            }
+        }
+
+      g_strfreev (mime_types);
+    }
+
+  mime_types = g_key_file_get_keys (key_file, default_group, NULL, NULL);
+
+  if (mime_types != NULL)
+    {
+      for (i = 0; mime_types[i] != NULL; i++)
+        {
+          desktop_file_ids = g_key_file_get_string_list (key_file, default_group, mime_types[i], NULL, NULL);
+
+          if (desktop_file_ids)
+            {
+              tweaks = desktop_file_dir_unindexed_get_tweaks (dir, mime_types[i]);
+              expand_strv (&tweaks->defaults, desktop_file_ids, NULL);
+            }
+        }
+
+      g_strfreev (mime_types);
+    }
+
+  g_key_file_free (key_file);
+}
+
+static void
+desktop_file_dir_unindexed_read_mimeapps_lists (DesktopFileDir *dir)
+{
+  const gchar * const *desktops;
+  gchar *filename;
+  gint i;
+
+  dir->mime_tweaks = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, free_mime_tweaks);
+
+  /* We process in order of precedence, using a blacklisting approach to
+   * avoid recording later instructions that conflict with ones we found
+   * earlier.
+   *
+   * We first start with the XDG_CURRENT_DESKTOP files, in precedence
+   * order.
+   */
+  desktops = get_lowercase_current_desktops ();
+  for (i = 0; desktops[i]; i++)
+    {
+      filename = g_strdup_printf ("%s/%s-mimeapps.list", dir->path, desktops[i]);
+      desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, "Added Associations", FALSE);
+      g_free (filename);
+    }
+
+  /* Next, the non-desktop-specific mimeapps.list */
+  filename = g_strdup_printf ("%s/mimeapps.list", dir->path);
+  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, "Added Associations", TRUE);
+  g_free (filename);
+
+  /* The remaining files are only checked for in directories that might
+   * contain desktop files (ie: not the config dirs).
+   */
+  if (dir->is_config)
+    return;
+
+  /* We have 'defaults.list' which was only ever understood by GLib.  It
+   * exists widely, but it has never been part of any spec and it should
+   * be treated as deprecated.  This will be removed in a future
+   * version.
+   */
+  filename = g_strdup_printf ("%s/defaults.list", dir->path);
+  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, "Added Associations", FALSE);
+  g_free (filename);
+
+  /* Finally, the mimeinfo.cache, which is just a cached copy of what we
+   * would find in the MimeTypes= lines of all of the desktop files.
+   */
+  filename = g_strdup_printf ("%s/mimeinfo.cache", dir->path);
+  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, "MIME Cache", TRUE);
+  g_free (filename);
+}
+
 static void
 desktop_file_dir_unindexed_init (DesktopFileDir *dir)
 {
-  get_apps_from_dir (&dir->app_names, dir->path, "");
+  if (!dir->is_config)
+    get_apps_from_dir (&dir->app_names, dir->path, "");
+
+  desktop_file_dir_unindexed_read_mimeapps_lists (dir);
 }
 
 static GDesktopAppInfo *
@@ -773,6 +1038,80 @@ desktop_file_dir_unindexed_search (DesktopFileDir  *dir,
     }
 }
 
+static gboolean
+array_contains (GPtrArray *array,
+                const gchar *str)
+{
+  gint i;
+
+  for (i = 0; i < array->len; i++)
+    if (g_str_equal (array->pdata[i], str))
+      return TRUE;
+
+  return FALSE;
+}
+
+static void
+desktop_file_dir_unindexed_mime_lookup (DesktopFileDir *dir,
+                                        const gchar    *mime_type,
+                                        GPtrArray      *hits,
+                                        GPtrArray      *blacklist)
+{
+  UnindexedMimeTweaks *tweaks;
+  gint i;
+
+  tweaks = g_hash_table_lookup (dir->mime_tweaks, mime_type);
+
+  if (!tweaks)
+    return;
+
+  if (tweaks->additions)
+    {
+      for (i = 0; tweaks->additions[i]; i++)
+        {
+          gchar *app_name = tweaks->additions[i];
+
+          if (!desktop_file_dir_app_name_is_masked (dir, app_name) &&
+              !array_contains (blacklist, app_name) && !array_contains (hits, app_name))
+            g_ptr_array_add (hits, g_strdup (app_name));
+        }
+    }
+
+  if (tweaks->removals)
+    {
+      for (i = 0; tweaks->removals[i]; i++)
+        {
+          gchar *app_name = tweaks->removals[i];
+
+          if (!desktop_file_dir_app_name_is_masked (dir, app_name) &&
+              !array_contains (blacklist, app_name) && !array_contains (hits, app_name))
+            g_ptr_array_add (blacklist, app_name);
+        }
+    }
+}
+
+static void
+desktop_file_dir_unindexed_default_lookup (DesktopFileDir *dir,
+                                           const gchar    *mime_type,
+                                           GPtrArray      *results)
+{
+  UnindexedMimeTweaks *tweaks;
+  gint i;
+
+  tweaks = g_hash_table_lookup (dir->mime_tweaks, mime_type);
+
+  if (!tweaks || !tweaks->defaults)
+    return;
+
+  for (i = 0; tweaks->defaults[i]; i++)
+    {
+      gchar *app_name = tweaks->defaults[i];
+
+      if (!array_contains (results, app_name))
+        g_ptr_array_add (results, g_strdup (app_name));
+    }
+}
+
 /* DesktopFileDir "API" {{{2 */
 
 /*< internal >
@@ -790,6 +1129,28 @@ desktop_file_dir_create (GArray      *array,
   DesktopFileDir dir = { 0, };
 
   dir.path = g_build_filename (data_dir, "applications", NULL);
+
+  g_array_append_val (array, dir);
+}
+
+/*< internal >
+ * desktop_file_dir_create:
+ * @array: the #GArray to add a new item to
+ * @config_dir: an XDG_CONFIG_DIR
+ *
+ * Just the same as desktop_file_dir_create() except that it does not
+ * add the "applications" directory.  It also marks the directory as
+ * config-only, which prevents us from attempting to find desktop files
+ * here.
+ */
+static void
+desktop_file_dir_create_for_config (GArray      *array,
+                                    const gchar *config_dir)
+{
+  DesktopFileDir dir = { 0, };
+
+  dir.path = g_strdup (config_dir);
+  dir.is_config = TRUE;
 
   g_array_append_val (array, dir);
 }
@@ -820,6 +1181,12 @@ desktop_file_dir_reset (DesktopFileDir *dir)
     {
       g_hash_table_unref (dir->memory_index);
       dir->memory_index = NULL;
+    }
+
+  if (dir->mime_tweaks)
+    {
+      g_hash_table_unref (dir->mime_tweaks);
+      dir->mime_tweaks = NULL;
     }
 
   dir->is_setup = FALSE;
@@ -890,8 +1257,49 @@ desktop_file_dir_get_all (DesktopFileDir *dir,
 }
 
 /*< internal >
+ * desktop_file_dir_mime_lookup:
+ * @dir: a #DesktopFileDir
+ * @mime_type: the mime type to look up
+ * @hits: the array to store the hits
+ * @blacklist: the array to store the blacklist
+ *
+ * Does a lookup of a mimetype against one desktop file directory,
+ * recording any hits and blacklisting and "Removed" associations (so
+ * later directories don't record them as hits).
+ *
+ * The items added to @hits are duplicated, but the ones in @blacklist
+ * are weak pointers.  This facilitates simply freeing the blacklist
+ * (which is only used for internal bookkeeping) but using the pdata of
+ * @hits as the result of the operation.
+ */
+static void
+desktop_file_dir_mime_lookup (DesktopFileDir *dir,
+                              const gchar    *mime_type,
+                              GPtrArray      *hits,
+                              GPtrArray      *blacklist)
+{
+  desktop_file_dir_unindexed_mime_lookup (dir, mime_type, hits, blacklist);
+}
+
+/*< internal >
+ * desktop_file_dir_default_lookup:
+ * @dir: a #DesktopFileDir
+ * @mime_type: the mime type to look up
+ * @results: an array to store the results in
+ *
+ * Collects the "default" applications for a given mime type from @dir.
+ */
+static void
+desktop_file_dir_default_lookup (DesktopFileDir *dir,
+                                 const gchar    *mime_type,
+                                 GPtrArray      *results)
+{
+  desktop_file_dir_unindexed_default_lookup (dir, mime_type, results);
+}
+
+/*< internal >
  * desktop_file_dir_search:
- * @dir: a #DesktopFilEDir
+ * @dir: a #DesktopFileDir
  * @term: a normalised and casefolded search term
  *
  * Finds the names of applications in @dir that match @term.
@@ -914,20 +1322,30 @@ desktop_file_dirs_lock (void)
 
   if (desktop_file_dirs == NULL)
     {
-      const char * const *data_dirs;
+      const char * const *dirs;
       GArray *tmp;
       gint i;
 
       tmp = g_array_new (FALSE, FALSE, sizeof (DesktopFileDir));
 
-      /* Highest priority: the user's ~/.local/share/applications */
+      /* First, the configs.  Highest priority: the user's ~/.config */
+      desktop_file_dir_create_for_config (tmp, g_get_user_config_dir ());
+
+      /* Next, the system configs (/etc/xdg, and so on). */
+      dirs = g_get_system_config_dirs ();
+      for (i = 0; dirs[i]; i++)
+        desktop_file_dir_create_for_config (tmp, dirs[i]);
+
+      /* Now the data.  Highest priority: the user's ~/.local/share/applications */
+      desktop_file_dir_user_data_index = tmp->len;
       desktop_file_dir_create (tmp, g_get_user_data_dir ());
 
       /* Following that, XDG_DATA_DIRS/applications, in order */
-      data_dirs = g_get_system_data_dirs ();
-      for (i = 0; data_dirs[i]; i++)
-        desktop_file_dir_create (tmp, data_dirs[i]);
+      dirs = g_get_system_data_dirs ();
+      for (i = 0; dirs[i]; i++)
+        desktop_file_dir_create (tmp, dirs[i]);
 
+      /* The list of directories will never change after this. */
       desktop_file_dirs = (DesktopFileDir *) tmp->data;
       n_desktop_file_dirs = tmp->len;
 
@@ -946,19 +1364,23 @@ desktop_file_dirs_unlock (void)
 }
 
 static void
-desktop_file_dirs_refresh (void)
-{
-  desktop_file_dirs_lock ();
-  desktop_file_dirs_unlock ();
-}
-
-static void
-desktop_file_dirs_invalidate_user (void)
+desktop_file_dirs_invalidate_user_config (void)
 {
   g_mutex_lock (&desktop_file_dir_lock);
 
   if (n_desktop_file_dirs)
-    desktop_file_dir_reset (&desktop_file_dirs[0]);
+    desktop_file_dir_reset (&desktop_file_dirs[desktop_file_dir_user_config_index]);
+
+  g_mutex_unlock (&desktop_file_dir_lock);
+}
+
+static void
+desktop_file_dirs_invalidate_user_data (void)
+{
+  g_mutex_lock (&desktop_file_dir_lock);
+
+  if (n_desktop_file_dirs)
+    desktop_file_dir_reset (&desktop_file_dirs[desktop_file_dir_user_data_index]);
 
   g_mutex_unlock (&desktop_file_dir_lock);
 }
@@ -2535,6 +2957,7 @@ g_desktop_app_info_should_show (GAppInfo *appinfo)
 /* mime types/default apps support {{{2 */
 
 typedef enum {
+  CONF_DIR,
   APP_DIR,
   MIMETYPE_DIR
 } DirType;
@@ -2546,10 +2969,23 @@ ensure_dir (DirType   type,
   char *path, *display_name;
   int errsv;
 
-  if (type == APP_DIR)
-    path = g_build_filename (g_get_user_data_dir (), "applications", NULL);
-  else
-    path = g_build_filename (g_get_user_data_dir (), "mime", "packages", NULL);
+  switch (type)
+    {
+    case CONF_DIR:
+      path = g_build_filename (g_get_user_config_dir (), NULL);
+      break;
+
+    case APP_DIR:
+      path = g_build_filename (g_get_user_data_dir (), "applications", NULL);
+      break;
+
+    case MIMETYPE_DIR:
+      path = g_build_filename (g_get_user_data_dir (), "mime", "packages", NULL);
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
 
   errno = 0;
   if (g_mkdir_with_parents (path, 0700) == 0)
@@ -2591,7 +3027,7 @@ update_mimeapps_list (const char  *desktop_id,
   g_assert (!((flags & UPDATE_MIME_SET_DEFAULT) &&
               (flags & UPDATE_MIME_SET_NON_DEFAULT)));
 
-  dirname = ensure_dir (APP_DIR, error);
+  dirname = ensure_dir (CONF_DIR, error);
   if (!dirname)
     return FALSE;
 
@@ -2782,7 +3218,7 @@ update_mimeapps_list (const char  *desktop_id,
 
   res = g_file_set_contents (filename, data, data_size, error);
 
-  mime_info_cache_reload (NULL);
+  desktop_file_dirs_invalidate_user_config ();
 
   g_free (filename);
   g_free (data);
@@ -3093,7 +3529,7 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
    * This means that calls directly following this will be able to see
    * the results immediately.
    */
-  desktop_file_dirs_invalidate_user ();
+  desktop_file_dirs_invalidate_user_data ();
 
   return TRUE;
 }
@@ -3231,17 +3667,99 @@ g_desktop_app_info_iface_init (GAppInfoIface *iface)
 
 /* Recommended applications {{{2 */
 
-static gboolean
-app_info_in_list (GAppInfo *info,
-                  GList    *list)
+/* Converts content_type into a list of itself with all of its parent
+ * types (if include_fallback is enabled) or just returns a single-item
+ * list with the unaliased content type.
+ */
+static gchar **
+get_list_of_mimetypes (const gchar *content_type,
+                       gboolean     include_fallback)
 {
-  while (list != NULL)
+  gchar *unaliased;
+  GPtrArray *array;
+
+  array = g_ptr_array_new ();
+  unaliased = _g_unix_content_type_unalias (content_type);
+  g_ptr_array_add (array, unaliased);
+
+  if (include_fallback)
     {
-      if (g_app_info_equal (info, list->data))
-        return TRUE;
-      list = list->next;
+      gint i;
+
+      /* Iterate the array as we grow it, until we have nothing more to add */
+      for (i = 0; i < array->len; i++)
+        {
+          gchar **parents = _g_unix_content_type_get_parents (g_ptr_array_index (array, i));
+          gint j;
+
+          for (j = 0; parents[j]; j++)
+            /* Don't add duplicates */
+            if (!array_contains (array, parents[j]))
+              g_ptr_array_add (array, parents[j]);
+            else
+              g_free (parents[j]);
+
+          /* We already stole or freed each element.  Free the container. */
+          g_free (parents);
+        }
     }
-  return FALSE;
+
+  g_ptr_array_add (array, NULL);
+
+  return (gchar **) g_ptr_array_free (array, FALSE);
+}
+
+static gchar **
+g_desktop_app_info_get_desktop_ids_for_content_type (const gchar *content_type,
+                                                     gboolean     include_fallback)
+{
+  GPtrArray *hits, *blacklist;
+  gchar **types;
+  gint i, j;
+
+  hits = g_ptr_array_new ();
+  blacklist = g_ptr_array_new ();
+
+  types = get_list_of_mimetypes (content_type, include_fallback);
+
+  desktop_file_dirs_lock ();
+
+  for (i = 0; types[i]; i++)
+    for (j = 0; j < n_desktop_file_dirs; j++)
+      desktop_file_dir_mime_lookup (&desktop_file_dirs[j], types[i], hits, blacklist);
+
+  desktop_file_dirs_unlock ();
+
+  g_ptr_array_add (hits, NULL);
+
+  g_ptr_array_free (blacklist, TRUE);
+  g_strfreev (types);
+
+  return (gchar **) g_ptr_array_free (hits, FALSE);
+}
+
+static gchar **
+g_desktop_app_info_get_defaults_for_content_type (const gchar *content_type)
+{
+  GPtrArray *results;
+  gchar **types;
+  gint i, j;
+
+  types = get_list_of_mimetypes (content_type, TRUE);
+  results = g_ptr_array_new ();
+
+  desktop_file_dirs_lock ();
+
+  for (i = 0; types[i]; i++)
+    for (j = 0; j < n_desktop_file_dirs; j++)
+      desktop_file_dir_default_lookup (&desktop_file_dirs[j], types[i], results);
+
+  desktop_file_dirs_unlock ();
+
+  g_ptr_array_add (results, NULL);
+  g_strfreev (types);
+
+  return (gchar **) g_ptr_array_free (results, FALSE);
 }
 
 /**
@@ -3263,31 +3781,25 @@ app_info_in_list (GAppInfo *info,
 GList *
 g_app_info_get_recommended_for_type (const gchar *content_type)
 {
-  GList *desktop_entries, *l;
+  gchar **desktop_ids;
   GList *infos;
-  GDesktopAppInfo *info;
+  gint i;
 
   g_return_val_if_fail (content_type != NULL, NULL);
 
-  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL, FALSE, NULL);
+  desktop_ids = g_desktop_app_info_get_desktop_ids_for_content_type (content_type, FALSE);
 
   infos = NULL;
-  for (l = desktop_entries; l != NULL; l = l->next)
+  for (i = 0; desktop_ids[i]; i++)
     {
-      char *desktop_entry = l->data;
+      GDesktopAppInfo *info;
 
-      info = g_desktop_app_info_new (desktop_entry);
+      info = g_desktop_app_info_new (desktop_ids[i]);
       if (info)
-        {
-          if (app_info_in_list (G_APP_INFO (info), infos))
-            g_object_unref (info);
-          else
-            infos = g_list_prepend (infos, info);
-        }
-      g_free (desktop_entry);
+        infos = g_list_prepend (infos, info);
     }
 
-  g_list_free (desktop_entries);
+  g_strfreev (desktop_ids);
 
   return g_list_reverse (infos);
 }
@@ -3308,34 +3820,38 @@ g_app_info_get_recommended_for_type (const gchar *content_type)
 GList *
 g_app_info_get_fallback_for_type (const gchar *content_type)
 {
-  GList *desktop_entries, *l;
-  GList *infos, *recommended_infos;
-  GDesktopAppInfo *info;
+  gchar **recommended_ids;
+  gchar **all_ids;
+  GList *infos;
+  gint i;
 
   g_return_val_if_fail (content_type != NULL, NULL);
 
-  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL, TRUE, NULL);
-  recommended_infos = g_app_info_get_recommended_for_type (content_type);
+  recommended_ids = g_desktop_app_info_get_desktop_ids_for_content_type (content_type, FALSE);
+  all_ids = g_desktop_app_info_get_desktop_ids_for_content_type (content_type, TRUE);
 
   infos = NULL;
-  for (l = desktop_entries; l != NULL; l = l->next)
+  for (i = 0; all_ids[i]; i++)
     {
-      char *desktop_entry = l->data;
+      GDesktopAppInfo *info;
+      gint j;
 
-      info = g_desktop_app_info_new (desktop_entry);
+      /* Don't return the ones on the recommended list */
+      for (j = 0; recommended_ids[j]; j++)
+        if (g_str_equal (all_ids[i], recommended_ids[j]))
+          break;
+
+      if (recommended_ids[j])
+        continue;
+
+      info = g_desktop_app_info_new (all_ids[i]);
+
       if (info)
-        {
-          if (app_info_in_list (G_APP_INFO (info), infos) ||
-              app_info_in_list (G_APP_INFO (info), recommended_infos))
-            g_object_unref (info);
-          else
-            infos = g_list_prepend (infos, info);
-        }
-      g_free (desktop_entry);
+        infos = g_list_prepend (infos, info);
     }
 
-  g_list_free (desktop_entries);
-  g_list_free_full (recommended_infos, g_object_unref);
+  g_strfreev (recommended_ids);
+  g_strfreev (all_ids);
 
   return g_list_reverse (infos);
 }
@@ -3355,43 +3871,25 @@ g_app_info_get_fallback_for_type (const gchar *content_type)
 GList *
 g_app_info_get_all_for_type (const char *content_type)
 {
-  GList *desktop_entries, *l;
+  gchar **desktop_ids;
   GList *infos;
-  char *user_default = NULL;
-  GDesktopAppInfo *info;
+  gint i;
 
   g_return_val_if_fail (content_type != NULL, NULL);
 
-  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL, TRUE, &user_default);
+  desktop_ids = g_desktop_app_info_get_desktop_ids_for_content_type (content_type, TRUE);
+
   infos = NULL;
-
-  /* put the user default in front of the list, for compatibility */
-  if (user_default != NULL)
+  for (i = 0; desktop_ids[i]; i++)
     {
-      info = g_desktop_app_info_new (user_default);
+      GDesktopAppInfo *info;
 
-      if (info != NULL)
+      info = g_desktop_app_info_new (desktop_ids[i]);
+      if (info)
         infos = g_list_prepend (infos, info);
     }
 
-  g_free (user_default);
-
-  for (l = desktop_entries; l != NULL; l = l->next)
-    {
-      char *desktop_entry = l->data;
-
-      info = g_desktop_app_info_new (desktop_entry);
-      if (info)
-        {
-          if (app_info_in_list (G_APP_INFO (info), infos))
-            g_object_unref (info);
-          else
-            infos = g_list_prepend (infos, info);
-        }
-      g_free (desktop_entry);
-    }
-
-  g_list_free (desktop_entries);
+  g_strfreev (desktop_ids);
 
   return g_list_reverse (infos);
 }
@@ -3431,59 +3929,56 @@ GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
                                  gboolean    must_support_uris)
 {
-  GList *desktop_entries, *l;
-  char *user_default = NULL;
+  gchar **desktop_ids;
   GAppInfo *info;
+  gint i;
 
   g_return_val_if_fail (content_type != NULL, NULL);
 
-  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL, TRUE, &user_default);
+  desktop_ids = g_desktop_app_info_get_defaults_for_content_type (content_type);
 
   info = NULL;
-
-  if (user_default != NULL)
+  for (i = 0; desktop_ids[i]; i++)
     {
-      info = (GAppInfo *) g_desktop_app_info_new (user_default);
+      info = (GAppInfo *) g_desktop_app_info_new (desktop_ids[i]);
 
       if (info)
         {
-          if (must_support_uris && !g_app_info_supports_uris (info))
-            {
-              g_object_unref (info);
-              info = NULL;
-            }
-        }
-    }
-
-  g_free (user_default);
-
-  if (info != NULL)
-    {
-      g_list_free_full (desktop_entries, g_free);
-      return info;
-    }
-
-  /* pick the first from the other list that matches our URI
-   * requirements.
-   */
-  for (l = desktop_entries; l != NULL; l = l->next)
-    {
-      char *desktop_entry = l->data;
-
-      info = (GAppInfo *)g_desktop_app_info_new (desktop_entry);
-      if (info)
-        {
-          if (must_support_uris && !g_app_info_supports_uris (info))
-            {
-              g_object_unref (info);
-              info = NULL;
-            }
-          else
+          if (!must_support_uris || g_app_info_supports_uris (info))
             break;
+
+          g_object_unref (info);
+          info = NULL;
         }
     }
 
-  g_list_free_full (desktop_entries, g_free);
+  g_strfreev (desktop_ids);
+
+  /* If we can't find a default app for this content type, pick one from
+   * the list of all supported apps.  This will be ordered by the user's
+   * preference and by "recommended" apps first, so the first one we
+   * find is probably the best fallback.
+   */
+  if (info == NULL)
+    {
+      desktop_ids = g_desktop_app_info_get_desktop_ids_for_content_type (content_type, TRUE);
+
+      for (i = 0; desktop_ids[i]; i++)
+        {
+          info = (GAppInfo *) g_desktop_app_info_new (desktop_ids[i]);
+
+          if (info)
+            {
+              if (!must_support_uris || g_app_info_supports_uris (info))
+                break;
+
+              g_object_unref (info);
+              info = NULL;
+            }
+        }
+
+      g_strfreev (desktop_ids);
+    }
 
   return info;
 }
@@ -3644,728 +4139,6 @@ g_app_info_get_all (void)
   g_hash_table_destroy (apps);
 
   return infos;
-}
-
-/* Caching of mimeinfo.cache and defaults.list files {{{2 */
-
-typedef struct {
-  char *path;
-  GHashTable *mime_info_cache_map;
-  GHashTable *defaults_list_map;
-  GHashTable *mimeapps_list_added_map;
-  GHashTable *mimeapps_list_removed_map;
-  GHashTable *mimeapps_list_defaults_map;
-  time_t mime_info_cache_timestamp;
-  time_t defaults_list_timestamp;
-  time_t mimeapps_list_timestamp;
-} MimeInfoCacheDir;
-
-typedef struct {
-  GList *dirs;                       /* mimeinfo.cache and defaults.list */
-  time_t last_stat_time;
-} MimeInfoCache;
-
-static MimeInfoCache *mime_info_cache = NULL;
-G_LOCK_DEFINE_STATIC (mime_info_cache);
-
-static void mime_info_cache_dir_add_desktop_entries (MimeInfoCacheDir  *dir,
-                                                     const char        *mime_type,
-                                                     char             **new_desktop_file_ids);
-
-static MimeInfoCache * mime_info_cache_new (void);
-
-static void
-destroy_info_cache_value (gpointer  key,
-                          GList    *value,
-                          gpointer  data)
-{
-  g_list_free_full (value, g_free);
-}
-
-static void
-destroy_info_cache_map (GHashTable *info_cache_map)
-{
-  g_hash_table_foreach (info_cache_map, (GHFunc)destroy_info_cache_value, NULL);
-  g_hash_table_destroy (info_cache_map);
-}
-
-static gboolean
-mime_info_cache_dir_out_of_date (MimeInfoCacheDir *dir,
-                                 const char       *cache_file,
-                                 time_t           *timestamp)
-{
-  struct stat buf;
-  char *filename;
-
-  filename = g_build_filename (dir->path, cache_file, NULL);
-
-  if (g_stat (filename, &buf) < 0)
-    {
-      g_free (filename);
-      return TRUE;
-    }
-  g_free (filename);
-
-  if (buf.st_mtime != *timestamp)
-    return TRUE;
-
-  return FALSE;
-}
-
-/* Call with lock held */
-static void
-mime_info_cache_dir_init (MimeInfoCacheDir *dir)
-{
-  GError *load_error;
-  GKeyFile *key_file;
-  gchar *filename, **mime_types;
-  int i;
-  struct stat buf;
-
-  load_error = NULL;
-  mime_types = NULL;
-
-  if (dir->mime_info_cache_map != NULL &&
-      !mime_info_cache_dir_out_of_date (dir, "mimeinfo.cache",
-                                        &dir->mime_info_cache_timestamp))
-    return;
-
-  if (dir->mime_info_cache_map != NULL)
-    destroy_info_cache_map (dir->mime_info_cache_map);
-
-  dir->mime_info_cache_map = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                    (GDestroyNotify) g_free,
-                                                    NULL);
-
-  key_file = g_key_file_new ();
-
-  filename = g_build_filename (dir->path, "mimeinfo.cache", NULL);
-
-  if (g_stat (filename, &buf) < 0)
-    goto error;
-
-  dir->mime_info_cache_timestamp = buf.st_mtime;
-
-  g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, &load_error);
-
-  g_free (filename);
-  filename = NULL;
-
-  if (load_error != NULL)
-    goto error;
-
-  mime_types = g_key_file_get_keys (key_file, MIME_CACHE_GROUP,
-                                    NULL, &load_error);
-
-  if (load_error != NULL)
-    goto error;
-
-  for (i = 0; mime_types[i] != NULL; i++)
-    {
-      gchar **desktop_file_ids;
-      char *unaliased_type;
-      desktop_file_ids = g_key_file_get_string_list (key_file,
-                                                     MIME_CACHE_GROUP,
-                                                     mime_types[i],
-                                                     NULL,
-                                                     NULL);
-
-      if (desktop_file_ids == NULL)
-        continue;
-
-      unaliased_type = _g_unix_content_type_unalias (mime_types[i]);
-      mime_info_cache_dir_add_desktop_entries (dir,
-                                               unaliased_type,
-                                               desktop_file_ids);
-      g_free (unaliased_type);
-
-      g_strfreev (desktop_file_ids);
-    }
-
-  g_strfreev (mime_types);
-  g_key_file_free (key_file);
-
-  return;
- error:
-  g_free (filename);
-  g_key_file_free (key_file);
-
-  if (mime_types != NULL)
-    g_strfreev (mime_types);
-
-  if (load_error)
-    g_error_free (load_error);
-}
-
-static void
-mime_info_cache_dir_init_defaults_list (MimeInfoCacheDir *dir)
-{
-  GKeyFile *key_file;
-  GError *load_error;
-  gchar *filename, **mime_types;
-  char *unaliased_type;
-  char **desktop_file_ids;
-  int i;
-  struct stat buf;
-
-  load_error = NULL;
-  mime_types = NULL;
-
-  if (dir->defaults_list_map != NULL &&
-      !mime_info_cache_dir_out_of_date (dir, "defaults.list",
-                                        &dir->defaults_list_timestamp))
-    return;
-
-  if (dir->defaults_list_map != NULL)
-    g_hash_table_destroy (dir->defaults_list_map);
-  dir->defaults_list_map = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                  g_free, (GDestroyNotify)g_strfreev);
-
-
-  key_file = g_key_file_new ();
-
-  filename = g_build_filename (dir->path, "defaults.list", NULL);
-  if (g_stat (filename, &buf) < 0)
-    goto error;
-
-  dir->defaults_list_timestamp = buf.st_mtime;
-
-  g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, &load_error);
-  g_free (filename);
-  filename = NULL;
-
-  if (load_error != NULL)
-    goto error;
-
-  mime_types = g_key_file_get_keys (key_file, DEFAULT_APPLICATIONS_GROUP,
-                                    NULL, NULL);
-  if (mime_types != NULL)
-    {
-      for (i = 0; mime_types[i] != NULL; i++)
-        {
-          desktop_file_ids = g_key_file_get_string_list (key_file,
-                                                         DEFAULT_APPLICATIONS_GROUP,
-                                                         mime_types[i],
-                                                         NULL,
-                                                         NULL);
-          if (desktop_file_ids == NULL)
-            continue;
-
-          unaliased_type = _g_unix_content_type_unalias (mime_types[i]);
-          g_hash_table_replace (dir->defaults_list_map,
-                                unaliased_type,
-                                desktop_file_ids);
-        }
-
-      g_strfreev (mime_types);
-    }
-
-  g_key_file_free (key_file);
-  return;
-
- error:
-  g_free (filename);
-  g_key_file_free (key_file);
-
-  if (mime_types != NULL)
-    g_strfreev (mime_types);
-
-  if (load_error)
-    g_error_free (load_error);
-}
-
-static void
-mime_info_cache_dir_init_mimeapps_list (MimeInfoCacheDir *dir)
-{
-  GKeyFile *key_file;
-  GError *load_error;
-  gchar *filename, **mime_types;
-  char *unaliased_type;
-  char **desktop_file_ids;
-  char *desktop_id;
-  int i;
-  struct stat buf;
-
-  load_error = NULL;
-  mime_types = NULL;
-
-  if (dir->mimeapps_list_added_map != NULL &&
-      !mime_info_cache_dir_out_of_date (dir, "mimeapps.list",
-                                        &dir->mimeapps_list_timestamp))
-    return;
-
-  if (dir->mimeapps_list_added_map != NULL)
-    g_hash_table_destroy (dir->mimeapps_list_added_map);
-  dir->mimeapps_list_added_map = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                        g_free, (GDestroyNotify)g_strfreev);
-
-  if (dir->mimeapps_list_removed_map != NULL)
-    g_hash_table_destroy (dir->mimeapps_list_removed_map);
-  dir->mimeapps_list_removed_map = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                          g_free, (GDestroyNotify)g_strfreev);
-
-  if (dir->mimeapps_list_defaults_map != NULL)
-    g_hash_table_destroy (dir->mimeapps_list_defaults_map);
-  dir->mimeapps_list_defaults_map = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                           g_free, g_free);
-
-  key_file = g_key_file_new ();
-
-  filename = g_build_filename (dir->path, "mimeapps.list", NULL);
-  if (g_stat (filename, &buf) < 0)
-    goto error;
-
-  dir->mimeapps_list_timestamp = buf.st_mtime;
-
-  g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, &load_error);
-  g_free (filename);
-  filename = NULL;
-
-  if (load_error != NULL)
-    goto error;
-
-  mime_types = g_key_file_get_keys (key_file, ADDED_ASSOCIATIONS_GROUP,
-                                    NULL, NULL);
-  if (mime_types != NULL)
-    {
-      for (i = 0; mime_types[i] != NULL; i++)
-        {
-          desktop_file_ids = g_key_file_get_string_list (key_file,
-                                                         ADDED_ASSOCIATIONS_GROUP,
-                                                         mime_types[i],
-                                                         NULL,
-                                                         NULL);
-          if (desktop_file_ids == NULL)
-            continue;
-
-          unaliased_type = _g_unix_content_type_unalias (mime_types[i]);
-          g_hash_table_replace (dir->mimeapps_list_added_map,
-                                unaliased_type,
-                                desktop_file_ids);
-        }
-
-      g_strfreev (mime_types);
-    }
-
-  mime_types = g_key_file_get_keys (key_file, REMOVED_ASSOCIATIONS_GROUP,
-                                    NULL, NULL);
-  if (mime_types != NULL)
-    {
-      for (i = 0; mime_types[i] != NULL; i++)
-        {
-          desktop_file_ids = g_key_file_get_string_list (key_file,
-                                                         REMOVED_ASSOCIATIONS_GROUP,
-                                                         mime_types[i],
-                                                         NULL,
-                                                         NULL);
-          if (desktop_file_ids == NULL)
-            continue;
-
-          unaliased_type = _g_unix_content_type_unalias (mime_types[i]);
-          g_hash_table_replace (dir->mimeapps_list_removed_map,
-                                unaliased_type,
-                                desktop_file_ids);
-        }
-
-      g_strfreev (mime_types);
-    }
-
-  mime_types = g_key_file_get_keys (key_file, DEFAULT_APPLICATIONS_GROUP,
-                                    NULL, NULL);
-  if (mime_types != NULL)
-    {
-      for (i = 0; mime_types[i] != NULL; i++)
-        {
-          desktop_id = g_key_file_get_string (key_file,
-                                              DEFAULT_APPLICATIONS_GROUP,
-                                              mime_types[i],
-                                              NULL);
-          if (desktop_id == NULL)
-            continue;
-
-          unaliased_type = _g_unix_content_type_unalias (mime_types[i]);
-          g_hash_table_replace (dir->mimeapps_list_defaults_map,
-                                unaliased_type,
-                                desktop_id);
-        }
-
-      g_strfreev (mime_types);
-    }
-
-  g_key_file_free (key_file);
-  return;
-
- error:
-  g_free (filename);
-  g_key_file_free (key_file);
-
-  if (mime_types != NULL)
-    g_strfreev (mime_types);
-
-  if (load_error)
-    g_error_free (load_error);
-}
-
-static MimeInfoCacheDir *
-mime_info_cache_dir_new (const char *path)
-{
-  MimeInfoCacheDir *dir;
-
-  dir = g_new0 (MimeInfoCacheDir, 1);
-  dir->path = g_strdup (path);
-
-  return dir;
-}
-
-static void
-mime_info_cache_dir_free (MimeInfoCacheDir *dir)
-{
-  if (dir == NULL)
-    return;
-
-  if (dir->mime_info_cache_map != NULL)
-    {
-      destroy_info_cache_map (dir->mime_info_cache_map);
-      dir->mime_info_cache_map = NULL;
-
-  }
-
-  if (dir->defaults_list_map != NULL)
-    {
-      g_hash_table_destroy (dir->defaults_list_map);
-      dir->defaults_list_map = NULL;
-    }
-
-  if (dir->mimeapps_list_added_map != NULL)
-    {
-      g_hash_table_destroy (dir->mimeapps_list_added_map);
-      dir->mimeapps_list_added_map = NULL;
-    }
-
-  if (dir->mimeapps_list_removed_map != NULL)
-    {
-      g_hash_table_destroy (dir->mimeapps_list_removed_map);
-      dir->mimeapps_list_removed_map = NULL;
-    }
-
-  if (dir->mimeapps_list_defaults_map != NULL)
-    {
-      g_hash_table_destroy (dir->mimeapps_list_defaults_map);
-      dir->mimeapps_list_defaults_map = NULL;
-    }
-
-  g_free (dir);
-}
-
-static void
-mime_info_cache_dir_add_desktop_entries (MimeInfoCacheDir  *dir,
-                                         const char        *mime_type,
-                                         char             **new_desktop_file_ids)
-{
-  GList *desktop_file_ids;
-  int i;
-
-  desktop_file_ids = g_hash_table_lookup (dir->mime_info_cache_map,
-                                          mime_type);
-
-  for (i = 0; new_desktop_file_ids[i] != NULL; i++)
-    {
-      if (!g_list_find_custom (desktop_file_ids, new_desktop_file_ids[i], (GCompareFunc) strcmp))
-        desktop_file_ids = g_list_append (desktop_file_ids,
-                                          g_strdup (new_desktop_file_ids[i]));
-    }
-
-  g_hash_table_insert (dir->mime_info_cache_map, g_strdup (mime_type), desktop_file_ids);
-}
-
-static void
-mime_info_cache_init_dir_lists (void)
-{
-  int i;
-
-  mime_info_cache = mime_info_cache_new ();
-
-  desktop_file_dirs_refresh ();
-
-  for (i = 0; i < n_desktop_file_dirs; i++)
-    {
-      MimeInfoCacheDir *dir;
-
-      dir = mime_info_cache_dir_new (desktop_file_dirs[i].path);
-
-      if (dir != NULL)
-        {
-          mime_info_cache_dir_init (dir);
-          mime_info_cache_dir_init_defaults_list (dir);
-          mime_info_cache_dir_init_mimeapps_list (dir);
-
-          mime_info_cache->dirs = g_list_append (mime_info_cache->dirs, dir);
-        }
-    }
-}
-
-static void
-mime_info_cache_update_dir_lists (void)
-{
-  GList *tmp;
-
-  tmp = mime_info_cache->dirs;
-
-  while (tmp != NULL)
-    {
-      MimeInfoCacheDir *dir = (MimeInfoCacheDir *) tmp->data;
-
-      /* No need to do this if we had file monitors... */
-      mime_info_cache_dir_init (dir);
-      mime_info_cache_dir_init_defaults_list (dir);
-      mime_info_cache_dir_init_mimeapps_list (dir);
-
-      tmp = tmp->next;
-    }
-}
-
-static void
-mime_info_cache_init (void)
-{
-  G_LOCK (mime_info_cache);
-  if (mime_info_cache == NULL)
-    mime_info_cache_init_dir_lists ();
-  else
-    {
-      time_t now;
-
-      time (&now);
-      if (now >= mime_info_cache->last_stat_time + 10)
-        {
-          mime_info_cache_update_dir_lists ();
-          mime_info_cache->last_stat_time = now;
-        }
-    }
-
-  G_UNLOCK (mime_info_cache);
-}
-
-static MimeInfoCache *
-mime_info_cache_new (void)
-{
-  MimeInfoCache *cache;
-
-  cache = g_new0 (MimeInfoCache, 1);
-
-  return cache;
-}
-
-static void
-mime_info_cache_free (MimeInfoCache *cache)
-{
-  if (cache == NULL)
-    return;
-
-  g_list_free_full (cache->dirs, (GDestroyNotify) mime_info_cache_dir_free);
-  g_free (cache);
-}
-
-/**
- * mime_info_cache_reload:
- * @dir: directory path which needs reloading.
- *
- * Reload the mime information for the @dir.
- */
-static void
-mime_info_cache_reload (const char *dir)
-{
-  /* FIXME: just reload the dir that needs reloading,
-   * don't blow the whole cache
-   */
-  if (mime_info_cache != NULL)
-    {
-      G_LOCK (mime_info_cache);
-      mime_info_cache_free (mime_info_cache);
-      mime_info_cache = NULL;
-      G_UNLOCK (mime_info_cache);
-    }
-}
-
-static GList *
-append_desktop_entry (GList      *list,
-                      const char *desktop_entry,
-                      GList      *removed_entries)
-{
-  /* Add if not already in list, and valid */
-  if (!g_list_find_custom (list, desktop_entry, (GCompareFunc) strcmp) &&
-      !g_list_find_custom (removed_entries, desktop_entry, (GCompareFunc) strcmp))
-    list = g_list_prepend (list, g_strdup (desktop_entry));
-
-  return list;
-}
-
-/**
- * get_all_desktop_entries_for_mime_type:
- * @mime_type: a mime type.
- * @except: NULL or a strv list
- *
- * Returns all the desktop ids for @mime_type. The desktop files
- * are listed in an order so that default applications are listed before
- * non-default ones, and handlers for inherited mimetypes are listed
- * after the base ones.
- *
- * Optionally doesn't list the desktop ids given in the @except
- *
- * Returns: a #GList containing the desktop ids which claim
- *    to handle @mime_type.
- */
-static GList *
-get_all_desktop_entries_for_mime_type (const char  *base_mime_type,
-                                       const char **except,
-                                       gboolean     include_fallback,
-                                       char       **explicit_default)
-{
-  GList *desktop_entries, *removed_entries, *list, *dir_list, *tmp;
-  MimeInfoCacheDir *dir;
-  char *mime_type, *default_entry = NULL;
-  char *old_default_entry = NULL;
-  const char *entry;
-  char **mime_types;
-  char **default_entries;
-  char **removed_associations;
-  gboolean already_found_handler;
-  int i, j, k;
-  GPtrArray *array;
-  char **anc;
-
-  mime_info_cache_init ();
-
-  if (include_fallback)
-    {
-      /* collect all ancestors */
-      mime_types = _g_unix_content_type_get_parents (base_mime_type);
-      array = g_ptr_array_new ();
-      for (i = 0; mime_types[i]; i++)
-        g_ptr_array_add (array, mime_types[i]);
-      g_free (mime_types);
-      for (i = 0; i < array->len; i++)
-        {
-          anc = _g_unix_content_type_get_parents (g_ptr_array_index (array, i));
-          for (j = 0; anc[j]; j++)
-            {
-              for (k = 0; k < array->len; k++)
-                {
-                  if (strcmp (anc[j], g_ptr_array_index (array, k)) == 0)
-                    break;
-                }
-              if (k == array->len) /* not found */
-                g_ptr_array_add (array, g_strdup (anc[j]));
-            }
-          g_strfreev (anc);
-        }
-      g_ptr_array_add (array, NULL);
-      mime_types = (char **)g_ptr_array_free (array, FALSE);
-    }
-  else
-    {
-      mime_types = g_malloc0 (2 * sizeof (gchar *));
-      mime_types[0] = g_strdup (base_mime_type);
-      mime_types[1] = NULL;
-    }
-
-  G_LOCK (mime_info_cache);
-
-  removed_entries = NULL;
-  desktop_entries = NULL;
-
-  for (i = 0; except != NULL && except[i] != NULL; i++)
-    removed_entries = g_list_prepend (removed_entries, g_strdup (except[i]));
-
-  for (i = 0; mime_types[i] != NULL; i++)
-    {
-      mime_type = mime_types[i];
-
-      /* This is true if we already found a handler for a more specific
-         mimetype. If its set we ignore any defaults for the less specific
-         mimetypes. */
-      already_found_handler = (desktop_entries != NULL);
-
-      /* Go through all apps listed in user and system dirs */
-      for (dir_list = mime_info_cache->dirs;
-           dir_list != NULL;
-           dir_list = dir_list->next)
-        {
-          dir = dir_list->data;
-
-          /* Pick the explicit default application if we got no result earlier
-           * (ie, for more specific mime types)
-           */
-          if (!already_found_handler)
-            {
-              entry = g_hash_table_lookup (dir->mimeapps_list_defaults_map, mime_type);
-
-              if (entry != NULL)
-                {
-                  /* Save the default entry if it's the first one we encounter */
-                  if (default_entry == NULL)
-                    default_entry = g_strdup (entry);
-                }
-            }
-
-          /* Then added associations from mimeapps.list */
-          default_entries = g_hash_table_lookup (dir->mimeapps_list_added_map, mime_type);
-          for (j = 0; default_entries != NULL && default_entries[j] != NULL; j++)
-            desktop_entries = append_desktop_entry (desktop_entries, default_entries[j], removed_entries);
-
-          /* Then removed associations from mimeapps.list */
-          removed_associations = g_hash_table_lookup (dir->mimeapps_list_removed_map, mime_type);
-          for (j = 0; removed_associations != NULL && removed_associations[j] != NULL; j++)
-            removed_entries = append_desktop_entry (removed_entries, removed_associations[j], NULL);
-
-          /* Then system defaults (or old per-user config) (using removed associations from this dir or earlier) */
-          default_entries = g_hash_table_lookup (dir->defaults_list_map, mime_type);
-          for (j = 0; default_entries != NULL && default_entries[j] != NULL; j++)
-            {
-              if (default_entry == NULL && old_default_entry == NULL && !already_found_handler)
-                old_default_entry = g_strdup (default_entries[j]);
-
-              desktop_entries = append_desktop_entry (desktop_entries, default_entries[j], removed_entries);
-            }
-        }
-
-      /* Go through all entries that support the mimetype */
-      for (dir_list = mime_info_cache->dirs;
-           dir_list != NULL;
-           dir_list = dir_list->next)
-        {
-          dir = dir_list->data;
-
-          list = g_hash_table_lookup (dir->mime_info_cache_map, mime_type);
-          for (tmp = list; tmp != NULL; tmp = tmp->next)
-            desktop_entries = append_desktop_entry (desktop_entries, tmp->data, removed_entries);
-        }
-    }
-
-  G_UNLOCK (mime_info_cache);
-
-  g_strfreev (mime_types);
-
-  /* If we have no default from mimeapps.list, take it from
-   * defaults.list intead.
-   *
-   * If we do have a default from mimeapps.list, free any one that came
-   * from defaults.list.
-   */
-  if (default_entry == NULL)
-    default_entry = old_default_entry;
-  else
-    g_free (old_default_entry);
-
-  if (explicit_default != NULL)
-    *explicit_default = default_entry;
-  else
-    g_free (default_entry);
-
-  g_list_free_full (removed_entries, g_free);
-
-  desktop_entries = g_list_reverse (desktop_entries);
-
-  return desktop_entries;
 }
 
 /* GDesktopAppInfoLookup interface {{{2 */
