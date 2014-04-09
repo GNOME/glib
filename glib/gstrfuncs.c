@@ -2794,19 +2794,10 @@ gboolean
 g_str_has_prefix (const gchar *str,
                   const gchar *prefix)
 {
-  int str_len;
-  int prefix_len;
-
   g_return_val_if_fail (str != NULL, FALSE);
   g_return_val_if_fail (prefix != NULL, FALSE);
 
-  str_len = strlen (str);
-  prefix_len = strlen (prefix);
-
-  if (str_len < prefix_len)
-    return FALSE;
-
-  return strncmp (str, prefix, prefix_len) == 0;
+  return strncmp (str, prefix, strlen (prefix)) == 0;
 }
 
 /**
