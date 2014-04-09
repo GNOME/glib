@@ -55,7 +55,8 @@ const gchar *myapp3_data =
   "Version=1.0\n"
   "Type=Application\n"
   "Exec=sleep 1\n"
-  "Name=my app 3\n";
+  "Name=my app 3\n"
+  "MimeType=image/png;";
 
 const gchar *myapp4_data =
   "[Desktop Entry]\n"
@@ -91,7 +92,8 @@ const gchar *defaults_data =
 
 const gchar *mimecache_data =
   "[MIME Cache]\n"
-  "image/bmp=myapp4.desktop;myapp5.desktop;\n";
+  "image/bmp=myapp4.desktop;myapp5.desktop;\n"
+  "image/png=myapp3.desktop;\n";
 
 /* Set up XDG_DATA_HOME and XDG_DATA_DIRS.
  * XDG_DATA_DIRS/applications will contain defaults.list
