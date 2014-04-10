@@ -969,9 +969,10 @@ g_logv (const gchar   *log_domain,
           gchar *expected_message;
 
           mklevel_prefix (level_prefix, expected->log_level);
-          expected_message = g_strdup_printf ("Did not see expected message %s: %s",
+          expected_message = g_strdup_printf ("Did not see expected message %s-%s: %s",
+                                              expected->log_domain ? expected->log_domain : "**",
                                               level_prefix, expected->pattern);
-          g_log_default_handler (log_domain, log_level, expected_message, NULL);
+          g_log_default_handler (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, expected_message, NULL);
           g_free (expected_message);
 
           log_level |= G_LOG_FLAG_FATAL;
@@ -1211,9 +1212,10 @@ g_test_assert_expected_messages_internal (const char     *domain,
       expected = expected_messages->data;
 
       mklevel_prefix (level_prefix, expected->log_level);
-      message = g_strdup_printf ("Did not see expected message %s: %s",
+      message = g_strdup_printf ("Did not see expected message %s-%s: %s",
+                                 expected->log_domain ? expected->log_domain : "**",
                                  level_prefix, expected->pattern);
-      g_assertion_message (domain, file, line, func, message);
+      g_assertion_message (G_LOG_DOMAIN, file, line, func, message);
       g_free (message);
     }
 }

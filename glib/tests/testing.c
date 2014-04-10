@@ -20,6 +20,12 @@
  * if advised of the possibility of such damage.
  */
 
+/* We want to distinguish between messages originating from libglib
+ * and messages originating from this program.
+ */
+#undef G_LOG_DOMAIN
+#define G_LOG_DOMAIN "testing"
+
 #include <glib.h>
 
 #include <stdlib.h>
@@ -380,7 +386,7 @@ static void
 test_expected_messages_expect_error (void)
 {
   /* make sure we can't try to expect a g_error() */
-  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, "*G_LOG_LEVEL_ERROR*");
+  g_test_expect_message ("GLib", G_LOG_LEVEL_CRITICAL, "*G_LOG_LEVEL_ERROR*");
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, "this won't work");
   g_test_assert_expected_messages ();
 }
@@ -433,7 +439,7 @@ test_expected_messages (void)
   g_test_trap_subprocess ("/misc/expected-messages/subprocess/wrong-warning", 0, 0);
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr_unmatched ("*should not be reached*");
-  g_test_trap_assert_stderr ("*Did not see expected message CRITICAL*should not be *WARNING*This is a * warning*");
+  g_test_trap_assert_stderr ("*GLib-CRITICAL*Did not see expected message testing-CRITICAL*should not be *WARNING*This is a * warning*");
 
   g_test_trap_subprocess ("/misc/expected-messages/subprocess/expected", 0, 0);
   g_test_trap_assert_passed ();
@@ -449,7 +455,7 @@ test_expected_messages (void)
 
   g_test_trap_subprocess ("/misc/expected-messages/subprocess/unexpected-extra-warning", 0, 0);
   g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*Did not see expected message CRITICAL*nope*");
+  g_test_trap_assert_stderr ("*GLib:ERROR*Did not see expected message testing-CRITICAL*nope*");
 }
 
 static void
