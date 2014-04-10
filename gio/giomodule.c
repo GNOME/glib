@@ -1253,6 +1253,8 @@ g_io_extension_point_get_extension_by_name (GIOExtensionPoint *extension_point,
 {
   GList *l;
 
+  g_return_val_if_fail (name != NULL, NULL);
+
   lazy_load_modules (extension_point);
   for (l = extension_point->extensions; l != NULL; l = l->next)
     {
