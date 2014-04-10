@@ -2276,9 +2276,6 @@ case $host in
   *-*-freebsd*|*-*-linux*)
     G_THREAD_LIBS_FOR_GTHREAD="`echo $G_THREAD_LIBS | sed s/-pthread/-lpthread/`"
     ;;
-  *-*-openbsd*)
-    LDFLAGS="$LDFLAGS -pthread"
-    ;;
   *)
     G_THREAD_LIBS_FOR_GTHREAD="$G_THREAD_LIBS"
     ;;
