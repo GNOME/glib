@@ -238,8 +238,12 @@ app_path_for_id (const gchar *app_id)
 
   path = g_strconcat ("/", app_id, NULL);
   for (i = 0; path[i]; i++)
-    if (path[i] == '.')
-      path[i] = '/';
+    {
+      if (path[i] == '.')
+        path[i] = '/';
+      if (path[i] == '-')
+        path[i] = '_';
+    }
 
   return path;
 }
