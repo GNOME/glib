@@ -96,7 +96,7 @@ const gchar *mimecache_data =
   "image/png=myapp3.desktop;\n";
 
 /* Set up XDG_DATA_HOME and XDG_DATA_DIRS.
- * XDG_DATA_DIRS/applications will contain defaults.list
+ * XDG_DATA_DIRS/applications will contain mimeapps.list
  * XDG_DATA_HOME/applications will contain myapp.desktop
  * and myapp2.desktop, and no mimeapps.list
  */
@@ -130,7 +130,7 @@ setup (void)
   res = g_mkdir_with_parents (appdir, 0700);
   g_assert (res == 0);
 
-  name = g_build_filename (appdir, "defaults.list", NULL);
+  name = g_build_filename (appdir, "mimeapps.list", NULL);
   g_test_message ("creating '%s'\n", name);
   g_file_set_contents (name, defaults_data, -1, &error);
   g_assert_no_error (error);
@@ -411,7 +411,7 @@ test_mime_file (void)
   g_free (dir);
 }
 
-/* test interaction between defaults.list and mimeapps.list */
+/* test interaction between mimeapps.list at different levels */
 static void
 test_mime_default (void)
 {
