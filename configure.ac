@@ -3449,15 +3449,16 @@ dnl
 AC_ARG_ENABLE(Bsymbolic,
               [AS_HELP_STRING([--disable-Bsymbolic],
                               [avoid linking with -Bsymbolic])],,
-              [SAVED_LDFLAGS="${LDFLAGS}"
+              [SAVED_LDFLAGS="${LDFLAGS}" SAVED_LIBS="${LIBS}"
                AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
                LDFLAGS=-Wl,-Bsymbolic-functions
+               LIBS=
                AC_TRY_LINK([], [int main (void) { return 0; }],
                            AC_MSG_RESULT(yes)
                            enable_Bsymbolic=yes,
                            AC_MSG_RESULT(no)
                            enable_Bsymbolic=no)
-               LDFLAGS="${SAVED_LDFLAGS}"])
+               LDFLAGS="${SAVED_LDFLAGS}" LIBS="${SAVED_LIBS}"])
 
 if test "x${enable_Bsymbolic}" = "xyes"; then
   GLIB_LINK_FLAGS=-Wl,-Bsymbolic-functions
@@ -3476,9 +3477,10 @@ dnl
 AC_ARG_ENABLE([znodelete],
               [AS_HELP_STRING([--disable-znodelete],
                               [avoid linking with -z,nodelete])],,
-              [SAVED_LDFLAGS="${LDFLAGS}"
+              [SAVED_LDFLAGS="${LDFLAGS}" SAVED_LIBS="${LIBS}"
                AC_MSG_CHECKING([for --fatal-warnings linker flag])
                LDFLAGS=-Wl,--fatal-warnings
+               LIBS=
                AC_TRY_LINK([], [int main (void) { return 0; }],
                            AC_MSG_RESULT(yes)
                            [ldflags_fatal=-Wl,--fatal-warnings],
@@ -3491,7 +3493,7 @@ AC_ARG_ENABLE([znodelete],
                            enable_znodelete=yes,
                            AC_MSG_RESULT(no)
                            enable_znodelete=no)
-               LDFLAGS="${SAVED_LDFLAGS}"])
+               LDFLAGS="${SAVED_LDFLAGS}" LIBS="${SAVED_LIBS}"])
 
 if test "x${enable_znodelete}" = "xyes"; then
   GOBJECT_LINK_FLAGS=-Wl,-z,nodelete
