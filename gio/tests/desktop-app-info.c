@@ -109,59 +109,34 @@ test_default (void)
   g_app_info_set_as_default_for_type (info2, "application/x-test", &error);
   g_assert (error == NULL);
 
-  list = g_app_info_get_all_for_type ("application/x-test");
-  g_assert (g_list_length (list) == 2);
-  
-  /* check that both are in the list, info2 before info1 */
-  info = (GAppInfo *)list->data;
+  info = g_app_info_get_default_for_type ("application/x-test", FALSE);
+  g_assert (info != NULL);
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
 
-  info = (GAppInfo *)list->next->data;
-  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info1));
-
-  g_list_free_full (list, g_object_unref);
-
-  /* now try adding something at the end */
+  /* now try adding something, but not setting as default */
   g_app_info_add_supports_type (info3, "application/x-test", &error);
   g_assert (error == NULL);
 
-  list = g_app_info_get_all_for_type ("application/x-test");
-  g_assert (g_list_length (list) == 3);
-  
-  /* check that all are in the list, info2, info1, info3 */
-  info = (GAppInfo *)list->data;
+  /* check that info2 is still default */
+  info = g_app_info_get_default_for_type ("application/x-test", FALSE);
+  g_assert (info != NULL);
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
-
-  info = (GAppInfo *)list->next->data;
-  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info1));
-
-  info = (GAppInfo *)list->next->next->data;
-  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info3));
-
-  g_list_free_full (list, g_object_unref);
 
   /* now remove info1 again */
   g_app_info_remove_supports_type (info1, "application/x-test", &error);
   g_assert (error == NULL);
 
-  list = g_app_info_get_all_for_type ("application/x-test");
-  g_assert (g_list_length (list) == 2);
-  
-  /* check that both are in the list, info2 before info3 */
-  info = (GAppInfo *)list->data;
+  /* and make sure info2 is still default */
+  info = g_app_info_get_default_for_type ("application/x-test", FALSE);
+  g_assert (info != NULL);
   g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info2));
-
-  info = (GAppInfo *)list->next->data;
-  g_assert_cmpstr (g_app_info_get_id (info), ==, g_app_info_get_id (info3));
-
-  g_list_free_full (list, g_object_unref);
 
   /* now clean it all up */
   g_app_info_reset_type_associations ("application/x-test");
 
   list = g_app_info_get_all_for_type ("application/x-test");
   g_assert (list == NULL);
-  
+
   g_app_info_delete (info1);
   g_app_info_delete (info2);
   g_app_info_delete (info3);
@@ -187,15 +162,15 @@ test_fallback (void)
   old_length = g_list_length (apps);
   g_list_free_full (apps, g_object_unref);
 
-  g_app_info_set_as_default_for_type (info1, "text/x-python", &error);
+  g_app_info_add_supports_type (info1, "text/x-python", &error);
   g_assert (error == NULL);
 
-  g_app_info_set_as_default_for_type (info2, "text/plain", &error);
+  g_app_info_add_supports_type (info2, "text/plain", &error);
   g_assert (error == NULL);
 
   /* check that both apps are registered */
   apps = g_app_info_get_all_for_type ("text/x-python");
-  g_assert (g_list_length (apps) == old_length + 2);
+  g_assert_cmpint (g_list_length (apps), ==, old_length + 2);
 
   /* check the ordering */
   app = g_list_nth_data (apps, 0);
