@@ -2183,10 +2183,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
                                                                   G_APP_INFO (info),
                                                                   launched_files);
               if (sn_id)
-                {
-                  envp = g_environ_setenv (envp, "DESKTOP_STARTUP_ID", sn_id, TRUE);
-                  g_free (sn_id);
-                }
+                envp = g_environ_setenv (envp, "DESKTOP_STARTUP_ID", sn_id, TRUE);
             }
 
           g_list_free_full (launched_files, g_object_unref);
