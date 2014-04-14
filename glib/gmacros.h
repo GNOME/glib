@@ -37,6 +37,12 @@
  */
 #include <stddef.h>
 
+#define G_GNUC_CHECK_VERSION(major, minor) \
+    (defined(__GNUC__) && \
+     ((__GNUC__ > (major)) || \
+      ((__GNUC__ == (major)) && \
+       (__GNUC_MINOR__ >= (minor)))))
+
 /* Here we provide G_GNUC_EXTENSION as an alias for __extension__,
  * where this is valid. This allows for warningless compilation of
  * "long long" types even in the presence of '-ansi -pedantic'. 

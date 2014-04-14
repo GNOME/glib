@@ -1996,6 +1996,21 @@
  */
 
 /**
+ * G_GNUC_CHECK_VERSION:
+ *
+ * Expands to a a check for a compiler with __GNUC__ defined and a version
+ * greater than or equal to the major and minor numbers provided. For example,
+ * the following would only match on compilers such as GCC 4.8 or newer.
+ *
+ * |[<!-- language="C" -->
+ * #if G_GNUC_CHECK_VERSION(4, 8)
+ * #endif
+ * ]|
+ *
+ * Since: 2.42
+ */
+
+/**
  * G_GNUC_CONST:
  *
  * Expands to the GNU C const function attribute if the compiler is gcc.
