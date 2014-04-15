@@ -338,7 +338,7 @@ typedef struct _GParamSpecTypeInfo GParamSpecTypeInfo;
 /**
  * GParamSpecTypeInfo:
  * @instance_size: Size of the instance (object) structure.
- * @n_preallocs: Prior to GLib 2.10, it specified the number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching). Since GLib 2.10, it is ignored, since instances are allocated with the <link linkend="glib-Memory-Slices">slice allocator</link> now.
+ * @n_preallocs: Prior to GLib 2.10, it specified the number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching). Since GLib 2.10, it is ignored, since instances are allocated with the [slice allocator][glib-Memory-Slices] now.
  * @instance_init: Location of the instance initialization function (optional).
  * @value_type: The #GType of values conforming to this #GParamSpec
  * @finalize: The instance finalization function (optional).

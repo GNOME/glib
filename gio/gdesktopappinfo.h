@@ -107,7 +107,7 @@ gchar *                 g_desktop_app_info_get_action_name              (GDeskto
  * G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME:
  *
  * Extension point for default handler to URI association. See
- * <link linkend="extending-gio">Extending GIO</link>.
+ * [Extending GIO][extending-gio].
  */
 #define G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME "gio-desktop-app-info-lookup"
 

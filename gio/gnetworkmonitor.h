@@ -31,7 +31,7 @@ G_BEGIN_DECLS
  * G_NETWORK_MONITOR_EXTENSION_POINT_NAME:
  *
  * Extension point for network status monitoring functionality.
- * See <link linkend="extending-gio">Extending GIO</link>.
+ * See [Extending GIO][extending-gio].
  *
  * Since: 2.30
  */

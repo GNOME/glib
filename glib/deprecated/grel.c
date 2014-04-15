@@ -96,7 +96,7 @@ typedef struct _GRealTuples        GRealTuples;
  * GRelation:
  *
  * The #GRelation struct is an opaque data structure to represent a
- * <link linkend="glib-Relations-and-Tuples">Relation</link>. It should
+ * [Relation][glib-Relations-and-Tuples]. It should
  * only be accessed via the following functions.
  **/
 struct _GRelation

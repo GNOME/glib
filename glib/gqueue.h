@@ -42,7 +42,7 @@ typedef struct _GQueue GQueue;
  * @length: the number of elements in the queue
  *
  * Contains the public fields of a
- * <link linkend="glib-Double-ended-Queues">Queue</link>.
+ * [Queue][glib-Double-ended-Queues].
  */
 struct _GQueue
 {

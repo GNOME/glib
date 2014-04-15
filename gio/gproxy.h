@@ -40,7 +40,7 @@ G_BEGIN_DECLS
  * G_PROXY_EXTENSION_POINT_NAME:
  *
  * Extension point for proxy functionality.
- * See <link linkend="extending-gio">Extending GIO</link>.
+ * See [Extending GIO][extending-gio].
  *
  * Since: 2.26
  */

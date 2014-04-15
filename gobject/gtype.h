@@ -991,7 +991,7 @@ typedef enum    /*< skip >*/
  *  finalization function for interface types. (optional)
  * @class_data: User-supplied data passed to the class init/finalize functions.
  * @instance_size: Size of the instance (object) structure (required for instantiatable types only).
- * @n_preallocs: Prior to GLib 2.10, it specified the number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching). Since GLib 2.10, it is ignored, since instances are allocated with the <link linkend="glib-Memory-Slices">slice allocator</link> now.
+ * @n_preallocs: Prior to GLib 2.10, it specified the number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching). Since GLib 2.10, it is ignored, since instances are allocated with the [slice allocator][glib-Memory-Slices] now.
  * @instance_init: Location of the instance initialization function (optional, for instantiatable types only).
  * @value_table: A #GTypeValueTable function table for generic handling of GValues of this type (usually only
  *  useful for fundamental types).
