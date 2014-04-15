@@ -663,7 +663,7 @@ expand_strv (gchar         ***strv_ptr,
             goto no_add;
 
       /* Don't add duplicates already in the list */
-      for (j = 0; strv[j]; j++)
+      for (j = 0; j < strv_len; j++)
         if (g_str_equal (to_add[i], strv[j]))
           goto no_add;
 
