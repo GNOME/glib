@@ -4469,6 +4469,23 @@ g_socket_get_credentials (GSocket   *socket,
                                   native_creds_buf);
       }
   }
+#elif G_CREDENTIALS_USE_NETBSD_UNPCBID
+  {
+    struct unpcbid cred;
+    socklen_t optlen = sizeof (cred);
+
+    if (getsockopt (socket->priv->fd,
+                    0,
+                    LOCAL_PEEREID,
+                    &cred,
+                    &optlen) == 0)
+      {
+        ret = g_credentials_new ();
+        g_credentials_set_native (ret,
+                                  G_CREDENTIALS_NATIVE_TYPE,
+                                  &cred);
+      }
+  }
 #elif G_CREDENTIALS_USE_SOLARIS_UCRED
   {
     ucred_t *ucred = NULL;

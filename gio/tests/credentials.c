@@ -100,6 +100,14 @@ test_basic (void)
           g_assert_cmpuint (native->cmcred_euid, ==, geteuid ());
           g_assert_cmpuint (native->cmcred_pid, ==, getpid ());
         }
+#elif G_CREDENTIALS_USE_NETBSD_UNPCBID
+        {
+          struct unpcbid *native = g_credentials_get_native (creds,
+              G_CREDENTIALS_TYPE_NETBSD_UNPCBID);
+
+          g_assert_cmpuint (native->unp_euid, ==, geteuid ());
+          g_assert_cmpuint (native->unp_pid, ==, getpid ());
+        }
 #elif G_CREDENTIALS_USE_OPENBSD_SOCKPEERCRED
         {
           struct sockpeercred *native = g_credentials_get_native (creds,
