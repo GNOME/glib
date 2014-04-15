@@ -723,9 +723,10 @@ g_settings_schema_source_get_text_tables (GSettingsSchemaSource *source)
  * g_settings_schema_source_list_schemas:
  * @source: a #GSettingsSchemaSource
  * @recursive: if we should recurse
- * @non_relocatable: (out) (transfer full): the list of non-relocatable
- *   schemas
- * @relocatable: (out) (transfer full): the list of relocatable schemas
+ * @non_relocatable: (out) (transfer full) (array zero-terminated=1): the
+ *   list of non-relocatable schemas
+ * @relocatable: (out) (transfer full) (array zero-terminated=1): the list
+ *   of relocatable schemas
  *
  * Lists the schemas in a given source.
  *
