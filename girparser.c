@@ -1127,9 +1127,9 @@ start_parameter (GMarkupParseContext *context,
     param->optional = FALSE;
 
   if (allow_none && strcmp (allow_none, "1") == 0)
-    param->allow_none = TRUE;
+    param->nullable = TRUE;
   else
-    param->allow_none = FALSE;
+    param->nullable = FALSE;
 
   if (skip && strcmp (skip, "1") == 0)
     param->skip = TRUE;

@@ -162,7 +162,7 @@ g_arg_info_may_be_null (GIArgInfo *info)
 
   blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return blob->allow_none;
+  return blob->nullable;
 }
 
 /**

@@ -396,7 +396,7 @@ typedef union _SimpleTypeBlob SimpleTypeBlob;
  *   parameter, the function actually takes an uint32*.
  * @caller_allocates: The parameter is a pointer to a struct or object that
  *   will receive an output of the function.
- * @allow_none: Only meaningful for types which are passed as pointers. For an
+ * @nullable: Only meaningful for types which are passed as pointers. For an
  *   in parameter, indicates if it is ok to pass NULL in. Gor an out
  *   parameter, indicates whether it may return NULL. Note that NULL is a
  *   valid GList and GSList value, thus allow_none will normally be set
@@ -437,7 +437,7 @@ typedef struct {
   guint          in                           : 1;
   guint          out                          : 1;
   guint          caller_allocates             : 1;
-  guint          allow_none                   : 1;
+  guint          nullable                     : 1;
   guint          optional                     : 1;
   guint          transfer_ownership           : 1;
   guint          transfer_container_ownership : 1;

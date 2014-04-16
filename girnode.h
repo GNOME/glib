@@ -146,7 +146,7 @@ struct _GIrNodeParam
   gboolean caller_allocates;
   gboolean optional;
   gboolean retval;
-  gboolean allow_none;
+  gboolean nullable;
   gboolean skip;
   gboolean transfer;
   gboolean shallow_transfer;

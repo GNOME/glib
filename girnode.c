@@ -1660,7 +1660,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
         _g_ir_node_build_typelib ((GIrNode *)function->result->type,
 				 node, build, &signature, offset2);
 
-	blob2->may_return_null = function->result->allow_none;
+	blob2->may_return_null = function->result->nullable;
 	blob2->caller_owns_return_value = function->result->transfer;
 	blob2->caller_owns_return_container = function->result->shallow_transfer;
 	blob2->skip_return = function->result->skip;
@@ -1702,7 +1702,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
         _g_ir_node_build_typelib ((GIrNode *)function->result->type,
 				 node, build, &signature, offset2);
 
-	blob2->may_return_null = function->result->allow_none;
+	blob2->may_return_null = function->result->nullable;
 	blob2->caller_owns_return_value = function->result->transfer;
 	blob2->caller_owns_return_container = function->result->shallow_transfer;
 	blob2->reserved = 0;
@@ -1759,7 +1759,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
         _g_ir_node_build_typelib ((GIrNode *)signal->result->type,
 				 node, build, &signature, offset2);
 
-	blob2->may_return_null = signal->result->allow_none;
+	blob2->may_return_null = signal->result->nullable;
 	blob2->caller_owns_return_value = signal->result->transfer;
 	blob2->caller_owns_return_container = signal->result->shallow_transfer;
 	blob2->reserved = 0;
@@ -1817,7 +1817,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
         _g_ir_node_build_typelib ((GIrNode *)vfunc->result->type,
 				 node, build, &signature, offset2);
 
-	blob2->may_return_null = vfunc->result->allow_none;
+	blob2->may_return_null = vfunc->result->nullable;
 	blob2->caller_owns_return_value = vfunc->result->transfer;
 	blob2->caller_owns_return_container = vfunc->result->shallow_transfer;
 	blob2->reserved = 0;
@@ -1848,7 +1848,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->in = param->in;
 	blob->out = param->out;
 	blob->caller_allocates = param->caller_allocates;
-	blob->allow_none = param->allow_none;
+	blob->nullable = param->nullable;
 	blob->skip = param->skip;
 	blob->optional = param->optional;
 	blob->transfer_ownership = param->transfer;
