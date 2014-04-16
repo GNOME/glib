@@ -117,6 +117,10 @@
  * account the fact that your program will not automatically be killed
  * if it tries to write to %stdout after it has been closed.
  *
+ * Like most other APIs in GLib, #GSocket is not inherently thread safe. To use
+ * a #GSocket concurrently from multiple threads, you must implement your own
+ * locking.
+ *
  * Since: 2.22
  */
 
