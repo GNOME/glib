@@ -185,9 +185,7 @@
 #include <errno.h>
 
 #if defined __OpenBSD__
-#include <sys/types.h>
 #include <unistd.h>
-#include <sys/param.h>
 #include <sys/sysctl.h>
 #endif
 
@@ -1763,13 +1761,16 @@ platform_get_argv0 (void)
   g_free (cmdline);
   return base_arg0;
 #elif defined __OpenBSD__
-  char **cmdline = NULL;
+  char **cmdline;
   char *base_arg0;
-  gsize len = PATH_MAX;
+  gsize len;
 
   int mib[] = { CTL_KERN, KERN_PROC_ARGS, getpid(), KERN_PROC_ARGV };
 
-  cmdline = (char **) realloc (cmdline, len);
+  if (sysctl (mib, G_N_ELEMENTS (mib), NULL, &len, NULL, 0) == -1)
+      return NULL;
+
+  cmdline = g_malloc0 (len);
 
   if (sysctl (mib, G_N_ELEMENTS (mib), cmdline, &len, NULL, 0) == -1)
     {
