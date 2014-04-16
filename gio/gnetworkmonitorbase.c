@@ -38,7 +38,8 @@ enum
 {
   PROP_0,
 
-  PROP_NETWORK_AVAILABLE
+  PROP_NETWORK_AVAILABLE,
+  PROP_CONNECTIVITY
 };
 
 struct _GNetworkMonitorBasePrivate
@@ -114,12 +115,20 @@ g_network_monitor_base_get_property (GObject    *object,
 
   switch (prop_id)
     {
-      case PROP_NETWORK_AVAILABLE:
-        g_value_set_boolean (value, monitor->priv->is_available);
-        break;
+    case PROP_NETWORK_AVAILABLE:
+      g_value_set_boolean (value, monitor->priv->is_available);
+      break;
 
-      default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    case PROP_CONNECTIVITY:
+      g_value_set_enum (value,
+                        monitor->priv->is_available ?
+                        G_NETWORK_CONNECTIVITY_FULL :
+                        G_NETWORK_CONNECTIVITY_LOCAL);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
     }
 
 }
@@ -151,6 +160,7 @@ g_network_monitor_base_class_init (GNetworkMonitorBaseClass *monitor_class)
   gobject_class->finalize     = g_network_monitor_base_finalize;
 
   g_object_class_override_property (gobject_class, PROP_NETWORK_AVAILABLE, "network-available");
+  g_object_class_override_property (gobject_class, PROP_CONNECTIVITY, "connectivity");
 }
 
 static gboolean

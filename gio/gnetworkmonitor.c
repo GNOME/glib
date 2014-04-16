@@ -99,6 +99,44 @@ g_network_monitor_get_network_available (GNetworkMonitor *monitor)
 }
 
 /**
+ * g_network_monitor_get_connectivity:
+ * @monitor: the #GNetworkMonitor
+ *
+ * Gets a more detailed networking state than
+ * g_network_monitor_get_network_available().
+ *
+ * If #GNetworkMonitor:network-available is %FALSE, then the
+ * connectivity state will be %G_NETWORK_CONNECTIVITY_LOCAL.
+ *
+ * If #GNetworkMonitor:network-available is %TRUE, then the
+ * connectivity state will be %G_NETWORK_CONNECTIVITY_FULL (if there
+ * is full Internet connectivity), %G_NETWORK_CONNECTIVITY_LIMITED (if
+ * the host has a default route, but appears to be unable to actually
+ * reach the full Internet), or %G_NETWORK_CONNECTIVITY_PORTAL (if the
+ * host is trapped behind a "captive portal" that requires some sort
+ * of login or acknowledgement before allowing full Internet access).
+ *
+ * Note that in the case of %G_NETWORK_CONNECTIVITY_LIMITED and
+ * %G_NETWORK_CONNECTIVITY_PORTAL, it is possible that some sites are
+ * reachable but others are not. In this case, applications can
+ * attempt to connect to remote servers, but should gracefully fall
+ * back to their "offline" behavior if the connection attempt fails.
+ *
+ * Return value: the network connectivity state
+ *
+ * Since: 2.42
+ */
+GNetworkConnectivity
+g_network_monitor_get_connectivity (GNetworkMonitor *monitor)
+{
+  GNetworkConnectivity connectivity;
+
+  g_object_get (G_OBJECT (monitor), "connectivity", &connectivity, NULL);
+
+  return connectivity;
+}
+
+/**
  * g_network_monitor_can_reach:
  * @monitor: a #GNetworkMonitor
  * @connectable: a #GSocketConnectable
@@ -280,4 +318,22 @@ g_network_monitor_default_init (GNetworkMonitorInterface *iface)
                                                              FALSE,
                                                              G_PARAM_READABLE |
                                                              G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GNetworkMonitor:connectivity:
+   *
+   * More detailed information about the host's network connectivity.
+   * See g_network_monitor_get_connectivity() and
+   * #GNetworkConnectivity for more details.
+   *
+   * Since: 2.42
+   */
+  g_object_interface_install_property (iface,
+                                       g_param_spec_enum ("connectivity",
+                                                          P_("Network connectivity"),
+                                                          P_("Level of network connectivity"),
+                                                          G_TYPE_NETWORK_CONNECTIVITY,
+                                                          G_NETWORK_CONNECTIVITY_FULL,
+                                                          G_PARAM_READABLE |
+                                                          G_PARAM_STATIC_STRINGS));
 }

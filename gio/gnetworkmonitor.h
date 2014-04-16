@@ -37,7 +37,7 @@ G_BEGIN_DECLS
  */
 #define G_NETWORK_MONITOR_EXTENSION_POINT_NAME "gio-network-monitor"
 
-#define G_TYPE_NETWORK_MONITOR         (g_network_monitor_get_type ())
+#define G_TYPE_NETWORK_MONITOR             (g_network_monitor_get_type ())
 #define G_NETWORK_MONITOR(o)               (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_NETWORK_MONITOR, GNetworkMonitor))
 #define G_IS_NETWORK_MONITOR(o)            (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_NETWORK_MONITOR))
 #define G_NETWORK_MONITOR_GET_INTERFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), G_TYPE_NETWORK_MONITOR, GNetworkMonitorInterface))
@@ -65,28 +65,31 @@ struct _GNetworkMonitorInterface {
 };
 
 GLIB_AVAILABLE_IN_2_32
-GType            g_network_monitor_get_type              (void) G_GNUC_CONST;
+GType                 g_network_monitor_get_type              (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_32
-GNetworkMonitor *g_network_monitor_get_default           (void);
+GNetworkMonitor      *g_network_monitor_get_default           (void);
 
 GLIB_AVAILABLE_IN_2_32
-gboolean         g_network_monitor_get_network_available (GNetworkMonitor     *monitor);
+gboolean              g_network_monitor_get_network_available (GNetworkMonitor     *monitor);
+
+GLIB_AVAILABLE_IN_2_42
+GNetworkConnectivity  g_network_monitor_get_connectivity      (GNetworkMonitor     *monitor);
 
 GLIB_AVAILABLE_IN_2_32
-gboolean         g_network_monitor_can_reach             (GNetworkMonitor     *monitor,
-							  GSocketConnectable  *connectable,
-							  GCancellable        *cancellable,
-							  GError             **error);
+gboolean              g_network_monitor_can_reach             (GNetworkMonitor     *monitor,
+                                                               GSocketConnectable  *connectable,
+                                                               GCancellable        *cancellable,
+                                                               GError             **error);
 GLIB_AVAILABLE_IN_2_32
-void             g_network_monitor_can_reach_async       (GNetworkMonitor     *monitor,
-							  GSocketConnectable  *connectable,
-							  GCancellable        *cancellable,
-							  GAsyncReadyCallback  callback,
-							  gpointer             user_data);
+void                  g_network_monitor_can_reach_async       (GNetworkMonitor     *monitor,
+                                                               GSocketConnectable  *connectable,
+                                                               GCancellable        *cancellable,
+                                                               GAsyncReadyCallback  callback,
+                                                               gpointer             user_data);
 GLIB_AVAILABLE_IN_2_32
-gboolean         g_network_monitor_can_reach_finish      (GNetworkMonitor     *monitor,
-							  GAsyncResult        *result,
-							  GError             **error);
+gboolean              g_network_monitor_can_reach_finish      (GNetworkMonitor     *monitor,
+                                                               GAsyncResult        *result,
+                                                               GError             **error);
 
 G_END_DECLS
 
