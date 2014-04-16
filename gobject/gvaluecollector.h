@@ -244,7 +244,7 @@ G_STMT_START {										\
 /**
  * G_VALUE_COLLECT_FORMAT_MAX_LENGTH:
  * 
- * The maximal number of #GTypeCValue<!-- -->s which can be collected for a 
+ * The maximal number of #GTypeCValues which can be collected for a 
  * single #GValue.
  */
 #define	G_VALUE_COLLECT_FORMAT_MAX_LENGTH	(8)

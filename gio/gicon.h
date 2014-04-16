@@ -45,7 +45,7 @@ typedef struct _GIconIface GIconIface;
  * GIconIface:
  * @g_iface: The parent interface.
  * @hash: A hash for a given #GIcon.
- * @equal: Checks if two #GIcon<!-- -->s are equal.
+ * @equal: Checks if two #GIcons are equal.
  * @to_tokens: Serializes a #GIcon into tokens. The tokens must not
  * contain any whitespace. Don't implement if the #GIcon can't be
  * serialized (Since 2.20).

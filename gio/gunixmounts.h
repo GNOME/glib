@@ -44,7 +44,7 @@ typedef struct _GUnixMountPoint GUnixMountPoint;
 /**
  * GUnixMountMonitor:
  *
- * Watches #GUnixMount<!-- -->s for changes.
+ * Watches #GUnixMounts for changes.
  **/
 typedef struct _GUnixMountMonitor      GUnixMountMonitor;
 typedef struct _GUnixMountMonitorClass GUnixMountMonitorClass;

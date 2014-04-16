@@ -46,11 +46,11 @@ struct _GFileAttributeInfo
 
 /**
  * GFileAttributeInfoList:
- * @infos: an array of #GFileAttributeInfo<!-- -->s.
+ * @infos: an array of #GFileAttributeInfos.
  * @n_infos: the number of values in the array.
  *
  * Acts as a lightweight registry for possible valid file attributes.
- * The registry stores Key-Value pair formats as #GFileAttributeInfo<!-- -->s.
+ * The registry stores Key-Value pair formats as #GFileAttributeInfos.
  **/
 struct _GFileAttributeInfoList
 {

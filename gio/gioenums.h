@@ -1348,7 +1348,7 @@ typedef enum /*< flags >*/
  * assign a serial number from the #GDBusConnection object when
  * sending a message.
  *
- * Flags used when sending #GDBusMessage<!-- -->s on a #GDBusConnection.
+ * Flags used when sending #GDBusMessages on a #GDBusConnection.
  *
  * Since: 2.26
  */
