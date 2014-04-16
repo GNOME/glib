@@ -715,8 +715,7 @@ static ChunkLink*
 magazine_cache_pop_magazine (guint  ix,
                              gsize *countp)
 {
-  guint *counters = allocator->contention_counters;
-  g_mutex_lock_a (&allocator->magazine_mutex, &counters[ix]);
+  g_mutex_lock_a (&allocator->magazine_mutex, &allocator->contention_counters[ix]);
   if (!allocator->magazines[ix])
     {
       guint magazine_threshold = allocator_get_magazine_threshold (allocator, ix);
