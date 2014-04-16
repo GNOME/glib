@@ -844,7 +844,7 @@ g_variant_get_size (GVariant *value)
  * serialised data, you must know the type of the #GVariant, and (if the
  * machine might be different) the endianness of the machine that stored
  * it. As a result, file formats or network messages that incorporate
- * serialised #GVariant<!---->s must include this information either
+ * serialised #GVariants must include this information either
  * implicitly (for instance "the file always contains a
  * %G_VARIANT_TYPE_VARIANT and it is always in little-endian order") or
  * explicitly (by storing the type and/or endianness in addition to the

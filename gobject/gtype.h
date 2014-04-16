@@ -926,7 +926,7 @@ typedef void   (*GInterfaceFinalizeFunc)     (gpointer         g_iface,
  * whether they actually want to cache the class of this type, since all
  * classes are routed through the same #GTypeClassCacheFunc chain.
  * 
- * Returns: %TRUE to stop further #GTypeClassCacheFunc<!-- -->s from being 
+ * Returns: %TRUE to stop further #GTypeClassCacheFuncs from being 
  *  called, %FALSE to continue.
  */
 typedef gboolean (*GTypeClassCacheFunc)	     (gpointer	       cache_data,

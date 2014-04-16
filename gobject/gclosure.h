@@ -102,7 +102,7 @@ typedef void  (*GClosureNotify)		(gpointer	 data,
  *  value.
  * @n_param_values: the length of the @param_values array
  * @param_values: (array length=n_param_values): an array of
- *  #GValue<!-- -->s holding the arguments on which to invoke the
+ *  #GValues holding the arguments on which to invoke the
  *  callback of @closure
  * @invocation_hint: (allow-none): the invocation hint given as the
  *  last argument to g_closure_invoke()

@@ -52,7 +52,7 @@ typedef struct _GFileIface    		GFileIface;
  * @g_iface: The parent interface.
  * @dup: Duplicates a #GFile.
  * @hash: Creates a hash of a #GFile.
- * @equal: Checks equality of two given #GFile<!-- -->s.
+ * @equal: Checks equality of two given #GFiles.
  * @is_native: Checks to see if a file is native to the system.
  * @has_uri_scheme: Checks to see if a #GFile has a given URI scheme.
  * @get_uri_scheme: Gets the URI scheme for a #GFile.
@@ -80,8 +80,8 @@ typedef struct _GFileIface    		GFileIface;
  * @set_display_name: Sets the display name for a #GFile.
  * @set_display_name_async: Asynchronously sets a #GFile's display name.
  * @set_display_name_finish: Finishes asynchronously setting a #GFile's display name.
- * @query_settable_attributes: Returns a list of #GFileAttribute<!-- -->s that can be set.
- * @_query_settable_attributes_async: Asynchronously gets a list of #GFileAttribute<!-- -->s that can be set.
+ * @query_settable_attributes: Returns a list of #GFileAttributes that can be set.
+ * @_query_settable_attributes_async: Asynchronously gets a list of #GFileAttributes that can be set.
  * @_query_settable_attributes_finish: Finishes asynchronously querying settable attributes.
  * @query_writable_namespaces: Returns a list of #GFileAttribute namespaces that are writable.
  * @_query_writable_namespaces_async: Asynchronously gets a list of #GFileAttribute namespaces that are writable.
