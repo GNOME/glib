@@ -1065,6 +1065,7 @@ start_parameter (GMarkupParseContext *context,
   const gchar *closure;
   const gchar *destroy;
   const gchar *skip;
+  const gchar *nullable;
   GIrNodeParam *param;
 
   if (!(strcmp (element_name, "parameter") == 0 &&
@@ -1082,6 +1083,7 @@ start_parameter (GMarkupParseContext *context,
   closure = find_attribute ("closure", attribute_names, attribute_values);
   destroy = find_attribute ("destroy", attribute_names, attribute_values);
   skip = find_attribute ("skip", attribute_names, attribute_values);
+  nullable = find_attribute ("nullable", attribute_names, attribute_values);
 
   if (name == NULL)
     name = "unknown";
@@ -1126,10 +1128,18 @@ start_parameter (GMarkupParseContext *context,
   else
     param->optional = FALSE;
 
-  if (allow_none && strcmp (allow_none, "1") == 0)
+  if (nullable && strcmp (nullable, "1") == 0)
     param->nullable = TRUE;
   else
     param->nullable = FALSE;
+
+  if (allow_none && strcmp (allow_none, "1") == 0)
+    {
+      if (param->out)
+        param->optional = TRUE;
+      else
+        param->nullable = TRUE;
+    }
 
   if (skip && strcmp (skip, "1") == 0)
     param->skip = TRUE;
@@ -2172,6 +2182,7 @@ start_return_value (GMarkupParseContext *context,
   GIrNodeParam *param;
   const gchar  *transfer;
   const gchar  *skip;
+  const gchar  *nullable;
 
   if (!(strcmp (element_name, "return-value") == 0 &&
 	ctx->state == STATE_FUNCTION))
@@ -2196,6 +2207,10 @@ start_return_value (GMarkupParseContext *context,
   transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
   if (!parse_param_transfer (param, transfer, NULL, error))
     return FALSE;
+
+  nullable = find_attribute ("nullable", attribute_names, attribute_values);
+  if (nullable && g_str_equal (nullable, "1"))
+    param->nullable = TRUE;
 
   switch (CURRENT_NODE (ctx)->type)
     {
