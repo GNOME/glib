@@ -944,6 +944,8 @@ g_date_time_new (GTimeZone *tz,
   GDateTime *datetime;
   gint64 full_time;
 
+  g_return_val_if_fail (tz != NULL, NULL);
+
   if (year < 1 || year > 9999 ||
       month < 1 || month > 12 ||
       day < 1 || day > 31 ||
