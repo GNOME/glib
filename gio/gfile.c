@@ -3402,8 +3402,9 @@ g_file_copy (GFile                  *source,
  * asynchronously. For details of the behaviour, see g_file_copy().
  *
  * If @progress_callback is not %NULL, then that function that will be called
- * just like in g_file_copy(), however the callback will run in the main loop,
- * not in the thread that is doing the I/O operation.
+ * just like in g_file_copy(). The callback will run in the default main context
+ * of the thread calling g_file_copy_async() — the same context as @callback is
+ * run in.
  *
  * When the operation is finished, @callback will be called. You can then call
  * g_file_copy_finish() to get the result of the operation.
