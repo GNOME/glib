@@ -607,16 +607,17 @@ g_file_error_from_errno (gint err_no)
 
 static char *
 format_error_message (const gchar  *filename,
-                      const gchar  *format_string) G_GNUC_FORMAT(2);
+                      const gchar  *format_string,
+                      int           saved_errno) G_GNUC_FORMAT(2);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"
 
 static char *
 format_error_message (const gchar  *filename,
-                      const gchar  *format_string)
+                      const gchar  *format_string,
+                      int           saved_errno)
 {
-  gint saved_errno = errno;
   gchar *display_name;
   gchar *msg;
 
@@ -637,10 +638,10 @@ format_error_message (const gchar  *filename,
 static void
 set_file_error (GError      **error,
                 const gchar  *filename,
-                const gchar  *format_string)
+                const gchar  *format_string,
+                int           saved_errno)
 {
-  int saved_errno = errno;
-  char *msg = format_error_message (filename, format_string);
+  char *msg = format_error_message (filename, format_string, saved_errno);
 
   g_set_error_literal (error, G_FILE_ERROR, g_file_error_from_errno (saved_errno),
                        msg);
@@ -858,9 +859,11 @@ get_contents_posix (const gchar  *filename,
 
   if (fd < 0)
     {
+      int saved_errno = errno;
       set_file_error (error,
                       filename,
-                      _("Failed to open file '%s': %s"));
+                      _("Failed to open file '%s': %s"),
+                      saved_errno);
 
       return FALSE;
     }
@@ -868,9 +871,11 @@ get_contents_posix (const gchar  *filename,
   /* I don't think this will ever fail, aside from ENOMEM, but. */
   if (fstat (fd, &stat_buf) < 0)
     {
+      int saved_errno = errno;
       set_file_error (error,
                       filename,
-                      _("Failed to get attributes of file '%s': fstat() failed: %s"));
+                      _("Failed to get attributes of file '%s': fstat() failed: %s"),
+                      saved_errno);
       close (fd);
 
       return FALSE;
@@ -896,9 +901,11 @@ get_contents_posix (const gchar  *filename,
       
       if (f == NULL)
         {
+          int saved_errno = errno;
           set_file_error (error,
                           filename,
-                          _("Failed to open file '%s': fdopen() failed: %s"));
+                          _("Failed to open file '%s': fdopen() failed: %s"),
+                          saved_errno);
 
           return FALSE;
         }
@@ -924,9 +931,11 @@ get_contents_win32 (const gchar  *filename,
 
   if (f == NULL)
     {
+      int saved_errno = errno;
       set_file_error (error,
                       filename,
-                      _("Failed to open file '%s': %s"));
+                      _("Failed to open file '%s': %s"),
+                      saved_errno);
 
       return FALSE;
     }
@@ -1027,7 +1036,10 @@ write_to_temp_file (const gchar  *contents,
 
   if (fd == -1)
     {
-      set_file_error (err, tmp_name, _("Failed to create file '%s': %s"));
+      int saved_errno = errno;
+      set_file_error (err,
+                      tmp_name, _("Failed to create file '%s': %s"),
+                      saved_errno);
       goto out;
     }
 
@@ -1048,10 +1060,13 @@ write_to_temp_file (const gchar  *contents,
 
       if (s < 0)
         {
-          if (errno == EINTR)
+          int saved_errno = errno;
+          if (saved_errno == EINTR)
             continue;
 
-          set_file_error (err, tmp_name, _("Failed to write file '%s': write() failed: %s"));
+          set_file_error (err,
+                          tmp_name, _("Failed to write file '%s': write() failed: %s"),
+                          saved_errno);
           close (fd);
           g_unlink (tmp_name);
 
@@ -1091,7 +1106,10 @@ write_to_temp_file (const gchar  *contents,
      */
     if (g_lstat (dest_file, &statbuf) == 0 && statbuf.st_size > 0 && fsync (fd) != 0)
       {
-        set_file_error (err, tmp_name, _("Failed to write file '%s': fsync() failed: %s"));
+        int saved_errno = errno;
+        set_file_error (err,
+                        tmp_name, _("Failed to write file '%s': fsync() failed: %s"),
+                        saved_errno);
         close (fd);
         g_unlink (tmp_name);
 
@@ -1211,9 +1229,11 @@ g_file_set_contents (const gchar  *filename,
       
       if (g_unlink (filename) == -1)
 	{
+          int saved_errno = errno;
           set_file_error (error,
                           filename,
-		          _("Existing file '%s' could not be removed: g_unlink() failed: %s"));
+		          _("Existing file '%s' could not be removed: g_unlink() failed: %s"),
+                          saved_errno);
 	  g_unlink (tmp_filename);
 	  retval = FALSE;
 	  goto out;
@@ -1514,9 +1534,11 @@ g_get_tmp_name (const gchar      *tmpl,
   retval = get_tmp_file (fulltemplate, f, flags, mode);
   if (retval == -1)
     {
+      int saved_errno = errno;
       set_file_error (error,
                       fulltemplate,
-                      _("Failed to create file '%s': %s"));
+                      _("Failed to create file '%s': %s"),
+                      saved_errno);
       g_free (fulltemplate);
       return -1;
     }
@@ -2010,9 +2032,11 @@ g_file_read_link (const gchar  *filename,
       read_size = readlink (filename, buffer, size);
       if (read_size < 0)
         {
+          int saved_errno = errno;
           set_file_error (error,
                           filename,
-                          _("Failed to read the symbolic link '%s': %s"));
+                          _("Failed to read the symbolic link '%s': %s"),
+                          saved_errno);
           g_free (buffer);
           return NULL;
         }
