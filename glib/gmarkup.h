@@ -116,7 +116,8 @@ typedef struct _GMarkupParser GMarkupParser;
 /**
  * GMarkupParser:
  * @start_element: Callback to invoke when the opening tag of an element
- *     is seen.
+ *     is seen. The callback's @attribute_names and @attribute_values parameters
+ *     are %NULL-terminated.
  * @end_element: Callback to invoke when the closing tag of an element
  *     is seen. Note that this is also called for empty tags like
  *     `<empty/>`.

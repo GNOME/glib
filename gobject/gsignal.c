@@ -1436,7 +1436,7 @@ g_signal_new (const gchar	 *signal_name,
  *
  * See g_signal_new() for information about signal names.
  *
- * If c_marshaller is %NULL @g_cclosure_marshal_generic will be used as
+ * If c_marshaller is %NULL, g_cclosure_marshal_generic() will be used as
  * the marshaller for this signal.
  *
  * Returns: the signal id
@@ -1564,7 +1564,7 @@ signal_add_class_closure (SignalNode *node,
  *
  * See g_signal_new() for details on allowed signal names.
  *
- * If c_marshaller is %NULL @g_cclosure_marshal_generic will be used as
+ * If c_marshaller is %NULL, g_cclosure_marshal_generic() will be used as
  * the marshaller for this signal.
  *
  * Returns: the signal id

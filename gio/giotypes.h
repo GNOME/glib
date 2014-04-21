@@ -526,7 +526,7 @@ typedef struct _GSubprocess                   GSubprocess;
  *
  * Options for launching a child process.
  *
- * Since: 2.36
+ * Since: 2.40
  */
 typedef struct _GSubprocessLauncher           GSubprocessLauncher;
 

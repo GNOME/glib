@@ -39,7 +39,8 @@
 
 /**
  * SECTION:markup
- * @Title: Simple XML Subset Parser * @Short_description: parses a subset of XML
+ * @Title: Simple XML Subset Parser
+ * @Short_description: parses a subset of XML
  * @See_also: [XML Specification](http://www.w3.org/TR/REC-xml/)
  *
  * The "GMarkup" parser is intended to parse a simple markup format
