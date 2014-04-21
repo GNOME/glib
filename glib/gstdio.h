@@ -26,7 +26,7 @@
 
 G_BEGIN_DECLS
 
-#if defined (_MSC_VER) && !defined(_WIN64)
+#if (defined (__MINGW64_VERSION_MAJOR) || defined (_MSC_VER)) && !defined(_WIN64)
 
 /* Make it clear that we mean the struct with 32-bit st_size and
  * 32-bit st_*time fields as that is how the 32-bit GLib DLL normally
