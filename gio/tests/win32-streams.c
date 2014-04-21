@@ -339,7 +339,7 @@ test_pipe_io_overlap (void)
   gchar name[256];
 
   g_snprintf (name, sizeof (name),
-              "\\\\.\\pipe\\gtest-io-overlap-%u", (guint) getpid ());
+              "\\\\.\\pipe\\gtest-io-overlap-%u", (guint) GetCurrentProcessId ());
 
   server = CreateNamedPipe (name,
                             PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED,
@@ -418,7 +418,7 @@ test_pipe_io_concurrent (void)
   gchar name[256], c;
 
   g_snprintf (name, sizeof (name),
-              "\\\\.\\pipe\\gtest-io-concurrent-%u", (guint) getpid ());
+              "\\\\.\\pipe\\gtest-io-concurrent-%u", (guint) GetCurrentProcessId ());
 
   server = CreateNamedPipe (name,
                             PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED,
@@ -490,7 +490,7 @@ test_pipe_io_cancel (void)
   gchar name[256];
 
   g_snprintf (name, sizeof (name),
-              "\\\\.\\pipe\\gtest-io-cancel-%u", (guint) getpid ());
+              "\\\\.\\pipe\\gtest-io-cancel-%u", (guint) GetCurrentProcessId ());
 
   in_handle = CreateNamedPipe (name,
                                PIPE_ACCESS_INBOUND | FILE_FLAG_OVERLAPPED,

@@ -36,9 +36,9 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#endif
 #include <fcntl.h>
 #include <utime.h>
-#endif
 #ifdef G_OS_WIN32
 #include <windows.h>
 #endif

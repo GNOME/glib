@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
+#else
+#include <io.h>
 #endif
 
 static GOptionEntry options[] = {
