@@ -188,7 +188,7 @@ find_file (const gchar *filename)
   /* search all the sourcedirs for the correct files in order */
   for (i = 0; sourcedirs[i] != NULL; i++)
     {
-	real_file = g_build_filename (sourcedirs[i], filename, NULL);
+	real_file = g_build_path ("/", sourcedirs[i], filename, NULL);
 	exists = g_file_test (real_file, G_FILE_TEST_EXISTS);
 	if (exists)
 	  return real_file;
