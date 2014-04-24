@@ -503,9 +503,6 @@ g_resolver_record_type_to_rrtype (GResolverRecordType type)
   g_return_val_if_reached (-1);
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-
 static GList *
 g_resolver_records_from_res_query (const gchar      *rrname,
                                    gint              rrtype,
@@ -615,8 +612,6 @@ g_resolver_records_from_res_query (const gchar      *rrname,
   else
     return records;
 }
-
-#pragma GCC diagnostic pop
 
 #elif defined(G_OS_WIN32)
 
