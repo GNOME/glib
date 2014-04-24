@@ -96,9 +96,21 @@ do_lookup_by_name (GTask         *task,
           g_object_unref (sockaddr);
         }
 
-      addresses = g_list_reverse (addresses);
-      g_task_return_pointer (task, addresses,
-                             (GDestroyNotify)g_resolver_free_addresses);
+      if (addresses != NULL)
+        {
+          addresses = g_list_reverse (addresses);
+          g_task_return_pointer (task, addresses,
+                                 (GDestroyNotify)g_resolver_free_addresses);
+        }
+      else
+        {
+          /* All addresses failed to be converted to GSocketAddresses. */
+          g_task_return_new_error (task,
+                                   G_RESOLVER_ERROR,
+                                   G_RESOLVER_ERROR_NOT_FOUND,
+                                   _("No DNS record of the requested type for '%s'"),
+                                   hostname);
+        }
     }
   else
     {
