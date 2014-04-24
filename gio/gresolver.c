@@ -336,7 +336,7 @@ handle_ip_address (const char  *hostname,
  * the textual form of an IP address (in which case this just becomes
  * a wrapper around g_inet_address_new_from_string()).
  *
- * On success, g_resolver_lookup_by_name() will return a #GList of
+ * On success, g_resolver_lookup_by_name() will return a non-empty #GList of
  * #GInetAddress, sorted in order of preference and guaranteed to not
  * contain duplicates. That is, if using the result to connect to
  * @hostname, you should attempt to connect to the first address
@@ -345,7 +345,7 @@ handle_ip_address (const char  *hostname,
  * result using e.g. g_socket_listener_add_address().
  *
  * If the DNS resolution fails, @error (if non-%NULL) will be set to a
- * value from #GResolverError.
+ * value from #GResolverError and %NULL will be returned.
  *
  * If @cancellable is non-%NULL, it can be used to cancel the
  * operation, in which case @error (if non-%NULL) will be set to
@@ -355,7 +355,7 @@ handle_ip_address (const char  *hostname,
  * address, it may be easier to create a #GNetworkAddress and use its
  * #GSocketConnectable interface.
  *
- * Returns: (element-type GInetAddress) (transfer full): a #GList
+ * Returns: (element-type GInetAddress) (transfer full): a non-empty #GList
  * of #GInetAddress, or %NULL on error. You
  * must unref each of the addresses and free the list when you are
  * done with it. (You can use g_resolver_free_addresses() to do this.)
@@ -638,13 +638,13 @@ g_resolver_get_service_rrname (const char *service,
  * @service and @protocol arguments do not include the leading underscore
  * that appears in the actual DNS entry.
  *
- * On success, g_resolver_lookup_service() will return a #GList of
+ * On success, g_resolver_lookup_service() will return a non-empty #GList of
  * #GSrvTarget, sorted in order of preference. (That is, you should
  * attempt to connect to the first target first, then the second if
  * the first fails, etc.)
  *
  * If the DNS resolution fails, @error (if non-%NULL) will be set to
- * a value from #GResolverError.
+ * a value from #GResolverError and %NULL will be returned.
  *
  * If @cancellable is non-%NULL, it can be used to cancel the
  * operation, in which case @error (if non-%NULL) will be set to
@@ -654,9 +654,10 @@ g_resolver_get_service_rrname (const char *service,
  * to create a #GNetworkService and use its #GSocketConnectable
  * interface.
  *
- * Returns: (element-type GSrvTarget) (transfer full): a #GList of #GSrvTarget,
- * or %NULL on error. You must free each of the targets and the list when you are
- * done with it. (You can use g_resolver_free_targets() to do this.)
+ * Returns: (element-type GSrvTarget) (transfer full): a non-empty #GList of
+ * #GSrvTarget, or %NULL on error. You must free each of the targets and the
+ * list when you are done with it. (You can use g_resolver_free_targets() to do
+ * this.)
  *
  * Since: 2.22
  */
@@ -742,8 +743,9 @@ g_resolver_lookup_service_async (GResolver           *resolver,
  * a value from #GResolverError. If the operation was cancelled,
  * @error will be set to %G_IO_ERROR_CANCELLED.
  *
- * Returns: (element-type GSrvTarget) (transfer full): a #GList of #GSrvTarget,
- * or %NULL on error. See g_resolver_lookup_service() for more details.
+ * Returns: (element-type GSrvTarget) (transfer full): a non-empty #GList of
+ * #GSrvTarget, or %NULL on error. See g_resolver_lookup_service() for more
+ * details.
  *
  * Since: 2.22
  */
@@ -795,15 +797,16 @@ g_resolver_free_targets (GList *targets)
  * information on what the records contain for each @record_type.
  *
  * If the DNS resolution fails, @error (if non-%NULL) will be set to
- * a value from #GResolverError.
+ * a value from #GResolverError and %NULL will be returned.
  *
  * If @cancellable is non-%NULL, it can be used to cancel the
  * operation, in which case @error (if non-%NULL) will be set to
  * %G_IO_ERROR_CANCELLED.
  *
- * Returns: (element-type GVariant) (transfer full): a #GList of #GVariant,
- * or %NULL on error. You must free each of the records and the list when you are
- * done with it. (You can use g_list_free_full() with g_variant_unref() to do this.)
+ * Returns: (element-type GVariant) (transfer full): a non-empty #GList of
+ * #GVariant, or %NULL on error. You must free each of the records and the list
+ * when you are done with it. (You can use g_list_free_full() with
+ * g_variant_unref() to do this.)
  *
  * Since: 2.34
  */
@@ -865,16 +868,18 @@ g_resolver_lookup_records_async (GResolver           *resolver,
  * @error: return location for a #GError, or %NULL
  *
  * Retrieves the result of a previous call to
- * g_resolver_lookup_records_async(). Returns a list of records as #GVariant
- * tuples. See #GResolverRecordType for information on what the records contain.
+ * g_resolver_lookup_records_async(). Returns a non-empty list of records as
+ * #GVariant tuples. See #GResolverRecordType for information on what the
+ * records contain.
  *
  * If the DNS resolution failed, @error (if non-%NULL) will be set to
  * a value from #GResolverError. If the operation was cancelled,
  * @error will be set to %G_IO_ERROR_CANCELLED.
  *
- * Returns: (element-type GVariant) (transfer full): a #GList of #GVariant,
- * or %NULL on error. You must free each of the records and the list when you are
- * done with it. (You can use g_list_free_full() with g_variant_unref() to do this.)
+ * Returns: (element-type GVariant) (transfer full): a non-empty #GList of
+ * #GVariant, or %NULL on error. You must free each of the records and the list
+ * when you are done with it. (You can use g_list_free_full() with
+ * g_variant_unref() to do this.)
  *
  * Since: 2.34
  */
