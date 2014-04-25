@@ -106,6 +106,7 @@ g_permission_acquire (GPermission   *permission,
                       GCancellable  *cancellable,
                       GError       **error)
 {
+  g_return_val_if_fail (G_IS_PERMISSION (permission), FALSE);
   return G_PERMISSION_GET_CLASS (permission)
     ->acquire (permission, cancellable, error);
 }
@@ -130,6 +131,7 @@ g_permission_acquire_async (GPermission         *permission,
                             GAsyncReadyCallback  callback,
                             gpointer             user_data)
 {
+  g_return_if_fail (G_IS_PERMISSION (permission));
   G_PERMISSION_GET_CLASS (permission)
     ->acquire_async (permission, cancellable, callback, user_data);
 }
@@ -155,6 +157,7 @@ g_permission_acquire_finish (GPermission   *permission,
                              GAsyncResult  *result,
                              GError       **error)
 {
+  g_return_val_if_fail (G_IS_PERMISSION (permission), FALSE);
   return G_PERMISSION_GET_CLASS (permission)
     ->acquire_finish (permission, result, error);
 }
@@ -190,6 +193,7 @@ g_permission_release (GPermission   *permission,
                       GCancellable  *cancellable,
                       GError       **error)
 {
+  g_return_val_if_fail (G_IS_PERMISSION (permission), FALSE);
   return G_PERMISSION_GET_CLASS (permission)
     ->release (permission, cancellable, error);
 }
@@ -214,6 +218,7 @@ g_permission_release_async (GPermission         *permission,
                             GAsyncReadyCallback  callback,
                             gpointer             user_data)
 {
+  g_return_if_fail (G_IS_PERMISSION (permission));
   G_PERMISSION_GET_CLASS (permission)
     ->release_async (permission, cancellable, callback, user_data);
 }
@@ -239,6 +244,7 @@ g_permission_release_finish (GPermission   *permission,
                              GAsyncResult  *result,
                              GError       **error)
 {
+  g_return_val_if_fail (G_IS_PERMISSION (permission), FALSE);
   return G_PERMISSION_GET_CLASS (permission)
     ->release_finish (permission, result, error);
 }
@@ -258,6 +264,7 @@ g_permission_release_finish (GPermission   *permission,
 gboolean
 g_permission_get_allowed (GPermission *permission)
 {
+  g_return_val_if_fail (G_IS_PERMISSION (permission), FALSE);
   return permission->priv->allowed;
 }
 
@@ -276,6 +283,7 @@ g_permission_get_allowed (GPermission *permission)
 gboolean
 g_permission_get_can_acquire (GPermission *permission)
 {
+  g_return_val_if_fail (G_IS_PERMISSION (permission), FALSE);
   return permission->priv->can_acquire;
 }
 
@@ -294,6 +302,7 @@ g_permission_get_can_acquire (GPermission *permission)
 gboolean
 g_permission_get_can_release (GPermission *permission)
 {
+  g_return_val_if_fail (G_IS_PERMISSION (permission), FALSE);
   return permission->priv->can_release;
 }
 
@@ -318,8 +327,11 @@ g_permission_impl_update (GPermission *permission,
                           gboolean     can_acquire,
                           gboolean     can_release)
 {
-  GObject *object = G_OBJECT (permission);
+  GObject *object;
 
+  g_return_if_fail (G_IS_PERMISSION (permission));
+
+  object = G_OBJECT (permission);
   g_object_freeze_notify (object);
 
   allowed = allowed != FALSE;
