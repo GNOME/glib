@@ -657,6 +657,12 @@ void  g_dbus_connection_remove_filter (GDBusConnection    *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+GLIB_AVAILABLE_IN_2_42
+void  g_dbus_warning_internal (const gchar *log_domain,
+                               const gchar *format_string,
+                               ...);
+#define g_dbus_warning(...) g_dbus_warning_internal (G_LOG_DOMAIN, __VA_ARGS__)
+
 
 G_END_DECLS
 

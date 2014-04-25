@@ -2309,6 +2309,7 @@ on_worker_message_received (GDBusWorker  *worker,
   //g_debug ("in on_worker_message_received");
 
   g_object_ref (message);
+  g_dbus_message_set_connection (message, connection);
   g_dbus_message_lock (message);
 
   //g_debug ("boo ref_count = %d %p %p", G_OBJECT (connection)->ref_count, connection, connection->worker);
@@ -7191,3 +7192,109 @@ g_bus_get_finish (GAsyncResult  *res,
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+static GDBusMessage *
+get_current_message (void)
+{
+  GSourceFunc callback;
+  gpointer user_data;
+  GSource *source;
+
+  source = g_main_current_source ();
+  if (source == NULL)
+    return NULL;
+
+  if (source->callback_funcs == NULL || source->callback_data == NULL)
+    return NULL;
+
+  (* source->callback_funcs->get) (source->callback_data, source, &callback, &user_data);
+
+  if (callback == emit_signal_instance_in_idle_cb)
+    return ((SignalInstance *) user_data)->message;
+
+  else if (callback == invoke_set_property_in_idle_cb)
+    return ((PropertyData *) user_data)->message;
+
+  else if (callback == invoke_get_property_in_idle_cb)
+    return ((PropertyData *) user_data)->message;
+
+  else if (callback == invoke_get_all_properties_in_idle_cb)
+    return ((PropertyGetAllData *) user_data)->message;
+
+  else if (callback == process_subtree_vtable_message_in_idle_cb)
+    return ((SubtreeDeferredData *) user_data)->message;
+
+  else if (callback == call_in_idle_cb)
+    return g_dbus_method_invocation_get_message (user_data);
+
+  else if (g_strcmp0 (g_source_get_name (source), "[gio] complete_in_idle_cb") == 0 &&
+           g_simple_async_result_get_source_tag (user_data) == g_dbus_connection_send_message_with_reply)
+    return g_simple_async_result_get_op_res_gpointer (user_data);
+
+  return NULL;
+}
+
+static gchar *
+get_sender_info (GDBusMessage *message)
+{
+  GDBusConnection *connection;
+  const gchar *id;
+  GVariant *reply;
+  guint32 pid = 0;
+  gchar *cmdline_filename;
+  gchar *cmdline = NULL;
+  GString *result;
+
+  id = g_dbus_message_get_sender (message);
+  connection = g_dbus_message_get_connection (message);
+
+  reply = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
+                                       "org.freedesktop.DBus", "GetConnectionUnixProcessID",
+                                       g_variant_new ("(s)", id), G_VARIANT_TYPE ("(u)"),
+                                       G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL);
+  if (reply)
+    {
+      g_variant_get (reply, "(u)", &pid);
+      g_variant_unref (reply);
+    }
+
+  if (pid)
+    {
+      cmdline_filename = g_strdup_printf ("/proc/%u/cmdline", pid);
+      g_file_get_contents (cmdline_filename, &cmdline, NULL, NULL);
+      g_free (cmdline_filename);
+    }
+
+  result = g_string_new (id);
+  if (pid)
+    g_string_append_printf (result, " pid %u", pid);
+  if (cmdline)
+    g_string_append_printf (result, " argv0 %s", cmdline);
+  g_free (cmdline);
+
+  return g_string_free (result, FALSE);
+}
+
+void
+g_dbus_warning_internal (const gchar *log_domain,
+                         const gchar *format_string,
+                         ...)
+{
+  GDBusMessage *message;
+  gchar *sender;
+  va_list ap;
+  gchar *str;
+
+  va_start (ap, format_string);
+  str = g_strdup_vprintf (format_string, ap);
+  va_end (ap);
+
+  message = get_current_message ();
+  if (message != NULL)
+    sender = get_sender_info (message);
+  else
+    sender = g_strdup ("(none)");
+
+  g_log (log_domain, G_LOG_LEVEL_WARNING, "Invalid D-Bus message from %s: %s", sender, str);
+  g_free (str);
+}

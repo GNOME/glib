@@ -502,6 +502,7 @@ struct _GDBusMessage
   /*< private >*/
   GObject parent_instance;
 
+  GDBusConnection *connection;
   GDBusMessageType type;
   GDBusMessageFlags flags;
   gboolean locked;
@@ -3616,4 +3617,19 @@ g_dbus_message_copy (GDBusMessage  *message,
  out:
 #endif
   return ret;
+}
+
+/* private */
+void
+g_dbus_message_set_connection (GDBusMessage    *message,
+                               GDBusConnection *connection)
+{
+  g_assert (!message->connection);
+  message->connection = g_object_ref (connection);
+}
+
+GDBusConnection *
+g_dbus_message_get_connection (GDBusMessage *message)
+{
+  return message->connection;
 }

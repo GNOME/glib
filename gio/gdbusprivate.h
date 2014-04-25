@@ -145,6 +145,11 @@ void _g_dbus_object_proxy_remove_interface (GDBusObjectProxy *proxy,
 /* Implemented in gdbusconnection.c */
 GDBusConnection *_g_bus_get_singleton_if_exists (GBusType bus_type);
 
+/* Implemented in gdbusmessage.c */
+void g_dbus_message_set_connection (GDBusMessage    *message,
+                                    GDBusConnection *connection);
+GDBusConnection *g_dbus_message_get_connection (GDBusMessage *message);
+
 G_END_DECLS
 
 #endif /* __G_DBUS_PRIVATE_H__ */
