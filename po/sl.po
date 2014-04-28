@@ -149,7 +149,7 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:101
 msgid "Usage:\n"
-msgstr "Uporaba: %s"
+msgstr "Uporaba:\n"
 
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:536
 #: ../gio/gsettings-tool.c:628
