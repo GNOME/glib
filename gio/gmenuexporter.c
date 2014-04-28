@@ -44,7 +44,7 @@
 /* {{{1 D-Bus Interface description */
 
 /* For documentation of this interface, see
- * http://live.gnome.org/GTK+/GApplication-dbus-apis
+ * https://wiki.gnome.org/Projects/GLib/GApplication/DBusAPI
  */
 
 static GDBusInterfaceInfo *
