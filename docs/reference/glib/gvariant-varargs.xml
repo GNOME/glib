@@ -62,7 +62,7 @@
    </listitem>
    <listitem>
     <para>
-     a sequence of zero or more format strings strings, concatenated and enclosed in parentheses
+     a sequence of zero or more format strings, concatenated and enclosed in parentheses
     </para>
    </listitem>
    <listitem>
@@ -471,7 +471,7 @@
     Note that in C, small integer types in variable argument lists are promoted up to <link
     linkend='gint'><type>int</type></link> or <link linkend='guint'><type>unsigned int</type></link> as appropriate, and
     read back accordingly.  <link linkend='gint'><type>int</type></link> is 32 bits on every platform on which GLib is
-    currently suported.  This means that you can use C expressions of type <link linkend='gint'><type>int</type></link>
+    currently supported.  This means that you can use C expressions of type <link linkend='gint'><type>int</type></link>
     with <link linkend='g-variant-new'><function>g_variant_new()</function></link> and format characters
     '<literal>b</literal>', '<literal>y</literal>', '<literal>n</literal>', '<literal>q</literal>',
     '<literal>i</literal>', '<literal>u</literal>' and '<literal>h</literal>'.  Specifically, you can use integer
