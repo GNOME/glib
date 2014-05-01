@@ -4244,3 +4244,40 @@ G_TYPE_NOTIFICATION
 G_TYPE_NOTIFICATION_BACKEND
 g_notification_get_type
 </SECTION>
+
+<SECTION>
+<FILE>glistmodel</FILE>
+<TITLE>GListModel</TITLE>
+GListModel
+g_list_model_new
+<SUBSECTION>
+g_list_model_get_type
+g_list_model_get_item_type
+g_list_model_get_n_items
+g_list_model_get_item
+g_list_model_items_changed
+<SUBSECTION>
+G_TYPE_LIST_MODEL
+G_LIST_MODEL
+G_IS_LIST_MODEL
+G_LIST_MODEL_GET_IFACE
+</SECTION>
+
+<SECTION>
+<FILE>gliststore</FILE>
+<TITLE>GListStore</TITLE>
+GListStore
+g_list_store_new
+<SUBSECTION>
+g_list_store_get_type
+g_list_store_new
+g_list_store_insert
+g_list_store_append
+g_list_store_remove
+g_list_store_remove_all
+g_list_store_splice
+<SUBSECTION>
+#define G_TYPE_LIST_STORE            (g_list_store_get_type ())
+#define G_LIST_STORE(o)              (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_LIST_STORE, GListStore))
+#define G_IS_LIST_STORE(o)           (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_LIST_STORE))
+</SECTION>

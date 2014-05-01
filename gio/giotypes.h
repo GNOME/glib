@@ -61,6 +61,8 @@ typedef struct _GPermission                   GPermission;
 
 typedef struct _GMenuModel                    GMenuModel;
 typedef struct _GNotification                 GNotification;
+typedef struct _GListModel                    GListModel;
+typedef struct _GListStore                    GListStore;
 
 /**
  * GDrive:
