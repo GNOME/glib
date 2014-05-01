@@ -256,32 +256,6 @@ _win32_unset_event_mask (GSocket *socket, int mask)
   recv (sockfd, (gpointer)buf, len, flags)
 #endif
 
-static void
-set_fd_nonblocking (int fd)
-{
-#ifndef G_OS_WIN32
-  GError *error = NULL;
-#else
-  gulong arg;
-#endif
-
-#ifndef G_OS_WIN32
-  if (!g_unix_set_fd_nonblocking (fd, TRUE, &error))
-    {
-      g_warning ("Error setting socket nonblocking: %s", error->message);
-      g_clear_error (&error);
-    }
-#else
-  arg = TRUE;
-
-  if (ioctlsocket (fd, FIONBIO, &arg) == SOCKET_ERROR)
-    {
-      int errsv = get_socket_errno ();
-      g_warning ("Error setting socket status flags: %s", socket_strerror (errsv));
-    }
-#endif
-}
-
 static gboolean
 check_socket (GSocket *socket,
 	      GError **error)
@@ -578,12 +552,34 @@ g_socket_constructed (GObject *object)
 					       socket->priv->protocol,
 					       &socket->priv->construct_error);
 
-  /* Always use native nonblocking sockets, as
-     windows sets sockets to nonblocking automatically
-     in certain operations. This way we make things work
-     the same on all platforms */
   if (socket->priv->fd != -1)
-    set_fd_nonblocking (socket->priv->fd);
+    {
+#ifndef G_OS_WIN32
+      GError *error = NULL;
+#else
+      gulong arg;
+#endif
+
+      /* Always use native nonblocking sockets, as Windows sets sockets to
+       * nonblocking automatically in certain operations. This way we make
+       * things work the same on all platforms.
+       */
+#ifndef G_OS_WIN32
+      if (!g_unix_set_fd_nonblocking (socket->priv->fd, TRUE, &error))
+        {
+          g_warning ("Error setting socket nonblocking: %s", error->message);
+          g_clear_error (&error);
+        }
+#else
+      arg = TRUE;
+
+      if (ioctlsocket (socket->priv->fd, FIONBIO, &arg) == SOCKET_ERROR)
+        {
+          int errsv = get_socket_errno ();
+          g_warning ("Error setting socket status flags: %s", socket_strerror (errsv));
+        }
+#endif
+    }
 }
 
 static void
