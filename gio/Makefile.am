@@ -472,6 +472,8 @@ libgio_2_0_la_SOURCES =		\
 	gmountprivate.h 	\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
+	glistmodel.c 		\
+	gliststore.c 		\
 	$(appinfo_sources) 	\
 	$(unix_sources) 	\
 	$(win32_sources) 	\
@@ -626,6 +628,8 @@ gio_headers =			\
 	gvolumemonitor.h 	\
 	gzlibcompressor.h	\
 	gzlibdecompressor.h	\
+	glistmodel.h		\
+	gliststore.h		\
 	$(application_headers)	\
 	$(settings_headers)	\
 	$(gdbus_headers)	\

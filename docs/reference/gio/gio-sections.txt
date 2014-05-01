@@ -4258,3 +4258,41 @@ G_TYPE_NOTIFICATION
 G_TYPE_NOTIFICATION_BACKEND
 g_notification_get_type
 </SECTION>
+
+<SECTION>
+<FILE>glistmodel</FILE>
+<TITLE>GListModel</TITLE>
+GListModel
+g_list_model_new
+<SUBSECTION>
+g_list_model_get_item_type
+g_list_model_get_n_items
+g_list_model_get_item
+g_list_model_get_object
+g_list_model_items_changed
+<SUBSECTION Standard>
+G_TYPE_LIST_MODEL
+G_LIST_MODEL
+G_IS_LIST_MODEL
+G_LIST_MODEL_GET_IFACE
+<SUBSECTION Private>
+g_list_model_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gliststore</FILE>
+<TITLE>GListStore</TITLE>
+GListStore
+<SUBSECTION>
+g_list_store_get_type
+g_list_store_new
+g_list_store_insert
+g_list_store_append
+g_list_store_remove
+g_list_store_remove_all
+g_list_store_splice
+<SUBSECTION Standard>
+G_TYPE_LIST_STORE
+<SUBSECTION Private>
+g_list_store_get_type
+</SECTION>

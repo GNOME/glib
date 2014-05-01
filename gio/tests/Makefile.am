@@ -62,6 +62,7 @@ test_programs = \
 	tls-interaction				\
 	vfs					\
 	volumemonitor				\
+	glistmodel				\
 	$(NULL)
 
 uninstalled_test_programs = \
