@@ -40,6 +40,7 @@ EXTRA_DIST += 			\
 	sanity_check		\
 	README.commits		\
 	README.in		\
+	README.rationale	\
 	INSTALL.in		\
 	README.win32		\
 	HACKING			\
