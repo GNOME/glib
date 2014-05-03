@@ -161,6 +161,10 @@ my @special_cases;
 my @special_case_offsets;
 my $special_case_offset = 0;
 
+# East asian widths
+
+my @eawidths;
+
 $do_decomp = 0;
 $do_props = 1;
 if (@ARGV && $ARGV[0] eq '-decomp')
@@ -177,10 +181,11 @@ elsif (@ARGV && $ARGV[0] eq '-both')
 
 if (@ARGV != 2) {
     $0 =~ s@.*/@@;
-    die "\nUsage: $0 [-decomp | -both] UNICODE-VERSION DIRECTORY\n\n       DIRECTORY should contain the following Unicode data files:\n       UnicodeData.txt, LineBreak.txt, SpecialCasing.txt, CaseFolding.txt,\n       CompositionExclusions.txt\n\n";
+    die "\nUsage: $0 [-decomp | -both] UNICODE-VERSION DIRECTORY\n\n       DIRECTORY should contain the following Unicode data files:\n       UnicodeData.txt, LineBreak.txt, SpecialCasing.txt, CaseFolding.txt,\n       CompositionExclusions.txt extracted/DerivedEastAsianWidth.txt \n\n";
 }
 
-my ($unicodedatatxt, $linebreaktxt, $specialcasingtxt, $casefoldingtxt, $compositionexclusionstxt);
+my ($unicodedatatxt, $linebreaktxt, $specialcasingtxt, $casefoldingtxt, $compositionexclusionstxt,
+    $derivedeastasianwidth);
 
 my $d = $ARGV[1];
 opendir (my $dir, $d) or die "Cannot open Unicode data dir $d: $!\n";
@@ -193,11 +198,19 @@ for my $f (readdir ($dir))
     $compositionexclusionstxt = "$d/$f" if ($f =~ /^CompositionExclusions.*\.txt/);
 }
 
+my $extd = $ARGV[1] . "/extracted";
+opendir (my $extdir, $extd) or die "Cannot open Unicode/extracted data dir $extd: $!\n";
+for my $f (readdir ($extdir))
+{
+    $derivedeastasianwidthtxt = "$extd/$f" if ($f =~ /^DerivedEastAsianWidth.*\.txt/);
+}
+
 defined $unicodedatatxt or die "Did not find UnicodeData file";
 defined $linebreaktxt or die "Did not find LineBreak file";
 defined $specialcasingtxt or die "Did not find SpecialCasing file";
 defined $casefoldingtxt or die "Did not find CaseFolding file";
 defined $compositionexclusionstxt or die "Did not find CompositionExclusions file";
+defined $derivedeastasianwidthtxt or die "Did not find DerivedEastAsianWidth file";
 
 print "Creating decomp table\n" if ($do_decomp);
 print "Creating property table\n" if ($do_props);
@@ -489,6 +502,31 @@ while (<INPUT>)
 
 close INPUT;
 
+print "Reading derived east asian widths\n";
+
+open (INPUT, "< $derivedeastasianwidthtxt") || exit 1;
+
+while (<INPUT>)
+{
+    my ($start_code, $end_code);
+    
+    chop;
+
+    s/#.*//;
+    next if /^\s*$/;
+    if (!/^([0-9A-F]+)(?:\.\.([0-9A-F]+))?\s*;\s*([A-Za-z_]+)\s*$/) {
+	die "Cannot parse line: '$_'\n";
+    }
+
+    if (defined $2) {
+	push @eawidths, [ hex $1, hex $2, $3 ];
+    } else {
+	push @eawidths, [ hex $1, hex $1, $3 ];
+    }
+}
+
+close INPUT;
+
 if ($do_props) {
     &print_tables ($last_code)
 }
@@ -663,6 +701,11 @@ sub print_tables
     #
     &output_special_case_table (\*OUT);
     &output_casefold_table (\*OUT);
+
+    #
+    # And the widths tables
+    #
+    &output_width_tables (\*OUT);
 
     print OUT "#endif /* CHARTABLES_H */\n";
 
@@ -1334,5 +1377,53 @@ EOT
    printf "Generated %d bytes for casefold table\n", $recordlen * @casefold;
 }
 
-			     
+sub output_one_width_table
+{
+    my ($out, $name, $wpe) = @_;
+    my $start;
+    my $end;
+    my $wp;
+    my $rex;
 
+    print $out "static const struct Interval g_unicode_width_table_${name}[] = {\n";
+
+    $rex = qr/$wpe/;
+
+    for (my $i = 0; $i <= $#eawidths; $i++) {
+        $start = $eawidths[$i]->[0];
+        $end = $eawidths[$i]->[1];
+        $wp = $eawidths[$i]->[2];
+
+        next if ($wp !~ $rex);
+
+        while ($i <= $#eawidths - 1 &&
+               $eawidths[$i + 1]->[0] == $end + 1 &&
+               ($eawidths[$i + 1]->[2] =~ $rex)) {
+            $i++;
+            $end = $eawidths[$i]->[1];
+        }
+        
+	printf $out "{0x%04X, 0x%04X},\n", $start, $end;
+    }
+
+    printf $out "};\n\n";
+}
+
+sub output_width_tables
+{
+    my $out = shift;
+
+    @eawidths = sort { $a->[0] <=> $b->[0] } @eawidths;
+
+    print $out <<EOT;
+
+struct Interval
+{
+  gunichar start, end;
+};
+
+EOT
+
+    &output_one_width_table ($out,"wide", "[FW]");
+    &output_one_width_table ($out, "ambiguous", "[A]");
+}
