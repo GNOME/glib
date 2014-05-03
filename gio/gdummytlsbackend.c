@@ -222,6 +222,7 @@ enum
   PROP_CONN_REHANDSHAKE_MODE,
   PROP_CONN_CERTIFICATE,
   PROP_CONN_DATABASE,
+  PROP_CONN_INTERACTION,
   PROP_CONN_PEER_CERTIFICATE,
   PROP_CONN_PEER_CERTIFICATE_ERRORS,
   PROP_CONN_VALIDATION_FLAGS,
@@ -286,6 +287,7 @@ g_dummy_tls_connection_class_init (GDummyTlsConnectionClass *connection_class)
   g_object_class_override_property (gobject_class, PROP_CONN_REHANDSHAKE_MODE, "rehandshake-mode");
   g_object_class_override_property (gobject_class, PROP_CONN_CERTIFICATE, "certificate");
   g_object_class_override_property (gobject_class, PROP_CONN_DATABASE, "database");
+  g_object_class_override_property (gobject_class, PROP_CONN_INTERACTION, "interaction");
   g_object_class_override_property (gobject_class, PROP_CONN_PEER_CERTIFICATE, "peer-certificate");
   g_object_class_override_property (gobject_class, PROP_CONN_PEER_CERTIFICATE_ERRORS, "peer-certificate-errors");
   g_object_class_override_property (gobject_class, PROP_CONN_VALIDATION_FLAGS, "validation-flags");
