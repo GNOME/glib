@@ -371,6 +371,29 @@ typedef enum
  * @G_UNICODE_SCRIPT_SHARADA:              Sharada. Since: 2.32
  * @G_UNICODE_SCRIPT_SORA_SOMPENG:         Sora Sompeng. Since: 2.32
  * @G_UNICODE_SCRIPT_TAKRI:                Takri. Since: 2.32
+ * @G_UNICODE_SCRIPT_BASSA_VAH:            Bassa. Since: 2.42
+ * @G_UNICODE_SCRIPT_CAUCASIAN_ALBANIAN:   Caucasian Albanian. Since: 2.42
+ * @G_UNICODE_SCRIPT_DUPLOYAN:             Duployan. Since: 2.42
+ * @G_UNICODE_SCRIPT_ELBASAN:              Elbasan. Since: 2.42
+ * @G_UNICODE_SCRIPT_GRANTHA:              Grantha. Since: 2.42
+ * @G_UNICODE_SCRIPT_KHOJKI:               Kjohki. Since: 2.42
+ * @G_UNICODE_SCRIPT_KHUDAWADI:            Khudawadi, Sindhi. Since: 2.42
+ * @G_UNICODE_SCRIPT_LINEAR_A:             Linear A. Since: 2.42
+ * @G_UNICODE_SCRIPT_MAHAJANI:             Mahajani. Since: 2.42
+ * @G_UNICODE_SCRIPT_MANICHAEAN:           Manichaean. Since: 2.42
+ * @G_UNICODE_SCRIPT_MENDE_KIKAKUI:        Mende Kikakui. Since: 2.42
+ * @G_UNICODE_SCRIPT_MODI:                 Modi. Since: 2.42
+ * @G_UNICODE_SCRIPT_MRO:                  Mro. Since: 2.42
+ * @G_UNICODE_SCRIPT_NABATAEAN:            Nabataean. Since: 2.42
+ * @G_UNICODE_SCRIPT_OLD_NORTH_ARABIAN:    Old North Arabian. Since: 2.42
+ * @G_UNICODE_SCRIPT_OLD_PERMIC:           Old Permic. Since: 2.42
+ * @G_UNICODE_SCRIPT_PAHAWH_HMONG:         Pahawh Hmong. Since: 2.42
+ * @G_UNICODE_SCRIPT_PALMYRENE:            Palmyrene. Since: 2.42
+ * @G_UNICODE_SCRIPT_PAU_CIN_HAU:          Pau Cin Hau. Since: 2.42
+ * @G_UNICODE_SCRIPT_PSALTER_PAHLAVI:      Psalter Pahlavi. Since: 2.42
+ * @G_UNICODE_SCRIPT_SIDDHAM:              Siddham. Since: 2.42
+ * @G_UNICODE_SCRIPT_TIRHUTA:              Tirhuta. Since: 2.42
+ * @G_UNICODE_SCRIPT_WARANG_CITI           Warang Citi. Since: 2.42
  *
  * The #GUnicodeScript enumeration identifies different writing
  * systems. The values correspond to the names as defined in the
@@ -502,7 +525,32 @@ typedef enum
   G_UNICODE_SCRIPT_MIAO,                   /* Plrd */
   G_UNICODE_SCRIPT_SHARADA,                /* Shrd */
   G_UNICODE_SCRIPT_SORA_SOMPENG,           /* Sora */
-  G_UNICODE_SCRIPT_TAKRI                   /* Takr */
+  G_UNICODE_SCRIPT_TAKRI,                  /* Takr */
+
+  /* Unicode 7.0 additions */
+  G_UNICODE_SCRIPT_BASSA_VAH,              /* Bass */
+  G_UNICODE_SCRIPT_CAUCASIAN_ALBANIAN,     /* Aghb */
+  G_UNICODE_SCRIPT_DUPLOYAN,               /* Dupl */
+  G_UNICODE_SCRIPT_ELBASAN,                /* Elba */
+  G_UNICODE_SCRIPT_GRANTHA,                /* Gran */
+  G_UNICODE_SCRIPT_KHOJKI,                 /* Khoj */
+  G_UNICODE_SCRIPT_KHUDAWADI,              /* Sind */
+  G_UNICODE_SCRIPT_LINEAR_A,               /* Lina */
+  G_UNICODE_SCRIPT_MAHAJANI,               /* Mahj */
+  G_UNICODE_SCRIPT_MANICHAEAN,             /* Manu */
+  G_UNICODE_SCRIPT_MENDE_KIKAKUI,          /* Mend */
+  G_UNICODE_SCRIPT_MODI,                   /* Modi */
+  G_UNICODE_SCRIPT_MRO,                    /* Mroo */
+  G_UNICODE_SCRIPT_NABATAEAN,              /* Nbat */
+  G_UNICODE_SCRIPT_OLD_NORTH_ARABIAN,      /* Narb */
+  G_UNICODE_SCRIPT_OLD_PERMIC,             /* Perm */
+  G_UNICODE_SCRIPT_PAHAWH_HMONG,           /* Hmng */
+  G_UNICODE_SCRIPT_PALMYRENE,              /* Palm */
+  G_UNICODE_SCRIPT_PAU_CIN_HAU,            /* Pauc */
+  G_UNICODE_SCRIPT_PSALTER_PAHLAVI,        /* Phlp */
+  G_UNICODE_SCRIPT_SIDDHAM,                /* Sidd */
+  G_UNICODE_SCRIPT_TIRHUTA,                /* Tirh */
+  G_UNICODE_SCRIPT_WARANG_CITI             /* Wara */
 } GUnicodeScript;
 
 GLIB_AVAILABLE_IN_ALL

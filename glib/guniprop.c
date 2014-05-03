@@ -1367,6 +1367,31 @@ static const guint32 iso15924_tags[] =
     PACK ('S','o','r','a'), /* G_UNICODE_SCRIPT_SORA_SOMPENG */
     PACK ('T','a','k','r'), /* G_UNICODE_SCRIPT_TAKRI */
 
+  /* Unicode 7.0 additions */
+    PACK ('B','a','s','s'), /* G_UNICODE_SCRIPT_BASSA_VAH */
+    PACK ('A','g','h','b'), /* G_UNICODE_SCRIPT_CAUCASIAN_ALBANIAN */
+    PACK ('D','u','p','l'), /* G_UNICODE_SCRIPT_DUPLOYAN */
+    PACK ('E','l','b','a'), /* G_UNICODE_SCRIPT_ELBASAN */
+    PACK ('G','r','a','n'), /* G_UNICODE_SCRIPT_GRANTHA */
+    PACK ('K','h','o','j'), /* G_UNICODE_SCRIPT_KHOJKI*/
+    PACK ('S','i','n','d'), /* G_UNICODE_SCRIPT_KHUDAWADI */
+    PACK ('L','i','n','a'), /* G_UNICODE_SCRIPT_LINEAR_A */
+    PACK ('M','a','h','j'), /* G_UNICODE_SCRIPT_MAHAJANI */
+    PACK ('M','a','n','u'), /* G_UNICODE_SCRIPT_MANICHAEAN */
+    PACK ('M','e','n','d'), /* G_UNICODE_SCRIPT_MENDE_KIKAKUI */
+    PACK ('M','o','d','i'), /* G_UNICODE_SCRIPT_MODI */
+    PACK ('M','r','o','o'), /* G_UNICODE_SCRIPT_MRO */
+    PACK ('N','b','a','t'), /* G_UNICODE_SCRIPT_NABATAEAN */
+    PACK ('N','a','r','b'), /* G_UNICODE_SCRIPT_OLD_NORTH_ARABIAN */
+    PACK ('P','e','r','m'), /* G_UNICODE_SCRIPT_OLD_PERMIC */
+    PACK ('H','m','n','g'), /* G_UNICODE_SCRIPT_PAHAWH_HMONG */
+    PACK ('P','a','l','m'), /* G_UNICODE_SCRIPT_PALMYRENE */
+    PACK ('P','a','u','c'), /* G_UNICODE_SCRIPT_PAU_CIN_HAU */
+    PACK ('P','h','l','p'), /* G_UNICODE_SCRIPT_PSALTER_PAHLAVI */
+    PACK ('S','i','d','d'), /* G_UNICODE_SCRIPT_SIDDHAM */
+    PACK ('T','i','r','h'), /* G_UNICODE_SCRIPT_TIRHUTA */
+    PACK ('W','a','r','a'), /* G_UNICODE_SCRIPT_WARANG_CITI */
+
 #undef PACK
 };
 
