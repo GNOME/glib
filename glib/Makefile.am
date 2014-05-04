@@ -127,6 +127,7 @@ libglib_2_0_la_SOURCES = 	\
 	gfileutils.c		\
 	ggettext.c		\
 	ghash.c			\
+	gheap.c			\
 	ghmac.c			\
 	ghook.c			\
 	ghostutils.c		\
@@ -263,6 +264,7 @@ glibsubinclude_HEADERS = \
 	gfileutils.h	\
 	ggettext.h	\
 	ghash.h		\
+	gheap.h		\
 	ghmac.h		\
 	ghook.h		\
 	ghostutils.h	\

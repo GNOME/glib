@@ -48,6 +48,7 @@
 #include <glib/gfileutils.h>
 #include <glib/ggettext.h>
 #include <glib/ghash.h>
+#include <glib/gheap.h>
 #include <glib/ghmac.h>
 #include <glib/ghook.h>
 #include <glib/ghostutils.h>

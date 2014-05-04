@@ -48,6 +48,7 @@ test_programs = \
 	error				\
 	fileutils			\
 	gdatetime			\
+	gheap				\
 	gvariant			\
 	hash				\
 	hmac				\

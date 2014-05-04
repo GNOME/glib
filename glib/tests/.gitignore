@@ -25,6 +25,7 @@ gvariant
 gwakeup
 gwakeup-fallback
 hash
+gheap
 hmac
 hook
 hostutils
