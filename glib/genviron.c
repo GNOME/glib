@@ -256,7 +256,7 @@ g_getenv (const gchar *variable)
  * Note that on some systems, when variables are overwritten, the memory
  * used for the previous variables and its value isn't reclaimed.
  *
- * You should be mindful fo the fact that environment variable handling
+ * You should be mindful of the fact that environment variable handling
  * in UNIX is not thread-safe, and your program may crash if one thread
  * calls g_setenv() while another thread is calling getenv(). (And note
  * that many functions, such as gettext(), call getenv() internally.)

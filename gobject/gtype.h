@@ -994,7 +994,7 @@ typedef enum    /*< skip >*/
  *  and to do type-specific setup such as registering signals and object
  *  properties.
  * @class_finalize: Location of the class finalization function for
- *  classed and instantiatable types. Location fo the default vtable 
+ *  classed and instantiatable types. Location of the default vtable
  *  finalization function for interface types. (optional)
  * @class_data: User-supplied data passed to the class init/finalize functions.
  * @instance_size: Size of the instance (object) structure (required for instantiatable types only).
