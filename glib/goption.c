@@ -2038,6 +2038,7 @@ g_option_context_parse (GOptionContext   *context,
                       if (new_arg)
                         new_arg[arg_index] = '\0';
                       add_pending_null (context, &((*argv)[i]), new_arg);
+                      i = new_i;
                     }
                   else if (parsed)
                     {
