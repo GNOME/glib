@@ -2365,6 +2365,52 @@ flag_optional_int (void)
   g_option_context_free (context);
 }
 
+static void
+short_remaining (void)
+{
+  gboolean ignore = FALSE;
+  gboolean remaining = FALSE;
+  gint number = 0;
+  gchar* text = NULL;
+  gchar** files = NULL;
+  GError* error = NULL;
+  GOptionEntry entries[] =
+  {
+    { "ignore", 'i', 0, G_OPTION_ARG_NONE, &ignore, NULL, NULL },
+    { "remaining", 'r', 0, G_OPTION_ARG_NONE, &remaining, NULL, NULL },
+    { "number", 'n', 0, G_OPTION_ARG_INT, &number, NULL, NULL },
+    { "text", 't', 0, G_OPTION_ARG_STRING, &text, NULL, NULL },
+    { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &files, NULL, NULL },
+    { NULL }
+  };
+  GOptionContext* context;
+  gchar **argv;
+  gint argc;
+
+  g_test_bug ("729563");
+
+  argv = split_string ("program -ri -n 4 -t hello file1 file2", &argc);
+
+  context = g_option_context_new (NULL);
+
+  g_option_context_add_main_entries (context, entries, NULL);
+  g_option_context_set_ignore_unknown_options (context, TRUE);
+
+  g_option_context_parse (context, &argc, &argv, &error);
+  g_assert_no_error (error);
+
+  g_assert (ignore);
+  g_assert (remaining);
+  g_assert_cmpint (number, ==, 4);
+  g_assert_cmpstr (text, ==, "hello");
+  g_assert_cmpstr (files[0], ==, "file1"); 
+  g_assert_cmpstr (files[1], ==, "file2"); 
+  g_assert (files[2] == NULL); 
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2375,6 +2421,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_bug_base ("http://bugzilla.gnome.org/");
+
   g_test_add_func ("/option/help/options", test_help);
   g_test_add_func ("/option/help/no-options", test_help_no_options);
   g_test_add_func ("/option/help/no-help-options", test_help_no_help_options);
@@ -2473,6 +2520,7 @@ main (int   argc,
   g_test_add_func ("/option/bug/lonely-dash", lonely_dash_test);
   g_test_add_func ("/option/bug/missing-arg", missing_arg_test);
   g_test_add_func ("/option/bug/dash-arg", dash_arg_test);
+  g_test_add_func ("/option/bug/short-remaining", short_remaining); 
 
   return g_test_run();
 }
