@@ -73,6 +73,8 @@ gboolean               g_callable_info_invoke          (GICallableInfo   *info,
                                                         gboolean          is_method,
                                                         gboolean          throws,
                                                         GError          **error);
+GITransfer             g_callable_info_get_instance_ownership_transfer (GICallableInfo *info);
+
 G_END_DECLS
 
 

@@ -465,6 +465,8 @@ typedef struct {
  *   freeing the container, but not its contents.
  * @skip_return: Indicates that the return value is only useful in C and should
  *   be skipped.
+ * @instance_transfer_ownership: When calling, the function assumes ownership of
+ *   the instance parameter.
  * @reserved: Reserved for future use.
  * @n_arguments: The number of arguments that this function expects, also the
  *   length of the array of ArgBlobs.
@@ -479,7 +481,8 @@ typedef struct {
   guint16        caller_owns_return_value     : 1;
   guint16        caller_owns_return_container : 1;
   guint16        skip_return                  : 1;
-  guint16        reserved                     :12;
+  guint16        instance_transfer_ownership  : 1;
+  guint16        reserved                     :11;
 
   guint16        n_arguments;
 

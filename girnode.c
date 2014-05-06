@@ -1664,6 +1664,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob2->caller_owns_return_value = function->result->transfer;
 	blob2->caller_owns_return_container = function->result->shallow_transfer;
 	blob2->skip_return = function->result->skip;
+        blob2->instance_transfer_ownership = function->instance_transfer_full;
 	blob2->reserved = 0;
 	blob2->n_arguments = n;
 
@@ -1762,6 +1763,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob2->may_return_null = signal->result->nullable;
 	blob2->caller_owns_return_value = signal->result->transfer;
 	blob2->caller_owns_return_container = signal->result->shallow_transfer;
+        blob2->instance_transfer_ownership = signal->instance_transfer_full;
 	blob2->reserved = 0;
 	blob2->n_arguments = n;
 
@@ -1820,6 +1822,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob2->may_return_null = vfunc->result->nullable;
 	blob2->caller_owns_return_value = vfunc->result->transfer;
 	blob2->caller_owns_return_container = vfunc->result->shallow_transfer;
+        blob2->instance_transfer_ownership = vfunc->instance_transfer_full;
 	blob2->reserved = 0;
 	blob2->n_arguments = n;
 

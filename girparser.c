@@ -1047,6 +1047,71 @@ parse_param_transfer (GIrNodeParam *param, const gchar *transfer, const gchar *n
 }
 
 static gboolean
+start_instance_parameter (GMarkupParseContext *context,
+                          const gchar         *element_name,
+                          const gchar        **attribute_names,
+                          const gchar        **attribute_values,
+                          ParseContext        *ctx,
+                          GError             **error)
+{
+  const gchar *transfer;
+  gboolean transfer_full;
+
+  if (!(strcmp (element_name, "instance-parameter") == 0 &&
+	ctx->state == STATE_FUNCTION_PARAMETERS))
+    return FALSE;
+
+  transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
+
+  state_switch (ctx, STATE_PASSTHROUGH);
+
+  if (strcmp (transfer, "full") == 0)
+    transfer_full = TRUE;
+  else if (strcmp (transfer, "none") == 0)
+    transfer_full = FALSE;
+  else
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+		   G_MARKUP_ERROR_INVALID_CONTENT,
+		   "invalid value for 'transfer-ownership' for instance parameter: %s", transfer);
+      return FALSE;
+    }
+
+  switch (CURRENT_NODE (ctx)->type)
+    {
+    case G_IR_NODE_FUNCTION:
+    case G_IR_NODE_CALLBACK:
+      {
+	GIrNodeFunction *func;
+
+	func = (GIrNodeFunction *)CURRENT_NODE (ctx);
+        func->instance_transfer_full = transfer_full;
+      }
+      break;
+    case G_IR_NODE_SIGNAL:
+      {
+	GIrNodeSignal *signal;
+
+	signal = (GIrNodeSignal *)CURRENT_NODE (ctx);
+        signal->instance_transfer_full = transfer_full;
+      }
+      break;
+    case G_IR_NODE_VFUNC:
+      {
+	GIrNodeVFunc *vfunc;
+
+	vfunc = (GIrNodeVFunc *)CURRENT_NODE (ctx);
+        vfunc->instance_transfer_full = transfer_full;
+      }
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+
+  return TRUE;
+}
+
+static gboolean
 start_parameter (GMarkupParseContext *context,
 		 const gchar         *element_name,
 		 const gchar        **attribute_names,
@@ -2848,11 +2913,10 @@ start_element_handler (GMarkupParseContext *context,
 				 attribute_names, attribute_values,
 				 ctx, error))
 	goto out;
-      else if (strcmp (element_name, "instance-parameter") == 0)
-        {
-          state_switch (ctx, STATE_PASSTHROUGH);
-          goto out;
-        }
+      else if (start_instance_parameter (context, element_name,
+				attribute_names, attribute_values,
+				ctx, error))
+	goto out;
       else if (strcmp (element_name, "c:include") == 0)
 	{
 	  state_switch (ctx, STATE_C_INCLUDE);
