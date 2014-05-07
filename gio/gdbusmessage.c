@@ -1451,7 +1451,7 @@ parse_value_from_blob (GMemoryBuffer       *buf,
                indent, "",
                just_align ? "Aligning" : "Reading",
                s,
-               (gint) g_seekable_tell (G_SEEKABLE (buf)));
+               (gint) buf->pos);
       g_free (s);
     }
 #endif /* DEBUG_SERIALIZER */
