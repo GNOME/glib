@@ -3552,6 +3552,8 @@ g_file_move (GFile                  *source,
           g_propagate_error (error, my_error);
           return FALSE;
         }
+      else
+        g_clear_error (&my_error);
     }
 
   /* If the types are different, and the destination method failed
@@ -3577,6 +3579,8 @@ g_file_move (GFile                  *source,
               g_propagate_error (error, my_error);
               return FALSE;
             }
+          else
+            g_clear_error (&my_error);
         }
     }
 
