@@ -275,6 +275,7 @@ test_ip_async (GSocketFamily family)
 
   data = create_server (family, echo_server_thread, FALSE);
   addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
 
   client = g_socket_new (family,
 			 G_SOCKET_TYPE_STREAM,
@@ -361,6 +362,7 @@ test_ip_sync (GSocketFamily family)
 
   data = create_server (family, echo_server_thread, FALSE);
   addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
 
   client = g_socket_new (family,
 			 G_SOCKET_TYPE_STREAM,
@@ -468,6 +470,7 @@ test_close_graceful (void)
 
   data = create_server (family, graceful_server_thread, FALSE);
   addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
 
   client = g_socket_new (family,
 			 G_SOCKET_TYPE_STREAM,
@@ -584,6 +587,7 @@ test_ipv6_v4mapped (void)
   g_socket_set_timeout (client, 1);
 
   addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
   iaddr = g_inet_address_new_loopback (G_SOCKET_FAMILY_IPV4);
   v4addr = g_inet_socket_address_new (iaddr, g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (addr)));
   g_object_unref (iaddr);
@@ -620,6 +624,7 @@ test_timed_wait (void)
 
   data = create_server (G_SOCKET_FAMILY_IPV4, echo_server_thread, FALSE);
   addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
 
   client = g_socket_new (G_SOCKET_FAMILY_IPV4,
 			 G_SOCKET_TYPE_STREAM,
