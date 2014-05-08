@@ -237,11 +237,11 @@ struct _GSignalInvocationHint
  * @n_params: The number of parameters that user callbacks take.
  * @param_types: (array length=n_params): The individual parameter types for
  *  user callbacks, note that the effective callback signature is:
- *  <programlisting>
+ *  |[<!-- language="C" -->
  *  @return_type callback (#gpointer     data1,
  *  [param_types param_names,]
  *  gpointer     data2);
- *  </programlisting>
+ *  ]|
  * 
  * A structure holding in-depth information for a specific signal. It is
  * filled in by the g_signal_query() function.
