@@ -15,4 +15,5 @@ Icon=security-medium
 Exec=true
 Terminal=false
 Type=Application
-NoDisplay=true
+OnlyShowIn=GNOME-Classic
+NotShowIn=GNOME

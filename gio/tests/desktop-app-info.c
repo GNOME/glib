@@ -429,7 +429,8 @@ run_apps (const gchar *command,
           gboolean     with_usr,
           gboolean     with_home,
           const gchar *locale_name,
-          const gchar *language)
+          const gchar *language,
+          const gchar *xdg_current_desktop)
 {
   gboolean success;
   gchar **envp;
@@ -472,6 +473,11 @@ run_apps (const gchar *command,
     envp = g_environ_setenv (envp, "LANGUAGE", language, TRUE);
   else
     envp = g_environ_unsetenv (envp, "LANGUAGE");
+
+  if (xdg_current_desktop)
+    envp = g_environ_setenv (envp, "XDG_CURRENT_DESKTOP", xdg_current_desktop, TRUE);
+  else
+    envp = g_environ_unsetenv (envp, "XDG_CURRENT_DESKTOP");
 
   success = g_spawn_sync (NULL, argv, envp, 0, NULL, NULL, &out, NULL, &status, NULL);
   g_assert (success);
@@ -521,7 +527,7 @@ assert_list (const gchar *expected,
 {
   gchar *result;
 
-  result = run_apps ("list", NULL, with_usr, with_home, locale_name, language);
+  result = run_apps ("list", NULL, with_usr, with_home, locale_name, language, NULL);
   g_strchomp (result);
   assert_strings_equivalent (expected, result);
   g_free (result);
@@ -537,7 +543,7 @@ assert_info (const gchar *desktop_id,
 {
   gchar *result;
 
-  result = run_apps ("show-info", desktop_id, with_usr, with_home, locale_name, language);
+  result = run_apps ("show-info", desktop_id, with_usr, with_home, locale_name, language, NULL);
   g_assert_cmpstr (result, ==, expected);
   g_free (result);
 }
@@ -556,7 +562,7 @@ assert_search (const gchar *search_string,
   gint i;
 
   expected_lines = g_strsplit (expected, "\n", -1);
-  result = run_apps ("search", search_string, with_usr, with_home, locale_name, language);
+  result = run_apps ("search", search_string, with_usr, with_home, locale_name, language, NULL);
   result_lines = g_strsplit (result, "\n", -1);
   g_assert_cmpint (g_strv_length (expected_lines), ==, g_strv_length (result_lines));
   for (i = 0; expected_lines[i]; i++)
@@ -574,7 +580,7 @@ assert_implementations (const gchar *interface,
 {
   gchar *result;
 
-  result = run_apps ("implementations", interface, with_usr, with_home, NULL, NULL);
+  result = run_apps ("implementations", interface, with_usr, with_home, NULL, NULL, NULL);
   g_strchomp (result);
   assert_strings_equivalent (expected, result);
   g_free (result);
@@ -707,6 +713,31 @@ test_implements (void)
   assert_implementations ("org.gnome.Shell.SearchProvider2", "", FALSE, FALSE);
 }
 
+static void
+assert_shown (const gchar *desktop_id,
+              gboolean     expected,
+              const gchar *xdg_current_desktop)
+{
+  gchar *result;
+
+  result = run_apps ("should-show", desktop_id, TRUE, TRUE, NULL, NULL, xdg_current_desktop);
+  g_assert_cmpstr (result, ==, expected ? "true\n" : "false\n");
+  g_free (result);
+}
+
+static void
+test_show_in (void)
+{
+  assert_shown ("gcr-prompter.desktop", FALSE, NULL);
+  assert_shown ("gcr-prompter.desktop", FALSE, "GNOME");
+  assert_shown ("gcr-prompter.desktop", FALSE, "KDE");
+  assert_shown ("gcr-prompter.desktop", FALSE, "GNOME:GNOME-Classic");
+  assert_shown ("gcr-prompter.desktop", TRUE, "GNOME-Classic:GNOME");
+  assert_shown ("gcr-prompter.desktop", TRUE, "GNOME-Classic");
+  assert_shown ("gcr-prompter.desktop", TRUE, "GNOME-Classic:KDE");
+  assert_shown ("gcr-prompter.desktop", TRUE, "KDE:GNOME-Classic");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -727,6 +758,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/actions", test_actions);
   g_test_add_func ("/desktop-app-info/search", test_search);
   g_test_add_func ("/desktop-app-info/implements", test_implements);
+  g_test_add_func ("/desktop-app-info/show-in", test_show_in);
 
   result = g_test_run ();
 

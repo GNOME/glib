@@ -136,8 +136,6 @@ test_show_in (void)
   GAppInfo *appinfo;
   const gchar *path;
 
-  g_desktop_app_info_set_desktop_env ("GNOME");
-
   path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
   g_assert (g_app_info_should_show (appinfo));
@@ -476,6 +474,8 @@ test_from_keyfile (void)
 int
 main (int argc, char *argv[])
 {
+  g_setenv ("XDG_CURRENT_DESKTOP", "GNOME", TRUE);
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/appinfo/basic", test_basic);

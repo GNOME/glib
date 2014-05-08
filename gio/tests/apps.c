@@ -107,5 +107,17 @@ main (int argc, char **argv)
       print_app_list (list);
     }
 
+  else if (g_str_equal (argv[1], "should-show"))
+    {
+      GAppInfo *info;
+
+      info = (GAppInfo *) g_desktop_app_info_new (argv[2]);
+      if (info)
+        {
+          g_print ("%s\n", g_app_info_should_show (info) ? "true" : "false");
+          g_object_unref (info);
+        }
+    }
+
   return 0;
 }
