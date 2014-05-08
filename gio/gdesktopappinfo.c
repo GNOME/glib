@@ -132,9 +132,6 @@ typedef enum {
 G_DEFINE_TYPE_WITH_CODE (GDesktopAppInfo, g_desktop_app_info, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_APP_INFO, g_desktop_app_info_iface_init))
 
-G_LOCK_DEFINE_STATIC (g_desktop_env);
-static gchar *g_desktop_env = NULL;
-
 /* DesktopFileDir implementation {{{1 */
 
 typedef struct
@@ -236,6 +233,29 @@ get_lowercase_current_desktops (void)
         }
       else
         tmp = g_new0 (gchar *, 0 + 1);
+
+      g_once_init_leave (&result, tmp);
+    }
+
+  return (const gchar **) result;
+}
+
+static const gchar * const *
+get_current_desktops (const gchar *value)
+{
+  static gchar **result;
+
+  if (g_once_init_enter (&result))
+    {
+      gchar **tmp;
+
+      if (!value)
+        value = g_getenv ("XDG_CURRENT_DESKTOP");
+
+      if (!value)
+        value = "";
+
+      tmp = g_strsplit (value, ":", 0);
 
       g_once_init_leave (&result, tmp);
     }
@@ -2040,14 +2060,16 @@ g_desktop_app_info_get_nodisplay (GDesktopAppInfo *info)
 /**
  * g_desktop_app_info_get_show_in:
  * @info: a #GDesktopAppInfo
- * @desktop_env: a string specifying a desktop name
+ * @desktop_env: (nullable): a string specifying a desktop name
  *
  * Checks if the application info should be shown in menus that list available
  * applications for a specific name of the desktop, based on the
  * `OnlyShowIn` and `NotShowIn` keys.
  *
- * If @desktop_env is %NULL, then the name of the desktop set with
- * g_desktop_app_info_set_desktop_env() is used.
+ * @desktop_env should typically be given as %NULL, in which case the
+ * `XDG_CURRENT_DESKTOP` environment variable is consulted.  If you want
+ * to override the default mechanism then you may specify @desktop_env,
+ * but this is not recommended.
  *
  * Note that g_app_info_should_show() for @info will include this check (with
  * %NULL for @desktop_env) as well as additional checks.
@@ -2062,45 +2084,33 @@ gboolean
 g_desktop_app_info_get_show_in (GDesktopAppInfo *info,
                                 const gchar     *desktop_env)
 {
-  gboolean found;
-  int i;
+  const gchar *specified_envs[] = { desktop_env, NULL };
+  const gchar * const *envs;
+  gint i;
 
   g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), FALSE);
 
-  if (!desktop_env) {
-    G_LOCK (g_desktop_env);
-    desktop_env = g_desktop_env;
-    G_UNLOCK (g_desktop_env);
-  }
+  if (desktop_env)
+    envs = specified_envs;
+  else
+    envs = get_current_desktops (NULL);
 
-  if (info->only_show_in)
+  for (i = 0; envs[i]; i++)
     {
-      if (desktop_env == NULL)
-        return FALSE;
+      gint j;
 
-      found = FALSE;
-      for (i = 0; info->only_show_in[i] != NULL; i++)
-        {
-          if (strcmp (info->only_show_in[i], desktop_env) == 0)
-            {
-              found = TRUE;
-              break;
-            }
-        }
-      if (!found)
-        return FALSE;
-    }
+      if (info->only_show_in)
+        for (j = 0; info->only_show_in[j]; j++)
+          if (g_str_equal (info->only_show_in[j], envs[i]))
+            return TRUE;
 
-  if (info->not_show_in && desktop_env)
-    {
-      for (i = 0; info->not_show_in[i] != NULL; i++)
-        {
-          if (strcmp (info->not_show_in[i], desktop_env) == 0)
+      if (info->not_show_in)
+        for (j = 0; info->not_show_in[j]; j++)
+          if (g_str_equal (info->not_show_in[j], envs[i]))
             return FALSE;
-        }
     }
 
-  return TRUE;
+  return info->only_show_in == NULL;
 }
 
 /* Launching... {{{2 */
@@ -2958,26 +2968,15 @@ g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
  * `OnlyShowIn` and `NotShowIn`
  * desktop entry fields.
  *
- * The 
- * [Desktop Menu specification](http://standards.freedesktop.org/menu-spec/latest/)
- * recognizes the following:
- * - GNOME
- * - KDE
- * - ROX
- * - XFCE
- * - LXDE
- * - Unity
- * - Old
- *
  * Should be called only once; subsequent calls are ignored.
+ *
+ * Deprecated:2.42:do not use this API.  Since 2.42 the value of the
+ * `XDG_CURRENT_DESKTOP` environment variable will be used.
  */
 void
 g_desktop_app_info_set_desktop_env (const gchar *desktop_env)
 {
-  G_LOCK (g_desktop_env);
-  if (!g_desktop_env)
-    g_desktop_env = g_strdup (desktop_env);
-  G_UNLOCK (g_desktop_env);
+  get_current_desktops (desktop_env);
 }
 
 static gboolean

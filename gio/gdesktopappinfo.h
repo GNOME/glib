@@ -71,7 +71,7 @@ GDesktopAppInfo *g_desktop_app_info_new               (const char      *desktop_
 GLIB_AVAILABLE_IN_ALL
 gboolean         g_desktop_app_info_get_is_hidden     (GDesktopAppInfo *info);
 
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_42
 void             g_desktop_app_info_set_desktop_env   (const char      *desktop_env);
 
 GLIB_AVAILABLE_IN_2_36
