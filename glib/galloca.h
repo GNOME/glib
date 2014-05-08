@@ -65,33 +65,26 @@ G_END_DECLS
  * stack frame is cleaned up. This macro essentially just wraps the alloca()
  * function present on most UNIX variants.
  * Thus it provides the same advantages and pitfalls as alloca():
- * <variablelist>
- *   <varlistentry><term></term><listitem><para>
- *     + alloca() is very fast, as on most systems it's implemented by just adjusting
- *     the stack pointer register.
- *   </para></listitem></varlistentry>
- *   <varlistentry><term></term><listitem><para>
- *     + It doesn't cause any memory fragmentation, within its scope, separate alloca()
- *     blocks just build up and are released together at function end.
- *   </para></listitem></varlistentry>
- *   <varlistentry><term></term><listitem><para>
- *     - Allocation sizes have to fit into the current stack frame. For instance in a
- *       threaded environment on Linux, the per-thread stack size is limited to 2 Megabytes,
- *       so be sparse with alloca() uses.
- *   </para></listitem></varlistentry>
- *   <varlistentry><term></term><listitem><para>
- *     - Allocation failure due to insufficient stack space is not indicated with a %NULL
- *       return like e.g. with malloc(). Instead, most systems probably handle it the same
- *       way as out of stack space situations from infinite function recursion, i.e.
- *       with a segmentation fault.
- *   </para></listitem></varlistentry>
- *   <varlistentry><term></term><listitem><para>
- *     - Special care has to be taken when mixing alloca() with GNU C variable sized arrays.
- *       Stack space allocated with alloca() in the same scope as a variable sized array
- *       will be freed together with the variable sized array upon exit of that scope, and
- *       not upon exit of the enclosing function scope.
- *   </para></listitem></varlistentry>
- * </variablelist>
+ *
+ * - alloca() is very fast, as on most systems it's implemented by just adjusting
+ *   the stack pointer register.
+ *
+ * - It doesn't cause any memory fragmentation, within its scope, separate alloca()
+ *   blocks just build up and are released together at function end.
+ *
+ * - Allocation sizes have to fit into the current stack frame. For instance in a
+ *   threaded environment on Linux, the per-thread stack size is limited to 2 Megabytes,
+ *   so be sparse with alloca() uses.
+ *
+ * - Allocation failure due to insufficient stack space is not indicated with a %NULL
+ *   return like e.g. with malloc(). Instead, most systems probably handle it the same
+ *   way as out of stack space situations from infinite function recursion, i.e.
+ *   with a segmentation fault.
+ *
+ * - Special care has to be taken when mixing alloca() with GNU C variable sized arrays.
+ *   Stack space allocated with alloca() in the same scope as a variable sized array
+ *   will be freed together with the variable sized array upon exit of that scope, and
+ *   not upon exit of the enclosing function scope.
  * 
  * Returns: space for @size bytes, allocated on the stack
  */
