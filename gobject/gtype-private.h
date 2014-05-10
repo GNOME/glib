@@ -26,6 +26,8 @@
 
 G_BEGIN_DECLS
 
+extern GTypeDebugFlags _g_type_debug_flags;
+
 typedef struct _GRealClosure  GRealClosure;
 struct _GRealClosure
 {

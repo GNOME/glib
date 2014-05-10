@@ -1984,7 +1984,6 @@ const gchar *    g_type_name_from_class         (GTypeClass	*g_class);
  * A bit in the type number that's supposed to be left untouched.
  */
 #define	G_TYPE_FLAG_RESERVED_ID_BIT	((GType) (1 << 0))
-extern GTypeDebugFlags			_g_type_debug_flags;
 
 G_END_DECLS
 
