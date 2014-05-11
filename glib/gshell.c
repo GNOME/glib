@@ -619,9 +619,10 @@ tokenize_command_line (const gchar *command_line,
 /**
  * g_shell_parse_argv:
  * @command_line: command line to parse
- * @argcp: (out): return location for number of args
- * @argvp: (out) (array length=argcp zero-terminated=1): return location for array of args
- * @error: return location for error
+ * @argcp: (out) (optional): return location for number of args, or %NULL
+ * @argvp: (out) (optional) (array length=argcp zero-terminated=1): return
+ *   location for array of args, or %NULL
+ * @error: (optional): return location for error, or %NULL
  * 
  * Parses a command line into an argument vector, in much the same way
  * the shell would, but without many of the expansions the shell would

@@ -1769,7 +1769,7 @@ g_subprocess_communicate_utf8 (GSubprocess   *subprocess,
  * @callback: Callback
  * @user_data: User data
  *
- * Asynchronous version of g_subprocess_communicate_utf().  Complete
+ * Asynchronous version of g_subprocess_communicate_utf8().  Complete
  * invocation with g_subprocess_communicate_utf8_finish().
  */
 void

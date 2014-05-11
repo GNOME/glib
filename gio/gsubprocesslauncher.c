@@ -675,8 +675,7 @@ g_subprocess_launcher_set_child_setup (GSubprocessLauncher  *self,
  * @argv0: Command line arguments
  * @...: Continued arguments, %NULL terminated
  *
- * A convenience helper for creating a #GSubprocess given a provided
- * varargs list of arguments.
+ * Creates a #GSubprocess given a provided varargs list of arguments.
  *
  * Since: 2.40
  * Returns: (transfer full): A new #GSubprocess, or %NULL on error (and @error will be set)
@@ -719,8 +718,7 @@ g_subprocess_launcher_spawn (GSubprocessLauncher  *launcher,
  * @argv: (array zero-terminated=1) (element-type utf8): Command line arguments
  * @error: Error
  *
- * A convenience helper for creating a #GSubprocess given a provided
- * array of arguments.
+ * Creates a #GSubprocess given a provided array of arguments.
  *
  * Since: 2.40
  * Returns: (transfer full): A new #GSubprocess, or %NULL on error (and @error will be set)
