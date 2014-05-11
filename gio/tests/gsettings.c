@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <libintl.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include <gio/gio.h>
 #include <gstdio.h>
 #define G_SETTINGS_ENABLE_BACKEND
@@ -1789,16 +1791,23 @@ test_keyfile (void)
 
   g_settings_set (settings, "farewell", "s", "cheerio");
   
-  called = FALSE;
-  g_signal_connect (settings, "writable-changed::greeting", G_CALLBACK (key_changed_cb), &called);
+  /* When executing as root, changing the mode of the keyfile will have
+   * no effect on the writability of the settings.
+   */
+  if (geteuid () != 0)
+    {
+      called = FALSE;
+      g_signal_connect (settings, "writable-changed::greeting",
+                        G_CALLBACK (key_changed_cb), &called);
 
-  g_chmod ("keyfile", 0500);
-  while (!called)
-    g_main_context_iteration (NULL, FALSE);
-  g_signal_handlers_disconnect_by_func (settings, key_changed_cb, &called);
+      g_chmod ("keyfile", 0500);
+      while (!called)
+        g_main_context_iteration (NULL, FALSE);
+      g_signal_handlers_disconnect_by_func (settings, key_changed_cb, &called);
 
-  writable = g_settings_is_writable (settings, "greeting");
-  g_assert_false (writable);
+      writable = g_settings_is_writable (settings, "greeting");
+      g_assert_false (writable);
+    }
 
   g_key_file_free (keyfile);
   g_free (data);
