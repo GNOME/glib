@@ -91,7 +91,7 @@ test_validity (void)
   /* Run all the tests. */
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
-      GStatBuf stat_buf;
+      GLocalFileStat stat_buf;
       const gchar *thumbnail_path;
       gchar *file_uri;
       gboolean result;
