@@ -953,6 +953,7 @@ handle_overwrite_open (const char    *filename,
                                G_IO_ERROR_CANT_CREATE_BACKUP,
                                _("Backup file creation failed"));
 	  g_unlink (backup_filename);
+	  (void) g_close (bfd, NULL);
 	  g_free (backup_filename);
 	  goto err_out;
 	}
