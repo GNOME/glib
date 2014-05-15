@@ -3057,9 +3057,11 @@ g_test_log_extract (GTestLogBuffer *tbuffer)
           tbuffer->msgs = g_slist_prepend (tbuffer->msgs, g_memdup (&msg, sizeof (msg)));
           return TRUE;
         }
+
+      g_free (msg.nums);
+      g_strfreev (msg.strings);
     }
-  g_free (msg.nums);
-  g_strfreev (msg.strings);
+
   g_error ("corrupt log stream from test program");
   return FALSE;
 }
