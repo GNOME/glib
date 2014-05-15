@@ -3746,6 +3746,11 @@ g_socket_send_message (GSocket                *socket,
   char zero;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), -1);
+  g_return_val_if_fail (address == NULL || G_IS_SOCKET_ADDRESS (address), -1);
+  g_return_val_if_fail (num_vectors == 0 || vectors != NULL, -1);
+  g_return_val_if_fail (num_messages == 0 || messages != NULL, -1);
+  g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), -1);
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   if (!check_socket (socket, error))
     return -1;
