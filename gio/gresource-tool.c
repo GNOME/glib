@@ -151,10 +151,18 @@ get_elf (const gchar *file,
 
   elf = elf_begin (*fd, ELF_C_READ, NULL);
   if (elf == NULL)
-    return NULL;
+    {
+      g_close (*fd, NULL);
+      *fd = -1;
+      return NULL;
+    }
 
   if (elf_kind (elf) != ELF_K_ELF)
-    return NULL;
+    {
+      g_close (*fd, NULL);
+      *fd = -1;
+      return NULL;
+    }
 
   return elf;
 }
