@@ -686,6 +686,7 @@ g_subprocess_new (GSubprocessFlags   flags,
   while ((arg = va_arg (ap, const gchar *)))
     g_ptr_array_add (args, (gchar *) arg);
   g_ptr_array_add (args, NULL);
+  va_end (ap);
 
   result = g_subprocess_newv ((const gchar * const *) args->pdata, flags, error);
 

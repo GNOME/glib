@@ -703,6 +703,7 @@ g_subprocess_launcher_spawn (GSubprocessLauncher  *launcher,
     g_ptr_array_add (args, (gchar *) arg);
 
   g_ptr_array_add (args, NULL);
+  va_end (ap);
 
   result = g_subprocess_launcher_spawnv (launcher, (const gchar * const *) args->pdata, error);
 
