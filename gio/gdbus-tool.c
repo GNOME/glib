@@ -1735,16 +1735,12 @@ handle_monitor (gint        *argc,
   gchar *s;
   GError *error;
   GDBusConnection *c;
-  GVariant *result;
-  GDBusNodeInfo *node;
   gboolean complete_names;
   gboolean complete_paths;
   GMainLoop *loop;
 
   ret = FALSE;
   c = NULL;
-  node = NULL;
-  result = NULL;
 
   modify_argv0_for_command (argc, argv, "monitor");
 
@@ -1887,10 +1883,6 @@ handle_monitor (gint        *argc,
   ret = TRUE;
 
  out:
-  if (node != NULL)
-    g_dbus_node_info_unref (node);
-  if (result != NULL)
-    g_variant_unref (result);
   if (c != NULL)
     g_object_unref (c);
   g_option_context_free (o);
