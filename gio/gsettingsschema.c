@@ -394,7 +394,7 @@ g_settings_schema_source_get_default (void)
  *
  * If the schema isn't found, %NULL is returned.
  *
- * Returns: (transfer full): a new #GSettingsSchema
+ * Returns: (nullable) (transfer full): a new #GSettingsSchema
  *
  * Since: 2.32
  **/

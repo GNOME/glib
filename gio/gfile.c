@@ -486,8 +486,8 @@ g_file_get_uri_scheme (GFile *file)
  *
  * This call does no blocking I/O.
  *
- * Returns: string containing the #GFile's base name, or %NULL
- *     if given #GFile is invalid. The returned string should be
+ * Returns: (nullable): string containing the #GFile's base name, or
+ *     %NULL if given #GFile is invalid. The returned string should be
  *     freed with g_free() when no longer needed.
  */
 char *
@@ -510,9 +510,9 @@ g_file_get_basename (GFile *file)
  *
  * This call does no blocking I/O.
  *
- * Returns: string containing the #GFile's path, or %NULL if
- *     no such path exists. The returned string should be
- *     freed with g_free() when no longer needed.
+ * Returns: (nullable): string containing the #GFile's path, or %NULL
+ *     if no such path exists. The returned string should be freed
+ *     with g_free() when no longer needed.
  */
 char *
 g_file_get_path (GFile *file)
@@ -680,9 +680,9 @@ g_file_equal (GFile *file1,
  *
  * This call does no blocking I/O.
  *
- * Returns: (transfer full): a #GFile structure to the
- *     parent of the given #GFile or %NULL if there is
- *     no parent. Free the returned object with g_object_unref().
+ * Returns: (nullable) (transfer full): a #GFile structure to the
+ *     parent of the given #GFile or %NULL if there is no parent. Free
+ *     the returned object with g_object_unref().
  */
 GFile *
 g_file_get_parent (GFile *file)
@@ -849,10 +849,10 @@ g_file_has_prefix (GFile *file,
  *
  * This call does no blocking I/O.
  *
- * Returns: string with the relative path from @descendant
- *     to @parent, or %NULL if @descendant doesn't have @parent
- *     as prefix. The returned string should be freed with g_free()
- *     when no longer needed.
+ * Returns: (nullable): string with the relative path from @descendant
+ *     to @parent, or %NULL if @descendant doesn't have @parent as
+ *     prefix. The returned string should be freed with g_free() when
+ *     no longer needed.
  */
 char *
 g_file_get_relative_path (GFile *parent,

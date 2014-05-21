@@ -389,7 +389,7 @@ g_action_group_has_action (GActionGroup *action_group,
  * possible for an action to be removed and for a new action to be added
  * with the same name but a different parameter type.
  *
- * Returns: the parameter type
+ * Returns: (nullable): the parameter type
  *
  * Since: 2.28
  **/
@@ -425,7 +425,8 @@ g_action_group_get_action_parameter_type (GActionGroup *action_group,
  * possible for an action to be removed and for a new action to be added
  * with the same name but a different state type.
  *
- * Returns: (transfer full): the state type, if the action is stateful
+ * Returns: (nullable) (transfer full): the state type, if the action
+ * is stateful
  *
  * Since: 2.28
  **/
@@ -463,7 +464,7 @@ g_action_group_get_action_state_type (GActionGroup *action_group,
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Returns: (transfer full): the state range hint
+ * Returns: (nullable) (transfer full): the state range hint
  *
  * Since: 2.28
  **/
@@ -515,7 +516,7 @@ g_action_group_get_action_enabled (GActionGroup *action_group,
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Returns: (allow-none): the current state of the action
+ * Returns: (nullable): the current state of the action
  *
  * Since: 2.28
  **/

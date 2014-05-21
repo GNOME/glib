@@ -1114,7 +1114,8 @@ g_dbus_message_get_header_fields (GDBusMessage  *message)
  *
  * Gets the body of a message.
  *
- * Returns: A #GVariant or %NULL if the body is empty. Do not free, it is owned by @message.
+ * Returns: (transfer none): A #GVariant or %NULL if the body is
+ * empty. Do not free, it is owned by @message.
  *
  * Since: 2.26
  */

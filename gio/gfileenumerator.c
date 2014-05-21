@@ -191,8 +191,9 @@ g_file_enumerator_init (GFileEnumerator *enumerator)
  * enumerator is at the end, %NULL will be returned and @error will
  * be unset.
  *
- * Returns: (transfer full): A #GFileInfo or %NULL on error or end of enumerator.
- *    Free the returned object with g_object_unref() when no longer needed.
+ * Returns: (nullable) (transfer full): A #GFileInfo or %NULL on error
+ *    or end of enumerator.  Free the returned object with
+ *    g_object_unref() when no longer needed.
  **/
 GFileInfo *
 g_file_enumerator_next_file (GFileEnumerator *enumerator,

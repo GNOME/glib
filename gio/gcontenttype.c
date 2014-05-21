@@ -382,7 +382,7 @@ g_content_type_get_description (const gchar *type)
  *
  * Gets the mime type for the content type, if one is registered.
  *
- * Returns: (allow-none): the registered mime type for the given @type,
+ * Returns: (nullable): the registered mime type for the given @type,
  *     or %NULL if unknown.
  */
 char *
@@ -569,8 +569,8 @@ looks_like_text (const guchar *data, gsize data_size)
  *
  * Tries to find a content type based on the mime type name.
  *
- * Returns: (allow-none): Newly allocated string with content type
- *     or %NULL. Free with g_free()
+ * Returns: (nullable): Newly allocated string with content type or
+ *     %NULL. Free with g_free()
  *
  * Since: 2.18
  **/

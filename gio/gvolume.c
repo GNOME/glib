@@ -641,8 +641,8 @@ g_volume_enumerate_identifiers (GVolume *volume)
  * implementations to find the underlying mount to shadow, see
  * g_mount_is_shadowed() for more details.
  *
- * Returns: (transfer full): the activation root of @volume or %NULL. Use
- *     g_object_unref() to free.
+ * Returns: (nullable) (transfer full): the activation root of @volume
+ *     or %NULL. Use g_object_unref() to free.
  *
  * Since: 2.18
  */

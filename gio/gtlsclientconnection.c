@@ -121,7 +121,7 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
 							     G_PARAM_STATIC_STRINGS));
 
   /**
-   * GTlsClientConnection:accepted-cas:
+   * GTlsClientConnection:accepted-cas: (type GLib.List) (element-type GLib.ByteArray):
    *
    * A list of the distinguished names of the Certificate Authorities
    * that the server will accept client certificates signed by. If the

@@ -169,7 +169,8 @@ g_pollable_source_new_full (gpointer      pollable_stream,
 /**
  * g_pollable_stream_read:
  * @stream: a #GInputStream
- * @buffer: a buffer to read data into
+ * @buffer: (array length=count) (element-type guint8): a buffer to
+ *   read data into
  * @count: the number of bytes to read
  * @blocking: whether to do blocking I/O
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.

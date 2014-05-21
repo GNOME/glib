@@ -619,9 +619,9 @@ g_file_info_has_namespace (GFileInfo  *info,
  *
  * Lists the file info structure's attributes.
  *
- * Returns: (array zero-terminated=1) (transfer full): a null-terminated array of strings of all of the
- * possible attribute types for the given @name_space, or
- * %NULL on error.
+ * Returns: (nullable) (array zero-terminated=1) (transfer full): a
+ * null-terminated array of strings of all of the possible attribute
+ * types for the given @name_space, or %NULL on error.
  **/
 char **
 g_file_info_list_attributes (GFileInfo  *info,

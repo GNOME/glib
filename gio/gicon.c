@@ -203,8 +203,8 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
  *    simply the name (such as `network-server`).
  *
  * Virtual: to_tokens
- * Returns: An allocated NUL-terminated UTF8 string or %NULL if @icon can't
- * be serialized. Use g_free() to free.
+ * Returns: (nullable): An allocated NUL-terminated UTF8 string or
+ * %NULL if @icon can't be serialized. Use g_free() to free.
  *
  * Since: 2.20
  */

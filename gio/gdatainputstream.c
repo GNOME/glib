@@ -735,12 +735,12 @@ scan_for_newline (GDataInputStream *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Returns: (transfer full) (array zero-terminated=1) (element-type guint8): a
- *  NUL terminated byte array with the line that was read in (without
- *  the newlines).  Set @length to a #gsize to get the length of the
- *  read line.  On an error, it will return %NULL and @error will be
- *  set. If there's no content to read, it will still return %NULL,
- *  but @error won't be set.
+ * Returns: (nullable) (transfer full) (array zero-terminated=1) (element-type guint8):
+ *  a NUL terminated byte array with the line that was read in
+ *  (without the newlines).  Set @length to a #gsize to get the length
+ *  of the read line.  On an error, it will return %NULL and @error
+ *  will be set. If there's no content to read, it will still return
+ *  %NULL, but @error won't be set.
  **/
 char *
 g_data_input_stream_read_line (GDataInputStream  *stream,
@@ -819,12 +819,13 @@ g_data_input_stream_read_line (GDataInputStream  *stream,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Returns: (transfer full): a NUL terminated UTF-8 string with the
- *  line that was read in (without the newlines).  Set @length to a
- *  #gsize to get the length of the read line.  On an error, it will
- *  return %NULL and @error will be set.  For UTF-8 conversion errors,
- *  the set error domain is %G_CONVERT_ERROR.  If there's no content to
- *  read, it will still return %NULL, but @error won't be set.
+ * Returns: (nullable) (transfer full): a NUL terminated UTF-8 string
+ *  with the line that was read in (without the newlines).  Set
+ *  @length to a #gsize to get the length of the read line.  On an
+ *  error, it will return %NULL and @error will be set.  For UTF-8
+ *  conversion errors, the set error domain is %G_CONVERT_ERROR.  If
+ *  there's no content to read, it will still return %NULL, but @error
+ *  won't be set.
  *
  * Since: 2.30
  **/
@@ -1197,12 +1198,12 @@ g_data_input_stream_read_until_async (GDataInputStream    *stream,
  * string encoding in g_data_input_stream_read_line() applies here as
  * well.
  *
- * Returns: (transfer full) (array zero-terminated=1) (element-type guint8):  a 
- *  NUL-terminated byte array with the line that was read in
- *  (without the newlines).  Set @length to a #gsize to get the
- *  length of the read line.  On an error, it will return %NULL and
- *  @error will be set. If there's no content to read, it will
- *  still return %NULL, but @error won't be set.
+ * Returns: (nullable) (transfer full) (array zero-terminated=1) (element-type guint8):
+ *  a NUL-terminated byte array with the line that was read in
+ *  (without the newlines).  Set @length to a #gsize to get the length
+ *  of the read line.  On an error, it will return %NULL and @error
+ *  will be set. If there's no content to read, it will still return
+ *  %NULL, but @error won't be set.
  *
  * Since: 2.20
  */
@@ -1227,12 +1228,12 @@ g_data_input_stream_read_line_finish (GDataInputStream  *stream,
  * Finish an asynchronous call started by
  * g_data_input_stream_read_line_async().
  *
- * Returns: (transfer full): a string with the line that was read in
- *  (without the newlines).  Set @length to a #gsize to get the length
- *  of the read line.  On an error, it will return %NULL and @error
- *  will be set. For UTF-8 conversion errors, the set error domain is
- *  %G_CONVERT_ERROR.  If there's no content to read, it will still
- *  return %NULL, but @error won't be set.
+ * Returns: (nullable) (transfer full): a string with the line that
+ *  was read in (without the newlines).  Set @length to a #gsize to
+ *  get the length of the read line.  On an error, it will return
+ *  %NULL and @error will be set. For UTF-8 conversion errors, the set
+ *  error domain is %G_CONVERT_ERROR.  If there's no content to read,
+ *  it will still return %NULL, but @error won't be set.
  *
  * Since: 2.30
  */

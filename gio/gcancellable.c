@@ -221,8 +221,8 @@ g_cancellable_pop_current (GCancellable *cancellable)
  *
  * Gets the top cancellable from the stack.
  *
- * Returns: (transfer none): a #GCancellable from the top of the stack, or %NULL
- * if the stack is empty.
+ * Returns: (nullable) (transfer none): a #GCancellable from the top
+ * of the stack, or %NULL if the stack is empty.
  **/
 GCancellable *
 g_cancellable_get_current  (void)

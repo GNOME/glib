@@ -568,7 +568,9 @@ g_tls_database_verify_chain_finish (GTlsDatabase          *self,
  * and between applications. If a certificate is modified in the database,
  * then it is not guaranteed that this handle will continue to point to it.
  *
- * Returns: (allow-none): a newly allocated string containing the handle.
+ * Returns: (nullable): a newly allocated string containing the
+ * handle.
+ *
  * Since: 2.30
  */
 gchar*

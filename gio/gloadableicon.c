@@ -60,11 +60,12 @@ g_loadable_icon_default_init (GLoadableIconIface *iface)
  * g_loadable_icon_load:
  * @icon: a #GLoadableIcon.
  * @size: an integer.
- * @type: (out) (allow-none): a location to store the type of the
- *        loaded icon, %NULL to ignore.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occurring, or %NULL to 
+ * @type: (out) (optional): a location to store the type of the loaded
+ * icon, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to
  * ignore.
+ * @error: a #GError location to store the error occurring, or %NULL
+ * to ignore.
  * 
  * Loads a loadable icon. For the asynchronous version of this function, 
  * see g_loadable_icon_load_async().
@@ -120,8 +121,8 @@ g_loadable_icon_load_async (GLoadableIcon       *icon,
  * g_loadable_icon_load_finish:
  * @icon: a #GLoadableIcon.
  * @res: a #GAsyncResult.
- * @type: (out) (allow-none): a location to store the type of the
- *        loaded icon, %NULL to ignore.
+ * @type: (out) (optional): a location to store the type of the loaded
+ *        icon, %NULL to ignore.
  * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 

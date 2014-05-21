@@ -328,7 +328,7 @@ g_action_get_state_type (GAction *action)
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Returns: (transfer full): the state range hint
+ * Returns: (nullable) (transfer full): the state range hint
  *
  * Since: 2.28
  **/
