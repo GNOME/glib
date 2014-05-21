@@ -67,4 +67,4 @@ typedef struct {
 GLIB_AVAILABLE_IN_ALL
 GLibPrivateVTable *glib__private__ (void);
 
-#endif /* __G_MAIN_H__ */
+#endif /* __GLIB_PRIVATE_H__ */
