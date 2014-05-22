@@ -1404,8 +1404,11 @@ object_interface_check_properties (gpointer check_data,
 
   class = g_type_class_ref (iface_class->g_instance_type);
 
-  if (!G_IS_OBJECT_CLASS (class))
+  if (class == NULL)
     return;
+
+  if (!G_IS_OBJECT_CLASS (class))
+    goto out;
 
   pspecs = g_param_spec_pool_list (pspec_pool, iface_type, &n);
 
@@ -1537,6 +1540,7 @@ object_interface_check_properties (gpointer check_data,
 
   g_free (pspecs);
 
+ out:
   g_type_class_unref (class);
 }
 
