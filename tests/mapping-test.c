@@ -30,6 +30,8 @@ static gchar *dir, *filename, *displayname, *childname;
 
 static gboolean stop = FALSE;
 
+static gint parent_pid;
+
 #ifndef G_OS_WIN32
 
 static void
@@ -91,26 +93,38 @@ map_or_die (const gchar *filename,
 
   return map;
 }
-	    
+    
+static gboolean
+signal_parent (gpointer data)
+{
+#ifndef G_OS_WIN32
+  kill (parent_pid, SIGUSR1);
+#endif
+  return G_SOURCE_REMOVE;
+}
+
 static int
 child_main (int argc, char *argv[])
 {
   GMappedFile *map;
   GMainLoop *loop;
 
+  parent_pid = atoi (argv[2]);
   map = map_or_die (filename, FALSE);
-  
-  loop = g_main_loop_new (NULL, FALSE);
 
 #ifndef G_OS_WIN32
   signal (SIGUSR1, handle_usr1);
 #endif
+  loop = g_main_loop_new (NULL, FALSE);
   g_idle_add (check_stop, loop);
+  g_idle_add (signal_parent, NULL);
   g_main_loop_run (loop);
 
   write_or_die (childname, 
 		g_mapped_file_get_contents (map),
 		g_mapped_file_get_length (map));
+
+  signal_parent (NULL);
 
   return 0;
 }
@@ -168,8 +182,10 @@ test_child_private (gchar *argv0)
   GMappedFile *map;
   gchar *buffer;
   gsize len;
-  gchar *child_argv[3];
+  gchar *child_argv[4];
   GPid  child_pid;
+  GMainLoop *loop;
+  gchar pid[100];
   
 #ifdef G_OS_WIN32
   g_remove ("STOP");
@@ -179,9 +195,15 @@ test_child_private (gchar *argv0)
   write_or_die (filename, "ABC", -1);
   map = map_or_die (filename, TRUE);
 
+#ifndef G_OS_WIN32
+  signal (SIGUSR1, handle_usr1);
+#endif
+
+  g_snprintf (pid, sizeof(pid), "%d", getpid ());
   child_argv[0] = argv0;
   child_argv[1] = "mapchild";
-  child_argv[2] = NULL;
+  child_argv[2] = pid;
+  child_argv[3] = NULL;
   if (!g_spawn_async (dir, child_argv, NULL,
 		      0, NULL, NULL, &child_pid, &error))
     {
@@ -190,8 +212,14 @@ test_child_private (gchar *argv0)
       exit (1);            
     }
 
-  /* give the child some time to set up its mapping */
+#ifndef G_OS_WIN32
+  loop = g_main_loop_new (NULL, FALSE);
+  g_idle_add (check_stop, loop);
+  g_main_loop_run (loop);
+  stop = FALSE;
+#else
   g_usleep (2000000);
+#endif
 
   buffer = (gchar *)g_mapped_file_get_contents (map);
   buffer[0] = '1';
@@ -205,8 +233,12 @@ test_child_private (gchar *argv0)
   g_file_set_contents ("STOP", "Hey there\n", -1, NULL);
 #endif
 
-  /* give the child some time to write the file */
+#ifndef G_OS_WIN32
+  g_idle_add (check_stop, loop);
+  g_main_loop_run (loop);
+#else
   g_usleep (2000000);
+#endif
 
   if (!g_file_get_contents (childname, &buffer, &len, &error))
     {
