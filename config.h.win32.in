@@ -208,7 +208,9 @@
 /* #undef HAVE_HASMNTOPT */
 
 /* Target the Windows XP API */
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
+#endif
 
 #if _WIN32_WINNT >= 0x0600
 /* if_indextoname() and if_nametoindex() are available on Windows Vista/Server
