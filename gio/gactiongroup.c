@@ -432,8 +432,7 @@ g_action_group_get_action_parameter_type (GActionGroup *action_group,
  * possible for an action to be removed and for a new action to be added
  * with the same name but a different state type.
  *
- * Returns: (nullable) (transfer full): the state type, if the action
- * is stateful
+ * Returns: (nullable): the state type, if the action is stateful
  *
  * Since: 2.28
  **/
