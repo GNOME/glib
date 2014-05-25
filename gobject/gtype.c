@@ -139,15 +139,6 @@
 #define g_assert_type_system_initialized() \
   g_assert (static_quark_type_flags)
 
-#ifdef  G_ENABLE_DEBUG
-#define DEBUG_CODE(debug_type, code_block)  G_STMT_START {    \
-    if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type) \
-      { code_block; }                                     \
-} G_STMT_END
-#else /* !G_ENABLE_DEBUG */
-#define DEBUG_CODE(debug_type, code_block)  /* code_block */
-#endif  /* G_ENABLE_DEBUG */
-
 #define TYPE_FUNDAMENTAL_FLAG_MASK (G_TYPE_FLAG_CLASSED | \
 				    G_TYPE_FLAG_INSTANTIATABLE | \
 				    G_TYPE_FLAG_DERIVABLE | \

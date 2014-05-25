@@ -24,6 +24,24 @@
 #include "gboxed.h"
 #include "gclosure.h"
 
+/*< private >
+ * GOBJECT_IF_DEBUG:
+ * @debug_type: Currently only OBJECTS and SIGNALS are supported.
+ * @code_block: Custom debug code.
+ *
+ * A convenience macro for debugging GObject.
+ * This macro is only used internally.
+ */
+#ifdef G_ENABLE_DEBUG
+#define GOBJECT_IF_DEBUG(debug_type, code_block) \
+G_STMT_START { \
+    if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type) \
+      { code_block; } \
+} G_STMT_END
+#else   /* !G_ENABLE_DEBUG */
+#define GOBJECT_IF_DEBUG(debug_type, code_block)
+#endif  /* G_ENABLE_DEBUG */
+
 G_BEGIN_DECLS
 
 extern GTypeDebugFlags _g_type_debug_flags;

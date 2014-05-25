@@ -316,7 +316,6 @@ g_object_notify_queue_add (GObject            *object,
 }
 
 #ifdef	G_ENABLE_DEBUG
-#define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
 G_LOCK_DEFINE_STATIC     (debug_objects);
 static guint		 debug_objects_count = 0;
 static GHashTable	*debug_objects_ht = NULL;
@@ -344,13 +343,13 @@ G_DEFINE_DESTRUCTOR(debug_objects_atexit)
 static void
 debug_objects_atexit (void)
 {
-  IF_DEBUG (OBJECTS)
+  GOBJECT_IF_DEBUG (OBJECTS,
     {
       G_LOCK (debug_objects);
       g_message ("stale GObjects: %u", debug_objects_count);
       g_hash_table_foreach (debug_objects_ht, debug_objects_foreach, NULL);
       G_UNLOCK (debug_objects);
-    }
+    });
 }
 #endif	/* G_ENABLE_DEBUG */
 
@@ -395,15 +394,13 @@ _g_object_type_init (void)
   g_assert (type == G_TYPE_OBJECT);
   g_value_register_transform_func (G_TYPE_OBJECT, G_TYPE_OBJECT, g_value_object_transform_value);
   
-#ifdef	G_ENABLE_DEBUG
-  IF_DEBUG (OBJECTS)
+  GOBJECT_IF_DEBUG (OBJECTS,
     {
       debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
 #ifndef G_HAS_CONSTRUCTORS
       g_atexit (debug_objects_atexit);
 #endif /* G_HAS_CONSTRUCTORS */
-    }
-#endif	/* G_ENABLE_DEBUG */
+    });
 }
 
 static void
@@ -981,15 +978,13 @@ g_object_init (GObject		*object,
       g_datalist_id_set_data (&object->qdata, quark_in_construction, object);
     }
 
-#ifdef	G_ENABLE_DEBUG
-  IF_DEBUG (OBJECTS)
+  GOBJECT_IF_DEBUG (OBJECTS,
     {
       G_LOCK (debug_objects);
       debug_objects_count++;
       g_hash_table_insert (debug_objects_ht, object, object);
       G_UNLOCK (debug_objects);
-    }
-#endif	/* G_ENABLE_DEBUG */
+    });
 }
 
 static void
@@ -1039,16 +1034,14 @@ g_object_finalize (GObject *object)
 
   g_datalist_clear (&object->qdata);
   
-#ifdef	G_ENABLE_DEBUG
-  IF_DEBUG (OBJECTS)
+  GOBJECT_IF_DEBUG (OBJECTS,
     {
       G_LOCK (debug_objects);
       g_assert (g_hash_table_lookup (debug_objects_ht, object) == object);
       g_hash_table_remove (debug_objects_ht, object);
       debug_objects_count--;
       G_UNLOCK (debug_objects);
-    }
-#endif	/* G_ENABLE_DEBUG */
+    });
 }
 
 static void
@@ -3184,15 +3177,13 @@ g_object_unref (gpointer _object)
 
 	  TRACE (GOBJECT_OBJECT_FINALIZE_END(object,G_TYPE_FROM_INSTANCE(object)));
 
-#ifdef	G_ENABLE_DEBUG
-          IF_DEBUG (OBJECTS)
+          GOBJECT_IF_DEBUG (OBJECTS,
 	    {
 	      /* catch objects not chaining finalize handlers */
 	      G_LOCK (debug_objects);
 	      g_assert (g_hash_table_lookup (debug_objects_ht, object) == NULL);
 	      G_UNLOCK (debug_objects);
-	    }
-#endif	/* G_ENABLE_DEBUG */
+	    });
           g_type_free_instance ((GTypeInstance*) object);
 	}
     }
