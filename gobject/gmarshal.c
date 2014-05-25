@@ -64,9 +64,9 @@ g_cclosure_marshal_VOID__VOID (GClosure     *closure,
 {
   typedef void (*GMarshalFunc_VOID__VOID) (gpointer     data1,
                                            gpointer     data2);
-  register GMarshalFunc_VOID__VOID callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__VOID callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 1);
 
@@ -129,9 +129,9 @@ g_cclosure_marshal_VOID__BOOLEAN (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__BOOLEAN) (gpointer     data1,
                                               gboolean     arg_1,
                                               gpointer     data2);
-  register GMarshalFunc_VOID__BOOLEAN callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__BOOLEAN callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -203,9 +203,9 @@ g_cclosure_marshal_VOID__CHAR (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__CHAR) (gpointer     data1,
                                            gchar        arg_1,
                                            gpointer     data2);
-  register GMarshalFunc_VOID__CHAR callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__CHAR callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -277,9 +277,9 @@ g_cclosure_marshal_VOID__UCHAR (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__UCHAR) (gpointer     data1,
                                             guchar       arg_1,
                                             gpointer     data2);
-  register GMarshalFunc_VOID__UCHAR callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__UCHAR callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -351,9 +351,9 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__INT) (gpointer     data1,
                                           gint         arg_1,
                                           gpointer     data2);
-  register GMarshalFunc_VOID__INT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__INT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -425,9 +425,9 @@ g_cclosure_marshal_VOID__UINT (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__UINT) (gpointer     data1,
                                            guint        arg_1,
                                            gpointer     data2);
-  register GMarshalFunc_VOID__UINT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__UINT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -499,9 +499,9 @@ g_cclosure_marshal_VOID__LONG (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__LONG) (gpointer     data1,
                                            glong        arg_1,
                                            gpointer     data2);
-  register GMarshalFunc_VOID__LONG callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__LONG callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -573,9 +573,9 @@ g_cclosure_marshal_VOID__ULONG (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__ULONG) (gpointer     data1,
                                             gulong       arg_1,
                                             gpointer     data2);
-  register GMarshalFunc_VOID__ULONG callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__ULONG callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -647,9 +647,9 @@ g_cclosure_marshal_VOID__ENUM (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__ENUM) (gpointer     data1,
                                            gint         arg_1,
                                            gpointer     data2);
-  register GMarshalFunc_VOID__ENUM callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__ENUM callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -721,9 +721,9 @@ g_cclosure_marshal_VOID__FLAGS (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__FLAGS) (gpointer     data1,
                                             guint        arg_1,
                                             gpointer     data2);
-  register GMarshalFunc_VOID__FLAGS callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__FLAGS callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -795,9 +795,9 @@ g_cclosure_marshal_VOID__FLOAT (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__FLOAT) (gpointer     data1,
                                             gfloat       arg_1,
                                             gpointer     data2);
-  register GMarshalFunc_VOID__FLOAT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__FLOAT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -869,9 +869,9 @@ g_cclosure_marshal_VOID__DOUBLE (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__DOUBLE) (gpointer     data1,
                                              gdouble      arg_1,
                                              gpointer     data2);
-  register GMarshalFunc_VOID__DOUBLE callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__DOUBLE callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -943,9 +943,9 @@ g_cclosure_marshal_VOID__STRING (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__STRING) (gpointer     data1,
                                              gpointer     arg_1,
                                              gpointer     data2);
-  register GMarshalFunc_VOID__STRING callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__STRING callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -1021,9 +1021,9 @@ g_cclosure_marshal_VOID__PARAM (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__PARAM) (gpointer     data1,
                                             gpointer     arg_1,
                                             gpointer     data2);
-  register GMarshalFunc_VOID__PARAM callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__PARAM callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -1099,9 +1099,9 @@ g_cclosure_marshal_VOID__BOXED (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__BOXED) (gpointer     data1,
                                             gpointer     arg_1,
                                             gpointer     data2);
-  register GMarshalFunc_VOID__BOXED callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__BOXED callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -1177,9 +1177,9 @@ g_cclosure_marshal_VOID__POINTER (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__POINTER) (gpointer     data1,
                                               gpointer     arg_1,
                                               gpointer     data2);
-  register GMarshalFunc_VOID__POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -1251,9 +1251,9 @@ g_cclosure_marshal_VOID__OBJECT (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__OBJECT) (gpointer     data1,
                                              gpointer     arg_1,
                                              gpointer     data2);
-  register GMarshalFunc_VOID__OBJECT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__OBJECT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -1329,9 +1329,9 @@ g_cclosure_marshal_VOID__VARIANT (GClosure     *closure,
   typedef void (*GMarshalFunc_VOID__VARIANT) (gpointer     data1,
                                               gpointer     arg_1,
                                               gpointer     data2);
-  register GMarshalFunc_VOID__VARIANT callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__VARIANT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 2);
 
@@ -1408,9 +1408,9 @@ g_cclosure_marshal_VOID__UINT_POINTER (GClosure     *closure,
                                                    guint        arg_1,
                                                    gpointer     arg_2,
                                                    gpointer     data2);
-  register GMarshalFunc_VOID__UINT_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_VOID__UINT_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
 
   g_return_if_fail (n_param_values == 3);
 
@@ -1487,9 +1487,9 @@ g_cclosure_marshal_BOOLEAN__FLAGS (GClosure     *closure,
   typedef gboolean (*GMarshalFunc_BOOLEAN__FLAGS) (gpointer     data1,
                                                    guint        arg_1,
                                                    gpointer     data2);
-  register GMarshalFunc_BOOLEAN__FLAGS callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__FLAGS callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -1571,9 +1571,9 @@ g_cclosure_marshal_STRING__OBJECT_POINTER (GClosure     *closure,
                                                          gpointer     arg_1,
                                                          gpointer     arg_2,
                                                          gpointer     data2);
-  register GMarshalFunc_STRING__OBJECT_POINTER callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_STRING__OBJECT_POINTER callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gchar* v_return;
 
   g_return_if_fail (return_value != NULL);
@@ -1664,9 +1664,9 @@ g_cclosure_marshal_BOOLEAN__BOXED_BOXED (GClosure     *closure,
                                                          gpointer     arg_1,
                                                          gpointer     arg_2,
                                                          gpointer     data2);
-  register GMarshalFunc_BOOLEAN__BOXED_BOXED callback;
-  register GCClosure *cc = (GCClosure*) closure;
-  register gpointer data1, data2;
+  GMarshalFunc_BOOLEAN__BOXED_BOXED callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
   gboolean v_return;
 
   g_return_if_fail (return_value != NULL);

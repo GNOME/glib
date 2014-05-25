@@ -363,7 +363,7 @@ write_string (int          fd,
 static GLogDomain*
 g_log_find_domain_L (const gchar *log_domain)
 {
-  register GLogDomain *domain;
+  GLogDomain *domain;
   
   domain = g_log_domains;
   while (domain)
@@ -378,7 +378,7 @@ g_log_find_domain_L (const gchar *log_domain)
 static GLogDomain*
 g_log_domain_new_L (const gchar *log_domain)
 {
-  register GLogDomain *domain;
+  GLogDomain *domain;
 
   domain = g_new (GLogDomain, 1);
   domain->log_domain = g_strdup (log_domain);
@@ -397,7 +397,7 @@ g_log_domain_check_free_L (GLogDomain *domain)
   if (domain->fatal_mask == G_LOG_FATAL_MASK &&
       domain->handlers == NULL)
     {
-      register GLogDomain *last, *work;
+      GLogDomain *last, *work;
       
       last = NULL;  
 
@@ -427,7 +427,7 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
 {
   if (domain && log_level)
     {
-      register GLogHandler *handler;
+      GLogHandler *handler;
       
       handler = domain->handlers;
       while (handler)
@@ -498,7 +498,7 @@ g_log_set_fatal_mask (const gchar   *log_domain,
 		      GLogLevelFlags fatal_mask)
 {
   GLogLevelFlags old_flags;
-  register GLogDomain *domain;
+  GLogDomain *domain;
   
   if (!log_domain)
     log_domain = "";
@@ -674,7 +674,7 @@ void
 g_log_remove_handler (const gchar *log_domain,
 		      guint	   handler_id)
 {
-  register GLogDomain *domain;
+  GLogDomain *domain;
   
   g_return_if_fail (handler_id > 0);
   
@@ -980,7 +980,7 @@ g_logv (const gchar   *log_domain,
 
   for (i = g_bit_nth_msf (log_level, -1); i >= 0; i = g_bit_nth_msf (log_level, i))
     {
-      register GLogLevelFlags test_level;
+      GLogLevelFlags test_level;
 
       test_level = 1 << i;
       if (log_level & test_level)

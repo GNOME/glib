@@ -281,7 +281,7 @@ g_datalist_clear (GData **datalist)
 static inline GDataset*
 g_dataset_lookup (gconstpointer	dataset_location)
 {
-  register GDataset *dataset;
+  GDataset *dataset;
   
   if (g_dataset_cached && g_dataset_cached->location == dataset_location)
     return g_dataset_cached;
@@ -297,7 +297,7 @@ g_dataset_lookup (gconstpointer	dataset_location)
 static void
 g_dataset_destroy_internal (GDataset *dataset)
 {
-  register gconstpointer dataset_location;
+  gconstpointer dataset_location;
   
   dataset_location = dataset->location;
   while (dataset)
@@ -331,7 +331,7 @@ g_dataset_destroy (gconstpointer  dataset_location)
   G_LOCK (g_dataset_global);
   if (g_dataset_location_ht)
     {
-      register GDataset *dataset;
+      GDataset *dataset;
 
       dataset = g_dataset_lookup (dataset_location);
       if (dataset)
@@ -552,7 +552,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
 			    gpointer       data,
 			    GDestroyNotify destroy_func)
 {
-  register GDataset *dataset;
+  GDataset *dataset;
   
   g_return_if_fail (dataset_location != NULL);
   if (!data)
@@ -1070,7 +1070,7 @@ g_dataset_foreach (gconstpointer    dataset_location,
 		   GDataForeachFunc func,
 		   gpointer         user_data)
 {
-  register GDataset *dataset;
+  GDataset *dataset;
   
   g_return_if_fail (dataset_location != NULL);
   g_return_if_fail (func != NULL);

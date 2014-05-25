@@ -307,7 +307,7 @@ g_bit_storage (gulong number)
   return G_LIKELY (number) ?
 	   ((GLIB_SIZEOF_LONG * 8U - 1) ^ (guint) __builtin_clzl(number)) + 1 : 1;
 #else
-  register guint n_bits = 0;
+  guint n_bits = 0;
   
   do
     {

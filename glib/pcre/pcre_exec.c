@@ -145,11 +145,11 @@ Returns:      >= 0 the number of subject bytes matched
 */
 
 static int
-match_ref(int offset, register PCRE_PUCHAR eptr, int length, match_data *md,
+match_ref(int offset, PCRE_PUCHAR eptr, int length, match_data *md,
   BOOL caseless)
 {
 PCRE_PUCHAR eptr_start = eptr;
-register PCRE_PUCHAR p = md->start_subject + md->offset_vector[offset];
+PCRE_PUCHAR p = md->start_subject + md->offset_vector[offset];
 
 #ifdef PCRE_DEBUG
 if (eptr >= md->end_subject)
@@ -285,7 +285,6 @@ versions and production versions. Note that the "rw" argument of RMATCH isn't
 actually used in this definition. */
 
 #ifndef NO_RECURSE
-#define REGISTER register
 
 #ifdef PCRE_DEBUG
 #define RMATCH(ra,rb,rc,rd,re,rw) \
@@ -311,8 +310,6 @@ actually used in this definition. */
 /* These versions of the macros manage a private stack on the heap. Note that
 the "rd" argument of RMATCH isn't actually used in this definition. It's the md
 argument of match(), which never changes. */
-
-#define REGISTER
 
 #define RMATCH(ra,rb,rc,rd,re,rw)\
   {\
@@ -478,7 +475,7 @@ Returns:       MATCH_MATCH if matched            )  these values are >= 0
 */
 
 static int
-match(REGISTER PCRE_PUCHAR eptr, REGISTER const pcre_uchar *ecode,
+match(PCRE_PUCHAR eptr, const pcre_uchar *ecode,
   PCRE_PUCHAR mstart, int offset_top, match_data *md, eptrblock *eptrb,
   unsigned int rdepth)
 {
@@ -486,10 +483,10 @@ match(REGISTER PCRE_PUCHAR eptr, REGISTER const pcre_uchar *ecode,
 so they can be ordinary variables in all cases. Mark some of them with
 "register" because they are used a lot in loops. */
 
-register int  rrc;         /* Returns from recursive calls */
-register int  i;           /* Used for loops not involving calls to RMATCH() */
-register unsigned int c;   /* Character values not kept over RMATCH() calls */
-register BOOL utf;         /* Local copy of UTF flag for speed */
+int  rrc;         /* Returns from recursive calls */
+int  i;           /* Used for loops not involving calls to RMATCH() */
+unsigned int c;   /* Character values not kept over RMATCH() calls */
+BOOL utf;         /* Local copy of UTF flag for speed */
 
 BOOL minimize, possessive; /* Quantifier options */
 BOOL caseless;
@@ -1942,8 +1939,8 @@ for (;;)
 
         if (offset > offset_top)
           {
-          register int *iptr = md->offset_vector + offset_top;
-          register int *iend = md->offset_vector + offset;
+          int *iptr = md->offset_vector + offset_top;
+          int *iend = md->offset_vector + offset;
           while (iptr < iend) *iptr++ = -1;
           }
 
@@ -3575,7 +3572,7 @@ for (;;)
 #ifdef SUPPORT_UTF
     if (utf)
       {
-      register unsigned int ch, och;
+      unsigned int ch, och;
 
       ecode++;
       GETCHARINC(ch, ecode);
@@ -3602,7 +3599,7 @@ for (;;)
     else
 #endif
       {
-      register unsigned int ch = ecode[1];
+      unsigned int ch = ecode[1];
       c = *eptr++;
       if (ch == c || (op == OP_NOTI && TABLE_GET(ch, md->fcc, ch) == c))
         RRETURN(MATCH_NOMATCH);
@@ -3716,7 +3713,7 @@ for (;;)
 #ifdef SUPPORT_UTF
       if (utf)
         {
-        register unsigned int d;
+        unsigned int d;
         for (i = 1; i <= min; i++)
           {
           if (eptr >= md->end_subject)
@@ -3751,7 +3748,7 @@ for (;;)
 #ifdef SUPPORT_UTF
         if (utf)
           {
-          register unsigned int d;
+          unsigned int d;
           for (fi = min;; fi++)
             {
             RMATCH(eptr, ecode, offset_top, md, eptrb, RM28);
@@ -3796,7 +3793,7 @@ for (;;)
 #ifdef SUPPORT_UTF
         if (utf)
           {
-          register unsigned int d;
+          unsigned int d;
           for (i = min; i < max; i++)
             {
             int len = 1;
@@ -3853,7 +3850,7 @@ for (;;)
 #ifdef SUPPORT_UTF
       if (utf)
         {
-        register unsigned int d;
+        unsigned int d;
         for (i = 1; i <= min; i++)
           {
           if (eptr >= md->end_subject)
@@ -3887,7 +3884,7 @@ for (;;)
 #ifdef SUPPORT_UTF
         if (utf)
           {
-          register unsigned int d;
+          unsigned int d;
           for (fi = min;; fi++)
             {
             RMATCH(eptr, ecode, offset_top, md, eptrb, RM32);
@@ -3931,7 +3928,7 @@ for (;;)
 #ifdef SUPPORT_UTF
         if (utf)
           {
-          register unsigned int d;
+          unsigned int d;
           for (i = min; i < max; i++)
             {
             int len = 1;
@@ -6497,7 +6494,7 @@ tables = re->tables;
 
 if (extra_data != NULL)
   {
-  register unsigned int flags = extra_data->flags;
+  unsigned int flags = extra_data->flags;
   if ((flags & PCRE_EXTRA_STUDY_DATA) != 0)
     study = (const pcre_study_data *)extra_data->study_data;
   if ((flags & PCRE_EXTRA_MATCH_LIMIT) != 0)
@@ -6658,8 +6655,8 @@ in case they inspect these fields. */
 
 if (md->offset_vector != NULL)
   {
-  register int *iptr = md->offset_vector + ocount;
-  register int *iend = iptr - re->top_bracket;
+  int *iptr = md->offset_vector + ocount;
+  int *iend = iptr - re->top_bracket;
   if (iend < md->offset_vector + 2) iend = md->offset_vector + 2;
   while (--iptr >= iend) *iptr = -1;
   md->offset_vector[0] = md->offset_vector[1] = -1;
@@ -6804,7 +6801,7 @@ for(;;)
       {
       while (start_match < end_subject)
         {
-        register unsigned int c = *start_match;
+        unsigned int c = *start_match;
 #ifndef COMPILE_PCRE8
         if (c > 255) c = 255;
 #endif
@@ -6861,7 +6858,7 @@ for(;;)
 
     if (has_req_char && end_subject - start_match < REQ_BYTE_MAX)
       {
-      register PCRE_PUCHAR p = start_match + (has_first_char? 1:0);
+      PCRE_PUCHAR p = start_match + (has_first_char? 1:0);
 
       /* We don't need to repeat the search if we haven't yet reached the
       place we found it at last time. */
@@ -6872,7 +6869,7 @@ for(;;)
           {
           while (p < end_subject)
             {
-            register int pp = *p++;
+            int pp = *p++;
             if (pp == req_char || pp == req_char2) { p--; break; }
             }
           }
@@ -7065,7 +7062,7 @@ if (rc == MATCH_MATCH || rc == MATCH_ACCEPT)
 
   if (md->end_offset_top/2 <= re->top_bracket && offsets != NULL)
     {
-    register int *iptr, *iend;
+    int *iptr, *iend;
     int resetcount = 2 + re->top_bracket * 2;
     if (resetcount > offsetcount) resetcount = offsetcount;
     iptr = offsets + md->end_offset_top;

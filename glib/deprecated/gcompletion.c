@@ -235,10 +235,10 @@ static void
 completion_check_cache (GCompletion* cmp,
 			gchar**	     new_prefix)
 {
-  register GList* list;
-  register gsize len;  
-  register gsize i;
-  register gsize plen;
+  GList* list;
+  gsize len;
+  gsize i;
+  gsize plen;
   gchar* postfix;
   gchar* s;
   

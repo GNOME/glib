@@ -83,8 +83,8 @@ g_pattern_ph_match (const gchar *match_pattern,
 		    const gchar *match_string,
 		    gboolean    *wildcard_reached_p)
 {
-  register const gchar *pattern, *string;
-  register gchar ch;
+  const gchar *pattern, *string;
+  gchar ch;
 
   pattern = match_pattern;
   string = match_string;

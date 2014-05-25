@@ -469,8 +469,8 @@ g_stpcpy (gchar       *dest,
   g_return_val_if_fail (src != NULL, NULL);
   return stpcpy (dest, src);
 #else
-  register gchar *d = dest;
-  register const gchar *s = src;
+  gchar *d = dest;
+  const gchar *s = src;
 
   g_return_val_if_fail (dest != NULL, NULL);
   g_return_val_if_fail (src != NULL, NULL);
@@ -1348,9 +1348,9 @@ g_strlcpy (gchar       *dest,
            const gchar *src,
            gsize        dest_size)
 {
-  register gchar *d = dest;
-  register const gchar *s = src;
-  register gsize n = dest_size;
+  gchar *d = dest;
+  const gchar *s = src;
+  gsize n = dest_size;
 
   g_return_val_if_fail (dest != NULL, 0);
   g_return_val_if_fail (src  != NULL, 0);
@@ -1359,7 +1359,7 @@ g_strlcpy (gchar       *dest,
   if (n != 0 && --n != 0)
     do
       {
-        register gchar c = *s++;
+        gchar c = *s++;
 
         *d++ = c;
         if (c == 0)
@@ -1409,9 +1409,9 @@ g_strlcat (gchar       *dest,
            const gchar *src,
            gsize        dest_size)
 {
-  register gchar *d = dest;
-  register const gchar *s = src;
-  register gsize bytes_left = dest_size;
+  gchar *d = dest;
+  const gchar *s = src;
+  gsize bytes_left = dest_size;
   gsize dlength;  /* Logically, MIN (strlen (d), dest_size) */
 
   g_return_val_if_fail (dest != NULL, 0);
@@ -1539,7 +1539,7 @@ g_str_is_ascii (const gchar *str)
 gchar*
 g_strdown (gchar *string)
 {
-  register guchar *s;
+  guchar *s;
 
   g_return_val_if_fail (string != NULL, NULL);
 
@@ -1570,7 +1570,7 @@ g_strdown (gchar *string)
 gchar*
 g_strup (gchar *string)
 {
-  register guchar *s;
+  guchar *s;
 
   g_return_val_if_fail (string != NULL, NULL);
 
@@ -1606,14 +1606,14 @@ g_strreverse (gchar *string)
 
   if (*string)
     {
-      register gchar *h, *t;
+      gchar *h, *t;
 
       h = string;
       t = string + strlen (string) - 1;
 
       while (h < t)
         {
-          register gchar c;
+          gchar c;
 
           c = *h;
           *h = *t;
@@ -1934,7 +1934,7 @@ g_strdelimit (gchar       *string,
               const gchar *delimiters,
               gchar        new_delim)
 {
-  register gchar *c;
+  gchar *c;
 
   g_return_val_if_fail (string != NULL, NULL);
 
@@ -1971,7 +1971,7 @@ g_strcanon (gchar       *string,
             const gchar *valid_chars,
             gchar        substitutor)
 {
-  register gchar *c;
+  gchar *c;
 
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (valid_chars != NULL, NULL);

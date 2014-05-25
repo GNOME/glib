@@ -81,7 +81,7 @@ naive_bit_nth_msf (gulong mask, gint   nth_bit)
 static guint
 naive_bit_storage (gulong number)
 {
-  register guint n_bits = 0;
+  guint n_bits = 0;
   
   do
     {

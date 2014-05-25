@@ -233,7 +233,7 @@ static void
 md5_transform (guint32       buf[4],
                guint32 const in[16])
 {
-  register guint32 a, b, c, d;
+  guint32 a, b, c, d;
 
 /* The four core functions - F1 is optimized somewhat */
 #define F1(x, y, z)     (z ^ (x & (y ^ z)))

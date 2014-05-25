@@ -386,7 +386,7 @@ static TypeNode		*static_fundamental_type_nodes[(G_TYPE_FUNDAMENTAL_MAX >> G_TYP
 static GType		 static_fundamental_next = G_TYPE_RESERVED_USER_FIRST;
 
 static inline TypeNode*
-lookup_type_node_I (register GType utype)
+lookup_type_node_I (GType utype)
 {
   if (utype > G_TYPE_FUNDAMENTAL_MAX)
     return (TypeNode*) (utype & ~TYPE_ID_MASK);

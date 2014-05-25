@@ -106,7 +106,7 @@ int
 PRIV(valid_utf)(PCRE_PUCHAR string, int length, int *erroroffset)
 {
 #ifdef SUPPORT_UTF
-register PCRE_PUCHAR p;
+PCRE_PUCHAR p;
 
 if (length < 0)
   {
@@ -116,7 +116,7 @@ if (length < 0)
 
 for (p = string; length-- > 0; p++)
   {
-  register int ab, c, d;
+  int ab, c, d;
 
   c = *p;
   if (c < 128) continue;                /* ASCII character */

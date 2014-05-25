@@ -302,7 +302,7 @@ static guint          g_n_signal_nodes = 0;
 static SignalNode   **g_signal_nodes = NULL;
 
 static inline SignalNode*
-LOOKUP_SIGNAL_NODE (register guint signal_id)
+LOOKUP_SIGNAL_NODE (guint signal_id)
 {
   if (signal_id < g_n_signal_nodes)
     return g_signal_nodes[signal_id];

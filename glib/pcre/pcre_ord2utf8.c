@@ -67,7 +67,7 @@ PRIV(ord2utf)(pcre_uint32 cvalue, pcre_uchar *buffer)
 {
 #ifdef SUPPORT_UTF
 
-register int i, j;
+int i, j;
 
 /* Checking invalid cvalue character, encoded as invalid UTF-16 character.
 Should never happen in practice. */
