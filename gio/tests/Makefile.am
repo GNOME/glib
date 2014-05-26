@@ -319,7 +319,7 @@ uninstalled_test_extra_programs += \
 test_programs += mimeapps
 clean-local: clean-mimeapps
 clean-mimeapps:
-	rm -rf xdgdatadir xdgdatahome
+	rm -rf xdgdatadir xdgdatahome xdgconfighome
 
 uninstalled_test_programs += gsettings gschema-compile
 gsettings_DEPENDENCIES = test.mo
