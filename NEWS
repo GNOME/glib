@@ -1,3 +1,86 @@
+Overview of changes in GLib 2.41.0
+===================================
+
+* Many bugfixes found by static analysis, including potential fd leaks
+  and NULL pointer dereferences.
+
+* Increased use of (nullable) attribute on out values and return types
+  now that it is supported (mostly from porting Vala metadata).
+
+* use XDG_CURRENT_DESKTOP for OnlyShowIn/NotShowIn handling of desktop
+  files, deprecating g_desktop_app_info_set_desktop_env()
+
+* add support for g_desktop_app_info_get_implementations() to find
+  desktop files that have an Implements= line for a given interface
+
+* GHmac has gained SHA-512 support
+
+* support the new mimeapps specification (most notably, moving the
+  assoications/defaults configuration to ~/.config/mimeapps.list).
+
+* libgobject is now linked -Wl,-z,nodelete when possible to avoid errors
+  when gobject is used from a module for a program that does not itself
+  use gobject and that module is unloaded/reloaded
+
+* ... and many other bug fixes.
+
+ 623552 glib warns if backtrace.py is not present
+ 667468 glib-2.30.2: ipv6 tests fail when no ipv6 support is available
+ 668152 -framework Carbon linker flag not passed to pkg-config .pc files
+ 707298 libgobject should be linked with -Wl,-z,nodelete
+ 712391 Add g_desktop_app_info_get_implementors()
+ 722723 Infinite recursion when calling g_io_stream_close_async() from libsoup
+ 724741 hmac: Fix support for SHA-512 in GHmac
+ 726040 networkaddress: fix parsing of uri with @ after authority
+ 726318 gio: Document that GSocket is not thread safe
+ 726611 socketclient: Leak on cancellation
+ 726872 gio: Add names to idles and timeouts
+ 727119 wrong IN6_IS_ADDR_MC_LINKLOCAL usage break android build
+ 727123 GNotification: Some small documentation fixes
+ 727320 docs: Remove escaping '\' from literals
+ 727551 Check use_count of GApplication in g_application_release()
+ 727559 g_file_copy: Don't set GError when we intend to ignore errors
+ 727692 gio/gtlscertificate.c -- broken PEM-file processing (affects local CA root stores, for starters)
+ 727890 soup_content_sniffer_real_sniff segfault
+ 727900 gio: Add newer dbus UnknownXxxx and PropertyReadOnly errors
+ 727928 gapplication-tool fixes
+ 727939 INTLLIBS are always appended in configure checks
+ 727964 g_io_extension_point_get_extension_by_name: Warn, but don't crash, for NULL inputs
+ 728040 Implement new mimeapps spec
+ 728066 Deal with startup notify id being NULL
+ 728280 platform_get_argv0: fix sysctl(3) use on OpenBSD
+ 728285 docs: Use markdown links in .h files, too
+ 728350 gaction: Minor clarifications in the GAction documentation
+ 728380 docs: Remove <!-- --> comment before plural s
+ 728565 gfile: More explicitly document the context for GFileProgressCallback
+ 728983 Docs: various fixes and improvements
+ 729167 gobject: Document that classes/objects/interfaces are zero-filled
+ 729563 GOption: A short option's value is included in G_OPTION_REMAINING
+ 729813 AppInfo: use XDG_CURRENT_DESKTOP for OnlyShowIn
+ 729875 gio: cleanup gdbusmessage.c file
+ 730045 Avoid overeager warning about deprecated properties
+ 730189 gtestutils: Fix a very unlikely FD leak in test fork handling
+ 730190 gsocket: Add missing preconditions to g_socket_send_message()
+ 730277 gthread: Fix use of a local variable after it went out of scope
+ 730278 gsubprocess: Add a missing va_end() call
+ 730295 gdbus-tool: Remove dead variables
+ 730493 Port annotations from Vala metadata
+
+Translations updated:
+ Basque
+ Brazilian Portuguese
+ Catalan
+ Czech
+ Danish
+ Greek
+ Hebrew
+ Hungarian
+ Punjabi
+ Serbian
+ Slovenian
+ Spanish
+ Ukrainian
+
 Overview of changes from GLib 2.39.91 to GLib 2.39.92
 =====================================================
 
