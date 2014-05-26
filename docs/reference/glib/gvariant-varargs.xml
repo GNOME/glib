@@ -221,7 +221,7 @@
       </entry>
       <entry colsep='1' rowsep='1'>
        <para>
-        Used as a prefix on a GVariant format string (not type string).  Denotes that a pointer to a
+        Used as a prefix on a GVariant type string (not format string).  Denotes that a pointer to a
         <link linkend='GVariant'>GVariant</link> should be used in place of the normal C type or types.  For
         <link linkend='g-variant-new'><function>g_variant_new()</function></link> this means that you must pass a
         non-<link linkend='NULL:CAPS'><literal>NULL</literal></link> <code>(<link linkend='GVariant'>GVariant</link>
@@ -260,7 +260,7 @@
       </entry>
       <entry colsep='1' rowsep='1'>
        <para>
-        Used as a prefix on a GVariant format string (not type string).  Denotes that a C pointer to serialised data
+        Used as a prefix on a GVariant type string (not format string).  Denotes that a C pointer to serialised data
         should be used in place of the normal C type.  See
         <link linkend='gvariant-format-strings-pointers'>Pointers</link> below.
        </para>
