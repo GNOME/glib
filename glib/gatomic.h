@@ -76,7 +76,7 @@ GLIB_AVAILABLE_IN_ALL
 gsize                   g_atomic_pointer_xor                  (volatile void  *atomic,
                                                                gsize           val);
 
-GLIB_DEPRECATED_IN_2_30_FOR(g_atomic_add)
+GLIB_DEPRECATED_IN_2_30_FOR(g_atomic_int_add)
 gint                    g_atomic_int_exchange_and_add         (volatile gint  *atomic,
                                                                gint            val);
 
