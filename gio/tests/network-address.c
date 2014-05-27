@@ -210,7 +210,24 @@ test_resolve_address_gresolver (gconstpointer d)
   else
     {
       g_assert_false (test->valid_resolve);
-      g_assert_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND);
+
+      if (!test->valid_parse)
+        {
+          /* GResolver should have rejected the address internally, in
+           * which case we're guaranteed to get G_RESOLVER_ERROR_NOT_FOUND.
+           */
+          g_assert_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND);
+        }
+      else
+        {
+          /* If GResolver didn't reject the string itself, then we
+           * might have attempted to send it over the network. If that
+           * attempt succeeded, we'd get back NOT_FOUND, but if
+           * there's no network available we might have gotten some
+           * other error instead.
+           */
+        }
+
       g_error_free (error);
       return;
     }
