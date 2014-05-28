@@ -120,6 +120,8 @@ child_main (int argc, char *argv[])
   g_idle_add (signal_parent, NULL);
   g_main_loop_run (loop);
 
+ g_message ("test_child_private: received parent signal");
+
   write_or_die (childname, 
 		g_mapped_file_get_contents (map),
 		g_mapped_file_get_length (map));
@@ -213,6 +215,7 @@ test_child_private (gchar *argv0)
 	       error->message);
       exit (1);            
     }
+ g_message ("test_child_private: child spawned");
 
 #ifndef G_OS_WIN32
   loop = g_main_loop_new (NULL, FALSE);
@@ -222,6 +225,8 @@ test_child_private (gchar *argv0)
 #else
   g_usleep (2000000);
 #endif
+
+ g_message ("test_child_private: received first child signal");
 
   buffer = (gchar *)g_mapped_file_get_contents (map);
   buffer[0] = '1';
@@ -241,6 +246,8 @@ test_child_private (gchar *argv0)
 #else
   g_usleep (2000000);
 #endif
+
+ g_message ("test_child_private: received second child signal");
 
   if (!g_file_get_contents (childname, &buffer, &len, &error))
     {
