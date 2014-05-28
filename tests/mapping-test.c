@@ -143,6 +143,7 @@ test_mapping (void)
   map = map_or_die (filename, TRUE);
   g_assert (g_mapped_file_get_length (map) == 3);
   g_mapped_file_free (map);
+  g_message ("test_mapping: ok");
 }
 
 static void 
@@ -173,6 +174,7 @@ test_private (void)
   g_assert (strcmp (buffer, "ABC") == 0);
   g_free (buffer);
 
+  g_message ("test_private: ok");
 }
 
 static void
@@ -251,6 +253,8 @@ test_child_private (gchar *argv0)
   g_assert (len == 3);
   g_assert (strcmp (buffer, "ABC") == 0);
   g_free (buffer);
+
+  g_message ("test_child_private: ok");
 }
 
 static int 
