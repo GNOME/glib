@@ -3975,6 +3975,15 @@ g_type_check_instance_is_a (GTypeInstance *type_instance,
 }
 
 gboolean
+g_type_check_instance_is_fundamentally_a (GTypeInstance *type_instance,
+                                          GType          fundamental_type)
+{
+  if (!type_instance || !type_instance->g_class)
+    return FALSE;
+  return NODE_FUNDAMENTAL_TYPE(lookup_type_node_I (type_instance->g_class->g_type)) == fundamental_type;
+}
+
+gboolean
 g_type_check_class_is_a (GTypeClass *type_class,
 			 GType       is_a_type)
 {

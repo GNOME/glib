@@ -490,6 +490,18 @@ struct _GTypeQuery
  */
 #define G_TYPE_CHECK_INSTANCE_TYPE(instance, g_type)            (_G_TYPE_CIT ((instance), (g_type)))
 /**
+ * G_TYPE_CHECK_INSTANCE_FUNDAMENTAL_TYPE:
+ * @instance: Location of a #GTypeInstance structure.
+ * @g_type: The fundamental type to be checked
+ *
+ * Checks if @instance is an instance of the fundamental type identified by @g_type.
+ *
+ * This macro should only be used in type implementations.
+ *
+ * Returns: %TRUE on success.
+ */
+#define G_TYPE_CHECK_INSTANCE_FUNDAMENTAL_TYPE(instance, g_type)            (_G_TYPE_CIFT ((instance), (g_type)))
+/**
  * G_TYPE_INSTANCE_GET_CLASS:
  * @instance: Location of the #GTypeInstance structure.
  * @g_type: The #GType of the class to be returned.
@@ -1895,6 +1907,9 @@ GTypeInstance*   g_type_check_instance_cast     (GTypeInstance      *instance,
 GLIB_AVAILABLE_IN_ALL
 gboolean         g_type_check_instance_is_a	(GTypeInstance      *instance,
 						 GType               iface_type) G_GNUC_PURE;
+GLIB_AVAILABLE_IN_2_42
+gboolean         g_type_check_instance_is_fundamentally_a (GTypeInstance *instance,
+                                                           GType          fundamental_type) G_GNUC_PURE;
 GLIB_AVAILABLE_IN_ALL
 GTypeClass*      g_type_check_class_cast        (GTypeClass         *g_class,
 						 GType               is_a_type);
@@ -1934,6 +1949,7 @@ const gchar *    g_type_name_from_class         (GTypeClass	*g_class);
 #define _G_TYPE_CHV(vl)			(g_type_check_value ((GValue*) vl))
 #define _G_TYPE_IGC(ip, gt, ct)         ((ct*) (((GTypeInstance*) ip)->g_class))
 #define _G_TYPE_IGI(ip, gt, ct)         ((ct*) g_type_interface_peek (((GTypeInstance*) ip)->g_class, gt))
+#define _G_TYPE_CIFT(ip, ft)            (g_type_check_instance_is_fundamentally_a ((GTypeInstance*) ip, ft))
 #ifdef	__GNUC__
 #  define _G_TYPE_CIT(ip, gt)             (G_GNUC_EXTENSION ({ \
   GTypeInstance *__inst = (GTypeInstance*) ip; GType __t = gt; gboolean __r; \
