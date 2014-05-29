@@ -342,7 +342,7 @@ close_converter (GIConv cd)
 /**
  * g_convert_with_iconv:
  * @str:           the string to convert
- * @len:           the length of the string, or -1 if the string is 
+ * @len:           the length of the string in bytes, or -1 if the string is
  *                 nul-terminated (Note that some encodings may allow nul
  *                 bytes to occur inside strings. In that case, using -1
  *                 for the @len parameter is unsafe)
@@ -495,7 +495,7 @@ g_convert_with_iconv (const gchar *str,
 /**
  * g_convert:
  * @str:           the string to convert
- * @len:           the length of the string, or -1 if the string is 
+ * @len:           the length of the string in bytes, or -1 if the string is
  *                 nul-terminated (Note that some encodings may allow nul
  *                 bytes to occur inside strings. In that case, using -1
  *                 for the @len parameter is unsafe)
@@ -574,7 +574,7 @@ g_convert (const gchar *str,
 /**
  * g_convert_with_fallback:
  * @str:          the string to convert
- * @len:          the length of the string, or -1 if the string is 
+ * @len:          the length of the string in bytes, or -1 if the string is
  *                 nul-terminated (Note that some encodings may allow nul
  *                 bytes to occur inside strings. In that case, using -1
  *                 for the @len parameter is unsafe)
