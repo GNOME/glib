@@ -45,6 +45,29 @@ G_STATIC_ASSERT (_g_alignof (gpointer) == _g_alignof (GFunc));
 G_STATIC_ASSERT (sizeof (GFunc) == sizeof (GCompareDataFunc));
 G_STATIC_ASSERT (_g_alignof (GFunc) == _g_alignof (GCompareDataFunc));
 
+/* We assume that "small" enums (those where all values fit in INT32_MIN
+ * to INT32_MAX) are exactly int-sized. In particular, we assume that if
+ * an enum has no members that exceed the range of char/short, the
+ * compiler will make it int-sized anyway, so adding a member later that
+ * *does* exceed the range of char/short is not an ABI break. */
+typedef enum {
+    TEST_CHAR_0 = 0
+} TestChar;
+typedef enum {
+    TEST_SHORT_0 = 0,
+    TEST_SHORT_256 = 256
+} TestShort;
+typedef enum {
+    TEST_INT32_MIN = G_MININT32,
+    TEST_INT32_MAX = G_MAXINT32
+} TestInt;
+G_STATIC_ASSERT (sizeof (TestChar) == sizeof (int));
+G_STATIC_ASSERT (sizeof (TestShort) == sizeof (int));
+G_STATIC_ASSERT (sizeof (TestInt) == sizeof (int));
+G_STATIC_ASSERT (_g_alignof (TestChar) == _g_alignof (int));
+G_STATIC_ASSERT (_g_alignof (TestShort) == _g_alignof (int));
+G_STATIC_ASSERT (_g_alignof (TestInt) == _g_alignof (int));
+
 /**
  * g_mem_gc_friendly:
  *
