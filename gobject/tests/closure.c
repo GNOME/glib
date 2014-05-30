@@ -196,6 +196,18 @@ int
 main (int argc,
       char *argv[])
 {
+#ifndef G_OS_WIN32
+  sigset_t sig_mask, old_mask;
+
+  sigemptyset (&sig_mask);
+  sigaddset (&sig_mask, SIGUSR1);
+  if (sigprocmask (SIG_UNBLOCK, &sig_mask, &old_mask) == 0)
+    {
+      if (sigismember (&old_mask, SIGUSR1))
+        g_message ("SIGUSR1 was blocked, unblocking it");
+    }
+#endif
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/closure/idle", test_closure_idle);
