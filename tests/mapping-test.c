@@ -285,6 +285,17 @@ main (int argc,
       char *argv[])
 {
   int ret;
+#ifndef G_OS_WIN32
+  sigset_t sig_mask, old_mask;
+
+  sigemptyset (&sig_mask);
+  sigaddset (&sig_mask, SIGUSR1);
+  if (sigprocmask (SIG_UNBLOCK, &sig_mask, &old_mask) == 0)
+    {
+      if (sigismember (&old_mask, SIGUSR1))
+        g_message ("SIGUSR1 was blocked, unblocking it");
+    }
+#endif
 
   dir = g_get_current_dir ();
   filename = g_build_filename (dir, "maptest", NULL);
