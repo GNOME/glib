@@ -50,7 +50,7 @@ G_BEGIN_DECLS
  * Checks whether @pspec "is a" valid #GParamSpec structure of type %G_TYPE_PARAM
  * or derived.
  */
-#define G_IS_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM))
+#define G_IS_PARAM_SPEC(pspec)		(G_TYPE_CHECK_INSTANCE_FUNDAMENTAL_TYPE ((pspec), G_TYPE_PARAM))
 /**
  * G_PARAM_SPEC_CLASS:
  * @pclass: a valid #GParamSpecClass
