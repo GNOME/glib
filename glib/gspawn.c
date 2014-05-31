@@ -59,6 +59,17 @@
  * SECTION:spawn
  * @Short_description: process launching
  * @Title: Spawning Processes
+ *
+ * GLib supports spawning of processes with an API that is more
+ * convenient than the bare UNIX fork() and exec().
+ *
+ * The g_spawn family of functions has synchronous (g_spawn_sync())
+ * and asynchronous variants (g_spawn_async(), g_spawn_async_with_pipes()),
+ * as well as convenience variants that take a complete shell-like
+ * commandline (g_spawn_command_line_sync(), g_spawn_command_line_async()).
+ *
+ * See #GSubprocess in GIO for a higher-level API that provides
+ * stream interfaces for communication with child processes.
  */
 
 
