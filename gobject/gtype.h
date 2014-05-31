@@ -1057,8 +1057,7 @@ struct _GInterfaceInfo
  * @value_init: Default initialize @values contents by poking values
  *  directly into the value->data array. The data array of
  *  the #GValue passed into this function was zero-filled
- *  with <function>memset()</function>, so no care has to
- *  be taken to free any
+ *  with `memset()`, so no care has to be taken to free any
  *  old contents. E.g. for the implementation of a string
  *  value that may never be %NULL, the implementation might
  *  look like:
