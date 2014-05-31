@@ -649,8 +649,8 @@ g_subprocess_class_init (GSubprocessClass *class)
  * g_subprocess_new: (skip)
  * @flags: flags that define the behaviour of the subprocess
  * @error: (allow-none): return location for an error, or %NULL
- * @argv0: first commandline argument to pass to the subprocess,
- *     followed by more arguments, followed by %NULL
+ * @argv0: first commandline argument to pass to the subprocess
+ * @...:   more commandline arguments, followed by %NULL
  *
  * Create a new process with the given flags and varargs argument
  * list.  By default, matching the g_spawn_async() defaults, the
