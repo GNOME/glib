@@ -90,7 +90,9 @@ typedef gint    (*GPollFunc)    (GPollFD *ufds,
 struct _GPollFD
 {
 #if defined (G_OS_WIN32) && GLIB_SIZEOF_VOID_P == 8
+#ifndef __GTK_DOC_IGNORE__
   gint64	fd;
+#endif
 #else
   gint		fd;
 #endif
@@ -98,6 +100,12 @@ struct _GPollFD
   gushort 	revents;
 };
 
+/**
+ * G_POLLFD_FORMAT:
+ *
+ * A format specifier that can be used in printf()-style format strings
+ * when printing the @fd member of a #GPollFD.
+ */
 #ifdef G_OS_WIN32
 #if GLIB_SIZEOF_VOID_P == 8
 #define G_POLLFD_FORMAT "%#I64x"

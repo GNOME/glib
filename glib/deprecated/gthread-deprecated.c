@@ -54,6 +54,8 @@
  * @G_THREAD_PRIORITY_HIGH: a priority higher than normal
  * @G_THREAD_PRIORITY_URGENT: the highest priority
  *
+ * Thread priorities.
+ *
  * Deprecated:2.32: Thread priorities no longer have any effect.
  */
 

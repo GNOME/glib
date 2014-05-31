@@ -155,6 +155,13 @@
  */
 
 /**
+ * G_LOG_LEVEL_USER_SHIFT:
+ *
+ * Log levels below 1<<G_LOG_LEVEL_USER_SHIFT are used by GLib.
+ * Higher bits can be used for user-defined log levels.
+ */
+
+/**
  * g_message:
  * @...: format string, followed by parameters to insert
  *     into the format string (as with printf())

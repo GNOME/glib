@@ -942,7 +942,7 @@ g_io_channel_get_line_term (GIOChannel *channel,
  *     This flag cannot be changed.
  * @G_IO_FLAG_IS_WRITABLE: indicates that the io channel is writable.
  *     This flag cannot be changed.
- * G_IO_FLAG_IS_WRITEABLE: a misspelled version of @G_IO_FLAG_IS_WRITABLE
+ * @G_IO_FLAG_IS_WRITEABLE: a misspelled version of @G_IO_FLAG_IS_WRITABLE
  *     that existed before the spelling was fixed in GLib 2.30. It is kept
  *     here for compatibility reasons. Deprecated since 2.30
  * @G_IO_FLAG_IS_SEEKABLE: indicates that the io channel is seekable,
@@ -2529,11 +2529,6 @@ g_io_channel_write_unichar (GIOChannel  *channel,
   return status;
 }
 
-/**
- * g_io_channel_error_quark:
- *
- * Returns: the quark used as %G_IO_CHANNEL_ERROR
- **/
 /**
  * G_IO_CHANNEL_ERROR:
  *

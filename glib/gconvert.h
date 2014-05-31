@@ -69,11 +69,10 @@ GLIB_AVAILABLE_IN_ALL
 GQuark g_convert_error_quark (void);
 
 /**
- * GIconv:
+ * GIConv:
  *
- * The <structname>GIConv</structname> struct wraps an
- * iconv() conversion descriptor. It contains private data
- * and should only be accessed using the following functions.
+ * The GIConv struct wraps an iconv() conversion descriptor. It contains
+ * private data and should only be accessed using the following functions.
  */
 typedef struct _GIConv *GIConv;
 

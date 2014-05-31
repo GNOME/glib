@@ -292,7 +292,8 @@ GQuark g_regex_error_quark (void);
  * Since: 2.14
  */
 /* Remember to update G_REGEX_COMPILE_MASK in gregex.c after
- * adding a new flag. */
+ * adding a new flag.
+ */
 typedef enum
 {
   G_REGEX_CASELESS          = 1 << 0,
@@ -405,14 +406,20 @@ typedef enum
 /**
  * GRegex:
  *
- * A GRegex is the "compiled" form of a regular expression pattern. This
- * structure is opaque and its fields cannot be accessed directly.
+ * A GRegex is the "compiled" form of a regular expression pattern.
+ * This structure is opaque and its fields cannot be accessed directly.
  *
  * Since: 2.14
  */
 typedef struct _GRegex		GRegex;
 
 
+/**
+ * GMatchInfo:
+ *
+ * A GMatchInfo is an opaque struct used to return information about
+ * matches.
+ */
 typedef struct _GMatchInfo	GMatchInfo;
 
 /**

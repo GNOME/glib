@@ -49,6 +49,15 @@
  */
 
 /**
+ * glib_major_version:
+ *
+ * The major version of the GLib library.
+ *
+ * An integer variable exported from the library linked
+ * against at application run time.
+ */
+
+/**
  * GLIB_MAJOR_VERSION:
  *
  * The major version number of the GLib library.
@@ -59,6 +68,15 @@
  */
 
 /**
+ * glib_minor_version:
+ *
+ * The minor version number of the GLib library.
+ *
+ * An integer variable exported from the library linked
+ * against at application run time.
+ */
+
+/**
  * GLIB_MINOR_VERSION:
  *
  * The minor version number of the GLib library.
@@ -66,6 +84,15 @@
  * Like #gtk_minor_version, but from the headers used at
  * application compile time, rather than from the library
  * linked against at application run time.
+ */
+
+/**
+ * glib_micro_version:
+ *
+ * The micro version number of the GLib library.
+ *
+ * An integer variable exported from the library linked
+ * against at application run time.
  */
 
 /**
@@ -89,6 +116,26 @@
  *
  * Returns: %TRUE if the version of the GLib header files
  * is the same as or newer than the passed-in version.
+ */
+
+/**
+ * glib_binary_age:
+ *
+ * The binary age of the GLib library.
+ * Defines how far back backwards compatibility reaches.
+ *
+ * An integer variable exported from the library linked
+ * against at application run time.
+ */
+
+/**
+ * glib_interface_age:
+ *
+ * The interface age of the GLib library.
+ * Defines how far back the API has last been extended.
+ *
+ * An integer variable exported from the library linked
+ * against at application run time.
  */
 
 const guint glib_major_version = GLIB_MAJOR_VERSION;

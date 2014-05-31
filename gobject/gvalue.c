@@ -296,12 +296,13 @@ g_value_fits_pointer (const GValue *value)
 
 /**
  * g_value_peek_pointer:
- * @value: An initialized #GValue structure.
+ * @value: An initialized #GValue structure
  *
- * Returns: (transfer none): the value contents as pointer. This
- * function asserts that g_value_fits_pointer() returned %TRUE for the
- * passed in value.  This is an internal function introduced mainly
- * for C marshallers.
+ * Returns the value contents as pointer. This function asserts that
+ * g_value_fits_pointer() returned %TRUE for the passed in value.
+ * This is an internal function introduced mainly for C marshallers.
+ *
+ * Returns: (transfer none): the value contents as pointer
  */
 gpointer
 g_value_peek_pointer (const GValue *value)

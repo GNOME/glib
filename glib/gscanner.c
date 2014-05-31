@@ -88,6 +88,14 @@
  */
 
 /**
+ * G_CSET_DIGITS:
+ *
+ * The set of ASCII digits.
+ * Used for specifying valid identifier characters
+ * in #GScannerConfig.
+ */
+
+/**
  * G_CSET_LATINC:
  *
  * The set of uppercase ISO 8859-1 alphabet characters

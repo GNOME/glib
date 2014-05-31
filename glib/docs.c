@@ -1702,7 +1702,7 @@
  * arrays or arrays on the stack.
  */
  
-/ * Miscellaneous Macros {{{1 */
+/* Miscellaneous Macros {{{1 */
 
 /**
  * SECTION:macros_misc
@@ -2292,6 +2292,12 @@
  * Expands to a string identifying the current function.
  *
  * Since: 2.4
+ */
+
+/**
+ * G_HAVE_GNUC_VISIBILITY:
+ *
+ * Defined to 1 if gcc-style visibility handling is supported.
  */
 
 /* Windows Compatibility Functions {{{1 */
