@@ -31,7 +31,7 @@ G_BEGIN_DECLS
 /**
  * GOptionContext:
  * 
- * A <structname>GOptionContext</structname> struct defines which options
+ * A `GOptionContext` struct defines which options
  * are accepted by the commandline option parser. The struct has only private 
  * fields and should not be directly accessed.
  */
@@ -40,12 +40,12 @@ typedef struct _GOptionContext GOptionContext;
 /**
  * GOptionGroup:
  *
- * A <structname>GOptionGroup</structname> struct defines the options in a single
+ * A `GOptionGroup` struct defines the options in a single
  * group. The struct has only private fields and should not be directly accessed.
  *
  * All options in a group share the same translation function. Libraries which
  * need to parse commandline options are expected to provide a function for
- * getting a <structname>GOptionGroup</structname> holding their options, which
+ * getting a `GOptionGroup` holding their options, which
  * the application can then add to its #GOptionContext.
  */
 typedef struct _GOptionGroup   GOptionGroup;

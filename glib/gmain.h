@@ -42,7 +42,7 @@ typedef enum /*< flags >*/
 /**
  * GMainContext:
  *
- * The <structname>GMainContext</structname> struct is an opaque data
+ * The `GMainContext` struct is an opaque data
  * type representing a set of sources to be handled in a main loop.
  */
 typedef struct _GMainContext            GMainContext;
@@ -50,7 +50,7 @@ typedef struct _GMainContext            GMainContext;
 /**
  * GMainLoop:
  *
- * The <structname>GMainLoop</structname> struct is an opaque data type
+ * The `GMainLoop` struct is an opaque data type
  * representing the main event loop of a GLib or GTK+ application.
  */
 typedef struct _GMainLoop               GMainLoop;
@@ -58,7 +58,7 @@ typedef struct _GMainLoop               GMainLoop;
 /**
  * GSource:
  *
- * The <structname>GSource</structname> struct is an opaque data type
+ * The `GSource` struct is an opaque data type
  * representing an event source.
  */
 typedef struct _GSource                 GSource;
@@ -71,7 +71,7 @@ typedef struct _GSourcePrivate          GSourcePrivate;
  * @get: Called to extract the callback function and data from the
  *     callback object.
 
- * The <structname>GSourceCallbackFuncs</structname> struct contains
+ * The `GSourceCallbackFuncs` struct contains
  * functions for managing callback objects.
  */
 typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
@@ -104,7 +104,7 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     are needed for this type of event source.
  * @finalize: Called when the source is finalized.
  *
- * The <structname>GSourceFuncs</structname> struct contains a table of
+ * The `GSourceFuncs` struct contains a table of
  * functions used to handle event sources in a generic manner.
  *
  * For idle sources, the prepare and check functions always return %TRUE
