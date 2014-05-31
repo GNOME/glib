@@ -114,7 +114,7 @@ g_mutex_impl_free (pthread_mutex_t *mutex)
   free (mutex);
 }
 
-static pthread_mutex_t *
+static inline pthread_mutex_t *
 g_mutex_get_impl (GMutex *mutex)
 {
   pthread_mutex_t *impl = g_atomic_pointer_get (&mutex->p);
@@ -285,7 +285,7 @@ g_rec_mutex_impl_free (pthread_mutex_t *mutex)
   free (mutex);
 }
 
-static pthread_mutex_t *
+static inline pthread_mutex_t *
 g_rec_mutex_get_impl (GRecMutex *rec_mutex)
 {
   pthread_mutex_t *impl = g_atomic_pointer_get (&rec_mutex->p);
@@ -445,7 +445,7 @@ g_rw_lock_impl_free (pthread_rwlock_t *rwlock)
   free (rwlock);
 }
 
-static pthread_rwlock_t *
+static inline pthread_rwlock_t *
 g_rw_lock_get_impl (GRWLock *lock)
 {
   pthread_rwlock_t *impl = g_atomic_pointer_get (&lock->p);
@@ -667,7 +667,7 @@ g_cond_impl_free (pthread_cond_t *cond)
   free (cond);
 }
 
-static pthread_cond_t *
+static inline pthread_cond_t *
 g_cond_get_impl (GCond *cond)
 {
   pthread_cond_t *impl = g_atomic_pointer_get (&cond->p);
@@ -1007,7 +1007,7 @@ g_private_impl_free (pthread_key_t *key)
   free (key);
 }
 
-static pthread_key_t *
+static inline pthread_key_t *
 g_private_get_impl (GPrivate *key)
 {
   pthread_key_t *impl = g_atomic_pointer_get (&key->p);
