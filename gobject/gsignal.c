@@ -2609,7 +2609,11 @@ g_signal_handler_is_connected (gpointer instance,
 
 /**
  * g_signal_handlers_destroy:
- * @instance: (type GObject.Object): The instance where a signal handler is sought.
+ * @instance: (type GObject.Object): The instance whose signal handlers are destroyed
+ *
+ * Destroy all signal handlers of a type instance. This function is
+ * an implementation detail of the #GObject dispose implementation,
+ * and should not be used outside of the type system.
  */
 void
 g_signal_handlers_destroy (gpointer instance)
