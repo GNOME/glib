@@ -72,7 +72,7 @@ GQuark g_bookmark_file_error_quark (void);
 /**
  * GBookmarkFile:
  *
- * The <structname>GBookmarkFile</structname> struct contains only
+ * The `GBookmarkFile` structure contains only
  * private data and should not be directly accessed.
  */
 typedef struct _GBookmarkFile GBookmarkFile;
