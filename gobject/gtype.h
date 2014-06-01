@@ -256,27 +256,27 @@ G_BEGIN_DECLS
  */
 /**
  * G_TYPE_IS_FUNDAMENTAL:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type is a fundamental type.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_IS_FUNDAMENTAL(type)             ((type) <= G_TYPE_FUNDAMENTAL_MAX)
 /**
  * G_TYPE_IS_DERIVED:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type is derived (or in object-oriented terminology:
  * inherited) from another type (this holds true for all non-fundamental
  * types).
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_IS_DERIVED(type)                 ((type) > G_TYPE_FUNDAMENTAL_MAX)
 /**
  * G_TYPE_IS_INTERFACE:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type is an interface type.
  * An interface type provides a pure API, the implementation
@@ -286,86 +286,86 @@ G_BEGIN_DECLS
  * with the difference that GType interfaces are not derivable (but see
  * g_type_interface_add_prerequisite() for an alternative).
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_IS_INTERFACE(type)               (G_TYPE_FUNDAMENTAL (type) == G_TYPE_INTERFACE)
 /**
  * G_TYPE_IS_CLASSED:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type is a classed type.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_IS_CLASSED(type)                 (g_type_test_flags ((type), G_TYPE_FLAG_CLASSED))
 /**
  * G_TYPE_IS_INSTANTIATABLE:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type can be instantiated.  Instantiation is the
  * process of creating an instance (object) of this type.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_IS_INSTANTIATABLE(type)          (g_type_test_flags ((type), G_TYPE_FLAG_INSTANTIATABLE))
 /**
  * G_TYPE_IS_DERIVABLE:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type is a derivable type.  A derivable type can
  * be used as the base class of a flat (single-level) class hierarchy.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_IS_DERIVABLE(type)               (g_type_test_flags ((type), G_TYPE_FLAG_DERIVABLE))
 /**
  * G_TYPE_IS_DEEP_DERIVABLE:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type is a deep derivable type.  A deep derivable type
  * can be used as the base class of a deep (multi-level) class hierarchy.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_IS_DEEP_DERIVABLE(type)          (g_type_test_flags ((type), G_TYPE_FLAG_DEEP_DERIVABLE))
 /**
  * G_TYPE_IS_ABSTRACT:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type is an abstract type.  An abstract type cannot be
  * instantiated and is normally used as an abstract base class for
  * derived classes.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_IS_ABSTRACT(type)                (g_type_test_flags ((type), G_TYPE_FLAG_ABSTRACT))
 /**
  * G_TYPE_IS_VALUE_ABSTRACT:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type is an abstract value type.  An abstract value type introduces
  * a value table, but can't be used for g_value_init() and is normally used as
  * an abstract base type for derived value types.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_IS_VALUE_ABSTRACT(type)          (g_type_test_flags ((type), G_TYPE_FLAG_VALUE_ABSTRACT))
 /**
  * G_TYPE_IS_VALUE_TYPE:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type is a value type and can be used with g_value_init(). 
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_IS_VALUE_TYPE(type)              (g_type_check_is_value_type (type))
 /**
  * G_TYPE_HAS_VALUE_TABLE:
- * @type: A #GType value.
+ * @type: A #GType value
  * 
  * Checks if @type has a #GTypeValueTable.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_HAS_VALUE_TABLE(type)            (g_type_value_table_peek (type) != NULL)
 
@@ -431,13 +431,13 @@ struct _GTypeInterface
 };
 /**
  * GTypeQuery:
- * @type: the #GType value of the type.
- * @type_name: the name of the type.
- * @class_size: the size of the class structure.
- * @instance_size: the size of the instance structure.
+ * @type: the #GType value of the type
+ * @type_name: the name of the type
+ * @class_size: the size of the class structure
+ * @instance_size: the size of the instance structure
  * 
- * A structure holding information for a specific type. It is
- * filled in by the g_type_query() function.
+ * A structure holding information for a specific type.
+ * It is filled in by the g_type_query() function.
  */
 struct _GTypeQuery
 {
@@ -454,21 +454,21 @@ struct _GTypeQuery
 /*< protected >*/
 /**
  * G_TYPE_CHECK_INSTANCE:
- * @instance: Location of a #GTypeInstance structure.
+ * @instance: Location of a #GTypeInstance structure
  * 
  * Checks if @instance is a valid #GTypeInstance structure,
  * otherwise issues a warning and returns %FALSE.
  * 
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_CHECK_INSTANCE(instance)				(_G_TYPE_CHI ((GTypeInstance*) (instance)))
 /**
  * G_TYPE_CHECK_INSTANCE_CAST:
- * @instance: Location of a #GTypeInstance structure.
- * @g_type: The type to be returned.
- * @c_type: The corresponding C type of @g_type.
+ * @instance: Location of a #GTypeInstance structure
+ * @g_type: The type to be returned
+ * @c_type: The corresponding C type of @g_type
  * 
  * Checks that @instance is an instance of the type identified by @g_type
  * and issues a warning if this is not the case. Returns @instance casted 
@@ -486,7 +486,7 @@ struct _GTypeQuery
  * 
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_CHECK_INSTANCE_TYPE(instance, g_type)            (_G_TYPE_CIT ((instance), (g_type)))
 /**
@@ -498,20 +498,20 @@ struct _GTypeQuery
  *
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_CHECK_INSTANCE_FUNDAMENTAL_TYPE(instance, g_type)            (_G_TYPE_CIFT ((instance), (g_type)))
 /**
  * G_TYPE_INSTANCE_GET_CLASS:
- * @instance: Location of the #GTypeInstance structure.
- * @g_type: The #GType of the class to be returned.
- * @c_type: The C type of the class structure.
+ * @instance: Location of the #GTypeInstance structure
+ * @g_type: The #GType of the class to be returned
+ * @c_type: The C type of the class structure
  * 
  * Get the class structure of a given @instance, casted
  * to a specified ancestor type @g_type of the instance.
  * 
- * Note that while calling a GInstanceInitFunc(), the class pointer gets
- * modified, so it might not always return the expected pointer.
+ * Note that while calling a GInstanceInitFunc(), the class pointer
+ * gets modified, so it might not always return the expected pointer.
  * 
  * This macro should only be used in type implementations.
  *
@@ -520,9 +520,9 @@ struct _GTypeQuery
 #define G_TYPE_INSTANCE_GET_CLASS(instance, g_type, c_type)     (_G_TYPE_IGC ((instance), (g_type), c_type))
 /**
  * G_TYPE_INSTANCE_GET_INTERFACE:
- * @instance: Location of the #GTypeInstance structure.
- * @g_type: The #GType of the interface to be returned.
- * @c_type: The C type of the interface structure.
+ * @instance: Location of the #GTypeInstance structure
+ * @g_type: The #GType of the interface to be returned
+ * @c_type: The C type of the interface structure
  * 
  * Get the interface structure for interface @g_type of a given @instance.
  * 
@@ -533,9 +533,9 @@ struct _GTypeQuery
 #define G_TYPE_INSTANCE_GET_INTERFACE(instance, g_type, c_type) (_G_TYPE_IGI ((instance), (g_type), c_type))
 /**
  * G_TYPE_CHECK_CLASS_CAST:
- * @g_class: Location of a #GTypeClass structure.
- * @g_type: The type to be returned.
- * @c_type: The corresponding C type of class structure of @g_type.
+ * @g_class: Location of a #GTypeClass structure
+ * @g_type: The type to be returned
+ * @c_type: The corresponding C type of class structure of @g_type
  * 
  * Checks that @g_class is a class structure of the type identified by @g_type
  * and issues a warning if this is not the case. Returns @g_class casted 
@@ -546,15 +546,15 @@ struct _GTypeQuery
 #define G_TYPE_CHECK_CLASS_CAST(g_class, g_type, c_type)        (_G_TYPE_CCC ((g_class), (g_type), c_type))
 /**
  * G_TYPE_CHECK_CLASS_TYPE:
- * @g_class: Location of a #GTypeClass structure.
- * @g_type: The type to be checked.
+ * @g_class: Location of a #GTypeClass structure
+ * @g_type: The type to be checked
  * 
  * Checks if @g_class is a class structure of the type identified by 
  * @g_type.
  * 
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_CHECK_CLASS_TYPE(g_class, g_type)                (_G_TYPE_CCT ((g_class), (g_type)))
 /**
@@ -566,25 +566,25 @@ struct _GTypeQuery
  * 
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_CHECK_VALUE(value)				(_G_TYPE_CHV ((value)))
 /**
  * G_TYPE_CHECK_VALUE_TYPE:
  * @value: a #GValue
- * @g_type: The type to be checked.
+ * @g_type: The type to be checked
  * 
  * Checks if @value has been initialized to hold values
  * of type @g_type. 
  * 
  * This macro should only be used in type implementations.
  *
- * Returns: %TRUE on success.
+ * Returns: %TRUE on success
  */
 #define G_TYPE_CHECK_VALUE_TYPE(value, g_type)			(_G_TYPE_CVH ((value), (g_type)))
 /**
  * G_TYPE_FROM_INSTANCE:
- * @instance: Location of a valid #GTypeInstance structure.
+ * @instance: Location of a valid #GTypeInstance structure
  * 
  * Get the type identifier from a given @instance structure. 
  * 
@@ -595,7 +595,7 @@ struct _GTypeQuery
 #define G_TYPE_FROM_INSTANCE(instance)                          (G_TYPE_FROM_CLASS (((GTypeInstance*) (instance))->g_class))
 /**
  * G_TYPE_FROM_CLASS:
- * @g_class: Location of a valid #GTypeClass structure.
+ * @g_class: Location of a valid #GTypeClass structure
  * 
  * Get the type identifier from a given @class structure.
  * 
@@ -606,7 +606,7 @@ struct _GTypeQuery
 #define G_TYPE_FROM_CLASS(g_class)                              (((GTypeClass*) (g_class))->g_type)
 /**
  * G_TYPE_FROM_INTERFACE:
- * @g_iface: Location of a valid #GTypeInterface structure.
+ * @g_iface: Location of a valid #GTypeInterface structure
  * 
  * Get the type identifier from a given @interface structure.
  * 
@@ -618,9 +618,9 @@ struct _GTypeQuery
 
 /**
  * G_TYPE_INSTANCE_GET_PRIVATE:
- * @instance: the instance of a type deriving from @private_type.
- * @g_type: the type identifying which private data to retrieve.
- * @c_type: The C type for the private structure.
+ * @instance: the instance of a type deriving from @private_type
+ * @g_type: the type identifying which private data to retrieve
+ * @c_type: The C type for the private structure
  * 
  * Gets the private structure for a particular type.
  * The private structure must have been registered in the
@@ -629,15 +629,15 @@ struct _GTypeQuery
  * This macro should only be used in type implementations.
  * 
  * Since: 2.4
- * Returns: a pointer to the private data structure.
+ * Returns: a pointer to the private data structure
  */
 #define G_TYPE_INSTANCE_GET_PRIVATE(instance, g_type, c_type)   ((c_type*) g_type_instance_get_private ((GTypeInstance*) (instance), (g_type)))
 
 /**
  * G_TYPE_CLASS_GET_PRIVATE:
- * @klass: the class of a type deriving from @private_type.
- * @g_type: the type identifying which private data to retrieve.
- * @c_type: The C type for the private structure.
+ * @klass: the class of a type deriving from @private_type
+ * @g_type: the type identifying which private data to retrieve
+ * @c_type: The C type for the private structure
  * 
  * Gets the private class structure for a particular type.
  * The private structure must have been registered in the
@@ -646,16 +646,16 @@ struct _GTypeQuery
  * This macro should only be used in type implementations.
  * 
  * Since: 2.24
- * Returns: a pointer to the private data structure.
+ * Returns: a pointer to the private data structure
  */
 #define G_TYPE_CLASS_GET_PRIVATE(klass, g_type, c_type)   ((c_type*) g_type_class_get_private ((GTypeClass*) (klass), (g_type)))
 
 /**
  * GTypeDebugFlags:
- * @G_TYPE_DEBUG_NONE: Print no messages.
- * @G_TYPE_DEBUG_OBJECTS: Print messages about object bookkeeping.
- * @G_TYPE_DEBUG_SIGNALS: Print messages about signal emissions.
- * @G_TYPE_DEBUG_MASK: Mask covering all debug flags.
+ * @G_TYPE_DEBUG_NONE: Print no messages
+ * @G_TYPE_DEBUG_OBJECTS: Print messages about object bookkeeping
+ * @G_TYPE_DEBUG_SIGNALS: Print messages about signal emissions
+ * @G_TYPE_DEBUG_MASK: Mask covering all debug flags
  *
  * These flags used to be passed to g_type_init_with_debug_flags() which
  * is now deprecated.
@@ -742,7 +742,7 @@ void		      g_type_query		     (GType	       type,
 /* --- type registration --- */
 /**
  * GBaseInitFunc:
- * @g_class: The #GTypeClass structure to initialize.
+ * @g_class: The #GTypeClass structure to initialize
  * 
  * A callback function used by the type system to do base initialization
  * of the class structures of derived types. It is called as part of the
@@ -756,7 +756,7 @@ void		      g_type_query		     (GType	       type,
 typedef void   (*GBaseInitFunc)              (gpointer         g_class);
 /**
  * GBaseFinalizeFunc:
- * @g_class: The #GTypeClass structure to finalize.
+ * @g_class: The #GTypeClass structure to finalize
  * 
  * A callback function used by the type system to finalize those portions
  * of a derived types class structure that were setup from the corresponding
@@ -773,24 +773,17 @@ typedef void   (*GBaseFinalizeFunc)          (gpointer         g_class);
  * A callback function used by the type system to initialize the class
  * of a specific type. This function should initialize all static class
  * members.
+ *
  * The initialization process of a class involves:
- * <itemizedlist>
- * <listitem><para>
- * 	1 - Copying common members from the parent class over to the
- * 	derived class structure.
- * </para></listitem>
- * <listitem><para>
- * 	2 -  Zero initialization of the remaining members not copied
- * 	over from the parent class.
- * </para></listitem>
- * <listitem><para>
- * 	3 - Invocation of the GBaseInitFunc() initializers of all parent
- * 	types and the class' type.
- * </para></listitem>
- * <listitem><para>
- * 	4 - Invocation of the class' GClassInitFunc() initializer.
- * </para></listitem>
- * </itemizedlist>
+ * 
+ * - Copying common members from the parent class over to the
+ *   derived class structure.
+ * - Zero initialization of the remaining members not copied
+ *   over from the parent class.
+ * - Invocation of the GBaseInitFunc() initializers of all parent
+ *   types and the class' type.
+ * - Invocation of the class' GClassInitFunc() initializer.
+ *
  * Since derived classes are partially initialized through a memory copy
  * of the parent class, the general rule is that GBaseInitFunc() and
  * GBaseFinalizeFunc() should take care of necessary reinitialization
@@ -801,10 +794,11 @@ typedef void   (*GBaseFinalizeFunc)          (gpointer         g_class);
  * or reference counted resources) are better handled by a GBaseInitFunc()
  * for this type, so proper initialization of the dynamic class members
  * is performed for class initialization of derived types as well.
+ *
  * An example may help to correspond the intend of the different class
  * initializers:
  * 
- * |[
+ * |[<!-- language="C" -->
  * typedef struct {
  *   GObjectClass parent_class;
  *   gint         static_integer;
@@ -850,6 +844,7 @@ typedef void   (*GBaseFinalizeFunc)          (gpointer         g_class);
  * Initialization of TypeBClass will first cause initialization of
  * TypeAClass (derived classes reference their parent classes, see
  * g_type_class_ref() on this).
+ *
  * Initialization of TypeAClass roughly involves zero-initializing its fields,
  * then calling its GBaseInitFunc() type_a_base_class_init() to allocate
  * its dynamic members (dynamic_string), and finally calling its GClassInitFunc()
@@ -860,11 +855,13 @@ typedef void   (*GBaseFinalizeFunc)          (gpointer         g_class);
  * The dynamic members of TypeAClass within TypeBClass now need
  * reinitialization which is performed by calling type_a_base_class_init()
  * with an argument of TypeBClass.
+ *
  * After that, the GBaseInitFunc() of TypeBClass, type_b_base_class_init()
  * is called to allocate the dynamic members of TypeBClass (dynamic_gstring),
  * and finally the GClassInitFunc() of TypeBClass, type_b_class_init(),
  * is called to complete the initialization process with the static members
  * (static_float).
+ *
  * Corresponding finalization counter parts to the GBaseInitFunc() functions
  * have to be provided to release allocated resources at class finalization
  * time.
@@ -873,8 +870,8 @@ typedef void   (*GClassInitFunc)             (gpointer         g_class,
 					      gpointer         class_data);
 /**
  * GClassFinalizeFunc:
- * @g_class: The #GTypeClass structure to finalize.
- * @class_data: The @class_data member supplied via the #GTypeInfo structure.
+ * @g_class: The #GTypeClass structure to finalize
+ * @class_data: The @class_data member supplied via the #GTypeInfo structure
  * 
  * A callback function used by the type system to finalize a class.
  * This function is rarely needed, as dynamically allocated class resources
@@ -888,8 +885,8 @@ typedef void   (*GClassFinalizeFunc)         (gpointer         g_class,
 					      gpointer         class_data);
 /**
  * GInstanceInitFunc:
- * @instance: The instance to initialize.
- * @g_class: The class of the type the instance is created for.
+ * @instance: The instance to initialize
+ * @g_class: The class of the type the instance is created for
  * 
  * A callback function used by the type system to initialize a new
  * instance of a type. This function initializes all instance members and
@@ -907,8 +904,8 @@ typedef void   (*GInstanceInitFunc)          (GTypeInstance   *instance,
 					      gpointer         g_class);
 /**
  * GInterfaceInitFunc:
- * @g_iface: The interface structure to initialize.
- * @iface_data: The @interface_data supplied via the #GInterfaceInfo structure.
+ * @g_iface: The interface structure to initialize
+ * @iface_data: The @interface_data supplied via the #GInterfaceInfo structure
  * 
  * A callback function used by the type system to initialize a new
  * interface.  This function should initialize all internal data and
@@ -921,8 +918,8 @@ typedef void   (*GInterfaceInitFunc)         (gpointer         g_iface,
 					      gpointer         iface_data);
 /**
  * GInterfaceFinalizeFunc:
- * @g_iface: The interface structure to finalize.
- * @iface_data: The @interface_data supplied via the #GInterfaceInfo structure.
+ * @g_iface: The interface structure to finalize
+ * @iface_data: The @interface_data supplied via the #GInterfaceInfo structure
  * 
  * A callback function used by the type system to finalize an interface.
  * This function should destroy any internal data and release any resources
@@ -946,13 +943,13 @@ typedef void   (*GInterfaceFinalizeFunc)     (gpointer         g_iface,
  * classes are routed through the same #GTypeClassCacheFunc chain.
  * 
  * Returns: %TRUE to stop further #GTypeClassCacheFuncs from being 
- *  called, %FALSE to continue.
+ *  called, %FALSE to continue
  */
 typedef gboolean (*GTypeClassCacheFunc)	     (gpointer	       cache_data,
 					      GTypeClass      *g_class);
 /**
  * GTypeInterfaceCheckFunc:
- * @check_data: data passed to g_type_add_interface_check().
+ * @check_data: data passed to g_type_add_interface_check()
  * @g_iface: the interface that has been initialized
  * 
  * A callback called after an interface vtable is initialized.
@@ -964,10 +961,10 @@ typedef void     (*GTypeInterfaceCheckFunc)  (gpointer	       check_data,
 					      gpointer         g_iface);
 /**
  * GTypeFundamentalFlags:
- * @G_TYPE_FLAG_CLASSED: Indicates a classed type.
- * @G_TYPE_FLAG_INSTANTIATABLE: Indicates an instantiable type (implies classed).
- * @G_TYPE_FLAG_DERIVABLE: Indicates a flat derivable type.
- * @G_TYPE_FLAG_DEEP_DERIVABLE: Indicates a deep derivable type (implies derivable).
+ * @G_TYPE_FLAG_CLASSED: Indicates a classed type
+ * @G_TYPE_FLAG_INSTANTIATABLE: Indicates an instantiable type (implies classed)
+ * @G_TYPE_FLAG_DERIVABLE: Indicates a flat derivable type
+ * @G_TYPE_FLAG_DEEP_DERIVABLE: Indicates a deep derivable type (implies derivable)
  * 
  * Bit masks used to check or determine specific characteristics of a
  * fundamental type.
@@ -982,10 +979,10 @@ typedef enum    /*< skip >*/
 /**
  * GTypeFlags:
  * @G_TYPE_FLAG_ABSTRACT: Indicates an abstract type. No instances can be
- *  created for an abstract type.
+ *  created for an abstract type
  * @G_TYPE_FLAG_VALUE_ABSTRACT: Indicates an abstract value type, i.e. a type
  *  that introduces a value table, but can't be used for
- *  g_value_init().
+ *  g_value_init()
  * 
  * Bit masks used to check or determine characteristics of a type.
  */
@@ -996,9 +993,9 @@ typedef enum    /*< skip >*/
 } GTypeFlags;
 /**
  * GTypeInfo:
- * @class_size: Size of the class structure (required for interface, classed and instantiatable types).
- * @base_init: Location of the base initialization function (optional).
- * @base_finalize: Location of the base finalization function (optional).
+ * @class_size: Size of the class structure (required for interface, classed and instantiatable types)
+ * @base_init: Location of the base initialization function (optional)
+ * @base_finalize: Location of the base finalization function (optional)
  * @class_init: Location of the class initialization function for
  *  classed and instantiatable types. Location of the default vtable 
  *  inititalization function for interface types. (optional) This function 
@@ -1008,16 +1005,17 @@ typedef enum    /*< skip >*/
  * @class_finalize: Location of the class finalization function for
  *  classed and instantiatable types. Location of the default vtable
  *  finalization function for interface types. (optional)
- * @class_data: User-supplied data passed to the class init/finalize functions.
- * @instance_size: Size of the instance (object) structure (required for instantiatable types only).
+ * @class_data: User-supplied data passed to the class init/finalize functions
+ * @instance_size: Size of the instance (object) structure (required for instantiatable types only)
  * @n_preallocs: Prior to GLib 2.10, it specified the number of pre-allocated (cached) instances to reserve memory for (0 indicates no caching). Since GLib 2.10, it is ignored, since instances are allocated with the [slice allocator][glib-Memory-Slices] now.
- * @instance_init: Location of the instance initialization function (optional, for instantiatable types only).
- * @value_table: A #GTypeValueTable function table for generic handling of GValues of this type (usually only
- *  useful for fundamental types).
+ * @instance_init: Location of the instance initialization function (optional, for instantiatable types only)
+ * @value_table: A #GTypeValueTable function table for generic handling of GValues
+ *  of this type (usually only useful for fundamental types)
  * 
  * This structure is used to provide the type system with the information
  * required to initialize and destruct (finalize) a type's class and
  * its instances.
+ *
  * The initialized structure is passed to the g_type_register_static() function
  * (or is copied into the provided #GTypeInfo structure in the
  * g_type_plugin_complete_type_info()). The type system will perform a deep
@@ -1080,14 +1078,14 @@ struct _GInterfaceInfo
  *  old contents. E.g. for the implementation of a string
  *  value that may never be %NULL, the implementation might
  *  look like:
- *  |[
+ *  |[<!-- language="C" -->
  *  value->data[0].v_pointer = g_strdup ("");
  *  ]|
  * @value_free: Free any old contents that might be left in the
  *  data array of the passed in @value. No resources may
  *  remain allocated through the #GValue contents after
  *  this function returns. E.g. for our above string type:
- *  |[
+ *  |[<!-- language="C" -->
  *  // only free strings without a specific flag for static storage
  *  if (!(value->data[1].v_uint & G_VALUE_NOCOPY_CONTENTS))
  *    g_free (value->data[0].v_pointer);
@@ -1099,33 +1097,25 @@ struct _GInterfaceInfo
  *  @src_value into @dest_value in a way, that even after
  *  @src_value has been freed, the contents of @dest_value
  *  remain valid. String type example:
- *  |[
+ *  |[<!-- language="C" -->
  *  dest_value->data[0].v_pointer = g_strdup (src_value->data[0].v_pointer);
  *  ]|
  * @value_peek_pointer: If the value contents fit into a pointer, such as objects
  *  or strings, return this pointer, so the caller can peek at
  *  the current contents. To extend on our above string example:
- *  |[
+ *  |[<!-- language="C" -->
  *  return value->data[0].v_pointer;
  *  ]|
  * @collect_format: A string format describing how to collect the contents of
  *  this value bit-by-bit. Each character in the format represents
  *  an argument to be collected, and the characters themselves indicate
  *  the type of the argument. Currently supported arguments are:
- *  <variablelist>
- *  <varlistentry><term /><listitem><para>
- *  'i' - Integers. passed as collect_values[].v_int.
- *  </para></listitem></varlistentry>
- *  <varlistentry><term /><listitem><para>
- *  'l' - Longs. passed as collect_values[].v_long.
- *  </para></listitem></varlistentry>
- *  <varlistentry><term /><listitem><para>
- *  'd' - Doubles. passed as collect_values[].v_double.
- *  </para></listitem></varlistentry>
- *  <varlistentry><term /><listitem><para>
- *  'p' - Pointers. passed as collect_values[].v_pointer.
- *  </para></listitem></varlistentry>
- *  </variablelist>
+ *
+ *  - 'i' - Integers. passed as collect_values[].v_int.
+ *  - 'l' - Longs. passed as collect_values[].v_long.
+ *  - 'd' - Doubles. passed as collect_values[].v_double.
+ *  - 'p' - Pointers. passed as collect_values[].v_pointer.
+ *
  *  It should be noted that for variable argument list construction,
  *  ANSI C promotes every type smaller than an integer to an int, and
  *  floats to doubles. So for collection of short int or char, 'i'
@@ -1150,7 +1140,7 @@ struct _GInterfaceInfo
  *  Thus an extra copy of the contents stored in @collect_values is
  *  not required for assignment to @value.
  *  For our above string example, we continue with:
- *  |[
+ *  |[<!-- language="C" -->
  *  if (!collect_values[0].v_pointer)
  *    value->data[0].v_pointer = g_strdup ("");
  *  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS)
@@ -1171,7 +1161,7 @@ struct _GInterfaceInfo
  *  array.  To deviate from our string example for a moment, and taking
  *  a look at an exemplary implementation for collect_value() of
  *  #GObject:
- *  |[
+ *  |[<!-- language="C" -->
  *  if (collect_values[0].v_pointer)
  *  {
  *    GObject *object = G_OBJECT (collect_values[0].v_pointer);
@@ -1211,7 +1201,7 @@ struct _GInterfaceInfo
  *  Similar to collect_value() the function may prematurely abort
  *  by returning a newly allocated string describing an error condition.
  *  To complete the string example:
- *  |[
+ *  |[<!-- language="C" -->
  *  gchar **string_p = collect_values[0].v_pointer;
  *  if (!string_p)
  *    return g_strdup_printf ("string location passed as NULL");
@@ -1222,21 +1212,21 @@ struct _GInterfaceInfo
  *  ]|
  *  And an illustrative version of lcopy_value() for
  *  reference-counted types:
- *  |[
+ *  |[<!-- language="C" -->
  *  GObject **object_p = collect_values[0].v_pointer;
  *  if (!object_p)
  *    return g_strdup_printf ("object location passed as NULL");
  *  if (!value->data[0].v_pointer)
  *    *object_p = NULL;
- *  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) /&ast; always honour &ast;/
+ *  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) // always honour
  *    *object_p = value->data[0].v_pointer;
  *  else
  *    *object_p = g_object_ref (value->data[0].v_pointer);
  *  return NULL;
  *  ]|
  * 
- * The #GTypeValueTable provides the functions required by the #GValue implementation,
- * to serve as a container for values of a type.
+ * The #GTypeValueTable provides the functions required by the #GValue
+ * implementation, to serve as a container for values of a type.
  */
 
 struct _GTypeValueTable
@@ -1333,10 +1323,11 @@ guint     g_type_get_type_registration_serial (void);
  *  separated by '_'.
  * @T_P: The #GType of the parent type.
  * 
- * A convenience macro for type implementations, which declares a 
- * class initialization function, an instance initialization function (see #GTypeInfo for information about 
- * these) and a static variable named @t_n<!-- -->_parent_class pointing to the parent class. Furthermore, it defines 
- * a *_get_type() function. See G_DEFINE_TYPE_EXTENDED() for an example.
+ * A convenience macro for type implementations, which declares a class
+ * initialization function, an instance initialization function (see #GTypeInfo
+ * for information about these) and a static variable named `t_n_parent_class`
+ * pointing to the parent class. Furthermore, it defines  a *_get_type() function.
+ * See G_DEFINE_TYPE_EXTENDED() for an example.
  * 
  * Since: 2.4
  */
@@ -1363,14 +1354,15 @@ guint     g_type_get_type_registration_serial (void);
  *  separated by '_'.
  * @T_P: The #GType of the parent type.
  * 
- * A convenience macro for type implementations, which declares a 
- * class initialization function, an instance initialization function (see #GTypeInfo for information about 
- * these), a static variable named @t_n<!-- -->_parent_class pointing to the parent class, and adds private
- * instance data to the type. Furthermore, it defines a *_get_type() function. See G_DEFINE_TYPE_EXTENDED()
+ * A convenience macro for type implementations, which declares a class
+ * initialization function, an instance initialization function (see #GTypeInfo
+ * for information about these), a static variable named `t_n_parent_class`
+ * pointing to the parent class, and adds private instance data to the type.
+ * Furthermore, it defines a *_get_type() function. See G_DEFINE_TYPE_EXTENDED()
  * for an example.
  * 
  * Note that private structs added with this macros must have a struct
- * name of the form <replaceable>@TN</replaceable>Private.
+ * name of the form @TN Private.
  *
  * Since: 2.38
  */
@@ -1398,9 +1390,10 @@ guint     g_type_get_type_registration_serial (void);
  * @_C_: Custom code that gets inserted in the @type_name_get_type() function.
  * 
  * A convenience macro for type implementations.
- * Similar to G_DEFINE_TYPE_WITH_CODE(), but defines an abstract type and allows you to 
- * insert custom code into the *_get_type() function, e.g. interface implementations 
- * via G_IMPLEMENT_INTERFACE(). See G_DEFINE_TYPE_EXTENDED() for an example.
+ * Similar to G_DEFINE_TYPE_WITH_CODE(), but defines an abstract type and
+ * allows you to insert custom code into the *_get_type() function, e.g.
+ * interface implementations  via G_IMPLEMENT_INTERFACE().
+ * See G_DEFINE_TYPE_EXTENDED() for an example.
  * 
  * Since: 2.4
  */
@@ -1430,7 +1423,7 @@ guint     g_type_get_type_registration_serial (void);
  * The most general convenience macro for type implementations, on which
  * G_DEFINE_TYPE(), etc are based.
  *
- * |[
+ * |[<!-- language="C" -->
  * G_DEFINE_TYPE_EXTENDED (GtkGadget,
  *                         gtk_gadget,
  *                         GTK_TYPE_WIDGET,
@@ -1439,7 +1432,7 @@ guint     g_type_get_type_registration_serial (void);
  *                                                gtk_gadget_gizmo_init));
  * ]|
  * expands to
- * |[
+ * |[<!-- language="C" -->
  * static void     gtk_gadget_init       (GtkGadget      *self);
  * static void     gtk_gadget_class_init (GtkGadgetClass *klass);
  * static gpointer gtk_gadget_parent_class = NULL;
@@ -1525,7 +1518,7 @@ guint     g_type_get_type_registration_serial (void);
  * @TYPE_IFACE: The #GType of the interface to add
  * @iface_init: The interface init function
  *
- * A convenience macro to ease interface addition in the @_C_ section
+ * A convenience macro to ease interface addition in the `_C_` section
  * of G_DEFINE_TYPE_WITH_CODE() or G_DEFINE_ABSTRACT_TYPE_WITH_CODE().
  * See G_DEFINE_TYPE_EXTENDED() for an example.
  *
@@ -1551,7 +1544,7 @@ guint     g_type_get_type_registration_serial (void);
  *
  * For instance:
  *
- * |[
+ * |[<!-- language="C" -->
  *   typedef struct _MyObject MyObject;
  *   typedef struct _MyObjectClass MyObjectClass;
  *
@@ -1571,7 +1564,7 @@ guint     g_type_get_type_registration_serial (void);
  * based on the arguments to this macro, which can be used to safely
  * retrieve the private data from an instance of the type; for instance:
  *
- * |[
+ * |[<!-- language="C" -->
  *   gint
  *   my_object_get_foo (MyObject *obj)
  *   {
@@ -1595,7 +1588,7 @@ guint     g_type_get_type_registration_serial (void);
  * macros, since it depends on variable names from those macros.
  *
  * Also note that private structs added with these macros must have a struct
- * name of the form <replaceable>TypeName</replaceable>Private.
+ * name of the form `TypeNamePrivate`.
  *
  * Since: 2.38
  */
@@ -1751,9 +1744,9 @@ type_name##_get_type (void) \
 
 /**
  * G_DEFINE_BOXED_TYPE:
- * @TypeName: The name of the new type, in Camel case.
+ * @TypeName: The name of the new type, in Camel case
  * @type_name: The name of the new type, in lowercase, with words
- *  separated by '_'.
+ *  separated by '_'
  * @copy_func: the #GBoxedCopyFunc for the new type
  * @free_func: the #GBoxedFreeFunc for the new type
  *
@@ -1765,12 +1758,12 @@ type_name##_get_type (void) \
 #define G_DEFINE_BOXED_TYPE(TypeName, type_name, copy_func, free_func) G_DEFINE_BOXED_TYPE_WITH_CODE (TypeName, type_name, copy_func, free_func, {})
 /**
  * G_DEFINE_BOXED_TYPE_WITH_CODE:
- * @TypeName: The name of the new type, in Camel case.
+ * @TypeName: The name of the new type, in Camel case
  * @type_name: The name of the new type, in lowercase, with words
- *  separated by '_'.
+ *  separated by '_'
  * @copy_func: the #GBoxedCopyFunc for the new type
  * @free_func: the #GBoxedFreeFunc for the new type
- * @_C_: Custom code that gets inserted in the *_get_type() function.
+ * @_C_: Custom code that gets inserted in the *_get_type() function
  *
  * A convenience macro for boxed type implementations.
  * Similar to G_DEFINE_BOXED_TYPE(), but allows to insert custom code into the
@@ -1826,9 +1819,9 @@ type_name##_get_type (void) \
 
 /**
  * G_DEFINE_POINTER_TYPE:
- * @TypeName: The name of the new type, in Camel case.
+ * @TypeName: The name of the new type, in Camel case
  * @type_name: The name of the new type, in lowercase, with words
- *  separated by '_'.
+ *  separated by '_'
  *
  * A convenience macro for pointer type implementations, which defines a
  * type_name_get_type() function registering the pointer type.
@@ -1838,14 +1831,14 @@ type_name##_get_type (void) \
 #define G_DEFINE_POINTER_TYPE(TypeName, type_name) G_DEFINE_POINTER_TYPE_WITH_CODE (TypeName, type_name, {})
 /**
  * G_DEFINE_POINTER_TYPE_WITH_CODE:
- * @TypeName: The name of the new type, in Camel case.
+ * @TypeName: The name of the new type, in Camel case
  * @type_name: The name of the new type, in lowercase, with words
- *  separated by '_'.
- * @_C_: Custom code that gets inserted in the *_get_type() function.
+ *  separated by '_'
+ * @_C_: Custom code that gets inserted in the *_get_type() function
  *
  * A convenience macro for pointer type implementations.
- * Similar to G_DEFINE_POINTER_TYPE(), but allows to insert custom code into the
- * type_name_get_type() function.
+ * Similar to G_DEFINE_POINTER_TYPE(), but allows to insert
+ * custom code into the type_name_get_type() function.
  *
  * Since: 2.26
  */

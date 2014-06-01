@@ -4463,8 +4463,7 @@ gobject_init_ctor (void)
  *   my_object->priv = G_TYPE_INSTANCE_GET_PRIVATE (my_object,
  *                                                  MY_TYPE_OBJECT,
  *                                                  MyObjectPrivate);
- *   /<!-- -->* my_object->priv->some_field will be
- *    * automatically initialised to 0 *<!-- -->/
+ *   // my_object->priv->some_field will be automatically initialised to 0
  * }
  *
  * static int
