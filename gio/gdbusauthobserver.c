@@ -45,7 +45,7 @@
  * processes owned by the same uid as the server, you would use a
  * signal handler like the following:
  * 
- * |[
+ * |[<!-- language="C" -->
  * static gboolean
  * on_authorize_authenticated_peer (GDBusAuthObserver *observer,
  *                                  GIOStream         *stream,

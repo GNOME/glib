@@ -810,7 +810,7 @@ iter_remove_or_steal (RealIter *ri, gboolean notify)
  * values are freed yourself.
  *
  * It is safe to continue iterating the #GHashTable afterward:
- * |[
+ * |[<!-- language="C" -->
  * while (g_hash_table_iter_next (&iter, &key, &value))
  *   {
  *     if (condition)
