@@ -1380,14 +1380,17 @@ object_set_property (GObject             *object,
     }
   else
     {
-      GParamSpec *notify_pspec;
-
       class->set_property (object, param_id, &tmp_value, pspec);
 
-      notify_pspec = get_notify_pspec (pspec);
+      if (~pspec->flags & G_PARAM_EXPLICIT_NOTIFY)
+        {
+          GParamSpec *notify_pspec;
 
-      if (notify_pspec != NULL)
-        g_object_notify_queue_add (object, nqueue, notify_pspec);
+          notify_pspec = get_notify_pspec (pspec);
+
+          if (notify_pspec != NULL)
+            g_object_notify_queue_add (object, nqueue, notify_pspec);
+        }
     }
   g_value_unset (&tmp_value);
 }

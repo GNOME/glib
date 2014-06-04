@@ -130,6 +130,10 @@ G_BEGIN_DECLS
  *  parameter is guaranteed to remain valid and 
  *  unmodified for the lifetime of the parameter. 
  *  Since 2.8
+ * @G_PARAM_EXPLICIT_NOTIFY: calls to g_object_set_property() for this
+ *   property will not automatically result in a "notify" signal being
+ *   emitted: the implementation must call g_object_notify() themselves
+ *   in case the property actually changes.  Since: 2.42.
  * @G_PARAM_PRIVATE: internal
  * @G_PARAM_DEPRECATED: the parameter is deprecated and will be removed
  *  in a future version. A warning will be generated if it is used
@@ -153,6 +157,7 @@ typedef enum
 #endif
   G_PARAM_STATIC_NICK	      = 1 << 6,
   G_PARAM_STATIC_BLURB	      = 1 << 7,
+  G_PARAM_EXPLICIT_NOTIFY     = 1 << 8,
   /* User defined flags go up to 30 */
   G_PARAM_DEPRECATED          = 1 << 31
 } GParamFlags;
