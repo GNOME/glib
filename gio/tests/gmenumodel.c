@@ -1002,6 +1002,67 @@ test_attributes (void)
 }
 
 static void
+test_attribute_iter (void)
+{
+  GMenu *menu;
+  GMenuItem *item;
+  const gchar *name;
+  GVariant *v;
+  GMenuAttributeIter *iter;
+  GHashTable *found;
+
+  menu = g_menu_new ();
+
+  item = g_menu_item_new ("test", NULL);
+  g_menu_item_set_attribute_value (item, "boolean", g_variant_new_boolean (FALSE));
+  g_menu_item_set_attribute_value (item, "string", g_variant_new_string ("bla"));
+
+  g_menu_item_set_attribute (item, "double", "d", 1.5);
+  v = g_variant_new_parsed ("[('one', 1), ('two', %i), (%s, 3)]", 2, "three");
+  g_menu_item_set_attribute_value (item, "complex", v);
+  g_menu_item_set_attribute_value (item, "test-123", g_variant_new_string ("test-123"));
+
+  g_menu_append_item (menu, item);
+
+  g_menu_item_set_attribute (item, "double", "d", G_PI);
+
+  g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (menu)), ==, 1);
+
+  found = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify)g_variant_unref); 
+
+  iter = g_menu_model_iterate_item_attributes (G_MENU_MODEL (menu), 0);
+  while (g_menu_attribute_iter_get_next (iter, &name, &v))
+    g_hash_table_insert (found, g_strdup (name), v);
+
+  g_assert_cmpint (g_hash_table_size (found), ==, 6);
+  
+  v = g_hash_table_lookup (found, "label");
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE_STRING));
+
+  v = g_hash_table_lookup (found, "boolean");
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE_BOOLEAN));
+ 
+  v = g_hash_table_lookup (found, "string");
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE_STRING));
+
+  v = g_hash_table_lookup (found, "double");
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE_DOUBLE));
+
+  v = g_hash_table_lookup (found, "complex");
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE("a(si)")));
+
+  v = g_hash_table_lookup (found, "test-123");
+  g_assert (g_variant_is_of_type (v, G_VARIANT_TYPE_STRING));
+
+  g_hash_table_unref (found);
+
+  g_menu_remove_all (menu);
+
+  g_object_unref (menu);
+  g_object_unref (item);
+}
+
+static void
 test_links (void)
 {
   GMenu *menu;
@@ -1169,6 +1230,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gmenu/dbus/subscriptions", test_dbus_subscriptions);
   g_test_add_func ("/gmenu/dbus/threaded", test_dbus_threaded);
   g_test_add_func ("/gmenu/attributes", test_attributes);
+  g_test_add_func ("/gmenu/attributes/iterate", test_attribute_iter);
   g_test_add_func ("/gmenu/links", test_links);
   g_test_add_func ("/gmenu/mutable", test_mutable);
   g_test_add_func ("/gmenu/convenience", test_convenience);
