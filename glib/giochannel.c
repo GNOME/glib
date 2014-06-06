@@ -1657,7 +1657,7 @@ g_io_channel_read_line (GIOChannel  *channel,
 
   status = g_io_channel_read_line_backend (channel, &got_length, terminator_pos, error);
 
-  if (length)
+  if (length && status != G_IO_STATUS_ERROR)
     *length = got_length;
 
   if (status == G_IO_STATUS_NORMAL)
