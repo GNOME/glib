@@ -62,7 +62,11 @@ G_BEGIN_DECLS
  * 
  * Checks whether a valid #GTypeInstance pointer is of type %G_TYPE_OBJECT.
  */
+#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_42
 #define G_IS_OBJECT(object)         (G_TYPE_CHECK_INSTANCE_FUNDAMENTAL_TYPE ((object), G_TYPE_OBJECT))
+#else
+#define G_IS_OBJECT(object)         (G_TYPE_CHECK_INSTANCE_TYPE ((object), G_TYPE_OBJECT))
+#endif
 /**
  * G_IS_OBJECT_CLASS:
  * @class: a #GObjectClass
