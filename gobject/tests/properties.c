@@ -7,13 +7,14 @@ typedef struct _TestObject {
   gint foo;
   gboolean bar;
   gchar *baz;
+  gchar *quux;
 } TestObject;
 
 typedef struct _TestObjectClass {
   GObjectClass parent_class;
 } TestObjectClass;
 
-enum { PROP_0, PROP_FOO, PROP_BAR, PROP_BAZ, N_PROPERTIES };
+enum { PROP_0, PROP_FOO, PROP_BAR, PROP_BAZ, PROP_QUUX, N_PROPERTIES };
 
 static GParamSpec *properties[N_PROPERTIES] = { NULL, };
 
@@ -63,6 +64,20 @@ test_object_set_baz (TestObject  *obj,
 }
 
 static void
+test_object_set_quux (TestObject  *obj,
+                      const gchar *quux)
+{
+  if (g_strcmp0 (obj->quux, quux) != 0)
+    {
+      g_free (obj->quux);
+      obj->quux = g_strdup (quux);
+
+      g_assert (properties[PROP_QUUX] != NULL);
+      g_object_notify_by_pspec (G_OBJECT (obj), properties[PROP_QUUX]);
+    }
+}
+
+static void
 test_object_finalize (GObject *gobject)
 {
   g_free (((TestObject *) gobject)->baz);
@@ -103,6 +118,10 @@ test_object_set_property (GObject *gobject,
       test_object_set_baz (tobj, g_value_get_string (value));
       break;
 
+    case PROP_QUUX:
+      test_object_set_quux (tobj, g_value_get_string (value));
+      break;
+
     default:
       g_assert_not_reached ();
     }
@@ -134,6 +153,10 @@ test_object_get_property (GObject *gobject,
       g_value_set_string (value, tobj->baz);
       break;
 
+    case PROP_QUUX:
+      g_value_set_string (value, tobj->quux);
+      break;
+
     default:
       g_assert_not_reached ();
     }
@@ -154,6 +177,9 @@ test_object_class_init (TestObjectClass *klass)
   properties[PROP_BAZ] = g_param_spec_string ("baz", "Baz", "Baz",
                                               NULL,
                                               G_PARAM_READWRITE);
+  properties[PROP_QUUX] = g_param_spec_string ("quux", "quux", "quux",
+                                               NULL,
+                                               G_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   gobject_class->set_property = test_object_set_property;
   gobject_class->get_property = test_object_get_property;
@@ -168,6 +194,7 @@ test_object_init (TestObject *self)
   self->foo = 42;
   self->bar = TRUE;
   self->baz = g_strdup ("Hello");
+  self->quux = NULL;
 }
 
 static void
@@ -187,6 +214,7 @@ properties_install (void)
 typedef struct {
   const gchar *name;
   GParamSpec *pspec;
+  gboolean    fired;
 } TestNotifyClosure;
 
 static void
@@ -196,6 +224,7 @@ on_notify (GObject           *gobject,
 {
   g_assert (clos->pspec == pspec);
   g_assert_cmpstr (clos->name, ==, pspec->name);
+  clos->fired = TRUE;
 }
 
 static void
@@ -205,12 +234,41 @@ properties_notify (void)
   TestNotifyClosure clos;
 
   g_assert (properties[PROP_FOO] != NULL);
+  g_assert (properties[PROP_QUUX] != NULL);
+  g_signal_connect (obj, "notify", G_CALLBACK (on_notify), &clos);
 
   clos.name = "foo";
   clos.pspec = properties[PROP_FOO];
 
-  g_signal_connect (obj, "notify", G_CALLBACK (on_notify), &clos);
+  clos.fired = FALSE;
   g_object_set (obj, "foo", 47, NULL);
+  g_assert (clos.fired);
+
+  clos.name = "baz";
+  clos.pspec = properties[PROP_BAZ];
+
+  clos.fired = FALSE;
+  g_object_set (obj, "baz", "something new", NULL);
+  g_assert (clos.fired);
+
+  /* baz lacks explicit notify, so we will see this twice */
+  clos.fired = FALSE;
+  g_object_set (obj, "baz", "something new", NULL);
+  g_assert (clos.fired);
+
+  /* quux on the other hand, ... */
+  clos.name = "quux";
+  clos.pspec = properties[PROP_QUUX];
+
+  clos.fired = FALSE;
+  g_object_set (obj, "quux", "something new", NULL);
+  g_assert (clos.fired);
+
+  /* no change; no notify */
+  clos.fired = FALSE;
+  g_object_set (obj, "quux", "something new", NULL);
+  g_assert (!clos.fired);
+
 
   g_object_unref (obj);
 }
