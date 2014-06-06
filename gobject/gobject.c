@@ -523,7 +523,12 @@ install_property_internal (GType       g_type,
  * @property_id: the id for the new property
  * @pspec: the #GParamSpec for the new property
  *
- * Installs a new property. This is usually done in the class initializer.
+ * Installs a new property.
+ *
+ * All properties should be installed during the class initializer.  It
+ * is possible to install properties after that, but doing so is not
+ * recommend, and specifically, is not guaranteed to be thread-safe vs.
+ * use of properties on the same type on other threads.
  *
  * Note that it is possible to redefine a property in a derived class,
  * by installing a property with the same name. This can be useful at times,
@@ -574,8 +579,12 @@ g_object_class_install_property (GObjectClass *class,
  * @pspecs: (array length=n_pspecs): the #GParamSpecs array
  *   defining the new properties
  *
- * Installs new properties from an array of #GParamSpecs. This is
- * usually done in the class initializer.
+ * Installs new properties from an array of #GParamSpecs.
+ *
+ * All properties should be installed during the class initializer.  It
+ * is possible to install properties after that, but doing so is not
+ * recommend, and specifically, is not guaranteed to be thread-safe vs.
+ * use of properties on the same type on other threads.
  *
  * The property id of each property is the index of each #GParamSpec in
  * the @pspecs array.
