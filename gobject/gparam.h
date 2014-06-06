@@ -161,8 +161,8 @@ typedef enum
 #endif
   G_PARAM_STATIC_NICK	      = 1 << 6,
   G_PARAM_STATIC_BLURB	      = 1 << 7,
-  G_PARAM_EXPLICIT_NOTIFY     = 1 << 8,
-  /* User defined flags go up to 30 */
+  /* User defined flags go here */
+  G_PARAM_EXPLICIT_NOTIFY     = 1 << 30,
   G_PARAM_DEPRECATED          = 1 << 31
 } GParamFlags;
 /**
@@ -184,7 +184,7 @@ typedef enum
  * G_PARAM_USER_SHIFT:
  * 
  * Minimum shift count to be used for user defined flags, to be stored in
- * #GParamSpec.flags. The maximum allowed is 30 + G_PARAM_USER_SHIFT.
+ * #GParamSpec.flags. The maximum allowed is 10.
  */
 #define	G_PARAM_USER_SHIFT	(8)
 
