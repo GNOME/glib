@@ -3804,6 +3804,8 @@ invalid_closure_notify (gpointer  instance,
   SIGNAL_LOCK ();
 
   handler = handler_lookup (instance, 0, closure, &signal_id);
+  /* See https://bugzilla.gnome.org/show_bug.cgi?id=730296 for discussion about this... */
+  g_assert (handler != NULL);
   g_assert (handler->closure == closure);
 
   handler->sequential_number = 0;
