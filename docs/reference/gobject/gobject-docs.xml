@@ -23,7 +23,7 @@
 			Just as GLib serves as an implementation of such fundamental
 			types and algorithms (linked lists, hash tables and so forth), the
 			GLib Object System provides the required implementations of a
-			flexible extensible and intentionally easy to map (into other
+			flexible, extensible, and intentionally easy to map (into other
 			languages) object-oriented framework for C.
 			The substantial elements that are provided can be summarized as:
 			<itemizedlist>
