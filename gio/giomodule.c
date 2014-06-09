@@ -1072,7 +1072,7 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (g_win32_directory_monitor_get_type ());
       g_type_ensure (g_registry_backend_get_type ());
 #endif
-#ifdef HAVE_CARBON
+#ifdef HAVE_COCOA
       g_nextstep_settings_backend_get_type ();
 #endif
 #ifdef G_OS_UNIX
