@@ -4,28 +4,33 @@
     <Import Project="glib-build-defines.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
+    <BinDir>$(SolutionDir)$(Configuration)\$(Platform)\bin</BinDir>
+    <InstalledDlls>$(BinDir)\$(GlibDllPrefix)glib(GlibDllSuffix).dll;$(BinDir)\$(GlibDllPrefix)gthread(GlibDllSuffix).dll;$(BinDir)\$(GlibDllPrefix)gmodule(GlibDllSuffix).dll;$(BinDir)\$(GlibDllPrefix)gobject(GlibDllSuffix).dll;$(BinDir)\$(GlibDllPrefix)gio(GlibDllSuffix).dll</InstalledDlls>
+    <InstalledBins>$(BinDir)\glib-genmarshal.exe;$(BinDir)\glib-compile-schemas.exe;$(BinDir)\gsettings.exe;$(BinDir)\glib-compile-resources.exe;$(BinDir)\gresource.exe;$(BinDir)\gio-querymodules.exe;$(BinDir)\gdbus.exe</InstalledBins>
+    <InstalledWin32Bins>$(BinDir)\gspawn-win32-helper.exe;$(BinDir)\gspawn-win32-helper-console.exe</InstalledWin32Bins>
+    <InstalledX64Bins>$(BinDir)\gspawn-win64-helper.exe;$(BinDir)\gspawn-win64-helper-console.exe</InstalledX64Bins>
     <GlibDoInstall>
 mkdir $(CopyDir)
 
 mkdir $(CopyDir)\bin
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
+copy $(BinDir)\*.dll $(CopyDir)\bin
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\glib-genmarshal.exe $(CopyDir)\bin
+copy $(BinDir)\glib-genmarshal.exe $(CopyDir)\bin
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gspawn-win*-helper*.exe $(CopyDir)\bin
+copy $(BinDir)\gspawn-win*-helper*.exe $(CopyDir)\bin
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\glib-compile-schemas.exe $(CopyDir)\bin
+copy $(BinDir)\glib-compile-schemas.exe $(CopyDir)\bin
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gsettings.exe $(CopyDir)\bin
+copy $(BinDir)\gsettings.exe $(CopyDir)\bin
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\glib-compile-resources.exe $(CopyDir)\bin
+copy $(BinDir)\glib-compile-resources.exe $(CopyDir)\bin
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gresource.exe $(CopyDir)\bin
+copy $(BinDir)\gresource.exe $(CopyDir)\bin
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gio-querymodules.exe $(CopyDir)\bin
+copy $(BinDir)\gio-querymodules.exe $(CopyDir)\bin
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gdbus.exe $(CopyDir)\bin
+copy $(BinDir)\gdbus.exe $(CopyDir)\bin
 
 copy ..\..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in $(CopyDir)\bin\gdbus-codegen
 
@@ -533,7 +538,7 @@ mkdir $(CopyDir)\lib\glib-$(ApiVersion)\include
 copy ..\..\..\glib\glibconfig.h $(CopyDir)\lib\glib-$(ApiVersion)\include
 
 
-copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
+copy $(BinDir)\*-$(ApiVersion).lib $(CopyDir)\lib
 
 
 mkdir $(CopyDir)\share\glib-$(ApiVersion)\schemas
@@ -551,6 +556,21 @@ copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\cod
     <_PropertySheetDisplayName>glibinstallprops</_PropertySheetDisplayName>
   </PropertyGroup>
   <ItemGroup>
+    <BuildMacro Include="BinDir">
+      <Value>$(BinDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="InstalledDlls">
+      <Value>$(InstalledDlls)</Value>
+    </BuildMacro>
+    <BuildMacro Include="InstalledBins">
+      <Value>$(InstalledBins)</Value>
+    </BuildMacro>
+    <BuildMacro Include="InstalledWin32Bins">
+      <Value>$(InstalledWin32Bins)</Value>
+    </BuildMacro>
+    <BuildMacro Include="InstalledX64Bins">
+      <Value>$(InstalledX64Bins)</Value>
+    </BuildMacro>
     <BuildMacro Include="GlibDoInstall">
       <Value>$(GlibDoInstall)</Value>
     </BuildMacro>
