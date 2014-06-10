@@ -1402,9 +1402,8 @@ load_user_special_dirs (void)
   g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = find_folder (kMovieDocumentsFolderType);
 }
 
-#endif /* HAVE_CARBON */
+#elif defined(G_OS_WIN32)
 
-#if defined(G_OS_WIN32)
 static void
 load_user_special_dirs (void)
 {
@@ -1472,10 +1471,8 @@ load_user_special_dirs (void)
   g_user_special_dirs[G_USER_DIRECTORY_TEMPLATES] = get_special_folder (CSIDL_TEMPLATES);
   g_user_special_dirs[G_USER_DIRECTORY_VIDEOS] = get_special_folder (CSIDL_MYVIDEO);
 }
-#endif /* G_OS_WIN32 */
 
-
-#if defined(G_OS_UNIX) && !defined(HAVE_CARBON)
+#else /* default is unix */
 
 /* adapted from xdg-user-dir-lookup.c
  *
@@ -1630,7 +1627,7 @@ load_user_special_dirs (void)
   g_free (config_file);
 }
 
-#endif /* G_OS_UNIX && !HAVE_CARBON */
+#endif /* platform-specific load_user_special_dirs implementations */
 
 
 /**
