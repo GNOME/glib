@@ -1062,11 +1062,8 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
   GParamSpec *pspec;
   gchar *delim;
 
-  if (!pool || !param_name)
-    {
-      g_return_val_if_fail (pool != NULL, NULL);
-      g_return_val_if_fail (param_name != NULL, NULL);
-    }
+  g_return_val_if_fail (pool != NULL, NULL);
+  g_return_val_if_fail (param_name != NULL, NULL);
 
   g_mutex_lock (&pool->mutex);
 
