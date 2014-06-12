@@ -236,6 +236,15 @@ gssize                 g_socket_send_message            (GSocket                
 							 gint                     flags,
 							 GCancellable            *cancellable,
 							 GError                 **error);
+
+GLIB_AVAILABLE_IN_2_44
+gint                   g_socket_send_messages           (GSocket                 *socket,
+							 GOutputMessage          *messages,
+							 guint                    num_messages,
+							 gint                     flags,
+							 GCancellable            *cancellable,
+							 GError                 **error);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean               g_socket_close                   (GSocket                 *socket,
 							 GError                 **error);
