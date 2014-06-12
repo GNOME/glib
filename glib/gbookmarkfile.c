@@ -1673,40 +1673,23 @@ g_bookmark_file_load_from_file (GBookmarkFile  *bookmark,
 				const gchar    *filename,
 				GError        **error)
 {
-  gchar *buffer;
+  gboolean ret = FALSE;
+  gchar *buffer = NULL;
   gsize len;
-  GError *read_error;
-  gboolean retval;
 	
   g_return_val_if_fail (bookmark != NULL, FALSE);
   g_return_val_if_fail (filename != NULL, FALSE);
 
-  read_error = NULL;
-  g_file_get_contents (filename, &buffer, &len, &read_error);
-  if (read_error)
-    {
-      g_propagate_error (error, read_error);
-
-      return FALSE;
-    }
+  if (!g_file_get_contents (filename, &buffer, &len, error))
+    goto out;
   
-  read_error = NULL;
-  retval = g_bookmark_file_load_from_data (bookmark,
-					   buffer,
-					   len,
-					   &read_error);
-  if (read_error)
-    {
-      g_propagate_error (error, read_error);
+  if (!g_bookmark_file_load_from_data (bookmark, buffer, len, error))
+    goto out;
 
-      g_free (buffer);
-
-      return FALSE;
-    }
-
+  ret = TRUE;
+ out:
   g_free (buffer);
-
-  return retval;
+  return ret;
 }
 
 
