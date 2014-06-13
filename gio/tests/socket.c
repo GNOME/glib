@@ -37,7 +37,43 @@ typedef struct {
   GSocketFamily family;
   GThread *thread;
   GMainLoop *loop;
+  GCancellable *cancellable; /* to shut down dgram echo server thread */
 } IPTestData;
+
+static gpointer
+echo_server_dgram_thread (gpointer user_data)
+{
+  IPTestData *data = user_data;
+  GSocketAddress *sa;
+  GCancellable *cancellable = data->cancellable;
+  GSocket *sock;
+  GError *error = NULL;
+  gssize nread, nwrote;
+  gchar buf[128];
+
+  sock = data->server;
+
+  while (TRUE)
+    {
+      nread = g_socket_receive_from (sock, &sa, buf, sizeof (buf), cancellable, &error);
+      if (error && g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        break;
+      g_assert_no_error (error);
+      g_assert_cmpint (nread, >=, 0);
+
+      nwrote = g_socket_send_to (sock, sa, buf, nread, cancellable, &error);
+      if (error && g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        break;
+      g_assert_no_error (error);
+      g_assert_cmpint (nwrote, ==, nread);
+
+      g_object_unref (sa);
+    }
+
+  g_clear_error (&error);
+
+  return NULL;
+}
 
 static gpointer
 echo_server_thread (gpointer user_data)
@@ -72,9 +108,10 @@ echo_server_thread (gpointer user_data)
 }
 
 static IPTestData *
-create_server (GSocketFamily family,
-	       GThreadFunc   server_thread,
-	       gboolean      v4mapped)
+create_server_full (GSocketFamily family,
+		    GSocketType   socket_type,
+		    GThreadFunc   server_thread,
+		    gboolean      v4mapped)
 {
   IPTestData *data;
   GSocket *server;
@@ -86,13 +123,13 @@ create_server (GSocketFamily family,
   data->family = family;
 
   data->server = server = g_socket_new (family,
-					G_SOCKET_TYPE_STREAM,
+					socket_type,
 					G_SOCKET_PROTOCOL_DEFAULT,
 					&error);
   g_assert_no_error (error);
 
   g_assert_cmpint (g_socket_get_family (server), ==, family);
-  g_assert_cmpint (g_socket_get_socket_type (server), ==, G_SOCKET_TYPE_STREAM);
+  g_assert_cmpint (g_socket_get_socket_type (server), ==, socket_type);
   g_assert_cmpint (g_socket_get_protocol (server), ==, G_SOCKET_PROTOCOL_DEFAULT);
 
   g_socket_set_blocking (server, TRUE);
@@ -127,12 +164,27 @@ create_server (GSocketFamily family,
   g_assert_cmpint (g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS (addr)), !=, 0);
   g_object_unref (addr);
 
-  g_socket_listen (server, &error);
-  g_assert_no_error (error);
+  if (socket_type == G_SOCKET_TYPE_STREAM)
+    {
+      g_socket_listen (server, &error);
+      g_assert_no_error (error);
+    }
+  else
+    {
+      data->cancellable = g_cancellable_new ();
+    }
 
   data->thread = g_thread_new ("server", server_thread, data);
 
   return data;
+}
+
+static IPTestData *
+create_server (GSocketFamily family,
+	       GThreadFunc   server_thread,
+	       gboolean      v4mapped)
+{
+  return create_server_full (family, G_SOCKET_TYPE_STREAM, server_thread, v4mapped);
 }
 
 static const gchar *testbuf = "0123456789abcdef";
@@ -493,6 +545,108 @@ test_ipv6_sync (void)
     }
 
   test_ip_sync (G_SOCKET_FAMILY_IPV6);
+}
+
+static void
+test_ip_sync_dgram (GSocketFamily family)
+{
+  IPTestData *data;
+  GError *error = NULL;
+  GSocket *client;
+  GSocketAddress *dest_addr;
+  gssize len;
+  gchar buf[128];
+
+  data = create_server_full (family, G_SOCKET_TYPE_DATAGRAM,
+                             echo_server_dgram_thread, FALSE);
+
+  dest_addr = g_socket_get_local_address (data->server, &error);
+
+  client = g_socket_new (family,
+			 G_SOCKET_TYPE_DATAGRAM,
+			 G_SOCKET_PROTOCOL_DEFAULT,
+			 &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpint (g_socket_get_family (client), ==, family);
+  g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
+  g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
+
+  g_socket_set_blocking (client, TRUE);
+  g_socket_set_timeout (client, 1);
+
+  len = g_socket_send_to (client, dest_addr, testbuf, strlen (testbuf) + 1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen (testbuf) + 1);
+
+  len = g_socket_receive_from (client, NULL, buf, sizeof (buf), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen (testbuf) + 1);
+
+  g_assert_cmpstr (testbuf, ==, buf);
+
+  {
+    GOutputVector v[7] = { { NULL, }, };
+
+    v[0].buffer = testbuf2 + 0;
+    v[0].size = 3;
+    v[1].buffer = testbuf2 + 3;
+    v[1].size = 5;
+    v[2].buffer = testbuf2 + 3 + 5;
+    v[2].size = 0;
+    v[3].buffer = testbuf2 + 3 + 5;
+    v[3].size = 6;
+    v[4].buffer = testbuf2 + 3 + 5 + 6;
+    v[4].size = 2;
+    v[5].buffer = testbuf2 + 3 + 5 + 6 + 2;
+    v[5].size = 1;
+    v[6].buffer = testbuf2 + 3 + 5 + 6 + 2 + 1;
+    v[6].size = strlen (testbuf2) - (3 + 5 + 6 + 2 + 1);
+
+    len = g_socket_send_message (client, dest_addr, v, G_N_ELEMENTS (v), NULL, 0, 0, NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpint (len, ==, strlen (testbuf2));
+
+    memset (buf, 0, sizeof (buf));
+    len = g_socket_receive_from (client, NULL, buf, sizeof (buf), NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpint (len, ==, strlen (testbuf2));
+    g_assert_cmpstr (testbuf2, ==, buf);
+  }
+
+  g_cancellable_cancel (data->cancellable);
+
+  g_thread_join (data->thread);
+
+  g_socket_close (client, &error);
+  g_assert_no_error (error);
+  g_socket_close (data->server, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (data->server);
+  g_object_unref (data->cancellable);
+  g_object_unref (client);
+  g_object_unref (dest_addr);
+
+  g_slice_free (IPTestData, data);
+}
+
+static void
+test_ipv4_sync_dgram (void)
+{
+  test_ip_sync_dgram (G_SOCKET_FAMILY_IPV4);
+}
+
+static void
+test_ipv6_sync_dgram (void)
+{
+  if (!ipv6_supported)
+    {
+      g_test_skip ("No support for IPv6");
+      return;
+    }
+
+  test_ip_sync_dgram (G_SOCKET_FAMILY_IPV6);
 }
 
 static gpointer
@@ -1138,6 +1292,8 @@ main (int   argc,
   g_test_add_func ("/socket/ipv4_async", test_ipv4_async);
   g_test_add_func ("/socket/ipv6_sync", test_ipv6_sync);
   g_test_add_func ("/socket/ipv6_async", test_ipv6_async);
+  g_test_add_func ("/socket/ipv4_sync/datagram", test_ipv4_sync_dgram);
+  g_test_add_func ("/socket/ipv6_sync/datagram", test_ipv6_sync_dgram);
 #if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
   g_test_add_func ("/socket/ipv6_v4mapped", test_ipv6_v4mapped);
 #endif
