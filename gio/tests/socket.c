@@ -586,6 +586,7 @@ test_ip_sync_dgram (GSocketFamily family)
   g_assert_cmpstr (testbuf, ==, buf);
 
   {
+    GOutputMessage m[3] = { { NULL, }, };
     GOutputVector v[7] = { { NULL, }, };
 
     v[0].buffer = testbuf2 + 0;
@@ -612,6 +613,60 @@ test_ip_sync_dgram (GSocketFamily family)
     g_assert_no_error (error);
     g_assert_cmpint (len, ==, strlen (testbuf2));
     g_assert_cmpstr (testbuf2, ==, buf);
+
+    m[0].vectors = &v[0];
+    m[0].num_vectors = 1;
+    m[0].address = dest_addr;
+    m[1].vectors = &v[0];
+    m[1].num_vectors = 6;
+    m[1].address = dest_addr;
+    m[2].vectors = &v[6];
+    m[2].num_vectors = 1;
+    m[2].address = dest_addr;
+
+    len = g_socket_send_messages (client, m, G_N_ELEMENTS (m), 0, NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpint (len, ==, G_N_ELEMENTS (m));
+    g_assert_cmpint (m[0].bytes_sent, ==, 3);
+    g_assert_cmpint (m[1].bytes_sent, ==, 17);
+    g_assert_cmpint (m[2].bytes_sent, ==, v[6].size);
+
+    memset (buf, 0, sizeof (buf));
+    len = g_socket_receive_from (client, NULL, buf, sizeof (buf), NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpint (len, ==, 3);
+
+    memset (buf, 0, sizeof (buf));
+    len = g_socket_receive_from (client, NULL, buf, sizeof (buf), NULL, &error);
+    g_assert_no_error (error);
+    /* v[0].size + v[1].size + v[2].size + v[3].size + v[4].size + v[5].size */
+    g_assert_cmpint (len, ==, 17);
+    g_assert (memcmp (testbuf2, buf, 17) == 0);
+
+    memset (buf, 0, sizeof (buf));
+    len = g_socket_receive_from (client, NULL, buf, sizeof (buf), NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpint (len, ==, v[6].size);
+    g_assert_cmpstr (buf, ==, v[6].buffer);
+
+    /* reset since we're re-using the message structs */
+    m[0].bytes_sent = 0;
+    m[1].bytes_sent = 0;
+    m[2].bytes_sent = 0;
+
+    /* now try to generate an error by omitting the destination address on [1] */
+    m[1].address = NULL;
+    len = g_socket_send_messages (client, m, G_N_ELEMENTS (m), 0, NULL, &error);
+    g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
+    g_clear_error (&error);
+    g_assert_cmpint (len, ==, -1);
+
+    g_assert_cmpint (m[0].bytes_sent, ==, 3);
+    g_assert_cmpint (m[1].bytes_sent, ==, 0);
+    g_assert_cmpint (m[2].bytes_sent, ==, 0);
+
+    len = g_socket_receive_from (client, NULL, buf, sizeof (buf), NULL, &error);
+    g_assert_cmpint (len, ==, 3);
   }
 
   g_cancellable_cancel (data->cancellable);
