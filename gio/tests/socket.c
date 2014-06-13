@@ -872,6 +872,7 @@ test_reuse_tcp (void)
   g_assert_no_error (error);
   g_socket_bind (sock2, addr, TRUE, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_ADDRESS_IN_USE);
+  g_clear_error (&error);
   g_object_unref (addr);
 
   g_object_unref (sock1);
