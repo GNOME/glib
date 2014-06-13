@@ -364,6 +364,8 @@ test_ipv6_async (void)
   test_ip_async (G_SOCKET_FAMILY_IPV6);
 }
 
+static const gchar testbuf2[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+
 static void
 test_ip_sync (GSocketFamily family)
 {
@@ -414,6 +416,34 @@ test_ip_sync (GSocketFamily family)
   g_assert_cmpint (len, ==, strlen (testbuf) + 1);
 
   g_assert_cmpstr (testbuf, ==, buf);
+
+  {
+    GOutputVector v[7] = { { NULL, }, };
+
+    v[0].buffer = testbuf2 + 0;
+    v[0].size = 3;
+    v[1].buffer = testbuf2 + 3;
+    v[1].size = 5;
+    v[2].buffer = testbuf2 + 3 + 5;
+    v[2].size = 0;
+    v[3].buffer = testbuf2 + 3 + 5;
+    v[3].size = 6;
+    v[4].buffer = testbuf2 + 3 + 5 + 6;
+    v[4].size = 2;
+    v[5].buffer = testbuf2 + 3 + 5 + 6 + 2;
+    v[5].size = 1;
+    v[6].buffer = testbuf2 + 3 + 5 + 6 + 2 + 1;
+    v[6].size = strlen (testbuf2) - (3 + 5 + 6 + 2 + 1);
+
+    len = g_socket_send_message (client, NULL, v, G_N_ELEMENTS (v), NULL, 0, 0, NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpint (len, ==, strlen (testbuf2));
+
+    len = g_socket_receive (client, buf, sizeof (buf), NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpint (len, ==, strlen (testbuf2));
+    g_assert_cmpstr (testbuf2, ==, buf);
+  }
 
   g_socket_shutdown (client, FALSE, TRUE, &error);
   g_assert_no_error (error);
