@@ -217,6 +217,8 @@ AS_IF([test "x$glib_have_carbon" = "xyes"], [
   LDFLAGS="$LDFLAGS $CARBON_LIBS"
 ], [CARBON_LIBS=""])
 
+AC_SUBST([CARBON_LIBS])
+
 AS_IF([test "x$glib_have_cocoa" = "xyes"], [
   AC_DEFINE(HAVE_COCOA, 1, [define to 1 if Cocoa is available])
   COCOA_LIBS="-Wl,-framework,Foundation"
