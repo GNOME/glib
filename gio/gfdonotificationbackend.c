@@ -181,6 +181,27 @@ notify_signal (GDBusConnection *connection,
   freedesktop_notification_free (n);
 }
 
+/* Converts a GNotificationPriority to an urgency level as defined by
+ * the freedesktop spec (0: low, 1: normal, 2: critical).
+ */
+static guchar
+urgency_from_priority (GNotificationPriority priority)
+{
+  switch (priority)
+    {
+    case G_NOTIFICATION_PRIORITY_LOW:
+      return 0;
+
+    default:
+    case G_NOTIFICATION_PRIORITY_NORMAL:
+      return 1;
+
+    case G_NOTIFICATION_PRIORITY_HIGH:
+    case G_NOTIFICATION_PRIORITY_URGENT:
+      return 2;
+    }
+}
+
 static void
 call_notify (GDBusConnection     *con,
              GApplication        *app,
@@ -196,6 +217,7 @@ call_notify (GDBusConnection     *con,
   GIcon *icon;
   GVariant *parameters;
   const gchar *body;
+  guchar urgency;
 
   g_variant_builder_init (&action_builder, G_VARIANT_TYPE_STRING_ARRAY);
   if (g_notification_get_default_action (notification, NULL, NULL))
@@ -237,8 +259,8 @@ call_notify (GDBusConnection     *con,
   g_variant_builder_init (&hints_builder, G_VARIANT_TYPE ("a{sv}"));
   g_variant_builder_add (&hints_builder, "{sv}", "desktop-entry",
                          g_variant_new_string (g_application_get_application_id (app)));
-  if (g_notification_get_urgent (notification))
-    g_variant_builder_add (&hints_builder, "{sv}", "urgency", g_variant_new_byte (2));
+  urgency = urgency_from_priority (g_notification_get_priority (notification));
+  g_variant_builder_add (&hints_builder, "{sv}", "urgency", g_variant_new_byte (urgency));
   icon = g_notification_get_icon (notification);
   if (icon != NULL && G_IS_FILE_ICON (icon))
     {

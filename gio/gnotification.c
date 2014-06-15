@@ -23,6 +23,7 @@
 #include "gdbusutils.h"
 #include "gicon.h"
 #include "gaction.h"
+#include "gioenumtypes.h"
 
 /**
  * SECTION:gnotification
@@ -72,7 +73,7 @@ struct _GNotification
   gchar *title;
   gchar *body;
   GIcon *icon;
-  gboolean urgent;
+  GNotificationPriority priority;
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;
@@ -286,19 +287,19 @@ g_notification_set_icon (GNotification *notification,
 }
 
 /*< private >
- * g_notification_get_urgent:
+ * g_notification_get_priority:
  * @notification: a #GNotification
  *
- * Returns %TRUE if @notification is marked as urgent.
+ * Returns the priority of @notification
  *
- * Since: 2.40
+ * Since: 2.42
  */
-gboolean
-g_notification_get_urgent (GNotification *notification)
+GNotificationPriority
+g_notification_get_priority (GNotification *notification)
 {
-  g_return_val_if_fail (G_IS_NOTIFICATION (notification), FALSE);
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), G_NOTIFICATION_PRIORITY_NORMAL);
 
-  return notification->urgent;
+  return notification->priority;
 }
 
 /**
@@ -306,7 +307,7 @@ g_notification_get_urgent (GNotification *notification)
  * @notification: a #GNotification
  * @urgent: %TRUE if @notification is urgent
  *
- * Sets or unsets whether @notification is marked as urgent.
+ * Deprecated in favor of g_notification_set_priority().
  *
  * Since: 2.40
  */
@@ -316,7 +317,24 @@ g_notification_set_urgent (GNotification *notification,
 {
   g_return_if_fail (G_IS_NOTIFICATION (notification));
 
-  notification->urgent = urgent;
+  g_notification_set_priority (notification, G_NOTIFICATION_PRIORITY_URGENT);
+}
+
+/**
+ * g_notification_set_priority:
+ * @notification: a #GNotification
+ * @priority: a #GNotificationPriority
+ *
+ * Sets the priority of @notification to @priority. See
+ * #GNotificationPriority for possible values.
+ */
+void
+g_notification_set_priority (GNotification         *notification,
+                             GNotificationPriority  priority)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+
+  notification->priority = priority;
 }
 
 /**
@@ -687,6 +705,21 @@ g_notification_serialize_button (Button *button)
   return g_variant_builder_end (&builder);
 }
 
+static GVariant *
+g_notification_get_priority_nick (GNotification *notification)
+{
+  GEnumClass *enum_class;
+  GEnumValue *value;
+  GVariant *nick;
+
+  enum_class = g_type_class_ref (G_TYPE_NOTIFICATION_PRIORITY);
+  value = g_enum_get_value (enum_class, g_notification_get_priority (notification));
+  nick = g_variant_new_string (value->value_nick);
+  g_type_class_unref (enum_class);
+
+  return nick;
+}
+
 /*< private >
  * g_notification_serialize:
  *
@@ -718,7 +751,7 @@ g_notification_serialize (GNotification *notification)
         }
     }
 
-  g_variant_builder_add (&builder, "{sv}", "urgent", g_variant_new_boolean (notification->urgent));
+  g_variant_builder_add (&builder, "{sv}", "priority", g_notification_get_priority_nick (notification));
 
   if (notification->default_action)
     {

@@ -25,6 +25,7 @@
 #endif
 
 #include <gio/giotypes.h>
+#include <gio/gioenums.h>
 
 G_BEGIN_DECLS
 
@@ -50,9 +51,13 @@ GLIB_AVAILABLE_IN_2_40
 void                    g_notification_set_icon                         (GNotification *notification,
                                                                          GIcon         *icon);
 
-GLIB_AVAILABLE_IN_2_40
+GLIB_DEPRECATED_IN_2_42_FOR(g_notification_set_priority)
 void                    g_notification_set_urgent                       (GNotification *notification,
                                                                          gboolean       urgent);
+
+GLIB_AVAILABLE_IN_2_42
+void                    g_notification_set_priority                     (GNotification         *notification,
+                                                                         GNotificationPriority  priority);
 
 GLIB_AVAILABLE_IN_2_40
 void                    g_notification_add_button                       (GNotification *notification,

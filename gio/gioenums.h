@@ -1783,6 +1783,32 @@ typedef enum {
   G_SUBPROCESS_FLAGS_INHERIT_FDS           = (1u << 7)
 } GSubprocessFlags;
 
+/**
+ * GNotificationPriority:
+ * @G_NOTIFICATION_PRIORITY_LOW: for notifications that do not require
+ *   immediate attention - typically used for contextual background
+ *   information, such as contact birthdays or local weather
+ * @G_NOTIFICATION_PRIORITY_NORMAL: the default priority, to be used for the
+ *   majority of notifications (for example email messages, software updates,
+ *   completed download/sync operations)
+ * @G_NOTIFICATION_PRIORITY_HIGH: for events that require more attention,
+ *   usually because responses are time-sensitive (for example chat and SMS
+ *   messages or alarms)
+ * @G_NOTIFICATION_PRIORITY_URGENT: for urgent notifications, or notifications
+ *   that require a response in a short space of time (for example phone calls
+ *   or emergency warnings)
+ *
+ * Priority levels for #GNotifications.
+ *
+ * Since: 2.42
+ */
+typedef enum {
+  G_NOTIFICATION_PRIORITY_NORMAL,
+  G_NOTIFICATION_PRIORITY_LOW,
+  G_NOTIFICATION_PRIORITY_HIGH,
+  G_NOTIFICATION_PRIORITY_URGENT
+} GNotificationPriority;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

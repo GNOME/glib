@@ -41,7 +41,7 @@ activate_app (GApplication *application,
   g_object_unref (icon);
 
   g_notification_set_body (notification, "body");
-  g_notification_set_urgent (notification, TRUE);
+  g_notification_set_priority (notification, G_NOTIFICATION_PRIORITY_URGENT);
   g_notification_set_default_action_and_target (notification, "app.action", "i", 42);
   g_notification_add_button_with_target (notification, "label", "app.action2", "s", "bla");
 
@@ -179,7 +179,7 @@ struct _GNotification
   gchar *title;
   gchar *body;
   GIcon *icon;
-  gboolean urgent;
+  GNotificationPriority priority;
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;
@@ -208,7 +208,7 @@ test_properties (void)
   icon = g_themed_icon_new ("i-c-o-n");
   g_notification_set_icon (n, icon);
   g_object_unref (icon);
-  g_notification_set_urgent (n, TRUE);
+  g_notification_set_priority (n, G_NOTIFICATION_PRIORITY_HIGH);
   g_notification_add_button (n, "label1", "app.action1::target1");
   g_notification_set_default_action (n, "app.action2::target2");
 
@@ -220,7 +220,7 @@ test_properties (void)
   names = g_themed_icon_get_names (G_THEMED_ICON (rn->icon));
   g_assert_cmpstr (names[0], ==, "i-c-o-n");
   g_assert (names[1] == NULL);
-  g_assert (rn->urgent);
+  g_assert (rn->priority == G_NOTIFICATION_PRIORITY_HIGH);
 
   g_assert_cmpint (rn->buttons->len, ==, 1);
   b = (Button*)rn->buttons->pdata[0];
