@@ -238,7 +238,7 @@ class GFrameDecorator:
                 return i
         return -1
 
-    def __next__ (self):
+    def next (self):
         # Ensure we have enough frames for a full signal emission
         self.fill()
 
@@ -273,6 +273,9 @@ class GFrameDecorator:
             self.queue[start:end] = new_frames
 
         return self.queue.pop(0)
+
+    def __next__ (self):
+        return self.next()
 
 class GFrameFilter(object):
     name = 'glib'
