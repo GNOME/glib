@@ -137,6 +137,9 @@ void            g_value_unset   	(GValue       *value);
 GLIB_AVAILABLE_IN_ALL
 void		g_value_set_instance	(GValue	      *value,
 					 gpointer      instance);
+GLIB_AVAILABLE_IN_2_42
+void            g_value_init_from_instance   (GValue       *value,
+                                              gpointer      instance);
 
 
 /* --- private --- */

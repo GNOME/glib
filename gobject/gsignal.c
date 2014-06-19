@@ -2157,8 +2157,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
 
       SIGNAL_UNLOCK ();
       instance_and_params->g_type = 0;
-      g_value_init (instance_and_params, G_TYPE_FROM_INSTANCE (instance));
-      g_value_set_instance (instance_and_params, instance);
+      g_value_init_from_instance (instance_and_params, instance);
       SIGNAL_LOCK ();
 
       emission->chain_type = chain_type;
@@ -3305,8 +3304,7 @@ g_signal_emit_valist (gpointer instance,
     }
 
   instance_and_params->g_type = 0;
-  g_value_init (instance_and_params, G_TYPE_FROM_INSTANCE (instance));
-  g_value_set_instance (instance_and_params, instance);
+  g_value_init_from_instance (instance_and_params, instance);
   if (signal_return_type == G_TYPE_NONE)
     signal_emit_unlocked_R (node, detail, instance, NULL, instance_and_params);
   else

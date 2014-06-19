@@ -373,6 +373,71 @@ g_value_set_instance (GValue  *value,
     }
 }
 
+/**
+ * g_value_init_from_instance:
+ * @value: An uninitialized #GValue structure.
+ * @instance: the instance
+ *
+ * Initializes and sets @value from an instantiatable type via the
+ * value_table's collect_value() function.
+ *
+ * Note: The @value will be initialised with the exact type of
+ * @instance.  If you wish to set the @value's type to a different GType
+ * (such as a parent class GType), you need to manually call
+ * g_value_init() and g_value_set_instance().
+ *
+ * Since: 2.42
+ */
+void
+g_value_init_from_instance (GValue  *value,
+                            gpointer instance)
+{
+  g_return_if_fail (value != NULL && G_VALUE_TYPE(value) == 0);
+
+  if (G_IS_OBJECT (instance))
+    {
+      /* Fast-path.
+       * If G_IS_OBJECT() succeeds we know:
+       * * that instance is present and valid
+       * * that it is a GObject, and therefore we can directly
+       *   use the collect implementation (g_object_ref) */
+      value_meminit (value, G_TYPE_FROM_INSTANCE (instance));
+      value->data[0].v_pointer = g_object_ref (instance);
+    }
+  else
+    {  
+      GType g_type;
+      GTypeValueTable *value_table;
+      GTypeCValue cvalue;
+      gchar *error_msg;
+
+      g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
+
+      g_type = G_TYPE_FROM_INSTANCE (instance);
+      value_table = g_type_value_table_peek (g_type);
+      g_return_if_fail (strcmp (value_table->collect_format, "p") == 0);
+
+      memset (&cvalue, 0, sizeof (cvalue));
+      cvalue.v_pointer = instance;
+
+      /* setup and collect */
+      value_meminit (value, g_type);
+      value_table->value_init (value);
+      error_msg = value_table->collect_value (value, 1, &cvalue, 0);
+      if (error_msg)
+        {
+          g_warning ("%s: %s", G_STRLOC, error_msg);
+          g_free (error_msg);
+
+          /* we purposely leak the value here, it might not be
+           * in a sane state if an error condition occoured
+           */
+          value_meminit (value, g_type);
+          value_table->value_init (value);
+        }
+    }
+}
+
 static GValueTransform
 transform_func_lookup (GType src_type,
 		       GType dest_type)
