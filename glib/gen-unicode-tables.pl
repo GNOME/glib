@@ -1323,12 +1323,9 @@ sub output_composition_table
 		  
     # Output second singletons
 
-    print OUT "static const guint16 compose_second_single[][2] = {\n";
+    print OUT "static const gunichar compose_second_single[][2] = {\n";
     $i = 0;				     
     for $record (@second_singletons) {
-        if ($record->[1] > 0xFFFF or $record->[2] > 0xFFFF) {
-            die "time to switch compose_second_single to gunichar";
-        }
 	print OUT ",\n" if $i++ > 0;
 	printf OUT " { %#06x, %#06x }", $record->[1], $record->[2];
     }
