@@ -2117,7 +2117,7 @@ g_path_is_absolute (const gchar *file_name)
  * i.e. after the "/" in UNIX or "C:\" under Windows. If @file_name
  * is not an absolute path it returns %NULL.
  *
- * Returns: a pointer into @file_name after the root component
+ * Returns: (nullable): a pointer into @file_name after the root component
  */
 const gchar *
 g_path_skip_root (const gchar *file_name)
