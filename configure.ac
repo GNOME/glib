@@ -2386,13 +2386,7 @@ AC_CACHE_CHECK(for futex(2) system call,
 #include <sys/syscall.h>
 #include <unistd.h>
 ],[
-int
-main (void)
-{
-  /* it is not like this actually runs or anything... */
   syscall (__NR_futex, NULL, FUTEX_WAKE, FUTEX_WAIT);
-  return 0;
-}
 ])],glib_cv_futex=yes,glib_cv_futex=no))
 if test x"$glib_cv_futex" = xyes; then
   AC_DEFINE(HAVE_FUTEX, 1, [we have the futex(2) system call])
@@ -2403,12 +2397,7 @@ AC_CACHE_CHECK(for eventfd(2) system call,
 #include <sys/eventfd.h>
 #include <unistd.h>
 ],[
-int
-main (void)
-{
   eventfd (0, EFD_CLOEXEC);
-  return 0;
-}
 ])],glib_cv_eventfd=yes,glib_cv_eventfd=no))
 if test x"$glib_cv_eventfd" = x"yes"; then
   AC_DEFINE(HAVE_EVENTFD, 1, [we have the eventfd(2) system call])
