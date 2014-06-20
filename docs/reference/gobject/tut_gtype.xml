@@ -566,9 +566,9 @@ void           g_type_free_instance   (GTypeInstance *instance);
             referred to as finalization in GType) is the symmetric process of 
             the initialization: interfaces are destroyed first. 
             Then, the most derived 
-            class_finalize (<link linkend="GClassFinalizeFunc"><type>GClassFinalizeFunc</type></link>) function is invoked. The 
+            class_finalize (<link linkend="GClassFinalizeFunc"><type>GClassFinalizeFunc</type></link>) function is invoked. Finally, the
             base_class_finalize (<link linkend="GBaseFinalizeFunc"><type>GBaseFinalizeFunc</type></link>) functions are 
-            Finally invoked from bottom-most most-derived type to top-most fundamental type and 
+            invoked from bottom-most most-derived type to top-most fundamental type and
             the class structure is freed.
           </para>
 
