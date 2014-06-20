@@ -503,8 +503,11 @@ g_local_file_get_parent (GFile *file)
   char *dirname;
   GFile *parent;
 
-  /* Check for root */
+  /* Check for root; local->filename is guaranteed to be absolute, so
+   * g_path_skip_root() should never return NULL. */
   non_root = g_path_skip_root (local->filename);
+  g_assert (non_root != NULL);
+
   if (*non_root == 0)
     return NULL;
 
