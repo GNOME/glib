@@ -2383,13 +2383,7 @@ AC_CACHE_CHECK(for futex(2) system call,
 #include <sys/syscall.h>
 #include <unistd.h>
 ],[
-int
-main (void)
-{
-  /* it is not like this actually runs or anything... */
   syscall (__NR_futex, NULL, FUTEX_WAKE, FUTEX_WAIT);
-  return 0;
-}
 ])],glib_cv_futex=yes,glib_cv_futex=no))
 if test x"$glib_cv_futex" = xyes; then
   AC_DEFINE(HAVE_FUTEX, 1, [we have the futex(2) system call])
@@ -2400,12 +2394,7 @@ AC_CACHE_CHECK(for eventfd(2) system call,
 #include <sys/eventfd.h>
 #include <unistd.h>
 ],[
-int
-main (void)
-{
   eventfd (0, EFD_CLOEXEC);
-  return 0;
-}
 ])],glib_cv_eventfd=yes,glib_cv_eventfd=no))
 if test x"$glib_cv_eventfd" = x"yes"; then
   AC_DEFINE(HAVE_EVENTFD, 1, [we have the eventfd(2) system call])
@@ -3451,7 +3440,7 @@ AC_ARG_ENABLE(Bsymbolic,
               [SAVED_LDFLAGS="${LDFLAGS}"
                AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
                LDFLAGS=-Wl,-Bsymbolic-functions
-               AC_TRY_LINK([], [int main (void) { return 0; }],
+               AC_TRY_LINK([], [return 0],
                            AC_MSG_RESULT(yes)
                            enable_Bsymbolic=yes,
                            AC_MSG_RESULT(no)
@@ -3478,14 +3467,14 @@ AC_ARG_ENABLE([znodelete],
               [SAVED_LDFLAGS="${LDFLAGS}"
                AC_MSG_CHECKING([for --fatal-warnings linker flag])
                LDFLAGS=-Wl,--fatal-warnings
-               AC_TRY_LINK([], [int main (void) { return 0; }],
+               AC_TRY_LINK([], [return 0],
                            AC_MSG_RESULT(yes)
                            [ldflags_fatal=-Wl,--fatal-warnings],
                            AC_MSG_RESULT(no)
                            ldflags_fatal=)
                AC_MSG_CHECKING([for -z,nodelete linker flag])
                LDFLAGS="$ldflags_fatal -Wl,-z,nodelete"
-               AC_TRY_LINK([], [int main (void) { return 0; }],
+               AC_TRY_LINK([], [return 0],
                            AC_MSG_RESULT(yes)
                            enable_znodelete=yes,
                            AC_MSG_RESULT(no)
@@ -3515,7 +3504,7 @@ case "$host" in
     SAVED_CFLAGS="${CFLAGS}"
     CFLAGS="-fvisibility=hidden"
     AC_MSG_CHECKING([for -fvisibility=hidden compiler flag])
-    AC_TRY_COMPILE([], [int main (void) { return 0; }],
+    AC_TRY_COMPILE([], [return 0],
                    AC_MSG_RESULT(yes)
                    enable_fvisibility_hidden=yes,
                    AC_MSG_RESULT(no)
