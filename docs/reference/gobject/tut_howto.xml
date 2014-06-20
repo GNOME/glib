@@ -863,7 +863,7 @@ void maman_ibaz_do_something (MamanIbaz *self);
 G_DEFINE_INTERFACE (MamanIbaz, maman_ibaz, 0);
 
 static void
-maman_ibaz_default_init (gpointer g_class)
+maman_ibaz_default_init (MamanIbazInterface *iface)
 {
     /* add properties and signals to the interface here */
 }
@@ -1119,9 +1119,9 @@ G_DEFINE_TYPE_WITH_CODE (MamanBar, maman_bar, G_TYPE_OBJECT,
       line in the <function>maman_ibaz_default_init</function> as shown below:
 <programlisting>
 static void
-maman_ibaz_default_init (gpointer g_iface)
+maman_ibaz_default_init (MamanIbazInteface *iface)
 {
-  g_object_interface_install_property (g_iface,
+  g_object_interface_install_property (iface,
                                        g_param_spec_string ("name",
                                                             "Name",
                                                             "Name of the MamanIbaz",
