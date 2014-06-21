@@ -1581,6 +1581,7 @@ _g_local_file_info_get_nostat (GFileInfo              *info,
 
 static const char *
 get_icon_name (const char *path,
+               const char *content_type,
                gboolean    use_symbolic,
                gboolean   *with_fallbacks_out)
 {
@@ -1625,6 +1626,10 @@ get_icon_name (const char *path,
     {
       name = use_symbolic ? "folder-videos-symbolic" : "folder-videos";
     }
+  else if (g_strcmp0 (content_type, "inode/directory") == 0)
+    {
+      name = use_symbolic ? "folder-symbolic" : "folder";
+    }
   else
     {
       name = NULL;
@@ -1645,7 +1650,7 @@ get_icon (const char *path,
   const char *icon_name;
   gboolean with_fallbacks;
 
-  icon_name = get_icon_name (path, use_symbolic, &with_fallbacks);
+  icon_name = get_icon_name (path, content_type, use_symbolic, &with_fallbacks);
   if (icon_name != NULL)
     {
       if (with_fallbacks)
