@@ -779,7 +779,7 @@ g_node_traverse_level (GNode		 *node,
 static gboolean
 g_node_depth_traverse_level (GNode             *node,
 			     GTraverseFlags	flags,
-			     guint		depth,
+			     gint		depth,
 			     GNodeTraverseFunc  func,
 			     gpointer	        data)
 {
@@ -787,7 +787,7 @@ g_node_depth_traverse_level (GNode             *node,
   gboolean more_levels;
 
   level = 0;  
-  while (level != depth) 
+  while (depth < 0 || level != (guint) depth)
     {
       more_levels = FALSE;
       if (g_node_traverse_level (node, flags, level, func, data, &more_levels))
