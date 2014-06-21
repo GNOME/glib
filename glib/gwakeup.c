@@ -227,19 +227,26 @@ g_wakeup_acknowledge (GWakeup *wakeup)
 void
 g_wakeup_signal (GWakeup *wakeup)
 {
-  guint64 one = 1;
   int res;
 
   if (wakeup->fds[1] == -1)
     {
+      guint64 one = 1;
+
+      /* eventfd() case. It requires a 64-bit counter increment value to be
+       * written. */
       do
         res = write (wakeup->fds[0], &one, sizeof one);
       while (G_UNLIKELY (res == -1 && errno == EINTR));
     }
   else
     {
+      guint8 one = 1;
+
+      /* Non-eventfd() case. Only a single byte needs to be written, and it can
+       * have an arbitrary value. */
       do
-        res = write (wakeup->fds[1], &one, 1);
+        res = write (wakeup->fds[1], &one, sizeof one);
       while (G_UNLIKELY (res == -1 && errno == EINTR));
     }
 }
