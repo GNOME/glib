@@ -2561,10 +2561,7 @@ g_date_time_format_locale (GDateTime   *datetime,
 	case 'z':
 	  {
 	    gint64 offset;
-	    if (datetime->tz != NULL)
-	      offset = g_date_time_get_utc_offset (datetime) / USEC_PER_SECOND;
-	    else
-	      offset = 0;
+	    offset = g_date_time_get_utc_offset (datetime) / USEC_PER_SECOND;
 	    if (!format_z (outstr, (int) offset, colons))
 	      return FALSE;
 	  }
