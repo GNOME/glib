@@ -1490,9 +1490,6 @@ g_cclosure_marshal_generic_va (GClosure *closure,
   args =  g_alloca (sizeof (gpointer) * n_args);
   storage = g_alloca (sizeof (va_arg_storage) * n_params);
 
-  if (tmpval_used)
-    enum_tmpval = g_alloca (sizeof (gint));
-
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       atypes[n_args-1] = &ffi_type_pointer;
