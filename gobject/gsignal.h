@@ -147,7 +147,7 @@ typedef enum
  * @G_CONNECT_AFTER: whether the handler should be called before or after the 
  *  default handler of the signal.
  * @G_CONNECT_SWAPPED: whether the instance and data should be swapped when
- *  calling the handler.
+ *  calling the handler; see g_signal_connect_swapped() for an example.
  * 
  * The connection flags are used to specify the behaviour of a signal's 
  * connection.
@@ -495,9 +495,31 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * Connects a #GCallback function to a signal for a particular object.
  * 
  * The instance on which the signal is emitted and @data will be swapped when 
- * calling the handler.
+ * calling the handler. This is useful when calling pre-existing functions to
+ * operate purely on the @data, rather than the @instance: swapping the
+ * parameters avoids the need to write a wrapper function.
+ *
+ * For example, this allows the shorter code:
+ * |[<!-- language="C" -->
+ * g_signal_connect_swapped (button, "clicked",
+ *                           (GCallback) gtk_widget_hide, other_widget);
+ * ]|
+ *
+ * Rather than the cumbersome:
+ * |[<!-- language="C" -->
+ * static void
+ * button_clicked_cb (GtkButton *button, GtkWidget *other_widget)
+ * {
+ *     gtk_widget_hide (other_widget);
+ * }
+ *
+ * …
+ *
+ * g_signal_connect (button, "clicked",
+ *                   (GCallback) button_clicked_cb, other_widget);
+ * ]|
  * 
- * Returns: the handler id (always greater than 0 for successful connections)
+ * Returns: the handler ID (always greater than 0 for successful connections)
  */
 #define g_signal_connect_swapped(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_SWAPPED)
