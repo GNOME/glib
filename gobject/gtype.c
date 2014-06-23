@@ -3499,6 +3499,9 @@ g_type_is_a (GType type,
 {
   TypeNode *node, *iface_node;
   gboolean is_a;
+
+  if (type == iface_type)
+    return TRUE;
   
   node = lookup_type_node_I (type);
   iface_node = lookup_type_node_I (iface_type);
