@@ -44,7 +44,7 @@ test_basic (void)
   settings = g_settings_new ("org.gtk.test");
 
   g_object_get (settings,
-                "schema", &str,
+                "schema-id", &str,
                 "backend", &b,
                 "path", &path,
                 "has-unapplied", &has_unapplied,
@@ -2399,7 +2399,7 @@ test_null_backend (void)
   backend = g_null_settings_backend_new ();
   settings = g_settings_new_with_backend_and_path ("org.gtk.test", backend, "/tests/");
 
-  g_object_get (settings, "schema", &str, NULL);
+  g_object_get (settings, "schema-id", &str, NULL);
   g_assert_cmpstr (str, ==, "org.gtk.test");
   g_free (str);
 
