@@ -562,7 +562,10 @@ _attribute_blob_find_first (GIBaseInfo *info,
  *
  * Iterate over all attributes associated with this node.  The iterator
  * structure is typically stack allocated, and must have its first
- * member initialized to %NULL.
+ * member initialized to %NULL.  Attributes are arbitrary namespaced key–value
+ * pairs which can be attached to almost any item.  They are intended for use
+ * by software higher in the toolchain than bindings, and are distinct from
+ * normal GIR annotations.
  *
  * Both the @name and @value should be treated as constants
  * and must not be freed.
