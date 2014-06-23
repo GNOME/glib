@@ -82,9 +82,11 @@ g_socket_listener_finalize (GObject *object)
   if (listener->priv->main_context)
     g_main_context_unref (listener->priv->main_context);
 
-  if (!listener->priv->closed)
-    g_socket_listener_close (listener);
-
+  /* Do not explicitly close the sockets. Instead, let them close themselves if
+   * their final reference is dropped, but keep them open if a reference is
+   * held externally to the GSocketListener (which is possible if
+   * g_socket_listener_add_socket() was used).
+   */
   g_ptr_array_free (listener->priv->sockets, TRUE);
 
   G_OBJECT_CLASS (g_socket_listener_parent_class)
@@ -205,6 +207,11 @@ check_listener (GSocketListener *listener,
  * to accept to identify this particular source, which is
  * useful if you're listening on multiple addresses and do
  * different things depending on what address is connected to.
+ *
+ * The @socket will not be automatically closed when the @listener is finalized
+ * unless the listener held the final reference to the socket. Before GLib 2.42,
+ * the @socket was automatically closed on finalization of the @listener, even
+ * if references to it were held elsewhere.
  *
  * Returns: %TRUE on success, %FALSE on error.
  *
