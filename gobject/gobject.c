@@ -1295,6 +1295,53 @@ g_object_thaw_notify (GObject *object)
   g_object_unref (object);
 }
 
+static gboolean
+should_issue_prop_deprecation_warning (const GParamSpec *pspec)
+{
+  static GHashTable *already_warned_table;
+  static const gchar *enable_diagnostic;
+  static GMutex already_warned_lock;
+  gboolean already;
+
+  if (!(pspec->flags & G_PARAM_DEPRECATED))
+    return FALSE;
+
+  if (g_once_init_enter (&enable_diagnostic))
+    {
+      const gchar *value = g_getenv ("G_ENABLE_DIAGNOSTIC");
+
+      if (!value)
+        value = "-";
+
+      g_once_init_leave (&enable_diagnostic, value);
+    }
+
+  if (enable_diagnostic[0] == '0')
+    return FALSE;
+
+  /* We hash only on property names: this means that we could end up in
+   * a situation where we fail to emit a warning about a pair of
+   * same-named deprecated properties used on two separate types.
+   * That's pretty unlikely to occur, and even if it does, you'll still
+   * have seen the warning for the first one...
+   *
+   * Doing it this way lets us hash directly on the (interned) property
+   * name pointers.
+   */
+  g_mutex_lock (&already_warned_lock);
+
+  if (already_warned_table == NULL)
+    already_warned_table = g_hash_table_new (NULL, NULL);
+
+  already = g_hash_table_contains (already_warned_table, (gpointer) pspec->name);
+  if (!already)
+    g_hash_table_add (already_warned_table, (gpointer) pspec->name);
+
+  g_mutex_unlock (&already_warned_lock);
+
+  return !already;
+}
+
 static inline void
 object_get_property (GObject     *object,
 		     GParamSpec  *pspec,
@@ -1313,8 +1360,15 @@ object_get_property (GObject     *object,
 
   redirect = g_param_spec_get_redirect_target (pspec);
   if (redirect)
-    pspec = redirect;    
-  
+    pspec = redirect;
+
+  if (should_issue_prop_deprecation_warning (pspec))
+    {
+      g_warning ("The property %s:%s is deprecated and shouldn't be used "
+                 "anymore. It will be removed in a future version.",
+                 G_OBJECT_TYPE_NAME (object), pspec->name);
+    }
+
   class->get_property (object, param_id, value, pspec);
 }
 
@@ -1328,7 +1382,6 @@ object_set_property (GObject             *object,
   GObjectClass *class = g_type_class_peek (pspec->owner_type);
   guint param_id = PARAM_SPEC_PARAM_ID (pspec);
   GParamSpec *redirect;
-  static const gchar * enable_diagnostic = NULL;
 
   if (class == NULL)
     {
@@ -1341,25 +1394,15 @@ object_set_property (GObject             *object,
   if (redirect)
     pspec = redirect;
 
-  if (G_UNLIKELY (!enable_diagnostic))
+  if (pspec->flags & G_PARAM_DEPRECATED)
     {
-      enable_diagnostic = g_getenv ("G_ENABLE_DIAGNOSTIC");
-      if (!enable_diagnostic)
-        enable_diagnostic = "0";
-    }
-
-  if (enable_diagnostic[0] == '1')
-    {
-      if (pspec->flags & G_PARAM_DEPRECATED)
+      /* don't warn for automatically provided construct properties */
+      if (!(pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) || !object_in_construction (object))
         {
-          /* don't warn for automatically provided construct properties */
-          if (!(pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) ||
-              !object_in_construction (object))
-            {
-              g_warning ("The property %s:%s is deprecated and shouldn't be used "
-                         "anymore. It will be removed in a future version.",
-                         G_OBJECT_TYPE_NAME (object), pspec->name);
-            }
+          if (should_issue_prop_deprecation_warning (pspec))
+            g_warning ("The property %s:%s is deprecated and shouldn't be used "
+                       "anymore. It will be removed in a future version.",
+                       G_OBJECT_TYPE_NAME (object), pspec->name);
         }
     }
 
