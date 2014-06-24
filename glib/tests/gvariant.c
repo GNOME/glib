@@ -1520,7 +1520,9 @@ test_array (void)
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) instances, n_children);
 
-        g_assert (memcmp (serialised.data, data, serialised.size) == 0);
+        if (serialised.size)
+          g_assert (memcmp (serialised.data, data, serialised.size) == 0);
+
         g_assert (g_variant_serialised_n_children (serialised) == n_children);
 
         for (i = 0; i < n_children; i++)
@@ -1681,7 +1683,9 @@ test_tuple (void)
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) instances, n_children);
 
-        g_assert (memcmp (serialised.data, data, serialised.size) == 0);
+        if (serialised.size)
+          g_assert (memcmp (serialised.data, data, serialised.size) == 0);
+
         g_assert (g_variant_serialised_n_children (serialised) == n_children);
 
         for (i = 0; i < n_children; i++)
@@ -1774,7 +1778,9 @@ test_variant (void)
         g_variant_serialiser_serialise (serialised, random_instance_filler,
                                         (gpointer *) &instance, 1);
 
-        g_assert (memcmp (serialised.data, data, serialised.size) == 0);
+        if (serialised.size)
+          g_assert (memcmp (serialised.data, data, serialised.size) == 0);
+
         g_assert (g_variant_serialised_n_children (serialised) == 1);
 
         child = g_variant_serialised_get_child (serialised, 0);
