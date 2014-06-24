@@ -749,6 +749,30 @@ g_settings_class_init (GSettingsClass *class)
                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
+   * GSettings:schema:
+   *
+   * The name of the schema that describes the types of keys
+   * for this #GSettings object.
+   *
+   * The type of this property is *not* #GSettingsSchema.
+   * #GSettingsSchema has only existed since version 2.32 and
+   * unfortunately this name was used in previous versions to refer to
+   * the schema ID rather than the schema itself.  Take care to use the
+   * 'settings-schema' property if you wish to pass in a
+   * #GSettingsSchema.
+   *
+   * Deprecated:2.32:Use the 'schema-id' property instead.  In a future
+   * version, this property may instead refer to a #GSettingsSchema.
+   */
+  g_object_class_install_property (object_class, PROP_SCHEMA_ID,
+    g_param_spec_string ("schema",
+                         P_("Schema name"),
+                         P_("The name of the schema for this settings object"),
+                         NULL,
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_DEPRECATED | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  /**
    * GSettings:schema-id:
    *
    * The name of the schema that describes the types of keys
