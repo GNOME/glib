@@ -1,3 +1,33 @@
+Overview of changes in GLib 2.41.1
+==================================
+
+* Bug fixes:
+ 697229 Custom Interface implementations will be broken with glib 2.37/38
+ 698614 GObject: prevent installing properties after init
+ 729269 gvariant: Fix confusion between type and format strings in the docs
+ 730198 broken valgrind.h leads to crashes in g_type_free_instance on mingw64
+ 730807 GMutex performance regression
+ 730963 gconvert: mention that the g_convert len should be in bytes
+ 730984 Faster instance type check for fundamentals
+ 731050 <structname> tags appear in documentation
+ 731200 unconditional 'notify' during g_object_set() is problematic
+ 731335 gtype: guard uses of new fundamental type check
+ 731341 gparam: change value of G_PARAM_EXPLICIT_NOTIFY
+ 731366 run-assert-msg-test.sh gdb leaves assert-msg-test zombie
+ 731425 giomodule protects function-call with different token than function...
+ 731513 clang: build failure: implicit declaration of function '__atomic_load_4'
+ 731584 gbookmarkfile: Cleaner error handling code to pacify static analysis
+ 731657 Prevent an invalid @CARBON_LIBS@ from appearing in the .pc files
+ 731979 docs: Correct param to interface's default_init()
+ 731996 Return folder as icon for directories
+ 732002 gwakeup: Clarify buffer sizing in g_wakeup_signal()
+ 732005 Remove unused assignments
+ 732019 gtestdbus: Don’t close stdout for dbus-daemon
+ 732068 gsignal: Add an example to the g_signal_connect_swapped() documentation
+ 732081 gsocket: Document that g_socket_create_source() holds a socket ref
+ 732107 gsocketlistener: Reconsider closing sockets on listener finalisation
+
+
 Overview of changes in GLib 2.41.0
 ===================================
 
