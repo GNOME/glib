@@ -1140,7 +1140,7 @@ maman_ibaz_default_init (MamanIbazInteface *iface)
     </para>
     
     <para>
-      An implementation declares and defines it's properties in the usual
+      An implementation declares and defines its properties in the usual
       way as explained in <xref linkend="gobject-properties"/>, except for one
       small change: it can declare the properties of the interface it
       implements using <function><link linkend="g-object-class-override-property">g_object_class_override_property</link></function>
@@ -1289,7 +1289,7 @@ maman_derived_baz_init (MamanDerivedBaz *self)
 
     <para>
       In this example MamanDerivedBaz overides the
-      <function>do_action</function> interface method. In it's overridden method
+      <function>do_action</function> interface method. In its overridden method
       it calls the base class implementation of the same interface method.
 <programlisting>
 static MamanIbazInterface *maman_ibaz_parent_interface = NULL;
