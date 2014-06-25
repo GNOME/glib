@@ -165,8 +165,6 @@ typedef struct
 {
   gint32     gmt_offset;
   gboolean   is_dst;
-  gboolean   is_standard;
-  gboolean   is_gmt;
   gchar     *abbrev;
 } TransitionInfo;
 
@@ -384,8 +382,6 @@ zone_for_constant_offset (GTimeZone *gtz, const gchar *name)
 
   info.gmt_offset = offset;
   info.is_dst = FALSE;
-  info.is_standard = TRUE;
-  info.is_gmt = TRUE;
   info.abbrev =  g_strdup (name);
 
 
@@ -445,12 +441,10 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
 {
   gsize size;
   guint index;
-  guint32 time_count, type_count, leap_count, isgmt_count;
-  guint32  isstd_count, char_count ;
+  guint32 time_count, type_count;
   guint8 *tz_transitions, *tz_type_index, *tz_ttinfo;
-  guint8 *tz_leaps, *tz_isgmt, *tz_isstd;
   guint8 *tz_abbrs;
-  gsize timesize = sizeof (gint32), countsize = sizeof (gint32);
+  gsize timesize = sizeof (gint32);
   const struct tzhead *header = g_bytes_get_data (zoneinfo, &size);
 
   g_return_if_fail (size >= sizeof (struct tzhead) &&
@@ -471,21 +465,11 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
       }
   time_count = guint32_from_be(header->tzh_timecnt);
   type_count = guint32_from_be(header->tzh_typecnt);
-  leap_count = guint32_from_be(header->tzh_leapcnt);
-  isgmt_count = guint32_from_be(header->tzh_ttisgmtcnt);
-  isstd_count = guint32_from_be(header->tzh_ttisstdcnt);
-  char_count = guint32_from_be(header->tzh_charcnt);
-
-  g_assert (type_count == isgmt_count);
-  g_assert (type_count == isstd_count);
 
   tz_transitions = ((guint8 *) (header) + sizeof (*header));
   tz_type_index = tz_transitions + timesize * time_count;
   tz_ttinfo = tz_type_index + time_count;
   tz_abbrs = tz_ttinfo + sizeof (struct ttinfo) * type_count;
-  tz_leaps = tz_abbrs + char_count;
-  tz_isstd = tz_leaps + (timesize + countsize) * leap_count;
-  tz_isgmt = tz_isstd + isstd_count;
 
   gtz->t_info = g_array_sized_new (FALSE, TRUE, sizeof (TransitionInfo),
                                    type_count);
@@ -498,8 +482,6 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
       struct ttinfo info = ((struct ttinfo*)tz_ttinfo)[index];
       t_info.gmt_offset = gint32_from_be (info.tt_gmtoff);
       t_info.is_dst = info.tt_isdst ? TRUE : FALSE;
-      t_info.is_standard = tz_isstd[index] ? TRUE : FALSE;
-      t_info.is_gmt = tz_isgmt[index] ? TRUE : FALSE;
       t_info.abbrev = g_strdup ((gchar *) &tz_abbrs[info.tt_abbrind]);
       g_array_append_val (gtz->t_info, t_info);
     }
@@ -839,8 +821,6 @@ fill_transition_info_from_rule (TransitionInfo *info,
 
   info->gmt_offset = offset;
   info->is_dst = is_dst;
-  info->is_standard = FALSE;
-  info->is_gmt = FALSE;
 
   if (name)
     info->abbrev = g_strdup (name);
@@ -1576,21 +1556,6 @@ interval_isdst (GTimeZone *tz,
   return interval_info (tz, interval)->is_dst;
 }
 
-
-inline static gboolean
-interval_isgmt (GTimeZone *tz,
-                guint      interval)
-{
-  g_return_val_if_fail (tz->t_info != NULL, 0);
-  return interval_info (tz, interval)->is_gmt;
-}
-
-inline static gboolean
-interval_isstandard (GTimeZone *tz,
-                guint      interval)
-{
-  return interval_info (tz, interval)->is_standard;
-}
 
 inline static gchar*
 interval_abbrev (GTimeZone *tz,
