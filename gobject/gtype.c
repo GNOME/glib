@@ -28,7 +28,6 @@
 #include "gtype-private.h"
 #include "gtypeplugin.h"
 #include "gvaluecollector.h"
-#include "gbsearcharray.h"
 #include "gatomicarray.h"
 #include "gobject_trace.h"
 
