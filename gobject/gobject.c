@@ -1295,8 +1295,8 @@ g_object_thaw_notify (GObject *object)
   g_object_unref (object);
 }
 
-static gboolean
-should_issue_prop_deprecation_warning (const GParamSpec *pspec)
+static void
+consider_issuing_property_deprecation_warning (const GParamSpec *pspec)
 {
   static GHashTable *already_warned_table;
   static const gchar *enable_diagnostic;
@@ -1304,7 +1304,7 @@ should_issue_prop_deprecation_warning (const GParamSpec *pspec)
   gboolean already;
 
   if (!(pspec->flags & G_PARAM_DEPRECATED))
-    return FALSE;
+    return;
 
   if (g_once_init_enter (&enable_diagnostic))
     {
@@ -1317,7 +1317,7 @@ should_issue_prop_deprecation_warning (const GParamSpec *pspec)
     }
 
   if (enable_diagnostic[0] == '0')
-    return FALSE;
+    return;
 
   /* We hash only on property names: this means that we could end up in
    * a situation where we fail to emit a warning about a pair of
@@ -1339,7 +1339,10 @@ should_issue_prop_deprecation_warning (const GParamSpec *pspec)
 
   g_mutex_unlock (&already_warned_lock);
 
-  return !already;
+  if (!already)
+    g_warning ("The property %s:%s is deprecated and shouldn't be used "
+               "anymore. It will be removed in a future version.",
+               g_type_name (pspec->owner_type), pspec->name);
 }
 
 static inline void
@@ -1362,12 +1365,7 @@ object_get_property (GObject     *object,
   if (redirect)
     pspec = redirect;
 
-  if (should_issue_prop_deprecation_warning (pspec))
-    {
-      g_warning ("The property %s:%s is deprecated and shouldn't be used "
-                 "anymore. It will be removed in a future version.",
-                 G_OBJECT_TYPE_NAME (object), pspec->name);
-    }
+  consider_issuing_property_deprecation_warning (pspec);
 
   class->get_property (object, param_id, value, pspec);
 }
@@ -1393,18 +1391,6 @@ object_set_property (GObject             *object,
   redirect = g_param_spec_get_redirect_target (pspec);
   if (redirect)
     pspec = redirect;
-
-  if (pspec->flags & G_PARAM_DEPRECATED)
-    {
-      /* don't warn for automatically provided construct properties */
-      if (!(pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) || !object_in_construction (object))
-        {
-          if (should_issue_prop_deprecation_warning (pspec))
-            g_warning ("The property %s:%s is deprecated and shouldn't be used "
-                       "anymore. It will be removed in a future version.",
-                       G_OBJECT_TYPE_NAME (object), pspec->name);
-        }
-    }
 
   /* provide a copy to work from, convert (if necessary) and validate */
   g_value_init (&tmp_value, pspec->value_type);
@@ -1685,6 +1671,7 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
       for (j = 0; j < n_params; j++)
         if (params[j].pspec == pspec)
           {
+            consider_issuing_property_deprecation_warning (pspec);
             value = params[j].value;
             break;
           }
@@ -1761,7 +1748,10 @@ g_object_new_with_custom_constructor (GObjectClass          *class,
   /* set remaining properties */
   for (i = 0; i < n_params; i++)
     if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
-      object_set_property (object, params[i].pspec, params[i].value, nqueue);
+      {
+        consider_issuing_property_deprecation_warning (params[i].pspec);
+        object_set_property (object, params[i].pspec, params[i].value, nqueue);
+      }
 
   /* If nqueue is non-NULL then we are frozen.  Thaw it. */
   if (nqueue)
@@ -1807,6 +1797,7 @@ g_object_new_internal (GObjectClass          *class,
           for (j = 0; j < n_params; j++)
             if (params[j].pspec == pspec)
               {
+                consider_issuing_property_deprecation_warning (pspec);
                 value = params[j].value;
                 break;
               }
@@ -1832,7 +1823,10 @@ g_object_new_internal (GObjectClass          *class,
        */
       for (i = 0; i < n_params; i++)
         if (!(params[i].pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
-          object_set_property (object, params[i].pspec, params[i].value, nqueue);
+          {
+            consider_issuing_property_deprecation_warning (params[i].pspec);
+            object_set_property (object, params[i].pspec, params[i].value, nqueue);
+          }
 
       g_object_notify_queue_thaw (object, nqueue);
     }
@@ -2160,10 +2154,11 @@ g_object_set_valist (GObject	 *object,
           g_value_unset (&value);
 	  break;
 	}
-      
+
+      consider_issuing_property_deprecation_warning (pspec);
       object_set_property (object, pspec, &value, nqueue);
       g_value_unset (&value);
-      
+
       name = va_arg (var_args, gchar*);
     }
 
@@ -2363,8 +2358,11 @@ g_object_set_property (GObject	    *object,
     g_warning ("%s: construct property \"%s\" for object '%s' can't be set after construction",
                G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
   else
-    object_set_property (object, pspec, value, nqueue);
-  
+    {
+      consider_issuing_property_deprecation_warning (pspec);
+      object_set_property (object, pspec, value, nqueue);
+    }
+
   g_object_notify_queue_thaw (object, nqueue);
   g_object_unref (object);
 }
