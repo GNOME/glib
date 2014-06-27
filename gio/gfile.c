@@ -650,7 +650,6 @@ g_file_hash (gconstpointer file)
  * This call does no blocking I/O.
  *
  * Returns: %TRUE if @file1 and @file2 are equal.
- *     %FALSE if either is not a #GFile.
  */
 gboolean
 g_file_equal (GFile *file1,
