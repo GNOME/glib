@@ -1,4 +1,4 @@
-# Test cases generated from Unicode 6.1 data
+# Test cases generated from Unicode 7.0.0 data
 # by gen-case-tests.pl. Do not edit.
 #
 # Some special hand crafted tests
@@ -503,12 +503,12 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ə	ə	Ə	Ə	#  259
 	ɚ	ɚ			#  25A
 	ɛ	ɛ	Ɛ	Ɛ	#  25B
-	ɜ	ɜ			#  25C
+	ɜ	ɜ	Ɜ	Ɜ	#  25C
 	ɝ	ɝ			#  25D
 	ɞ	ɞ			#  25E
 	ɟ	ɟ			#  25F
 	ɠ	ɠ	Ɠ	Ɠ	#  260
-	ɡ	ɡ			#  261
+	ɡ	ɡ	Ɡ	Ɡ	#  261
 	ɢ	ɢ			#  262
 	ɣ	ɣ	Ɣ	Ɣ	#  263
 	ɤ	ɤ			#  264
@@ -519,7 +519,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ɩ	ɩ	Ɩ	Ɩ	#  269
 	ɪ	ɪ			#  26A
 	ɫ	ɫ	Ɫ	Ɫ	#  26B
-	ɬ	ɬ			#  26C
+	ɬ	ɬ	Ɬ	Ɬ	#  26C
 	ɭ	ɭ			#  26D
 	ɮ	ɮ			#  26E
 	ɯ	ɯ	Ɯ	Ɯ	#  26F
@@ -546,7 +546,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ʄ	ʄ			#  284
 	ʅ	ʅ			#  285
 	ʆ	ʆ			#  286
-	ʇ	ʇ			#  287
+	ʇ	ʇ	Ʇ	Ʇ	#  287
 	ʈ	ʈ	Ʈ	Ʈ	#  288
 	ʉ	ʉ	Ʉ	Ʉ	#  289
 	ʊ	ʊ	Ʊ	Ʊ	#  28A
@@ -568,7 +568,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ʛ	ʛ			#  29B
 	ʜ	ʜ			#  29C
 	ʝ	ʝ			#  29D
-	ʞ	ʞ			#  29E
+	ʞ	ʞ	Ʞ	Ʞ	#  29E
 	ʟ	ʟ			#  29F
 	ʠ	ʠ			#  2A0
 	ʡ	ʡ			#  2A1
@@ -595,6 +595,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ͻ	ͻ	Ͻ	Ͻ	#  37B
 	ͼ	ͼ	Ͼ	Ͼ	#  37C
 	ͽ	ͽ	Ͽ	Ͽ	#  37D
+	Ϳ	ϳ		Ϳ	#  37F
 	Ά	ά		Ά	#  386
 	Έ	έ		Έ	#  388
 	Ή	ή		Ή	#  389
@@ -699,7 +700,7 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ϰ	ϰ	Κ	Κ	#  3F0
 	ϱ	ϱ	Ρ	Ρ	#  3F1
 	ϲ	ϲ	Ϲ	Ϲ	#  3F2
-	ϳ	ϳ			#  3F3
+	ϳ	ϳ	Ϳ	Ϳ	#  3F3
 	ϴ	θ		ϴ	#  3F4
 	ϵ	ϵ	Ε	Ε	#  3F5
 	Ϸ	ϸ		Ϸ	#  3F7
@@ -999,6 +1000,14 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ԥ	ԥ	Ԥ	Ԥ	#  525
 	Ԧ	ԧ		Ԧ	#  526
 	ԧ	ԧ	Ԧ	Ԧ	#  527
+	Ԩ	ԩ		Ԩ	#  528
+	ԩ	ԩ	Ԩ	Ԩ	#  529
+	Ԫ	ԫ		Ԫ	#  52A
+	ԫ	ԫ	Ԫ	Ԫ	#  52B
+	Ԭ	ԭ		Ԭ	#  52C
+	ԭ	ԭ	Ԭ	Ԭ	#  52D
+	Ԯ	ԯ		Ԯ	#  52E
+	ԯ	ԯ	Ԯ	Ԯ	#  52F
 	Ա	ա		Ա	#  531
 	Բ	բ		Բ	#  532
 	Գ	գ		Գ	#  533
@@ -2066,6 +2075,10 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ꚕ	ꚕ	Ꚕ	Ꚕ	# A695
 	Ꚗ	ꚗ		Ꚗ	# A696
 	ꚗ	ꚗ	Ꚗ	Ꚗ	# A697
+	Ꚙ	ꚙ		Ꚙ	# A698
+	ꚙ	ꚙ	Ꚙ	Ꚙ	# A699
+	Ꚛ	ꚛ		Ꚛ	# A69A
+	ꚛ	ꚛ	Ꚛ	Ꚛ	# A69B
 	Ꜣ	ꜣ		Ꜣ	# A722
 	ꜣ	ꜣ	Ꜣ	Ꜣ	# A723
 	Ꜥ	ꜥ		Ꜥ	# A724
@@ -2175,6 +2188,18 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	ꞑ	ꞑ	Ꞑ	Ꞑ	# A791
 	Ꞓ	ꞓ		Ꞓ	# A792
 	ꞓ	ꞓ	Ꞓ	Ꞓ	# A793
+	ꞔ	ꞔ			# A794
+	ꞕ	ꞕ			# A795
+	Ꞗ	ꞗ		Ꞗ	# A796
+	ꞗ	ꞗ	Ꞗ	Ꞗ	# A797
+	Ꞙ	ꞙ		Ꞙ	# A798
+	ꞙ	ꞙ	Ꞙ	Ꞙ	# A799
+	Ꞛ	ꞛ		Ꞛ	# A79A
+	ꞛ	ꞛ	Ꞛ	Ꞛ	# A79B
+	Ꞝ	ꞝ		Ꞝ	# A79C
+	ꞝ	ꞝ	Ꞝ	Ꞝ	# A79D
+	Ꞟ	ꞟ		Ꞟ	# A79E
+	ꞟ	ꞟ	Ꞟ	Ꞟ	# A79F
 	Ꞡ	ꞡ		Ꞡ	# A7A0
 	ꞡ	ꞡ	Ꞡ	Ꞡ	# A7A1
 	Ꞣ	ꞣ		Ꞣ	# A7A2
@@ -2186,7 +2211,57 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	Ꞩ	ꞩ		Ꞩ	# A7A8
 	ꞩ	ꞩ	Ꞩ	Ꞩ	# A7A9
 	Ɦ	ɦ		Ɦ	# A7AA
+	Ɜ	ɜ		Ɜ	# A7AB
+	Ɡ	ɡ		Ɡ	# A7AC
+	Ɬ	ɬ		Ɬ	# A7AD
+	Ʞ	ʞ		Ʞ	# A7B0
+	Ʇ	ʇ		Ʇ	# A7B1
 	ꟺ	ꟺ			# A7FA
+	ꬰ	ꬰ			# AB30
+	ꬱ	ꬱ			# AB31
+	ꬲ	ꬲ			# AB32
+	ꬳ	ꬳ			# AB33
+	ꬴ	ꬴ			# AB34
+	ꬵ	ꬵ			# AB35
+	ꬶ	ꬶ			# AB36
+	ꬷ	ꬷ			# AB37
+	ꬸ	ꬸ			# AB38
+	ꬹ	ꬹ			# AB39
+	ꬺ	ꬺ			# AB3A
+	ꬻ	ꬻ			# AB3B
+	ꬼ	ꬼ			# AB3C
+	ꬽ	ꬽ			# AB3D
+	ꬾ	ꬾ			# AB3E
+	ꬿ	ꬿ			# AB3F
+	ꭀ	ꭀ			# AB40
+	ꭁ	ꭁ			# AB41
+	ꭂ	ꭂ			# AB42
+	ꭃ	ꭃ			# AB43
+	ꭄ	ꭄ			# AB44
+	ꭅ	ꭅ			# AB45
+	ꭆ	ꭆ			# AB46
+	ꭇ	ꭇ			# AB47
+	ꭈ	ꭈ			# AB48
+	ꭉ	ꭉ			# AB49
+	ꭊ	ꭊ			# AB4A
+	ꭋ	ꭋ			# AB4B
+	ꭌ	ꭌ			# AB4C
+	ꭍ	ꭍ			# AB4D
+	ꭎ	ꭎ			# AB4E
+	ꭏ	ꭏ			# AB4F
+	ꭐ	ꭐ			# AB50
+	ꭑ	ꭑ			# AB51
+	ꭒ	ꭒ			# AB52
+	ꭓ	ꭓ			# AB53
+	ꭔ	ꭔ			# AB54
+	ꭕ	ꭕ			# AB55
+	ꭖ	ꭖ			# AB56
+	ꭗ	ꭗ			# AB57
+	ꭘ	ꭘ			# AB58
+	ꭙ	ꭙ			# AB59
+	ꭚ	ꭚ			# AB5A
+	ꭤ	ꭤ			# AB64
+	ꭥ	ꭥ			# AB65
 	ﬀ	ﬀ	Ff	FF	# FB00
 	ﬁ	ﬁ	Fi	FI	# FB01
 	ﬂ	ﬂ	Fl	FL	# FB02
@@ -2331,6 +2406,70 @@ lt_LT.UTF-8	Į́	į̇́	Į́	Į́	 # LATIN CAPITAL LETTER I WITH OGONEK (with ac
 	𐑍	𐑍	𐐥	𐐥	# 1044D
 	𐑎	𐑎	𐐦	𐐦	# 1044E
 	𐑏	𐑏	𐐧	𐐧	# 1044F
+	𑢠	𑣀		𑢠	# 118A0
+	𑢡	𑣁		𑢡	# 118A1
+	𑢢	𑣂		𑢢	# 118A2
+	𑢣	𑣃		𑢣	# 118A3
+	𑢤	𑣄		𑢤	# 118A4
+	𑢥	𑣅		𑢥	# 118A5
+	𑢦	𑣆		𑢦	# 118A6
+	𑢧	𑣇		𑢧	# 118A7
+	𑢨	𑣈		𑢨	# 118A8
+	𑢩	𑣉		𑢩	# 118A9
+	𑢪	𑣊		𑢪	# 118AA
+	𑢫	𑣋		𑢫	# 118AB
+	𑢬	𑣌		𑢬	# 118AC
+	𑢭	𑣍		𑢭	# 118AD
+	𑢮	𑣎		𑢮	# 118AE
+	𑢯	𑣏		𑢯	# 118AF
+	𑢰	𑣐		𑢰	# 118B0
+	𑢱	𑣑		𑢱	# 118B1
+	𑢲	𑣒		𑢲	# 118B2
+	𑢳	𑣓		𑢳	# 118B3
+	𑢴	𑣔		𑢴	# 118B4
+	𑢵	𑣕		𑢵	# 118B5
+	𑢶	𑣖		𑢶	# 118B6
+	𑢷	𑣗		𑢷	# 118B7
+	𑢸	𑣘		𑢸	# 118B8
+	𑢹	𑣙		𑢹	# 118B9
+	𑢺	𑣚		𑢺	# 118BA
+	𑢻	𑣛		𑢻	# 118BB
+	𑢼	𑣜		𑢼	# 118BC
+	𑢽	𑣝		𑢽	# 118BD
+	𑢾	𑣞		𑢾	# 118BE
+	𑢿	𑣟		𑢿	# 118BF
+	𑣀	𑣀	𑢠	𑢠	# 118C0
+	𑣁	𑣁	𑢡	𑢡	# 118C1
+	𑣂	𑣂	𑢢	𑢢	# 118C2
+	𑣃	𑣃	𑢣	𑢣	# 118C3
+	𑣄	𑣄	𑢤	𑢤	# 118C4
+	𑣅	𑣅	𑢥	𑢥	# 118C5
+	𑣆	𑣆	𑢦	𑢦	# 118C6
+	𑣇	𑣇	𑢧	𑢧	# 118C7
+	𑣈	𑣈	𑢨	𑢨	# 118C8
+	𑣉	𑣉	𑢩	𑢩	# 118C9
+	𑣊	𑣊	𑢪	𑢪	# 118CA
+	𑣋	𑣋	𑢫	𑢫	# 118CB
+	𑣌	𑣌	𑢬	𑢬	# 118CC
+	𑣍	𑣍	𑢭	𑢭	# 118CD
+	𑣎	𑣎	𑢮	𑢮	# 118CE
+	𑣏	𑣏	𑢯	𑢯	# 118CF
+	𑣐	𑣐	𑢰	𑢰	# 118D0
+	𑣑	𑣑	𑢱	𑢱	# 118D1
+	𑣒	𑣒	𑢲	𑢲	# 118D2
+	𑣓	𑣓	𑢳	𑢳	# 118D3
+	𑣔	𑣔	𑢴	𑢴	# 118D4
+	𑣕	𑣕	𑢵	𑢵	# 118D5
+	𑣖	𑣖	𑢶	𑢶	# 118D6
+	𑣗	𑣗	𑢷	𑢷	# 118D7
+	𑣘	𑣘	𑢸	𑢸	# 118D8
+	𑣙	𑣙	𑢹	𑢹	# 118D9
+	𑣚	𑣚	𑢺	𑢺	# 118DA
+	𑣛	𑣛	𑢻	𑢻	# 118DB
+	𑣜	𑣜	𑢼	𑢼	# 118DC
+	𑣝	𑣝	𑢽	𑢽	# 118DD
+	𑣞	𑣞	𑢾	𑢾	# 118DE
+	𑣟	𑣟	𑢿	𑢿	# 118DF
 	𝐀			𝐀	# 1D400
 	𝐁			𝐁	# 1D401
 	𝐂			𝐂	# 1D402
