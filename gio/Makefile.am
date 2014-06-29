@@ -144,13 +144,6 @@ win32_settings_sources = \
 settings_sources += $(win32_settings_sources)
 endif
 
-if OS_COCOA
-cocoa_settings_sources = \
-	gnextstepsettingsbackend.c
-
-settings_sources += $(cocoa_settings_sources)
-endif
-
 application_headers = \
 	gapplication.h			\
 	gapplicationcommandline.h	\
@@ -619,9 +612,17 @@ libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	-export-dynamic $(no_undefined)
 
 if OS_COCOA
-# This is dumb.  The ObjC source file should be properly named .m
-libgio_2_0_la_CFLAGS += -xobjective-c
-libgio_2_0_la_LDFLAGS += -Wl,-framework,Foundation -Wl,-framework,AppKit
+# Let's avoid polluting the CFLAGS of libgio with -xobjective-c
+# We cannot simply rename the ObjC files to .m because it plays
+# tricks with Automake. For further reference, see:
+# https://bugzilla.gnome.org/show_bug.cgi?id=672777
+libgio_objc_2_0_la_CFLAGS = $(libgio_2_0_la_CFLAGS) -xobjective-c
+libgio_objc_2_0_la_CPPFLAGS = $(libgio_2_0_la_CPPFLAGS)
+libgio_objc_2_0_la_LDFLAGS = $(libgio_2_0_la_LDFLAGS) -Wl,-framework,Foundation -Wl,-framework,AppKit
+libgio_objc_2_0_la_SOURCES = gnextstepsettingsbackend.c
+
+noinst_LTLIBRARIES += libgio-objc-2.0.la
+libgio_2_0_la_LIBADD += libgio-objc-2.0.la
 endif
 
 if HAVE_LIBMOUNT
@@ -629,7 +630,7 @@ libgio_2_0_la_CFLAGS += $(LIBMOUNT_CFLAGS)
 libgio_2_0_la_LIBADD += $(LIBMOUNT_LIBS)
 endif
 
-libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
+EXTRA_libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
 
 gio-win32-res.o: gio.rc
 	$(WINDRES) gio.rc $@
