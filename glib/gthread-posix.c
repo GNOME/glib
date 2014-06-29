@@ -1289,6 +1289,11 @@ g_mutex_init (GMutex *mutex)
 void
 g_mutex_clear (GMutex *mutex)
 {
+  if G_UNLIKELY (mutex->i[0] != 0)
+    {
+      fprintf (stderr, "g_mutex_clear() called on uninitialised or locked mutex\n");
+      abort ();
+    }
 }
 
 static void __attribute__((noinline))
@@ -1304,11 +1309,18 @@ g_mutex_lock_slowpath (GMutex *mutex)
 }
 
 static void __attribute__((noinline))
-g_mutex_unlock_slowpath (GMutex *mutex)
+g_mutex_unlock_slowpath (GMutex *mutex,
+                         guint   prev)
 {
   /* We seem to get better code for the uncontended case by splitting
-   * out this call...
+   * this out...
    */
+  if G_UNLIKELY (prev == 0)
+    {
+      fprintf (stderr, "Attempt to unlock mutex that was not locked\n");
+      abort ();
+    }
+
   syscall (__NR_futex, &mutex->i[0], (gsize) FUTEX_WAKE, (gsize) 1, NULL);
 }
 
@@ -1323,9 +1335,13 @@ g_mutex_lock (GMutex *mutex)
 void
 g_mutex_unlock (GMutex *mutex)
 {
+  guint prev;
+
+  prev = exchange_release (&mutex->i[0], 0);
+
   /* 1-> 0 and we're done.  Anything else and we need to signal... */
-  if G_UNLIKELY (exchange_release (&mutex->i[0], 0) != 1)
-    g_mutex_unlock_slowpath (mutex);
+  if G_UNLIKELY (prev != 1)
+    g_mutex_unlock_slowpath (mutex, prev);
 }
 
 gboolean
