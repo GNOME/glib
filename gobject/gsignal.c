@@ -2940,7 +2940,9 @@ g_signal_has_handler_pending (gpointer instance,
  *  is being emitted on. The rest are any arguments to be passed to the signal.
  * @signal_id: the signal id
  * @detail: the detail
- * @return_value: Location to store the return value of the signal emission.
+ * @return_value: (inout) (optional): Location to
+ * store the return value of the signal emission. This must be provided if the
+ * specified signal returns a value, but may be ignored otherwise.
  *
  * Emits a signal.
  *
