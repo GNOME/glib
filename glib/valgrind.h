@@ -160,6 +160,16 @@
 #  endif
 #endif
 
+/* XXX: Unfortunately x64 Visual C++ does not suport inline asms,
+ * so disable the use of valgrind's inline asm's for x64 Visual C++
+ * builds, so that x64 Visual C++ builds of GLib can be maintained
+ */
+#if defined (PLAT_amd64_win64) && defined (_MSC_VER)
+#  if !defined(NVALGRIND)
+#    define NVALGRIND 1
+#  endif
+#endif
+
 
 /* ------------------------------------------------------------------ */
 /* ARCHITECTURE SPECIFICS for SPECIAL INSTRUCTIONS.  There is nothing */
