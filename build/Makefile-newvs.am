@@ -26,7 +26,7 @@ create_vcxproj:
 create_props:
 	for F in `(cd $(top_builddir)/build/win32/vs10 && ls *.props)`; do \
 		case $$F in \
-			*)	cat $(top_builddir)/build/win32/vs10/$$F | sed 's/10/$(MSVC_VER)/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$$F \
+			*)	cat $(top_builddir)/build/win32/vs10/$$F | sed 's/<VSVer>10<\/VSVer>/<VSVer>$(MSVC_VER)<\/VSVer>/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$$F \
 			;; \
 		esac; \
 	done
