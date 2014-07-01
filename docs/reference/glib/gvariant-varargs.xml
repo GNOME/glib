@@ -984,7 +984,7 @@ data = g_variant_new_parsed ("(%o, {'brightness': {'value': <%i>, 'max': <%i>}})
 
    <para>
     The '<literal>^</literal>' character currently supports conversion to and from bytestrings or to and from arrays
-    of strings or bytestrings.  It has a number of forms.
+    of strings or bytestrings.  It does not support byte arrays.  It has a number of forms.
    </para>
 
    <para>
