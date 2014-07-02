@@ -46,7 +46,7 @@
 /* DBus Interface definition {{{1 */
 
 /* For documentation of these interfaces, see
- * https://live.gnome.org/GApplication/DBusAPI
+ * https://wiki.gnome.org/Projects/GLib/GApplication/DBusAPI
  */
 static const gchar org_gtk_Application_xml[] =
   "<node>"

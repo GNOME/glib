@@ -85,7 +85,7 @@ g_action_group_describe_action (GActionGroup *action_group,
  * It's also a lot easier to read. :)
  *
  * For documentation of this interface, see
- * http://live.gnome.org/GTK+/GApplication-dbus-apis
+ * https://wiki.gnome.org/Projects/GLib/GApplication/DBusAPI
  */
 const char org_gtk_Actions_xml[] =
   "<node>"

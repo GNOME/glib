@@ -5,7 +5,7 @@ the use of the library.
 Please refer to the following GNOME Live! page for more detailed
 instructions on building GLib and its dependencies with Visual C++:
 
-https://live.gnome.org/GTK%2B/Win32/MSVCCompilationOfGTKStack
+https://wiki.gnome.org/Projects/GTK%2B/Win32/MSVCCompilationOfGTKStack
 
 This VS10 solution and the projects it includes are intented to be used
 in a GLib source tree unpacked from a tarball. In a git checkout you

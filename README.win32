@@ -174,9 +174,9 @@ Building with Visual Studio
 ===========================
 
 A more detailed outline of building GLib with its dependencies can
-now be found in GNOME Live!:
+now be found on the GNOME wiki:
 
-https://live.gnome.org/GTK%2B/Win32/MSVCCompilationOfGTKStack
+https://wiki.gnome.org/Projects/GTK%2B/Win32/MSVCCompilationOfGTKStack
 
 Please do not build GLib in paths that contain spaces in them, as
 this may cause problems during compilation and during usage of the
