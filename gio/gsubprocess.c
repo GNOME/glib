@@ -941,6 +941,9 @@ g_subprocess_sync_complete (GAsyncResult **result)
  * This function does not fail in the case of the subprocess having
  * abnormal termination.  See g_subprocess_wait_check() for that.
  *
+ * Cancelling @cancellable doesn't kill the subprocess.  Call
+ * g_subprocess_force_exit() if it is desirable.
+ *
  * Returns: %TRUE on success, %FALSE if @cancellable was cancelled
  *
  * Since: 2.40
