@@ -141,6 +141,9 @@ g_input_stream_init (GInputStream *stream)
  * can happen e.g. near the end of a file. Zero is returned on end of file
  * (or if @count is zero),  but never otherwise.
  *
+ * The returned @buffer is not a nul-terminated string, it can contain nul bytes
+ * at any position, and this function doesn't nul-terminate the @buffer.
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
