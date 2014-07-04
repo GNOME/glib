@@ -2283,12 +2283,14 @@ append_value_to_blob (GVariant            *value,
 
     case 'a': /* G_VARIANT_TYPE_ARRAY */
       {
+        const GVariantType *element_type;
         GVariant *item;
         GVariantIter iter;
         goffset array_len_offset;
         goffset array_payload_begin_offset;
         goffset cur_offset;
         gsize array_len;
+        guint fixed_size;
 
         padding_added = ensure_output_padding (mbuf, 4);
         if (value != NULL)
@@ -2312,16 +2314,33 @@ append_value_to_blob (GVariant            *value,
              */
             array_payload_begin_offset = mbuf->valid_len;
 
+            element_type = g_variant_type_element (type);
+            fixed_size = get_type_fixed_size (element_type);
+
             if (g_variant_n_children (value) == 0)
               {
                 gsize padding_added_for_item;
                 if (!append_value_to_blob (NULL,
-                                           g_variant_type_element (type),
+                                           element_type,
                                            mbuf,
                                            &padding_added_for_item,
                                            error))
                   goto fail;
                 array_payload_begin_offset += padding_added_for_item;
+              }
+            else if (fixed_size != 0)
+              {
+                GVariant *use_value;
+
+                if (g_memory_buffer_is_byteswapped (mbuf))
+                  use_value = g_variant_byteswap (value);
+                else
+                  use_value = g_variant_ref (value);
+
+                ensure_output_padding (mbuf, fixed_size);
+                array_len = g_variant_get_size (use_value);
+                g_memory_buffer_write (mbuf, g_variant_get_data (use_value), array_len);
+                g_variant_unref (use_value);
               }
             else
               {
