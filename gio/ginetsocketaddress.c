@@ -361,7 +361,9 @@ g_inet_socket_address_new_from_string (const char *address,
 
       if (G_UNLIKELY (g_once_init_enter (&hints)))
         {
+          hints_struct.ai_family = AF_UNSPEC;
           hints_struct.ai_socktype = SOCK_STREAM;
+          hints_struct.ai_protocol = 0;
           hints_struct.ai_flags = AI_NUMERICHOST;
           g_once_init_leave (&hints, &hints_struct);
         }
