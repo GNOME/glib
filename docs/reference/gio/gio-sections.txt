@@ -3016,6 +3016,9 @@ g_application_set_inactivity_timeout
 g_application_get_flags
 g_application_set_flags
 <SUBSECTION>
+g_application_get_resource_base_path
+g_application_set_resource_base_path
+<SUBSECTION>
 g_application_get_dbus_connection
 g_application_get_dbus_object_path
 <SUBSECTION>
