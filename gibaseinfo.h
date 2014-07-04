@@ -66,23 +66,49 @@ typedef struct {
 
 #define GI_TYPE_BASE_INFO	(g_base_info_gtype_get_type ())
 
+
+GI_AVAILABLE_IN_ALL
 GType                  g_base_info_gtype_get_type   (void) G_GNUC_CONST;
+
+GI_AVAILABLE_IN_ALL
 GIBaseInfo *           g_base_info_ref              (GIBaseInfo   *info);
+
+GI_AVAILABLE_IN_ALL
 void                   g_base_info_unref            (GIBaseInfo   *info);
+
+GI_AVAILABLE_IN_ALL
 GIInfoType             g_base_info_get_type         (GIBaseInfo   *info);
+
+GI_AVAILABLE_IN_ALL
 const gchar *          g_base_info_get_name         (GIBaseInfo   *info);
+
+GI_AVAILABLE_IN_ALL
 const gchar *          g_base_info_get_namespace    (GIBaseInfo   *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean               g_base_info_is_deprecated    (GIBaseInfo   *info);
+
+GI_AVAILABLE_IN_ALL
 const gchar *          g_base_info_get_attribute    (GIBaseInfo   *info,
                                                      const gchar  *name);
+
+GI_AVAILABLE_IN_ALL
 gboolean               g_base_info_iterate_attributes (GIBaseInfo      *info,
                                                        GIAttributeIter *iterator,
                                                        char           **name,
                                                        char          **value);
+
+GI_AVAILABLE_IN_ALL
 GIBaseInfo *           g_base_info_get_container    (GIBaseInfo   *info);
+
+GI_AVAILABLE_IN_ALL
 GITypelib *             g_base_info_get_typelib      (GIBaseInfo   *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean               g_base_info_equal            (GIBaseInfo   *info1,
                                                      GIBaseInfo   *info2);
+
+GI_AVAILABLE_IN_ALL
 GIBaseInfo *           g_info_new                   (GIInfoType    type,
 						     GIBaseInfo   *container,
 						     GITypelib     *typelib,

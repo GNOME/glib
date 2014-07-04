@@ -40,17 +40,41 @@ G_BEGIN_DECLS
 #define GI_IS_ARG_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ARG)
 
+
+GI_AVAILABLE_IN_ALL
 GIDirection            g_arg_info_get_direction          (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean               g_arg_info_is_return_value        (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean               g_arg_info_is_optional            (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean               g_arg_info_is_caller_allocates    (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean               g_arg_info_may_be_null            (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean               g_arg_info_is_skip                (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GITransfer             g_arg_info_get_ownership_transfer (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIScopeType            g_arg_info_get_scope              (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gint                   g_arg_info_get_closure            (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gint                   g_arg_info_get_destroy            (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GITypeInfo *           g_arg_info_get_type               (GIArgInfo *info);
+
+GI_AVAILABLE_IN_ALL
 void                   g_arg_info_load_type              (GIArgInfo *info,
                                                           GITypeInfo *type);
 G_END_DECLS

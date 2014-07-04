@@ -50,15 +50,29 @@ G_BEGIN_DECLS
 #define GI_IS_VALUE_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VALUE)
 
+
+GI_AVAILABLE_IN_ALL
 gint           g_enum_info_get_n_values      (GIEnumInfo  *info);
+
+GI_AVAILABLE_IN_ALL
 GIValueInfo  * g_enum_info_get_value         (GIEnumInfo  *info,
 					      gint         n);
+
+GI_AVAILABLE_IN_ALL
 gint              g_enum_info_get_n_methods     (GIEnumInfo  *info);
+
+GI_AVAILABLE_IN_ALL
 GIFunctionInfo  * g_enum_info_get_method        (GIEnumInfo  *info,
 						 gint         n);
+
+GI_AVAILABLE_IN_ALL
 GITypeTag      g_enum_info_get_storage_type  (GIEnumInfo  *info);
+
+GI_AVAILABLE_IN_ALL
 const gchar *  g_enum_info_get_error_domain  (GIEnumInfo  *info);
 
+
+GI_AVAILABLE_IN_ALL
 gint64         g_value_info_get_value        (GIValueInfo *info);
 
 G_END_DECLS

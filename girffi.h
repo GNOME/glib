@@ -64,30 +64,38 @@ struct _GIFunctionInvoker {
  */
 typedef GIArgument GIFFIReturnValue;
 
+GI_AVAILABLE_IN_ALL
 ffi_type *    gi_type_tag_get_ffi_type            (GITypeTag type_tag, gboolean is_pointer);
 
+GI_AVAILABLE_IN_ALL
 ffi_type *    g_type_info_get_ffi_type            (GITypeInfo           *info);
 
+GI_AVAILABLE_IN_1_32
 void          gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
                                                      GIFFIReturnValue            *ffi_value,
                                                      GIArgument                  *arg);
 
+GI_AVAILABLE_IN_ALL
 gboolean      g_function_info_prep_invoker        (GIFunctionInfo       *info,
                                                    GIFunctionInvoker    *invoker,
                                                    GError              **error);
 
+GI_AVAILABLE_IN_1_32
 gboolean      g_function_invoker_new_for_address  (gpointer              addr,
                                                    GICallableInfo       *info,
                                                    GIFunctionInvoker    *invoker,
                                                    GError              **error);
 
+GI_AVAILABLE_IN_ALL
 void          g_function_invoker_destroy          (GIFunctionInvoker    *invoker);
 
 
+GI_AVAILABLE_IN_ALL
 ffi_closure * g_callable_info_prepare_closure     (GICallableInfo       *callable_info,
                                                    ffi_cif              *cif,
                                                    GIFFIClosureCallback  callback,
                                                    gpointer              user_data);
+GI_AVAILABLE_IN_ALL
 void          g_callable_info_free_closure        (GICallableInfo       *callable_info,
                                                    ffi_closure          *closure);
 

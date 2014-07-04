@@ -1217,6 +1217,8 @@ DirEntry *g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
 gboolean  g_typelib_matches_gtype_name_prefix (GITypelib *typelib,
 					       const gchar *gtype_name);
 
+
+GI_AVAILABLE_IN_ALL
 void      g_typelib_check_sanity (void);
 
 /**
@@ -1259,6 +1261,8 @@ typedef enum
 
 GQuark g_typelib_error_quark (void);
 
+
+GI_AVAILABLE_IN_ALL
 gboolean g_typelib_validate (GITypelib  *typelib,
 			     GError    **error);
 

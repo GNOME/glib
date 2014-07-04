@@ -40,17 +40,35 @@ G_BEGIN_DECLS
 #define GI_IS_STRUCT_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_STRUCT)
 
+
+GI_AVAILABLE_IN_ALL
 gint             g_struct_info_get_n_fields    (GIStructInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIFieldInfo *    g_struct_info_get_field       (GIStructInfo *info,
 						gint          n);
+
+GI_AVAILABLE_IN_ALL
 gint             g_struct_info_get_n_methods   (GIStructInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIFunctionInfo * g_struct_info_get_method      (GIStructInfo *info,
 						gint          n);
+
+GI_AVAILABLE_IN_ALL
 GIFunctionInfo * g_struct_info_find_method     (GIStructInfo *info,
 						const gchar  *name);
+
+GI_AVAILABLE_IN_ALL
 gsize            g_struct_info_get_size        (GIStructInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gsize            g_struct_info_get_alignment   (GIStructInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean         g_struct_info_is_gtype_struct (GIStructInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean         g_struct_info_is_foreign      (GIStructInfo *info);
 
 G_END_DECLS

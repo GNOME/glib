@@ -48,8 +48,13 @@ G_BEGIN_DECLS
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_UNION) || \
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_BOXED))
 
+GI_AVAILABLE_IN_ALL
 const gchar *          g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
+
+GI_AVAILABLE_IN_ALL
 const gchar *          g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GType                  g_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);
 
 G_END_DECLS

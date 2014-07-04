@@ -77,60 +77,126 @@ typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
 #define GI_IS_OBJECT_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_OBJECT)
 
+
+GI_AVAILABLE_IN_ALL
 const gchar *     g_object_info_get_type_name	 (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 const gchar *     g_object_info_get_type_init	 (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean          g_object_info_get_abstract     (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean          g_object_info_get_fundamental  (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIObjectInfo *    g_object_info_get_parent       (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gint              g_object_info_get_n_interfaces (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIInterfaceInfo * g_object_info_get_interface    (GIObjectInfo *info,
 						  gint          n);
+
+GI_AVAILABLE_IN_ALL
 gint              g_object_info_get_n_fields     (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIFieldInfo *     g_object_info_get_field        (GIObjectInfo *info,
 						  gint          n);
+
+GI_AVAILABLE_IN_ALL
 gint              g_object_info_get_n_properties (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIPropertyInfo *  g_object_info_get_property     (GIObjectInfo *info,
 						  gint          n);
+
+GI_AVAILABLE_IN_ALL
 gint              g_object_info_get_n_methods    (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  g_object_info_get_method       (GIObjectInfo *info,
 						  gint          n);
+
+GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  g_object_info_find_method      (GIObjectInfo *info,
 						  const gchar  *name);
 
+
+GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  g_object_info_find_method_using_interfaces (GIObjectInfo  *info,
 							      const gchar   *name,
 							      GIObjectInfo **implementor);
 
+
+GI_AVAILABLE_IN_ALL
 gint              g_object_info_get_n_signals    (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GISignalInfo *    g_object_info_get_signal       (GIObjectInfo *info,
 						  gint          n);
 
+
+GI_AVAILABLE_IN_ALL
 GISignalInfo *    g_object_info_find_signal      (GIObjectInfo *info,
 						  const gchar  *name);
 
+
+GI_AVAILABLE_IN_ALL
 gint              g_object_info_get_n_vfuncs     (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIVFuncInfo *     g_object_info_get_vfunc        (GIObjectInfo *info,
 						  gint          n);
+
+GI_AVAILABLE_IN_ALL
 GIVFuncInfo *     g_object_info_find_vfunc       (GIObjectInfo *info,
                                                   const gchar  *name);
+
+GI_AVAILABLE_IN_1_32
 GIVFuncInfo *     g_object_info_find_vfunc_using_interfaces (GIObjectInfo  *info,
 								const gchar   *name,
 								GIObjectInfo **implementor);
+
+GI_AVAILABLE_IN_ALL
 gint              g_object_info_get_n_constants  (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIConstantInfo *  g_object_info_get_constant     (GIObjectInfo *info,
 						  gint          n);
+
+GI_AVAILABLE_IN_ALL
 GIStructInfo *    g_object_info_get_class_struct (GIObjectInfo *info);
 
+
+GI_AVAILABLE_IN_ALL
 const char *                 g_object_info_get_ref_function               (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIObjectInfoRefFunction      g_object_info_get_ref_function_pointer       (GIObjectInfo *info);
 
+
+GI_AVAILABLE_IN_ALL
 const char *                 g_object_info_get_unref_function             (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIObjectInfoUnrefFunction    g_object_info_get_unref_function_pointer     (GIObjectInfo *info);
 
+
+GI_AVAILABLE_IN_ALL
 const char *                 g_object_info_get_set_value_function         (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIObjectInfoSetValueFunction g_object_info_get_set_value_function_pointer (GIObjectInfo *info);
 
+
+GI_AVAILABLE_IN_ALL
 const char *                 g_object_info_get_get_value_function         (GIObjectInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIObjectInfoGetValueFunction g_object_info_get_get_value_function_pointer (GIObjectInfo *info);
 
 

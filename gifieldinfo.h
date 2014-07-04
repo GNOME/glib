@@ -41,13 +41,25 @@ G_BEGIN_DECLS
 #define GI_IS_FIELD_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FIELD)
 
+
+GI_AVAILABLE_IN_ALL
 GIFieldInfoFlags       g_field_info_get_flags      (GIFieldInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gint                   g_field_info_get_size       (GIFieldInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gint                   g_field_info_get_offset     (GIFieldInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GITypeInfo *           g_field_info_get_type       (GIFieldInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gboolean               g_field_info_get_field      (GIFieldInfo     *field_info,
 						    gpointer         mem,
 						    GIArgument       *value);
+
+GI_AVAILABLE_IN_ALL
 gboolean               g_field_info_set_field      (GIFieldInfo     *field_info,
 						    gpointer         mem,
 						    const GIArgument *value);

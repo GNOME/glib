@@ -27,6 +27,8 @@
 #error "Only <girepository.h> can be included directly."
 #endif
 
+#include <giversionmacros.h>
+
 G_BEGIN_DECLS
 
 #ifndef __GTK_DOC_IGNORE__

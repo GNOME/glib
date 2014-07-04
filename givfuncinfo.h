@@ -40,13 +40,24 @@ G_BEGIN_DECLS
 #define GI_IS_VFUNC_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VFUNC)
 
+GI_AVAILABLE_IN_ALL
 GIVFuncInfoFlags  g_vfunc_info_get_flags   (GIVFuncInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gint              g_vfunc_info_get_offset  (GIVFuncInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GISignalInfo *    g_vfunc_info_get_signal  (GIVFuncInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIFunctionInfo *  g_vfunc_info_get_invoker (GIVFuncInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gpointer          g_vfunc_info_get_address (GIVFuncInfo *info,
                                             GType        implementor_gtype,
                                             GError     **error);
+
+GI_AVAILABLE_IN_ALL
 gboolean          g_vfunc_info_invoke      (GIVFuncInfo      *info,
                                             GType             implementor,
                                             const GIArgument *in_args,

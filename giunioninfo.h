@@ -40,20 +40,41 @@ G_BEGIN_DECLS
 #define GI_IS_UNION_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_UNION)
 
+GI_AVAILABLE_IN_ALL
 gint             g_union_info_get_n_fields             (GIUnionInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIFieldInfo *    g_union_info_get_field                (GIUnionInfo *info,
 							gint         n);
+
+GI_AVAILABLE_IN_ALL
 gint             g_union_info_get_n_methods            (GIUnionInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIFunctionInfo * g_union_info_get_method               (GIUnionInfo *info,
 							gint         n);
+
+GI_AVAILABLE_IN_ALL
 gboolean         g_union_info_is_discriminated         (GIUnionInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gint             g_union_info_get_discriminator_offset (GIUnionInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GITypeInfo *     g_union_info_get_discriminator_type   (GIUnionInfo *info);
+
+GI_AVAILABLE_IN_ALL
 GIConstantInfo * g_union_info_get_discriminator        (GIUnionInfo *info,
 							gint         n);
+
+GI_AVAILABLE_IN_ALL
 GIFunctionInfo * g_union_info_find_method              (GIUnionInfo *info,
 							const gchar *name);
+
+GI_AVAILABLE_IN_ALL
 gsize            g_union_info_get_size                 (GIUnionInfo *info);
+
+GI_AVAILABLE_IN_ALL
 gsize            g_union_info_get_alignment            (GIUnionInfo *info);
 
 G_END_DECLS
