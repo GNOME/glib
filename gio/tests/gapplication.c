@@ -672,6 +672,39 @@ test_local_command_line (void)
   g_free (binpath);
 }
 
+static void
+test_resource_path (void)
+{
+  GApplication *app;
+
+  app = g_application_new ("x.y.z", 0);
+  g_assert_cmpstr (g_application_get_resource_base_path (app), ==, "/x/y/z");
+
+  /* this should not change anything */
+  g_application_set_application_id (app, "a.b.c");
+  g_assert_cmpstr (g_application_get_resource_base_path (app), ==, "/x/y/z");
+
+  /* but this should... */
+  g_application_set_resource_base_path (app, "/x");
+  g_assert_cmpstr (g_application_get_resource_base_path (app), ==, "/x");
+
+  /* ... and this */
+  g_application_set_resource_base_path (app, NULL);
+  g_assert_cmpstr (g_application_get_resource_base_path (app), ==, NULL);
+
+  g_object_unref (app);
+
+  /* Make sure that overriding at construction time works properly */
+  app = g_object_new (G_TYPE_APPLICATION, "application-id", "x.y.z", "resource-base-path", "/a", NULL);
+  g_assert_cmpstr (g_application_get_resource_base_path (app), ==, "/a");
+  g_object_unref (app);
+
+  /* ... particularly if we override to NULL */
+  app = g_object_new (G_TYPE_APPLICATION, "application-id", "x.y.z", "resource-base-path", NULL, NULL);
+  g_assert_cmpstr (g_application_get_resource_base_path (app), ==, NULL);
+  g_object_unref (app);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -690,6 +723,7 @@ main (int argc, char **argv)
 /*  g_test_add_func ("/gapplication/remote-actions", test_remote_actions); */
   g_test_add_func ("/gapplication/local-command-line", test_local_command_line);
 /*  g_test_add_func ("/gapplication/remote-command-line", test_remote_command_line); */
+  g_test_add_func ("/gapplication/resource-path", test_resource_path);
 
   return g_test_run ();
 }
