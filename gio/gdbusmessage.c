@@ -64,6 +64,16 @@ struct _GMemoryBuffer
   GDataStreamByteOrder byte_order;
 };
 
+static gboolean
+g_memory_buffer_is_byteswapped (GMemoryBuffer *mbuf)
+{
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+  return mbuf->byte_order == G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
+#else
+  return mbuf->byte_order == G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN;
+#endif
+}
+
 static guchar
 g_memory_buffer_read_byte (GMemoryBuffer  *mbuf)
 {
@@ -85,18 +95,10 @@ g_memory_buffer_read_int16 (GMemoryBuffer  *mbuf)
 
   memcpy (&v, mbuf->data + mbuf->pos, 2);
   mbuf->pos += 2;
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      v = GINT16_FROM_BE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      v = GINT16_FROM_LE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+
+  if (g_memory_buffer_is_byteswapped (mbuf))
+    v = GUINT16_SWAP_LE_BE (v);
+
   return v;
 }
 
@@ -113,18 +115,10 @@ g_memory_buffer_read_uint16 (GMemoryBuffer  *mbuf)
 
   memcpy (&v, mbuf->data + mbuf->pos, 2);
   mbuf->pos += 2;
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      v = GINT16_FROM_BE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      v = GINT16_FROM_LE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+
+  if (g_memory_buffer_is_byteswapped (mbuf))
+    v = GUINT16_SWAP_LE_BE (v);
+
   return v;
 }
 
@@ -141,18 +135,10 @@ g_memory_buffer_read_int32 (GMemoryBuffer  *mbuf)
 
   memcpy (&v, mbuf->data + mbuf->pos, 4);
   mbuf->pos += 4;
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      v = GINT32_FROM_BE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      v = GINT32_FROM_LE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+
+  if (g_memory_buffer_is_byteswapped (mbuf))
+    v = GUINT32_SWAP_LE_BE (v);
+
   return v;
 }
 
@@ -169,18 +155,10 @@ g_memory_buffer_read_uint32 (GMemoryBuffer  *mbuf)
 
   memcpy (&v, mbuf->data + mbuf->pos, 4);
   mbuf->pos += 4;
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      v = GUINT32_FROM_BE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      v = GUINT32_FROM_LE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+
+  if (g_memory_buffer_is_byteswapped (mbuf))
+    v = GUINT32_SWAP_LE_BE (v);
+
   return v;
 }
 
@@ -197,18 +175,10 @@ g_memory_buffer_read_int64 (GMemoryBuffer  *mbuf)
 
   memcpy (&v, mbuf->data + mbuf->pos, 8);
   mbuf->pos += 8;
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      v = GINT64_FROM_BE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      v = GINT64_FROM_LE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-    default:
-      break;
-    }
+
+  if (g_memory_buffer_is_byteswapped (mbuf))
+    v = GUINT64_SWAP_LE_BE (v);
+
   return v;
 }
 
@@ -225,19 +195,11 @@ g_memory_buffer_read_uint64 (GMemoryBuffer  *mbuf)
 
   memcpy (&v, mbuf->data + mbuf->pos, 8);
   mbuf->pos += 8;
-  switch (mbuf->byte_order)
-    {
-    case G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN:
-      v = GUINT64_FROM_BE (v);
-      break;
-    case G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN:
-      v = GUINT64_FROM_LE (v);
-      break;
-	case G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN:
-	default:
-	  break;
-	}
-      return v;
+
+  if (g_memory_buffer_is_byteswapped (mbuf))
+    v = GUINT64_SWAP_LE_BE (v);
+
+  return v;
 }
 
 #define MIN_ARRAY_SIZE  128
