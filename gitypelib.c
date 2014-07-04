@@ -20,12 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
 #include <stdlib.h>
 #include <string.h>
 
 #include <glib.h>
 
-#include "config.h"
 #include "gitypelib-internal.h"
 
 typedef struct {

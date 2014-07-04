@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -29,7 +31,6 @@
 #include "girmodule.h"
 #include "girnode.h"
 #include "gitypelib-internal.h"
-#include "config.h"
 
 /* This is a "major" version in the sense that it's only bumped
  * for incompatible changes.
