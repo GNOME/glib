@@ -1346,7 +1346,7 @@ read_string (GMemoryBuffer  *mbuf,
   gchar *str;
   const gchar *end_valid;
 
-  if (mbuf->pos + len >= mbuf->valid_len || mbuf->pos + len < mbuf->pos)
+  if G_UNLIKELY (mbuf->pos + len >= mbuf->valid_len || mbuf->pos + len < mbuf->pos)
     {
       mbuf->pos = mbuf->valid_len;
       /* G_GSIZE_FORMAT doesn't work with gettext, so we use %lu */
@@ -1362,7 +1362,7 @@ read_string (GMemoryBuffer  *mbuf,
       return NULL;
     }
 
-  if (mbuf->data[mbuf->pos + len] != '\0')
+  if G_UNLIKELY (mbuf->data[mbuf->pos + len] != '\0')
     {
       str = g_strndup (mbuf->data + mbuf->pos, len);
       g_set_error (error,
@@ -1378,7 +1378,7 @@ read_string (GMemoryBuffer  *mbuf,
   str = mbuf->data + mbuf->pos;
   mbuf->pos += len + 1;
 
-  if (!g_utf8_validate (str, -1, &end_valid))
+  if G_UNLIKELY (!g_utf8_validate (str, -1, &end_valid))
     {
       gint offset;
       gchar *valid_str;
@@ -1406,7 +1406,7 @@ read_bytes (GMemoryBuffer  *mbuf,
 {
   gconstpointer result;
 
-  if (mbuf->pos + len > mbuf->valid_len || mbuf->pos + len < mbuf->pos)
+  if G_UNLIKELY (mbuf->pos + len > mbuf->valid_len || mbuf->pos + len < mbuf->pos)
     {
       mbuf->pos = mbuf->valid_len;
       /* G_GSIZE_FORMAT doesn't work with gettext, so we use %lu */
