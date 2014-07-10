@@ -3321,7 +3321,7 @@ g_object_dup_qdata (GObject        *object,
  * or may not include using @old_destroy as sometimes replacement
  * should not destroy the object in the normal way.
  *
- * Return: %TRUE if the existing value for @quark was replaced
+ * Returns: %TRUE if the existing value for @quark was replaced
  *  by @newval, %FALSE otherwise.
  *
  * Since: 2.34
@@ -3530,7 +3530,7 @@ g_object_dup_data (GObject        *object,
  * or may not include using @old_destroy as sometimes replacement
  * should not destroy the object in the normal way.
  *
- * Return: %TRUE if the existing value for @key was replaced
+ * Returns: %TRUE if the existing value for @key was replaced
  *  by @newval, %FALSE otherwise.
  *
  * Since: 2.34
