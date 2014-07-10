@@ -204,7 +204,8 @@ g_dbus_object_manager_client_finalize (GObject *object)
                                             manager);
       g_object_unref (manager->priv->control_proxy);
     }
-  g_object_unref (manager->priv->connection);
+  if (manager->priv->connection != NULL)
+    g_object_unref (manager->priv->connection);
   g_free (manager->priv->object_path);
   g_free (manager->priv->name);
   g_free (manager->priv->name_owner);
