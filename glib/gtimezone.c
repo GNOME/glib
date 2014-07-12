@@ -1699,7 +1699,7 @@ g_time_zone_adjust_time (GTimeZone *tz,
  * If @type is %G_TIME_TYPE_UNIVERSAL then this function will always
  * succeed (since universal time is monotonic and continuous).
  *
- * Otherwise @time_ is treated is local time.  The distinction between
+ * Otherwise @time_ is treated as local time.  The distinction between
  * %G_TIME_TYPE_STANDARD and %G_TIME_TYPE_DAYLIGHT is ignored except in
  * the case that the given @time_ is ambiguous.  In Toronto, for example,
  * 01:30 on November 7th 2010 occurred twice (once inside of daylight

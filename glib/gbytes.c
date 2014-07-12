@@ -346,7 +346,7 @@ g_bytes_equal (gconstpointer bytes1,
  *
  * Creates an integer hash code for the byte data in the #GBytes.
  *
- * This function can be passed to g_hash_table_new() as the @key_equal_func
+ * This function can be passed to g_hash_table_new() as the @key_hash_func
  * parameter, when using non-%NULL #GBytes pointers as keys in a #GHashTable.
  *
  * Returns: a hash value corresponding to the key.
