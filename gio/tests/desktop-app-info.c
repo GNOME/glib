@@ -182,11 +182,16 @@ test_fallback (void)
   app = g_list_nth_data (recomm, 0);
   g_assert (g_app_info_equal (info1, app));
 
-  /* and that Test2 is the first fallback */
+  /* and that Test2 is among the fallback apps */
   fallback = g_app_info_get_fallback_for_type ("text/x-python");
   g_assert (fallback != NULL);
-  app = g_list_nth_data (fallback, 0);
-  g_assert (g_app_info_equal (info2, app));
+  for (l = fallback; l; l = l->next)
+    {
+      app = l->data;
+      if (g_app_info_equal (info2, app))
+        break;
+    }
+  g_assert_cmpstr (g_app_info_get_name (app), ==, "Test2");
 
   /* check that recomm + fallback = all applications */
   list = g_list_concat (g_list_copy (recomm), g_list_copy (fallback));
