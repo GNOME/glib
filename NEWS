@@ -1,3 +1,47 @@
+Overview of changes in GLib 2.41.2
+==================================
+
+* The Unicode support has been updated to version 7.0
+  of the Unicode standard
+
+* GNotification now supports priorities for notifications
+
+* GCredentials has gained NetBSD support
+
+* GMutex now uses a faster, native implementation on Linux
+
+* Bugs fixed:
+ 699132 Pluggable event loop backends
+ 720708 g_assert_warning(): number of arguments doesn't match for...
+ 722092 Add GtkApplication resources support
+ 724986 Change gio/data-to-c.pl to /usr/bin/env perl.
+ 727974 Fix up failure-to-see-expected-message logging
+ 728256 gcredentials: add NetBSD support
+ 728401 GDateTime: Add guards to g_date_time_new()
+ 729825 Formatting of g_alloca documentation
+ 729914 instead of DEBUG_CODE and IF_DEBUG, provide a common macro...
+ 730293 clang++-3.4: error: 'register' storage class specifier is ...
+ 731339 giochannel: avoid setting uninitialised length
+ 731424 #ifdef spaghetti for load_user_special_dirs() implementations
+ 731623 GNotification: add support for a priority setting
+ 731929 update tables to unicode 7.0.0
+ 731950 gvalue: New g_value_from_instance
+ 731986 GLib: implement GMutex natively on Linux
+ 732184 GObject: warn on use of deprecated properties
+ 732357 Docs: various fixes and improvements
+ 732429 GActionEntry: improve documentation
+ 732465 Fix build on x64 Visual C++ builds
+ 732704 Docs: various fixes and improvements
+ 732739 ginetsocketaddress: Explicitly initialise flags for getaddr...
+ 732754 GDBusMessage: optimise (de)serialisation of fixed arrays
+ 732984 g_object_ref(NULL) in g_dbus_object_manager_client_finalize
+ 733084 Typos in g_bytes_hash() and g_time_zone_find_interval() docs
+ 733146 spawn helper does not use correctly the parameters 
+
+* Translation updates:
+ Lithuanian
+
+
 Overview of changes in GLib 2.41.1
 ==================================
 
