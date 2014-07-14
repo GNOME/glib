@@ -181,8 +181,7 @@ g_network_address_set_property (GObject      *object,
       break;
 
     case PROP_SCHEME:
-      if (addr->priv->scheme)
-        g_free (addr->priv->scheme);
+      g_free (addr->priv->scheme);
       addr->priv->scheme = g_value_dup_string (value);
       break;
 

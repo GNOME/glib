@@ -350,8 +350,7 @@ g_network_service_set_scheme (GNetworkService *srv,
 {
   g_return_if_fail (G_IS_NETWORK_SERVICE (srv));
 
-  if (srv->priv->scheme)
-    g_free (srv->priv->scheme);
+  g_free (srv->priv->scheme);
   srv->priv->scheme = g_strdup (scheme);
 
   g_object_notify (G_OBJECT (srv), "scheme");

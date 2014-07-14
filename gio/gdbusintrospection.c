@@ -1827,8 +1827,7 @@ g_dbus_node_info_new_for_xml (const gchar  *xml_data,
   g_free (ughret);
 
  out:
-  if (parser != NULL)
-    g_free (parser);
+  g_free (parser);
   if (context != NULL)
     g_markup_parse_context_free (context);
 
