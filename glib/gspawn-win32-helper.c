@@ -64,8 +64,7 @@ write_err_and_exit (gint    fd,
 /* We build gspawn-win32-helper.exe as a Windows GUI application
  * to avoid any temporarily flashing console windows in case
  * the gspawn function is invoked by a GUI program. Thus, no main()
- * but a WinMain(). We do, however, still use argc and argv tucked
- * away in the global __argc and __argv by the C runtime startup code.
+ * but a WinMain().
  */
 
 /* Info peeked from mingw runtime's source code. __wgetmainargs() is a
@@ -211,6 +210,7 @@ main (int ignored_argc, char **ignored_argv)
   gint argv_zero_offset = ARG_PROGRAM;
   wchar_t **new_wargv;
   int argc;
+  char **argv;
   wchar_t **wargv, **wenvp;
   _startupinfo si = { 0 };
   char c;
@@ -225,28 +225,27 @@ main (int ignored_argc, char **ignored_argv)
   _CrtSetReportMode(_CRT_ASSERT, 0);
 #endif
 
-
-  g_assert (__argc >= ARG_COUNT);
-
   /* Fetch the wide-char argument vector */
   __wgetmainargs (&argc, &wargv, &wenvp, 0, &si);
 
-  /* We still have the system codepage args in __argv. We can look
-   * at the first args in which gspawn-win32.c passes us flags and
-   * fd numbers in __argv, as we know those are just ASCII anyway.
-   */
-  g_assert (argc == __argc);
+  g_assert (argc >= ARG_COUNT);
+
+  /* Convert unicode wargs to utf8 */
+  argv = g_new(char *, argc + 1);
+  for (i = 0; i < argc; i++)
+    argv[i] = g_utf16_to_utf8(wargv[i], -1, NULL, NULL, NULL);
+  argv[i] = NULL;
 
   /* argv[ARG_CHILD_ERR_REPORT] is the file descriptor number onto
    * which write error messages.
    */
-  child_err_report_fd = atoi (__argv[ARG_CHILD_ERR_REPORT]);
+  child_err_report_fd = atoi (argv[ARG_CHILD_ERR_REPORT]);
 
   /* Hack to implement G_SPAWN_FILE_AND_ARGV_ZERO. If
    * argv[ARG_CHILD_ERR_REPORT] is suffixed with a '#' it means we get
    * the program to run and its argv[0] separately.
    */
-  if (__argv[ARG_CHILD_ERR_REPORT][strlen (__argv[ARG_CHILD_ERR_REPORT]) - 1] == '#')
+  if (argv[ARG_CHILD_ERR_REPORT][strlen (argv[ARG_CHILD_ERR_REPORT]) - 1] == '#')
     argv_zero_offset++;
 
   /* argv[ARG_HELPER_SYNC] is the file descriptor number we read a
@@ -255,16 +254,16 @@ main (int ignored_argc, char **ignored_argv)
    * duplicate the process handle we sent it. Duplicating a handle
    * from another process works only if that other process exists.
    */
-  helper_sync_fd = atoi (__argv[ARG_HELPER_SYNC]);
+  helper_sync_fd = atoi (argv[ARG_HELPER_SYNC]);
 
   /* argv[ARG_STDIN..ARG_STDERR] are the file descriptor numbers that
    * should be dup2'd to 0, 1 and 2. '-' if the corresponding fd
    * should be left alone, and 'z' if it should be connected to the
    * bit bucket NUL:.
    */
-  if (__argv[ARG_STDIN][0] == '-')
+  if (argv[ARG_STDIN][0] == '-')
     ; /* Nothing */
-  else if (__argv[ARG_STDIN][0] == 'z')
+  else if (argv[ARG_STDIN][0] == 'z')
     {
       fd = open ("NUL:", O_RDONLY);
       if (fd != 0)
@@ -275,7 +274,7 @@ main (int ignored_argc, char **ignored_argv)
     }
   else
     {
-      fd = atoi (__argv[ARG_STDIN]);
+      fd = atoi (argv[ARG_STDIN]);
       if (fd != 0)
 	{
 	  dup2 (fd, 0);
@@ -283,9 +282,9 @@ main (int ignored_argc, char **ignored_argv)
 	}
     }
 
-  if (__argv[ARG_STDOUT][0] == '-')
+  if (argv[ARG_STDOUT][0] == '-')
     ; /* Nothing */
-  else if (__argv[ARG_STDOUT][0] == 'z')
+  else if (argv[ARG_STDOUT][0] == 'z')
     {
       fd = open ("NUL:", O_WRONLY);
       if (fd != 1)
@@ -296,7 +295,7 @@ main (int ignored_argc, char **ignored_argv)
     }
   else
     {
-      fd = atoi (__argv[ARG_STDOUT]);
+      fd = atoi (argv[ARG_STDOUT]);
       if (fd != 1)
 	{
 	  dup2 (fd, 1);
@@ -304,9 +303,9 @@ main (int ignored_argc, char **ignored_argv)
 	}
     }
 
-  if (__argv[ARG_STDERR][0] == '-')
+  if (argv[ARG_STDERR][0] == '-')
     ; /* Nothing */
-  else if (__argv[ARG_STDERR][0] == 'z')
+  else if (argv[ARG_STDERR][0] == 'z')
     {
       fd = open ("NUL:", O_WRONLY);
       if (fd != 2)
@@ -317,7 +316,7 @@ main (int ignored_argc, char **ignored_argv)
     }
   else
     {
-      fd = atoi (__argv[ARG_STDERR]);
+      fd = atoi (argv[ARG_STDERR]);
       if (fd != 2)
 	{
 	  dup2 (fd, 2);
@@ -325,19 +324,19 @@ main (int ignored_argc, char **ignored_argv)
 	}
     }
 
-  /* __argv[ARG_WORKING_DIRECTORY] is the directory in which to run the
+  /* argv[ARG_WORKING_DIRECTORY] is the directory in which to run the
    * process.  If "-", don't change directory.
    */
-  if (__argv[ARG_WORKING_DIRECTORY][0] == '-' &&
-      __argv[ARG_WORKING_DIRECTORY][1] == 0)
+  if (argv[ARG_WORKING_DIRECTORY][0] == '-' &&
+      argv[ARG_WORKING_DIRECTORY][1] == 0)
     ; /* Nothing */
   else if (_wchdir (wargv[ARG_WORKING_DIRECTORY]) < 0)
     write_err_and_exit (child_err_report_fd, CHILD_CHDIR_FAILED);
 
-  /* __argv[ARG_CLOSE_DESCRIPTORS] is "y" if file descriptors from 3
+  /* argv[ARG_CLOSE_DESCRIPTORS] is "y" if file descriptors from 3
    *  upwards should be closed
    */
-  if (__argv[ARG_CLOSE_DESCRIPTORS][0] == 'y')
+  if (argv[ARG_CLOSE_DESCRIPTORS][0] == 'y')
     for (i = 3; i < 1000; i++)	/* FIXME real limit? */
       if (i != child_err_report_fd && i != helper_sync_fd)
         if (_get_osfhandle (i) != -1)
@@ -349,16 +348,16 @@ main (int ignored_argc, char **ignored_argv)
   child_err_report_fd = dup_noninherited (child_err_report_fd, _O_WRONLY);
   helper_sync_fd = dup_noninherited (helper_sync_fd, _O_RDONLY);
 
-  /* __argv[ARG_WAIT] is "w" to wait for the program to exit */
-  if (__argv[ARG_WAIT][0] == 'w')
+  /* argv[ARG_WAIT] is "w" to wait for the program to exit */
+  if (argv[ARG_WAIT][0] == 'w')
     mode = P_WAIT;
   else
     mode = P_NOWAIT;
 
-  /* __argv[ARG_USE_PATH] is "y" to use PATH, otherwise not */
+  /* argv[ARG_USE_PATH] is "y" to use PATH, otherwise not */
 
-  /* __argv[ARG_PROGRAM] is executable file to run,
-   * __argv[argv_zero_offset]... is its argv. argv_zero_offset equals
+  /* argv[ARG_PROGRAM] is executable file to run,
+   * argv[argv_zero_offset]... is its argv. argv_zero_offset equals
    * ARG_PROGRAM unless G_SPAWN_FILE_AND_ARGV_ZERO was used, in which
    * case we have a separate executable name and argv[0].
    */
@@ -368,7 +367,7 @@ main (int ignored_argc, char **ignored_argv)
    */
   protect_wargv (wargv + argv_zero_offset, &new_wargv);
 
-  if (__argv[ARG_USE_PATH][0] == 'y')
+  if (argv[ARG_USE_PATH][0] == 'y')
     handle = _wspawnvp (mode, wargv[ARG_PROGRAM], (const wchar_t **) new_wargv);
   else
     handle = _wspawnv (mode, wargv[ARG_PROGRAM], (const wchar_t **) new_wargv);
@@ -382,6 +381,8 @@ main (int ignored_argc, char **ignored_argv)
   write (child_err_report_fd, &handle, sizeof (handle));
 
   read (helper_sync_fd, &c, 1);
+
+  g_strfreev (argv);
 
   return 0;
 }
