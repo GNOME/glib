@@ -129,11 +129,7 @@ g_socket_service_changed (GSocketListener *listener)
       if (service->priv->outstanding_accept)
 	g_cancellable_cancel (service->priv->cancellable);
       else
-	{
-	  g_socket_listener_accept_async (listener, service->priv->cancellable,
-					  g_socket_service_ready, NULL);
-	  service->priv->outstanding_accept = TRUE;
-	}
+	do_accept (service);
     }
 
   G_UNLOCK (active);
