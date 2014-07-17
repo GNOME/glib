@@ -465,6 +465,9 @@ gboolean
 g_inet_address_mask_equal (GInetAddressMask  *mask,
 			   GInetAddressMask  *mask2)
 {
+  g_return_val_if_fail (G_IS_INET_ADDRESS_MASK (mask), FALSE);
+  g_return_val_if_fail (G_IS_INET_ADDRESS_MASK (mask2), FALSE);
+
   return ((mask->priv->length == mask2->priv->length) &&
 	  g_inet_address_equal (mask->priv->addr, mask2->priv->addr));
 }
