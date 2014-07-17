@@ -101,8 +101,14 @@ g_network_monitor_base_constructed (GObject *object)
       g_object_unref (mask);
 
       mask = g_inet_address_mask_new_from_string ("::/0", NULL);
-      g_network_monitor_base_add_network (monitor, mask);
-      g_object_unref (mask);
+      if (mask)
+        {
+          /* On some environments (for example Windows without IPv6 support
+           * enabled) the string "::/0" can't be processed and causes
+           * g_inet_address_mask_new_from_string to return NULL */
+          g_network_monitor_base_add_network (monitor, mask);
+          g_object_unref (mask);
+        }
     }
 }
 
