@@ -393,6 +393,8 @@ g_inet_address_new_from_string (const gchar *string)
   struct in6_addr in6_addr;
 #endif
 
+  g_return_val_if_fail (string != NULL, NULL);
+
   /* If this GInetAddress is the first networking-related object to be
    * created, then we won't have called g_networking_init() yet at
    * this point.
