@@ -194,7 +194,32 @@ test_match (gconstpointer d)
   match = g_regex_match_full (regex, data->string, data->string_len,
                               data->start_position, data->match_opts2, NULL, NULL);
 
-  g_assert_cmpint (match, ==, data->expected);
+  if (data->expected)
+    {
+      if (!match)
+        g_error ("Regex '%s' (with compile options %u and "
+            "match options %u) should have matched '%.*s' "
+            "(of length %d, at position %d, with match options %u) but did not",
+            data->pattern, data->compile_opts, data->match_opts,
+            data->string_len == -1 ? (int) strlen (data->string) :
+              (int) data->string_len,
+            data->string, (int) data->string_len,
+            data->start_position, data->match_opts2);
+
+      g_assert_cmpint (match, ==, TRUE);
+    }
+  else
+    {
+      if (match)
+        g_error ("Regex '%s' (with compile options %u and "
+            "match options %u) should not have matched '%.*s' "
+            "(of length %d, at position %d, with match options %u) but did",
+            data->pattern, data->compile_opts, data->match_opts,
+            data->string_len == -1 ? (int) strlen (data->string) :
+              (int) data->string_len,
+            data->string, (int) data->string_len,
+            data->start_position, data->match_opts2);
+    }
 
   if (data->string_len == -1 && data->start_position == 0)
     {
@@ -1020,10 +1045,13 @@ test_expand (gconstpointer d)
   GRegex *regex = NULL;
   GMatchInfo *match_info = NULL;
   gchar *res;
+  GError *error = NULL;
 
   if (data->pattern)
     {
-      regex = g_regex_new (data->pattern, data->raw ? G_REGEX_RAW : 0, 0, NULL);
+      regex = g_regex_new (data->pattern, data->raw ? G_REGEX_RAW : 0, 0,
+          &error);
+      g_assert_no_error (error);
       g_regex_match (regex, data->string, 0, &match_info);
     }
 
@@ -1279,7 +1307,38 @@ test_match_all (gconstpointer d)
     g_assert (match_ok);
 
   match_count = g_match_info_get_match_count (match_info);
-  g_assert_cmpint (match_count, ==, g_slist_length (data->expected));
+
+  if (match_count != g_slist_length (data->expected))
+    {
+      g_message ("regex: %s", data->pattern);
+      g_message ("string: %s", data->string);
+      g_message ("matched strings:");
+
+      for (i = 0; i < match_count; i++)
+        {
+          gint start, end;
+          gchar *matched_string;
+
+          matched_string = g_match_info_fetch (match_info, i);
+          g_match_info_fetch_pos (match_info, i, &start, &end);
+          g_message ("%d. %d-%d '%s'", i, start, end, matched_string);
+          g_free (matched_string);
+        }
+
+      g_message ("expected strings:");
+      i = 0;
+
+      for (l_exp = data->expected; l_exp != NULL; l_exp = l_exp->next)
+        {
+          Match *exp = l_exp->data;
+
+          g_message ("%d. %d-%d '%s'", i, exp->start, exp->end, exp->string);
+          i++;
+        }
+
+      g_error ("match_count not as expected: %d != %d",
+          match_count, g_slist_length (data->expected));
+    }
 
   l_exp = data->expected;
   for (i = 0; i < match_count; i++)
