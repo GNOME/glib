@@ -35,6 +35,9 @@
 /* This seems as good a place as any to make static assertions about platform
  * assumptions we make throughout GLib. */
 
+/* We do not support 36-bit bytes or other historical curiosities. */
+G_STATIC_ASSERT (CHAR_BIT == 8);
+
 /* We assume that data pointers are the same size as function pointers... */
 G_STATIC_ASSERT (sizeof (gpointer) == sizeof (GFunc));
 G_STATIC_ASSERT (_g_alignof (gpointer) == _g_alignof (GFunc));

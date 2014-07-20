@@ -2812,6 +2812,7 @@ _______EOF
 
 
 	### this should always be true in a modern C/C++ compiler
+	### and is statically asserted by glib-init.c
 	cat >>$outfile <<_______EOF
 typedef signed char gint8;
 typedef unsigned char guint8;
