@@ -335,6 +335,7 @@ credentials_native_type_check (GCredentialsType  requested_type,
 
 #if G_CREDENTIALS_SUPPORTED
   supported = g_enum_get_value (enum_class, G_CREDENTIALS_NATIVE_TYPE);
+  g_assert (supported);
   g_warning ("g_credentials_%s_native: Trying to %s credentials of type %s "
              "but only %s is supported on this platform.",
              op, op,
