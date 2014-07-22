@@ -753,6 +753,7 @@ g_application_impl_command_line (GApplicationImpl    *impl,
                                               g_variant_new ("(o^aay@a{sv})", object_path, arguments, platform_data),
                                               G_VARIANT_TYPE ("(i)"), 0, G_MAXINT, fd_list, NULL,
                                               g_application_impl_cmdline_done, &data);
+    g_object_unref (fd_list);
   }
 #else
   g_dbus_connection_call (impl->session_bus, impl->bus_name, impl->object_path,
