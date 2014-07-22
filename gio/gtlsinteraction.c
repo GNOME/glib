@@ -372,11 +372,11 @@ g_tls_interaction_invoke_ask_password (GTlsInteraction    *interaction,
   g_return_val_if_fail (G_IS_TLS_PASSWORD (password), G_TLS_INTERACTION_UNHANDLED);
   g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), G_TLS_INTERACTION_UNHANDLED);
 
-  closure = invoke_closure_new (interaction, G_OBJECT (password), cancellable);
-
   klass = G_TLS_INTERACTION_GET_CLASS (interaction);
+
   if (klass->ask_password)
     {
+      closure = invoke_closure_new (interaction, G_OBJECT (password), cancellable);
       g_main_context_invoke (interaction->priv->context,
                              on_invoke_ask_password_sync, closure);
       result = invoke_closure_wait_and_free (closure, error);
@@ -384,6 +384,8 @@ g_tls_interaction_invoke_ask_password (GTlsInteraction    *interaction,
   else if (klass->ask_password_async)
     {
       g_return_val_if_fail (klass->ask_password_finish, G_TLS_INTERACTION_UNHANDLED);
+
+      closure = invoke_closure_new (interaction, G_OBJECT (password), cancellable);
       g_main_context_invoke (interaction->priv->context,
                              on_invoke_ask_password_async_as_sync, closure);
 
@@ -392,7 +394,6 @@ g_tls_interaction_invoke_ask_password (GTlsInteraction    *interaction,
   else
     {
       result = G_TLS_INTERACTION_UNHANDLED;
-      invoke_closure_free (closure);
     }
 
   return result;
@@ -662,11 +663,11 @@ g_tls_interaction_invoke_request_certificate (GTlsInteraction    *interaction,
   g_return_val_if_fail (G_IS_TLS_CONNECTION (connection), G_TLS_INTERACTION_UNHANDLED);
   g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), G_TLS_INTERACTION_UNHANDLED);
 
-  closure = invoke_closure_new (interaction, G_OBJECT (connection), cancellable);
-
   klass = G_TLS_INTERACTION_GET_CLASS (interaction);
+
   if (klass->request_certificate)
     {
+      closure = invoke_closure_new (interaction, G_OBJECT (connection), cancellable);
       g_main_context_invoke (interaction->priv->context,
                              on_invoke_request_certificate_sync, closure);
       result = invoke_closure_wait_and_free (closure, error);
@@ -674,6 +675,8 @@ g_tls_interaction_invoke_request_certificate (GTlsInteraction    *interaction,
   else if (klass->request_certificate_async)
     {
       g_return_val_if_fail (klass->request_certificate_finish, G_TLS_INTERACTION_UNHANDLED);
+
+      closure = invoke_closure_new (interaction, G_OBJECT (connection), cancellable);
       g_main_context_invoke (interaction->priv->context,
                              on_invoke_request_certificate_async_as_sync, closure);
 
@@ -682,7 +685,6 @@ g_tls_interaction_invoke_request_certificate (GTlsInteraction    *interaction,
   else
     {
       result = G_TLS_INTERACTION_UNHANDLED;
-      invoke_closure_free (closure);
     }
 
   return result;
