@@ -1455,7 +1455,7 @@ read_hidden_file (const gchar *dirname)
   gchar *filename;
 
   filename = g_build_path ("/", dirname, ".hidden", NULL);
-  g_file_get_contents (filename, &contents, NULL, NULL);
+  (void) g_file_get_contents (filename, &contents, NULL, NULL);
   g_free (filename);
 
   if (contents != NULL)
