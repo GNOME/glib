@@ -392,6 +392,7 @@ keyfile_to_tree (GKeyfileSettingsBackend *kfsb,
         continue;
 
       keys = g_key_file_get_keys (keyfile, groups[i], NULL, NULL);
+      g_assert (keys != NULL);
 
       for (j = 0; keys[j]; j++)
         {
