@@ -697,6 +697,8 @@ parse_into_text_tables (const gchar *directory,
 
       g_free (filename);
     }
+  
+  g_dir_close (dir);
 }
 
 static GHashTable **
