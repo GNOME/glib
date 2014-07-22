@@ -88,8 +88,13 @@ do_lookup_by_name (GTask         *task,
       for (ai = res; ai; ai = ai->ai_next)
         {
           sockaddr = g_socket_address_new_from_native (ai->ai_addr, ai->ai_addrlen);
-          if (!sockaddr || !G_IS_INET_SOCKET_ADDRESS (sockaddr))
+          if (!sockaddr)
             continue;
+          if (!G_IS_INET_SOCKET_ADDRESS (sockaddr))
+            {
+              g_clear_object (&sockaddr);
+              continue;
+            }
 
           addr = g_object_ref (g_inet_socket_address_get_address ((GInetSocketAddress *)sockaddr));
           addresses = g_list_prepend (addresses, addr);
