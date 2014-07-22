@@ -673,8 +673,9 @@ parse_into_text_tables (const gchar *directory,
           GMarkupParseContext *context;
 
           context = g_markup_parse_context_new (&parser, G_MARKUP_TREAT_CDATA_AS_TEXT, &info, NULL);
+          /* Ignore errors here, this is best effort only. */
           if (g_markup_parse_context_parse (context, contents, size, NULL))
-            g_markup_parse_context_end_parse (context, NULL);
+            (void) g_markup_parse_context_end_parse (context, NULL);
           g_markup_parse_context_free (context);
 
           /* Clean up dangling stuff in case there was an error. */
