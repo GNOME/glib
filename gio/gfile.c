@@ -7507,7 +7507,7 @@ measure_disk_usage_thread (GTask        *task,
 {
   MeasureTaskData *data = task_data;
   GError *error = NULL;
-  MeasureResult result;
+  MeasureResult result = { 0, };
 
   if (g_file_measure_disk_usage (source_object, data->flags, cancellable,
                                  data->progress_callback ? measure_disk_usage_progress : NULL, task,
