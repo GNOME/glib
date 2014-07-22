@@ -1210,6 +1210,11 @@ get_type_fixed_size (const GVariantType *type)
 {
   /* NB: we do not treat 'b' as fixed-size here because GVariant and
    * D-Bus disagree about the size.
+   *
+   * In addition 'd' is encoded differently by GVariant and DBus, so
+   * we force (en|de)coding rather than direct use of fixed data.
+   *
+   * https://bugzilla.gnome.org/show_bug.cgi?id=732754
    */
   switch (*g_variant_type_peek_string (type))
     {
@@ -1219,7 +1224,7 @@ get_type_fixed_size (const GVariantType *type)
       return 2;
     case 'i': case 'u': case 'h':
       return 4;
-    case 'x': case 't': case 'd':
+    case 'x': case 't':
       return 8;
     default:
       return 0;
