@@ -2013,7 +2013,7 @@ g_file_read_link (const gchar  *filename,
           set_file_error (error,
                           filename,
                           _("Failed to read the symbolic link '%s': %s"));
-	
+          g_free (buffer);
           return NULL;
         }
     
