@@ -87,9 +87,6 @@ G_END_DECLS
 /* We prefer the new C11-style atomic extension of GCC if available */
 #if defined(__ATOMIC_SEQ_CST) && !defined(__clang__)
 
-/* We use __atomic_load_4, so we rely on this being true */
-G_STATIC_ASSERT (sizeof (gint) == 4);
-
 #define g_atomic_int_get(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
@@ -118,9 +115,6 @@ G_STATIC_ASSERT (sizeof (gint) == 4);
   }))
 
 #else /* GLIB_SIZEOF_VOID_P == 8 */
-
-/* Assume that if GLIB_SIZEOF_VOID_P is not 8, it must be 4 */
-G_STATIC_ASSERT (sizeof (gpointer) == 4);
 
 #define g_atomic_pointer_get(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
