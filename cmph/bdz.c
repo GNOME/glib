@@ -455,6 +455,12 @@ static void assigning(bdz_config_data_t *bdz, bdz_graph3_t* graph3, bdz_queue_t 
 			SETBIT(marked_vertices, v2);
 		}		
 		DEBUGP("A:%u %u %u -- %u %u %u\n", v0, v1, v2, GETVALUE(bdz->g, v0), GETVALUE(bdz->g, v1), GETVALUE(bdz->g, v2));
+#if (_MSC_VER > 1699 && _MSC_VER < 1800)
+    /* This is bad, MSVC 2012 X64 getting confused with the value of i... */
+    /* an obvious MSVC 2012 X64 compiler bug :| */
+    if (i <= 0)
+      break;
+#endif
 	};
 	free(marked_vertices);
 }
