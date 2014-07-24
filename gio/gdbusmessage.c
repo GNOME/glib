@@ -1210,11 +1210,6 @@ get_type_fixed_size (const GVariantType *type)
 {
   /* NB: we do not treat 'b' as fixed-size here because GVariant and
    * D-Bus disagree about the size.
-   *
-   * In addition 'd' is encoded differently by GVariant and DBus, so
-   * we force (en|de)coding rather than direct use of fixed data.
-   *
-   * https://bugzilla.gnome.org/show_bug.cgi?id=732754
    */
   switch (*g_variant_type_peek_string (type))
     {
@@ -1224,7 +1219,7 @@ get_type_fixed_size (const GVariantType *type)
       return 2;
     case 'i': case 'u': case 'h':
       return 4;
-    case 'x': case 't':
+    case 'x': case 't': case 'd':
       return 8;
     default:
       return 0;
@@ -2425,7 +2420,8 @@ append_value_to_blob (GVariant            *value,
                 else
                   use_value = g_variant_ref (value);
 
-                ensure_output_padding (mbuf, fixed_size);
+                array_payload_begin_offset += ensure_output_padding (mbuf, fixed_size);
+
                 array_len = g_variant_get_size (use_value);
                 g_memory_buffer_write (mbuf, g_variant_get_data (use_value), array_len);
                 g_variant_unref (use_value);
