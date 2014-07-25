@@ -3445,7 +3445,7 @@ AC_ARG_ENABLE(Bsymbolic,
                AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
                LDFLAGS=-Wl,-Bsymbolic-functions
                LIBS=
-               AC_TRY_LINK([], [int main (void) { return 0; }],
+               AC_TRY_LINK([], [return 0],
                            AC_MSG_RESULT(yes)
                            enable_Bsymbolic=yes,
                            AC_MSG_RESULT(no)
@@ -3473,14 +3473,14 @@ AC_ARG_ENABLE([znodelete],
                AC_MSG_CHECKING([for --fatal-warnings linker flag])
                LDFLAGS=-Wl,--fatal-warnings
                LIBS=
-               AC_TRY_LINK([], [int main (void) { return 0; }],
+               AC_TRY_LINK([], [return 0}],
                            AC_MSG_RESULT(yes)
                            [ldflags_fatal=-Wl,--fatal-warnings],
                            AC_MSG_RESULT(no)
                            ldflags_fatal=)
                AC_MSG_CHECKING([for -z,nodelete linker flag])
                LDFLAGS="$ldflags_fatal -Wl,-z,nodelete"
-               AC_TRY_LINK([], [int main (void) { return 0; }],
+               AC_TRY_LINK([], [return 0],
                            AC_MSG_RESULT(yes)
                            enable_znodelete=yes,
                            AC_MSG_RESULT(no)
@@ -3510,7 +3510,7 @@ case "$host" in
     SAVED_CFLAGS="${CFLAGS}"
     CFLAGS="-fvisibility=hidden"
     AC_MSG_CHECKING([for -fvisibility=hidden compiler flag])
-    AC_TRY_COMPILE([], [int main (void) { return 0; }],
+    AC_TRY_COMPILE([], [return 0],
                    AC_MSG_RESULT(yes)
                    enable_fvisibility_hidden=yes,
                    AC_MSG_RESULT(no)
