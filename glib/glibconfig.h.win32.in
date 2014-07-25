@@ -225,10 +225,18 @@ typedef unsigned __int64 guintptr;
 #define GUINT_TO_LE(val)	((guint) GUINT32_TO_LE (val))
 #define GINT_TO_BE(val)		((gint) GINT32_TO_BE (val))
 #define GUINT_TO_BE(val)	((guint) GUINT32_TO_BE (val))
+#if GLIB_SIZEOF_SIZE_T == 4
 #define GSIZE_TO_LE(val)	((gsize) GUINT32_TO_LE (val))
 #define GSSIZE_TO_LE(val)	((gssize) GINT32_TO_LE (val))
 #define GSIZE_TO_BE(val)	((gsize) GUINT32_TO_BE (val))
 #define GSSIZE_TO_BE(val)	((gssize) GINT32_TO_BE (val))
+#elif GLIB_SIZEOF_SIZE_T == 8
+#define GSIZE_TO_LE(val)	((gsize) GUINT64_TO_LE (val))
+#define GSSIZE_TO_LE(val)	((gssize) GINT64_TO_LE (val))
+#define GSIZE_TO_BE(val)	((gsize) GUINT64_TO_BE (val))
+#define GSSIZE_TO_BE(val)	((gssize) GINT64_TO_BE (val))
+#endif
+
 #define G_BYTE_ORDER G_LITTLE_ENDIAN
 
 #define GLIB_SYSDEF_POLLIN =1
