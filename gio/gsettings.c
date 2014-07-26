@@ -83,6 +83,16 @@
  * the names must begin with a lowercase character, must not end
  * with a '-', and must not contain consecutive dashes.
  *
+ * GSettings supports change notification.  The primary mechanism to
+ * watch for changes is to connect to the "changed" signal.  You can
+ * optionally watch for changes on only a single key by using a signal
+ * detail.  Signals are only guaranteed to be emitted for a given key
+ * after you have read the value of that key while a signal handler was
+ * connected for that key.  Signals may or may not be emitted in the
+ * case that the key "changed" to the value that you had previously
+ * read.  Signals may be reported in additional cases as well and the
+ * "changed" signal should really be treated as "may have changed".
+ *
  * Similar to GConf, the default values in GSettings schemas can be
  * localized, but the localized values are stored in gettext catalogs
  * and looked up with the domain that is specified in the
@@ -229,6 +239,8 @@ struct _GSettingsPrivate
   GSettingsSchema *schema;
   gchar *path;
 
+  gboolean is_subscribed;
+
   GDelayedSettingsBackend *delayed;
 };
 
@@ -303,6 +315,26 @@ g_settings_real_writable_change_event (GSettings *settings,
 
   return FALSE;
 }
+
+static gboolean
+g_settings_has_signal_handlers (GSettings *settings)
+{
+  GSettingsClass *class = G_SETTINGS_GET_CLASS (settings);
+
+  if (class->change_event != g_settings_real_change_event ||
+      class->writable_change_event != g_settings_real_writable_change_event)
+    return TRUE;
+
+  if (g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT], 0, TRUE) ||
+      g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGED], 0, TRUE) ||
+      g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_CHANGE_EVENT], 0, TRUE) ||
+      g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_CHANGED], 0, TRUE))
+    return TRUE;
+
+  /* None of that?  Then surely nobody is watching.... */
+  return FALSE;
+}
+
 
 static void
 settings_backend_changed (GObject             *target,
@@ -570,8 +602,6 @@ g_settings_constructed (GObject *object)
   g_settings_backend_watch (settings->priv->backend,
                             &listener_vtable, G_OBJECT (settings),
                             settings->priv->main_context);
-  g_settings_backend_subscribe (settings->priv->backend,
-                                settings->priv->path);
 }
 
 static void
@@ -579,8 +609,10 @@ g_settings_finalize (GObject *object)
 {
   GSettings *settings = G_SETTINGS (object);
 
-  g_settings_backend_unsubscribe (settings->priv->backend,
-                                  settings->priv->path);
+  if (settings->priv->is_subscribed)
+    g_settings_backend_unsubscribe (settings->priv->backend,
+                                    settings->priv->path);
+
   g_main_context_unref (settings->priv->main_context);
   g_object_unref (settings->priv->backend);
   g_settings_schema_unref (settings->priv->schema);
@@ -1044,6 +1076,13 @@ g_settings_read_from_backend (GSettings          *settings,
   GVariant *value;
   GVariant *fixup;
   gchar *path;
+
+  /* If we are not yet watching for changes, consider doing it now... */
+  if (!settings->priv->is_subscribed && g_settings_has_signal_handlers (settings))
+    {
+      g_settings_backend_subscribe (settings->priv->backend, settings->priv->path);
+      settings->priv->is_subscribed = TRUE;
+    }
 
   path = g_strconcat (settings->priv->path, key->name, NULL);
   if (user_value_only)

@@ -408,6 +408,8 @@ value_changed (GSettings   *settings,
 static void
 gsettings_monitor (void)
 {
+  gchar **keys;
+
   if (global_key)
     {
       gchar *name;
@@ -417,6 +419,17 @@ gsettings_monitor (void)
     }
   else
     g_signal_connect (global_settings, "changed", G_CALLBACK (value_changed), NULL);
+
+  /* We have to read a value from GSettings before we start receiving
+   * signals...
+   *
+   * If the schema has zero keys then we won't be displaying any
+   * notifications anyway.
+   */
+  keys = g_settings_list_keys (global_settings);
+  if (keys[0])
+    g_variant_unref (g_settings_get_value (global_settings, keys[0]));
+  g_strfreev (keys);
 
   for (;;)
     g_main_context_iteration (NULL, TRUE);
