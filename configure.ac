@@ -3473,7 +3473,7 @@ AC_ARG_ENABLE([znodelete],
                AC_MSG_CHECKING([for --fatal-warnings linker flag])
                LDFLAGS=-Wl,--fatal-warnings
                LIBS=
-               AC_TRY_LINK([], [return 0}],
+               AC_TRY_LINK([], [return 0],
                            AC_MSG_RESULT(yes)
                            [ldflags_fatal=-Wl,--fatal-warnings],
                            AC_MSG_RESULT(no)
