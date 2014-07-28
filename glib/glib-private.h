@@ -20,6 +20,7 @@
 
 #include <glib.h>
 #include "gwakeup.h"
+#include "gmarkup-private.h"
 
 #if defined(__GNUC__)
 # define _g_alignof(type) (__alignof__ (type))
@@ -60,6 +61,17 @@ typedef struct {
   GDir *                (* g_dir_open_with_errno)       (const gchar *path,
                                                          guint        flags);
   GDir *                (* g_dir_new_from_dirp)         (gpointer dirp);
+
+  gboolean              (* g_markup_parse_context_parse_slightly) (GMarkupParseContext  *context,
+                                                                   GError              **error);
+
+  gboolean              (* g_markup_collect_attributesv)          (const gchar         *element_name,
+                                                                   const gchar        **attribute_names,
+                                                                   const gchar        **attribute_values,
+                                                                   GError             **error,
+                                                                   GMarkupCollectType   first_type,
+                                                                   const gchar         *first_attr,
+                                                                   va_list              ap);
 
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;

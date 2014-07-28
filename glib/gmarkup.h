@@ -90,6 +90,9 @@ GQuark g_markup_error_quark (void);
  *     attributes and tags, along with their contents.  A qualified
  *     attribute or tag is one that contains ':' in its name (ie: is in
  *     another namespace).  Since: 2.40.
+ * @G_MARKUP_IGNORE_PASSTHROUGH: Ignore (don't report) passthrough
+ *     data on a #GMarkupReader.  Meaningless with #GMarkupParseContext;
+ *     just give a %NULL callback in your parser.  Since: 2.40.
  *
  * Flags that affect the behaviour of the parser.
  */
@@ -98,7 +101,8 @@ typedef enum
   G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG = 1 << 0,
   G_MARKUP_TREAT_CDATA_AS_TEXT              = 1 << 1,
   G_MARKUP_PREFIX_ERROR_POSITION            = 1 << 2,
-  G_MARKUP_IGNORE_QUALIFIED                 = 1 << 3
+  G_MARKUP_IGNORE_QUALIFIED                 = 1 << 3,
+  G_MARKUP_IGNORE_PASSTHROUGH               = 1 << 4
 } GMarkupParseFlags;
 
 /**
