@@ -95,6 +95,7 @@ uninstalled_test_extra_programs = \
 	gdbus-example-watch-proxy		\
 	gsubprocess-testprog			\
 	httpd					\
+	markup-read				\
 	proxy					\
 	resolver				\
 	send-data				\
