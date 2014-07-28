@@ -15,3 +15,4 @@ gresource
 gschema-compile
 gsettings
 gapplication
+new-compiler
