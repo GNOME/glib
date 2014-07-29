@@ -238,22 +238,43 @@ g_win32_error_message (gint error)
 gchar *
 g_win32_get_package_installation_directory_of_module (gpointer hmodule)
 {
+  gchar *filename;
   gchar *retval;
   gchar *p;
   wchar_t wc_fn[MAX_PATH];
 
+  /* NOTE: it relies that GetModuleFileNameW returns only canonical paths */
   if (!GetModuleFileNameW (hmodule, wc_fn, MAX_PATH))
     return NULL;
 
-  retval = g_utf16_to_utf8 (wc_fn, -1, NULL, NULL, NULL);
+  filename = g_utf16_to_utf8 (wc_fn, -1, NULL, NULL, NULL);
 
-  if ((p = strrchr (retval, G_DIR_SEPARATOR)) != NULL)
+  if ((p = strrchr (filename, G_DIR_SEPARATOR)) != NULL)
     *p = '\0';
 
-  p = strrchr (retval, G_DIR_SEPARATOR);
-  if (p && (g_ascii_strcasecmp (p + 1, "bin") == 0 ||
-	    g_ascii_strcasecmp (p + 1, "lib") == 0))
-    *p = '\0';
+  retval = g_strdup (filename);
+
+  do
+    {
+      p = strrchr (retval, G_DIR_SEPARATOR);
+      if (p == NULL)
+        break;
+
+      *p = '\0';
+
+      if (g_ascii_strcasecmp (p + 1, "bin") == 0 ||
+          g_ascii_strcasecmp (p + 1, "lib") == 0)
+        break;
+    }
+  while (p != NULL);
+
+  if (p == NULL)
+    {
+      g_free (retval);
+      retval = filename;
+    }
+  else
+    g_free (filename);
 
 #ifdef G_WITH_CYGWIN
   /* In Cygwin we need to have POSIX paths */
