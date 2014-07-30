@@ -204,9 +204,6 @@ g_free (gpointer mem)
  * Otherwise, the variable is destroyed using @destroy and the
  * pointer is set to %NULL.
  *
- * This function is threadsafe and modifies the pointer atomically,
- * using memory barriers where needed.
- *
  * A macro is also included that allows this function to be used without
  * pointer casts.
  *
@@ -219,15 +216,12 @@ g_clear_pointer (gpointer      *pp,
 {
   gpointer _p;
 
-  /* This is a little frustrating.
-   * Would be nice to have an atomic exchange (with no compare).
-   */
-  do
-    _p = g_atomic_pointer_get (pp);
-  while G_UNLIKELY (!g_atomic_pointer_compare_and_exchange (pp, _p, NULL));
-
+  _p = *pp;
   if (_p)
-    destroy (_p);
+    {
+      *pp = NULL;
+      destroy (_p);
+    }
 }
 
 /**
