@@ -27,7 +27,7 @@
   * be large enough compared to the timer resolution, but small
   * enought that the risk of any random slowness will miss the
   * running window */
-#define TARGET_ROUND_TIME 0.004
+#define TARGET_ROUND_TIME 0.008
 
 static gboolean verbose = FALSE;
 static int test_length = DEFAULT_TEST_TIME;
@@ -65,7 +65,7 @@ run_test (PerformanceTest *test)
 {
   gpointer data = NULL;
   guint64 i, num_rounds;
-  double elapsed, min_elapsed, factor;
+  double elapsed, min_elapsed, max_elapsed, avg_elapsed, factor;
   GTimer *timer;
 
   g_print ("Running test %s\n", test->name);
@@ -77,6 +77,8 @@ run_test (PerformanceTest *test)
   if (verbose)
     g_print ("Warming up\n");
 
+  g_timer_start (timer);
+
   /* Warm up the test by doing a few runs */
   for (i = 0; i < WARM_UP_N_RUNS; i++)
     {
@@ -85,8 +87,14 @@ run_test (PerformanceTest *test)
       test->finish (test, data);
     }
 
+  g_timer_stop (timer);
+  elapsed = g_timer_elapsed (timer, NULL);
+
   if (verbose)
-    g_print ("Estimating round time\n");
+    {
+      g_print ("Warm up time: %.2f secs\n", elapsed);
+      g_print ("Estimating round time\n");
+    }
 
   /* Estimate time for one run by doing a few test rounds */
   min_elapsed = 0;
@@ -108,7 +116,7 @@ run_test (PerformanceTest *test)
   factor = TARGET_ROUND_TIME / min_elapsed;
 
   if (verbose)
-    g_print ("Uncorrected round time: %f.4 secs, correction factor %f.2\n", min_elapsed, factor);
+    g_print ("Uncorrected round time: %.4f msecs, correction factor %.2f\n", 1000*min_elapsed, factor);
 
   /* Calculate number of rounds needed */
   num_rounds = (test_length / TARGET_ROUND_TIME) + 1;
@@ -127,14 +135,23 @@ run_test (PerformanceTest *test)
       elapsed = g_timer_elapsed (timer, NULL);
 
       if (i == 0)
-	min_elapsed = elapsed;
+	max_elapsed = min_elapsed = avg_elapsed = elapsed;
       else
-	min_elapsed = MIN (min_elapsed, elapsed);
+        {
+          min_elapsed = MIN (min_elapsed, elapsed);
+          max_elapsed = MAX (max_elapsed, elapsed);
+          avg_elapsed += elapsed;
+        }
     }
 
-  if (verbose)
-    g_print ("Minimum corrected round time: %f secs\n", min_elapsed);
+  avg_elapsed = avg_elapsed / num_rounds;
 
+  if (verbose)
+    {
+      g_print ("Minimum corrected round time: %.2f msecs\n", min_elapsed * 1000);
+      g_print ("Maximum corrected round time: %.2f msecs\n", max_elapsed * 1000);
+      g_print ("Average corrected round time: %.2f msecs\n", avg_elapsed * 1000);
+    }
   /* Print the results */
   test->print_result (test, data, min_elapsed);
 
@@ -512,8 +529,8 @@ test_construction_print_result (PerformanceTest *test,
 {
   struct ConstructionTest *data = _data;
 
-  g_print ("Number of constructed objects per second: %.0f\n",
-	   data->n_objects / time);
+  g_print ("Millions of constructed objects per second: %.3f\n",
+	   data->n_objects / (time * 1000000));
 }
 
 /*************************************************************
@@ -768,6 +785,88 @@ test_emission_handled_teardown (PerformanceTest *test,
 }
 
 /*************************************************************
+ * Test object refcount performance
+ *************************************************************/
+
+#define NUM_KILO_REFS_PER_ROUND 100000
+
+struct RefcountTest {
+  GObject *object;
+  int n_checks;
+};
+
+static gpointer
+test_refcount_setup (PerformanceTest *test)
+{
+  struct RefcountTest *data;
+
+  data = g_new0 (struct RefcountTest, 1);
+  data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
+
+  return data;
+}
+
+static void
+test_refcount_init (PerformanceTest *test,
+                    gpointer _data,
+                    double factor)
+{
+  struct RefcountTest *data = _data;
+
+  data->n_checks = factor * NUM_KILO_REFS_PER_ROUND;
+}
+
+static void
+test_refcount_run (PerformanceTest *test,
+                   gpointer _data)
+{
+  struct RefcountTest *data = _data;
+  GObject *object = data->object;
+  int i;
+
+  for (i = 0; i < data->n_checks; i++)
+    {
+      g_object_ref (object);
+      g_object_ref (object);
+      g_object_ref (object);
+      g_object_unref (object);
+      g_object_unref (object);
+
+      g_object_ref (object);
+      g_object_ref (object);
+      g_object_unref (object);
+      g_object_unref (object);
+      g_object_unref (object);
+    }
+}
+
+static void
+test_refcount_finish (PerformanceTest *test,
+                      gpointer _data)
+{
+}
+
+static void
+test_refcount_print_result (PerformanceTest *test,
+			      gpointer _data,
+			      double time)
+{
+  struct RefcountTest *data = _data;
+  g_print ("Million refs+unref per second: %.2f\n",
+	   data->n_checks * 5 / (time * 1000000 ));
+}
+
+static void
+test_refcount_teardown (PerformanceTest *test,
+			  gpointer _data)
+{
+  struct RefcountTest *data = _data;
+
+  g_object_unref (data->object);
+  g_free (data);
+}
+
+/*************************************************************
  * Main test code
  *************************************************************/
 
@@ -901,6 +1000,16 @@ static PerformanceTest tests[] = {
     test_emission_handled_finish,
     test_emission_handled_teardown,
     test_emission_handled_print_result
+  },
+  {
+    "refcount",
+    NULL,
+    test_refcount_setup,
+    test_refcount_init,
+    test_refcount_run,
+    test_refcount_finish,
+    test_refcount_teardown,
+    test_refcount_print_result
   }
 };
 
