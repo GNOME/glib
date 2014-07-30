@@ -590,7 +590,7 @@ do_spawn_with_pipes (gint                 *exit_status,
     goto cleanup_and_fail;
   
   new_argv = g_new (char *, argc + 1 + ARG_COUNT);
-  if (GetConsoleCursorInfo (GetStdHandle (STD_OUTPUT_HANDLE), &cursor_info))
+  if (GetConsoleWindow () != NULL)
     helper_process = HELPER_PROCESS "-console.exe";
   else
     helper_process = HELPER_PROCESS ".exe";
