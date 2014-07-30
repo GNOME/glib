@@ -17,7 +17,7 @@
   <bug-database rdf:resource="http://bugzilla.gnome.org/enter_bug.cgi?product=glib"/>
   <download-page rdf:resource="http://download.gnome.org/sources/glib/" />
   <mailing-list rdf:resource="mailto:gtk-devel-list@gnome.org" />
-  <category rdf:resource="http://api.gnome.org/doap-extensions#platform" />
+  <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
 
   <programming-language>C</programming-language>
 
