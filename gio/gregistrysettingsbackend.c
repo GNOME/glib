@@ -1754,8 +1754,12 @@ watch_add_notify (GRegistryBackend *self,
   EnterCriticalSection (self->cache_lock);
   cache_node = registry_cache_get_node_for_key (self->cache_root, gsettings_prefix, TRUE);
 
-  g_return_val_if_fail (cache_node != NULL, FALSE);
-  g_return_val_if_fail (cache_node->data != NULL, FALSE);
+  if (cache_node == NULL || cache_node->data == NULL)
+    {
+      LeaveCriticalSection (self->cache_lock);
+      g_warn_if_reached ();
+      return FALSE;
+    }
   
   cache_item = cache_node->data;
 
@@ -1764,6 +1768,7 @@ watch_add_notify (GRegistryBackend *self,
     {
       trace ("watch_add_notify: prefix %s already watched, %i subscribers.\n",
              gsettings_prefix, cache_item->subscription_count);
+      LeaveCriticalSection (self->cache_lock);
       return FALSE;
     }
 
