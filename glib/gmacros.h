@@ -121,6 +121,12 @@
   __pragma (warning (disable : 4996))
 #define G_GNUC_END_IGNORE_DEPRECATIONS			\
   __pragma (warning (pop))
+#elif defined (__clang__)
+#define G_GNUC_BEGIN_IGNORE_DEPRECATIONS \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"")
+#define G_GNUC_END_IGNORE_DEPRECATIONS \
+  _Pragma("clang diagnostic pop")
 #else
 #define G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 #define G_GNUC_END_IGNORE_DEPRECATIONS
