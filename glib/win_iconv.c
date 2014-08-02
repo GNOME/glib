@@ -1529,7 +1529,7 @@ utf16_wctomb(csconv_t *cv, ushort *wbuf, int wbufsize, uchar *buf, int bufsize)
 static int
 utf32_mbtowc(csconv_t *cv, const uchar *buf, int bufsize, ushort *wbuf, int *wbufsize)
 {
-    uint wc;
+    uint wc = 0xD800;
 
     if (bufsize < 4)
         return_error(EINVAL);
