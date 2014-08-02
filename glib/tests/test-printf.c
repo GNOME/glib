@@ -637,7 +637,11 @@ test_positional_params2 (void)
     }
   g_test_trap_subprocess (NULL, 0, 0);
   g_test_trap_assert_passed ();
+#ifndef G_OS_WIN32
   g_test_trap_assert_stdout ("a b\n   ab\nabcabc\n");
+#else
+  g_test_trap_assert_stdout ("a b\r\n   ab\r\nabcabc\r\n");
+#endif
 }
 
 static void
@@ -854,18 +858,25 @@ _Pragma ("GCC diagnostic pop")
 static void
 test_64bit2 (void)
 {
+#ifndef G_OS_WIN32
   g_test_trap_subprocess ("/printf/test-64bit/subprocess/base", 0, 0);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stdout ("123456\n-123456\n123456\n"
                              "361100\n0361100\n1e240\n"
                              "0x1e240\n1E240\n");
 
-#ifdef G_OS_WIN32
+#else
+  g_test_trap_subprocess ("/printf/test-64bit/subprocess/base", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("123456\r\n-123456\r\n123456\r\n"
+                             "361100\r\n0361100\r\n1e240\r\n"
+                             "0x1e240\r\n1E240\r\n");
+
   g_test_trap_subprocess ("/printf/test-64bit/subprocess/win32", 0, 0);
   g_test_trap_assert_passed ();
-  g_test_trap_assert_stdout ("123456\n-123456\n123456\n"
-                             "361100\n0361100\n1e240\n"
-                             "0x1e240\n1E240\n");
+  g_test_trap_assert_stdout ("123456\r\n-123456\r\n123456\r\n"
+                             "361100\r\n0361100\r\n1e240\r\n"
+                             "0x1e240\r\n1E240\r\n");
 #endif
 }
 
