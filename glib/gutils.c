@@ -1796,7 +1796,8 @@ g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void))
   gchar **retval;
   gchar *p;
   gchar *exe_root;
-      
+
+  hmodule = NULL;
   if (address_of_function)
     {
       G_LOCK (g_utils_global);

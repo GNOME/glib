@@ -294,7 +294,9 @@ handle_ip_address (const char  *hostname,
                    GError     **error)
 {
   GInetAddress *addr;
+#ifndef G_OS_WIN32
   struct in_addr ip4addr;
+#endif
 
   addr = g_inet_address_new_from_string (hostname);
   if (addr)

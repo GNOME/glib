@@ -4012,6 +4012,7 @@ g_main_context_poll (GMainContext *context,
   if (n_fds || timeout != 0)
     {
 #ifdef	G_MAIN_POLL_DEBUG
+      poll_timer = NULL;
       if (_g_main_poll_debug)
 	{
 	  g_print ("polling context=%p n=%d timeout=%d\n",
