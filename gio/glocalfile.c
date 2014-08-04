@@ -2660,10 +2660,38 @@ g_local_file_measure_size_of_file (gint           parent_fd,
 
 #if defined (AT_FDCWD)
   if (fstatat (parent_fd, name->data, &buf, AT_SYMLINK_NOFOLLOW) != 0)
-#else
-  if (g_lstat (name->data, &buf) != 0)
-#endif
     return g_local_file_measure_size_error (state->flags, errno, name, error);
+#elif defined (HAVE_LSTAT) || !defined (G_OS_WIN32)
+  if (g_lstat (name->data, &buf) != 0)
+    return g_local_file_measure_size_error (state->flags, errno, name, error);
+#else
+  {
+    const char *filename = (const gchar *) name->data;
+    wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+    int retval;
+    int save_errno;
+    int len;
+
+    if (wfilename == NULL)
+      return g_local_file_measure_size_error (state->flags, errno, name, error);
+
+    len = wcslen (wfilename);
+    while (len > 0 && G_IS_DIR_SEPARATOR (wfilename[len-1]))
+      len--;
+    if (len > 0 &&
+        (!g_path_is_absolute (filename) || len > g_path_skip_root (filename) - filename))
+      wfilename[len] = '\0';
+
+    retval = _wstat32i64 (wfilename, &buf);
+    save_errno = errno;
+
+    g_free (wfilename);
+
+    errno = save_errno;
+    if (retval != 0)
+      return g_local_file_measure_size_error (state->flags, errno, name, error);
+  }
+#endif
 
   if (name->next)
     {
