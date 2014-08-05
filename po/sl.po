@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-04-28 19:34+0000\n"
-"PO-Revision-Date: 2014-04-28 21:44+0100\n"
+"POT-Creation-Date: 2014-07-21 05:47+0000\n"
+"PO-Revision-Date: 2014-07-21 16:27+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -21,11 +21,11 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.6.5\n"
 
 #: ../gio/gapplication.c:509
 msgid "Enter GApplication service mode (use from D-Bus service files)"
-msgstr ""
+msgstr "Vstopi v način storitev (uporabi iz storitvenih datotek D-Bus)"
 
 #: ../gio/gapplication.c:514
 msgid "GApplication options"
@@ -60,6 +60,8 @@ msgstr "Seznam znanih programov"
 #: ../gio/gapplication-tool.c:53
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
 msgstr ""
+"Izpiši nameščene programe, ki se lahko zaženejo z vodila D-Bus (po "
+"datotekah .desktop)"
 
 #: ../gio/gapplication-tool.c:55
 msgid "Launch an application"
@@ -91,7 +93,7 @@ msgstr "Izpis dejanja na voljo"
 
 #: ../gio/gapplication-tool.c:64
 msgid "List static actions for an application (from .desktop file)"
-msgstr ""
+msgstr "Izpiši statična dejanja za program (iz datoteke .desktop)"
 
 #: ../gio/gapplication-tool.c:65 ../gio/gapplication-tool.c:71
 msgid "APPID"
@@ -120,6 +122,7 @@ msgstr "DATOTEKA"
 #: ../gio/gapplication-tool.c:72
 msgid "Optional relative or relative filenames, or URIs to open"
 msgstr ""
+"Neobvezna relativna ali relativna imena datotek ali URI-ji za odpiranje"
 
 #: ../gio/gapplication-tool.c:73
 msgid "ACTION"
@@ -135,7 +138,7 @@ msgstr "PARAMETER"
 
 #: ../gio/gapplication-tool.c:74
 msgid "Optional parameter to the action invocation, in GVariant format"
-msgstr ""
+msgstr "Neobvezen parameter za priklic dejanja, v zapisu GVariant"
 
 #: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:511
 #: ../gio/gsettings-tool.c:594
@@ -172,6 +175,8 @@ msgid ""
 "Use '%s help COMMAND' to get detailed help.\n"
 "\n"
 msgstr ""
+"Z ukazom '%s help UKAZ' se izpiše podrobna pomoč.\n"
+"\n"
 
 #: ../gio/gapplication-tool.c:165
 #, c-format
@@ -179,6 +184,8 @@ msgid ""
 "%s command requires an application id to directly follow\n"
 "\n"
 msgstr ""
+"Ukaz %s zahteva id programa, da mu neposredno sledi\n"
+"\n"
 
 #: ../gio/gapplication-tool.c:171
 #, c-format
@@ -187,21 +194,23 @@ msgstr "Neveljaven ID programa: '%s'\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
 #: ../gio/gapplication-tool.c:182
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "'%s' takes no arguments\n"
 "\n"
-msgstr "%s ne prevzema argumentov"
+msgstr ""
+"'%s' ne prevzema argumentov\n"
+"\n"
 
 #: ../gio/gapplication-tool.c:266
-#, fuzzy, c-format
+#, c-format
 msgid "unable to connect to D-Bus: %s\n"
-msgstr "Poveži s sistemskim vodilom"
+msgstr "povezava z vodilom D-Bus ni uspela: %s\n"
 
 #: ../gio/gapplication-tool.c:286
-#, fuzzy, c-format
+#, c-format
 msgid "error sending %s message to application: %s\n"
-msgstr "Napaka med pripenjanjem sporočila %d iz %s v %s: %s"
+msgstr "Napaka pri pošiljanju sporočila %s programu: %s\n"
 
 #: ../gio/gapplication-tool.c:317
 #, c-format
@@ -214,6 +223,8 @@ msgid ""
 "invalid action name: '%s'\n"
 "action names must consist of only alphanumerics, '-' and '.'\n"
 msgstr ""
+"neveljavno ime dejanja: '%s'\n"
+"imena dejanj lahko tvorijo le alfanumerični znaki, vezaj in pika\n"
 
 #: ../gio/gapplication-tool.c:344
 #, c-format
@@ -223,12 +234,12 @@ msgstr "napaka razčlenjevanja parametra dejanja: %s\n"
 #: ../gio/gapplication-tool.c:356
 #, c-format
 msgid "actions accept a maximum of one parameter\n"
-msgstr ""
+msgstr "dejanja prejemajo največ en parameter\n"
 
 #: ../gio/gapplication-tool.c:411
 #, c-format
 msgid "list-actions command takes only the application id"
-msgstr ""
+msgstr "ukaz list-actions zahteva le id programa"
 
 #: ../gio/gapplication-tool.c:421
 #, c-format
@@ -346,9 +357,8 @@ msgid "GCredentials does not contain a process ID on this OS"
 msgstr "Predmet GCredentials na tem sistemu ne vsebuje ustreznega ID opravila"
 
 #: ../gio/gcredentials.c:536
-#, fuzzy
 msgid "Credentials spoofing is not possible on this OS"
-msgstr "Na tem OS predmet GCredentials ni podprt"
+msgstr "Na tem OS vohljanje po poverilih ni podprto"
 
 #: ../gio/gdatainputstream.c:304
 msgid "Unexpected early end-of-stream"
@@ -4579,31 +4589,3 @@ msgstr[3] "%s bajti"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
-
-#~ msgid ""
-#~ "Error processing input file with xmllint:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Napaka pri obdelavi dovodne datoteke z xmllint:\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "Error processing input file with to-pixdata:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Napaka pri obdelovanju dovodne datoteke z to-pixdata:\n"
-#~ "%s"
-
-#~ msgid "Unable to get pending error: %s"
-#~ msgstr "Ni mogoče pridobiti uvrščene napake: %s"
-
-#~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-#~ msgstr ""
-#~ "Ni mogoče odpreti datoteke '%s' za pisanje:  fdopen() ni uspešno izveden: "
-#~ "%s"
-
-#~ msgid "Failed to write file '%s': fflush() failed: %s"
-#~ msgstr "Ni mogoče zapisati datoteke '%s': fflush() ni uspešno izveden: %s"
-
-#~ msgid "Failed to close file '%s': fclose() failed: %s"
-#~ msgstr "Ni mogoče zapreti datoteke '%s':  fclose() ni uspešno izveden: %s"
