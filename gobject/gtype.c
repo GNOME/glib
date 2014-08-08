@@ -4193,14 +4193,14 @@ g_type_check_is_value_type (GType type)
 }
 
 gboolean
-g_type_check_value (GValue *value)
+g_type_check_value (const GValue *value)
 {
   return value && type_check_is_value_type_U (value->g_type);
 }
 
 gboolean
-g_type_check_value_holds (GValue *value,
-			  GType   type)
+g_type_check_value_holds (const GValue *value,
+			  GType         type)
 {
   return value && type_check_is_value_type_U (value->g_type) && g_type_is_a (value->g_type, type);
 }
