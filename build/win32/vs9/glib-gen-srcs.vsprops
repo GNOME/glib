@@ -7,26 +7,22 @@
 	>
 	<UserMacro
 		Name="GenConfigH"
-		Value="
-copy ..\..\..\config.h.win32 ..\..\..\config.h
-		      "
+		Value="copy ..\..\..\config.h.win32 ..\..\..\config.h"
 	/>
 	<UserMacro
 		Name="GenGLibConfigH"
-		Value="
-copy ..\..\..\glib\glibconfig.h.win32 ..\..\..\glib\glibconfig.h
-		      "
+		Value="copy ..\..\..\glib\glibconfig.h.win32 ..\..\..\glib\glibconfig.h"
 	/>
 	<UserMacro
 		Name="GenGModuleConfH"
-		Value="
-copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h
-		      "
+		Value="copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h"
 	/>
 	<UserMacro
 		Name="GenGNetworkingH"
-		Value="
-copy ..\..\..\gio\gnetworking.h.win32 ..\..\..\gio\gnetworking.h
-		      "
+		Value="copy ..\..\..\gio\gnetworking.h.win32 ..\..\..\gio\gnetworking.h"
+	/>
+	<UserMacro
+		Name="GenGLibMKEnums"
+		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\process_in_win32.py --glib-mkenums"
 	/>
 </VisualStudioPropertySheet>

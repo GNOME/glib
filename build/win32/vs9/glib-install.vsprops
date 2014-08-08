@@ -20,6 +20,7 @@ copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gresource.exe $(Copy
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gio-querymodules.exe $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gdbus.exe $(CopyDir)\bin&#x0D;&#x0A;
 copy ..\..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in $(CopyDir)\bin\gdbus-codegen&#x0D;&#x0A;
+if exist ..\..\..\gobject\glib-mkenums copy ..\..\..\gobject\glib-mkenums $(CopyDir)\bin&#x0D;&#x0A;
 
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\gobject&#x0D;&#x0A;

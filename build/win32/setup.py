@@ -9,32 +9,7 @@ import string
 import subprocess
 import optparse
 
-def get_version(srcroot):
-    ver = {}
-    RE_VERSION = re.compile(r'^m4_define\(\[(glib_\w+)\],\s*\[(\d+)\]\)')
-    with open(os.path.join(srcroot, 'configure.ac'), 'r') as ac:
-        for i in ac:
-            mo = RE_VERSION.search(i)
-            if mo:
-                ver[mo.group(1).upper()] = int(mo.group(2))
-    ver['GLIB_BINARY_AGE'] = 100 * ver['GLIB_MINOR_VERSION'] + ver['GLIB_MICRO_VERSION']
-    ver['GLIB_VERSION'] = '%d.%d.%d' % (ver['GLIB_MAJOR_VERSION'],
-                                        ver['GLIB_MINOR_VERSION'],
-                                        ver['GLIB_MICRO_VERSION'])
-    ver['LT_RELEASE'] = '%d.%d' % (ver['GLIB_MAJOR_VERSION'], ver['GLIB_MINOR_VERSION'])
-    ver['LT_CURRENT'] = 100 * ver['GLIB_MINOR_VERSION'] + ver['GLIB_MICRO_VERSION'] - ver['GLIB_INTERFACE_AGE']
-    ver['LT_REVISION'] = ver['GLIB_INTERFACE_AGE']
-    ver['LT_AGE'] = ver['GLIB_BINARY_AGE'] - ver['GLIB_INTERFACE_AGE']
-    ver['LT_CURRENT_MINUS_AGE'] = ver['LT_CURRENT'] - ver['LT_AGE']
-    return ver
-
-def process_in(src, dest, vars):
-    RE_VARS = re.compile(r'@(\w+?)@')
-    with open(src, 'r') as s:
-        with open(dest, 'w') as d:
-            for i in s:
-                i = RE_VARS.sub(lambda x: str(vars[x.group(1)]), i)
-                d.write(i)
+from process_in_win32 import get_version, process_in, get_srcroot
 
 def process_include(src, dest, includes):
     RE_INCLUDE = re.compile(r'^\s*#include\s+"(.*)"')
@@ -233,13 +208,7 @@ def main(argv):
     parser = optparse.OptionParser()
     parser.add_option('-p', '--perl', dest='perl', metavar='PATH', default='C:\\Perl\\bin\\perl.exe', action='store', help='path to the perl interpretor (default: C:\\Perl\\bin\\perl.exe)')
     opt, args = parser.parse_args(argv)
-    def parent_dir(path):
-        if not os.path.isabs(path):
-            path = os.path.abspath(path)
-        if os.path.isfile(path):
-            path = os.path.dirname(path)
-        return os.path.split(path)[0]
-    srcroot = parent_dir(parent_dir(__file__))
+    srcroot = get_srcroot()
     #print 'srcroot', srcroot
     ver = get_version(srcroot)
     #print 'ver', ver

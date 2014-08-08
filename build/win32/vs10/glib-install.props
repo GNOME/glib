@@ -34,6 +34,8 @@ copy $(BinDir)\gdbus.exe $(CopyDir)\bin
 
 copy ..\..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in $(CopyDir)\bin\gdbus-codegen
 
+if exist ..\..\..\gobject\glib-mkenums copy ..\..\..\gobject\glib-mkenums $(CopyDir)\bin
+
 
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
 

@@ -18,6 +18,9 @@
 #include "libgobject.vs10.sourcefiles.filters"
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\..\..\gobject\glib-mkenums.in"><Filter>Resource Files</Filter></CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
     <ResourceCompile Include="..\..\..\gobject\gobject.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>

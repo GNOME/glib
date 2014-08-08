@@ -46,4 +46,8 @@
 		Name="GlibDllSuffix"
 		Value="$(GlibSeparateVSDllSuffix)"
 	/>
+	<UserMacro
+		Name="PythonPath"
+		Value="c:\python27"
+	/>
 </VisualStudioPropertySheet>
