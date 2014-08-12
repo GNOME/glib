@@ -167,7 +167,7 @@
       <xi:include href="xml/gsrvtarget.xml"/>
     </chapter>
     <chapter id="gdbus-lowlevel">
-      <title>Lowlevel D-Bus Support</title>
+      <title>Low-level D-Bus Support</title>
       <xi:include href="xml/gdbusutils.xml"/>
       <xi:include href="xml/gdbusaddress.xml"/>
       <xi:include href="xml/gdbusintrospection.xml"/>
@@ -179,7 +179,7 @@
       <xi:include href="xml/gdbusauthobserver.xml"/>
     </chapter>
     <chapter id="gdbus-convenience">
-      <title>Highlevel D-Bus Support</title>
+      <title>High-level D-Bus Support</title>
       <xi:include href="xml/gdbusnameowning.xml"/>
       <xi:include href="xml/gdbusnamewatching.xml"/>
       <xi:include href="xml/gdbusinterface.xml"/>
