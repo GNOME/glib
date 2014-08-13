@@ -3040,6 +3040,7 @@ g_application_withdraw_notification
 <SUBSECTION>
 g_application_run
 g_application_add_main_option_entries
+g_application_add_main_option
 g_application_add_option_group
 <SUBSECTION>
 g_application_set_default

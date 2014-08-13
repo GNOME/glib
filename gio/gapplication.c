@@ -239,6 +239,9 @@ struct _GApplicationPrivate
   GSList             *option_groups;
   GHashTable         *packed_options;
   gboolean            options_parsed;
+
+  /* Allocated option strings, from g_application_add_main_option() */
+  GSList             *option_strings;
 };
 
 enum
@@ -662,6 +665,64 @@ g_application_add_main_option_entries (GApplication       *application,
 
       g_option_group_add_entries (application->priv->main_options, my_entries);
     }
+}
+
+/**
+ * g_application_add_main_option:
+ * @application: the #GApplication
+ * @long_name: the long name of an option used to specify it in a commandline
+ * @short_name: the short name of an option
+ * @flags: flags from #GOptionFlags
+ * @arg: the type of the option, as a #GOptionArg
+ * @description: the description for the option in `--help` output
+ * @arg_description: (nullable): the placeholder to use for the extra argument
+ *    parsed by the option in `--help` output
+ *
+ * Add an option to be handled by @application.
+ *
+ * Calling this function is the equivalent of calling
+ * g_application_add_main_option_entries() with a single #GOptionEntry
+ * that has its arg_data member set to %NULL.
+ *
+ * The parsed arguments will be packed into a #GVariantDict which
+ * is passed to #GApplication::handle-local-options. If
+ * %G_APPLICATION_HANDLES_COMMAND_LINE is set, then it will also
+ * be sent to the primary instance. See
+ * g_application_add_main_option_entries() for more details.
+ *
+ * See #GOptionEntry for more documentation of the arguments.
+ *
+ * Since: 2.42
+ **/
+void
+g_application_add_main_option (GApplication *application,
+                               const char   *long_name,
+                               char          short_name,
+                               gint          flags,
+                               GOptionArg    arg,
+                               const char   *description,
+                               const char   *arg_description)
+{
+  gchar *dup_string;
+  GOptionEntry my_entry[2] = {
+    { NULL, short_name, flags, arg, NULL, NULL, NULL },
+    { NULL }
+  };
+
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (long_name != NULL);
+  g_return_if_fail (description != NULL);
+
+  my_entry[0].long_name = dup_string = g_strdup (long_name);
+  application->priv->option_strings = g_slist_prepend (application->priv->option_strings, dup_string);
+
+  my_entry[0].description = dup_string = g_strdup (description);
+  application->priv->option_strings = g_slist_prepend (application->priv->option_strings, dup_string);
+
+  my_entry[0].arg_description = dup_string = g_strdup (arg_description);
+  application->priv->option_strings = g_slist_prepend (application->priv->option_strings, dup_string);
+
+  g_application_add_main_option_entries (application, my_entry);
 }
 
 /**
@@ -1140,8 +1201,10 @@ g_application_finalize (GObject *object)
   if (application->priv->main_options)
     g_option_group_free (application->priv->main_options);
   if (application->priv->packed_options)
-    g_hash_table_unref (application->priv->packed_options);
-
+    {
+      g_slist_free_full (application->priv->option_strings, g_free);
+      g_hash_table_unref (application->priv->packed_options);
+    }
   if (application->priv->impl)
     g_application_impl_destroy (application->priv->impl);
   g_free (application->priv->id);
