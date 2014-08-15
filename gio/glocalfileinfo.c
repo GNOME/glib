@@ -1259,7 +1259,7 @@ get_content_type (const char          *basename,
 
       content_type = g_content_type_guess (basename, NULL, 0, &result_uncertain);
       
-#ifndef G_OS_WIN32
+#if !defined(G_OS_WIN32) && !defined(HAVE_COCOA)
       if (!fast && result_uncertain && path != NULL)
 	{
 	  guchar sniff_buffer[4096];

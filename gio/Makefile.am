@@ -3,7 +3,9 @@ include $(top_srcdir)/glib.mk
 SUBDIRS = gdbus-2.0/codegen
 
 if OS_UNIX
+if !OS_COCOA
 SUBDIRS += xdgmime
+endif
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
@@ -221,6 +223,7 @@ local_sources = \
 platform_libadd =
 platform_deps =
 appinfo_sources =
+contenttype_sources =
 
 if HAVE_INOTIFY
 SUBDIRS += inotify
@@ -247,9 +250,13 @@ SUBDIRS += fam
 endif
 
 if OS_UNIX
-unix_appinfo_sources = gdesktopappinfo.c
+if !OS_COCOA
 platform_libadd += xdgmime/libxdgmime.la
 platform_deps += xdgmime/libxdgmime.la
+endif
+
+appinfo_sources += gdesktopappinfo.c
+
 unix_sources = \
 	gfiledescriptorbased.c  \
 	gunixconnection.c	\
@@ -266,7 +273,6 @@ unix_sources = \
 	gunixvolumemonitor.h 	\
 	gunixinputstream.c 	\
 	gunixoutputstream.c 	\
-	gcontenttype.c 		\
 	gcontenttypeprivate.h 	\
 	gfdonotificationbackend.c \
 	ggtknotificationbackend.c \
@@ -321,7 +327,6 @@ win32_actual_sources = \
 	$(gdbus_daemon_sources) \
 	gwin32registrykey.c \
 	gwin32registrykey.h \
-	gcontenttype-win32.c \
 	gwin32mount.c \
 	gwin32mount.h \
 	gwin32volumemonitor.c \
@@ -344,6 +349,8 @@ win32_more_sources_for_vcproj = \
 
 if OS_WIN32
 win32_appinfo_sources = gwin32appinfo.c gwin32appinfo.h
+appinfo_sources += gwin32appinfo.c gwin32appinfo.h
+contenttype_sources += contenttype-win32.c
 platform_libadd += -lshlwapi -lws2_32 -ldnsapi -liphlpapi
 win32_sources = $(win32_actual_sources)
 appinfo_sources += $(win32_appinfo_sources)
@@ -386,6 +393,16 @@ portal_sources = \
 	gproxyresolverportal.h		\
 	$(xdp_dbus_built_sources)	\
 	$(NULL)
+
+if OS_COCOA
+contenttype_sources += gosxcontenttype.c
+endif
+
+if OS_UNIX
+if !OS_COCOA
+contenttype_sources += gcontenttype.c
+endif
+endif
 
 gio_base_sources =		\
 	gappinfo.c 		\
@@ -542,6 +559,7 @@ gio_base_sources =		\
 libgio_2_0_la_SOURCES =		\
 	$(gio_base_sources)	\
 	$(appinfo_sources) 	\
+	$(contenttype_sources) \
 	$(unix_sources) 	\
 	$(win32_sources) 	\
 	$(settings_sources) 	\
