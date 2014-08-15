@@ -46,6 +46,8 @@
  * On Win32 it is an extension string like ".doc", ".txt" or a perceived
  * string like "audio". Such strings can be looked up in the registry at
  * HKEY_CLASSES_ROOT.
+ * On OSX it is a [Uniform Type Identifier](https://en.wikipedia.org/wiki/Uniform_Type_Identifier)
+ * such as "com.apple.application".
  **/
 
 #include <dirent.h>
@@ -187,7 +189,8 @@ g_content_type_is_mime_type (const gchar *type,
  *
  * Checks if the content type is the generic "unknown" type.
  * On UNIX this is the "application/octet-stream" mimetype,
- * while on win32 it is "*".
+ * while on win32 it is "*" and on OSX it is a dynamic type
+ * or octet-stream.
  *
  * Returns: %TRUE if the type is the unknown type.
  */
