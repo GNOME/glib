@@ -16,19 +16,18 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-04-19 05:42+0000\n"
-"PO-Revision-Date: 2014-04-19 20:43+0100\n"
-"Last-Translator: Benjamin Steinwender <b@stbe.at>\n"
+"POT-Creation-Date: 2014-08-05 05:54+0000\n"
+"PO-Revision-Date: 2014-08-05 10:37+0100\n"
+"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.4\n"
+"X-Generator: Poedit 1.6.3\n"
 
 #: ../gio/gapplication.c:509
-#, fuzzy
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "GApplication Dienstmodus starten (aus D-Bus Dienstdateien verwenden)"
 
@@ -63,9 +62,9 @@ msgid "List applications"
 msgstr "Anwendungen auflisten"
 
 #: ../gio/gapplication-tool.c:53
-#, fuzzy
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
-msgstr "Statische Aktionen einer Anwendung auflisten (aus .desktop-Datei)"
+msgstr ""
+"Die über D-Bus aktivierbaren Anwendungen auflisten (aus .desktop-Dateien)"
 
 #: ../gio/gapplication-tool.c:55
 msgid "Launch an application"
@@ -125,6 +124,7 @@ msgstr "DATEI"
 #: ../gio/gapplication-tool.c:72
 msgid "Optional relative or relative filenames, or URIs to open"
 msgstr ""
+"Optional realtive oder relative Dateinamen, oder Adressen (URIs) zum Öffnen"
 
 #: ../gio/gapplication-tool.c:73
 msgid "ACTION"
@@ -2295,7 +2295,7 @@ msgstr "Ausgabedatenstrom unterstützt kein Schreiben"
 msgid "Source stream is already closed"
 msgstr "Quelldatenstrom ist bereits geschlossen"
 
-#: ../gio/gresolver.c:318 ../gio/gthreadedresolver.c:108
+#: ../gio/gresolver.c:318 ../gio/gthreadedresolver.c:120
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Fehler beim Auflösen von »%s«: %s"
@@ -2937,23 +2937,24 @@ msgstr "Unbekannter Fehler im SOCKSv5-Proxy."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Version %d der GThemedIcon-Kodierung kann nicht verarbeitet werden"
 
-#: ../gio/gthreadedresolver.c:193
-#, c-format
-msgid "Error reverse-resolving '%s': %s"
-msgstr "Fehler beim Rückwärtsauflösen von »%s«: %s"
-
-#: ../gio/gthreadedresolver.c:531 ../gio/gthreadedresolver.c:611
-#: ../gio/gthreadedresolver.c:711 ../gio/gthreadedresolver.c:761
+#: ../gio/gthreadedresolver.c:111 ../gio/gthreadedresolver.c:543
+#: ../gio/gthreadedresolver.c:623 ../gio/gthreadedresolver.c:723
+#: ../gio/gthreadedresolver.c:773
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "Kein DNS-Datensatz des angeforderten Typs für »%s«"
 
-#: ../gio/gthreadedresolver.c:536 ../gio/gthreadedresolver.c:716
+#: ../gio/gthreadedresolver.c:205
+#, c-format
+msgid "Error reverse-resolving '%s': %s"
+msgstr "Fehler beim Rückwärtsauflösen von »%s«: %s"
+
+#: ../gio/gthreadedresolver.c:548 ../gio/gthreadedresolver.c:728
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "»%s« kann vorübergehend nicht aufgelöst werden"
 
-#: ../gio/gthreadedresolver.c:541 ../gio/gthreadedresolver.c:721
+#: ../gio/gthreadedresolver.c:553 ../gio/gthreadedresolver.c:733
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Fehler beim Auflösen von »%s«"
