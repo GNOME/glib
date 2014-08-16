@@ -961,7 +961,7 @@ g_ascii_formatd (gchar       *buffer,
       if (*p == '+' || *p == '-')
         p++;
 
-      while (isdigit ((guchar)*p))
+      while (g_ascii_isdigit ((guchar)*p))
         p++;
 
       if (strncmp (p, decimal_point, decimal_point_len) == 0)
