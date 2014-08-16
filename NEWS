@@ -1,3 +1,36 @@
+Overview of changes in GLib 2.41.3
+==================================
+
+* g_clear_pointer and g_clear_object no longer use atomics
+
+* Bugs fixed:
+ 711547 win32: silence some build warnings
+ 725511 Compiled resource files should have the same /-separators everywhere
+ 725513 Some tests fail to build on W32
+ 725514 W32: gfileutils does not preserve errno correctly
+ 725515 test-printf fails on W32
+ 728730 gsocket: Set SO_NOSIGPIPE on sockets on Darwin
+ 729703 Leaks a GError in g_file_move
+ 730932 statically assert that reasonable assumptions about enums are true
+ 732085 gtype: Fast-path for g_type_is_a
+ 732754 GDBusMessage: optimise (de)serialisation of fixed arrays
+ 733345 ginetaddress: Add a precondition to g_inet_address_new_from_string()
+ 733576 Patches from static analysis run on 2.40
+ 733715 glib's configure.ac makes accidentally use of nested function
+ 733934 win32: improve the package installation dir lookup
+ 733960 W32: spawning a console process creates a new window when stdout...
+ 733969 Remove atomic aspects of g_clear_pointer/object
+ 733982 Do not crash when checking whether an instance type is of a given...
+ 734035 gedit hangs up when there's no GSettings key in the registry 
+
+* Translation updates:
+ Basque
+ Brazilian Portuguese
+ Lithuanian
+ Slovenian
+ Spanish
+
+
 Overview of changes in GLib 2.41.2
 ==================================
 
