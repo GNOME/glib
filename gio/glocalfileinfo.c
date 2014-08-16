@@ -1218,20 +1218,20 @@ get_content_type (const char          *basename,
 {
   if (is_symlink &&
       (symlink_broken || (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS)))
-    return g_strdup ("inode/symlink");
+    return g_content_type_from_mime_type ("inode/symlink");
   else if (statbuf != NULL && S_ISDIR(statbuf->st_mode))
-    return g_strdup ("inode/directory");
+    return g_content_type_from_mime_type ("inode/directory");
 #ifndef G_OS_WIN32
   else if (statbuf != NULL && S_ISCHR(statbuf->st_mode))
-    return g_strdup ("inode/chardevice");
+    return g_content_type_from_mime_type ("inode/chardevice");
   else if (statbuf != NULL && S_ISBLK(statbuf->st_mode))
-    return g_strdup ("inode/blockdevice");
+    return g_content_type_from_mime_type ("inode/blockdevice");
   else if (statbuf != NULL && S_ISFIFO(statbuf->st_mode))
-    return g_strdup ("inode/fifo");
+    return g_content_type_from_mime_type ("inode/fifo");
 #endif
 #ifdef S_ISSOCK
   else if (statbuf != NULL && S_ISSOCK(statbuf->st_mode))
-    return g_strdup ("inode/socket");
+    return g_content_type_from_mime_type ("inode/socket");
 #endif
   else
     {
