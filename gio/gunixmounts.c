@@ -150,6 +150,8 @@ struct _GUnixMountMonitor {
   GFileMonitor *fstab_monitor;
   GFileMonitor *mtab_monitor;
 
+  GList *mount_poller_mounts;
+
   GSource *proc_mounts_watch_source;
 };
 
@@ -161,6 +163,8 @@ static GUnixMountMonitor *the_mount_monitor = NULL;
 
 static GList *_g_get_unix_mounts (void);
 static GList *_g_get_unix_mount_points (void);
+
+static guint64 mount_poller_time = 0;
 
 G_DEFINE_TYPE (GUnixMountMonitor, g_unix_mount_monitor, G_TYPE_OBJECT);
 
@@ -188,6 +192,7 @@ G_DEFINE_TYPE (GUnixMountMonitor, g_unix_mount_monitor, G_TYPE_OBJECT);
 #endif
 
 #if (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
+#include <sys/param.h>
 #include <sys/ucred.h>
 #include <sys/mount.h>
 #include <fstab.h>
@@ -353,7 +358,7 @@ get_mtab_read_file (void)
 # else
   return _PATH_MOUNTED;
 # endif
-#else	
+#else
   return "/etc/mtab";
 #endif
 }
@@ -367,7 +372,7 @@ get_mtab_monitor_file (void)
 # else
   return _PATH_MOUNTED;
 # endif
-#else	
+#else
   return "/etc/mtab";
 #endif
 }
@@ -608,9 +613,9 @@ get_mtab_monitor_file (void)
 static GList *
 _g_get_unix_mounts (void)
 {
-#if defined(HAVE_GETVFSSTAT)
+#if defined(USE_STATVFS)
   struct statvfs *mntent = NULL;
-#elif defined(HAVE_GETFSSTAT)
+#elif defined(USE_STATFS)
   struct statfs *mntent = NULL;
 #else
   #error statfs juggling failed
@@ -621,9 +626,9 @@ _g_get_unix_mounts (void)
   GList *return_list;
   
   /* Pass NOWAIT to avoid blocking trying to update NFS mounts. */
-#if defined(HAVE_GETVFSSTAT)
+#if defined(USE_STATVFS) && defined(HAVE_GETVFSSTAT)
   num_mounts = getvfsstat (NULL, 0, ST_NOWAIT);
-#elif defined(HAVE_GETFSSTAT)
+#elif defined(USE_STATFS) && defined(HAVE_GETFSSTAT)
   num_mounts = getfsstat (NULL, 0, MNT_NOWAIT);
 #endif
   if (num_mounts == -1)
@@ -631,9 +636,9 @@ _g_get_unix_mounts (void)
 
   bufsize = num_mounts * sizeof (*mntent);
   mntent = g_malloc (bufsize);
-#if defined(HAVE_GETVFSSTAT)
+#if defined(USE_STATVFS) && defined(HAVE_GETVFSSTAT)
   num_mounts = getvfsstat (mntent, bufsize, ST_NOWAIT);
-#elif defined(HAVE_GETFSSTAT)
+#elif defined(USE_STATFS) && defined(HAVE_GETFSSTAT)
   num_mounts = getfsstat (mntent, bufsize, MNT_NOWAIT);
 #endif
   if (num_mounts == -1)
@@ -648,10 +653,13 @@ _g_get_unix_mounts (void)
       mount_entry->mount_path = g_strdup (mntent[i].f_mntonname);
       mount_entry->device_path = g_strdup (mntent[i].f_mntfromname);
       mount_entry->filesystem_type = g_strdup (mntent[i].f_fstypename);
-#if defined(HAVE_GETVFSSTAT)
+
+#if defined(USE_STATVFS)
       if (mntent[i].f_flag & ST_RDONLY)
-#elif defined(HAVE_GETFSSTAT)
+#elif defined(USE_STATFS)
       if (mntent[i].f_flags & MNT_RDONLY)
+#else
+      #error statfs juggling failed
 #endif
         mount_entry->is_read_only = TRUE;
 
@@ -1132,7 +1140,11 @@ get_mounts_timestamp (void)
   if (monitor_file)
     {
       if (stat (monitor_file, &buf) == 0)
-	return (guint64)buf.st_mtime;
+        return (guint64)buf.st_mtime;
+    }
+  else
+    {
+      return mount_poller_time;
     }
   return 0;
 }
@@ -1147,7 +1159,7 @@ get_mount_points_timestamp (void)
   if (monitor_file)
     {
       if (stat (monitor_file, &buf) == 0)
-	return (guint64)buf.st_mtime;
+        return (guint64)buf.st_mtime;
     }
   return 0;
 }
@@ -1199,9 +1211,9 @@ g_unix_mount_at (const char *mount_path,
       mount_entry = l->data;
 
       if (!found && strcmp (mount_path, mount_entry->mount_path) == 0)
-	found = mount_entry;
+        found = mount_entry;
       else
-	g_unix_mount_free (mount_entry);
+        g_unix_mount_free (mount_entry);
     }
   g_list_free (mounts);
 
@@ -1277,6 +1289,12 @@ g_unix_mount_monitor_finalize (GObject *object)
     {
       g_file_monitor_cancel (monitor->mtab_monitor);
       g_object_unref (monitor->mtab_monitor);
+    }
+
+  if (monitor->mount_poller_mounts != NULL)
+    {
+      g_list_foreach (monitor->mount_poller_mounts, (GFunc)g_unix_mount_free, NULL);
+      g_list_free (monitor->mount_poller_mounts);
     }
 
   the_mount_monitor = NULL;
@@ -1370,6 +1388,51 @@ proc_mounts_changed (GIOChannel   *channel,
   return TRUE;
 }
 
+static gboolean
+mount_change_poller (gpointer user_data)
+{
+  GUnixMountMonitor *mount_monitor;
+  GList *current_mounts;
+  gboolean has_changed = FALSE;
+
+  mount_monitor = user_data;
+  current_mounts = _g_get_unix_mounts ();
+
+  if (g_list_length (current_mounts) != g_list_length (mount_monitor->mount_poller_mounts))
+    {
+      g_list_foreach (mount_monitor->mount_poller_mounts, (GFunc)g_unix_mount_free, NULL);
+      has_changed = TRUE;
+    }
+  else
+    {
+      int i;
+
+      for (i = 0; i < g_list_length (current_mounts); i++)
+        {
+          GUnixMountEntry *m1;
+          GUnixMountEntry *m2;
+
+          m1 = (GUnixMountEntry *)g_list_nth_data (current_mounts, i);
+          m2 = (GUnixMountEntry *)g_list_nth_data (mount_monitor->mount_poller_mounts, i);
+          if (! has_changed && g_unix_mount_compare (m1, m2) != 0)
+            has_changed = TRUE;
+
+          g_unix_mount_free (m2);
+        }
+    }
+
+  g_list_free (mount_monitor->mount_poller_mounts);
+  mount_monitor->mount_poller_mounts = current_mounts;
+
+  if (has_changed)
+    {
+      mount_poller_time = (guint64)time (NULL);
+      g_signal_emit (mount_monitor, signals[MOUNTS_CHANGED], 0);
+    }
+
+  return TRUE;
+}
+
 static void
 g_unix_mount_monitor_init (GUnixMountMonitor *monitor)
 {
@@ -1423,6 +1486,18 @@ g_unix_mount_monitor_init (GUnixMountMonitor *monitor)
           g_object_unref (file);
           g_signal_connect (monitor->mtab_monitor, "changed", (GCallback)mtab_file_changed, monitor);
         }
+    }
+  else
+    {
+      monitor->proc_mounts_watch_source = g_timeout_source_new_seconds (3);
+      monitor->mount_poller_mounts = _g_get_unix_mounts ();
+      mount_poller_time = (guint64)time (NULL);
+      g_source_set_callback (monitor->proc_mounts_watch_source,
+                             (GSourceFunc)mount_change_poller,
+                             monitor, NULL);
+      g_source_attach (monitor->proc_mounts_watch_source,
+                       g_main_context_get_thread_default ());
+      g_source_unref (monitor->proc_mounts_watch_source);
     }
 }
 
