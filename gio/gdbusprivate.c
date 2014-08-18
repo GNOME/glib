@@ -1555,7 +1555,7 @@ continue_writing_in_idle_cb (gpointer user_data)
   return FALSE;
 }
 
-/*
+/**
  * @write_data: (transfer full) (allow-none):
  * @flush_data: (transfer full) (allow-none):
  * @close_data: (transfer full) (allow-none):
@@ -1908,7 +1908,7 @@ _g_dbus_debug_print_unlock (void)
   G_UNLOCK (print_lock);
 }
 
-/*
+/**
  * _g_dbus_initialize:
  *
  * Does various one-time init things such as

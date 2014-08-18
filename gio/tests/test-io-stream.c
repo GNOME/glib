@@ -75,7 +75,7 @@ test_io_stream_class_init (TestIOStreamClass *klass)
   giostream_class->get_output_stream = test_io_stream_get_output_stream;
 }
 
-/*
+/**
  * test_io_stream_new:
  * @input_stream: an input stream
  * @output_stream: an output stream

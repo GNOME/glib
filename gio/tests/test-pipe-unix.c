@@ -34,7 +34,7 @@
 #   error This module only exists on Unix
 #endif
 
-/*
+/**
  * test_pipe:
  * @is: (out) (allow-none): used to return a #GInputStream
  * @os: (out) (allow-none): used to return a #GOutputStream
@@ -80,7 +80,7 @@ test_pipe (GInputStream  **is,
   return TRUE;
 }
 
-/*
+/**
  * test_bidi_pipe:
  * @left: (out) (allow-none): used to return one #GIOStream
  * @right: (out) (allow-none): used to return the other #GIOStream

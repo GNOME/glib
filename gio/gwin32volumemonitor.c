@@ -46,7 +46,7 @@ G_DEFINE_TYPE_WITH_CODE (GWin32VolumeMonitor, g_win32_volume_monitor, G_TYPE_NAT
 							 "win32",
 							 0));
 							 
-/*
+/**
  * get_viewable_logical_drives:
  *
  * Returns the list of logical and viewable drives as defined by

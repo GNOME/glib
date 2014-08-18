@@ -299,7 +299,7 @@ psource_new()
 	return source;
 }
 
-/*
+/**
  * port_add:
  * @f:
  *
@@ -371,8 +371,8 @@ start_over:
     return errno;
 }
 
-/*
- * port_remove
+/**
+ * port_remove:
  *
  * < private >
  * Unsafe, need lock fen_lock.

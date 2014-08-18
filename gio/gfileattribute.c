@@ -135,7 +135,7 @@
  * where `nn` is a 2-digit hexadecimal number.
  */
 
-/*
+/**
  * _g_file_attribute_value_free:
  * @attr: a #GFileAttributeValue.
  *
@@ -151,7 +151,7 @@ _g_file_attribute_value_free (GFileAttributeValue *attr)
   g_free (attr);
 }
 
-/*
+/**
  * _g_file_attribute_value_clear:
  * @attr: a #GFileAttributeValue.
  *
@@ -178,7 +178,7 @@ _g_file_attribute_value_clear (GFileAttributeValue *attr)
   attr->type = G_FILE_ATTRIBUTE_TYPE_INVALID;
 }
 
-/*
+/**
  * g_file_attribute_value_set:
  * @attr: a #GFileAttributeValue to set the value in.
  * @new_value: a #GFileAttributeValue to get the value from.
@@ -207,7 +207,7 @@ _g_file_attribute_value_set (GFileAttributeValue        *attr,
     g_object_ref (attr->u.obj);
 }
 
-/*
+/**
  * _g_file_attribute_value_new:
  *
  * Creates a new file attribute.
@@ -240,7 +240,7 @@ _g_file_attribute_value_peek_as_pointer (GFileAttributeValue *attr)
   }
 }
 
-/*
+/**
  * g_file_attribute_value_dup:
  * @other: a #GFileAttributeValue to duplicate.
  *
@@ -314,7 +314,7 @@ escape_byte_string (const char *str)
     }
 }
 
-/*
+/**
  * _g_file_attribute_value_as_string:
  * @attr: a #GFileAttributeValue.
  *
@@ -384,7 +384,7 @@ _g_file_attribute_value_as_string (const GFileAttributeValue *attr)
   return str;
 }
 
-/*
+/**
  * _g_file_attribute_value_get_string:
  * @attr: a #GFileAttributeValue.
  *
@@ -404,7 +404,7 @@ _g_file_attribute_value_get_string (const GFileAttributeValue *attr)
   return attr->u.string;
 }
 
-/*
+/**
  * _g_file_attribute_value_get_byte_string:
  * @attr: a #GFileAttributeValue.
  *
@@ -435,7 +435,7 @@ _g_file_attribute_value_get_stringv (const GFileAttributeValue *attr)
   return attr->u.stringv;
 }
 
-/*
+/**
  * _g_file_attribute_value_get_boolean:
  * @attr: a #GFileAttributeValue.
  *
@@ -455,7 +455,7 @@ _g_file_attribute_value_get_boolean (const GFileAttributeValue *attr)
   return attr->u.boolean;
 }
 
-/*
+/**
  * _g_file_attribute_value_get_uint32:
  * @attr: a #GFileAttributeValue.
  *
@@ -475,7 +475,7 @@ _g_file_attribute_value_get_uint32 (const GFileAttributeValue *attr)
   return attr->u.uint32;
 }
 
-/*
+/**
  * _g_file_attribute_value_get_int32:
  * @attr: a #GFileAttributeValue.
  *
@@ -495,7 +495,7 @@ _g_file_attribute_value_get_int32 (const GFileAttributeValue *attr)
   return attr->u.int32;
 }
 
-/*
+/**
  * _g_file_attribute_value_get_uint64:
  * @attr: a #GFileAttributeValue.
  *
@@ -515,7 +515,7 @@ _g_file_attribute_value_get_uint64 (const GFileAttributeValue *attr)
   return attr->u.uint64;
 }
 
-/*
+/**
  * _g_file_attribute_value_get_int64:
  * @attr: a #GFileAttributeValue.
  *
@@ -535,7 +535,7 @@ _g_file_attribute_value_get_int64 (const GFileAttributeValue *attr)
   return attr->u.int64;
 }
 
-/*
+/**
  * _g_file_attribute_value_get_object:
  * @attr: a #GFileAttributeValue.
  *
@@ -617,7 +617,7 @@ _g_file_attribute_value_set_from_pointer (GFileAttributeValue *value,
     }
 }
 
-/*
+/**
  * _g_file_attribute_value_set_string:
  * @attr: a #GFileAttributeValue.
  * @string: a UTF-8 string to set within the type.
@@ -636,7 +636,7 @@ _g_file_attribute_value_set_string (GFileAttributeValue *attr,
   attr->u.string = g_strdup (string);
 }
 
-/*
+/**
  * _g_file_attribute_value_set_byte_string:
  * @attr: a #GFileAttributeValue.
  * @string: a byte string to set within the type.
@@ -668,7 +668,7 @@ _g_file_attribute_value_set_stringv (GFileAttributeValue *attr,
 }
 
 
-/*
+/**
  * _g_file_attribute_value_set_boolean:
  * @attr: a #GFileAttributeValue.
  * @value: a #gboolean to set within the type.
@@ -686,7 +686,7 @@ _g_file_attribute_value_set_boolean (GFileAttributeValue *attr,
   attr->u.boolean = !!value;
 }
 
-/*
+/**
  * _g_file_attribute_value_set_uint32:
  * @attr: a #GFileAttributeValue.
  * @value: a #guint32 to set within the type.
@@ -704,7 +704,7 @@ _g_file_attribute_value_set_uint32 (GFileAttributeValue *attr,
   attr->u.uint32 = value;
 }
 
-/*
+/**
  * _g_file_attribute_value_set_int32:
  * @attr: a #GFileAttributeValue.
  * @value: a #gint32 to set within the type.
@@ -722,7 +722,7 @@ _g_file_attribute_value_set_int32 (GFileAttributeValue *attr,
   attr->u.int32 = value;
 }
 
-/*
+/**
  * _g_file_attribute_value_set_uint64:
  * @attr: a #GFileAttributeValue.
  * @value: a #guint64 to set within the type.
@@ -740,7 +740,7 @@ _g_file_attribute_value_set_uint64 (GFileAttributeValue *attr,
   attr->u.uint64 = value;
 }
 
-/*
+/**
  * _g_file_attribute_value_set_int64:
  * @attr: a #GFileAttributeValue.
  * @value: a #gint64 to set within the type.
@@ -758,7 +758,7 @@ _g_file_attribute_value_set_int64 (GFileAttributeValue *attr,
   attr->u.int64 = value;
 }
 
-/*
+/**
  * _g_file_attribute_value_set_object:
  * @attr: a #GFileAttributeValue.
  * @obj: a #GObject.

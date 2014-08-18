@@ -48,7 +48,7 @@ const uint32_t KQUEUE_VNODE_FLAGS =
 
 extern int get_kqueue_descriptor(void);
 
-/*
+/**
  * _kqueue_thread_collect_fds:
  * @events: a #kevents - the list of events to monitor. Will be extended
  *     with new items.
@@ -85,7 +85,7 @@ _kqueue_thread_collect_fds (kevents *events)
 }
 
 
-/*
+/**
  * _kqueue_thread_cleanup_fds:
  * @events: a #kevents -- list of events to monitor. Cancelled
  *     subscriptions will be removed from it, and its size
@@ -133,7 +133,7 @@ _kqueue_thread_cleanup_fds (kevents *events)
 }
 
 
-/*
+/**
  * _kqueue_thread_drop_fd:
  * @events: a #kevents -- list of events to monitor. Cancelled
  *     subscriptions will be removed from it, and its size
@@ -160,7 +160,7 @@ _kqueue_thread_drop_fd (kevents *events, int fd)
     } 
 }
 
-/*
+/**
  * _kqueue_thread_func:
  * @arg: a pointer to int -- control file descriptor.
  *
@@ -265,7 +265,7 @@ _kqueue_thread_func (void *arg)
 }
 
 
-/*
+/**
  * _kqueue_thread_push_fd:
  * @fd: a file descriptor
  *
@@ -284,7 +284,7 @@ _kqueue_thread_push_fd (int fd)
 }
 
 
-/*
+/**
  * _kqueue_thread_remove_fd:
  * @fd: a file descriptor
  *

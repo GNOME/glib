@@ -117,7 +117,7 @@ _win32_get_displayname (const char *drive)
   return name ? name : g_strdup (drive);
 }
 
-/*
+/**
  * _g_win32_mount_new:
  * @volume_monitor: a #GVolumeMonitor.
  * @path: a win32 path.

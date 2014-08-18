@@ -139,7 +139,7 @@ g_winhttp_vfs_init (GWinHttpVfs *vfs)
   g_free (wagent);
 }
 
-/*
+/**
  * g_winhttp_vfs_new:
  *
  * Returns a new #GVfs handle for a WinHttp vfs.

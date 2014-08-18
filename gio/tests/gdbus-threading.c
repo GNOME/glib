@@ -469,7 +469,7 @@ ensure_connection_works (GDBusConnection *conn)
   g_variant_unref (v);
 }
 
-/*
+/**
  * get_sync_in_thread:
  * @data: (type guint): delay in microseconds
  *
