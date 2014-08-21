@@ -152,6 +152,8 @@ gssize        g_task_propagate_int             (GTask           *task,
                                                 GError         **error);
 GLIB_AVAILABLE_IN_2_36
 gboolean      g_task_had_error                 (GTask           *task);
+GLIB_AVAILABLE_IN_2_44
+gboolean      g_task_get_completed             (GTask           *task);
 
 G_END_DECLS
 

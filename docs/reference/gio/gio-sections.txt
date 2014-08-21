@@ -4233,6 +4233,7 @@ g_task_propagate_boolean
 g_task_propagate_int
 g_task_propagate_pointer
 g_task_had_error
+g_task_get_completed
 <SUBSECTION>
 g_task_run_in_thread
 g_task_run_in_thread_sync

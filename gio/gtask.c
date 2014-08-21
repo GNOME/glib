@@ -23,6 +23,8 @@
 #include "gasyncresult.h"
 #include "gcancellable.h"
 
+#include "glibintl.h"
+
 /**
  * SECTION:gtask
  * @short_description: Cancellable synchronous or asynchronous task
@@ -547,6 +549,7 @@ struct _GTask {
 
   GAsyncReadyCallback callback;
   gpointer callback_data;
+  gboolean completed;
 
   GTaskThreadFunc task_func;
   GMutex lock;
@@ -573,6 +576,11 @@ struct _GTaskClass
 {
   GObjectClass parent_class;
 };
+
+typedef enum
+{
+  PROP_COMPLETED = 1,
+} GTaskProperty;
 
 static void g_task_thread_pool_resort (void);
 
@@ -1074,9 +1082,17 @@ static void
 g_task_return_now (GTask *task)
 {
   g_main_context_push_thread_default (task->context);
-  task->callback (task->source_object,
-                  G_ASYNC_RESULT (task),
-                  task->callback_data);
+
+  if (task->callback != NULL)
+    {
+      task->callback (task->source_object,
+                      G_ASYNC_RESULT (task),
+                      task->callback_data);
+    }
+
+  task->completed = TRUE;
+  g_object_notify (G_OBJECT (task), "completed");
+
   g_main_context_pop_thread_default (task->context);
 }
 
@@ -1103,7 +1119,7 @@ g_task_return (GTask           *task,
   if (type == G_TASK_RETURN_SUCCESS)
     task->result_set = TRUE;
 
-  if (task->synchronous || !task->callback)
+  if (task->synchronous)
     return;
 
   /* Normally we want to invoke the task's callback when its return
@@ -1354,6 +1370,7 @@ g_task_run_in_thread (GTask           *task,
  * Normally this is used with tasks created with a %NULL
  * `callback`, but note that even if the task does
  * have a callback, it will not be invoked when @task_func returns.
+ * #GTask:completed will be set to %TRUE just before this function returns.
  *
  * Since: 2.36
  */
@@ -1372,6 +1389,11 @@ g_task_run_in_thread_sync (GTask           *task,
     g_cond_wait (&task->cond, &task->lock);
 
   g_mutex_unlock (&task->lock);
+
+  /* Notify of completion in this thread. */
+  task->completed = TRUE;
+  g_object_notify (G_OBJECT (task), "completed");
+
   g_object_unref (task);
 }
 
@@ -1719,6 +1741,26 @@ g_task_had_error (GTask *task)
 }
 
 /**
+ * g_task_get_completed:
+ * @task: a #GTask.
+ *
+ * Gets the value of #GTask:completed. This changes from %FALSE to %TRUE after
+ * the task’s callback is invoked, and will return %FALSE if called from inside
+ * the callback.
+ *
+ * Returns: %TRUE if the task has completed, %FALSE otherwise.
+ *
+ * Since: 2.44
+ */
+gboolean
+g_task_get_completed (GTask *task)
+{
+  g_return_val_if_fail (G_IS_TASK (task), FALSE);
+
+  return task->completed;
+}
+
+/**
  * g_task_is_valid:
  * @result: (type Gio.AsyncResult): A #GAsyncResult
  * @source_object: (allow-none) (type GObject): the source object
@@ -1791,11 +1833,49 @@ g_task_thread_pool_resort (void)
 }
 
 static void
+g_task_get_property (GObject    *object,
+                     guint       prop_id,
+                     GValue     *value,
+                     GParamSpec *pspec)
+{
+  GTask *task = G_TASK (object);
+
+  switch ((GTaskProperty) prop_id)
+    {
+    case PROP_COMPLETED:
+      g_value_set_boolean (value, task->completed);
+      break;
+    }
+}
+
+static void
 g_task_class_init (GTaskClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->get_property = g_task_get_property;
   gobject_class->finalize = g_task_finalize;
+
+  /**
+   * GTask:completed:
+   *
+   * Whether the task has completed, meaning its callback (if set) has been
+   * invoked. This can only happen after g_task_return_pointer(),
+   * g_task_return_error() or one of the other return functions have been called
+   * on the task.
+   *
+   * This property is guaranteed to change from %FALSE to %TRUE exactly once.
+   *
+   * The #GObject::notify signal for this change is emitted in the same main
+   * context as the task’s callback, immediately after that callback is invoked.
+   *
+   * Since: 2.44
+   */
+  g_object_class_install_property (gobject_class, PROP_COMPLETED,
+    g_param_spec_boolean ("completed",
+                          P_("Task completed"),
+                          P_("Whether the task has completed yet"),
+                          FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 }
 
 static gpointer

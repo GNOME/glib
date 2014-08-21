@@ -20,6 +20,44 @@ static gssize magic;
  */
 #define g_dummy_object_new g_socket_client_new
 
+static gboolean
+idle_quit_loop (gpointer user_data)
+{
+  g_main_loop_quit (loop);
+  return FALSE;
+}
+
+static void
+completed_cb (GObject    *gobject,
+              GParamSpec *pspec,
+              gpointer    user_data)
+{
+	gboolean *notification_emitted = user_data;
+	*notification_emitted = TRUE;
+}
+
+static void
+wait_for_completed_notification (GTask *task)
+{
+  gboolean notification_emitted = FALSE;
+  gboolean is_completed = FALSE;
+
+  /* Hold a ref. so we can check the :completed property afterwards. */
+  g_object_ref (task);
+
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
+  g_idle_add (idle_quit_loop, NULL);
+  g_main_loop_run (loop);
+  g_assert_true (notification_emitted);
+
+  g_assert_true (g_task_get_completed (task));
+  g_object_get (G_OBJECT (task), "completed", &is_completed, NULL);
+  g_assert_true (is_completed);
+
+  g_object_unref (task);
+}
+
 /* test_basic */
 
 static void
@@ -34,6 +72,7 @@ basic_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   *result_out = g_task_propagate_int (G_TASK (result), &error);
   g_assert_no_error (error);
@@ -66,16 +105,20 @@ test_basic (void)
   GTask *task;
   gssize result;
   gboolean task_data_destroyed = FALSE;
+  gboolean notification_emitted = FALSE;
 
   task = g_task_new (NULL, NULL, basic_callback, &result);
   g_task_set_task_data (task, &task_data_destroyed, basic_destroy_notify);
   g_object_add_weak_pointer (G_OBJECT (task), (gpointer *)&task);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
 
   g_idle_add (basic_return, task);
   g_main_loop_run (loop);
 
   g_assert_cmpint (result, ==, magic);
   g_assert (task_data_destroyed == TRUE);
+  g_assert_true (notification_emitted);
   g_assert (task == NULL);
 }
 
@@ -93,6 +136,7 @@ error_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   *result_out = g_task_propagate_int (G_TASK (result), &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
@@ -129,9 +173,12 @@ test_error (void)
   gssize result;
   gboolean first_task_data_destroyed = FALSE;
   gboolean second_task_data_destroyed = FALSE;
+  gboolean notification_emitted = FALSE;
 
   task = g_task_new (NULL, NULL, error_callback, &result);
   g_object_add_weak_pointer (G_OBJECT (task), (gpointer *)&task);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
 
   g_assert (first_task_data_destroyed == FALSE);
   g_task_set_task_data (task, &first_task_data_destroyed, error_destroy_notify);
@@ -147,6 +194,7 @@ test_error (void)
 
   g_assert_cmpint (result, ==, -1);
   g_assert (second_task_data_destroyed == TRUE);
+  g_assert_true (notification_emitted);
   g_assert (task == NULL);
 }
 
@@ -155,6 +203,7 @@ test_error (void)
  * next iteration.
  */
 gboolean same_result = FALSE;
+gboolean same_notification_emitted = FALSE;
 
 static void
 same_callback (GObject      *object,
@@ -168,6 +217,7 @@ same_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   *result_out = g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_no_error (error);
@@ -184,6 +234,8 @@ same_start (gpointer user_data)
   task = g_task_new (NULL, NULL, same_callback, &same_result);
   *weak_pointer = task;
   g_object_add_weak_pointer (G_OBJECT (task), weak_pointer);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &same_notification_emitted);
 
   g_task_return_boolean (task, TRUE);
   g_object_unref (task);
@@ -191,6 +243,7 @@ same_start (gpointer user_data)
   /* same_callback should not have been invoked yet */
   g_assert (same_result == FALSE);
   g_assert (*weak_pointer == task);
+  g_assert_false (same_notification_emitted);
 
   return FALSE;
 }
@@ -205,11 +258,13 @@ test_return_from_same_iteration (void)
 
   g_assert (same_result == TRUE);
   g_assert (weak_pointer == NULL);
+  g_assert_true (same_notification_emitted);
 }
 
 /* test_return_from_toplevel: calling g_task_return_* from outside any
  * main loop completes the task inside the main loop.
  */
+gboolean toplevel_notification_emitted = FALSE;
 
 static void
 toplevel_callback (GObject      *object,
@@ -223,6 +278,7 @@ toplevel_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   *result_out = g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_no_error (error);
@@ -238,6 +294,8 @@ test_return_from_toplevel (void)
 
   task = g_task_new (NULL, NULL, toplevel_callback, &result);
   g_object_add_weak_pointer (G_OBJECT (task), (gpointer *)&task);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &toplevel_notification_emitted);
 
   g_task_return_boolean (task, TRUE);
   g_object_unref (task);
@@ -245,11 +303,13 @@ test_return_from_toplevel (void)
   /* toplevel_callback should not have been invoked yet */
   g_assert (result == FALSE);
   g_assert (task != NULL);
+  g_assert_false (toplevel_notification_emitted);
 
   g_main_loop_run (loop);
 
   g_assert (result == TRUE);
   g_assert (task == NULL);
+  g_assert_true (toplevel_notification_emitted);
 }
 
 /* test_return_from_anon_thread: calling g_task_return_* from a
@@ -257,6 +317,7 @@ test_return_from_toplevel (void)
  * task in the task's context/thread.
  */
 
+gboolean anon_thread_notification_emitted = FALSE;
 GThread *anon_thread;
 
 static void
@@ -271,6 +332,7 @@ anon_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   g_assert (g_thread_self () == main_thread);
 
@@ -309,6 +371,9 @@ test_return_from_anon_thread (void)
 
   task = g_task_new (NULL, NULL, anon_callback, &result);
   g_object_add_weak_pointer (G_OBJECT (task), (gpointer *)&task);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb,
+                    &anon_thread_notification_emitted);
 
   g_idle_add (anon_start, task);
   g_main_loop_run (loop);
@@ -317,6 +382,7 @@ test_return_from_anon_thread (void)
 
   g_assert_cmpint (result, ==, magic);
   g_assert (task == NULL);
+  g_assert_true (anon_thread_notification_emitted);
 }
 
 /* test_return_from_wrong_thread: calling g_task_return_* from a
@@ -324,6 +390,7 @@ test_return_from_anon_thread (void)
  * task in the task's context/thread.
  */
 
+gboolean wrong_thread_notification_emitted = FALSE;
 GThread *wrong_thread;
 
 static void
@@ -338,6 +405,7 @@ wrong_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   g_assert (g_thread_self () == main_thread);
 
@@ -385,6 +453,9 @@ test_return_from_wrong_thread (void)
 
   task = g_task_new (NULL, NULL, wrong_callback, &result);
   g_object_add_weak_pointer (G_OBJECT (task), (gpointer *)&task);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb,
+                    &wrong_thread_notification_emitted);
 
   g_idle_add (wrong_start, task);
   g_main_loop_run (loop);
@@ -393,6 +464,7 @@ test_return_from_wrong_thread (void)
 
   g_assert_cmpint (result, ==, magic);
   g_assert (task == NULL);
+  g_assert_true (wrong_thread_notification_emitted);
 }
 
 /* test_no_callback */
@@ -408,16 +480,17 @@ test_no_callback (void)
   g_task_return_boolean (task, TRUE);
   g_object_unref (task);
 
-  /* Since there's no callback, g_task_return_boolean() will
-   * not have queued an idle source and taken a ref on task,
-   * so we just dropped the last ref.
-   */
-  g_assert (task == NULL);
+  /* Even though there’s no callback, the :completed notification has to
+   * happen in an idle handler. */
+  g_assert_nonnull (task);
+  wait_for_completed_notification (task);
+  g_assert_null (task);
 }
 
 /* test_report_error */
 
 static void test_report_error (void);
+gboolean error_notification_emitted = FALSE;
 
 static void
 report_callback (GObject      *object,
@@ -434,6 +507,7 @@ report_callback (GObject      *object,
   g_assert (g_async_result_is_tagged (result, test_report_error));
   g_assert (g_task_get_source_tag (G_TASK (result)) == test_report_error);
   g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   ret = g_task_propagate_int (G_TASK (result), &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
@@ -442,6 +516,8 @@ report_callback (GObject      *object,
 
   *weak_pointer = result;
   g_object_add_weak_pointer (G_OBJECT (result), weak_pointer);
+  g_signal_connect (result, "notify::completed",
+                    (GCallback) completed_cb, &error_notification_emitted);
 
   g_main_loop_quit (loop);
 }
@@ -458,6 +534,7 @@ test_report_error (void)
   g_main_loop_run (loop);
 
   g_assert (weak_pointer == NULL);
+  g_assert_true (error_notification_emitted);
 }
 
 /* test_priority: tasks complete in priority order */
@@ -476,6 +553,7 @@ priority_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_no_error (error);
@@ -614,6 +692,7 @@ return_if_cancelled_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
@@ -628,24 +707,37 @@ test_return_if_cancelled (void)
   GTask *task;
   GCancellable *cancellable;
   gboolean cancelled;
+  gboolean notification_emitted = FALSE;
 
   cancellable = g_cancellable_new ();
 
   task = g_task_new (NULL, cancellable, return_if_cancelled_callback, NULL);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
+
   g_cancellable_cancel (cancellable);
   cancelled = g_task_return_error_if_cancelled (task);
   g_assert (cancelled);
+  g_assert_false (notification_emitted);
   g_main_loop_run (loop);
   g_object_unref (task);
+  g_assert_true (notification_emitted);
   g_cancellable_reset (cancellable);
 
+  notification_emitted = FALSE;
+
   task = g_task_new (NULL, cancellable, return_if_cancelled_callback, NULL);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
+
   g_task_set_check_cancellable (task, FALSE);
   g_cancellable_cancel (cancellable);
   cancelled = g_task_return_error_if_cancelled (task);
   g_assert (cancelled);
+  g_assert_false (notification_emitted);
   g_main_loop_run (loop);
   g_object_unref (task);
+  g_assert_true (notification_emitted);
   g_object_unref (cancellable);
 }
 
@@ -681,6 +773,7 @@ run_in_thread_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   ret = g_task_propagate_int (G_TASK (result), &error);
   g_assert_no_error (error);
@@ -701,6 +794,7 @@ run_in_thread_thread (GTask        *task,
   g_assert (source_object == g_task_get_source_object (task));
   g_assert (task_data == g_task_get_task_data (task));
   g_assert (cancellable == g_task_get_cancellable (task));
+  g_assert_false (g_task_get_completed (task));
 
   g_assert (g_thread_self () != main_thread);
 
@@ -718,10 +812,13 @@ test_run_in_thread (void)
   GTask *task;
   volatile gboolean thread_ran = FALSE;
   volatile gboolean weak_notify_ran = FALSE;
+  gboolean notification_emitted = FALSE;
   gboolean done = FALSE;
 
   task = g_task_new (NULL, NULL, run_in_thread_callback, &done);
   g_object_weak_ref (G_OBJECT (task), task_weak_notify, (gpointer)&weak_notify_ran);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
 
   g_task_set_task_data (task, (gpointer)&thread_ran, NULL);
   g_task_run_in_thread (task, run_in_thread_thread);
@@ -738,6 +835,7 @@ test_run_in_thread (void)
   g_main_loop_run (loop);
 
   g_assert (done == TRUE);
+  g_assert_true (notification_emitted);
 
   g_mutex_lock (&run_in_thread_mutex);
   while (!weak_notify_ran)
@@ -767,6 +865,7 @@ run_in_thread_sync_thread (GTask        *task,
   g_assert (source_object == g_task_get_source_object (task));
   g_assert (task_data == g_task_get_task_data (task));
   g_assert (cancellable == g_task_get_cancellable (task));
+  g_assert_false (g_task_get_completed (task));
 
   g_assert (g_thread_self () != main_thread);
 
@@ -780,9 +879,13 @@ test_run_in_thread_sync (void)
   GTask *task;
   gboolean thread_ran = FALSE;
   gssize ret;
+  gboolean notification_emitted = FALSE;
   GError *error = NULL;
 
   task = g_task_new (NULL, NULL, run_in_thread_sync_callback, NULL);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb,
+                    &notification_emitted);
 
   g_task_set_task_data (task, &thread_ran, NULL);
   g_task_run_in_thread_sync (task, run_in_thread_sync_thread);
@@ -790,6 +893,8 @@ test_run_in_thread_sync (void)
   g_assert (thread_ran == TRUE);
   g_assert (task != NULL);
   g_assert (!g_task_had_error (task));
+  g_assert_true (g_task_get_completed (task));
+  g_assert_true (notification_emitted);
 
   ret = g_task_propagate_int (task, &error);
   g_assert_no_error (error);
@@ -817,6 +922,7 @@ quit_main_loop_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   ret = g_task_propagate_boolean (G_TASK (result), &error);
   g_assert_no_error (error);
@@ -1018,6 +1124,7 @@ return_on_cancel_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   ret = g_task_propagate_int (G_TASK (result), &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
@@ -1070,6 +1177,7 @@ test_return_on_cancel (void)
   volatile ThreadState thread_state;
   volatile gboolean weak_notify_ran = FALSE;
   gboolean callback_ran;
+  gboolean notification_emitted = FALSE;
 
   cancellable = g_cancellable_new ();
 
@@ -1079,6 +1187,8 @@ test_return_on_cancel (void)
   callback_ran = FALSE;
   thread_state = THREAD_STARTING;
   task = g_task_new (NULL, cancellable, return_on_cancel_callback, &callback_ran);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
 
   g_task_set_task_data (task, (gpointer)&thread_state, NULL);
   g_mutex_lock (&roc_init_mutex);
@@ -1099,14 +1209,18 @@ test_return_on_cancel (void)
 
   g_assert (thread_state == THREAD_COMPLETED);
   g_assert (callback_ran == TRUE);
+  g_assert_true (notification_emitted);
 
   g_cancellable_reset (cancellable);
 
   /* If return-on-cancel is TRUE, it does return early */
   callback_ran = FALSE;
+  notification_emitted = FALSE;
   thread_state = THREAD_STARTING;
   task = g_task_new (NULL, cancellable, return_on_cancel_callback, &callback_ran);
   g_object_weak_ref (G_OBJECT (task), task_weak_notify, (gpointer)&weak_notify_ran);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
   g_task_set_return_on_cancel (task, TRUE);
 
   g_task_set_task_data (task, (gpointer)&thread_state, NULL);
@@ -1139,14 +1253,18 @@ test_return_on_cancel (void)
     g_cond_wait (&run_in_thread_cond, &run_in_thread_mutex);
   g_mutex_unlock (&run_in_thread_mutex);
 
+  g_assert_true (notification_emitted);
   g_cancellable_reset (cancellable);
 
   /* If the task is already cancelled before it starts, it returns
    * immediately, but the thread func still runs.
    */
   callback_ran = FALSE;
+  notification_emitted = FALSE;
   thread_state = THREAD_STARTING;
   task = g_task_new (NULL, cancellable, return_on_cancel_callback, &callback_ran);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
   g_task_set_return_on_cancel (task, TRUE);
 
   g_cancellable_cancel (cancellable);
@@ -1171,6 +1289,7 @@ test_return_on_cancel (void)
   g_mutex_unlock (&roc_finish_mutex);
 
   g_assert (thread_state == THREAD_CANCELLED);
+  g_assert_true (notification_emitted);
 
   g_object_unref (cancellable);
 }
@@ -1325,6 +1444,7 @@ return_on_cancel_atomic_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   ret = g_task_propagate_int (G_TASK (result), &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
@@ -1333,13 +1453,6 @@ return_on_cancel_atomic_callback (GObject      *object,
 
   *callback_ran = TRUE;
   g_main_loop_quit (loop);
-}
-
-static gboolean
-idle_quit_loop (gpointer user_data)
-{
-  g_main_loop_quit (loop);
-  return FALSE;
 }
 
 static void
@@ -1353,6 +1466,7 @@ return_on_cancel_atomic_thread (GTask        *task,
   g_assert (source_object == g_task_get_source_object (task));
   g_assert (task_data == g_task_get_task_data (task));
   g_assert (cancellable == g_task_get_cancellable (task));
+  g_assert_false (g_task_get_completed (task));
 
   g_assert (g_thread_self () != main_thread);
   g_assert_cmpint (*state, ==, 0);
@@ -1395,6 +1509,7 @@ test_return_on_cancel_atomic (void)
   GTask *task;
   GCancellable *cancellable;
   volatile gint state;
+  gboolean notification_emitted = FALSE;
   gboolean callback_ran;
 
   cancellable = g_cancellable_new ();
@@ -1406,6 +1521,8 @@ test_return_on_cancel_atomic (void)
   callback_ran = FALSE;
   task = g_task_new (NULL, cancellable, return_on_cancel_atomic_callback, &callback_ran);
   g_task_set_return_on_cancel (task, TRUE);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
 
   g_task_set_task_data (task, (gpointer)&state, NULL);
   g_task_run_in_thread (task, return_on_cancel_atomic_thread);
@@ -1435,6 +1552,7 @@ test_return_on_cancel_atomic (void)
   g_assert (callback_ran == FALSE);
   g_main_loop_run (loop);
   g_assert (callback_ran == TRUE);
+  g_assert_true (notification_emitted);
 
   g_cancellable_reset (cancellable);
 
@@ -1445,8 +1563,11 @@ test_return_on_cancel_atomic (void)
    */
   state = 0;
   callback_ran = FALSE;
+  notification_emitted = FALSE;
   task = g_task_new (NULL, cancellable, return_on_cancel_atomic_callback, &callback_ran);
   g_task_set_return_on_cancel (task, TRUE);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
 
   g_task_set_task_data (task, (gpointer)&state, NULL);
   g_task_run_in_thread (task, return_on_cancel_atomic_thread);
@@ -1476,6 +1597,7 @@ test_return_on_cancel_atomic (void)
 
   g_main_loop_run (loop);
   g_assert (callback_ran == TRUE);
+  g_assert_true (notification_emitted);
 
   while (state == 5)
     g_cond_wait (&roca_cond_2, &roca_mutex_2);
@@ -1508,9 +1630,15 @@ test_return_pointer (void)
   g_task_return_pointer (task, object, g_object_unref);
   g_assert_cmpint (object->ref_count, ==, 1);
 
+  /* Task and object are reffed until the :completed notification in idle. */
   g_object_unref (task);
-  g_assert (task == NULL);
-  g_assert (object == NULL);
+  g_assert_nonnull (task);
+  g_assert_nonnull (object);
+
+  wait_for_completed_notification (task);
+
+  g_assert_null (task);
+  g_assert_null (object);
 
   /* Likewise, if the return value is overwritten by an error */
   object = (GObject *)g_dummy_object_new ();
@@ -1533,8 +1661,13 @@ test_return_pointer (void)
 
   g_object_unref (task);
   g_object_unref (cancellable);
-  g_assert (task == NULL);
-  g_assert (object == NULL);
+  g_assert_nonnull (task);
+  g_assert_nonnull (object);
+
+  wait_for_completed_notification (task);
+
+  g_assert_null (task);
+  g_assert_null (object);
   
   /* If we read back the return value, we steal its ref */
   object = (GObject *)g_dummy_object_new ();
@@ -1552,10 +1685,13 @@ test_return_pointer (void)
   g_assert_cmpint (object->ref_count, ==, 1);
 
   g_object_unref (task);
-  g_assert (task == NULL);
+  g_assert_nonnull (task);
   g_assert_cmpint (object->ref_count, ==, 1);
   g_object_unref (object);
   g_assert (object == NULL);
+
+  wait_for_completed_notification (task);
+  g_assert_null (task);
 }
 
 /* test_object_keepalive: GTask takes a ref on its source object */
@@ -1574,6 +1710,7 @@ keepalive_callback (GObject      *object,
   g_assert (g_task_is_valid (result, object));
   g_assert (g_async_result_get_user_data (result) == user_data);
   g_assert (!g_task_had_error (G_TASK (result)));
+  g_assert_false (g_task_get_completed (G_TASK (result)));
 
   *result_out = g_task_propagate_int (G_TASK (result), &error);
   g_assert_no_error (error);
@@ -1588,12 +1725,15 @@ test_object_keepalive (void)
   GTask *task;
   gssize result;
   int ref_count;
+  gboolean notification_emitted = FALSE;
 
   keepalive_object = object = (GObject *)g_dummy_object_new ();
   g_object_add_weak_pointer (object, (gpointer *)&object);
 
   task = g_task_new (object, NULL, keepalive_callback, &result);
   g_object_add_weak_pointer (G_OBJECT (task), (gpointer *)&task);
+  g_signal_connect (task, "notify::completed",
+                    (GCallback) completed_cb, &notification_emitted);
 
   ref_count = object->ref_count;
   g_assert_cmpint (ref_count, >, 1);
@@ -1611,6 +1751,7 @@ test_object_keepalive (void)
 
   g_assert (object != NULL);
   g_assert_cmpint (result, ==, magic);
+  g_assert_true (notification_emitted);
 
   g_object_unref (task);
   g_assert (task == NULL);
