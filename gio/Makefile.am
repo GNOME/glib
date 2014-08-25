@@ -302,6 +302,8 @@ gdbus_daemon_sources = \
 
 win32_actual_sources = \
 	$(gdbus_daemon_sources) \
+	gwin32registrykey.c \
+	gwin32registrykey.h \
 	gcontenttype-win32.c \
 	gwin32mount.c \
 	gwin32mount.h \
