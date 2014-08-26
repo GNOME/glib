@@ -1291,11 +1291,7 @@ g_unix_mount_monitor_finalize (GObject *object)
       g_object_unref (monitor->mtab_monitor);
     }
 
-  if (monitor->mount_poller_mounts != NULL)
-    {
-      g_list_foreach (monitor->mount_poller_mounts, (GFunc)g_unix_mount_free, NULL);
-      g_list_free (monitor->mount_poller_mounts);
-    }
+  g_list_free_full (monitor->mount_poller_mounts, (GDestroyNotify)g_unix_mount_free);
 
   the_mount_monitor = NULL;
 
@@ -1392,41 +1388,33 @@ static gboolean
 mount_change_poller (gpointer user_data)
 {
   GUnixMountMonitor *mount_monitor;
-  GList *current_mounts;
+  GList *current_mounts, *new_it, *old_it;
   gboolean has_changed = FALSE;
 
   mount_monitor = user_data;
   current_mounts = _g_get_unix_mounts ();
 
-  if (g_list_length (current_mounts) != g_list_length (mount_monitor->mount_poller_mounts))
+  for ( new_it = current_mounts, old_it = mount_monitor->mount_poller_mounts;
+        new_it != NULL && old_it != NULL;
+        new_it = g_list_next (new_it), old_it = g_list_next (old_it) )
     {
-      g_list_foreach (mount_monitor->mount_poller_mounts, (GFunc)g_unix_mount_free, NULL);
-      has_changed = TRUE;
-    }
-  else
-    {
-      int i;
-
-      for (i = 0; i < g_list_length (current_mounts); i++)
+      if (g_unix_mount_compare (new_it->data, old_it->data) != 0)
         {
-          GUnixMountEntry *m1;
-          GUnixMountEntry *m2;
-
-          m1 = (GUnixMountEntry *)g_list_nth_data (current_mounts, i);
-          m2 = (GUnixMountEntry *)g_list_nth_data (mount_monitor->mount_poller_mounts, i);
-          if (! has_changed && g_unix_mount_compare (m1, m2) != 0)
-            has_changed = TRUE;
-
-          g_unix_mount_free (m2);
+          has_changed = TRUE;
+          break;
         }
     }
+  if (!(new_it == NULL && old_it == NULL))
+    has_changed = TRUE;
 
-  g_list_free (mount_monitor->mount_poller_mounts);
+  g_list_free_full (mount_monitor->mount_poller_mounts,
+                    (GDestroyNotify)g_unix_mount_free);
+
   mount_monitor->mount_poller_mounts = current_mounts;
 
   if (has_changed)
     {
-      mount_poller_time = (guint64)time (NULL);
+      mount_poller_time = (guint64)g_get_monotonic_time ();
       g_signal_emit (mount_monitor, signals[MOUNTS_CHANGED], 0);
     }
 
@@ -1491,7 +1479,7 @@ g_unix_mount_monitor_init (GUnixMountMonitor *monitor)
     {
       monitor->proc_mounts_watch_source = g_timeout_source_new_seconds (3);
       monitor->mount_poller_mounts = _g_get_unix_mounts ();
-      mount_poller_time = (guint64)time (NULL);
+      mount_poller_time = (guint64)g_get_monotonic_time ();
       g_source_set_callback (monitor->proc_mounts_watch_source,
                              (GSourceFunc)mount_change_poller,
                              monitor, NULL);
