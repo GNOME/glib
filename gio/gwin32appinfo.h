@@ -1,6 +1,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  *
  * Copyright (C) 2006-2007 Red Hat, Inc.
+ * Copyright (C) 2014 Руслан Ижбулатов
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,7 +16,8 @@
  * You should have received a copy of the GNU Lesser General
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  *
- * Author: Alexander Larsson <alexl@redhat.com>
+ * Authors: Alexander Larsson <alexl@redhat.com>
+ *          Руслан Ижбулатов  <lrn1986@gmail.com>
  */
 
 #ifndef __G_WIN32_APP_INFO_H__
