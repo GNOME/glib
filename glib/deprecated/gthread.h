@@ -43,6 +43,8 @@ typedef enum
   G_THREAD_PRIORITY_URGENT
 } GThreadPriority;
 
+#endif
+
 struct  _GThread
 {
   /*< private >*/
@@ -51,6 +53,8 @@ struct  _GThread
   gboolean joinable;
   GThreadPriority priority;
 };
+
+#ifndef G_DISABLE_DEPRECATED
 
 typedef struct _GThreadFunctions GThreadFunctions;
 struct _GThreadFunctions
