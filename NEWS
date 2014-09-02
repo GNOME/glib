@@ -1,3 +1,32 @@
+Overview of changes in GLib 2.41.4
+==================================
+
+* GApplication now has binding-friendly API to handle
+  commandline options: g_application_add_main_option
+
+* G_GNUC_BEGIN_IGNORE_DEPRECATIONS works with clang
+
+* Bugs fixed:
+ 583330 poll list of mounted file systems (no mtab support)
+ 727455 Command line option parsing from bindings
+ 734126 add G_GNUC_BEGIN_IGNORE_DEPRECATIONS macro for clang
+ 735179 gsocketclient: Handle cancellation between CONNECTING...
+ 735297 Docs claim that GThread struct is deprecated 
+
+* Translation updates:
+  Assamese
+  Catalan
+  Catalan (Valencian)
+  Czech
+  French
+  German
+  Greek
+  Hebrew
+  Korean
+  Oriya
+  Traditional Chinese
+
+
 Overview of changes in GLib 2.41.3
 ==================================
 
