@@ -447,11 +447,16 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
  * until it is destroyed by g_thread_pool_free(). If @exclusive is
  * %FALSE, threads are created when needed and shared between all
  * non-exclusive thread pools. This implies that @max_threads may
- * not be -1 for exclusive thread pools.
+ * not be -1 for exclusive thread pools. Besides, exclusive thread
+ * pools are not affected by g_thread_pool_set_max_idle_time()
+ * since their threads are never considered idle and returned to the
+ * global pool.
  *
  * @error can be %NULL to ignore errors, or non-%NULL to report
  * errors. An error can only occur when @exclusive is set to %TRUE
  * and not all @max_threads threads could be created.
+ * See #GThreadError for possible errors that may occurr.
+ * Note, even in case of error a valid #GThreadPool is returned.
  *
  * Returns: the new #GThreadPool
  */
