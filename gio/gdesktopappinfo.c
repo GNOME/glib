@@ -641,7 +641,7 @@ desktop_file_dir_unindexed_get_tweaks (DesktopFileDir *dir,
   gchar *unaliased_type;
 
   unaliased_type = _g_unix_content_type_unalias (mime_type);
-  tweaks = g_hash_table_lookup (dir->mime_tweaks, mime_type);
+  tweaks = g_hash_table_lookup (dir->mime_tweaks, unaliased_type);
 
   if (tweaks == NULL)
     {
