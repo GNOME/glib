@@ -394,13 +394,13 @@ desktop_key_get_name (guint key_id)
     case DESKTOP_KEY_Exec:
       return "Exec";
     case DESKTOP_KEY_GenericName:
-      return "GenericName";
+      return GENERIC_NAME_KEY;
     case DESKTOP_KEY_Keywords:
-      return "Keywords";
+      return KEYWORDS_KEY;
     case DESKTOP_KEY_Name:
       return "Name";
     case DESKTOP_KEY_X_GNOME_FullName:
-      return "X-GNOME-FullName";
+      return FULL_NAME_KEY;
     default:
       g_assert_not_reached ();
     }
@@ -770,8 +770,6 @@ desktop_file_dir_unindexed_read_mimeapps_list (DesktopFileDir *dir,
                                                const gchar    *added_group,
                                                gboolean        tweaks_permitted)
 {
-  const gchar default_group[] = "Default Applications";
-  const gchar removed_group[] = "Removed Assocations";
   UnindexedMimeTweaks *tweaks;
   char **desktop_file_ids;
   GKeyFile *key_file;
@@ -811,12 +809,12 @@ desktop_file_dir_unindexed_read_mimeapps_list (DesktopFileDir *dir,
       g_strfreev (mime_types);
     }
 
-  mime_types = g_key_file_get_keys (key_file, removed_group, NULL, NULL);
+  mime_types = g_key_file_get_keys (key_file, REMOVED_ASSOCIATIONS_GROUP, NULL, NULL);
 
   if G_UNLIKELY (mime_types != NULL && !tweaks_permitted)
     {
       g_warning ("%s contains a [%s] group, but it is not permitted here.  Only the non-desktop-specific "
-                 "mimeapps.list file may add or remove associations.", filename, removed_group);
+                 "mimeapps.list file may add or remove associations.", filename, REMOVED_ASSOCIATIONS_GROUP);
       g_strfreev (mime_types);
       mime_types = NULL;
     }
@@ -825,7 +823,7 @@ desktop_file_dir_unindexed_read_mimeapps_list (DesktopFileDir *dir,
     {
       for (i = 0; mime_types[i] != NULL; i++)
         {
-          desktop_file_ids = g_key_file_get_string_list (key_file, removed_group, mime_types[i], NULL, NULL);
+          desktop_file_ids = g_key_file_get_string_list (key_file, REMOVED_ASSOCIATIONS_GROUP, mime_types[i], NULL, NULL);
 
           if (desktop_file_ids)
             {
@@ -837,13 +835,13 @@ desktop_file_dir_unindexed_read_mimeapps_list (DesktopFileDir *dir,
       g_strfreev (mime_types);
     }
 
-  mime_types = g_key_file_get_keys (key_file, default_group, NULL, NULL);
+  mime_types = g_key_file_get_keys (key_file, DEFAULT_APPLICATIONS_GROUP, NULL, NULL);
 
   if (mime_types != NULL)
     {
       for (i = 0; mime_types[i] != NULL; i++)
         {
-          desktop_file_ids = g_key_file_get_string_list (key_file, default_group, mime_types[i], NULL, NULL);
+          desktop_file_ids = g_key_file_get_string_list (key_file, DEFAULT_APPLICATIONS_GROUP, mime_types[i], NULL, NULL);
 
           if (desktop_file_ids)
             {
@@ -878,13 +876,13 @@ desktop_file_dir_unindexed_read_mimeapps_lists (DesktopFileDir *dir)
   for (i = 0; desktops[i]; i++)
     {
       filename = g_strdup_printf ("%s/%s-mimeapps.list", dir->path, desktops[i]);
-      desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, "Added Associations", FALSE);
+      desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, ADDED_ASSOCIATIONS_GROUP, FALSE);
       g_free (filename);
     }
 
   /* Next, the non-desktop-specific mimeapps.list */
   filename = g_strdup_printf ("%s/mimeapps.list", dir->path);
-  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, "Added Associations", TRUE);
+  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, ADDED_ASSOCIATIONS_GROUP, TRUE);
   g_free (filename);
 
   /* The remaining files are only checked for in directories that might
@@ -899,14 +897,14 @@ desktop_file_dir_unindexed_read_mimeapps_lists (DesktopFileDir *dir)
    * version.
    */
   filename = g_strdup_printf ("%s/defaults.list", dir->path);
-  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, "Added Associations", FALSE);
+  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, DEFAULT_APPLICATIONS_GROUP, FALSE);
   g_free (filename);
 
   /* Finally, the mimeinfo.cache, which is just a cached copy of what we
    * would find in the MimeTypes= lines of all of the desktop files.
    */
   filename = g_strdup_printf ("%s/mimeinfo.cache", dir->path);
-  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, "MIME Cache", TRUE);
+  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, MIME_CACHE_GROUP, TRUE);
   g_free (filename);
 }
 
