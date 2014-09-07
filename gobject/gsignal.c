@@ -153,12 +153,9 @@ static inline void		handler_unref_R		(guint		  signal_id,
 							 Handler	 *handler);
 static gint			handler_lists_cmp	(gconstpointer	  node1,
 							 gconstpointer	  node2);
-static inline void		emission_push		(Emission	**emission_list_p,
-							 Emission	 *emission);
-static inline void		emission_pop		(Emission	**emission_list_p,
-							 Emission	 *emission);
-static inline Emission*		emission_find		(Emission	 *emission_list,
-							 guint		  signal_id,
+static inline void		emission_push		(Emission	 *emission);
+static inline void		emission_pop		(Emission	 *emission);
+static inline Emission*		emission_find		(guint		  signal_id,
 							 GQuark		  detail,
 							 gpointer	  instance);
 static gint			class_closures_cmp	(gconstpointer	  node1,
@@ -289,8 +286,7 @@ static GBSearchConfig g_class_closure_bconfig = {
   0,
 };
 static GHashTable    *g_handler_list_bsa_ht = NULL;
-static Emission      *g_recursive_emissions = NULL;
-static Emission      *g_restart_emissions = NULL;
+static Emission      *g_emissions = NULL;
 static gulong         g_handler_sequential_number = 1;
 G_LOCK_DEFINE_STATIC (g_signal_mutex);
 #define	SIGNAL_LOCK()		G_LOCK (g_signal_mutex)
@@ -731,40 +727,37 @@ node_update_single_va_closure (SignalNode *node)
 }
 
 static inline void
-emission_push (Emission **emission_list_p,
-	       Emission  *emission)
+emission_push (Emission  *emission)
 {
-  emission->next = *emission_list_p;
-  *emission_list_p = emission;
+  emission->next = g_emissions;
+  g_emissions = emission;
 }
 
 static inline void
-emission_pop (Emission **emission_list_p,
-	      Emission  *emission)
+emission_pop (Emission  *emission)
 {
   Emission *node, *last = NULL;
 
-  for (node = *emission_list_p; node; last = node, node = last->next)
+  for (node = g_emissions; node; last = node, node = last->next)
     if (node == emission)
       {
 	if (last)
 	  last->next = node->next;
 	else
-	  *emission_list_p = node->next;
+	  g_emissions = node->next;
 	return;
       }
   g_assert_not_reached ();
 }
 
 static inline Emission*
-emission_find (Emission *emission_list,
-	       guint     signal_id,
+emission_find (guint     signal_id,
 	       GQuark    detail,
 	       gpointer  instance)
 {
   Emission *emission;
   
-  for (emission = emission_list; emission; emission = emission->next)
+  for (emission = g_emissions; emission; emission = emission->next)
     if (emission->instance == instance &&
 	emission->ihint.signal_id == signal_id &&
 	emission->ihint.detail == detail)
@@ -775,26 +768,13 @@ emission_find (Emission *emission_list,
 static inline Emission*
 emission_find_innermost (gpointer instance)
 {
-  Emission *emission, *s = NULL, *c = NULL;
+  Emission *emission;
   
-  for (emission = g_restart_emissions; emission; emission = emission->next)
+  for (emission = g_emissions; emission; emission = emission->next)
     if (emission->instance == instance)
-      {
-	s = emission;
-	break;
-      }
-  for (emission = g_recursive_emissions; emission; emission = emission->next)
-    if (emission->instance == instance)
-      {
-	c = emission;
-	break;
-      }
-  if (!s)
-    return c;
-  else if (!c)
-    return s;
-  else
-    return G_HAVE_GROWING_STACK ? MAX (c, s) : MIN (c, s);
+      return emission;
+
+  return NULL;
 }
 
 static gint
@@ -884,8 +864,7 @@ g_signal_stop_emission (gpointer instance,
     }
   if (node && g_type_is_a (G_TYPE_FROM_INSTANCE (instance), node->itype))
     {
-      Emission *emission_list = node->flags & G_SIGNAL_NO_RECURSE ? g_restart_emissions : g_recursive_emissions;
-      Emission *emission = emission_find (emission_list, signal_id, detail, instance);
+      Emission *emission = emission_find (signal_id, detail, instance);
       
       if (emission)
         {
@@ -1149,8 +1128,7 @@ g_signal_stop_emission_by_name (gpointer     instance,
                    G_STRLOC, detailed_signal, instance, g_type_name (itype));
       else
 	{
-	  Emission *emission_list = node->flags & G_SIGNAL_NO_RECURSE ? g_restart_emissions : g_recursive_emissions;
-	  Emission *emission = emission_find (emission_list, signal_id, detail, instance);
+	  Emission *emission = emission_find (signal_id, detail, instance);
 	  
 	  if (emission)
 	    {
@@ -1868,8 +1846,7 @@ signal_destroy_R (SignalNode *signal_node)
   {
     Emission *emission;
     
-    for (emission = (node.flags & G_SIGNAL_NO_RECURSE) ? g_restart_emissions : g_recursive_emissions;
-         emission; emission = emission->next)
+    for (emission = g_emissions; emission; emission = emission->next)
       if (emission->ihint.signal_id == node.signal_id)
         g_critical (G_STRLOC ": signal \"%s\" being destroyed is currently in emission (instance '%p')",
                     node.name, emission->instance);
@@ -3197,7 +3174,7 @@ g_signal_emit_valist (gpointer instance,
 	  emission.ihint.run_type = run_type;
 	  emission.state = EMISSION_RUN;
 	  emission.chain_type = instance_type;
-	  emission_push (&g_recursive_emissions, &emission);
+	  emission_push (&emission);
 
           if (fastpath_handler)
             handler_ref (fastpath_handler);
@@ -3227,7 +3204,7 @@ g_signal_emit_valist (gpointer instance,
 	  SIGNAL_LOCK ();
 
 	  emission.chain_type = G_TYPE_NONE;
-	  emission_pop (&g_recursive_emissions, &emission);
+	  emission_pop (&emission);
 
           if (fastpath_handler)
             handler_unref_R (signal_id, instance, fastpath_handler);
@@ -3434,7 +3411,7 @@ signal_emit_unlocked_R (SignalNode   *node,
 
   if (node->flags & G_SIGNAL_NO_RECURSE)
     {
-      Emission *node = emission_find (g_restart_emissions, signal_id, detail, instance);
+      Emission *node = emission_find (signal_id, detail, instance);
       
       if (node)
 	{
@@ -3459,7 +3436,7 @@ signal_emit_unlocked_R (SignalNode   *node,
   emission.ihint.run_type = 0;
   emission.state = 0;
   emission.chain_type = G_TYPE_NONE;
-  emission_push ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions, &emission);
+  emission_push (&emission);
   class_closure = signal_lookup_closure (node, instance);
   
  EMIT_RESTART:
@@ -3683,7 +3660,7 @@ signal_emit_unlocked_R (SignalNode   *node,
   if (handler_list)
     handler_unref_R (signal_id, instance, handler_list);
   
-  emission_pop ((node->flags & G_SIGNAL_NO_RECURSE) ? &g_restart_emissions : &g_recursive_emissions, &emission);
+  emission_pop (&emission);
   SIGNAL_UNLOCK ();
   if (accumulator)
     g_value_unset (&accu);
