@@ -220,6 +220,8 @@ test_ignore (void)
       g_assert_cmpstr (proxies[0], ==, ignore_tests[i].proxy);
       g_strfreev (proxies);
     }
+
+  g_object_unref (resolver);
 }
 
 int
