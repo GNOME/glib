@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-03-07 06:56+0000\n"
-"PO-Revision-Date: 2014-03-08 15:58+0200\n"
+"POT-Creation-Date: 2014-09-07 05:51+0000\n"
+"PO-Revision-Date: 2014-09-07 12:55+0300\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -22,33 +22,30 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
-#: ../gio/gapplication.c:509
+#: ../gio/gapplication.c:514
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Ievadiet GApplication servisa režīmu (izmantot no D-Bus servisa datnēm)"
 
-#: ../gio/gapplication.c:514
-#| msgid "Application Options:"
+#: ../gio/gapplication.c:519
 msgid "GApplication options"
 msgstr "GApplication opcijas"
 
-#: ../gio/gapplication.c:514
-#| msgid "Application Options:"
+#: ../gio/gapplication.c:519
 msgid "Show GApplication options"
 msgstr "Parādīt GApplication opcijas"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
-#: ../gio/gresource-tool.c:473 ../gio/gsettings-tool.c:508
+#: ../gio/gresource-tool.c:481 ../gio/gsettings-tool.c:508
 msgid "Print help"
 msgstr "Drukāšanas palīdzība"
 
-#: ../gio/gapplication-tool.c:47 ../gio/gresource-tool.c:474
-#: ../gio/gresource-tool.c:542
+#: ../gio/gapplication-tool.c:47 ../gio/gresource-tool.c:482
+#: ../gio/gresource-tool.c:550
 msgid "[COMMAND]"
 msgstr "[KOMANDA]"
 
 #: ../gio/gapplication-tool.c:49
-#| msgid "Print address"
 msgid "Print version"
 msgstr "Drukāt versiju"
 
@@ -57,7 +54,6 @@ msgid "Print version information and exit"
 msgstr "Parādīt informāciju par versiju un iziet"
 
 #: ../gio/gapplication-tool.c:52
-#| msgid "Can't find application"
 msgid "List applications"
 msgstr "Uzskaitīt lietotnes"
 
@@ -67,7 +63,6 @@ msgstr ""
 "Uzskaitīt instalētās D-Bus aktivizējamās lietotnes (ar .desktop datnēm)"
 
 #: ../gio/gapplication-tool.c:55
-#| msgid "Can't find application"
 msgid "Launch an application"
 msgstr "Palaist lietotni"
 
@@ -117,8 +112,8 @@ msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Lietotnes identifikators D-Bus formātā(piemēram: org.example.viewer)"
 
 #: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:589
-#: ../gio/glib-compile-resources.c:620 ../gio/gresource-tool.c:480
-#: ../gio/gresource-tool.c:546
+#: ../gio/glib-compile-resources.c:620 ../gio/gresource-tool.c:488
+#: ../gio/gresource-tool.c:554
 msgid "FILE"
 msgstr "DATNE"
 
@@ -128,12 +123,10 @@ msgstr ""
 "Neobligāts relatīvs vai relatīvs datnes nosaukums, vai URI, lai atvērtu"
 
 #: ../gio/gapplication-tool.c:73
-#| msgid "SECTION"
 msgid "ACTION"
 msgstr "DARBĪBA"
 
 #: ../gio/gapplication-tool.c:73
-#| msgid "Destination name to introspect"
 msgid "The action name to invoke"
 msgstr "Darbības nosaukums, ko izsaukt"
 
@@ -145,7 +138,7 @@ msgstr "PARAMETRS"
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Neobligāts parametrs darbības izsaukšanai, GVariant formātā"
 
-#: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:511
+#: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:519
 #: ../gio/gsettings-tool.c:594
 #, c-format
 msgid ""
@@ -156,11 +149,10 @@ msgstr ""
 "\n"
 
 #: ../gio/gapplication-tool.c:101
-#| msgid "Usage:"
 msgid "Usage:\n"
 msgstr "Lietošana:\n"
 
-#: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:536
+#: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:544
 #: ../gio/gsettings-tool.c:628
 msgid "Arguments:\n"
 msgstr "Parametri:\n"
@@ -195,7 +187,6 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:171
 #, c-format
-#| msgid "invalid GVariant type string '%s'"
 msgid "invalid application id: '%s'\n"
 msgstr "nederīgs lietotnes id — “%s”\n"
 
@@ -209,24 +200,22 @@ msgstr ""
 "“%s” nepieņem parametrus\n"
 "\n"
 
-#: ../gio/gapplication-tool.c:262
+#: ../gio/gapplication-tool.c:266
 #, c-format
-#| msgid "Could not connect to %s: "
 msgid "unable to connect to D-Bus: %s\n"
 msgstr "Nevarēja savienoties ar D-Bus — %s\n"
 
-#: ../gio/gapplication-tool.c:282
+#: ../gio/gapplication-tool.c:286
 #, c-format
-#| msgid "Error sending message: %s"
 msgid "error sending %s message to application: %s\n"
 msgstr "kļūda, sūtot %s ziņojumu lietotnei — %s\n"
 
-#: ../gio/gapplication-tool.c:313
+#: ../gio/gapplication-tool.c:317
 #, c-format
 msgid "action name must be given after application id\n"
 msgstr "darbības nosaukumam ir jābūt dotam pēc lietotnes id\n"
 
-#: ../gio/gapplication-tool.c:321
+#: ../gio/gapplication-tool.c:325
 #, c-format
 msgid ""
 "invalid action name: '%s'\n"
@@ -235,33 +224,28 @@ msgstr ""
 "nederīgs darbības nosaukums — “%s”\n"
 "darbības nosaukumā var būt tikai burti, cipari, “-” un “.”\n"
 
-#: ../gio/gapplication-tool.c:340
+#: ../gio/gapplication-tool.c:344
 #, c-format
-#| msgid "Error parsing parameter %d: %s\n"
 msgid "error parsing action parameter: %s\n"
 msgstr "kļūda, parsējot darbības parametru — %s\n"
 
-#: ../gio/gapplication-tool.c:352
+#: ../gio/gapplication-tool.c:356
 #, c-format
 msgid "actions accept a maximum of one parameter\n"
 msgstr "darbības pieņem ne vairāk ka vienu parametru\n"
 
-#: ../gio/gapplication-tool.c:407
+#: ../gio/gapplication-tool.c:411
 #, c-format
 msgid "list-actions command takes only the application id"
 msgstr "darbību uzskaites komanda pieņem tikai lietotnes id"
 
-#: ../gio/gapplication-tool.c:417
+#: ../gio/gapplication-tool.c:421
 #, c-format
-#| msgid "Unable to find terminal required for application"
 msgid "unable to find desktop file for application %s\n"
 msgstr "nevar atrast darbvirsmas datni lietotnei %s\n"
 
-#: ../gio/gapplication-tool.c:462
+#: ../gio/gapplication-tool.c:466
 #, c-format
-#| msgid ""
-#| "Unknown command %s\n"
-#| "\n"
 msgid ""
 "unrecognised command: %s\n"
 "\n"
@@ -270,8 +254,8 @@ msgstr ""
 "\n"
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
-#: ../gio/ginputstream.c:173 ../gio/ginputstream.c:365
-#: ../gio/ginputstream.c:603 ../gio/ginputstream.c:819
+#: ../gio/ginputstream.c:176 ../gio/ginputstream.c:370
+#: ../gio/ginputstream.c:608 ../gio/ginputstream.c:828
 #: ../gio/goutputstream.c:200 ../gio/goutputstream.c:823
 #: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
@@ -287,8 +271,8 @@ msgstr "Uz bāzes plūsmas meklēšana netiek atbalstīta"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Nevar apraut GBufferedInputStream"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1008
-#: ../gio/giostream.c:278 ../gio/goutputstream.c:1464
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1017
+#: ../gio/giostream.c:277 ../gio/goutputstream.c:1464
 msgid "Stream is already closed"
 msgstr "Plūsma jau ir aizvērta"
 
@@ -296,10 +280,10 @@ msgstr "Plūsma jau ir aizvērta"
 msgid "Truncate not supported on base stream"
 msgstr "Uz bāzes plūsmas apraušana nav atbalstīta"
 
-#: ../gio/gcancellable.c:310 ../gio/gdbusconnection.c:1894
-#: ../gio/gdbusconnection.c:1986 ../gio/gdbusprivate.c:1416
-#: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:829
-#: ../gio/gsimpleasyncresult.c:855
+#: ../gio/gcancellable.c:310 ../gio/gdbusconnection.c:1896
+#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1417
+#: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:830
+#: ../gio/gsimpleasyncresult.c:856
 #, c-format
 msgid "Operation was cancelled"
 msgstr "Darbība tika atcelta"
@@ -316,8 +300,8 @@ msgstr "Nepilnīga vairāku baitu sekvence ievadē"
 msgid "Not enough space in destination"
 msgstr "Mērķī nepietiek brīvās vietas"
 
-#: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:847
-#: ../gio/gdatainputstream.c:1255 ../glib/gconvert.c:438
+#: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
+#: ../gio/gdatainputstream.c:1256 ../glib/gconvert.c:438
 #: ../glib/gconvert.c:845 ../glib/giochannel.c:1557 ../glib/giochannel.c:1599
 #: ../glib/giochannel.c:2443 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
 msgid "Invalid byte sequence in conversion input"
@@ -329,7 +313,7 @@ msgstr "Nepareiza baitu secība konversijas ievadē"
 msgid "Error during conversion: %s"
 msgstr "Kļūda, konversējot — %s"
 
-#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:992
+#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:985
 msgid "Cancellable initialization not supported"
 msgstr "Atceļama inicializācija nav atbalstīta"
 
@@ -358,20 +342,19 @@ msgstr "Nezināms tips"
 msgid "%s filetype"
 msgstr "%s datnes tips"
 
-#: ../gio/gcredentials.c:291 ../gio/gcredentials.c:542
+#: ../gio/gcredentials.c:312 ../gio/gcredentials.c:571
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials nav implementēti šajā OS"
 
-#: ../gio/gcredentials.c:443
+#: ../gio/gcredentials.c:467
 msgid "There is no GCredentials support for your platform"
 msgstr "Šajā platformā nav GCredentials atbalsta"
 
-#: ../gio/gcredentials.c:487
+#: ../gio/gcredentials.c:513
 msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials nesatur procesa ID šajā OS"
 
-#: ../gio/gcredentials.c:536
-#| msgid "GCredentials is not implemented on this OS"
+#: ../gio/gcredentials.c:565
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "Šajā OS nevar viltot akreditācijas datus"
 
@@ -517,7 +500,7 @@ msgstr "Sesijas dbus nav palaists un automātiskā palaišana cieta neveiksmi"
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Nevar noteikt sesijas kopnes adresi (nav implementēts šai OS)"
 
-#: ../gio/gdbusaddress.c:1546 ../gio/gdbusconnection.c:6920
+#: ../gio/gdbusaddress.c:1546 ../gio/gdbusconnection.c:6931
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -526,7 +509,7 @@ msgstr ""
 "Nevar noteikt kopnes adresi no DBUS_STARTER_BUS_TYPE vides mainīgā — "
 "nezināma vērtība “%s”"
 
-#: ../gio/gdbusaddress.c:1555 ../gio/gdbusconnection.c:6929
+#: ../gio/gdbusaddress.c:1555 ../gio/gdbusconnection.c:6940
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -637,113 +620,113 @@ msgstr "Kļūda, atverot atslēgu saišķi “%s” rakstīšanai: "
 msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(Un vēl, “%s” slēguma atbrīvošana neizdevās — %s) "
 
-#: ../gio/gdbusconnection.c:611 ../gio/gdbusconnection.c:2452
+#: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2455
 msgid "The connection is closed"
 msgstr "Savienojums ir aizvērts"
 
-#: ../gio/gdbusconnection.c:1939
+#: ../gio/gdbusconnection.c:1942
 msgid "Timeout was reached"
 msgstr "Iestājās noildze"
 
-#: ../gio/gdbusconnection.c:2574
+#: ../gio/gdbusconnection.c:2577
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Sastapās ar neatbalstītiem slēdžiem (flag), veidojot klienta puses "
 "savienojumu"
 
-#: ../gio/gdbusconnection.c:4153 ../gio/gdbusconnection.c:4496
+#: ../gio/gdbusconnection.c:4157 ../gio/gdbusconnection.c:4504
 #, c-format
 msgid ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Nav tādas saskarnes “org.freedesktop.DBus.Properties” uz objekta ceļa %s"
 
-#: ../gio/gdbusconnection.c:4295
+#: ../gio/gdbusconnection.c:4299
 #, c-format
 msgid "No such property '%s'"
 msgstr "Nav tādas īpašības “%s”"
 
-#: ../gio/gdbusconnection.c:4307
+#: ../gio/gdbusconnection.c:4311
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "Īpašība “%s” nav lasāma"
 
-#: ../gio/gdbusconnection.c:4318
+#: ../gio/gdbusconnection.c:4322
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "Īpašība “%s” nav rakstāma"
 
-#: ../gio/gdbusconnection.c:4338
+#: ../gio/gdbusconnection.c:4342
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr "Kļūda, iestatot īpašību “%s” — gaidīja tipu “%s”, bet saņēma “%s”"
 
-#: ../gio/gdbusconnection.c:4439 ../gio/gdbusconnection.c:6361
+#: ../gio/gdbusconnection.c:4447 ../gio/gdbusconnection.c:6371
 #, c-format
 msgid "No such interface '%s'"
 msgstr "Nav tādas saskarnes “%s”"
 
-#: ../gio/gdbusconnection.c:4646
+#: ../gio/gdbusconnection.c:4655
 msgid "No such interface"
 msgstr "Nav tādas saskarnes"
 
-#: ../gio/gdbusconnection.c:4864 ../gio/gdbusconnection.c:6869
+#: ../gio/gdbusconnection.c:4873 ../gio/gdbusconnection.c:6880
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "Nav tādas saskarnes “%s” uz objekta ceļa %s"
 
-#: ../gio/gdbusconnection.c:4961
+#: ../gio/gdbusconnection.c:4971
 #, c-format
 msgid "No such method '%s'"
 msgstr "Nav tādas metodes “%s”"
 
-#: ../gio/gdbusconnection.c:4992
+#: ../gio/gdbusconnection.c:5002
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Ziņojuma tips “%s” neatbilda gaidītajam tipam “%s”"
 
-#: ../gio/gdbusconnection.c:5190
+#: ../gio/gdbusconnection.c:5200
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Objekts jau ir eksportēts saskarnei %s pie %s"
 
-#: ../gio/gdbusconnection.c:5389
+#: ../gio/gdbusconnection.c:5399
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Metode “%s” atgrieza tipu “%s”, bet gaidīja “%s”"
 
-#: ../gio/gdbusconnection.c:6472
+#: ../gio/gdbusconnection.c:6482
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Metode “%s” uz saskarnes “%s” ar parakstu “%s” neeksistē"
 
-#: ../gio/gdbusconnection.c:6592
+#: ../gio/gdbusconnection.c:6603
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "%s apakškoks jau ir eksportēts "
 
-#: ../gio/gdbusmessage.c:1269
+#: ../gio/gdbusmessage.c:1246
 msgid "type is INVALID"
 msgstr "tips ir INVALID"
 
-#: ../gio/gdbusmessage.c:1280
+#: ../gio/gdbusmessage.c:1257
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "METHOD_CALL ziņojums — trūkst PATH vai MEMBER galvene"
 
-#: ../gio/gdbusmessage.c:1291
+#: ../gio/gdbusmessage.c:1268
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "METHOD_RETURN ziņojums — trūkst REPLY_SERIAL galvenes lauks"
 
-#: ../gio/gdbusmessage.c:1303
+#: ../gio/gdbusmessage.c:1280
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "ERROR ziņojums — trūkst REPLY_SERIAL vai ERROR_NAME galvenes lauks"
 
-#: ../gio/gdbusmessage.c:1316
+#: ../gio/gdbusmessage.c:1293
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "SIGNAL ziņojums — trūkst PATH, INTERFACE vai MEMBER galvenes datne"
 
-#: ../gio/gdbusmessage.c:1324
+#: ../gio/gdbusmessage.c:1301
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -751,7 +734,7 @@ msgstr ""
 "SIGNAL ziņojums — PATH galvenes datne izmanto rezervēto vērtību /org/"
 "freedesktop/DBus/Local"
 
-#: ../gio/gdbusmessage.c:1332
+#: ../gio/gdbusmessage.c:1309
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -759,7 +742,7 @@ msgstr ""
 "SIGNAL ziņojums — INTERFACE galvenes dante izmanto rezervēto vērtību org."
 "freedesktop.DBus.Local"
 
-#: ../gio/gdbusmessage.c:1381
+#: ../gio/gdbusmessage.c:1357 ../gio/gdbusmessage.c:1417
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
@@ -767,12 +750,12 @@ msgstr[0] "Vēlējās lasīt %lu baitu, bet saņēma %lu"
 msgstr[1] "Vēlējās lasīt %lu baitus, bet saņēma %lu"
 msgstr[2] "Vēlējās lasīt %lu baitus, bet saņēma %lu"
 
-#: ../gio/gdbusmessage.c:1396
+#: ../gio/gdbusmessage.c:1371
 #, c-format
 msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr "Gaidīja NUL baitu pēc virknes “%s”, bet atrada baitu %d"
 
-#: ../gio/gdbusmessage.c:1415
+#: ../gio/gdbusmessage.c:1390
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -781,17 +764,17 @@ msgstr ""
 "Gaidīja derīgu UTF-8 virkni, bet atrada nederīgus baitus pie baitu nobīdes "
 "%d (virknes garums ir %d). Derīgā UTF-8 virkne līdz tai vietai bija “%s”"
 
-#: ../gio/gdbusmessage.c:1617
+#: ../gio/gdbusmessage.c:1589
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "Parsētā vērtība “%s” nav derīgs D-Bus objekta ceļš"
 
-#: ../gio/gdbusmessage.c:1641
+#: ../gio/gdbusmessage.c:1611
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "Parsētā vērtība “%s” nav derīgs D-Bus objekta paraksts"
 
-#: ../gio/gdbusmessage.c:1696
+#: ../gio/gdbusmessage.c:1658
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -807,19 +790,28 @@ msgstr[2] ""
 "Saskārās ar %u baitu garu masīvu.  Maksimālais garums ir 2<<26 baiti (64 "
 "MiB)."
 
-#: ../gio/gdbusmessage.c:1849
+#: ../gio/gdbusmessage.c:1678
+#, c-format
+msgid ""
+"Encountered array of type 'a%c', expected to have a length a multiple of %u "
+"bytes, but found to be %u bytes in length"
+msgstr ""
+"Saskārās ar masīvu, kam tips ir “a%c”, kura garumam vajadzētu dalīties ar %u "
+"baitiem, bet tā garums ir %u baiti"
+
+#: ../gio/gdbusmessage.c:1845
 #, c-format
 msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr "Parsētā vērtība “%s” variantam nav derīgs D-Bus paraksts"
 
-#: ../gio/gdbusmessage.c:1873
+#: ../gio/gdbusmessage.c:1869
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
 "Kļūda, deserializējot GVariant ar tipa virkni “%s” no D-Bus vadu formāta"
 
-#: ../gio/gdbusmessage.c:2060
+#: ../gio/gdbusmessage.c:2053
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
@@ -828,23 +820,23 @@ msgstr ""
 "Nederīga secības (endian) vērtība. Gaidīja 0x6c ('l') vai 0x42 ('B'), bet "
 "atrada vērību 0x%02x"
 
-#: ../gio/gdbusmessage.c:2073
+#: ../gio/gdbusmessage.c:2066
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Nederīga lielā protokola vērtība. Gaidīja 1, bet saņēma %d"
 
-#: ../gio/gdbusmessage.c:2129
+#: ../gio/gdbusmessage.c:2122
 #, c-format
 msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
 "Paraksta galvene ar parakstu “%s” atrasta, bet vēstules pamatteksts ir tukšs"
 
-#: ../gio/gdbusmessage.c:2143
+#: ../gio/gdbusmessage.c:2136
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr "Parsētā vērtība “%s” nav derīgs D-Bus paraksts (pamattekstam)"
 
-#: ../gio/gdbusmessage.c:2173
+#: ../gio/gdbusmessage.c:2166
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -855,17 +847,17 @@ msgstr[1] ""
 msgstr[2] ""
 "Ziņojumā nav paraksta galvenes, bet ziņojuma pamatteksts ir %u baitu"
 
-#: ../gio/gdbusmessage.c:2183
+#: ../gio/gdbusmessage.c:2176
 msgid "Cannot deserialize message: "
 msgstr "Nevar deserializēt ziņojumu: "
 
-#: ../gio/gdbusmessage.c:2504
+#: ../gio/gdbusmessage.c:2517
 #, c-format
 msgid ""
 "Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr "Kļūda, serializējot GVariant ar tipa virkni “%s” uz D-Bus vadu formātu"
 
-#: ../gio/gdbusmessage.c:2641
+#: ../gio/gdbusmessage.c:2654
 #, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
@@ -874,16 +866,16 @@ msgstr ""
 "Ziņojumam ir %d datņu deskriptori, bet galvenes lauks norāda %d datņu "
 "deskriptorus"
 
-#: ../gio/gdbusmessage.c:2649
+#: ../gio/gdbusmessage.c:2662
 msgid "Cannot serialize message: "
 msgstr "Nevar serializēt ziņojumu: "
 
-#: ../gio/gdbusmessage.c:2693
+#: ../gio/gdbusmessage.c:2706
 #, c-format
 msgid "Message body has signature '%s' but there is no signature header"
 msgstr "Ziņojuma pamattekstam ir paraksts “%s”, bet nav paraksta galvenes"
 
-#: ../gio/gdbusmessage.c:2703
+#: ../gio/gdbusmessage.c:2716
 #, c-format
 msgid ""
 "Message body has type signature '%s' but signature in the header field is "
@@ -892,26 +884,26 @@ msgstr ""
 "Vēstules pamattekstam ir tipa paraksts “%s”, bet paraksts galvenes laukā ir "
 "“%s”"
 
-#: ../gio/gdbusmessage.c:2719
+#: ../gio/gdbusmessage.c:2732
 #, c-format
 msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr "Ziņojuma pamatteksts ir tukšs, bet paraksta galvenes lauks ir “(%s)”"
 
-#: ../gio/gdbusmessage.c:3269
+#: ../gio/gdbusmessage.c:3282
 #, c-format
 msgid "Error return with body of type '%s'"
 msgstr "Kļūdas atgriešana ar pamattekstu ar tipu “%s”"
 
-#: ../gio/gdbusmessage.c:3277
+#: ../gio/gdbusmessage.c:3290
 msgid "Error return with empty body"
 msgstr "Kļūdas atgriešana ar tukšu pamattekstu"
 
-#: ../gio/gdbusprivate.c:2064
+#: ../gio/gdbusprivate.c:2067
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Nevar saņemt aparatūras profilu — %s"
 
-#: ../gio/gdbusprivate.c:2109
+#: ../gio/gdbusprivate.c:2112
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Nevarēja ielādēt /var/lib/dbus/machine-id vai /etc/machine-id: "
 
@@ -946,12 +938,12 @@ msgstr "Nevar norādīt nonce datni, kad veido serveri"
 msgid "Error writing nonce file at '%s': %s"
 msgstr "Kļūda, rakstot nonce datni pie “%s” — %s"
 
-#: ../gio/gdbusserver.c:1043
+#: ../gio/gdbusserver.c:1044
 #, c-format
 msgid "The string '%s' is not a valid D-Bus GUID"
 msgstr "Virkne “%s” nav derīga D-Bus GUID"
 
-#: ../gio/gdbusserver.c:1083
+#: ../gio/gdbusserver.c:1084
 #, c-format
 msgid "Cannot listen on unsupported transport '%s'"
 msgstr "Nevar klausīties uz neatbalstīta transporta “%s”"
@@ -1052,7 +1044,7 @@ msgid "Emit a signal."
 msgstr "Izplatīt signālu."
 
 #: ../gio/gdbus-tool.c:604 ../gio/gdbus-tool.c:836 ../gio/gdbus-tool.c:1571
-#: ../gio/gdbus-tool.c:1803
+#: ../gio/gdbus-tool.c:1799
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Kļūda savienojot — %s\n"
@@ -1063,7 +1055,7 @@ msgid "Error: object path not specified.\n"
 msgstr "Kļūda — nav norādīts objekta ceļš.\n"
 
 #: ../gio/gdbus-tool.c:621 ../gio/gdbus-tool.c:897 ../gio/gdbus-tool.c:1629
-#: ../gio/gdbus-tool.c:1862
+#: ../gio/gdbus-tool.c:1858
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Kļūda — %s nav derīgs objekta ceļš\n"
@@ -1124,7 +1116,7 @@ msgstr "Noildze sekundēs"
 msgid "Invoke a method on a remote object."
 msgstr "Izsaukt metodi uz attālināta objekta."
 
-#: ../gio/gdbus-tool.c:856 ../gio/gdbus-tool.c:1590 ../gio/gdbus-tool.c:1822
+#: ../gio/gdbus-tool.c:856 ../gio/gdbus-tool.c:1590 ../gio/gdbus-tool.c:1818
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Kļūda — nav norādīts galamērķis\n"
@@ -1181,43 +1173,43 @@ msgstr "Mērķa nosaukums uz pārraugu"
 msgid "Object path to monitor"
 msgstr "Objekta ceļš uz pārraugu"
 
-#: ../gio/gdbus-tool.c:1755
+#: ../gio/gdbus-tool.c:1751
 msgid "Monitor a remote object."
 msgstr "Pārraudzīt attālinātu objektu."
 
-#: ../gio/gdesktopappinfo.c:1440 ../gio/gdesktopappinfo.c:4583
+#: ../gio/gdesktopappinfo.c:1919 ../gio/gdesktopappinfo.c:4440
 #: ../gio/gwin32appinfo.c:219
 msgid "Unnamed"
 msgstr "Nenosaukts"
 
-#: ../gio/gdesktopappinfo.c:1859
+#: ../gio/gdesktopappinfo.c:2328
 msgid "Desktop file didn't specify Exec field"
 msgstr "Darbvirsmas datne nenorādīja Exec lauku"
 
-#: ../gio/gdesktopappinfo.c:2144
+#: ../gio/gdesktopappinfo.c:2613
 msgid "Unable to find terminal required for application"
 msgstr "Nevarēja atrast termināli, kas ir nepieciešams lietotnei"
 
-#: ../gio/gdesktopappinfo.c:2560
+#: ../gio/gdesktopappinfo.c:3034
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Nevar izveidot lietotāja lietotnes konfigurācijas mapi %s — %s"
 
-#: ../gio/gdesktopappinfo.c:2564
+#: ../gio/gdesktopappinfo.c:3038
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Nevar izveidot lietotāja MIME konfigurācijas mapi %s — %s"
 
-#: ../gio/gdesktopappinfo.c:2804 ../gio/gdesktopappinfo.c:2828
+#: ../gio/gdesktopappinfo.c:3278 ../gio/gdesktopappinfo.c:3302
 msgid "Application information lacks an identifier"
 msgstr "Lietotnes informācijai trūkst identifikatora"
 
-#: ../gio/gdesktopappinfo.c:3061
+#: ../gio/gdesktopappinfo.c:3535
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Nevar izveidot lietotāja darbvirsmas datni %s"
 
-#: ../gio/gdesktopappinfo.c:3195
+#: ../gio/gdesktopappinfo.c:3669
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Pielāgotas %s definīcijas"
@@ -1245,8 +1237,8 @@ msgstr "dzinis neatbalsta startēšanu"
 msgid "drive doesn't implement stop"
 msgstr "dzinis neatbalsta apturēšanu"
 
-#: ../gio/gdummytlsbackend.c:189 ../gio/gdummytlsbackend.c:309
-#: ../gio/gdummytlsbackend.c:399
+#: ../gio/gdummytlsbackend.c:189 ../gio/gdummytlsbackend.c:311
+#: ../gio/gdummytlsbackend.c:401
 msgid "TLS support is not available"
 msgstr "TLS atbalsts nav pieejams"
 
@@ -1274,14 +1266,14 @@ msgstr "Vairāki slikti formēti marķieri (%d) GEmblemedIcon kodējumā"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Gaidīja GEmblem priekš GEmblemedIcon"
 
-#: ../gio/gfile.c:957 ../gio/gfile.c:1195 ../gio/gfile.c:1333
-#: ../gio/gfile.c:1571 ../gio/gfile.c:1626 ../gio/gfile.c:1684
-#: ../gio/gfile.c:1768 ../gio/gfile.c:1825 ../gio/gfile.c:1889
-#: ../gio/gfile.c:1944 ../gio/gfile.c:3587 ../gio/gfile.c:3642
-#: ../gio/gfile.c:3849 ../gio/gfile.c:3891 ../gio/gfile.c:4354
-#: ../gio/gfile.c:4765 ../gio/gfile.c:4850 ../gio/gfile.c:4940
-#: ../gio/gfile.c:5037 ../gio/gfile.c:5124 ../gio/gfile.c:5225
-#: ../gio/gfile.c:7744 ../gio/gfile.c:7834 ../gio/gfile.c:7918
+#: ../gio/gfile.c:956 ../gio/gfile.c:1194 ../gio/gfile.c:1332
+#: ../gio/gfile.c:1570 ../gio/gfile.c:1625 ../gio/gfile.c:1683
+#: ../gio/gfile.c:1767 ../gio/gfile.c:1824 ../gio/gfile.c:1888
+#: ../gio/gfile.c:1943 ../gio/gfile.c:3591 ../gio/gfile.c:3646
+#: ../gio/gfile.c:3853 ../gio/gfile.c:3895 ../gio/gfile.c:4358
+#: ../gio/gfile.c:4769 ../gio/gfile.c:4854 ../gio/gfile.c:4944
+#: ../gio/gfile.c:5041 ../gio/gfile.c:5128 ../gio/gfile.c:5229
+#: ../gio/gfile.c:7748 ../gio/gfile.c:7838 ../gio/gfile.c:7922
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Darbība nav atbalstīta"
@@ -1296,83 +1288,83 @@ msgstr "Darbība nav atbalstīta"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1456 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
+#: ../gio/gfile.c:1455 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
 #: ../gio/glocalfile.c:1127
 msgid "Containing mount does not exist"
 msgstr "Saturošais montēšanas punkts neeksistē"
 
-#: ../gio/gfile.c:2503 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2502 ../gio/glocalfile.c:2337
 msgid "Can't copy over directory"
 msgstr "Nevar kopēt virsū mapei"
 
-#: ../gio/gfile.c:2563
+#: ../gio/gfile.c:2562
 msgid "Can't copy directory over directory"
 msgstr "Nevar uzkopēt mapi virsū mapei"
 
-#: ../gio/gfile.c:2571 ../gio/glocalfile.c:2346
+#: ../gio/gfile.c:2570 ../gio/glocalfile.c:2346
 msgid "Target file exists"
 msgstr "Mērķa datne eksistē"
 
-#: ../gio/gfile.c:2590
+#: ../gio/gfile.c:2589
 msgid "Can't recursively copy directory"
 msgstr "Nevar rekursīvi kopēt mapi"
 
-#: ../gio/gfile.c:2872
+#: ../gio/gfile.c:2871
 msgid "Splice not supported"
 msgstr "Splice nav atbalstīts"
 
-#: ../gio/gfile.c:2876
+#: ../gio/gfile.c:2875
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Kļūda, datnei veicot splice — %s"
 
-#: ../gio/gfile.c:3007
+#: ../gio/gfile.c:3006
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Kopēšana (reflink/clone) starp montētiem sējumiem nav atbalstīta"
 
-#: ../gio/gfile.c:3011
+#: ../gio/gfile.c:3010
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopēšana (reflink/clone) nav atbalstīta vai nav derīga"
 
-#: ../gio/gfile.c:3016
+#: ../gio/gfile.c:3015
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "Kopēšana (reflink/clone) nav atbalstīta vai nenostrādāja"
 
-#: ../gio/gfile.c:3079
+#: ../gio/gfile.c:3078
 msgid "Can't copy special file"
 msgstr "Nevar kopēt īpašu datni"
 
-#: ../gio/gfile.c:3839
+#: ../gio/gfile.c:3843
 msgid "Invalid symlink value given"
 msgstr "Ir dota nederīga simboliskās saites vērtība"
 
-#: ../gio/gfile.c:4000
+#: ../gio/gfile.c:4004
 msgid "Trash not supported"
 msgstr "Miskaste nav atbalstīta"
 
-#: ../gio/gfile.c:4112
+#: ../gio/gfile.c:4116
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Datņu nosaukums nevar saturēt “%c”"
 
-#: ../gio/gfile.c:6536 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6540 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "sējums neatbalsta montēšanu"
 
-#: ../gio/gfile.c:6645
+#: ../gio/gfile.c:6649
 msgid "No application is registered as handling this file"
 msgstr "Neviena lietotne nav reģistrēta, kā šo datni apstrādājoša"
 
-#: ../gio/gfileenumerator.c:211
+#: ../gio/gfileenumerator.c:212
 msgid "Enumerator is closed"
 msgstr "Skaitītājs ir aizvērts"
 
-#: ../gio/gfileenumerator.c:218 ../gio/gfileenumerator.c:277
-#: ../gio/gfileenumerator.c:376 ../gio/gfileenumerator.c:475
+#: ../gio/gfileenumerator.c:219 ../gio/gfileenumerator.c:278
+#: ../gio/gfileenumerator.c:377 ../gio/gfileenumerator.c:476
 msgid "File enumerator has outstanding operation"
 msgstr "Datņu skaitītājam ir neizpildīta darbība"
 
-#: ../gio/gfileenumerator.c:367 ../gio/gfileenumerator.c:466
+#: ../gio/gfileenumerator.c:368 ../gio/gfileenumerator.c:467
 msgid "File enumerator is already closed"
 msgstr "Datņu skaitītājs jau ir aizvērts"
 
@@ -1465,7 +1457,7 @@ msgstr "Nepietiek vietas ligzdas adresei"
 msgid "Unsupported socket address"
 msgstr "Neatbalstīta soketa adrese"
 
-#: ../gio/ginputstream.c:182
+#: ../gio/ginputstream.c:185
 msgid "Input stream doesn't implement read"
 msgstr "Ievades plūsma neatbalsta lasīšanu"
 
@@ -1475,7 +1467,7 @@ msgstr "Ievades plūsma neatbalsta lasīšanu"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1018 ../gio/giostream.c:288
+#: ../gio/ginputstream.c:1027 ../gio/giostream.c:287
 #: ../gio/goutputstream.c:1474
 msgid "Stream has outstanding operation"
 msgstr "Plūsmai ir neizpildīta darbība"
@@ -1995,75 +1987,75 @@ msgstr "Kļūda, iestatot paplašināto atribūtu “%s” — %s"
 msgid " (invalid encoding)"
 msgstr " (nederīgs kodējums)"
 
-#: ../gio/glocalfileinfo.c:1748 ../gio/glocalfileoutputstream.c:803
+#: ../gio/glocalfileinfo.c:1747 ../gio/glocalfileoutputstream.c:803
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Kļūda, saņemot informāciju par datni “%s” — %s"
 
-#: ../gio/glocalfileinfo.c:1999
+#: ../gio/glocalfileinfo.c:1998
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Kļūda, saņemot informāciju datnes deskriptoram — %s"
 
-#: ../gio/glocalfileinfo.c:2044
+#: ../gio/glocalfileinfo.c:2043
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Nederīgs atribūta tips (tika gaidīts uint32)"
 
-#: ../gio/glocalfileinfo.c:2062
+#: ../gio/glocalfileinfo.c:2061
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Nederīgs atribūta tips (tika gaidīts uint64)"
 
-#: ../gio/glocalfileinfo.c:2081 ../gio/glocalfileinfo.c:2100
+#: ../gio/glocalfileinfo.c:2080 ../gio/glocalfileinfo.c:2099
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Nederīgs atribūta tips (tika gaidīta bitu virkne)"
 
-#: ../gio/glocalfileinfo.c:2135
+#: ../gio/glocalfileinfo.c:2134
 msgid "Cannot set permissions on symlinks"
 msgstr "Nevar iestatīt atļaujas simboliskajām saitēm"
 
-#: ../gio/glocalfileinfo.c:2151
+#: ../gio/glocalfileinfo.c:2150
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Kļūda, iestatot tiesības — %s"
 
-#: ../gio/glocalfileinfo.c:2202
+#: ../gio/glocalfileinfo.c:2201
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Kļūda, iestatot īpašnieku — %s"
 
-#: ../gio/glocalfileinfo.c:2225
+#: ../gio/glocalfileinfo.c:2224
 msgid "symlink must be non-NULL"
 msgstr "simboliskajai saitei ir jābūt ne NULL"
 
-#: ../gio/glocalfileinfo.c:2235 ../gio/glocalfileinfo.c:2254
-#: ../gio/glocalfileinfo.c:2265
+#: ../gio/glocalfileinfo.c:2234 ../gio/glocalfileinfo.c:2253
+#: ../gio/glocalfileinfo.c:2264
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Kļūda, iestatot simbolisko saiti — %s"
 
-#: ../gio/glocalfileinfo.c:2244
+#: ../gio/glocalfileinfo.c:2243
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Kļūda, iestatot simbolisko saiti — datne nav simboliskā saite"
 
-#: ../gio/glocalfileinfo.c:2370
+#: ../gio/glocalfileinfo.c:2369
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Kļūda, iestatot izmaiņu vai piekļuves laiku — %s"
 
-#: ../gio/glocalfileinfo.c:2393
+#: ../gio/glocalfileinfo.c:2392
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux kontekstam ir jābūt ne NULL"
 
-#: ../gio/glocalfileinfo.c:2408
+#: ../gio/glocalfileinfo.c:2407
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Kļūda, iestatot SELinux kontekstu — %s"
 
-#: ../gio/glocalfileinfo.c:2415
+#: ../gio/glocalfileinfo.c:2414
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux nav ieslēgts uz šīs sistēmas"
 
-#: ../gio/glocalfileinfo.c:2507
+#: ../gio/glocalfileinfo.c:2506
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s atribūta iestatīšana nav atbalstīta"
@@ -2225,7 +2217,7 @@ msgstr "montējums neatbalsta satura tipa minēšanu"
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "montējums neatbalsta sinhrono satura tipa minēšanu"
 
-#: ../gio/gnetworkaddress.c:339
+#: ../gio/gnetworkaddress.c:338
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Datora nosaukums “%s” satur “[” bet ne “]”"
@@ -2260,7 +2252,8 @@ msgstr "Izvades plūsma neatbalsta rakstīšanu"
 msgid "Source stream is already closed"
 msgstr "Avota plūsma jau ir aizvērta"
 
-#: ../gio/gresolver.c:318 ../gio/gthreadedresolver.c:108
+#: ../gio/gresolver.c:320 ../gio/gthreadedresolver.c:116
+#: ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Kļūda, sameklējot “%s” — %s"
@@ -2287,11 +2280,11 @@ msgstr "Resurss pie “%s” nav mape"
 msgid "Input stream doesn't implement seek"
 msgstr "Ievades plūsma neatbalsta meklēšanu"
 
-#: ../gio/gresource-tool.c:479
+#: ../gio/gresource-tool.c:487
 msgid "List sections containing resources in an elf FILE"
 msgstr "Uzskaitīt sadaļas, kas satur resursus elf DATNĒ"
 
-#: ../gio/gresource-tool.c:485
+#: ../gio/gresource-tool.c:493
 msgid ""
 "List resources\n"
 "If SECTION is given, only list resources in this section\n"
@@ -2301,16 +2294,16 @@ msgstr ""
 "Ja ir norādīta SADAĻA, uzskaitīt resursus šajā sadaļā\n"
 "Ja ir norādīts CEĻŠ, uzskaitīt tikai atbilstošus resursus"
 
-#: ../gio/gresource-tool.c:488 ../gio/gresource-tool.c:498
+#: ../gio/gresource-tool.c:496 ../gio/gresource-tool.c:506
 msgid "FILE [PATH]"
 msgstr "DATNE [CEĻŠ]"
 
-#: ../gio/gresource-tool.c:489 ../gio/gresource-tool.c:499
-#: ../gio/gresource-tool.c:506
+#: ../gio/gresource-tool.c:497 ../gio/gresource-tool.c:507
+#: ../gio/gresource-tool.c:514
 msgid "SECTION"
 msgstr "SADAĻA"
 
-#: ../gio/gresource-tool.c:494
+#: ../gio/gresource-tool.c:502
 msgid ""
 "List resources with details\n"
 "If SECTION is given, only list resources in this section\n"
@@ -2322,15 +2315,15 @@ msgstr ""
 "Ja ir norādīts CEĻŠ, uzskaitīt tikai atbilstošus resursus\n"
 "Informācija iekļauj sadaļu, izmēru un saspiešanu"
 
-#: ../gio/gresource-tool.c:504
+#: ../gio/gresource-tool.c:512
 msgid "Extract a resource file to stdout"
 msgstr "Izvilkt resursu datni uz stdout"
 
-#: ../gio/gresource-tool.c:505
+#: ../gio/gresource-tool.c:513
 msgid "FILE PATH"
 msgstr "DATNE CEĻŠ"
 
-#: ../gio/gresource-tool.c:519
+#: ../gio/gresource-tool.c:527
 msgid ""
 "Usage:\n"
 "  gresource [--section SECTION] COMMAND [ARGS...]\n"
@@ -2358,7 +2351,7 @@ msgstr ""
 "Lietojiet “gresource help KOMANDA”, lai saņemtu detalizētu palīdzību.\n"
 "\n"
 
-#: ../gio/gresource-tool.c:533
+#: ../gio/gresource-tool.c:541
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2373,19 +2366,19 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:540
+#: ../gio/gresource-tool.c:548
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SADAĻA   (Neobligāts) elf sadaļas nosaukums\n"
 
-#: ../gio/gresource-tool.c:544 ../gio/gsettings-tool.c:635
+#: ../gio/gresource-tool.c:552 ../gio/gsettings-tool.c:635
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  KOMANDA  (neobligāta) komanda, ko izskaidrot\n"
 
-#: ../gio/gresource-tool.c:550
+#: ../gio/gresource-tool.c:558
 msgid "  FILE      An elf file (a binary or a shared library)\n"
 msgstr "  DATNE     elf datne (bināra datne vai koplietota bibliotēka)\n"
 
-#: ../gio/gresource-tool.c:553
+#: ../gio/gresource-tool.c:561
 msgid ""
 "  FILE      An elf file (a binary or a shared library)\n"
 "            or a compiled resource file\n"
@@ -2393,19 +2386,19 @@ msgstr ""
 "  DATNE     elf datne (bināra datne vai koplietota bibliotēka)\n"
 "            vai saspiests resursu datne\n"
 
-#: ../gio/gresource-tool.c:557
+#: ../gio/gresource-tool.c:565
 msgid "[PATH]"
 msgstr "[CEĻŠ]"
 
-#: ../gio/gresource-tool.c:559
+#: ../gio/gresource-tool.c:567
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  CEĻŠ      (Neobligāts) resursa ceļš (var būt daļējs)\n"
 
-#: ../gio/gresource-tool.c:560
+#: ../gio/gresource-tool.c:568
 msgid "PATH"
 msgstr "CEĻŠ"
 
-#: ../gio/gresource-tool.c:562
+#: ../gio/gresource-tool.c:570
 msgid "  PATH      A resource path\n"
 msgstr "  CEĻŠ      Resursa ceļš\n"
 
@@ -2535,27 +2528,6 @@ msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SHĒMA[:CEĻŠ] [ATSLĒGA]"
 
 #: ../gio/gsettings-tool.c:602
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
-#| "\n"
-#| "Commands:\n"
-#| "  help                      Show this information\n"
-#| "  list-schemas              List installed schemas\n"
-#| "  list-relocatable-schemas  List relocatable schemas\n"
-#| "  list-keys                 List keys in a schema\n"
-#| "  list-children             List children of a schema\n"
-#| "  list-recursively          List keys and values, recursively\n"
-#| "  range                     Queries the range of a key\n"
-#| "  get                       Get the value of a key\n"
-#| "  set                       Set the value of a key\n"
-#| "  reset                     Reset the value of a key\n"
-#| "  reset-recursively         Reset all values in a given schema\n"
-#| "  writable                  Check if a key is writable\n"
-#| "  monitor                   Watch for changes\n"
-#| "\n"
-#| "Use 'gsettings help COMMAND' to get detailed help.\n"
-#| "\n"
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -2655,133 +2627,133 @@ msgstr "Dots tukšs shēmas nosaukums\n"
 msgid "No such key '%s'\n"
 msgstr "Nav tādas atslēgas “%s”\n"
 
-#: ../gio/gsocket.c:312
+#: ../gio/gsocket.c:266
 msgid "Invalid socket, not initialized"
 msgstr "Nederīga ligzda, nav inicializēta"
 
-#: ../gio/gsocket.c:319
+#: ../gio/gsocket.c:273
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Nederīga ligzda, inicializācija neizdevās, jo — %s"
 
-#: ../gio/gsocket.c:327
+#: ../gio/gsocket.c:281
 msgid "Socket is already closed"
 msgstr "Ligzda jau ir aizvērta"
 
-#: ../gio/gsocket.c:335 ../gio/gsocket.c:3615 ../gio/gsocket.c:3670
+#: ../gio/gsocket.c:296 ../gio/gsocket.c:3618 ../gio/gsocket.c:3673
 msgid "Socket I/O timed out"
 msgstr "Ligzdai I/O iestājās noildze"
 
-#: ../gio/gsocket.c:482
+#: ../gio/gsocket.c:443
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "izveido GSocket no fd — %s"
 
-#: ../gio/gsocket.c:510 ../gio/gsocket.c:564 ../gio/gsocket.c:571
+#: ../gio/gsocket.c:471 ../gio/gsocket.c:525 ../gio/gsocket.c:532
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Nevarēja izveidot ligzdu — %s"
 
-#: ../gio/gsocket.c:564
+#: ../gio/gsocket.c:525
 msgid "Unknown family was specified"
 msgstr "Tika norādīta nezināma saime"
 
-#: ../gio/gsocket.c:571
+#: ../gio/gsocket.c:532
 msgid "Unknown protocol was specified"
 msgstr "Tika norādīts nezināms protokols"
 
-#: ../gio/gsocket.c:1729
+#: ../gio/gsocket.c:1722
 #, c-format
 msgid "could not get local address: %s"
 msgstr "nevarēja iegūt lokālo adresi — %s"
 
-#: ../gio/gsocket.c:1772
+#: ../gio/gsocket.c:1765
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "nevarēja iegūt attālināto adresi — %s"
 
-#: ../gio/gsocket.c:1833
+#: ../gio/gsocket.c:1826
 #, c-format
 msgid "could not listen: %s"
 msgstr "nevar klausīties — %s"
 
-#: ../gio/gsocket.c:1932
+#: ../gio/gsocket.c:1925
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Kļūda, sasaistoties ar adresi — %s"
 
-#: ../gio/gsocket.c:2044 ../gio/gsocket.c:2081
+#: ../gio/gsocket.c:2037 ../gio/gsocket.c:2074
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Kļūda, pievienojoties multiraides grupai — %s"
 
-#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
+#: ../gio/gsocket.c:2038 ../gio/gsocket.c:2075
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Kļūda, pametot multiraides grupu — %s"
 
-#: ../gio/gsocket.c:2046
+#: ../gio/gsocket.c:2039
 msgid "No support for source-specific multicast"
 msgstr "Nav atbalsta avotam specifiskām multiraidēm"
 
-#: ../gio/gsocket.c:2265
+#: ../gio/gsocket.c:2261
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Kļūda, pieņemot savienojumu — %s"
 
-#: ../gio/gsocket.c:2386
+#: ../gio/gsocket.c:2382
 msgid "Connection in progress"
 msgstr "Notiek savienošanās"
 
-#: ../gio/gsocket.c:2433
+#: ../gio/gsocket.c:2432
 msgid "Unable to get pending error: "
 msgstr "Nevar saņemt izpildes gaidīšanas kļūdu:"
 
-#: ../gio/gsocket.c:2631
+#: ../gio/gsocket.c:2633
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Kļūda, saņemot datus — %s"
 
-#: ../gio/gsocket.c:2809
+#: ../gio/gsocket.c:2811
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Kļūda, sūtot datus — %s"
 
-#: ../gio/gsocket.c:2923
+#: ../gio/gsocket.c:2925
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Neizdevās izslēgt ligzdu — %s"
 
-#: ../gio/gsocket.c:3002
+#: ../gio/gsocket.c:3004
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Kļūda, aizverot ligzdu — %s"
 
-#: ../gio/gsocket.c:3608
+#: ../gio/gsocket.c:3611
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Gaida ligzdas nosacījumu — %s"
 
-#: ../gio/gsocket.c:3886 ../gio/gsocket.c:3967
+#: ../gio/gsocket.c:3897 ../gio/gsocket.c:3978
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Kļūda, sūtot ziņojumu — %s"
 
-#: ../gio/gsocket.c:3911
+#: ../gio/gsocket.c:3922
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage nav atbalstīts uz Windows"
 
-#: ../gio/gsocket.c:4245 ../gio/gsocket.c:4380
+#: ../gio/gsocket.c:4259 ../gio/gsocket.c:4394
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Kļūda, saņemot ziņojumu — %s"
 
-#: ../gio/gsocket.c:4485
+#: ../gio/gsocket.c:4516
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Nevar nolasīt ligzdas datus — %s"
 
-#: ../gio/gsocket.c:4494
+#: ../gio/gsocket.c:4525
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials nav implementēts šai OS"
 
@@ -2799,24 +2771,24 @@ msgstr "Nevarēja savienoties ar %s: "
 msgid "Could not connect: "
 msgstr "Nevarēja savienoties:"
 
-#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1594
+#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1603
 msgid "Unknown error on connect"
 msgstr "Nezināma kļūda savienojoties"
 
-#: ../gio/gsocketclient.c:1082 ../gio/gsocketclient.c:1532
+#: ../gio/gsocketclient.c:1082 ../gio/gsocketclient.c:1538
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Starpnieka mēģināšana caur ne-TCP savienojumu nav atbalstīta."
 
-#: ../gio/gsocketclient.c:1108 ../gio/gsocketclient.c:1553
+#: ../gio/gsocketclient.c:1108 ../gio/gsocketclient.c:1559
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Starpnieka protokols “%s” nav atbalstīts."
 
-#: ../gio/gsocketlistener.c:186
+#: ../gio/gsocketlistener.c:188
 msgid "Listener is already closed"
 msgstr "Klausītājs jau ir aizvērts"
 
-#: ../gio/gsocketlistener.c:227
+#: ../gio/gsocketlistener.c:234
 msgid "Added socket is closed"
 msgstr "Pievienotā ligzda ir aizvērta"
 
@@ -2913,23 +2885,27 @@ msgstr "Nezināma SOCKSv5 starpnieka kļūda."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Nevar apstrādāt GThemedIcon versijas %d kodējumu"
 
-#: ../gio/gthreadedresolver.c:193
+#: ../gio/gthreadedresolver.c:118
+msgid "No valid addresses were found"
+msgstr "Netika atrasta neviena derīga adrese"
+
+#: ../gio/gthreadedresolver.c:211
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Kļūda, apgriezti sameklējot “%s” — %s"
 
-#: ../gio/gthreadedresolver.c:531 ../gio/gthreadedresolver.c:611
-#: ../gio/gthreadedresolver.c:711 ../gio/gthreadedresolver.c:761
+#: ../gio/gthreadedresolver.c:546 ../gio/gthreadedresolver.c:626
+#: ../gio/gthreadedresolver.c:724 ../gio/gthreadedresolver.c:774
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "Nav DNS ierakstu “%s” pieprasītajam tipam"
 
-#: ../gio/gthreadedresolver.c:536 ../gio/gthreadedresolver.c:716
+#: ../gio/gthreadedresolver.c:551 ../gio/gthreadedresolver.c:729
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Pagaidām nevar sameklēt “%s”"
 
-#: ../gio/gthreadedresolver.c:541 ../gio/gthreadedresolver.c:721
+#: ../gio/gthreadedresolver.c:556 ../gio/gthreadedresolver.c:734
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Kļūda, sameklējot “%s”"
@@ -3038,7 +3014,7 @@ msgstr "Kļūda, nolasot datnes deskriptoru — %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Kļūda, aizverot datnes deskriptoru — %s"
 
-#: ../gio/gunixmounts.c:1991 ../gio/gunixmounts.c:2044
+#: ../gio/gunixmounts.c:2054 ../gio/gunixmounts.c:2107
 msgid "Filesystem root"
 msgstr "Datņu sistēmas sakne"
 
@@ -3163,49 +3139,49 @@ msgstr "Negaidīta birka “%s”, tika gaidīt birka “%s”"
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Negaidīta birka “%s” iekš “%s”"
 
-#: ../glib/gbookmarkfile.c:1773
+#: ../glib/gbookmarkfile.c:1756
 msgid "No valid bookmark file found in data dirs"
 msgstr "Nav atrasts derīga grāmatzīmes datne datu mapēs"
 
-#: ../glib/gbookmarkfile.c:1974
+#: ../glib/gbookmarkfile.c:1957
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Grāmatzīme ar URI “%s” jau eksistē"
 
-#: ../glib/gbookmarkfile.c:2020 ../glib/gbookmarkfile.c:2178
-#: ../glib/gbookmarkfile.c:2263 ../glib/gbookmarkfile.c:2343
-#: ../glib/gbookmarkfile.c:2428 ../glib/gbookmarkfile.c:2511
-#: ../glib/gbookmarkfile.c:2589 ../glib/gbookmarkfile.c:2668
-#: ../glib/gbookmarkfile.c:2710 ../glib/gbookmarkfile.c:2807
-#: ../glib/gbookmarkfile.c:2927 ../glib/gbookmarkfile.c:3117
-#: ../glib/gbookmarkfile.c:3193 ../glib/gbookmarkfile.c:3361
-#: ../glib/gbookmarkfile.c:3450 ../glib/gbookmarkfile.c:3539
-#: ../glib/gbookmarkfile.c:3655
+#: ../glib/gbookmarkfile.c:2003 ../glib/gbookmarkfile.c:2161
+#: ../glib/gbookmarkfile.c:2246 ../glib/gbookmarkfile.c:2326
+#: ../glib/gbookmarkfile.c:2411 ../glib/gbookmarkfile.c:2494
+#: ../glib/gbookmarkfile.c:2572 ../glib/gbookmarkfile.c:2651
+#: ../glib/gbookmarkfile.c:2693 ../glib/gbookmarkfile.c:2790
+#: ../glib/gbookmarkfile.c:2910 ../glib/gbookmarkfile.c:3100
+#: ../glib/gbookmarkfile.c:3176 ../glib/gbookmarkfile.c:3344
+#: ../glib/gbookmarkfile.c:3433 ../glib/gbookmarkfile.c:3522
+#: ../glib/gbookmarkfile.c:3638
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Nav atrasta grāmatzīme URI “%s”"
 
-#: ../glib/gbookmarkfile.c:2352
+#: ../glib/gbookmarkfile.c:2335
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Nav definēts MIME tips grāmatzīmē URI “%s”"
 
-#: ../glib/gbookmarkfile.c:2437
+#: ../glib/gbookmarkfile.c:2420
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Nav definēti privātie karogi grāmatzīmēs URI “%s”"
 
-#: ../glib/gbookmarkfile.c:2816
+#: ../glib/gbookmarkfile.c:2799
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Nav iestatītas grupas grāmatzīmēs URI “%s”"
 
-#: ../glib/gbookmarkfile.c:3214 ../glib/gbookmarkfile.c:3371
+#: ../glib/gbookmarkfile.c:3197 ../glib/gbookmarkfile.c:3354
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Neviena lietotne ar nosaukumu “%s” nav reģistrējusi “%s” grāmatzīmi"
 
-#: ../glib/gbookmarkfile.c:3394
+#: ../glib/gbookmarkfile.c:3377
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Neizdevās izvērst exec rindu “%s” ar URI “%s”"
@@ -3485,7 +3461,7 @@ msgstr "Sv"
 msgid "Error opening directory '%s': %s"
 msgstr "Kļūda, atverot direktoriju “%s” — %s"
 
-#: ../glib/gfileutils.c:699 ../glib/gfileutils.c:791
+#: ../glib/gfileutils.c:700 ../glib/gfileutils.c:792
 #, c-format
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
@@ -3493,77 +3469,77 @@ msgstr[0] "Nevarēja piešķirt %lu baitu, lai nolasītu datni “%s”"
 msgstr[1] "Nevarēja atrast %lu baitus, lai nolasītu datni “%s”"
 msgstr[2] "Nevarēja atrast %lu baitus, lai nolasītu datni “%s”"
 
-#: ../glib/gfileutils.c:716
+#: ../glib/gfileutils.c:717
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Kļūda, nolasot datni “%s” — %s"
 
-#: ../glib/gfileutils.c:752
+#: ../glib/gfileutils.c:753
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Datne \"%s\" ir pārāk liela"
 
-#: ../glib/gfileutils.c:816
+#: ../glib/gfileutils.c:817
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Neizdevās nolasīt no datnes “%s” — %s"
 
-#: ../glib/gfileutils.c:863 ../glib/gfileutils.c:929
+#: ../glib/gfileutils.c:865 ../glib/gfileutils.c:937
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Neizdevās atvērt datni “%s” — %s"
 
-#: ../glib/gfileutils.c:873
+#: ../glib/gfileutils.c:877
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Neizdevās dabūt datnes “%s” atribūtus — fstat() neizdevās — %s"
 
-#: ../glib/gfileutils.c:901
+#: ../glib/gfileutils.c:907
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Neizdevās atvērt “%s” — fdopen() neizdevās — %s"
 
-#: ../glib/gfileutils.c:997
+#: ../glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Neizdevās pārsaukt datni “%s” uz “%s” — g_rename() neizdevās — %s"
 
-#: ../glib/gfileutils.c:1030 ../glib/gfileutils.c:1519
+#: ../glib/gfileutils.c:1041 ../glib/gfileutils.c:1540
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Neizdevās izveidot datni “%s” — %s"
 
-#: ../glib/gfileutils.c:1054
+#: ../glib/gfileutils.c:1068
 #, c-format
 msgid "Failed to write file '%s': write() failed: %s"
 msgstr "Neizdevās rakstīt datnē “%s” — write() neizdevās — %s"
 
-#: ../glib/gfileutils.c:1094
+#: ../glib/gfileutils.c:1111
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Neizdevās rakstīt datnē “%s” — fsync() neizdevās — %s"
 
-#: ../glib/gfileutils.c:1216
+#: ../glib/gfileutils.c:1235
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Nevarēja izdzēst esošo datni “%s” — g_unlink() neizdevās — %s"
 
-#: ../glib/gfileutils.c:1486
+#: ../glib/gfileutils.c:1506
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Veidne “%s” ir nepareiza, nedrīkstētu saturēt “%s”"
 
-#: ../glib/gfileutils.c:1499
+#: ../glib/gfileutils.c:1519
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Veidne “%s” nesatur XXXXXX"
 
-#: ../glib/gfileutils.c:2015
+#: ../glib/gfileutils.c:2038
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Neizdevās nolasīt simbolisko saiti “%s” — %s"
 
-#: ../glib/gfileutils.c:2033
+#: ../glib/gfileutils.c:2057
 msgid "Symbolic links not supported"
 msgstr "Simboliskās saites nav atbalstītas"
 
@@ -3711,32 +3687,32 @@ msgstr "Neizdevās kartēt %s%s%s%s — mmap() neizdevās — %s"
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Neizdevās atvērt datni “%s” — open() neizdevās — %s"
 
-#: ../glib/gmarkup.c:397 ../glib/gmarkup.c:439
+#: ../glib/gmarkup.c:398 ../glib/gmarkup.c:440
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Kļūda rindā %d rakstzīme %d: "
 
-#: ../glib/gmarkup.c:461 ../glib/gmarkup.c:544
+#: ../glib/gmarkup.c:462 ../glib/gmarkup.c:545
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "Nepareizi kodēts UTF-8 teksts — nav derīgs “%s”"
 
-#: ../glib/gmarkup.c:472
+#: ../glib/gmarkup.c:473
 #, c-format
 msgid "'%s' is not a valid name"
 msgstr "“%s” nav derīgs nosaukums"
 
-#: ../glib/gmarkup.c:488
+#: ../glib/gmarkup.c:489
 #, c-format
 msgid "'%s' is not a valid name: '%c'"
 msgstr "“%s” nav derīgs nosaukums — '%c'"
 
-#: ../glib/gmarkup.c:598
+#: ../glib/gmarkup.c:599
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Kļūda rindā %d — %s"
 
-#: ../glib/gmarkup.c:682
+#: ../glib/gmarkup.c:683
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -3745,7 +3721,7 @@ msgstr ""
 "Neizdevās apstrādāt “%-.*s”, kur vajadzētu būt ciparam rakstzīmes atsaucē "
 "(piemēram, &#234;) — iespējams, ka cipars ir pārāk liels"
 
-#: ../glib/gmarkup.c:694
+#: ../glib/gmarkup.c:695
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -3754,24 +3730,24 @@ msgstr ""
 "Rakstzīmes atsauce nebeidzās ar semikolu; visdrīzāk jūs lietojāt & zīmi bez "
 "nodoma sākt entītiju — aizvieto “&” zīmes ar &amp;"
 
-#: ../glib/gmarkup.c:720
+#: ../glib/gmarkup.c:721
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Rakstzīmes atsauce “%-.*s” neiekodē atļautu rakstzīmi"
 
-#: ../glib/gmarkup.c:758
+#: ../glib/gmarkup.c:759
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Pamanīta tukša entītija “&;”; derīgas entītijas ir: &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: ../glib/gmarkup.c:766
+#: ../glib/gmarkup.c:767
 #, c-format
 msgid "Entity name '%-.*s' is not known"
 msgstr "Entītijas nosaukums “%-.*s” nav zināms"
 
-#: ../glib/gmarkup.c:771
+#: ../glib/gmarkup.c:772
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -3779,11 +3755,11 @@ msgstr ""
 "Entītija nebeidzās ar semikolu; visdrīzāk jūs lietojāt “&” zīmi bez nodoma "
 "sākt entītiju - aizvieto “&” zīmes ar &amp;"
 
-#: ../glib/gmarkup.c:1177
+#: ../glib/gmarkup.c:1178
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentam jāsākas ar elementu (piemēram, <book>)"
 
-#: ../glib/gmarkup.c:1217
+#: ../glib/gmarkup.c:1218
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -3792,7 +3768,7 @@ msgstr ""
 "“%s” nav atļauta rakstzīme, sekojoša aiz rakstzīmes “<” tā nedrīkst iesākt "
 "elementa vārdu."
 
-#: ../glib/gmarkup.c:1259
+#: ../glib/gmarkup.c:1260
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag "
@@ -3801,14 +3777,14 @@ msgstr ""
 "Savāda rakstzīme “%s”. Tika gaidīta “>” rakstzīme, kas nobeigtu sākuma birku "
 "elementam “%s”"
 
-#: ../glib/gmarkup.c:1340
+#: ../glib/gmarkup.c:1341
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
 "Savāda rakstzīme “%s”, gaidīju “=” aiz atribūta nosaukuma “%s” elementam “%s”"
 
-#: ../glib/gmarkup.c:1381
+#: ../glib/gmarkup.c:1382
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -3819,7 +3795,7 @@ msgstr ""
 "sākuma birku elementam “%s” vai fakultatīvi atribūtu; iespējams, jūs "
 "lietojāt nepareizu rakstzīmi atribūta nosaukumā"
 
-#: ../glib/gmarkup.c:1425
+#: ../glib/gmarkup.c:1426
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -3828,7 +3804,7 @@ msgstr ""
 "Savāda rakstzīme “%s”, tika gaidītas atvērtās pēdiņas pēc vienādības zīme, "
 "nosakot vērtību atribūtam “%s” no elementa “%s”"
 
-#: ../glib/gmarkup.c:1558
+#: ../glib/gmarkup.c:1559
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -3837,7 +3813,7 @@ msgstr ""
 "“%s” nav derīga rakstzīme, sekojot rakstzīmēm “</”; “%s” nevar sākt elementa "
 "nosaukumu"
 
-#: ../glib/gmarkup.c:1594
+#: ../glib/gmarkup.c:1595
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -3846,25 +3822,25 @@ msgstr ""
 "“%s” nav derīga rakstzīme, sekojot aizverošā elementa nosaukumam “%s”; "
 "atļautā rakstzīme ir “>”"
 
-#: ../glib/gmarkup.c:1605
+#: ../glib/gmarkup.c:1606
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elements “%s” tika aizvērts, neviens elements pašlaik nav atvērts"
 
-#: ../glib/gmarkup.c:1614
+#: ../glib/gmarkup.c:1615
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Elements “%s” tika aizvērts, bet pašlaik atvērtais elements ir “%s”"
 
-#: ../glib/gmarkup.c:1767
+#: ../glib/gmarkup.c:1768
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokuments bija tukšs vai saturēja tikai tukšu atstarpi"
 
-#: ../glib/gmarkup.c:1781
+#: ../glib/gmarkup.c:1782
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokuments negaidīti izbeidzās tieši pēc atvērtās leņķa iekavas “<”"
 
-#: ../glib/gmarkup.c:1789 ../glib/gmarkup.c:1834
+#: ../glib/gmarkup.c:1790 ../glib/gmarkup.c:1835
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -3873,7 +3849,7 @@ msgstr ""
 "Dokuments negaidīti izbeidzās ar joprojām atvērtiem elementiem — “%s” bija "
 "pēdējais atvērtais elements"
 
-#: ../glib/gmarkup.c:1797
+#: ../glib/gmarkup.c:1798
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -3882,19 +3858,19 @@ msgstr ""
 "Dokuments negaidīti izbeidzās, gaidīja ieraudzīt aizverošo leņķa iekavu, "
 "beidzoties ar tagu <%s/>"
 
-#: ../glib/gmarkup.c:1803
+#: ../glib/gmarkup.c:1804
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokuments negaidīti izbeidzās elementa nosaukumā"
 
-#: ../glib/gmarkup.c:1809
+#: ../glib/gmarkup.c:1810
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokuments negaidīti izbeidzās atribūta nosaukumā"
 
-#: ../glib/gmarkup.c:1814
+#: ../glib/gmarkup.c:1815
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Dokuments negaidīti izbeidzās elementa atverošajā birkā."
 
-#: ../glib/gmarkup.c:1820
+#: ../glib/gmarkup.c:1821
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -3902,74 +3878,74 @@ msgstr ""
 "Dokuments negaidīti beidzās aiz vienādības zīmes, sekojot atribūta "
 "nosaukumam; nav atribūta vērtības"
 
-#: ../glib/gmarkup.c:1827
+#: ../glib/gmarkup.c:1828
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokuments negaidīti beidzās kamēr atradās atribūta vērtībā"
 
-#: ../glib/gmarkup.c:1843
+#: ../glib/gmarkup.c:1844
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokuments negaidīti beidzās elementa “%s” aizverošajā birkā"
 
-#: ../glib/gmarkup.c:1849
+#: ../glib/gmarkup.c:1850
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokuments negaidīti izbeidzās komentārā vai apstrādes instrukcijā"
 
-#: ../glib/goption.c:797
+#: ../glib/goption.c:795
 msgid "Usage:"
 msgstr "Lietošana:"
 
-#: ../glib/goption.c:797
+#: ../glib/goption.c:795
 msgid "[OPTION...]"
 msgstr "[OPCIJA...]"
 
-#: ../glib/goption.c:913
+#: ../glib/goption.c:911
 msgid "Help Options:"
 msgstr "Palīdzības opcijas:"
 
-#: ../glib/goption.c:914
+#: ../glib/goption.c:912
 msgid "Show help options"
 msgstr "Rādīt palīdzības opcijas"
 
-#: ../glib/goption.c:920
+#: ../glib/goption.c:918
 msgid "Show all help options"
 msgstr "Rādīt visas palīdzības opcijas"
 
-#: ../glib/goption.c:982
+#: ../glib/goption.c:980
 msgid "Application Options:"
 msgstr "Lietotnes opcijas:"
 
-#: ../glib/goption.c:1046 ../glib/goption.c:1116
+#: ../glib/goption.c:1044 ../glib/goption.c:1114
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Nevar apstrādāt veselā skaitļa vērtību “%s” priekš %s"
 
-#: ../glib/goption.c:1056 ../glib/goption.c:1124
+#: ../glib/goption.c:1054 ../glib/goption.c:1122
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Veselā skaitļa vērtība “%s” priekš %s ir ārpus apgabala"
 
-#: ../glib/goption.c:1081
+#: ../glib/goption.c:1079
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Nevar apstrādāt dubulto vērtību “%s” priekš %s"
 
-#: ../glib/goption.c:1089
+#: ../glib/goption.c:1087
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Dubultā vērtība “%s” priekš %s ir ārpus apgabala"
 
-#: ../glib/goption.c:1375 ../glib/goption.c:1454
+#: ../glib/goption.c:1373 ../glib/goption.c:1452
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Kļūda, parsējot opciju %s"
 
-#: ../glib/goption.c:1485 ../glib/goption.c:1598
+#: ../glib/goption.c:1483 ../glib/goption.c:1596
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Trūkst %s parametrs"
 
-#: ../glib/goption.c:2055
+#: ../glib/goption.c:2057
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nezināma opcija %s"
@@ -4337,101 +4313,101 @@ msgstr "nezināma atsoļa sekvence"
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Kļūda, apstrādājot aizvietošanas tekstu “%s” pie rakstzīmes %lu — %s"
 
-#: ../glib/gshell.c:88
+#: ../glib/gshell.c:96
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Citētais teksts nesākas ar jautājuma zīmi"
 
-#: ../glib/gshell.c:178
+#: ../glib/gshell.c:186
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr "Neatbilstoša jautājuma zīme komandrindā vai citā čaulas-citētā tekstā"
 
-#: ../glib/gshell.c:574
+#: ../glib/gshell.c:582
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
 msgstr "Teksts beidzās tieši pēc “\\” rakstzīmes. (Teksts bija “%s”)"
 
-#: ../glib/gshell.c:581
+#: ../glib/gshell.c:589
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
 "Teksts beidzās pirms atbilstošais citāts tika atrasts priekš %c. (Teksts "
 "bija “%s”)"
 
-#: ../glib/gshell.c:593
+#: ../glib/gshell.c:601
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksts bija tukšs (vai saturēja tikai tukšumus)"
 
-#: ../glib/gspawn.c:198
+#: ../glib/gspawn.c:209
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nevarēja nolasīt datus no bērnprocesa (%s)"
 
-#: ../glib/gspawn.c:342
+#: ../glib/gspawn.c:353
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Negaidīta kļūda iekš select(), lasot datus no bērnprocesa (%s)"
 
-#: ../glib/gspawn.c:427
+#: ../glib/gspawn.c:438
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Negaidīta kļūda waitpid() (%s)"
 
-#: ../glib/gspawn.c:838 ../glib/gspawn-win32.c:1233
+#: ../glib/gspawn.c:849 ../glib/gspawn-win32.c:1233
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Bērna process beidza darbu ar kodu %ld"
 
-#: ../glib/gspawn.c:846
+#: ../glib/gspawn.c:857
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Bērna process tika pārtraukts ar signālu %ld"
 
-#: ../glib/gspawn.c:853
+#: ../glib/gspawn.c:864
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Bērna process tika apturēts ar signālu %ld"
 
-#: ../glib/gspawn.c:860
+#: ../glib/gspawn.c:871
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Bērna process beidza darbu nenormāli"
 
-#: ../glib/gspawn.c:1265 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
+#: ../glib/gspawn.c:1276 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nevarēja nolasīt no bērna programkanāla (%s)"
 
-#: ../glib/gspawn.c:1335
+#: ../glib/gspawn.c:1346
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Neizdevās sadalīt (%s)"
 
-#: ../glib/gspawn.c:1484 ../glib/gspawn-win32.c:370
+#: ../glib/gspawn.c:1495 ../glib/gspawn-win32.c:370
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nevarēja pāriet uz direktoriju “%s” (%s)"
 
-#: ../glib/gspawn.c:1494
+#: ../glib/gspawn.c:1505
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nevarēja izpildīt bērnprocesu “%s” (%s)"
 
-#: ../glib/gspawn.c:1504
+#: ../glib/gspawn.c:1515
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nevarēja novadīt bērnprocesa (%s) izvadi vai ievadi"
 
-#: ../glib/gspawn.c:1513
+#: ../glib/gspawn.c:1524
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nevarēja sazarot bērnprocesu (%s)"
 
-#: ../glib/gspawn.c:1521
+#: ../glib/gspawn.c:1532
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nezināma kļūda, izpildot bērnprocesu “%s”"
 
-#: ../glib/gspawn.c:1545
+#: ../glib/gspawn.c:1556
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -4486,7 +4462,6 @@ msgstr ""
 "Negaidīta kļūda iekš g_io_channel_win32_poll(), lasot datus no bērnprocesa"
 
 #: ../glib/gutf8.c:780
-#| msgid "failed to get memory"
 msgid "Failed to allocate memory"
 msgstr "Neizdevās piešķirt atmiņu"
 
@@ -4503,7 +4478,7 @@ msgstr "Nepareiza secība konversijas ievadē"
 msgid "Character out of range for UTF-16"
 msgstr "Rakstzīme nav UTF-16 apgabalā"
 
-#: ../glib/gutils.c:2118 ../glib/gutils.c:2145 ../glib/gutils.c:2251
+#: ../glib/gutils.c:2116 ../glib/gutils.c:2143 ../glib/gutils.c:2249
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -4511,68 +4486,68 @@ msgstr[0] "%u baits"
 msgstr[1] "%u baiti"
 msgstr[2] "%u baitu"
 
-#: ../glib/gutils.c:2124
+#: ../glib/gutils.c:2122
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2126
+#: ../glib/gutils.c:2124
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2129
+#: ../glib/gutils.c:2127
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2132
+#: ../glib/gutils.c:2130
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2135
+#: ../glib/gutils.c:2133
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2138
+#: ../glib/gutils.c:2136
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2151
+#: ../glib/gutils.c:2149
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gutils.c:2154 ../glib/gutils.c:2269
+#: ../glib/gutils.c:2152 ../glib/gutils.c:2267
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2157 ../glib/gutils.c:2274
+#: ../glib/gutils.c:2155 ../glib/gutils.c:2272
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2159 ../glib/gutils.c:2279
+#: ../glib/gutils.c:2157 ../glib/gutils.c:2277
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2162 ../glib/gutils.c:2284
+#: ../glib/gutils.c:2160 ../glib/gutils.c:2282
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2165 ../glib/gutils.c:2289
+#: ../glib/gutils.c:2163 ../glib/gutils.c:2287
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2202
+#: ../glib/gutils.c:2200
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4585,7 +4560,7 @@ msgstr[2] "%s baitu"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2264
+#: ../glib/gutils.c:2262
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
