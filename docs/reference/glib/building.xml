@@ -507,8 +507,8 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--enable-gcov</systemitem> and
-        <systemitem>--disable-gcov</systemitem></title>
+      <title><systemitem>--enable-coverage</systemitem> and
+        <systemitem>--disable-coverage</systemitem></title>
 
       <para>
         Enable the generation of coverage reports for the GLib tests.
