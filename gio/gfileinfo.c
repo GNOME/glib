@@ -28,7 +28,7 @@
  * implements methods for getting information that all files should
  * contain, and allows for manipulation of extended attributes.
  *
- * See [GFileAttribute][gio-GFileAttribute for more information on how
+ * See [GFileAttribute][gio-GFileAttribute] for more information on how
  * GIO handles file attributes.
  *
  * To obtain a #GFileInfo for a #GFile, use g_file_query_info() (or its

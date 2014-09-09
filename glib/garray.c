@@ -816,9 +816,11 @@ g_array_maybe_expand (GRealArray *array,
  * An example using a #GPtrArray:
  * |[<!-- language="C" -->
  *   GPtrArray *array;
- *   gchar *string1 = "one", *string2 = "two", *string3 = "three";
+ *   gchar *string1 = "one";
+ *   gchar *string2 = "two";
+ *   gchar *string3 = "three";
  *
- *   gparray = g_ptr_array_new ();
+ *   array = g_ptr_array_new ();
  *   g_ptr_array_add (array, (gpointer) string1);
  *   g_ptr_array_add (array, (gpointer) string2);
  *   g_ptr_array_add (array, (gpointer) string3);
