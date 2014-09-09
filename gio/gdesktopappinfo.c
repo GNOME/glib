@@ -137,6 +137,7 @@ G_DEFINE_TYPE_WITH_CODE (GDesktopAppInfo, g_desktop_app_info, G_TYPE_OBJECT,
 typedef struct
 {
   gchar                      *path;
+  gchar                      *alternatively_watching;
   gboolean                    is_config;
   gboolean                    is_setup;
   GLocalDirectoryMonitor     *monitor;
@@ -155,6 +156,52 @@ static GMutex          desktop_file_dir_lock;
 /* Monitor 'changed' signal handler {{{2 */
 static void desktop_file_dir_reset (DesktopFileDir *dir);
 
+/*< internal >
+ * desktop_file_dir_get_alternative_dir:
+ * @dir: a #DesktopFileDir
+ *
+ * Gets the "alternative" directory to monitor in case the path
+ * doesn't exist.
+ *
+ * If the path exists this will return NULL, otherwise it will return a
+ * parent directory of the path.
+ *
+ * This is used to avoid inotify on a non-existent directory (which
+ * results in polling).
+ *
+ * See https://bugzilla.gnome.org/show_bug.cgi?id=522314 for more info.
+ */
+static gchar *
+desktop_file_dir_get_alternative_dir (DesktopFileDir *dir)
+{
+  gchar *parent;
+
+  /* If the directory itself exists then we need no alternative. */
+  if (g_access (dir->path, R_OK | X_OK) == 0)
+    return NULL;
+
+  /* Otherwise, try the parent directories until we find one. */
+  parent = g_path_get_dirname (dir->path);
+
+  while (g_access (parent, R_OK | X_OK) != 0)
+    {
+      gchar *tmp = parent;
+
+      parent = g_path_get_dirname (tmp);
+
+      /* If somehow we get to '/' or '.' then just stop... */
+      if (g_str_equal (parent, tmp))
+        {
+          g_free (tmp);
+          break;
+        }
+
+      g_free (tmp);
+    }
+
+  return parent;
+}
+
 static void
 desktop_file_dir_changed (GFileMonitor      *monitor,
                           GFile             *file,
@@ -163,6 +210,7 @@ desktop_file_dir_changed (GFileMonitor      *monitor,
                           gpointer           user_data)
 {
   DesktopFileDir *dir = user_data;
+  gboolean do_nothing = FALSE;
 
   /* We are not interested in receiving notifications forever just
    * because someone asked about one desktop file once.
@@ -170,15 +218,30 @@ desktop_file_dir_changed (GFileMonitor      *monitor,
    * After we receive the first notification, reset the dir, destroying
    * the monitor.  We will take this as a hint, next time that we are
    * asked, that we need to check if everything is up to date.
+   *
+   * If this is a notification for a parent directory (because the
+   * desktop directory didn't exist) then we shouldn't fire the signal
+   * unless something actually changed.
    */
   g_mutex_lock (&desktop_file_dir_lock);
 
-  desktop_file_dir_reset (dir);
+  if (dir->alternatively_watching)
+    {
+      gchar *alternative_dir;
+
+      alternative_dir = desktop_file_dir_get_alternative_dir (dir);
+      do_nothing = alternative_dir && g_str_equal (dir->alternatively_watching, alternative_dir);
+      g_free (alternative_dir);
+    }
+
+  if (!do_nothing)
+    desktop_file_dir_reset (dir);
 
   g_mutex_unlock (&desktop_file_dir_lock);
 
   /* Notify anyone else who may be interested */
-  g_app_info_monitor_fire ();
+  if (!do_nothing)
+    g_app_info_monitor_fire ();
 }
 
 /* Internal utility functions {{{2 */
@@ -1207,6 +1270,12 @@ desktop_file_dir_create_for_config (GArray      *array,
 static void
 desktop_file_dir_reset (DesktopFileDir *dir)
 {
+  if (dir->alternatively_watching)
+    {
+      g_free (dir->alternatively_watching);
+      dir->alternatively_watching = NULL;
+    }
+
   if (dir->monitor)
     {
       g_signal_handlers_disconnect_by_func (dir->monitor, desktop_file_dir_changed, dir);
@@ -1252,10 +1321,23 @@ desktop_file_dir_reset (DesktopFileDir *dir)
 static void
 desktop_file_dir_init (DesktopFileDir *dir)
 {
+  const gchar *watch_dir;
+
   g_assert (!dir->is_setup);
 
+  g_assert (!dir->alternatively_watching);
   g_assert (!dir->monitor);
-  dir->monitor = g_local_directory_monitor_new_in_worker (dir->path, G_FILE_MONITOR_NONE, NULL);
+
+  dir->alternatively_watching = desktop_file_dir_get_alternative_dir (dir);
+  watch_dir = dir->alternatively_watching ? dir->alternatively_watching : dir->path;
+
+  /* There is a very thin race here if the watch_dir has been _removed_
+   * between when we checked for it and when we establish the watch.
+   * Removes probably don't happen in usual operation, and even if it
+   * does (and we catch the unlikely race), the only degradation is that
+   * we will fall back to polling.
+   */
+  dir->monitor = g_local_directory_monitor_new_in_worker (watch_dir, G_FILE_MONITOR_NONE, NULL);
 
   if (dir->monitor)
     {
