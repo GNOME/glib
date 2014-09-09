@@ -2330,8 +2330,13 @@ g_check_setuid (void)
     extern int __libc_enable_secure;
     return __libc_enable_secure;
   }
-#elif defined(HAVE_ISSETUGID)
+#elif defined(HAVE_ISSETUGID) && !defined(__BIONIC__)
   /* BSD: http://www.freebsd.org/cgi/man.cgi?query=issetugid&sektion=2 */
+
+  /* Android had it in older versions but the new 64 bit ABI does not
+   * have it anymore, and some versions of the 32 bit ABI neither.
+   * https://code.google.com/p/android-developer-preview/issues/detail?id=168
+   */
   return issetugid ();
 #elif defined(G_OS_UNIX)
   uid_t ruid, euid, suid; /* Real, effective and saved user ID's */
