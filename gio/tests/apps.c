@@ -1,6 +1,7 @@
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 #include <locale.h>
+#include <stdlib.h>
 
 static void
 print (const gchar *str)
@@ -18,6 +19,13 @@ print_app_list (GList *list)
       list = g_list_delete_link (list, list);
       g_object_unref (info);
     }
+}
+
+static void
+quit (gpointer user_data)
+{
+  g_print ("appinfo database changed.\n");
+  exit (0);
 }
 
 int
@@ -117,6 +125,22 @@ main (int argc, char **argv)
           g_print ("%s\n", g_app_info_should_show (info) ? "true" : "false");
           g_object_unref (info);
         }
+    }
+
+  else if (g_str_equal (argv[1], "monitor"))
+    {
+      GAppInfoMonitor *monitor;
+      GAppInfo *info;
+
+      monitor = g_app_info_monitor_get ();
+
+      info = (GAppInfo *) g_desktop_app_info_new ("this-desktop-file-does-not-exist");
+      g_assert (!info);
+
+      g_signal_connect (monitor, "changed", G_CALLBACK (quit), NULL);
+
+      while (1)
+        g_main_context_iteration (NULL, TRUE);
     }
 
   return 0;
