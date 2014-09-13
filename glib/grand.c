@@ -56,6 +56,7 @@
 
 #ifdef G_OS_WIN32
 #include <stdlib.h>
+#include <process.h> /* For getpid() */
 #endif
 
 /**
@@ -261,10 +262,23 @@ g_rand_new (void)
       seed[3] = getppid ();
     }
 #else /* G_OS_WIN32 */
+  /* rand_s() is only available since Visual Studio 2005 */
+#if defined(_MSC_VER) && _MSC_VER >= 1400
   gint i;
 
   for (i = 0; i < G_N_ELEMENTS (seed); i++)
     rand_s (&seed[i]);
+#else
+#warning Using insecure seed for random number generation because of missing rand_s() in Windows XP
+  GTimeVal now;
+
+  g_get_current_time (&now);
+  seed[0] = now.tv_sec;
+  seed[1] = now.tv_usec;
+  seed[2] = getpid ();
+  seed[3] = 0;
+#endif
+
 #endif
 
   return g_rand_new_with_seed_array (seed, 4);
