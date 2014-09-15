@@ -1,3 +1,26 @@
+Overview of changes in GLib 2.41.5
+==================================
+
+* Bug fixes:
+ 735819 single native credential struct used for two purposes
+ 735915 glib-building.html uses --enable-gcov instead of --enable-coverage
+ 736350 GDesktopAppInfo: avoid polling on missing desktop dirs
+ 736351 Don't use issetugid() on Android
+        Fix the default application logic in GDesktopAppInfo
+ 736458 Only use rand_s() when targetting Visual Studio >= 2005
+
+* Translation updates
+ Galician
+ Hungarian
+ Indonesian
+ Kannada
+ Latvian
+ Polish
+ Russian
+ Slovenian
+ Tamil
+
+
 Overview of changes in GLib 2.41.4
 ==================================
 
