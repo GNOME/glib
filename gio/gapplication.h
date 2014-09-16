@@ -173,7 +173,7 @@ GLIB_AVAILABLE_IN_2_42
 void                    g_application_add_main_option                   (GApplication             *application,
                                                                          const char               *long_name,
                                                                          char                      short_name,
-                                                                         gint                      flags,
+                                                                         GOptionFlags              flags,
                                                                          GOptionArg                arg,
                                                                          const char               *description,
                                                                          const char               *arg_description);
