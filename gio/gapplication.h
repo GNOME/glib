@@ -159,7 +159,7 @@ GLIB_AVAILABLE_IN_2_42
 const gchar *           g_application_get_resource_base_path            (GApplication             *application);
 GLIB_AVAILABLE_IN_2_42
 void                    g_application_set_resource_base_path            (GApplication             *application,
-                                                                         const gchar              *resource_base_path);
+                                                                         const gchar              *resource_path);
 
 GLIB_DEPRECATED
 void                    g_application_set_action_group                  (GApplication             *application,

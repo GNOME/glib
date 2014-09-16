@@ -4138,6 +4138,9 @@ g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
  * An application implements an interface if that interface is listed in
  * the Implements= line of the desktop file of the application.
  *
+ * Returns: (element-type GDesktopAppInfo) (transfer full): a list of #GDesktopAppInfo
+ * objects.
+ *
  * Since: 2.42
  **/
 GList *

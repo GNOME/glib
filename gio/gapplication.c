@@ -1722,7 +1722,7 @@ g_application_get_resource_base_path (GApplication *application)
  */
 void
 g_application_set_resource_base_path (GApplication *application,
-                                 const gchar  *resource_path)
+                                      const gchar  *resource_path)
 {
   g_return_if_fail (G_IS_APPLICATION (application));
   g_return_if_fail (resource_path == NULL || g_str_has_prefix (resource_path, "/"));
