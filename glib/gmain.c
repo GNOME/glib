@@ -1903,6 +1903,18 @@ g_source_get_name (GSource *source)
  * This is a convenience utility to set source names from the return
  * value of g_idle_add(), g_timeout_add(), etc.
  *
+ * It is a programmer error to attempt to set the name of a non-existent
+ * source.
+ *
+ * More specifically: source IDs can be reissued after a source has been
+ * destroyed and therefore it is never valid to use this function with a
+ * source ID which may have already been removed.  An example is when
+ * scheduling an idle to run in another thread with g_idle_add(): the
+ * idle may already have run and been removed by the time this function
+ * is called on its (now invalid) source ID.  This source ID may have
+ * been reissued, leading to the operation being performed against the
+ * wrong source.
+ *
  * Since: 2.26
  **/
 void
@@ -2043,7 +2055,18 @@ g_source_unref (GSource *source)
  *
  * Finds a #GSource given a pair of context and ID.
  *
- * Returns: (transfer none): the #GSource if found, otherwise, %NULL
+ * It is a programmer error to attempt to lookup a non-existent source.
+ *
+ * More specifically: source IDs can be reissued after a source has been
+ * destroyed and therefore it is never valid to use this function with a
+ * source ID which may have already been removed.  An example is when
+ * scheduling an idle to run in another thread with g_idle_add(): the
+ * idle may already have run and been removed by the time this function
+ * is called on its (now invalid) source ID.  This source ID may have
+ * been reissued, leading to the operation being performed against the
+ * wrong source.
+ *
+ * Returns: (transfer none): the #GSource
  **/
 GSource *
 g_main_context_find_source_by_id (GMainContext *context,
@@ -2177,6 +2200,15 @@ g_main_context_find_source_by_user_data (GMainContext *context,
  * added to a non-default main context.
  *
  * It is a programmer error to attempt to remove a non-existent source.
+ *
+ * More specifically: source IDs can be reissued after a source has been
+ * destroyed and therefore it is never valid to use this function with a
+ * source ID which may have already been removed.  An example is when
+ * scheduling an idle to run in another thread with g_idle_add(): the
+ * idle may already have run and been removed by the time this function
+ * is called on its (now invalid) source ID.  This source ID may have
+ * been reissued, leading to the operation being performed against the
+ * wrong source.
  *
  * Returns: For historical reasons, this function always returns %TRUE
  **/
