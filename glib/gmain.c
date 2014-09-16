@@ -1854,8 +1854,13 @@ g_source_get_can_recurse (GSource  *source)
  *
  * It is permitted to call this function multiple times, but is not
  * recommended due to the potential performance impact.  For example,
- * one could change the name in the "check" function of a #GSourceFuncs 
+ * one could change the name in the "check" function of a #GSourceFuncs
  * to include details like the event type in the source name.
+ *
+ * Use caution if changing the name while another thread may be
+ * accessing it with g_source_get_name(); that function does not copy
+ * the value, and changing the value will free it while the other thread
+ * may be attempting to use it.
  *
  * Since: 2.26
  **/
@@ -1863,7 +1868,14 @@ void
 g_source_set_name (GSource    *source,
                    const char *name)
 {
+  GMainContext *context;
+
   g_return_if_fail (source != NULL);
+
+  context = source->context;
+
+  if (context)
+    LOCK_CONTEXT (context);
 
   /* setting back to NULL is allowed, just because it's
    * weird if get_name can return NULL but you can't
@@ -1872,17 +1884,20 @@ g_source_set_name (GSource    *source,
 
   g_free (source->name);
   source->name = g_strdup (name);
+
+  if (context)
+    UNLOCK_CONTEXT (context);
 }
 
 /**
  * g_source_get_name:
  * @source: a #GSource
  *
- * Gets a name for the source, used in debugging and profiling.
- * The name may be #NULL if it has never been set with
- * g_source_set_name().
+ * Gets a name for the source, used in debugging and profiling.  The
+ * name may be #NULL if it has never been set with g_source_set_name().
  *
  * Returns: the name of the source
+ *
  * Since: 2.26
  **/
 const char *
