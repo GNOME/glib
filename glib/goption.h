@@ -53,6 +53,7 @@ typedef struct _GOptionEntry   GOptionEntry;
 
 /**
  * GOptionFlags:
+ * @G_OPTION_FLAG_NONE: No flags. Since: 2.42.
  * @G_OPTION_FLAG_HIDDEN: The option doesn't appear in `--help` output.
  * @G_OPTION_FLAG_IN_MAIN: The option appears in the main section of the
  *     `--help` output, even if it is defined in a group.
@@ -79,6 +80,7 @@ typedef struct _GOptionEntry   GOptionEntry;
  */
 typedef enum
 {
+  G_OPTION_FLAG_NONE            = 0,
   G_OPTION_FLAG_HIDDEN		= 1 << 0,
   G_OPTION_FLAG_IN_MAIN		= 1 << 1,
   G_OPTION_FLAG_REVERSE		= 1 << 2,
