@@ -540,7 +540,7 @@ struct _GTask {
   GDestroyNotify task_data_destroy;
 
   GMainContext *context;
-  guint64 creation_time;
+  gint64 creation_time;
   gint priority;
   GCancellable *cancellable;
   gboolean check_cancellable;
