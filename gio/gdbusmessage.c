@@ -3444,6 +3444,7 @@ g_dbus_message_print (GDBusMessage *message,
     {
       g_string_append_printf (str, "%*s  (none)\n", indent, "");
     }
+  g_list_free (keys);
   g_string_append_printf (str, "%*sBody: ", indent, "");
   if (message->body != NULL)
     {
