@@ -1274,6 +1274,14 @@ g_task_start_task_thread (GTask           *task,
           return;
         }
 
+      /* This introduces a reference count loop between the GTask and
+       * GCancellable, but is necessary to avoid a race on finalising the GTask
+       * between task_thread_cancelled() (in one thread) and
+       * g_task_thread_complete() (in another).
+       *
+       * Accordingly, the signal handler *must* be removed once the task has
+       * completed.
+       */
       g_signal_connect_data (task->cancellable, "cancelled",
                              G_CALLBACK (task_thread_cancelled),
                              g_object_ref (task),
