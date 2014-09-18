@@ -15,9 +15,9 @@
       which contains three objects:
       <itemizedlist>
         <listitem><para>a function pointer (the callback itself) whose prototype looks like:
-<programlisting>
+<informalexample><programlisting>
 return_type function_callback (... , gpointer user_data);
-</programlisting>
+</programlisting></informalexample>
         </para></listitem>
         <listitem><para>
            the user_data pointer which is passed to the callback upon invocation of the closure
@@ -80,7 +80,7 @@ return_type function_callback (... , gpointer user_data);
         to connect a callback to a given event, you will either use simple <link linkend="GCClosure"><type>GCClosure</type></link>s
         which have a pretty minimal API or the even simpler <function><link linkend="g-signal-connect">g_signal_connect</link></function> 
         functions (which will be presented a bit later :).
-<programlisting>
+<informalexample><programlisting>
 GClosure *g_cclosure_new             (GCallback      callback_func,
                                       gpointer       user_data,
                                       GClosureNotify destroy_data);
@@ -89,7 +89,7 @@ GClosure *g_cclosure_new_swap        (GCallback      callback_func,
                                       GClosureNotify destroy_data);
 GClosure *g_signal_type_cclosure_new (GType          itype,
                                       guint          struct_offset);
-</programlisting>
+</programlisting></informalexample>
       </para>
 
       <para>
@@ -128,7 +128,7 @@ GClosure *g_signal_type_cclosure_new (GType          itype,
       <para>
         The following code implements a simple marshaller in C for a C function which takes an
         integer as first parameter and returns void.
-<programlisting>
+<informalexample><programlisting>
 g_cclosure_marshal_VOID__INT (GClosure     *closure,
                               GValue       *return_value,
                               guint         n_param_values,
@@ -154,7 +154,7 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
             g_marshal_value_peek_int (param_values + 1),
             data2);
 }
-</programlisting>
+</programlisting></informalexample>
       </para>
   
       <para>
@@ -194,9 +194,9 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
       When a signal is emitted on a given type instance, all the closures
       connected to this signal on this type instance will be invoked. All the closures
       connected to such a signal represent callbacks whose signature looks like:
-<programlisting>
+<informalexample><programlisting>
 return_type function_callback (gpointer instance, ... , gpointer user_data);
-</programlisting>
+</programlisting></informalexample>
     </para>
 
     <sect2 id="signal-registration">
@@ -205,7 +205,7 @@ return_type function_callback (gpointer instance, ... , gpointer user_data);
 	  <para>
 		To register a new signal on an existing type, we can use any of <function><link linkend="g-signal-newv">g_signal_newv</link></function>,
 		<function><link linkend="g-signal-new-valist">g_signal_new_valist</link></function> or <function><link linkend="g-signal-new">g_signal_new</link></function> functions:
-<programlisting>
+<informalexample><programlisting>
 guint g_signal_newv (const gchar        *signal_name,
                      GType               itype,
                      GSignalFlags        signal_flags,
@@ -216,7 +216,7 @@ guint g_signal_newv (const gchar        *signal_name,
                      GType               return_type,
                      guint               n_params,
                      GType              *param_types);
-</programlisting>
+</programlisting></informalexample>
 		The number of parameters to these functions is a bit intimidating but they are relatively
 		simple:
 		<itemizedlist>
@@ -310,12 +310,12 @@ guint g_signal_newv (const gchar        *signal_name,
 	  <para>
 		Signal emission is done through the use of the <function><link linkend="g-signal-emit">g_signal_emit</link></function> family 
 		of functions.
-<programlisting>
+<informalexample><programlisting>
 void g_signal_emitv (const GValue *instance_and_params,
                      guint         signal_id,
                      GQuark        detail,
                      GValue       *return_value);
-</programlisting>
+</programlisting></informalexample>
 		<itemizedlist>
 		  <listitem><para>
 			The instance_and_params array of GValues contains the list of input
@@ -440,15 +440,15 @@ void g_signal_emitv (const GValue *instance_and_params,
 		   <function><link linkend="g-quark-from-string">g_quark_from_string</link></function> and <function><link linkend="g-quark-to-string">g_quark_to_string</link></function>.
 		  </para>
 		</footnote>:
-<programlisting>
+<informalexample><programlisting>
 gulong     g_signal_connect_closure_by_id          (gpointer          instance,
                            guint          signal_id,
                            GQuark          detail,
                            GClosure         *closure,
                            gboolean          after);
-</programlisting>
+</programlisting></informalexample>
         The two other functions hide the detail parameter in the signal name identification:
-<programlisting>
+<informalexample><programlisting>
 gulong     g_signal_connect_closure          (gpointer          instance,
                            const gchar       *detailed_signal,
                            GClosure         *closure,
@@ -459,7 +459,7 @@ gulong     g_signal_connect_data              (gpointer          instance,
                            gpointer          data,
                            GClosureNotify      destroy_data,
                            GConnectFlags      connect_flags);
-</programlisting>
+</programlisting></informalexample>
 		Their detailed_signal parameter is a string which identifies the name of the signal
 		to connect to. However, the format of this string is structured to look like 
 		<emphasis>signal_name::detail_name</emphasis>. Connecting to the signal
@@ -471,7 +471,7 @@ gulong     g_signal_connect_data              (gpointer          instance,
 	  <para>
 		Of the four main signal emission functions, three have an explicit detail parameter as a 
 		<link linkend="GQuark"><type>GQuark</type></link> again:
-<programlisting>
+<informalexample><programlisting>
 void                  g_signal_emitv        (const GValue       *instance_and_params,
                          guint               signal_id,
                          GQuark              detail,
@@ -484,13 +484,13 @@ void                  g_signal_emit         (gpointer            instance,
                          guint               signal_id,
                          GQuark              detail,
                          ...);
-</programlisting>
+</programlisting></informalexample>
         The fourth function hides it in its signal name parameter:
-<programlisting>
+<informalexample><programlisting>
 void                  g_signal_emit_by_name (gpointer            instance,
                          const gchar        *detailed_signal,
                          ...);
-</programlisting>
+</programlisting></informalexample>
         The format of the detailed_signal parameter is exactly the same as the format used by
         the <function><link linkend="g-signal-connect">g_signal_connect</link></function> functions: <emphasis>signal_name::detail_name</emphasis>.
 	  </para>

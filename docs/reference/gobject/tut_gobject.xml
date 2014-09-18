@@ -51,16 +51,16 @@
       Objects which inherit from GObject are allowed to override this
       constructor class method: they should however chain to their parent
       constructor method before doing so:
-<programlisting>
+<informalexample><programlisting>
   GObject *(* constructor) (GType                  gtype,
                             guint                  n_properties,
                             GObjectConstructParam *properties);
-</programlisting>
+</programlisting></informalexample>
     </para>
 
     <para>
       The example below shows how <type>MamanBar</type> overrides the parent's constructor:
-<programlisting>
+<informalexample><programlisting>
 #define MAMAN_TYPE_BAR                  (maman_bar_get_type ())
 #define MAMAN_BAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_BAR, MamanBar))
 #define MAMAN_IS_BAR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_BAR))
@@ -119,11 +119,11 @@ maman_bar_init (MamanBar *self)
   /* initialize the object */
 }
 
-</programlisting>
+</programlisting></informalexample>
       If the user instantiates an object <type>MamanBar</type> with:
-<programlisting>
+<informalexample><programlisting>
 MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
-</programlisting>        
+</programlisting></informalexample>        
       If this is the first instantiation of such an object, the
       <function>maman_bar_class_init</function> function will be invoked
       after any <function>maman_bar_base_class_init</function> function.
@@ -266,7 +266,7 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
       which can be integrated in applications which use or require different memory management
       models (such as garbage collection). The methods which are used to
       manipulate this reference count are described below.
-<programlisting>
+<informalexample><programlisting>
 /*
   Refcounting
 */
@@ -293,7 +293,7 @@ void g_object_remove_weak_pointer (GObject     *object,
  * Cycle handling
  */
 void g_object_run_dispose         (GObject     *object);
-</programlisting>
+</programlisting></informalexample>
     </para>
 
     <sect2 id="gobject-memory-refcount">
@@ -705,14 +705,14 @@ g_value_unset (&amp;val);
         It is interesting to note that the <function><link linkend="g-object-set">g_object_set</link></function> and 
         <function><link linkend="g-object-set-valist">g_object_set_valist</link></function> (vararg version) functions can be used to set
         multiple properties at once. The client code shown above can then be re-written as:
-<programlisting>
+<informalexample><programlisting>
 MamanBar *foo;
 foo = /* */;
 g_object_set (G_OBJECT (foo),
               "papa-number", 2, 
               "maman-name", "test", 
               NULL);
-</programlisting>
+</programlisting></informalexample>
         This saves us from managing the GValues that we were needing to handle when using
         <function><link linkend="g-object-set-property">g_object_set_property</link></function>.
         The code above will trigger one notify signal emission for each property modified.

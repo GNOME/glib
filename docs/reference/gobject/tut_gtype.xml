@@ -9,7 +9,7 @@
         A type, as manipulated by the GLib type system, is much more generic than what
         is usually understood as an Object type. It is best explained by looking at the 
         structure and the functions used to register new types in the type system.
-        <programlisting>
+        <informalexample><programlisting>
 typedef struct _GTypeInfo               GTypeInfo;
 struct _GTypeInfo
 {
@@ -41,7 +41,7 @@ GType g_type_register_fundamental (GType                       type_id,
                                    const GTypeInfo            *info,
                                    const GTypeFundamentalInfo *finfo,
                                    GTypeFlags                  flags);
-        </programlisting>
+        </programlisting></informalexample>
       </para>
 
       <para>
@@ -133,7 +133,7 @@ GType g_type_register_fundamental (GType                       type_id,
           The following code shows how you can copy around a 64 bit integer, as well as a <link linkend="GObject"><type>GObject</type></link>
           instance pointer (sample code for this is located in the source tarball for this document in 
           <filename>sample/gtype/test.c</filename>):
-<programlisting>
+<informalexample><programlisting>
 static void test_int (void)
 {
   GValue a_value = G_VALUE_INIT;
@@ -179,7 +179,7 @@ static void test_object (void)
   g_object_unref (G_OBJECT (obj));
   g_object_unref (G_OBJECT (obj));
 }
-</programlisting>
+</programlisting></informalexample>
           The important point about the above code is that the exact semantics of the copy calls
           is undefined since they depend on the implementation of the copy function. Certain 
           copy functions might decide to allocate a new chunk of memory and then to copy the 
@@ -192,7 +192,7 @@ static void test_object (void)
           <filename>gtype.h</filename> and is thoroughly described in the
           API documentation provided with GObject (for once ;-) which is why we will
           not detail its exact semantics. 
-          <programlisting>
+          <informalexample><programlisting>
 typedef struct _GTypeValueTable         GTypeValueTable;
 struct _GTypeValueTable
 {
@@ -213,7 +213,7 @@ struct _GTypeValueTable
                                   GTypeCValue  *collect_values,
                                   guint                collect_flags);
 };
-          </programlisting>
+          </programlisting></informalexample>
           Interestingly, it is also very unlikely
           you will ever need to specify a value_table during type registration
           because these value_tables are inherited from the parent types for
@@ -290,21 +290,21 @@ struct _GTypeValueTable
         The implementation of these macros is pretty straightforward: a number of simple-to-use 
         macros are provided in <filename>gtype.h</filename>. For the example we used above, we would 
         write the following trivial code to declare the macros:
-<programlisting>
+<informalexample><programlisting>
 #define MAMAN_TYPE_BAR                  (maman_bar_get_type ())
 #define MAMAN_BAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_BAR, MamanBar))
 #define MAMAN_BAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_TYPE_BAR, MamanBarClass))
 #define MAMAN_IS_BAR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_BAR))
 #define MAMAN_IS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_TYPE_BAR))
 #define MAMAN_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_TYPE_BAR, MamanBarClass))
-</programlisting>
+</programlisting></informalexample>
         <note><simpara>Stick to the naming <varname>klass</varname> as <varname>class</varname> is a registered c++ keyword.</simpara></note>
       </para>
 
       <para>
         The following code shows how to implement the <function>maman_bar_get_type</function>
         function:
-<programlisting>
+<informalexample><programlisting>
 GType maman_bar_get_type (void)
 {
   static GType type = 0;
@@ -318,16 +318,16 @@ GType maman_bar_get_type (void)
   }
   return type;
 }
-</programlisting>
+</programlisting></informalexample>
       </para>
 
       <para>
         If you have no special requirements you can use the
         <function><link linkend="G-DEFINE-TYPE:CAPS">G_DEFINE_TYPE</link></function>
 	macro to define a class:
-<programlisting>
+<informalexample><programlisting>
 G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
-</programlisting>
+</programlisting></informalexample>
       </para>
 
       </sect1>
@@ -345,7 +345,7 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
           To register such a type in the type system, you just need to fill the 
           <link linkend="GTypeInfo"><type>GTypeInfo</type></link> structure with zeros since these types are also most of the time
           fundamental:
-          <programlisting>
+          <informalexample><programlisting>
   GTypeInfo info = {
     0,                                /* class_size */
     NULL,                        /* base_init */
@@ -370,7 +370,7 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
   };
   info.value_table = &amp;value_table;
   type = g_type_register_fundamental (G_TYPE_CHAR, "gchar", &amp;info, &amp;finfo, 0);
-          </programlisting>
+          </programlisting></informalexample>
         </para>
 
 
@@ -401,7 +401,7 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
         <para>
           For example, the code below shows how you could register 
           such a fundamental object type in the type system:
-<programlisting>
+<informalexample><programlisting>
 typedef struct {
   GObject parent;
   /* instance members */
@@ -440,7 +440,7 @@ maman_bar_get_type (void)
   }
   return type;
 }
-</programlisting>
+</programlisting></informalexample>
           Upon the first call to <function>maman_bar_get_type</function>, the type named
           <emphasis>BarType</emphasis> will be registered in the type system as inheriting
           from the type <emphasis>G_TYPE_OBJECT</emphasis>.
@@ -452,7 +452,7 @@ maman_bar_get_type (void)
           a <link linkend="GTypeClass"><type>GTypeClass</type></link> structure. All instance structures must contain as first
           member a <link linkend="GTypeInstance"><type>GTypeInstance</type></link> structure. The declaration of these C types,
           coming from <filename>gtype.h</filename> is shown below:
-<programlisting>
+<informalexample><programlisting>
 struct _GTypeClass
 {
   GType g_type;
@@ -461,7 +461,7 @@ struct _GTypeInstance
 {
   GTypeClass *g_class;
 };
-</programlisting>
+</programlisting></informalexample>
           These constraints allow the type system to make sure that every object instance
           (identified by a pointer to the object's instance structure) contains in its
           first bytes a pointer to the object's class structure.
@@ -469,7 +469,7 @@ struct _GTypeInstance
         <para>
           This relationship is best explained by an example: let's take object B which
           inherits from object A:
-<programlisting>
+<informalexample><programlisting>
 /* A definitions */
 typedef struct {
   GTypeInstance parent;
@@ -493,7 +493,7 @@ typedef struct {
   void (*method_c) (void);
   void (*method_d) (void);
 } BClass;
-</programlisting>          
+</programlisting></informalexample>          
           The C standard mandates that the first field of a C structure is stored starting
           in the first byte of the buffer used to hold the structure's fields in memory.
           This means that the first field of an instance of an object B is A's first field
@@ -504,15 +504,15 @@ typedef struct {
         <para>
           Thanks to these simple conditions, it is possible to detect the type of every
           object instance by doing: 
-<programlisting>
+<informalexample><programlisting>
 B *b;
 b->parent.parent.g_class->g_type
-</programlisting>
+</programlisting></informalexample>
           or, more quickly:
-<programlisting>
+<informalexample><programlisting>
 B *b;
 ((GTypeInstance*)b)->g_class->g_type
-</programlisting>
+</programlisting></informalexample>
         </para>
 
         <sect2 id="gtype-instantiable-classed-init-done">
@@ -521,10 +521,10 @@ B *b;
           <para>
             instantiation of these types can be done with 
             <function><link linkend="g-type-create-instance">g_type_create_instance</link></function>:
-<programlisting>
+<informalexample><programlisting>
 GTypeInstance* g_type_create_instance (GType          type);
 void           g_type_free_instance   (GTypeInstance *instance);
-</programlisting>
+</programlisting></informalexample>
             <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> will look up the type information
             structure associated to the type requested. Then, the instance size and instantiation
             policy (if the n_preallocs field is set to a non-zero value, the type system allocates
@@ -662,7 +662,7 @@ void           g_type_free_instance   (GTypeInstance *instance);
           To declare an interface you have to register a non-instantiable
           classed type which derives from 
           <link linkend="GTypeInterface"><type>GTypeInterface</type></link>. The following piece of code declares such an interface.
-<programlisting>
+<informalexample><programlisting>
 #define MAMAN_TYPE_IBAZ                (maman_ibaz_get_type ())
 #define MAMAN_IBAZ(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_IBAZ, MamanIbaz))
 #define MAMAN_IS_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_IBAZ))
@@ -680,15 +680,15 @@ struct _MamanIbazInterface {
 GType maman_ibaz_get_type (void);
 
 void maman_ibaz_do_action (MamanIbaz *self);
-</programlisting>
+</programlisting></informalexample>
           The interface function, <function>maman_ibaz_do_action</function> is implemented
           in a pretty simple way:
-<programlisting>
+<informalexample><programlisting>
 void maman_ibaz_do_action (MamanIbaz *self)
 {
   MAMAN_IBAZ_GET_INTERFACE (self)->do_action (self);
 }
-</programlisting>
+</programlisting></informalexample>
          <function>maman_ibaz_get_type</function> registers a type named <emphasis>MamanIbaz</emphasis>
          which inherits from G_TYPE_INTERFACE. All interfaces must be children of G_TYPE_INTERFACE in the 
          inheritance tree.
@@ -708,7 +708,7 @@ void maman_ibaz_do_action (MamanIbaz *self)
           interfaces. The function named <function>maman_baz_get_type</function> registers
           a new GType named MamanBaz which inherits from <link linkend="GObject"><type>GObject</type></link> and which
           implements the interface <type>MamanIbaz</type>.
-<programlisting>
+<informalexample><programlisting>
 static void maman_baz_do_action (MamanIbaz *self)
 {
   g_print ("Baz implementation of Ibaz interface Action.\n");
@@ -752,7 +752,7 @@ maman_baz_get_type (void)
   }
   return type;
 }
-</programlisting>
+</programlisting></informalexample>
         </para>
 
         <para>
@@ -762,21 +762,21 @@ maman_baz_get_type (void)
           <type>FooInterface</type>).
                 The <link linkend="GInterfaceInfo"><type>GInterfaceInfo</type></link> structure holds
           information about the implementation of the interface:
-<programlisting>
+<informalexample><programlisting>
 struct _GInterfaceInfo
 {
   GInterfaceInitFunc     interface_init;
   GInterfaceFinalizeFunc interface_finalize;
   gpointer               interface_data;
 };
-</programlisting>
+</programlisting></informalexample>
         </para>
 
         <para>
         If you have no special requirements you can use the
         <link linkend="G-IMPLEMENT-INTERFACE:CAPS">G_IMPLEMENT_INTERFACE</link> macro
         to implement an interface:
-<programlisting>
+<informalexample><programlisting>
 static void
 maman_baz_do_action (MamanIbaz *self)
 {
@@ -792,7 +792,7 @@ maman_ibaz_interface_init (MamanIbazInterface *iface)
 G_DEFINE_TYPE_WITH_CODE (MamanBaz, maman_baz, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (MAMAN_TYPE_IBAZ,
                                                 maman_ibaz_interface_init));
-</programlisting>
+</programlisting></informalexample>
         </para>
 
         <sect2 id="gtype-non-instantiable-classed-init">
@@ -835,7 +835,7 @@ G_DEFINE_TYPE_WITH_CODE (MamanBaz, maman_baz, G_TYPE_OBJECT,
             <function>default_init</function> function is declared by
             <link linkend="G-DEFINE-INTERFACE:CAPS">G_DEFINE_INTERFACE</link>
             which can be used to define the interface:
-<programlisting>
+<informalexample><programlisting>
 G_DEFINE_INTERFACE (MamanIbaz, maman_ibaz, G_TYPE_OBJECT);
 
 static void
@@ -843,12 +843,12 @@ maman_ibaz_default_init (MamanIbazInterface *iface)
 {
   /* add properties and signals here, will only called once */
 }
-</programlisting>
+</programlisting></informalexample>
           </para>
 
           <para>
             Or you can do that yourself in a GType function for your interface:
-<programlisting>
+<informalexample><programlisting>
 GType
 maman_ibaz_get_type (void)
 {
@@ -878,7 +878,7 @@ maman_ibaz_default_init (MamanIbazInterface *iface)
 {
   /* add properties and signals here, will only called once */
 }
-</programlisting>
+</programlisting></informalexample>
           </para>
 
         <para>

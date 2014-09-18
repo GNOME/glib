@@ -99,7 +99,7 @@ break g_object_unref if _object == 0xcafebabe
     (a small program part of the libxslt library) to generate the final HTML
     output. Other tools can be used to generate PDF output from the source XML.
     The following code excerpt shows what these comments look like.
-    <programlisting>
+      <informalexample><programlisting>
 /**
  * gtk_widget_freeze_child_notify:
  * @widget: a #GtkWidget
@@ -113,7 +113,7 @@ void
 gtk_widget_freeze_child_notify (GtkWidget *widget)
 {
 ...
-      </programlisting>
+      </programlisting></informalexample>
     </para>
     <para>
     Thorough

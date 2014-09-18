@@ -51,9 +51,9 @@ passed as additional arguments on the command line.
 <para>
 The marshaller lists are processed line by line, a line can contain a
 comment in the form of
-<programlisting>
+<informalexample><programlisting>
 # this is a comment
-</programlisting>
+</programlisting></informalexample>
 or a marshaller specification of the form
 <programlisting>
 <replaceable>RTYPE</replaceable>:<replaceable>PTYPE</replaceable>
@@ -329,7 +329,7 @@ Print version and exit.
 <para>
 To generate marshallers for the following callback functions:
 </para>
-<programlisting>
+<informalexample><programlisting>
 void   foo (gpointer data1,
             gpointer data2);
 void   bar (gpointer data1,
@@ -339,7 +339,7 @@ gfloat baz (gpointer data1,
             gboolean param1,
             guchar   param2,
             gpointer data2);
-</programlisting>
+</programlisting></informalexample>
 <para>
 The <filename>marshaller.list</filename> file has to look like this:
 </para>
@@ -368,7 +368,7 @@ g_cclosure_user_marshal_FLOAT__BOOLEAN_UCHAR().
 They can be used directly for GClosures or be passed in as the
 GSignalCMarshaller c_marshaller; argument upon creation of signals:
 </para>
-<programlisting>
+<informalexample><programlisting>
 GClosure *cc_foo, *cc_bar, *cc_baz;
 
 cc_foo = g_cclosure_new (NULL, foo, NULL);
@@ -377,7 +377,7 @@ cc_bar = g_cclosure_new (NULL, bar, NULL);
 g_closure_set_marshal (cc_bar, g_cclosure_user_marshal_VOID__INT);
 cc_baz = g_cclosure_new (NULL, baz, NULL);
 g_closure_set_marshal (cc_baz, g_cclosure_user_marshal_FLOAT__BOOLEAN_UCHAR);
-</programlisting>
+</programlisting></informalexample>
 </refsect1>
 <refsect1><title>See also</title>
 <para>
