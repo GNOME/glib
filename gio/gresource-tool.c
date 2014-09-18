@@ -113,8 +113,9 @@ extract_resource (GResource   *resource,
                   const gchar *path)
 {
   GBytes *bytes;
+  GError *error = NULL;
 
-  bytes = g_resource_lookup_data (resource, path, 0, NULL);
+  bytes = g_resource_lookup_data (resource, path, 0, &error);
   if (bytes != NULL)
     {
       gconstpointer data;
@@ -128,7 +129,8 @@ extract_resource (GResource   *resource,
     }
   else
     {
-      g_printerr ("Can't find resource path %s\n", path);
+      g_printerr ("%s\n", error->message);
+      g_error_free (error);
     }
 }
 
