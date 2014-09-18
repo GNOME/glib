@@ -50,6 +50,19 @@
  * GObject ships with a utility called [glib-mkenums][glib-mkenums],
  * that can construct suitable type registration functions from C enumeration
  * definitions.
+ *
+ * Example of how to get a string representation of an enum value:
+ * |[<!-- language="C" -->
+ * GEnumClass *enum_class;
+ * GEnumValue *enum_value;
+ *
+ * enum_class = g_type_class_ref (MAMAN_TYPE_MY_ENUM);
+ * enum_value = g_enum_get_value (enum_class, MAMAN_MY_ENUM_FOO);
+ *
+ * g_print ("Name: %s\n", enum_value->value_name);
+ *
+ * g_type_class_unref (enum_class);
+ * ]|
  */
 
 
