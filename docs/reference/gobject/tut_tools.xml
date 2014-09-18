@@ -117,9 +117,9 @@ gtk_widget_freeze_child_notify (GtkWidget *widget)
     </para>
     <para>
     Thorough
-    <ulink url="http://library.gnome.org/devel/gtk-doc-manual/stable/">documentation</ulink>
+    <ulink url="https://developer.gnome.org/gtk-doc-manual/stable/">documentation</ulink>
     on how to set up and use gtk-doc in your project is provided on the
-    <ulink url="http://library.gnome.org/devel/">GNOME developer website</ulink>.
+    <ulink url="https://developer.gnome.org/">GNOME developer website</ulink>.
     </para>
   </chapter>
 </part>
