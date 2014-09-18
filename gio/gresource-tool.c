@@ -113,9 +113,8 @@ extract_resource (GResource   *resource,
                   const gchar *path)
 {
   GBytes *bytes;
-  GError *error = NULL;
 
-  bytes = g_resource_lookup_data (resource, path, 0, &error);
+  bytes = g_resource_lookup_data (resource, path, 0, NULL);
   if (bytes != NULL)
     {
       gconstpointer data;
@@ -126,11 +125,6 @@ extract_resource (GResource   *resource,
       if (written < size)
         g_printerr ("Data truncated\n");
       g_bytes_unref (bytes);
-    }
-  else
-    {
-      g_printerr ("%s\n", error->message);
-      g_error_free (error);
     }
 }
 
@@ -230,10 +224,16 @@ resource_from_section (GElf_Shdr *shdr,
   if (contents != MAP_FAILED)
     {
       GBytes *bytes;
+      GError *error = NULL;
 
       bytes = g_bytes_new_static (contents + page_offset, shdr->sh_size);
-      resource = g_resource_new_from_data (bytes, NULL);
+      resource = g_resource_new_from_data (bytes, &error);
       g_bytes_unref (bytes);
+      if (error)
+        {
+          g_printerr ("%s\n", error->message);
+          g_error_free (error);
+        }
     }
   else
     {
@@ -316,7 +316,10 @@ extract_resource_cb (GElf_Shdr   *shdr,
   extract_resource (resource, d->path);
   g_resource_unref (resource);
 
-  return FALSE;
+  if (d->section)
+    return FALSE;
+
+  return TRUE;
 }
 
 static void
@@ -397,7 +400,6 @@ cmd_list (const gchar *file,
   GResource *resource;
 
 #ifdef HAVE_LIBELF
-
   Elf *elf;
   int fd;
 
