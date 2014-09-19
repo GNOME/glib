@@ -1288,10 +1288,8 @@ g_task_start_task_thread (GTask           *task,
                              task_thread_cancelled_disconnect_notify, 0);
     }
 
-  g_thread_pool_push (task_pool, g_object_ref (task), &task->error);
-  if (task->error)
-    task->thread_complete = TRUE;
-  else if (g_private_get (&task_private))
+  g_thread_pool_push (task_pool, g_object_ref (task), NULL);
+  if (g_private_get (&task_private))
     {
       /* This thread is being spawned from another GTask thread, so
        * bump up max-threads so we don't starve.
