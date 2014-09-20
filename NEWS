@@ -1,3 +1,34 @@
+Overview of changes from GLib 2.40.0 to GLib 2.40.1
+====================================================
+
+ * gobject: try to link with -Wl,-z,nodelete to prevent unloading
+ * g_file_copy: Don't set GError when we intend to ignore errors
+ * gapplication-tool: ensure object paths are valid
+ * gtlscertificate: fix certificate list parsing with trailing comments
+ * g_str_has_prefix: improve efficiency with long strings
+ * Added type check to GPermission public functions.
+ * GApplication: Don't decrease use_count below 0
+ * networkmonitornetlink: fix IPv6 issues on Android
+ * gresolver: Ensure GThreadedResolver always sets an error if resolution fails
+ * gmacros.h: add G_GNUC_*_IGNORE_DEPRECATIONS macros for clang
+ * networkaddress: fix parsing of uri with @ after authority
+ * gvariant tests: workaround libc/compiler "issue"
+ * Windows:
+  - gio/gtestdbus.c: Fix write_config_file() for Windows
+  - MSVC 2010+ Projects: Update "Installation" Process
+  - gspawn-win32: do not rely on __argc and __argv global vars.
+ * documentation fixes
+
+Translations updated:
+ * Basque language
+ * Catalan
+ * Czech
+ * German
+ * Greek
+ * Hungarian
+ * Indonesian
+ * Slovenian
+
 Overview of changes from GLib 2.39.92 to GLib 2.40.0
 ====================================================
 
