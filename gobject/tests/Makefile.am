@@ -22,6 +22,7 @@ test_programs = \
 	private				\
 	closure				\
 	object				\
+	signal-handler			\
 	$(NULL)
 
 # -----------------------------------------------------------------------------
