@@ -126,7 +126,8 @@ static inline HandlerList*	handler_list_ensure	(guint		  signal_id,
 							 gpointer	  instance);
 static inline HandlerList*	handler_list_lookup	(guint		  signal_id,
 							 gpointer	  instance);
-static inline Handler*		handler_new		(gboolean	  after);
+static inline Handler*		handler_new		(guint            signal_id,
+                                                         gboolean	  after);
 static	      void		handler_insert		(guint		  signal_id,
 							 gpointer	  instance,
 							 Handler	 *handler);
@@ -247,6 +248,7 @@ struct _Handler
   Handler      *next;
   Handler      *prev;
   GQuark	detail;
+  guint         signal_id;
   guint         ref_count;
   guint         block_count : 16;
 #define HANDLER_MAX_BLOCK_COUNT (1 << 16)
@@ -288,6 +290,8 @@ static GBSearchConfig g_class_closure_bconfig = {
 static GHashTable    *g_handler_list_bsa_ht = NULL;
 static Emission      *g_emissions = NULL;
 static gulong         g_handler_sequential_number = 1;
+static GHashTable    *g_handlers = NULL;
+
 G_LOCK_DEFINE_STATIC (g_signal_mutex);
 #define	SIGNAL_LOCK()		G_LOCK (g_signal_mutex)
 #define	SIGNAL_UNLOCK()		G_UNLOCK (g_signal_mutex)
@@ -411,13 +415,34 @@ handler_list_lookup (guint    signal_id,
   return hlbsa ? g_bsearch_array_lookup (hlbsa, &g_signal_hlbsa_bconfig, &key) : NULL;
 }
 
+static guint
+handler_hash (gconstpointer key)
+{
+  return (guint)((Handler*)key)->sequential_number;
+}
+
+static gboolean
+handler_equal (gconstpointer a, gconstpointer b)
+{
+  return ((Handler*)a)->sequential_number == ((Handler*)b)->sequential_number;
+}
+
 static Handler*
 handler_lookup (gpointer  instance,
 		gulong    handler_id,
 		GClosure *closure,
 		guint    *signal_id_p)
 {
-  GBSearchArray *hlbsa = g_hash_table_lookup (g_handler_list_bsa_ht, instance);
+  GBSearchArray *hlbsa;
+
+  if (handler_id)
+    {
+      Handler key;
+      key.sequential_number = handler_id;
+      return (Handler *)g_hash_table_lookup (g_handlers, &key);
+    }
+
+  hlbsa = g_hash_table_lookup (g_handler_list_bsa_ht, instance);
   
   if (hlbsa)
     {
@@ -433,7 +458,7 @@ handler_lookup (gpointer  instance,
               {
                 if (signal_id_p)
                   *signal_id_p = hlist->signal_id;
-		
+
                 return handler;
               }
         }
@@ -554,7 +579,7 @@ handlers_find (gpointer         instance,
 }
 
 static inline Handler*
-handler_new (gboolean after)
+handler_new (guint signal_id, gboolean after)
 {
   Handler *handler = g_slice_new (Handler);
 #ifndef G_DISABLE_CHECKS
@@ -566,11 +591,14 @@ handler_new (gboolean after)
   handler->prev = NULL;
   handler->next = NULL;
   handler->detail = 0;
+  handler->signal_id = signal_id;
   handler->ref_count = 1;
   handler->block_count = 0;
   handler->after = after != FALSE;
   handler->closure = NULL;
   handler->has_invalid_closure_notify = 0;
+
+  g_hash_table_add (g_handlers, handler);
   
   return handler;
 }
@@ -803,6 +831,7 @@ _g_signal_init (void)
       g_n_signal_nodes = 1;
       g_signal_nodes = g_renew (SignalNode*, g_signal_nodes, g_n_signal_nodes);
       g_signal_nodes[0] = NULL;
+      g_handlers = g_hash_table_new (handler_hash, handler_equal);
     }
   SIGNAL_UNLOCK ();
 }
@@ -2266,7 +2295,7 @@ g_signal_connect_closure_by_id (gpointer  instance,
 	g_warning ("%s: signal id '%u' is invalid for instance '%p'", G_STRLOC, signal_id, instance);
       else
 	{
-	  Handler *handler = handler_new (after);
+	  Handler *handler = handler_new (signal_id, after);
 	  
 	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
@@ -2330,7 +2359,7 @@ g_signal_connect_closure (gpointer     instance,
                    G_STRLOC, detailed_signal, instance, g_type_name (itype));
       else
 	{
-	  Handler *handler = handler_new (after);
+	  Handler *handler = handler_new (signal_id, after);
 
 	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
@@ -2431,7 +2460,7 @@ g_signal_connect_data (gpointer       instance,
                    G_STRLOC, detailed_signal, instance, g_type_name (itype));
       else
 	{
-	  Handler *handler = handler_new (after);
+	  Handler *handler = handler_new (signal_id, after);
 
 	  handler_seq_no = handler->sequential_number;
 	  handler->detail = detail;
@@ -2551,19 +2580,19 @@ g_signal_handler_disconnect (gpointer instance,
                              gulong   handler_id)
 {
   Handler *handler;
-  guint signal_id;
   
   g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
   g_return_if_fail (handler_id > 0);
   
   SIGNAL_LOCK ();
-  handler = handler_lookup (instance, handler_id, NULL, &signal_id);
+  handler = handler_lookup (instance, handler_id, 0, 0);
   if (handler)
     {
+      g_hash_table_remove (g_handlers, handler);
       handler->sequential_number = 0;
       handler->block_count = 1;
       remove_invalid_closure_notify (handler, instance);
-      handler_unref_R (signal_id, instance, handler);
+      handler_unref_R (handler->signal_id, instance, handler);
     }
   else
     g_warning ("%s: instance '%p' has no handler with id '%lu'", G_STRLOC, instance, handler_id);
@@ -2636,6 +2665,7 @@ g_signal_handlers_destroy (gpointer instance)
               tmp->prev = tmp;
               if (tmp->sequential_number)
 		{
+                  g_hash_table_remove (g_handlers, tmp);
 		  remove_invalid_closure_notify (tmp, instance);
 		  tmp->sequential_number = 0;
 		  handler_unref_R (0, NULL, tmp);
