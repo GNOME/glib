@@ -1,3 +1,39 @@
+Overview of changes in GLib 2.42.0
+===================================
+
+All changes in this release are trivial in nature.
+
+ - introspection warning fixes
+
+ - g_application_add_main_option now uses an enum instead of an 'int'
+   for the type of a parameter
+
+ - added a G_OPTION_FLAG_NONE so that people don't need to use 0
+
+ - gresource: Use GError in more places
+
+ - gresource commandline tool: improve extraction from multiple sections
+
+ - GSource now takes the context lock (if any) in g_source_set_name()
+
+ - new documentation to clarify the use of some APIs related to
+   GVariant, GSource, GApplication
+
+ - other minor updates to docs
+
+* Bugs fixed
+ 736683 Thread safety issues with g_main_context_find_source_by_id
+ 736975 [patch] please document that GVariant serialization needs an
+        out-of-band length field
+
+* Translation updates
+ Danish
+ Hindi
+ Marathi
+ Punjabi
+ Serbian
+ Simplified Chinese
+
 Overview of changes in GLib 2.41.5
 ==================================
 
