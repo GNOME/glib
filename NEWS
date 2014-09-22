@@ -1,3 +1,9 @@
+Overview of changes from GLib 2.40.1 to GLib 2.40.2
+====================================================
+
+This release contains several BSD-related fixes backported from master
+which failed to make it into the last release.
+
 Overview of changes from GLib 2.40.0 to GLib 2.40.1
 ====================================================
 
