@@ -93,6 +93,9 @@
 
 
 #include <stdarg.h>
+#if HAVE_STDINT_H
+#include <stdint.h>
+#endif
 
 /* Nb: this file might be included in a file compiled with -ansi.  So
    we can't use C++ style "//" comments nor the "asm" keyword (instead
