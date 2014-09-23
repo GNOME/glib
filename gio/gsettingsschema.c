@@ -1292,7 +1292,7 @@ g_settings_schema_key_get_translated_default (GSettingsSchemaKey *key)
   if (value == NULL)
     {
       g_warning ("Failed to parse translated string '%s' for "
-                 "key '%s' in schema '%s': %s", key->unparsed, key->name,
+                 "key '%s' in schema '%s': %s", translated, key->name,
                  g_settings_schema_get_id (key->schema), error->message);
       g_warning ("Using untranslated default instead.");
       g_error_free (error);
