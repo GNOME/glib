@@ -2624,6 +2624,10 @@ g_application_set_default (GApplication *application)
  * calling only the 'shutdown' function before doing so.
  *
  * The hold count is ignored.
+ * Take care if your code has called g_application_hold() on the application and
+ * is therefore still expecting it to exist.
+ * (Note that you may have called g_application_hold() indirectly, for example
+ * through gtk_application_add_window().)
  *
  * The result of calling g_application_run() again after it returns is
  * unspecified.
