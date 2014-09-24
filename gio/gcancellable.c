@@ -722,6 +722,8 @@ static GSourceFuncs cancellable_source_funcs =
  * For convenience, you can call this with a %NULL #GCancellable,
  * in which case the source will never trigger.
  *
+ * The new #GSource will hold a reference to the #GCancellable.
+ *
  * Returns: (transfer full): the new #GSource.
  *
  * Since: 2.28
