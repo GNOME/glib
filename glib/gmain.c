@@ -2122,6 +2122,21 @@ g_source_unref_internal (GSource      *source,
           source->ref_count--;
 	}
 
+      if (old_cb_funcs)
+        {
+          /* Temporarily increase the ref count again so that GSource methods
+           * can be called from callback_funcs.unref(). */
+          source->ref_count++;
+          if (context)
+            UNLOCK_CONTEXT (context);
+
+          old_cb_funcs->unref (old_cb_data);
+
+          if (context)
+            LOCK_CONTEXT (context);
+          source->ref_count--;
+        }
+
       g_free (source->name);
       source->name = NULL;
 
@@ -2146,20 +2161,9 @@ g_source_unref_internal (GSource      *source,
 
       g_free (source);
     }
-  
+
   if (!have_lock && context)
     UNLOCK_CONTEXT (context);
-
-  if (old_cb_funcs)
-    {
-      if (have_lock)
-	UNLOCK_CONTEXT (context);
-      
-      old_cb_funcs->unref (old_cb_data);
-
-      if (have_lock)
-	LOCK_CONTEXT (context);
-    }
 }
 
 /**
