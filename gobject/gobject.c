@@ -1311,7 +1311,7 @@ consider_issuing_property_deprecation_warning (const GParamSpec *pspec)
       const gchar *value = g_getenv ("G_ENABLE_DIAGNOSTIC");
 
       if (!value)
-        value = "-";
+        value = "0";
 
       g_once_init_leave (&enable_diagnostic, value);
     }
