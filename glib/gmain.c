@@ -2026,6 +2026,17 @@ g_source_unref_internal (GSource      *source,
 
       g_slist_free_full (source->priv->fds, g_free);
 
+      while (source->priv->child_sources)
+        {
+          GSource *child_source = source->priv->child_sources->data;
+
+          source->priv->child_sources =
+            g_slist_remove (source->priv->child_sources, child_source);
+          child_source->priv->parent_source = NULL;
+
+          g_source_unref_internal (child_source, context, have_lock);
+        }
+
       g_slice_free (GSourcePrivate, source->priv);
       source->priv = NULL;
 
