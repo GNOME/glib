@@ -514,7 +514,7 @@ g_main_context_unref (GMainContext *context)
   GSource *source;
   GList *sl_iter;
   GSourceList *list;
-  gint i;
+  guint i;
 
   g_return_if_fail (context != NULL);
   g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0); 
@@ -3327,7 +3327,7 @@ gboolean
 g_main_context_prepare (GMainContext *context,
 			gint         *priority)
 {
-  gint i;
+  guint i;
   gint n_ready = 0;
   gint current_priority = G_MAXINT;
   GSource *source;
