@@ -2384,12 +2384,13 @@ short_remaining (void)
     { NULL }
   };
   GOptionContext* context;
-  gchar **argv;
+  gchar **argv, **argv_copy;
   gint argc;
 
   g_test_bug ("729563");
 
   argv = split_string ("program -ri -n 4 -t hello file1 file2", &argc);
+  argv_copy = copy_stringv (argv, argc);
 
   context = g_option_context_new (NULL);
 
@@ -2407,7 +2408,10 @@ short_remaining (void)
   g_assert_cmpstr (files[1], ==, "file2"); 
   g_assert (files[2] == NULL); 
 
-  g_strfreev (argv);
+  g_free (text);
+  g_strfreev (files);
+  g_strfreev (argv_copy);
+  g_free (argv);
   g_option_context_free (context);
 }
 

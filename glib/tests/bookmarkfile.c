@@ -31,6 +31,7 @@ test_load_from_data_dirs (void)
   g_assert (!res);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
   g_assert_null (path);
+  g_error_free (error);
 
   g_bookmark_file_free (bookmark);  
 }

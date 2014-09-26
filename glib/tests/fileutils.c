@@ -46,7 +46,7 @@
 #define S G_DIR_SEPARATOR_S
 
 static void
-check_string (gchar *str, gchar *expected)
+check_string (gchar *str, const gchar *expected)
 {
   g_assert (str != NULL);
   g_assert_cmpstr (str, ==, expected);
@@ -825,6 +825,7 @@ test_read_link (void)
   path = g_file_read_link (oldpath, &error);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
   g_assert_null (path);
+  g_error_free (error);
 
   g_free (cwd);
   g_free (newpath);
