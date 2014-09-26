@@ -95,7 +95,11 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
   /**
    * GTlsConnection:base-io-stream:
    *
-   * The #GIOStream that the connection wraps
+   * The #GIOStream that the connection wraps. The connection holds a reference
+   * to this stream, and may run operations on the stream from other threads
+   * throughout its lifetime. Consequently, after the #GIOStream has been
+   * constructed, application code may only run its own operations on this
+   * stream when no #GIOStream operations are running.
    *
    * Since: 2.28
    */
@@ -621,7 +625,8 @@ g_tls_connection_get_peer_certificate_errors (GTlsConnection *conn)
  * on @conn, this will send a close notification regardless of the
  * setting of this property. If you explicitly want to do an unclean
  * close, you can close @conn's #GTlsConnection:base-io-stream rather
- * than closing @conn itself.
+ * than closing @conn itself, but note that this may only be done when no other
+ * operations are pending on @conn or the base I/O stream.
  *
  * Since: 2.28
  */

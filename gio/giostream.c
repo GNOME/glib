@@ -60,6 +60,28 @@
  * #GIOStream may still be open. However, some streams may support
  * "half-closed" states where one direction of the stream is actually shut down.
  *
+ * Operations on #GIOStreams cannot be started while another operation on the
+ * #GIOStream or its substreams is in progress. Specifically, an application can
+ * read from the #GInputStream and write to the #GOutputStream simultaneously
+ * (either in separate threads, or as asynchronous operations in the same
+ * thread), but an application cannot start any #GIOStream operation while there
+ * is a #GIOStream, #GInputStream or #GOutputStream operation in progress, and
+ * an application can’t start any #GInputStream or #GOutputStream operation
+ * while there is a #GIOStream operation in progress.
+ *
+ * This is a product of individual stream operations being associated with a
+ * given #GMainContext (the thread-default context at the time the operation was
+ * started), rather than entire streams being associated with a single
+ * #GMainContext.
+ *
+ * GIO may run operations on #GIOStreams from other (worker) threads, and this
+ * may be exposed to application code in the behaviour of wrapper streams, such
+ * as #GBufferedInputStream or #GTlsConnection. With such wrapper APIs,
+ * application code may only run operations on the base (wrapped) stream when
+ * the wrapper stream is idle. Note that the semantics of such operations may
+ * not be well-defined due to the state the wrapper stream leaves the base
+ * stream in (though they are guaranteed not to crash).
+ *
  * Since: 2.22
  */
 
