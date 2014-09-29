@@ -245,6 +245,10 @@ AC_ARG_ENABLE(rebuilds,
               [AS_HELP_STRING([--disable-rebuilds],
                               [disable all source autogeneration rules])],,
               [enable_rebuilds=yes])
+AC_ARG_ENABLE(kdbus,
+              [AS_HELP_STRING([--enable-kdbus],
+                              [enable kdbus [default=no]])],,
+              [enable_kdbus=no])
 
 GLIB_TESTS
 
@@ -261,6 +265,13 @@ AS_IF([test "x$disable_mem_pools" = "xno"], [
   AC_DEFINE(DISABLE_MEM_POOLS, [1], [Whether to disable memory pools])
   AC_MSG_RESULT([yes])
 ])
+
+AC_MSG_CHECKING([whether to enable kdbus])
+AM_CONDITIONAL(KDBUS_TRANSPORT, [test "x$enable_kdbus" = "xyes"])
+AS_IF([test "x$enable_kdbus" = "xyes"], [
+  AC_DEFINE(KDBUS_TRANSPORT, 1, [Whether to enable kdbus])
+  AC_MSG_RESULT([yes])
+], [ AC_MSG_RESULT([no]) ])
 
 dnl location to install runtime libraries, e.g. ../../lib to install
 dnl to /lib if libdir is /usr/lib
