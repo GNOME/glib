@@ -212,6 +212,8 @@ G_LOCK_DEFINE_STATIC (message_bus_lock);
 
 static GWeakRef the_session_bus;
 static GWeakRef the_system_bus;
+static GWeakRef the_user_bus;
+static GWeakRef the_machine_bus;
 
 /* Extra pseudo-member of GDBusSendMessageFlags.
  * Set by initable_init() to indicate that despite not being initialized yet,
@@ -7342,6 +7344,14 @@ message_bus_get_singleton (GBusType   bus_type,
 
     case G_BUS_TYPE_SYSTEM:
       ret = &the_system_bus;
+      break;
+
+    case G_BUS_TYPE_USER:
+      ret = &the_user_bus;
+      break;
+
+    case G_BUS_TYPE_MACHINE:
+      ret = &the_machine_bus;
       break;
 
     case G_BUS_TYPE_STARTER:

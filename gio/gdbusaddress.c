@@ -1471,6 +1471,8 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
                                  GError       **error)
 {
   gchar *ret;
+  const gchar *system_bus;
+  const gchar *session_bus;
   const gchar *starter_bus;
   GError *local_error;
 
@@ -1522,6 +1524,23 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
         {
           ret = get_session_address_platform_specific (&local_error);
         }
+      break;
+
+    case G_BUS_TYPE_MACHINE:
+      system_bus = g_getenv ("DBUS_SYSTEM_BUS_ADDRESS");
+      if (system_bus == NULL)
+        ret = g_strdup ("kernel:path=/dev/kdbus/0-system/bus;unix:path=/var/run/dbus/system_bus_socket");
+      else
+        ret = g_strdup_printf ("kernel:path=/dev/kdbus/0-system/bus;%s", system_bus);
+      break;
+
+    case G_BUS_TYPE_USER:
+      session_bus = g_getenv ("DBUS_SESSION_BUS_ADDRESS");
+      if (session_bus == NULL)
+        ret = g_strdup_printf ("kernel:path=/dev/kdbus/%d-user/bus;%s", getuid(),
+                                   get_session_address_platform_specific (&local_error));
+      else
+        ret = g_strdup_printf ("kernel:path=/dev/kdbus/%d-user/bus;%s", getuid(), session_bus);
       break;
 
     case G_BUS_TYPE_STARTER:

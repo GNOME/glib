@@ -912,6 +912,8 @@ typedef enum {
  * @G_BUS_TYPE_NONE: Not a message bus.
  * @G_BUS_TYPE_SYSTEM: The system-wide message bus.
  * @G_BUS_TYPE_SESSION: The login session message bus.
+ * @G_BUS_TYPE_MACHINE: New bus type for kdbus transport (falls back to system bus in case of failure).
+ * @G_BUS_TYPE_USER: New bus type for kdbus transport (falls back to session bus in case of failure).
  *
  * An enumeration for well-known message buses.
  *
@@ -922,7 +924,9 @@ typedef enum
   G_BUS_TYPE_STARTER = -1,
   G_BUS_TYPE_NONE = 0,
   G_BUS_TYPE_SYSTEM  = 1,
-  G_BUS_TYPE_SESSION = 2
+  G_BUS_TYPE_SESSION = 2,
+  G_BUS_TYPE_MACHINE = 3,
+  G_BUS_TYPE_USER = 4
 } GBusType;
 
 /**
