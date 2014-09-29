@@ -151,6 +151,21 @@ GLIB_AVAILABLE_IN_ALL
 gssize   g_input_stream_read_finish   (GInputStream          *stream,
 				       GAsyncResult          *result,
 				       GError               **error);
+
+GLIB_AVAILABLE_IN_2_44
+void     g_input_stream_read_all_async    (GInputStream          *stream,
+                                           void                  *buffer,
+                                           gsize                  count,
+                                           int                    io_priority,
+                                           GCancellable          *cancellable,
+                                           GAsyncReadyCallback    callback,
+                                           gpointer               user_data);
+GLIB_AVAILABLE_IN_2_44
+gboolean g_input_stream_read_all_finish   (GInputStream          *stream,
+                                           GAsyncResult          *result,
+                                           gsize                 *bytes_read,
+                                           GError               **error);
+
 GLIB_AVAILABLE_IN_2_34
 void     g_input_stream_read_bytes_async  (GInputStream          *stream,
 					   gsize                  count,
