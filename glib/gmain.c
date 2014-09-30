@@ -268,7 +268,7 @@ struct _GMainContext
   guint owner_count;
   GSList *waiters;
 
-  gint ref_count;
+  volatile gint ref_count;
 
   GHashTable *sources;              /* guint -> GSource */
 
@@ -310,7 +310,7 @@ struct _GMainLoop
 {
   GMainContext *context;
   gboolean is_running;
-  gint ref_count;
+  volatile gint ref_count;
 };
 
 struct _GTimeoutSource
