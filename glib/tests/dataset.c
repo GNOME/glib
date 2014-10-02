@@ -69,6 +69,9 @@ test_dataset_basic (void)
   g_dataset_remove_data (location, "test1");
   ret = g_dataset_get_data (location, "test1");
   g_assert (ret == NULL);
+
+  ret = g_dataset_get_data (location, NULL);
+  g_assert (ret == NULL);
 }
 
 static gint destroy_count;
@@ -171,9 +174,12 @@ test_dataset_id (void)
   g_dataset_id_remove_data (location, quark);
   ret = g_dataset_id_get_data (location, quark);
   g_assert (ret == NULL);
+
+  ret = g_dataset_id_get_data (location, 0);
+  g_assert (ret == NULL);
 }
 
-GData *list;
+static GData *list;
 
 static void
 free_one (gpointer data)
@@ -200,6 +206,50 @@ test_datalist_clear (void)
   g_test_trap_assert_passed ();
 }
 
+static void
+test_datalist_basic (void)
+{
+  GData *list = NULL;
+  gpointer data;
+  gpointer ret;
+
+  g_datalist_init (&list);
+  data = "one";
+  g_datalist_set_data (&list, "one", data);
+  ret = g_datalist_get_data (&list, "one");
+  g_assert (ret == data);
+
+  ret = g_datalist_get_data (&list, "two");
+  g_assert (ret == NULL);
+
+  ret = g_datalist_get_data (&list, NULL);
+  g_assert (ret == NULL);
+
+  g_datalist_clear (&list);
+}
+
+static void
+test_datalist_id (void)
+{
+  GData *list = NULL;
+  gpointer data;
+  gpointer ret;
+
+  g_datalist_init (&list);
+  data = "one";
+  g_datalist_id_set_data (&list, g_quark_from_string ("one"), data);
+  ret = g_datalist_id_get_data (&list, g_quark_from_string ("one"));
+  g_assert (ret == data);
+
+  ret = g_datalist_id_get_data (&list, g_quark_from_string ("two"));
+  g_assert (ret == NULL);
+
+  ret = g_datalist_id_get_data (&list, 0);
+  g_assert (ret == NULL);
+
+  g_datalist_clear (&list);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -212,6 +262,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/dataset/full", test_dataset_full);
   g_test_add_func ("/dataset/foreach", test_dataset_foreach);
   g_test_add_func ("/dataset/destroy", test_dataset_destroy);
+  g_test_add_func ("/datalist/basic", test_datalist_basic);
+  g_test_add_func ("/datalist/id", test_datalist_id);
   g_test_add_func ("/datalist/recursive-clear", test_datalist_clear);
 
   return g_test_run ();
