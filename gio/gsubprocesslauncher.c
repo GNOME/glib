@@ -237,9 +237,8 @@ g_subprocess_launcher_new (GSubprocessFlags flags)
  * As an alternative, you can use g_subprocess_launcher_setenv(),
  * g_subprocess_launcher_unsetenv(), etc.
  *
- * All strings in this array are expected to be in the GLib file name
- * encoding.  On UNIX, this means that they can be arbitrary byte
- * strings.  On Windows, they should be in UTF-8.
+ * On UNIX, all strings in this array can be arbitrary byte strings.
+ * On Windows, they should be in UTF-8.
  *
  * Since: 2.40
  **/
@@ -261,10 +260,9 @@ g_subprocess_launcher_set_environ (GSubprocessLauncher  *self,
  * Sets the environment variable @variable in the environment of
  * processes launched from this launcher.
  *
- * Both the variable's name and value should be in the GLib file name
- * encoding. On UNIX, this means that they can be arbitrary byte
- * strings. On Windows, they should be in UTF-8.
- *
+ * On UNIX, both the variable's name and value can be arbitrary byte
+ * strings, except that the variable's name cannot contain '='.
+ * On Windows, they should be in UTF-8.
  *
  * Since: 2.40
  **/
@@ -285,9 +283,8 @@ g_subprocess_launcher_setenv (GSubprocessLauncher *self,
  * Removes the environment variable @variable from the environment of
  * processes launched from this launcher.
  *
- * The variable name should be in the GLib file name encoding.  On UNIX,
- * this means that they can be arbitrary byte strings.  On Windows, they
- * should be in UTF-8.
+ * On UNIX, the variable's name can be an arbitrary byte string not
+ * containing '='. On Windows, it should be in UTF-8.
  *
  * Since: 2.40
  **/
@@ -306,9 +303,8 @@ g_subprocess_launcher_unsetenv (GSubprocessLauncher *self,
  * Returns the value of the environment variable @variable in the
  * environment of processes launched from this launcher.
  *
- * The returned string is in the GLib file name encoding.  On UNIX, this
- * means that it can be an arbitrary byte string.  On Windows, it will
- * be UTF-8.
+ * On UNIX, the returned string can be an arbitrary byte string.
+ * On Windows, it will be UTF-8.
  *
  * Returns: the value of the environment variable, %NULL if unset
  *
