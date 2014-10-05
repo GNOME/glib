@@ -640,7 +640,7 @@ g_subprocess_launcher_take_fd (GSubprocessLauncher   *self,
 }
 
 /**
- * g_subprocess_launcher_set_child_setup:
+ * g_subprocess_launcher_set_child_setup: (skip)
  * @self: a #GSubprocessLauncher
  * @child_setup: a #GSpawnChildSetupFunc to use as the child setup function
  * @user_data: user data for @child_setup
