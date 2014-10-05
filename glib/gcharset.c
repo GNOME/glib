@@ -152,7 +152,8 @@ charset_cache_free (gpointer data)
 
 /**
  * g_get_charset:
- * @charset: return location for character set name
+ * @charset: (out) (optional) (transfer none): return location for character set
+ *   name, or %NULL.
  *
  * Obtains the character set for the [current locale][setlocale]; you
  * might use this character set as an argument to g_convert(), to convert
