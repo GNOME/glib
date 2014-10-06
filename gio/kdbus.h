@@ -213,7 +213,6 @@ struct kdbus_policy_access {
  *				bloom filter
  * @KDBUS_ITEM_DST_NAME:	Destination's well-known name
  * @KDBUS_ITEM_MAKE_NAME:	Name of domain, bus, endpoint
- * @KDBUS_ITEM_MEMFD_NAME:	The human readable name of a memfd (debugging)
  * @KDBUS_ITEM_ATTACH_FLAGS:	Attach-flags, used for updating which metadata
  *				a connection subscribes to
  * @_KDBUS_ITEM_ATTACH_BASE:	Start of metadata attach items
@@ -254,7 +253,6 @@ enum kdbus_item_type {
 	KDBUS_ITEM_BLOOM_MASK,
 	KDBUS_ITEM_DST_NAME,
 	KDBUS_ITEM_MAKE_NAME,
-	KDBUS_ITEM_MEMFD_NAME,
 	KDBUS_ITEM_ATTACH_FLAGS,
 
 	_KDBUS_ITEM_ATTACH_BASE	= 0x1000,
@@ -683,7 +681,7 @@ struct kdbus_cmd_conn_info {
 	__u64 flags;
 	__u64 id;
 	__u64 offset;
-	char name[0];
+	struct kdbus_item items[0];
 } __attribute__((aligned(8)));
 
 /**
@@ -716,6 +714,16 @@ struct kdbus_cmd_update {
 } __attribute__((aligned(8)));
 
 /**
+ * enum kdbus_cmd_match_flags - flags to control the KDBUS_CMD_MATCH_ADD ioctl
+ * @KDBUS_MATCH_REPLACE:	If entries with the supplied cookie already
+ *				exists, remove them before installing the new
+ *				matches.
+ */
+enum kdbus_cmd_match_flags {
+	KDBUS_MATCH_REPLACE	= 1ULL <<  0,
+};
+
+/**
  * struct kdbus_cmd_match - struct to add or remove matches
  * @size:		The total size of the struct
  * @cookie:		Userspace supplied cookie. When removing, the cookie
@@ -728,6 +736,7 @@ struct kdbus_cmd_update {
 struct kdbus_cmd_match {
 	__u64 size;
 	__u64 cookie;
+	__u64 flags;
 	struct kdbus_item items[0];
 } __attribute__((aligned(8)));
 
