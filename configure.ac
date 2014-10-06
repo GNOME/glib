@@ -1379,7 +1379,7 @@ if test x"$glib_native_win32" = xyes; then
   G_MODULE_LDFLAGS=
 else
   export SED
-  G_MODULE_LDFLAGS=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
+  eval G_MODULE_LDFLAGS=$export_dynamic_flag_spec
 fi
 dnl G_MODULE_IMPL= don't reset, so cmd-line can override
 G_MODULE_NEED_USCORE=0
@@ -1434,7 +1434,6 @@ dnl *** check for OSF1/5.0 RTLD_GLOBAL brokenness
 		${LDFLAGS} -module -o plugin.la -export-dynamic \
 		-shrext ".o" -avoid-version plugin.lo \
 		-rpath /dont/care >/dev/null 2>&1
-	eval `./libtool --config | grep ^objdir`
 	AC_CACHE_CHECK([for RTLD_GLOBAL brokenness],
 		glib_cv_rtldglobal_broken,[
 		AC_TRY_RUN([
@@ -1517,8 +1516,6 @@ fi
 
 AC_MSG_CHECKING(for the suffix of module shared libraries)
 export SED
-shrext_cmds=`./libtool --config | grep '^shrext_cmds='`
-eval $shrext_cmds
 module=yes eval std_shrext=$shrext_cmds
 # chop the initial dot
 glib_gmodule_suffix=`echo $std_shrext | sed 's/^\.//'`
