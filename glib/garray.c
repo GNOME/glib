@@ -1589,6 +1589,7 @@ g_byte_array_new_take (guint8 *data,
 
   real->data = data;
   real->len = len;
+  real->alloc = len;
 
   return array;
 }
