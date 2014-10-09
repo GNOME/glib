@@ -261,7 +261,7 @@ GVariant *g_dbus_connection_call_with_unix_fd_list_sync       (GDBusConnection  
  * @interface_name: The D-Bus interface name the method was invoked on.
  * @method_name: The name of the method that was invoked.
  * @parameters: A #GVariant tuple with parameters.
- * @invocation: A #GDBusMethodInvocation object that can be used to return a value or error.
+ * @invocation: (transfer full): A #GDBusMethodInvocation object that must be used to return a value or error.
  * @user_data: The @user_data #gpointer passed to g_dbus_connection_register_object().
  *
  * The type of the @method_call function in #GDBusInterfaceVTable.
@@ -342,6 +342,16 @@ typedef gboolean  (*GDBusInterfaceSetPropertyFunc) (GDBusConnection       *conne
  * asynchronously, give %NULL as your get_property() or set_property()
  * function. The D-Bus call will be directed to your @method_call function,
  * with the provided @interface_name set to "org.freedesktop.DBus.Properties".
+ *
+ * Ownership of the #GDBusMethodInvocation object passed to the
+ * method_call() function is transferred to your handler; you must
+ * call one of the methods of #GDBusMethodInvocation to return a reply
+ * (possibly empty), or an error. These functions also take ownership
+ * of the passed-in invocation object, so unless the invocation
+ * object has otherwise been referenced, it will be then be freed.
+ * Calling one of these functions may be done within your
+ * method_call() implementation but it also can be done at a later
+ * point to handle the method asynchronously.
  *
  * The usual checks on the validity of the calls is performed. For
  * `Get` calls, an error is automatically returned if the property does
