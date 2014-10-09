@@ -1564,16 +1564,10 @@ g_cond_timed_wait (GCond    *cond,
   end_time *= 1000000;
   end_time += abs_time->tv_usec;
 
-#ifdef CLOCK_MONOTONIC
   /* would be nice if we had clock_rtoffset, but that didn't seem to
    * make it into the kernel yet...
    */
   end_time += g_get_monotonic_time () - g_get_real_time ();
-#else
-  /* if CLOCK_MONOTONIC is not defined then g_get_montonic_time() and
-   * g_get_real_time() are returning the same clock, so don't bother...
-   */
-#endif
 
   return g_cond_wait_until (cond, mutex, end_time);
 }
