@@ -2225,6 +2225,7 @@ g_socket_control_message_get_type
 <FILE>gsocketlistener</FILE>
 <TITLE>GSocketListener</TITLE>
 GSocketListener
+GSocketListenerEvent
 g_socket_listener_new
 g_socket_listener_add_socket
 g_socket_listener_add_address

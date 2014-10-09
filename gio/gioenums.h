@@ -1751,6 +1751,29 @@ typedef enum {
 } GSocketClientEvent;
 
 /**
+ * GSocketListenerEvent:
+ * @G_SOCKET_LISTENER_BINDING: The listener is about to bind a socket.
+ * @G_SOCKET_LISTENER_BOUND: The listener has bound a socket.
+ * @G_SOCKET_LISTENER_LISTENING: The listener is about to start
+ *    listening on this socket.
+ * @G_SOCKET_LISTENER_LISTENED: The listener is now listening on
+ *   this socket.
+ *
+ * Describes an event occurring on a #GSocketListener. See the
+ * #GSocketListener::event signal for more details.
+ *
+ * Additional values may be added to this type in the future.
+ *
+ * Since: 2.46
+ */
+typedef enum {
+  G_SOCKET_LISTENER_BINDING,
+  G_SOCKET_LISTENER_BOUND,
+  G_SOCKET_LISTENER_LISTENING,
+  G_SOCKET_LISTENER_LISTENED
+} GSocketListenerEvent;
+
+/**
  * GTestDBusFlags:
  * @G_TEST_DBUS_NONE: No flags.
  *
