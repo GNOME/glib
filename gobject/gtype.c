@@ -33,6 +33,9 @@
 
 #include "gconstructor.h"
 
+#ifdef	G_ENABLE_DEBUG
+#define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
+#endif
 
 /**
  * SECTION:gtype
@@ -223,6 +226,9 @@ typedef enum
 struct _TypeNode
 {
   guint volatile ref_count;
+#ifdef G_ENABLE_DEBUG
+  guint volatile instance_count;
+#endif
   GTypePlugin *plugin;
   guint        n_children; /* writable with lock */
   guint        n_supers : 8;
@@ -506,7 +512,6 @@ type_node_any_new_W (TypeNode             *pnode,
   node->data = NULL;
   node->qname = g_quark_from_string (name);
   node->global_gdata = NULL;
-  
   g_hash_table_insert (static_type_nodes_ht,
 		       (gpointer) g_quark_to_string (node->qname),
 		       (gpointer) type);
@@ -1864,6 +1869,13 @@ g_type_create_instance (GType type)
   if (node->data->instance.instance_init)
     node->data->instance.instance_init (instance, class);
 
+#ifdef	G_ENABLE_DEBUG
+  IF_DEBUG (INSTANCE_COUNT)
+    {
+      g_atomic_int_inc ((int *) &node->instance_count);
+    }
+#endif
+
   TRACE(GOBJECT_OBJECT_NEW(instance, type));
 
   return instance;
@@ -1933,6 +1945,13 @@ g_type_free_instance (GTypeInstance *instance)
     }
   else
     g_slice_free1 (private_size + ivar_size, allocated);
+
+#ifdef	G_ENABLE_DEBUG
+  IF_DEBUG (INSTANCE_COUNT)
+    {
+      g_atomic_int_add ((int *) &node->instance_count, -1);
+    }
+#endif
 
   g_type_class_unref (class);
 }
@@ -3807,6 +3826,34 @@ g_type_query (GType       type,
     }
 }
 
+/**
+ * g_type_get_instance_count:
+ * @type: a #GType
+ *
+ * Returns the number of instances allocated of the particular type;
+ * this is only available if GLib is built with debugging support and
+ * the instance_count debug flag is set (by setting the GOBJECT_DEBUG
+ * variable to include instance-count).
+ *
+ * Returns: the number of instances allocated of the given type;
+ *   if instance counts are not available, returns 0.
+ *
+ * Since: 2.44
+ */
+int
+g_type_get_instance_count (GType type)
+{
+#ifdef G_ENABLE_DEBUG
+  TypeNode *node;
+
+  node = lookup_type_node_I (type);
+  g_return_if_fail (node != NULL);
+
+  return g_atomic_int_get (&node->instance_count);
+#else
+  return 0;
+#endif
+}
 
 /* --- implementation details --- */
 gboolean
@@ -4337,6 +4384,7 @@ gobject_init_ctor (void)
     {
       GDebugKey debug_keys[] = {
         { "objects", G_TYPE_DEBUG_OBJECTS },
+        { "instance-count", G_TYPE_DEBUG_INSTANCE_COUNT },
         { "signals", G_TYPE_DEBUG_SIGNALS },
       };
 
@@ -4817,3 +4865,4 @@ g_type_ensure (GType type)
   if (G_UNLIKELY (type == (GType)-1))
     g_error ("can't happen");
 }
+

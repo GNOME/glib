@@ -656,6 +656,7 @@ struct _GTypeQuery
  * @G_TYPE_DEBUG_OBJECTS: Print messages about object bookkeeping
  * @G_TYPE_DEBUG_SIGNALS: Print messages about signal emissions
  * @G_TYPE_DEBUG_MASK: Mask covering all debug flags
+ * @G_TYPE_DEBUG_INSTANCE_COUNT: Keep a count of instances of each type
  *
  * These flags used to be passed to g_type_init_with_debug_flags() which
  * is now deprecated.
@@ -670,7 +671,8 @@ typedef enum	/*< skip >*/
   G_TYPE_DEBUG_NONE	= 0,
   G_TYPE_DEBUG_OBJECTS	= 1 << 0,
   G_TYPE_DEBUG_SIGNALS	= 1 << 1,
-  G_TYPE_DEBUG_MASK	= 0x03
+  G_TYPE_DEBUG_INSTANCE_COUNT = 1 << 2,
+  G_TYPE_DEBUG_MASK	= 0x07
 } GTypeDebugFlags;
 
 
@@ -738,6 +740,8 @@ GLIB_AVAILABLE_IN_ALL
 void		      g_type_query		     (GType	       type,
 						      GTypeQuery      *query);
 
+GLIB_AVAILABLE_IN_2_44
+int                   g_type_get_instance_count      (GType            type);
 
 /* --- type registration --- */
 /**
