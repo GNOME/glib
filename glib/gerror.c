@@ -604,6 +604,10 @@ g_set_error_literal (GError      **err,
  *
  * If @dest is %NULL, free @src; otherwise, moves @src into *@dest.
  * The error variable @dest points to must be %NULL.
+ *
+ * Note that @src is no longer valid after this call. If you want
+ * to keep using the same GError*, you need to set it to %NULL
+ * after calling this function on it.
  */
 void
 g_propagate_error (GError **dest,
