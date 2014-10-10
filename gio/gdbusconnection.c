@@ -5172,6 +5172,259 @@ g_dbus_connection_unregister_object (GDBusConnection *connection,
   return ret;
 }
 
+typedef struct {
+  GClosure *method_call_closure;
+  GClosure *get_property_closure;
+  GClosure *set_property_closure;
+} RegisterObjectData;
+
+static RegisterObjectData *
+register_object_data_new (GClosure *method_call_closure,
+                          GClosure *get_property_closure,
+                          GClosure *set_property_closure)
+{
+  RegisterObjectData *data;
+
+  data = g_new0 (RegisterObjectData, 1);
+
+  if (method_call_closure != NULL)
+    {
+      data->method_call_closure = g_closure_ref (method_call_closure);
+      g_closure_sink (method_call_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (method_call_closure))
+        g_closure_set_marshal (method_call_closure, g_cclosure_marshal_generic);
+    }
+
+  if (get_property_closure != NULL)
+    {
+      data->get_property_closure = g_closure_ref (get_property_closure);
+      g_closure_sink (get_property_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (get_property_closure))
+        g_closure_set_marshal (get_property_closure, g_cclosure_marshal_generic);
+    }
+
+  if (set_property_closure != NULL)
+    {
+      data->set_property_closure = g_closure_ref (set_property_closure);
+      g_closure_sink (set_property_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (set_property_closure))
+        g_closure_set_marshal (set_property_closure, g_cclosure_marshal_generic);
+    }
+
+  return data;
+}
+
+static void
+register_object_free_func (gpointer user_data)
+{
+  RegisterObjectData *data = user_data;
+
+  g_clear_pointer (&data->method_call_closure, g_closure_unref);
+  g_clear_pointer (&data->get_property_closure, g_closure_unref);
+  g_clear_pointer (&data->set_property_closure, g_closure_unref);
+
+  g_free (data);
+}
+
+static void
+register_with_closures_on_method_call (GDBusConnection       *connection,
+                                       const gchar           *sender,
+                                       const gchar           *object_path,
+                                       const gchar           *interface_name,
+                                       const gchar           *method_name,
+                                       GVariant              *parameters,
+                                       GDBusMethodInvocation *invocation,
+                                       gpointer               user_data)
+{
+  RegisterObjectData *data = user_data;
+  GValue params[] = { G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT };
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], sender);
+
+  g_value_init (&params[2], G_TYPE_STRING);
+  g_value_set_string (&params[2], object_path);
+
+  g_value_init (&params[3], G_TYPE_STRING);
+  g_value_set_string (&params[3], interface_name);
+
+  g_value_init (&params[4], G_TYPE_STRING);
+  g_value_set_string (&params[4], method_name);
+
+  g_value_init (&params[5], G_TYPE_VARIANT);
+  g_value_set_variant (&params[5], parameters);
+
+  g_value_init (&params[6], G_TYPE_DBUS_METHOD_INVOCATION);
+  g_value_set_object (&params[6], invocation);
+
+  g_closure_invoke (data->method_call_closure, NULL, G_N_ELEMENTS (params), params, NULL);
+
+  g_value_unset (params + 0);
+  g_value_unset (params + 1);
+  g_value_unset (params + 2);
+  g_value_unset (params + 3);
+  g_value_unset (params + 4);
+  g_value_unset (params + 5);
+  g_value_unset (params + 6);
+}
+
+static GVariant *
+register_with_closures_on_get_property (GDBusConnection *connection,
+                                        const gchar     *sender,
+                                        const gchar     *object_path,
+                                        const gchar     *interface_name,
+                                        const gchar     *property_name,
+                                        GError         **error,
+                                        gpointer         user_data)
+{
+  RegisterObjectData *data = user_data;
+  GValue params[] = { G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT };
+  GValue result_value = G_VALUE_INIT;
+  GVariant *result;
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], sender);
+
+  g_value_init (&params[2], G_TYPE_STRING);
+  g_value_set_string (&params[2], object_path);
+
+  g_value_init (&params[3], G_TYPE_STRING);
+  g_value_set_string (&params[3], interface_name);
+
+  g_value_init (&params[4], G_TYPE_STRING);
+  g_value_set_string (&params[4], property_name);
+
+  g_value_init (&result_value, G_TYPE_VARIANT);
+
+  g_closure_invoke (data->get_property_closure, &result_value, G_N_ELEMENTS (params), params, NULL);
+
+  result = g_value_get_variant (&result_value);
+  if (result)
+    g_variant_ref (result);
+
+  g_value_unset (params + 0);
+  g_value_unset (params + 1);
+  g_value_unset (params + 2);
+  g_value_unset (params + 3);
+  g_value_unset (params + 4);
+  g_value_unset (&result_value);
+
+  if (!result)
+    g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                 _("Unable to retrieve property %s.%s"),
+                 interface_name, property_name);
+
+  return result;
+}
+
+static gboolean
+register_with_closures_on_set_property (GDBusConnection *connection,
+                                        const gchar     *sender,
+                                        const gchar     *object_path,
+                                        const gchar     *interface_name,
+                                        const gchar     *property_name,
+                                        GVariant        *value,
+                                        GError         **error,
+                                        gpointer         user_data)
+{
+  RegisterObjectData *data = user_data;
+  GValue params[] = { G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT };
+  GValue result_value = G_VALUE_INIT;
+  gboolean result;
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], sender);
+
+  g_value_init (&params[2], G_TYPE_STRING);
+  g_value_set_string (&params[2], object_path);
+
+  g_value_init (&params[3], G_TYPE_STRING);
+  g_value_set_string (&params[3], interface_name);
+
+  g_value_init (&params[4], G_TYPE_STRING);
+  g_value_set_string (&params[4], property_name);
+
+  g_value_init (&params[5], G_TYPE_VARIANT);
+  g_value_set_variant (&params[5], value);
+
+  g_value_init (&result_value, G_TYPE_BOOLEAN);
+
+  g_closure_invoke (data->set_property_closure, &result_value, G_N_ELEMENTS (params), params, NULL);
+
+  result = g_value_get_boolean (&result_value);
+
+  g_value_unset (params + 0);
+  g_value_unset (params + 1);
+  g_value_unset (params + 2);
+  g_value_unset (params + 3);
+  g_value_unset (params + 4);
+  g_value_unset (params + 5);
+  g_value_unset (&result_value);
+
+  if (!result)
+    g_set_error (error,
+                 G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
+                 _("Unable to set property %s.%s"),
+                 interface_name, property_name);
+
+  return result;
+}
+
+/**
+ * g_dbus_connection_register_object_with_closures: (rename-to g_dbus_connection_register_object)
+ * @connection: A #GDBusConnection.
+ * @object_path: The object path to register at.
+ * @interface_info: Introspection data for the interface.
+ * @method_call_closure: (nullable): #GClosure for handling incoming method calls.
+ * @get_property_closure: (nullable): #GClosure for getting a property.
+ * @set_property_closure: (nullable): #GClosure for setting a property.
+ * @error: Return location for error or %NULL.
+ *
+ * Version of g_dbus_connection_register_object() using closures instead of a
+ * #GDBusInterfaceVTable for easier binding in other languages.
+ *
+ * Returns: 0 if @error is set, otherwise a registration id (never 0)
+ * that can be used with g_dbus_connection_unregister_object() .
+ *
+ * Since: 2.46
+ */
+guint
+g_dbus_connection_register_object_with_closures (GDBusConnection     *connection,
+                                                 const gchar         *object_path,
+                                                 GDBusInterfaceInfo  *interface_info,
+                                                 GClosure            *method_call_closure,
+                                                 GClosure            *get_property_closure,
+                                                 GClosure            *set_property_closure,
+                                                 GError             **error)
+{
+  RegisterObjectData *data;
+  GDBusInterfaceVTable vtable =
+    {
+      method_call_closure != NULL  ? register_with_closures_on_method_call  : NULL,
+      get_property_closure != NULL ? register_with_closures_on_get_property : NULL,
+      set_property_closure != NULL ? register_with_closures_on_set_property : NULL
+    };
+
+  data = register_object_data_new (method_call_closure, get_property_closure, set_property_closure);
+
+  return g_dbus_connection_register_object (connection,
+                                            object_path,
+                                            interface_info,
+                                            &vtable,
+                                            data,
+                                            register_object_free_func,
+                                            error);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 /**
