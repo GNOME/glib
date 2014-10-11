@@ -3847,7 +3847,7 @@ g_type_get_instance_count (GType type)
   TypeNode *node;
 
   node = lookup_type_node_I (type);
-  g_return_if_fail (node != NULL);
+  g_return_val_if_fail (node != NULL, 0);
 
   return g_atomic_int_get (&node->instance_count);
 #else
