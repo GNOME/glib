@@ -641,7 +641,7 @@ g_file_hash (gconstpointer file)
  * @file1: the first #GFile
  * @file2: the second #GFile
  *
- * Checks equality of two given #GFiles.
+ * Checks if the two given #GFiles refer to the same file.
  *
  * Note that two #GFiles that differ can still refer to the same
  * file on the filesystem due to various forms of filename
@@ -809,6 +809,9 @@ g_file_get_child_for_display_name (GFile      *file,
  * pathname match @prefix. Only full pathname elements are matched,
  * so a path like /foo is not considered a prefix of /foobar, only
  * of /foo/bar.
+ *
+ * A #GFile is not a prefix of itself. If you want to check for
+ * equality, use g_file_equal().
  *
  * This call does no I/O, as it works purely on names. As such it can
  * sometimes return %FALSE even if @file is inside a @prefix (from a
