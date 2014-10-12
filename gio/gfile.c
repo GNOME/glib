@@ -660,6 +660,9 @@ g_file_equal (GFile *file1,
   g_return_val_if_fail (G_IS_FILE (file1), FALSE);
   g_return_val_if_fail (G_IS_FILE (file2), FALSE);
 
+  if (file1 == file2)
+    return TRUE;
+
   if (G_TYPE_FROM_INSTANCE (file1) != G_TYPE_FROM_INSTANCE (file2))
     return FALSE;
 
