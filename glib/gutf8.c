@@ -677,6 +677,8 @@ g_utf8_get_char_validated (const gchar *p,
     return result;
 }
 
+#define CONT_BYTE_FAST(p) ((guchar)*p++ & 0x3f)
+
 /**
  * g_utf8_to_ucs4_fast:
  * @str: a UTF-8 encoded string
@@ -729,39 +731,52 @@ g_utf8_to_ucs4_fast (const gchar *str,
   p = str;
   for (i=0; i < n_chars; i++)
     {
-      gunichar wc = (guchar)*p++;
+      guchar first = (guchar)*p++;
+      gunichar wc;
 
-      if (wc < 0x80)
+      if (first < 0xc0)
 	{
-	  result[i] = wc;
+          /* We really hope first < 0x80, but we don't want to test an
+           * extra branch for invalid input, which this function
+           * does not care about. Handling unexpected continuation bytes
+           * here will do the least damage. */
+	  wc = first;
 	}
       else
-	{ 
-	  gunichar mask = 0x40;
-
-	  if (G_UNLIKELY ((wc & mask) == 0))
-	    {
-	      /* It's an out-of-sequence 10xxxxxxx byte.
-	       * Rather than making an ugly hash of this and the next byte
-	       * and overrunning the buffer, it's more useful to treat it
-	       * with a replacement character
-	       */
-	      result[i] = 0xfffd;
-	      continue;
-	    }
-
-	  do
-	    {
-	      wc <<= 6;
-	      wc |= (guchar)(*p++) & 0x3f;
-	      mask <<= 5;
-	    }
-	  while((wc & mask) != 0);
-
-	  wc &= mask - 1;
-
-	  result[i] = wc;
+	{
+          gunichar c1 = CONT_BYTE_FAST(p);
+          if (first < 0xe0)
+            {
+              wc = ((first & 0x1f) << 6) | c1;
+            }
+          else
+            {
+              gunichar c2 = CONT_BYTE_FAST(p);
+              if (first < 0xf0)
+                {
+                  wc = ((first & 0x0f) << 12) | (c1 << 6) | c2;
+                }
+              else
+                {
+                  gunichar c3 = CONT_BYTE_FAST(p);
+                  wc = ((first & 0x07) << 18) | (c1 << 12) | (c2 << 6) | c3;
+                  if (G_UNLIKELY (first >= 0xf8))
+                    {
+                      /* This can't be valid UTF-8, but g_utf8_next_char()
+                       * and company allow out-of-range sequences */
+                      gunichar mask = 1 << 20;
+                      while ((wc & mask) != 0)
+                        {
+                          wc <<= 6;
+                          wc |= CONT_BYTE_FAST(p);
+                          mask <<= 5;
+                        }
+                      wc &= mask - 1;
+                    }
+                }
+            }
 	}
+      result[i] = wc;
     }
   result[i] = 0;
 
