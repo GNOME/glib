@@ -142,6 +142,24 @@ grind_utf8_to_ucs4_fast_sized (const char *str, gsize len)
   return 0;
 }
 
+static int
+grind_utf8_validate (const char *str, gsize len)
+{
+  int i;
+  for (i = 0; i < NUM_ITERATIONS; i++)
+    g_utf8_validate (str, -1, NULL);
+  return 0;
+}
+
+static int
+grind_utf8_validate_sized (const char *str, gsize len)
+{
+  int i;
+  for (i = 0; i < NUM_ITERATIONS; i++)
+    g_utf8_validate (str, len, NULL);
+  return 0;
+}
+
 static void
 perform_for (GrindFunc grind_func, const char *str, const char *label)
 {
@@ -192,6 +210,8 @@ main (int argc, char **argv)
       g_test_add_data_func ("/utf8/perf/utf8_to_ucs4-sized", grind_utf8_to_ucs4_sized, perform);
       g_test_add_data_func ("/utf8/perf/utf8_to_ucs4_fast", grind_utf8_to_ucs4_fast, perform);
       g_test_add_data_func ("/utf8/perf/utf8_to_ucs4_fast-sized", grind_utf8_to_ucs4_fast_sized, perform);
+      g_test_add_data_func ("/utf8/perf/utf8_validate", grind_utf8_validate, perform);
+      g_test_add_data_func ("/utf8/perf/utf8_validate-sized", grind_utf8_validate_sized, perform);
     }
 
   return g_test_run ();
