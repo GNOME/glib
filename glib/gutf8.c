@@ -1442,20 +1442,18 @@ g_ucs4_to_utf16 (const gunichar  *str,
   return result;
 }
 
-#define CONTINUATION_CHAR                           \
- G_STMT_START {                                     \
-  if ((*(guchar *)p & 0xc0) != 0x80) /* 10xxxxxx */ \
-    goto error;                                     \
-  val <<= 6;                                        \
-  val |= (*(guchar *)p) & 0x3f;                     \
- } G_STMT_END
+#define VALIDATE_BYTE(mask, expect)                      \
+  G_STMT_START {                                         \
+    if (G_UNLIKELY((*(guchar *)p & (mask)) != (expect))) \
+      goto error;                                        \
+  } G_STMT_END
+
+/* see IETF RFC 3629 Section 4 */
 
 static const gchar *
 fast_validate (const char *str)
 
 {
-  gunichar val = 0;
-  gunichar min = 0;
   const gchar *p;
 
   for (p = str; *p; p++)
@@ -1465,49 +1463,56 @@ fast_validate (const char *str)
       else 
 	{
 	  const gchar *last;
-	  
+
 	  last = p;
-	  if ((*(guchar *)p & 0xe0) == 0xc0) /* 110xxxxx */
+	  if (*(guchar *)p < 0xe0) /* 110xxxxx */
 	    {
 	      if (G_UNLIKELY ((*(guchar *)p & 0x1e) == 0))
-		goto error;
-	      p++;
-	      if (G_UNLIKELY ((*(guchar *)p & 0xc0) != 0x80)) /* 10xxxxxx */
 		goto error;
 	    }
 	  else
 	    {
-	      if ((*(guchar *)p & 0xf0) == 0xe0) /* 1110xxxx */
+	      if (*(guchar *)p < 0xf0) /* 1110xxxx */
 		{
-		  min = (1 << 11);
-		  val = *(guchar *)p & 0x0f;
-		  goto TWO_REMAINING;
+		  switch (*(guchar *)p++ & 0x0f)
+		    {
+		    case 0:
+		      VALIDATE_BYTE(0xe0, 0xa0); /* 0xa0 ... 0xbf */
+		      break;
+		    case 0x0d:
+		      VALIDATE_BYTE(0xe0, 0x80); /* 0x80 ... 0x9f */
+		      break;
+		    default:
+		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
+		    }
 		}
-	      else if ((*(guchar *)p & 0xf8) == 0xf0) /* 11110xxx */
+	      else if (*(guchar *)p < 0xf5) /* 11110xxx excluding out-of-range */
 		{
-		  min = (1 << 16);
-		  val = *(guchar *)p & 0x07;
+		  switch (*(guchar *)p++ & 0x07)
+		    {
+		    case 0:
+		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
+		      if (G_UNLIKELY((*(guchar *)p & 0x30) == 0))
+			goto error;
+		      break;
+		    case 4:
+		      VALIDATE_BYTE(0xf0, 0x80); /* 0x80 ... 0x8f */
+		      break;
+		    default:
+		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
+		    }
+		  p++;
+		  VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
 		}
 	      else
 		goto error;
-	      
-	      p++;
-	      CONTINUATION_CHAR;
-	    TWO_REMAINING:
-	      p++;
-	      CONTINUATION_CHAR;
-	      p++;
-	      CONTINUATION_CHAR;
-	      
-	      if (G_UNLIKELY (val < min))
-		goto error;
+	    }
 
-	      if (G_UNLIKELY (!UNICODE_VALID(val)))
-		goto error;
-	    } 
-	  
+	  p++;
+	  VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
+
 	  continue;
-	  
+
 	error:
 	  return last;
 	}
@@ -1521,8 +1526,6 @@ fast_validate_len (const char *str,
 		   gssize      max_len)
 
 {
-  gunichar val = 0;
-  gunichar min = 0;
   const gchar *p;
 
   g_assert (max_len >= 0);
@@ -1534,57 +1537,65 @@ fast_validate_len (const char *str,
       else 
 	{
 	  const gchar *last;
-	  
+
 	  last = p;
-	  if ((*(guchar *)p & 0xe0) == 0xc0) /* 110xxxxx */
+	  if (*(guchar *)p < 0xe0) /* 110xxxxx */
 	    {
 	      if (G_UNLIKELY (max_len - (p - str) < 2))
 		goto error;
 	      
 	      if (G_UNLIKELY ((*(guchar *)p & 0x1e) == 0))
 		goto error;
-	      p++;
-	      if (G_UNLIKELY ((*(guchar *)p & 0xc0) != 0x80)) /* 10xxxxxx */
-		goto error;
 	    }
 	  else
 	    {
-	      if ((*(guchar *)p & 0xf0) == 0xe0) /* 1110xxxx */
+	      if (*(guchar *)p < 0xf0) /* 1110xxxx */
 		{
 		  if (G_UNLIKELY (max_len - (p - str) < 3))
 		    goto error;
-		  
-		  min = (1 << 11);
-		  val = *(guchar *)p & 0x0f;
-		  goto TWO_REMAINING;
+
+		  switch (*(guchar *)p++ & 0x0f)
+		    {
+		    case 0:
+		      VALIDATE_BYTE(0xe0, 0xa0); /* 0xa0 ... 0xbf */
+		      break;
+		    case 0x0d:
+		      VALIDATE_BYTE(0xe0, 0x80); /* 0x80 ... 0x9f */
+		      break;
+		    default:
+		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
+		    }
 		}
- 	      else if ((*(guchar *)p & 0xf8) == 0xf0) /* 11110xxx */
+	      else if (*(guchar *)p < 0xf5) /* 11110xxx excluding out-of-range */
 		{
 		  if (G_UNLIKELY (max_len - (p - str) < 4))
 		    goto error;
-		  
-		  min = (1 << 16);
-		  val = *(guchar *)p & 0x07;
+
+		  switch (*(guchar *)p++ & 0x07)
+		    {
+		    case 0:
+		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
+		      if (G_UNLIKELY((*(guchar *)p & 0x30) == 0))
+			goto error;
+		      break;
+		    case 4:
+		      VALIDATE_BYTE(0xf0, 0x80); /* 0x80 ... 0x8f */
+		      break;
+		    default:
+		      VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
+		    }
+		  p++;
+		  VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
 		}
 	      else
 		goto error;
-	      
-	      p++;
-	      CONTINUATION_CHAR;
-	    TWO_REMAINING:
-	      p++;
-	      CONTINUATION_CHAR;
-	      p++;
-	      CONTINUATION_CHAR;
-	      
-	      if (G_UNLIKELY (val < min))
-		goto error;
-	      if (G_UNLIKELY (!UNICODE_VALID(val)))
-		goto error;
-	    } 
-	  
+	    }
+
+	  p++;
+	  VALIDATE_BYTE(0xc0, 0x80); /* 10xxxxxx */
+
 	  continue;
-	  
+
 	error:
 	  return last;
 	}
