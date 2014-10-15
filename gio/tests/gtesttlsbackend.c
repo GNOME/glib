@@ -92,6 +92,15 @@ G_DEFINE_TYPE_WITH_CODE (GTestTlsCertificate, g_test_tls_certificate, G_TYPE_TLS
 			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
 						g_test_tls_certificate_initable_iface_init);)
 
+static GTlsCertificateFlags
+g_test_tls_certificate_verify (GTlsCertificate     *cert,
+                               GSocketConnectable  *identity,
+                               GTlsCertificate     *trusted_ca)
+{
+  /* For now, all of the tests expect the certificate to verify */
+  return 0;
+}
+
 static void
 g_test_tls_certificate_get_property (GObject    *object,
 				      guint       prop_id,
@@ -151,13 +160,16 @@ g_test_tls_certificate_finalize (GObject *object)
 }
 
 static void
-g_test_tls_certificate_class_init (GTestTlsCertificateClass *certificate_class)
+g_test_tls_certificate_class_init (GTestTlsCertificateClass *test_class)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (certificate_class);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (test_class);
+  GTlsCertificateClass *certificate_class = G_TLS_CERTIFICATE_CLASS (test_class);
 
   gobject_class->get_property = g_test_tls_certificate_get_property;
   gobject_class->set_property = g_test_tls_certificate_set_property;
   gobject_class->finalize = g_test_tls_certificate_finalize;
+
+  certificate_class->verify = g_test_tls_certificate_verify;
 
   g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE, "certificate");
   g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE_PEM, "certificate-pem");
