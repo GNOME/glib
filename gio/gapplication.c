@@ -1218,6 +1218,8 @@ g_application_finalize (GObject *object)
   if (application->priv->notifications)
     g_object_unref (application->priv->notifications);
 
+  g_free (application->priv->resource_path);
+
   G_OBJECT_CLASS (g_application_parent_class)
     ->finalize (object);
 }
