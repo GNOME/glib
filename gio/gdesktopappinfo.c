@@ -897,7 +897,7 @@ desktop_file_dir_unindexed_read_mimeapps_lists (DesktopFileDir *dir)
    * version.
    */
   filename = g_strdup_printf ("%s/defaults.list", dir->path);
-  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, DEFAULT_APPLICATIONS_GROUP, FALSE);
+  desktop_file_dir_unindexed_read_mimeapps_list (dir, filename, ADDED_ASSOCIATIONS_GROUP, FALSE);
   g_free (filename);
 
   /* Finally, the mimeinfo.cache, which is just a cached copy of what we
