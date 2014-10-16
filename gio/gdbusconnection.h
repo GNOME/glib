@@ -93,40 +93,32 @@ GDBusConnection *g_dbus_connection_new_for_address_sync       (const gchar      
 
 GLIB_AVAILABLE_IN_2_40
 gchar     *g_dbus_get_bus_id                                  (GDBusConnection    *connection,
-                                                               gint                timeout_msec,
                                                                GError            **error);
 GLIB_AVAILABLE_IN_2_40
 gchar    **g_dbus_get_list_names                              (GDBusConnection    *connection,
-                                                               gint                timeout_msec,
                                                                GError            **error);
 GLIB_AVAILABLE_IN_2_40
 gchar    **g_dbus_get_list_activatable_names                  (GDBusConnection    *connection,
-                                                               gint                timeout_msec,
                                                                GError            **error);
 GLIB_AVAILABLE_IN_2_40
 gchar    **g_dbus_get_list_queued_owners                      (GDBusConnection    *connection,
                                                                const gchar        *name,
-                                                               gint                timeout_msec,
                                                                GError            **error);
 GLIB_AVAILABLE_IN_2_40
 gchar     *g_dbus_get_name_owner                              (GDBusConnection    *connection,
                                                                const gchar        *name,
-                                                               gint                timeout_msec,
                                                                GError            **error);
 GLIB_AVAILABLE_IN_2_40
 gboolean   g_dbus_name_has_owner                              (GDBusConnection    *connection,
                                                                const gchar        *name,
-                                                               gint                timeout_msec,
                                                                GError            **error);
 GLIB_AVAILABLE_IN_2_40
 guint32    g_dbus_get_connection_pid                          (GDBusConnection    *connection,
                                                                const gchar        *name,
-                                                               gint                timeout_msec,
                                                                GError            **error);
 GLIB_AVAILABLE_IN_2_40
 guint32    g_dbus_get_connection_uid                          (GDBusConnection    *connection,
                                                                const gchar        *name,
-                                                               gint                timeout_msec,
                                                                GError            **error);
 
 /* ---------------------------------------------------------------------------------------------------- */

@@ -42,6 +42,7 @@
 
 #ifdef G_OS_UNIX
 #include <gio/gunixsocketaddress.h>
+#include <gio/gkdbusconnection.h>
 #endif
 
 #ifdef G_OS_WIN32
@@ -358,6 +359,16 @@ is_valid_tcp (const gchar  *address_entry,
   return ret;
 }
 
+static int
+g_dbus_is_supported_address_kdbus (const gchar  *transport_name)
+{
+  int supported = 0;
+
+  supported = g_strcmp0 (transport_name, "kernel") == 0;
+
+  return supported;
+}
+
 /**
  * g_dbus_is_supported_address:
  * @string: A string.
@@ -399,7 +410,8 @@ g_dbus_is_supported_address (const gchar  *string,
         goto out;
 
       supported = FALSE;
-      if (g_strcmp0 (transport_name, "unix") == 0)
+      if ((g_strcmp0 (transport_name, "unix") == 0)
+          || g_dbus_is_supported_address_kdbus (transport_name))
         supported = is_valid_unix (a[n], key_value_pairs, error);
       else if (g_strcmp0 (transport_name, "tcp") == 0)
         supported = is_valid_tcp (a[n], key_value_pairs, error);
@@ -551,7 +563,8 @@ g_dbus_address_connect (const gchar   *address_entry,
     {
     }
 #ifdef G_OS_UNIX
-  else if (g_strcmp0 (transport_name, "unix") == 0)
+  if ((g_strcmp0 (transport_name, "unix") == 0)
+      || g_dbus_is_supported_address_kdbus (transport_name))
     {
       const gchar *path;
       const gchar *abstract;
@@ -662,21 +675,46 @@ g_dbus_address_connect (const gchar   *address_entry,
 
   if (connectable != NULL)
     {
-      GSocketClient *client;
-      GSocketConnection *connection;
 
-      g_assert (ret == NULL);
-      client = g_socket_client_new ();
-      connection = g_socket_client_connect (client,
-                                            connectable,
-                                            cancellable,
-                                            error);
-      g_object_unref (connectable);
-      g_object_unref (client);
-      if (connection == NULL)
-        goto out;
+      if (g_dbus_is_supported_address_kdbus (transport_name))
+        {
+          GKdbusConnection *connection;
+          gboolean status;
 
-      ret = G_IO_STREAM (connection);
+          const gchar *path;
+          path = g_hash_table_lookup (key_value_pairs, "path");
+
+          g_assert (ret == NULL);
+          connection = _g_kdbus_connection_new ();
+          status = _g_kdbus_connection_connect (connection,
+                                                path,
+                                                cancellable,
+                                                error);
+          g_object_unref (connectable);
+
+          if (!status)
+            goto out;
+
+          ret = G_IO_STREAM (connection);
+        }
+      else
+        {
+          GSocketClient *client;
+          GSocketConnection *connection;
+
+          g_assert (ret == NULL);
+          client = g_socket_client_new ();
+          connection = g_socket_client_connect (client,
+                                                connectable,
+                                                cancellable,
+                                                error);
+          g_object_unref (connectable);
+          g_object_unref (client);
+          if (connection == NULL)
+            goto out;
+
+          ret = G_IO_STREAM (connection);
+        }
 
       if (nonce_file != NULL)
         {

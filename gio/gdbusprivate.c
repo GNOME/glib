@@ -40,6 +40,8 @@
 #include "gsocketoutputstream.h"
 
 #ifdef G_OS_UNIX
+#include "gkdbus.h"
+#include "gkdbusconnection.h"
 #include "gunixfdmessage.h"
 #include "gunixconnection.h"
 #include "gunixcredentialsmessage.h"
@@ -359,8 +361,11 @@ struct GDBusWorker
   GDBusWorkerDisconnectedCallback     disconnected_callback;
   gpointer                            user_data;
 
-  /* if not NULL, stream is GSocketConnection */
+  /* if GSocket and GKdbus are NULL, stream is GSocketConnection */
   GSocket *socket;
+#if defined (G_OS_UNIX) && (KDBUS_TRANSPORT)
+  GKdbus  *kdbus;
+#endif
 
   /* used for reading */
   GMutex                              read_lock;
@@ -1673,6 +1678,11 @@ _g_dbus_worker_new (GIOStream                              *stream,
 
   if (G_IS_SOCKET_CONNECTION (worker->stream))
     worker->socket = g_socket_connection_get_socket (G_SOCKET_CONNECTION (worker->stream));
+
+#if defined (G_OS_UNIX) && (KDBUS_TRANSPORT)
+  if (G_IS_KDBUS_CONNECTION (worker->stream))
+    worker->kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (worker->stream));
+#endif
 
   worker->shared_thread_data = _g_dbus_shared_thread_ref ();
 

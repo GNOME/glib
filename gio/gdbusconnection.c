@@ -122,6 +122,8 @@
 #include "gsimpleasyncresult.h"
 
 #ifdef G_OS_UNIX
+#include "gkdbus.h"
+#include "gkdbusconnection.h"
 #include "gunixconnection.h"
 #include "gunixfdmessage.h"
 #endif
@@ -1595,13 +1597,9 @@ g_dbus_connection_close_sync (GDBusConnection  *connection,
 /**
  * g_dbus_get_bus_id:
  * @connection: a #GDBusConnection
- * @timeout_msec: the timeout in milliseconds, -1 to use the default timeout
  * @error: return location for error or %NULL
  *
  * Synchronously returns the unique ID of the bus.
- *
- * If @connection is closed then the operation will fail with
- * %G_IO_ERROR_CLOSED.
  *
  * The calling thread is blocked until a reply is received.
  *
@@ -1612,23 +1610,29 @@ g_dbus_connection_close_sync (GDBusConnection  *connection,
  */
 gchar *
 g_dbus_get_bus_id (GDBusConnection  *connection,
-                   gint              timeout_msec,
                    GError          **error)
 {
   GVariant *result;
   gchar *bus_id;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   result = NULL;
   bus_id = NULL;
 
-  result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
-                                        "org.freedesktop.DBus", "GetId",
-                                        NULL, G_VARIANT_TYPE ("(s)"),
-                                        G_DBUS_CALL_FLAGS_NONE, timeout_msec, NULL, error);
+  if (G_IS_KDBUS_CONNECTION (connection->stream))
+    {
+      result = _g_kdbus_GetBusId (connection, error);
+    }
+  else
+    {
+      result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
+                                            "org.freedesktop.DBus", "GetId",
+                                            NULL, G_VARIANT_TYPE ("(s)"),
+                                            G_DBUS_CALL_FLAGS_NONE, -1, NULL, error);
+    }
+
   if (result != NULL)
     {
       g_variant_get (result, "(s)", &bus_id);
@@ -1649,7 +1653,6 @@ static gchar **
 _g_dbus_get_list_internal (GDBusConnection    *connection,
                            const gchar        *name,
                            GDBusListNameType   list_name_type,
-                           gint                timeout_msec,
                            GError            **error)
 {
   gchar **strv;
@@ -1663,10 +1666,13 @@ _g_dbus_get_list_internal (GDBusConnection    *connection,
 
   if (list_name_type == LIST_QUEUED_OWNERS)
     {
-      result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
-                                            "org.freedesktop.DBus", "ListQueuedOwners",
-                                            g_variant_new ("(s)", name), G_VARIANT_TYPE ("(as)"),
-                                            G_DBUS_CALL_FLAGS_NONE, timeout_msec, NULL, error);
+      if (G_IS_KDBUS_CONNECTION (connection->stream))
+        result = _g_kdbus_GetListQueuedOwners (connection, name, error);
+      else
+        result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
+                                              "org.freedesktop.DBus", "ListQueuedOwners",
+                                              g_variant_new ("(s)", name), G_VARIANT_TYPE ("(as)"),
+                                              G_DBUS_CALL_FLAGS_NONE, -1, NULL, error);
     }
   else
     {
@@ -1677,10 +1683,13 @@ _g_dbus_get_list_internal (GDBusConnection    *connection,
       else
         method_name = "ListActivatableNames";
 
-      result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
-                                            "org.freedesktop.DBus", method_name,
-                                            NULL, G_VARIANT_TYPE ("(as)"),
-                                            G_DBUS_CALL_FLAGS_NONE, timeout_msec, NULL, error);
+      if (G_IS_KDBUS_CONNECTION (connection->stream))
+        result = _g_kdbus_GetListNames (connection, list_name_type, error);
+      else
+        result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
+                                              "org.freedesktop.DBus", method_name,
+                                              NULL, G_VARIANT_TYPE ("(as)"),
+                                              G_DBUS_CALL_FLAGS_NONE, -1, NULL, error);
     }
 
   if (result != NULL)
@@ -1707,33 +1716,27 @@ _g_dbus_get_list_internal (GDBusConnection    *connection,
 /**
  * g_dbus_get_list_names:
  * @connection: a #GDBusConnection
- * @timeout_msec: the timeout in milliseconds, -1 to use the default timeout
  * @error: return location for error or %NULL
  *
  * Synchronously returns a list of all currently-owned names on the bus.
  *
- * If @connection is closed then the operation will fail with
- * %G_IO_ERROR_CLOSED.
- *
  * The calling thread is blocked until a reply is received.
  *
- * Returns: a list of all currently-owned names on the bus.
- *     Free with g_strfreev().
+ * Returns: a list of all currently-owned names on the bus or %NULL if
+ *     @error is set. Free with g_strfreev().
  *
  * Since: 2.4x
  */
 gchar **
 g_dbus_get_list_names (GDBusConnection  *connection,
-                       gint              timeout_msec,
                        GError          **error)
 {
   gchar **strv;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  strv = _g_dbus_get_list_internal (connection, NULL, LIST_NAMES, timeout_msec, error);
+  strv = _g_dbus_get_list_internal (connection, NULL, LIST_NAMES, error);
 
   return strv;
 }
@@ -1741,33 +1744,27 @@ g_dbus_get_list_names (GDBusConnection  *connection,
 /**
  * g_dbus_get_list_activatable_names:
  * @connection: a #GDBusConnection
- * @timeout_msec: the timeout in milliseconds, -1 to use the default timeout
  * @error: return location for error or %NULL
  *
  * Synchronously returns a list of all names that can be activated on the bus.
  *
- * If @connection is closed then the operation will fail with
- * %G_IO_ERROR_CLOSED.
- *
  * The calling thread is blocked until a reply is received.
  *
- * Returns: a list of all names that can be activated on the bus.
- *     Free with g_strfreev().
+ * Returns: a list of all names that can be activated on the bus or %NULL if
+ *     @error is set. Free with g_strfreev().
  *
  * Since: 2.4x
  */
 gchar **
 g_dbus_get_list_activatable_names (GDBusConnection  *connection,
-                                   gint              timeout_msec,
                                    GError          **error)
 {
   gchar **strv;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  strv = _g_dbus_get_list_internal (connection, NULL, LIST_ACTIVATABLE_NAMES, timeout_msec, error);
+  strv = _g_dbus_get_list_internal (connection, NULL, LIST_ACTIVATABLE_NAMES, error);
 
   return strv;
 }
@@ -1776,16 +1773,13 @@ g_dbus_get_list_activatable_names (GDBusConnection  *connection,
  * g_dbus_get_list_queued_names:
  * @connection: a #GDBusConnection
  * @name: a unique or well-known bus name
- * @timeout_msec: the timeout in milliseconds, -1 to use the default timeout
  * @error: return location for error or %NULL
  *
  * Synchronously returns the unique bus names of connections currently queued
  * for the @name.
  *
- * If @connection is closed then the operation will fail with
- * %G_IO_ERROR_CLOSED. If @name contains a value not compatible with
- * the D-Bus syntax and naming conventions for bus names, the operation
- * returns %NULL.
+ * If @name contains a value not compatible with the D-Bus syntax and naming
+ * conventions for bus names, the operation returns %NULL and @error is set.
  *
  * The calling thread is blocked until a reply is received.
  *
@@ -1797,17 +1791,15 @@ g_dbus_get_list_activatable_names (GDBusConnection  *connection,
 gchar **
 g_dbus_get_list_queued_owners (GDBusConnection  *connection,
                                const gchar      *name,
-                               gint              timeout_msec,
                                GError          **error)
 {
   gchar **strv;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
   g_return_val_if_fail (name == NULL || g_dbus_is_name (name), NULL);
-  g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  strv = _g_dbus_get_list_internal (connection, name, LIST_QUEUED_OWNERS, timeout_msec, error);
+  strv = _g_dbus_get_list_internal (connection, name, LIST_QUEUED_OWNERS, error);
 
   return strv;
 }
@@ -1816,17 +1808,14 @@ g_dbus_get_list_queued_owners (GDBusConnection  *connection,
  * g_dbus_get_name_owner:
  * @connection: a #GDBusConnection
  * @name: well-known bus name to get the owner of
- * @timeout_msec: the timeout in milliseconds, -1 to use the default timeout
  * @error: return location for error or %NULL
  *
  * Synchronously returns the unique connection name of the primary owner of
  * the name given. If the requested name doesn't have an owner, an @error is
  * returned.
  *
- * If @connection is closed then the operation will fail with
- * %G_IO_ERROR_CLOSED. If @name contains a value not compatible with
- * the D-Bus syntax and naming conventions for bus names, the operation
- * returns %NULL.
+ * If @name contains a value not compatible with the D-Bus syntax and naming
+ * conventions for bus names, the operation returns %NULL and @error is set.
  *
  * The calling thread is blocked until a reply is received.
  *
@@ -1839,7 +1828,6 @@ g_dbus_get_list_queued_owners (GDBusConnection  *connection,
 gchar *
 g_dbus_get_name_owner (GDBusConnection  *connection,
                        const gchar      *name,
-                       gint              timeout_msec,
                        GError          **error)
 {
   GVariant *result;
@@ -1847,16 +1835,18 @@ g_dbus_get_name_owner (GDBusConnection  *connection,
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
   g_return_val_if_fail (name == NULL || g_dbus_is_name (name), NULL);
-  g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   name_owner = NULL;
   result = NULL;
 
-  result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
-                                        "org.freedesktop.DBus", "GetNameOwner",
-                                        g_variant_new ("(s)", name), G_VARIANT_TYPE ("(s)"),
-                                        G_DBUS_CALL_FLAGS_NONE, timeout_msec, NULL, error);
+  if (G_IS_KDBUS_CONNECTION (connection->stream))
+    result = _g_kdbus_GetNameOwner (connection, name, error);
+  else
+    result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
+                                          "org.freedesktop.DBus", "GetNameOwner",
+                                          g_variant_new ("(s)", name), G_VARIANT_TYPE ("(s)"),
+                                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, error);
   if (result != NULL)
     {
       g_variant_get (result, "(s)", &name_owner);
@@ -1872,15 +1862,12 @@ g_dbus_get_name_owner (GDBusConnection  *connection,
  * g_dbus_name_has_owner:
  * @connection: a #GDBusConnection
  * @name: a unique or well-known bus name
- * @timeout_msec: the timeout in milliseconds, -1 to use the default timeout
  * @error: return location for error or %NULL
  *
  * Synchronously checks if the specified name exists (currently has an owner).
  *
- * If @connection is closed then the operation will fail with
- * %G_IO_ERROR_CLOSED. If @name contains a value not compatible with
- * the D-Bus syntax and naming conventions for bus names, the operation
- * returns FALSE.
+ * If @name contains a value not compatible with the D-Bus syntax and naming
+ * conventions for bus names, the operation returns %NULL and @error is set.
  *
  * The calling thread is blocked until a reply is received.
  *
@@ -1893,7 +1880,6 @@ g_dbus_get_name_owner (GDBusConnection  *connection,
 gboolean
 g_dbus_name_has_owner (GDBusConnection  *connection,
                        const gchar      *name,
-                       gint              timeout_msec,
                        GError          **error)
 {
   GVariant *result;
@@ -1901,15 +1887,17 @@ g_dbus_name_has_owner (GDBusConnection  *connection,
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
   g_return_val_if_fail (name == NULL || g_dbus_is_name (name), NULL);
-  g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   result = NULL;
 
-  result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
-                                        "org.freedesktop.DBus", "NameHasOwner",
-                                        g_variant_new ("(s)", name), G_VARIANT_TYPE ("(b)"),
-                                        G_DBUS_CALL_FLAGS_NONE, timeout_msec, NULL, error);
+  if (G_IS_KDBUS_CONNECTION (connection->stream))
+    result = _g_kdbus_NameHasOwner (connection, name, error);
+  else
+    result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
+                                          "org.freedesktop.DBus", "NameHasOwner",
+                                          g_variant_new ("(s)", name), G_VARIANT_TYPE ("(b)"),
+                                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, error);
   if (result != NULL)
     {
       g_variant_get (result, "(b)", &ret);
@@ -1925,16 +1913,14 @@ g_dbus_name_has_owner (GDBusConnection  *connection,
  * g_dbus_get_connection_pid:
  * @connection: a #GDBusConnection
  * @name: a unique or well-known bus name of the connection to query
- * @timeout_msec: the timeout in milliseconds, -1 to use the default timeout
  * @error: return location for error or %NULL
  *
  * Synchronously returns the Unix process ID of the process connected to the
  * bus. If unable to determine it, an @error is returned.
  *
- * If @connection is closed then the operation will fail with
- * %G_IO_ERROR_CLOSED. If @name contains a value not compatible with
- * the D-Bus syntax and naming conventions for bus names, the operation
- * returns (guint32) -1.
+ * If @name contains a value not compatible with the D-Bus syntax and naming
+ * conventions for bus names, the operation returns (guint32) -1 and @error
+ * is set.
  *
  * The calling thread is blocked until a reply is received.
  *
@@ -1946,7 +1932,6 @@ g_dbus_name_has_owner (GDBusConnection  *connection,
 guint32
 g_dbus_get_connection_pid (GDBusConnection  *connection,
                            const gchar      *name,
-                           gint              timeout_msec,
                            GError          **error)
 {
   GVariant *result;
@@ -1954,16 +1939,18 @@ g_dbus_get_connection_pid (GDBusConnection  *connection,
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), -1);
   g_return_val_if_fail (name == NULL || g_dbus_is_name (name), -1);
-  g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, -1);
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   result = NULL;
   pid = -1;
 
-  result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
-                                        "org.freedesktop.DBus", "GetConnectionUnixProcessID",
-                                        g_variant_new ("(s)", name), G_VARIANT_TYPE ("(u)"),
-                                        G_DBUS_CALL_FLAGS_NONE, timeout_msec, NULL, error);
+  if (G_IS_KDBUS_CONNECTION (connection->stream))
+    result = _g_kdbus_GetConnectionUnixProcessID (connection, name, error);
+  else
+    result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
+                                          "org.freedesktop.DBus", "GetConnectionUnixProcessID",
+                                          g_variant_new ("(s)", name), G_VARIANT_TYPE ("(u)"),
+                                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, error);
   if (result != NULL)
     {
       g_variant_get (result, "(u)", &pid);
@@ -1977,16 +1964,14 @@ g_dbus_get_connection_pid (GDBusConnection  *connection,
  * g_dbus_get_connection_uid:
  * @connection: a #GDBusConnection
  * @name: a unique or well-known bus name of the connection to query
- * @timeout_msec: the timeout in milliseconds, -1 to use the default timeout
  * @error: return location for error or %NULL
  *
  * Synchronously returns the Unix user ID of the process connected to the
  * bus. If unable to determine it, an @error is returned.
  *
- * If @connection is closed then the operation will fail with
- * %G_IO_ERROR_CLOSED. If @name contains a value not compatible with
- * the D-Bus syntax and naming conventions for bus names, the operation
- * returns (guint32) -1.
+ * If @name contains a value not compatible with the D-Bus syntax and naming
+ * conventions for bus names, the operation returns (guint32) -1 and @error
+ * is set.
  *
  * The calling thread is blocked until a reply is received.
  *
@@ -1998,7 +1983,6 @@ g_dbus_get_connection_pid (GDBusConnection  *connection,
 guint32
 g_dbus_get_connection_uid (GDBusConnection  *connection,
                            const gchar      *name,
-                           gint              timeout_msec,
                            GError          **error)
 {
   GVariant *result;
@@ -2006,16 +1990,18 @@ g_dbus_get_connection_uid (GDBusConnection  *connection,
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), -1);
   g_return_val_if_fail (name == NULL || g_dbus_is_name (name), -1);
-  g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, -1);
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
   result = NULL;
   uid = -1;
 
-  result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
-                                        "org.freedesktop.DBus", "GetConnectionUnixUser",
-                                        g_variant_new ("(s)", name), G_VARIANT_TYPE ("(u)"),
-                                        G_DBUS_CALL_FLAGS_NONE, timeout_msec, NULL, error);
+  if (G_IS_KDBUS_CONNECTION (connection->stream))
+    result = _g_kdbus_GetConnectionUnixUser (connection, name, error);
+  else
+    result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
+                                          "org.freedesktop.DBus", "GetConnectionUnixUser",
+                                          g_variant_new ("(s)", name), G_VARIANT_TYPE ("(u)"),
+                                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, error);
   if (result != NULL)
     {
       g_variant_get (result, "(u)", &uid);
@@ -3031,6 +3017,12 @@ initable_init (GInitable     *initable,
       g_assert_not_reached ();
     }
 
+  /* [KDBUS] Skip authentication process for kdbus transport */
+  if (G_IS_KDBUS_CONNECTION (connection->stream))
+    {
+      goto authenticated;
+    }
+
   /* Authenticate the connection */
   if (connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER)
     {
@@ -3068,6 +3060,8 @@ initable_init (GInitable     *initable,
       g_object_unref (connection->authentication_observer);
       connection->authentication_observer = NULL;
     }
+
+authenticated:
 
   //g_output_stream_flush (G_SOCKET_CONNECTION (connection->stream)
 
@@ -3112,17 +3106,25 @@ initable_init (GInitable     *initable,
           goto out;
         }
 
-      hello_result = g_dbus_connection_call_sync (connection,
-                                                  "org.freedesktop.DBus", /* name */
-                                                  "/org/freedesktop/DBus", /* path */
-                                                  "org.freedesktop.DBus", /* interface */
-                                                  "Hello",
-                                                  NULL, /* parameters */
-                                                  G_VARIANT_TYPE ("(s)"),
-                                                  CALL_FLAGS_INITIALIZING,
-                                                  -1,
-                                                  NULL, /* TODO: cancellable */
-                                                  &connection->initialization_error);
+      if (G_IS_KDBUS_CONNECTION (connection->stream))
+        {
+          hello_result = _g_kdbus_Hello (connection->stream, &connection->initialization_error);
+        }
+      else
+        {
+          hello_result = g_dbus_connection_call_sync (connection,
+                                                      "org.freedesktop.DBus", /* name */
+                                                      "/org/freedesktop/DBus", /* path */
+                                                      "org.freedesktop.DBus", /* interface */
+                                                      "Hello",
+                                                      NULL, /* parameters */
+                                                      G_VARIANT_TYPE ("(s)"),
+                                                      CALL_FLAGS_INITIALIZING,
+                                                      -1,
+                                                      NULL, /* TODO: cancellable */
+                                                      &connection->initialization_error);
+        }
+
       if (hello_result == NULL)
         goto out;
 
@@ -4165,7 +4167,7 @@ emit_signal_instance_in_idle_cb (gpointer data)
     }
   else
     {
-      g_variant_ref_sink (parameters);
+      g_variant_ref (parameters);
     }
 
 #if 0
