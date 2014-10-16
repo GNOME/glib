@@ -55,54 +55,50 @@ struct _GKdbus
   GKdbusPrivate *priv;
 };
 
-typedef struct
-{
-  gchar  *data;
-  gsize   size;
-} msg_part;
+GType                                   _g_kdbus_get_type                   (void) G_GNUC_CONST;
 
-GType                                   _g_kdbus_get_type                  (void) G_GNUC_CONST;
+gboolean                                _g_kdbus_open                       (GKdbus         *kdbus,
+                                                                             const gchar    *address,
+                                                                             GError        **error);
 
-gboolean                                _g_kdbus_open                      (GKdbus       *kdbus,
-                                                                            const gchar  *address,
-                                                                            GError      **error);
+gboolean                                _g_kdbus_close                      (GKdbus         *kdbus,
+                                                                             GError        **error);
 
-gboolean                                _g_kdbus_close                     (GKdbus  *kdbus,
-                                                                            GError **error);
+gboolean                                _g_kdbus_is_closed                  (GKdbus         *kdbus);
 
-gboolean                                _g_kdbus_is_closed                 (GKdbus  *kdbus);
+GSource *                               _g_kdbus_create_source              (GKdbus         *kdbus,
+                                                                             GIOCondition    condition,
+                                                                             GCancellable   *cancellable);
 
+GVariant *                              _g_kdbus_Hello                      (GIOStream        *stream,
+                                                                             GError          **error);
 
-gssize                                  _g_kdbus_receive                   (GKdbus        *kdbus,
-                                                                            GCancellable  *cancellable,
-                                                                            GError       **error);
+GVariant *                              _g_kdbus_GetBusId                   (GDBusConnection  *connection,
+                                                                             GError          **error);
 
-gsize                                   _g_kdbus_send                      (GDBusWorker   *worker,
-                                                                            GKdbus        *kdbus,
-                                                                            GDBusMessage  *dbus_msg,
-                                                                            gchar         *blob,
-                                                                            gsize          blob_size,
-                                                                            GUnixFDList   *fd_list,
-                                                                            GCancellable  *cancellable,
-                                                                            GError       **error);
+GVariant *                              _g_kdbus_GetListNames               (GDBusConnection  *connection,
+                                                                             guint             flags,
+                                                                             GError          **error);
 
-GSource *                               _g_kdbus_create_source             (GKdbus        *kdbus,
-                                                                            GIOCondition   condition,
-                                                                            GCancellable  *cancellable);
+GVariant *                              _g_kdbus_GetListQueuedOwners        (GDBusConnection  *connection,
+                                                                             const gchar      *name,
+                                                                             GError          **error);
 
-gchar *                                 _g_kdbus_hexdump_all_items         (GSList        *kdbus_msg_items);
+GVariant *                              _g_kdbus_NameHasOwner               (GDBusConnection  *connection,
+                                                                             const gchar      *name,
+                                                                             GError          **error);
 
-void                                    _g_kdbus_release_kmsg              (GKdbus        *kdbus);
+GVariant *                              _g_kdbus_GetNameOwner               (GDBusConnection  *connection,
+                                                                             const gchar      *name,
+                                                                             GError          **error);
 
-void                                    _g_kdbus_attach_fds_to_msg         (GKdbus        *kdbus,
-                                                                            GUnixFDList  **fd_list);
+GVariant *                              _g_kdbus_GetConnectionUnixProcessID (GDBusConnection  *connection,
+                                                                             const gchar      *name,
+                                                                             GError          **error);
 
-GSList *                                _g_kdbus_get_last_msg_items        (GKdbus        *kdbus);
-
-gchar *                                 _g_kdbus_get_last_msg_sender       (GKdbus        *kdbus);
-
-gchar *                                 _g_kdbus_get_last_msg_destination  (GKdbus        *kdbus);
-
+GVariant *                              _g_kdbus_GetConnectionUnixUser      (GDBusConnection  *connection,
+                                                                             const gchar      *name,
+                                                                             GError          **error);
 G_END_DECLS
 
 #endif /* __G_KDBUS_H__ */
