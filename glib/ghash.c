@@ -369,7 +369,7 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
    * from a destroy notifier. The alternative would be to crash any second
    * (as keys, etc. will be NULL).
    * Applications need to either use g_hash_table_destroy, or ensure the hash
-   * table is empty prior to removing the last reference using g_object_unref. */
+   * table is empty prior to removing the last reference using g_hash_table_unref(). */
   g_assert (hash_table->ref_count > 0);
 
   hash_value = hash_table->hash_func (key);
@@ -696,7 +696,7 @@ g_hash_table_new (GHashFunc  hash_func,
  * permissible if the application still holds a reference to the hash table.
  * This means that you may need to ensure that the hash table is empty by
  * calling g_hash_table_remove_all before releasing the last reference using
- * g_object_unref.
+ * g_hash_table_unref().
  *
  * Returns: a new #GHashTable
  */
