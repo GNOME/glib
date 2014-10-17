@@ -365,6 +365,13 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
   gboolean have_tombstone = FALSE;
   guint step = 0;
 
+  /* If this happens, then the application is probably doing too much work
+   * from a destroy notifier. The alternative would be to crash any second
+   * (as keys, etc. will be NULL).
+   * Applications need to either use g_hash_table_destroy, or ensure the hash
+   * table is empty prior to removing the last reference using g_object_unref. */
+  g_assert (hash_table->ref_count > 0);
+
   hash_value = hash_table->hash_func (key);
   if (G_UNLIKELY (!HASH_IS_REAL (hash_value)))
     hash_value = 2;
@@ -465,11 +472,20 @@ g_hash_table_remove_node (GHashTable   *hash_table,
  */
 static void
 g_hash_table_remove_all_nodes (GHashTable *hash_table,
-                               gboolean    notify)
+                               gboolean    notify,
+                               gboolean    destruction)
 {
   int i;
   gpointer key;
   gpointer value;
+  gint old_size;
+  gpointer *old_keys;
+  gpointer *old_values;
+  guint    *old_hashes;
+
+  /* If the hash table is already empty, there is nothing to be done. */
+  if (hash_table->nnodes == 0)
+    return;
 
   hash_table->nnodes = 0;
   hash_table->noccupied = 0;
@@ -478,23 +494,52 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
       (hash_table->key_destroy_func == NULL &&
        hash_table->value_destroy_func == NULL))
     {
-      memset (hash_table->hashes, 0, hash_table->size * sizeof (guint));
-      memset (hash_table->keys, 0, hash_table->size * sizeof (gpointer));
-      memset (hash_table->values, 0, hash_table->size * sizeof (gpointer));
+      if (!destruction)
+        {
+          memset (hash_table->hashes, 0, hash_table->size * sizeof (guint));
+          memset (hash_table->keys, 0, hash_table->size * sizeof (gpointer));
+          memset (hash_table->values, 0, hash_table->size * sizeof (gpointer));
+        }
 
       return;
     }
 
-  for (i = 0; i < hash_table->size; i++)
-    {
-      if (HASH_IS_REAL (hash_table->hashes[i]))
-        {
-          key = hash_table->keys[i];
-          value = hash_table->values[i];
+  /* Keep the old storage space around to iterate over it. */
+  old_size = hash_table->size;
+  old_keys   = hash_table->keys;
+  old_values = hash_table->values;
+  old_hashes = hash_table->hashes;
 
-          hash_table->hashes[i] = UNUSED_HASH_VALUE;
-          hash_table->keys[i] = NULL;
-          hash_table->values[i] = NULL;
+  /* Now create a new storage space; If the table is destroyed we can use the
+   * shortcut of not creating a new storage. This saves the allocation at the
+   * cost of not allowing any recursive access.
+   * However, the application doesn't own any reference anymore, so access
+   * is not allowed. If accesses are done, then either an assert or crash
+   * *will* happen. */
+  g_hash_table_set_shift (hash_table, HASH_TABLE_MIN_SHIFT);
+  if (!destruction)
+    {
+      hash_table->keys   = g_new0 (gpointer, hash_table->size);
+      hash_table->values = hash_table->keys;
+      hash_table->hashes = g_new0 (guint, hash_table->size);
+    }
+  else
+    {
+      hash_table->keys   = NULL;
+      hash_table->values = NULL;
+      hash_table->hashes = NULL;
+    }
+
+  for (i = 0; i < old_size; i++)
+    {
+      if (HASH_IS_REAL (old_hashes[i]))
+        {
+          key = old_keys[i];
+          value = old_values[i];
+
+          old_hashes[i] = UNUSED_HASH_VALUE;
+          old_keys[i] = NULL;
+          old_values[i] = NULL;
 
           if (hash_table->key_destroy_func != NULL)
             hash_table->key_destroy_func (key);
@@ -502,11 +547,14 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
           if (hash_table->value_destroy_func != NULL)
             hash_table->value_destroy_func (value);
         }
-      else if (HASH_IS_TOMBSTONE (hash_table->hashes[i]))
-        {
-          hash_table->hashes[i] = UNUSED_HASH_VALUE;
-        }
     }
+
+  /* Destroy old storage space. */
+  if (old_keys != old_values)
+    g_free (old_values);
+
+  g_free (old_keys);
+  g_free (old_hashes);
 }
 
 /*
@@ -642,6 +690,13 @@ g_hash_table_new (GHashFunc  hash_func,
  * count of 1 and allows to specify functions to free the memory
  * allocated for the key and value that get called when removing the
  * entry from the #GHashTable.
+ *
+ * Since version 2.42 it is permissible for destroy notify functions to
+ * recursively remove further items from the hash table. This is only
+ * permissible if the application still holds a reference to the hash table.
+ * This means that you may need to ensure that the hash table is empty by
+ * calling g_hash_table_remove_all before releasing the last reference using
+ * g_object_unref.
  *
  * Returns: a new #GHashTable
  */
@@ -1039,7 +1094,7 @@ g_hash_table_unref (GHashTable *hash_table)
 
   if (g_atomic_int_dec_and_test (&hash_table->ref_count))
     {
-      g_hash_table_remove_all_nodes (hash_table, TRUE);
+      g_hash_table_remove_all_nodes (hash_table, TRUE, TRUE);
       if (hash_table->keys != hash_table->values)
         g_free (hash_table->values);
       g_free (hash_table->keys);
@@ -1368,7 +1423,7 @@ g_hash_table_remove_all (GHashTable *hash_table)
     hash_table->version++;
 #endif
 
-  g_hash_table_remove_all_nodes (hash_table, TRUE);
+  g_hash_table_remove_all_nodes (hash_table, TRUE, FALSE);
   g_hash_table_maybe_resize (hash_table);
 }
 
@@ -1391,7 +1446,7 @@ g_hash_table_steal_all (GHashTable *hash_table)
     hash_table->version++;
 #endif
 
-  g_hash_table_remove_all_nodes (hash_table, FALSE);
+  g_hash_table_remove_all_nodes (hash_table, FALSE, FALSE);
   g_hash_table_maybe_resize (hash_table);
 }
 

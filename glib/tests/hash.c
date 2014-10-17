@@ -793,9 +793,10 @@ test_remove_all (void)
   gboolean res;
 
   h = g_hash_table_new_full (g_str_hash, g_str_equal, key_destroy, value_destroy);
-  g_hash_table_insert (h, "abc", "ABC");
-  g_hash_table_insert (h, "cde", "CDE");
-  g_hash_table_insert (h, "xyz", "XYZ");
+
+  g_hash_table_insert (h, "abc", "cde");
+  g_hash_table_insert (h, "cde", "xyz");
+  g_hash_table_insert (h, "xyz", "abc");
 
   destroy_counter = 0;
   destroy_key_counter = 0;
@@ -823,6 +824,52 @@ test_remove_all (void)
   g_assert_cmpint (destroy_key_counter, ==, 2);
 
   g_hash_table_unref (h);
+}
+
+GHashTable *recursive_destruction_table = NULL;
+static void
+recursive_value_destroy (gpointer value)
+{
+  destroy_counter++;
+
+  if (recursive_destruction_table)
+    g_hash_table_remove (recursive_destruction_table, value);
+}
+
+static void
+test_recursive_remove_all_subprocess (void)
+{
+  GHashTable *h;
+
+  h = g_hash_table_new_full (g_str_hash, g_str_equal, key_destroy, recursive_value_destroy);
+  recursive_destruction_table = h;
+
+  /* Add more items compared to test_remove_all, as it would not fail otherwise. */
+  g_hash_table_insert (h, "abc", "cde");
+  g_hash_table_insert (h, "cde", "fgh");
+  g_hash_table_insert (h, "fgh", "ijk");
+  g_hash_table_insert (h, "ijk", "lmn");
+  g_hash_table_insert (h, "lmn", "opq");
+  g_hash_table_insert (h, "opq", "rst");
+  g_hash_table_insert (h, "rst", "uvw");
+  g_hash_table_insert (h, "uvw", "xyz");
+  g_hash_table_insert (h, "xyz", "abc");
+
+  destroy_counter = 0;
+  destroy_key_counter = 0;
+
+  g_hash_table_remove_all (h);
+  g_assert_cmpint (destroy_counter, ==, 9);
+  g_assert_cmpint (destroy_key_counter, ==, 9);
+
+  g_hash_table_unref (h);
+}
+
+static void
+test_recursive_remove_all (void)
+{
+  g_test_trap_subprocess ("/hash/recursive-remove-all/subprocess", 1000000, 0);
+  g_test_trap_assert_passed ();
 }
 
 typedef struct {
@@ -1459,6 +1506,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/set-ref", set_ref_hash_test);
   g_test_add_func ("/hash/ref", test_hash_ref);
   g_test_add_func ("/hash/remove-all", test_remove_all);
+  g_test_add_func ("/hash/recursive-remove-all", test_recursive_remove_all);
+  g_test_add_func ("/hash/recursive-remove-all/subprocess", test_recursive_remove_all_subprocess);
   g_test_add_func ("/hash/find", test_find);
   g_test_add_func ("/hash/foreach", test_foreach);
   g_test_add_func ("/hash/foreach-steal", test_foreach_steal);
