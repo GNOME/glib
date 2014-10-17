@@ -1894,6 +1894,33 @@ typedef enum {
   G_NETWORK_CONNECTIVITY_FULL        = 4
 } GNetworkConnectivity;
 
+/**
+ * GTlsVersion:
+ * @G_TLS_VERSION_INVALID: invalid or unspecified version
+ * @G_TLS_VERSION_SSL_3_0: SSL 3.0
+ * @G_TLS_VERSION_TLS_1_0: TLS 1.0
+ * @G_TLS_VERSION_TLS_1_1: TLS 1.1
+ * @G_TLS_VERSION_TLS_1_2: TLS 1.2
+ * @G_TLS_VERSION_DTLS_1_0: Datagram TLS 1.0
+ * @G_TLS_VERSION_DTLS_1_2: Datagram TLS 1.2
+ *
+ * Versions of TLS/SSL. Note that the enumeration values are simply
+ * the two-byte "ProtocolVersion" values used in the TLS/SSL protocol,
+ * and new values will be added to the enumeration in the future if
+ * new versions of TLS are defined.
+ *
+ * Since: 2.46
+ */
+typedef enum {
+  G_TLS_VERSION_INVALID  = 0,
+  G_TLS_VERSION_SSL_3_0  = 0x0300,
+  G_TLS_VERSION_TLS_1_0  = 0x0301,
+  G_TLS_VERSION_TLS_1_1  = 0x0302,
+  G_TLS_VERSION_TLS_1_2  = 0x0303,
+  G_TLS_VERSION_DTLS_1_0 = 0xFEFF,
+  G_TLS_VERSION_DTLS_1_2 = 0xFEFD
+} GTlsVersion;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

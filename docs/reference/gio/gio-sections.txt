@@ -3636,6 +3636,8 @@ g_tls_connection_get_database
 g_tls_connection_set_database
 g_tls_connection_get_interaction
 g_tls_connection_set_interaction
+GTlsVersion
+g_tls_connection_get_info
 <SUBSECTION>
 g_tls_connection_handshake
 g_tls_connection_handshake_async

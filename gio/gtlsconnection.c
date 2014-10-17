@@ -83,7 +83,8 @@ enum {
   PROP_PEER_CERTIFICATE,
   PROP_PEER_CERTIFICATE_ERRORS,
   PROP_ADVERTISED_PROTOCOLS,
-  PROP_NEGOTIATED_PROTOCOL
+  PROP_NEGOTIATED_PROTOCOL,
+  PROP_CONNECTION_INFO
 };
 
 static void
@@ -277,6 +278,27 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
                                                         NULL,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GTlsConnection:connection-info:
+   *
+   * Miscellaneous information about the negotiated parameters for the
+   * connection (ciphersuite, extensions, etc). See
+   * g_tls_connection_get_connection_info() for details.
+   *
+   * This is only valid after a handshake has completed; before that
+   * it will be %NULL.
+   *
+   * Since: 2.46
+   */
+  g_object_class_install_property (gobject_class, PROP_CONNECTION_INFO,
+                                   g_param_spec_variant ("connection-info",
+                                                         P_("Connection Info"),
+                                                         P_("Negotiated SSL/TLS information"),
+                                                         G_VARIANT_TYPE_VARDICT,
+                                                         NULL,
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
 
   /**
    * GTlsConnection::accept-certificate:
@@ -812,6 +834,60 @@ g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
   interned_protocol = protocol ? g_intern_string (protocol) : NULL;
   g_free (protocol);
   return interned_protocol;
+}
+
+/**
+ * g_tls_connection_get_connection_info:
+ * @conn: a #GTlsConnection
+ *
+ * Gets information about the encryption and other TLS session
+ * parameters of @conn, as a #GVariant dictionary containing various
+ * pieces of information.
+ *
+ * Certain pieces of information are available for all connections:
+ *
+ * - `version` (int16): the negotiated #GTlsVersion. (In fact, this is
+ *   just the version number value in the binary format used by the
+ *   TLS protocol. For known SSL/TLS versions, this will be one of the
+ *   values of the #GTlsVersion enumeration, but future versions of
+ *   the backend TLS library may negotiate connections using TLS
+ *   versions not yet known to GLib.)
+ * - `key-exchange` (string): the key exchange algorithm (eg, "RSA" or
+ *   "ECDH_ECDSA")
+ * - `cipher` (string): the cipher algorithm (eg, "DES" or
+ *   "AES_256_CBC")
+ * - `mac` (string): the MAC algorithm (eg, "MD5" or "SHA256")
+ * - `cipher-suite` (string): the full cipher suite name (eg,
+ *   "TLS_RSA_WITH_AES128_CBC_SHA")
+ * - `key-size` (int32): the size of the key used by the cipher
+ *   algorithm
+ * - `mac-size` (int32): the output size of the MAC algorithm
+ *
+ * Additional data may also be available depending on the ciphersuite
+ * or extensions:
+ *
+ * - `dh-prime-size` (int32): for cipher suites using Diffie-Hellman key
+ *   exchange, the length in bits of the prime modulus.
+ * - `ext-renegotiation-info` (boolean): %TRUE if client and server
+ *   both support the TLS Renegotiation Indication Extension
+ *
+ * Returns: (transfer full) (nullable): a variant dictionary
+ * containing information about @conn, or %NULL if @conn is not
+ * connected or has not completed a handshake.
+ *
+ * Since: 2.46
+ */
+GVariant *
+g_tls_connection_get_connection_info (GTlsConnection *conn)
+{
+  GVariant *info;
+
+  g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
+
+  g_object_get (G_OBJECT (conn),
+                "connection-info", &info,
+                NULL);
+  return info;
 }
 
 /**

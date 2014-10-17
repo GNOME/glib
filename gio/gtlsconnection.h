@@ -122,6 +122,9 @@ void                  g_tls_connection_set_advertised_protocols    (GTlsConnecti
 GLIB_AVAILABLE_IN_2_46
 const char *          g_tls_connection_get_negotiated_protocol     (GTlsConnection       *conn);
 
+GLIB_AVAILABLE_IN_2_46
+GVariant *            g_tls_connection_get_connection_info         (GTlsConnection       *conn);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean              g_tls_connection_handshake                   (GTlsConnection       *conn,
 								    GCancellable         *cancellable,
