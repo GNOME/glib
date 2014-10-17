@@ -82,7 +82,7 @@
  * Since: 2.28
  */
 
-G_DEFINE_INTERFACE (GTlsBackend, g_tls_backend, G_TYPE_OBJECT);
+G_DEFINE_INTERFACE (GTlsBackend, g_tls_backend, G_TYPE_OBJECT)
 
 static void
 g_tls_backend_default_init (GTlsBackendInterface *iface)

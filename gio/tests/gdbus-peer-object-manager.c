@@ -38,7 +38,7 @@ typedef struct {
 } MockInterfaceClass;
 
 static GType mock_interface_get_type (void);
-G_DEFINE_TYPE (MockInterface, mock_interface, G_TYPE_DBUS_INTERFACE_SKELETON);
+G_DEFINE_TYPE (MockInterface, mock_interface, G_TYPE_DBUS_INTERFACE_SKELETON)
 
 static void
 mock_interface_init (MockInterface *self)

@@ -96,7 +96,7 @@ G_DEFINE_TYPE_WITH_CODE (GResourceFile, g_resource_file, G_TYPE_OBJECT,
 						g_resource_file_file_iface_init))
 
 #define g_resource_file_enumerator_get_type _g_resource_file_enumerator_get_type
-G_DEFINE_TYPE (GResourceFileEnumerator, g_resource_file_enumerator, G_TYPE_FILE_ENUMERATOR);
+G_DEFINE_TYPE (GResourceFileEnumerator, g_resource_file_enumerator, G_TYPE_FILE_ENUMERATOR)
 
 static GFileEnumerator *_g_resource_file_enumerator_new (GResourceFile *file,
 							 const char           *attributes,
@@ -778,7 +778,7 @@ struct _GResourceFileInputStreamClass
 };
 
 #define g_resource_file_input_stream_get_type _g_resource_file_input_stream_get_type
-G_DEFINE_TYPE (GResourceFileInputStream, g_resource_file_input_stream, G_TYPE_FILE_INPUT_STREAM);
+G_DEFINE_TYPE (GResourceFileInputStream, g_resource_file_input_stream, G_TYPE_FILE_INPUT_STREAM)
 
 static gssize     g_resource_file_input_stream_read       (GInputStream      *stream,
 							   void              *buffer,

@@ -39,7 +39,7 @@ G_DEFINE_TYPE_WITH_CODE (GTestTlsBackend, g_test_tls_backend, G_TYPE_OBJECT,
 			 g_io_extension_point_implement (G_TLS_BACKEND_EXTENSION_POINT_NAME,
 							 g_define_type_id,
 							 "test",
-							 999))
+							 999);)
 
 static void
 g_test_tls_backend_init (GTestTlsBackend *backend)
@@ -91,7 +91,7 @@ static void g_test_tls_certificate_initable_iface_init (GInitableIface *iface);
 #define g_test_tls_certificate_get_type _g_test_tls_certificate_get_type
 G_DEFINE_TYPE_WITH_CODE (GTestTlsCertificate, g_test_tls_certificate, G_TYPE_TLS_CERTIFICATE,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_test_tls_certificate_initable_iface_init);)
+						g_test_tls_certificate_initable_iface_init))
 
 static GTlsCertificateFlags
 g_test_tls_certificate_verify (GTlsCertificate     *cert,
@@ -242,10 +242,10 @@ static void g_test_tls_connection_initable_iface_init (GInitableIface *iface);
 
 #define g_test_tls_connection_get_type _g_test_tls_connection_get_type
 G_DEFINE_TYPE_WITH_CODE (GTestTlsConnection, g_test_tls_connection, G_TYPE_TLS_CONNECTION,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_CLIENT_CONNECTION, NULL);
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_SERVER_CONNECTION, NULL);
+			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_CLIENT_CONNECTION, NULL)
+			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_SERVER_CONNECTION, NULL)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_test_tls_connection_initable_iface_init);)
+						g_test_tls_connection_initable_iface_init))
 
 static void
 g_test_tls_connection_get_property (GObject    *object,

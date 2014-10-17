@@ -61,7 +61,7 @@ G_DEFINE_TYPE_WITH_CODE (GDummyTlsBackend, g_dummy_tls_backend, G_TYPE_OBJECT,
 			 g_io_extension_point_implement (G_TLS_BACKEND_EXTENSION_POINT_NAME,
 							 g_define_type_id,
 							 "dummy",
-							 -100))
+							 -100);)
 
 static void
 g_dummy_tls_backend_init (GDummyTlsBackend *dummy)
@@ -143,7 +143,7 @@ static void g_dummy_tls_certificate_initable_iface_init (GInitableIface *iface);
 #define g_dummy_tls_certificate_get_type _g_dummy_tls_certificate_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyTlsCertificate, g_dummy_tls_certificate, G_TYPE_TLS_CERTIFICATE,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_dummy_tls_certificate_initable_iface_init);)
+						g_dummy_tls_certificate_initable_iface_init))
 
 static void
 g_dummy_tls_certificate_get_property (GObject    *object,
@@ -242,10 +242,10 @@ static void g_dummy_tls_connection_initable_iface_init (GInitableIface *iface);
 
 #define g_dummy_tls_connection_get_type _g_dummy_tls_connection_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyTlsConnection, g_dummy_tls_connection, G_TYPE_TLS_CONNECTION,
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_CLIENT_CONNECTION, NULL);
-			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_SERVER_CONNECTION, NULL);
+			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_CLIENT_CONNECTION, NULL)
+			 G_IMPLEMENT_INTERFACE (G_TYPE_TLS_SERVER_CONNECTION, NULL)
 			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_dummy_tls_connection_initable_iface_init);)
+						g_dummy_tls_connection_initable_iface_init))
 
 static void
 g_dummy_tls_connection_get_property (GObject    *object,
@@ -453,9 +453,9 @@ static void g_dummy_tls_database_initable_iface_init (GInitableIface *iface);
 #define g_dummy_tls_database_get_type _g_dummy_tls_database_get_type
 G_DEFINE_TYPE_WITH_CODE (GDummyTlsDatabase, g_dummy_tls_database, G_TYPE_TLS_DATABASE,
                          G_IMPLEMENT_INTERFACE (G_TYPE_TLS_FILE_DATABASE,
-                                                g_dummy_tls_database_file_database_iface_init);
+                                                g_dummy_tls_database_file_database_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-                                                g_dummy_tls_database_initable_iface_init);)
+                                                g_dummy_tls_database_initable_iface_init))
 
 
 static void

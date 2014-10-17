@@ -40,7 +40,7 @@ typedef struct {
 
 GType my_object_get_type (void) G_GNUC_CONST;
 
-G_DEFINE_TYPE (MyObject, my_object, G_TYPE_OBJECT);
+G_DEFINE_TYPE (MyObject, my_object, G_TYPE_OBJECT)
 
 static void
 my_object_init (MyObject *object)

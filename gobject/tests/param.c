@@ -410,19 +410,19 @@ test_value_transform (void)
 
 static GType test_object_a_get_type (void);
 typedef GObject TestObjectA; typedef GObjectClass TestObjectAClass;
-G_DEFINE_TYPE (TestObjectA, test_object_a, G_TYPE_OBJECT);
+G_DEFINE_TYPE (TestObjectA, test_object_a, G_TYPE_OBJECT)
 static void test_object_a_class_init (TestObjectAClass *class) { }
 static void test_object_a_init (TestObjectA *a) { }
 
 static GType test_object_b_get_type (void);
 typedef GObject TestObjectB; typedef GObjectClass TestObjectBClass;
-G_DEFINE_TYPE (TestObjectB, test_object_b, test_object_a_get_type ());
+G_DEFINE_TYPE (TestObjectB, test_object_b, test_object_a_get_type ())
 static void test_object_b_class_init (TestObjectBClass *class) { }
 static void test_object_b_init (TestObjectB *b) { }
 
 static GType test_object_c_get_type (void);
 typedef GObject TestObjectC; typedef GObjectClass TestObjectCClass;
-G_DEFINE_TYPE (TestObjectC, test_object_c, G_TYPE_OBJECT);
+G_DEFINE_TYPE (TestObjectC, test_object_c, G_TYPE_OBJECT)
 static void test_object_c_class_init (TestObjectCClass *class) { }
 static void test_object_c_init (TestObjectC *c) { }
 

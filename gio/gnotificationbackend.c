@@ -24,7 +24,7 @@
 #include "gactiongroup.h"
 #include "giomodule-priv.h"
 
-G_DEFINE_TYPE (GNotificationBackend, g_notification_backend, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GNotificationBackend, g_notification_backend, G_TYPE_OBJECT)
 
 static void
 g_notification_backend_class_init (GNotificationBackendClass *class)

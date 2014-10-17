@@ -25,7 +25,7 @@
 #include "glistmodel.h"
 #include "glibintl.h"
 
-G_DEFINE_INTERFACE (GListModel, g_list_model, G_TYPE_OBJECT);
+G_DEFINE_INTERFACE (GListModel, g_list_model, G_TYPE_OBJECT)
 
 /**
  * SECTION:glistmodel

@@ -54,9 +54,7 @@
 #endif
 
 
-G_DEFINE_ABSTRACT_TYPE (GSocketControlMessage,
-                        g_socket_control_message,
-                        G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (GSocketControlMessage, g_socket_control_message, G_TYPE_OBJECT)
 
 /**
  * g_socket_control_message_get_size:

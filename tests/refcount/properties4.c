@@ -30,7 +30,7 @@ struct _MyBadgerClass
 };
 
 static GType my_badger_get_type (void);
-G_DEFINE_TYPE (MyBadger, my_badger, G_TYPE_OBJECT);
+G_DEFINE_TYPE (MyBadger, my_badger, G_TYPE_OBJECT)
 
 static void my_badger_dispose (GObject * object);
 

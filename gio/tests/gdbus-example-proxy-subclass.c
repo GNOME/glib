@@ -108,7 +108,7 @@ enum
 
 static guint signals[LAST_SIGNAL] = {0};
 
-G_DEFINE_TYPE (AccountsUser, accounts_user, G_TYPE_DBUS_PROXY);
+G_DEFINE_TYPE (AccountsUser, accounts_user, G_TYPE_DBUS_PROXY)
 
 static void
 accounts_user_finalize (GObject *object)

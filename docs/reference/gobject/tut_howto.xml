@@ -938,7 +938,7 @@ G_END_DECLS
       </para></listitem>
     </itemizedlist>
 <informalexample><programlisting>
-G_DEFINE_INTERFACE (ViewerEditable, viewer_editable, G_TYPE_OBJECT);
+G_DEFINE_INTERFACE (ViewerEditable, viewer_editable, G_TYPE_OBJECT)
 
 static void
 viewer_editable_default_init (ViewerEditableInterface *iface)
@@ -1091,7 +1091,7 @@ viewer_file_init (ViewerFile *self)
       the GObject equivalent:
 <informalexample><programlisting>
 /* Make the ViewerEditableLossy interface require ViewerEditable interface. */
-G_DEFINE_INTERFACE (ViewerEditableLossy, viewer_editable_lossy, VIEWER_TYPE_EDITABLE);
+G_DEFINE_INTERFACE (ViewerEditableLossy, viewer_editable_lossy, VIEWER_TYPE_EDITABLE)
 </programlisting></informalexample>
       In the <function><link linkend="G-DEFINE-INTERFACE:CAPS">G_DEFINE_INTERFACE</link></function>
       call above, the third parameter defines the prerequisite type. This

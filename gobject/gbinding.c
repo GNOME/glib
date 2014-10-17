@@ -193,7 +193,7 @@ enum
 
 static guint gobject_notify_signal_id;
 
-G_DEFINE_TYPE (GBinding, g_binding, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GBinding, g_binding, G_TYPE_OBJECT)
 
 /* the basic assumption is that if either the source or the target
  * goes away then the binding does not exist any more and it should

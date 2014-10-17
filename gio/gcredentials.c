@@ -113,7 +113,7 @@ struct _GCredentialsClass
   GObjectClass parent_class;
 };
 
-G_DEFINE_TYPE (GCredentials, g_credentials, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GCredentials, g_credentials, G_TYPE_OBJECT)
 
 static void
 g_credentials_finalize (GObject *object)

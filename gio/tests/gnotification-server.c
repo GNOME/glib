@@ -37,7 +37,7 @@ struct _GNotificationServer
   GHashTable *applications;
 };
 
-G_DEFINE_TYPE (GNotificationServer, g_notification_server, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GNotificationServer, g_notification_server, G_TYPE_OBJECT)
 
 enum
 {

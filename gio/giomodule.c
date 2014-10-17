@@ -96,7 +96,7 @@
  *
  *  |[<!-- language="C" -->
  *  // Implement an extension point
- *  G_DEFINE_TYPE (MyExampleImpl, my_example_impl, MY_TYPE_EXAMPLE);
+ *  G_DEFINE_TYPE (MyExampleImpl, my_example_impl, MY_TYPE_EXAMPLE)
  *  g_io_extension_point_implement ("my-extension-point",
  *                                  my_example_impl_get_type (),
  *                                  "my-example",
@@ -261,7 +261,7 @@ struct _GIOExtensionPoint {
 static GHashTable *extension_points = NULL;
 G_LOCK_DEFINE_STATIC(extension_points);
 
-G_DEFINE_TYPE (GIOModule, g_io_module, G_TYPE_TYPE_MODULE);
+G_DEFINE_TYPE (GIOModule, g_io_module, G_TYPE_TYPE_MODULE)
 
 static void
 g_io_module_class_init (GIOModuleClass *class)

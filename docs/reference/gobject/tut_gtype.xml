@@ -715,7 +715,7 @@ viewer_file_editable_interface_init (ViewerEditableInterface *iface)
 
 G_DEFINE_TYPE_WITH_CODE (ViewerFile, viewer_file, VIEWER_TYPE_FILE,
                          G_IMPLEMENT_INTERFACE (VIEWER_TYPE_EDITABLE,
-                                                viewer_file_editable_interface_init));
+                                                viewer_file_editable_interface_init))
 </programlisting></informalexample>
         </para>
 
@@ -836,7 +836,7 @@ struct _GInterfaceInfo
             <link linkend="G-DEFINE-INTERFACE:CAPS">G_DEFINE_INTERFACE</link>
             which can be used to define the interface:
 <informalexample><programlisting>
-G_DEFINE_INTERFACE (ViewerEditable, viewer_editable, G_TYPE_OBJECT);
+G_DEFINE_INTERFACE (ViewerEditable, viewer_editable, G_TYPE_OBJECT)
 
 static void
 viewer_editable_default_init (ViewerEditableInterface *iface)

@@ -170,7 +170,7 @@ typedef struct {
 typedef GMenuModelClass RandomMenuClass;
 
 static GType random_menu_get_type (void);
-G_DEFINE_TYPE (RandomMenu, random_menu, G_TYPE_MENU_MODEL);
+G_DEFINE_TYPE (RandomMenu, random_menu, G_TYPE_MENU_MODEL)
 
 static gboolean
 random_menu_is_mutable (GMenuModel *model)
@@ -346,7 +346,7 @@ typedef struct {
 typedef GMenuModelClass MirrorMenuClass;
 
 static GType mirror_menu_get_type (void);
-G_DEFINE_TYPE (MirrorMenu, mirror_menu, G_TYPE_MENU_MODEL);
+G_DEFINE_TYPE (MirrorMenu, mirror_menu, G_TYPE_MENU_MODEL)
 
 static gboolean
 mirror_menu_is_mutable (GMenuModel *model)

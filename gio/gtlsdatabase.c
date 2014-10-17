@@ -89,7 +89,7 @@
  * Since: 2.30
  */
 
-G_DEFINE_ABSTRACT_TYPE (GTlsDatabase, g_tls_database, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (GTlsDatabase, g_tls_database, G_TYPE_OBJECT)
 
 enum {
   UNLOCK_REQUIRED,

@@ -68,7 +68,7 @@ struct _GFilenameCompleter {
   LoadBasenamesData *basename_loader;
 };
 
-G_DEFINE_TYPE (GFilenameCompleter, g_filename_completer, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GFilenameCompleter, g_filename_completer, G_TYPE_OBJECT)
 
 static void cancel_load_basenames (GFilenameCompleter *completer);
 

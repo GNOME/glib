@@ -68,7 +68,7 @@
  * Since: 2.48
  */
 
-G_DEFINE_INTERFACE (GDtlsConnection, g_dtls_connection, G_TYPE_DATAGRAM_BASED);
+G_DEFINE_INTERFACE (GDtlsConnection, g_dtls_connection, G_TYPE_DATAGRAM_BASED)
 
 enum {
   ACCEPT_CERTIFICATE,

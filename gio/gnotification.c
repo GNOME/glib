@@ -86,7 +86,7 @@ typedef struct
   GVariant *target;
 } Button;
 
-G_DEFINE_TYPE (GNotification, g_notification, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GNotification, g_notification, G_TYPE_OBJECT)
 
 static void
 button_free (gpointer data)

@@ -45,7 +45,7 @@ struct _GWinHttpFileInputStreamClass
 };
 
 #define g_winhttp_file_input_stream_get_type _g_winhttp_file_input_stream_get_type
-G_DEFINE_TYPE (GWinHttpFileInputStream, g_winhttp_file_input_stream, G_TYPE_FILE_INPUT_STREAM);
+G_DEFINE_TYPE (GWinHttpFileInputStream, g_winhttp_file_input_stream, G_TYPE_FILE_INPUT_STREAM)
 
 static gssize g_winhttp_file_input_stream_read (GInputStream    *stream,
                                                 void            *buffer,

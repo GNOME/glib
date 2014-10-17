@@ -56,7 +56,7 @@ struct _TestObjectClass
   GObjectClass parent_class;
 };
 
-G_DEFINE_TYPE (TestObject, test_object, G_TYPE_OBJECT);
+G_DEFINE_TYPE (TestObject, test_object, G_TYPE_OBJECT)
 
 static void
 test_object_finalize (GObject *object)

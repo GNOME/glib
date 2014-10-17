@@ -23,7 +23,7 @@
 #include "gtask.h"
 
 
-G_DEFINE_ABSTRACT_TYPE (GSocketAddressEnumerator, g_socket_address_enumerator, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (GSocketAddressEnumerator, g_socket_address_enumerator, G_TYPE_OBJECT)
 
 static void            g_socket_address_enumerator_real_next_async  (GSocketAddressEnumerator  *enumerator,
 								     GCancellable              *cancellable,

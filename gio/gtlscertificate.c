@@ -50,7 +50,7 @@
  * Since: 2.28
  */
 
-G_DEFINE_ABSTRACT_TYPE (GTlsCertificate, g_tls_certificate, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (GTlsCertificate, g_tls_certificate, G_TYPE_OBJECT)
 
 enum
 {

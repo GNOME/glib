@@ -28,7 +28,7 @@ enum
 };
 
 static GType binding_source_get_type (void);
-G_DEFINE_TYPE (BindingSource, binding_source, G_TYPE_OBJECT);
+G_DEFINE_TYPE (BindingSource, binding_source, G_TYPE_OBJECT)
 
 static void
 binding_source_set_property (GObject      *gobject,
@@ -150,7 +150,7 @@ enum
 };
 
 static GType binding_target_get_type (void);
-G_DEFINE_TYPE (BindingTarget, binding_target, G_TYPE_OBJECT);
+G_DEFINE_TYPE (BindingTarget, binding_target, G_TYPE_OBJECT)
 
 static void
 binding_target_set_property (GObject      *gobject,

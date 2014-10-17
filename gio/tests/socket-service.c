@@ -105,7 +105,7 @@ GType test_threaded_socket_service_get_type (void);
 typedef GThreadedSocketService TestThreadedSocketService;
 typedef GThreadedSocketServiceClass TestThreadedSocketServiceClass;
 
-G_DEFINE_TYPE (TestThreadedSocketService, test_threaded_socket_service, G_TYPE_THREADED_SOCKET_SERVICE);
+G_DEFINE_TYPE (TestThreadedSocketService, test_threaded_socket_service, G_TYPE_THREADED_SOCKET_SERVICE)
 
 static void
 test_threaded_socket_service_init (TestThreadedSocketService *service)

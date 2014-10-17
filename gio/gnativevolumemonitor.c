@@ -26,7 +26,7 @@
 #include "gnativevolumemonitor.h"
 
 
-G_DEFINE_ABSTRACT_TYPE (GNativeVolumeMonitor, g_native_volume_monitor, G_TYPE_VOLUME_MONITOR);
+G_DEFINE_ABSTRACT_TYPE (GNativeVolumeMonitor, g_native_volume_monitor, G_TYPE_VOLUME_MONITOR)
 
 static void
 g_native_volume_monitor_finalize (GObject *object)

@@ -83,7 +83,7 @@ struct _GFileInfoClass
 };
 
 
-G_DEFINE_TYPE (GFileInfo, g_file_info, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GFileInfo, g_file_info, G_TYPE_OBJECT)
 
 typedef struct {
   guint32 id;

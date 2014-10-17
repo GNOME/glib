@@ -54,7 +54,7 @@
 
 typedef GObjectClass GSubprocessLauncherClass;
 
-G_DEFINE_TYPE (GSubprocessLauncher, g_subprocess_launcher, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GSubprocessLauncher, g_subprocess_launcher, G_TYPE_OBJECT)
 
 static gboolean
 verify_disposition (const gchar      *stream_name,

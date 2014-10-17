@@ -44,7 +44,7 @@ struct _GWinHttpFileOutputStreamClass
 };
 
 #define g_winhttp_file_output_stream_get_type _g_winhttp_file_output_stream_get_type
-G_DEFINE_TYPE (GWinHttpFileOutputStream, g_winhttp_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM);
+G_DEFINE_TYPE (GWinHttpFileOutputStream, g_winhttp_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM)
 
 static gssize     g_winhttp_file_output_stream_write      (GOutputStream     *stream,
                                                            const void        *buffer,

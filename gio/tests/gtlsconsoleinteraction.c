@@ -36,7 +36,7 @@
  * functions like getpass() and does lazy things with threads.
  */
 
-G_DEFINE_TYPE (GTlsConsoleInteraction, g_tls_console_interaction, G_TYPE_TLS_INTERACTION);
+G_DEFINE_TYPE (GTlsConsoleInteraction, g_tls_console_interaction, G_TYPE_TLS_INTERACTION)
 
 #if defined(G_OS_WIN32) || defined(__BIONIC__)
 /* win32 doesn't have getpass() */

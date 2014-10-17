@@ -154,8 +154,7 @@ static guint _signals[LAST_SIGNAL] = {0};
 static void initable_iface_init       (GInitableIface *initable_iface);
 
 G_DEFINE_TYPE_WITH_CODE (GDBusServer, g_dbus_server, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init)
-                         );
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init))
 
 static void
 g_dbus_server_finalize (GObject *object)

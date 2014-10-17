@@ -130,7 +130,7 @@ struct _DynamicObjectClass
 };
 
 static GType dynamic_object_get_type (void);
-G_DEFINE_DYNAMIC_TYPE(DynamicObject, dynamic_object, G_TYPE_OBJECT);
+G_DEFINE_DYNAMIC_TYPE(DynamicObject, dynamic_object, G_TYPE_OBJECT)
 
 static void
 dynamic_object_class_init (DynamicObjectClass *class)

@@ -76,7 +76,7 @@ struct _GLocalFileEnumerator
 };
 
 #define g_local_file_enumerator_get_type _g_local_file_enumerator_get_type
-G_DEFINE_TYPE (GLocalFileEnumerator, g_local_file_enumerator, G_TYPE_FILE_ENUMERATOR);
+G_DEFINE_TYPE (GLocalFileEnumerator, g_local_file_enumerator, G_TYPE_FILE_ENUMERATOR)
 
 static GFileInfo *g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
 						     GCancellable     *cancellable,

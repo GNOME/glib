@@ -1557,7 +1557,7 @@ struct _GUnixMountMonitorClass {
 };
 
 
-G_DEFINE_TYPE (GUnixMountMonitor, g_unix_mount_monitor, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GUnixMountMonitor, g_unix_mount_monitor, G_TYPE_OBJECT)
 
 static GContextSpecificGroup  mount_monitor_group;
 static GFileMonitor          *fstab_monitor;

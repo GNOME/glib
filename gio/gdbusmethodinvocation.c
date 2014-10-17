@@ -92,7 +92,7 @@ struct _GDBusMethodInvocation
   gpointer         user_data;
 };
 
-G_DEFINE_TYPE (GDBusMethodInvocation, g_dbus_method_invocation, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GDBusMethodInvocation, g_dbus_method_invocation, G_TYPE_OBJECT)
 
 static void
 g_dbus_method_invocation_finalize (GObject *object)

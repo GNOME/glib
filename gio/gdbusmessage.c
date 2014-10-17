@@ -474,7 +474,7 @@ enum
   PROP_LOCKED
 };
 
-G_DEFINE_TYPE (GDBusMessage, g_dbus_message, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GDBusMessage, g_dbus_message, G_TYPE_OBJECT)
 
 static void
 g_dbus_message_finalize (GObject *object)

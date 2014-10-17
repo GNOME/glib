@@ -35,8 +35,8 @@ typedef GFilterInputStreamClass  TestFilterInputStreamClass;
 typedef GFilterOutputStream      TestFilterOutputStream;
 typedef GFilterOutputStreamClass TestFilterOutputStreamClass;
 
-G_DEFINE_TYPE (TestFilterInputStream, test_filter_input_stream, G_TYPE_FILTER_INPUT_STREAM);
-G_DEFINE_TYPE (TestFilterOutputStream, test_filter_output_stream, G_TYPE_FILTER_OUTPUT_STREAM);
+G_DEFINE_TYPE (TestFilterInputStream, test_filter_input_stream, G_TYPE_FILTER_INPUT_STREAM)
+G_DEFINE_TYPE (TestFilterOutputStream, test_filter_output_stream, G_TYPE_FILTER_OUTPUT_STREAM)
 
 static void
 test_filter_input_stream_init (TestFilterInputStream *stream)

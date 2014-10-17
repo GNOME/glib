@@ -45,7 +45,7 @@
  * thread-default-context active.
  **/
 
-G_DEFINE_TYPE (GVolumeMonitor, g_volume_monitor, G_TYPE_OBJECT);
+G_DEFINE_TYPE (GVolumeMonitor, g_volume_monitor, G_TYPE_OBJECT)
 
 enum {
   VOLUME_ADDED,

@@ -54,7 +54,7 @@ typedef struct {
   GDestroyNotify parse_name_destroy;
 } GVfsURISchemeData;
 
-G_DEFINE_TYPE_WITH_PRIVATE (GVfs, g_vfs, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_PRIVATE (GVfs, g_vfs, G_TYPE_OBJECT)
 
 static void
 g_vfs_dispose (GObject *object)
