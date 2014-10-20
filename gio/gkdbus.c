@@ -177,7 +177,7 @@ g_kdbus_init (GKdbus  *kdbus)
 
   kdbus->priv->kdbus_buffer = NULL;
 
-  kdbus->priv->hello_flags = 0; /* KDBUS_HELLO_ACCEPT_FD | KDBUS_HELLO_ACCEPT_MEMFD */
+  kdbus->priv->hello_flags = 0; /* KDBUS_HELLO_ACCEPT_FD */
   kdbus->priv->attach_flags = KDBUS_ATTACH_NAMES;
 }
 
@@ -565,7 +565,7 @@ _g_kdbus_Hello (GIOStream  *stream,
       return NULL;
     }
 
-  if (hello->bus_flags > 0xFFFFFFFFULL || hello->conn_flags > 0xFFFFFFFFULL)
+  if (hello->bus_flags > 0xFFFFFFFFULL)
     {
       g_set_error_literal (error,
                            G_IO_ERROR,
