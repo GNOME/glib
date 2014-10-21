@@ -241,6 +241,7 @@ test_programs += \
 	gdbus-peer-object-manager		\
 	live-g-file				\
 	socket-address				\
+	stream-rw_all				\
 	unix-fd					\
 	unix-streams				\
 	$(NULL)
