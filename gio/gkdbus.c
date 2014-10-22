@@ -78,6 +78,23 @@ typedef enum
   G_BUS_CREDS_SELINUX_CONTEXT  = 4
 } GBusCredentialsFlags;
 
+/* GBusNameOwnerReturnFlags */
+typedef enum
+{
+  G_BUS_REQUEST_NAME_REPLY_PRIMARY_OWNER = 1, /* Caller is now the primary owner of the name, replacing any previous owner */
+  G_BUS_REQUEST_NAME_REPLY_IN_QUEUE = 2,      /* The name already had an owner, the application will be placed in a queue */
+  G_BUS_REQUEST_NAME_REPLY_EXISTS = 3,        /* The name already has an owner */
+  G_BUS_REQUEST_NAME_REPLY_ALREADY_OWNER = 4  /* The application trying to request ownership of a name is already the owner of it */
+} GBusNameOwnerReturnFlags;
+
+/* GBusReleaseNameReturnFlags */
+typedef enum
+{
+  G_BUS_RELEASE_NAME_REPLY_RELEASED = 1,     /* The caller has released his claim on the given name */
+  G_BUS_RELEASE_NAME_REPLY_NON_EXISTENT = 2, /* The given name does not exist on this bus*/
+  G_BUS_RELEASE_NAME_REPLY_NOT_OWNER = 3     /* The caller not waiting in the queue to own this name*/
+} GBusReleaseNameReturnFlags;
+
 /* GKdbusPrivate struct */
 struct _GKdbusPrivate
 {
@@ -437,7 +454,7 @@ _g_kdbus_open (GKdbus       *kdbus,
 
 
 /**
- * _g_kdbus_free_data:
+ * g_kdbus_free_data:
  *
  */
 static gboolean
@@ -455,6 +472,31 @@ g_kdbus_free_data (GKdbus      *kdbus,
       return FALSE;
 
   return TRUE;
+}
+
+
+/**
+ * g_kdbus_translate_nameowner_flags:
+ *
+ */
+static void
+g_kdbus_translate_nameowner_flags (GBusNameOwnerFlags   flags,
+                                   guint64             *kdbus_flags)
+{
+  guint64 new_flags;
+
+  new_flags = 0;
+
+  if (flags & G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT)
+    new_flags |= KDBUS_NAME_ALLOW_REPLACEMENT;
+
+  if (flags & G_BUS_NAME_OWNER_FLAGS_REPLACE)
+    new_flags |= KDBUS_NAME_REPLACE_EXISTING;
+
+  if (!(flags & G_BUS_NAME_OWNER_FLAGS_DO_NOT_QUEUE))
+    new_flags |= KDBUS_NAME_QUEUE;
+
+  *kdbus_flags = new_flags;
 }
 
 
@@ -580,6 +622,83 @@ _g_kdbus_Hello (GIOStream  *stream,
   asprintf(&kdbus->priv->unique_name, ":1.%llu", (unsigned long long) hello->id);
 
   return g_variant_new ("(s)", kdbus->priv->unique_name);
+}
+
+
+/*
+ * _g_kdbus_RequestName:
+ *
+ */
+GVariant *
+_g_kdbus_RequestName (GDBusConnection     *connection,
+                      const gchar         *name,
+                      GBusNameOwnerFlags   flags,
+                      GError             **error)
+{
+  GKdbus *kdbus;
+  GVariant *result;
+  struct kdbus_cmd_name *kdbus_name;
+  guint64 kdbus_flags;
+  gssize len, size;
+  gint status, ret;
+
+  status = G_BUS_REQUEST_NAME_REPLY_PRIMARY_OWNER;
+
+  kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
+  if (kdbus == NULL)
+    {
+      g_set_error_literal (error,
+                           G_DBUS_ERROR,
+                           G_DBUS_ERROR_IO_ERROR,
+                           _("The connection is closed"));
+      return NULL;
+    }
+
+  if (!g_dbus_is_name (name))
+    {
+      g_set_error (error,
+                   G_DBUS_ERROR,
+                   G_DBUS_ERROR_INVALID_ARGS,
+                   "Given bus name \"%s\" is not valid", name);
+      return NULL;
+    }
+
+  if (*name == ':')
+    {
+      g_set_error (error,
+                   G_DBUS_ERROR,
+                   G_DBUS_ERROR_INVALID_ARGS,
+                   "Cannot acquire a service starting with ':' such as \"%s\"", name);
+      return NULL;
+    }
+
+  g_kdbus_translate_nameowner_flags (flags, &kdbus_flags);
+
+  len = strlen(name) + 1;
+  size = G_STRUCT_OFFSET (struct kdbus_cmd_name, items) + KDBUS_ITEM_SIZE(len);
+  kdbus_name = g_alloca0 (size);
+  kdbus_name->items[0].size = KDBUS_ITEM_HEADER_SIZE + len;
+  kdbus_name->items[0].type = KDBUS_ITEM_NAME;
+  kdbus_name->flags = kdbus_flags;
+  memcpy (kdbus_name->items[0].str, name, len);
+
+  ret = ioctl(kdbus->priv->fd, KDBUS_CMD_NAME_ACQUIRE, kdbus_name);
+  if (ret < 0)
+    {
+      if (errno == EEXIST)
+        status = G_BUS_REQUEST_NAME_REPLY_EXISTS;
+      else if (errno == EALREADY)
+        status = G_BUS_REQUEST_NAME_REPLY_ALREADY_OWNER;
+      else
+        return FALSE;
+    }
+
+  if (kdbus_name->flags & KDBUS_NAME_IN_QUEUE)
+    status = G_BUS_REQUEST_NAME_REPLY_IN_QUEUE;
+
+  result = g_variant_new ("(u)", status);
+
+  return result;
 }
 
 

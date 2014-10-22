@@ -76,6 +76,11 @@ GVariant *                              _g_kdbus_Hello                      (GIO
 GVariant *                              _g_kdbus_GetBusId                   (GDBusConnection  *connection,
                                                                              GError          **error);
 
+GVariant *                              _g_kdbus_RequestName                (GDBusConnection     *connection,
+                                                                             const gchar         *name,
+                                                                             GBusNameOwnerFlags   flags,
+                                                                             GError             **error);
+
 GVariant *                              _g_kdbus_GetListNames               (GDBusConnection  *connection,
                                                                              guint             flags,
                                                                              GError          **error);
