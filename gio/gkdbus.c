@@ -702,6 +702,75 @@ _g_kdbus_RequestName (GDBusConnection     *connection,
 }
 
 
+/*
+ * _g_kdbus_ReleaseName:
+ *
+ */
+GVariant *
+_g_kdbus_ReleaseName (GDBusConnection     *connection,
+                      const gchar         *name,
+                      GError             **error)
+{
+  GKdbus *kdbus;
+  GVariant *result;
+  struct kdbus_cmd_name *kdbus_name;
+  gssize len, size;
+  gint status, ret;
+
+  status = G_BUS_RELEASE_NAME_REPLY_RELEASED;
+
+  kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
+  if (kdbus == NULL)
+    {
+      g_set_error_literal (error,
+                           G_DBUS_ERROR,
+                           G_DBUS_ERROR_IO_ERROR,
+                           _("The connection is closed"));
+      return NULL;
+    }
+
+  if (!g_dbus_is_name (name))
+    {
+      g_set_error (error,
+                   G_DBUS_ERROR,
+                   G_DBUS_ERROR_INVALID_ARGS,
+                   "Given bus name \"%s\" is not valid", name);
+      return NULL;
+    }
+
+  if (*name == ':')
+    {
+      g_set_error (error,
+                   G_DBUS_ERROR,
+                   G_DBUS_ERROR_INVALID_ARGS,
+                   "Cannot release a service starting with ':' such as \"%s\"", name);
+      return NULL;
+    }
+
+  len = strlen(name) + 1;
+  size = G_STRUCT_OFFSET (struct kdbus_cmd_name, items) + KDBUS_ITEM_SIZE(len);
+  kdbus_name = g_alloca0 (size);
+  kdbus_name->items[0].size = KDBUS_ITEM_HEADER_SIZE + len;
+  kdbus_name->items[0].type = KDBUS_ITEM_NAME;
+  memcpy (kdbus_name->items[0].str, name, len);
+
+  ret = ioctl(kdbus->priv->fd, KDBUS_CMD_NAME_RELEASE, kdbus_name);
+  if (ret < 0)
+    {
+      if (errno == ESRCH)
+        status = G_BUS_RELEASE_NAME_REPLY_NON_EXISTENT;
+      else if (errno == EADDRINUSE)
+        status = G_BUS_RELEASE_NAME_REPLY_NOT_OWNER;
+      else
+        return FALSE;
+    }
+
+  result = g_variant_new ("(u)", status);
+
+  return result;
+}
+
+
 /**
  * _g_kdbus_GetBusId:
  *

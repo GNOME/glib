@@ -81,6 +81,10 @@ GVariant *                              _g_kdbus_RequestName                (GDB
                                                                              GBusNameOwnerFlags   flags,
                                                                              GError             **error);
 
+GVariant *                              _g_kdbus_ReleaseName                (GDBusConnection     *connection,
+                                                                             const gchar         *name,
+                                                                             GError             **error);
+
 GVariant *                              _g_kdbus_GetListNames               (GDBusConnection  *connection,
                                                                              guint             flags,
                                                                              GError          **error);
