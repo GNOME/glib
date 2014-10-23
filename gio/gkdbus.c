@@ -101,6 +101,8 @@ struct _GKdbusPrivate
   gint               fd;
 
   gchar             *kdbus_buffer;
+  struct kdbus_msg  *kmsg;
+
   gchar             *unique_name;
   guint64            unique_id;
 
@@ -1247,4 +1249,45 @@ _g_kdbus_GetConnectionUnixUser (GDBusConnection  *connection,
                                        name,
                                        G_BUS_CREDS_UID,
                                        error);
+}
+
+
+/**
+ * _g_kdbus_receive:
+ *
+ */
+gssize
+_g_kdbus_receive (GKdbus        *kdbus,
+                  GCancellable  *cancellable,
+                  GError       **error)
+{
+  struct kdbus_cmd_recv recv = {};
+  gssize size = 0;
+
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+   return -1;
+
+  again:
+    if (ioctl(kdbus->priv->fd, KDBUS_CMD_MSG_RECV, &recv) < 0)
+     {
+        if (errno == EINTR || errno == EAGAIN)
+         goto again;
+
+       g_set_error (error, G_IO_ERROR, g_io_error_from_errno(errno),_("Error receiving message - KDBUS_CMD_MSG_RECV error"));
+       return -1;
+     }
+
+   kdbus->priv->kmsg = (struct kdbus_msg *)((guint8 *)kdbus->priv->kdbus_buffer + recv.offset);
+
+   if (kdbus->priv->kmsg->payload_type == KDBUS_PAYLOAD_DBUS)
+     //size = g_kdbus_decode_dbus_msg (kdbus);
+     g_print ("Standard message\n");
+   else if (kdbus->priv->kmsg->payload_type == KDBUS_PAYLOAD_KERNEL)
+     //size = g_kdbus_decode_kernel_msg (kdbus);
+     g_print ("Message from kernel\n");
+   else
+     //g_set_error
+     g_error ("Unknown payload type: %llu", kdbus->priv->kmsg->payload_type);
+
+   return size;
 }

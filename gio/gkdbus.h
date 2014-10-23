@@ -108,6 +108,11 @@ GVariant *                              _g_kdbus_GetConnectionUnixProcessID (GDB
 GVariant *                              _g_kdbus_GetConnectionUnixUser      (GDBusConnection  *connection,
                                                                              const gchar      *name,
                                                                              GError          **error);
+
+gssize                                  _g_kdbus_receive                    (GKdbus           *kdbus,
+                                                                             GCancellable     *cancellable,
+                                                                             GError          **error);
+
 G_END_DECLS
 
 #endif /* __G_KDBUS_H__ */
