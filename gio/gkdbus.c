@@ -1253,6 +1253,58 @@ _g_kdbus_GetConnectionUnixUser (GDBusConnection  *connection,
 
 
 /**
+* g_kdbus_decode_kernel_msg:
+*
+*/
+static gssize
+g_kdbus_decode_kernel_msg (GKdbus  *kdbus)
+{
+  struct kdbus_item *item = NULL;
+  gssize size = 0;
+
+  KDBUS_ITEM_FOREACH(item, kdbus->priv->kmsg, items)
+    {
+     switch (item->type)
+        {
+          case KDBUS_ITEM_ID_ADD:
+          case KDBUS_ITEM_ID_REMOVE:
+          case KDBUS_ITEM_NAME_ADD:
+          case KDBUS_ITEM_NAME_REMOVE:
+          case KDBUS_ITEM_NAME_CHANGE:
+            //size = g_kdbus_NameOwnerChanged_generate (kdbus, item);
+            g_error ("'NameOwnerChanged'");
+            break;
+
+          case KDBUS_ITEM_REPLY_TIMEOUT:
+          case KDBUS_ITEM_REPLY_DEAD:
+            //size = g_kdbus_KernelMethodError_generate (kdbus, item);
+            g_error ("'KernelMethodError'");
+            break;
+
+          default:
+            g_warning ("Unknown field in kernel message - %lld", item->type);
+       }
+    }
+
+#if 0
+  /* Override information from the user header with data from the kernel */
+  g_string_printf (kdbus->priv->msg_sender, "org.freedesktop.DBus");
+
+  /* for destination */
+  if (kdbus->priv->kmsg->dst_id == KDBUS_DST_ID_BROADCAST)
+    /* for broadcast messages we don't have to set destination */
+    ;
+  else if (kdbus->priv->kmsg->dst_id == KDBUS_DST_ID_NAME)
+    g_string_printf (kdbus->priv->msg_destination, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->unique_id);
+  else
+   g_string_printf (kdbus->priv->msg_destination, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->kmsg->dst_id);
+#endif
+
+  return size;
+}
+
+
+/**
  * _g_kdbus_receive:
  *
  */
@@ -1265,29 +1317,35 @@ _g_kdbus_receive (GKdbus        *kdbus,
   gssize size = 0;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
-   return -1;
+    return -1;
 
-  again:
+again:
     if (ioctl(kdbus->priv->fd, KDBUS_CMD_MSG_RECV, &recv) < 0)
-     {
+      {
         if (errno == EINTR || errno == EAGAIN)
-         goto again;
+          goto again;
 
-       g_set_error (error, G_IO_ERROR, g_io_error_from_errno(errno),_("Error receiving message - KDBUS_CMD_MSG_RECV error"));
-       return -1;
-     }
+        g_set_error (error, G_IO_ERROR,
+                     g_io_error_from_errno (errno),
+                     _("Error while receiving message: %s"),
+                     g_strerror (errno));
+        return -1;
+      }
 
    kdbus->priv->kmsg = (struct kdbus_msg *)((guint8 *)kdbus->priv->kdbus_buffer + recv.offset);
 
    if (kdbus->priv->kmsg->payload_type == KDBUS_PAYLOAD_DBUS)
-     //size = g_kdbus_decode_dbus_msg (kdbus);
-     g_print ("Standard message\n");
+     g_error ("Received standard dbus message - not supported yet");
    else if (kdbus->priv->kmsg->payload_type == KDBUS_PAYLOAD_KERNEL)
-     //size = g_kdbus_decode_kernel_msg (kdbus);
-     g_print ("Message from kernel\n");
+     size = g_kdbus_decode_kernel_msg (kdbus);
    else
-     //g_set_error
-     g_error ("Unknown payload type: %llu", kdbus->priv->kmsg->payload_type);
+     {
+       g_set_error (error,
+                    G_DBUS_ERROR,
+                    G_DBUS_ERROR_FAILED,
+                    _("Received unknown payload type"));
+       return -1;
+     }
 
    return size;
 }
