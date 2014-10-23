@@ -1010,7 +1010,7 @@ _g_dbus_worker_do_initial_read (gpointer data)
 {
   GDBusWorker *worker = data;
   g_mutex_lock (&worker->read_lock);
-  //_g_dbus_worker_do_read_unlocked (worker); TEMPORARY HACK!
+  _g_dbus_worker_do_read_unlocked (worker);
   g_mutex_unlock (&worker->read_lock);
   return FALSE;
 }
