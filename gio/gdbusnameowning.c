@@ -28,6 +28,10 @@
 #include "gdbusprivate.h"
 #include "gdbusconnection.h"
 
+#ifdef G_OS_UNIX
+#include "gkdbusconnection.h"
+#endif
+
 #include "glibintl.h"
 
 /**
@@ -296,27 +300,10 @@ on_name_lost_or_acquired (GDBusConnection  *connection,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-request_name_cb (GObject      *source_object,
-                 GAsyncResult *res,
-                 gpointer      user_data)
+process_request_name_reply (Client  *client,
+                            guint32  request_name_reply)
 {
-  Client *client = user_data;
-  GVariant *result;
-  guint32 request_name_reply;
   gboolean subscribe;
-
-  request_name_reply = 0;
-  result = NULL;
-
-  /* don't use client->connection - it may be NULL already */
-  result = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object),
-                                          res,
-                                          NULL);
-  if (result != NULL)
-    {
-      g_variant_get (result, "(u)", &request_name_reply);
-      g_variant_unref (result);
-    }
 
   subscribe = FALSE;
 
@@ -387,6 +374,33 @@ request_name_cb (GObject      *source_object,
           g_object_unref (connection);
         }
     }
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static void
+request_name_cb (GObject      *source_object,
+                 GAsyncResult *res,
+                 gpointer      user_data)
+{
+  Client *client = user_data;
+  GVariant *result;
+  guint32 request_name_reply;
+
+  request_name_reply = 0;
+  result = NULL;
+
+  /* don't use client->connection - it may be NULL already */
+  result = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object),
+                                          res,
+                                          NULL);
+  if (result != NULL)
+    {
+      g_variant_get (result, "(u)", &request_name_reply);
+      g_variant_unref (result);
+    }
+
+  process_request_name_reply (client, request_name_reply);
 
   client_unref (client);
 }
@@ -428,20 +442,41 @@ has_connection (Client *client)
                                                              client);
 
   /* attempt to acquire the name */
-  g_dbus_connection_call (client->connection,
-                          "org.freedesktop.DBus",  /* bus name */
-                          "/org/freedesktop/DBus", /* object path */
-                          "org.freedesktop.DBus",  /* interface name */
-                          "RequestName",           /* method name */
-                          g_variant_new ("(su)",
-                                         client->name,
-                                         client->flags),
-                          G_VARIANT_TYPE ("(u)"),
-                          G_DBUS_CALL_FLAGS_NONE,
-                          -1,
-                          NULL,
-                          (GAsyncReadyCallback) request_name_cb,
-                          client_ref (client));
+  if (G_IS_KDBUS_CONNECTION (g_dbus_connection_get_stream (client->connection)))
+    {
+      GVariant *result;
+      guint32 request_name_reply;
+
+      request_name_reply = 0;
+      result = NULL;
+
+      result = _g_kdbus_RequestName (client->connection, client->name, client->flags, NULL);
+
+      if (result != NULL)
+        {
+          g_variant_get (result, "(u)", &request_name_reply);
+          g_variant_unref (result);
+        }
+
+      process_request_name_reply (client, request_name_reply);
+    }
+  else
+    {
+      g_dbus_connection_call (client->connection,
+                              "org.freedesktop.DBus",  /* bus name */
+                              "/org/freedesktop/DBus", /* object path */
+                              "org.freedesktop.DBus",  /* interface name */
+                              "RequestName",           /* method name */
+                              g_variant_new ("(su)",
+                                             client->name,
+                                             client->flags),
+                              G_VARIANT_TYPE ("(u)"),
+                              G_DBUS_CALL_FLAGS_NONE,
+                              -1,
+                              NULL,
+                              (GAsyncReadyCallback) request_name_cb,
+                              client_ref (client));
+    }
 }
 
 
@@ -913,17 +948,20 @@ g_bus_unown_name (guint owner_id)
            * I believe this is a bug in the bus daemon.
            */
           error = NULL;
-          result = g_dbus_connection_call_sync (client->connection,
-                                                "org.freedesktop.DBus",  /* bus name */
-                                                "/org/freedesktop/DBus", /* object path */
-                                                "org.freedesktop.DBus",  /* interface name */
-                                                "ReleaseName",           /* method name */
-                                                g_variant_new ("(s)", client->name),
-                                                G_VARIANT_TYPE ("(u)"),
-                                                G_DBUS_CALL_FLAGS_NONE,
-                                                -1,
-                                                NULL,
-                                                &error);
+          if (G_IS_KDBUS_CONNECTION (g_dbus_connection_get_stream (client->connection)))
+            result = _g_kdbus_ReleaseName (client->connection, client->name, &error);
+          else
+            result = g_dbus_connection_call_sync (client->connection,
+                                                  "org.freedesktop.DBus",  /* bus name */
+                                                  "/org/freedesktop/DBus", /* object path */
+                                                  "org.freedesktop.DBus",  /* interface name */
+                                                  "ReleaseName",           /* method name */
+                                                  g_variant_new ("(s)", client->name),
+                                                  G_VARIANT_TYPE ("(u)"),
+                                                  G_DBUS_CALL_FLAGS_NONE,
+                                                  -1,
+                                                  NULL,
+                                                  &error);
           if (result == NULL)
             {
               g_warning ("Error releasing name %s: %s", client->name, error->message);

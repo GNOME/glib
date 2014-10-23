@@ -677,6 +677,7 @@ _g_kdbus_RequestName (GDBusConnection     *connection,
   len = strlen(name) + 1;
   size = G_STRUCT_OFFSET (struct kdbus_cmd_name, items) + KDBUS_ITEM_SIZE(len);
   kdbus_name = g_alloca0 (size);
+  kdbus_name->size = size;
   kdbus_name->items[0].size = KDBUS_ITEM_HEADER_SIZE + len;
   kdbus_name->items[0].type = KDBUS_ITEM_NAME;
   kdbus_name->flags = kdbus_flags;
@@ -690,7 +691,13 @@ _g_kdbus_RequestName (GDBusConnection     *connection,
       else if (errno == EALREADY)
         status = G_BUS_REQUEST_NAME_REPLY_ALREADY_OWNER;
       else
-        return FALSE;
+        {
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errno),
+                       _("Error while acquiring name: %s"),
+                       g_strerror (errno));
+          return NULL;
+        }
     }
 
   if (kdbus_name->flags & KDBUS_NAME_IN_QUEUE)
@@ -750,6 +757,7 @@ _g_kdbus_ReleaseName (GDBusConnection     *connection,
   len = strlen(name) + 1;
   size = G_STRUCT_OFFSET (struct kdbus_cmd_name, items) + KDBUS_ITEM_SIZE(len);
   kdbus_name = g_alloca0 (size);
+  kdbus_name->size = size;
   kdbus_name->items[0].size = KDBUS_ITEM_HEADER_SIZE + len;
   kdbus_name->items[0].type = KDBUS_ITEM_NAME;
   memcpy (kdbus_name->items[0].str, name, len);
@@ -762,7 +770,13 @@ _g_kdbus_ReleaseName (GDBusConnection     *connection,
       else if (errno == EADDRINUSE)
         status = G_BUS_RELEASE_NAME_REPLY_NOT_OWNER;
       else
-        return FALSE;
+        {
+          g_set_error (error, G_IO_ERROR,
+                       g_io_error_from_errno (errno),
+                       _("Error while releasing name: %s"),
+                       g_strerror (errno));
+          return NULL;
+        }
     }
 
   result = g_variant_new ("(u)", status);
