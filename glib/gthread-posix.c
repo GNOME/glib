@@ -1159,7 +1159,9 @@ g_system_thread_new (GThreadFunc   thread_func,
   if (stack_size)
     {
 #ifdef _SC_THREAD_STACK_MIN
-      stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), stack_size);
+      long min_stack_size = sysconf (_SC_THREAD_STACK_MIN);
+      if (min_stack_size >= 0)
+        stack_size = MAX (min_stack_size, stack_size);
 #endif /* _SC_THREAD_STACK_MIN */
       /* No error check here, because some systems can't do it and
        * we simply don't want threads to fail because of that. */
