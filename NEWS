@@ -1,3 +1,43 @@
+Overview of changes in GLib 2.43.0
+==================================
+
+* GObject gained a debug option to provide instance counts. To use it,
+  set GOBJECT_DEBUG=instance-count and call g_type_get_instance_count().
+
+* GOption now has a strict POSIX mode in which it stops parsing arguments
+  as soon as a non-option argument is encountered.
+
+* Bugs fixed:
+ 354457 Feature Proposal: Per-Type Statistics for Instantiable GTypes
+ 695082 g_hash_table_remove_all is not save against a call to g_hash_table_remove
+ 723160 GOption: add strict posix mode
+ 728256 gcredentials: add NetBSD support
+ 729739 tlscertificate: add support for loading certificate chains
+ 733338 Don't segfault in GNetworkMonitor when IPv6 support is unavailable
+ 736273 gdesktopappinfo: Use symbolic names in the code
+ 736284 Keep only one list of signal emissions
+ 736806 gtask: Fix reference count loop causing leaks
+ 736914 Docs: various fixes and improvements
+ 737143 Include <stdint.h> in glib/valgrind.h
+ 737259 gcancellable: Clarify that GSources hold references to GCancellables
+ 737338 gmain: Unref child sources when finalising a GSource
+ 737446 tests: Fix some minor leaks in the unit tests
+ 737451 Provide api to read_all_async
+ 737741 g_datalist_id_get_data assertion fails for non-existant keys
+ 737869 GApplication command line handling breaks --help
+ 738170 g_byte_array_new_take() doesn't initialize array->alloc
+ 738197 g_cond_timed_wait() doesn't time out on Mac OS X
+ 738374 gfile: g_file_equal (x, x) is TRUE
+ 738675 GSubprocessLauncher is missing some data on the docs 
+
+* Translation updates:
+ Bengali (India)
+ Bulgarian
+ Gujarati
+ Italian
+ Telugu
+
+
 Overview of changes in GLib 2.42.0
 ===================================
 
