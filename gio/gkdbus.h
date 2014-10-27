@@ -109,6 +109,12 @@ GVariant *                              _g_kdbus_GetConnectionUnixUser      (GDB
                                                                              const gchar      *name,
                                                                              GError          **error);
 
+void                                    _g_kdbus_subscribe_name_acquired    (GDBusConnection  *connection,
+                                                                             const gchar      *name);
+
+void                                    _g_kdbus_subscribe_name_lost        (GDBusConnection  *connection,
+                                                                             const gchar      *name);
+
 gssize                                  _g_kdbus_receive                    (GKdbus           *kdbus,
                                                                              GCancellable     *cancellable,
                                                                              GError          **error);

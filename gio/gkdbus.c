@@ -1252,6 +1252,138 @@ _g_kdbus_GetConnectionUnixUser (GDBusConnection  *connection,
 }
 
 
+/*
+ * _g_kdbus_subscribe_name_acquired:
+ *
+ */
+static void
+_g_kdbus_subscribe_name_owner_changed (GDBusConnection  *connection,
+                                       const gchar      *name,
+                                       const gchar      *old_name,
+                                       const gchar      *new_name)
+{
+  GKdbus *kdbus;
+  struct kdbus_item *item;
+  struct kdbus_cmd_match *cmd_match;
+  gssize size, len;
+  gint ret;
+
+  guint64 old_id = KDBUS_MATCH_ID_ANY;
+  guint64 new_id = KDBUS_MATCH_ID_ANY;
+
+  kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
+
+  len = strlen(name) + 1;
+  size = KDBUS_ALIGN8(G_STRUCT_OFFSET (struct kdbus_cmd_match, items) +
+                      G_STRUCT_OFFSET (struct kdbus_item, name_change) +
+                      G_STRUCT_OFFSET (struct kdbus_notify_name_change, name) + len);
+
+  cmd_match = g_alloca0 (size);
+  cmd_match->size = size;
+  cmd_match->cookie = 1000;
+  item = cmd_match->items;
+
+  /* KDBUS_ITEM_NAME_CHANGE */
+  item->type = KDBUS_ITEM_NAME_CHANGE;
+  item->name_change.old_id.id = old_id;
+  item->name_change.new_id.id = new_id;
+  memcpy(item->name_change.name, name, len);
+  item->size = G_STRUCT_OFFSET (struct kdbus_item, name_change) +
+               G_STRUCT_OFFSET(struct kdbus_notify_name_change, name) + len;
+  item = KDBUS_ITEM_NEXT(item);
+
+  ret = ioctl(kdbus->priv->fd, KDBUS_CMD_MATCH_ADD, cmd_match);
+  if (ret < 0)
+    g_warning ("ERROR - %d\n", (int) errno);
+}
+
+
+/*
+ * _g_kdbus_subscribe_name_acquired:
+ *
+ */
+void
+_g_kdbus_subscribe_name_acquired (GDBusConnection  *connection,
+                                  const gchar      *name)
+{
+  GKdbus *kdbus;
+  struct kdbus_item *item;
+  struct kdbus_cmd_match *cmd_match;
+  gssize size, len;
+  gint ret;
+
+  kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
+
+  len = strlen(name) + 1;
+  size = KDBUS_ALIGN8(G_STRUCT_OFFSET (struct kdbus_cmd_match, items) +
+                      G_STRUCT_OFFSET (struct kdbus_item, name_change) +
+                      G_STRUCT_OFFSET (struct kdbus_notify_name_change, name) + len);
+
+  cmd_match = g_alloca0 (size);
+  cmd_match->size = size;
+  cmd_match->cookie = 1001;
+  item = cmd_match->items;
+
+  /* KDBUS_ITEM_NAME_ADD */
+  item->type = KDBUS_ITEM_NAME_ADD;
+  item->name_change.old_id.id = KDBUS_MATCH_ID_ANY;
+  item->name_change.new_id.id = kdbus->priv->unique_id;
+  memcpy(item->name_change.name, name, len);
+  item->size = G_STRUCT_OFFSET (struct kdbus_item, name_change) +
+               G_STRUCT_OFFSET(struct kdbus_notify_name_change, name) + len;
+  item = KDBUS_ITEM_NEXT(item);
+
+  ret = ioctl(kdbus->priv->fd, KDBUS_CMD_MATCH_ADD, cmd_match);
+  if (ret < 0)
+    g_warning ("ERROR - %d\n", (int) errno);
+
+  _g_kdbus_subscribe_name_owner_changed (connection, name, "test", "test");
+}
+
+
+/*
+ * _g_kdbus_subscribe_name_lost:
+ *
+ */
+void
+_g_kdbus_subscribe_name_lost (GDBusConnection  *connection,
+                              const gchar      *name)
+{
+  GKdbus *kdbus;
+  struct kdbus_item *item;
+  struct kdbus_cmd_match *cmd_match;
+  gssize size, len;
+  gint ret;
+
+  kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
+
+  len = strlen(name) + 1;
+  size = KDBUS_ALIGN8(G_STRUCT_OFFSET (struct kdbus_cmd_match, items) +
+                      G_STRUCT_OFFSET (struct kdbus_item, name_change) +
+                      G_STRUCT_OFFSET (struct kdbus_notify_name_change, name) + len);
+
+  cmd_match = g_alloca0 (size);
+  cmd_match->size = size;
+  cmd_match->cookie = 1002;
+  item = cmd_match->items;
+
+  /* KDBUS_ITEM_NAME_REMOVE */
+  item->type = KDBUS_ITEM_NAME_REMOVE;
+  item->name_change.old_id.id = kdbus->priv->unique_id;
+  item->name_change.new_id.id = KDBUS_MATCH_ID_ANY;
+  memcpy(item->name_change.name, name, len);
+  item->size = G_STRUCT_OFFSET (struct kdbus_item, name_change) +
+               G_STRUCT_OFFSET(struct kdbus_notify_name_change, name) + len;
+  item = KDBUS_ITEM_NEXT(item);
+
+  ret = ioctl(kdbus->priv->fd, KDBUS_CMD_MATCH_ADD, cmd_match);
+  if (ret < 0)
+    g_warning ("ERROR - %d\n", (int) errno);
+
+  _g_kdbus_subscribe_name_owner_changed (connection, name, "test", "test");
+}
+
+
 /**
 * g_kdbus_decode_kernel_msg:
 *

@@ -3990,6 +3990,16 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
     {
       if (!is_signal_data_for_name_lost_or_acquired (signal_data))
         add_match_rule (connection, signal_data->rule);
+      else
+        {
+          if (G_IS_KDBUS_CONNECTION (connection->stream))
+            {
+              if (g_strcmp0 (signal_data->member, "NameAcquired") == 0)
+                _g_kdbus_subscribe_name_acquired (connection, arg0);
+              else if (g_strcmp0 (signal_data->member, "NameLost") == 0)
+                _g_kdbus_subscribe_name_lost (connection, arg0);
+            }
+        }
     }
 
   signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array,
@@ -4075,6 +4085,13 @@ unsubscribe_id_internal (GDBusConnection *connection,
                * did, and releasing the lock later.
                */
               remove_match_rule (connection, signal_data->rule);
+            }
+          else
+            {
+              if (G_IS_KDBUS_CONNECTION (connection->stream))
+                {
+                  //_g_kdbus_unsubscribe_name_lost_and_acquired (connection, arg0);
+                }
             }
 
           signal_data_free (signal_data);
