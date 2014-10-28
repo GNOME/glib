@@ -72,7 +72,6 @@ G_LOCK_DEFINE_STATIC(job_count);
 
 typedef struct
 {
-  GThreadedSocketService *service;
   GSocketConnection *connection;
   GObject *source_object;
 } GThreadedSocketServiceData;
@@ -85,10 +84,9 @@ g_threaded_socket_service_func (gpointer _data,
   GThreadedSocketServiceData *data = _data;
   gboolean result;
 
-  g_signal_emit (data->service, g_threaded_socket_service_run_signal,
+  g_signal_emit (threaded, g_threaded_socket_service_run_signal,
                  0, data->connection, data->source_object, &result);
 
-  g_object_unref (data->service);
   g_object_unref (data->connection);
   if (data->source_object)
     g_object_unref (data->source_object);
@@ -98,6 +96,8 @@ g_threaded_socket_service_func (gpointer _data,
   if (threaded->priv->job_count-- == threaded->priv->max_threads)
     g_socket_service_start (G_SOCKET_SERVICE (threaded));
   G_UNLOCK (job_count);
+
+  g_object_unref (threaded);
 }
 
 static gboolean
@@ -111,7 +111,10 @@ g_threaded_socket_service_incoming (GSocketService    *service,
   threaded = G_THREADED_SOCKET_SERVICE (service);
 
   data = g_slice_new (GThreadedSocketServiceData);
-  data->service = g_object_ref (service);
+
+  /* Ref the socket service for the thread */
+  g_object_ref (service);
+
   data->connection = g_object_ref (connection);
   if (source_object)
     data->source_object = g_object_ref (source_object);
@@ -156,7 +159,7 @@ g_threaded_socket_service_finalize (GObject *object)
 {
   GThreadedSocketService *service = G_THREADED_SOCKET_SERVICE (object);
 
-  g_thread_pool_free (service->priv->thread_pool, FALSE, TRUE);
+  g_thread_pool_free (service->priv->thread_pool, FALSE, FALSE);
 
   G_OBJECT_CLASS (g_threaded_socket_service_parent_class)
     ->finalize (object);
