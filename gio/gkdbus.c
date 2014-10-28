@@ -1260,15 +1260,15 @@ static void
 _g_kdbus_subscribe_name_owner_changed (GDBusConnection  *connection,
                                        const gchar      *name,
                                        const gchar      *old_name,
-                                       const gchar      *new_name)
+                                       const gchar      *new_name,
+                                       guint             cookie)
 {
   GKdbus *kdbus;
   struct kdbus_item *item;
   struct kdbus_cmd_match *cmd_match;
   gssize size, len;
   gint ret;
-
-  guint64 old_id = KDBUS_MATCH_ID_ANY;
+  guint64 old_id;
   guint64 new_id = KDBUS_MATCH_ID_ANY;
 
   kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
@@ -1280,7 +1280,36 @@ _g_kdbus_subscribe_name_owner_changed (GDBusConnection  *connection,
 
   cmd_match = g_alloca0 (size);
   cmd_match->size = size;
-  cmd_match->cookie = 1000;
+  cmd_match->cookie = cookie;
+  item = cmd_match->items;
+
+  if (old_name[0] == 0)
+    {
+      old_id = KDBUS_MATCH_ID_ANY;
+    }
+  else
+    {
+      if (g_dbus_is_unique_name(old_name))
+        old_id = old_id+3;
+      else
+        return;
+    }
+
+  if (new_name[0] == 0)
+    {
+      new_id = KDBUS_MATCH_ID_ANY;
+    }
+  else
+    {
+      if (g_dbus_is_unique_name(new_name))
+        new_id = new_id+3;
+      else
+        return;
+    }
+
+  cmd_match = g_alloca0 (size);
+  cmd_match->size = size;
+  cmd_match->cookie = cookie;
   item = cmd_match->items;
 
   /* KDBUS_ITEM_NAME_CHANGE */
@@ -1310,6 +1339,7 @@ _g_kdbus_subscribe_name_acquired (GDBusConnection  *connection,
   struct kdbus_item *item;
   struct kdbus_cmd_match *cmd_match;
   gssize size, len;
+  guint64 cookie;
   gint ret;
 
   kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
@@ -1319,9 +1349,10 @@ _g_kdbus_subscribe_name_acquired (GDBusConnection  *connection,
                       G_STRUCT_OFFSET (struct kdbus_item, name_change) +
                       G_STRUCT_OFFSET (struct kdbus_notify_name_change, name) + len);
 
+  cookie = 0xbeefbeefbeefbeef;
   cmd_match = g_alloca0 (size);
   cmd_match->size = size;
-  cmd_match->cookie = 1001;
+  cmd_match->cookie = cookie;
   item = cmd_match->items;
 
   /* KDBUS_ITEM_NAME_ADD */
@@ -1337,7 +1368,7 @@ _g_kdbus_subscribe_name_acquired (GDBusConnection  *connection,
   if (ret < 0)
     g_warning ("ERROR - %d\n", (int) errno);
 
-  _g_kdbus_subscribe_name_owner_changed (connection, name, "test", "test");
+  _g_kdbus_subscribe_name_owner_changed (connection, name, "", kdbus->priv->unique_name, cookie);
 }
 
 
@@ -1353,6 +1384,7 @@ _g_kdbus_subscribe_name_lost (GDBusConnection  *connection,
   struct kdbus_item *item;
   struct kdbus_cmd_match *cmd_match;
   gssize size, len;
+  guint64 cookie;
   gint ret;
 
   kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
@@ -1362,9 +1394,10 @@ _g_kdbus_subscribe_name_lost (GDBusConnection  *connection,
                       G_STRUCT_OFFSET (struct kdbus_item, name_change) +
                       G_STRUCT_OFFSET (struct kdbus_notify_name_change, name) + len);
 
+  cookie = 0xdeafdeafdeafdeaf;
   cmd_match = g_alloca0 (size);
   cmd_match->size = size;
-  cmd_match->cookie = 1002;
+  cmd_match->cookie = cookie;
   item = cmd_match->items;
 
   /* KDBUS_ITEM_NAME_REMOVE */
@@ -1380,7 +1413,7 @@ _g_kdbus_subscribe_name_lost (GDBusConnection  *connection,
   if (ret < 0)
     g_warning ("ERROR - %d\n", (int) errno);
 
-  _g_kdbus_subscribe_name_owner_changed (connection, name, "test", "test");
+  _g_kdbus_subscribe_name_owner_changed (connection, name, kdbus->priv->unique_name, "", cookie);
 }
 
 
