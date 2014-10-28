@@ -387,14 +387,14 @@ create_certificate_chain_from_list (GSList       *pem_list,
       pem = g_slist_next (pem);
     }
 
-  /* Verify the certificate chain and return NULL if it doesn't
-   * verify. */
+  /* Verify that the certificates form a chain. (We don't care at this
+   * point if there are other problems with it.)
+   */
   flags = g_tls_certificate_verify (cert, NULL, root);
-  if (flags)
+  if (flags & G_TLS_CERTIFICATE_UNKNOWN_CA)
     {
-      /* Couldn't verify the certificate chain, so unref it. */
-      g_object_unref (cert);
-      cert = NULL;
+      /* It wasn't a chain, it's just a bunch of unrelated certs. */
+      g_clear_object (&cert);
     }
 
   return cert;
