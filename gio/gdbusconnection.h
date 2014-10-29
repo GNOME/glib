@@ -92,6 +92,15 @@ GDBusConnection *g_dbus_connection_new_for_address_sync       (const gchar      
 /* ---------------------------------------------------------------------------------------------------- */
 
 GLIB_AVAILABLE_IN_2_40
+guint32    g_dbus_request_name                                (GDBusConnection     *connection,
+                                                               const gchar         *name,
+                                                               GBusNameOwnerFlags   flags,
+                                                               GError             **error);
+GLIB_AVAILABLE_IN_2_40
+guint32    g_dbus_release_name                                (GDBusConnection     *connection,
+                                                               const gchar         *name,
+                                                               GError             **error);
+GLIB_AVAILABLE_IN_2_40
 gchar     *g_dbus_get_bus_id                                  (GDBusConnection    *connection,
                                                                GError            **error);
 GLIB_AVAILABLE_IN_2_40

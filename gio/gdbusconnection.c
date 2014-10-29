@@ -1595,6 +1595,100 @@ g_dbus_connection_close_sync (GDBusConnection  *connection,
 /* ---------------------------------------------------------------------------------------------------- */
 
 /**
+ * g_dbus_request_name:
+ * @connection: a #GDBusConnection
+ * @name: well-known bus name (name to request)
+ * @flags: a set of flags from the GBusNameOwnerFlags enumeration
+ * @error: return location for error or %NULL
+ *
+ * Synchronously acquires name on the bus and returns status code.
+ *
+ * The calling thread is blocked until a reply is received.
+ *
+ * Returns: status code or %G_BUS_REQUEST_NAME_FLAGS_ERROR
+ *     if @error is set.
+ *
+ * Since: 2.4x
+ */
+GBusRequestNameReplyFlags
+g_dbus_request_name (GDBusConnection     *connection,
+                     const gchar         *name,
+                     GBusNameOwnerFlags   flags,
+                     GError             **error)
+{
+  GVariant *result;
+  guint32 request_name_reply;
+
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), G_BUS_RELEASE_NAME_FLAGS_ERROR);
+  g_return_val_if_fail (g_dbus_is_name (name) && !g_dbus_is_unique_name (name), G_BUS_RELEASE_NAME_FLAGS_ERROR);
+  g_return_val_if_fail (error == NULL || *error == NULL, G_BUS_RELEASE_NAME_FLAGS_ERROR);
+
+  if (G_IS_KDBUS_CONNECTION (connection->stream))
+    result = _g_kdbus_RequestName (connection, name, flags, error);
+  else
+    result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/org/freedesktop/DBus",
+                                          "org.freedesktop.DBus", "RequestName",
+                                          g_variant_new ("(su)", name, flags), G_VARIANT_TYPE ("(u)"),
+                                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, error);
+
+  if (result != NULL)
+    {
+      g_variant_get (result, "(u)", &request_name_reply);
+      g_variant_unref (result);
+    }
+  else
+    request_name_reply = G_BUS_REQUEST_NAME_FLAGS_ERROR;
+
+  return (GBusRequestNameReplyFlags) request_name_reply;
+}
+
+/**
+ * g_dbus_release_name:
+ * @connection: a #GDBusConnection
+ * @name: well-known bus name (name to release)
+ * @error: return location for error or %NULL
+ *
+ * Synchronously releases name on the bus and returns status code.
+ *
+ * The calling thread is blocked until a reply is received.
+ *
+ * Returns: status code or %G_BUS_RELEASE_NAME_FLAGS_ERROR
+ *     if @error is set.
+ *
+ * Since: 2.4x
+ */
+GBusReleaseNameReplyFlags
+g_dbus_release_name (GDBusConnection     *connection,
+                     const gchar         *name,
+                     GError             **error)
+{
+  GVariant *result;
+  guint32 release_name_reply;
+
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), G_BUS_RELEASE_NAME_FLAGS_ERROR);
+  g_return_val_if_fail (g_dbus_is_name (name) && !g_dbus_is_unique_name (name), G_BUS_RELEASE_NAME_FLAGS_ERROR);
+  g_return_val_if_fail (error == NULL || *error == NULL, G_BUS_RELEASE_NAME_FLAGS_ERROR);
+
+  if (G_IS_KDBUS_CONNECTION (connection->stream))
+    result = _g_kdbus_ReleaseName (connection, name, error);
+  else
+    result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/org/freedesktop/DBus",
+                                          "org.freedesktop.DBus", "ReleaseName",
+                                          g_variant_new ("(s)", name), G_VARIANT_TYPE ("(u)"),
+                                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, error);
+
+  if (result != NULL)
+    {
+      g_variant_get (result, "(u)", &release_name_reply);
+      g_variant_unref (result);
+    }
+  else
+    release_name_reply = G_BUS_RELEASE_NAME_FLAGS_ERROR;
+
+  return (GBusReleaseNameReplyFlags) release_name_reply;
+}
+
+/**
  * g_dbus_get_bus_id:
  * @connection: a #GDBusConnection
  * @error: return location for error or %NULL

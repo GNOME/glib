@@ -950,6 +950,46 @@ typedef enum
 } GBusNameOwnerFlags;
 
 /**
+ * GBusRequestNameReplyFlags:
+ * @G_BUS_REQUEST_NAME_FLAGS_ERROR: Error flag.
+ * @G_BUS_REQUEST_NAME_FLAGS_PRIMARY_OWNER: Caller is now the primary owner of the name, replacing any previous owner.
+ * @G_BUS_REQUEST_NAME_FLAGS_IN_QUEUE: The name already had an owner, the application will be placed in a queue.
+ * @G_BUS_REQUEST_NAME_FLAGS_EXISTS: The name already has an owner.
+ * @G_BUS_REQUEST_NAME_FLAGS_ALREADY_OWNER: The application trying to request ownership of a name is already the owner of it.
+ *
+ * Flags used in g_dbus_request_name().
+ *
+ * Since: 2.4x
+ */
+typedef enum
+{
+  G_BUS_REQUEST_NAME_FLAGS_ERROR = 0,
+  G_BUS_REQUEST_NAME_FLAGS_PRIMARY_OWNER = 1,
+  G_BUS_REQUEST_NAME_FLAGS_IN_QUEUE = 2,
+  G_BUS_REQUEST_NAME_FLAGS_EXISTS = 3,
+  G_BUS_REQUEST_NAME_FLAGS_ALREADY_OWNER = 4
+} GBusRequestNameReplyFlags;
+
+/**
+ * GBusReleaseNameReplyFlags:
+ * @G_BUS_RELEASE_NAME_FLAGS_ERROR: Error flag.
+ * @G_BUS_RELEASE_NAME_FLAGS_RELEASED: The caller has released his claim on the given name.
+ * @G_BUS_RELEASE_NAME_FLAGS_NON_EXISTENT: The given name does not exist on this bus
+ * @G_BUS_RELEASE_NAME_FLAGS_NOT_OWNER: The caller not waiting in the queue to own this name
+ *
+ * Flags used in g_dbus_release_name().
+ *
+ * Since: 2.4x
+ */
+typedef enum
+{
+  G_BUS_RELEASE_NAME_FLAGS_ERROR = 0,
+  G_BUS_RELEASE_NAME_FLAGS_RELEASED = 1,
+  G_BUS_RELEASE_NAME_FLAGS_NON_EXISTENT = 2,
+  G_BUS_RELEASE_NAME_FLAGS_NOT_OWNER = 3
+} GBusReleaseNameReplyFlags;
+
+/**
  * GBusNameWatcherFlags:
  * @G_BUS_NAME_WATCHER_FLAGS_NONE: No flags set.
  * @G_BUS_NAME_WATCHER_FLAGS_AUTO_START: If no-one owns the name when

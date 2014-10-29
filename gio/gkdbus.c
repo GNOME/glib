@@ -78,23 +78,6 @@ typedef enum
   G_BUS_CREDS_SELINUX_CONTEXT  = 4
 } GBusCredentialsFlags;
 
-/* GBusNameOwnerReturnFlags */
-typedef enum
-{
-  G_BUS_REQUEST_NAME_REPLY_PRIMARY_OWNER = 1, /* Caller is now the primary owner of the name, replacing any previous owner */
-  G_BUS_REQUEST_NAME_REPLY_IN_QUEUE = 2,      /* The name already had an owner, the application will be placed in a queue */
-  G_BUS_REQUEST_NAME_REPLY_EXISTS = 3,        /* The name already has an owner */
-  G_BUS_REQUEST_NAME_REPLY_ALREADY_OWNER = 4  /* The application trying to request ownership of a name is already the owner of it */
-} GBusNameOwnerReturnFlags;
-
-/* GBusReleaseNameReturnFlags */
-typedef enum
-{
-  G_BUS_RELEASE_NAME_REPLY_RELEASED = 1,     /* The caller has released his claim on the given name */
-  G_BUS_RELEASE_NAME_REPLY_NON_EXISTENT = 2, /* The given name does not exist on this bus*/
-  G_BUS_RELEASE_NAME_REPLY_NOT_OWNER = 3     /* The caller not waiting in the queue to own this name*/
-} GBusReleaseNameReturnFlags;
-
 /* GKdbusPrivate struct */
 struct _GKdbusPrivate
 {
@@ -644,7 +627,7 @@ _g_kdbus_RequestName (GDBusConnection     *connection,
   gssize len, size;
   gint status, ret;
 
-  status = G_BUS_REQUEST_NAME_REPLY_PRIMARY_OWNER;
+  status = G_BUS_REQUEST_NAME_FLAGS_PRIMARY_OWNER;
 
   kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
   if (kdbus == NULL)
@@ -689,9 +672,9 @@ _g_kdbus_RequestName (GDBusConnection     *connection,
   if (ret < 0)
     {
       if (errno == EEXIST)
-        status = G_BUS_REQUEST_NAME_REPLY_EXISTS;
+        status = G_BUS_REQUEST_NAME_FLAGS_EXISTS;
       else if (errno == EALREADY)
-        status = G_BUS_REQUEST_NAME_REPLY_ALREADY_OWNER;
+        status = G_BUS_REQUEST_NAME_FLAGS_ALREADY_OWNER;
       else
         {
           g_set_error (error, G_IO_ERROR,
@@ -703,7 +686,7 @@ _g_kdbus_RequestName (GDBusConnection     *connection,
     }
 
   if (kdbus_name->flags & KDBUS_NAME_IN_QUEUE)
-    status = G_BUS_REQUEST_NAME_REPLY_IN_QUEUE;
+    status = G_BUS_REQUEST_NAME_FLAGS_IN_QUEUE;
 
   result = g_variant_new ("(u)", status);
 
@@ -726,7 +709,7 @@ _g_kdbus_ReleaseName (GDBusConnection     *connection,
   gssize len, size;
   gint status, ret;
 
-  status = G_BUS_RELEASE_NAME_REPLY_RELEASED;
+  status = G_BUS_RELEASE_NAME_FLAGS_RELEASED;
 
   kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
   if (kdbus == NULL)
@@ -768,9 +751,9 @@ _g_kdbus_ReleaseName (GDBusConnection     *connection,
   if (ret < 0)
     {
       if (errno == ESRCH)
-        status = G_BUS_RELEASE_NAME_REPLY_NON_EXISTENT;
+        status = G_BUS_RELEASE_NAME_FLAGS_NON_EXISTENT;
       else if (errno == EADDRINUSE)
-        status = G_BUS_RELEASE_NAME_REPLY_NOT_OWNER;
+        status = G_BUS_RELEASE_NAME_FLAGS_NOT_OWNER;
       else
         {
           g_set_error (error, G_IO_ERROR,
