@@ -594,12 +594,12 @@ array_resize (GMemoryOutputStream  *ostream,
   return TRUE;
 }
 
-static gint
-g_nearest_pow (gint num)
+static gsize
+g_nearest_pow (gsize num)
 {
-  gint n = 1;
+  gsize n = 1;
 
-  while (n < num)
+  while (n < num && n > 0)
     n <<= 1;
 
   return n;
@@ -639,12 +639,10 @@ g_memory_output_stream_write (GOutputStream  *stream,
        * much memory.
        */
       new_size = g_nearest_pow (priv->pos + count);
-      /* Check for overflow again. We have only checked if
-         pos + count > G_MAXSIZE, but it only catches the case of writing
-         more than 4GiB total on a 32-bit system. There's still the problem
-         of g_nearest_pow overflowing above 0x7fffffff, so we're
-         effectively limited to 2GiB. */
-      if (new_size < priv->len)
+      /* Check for overflow again. We have checked if
+         pos + count > G_MAXSIZE, but now check if g_nearest_pow () has
+         overflowed */
+      if (new_size == 0)
         goto overflow;
 
       new_size = MAX (new_size, MIN_ARRAY_SIZE);
