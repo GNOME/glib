@@ -204,12 +204,12 @@ g_memory_buffer_read_uint64 (GMemoryBuffer  *mbuf)
 
 #define MIN_ARRAY_SIZE  128
 
-static gint
-g_nearest_pow (gint num)
+static gsize
+g_nearest_pow (gsize num)
 {
-  gint n = 1;
+  gsize n = 1;
 
-  while (n < num)
+  while (n < num && n > 0)
     n <<= 1;
 
   return n;
@@ -261,12 +261,10 @@ g_memory_buffer_write (GMemoryBuffer  *mbuf,
          TODO: This wastes a lot of memory at large buffer sizes.
                Figure out a more rational allocation strategy. */
       new_size = g_nearest_pow (mbuf->pos + count);
-      /* Check for overflow again. We have only checked if
-         pos + count > G_MAXSIZE, but it only catches the case of writing
-         more than 4GiB total on a 32-bit system. There's still the problem
-         of g_nearest_pow overflowing above 0x7fffffff, so we're
-         effectively limited to 2GiB. */
-      if (new_size < mbuf->len)
+      /* Check for overflow again. We have checked if
+         pos + count > G_MAXSIZE, but now check if g_nearest_pow () has
+         overflowed */
+      if (new_size == 0)
         return FALSE;
 
       new_size = MAX (new_size, MIN_ARRAY_SIZE);
