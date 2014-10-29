@@ -1236,6 +1236,29 @@ _g_kdbus_GetConnectionUnixUser (GDBusConnection  *connection,
 
 
 /*
+ * _g_kdbus_match_remove:
+ *
+ */
+static void
+_g_kdbus_match_remove (GDBusConnection  *connection,
+                       guint             cookie)
+{
+  GKdbus *kdbus;
+  struct kdbus_cmd_match cmd_match = {};
+  gint ret;
+
+  kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
+
+  cmd_match.size = sizeof (cmd_match);
+  cmd_match.cookie = cookie;
+
+  ret = ioctl(kdbus->priv->fd, KDBUS_CMD_MATCH_REMOVE, &cmd_match);
+  if (ret < 0)
+    g_warning ("ERROR - %d\n", (int) errno);
+}
+
+
+/*
  * _g_kdbus_subscribe_name_acquired:
  *
  */
@@ -1397,6 +1420,34 @@ _g_kdbus_subscribe_name_lost (GDBusConnection  *connection,
     g_warning ("ERROR - %d\n", (int) errno);
 
   _g_kdbus_subscribe_name_owner_changed (connection, name, kdbus->priv->unique_name, "", cookie);
+}
+
+
+/*
+ * _g_kdbus_unsubscribe_name_acquired:
+ *
+ */
+void
+_g_kdbus_unsubscribe_name_acquired (GDBusConnection  *connection)
+{
+  guint64 cookie;
+
+  cookie = 0xbeefbeefbeefbeef;
+  _g_kdbus_match_remove (connection, cookie);
+}
+
+
+/*
+ * _g_kdbus_unsubscribe_name_lost:
+ *
+ */
+void
+_g_kdbus_unsubscribe_name_lost (GDBusConnection  *connection)
+{
+  guint64 cookie;
+
+  cookie = 0xdeafdeafdeafdeaf;
+  _g_kdbus_match_remove (connection, cookie);
 }
 
 

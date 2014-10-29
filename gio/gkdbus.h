@@ -115,6 +115,10 @@ void                                    _g_kdbus_subscribe_name_acquired    (GDB
 void                                    _g_kdbus_subscribe_name_lost        (GDBusConnection  *connection,
                                                                              const gchar      *name);
 
+void                                    _g_kdbus_unsubscribe_name_acquired  (GDBusConnection  *connection);
+
+void                                    _g_kdbus_unsubscribe_name_lost      (GDBusConnection  *connection);
+
 gssize                                  _g_kdbus_receive                    (GKdbus           *kdbus,
                                                                              GCancellable     *cancellable,
                                                                              GError          **error);

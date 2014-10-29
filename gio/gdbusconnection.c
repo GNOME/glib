@@ -4184,7 +4184,10 @@ unsubscribe_id_internal (GDBusConnection *connection,
             {
               if (G_IS_KDBUS_CONNECTION (connection->stream))
                 {
-                  //_g_kdbus_unsubscribe_name_lost_and_acquired (connection, arg0);
+                  if (g_strcmp0 (signal_data->member, "NameAcquired") == 0)
+                    _g_kdbus_unsubscribe_name_acquired (connection);
+                  else if (g_strcmp0 (signal_data->member, "NameLost") == 0)
+                    _g_kdbus_unsubscribe_name_lost (connection);
                 }
             }
 
