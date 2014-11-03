@@ -27,12 +27,12 @@
 #define _WIN32_WINNT 0x0501
 #endif
 #include <winsock2.h>
-#undef interface
 #include <ws2tcpip.h>
 #include <windns.h>
 #include <mswsock.h>
 #include <wspiapi.h>
 #include <iphlpapi.h>
+#undef interface
 
 #else /* !G_OS_WIN32 */
 
