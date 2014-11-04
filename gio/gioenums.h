@@ -1212,6 +1212,8 @@ typedef enum {
  * @G_DBUS_CALL_FLAGS_NO_AUTO_START: The bus must not launch
  * an owner for the destination name in response to this method
  * invocation.
+ * @G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION: the caller is prepared to
+ * wait for interactive authorization. Since 2.46.
  *
  * Flags used in g_dbus_connection_call() and similar APIs.
  *
@@ -1219,7 +1221,8 @@ typedef enum {
  */
 typedef enum {
   G_DBUS_CALL_FLAGS_NONE = 0,
-  G_DBUS_CALL_FLAGS_NO_AUTO_START = (1<<0)
+  G_DBUS_CALL_FLAGS_NO_AUTO_START = (1<<0),
+  G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION = (1<<1)
 } GDBusCallFlags;
 /* (1<<31) is reserved for internal use by GDBusConnection, do not use it. */
 
@@ -1249,6 +1252,9 @@ typedef enum {
  * @G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED: A reply is not expected.
  * @G_DBUS_MESSAGE_FLAGS_NO_AUTO_START: The bus must not launch an
  * owner for the destination name in response to this message.
+ * @G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION: If set on a method
+ * call, this flag means that the caller is prepared to wait for interactive
+ * authorization. Since 2.46.
  *
  * Message flags used in #GDBusMessage.
  *
@@ -1257,7 +1263,8 @@ typedef enum {
 typedef enum {
   G_DBUS_MESSAGE_FLAGS_NONE = 0,
   G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED = (1<<0),
-  G_DBUS_MESSAGE_FLAGS_NO_AUTO_START = (1<<1)
+  G_DBUS_MESSAGE_FLAGS_NO_AUTO_START = (1<<1),
+  G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION = (1<<2)
 } GDBusMessageFlags;
 
 /**

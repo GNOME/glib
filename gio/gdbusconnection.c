@@ -5265,8 +5265,14 @@ static void
 add_call_flags (GDBusMessage           *message,
                          GDBusCallFlags  flags)
 {
+  GDBusMessageFlags msg_flags = 0;
+
   if (flags & G_DBUS_CALL_FLAGS_NO_AUTO_START)
-    g_dbus_message_set_flags (message, G_DBUS_MESSAGE_FLAGS_NO_AUTO_START);
+    msg_flags |= G_DBUS_MESSAGE_FLAGS_NO_AUTO_START;
+  if (flags & G_DBUS_CALL_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION)
+    msg_flags |= G_DBUS_MESSAGE_FLAGS_ALLOW_INTERACTIVE_AUTHORIZATION;
+  if (msg_flags)
+    g_dbus_message_set_flags (message, msg_flags);
 }
 
 static GVariant *
