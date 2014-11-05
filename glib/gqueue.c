@@ -1072,8 +1072,5 @@ g_queue_insert_sorted (GQueue           *queue,
   while (list && func (list->data, data, user_data) < 0)
     list = list->next;
 
-  if (list)
-    g_queue_insert_before (queue, list, data);
-  else
-    g_queue_push_tail (queue, data);
+  g_queue_insert_before (queue, list, data);
 }

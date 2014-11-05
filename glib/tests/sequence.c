@@ -410,16 +410,6 @@ dump_info (SequenceInfo *seq)
 #endif
 }
 
-/* A version of g_queue_insert_before() that appends if link is NULL */
-static void
-queue_insert_before (SequenceInfo *seq, GList *link, gpointer data)
-{
-  if (link)
-    g_queue_insert_before (seq->queue, link, data);
-  else
-    g_queue_push_tail (seq->queue, data);
-}
-
 static void
 run_random_tests (gconstpointer d)
 {
@@ -611,7 +601,7 @@ run_random_tests (gconstpointer d)
 
                 new_iter = g_sequence_insert_before (iter, new_item (seq));
 
-                queue_insert_before (seq, link, new_iter);
+                g_queue_insert_before (seq->queue, link, new_iter);
               }
           }
           break;
@@ -630,7 +620,7 @@ run_random_tests (gconstpointer d)
                 if (!link2)
                   g_assert (g_sequence_iter_is_end (iter2));
 
-                queue_insert_before (seq2, link2, link1->data);
+                g_queue_insert_before (seq2->queue, link2, link1->data);
 
                 g_queue_delete_link (seq1->queue, link1);
 
@@ -864,7 +854,7 @@ run_random_tests (gconstpointer d)
                 Item *item = get_item (list->data);
 
                 g_assert (dst->queue);
-                queue_insert_before (dst, dst_link, list->data);
+                g_queue_insert_before (dst->queue, dst_link, list->data);
                 g_queue_delete_link (src->queue, list);
 
                 g_assert (item->seq == src);
