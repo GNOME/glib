@@ -983,12 +983,14 @@ g_queue_remove_all (GQueue        *queue,
 /**
  * g_queue_insert_before:
  * @queue: a #GQueue
- * @sibling: a #GList link that must be part of @queue
+ * @sibling: (nullable): a #GList link that must be part of @queue, or %NULL to
+ *   push at the tail of the queue.
  * @data: the data to insert
  * 
  * Inserts @data into @queue before @sibling.
  *
- * @sibling must be part of @queue.
+ * @sibling must be part of @queue. Since GLib 2.44 a %NULL sibling pushes the
+ * data at the tail of the queue.
  * 
  * Since: 2.4
  */
@@ -998,21 +1000,33 @@ g_queue_insert_before (GQueue   *queue,
                        gpointer  data)
 {
   g_return_if_fail (queue != NULL);
-  g_return_if_fail (sibling != NULL);
 
-  queue->head = g_list_insert_before (queue->head, sibling, data);
-  queue->length++;
+  if (sibling == NULL)
+    {
+      /* We don't use g_list_insert_before() with a NULL sibling because it
+       * would be a O(n) operation and we would need to update manually the tail
+       * pointer.
+       */
+      g_queue_push_tail (queue, data);
+    }
+  else
+    {
+      queue->head = g_list_insert_before (queue->head, sibling, data);
+      queue->length++;
+    }
 }
 
 /**
  * g_queue_insert_after:
  * @queue: a #GQueue
- * @sibling: a #GList link that must be part of @queue
+ * @sibling: (nullable): a #GList link that must be part of @queue, or %NULL to
+ *   push at the head of the queue.
  * @data: the data to insert
  *
- * Inserts @data into @queue after @sibling
+ * Inserts @data into @queue after @sibling.
  *
- * @sibling must be part of @queue
+ * @sibling must be part of @queue. Since GLib 2.44 a %NULL sibling pushes the
+ * data at the head of the queue.
  * 
  * Since: 2.4
  */
@@ -1022,10 +1036,9 @@ g_queue_insert_after (GQueue   *queue,
                       gpointer  data)
 {
   g_return_if_fail (queue != NULL);
-  g_return_if_fail (sibling != NULL);
 
-  if (sibling == queue->tail)
-    g_queue_push_tail (queue, data);
+  if (sibling == NULL)
+    g_queue_push_head (queue, data);
   else
     g_queue_insert_before (queue, sibling->next, data);
 }
