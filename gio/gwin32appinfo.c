@@ -616,15 +616,19 @@ g_app_info_get_fallback_for_type (const char *content_type)
   return g_app_info_get_all_for_type (content_type);
 }
 
-GAppInfo *
-g_app_info_get_default_for_type (const char *content_type,
-				 gboolean    must_support_uris)
+/*
+ * The windows api (AssocQueryString) doesn't distinguish between uri schemes
+ * and file type extensions here, so we use the same implementation for both
+ * g_app_info_get_default_for_type and g_app_info_get_default_for_uri_scheme
+ */
+static GAppInfo *
+get_default_for_association (const char *association)
 {
   wchar_t *wtype;
   wchar_t buffer[1024];
   DWORD buffer_size;
 
-  wtype = g_utf8_to_utf16 (content_type, -1, NULL, NULL, NULL);
+  wtype = g_utf8_to_utf16 (association, -1, NULL, NULL, NULL);
 
   /* Verify that we have some sort of app registered for this type */
 #ifdef AssocQueryString
@@ -644,10 +648,16 @@ g_app_info_get_default_for_type (const char *content_type,
 }
 
 GAppInfo *
+g_app_info_get_default_for_type (const char *content_type,
+                                 gboolean    must_support_uris)
+{
+  return get_default_for_association (content_type);
+}
+
+GAppInfo *
 g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
 {
-  /* TODO: Implement */
-  return NULL;
+  return get_default_for_association (uri_scheme);
 }
 
 GList *
