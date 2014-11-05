@@ -1569,9 +1569,9 @@ g_test_run (void)
  * @test_name:     the name for the test case
  * @data_size:     the size of the fixture data structure
  * @test_data:     test data argument for the test functions
- * @data_setup:    the function to set up the fixture data
- * @data_test:     the actual test function
- * @data_teardown: the function to teardown the fixture data
+ * @data_setup:    (scope async): the function to set up the fixture data
+ * @data_test:     (scope async): the actual test function
+ * @data_teardown: (scope async): the function to teardown the fixture data
  *
  * Create a new #GTestCase, named @test_name, this API is fairly
  * low level, calling g_test_add() or g_test_add_func() is preferable.
@@ -1834,8 +1834,8 @@ g_test_set_nonfatal_assertions (void)
 
 /**
  * g_test_add_func:
- * @testpath:   /-separated test case path name for the test.
- * @test_func:  The test function to invoke for this test.
+ * @testpath:  /-separated test case path name for the test.
+ * @test_func: (scope async):  The test function to invoke for this test.
  *
  * Create a new test case, similar to g_test_create_case(). However
  * the test is assumed to use no fixture, and test suites are automatically
@@ -1870,9 +1870,9 @@ g_test_add_func (const char *testpath,
 
 /**
  * g_test_add_data_func:
- * @testpath:   /-separated test case path name for the test.
- * @test_data:  Test data argument for the test function.
- * @test_func:  The test function to invoke for this test.
+ * @testpath:  /-separated test case path name for the test.
+ * @test_data: Test data argument for the test function.
+ * @test_func: (scope async): The test function to invoke for this test.
  *
  * Create a new test case, similar to g_test_create_case(). However
  * the test is assumed to use no fixture, and test suites are automatically
