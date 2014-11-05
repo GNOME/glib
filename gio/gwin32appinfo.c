@@ -246,10 +246,10 @@ g_win32_app_info_get_icon (GAppInfo *appinfo)
 }
 
 static gboolean
-g_win32_app_info_launch (GAppInfo           *appinfo,
-			 GList              *files,
-			 GAppLaunchContext  *launch_context,
-			 GError            **error)
+g_win32_app_info_launch_locations (GAppInfo           *appinfo,
+                                   GList              *locations,
+                                   GAppLaunchContext  *launch_context,
+                                   GError            **error)
 {
   GWin32AppInfo *info = G_WIN32_APP_INFO (appinfo);
 #ifdef AssocQueryString
@@ -285,17 +285,14 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
    * instead.
    */
 
-  for (l = files; l != NULL; l = l->next)
+  for (l = locations; l != NULL; l = l->next)
     {
-      char *path = g_file_get_path (l->data);
-      wchar_t *wfilename = g_utf8_to_utf16 (path, -1, NULL, NULL, NULL);
-
-      g_free (path);
+      wchar_t *wloc = g_utf8_to_utf16 (l->data, -1, NULL, NULL, NULL);
       
       memset (&exec_info, 0, sizeof (exec_info));
       exec_info.cbSize = sizeof (exec_info);
       exec_info.fMask = SEE_MASK_FLAG_DDEWAIT | SEE_MASK_CLASSKEY;
-      exec_info.lpFile = wfilename;     
+      exec_info.lpFile = wloc;
       exec_info.nShow = SW_SHOWNORMAL;
       exec_info.hkeyClass = class_key;
       
@@ -306,12 +303,12 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
 	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, _("Error launching application: %s"), message_utf8);
 	  g_free (message_utf8);
 	  
-	  g_free (wfilename);
+	  g_free (wloc);
 	  RegCloseKey (class_key);
 	  return FALSE;
 	}
       
-      g_free (wfilename);
+      g_free (wloc);
     }
   
   RegCloseKey (class_key);
@@ -322,7 +319,8 @@ g_win32_app_info_launch (GAppInfo           *appinfo,
 static gboolean
 g_win32_app_info_supports_uris (GAppInfo *appinfo)
 {
-  return FALSE;
+  /* TODO: is there some way to determine this on windows? */
+  return TRUE;
 }
 
 static gboolean
@@ -332,15 +330,31 @@ g_win32_app_info_supports_files (GAppInfo *appinfo)
 }
 
 static gboolean
+g_win32_app_info_launch (GAppInfo           *appinfo,
+                         GList              *files,
+                         GAppLaunchContext  *launch_context,
+                         GError            **error)
+{
+  gboolean success;
+  GList *paths = g_list_copy_deep (files, (GCopyFunc) g_file_get_path,
+                                   NULL);
+
+  success = g_win32_app_info_launch_locations (appinfo, paths,
+                                               launch_context, error);
+
+  g_list_free_full (paths, g_free);
+
+  return success;
+}
+
+static gboolean
 g_win32_app_info_launch_uris (GAppInfo           *appinfo,
 			      GList              *uris,
 			      GAppLaunchContext  *launch_context,
 			      GError            **error)
 {
-  g_set_error_literal (error, G_IO_ERROR, 
-                       G_IO_ERROR_NOT_SUPPORTED, 
-                       _("URIs not supported"));
-  return FALSE;
+  return g_win32_app_info_launch_locations (appinfo, uris,
+                                            launch_context, error);
 }
 
 static gboolean
