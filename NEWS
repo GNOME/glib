@@ -1,3 +1,24 @@
+Overview of changes in GLib 2.42.1
+==================================
+
+* This release disables deprecation warnings by default
+
+* Bugs fixed:
+ 728256 gcredentials: add NetBSD support
+ 736806 gtask: Fix reference count loop causing leaks
+ 737143 Include <stdint.h> in glib/valgrind.h
+ 738170 g_byte_array_new_take() doesn't initialize array->alloc
+ 738197 g_cond_timed_wait() doesn't time out on Mac OS X 
+
+* Translation updates:
+ Bengali (India)
+ Bulgarian
+ Gujarati
+ Italian
+ Norwegian bokmål
+ Telugu
+
+
 Overview of changes in GLib 2.42.0
 ===================================
 
