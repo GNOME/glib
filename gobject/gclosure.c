@@ -22,6 +22,7 @@
 
 #include "config.h"
 
+#include "../glib/valgrind.h"
 #include <string.h>
 
 #include <ffi.h>
@@ -189,14 +190,31 @@ GClosure*
 g_closure_new_simple (guint           sizeof_closure,
 		      gpointer        data)
 {
-  GRealClosure *real_closure;
   GClosure *closure;
+  gint private_size;
+  gchar *allocated;
 
   g_return_val_if_fail (sizeof_closure >= sizeof (GClosure), NULL);
-  sizeof_closure = sizeof_closure + sizeof (GRealClosure) - sizeof (GClosure);
 
-  real_closure = g_malloc0 (sizeof_closure);
-  closure = &real_closure->closure;
+  private_size = sizeof (GRealClosure) - sizeof (GClosure);
+
+  /* See comments in gtype.c about what's going on here... */
+  if (RUNNING_ON_VALGRIND)
+    {
+      private_size += sizeof (gpointer);
+
+      allocated = g_malloc0 (private_size + sizeof_closure + sizeof (gpointer));
+
+      *(gpointer *) (allocated + private_size + sizeof_closure) = allocated + sizeof (gpointer);
+
+      VALGRIND_MALLOCLIKE_BLOCK (allocated + private_size, sizeof_closure + sizeof (gpointer), 0, TRUE);
+      VALGRIND_MALLOCLIKE_BLOCK (allocated + sizeof (gpointer), private_size - sizeof (gpointer), 0, TRUE);
+    }
+  else
+    allocated = g_malloc0 (private_size + sizeof_closure);
+
+  closure = (GClosure *) (allocated + private_size);
+
   SET (closure, ref_count, 1);
   SET (closure, floating, TRUE);
   closure->data = data;
@@ -589,7 +607,22 @@ g_closure_unref (GClosure *closure)
     {
       closure_invoke_notifiers (closure, FNOTIFY);
       g_free (closure->notifiers);
-      g_free (G_REAL_CLOSURE (closure));
+
+      /* See comments in gtype.c about what's going on here... */
+      if (RUNNING_ON_VALGRIND)
+        {
+          gchar *allocated;
+
+          allocated = (gchar *) G_REAL_CLOSURE (closure);
+          allocated -= sizeof (gpointer);
+
+          g_free (allocated);
+
+          VALGRIND_FREELIKE_BLOCK (allocated + sizeof (gpointer), 0);
+          VALGRIND_FREELIKE_BLOCK (closure, 0);
+        }
+      else
+        g_free (G_REAL_CLOSURE (closure));
     }
 }
 
