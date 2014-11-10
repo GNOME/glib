@@ -313,7 +313,7 @@ msgstr ""
 #: ../glib/gdatetime.c:303
 msgctxt "full weekday name"
 msgid "Monday"
-msgstr "Дышәмбе"
+msgstr "Дүшәмбе"
 
 #: ../glib/gdatetime.c:305
 msgctxt "full weekday name"
@@ -323,7 +323,7 @@ msgstr "Сишәмбе"
 #: ../glib/gdatetime.c:307
 msgctxt "full weekday name"
 msgid "Wednesday"
-msgstr "Чәршәәмбе"
+msgstr "Чәршәмбе"
 
 #: ../glib/gdatetime.c:309
 msgctxt "full weekday name"
@@ -348,7 +348,7 @@ msgstr "Якшәмбе"
 #: ../glib/gdatetime.c:330
 msgctxt "abbreviated weekday name"
 msgid "Mon"
-msgstr "Дыш"
+msgstr "Дүш"
 
 #: ../glib/gdatetime.c:332
 msgctxt "abbreviated weekday name"
