@@ -476,6 +476,20 @@ g_application_parse_command_line (GApplication   *application,
 
   context = g_option_context_new (NULL);
 
+  /* If the application has not registered local options and it has
+   * G_APPLICATION_HANDLES_COMMAND_LINE then we have to assume that
+   * their primary instance commandline handler may want to deal with
+   * the arguments.  We must therefore ignore them.
+   *
+   * We must also ignore --help in this case since some applications
+   * will try to handle this from the remote side.  See #737869.
+   */
+  if (application->priv->main_options == NULL && (application->priv->flags & G_APPLICATION_HANDLES_COMMAND_LINE))
+    {
+      g_option_context_set_ignore_unknown_options (context, TRUE);
+      g_option_context_set_help_enabled (context, FALSE);
+    }
+
   /* Add the main option group, if it exists */
   if (application->priv->main_options)
     {
@@ -492,20 +506,6 @@ g_application_parse_command_line (GApplication   *application,
       g_option_context_add_group (context, application->priv->option_groups->data);
       application->priv->option_groups = g_slist_delete_link (application->priv->option_groups,
                                                               application->priv->option_groups);
-    }
-
-  /* If the application has not registered local options and it has
-   * G_APPLICATION_HANDLES_COMMAND_LINE then we have to assume that
-   * their primary instance commandline handler may want to deal with
-   * the arguments.  We must therefore ignore them.
-   *
-   * We must also ignore --help in this case since some applications
-   * will try to handle this from the remote side.  See #737869.
-   */
-  if (application->priv->main_options == NULL && (application->priv->flags & G_APPLICATION_HANDLES_COMMAND_LINE))
-    {
-      g_option_context_set_ignore_unknown_options (context, TRUE);
-      g_option_context_set_help_enabled (context, FALSE);
     }
 
   /* In the case that we are not explicitly marked as a service or a

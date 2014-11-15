@@ -705,6 +705,50 @@ test_resource_path (void)
   g_object_unref (app);
 }
 
+static gint
+test_help_command_line (GApplication            *app,
+                        GApplicationCommandLine *command_line,
+                        gpointer                 user_data)
+{
+  gboolean *called = user_data;
+
+  *called = TRUE;
+
+  return 0;
+}
+
+/* Test whether --help is handled when HANDLES_COMMND_LINE is set and
+ * options have been added.
+ */
+static void
+test_help (void)
+{
+  if (g_test_subprocess ())
+    {
+      char *binpath = g_test_build_filename (G_TEST_BUILT, "unimportant", NULL);
+      gchar *argv[] = { binpath, "--help", NULL };
+      GApplication *app;
+      gboolean called = FALSE;
+      int status;
+
+      app = g_application_new ("org.gtk.TestApplication", G_APPLICATION_HANDLES_COMMAND_LINE);
+      g_application_add_main_option (app, "foo", 'f', G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, "", "");
+      g_signal_connect (app, "command-line", G_CALLBACK (test_help_command_line), &called);
+
+      status = g_application_run (app, G_N_ELEMENTS (argv) -1, argv);
+      g_assert (called == TRUE);
+      g_assert_cmpint (status, ==, 0);
+
+      g_object_unref (app);
+      g_free (binpath);
+      return;
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*Application options*");
+}
+
 int
 main (int argc, char **argv)
 {
@@ -724,6 +768,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gapplication/local-command-line", test_local_command_line);
 /*  g_test_add_func ("/gapplication/remote-command-line", test_remote_command_line); */
   g_test_add_func ("/gapplication/resource-path", test_resource_path);
+  g_test_add_func ("/gapplication/test-help", test_help);
 
   return g_test_run ();
 }
