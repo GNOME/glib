@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.38.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-23 14:56+0200\n"
-"PO-Revision-Date: 2014-07-23 14:57+0200\n"
+"POT-Creation-Date: 2014-11-15 18:27+0100\n"
+"PO-Revision-Date: 2014-11-15 18:31+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -18,25 +18,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../gio/gapplication.c:511
+#: ../gio/gapplication.c:520
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "Oppgi tjenestemodus for GApplication (bruk fra D-Bus tjenestefiler)"
 
-#: ../gio/gapplication.c:516
+#: ../gio/gapplication.c:525
 msgid "GApplication options"
 msgstr "Flagg for GApplication"
 
-#: ../gio/gapplication.c:516
+#: ../gio/gapplication.c:525
 msgid "Show GApplication options"
 msgstr "Vis flagg for GApplication"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
-#: ../gio/gresource-tool.c:481 ../gio/gsettings-tool.c:508
+#: ../gio/gresource-tool.c:485 ../gio/gsettings-tool.c:508
 msgid "Print help"
 msgstr "Skriv ut hjelp"
 
-#: ../gio/gapplication-tool.c:47 ../gio/gresource-tool.c:482
-#: ../gio/gresource-tool.c:550
+#: ../gio/gapplication-tool.c:47 ../gio/gresource-tool.c:486
+#: ../gio/gresource-tool.c:554
 msgid "[COMMAND]"
 msgstr "[KOMMANDO]"
 
@@ -54,7 +54,7 @@ msgstr "Vis programmer"
 
 #: ../gio/gapplication-tool.c:53
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
-msgstr ""
+msgstr "Vis installerte programmer som kan aktiveres via D-Bus (på .desktop-filer)"
 
 #: ../gio/gapplication-tool.c:55
 msgid "Launch an application"
@@ -86,7 +86,7 @@ msgstr "Vis tilgjengelige handlinger"
 
 #: ../gio/gapplication-tool.c:64
 msgid "List static actions for an application (from .desktop file)"
-msgstr ""
+msgstr "Vis statiske handlinger for et program (fra .desktop-fil)"
 
 #: ../gio/gapplication-tool.c:65 ../gio/gapplication-tool.c:71
 msgid "APPID"
@@ -103,17 +103,17 @@ msgstr "Vis detaljert hjelp for denne kommandoen"
 
 #: ../gio/gapplication-tool.c:71
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
-msgstr ""
+msgstr "Programidentifikator i D-Bus-format (f.eks. org.example.viewer)"
 
 #: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:589
-#: ../gio/glib-compile-resources.c:620 ../gio/gresource-tool.c:488
-#: ../gio/gresource-tool.c:554
+#: ../gio/glib-compile-resources.c:620 ../gio/gresource-tool.c:492
+#: ../gio/gresource-tool.c:558
 msgid "FILE"
 msgstr "FIL"
 
 #: ../gio/gapplication-tool.c:72
 msgid "Optional relative or relative filenames, or URIs to open"
-msgstr ""
+msgstr "Alternative relative filnavn eller URIer som skal åpnes"
 
 #: ../gio/gapplication-tool.c:73
 msgid "ACTION"
@@ -129,9 +129,9 @@ msgstr "PARAMETER"
 
 #: ../gio/gapplication-tool.c:74
 msgid "Optional parameter to the action invocation, in GVariant format"
-msgstr ""
+msgstr "Valgfri parameter til utførelse av handling, i GVariant-format"
 
-#: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:519
+#: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:523
 #: ../gio/gsettings-tool.c:594
 #, c-format
 msgid ""
@@ -145,7 +145,7 @@ msgstr ""
 msgid "Usage:\n"
 msgstr "Bruk:\n"
 
-#: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:544
+#: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:548
 #: ../gio/gsettings-tool.c:628
 msgid "Arguments:\n"
 msgstr "Argumenter:\n"
@@ -174,7 +174,7 @@ msgstr ""
 msgid ""
 "%s command requires an application id to directly follow\n"
 "\n"
-msgstr ""
+msgstr "%s-kommandoen krever en program-ID etter kommandoen\n"
 
 #: ../gio/gapplication-tool.c:171
 #, c-format
@@ -212,6 +212,8 @@ msgid ""
 "invalid action name: '%s'\n"
 "action names must consist of only alphanumerics, '-' and '.'\n"
 msgstr ""
+"ugyldig navvn på handling: «%s»\n"
+"navn på handlinger må kun bestå av tall og bokstaver, «-» og «.»\n"
 
 #: ../gio/gapplication-tool.c:344
 #, c-format
@@ -221,12 +223,12 @@ msgstr "feil under tolking av parameter for handling: %s\n"
 #: ../gio/gapplication-tool.c:356
 #, c-format
 msgid "actions accept a maximum of one parameter\n"
-msgstr ""
+msgstr "handlinger godtar ikke mer enn en parameter\n"
 
 #: ../gio/gapplication-tool.c:411
 #, c-format
 msgid "list-actions command takes only the application id"
-msgstr ""
+msgstr "list-actions kommandoen tar kun program-ID"
 
 #: ../gio/gapplication-tool.c:421
 #, c-format
@@ -243,9 +245,9 @@ msgstr ""
 "\n"
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
-#: ../gio/ginputstream.c:176 ../gio/ginputstream.c:370
-#: ../gio/ginputstream.c:608 ../gio/ginputstream.c:828
-#: ../gio/goutputstream.c:200 ../gio/goutputstream.c:823
+#: ../gio/ginputstream.c:176 ../gio/ginputstream.c:376
+#: ../gio/ginputstream.c:614 ../gio/ginputstream.c:1013
+#: ../gio/goutputstream.c:200 ../gio/goutputstream.c:830
 #: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
 msgid "Too large count value passed to %s"
@@ -260,8 +262,8 @@ msgstr "Søk er ikke støttet på grunnstrøm"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Kan ikke avkorte GBufferedInputStream"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1017
-#: ../gio/giostream.c:277 ../gio/goutputstream.c:1464
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202
+#: ../gio/giostream.c:277 ../gio/goutputstream.c:1654
 msgid "Stream is already closed"
 msgstr "Strømmen er allerede lukket"
 
@@ -269,7 +271,7 @@ msgstr "Strømmen er allerede lukket"
 msgid "Truncate not supported on base stream"
 msgstr "Avkorting er ikke støttet på grunnstrøm"
 
-#: ../gio/gcancellable.c:310 ../gio/gdbusconnection.c:1896
+#: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1896
 #: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1417
 #: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:830
 #: ../gio/gsimpleasyncresult.c:856
@@ -694,27 +696,27 @@ msgstr "Metode «%s» på grensesnitt «%s» med signatur «%s» eksisterer ikke
 msgid "A subtree is already exported for %s"
 msgstr "Et undertre er allerede eksportert for %s"
 
-#: ../gio/gdbusmessage.c:1246
+#: ../gio/gdbusmessage.c:1244
 msgid "type is INVALID"
 msgstr "UGYLDIG type"
 
-#: ../gio/gdbusmessage.c:1257
+#: ../gio/gdbusmessage.c:1255
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "METHOD_CALL melding: Topptekstfelt PATH eller MEMBER mangler"
 
-#: ../gio/gdbusmessage.c:1268
+#: ../gio/gdbusmessage.c:1266
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "METHOD_RETURN melding: Topptekstfelt REPLY_SERIAL mangler"
 
-#: ../gio/gdbusmessage.c:1280
+#: ../gio/gdbusmessage.c:1278
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "ERROR melding: Topptekstfelt REPLY_SERIAL eller ERROR_NAME mangler"
 
-#: ../gio/gdbusmessage.c:1293
+#: ../gio/gdbusmessage.c:1291
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "SIGNAL melding: Topptekstfelt for PATH, INTERFACE eller MEMBER mangler"
 
-#: ../gio/gdbusmessage.c:1301
+#: ../gio/gdbusmessage.c:1299
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -722,7 +724,7 @@ msgstr ""
 "SIGNAL-melding: Topptekstfelt for PATH bruker reservert verdi /org/"
 "freedesktop/DBus/Local"
 
-#: ../gio/gdbusmessage.c:1309
+#: ../gio/gdbusmessage.c:1307
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -730,19 +732,19 @@ msgstr ""
 "SIGNAL melding: Topptekstfelt for INTERFACE bruker reservert verdi org."
 "freedesktop.DBus.Local"
 
-#: ../gio/gdbusmessage.c:1357 ../gio/gdbusmessage.c:1417
+#: ../gio/gdbusmessage.c:1355 ../gio/gdbusmessage.c:1415
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "Ønsket å lese %lu byte men fikk bare %lu"
 msgstr[1] "Ønsket å lese %lu bytes men fikk bare %lu"
 
-#: ../gio/gdbusmessage.c:1371
+#: ../gio/gdbusmessage.c:1369
 #, c-format
 msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr "Forventet NUL-byte etter strengen «%s», men fant byte %d"
 
-#: ../gio/gdbusmessage.c:1390
+#: ../gio/gdbusmessage.c:1388
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -752,17 +754,17 @@ msgstr ""
 "(lengden av strengen er %d). Gydldig UTF-8 streng opp til det punktet var "
 "«%s»"
 
-#: ../gio/gdbusmessage.c:1589
+#: ../gio/gdbusmessage.c:1587
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "Lest verdi «%s» er ikke en gyldig objektsti for D-Bus"
 
-#: ../gio/gdbusmessage.c:1611
+#: ../gio/gdbusmessage.c:1609
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "Tolket verdi «%s» er ikke en gyldig D-Bus-signatur"
 
-#: ../gio/gdbusmessage.c:1658
+#: ../gio/gdbusmessage.c:1656
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -773,26 +775,26 @@ msgstr[0] ""
 msgstr[1] ""
 "Fant en array med lengde %u bytes. Maksimal lengde er 2<<26 byte (64 MiB)."
 
-#: ../gio/gdbusmessage.c:1678
+#: ../gio/gdbusmessage.c:1676
 #, c-format
 msgid ""
 "Encountered array of type 'a%c', expected to have a length a multiple of %u "
 "bytes, but found to be %u bytes in length"
-msgstr ""
+msgstr "Fant en matrise av type «a%c» som var forventet å ha en lengde som er en multippel av %u bytes, men var %u bytes lang"
 
-#: ../gio/gdbusmessage.c:1845
+#: ../gio/gdbusmessage.c:1843
 #, c-format
 msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr "Lest verdi «%s» for variant er ikke en gyldig D-Bus-signatur"
 
-#: ../gio/gdbusmessage.c:1869
+#: ../gio/gdbusmessage.c:1867
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
 "Feil ved deserialisering av GVariant med strengtype «%s» fra D-Bus-format"
 
-#: ../gio/gdbusmessage.c:2053
+#: ../gio/gdbusmessage.c:2051
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
@@ -801,22 +803,22 @@ msgstr ""
 "Ugyldig verdi for endianness. Forventet 0x6c ('l') eller 0x42 ('B'), men "
 "fant verdien 0x%02x"
 
-#: ../gio/gdbusmessage.c:2066
+#: ../gio/gdbusmessage.c:2064
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Ugyldig hovedversjon for protokoll. Forventet en men fikk %d"
 
-#: ../gio/gdbusmessage.c:2122
+#: ../gio/gdbusmessage.c:2120
 #, c-format
 msgid "Signature header with signature '%s' found but message body is empty"
 msgstr "Signaturtopptekst med signatur «%s» funnet, men meldingskroppen er tom"
 
-#: ../gio/gdbusmessage.c:2136
+#: ../gio/gdbusmessage.c:2134
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr "Lest verdi «%s» er ikke en gyldig D-Bus-signatur (for kropp)"
 
-#: ../gio/gdbusmessage.c:2166
+#: ../gio/gdbusmessage.c:2164
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -824,18 +826,18 @@ msgstr[0] "Ingen signaturtopptekst i meldingen, men meldingskroppen er %u byte"
 msgstr[1] ""
 "Ingen signaturtopptekst i meldingen, men meldingskroppen er %u bytes"
 
-#: ../gio/gdbusmessage.c:2176
+#: ../gio/gdbusmessage.c:2174
 msgid "Cannot deserialize message: "
 msgstr "Kan ikke deserialisere melding: "
 
-#: ../gio/gdbusmessage.c:2516
+#: ../gio/gdbusmessage.c:2515
 #, c-format
 msgid ""
 "Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
 "Feil ved serialisering av GVariant med strengtype «%s» til D-Bus-format"
 
-#: ../gio/gdbusmessage.c:2653
+#: ../gio/gdbusmessage.c:2652
 #, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
@@ -844,17 +846,17 @@ msgstr ""
 "Meldingen har %d fildeskriptorer men topptekstfeltet indikerer %d "
 "fildeskriptorer"
 
-#: ../gio/gdbusmessage.c:2661
+#: ../gio/gdbusmessage.c:2660
 msgid "Cannot serialize message: "
 msgstr "Kan ikke serialisere melding: "
 
-#: ../gio/gdbusmessage.c:2705
+#: ../gio/gdbusmessage.c:2704
 #, c-format
 msgid "Message body has signature '%s' but there is no signature header"
 msgstr ""
 "Meldingskroppen har signatur «%s» men det finnes ingen signaturtopptekst"
 
-#: ../gio/gdbusmessage.c:2715
+#: ../gio/gdbusmessage.c:2714
 #, c-format
 msgid ""
 "Message body has type signature '%s' but signature in the header field is "
@@ -863,17 +865,17 @@ msgstr ""
 "Meldingskroppen har signaturtype «%s», men signaturen i topptekstfeltet et "
 "«%s»"
 
-#: ../gio/gdbusmessage.c:2731
+#: ../gio/gdbusmessage.c:2730
 #, c-format
 msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr "Meldingskroppen er tom men signatur i topptekstfeltet er «(%s)»"
 
-#: ../gio/gdbusmessage.c:3281
+#: ../gio/gdbusmessage.c:3280
 #, c-format
 msgid "Error return with body of type '%s'"
 msgstr "Feil retur med kropp av type «%s»"
 
-#: ../gio/gdbusmessage.c:3289
+#: ../gio/gdbusmessage.c:3288
 msgid "Error return with empty body"
 msgstr "Feil retur med tom kropp"
 
@@ -1156,39 +1158,39 @@ msgstr "Objektsti som skal overvåkes"
 msgid "Monitor a remote object."
 msgstr "Overvåk et eksternt objekt."
 
-#: ../gio/gdesktopappinfo.c:1919 ../gio/gdesktopappinfo.c:4440
+#: ../gio/gdesktopappinfo.c:1999 ../gio/gdesktopappinfo.c:4523
 #: ../gio/gwin32appinfo.c:219
 msgid "Unnamed"
 msgstr "Uten navn"
 
-#: ../gio/gdesktopappinfo.c:2328
+#: ../gio/gdesktopappinfo.c:2408
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop-filen hadde ingen verdi i Exec-feltet"
 
-#: ../gio/gdesktopappinfo.c:2613
+#: ../gio/gdesktopappinfo.c:2693
 msgid "Unable to find terminal required for application"
 msgstr "Kan ikke finne terminalen som kreves for programmet"
 
-#: ../gio/gdesktopappinfo.c:3034
+#: ../gio/gdesktopappinfo.c:3114
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Kan ikke opprette konfigurasjonsmappe %s for brukers program: %s"
 
-#: ../gio/gdesktopappinfo.c:3038
+#: ../gio/gdesktopappinfo.c:3118
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan ikke opprette brukers konfigurasjonsmappe %s for MIME: %s"
 
-#: ../gio/gdesktopappinfo.c:3278 ../gio/gdesktopappinfo.c:3302
+#: ../gio/gdesktopappinfo.c:3358 ../gio/gdesktopappinfo.c:3382
 msgid "Application information lacks an identifier"
 msgstr "Programinformasjonen mangler en identifikator"
 
-#: ../gio/gdesktopappinfo.c:3535
+#: ../gio/gdesktopappinfo.c:3615
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan ikke opprette brukers desktop-fil %s"
 
-#: ../gio/gdesktopappinfo.c:3669
+#: ../gio/gdesktopappinfo.c:3749
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Egendefinert definisjon for %s"
@@ -1245,14 +1247,14 @@ msgstr "Feil antall tegn (%d) i GEmblemedIcon-koding"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Ventet et GEmblem for GEmblemedIcon"
 
-#: ../gio/gfile.c:956 ../gio/gfile.c:1194 ../gio/gfile.c:1332
-#: ../gio/gfile.c:1570 ../gio/gfile.c:1625 ../gio/gfile.c:1683
-#: ../gio/gfile.c:1767 ../gio/gfile.c:1824 ../gio/gfile.c:1888
-#: ../gio/gfile.c:1943 ../gio/gfile.c:3587 ../gio/gfile.c:3642
-#: ../gio/gfile.c:3849 ../gio/gfile.c:3891 ../gio/gfile.c:4354
-#: ../gio/gfile.c:4765 ../gio/gfile.c:4850 ../gio/gfile.c:4940
-#: ../gio/gfile.c:5037 ../gio/gfile.c:5124 ../gio/gfile.c:5225
-#: ../gio/gfile.c:7744 ../gio/gfile.c:7834 ../gio/gfile.c:7918
+#: ../gio/gfile.c:962 ../gio/gfile.c:1200 ../gio/gfile.c:1338
+#: ../gio/gfile.c:1576 ../gio/gfile.c:1631 ../gio/gfile.c:1689
+#: ../gio/gfile.c:1773 ../gio/gfile.c:1830 ../gio/gfile.c:1894
+#: ../gio/gfile.c:1949 ../gio/gfile.c:3597 ../gio/gfile.c:3652
+#: ../gio/gfile.c:3859 ../gio/gfile.c:3901 ../gio/gfile.c:4364
+#: ../gio/gfile.c:4775 ../gio/gfile.c:4860 ../gio/gfile.c:4950
+#: ../gio/gfile.c:5047 ../gio/gfile.c:5134 ../gio/gfile.c:5235
+#: ../gio/gfile.c:7754 ../gio/gfile.c:7844 ../gio/gfile.c:7928
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Operasjonen er ikke støttet"
@@ -1267,70 +1269,70 @@ msgstr "Operasjonen er ikke støttet"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1455 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
+#: ../gio/gfile.c:1461 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
 #: ../gio/glocalfile.c:1127
 msgid "Containing mount does not exist"
 msgstr "Omsluttende monteringspunkt finnes ikke"
 
-#: ../gio/gfile.c:2502 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2508 ../gio/glocalfile.c:2337
 msgid "Can't copy over directory"
 msgstr "Kan ikke kopiere over katalog"
 
-#: ../gio/gfile.c:2562
+#: ../gio/gfile.c:2568
 msgid "Can't copy directory over directory"
 msgstr "Kan ikke kopiere katalog over katalog"
 
-#: ../gio/gfile.c:2570 ../gio/glocalfile.c:2346
+#: ../gio/gfile.c:2576 ../gio/glocalfile.c:2346
 msgid "Target file exists"
 msgstr "Målfilen eksisterer"
 
-#: ../gio/gfile.c:2589
+#: ../gio/gfile.c:2595
 msgid "Can't recursively copy directory"
 msgstr "Kan ikke kopiere katalog rekursivt"
 
-#: ../gio/gfile.c:2871
+#: ../gio/gfile.c:2877
 msgid "Splice not supported"
 msgstr "Splice er ikke støttet"
 
-#: ../gio/gfile.c:2875
+#: ../gio/gfile.c:2881
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Feil ved bruk av  splice(2) på fil: %s"
 
-#: ../gio/gfile.c:3006
+#: ../gio/gfile.c:3012
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Kopiering (reflink/clone) mellom monteringspunkter er ikke støttet"
 
-#: ../gio/gfile.c:3010
+#: ../gio/gfile.c:3016
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopiering (reflink/clone) er ikke støttet eller ugyldig"
 
-#: ../gio/gfile.c:3015
+#: ../gio/gfile.c:3021
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "Kopiering (reflink/clone) er ikke støttet eller virket ikke"
 
-#: ../gio/gfile.c:3078
+#: ../gio/gfile.c:3084
 msgid "Can't copy special file"
 msgstr "Kan ikke kopiere spesiell fil"
 
-#: ../gio/gfile.c:3839
+#: ../gio/gfile.c:3849
 msgid "Invalid symlink value given"
 msgstr "Ugyldig verdi oppgitt for symbolsk lenke"
 
-#: ../gio/gfile.c:4000
+#: ../gio/gfile.c:4010
 msgid "Trash not supported"
 msgstr "Papirkurv er ikke støttet"
 
-#: ../gio/gfile.c:4112
+#: ../gio/gfile.c:4122
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Filnavn kan ikke inneholde «%c»"
 
-#: ../gio/gfile.c:6536 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6546 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "volumet implementerer ikke montering"
 
-#: ../gio/gfile.c:6645
+#: ../gio/gfile.c:6655
 msgid "No application is registered as handling this file"
 msgstr "Ingen program registrert for å håndtere denne filen"
 
@@ -1446,8 +1448,8 @@ msgstr "Inndatastrøm implementerer ikke lesing"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1027 ../gio/giostream.c:287
-#: ../gio/goutputstream.c:1474
+#: ../gio/ginputstream.c:1212 ../gio/giostream.c:287
+#: ../gio/goutputstream.c:1664
 msgid "Stream has outstanding operation"
 msgstr "Strømmen har utestående operasjoner"
 
@@ -2111,7 +2113,7 @@ msgstr "Filen ble endret eksternt"
 msgid "Error removing old file: %s"
 msgstr "Feil ved fjerning av gammel fil: %s"
 
-#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:771
+#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:769
 msgid "Invalid GSeekType supplied"
 msgstr "Ugyldig GSeekType oppgitt"
 
@@ -2131,7 +2133,7 @@ msgstr "Kan ikke endre størrelse på utdatastrøm for minne"
 msgid "Failed to resize memory output stream"
 msgstr "Klarte ikke å endre størrelse på utdatastrøm for minne"
 
-#: ../gio/gmemoryoutputstream.c:673
+#: ../gio/gmemoryoutputstream.c:671
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
@@ -2139,11 +2141,11 @@ msgstr ""
 "Mengden minne som kreves for å prosessere skriveoperasjonen er større enn "
 "tilgjengelig adresseområde"
 
-#: ../gio/gmemoryoutputstream.c:781
+#: ../gio/gmemoryoutputstream.c:779
 msgid "Requested seek before the beginning of the stream"
 msgstr "Forespurt søk før begynnelsen på strømmen"
 
-#: ../gio/gmemoryoutputstream.c:796
+#: ../gio/gmemoryoutputstream.c:794
 msgid "Requested seek beyond the end of the stream"
 msgstr "Forespurt søk forbi slutten på strømmen"
 
@@ -2223,15 +2225,15 @@ msgstr "Kunne ikke lage nettverksovervåker: "
 msgid "Could not get network status: "
 msgstr "Kunne ikke hente nettverksstatus: "
 
-#: ../gio/goutputstream.c:209 ../gio/goutputstream.c:550
+#: ../gio/goutputstream.c:209 ../gio/goutputstream.c:557
 msgid "Output stream doesn't implement write"
 msgstr "Ut-strømmen implementerer ikke skriving"
 
-#: ../gio/goutputstream.c:511 ../gio/goutputstream.c:1028
+#: ../gio/goutputstream.c:518 ../gio/goutputstream.c:1218
 msgid "Source stream is already closed"
 msgstr "Kildestrømmen er allerede lukket"
 
-#: ../gio/gresolver.c:318 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:320 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving '%s': %s"
@@ -2259,11 +2261,11 @@ msgstr "Ressurs ved «%s» er ikke en katalog"
 msgid "Input stream doesn't implement seek"
 msgstr "Inndatastrøm implementerer ikke søk"
 
-#: ../gio/gresource-tool.c:487
+#: ../gio/gresource-tool.c:491
 msgid "List sections containing resources in an elf FILE"
 msgstr "Vis seksjoner som inneholder ressurser i en elf FIL"
 
-#: ../gio/gresource-tool.c:493
+#: ../gio/gresource-tool.c:497
 msgid ""
 "List resources\n"
 "If SECTION is given, only list resources in this section\n"
@@ -2273,16 +2275,16 @@ msgstr ""
 "Hvis SEKSJON oppgis skal kun ressurser i denne seksjonen vises\n"
 "Hvis STI oppgis skal kun relevante ressurser vises"
 
-#: ../gio/gresource-tool.c:496 ../gio/gresource-tool.c:506
+#: ../gio/gresource-tool.c:500 ../gio/gresource-tool.c:510
 msgid "FILE [PATH]"
 msgstr "FIL [STI]"
 
-#: ../gio/gresource-tool.c:497 ../gio/gresource-tool.c:507
-#: ../gio/gresource-tool.c:514
+#: ../gio/gresource-tool.c:501 ../gio/gresource-tool.c:511
+#: ../gio/gresource-tool.c:518
 msgid "SECTION"
 msgstr "SEKSJON"
 
-#: ../gio/gresource-tool.c:502
+#: ../gio/gresource-tool.c:506
 msgid ""
 "List resources with details\n"
 "If SECTION is given, only list resources in this section\n"
@@ -2294,15 +2296,15 @@ msgstr ""
 "Hvis STI oppgis vises kun relevante ressurser\n"
 "Detaljer inkluderer seksjon, størrelse og komprimering"
 
-#: ../gio/gresource-tool.c:512
+#: ../gio/gresource-tool.c:516
 msgid "Extract a resource file to stdout"
 msgstr "Hent ut en ressursfil til stdout"
 
-#: ../gio/gresource-tool.c:513
+#: ../gio/gresource-tool.c:517
 msgid "FILE PATH"
 msgstr "STI TIL FIL"
 
-#: ../gio/gresource-tool.c:527
+#: ../gio/gresource-tool.c:531
 msgid ""
 "Usage:\n"
 "  gresource [--section SECTION] COMMAND [ARGS...]\n"
@@ -2330,7 +2332,7 @@ msgstr ""
 "Bruk «gresource help KOMMANDO» for å få detaljert hjelp.\n"
 "\n"
 
-#: ../gio/gresource-tool.c:541
+#: ../gio/gresource-tool.c:545
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2345,19 +2347,19 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:548
+#: ../gio/gresource-tool.c:552
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SEKSJON  Et valgfritt navn på en elf seksjon\n"
 
-#: ../gio/gresource-tool.c:552 ../gio/gsettings-tool.c:635
+#: ../gio/gresource-tool.c:556 ../gio/gsettings-tool.c:635
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  KOMMANDO Valgfri kommando som skal forklares\n"
 
-#: ../gio/gresource-tool.c:558
+#: ../gio/gresource-tool.c:562
 msgid "  FILE      An elf file (a binary or a shared library)\n"
 msgstr "  FIL      En elf-fil. Binærfil eller delt bibliotek\n"
 
-#: ../gio/gresource-tool.c:561
+#: ../gio/gresource-tool.c:565
 msgid ""
 "  FILE      An elf file (a binary or a shared library)\n"
 "            or a compiled resource file\n"
@@ -2365,19 +2367,19 @@ msgstr ""
 "  FIL       En elf-fil - binær eller delt bibliotek\n"
 "            eller en kompilert ressursfil\n"
 
-#: ../gio/gresource-tool.c:565
+#: ../gio/gresource-tool.c:569
 msgid "[PATH]"
 msgstr "[STI]"
 
-#: ../gio/gresource-tool.c:567
+#: ../gio/gresource-tool.c:571
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  STI      En valgfri ressurssti - kan være ufullstendig\n"
 
-#: ../gio/gresource-tool.c:568
+#: ../gio/gresource-tool.c:572
 msgid "PATH"
 msgstr "STI"
 
-#: ../gio/gresource-tool.c:570
+#: ../gio/gresource-tool.c:574
 msgid "  PATH      A resource path\n"
 msgstr "  STI      En ressurssti\n"
 
@@ -2751,15 +2753,15 @@ msgstr "Kunne ikke koble til «%s»: "
 msgid "Could not connect: "
 msgstr "Kunne ikke koble til: "
 
-#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1597
+#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1603
 msgid "Unknown error on connect"
 msgstr "Ukjent feil ved tilkobling"
 
-#: ../gio/gsocketclient.c:1082 ../gio/gsocketclient.c:1532
+#: ../gio/gsocketclient.c:1082 ../gio/gsocketclient.c:1538
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Proxy over annet enn TCP-forbindelser er ikke støttet."
 
-#: ../gio/gsocketclient.c:1108 ../gio/gsocketclient.c:1553
+#: ../gio/gsocketclient.c:1108 ../gio/gsocketclient.c:1559
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Protokoll «%s» er er ikke støttet"
@@ -2889,23 +2891,23 @@ msgstr "Midlertidig ute av stand til å slå opp «%s»"
 msgid "Error resolving '%s'"
 msgstr "Feil ved oppslag av «%s»"
 
-#: ../gio/gtlscertificate.c:247
+#: ../gio/gtlscertificate.c:250
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "Kunne ikke dekryptere PEM-kodet privat nøkkel"
 
-#: ../gio/gtlscertificate.c:252
+#: ../gio/gtlscertificate.c:255
 msgid "No PEM-encoded private key found"
 msgstr "Fant ikke PEM-kodet privat nøkkel"
 
-#: ../gio/gtlscertificate.c:262
+#: ../gio/gtlscertificate.c:265
 msgid "Could not parse PEM-encoded private key"
 msgstr "Kunne ikke lese PEM-kodet privat nøkkel"
 
-#: ../gio/gtlscertificate.c:287
+#: ../gio/gtlscertificate.c:290
 msgid "No PEM-encoded certificate found"
 msgstr "Fant ikke PEM-kodet sertifikat"
 
-#: ../gio/gtlscertificate.c:296
+#: ../gio/gtlscertificate.c:299
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Kunne ikke lese PEM-kodet sertifikat"
 
@@ -2991,7 +2993,7 @@ msgstr "Feil under lesing fra fildeskriptor: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Feil under lukking av fildeskriptor: %s"
 
-#: ../gio/gunixmounts.c:1991 ../gio/gunixmounts.c:2044
+#: ../gio/gunixmounts.c:2054 ../gio/gunixmounts.c:2107
 msgid "Filesystem root"
 msgstr "Filsystemrot"
 
@@ -3438,85 +3440,85 @@ msgstr "Søn"
 msgid "Error opening directory '%s': %s"
 msgstr "Feil under åpning av katalog «%s»: %s"
 
-#: ../glib/gfileutils.c:699 ../glib/gfileutils.c:791
+#: ../glib/gfileutils.c:700 ../glib/gfileutils.c:792
 #, c-format
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "Kunne ikke allokere %lu byte til lest fil «%s»"
 msgstr[1] "Kunne ikke allokere %lu bytes til lest fil «%s»"
 
-#: ../glib/gfileutils.c:716
+#: ../glib/gfileutils.c:717
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Feil under lesing av fil «%s»: %s"
 
-#: ../glib/gfileutils.c:752
+#: ../glib/gfileutils.c:753
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Fil «%s» er for stor"
 
-#: ../glib/gfileutils.c:816
+#: ../glib/gfileutils.c:817
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Feil under lesing fra fil «%s»: %s"
 
-#: ../glib/gfileutils.c:863 ../glib/gfileutils.c:929
+#: ../glib/gfileutils.c:865 ../glib/gfileutils.c:937
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Feil under åpning av fil «%s»: %s"
 
-#: ../glib/gfileutils.c:873
+#: ../glib/gfileutils.c:877
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Feil ved uthenting av attributter for fil «%s»: fstat() feilet: %s"
 
-#: ../glib/gfileutils.c:901
+#: ../glib/gfileutils.c:907
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Feil under åpning av fil «%s»: fdopen() feilet: %s"
 
-#: ../glib/gfileutils.c:997
+#: ../glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Feil under endring av navn på filen «%s» til «%s»: g_rename() feilet: %s"
 
-#: ../glib/gfileutils.c:1030 ../glib/gfileutils.c:1519
+#: ../glib/gfileutils.c:1041 ../glib/gfileutils.c:1540
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
 
-#: ../glib/gfileutils.c:1054
+#: ../glib/gfileutils.c:1068
 #, c-format
 msgid "Failed to write file '%s': write() failed: %s"
 msgstr "Kunne ikke skrive fil «%s»: write() feilet: %s"
 
-#: ../glib/gfileutils.c:1094
+#: ../glib/gfileutils.c:1111
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Kunne ikke skrive fil «%s»: fsync() feilet: %s"
 
-#: ../glib/gfileutils.c:1216
+#: ../glib/gfileutils.c:1235
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Eksisterende fil «%s» kunne ikke bli fjernet: g_unlink() feilet: %s"
 
-#: ../glib/gfileutils.c:1486
+#: ../glib/gfileutils.c:1506
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mal «%s» er ugyldig, må ikke inneholde «%s»"
 
-#: ../glib/gfileutils.c:1499
+#: ../glib/gfileutils.c:1519
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Mal «%s» inneholder ikke XXXXXX"
 
-#: ../glib/gfileutils.c:2015
+#: ../glib/gfileutils.c:2038
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Feil under lesing av symbolsk lenke «%s»: %s"
 
-#: ../glib/gfileutils.c:2033
+#: ../glib/gfileutils.c:2057
 msgid "Symbolic links not supported"
 msgstr "Symbolske lenker er ikke støttet"
 
@@ -3870,61 +3872,61 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentet sluttet uventet inni en kommentar eller prosesseringsinstruksjon"
 
-#: ../glib/goption.c:795
+#: ../glib/goption.c:855
 msgid "Usage:"
 msgstr "Bruk:"
 
-#: ../glib/goption.c:795
+#: ../glib/goption.c:855
 msgid "[OPTION...]"
 msgstr "[FLAGG …]"
 
-#: ../glib/goption.c:911
+#: ../glib/goption.c:971
 msgid "Help Options:"
 msgstr "Flagg for hjelp:"
 
-#: ../glib/goption.c:912
+#: ../glib/goption.c:972
 msgid "Show help options"
 msgstr "Vis flagg for hjelp"
 
-#: ../glib/goption.c:918
+#: ../glib/goption.c:978
 msgid "Show all help options"
 msgstr "Vis alle flagg for hjelp"
 
-#: ../glib/goption.c:980
+#: ../glib/goption.c:1040
 msgid "Application Options:"
 msgstr "Flagg for applikasjonen"
 
-#: ../glib/goption.c:1044 ../glib/goption.c:1114
+#: ../glib/goption.c:1104 ../glib/goption.c:1174
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Kan ikke lese heltallsverdi «%s» for %s"
 
-#: ../glib/goption.c:1054 ../glib/goption.c:1122
+#: ../glib/goption.c:1114 ../glib/goption.c:1182
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "Heltallsverdi «%s» for %s er utenfor gyldig område"
 
-#: ../glib/goption.c:1079
+#: ../glib/goption.c:1139
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Kan ikke lese verdi for double «%s» for %s"
 
-#: ../glib/goption.c:1087
+#: ../glib/goption.c:1147
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "Double-verdi «%s» for %s er utenfor gyldig område"
 
-#: ../glib/goption.c:1373 ../glib/goption.c:1452
+#: ../glib/goption.c:1433 ../glib/goption.c:1512
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Feil under tolking av flagg %s"
 
-#: ../glib/goption.c:1483 ../glib/goption.c:1596
+#: ../glib/goption.c:1543 ../glib/goption.c:1656
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Mangler argument for %s"
 
-#: ../glib/goption.c:2057
+#: ../glib/goption.c:2117
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ukjent flagg %s"
@@ -4458,75 +4460,75 @@ msgstr "Ugyldig sekvens i inndata for konvertering"
 msgid "Character out of range for UTF-16"
 msgstr "Tegn utenfor gyldig område for UTF-16"
 
-#: ../glib/gutils.c:2115 ../glib/gutils.c:2142 ../glib/gutils.c:2248
+#: ../glib/gutils.c:2116 ../glib/gutils.c:2143 ../glib/gutils.c:2249
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: ../glib/gutils.c:2121
+#: ../glib/gutils.c:2122
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2123
+#: ../glib/gutils.c:2124
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2126
+#: ../glib/gutils.c:2127
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2129
+#: ../glib/gutils.c:2130
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2132
+#: ../glib/gutils.c:2133
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2135
+#: ../glib/gutils.c:2136
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2148
+#: ../glib/gutils.c:2149
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gutils.c:2151 ../glib/gutils.c:2266
+#: ../glib/gutils.c:2152 ../glib/gutils.c:2267
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2154 ../glib/gutils.c:2271
+#: ../glib/gutils.c:2155 ../glib/gutils.c:2272
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2156 ../glib/gutils.c:2276
+#: ../glib/gutils.c:2157 ../glib/gutils.c:2277
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2159 ../glib/gutils.c:2281
+#: ../glib/gutils.c:2160 ../glib/gutils.c:2282
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2162 ../glib/gutils.c:2286
+#: ../glib/gutils.c:2163 ../glib/gutils.c:2287
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2199
+#: ../glib/gutils.c:2200
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4538,7 +4540,7 @@ msgstr[1] "%s bytes"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2261
+#: ../glib/gutils.c:2262
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
