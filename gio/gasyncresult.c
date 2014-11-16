@@ -147,8 +147,8 @@ g_async_result_get_user_data (GAsyncResult *res)
  *
  * Gets the source object from a #GAsyncResult.
  *
- * Returns: (transfer full): a new reference to the source object for the @res,
- *    or %NULL if there is none.
+ * Returns: (transfer full) (nullable): a new reference to the source
+ *    object for the @res, or %NULL if there is none.
  */
 GObject *
 g_async_result_get_source_object (GAsyncResult *res)

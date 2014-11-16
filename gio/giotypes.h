@@ -259,7 +259,7 @@ typedef struct _GVolumeMonitor                GVolumeMonitor;
 
 /**
  * GAsyncReadyCallback:
- * @source_object: the object the asynchronous operation was started with.
+ * @source_object: (nullable): the object the asynchronous operation was started with.
  * @res: a #GAsyncResult.
  * @user_data: user data passed to the callback.
  *
