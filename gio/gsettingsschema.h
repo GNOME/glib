@@ -74,6 +74,9 @@ GSettingsSchemaKey *    g_settings_schema_get_key                       (GSettin
 GLIB_AVAILABLE_IN_2_40
 gboolean                g_settings_schema_has_key                       (GSettingsSchema        *schema,
                                                                          const gchar            *name);
+GLIB_AVAILABLE_IN_2_46
+gchar**                 g_settings_schema_list_keys                     (GSettingsSchema        *schema);
+
 
 GLIB_AVAILABLE_IN_2_44
 gchar **                g_settings_schema_list_children                 (GSettingsSchema        *schema);

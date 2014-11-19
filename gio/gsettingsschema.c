@@ -1036,6 +1036,8 @@ g_settings_schema_list_children (GSettingsSchema *schema)
   gint n_keys;
   gint i, j;
 
+  g_return_val_if_fail (schema != NULL, NULL);
+
   keys = g_settings_schema_list (schema, &n_keys);
   strv = g_new (gchar *, n_keys + 1);
   for (i = j = 0; i < n_keys; i++)
@@ -1050,6 +1052,45 @@ g_settings_schema_list_children (GSettingsSchema *schema)
           strv[j][length - 1] = '\0';
           j++;
         }
+    }
+  strv[j] = NULL;
+
+  return strv;
+}
+
+/**
+ * g_settings_schema_list_keys:
+ * @schema: a #GSettingsSchema
+ *
+ * Introspects the list of keys on @schema.
+ *
+ * You should probably not be calling this function from "normal" code
+ * (since you should already know what keys are in your schema).  This
+ * function is intended for introspection reasons.
+ *
+ * Returns: (transfer full) (element-type utf8): a list of the keys on
+ *   @schema
+ *
+ * Since: 2.46
+ */
+gchar **
+g_settings_schema_list_keys (GSettingsSchema *schema)
+{
+  const GQuark *keys;
+  gchar **strv;
+  gint n_keys;
+  gint i, j;
+
+  g_return_val_if_fail (schema != NULL, NULL);
+
+  keys = g_settings_schema_list (schema, &n_keys);
+  strv = g_new (gchar *, n_keys + 1);
+  for (i = j = 0; i < n_keys; i++)
+    {
+      const gchar *key = g_quark_to_string (keys[i]);
+
+      if (!g_str_has_suffix (key, "/"))
+        strv[j++] = g_strdup (key);
     }
   strv[j] = NULL;
 
