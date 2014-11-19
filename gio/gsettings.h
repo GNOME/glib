@@ -92,7 +92,7 @@ GSettings *             g_settings_new_full                             (GSettin
                                                                          const gchar        *path);
 GLIB_AVAILABLE_IN_ALL
 gchar **                g_settings_list_children                        (GSettings          *settings);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_46_FOR(g_settings_schema_list_keys)
 gchar **                g_settings_list_keys                            (GSettings          *settings);
 GLIB_DEPRECATED_IN_2_40_FOR(g_settings_schema_key_get_range)
 GVariant *              g_settings_get_range                            (GSettings          *settings,
