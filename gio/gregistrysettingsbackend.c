@@ -1654,9 +1654,6 @@ watch_start (GRegistryBackend *self)
 
   g_return_val_if_fail (self->watch == NULL, FALSE);
 
-  self->cache_lock = g_slice_new (CRITICAL_SECTION);
-  InitializeCriticalSection (self->cache_lock);
-
   watch = g_slice_new (WatchThreadState);
   watch->owner = G_SETTINGS_BACKEND (self);
 
@@ -1685,8 +1682,6 @@ watch_start (GRegistryBackend *self)
   return TRUE;
 
 fail_2:
-  DeleteCriticalSection (self->cache_lock);
-  g_slice_free (CRITICAL_SECTION, self->cache_lock);
   DeleteCriticalSection (watch->message_lock);
   g_slice_free (CRITICAL_SECTION, watch->message_lock);
   CloseHandle (watch->message_sent_event);
@@ -1720,9 +1715,7 @@ watch_stop_unlocked (GRegistryBackend *self)
 
   LeaveCriticalSection (watch->message_lock);
   DeleteCriticalSection (watch->message_lock);
-  DeleteCriticalSection (self->cache_lock);
   g_slice_free (CRITICAL_SECTION, watch->message_lock);
-  g_slice_free (CRITICAL_SECTION, self->cache_lock);
   CloseHandle (watch->message_sent_event);
   CloseHandle (watch->message_received_event);
   CloseHandle (watch->thread);
@@ -1936,6 +1929,9 @@ g_registry_backend_finalize (GObject *object)
       watch_stop_unlocked (self);
     }
 
+  DeleteCriticalSection (self->cache_lock);
+  g_slice_free (CRITICAL_SECTION, self->cache_lock);
+
   g_free (self->base_path);
 }
 
@@ -1969,6 +1965,9 @@ g_registry_backend_init (GRegistryBackend *self)
   item->name = g_strdup ("<root>");
   item->ref_count = 1;
   self->cache_root = g_node_new (item);
+
+  self->cache_lock = g_slice_new (CRITICAL_SECTION);
+  InitializeCriticalSection (self->cache_lock);
 
   self->watch = NULL;
 }
