@@ -1567,18 +1567,18 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
     case G_BUS_TYPE_MACHINE:
       system_bus = g_getenv ("DBUS_SYSTEM_BUS_ADDRESS");
       if (system_bus == NULL)
-        ret = g_strdup ("kernel:path=/dev/kdbus/0-system/bus;unix:path=/var/run/dbus/system_bus_socket");
+        ret = g_strdup ("kernel:path=/sys/fs/kdbus/0-system/bus;unix:path=/var/run/dbus/system_bus_socket");
       else
-        ret = g_strdup_printf ("kernel:path=/dev/kdbus/0-system/bus;%s", system_bus);
+        ret = g_strdup_printf ("kernel:path=/sys/fs/kdbus/0-system/bus;%s", system_bus);
       break;
 
     case G_BUS_TYPE_USER:
       session_bus = g_getenv ("DBUS_SESSION_BUS_ADDRESS");
       if (session_bus == NULL)
-        ret = g_strdup_printf ("kernel:path=/dev/kdbus/%d-user/bus;%s", getuid(),
+        ret = g_strdup_printf ("kernel:path=/sys/fs/kdbus/%d-user/bus;%s", getuid(),
                                    get_session_address_platform_specific (&local_error));
       else
-        ret = g_strdup_printf ("kernel:path=/dev/kdbus/%d-user/bus;%s", getuid(), session_bus);
+        ret = g_strdup_printf ("kernel:path=/sys/fs/kdbus/%d-user/bus;%s", getuid(), session_bus);
       break;
 
     case G_BUS_TYPE_STARTER:

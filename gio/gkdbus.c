@@ -89,8 +89,9 @@ struct _GKdbusPrivate
   gchar             *unique_name;
   guint64            unique_id;
 
-  guint64            hello_flags;
-  guint64            attach_flags;
+  guint64            flags;
+  guint64            attach_flags_send;
+  guint64            attach_flags_recv;
 
   guint              closed : 1;
   guint              inited : 1;
@@ -179,8 +180,9 @@ g_kdbus_init (GKdbus  *kdbus)
 
   kdbus->priv->kdbus_buffer = NULL;
 
-  kdbus->priv->hello_flags = 0; /* KDBUS_HELLO_ACCEPT_FD */
-  kdbus->priv->attach_flags = KDBUS_ATTACH_NAMES;
+  kdbus->priv->flags = 0; /* KDBUS_HELLO_ACCEPT_FD */
+  kdbus->priv->attach_flags_send = _KDBUS_ATTACH_ALL;
+  kdbus->priv->attach_flags_recv = _KDBUS_ATTACH_ALL;
 }
 
 
@@ -562,14 +564,15 @@ _g_kdbus_Hello (GIOStream  *stream,
          KDBUS_ALIGN8 (G_STRUCT_OFFSET (struct kdbus_item, str) + conn_name_size + 1);
 
   hello = g_alloca0 (size);
-  hello->conn_flags = kdbus->priv->hello_flags;
-  hello->attach_flags =  kdbus->priv->attach_flags;
+  hello->flags = kdbus->priv->flags;
+  hello->attach_flags_send = kdbus->priv->attach_flags_send;
+  hello->attach_flags_recv = kdbus->priv->attach_flags_recv;
   hello->size = size;
   hello->pool_size = KDBUS_POOL_SIZE;
 
   item = hello->items;
   item->size = G_STRUCT_OFFSET (struct kdbus_item, str) + conn_name_size + 1;
-  item->type = KDBUS_ITEM_CONN_NAME;
+  item->type = KDBUS_ITEM_CONN_DESCRIPTION;
   memcpy (item->str, conn_name, conn_name_size+1);
   item = KDBUS_ITEM_NEXT (item);
 
@@ -820,7 +823,7 @@ _g_kdbus_GetListNames (GDBusConnection  *connection,
 
   struct kdbus_cmd_name_list cmd = {};
   struct kdbus_name_list *name_list;
-  struct kdbus_cmd_name *name;
+  struct kdbus_name_info *name;
 
   guint64 prev_id;
   gint ret;
@@ -871,8 +874,8 @@ _g_kdbus_GetListNames (GDBusConnection  *connection,
         }
 
        KDBUS_ITEM_FOREACH(item, name, items)
-         if (item->type == KDBUS_ITEM_NAME)
-           item_name = item->str;
+         if (item->type == KDBUS_ITEM_OWNED_NAME)
+           item_name = item->name.name;
 
         if (g_dbus_is_name (item_name))
           g_variant_builder_add (builder, "s", item_name);
@@ -895,20 +898,20 @@ g_kdbus_NameHasOwner_internal (GKdbus       *kdbus,
                                const gchar  *name,
                                GError      **error)
 {
-  struct kdbus_cmd_conn_info *cmd;
+  struct kdbus_cmd_info *cmd;
   gssize size, len;
   gint ret;
 
   if (g_dbus_is_unique_name(name))
     {
-       size = G_STRUCT_OFFSET (struct kdbus_cmd_conn_info, items);
+       size = G_STRUCT_OFFSET (struct kdbus_cmd_info, items);
        cmd = g_alloca0 (size);
        cmd->id = g_ascii_strtoull (name+3, NULL, 10);
     }
   else
     {
        len = strlen(name) + 1;
-       size = G_STRUCT_OFFSET (struct kdbus_cmd_conn_info, items) + KDBUS_ITEM_SIZE(len);
+       size = G_STRUCT_OFFSET (struct kdbus_cmd_info, items) + KDBUS_ITEM_SIZE(len);
        cmd = g_alloca0 (size);
        cmd->items[0].size = KDBUS_ITEM_HEADER_SIZE + len;
        cmd->items[0].type = KDBUS_ITEM_NAME;
@@ -943,7 +946,7 @@ _g_kdbus_GetListQueuedOwners (GDBusConnection  *connection,
 
   struct kdbus_cmd_name_list cmd = {};
   struct kdbus_name_list *name_list;
-  struct kdbus_cmd_name *kname;
+  struct kdbus_name_info *kname;
 
   kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
   if (kdbus == NULL)
@@ -1066,8 +1069,8 @@ g_kdbus_GetConnInfo_internal (GDBusConnection  *connection,
   GKdbus *kdbus;
   GVariant *result;
 
-  struct kdbus_cmd_conn_info *cmd;
-  struct kdbus_conn_info *conn_info;
+  struct kdbus_cmd_info *cmd;
+  struct kdbus_info *conn_info;
   struct kdbus_item *item;
   gssize size, len;
   gint ret;
@@ -1103,21 +1106,21 @@ g_kdbus_GetConnInfo_internal (GDBusConnection  *connection,
 
   if (g_dbus_is_unique_name(name))
     {
-       size = G_STRUCT_OFFSET (struct kdbus_cmd_conn_info, items);
+       size = G_STRUCT_OFFSET (struct kdbus_cmd_info, items);
        cmd = g_alloca0 (size);
        cmd->id = g_ascii_strtoull (name+3, NULL, 10);
     }
   else
     {
        len = strlen(name) + 1;
-       size = G_STRUCT_OFFSET (struct kdbus_cmd_conn_info, items) + KDBUS_ITEM_SIZE(len);
+       size = G_STRUCT_OFFSET (struct kdbus_cmd_info, items) + KDBUS_ITEM_SIZE(len);
        cmd = g_alloca0 (size);
        cmd->items[0].size = KDBUS_ITEM_HEADER_SIZE + len;
        cmd->items[0].type = KDBUS_ITEM_NAME;
        memcpy (cmd->items[0].str, name, len);
     }
 
-  cmd->flags = KDBUS_ATTACH_NAMES;
+  cmd->flags = _KDBUS_ATTACH_ALL;
   cmd->size = size;
 
   ret = ioctl(kdbus->priv->fd, KDBUS_CMD_CONN_INFO, cmd);
@@ -1130,7 +1133,7 @@ g_kdbus_GetConnInfo_internal (GDBusConnection  *connection,
       return NULL;
     }
 
-  conn_info = (struct kdbus_conn_info *) ((guint8 *) kdbus->priv->kdbus_buffer + cmd->offset);
+  conn_info = (struct kdbus_info *) ((guint8 *) kdbus->priv->kdbus_buffer + cmd->offset);
 
   /*
   if (conn_info->flags & KDBUS_HELLO_ACTIVATOR)
