@@ -55,6 +55,12 @@ struct _GKdbus
   GKdbusPrivate *priv;
 };
 
+typedef struct
+{
+  gchar  *data;
+  gsize   size;
+} msg_part;
+
 GType                                   _g_kdbus_get_type                   (void) G_GNUC_CONST;
 
 gboolean                                _g_kdbus_open                       (GKdbus         *kdbus,
@@ -115,10 +121,31 @@ void                                    _g_kdbus_unsubscribe_name_acquired  (GDB
 
 void                                    _g_kdbus_unsubscribe_name_lost      (GDBusConnection  *connection);
 
+gsize                                   _g_kdbus_send                       (GDBusWorker      *worker,
+                                                                             GKdbus           *kdbus,
+                                                                             GDBusMessage     *dbus_msg,
+                                                                             gchar            *blob,
+                                                                             gsize             blob_size,
+                                                                             GUnixFDList      *fd_list,
+                                                                             GCancellable     *cancellable,
+                                                                             GError          **error);
+
 gssize                                  _g_kdbus_receive                    (GKdbus           *kdbus,
                                                                              GCancellable     *cancellable,
                                                                              GError          **error);
 
+GSList *                                _g_kdbus_get_last_msg_items         (GKdbus           *kdbus);
+
+gchar *                                 _g_kdbus_get_last_msg_sender        (GKdbus           *kdbus);
+
+gchar *                                 _g_kdbus_get_last_msg_destination   (GKdbus           *kdbus);
+
+gchar *                                 _g_kdbus_hexdump_all_items          (GSList           *kdbus_msg_items);
+
+void                                    _g_kdbus_release_kmsg               (GKdbus           *kdbus);
+
+void                                    _g_kdbus_attach_fds_to_msg          (GKdbus           *kdbus,
+                                                                             GUnixFDList     **fd_list);
 G_END_DECLS
 
 #endif /* __G_KDBUS_H__ */

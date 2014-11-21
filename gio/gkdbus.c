@@ -34,6 +34,7 @@
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #ifdef HAVE_SYS_FILIO_H
 # include <sys/filio.h>
@@ -42,6 +43,13 @@
 #ifdef HAVE_SYS_UIO_H
 #include <sys/uio.h>
 #endif
+
+#include <glib/gstdio.h>
+#include <gio/gio.h>
+#include <gio/gunixfdlist.h>
+
+#include "glibintl.h"
+#include "gunixfdmessage.h"
 
 #define KDBUS_POOL_SIZE (16 * 1024LU * 1024LU)
 #define KDBUS_ALIGN8(l) (((l) + 7) & ~7)
@@ -93,6 +101,16 @@ struct _GKdbusPrivate
   guint64            attach_flags_send;
   guint64            attach_flags_recv;
 
+  GString           *msg_sender;
+  GString           *msg_destination;
+  GSList            *kdbus_msg_items;
+
+  gint              *fds;
+  gint               num_fds;
+
+  gsize              bloom_size;
+  guint              bloom_n_hash;
+
   guint              closed : 1;
   guint              inited : 1;
   guint              timeout;
@@ -117,6 +135,94 @@ typedef gboolean (*GKdbusSourceFunc) (GKdbus *kdbus,
                                       GIOCondition condition,
                                       gpointer user_data);
 
+/* Hash keys for bloom filters*/
+const guint8 hash_keys[8][16] =
+{
+  {0xb9,0x66,0x0b,0xf0,0x46,0x70,0x47,0xc1,0x88,0x75,0xc4,0x9c,0x54,0xb9,0xbd,0x15},
+  {0xaa,0xa1,0x54,0xa2,0xe0,0x71,0x4b,0x39,0xbf,0xe1,0xdd,0x2e,0x9f,0xc5,0x4a,0x3b},
+  {0x63,0xfd,0xae,0xbe,0xcd,0x82,0x48,0x12,0xa1,0x6e,0x41,0x26,0xcb,0xfa,0xa0,0xc8},
+  {0x23,0xbe,0x45,0x29,0x32,0xd2,0x46,0x2d,0x82,0x03,0x52,0x28,0xfe,0x37,0x17,0xf5},
+  {0x56,0x3b,0xbf,0xee,0x5a,0x4f,0x43,0x39,0xaf,0xaa,0x94,0x08,0xdf,0xf0,0xfc,0x10},
+  {0x31,0x80,0xc8,0x73,0xc7,0xea,0x46,0xd3,0xaa,0x25,0x75,0x0f,0x9e,0x4c,0x09,0x29},
+  {0x7d,0xf7,0x18,0x4b,0x7b,0xa4,0x44,0xd5,0x85,0x3c,0x06,0xe0,0x65,0x53,0x96,0x6d},
+  {0xf2,0x77,0xe9,0x6f,0x93,0xb5,0x4e,0x71,0x9a,0x0c,0x34,0x88,0x39,0x25,0xbf,0x35}
+};
+
+
+/**
+ * _g_kdbus_get_last_msg_sender
+ *
+ */
+gchar *
+_g_kdbus_get_last_msg_sender (GKdbus  *kdbus)
+{
+  return kdbus->priv->msg_sender->str;
+}
+
+
+/**
+ * _g_kdbus_get_last_msg_destination
+ *
+ */
+gchar *
+_g_kdbus_get_last_msg_destination (GKdbus  *kdbus)
+{
+  return kdbus->priv->msg_destination->str;
+}
+
+
+/**
+ * _g_kdbus_get_last_msg_items:
+ *
+ */
+GSList *
+_g_kdbus_get_last_msg_items (GKdbus  *kdbus)
+{
+  return kdbus->priv->kdbus_msg_items;
+}
+
+
+/**
+ * g_kdbus_add_msg_part:
+ *
+ */
+static void
+g_kdbus_add_msg_part (GKdbus  *kdbus,
+                      gchar   *data,
+                      gsize    size)
+{
+  msg_part* part = g_new (msg_part, 1);
+  part->data = data;
+  part->size = size;
+  kdbus->priv->kdbus_msg_items = g_slist_append (kdbus->priv->kdbus_msg_items, part);
+}
+
+
+/**
+ * _g_kdbus_hexdump_all_items:
+ *
+ */
+gchar *
+_g_kdbus_hexdump_all_items (GSList  *kdbus_msg_items)
+{
+
+  GString *ret;
+  gint item = 1;
+  ret = g_string_new (NULL);
+
+  while (kdbus_msg_items != NULL)
+    {
+      g_string_append_printf (ret, "\n  Item %d\n", item);
+      g_string_append (ret, _g_dbus_hexdump (((msg_part*)kdbus_msg_items->data)->data, ((msg_part*)kdbus_msg_items->data)->size, 2));
+
+      kdbus_msg_items = g_slist_next(kdbus_msg_items);
+      item++;
+    }
+
+  return g_string_free (ret, FALSE);
+}
+
+
 /**
  * g_kdbus_finalize:
  *
@@ -133,6 +239,9 @@ g_kdbus_finalize (GObject  *object)
 
   if (kdbus->priv->fd != -1 && !kdbus->priv->closed)
     _g_kdbus_close (kdbus, NULL);
+
+  g_string_free (kdbus->priv->msg_sender, TRUE);
+  g_string_free (kdbus->priv->msg_destination, TRUE);
 
   if (G_OBJECT_CLASS (g_kdbus_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_kdbus_parent_class)->finalize) (object);
@@ -179,10 +288,17 @@ g_kdbus_init (GKdbus  *kdbus)
   kdbus->priv->unique_name = NULL;
 
   kdbus->priv->kdbus_buffer = NULL;
+  kdbus->priv->kdbus_msg_items = NULL;
+
+  kdbus->priv->msg_sender = g_string_new (NULL);
+  kdbus->priv->msg_destination = g_string_new (NULL);
 
   kdbus->priv->flags = 0; /* KDBUS_HELLO_ACCEPT_FD */
   kdbus->priv->attach_flags_send = _KDBUS_ATTACH_ALL;
   kdbus->priv->attach_flags_recv = _KDBUS_ATTACH_ALL;
+
+  kdbus->priv->fds = NULL;
+  kdbus->priv->num_fds = 0;
 }
 
 
@@ -288,7 +404,6 @@ kdbus_source_dispatch  (GSource      *source,
   if (kdbus->priv->timeout)
     kdbus_source->timeout_time = g_get_monotonic_time ()
                                + kdbus->priv->timeout * 1000000;
-
   else
     kdbus_source->timeout_time = 0;
 
@@ -609,11 +724,15 @@ _g_kdbus_Hello (GIOStream  *stream,
   kdbus->priv->unique_id = hello->id;
   asprintf(&kdbus->priv->unique_name, ":1.%llu", (unsigned long long) hello->id);
 
+  /* read bloom filters parameters */
+  kdbus->priv->bloom_size = (gsize) hello->bloom.size;
+  kdbus->priv->bloom_n_hash = (guint) hello->bloom.n_hash;
+
   return g_variant_new ("(s)", kdbus->priv->unique_name);
 }
 
 
-/*
+/**
  * _g_kdbus_RequestName:
  *
  */
@@ -697,7 +816,7 @@ _g_kdbus_RequestName (GDBusConnection     *connection,
 }
 
 
-/*
+/**
  * _g_kdbus_ReleaseName:
  *
  */
@@ -1198,7 +1317,7 @@ _g_kdbus_GetConnectionUnixUser (GDBusConnection  *connection,
 }
 
 
-/*
+/**
  * _g_kdbus_match_remove:
  *
  */
@@ -1221,7 +1340,7 @@ _g_kdbus_match_remove (GDBusConnection  *connection,
 }
 
 
-/*
+/**
  * _g_kdbus_subscribe_name_acquired:
  *
  */
@@ -1296,7 +1415,7 @@ _g_kdbus_subscribe_name_owner_changed (GDBusConnection  *connection,
 }
 
 
-/*
+/**
  * _g_kdbus_subscribe_name_acquired:
  *
  */
@@ -1341,7 +1460,7 @@ _g_kdbus_subscribe_name_acquired (GDBusConnection  *connection,
 }
 
 
-/*
+/**
  * _g_kdbus_subscribe_name_lost:
  *
  */
@@ -1386,7 +1505,7 @@ _g_kdbus_subscribe_name_lost (GDBusConnection  *connection,
 }
 
 
-/*
+/**
  * _g_kdbus_unsubscribe_name_acquired:
  *
  */
@@ -1400,7 +1519,7 @@ _g_kdbus_unsubscribe_name_acquired (GDBusConnection  *connection)
 }
 
 
-/*
+/**
  * _g_kdbus_unsubscribe_name_lost:
  *
  */
@@ -1415,9 +1534,334 @@ _g_kdbus_unsubscribe_name_lost (GDBusConnection  *connection)
 
 
 /**
-* g_kdbus_decode_kernel_msg:
-*
-*/
+ * _g_kdbus_release_msg:
+ *
+ */
+void
+_g_kdbus_release_kmsg (GKdbus  *kdbus)
+{
+  struct kdbus_item *item = NULL;
+  GSList *iterator = NULL;
+  guint64 offset;
+
+  offset = (guint8 *)kdbus->priv->kmsg - (guint8 *)kdbus->priv->kdbus_buffer;
+  ioctl(kdbus->priv->fd, KDBUS_CMD_FREE, &offset);
+
+  for (iterator = kdbus->priv->kdbus_msg_items; iterator; iterator = iterator->next)
+    g_free ((msg_part*)iterator->data);
+
+  g_slist_free (kdbus->priv->kdbus_msg_items);
+  kdbus->priv->kdbus_msg_items = NULL;
+
+  KDBUS_ITEM_FOREACH (item, kdbus->priv->kmsg, items)
+    {
+      if (item->type == KDBUS_ITEM_PAYLOAD_MEMFD)
+        close(item->memfd.fd);
+      else if (item->type == KDBUS_ITEM_FDS)
+        {
+          gint i;
+          gint num_fds = (item->size - G_STRUCT_OFFSET(struct kdbus_item, fds)) / sizeof(int);
+
+          for (i = 0; i < num_fds; i++)
+            close(item->fds[i]);
+        }
+    }
+}
+
+
+/**
+ * g_kdbus_append_payload_vec:
+ *
+ */
+static void
+g_kdbus_append_payload_vec (struct kdbus_item **item,
+                            const void         *data_ptr,
+                            gssize              size)
+{
+  *item = KDBUS_ALIGN8_PTR(*item);
+  (*item)->size = G_STRUCT_OFFSET (struct kdbus_item, vec) + sizeof(struct kdbus_vec);
+  (*item)->type = KDBUS_ITEM_PAYLOAD_VEC;
+  (*item)->vec.address = (guint64)((guintptr)data_ptr);
+  (*item)->vec.size = size;
+  *item = KDBUS_ITEM_NEXT(*item);
+}
+
+
+/**
+ * g_kdbus_append_payload_destiantion:
+ *
+ */
+static void
+g_kdbus_append_destination (struct kdbus_item **item,
+                            const gchar        *destination,
+                            gsize               size)
+{
+  *item = KDBUS_ALIGN8_PTR(*item);
+  (*item)->size = G_STRUCT_OFFSET (struct kdbus_item, str) + size + 1;
+  (*item)->type = KDBUS_ITEM_DST_NAME;
+  memcpy ((*item)->str, destination, size+1);
+  *item = KDBUS_ITEM_NEXT(*item);
+}
+
+
+/**
+ * g_kdbus_append_payload_bloom:
+ *
+ */
+static struct kdbus_bloom_filter *
+g_kdbus_append_bloom (struct kdbus_item **item,
+                      gsize               size)
+{
+  struct kdbus_item *bloom_item;
+
+  bloom_item = KDBUS_ALIGN8_PTR(*item);
+  bloom_item->size = G_STRUCT_OFFSET (struct kdbus_item, bloom_filter) +
+                     G_STRUCT_OFFSET (struct kdbus_bloom_filter, data) +
+                     size;
+
+  bloom_item->type = KDBUS_ITEM_BLOOM_FILTER;
+
+  *item = KDBUS_ITEM_NEXT(bloom_item);
+  return &bloom_item->bloom_filter;
+}
+
+
+/**
+ * g_kdbus_append_fds:
+ *
+ */
+static void
+g_kdbus_append_fds (struct kdbus_item **item,
+                    GUnixFDList        *fd_list)
+{
+  *item = KDBUS_ALIGN8_PTR(*item);
+  (*item)->size = G_STRUCT_OFFSET (struct kdbus_item, fds) + sizeof(int) * g_unix_fd_list_get_length(fd_list);
+  (*item)->type = KDBUS_ITEM_FDS;
+  memcpy ((*item)->fds, g_unix_fd_list_peek_fds(fd_list, NULL), sizeof(int) * g_unix_fd_list_get_length(fd_list));
+
+  *item = KDBUS_ITEM_NEXT(*item);
+}
+
+
+/**
+ * _g_kdbus_attach_fds_to_msg:
+ *
+ */
+void
+_g_kdbus_attach_fds_to_msg (GKdbus       *kdbus,
+                            GUnixFDList **fd_list)
+{
+  if ((kdbus->priv->fds != NULL) && (kdbus->priv->num_fds > 0))
+    {
+      gint n;
+
+      if (*fd_list == NULL)
+        *fd_list = g_unix_fd_list_new();
+
+      for (n = 0; n < kdbus->priv->num_fds; n++)
+        {
+          g_unix_fd_list_append (*fd_list, kdbus->priv->fds[n], NULL);
+          (void) g_close (kdbus->priv->fds[n], NULL);
+        }
+
+      g_free (kdbus->priv->fds);
+      kdbus->priv->fds = NULL;
+      kdbus->priv->num_fds = 0;
+    }
+}
+
+/**
+ * g_kdbus_bloom_add_data:
+ * Based on bus-bloom.c from systemd
+ * http://cgit.freedesktop.org/systemd/systemd/tree/src/libsystemd/sd-bus/bus-bloom.c
+ */
+static void
+g_kdbus_bloom_add_data (GKdbus      *kdbus,
+                        guint64      bloom_data [],
+                        const void  *data,
+                        gsize        n)
+{
+  guint8 hash[8];
+  guint64 bit_num;
+  guint bytes_num = 0;
+  guint cnt_1, cnt_2;
+
+  guint c = 0;
+  guint64 p = 0;
+
+  bit_num = kdbus->priv->bloom_size * 8;
+
+  if (bit_num > 1)
+    bytes_num = ((__builtin_clzll(bit_num) ^ 63U) + 7) / 8;
+
+  for (cnt_1 = 0; cnt_1 < (kdbus->priv->bloom_n_hash); cnt_1++)
+    {
+      for (cnt_2 = 0; cnt_2 < bytes_num; cnt_2++)
+        {
+          if (c <= 0)
+            {
+              g_siphash24(hash, data, n, hash_keys[cnt_1++]);
+              c += 8;
+            }
+
+          p = (p << 8ULL) | (guint64) hash[8 - c];
+          c--;
+        }
+
+      p &= bit_num - 1;
+      bloom_data[p >> 6] |= 1ULL << (p & 63);
+    }
+}
+
+
+/**
+ * g_kdbus_bloom_add_pair:
+ *
+ */
+static void
+g_kdbus_bloom_add_pair (GKdbus       *kdbus,
+                        guint64       bloom_data [],
+                        const gchar  *parameter,
+                        const gchar  *value)
+{
+  GString *data = g_string_new (NULL);
+
+  g_string_printf (data,"%s:%s",parameter,value);
+  g_kdbus_bloom_add_data(kdbus, bloom_data, data->str, data->len);
+  g_string_free (data, TRUE);
+}
+
+
+/**
+ * g_kdbus_bloom_add_prefixes:
+ *
+ */
+static void
+g_kdbus_bloom_add_prefixes (GKdbus       *kdbus,
+                            guint64       bloom_data [],
+                            const gchar  *parameter,
+                            const gchar  *value,
+                            gchar         separator)
+{
+  GString *data = g_string_new (NULL);
+
+  g_string_printf (data,"%s:%s",parameter,value);
+
+  for (;;)
+    {
+      gchar *last_sep;
+      last_sep = strrchr(data->str, separator);
+      if (!last_sep || last_sep == data->str)
+        break;
+
+      *last_sep = 0;
+      g_kdbus_bloom_add_data(kdbus, bloom_data, data->str, last_sep-(data->str));
+    }
+  g_string_free (data, TRUE);
+}
+
+
+/**
+ * g_kdbus_setup_bloom:
+ * Based on bus-bloom.c from systemd
+ * http://cgit.freedesktop.org/systemd/systemd/tree/src/libsystemd/sd-bus/bus-bloom.c
+ */
+static void
+g_kdbus_setup_bloom (GKdbus                     *kdbus,
+                     GDBusMessage               *dbus_msg,
+                     struct kdbus_bloom_filter  *bloom_filter)
+{
+  GVariant *body;
+  GVariantIter iter;
+  GVariant *child;
+
+  const gchar *message_type;
+  const gchar *interface;
+  const gchar *member;
+  const gchar *path;
+
+  void *bloom_data;
+  gint cnt = 0;
+
+  body = g_dbus_message_get_body (dbus_msg);
+  message_type = _g_dbus_enum_to_string (G_TYPE_DBUS_MESSAGE_TYPE, g_dbus_message_get_message_type (dbus_msg));
+  interface = g_dbus_message_get_interface (dbus_msg);
+  member = g_dbus_message_get_member (dbus_msg);
+  path = g_dbus_message_get_path (dbus_msg);
+
+  bloom_data = bloom_filter->data;
+  memset (bloom_data, 0, kdbus->priv->bloom_size);
+  bloom_filter->generation = 0;
+
+  g_kdbus_bloom_add_pair(kdbus, bloom_data, "message-type", message_type);
+
+  if (interface)
+    g_kdbus_bloom_add_pair(kdbus, bloom_data, "interface", interface);
+
+  if (member)
+    g_kdbus_bloom_add_pair(kdbus, bloom_data, "member", member);
+
+  if (path)
+    {
+      g_kdbus_bloom_add_pair(kdbus, bloom_data, "path", path);
+      g_kdbus_bloom_add_pair(kdbus, bloom_data, "path-slash-prefix", path);
+      g_kdbus_bloom_add_prefixes(kdbus, bloom_data, "path-slash-prefix", path, '/');
+    }
+
+  if (body != NULL)
+    {
+      g_variant_iter_init (&iter, body);
+      while ((child = g_variant_iter_next_value (&iter)))
+        {
+          gchar buf[sizeof("arg")-1 + 2 + sizeof("-slash-prefix")];
+          gchar *child_string;
+          gchar *e;
+
+          /* Is it necessary? */
+          //if (g_variant_is_container (child))
+          //  iterate_container_recursive (child);
+
+          if (!(g_variant_is_of_type (child, G_VARIANT_TYPE_STRING)) &&
+              !(g_variant_is_of_type (child, G_VARIANT_TYPE_OBJECT_PATH)) &&
+              !(g_variant_is_of_type (child, G_VARIANT_TYPE_SIGNATURE)))
+            break;
+
+          child_string = g_variant_dup_string (child, NULL);
+
+          e = stpcpy(buf, "arg");
+          if (cnt < 10)
+            *(e++) = '0' + (char) cnt;
+          else
+            {
+              *(e++) = '0' + (char) (cnt / 10);
+              *(e++) = '0' + (char) (cnt % 10);
+            }
+
+          *e = 0;
+          g_kdbus_bloom_add_pair(kdbus, bloom_data, buf, child_string);
+
+          strcpy(e, "-dot-prefix");
+          g_kdbus_bloom_add_prefixes(kdbus, bloom_data, buf, child_string, '.');
+
+          strcpy(e, "-slash-prefix");
+          g_kdbus_bloom_add_prefixes(kdbus, bloom_data, buf, child_string, '/');
+
+          g_free (child_string);
+          g_variant_unref (child);
+          cnt++;
+        }
+    }
+}
+
+
+/*
+ * TODO: g_kdbus_NameOwnerChanged_generate, g_kdbus_KernelMethodError_generate
+ */
+
+/**
+ * g_kdbus_decode_kernel_msg:
+ *
+ */
 static gssize
 g_kdbus_decode_kernel_msg (GKdbus  *kdbus)
 {
@@ -1448,7 +1892,7 @@ g_kdbus_decode_kernel_msg (GKdbus  *kdbus)
        }
     }
 
-#if 0
+
   /* Override information from the user header with data from the kernel */
   g_string_printf (kdbus->priv->msg_sender, "org.freedesktop.DBus");
 
@@ -1460,9 +1904,116 @@ g_kdbus_decode_kernel_msg (GKdbus  *kdbus)
     g_string_printf (kdbus->priv->msg_destination, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->unique_id);
   else
    g_string_printf (kdbus->priv->msg_destination, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->kmsg->dst_id);
-#endif
 
   return size;
+}
+
+
+/**
+ * g_kdbus_decode_dbus_msg:
+ *
+ */
+static gssize
+g_kdbus_decode_dbus_msg (GKdbus  *kdbus)
+{
+  struct kdbus_item *item;
+  gchar *msg_ptr;
+  gssize ret_size = 0;
+  gssize data_size = 0;
+  const gchar *destination = NULL;
+
+  KDBUS_ITEM_FOREACH(item, kdbus->priv->kmsg, items)
+    {
+      if (item->size <= KDBUS_ITEM_HEADER_SIZE)
+        g_error("[KDBUS] %llu bytes - invalid data record\n", item->size);
+
+      data_size = item->size - KDBUS_ITEM_HEADER_SIZE;
+
+      switch (item->type)
+        {
+
+         /* KDBUS_ITEM_DST_NAME */
+         case KDBUS_ITEM_DST_NAME:
+           destination = item->str;
+           break;
+
+        /* KDBUS_ITEM_PALOAD_OFF */
+        case KDBUS_ITEM_PAYLOAD_OFF:
+
+          msg_ptr = (gchar*) kdbus->priv->kmsg + item->vec.offset;
+          g_kdbus_add_msg_part (kdbus, msg_ptr, item->vec.size);
+          ret_size += item->vec.size;
+
+          break;
+
+        /* KDBUS_ITEM_PAYLOAD_MEMFD */
+        case KDBUS_ITEM_PAYLOAD_MEMFD:
+
+          msg_ptr = mmap(NULL, item->memfd.size, PROT_READ, MAP_SHARED, item->memfd.fd, 0);
+
+          if (msg_ptr == MAP_FAILED)
+            {
+              g_print ("mmap() fd=%i failed:%m", item->memfd.fd);
+              break;
+            }
+
+          g_kdbus_add_msg_part (kdbus, msg_ptr, item->memfd.size);
+          ret_size += item->memfd.size;
+
+          break;
+
+        /* KDBUS_ITEM_FDS */
+        case KDBUS_ITEM_FDS:
+
+          kdbus->priv->num_fds = data_size / sizeof(int);
+          kdbus->priv->fds = g_malloc0 (sizeof(int) * kdbus->priv->num_fds);
+          memcpy(kdbus->priv->fds, item->fds, sizeof(int) * kdbus->priv->num_fds);
+
+          break;
+
+        /* All of the following items, like CMDLINE,
+           CGROUP, etc. need some GDBUS API extensions and
+           should be implemented in the future */
+        case KDBUS_ITEM_CREDS:
+        case KDBUS_ITEM_TIMESTAMP:
+        case KDBUS_ITEM_PID_COMM:
+        case KDBUS_ITEM_TID_COMM:
+        case KDBUS_ITEM_EXE:
+        case KDBUS_ITEM_CMDLINE:
+        case KDBUS_ITEM_CGROUP:
+        case KDBUS_ITEM_AUDIT:
+        case KDBUS_ITEM_CAPS:
+        case KDBUS_ITEM_SECLABEL:
+        case KDBUS_ITEM_CONN_DESCRIPTION:
+        case KDBUS_ITEM_AUXGROUPS:
+        case KDBUS_ITEM_OWNED_NAME:
+        case KDBUS_ITEM_NAME:
+          break;
+
+        default:
+          g_error ("[KDBUS] DBUS_PAYLOAD: Unknown filed - %lld", item->type);
+          break;
+        }
+    }
+
+  /* Override information from the user header with data from the kernel */
+
+  if (kdbus->priv->kmsg->src_id == KDBUS_SRC_ID_KERNEL)
+    g_string_printf (kdbus->priv->msg_sender, "org.freedesktop.DBus");
+  else
+    g_string_printf (kdbus->priv->msg_sender, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->kmsg->src_id);
+
+  if (destination)
+    g_string_printf (kdbus->priv->msg_destination, "%s", destination);
+  else if (kdbus->priv->kmsg->dst_id == KDBUS_DST_ID_BROADCAST)
+    /* for broadcast messages we don't have to set destination */
+    ;
+  else if (kdbus->priv->kmsg->dst_id == KDBUS_DST_ID_NAME)
+    g_string_printf (kdbus->priv->msg_destination, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->unique_id);
+  else
+    g_string_printf (kdbus->priv->msg_destination, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->kmsg->dst_id);
+
+  return ret_size;
 }
 
 
@@ -1497,7 +2048,7 @@ again:
    kdbus->priv->kmsg = (struct kdbus_msg *)((guint8 *)kdbus->priv->kdbus_buffer + recv.offset);
 
    if (kdbus->priv->kmsg->payload_type == KDBUS_PAYLOAD_DBUS)
-     g_error ("Received standard dbus message - not supported yet");
+     size = g_kdbus_decode_dbus_msg (kdbus);
    else if (kdbus->priv->kmsg->payload_type == KDBUS_PAYLOAD_KERNEL)
      size = g_kdbus_decode_kernel_msg (kdbus);
    else
@@ -1510,4 +2061,177 @@ again:
      }
 
    return size;
+}
+
+
+/**
+ * _g_kdbus_send:
+ * Returns: size of data sent or -1 when error
+ */
+gsize
+_g_kdbus_send (GDBusWorker   *worker,
+               GKdbus        *kdbus,
+               GDBusMessage  *dbus_msg,
+               gchar         *blob,
+               gsize          blob_size,
+               GUnixFDList   *fd_list,
+               GCancellable  *cancellable,
+               GError       **error)
+{
+  struct kdbus_msg* kmsg;
+  struct kdbus_item *item;
+  guint64 kmsg_size = 0;
+  const gchar *name;
+  guint64 dst_id = KDBUS_DST_ID_BROADCAST;
+
+  g_return_val_if_fail (G_IS_KDBUS (kdbus), -1);
+
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return -1;
+
+  /*
+   * check destination
+   */
+  if ((name = g_dbus_message_get_destination(dbus_msg)))
+    {
+      dst_id = KDBUS_DST_ID_NAME;
+      if ((name[0] == ':') && (name[1] == '1') && (name[2] == '.'))
+        {
+          dst_id = strtoull(&name[3], NULL, 10);
+          name=NULL;
+        }
+    }
+
+  /*
+   * check and set message size
+   */
+  kmsg_size = sizeof(struct kdbus_msg);
+  kmsg_size += KDBUS_ITEM_SIZE(sizeof(struct kdbus_vec));   /* header + body */
+
+  if (fd_list != NULL && g_unix_fd_list_get_length (fd_list) > 0)
+    kmsg_size += KDBUS_ALIGN8(G_STRUCT_OFFSET(struct kdbus_item, fds) + sizeof(int) * g_unix_fd_list_get_length(fd_list));
+
+  if (name)
+    kmsg_size += KDBUS_ITEM_SIZE(strlen(name) + 1);
+  else if (dst_id == KDBUS_DST_ID_BROADCAST)
+    kmsg_size += KDBUS_ALIGN8(G_STRUCT_OFFSET(struct kdbus_item, bloom_filter) +
+                        G_STRUCT_OFFSET(struct kdbus_bloom_filter, data) +
+                        kdbus->priv->bloom_size);
+
+  kmsg = malloc(kmsg_size);
+  if (!kmsg)
+    g_error ("[KDBUS] kmsg malloc error");
+
+
+  /*
+   * set message header
+   */
+  memset(kmsg, 0, kmsg_size);
+  kmsg->size = kmsg_size;
+  kmsg->payload_type = KDBUS_PAYLOAD_DBUS;
+  kmsg->dst_id = name ? 0 : dst_id;
+  kmsg->src_id = kdbus->priv->unique_id;
+  kmsg->cookie = g_dbus_message_get_serial(dbus_msg);
+  kmsg->priority = 0;
+
+
+  /*
+   * set message flags
+   */
+  kmsg->flags = ((g_dbus_message_get_flags (dbus_msg) & G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED) ? 0 : KDBUS_MSG_FLAGS_EXPECT_REPLY) |
+                ((g_dbus_message_get_flags (dbus_msg) & G_DBUS_MESSAGE_FLAGS_NO_AUTO_START) ? KDBUS_MSG_FLAGS_NO_AUTO_START : 0);
+
+  if ((kmsg->flags) & KDBUS_MSG_FLAGS_EXPECT_REPLY)
+    kmsg->timeout_ns = 2000000000;
+  else
+    kmsg->cookie_reply = g_dbus_message_get_reply_serial(dbus_msg);
+
+
+  /*
+   * append payload
+   */
+  item = kmsg->items;
+
+  /* if we don't use memfd, send whole message as a PAYLOAD_VEC item */
+  g_kdbus_append_payload_vec (&item, blob, blob_size);
+
+
+  /*
+   * append destination or bloom filters
+   */
+  if (name)
+    g_kdbus_append_destination (&item, name, strlen(name));
+  else if (dst_id == KDBUS_DST_ID_BROADCAST)
+    {
+      struct kdbus_bloom_filter *bloom_filter;
+
+      bloom_filter = g_kdbus_append_bloom (&item, kdbus->priv->bloom_size);
+      g_kdbus_setup_bloom (kdbus, dbus_msg, bloom_filter);
+    }
+
+  /*
+   * append fds if any
+   */
+  if (fd_list != NULL && g_unix_fd_list_get_length (fd_list) > 0)
+    g_kdbus_append_fds (&item, fd_list);
+
+
+  /*
+   * send message
+   */
+//again:
+  if (ioctl(kdbus->priv->fd, KDBUS_CMD_MSG_SEND, kmsg))
+    {
+/*
+      GString *error_name;
+      error_name = g_string_new (NULL);
+
+      if(errno == EINTR)
+        {
+          g_string_free (error_name,TRUE);
+          goto again;
+        }
+      else if (errno == ENXIO)
+        {
+          g_string_printf (error_name, "Name %s does not exist", g_dbus_message_get_destination(dbus_msg));
+          g_kdbus_generate_local_error (worker,
+                                        dbus_msg,
+                                        g_variant_new ("(s)",error_name->str),
+                                        G_DBUS_ERROR_SERVICE_UNKNOWN);
+          g_string_free (error_name,TRUE);
+          return 0;
+        }
+      else if ((errno == ESRCH) || (errno == EADDRNOTAVAIL))
+        {
+          if (kmsg->flags & KDBUS_MSG_FLAGS_NO_AUTO_START)
+            {
+              g_string_printf (error_name, "Name %s does not exist", g_dbus_message_get_destination(dbus_msg));
+              g_kdbus_generate_local_error (worker,
+                                            dbus_msg,
+                                            g_variant_new ("(s)",error_name->str),
+                                            G_DBUS_ERROR_SERVICE_UNKNOWN);
+              g_string_free (error_name,TRUE);
+              return 0;
+            }
+          else
+            {
+              g_string_printf (error_name, "The name %s was not provided by any .service files", g_dbus_message_get_destination(dbus_msg));
+              g_kdbus_generate_local_error (worker,
+                                            dbus_msg,
+                                            g_variant_new ("(s)",error_name->str),
+                                            G_DBUS_ERROR_SERVICE_UNKNOWN);
+              g_string_free (error_name,TRUE);
+              return 0;
+            }
+        }
+
+      g_print ("[KDBUS] ioctl error sending kdbus message:%d (%m)\n",errno);
+      g_set_error (error, G_IO_ERROR, g_io_error_from_errno(errno), _("Error sending message - KDBUS_CMD_MSG_SEND error"));
+*/
+      g_error ("IOCTL SEND: %d\n",errno);
+      return -1;
+    }
+
+  free(kmsg);
+  return blob_size;
 }
