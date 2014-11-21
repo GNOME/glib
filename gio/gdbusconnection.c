@@ -1953,57 +1953,6 @@ g_dbus_get_name_owner (GDBusConnection  *connection,
 }
 
 /**
- * g_dbus_name_has_owner:
- * @connection: a #GDBusConnection
- * @name: a unique or well-known bus name
- * @error: return location for error or %NULL
- *
- * Synchronously checks if the specified name exists (currently has an owner).
- *
- * If @name contains a value not compatible with the D-Bus syntax and naming
- * conventions for bus names, the operation returns %NULL and @error is set.
- *
- * The calling thread is blocked until a reply is received.
- *
- * Returns: %TRUE if specified name exists (currently has an owner)
- *     If the requested name doesn't have an owner or @error is set,
- *     function returns %FALSE.
- *
- * Since: 2.4x
- */
-gboolean
-g_dbus_name_has_owner (GDBusConnection  *connection,
-                       const gchar      *name,
-                       GError          **error)
-{
-  GVariant *result;
-  gboolean ret;
-
-  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  g_return_val_if_fail (name == NULL || g_dbus_is_name (name), NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  result = NULL;
-
-  if (G_IS_KDBUS_CONNECTION (connection->stream))
-    result = _g_kdbus_NameHasOwner (connection, name, error);
-  else
-    result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
-                                          "org.freedesktop.DBus", "NameHasOwner",
-                                          g_variant_new ("(s)", name), G_VARIANT_TYPE ("(b)"),
-                                          G_DBUS_CALL_FLAGS_NONE, -1, NULL, error);
-  if (result != NULL)
-    {
-      g_variant_get (result, "(b)", &ret);
-      g_variant_unref (result);
-    }
-  else
-    ret = FALSE;
-
-  return ret;
-}
-
-/**
  * g_dbus_get_connection_pid:
  * @connection: a #GDBusConnection
  * @name: a unique or well-known bus name of the connection to query

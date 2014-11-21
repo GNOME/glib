@@ -1017,46 +1017,6 @@ _g_kdbus_GetListQueuedOwners (GDBusConnection  *connection,
 
 
 /**
- * _g_kdbus_NameHasOwner:
- *
- */
-GVariant *
-_g_kdbus_NameHasOwner (GDBusConnection  *connection,
-                       const gchar      *name,
-                       GError          **error)
-{
-  GKdbus *kdbus;
-  GVariant *result;
-
-  kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
-  if (kdbus == NULL)
-    {
-      g_set_error_literal (error,
-                           G_DBUS_ERROR,
-                           G_DBUS_ERROR_IO_ERROR,
-                           _("The connection is closed"));
-      return NULL;
-    }
-
-  if (!g_dbus_is_name (name))
-    {
-      g_set_error (error,
-                   G_DBUS_ERROR,
-                   G_DBUS_ERROR_INVALID_ARGS,
-                   "Given bus name \"%s\" is not valid", name);
-      return NULL;
-    }
-
-  if (!g_kdbus_NameHasOwner_internal (kdbus, name, error))
-    result = g_variant_new ("(b)", FALSE);
-  else
-    result = g_variant_new ("(b)", TRUE);
-
-  return result;
-}
-
-
-/**
  * g_kdbus_GetConnInfo_internal:
  *
  */

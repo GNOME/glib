@@ -93,10 +93,6 @@ GVariant *                              _g_kdbus_GetListQueuedOwners        (GDB
                                                                              const gchar      *name,
                                                                              GError          **error);
 
-GVariant *                              _g_kdbus_NameHasOwner               (GDBusConnection  *connection,
-                                                                             const gchar      *name,
-                                                                             GError          **error);
-
 GVariant *                              _g_kdbus_GetNameOwner               (GDBusConnection  *connection,
                                                                              const gchar      *name,
                                                                              GError          **error);
