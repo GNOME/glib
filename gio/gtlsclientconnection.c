@@ -103,18 +103,23 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
   /**
    * GTlsClientConnection:use-ssl3:
    *
-   * If %TRUE, tells the connection to use SSL 3.0 rather than trying
-   * to negotiate the best version of TLS or SSL to use. This can be
-   * used when talking to servers that don't implement version
-   * negotiation correctly and therefore refuse to handshake at all with
-   * a "modern" TLS handshake.
+   * If %TRUE, tells the connection to use a fallback version of TLS
+   * or SSL, rather than trying to negotiate the best version of TLS
+   * to use. This can be used when talking to servers that don't
+   * implement version negotiation correctly and therefore refuse to
+   * handshake at all with a "modern" TLS handshake.
+   *
+   * Despite the property name, the fallback version is not
+   * necessarily SSL 3.0; if SSL 3.0 has been disabled, the
+   * #GTlsClientConnection will use the next highest available version
+   * (normally TLS 1.0) as the fallback version.
    *
    * Since: 2.28
    */
   g_object_interface_install_property (iface,
 				       g_param_spec_boolean ("use-ssl3",
-							     P_("Use SSL3"),
-							     P_("Use SSL 3.0 rather than trying to use TLS 1.x"),
+							     P_("Use fallback"),
+							     P_("Use fallback version of SSL/TLS rather than most recent version"),
 							     FALSE,
 							     G_PARAM_READWRITE |
 							     G_PARAM_CONSTRUCT |
