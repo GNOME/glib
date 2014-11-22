@@ -2461,16 +2461,15 @@ dnl *********************
 dnl *** GRegex checks ***
 dnl *********************
 
-PCRE_REQUIRED_VERSION=8.13
+PCRE_REQUIRED_VERSION=8.36
 
-# Check if we should use the internal or the system-supplied pcre
-AC_ARG_WITH(pcre,
-            [AS_HELP_STRING([--with-pcre=@<:@internal/system@:>@],
-                            [whether to use system PCRE [default=internal]])])
+# Check which pcre we should use
+AC_ARG_WITH([pcre],
+            [AS_HELP_STRING([--with-pcre=@<:@pcre@:>@],
+                            [which pcre library to use (default: pcre)])],
+            [],[with_pcre=pcre])
 
-AM_CONDITIONAL(USE_SYSTEM_PCRE, [test "x$with_pcre" = xsystem])
-
-AS_IF([ test "x$with_pcre" = xsystem], [
+AS_IF([ test "x$with_pcre" != xno], [
   PKG_CHECK_MODULES(PCRE,
                     libpcre >= $PCRE_REQUIRED_VERSION)
   AC_CACHE_CHECK([for Unicode support in PCRE],glib_cv_pcre_has_unicode,[
@@ -2499,21 +2498,11 @@ AS_IF([ test "x$with_pcre" = xsystem], [
   fi
   AC_SUBST(PCRE_CFLAGS)
   AC_SUBST(PCRE_LIBS)
-  AC_DEFINE(USE_SYSTEM_PCRE, [], [using the system-supplied PCRE library])
   PCRE_REQUIRES=libpcre
   AC_SUBST(PCRE_REQUIRES)
 ], [
-  # If using gcc 4 pass -Wno-pointer-sign when compiling the internal PCRE
-  AS_IF([ test x"$GCC" = xyes], [
-    AC_MSG_CHECKING([whether compiler understands -Wno-pointer-sign])
-    save_CFLAGS="$CFLAGS"
-    CFLAGS="$CFLAGS -Wno-pointer-sign"
-    AC_TRY_COMPILE([],[],[PCRE_WARN_CFLAGS="$PCRE_WARN_CFLAGS -Wno-pointer-sign"
-                          AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
-    CFLAGS="$save_CFLAGS"
-  ])
+  AC_MSG_ERROR([building without pcre is not supported])
 ])
-AC_SUBST(PCRE_WARN_CFLAGS)
 
 dnl **********************
 dnl *** Win32 API libs ***
@@ -3599,8 +3588,6 @@ glib/Makefile
 glib/glib.stp
 glib/libcharset/Makefile
 glib/gnulib/Makefile
-glib/pcre/Makefile
-glib/update-pcre/Makefile
 glib/tests/Makefile
 gmodule/Makefile
 gmodule/gmoduleconf.h

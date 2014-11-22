@@ -26,21 +26,14 @@ PRINTF_SUBDIR = gnulib
 printf_la = gnulib/libgnulib.la
 endif 
 
-if USE_SYSTEM_PCRE
-else
-MAYBE_PCRE = pcre 
-endif
-
-SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . tests
-DIST_SUBDIRS = libcharset gnulib pcre update-pcre tests
+SUBDIRS = libcharset $(PRINTF_SUBDIR) . tests
+DIST_SUBDIRS = libcharset gnulib tests
 
 AM_CPPFLAGS = 				\
 	$(glib_INCLUDES) 		\
-	$(pcre_inc) 			\
 	-DG_LOG_DOMAIN=\"GLib\" 	\
 	$(GLIB_DEBUG_FLAGS) 		\
-	-DGLIB_COMPILATION 		\
-	-DPCRE_STATIC
+	-DGLIB_COMPILATION
 
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
@@ -339,16 +332,8 @@ glib_win32_res = glib-win32-res.o
 glib_win32_res_ldflag = -Wl,$(glib_win32_res)
 endif
 
-if USE_SYSTEM_PCRE
-pcre_lib = $(PCRE_LIBS)
-pcre_inc = $(PCRE_CFLAGS)
-else
-pcre_lib = pcre/libpcre.la
-pcre_inc =
-endif
-
-libglib_2_0_la_CFLAGS = $(AM_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS)
-libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@ $(pcre_lib) $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD)
+libglib_2_0_la_CFLAGS = $(AM_CFLAGS) $(GLIB_HIDDEN_VISIBILITY_CFLAGS) $(PCRE_CFLAGS)
+libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@ $(PCRE_LIBS) $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD)
 libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ $(glib_win32_res) $(glib_def)
 
 libglib_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
