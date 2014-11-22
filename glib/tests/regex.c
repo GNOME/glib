@@ -2159,6 +2159,20 @@ test_max_lookbehind (void)
   g_regex_unref (regex);
 }
 
+static void
+test_match_empty (void)
+{
+  GRegex *regex;
+
+  regex = g_regex_new ("a+", 0, 0, NULL);
+  g_assert_cmpint (g_regex_get_match_empty (regex), ==, FALSE);
+  g_regex_unref (regex);
+
+  regex = g_regex_new ("a*", 0, 0, NULL);
+  g_assert_cmpint (g_regex_get_match_empty (regex), ==, TRUE);
+  g_regex_unref (regex);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -2178,6 +2192,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/multiline", test_multiline);
   g_test_add_func ("/regex/explicit-crlf", test_explicit_crlf);
   g_test_add_func ("/regex/max-lookbehind", test_max_lookbehind);
+  g_test_add_func ("/regex/match-empty", test_match_empty); 
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("[A-Z]+", G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE, G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL);

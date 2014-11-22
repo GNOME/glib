@@ -1579,6 +1579,27 @@ g_regex_get_max_lookbehind (const GRegex *regex)
 }
 
 /**
+ * g_regex_get_match_empty:
+ * @regex: a #GRegex structure
+ *
+ * Returns whether the pattern matches the empty string.
+ *
+ * Returns: %TRUE if the pattern matches the emtpy string
+ *
+ * Since: 2.44
+ */
+gboolean
+g_regex_get_match_empty (const GRegex *regex)
+{
+  gint match_empty;
+
+  pcre_fullinfo (regex->pcre_re, regex->extra,
+                 PCRE_INFO_MATCH_EMPTY, &match_empty);
+
+  return match_empty != 0;
+}
+
+/**
  * g_regex_get_compile_flags:
  * @regex: a #GRegex
  *
