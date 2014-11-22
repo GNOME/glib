@@ -136,6 +136,8 @@ G_BEGIN_DECLS
  * @G_REGEX_ERROR_RAW_LOCK: switching to UTF-8 mode from the pattern is disallowed.
  *     This happens when using %G_REGEX_RAW_LOCK and the pattern contains "(*UTF)"
  *     or "(*UTF8)". Since: 2.44
+ * @G_REGEX_ERROR_VERB_UNKNOWN_OR_MALFORMED: unknown or malformed backtracing 
+ *     control verb. Same as %G_REGEX_ERROR_UNKNOWN_BACKTRACKING_CONTROL_VERB. Since: 2.44
  *
  * Error codes returned by regular expressions functions.
  *
@@ -190,6 +192,7 @@ typedef enum
   G_REGEX_ERROR_INVALID_RELATIVE_REFERENCE = 158,
   G_REGEX_ERROR_BACKTRACKING_CONTROL_VERB_ARGUMENT_FORBIDDEN = 159,
   G_REGEX_ERROR_UNKNOWN_BACKTRACKING_CONTROL_VERB  = 160,
+  G_REGEX_ERROR_VERB_UNKNOWN_OR_MALFORMED = G_REGEX_ERROR_UNKNOWN_BACKTRACKING_CONTROL_VERB,
   G_REGEX_ERROR_NUMBER_TOO_BIG = 161,
   G_REGEX_ERROR_MISSING_SUBPATTERN_NAME = 162,
   G_REGEX_ERROR_MISSING_DIGIT = 163,

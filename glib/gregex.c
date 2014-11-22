@@ -482,7 +482,7 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       *errmsg = _("an argument is not allowed for (*ACCEPT), (*FAIL), or (*COMMIT)");
       break;
     case G_REGEX_ERROR_UNKNOWN_BACKTRACKING_CONTROL_VERB:
-      *errmsg = _("(*VERB) not recognized");
+      *errmsg = _("(*VERB) not recognized or malformed");
       break;
     case G_REGEX_ERROR_NUMBER_TOO_BIG:
       *errmsg = _("number is too big");
