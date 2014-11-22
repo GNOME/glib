@@ -125,7 +125,8 @@
                               G_REGEX_NEWLINE_CRLF      | \
                               G_REGEX_NEWLINE_ANYCRLF   | \
                               G_REGEX_BSR_ANYCRLF       | \
-                              G_REGEX_JAVASCRIPT_COMPAT)
+                              G_REGEX_JAVASCRIPT_COMPAT | \
+                              G_REGEX_RAW_LOCK)
 
 /* Mask of all GRegexCompileFlags values that are (not) passed trough to PCRE */
 #define G_REGEX_COMPILE_PCRE_MASK (G_REGEX_COMPILE_MASK & ~G_REGEX_COMPILE_NONPCRE_MASK)
@@ -166,6 +167,7 @@ G_STATIC_ASSERT (G_REGEX_NEWLINE_CRLF      == PCRE_NEWLINE_CRLF);
 G_STATIC_ASSERT (G_REGEX_NEWLINE_ANYCRLF   == PCRE_NEWLINE_ANYCRLF);
 G_STATIC_ASSERT (G_REGEX_BSR_ANYCRLF       == PCRE_BSR_ANYCRLF);
 G_STATIC_ASSERT (G_REGEX_JAVASCRIPT_COMPAT == PCRE_JAVASCRIPT_COMPAT);
+G_STATIC_ASSERT (G_REGEX_RAW_LOCK          == PCRE_NEVER_UTF);
 
 G_STATIC_ASSERT (G_REGEX_MATCH_ANCHORED         == PCRE_ANCHORED);
 G_STATIC_ASSERT (G_REGEX_MATCH_NOTBOL           == PCRE_NOTBOL);
@@ -517,6 +519,9 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       break;
     case G_REGEX_ERROR_CHARACTER_VALUE_TOO_LARGE:
       *errmsg = _("character value in \\u.... sequence is too large");
+      break;
+    case G_REGEX_ERROR_RAW_LOCK:
+      *errmsg = _("switching to UTF-8 mode is disallowed");
       break;
 
     case 116: /* erroffset passed as NULL */
@@ -1302,6 +1307,7 @@ g_regex_new (const gchar         *pattern,
   g_return_val_if_fail (pattern != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   g_return_val_if_fail ((compile_options & ~G_REGEX_COMPILE_MASK) == 0, NULL);
+  g_return_val_if_fail ((compile_options & G_REGEX_RAW) || (compile_options & G_REGEX_RAW_LOCK) == 0, NULL);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, NULL);
 
   if (g_once_init_enter (&initialised))

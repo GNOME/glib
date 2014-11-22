@@ -133,6 +133,9 @@ G_BEGIN_DECLS
  *     "(*SKIP)", or "(*THEN)". Since: 2.34
  * @G_REGEX_ERROR_CHARACTER_VALUE_TOO_LARGE: the character value in the \\u sequence is
  *     too large. Since: 2.34
+ * @G_REGEX_ERROR_RAW_LOCK: switching to UTF-8 mode from the pattern is disallowed.
+ *     This happens when using %G_REGEX_RAW_LOCK and the pattern contains "(*UTF)"
+ *     or "(*UTF8)". Since: 2.44
  *
  * Error codes returned by regular expressions functions.
  *
@@ -198,7 +201,8 @@ typedef enum
   G_REGEX_ERROR_NOT_SUPPORTED_IN_CLASS = 171,
   G_REGEX_ERROR_TOO_MANY_FORWARD_REFERENCES = 172,
   G_REGEX_ERROR_NAME_TOO_LONG = 175,
-  G_REGEX_ERROR_CHARACTER_VALUE_TOO_LARGE = 176
+  G_REGEX_ERROR_CHARACTER_VALUE_TOO_LARGE = 176,
+  G_REGEX_ERROR_RAW_LOCK = 178
 } GRegexError;
 
 /**
@@ -286,6 +290,8 @@ GQuark g_regex_error_quark (void);
  *    characters '\r', '\n' and '\r\n'. Since: 2.34
  * @G_REGEX_JAVASCRIPT_COMPAT: Changes behaviour so that it is compatible with
  *     JavaScript rather than PCRE. Since: 2.34
+ * @G_REGEX_RAW_LOCK: Disallow switching to UTF-8 mode via "(*UTF)" in the pattern
+ *     being compiled. %G_REGEX_RAW must also be set when using this flag. Since: 2.44
  *
  * Flags specifying compile-time options.
  *
@@ -313,7 +319,8 @@ typedef enum
   G_REGEX_NEWLINE_CRLF      = G_REGEX_NEWLINE_CR | G_REGEX_NEWLINE_LF,
   G_REGEX_NEWLINE_ANYCRLF   = G_REGEX_NEWLINE_CR | 1 << 22,
   G_REGEX_BSR_ANYCRLF       = 1 << 23,
-  G_REGEX_JAVASCRIPT_COMPAT = 1 << 25
+  G_REGEX_JAVASCRIPT_COMPAT = 1 << 25,
+  G_REGEX_RAW_LOCK          = 1 << 16
 } GRegexCompileFlags;
 
 /**
