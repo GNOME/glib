@@ -115,6 +115,7 @@ sleepy-stream
 socket
 socket-address
 socket-client
+socket-listener
 socket-server
 srvtarget
 task
