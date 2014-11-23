@@ -57,6 +57,8 @@ GType               g_network_address_get_type     (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_ALL
 GSocketConnectable *g_network_address_new          (const gchar      *hostname,
 						    guint16           port);
+GLIB_AVAILABLE_IN_2_44
+GSocketConnectable *g_network_address_new_loopback (guint16           port);
 GLIB_AVAILABLE_IN_ALL
 GSocketConnectable *g_network_address_parse        (const gchar      *host_and_port,
 						    guint16           default_port,

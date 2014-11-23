@@ -267,6 +267,12 @@ g_network_address_parse_sockaddr (GNetworkAddress *addr)
  * Creates a new #GSocketConnectable for connecting to the given
  * @hostname and @port.
  *
+ * Note that depending on the configuration of the machine, a
+ * @hostname of `localhost` may refer to the IPv4 loopback address
+ * only, or to both IPv4 and IPv6; use
+ * g_network_address_new_loopback() to create a #GNetworkAddress that
+ * is guaranteed to resolve to both addresses.
+ *
  * Returns: (transfer full) (type GNetworkAddress): the new #GNetworkAddress
  *
  * Since: 2.22
@@ -279,6 +285,45 @@ g_network_address_new (const gchar *hostname,
                        "hostname", hostname,
                        "port", port,
                        NULL);
+}
+
+/**
+ * g_network_address_new_loopback:
+ * @port: the port
+ *
+ * Creates a new #GSocketConnectable for connecting to the local host
+ * over a loopback connection to the given @port. This is intended for
+ * use in connecting to local services which may be running on IPv4 or
+ * IPv6.
+ *
+ * The connectable will return IPv4 and IPv6 loopback addresses,
+ * regardless of how the host resolves `localhost`. By contrast,
+ * g_network_address_new() will often only return an IPv4 address when
+ * resolving `localhost`, and an IPv6 address for `localhost6`.
+ *
+ * g_network_address_get_hostname() will always return `localhost` for
+ * #GNetworkAddresses created with this constructor.
+ *
+ * Returns: (transfer full) (type GNetworkAddress): the new #GNetworkAddress
+ *
+ * Since: 2.44
+ */
+GSocketConnectable *
+g_network_address_new_loopback (guint16 port)
+{
+  GNetworkAddress *addr;
+  GList *addrs = NULL;
+
+  addr = g_object_new (G_TYPE_NETWORK_ADDRESS,
+                       "hostname", "localhost",
+                       "port", port,
+                       NULL);
+
+  addrs = g_list_append (addrs, g_inet_address_new_loopback (AF_INET6));
+  addrs = g_list_append (addrs, g_inet_address_new_loopback (AF_INET));
+  g_network_address_set_addresses (addr, addrs, 0);
+
+  return G_SOCKET_CONNECTABLE (addr);
 }
 
 /**

@@ -1867,11 +1867,12 @@ g_socket_connectable_get_type
 <TITLE>GNetworkAddress</TITLE>
 GNetworkAddress
 g_network_address_new
+g_network_address_new_loopback
+g_network_address_parse
+g_network_address_parse_uri
 g_network_address_get_hostname
 g_network_address_get_port
 g_network_address_get_scheme
-g_network_address_parse
-g_network_address_parse_uri
 <SUBSECTION Standard>
 GNetworkAddressClass
 GNetworkAddressPrivate

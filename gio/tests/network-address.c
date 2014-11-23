@@ -348,6 +348,135 @@ test_uri_scope_id (void)
   g_object_unref (addr);
 }
 
+static void
+test_loopback_basic (void)
+{
+  GNetworkAddress *addr;  /* owned */
+
+  addr = G_NETWORK_ADDRESS (g_network_address_new_loopback (666));
+
+  /* Test basic properties. */
+  g_assert_cmpstr (g_network_address_get_hostname (addr), ==, "localhost");
+  g_assert_cmpuint (g_network_address_get_port (addr), ==, 666);
+  g_assert_null (g_network_address_get_scheme (addr));
+
+  g_object_unref (addr);
+}
+
+static void
+assert_socket_address_matches (GSocketAddress *a,
+                               const gchar    *expected_address,
+                               guint16         expected_port)
+{
+  GInetSocketAddress *sa;
+  gchar *str;  /* owned */
+
+  g_assert (G_IS_INET_SOCKET_ADDRESS (a));
+
+  sa = G_INET_SOCKET_ADDRESS (a);
+  g_assert_cmpint (g_inet_socket_address_get_port (sa), ==, expected_port);
+
+  str = g_inet_address_to_string (g_inet_socket_address_get_address (sa));
+  g_assert_cmpstr (str, ==, expected_address);
+  g_free (str);
+}
+
+static void
+test_loopback_sync (void)
+{
+  GSocketConnectable *addr;  /* owned */
+  GSocketAddressEnumerator *enumerator;  /* owned */
+  GSocketAddress *a;  /* owned */
+  GError *error = NULL;
+
+  addr = g_network_address_new_loopback (616);
+  enumerator = g_socket_connectable_enumerate (addr);
+
+  /* IPv6 address. */
+  a = g_socket_address_enumerator_next (enumerator, NULL, &error);
+  g_assert_no_error (error);
+  assert_socket_address_matches (a, "::1", 616);
+  g_object_unref (a);
+
+  /* IPv4 address. */
+  a = g_socket_address_enumerator_next (enumerator, NULL, &error);
+  g_assert_no_error (error);
+  assert_socket_address_matches (a, "127.0.0.1", 616);
+  g_object_unref (a);
+
+  /* End of results. */
+  g_assert_null (g_socket_address_enumerator_next (enumerator, NULL, &error));
+  g_assert_no_error (error);
+
+  g_object_unref (enumerator);
+  g_object_unref (addr);
+}
+
+typedef struct {
+  GList/*<owned GSocketAddress> */ *addrs;  /* owned */
+  GMainLoop *loop;  /* owned */
+} AsyncData;
+
+static void
+got_addr (GObject *source_object, GAsyncResult *result, gpointer user_data)
+{
+  GSocketAddressEnumerator *enumerator;
+  AsyncData *data;
+  GSocketAddress *a;  /* owned */
+  GError *error = NULL;
+
+  enumerator = G_SOCKET_ADDRESS_ENUMERATOR (source_object);
+  data = user_data;
+
+  a = g_socket_address_enumerator_next_finish (enumerator, result, &error);
+  g_assert_no_error (error);
+
+  if (a == NULL)
+    {
+      /* End of results. */
+      data->addrs = g_list_reverse (data->addrs);
+      g_main_loop_quit (data->loop);
+    }
+  else
+    {
+      g_assert (G_IS_INET_SOCKET_ADDRESS (a));
+      data->addrs = g_list_prepend (data->addrs, a);
+
+      g_socket_address_enumerator_next_async (enumerator, NULL,
+                                              got_addr, user_data);
+    }
+}
+
+static void
+test_loopback_async (void)
+{
+  GSocketConnectable *addr;  /* owned */
+  GSocketAddressEnumerator *enumerator;  /* owned */
+  AsyncData data = { 0, };
+
+  addr = g_network_address_new_loopback (610);
+  enumerator = g_socket_connectable_enumerate (addr);
+
+  /* Get all the addresses. */
+  data.addrs = NULL;
+  data.loop = g_main_loop_new (NULL, FALSE);
+
+  g_socket_address_enumerator_next_async (enumerator, NULL, got_addr, &data);
+
+  g_main_loop_run (data.loop);
+  g_main_loop_unref (data.loop);
+
+  /* Check results. */
+  g_assert_cmpuint (g_list_length (data.addrs), ==, 2);
+  assert_socket_address_matches (data.addrs->data, "::1", 610);
+  assert_socket_address_matches (data.addrs->next->data, "127.0.0.1", 610);
+
+  g_list_free_full (data.addrs, (GDestroyNotify) g_object_unref);
+
+  g_object_unref (enumerator);
+  g_object_unref (addr);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -388,6 +517,9 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/network-address/scope-id", test_host_scope_id);
   g_test_add_func ("/network-address/uri-scope-id", test_uri_scope_id);
+  g_test_add_func ("/network-address/loopback/basic", test_loopback_basic);
+  g_test_add_func ("/network-address/loopback/sync", test_loopback_sync);
+  g_test_add_func ("/network-address/loopback/async", test_loopback_async);
 
   return g_test_run ();
 }
