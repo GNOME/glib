@@ -2296,6 +2296,15 @@ main (int argc, char *argv[])
   TEST_NEW_FAIL ("\\u0100", G_REGEX_RAW | G_REGEX_JAVASCRIPT_COMPAT, G_REGEX_ERROR_CHARACTER_VALUE_TOO_LARGE);
   TEST_NEW_FAIL ("(*UTF)", G_REGEX_RAW | G_REGEX_RAW_LOCK, G_REGEX_ERROR_RAW_LOCK);
   TEST_NEW_FAIL ("(*LIMIT_MATCH=abc)", 0, G_REGEX_ERROR_VERB_UNKNOWN_OR_MALFORMED);
+  TEST_NEW_FAIL ("\\x{100000000}", 0, G_REGEX_ERROR_CODE_TOO_LARGE);
+  TEST_NEW_FAIL ("\\o{100000000000}", 0, G_REGEX_ERROR_CODE_TOO_LARGE);
+  TEST_NEW_FAIL ("\\x{g}", 0, G_REGEX_ERROR_NON_HEX_CHARACTER);
+  TEST_NEW_FAIL ("\\o{9}", 0, G_REGEX_ERROR_NON_OCTAL_CHARACTER);
+  TEST_NEW_FAIL ("(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((())))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))", 0, G_REGEX_ERROR_NESTED_PARENTHESES_LIMIT_EXCEEDED);
+  TEST_NEW_FAIL ("[A-\\d]", 0, G_REGEX_ERROR_INVALID_RANGE_IN_CHARACTER_CLASS);
+  TEST_NEW_FAIL ("(?<0a>x)", 0, G_REGEX_ERROR_INVALID_GROUP_NAME_START);
+  TEST_NEW_FAIL ("\\x{}",0, G_REGEX_ERROR_HEX_OR_OCTAL_DIGITS_MISSING);
+  TEST_NEW_FAIL ("\\o{}",0, G_REGEX_ERROR_HEX_OR_OCTAL_DIGITS_MISSING);
 
   /* These errors can't really be tested sanely:
    * G_REGEX_ERROR_EXPRESSION_TOO_LARGE
@@ -2465,6 +2474,7 @@ main (int argc, char *argv[])
   TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "Ǆ", -1, 0, 0, TRUE);
   TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "ǅ", -1, 0, 0, TRUE);
   TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "ǆ", -1, 0, 0, TRUE);
+  TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "ǅ", -1, 0, 0, TRUE);
 
   /* TEST_MATCH_NEXT#(pattern, string, string_len, start_position, ...) */
   TEST_MATCH_NEXT0("a", "x", -1, 0);

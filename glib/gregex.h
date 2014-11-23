@@ -138,6 +138,15 @@ G_BEGIN_DECLS
  *     or "(*UTF8)". Since: 2.44
  * @G_REGEX_ERROR_VERB_UNKNOWN_OR_MALFORMED: unknown or malformed backtracing 
  *     control verb. Same as %G_REGEX_ERROR_UNKNOWN_BACKTRACKING_CONTROL_VERB. Since: 2.44
+ * @G_REGEX_ERROR_CODE_TOO_LARGE = G_REGEX_ERROR_HEX_CODE_TOO_LARGE,
+ *     Value in "\\x{...}" or "\\o{...}" sequence is too large. Since 2.44
+ * @G_REGEX_ERROR_NON_HEX_CHARACTER: Non-hexadecimal character in "\\x{...}"
+ *     sequence. Since: 2.44
+ * @G_REGEX_ERROR_NON_OCTAL_CHARACTER: Non-octal characterin "\\o{...}" sequence. Since: 2.44
+ * @G_REGEX_ERROR_MISSING_OPENING_BRACE: Opening brace missing after "\\o" sequence. Since: 2.44
+ * @G_REGEX_ERROR_NESTED_PARENTHESES_LIMIT_EXCEEDED: Parentheses are too deeply nested. Since: 2.44
+ * @G_REGEX_ERROR_INVALID_RANGE_IN_CHARACTER_CLASS: Invalid range in character class. Since: 2.44
+ * @G_REGEX_ERROR_INVALID_GROUP_NAME_START: Group name must start with non-digit character. Since: 2.44
  *
  * Error codes returned by regular expressions functions.
  *
@@ -205,7 +214,15 @@ typedef enum
   G_REGEX_ERROR_TOO_MANY_FORWARD_REFERENCES = 172,
   G_REGEX_ERROR_NAME_TOO_LONG = 175,
   G_REGEX_ERROR_CHARACTER_VALUE_TOO_LARGE = 176,
-  G_REGEX_ERROR_RAW_LOCK = 178
+  G_REGEX_ERROR_RAW_LOCK = 178,
+  G_REGEX_ERROR_CODE_TOO_LARGE = G_REGEX_ERROR_HEX_CODE_TOO_LARGE,
+  G_REGEX_ERROR_NON_HEX_CHARACTER = 179,
+  G_REGEX_ERROR_NON_OCTAL_CHARACTER = 180,
+  G_REGEX_ERROR_MISSING_OPENING_BRACE = 181,
+  G_REGEX_ERROR_NESTED_PARENTHESES_LIMIT_EXCEEDED = 182,
+  G_REGEX_ERROR_INVALID_RANGE_IN_CHARACTER_CLASS = 183,
+  G_REGEX_ERROR_INVALID_GROUP_NAME_START = 184,
+  G_REGEX_ERROR_HEX_OR_OCTAL_DIGITS_MISSING = 186
 } GRegexError;
 
 /**
@@ -295,7 +312,8 @@ GQuark g_regex_error_quark (void);
  *     JavaScript rather than PCRE. Since: 2.34
  * @G_REGEX_RAW_LOCK: Disallow switching to UTF-8 mode via "(*UTF)" in the pattern
  *     being compiled. %G_REGEX_RAW must also be set when using this flag. Since: 2.44
- *
+ * @G_REGEX_ERROR_HEX_OR_OCTAL_DIGITS_MISSING: Digits are missingin a "\\x{...}" or
+ *     "\\o{...}" sequence. Since: 2.44
  * Flags specifying compile-time options.
  *
  * Since: 2.14

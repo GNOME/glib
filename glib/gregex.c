@@ -413,8 +413,8 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
     case G_REGEX_ERROR_POSIX_COLLATING_ELEMENTS_NOT_SUPPORTED:
       *errmsg = _("POSIX collating elements are not supported");
       break;
-    case G_REGEX_ERROR_HEX_CODE_TOO_LARGE:
-      *errmsg = _("character value in \\x{...} sequence is too large");
+    case G_REGEX_ERROR_CODE_TOO_LARGE: /* also G_REGEX_ERROR_HEX_CODE_TOO_LARGE */
+      *errmsg = _("character value in \\x{...} or \\o{...} sequence is too large");
       break;
     case G_REGEX_ERROR_INVALID_CONDITION:
       *errmsg = _("invalid condition (?(0)");
@@ -522,6 +522,31 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       break;
     case G_REGEX_ERROR_RAW_LOCK:
       *errmsg = _("switching to UTF-8 mode is disallowed");
+      break;
+    case G_REGEX_ERROR_NON_HEX_CHARACTER:
+      *errmsg = _("non-hexadecimal character in \\x{...} (closing brace missing?)");
+      break;
+    case G_REGEX_ERROR_NON_OCTAL_CHARACTER:
+      *errmsg = _("non-octal character in \\o{...} (closing brace missing?)");
+      break;
+    case G_REGEX_ERROR_MISSING_OPENING_BRACE:
+      *errmsg = _("missing opening brace after \\o");
+      break;
+    case 119:
+    case 185:
+      *errcode = G_REGEX_ERROR_NESTED_PARENTHESES_LIMIT_EXCEEDED;
+      /* fall-through */
+    case G_REGEX_ERROR_NESTED_PARENTHESES_LIMIT_EXCEEDED:
+      *errmsg = _("parentheses are too deeply nested");
+      break;
+    case G_REGEX_ERROR_INVALID_RANGE_IN_CHARACTER_CLASS:
+      *errmsg = _("invalid range in character class");
+      break;
+    case G_REGEX_ERROR_INVALID_GROUP_NAME_START:
+      *errmsg = _("group name must start with a non-digit");
+      break;
+    case G_REGEX_ERROR_HEX_OR_OCTAL_DIGITS_MISSING:
+      *errmsg = _("digits missing in \\x{} or \\o{}");
       break;
 
     case 116: /* erroffset passed as NULL */
