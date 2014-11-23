@@ -56,6 +56,7 @@ test_programs = \
 	simple-proxy				\
 	sleepy-stream				\
 	socket					\
+	socket-listener				\
 	srvtarget				\
 	task					\
 	tls-interaction				\

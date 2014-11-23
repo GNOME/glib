@@ -116,6 +116,7 @@ stream-rw_all
 socket
 socket-address
 socket-client
+socket-listener
 socket-server
 srvtarget
 task
