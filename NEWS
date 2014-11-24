@@ -1,3 +1,30 @@
+Overview of changes in GLib 2.43.1
+==================================
+
+* GQueue now accepts NULL as a sibling in g_queue_insert_before() and
+  g_queue_insert_after()
+
+* Bugs fixed:
+  11059 Linux poll issue
+ 726037 Add G_PARAM_READWRITE value to the GParamFlags enumeration
+ 727988 GMemoryOutputStream hangs when writing more than 1GiB
+ 729739 tlscertificate: add support for loading certificate chains
+ 733791 GSettings: delay backend subscription
+ 736286 Clarify g_file_replace behavior with etags
+ 736620 GQueue: accept NULL sibling for insert_before() and insert_after()
+ 737150 GLib-GIO-WARNING **: Failed to parse translated string 'visible-name...
+ 737160 unhelpful error message
+ 738259 GDBusInterfaceVTable: clarify memory handling for the method() virt...
+ 738551 'interface' variable conflicts with Windows defines
+ 738633 Need to disable SSLv3 in glib-networking
+ 740157 <app> --help doesn't work even when options were added
+ 740309 Fix docs in g_strfreev
+ 740413 Fix the GSettings Registry Backend 
+
+* Translation updates:
+ Norwegian bokmål
+
+
 Overview of changes in GLib 2.43.0
 ==================================
 
