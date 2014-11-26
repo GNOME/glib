@@ -1234,14 +1234,16 @@ g_kdbus_GetConnInfo_internal (GDBusConnection  *connection,
    {
       switch (item->type)
         {
-          case KDBUS_ITEM_CREDS:
+          case KDBUS_ITEM_PIDS:
 
             if (flag == G_BUS_CREDS_PID)
               {
-                guint pid = item->creds.pid;
+                guint pid = item->pids.pid;
                 result = g_variant_new ("(u)", pid);
                 goto exit;
-               }
+              }
+
+          case KDBUS_ITEM_CREDS:
 
             if (flag == G_BUS_CREDS_UID)
               {
@@ -1257,8 +1259,10 @@ g_kdbus_GetConnInfo_internal (GDBusConnection  *connection,
           case KDBUS_ITEM_CMDLINE:
           case KDBUS_ITEM_CGROUP:
           case KDBUS_ITEM_CAPS:
-          case KDBUS_ITEM_NAME:
           case KDBUS_ITEM_AUDIT:
+          case KDBUS_ITEM_CONN_DESCRIPTION:
+          case KDBUS_ITEM_AUXGROUPS:
+          case KDBUS_ITEM_OWNED_NAME:
             break;
         }
    }
@@ -1988,6 +1992,7 @@ g_kdbus_decode_dbus_msg (GKdbus  *kdbus)
         case KDBUS_ITEM_AUXGROUPS:
         case KDBUS_ITEM_OWNED_NAME:
         case KDBUS_ITEM_NAME:
+        case KDBUS_ITEM_PIDS:
           break;
 
         default:
