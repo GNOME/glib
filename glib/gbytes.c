@@ -26,12 +26,53 @@
 #include <glib/garray.h>
 #include <glib/gstrfuncs.h>
 #include <glib/gatomic.h>
+#include <glib/gmappedfile.h>
+#include <glib/gstdio.h>
 #include <glib/gslice.h>
 #include <glib/gtestutils.h>
 #include <glib/gmem.h>
 #include <glib/gmessages.h>
 
 #include <string.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#ifdef HAVE_LINUX_MEMFD_H
+#include <fcntl.h>
+#include <linux/memfd.h>
+#include <unistd.h>
+/* FIXME: Use a similar approach to systemd/src/shared/missing.h */
+#ifndef F_LINUX_SPECIFIC_BASE
+#define F_LINUX_SPECIFIC_BASE 1024
+#endif
+
+#ifndef F_SETPIPE_SZ
+#define F_SETPIPE_SZ (F_LINUX_SPECIFIC_BASE + 7)
+#endif
+
+#ifndef F_GETPIPE_SZ
+#define F_GETPIPE_SZ (F_LINUX_SPECIFIC_BASE + 8)
+#endif
+
+#ifndef F_ADD_SEALS
+#define F_ADD_SEALS (F_LINUX_SPECIFIC_BASE + 9)
+#define F_GET_SEALS (F_LINUX_SPECIFIC_BASE + 10)
+
+#define F_SEAL_SEAL     0x0001  /* prevent further seals from being set */
+#define F_SEAL_SHRINK   0x0002  /* prevent file from shrinking */
+#define F_SEAL_GROW     0x0004  /* prevent file from growing */
+#define F_SEAL_WRITE    0x0008  /* prevent writes */
+#endif
+
+#ifndef MFD_ALLOW_SEALING
+#define MFD_ALLOW_SEALING 0x0002U
+#endif
+
+#ifndef MFD_CLOEXEC
+#define MFD_CLOEXEC 0x0001U
+#endif
+/* end FIXME. */
+#endif
 
 /**
  * GBytes:
@@ -69,8 +110,10 @@ struct _GBytes
   gconstpointer data;  /* may be NULL iff (size == 0) */
   gsize size;  /* may be 0 */
   gint ref_count;
+  gint fd; /* -1 when data is not backed by an fd. */
   GDestroyNotify free_func;
-  gpointer user_data;
+  gpointer user_data; /* used to store a GMappedFile when backed by an fd (and
+                       * only after g_bytes_get_data() has been called. */
 };
 
 /**
@@ -94,6 +137,104 @@ g_bytes_new (gconstpointer data,
   g_return_val_if_fail (data != NULL || size == 0, NULL);
 
   return g_bytes_new_take (g_memdup (data, size), size);
+}
+
+/*
+ * _g_bytes_new_internal:
+ * Same as g_bytes_new_with_free_func() except for the fd parameter, used by
+ * g_bytes_new_take_fd().
+ */
+static GBytes *
+_g_bytes_new_internal (gconstpointer  data,
+                       gsize          size,
+                       gint           fd,
+                       GDestroyNotify free_func,
+                       gpointer       user_data)
+{
+  GBytes *bytes;
+
+  g_return_val_if_fail (data != NULL || fd != -1, NULL);
+
+  bytes = g_slice_new (GBytes);
+  bytes->data = data;
+  bytes->size = size;
+  bytes->fd = fd;
+  bytes->free_func = free_func;
+  bytes->user_data = user_data;
+  bytes->ref_count = 1;
+
+  return (GBytes *)bytes;
+}
+
+static void
+unref_mapped_file (gpointer data)
+{
+  if (data != NULL)
+    {
+      g_mapped_file_unref ((GMappedFile *)data);
+    }
+}
+
+/**
+ * g_bytes_new_take_fd:
+ * @fd: the file descriptor containg data from which to create a #GBytes
+ *
+ * Creates a new #GBytes from @fd.
+ *
+ * This call "consumes" the file descriptor, transferring ownership to the
+ * returned #GBytes.
+ *
+ * Returns: (transfer full): a new #GBytes
+ *
+ * Since: 2.44
+ */
+GBytes *
+g_bytes_new_take_fd (gint fd)
+{
+#ifdef HAVE_LINUX_MEMFD_H
+  gint seals;
+  const gint IMMUTABLE_SEALS = F_SEAL_WRITE |
+                               F_SEAL_SHRINK |
+                               F_SEAL_GROW |
+                               F_SEAL_SEAL;
+#endif /* HAVE_LINUX_MEMFD_H */
+  gint error;
+  struct stat sb;
+
+#ifdef HAVE_LINUX_MEMFD_H
+  /* FIXME: seal the fd if possible (only on Linux 3.17+, and if the fd was
+   * created with memfd_create()). */
+  /* FIXME: Check if the provided fd is one of the standard ones, and warn? */
+  seals = fcntl (fd, F_GET_SEALS);
+  if (seals == -1)
+    {
+      g_debug ("Retrieving fd seals failed: %s", g_strerror (errno));
+    }
+
+  /* Seal the fd, if it is not already. */
+  if ((seals & (IMMUTABLE_SEALS)) >= IMMUTABLE_SEALS)
+    {
+      g_debug ("%s", "fd already sealed");
+    }
+  else
+    {
+      error = fcntl (fd, F_ADD_SEALS, IMMUTABLE_SEALS);
+      if (error == -1)
+        {
+          g_debug ("fd sealing failed: %s", g_strerror (errno));
+          /* FIXME: use shm_open() on non-Linux, or when memfd_create() is
+           * otherwise unavailable? */
+        }
+    }
+#endif /* HAVE_LINUX_MEMFD_H */
+
+  error = fstat (fd, &sb);
+  if (error == -1)
+    {
+      g_debug ("fstat() on fd failed: %s", g_strerror (errno));
+    }
+
+  return _g_bytes_new_internal (NULL, sb.st_size, fd, NULL, unref_mapped_file);
 }
 
 /**
@@ -176,18 +317,9 @@ g_bytes_new_with_free_func (gconstpointer  data,
                             GDestroyNotify free_func,
                             gpointer       user_data)
 {
-  GBytes *bytes;
-
   g_return_val_if_fail (data != NULL || size == 0, NULL);
 
-  bytes = g_slice_new (GBytes);
-  bytes->data = data;
-  bytes->size = size;
-  bytes->free_func = free_func;
-  bytes->user_data = user_data;
-  bytes->ref_count = 1;
-
-  return (GBytes *)bytes;
+  return _g_bytes_new_internal (data, size, -1, free_func, user_data);
 }
 
 /**
@@ -242,9 +374,38 @@ gconstpointer
 g_bytes_get_data (GBytes *bytes,
                   gsize *size)
 {
+  GError *error = NULL;
+
   g_return_val_if_fail (bytes != NULL, NULL);
+
   if (size)
     *size = bytes->size;
+
+  if (bytes->fd > -1)
+    {
+      if (bytes->user_data == NULL)
+        {
+          bytes->user_data = g_mapped_file_new_from_fd (bytes->fd, FALSE,
+                                                        &error);
+          if (bytes->user_data == NULL)
+            {
+              g_debug ("Failed to map fd: %s", error->message);
+              *size = 0;
+              return NULL;
+            }
+
+          *size = g_mapped_file_get_length (bytes->user_data);
+          if (*size != bytes->size)
+            {
+              g_debug ("Mapped size differs from that returned by fstat(): %"
+                       G_GSIZE_FORMAT " versus %" G_GOFFSET_FORMAT, *size,
+                       bytes->size);
+            }
+
+          bytes->data = g_mapped_file_get_contents (bytes->user_data);
+        }
+    }
+
   return bytes->data;
 }
 
@@ -461,6 +622,11 @@ g_bytes_unref_to_data (GBytes *bytes,
        * Copy: Non g_malloc (or compatible) allocator, or static memory,
        * so we have to copy, and then unref.
        */
+      if (!bytes->data && bytes->fd > -1)
+        {
+          /* Map the fd if the data is to be copied. */
+          g_bytes_get_data (bytes, NULL);
+        }
       result = g_memdup (bytes->data, bytes->size);
       *size = bytes->size;
       g_bytes_unref (bytes);

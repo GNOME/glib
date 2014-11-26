@@ -2470,6 +2470,7 @@ g_byte_array_free_to_bytes
 GBytes
 g_bytes_new
 g_bytes_new_take
+g_bytes_new_take_fd
 g_bytes_new_static
 g_bytes_new_with_free_func
 g_bytes_new_from_bytes

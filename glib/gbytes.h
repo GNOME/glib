@@ -39,6 +39,9 @@ GLIB_AVAILABLE_IN_ALL
 GBytes *        g_bytes_new_take                (gpointer        data,
                                                  gsize           size);
 
+GLIB_AVAILABLE_IN_2_44
+GBytes *        g_bytes_new_take_fd             (gint            fd);
+
 GLIB_AVAILABLE_IN_ALL
 GBytes *        g_bytes_new_static              (gconstpointer   data,
                                                  gsize           size);
