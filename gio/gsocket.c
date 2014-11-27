@@ -44,6 +44,10 @@
 # include <sys/ioctl.h>
 #endif
 
+#ifdef HAVE_SIOCGIFADDR
+#include <net/if.h>
+#endif
+
 #ifdef HAVE_SYS_FILIO_H
 # include <sys/filio.h>
 #endif
@@ -59,6 +63,7 @@
 #include "gdatagrambased.h"
 #include "gioenumtypes.h"
 #include "ginetaddress.h"
+#include "ginetsocketaddress.h"
 #include "ginitable.h"
 #include "gioerror.h"
 #include "gioenums.h"
@@ -2272,6 +2277,9 @@ g_socket_multicast_group_operation (GSocket       *socket,
  * in RFC 4604 is used. Note that on older platforms this may fail
  * with a %G_IO_ERROR_NOT_SUPPORTED error.
  *
+ * To bind to a given source-specific multicast address, use
+ * g_socket_join_multicast_group_ssm() instead.
+ *
  * Returns: %TRUE on success, %FALSE on error.
  *
  * Since: 2.32
@@ -2301,6 +2309,9 @@ g_socket_join_multicast_group (GSocket       *socket,
  * @socket remains bound to its address and port, and can still receive
  * unicast messages after calling this.
  *
+ * To unbind to a given source-specific multicast address, use
+ * g_socket_leave_multicast_group_ssm() instead.
+ *
  * Returns: %TRUE on success, %FALSE on error.
  *
  * Since: 2.32
@@ -2313,6 +2324,282 @@ g_socket_leave_multicast_group (GSocket       *socket,
 				GError       **error)
 {
   return g_socket_multicast_group_operation (socket, group, source_specific, iface, FALSE, error);
+}
+
+static gboolean
+g_socket_multicast_group_operation_ssm (GSocket       *socket,
+                                        GInetAddress  *group,
+                                        GInetAddress  *source_specific,
+                                        const gchar   *iface,
+                                        gboolean       join_group,
+                                        GError       **error)
+{
+  gint result;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
+  g_return_val_if_fail (socket->priv->type == G_SOCKET_TYPE_DATAGRAM, FALSE);
+  g_return_val_if_fail (G_IS_INET_ADDRESS (group), FALSE);
+  g_return_val_if_fail (iface == NULL || *iface != '\0', FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (!source_specific)
+    {
+      return g_socket_multicast_group_operation (socket, group, FALSE, iface,
+                                                 join_group, error);
+    }
+
+  if (!check_socket (socket, error))
+    return FALSE;
+
+  switch (g_inet_address_get_family (group))
+    {
+    case G_SOCKET_FAMILY_INVALID:
+    case G_SOCKET_FAMILY_UNIX:
+      {
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+            join_group ?
+            _("Error joining multicast group: %s") :
+            _("Error leaving multicast group: %s"),
+            _("Unsupported socket family"));
+        return FALSE;
+      }
+      break;
+
+    case G_SOCKET_FAMILY_IPV4:
+      {
+#ifdef IP_ADD_SOURCE_MEMBERSHIP
+        gint optname;
+        struct ip_mreq_source mc_req_src;
+
+        if (g_inet_address_get_family (source_specific) !=
+            G_SOCKET_FAMILY_IPV4)
+          {
+            g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                join_group ?
+                _("Error joining multicast group: %s") :
+                _("Error leaving multicast group: %s"),
+                _("source-specific not an IPv4 address"));
+            return FALSE;
+          }
+
+        memset (&mc_req_src, 0, sizeof (mc_req_src));
+
+        /* By default use the default IPv4 multicast interface. */
+        mc_req_src.imr_interface.s_addr = g_htonl (INADDR_ANY);
+
+        if (iface)
+          {
+#if defined(G_OS_WIN32) && defined (HAVE_IF_NAMETOINDEX)
+            guint iface_index = if_nametoindex (iface);
+            if (iface_index == 0)
+              {
+                int errsv = errno;
+
+                g_set_error (error, G_IO_ERROR,  g_io_error_from_errno (errsv),
+                             _("Interface not found: %s"), g_strerror (errsv));
+                return FALSE;
+              }
+            /* (0.0.0.iface_index) only works on Windows. */
+            mc_req_src.imr_interface.s_addr = g_htonl (iface_index);
+#elif defined (HAVE_SIOCGIFADDR)
+            int ret;
+            struct ifreq ifr;
+            struct sockaddr_in *iface_addr;
+            size_t if_name_len = strlen (iface);
+
+            memset (&ifr, 0, sizeof (ifr));
+
+            if (if_name_len >= sizeof (ifr.ifr_name))
+              {
+                g_set_error (error, G_IO_ERROR,  G_IO_ERROR_FILENAME_TOO_LONG,
+                             _("Interface name too long"));
+                return FALSE;
+              }
+
+            memcpy (ifr.ifr_name, iface, if_name_len);
+
+            /* Get the IPv4 address of the given network interface name. */
+            ret = ioctl (socket->priv->fd, SIOCGIFADDR, &ifr);
+            if (ret < 0)
+              {
+                int errsv = errno;
+
+                g_set_error (error, G_IO_ERROR,  g_io_error_from_errno (errsv),
+                             _("Interface not found: %s"), g_strerror (errsv));
+                return FALSE;
+              }
+
+            iface_addr = (struct sockaddr_in *) &ifr.ifr_addr;
+            mc_req_src.imr_interface.s_addr = iface_addr->sin_addr.s_addr;
+#endif  /* defined(G_OS_WIN32) && defined (HAVE_IF_NAMETOINDEX) */
+          }
+        memcpy (&mc_req_src.imr_multiaddr, g_inet_address_to_bytes (group),
+                g_inet_address_get_native_size (group));
+        memcpy (&mc_req_src.imr_sourceaddr,
+                g_inet_address_to_bytes (source_specific),
+                g_inet_address_get_native_size (source_specific));
+
+        optname =
+            join_group ? IP_ADD_SOURCE_MEMBERSHIP : IP_DROP_SOURCE_MEMBERSHIP;
+        result = setsockopt (socket->priv->fd, IPPROTO_IP, optname,
+                             &mc_req_src, sizeof (mc_req_src));
+#else
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+            join_group ?
+            _("Error joining multicast group: %s") :
+            _("Error leaving multicast group: %s"),
+            _("No support for IPv4 source-specific multicast"));
+        return FALSE;
+#endif  /* IP_ADD_SOURCE_MEMBERSHIP */
+      }
+      break;
+
+    case G_SOCKET_FAMILY_IPV6:
+      {
+#ifdef MCAST_JOIN_SOURCE_GROUP
+        gboolean res;
+        gint optname;
+        struct group_source_req mc_req_src;
+        GSocketAddress *saddr_group, *saddr_source_specific;
+        guint iface_index = 0;
+
+#if defined (HAVE_IF_NAMETOINDEX)
+        if (iface)
+          {
+            iface_index = if_nametoindex (iface);
+            if (iface_index == 0)
+              {
+                int errsv = errno;
+
+                g_set_error (error, G_IO_ERROR,  g_io_error_from_errno (errsv),
+                             _("Interface not found: %s"), g_strerror (errsv));
+                return FALSE;
+              }
+          }
+#endif  /* defined (HAVE_IF_NAMETOINDEX) */
+        mc_req_src.gsr_interface = iface_index;
+
+        saddr_group = g_inet_socket_address_new (group, 0);
+        res = g_socket_address_to_native (saddr_group, &mc_req_src.gsr_group,
+                                          sizeof (mc_req_src.gsr_group),
+                                          error);
+        g_object_unref (saddr_group);
+        if (!res)
+          return FALSE;
+
+        saddr_source_specific = g_inet_socket_address_new (source_specific, 0);
+        res = g_socket_address_to_native (saddr_source_specific,
+                                          &mc_req_src.gsr_source,
+                                          sizeof (mc_req_src.gsr_source),
+                                          error);
+        g_object_unref (saddr_source_specific);
+
+        if (!res)
+          return FALSE;
+
+        optname =
+            join_group ? MCAST_JOIN_SOURCE_GROUP : MCAST_LEAVE_SOURCE_GROUP;
+        result = setsockopt (socket->priv->fd, IPPROTO_IPV6, optname,
+                             &mc_req_src, sizeof (mc_req_src));
+#else
+        g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+            join_group ?
+            _("Error joining multicast group: %s") :
+            _("Error leaving multicast group: %s"),
+            _("No support for IPv6 source-specific multicast"));
+        return FALSE;
+#endif  /* MCAST_JOIN_SOURCE_GROUP */
+      }
+      break;
+
+    default:
+      g_return_val_if_reached (FALSE);
+    }
+
+  if (result < 0)
+    {
+      int errsv = get_socket_errno ();
+
+      g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
+          join_group ?
+          _("Error joining multicast group: %s") :
+          _("Error leaving multicast group: %s"),
+           socket_strerror (errsv));
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+/**
+ * g_socket_join_multicast_group_ssm:
+ * @socket: a #GSocket.
+ * @group: a #GInetAddress specifying the group address to join.
+ * @source_specific: (nullable): a #GInetAddress specifying the
+ * source-specific multicast address or %NULL to ignore.
+ * @iface: (nullable): Name of the interface to use, or %NULL
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Registers @socket to receive multicast messages sent to @group.
+ * @socket must be a %G_SOCKET_TYPE_DATAGRAM socket, and must have
+ * been bound to an appropriate interface and port with
+ * g_socket_bind().
+ *
+ * If @iface is %NULL, the system will automatically pick an interface
+ * to bind to based on @group.
+ *
+ * If @source_specific is not %NULL, use source-specific multicast as
+ * defined in RFC 4604. Note that on older platforms this may fail
+ * with a %G_IO_ERROR_NOT_SUPPORTED error.
+ *
+ * Note that this function can be called multiple times for the same
+ * @group with different @source_specific in order to receive multicast
+ * packets from more than one source.
+ *
+ * Returns: %TRUE on success, %FALSE on error.
+ *
+ * Since: 2.56
+ */
+gboolean
+g_socket_join_multicast_group_ssm (GSocket       *socket,
+                                   GInetAddress  *group,
+                                   GInetAddress  *source_specific,
+                                   const gchar   *iface,
+                                   GError       **error)
+{
+  return g_socket_multicast_group_operation_ssm (socket, group,
+      source_specific, iface, TRUE, error);
+}
+
+/**
+ * g_socket_leave_multicast_group_ssm:
+ * @socket: a #GSocket.
+ * @group: a #GInetAddress specifying the group address to leave.
+ * @source_specific: (nullable): a #GInetAddress specifying the
+ * source-specific multicast address or %NULL to ignore.
+ * @iface: (nullable): Name of the interface to use, or %NULL
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Removes @socket from the multicast group defined by @group, @iface,
+ * and @source_specific (which must all have the same values they had
+ * when you joined the group).
+ *
+ * @socket remains bound to its address and port, and can still receive
+ * unicast messages after calling this.
+ *
+ * Returns: %TRUE on success, %FALSE on error.
+ *
+ * Since: 2.56
+ */
+gboolean
+g_socket_leave_multicast_group_ssm (GSocket       *socket,
+                                    GInetAddress  *group,
+                                    GInetAddress  *source_specific,
+                                    const gchar   *iface,
+                                    GError       **error)
+{
+  return g_socket_multicast_group_operation_ssm (socket, group,
+      source_specific, iface, FALSE, error);
 }
 
 /**

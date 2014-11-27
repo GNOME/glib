@@ -2095,6 +2095,8 @@ g_socket_get_credentials
 <SUBSECTION>
 g_socket_join_multicast_group
 g_socket_leave_multicast_group
+g_socket_join_multicast_group_ssm
+g_socket_leave_multicast_group_ssm
 g_socket_get_multicast_loopback
 g_socket_set_multicast_loopback
 g_socket_get_multicast_ttl

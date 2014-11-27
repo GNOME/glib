@@ -951,6 +951,22 @@ fi
 
 AC_CHECK_FUNCS(endservent if_nametoindex if_indextoname sendmmsg recvmmsg)
 
+AC_MSG_CHECKING([for SIOCGIFADDR])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+    [[
+        #include <sys/ioctl.h>
+        #include <net/if.h>
+    ]],
+    [[
+        struct ifreq ifr;
+        ioctl(0, SIOCGIFADDR, &ifr);
+    ]])], [
+        AC_MSG_RESULT(yes)
+        AC_DEFINE(HAVE_SIOCGIFADDR, 1, [SIOCGIFADDR is available])
+    ], [
+        AC_MSG_RESULT(no)
+])
+
 AS_IF([test $glib_native_win32 = yes], [
   # <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for
   # inline workarounds for getaddrinfo, getnameinfo and freeaddrinfo if

@@ -157,6 +157,18 @@ gboolean               g_socket_leave_multicast_group   (GSocket                
                                                          gboolean                 source_specific,
                                                          const gchar             *iface,
                                                          GError                 **error);
+GLIB_AVAILABLE_IN_2_56
+gboolean               g_socket_join_multicast_group_ssm    (GSocket                 *socket,
+                                                             GInetAddress            *group,
+                                                             GInetAddress            *source_specific,
+                                                             const gchar             *iface,
+                                                             GError                 **error);
+GLIB_AVAILABLE_IN_2_56
+gboolean               g_socket_leave_multicast_group_ssm   (GSocket                 *socket,
+                                                             GInetAddress            *group,
+                                                             GInetAddress            *source_specific,
+                                                             const gchar             *iface,
+                                                             GError                 **error);
 GLIB_AVAILABLE_IN_ALL
 gboolean               g_socket_connect                 (GSocket                 *socket,
 							 GSocketAddress          *address,

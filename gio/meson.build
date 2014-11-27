@@ -93,6 +93,18 @@ if host_system != 'windows'
                  name : 'struct ip_mreqn')
     glib_conf.set('HAVE_IP_MREQN', '/**/')
   endif
+
+  if cc.compiles('''#include <sys/ioctl.h>
+                    #include <net/if.h>
+                    int main (int argc, char ** argv) {
+                      struct ifreq ifr;
+                      ioctl(0, SIOCGIFADDR, &ifr);
+                      return 0;
+                    }''',
+                 name : 'ioctl with request SIOCGIFADDR')
+    glib_conf.set('HAVE_SIOCGIFADDR', '/**/')
+  endif
+
 endif
 
 network_args_string = ''

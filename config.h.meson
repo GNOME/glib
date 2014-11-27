@@ -364,6 +364,9 @@
 /* Define if you have the 'sig_atomic_t' type. */
 #mesondefine HAVE_SIG_ATOMIC_T
 
+/* Define if there is support for the ioctl request SIOCGIFADDR. */
+#mesondefine HAVE_SIOCGIFADDR
+
 /* Define to 1 if you have the `snprintf' function. */
 #mesondefine HAVE_SNPRINTF
 
