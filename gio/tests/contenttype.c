@@ -199,21 +199,6 @@ test_description (void)
   g_free (type);
 }
 
-static gboolean
-strv_contains (const gchar * const *strv,
-               const gchar  *s)
-{
-  gint i;
-
-  for (i = 0; strv[i]; i++)
-    {
-      if (g_strcmp0 (strv[i], s) == 0)
-        return TRUE;
-    }
-
-  return FALSE;
-}
-
 static void
 test_icon (void)
 {
@@ -228,8 +213,8 @@ test_icon (void)
       const gchar *const *names;
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
-      g_assert (strv_contains (names, "text-plain"));
-      g_assert (strv_contains (names, "text-x-generic"));
+      g_assert (g_strv_contains (names, "text-plain"));
+      g_assert (g_strv_contains (names, "text-x-generic"));
     }
   g_object_unref (icon);
   g_free (type);
@@ -242,8 +227,8 @@ test_icon (void)
       const gchar *const *names;
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
-      g_assert (strv_contains (names, "application-rtf"));
-      g_assert (strv_contains (names, "x-office-document"));
+      g_assert (g_strv_contains (names, "application-rtf"));
+      g_assert (g_strv_contains (names, "x-office-document"));
     }
   g_object_unref (icon);
   g_free (type);
@@ -263,10 +248,10 @@ test_symbolic_icon (void)
       const gchar *const *names;
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
-      g_assert (strv_contains (names, "text-plain-symbolic"));
-      g_assert (strv_contains (names, "text-x-generic-symbolic"));
-      g_assert (strv_contains (names, "text-plain"));
-      g_assert (strv_contains (names, "text-x-generic"));
+      g_assert (g_strv_contains (names, "text-plain-symbolic"));
+      g_assert (g_strv_contains (names, "text-x-generic-symbolic"));
+      g_assert (g_strv_contains (names, "text-plain"));
+      g_assert (g_strv_contains (names, "text-x-generic"));
     }
   g_object_unref (icon);
   g_free (type);
@@ -279,10 +264,10 @@ test_symbolic_icon (void)
       const gchar *const *names;
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
-      g_assert (strv_contains (names, "application-rtf-symbolic"));
-      g_assert (strv_contains (names, "x-office-document-symbolic"));
-      g_assert (strv_contains (names, "application-rtf"));
-      g_assert (strv_contains (names, "x-office-document"));
+      g_assert (g_strv_contains (names, "application-rtf-symbolic"));
+      g_assert (g_strv_contains (names, "x-office-document-symbolic"));
+      g_assert (g_strv_contains (names, "application-rtf"));
+      g_assert (g_strv_contains (names, "x-office-document"));
     }
   g_object_unref (icon);
   g_free (type);
