@@ -2021,8 +2021,8 @@ g_file_read_link (const gchar  *filename,
 {
 #ifdef HAVE_READLINK
   gchar *buffer;
-  guint size;
-  gint read_size;    
+  size_t size;
+  ssize_t read_size;
   
   size = 256; 
   buffer = g_malloc (size);
@@ -2041,7 +2041,7 @@ g_file_read_link (const gchar  *filename,
           return NULL;
         }
     
-      if (read_size < size) 
+      if ((size_t) read_size < size)
         {
           buffer[read_size] = 0;
           return buffer;
