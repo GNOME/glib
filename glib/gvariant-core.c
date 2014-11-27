@@ -106,21 +106,11 @@ struct _GVariant
  *            The type_info field never changes during the life of the
  *            instance, so it can be accessed without a lock.
  *
- * size: this is the size of the serialised form for the instance, if it
- *       is known.  If the instance is in serialised form then it is, by
- *       definition, known.  If the instance is in tree form then it may
- *       be unknown (in which case it is -1).  It is possible for the
- *       size to be known when in tree form if, for example, the user
- *       has called g_variant_get_size() without calling
- *       g_variant_get_data().  Additionally, even when the user calls
- *       g_variant_get_data() the size of the data must first be
- *       determined so that a large enough buffer can be allocated for
- *       the data.
- *
- *       Once the size is known, it can never become unknown again.
- *       g_variant_ensure_size() is used to ensure that the size is in
- *       the known state -- it calculates the size if needed.  After
- *       that, the size field can be accessed without a lock.
+ * size: this is the size of the serialised form for the instance.  It
+ *       is known for serialised instances and also tree-form instances
+ *       (for which it is calculated at construction time, from the
+ *       known sizes of the children used).  After construction, it
+ *       never changes and therefore can be accessed without a lock.
  *
  * contents: a union containing either the information associated with
  *           holding a value in serialised form or holding a value in
@@ -276,31 +266,19 @@ g_variant_release_children (GVariant *value)
  * instances are always in serialised form.  For these instances,
  * storing their serialised form merely involves a memcpy().
  *
- * Serialisation is a two-step process.  First, the size of the
- * serialised data must be calculated so that an appropriately-sized
- * buffer can be allocated.  Second, the data is written into the
- * buffer.
+ * Converting to serialised form:
  *
- * Determining the size:
- *   The process of determining the size is triggered by a call to
- *   g_variant_ensure_size() on a container.  This invokes the
- *   serialiser code to determine the size.  The serialiser is passed
- *   g_variant_fill_gvs() as a callback.
+ *   The first step in the process of converting a GVariant to
+ *   serialised form is to allocate a buffer.  The size of the buffer is
+ *   always known because we computed at construction time of the
+ *   GVariant.
  *
- *   g_variant_fill_gvs() is called by the serialiser on each child of
- *   the container which, in turn, calls g_variant_ensure_size() on
- *   itself and fills in the result of its own size calculation.
- *
- *   The serialiser uses the size information from the children to
- *   calculate the size needed for the entire container.
- *
- * Writing the data:
  *   After the buffer has been allocated, g_variant_serialise() is
  *   called on the container.  This invokes the serialiser code to write
- *   the bytes to the container.  The serialiser is, again, passed
+ *   the bytes to the container.  The serialiser is passed
  *   g_variant_fill_gvs() as a callback.
  *
- *   This time, when g_variant_fill_gvs() is called for each child, the
+ *   At the time that g_variant_fill_gvs() is called for each child, the
  *   child is given a pointer to a sub-region of the allocated buffer
  *   where it should write its data.  This is done by calling
  *   g_variant_store().  In the event that the instance is in serialised
@@ -312,34 +290,6 @@ g_variant_release_children (GVariant *value)
  * The forward declaration here allows corecursion via callback:
  */
 static void g_variant_fill_gvs (GVariantSerialised *, gpointer);
-
-/* < private >
- * g_variant_ensure_size:
- * @value: a #GVariant
- *
- * Ensures that the ->size field of @value is filled in properly.  This
- * must be done as a precursor to any serialisation of the value in
- * order to know how large of a buffer is needed to store the data.
- *
- * The current thread must hold the lock on @value.
- */
-static void
-g_variant_ensure_size (GVariant *value)
-{
-  g_assert (value->state & STATE_LOCKED);
-
-  if (value->size == (gssize) -1)
-    {
-      gpointer *children;
-      gsize n_children;
-
-      children = (gpointer *) value->contents.tree.children;
-      n_children = value->contents.tree.n_children;
-      value->size = g_variant_serialiser_needed_size (value->type_info,
-                                                      g_variant_fill_gvs,
-                                                      children, n_children);
-    }
-}
 
 /* < private >
  * g_variant_serialise:
@@ -386,19 +336,18 @@ g_variant_serialise (GVariant *value,
  *
  *  - reporting its type
  *
- *  - reporting its serialised size (requires knowing the size first)
+ *  - reporting its serialised size
  *
  *  - possibly storing its serialised form into the provided buffer
+ *
+ * This callback is also used during g_variant_new_from_children() in
+ * order to discover the size and type of each child.
  */
 static void
 g_variant_fill_gvs (GVariantSerialised *serialised,
                     gpointer            data)
 {
   GVariant *value = data;
-
-  g_variant_lock (value);
-  g_variant_ensure_size (value);
-  g_variant_unlock (value);
 
   if (serialised->type_info == NULL)
     serialised->type_info = value->type_info;
@@ -423,11 +372,10 @@ g_variant_fill_gvs (GVariantSerialised *serialised,
  *
  * Ensures that @value is in serialised form.
  *
- * If @value is in tree form then this function ensures that the
- * serialised size is known and then allocates a buffer of that size and
- * serialises the instance into the buffer.  The 'children' array is
- * then released and the instance is set to serialised form based on the
- * contents of the buffer.
+ * If @value is in tree form then this function allocates a buffer of
+ * that size and serialises the instance into the buffer.  The
+ * 'children' array is then released and the instance is set to
+ * serialised form based on the contents of the buffer.
  *
  * The current thread must hold the lock on @value.
  */
@@ -441,7 +389,6 @@ g_variant_ensure_serialised (GVariant *value)
       GBytes *bytes;
       gpointer data;
 
-      g_variant_ensure_size (value);
       data = g_malloc (value->size);
       g_variant_serialise (value, data);
 
@@ -478,7 +425,6 @@ g_variant_alloc (const GVariantType *type,
   value->state = (serialised ? STATE_SERIALISED : 0) |
                  (trusted ? STATE_TRUSTED : 0) |
                  STATE_FLOATING;
-  value->size = (gssize) -1;
   value->ref_count = 1;
 
   return value;
@@ -565,6 +511,8 @@ g_variant_new_from_children (const GVariantType  *type,
   value = g_variant_alloc (type, FALSE, trusted);
   value->contents.tree.children = children;
   value->contents.tree.n_children = n_children;
+  value->size = g_variant_serialiser_needed_size (value->type_info, g_variant_fill_gvs,
+                                                  (gpointer *) children, n_children);
 
   return value;
 }
@@ -813,10 +761,6 @@ g_variant_is_floating (GVariant *value)
 gsize
 g_variant_get_size (GVariant *value)
 {
-  g_variant_lock (value);
-  g_variant_ensure_size (value);
-  g_variant_unlock (value);
-
   return value->size;
 }
 
