@@ -753,6 +753,8 @@ get_fs_type (long f_type)
       return "xiafs";
     case 0x52345362:
       return "reiser4";
+    case 0x65735546:
+      return "fuse";
     default:
       return NULL;
     }
