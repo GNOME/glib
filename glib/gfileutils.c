@@ -1366,8 +1366,8 @@ wrap_g_open (const gchar *filename,
  * in the GLib file name encoding. Most importantly, on Windows it
  * should be in UTF-8.
  *
- * Returns: (type filename): A pointer to @tmpl, which has been modified
- *     to hold the directory name. In case of errors, %NULL is
+ * Returns: (nullable) (type filename): A pointer to @tmpl, which has been
+ *     modified to hold the directory name. In case of errors, %NULL is
  *     returned, and %errno will be set.
  *
  * Since: 2.30
@@ -1398,8 +1398,8 @@ g_mkdtemp_full (gchar *tmpl,
  * The string should be in the GLib file name encoding. Most importantly,
  * on Windows it should be in UTF-8.
  *
- * Returns: (type filename): A pointer to @tmpl, which has been modified
- *     to hold the directory name.  In case of errors, %NULL is
+ * Returns: (nullable) (type filename): A pointer to @tmpl, which has been
+ *     modified to hold the directory name.  In case of errors, %NULL is
  *     returned and %errno will be set.
  *
  * Since: 2.30
@@ -1771,8 +1771,8 @@ g_build_pathv (const gchar  *separator,
 
 /**
  * g_build_path:
- * @separator: a string used to separator the elements of the path.
- * @first_element: the first element in the path
+ * @separator: (type filename): a string used to separator the elements of the path.
+ * @first_element: (type filename): the first element in the path
  * @...: remaining elements in path, terminated by %NULL
  * 
  * Creates a path from a series of elements using @separator as the
@@ -1802,7 +1802,8 @@ g_build_pathv (const gchar  *separator,
  * copies of the separator, elements consisting only of copies
  * of the separator are ignored.
  * 
- * Returns: a newly-allocated string that must be freed with g_free().
+ * Returns: (type filename): a newly-allocated string that must be freed with
+ *     g_free().
  **/
 gchar *
 g_build_path (const gchar *separator,
@@ -1967,7 +1968,7 @@ g_build_filenamev (gchar **args)
 
 /**
  * g_build_filename:
- * @first_element: the first element in the path
+ * @first_element: (type filename): the first element in the path
  * @...: remaining elements in path, terminated by %NULL
  * 
  * Creates a filename from a series of elements using the correct
@@ -1986,7 +1987,8 @@ g_build_filenamev (gchar **args)
  * path. If the first element is a relative path, the result will
  * be a relative path. 
  * 
- * Returns: a newly-allocated string that must be freed with g_free().
+ * Returns: (type filename): a newly-allocated string that must be freed with
+ *     g_free().
  **/
 gchar *
 g_build_filename (const gchar *first_element, 
@@ -2295,14 +2297,14 @@ g_path_get_basename (const gchar *file_name)
 
 /**
  * g_dirname:
- * @file_name: the name of the file
+ * @file_name: (type filename): the name of the file
  *
  * Gets the directory components of a file name.
  *
  * If the file name has no directory components "." is returned.
  * The returned string should be freed when no longer needed.
  *
- * Returns: the directory components of the file
+ * Returns: (type filename): the directory components of the file
  *
  * Deprecated: use g_path_get_dirname() instead
  */
