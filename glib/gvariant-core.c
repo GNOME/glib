@@ -249,6 +249,31 @@ g_variant_release_children (GVariant *value)
   g_free (value->contents.tree.children);
 }
 
+/* < private >
+ * g_variant_lock_in_tree_form:
+ * @value: a #GVariant
+ *
+ * Locks @value if it is in tree form.
+ *
+ * Returns: %TRUE if @value is now in tree form with the lock acquired
+ */
+static gboolean
+g_variant_lock_in_tree_form (GVariant *value)
+{
+  if (g_atomic_int_get (&value->state) & STATE_SERIALISED)
+    return FALSE;
+
+  g_variant_lock (value);
+
+  if (value->state & STATE_SERIALISED)
+    {
+      g_variant_unlock (value);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 /* This begins the main body of the recursive serialiser.
  *
  * There are 3 functions here that work as a team with the serialiser to
@@ -870,9 +895,12 @@ g_variant_n_children (GVariant *value)
 {
   gsize n_children;
 
-  g_variant_lock (value);
-
-  if (value->state & STATE_SERIALISED)
+  if (g_variant_lock_in_tree_form (value))
+    {
+      n_children = value->contents.tree.n_children;
+      g_variant_unlock (value);
+    }
+  else
     {
       GVariantSerialised serialised = {
         value->type_info,
@@ -882,10 +910,6 @@ g_variant_n_children (GVariant *value)
 
       n_children = g_variant_serialised_n_children (serialised);
     }
-  else
-    n_children = value->contents.tree.n_children;
-
-  g_variant_unlock (value);
 
   return n_children;
 }
@@ -916,52 +940,43 @@ GVariant *
 g_variant_get_child_value (GVariant *value,
                            gsize     index_)
 {
+  GVariant *child;
+
   g_return_val_if_fail (index_ < g_variant_n_children (value), NULL);
 
-  if (~g_atomic_int_get (&value->state) & STATE_SERIALISED)
+  if (g_variant_lock_in_tree_form (value))
     {
-      g_variant_lock (value);
 
-      if (~value->state & STATE_SERIALISED)
-        {
-          GVariant *child;
-
-          child = g_variant_ref (value->contents.tree.children[index_]);
-          g_variant_unlock (value);
-
-          return child;
-        }
-
+      child = g_variant_ref (value->contents.tree.children[index_]);
       g_variant_unlock (value);
     }
+  else
+    {
+      GVariantSerialised serialised = {
+        value->type_info,
+        (gpointer) value->contents.serialised.data,
+        value->size
+      };
+      GVariantSerialised s_child;
 
-  {
-    GVariantSerialised serialised = {
-      value->type_info,
-      (gpointer) value->contents.serialised.data,
-      value->size
-    };
-    GVariantSerialised s_child;
-    GVariant *child;
+      /* get the serialiser to extract the serialised data for the child
+       * from the serialised data for the container
+       */
+      s_child = g_variant_serialised_get_child (serialised, index_);
 
-    /* get the serialiser to extract the serialised data for the child
-     * from the serialised data for the container
-     */
-    s_child = g_variant_serialised_get_child (serialised, index_);
+      /* create a new serialised instance out of it */
+      child = g_slice_new (GVariant);
+      child->type_info = s_child.type_info;
+      child->state = (value->state & STATE_TRUSTED) |
+                     STATE_SERIALISED;
+      child->size = s_child.size;
+      child->ref_count = 1;
+      child->contents.serialised.bytes =
+        g_bytes_ref (value->contents.serialised.bytes);
+      child->contents.serialised.data = s_child.data;
+    }
 
-    /* create a new serialised instance out of it */
-    child = g_slice_new (GVariant);
-    child->type_info = s_child.type_info;
-    child->state = (value->state & STATE_TRUSTED) |
-                   STATE_SERIALISED;
-    child->size = s_child.size;
-    child->ref_count = 1;
-    child->contents.serialised.bytes =
-      g_bytes_ref (value->contents.serialised.bytes);
-    child->contents.serialised.data = s_child.data;
-
-    return child;
-  }
+  return child;
 }
 
 /**
@@ -988,19 +1003,18 @@ void
 g_variant_store (GVariant *value,
                  gpointer  data)
 {
-  g_variant_lock (value);
-
-  if (value->state & STATE_SERIALISED)
+  if (g_variant_lock_in_tree_form (value))
+    {
+      g_variant_serialise (value, data);
+      g_variant_unlock (value);
+    }
+  else
     {
       if (value->contents.serialised.data != NULL)
         memcpy (data, value->contents.serialised.data, value->size);
       else
         memset (data, 0, value->size);
     }
-  else
-    g_variant_serialise (value, data);
-
-  g_variant_unlock (value);
 }
 
 /**
@@ -1025,9 +1039,13 @@ g_variant_store (GVariant *value,
 gboolean
 g_variant_is_normal_form (GVariant *value)
 {
-  if (value->state & STATE_TRUSTED)
+  if (g_atomic_int_get (&value->state) & STATE_TRUSTED)
     return TRUE;
 
+  /* We always take the lock here because we expect to find that the
+   * value is in normal form and in that case, we need to update the
+   * state, which requires holding the lock.
+   */
   g_variant_lock (value);
 
   if (value->state & STATE_SERIALISED)
