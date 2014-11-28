@@ -14,6 +14,7 @@
 #include "config.h"
 
 #include <glib/gvariant-internal.h>
+#include <glib/glib-private.h>
 #include <string.h>
 #include <stdlib.h>
 #include <glib.h>
@@ -2459,6 +2460,19 @@ tree_instance_get_gvariant (TreeInstance *tree)
   return result;
 }
 
+static GVariant *
+create_random_gvariant (guint depth)
+{
+  TreeInstance *tree;
+  GVariant *value;
+
+  tree = tree_instance_new (NULL, depth);
+  value = g_variant_take_ref (tree_instance_get_gvariant (tree));
+  tree_instance_free (tree);
+
+  return value;
+}
+
 static gboolean
 tree_instance_check_gvariant (TreeInstance *tree,
                               GVariant     *value)
@@ -4534,6 +4548,64 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
+static GByteArray *
+flatten_vectors (GVariantVectors *v)
+{
+  GByteArray *result;
+  guint i;
+
+  result = g_byte_array_new ();
+
+  for (i = 0; i < v->vectors->len; i++)
+    {
+      GVariantVector vec = g_array_index (v->vectors, GVariantVector, i);
+
+      if (vec.gbytes)
+        g_byte_array_append (result, vec.data.pointer, vec.size);
+      else
+        g_byte_array_append (result, v->extra_bytes->data + vec.data.offset, vec.size);
+    }
+
+  return result;
+}
+
+static void
+test_vector_serialiser (void)
+{
+  GVariantVectors vectors;
+  GByteArray *flattened;
+  GVariant *value;
+  guint i;
+
+  for (i = 0; i < 100; i++)
+    {
+      value = create_random_gvariant (4);
+
+      GLIB_PRIVATE_CALL(g_variant_to_vectors) (value, &vectors);
+      flattened = flatten_vectors (&vectors);
+      g_byte_array_free (vectors.extra_bytes, TRUE);
+      g_byte_array_free (vectors.offsets, TRUE);
+      g_array_free (vectors.vectors, TRUE);
+
+#if 0
+      if (flattened->len != g_variant_get_size (value) ||
+          memcmp (flattened->data, g_variant_get_data (value), flattened->len) != 0)
+        {
+          g_file_set_contents ("flattened", flattened->data, flattened->len, NULL);
+          g_file_set_contents ("serialised", g_variant_get_data (value), g_variant_get_size (value), NULL);
+          g_print ("type is %s\n", g_variant_get_type_string (value));
+          g_assert_not_reached ();
+        }
+#endif
+
+      g_assert_cmpint (flattened->len, ==, g_variant_get_size (value));
+      g_assert (memcmp (flattened->data, g_variant_get_data (value), flattened->len) == 0);
+
+      g_byte_array_free (flattened, TRUE);
+      g_variant_unref (value);
+    }
+}
+
 int
 main (int argc, char **argv)
 {
@@ -4592,6 +4664,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/gbytes", test_gbytes);
   g_test_add_func ("/gvariant/print-context", test_print_context);
   g_test_add_func ("/gvariant/error-quark", test_error_quark);
+  g_test_add_func ("/gvariant/vector-serialiser", test_vector_serialiser);
 
   return g_test_run ();
 }
