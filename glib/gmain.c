@@ -4205,7 +4205,7 @@ g_main_context_add_poll_unlocked (GMainContext *context,
   nextrec = context->poll_records;
   while (nextrec)
     {
-      if (nextrec->fd > fd)
+      if (nextrec->fd->fd > fd->fd)
         break;
       prevrec = nextrec;
       nextrec = nextrec->next;
