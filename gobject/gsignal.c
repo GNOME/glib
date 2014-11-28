@@ -2867,6 +2867,12 @@ g_signal_handlers_disconnect_matched (gpointer         instance,
  * Returns whether there are any handlers connected to @instance for the
  * given signal id and detail.
  *
+ * If @detail is 0 then it will only match handlers that were connected
+ * without detail.  If @detail is non-zero then it will match handlers
+ * connected both without detail and with the given detail.  This is
+ * consistent with how a signal emitted with @detail would be delivered
+ * to those handlers.
+ *
  * One example of when you might use this is when the arguments to the
  * signal are difficult to compute. A class implementor may opt to not
  * emit the signal if no one is attached anyway, thus saving the cost
