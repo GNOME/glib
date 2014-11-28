@@ -1885,7 +1885,7 @@ struct _TreeInstance
   union {
     guint64 integer;
     gdouble floating;
-    gchar string[32];
+    gchar string[200];
   } data;
   gsize data_size;
 };
@@ -2004,7 +2004,7 @@ tree_instance_new (const GVariantType *type,
       break;
 
     case 's': case 'o': case 'g':
-      instance->data_size = g_test_rand_int_range (10, 20);
+      instance->data_size = g_test_rand_int_range (10, 200);
       make_random_string (instance->data.string, instance->data_size, type);
       break;
     }
