@@ -19,6 +19,7 @@
 #include "config.h"
 
 #include <glib/gvariant-core.h>
+#include "glib-private.h"
 
 #include <glib/gvariant-serialiser.h>
 #include <glib/gtestutils.h>
@@ -422,6 +423,61 @@ g_variant_ensure_serialised (GVariant *value)
 
       g_variant_unlock (value);
     }
+}
+
+/* Now we have the code to recursively serialise a GVariant into a
+ * GVariantVectors structure.
+ *
+ * We want to do this in cases where the GVariant contains large chunks
+ * of serialised data in order to avoid having to copy this data.
+ *
+ * This generally works the same as normal serialising (co-recursion
+ * with the serialiser) but instead of using a callback we just hard-code
+ * the callback with the name g_variant_callback_write_to_vectors().
+ *
+ * This is a private API that will be used by GDBus.
+ */
+gsize
+g_variant_callback_write_to_vectors (GVariantVectors   *vectors,
+                                     gpointer           data,
+                                     GVariantTypeInfo **type_info)
+{
+  GVariant *value = data;
+
+  if (g_variant_lock_in_tree_form (value))
+    {
+      g_variant_serialiser_write_to_vectors (vectors, value->type_info, value->size,
+                                             (gpointer *) value->contents.tree.children,
+                                             value->contents.tree.n_children);
+
+      g_variant_unlock (value);
+    }
+  else
+    g_variant_vectors_append_gbytes (vectors, value->contents.serialised.bytes,
+                                     value->contents.serialised.data, value->size);
+
+  if (type_info)
+    *type_info = value->type_info;
+
+  return value->size;
+}
+
+/* < private >
+ * g_variant_serialise_to_vectors:
+ * @value: a #GVariant
+ * @vectors: (out): the result
+ *
+ * Serialises @value into @vectors.
+ *
+ * The caller must free @vectors.
+ */
+void
+g_variant_to_vectors (GVariant        *value,
+                      GVariantVectors *vectors)
+{
+  g_variant_vectors_init (vectors);
+
+  g_variant_callback_write_to_vectors (vectors, value, NULL);
 }
 
 /* < private >

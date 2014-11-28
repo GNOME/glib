@@ -22,6 +22,7 @@
 #define __G_VARIANT_SERIALISER_H__
 
 #include "gvarianttypeinfo.h"
+#include "gvariant-vectors.h"
 
 typedef struct
 {
@@ -69,5 +70,15 @@ gboolean                        g_variant_serialiser_is_object_path     (gconstp
 GLIB_AVAILABLE_IN_ALL
 gboolean                        g_variant_serialiser_is_signature       (gconstpointer             data,
                                                                          gsize                     size);
+
+
+gsize                           g_variant_callback_write_to_vectors     (GVariantVectors          *vectors,
+                                                                         gpointer                  data,
+                                                                         GVariantTypeInfo        **type_info);
+void                            g_variant_serialiser_write_to_vectors   (GVariantVectors          *items,
+                                                                         GVariantTypeInfo         *type_info,
+                                                                         gsize                     size,
+                                                                         const gpointer           *children,
+                                                                         gsize                     n_children);
 
 #endif /* __G_VARIANT_SERIALISER_H__ */

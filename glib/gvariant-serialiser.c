@@ -292,6 +292,19 @@ gvs_fixed_sized_maybe_serialise (GVariantSerialised        value,
     }
 }
 
+static gsize
+gvs_fixed_sized_maybe_write_to_vectors (GVariantVectors  *vectors,
+                                        GVariantTypeInfo *type_info,
+                                        gsize             size,
+                                        const gpointer   *children,
+                                        gsize             n_children)
+{
+  if (!n_children)
+    return 0;
+
+  return g_variant_callback_write_to_vectors (vectors, children[0], NULL);
+}
+
 static gboolean
 gvs_fixed_sized_maybe_is_normal (GVariantSerialised value)
 {
@@ -381,6 +394,20 @@ gvs_variable_sized_maybe_serialise (GVariantSerialised        value,
       /* write the data for the child.  */
       gvs_filler (&child, children[0]);
       value.data[child.size] = '\0';
+    }
+}
+
+static void
+gvs_variable_sized_maybe_write_to_vectors (GVariantVectors  *vectors,
+                                           GVariantTypeInfo *type_info,
+                                           gsize             size,
+                                           const gpointer   *children,
+                                           gsize             n_children)
+{
+  if (n_children)
+    {
+      g_variant_callback_write_to_vectors (vectors, children[0], NULL);
+      g_variant_vectors_append_copy (vectors, "", 1);
     }
 }
 
@@ -480,6 +507,19 @@ gvs_fixed_sized_array_serialise (GVariantSerialised        value,
       gvs_filler (&child, children[i]);
       child.data += child.size;
     }
+}
+
+static void
+gvs_fixed_sized_array_write_to_vectors (GVariantVectors  *vectors,
+                                        GVariantTypeInfo *type_info,
+                                        gsize             size,
+                                        const gpointer   *children,
+                                        gsize             n_children)
+{
+  gsize i;
+
+  for (i = 0; i < n_children; i++)
+    g_variant_callback_write_to_vectors (vectors, children[i], NULL);
 }
 
 static gboolean
@@ -745,6 +785,38 @@ gvs_variable_sized_array_serialise (GVariantSerialised        value,
       gvs_write_unaligned_le (offset_ptr, offset, offset_size);
       offset_ptr += offset_size;
     }
+}
+
+static void
+gvs_variable_sized_array_write_to_vectors (GVariantVectors  *vectors,
+                                           GVariantTypeInfo *type_info,
+                                           gsize             size,
+                                           const gpointer   *children,
+                                           gsize             n_children)
+{
+  guint offset_key;
+  guint alignment;
+  gsize offset;
+  gsize i;
+
+  if (n_children == 0)
+    return;
+
+  offset_key = g_variant_vectors_reserve_offsets (vectors, n_children, gvs_get_offset_size (size));
+  g_variant_type_info_query (type_info, &alignment, NULL);
+  offset = 0;
+
+  for (i = 0; i < n_children; i++)
+    {
+      if ((-offset) & alignment)
+        offset += g_variant_vectors_append_pad (vectors, (-offset) & alignment);
+
+      offset += g_variant_callback_write_to_vectors (vectors, children[i], NULL);
+
+      g_variant_vectors_write_to_offsets (vectors, i, offset, offset_key);
+    }
+
+  g_variant_vectors_commit_offsets (vectors, offset_key);
 }
 
 static gboolean
@@ -1014,6 +1086,95 @@ gvs_tuple_serialise (GVariantSerialised        value,
     value.data[offset++] = '\0';
 }
 
+
+static void
+gvs_tuple_write_to_vectors (GVariantVectors  *vectors,
+                            GVariantTypeInfo *type_info,
+                            gsize             size,
+                            const gpointer   *children,
+                            gsize             n_children)
+{
+  const GVariantMemberInfo *member_info = NULL;
+  gsize fixed_size;
+  gsize offset;
+  gsize i;
+
+  if (n_children == 0)
+    {
+      g_variant_vectors_append_copy (vectors, "", 1);
+      return;
+    }
+
+  g_variant_type_info_query (type_info, NULL, &fixed_size);
+  offset = 0;
+
+  if (!fixed_size)
+    {
+      gsize n_offsets;
+
+      member_info = g_variant_type_info_member_info (type_info, n_children - 1);
+      n_offsets = member_info->i + 1;
+
+      if (n_offsets)
+        {
+          gsize offset_key = 0;
+
+          offset_key = g_variant_vectors_reserve_offsets (vectors, n_offsets, gvs_get_offset_size (size));
+
+          for (i = 0; i < n_children; i++)
+            {
+              guint alignment;
+
+              member_info = g_variant_type_info_member_info (type_info, i);
+              g_variant_type_info_query (member_info->type_info, &alignment, NULL);
+
+              if ((-offset) & alignment)
+                offset += g_variant_vectors_append_pad (vectors, (-offset) & alignment);
+
+              offset += g_variant_callback_write_to_vectors (vectors, children[i], NULL);
+
+              if (member_info->ending_type == G_VARIANT_MEMBER_ENDING_OFFSET)
+                g_variant_vectors_write_to_offsets (vectors, --n_offsets, offset, offset_key);
+            }
+
+          g_variant_vectors_commit_offsets (vectors, offset_key);
+        }
+      else
+        {
+          for (i = 0; i < n_children; i++)
+            {
+              guint alignment;
+
+              member_info = g_variant_type_info_member_info (type_info, i);
+              g_variant_type_info_query (member_info->type_info, &alignment, NULL);
+
+              if ((-offset) & alignment)
+                offset += g_variant_vectors_append_pad (vectors, (-offset) & alignment);
+
+              offset += g_variant_callback_write_to_vectors (vectors, children[i], NULL);
+            }
+        }
+    }
+  else
+    {
+      for (i = 0; i < n_children; i++)
+        {
+          guint alignment;
+
+          member_info = g_variant_type_info_member_info (type_info, i);
+          g_variant_type_info_query (member_info->type_info, &alignment, NULL);
+
+          if ((-offset) & alignment)
+            offset += g_variant_vectors_append_pad (vectors, (-offset) & alignment);
+
+          offset += g_variant_callback_write_to_vectors (vectors, children[i], NULL);
+        }
+
+      g_assert (fixed_size - offset < 8);
+      g_variant_vectors_append_pad (vectors, fixed_size - offset);
+    }
+}
+
 static gboolean
 gvs_tuple_is_normal (GVariantSerialised value)
 {
@@ -1226,6 +1387,23 @@ gvs_variant_serialise (GVariantSerialised        value,
   memcpy (value.data + child.size + 1, type_string, strlen (type_string));
 }
 
+static void
+gvs_variant_write_to_vectors (GVariantVectors  *vectors,
+                              GVariantTypeInfo *type_info,
+                              gsize             size,
+                              const gpointer   *children,
+                              gsize             n_children)
+{
+  GVariantTypeInfo *child_type_info;
+  const gchar *type_string;
+
+  g_variant_callback_write_to_vectors (vectors, children[0], &child_type_info);
+  type_string = g_variant_type_info_get_type_string (child_type_info);
+
+  g_variant_vectors_append_copy (vectors, "", 1);
+  g_variant_vectors_append_copy (vectors, type_string, strlen (type_string));
+}
+
 static inline gboolean
 gvs_variant_is_normal (GVariantSerialised value)
 {
@@ -1435,7 +1613,21 @@ g_variant_serialiser_needed_size (GVariantTypeInfo         *type_info,
 
                   return gvs_/**/,/**/_needed_size (type_info, gvs_filler,
                                                     children, n_children);
+                 )
+  g_assert_not_reached ();
+}
 
+
+void
+g_variant_serialiser_write_to_vectors (GVariantVectors  *vectors,
+                                       GVariantTypeInfo *type_info,
+                                       gsize             size,
+                                       const gpointer   *children,
+                                       gsize             n_children)
+{
+  DISPATCH_CASES (type_info,
+                  gvs_/**/,/**/_write_to_vectors (vectors, type_info, size, children, n_children);
+                  return;
                  )
   g_assert_not_reached ();
 }
