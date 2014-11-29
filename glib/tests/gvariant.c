@@ -4497,10 +4497,13 @@ test_gbytes (void)
 {
   GVariant *a;
   GVariant *tuple;
+  GVariant *b;
+  GVariant *c;
   GBytes *bytes;
   GBytes *bytes2;
   const guint8 values[5] = { 1, 2, 3, 4, 5 };
   const guint8 *elts;
+  gchar *tmp;
   gsize n_elts;
   gint i;
 
@@ -4531,6 +4534,41 @@ test_gbytes (void)
   g_bytes_unref (bytes2);
   g_variant_unref (a);
   g_variant_unref (tuple);
+
+  /* Feed in some non-normal data... make sure it's aligned.
+   *
+   * Here we have an array of three elements.  The first and last are
+   * normal ints ('iiii') and array-of-bytes data ('ayay').  The middle
+   * element is zero-bytes wide, which will present a problem when
+   * fetching the fixed-size integer out of it.
+   * */
+  tmp = g_strdup ("iiiiayayiiiisayay\x08\x08\x10");
+  bytes = g_bytes_new_take (tmp, strlen (tmp));
+  a = g_variant_new_from_bytes (G_VARIANT_TYPE ("a(iay)"), bytes, FALSE);
+  g_bytes_unref (bytes);
+
+  /* The middle tuple is zero bytes */
+  b = g_variant_get_child_value (a, 1);
+  g_assert_cmpint (g_variant_get_size (b), ==, 0);
+
+  /* But we're going to pull a 4-byte child out of it... */
+  c = g_variant_get_child_value (b, 0);
+  g_assert_cmpint (g_variant_get_size (c), ==, 4);
+
+  /* g_variant_get_data() is allowed to fail in this case.
+   * NB: if someone finds a way to avoid this then that's fine too...
+   */
+  g_assert (g_variant_get_data (c) == NULL);
+
+  /* but since it's four bytes, it ought to have data... */
+  bytes = g_variant_get_data_as_bytes (c);
+  g_assert_cmpint (g_bytes_get_size (bytes), ==, 4);
+  g_assert (memcmp (g_bytes_get_data (bytes, NULL), "\0\0\0\0", 4) == 0);
+  g_bytes_unref (bytes);
+
+  g_variant_unref (c);
+  g_variant_unref (b);
+  g_variant_unref (a);
 }
 
 typedef struct {

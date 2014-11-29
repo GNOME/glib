@@ -30,8 +30,18 @@ GVariant *              g_variant_new_from_children                     (const G
                                                                          gsize                n_children,
                                                                          gboolean             trusted);
 
+GVariant *              g_variant_new_serialised                        (const GVariantType  *type,
+                                                                         GBytes              *bytes,
+                                                                         gconstpointer        data,
+                                                                         gsize                size,
+                                                                         gboolean             trusted);
+
 gboolean                g_variant_is_trusted                            (GVariant            *value);
 
 GVariantTypeInfo *      g_variant_get_type_info                         (GVariant            *value);
+
+gconstpointer           g_variant_get_serialised                        (GVariant            *value,
+                                                                         GBytes             **bytes,
+                                                                         gsize               *size);
 
 #endif /* __G_VARIANT_CORE_H__ */

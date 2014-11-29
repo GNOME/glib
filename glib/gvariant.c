@@ -288,14 +288,9 @@ g_variant_new_from_trusted (const GVariantType *type,
                             gconstpointer       data,
                             gsize               size)
 {
-  GVariant *value;
-  GBytes *bytes;
+  gpointer mydata = g_memdup (data, size);
 
-  bytes = g_bytes_new (data, size);
-  value = g_variant_new_from_bytes (type, bytes, TRUE);
-  g_bytes_unref (bytes);
-
-  return value;
+  return g_variant_new_serialised (type, g_bytes_new_take (mydata, size), mydata, size, TRUE);
 }
 
 /**
@@ -5932,21 +5927,99 @@ g_variant_new_from_data (const GVariantType *type,
                          GDestroyNotify      notify,
                          gpointer            user_data)
 {
-  GVariant *value;
   GBytes *bytes;
 
   g_return_val_if_fail (g_variant_type_is_definite (type), NULL);
   g_return_val_if_fail (data != NULL || size == 0, NULL);
+
+  if (size == 0)
+    {
+      if (notify)
+        {
+          (* notify) (user_data);
+          notify = NULL;
+        }
+
+      data = NULL;
+    }
 
   if (notify)
     bytes = g_bytes_new_with_free_func (data, size, notify, user_data);
   else
     bytes = g_bytes_new_static (data, size);
 
-  value = g_variant_new_from_bytes (type, bytes, trusted);
-  g_bytes_unref (bytes);
+  return g_variant_new_serialised (type, bytes, data, size, trusted);
+}
 
-  return value;
+/**
+ * g_variant_new_from_bytes:
+ * @type: a #GVariantType
+ * @bytes: a #GBytes
+ * @trusted: if the contents of @bytes are trusted
+ *
+ * Constructs a new serialised-mode #GVariant instance.  This is the
+ * inner interface for creation of new serialised values that gets
+ * called from various functions in gvariant.c.
+ *
+ * A reference is taken on @bytes.
+ *
+ * Returns: (transfer none): a new #GVariant with a floating reference
+ *
+ * Since: 2.36
+ */
+GVariant *
+g_variant_new_from_bytes (const GVariantType *type,
+                          GBytes             *bytes,
+                          gboolean            trusted)
+{
+  gconstpointer data;
+  gsize size;
+
+  g_return_val_if_fail (g_variant_type_is_definite (type), NULL);
+
+  data = g_bytes_get_data (bytes, &size);
+
+  return g_variant_new_serialised (type, g_bytes_ref (bytes), data, size, trusted);
+}
+
+/**
+ * g_variant_get_data_as_bytes:
+ * @value: a #GVariant
+ *
+ * Returns a pointer to the serialised form of a #GVariant instance.
+ * The semantics of this function are exactly the same as
+ * g_variant_get_data(), except that the returned #GBytes holds
+ * a reference to the variant data.
+ *
+ * Returns: (transfer full): A new #GBytes representing the variant data
+ *
+ * Since: 2.36
+ */
+GBytes *
+g_variant_get_data_as_bytes (GVariant *value)
+{
+  gconstpointer data;
+  GBytes *bytes;
+  gsize size;
+  gconstpointer bytes_data;
+  gsize bytes_size;
+
+  data = g_variant_get_serialised (value, &bytes, &size);
+  bytes_data = g_bytes_get_data (bytes, &bytes_size);
+
+  /* Try to reuse the GBytes held internally by GVariant, if it exists
+   * and is covering exactly the correct range.
+   */
+  if (data == bytes_data && size == bytes_size)
+    return g_bytes_ref (bytes);
+
+  /* See g_variant_get_data() about why it can return NULL... */
+  else if (data == NULL)
+    return g_bytes_new_take (g_malloc0 (size), size);
+
+  /* Otherwise, make a new GBytes with reference to the old. */
+  else
+    return g_bytes_new_with_free_func (data, size, (GDestroyNotify) g_bytes_unref, g_bytes_ref (bytes));
 }
 
 /* Epilogue {{{1 */

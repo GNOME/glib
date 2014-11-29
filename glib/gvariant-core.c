@@ -509,58 +509,6 @@ g_variant_alloc (const GVariantType *type,
   return value;
 }
 
-/**
- * g_variant_new_from_bytes:
- * @type: a #GVariantType
- * @bytes: a #GBytes
- * @trusted: if the contents of @bytes are trusted
- *
- * Constructs a new serialised-mode #GVariant instance.  This is the
- * inner interface for creation of new serialised values that gets
- * called from various functions in gvariant.c.
- *
- * A reference is taken on @bytes.
- *
- * Returns: (transfer none): a new #GVariant with a floating reference
- *
- * Since: 2.36
- */
-GVariant *
-g_variant_new_from_bytes (const GVariantType *type,
-                          GBytes             *bytes,
-                          gboolean            trusted)
-{
-  GVariant *value;
-  guint alignment;
-  gsize size;
-
-  value = g_variant_alloc (type, TRUE, trusted);
-
-  value->contents.serialised.bytes = g_bytes_ref (bytes);
-
-  g_variant_type_info_query (value->type_info,
-                             &alignment, &size);
-
-  if (size && g_bytes_get_size (bytes) != size)
-    {
-      /* Creating a fixed-sized GVariant with a bytes of the wrong
-       * size.
-       *
-       * We should do the equivalent of pulling a fixed-sized child out
-       * of a brozen container (ie: data is NULL size is equal to the correct
-       * fixed size).
-       */
-      value->contents.serialised.data = NULL;
-      value->size = size;
-    }
-  else
-    {
-      value->contents.serialised.data = g_bytes_get_data (bytes, &value->size);
-    }
-
-  return value;
-}
-
 /* -- internal -- */
 
 /* < internal >
@@ -592,6 +540,63 @@ g_variant_new_from_children (const GVariantType  *type,
   value->contents.tree.n_children = n_children;
   value->size = g_variant_serialiser_needed_size (value->type_info, g_variant_fill_gvs,
                                                   (gpointer *) children, n_children);
+
+  return value;
+}
+
+/* < internal >
+ * g_variant_new_serialised:
+ * @type: a #GVariantType
+ * @bytes: the #GBytes holding @data
+ * @data: a pointer to the serialised data
+ * @size: the size of @data, in bytes
+ * @trusted: %TRUE if @data is trusted
+ *
+ * Constructs a new serialised #GVariant instance.  This is the inner
+ * interface for creation of new serialised values that gets called from
+ * various functions in gvariant.c.
+ *
+ * @bytes is consumed by this function.  g_bytes_unref() will be called
+ * on it some time later.
+ *
+ * Returns: a new #GVariant with a floating reference
+ */
+GVariant *
+g_variant_new_serialised (const GVariantType *type,
+                          GBytes             *bytes,
+                          gconstpointer       data,
+                          gsize               size,
+                          gboolean            trusted)
+{
+  GVariant *value;
+  gsize fixed_size;
+
+  value = g_variant_alloc (type, TRUE, trusted);
+  value->contents.serialised.bytes = bytes;
+  value->contents.serialised.data = data;
+  value->size = size;
+
+  g_variant_type_info_query (value->type_info, NULL, &fixed_size);
+  if G_UNLIKELY (fixed_size && size != fixed_size)
+    {
+      /* Creating a fixed-sized GVariant with a bytes of the wrong
+       * size.
+       *
+       * We should do the equivalent of pulling a fixed-sized child out
+       * of a broken container (ie: data is NULL size is equal to the correct
+       * fixed size).
+       *
+       * This really ought not to happen if the data is trusted...
+       */
+      if (trusted)
+        g_error ("Attempting to create a trusted GVariant instance out of invalid data");
+
+      /* We hang on to the GBytes (even though we don't use it anymore)
+       * because every GVariant must have a GBytes.
+       */
+      value->contents.serialised.data = NULL;
+      value->size = fixed_size;
+    }
 
   return value;
 }
@@ -632,6 +637,32 @@ gboolean
 g_variant_is_trusted (GVariant *value)
 {
   return (value->state & STATE_TRUSTED) != 0;
+}
+
+/* < internal >
+ * g_variant_get_serialised:
+ * @value: a #GVariant
+ * @bytes: (out) (transfer none): a location to store the #GBytes
+ * @size: (out): a location to store the size of the returned data
+ *
+ * Ensures that @value is in serialised form and returns information
+ * about it.  This is called from various APIs in gvariant.c
+ *
+ * Returns: data, of length @size
+ */
+gconstpointer
+g_variant_get_serialised (GVariant  *value,
+                          GBytes   **bytes,
+                          gsize     *size)
+{
+  g_variant_ensure_serialised (value);
+
+  if (bytes)
+    *bytes = value->contents.serialised.bytes;
+
+  *size = value->size;
+
+  return value->contents.serialised.data;
 }
 
 /* -- public -- */
@@ -883,40 +914,6 @@ g_variant_get_data (GVariant *value)
   g_variant_ensure_serialised (value);
 
   return value->contents.serialised.data;
-}
-
-/**
- * g_variant_get_data_as_bytes:
- * @value: a #GVariant
- *
- * Returns a pointer to the serialised form of a #GVariant instance.
- * The semantics of this function are exactly the same as
- * g_variant_get_data(), except that the returned #GBytes holds
- * a reference to the variant data.
- *
- * Returns: (transfer full): A new #GBytes representing the variant data
- *
- * Since: 2.36
- */ 
-GBytes *
-g_variant_get_data_as_bytes (GVariant *value)
-{
-  const gchar *bytes_data;
-  const gchar *data;
-  gsize bytes_size;
-  gsize size;
-
-  g_variant_ensure_serialised (value);
-
-  bytes_data = g_bytes_get_data (value->contents.serialised.bytes, &bytes_size);
-  data = value->contents.serialised.data;
-  size = value->size;
-
-  if (data == bytes_data && size == bytes_size)
-    return g_bytes_ref (value->contents.serialised.bytes);
-  else
-    return g_bytes_new_from_bytes (value->contents.serialised.bytes,
-                                   data - bytes_data, size);
 }
 
 
