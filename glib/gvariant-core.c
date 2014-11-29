@@ -401,15 +401,11 @@ g_variant_fill_gvs (GVariantSerialised *serialised,
  * that size and serialises the instance into the buffer.  The
  * 'children' array is then released and the instance is set to
  * serialised form based on the contents of the buffer.
- *
- * The current thread must hold the lock on @value.
  */
 static void
 g_variant_ensure_serialised (GVariant *value)
 {
-  g_assert (value->state & STATE_LOCKED);
-
-  if (~value->state & STATE_SERIALISED)
+  if (g_variant_lock_in_tree_form (value))
     {
       GBytes *bytes;
       gpointer data;
@@ -423,6 +419,8 @@ g_variant_ensure_serialised (GVariant *value)
       value->contents.serialised.data = g_bytes_get_data (bytes, NULL);
       value->contents.serialised.bytes = bytes;
       value->state |= STATE_SERIALISED;
+
+      g_variant_unlock (value);
     }
 }
 
@@ -826,9 +824,7 @@ g_variant_get_size (GVariant *value)
 gconstpointer
 g_variant_get_data (GVariant *value)
 {
-  g_variant_lock (value);
   g_variant_ensure_serialised (value);
-  g_variant_unlock (value);
 
   return value->contents.serialised.data;
 }
@@ -854,9 +850,7 @@ g_variant_get_data_as_bytes (GVariant *value)
   gsize bytes_size;
   gsize size;
 
-  g_variant_lock (value);
   g_variant_ensure_serialised (value);
-  g_variant_unlock (value);
 
   bytes_data = g_bytes_get_data (value->contents.serialised.bytes, &bytes_size);
   data = value->contents.serialised.data;
