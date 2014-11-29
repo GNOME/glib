@@ -1142,6 +1142,7 @@ g_debug
 
 <SUBSECTION>
 g_log_set_handler
+g_log_set_handler_full
 g_log_remove_handler
 g_log_set_always_fatal
 g_log_set_fatal_mask

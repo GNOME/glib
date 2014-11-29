@@ -279,6 +279,7 @@ struct _GLogHandler
   GLogLevelFlags log_level;
   GLogFunc	 log_func;
   gpointer	 data;
+  GDestroyNotify destroy;
   GLogHandler	*next;
 };
 
@@ -566,9 +567,37 @@ g_log_set_fatal_mask (const gchar   *log_domain,
  */
 guint
 g_log_set_handler (const gchar	 *log_domain,
-		   GLogLevelFlags log_levels,
-		   GLogFunc	  log_func,
-		   gpointer	  user_data)
+                   GLogLevelFlags log_levels,
+                   GLogFunc       log_func,
+                   gpointer       user_data)
+{
+  return g_log_set_handler_full (log_domain, log_levels, log_func, user_data, NULL);
+}
+
+/**
+ * g_log_set_handler_full: (rename-to g_log_set_handler)
+ * @log_domain: (allow-none): the log domain, or %NULL for the default ""
+ *     application domain
+ * @log_levels: the log levels to apply the log handler for.
+ *     To handle fatal and recursive messages as well, combine
+ *     the log levels with the #G_LOG_FLAG_FATAL and
+ *     #G_LOG_FLAG_RECURSION bit flags.
+ * @log_func: the log handler function
+ * @user_data: data passed to the log handler
+ * @destroy: destroy notify for @user_data, or %NULL
+ *
+ * Like g_log_sets_handler(), but takes a destroy notify for the @user_data.
+ *
+ * Returns: the id of the new handler
+ *
+ * Since: 2.44
+ */
+guint
+g_log_set_handler_full (const gchar    *log_domain,
+                        GLogLevelFlags  log_levels,
+                        GLogFunc        log_func,
+                        gpointer        user_data,
+                        GDestroyNotify  destroy)
 {
   static guint handler_id = 0;
   GLogDomain *domain;
@@ -592,6 +621,7 @@ g_log_set_handler (const gchar	 *log_domain,
   handler->log_level = log_levels;
   handler->log_func = log_func;
   handler->data = user_data;
+  handler->destroy = destroy;
   handler->next = domain->handlers;
   domain->handlers = handler;
 
@@ -699,6 +729,8 @@ g_log_remove_handler (const gchar *log_domain,
 		domain->handlers = work->next;
 	      g_log_domain_check_free_L (domain); 
 	      g_mutex_unlock (&g_messages_lock);
+              if (work->destroy)
+                work->destroy (work->data);
 	      g_free (work);
 	      return;
 	    }
