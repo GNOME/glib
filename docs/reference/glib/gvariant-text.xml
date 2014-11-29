@@ -224,6 +224,7 @@
         <literal>handle</literal>,
         <literal>int64</literal>,
         <literal>uint64</literal>,
+        <literal>float</literal>,
         <literal>double</literal>,
         <literal>string</literal>,
         <literal>objectpath</literal>,
@@ -534,9 +535,9 @@
     Type keywords can be seen as more verbose (and more legible) versions of a common subset of the type codes.
     The type keywords <literal>boolean</literal>, <literal>byte</literal>, <literal>int16</literal>,
     <literal>uint16</literal>, <literal>int32</literal>, <literal>uint32</literal>, <literal>handle</literal>,
-    <literal>int64</literal>, <literal>uint64</literal>, <literal>double</literal>, <literal>string</literal>,
-    <literal>objectpath</literal> and literal <literal>signature</literal> are each exactly equivalent to their
-    corresponding type code.
+    <literal>int64</literal>, <literal>uint64</literal>, <literal>float</literal>, <literal>double</literal>,
+    <literal>string</literal>, <literal>objectpath</literal> and literal <literal>signature</literal> are each
+    exactly equivalent to their corresponding type code.
    </para>
    <para>
     Type codes are an <literal>@</literal> ("at" sign) followed by a definite GVariant type string.  Some

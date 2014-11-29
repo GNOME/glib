@@ -44,6 +44,7 @@ typedef enum
   G_VARIANT_CLASS_INT64         = 'x',
   G_VARIANT_CLASS_UINT64        = 't',
   G_VARIANT_CLASS_HANDLE        = 'h',
+  G_VARIANT_CLASS_FLOAT         = 'f',
   G_VARIANT_CLASS_DOUBLE        = 'd',
   G_VARIANT_CLASS_STRING        = 's',
   G_VARIANT_CLASS_OBJECT_PATH   = 'o',
@@ -95,6 +96,8 @@ GLIB_AVAILABLE_IN_ALL
 GVariant *                      g_variant_new_uint64                    (guint64               value);
 GLIB_AVAILABLE_IN_ALL
 GVariant *                      g_variant_new_handle                    (gint32                value);
+GLIB_AVAILABLE_IN_2_44
+GVariant *                      g_variant_new_float                     (gfloat                value);
 GLIB_AVAILABLE_IN_ALL
 GVariant *                      g_variant_new_double                    (gdouble               value);
 GLIB_AVAILABLE_IN_ALL
@@ -148,6 +151,8 @@ GLIB_AVAILABLE_IN_ALL
 guint64                         g_variant_get_uint64                    (GVariant             *value);
 GLIB_AVAILABLE_IN_ALL
 gint32                          g_variant_get_handle                    (GVariant             *value);
+GLIB_AVAILABLE_IN_2_44
+gfloat                          g_variant_get_float                     (GVariant             *value);
 GLIB_AVAILABLE_IN_ALL
 gdouble                         g_variant_get_double                    (GVariant             *value);
 GLIB_AVAILABLE_IN_ALL

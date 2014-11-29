@@ -115,7 +115,7 @@ static const GVariantTypeInfo g_variant_type_info_basic_table[24] = {
   /* 'c' */ { not_a_type },
   /* 'd' */ { fixed_aligned(8) },   /* double */
   /* 'e' */ { not_a_type },
-  /* 'f' */ { not_a_type },
+  /* 'f' */ { fixed_aligned(4) },   /* float */
   /* 'g' */ { unaligned        },   /* signature string */
   /* 'h' */ { fixed_aligned(4) },   /* file handle (int32) */
   /* 'i' */ { fixed_aligned(4) },   /* int32 */
@@ -147,7 +147,7 @@ static const GVariantTypeInfo g_variant_type_info_basic_table[24] = {
  * GVariantTypeInfo itself, we save a bunch of relocations.
  */
 static const char g_variant_type_info_basic_chars[24][2] = {
-  "b", " ", "d", " ", " ", "g", "h", "i", " ", " ", " ", " ",
+  "b", " ", "d", " ", "f", "g", "h", "i", " ", " ", " ", " ",
   "n", "o", " ", "q", " ", "s", "t", "u", "v", " ", "x", "y"
 };
 

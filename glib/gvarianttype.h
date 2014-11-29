@@ -104,6 +104,15 @@ typedef struct _GVariantType GVariantType;
 #define G_VARIANT_TYPE_UINT64               ((const GVariantType *) "t")
 
 /**
+ * G_VARIANT_TYPE_FLOAT:
+ *
+ * The type of a single precision IEEE754 floating point number.  You
+ * can store a number as large as 3.40e38 in these (plus and minus) but
+ * there are some gaps on the way.
+ **/
+#define G_VARIANT_TYPE_FLOAT                ((const GVariantType *) "f")
+
+/**
  * G_VARIANT_TYPE_DOUBLE:
  *
  * The type of a double precision IEEE754 floating point number.

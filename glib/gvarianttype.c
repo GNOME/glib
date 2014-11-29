@@ -110,7 +110,7 @@
  * A basic type string describes a basic type (as per
  * g_variant_type_is_basic()) and is always a single character in length.
  * The valid basic type strings are "b", "y", "n", "q", "i", "u", "x", "t",
- * "h", "d", "s", "o", "g" and "?".
+ * "h", "f", "d", "s", "o", "g" and "?".
  *
  * The above definition is recursive to arbitrary depth. "aaaaai" and
  * "(ui(nq((y)))s)" are both valid type strings, as is
@@ -128,6 +128,8 @@
  * - `h`: the type string of %G_VARIANT_TYPE_HANDLE; a signed 32 bit value
  *   that, by convention, is used as an index into an array of file
  *   descriptors that are sent alongside a D-Bus message.
+ * - `f`: the type string of %G_VARIANT_TYPE_FLOAT; a single precision
+ *   floating point value.
  * - `d`: the type string of %G_VARIANT_TYPE_DOUBLE; a double precision
  *   floating point value.
  * - `s`: the type string of %G_VARIANT_TYPE_STRING; a string.
@@ -240,7 +242,7 @@ g_variant_type_string_scan (const gchar  *string,
 
     case '{':
       if (string == limit || *string == '\0' ||                    /* { */
-          !strchr ("bynqihuxtdsog?", *string++) ||                 /* key */
+          !strchr ("bynqihuxtfdsog?", *string++) ||                /* key */
           !g_variant_type_string_scan (string, limit, &string) ||  /* value */
           string == limit || *string++ != '}')                     /* } */
         return FALSE;
@@ -252,7 +254,7 @@ g_variant_type_string_scan (const gchar  *string,
 
     case 'b': case 'y': case 'n': case 'q': case 'i': case 'u':
     case 'x': case 't': case 'd': case 's': case 'o': case 'g':
-    case 'v': case 'r': case '*': case '?': case 'h':
+    case 'v': case 'r': case '*': case '?': case 'h': case 'f':
       break;
 
     default:
@@ -533,8 +535,8 @@ g_variant_type_is_container (const GVariantType *type)
  *
  * Determines if the given @type is a basic type.
  *
- * Basic types are booleans, bytes, integers, doubles, strings, object
- * paths and signatures.
+ * Basic types are booleans, bytes, integers, floats, doubles, strings,
+ * object paths and signatures.
  *
  * Only a basic type may be used as the key of a dictionary entry.
  *
@@ -564,6 +566,7 @@ g_variant_type_is_basic (const GVariantType *type)
     case 'u':
     case 't':
     case 'x':
+    case 'f':
     case 'd':
     case 's':
     case 'o':
