@@ -571,7 +571,7 @@ g_variant_new_from_bytes (const GVariantType *type,
  * @trusted: %TRUE if every child in @children in trusted
  *
  * Constructs a new tree-mode #GVariant instance.  This is the inner
- * interface for creation of new serialised values that gets called from
+ * interface for creation of new tree-mode values that gets called from
  * various functions in gvariant.c.
  *
  * @children is consumed by this function.  g_free() will be called on
