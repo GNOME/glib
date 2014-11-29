@@ -50,7 +50,11 @@ IGNORE_HFILES = \
 	gvariant-serialiser.h	\
 	gvariant-core.h		\
 	gvarianttypeinfo.h	\
-	gwakeup.h
+	gwakeup.h		\
+	gtranslit-data.h	\
+	glib-init.h		\
+	gconstructor.h		\
+	valgrind.h
 
 # Images to copy into HTML directory
 HTML_IMAGES =  						\

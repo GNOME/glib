@@ -251,6 +251,7 @@ gboolean g_spawn_check_exit_status (gint      exit_status,
 GLIB_AVAILABLE_IN_ALL
 void g_spawn_close_pid (GPid pid);
 
+#ifndef __GTK_DOC_IGNORE__
 #ifdef G_OS_WIN32
 #define g_spawn_async              g_spawn_async_utf8
 #define g_spawn_async_with_pipes   g_spawn_async_with_pipes_utf8
@@ -300,6 +301,7 @@ gboolean g_spawn_command_line_sync_utf8  (const gchar           *command_line,
 GLIB_AVAILABLE_IN_ALL
 gboolean g_spawn_command_line_async_utf8 (const gchar           *command_line,
                                           GError               **error);
+#endif
 #endif
 
 G_END_DECLS

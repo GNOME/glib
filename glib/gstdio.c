@@ -845,6 +845,8 @@ g_utime (const gchar    *filename,
  * attempt to correctly handle %EINTR, which has platform-specific
  * semantics.
  *
+ * Returns: %TRUE on success, %FALSE if there was an error.
+ *
  * Since: 2.36
  */
 gboolean

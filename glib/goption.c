@@ -488,6 +488,7 @@ g_option_context_get_ignore_unknown_options (GOptionContext *context)
 /**
  * g_option_context_set_strict_posix:
  * @context: a #GoptionContext
+ * @strict_posix: the new value
  *
  * Sets strict POSIX mode.
  *
@@ -532,6 +533,8 @@ g_option_context_set_strict_posix (GOptionContext *context,
  * Returns whether strict POSIX code is enabled.
  *
  * See g_option_context_set_strict_posix() for more information.
+ *
+ * Returns: %TRUE if strict POSIX is enabled, %FALSE otherwise.
  *
  * Since: 2.44
  **/

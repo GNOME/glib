@@ -55,7 +55,6 @@
    ---------------------------------------------------------------- 
 */
 
-
 /* This file is for inclusion into client (your!) code.
 
    You can use these macros to manipulate and query Valgrind's 
@@ -72,7 +71,6 @@
 
 #ifndef __VALGRIND_H
 #define __VALGRIND_H
-
 
 /* ------------------------------------------------------------------ */
 /* VERSION NUMBER OF VALGRIND                                         */

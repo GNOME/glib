@@ -383,13 +383,31 @@
  */
 
 /**
- * G_KEY_FILE_DESKTOP_KEY_URL :
+ * G_KEY_FILE_DESKTOP_KEY_URL:
  *
  * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string
  * giving the URL to access. It is only valid for desktop entries
  * with the `Link` type.
  *
  * Since: 2.14
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_DBUS_ACTIVATABLE:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean set to true
+ * if the application is D-Bus activatable.
+ *
+ * Since: 2.38
+ */
+
+/**
+ * G_KEY_FILE_DESKTOP_KEY_ACTIONS:
+ *
+ * A key under #G_KEY_FILE_DESKTOP_GROUP, whose value is a string list
+ * giving the available application actions.
+ *
+ * Since: 2.38
  */
 
 /**

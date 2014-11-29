@@ -1308,6 +1308,8 @@ g_hash_table_add (GHashTable *hash_table,
  *
  * Checks if @key is in @hash_table.
  *
+ * Returns: %TRUE if @key is in @hash_table, %FALSE otherwise.
+ *
  * Since: 2.32
  **/
 gboolean

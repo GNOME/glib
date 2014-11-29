@@ -259,7 +259,7 @@ typedef enum
  *                               a value never returned from g_unichar_get_script()
  * @G_UNICODE_SCRIPT_COMMON:     a character used by multiple different scripts
  * @G_UNICODE_SCRIPT_INHERITED:  a mark glyph that takes its script from the
- * i                             base glyph to which it is attached
+ *                               base glyph to which it is attached
  * @G_UNICODE_SCRIPT_ARABIC:     Arabic
  * @G_UNICODE_SCRIPT_ARMENIAN:   Armenian
  * @G_UNICODE_SCRIPT_BENGALI:    Bengali
@@ -393,7 +393,7 @@ typedef enum
  * @G_UNICODE_SCRIPT_PSALTER_PAHLAVI:      Psalter Pahlavi. Since: 2.42
  * @G_UNICODE_SCRIPT_SIDDHAM:              Siddham. Since: 2.42
  * @G_UNICODE_SCRIPT_TIRHUTA:              Tirhuta. Since: 2.42
- * @G_UNICODE_SCRIPT_WARANG_CITI           Warang Citi. Since: 2.42
+ * @G_UNICODE_SCRIPT_WARANG_CITI:          Warang Citi. Since: 2.42
  *
  * The #GUnicodeScript enumeration identifies different writing
  * systems. The values correspond to the names as defined in the

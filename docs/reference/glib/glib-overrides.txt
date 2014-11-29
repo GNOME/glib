@@ -206,11 +206,6 @@ GCond *cond
 #define G_OS_WIN32
 </MACRO>
 
-<MACRO>
-<NAME>G_OS_BEOS</NAME>
-#define G_OS_BEOS
-</MACRO>
-
 # g_ascii_isxxx
 
 <FUNCTION>

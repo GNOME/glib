@@ -549,7 +549,7 @@
  * G_GSIZE_MODIFIER:
  *
  * The platform dependent length modifier for conversion specifiers
- * for scanning and printing values of type #gsize or #gssize. It
+ * for scanning and printing values of type #gsize. It
  * is a string literal.
  *
  * Since: 2.6
@@ -573,7 +573,7 @@
  * to #G_MAXSSIZE.
  *
  * To print or scan values of this type, use
- * %G_GSIZE_MODIFIER and/or %G_GSSIZE_FORMAT.
+ * %G_GSSIZE_MODIFIER and/or %G_GSSIZE_FORMAT.
  */
 
 /**
@@ -597,6 +597,16 @@
  *
  * This is the platform dependent conversion specifier for scanning
  * and printing values of type #gssize. See also #G_GINT16_FORMAT.
+ *
+ * Since: 2.6
+ */
+
+/**
+ * G_GSSIZE_MODIFIER:
+ *
+ * The platform dependent length modifier for conversion specifiers
+ * for scanning and printing values of type #gssize. It
+ * is a string literal.
  *
  * Since: 2.6
  */

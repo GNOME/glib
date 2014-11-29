@@ -166,6 +166,7 @@ gchar *g_filename_display_basename (const gchar *filename) G_GNUC_MALLOC;
 GLIB_AVAILABLE_IN_ALL
 gchar **g_uri_list_extract_uris (const gchar *uri_list) G_GNUC_MALLOC;
 
+#ifndef __GTK_DOC_IGNORE__
 #ifdef G_OS_WIN32
 #define g_filename_to_utf8   g_filename_to_utf8_utf8
 #define g_filename_from_utf8 g_filename_from_utf8_utf8
@@ -193,6 +194,7 @@ gchar *g_filename_to_uri_utf8    (const gchar  *filename,
                                   const gchar  *hostname,
                                   GError      **error) G_GNUC_MALLOC;
 #endif
+#endif /* __GTK_DOC_IGNORE__ */
 
 G_END_DECLS
 
