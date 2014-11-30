@@ -99,7 +99,6 @@ test_threaded_712570 (void)
   GMainLoop *loop;
   GSocketClient *client;
   GError *error = NULL;
-  int ref_count;
 
   g_test_bug ("712570");
 
@@ -135,11 +134,13 @@ test_threaded_712570 (void)
 
   /* Stop the service and then wait for it to asynchronously cancel
    * its outstanding accept() call (and drop the associated ref).
+   * At least one main context iteration is required in some circumstances
+   * to ensure that the cancellation actually happens.
    */
-  ref_count = G_OBJECT (service)->ref_count;
   g_socket_service_stop (G_SOCKET_SERVICE (service));
-  while (G_OBJECT (service)->ref_count == ref_count)
+  do
     g_main_context_iteration (NULL, TRUE);
+  while (G_OBJECT (service)->ref_count > 3);
 
   /* Drop our ref, then unlock the mutex and wait for the service to be
    * finalized. (Without the fix for 712570 it would hang forever here.)
