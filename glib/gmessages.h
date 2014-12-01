@@ -342,9 +342,48 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  * returned from the current function.
  *
  * If G_DISABLE_CHECKS is defined then the check is not performed.  You
- * should therefore not depend on any side effects of @expr.
+ * should therefore not depend on any side effects of @expr.  See
+ * g_return_if_fail_se() for a version that guarantees side effects.
  */
 #define g_return_val_if_fail(expr,val) G_STMT_START{ (void)0; }G_STMT_END
+
+/**
+ * g_return_if_fail_se:
+ * @expr: the expression to check
+ *
+ * Verifies that the expression @expr, usually representing a
+ * precondition, evaluates to %TRUE.
+ *
+ * This is the same as g_return_if_fail() except that @expr is
+ * guaranteed to be evaluated, so it may contain side effects.
+ *
+ * Note: it is still undefined if this function will actually return or
+ * not, or if any side effects of @val will be evaluated.  There is only
+ * a guarantee with respect to side effects of @expr.
+ *
+ * Since: 2.44
+ */
+#define g_return_if_fail_se(expr)         ((void) (expr))
+
+/**
+ * g_return_val_if_fail_se:
+ * @expr: the expression to check
+ * @val: the value to return from the current function
+ *       if the expression is not true
+ *
+ * Verifies that the expression @expr, usually representing a
+ * precondition, evaluates to %TRUE.
+ *
+ * This is the same as g_return_val_if_fail() except that @expr is
+ * guaranteed to be evaluated, so it may contain side effects.
+ *
+ * Note: it is still undefined if this function will actually return or
+ * not, or if any side effects of @val will be evaluated.  There is only
+ * a guarantee with respect to side effects of @expr.
+ *
+ * Since: 2.44
+ */
+#define g_return_val_if_fail_se(expr,val) ((void) (expr))
 
 /**
  * g_return_if_reached:
@@ -381,6 +420,9 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 		                   #expr);				\
 	 return (val);							\
        };				}G_STMT_END
+
+#define g_return_if_fail_se(expr)         g_return_if_fail((expr))
+#define g_return_val_if_fail_se(expr,val) g_return_val_if_fail((expr), (val))
 
 #define g_return_if_reached()		G_STMT_START{			\
      g_log (G_LOG_DOMAIN,						\

@@ -973,6 +973,8 @@ g_set_printerr_handler
 <SUBSECTION>
 g_return_if_fail
 g_return_val_if_fail
+g_return_if_fail_se
+g_return_val_if_fail_se
 g_return_if_reached
 g_return_val_if_reached
 g_warn_if_fail
@@ -2976,6 +2978,7 @@ g_test_rand_double
 g_test_rand_double_range
 
 g_assert
+g_assert_se
 g_assert_not_reached
 
 g_assert_cmpstr

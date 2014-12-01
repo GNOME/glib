@@ -83,12 +83,14 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
 #ifdef G_DISABLE_ASSERT
 #define g_assert_not_reached()          do { (void) 0; } while (0)
 #define g_assert(expr)                  do { (void) 0; } while (0)
+#define g_assert_se(expr)               ((void) (expr))
 #else /* !G_DISABLE_ASSERT */
 #define g_assert_not_reached()          do { g_assertion_message_expr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, NULL); } while (0)
 #define g_assert(expr)                  do { if G_LIKELY (expr) ; else \
                                                g_assertion_message_expr (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                          #expr); \
                                            } while (0)
+#define g_assert_se(expr)               g_assert((expr))
 #endif /* !G_DISABLE_ASSERT */
 
 GLIB_AVAILABLE_IN_ALL

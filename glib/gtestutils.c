@@ -316,6 +316,25 @@
  *
  * The macro can be turned off in final releases of code by defining
  * `G_DISABLE_ASSERT` when compiling the application.
+ *
+ * For a version which is guaranteed to evaluate side effects in @expr,
+ * see g_assert_se().
+ */
+
+/**
+ * g_assert_se:
+ * @expr: the expression to check
+ *
+ * Debugging macro to terminate the application if the assertion
+ * fails. If the assertion fails (i.e. the expression is not true),
+ * an error message is logged and the application is terminated.
+ *
+ * The check can be turned off in final releases of code by defining
+ * `G_DISABLE_ASSERT` when compiling the application.
+ *
+ * Unlike g_assert(), this macro is guaranteed to evaluate side effects
+ * of @expr, even if checks are disabled.  It is still undefined if the
+ * program will actually be aborted or not.
  */
 
 /**
