@@ -122,13 +122,15 @@ How to run and debug your GLib application
       <varlistentry>
         <term>fatal-warnings</term>
         <listitem><para>Causes GLib to abort the program at the first call
-           to g_warning() or g_critical().</para>
+           to g_warning() or g_critical().  Use of this flag is not
+           recommended except when debugging.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>fatal-criticals</term>
         <listitem><para>Causes GLib to abort the program at the first call
-           to g_critical().</para>
+           to g_critical().  This flag can be useful during debugging and
+           testing.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
