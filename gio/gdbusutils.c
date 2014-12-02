@@ -419,6 +419,11 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
       g_value_set_uint64 (out_gvalue, g_variant_get_uint64 (value));
       break;
 
+    case G_VARIANT_CLASS_FLOAT:
+      g_value_init (out_gvalue, G_TYPE_FLOAT);
+      g_value_set_float (out_gvalue, g_variant_get_float (value));
+      break;
+
     case G_VARIANT_CLASS_DOUBLE:
       g_value_init (out_gvalue, G_TYPE_DOUBLE);
       g_value_set_double (out_gvalue, g_variant_get_double (value));
@@ -591,6 +596,10 @@ g_dbus_gvalue_to_gvariant (const GValue       *gvalue,
 
         case G_VARIANT_CLASS_UINT64:
           ret = g_variant_ref_sink (g_variant_new_uint64 (g_value_get_uint64 (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_FLOAT:
+          ret = g_variant_ref_sink (g_variant_new_float (g_value_get_float (gvalue)));
           break;
 
         case G_VARIANT_CLASS_DOUBLE:
