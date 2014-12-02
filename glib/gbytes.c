@@ -32,6 +32,14 @@
 #include <glib/gmessages.h>
 
 #include <string.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#ifdef G_OS_UNIX
+#include "glib-unix.h"
+#include <sys/mman.h>
+#endif
 
 /**
  * GBytes:
@@ -68,7 +76,7 @@ struct _GBytes
 {
   gsize size;
   gint  ref_count;
-  gint  type;
+  gint  type_or_fd;
 };
 
 typedef struct
@@ -109,17 +117,20 @@ typedef struct
 #define G_BYTES_TYPE_NOTIFY        (-4)
 
 /* All bytes are either inline or subtypes of GBytesData */
-#define G_BYTES_IS_INLINE(bytes)   ((bytes)->type == G_BYTES_TYPE_INLINE)
+#define G_BYTES_IS_INLINE(bytes)   ((bytes)->type_or_fd == G_BYTES_TYPE_INLINE)
 #define G_BYTES_IS_DATA(bytes)     (!G_BYTES_IS_INLINE(bytes))
 
 /* More specific subtypes of GBytesData */
-#define G_BYTES_IS_STATIC(bytes)   ((bytes)->type == G_BYTES_TYPE_STATIC)
-#define G_BYTES_IS_FREE(bytes)     ((bytes)->type == G_BYTES_TYPE_FREE)
-#define G_BYTES_IS_NOTIFY(bytes)   ((bytes)->type == G_BYTES_TYPE_NOTIFY)
+#define G_BYTES_IS_STATIC(bytes)   ((bytes)->type_or_fd == G_BYTES_TYPE_STATIC)
+#define G_BYTES_IS_FREE(bytes)     ((bytes)->type_or_fd == G_BYTES_TYPE_FREE)
+#define G_BYTES_IS_NOTIFY(bytes)   ((bytes)->type_or_fd == G_BYTES_TYPE_NOTIFY)
+
+/* we have a memfd if type_or_fd >= 0 */
+#define G_BYTES_IS_MEMFD(bytes)    ((bytes)->type_or_fd >= 0)
 
 static gpointer
 g_bytes_allocate (guint struct_size,
-                  guint type,
+                  guint type_or_fd,
                   gsize data_size)
 {
   GBytes *bytes;
@@ -127,7 +138,7 @@ g_bytes_allocate (guint struct_size,
   bytes = g_slice_alloc (struct_size);
   bytes->size = data_size;
   bytes->ref_count = 1;
-  bytes->type = type;
+  bytes->type_or_fd = type_or_fd;
 
   return bytes;
 }
@@ -159,6 +170,45 @@ g_bytes_new (gconstpointer data,
 
   return (GBytes *) bytes;
 }
+
+/**
+ * g_bytes_new_take_zero_copy_fd:
+ * @fd: a file descriptor capable of being zero-copy-safe
+ *
+ * Creates a new #GBytes from @fd.
+ *
+ * @fd must be capable of being made zero-copy-safe.  In concrete terms,
+ * this means that a call to g_unix_fd_ensure_zero_copy_safe() on @fd
+ * will succeed.  This call will be made before returning.
+ *
+ * This call consumes @fd, transferring ownership to the returned
+ * #GBytes.
+ *
+ * Returns: (transfer full): a new #GBytes
+ *
+ * Since: 2.44
+ */
+#ifdef G_OS_UNIX
+GBytes *
+g_bytes_new_take_zero_copy_fd (gint fd)
+{
+  GBytesData *bytes;
+  struct stat buf;
+
+  g_return_val_if_fail_se (g_unix_fd_ensure_zero_copy_safe (fd), NULL);
+
+  /* We already checked this is a memfd... */
+  g_assert_se (fstat (fd, &buf) == 0);
+
+  bytes = g_bytes_allocate (sizeof (GBytesData), fd, buf.st_size);
+  bytes->data = mmap (NULL, buf.st_size, PROT_READ, MAP_SHARED, fd, 0);
+  if (bytes->data == MAP_FAILED)
+    /* this is similar to malloc() failing, so do the same... */
+    g_error ("mmap() on memfd failed: %s\n", g_strerror (errno));
+
+  return (GBytes *) bytes;
+}
+#endif /* G_OS_UNIX */
 
 /**
  * g_bytes_new_take:
@@ -394,7 +444,7 @@ g_bytes_unref (GBytes *bytes)
 
   if (g_atomic_int_dec_and_test (&bytes->ref_count))
     {
-      switch (bytes->type)
+      switch (bytes->type_or_fd)
         {
         case G_BYTES_TYPE_STATIC:
           /* data does not need to be freed */
@@ -428,7 +478,17 @@ g_bytes_unref (GBytes *bytes)
           }
 
         default:
-          g_assert_not_reached ();
+          {
+            GBytesData *data_bytes = (GBytesData *) bytes;
+
+            g_assert (bytes->type_or_fd >= 0);
+
+            g_assert_se (munmap (data_bytes->data, bytes->size) == 0);
+            g_assert_se (close (bytes->type_or_fd) == 0);
+
+            g_slice_free (GBytesData, data_bytes);
+            break;
+          }
         }
     }
 }
