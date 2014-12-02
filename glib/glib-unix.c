@@ -31,6 +31,37 @@
 
 #include <string.h>
 
+#include <fcntl.h>
+#include <sys/syscall.h>
+#include <unistd.h>
+
+#ifdef __linux__
+
+/* We want to support these features of Linux even when building GLib
+ * against older versions of system headers.  This will allow us to
+ * 'automatically' start supporting a particular feature when GLib is
+ * used with a newer kernel, without recompile.
+ *
+ * This means that we're not changing functionality of GLib simply based
+ * on the set of headers we happen to compile against...
+ */
+
+#ifndef F_LINUX_SPECIFIC_BASE
+#define F_LINUX_SPECIFIC_BASE 1024
+#endif
+
+#ifndef F_ADD_SEALS
+#define F_ADD_SEALS (F_LINUX_SPECIFIC_BASE + 9)
+#define F_GET_SEALS (F_LINUX_SPECIFIC_BASE + 10)
+
+#define F_SEAL_SEAL     0x0001  /* prevent further seals from being set */
+#define F_SEAL_SHRINK   0x0002  /* prevent file from shrinking */
+#define F_SEAL_GROW     0x0004  /* prevent file from growing */
+#define F_SEAL_WRITE    0x0008  /* prevent writes */
+#endif
+
+#endif
+
 /**
  * SECTION:gunix
  * @title: UNIX-specific utilities and integration
@@ -420,4 +451,63 @@ g_unix_fd_add (gint              fd,
                gpointer          user_data)
 {
   return g_unix_fd_add_full (G_PRIORITY_DEFAULT, fd, condition, function, user_data, NULL);
+}
+
+/**
+ * g_unix_fd_ensure_zero_copy_safe:
+ * @fd: a file descriptor
+ *
+ * Checks whether @fd can be use in zero-copy mode. On Linux, this checks that
+ * the descriptor is a memfd, created with memfd_create(), and tries to apply
+ * seals to it so that it can be safely consumed by another process. On other
+ * Unix systems, this function will fail.
+ *
+ * Returns: whether the fd is safe to use in zero-copy mode. Sealing of memfds
+ *          is required for the @fd to be considered safe. If sealing fails, or
+ *          memfds are not available, or the @fd is not a memfd, returns %FALSE
+ *
+ * Since: 2.44
+ **/
+gboolean
+g_unix_fd_ensure_zero_copy_safe (gint fd)
+{
+#ifdef F_GET_SEALS
+  gint seals;
+  const gint IMMUTABLE_SEALS = F_SEAL_WRITE |
+                               F_SEAL_SHRINK |
+                               F_SEAL_GROW |
+                               F_SEAL_SEAL;
+
+  g_return_val_if_fail (fd >= 0, FALSE);
+
+  /* Seal the fd if possible (only on Linux 3.17+, and if the fd was created
+   * with memfd_create()). */
+  seals = fcntl (fd, F_GET_SEALS);
+  if (seals == -1)
+    {
+      g_debug ("Retrieving fd seals failed: %s", g_strerror (errno));
+      return FALSE;
+    }
+
+  /* Seal the fd, if it is not already. */
+  if ((seals & (IMMUTABLE_SEALS)) >= IMMUTABLE_SEALS)
+    {
+      g_debug ("%s", "fd already sealed");
+    }
+  else
+    {
+      gint error;
+
+      error = fcntl (fd, F_ADD_SEALS, IMMUTABLE_SEALS);
+      if (error == -1)
+        {
+          g_debug ("fd sealing failed: %s", g_strerror (errno));
+          return FALSE;
+        }
+    }
+
+  return TRUE;
+#else
+  return FALSE;
+#endif
 }
