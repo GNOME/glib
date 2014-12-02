@@ -1575,10 +1575,10 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
     case G_BUS_TYPE_USER:
       session_bus = g_getenv ("DBUS_SESSION_BUS_ADDRESS");
       if (session_bus == NULL)
-        ret = g_strdup_printf ("kernel:path=/sys/fs/kdbus/%d-user/bus;%s", getuid(),
+        ret = g_strdup_printf ("kernel:path=%s/kdbus;%s", g_get_user_runtime_dir (),
                                    get_session_address_platform_specific (&local_error));
       else
-        ret = g_strdup_printf ("kernel:path=/sys/fs/kdbus/%d-user/bus;%s", getuid(), session_bus);
+        ret = g_strdup_printf ("kernel:path=%s/kdbus;%s", g_get_user_runtime_dir (), session_bus);
       break;
 
     case G_BUS_TYPE_STARTER:
