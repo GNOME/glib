@@ -343,12 +343,16 @@ print_names (GDBusConnection *c,
 
 static gboolean  opt_connection_system  = FALSE;
 static gboolean  opt_connection_session = FALSE;
+static gboolean  opt_connection_user    = FALSE;
+static gboolean  opt_connection_machine = FALSE;
 static gchar    *opt_connection_address = NULL;
 
 static const GOptionEntry connection_entries[] =
 {
   { "system", 'y', 0, G_OPTION_ARG_NONE, &opt_connection_system, N_("Connect to the system bus"), NULL},
   { "session", 'e', 0, G_OPTION_ARG_NONE, &opt_connection_session, N_("Connect to the session bus"), NULL},
+  { "user", 'u', 0, G_OPTION_ARG_NONE, &opt_connection_user, N_("Connect to the system bus"), NULL},
+  { "machine", 'm', 0, G_OPTION_ARG_NONE, &opt_connection_machine, N_("Connect to the session bus"), NULL},
   { "address", 'a', 0, G_OPTION_ARG_STRING, &opt_connection_address, N_("Connect to given D-Bus address"), NULL},
   { NULL }
 };
@@ -373,11 +377,16 @@ static GDBusConnection *
 connection_get_dbus_connection (GError **error)
 {
   GDBusConnection *c;
+  guint count;
 
   c = NULL;
 
+  count = !!opt_connection_system +
+          !!opt_connection_session +
+          !!opt_connection_address;
+
   /* First, ensure we have exactly one connect */
-  if (!opt_connection_system && !opt_connection_session && opt_connection_address == NULL)
+  if (count == 0)
     {
       g_set_error (error,
                    G_IO_ERROR,
@@ -385,9 +394,7 @@ connection_get_dbus_connection (GError **error)
                    _("No connection endpoint specified"));
       goto out;
     }
-  else if ((opt_connection_system && (opt_connection_session || opt_connection_address != NULL)) ||
-           (opt_connection_session && (opt_connection_system || opt_connection_address != NULL)) ||
-           (opt_connection_address != NULL && (opt_connection_system || opt_connection_session)))
+  else if (count > 1)
     {
       g_set_error (error,
                    G_IO_ERROR,
