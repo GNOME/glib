@@ -406,6 +406,35 @@ g_bytes_get_size (GBytes *bytes)
   return bytes->size;
 }
 
+/**
+ * g_bytes_get_zero_copy_fd:
+ * @bytes: a #GBytes
+ *
+ * Gets the zero-copy fd from a #GBytes, if it has one.
+ *
+ * Returns -1 if @bytes was not created from a zero-copy fd.
+ *
+ * A #GBytes created with a zero-copy fd may have been internally
+ * converted into another type of #GBytes for any reason at all.  This
+ * function may therefore return -1 at any time, even for a #GBytes that
+ * was created with g_bytes_new_take_zero_copy_fd().
+ *
+ * The returned file descriptor belongs to @bytes.  Do not close it.
+ *
+ * Returns: a file descriptor, or -1
+ *
+ * Since: 2.44
+ */
+gint
+g_bytes_get_zero_copy_fd (GBytes *bytes)
+{
+  g_return_val_if_fail (bytes != NULL, -1);
+
+  if (G_BYTES_IS_MEMFD (bytes))
+    return bytes->type_or_fd;
+  else
+    return -1;
+}
 
 /**
  * g_bytes_ref:
