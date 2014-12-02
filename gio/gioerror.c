@@ -314,6 +314,9 @@ g_io_error_from_win32_error (gint error_code)
     case WSAECONNRESET:
       return G_IO_ERROR_CONNECTION_CLOSED;
 
+    case ERROR_PIPE_LISTENING:
+      return G_IO_ERROR_NOT_CONNECTED;
+
     default:
       return G_IO_ERROR_FAILED;
     }

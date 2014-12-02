@@ -475,6 +475,7 @@ typedef enum {
  *     "connection closed" errors returned %G_IO_ERROR_BROKEN_PIPE, but others
  *     returned %G_IO_ERROR_FAILED. Now they should all return the same
  *     value, which has this more logical name. Since 2.44.
+ * @G_IO_ERROR_NOT_CONNECTED: Transport endpoint is not connected. Since 2.44
  *
  * Error codes returned by GIO functions.
  *
@@ -539,6 +540,7 @@ typedef enum {
   G_IO_ERROR_PROXY_NOT_ALLOWED,
   G_IO_ERROR_BROKEN_PIPE,
   G_IO_ERROR_CONNECTION_CLOSED = G_IO_ERROR_BROKEN_PIPE
+  G_IO_ERROR_NOT_CONNECTED
 } GIOErrorEnum;
 
 
