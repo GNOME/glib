@@ -839,7 +839,8 @@ g_slist_last (GSList *list)
  * Gets the number of elements in a #GSList.
  *
  * This function iterates over the whole list to
- * count its elements.
+ * count its elements. To check whether the list is non-empty, it is faster to
+ * check @list against %NULL.
  *
  * Returns: the number of elements in the #GSList
  */

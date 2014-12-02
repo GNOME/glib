@@ -947,7 +947,8 @@ g_list_first (GList *list)
  *
  * This function iterates over the whole list to count its elements.
  * Use a #GQueue instead of a GList if you regularly need the number
- * of items. 
+ * of items. To check whether the list is non-empty, it is faster to check
+ * @list against %NULL.
  *
  * Returns: the number of elements in the #GList
  */
