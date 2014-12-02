@@ -66,12 +66,71 @@
 
 struct _GBytes
 {
-  gconstpointer data;  /* may be NULL iff (size == 0) */
-  gsize size;  /* may be 0 */
-  gint ref_count;
-  GDestroyNotify free_func;
-  gpointer user_data;
+  gsize size;
+  gint  ref_count;
+  gint  type;
 };
+
+typedef struct
+{
+  GBytes bytes;
+#if GLIB_SIZEOF_SIZE_T == 4
+  guint pad;
+#endif
+
+  guchar data[1];
+} GBytesInline;
+
+/* important: the ->data field of GBytesInline should always be 'nicely
+ * aligned'.
+ */
+G_STATIC_ASSERT (G_STRUCT_OFFSET (GBytesInline, data) % (2 * sizeof (gpointer)) == 0);
+G_STATIC_ASSERT (G_STRUCT_OFFSET (GBytesInline, data) % 8 == 0);
+
+
+typedef struct
+{
+  GBytes   bytes;
+
+  gpointer data;
+} GBytesData;
+
+typedef struct
+{
+  GBytesData     data_bytes;
+
+  GDestroyNotify notify;
+  gpointer       user_data;
+} GBytesNotify;
+
+#define G_BYTES_TYPE_INLINE        (-1)
+#define G_BYTES_TYPE_STATIC        (-2)
+#define G_BYTES_TYPE_FREE          (-3)
+#define G_BYTES_TYPE_NOTIFY        (-4)
+
+/* All bytes are either inline or subtypes of GBytesData */
+#define G_BYTES_IS_INLINE(bytes)   ((bytes)->type == G_BYTES_TYPE_INLINE)
+#define G_BYTES_IS_DATA(bytes)     (!G_BYTES_IS_INLINE(bytes))
+
+/* More specific subtypes of GBytesData */
+#define G_BYTES_IS_STATIC(bytes)   ((bytes)->type == G_BYTES_TYPE_STATIC)
+#define G_BYTES_IS_FREE(bytes)     ((bytes)->type == G_BYTES_TYPE_FREE)
+#define G_BYTES_IS_NOTIFY(bytes)   ((bytes)->type == G_BYTES_TYPE_NOTIFY)
+
+static gpointer
+g_bytes_allocate (guint struct_size,
+                  guint type,
+                  gsize data_size)
+{
+  GBytes *bytes;
+
+  bytes = g_slice_alloc (struct_size);
+  bytes->size = data_size;
+  bytes->ref_count = 1;
+  bytes->type = type;
+
+  return bytes;
+}
 
 /**
  * g_bytes_new:
@@ -91,9 +150,14 @@ GBytes *
 g_bytes_new (gconstpointer data,
              gsize         size)
 {
+  GBytesInline *bytes;
+
   g_return_val_if_fail (data != NULL || size == 0, NULL);
 
-  return g_bytes_new_take (g_memdup (data, size), size);
+  bytes = g_bytes_allocate (G_STRUCT_OFFSET (GBytesInline, data[size]), G_BYTES_TYPE_INLINE, size);
+  memcpy (bytes->data, data, size);
+
+  return (GBytes *) bytes;
 }
 
 /**
@@ -123,9 +187,13 @@ GBytes *
 g_bytes_new_take (gpointer data,
                   gsize    size)
 {
-  return g_bytes_new_with_free_func (data, size, g_free, data);
-}
+  GBytesData *bytes;
 
+  bytes = g_bytes_allocate (sizeof (GBytesNotify), G_BYTES_TYPE_FREE, size);
+  bytes->data = data;
+
+  return (GBytes *) bytes;
+}
 
 /**
  * g_bytes_new_static: (skip)
@@ -146,7 +214,14 @@ GBytes *
 g_bytes_new_static (gconstpointer data,
                     gsize         size)
 {
-  return g_bytes_new_with_free_func (data, size, NULL, NULL);
+  GBytesData *bytes;
+
+  g_return_val_if_fail (data != NULL || size == 0, NULL);
+
+  bytes = g_bytes_allocate (sizeof (GBytesData), G_BYTES_TYPE_STATIC, size);
+  bytes->data = (gpointer) data;
+
+  return (GBytes *) bytes;
 }
 
 /**
@@ -176,18 +251,17 @@ g_bytes_new_with_free_func (gconstpointer  data,
                             GDestroyNotify free_func,
                             gpointer       user_data)
 {
-  GBytes *bytes;
+  GBytesNotify *bytes;
 
-  g_return_val_if_fail (data != NULL || size == 0, NULL);
+  if (!free_func)
+    return g_bytes_new_static (data, size);
 
-  bytes = g_slice_new (GBytes);
-  bytes->data = data;
-  bytes->size = size;
-  bytes->free_func = free_func;
+  bytes = g_bytes_allocate (sizeof (GBytesNotify), G_BYTES_TYPE_NOTIFY, size);
+  bytes->data_bytes.data = (gpointer) data;
+  bytes->notify = free_func;
   bytes->user_data = user_data;
-  bytes->ref_count = 1;
 
-  return (GBytes *)bytes;
+  return (GBytes *) bytes;
 }
 
 /**
@@ -216,7 +290,7 @@ g_bytes_new_from_bytes (GBytes  *bytes,
   g_return_val_if_fail (offset <= bytes->size, NULL);
   g_return_val_if_fail (offset + length <= bytes->size, NULL);
 
-  return g_bytes_new_with_free_func ((gchar *)bytes->data + offset, length,
+  return g_bytes_new_with_free_func ((gchar *) g_bytes_get_data (bytes, NULL) + offset, length,
                                      (GDestroyNotify)g_bytes_unref, g_bytes_ref (bytes));
 }
 
@@ -240,12 +314,27 @@ g_bytes_new_from_bytes (GBytes  *bytes,
  */
 gconstpointer
 g_bytes_get_data (GBytes *bytes,
-                  gsize *size)
+                  gsize  *size)
 {
   g_return_val_if_fail (bytes != NULL, NULL);
+
   if (size)
     *size = bytes->size;
-  return bytes->data;
+
+  if (G_BYTES_IS_DATA (bytes))
+    {
+      GBytesData *data_bytes = (GBytesData *) bytes;
+
+      return data_bytes->data;
+    }
+  else if (G_BYTES_IS_INLINE (bytes))
+    {
+      GBytesInline *inline_bytes = (GBytesInline *) bytes;
+
+      return inline_bytes->data;
+    }
+  else
+    g_assert_not_reached ();
 }
 
 /**
@@ -305,9 +394,42 @@ g_bytes_unref (GBytes *bytes)
 
   if (g_atomic_int_dec_and_test (&bytes->ref_count))
     {
-      if (bytes->free_func != NULL)
-        bytes->free_func (bytes->user_data);
-      g_slice_free (GBytes, bytes);
+      switch (bytes->type)
+        {
+        case G_BYTES_TYPE_STATIC:
+          /* data does not need to be freed */
+          g_slice_free (GBytesData, (GBytesData *) bytes);
+          break;
+
+        case G_BYTES_TYPE_INLINE:
+          /* data will be freed along with struct */
+          g_slice_free1 (G_STRUCT_OFFSET (GBytesInline, data[bytes->size]), bytes);
+          break;
+
+        case G_BYTES_TYPE_FREE:
+          {
+            GBytesData *data_bytes = (GBytesData *) bytes;
+
+            g_free (data_bytes->data);
+
+            g_slice_free (GBytesData, data_bytes);
+            break;
+          }
+
+        case G_BYTES_TYPE_NOTIFY:
+          {
+            GBytesNotify *notify_bytes = (GBytesNotify *) bytes;
+
+            /* We don't create GBytesNotify if callback was NULL */
+            (* notify_bytes->notify) (notify_bytes->user_data);
+
+            g_slice_free (GBytesNotify, notify_bytes);
+            break;
+          }
+
+        default:
+          g_assert_not_reached ();
+        }
     }
 }
 
@@ -330,14 +452,22 @@ gboolean
 g_bytes_equal (gconstpointer bytes1,
                gconstpointer bytes2)
 {
-  const GBytes *b1 = bytes1;
-  const GBytes *b2 = bytes2;
+  gconstpointer d1, d2;
+  gsize s1, s2;
 
   g_return_val_if_fail (bytes1 != NULL, FALSE);
   g_return_val_if_fail (bytes2 != NULL, FALSE);
 
-  return b1->size == b2->size &&
-         memcmp (b1->data, b2->data, b1->size) == 0;
+  d1 = g_bytes_get_data ((GBytes *) bytes1, &s1);
+  d2 = g_bytes_get_data ((GBytes *) bytes2, &s2);
+
+  if (s1 != s2)
+    return FALSE;
+
+  if (d1 == d2)
+    return TRUE;
+
+  return memcmp (d1, d2, s1) == 0;
 }
 
 /**
@@ -356,14 +486,18 @@ g_bytes_equal (gconstpointer bytes1,
 guint
 g_bytes_hash (gconstpointer bytes)
 {
-  const GBytes *a = bytes;
-  const signed char *p, *e;
+  const guchar *data;
+  const guchar *end;
+  gsize size;
   guint32 h = 5381;
 
   g_return_val_if_fail (bytes != NULL, 0);
 
-  for (p = (signed char *)a->data, e = (signed char *)a->data + a->size; p != e; p++)
-    h = (h << 5) + h + *p;
+  data = g_bytes_get_data ((GBytes *) bytes, &size);
+  end = data + size;
+
+  while (data != end)
+    h = (h << 5) + h + *(data++);
 
   return h;
 }
@@ -386,41 +520,22 @@ gint
 g_bytes_compare (gconstpointer bytes1,
                  gconstpointer bytes2)
 {
-  const GBytes *b1 = bytes1;
-  const GBytes *b2 = bytes2;
+  gconstpointer d1, d2;
+  gsize s1, s2;
   gint ret;
 
   g_return_val_if_fail (bytes1 != NULL, 0);
   g_return_val_if_fail (bytes2 != NULL, 0);
 
-  ret = memcmp (b1->data, b2->data, MIN (b1->size, b2->size));
-  if (ret == 0 && b1->size != b2->size)
-      ret = b1->size < b2->size ? -1 : 1;
+  d1 = g_bytes_get_data ((GBytes *) bytes1, &s1);
+  d2 = g_bytes_get_data ((GBytes *) bytes2, &s2);
+
+  ret = memcmp (d1, d2, MIN (s1, s2));
+  if (ret == 0 && s1 != s2)
+    ret = s1 < s2 ? -1 : 1;
+
   return ret;
 }
-
-static gpointer
-try_steal_and_unref (GBytes         *bytes,
-                     GDestroyNotify  free_func,
-                     gsize          *size)
-{
-  gpointer result;
-
-  if (bytes->free_func != free_func || bytes->data == NULL)
-    return NULL;
-
-  /* Are we the only reference? */
-  if (g_atomic_int_get (&bytes->ref_count) == 1)
-    {
-      *size = bytes->size;
-      result = (gpointer)bytes->data;
-      g_slice_free (GBytes, bytes);
-      return result;
-    }
-
-  return NULL;
-}
-
 
 /**
  * g_bytes_unref_to_data:
@@ -449,20 +564,26 @@ g_bytes_unref_to_data (GBytes *bytes,
   g_return_val_if_fail (bytes != NULL, NULL);
   g_return_val_if_fail (size != NULL, NULL);
 
+
   /*
    * Optimal path: if this is was the last reference, then we can return
    * the data from this GBytes without copying.
    */
-
-  result = try_steal_and_unref (bytes, g_free, size);
-  if (result == NULL)
+  if (G_BYTES_IS_FREE(bytes) && g_atomic_int_get (&bytes->ref_count) == 1)
     {
-      /*
-       * Copy: Non g_malloc (or compatible) allocator, or static memory,
-       * so we have to copy, and then unref.
-       */
-      result = g_memdup (bytes->data, bytes->size);
+      GBytesData *data_bytes = (GBytesData *) bytes;
+
+      result = data_bytes->data;
       *size = bytes->size;
+
+      g_slice_free (GBytesData, data_bytes);
+    }
+  else
+    {
+      gconstpointer data;
+
+      data = g_bytes_get_data (bytes, size);
+      result = g_memdup (data, *size);
       g_bytes_unref (bytes);
     }
 
