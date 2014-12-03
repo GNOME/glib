@@ -1617,6 +1617,15 @@ g_variant_serialiser_needed_size (GVariantTypeInfo         *type_info,
   g_assert_not_reached ();
 }
 
+gboolean
+g_variant_serialiser_unpack_all (GVariantTypeInfo *type_info,
+                                 gconstpointer     end,
+                                 gsize             end_size,
+                                 gsize             total_size,
+                                 GArray           *results)
+{
+  return FALSE;
+}
 
 void
 g_variant_serialiser_write_to_vectors (GVariantVectors  *vectors,

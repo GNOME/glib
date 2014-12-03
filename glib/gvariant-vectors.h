@@ -19,7 +19,7 @@ typedef struct
 {
   GBytes *gbytes;
   union {
-    gconstpointer pointer;
+    const guchar *pointer;
     gsize         offset;
   } data;
   gsize    size;

@@ -665,6 +665,157 @@ g_variant_get_serialised (GVariant  *value,
   return value->contents.serialised.data;
 }
 
+static GVariant *
+g_variant_vector_deserialise (GVariantTypeInfo *type_info,
+                              GVariantVector   *first_vector,
+                              GVariantVector   *last_vector,
+                              gsize             size,
+                              gboolean          trusted,
+                              GArray           *children)
+{
+  g_assert (size > 0);
+
+  if (first_vector < last_vector)
+    {
+      GVariantVector *vector = first_vector;
+      gconstpointer end;
+      GVariant **new;
+      guint offset;
+      guint i, n;
+
+      end = last_vector->data.pointer + last_vector->size;
+
+      offset = children->len;
+
+      if (!g_variant_serialiser_unpack_all (type_info, end, last_vector->size, size, children))
+        {
+          /* We are supposed to consume type_info */
+          g_variant_type_info_unref (type_info);
+          return FALSE;
+        }
+
+      n = children->len - offset;
+      new = g_new (GVariant *, n);
+
+      for (i = 0; i < n; i++)
+        {
+          GVariantUnpacked *unpacked;
+          GVariantVector *fv;
+          gsize saved_size;
+
+          unpacked = &g_array_index (children, GVariantUnpacked, offset + i);
+
+          /* Skip the alignment.
+           *
+           * We can destroy vectors because we won't be going back.
+           *
+           * We do a >= compare because we want to go to the next vector
+           * if it is the start of our child.
+           */
+          while (unpacked->skip >= vector->size)
+            {
+              unpacked->skip -= vector->size;
+              vector++;
+            }
+          fv = vector;
+          fv->data.pointer += unpacked->skip;
+          fv->size -= unpacked->skip;
+
+          if (unpacked->size == 0)
+            {
+              new[i] = g_variant_new_serialised (type_info, g_bytes_new (NULL, 0), NULL, 0, trusted);
+              continue;
+            }
+
+          /* Now skip to the end, according to 'size'.
+           *
+           * We cannot destroy everything here because we will probably
+           * end up reusing the last one.
+           *
+           * We do a > compare because we want to stay on this vector if
+           * it is the end of our child.
+           */
+          size = unpacked->size;
+          while (unpacked->size > vector->size)
+            {
+              unpacked->size -= vector->size;
+              vector++;
+            }
+
+          /* temporarily replace the size field */
+          saved_size = vector->size;
+          vector->size = unpacked->size;
+
+          new[i] = g_variant_vector_deserialise (unpacked->type_info, fv, vector, size, trusted, children);
+
+          if (new[i] == NULL)
+            {
+              gint j;
+
+              /* Free the new children array and any children in it up
+               * to this point.
+               */
+              for (j = 0; j < i; j++)
+                g_variant_unref (new[j]);
+              g_free (new);
+
+              /* Consume the type_info for the remaining children */
+              for (j = i + 1; j < n; j++)
+                g_variant_type_info_unref (g_array_index (children, GVariantUnpacked, offset + i).type_info);
+
+              /* Rewind this */
+              g_array_set_size (children, offset);
+
+              /* We have to free this */
+              g_variant_type_info_unref (type_info);
+
+              return NULL;
+            }
+
+          /* Repair the last vector and move past our data */
+          vector->data.pointer += unpacked->size;
+          vector->size -= saved_size - unpacked->size;
+        }
+
+      /* Rewind */
+      g_array_set_size (children, offset);
+
+      /* Create the tree-form GVariant in the usual way */
+      return g_variant_new_from_children (type_info, new, n, trusted);
+    }
+  else
+    {
+      g_assert (first_vector == last_vector);
+      g_assert (size == first_vector->size);
+
+      return g_variant_new_serialised (type_info, g_bytes_ref (first_vector->gbytes),
+                                       first_vector->data.pointer, size, trusted);
+    }
+}
+
+GVariant *
+g_variant_from_vectors (const GVariantType *type,
+                        GVariantVector     *vectors,
+                        gsize               n_vectors,
+                        gsize               size,
+                        gboolean            trusted)
+{
+  GVariant *result;
+  GArray *tmp;
+
+  g_return_val_if_fail (vectors != NULL || n_vectors == 0, NULL);
+
+  if (size == 0)
+    return g_variant_new_serialised (g_variant_type_info_get (type), g_bytes_new (NULL, 0), NULL, 0, trusted);
+
+  tmp = g_array_new (FALSE, FALSE, sizeof (GVariantUnpacked));
+  result = g_variant_vector_deserialise (g_variant_type_info_get (type),
+                                         vectors, vectors + n_vectors - 1, size, trusted, tmp);
+  g_array_free (tmp, TRUE);
+
+  return result;
+}
+
 /* -- public -- */
 
 /**

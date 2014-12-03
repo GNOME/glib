@@ -33,6 +33,11 @@ gboolean                g_check_setuid                  (void);
 GMainContext *          g_main_context_new_with_next_id (guint next_id);
 void                    g_variant_to_vectors            (GVariant *value,
                                                          GVariantVectors *vectors);
+GVariant *              g_variant_from_vectors          (const GVariantType *type,
+                                                         GVariantVector     *vectors,
+                                                         gsize               n_vectors,
+                                                         gsize               size,
+                                                         gboolean            trusted);
 
 #ifdef G_OS_WIN32
 gchar *_glib_get_dll_directory (void);
@@ -66,6 +71,11 @@ typedef struct {
 
   void                  (* g_variant_to_vectors)        (GVariant    *value,
                                                          GVariantVectors *vectors);
+  GVariant *            (* g_variant_from_vectors)      (const GVariantType *type,
+                                                         GVariantVector  *vectors,
+                                                         gsize            n_vectors,
+                                                         gsize size,
+                                                         gboolean trusted);
 
 
   /* Add other private functions here, initialize them in glib-private.c */

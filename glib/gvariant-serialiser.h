@@ -31,12 +31,25 @@ typedef struct
   gsize             size;
 } GVariantSerialised;
 
+typedef struct
+{
+  GVariantTypeInfo *type_info;
+  gsize             skip;
+  gsize             size;
+} GVariantUnpacked;
+
 /* deserialisation */
 GLIB_AVAILABLE_IN_ALL
 gsize                           g_variant_serialised_n_children         (GVariantSerialised        container);
 GLIB_AVAILABLE_IN_ALL
 GVariantSerialised              g_variant_serialised_get_child          (GVariantSerialised        container,
                                                                          gsize                     index);
+
+gboolean                        g_variant_serialiser_unpack_all         (GVariantTypeInfo         *type_info,
+                                                                         gconstpointer             end_pointer,
+                                                                         gsize                     end_size,
+                                                                         gsize                     total_size,
+                                                                         GArray                   *results_array);
 
 /* serialisation */
 typedef void                  (*GVariantSerialisedFiller)               (GVariantSerialised       *serialised,
