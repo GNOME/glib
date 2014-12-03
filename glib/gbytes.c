@@ -200,8 +200,15 @@ g_bytes_new_take_zero_copy_fd (gint fd)
   /* We already checked this is a memfd... */
   g_assert_se (fstat (fd, &buf) == 0);
 
+  if (buf.st_size == 0)
+    {
+      g_assert_se (close (fd) == 0);
+
+      return g_bytes_new (NULL, 0);
+    }
+
   bytes = g_bytes_allocate (sizeof (GBytesData), fd, buf.st_size);
-  bytes->data = mmap (NULL, buf.st_size, PROT_READ, MAP_SHARED, fd, 0);
+  bytes->data = mmap (NULL, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
   if (bytes->data == MAP_FAILED)
     /* this is similar to malloc() failing, so do the same... */
     g_error ("mmap() on memfd failed: %s\n", g_strerror (errno));
