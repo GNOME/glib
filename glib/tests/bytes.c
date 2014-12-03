@@ -15,7 +15,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+#include <unistd.h>
 #include "glib.h"
+#include "glib-unix.h"
+
+#include "glib-linux.h"
 
 static const gchar *NYAN = "nyannyan";
 static const gsize N_NYAN = 8;
@@ -208,7 +213,7 @@ test_to_data_transferred (void)
   GBytes *bytes;
 
   /* Memory transferred: one reference, and allocated with g_malloc */
-  bytes = g_bytes_new (NYAN, N_NYAN);
+  bytes = g_bytes_new_take (g_memdup (NYAN, N_NYAN), N_NYAN);
   memory = g_bytes_get_data (bytes, NULL);
   data = g_bytes_unref_to_data (bytes, &size);
   g_assert (data == memory);
@@ -265,7 +270,7 @@ test_to_array_transferred (void)
   GBytes *bytes;
 
   /* Memory transferred: one reference, and allocated with g_malloc */
-  bytes = g_bytes_new (NYAN, N_NYAN);
+  bytes = g_bytes_new_take (g_memdup (NYAN, N_NYAN), N_NYAN);
   memory = g_bytes_get_data (bytes, NULL);
   array = g_bytes_unref_to_array (bytes);
   g_assert (array != NULL);
@@ -331,6 +336,46 @@ test_null (void)
   g_assert (size == 0);
 }
 
+#ifdef GLIB_LINUX
+static void
+test_memfd (void)
+{
+  GBytes *bytes;
+  gint fd;
+
+  fd = glib_linux_memfd_create ("", MFD_CLOEXEC);
+  if (fd == -1 && errno == EINVAL)
+    {
+      g_test_skip ("missing kernel memfd support");
+      return;
+    }
+
+  /* We should not be able to seal this one */
+  g_assert (!g_unix_fd_ensure_zero_copy_safe (fd));
+  close (fd);
+
+  /* but this one will work */
+  fd = glib_linux_memfd_create ("", MFD_CLOEXEC | MFD_ALLOW_SEALING);
+  bytes = g_bytes_new_take_zero_copy_fd (fd);
+  g_assert_cmpint (g_bytes_get_size (bytes), ==, 0);
+  g_bytes_unref (bytes);
+
+  /* try with real data */
+  fd = glib_linux_memfd_create ("", MFD_CLOEXEC | MFD_ALLOW_SEALING);
+  g_assert_se (write (fd, NYAN, N_NYAN) == N_NYAN);
+  bytes = g_bytes_new_take_zero_copy_fd (fd);
+  g_assert_cmpint (g_bytes_get_size (bytes), ==, N_NYAN);
+  g_assert (memcmp (g_bytes_get_data (bytes, NULL), NYAN, N_NYAN) == 0);
+  g_assert (g_bytes_get_zero_copy_fd (bytes) == fd);
+
+  /* ensure that we cannot modify the fd further */
+  g_assert_se (write (fd, NYAN, N_NYAN) == -1);
+
+  /* that's enough for now */
+  g_bytes_unref (bytes);
+}
+#endif
+
 int
 main (int argc, char *argv[])
 {
@@ -353,6 +398,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/bytes/to-array/two-refs", test_to_array_two_refs);
   g_test_add_func ("/bytes/to-array/non-malloc", test_to_array_non_malloc);
   g_test_add_func ("/bytes/null", test_null);
+#ifdef GLIB_LINUX
+  g_test_add_func ("/bytes/memfd", test_memfd);
+#endif
 
   return g_test_run ();
 }
