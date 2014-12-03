@@ -46,7 +46,7 @@ GVariantSerialised              g_variant_serialised_get_child          (GVarian
                                                                          gsize                     index);
 
 gboolean                        g_variant_serialiser_unpack_all         (GVariantTypeInfo         *type_info,
-                                                                         gconstpointer             end_pointer,
+                                                                         const guchar             *end_pointer,
                                                                          gsize                     end_size,
                                                                          gsize                     total_size,
                                                                          GArray                   *results_array);
