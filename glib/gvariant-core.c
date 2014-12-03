@@ -1012,15 +1012,10 @@ g_variant_get_child_value (GVariant *value,
       s_child = g_variant_serialised_get_child (serialised, index_);
 
       /* create a new serialised instance out of it */
-      child = g_slice_new (GVariant);
-      child->type_info = s_child.type_info;
-      child->state = (value->state & STATE_TRUSTED) |
-                     STATE_SERIALISED;
-      child->size = s_child.size;
-      child->ref_count = 1;
-      child->contents.serialised.bytes =
-        g_bytes_ref (value->contents.serialised.bytes);
-      child->contents.serialised.data = s_child.data;
+      child = g_variant_new_serialised (s_child.type_info,
+                                        g_bytes_ref (value->contents.serialised.bytes),
+                                        s_child.data, s_child.size,
+                                        value->state & STATE_TRUSTED);
     }
 
   return child;
