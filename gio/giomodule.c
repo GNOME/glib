@@ -891,6 +891,7 @@ extern GType _g_dummy_tls_backend_get_type (void);
 extern GType g_network_monitor_base_get_type (void);
 #ifdef HAVE_NETLINK
 extern GType _g_network_monitor_netlink_get_type (void);
+extern GType _g_network_monitor_nm_get_type (void);
 #endif
 
 #ifdef G_OS_UNIX
@@ -1092,6 +1093,7 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (g_network_monitor_base_get_type ());
 #ifdef HAVE_NETLINK
       g_type_ensure (_g_network_monitor_netlink_get_type ());
+      g_type_ensure (_g_network_monitor_nm_get_type ());
 #endif
     }
 

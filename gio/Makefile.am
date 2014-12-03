@@ -291,6 +291,8 @@ if HAVE_NETLINK
 unix_sources +=			 \
 	gnetworkmonitornetlink.c \
 	gnetworkmonitornetlink.h \
+	gnetworkmonitornm.c	 \
+	gnetworkmonitornm.h	 \
 	$(NULL)
 endif
 endif
