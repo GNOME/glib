@@ -835,8 +835,7 @@ test_peer (void)
                          &len2,
                          &error);
     g_assert_no_error (error);
-    g_assert_cmpint (len, ==, len2);
-    g_assert (memcmp (buf, buf2, len) == 0);
+    g_assert_cmpmem (buf, len, buf2, len2);
     g_free (buf2);
     g_free (buf);
   }

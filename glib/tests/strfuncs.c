@@ -1262,8 +1262,7 @@ test_bounds (void)
   tmp = g_strjoinv (".", array);
   g_strfreev (array);
 
-  g_assert_cmpint (strlen (tmp), ==, 4095);
-  g_assert (memcmp (tmp, string, 4095) == 0);
+  g_assert_cmpmem (tmp, strlen (tmp), string, 4095);
   g_free (tmp);
 
   tmp = g_strconcat (string, string, string, NULL);

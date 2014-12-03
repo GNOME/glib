@@ -2224,8 +2224,7 @@ test_byteswap (void)
 
   g_variant_serialised_byteswap (two);
 
-  g_assert_cmpint (one.size, ==, two.size);
-  g_assert (memcmp (one.data, two.data, one.size) == 0);
+  g_assert_cmpmem (one.data, one.size, two.data, two.size);
 
   tree_instance_free (tree);
   g_free (one.data);

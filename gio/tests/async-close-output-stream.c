@@ -100,15 +100,10 @@ compare_output (SetupData *data)
   gsize size;
   gpointer written;
 
+  written = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (data->data_stream));
   size = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (data->data_stream));
 
-  /* compare the size of the data */
-  g_assert_cmpint (size, ==, data->expected_size);
-
-  written = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (data->data_stream));
-
-  /* compare the data itself */
-  g_assert (memcmp (written, data->expected_output, size) == 0);
+  g_assert_cmpmem (written, size, data->expected_output, data->expected_size);
 }
 
 static void

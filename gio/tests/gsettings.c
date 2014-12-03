@@ -1761,9 +1761,7 @@ test_strinfo (void)
     strinfo_builder_append_item (builder, "foo", 1);
     strinfo_builder_append_item (builder, "bar", 2);
     g_assert (strinfo_builder_append_alias (builder, "baz", "bar"));
-    g_assert_cmpint (builder->len % 4, ==, 0);
-    g_assert_cmpint (builder->len / 4, ==, length);
-    g_assert (memcmp (builder->str, strinfo, length * 4) == 0);
+    g_assert_cmpmem (builder->str, builder->len, strinfo, length * 4);
     g_string_free (builder, TRUE);
   }
 

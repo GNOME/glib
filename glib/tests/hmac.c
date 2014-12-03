@@ -352,8 +352,7 @@ test_hmac (HmacCase *t)
   g_hmac_update (hmac, t->data, t->data_len);
   g_hmac_get_digest (hmac, digest, &digest_len);
 
-  g_assert_cmpuint (digest_len, ==, hmac_len);
-  g_assert (memcmp (digest, t->result, digest_len) == 0);
+  g_assert_cmpmem (digest, hmac_len, t->result, digest_len);
 
   g_free (digest);
   g_hmac_unref (hmac);

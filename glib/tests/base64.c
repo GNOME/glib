@@ -57,10 +57,7 @@ test_incremental (gboolean line_break,
       len -= chunk_len;
     }
 
-  /* Check decoded length */
-  g_assert_cmpint (decoded_len, ==, length);
-  /* Check decoded data */
-  g_assert (memcmp (data, data2, length) == 0);
+  g_assert_cmpmem (data, length, data2, decoded_len);
 
   g_free (text);
   g_free (data2);
@@ -94,10 +91,7 @@ test_full (gconstpointer d)
   data2 = g_base64_decode (text, &len);
   g_free (text);
 
-  /* Check decoded length */
-  g_assert_cmpint (len, ==, length);
-  /* Check decoded base64 data */
-  g_assert (memcmp (data, data2, length) == 0);
+  g_assert_cmpmem (data, length, data2, len);
 
   g_free (data2);
 }
@@ -249,13 +243,9 @@ decode_and_compare (const gchar            *datap,
 {
   guchar *data2;
   gsize len;
-  int memcmp_decode;
 
   data2 = g_base64_decode (datap, &len);
-  g_assert_cmpint (len, ==, p->length);
-  /* g_printerr ("length: got %d, expected %d\n",len, length); */
-  memcmp_decode = memcmp (p->data, data2, p->length);
-  g_assert_cmpint (memcmp_decode, ==, 0);
+  g_assert_cmpmem (p->data, p->length, data2, len);
   g_free (data2);
 }
 
@@ -266,14 +256,10 @@ decode_inplace_and_compare (const gchar            *datap,
   gchar *data;
   guchar *data2;
   gsize len;
-  int memcmp_decode;
 
   data = g_strdup (datap);
   data2 = g_base64_decode_inplace (data, &len);
-  g_assert_cmpint (len, ==, p->length);
-  /* g_printerr ("length: got %d, expected %d\n",len, length); */
-  memcmp_decode = memcmp (p->data, data2, p->length);
-  g_assert_cmpint (memcmp_decode, ==, 0);
+  g_assert_cmpmem (p->data, p->length, data2, len);
   g_free (data2);
 }
 
@@ -361,8 +347,7 @@ test_base64_decode_smallblock (gconstpointer blocksize_p)
 
       decoded_atonce = g_base64_decode (str, &decoded_atonce_size);
 
-      g_assert_cmpint (decoded_size, ==, decoded_atonce_size);
-      g_assert (memcmp (decoded, decoded_atonce, decoded_size) == 0);
+      g_assert_cmpmem (decoded, decoded_size, decoded_atonce, decoded_atonce_size);
       
       g_free (decoded);
       g_free (decoded_atonce);

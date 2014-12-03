@@ -331,8 +331,9 @@ test_cat_utf8 (void)
 
   output_buf = g_memory_output_stream_steal_as_bytes ((GMemoryOutputStream*)output_buf_stream);
 
-  g_assert_cmpint (g_bytes_get_size (output_buf), ==, 13);
-  g_assert_cmpint (memcmp (g_bytes_get_data (output_buf, NULL), "hello, world!", 13), ==, 0);
+  g_assert_cmpmem (g_bytes_get_data (output_buf, NULL),
+                   g_bytes_get_size (output_buf),
+                   "hello, world!", 13);
 
   g_bytes_unref (output_buf);
   g_main_loop_unref (data.loop);
@@ -611,8 +612,7 @@ on_communicate_complete (GObject               *proc,
       stdout_len = strlen (stdout_str);
     }
 
-  g_assert_cmpint (stdout_len, ==, 11);
-  g_assert (memcmp (stdout_data, "hello world", 11) == 0);
+  g_assert_cmpmem (stdout_data, stdout_len, "hello world", 11);
   if (stdout)
     g_bytes_unref (stdout);
   g_free (stdout_str);
@@ -683,8 +683,7 @@ test_communicate (void)
   g_assert_no_error (error);
   stdout_data = g_bytes_get_data (stdout, &stdout_len);
 
-  g_assert_cmpint (stdout_len, ==, 11);
-  g_assert (memcmp (stdout_data, "hello world", 11) == 0);
+  g_assert_cmpmem (stdout_data, stdout_len, "hello world", 11);
   g_bytes_unref (stdout);
   
   g_bytes_unref (input);

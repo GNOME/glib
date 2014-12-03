@@ -423,13 +423,11 @@ test_string_nul_handling (void)
   g_assert (!g_string_equal (string1, string2));
   g_assert (string1->len == 8);
   g_string_append (string1, "yzzy");
-  g_assert (string1->len == 12);
-  g_assert (memcmp (string1->str, "fiddle\0xyzzy", 13) == 0);
+  g_assert_cmpmem (string1->str, string1->len + 1, "fiddle\0xyzzy", 13);
   g_string_insert (string1, 1, "QED");
-  g_assert (memcmp (string1->str, "fQEDiddle\0xyzzy", 16) == 0);
+  g_assert_cmpmem (string1->str, string1->len + 1, "fQEDiddle\0xyzzy", 16);
   g_string_printf (string1, "fiddle%cxyzzy", '\0');
-  g_assert (string1->len == 12);
-  g_assert (memcmp (string1->str, "fiddle\0xyzzy", 13) == 0);
+  g_assert_cmpmem (string1->str, string1->len + 1, "fiddle\0xyzzy", 13);
 
   g_string_free (string1, TRUE);
   g_string_free (string2, TRUE);
@@ -490,7 +488,7 @@ test_string_to_bytes (void)
 
   g_assert_cmpint (byte_len, ==, 7);
 
-  g_assert_cmpint (memcmp (byte_data, "foo-bar", byte_len), ==, 0);
+  g_assert_cmpmem (byte_data, byte_len, "foo-bar", 7);
 
   g_bytes_unref (bytes);
 }

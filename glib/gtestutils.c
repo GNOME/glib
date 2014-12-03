@@ -88,11 +88,11 @@
  * "assertions", which consists of running the test_assertions function.
  *
  * In addition to the traditional g_assert(), the test framework provides
- * an extended set of assertions for string and numerical comparisons:
- * g_assert_cmpfloat(), g_assert_cmpint(), g_assert_cmpuint(),
- * g_assert_cmphex(), g_assert_cmpstr(). The advantage of these variants
- * over plain g_assert() is that the assertion messages can be more
- * elaborate, and include the values of the compared entities.
+ * an extended set of assertions for comparisons: g_assert_cmpfloat(),
+ * g_assert_cmpint(), g_assert_cmpuint(), g_assert_cmphex(),
+ * g_assert_cmpstr(), and g_assert_cmpmem(). The advantage of these
+ * variants over plain g_assert() is that the assertion messages can be
+ * more elaborate, and include the values of the compared entities.
  *
  * GLib ships with two utilities called [gtester][gtester] and
  * [gtester-report][gtester-report] to facilitate running tests and producing
@@ -542,6 +542,29 @@
  * actual values of @n1 and @n2.
  *
  * Since: 2.16
+ */
+
+/**
+ * g_assert_cmpmem:
+ * @m1: pointer to a buffer
+ * @l1: length of @m1
+ * @m2: pointer to another buffer
+ * @l2: length of @m2
+ *
+ * Debugging macro to compare memory regions. If the comparison fails,
+ * an error message is logged and the application is either terminated
+ * or the testcase marked as failed.
+ *
+ * The effect of `g_assert_cmpmem (m1, l1, m2, l2)` is
+ * the same as `g_assert_true (l1 == l2 && memcmp (m1, m2, l1) == 0)`.
+ * The advantage of this macro is that it can produce a message that
+ * includes the actual values of @l1 and @l2.
+ *
+ * |[<!-- language="C" -->
+ *   g_assert_cmpmem (buf->data, buf->len, expected, sizeof (expected));
+ * ]|
+ *
+ * Since: 2.46
  */
 
 /**
