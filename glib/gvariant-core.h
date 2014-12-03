@@ -25,12 +25,12 @@
 
 /* gvariant-core.c */
 
-GVariant *              g_variant_new_from_children                     (const GVariantType  *type,
+GVariant *              g_variant_new_from_children                     (GVariantTypeInfo    *type_info,
                                                                          GVariant           **children,
                                                                          gsize                n_children,
                                                                          gboolean             trusted);
 
-GVariant *              g_variant_new_serialised                        (const GVariantType  *type,
+GVariant *              g_variant_new_serialised                        (GVariantTypeInfo    *type_info,
                                                                          GBytes              *bytes,
                                                                          gconstpointer        data,
                                                                          gsize                size,

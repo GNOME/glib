@@ -290,7 +290,8 @@ g_variant_new_from_trusted (const GVariantType *type,
 {
   gpointer mydata = g_memdup (data, size);
 
-  return g_variant_new_serialised (type, g_bytes_new_take (mydata, size), mydata, size, TRUE);
+  return g_variant_new_serialised (g_variant_type_info_get (type),
+                                   g_bytes_new_take (mydata, size), mydata, size, TRUE);
 }
 
 /**
@@ -636,8 +637,8 @@ GVariant *
 g_variant_new_maybe (const GVariantType *child_type,
                      GVariant           *child)
 {
+  GVariantTypeInfo *type_info;
   GVariantType *maybe_type;
-  GVariant *value;
 
   g_return_val_if_fail (child_type == NULL || g_variant_type_is_definite
                         (child_type), 0);
@@ -650,6 +651,8 @@ g_variant_new_maybe (const GVariantType *child_type,
     child_type = g_variant_get_type (child);
 
   maybe_type = g_variant_type_new_maybe (child_type);
+  type_info = g_variant_type_info_get (maybe_type);
+  g_variant_type_free (maybe_type);
 
   if (child != NULL)
     {
@@ -660,14 +663,10 @@ g_variant_new_maybe (const GVariantType *child_type,
       children[0] = g_variant_ref_sink (child);
       trusted = g_variant_is_trusted (children[0]);
 
-      value = g_variant_new_from_children (maybe_type, children, 1, trusted);
+      return g_variant_new_from_children (type_info, children, 1, trusted);
     }
   else
-    value = g_variant_new_from_children (maybe_type, NULL, 0, TRUE);
-
-  g_variant_type_free (maybe_type);
-
-  return value;
+    return g_variant_new_from_children (type_info, NULL, 0, TRUE);
 }
 
 /**
@@ -713,7 +712,7 @@ g_variant_new_variant (GVariant *value)
 
   g_variant_ref_sink (value);
 
-  return g_variant_new_from_children (G_VARIANT_TYPE_VARIANT,
+  return g_variant_new_from_children (g_variant_type_info_get (G_VARIANT_TYPE_VARIANT),
                                       g_memdup (&value, sizeof value),
                                       1, g_variant_is_trusted (value));
 }
@@ -769,10 +768,10 @@ g_variant_new_array (const GVariantType *child_type,
                      GVariant * const   *children,
                      gsize               n_children)
 {
+  GVariantTypeInfo *type_info;
   GVariantType *array_type;
   GVariant **my_children;
   gboolean trusted;
-  GVariant *value;
   gsize i;
 
   g_return_val_if_fail (n_children > 0 || child_type != NULL, NULL);
@@ -786,6 +785,8 @@ g_variant_new_array (const GVariantType *child_type,
   if (child_type == NULL)
     child_type = g_variant_get_type (children[0]);
   array_type = g_variant_type_new_array (child_type);
+  type_info = g_variant_type_info_get (array_type);
+  g_variant_type_free (array_type);
 
   for (i = 0; i < n_children; i++)
     {
@@ -794,11 +795,7 @@ g_variant_new_array (const GVariantType *child_type,
       trusted &= g_variant_is_trusted (children[i]);
     }
 
-  value = g_variant_new_from_children (array_type, my_children,
-                                       n_children, trusted);
-  g_variant_type_free (array_type);
-
-  return value;
+  return g_variant_new_from_children (type_info, my_children, n_children, trusted);
 }
 
 /*< private >
@@ -849,10 +846,10 @@ GVariant *
 g_variant_new_tuple (GVariant * const *children,
                      gsize             n_children)
 {
+  GVariantTypeInfo *type_info;
   GVariantType *tuple_type;
   GVariant **my_children;
   gboolean trusted;
-  GVariant *value;
   gsize i;
 
   g_return_val_if_fail (n_children == 0 || children != NULL, NULL);
@@ -867,11 +864,10 @@ g_variant_new_tuple (GVariant * const *children,
     }
 
   tuple_type = g_variant_make_tuple_type (children, n_children);
-  value = g_variant_new_from_children (tuple_type, my_children,
-                                       n_children, trusted);
+  type_info = g_variant_type_info_get (tuple_type);
   g_variant_type_free (tuple_type);
 
-  return value;
+  return g_variant_new_from_children (type_info, my_children, n_children, trusted);
 }
 
 /*< private >
@@ -909,6 +905,7 @@ GVariant *
 g_variant_new_dict_entry (GVariant *key,
                           GVariant *value)
 {
+  GVariantTypeInfo *type_info;
   GVariantType *dict_type;
   GVariant **children;
   gboolean trusted;
@@ -922,10 +919,10 @@ g_variant_new_dict_entry (GVariant *key,
   trusted = g_variant_is_trusted (key) && g_variant_is_trusted (value);
 
   dict_type = g_variant_make_dict_entry_type (key, value);
-  value = g_variant_new_from_children (dict_type, children, 2, trusted);
+  type_info = g_variant_type_info_get (dict_type);
   g_variant_type_free (dict_type);
 
-  return value;
+  return g_variant_new_from_children (type_info, children, 2, trusted);
 }
 
 /**
@@ -1551,7 +1548,7 @@ g_variant_new_strv (const gchar * const *strv,
   for (i = 0; i < length; i++)
     strings[i] = g_variant_ref_sink (g_variant_new_string (strv[i]));
 
-  return g_variant_new_from_children (G_VARIANT_TYPE_STRING_ARRAY,
+  return g_variant_new_from_children (g_variant_type_info_get (G_VARIANT_TYPE_STRING_ARRAY),
                                       strings, length, TRUE);
 }
 
@@ -1687,7 +1684,7 @@ g_variant_new_objv (const gchar * const *strv,
   for (i = 0; i < length; i++)
     strings[i] = g_variant_ref_sink (g_variant_new_object_path (strv[i]));
 
-  return g_variant_new_from_children (G_VARIANT_TYPE_OBJECT_PATH_ARRAY,
+  return g_variant_new_from_children (g_variant_type_info_get (G_VARIANT_TYPE_OBJECT_PATH_ARRAY),
                                       strings, length, TRUE);
 }
 
@@ -1924,7 +1921,7 @@ g_variant_new_bytestring_array (const gchar * const *strv,
   for (i = 0; i < length; i++)
     strings[i] = g_variant_ref_sink (g_variant_new_bytestring (strv[i]));
 
-  return g_variant_new_from_children (G_VARIANT_TYPE_BYTESTRING_ARRAY,
+  return g_variant_new_from_children (g_variant_type_info_get (G_VARIANT_TYPE_BYTESTRING_ARRAY),
                                       strings, length, TRUE);
 }
 
@@ -3667,7 +3664,7 @@ g_variant_builder_end (GVariantBuilder *builder)
   else
     g_assert_not_reached ();
 
-  value = g_variant_new_from_children (my_type,
+  value = g_variant_new_from_children (g_variant_type_info_get (my_type),
                                        g_renew (GVariant *,
                                                 GVSB(builder)->children,
                                                 GVSB(builder)->offset),
@@ -5948,7 +5945,7 @@ g_variant_new_from_data (const GVariantType *type,
   else
     bytes = g_bytes_new_static (data, size);
 
-  return g_variant_new_serialised (type, bytes, data, size, trusted);
+  return g_variant_new_serialised (g_variant_type_info_get (type), bytes, data, size, trusted);
 }
 
 /**
@@ -5979,7 +5976,7 @@ g_variant_new_from_bytes (const GVariantType *type,
 
   data = g_bytes_get_data (bytes, &size);
 
-  return g_variant_new_serialised (type, g_bytes_ref (bytes), data, size, trusted);
+  return g_variant_new_serialised (g_variant_type_info_get (type), g_bytes_ref (bytes), data, size, trusted);
 }
 
 /**

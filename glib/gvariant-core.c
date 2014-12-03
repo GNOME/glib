@@ -482,7 +482,7 @@ g_variant_to_vectors (GVariant        *value,
 
 /* < private >
  * g_variant_alloc:
- * @type: the type of the new instance
+ * @type_info: (transfer full) the type info of the new instance
  * @serialised: if the instance will be in serialised form
  * @trusted: if the instance will be trusted
  *
@@ -493,14 +493,14 @@ g_variant_to_vectors (GVariant        *value,
  * Returns: a new #GVariant with a floating reference
  */
 static GVariant *
-g_variant_alloc (const GVariantType *type,
-                 gboolean            serialised,
-                 gboolean            trusted)
+g_variant_alloc (GVariantTypeInfo *type_info,
+                 gboolean          serialised,
+                 gboolean          trusted)
 {
   GVariant *value;
 
   value = g_slice_new (GVariant);
-  value->type_info = g_variant_type_info_get (type);
+  value->type_info = type_info;
   value->state = (serialised ? STATE_SERIALISED : 0) |
                  (trusted ? STATE_TRUSTED : 0) |
                  STATE_FLOATING;
@@ -513,7 +513,7 @@ g_variant_alloc (const GVariantType *type,
 
 /* < internal >
  * g_variant_new_from_children:
- * @type: a #GVariantType
+ * @type_info: (transfer full) a #GVariantTypeInfo
  * @children: an array of #GVariant pointers.  Consumed.
  * @n_children: the length of @children
  * @trusted: %TRUE if every child in @children in trusted
@@ -528,14 +528,14 @@ g_variant_alloc (const GVariantType *type,
  * Returns: a new #GVariant with a floating reference
  */
 GVariant *
-g_variant_new_from_children (const GVariantType  *type,
-                             GVariant           **children,
-                             gsize                n_children,
-                             gboolean             trusted)
+g_variant_new_from_children (GVariantTypeInfo  *type_info,
+                             GVariant         **children,
+                             gsize              n_children,
+                             gboolean           trusted)
 {
   GVariant *value;
 
-  value = g_variant_alloc (type, FALSE, trusted);
+  value = g_variant_alloc (type_info, FALSE, trusted);
   value->contents.tree.children = children;
   value->contents.tree.n_children = n_children;
   value->size = g_variant_serialiser_needed_size (value->type_info, g_variant_fill_gvs,
@@ -546,8 +546,8 @@ g_variant_new_from_children (const GVariantType  *type,
 
 /* < internal >
  * g_variant_new_serialised:
- * @type: a #GVariantType
- * @bytes: the #GBytes holding @data
+ * @type_info: (transfer full): a #GVariantTypeInfo
+ * @bytes: (transfer full): the #GBytes holding @data
  * @data: a pointer to the serialised data
  * @size: the size of @data, in bytes
  * @trusted: %TRUE if @data is trusted
@@ -562,16 +562,16 @@ g_variant_new_from_children (const GVariantType  *type,
  * Returns: a new #GVariant with a floating reference
  */
 GVariant *
-g_variant_new_serialised (const GVariantType *type,
-                          GBytes             *bytes,
-                          gconstpointer       data,
-                          gsize               size,
-                          gboolean            trusted)
+g_variant_new_serialised (GVariantTypeInfo *type_info,
+                          GBytes           *bytes,
+                          gconstpointer     data,
+                          gsize             size,
+                          gboolean          trusted)
 {
   GVariant *value;
   gsize fixed_size;
 
-  value = g_variant_alloc (type, TRUE, trusted);
+  value = g_variant_alloc (type_info, TRUE, trusted);
   value->contents.serialised.bytes = bytes;
   value->contents.serialised.data = data;
   value->size = size;
