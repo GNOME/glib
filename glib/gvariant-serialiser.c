@@ -864,14 +864,16 @@ gvs_variable_sized_array_unpack_all (GVariantTypeInfo *type_info,
       end = gvs_read_unaligned_le (offsets, offset_size);
       offsets += offset_size;
 
-      if (start < prev_end || end < start) { g_assert_not_reached ();
-        return FALSE; /* XXX free the array and type infos */ }
+      if (start < prev_end || end < start)
+       return FALSE;
 
       unpacked.type_info = g_variant_type_info_ref (element);
       unpacked.skip = start - prev_end;
       unpacked.size = end - start;
 
       g_array_append_val (results, unpacked);
+
+      prev_end = end;
     }
 
   return TRUE;
@@ -1155,13 +1157,82 @@ gvs_tuple_get_child (GVariantSerialised value,
 
 static gboolean
 gvs_tuple_unpack_all (GVariantTypeInfo *type_info,
-                      const guchar     *end,
+                      const guchar     *end_pointer,
                       gsize             end_size,
                       gsize             total_size,
                       GArray           *results)
 {
-  g_assert_not_reached (); /* FIXME */
-  return FALSE;
+  gsize offset_size;
+  gsize prev_end;
+  gsize i, n;
+
+  n = g_variant_type_info_n_members (type_info);
+
+  /* An empty tuple (n = 0) is always encoded as a single byte, which
+   * means that we should not be attempting to unpack it from multiple
+   * vectors.
+   */
+  if (n == 0)
+    return FALSE;
+
+  offset_size = gvs_get_offset_size (total_size);
+
+  prev_end = 0;
+
+  for (i = 0; i < n; i++)
+    {
+      const GVariantMemberInfo *member_info;
+      GVariantUnpacked unpacked;
+      gsize fixed_size;
+      guint alignment;
+      gsize start;
+      gsize end;
+
+      member_info = g_variant_type_info_member_info (type_info, i);
+      g_variant_type_info_query (member_info->type_info, &alignment, &fixed_size);
+
+      start = prev_end + ((-prev_end) & alignment);
+
+      switch (member_info->ending_type)
+        {
+        case G_VARIANT_MEMBER_ENDING_FIXED:
+          end = start + fixed_size;
+          break;
+
+        case G_VARIANT_MEMBER_ENDING_LAST:
+          end = total_size;
+          break;
+
+        case G_VARIANT_MEMBER_ENDING_OFFSET:
+          if (end_size < offset_size)
+            return FALSE;
+
+          end_pointer -= offset_size;
+          total_size -= offset_size;
+          end_size -= offset_size;
+
+          end = gvs_read_unaligned_le (end_pointer, offset_size);
+          break;
+
+        default:
+          g_assert_not_reached ();
+        }
+
+      if (start < prev_end || end < start)
+        return FALSE;
+
+      unpacked.type_info = g_variant_type_info_ref (member_info->type_info);
+      unpacked.skip = start - prev_end;
+      unpacked.size = end - start;
+
+      g_array_append_val (results, unpacked);
+
+      prev_end = end;
+    }
+
+  g_assert (prev_end == total_size);
+
+  return TRUE;
 }
 
 static gsize
@@ -1515,14 +1586,71 @@ gvs_variant_get_child (GVariantSerialised value,
   return child;
 }
 
+static GVariantTypeInfo *
+gvs_variant_find_type (const guchar *end_pointer,
+                       gsize         end_size,
+                       gsize         total_size,
+                       gsize        *child_size)
+{
+  gsize i;
+
+  for (i = 1; i <= end_size; i++)
+    if (end_pointer[-i] == '\0')
+      {
+        const gchar *type_string = (gchar *) end_pointer - i + 1;
+        const gchar *limit = (gchar *) end_pointer;
+        const gchar *end;
+
+        /* We may have a type string of length 'i'.  Check for validity. */
+        if (g_variant_type_string_scan (type_string, limit, &end) && end == limit)
+          {
+            const GVariantType *type = (GVariantType *) type_string;
+
+            if (g_variant_type_is_definite (type))
+              {
+                GVariantTypeInfo *type_info;
+                gsize fixed_size;
+
+                type_info = g_variant_type_info_get (type);
+
+                g_variant_type_info_query (type_info, NULL, &fixed_size);
+
+                if (!fixed_size || fixed_size == total_size - i)
+                  {
+                    *child_size = total_size - i;
+
+                    return type_info;
+                  }
+
+                g_variant_type_info_unref (type_info);
+              }
+          }
+
+        /* No sense in trying other lengths if we already failed */
+        break;
+      }
+
+  return NULL;
+}
+
 static gboolean
 gvs_variant_unpack_all (GVariantTypeInfo *type_info,
-                        const guchar     *end,
+                        const guchar     *end_pointer,
                         gsize             end_size,
                         gsize             total_size,
                         GArray           *results)
 {
-  g_assert_not_reached (); /* FIXME */
+  GVariantUnpacked unpacked;
+
+  if ((unpacked.type_info = gvs_variant_find_type (end_pointer, end_size, total_size, &unpacked.size)))
+    {
+      unpacked.skip = 0;
+
+      g_array_append_val (results, unpacked);
+
+      return TRUE;
+    }
+
   return FALSE;
 }
 

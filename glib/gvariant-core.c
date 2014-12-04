@@ -675,6 +675,19 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
 {
   g_assert (size > 0);
 
+#if 0
+  gsize tally = 0;
+  gint i;
+
+  g_print ("enter as %s (size %d)\n", g_variant_type_info_get_type_string (type_info), (guint) size);
+  for (i = 0; first_vector + i <= last_vector; i++)
+    {
+      g_print ("  %p %d\n", first_vector[i].data.pointer, (guint) first_vector[i].size);
+      tally += first_vector[i].size;
+    }
+  g_assert_cmpint (size, ==, tally);
+#endif
+
   if (first_vector < last_vector)
     {
       GVariantVector *vector = first_vector;
@@ -691,6 +704,16 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
         {
           /* We are supposed to consume type_info */
           g_variant_type_info_unref (type_info);
+
+          for (i = offset; i < children->len; i++)
+            {
+              GVariantUnpacked *unpacked = &g_array_index (children, GVariantUnpacked, i);
+
+              g_variant_type_info_unref (unpacked->type_info);
+            }
+
+          g_array_set_size (children, offset);
+
           return FALSE;
         }
 
@@ -701,7 +724,8 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
         {
           GVariantUnpacked *unpacked;
           GVariantVector *fv;
-          gsize saved_size;
+          const guchar *resume_at;
+          gsize resume_at_size;
 
           unpacked = &g_array_index (children, GVariantUnpacked, offset + i);
 
@@ -717,6 +741,9 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
               unpacked->skip -= vector->size;
               vector++;
             }
+          g_assert (vector >= first_vector);
+          g_assert (vector <= last_vector);
+
           fv = vector;
           fv->data.pointer += unpacked->skip;
           fv->size -= unpacked->skip;
@@ -736,14 +763,21 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
            * it is the end of our child.
            */
           size = unpacked->size;
+          //g_print ("need to seek %d bytes\n", (guint) size);
           while (unpacked->size > vector->size)
             {
+              //g_print ("  skipping %d\n", (guint) vector->size);
               unpacked->size -= vector->size;
               vector++;
             }
 
+          g_assert (vector >= first_vector);
+          g_assert (vector <= last_vector);
+
           /* temporarily replace the size field */
-          saved_size = vector->size;
+          //g_print ("--adj last size from %d to %d\n", (guint) vector->size, (guint) unpacked->size);
+          resume_at = vector->data.pointer + unpacked->size;
+          resume_at_size = vector->size - unpacked->size;
           vector->size = unpacked->size;
 
           new[i] = g_variant_vector_deserialise (unpacked->type_info, fv, vector, size, trusted, children);
@@ -761,7 +795,7 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
 
               /* Consume the type_info for the remaining children */
               for (j = i + 1; j < n; j++)
-                g_variant_type_info_unref (g_array_index (children, GVariantUnpacked, offset + i).type_info);
+                g_variant_type_info_unref (g_array_index (children, GVariantUnpacked, offset + j).type_info);
 
               /* Rewind this */
               g_array_set_size (children, offset);
@@ -773,8 +807,10 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
             }
 
           /* Repair the last vector and move past our data */
-          vector->data.pointer += unpacked->size;
-          vector->size -= saved_size - unpacked->size;
+          //g_print ("chug %d\n", (guint) unpacked->size);
+          vector->data.pointer = resume_at;
+          vector->size = resume_at_size;
+          //g_print ("now have %d left\n", (guint) vector->size);
         }
 
       /* Rewind */

@@ -4643,9 +4643,26 @@ test_vector_serialiser (void)
 
   for (i = 0; i < 100; i++)
     {
-      value = create_random_gvariant (4);
+      guint j;
+
+      value = create_random_gvariant (2);
+      //g_print (">>> %s\n", g_variant_print (value, TRUE));
 
       GLIB_PRIVATE_CALL(g_variant_to_vectors) (value, &vectors);
+      for (j = 0; j < vectors.vectors->len; j++)
+        {
+          GVariantVector *v = &g_array_index (vectors.vectors, GVariantVector, j);
+
+          if (!v->gbytes)
+            {
+              v->gbytes = g_bytes_new (NULL, 0);
+              v->data.pointer = v->data.offset + vectors.extra_bytes->data;
+            }
+
+          //g_print ("  V %p %p %d\n", v, v->data.pointer, (guint) v->size);
+        }
+      GLIB_PRIVATE_CALL(g_variant_from_vectors) (g_variant_get_type (value), (GVariantVector *) vectors.vectors->data, vectors.vectors->len, g_variant_get_size (value), TRUE);
+      continue;
       flattened = flatten_vectors (&vectors);
       g_byte_array_free (vectors.extra_bytes, TRUE);
       g_byte_array_free (vectors.offsets, TRUE);
