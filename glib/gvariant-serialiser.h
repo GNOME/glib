@@ -49,7 +49,7 @@ gboolean                        g_variant_serialiser_unpack_all         (GVarian
                                                                          const guchar             *end_pointer,
                                                                          gsize                     end_size,
                                                                          gsize                     total_size,
-                                                                         GArray                   *results_array);
+                                                                         GArray                   *unpacked_children);
 
 /* serialisation */
 typedef void                  (*GVariantSerialisedFiller)               (GVariantSerialised       *serialised,

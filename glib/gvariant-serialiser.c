@@ -261,21 +261,20 @@ gvs_fixed_sized_maybe_get_child (GVariantSerialised value,
 
 static gboolean
 gvs_fixed_sized_maybe_unpack_all (GVariantTypeInfo *type_info,
-                                  const guchar     *end,
+                                  const guchar     *end_pointer,
                                   gsize             end_size,
                                   gsize             total_size,
-                                  GArray           *results)
+                                  GArray           *unpacked_children)
 {
   if (total_size)
     {
       GVariantUnpacked unpacked;
 
-      unpacked.type_info = g_variant_type_info_element (type_info);
-      g_variant_type_info_ref (unpacked.type_info);
+      unpacked.type_info = g_variant_type_info_ref (g_variant_type_info_element (type_info));
       unpacked.skip = 0;
       unpacked.size = total_size;
 
-      g_array_append_val (results, unpacked);
+      g_array_append_val (unpacked_children, unpacked);
     }
 
   return TRUE;
@@ -387,21 +386,20 @@ gvs_variable_sized_maybe_get_child (GVariantSerialised value,
 
 static gboolean
 gvs_variable_sized_maybe_unpack_all (GVariantTypeInfo *type_info,
-                                     const guchar     *end,
+                                     const guchar     *end_pointer,
                                      gsize             end_size,
                                      gsize             total_size,
-                                     GArray           *results)
+                                     GArray           *unpacked_children)
 {
   if (total_size)
     {
       GVariantUnpacked unpacked;
 
-      unpacked.type_info = g_variant_type_info_element (type_info);
-      g_variant_type_info_ref (unpacked.type_info);
+      unpacked.type_info = g_variant_type_info_ref (g_variant_type_info_element (type_info));
       unpacked.skip = 0;
       unpacked.size = total_size - 1;
 
-      g_array_append_val (results, unpacked);
+      g_array_append_val (unpacked_children, unpacked);
     }
 
   return TRUE;
@@ -522,10 +520,10 @@ gvs_fixed_sized_array_get_child (GVariantSerialised value,
 
 static gboolean
 gvs_fixed_sized_array_unpack_all (GVariantTypeInfo *type_info,
-                                  const guchar     *end,
+                                  const guchar     *end_pointer,
                                   gsize             end_size,
                                   gsize             total_size,
-                                  GArray           *results)
+                                  GArray           *unpacked_children)
 {
   GVariantTypeInfo *element;
   gsize element_fixed_size;
@@ -547,7 +545,7 @@ gvs_fixed_sized_array_unpack_all (GVariantTypeInfo *type_info,
       unpacked.skip = 0;
       unpacked.size = element_fixed_size;
 
-      g_array_append_val (results, unpacked);
+      g_array_append_val (unpacked_children, unpacked);
     }
 
   return TRUE;
@@ -807,10 +805,10 @@ gvs_variable_sized_array_get_child (GVariantSerialised value,
 
 static gboolean
 gvs_variable_sized_array_unpack_all (GVariantTypeInfo *type_info,
-                                     const guchar     *end,
+                                     const guchar     *end_pointer,
                                      gsize             end_size,
                                      gsize             total_size,
-                                     GArray           *results)
+                                     GArray           *unpacked_children)
 {
   GVariantTypeInfo *element;
   guint element_alignment;
@@ -832,7 +830,7 @@ gvs_variable_sized_array_unpack_all (GVariantTypeInfo *type_info,
   if (offset_size > end_size)
     return FALSE;
 
-  last_end = gvs_read_unaligned_le (end - offset_size, offset_size);
+  last_end = gvs_read_unaligned_le (end_pointer - offset_size, offset_size);
 
   if (last_end > total_size)
     return 0;
@@ -842,7 +840,7 @@ gvs_variable_sized_array_unpack_all (GVariantTypeInfo *type_info,
   if (offsets_array_size > end_size)
     return FALSE;
 
-  offsets = end - offsets_array_size;
+  offsets = end_pointer - offsets_array_size;
 
   if (offsets_array_size % offset_size)
     return FALSE;
@@ -864,14 +862,14 @@ gvs_variable_sized_array_unpack_all (GVariantTypeInfo *type_info,
       end = gvs_read_unaligned_le (offsets, offset_size);
       offsets += offset_size;
 
-      if (start < prev_end || end < start)
+      if (start < prev_end || end < start || end > last_end)
        return FALSE;
 
       unpacked.type_info = g_variant_type_info_ref (element);
       unpacked.skip = start - prev_end;
       unpacked.size = end - start;
 
-      g_array_append_val (results, unpacked);
+      g_array_append_val (unpacked_children, unpacked);
 
       prev_end = end;
     }
@@ -1160,7 +1158,7 @@ gvs_tuple_unpack_all (GVariantTypeInfo *type_info,
                       const guchar     *end_pointer,
                       gsize             end_size,
                       gsize             total_size,
-                      GArray           *results)
+                      GArray           *unpacked_children)
 {
   gsize offset_size;
   gsize prev_end;
@@ -1218,14 +1216,14 @@ gvs_tuple_unpack_all (GVariantTypeInfo *type_info,
           g_assert_not_reached ();
         }
 
-      if (start < prev_end || end < start)
+      if (start < prev_end || end < start || end > total_size)
         return FALSE;
 
       unpacked.type_info = g_variant_type_info_ref (member_info->type_info);
       unpacked.skip = start - prev_end;
       unpacked.size = end - start;
 
-      g_array_append_val (results, unpacked);
+      g_array_append_val (unpacked_children, unpacked);
 
       prev_end = end;
     }
@@ -1531,61 +1529,6 @@ gvs_variant_n_children (GVariantSerialised value)
   return 1;
 }
 
-static inline GVariantSerialised
-gvs_variant_get_child (GVariantSerialised value,
-                       gsize              index_)
-{
-  GVariantSerialised child = { 0, };
-
-  /* NOTE: not O(1) and impossible for it to be... */
-  if (value.size)
-    {
-      /* find '\0' character */
-      for (child.size = value.size - 1; child.size; child.size--)
-        if (value.data[child.size] == '\0')
-          break;
-
-      /* ensure we didn't just hit the start of the string */
-      if (value.data[child.size] == '\0')
-        {
-          const gchar *type_string = (gchar *) &value.data[child.size + 1];
-          const gchar *limit = (gchar *) &value.data[value.size];
-          const gchar *end;
-
-          if (g_variant_type_string_scan (type_string, limit, &end) &&
-              end == limit)
-            {
-              const GVariantType *type = (GVariantType *) type_string;
-
-              if (g_variant_type_is_definite (type))
-                {
-                  gsize fixed_size;
-
-                  child.type_info = g_variant_type_info_get (type);
-
-                  if (child.size != 0)
-                    /* only set to non-%NULL if size > 0 */
-                    child.data = value.data;
-
-                  g_variant_type_info_query (child.type_info,
-                                             NULL, &fixed_size);
-
-                  if (!fixed_size || fixed_size == child.size)
-                    return child;
-
-                  g_variant_type_info_unref (child.type_info);
-                }
-            }
-        }
-    }
-
-  child.type_info = g_variant_type_info_get (G_VARIANT_TYPE_UNIT);
-  child.data = NULL;
-  child.size = 1;
-
-  return child;
-}
-
 static GVariantTypeInfo *
 gvs_variant_find_type (const guchar *end_pointer,
                        gsize         end_size,
@@ -1633,12 +1576,32 @@ gvs_variant_find_type (const guchar *end_pointer,
   return NULL;
 }
 
+static inline GVariantSerialised
+gvs_variant_get_child (GVariantSerialised value,
+                       gsize              index_)
+{
+  GVariantSerialised child = { 0, };
+
+  if ((child.type_info = gvs_variant_find_type (value.data + value.size, value.size, value.size, &child.size)))
+    {
+      if (child.size != 0)
+        child.data = value.data;
+    }
+  else
+    {
+      child.type_info = g_variant_type_info_get (G_VARIANT_TYPE_UNIT);
+      child.size = 1;
+    }
+
+  return child;
+}
+
 static gboolean
 gvs_variant_unpack_all (GVariantTypeInfo *type_info,
                         const guchar     *end_pointer,
                         gsize             end_size,
                         gsize             total_size,
-                        GArray           *results)
+                        GArray           *unpacked_children)
 {
   GVariantUnpacked unpacked;
 
@@ -1646,7 +1609,7 @@ gvs_variant_unpack_all (GVariantTypeInfo *type_info,
     {
       unpacked.skip = 0;
 
-      g_array_append_val (results, unpacked);
+      g_array_append_val (unpacked_children, unpacked);
 
       return TRUE;
     }
@@ -1918,13 +1881,13 @@ g_variant_serialiser_needed_size (GVariantTypeInfo         *type_info,
 
 gboolean
 g_variant_serialiser_unpack_all (GVariantTypeInfo *type_info,
-                                 const guchar     *end,
+                                 const guchar     *end_pointer,
                                  gsize             end_size,
                                  gsize             total_size,
-                                 GArray           *results)
+                                 GArray           *unpacked_children)
 {
   DISPATCH_CASES (type_info,
-                  return gvs_/**/,/**/_unpack_all (type_info, end, end_size, total_size, results);
+                  return gvs_/**/,/**/_unpack_all (type_info, end_pointer, end_size, total_size, unpacked_children);
                  )
 
   /* We are here because type_info is not a container type */
