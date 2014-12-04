@@ -671,63 +671,44 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
                               GVariantVector   *last_vector,
                               gsize             size,
                               gboolean          trusted,
-                              GArray           *children)
+                              GArray           *unpacked_children)
 {
   g_assert (size > 0);
-
-#if 0
-  gsize tally = 0;
-  gint i;
-
-  g_print ("enter as %s (size %d)\n", g_variant_type_info_get_type_string (type_info), (guint) size);
-  for (i = 0; first_vector + i <= last_vector; i++)
-    {
-      g_print ("  %p %d\n", first_vector[i].data.pointer, (guint) first_vector[i].size);
-      tally += first_vector[i].size;
-    }
-  g_assert_cmpint (size, ==, tally);
-#endif
 
   if (first_vector < last_vector)
     {
       GVariantVector *vector = first_vector;
-      gconstpointer end;
-      GVariant **new;
-      guint offset;
-      guint i, n;
+      const guchar *end_pointer;
+      GVariant **children;
+      guint save_point;
+      guint n_children;
+      gboolean failed;
+      guint i;
 
-      end = last_vector->data.pointer + last_vector->size;
+      end_pointer = last_vector->data.pointer + last_vector->size;
+      save_point = unpacked_children->len;
 
-      offset = children->len;
-
-      if (!g_variant_serialiser_unpack_all (type_info, end, last_vector->size, size, children))
+      if (!g_variant_serialiser_unpack_all (type_info, end_pointer, last_vector->size, size, unpacked_children))
         {
-          /* We are supposed to consume type_info */
+          for (i = save_point; i < unpacked_children->len; i++)
+            g_variant_type_info_unref (g_array_index (unpacked_children, GVariantUnpacked, i).type_info);
+          g_array_set_size (unpacked_children, save_point);
+
           g_variant_type_info_unref (type_info);
 
-          for (i = offset; i < children->len; i++)
-            {
-              GVariantUnpacked *unpacked = &g_array_index (children, GVariantUnpacked, i);
-
-              g_variant_type_info_unref (unpacked->type_info);
-            }
-
-          g_array_set_size (children, offset);
-
-          return FALSE;
+          return NULL;
         }
 
-      n = children->len - offset;
-      new = g_new (GVariant *, n);
+      n_children = unpacked_children->len - save_point;
+      children = g_new (GVariant *, n_children);
+      failed = FALSE;
 
-      for (i = 0; i < n; i++)
+      for (i = 0; i < n_children; i++)
         {
-          GVariantUnpacked *unpacked;
-          GVariantVector *fv;
-          const guchar *resume_at;
+          GVariantUnpacked *unpacked = &g_array_index (unpacked_children, GVariantUnpacked, save_point + i);
+          const guchar *resume_at_data;
           gsize resume_at_size;
-
-          unpacked = &g_array_index (children, GVariantUnpacked, offset + i);
+          GVariantVector *fv;
 
           /* Skip the alignment.
            *
@@ -741,7 +722,6 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
               unpacked->skip -= vector->size;
               vector++;
             }
-          g_assert (vector >= first_vector);
           g_assert (vector <= last_vector);
 
           fv = vector;
@@ -750,7 +730,7 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
 
           if (unpacked->size == 0)
             {
-              new[i] = g_variant_new_serialised (type_info, g_bytes_new (NULL, 0), NULL, 0, trusted);
+              children[i] = g_variant_new_serialised (type_info, g_bytes_new (NULL, 0), NULL, 0, trusted);
               continue;
             }
 
@@ -763,61 +743,47 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
            * it is the end of our child.
            */
           size = unpacked->size;
-          //g_print ("need to seek %d bytes\n", (guint) size);
           while (unpacked->size > vector->size)
             {
-              //g_print ("  skipping %d\n", (guint) vector->size);
               unpacked->size -= vector->size;
               vector++;
             }
-
-          g_assert (vector >= first_vector);
           g_assert (vector <= last_vector);
 
-          /* temporarily replace the size field */
-          //g_print ("--adj last size from %d to %d\n", (guint) vector->size, (guint) unpacked->size);
-          resume_at = vector->data.pointer + unpacked->size;
+          /* We have to modify the vectors for the benefit of the
+           * recursive step.  We also have to remember where we left
+           * off, keeping in mind that the recursive step may itself
+           * modify the vectors.
+           */
+          resume_at_data = vector->data.pointer + unpacked->size;
           resume_at_size = vector->size - unpacked->size;
           vector->size = unpacked->size;
 
-          new[i] = g_variant_vector_deserialise (unpacked->type_info, fv, vector, size, trusted, children);
+          children[i] = g_variant_vector_deserialise (unpacked->type_info, fv, vector,
+                                                      size, trusted, unpacked_children);
 
-          if (new[i] == NULL)
-            {
-              gint j;
-
-              /* Free the new children array and any children in it up
-               * to this point.
-               */
-              for (j = 0; j < i; j++)
-                g_variant_unref (new[j]);
-              g_free (new);
-
-              /* Consume the type_info for the remaining children */
-              for (j = i + 1; j < n; j++)
-                g_variant_type_info_unref (g_array_index (children, GVariantUnpacked, offset + j).type_info);
-
-              /* Rewind this */
-              g_array_set_size (children, offset);
-
-              /* We have to free this */
-              g_variant_type_info_unref (type_info);
-
-              return NULL;
-            }
-
-          /* Repair the last vector and move past our data */
-          //g_print ("chug %d\n", (guint) unpacked->size);
-          vector->data.pointer = resume_at;
+          vector->data.pointer = resume_at_data;
           vector->size = resume_at_size;
-          //g_print ("now have %d left\n", (guint) vector->size);
+
+          failed |= children[i] == NULL;
         }
 
-      /* Rewind */
-      g_array_set_size (children, offset);
+      /* We consumed all the type infos */
+      g_array_set_size (unpacked_children, save_point);
 
-      /* Create the tree-form GVariant in the usual way */
-      return g_variant_new_from_children (type_info, new, n, trusted);
+      if G_UNLIKELY (failed)
+        {
+          for (i = 0; i < n_children; i++)
+            if (children[i])
+              g_variant_unref (children[i]);
+
+          g_variant_type_info_unref (type_info);
+          g_free (children);
+
+          return NULL;
+        }
+
+      return g_variant_new_from_children (type_info, children, n_children, trusted);
     }
   else
     {
