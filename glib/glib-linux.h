@@ -20,6 +20,8 @@
 #ifndef __GLIB_LINUX_H__
 #define __GLIB_LINUX_H__
 
+#include <errno.h>
+
 /* If we know that we are on Linux, add some features, even if they are
  * not (yet) advertised in the glibc or kernel headers.
  *
@@ -43,6 +45,13 @@
 #define GLIB_LINUX
 
 #include <sys/syscall.h>
+
+static inline int
+glib_linux_enosys (void)
+{
+  errno = ENOSYS;
+  return -1;
+}
 
 /* futex */
 #include <linux/futex.h>
@@ -68,20 +77,35 @@ glib_linux_futex (int                   *uaddr,
 #endif
 
 #ifndef __NR_memfd_create
-  #ifdef __x86_64__
-    #define __NR_memfd_create 319
-  #elif defined __arm__
-    #define __NR_memfd_create 385
-  #else
-    #define __NR_memfd_create 356
-  #endif
+#  if defined __x86_64__
+#    define __NR_memfd_create 319
+#  elif defined i386
+#    define __NR_memfd_create 356
+#  elif defined __arm__
+     /* arm and arm64 have the same value */
+#    define __NR_memfd_create 385
+#  elif defined _MIPS_SIM
+#    if _MIPS_SIM == _MIPS_SIM_ABI32
+#      define __NR_memfd_create 4354
+#    endif
+#    if _MIPS_SIM == _MIPS_SIM_NABI32
+#      define __NR_memfd_create 6318
+#    endif
+#    if _MIPS_SIM == _MIPS_SIM_ABI64
+#      define __NR_memfd_create 5314
+#    endif
+#  endif
 #endif
 
 static inline int
 glib_linux_memfd_create (const char   *name,
                          unsigned int  flags)
 {
+#ifdef __NR_memfd_create
   return syscall (__NR_memfd_create, name, flags);
+#else
+  return glib_linux_enosys ();
+#endif
 }
 
 /* Linux-specific fcntl() operations */
