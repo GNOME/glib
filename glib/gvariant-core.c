@@ -1169,6 +1169,7 @@ g_variant_get_child_value (GVariant *value,
                                         g_bytes_ref (value->contents.serialised.bytes),
                                         s_child.data, s_child.size,
                                         value->state & STATE_TRUSTED);
+      child->state &= ~STATE_FLOATING;
     }
 
   return child;
