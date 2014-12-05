@@ -79,6 +79,7 @@ gio/gnetworkaddress.c
 gio/gnetworkmonitorbase.c
 gio/gnetworkmonitor.c
 gio/gnetworkmonitornetlink.c
+gio/gnetworkmonitornm.c
 gio/gnetworkservice.c
 gio/goutputstream.c
 gio/gpermission.c
