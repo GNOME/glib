@@ -54,6 +54,8 @@ class Arg:
         self.format_out = '@' + self.signature
         self.gvariant_get = 'XXX'
         self.gvalue_get = 'g_value_get_variant'
+        self.array_annotation = ''
+
         if not utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.ForceGVariant'):
             if self.signature == 'b':
                 self.ctype_in_g  = 'gboolean '
@@ -200,6 +202,7 @@ class Arg:
                 self.format_out = '^as'
                 self.gvariant_get = 'g_variant_get_strv'
                 self.gvalue_get = 'g_value_get_boxed'
+                self.array_annotation = '(array zero-terminated=1)'
             elif self.signature == 'ao':
                 self.ctype_in_g  = 'const gchar *const *'
                 self.ctype_in  = 'const gchar *const *'
@@ -211,6 +214,7 @@ class Arg:
                 self.format_out = '^ao'
                 self.gvariant_get = 'g_variant_get_objv'
                 self.gvalue_get = 'g_value_get_boxed'
+                self.array_annotation = '(array zero-terminated=1)'
             elif self.signature == 'aay':
                 self.ctype_in_g  = 'const gchar *const *'
                 self.ctype_in  = 'const gchar *const *'
@@ -222,6 +226,8 @@ class Arg:
                 self.format_out = '^aay'
                 self.gvariant_get = 'g_variant_get_bytestring_array'
                 self.gvalue_get = 'g_value_get_boxed'
+                self.array_annotation = '(array zero-terminated=1)'
+
 
 class Method:
     def __init__(self, name):

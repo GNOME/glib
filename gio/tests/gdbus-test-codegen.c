@@ -172,7 +172,12 @@ on_handle_test_non_primitive_types (FooiGenBar            *object,
   s = g_strjoinv (", ", (gchar **) array_of_bytestrings);
   g_string_append_printf (str, "array_of_bytestrings: [%s] ", s);
   g_free (s);
-  foo_igen_bar_complete_test_non_primitive_types (object, invocation, str->str);
+  foo_igen_bar_complete_test_non_primitive_types (object, invocation,
+                                                  array_of_strings,
+                                                  array_of_objpaths,
+                                                  array_of_signatures,
+                                                  array_of_bytestrings,
+                                                  str->str);
   g_string_free (str, TRUE);
   return TRUE;
 }
@@ -700,7 +705,12 @@ check_bar_proxy (FooiGenBar *proxy,
   const gchar *array_of_strings[3] = {"one", "two", NULL};
   const gchar *array_of_strings_2[3] = {"one2", "two2", NULL};
   const gchar *array_of_objpaths[3] = {"/one", "/one/two", NULL};
+  GVariant *array_of_signatures = NULL;
   const gchar *array_of_bytestrings[3] = {"one\xff", "two\xff", NULL};
+  gchar **ret_array_of_strings = NULL;
+  gchar **ret_array_of_objpaths = NULL;
+  GVariant *ret_array_of_signatures = NULL;
+  gchar **ret_array_of_bytestrings = NULL;
   guchar ret_val_byte;
   gboolean ret_val_boolean;
   gint16 ret_val_int16;
@@ -888,6 +898,7 @@ check_bar_proxy (FooiGenBar *proxy,
   g_assert (ret);
 
   error = NULL;
+  array_of_signatures = g_variant_ref_sink (g_variant_new_parsed ("[@g 'ass', 'git']"));
   ret = foo_igen_bar_call_test_non_primitive_types_sync (proxy,
                                                          g_variant_new_parsed ("{'one': 'red',"
                                                                                " 'two': 'blue'}"),
@@ -896,14 +907,36 @@ check_bar_proxy (FooiGenBar *proxy,
                                                          g_variant_new_parsed ("(42, 'foo', 'bar')"),
                                                          array_of_strings,
                                                          array_of_objpaths,
-                                                         g_variant_new_parsed ("[@g 'ass', 'git']"),
+                                                         array_of_signatures,
                                                          array_of_bytestrings,
+                                                         &ret_array_of_strings,
+                                                         &ret_array_of_objpaths,
+                                                         &ret_array_of_signatures,
+                                                         &ret_array_of_bytestrings,
                                                          &s,
                                                          NULL, /* GCancellable */
                                                          &error);
 
   g_assert_no_error (error);
   g_assert (ret);
+
+  g_assert_nonnull (ret_array_of_strings);
+  g_assert_cmpuint (g_strv_length ((gchar **) ret_array_of_strings), ==,
+                    g_strv_length ((gchar **) array_of_strings));
+  g_assert_nonnull (ret_array_of_objpaths);
+  g_assert_cmpuint (g_strv_length ((gchar **) ret_array_of_objpaths), ==,
+                    g_strv_length ((gchar **) array_of_objpaths));
+  g_assert_nonnull (ret_array_of_signatures);
+  g_assert_true (g_variant_equal (ret_array_of_signatures, array_of_signatures));
+  g_assert_nonnull (ret_array_of_bytestrings);
+  g_assert_cmpuint (g_strv_length ((gchar **) ret_array_of_bytestrings), ==,
+                    g_strv_length ((gchar **) array_of_bytestrings));
+
+  g_clear_pointer (&ret_array_of_strings, g_strfreev);
+  g_clear_pointer (&ret_array_of_objpaths, g_strfreev);
+  g_clear_pointer (&ret_array_of_signatures, g_variant_unref);
+  g_clear_pointer (&ret_array_of_bytestrings, g_strfreev);
+  g_clear_pointer (&s, g_free);
 
   /* Check that org.freedesktop.DBus.Error.UnknownMethod is returned on
    * unimplemented methods.
@@ -1049,6 +1082,7 @@ check_bar_proxy (FooiGenBar *proxy,
 
   /* cleanup */
   g_free (data);
+  g_variant_unref (array_of_signatures);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

@@ -1395,7 +1395,7 @@ class CodeGenerator:
                          ' * @proxy: A #%sProxy.\n'
                          %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.out_args:
-                self.c.write(' * @out_%s: (out): Return location for return parameter or %%NULL to ignore.\n'%(a.name))
+                self.c.write(' * @out_%s: (out)%s: Return location for return parameter or %%NULL to ignore.\n'%(a.name, ' ' + a.array_annotation if a.array_annotation else ''))
             if unix_fd:
                 self.c.write(' * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.\n')
             self.c.write(self.docbook_gen.expand(
@@ -1450,7 +1450,7 @@ class CodeGenerator:
             if unix_fd:
                 self.c.write(' * @fd_list: (nullable): A #GUnixFDList or %NULL.\n')
             for a in m.out_args:
-                self.c.write(' * @out_%s: (out): Return location for return parameter or %%NULL to ignore.\n'%(a.name))
+                self.c.write(' * @out_%s: (out)%s: Return location for return parameter or %%NULL to ignore.\n'%(a.name, ' ' + a.array_annotation if a.array_annotation else ''))
             if unix_fd:
                 self.c.write(' * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.\n')
             self.c.write(self.docbook_gen.expand(

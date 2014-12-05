@@ -50,9 +50,13 @@
       <arg direction="in" type="a{s(ii)}" name="dict_s_to_pairs" />
       <arg direction="in" type="(iss)" name="a_struct" />
       <arg direction="in" type="as" name="array_of_strings" />
+      <arg direction="out" type="as" name="ret_array_of_strings" />
       <arg direction="in" type="ao" name="array_of_objpaths" />
+      <arg direction="out" type="ao" name="ret_array_of_objpaths" />
       <arg direction="in" type="ag" name="array_of_signatures" />
+      <arg direction="out" type="ag" name="ret_array_of_signatures" />
       <arg direction="in" type="aay" name="array_of_bytestrings" />
+      <arg direction="out" type="aay" name="ret_array_of_bytestrings" />
       <arg direction="out" type="ay" name="result" />
     </method>
 
