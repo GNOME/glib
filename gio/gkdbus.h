@@ -121,11 +121,9 @@ void                                    _g_kdbus_unsubscribe_name_acquired  (GDB
 
 void                                    _g_kdbus_unsubscribe_name_lost      (GDBusConnection  *connection);
 
-gsize                                   _g_kdbus_send                       (GDBusWorker      *worker,
+gboolean                                _g_kdbus_send                       (GDBusWorker      *worker,
                                                                              GKdbus           *kdbus,
                                                                              GDBusMessage     *dbus_msg,
-                                                                             gchar            *blob,
-                                                                             gsize             blob_size,
                                                                              GUnixFDList      *fd_list,
                                                                              GCancellable     *cancellable,
                                                                              GError          **error);

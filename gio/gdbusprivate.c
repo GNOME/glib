@@ -1210,8 +1210,6 @@ write_message_continue_writing (MessageToWriteData *data)
       data->total_written = _g_kdbus_send (data->worker,
                                            data->worker->kdbus,
                                            data->message,
-                                           data->blob,
-                                           data->blob_size,
                                            fd_list,
                                            data->worker->cancellable,
                                            &error);

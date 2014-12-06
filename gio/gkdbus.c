@@ -45,6 +45,7 @@
 #endif
 
 #include <glib/gstdio.h>
+#include <glib/glib-private.h>
 #include <gio/gio.h>
 #include <gio/gunixfdlist.h>
 
@@ -1590,6 +1591,23 @@ g_kdbus_append_payload_vec (struct kdbus_item **item,
   *item = KDBUS_ITEM_NEXT(*item);
 }
 
+/**
+ * g_kdbus_append_payload_memfd:
+ *
+ */
+static void
+g_kdbus_append_payload_memfd (struct kdbus_item **item,
+                              gint                fd,
+                              gssize              size)
+{
+  *item = KDBUS_ALIGN8_PTR(*item);
+  (*item)->size = G_STRUCT_OFFSET (struct kdbus_item, memfd) + sizeof(struct kdbus_memfd);
+  (*item)->type = KDBUS_ITEM_PAYLOAD_MEMFD;
+  (*item)->memfd.fd = fd;
+  (*item)->memfd.size = size;
+  *item = KDBUS_ITEM_NEXT(*item);
+}
+
 
 /**
  * g_kdbus_append_payload_destiantion:
@@ -1917,16 +1935,22 @@ g_kdbus_decode_kernel_msg (GKdbus  *kdbus)
  * g_kdbus_decode_dbus_msg:
  *
  */
-static gssize
-g_kdbus_decode_dbus_msg (GKdbus  *kdbus)
+static GDBusMessage *
+g_kdbus_decode_dbus_msg (GKdbus                *kdbus,
+                         struct kdbus_cmd_recv *recv)
 {
   struct kdbus_item *item;
-  gchar *msg_ptr;
-  gssize ret_size = 0;
   gssize data_size = 0;
   const gchar *destination = NULL;
+  GArray *body_vectors;
+  gsize body_size;
+  GVariant *body;
+  guint i;
 
-  KDBUS_ITEM_FOREACH(item, kdbus->priv->kmsg, items)
+  body_vectors = g_array_new (FALSE, FALSE, sizeof (GVariantVector));
+  body_size = 0;
+
+  KDBUS_ITEM_FOREACH(item, (struct kdbus_msg *)((guint8 *)kdbus->priv->kdbus_buffer + recv->offset), items)
     {
       if (item->size <= KDBUS_ITEM_HEADER_SIZE)
         g_error("[KDBUS] %llu bytes - invalid data record\n", item->size);
@@ -1935,7 +1959,6 @@ g_kdbus_decode_dbus_msg (GKdbus  *kdbus)
 
       switch (item->type)
         {
-
          /* KDBUS_ITEM_DST_NAME */
          case KDBUS_ITEM_DST_NAME:
            destination = item->str;
@@ -1943,27 +1966,61 @@ g_kdbus_decode_dbus_msg (GKdbus  *kdbus)
 
         /* KDBUS_ITEM_PALOAD_OFF */
         case KDBUS_ITEM_PAYLOAD_OFF:
+          {
+            GVariantVector vector;
+            gsize flavour;
 
-          msg_ptr = (gchar*) kdbus->priv->kmsg + item->vec.offset;
-          g_kdbus_add_msg_part (kdbus, msg_ptr, item->vec.size);
-          ret_size += item->vec.size;
+            /* We want to make sure the bytes are aligned the same as
+             * they would be if they appeared in a contiguously
+             * allocated chunk of aligned memory.
+             *
+             * We decide what the alignment 'should' be by consulting
+             * body_size, which has been tracking the total size of the
+             * message up to this point.
+             *
+             * We then play around with the pointer by removing as many
+             * bytes as required to get it to the proper alignment (and
+             * copy extra bytes accordingly).  This means that we will
+             * grab some extra data in the 'bytes', but it won't be
+             * shared with GVariant (which means there is no chance of
+             * it being accidentally retransmitted).
+             *
+             * The kernel does the same thing, so make sure we get the
+             * expected result.  Because of the kernel doing the same,
+             * the result is that we will always be rounding-down to a
+             * multiple of 8 for the pointer, which means that the
+             * pointer will always be valid, assuming the original
+             * address was.
+             *
+             * We could fix this with a new GBytes constructor that took
+             * 'flavour' as a parameter, but it's not worth it...
+             */
+            flavour = body_size & 7;
+            //g_assert ((item->vec.offset & 7) == flavour); FIXME: kdbus bug doesn't count memfd in flavouring
 
+            vector.gbytes = g_bytes_new (((guchar *) kdbus->priv->kmsg) + item->vec.offset - flavour,
+                                         item->vec.size + flavour);
+            vector.data.pointer = g_bytes_get_data (vector.gbytes, NULL);
+            vector.data.pointer += flavour;
+            vector.size = item->vec.size;
+
+            g_array_append_val (body_vectors, vector);
+            body_size += vector.size;
+          }
           break;
 
         /* KDBUS_ITEM_PAYLOAD_MEMFD */
         case KDBUS_ITEM_PAYLOAD_MEMFD:
+          {
+            GVariantVector vector;
 
-          msg_ptr = mmap(NULL, item->memfd.size, PROT_READ, MAP_SHARED, item->memfd.fd, 0);
+            vector.gbytes = g_bytes_new_take_zero_copy_fd (item->memfd.fd);
+            vector.data.pointer = g_bytes_get_data (vector.gbytes, &vector.size);
+            g_print ("GB was %p/%d\n", vector.data.pointer, (guint) vector.size);
 
-          if (msg_ptr == MAP_FAILED)
-            {
-              g_print ("mmap() fd=%i failed:%m", item->memfd.fd);
-              break;
-            }
-
-          g_kdbus_add_msg_part (kdbus, msg_ptr, item->memfd.size);
-          ret_size += item->memfd.size;
-
+            g_array_append_val (body_vectors, vector);
+            body_size += vector.size;
+          }
           break;
 
         /* KDBUS_ITEM_FDS */
@@ -1978,8 +2035,27 @@ g_kdbus_decode_dbus_msg (GKdbus  *kdbus)
         /* All of the following items, like CMDLINE,
            CGROUP, etc. need some GDBUS API extensions and
            should be implemented in the future */
-        case KDBUS_ITEM_CREDS:
         case KDBUS_ITEM_TIMESTAMP:
+          {
+            g_print ("time: seq %llu mon %llu real %llu\n",
+                     item->timestamp.seqnum, item->timestamp.monotonic_ns, item->timestamp.realtime_ns);
+            //g_dbus_message_set_timestamp (message, item->timestamp.monotonic_ns / 1000);
+            //g_dbus_message_set_serial (message, item->timestamp.seqnum);
+            break;
+          }
+
+        case KDBUS_ITEM_CREDS:
+          {
+            g_print ("creds: u%u eu %u su%u fsu%u g%u eg%u sg%u fsg%u\n",
+                     item->creds.uid, item->creds.euid, item->creds.suid, item->creds.fsuid,
+                     item->creds.gid, item->creds.egid, item->creds.sgid, item->creds.fsgid);
+            break;
+          }
+
+        case KDBUS_ITEM_PIDS:
+          {
+          }
+
         case KDBUS_ITEM_PID_COMM:
         case KDBUS_ITEM_TID_COMM:
         case KDBUS_ITEM_EXE:
@@ -1992,7 +2068,7 @@ g_kdbus_decode_dbus_msg (GKdbus  *kdbus)
         case KDBUS_ITEM_AUXGROUPS:
         case KDBUS_ITEM_OWNED_NAME:
         case KDBUS_ITEM_NAME:
-        case KDBUS_ITEM_PIDS:
+          g_print ("unhandled %04x\n", (int) item->type);
           break;
 
         default:
@@ -2000,6 +2076,18 @@ g_kdbus_decode_dbus_msg (GKdbus  *kdbus)
           break;
         }
     }
+
+  body = GLIB_PRIVATE_CALL(g_variant_from_vectors) (G_VARIANT_TYPE ("(ssa{sv})"),
+                                                    (GVariantVector *) body_vectors->data,
+                                                    body_vectors->len, body_size, FALSE);
+  g_assert (body);
+
+  for (i = 0; i < body_vectors->len; i++)
+    g_bytes_unref (g_array_index (body_vectors, GVariantVector, i).gbytes);
+
+  g_array_free (body_vectors, TRUE);
+
+  g_print ("body is %s\n", g_variant_print (body, TRUE));
 
   /* Override information from the user header with data from the kernel */
 
@@ -2018,7 +2106,7 @@ g_kdbus_decode_dbus_msg (GKdbus  *kdbus)
   else
     g_string_printf (kdbus->priv->msg_destination, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->kmsg->dst_id);
 
-  return ret_size;
+  return NULL;
 }
 
 
@@ -2032,7 +2120,6 @@ _g_kdbus_receive (GKdbus        *kdbus,
                   GError       **error)
 {
   struct kdbus_cmd_recv recv = {};
-  gssize size = 0;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return -1;
@@ -2053,9 +2140,9 @@ again:
    kdbus->priv->kmsg = (struct kdbus_msg *)((guint8 *)kdbus->priv->kdbus_buffer + recv.offset);
 
    if (kdbus->priv->kmsg->payload_type == KDBUS_PAYLOAD_DBUS)
-     size = g_kdbus_decode_dbus_msg (kdbus);
+     g_kdbus_decode_dbus_msg (kdbus, &recv);
    else if (kdbus->priv->kmsg->payload_type == KDBUS_PAYLOAD_KERNEL)
-     size = g_kdbus_decode_kernel_msg (kdbus);
+     g_kdbus_decode_kernel_msg (kdbus);
    else
      {
        g_set_error (error,
@@ -2065,34 +2152,45 @@ again:
        return -1;
      }
 
-   return size;
+   return 0;
 }
-
 
 /**
  * _g_kdbus_send:
  * Returns: size of data sent or -1 when error
  */
-gsize
+gboolean
 _g_kdbus_send (GDBusWorker   *worker,
                GKdbus        *kdbus,
                GDBusMessage  *dbus_msg,
-               gchar         *blob,
-               gsize          blob_size,
                GUnixFDList   *fd_list,
                GCancellable  *cancellable,
                GError       **error)
 {
+  GVariantVectors body_vectors;
+  GVariant *body;
   struct kdbus_msg* kmsg;
   struct kdbus_item *item;
   guint64 kmsg_size = 0;
   const gchar *name;
   guint64 dst_id = KDBUS_DST_ID_BROADCAST;
+  guint i;
 
   g_return_val_if_fail (G_IS_KDBUS (kdbus), -1);
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
-    return -1;
+    return FALSE;
+
+  body = g_dbus_message_get_body (dbus_msg);
+  if (body == NULL)
+    {
+      g_warning ("no body!");
+      body = g_variant_new ("()");
+      g_variant_ref_sink (body);
+    }
+  else
+    g_variant_ref (body);
+  GLIB_PRIVATE_CALL(g_variant_to_vectors) (body, &body_vectors);
 
   /*
    * check destination
@@ -2111,7 +2209,9 @@ _g_kdbus_send (GDBusWorker   *worker,
    * check and set message size
    */
   kmsg_size = sizeof(struct kdbus_msg);
-  kmsg_size += KDBUS_ITEM_SIZE(sizeof(struct kdbus_vec));   /* header + body */
+
+    { G_STATIC_ASSERT (sizeof (struct kdbus_vec) == sizeof (struct kdbus_memfd)); }
+  kmsg_size += KDBUS_ITEM_SIZE(sizeof (struct kdbus_vec)) * body_vectors.vectors->len;
 
   if (fd_list != NULL && g_unix_fd_list_get_length (fd_list) > 0)
     kmsg_size += KDBUS_ALIGN8(G_STRUCT_OFFSET(struct kdbus_item, fds) + sizeof(int) * g_unix_fd_list_get_length(fd_list));
@@ -2156,9 +2256,36 @@ _g_kdbus_send (GDBusWorker   *worker,
    * append payload
    */
   item = kmsg->items;
+  for (i = 0; i < body_vectors.vectors->len; i++)
+    {
+      GVariantVector vector = g_array_index (body_vectors.vectors, GVariantVector, i);
+
+      if (vector.gbytes)
+        {
+          gint fd;
+
+          fd = g_bytes_get_zero_copy_fd (vector.gbytes);
+
+          if (fd >= 0)
+            {
+              gconstpointer bytes_data;
+              gsize bytes_size;
+
+              bytes_data = g_bytes_get_data (vector.gbytes, &bytes_size);
+
+              if (bytes_data == vector.data.pointer && bytes_size == vector.size)
+                g_kdbus_append_payload_memfd (&item, fd, vector.size);
+              else
+                g_kdbus_append_payload_vec (&item, vector.data.pointer, vector.size);
+            }
+          else
+            g_kdbus_append_payload_vec (&item, vector.data.pointer, vector.size);
+        }
+      else
+        g_kdbus_append_payload_vec (&item, body_vectors.extra_bytes->data + vector.data.offset, vector.size);
+    }
 
   /* if we don't use memfd, send whole message as a PAYLOAD_VEC item */
-  g_kdbus_append_payload_vec (&item, blob, blob_size);
 
 
   /*
@@ -2233,10 +2360,12 @@ _g_kdbus_send (GDBusWorker   *worker,
       g_print ("[KDBUS] ioctl error sending kdbus message:%d (%m)\n",errno);
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno(errno), _("Error sending message - KDBUS_CMD_MSG_SEND error"));
 */
+      perror("ioctl send");
       g_error ("IOCTL SEND: %d\n",errno);
-      return -1;
+      return FALSE;
     }
 
   free(kmsg);
-  return blob_size;
+
+  return TRUE;
 }

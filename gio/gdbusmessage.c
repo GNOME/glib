@@ -3012,6 +3012,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
           if (!append_body_to_blob (message->body, &mbuf, error))
             goto out;
         }
+#if 0
       /* body - GVariant marshalling */
       else if (message->major_protocol_version == 2)
         {
@@ -3020,6 +3021,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
 
           g_memory_buffer_write (&mbuf, message_body_data, message_body_size);
         }
+#endif
     }
   else
     {
