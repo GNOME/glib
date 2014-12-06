@@ -730,7 +730,7 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
 
           if (unpacked->size == 0)
             {
-              children[i] = g_variant_new_serialised (type_info, g_bytes_new (NULL, 0), NULL, 0, trusted);
+              children[i] = g_variant_new_serialised (unpacked->type_info, g_bytes_new (NULL, 0), NULL, 0, trusted);
               continue;
             }
 
