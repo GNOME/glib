@@ -161,6 +161,9 @@ sync_properties (GNetworkMonitorNM *nm,
   GNetworkConnectivity new_connectivity;
 
   v = g_dbus_proxy_get_cached_property (nm->priv->proxy, "Connectivity");
+  if (!v)
+    return;
+
   nm_connectivity = g_variant_get_uint32 (v);
   g_variant_unref (v);
 
