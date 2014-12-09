@@ -1067,7 +1067,6 @@ g_socket_client_connect (GSocketClient       *client,
 	  GProxy *proxy;
 
 	  protocol = g_proxy_address_get_protocol (proxy_addr);
-	  proxy = g_proxy_get_default_for_protocol (protocol);
 
           /* The connection should not be anything else then TCP Connection,
            * but let's put a safety guard in case
@@ -1084,7 +1083,11 @@ g_socket_client_connect (GSocketClient       *client,
 	      g_object_unref (connection);
 	      connection = NULL;
             }
-          else if (proxy)
+	  else if (g_hash_table_contains (client->priv->app_proxies, protocol))
+	    {
+	      application_proxy = TRUE;
+	    }
+          else if ((proxy = g_proxy_get_default_for_protocol (protocol)))
 	    {
 	      GIOStream *proxy_connection;
 
@@ -1101,18 +1104,13 @@ g_socket_client_connect (GSocketClient       *client,
 	      if (connection)
 		g_socket_client_emit_event (client, G_SOCKET_CLIENT_PROXY_NEGOTIATED, connectable, connection);
 	    }
-	  else if (!g_hash_table_lookup_extended (client->priv->app_proxies,
-						  protocol, NULL, NULL))
+	  else
 	    {
 	      g_set_error (&last_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
 			   _("Proxy protocol '%s' is not supported."),
 			   protocol);
 	      g_object_unref (connection);
 	      connection = NULL;
-	    }
-	  else
-	    {
-	      application_proxy = TRUE;
 	    }
 	}
 
@@ -1523,7 +1521,6 @@ g_socket_client_connected_callback (GObject      *source,
     }
 
   protocol = g_proxy_address_get_protocol (data->proxy_addr);
-  proxy = g_proxy_get_default_for_protocol (protocol);
 
   /* The connection should not be anything other than TCP,
    * but let's put a safety guard in case
@@ -1539,7 +1536,13 @@ g_socket_client_connected_callback (GObject      *source,
 
       enumerator_next_async (data);
     }
-  else if (proxy)
+  else if (g_hash_table_contains (data->client->priv->app_proxies, protocol))
+    {
+      /* Simply complete the connection, we don't want to do TLS handshake
+       * as the application proxy handling may need proxy handshake first */
+      g_socket_client_async_connect_complete (data);
+    }
+  else if ((proxy = g_proxy_get_default_for_protocol (protocol)))
     {
       g_socket_client_emit_event (data->client, G_SOCKET_CLIENT_PROXY_NEGOTIATING, data->connectable, data->connection);
       g_proxy_connect_async (proxy,
@@ -1550,8 +1553,7 @@ g_socket_client_connected_callback (GObject      *source,
                              data);
       g_object_unref (proxy);
     }
-  else if (!g_hash_table_lookup_extended (data->client->priv->app_proxies,
-					  protocol, NULL, NULL))
+  else
     {
       g_clear_error (&data->last_error);
 
@@ -1560,12 +1562,6 @@ g_socket_client_connected_callback (GObject      *source,
           protocol);
 
       enumerator_next_async (data);
-    }
-  else
-    {
-      /* Simply complete the connection, we don't want to do TLS handshake
-       * as the application proxy handling may need proxy handshake first */
-      g_socket_client_async_connect_complete (data);
     }
 }
 
@@ -1926,5 +1922,5 @@ void
 g_socket_client_add_application_proxy (GSocketClient *client,
 			               const gchar   *protocol)
 {
-  g_hash_table_insert (client->priv->app_proxies, g_strdup (protocol), NULL);
+  g_hash_table_add (client->priv->app_proxies, g_strdup (protocol));
 }
