@@ -81,7 +81,9 @@ enum {
   PROP_INTERACTION,
   PROP_CERTIFICATE,
   PROP_PEER_CERTIFICATE,
-  PROP_PEER_CERTIFICATE_ERRORS
+  PROP_PEER_CERTIFICATE_ERRORS,
+  PROP_ADVERTISED_PROTOCOLS,
+  PROP_NEGOTIATED_PROTOCOL
 };
 
 static void
@@ -244,6 +246,37 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 						       0,
 						       G_PARAM_READABLE |
 						       G_PARAM_STATIC_STRINGS));
+  /**
+   * GTlsConnection:advertised-protocols:
+   *
+   * The list of application-layer protocols that the connection
+   * advertises that it is willing to speak. See
+   * g_tls_connection_set_advertised_protocols().
+   *
+   * Since: 2.46
+   */
+  g_object_class_install_property (gobject_class, PROP_ADVERTISED_PROTOCOLS,
+                                   g_param_spec_boxed ("advertised-protocols",
+                                                       P_("Advertised Protocols"),
+                                                       P_("Application-layer protocols available on this connection"),
+                                                       G_TYPE_STRV,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_STATIC_STRINGS));
+  /**
+   * GTlsConnection:negotiated-protocol:
+   *
+   * The application-layer protocol negotiated during the TLS
+   * handshake. See g_tls_connection_get_negotiated_protocol().
+   *
+   * Since: 2.46
+   */
+  g_object_class_install_property (gobject_class, PROP_NEGOTIATED_PROTOCOL,
+                                   g_param_spec_string ("negotiated-protocol",
+                                                        P_("Negotiated Protocol"),
+                                                        P_("Application-layer protocol negotiated for this connection"),
+                                                        NULL,
+                                                        G_PARAM_READABLE |
+                                                        G_PARAM_STATIC_STRINGS));
 
   /**
    * GTlsConnection::accept-certificate:
@@ -723,6 +756,62 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
 		"rehandshake-mode", &mode,
 		NULL);
   return mode;
+}
+
+/**
+ * g_tls_connection_set_advertised_protocols:
+ * @conn: a #GTlsConnection
+ * @protocols: (array null-terminated=1): a %NULL-terminated array
+ *   of ALPN protocol names (eg, "http/1.1", "h2")
+ *
+ * Sets the list of application-layer protocols to advertise that the
+ * caller is willing to speak on this connection. The
+ * Application-Layer Protocol Negotiation (ALPN) extension will be
+ * used to negotiate a compatible protocol with the peer; use
+ * g_tls_connection_get_negotiated_protocol() to find the negotiated
+ * protocol after the handshake.
+ *
+ * Since: 2.46
+ */
+void
+g_tls_connection_set_advertised_protocols (GTlsConnection     *conn,
+                                           const char * const *protocols)
+{
+  g_return_if_fail (G_IS_TLS_CONNECTION (conn));
+  g_return_if_fail (protocols != NULL);
+
+  g_object_set (G_OBJECT (conn),
+                "advertised-protocols", protocols,
+                NULL);
+}
+
+/**
+ * g_tls_connection_get_negotiated_protocol:
+ * @conn: a #GTlsConnection
+ *
+ * Gets the name of the application-layer protocol negotiated during
+ * the handshake.
+ *
+ * If the peer did not use the ALPN extension, or did not advertise a
+ * protocol that matched one of @conn's protocols, or the TLS backend
+ * does not support ALPN, then this will be %NULL.
+ *
+ * Since: 2.46
+ */
+const char *
+g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
+{
+  char *protocol;
+  const char *interned_protocol;
+
+  g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
+
+  g_object_get (G_OBJECT (conn),
+                "negotiated-protocol", &protocol,
+                NULL);
+  interned_protocol = protocol ? g_intern_string (protocol) : NULL;
+  g_free (protocol);
+  return interned_protocol;
 }
 
 /**
