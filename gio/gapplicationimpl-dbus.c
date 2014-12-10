@@ -852,13 +852,13 @@ g_dbus_command_line_get_stdin (GApplicationCommandLine *cmdline)
 
   if (fd_list && g_unix_fd_list_get_length (fd_list))
     {
-      gint *fds, n_fds, i;
+      gint *fds, i;
 
-      fds = g_unix_fd_list_steal_fds (fd_list, &n_fds);
-      result = g_unix_input_stream_new (fds[0], TRUE);
-      for (i = 1; i < n_fds; i++)
-        (void) g_close (fds[i], NULL);
-      g_free (fds);
+      fds = g_unix_fd_list_peek_fds (fd_list, NULL);
+      result = g_unix_input_stream_new (fds[0], FALSE);
+      g_object_weak_ref (G_OBJECT (result),
+                         (GWeakNotify) g_object_unref,
+                         g_object_ref (fd_list));
     }
 
   return result;

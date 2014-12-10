@@ -93,7 +93,6 @@ struct _GKdbusPrivate
   gint               fd;
 
   gchar             *kdbus_buffer;
-  struct kdbus_msg  *kmsg;
 
   gchar             *unique_name;
   guint64            unique_id;
@@ -101,13 +100,6 @@ struct _GKdbusPrivate
   guint64            flags;
   guint64            attach_flags_send;
   guint64            attach_flags_recv;
-
-  GString           *msg_sender;
-  GString           *msg_destination;
-  GSList            *kdbus_msg_items;
-
-  gint              *fds;
-  gint               num_fds;
 
   gsize              bloom_size;
   guint              bloom_n_hash;
@@ -151,55 +143,6 @@ const guint8 hash_keys[8][16] =
 
 
 /**
- * _g_kdbus_get_last_msg_sender
- *
- */
-gchar *
-_g_kdbus_get_last_msg_sender (GKdbus  *kdbus)
-{
-  return kdbus->priv->msg_sender->str;
-}
-
-
-/**
- * _g_kdbus_get_last_msg_destination
- *
- */
-gchar *
-_g_kdbus_get_last_msg_destination (GKdbus  *kdbus)
-{
-  return kdbus->priv->msg_destination->str;
-}
-
-
-/**
- * _g_kdbus_get_last_msg_items:
- *
- */
-GSList *
-_g_kdbus_get_last_msg_items (GKdbus  *kdbus)
-{
-  return kdbus->priv->kdbus_msg_items;
-}
-
-
-/**
- * g_kdbus_add_msg_part:
- *
- */
-static void
-g_kdbus_add_msg_part (GKdbus  *kdbus,
-                      gchar   *data,
-                      gsize    size)
-{
-  msg_part* part = g_new (msg_part, 1);
-  part->data = data;
-  part->size = size;
-  kdbus->priv->kdbus_msg_items = g_slist_append (kdbus->priv->kdbus_msg_items, part);
-}
-
-
-/**
  * _g_kdbus_hexdump_all_items:
  *
  */
@@ -240,9 +183,6 @@ g_kdbus_finalize (GObject  *object)
 
   if (kdbus->priv->fd != -1 && !kdbus->priv->closed)
     _g_kdbus_close (kdbus, NULL);
-
-  g_string_free (kdbus->priv->msg_sender, TRUE);
-  g_string_free (kdbus->priv->msg_destination, TRUE);
 
   if (G_OBJECT_CLASS (g_kdbus_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_kdbus_parent_class)->finalize) (object);
@@ -289,17 +229,10 @@ g_kdbus_init (GKdbus  *kdbus)
   kdbus->priv->unique_name = NULL;
 
   kdbus->priv->kdbus_buffer = NULL;
-  kdbus->priv->kdbus_msg_items = NULL;
-
-  kdbus->priv->msg_sender = g_string_new (NULL);
-  kdbus->priv->msg_destination = g_string_new (NULL);
 
   kdbus->priv->flags = 0; /* KDBUS_HELLO_ACCEPT_FD */
   kdbus->priv->attach_flags_send = _KDBUS_ATTACH_ALL;
   kdbus->priv->attach_flags_recv = _KDBUS_ATTACH_ALL;
-
-  kdbus->priv->fds = NULL;
-  kdbus->priv->num_fds = 0;
 }
 
 
@@ -1361,7 +1294,7 @@ _g_kdbus_subscribe_name_owner_changed (GDBusConnection  *connection,
   struct kdbus_cmd_match *cmd_match;
   gssize size, len;
   gint ret;
-  guint64 old_id;
+  guint64 old_id = 0; /* XXX why? */
   guint64 new_id = KDBUS_MATCH_ID_ANY;
 
   kdbus = _g_kdbus_connection_get_kdbus (G_KDBUS_CONNECTION (g_dbus_connection_get_stream (connection)));
@@ -1539,94 +1472,6 @@ _g_kdbus_unsubscribe_name_lost (GDBusConnection  *connection)
 
 
 /**
- * _g_kdbus_release_msg:
- *
- */
-void
-_g_kdbus_release_kmsg (GKdbus  *kdbus)
-{
-  struct kdbus_item *item = NULL;
-  GSList *iterator = NULL;
-  guint64 offset;
-
-  offset = (guint8 *)kdbus->priv->kmsg - (guint8 *)kdbus->priv->kdbus_buffer;
-  ioctl(kdbus->priv->fd, KDBUS_CMD_FREE, &offset);
-
-  for (iterator = kdbus->priv->kdbus_msg_items; iterator; iterator = iterator->next)
-    g_free ((msg_part*)iterator->data);
-
-  g_slist_free (kdbus->priv->kdbus_msg_items);
-  kdbus->priv->kdbus_msg_items = NULL;
-
-  KDBUS_ITEM_FOREACH (item, kdbus->priv->kmsg, items)
-    {
-      if (item->type == KDBUS_ITEM_PAYLOAD_MEMFD)
-        close(item->memfd.fd);
-      else if (item->type == KDBUS_ITEM_FDS)
-        {
-          gint i;
-          gint num_fds = (item->size - G_STRUCT_OFFSET(struct kdbus_item, fds)) / sizeof(int);
-
-          for (i = 0; i < num_fds; i++)
-            close(item->fds[i]);
-        }
-    }
-}
-
-
-/**
- * g_kdbus_append_payload_vec:
- *
- */
-static void
-g_kdbus_append_payload_vec (struct kdbus_item **item,
-                            const void         *data_ptr,
-                            gssize              size)
-{
-  *item = KDBUS_ALIGN8_PTR(*item);
-  (*item)->size = G_STRUCT_OFFSET (struct kdbus_item, vec) + sizeof(struct kdbus_vec);
-  (*item)->type = KDBUS_ITEM_PAYLOAD_VEC;
-  (*item)->vec.address = (guint64)((guintptr)data_ptr);
-  (*item)->vec.size = size;
-  *item = KDBUS_ITEM_NEXT(*item);
-}
-
-/**
- * g_kdbus_append_payload_memfd:
- *
- */
-static void
-g_kdbus_append_payload_memfd (struct kdbus_item **item,
-                              gint                fd,
-                              gssize              size)
-{
-  *item = KDBUS_ALIGN8_PTR(*item);
-  (*item)->size = G_STRUCT_OFFSET (struct kdbus_item, memfd) + sizeof(struct kdbus_memfd);
-  (*item)->type = KDBUS_ITEM_PAYLOAD_MEMFD;
-  (*item)->memfd.fd = fd;
-  (*item)->memfd.size = size;
-  *item = KDBUS_ITEM_NEXT(*item);
-}
-
-
-/**
- * g_kdbus_append_payload_destiantion:
- *
- */
-static void
-g_kdbus_append_destination (struct kdbus_item **item,
-                            const gchar        *destination,
-                            gsize               size)
-{
-  *item = KDBUS_ALIGN8_PTR(*item);
-  (*item)->size = G_STRUCT_OFFSET (struct kdbus_item, str) + size + 1;
-  (*item)->type = KDBUS_ITEM_DST_NAME;
-  memcpy ((*item)->str, destination, size+1);
-  *item = KDBUS_ITEM_NEXT(*item);
-}
-
-
-/**
  * g_kdbus_append_payload_bloom:
  *
  */
@@ -1647,50 +1492,6 @@ g_kdbus_append_bloom (struct kdbus_item **item,
   return &bloom_item->bloom_filter;
 }
 
-
-/**
- * g_kdbus_append_fds:
- *
- */
-static void
-g_kdbus_append_fds (struct kdbus_item **item,
-                    GUnixFDList        *fd_list)
-{
-  *item = KDBUS_ALIGN8_PTR(*item);
-  (*item)->size = G_STRUCT_OFFSET (struct kdbus_item, fds) + sizeof(int) * g_unix_fd_list_get_length(fd_list);
-  (*item)->type = KDBUS_ITEM_FDS;
-  memcpy ((*item)->fds, g_unix_fd_list_peek_fds(fd_list, NULL), sizeof(int) * g_unix_fd_list_get_length(fd_list));
-
-  *item = KDBUS_ITEM_NEXT(*item);
-}
-
-
-/**
- * _g_kdbus_attach_fds_to_msg:
- *
- */
-void
-_g_kdbus_attach_fds_to_msg (GKdbus       *kdbus,
-                            GUnixFDList **fd_list)
-{
-  if ((kdbus->priv->fds != NULL) && (kdbus->priv->num_fds > 0))
-    {
-      gint n;
-
-      if (*fd_list == NULL)
-        *fd_list = g_unix_fd_list_new();
-
-      for (n = 0; n < kdbus->priv->num_fds; n++)
-        {
-          g_unix_fd_list_append (*fd_list, kdbus->priv->fds[n], NULL);
-          (void) g_close (kdbus->priv->fds[n], NULL);
-        }
-
-      g_free (kdbus->priv->fds);
-      kdbus->priv->fds = NULL;
-      kdbus->priv->num_fds = 0;
-    }
-}
 
 /**
  * g_kdbus_bloom_add_data:
@@ -1884,13 +1685,13 @@ g_kdbus_setup_bloom (GKdbus                     *kdbus,
  * g_kdbus_decode_kernel_msg:
  *
  */
-static gssize
-g_kdbus_decode_kernel_msg (GKdbus  *kdbus)
+static void
+g_kdbus_decode_kernel_msg (GKdbus           *kdbus,
+                           struct kdbus_msg *msg)
 {
   struct kdbus_item *item = NULL;
-  gssize size = 0;
 
-  KDBUS_ITEM_FOREACH(item, kdbus->priv->kmsg, items)
+  KDBUS_ITEM_FOREACH(item, msg, items)
     {
      switch (item->type)
         {
@@ -1914,7 +1715,7 @@ g_kdbus_decode_kernel_msg (GKdbus  *kdbus)
        }
     }
 
-
+#if 0
   /* Override information from the user header with data from the kernel */
   g_string_printf (kdbus->priv->msg_sender, "org.freedesktop.DBus");
 
@@ -1928,6 +1729,7 @@ g_kdbus_decode_kernel_msg (GKdbus  *kdbus)
    g_string_printf (kdbus->priv->msg_destination, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->kmsg->dst_id);
 
   return size;
+#endif
 }
 
 
@@ -1936,21 +1738,28 @@ g_kdbus_decode_kernel_msg (GKdbus  *kdbus)
  *
  */
 static GDBusMessage *
-g_kdbus_decode_dbus_msg (GKdbus                *kdbus,
-                         struct kdbus_cmd_recv *recv)
+g_kdbus_decode_dbus_msg (GKdbus           *kdbus,
+                         struct kdbus_msg *msg)
 {
+  GDBusMessage *message;
   struct kdbus_item *item;
   gssize data_size = 0;
-  const gchar *destination = NULL;
   GArray *body_vectors;
   gsize body_size;
   GVariant *body;
+  gchar *tmp;
   guint i;
+
+  message = g_dbus_message_new ();
+
+  tmp = g_strdup_printf (":1.%"G_GUINT64_FORMAT, (guint64) msg->src_id);
+  g_dbus_message_set_sender (message, tmp);
+  g_free (tmp);
 
   body_vectors = g_array_new (FALSE, FALSE, sizeof (GVariantVector));
   body_size = 0;
 
-  KDBUS_ITEM_FOREACH(item, (struct kdbus_msg *)((guint8 *)kdbus->priv->kdbus_buffer + recv->offset), items)
+  KDBUS_ITEM_FOREACH(item, msg, items)
     {
       if (item->size <= KDBUS_ITEM_HEADER_SIZE)
         g_error("[KDBUS] %llu bytes - invalid data record\n", item->size);
@@ -1961,7 +1770,10 @@ g_kdbus_decode_dbus_msg (GKdbus                *kdbus,
         {
          /* KDBUS_ITEM_DST_NAME */
          case KDBUS_ITEM_DST_NAME:
-           destination = item->str;
+           /* Classic D-Bus doesn't make this known to the receiver, so
+            * we don't do it here either (for compatibility with the
+            * fallback case).
+            */
            break;
 
         /* KDBUS_ITEM_PALOAD_OFF */
@@ -1998,8 +1810,7 @@ g_kdbus_decode_dbus_msg (GKdbus                *kdbus,
             flavour = body_size & 7;
             //g_assert ((item->vec.offset & 7) == flavour); FIXME: kdbus bug doesn't count memfd in flavouring
 
-            vector.gbytes = g_bytes_new (((guchar *) kdbus->priv->kmsg) + item->vec.offset - flavour,
-                                         item->vec.size + flavour);
+            vector.gbytes = g_bytes_new (((guchar *) msg) + item->vec.offset - flavour, item->vec.size + flavour);
             vector.data.pointer = g_bytes_get_data (vector.gbytes, NULL);
             vector.data.pointer += flavour;
             vector.size = item->vec.size;
@@ -2025,11 +1836,13 @@ g_kdbus_decode_dbus_msg (GKdbus                *kdbus,
 
         /* KDBUS_ITEM_FDS */
         case KDBUS_ITEM_FDS:
+          {
+            GUnixFDList *fd_list;
 
-          kdbus->priv->num_fds = data_size / sizeof(int);
-          kdbus->priv->fds = g_malloc0 (sizeof(int) * kdbus->priv->num_fds);
-          memcpy(kdbus->priv->fds, item->fds, sizeof(int) * kdbus->priv->num_fds);
-
+            fd_list = g_unix_fd_list_new_from_array (item->fds, data_size / sizeof (int));
+            g_dbus_message_set_unix_fd_list (message, fd_list);
+            g_object_unref (fd_list);
+          }
           break;
 
         /* All of the following items, like CMDLINE,
@@ -2053,9 +1866,6 @@ g_kdbus_decode_dbus_msg (GKdbus                *kdbus,
           }
 
         case KDBUS_ITEM_PIDS:
-          {
-          }
-
         case KDBUS_ITEM_PID_COMM:
         case KDBUS_ITEM_TID_COMM:
         case KDBUS_ITEM_EXE:
@@ -2087,26 +1897,10 @@ g_kdbus_decode_dbus_msg (GKdbus                *kdbus,
 
   g_array_free (body_vectors, TRUE);
 
-  g_print ("body is %s\n", g_variant_print (body, TRUE));
+  g_dbus_message_set_body (message, body);
+  g_variant_unref (body);
 
-  /* Override information from the user header with data from the kernel */
-
-  if (kdbus->priv->kmsg->src_id == KDBUS_SRC_ID_KERNEL)
-    g_string_printf (kdbus->priv->msg_sender, "org.freedesktop.DBus");
-  else
-    g_string_printf (kdbus->priv->msg_sender, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->kmsg->src_id);
-
-  if (destination)
-    g_string_printf (kdbus->priv->msg_destination, "%s", destination);
-  else if (kdbus->priv->kmsg->dst_id == KDBUS_DST_ID_BROADCAST)
-    /* for broadcast messages we don't have to set destination */
-    ;
-  else if (kdbus->priv->kmsg->dst_id == KDBUS_DST_ID_NAME)
-    g_string_printf (kdbus->priv->msg_destination, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->unique_id);
-  else
-    g_string_printf (kdbus->priv->msg_destination, ":1.%" G_GUINT64_FORMAT, (guint64) kdbus->priv->kmsg->dst_id);
-
-  return NULL;
+  return message;
 }
 
 
@@ -2120,6 +1914,7 @@ _g_kdbus_receive (GKdbus        *kdbus,
                   GError       **error)
 {
   struct kdbus_cmd_recv recv = {};
+  struct kdbus_msg *msg;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return -1;
@@ -2137,12 +1932,12 @@ again:
         return -1;
       }
 
-   kdbus->priv->kmsg = (struct kdbus_msg *)((guint8 *)kdbus->priv->kdbus_buffer + recv.offset);
+   msg = (struct kdbus_msg *)((guint8 *)kdbus->priv->kdbus_buffer + recv.offset);
 
-   if (kdbus->priv->kmsg->payload_type == KDBUS_PAYLOAD_DBUS)
-     g_kdbus_decode_dbus_msg (kdbus, &recv);
-   else if (kdbus->priv->kmsg->payload_type == KDBUS_PAYLOAD_KERNEL)
-     g_kdbus_decode_kernel_msg (kdbus);
+   if (msg->payload_type == KDBUS_PAYLOAD_DBUS)
+     g_kdbus_decode_dbus_msg (kdbus, msg);
+   else if (msg->payload_type == KDBUS_PAYLOAD_KERNEL)
+     g_kdbus_decode_kernel_msg (kdbus, msg);
    else
      {
        g_set_error (error,
@@ -2152,7 +1947,76 @@ again:
        return -1;
      }
 
+  ioctl(kdbus->priv->fd, KDBUS_CMD_FREE, &recv.offset);
+
    return 0;
+}
+
+struct dbus_fixed_header {
+  guint8  endian;
+  guint8  type;
+  guint8  flags;
+  guint8  version;
+  guint32 reserved;
+  guint64 serial;
+};
+
+#define DBUS_FIXED_HEADER_TYPE     ((const GVariantType *) "(yyyyut)")
+#define DBUS_EXTENDED_HEADER_TYPE  ((const GVariantType *) "a{tv}")
+#define DBUS_MESSAGE_TYPE          ((const GVariantType *) "((yyyyut)a{tv}v)")
+
+#define KDBUS_MSG_MAX_SIZE         8192
+
+static gboolean
+g_kdbus_msg_append_item (struct kdbus_msg *msg,
+                         gsize             type,
+                         gconstpointer     data,
+                         gsize             size)
+{
+  struct kdbus_item *item;
+  gsize item_size;
+
+  item_size = size + sizeof (struct kdbus_item);
+
+  if (msg->size + item_size > KDBUS_MSG_MAX_SIZE)
+    return FALSE;
+
+  item = (struct kdbus_item *) ((guchar *) msg) + msg->size;
+  item->type = type;
+  item->size = item_size;
+  memcpy (item->data, data, size);
+
+  msg->size += (item_size + 7) & ~7ull;
+
+  return TRUE;
+}
+
+static gboolean
+g_kdbus_msg_append_payload_vec (struct kdbus_msg *msg,
+                            gconstpointer     data,
+                            gsize             size)
+{
+  struct kdbus_vec vec = {
+    .size = size,
+    .address = (gsize) data
+  };
+
+  return g_kdbus_msg_append_item (msg, KDBUS_ITEM_PAYLOAD_VEC, &vec, sizeof vec);
+}
+
+static gboolean
+g_kdbus_msg_append_payload_memfd (struct kdbus_msg *msg,
+                                  gint              fd,
+                                  gsize             offset,
+                                  gsize             size)
+{
+  struct kdbus_memfd mfd = {
+   .start = offset,
+   .size = size,
+   .fd = fd,
+  };
+
+  return g_kdbus_msg_append_item (msg, KDBUS_ITEM_PAYLOAD_MEMFD, &mfd, sizeof mfd);
 }
 
 /**
@@ -2160,159 +2024,189 @@ again:
  * Returns: size of data sent or -1 when error
  */
 gboolean
-_g_kdbus_send (GDBusWorker   *worker,
-               GKdbus        *kdbus,
-               GDBusMessage  *dbus_msg,
-               GUnixFDList   *fd_list,
+_g_kdbus_send (GKdbus        *kdbus,
+               GDBusMessage  *message,
                GCancellable  *cancellable,
                GError       **error)
 {
+  struct kdbus_msg *msg = alloca (KDBUS_MSG_MAX_SIZE);
   GVariantVectors body_vectors;
-  GVariant *body;
-  struct kdbus_msg* kmsg;
-  struct kdbus_item *item;
-  guint64 kmsg_size = 0;
-  const gchar *name;
-  guint64 dst_id = KDBUS_DST_ID_BROADCAST;
-  guint i;
 
   g_return_val_if_fail (G_IS_KDBUS (kdbus), -1);
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return FALSE;
 
-  body = g_dbus_message_get_body (dbus_msg);
-  if (body == NULL)
-    {
-      g_warning ("no body!");
+  /* fill in as we go... */
+  memset (msg, 0, sizeof (struct kdbus_msg));
+  msg->size = sizeof (struct kdbus_msg);
+  msg->payload_type = KDBUS_PAYLOAD_DBUS;
+  msg->src_id = kdbus->priv->unique_id;
+  msg->cookie = g_dbus_message_get_serial(message);
+
+  /* Message destination */
+  {
+    const gchar *dst_name;
+
+    dst_name = g_dbus_message_get_destination (message);
+
+    if (dst_name != NULL)
+      {
+        if (g_dbus_is_unique_name (dst_name))
+          {
+            if (dst_name[1] != '1' || dst_name[2] != '.')
+              {
+                g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_NAME_HAS_NO_OWNER,
+                             "Invalid unique D-Bus name '%s'", dst_name);
+                return FALSE;
+              }
+
+            /* We already know that it passes the checks for unique
+             * names, so no need to perform error checking on strtoull.
+             */
+            msg->dst_id = strtoull (dst_name + 3, NULL, 10);
+            dst_name = NULL;
+          }
+        else
+          {
+            g_kdbus_msg_append_item (msg, KDBUS_ITEM_DST_NAME, dst_name, strlen (dst_name) + 1);
+            msg->dst_id = KDBUS_DST_ID_NAME;
+          }
+      }
+    else
+      msg->dst_id = KDBUS_DST_ID_BROADCAST;
+  }
+
+  /* File descriptors */
+  {
+    GUnixFDList *fd_list;
+
+    fd_list = g_dbus_message_get_unix_fd_list (message);
+
+    if (fd_list != NULL)
+      {
+        const gint *fds;
+        gint n_fds;
+
+        fds = g_unix_fd_list_peek_fds (fd_list, &n_fds);
+
+        if (n_fds)
+          g_kdbus_msg_append_item (msg, KDBUS_ITEM_FDS, fds, sizeof (gint) * n_fds);
+      }
+  }
+
+  /* Message body */
+  {
+    struct dbus_fixed_header fh;
+    GHashTableIter header_iter;
+    GVariantBuilder builder;
+    gpointer key, value;
+    GVariant *parts[3];
+    GVariant *body;
+
+    fh.endian = (G_BYTE_ORDER == G_LITTLE_ENDIAN) ? 'l': 'B';
+    fh.type = g_dbus_message_get_message_type (message);
+    fh.flags = g_dbus_message_get_flags (message);
+    fh.version = 2;
+    fh.reserved = 0;
+    fh.serial = g_dbus_message_get_serial (message);
+    parts[0] = g_variant_new_from_data (DBUS_FIXED_HEADER_TYPE, &fh, sizeof fh, TRUE, NULL, NULL);
+
+    g_dbus_message_init_header_iter (message, &header_iter);
+    g_variant_builder_init (&builder, DBUS_EXTENDED_HEADER_TYPE);
+    while (g_hash_table_iter_next (&header_iter, &key, &value))
+      {
+        guint64 key_int = (gsize) key;
+
+        /* We don't send these in GVariant format */
+        if (key_int == G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE ||
+            key_int == G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS)
+          continue;
+
+        g_variant_builder_add (&builder, "{tv}", key_int, value);
+      }
+    parts[1] = g_variant_builder_end (&builder);
+
+    body = g_dbus_message_get_body (message);
+    if (!body)
       body = g_variant_new ("()");
-      g_variant_ref_sink (body);
-    }
-  else
-    g_variant_ref (body);
-  GLIB_PRIVATE_CALL(g_variant_to_vectors) (body, &body_vectors);
+    parts[2] = g_variant_new_variant (body);
 
-  /*
-   * check destination
-   */
-  if ((name = g_dbus_message_get_destination(dbus_msg)))
-    {
-      dst_id = KDBUS_DST_ID_NAME;
-      if ((name[0] == ':') && (name[1] == '1') && (name[2] == '.'))
-        {
-          dst_id = strtoull(&name[3], NULL, 10);
-          name=NULL;
-        }
-    }
+    body = g_variant_ref_sink (g_variant_new_tuple (parts, G_N_ELEMENTS (parts)));
+    GLIB_PRIVATE_CALL(g_variant_to_vectors) (body, &body_vectors);
+    g_variant_unref (body);
+  }
 
-  /*
-   * check and set message size
-   */
-  kmsg_size = sizeof(struct kdbus_msg);
+  {
+    guint i;
 
-    { G_STATIC_ASSERT (sizeof (struct kdbus_vec) == sizeof (struct kdbus_memfd)); }
-  kmsg_size += KDBUS_ITEM_SIZE(sizeof (struct kdbus_vec)) * body_vectors.vectors->len;
+    for (i = 0; i < body_vectors.vectors->len; i++)
+      {
+        GVariantVector vector = g_array_index (body_vectors.vectors, GVariantVector, i);
 
-  if (fd_list != NULL && g_unix_fd_list_get_length (fd_list) > 0)
-    kmsg_size += KDBUS_ALIGN8(G_STRUCT_OFFSET(struct kdbus_item, fds) + sizeof(int) * g_unix_fd_list_get_length(fd_list));
+        if (vector.gbytes)
+          {
+            gint fd;
 
-  if (name)
-    kmsg_size += KDBUS_ITEM_SIZE(strlen(name) + 1);
-  else if (dst_id == KDBUS_DST_ID_BROADCAST)
-    kmsg_size += KDBUS_ALIGN8(G_STRUCT_OFFSET(struct kdbus_item, bloom_filter) +
-                        G_STRUCT_OFFSET(struct kdbus_bloom_filter, data) +
-                        kdbus->priv->bloom_size);
+            fd = g_bytes_get_zero_copy_fd (vector.gbytes);
 
-  kmsg = malloc(kmsg_size);
-  if (!kmsg)
-    g_error ("[KDBUS] kmsg malloc error");
+            if (fd >= 0)
+              {
+                const guchar *bytes_data;
+                gsize bytes_size;
 
+                bytes_data = g_bytes_get_data (vector.gbytes, &bytes_size);
 
-  /*
-   * set message header
-   */
-  memset(kmsg, 0, kmsg_size);
-  kmsg->size = kmsg_size;
-  kmsg->payload_type = KDBUS_PAYLOAD_DBUS;
-  kmsg->dst_id = name ? 0 : dst_id;
-  kmsg->src_id = kdbus->priv->unique_id;
-  kmsg->cookie = g_dbus_message_get_serial(dbus_msg);
-  kmsg->priority = 0;
-
+                if (bytes_data <= vector.data.pointer && vector.data.pointer + vector.size <= bytes_data + bytes_size)
+                  {
+                    if (!g_kdbus_msg_append_payload_memfd (msg, fd, vector.data.pointer - bytes_data, vector.size))
+                      goto need_compact;
+                  }
+                else
+                  {
+                    if (!g_kdbus_msg_append_payload_vec (msg, vector.data.pointer, vector.size))
+                      goto need_compact;
+                  }
+              }
+            else
+              {
+                if (!g_kdbus_msg_append_payload_vec (msg, vector.data.pointer, vector.size))
+                  goto need_compact;
+              }
+          }
+        else
+          if (!g_kdbus_msg_append_payload_vec (msg, body_vectors.extra_bytes->data + vector.data.offset, vector.size))
+            goto need_compact;
+      }
+  }
 
   /*
    * set message flags
    */
-  kmsg->flags = ((g_dbus_message_get_flags (dbus_msg) & G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED) ? 0 : KDBUS_MSG_FLAGS_EXPECT_REPLY) |
-                ((g_dbus_message_get_flags (dbus_msg) & G_DBUS_MESSAGE_FLAGS_NO_AUTO_START) ? KDBUS_MSG_FLAGS_NO_AUTO_START : 0);
+  msg->flags = ((g_dbus_message_get_flags (message) & G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED) ? 0 : KDBUS_MSG_FLAGS_EXPECT_REPLY) |
+                ((g_dbus_message_get_flags (message) & G_DBUS_MESSAGE_FLAGS_NO_AUTO_START) ? KDBUS_MSG_FLAGS_NO_AUTO_START : 0);
 
-  if ((kmsg->flags) & KDBUS_MSG_FLAGS_EXPECT_REPLY)
-    kmsg->timeout_ns = 2000000000;
+  if ((msg->flags) & KDBUS_MSG_FLAGS_EXPECT_REPLY)
+    msg->timeout_ns = 2000000000;
   else
-    kmsg->cookie_reply = g_dbus_message_get_reply_serial(dbus_msg);
+    msg->cookie_reply = g_dbus_message_get_reply_serial(message);
 
 
   /*
-   * append payload
-   */
-  item = kmsg->items;
-  for (i = 0; i < body_vectors.vectors->len; i++)
-    {
-      GVariantVector vector = g_array_index (body_vectors.vectors, GVariantVector, i);
-
-      if (vector.gbytes)
-        {
-          gint fd;
-
-          fd = g_bytes_get_zero_copy_fd (vector.gbytes);
-
-          if (fd >= 0)
-            {
-              gconstpointer bytes_data;
-              gsize bytes_size;
-
-              bytes_data = g_bytes_get_data (vector.gbytes, &bytes_size);
-
-              if (bytes_data == vector.data.pointer && bytes_size == vector.size)
-                g_kdbus_append_payload_memfd (&item, fd, vector.size);
-              else
-                g_kdbus_append_payload_vec (&item, vector.data.pointer, vector.size);
-            }
-          else
-            g_kdbus_append_payload_vec (&item, vector.data.pointer, vector.size);
-        }
-      else
-        g_kdbus_append_payload_vec (&item, body_vectors.extra_bytes->data + vector.data.offset, vector.size);
-    }
-
-  /* if we don't use memfd, send whole message as a PAYLOAD_VEC item */
-
-
-  /*
-   * append destination or bloom filters
-   */
-  if (name)
-    g_kdbus_append_destination (&item, name, strlen(name));
-  else if (dst_id == KDBUS_DST_ID_BROADCAST)
+  if (dst_id == KDBUS_DST_ID_BROADCAST)
     {
       struct kdbus_bloom_filter *bloom_filter;
 
       bloom_filter = g_kdbus_append_bloom (&item, kdbus->priv->bloom_size);
-      g_kdbus_setup_bloom (kdbus, dbus_msg, bloom_filter);
+      g_kdbus_setup_bloom (kdbus, message, bloom_filter);
     }
-
-  /*
-   * append fds if any
-   */
-  if (fd_list != NULL && g_unix_fd_list_get_length (fd_list) > 0)
-    g_kdbus_append_fds (&item, fd_list);
-
+    */
 
   /*
    * send message
    */
 //again:
-  if (ioctl(kdbus->priv->fd, KDBUS_CMD_MSG_SEND, kmsg))
+  if (ioctl(kdbus->priv->fd, KDBUS_CMD_MSG_SEND, msg))
     {
 /*
       GString *error_name;
@@ -2365,7 +2259,15 @@ _g_kdbus_send (GDBusWorker   *worker,
       return FALSE;
     }
 
-  free(kmsg);
-
   return TRUE;
+
+need_compact:
+  /* We end up here if:
+   *  - too many kdbus_items
+   *  - too large kdbus_msg size
+   *  - too much vector data
+   *
+   * We need to compact the message before sending it.
+   */
+  g_assert_not_reached ();
 }

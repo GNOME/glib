@@ -731,6 +731,7 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
           if (unpacked->size == 0)
             {
               children[i] = g_variant_new_serialised (unpacked->type_info, g_bytes_new (NULL, 0), NULL, 0, trusted);
+              g_variant_ref_sink (children[i]);
               continue;
             }
 
@@ -765,7 +766,10 @@ g_variant_vector_deserialise (GVariantTypeInfo *type_info,
           vector->data.pointer = resume_at_data;
           vector->size = resume_at_size;
 
-          failed |= children[i] == NULL;
+          if (children[i])
+            g_variant_ref_sink (children[i]);
+          else
+            failed = TRUE;
         }
 
       /* We consumed all the type infos */
@@ -813,6 +817,7 @@ g_variant_from_vectors (const GVariantType *type,
   tmp = g_array_new (FALSE, FALSE, sizeof (GVariantUnpacked));
   result = g_variant_vector_deserialise (g_variant_type_info_get (type),
                                          vectors, vectors + n_vectors - 1, size, trusted, tmp);
+  g_variant_ref_sink (result);
   g_array_free (tmp, TRUE);
 
   return result;

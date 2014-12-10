@@ -306,6 +306,44 @@ g_dbus_method_invocation_get_parameters (GDBusMethodInvocation *invocation)
 }
 
 /**
+ * g_dbus_method_invocation_peek_unix_fd:
+ * @invocation: A #GDBusMethodInvocation.
+ * @index_: the index
+ *
+ * Gets the fd associated with @index in the method invocation.
+ *
+ * If there is no file descriptor at the given index, -1 is returned.
+ *
+ * The returned file descriptor is owned by the message and must not be
+ * closed by the caller.  Use dup() if you want your own copy.
+ *
+ * Returns: the file descriptor, or -1
+ */
+#ifdef G_OS_UNIX
+gint
+g_dbus_method_invocation_peek_unix_fd (GDBusMethodInvocation *invocation,
+                                       guint                  index_)
+{
+  GUnixFDList *fd_list;
+
+  fd_list = g_dbus_message_get_unix_fd_list (invocation->message);
+
+  if (fd_list)
+    {
+      const gint *fds;
+      gint n_fds;
+
+      fds = g_unix_fd_list_peek_fds (fd_list, &n_fds);
+
+      if (index_ < (guint) n_fds)
+        return fds[index_];
+    }
+
+  return -1;
+}
+#endif
+
+/**
  * g_dbus_method_invocation_get_user_data: (skip)
  * @invocation: A #GDBusMethodInvocation.
  *

@@ -702,12 +702,6 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
                                          res,
                                          &error);
 
-      /* [KDBUS]  Get all received items*/
-      worker->read_kdbus_msg_items = _g_kdbus_get_last_msg_items (worker->kdbus);
-
-      /* [KDBUS] Attach fds (if any) to worker->read_fd_list */
-      _g_kdbus_attach_fds_to_msg (worker->kdbus, &worker->read_fd_list);
-
       /* [KDBUS] For KDBUS transport we read whole message at once*/
       worker->read_buffer_bytes_wanted = bytes_read;
     }
@@ -886,30 +880,6 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
 #if defined (G_OS_UNIX) && (KDBUS_TRANSPORT)
           else if (G_IS_KDBUS_CONNECTION (worker->stream))
             {
-              GDBusMessageType message_type;
-              gchar *sender;
-              gchar *destination;
-
-              message = _g_dbus_message_new_from_kdbus_items (worker->read_kdbus_msg_items,
-                                                              &error);
-
-              /* [KDBUS] override informations from the user header with kernel msg header */
-              sender = _g_kdbus_get_last_msg_sender (worker->kdbus);
-              g_dbus_message_set_sender (message, sender);
-
-              message_type = g_dbus_message_get_message_type (message);
-              if (message_type == G_DBUS_MESSAGE_TYPE_SIGNAL)
-                {
-                  destination = _g_kdbus_get_last_msg_destination (worker->kdbus);
-                  g_dbus_message_set_destination (message, destination);
-                }
-
-              if (message == NULL)
-                {
-                   g_warning ("Error decoding D-Bus (kdbus) message\n");
-                   g_error_free (error);
-                   goto out;
-                }
             }
 #endif
           else
@@ -995,11 +965,6 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
   /* [KDBUS] release memory occupied by kdbus message */
   if (G_IS_KDBUS_CONNECTION (worker->stream))
     {
-      if (!_g_kdbus_is_closed (worker->kdbus))
-        {
-          _g_kdbus_release_kmsg (worker->kdbus);
-          worker->read_kdbus_msg_items = NULL;
-        }
       worker->read_buffer = NULL;
     }
 #endif
@@ -1766,9 +1731,7 @@ continue_writing (GDBusWorker *worker)
           */
 
           if (G_IS_KDBUS_CONNECTION (worker->stream))
-            _g_dbus_message_set_protocol_ver (data->message,2);
-          else
-            _g_dbus_message_set_protocol_ver (data->message,1);
+            g_assert_not_reached ();
 
           new_blob = g_dbus_message_to_blob (data->message,
                                              &new_blob_size,

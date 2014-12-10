@@ -183,7 +183,8 @@ struct kdbus_bloom_filter {
 
 /**
  * struct kdbus_memfd - a kdbus memfd
- * @size:		The memfd's size
+ * @start:		The offset into the memfd where the segment starts
+ * @size:		The size of the memfd segment
  * @fd:			The file descriptor number
  * @__pad:		Padding to ensure proper alignment and size
  *
@@ -191,6 +192,7 @@ struct kdbus_bloom_filter {
  *   KDBUS_ITEM_PAYLOAD_MEMFD
  */
 struct kdbus_memfd {
+	__u64 start;
 	__u64 size;
 	int fd;
 	__u32 __pad;
@@ -583,12 +585,15 @@ enum kdbus_policy_type {
  *				a service
  * @KDBUS_HELLO_MONITOR:	Special-purpose connection to monitor
  *				bus traffic
+ * @KDBUS_HELLO_UNPRIVILEGED:	Don't treat this connection as privileged once
+ *				the bus connection was established.
  */
 enum kdbus_hello_flags {
 	KDBUS_HELLO_ACCEPT_FD		=  1ULL <<  0,
 	KDBUS_HELLO_ACTIVATOR		=  1ULL <<  1,
 	KDBUS_HELLO_POLICY_HOLDER	=  1ULL <<  2,
 	KDBUS_HELLO_MONITOR		=  1ULL <<  3,
+	KDBUS_HELLO_UNPRIVILEGED	=  1ULL <<  4,
 };
 
 /**
@@ -768,6 +773,7 @@ enum kdbus_name_list_flags {
  * @offset:		The returned offset in the caller's pool buffer.
  *			The user must use KDBUS_CMD_FREE to free the
  *			allocated memory.
+ * @size:		Output buffer to report size of data at @offset.
  *
  * This structure is used with the KDBUS_CMD_NAME_LIST ioctl.
  */
@@ -775,6 +781,7 @@ struct kdbus_cmd_name_list {
 	__u64 flags;
 	__u64 kernel_flags;
 	__u64 offset;
+	__u64 size;
 } __attribute__((aligned(8)));
 
 /**
@@ -801,6 +808,7 @@ struct kdbus_name_list {
  * @offset:		Returned offset in the caller's pool buffer where the
  *			kdbus_info struct result is stored. The user must
  *			use KDBUS_CMD_FREE to free the allocated memory.
+ * @info_size:		Output buffer to report size of data at @offset.
  * @items:		The optional item list, containing the
  *			well-known name to look up as a KDBUS_ITEM_NAME.
  *			Only needed in case @id is zero.
@@ -815,6 +823,7 @@ struct kdbus_cmd_info {
 	__u64 kernel_flags;
 	__u64 id;
 	__u64 offset;
+	__u64 info_size;
 	struct kdbus_item items[0];
 } __attribute__((aligned(8)));
 

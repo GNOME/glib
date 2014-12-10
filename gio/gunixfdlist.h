@@ -68,6 +68,9 @@ GLIB_AVAILABLE_IN_ALL
 GUnixFDList *           g_unix_fd_list_new_from_array                   (const gint   *fds,
                                                                          gint          n_fds);
 
+GLIB_AVAILABLE_IN_2_44
+void                    g_unix_fd_list_lock                             (GUnixFDList  *list);
+
 GLIB_AVAILABLE_IN_ALL
 gint                    g_unix_fd_list_append                           (GUnixFDList  *list,
                                                                          gint          fd,

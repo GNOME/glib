@@ -53,6 +53,11 @@ GLIB_AVAILABLE_IN_ALL
 GDBusMessage          *g_dbus_method_invocation_get_message          (GDBusMethodInvocation *invocation);
 GLIB_AVAILABLE_IN_ALL
 GVariant              *g_dbus_method_invocation_get_parameters       (GDBusMethodInvocation *invocation);
+#ifdef G_OS_UNIX
+GLIB_AVAILABLE_IN_2_44
+gint                   g_dbus_method_invocation_peek_unix_fd         (GDBusMethodInvocation *invocation,
+                                                                      guint                  index_);
+#endif
 GLIB_AVAILABLE_IN_ALL
 gpointer               g_dbus_method_invocation_get_user_data        (GDBusMethodInvocation *invocation);
 

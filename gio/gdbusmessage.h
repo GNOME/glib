@@ -192,16 +192,6 @@ GLIB_AVAILABLE_IN_ALL
 gboolean                  g_dbus_message_to_gerror          (GDBusMessage             *message,
                                                              GError                  **error);
 
-GDBusMessage             *_g_dbus_message_new_from_kdbus_items  (GSList               *kdbus_msg_items,
-                                                                 GError              **error);
-
-/* to remove */
-guint32                   _g_dbus_message_get_protocol_ver      (GDBusMessage             *message);
-
-/* to remove */
-void                      _g_dbus_message_set_protocol_ver      (GDBusMessage             *message,
-                                                                 guint32                   protocol_ver);
-
 G_END_DECLS
 
 #endif /* __G_DBUS_MESSAGE_H__ */

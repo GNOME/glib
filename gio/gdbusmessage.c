@@ -49,7 +49,6 @@
 #include "gdbusprivate.h"
 
 #ifdef G_OS_UNIX
-#include "gkdbus.h"
 #include "gunixfdlist.h"
 #endif
 
@@ -972,38 +971,6 @@ g_dbus_message_set_serial (GDBusMessage  *message,
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
-
-/**
-  * _g_dbus_message_get_protocol_ver:
-  * To remove - more info [1]
-  * [1] https://bugzilla.gnome.org/show_bug.cgi?id=721861
-  */
-guint32
-_g_dbus_message_get_protocol_ver (GDBusMessage *message)
-{
-  g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), 0);
-  return message->major_protocol_version;
-}
-
-/**
-  * _g_dbus_message_set_protocol_ver:
-  * To remove - more info [1]
-  * [1] https://bugzilla.gnome.org/show_bug.cgi?id=721861
-  */
-void
-_g_dbus_message_set_protocol_ver (GDBusMessage  *message,
-                                  guint32        protocol_ver)
-{
-  g_return_if_fail (G_IS_DBUS_MESSAGE (message));
-
-  if (message->locked)
-    {
-      g_warning ("%s: Attempted to modify a locked message", G_STRFUNC);
-      return;
-    }
-
-  message->major_protocol_version = protocol_ver;
-}
 
 /* TODO: need GI annotations to specify that any guchar value goes for header_field */
 
@@ -2225,219 +2192,6 @@ g_dbus_message_new_from_blob (guchar                *blob,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/*
- * _g_dbus_message_new_from_kdbus_items:
- *
- * Single kdbus message may contain zero, one or more items
- * (PAYLOAD_VEC or PAYLOAD_MEMFD), so we need this function
- * (only for kdbus transport purposes) to parse them to GDBusMessage.
- * kdbus_msg_items list contain list of pointer + data pair for each received item.
- *
- * TODO: Add support for two and more items
- */
-
-GDBusMessage *
-_g_dbus_message_new_from_kdbus_items (GSList  *kdbus_msg_items,
-                                      GError **error)
-{
-  gboolean ret;
-  GMemoryBuffer mbuf;
-  GDBusMessage *message;
-  guchar endianness;
-  guchar major_protocol_version;
-  guint32 message_body_len;
-  guint32 message_headers_len;
-  GVariant *headers;
-  GVariant *item;
-  GVariantIter iter;
-  GVariant *signature;
-
-  ret = FALSE;
-
-  g_return_val_if_fail (kdbus_msg_items != NULL, NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  message = g_dbus_message_new ();
-  memset (&mbuf, 0, sizeof (mbuf));
-
-  /*
-   * MESSAGE HEADER
-   * message header in its entirety must be contained in a first single item
-   */
-  mbuf.data = ((msg_part*)kdbus_msg_items->data)->data;
-  mbuf.len = mbuf.valid_len = ((msg_part*)kdbus_msg_items->data)->size;
-
-  endianness = g_memory_buffer_read_byte (&mbuf);
-  switch (endianness)
-    {
-    case 'l':
-      mbuf.byte_order = G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN;
-      message->byte_order = G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN;
-      break;
-    case 'B':
-      mbuf.byte_order = G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
-      message->byte_order = G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN;
-      break;
-    default:
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value 0x%02x"),
-                   endianness);
-      goto out;
-    }
-
-  message->type = g_memory_buffer_read_byte (&mbuf);
-  message->flags = g_memory_buffer_read_byte (&mbuf);
-  major_protocol_version = g_memory_buffer_read_byte (&mbuf);
-
-  if (major_protocol_version != 2)
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Invalid major protocol version. Expected 2 but found %d"),
-                   major_protocol_version);
-      goto out;
-    }
-
-  message_body_len = g_memory_buffer_read_uint32 (&mbuf);
-  message->serial = g_memory_buffer_read_uint32 (&mbuf);
-
-  message_headers_len = g_memory_buffer_read_uint32 (&mbuf);
-  headers = g_variant_new_from_data (G_VARIANT_TYPE ("a{yv}"),
-                                     mbuf.data + mbuf.pos,
-                                     message_headers_len,
-                                     TRUE,
-                                     NULL,
-                                     NULL);
-  mbuf.pos += message_headers_len;
-
-  if (headers == NULL)
-    goto out;
-  g_variant_iter_init (&iter, headers);
-  while ((item = g_variant_iter_next_value (&iter)) != NULL)
-    {
-      guchar header_field;
-      GVariant *value;
-      g_variant_get (item,
-                     "{yv}",
-                     &header_field,
-                     &value);
-      g_dbus_message_set_header (message, header_field, value);
-      g_variant_unref (value);
-      g_variant_unref (item);
-    }
-  g_variant_unref (headers);
-
-  signature = g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE);
-  if (signature != NULL)
-    {
-      const gchar *signature_str;
-      gsize signature_str_len;
-
-      signature_str = g_variant_get_string (signature, &signature_str_len);
-
-      if (signature_str_len > 0)
-        {
-          GVariantType *variant_type;
-          gchar *tupled_signature_str;
-
-          gchar *data = NULL;
-          gsize size = NULL;
-
-          if (!g_variant_is_signature (signature_str))
-            {
-              g_set_error (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_INVALID_ARGUMENT,
-                           _("Parsed value '%s' is not a valid D-Bus signature (for body)"),
-                           signature_str);
-              goto out;
-            }
-          tupled_signature_str = g_strdup_printf ("(%s)", signature_str);
-          variant_type = g_variant_type_new (tupled_signature_str);
-          g_free (tupled_signature_str);
-
-          /*
-           * MESSAGE BODY
-           */
-
-          if (g_slist_length(kdbus_msg_items) == 1)
-            {
-              /* if kdbus_msg_items has only one element, head and body are
-                 contained in a single PAYLOAD_VEC item */
-              ensure_input_padding (&mbuf,8);
-              data = mbuf.data + mbuf.pos;
-              size = message_body_len;
-            }
-          else if (g_slist_length(kdbus_msg_items) > 1)
-            {
-              /* message consists two or more items
-                 TODO: Add support for three and more items */
-              data = ((msg_part*)g_slist_next(kdbus_msg_items)->data)->data;
-              size = ((msg_part*)g_slist_next(kdbus_msg_items)->data)->size;
-            }
-          else
-            {
-              g_set_error (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_INVALID_ARGUMENT,
-                           _("[KDBUS] Received message is not valid"));
-              goto out;
-            }
-
-          message->body = g_variant_new_from_data (variant_type,
-                                                   data,
-                                                   size,
-                                                   TRUE,
-                                                   NULL,
-                                                   NULL);
-
-          g_variant_type_free (variant_type);
-          if (message->body == NULL)
-            goto out;
-        }
-    }
-  else
-    {
-      /* no signature, this is only OK if the body is empty */
-      if (message_body_len != 0)
-        {
-          /* G_GUINT32_FORMAT doesn't work with gettext, just use %u */
-          g_set_error (error,
-                       G_IO_ERROR,
-                       G_IO_ERROR_INVALID_ARGUMENT,
-                       g_dngettext (GETTEXT_PACKAGE,
-                                    "No signature header in message but the message body is %u byte",
-                                    "No signature header in message but the message body is %u bytes",
-                                    message_body_len),
-                       message_body_len);
-          goto out;
-        }
-    }
-
-  if (!validate_headers (message, error))
-    {
-      g_prefix_error (error, _("Cannot deserialize message: "));
-      goto out;
-    }
-
-  ret = TRUE;
-
- out:
-  if (ret)
-    {
-      return message;
-    }
-  else
-    {
-      if (message != NULL)
-        g_object_unref (message);
-      return NULL;
-    }
-}
-
 static gsize
 ensure_output_padding (GMemoryBuffer  *mbuf,
                        gsize           padding_size)
@@ -2813,12 +2567,6 @@ append_body_to_blob (GVariant       *value,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* [KDBUS]
- * g_dbus_message_to_blob() will be replaced by new function only for kdbus transport
- * purposes (this function will be able to create blob directly/unconditionally in memfd
- * object, without making copy)
- */
-
 /**
  * g_dbus_message_to_blob:
  * @message: A #GDBusMessage.
@@ -2847,11 +2595,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   goffset body_len_offset;
   goffset body_start_offset;
   gsize body_size;
-  gconstpointer message_body_data;
-  gsize message_body_size;
   GVariant *header_fields;
-  gsize header_fields_size;
-  gconstpointer header_fields_data;
   GVariantBuilder builder;
   GHashTableIter hash_iter;
   gpointer key;
@@ -2868,20 +2612,6 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
   g_return_val_if_fail (out_size != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  /* temporary solution */
-  if (!message->major_protocol_version)
-    g_error ("message->major_protocol_version is not set");
-
-  if (message->major_protocol_version != 1 && message->major_protocol_version != 2)
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Invalid major protocol version. Expected 1 or 2 but found %d"),
-                   message->major_protocol_version);
-      goto out;
-    }
 
   memset (&mbuf, 0, sizeof (mbuf));
   mbuf.len = MIN_ARRAY_SIZE;
@@ -2902,10 +2632,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   g_memory_buffer_put_byte (&mbuf, (guchar) message->byte_order);
   g_memory_buffer_put_byte (&mbuf, message->type);
   g_memory_buffer_put_byte (&mbuf, message->flags);
-
-  /* major protocol version */
-  g_memory_buffer_put_byte (&mbuf, message->major_protocol_version);
-
+  g_memory_buffer_put_byte (&mbuf, 1); /* major protocol version */
   body_len_offset = mbuf.valid_len;
   /* body length - will be filled in later */
   g_memory_buffer_put_uint32 (&mbuf, 0xF00DFACE);
@@ -2945,30 +2672,15 @@ g_dbus_message_to_blob (GDBusMessage          *message,
     }
   header_fields = g_variant_builder_end (&builder);
 
-  /* header - dbus1 marshaliling */
-  if (message->major_protocol_version == 1)
+  if (!append_value_to_blob (header_fields,
+                             g_variant_get_type (header_fields),
+                             &mbuf,
+                             NULL,
+                             error))
     {
-      if (!append_value_to_blob (header_fields,
-                                 g_variant_get_type (header_fields),
-                                 &mbuf,
-                                 NULL,
-                                 error))
-        {
-          g_variant_unref (header_fields);
-          goto out;
-        }
-
+      g_variant_unref (header_fields);
+      goto out;
     }
-  /* header - GVariant marshalling */
-  else if (message->major_protocol_version == 2)
-    {
-      header_fields_data = g_variant_get_data (header_fields);
-      header_fields_size = g_variant_get_size (header_fields);
-
-      g_memory_buffer_put_uint32 (&mbuf, header_fields_size);
-      g_memory_buffer_write (&mbuf, header_fields_data, header_fields_size);
-    }
-
   g_variant_unref (header_fields);
 
   /* header size must be a multiple of 8 */
@@ -3005,23 +2717,8 @@ g_dbus_message_to_blob (GDBusMessage          *message,
           goto out;
         }
       g_free (tupled_signature_str);
-
-      /* body - dbus1 marshaliling */
-      if (message->major_protocol_version == 1)
-        {
-          if (!append_body_to_blob (message->body, &mbuf, error))
-            goto out;
-        }
-#if 0
-      /* body - GVariant marshalling */
-      else if (message->major_protocol_version == 2)
-        {
-          message_body_data = g_variant_get_data (message->body);
-          message_body_size = g_variant_get_size (message->body);
-
-          g_memory_buffer_write (&mbuf, message_body_data, message_body_size);
-        }
-#endif
+      if (!append_body_to_blob (message->body, &mbuf, error))
+        goto out;
     }
   else
     {
@@ -3930,4 +3627,11 @@ g_dbus_message_copy (GDBusMessage  *message,
  out:
 #endif
   return ret;
+}
+
+void
+g_dbus_message_init_header_iter (GDBusMessage   *message,
+                                 GHashTableIter *iter)
+{
+  g_hash_table_iter_init (iter, message->headers);
 }
