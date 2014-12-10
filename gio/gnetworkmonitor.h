@@ -72,7 +72,7 @@ GNetworkMonitor      *g_network_monitor_get_default           (void);
 GLIB_AVAILABLE_IN_2_32
 gboolean              g_network_monitor_get_network_available (GNetworkMonitor     *monitor);
 
-GLIB_AVAILABLE_IN_2_42
+GLIB_AVAILABLE_IN_2_44
 GNetworkConnectivity  g_network_monitor_get_connectivity      (GNetworkMonitor     *monitor);
 
 GLIB_AVAILABLE_IN_2_32

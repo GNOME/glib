@@ -1834,7 +1834,7 @@ typedef enum {
  *
  * The host's network connectivity state, as reported by #GNetworkMonitor.
  *
- * Since: 2.42
+ * Since: 2.44
  */
 typedef enum {
   G_NETWORK_CONNECTIVITY_LOCAL       = 1,

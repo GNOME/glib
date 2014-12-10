@@ -124,7 +124,7 @@ g_network_monitor_get_network_available (GNetworkMonitor *monitor)
  *
  * Return value: the network connectivity state
  *
- * Since: 2.42
+ * Since: 2.44
  */
 GNetworkConnectivity
 g_network_monitor_get_connectivity (GNetworkMonitor *monitor)
@@ -326,7 +326,7 @@ g_network_monitor_default_init (GNetworkMonitorInterface *iface)
    * See g_network_monitor_get_connectivity() and
    * #GNetworkConnectivity for more details.
    *
-   * Since: 2.42
+   * Since: 2.44
    */
   g_object_interface_install_property (iface,
                                        g_param_spec_enum ("connectivity",
