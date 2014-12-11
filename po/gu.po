@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gu\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-09-24 05:52+0000\n"
-"PO-Revision-Date: 2014-09-24 23:09+0530\n"
+"POT-Creation-Date: 2014-12-10 18:43+0000\n"
+"PO-Revision-Date: 2014-12-11 09:29+0530\n"
 "Last-Translator: \n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -30,22 +30,20 @@ msgstr ""
 "\n"
 "\n"
 
-#: ../gio/gapplication.c:514
+#: ../gio/gapplication.c:520
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "GApplication સેવા સ્થિતિને દાખલ કરો (D-Bus સેવા ફાઇલોમાંથી વાપરો)"
 
-#: ../gio/gapplication.c:519
-#| msgid "Application Options:"
+#: ../gio/gapplication.c:525
 msgid "GApplication options"
 msgstr "GApplication વિકલ્પો"
 
-#: ../gio/gapplication.c:519
-#| msgid "Application Options:"
+#: ../gio/gapplication.c:525
 msgid "Show GApplication options"
 msgstr "GApplication વિકલ્પોને બતાવો"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
-#: ../gio/gresource-tool.c:485 ../gio/gsettings-tool.c:508
+#: ../gio/gresource-tool.c:485 ../gio/gsettings-tool.c:521
 msgid "Print help"
 msgstr "મદદને છાપો"
 
@@ -55,26 +53,24 @@ msgid "[COMMAND]"
 msgstr "[COMMAND]"
 
 #: ../gio/gapplication-tool.c:49
-#| msgid "Print address"
 msgid "Print version"
 msgstr "આવૃત્તિને છાપો"
 
-#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:514
+#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:527
 msgid "Print version information and exit"
 msgstr "આવૃત્તિ જાણકારીને છાપો અને બહાર નીકળો"
 
 #: ../gio/gapplication-tool.c:52
-#| msgid "Can't find application"
 msgid "List applications"
 msgstr "કાર્યક્રમોની યાદી"
 
 #: ../gio/gapplication-tool.c:53
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
 msgstr ""
-"સ્થાપિત થયેલ D-Bus સક્રિય કરી શકાય તેવાં કાર્યક્રમોની યાદી કરો (.desktop ફાઇલો દ્દારા)"
+"સ્થાપિત થયેલ D-Bus સક્રિય કરી શકાય તેવાં કાર્યક્રમોની યાદી કરો (.desktop ફાઇલો "
+"દ્દારા)"
 
 #: ../gio/gapplication-tool.c:55
-#| msgid "Can't find application"
 msgid "Launch an application"
 msgstr "કાર્યક્રમને શરૂ કરો"
 
@@ -134,12 +130,10 @@ msgid "Optional relative or relative filenames, or URIs to open"
 msgstr "વૈકલ્પિક સંબંધિ અથવા સંબંધી ફાઇલનામો, અથવા ખોલવા માટે URIs"
 
 #: ../gio/gapplication-tool.c:73
-#| msgid "SECTION"
 msgid "ACTION"
 msgstr "ક્રિયા"
 
 #: ../gio/gapplication-tool.c:73
-#| msgid "Destination name to introspect"
 msgid "The action name to invoke"
 msgstr "બોલાવા માટે ક્રિયા નામ"
 
@@ -152,7 +146,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "ક્રિયાને બોલાવા માટે વૈકલ્પિક પરિમાણ, GVarian બંધારણમાં"
 
 #: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:523
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:607
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -162,12 +156,11 @@ msgstr ""
 "\n"
 
 #: ../gio/gapplication-tool.c:101
-#| msgid "Usage:"
 msgid "Usage:\n"
 msgstr "વપરાશ:\n"
 
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:548
-#: ../gio/gsettings-tool.c:628
+#: ../gio/gsettings-tool.c:641
 msgid "Arguments:\n"
 msgstr "દલીલો:\n"
 
@@ -201,7 +194,6 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:171
 #, c-format
-#| msgid "invalid GVariant type string '%s'"
 msgid "invalid application id: '%s'\n"
 msgstr "અયોગ્ય કાર્યક્રમ id: '%s'\n"
 
@@ -217,13 +209,11 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:266
 #, c-format
-#| msgid "Could not connect to %s: "
 msgid "unable to connect to D-Bus: %s\n"
 msgstr "D-Bus ને જોડાવાનું અસમર્થ: %s\n"
 
 #: ../gio/gapplication-tool.c:286
 #, c-format
-#| msgid "Error sending message: %s"
 msgid "error sending %s message to application: %s\n"
 msgstr "કાર્યક્રમમાં %s સંદેશાને મોકલતી વખતે ભૂલ: %s\n"
 
@@ -243,7 +233,6 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:344
 #, c-format
-#| msgid "Error parsing parameter %d: %s\n"
 msgid "error parsing action parameter: %s\n"
 msgstr "ક્રિયા પરિમાણને પદચ્છેદન કરતી વખતે ભૂલ: %s\n"
 
@@ -259,15 +248,11 @@ msgstr "list-actions આદેશ એ ફક્ત કાર્યક્રમ i
 
 #: ../gio/gapplication-tool.c:421
 #, c-format
-#| msgid "Unable to find terminal required for application"
 msgid "unable to find desktop file for application %s\n"
 msgstr "કાર્યક્રમ %s માટે ડેસ્કટોપ ફાઇલને શોધવામાં અસમર્થ\n"
 
 #: ../gio/gapplication-tool.c:466
 #, c-format
-#| msgid ""
-#| "Unknown command %s\n"
-#| "\n"
 msgid ""
 "unrecognised command: %s\n"
 "\n"
@@ -276,9 +261,9 @@ msgstr ""
 "\n"
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
-#: ../gio/ginputstream.c:176 ../gio/ginputstream.c:370
-#: ../gio/ginputstream.c:608 ../gio/ginputstream.c:828
-#: ../gio/goutputstream.c:200 ../gio/goutputstream.c:823
+#: ../gio/ginputstream.c:176 ../gio/ginputstream.c:376
+#: ../gio/ginputstream.c:614 ../gio/ginputstream.c:1013
+#: ../gio/goutputstream.c:200 ../gio/goutputstream.c:830
 #: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
 msgid "Too large count value passed to %s"
@@ -293,8 +278,8 @@ msgstr "સીક એ મૂળ સ્ટ્રીમ પર આધારભૂ�
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "GBufferedInputStream કાપી શકાતુ નથી"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1017
-#: ../gio/giostream.c:277 ../gio/goutputstream.c:1464
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202
+#: ../gio/giostream.c:277 ../gio/goutputstream.c:1654
 msgid "Stream is already closed"
 msgstr "સ્ટ્રીમ પહેલાથી જ બંધ થઈ ગયેલ છે"
 
@@ -302,7 +287,7 @@ msgstr "સ્ટ્રીમ પહેલાથી જ બંધ થઈ ગય�
 msgid "Truncate not supported on base stream"
 msgstr "ટ્રન્કેટ એ મૂળ સ્ટ્રીમ પર આધારભૂત નથી"
 
-#: ../gio/gcancellable.c:310 ../gio/gdbusconnection.c:1896
+#: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1896
 #: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1417
 #: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:830
 #: ../gio/gsimpleasyncresult.c:856
@@ -377,7 +362,6 @@ msgid "GCredentials does not contain a process ID on this OS"
 msgstr "GCredentials એ આ OS પર પ્રક્રિયા ID ને સમાવતુ નથી"
 
 #: ../gio/gcredentials.c:565
-#| msgid "GCredentials is not implemented on this OS"
 msgid "Credentials spoofing is not possible on this OS"
 msgstr "શ્રેય સ્પુફીંગ આ OS પર શક્યા નથી"
 
@@ -704,27 +688,27 @@ msgstr "હસ્તાક્ષર '%s' સાથે ઇન્ટરફેસ '
 msgid "A subtree is already exported for %s"
 msgstr "સબટ્રી પહેલેથી %s માટે નિકાસ થયેલ છે"
 
-#: ../gio/gdbusmessage.c:1246
+#: ../gio/gdbusmessage.c:1244
 msgid "type is INVALID"
 msgstr "પ્રકાર INVALID છે"
 
-#: ../gio/gdbusmessage.c:1257
+#: ../gio/gdbusmessage.c:1255
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "METHOD_CALL સંદેશો: PATH અથવા MEMBER હેડર ક્ષેત્ર ગેરહાજર છે"
 
-#: ../gio/gdbusmessage.c:1268
+#: ../gio/gdbusmessage.c:1266
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "METHOD_RETURN સંદેશો: REPLY_SERIAL હેડર ક્ષેત્ર ગેરહાજર છે"
 
-#: ../gio/gdbusmessage.c:1280
+#: ../gio/gdbusmessage.c:1278
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "ERROR સંદેશો: REPLY_SERIAL અથવા ERROR_NAME હેડર ક્ષેત્ર ગેરહાજર છે"
 
-#: ../gio/gdbusmessage.c:1293
+#: ../gio/gdbusmessage.c:1291
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "SIGNAL સંદેશો: PATH, INTERFACE અથવા MEMBER હેડર ક્ષેત્ર ગેરહાજર છે"
 
-#: ../gio/gdbusmessage.c:1301
+#: ../gio/gdbusmessage.c:1299
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -732,7 +716,7 @@ msgstr ""
 "SIGNAL સંદેશો: PATH હેડર ક્ષેત્ર આરક્ષિત કિંમત /org/freedesktop/DBus/Local ને વાપરી "
 "રહ્યા છે"
 
-#: ../gio/gdbusmessage.c:1309
+#: ../gio/gdbusmessage.c:1307
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -740,19 +724,19 @@ msgstr ""
 "SIGNAL સંદેશો: INTERFACE હેડર ક્ષેત્ર એ આરક્ષિત કિંમત org.freedesktop.DBus.Local ને "
 "વાપરી રહ્યા છે"
 
-#: ../gio/gdbusmessage.c:1357 ../gio/gdbusmessage.c:1417
+#: ../gio/gdbusmessage.c:1355 ../gio/gdbusmessage.c:1415
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "%lu બાઇટને વાંચવાની ઇચ્છા રાખેલ છે પરંતુ %lu મળ્યુ"
 msgstr[1] "%lu બાઇટને વાંચવાની ઇચ્છા રાખેલ છે પરંતુ %lu મળ્યુ"
 
-#: ../gio/gdbusmessage.c:1371
+#: ../gio/gdbusmessage.c:1369
 #, c-format
 msgid "Expected NUL byte after the string '%s' but found byte %d"
 msgstr "શબ્દમાળા '%s' પછી ઇચ્છિત NUL બાઇટ પરંતુ બાઇટ %d મળ્યુ"
 
-#: ../gio/gdbusmessage.c:1390
+#: ../gio/gdbusmessage.c:1388
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -761,24 +745,24 @@ msgstr ""
 "ઇચ્છિત માન્ય UTF-8 શબ્દમાળા પરંતુ બાઇટ ઓફસેટ %d પર અમાન્ય બાઇટ મળ્યુ (શબ્દમાળાની લંબાઇ "
 "%d  છે). માન્ય UTF-8 શબ્દમાળા ત્યાં સુધી છે કે બિંદુ '%s' હતુ"
 
-#: ../gio/gdbusmessage.c:1589
+#: ../gio/gdbusmessage.c:1587
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus object path"
 msgstr "પદચ્છેદન થયેલ કિંમત '%s' એ યોગ્ય D-Bus ઓબ્જેક્ટ પાથ નથી"
 
-#: ../gio/gdbusmessage.c:1611
+#: ../gio/gdbusmessage.c:1609
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature"
 msgstr "પદચ્છેદન થયેલ '%s' એ યોગ્ય D-Bus હસ્તાક્ષર નથી"
 
-#: ../gio/gdbusmessage.c:1658
+#: ../gio/gdbusmessage.c:1656
 #, c-format
 msgid "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] "લંબાઇ %u બાઇટની મળેલ એરે. મહત્તમ લંબાઇ 2<<26 બાઇટ (64 MiB) છે."
 msgstr[1] "લંબાઇ %u બાઇટની મળેલ એરે. મહત્તમ લંબાઇ 2<<26 બાઇટ (64 MiB) છે"
 
-#: ../gio/gdbusmessage.c:1678
+#: ../gio/gdbusmessage.c:1676
 #, c-format
 msgid ""
 "Encountered array of type 'a%c', expected to have a length a multiple of %u "
@@ -787,59 +771,59 @@ msgstr ""
 "પ્રકાર 'a%c' ની શોધાયેલ એરે, %u બાઇટને બહુવિધ લંબાઇ હોય તેવી અપેક્ષા રાખેલ છે, પરંતુ "
 "લંબાઇમાં %u બાઇટ મળી"
 
-#: ../gio/gdbusmessage.c:1845
+#: ../gio/gdbusmessage.c:1843
 #, c-format
 msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
 msgstr "પદચ્છેદન કિંમત '%s' ભિન્નતા માટે માન્ય D-Bus હસ્તાક્ષર નથી"
 
-#: ../gio/gdbusmessage.c:1869
+#: ../gio/gdbusmessage.c:1867
 #, c-format
 msgid "Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
 "D-Bus વાયર બંધારણમાં શબ્દમાળા પ્રકાર '%s' સાથે GVariant ને ક્રમમાં ન કરી રહ્યા હોય "
 "ત્યારે ભૂલ"
 
-#: ../gio/gdbusmessage.c:2053
+#: ../gio/gdbusmessage.c:2051
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr "અયોગ્ય endianness કિંમત. ઇચ્છિત 0x6c ('l') અથવા 0x42 ('B') પરંતુ કિંમત 0x%02x મળી"
 
-#: ../gio/gdbusmessage.c:2066
+#: ../gio/gdbusmessage.c:2064
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "અયોગ્ય મુખ્ય પ્રોટોકોલ આવૃત્તિ. ઇચ્છિત 1 પરંતુ %d મળ્યુ"
 
-#: ../gio/gdbusmessage.c:2122
+#: ../gio/gdbusmessage.c:2120
 #, c-format
 msgid "Signature header with signature '%s' found but message body is empty"
 msgstr "હસ્તાક્ષર '%s' સાથે હસ્તાક્ષર હેડર મળ્યુ પરંતુ સંદેશા બૉડી ખાલી છે"
 
-#: ../gio/gdbusmessage.c:2136
+#: ../gio/gdbusmessage.c:2134
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
 msgstr "પદચ્છેદન કિંમત '%s' એ માન્ય D-Bus હસ્તાક્ષર નથી (બૉડી માટે)"
 
-#: ../gio/gdbusmessage.c:2166
+#: ../gio/gdbusmessage.c:2164
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] "સંદેશામાં હસ્તાક્ષર હેડર નથી પરંતુ સંદેશા બૉડી એ %u બાઇટ છે"
 msgstr[1] "સંદેશામાં હસ્તાક્ષર હેડર નથી પરંતુ સંદેશા બૉડી એ %u બાઇટ છે"
 
-#: ../gio/gdbusmessage.c:2176
+#: ../gio/gdbusmessage.c:2174
 msgid "Cannot deserialize message: "
 msgstr "સંદેશા ક્રમમાં કરી શકાતુ નથી:"
 
-#: ../gio/gdbusmessage.c:2517
+#: ../gio/gdbusmessage.c:2515
 #, c-format
 msgid "Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
 "D-Bus વાયર બંધારણમાં શબ્દમાળા પ્રકાર '%s' સાથે GVariant ને ક્રમમાં કરી રહ્યા હોય ત્યારે "
 "ભૂલ"
 
-#: ../gio/gdbusmessage.c:2654
+#: ../gio/gdbusmessage.c:2652
 #, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
@@ -847,33 +831,33 @@ msgid ""
 msgstr ""
 "સંદેશા પાસે  %d ફાઇલ વર્ણનકર્તા છે પરંતુ હેડર ક્ષેત્ર એ %d ફાઇલ વર્ણનકર્તાને સૂચિત કરે છે"
 
-#: ../gio/gdbusmessage.c:2662
+#: ../gio/gdbusmessage.c:2660
 msgid "Cannot serialize message: "
 msgstr "સંદેશાને ક્રમમાં કરી શકાતુ નથી: "
 
-#: ../gio/gdbusmessage.c:2706
+#: ../gio/gdbusmessage.c:2704
 #, c-format
 msgid "Message body has signature '%s' but there is no signature header"
 msgstr "સંદેશા બૉડી પાસે હસ્તાક્ષર '%s' છે પરંતુ ત્યાં હસ્તાક્ષર હેડર નથી"
 
-#: ../gio/gdbusmessage.c:2716
+#: ../gio/gdbusmessage.c:2714
 #, c-format
 msgid ""
 "Message body has type signature '%s' but signature in the header field is "
 "'%s'"
 msgstr "સંદેશા બૉડી પાસે હસ્તાક્ષર પ્રકાર '%s' છે પરંતુ હેડર ક્ષેત્રમાં હસ્તાક્ષર '%s' છે"
 
-#: ../gio/gdbusmessage.c:2732
+#: ../gio/gdbusmessage.c:2730
 #, c-format
 msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr "સંદેશા બૉડી એ ખાલી છે પરંતુ હેડર ક્ષેત્રમાં હસ્તાક્ષર '(%s)' છે"
 
-#: ../gio/gdbusmessage.c:3282
+#: ../gio/gdbusmessage.c:3280
 #, c-format
 msgid "Error return with body of type '%s'"
 msgstr "પ્રકાર '%s' નાં બૉડી સાથે પાછુ લાવતી વખતે ભૂલ"
 
-#: ../gio/gdbusmessage.c:3290
+#: ../gio/gdbusmessage.c:3288
 msgid "Error return with empty body"
 msgstr "ખાલી બૉડી સાથે ભૂલ પાછી આવી"
 
@@ -1153,39 +1137,39 @@ msgstr "મોનિટર કરવા માટે ઑબ્જેક્ટ �
 msgid "Monitor a remote object."
 msgstr "દૂરસ્થ ઑબ્જેક્ટને મોનિટર કરો."
 
-#: ../gio/gdesktopappinfo.c:2001 ../gio/gdesktopappinfo.c:4525
+#: ../gio/gdesktopappinfo.c:1999 ../gio/gdesktopappinfo.c:4523
 #: ../gio/gwin32appinfo.c:219
 msgid "Unnamed"
 msgstr "શીર્ષકવીહિન"
 
-#: ../gio/gdesktopappinfo.c:2410
+#: ../gio/gdesktopappinfo.c:2408
 msgid "Desktop file didn't specify Exec field"
 msgstr "ડેસ્કટોપ ફાઈલે Exec ક્ષેત્ર સ્પષ્ટ કરેલ નથી"
 
-#: ../gio/gdesktopappinfo.c:2695
+#: ../gio/gdesktopappinfo.c:2693
 msgid "Unable to find terminal required for application"
 msgstr "કાર્યક્રમ માટે જરૂરી ટર્મિનલ શોધવામાં અસમર્થ"
 
-#: ../gio/gdesktopappinfo.c:3116
+#: ../gio/gdesktopappinfo.c:3114
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "વપરાશકર્તા કાર્યક્રમ રૂપરેખાંકન ફોલ્ડર %s બનાવી શક્યા નહિં: %s"
 
-#: ../gio/gdesktopappinfo.c:3120
+#: ../gio/gdesktopappinfo.c:3118
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "વપરાશકર્તા MIME રૂપરેખાંકન ફોલ્ડર %s બનાવી શક્યા નહિં: %s"
 
-#: ../gio/gdesktopappinfo.c:3360 ../gio/gdesktopappinfo.c:3384
+#: ../gio/gdesktopappinfo.c:3358 ../gio/gdesktopappinfo.c:3382
 msgid "Application information lacks an identifier"
 msgstr "કાર્યક્રમ જાણકારીને ઓળખકર્તાનો અભાવ છે"
 
-#: ../gio/gdesktopappinfo.c:3617
+#: ../gio/gdesktopappinfo.c:3615
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "વપરાશકર્તા ડેસ્કટોપ ફાઈલ %s બનાવી શકતા નથી"
 
-#: ../gio/gdesktopappinfo.c:3751
+#: ../gio/gdesktopappinfo.c:3749
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s માટે વૈવિધ્યપૂર્ણ વ્યાખ્યા"
@@ -1242,14 +1226,14 @@ msgstr "GEmblemedIcon એનકોડીંગ માં ટોકનો (%d) �
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon માટે GEmblem એ અપેક્ષિત છે"
 
-#: ../gio/gfile.c:956 ../gio/gfile.c:1194 ../gio/gfile.c:1332
-#: ../gio/gfile.c:1570 ../gio/gfile.c:1625 ../gio/gfile.c:1683
-#: ../gio/gfile.c:1767 ../gio/gfile.c:1824 ../gio/gfile.c:1888
-#: ../gio/gfile.c:1943 ../gio/gfile.c:3591 ../gio/gfile.c:3646
-#: ../gio/gfile.c:3853 ../gio/gfile.c:3895 ../gio/gfile.c:4358
-#: ../gio/gfile.c:4769 ../gio/gfile.c:4854 ../gio/gfile.c:4944
-#: ../gio/gfile.c:5041 ../gio/gfile.c:5128 ../gio/gfile.c:5229
-#: ../gio/gfile.c:7748 ../gio/gfile.c:7838 ../gio/gfile.c:7922
+#: ../gio/gfile.c:962 ../gio/gfile.c:1200 ../gio/gfile.c:1338
+#: ../gio/gfile.c:1576 ../gio/gfile.c:1631 ../gio/gfile.c:1689
+#: ../gio/gfile.c:1773 ../gio/gfile.c:1830 ../gio/gfile.c:1894
+#: ../gio/gfile.c:1949 ../gio/gfile.c:3597 ../gio/gfile.c:3652
+#: ../gio/gfile.c:3859 ../gio/gfile.c:3901 ../gio/gfile.c:4364
+#: ../gio/gfile.c:4775 ../gio/gfile.c:4860 ../gio/gfile.c:4950
+#: ../gio/gfile.c:5047 ../gio/gfile.c:5134 ../gio/gfile.c:5235
+#: ../gio/gfile.c:7754 ../gio/gfile.c:7844 ../gio/gfile.c:7928
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "પ્રક્રિયા આધારભૂત નથી"
@@ -1264,70 +1248,70 @@ msgstr "પ્રક્રિયા આધારભૂત નથી"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1455 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
+#: ../gio/gfile.c:1461 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
 #: ../gio/glocalfile.c:1127
 msgid "Containing mount does not exist"
 msgstr "સમાવનાર માઉન્ટ અસ્તિત્વમાં નથી"
 
-#: ../gio/gfile.c:2502 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2508 ../gio/glocalfile.c:2337
 msgid "Can't copy over directory"
 msgstr "ડિરેક્ટરી ઉપર નકલ કરી શકતા નથી"
 
-#: ../gio/gfile.c:2562
+#: ../gio/gfile.c:2568
 msgid "Can't copy directory over directory"
 msgstr "ડિરેક્ટરીને ડિરેક્ટરી ઉપર નકલ કરી શકતા નથી"
 
-#: ../gio/gfile.c:2570 ../gio/glocalfile.c:2346
+#: ../gio/gfile.c:2576 ../gio/glocalfile.c:2346
 msgid "Target file exists"
 msgstr "લક્ષ્ય ફાઈલ અસ્તિત્વમાં નથી"
 
-#: ../gio/gfile.c:2589
+#: ../gio/gfile.c:2595
 msgid "Can't recursively copy directory"
 msgstr "પુનરાવર્તિત રીતે ડિરેક્ટરીની નકલ કરી શકતા નથી"
 
-#: ../gio/gfile.c:2871
+#: ../gio/gfile.c:2877
 msgid "Splice not supported"
 msgstr "જોડવાનું આધારભૂત નથી"
 
-#: ../gio/gfile.c:2875
+#: ../gio/gfile.c:2881
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "ફાઈલ ને જોડવામાં ભૂલ: %s"
 
-#: ../gio/gfile.c:3006
+#: ../gio/gfile.c:3012
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "નકલ (સંદર્ભકડી/ક્લોન) માઉન્ટ વચ્ચે આધારભૂત નથી"
 
-#: ../gio/gfile.c:3010
+#: ../gio/gfile.c:3016
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "નકલ (સંદર્ભકડી/ક્લોન) આધારભૂત નથી અથવા અયોગ્ય છે"
 
-#: ../gio/gfile.c:3015
+#: ../gio/gfile.c:3021
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "નકલ (સંદર્ભકડી/ક્લોન) આધારભૂત નથી અથવા કામ કરતી નથી"
 
-#: ../gio/gfile.c:3078
+#: ../gio/gfile.c:3084
 msgid "Can't copy special file"
 msgstr "વિશિષ્ટ ફાઇલ ની નકલ કરી શકતા નથી"
 
-#: ../gio/gfile.c:3843
+#: ../gio/gfile.c:3849
 msgid "Invalid symlink value given"
 msgstr "અયોગ્ય સાંકેતિક કડી કિંમત અપાયેલ છે"
 
-#: ../gio/gfile.c:4004
+#: ../gio/gfile.c:4010
 msgid "Trash not supported"
 msgstr "કચરાપેટી આધારભૂત નથી"
 
-#: ../gio/gfile.c:4116
+#: ../gio/gfile.c:4122
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "ફાઈલ નામો '%c' સમાવી શકતા નથી"
 
-#: ../gio/gfile.c:6540 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6546 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "વોલ્યુમ માઉન્ટ અમલમાં મૂકતું નથી"
 
-#: ../gio/gfile.c:6649
+#: ../gio/gfile.c:6655
 msgid "No application is registered as handling this file"
 msgstr "આ ફાઈલ સંભાળવા માટે કોઈ કાર્યક્રમ રજીસ્ટર થયેલ નથી"
 
@@ -1443,8 +1427,8 @@ msgstr "ઈનપુટ સ્ટ્રીમ વાંચનને અમલમ
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1027 ../gio/giostream.c:287
-#: ../gio/goutputstream.c:1474
+#: ../gio/ginputstream.c:1212 ../gio/giostream.c:287
+#: ../gio/goutputstream.c:1664
 msgid "Stream has outstanding operation"
 msgstr "સ્ટ્રીમને ભરપૂર પ્રક્રિયા છે"
 
@@ -1930,7 +1914,6 @@ msgstr "માઉન્ટો વચ્ચે ખસેડવાનું આધ
 
 #: ../gio/glocalfile.c:2603
 #, c-format
-#| msgid "Could not load schemas from %s: %s\n"
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "%s નાં ડિસ્ક વપરાશને નક્કી કરી શક્યા નહિંય: %s"
 
@@ -2099,7 +2082,7 @@ msgstr "ફાઈલ બાહ્ય રીતે સુધારેલ હત�
 msgid "Error removing old file: %s"
 msgstr "જૂની ફાઇલને દૂર કરવા દરમ્યાન ભૂલ: %s"
 
-#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:771
+#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:769
 msgid "Invalid GSeekType supplied"
 msgstr "અયોગ્ય GSeekType પૂરું પાડેલ"
 
@@ -2119,17 +2102,17 @@ msgstr "મેમરી આઉટપુટ સ્ટ્રીમનું મા
 msgid "Failed to resize memory output stream"
 msgstr "મેમરી આઉટપુટ સ્ટ્રીમનું માપ બદલવામાં નિષ્ફળ"
 
-#: ../gio/gmemoryoutputstream.c:673
+#: ../gio/gmemoryoutputstream.c:671
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr "લખવાની પ્રક્રિયા કરવા માટે જરૂરી મેમરી ઉપલબ્ધ જગ્યા કરતા વધારે છે"
 
-#: ../gio/gmemoryoutputstream.c:781
+#: ../gio/gmemoryoutputstream.c:779
 msgid "Requested seek before the beginning of the stream"
 msgstr "સ્ટ્રીમને શરૂ કરતા પહેલાં સીક સૂચના શોધેલ છે"
 
-#: ../gio/gmemoryoutputstream.c:796
+#: ../gio/gmemoryoutputstream.c:794
 msgid "Requested seek beyond the end of the stream"
 msgstr "સ્ટ્રીમનાં તળિયે સૂચના શોધેલ છે"
 
@@ -2182,16 +2165,16 @@ msgstr "માઉન્ટ એ સમાવિષ્ટ પ્રકાર અ�
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "માઉન્ટ એ સમાવિષ્ટ પ્રકાર અંદાજિત કરવાનું એકી સાથે અમલીકરણ કરતુ નથી"
 
-#: ../gio/gnetworkaddress.c:338
+#: ../gio/gnetworkaddress.c:383
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "યજમાનનામ '%s' સમાવે છે '[' પરંતુ નથી ']'"
 
-#: ../gio/gnetworkmonitorbase.c:189 ../gio/gnetworkmonitorbase.c:292
+#: ../gio/gnetworkmonitorbase.c:199 ../gio/gnetworkmonitorbase.c:302
 msgid "Network unreachable"
 msgstr "નેટવર્ક પહોંચી શકે તેમ નથી"
 
-#: ../gio/gnetworkmonitorbase.c:227 ../gio/gnetworkmonitorbase.c:257
+#: ../gio/gnetworkmonitorbase.c:237 ../gio/gnetworkmonitorbase.c:267
 msgid "Host unreachable"
 msgstr "યજમાન પહોંચી શકે તેમ નથી"
 
@@ -2209,11 +2192,16 @@ msgstr "નેટવર્ક મોનિટરને બનાવી શક્
 msgid "Could not get network status: "
 msgstr "નેટવર્ક પરિસ્થિતિને મેળવી શક્યા નહિં: "
 
-#: ../gio/goutputstream.c:209 ../gio/goutputstream.c:550
+#: ../gio/gnetworkmonitornm.c:263
+#, c-format
+msgid "NetworkManager version too old"
+msgstr "NetworkManager આવૃત્તિ ઘણી જૂની છે"
+
+#: ../gio/goutputstream.c:209 ../gio/goutputstream.c:557
 msgid "Output stream doesn't implement write"
 msgstr "આઉટપુટ સ્ટ્રીમ લેખનને અમલમાં મૂકતું નથી"
 
-#: ../gio/goutputstream.c:511 ../gio/goutputstream.c:1028
+#: ../gio/goutputstream.c:518 ../gio/goutputstream.c:1218
 msgid "Source stream is already closed"
 msgstr "સ્રોત સ્ટ્રીમ પહેલાથી જ બંધ થઈ ગયેલ છે"
 
@@ -2335,7 +2323,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SECTION    (વૈકલ્પિક) elf વિભાગ નામ\n"
 
-#: ../gio/gresource-tool.c:556 ../gio/gsettings-tool.c:635
+#: ../gio/gresource-tool.c:556 ../gio/gsettings-tool.c:648
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMMAND   વર્ણન કરવા માટે  (વૈકલ્પિક) આદેશ\n"
 
@@ -2402,38 +2390,38 @@ msgstr "પાથ સ્લેશ (/) સાથે બંધ થવો જ જ�
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "પાથ એ બે નજીક સ્લૅશ (//) ને સમાવતુ જ નથી\n"
 
-#: ../gio/gsettings-tool.c:477
+#: ../gio/gsettings-tool.c:490
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "પૂરી પાડેલ કિંમત માન્ય સીમાની બહાર છે\n"
 
-#: ../gio/gsettings-tool.c:484
+#: ../gio/gsettings-tool.c:497
 #, c-format
 msgid "The key is not writable\n"
 msgstr "કી લખી શકાય તેમ નથી\n"
 
-#: ../gio/gsettings-tool.c:520
+#: ../gio/gsettings-tool.c:533
 msgid "List the installed (non-relocatable) schemas"
 msgstr "સ્થાપિત થયેલ (પુન:સ્થિત ન કરાય) તેવી યોજનાની યાદી"
 
-#: ../gio/gsettings-tool.c:526
+#: ../gio/gsettings-tool.c:539
 msgid "List the installed relocatable schemas"
 msgstr "સ્થાપિત થયેલ પુન:સ્થિત કરી શકાય તેવી યોજનાની યાદી કરો"
 
-#: ../gio/gsettings-tool.c:532
+#: ../gio/gsettings-tool.c:545
 msgid "List the keys in SCHEMA"
 msgstr "SCHEMA માં કીઓની યાદી કરો"
 
-#: ../gio/gsettings-tool.c:533 ../gio/gsettings-tool.c:539
-#: ../gio/gsettings-tool.c:576
+#: ../gio/gsettings-tool.c:546 ../gio/gsettings-tool.c:552
+#: ../gio/gsettings-tool.c:589
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMA[:PATH]"
 
-#: ../gio/gsettings-tool.c:538
+#: ../gio/gsettings-tool.c:551
 msgid "List the children of SCHEMA"
 msgstr "SCHEMA નાં બાળકોની યાદી કરો"
 
-#: ../gio/gsettings-tool.c:544
+#: ../gio/gsettings-tool.c:557
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2441,44 +2429,44 @@ msgstr ""
 "કીઓ અને કિંમતોની યાદી, પુનરાવર્તીત\n"
 "જો SCHEMA આપેલ ન હોય તો, બધી કીઓની યાદી કરો\n"
 
-#: ../gio/gsettings-tool.c:546
+#: ../gio/gsettings-tool.c:559
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SCHEMA[:PATH]]"
 
-#: ../gio/gsettings-tool.c:551
+#: ../gio/gsettings-tool.c:564
 msgid "Get the value of KEY"
 msgstr "KEY ની કિંમતને મેળવો"
 
-#: ../gio/gsettings-tool.c:552 ../gio/gsettings-tool.c:558
-#: ../gio/gsettings-tool.c:570 ../gio/gsettings-tool.c:582
+#: ../gio/gsettings-tool.c:565 ../gio/gsettings-tool.c:571
+#: ../gio/gsettings-tool.c:583 ../gio/gsettings-tool.c:595
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:PATH] KEY"
 
-#: ../gio/gsettings-tool.c:557
+#: ../gio/gsettings-tool.c:570
 msgid "Query the range of valid values for KEY"
 msgstr "KEY માટે માન્ય કિંમતોની સીમાની ક્વેરી કરો"
 
-#: ../gio/gsettings-tool.c:563
+#: ../gio/gsettings-tool.c:576
 msgid "Set the value of KEY to VALUE"
 msgstr "VALUE માટે KEY ની કિંમત સુયોજિત કરો"
 
-#: ../gio/gsettings-tool.c:564
+#: ../gio/gsettings-tool.c:577
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMA[:PATH] KEY VALUE"
 
-#: ../gio/gsettings-tool.c:569
+#: ../gio/gsettings-tool.c:582
 msgid "Reset KEY to its default value"
 msgstr "તેની મૂળભૂત કિંમતમાં KEY ને પુન:સુયોજિત કરો"
 
-#: ../gio/gsettings-tool.c:575
+#: ../gio/gsettings-tool.c:588
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "તેનાં મૂળભૂતોમાં SCHEMA માં બધા કીઓને પુન:સુયોજિત કરો"
 
-#: ../gio/gsettings-tool.c:581
+#: ../gio/gsettings-tool.c:594
 msgid "Check if KEY is writable"
 msgstr "ચકાસો જો KEY લખી શકાય તેમ છે"
 
-#: ../gio/gsettings-tool.c:587
+#: ../gio/gsettings-tool.c:600
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2488,32 +2476,11 @@ msgstr ""
 "જો KEY સ્પષ્ટ થયેલ ન હોય તો, SCHEMA માં બધી કીઓને મોનિટર કરો.\n"
 "મોનિટર કરવાનું બંધ રાખવા માટે ^C વાપરો.\n"
 
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:603
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
-#: ../gio/gsettings-tool.c:602
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
-#| "\n"
-#| "Commands:\n"
-#| "  help                      Show this information\n"
-#| "  list-schemas              List installed schemas\n"
-#| "  list-relocatable-schemas  List relocatable schemas\n"
-#| "  list-keys                 List keys in a schema\n"
-#| "  list-children             List children of a schema\n"
-#| "  list-recursively          List keys and values, recursively\n"
-#| "  range                     Queries the range of a key\n"
-#| "  get                       Get the value of a key\n"
-#| "  set                       Set the value of a key\n"
-#| "  reset                     Reset the value of a key\n"
-#| "  reset-recursively         Reset all values in a given schema\n"
-#| "  writable                  Check if a key is writable\n"
-#| "  monitor                   Watch for changes\n"
-#| "\n"
-#| "Use 'gsettings help COMMAND' to get detailed help.\n"
-#| "\n"
+#: ../gio/gsettings-tool.c:615
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -2560,7 +2527,7 @@ msgstr ""
 "વિગત થયેલ મદદને મેળવવા માટે 'gsettings help COMMAND' વાપરો.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:625
+#: ../gio/gsettings-tool.c:638
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2575,11 +2542,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:631
+#: ../gio/gsettings-tool.c:644
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  વધારાની યોજના શોધવા માટે SCHEMADIR ડિરેક્ટરી\n"
 
-#: ../gio/gsettings-tool.c:639
+#: ../gio/gsettings-tool.c:652
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2587,29 +2554,29 @@ msgstr ""
 "  SCHEMA    યોજનાનું નામ\n"
 "  PATH      પુન:સ્થિત યોજનાઓ માટે પાથ\n"
 
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:657
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY       યોજનામાં (વૈકલ્પિક) કી\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:661
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       યોજનામાં કી\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:665
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     સુયોજિત કરવા માટે કિંમત\n"
 
-#: ../gio/gsettings-tool.c:707
+#: ../gio/gsettings-tool.c:720
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "%s માંથી યોજનાને લાવી શક્યા નહિં: %s\n"
 
-#: ../gio/gsettings-tool.c:769
+#: ../gio/gsettings-tool.c:782
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "ખાલી યોજના નામ આપેલ છે\n"
 
-#: ../gio/gsettings-tool.c:798
+#: ../gio/gsettings-tool.c:811
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "આવી કી '%s' નથી\n"
@@ -2895,23 +2862,23 @@ msgstr "'%s' ને સુધારવા માટે થોડા વખત �
 msgid "Error resolving '%s'"
 msgstr "'%s' ને સુધારી રહ્યા હોય ત્યારે ભૂલ"
 
-#: ../gio/gtlscertificate.c:247
+#: ../gio/gtlscertificate.c:250
 msgid "Cannot decrypt PEM-encoded private key"
 msgstr "PEM-એનકોડ થયેલ ખાનગી કીને ડિક્રિપ્ટ કરી શકાતુ નથી"
 
-#: ../gio/gtlscertificate.c:252
+#: ../gio/gtlscertificate.c:255
 msgid "No PEM-encoded private key found"
 msgstr "PEM-એનકોડ થયેલ ખાનગી કી મળી નથી"
 
-#: ../gio/gtlscertificate.c:262
+#: ../gio/gtlscertificate.c:265
 msgid "Could not parse PEM-encoded private key"
 msgstr "PEM-એનકોડ થયેલ ખાનગી કીનું પદચ્છેદન કરી શક્યા નહિં"
 
-#: ../gio/gtlscertificate.c:287
+#: ../gio/gtlscertificate.c:290
 msgid "No PEM-encoded certificate found"
 msgstr "PEM-એનકોડ થયેલ પ્રમાણપત્ર મળ્યુ નથી"
 
-#: ../gio/gtlscertificate.c:296
+#: ../gio/gtlscertificate.c:299
 msgid "Could not parse PEM-encoded certificate"
 msgstr "PEM-એનકોડ થયેલ પ્રમાણપત્રનું પદચ્છેદન કરી શક્યા નહિં"
 
@@ -3023,20 +2990,16 @@ msgstr "વોલ્યુમ એ eject અથવા eject_with_operation ને
 msgid "Can't find application"
 msgstr "કાર્યક્રમ શોધી શકતા નથી"
 
-#: ../gio/gwin32appinfo.c:306
+#: ../gio/gwin32appinfo.c:303
 #, c-format
 msgid "Error launching application: %s"
 msgstr "કાર્યક્રમ લાવતી વખતે ભૂલ: %s"
 
-#: ../gio/gwin32appinfo.c:342
-msgid "URIs not supported"
-msgstr "URIs આધારભૂત નથી"
-
-#: ../gio/gwin32appinfo.c:364
+#: ../gio/gwin32appinfo.c:378
 msgid "association changes not supported on win32"
 msgstr "સંડોવણી ફેરફારો win32 પર આધારભૂત નથી"
 
-#: ../gio/gwin32appinfo.c:376
+#: ../gio/gwin32appinfo.c:390
 msgid "Association creation not supported on win32"
 msgstr "સંડોવણી બનાવટ win32 પર આધારભૂત નથી"
 
@@ -3578,29 +3541,29 @@ msgstr "અયોગ્ય કી નામ: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "કી ફાઈલ બિનઆધારભૂત અક્ષર સંગ્રહપદ્ધતિ '%s' સમાવે છે"
 
-#: ../glib/gkeyfile.c:1530 ../glib/gkeyfile.c:1692 ../glib/gkeyfile.c:3072
-#: ../glib/gkeyfile.c:3138 ../glib/gkeyfile.c:3264 ../glib/gkeyfile.c:3397
-#: ../glib/gkeyfile.c:3539 ../glib/gkeyfile.c:3768 ../glib/gkeyfile.c:3835
+#: ../glib/gkeyfile.c:1530 ../glib/gkeyfile.c:1703 ../glib/gkeyfile.c:3081
+#: ../glib/gkeyfile.c:3144 ../glib/gkeyfile.c:3270 ../glib/gkeyfile.c:3400
+#: ../glib/gkeyfile.c:3542 ../glib/gkeyfile.c:3771 ../glib/gkeyfile.c:3838
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "કી ફાઈલ પાસે જૂથ '%s' નથી"
 
-#: ../glib/gkeyfile.c:1704
+#: ../glib/gkeyfile.c:1658
 #, c-format
-msgid "Key file does not have key '%s'"
-msgstr "કી ફાઈલ પાસે કી '%s' નથી"
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "કી ફાઈલ પાસે કી '%s' એ જૂથ '%s' માં નથી"
 
-#: ../glib/gkeyfile.c:1811 ../glib/gkeyfile.c:1927
+#: ../glib/gkeyfile.c:1820 ../glib/gkeyfile.c:1936
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "કી ફાઈલ '%s' કીને કિંમત '%s' સાથે સમાવે છે કે જે UTF-8 નથી"
 
-#: ../glib/gkeyfile.c:1831 ../glib/gkeyfile.c:1947 ../glib/gkeyfile.c:2316
+#: ../glib/gkeyfile.c:1840 ../glib/gkeyfile.c:1956 ../glib/gkeyfile.c:2325
 #, c-format
 msgid "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "કી ફાઈલ '%s' કી સમાવે છે કે જેની પાસે કિંમત છે જે ઈન્ટરપ્રીટ કરી શકાતી નથી."
 
-#: ../glib/gkeyfile.c:2533 ../glib/gkeyfile.c:2901
+#: ../glib/gkeyfile.c:2542 ../glib/gkeyfile.c:2910
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
@@ -3609,17 +3572,12 @@ msgstr ""
 "કી ફાઈલ '%s' કી જૂથ '%s' માં સમાવે છે કે જેની પાસે કિંમત છે કે જે ઈન્ટરપ્રીટ કરી શકાતી "
 "નથી."
 
-#: ../glib/gkeyfile.c:2611 ../glib/gkeyfile.c:2688
+#: ../glib/gkeyfile.c:2620 ../glib/gkeyfile.c:2697
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr ""
 "કી  '%s' કી જૂથ '%s'પાસે કિંમત '%s'છે કે જ્યાં %s ઇચ્છા રાખી રહ્યુ હતુ ઈન્ટરપ્રીટ કરી "
 "શકાતી ."
-
-#: ../glib/gkeyfile.c:3087 ../glib/gkeyfile.c:3279 ../glib/gkeyfile.c:3846
-#, c-format
-msgid "Key file does not have key '%s' in group '%s'"
-msgstr "કી ફાઈલ પાસે કી '%s' એ જૂથ '%s' માં નથી"
 
 #: ../glib/gkeyfile.c:4078
 msgid "Key file contains escape character at end of line"
@@ -3853,61 +3811,61 @@ msgstr "'%s' વસ્તુના બંદ ટેગની અંદર દસ
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "ટિપ્પણી અથવા પ્રક્રિયા સુચનાની અંદર અણધારી રીતે દસ્તાવેજનો અંત થાય છે"
 
-#: ../glib/goption.c:795
+#: ../glib/goption.c:855
 msgid "Usage:"
 msgstr "વપરાશ:"
 
-#: ../glib/goption.c:795
+#: ../glib/goption.c:855
 msgid "[OPTION...]"
 msgstr "[OPTION...]"
 
-#: ../glib/goption.c:911
+#: ../glib/goption.c:971
 msgid "Help Options:"
 msgstr "મદદ વિકલ્પો:"
 
-#: ../glib/goption.c:912
+#: ../glib/goption.c:972
 msgid "Show help options"
 msgstr "મદદ વિકલ્પો બતાવો"
 
-#: ../glib/goption.c:918
+#: ../glib/goption.c:978
 msgid "Show all help options"
 msgstr "બધા મદદ વિકલ્પો બતાવો"
 
-#: ../glib/goption.c:980
+#: ../glib/goption.c:1040
 msgid "Application Options:"
 msgstr "કાર્યક્રમ વિકલ્પો:"
 
-#: ../glib/goption.c:1044 ../glib/goption.c:1114
+#: ../glib/goption.c:1104 ../glib/goption.c:1174
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "પૂર્ણાંક કિંમત '%s' ને %s માટે પદચ્છેદન કરી શકતા નથી"
 
-#: ../glib/goption.c:1054 ../glib/goption.c:1122
+#: ../glib/goption.c:1114 ../glib/goption.c:1182
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "પૂર્ણાંક કિંમત '%s' એ %s માટે મર્યાદા બહાર છે"
 
-#: ../glib/goption.c:1079
+#: ../glib/goption.c:1139
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "બમણી કિંમત '%s' ને %s માટે પદચ્છેદિત કરી શકતા નથી"
 
-#: ../glib/goption.c:1087
+#: ../glib/goption.c:1147
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "બમણી કિંમત '%s' જે %s માટે છે તે વિસ્તારની બહાર છે"
 
-#: ../glib/goption.c:1373 ../glib/goption.c:1452
+#: ../glib/goption.c:1433 ../glib/goption.c:1512
 #, c-format
 msgid "Error parsing option %s"
 msgstr "ભૂલ પદચ્છેદન વિકલ્પ %s"
 
-#: ../glib/goption.c:1483 ../glib/goption.c:1596
+#: ../glib/goption.c:1543 ../glib/goption.c:1656
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s માટેની દલીલ ગુમ થયેલ છે"
 
-#: ../glib/goption.c:2057
+#: ../glib/goption.c:2117
 #, c-format
 msgid "Unknown option %s"
 msgstr "અજ્ઞાત વિકલ્પ %s"
@@ -4420,7 +4378,6 @@ msgid ""
 msgstr "બાળ-પ્રક્રિયામાંથી માહિતી વાંચતી વખતે g_io_channel_win32_poll() માં આવતી અણધારી ભૂલ"
 
 #: ../glib/gutf8.c:780
-#| msgid "failed to get memory"
 msgid "Failed to allocate memory"
 msgstr "મેમરીની ફાળવણી કરવામાં નિષ્ફળ"
 
@@ -4521,6 +4478,12 @@ msgstr[1] "%s બાઇટ"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "URIs not supported"
+#~ msgstr "URIs આધારભૂત નથી"
+
+#~ msgid "Key file does not have key '%s'"
+#~ msgstr "કી ફાઈલ પાસે કી '%s' નથી"
 
 #~ msgid ""
 #~ "Error processing input file with xmllint:\n"
