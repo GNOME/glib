@@ -1681,7 +1681,7 @@ g_hash_table_get_keys (GHashTable *hash_table)
  * %NULL was used as the value for a key.
  *
  * Note: in the common case of a string-keyed #GHashTable, the return
- * value of this function can be conveniently cast to (gchar **).
+ * value of this function can be conveniently cast to (const gchar **).
  *
  * You should always free the return result with g_free().  In the
  * above-mentioned case of a string-keyed hash table, it may be
