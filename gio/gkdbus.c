@@ -51,6 +51,7 @@
 #include "glibintl.h"
 #include "gunixfdmessage.h"
 
+#define KDBUS_TIMEOUT_NS 2000000000LU
 #define KDBUS_POOL_SIZE (16 * 1024LU * 1024LU)
 #define KDBUS_ALIGN8(l) (((l) + 7) & ~7)
 #define KDBUS_ALIGN8_PTR(p) ((void*) (uintptr_t)(p))
@@ -1983,7 +1984,7 @@ _g_kdbus_send (GKDBusWorker        *kdbus,
                 ((g_dbus_message_get_flags (message) & G_DBUS_MESSAGE_FLAGS_NO_AUTO_START) ? KDBUS_MSG_NO_AUTO_START : 0);
 
   if ((msg->flags) & KDBUS_MSG_EXPECT_REPLY)
-    msg->timeout_ns = 2000000000;
+    msg->timeout_ns = 1000LU * g_get_monotonic_time() + KDBUS_TIMEOUT_NS;
   else
     msg->cookie_reply = g_dbus_message_get_reply_serial(message);
 
