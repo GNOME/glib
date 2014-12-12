@@ -1239,6 +1239,11 @@ g_system_thread_set_name (const gchar *name)
 #include <linux/futex.h>
 #include <sys/syscall.h>
 
+#ifndef FUTEX_WAIT_PRIVATE
+#define FUTEX_WAIT_PRIVATE FUTEX_WAIT
+#define FUTEX_WAKE_PRIVATE FUTEX_WAKE
+#endif
+
 /* We should expand the set of operations available in gatomic once we
  * have better C11 support in GCC in common distributions (ie: 4.9).
  *
@@ -1305,7 +1310,7 @@ g_mutex_lock_slowpath (GMutex *mutex)
    * Otherwise, sleep for as long as the 2 remains...
    */
   while (exchange_acquire (&mutex->i[0], 2) != 0)
-    syscall (__NR_futex, &mutex->i[0], (gsize) FUTEX_WAIT, (gsize) 2, NULL);
+    syscall (__NR_futex, &mutex->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) 2, NULL);
 }
 
 static void __attribute__((noinline))
@@ -1321,7 +1326,7 @@ g_mutex_unlock_slowpath (GMutex *mutex,
       abort ();
     }
 
-  syscall (__NR_futex, &mutex->i[0], (gsize) FUTEX_WAKE, (gsize) 1, NULL);
+  syscall (__NR_futex, &mutex->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) 1, NULL);
 }
 
 void
@@ -1387,7 +1392,7 @@ g_cond_wait (GCond  *cond,
   guint sampled = g_atomic_int_get (&cond->i[0]);
 
   g_mutex_unlock (mutex);
-  syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT, (gsize) sampled, NULL);
+  syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, NULL);
   g_mutex_lock (mutex);
 }
 
@@ -1396,7 +1401,7 @@ g_cond_signal (GCond *cond)
 {
   g_atomic_int_inc (&cond->i[0]);
 
-  syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAKE, (gsize) 1, NULL);
+  syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) 1, NULL);
 }
 
 void
@@ -1404,7 +1409,7 @@ g_cond_broadcast (GCond *cond)
 {
   g_atomic_int_inc (&cond->i[0]);
 
-  syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAKE, (gsize) INT_MAX, NULL);
+  syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) INT_MAX, NULL);
 }
 
 gboolean
@@ -1434,7 +1439,7 @@ g_cond_wait_until (GCond  *cond,
 
   sampled = cond->i[0];
   g_mutex_unlock (mutex);
-  res = syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT, (gsize) sampled, &span);
+  res = syscall (__NR_futex, &cond->i[0], (gsize) FUTEX_WAIT_PRIVATE, (gsize) sampled, &span);
   g_mutex_lock (mutex);
 
   return (res < 0 && errno == ETIMEDOUT) ? FALSE : TRUE;

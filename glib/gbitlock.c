@@ -52,6 +52,11 @@ static GSList *g_futex_address_list = NULL;
 #include <sys/syscall.h>
 #include <unistd.h>
 
+#ifndef FUTEX_WAIT_PRIVATE
+#define FUTEX_WAIT_PRIVATE FUTEX_WAIT
+#define FUTEX_WAKE_PRIVATE FUTEX_WAKE
+#endif
+
 /* < private >
  * g_futex_wait:
  * @address: a pointer to an integer
@@ -73,7 +78,7 @@ static void
 g_futex_wait (const volatile gint *address,
               gint                 value)
 {
-  syscall (__NR_futex, address, (gsize) FUTEX_WAIT, (gsize) value, NULL);
+  syscall (__NR_futex, address, (gsize) FUTEX_WAIT_PRIVATE, (gsize) value, NULL);
 }
 
 /* < private >
@@ -90,7 +95,7 @@ g_futex_wait (const volatile gint *address,
 static void
 g_futex_wake (const volatile gint *address)
 {
-  syscall (__NR_futex, address, (gsize) FUTEX_WAKE, (gsize) 1, NULL);
+  syscall (__NR_futex, address, (gsize) FUTEX_WAKE_PRIVATE, (gsize) 1, NULL);
 }
 
 #else
