@@ -1232,8 +1232,6 @@ g_kdbus_setup_bloom (GKDBusWorker                     *worker,
                      struct kdbus_bloom_filter  *bloom_filter)
 {
   GVariant *body;
-  GVariantIter iter;
-  GVariant *child;
 
   const gchar *message_type;
   const gchar *interface;
@@ -1241,7 +1239,6 @@ g_kdbus_setup_bloom (GKDBusWorker                     *worker,
   const gchar *path;
 
   void *bloom_data;
-  gint cnt = 0;
 
   body = g_dbus_message_get_body (dbus_msg);
   message_type = _g_dbus_enum_to_string (G_TYPE_DBUS_MESSAGE_TYPE, g_dbus_message_get_message_type (dbus_msg));
@@ -1270,23 +1267,30 @@ g_kdbus_setup_bloom (GKDBusWorker                     *worker,
 
   if (body != NULL)
     {
-      g_variant_iter_init (&iter, body);
-      while ((child = g_variant_iter_next_value (&iter)))
+      const GVariantType *body_type;
+      const GVariantType *arg_type;
+      guint cnt;
+
+      body_type = g_variant_get_type (body);
+
+      for (arg_type = g_variant_type_first (body_type), cnt = 0;
+           arg_type;
+           arg_type = g_variant_type_next (arg_type), cnt++)
         {
+          gchar type_char = g_variant_type_peek_string (arg_type)[0];
           gchar buf[sizeof("arg")-1 + 2 + sizeof("-slash-prefix")];
-          gchar *child_string;
+          const gchar *str;
+          GVariant *child;
           gchar *e;
 
-          /* Is it necessary? */
-          //if (g_variant_is_container (child))
-          //  iterate_container_recursive (child);
+          if (type_char != 's' && type_char != 'o')
+            /* XXX: kdbus docs say "stop after first non-string" but I
+             * think they're wrong (vs. dbus-1 compat)...
+             */
+            continue;
 
-          if (!(g_variant_is_of_type (child, G_VARIANT_TYPE_STRING)) &&
-              !(g_variant_is_of_type (child, G_VARIANT_TYPE_OBJECT_PATH)) &&
-              !(g_variant_is_of_type (child, G_VARIANT_TYPE_SIGNATURE)))
-            break;
-
-          child_string = g_variant_dup_string (child, NULL);
+          child = g_variant_get_child_value (body, cnt);
+          str = g_variant_get_string (child, NULL);
 
           e = stpcpy(buf, "arg");
           if (cnt < 10)
@@ -1297,18 +1301,21 @@ g_kdbus_setup_bloom (GKDBusWorker                     *worker,
               *(e++) = '0' + (char) (cnt % 10);
             }
 
-          *e = 0;
-          g_kdbus_bloom_add_pair(worker, bloom_data, buf, child_string);
-
-          strcpy(e, "-dot-prefix");
-          g_kdbus_bloom_add_prefixes(worker, bloom_data, buf, child_string, '.');
-
+          /* We add this one for both strings and object paths */
           strcpy(e, "-slash-prefix");
-          g_kdbus_bloom_add_prefixes(worker, bloom_data, buf, child_string, '/');
+          g_kdbus_bloom_add_prefixes(worker, bloom_data, buf, str, '/');
 
-          g_free (child_string);
+          /* But the others are only for strings */
+          if (type_char == 's')
+            {
+              strcpy(e, "-dot-prefix");
+              g_kdbus_bloom_add_prefixes(worker, bloom_data, buf, str, '.');
+
+              *e = 0;
+              g_kdbus_bloom_add_pair(worker, bloom_data, buf, str);
+            }
+
           g_variant_unref (child);
-          cnt++;
         }
     }
 }
