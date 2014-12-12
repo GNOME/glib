@@ -657,6 +657,7 @@ static gchar      *test_run_name = "";
 static GSList    **test_filename_free_list;
 static guint       test_run_forks = 0;
 static guint       test_run_count = 0;
+static guint       test_count = 0;
 static guint       test_skipped_count = 0;
 static GTestResult test_run_success = G_TEST_RUN_FAILURE;
 static gchar      *test_run_msg = NULL;
@@ -783,6 +784,8 @@ g_test_log (GTestLogType lbit,
         {
           if (string1[0] != 0)
             g_print ("# Start of %s tests\n", string1);
+          else
+            g_print ("1..%d\n", test_count);
         }
       break;
     case G_TEST_LOG_STOP_SUITE:
@@ -790,8 +793,6 @@ g_test_log (GTestLogType lbit,
         {
           if (string1[0] != 0)
             g_print ("# End of %s tests\n", string1);
-          else
-            g_print ("1..%d\n", test_run_count);
         }
       break;
     case G_TEST_LOG_STOP_CASE:
@@ -1141,6 +1142,17 @@ g_test_init (int    *argc,
 
   if (!g_get_prgname() && !no_g_set_prgname)
     g_set_prgname ((*argv)[0]);
+
+  /* sanity check */
+  if (test_tap_log)
+    {
+      if (test_paths || test_paths_skipped || test_startup_skip_count)
+        {
+          g_printerr ("%s: options that skip some tests are incompatible with --tap\n",
+                      (*argv)[0]);
+          exit (1);
+        }
+    }
 
   /* verify GRand reliability, needed for reliable seeds */
   if (1)
@@ -2204,6 +2216,33 @@ g_test_run_suite_internal (GTestSuite *suite,
   return n_bad;
 }
 
+static int
+g_test_suite_count (GTestSuite *suite)
+{
+  int n = 0;
+  GSList *iter;
+
+  g_return_val_if_fail (suite != NULL, -1);
+
+  for (iter = suite->cases; iter; iter = iter->next)
+    {
+      GTestCase *tc = iter->data;
+
+      if (strcmp (tc->name, "subprocess") != 0)
+        n++;
+    }
+
+  for (iter = suite->suites; iter; iter = iter->next)
+    {
+      GTestSuite *ts = iter->data;
+
+      if (strcmp (ts->name, "subprocess") != 0)
+        n += g_test_suite_count (ts);
+    }
+
+  return n;
+}
+
 /**
  * g_test_run_suite:
  * @suite: a #GTestSuite
@@ -2229,6 +2268,7 @@ g_test_run_suite (GTestSuite *suite)
   g_return_val_if_fail (g_test_run_once == TRUE, -1);
 
   g_test_run_once = FALSE;
+  test_count = g_test_suite_count (suite);
 
   test_run_name = g_strdup_printf ("/%s", suite->name);
 
