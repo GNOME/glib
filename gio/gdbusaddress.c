@@ -39,10 +39,10 @@
 #include "gdbusprivate.h"
 #include "giomodule-priv.h"
 #include "gdbusdaemon.h"
+#include "gkdbus.h"
 
 #ifdef G_OS_UNIX
 #include <gio/gunixsocketaddress.h>
-#include <gio/gkdbusconnection.h>
 #endif
 
 #ifdef G_OS_WIN32
@@ -359,16 +359,6 @@ is_valid_tcp (const gchar  *address_entry,
   return ret;
 }
 
-static int
-g_dbus_is_supported_address_kdbus (const gchar  *transport_name)
-{
-  int supported = 0;
-
-  supported = g_strcmp0 (transport_name, "kernel") == 0;
-
-  return supported;
-}
-
 /**
  * g_dbus_is_supported_address:
  * @string: A string.
@@ -410,8 +400,7 @@ g_dbus_is_supported_address (const gchar  *string,
         goto out;
 
       supported = FALSE;
-      if ((g_strcmp0 (transport_name, "unix") == 0)
-          || g_dbus_is_supported_address_kdbus (transport_name))
+      if (g_strcmp0 (transport_name, "unix") == 0)
         supported = is_valid_unix (a[n], key_value_pairs, error);
       else if (g_strcmp0 (transport_name, "tcp") == 0)
         supported = is_valid_tcp (a[n], key_value_pairs, error);
@@ -533,8 +522,9 @@ out:
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static GIOStream *
+static GObject *
 g_dbus_address_try_connect_one (const gchar   *address_entry,
+                                gboolean       kdbus_okay,
                                 gchar        **out_guid,
                                 GCancellable  *cancellable,
                                 GError       **error);
@@ -544,14 +534,15 @@ g_dbus_address_try_connect_one (const gchar   *address_entry,
  * point. That way we can implement a D-Bus transport over X11 without
  * making libgio link to libX11...
  */
-static GIOStream *
+static GObject *
 g_dbus_address_connect (const gchar   *address_entry,
                         const gchar   *transport_name,
+                        gboolean       kdbus_okay,
                         GHashTable    *key_value_pairs,
                         GCancellable  *cancellable,
                         GError       **error)
 {
-  GIOStream *ret;
+  GObject *ret;
   GSocketConnectable *connectable;
   const gchar *nonce_file;
 
@@ -563,8 +554,28 @@ g_dbus_address_connect (const gchar   *address_entry,
     {
     }
 #ifdef G_OS_UNIX
-  if ((g_strcmp0 (transport_name, "unix") == 0)
-      || g_dbus_is_supported_address_kdbus (transport_name))
+  else if (kdbus_okay || g_str_equal (transport_name, "kernel"))
+    {
+      GKDBusWorker *worker;
+      const gchar *path;
+
+      path = g_hash_table_lookup (key_value_pairs, "path");
+
+      if (path == NULL)
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Error in address '%s' - the kernel transport requires a path"),
+                       address_entry);
+        }
+
+      worker = g_kdbus_worker_new (path, error);
+
+      if (worker == NULL)
+        return NULL;
+
+      return G_OBJECT (worker);
+    }
+  else if (g_strcmp0 (transport_name, "unix") == 0)
     {
       const gchar *path;
       const gchar *abstract;
@@ -654,7 +665,7 @@ g_dbus_address_connect (const gchar   *address_entry,
       autolaunch_address = get_session_address_platform_specific (error);
       if (autolaunch_address != NULL)
         {
-          ret = g_dbus_address_try_connect_one (autolaunch_address, NULL, cancellable, error);
+          ret = g_dbus_address_try_connect_one (autolaunch_address, kdbus_okay, NULL, cancellable, error);
           g_free (autolaunch_address);
           goto out;
         }
@@ -675,46 +686,21 @@ g_dbus_address_connect (const gchar   *address_entry,
 
   if (connectable != NULL)
     {
+      GSocketClient *client;
+      GSocketConnection *connection;
 
-      if (g_dbus_is_supported_address_kdbus (transport_name))
-        {
-          GKdbusConnection *connection;
-          gboolean status;
+      g_assert (ret == NULL);
+      client = g_socket_client_new ();
+      connection = g_socket_client_connect (client,
+                                            connectable,
+                                            cancellable,
+                                            error);
+      g_object_unref (connectable);
+      g_object_unref (client);
+      if (connection == NULL)
+        goto out;
 
-          const gchar *path;
-          path = g_hash_table_lookup (key_value_pairs, "path");
-
-          g_assert (ret == NULL);
-          connection = _g_kdbus_connection_new ();
-          status = _g_kdbus_connection_connect (connection,
-                                                path,
-                                                cancellable,
-                                                error);
-          g_object_unref (connectable);
-
-          if (!status)
-            goto out;
-
-          ret = G_IO_STREAM (connection);
-        }
-      else
-        {
-          GSocketClient *client;
-          GSocketConnection *connection;
-
-          g_assert (ret == NULL);
-          client = g_socket_client_new ();
-          connection = g_socket_client_connect (client,
-                                                connectable,
-                                                cancellable,
-                                                error);
-          g_object_unref (connectable);
-          g_object_unref (client);
-          if (connection == NULL)
-            goto out;
-
-          ret = G_IO_STREAM (connection);
-        }
+      ret = G_OBJECT (connection);
 
       if (nonce_file != NULL)
         {
@@ -767,7 +753,7 @@ g_dbus_address_connect (const gchar   *address_entry,
             }
           fclose (f);
 
-          if (!g_output_stream_write_all (g_io_stream_get_output_stream (ret),
+          if (!g_output_stream_write_all (g_io_stream_get_output_stream (G_IO_STREAM (connection)),
                                           nonce_contents,
                                           16,
                                           NULL,
@@ -787,13 +773,14 @@ g_dbus_address_connect (const gchar   *address_entry,
   return ret;
 }
 
-static GIOStream *
+static GObject *
 g_dbus_address_try_connect_one (const gchar   *address_entry,
+                                gboolean       kdbus_okay,
                                 gchar        **out_guid,
                                 GCancellable  *cancellable,
                                 GError       **error)
 {
-  GIOStream *ret;
+  GObject *ret;
   GHashTable *key_value_pairs;
   gchar *transport_name;
   const gchar *guid;
@@ -810,6 +797,7 @@ g_dbus_address_try_connect_one (const gchar   *address_entry,
 
   ret = g_dbus_address_connect (address_entry,
                                 transport_name,
+                                kdbus_okay,
                                 key_value_pairs,
                                 cancellable,
                                 error);
@@ -977,7 +965,25 @@ g_dbus_address_get_stream_sync (const gchar   *address,
                                 GCancellable  *cancellable,
                                 GError       **error)
 {
-  GIOStream *ret;
+  GObject *result;
+
+  result = g_dbus_address_get_stream_internal (address, FALSE, out_guid, cancellable, error);
+  g_assert (result == NULL || G_IS_IO_STREAM (result));
+
+  if (result)
+    return G_IO_STREAM (result);
+
+  return NULL;
+}
+
+GObject *
+g_dbus_address_get_stream_internal (const gchar   *address,
+                                    gboolean       kdbus_okay,
+                                    gchar        **out_guid,
+                                    GCancellable  *cancellable,
+                                    GError       **error)
+{
+  GObject *ret;
   gchar **addr_array;
   guint n;
   GError *last_error;
@@ -1004,6 +1010,7 @@ g_dbus_address_get_stream_sync (const gchar   *address,
 
       this_error = NULL;
       ret = g_dbus_address_try_connect_one (addr,
+                                            kdbus_okay,
                                             out_guid,
                                             cancellable,
                                             &this_error);

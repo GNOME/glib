@@ -28,10 +28,6 @@
 #include "gdbusprivate.h"
 #include "gdbusconnection.h"
 
-#ifdef G_OS_UNIX
-#include "gkdbusconnection.h"
-#endif
-
 #include "glibintl.h"
 
 /**
@@ -440,7 +436,7 @@ has_connection (Client *client)
                                                              "closed",
                                                              G_CALLBACK (on_connection_disconnected),
                                                              client);
-
+#if 0
   /* attempt to acquire the name */
   if (G_IS_KDBUS_CONNECTION (g_dbus_connection_get_stream (client->connection)))
     {
@@ -461,6 +457,7 @@ has_connection (Client *client)
       process_request_name_reply (client, request_name_reply);
     }
   else
+#endif
     {
       g_dbus_connection_call (client->connection,
                               "org.freedesktop.DBus",  /* bus name */
@@ -948,9 +945,11 @@ g_bus_unown_name (guint owner_id)
            * I believe this is a bug in the bus daemon.
            */
           error = NULL;
+#if 0
           if (G_IS_KDBUS_CONNECTION (g_dbus_connection_get_stream (client->connection)))
             result = _g_kdbus_ReleaseName (client->connection, client->name, &error);
           else
+#endif
             result = g_dbus_connection_call_sync (client->connection,
                                                   "org.freedesktop.DBus",  /* bus name */
                                                   "/org/freedesktop/DBus", /* object path */

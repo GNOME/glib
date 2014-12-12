@@ -817,7 +817,8 @@ g_variant_from_vectors (const GVariantType *type,
   tmp = g_array_new (FALSE, FALSE, sizeof (GVariantUnpacked));
   result = g_variant_vector_deserialise (g_variant_type_info_get (type),
                                          vectors, vectors + n_vectors - 1, size, trusted, tmp);
-  g_variant_ref_sink (result);
+  if (result)
+    g_variant_ref_sink (result);
   g_array_free (tmp, TRUE);
 
   return result;

@@ -123,7 +123,6 @@
 
 #ifdef G_OS_UNIX
 #include "gkdbus.h"
-#include "gkdbusconnection.h"
 #include "gunixconnection.h"
 #include "gunixfdmessage.h"
 #endif
@@ -391,6 +390,7 @@ struct _GDBusConnection
    * hold @init_lock or check for initialization first.
    */
   GDBusWorker *worker;
+  GKDBusWorker *kdbus_worker;
 
   /* If connected to a message bus, this contains the unique name assigned to
    * us by the bus (e.g. ":1.42").
@@ -1623,8 +1623,8 @@ g_dbus_request_name (GDBusConnection     *connection,
   g_return_val_if_fail (g_dbus_is_name (name) && !g_dbus_is_unique_name (name), G_BUS_RELEASE_NAME_FLAGS_ERROR);
   g_return_val_if_fail (error == NULL || *error == NULL, G_BUS_RELEASE_NAME_FLAGS_ERROR);
 
-  if (G_IS_KDBUS_CONNECTION (connection->stream))
-    result = _g_kdbus_RequestName (connection, name, flags, error);
+  if (connection->kdbus_worker)
+    result = _g_kdbus_RequestName (connection->kdbus_worker, name, flags, error);
   else
     result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/org/freedesktop/DBus",
                                           "org.freedesktop.DBus", "RequestName",
@@ -1669,8 +1669,8 @@ g_dbus_release_name (GDBusConnection     *connection,
   g_return_val_if_fail (g_dbus_is_name (name) && !g_dbus_is_unique_name (name), G_BUS_RELEASE_NAME_FLAGS_ERROR);
   g_return_val_if_fail (error == NULL || *error == NULL, G_BUS_RELEASE_NAME_FLAGS_ERROR);
 
-  if (G_IS_KDBUS_CONNECTION (connection->stream))
-    result = _g_kdbus_ReleaseName (connection, name, error);
+  if (connection->kdbus_worker)
+    result = _g_kdbus_ReleaseName (connection->kdbus_worker, name, error);
   else
     result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/org/freedesktop/DBus",
                                           "org.freedesktop.DBus", "ReleaseName",
@@ -1715,9 +1715,9 @@ g_dbus_get_bus_id (GDBusConnection  *connection,
   result = NULL;
   bus_id = NULL;
 
-  if (G_IS_KDBUS_CONNECTION (connection->stream))
+  if (connection->kdbus_worker)
     {
-      result = _g_kdbus_GetBusId (connection, error);
+      result = _g_kdbus_GetBusId (connection->kdbus_worker, error);
     }
   else
     {
@@ -1760,8 +1760,8 @@ _g_dbus_get_list_internal (GDBusConnection    *connection,
 
   if (list_name_type == LIST_QUEUED_OWNERS)
     {
-      if (G_IS_KDBUS_CONNECTION (connection->stream))
-        result = _g_kdbus_GetListQueuedOwners (connection, name, error);
+      if (connection->kdbus_worker)
+        result = _g_kdbus_GetListQueuedOwners (connection->kdbus_worker, name, error);
       else
         result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
                                               "org.freedesktop.DBus", "ListQueuedOwners",
@@ -1777,8 +1777,8 @@ _g_dbus_get_list_internal (GDBusConnection    *connection,
       else
         method_name = "ListActivatableNames";
 
-      if (G_IS_KDBUS_CONNECTION (connection->stream))
-        result = _g_kdbus_GetListNames (connection, list_name_type, error);
+      if (connection->kdbus_worker)
+        result = _g_kdbus_GetListNames (connection->kdbus_worker, list_name_type, error);
       else
         result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
                                               "org.freedesktop.DBus", method_name,
@@ -1934,8 +1934,8 @@ g_dbus_get_name_owner (GDBusConnection  *connection,
   name_owner = NULL;
   result = NULL;
 
-  if (G_IS_KDBUS_CONNECTION (connection->stream))
-    result = _g_kdbus_GetNameOwner (connection, name, error);
+  if (connection->kdbus_worker)
+    result = _g_kdbus_GetNameOwner (connection->kdbus_worker, name, error);
   else
     result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
                                           "org.freedesktop.DBus", "GetNameOwner",
@@ -1987,8 +1987,8 @@ g_dbus_get_connection_pid (GDBusConnection  *connection,
   result = NULL;
   pid = -1;
 
-  if (G_IS_KDBUS_CONNECTION (connection->stream))
-    result = _g_kdbus_GetConnectionUnixProcessID (connection, name, error);
+  if (connection->kdbus_worker)
+    result = _g_kdbus_GetConnectionUnixProcessID (connection->kdbus_worker, name, error);
   else
     result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
                                           "org.freedesktop.DBus", "GetConnectionUnixProcessID",
@@ -2038,8 +2038,8 @@ g_dbus_get_connection_uid (GDBusConnection  *connection,
   result = NULL;
   uid = -1;
 
-  if (G_IS_KDBUS_CONNECTION (connection->stream))
-    result = _g_kdbus_GetConnectionUnixUser (connection, name, error);
+  if (connection->kdbus_worker)
+    result = _g_kdbus_GetConnectionUnixUser (connection->kdbus_worker, name, error);
   else
     result = g_dbus_connection_call_sync (connection, "org.freedesktop.DBus", "/",
                                           "org.freedesktop.DBus", "GetConnectionUnixUser",
@@ -2087,7 +2087,7 @@ g_dbus_connection_get_last_serial (GDBusConnection *connection)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
-
+#include "gkdbus.h"
 /* Can be called by any thread, with the connection lock held */
 static gboolean
 g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
@@ -2174,10 +2174,14 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
                         g_thread_self (),
                         GUINT_TO_POINTER (serial_to_use));
 
+  if (connection->worker)
   _g_dbus_worker_send_message (connection->worker,
                                message,
                                (gchar*) blob,
                                blob_size);
+  else
+  g_kdbus_worker_send_message (connection->kdbus_worker, message, error);
+
   blob = NULL; /* since _g_dbus_worker_send_message() steals the blob */
 
   ret = TRUE;
@@ -3031,6 +3035,8 @@ initable_init (GInitable     *initable,
    */
   if (connection->address != NULL)
     {
+      GObject *ret;
+
       g_assert (connection->stream == NULL);
 
       if ((connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER) ||
@@ -3043,12 +3049,19 @@ initable_init (GInitable     *initable,
           goto out;
         }
 
-      connection->stream = g_dbus_address_get_stream_sync (connection->address,
-                                                           NULL, /* TODO: out_guid */
-                                                           cancellable,
-                                                           &connection->initialization_error);
-      if (connection->stream == NULL)
+      ret = g_dbus_address_get_stream_internal (connection->address, TRUE,
+                                                NULL, /* TODO: out_guid */
+                                                cancellable, &connection->initialization_error);
+
+      if (ret == NULL)
         goto out;
+
+      if (G_IS_IO_STREAM (ret))
+        connection->stream = G_IO_STREAM (ret);
+      else if (G_IS_KDBUS_WORKER (ret))
+        connection->kdbus_worker = G_KDBUS_WORKER (ret);
+      else
+        g_assert_not_reached ();
     }
   else if (connection->stream != NULL)
     {
@@ -3060,7 +3073,7 @@ initable_init (GInitable     *initable,
     }
 
   /* [KDBUS] Skip authentication process for kdbus transport */
-  if (G_IS_KDBUS_CONNECTION (connection->stream))
+  if (connection->kdbus_worker)
     {
       goto authenticated;
     }
@@ -3125,6 +3138,7 @@ authenticated:
   g_hash_table_insert (alive_connections, connection, connection);
   G_UNLOCK (message_bus_lock);
 
+  if (!connection->kdbus_worker)
   connection->worker = _g_dbus_worker_new (connection->stream,
                                            connection->capabilities,
                                            ((connection->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING) != 0),
@@ -3148,9 +3162,9 @@ authenticated:
           goto out;
         }
 
-      if (G_IS_KDBUS_CONNECTION (connection->stream))
+      if (connection->kdbus_worker)
         {
-          hello_result = _g_kdbus_Hello (connection->stream, &connection->initialization_error);
+          hello_result = _g_kdbus_Hello (connection->kdbus_worker, &connection->initialization_error);
         }
       else
         {
@@ -4034,12 +4048,12 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
         add_match_rule (connection, signal_data->rule);
       else
         {
-          if (G_IS_KDBUS_CONNECTION (connection->stream))
+          if (connection->kdbus_worker)
             {
               if (g_strcmp0 (signal_data->member, "NameAcquired") == 0)
-                _g_kdbus_subscribe_name_acquired (connection, arg0);
+                _g_kdbus_subscribe_name_acquired (connection->kdbus_worker, arg0);
               else if (g_strcmp0 (signal_data->member, "NameLost") == 0)
-                _g_kdbus_subscribe_name_lost (connection, arg0);
+                _g_kdbus_subscribe_name_lost (connection->kdbus_worker, arg0);
             }
         }
     }
@@ -4130,12 +4144,12 @@ unsubscribe_id_internal (GDBusConnection *connection,
             }
           else
             {
-              if (G_IS_KDBUS_CONNECTION (connection->stream))
+              if (connection->kdbus_worker)
                 {
                   if (g_strcmp0 (signal_data->member, "NameAcquired") == 0)
-                    _g_kdbus_unsubscribe_name_acquired (connection);
+                    _g_kdbus_unsubscribe_name_acquired (connection->kdbus_worker);
                   else if (g_strcmp0 (signal_data->member, "NameLost") == 0)
-                    _g_kdbus_unsubscribe_name_lost (connection);
+                    _g_kdbus_unsubscribe_name_lost (connection->kdbus_worker);
                 }
             }
 

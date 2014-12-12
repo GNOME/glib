@@ -148,6 +148,14 @@ GDBusConnection *_g_bus_get_singleton_if_exists (GBusType bus_type);
 void g_dbus_message_init_header_iter (GDBusMessage   *message,
                                       GHashTableIter *iter);
 
+GObject *
+g_dbus_address_get_stream_internal (const gchar   *address,
+                                    gboolean       kdbus_okay,
+                                    gchar        **out_uuid,
+                                    GCancellable  *cancellable,
+                                    GError       **error);
+
+
 G_END_DECLS
 
 #endif /* __G_DBUS_PRIVATE_H__ */

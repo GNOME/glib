@@ -31,117 +31,104 @@
 #include <gio/giotypes.h>
 #include "gdbusprivate.h"
 
-G_BEGIN_DECLS
+#define G_TYPE_KDBUS_WORKER                                (g_kdbus_worker_get_type ())
+#define G_KDBUS_WORKER(inst)                               (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
+                                                            G_TYPE_KDBUS_WORKER, GKDBusWorker))
+#define G_KDBUS_WORKER_CLASS(class)                        (G_TYPE_CHECK_CLASS_CAST ((class),                       \
+                                                            G_TYPE_KDBUS_WORKER, GKDBusWorkerClass))
+#define G_IS_KDBUS_WORKER(inst)                            (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
+                                                            G_TYPE_KDBUS_WORKER))
+#define G_IS_KDBUS_WORKER_CLASS(class)                     (G_TYPE_CHECK_CLASS_TYPE ((class),                       \
+                                                            G_TYPE_KDBUS_WORKER))
+#define G_KDBUS_WORKER_GET_CLASS(inst)                     (G_TYPE_INSTANCE_GET_CLASS ((inst),                      \
+                                                            G_TYPE_KDBUS_WORKER, GKDBusWorkerClass))
 
-#define G_TYPE_KDBUS                                       (_g_kdbus_get_type ())
-#define G_KDBUS(o)                                         (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_KDBUS, GKdbus))
-#define G_KDBUS_CLASS(k)                                   (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_KDBUS, GKdbusClass))
-#define G_KDBUS_GET_CLASS(o)                               (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_KDBUS, GKdbusClass))
-#define G_IS_KDBUS(o)                                      (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_KDBUS))
-#define G_IS_KDBUS_CLASS(k)                                (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_KDBUS))
+typedef struct _GKDBusWorker                               GKDBusWorker;
 
-typedef struct _GKdbus                                      GKdbus;
-typedef struct _GKdbusClass                                 GKdbusClass;
-typedef struct _GKdbusPrivate                               GKdbusPrivate;
+GType                   g_kdbus_worker_get_type                         (void);
 
-struct _GKdbusClass
-{
-  GObjectClass parent_class;
-};
+GKDBusWorker *          g_kdbus_worker_new                              (const gchar  *address,
+                                                                         GError      **error);
 
-struct _GKdbus
-{
-  GObject parent_instance;
-  GKdbusPrivate *priv;
-};
+#if 0
+                                                                         GDBusCapabilityFlags                     capabilities,
+                                                                         gboolean                                 initially_frozen,
+                                                                         GDBusWorkerMessageReceivedCallback       message_received_callback,
+                                                                         GDBusWorkerMessageAboutToBeSentCallback  message_about_to_be_sent_callback,
+                                                                         GDBusWorkerDisconnectedCallback          disconnected_callback,
+                                                                         gpointer                                 user_data);
+#endif
 
-typedef struct
-{
-  gchar  *data;
-  gsize   size;
-} msg_part;
+void                    g_kdbus_worker_unfreeze                         (GKDBusWorker *worker);
 
-GType                                   _g_kdbus_get_type                   (void) G_GNUC_CONST;
+gboolean                g_kdbus_worker_send_message                     (GKDBusWorker  *worker,
+                                                                         GDBusMessage  *message,
+                                                                         GError       **error);
 
-gboolean                                _g_kdbus_open                       (GKdbus         *kdbus,
+void                    g_kdbus_worker_stop                             (GKDBusWorker *worker);
+
+void                    g_kdbus_worker_flush_sync                       (GKDBusWorker *worker);
+
+void                    g_kdbus_worker_close                            (GKDBusWorker       *worker,
+                                                                         GCancellable       *cancellable,
+                                                                         GSimpleAsyncResult *result);
+
+
+gboolean                                _g_kdbus_open                       (GKDBusWorker   *kdbus,
                                                                              const gchar    *address,
                                                                              GError        **error);
 
-gboolean                                _g_kdbus_close                      (GKdbus         *kdbus,
-                                                                             GError        **error);
+void                                    _g_kdbus_close                      (GKDBusWorker         *kdbus);
 
-gboolean                                _g_kdbus_is_closed                  (GKdbus         *kdbus);
+gboolean                                _g_kdbus_is_closed                  (GKDBusWorker         *kdbus);
 
-GSource *                               _g_kdbus_create_source              (GKdbus         *kdbus,
-                                                                             GIOCondition    condition,
-                                                                             GCancellable   *cancellable);
+GVariant *                              _g_kdbus_Hello                      (GKDBusWorker  *worker,
+                                                                             GError       **error);
 
-GVariant *                              _g_kdbus_Hello                      (GIOStream        *stream,
+GVariant *                              _g_kdbus_GetBusId                   (GKDBusWorker  *worker,
                                                                              GError          **error);
 
-GVariant *                              _g_kdbus_GetBusId                   (GDBusConnection  *connection,
-                                                                             GError          **error);
-
-GVariant *                              _g_kdbus_RequestName                (GDBusConnection     *connection,
+GVariant *                              _g_kdbus_RequestName                (GKDBusWorker     *worker,
                                                                              const gchar         *name,
                                                                              GBusNameOwnerFlags   flags,
                                                                              GError             **error);
 
-GVariant *                              _g_kdbus_ReleaseName                (GDBusConnection     *connection,
+GVariant *                              _g_kdbus_ReleaseName                (GKDBusWorker     *worker,
                                                                              const gchar         *name,
                                                                              GError             **error);
 
-GVariant *                              _g_kdbus_GetListNames               (GDBusConnection  *connection,
+GVariant *                              _g_kdbus_GetListNames               (GKDBusWorker  *worker,
                                                                              guint             flags,
                                                                              GError          **error);
 
-GVariant *                              _g_kdbus_GetListQueuedOwners        (GDBusConnection  *connection,
+GVariant *                              _g_kdbus_GetListQueuedOwners        (GKDBusWorker  *worker,
                                                                              const gchar      *name,
                                                                              GError          **error);
 
-GVariant *                              _g_kdbus_GetNameOwner               (GDBusConnection  *connection,
+GVariant *                              _g_kdbus_GetNameOwner               (GKDBusWorker  *worker,
                                                                              const gchar      *name,
                                                                              GError          **error);
 
-GVariant *                              _g_kdbus_GetConnectionUnixProcessID (GDBusConnection  *connection,
+GVariant *                              _g_kdbus_GetConnectionUnixProcessID (GKDBusWorker  *worker,
                                                                              const gchar      *name,
                                                                              GError          **error);
 
-GVariant *                              _g_kdbus_GetConnectionUnixUser      (GDBusConnection  *connection,
+GVariant *                              _g_kdbus_GetConnectionUnixUser      (GKDBusWorker  *worker,
                                                                              const gchar      *name,
                                                                              GError          **error);
 
-void                                    _g_kdbus_subscribe_name_acquired    (GDBusConnection  *connection,
+void                                    _g_kdbus_subscribe_name_acquired    (GKDBusWorker  *worker,
                                                                              const gchar      *name);
 
-void                                    _g_kdbus_subscribe_name_lost        (GDBusConnection  *connection,
+void                                    _g_kdbus_subscribe_name_lost        (GKDBusWorker  *worker,
                                                                              const gchar      *name);
 
-void                                    _g_kdbus_unsubscribe_name_acquired  (GDBusConnection  *connection);
+void                                    _g_kdbus_unsubscribe_name_acquired  (GKDBusWorker  *worker);
 
-void                                    _g_kdbus_unsubscribe_name_lost      (GDBusConnection  *connection);
-
-gboolean                                _g_kdbus_send                       (GKdbus           *kdbus,
-                                                                             GDBusMessage     *dbus_msg,
-                                                                             GCancellable     *cancellable,
-                                                                             GError          **error);
-
-gssize                                  _g_kdbus_receive                    (GKdbus           *kdbus,
-                                                                             GCancellable     *cancellable,
-                                                                             GError          **error);
-
-GSList *                                _g_kdbus_get_last_msg_items         (GKdbus           *kdbus);
-
-gchar *                                 _g_kdbus_get_last_msg_sender        (GKdbus           *kdbus);
-
-gchar *                                 _g_kdbus_get_last_msg_destination   (GKdbus           *kdbus);
+void                                    _g_kdbus_unsubscribe_name_lost      (GKDBusWorker  *worker);
 
 gchar *                                 _g_kdbus_hexdump_all_items          (GSList           *kdbus_msg_items);
 
-void                                    _g_kdbus_release_kmsg               (GKdbus           *kdbus);
-
-void                                    _g_kdbus_attach_fds_to_msg          (GKdbus           *kdbus,
-                                                                             GUnixFDList     **fd_list);
 G_END_DECLS
 
 #endif /* __G_KDBUS_H__ */
