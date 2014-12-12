@@ -438,7 +438,6 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/g_tree", test_g_tree);
   g_test_add_func ("/autoptr/g_variant", test_g_variant);
   g_test_add_func ("/autoptr/g_variant_builder", test_g_variant_builder);
-  g_test_add_func ("/autoptr/g_variant_builder", test_g_variant_builder);
   g_test_add_func ("/autoptr/g_variant_iter", test_g_variant_iter);
   g_test_add_func ("/autoptr/g_variant_dict", test_g_variant_dict);
   g_test_add_func ("/autoptr/g_variant_type", test_g_variant_type);

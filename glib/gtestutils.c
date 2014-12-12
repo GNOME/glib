@@ -1647,6 +1647,15 @@ find_suite (gconstpointer l, gconstpointer s)
   return strcmp (suite->name, str);
 }
 
+static gint
+find_case (gconstpointer l, gconstpointer s)
+{
+  const GTestCase *tc = l;
+  const gchar *str = s;
+
+  return strcmp (tc->name, str);
+}
+
 /**
  * GTestFixtureFunc:
  * @fixture: the test fixture
@@ -1712,7 +1721,12 @@ g_test_add_vtable (const char       *testpath,
         }
       else /* islast */
         {
-          GTestCase *tc = g_test_create_case (seg, data_size, test_data, data_setup, fixture_test_func, data_teardown);
+          GTestCase *tc;
+
+          if (g_slist_find_custom (suite->cases, seg, find_case))
+            g_error ("duplicate test case path: %s", testpath);
+
+          tc = g_test_create_case (seg, data_size, test_data, data_setup, fixture_test_func, data_teardown);
           g_test_suite_add (suite, tc);
         }
     }

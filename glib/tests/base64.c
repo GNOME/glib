@@ -394,9 +394,9 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/base64/incremental/nobreak/3", GINT_TO_POINTER (DATA_SIZE - 2), test_incremental_nobreak);
   g_test_add_data_func ("/base64/incremental/break/3", GINT_TO_POINTER (DATA_SIZE - 2), test_incremental_break);
 
-  g_test_add_data_func ("/base64/incremental/nobreak/4", GINT_TO_POINTER (1), test_incremental_nobreak);
-  g_test_add_data_func ("/base64/incremental/nobreak/4", GINT_TO_POINTER (2), test_incremental_nobreak);
-  g_test_add_data_func ("/base64/incremental/nobreak/4", GINT_TO_POINTER (3), test_incremental_nobreak);
+  g_test_add_data_func ("/base64/incremental/nobreak/4-a", GINT_TO_POINTER (1), test_incremental_nobreak);
+  g_test_add_data_func ("/base64/incremental/nobreak/4-b", GINT_TO_POINTER (2), test_incremental_nobreak);
+  g_test_add_data_func ("/base64/incremental/nobreak/4-c", GINT_TO_POINTER (3), test_incremental_nobreak);
 
   g_test_add_func ("/base64/encode", test_base64_encode);
   g_test_add_func ("/base64/decode", test_base64_decode);
