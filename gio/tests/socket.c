@@ -491,6 +491,7 @@ test_ip_sync (GSocketFamily family)
     g_assert_no_error (error);
     g_assert_cmpint (len, ==, strlen (testbuf2));
 
+    memset (buf, 0, sizeof (buf));
     len = g_socket_receive (client, buf, sizeof (buf), NULL, &error);
     g_assert_no_error (error);
     g_assert_cmpint (len, ==, strlen (testbuf2));
