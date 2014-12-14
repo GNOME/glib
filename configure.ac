@@ -834,6 +834,41 @@ int main ()
 
 AC_MSG_RESULT($glib_ssize_type)
 
+dnl Some platforms (Apple) hard-code int64_t to long long instead of
+dnl using long on 64-bit architectures. This can cause type mismatch
+dnl warnings when trying to interface with code using the standard
+dnl library type. Test for the warnings and set gint64 to whichever
+dnl works.
+dnl
+AS_IF([test $ac_cv_sizeof_long_long = $ac_cv_sizeof_long], [
+  GLIB_CHECK_COMPILE_WARNINGS([AC_LANG_SOURCE([[
+#if defined(_AIX) && !defined(__GNUC__)
+#pragma options langlvl=stdc99
+#endif
+#include <stdint.h>
+#include <stdio.h>
+int main ()
+{
+  int64_t i1 = 1;
+  long *i2 = &i1;
+  return 1;
+}
+    ]])],[ glib_cv_int64_t=long ],
+      [GLIB_CHECK_COMPILE_WARNINGS([AC_LANG_SOURCE([[
+#if defined(_AIX) && !defined(__GNUC__)
+#pragma options langlvl=stdc99
+#endif
+#include <stdint.h>
+#include <stdio.h>
+int main ()
+{
+  int64_t i1 = 1;
+  long long *i2 = &i1;
+  return 1;
+}
+        ]])],[ glib_cv_int64_t=long_long ])])
+])
+
 # Check for some functions
 AC_CHECK_FUNCS(lstat strsignal vsnprintf stpcpy strcasecmp strncasecmp poll vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk mkostemp link)
 AC_CHECK_FUNCS(lchmod lchown fchmod fchown utimes getresuid)
@@ -3018,13 +3053,25 @@ $ac_cv_sizeof_int)
   guint64_constant='(val)'
   ;;
 $ac_cv_sizeof_long)
-  gint64=long
-  gint64_modifier='"l"'
-  gint64_format='"li"'
-  guint64_format='"lu"'
-  glib_extension=
-  gint64_constant='(val##L)'
-  guint64_constant='(val##UL)'
+  if test "x$glib_cv_int64_t" = "xlong_long"; then
+    gint64='long long'
+    if test -n "$glib_cv_long_long_format"; then
+      gint64_modifier='"'$glib_cv_long_long_format'"'
+      gint64_format='"'$glib_cv_long_long_format'i"'
+      guint64_format='"'$glib_cv_long_long_format'u"'
+    fi
+    glib_extension='G_GNUC_EXTENSION '
+    gint64_constant='(G_GNUC_EXTENSION (val##LL))'
+    guint64_constant='(G_GNUC_EXTENSION (val##ULL))'
+  else
+    gint64=long
+    gint64_modifier='"l"'
+    gint64_format='"li"'
+    guint64_format='"lu"'
+    glib_extension=
+    gint64_constant='(val##L)'
+    guint64_constant='(val##UL)'
+  fi
   ;;
 $ac_cv_sizeof_long_long)
   gint64='long long'
