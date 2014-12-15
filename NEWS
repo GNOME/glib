@@ -1,3 +1,37 @@
+Overview of changes in GLib 2.43.2
+==================================
+
+* New function: g_strv_contains
+
+* New function: g_network_address_new_loopback
+
+* New function: g_socket_send_messages
+
+* A new GNetworkMonitor implementation using NetworkManager provides
+  more detailed connectivity information
+
+* Bugs fixed:
+  11059 Linux poll issue
+ 664562 captive wifi portal support for GNetworkMonitor
+ 685880 Add g_strv_contains()
+ 712570 Hang in g_threaded_socket_service_func
+ 719646 GSocket: add g_socket_send_messages() to send multiple messages...
+ 728928 Provide separate error code for "Connection reset by peer"
+ 732317 Support GSocketConnectable for loopback addresses
+ 740814 "make check" should ensure that every symbol is documented
+ 740848 Backend subscription fails when connecting to a signal with a d...
+ 741016 gio: add G_IO_ERROR_NOT_CONNECTED
+ 741226 keyfile: Add "in group" to GError message consistently
+
+* Translation updates:
+ Gujarati
+ Hebrew
+ Hungarian
+ Kannada
+ Turkish
+ Vietnamese
+
+
 Overview of changes in GLib 2.43.1
 ==================================
 
