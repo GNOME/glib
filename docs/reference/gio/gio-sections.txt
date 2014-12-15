@@ -585,6 +585,8 @@ G_TYPE_EMBLEM
 GInputStream
 g_input_stream_read
 g_input_stream_read_all
+g_input_stream_read_all_async
+g_input_stream_read_all_finish
 g_input_stream_skip
 g_input_stream_close
 g_input_stream_read_async
@@ -793,6 +795,8 @@ GOutputStreamSpliceFlags
 GOutputStream
 g_output_stream_write
 g_output_stream_write_all
+g_output_stream_write_all_async
+g_output_stream_write_all_finish
 g_output_stream_splice
 g_output_stream_flush
 g_output_stream_close
@@ -1933,6 +1937,7 @@ g_socket_receive_with_blocking
 g_socket_send
 g_socket_send_to
 g_socket_send_message
+g_socket_send_messages
 g_socket_send_with_blocking
 g_socket_close
 g_socket_is_closed
@@ -2595,6 +2600,7 @@ g_dbus_address_get_stream
 g_dbus_address_get_stream_finish
 g_dbus_address_get_stream_sync
 g_dbus_address_get_for_bus_sync
+g_dbus_address_escape_value
 </SECTION>
 
 <SECTION>
@@ -3831,6 +3837,8 @@ g_network_monitor_get_network_available
 g_network_monitor_can_reach
 g_network_monitor_can_reach_async
 g_network_monitor_can_reach_finish
+GNetworkConnectivity
+g_network_monitor_get_connectivity
 <SUBSECTION Standard>
 g_network_monitor_get_type
 G_TYPE_NETWORK_MONITOR
@@ -4229,6 +4237,8 @@ g_notification_new
 g_notification_set_title
 g_notification_set_body
 g_notification_set_icon
+GNotificationPriority
+g_notification_set_priority
 g_notification_set_urgent
 <SUBSECTION>
 g_notification_set_default_action
