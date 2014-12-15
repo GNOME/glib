@@ -554,7 +554,7 @@ g_dbus_address_connect (const gchar   *address_entry,
     {
     }
 #ifdef G_OS_UNIX
-  else if (kdbus_okay || g_str_equal (transport_name, "kernel"))
+  else if (kdbus_okay && g_str_equal (transport_name, "kernel"))
     {
       GKDBusWorker *worker;
       const gchar *path;
@@ -567,13 +567,15 @@ g_dbus_address_connect (const gchar   *address_entry,
                        _("Error in address '%s' - the kernel transport requires a path"),
                        address_entry);
         }
+      else
+        {
+          worker = g_kdbus_worker_new (path, error);
 
-      worker = g_kdbus_worker_new (path, error);
+          if (worker == NULL)
+            return NULL;
 
-      if (worker == NULL)
-        return NULL;
-
-      return G_OBJECT (worker);
+          return G_OBJECT (worker);
+        }
     }
   else if (g_strcmp0 (transport_name, "unix") == 0)
     {

@@ -50,14 +50,12 @@ GType                   g_kdbus_worker_get_type                         (void);
 GKDBusWorker *          g_kdbus_worker_new                              (const gchar  *address,
                                                                          GError      **error);
 
-#if 0
+void                    g_kdbus_worker_associate                        (GKDBusWorker                            *worker,
                                                                          GDBusCapabilityFlags                     capabilities,
-                                                                         gboolean                                 initially_frozen,
                                                                          GDBusWorkerMessageReceivedCallback       message_received_callback,
                                                                          GDBusWorkerMessageAboutToBeSentCallback  message_about_to_be_sent_callback,
                                                                          GDBusWorkerDisconnectedCallback          disconnected_callback,
                                                                          gpointer                                 user_data);
-#endif
 
 void                    g_kdbus_worker_unfreeze                         (GKDBusWorker *worker);
 

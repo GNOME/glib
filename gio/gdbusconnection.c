@@ -1162,8 +1162,12 @@ g_dbus_connection_start_message_processing (GDBusConnection *connection)
   if (!check_initialized (connection))
     return;
 
-  g_assert (connection->worker != NULL);
-  _g_dbus_worker_unfreeze (connection->worker);
+  g_assert (connection->worker || connection->kdbus_worker);
+
+  if (connection->kdbus_worker)
+    g_kdbus_worker_unfreeze (connection->kdbus_worker);
+  else
+    _g_dbus_worker_unfreeze (connection->worker);
 }
 
 /**
@@ -2754,8 +2758,7 @@ typedef struct
 
 /* Called in GDBusWorker's thread - we must not block - with no lock held */
 static void
-on_worker_message_received (GDBusWorker  *worker,
-                            GDBusMessage *message,
+on_worker_message_received (GDBusMessage *message,
                             gpointer      user_data)
 {
   GDBusConnection *connection;
@@ -2856,8 +2859,7 @@ on_worker_message_received (GDBusWorker  *worker,
 
 /* Called in GDBusWorker's thread, lock is not held */
 static GDBusMessage *
-on_worker_message_about_to_be_sent (GDBusWorker  *worker,
-                                    GDBusMessage *message,
+on_worker_message_about_to_be_sent (GDBusMessage *message,
                                     gpointer      user_data)
 {
   GDBusConnection *connection;
@@ -2933,10 +2935,9 @@ cancel_method_on_close (gpointer key, gpointer value, gpointer user_data)
 
 /* Called in GDBusWorker's thread - we must not block - without lock held */
 static void
-on_worker_closed (GDBusWorker *worker,
-                  gboolean     remote_peer_vanished,
-                  GError      *error,
-                  gpointer     user_data)
+on_worker_closed (gboolean  remote_peer_vanished,
+                  GError   *error,
+                  gpointer  user_data)
 {
   GDBusConnection *connection;
   gboolean alive;
@@ -2998,6 +2999,7 @@ initable_init (GInitable     *initable,
                GError       **error)
 {
   GDBusConnection *connection = G_DBUS_CONNECTION (initable);
+  gboolean initially_frozen;
   gboolean ret;
 
   /* This method needs to be idempotent to work with the singleton
@@ -3052,7 +3054,6 @@ initable_init (GInitable     *initable,
       ret = g_dbus_address_get_stream_internal (connection->address, TRUE,
                                                 NULL, /* TODO: out_guid */
                                                 cancellable, &connection->initialization_error);
-
       if (ret == NULL)
         goto out;
 
@@ -3138,14 +3139,23 @@ authenticated:
   g_hash_table_insert (alive_connections, connection, connection);
   G_UNLOCK (message_bus_lock);
 
-  if (!connection->kdbus_worker)
-  connection->worker = _g_dbus_worker_new (connection->stream,
-                                           connection->capabilities,
-                                           ((connection->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING) != 0),
-                                           on_worker_message_received,
-                                           on_worker_message_about_to_be_sent,
-                                           on_worker_closed,
-                                           connection);
+  initially_frozen = (connection->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING) != 0;
+
+  if (connection->kdbus_worker)
+   g_kdbus_worker_associate (connection->kdbus_worker,
+                             connection->capabilities,
+                             on_worker_message_received,
+                             on_worker_message_about_to_be_sent,
+                             on_worker_closed,
+                             connection);
+  else
+    connection->worker = _g_dbus_worker_new (connection->stream,
+                                             connection->capabilities,
+                                             initially_frozen,
+                                             on_worker_message_received,
+                                             on_worker_message_about_to_be_sent,
+                                             on_worker_closed,
+                                             connection);
 
   /* if a bus connection, call org.freedesktop.DBus.Hello - this is how we're getting a name */
   if (connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
@@ -3188,6 +3198,9 @@ authenticated:
       g_variant_unref (hello_result);
       //g_debug ("unique name is '%s'", connection->bus_unique_name);
     }
+
+  if (connection->kdbus_worker && !initially_frozen)
+    g_kdbus_worker_unfreeze (connection->kdbus_worker);
 
   ret = TRUE;
  out:

@@ -33,16 +33,13 @@ G_BEGIN_DECLS
 
 typedef struct GDBusWorker GDBusWorker;
 
-typedef void (*GDBusWorkerMessageReceivedCallback) (GDBusWorker   *worker,
-                                                    GDBusMessage  *message,
+typedef void (*GDBusWorkerMessageReceivedCallback) (GDBusMessage  *message,
                                                     gpointer       user_data);
 
-typedef GDBusMessage *(*GDBusWorkerMessageAboutToBeSentCallback) (GDBusWorker   *worker,
-                                                                  GDBusMessage  *message,
+typedef GDBusMessage *(*GDBusWorkerMessageAboutToBeSentCallback) (GDBusMessage  *message,
                                                                   gpointer       user_data);
 
-typedef void (*GDBusWorkerDisconnectedCallback)    (GDBusWorker   *worker,
-                                                    gboolean       remote_peer_vanished,
+typedef void (*GDBusWorkerDisconnectedCallback)    (gboolean       remote_peer_vanished,
                                                     GError        *error,
                                                     gpointer       user_data);
 

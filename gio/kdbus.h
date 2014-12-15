@@ -384,6 +384,16 @@ struct kdbus_item {
 };
 
 /**
+ * struct kdbus_item_list - A list of items
+ * @size:		The total size of the structure
+ * @items:		Array of items
+ */
+struct kdbus_item_list {
+	__u64 size;
+	struct kdbus_item items[0];
+};
+
+/**
  * enum kdbus_msg_flags - type of message
  * @KDBUS_MSG_EXPECT_REPLY:	Expect a reply message, used for
  *				method calls. The userspace-supplied
@@ -705,8 +715,10 @@ enum kdbus_attach_flags {
  * @id:			The ID of this connection (kernel → userspace)
  * @pool_size:		Size of the connection's buffer where the received
  *			messages are placed
- * @bloom:		The bloom properties of the bus, specified
- *			by the bus creator (kernel → userspace)
+ * @offset:		Pool offset where additional items of type
+ *			kdbus_item_list are stored. They contain information
+ *			about the bus and the newly created connection.
+ * @items_size:		Copy of item_list.size stored in @offset.
  * @id128:		Unique 128-bit ID of the bus (kernel → userspace)
  * @items:		A list of items
  *
@@ -722,7 +734,8 @@ struct kdbus_cmd_hello {
 	__u64 bus_flags;
 	__u64 id;
 	__u64 pool_size;
-	struct kdbus_bloom_parameter bloom;
+	__u64 offset;
+	__u64 items_size;
 	__u8 id128[16];
 	struct kdbus_item items[0];
 } __attribute__((aligned(8)));
@@ -846,7 +859,9 @@ enum kdbus_name_list_flags {
  * @offset:		The returned offset in the caller's pool buffer.
  *			The user must use KDBUS_CMD_FREE to free the
  *			allocated memory.
+ * @list_size:		Returned size of list in bytes
  * @size:		Output buffer to report size of data at @offset.
+ * @items:		Items for the command. Reserved for future use.
  *
  * This structure is used with the KDBUS_CMD_NAME_LIST ioctl.
  */
@@ -1021,7 +1036,7 @@ struct kdbus_cmd_match {
 #define KDBUS_CMD_BYEBYE		_IO(KDBUS_IOCTL_MAGIC, 0x21)	\
 
 #define KDBUS_CMD_SEND			_IOWR(KDBUS_IOCTL_MAGIC, 0x30,	\
-					      struct kdbus_msg)
+					      struct kdbus_cmd_send)
 #define KDBUS_CMD_RECV			_IOWR(KDBUS_IOCTL_MAGIC, 0x31,	\
 					      struct kdbus_cmd_recv)
 #define KDBUS_CMD_CANCEL		_IOW(KDBUS_IOCTL_MAGIC, 0x32,	\

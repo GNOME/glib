@@ -436,28 +436,20 @@ has_connection (Client *client)
                                                              "closed",
                                                              G_CALLBACK (on_connection_disconnected),
                                                              client);
-#if 0
   /* attempt to acquire the name */
-  if (G_IS_KDBUS_CONNECTION (g_dbus_connection_get_stream (client->connection)))
+  if (1)
     {
-      GVariant *result;
+      GError *error = NULL;
       guint32 request_name_reply;
 
       request_name_reply = 0;
-      result = NULL;
 
-      result = _g_kdbus_RequestName (client->connection, client->name, client->flags, NULL);
-
-      if (result != NULL)
-        {
-          g_variant_get (result, "(u)", &request_name_reply);
-          g_variant_unref (result);
-        }
+      request_name_reply = g_dbus_request_name (client->connection, client->name, client->flags, &error);
+      g_assert_no_error (error);
 
       process_request_name_reply (client, request_name_reply);
     }
   else
-#endif
     {
       g_dbus_connection_call (client->connection,
                               "org.freedesktop.DBus",  /* bus name */
@@ -945,11 +937,14 @@ g_bus_unown_name (guint owner_id)
            * I believe this is a bug in the bus daemon.
            */
           error = NULL;
-#if 0
-          if (G_IS_KDBUS_CONNECTION (g_dbus_connection_get_stream (client->connection)))
-            result = _g_kdbus_ReleaseName (client->connection, client->name, &error);
+          if (1)
+            {
+              g_dbus_release_name (client->connection, client->name, &error);
+              g_assert_no_error (error);
+
+              result = g_variant_ref_sink (g_variant_new_uint32 (1));
+            }
           else
-#endif
             result = g_dbus_connection_call_sync (client->connection,
                                                   "org.freedesktop.DBus",  /* bus name */
                                                   "/org/freedesktop/DBus", /* object path */

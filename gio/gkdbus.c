@@ -120,6 +120,12 @@ struct _GKDBusWorker
   guint              timed_out : 1;
 
   guchar             bus_id[16];
+
+  GDBusCapabilityFlags                     capabilities;
+  GDBusWorkerMessageReceivedCallback       message_received_callback;
+  GDBusWorkerMessageAboutToBeSentCallback  message_about_to_be_sent_callback;
+  GDBusWorkerDisconnectedCallback          disconnected_callback;
+  gpointer                                 user_data;
 };
 
 static gssize _g_kdbus_receive (GKDBusWorker  *kdbus,
@@ -197,9 +203,9 @@ kdbus_ready (gint         fd,
 }
 
 gboolean
-_g_kdbus_open (GKDBusWorker       *worker,
-               const gchar  *address,
-               GError      **error)
+_g_kdbus_open (GKDBusWorker  *worker,
+               const gchar   *address,
+               GError       **error)
 {
   g_return_val_if_fail (G_IS_KDBUS_WORKER (worker), FALSE);
 
@@ -211,11 +217,6 @@ _g_kdbus_open (GKDBusWorker       *worker,
     }
 
   worker->closed = FALSE;
-
-  worker->context = g_main_context_ref_thread_default ();
-  worker->source = g_unix_fd_source_new (worker->fd, G_IO_IN);
-  g_source_set_callback (worker->source, (GSourceFunc) kdbus_ready, worker, NULL);
-  g_source_attach (worker->source, worker->context);
 
   return TRUE;
 }
@@ -372,8 +373,8 @@ _g_kdbus_Hello (GKDBusWorker *worker,
   asprintf(&worker->unique_name, ":1.%llu", (unsigned long long) hello->id);
 
   /* read bloom filters parameters */
-  worker->bloom_size = (gsize) hello->bloom.size;
-  worker->bloom_n_hash = (guint) hello->bloom.n_hash;
+  //worker->bloom_size = (gsize) hello->bloom.size;
+  //worker->bloom_n_hash = (guint) hello->bloom.n_hash;
 
   return g_variant_new ("(s)", worker->unique_name);
 }
@@ -1577,7 +1578,11 @@ g_kdbus_decode_dbus_msg (GKDBusWorker           *worker,
 
   g_print ("Received:\n%s\n", g_dbus_message_print (message, 2));
 
-  return message;
+  (* worker->message_received_callback) (message, worker->user_data);
+
+  g_object_unref (message);
+
+  return 0;
 }
 
 
@@ -1608,12 +1613,18 @@ again:
         if (errno == EAGAIN)
           return 0;
 
+        g_warning ("in holding pattern over %d %d\n", kdbus->fd, errno);
+        while (1)
+          sleep(1);
+
         g_set_error (error, G_IO_ERROR,
                      g_io_error_from_errno (errno),
                      _("Error while receiving message: %s"),
                      g_strerror (errno));
         return -1;
       }
+
+    g_print ("but sometimes that's okay\n");
 
    msg = (struct kdbus_msg *)((guint8 *)kdbus->kdbus_buffer + recv.reply.offset);
 
@@ -2083,14 +2094,6 @@ need_compact:
 GKDBusWorker *
 g_kdbus_worker_new (const gchar  *address,
                     GError      **error)
-#if 0
-                    GDBusCapabilityFlags                     capabilities,
-                    gboolean                                 initially_frozen,
-                    GDBusWorkerMessageReceivedCallback       message_received_callback,
-                    GDBusWorkerMessageAboutToBeSentCallback  message_about_to_be_sent_callback,
-                    GDBusWorkerDisconnectedCallback          disconnected_callback,
-                    gpointer                                 user_data)
-#endif
 {
   GKDBusWorker *worker;
 
@@ -2105,8 +2108,37 @@ g_kdbus_worker_new (const gchar  *address,
 }
 
 void
+g_kdbus_worker_associate (GKDBusWorker                            *worker,
+                          GDBusCapabilityFlags                     capabilities,
+                          GDBusWorkerMessageReceivedCallback       message_received_callback,
+                          GDBusWorkerMessageAboutToBeSentCallback  message_about_to_be_sent_callback,
+                          GDBusWorkerDisconnectedCallback          disconnected_callback,
+                          gpointer                                 user_data)
+{
+  worker->capabilities = capabilities;
+  worker->message_received_callback = message_received_callback;
+  worker->message_about_to_be_sent_callback = message_about_to_be_sent_callback;
+  worker->disconnected_callback = disconnected_callback;
+  worker->user_data = user_data;
+}
+
+void
 g_kdbus_worker_unfreeze (GKDBusWorker *worker)
 {
+  gchar *name;
+
+  if (worker->source != NULL)
+    return;
+
+  worker->context = g_main_context_ref_thread_default ();
+  worker->source = g_unix_fd_source_new (worker->fd, G_IO_IN);
+
+  g_source_set_callback (worker->source, (GSourceFunc) kdbus_ready, worker, NULL);
+  name = g_strdup_printf ("kdbus worker");
+  g_source_set_name (worker->source, name);
+  g_free (name);
+
+  g_source_attach (worker->source, worker->context);
 }
 
 gboolean

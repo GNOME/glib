@@ -477,7 +477,7 @@ _g_dbus_worker_emit_disconnected (GDBusWorker  *worker,
                                   GError       *error)
 {
   if (!g_atomic_int_get (&worker->stopped))
-    worker->disconnected_callback (worker, remote_peer_vanished, error, worker->user_data);
+    worker->disconnected_callback (remote_peer_vanished, error, worker->user_data);
 }
 
 static void
@@ -485,7 +485,7 @@ _g_dbus_worker_emit_message_received (GDBusWorker  *worker,
                                       GDBusMessage *message)
 {
   if (!g_atomic_int_get (&worker->stopped))
-    worker->message_received_callback (worker, message, worker->user_data);
+    worker->message_received_callback (message, worker->user_data);
 }
 
 static GDBusMessage *
@@ -494,7 +494,7 @@ _g_dbus_worker_emit_message_about_to_be_sent (GDBusWorker  *worker,
 {
   GDBusMessage *ret;
   if (!g_atomic_int_get (&worker->stopped))
-    ret = worker->message_about_to_be_sent_callback (worker, message, worker->user_data);
+    ret = worker->message_about_to_be_sent_callback (message, worker->user_data);
   else
     ret = message;
   return ret;
