@@ -152,6 +152,64 @@ test_clear_function (void)
 }
 
 static void
+test_set (void)
+{
+  GObject *o = NULL;
+  GObject *tmp;
+
+  g_assert (!g_set_object (&o, NULL));
+  g_assert (o == NULL);
+
+  tmp = g_object_new (G_TYPE_OBJECT, NULL);
+  g_assert_cmpint (tmp->ref_count, ==, 1);
+
+  g_assert (g_set_object (&o, tmp));
+  g_assert (o == tmp);
+  g_assert_cmpint (tmp->ref_count, ==, 2);
+
+  g_object_unref (tmp);
+  g_assert_cmpint (tmp->ref_count, ==, 1);
+
+  /* Setting it again shouldn’t cause finalisation. */
+  g_assert (!g_set_object (&o, tmp));
+  g_assert (o == tmp);
+  g_assert_cmpint (tmp->ref_count, ==, 1);
+
+  g_assert (g_set_object (&o, NULL));
+  g_assert (o == NULL);
+  g_assert (!G_IS_OBJECT (tmp));  /* finalised */
+}
+
+static void
+test_set_function (void)
+{
+  GObject *o = NULL;
+  GObject *tmp;
+
+  g_assert (!(g_set_object) (&o, NULL));
+  g_assert (o == NULL);
+
+  tmp = g_object_new (G_TYPE_OBJECT, NULL);
+  g_assert_cmpint (tmp->ref_count, ==, 1);
+
+  g_assert ((g_set_object) (&o, tmp));
+  g_assert (o == tmp);
+  g_assert_cmpint (tmp->ref_count, ==, 2);
+
+  g_object_unref (tmp);
+  g_assert_cmpint (tmp->ref_count, ==, 1);
+
+  /* Setting it again shouldn’t cause finalisation. */
+  g_assert (!(g_set_object) (&o, tmp));
+  g_assert (o == tmp);
+  g_assert_cmpint (tmp->ref_count, ==, 1);
+
+  g_assert ((g_set_object) (&o, NULL));
+  g_assert (o == NULL);
+  g_assert (!G_IS_OBJECT (tmp));  /* finalised */
+}
+
+static void
 toggle_cb (gpointer data, GObject *obj, gboolean is_last)
 {
   gboolean *b = data;
@@ -604,6 +662,8 @@ main (int argc, char **argv)
   g_test_add_func ("/type/class-private", test_class_private);
   g_test_add_func ("/object/clear", test_clear);
   g_test_add_func ("/object/clear-function", test_clear_function);
+  g_test_add_func ("/object/set", test_set);
+  g_test_add_func ("/object/set-function", test_set_function);
   g_test_add_func ("/object/value", test_object_value);
   g_test_add_func ("/object/initially-unowned", test_initially_unowned);
   g_test_add_func ("/object/weak-pointer", test_weak_pointer);
