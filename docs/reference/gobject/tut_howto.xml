@@ -439,7 +439,7 @@ maman_bar_dispose (GObject *gobject)
 
   /* dispose() might be called multiple times, so we must guard against
    * calling g_object_unref() on an invalid GObject by setting the member
-   * NULL; g_clear_object() does this for us, atomically.
+   * NULL; g_clear_object() does this for us.
    */
   g_clear_object (&amp;self->priv->an_object);
 
