@@ -627,8 +627,8 @@ G_STMT_START { \
   GObject *_glib__object = (GObject*) (object); \
   GParamSpec *_glib__pspec = (GParamSpec*) (pspec); \
   guint _glib__property_id = (property_id); \
-  g_warning ("%s: invalid %s id %u for \"%s\" of type '%s' in '%s'", \
-             G_STRLOC, \
+  g_warning ("%s:%u: invalid %s id %u for \"%s\" of type '%s' in '%s'", \
+             __FILE__, __LINE__, \
              (pname), \
              _glib__property_id, \
              _glib__pspec->name, \
