@@ -427,6 +427,7 @@ libgio_2_0_la_SOURCES =		\
 	gresourcefile.h		\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
+	gsimpleiostream.c	\
 	gsimplepermission.c 	\
 	gsocket.c		\
 	gsocketaddress.c	\
@@ -596,6 +597,7 @@ gio_headers =			\
 	gresource.h		\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\
+	gsimpleiostream.h	\
 	gsimplepermission.h 	\
 	gsocket.h		\
 	gsocketaddress.h	\

@@ -111,6 +111,7 @@
 #include <gio/gsimpleaction.h>
 #include <gio/gsimpleactiongroup.h>
 #include <gio/gsimpleasyncresult.h>
+#include <gio/gsimpleiostream.h>
 #include <gio/gsimplepermission.h>
 #include <gio/gsocketaddressenumerator.h>
 #include <gio/gsocketaddress.h>

@@ -135,6 +135,7 @@ typedef struct _GNetworkMonitor               GNetworkMonitor;
 typedef struct _GNetworkService               GNetworkService;
 typedef struct _GOutputStream                 GOutputStream;
 typedef struct _GIOStream                     GIOStream;
+typedef struct _GSimpleIOStream               GSimpleIOStream;
 typedef struct _GPollableInputStream          GPollableInputStream; /* Dummy typedef */
 typedef struct _GPollableOutputStream         GPollableOutputStream; /* Dummy typedef */
 typedef struct _GResolver                     GResolver;

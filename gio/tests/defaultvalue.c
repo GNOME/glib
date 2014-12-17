@@ -82,6 +82,7 @@ test_type (gconstpointer data)
       g_type_is_a (type, G_TYPE_PROPERTY_ACTION) ||
       g_type_is_a (type, G_TYPE_SETTINGS) ||
       g_type_is_a (type, G_TYPE_SOCKET_CONNECTION) ||
+      g_type_is_a (type, G_TYPE_SIMPLE_IO_STREAM) ||
       g_type_is_a (type, G_TYPE_THEMED_ICON) ||
       FALSE)
     {

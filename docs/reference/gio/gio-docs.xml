@@ -57,6 +57,7 @@
         <xi:include href="xml/ginputstream.xml"/>
         <xi:include href="xml/goutputstream.xml"/>
         <xi:include href="xml/giostream.xml"/>
+        <xi:include href="xml/gsimpleiostream.xml"/>
         <xi:include href="xml/gfileinputstream.xml"/>
         <xi:include href="xml/gfileoutputstream.xml"/>
         <xi:include href="xml/gfileiostream.xml"/>

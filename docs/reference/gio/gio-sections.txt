@@ -1040,6 +1040,20 @@ g_io_stream_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gsimpleiostream</FILE>
+<TITLE>GSimpleIOStream</TITLE>
+GSimpleIOStream
+g_simple_io_stream_new
+<SUBSECTION Standard>
+GIOStreamClass
+G_TYPE_SIMPLE_IO_STREAM
+G_IS_SIMPLE_IO_STREAM
+G_SIMPLE_IO_STREAM
+<SUBSECTION Private>
+g_simple_io_stream_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gfileiostream</FILE>
 <TITLE>GFileIOStream</TITLE>
 GFileIOStream
