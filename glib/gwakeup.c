@@ -81,6 +81,12 @@ g_wakeup_new (void)
   return (GWakeup *) wakeup;
 }
 
+ghandle
+g_wakeup_get_handle (GWakeup *wakeup)
+{
+  return (ghandle) wakeup;
+}
+
 void
 g_wakeup_get_pollfd (GWakeup *wakeup,
                      GPollFD *poll_fd)
@@ -165,6 +171,24 @@ g_wakeup_new (void)
     g_error ("Set pipes non-blocking for GWakeup: %s\n", error->message);
 
   return wakeup;
+}
+
+/**
+ * g_wakeup_get_handle:
+ * @wakeup: a #GWakeup
+ *
+ * Returns the #ghandle for wakeup.  The handle will poll as ready when
+ * the wakeup is signalled and will continue to poll as ready until the
+ * wakeup has been acknowledged.
+ *
+ * Returns: a valid #ghandle
+ *
+ * Since: 2.44
+ **/
+ghandle
+g_wakeup_get_handle (GWakeup *wakeup)
+{
+  return wakeup->fds[0];
 }
 
 /**
