@@ -254,9 +254,9 @@ struct _GMainContext
   GPollFD *cached_poll_array;
   guint cached_poll_array_size;
 
-  GThread *last_owner;   /* wake_up_rec belongs to last_owner */
-  GPollFD wake_up_rec;   /* or is invalid if last_owner is NULL */
-  gboolean copacetic;    /* if it is safe to poll() */
+  GWakeup *wakeup;
+
+  GPollFD wake_up_rec;
 
 /* Flag indicating whether the set of fd's changed during a poll */
   gboolean poll_changed;
@@ -556,9 +556,7 @@ g_main_context_unref (GMainContext *context)
 
   poll_rec_list_free (context, context->poll_records);
 
-  if (context->last_owner)
-    g_thread_unref (context->last_owner);
-
+  g_wakeup_free (context->wakeup);
   g_cond_clear (&context->cond);
 
   g_free (context);
@@ -623,6 +621,10 @@ g_main_context_new (void)
   
   context->time_is_fresh = FALSE;
   
+  context->wakeup = g_wakeup_new ();
+  g_wakeup_get_pollfd (context->wakeup, &context->wake_up_rec);
+  g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
+
   G_LOCK (main_context_list);
   main_context_list = g_slist_append (main_context_list, context);
 
@@ -3237,27 +3239,6 @@ g_main_dispatch (GMainContext *context)
   g_ptr_array_set_size (context->pending_dispatches, 0);
 }
 
-static void
-g_main_context_associate_with_thread (GMainContext *context,
-                                      GThread      *self)
-{
-  if (context->last_owner == self)
-    return;
-
-  g_thread_ref (self);
-
-  if (context->last_owner)
-    {
-      g_main_context_remove_poll_unlocked (context, 0, &context->wake_up_rec);
-      g_thread_unref (self->last_owner);
-    }
-
-  context->last_owner = self;
-
-  g_thread_get_wake_pollfd (context->wakeup, &context->wake_up_rec);
-  g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
-}
-
 /**
  * g_main_context_acquire:
  * @context: a #GMainContext
@@ -3291,8 +3272,6 @@ g_main_context_acquire (GMainContext *context)
     {
       context->owner = self;
       g_assert (context->owner_count == 0);
-
-      g_main_context_associate_with_thread (context, self);
     }
 
   if (context->owner == self)
@@ -3490,7 +3469,6 @@ g_main_context_prepare (GMainContext *context,
   
   /* Prepare all sources */
 
-  context->copacetic = TRUE;
   context->timeout = -1;
   
   g_source_iter_init (&iter, context, TRUE);
@@ -3705,7 +3683,8 @@ g_main_context_check (GMainContext *context,
       return FALSE;
     }
 
-  g_thread_clear_wakeup ();
+  if (context->wake_up_rec.revents)
+    g_wakeup_acknowledge (context->wakeup);
 
   /* If the set of poll file descriptors changed, bail out
    * and let the main loop rerun
@@ -4208,21 +4187,15 @@ g_main_context_poll (GMainContext *context,
       poll_func = context->poll_func;
       
       UNLOCK_CONTEXT (context);
-
-      if (g_thread_enter_critical_section_with_fd ())
-        {
-          if ((*poll_func) (fds, n_fds, timeout) < 0 && errno != EINTR)
-            {
+      if ((*poll_func) (fds, n_fds, timeout) < 0 && errno != EINTR)
+	{
 #ifndef G_OS_WIN32
-              g_warning ("poll(2) failed due to: %s.",
-                         g_strerror (errno));
+	  g_warning ("poll(2) failed due to: %s.",
+		     g_strerror (errno));
 #else
-              /* If g_poll () returns -1, it has already called g_warning() */
+	  /* If g_poll () returns -1, it has already called g_warning() */
 #endif
-            }
-
-          g_thread_leave_critical_section ();
-        }
+	}
       
 #ifdef	G_MAIN_POLL_DEBUG
       if (_g_main_poll_debug)
@@ -4560,14 +4533,7 @@ g_main_context_wakeup (GMainContext *context)
 
   g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0);
 
-  LOCK_CONTEXT(context);
-
-  context->copacetic = FALSE;
-
-  if (context->owner)
-    g_thread_wakeup (context->owner);
-
-  UNLOCK_CONTEXT(context);
+  g_wakeup_signal (context->wakeup);
 }
 
 /**
@@ -5028,12 +4994,7 @@ wake_source (GSource *source)
   G_LOCK(main_context_list);
   context = source->context;
   if (context)
-    {
-      LOCK_CONTEXT(context);
-      if (context->owner)
-        g_thread_wake (context->owner);
-      UNLOCK_CONTEXT(context);
-    }
+    g_wakeup_signal (context->wakeup);
   G_UNLOCK(main_context_list);
 }
 
