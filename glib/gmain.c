@@ -182,6 +182,35 @@
  * On UNIX, the GLib mainloop is incompatible with fork(). Any program
  * using the mainloop must either exec() or exit() from the child
  * without returning to the mainloop.
+ *
+ * ## Memory management of sources # {#mainloop-memory-management}
+ *
+ * There are two options for memory management of the user data passed to a
+ * #GSource to be passed to its callback on invocation. This data is provided
+ * in calls to g_timeout_add(), g_timeout_add_full(), g_idle_add(), etc. and
+ * more generally, using g_source_set_callback(). This data is typically an
+ * object which ‘owns’ the timeout or idle callback, such as a widget or a
+ * network protocol implementation. In many cases, it is an error for the
+ * callback to be invoked after this owning object has been destroyed, as that
+ * results in use of freed memory.
+ *
+ * The first, and preferred, option is to store the source ID returned by
+ * functions such as g_timeout_add() or g_source_attach(), and explicitly
+ * remove that source from the main context using g_source_remove() when the
+ * owning object is finalised. This ensures that the callback can only be
+ * invoked while the object is still alive.
+ *
+ * The second option is to hold a strong reference to the object in the
+ * callback, and to release it in the callback’s #GDestroyNotify. This ensures
+ * that the object is kept alive until after the source is finalized, which is
+ * guaranteed to be after it is invoked for the final time. The #GDestroyNotify
+ * is another callback passed to the ‘full’ variants of #GSource functions (for
+ * example, g_timeout_add_full()). It is called when the source is finalized,
+ * and is designed for releasing references like this.
+ *
+ * One important caveat of this second approach is that it will keep the object
+ * alive indefinitely if the main loop is stopped before the #GSource is
+ * invoked, which may be undesirable.
  */
 
 /* Types */
@@ -1565,6 +1594,9 @@ static GSourceCallbackFuncs g_source_callback_funcs = {
  * The exact type of @func depends on the type of source; ie. you
  * should not count on @func being called with @data as its first
  * parameter.
+ *
+ * See [memory management of sources][mainloop-memory-management] for details
+ * on how to handle memory management of @data.
  * 
  * Typically, you won't use this function. Instead use functions specific
  * to the type of source you are using.
@@ -4635,6 +4667,9 @@ g_timeout_source_new_seconds (guint interval)
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
  *
+ * See [memory management of sources][mainloop-memory-management] for details
+ * on how to handle the return value and memory management of @data.
+ *
  * This internally creates a main loop source using g_timeout_source_new()
  * and attaches it to the global #GMainContext using g_source_attach(), so
  * the callback will be invoked in whichever thread is running that main
@@ -4689,6 +4724,9 @@ g_timeout_add_full (gint           priority,
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
  *
+ * See [memory management of sources][mainloop-memory-management] for details
+ * on how to handle the return value and memory management of @data.
+ *
  * If you want to have a timer in the "seconds" range and do not care
  * about the exact time of the first call of the timer, use the
  * g_timeout_add_seconds() function; this function allows for more
@@ -4740,6 +4778,9 @@ g_timeout_add (guint32        interval,
  * event sources. Thus they should not be relied on for precise timing.
  * After each call to the timeout function, the time of the next
  * timeout is recalculated based on the current time and the given @interval
+ *
+ * See [memory management of sources][mainloop-memory-management] for details
+ * on how to handle the return value and memory management of @data.
  *
  * If you want timing more precise than whole seconds, use g_timeout_add()
  * instead.
@@ -4804,6 +4845,9 @@ g_timeout_add_seconds_full (gint           priority,
  * Note that the first call of the timer may not be precise for timeouts
  * of one second. If you need finer precision and have such a timeout,
  * you may want to use g_timeout_add() instead.
+ *
+ * See [memory management of sources][mainloop-memory-management] for details
+ * on how to handle the return value and memory management of @data.
  *
  * The interval given is in terms of monotonic time, not wall clock
  * time.  See g_get_monotonic_time().
@@ -5432,6 +5476,9 @@ g_idle_source_new (void)
  * Adds a function to be called whenever there are no higher priority
  * events pending.  If the function returns %FALSE it is automatically
  * removed from the list of event sources and will not be called again.
+ *
+ * See [memory management of sources][mainloop-memory-management] for details
+ * on how to handle the return value and memory management of @data.
  * 
  * This internally creates a main loop source using g_idle_source_new()
  * and attaches it to the global #GMainContext using g_source_attach(), so
@@ -5474,6 +5521,9 @@ g_idle_add_full (gint           priority,
  * default idle priority, #G_PRIORITY_DEFAULT_IDLE.  If the function
  * returns %FALSE it is automatically removed from the list of event
  * sources and will not be called again.
+ *
+ * See [memory management of sources][mainloop-memory-management] for details
+ * on how to handle the return value and memory management of @data.
  * 
  * This internally creates a main loop source using g_idle_source_new()
  * and attaches it to the global #GMainContext using g_source_attach(), so
