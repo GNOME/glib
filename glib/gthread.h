@@ -31,6 +31,7 @@
 
 #include <glib/gatomic.h>
 #include <glib/gerror.h>
+#include <glib/gpoll.h>
 
 G_BEGIN_DECLS
 
@@ -157,7 +158,8 @@ GLIB_AVAILABLE_IN_ALL
 gpointer        g_thread_join                   (GThread        *thread);
 GLIB_AVAILABLE_IN_ALL
 void            g_thread_yield                  (void);
-
+GLIB_AVAILABLE_IN_2_44
+void            g_thread_wakeup                 (GThread        *thread);
 
 GLIB_AVAILABLE_IN_2_32
 void            g_mutex_init                    (GMutex         *mutex);
@@ -262,6 +264,11 @@ void            g_once_init_leave               (volatile void  *location,
 # define g_once_init_leave(location, result) \
   (g_once_init_leave((location), (gsize) (result)))
 #endif
+
+GLIB_AVAILABLE_IN_2_44
+ghandle         g_thread_enter_critical_section_using_handle    (GThread *thread);
+GLIB_AVAILABLE_IN_2_44
+void            g_thread_leave_critical_section                 (GThread *thread);
 
 GLIB_AVAILABLE_IN_2_36
 guint          g_get_num_processors (void);

@@ -23,11 +23,16 @@
 #define __G_THREADPRIVATE_H__
 
 #include "deprecated/gthread.h"
+#include "gwakeup.h"
 
 typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
   GThread thread;
+
+  GWakeup *wakeup;
+  guint    in_critical    : 1;
+  guint    wakeup_flagged : 1;
 
   gint ref_count;
   gboolean ours;
