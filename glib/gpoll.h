@@ -74,6 +74,24 @@ typedef gint    (*GPollFunc)    (GPollFD *ufds,
                                  guint    nfsd,
                                  gint     timeout_);
 
+#ifdef G_OS_WIN32
+typedef gintptr ghandleint;
+typedef gpointer ghandle;
+#define G_HANDLE_NULL (NULL)
+#else
+typedef gint ghandleint;
+typedef gint ghandle;
+#define G_HANDLE_NULL (-1)
+#endif
+
+G_STATIC_ASSERT(sizeof (ghandle) == sizeof (ghandleint));
+
+static inline gboolean
+g_handle_is_valid (ghandle handle)
+{
+  return handle != G_HANDLE_NULL;
+}
+
 /**
  * GPollFD:
  * @fd: the file descriptor to poll (or a HANDLE on Win32)
@@ -89,13 +107,7 @@ typedef gint    (*GPollFunc)    (GPollFD *ufds,
  */
 struct _GPollFD
 {
-#if defined (G_OS_WIN32) && GLIB_SIZEOF_VOID_P == 8
-#ifndef __GTK_DOC_IGNORE__
-  gint64	fd;
-#endif
-#else
-  gint		fd;
-#endif
+  ghandleint    fd;
   gushort 	events;
   gushort 	revents;
 };

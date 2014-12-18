@@ -544,6 +544,10 @@ g_child_watch_add
 g_child_watch_add_full
 
 <SUBSECTION>
+ghandle
+ghandleint
+%G_HANDLE_NULL
+g_handle_is_valid
 GPollFD
 g_poll
 G_POLLFD_FORMAT

@@ -2370,5 +2370,43 @@
  * Since: 2.6
  */
  
+/* ghandle {{{1 */
+/**
+ * ghandle:
+ *
+ * Corresponds to a HANDLE on Windows and a file descriptor elsewhere.
+ *
+ * Since: 2.44
+ */
+
+/**
+ * ghandleint:
+ *
+ * An integer with the same size as #ghandle.  Used in #GPollFD as the
+ * 'fd' field.
+ *
+ * Since: 2.44
+ */
+
+/**
+ * G_HANDLE_INVALID:
+ *
+ * A value used to denote an invalid handle.  Can always be safely
+ * compared to #ghandle.
+ *
+ * See also g_handle_is_valid().
+ *
+ * Since: 2.44
+ */
+
+/**
+ * g_handle_is_valid:
+ * @handle: a #ghandle
+ *
+ * Checks if a #ghandle is valid (ie: not equal to G_HANDLE_NULL).
+ *
+ * Since: 2.44
+ */
+
  /* Epilogue {{{1 */
 /* vim: set foldmethod=marker: */
