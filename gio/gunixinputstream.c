@@ -340,43 +340,27 @@ g_unix_input_stream_read (GInputStream  *stream,
 {
   GUnixInputStream *unix_stream;
   gssize res = -1;
-  GPollFD poll_fds[2];
-  int nfds;
-  int poll_ret;
+  GPollFD pollfd;
 
   unix_stream = G_UNIX_INPUT_STREAM (stream);
 
-  poll_fds[0].fd = unix_stream->priv->fd;
-  poll_fds[0].events = G_IO_IN;
-  if (unix_stream->priv->is_pipe_or_socket &&
-      g_cancellable_make_pollfd (cancellable, &poll_fds[1]))
-    nfds = 2;
-  else
-    nfds = 1;
+  pollfd.fd = unix_stream->priv->fd;
+  pollfd.events = G_IO_IN;
 
   while (1)
     {
-      poll_fds[0].revents = poll_fds[1].revents = 0;
-      do
-	poll_ret = g_poll (poll_fds, nfds, -1);
-      while (poll_ret == -1 && errno == EINTR);
+      gboolean result;
 
-      if (poll_ret == -1)
-	{
-          int errsv = errno;
+      if (unix_stream->priv->is_pipe_or_socket)
+        result = g_cancellable_poll_simple (cancellable, &pollfd, -1, error);
+      else
+        result = !g_cancellable_set_error_if_cancelled (cancellable, error);
 
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error reading from file descriptor: %s"),
-		       g_strerror (errsv));
-	  break;
-	}
-
-      if (g_cancellable_set_error_if_cancelled (cancellable, error))
-	break;
-
-      if (!poll_fds[0].revents)
-	continue;
+      if (!result)
+        {
+          g_prefix_error (error, _("Error reading from file descriptor: "));
+          break;
+        }
 
       res = read (unix_stream->priv->fd, buffer, count);
       if (res == -1)
@@ -395,8 +379,6 @@ g_unix_input_stream_read (GInputStream  *stream,
       break;
     }
 
-  if (nfds == 2)
-    g_cancellable_release_fd (cancellable);
   return res;
 }
 

@@ -40,22 +40,14 @@ _g_win32_overlap_wait_result (HANDLE           hfile,
                               DWORD           *transferred,
                               GCancellable    *cancellable)
 {
-  GPollFD pollfd[2];
+  GPollFD pollfd;
   gboolean result = FALSE;
-  gint num, npoll;
 
-  pollfd[0].fd = (gint)overlap->hEvent;
-  pollfd[0].events = G_IO_IN;
-  num = 1;
-
-  if (g_cancellable_make_pollfd (cancellable, &pollfd[1]))
-    num++;
+  pollfd.fd = (gint)overlap->hEvent;
+  pollfd.events = G_IO_IN;
 
 loop:
-  npoll = g_poll (pollfd, num, -1);
-  if (npoll <= 0)
-    /* error out, should never happen */
-    goto end;
+  g_cancellable_poll_simple (cancellable, &pollfd, -1, NULL);
 
   if (g_cancellable_is_cancelled (cancellable))
     {
@@ -73,10 +65,6 @@ loop:
       GetLastError () == ERROR_IO_INCOMPLETE &&
       !g_cancellable_is_cancelled (cancellable))
     goto loop;
-
-end:
-  if (num > 1)
-    g_cancellable_release_fd (cancellable);
 
   return result;
 }

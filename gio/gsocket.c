@@ -3557,7 +3557,7 @@ g_socket_condition_timed_wait (GSocket       *socket,
 			       GCancellable  *cancellable,
 			       GError       **error)
 {
-  gint64 start_time;
+  gint64 end_time;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
@@ -3567,114 +3567,49 @@ g_socket_condition_timed_wait (GSocket       *socket,
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
     return FALSE;
 
-  if (socket->priv->timeout &&
-      (timeout < 0 || socket->priv->timeout < timeout / G_USEC_PER_SEC))
-    timeout = socket->priv->timeout * 1000;
-  else if (timeout != -1)
-    timeout = timeout / 1000;
-
-  start_time = g_get_monotonic_time ();
+  if (socket->priv->timeout && (timeout < 0 || socket->priv->timeout < timeout / G_USEC_PER_SEC))
+    end_time = g_get_monotonic_time () + socket->priv->timeout * G_TIME_SPAN_SECOND;
+  else if (timeout > 0)
+    end_time = g_get_monotonic_time () + timeout;
+  else /* timeout is -1 or 0 */
+    end_time = timeout;
 
 #ifdef G_OS_WIN32
   {
     GIOCondition current_condition;
-    WSAEVENT events[2];
-    DWORD res;
-    GPollFD cancel_fd;
-    int num_events;
+    GPollFD pollfd;
 
     /* Always check these */
-    condition |=  G_IO_ERR | G_IO_HUP;
+    condition |= G_IO_ERR | G_IO_HUP;
 
     add_condition_watch (socket, &condition);
 
-    num_events = 0;
-    events[num_events++] = socket->priv->event;
-
-    if (g_cancellable_make_pollfd (cancellable, &cancel_fd))
-      events[num_events++] = (WSAEVENT)cancel_fd.fd;
-
-    if (timeout == -1)
-      timeout = WSA_INFINITE;
+    pollfd.fd = (gintptr) socket->priv->event;
+    pollfd.events = G_IO_IN;
 
     current_condition = update_condition (socket);
     while ((condition & current_condition) == 0)
       {
-	res = WSAWaitForMultipleEvents (num_events, events,
-					FALSE, timeout, FALSE);
-	if (res == WSA_WAIT_FAILED)
-	  {
-	    int errsv = get_socket_errno ();
+        if (!g_cancellable_poll_simple (cancellable, &pollfd, end_time, error))
+          {
+            g_prefix_error (error, _("Waiting for socket condition: "));
+            break;
+          }
 
-	    g_set_error (error, G_IO_ERROR,
-			 socket_io_error_from_errno (errsv),
-			 _("Waiting for socket condition: %s"),
-			 socket_strerror (errsv));
-	    break;
-	  }
-	else if (res == WSA_WAIT_TIMEOUT)
-	  {
-	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
-				 _("Socket I/O timed out"));
-	    break;
-	  }
-
-	if (g_cancellable_set_error_if_cancelled (cancellable, error))
-	  break;
-
-	current_condition = update_condition (socket);
-
-	if (timeout != WSA_INFINITE)
-	  {
-	    timeout -= (g_get_monotonic_time () - start_time) * 1000;
-	    if (timeout < 0)
-	      timeout = 0;
-	  }
+        current_condition = update_condition (socket);
       }
     remove_condition_watch (socket, &condition);
-    if (num_events > 1)
-      g_cancellable_release_fd (cancellable);
 
     return (condition & current_condition) != 0;
   }
 #else
   {
-    GPollFD poll_fd[2];
-    gint result;
-    gint num;
+    GPollFD pollfd;
 
-    poll_fd[0].fd = socket->priv->fd;
-    poll_fd[0].events = condition;
-    num = 1;
+    pollfd.fd = socket->priv->fd;
+    pollfd.events = condition;
 
-    if (g_cancellable_make_pollfd (cancellable, &poll_fd[1]))
-      num++;
-
-    while (TRUE)
-      {
-	result = g_poll (poll_fd, num, timeout);
-	if (result != -1 || errno != EINTR)
-	  break;
-
-	if (timeout != -1)
-	  {
-	    timeout -= (g_get_monotonic_time () - start_time) / 1000;
-	    if (timeout < 0)
-	      timeout = 0;
-	  }
-      }
-    
-    if (num > 1)
-      g_cancellable_release_fd (cancellable);
-
-    if (result == 0)
-      {
-	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
-			     _("Socket I/O timed out"));
-	return FALSE;
-      }
-
-    return !g_cancellable_set_error_if_cancelled (cancellable, error);
+    return g_cancellable_poll_simple (cancellable, &pollfd, end_time, error);
   }
   #endif
 }
