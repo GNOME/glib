@@ -469,6 +469,15 @@ void                 g_source_set_ready_time (GSource        *source,
 GLIB_AVAILABLE_IN_2_36
 gint64               g_source_get_ready_time (GSource        *source);
 
+GLIB_AVAILABLE_IN_2_44
+gpointer             g_source_add_handle     (GSource        *source,
+                                              ghandle         handle);
+GLIB_AVAILABLE_IN_2_44
+void                 g_source_remove_handle  (GSource        *source,
+                                              gpointer        tag);
+GLIB_AVAILABLE_IN_2_44
+gboolean             g_source_query_handle   (GSource        *source,
+                                              gpointer        tag);
 #ifdef G_OS_UNIX
 GLIB_AVAILABLE_IN_2_36
 gpointer             g_source_add_unix_fd    (GSource        *source,

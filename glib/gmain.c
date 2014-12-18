@@ -2308,7 +2308,6 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
     return FALSE;
 }
 
-#ifdef G_OS_UNIX
 /**
  * g_source_add_unix_fd:
  * @source: a #GSource
@@ -2333,9 +2332,12 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
  *
  * Since: 2.36
  **/
+#ifndef G_OS_UNIX
+static
+#endif
 gpointer
 g_source_add_unix_fd (GSource      *source,
-                      gint          fd,
+                      ghandle       fd,
                       GIOCondition  events)
 {
   GMainContext *context;
@@ -2345,7 +2347,7 @@ g_source_add_unix_fd (GSource      *source,
   g_return_val_if_fail (!SOURCE_DESTROYED (source), NULL);
 
   poll_fd = g_new (GPollFD, 1);
-  poll_fd->fd = fd;
+  poll_fd->fd = (ghandleint) fd;
   poll_fd->events = events;
   poll_fd->revents = 0;
 
@@ -2386,6 +2388,7 @@ g_source_add_unix_fd (GSource      *source,
  *
  * Since: 2.36
  **/
+#ifdef G_OS_UNIX
 void
 g_source_modify_unix_fd (GSource      *source,
                          gpointer      tag,
@@ -2405,6 +2408,7 @@ g_source_modify_unix_fd (GSource      *source,
   if (context)
     g_main_context_wakeup (context);
 }
+#endif
 
 /**
  * g_source_remove_unix_fd:
@@ -2424,6 +2428,9 @@ g_source_modify_unix_fd (GSource      *source,
  *
  * Since: 2.36
  **/
+#ifndef G_OS_UNIX
+static
+#endif
 void
 g_source_remove_unix_fd (GSource  *source,
                          gpointer  tag)
@@ -2473,6 +2480,9 @@ g_source_remove_unix_fd (GSource  *source,
  *
  * Since: 2.36
  **/
+#ifndef G_OS_UNIX
+static
+#endif
 GIOCondition
 g_source_query_unix_fd (GSource  *source,
                         gpointer  tag)
@@ -2486,7 +2496,84 @@ g_source_query_unix_fd (GSource  *source,
 
   return poll_fd->revents;
 }
-#endif /* G_OS_UNIX */
+
+/**
+ * g_source_add_handle:
+ * @source: a #GSource
+ * @handle: the #ghandle to monitor
+ *
+ * Monitors @handle for readiness.
+ *
+ * The tag returned by this function can be used to remove the
+ * monitoring of the handle using g_source_remove_handle().
+ *
+ * It is not necessary to remove the handle before destroying the source; it
+ * will be cleaned up automatically.
+ *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
+ *
+ * On UNIX, @handle will be polled for readability.  If you need to
+ * watch for other events, see g_source_add_unix_fd().
+ *
+ * Returns: an opaque tag
+ *
+ * Since: 2.44
+ **/
+gpointer
+g_source_add_handle (GSource *source,
+                     ghandle  handle)
+{
+  return g_source_add_unix_fd (source, handle, G_IO_IN);
+}
+
+/**
+ * g_source_remove_handle:
+ * @source: a #GSource
+ * @tag: the tag from g_source_add_handle()
+ *
+ * Reverses the effect of a previous call to g_source_add_handle().
+ *
+ * You only need to call this if you want to remove a handle from being
+ * watched while keeping the same source around.  In the normal case you
+ * will just want to destroy the source.
+ *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
+ *
+ * Since: 2.36
+ **/
+void
+g_source_remove_handle (GSource  *source,
+                        gpointer  tag)
+{
+  return g_source_remove_unix_fd (source, tag);
+}
+
+/**
+ * g_source_query_handle:
+ * @source: a #GSource
+ * @tag: the tag from g_source_add_handle()
+ *
+ * Queries the ready state of the handle corresponding to @tag on
+ * @source during the last poll.
+ *
+ * The return value of this function is only defined when the function
+ * is called from the check or dispatch functions for @source.
+ *
+ * This API is only intended to be used by implementations of #GSource.
+ * Do not call this API on a #GSource that you did not create.
+ *
+ * Returns: %TRUE if the handle was ready
+ *
+ * Since: 2.44
+ **/
+gboolean
+g_source_query_handle (GSource  *source,
+                       gpointer  tag)
+{
+  return (g_source_query_unix_fd (source, tag) & G_IO_IN) != 0;
+}
 
 /**
  * g_get_current_time:
