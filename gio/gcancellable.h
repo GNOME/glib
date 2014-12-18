@@ -88,6 +88,18 @@ gboolean      g_cancellable_make_pollfd            (GCancellable  *cancellable,
 GLIB_AVAILABLE_IN_ALL
 void          g_cancellable_release_fd             (GCancellable  *cancellable);
 
+GLIB_AVAILABLE_IN_2_44
+gboolean      g_cancellable_poll_simple            (GCancellable  *cancellable,
+                                                    GPollFD       *pollfd,
+                                                    gint64         ready_time,
+                                                    GError       **error);
+GLIB_AVAILABLE_IN_2_44
+gint          g_cancellable_poll_full              (GCancellable  *cancellable,
+                                                    GPollFD       *pollfds,
+                                                    guint          nfds,
+                                                    gint64         ready_time,
+                                                    GError       **error);
+
 GLIB_AVAILABLE_IN_ALL
 GSource *     g_cancellable_source_new             (GCancellable  *cancellable);
 

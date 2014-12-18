@@ -1218,6 +1218,8 @@ g_cancellable_get_fd
 g_cancellable_make_pollfd
 g_cancellable_release_fd
 g_cancellable_source_new
+g_cancellable_poll_simple
+g_cancellable_poll_full
 GCancellableSourceFunc
 g_cancellable_get_current
 g_cancellable_pop_current

@@ -25,6 +25,9 @@
 #include "gcancellable.h"
 #include "glibintl.h"
 
+#include <string.h>
+#include <errno.h>
+
 
 /**
  * SECTION:gcancellable
@@ -454,6 +457,241 @@ g_cancellable_release_fd (GCancellable *cancellable)
     }
 
   g_mutex_unlock (&cancellable_mutex);
+}
+
+/**
+ * g_cancellable_poll_simple:
+ * @cancellable: (nullable): a #GCancellable object
+ * @pollfd: a single #GPollFD record to poll
+ * @ready_time: the monotonic time past which to return
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Waits on @pollfd until the requested condition is met, until the
+ * @ready_time is reached, or until @cancellable is cancelled.
+ *
+ * If @cancellable is cancelled or if polling returns an error then
+ * @error will be set and %FALSE will be returned.  EINTR is handled
+ * internally by retrying the poll.  Other errors, including
+ * cancellation, are generally reported in the %G_IO_ERROR domain.
+ *
+ * If the condition requested by @pollfd becomes ready then the revents
+ * field of @pollfd will be updated accordingly and %TRUE will be
+ * returned.
+ *
+ * If @ready_time was reached and the @pollfd was not ready then
+ * %G_IO_ERROR_TIMED_OUT will be returned.
+ *
+ * If @ready_time is in the past (including a value of 0) then the call
+ * will return immediately.  Checking of cancellation and the @pollfd
+ * will still occur in the normal way -- it just won't block.  A
+ * negative @ready_time means that there is no timeout.
+ *
+ * @cancellable can be %NULL, in which case cancellation is not checked
+ * for.
+ *
+ * See g_cancellable_poll_full() for a more powerful version of this
+ * call, if you need it.
+ *
+ * Returns: %TRUE if the requested condition was met, or %FALSE on error
+ *   or cancellation
+ *
+ * Since: 2.44
+ **/
+gint
+g_cancellable_poll_simple (GCancellable  *cancellable,
+                           GPollFD       *pollfd,
+                           gint64         ready_time,
+                           GError       **error)
+{
+  GPollFD fds[2];
+  guint nfds;
+  gint timeout;
+  gint result;
+
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return FALSE;
+
+  fds[0] = *pollfd;
+  nfds = 1;
+
+  nfds += g_cancellable_make_pollfd (cancellable, &fds[1]);
+  fds[1].revents = 0; /* we check this below */
+
+again:
+  if (ready_time > 0)
+    {
+      gint64 now = g_get_monotonic_time ();
+
+      if (now < ready_time)
+        timeout = (ready_time - now + 999) / G_TIME_SPAN_MILLISECOND;
+      else
+        timeout = 0;
+    }
+  else if (ready_time < 0)
+    timeout = -1;
+  else
+    timeout = 0;
+
+  result = g_poll (fds, nfds, timeout);
+
+  if (result == -1)
+    {
+      gint saved_errno = errno;
+
+      if (saved_errno == EINTR)
+        goto again;
+
+      g_set_error_literal (error, G_IO_ERROR,
+                           g_io_error_from_errno (saved_errno),
+                           g_strerror (saved_errno));
+
+      goto out;
+    }
+
+  if (result == 0)
+    {
+      g_assert (ready_time >= 0);
+      g_set_error_literal (error, G_IO_ERROR,
+                           G_IO_ERROR_TIMED_OUT,
+                           _("Operation timed out"));
+      result = -1;
+      goto out;
+    }
+
+  if (result && fds[1].revents)
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_CANCELLED,
+                           _("Operation was cancelled"));
+      result = -1;
+      goto out;
+    }
+
+  pollfd->revents = fds[0].revents;
+
+out:
+  g_cancellable_release_fd (cancellable);
+
+  return result != -1;
+}
+
+/**
+ * g_cancellable_poll_full:
+ * @cancellable: (nullable): a #GCancellable object
+ * @pollfds: an array of #GPollFD records to poll
+ * @nfds: the length of @pollfds
+ * @ready_time: the monotonic time past which to return
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Waits on @pollfds until at least one of the requested conditions is
+ * met, until the @ready_time is reached, or until @cancellable is
+ * cancelled.
+ *
+ * If @cancellable is cancelled or if polling returns an error then
+ * @error will be set and -1 will be returned.  EINTR is returned as
+ * %G_FILE_ERROR_INTR (as there is no equivalent error code in GIO).  In
+ * general, this function will return error codes from #GFileError,
+ * except in case of cancellation in which case %G_IO_ERROR_CANCELLED is
+ * used.
+ *
+ * Otherwise, the number of ready @pollfds is returned.  Their revents
+ * fields will be updated accordingly.  If @ready_time was reached then
+ * the result may be zero.
+ *
+ * If @ready_time is in the past (including a value of 0) then the call
+ * will return immediately.  Checking of cancellation and the @pollfds
+ * will still occur in the normal way -- it just won't block.  A
+ * negative @ready_time means that there is no timeout.
+ *
+ * @cancellable can be %NULL, in which case cancellation is not checked
+ * for.
+ *
+ * g_cancellable_poll_simple() will be easier to use for most cases.
+ *
+ * Returns: the number of @pollfds that are ready, or -1 on error
+ *
+ * Since: 2.44
+ **/
+gint
+g_cancellable_poll_full (GCancellable  *cancellable,
+                         GPollFD       *pollfds,
+                         guint          nfds,
+                         gint64         ready_time,
+                         GError       **error)
+{
+  GPollFD *all_pollfds;
+  gint all_nfds;
+  gint timeout;
+  gint result;
+
+  if (g_cancellable_set_error_if_cancelled (cancellable, error))
+    return FALSE;
+
+  if (cancellable)
+    {
+      /* not that we ever expect this to happen... */
+      if (nfds >= 1024)
+        all_pollfds = g_new (GPollFD, nfds + 1);
+      else
+        all_pollfds = g_newa (GPollFD, nfds + 1);
+
+      g_cancellable_make_pollfd (cancellable, &all_pollfds[0]);
+      memcpy (all_pollfds + 1, pollfds, nfds * sizeof (GPollFD));
+      all_nfds = nfds + 1;
+    }
+  else
+    {
+      all_pollfds = pollfds;
+      all_nfds = nfds;
+    }
+
+  if (ready_time > 0)
+    {
+      gint64 now = g_get_monotonic_time ();
+
+      if (now < ready_time)
+        timeout = (ready_time - now + 999) / G_TIME_SPAN_MILLISECOND;
+      else
+        timeout = 0;
+    }
+  else if (ready_time < 0)
+    timeout = -1;
+  else
+    timeout = 0;
+
+  result = g_poll (all_pollfds, all_nfds, timeout);
+
+  if (result == -1)
+    {
+      gint saved_errno = errno;
+
+      g_set_error_literal (error, G_FILE_ERROR,
+                           g_file_error_from_errno (saved_errno),
+                           g_strerror (saved_errno));
+      goto out;
+    }
+
+  if (cancellable && all_pollfds[0].revents)
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_CANCELLED,
+                           _("Operation was cancelled"));
+      result = -1;
+      goto out;
+    }
+
+  if (cancellable)
+    memcpy (pollfds, all_pollfds + 1, nfds * sizeof (GPollFD));
+
+out:
+  g_cancellable_release_fd (cancellable);
+
+  if (cancellable && nfds >= 1024)
+    g_free (all_pollfds);
+
+  return result;
 }
 
 /**
