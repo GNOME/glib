@@ -1685,7 +1685,10 @@ g_param_spec_uchar (const gchar *name,
  * @flags: flags for the property specified
  *
  * Creates a new #GParamSpecBoolean instance specifying a %G_TYPE_BOOLEAN
- * property.
+ * property. In many cases, it may be more appropriate to use an enum with
+ * g_param_spec_enum(), both to improve code clarity by using explicitly named
+ * values, and to allow for more values to be added in future without breaking
+ * API.
  *
  * See g_param_spec_internal() for details on property names.
  *
@@ -2326,6 +2329,8 @@ g_param_spec_boxed (const gchar *name,
  * @flags: flags for the property specified
  *
  * Creates a new #GParamSpecPointer instance specifying a pointer property.
+ * Where possible, it is better to use g_param_spec_object() or
+ * g_param_spec_boxed() to expose memory management information.
  *
  * See g_param_spec_internal() for details on property names.
  *
