@@ -125,6 +125,16 @@ void          g_cancellable_disconnect             (GCancellable  *cancellable,
 GLIB_AVAILABLE_IN_ALL
 void          g_cancellable_cancel       (GCancellable  *cancellable);
 
+GLIB_AVAILABLE_IN_2_44
+ghandle       g_cancellable_enter_critical_section_using_handle         (GCancellable  *cancellable,
+                                                                         GThread       *self,
+                                                                         GError       **error);
+
+GLIB_AVAILABLE_IN_2_44
+gboolean      g_cancellable_leave_critical_section                      (GCancellable  *cancellable,
+                                                                         GThread       *self,
+                                                                         GError       **error);
+
 G_END_DECLS
 
 #endif /* __G_CANCELLABLE_H__ */

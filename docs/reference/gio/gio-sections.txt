@@ -1228,6 +1228,8 @@ g_cancellable_reset
 g_cancellable_connect
 g_cancellable_disconnect
 g_cancellable_cancel
+g_cancellable_enter_critical_section_using_handle
+g_cancellable_leave_critical_section
 <SUBSECTION Standard>
 GCancellableClass
 G_CANCELLABLE

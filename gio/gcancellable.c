@@ -50,6 +50,12 @@ struct _GCancellablePrivate
   guint cancelled_running : 1;
   guint cancelled_running_waiting : 1;
 
+  union {
+    GThread *one;
+    GThread **several;
+  } critical_threads;
+  guint n_critical_threads;
+
   guint fd_refcount;
   GWakeup *wakeup;
 };
@@ -735,6 +741,17 @@ g_cancellable_cancel (GCancellable *cancellable)
   priv->cancelled = TRUE;
   priv->cancelled_running = TRUE;
 
+  /* wake threads in critical sections */
+  if G_UNLIKELY (cancellable->priv->n_critical_threads > 1)
+    {
+      guint i;
+
+      for (i = 0; i < cancellable->priv->n_critical_threads; i++)
+        g_thread_wakeup (cancellable->priv->critical_threads.several[i]);
+    }
+  else if (cancellable->priv->n_critical_threads)
+    g_thread_wakeup (cancellable->priv->critical_threads.one);
+
   if (priv->wakeup)
     GLIB_PRIVATE_CALL (g_wakeup_signal) (priv->wakeup);
 
@@ -992,4 +1009,242 @@ g_cancellable_source_new (GCancellable *cancellable)
     }
 
   return source;
+}
+
+static void
+g_cancellable_add_critical_thread (GCancellable *cancellable,
+                                   GThread      *thread)
+{
+  g_thread_ref (thread);
+
+  /* The vast majority case will be when there is only one thread, but
+   * we do support a single cancellable in use from multiple threads and
+   * they may all be using critical-section handling.
+   */
+  if G_LIKELY (cancellable->priv->n_critical_threads == 0)
+    {
+      cancellable->priv->critical_threads.one = thread;
+      cancellable->priv->n_critical_threads = 1;
+    }
+  else if (cancellable->priv->n_critical_threads == 1)
+    {
+      GThread *other = cancellable->priv->critical_threads.one;
+
+      cancellable->priv->critical_threads.several = g_new (GThread *, 2);
+      cancellable->priv->critical_threads.several[0] = other;
+      cancellable->priv->critical_threads.several[1] = thread;
+      cancellable->priv->n_critical_threads = 2;
+    }
+  else
+    {
+      GThread **threads;
+      guint i;
+
+      threads = g_new (GThread *, cancellable->priv->n_critical_threads + 1);
+
+      for (i = 0; i < cancellable->priv->n_critical_threads; i++)
+        {
+          g_assert (cancellable->priv->critical_threads.several[i] != thread);
+          threads[i] = cancellable->priv->critical_threads.several[i];
+        }
+
+      threads[i++] = thread;
+
+      g_free (cancellable->priv->critical_threads.several);
+      cancellable->priv->critical_threads.several = threads;
+      cancellable->priv->n_critical_threads++;
+    }
+}
+
+static void
+g_cancellable_remove_critical_thread (GCancellable *cancellable,
+                                      GThread      *thread)
+{
+  if G_LIKELY (cancellable->priv->n_critical_threads == 1)
+    {
+      g_assert (cancellable->priv->critical_threads.one == thread);
+      cancellable->priv->n_critical_threads = 0;
+    }
+  else if (cancellable->priv->n_critical_threads == 2)
+    {
+      GThread *other;
+
+      if (cancellable->priv->critical_threads.several[0] != thread)
+        {
+          g_assert (cancellable->priv->critical_threads.several[0] == thread);
+          other = cancellable->priv->critical_threads.several[0];
+        }
+      else
+        other = cancellable->priv->critical_threads.several[1];
+
+      g_free (cancellable->priv->critical_threads.several);
+      cancellable->priv->critical_threads.one = other;
+      cancellable->priv->n_critical_threads = 1;
+    }
+  else
+    {
+      guint i;
+
+      for (i = 0; i < cancellable->priv->n_critical_threads; i++)
+        if (cancellable->priv->critical_threads.several[i] == thread)
+          break;
+
+      g_assert (i != cancellable->priv->n_critical_threads);
+      cancellable->priv->n_critical_threads--;
+
+      for (; i < cancellable->priv->n_critical_threads; i++)
+        /* move from the right */
+        cancellable->priv->critical_threads.several[i] = cancellable->priv->critical_threads.several[i + 1];
+    }
+
+  g_thread_unref (thread);
+}
+
+/**
+ * g_cancellable_enter_critical_section_using_handle:
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @thread: the current #GThread
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Attempts to enter a critical section that can be cancelled by
+ * @cancellable.
+ *
+ * See g_thread_enter_critical_section_using_handle() for a conceptual
+ * introduction.
+ *
+ * @thread absolutely must be equal to the current thread as returned by
+ * g_thread_self().  The behaviour is completely undefined otherwise.
+ *
+ * This function is essentially a convenience wrapper.  First, it
+ * atomically checks for cancellation and returns %G_HANDLE_NULL with
+ * @error appropriately set if the cancellable is already cancelled.
+ * Then it sets up @cancellable so that a cancellation in another thread
+ * will result in g_thread_wakeup() being called on @thread.  Finally,
+ * g_thread_enter_critical_section_using_handle() is called and the
+ * result is returned.
+ *
+ * The result is that the returned handle will poll as ready if
+ * @cancellable is triggered.
+ *
+ * You must call g_cancellable_leave_critical_section() when you are
+ * done.
+ *
+ * The example in the documentation for
+ * g_thread_enter_critical_section_using_handle() could be written
+ * using GCancellable as follows:
+ *
+ * |[
+ * static gpointer worker (gpointer user_data) {
+ *   GCancellable *cancellable = user_data;
+ *   GThread *self = g_thread_self ();
+ *   gboolean should_exit = FALSE;
+ *
+ *   while (TRUE)
+ *     {
+ *       ghandle handle;
+ *
+ *       handle = g_cancellable_enter_critical_section_using_handle (cancellable, self, NULL);
+ *       if (!g_handle_is_valid (handle))
+ *         break;
+ *
+ *       do_blocking_work (handle);
+ *
+ *       g_cancellable_leave_critical_section (cancellable, self, NULL);
+ *     }
+ *
+ *   return NULL;
+ * }
+ *
+ * void start_cancellable_worker (GCancellable *cancellable) {
+ *   g_atomic_set (&continue_work, 1);
+ *   g_thread_unref (g_thread_new ("worker", worker, cancellable));
+ * }
+ * ]|
+ *
+ * Returns: a valid #ghandle if the critical section was entered or
+ *   %G_HANDLE_NULL (and @error set) if not.  Use g_handle_is_valid() to
+ *   check.
+ *
+ * Since: 2.44
+ */
+ghandle
+g_cancellable_enter_critical_section_using_handle (GCancellable  *cancellable,
+                                                   GThread       *thread,
+                                                   GError       **error)
+{
+  if (cancellable)
+    {
+      gboolean cancelled = FALSE;
+
+      g_mutex_lock (&cancellable_mutex);
+
+      cancelled = cancellable->priv->cancelled;
+
+      if (!cancelled)
+        g_cancellable_add_critical_thread (cancellable, thread);
+
+      g_mutex_unlock (&cancellable_mutex);
+
+      if (cancelled)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_CANCELLED,
+                               _("Operation was cancelled"));
+          return G_HANDLE_NULL;
+        }
+    }
+
+  return g_thread_enter_critical_section_using_handle (thread);
+}
+
+/**
+ * g_cancellable_leave_critical_section:
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @thread: the current #GThread
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Leaves the critical section entered by
+ * g_cancellable_enter_critical_section_using_handle().
+ *
+ * This will also check @cancellable again for having been cancelled
+ * (which may very well be the reason for the operating in the critical
+ * section having finished).  This provides a convenient chance to
+ * recheck @cancellable, but you may safely ignore the result if you
+ * will be checking it again soon anyway.
+ *
+ * Returns: %TRUE if @cancellable was not cancelled.  Returns %FALSE
+ *   (with @error set appropriately) in case of cancellation.
+ *
+ * Since: 2.44
+ */
+gboolean
+g_cancellable_leave_critical_section (GCancellable  *cancellable,
+                                      GThread       *thread,
+                                      GError       **error)
+{
+  g_thread_leave_critical_section (thread);
+
+  if (cancellable)
+    {
+      gboolean cancelled = FALSE;
+
+      g_mutex_lock (&cancellable_mutex);
+
+      g_cancellable_remove_critical_thread (cancellable, thread);
+      cancelled = cancellable->priv->cancelled;
+
+      g_mutex_unlock (&cancellable_mutex);
+
+      if (cancelled)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_CANCELLED,
+                               _("Operation was cancelled"));
+          return FALSE;
+        }
+    }
+
+  return TRUE;
 }
