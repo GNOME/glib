@@ -2850,6 +2850,34 @@ g_get_monotonic_time (void)
 }
 #endif
 
+/**
+ * g_get_coarse_monotonic_time:
+ *
+ * Gets the "coarse" monotonic time.
+ *
+ * This is the same thing as fetching the monotonic time except that it
+ * may be implemented in a way that is faster and less accurate.  On
+ * Linux this corresponds to CLOCK_MONOTONIC_COARSE.
+ *
+ * Since: 2.44
+ */
+gint64
+g_get_coarse_monotonic_time (void)
+{
+#ifdef __linux__
+  struct timespec ts;
+
+  result = clock_gettime (CLOCK_MONOTONIC_COARSE, &ts);
+
+  if G_UNLIKELY (result != 0)
+    g_error ("GLib requires CLOCK_MONOTONIC_COARSE on Linux");
+
+  return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
+#else
+  return g_get_monotonic_time ();
+#endif
+}
+
 static void
 g_main_dispatch_free (gpointer dispatch)
 {

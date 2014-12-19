@@ -543,6 +543,8 @@ GLIB_AVAILABLE_IN_ALL
 void   g_get_current_time                 (GTimeVal       *result);
 GLIB_AVAILABLE_IN_ALL
 gint64 g_get_monotonic_time               (void);
+GLIB_AVAILABLE_IN_2_44
+gint64 g_get_coarse_monotonic_time        (void);
 GLIB_AVAILABLE_IN_ALL
 gint64 g_get_real_time                    (void);
 

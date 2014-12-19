@@ -1455,6 +1455,7 @@ g_time_val_to_iso8601
 
 <SUBSECTION>
 g_get_monotonic_time
+g_get_coarse_monotonic_time
 g_get_real_time
 
 <SUBSECTION>
