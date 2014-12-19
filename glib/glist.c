@@ -186,7 +186,10 @@ g_list_free (GList *list)
  * g_list_free_1:
  * @list: a #GList element
  *
- * Frees one #GList element.
+ * Frees one #GList element, but does not update links from the next and
+ * previous elements in the list, so you should not call this function on an
+ * element that is currently part of a list.
+ *
  * It is usually used after g_list_remove_link().
  */
 /**
