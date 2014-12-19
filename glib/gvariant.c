@@ -1213,11 +1213,11 @@ g_variant_new_fixed_array (const GVariantType  *element_type,
 /* String type constructor/getters/validation {{{1 */
 /**
  * g_variant_new_string:
- * @string: a normal utf8 nul-terminated string
+ * @string: a normal UTF-8 nul-terminated string
  *
  * Creates a string #GVariant with the contents of @string.
  *
- * @string must be valid utf8.
+ * @string must be valid UTF-8.
  *
  * Returns: (transfer none): a floating reference to a new string #GVariant instance
  *
@@ -1235,11 +1235,11 @@ g_variant_new_string (const gchar *string)
 
 /**
  * g_variant_new_take_string: (skip)
- * @string: a normal utf8 nul-terminated string
+ * @string: a normal UTF-8 nul-terminated string
  *
  * Creates a string #GVariant with the contents of @string.
  *
- * @string must be valid utf8.
+ * @string must be valid UTF-8.
  *
  * This function consumes @string.  g_free() will be called on @string
  * when it is no longer required.
@@ -1407,7 +1407,7 @@ g_variant_is_signature (const gchar *string)
  * type.  This includes the types %G_VARIANT_TYPE_STRING,
  * %G_VARIANT_TYPE_OBJECT_PATH and %G_VARIANT_TYPE_SIGNATURE.
  *
- * The string will always be utf8 encoded.
+ * The string will always be UTF-8 encoded.
  *
  * If @length is non-%NULL then the length of the string (in bytes) is
  * returned there.  For trusted values, this information is already
@@ -1418,7 +1418,7 @@ g_variant_is_signature (const gchar *string)
  *
  * The return value remains valid as long as @value exists.
  *
- * Returns: (transfer none): the constant string, utf8 encoded
+ * Returns: (transfer none): the constant string, UTF-8 encoded
  *
  * Since: 2.24
  **/
@@ -1485,11 +1485,11 @@ g_variant_get_string (GVariant *value,
  * Similar to g_variant_get_string() except that instead of returning
  * a constant string, the string is duplicated.
  *
- * The string will always be utf8 encoded.
+ * The string will always be UTF-8 encoded.
  *
  * The return value must be freed using g_free().
  *
- * Returns: (transfer full): a newly allocated string, utf8 encoded
+ * Returns: (transfer full): a newly allocated string, UTF-8 encoded
  *
  * Since: 2.24
  **/
@@ -1777,7 +1777,7 @@ g_variant_dup_objv (GVariant *value,
  *
  * Creates an array-of-bytes #GVariant with the contents of @string.
  * This function is just like g_variant_new_string() except that the
- * string need not be valid utf8.
+ * string need not be valid UTF-8.
  *
  * The nul terminator character at the end of the string is stored in
  * the array.
