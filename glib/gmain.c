@@ -2867,6 +2867,7 @@ g_get_coarse_monotonic_time (void)
 {
 #ifdef __linux__
   struct timespec ts;
+  gint result;
 
   result = clock_gettime (CLOCK_MONOTONIC_COARSE, &ts);
 
@@ -5708,15 +5709,16 @@ again:
 }
 #else /* G_OS_UNIX */
 gint
-g_handle_wait_multiple (const ghandle *handles,
-                        guint          n_handles,
-                        gint64         ready_time)
+g_handle_wait_multiple (const ghandle  *handles,
+                        guint           n_handles,
+                        gint64          ready_time,
+                        GError        **error)
 {
-  struct pollfd *fds;
+  GPollFD *fds;
   gint result;
   guint i;
 
-  fds = g_newa (struct pollfd, n_handles);
+  fds = g_newa (GPollFD, n_handles);
   for (i = 0; i < n_handles; i++)
     {
       fds[i].fd = handles[i];
@@ -5724,7 +5726,7 @@ g_handle_wait_multiple (const ghandle *handles,
     }
 
 again:
-  result = poll (fds, n_handles, ready_time_to_timeout (ready_time));
+  result = g_poll (fds, n_handles, ready_time_to_timeout (ready_time));
 
   if (result == -1)
     {
@@ -5739,7 +5741,7 @@ again:
 
   if (result == 0)
     {
-      g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_TIMED_OUT, _("Operation timed out"));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT, _("Operation timed out"));
       return -1;
     }
 
@@ -5780,15 +5782,16 @@ again:
  */
 #ifdef G_OS_UNIX
 gint
-g_unix_fd_wait_multiple (GPollFD *pollfds,
-                         guint    n_pollfds,
-                         gint64   ready_time)
+g_unix_fd_wait_multiple (GPollFD  *pollfds,
+                         guint     n_pollfds,
+                         gint64    ready_time,
+                         GError  **error)
 {
   gint result;
   guint i;
 
 again:
-  result = poll (pollfds, n_pollfds, ready_time_to_timeout (ready_time));
+  result = g_poll (pollfds, n_pollfds, ready_time_to_timeout (ready_time));
 
   if (result == -1)
     {
@@ -5808,7 +5811,7 @@ again:
     }
 
   for (i = 0; i < n_pollfds; i++)
-    if (fds[i].revents)
+    if (pollfds[i].revents)
       {
         result = i;
         break;
@@ -5818,7 +5821,7 @@ again:
 
   /* prevent abuse */
   for (i = 0; i < n_pollfds; i++)
-    fds[i].revents = 0;
+    pollfds[i].revents = 0;
 
   return i;
 }
