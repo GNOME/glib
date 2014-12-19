@@ -1033,7 +1033,7 @@ g_settings_new_with_backend_and_path (const gchar      *schema_id,
  * If @backend is %NULL then the default backend is used.
  *
  * If @path is %NULL then the path from the schema is used.  It is an
- * error f @path is %NULL and the schema has no path of its own or if
+ * error if @path is %NULL and the schema has no path of its own or if
  * @path is non-%NULL and not equal to the path that the schema does
  * have.
  *
