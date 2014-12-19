@@ -3057,6 +3057,11 @@ g_object_ref (gpointer _object)
  *
  * Decreases the reference count of @object. When its reference count
  * drops to 0, the object is finalized (i.e. its memory is freed).
+ *
+ * If the pointer to the #GObject may be reused in future (for example, if it is
+ * an instance variable of another object), it is recommended to clear the
+ * pointer to %NULL rather than retain a dangling pointer to a potentially
+ * invalid #GObject instance. Use g_clear_object() for this.
  */
 void
 g_object_unref (gpointer _object)
