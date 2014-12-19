@@ -140,6 +140,20 @@
  * and #GAsyncQueue, which are thread-safe and need no further
  * application-level locking to be accessed from multiple threads.
  * Most refcounting functions such as g_object_ref() are also thread-safe.
+ *
+ * A common use for #GThreads is to move a long-running blocking operation out
+ * of the main thread and into a worker thread. For GLib functions, such as
+ * single GIO operations, this is not necessary, and complicates the code.
+ * Instead, the `…_async()` version of the function should be used from the main
+ * thread, eliminating the need for locking and synchronisation between multiple
+ * threads. If an operation does need to be moved to a worker thread, consider
+ * using g_task_run_in_thread(), or a #GThreadPool. #GThreadPool is often a
+ * better choice than #GThread, as it handles thread reuse and task queueing;
+ * #GTask uses this internally.
+ *
+ * However, if multiple blocking operations need to be performed in sequence,
+ * and it is not possible to use #GTask for them, moving them to a worker thread
+ * can clarify the code.
  */
 
 /* G_LOCK Documentation {{{1 ---------------------------------------------- */
@@ -784,6 +798,10 @@ g_thread_proxy (gpointer data)
  *
  * If the thread can not be created the program aborts. See
  * g_thread_try_new() if you want to attempt to deal with failures.
+ *
+ * If you are using threads to offload (potentially many) short-lived tasks,
+ * #GThreadPool may be more appropriate than manually spawning and tracking
+ * multiple #GThreads.
  *
  * To free the struct returned by this function, use g_thread_unref().
  * Note that g_thread_join() implicitly unrefs the #GThread as well.
