@@ -5185,10 +5185,14 @@ g_child_watch_dispatch (GSource    *source,
 static void
 g_unix_signal_handler (int signum)
 {
+  gint saved_errno = errno;
+
   unix_signal_pending[signum] = TRUE;
   any_unix_signal_pending = TRUE;
 
   g_wakeup_signal (glib_worker_context->wakeup);
+
+  errno = saved_errno;
 }
 
 #endif /* !G_OS_WIN32 */
