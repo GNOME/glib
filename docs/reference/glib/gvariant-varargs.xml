@@ -530,7 +530,8 @@ value4 = g_variant_new ("x", G_GINT64_CONSTANT (998877665544332211));
     '<literal>s</literal>', '<literal>o</literal>' or '<literal>g</literal>' in a format string,
     <link linkend='g-variant-new'><function>g_variant_new()</function></link> takes a <code>(const
     <link linkend='gchar'>gchar</link> *)</code> and makes a copy of it.
-    <link linkend='NULL:CAPS'><literal>NULL</literal></link> is not a valid string.  If the '<literal>o</literal>' or
+    <link linkend='NULL:CAPS'><literal>NULL</literal></link> is not a valid string; use
+    <link linkend='gvariant-format-strings-maybe-types'>maybe types</link> to encode that.  If the '<literal>o</literal>' or
     '<literal>g</literal>' characters are used, care must be taken to ensure that the passed string is a valid DBus
     object path or DBus type signature, respectively.
    </para>
