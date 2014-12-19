@@ -497,7 +497,6 @@ static void g_thread_cleanup (gpointer data);
 static GPrivate     g_thread_specific_private = G_PRIVATE_INIT (g_thread_cleanup);
 
 G_LOCK_DEFINE_STATIC (g_thread_new);
-G_LOCK_DEFINE_STATIC (g_thread_critical_section);
 
 /* GOnce {{{1 ------------------------------------------------------------- */
 
@@ -977,12 +976,21 @@ g_thread_self (void)
  * g_thread_wakeup:
  * @thread: a #GThread
  *
- * Wakes @thread if it is in a critical section.
+ * Wakes @thread, which must currently be in a critical section.
  *
- * If @thread is not in a critical section, does nothing.
+ * If @thread is not in a critical section, the behaviour is undefined.
+ * Much worse, if @thread is in a critical section other than the one
+ * that you expect that it to be in, very bad things will happen.
  *
- * See g_thread_enter_critical_section_using_handle() for an example of
- * how you might use this.
+ * The only way to get this right is by holding a lock when you call
+ * this function.  The lock must be the same lock that was held while
+ * entering the critical section in the other thread and which will be
+ * held again while leaving it.  You will need to use some kind of
+ * variable shared under that lock in order to reliably determine when
+ * the thread is in your critical section.
+ *
+ * See g_thread_enter_critical_section_using_handle() for a full
+ * example.
  *
  * Since: 2.44
  */
@@ -991,82 +999,88 @@ g_thread_wakeup (GThread *thread)
 {
   GRealThread *real = (GRealThread *) thread;
 
-  G_LOCK (g_thread_critical_section);
+  g_assert (real->in_critical);
 
-  if (real->in_critical && !real->wakeup_flagged)
+  if (!real->wakeup_flagged)
     {
       g_wakeup_signal (real->wakeup);
       real->wakeup_flagged = TRUE;
     }
-
-  G_UNLOCK (g_thread_critical_section);
 }
 
 /**
  * g_thread_enter_critical_section_using_handle:
  * @thread: the current #GThread
  *
- * Enters a critical region for the current thread.
+ * Enters a critical section for the current thread.
+ *
+ * You must be holding a lock while you call this function.
  *
  * @thread absolutely must be equal to the current thread as returned by
  * g_thread_self().  The behaviour is completely undefined otherwise.
  *
- * This function returns a handle that, at some point during the time
- * that this function was running, was not ready.
- *
- * Any call to g_thread_wakeup() that occurs after that point will
- * result in the returned handle polling as ready.
- *
- * For this reason, if a call to g_thread_wakeup() and
- * g_thread_enter_critical_section_using_handle() are made
- * concurrently, then the returned handled may either by ready or not
- * ready.
- *
- * In order for this to work reliably you will need an extra variable.
- * You will need to use either locks or atomic operations to protect
- * access to that variable.
+ * This function returns a handle that will not poll as ready, but may
+ * become ready after the lock held when calling this function is
+ * released if g_thread_wakeup() is called.  g_thread_wakeup() must be
+ * called while holding the same lock as was held when this function was
+ * called.
  *
  * You must call g_thread_leave_critical_section() immediately after you
- * are done waiting and you must not call any other non-system functions
- * in between.  The pairing of this call with
- * g_thread_leave_critical_section() is not recursive.
+ * are done waiting.  The pairing of this call with
+ * g_thread_leave_critical_section() is not recursive and it is your
+ * responsibility to ensure you do not make calls to other code which
+ * may try to use this functionality.
  *
  * Consider the following example:
  *
  * |[
- * gboolean  continue_work;
+ * GMutex    lock;
  * GThread  *worker;
+ * gboolean  in_critical;
+ * gboolean  request_exit;
  *
  * static gpointer worker (gpointer user_data) {
  *   GThread *self = g_thread_self ();
- *   gboolean should_exit = FALSE;
  *
- *   do
+ *   g_mutex_lock (&mutex);
+ *
+ *   while (!request_exit)
  *     {
  *       ghandle handle;
  *
  *       handle = g_thread_enter_critical_section_using_handle (self);
+ *       in_critical = TRUE;
  *
- *       if (g_atomic_int_get (&continue_work))
- *         do_blocking_work (handle);
- *       else
- *         should_exit = TRUE;
+ *       g_mutex_unlock (&mutex);
+ *
+ *       do_blocking_work (handle);
+ *
+ *       g_mutex_lock (&mutex);
  *
  *       g_thread_leave_critical_section (self);
+ *       in_critical = FALSE;
  *     }
- *   while (!should_exit);
+ *
+ *   g_mutex_unlock (&mutex);
  *
  *   return NULL;
  * }
  *
  * void start_worker (void) {
- *   g_atomic_set (&continue_work, 1);
+ *   g_mutex_lock (&lock);
+ *   request_exit = FALSE;
+ *   g_mutex_unlock (&lock);
+ *
  *   worker = g_thread_new ("worker", worker, NULL);
  * }
  *
  * void exit_worker (void) {
- *   g_atomic_int_set (&continue_work, 0);
- *   g_thread_wakeup (worker);
+ *   g_mutex_lock (&lock);
+ *   request_exit = TRUE;
+ *   if (in_critical)
+ *     g_thread_wakeup (worker);
+ *   g_mutex_unlock (&lock);
+ *
  *   g_thread_join (worker);
  * }
  * ]|
@@ -1074,24 +1088,20 @@ g_thread_wakeup (GThread *thread)
  * In the example `do_blocking_work()` is a low-level function that will
  * always return immediately when `handle` becomes ready.  This may be
  * based on `poll()`, for example.  Once the worker is started, it will
- * enter a loop.  Each iteration starts the critical section and then
- * atomically checks the `continue_worker` flag.  If the flag is not
- * set, the blocking begins.
+ * enter a loop.  Each iteration atomically checks the `exit_worker`
+ * variable and starts the critical section.  Then the blocking begins.
  *
  * When `exit_worker()` is called, the worker may either be inside of
  * or outside of the critical section.  If it is inside of the critical
  * section then g_thread_wakeup() will ensure that the handle becomes
  * ready and `do_blocking_work()` will return shortly.  In all cases,
- * `continue_worker` will be found to be %FALSE during the next loop
- * iteration, and it will exit.  If the worker was not in the critical
- * section then g_thread_wakeup() will do nothing at all.  This is why
- * the `continue_worker` variable must be checked after entering the
- * critical section.
+ * `request_exit` will be found to be %TRUE during the next loop and the
+ * worker will exit.
  *
  * The return value for this function may or may not be the same each
  * time you call it.  The handle may or may not have been closed and
- * reopened.  The only guarantee is that the handle was not ready at
- * some time during the call.
+ * reopened.  The only guarantee is that the handle will not poll as
+ * ready at the time it is returned.
  *
  * Returns: a valid #ghandle
  *
@@ -1107,18 +1117,11 @@ g_thread_enter_critical_section_using_handle (GThread *thread)
    *       anything here unless you also fix it there.
    */
 
-  /* We could probably do this with atomics fairly easily, but the
-   * mutex approach is a lot easier to read and will work for now.
-   */
-  G_LOCK (g_thread_critical_section);
-
   if (!real->wakeup)
     real->wakeup = g_wakeup_new ();
 
   g_assert (!real->in_critical || !real->wakeup_flagged);
   real->in_critical = TRUE;
-
-  G_UNLOCK (g_thread_critical_section);
 
   return g_wakeup_get_handle (real->wakeup);
 }
@@ -1133,14 +1136,15 @@ g_thread_enter_critical_section_using_handle (GThread *thread)
  * @thread absolutely must be equal to the current thread as returned by
  * g_thread_self().  The behaviour is completely undefined otherwise.
  *
+ * You must be holding the same lock that you were holding when you
+ * called g_thread_enter_critical_section_using_handle().
+ *
  * Since: 2.44
  */
 void
 g_thread_leave_critical_section (GThread *thread)
 {
   GRealThread *real = (GRealThread *) thread;
-
-  G_LOCK (g_thread_critical_section);
 
   g_assert (real->in_critical);
   real->in_critical = FALSE;
@@ -1150,8 +1154,6 @@ g_thread_leave_critical_section (GThread *thread)
       real->wakeup_flagged = FALSE;
       g_wakeup_acknowledge (real->wakeup);
     }
-
-  G_UNLOCK (g_thread_critical_section);
 }
 
 /**
