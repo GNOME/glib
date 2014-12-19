@@ -52,7 +52,8 @@
  * functions in GLib and GTK+ do not use the #GError facility.
  *
  * Functions that can fail take a return location for a #GError as their
- * last argument. For example:
+ * last argument. On error, a new #GError instance will be allocated and
+ * returned to the caller via this argument. For example:
  * |[<!-- language="C" -->
  * gboolean g_file_get_contents (const gchar  *filename,
  *                               gchar       **contents,
@@ -161,7 +162,8 @@
  * ]|
  *
  * If the sub-function does not indicate errors other than by
- * reporting a #GError, you need to create a temporary #GError
+ * reporting a #GError (or if its return value does not reliably indicate
+ * errors) you need to create a temporary #GError
  * since the passed-in one may be %NULL. g_propagate_error() is
  * intended for use in this case.
  * |[<!-- language="C" -->
