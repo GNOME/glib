@@ -4636,8 +4636,10 @@ g_timeout_source_new_seconds (guint interval)
  * (it does not try to 'catch up' time lost in delays).
  *
  * This internally creates a main loop source using g_timeout_source_new()
- * and attaches it to the main loop context using g_source_attach(). You can
- * do these steps manually if you need greater control.
+ * and attaches it to the global #GMainContext using g_source_attach(), so
+ * the callback will be invoked in whichever thread is running that main
+ * context. You can do these steps manually if you need greater control or to
+ * use a custom main context.
  *
  * The interval given in terms of monotonic time, not wall clock time.
  * See g_get_monotonic_time().
@@ -4694,8 +4696,10 @@ g_timeout_add_full (gint           priority,
  * optimizations and more efficient system power usage.
  *
  * This internally creates a main loop source using g_timeout_source_new()
- * and attaches it to the main loop context using g_source_attach(). You can
- * do these steps manually if you need greater control.
+ * and attaches it to the global #GMainContext using g_source_attach(), so
+ * the callback will be invoked in whichever thread is running that main
+ * context. You can do these steps manually if you need greater control or to
+ * use a custom main context.
  * 
  * The interval given is in terms of monotonic time, not wall clock
  * time.  See g_get_monotonic_time().
@@ -5429,8 +5433,10 @@ g_idle_source_new (void)
  * removed from the list of event sources and will not be called again.
  * 
  * This internally creates a main loop source using g_idle_source_new()
- * and attaches it to the main loop context using g_source_attach(). 
- * You can do these steps manually if you need greater control.
+ * and attaches it to the global #GMainContext using g_source_attach(), so
+ * the callback will be invoked in whichever thread is running that main
+ * context. You can do these steps manually if you need greater control or to
+ * use a custom main context.
  * 
  * Returns: the ID (greater than 0) of the event source.
  * Rename to: g_idle_add
@@ -5470,8 +5476,10 @@ g_idle_add_full (gint           priority,
  * sources and will not be called again.
  * 
  * This internally creates a main loop source using g_idle_source_new()
- * and attaches it to the main loop context using g_source_attach(). 
- * You can do these steps manually if you need greater control.
+ * and attaches it to the global #GMainContext using g_source_attach(), so
+ * the callback will be invoked in whichever thread is running that main
+ * context. You can do these steps manually if you need greater control or to
+ * use a custom main context.
  * 
  * Returns: the ID (greater than 0) of the event source.
  **/
