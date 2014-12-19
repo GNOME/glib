@@ -3577,20 +3577,16 @@ g_socket_condition_timed_wait (GSocket       *socket,
 #ifdef G_OS_WIN32
   {
     GIOCondition current_condition;
-    GPollFD pollfd;
 
     /* Always check these */
     condition |= G_IO_ERR | G_IO_HUP;
 
     add_condition_watch (socket, &condition);
 
-    pollfd.fd = (gintptr) socket->priv->event;
-    pollfd.events = G_IO_IN;
-
     current_condition = update_condition (socket);
     while ((condition & current_condition) == 0)
       {
-        if (!g_cancellable_poll_simple (cancellable, &pollfd, end_time, error))
+        if (!g_cancellable_wait_for_handle (cancellable, socket->priv->event, end_time, error))
           {
             g_prefix_error (error, _("Waiting for socket condition: "));
             break;
@@ -3603,15 +3599,8 @@ g_socket_condition_timed_wait (GSocket       *socket,
     return (condition & current_condition) != 0;
   }
 #else
-  {
-    GPollFD pollfd;
-
-    pollfd.fd = socket->priv->fd;
-    pollfd.events = condition;
-
-    return g_cancellable_poll_simple (cancellable, &pollfd, end_time, error);
-  }
-  #endif
+  return g_cancellable_wait_for_unix_fd (cancellable, socket->priv->fd, condition, end_time, error);
+#endif
 }
 
 /**

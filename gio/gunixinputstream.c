@@ -340,23 +340,15 @@ g_unix_input_stream_read (GInputStream  *stream,
 {
   GUnixInputStream *unix_stream;
   gssize res = -1;
-  GPollFD pollfd;
 
   unix_stream = G_UNIX_INPUT_STREAM (stream);
 
-  pollfd.fd = unix_stream->priv->fd;
-  pollfd.events = G_IO_IN;
-
   while (1)
     {
-      gboolean result;
-
-      if (unix_stream->priv->is_pipe_or_socket)
-        result = g_cancellable_poll_simple (cancellable, &pollfd, -1, error);
-      else
-        result = !g_cancellable_set_error_if_cancelled (cancellable, error);
-
-      if (!result)
+      if (!g_cancellable_wait_for_unix_fd (cancellable,
+                                           unix_stream->priv->is_pipe_or_socket ? unix_stream->priv->fd : -1, G_IO_IN,
+                                           unix_stream->priv->is_pipe_or_socket ? -1 : 0,
+                                           error))
         {
           g_prefix_error (error, _("Error reading from file descriptor: "));
           break;

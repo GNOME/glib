@@ -325,23 +325,15 @@ g_unix_output_stream_write (GOutputStream  *stream,
 {
   GUnixOutputStream *unix_stream;
   gssize res = -1;
-  GPollFD pollfd;
 
   unix_stream = G_UNIX_OUTPUT_STREAM (stream);
 
-  pollfd.fd = unix_stream->priv->fd;
-  pollfd.events = G_IO_OUT;
-
   while (1)
     {
-      gboolean result;
-
-      if (unix_stream->priv->is_pipe_or_socket)
-        result = g_cancellable_poll_simple (cancellable, &pollfd, -1, error);
-      else
-        result = !g_cancellable_set_error_if_cancelled (cancellable, error);
-
-      if (!result)
+      if (!g_cancellable_wait_for_unix_fd (cancellable,
+                                           unix_stream->priv->is_pipe_or_socket ? unix_stream->priv->fd : -1, G_IO_OUT,
+                                           unix_stream->priv->is_pipe_or_socket ? -1 : 0,
+                                           error))
         {
           g_prefix_error (error, _("Error writing to file descriptor: "));
           break;
