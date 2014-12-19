@@ -114,6 +114,13 @@ guint    g_unix_fd_add             (gint              fd,
                                     GUnixFDSourceFunc function,
                                     gpointer          user_data);
 
+GLIB_AVAILABLE_IN_2_44
+gint     g_unix_fd_wait_multiple   (GPollFD          *pollfds,
+                                    guint             n_pollfds,
+                                    gint64            ready_time,
+                                    GError          **error);
+
+
 G_END_DECLS
 
 #endif  /* __G_UNIX_H__ */

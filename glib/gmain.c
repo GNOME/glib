@@ -99,6 +99,7 @@
 #include "gmain-internal.h"
 #include "glib-init.h"
 #include "glib-private.h"
+#include "glibintl.h"
 
 /**
  * SECTION:main
@@ -5610,6 +5611,219 @@ g_idle_remove_by_data (gpointer data)
 {
   return g_source_remove_by_funcs_user_data (&g_idle_funcs, data);
 }
+
+static gint
+ready_time_to_timeout (gint64 ready_time)
+{
+  gint timeout;
+
+  if (ready_time > 0)
+    {
+      gint64 now = g_get_coarse_monotonic_time ();
+
+      if (now < ready_time)
+        timeout = (ready_time - now + 999) / G_TIME_SPAN_MILLISECOND;
+      else
+        timeout = 0;
+    }
+  else if (ready_time < 0)
+    timeout = -1;
+  else
+    timeout = 0;
+
+  return timeout;
+}
+
+/* alex says maybe we should just move G_IO_ERROR into glib... */
+#define G_IO_ERROR g_quark_from_string ("g-io-error-quark")
+#define G_IO_ERROR_TIMED_OUT 24
+
+/**
+ * g_handle_wait_multiple
+ * @handles: a "small" array of handles
+ * @n_handles: the length of @handles
+ * @ready_time: the monotonic time past which to return
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Waits for multiple @handles to become ready.
+ *
+ * If one handle becomes ready, its index will be returned.  If multiple
+ * handles are ready, the returned index will be that of the first ready
+ * handle in the array (in array order).
+ *
+ * If @ready_time passes, %G_IO_ERROR_TIMED_OUT will be returned.  A
+ * ready time in the past (ideally 0) means to return immediately and a
+ * ready time of -1 means to block indefinitely.
+ *
+ * Interruptions due to signal delivery on POSIX (`EINTR`), or async
+ * procedure calls or IO completion handlers on Windows
+ * (`WAIT_IO_COMPLETION`) are dealt with internally by rescheduling the
+ * wait.
+ *
+ * If you are on POSIX and need to check for specific IO conditions, but
+ * still want a similar higher-level API, use g_unix_fd_wait_multiple().
+ *
+ * Returns: the array index of a ready handle, or -1 in case of an error
+ *
+ * Since: 2.44
+ */
+#ifdef G_OS_WIN32
+gint
+g_handle_wait_multiple (const ghandle  *handles,
+                        guint           n_handles,
+                        gint64          ready_time,
+                        GError        **error)
+{
+  DWORD result;
+
+again:
+  result = WaitForMultipleObjectsEx (n_handles, handles, FALSE,
+                                     ready_time_to_timeout (ready_time), TRUE);
+
+  if (result == WAIT_IO_COMPLETION)
+    goto again;
+
+  if (result == WAIT_TIMEOUT)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT, _("Operation timed out"));
+      return -1;
+    }
+
+  if (result == WAIT_FAILED)
+    {
+      if (error)
+        {
+          gchar *emsg = g_win32_error_message (GetLastError ());
+          g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_FAILED, emsg);
+          g_free (emsg);
+        }
+
+      return -1;
+    }
+
+  if (WAIT_OBJECT_0 <= result && result < WAIT_OBJECT_0 + n_handles)
+    return result - WAIT_OBJECT_0;
+
+  g_assert_not_reached ();
+}
+#else /* G_OS_UNIX */
+gint
+g_handle_wait_multiple (const ghandle *handles,
+                        guint          n_handles,
+                        gint64         ready_time)
+{
+  struct pollfd *fds;
+  gint result;
+  guint i;
+
+  fds = g_newa (struct pollfd, n_handles);
+  for (i = 0; i < n_handles; i++)
+    {
+      fds[i].fd = handles[i];
+      fds[i].events = G_IO_IN;
+    }
+
+again:
+  result = poll (fds, n_handles, ready_time_to_timeout (ready_time));
+
+  if (result == -1)
+    {
+      gint saved_errno = errno;
+
+      if (saved_errno == EINTR)
+        goto again;
+
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (saved_errno), g_strerror (saved_errno));
+      return -1;
+    }
+
+  if (result == 0)
+    {
+      g_set_error_literal (error, G_FILE_ERROR, G_FILE_ERROR_TIMED_OUT, _("Operation timed out"));
+      return -1;
+    }
+
+  for (i = 0; i < n_handles; i++)
+    if (fds[i].revents)
+      return i;
+
+  g_assert_not_reached ();
+}
+#endif /* G_OS_WIN32 */
+
+/**
+ * g_unix_fd_wait_multiple
+ * @handles: a "small" array of handles
+ * @n_handles: the length of @handles
+ * @ready_time: the monotonic time past which to return
+ * @error: a pointer to a %NULL #GError, or %NULL
+ *
+ * Waits for multiple @pollfds to become ready.
+ *
+ * If one fd becomes ready, its index will be returned.  If multiple
+ * fd are ready, the returned index will be that of the first ready
+ * fd in the array (in array order).
+ *
+ * If @ready_time passes, %G_IO_ERROR_TIMED_OUT will be returned.  A
+ * ready time in the past (ideally 0) means to return immediately and a
+ * ready time of -1 means to block indefinitely.
+ *
+ * Interruptions due to signal (`EINTR`) are dealt with internally by
+ * rescheduling the wait.
+ *
+ * If you only need to check for %G_IO_IN, consider using
+ * g_handle_wait_multiple() instead.
+ *
+ * Returns: the array index of a ready fd, or -1 in case of an error
+ *
+ * Since: 2.44
+ */
+#ifdef G_OS_UNIX
+gint
+g_unix_fd_wait_multiple (GPollFD *pollfds,
+                         guint    n_pollfds,
+                         gint64   ready_time)
+{
+  gint result;
+  guint i;
+
+again:
+  result = poll (pollfds, n_pollfds, ready_time_to_timeout (ready_time));
+
+  if (result == -1)
+    {
+      gint saved_errno = errno;
+
+      if (saved_errno == EINTR)
+        goto again;
+
+      g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (saved_errno), g_strerror (saved_errno));
+      return -1;
+    }
+
+  if (result == 0)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT, _("Operation timed out"));
+      return -1;
+    }
+
+  for (i = 0; i < n_pollfds; i++)
+    if (fds[i].revents)
+      {
+        result = i;
+        break;
+      }
+
+  g_assert (i != n_pollfds);
+
+  /* prevent abuse */
+  for (i = 0; i < n_pollfds; i++)
+    fds[i].revents = 0;
+
+  return i;
+}
+#endif
+
 
 /**
  * g_main_context_invoke:

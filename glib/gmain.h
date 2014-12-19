@@ -548,6 +548,11 @@ gint64 g_get_coarse_monotonic_time        (void);
 GLIB_AVAILABLE_IN_ALL
 gint64 g_get_real_time                    (void);
 
+GLIB_AVAILABLE_IN_2_44
+gint   g_handle_wait_multiple             (const ghandle  *handles,
+                                           guint           n_handles,
+                                           gint64          ready_time,
+                                           GError        **error);
 
 /* Source manipulation by ID */
 GLIB_AVAILABLE_IN_ALL
