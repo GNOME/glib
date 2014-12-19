@@ -465,6 +465,28 @@ g_cancellable_release_fd (GCancellable *cancellable)
   g_mutex_unlock (&cancellable_mutex);
 }
 
+gint
+ready_time_to_timeout (gint64 ready_time)
+{
+  gint timeout;
+
+  if (ready_time > 0)
+    {
+      gint64 now = g_get_monotonic_time ();
+
+      if (now < ready_time)
+        timeout = (ready_time - now + 999) / G_TIME_SPAN_MILLISECOND;
+      else
+        timeout = 0;
+    }
+  else if (ready_time < 0)
+    timeout = -1;
+  else
+    timeout = 0;
+
+  return timeout;
+}
+
 /**
  * g_cancellable_poll_simple:
  * @cancellable: (nullable): a #GCancellable object
@@ -511,7 +533,6 @@ g_cancellable_poll_simple (GCancellable  *cancellable,
 {
   GPollFD fds[2];
   guint nfds;
-  gint timeout;
   gint result;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
@@ -524,21 +545,7 @@ g_cancellable_poll_simple (GCancellable  *cancellable,
   fds[1].revents = 0; /* we check this below */
 
 again:
-  if (ready_time > 0)
-    {
-      gint64 now = g_get_monotonic_time ();
-
-      if (now < ready_time)
-        timeout = (ready_time - now + 999) / G_TIME_SPAN_MILLISECOND;
-      else
-        timeout = 0;
-    }
-  else if (ready_time < 0)
-    timeout = -1;
-  else
-    timeout = 0;
-
-  result = g_poll (fds, nfds, timeout);
+  result = g_poll (fds, nfds, ready_time_to_timeout (ready_time));
 
   if (result == -1)
     {
@@ -628,7 +635,6 @@ g_cancellable_poll_full (GCancellable  *cancellable,
 {
   GPollFD *all_pollfds;
   gint all_nfds;
-  gint timeout;
   gint result;
 
   if (g_cancellable_set_error_if_cancelled (cancellable, error))
@@ -652,21 +658,7 @@ g_cancellable_poll_full (GCancellable  *cancellable,
       all_nfds = nfds;
     }
 
-  if (ready_time > 0)
-    {
-      gint64 now = g_get_monotonic_time ();
-
-      if (now < ready_time)
-        timeout = (ready_time - now + 999) / G_TIME_SPAN_MILLISECOND;
-      else
-        timeout = 0;
-    }
-  else if (ready_time < 0)
-    timeout = -1;
-  else
-    timeout = 0;
-
-  result = g_poll (all_pollfds, all_nfds, timeout);
+  result = g_poll (all_pollfds, all_nfds, ready_time_to_timeout (ready_time));
 
   if (result == -1)
     {
