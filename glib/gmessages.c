@@ -180,6 +180,10 @@
  *
  * A convenience function/macro to log a warning message.
  *
+ * This is not intended for end user error reporting. Use of #GError is
+ * preferred for that instead, as it allows calling functions to perform actions
+ * conditional on the type of error.
+ *
  * You can make warnings fatal at runtime by setting the `G_DEBUG`
  * environment variable (see
  * [Running GLib Applications](glib-running.html)).
@@ -216,6 +220,10 @@
  *     into the format string (as with printf())
  *
  * A convenience function/macro to log an error message.
+ *
+ * This is not intended for end user error reporting. Use of #GError is
+ * preferred for that instead, as it allows calling functions to perform actions
+ * conditional on the type of error.
  *
  * Error messages are always fatal, resulting in a call to
  * abort() to terminate the application. This function will
