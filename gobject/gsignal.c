@@ -97,6 +97,32 @@
  * Specification of no detail argument for signal handlers (omission of the
  * detail part of the signal specification upon connection) serves as a
  * wildcard and matches any detail argument passed in to emission.
+ *
+ * ## Memory management of signal handlers # {#signal-memory-management}
+ *
+ * If you are connecting handlers to signals and using a #GObject instance as
+ * your signal handler user data, you should remember to pair calls to
+ * g_signal_connect() with calls to g_signal_handler_disconnect() or
+ * g_signal_handlers_disconnect_by_func(). While signal handlers are
+ * automatically disconnected when the object emitting the signal is finalised,
+ * they are not automatically disconnected when the signal handler user data is
+ * destroyed. If this user data is a #GObject instance, using it from a
+ * signal handler after it has been finalised is an error.
+ *
+ * There are two strategies for managing such user data. The first is to
+ * disconnect the signal handler (using g_signal_handler_disconnect() or
+ * g_signal_handlers_disconnect_by_func()) when the user data (object) is
+ * finalised; this has to be implemented manually. For non-threaded programs,
+ * g_signal_connect_object() can be used to implement this automatically.
+ * Currently, however, it is unsafe to use in threaded programs.
+ *
+ * The second is to hold a strong reference on the user data until after the
+ * signal is disconnected for other reasons. This can be implemented
+ * automatically using g_signal_connect_data().
+ *
+ * The first approach is recommended, as the second approach can result in
+ * effective memory leaks of the user data if the signal handler is never
+ * disconnected for some reason.
  */
 
 

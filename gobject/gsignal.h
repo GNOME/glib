@@ -465,6 +465,9 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * Connects a #GCallback function to a signal for a particular object.
  * 
  * The handler will be called before the default handler of the signal.
+ *
+ * See [memory management of signal handlers][signal-memory-management] for
+ * details on how to handle the return value and memory management of @data.
  * 
  * Returns: the handler id (always greater than 0 for successful connections)
  */
