@@ -181,7 +181,9 @@ g_realloc (gpointer mem,
  * @mem: (allow-none): the memory to free
  * 
  * Frees the memory pointed to by @mem.
- * If @mem is %NULL it simply returns.
+ *
+ * If @mem is %NULL it simply returns, so there is no need to check @mem
+ * against %NULL before calling this function.
  */
 void
 g_free (gpointer mem)
@@ -281,7 +283,9 @@ g_try_malloc0 (gsize n_bytes)
  * 
  * Attempts to realloc @mem to a new size, @n_bytes, and returns %NULL
  * on failure. Contrast with g_realloc(), which aborts the program
- * on failure. If @mem is %NULL, behaves the same as g_try_malloc().
+ * on failure.
+ *
+ * If @mem is %NULL, behaves the same as g_try_malloc().
  * 
  * Returns: the allocated memory, or %NULL.
  */
