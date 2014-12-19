@@ -1701,6 +1701,10 @@ g_hash_table_size (GHashTable *hash_table)
  * Retrieves every key inside @hash_table. The returned data is valid
  * until changes to the hash release those keys.
  *
+ * This iterates over every entry in the hash table to build its return value.
+ * To iterate over the entries in a #GHashTable more efficiently, use a
+ * #GHashTableIter.
+ *
  * Returns: a #GList containing all the keys inside the hash
  *     table. The content of the list is owned by the hash table and
  *     should not be modified or freed. Use g_list_free() when done
@@ -1740,6 +1744,10 @@ g_hash_table_get_keys (GHashTable *hash_table)
  * Note: in the common case of a string-keyed #GHashTable, the return
  * value of this function can be conveniently cast to (const gchar **).
  *
+ * This iterates over every entry in the hash table to build its return value.
+ * To iterate over the entries in a #GHashTable more efficiently, use a
+ * #GHashTableIter.
+ *
  * You should always free the return result with g_free().  In the
  * above-mentioned case of a string-keyed hash table, it may be
  * appropriate to use g_strfreev() if you call g_hash_table_steal_all()
@@ -1778,6 +1786,10 @@ g_hash_table_get_keys_as_array (GHashTable *hash_table,
  *
  * Retrieves every value inside @hash_table. The returned data
  * is valid until @hash_table is modified.
+ *
+ * This iterates over every entry in the hash table to build its return value.
+ * To iterate over the entries in a #GHashTable more efficiently, use a
+ * #GHashTableIter.
  *
  * Returns: a #GList containing all the values inside the hash
  *     table. The content of the list is owned by the hash table and
