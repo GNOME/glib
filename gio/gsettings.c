@@ -64,7 +64,8 @@
  *
  * Normally, a schema has as fixed path that determines where the settings
  * are stored in the conceptual global tree of settings. However, schemas
- * can also be 'relocatable', i.e. not equipped with a fixed path. This is
+ * can also be '[relocatable][gsettings-relocatable]', i.e. not equipped with
+ * a fixed path. This is
  * useful e.g. when the schema describes an 'account', and you want to be
  * able to store a arbitrary number of accounts.
  *
@@ -228,6 +229,29 @@
  * automatically binds it to the writability of the bound setting.
  * If this 'magic' gets in the way, it can be suppressed with the
  * #G_SETTINGS_BIND_NO_SENSITIVITY flag.
+ *
+ * ## Relocatable schemas # {#gsettings-relocatable}
+ *
+ * A relocatable schema is one with no `path` attribute specified on its
+ * <schema> element. By using g_settings_new_with_path(), a #GSettings object
+ * can be instantiated for a relocatable schema, assigning a path to the
+ * instance. Paths passed to g_settings_new_with_path() will typically be
+ * constructed dynamically from a constant prefix plus some form of instance
+ * identifier; but they must still be valid GSettings paths. Paths could also
+ * be constant and used with a globally installed schema originating from a
+ * dependency library.
+ *
+ * For example, a relocatable schema could be used to store geometry information
+ * for different windows in an application. If the schema ID was
+ * `org.foo.MyApp.Window`, it could be instantiated for paths
+ * `/org/foo/MyApp/main/`, `/org/foo/MyApp/document-1/`,
+ * `/org/foo/MyApp/document-2/`, etc. If any of the paths are well-known
+ * they can be specified as <child> elements in the parent schema, e.g.:
+ * |[
+ * <schema id="org.foo.MyApp" path="/org/foo/MyApp/">
+ *   <child name="main" schema="org.foo.MyApp.Window"/>
+ * </schema>
+ * ]|
  */
 
 /**
