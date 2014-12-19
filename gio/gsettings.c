@@ -276,6 +276,60 @@
  *   <child name="main" schema="org.foo.MyApp.Window"/>
  * </schema>
  * ]|
+ *
+ * ## Build system integration # {#gsettings-build-system}
+ *
+ * GSettings comes with autotools integration to simplify compiling and
+ * installing schemas. To add GSettings support to an application, add the
+ * following to your `configure.ac`:
+ * |[
+ * GLIB_GSETTINGS
+ * ]|
+ *
+ * In the appropriate `Makefile.am`, use the following snippet to compile and
+ * install the named schema:
+ * |[
+ * gsettings_SCHEMAS = org.foo.MyApp.gschema.xml
+ * EXTRA_DIST = $(gsettings_SCHEMAS)
+ *
+ * @GSETTINGS_RULES@
+ * ]|
+ *
+ * No changes are needed to the build system to mark a schema XML file for
+ * translation. Assuming it sets the `gettext-domain` attribute, a schema may
+ * be marked for translation by adding it to `POTFILES.in`, assuming gettext
+ * 0.19 is in use (the preferred method for translation):
+ * |[
+ * data/org.foo.MyApp.gschema.xml
+ * ]|
+ *
+ * Alternatively, if intltool 0.50.1 is in use:
+ * |[
+ * [type: gettext/gsettings]data/org.foo.MyApp.gschema.xml
+ * ]|
+ *
+ * GSettings will use gettext to look up translations for the <summary> and
+ * <description> elements, and also any <default> elements which have a `l10n`
+ * attribute set. Translations must not be included in the `.gschema.xml` file
+ * by the build system, for example by using intltool XML rules with a
+ * `.gschema.xml.in` template.
+ *
+ * If an enumerated type defined in a C header file is to be used in a GSettings
+ * schema, it can either be defined manually using an <enum> element in the
+ * schema XML, or it can be extracted automatically from the C header. This
+ * approach is preferred, as it ensures the two representations are always
+ * synchronised. To do so, add the following to the relevant `Makefile.am`:
+ * |[
+ * gsettings_ENUM_NAMESPACE = org.foo.MyApp
+ * gsettings_ENUM_FILES = my-app-enums.h my-app-misc.h
+ * ]|
+ *
+ * `gsettings_ENUM_NAMESPACE` specifies the schema namespace for the enum files,
+ * which are specified in `gsettings_ENUM_FILES`. This will generate a
+ * `org.foo.MyApp.enums.xml` file containing the extracted enums, which will be
+ * automatically included in the schema compilation, install and uninstall
+ * rules. It should not be committed to version control or included in
+ * `EXTRA_DIST`.
  */
 
 /**
