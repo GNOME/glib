@@ -1123,11 +1123,21 @@ g_cancellable_remove_critical_thread (GCancellable *cancellable,
  * g_thread_enter_critical_section_using_handle() is called and the
  * result is returned.
  *
- * The result is that the returned handle will poll as ready if
+ * You cannot call g_thread_wakeup() on @thread for yourself because you
+ * cannot acquire the lock that this function will use the establish the
+ * critical section.
+ *
+ * The overall result is that the returned handle will poll as ready if
  * @cancellable is triggered.
  *
  * You must call g_cancellable_leave_critical_section() when you are
  * done.
+ *
+ * If @cancellable is %NULL then this function will still enter the
+ * critical section and return a valid handle, but that handle will
+ * never become ready.  This is relatively low-overhead but you could
+ * save yourself the trouble of polling on an extra object by checking
+ * for @cancellable being %NULL before calling this function.
  *
  * The example in the documentation for
  * g_thread_enter_critical_section_using_handle() could be written
@@ -1137,7 +1147,6 @@ g_cancellable_remove_critical_thread (GCancellable *cancellable,
  * static gpointer worker (gpointer user_data) {
  *   GCancellable *cancellable = user_data;
  *   GThread *self = g_thread_self ();
- *   gboolean should_exit = FALSE;
  *
  *   while (TRUE)
  *     {
@@ -1156,7 +1165,6 @@ g_cancellable_remove_critical_thread (GCancellable *cancellable,
  * }
  *
  * void start_cancellable_worker (GCancellable *cancellable) {
- *   g_atomic_set (&continue_work, 1);
  *   g_thread_unref (g_thread_new ("worker", worker, cancellable));
  * }
  * ]|
@@ -1172,30 +1180,35 @@ g_cancellable_enter_critical_section_using_handle (GCancellable  *cancellable,
                                                    GThread       *thread,
                                                    GError       **error)
 {
-  if (cancellable)
+  ghandle result = G_HANDLE_NULL;
+
+  /* We're about to call a function that is documented as requiring a
+   * lock to be held... without holding a lock.
+   *
+   * That's actually OK because we're operating on thread-local data and
+   * there is no chance that g_thread_wakeup() can be called if the
+   * cancellable is %NULL.
+   */
+  if (!cancellable)
+    return g_thread_enter_critical_section_using_handle (thread);
+
+  g_mutex_lock (&cancellable_mutex);
+
+  if (!cancellable->priv->cancelled)
     {
-      gboolean cancelled = FALSE;
-
-      g_mutex_lock (&cancellable_mutex);
-
-      cancelled = cancellable->priv->cancelled;
-
-      if (!cancelled)
-        g_cancellable_add_critical_thread (cancellable, thread);
-
-      g_mutex_unlock (&cancellable_mutex);
-
-      if (cancelled)
-        {
-          g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_CANCELLED,
-                               _("Operation was cancelled"));
-          return G_HANDLE_NULL;
-        }
+      result = g_thread_enter_critical_section_using_handle (thread);
+      g_cancellable_add_critical_thread (cancellable, thread);
     }
 
-  return g_thread_enter_critical_section_using_handle (thread);
+  g_mutex_unlock (&cancellable_mutex);
+
+  if (!g_handle_is_valid (result))
+    g_set_error_literal (error,
+                         G_IO_ERROR,
+                         G_IO_ERROR_CANCELLED,
+                         _("Operation was cancelled"));
+
+  return result;
 }
 
 /**
@@ -1223,28 +1236,28 @@ g_cancellable_leave_critical_section (GCancellable  *cancellable,
                                       GThread       *thread,
                                       GError       **error)
 {
-  g_thread_leave_critical_section (thread);
+  gboolean success = TRUE;
 
-  if (cancellable)
+  /* See comment above */
+  if (!cancellable)
     {
-      gboolean cancelled = FALSE;
-
-      g_mutex_lock (&cancellable_mutex);
-
-      g_cancellable_remove_critical_thread (cancellable, thread);
-      cancelled = cancellable->priv->cancelled;
-
-      g_mutex_unlock (&cancellable_mutex);
-
-      if (cancelled)
-        {
-          g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_CANCELLED,
-                               _("Operation was cancelled"));
-          return FALSE;
-        }
+      g_thread_leave_critical_section (thread);
+      return TRUE;
     }
+
+  g_mutex_lock (&cancellable_mutex);
+
+  g_cancellable_remove_critical_thread (cancellable, thread);
+  g_thread_leave_critical_section (thread);
+  success = !cancellable->priv->cancelled;
+
+  g_mutex_unlock (&cancellable_mutex);
+
+  if (!success)
+    g_set_error_literal (error,
+                         G_IO_ERROR,
+                         G_IO_ERROR_CANCELLED,
+                         _("Operation was cancelled"));
 
   return TRUE;
 }
