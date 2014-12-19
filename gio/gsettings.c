@@ -97,9 +97,33 @@
  * Similar to GConf, the default values in GSettings schemas can be
  * localized, but the localized values are stored in gettext catalogs
  * and looked up with the domain that is specified in the
- * gettext-domain attribute of the <schemalist> or <schema>
- * elements and the category that is specified in the l10n attribute of
- * the <key> element.
+ * `gettext-domain` attribute of the <schemalist> or <schema>
+ * elements and the category that is specified in the `l10n` attribute of
+ * the <default> element. The string which is translated includes all text in
+ * the <default> element, including any surrounding quotation marks.
+ *
+ * The `l10n` attribute must be set to `messages` or `time`, and sets the
+ * [locale category for
+ * translation](https://www.gnu.org/software/gettext/manual/html_node/Aspects.html#index-locale-categories-1).
+ * The `messages` category should be used by default; use `time` for
+ * translatable date or time formats. A translation comment can be added as an
+ * XML comment immediately above the <default> element — it is recommended to
+ * add these comments to aid translators understand the meaning and
+ * implications of the default value. An optional translation `context`
+ * attribute can be set on the <default> element to disambiguate multiple
+ * defaults which use the same string.
+ *
+ * For example:
+ * |[
+ *  <!-- Translators: A list of words which are not allowed to be typed, in
+ *       GVariant serialization syntax.
+ *       See: https://developer.gnome.org/glib/stable/gvariant-text.html -->
+ *  <default l10n='messages' context='Banned words'>['bad', 'words']</default>
+ * ]|
+ *
+ * Translations of default values must remain syntactically valid serialized
+ * #GVariants (e.g. retaining any surrounding quotation marks) or runtime
+ * errors will occur.
  *
  * GSettings uses schemas in a compact binary form that is created
  * by the [glib-compile-schemas][glib-compile-schemas]
