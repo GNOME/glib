@@ -1225,10 +1225,10 @@ g_system_thread_exit (void)
 void
 g_system_thread_set_name (const gchar *name)
 {
-#ifdef HAVE_SYS_PRCTL_H
-#ifdef PR_SET_NAME
-  prctl (PR_SET_NAME, name, 0, 0, 0, 0);
-#endif
+#if defined(HAVE_SYS_PRCTL_H) && defined(PR_SET_NAME)
+  prctl (PR_SET_NAME, name, 0, 0, 0, 0); /* on Linux */
+#elif defined(HAVE_PTHREAD_SETNAME_NP_WITHOUT_TID)
+  pthread_setname_np(name); /* on OS X and iOS */
 #endif
 }
 
