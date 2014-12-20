@@ -729,5 +729,6 @@ g_win32_get_command_line (void)
     result[i] = g_utf16_to_utf8 (args[i], -1, NULL, NULL, NULL);
   result[i] = NULL;
 
+  LocalFree (args);
   return result;
 }
