@@ -509,13 +509,8 @@ g_spawn_sync (const gchar          *working_directory,
  * main(). wmain() has a wide character argument vector as parameter.
  *
  * At least currently, mingw doesn't support wmain(), so if you use
- * mingw to develop the spawned program, it will have to call the
- * undocumented function __wgetmainargs() to get the wide character
- * argument vector and environment. See gspawn-win32-helper.c in the
- * GLib sources or init.c in the mingw runtime sources for a prototype
- * for that function. Alternatively, you can retrieve the Win32 system
- * level wide character command line passed to the spawned program
- * using the GetCommandLineW() function.
+ * mingw to develop the spawned program, it should call
+ * g_win32_get_command_line() to get arguments in UTF-8.
  *
  * On Windows the low-level child process creation API CreateProcess()
  * doesn't use argument vectors, but a command line. The C runtime

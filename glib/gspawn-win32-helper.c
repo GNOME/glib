@@ -67,20 +67,6 @@ write_err_and_exit (gint    fd,
  * but a WinMain().
  */
 
-/* Info peeked from mingw runtime's source code. __wgetmainargs() is a
- * function to get the program's argv in wide char format.
- */
-
-typedef struct {
-  int newmode;
-} _startupinfo;
-
-extern void __wgetmainargs(int *argc,
-			   wchar_t ***wargv,
-			   wchar_t ***wenviron,
-			   int expand_wildcards,
-			   _startupinfo *startupinfo);
-
 /* Copy of protect_argv that handles wchar_t strings */
 
 static gint
@@ -211,8 +197,7 @@ main (int ignored_argc, char **ignored_argv)
   wchar_t **new_wargv;
   int argc;
   char **argv;
-  wchar_t **wargv, **wenvp;
-  _startupinfo si = { 0 };
+  wchar_t **wargv;
   char c;
 
 #if (defined (_MSC_VER) && _MSC_VER >= 1400)
@@ -226,7 +211,7 @@ main (int ignored_argc, char **ignored_argv)
 #endif
 
   /* Fetch the wide-char argument vector */
-  __wgetmainargs (&argc, &wargv, &wenvp, 0, &si);
+  wargv = CommandLineToArgvW (GetCommandLineW(), &argc);
 
   g_assert (argc >= ARG_COUNT);
 
@@ -382,6 +367,7 @@ main (int ignored_argc, char **ignored_argv)
 
   read (helper_sync_fd, &c, 1);
 
+  LocalFree (wargv);
   g_strfreev (argv);
 
   return 0;

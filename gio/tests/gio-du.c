@@ -6,21 +6,6 @@ static gint     option_format_size;
 
 static gint     outstanding_asyncs;
 
-#ifdef G_OS_WIN32
-typedef struct {
-  int newmode;
-} _startupinfo;
-
-#ifndef _MSC_VER
-
-extern void __wgetmainargs(int *argc,
-			   wchar_t ***wargv,
-			   wchar_t ***wenviron,
-			   int expand_wildcards,
-			   _startupinfo *startupinfo);
-#endif
-#endif
-
 static void
 print_result (const gchar *filename,
               guint64      disk_usage,
@@ -91,12 +76,10 @@ main (int argc, char **argv)
   GFileMeasureProgressCallback progress = NULL;
   GFileMeasureFlags flags = 0;
   gint i;
-#ifdef G_OS_WIN32
-  int wargc;
-  wchar_t **wargv, **wenvp;
-  _startupinfo si = { 0 };
 
-  __wgetmainargs (&wargc, &wargv, &wenvp, 0, &si);
+#ifdef G_OS_WIN32
+  argv = g_win32_get_command_line ();
+  argc = g_strv_length (argv);
 #endif
 
   setlocale (LC_ALL, "");
@@ -111,6 +94,9 @@ main (int argc, char **argv)
       if (g_str_equal (argv[i], "--help"))
         {
           g_print ("usage: du [--progress] [--async] [-x] [-h] [-h] [--apparent-size] [--any-error] [--] files...\n");
+#ifdef G_OS_WIN32
+          g_strfreev (argv);
+#endif
           return 0;
         }
       else if (g_str_equal (argv[i], "-x"))
@@ -134,24 +120,20 @@ main (int argc, char **argv)
   if (!argv[i])
     {
       g_printerr ("usage: du [--progress] [--async] [-x] [-h] [-h] [--apparent-size] [--any-error] [--] files...\n");
+#ifdef G_OS_WIN32
+      g_strfreev (argv);
+#endif
       return 1;
     }
 
-#ifdef G_OS_WIN32
-  while (wargv[i])
-  {
-    gchar *argv_utf8 = g_utf16_to_utf8 (wargv[i], -1, NULL, NULL, NULL);
-#else
   while (argv[i])
   {
-    gchar *argv_utf8 = g_strdup (argv[i]);
-#endif
-    GFile *file = g_file_new_for_commandline_arg (argv_utf8);
+    GFile *file = g_file_new_for_commandline_arg (argv[i]);
 
     if (option_use_async)
     {
       g_file_measure_disk_usage_async (file, flags, G_PRIORITY_DEFAULT, NULL,
-                                       progress, argv_utf8, async_ready_func, argv_utf8);
+                                       progress, argv[i], async_ready_func, argv[i]);
       outstanding_asyncs++;
     }
     else
@@ -161,10 +143,9 @@ main (int argc, char **argv)
       guint64 num_dirs;
       guint64 num_files;
 
-      g_file_measure_disk_usage (file, flags, NULL, progress, argv_utf8,
+      g_file_measure_disk_usage (file, flags, NULL, progress, argv[i],
                                  &disk_usage, &num_dirs, &num_files, &error);
-      print_result (argv_utf8, disk_usage, num_dirs, num_files, error, '\n');
-      g_free (argv_utf8);
+      print_result (argv[i], disk_usage, num_dirs, num_files, error, '\n');
     }
 
     g_object_unref (file);
@@ -174,6 +155,10 @@ main (int argc, char **argv)
 
   while (outstanding_asyncs)
     g_main_context_iteration (NULL, TRUE);
+
+#ifdef G_OS_WIN32
+  g_strfreev (argv);
+#endif
 
   return 0;
 }
