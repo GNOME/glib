@@ -315,7 +315,7 @@ glibsubinclude_HEADERS = \
 
 # This is read by gobject-introspection/misc/ and gtk-doc
 glib-public-headers.txt: Makefile
-	echo $(glibinclude_HEADERS) $(glibsubinclude_HEADERS) > $@.tmp && mv $@.tmp $@
+	$(AM_V_GEN) echo $(glibinclude_HEADERS) $(glibsubinclude_HEADERS) > $@.tmp && mv $@.tmp $@
 
 CLEANFILES += glib-public-headers.txt
 
