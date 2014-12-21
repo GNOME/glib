@@ -188,7 +188,7 @@
  *     </key>
  *
  *     <key name='flags-key' flags='org.gtk.Test.myflags'>
- *       <default>["flag1",flag2"]</default>
+ *       <default>["flag1","flag2"]</default>
  *     </key>
  *   </schema>
  * </schemalist>
