@@ -1656,7 +1656,7 @@ g_date_time_get_day_of_month (GDateTime *datetime)
  * calendar year (so that these days have the same week-numbering year
  * as the Thursday occurring early in the next year).
  *
- * For Friday, Saturaday and Sunday occurring near the start of the year,
+ * For Friday, Saturday and Sunday occurring near the start of the year,
  * this may mean that the week-numbering year is one less than the
  * calendar year (so that these days have the same week-numbering year
  * as the Thursday occurring late in the previous year).
