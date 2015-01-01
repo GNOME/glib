@@ -164,7 +164,7 @@
 #endif  /* !__GNUC__ */
 #endif  /* !G_DISABLE_DEPRECATED */
 
-#if __has_feature(attribute_analyzer_noreturn)
+#if __has_feature(attribute_analyzer_noreturn) && defined(__clang_analyzer__)
 #define G_ANALYZER_ANALYZING 1
 #define G_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
 #else
