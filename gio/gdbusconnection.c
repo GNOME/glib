@@ -804,17 +804,6 @@ g_dbus_connection_real_closed (GDBusConnection *connection,
       (flags & FLAG_INITIALIZED) != 0 &&
       connection->initialization_error == NULL)
     {
-      if (error != NULL)
-        {
-          g_printerr ("%s: Remote peer vanished with error: %s (%s, %d). Exiting.\n",
-                      G_STRFUNC,
-                      error->message,
-                      g_quark_to_string (error->domain), error->code);
-        }
-      else
-        {
-          g_printerr ("%s: Remote peer vanished. Exiting.\n", G_STRFUNC);
-        }
       raise (SIGTERM);
     }
 }
