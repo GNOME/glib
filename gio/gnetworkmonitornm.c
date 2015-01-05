@@ -219,6 +219,10 @@ has_property (GDBusProxy *proxy,
   gboolean prop_found = FALSE;
 
   props = g_dbus_proxy_get_cached_property_names (proxy);
+
+  if (!props)
+    return FALSE;
+
   for (i = 0; props[i] != NULL; i++)
     {
       if (g_str_equal (props[i], property_name))
