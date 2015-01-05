@@ -972,6 +972,27 @@ g_thread_self (void)
   return (GThread*) thread;
 }
 
+/*< internal >
+ * g_thread_get_debug_name:
+ * @thread: a #GThread
+ *
+ * Gets the name of @thread, suitable for debugging output.
+ *
+ * If @thread is not named then this will return something like "unnamed
+ * thread".
+ */
+const gchar *
+g_thread_get_debug_name (GThread *thread)
+{
+  GRealThread *real = (GRealThread*) thread;
+
+  if (real->name)
+    return real->name;
+
+  else
+    return "unnamed thread";
+}
+
 /**
  * g_get_num_processors:
  *

@@ -57,4 +57,6 @@ GThread *       g_thread_new_internal           (const gchar  *name,
 
 gpointer        g_thread_proxy                  (gpointer      thread);
 
+const gchar *   g_thread_get_debug_name         (GThread      *thread);
+
 #endif /* __G_THREADPRIVATE_H__ */
