@@ -338,6 +338,8 @@ GLIB_AVAILABLE_IN_ALL
 void     g_main_context_release (GMainContext *context);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_main_context_is_owner (GMainContext *context);
+GLIB_AVAILABLE_IN_2_44
+gboolean g_main_context_ensure_is_owner (GMainContext *context);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_main_context_wait    (GMainContext *context,
                                  GCond        *cond,

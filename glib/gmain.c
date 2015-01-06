@@ -99,6 +99,7 @@
 #include "gmain-internal.h"
 #include "glib-init.h"
 #include "glib-private.h"
+#include "gthreadprivate.h"
 
 /**
  * SECTION:main
@@ -418,6 +419,22 @@ static GMainContext *glib_worker_context;
 
 G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
+
+/* Tracks the "owner" of the global default main context.  Protected by
+ * the lock on default_main_context itself.
+ *
+ * We have four possible states here:
+ *
+ *  - context has never been used: owner is NULL, 'owned' is FALSE
+ *  - context was used unacquired: owner is set and 'owned' is TRUE
+ *  - context was acquired by one thread: owner is set and 'owned' is FALSE
+ *  - context was acquired by multiple threads: owner is NULL and 'owned' is TRUE
+ *
+ * We hold a ref on the owner thread in order to avoid ABA issues as
+ * well as to ensure that g_thread_get_debug_name() is safe.
+ */
+static GThread *     default_main_context_owner;
+static gboolean      default_main_context_owned;
 
 #ifndef G_OS_WIN32
 
@@ -3181,6 +3198,50 @@ g_main_context_acquire (GMainContext *context)
   
   LOCK_CONTEXT (context);
 
+  if (context == default_main_context)
+    {
+      if (default_main_context_owner && default_main_context_owner != self)
+        {
+          /* There are two possible cases here.
+           *
+           * The first is that we are (validly) acquiring the global
+           * default main context in a second thread.  The other is that
+           * the context has been pinned to another thread via
+           * g_main_context_ensure_is_owner(), in which case we must
+           * warn.  Ideally, we would fail to acquire the context here,
+           * but that would probably break too many people's programs.
+           */
+          if (default_main_context_owned)
+            {
+              static gboolean warned;
+
+              if (!warned)
+                {
+                  g_critical ("Operations were performed on the unacquired default main context (%p) from "
+                              "thread %p (%s) but now the main context is being acquired by thread %p (%s).",
+                              context,
+                              default_main_context_owner, g_thread_get_debug_name (default_main_context_owner),
+                              self, g_thread_get_debug_name (self));
+                  warned = TRUE;
+                }
+            }
+          else
+            {
+              /* Has been acquired in more than one thread, so now it
+               * can't be owned by anyone.
+               */
+              if (default_main_context_owner)
+                g_thread_unref (default_main_context_owner);
+
+              default_main_context_owner = NULL;
+              default_main_context_owned = TRUE;
+            }
+        }
+
+      else if (!default_main_context_owned && !default_main_context_owner)
+        default_main_context_owner = g_thread_ref (self);
+    }
+
   if (!context->owner)
     {
       context->owner = self;
@@ -4472,6 +4533,115 @@ g_main_context_is_owner (GMainContext *context)
 
   LOCK_CONTEXT (context);
   is_owner = context->owner == G_THREAD_SELF;
+  UNLOCK_CONTEXT (context);
+
+  return is_owner;
+}
+
+/**
+ * g_main_context_ensure_is_owner:
+ * @context: a #GMainContext
+ *
+ * Ensures that the current thread is the effective owner of @context.
+ *
+ * This function is the basis of the #GMainContext-based mutual
+ * exclusion mechanism in which an object that belongs to a particular
+ * context may only be accessed by a thread that is the effective owner
+ * of that context.  This is a pervasive pattern used throughout GLib
+ * and GLib-based libraries and programs.
+ *
+ * The current thread must be the "effective owner" of @context.
+ * @context must not be %NULL.  If either of these conditions is false
+ * then a programmer error is considered to have occurred and a critical
+ * error may be logged, or the program terminated.
+ *
+ * The current thread is the "effective owner" of the context in two
+ * cases:
+ *
+ * The first case is if the current thread has acquired the recursive
+ * lock of the context with g_main_context_acquire().
+ *
+ * The second case is a special case for the global default main
+ * context.  It is considered to be owned by the main thread of the
+ * program unless another thread has acquired it.  More precisely, it is
+ * considered to be owned by the first thread that calls this function
+ * on the unacquired global main context.  This must then be the same
+ * (and only) thread that will eventually acquire and iterate the
+ * context.  Similarly, if the context is acquired or iterated by a
+ * particular thread then only this thread can be considered the
+ * effective owner of the context when it is no longer acquired.
+ *
+ * This means that calling this function, at any time, on the unacquired
+ * main context is incompatible with acquiring the main context in two
+ * different threads, but probably you didn't want to do that anyway.
+ *
+ * In theory this function always returns %TRUE, but it may return
+ * %FALSE in cases where the preconditions have been violated (ie:
+ * @context is not owned by the current thread).  This makes this
+ * function appropriate for use with g_return_if_fail() or similar.
+ *
+ * Returns: %TRUE
+ *
+ * Since: 2.44
+ */
+gboolean
+g_main_context_ensure_is_owner (GMainContext *context)
+{
+  GThread *self = G_THREAD_SELF;
+  gboolean is_owner;
+
+  g_return_val_if_fail (context != NULL, FALSE);
+
+  LOCK_CONTEXT (context);
+
+  is_owner = context->owner == G_THREAD_SELF;
+
+  if (!is_owner && context == default_main_context)
+    {
+      static gboolean warned;
+
+      /* maybe we're already the owner */
+      if (default_main_context_owner == self)
+        default_main_context_owned = TRUE;
+
+      /* or maybe we can become the owner */
+      else if (!default_main_context_owner && !default_main_context_owned)
+        {
+          default_main_context_owner = g_thread_ref (self);
+          default_main_context_owned = TRUE;
+        }
+
+      /* otherwise, we have some kind of trouble */
+      else if (!warned)
+        {
+          if (default_main_context_owner && !default_main_context_owned)
+            g_critical ("The default main context (%p) has been iterated in thread %p (%s) but now another "
+                        "thread %p (%s) is trying to perform operations on it while it is unacquired.",
+                        context,
+                        default_main_context_owner, g_thread_get_debug_name (default_main_context_owner),
+                        self, g_thread_get_debug_name (self));
+
+          else if (!default_main_context_owner && default_main_context_owned)
+            g_critical ("The default main context (%p) has been iterated in multiple threads but now a "
+                        "thread %p (%s) is trying to perform operations on it while it is unacquired.",
+                        context, self, g_thread_get_debug_name (self));
+
+          else if (default_main_context_owned && default_main_context_owned)
+            g_critical ("Operations were performed on the unacquired default main context (%p) from "
+                        "thread %p (%s) but now a different thread %p (%s) is trying to do the same.",
+                        context,
+                        default_main_context_owner, g_thread_get_debug_name (default_main_context_owner),
+                        self, g_thread_get_debug_name (self));
+
+          else
+            g_assert_not_reached ();
+
+          warned = TRUE;
+        }
+
+      is_owner = default_main_context_owner == self;
+    }
+
   UNLOCK_CONTEXT (context);
 
   return is_owner;

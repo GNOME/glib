@@ -500,6 +500,7 @@ g_main_context_wakeup
 g_main_context_acquire
 g_main_context_release
 g_main_context_is_owner
+g_main_context_ensure_is_owner
 g_main_context_wait
 g_main_context_prepare
 g_main_context_query
