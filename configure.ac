@@ -762,17 +762,7 @@ AM_CONDITIONAL(HAVE_SUNSTUDIO_VISIBILITY, [test x$g_have_sunstudio_visibility = 
 # check for bytesex stuff
 AC_C_BIGENDIAN
 if test x$ac_cv_c_bigendian = xuniversal ; then
-AC_TRY_COMPILE([#include <endian.h>], [#if __BYTE_ORDER == __BIG_ENDIAN
-#else
-#error Not a big endian. 
-#endif],
-    ac_cv_c_bigendian=yes
-    ,AC_TRY_COMPILE([#include <endian.h>], [#if __BYTE_ORDER == __LITTLE_ENDIAN
-#else
-#error Not a little endian. 
-#endif],
-    ac_cv_c_bigendian=no
-    ,AC_MSG_WARN([Could not determine endianness.])))
+  AC_MSG_ERROR([Universal builds not supported: see https://bugs.gnome.org/742548])
 fi
 
 
