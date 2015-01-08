@@ -22,6 +22,7 @@
 
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
+#include "gcontextspecificgroup.h"
 
 #include "glibintl.h"
 #include <gioerror.h>
@@ -1057,40 +1058,6 @@ g_app_launch_context_launch_failed (GAppLaunchContext *context,
  * Since: 2.40
  **/
 
-/* We have one of each of these per main context and hand them out
- * according to the thread default main context at the time of the call
- * to g_app_info_monitor_get().
- *
- * g_object_unref() is only ever called from the same context, so we
- * effectively have a single-threaded scenario for each GAppInfoMonitor.
- *
- * We use a hashtable to cache the per-context monitor (but we do not
- * hold a ref).  During finalize, we remove it.  This is possible
- * because we don't have to worry about the usual races due to the
- * single-threaded nature of each object.
- *
- * We keep a global list of all contexts that have a monitor for them,
- * which we have to access under a lock.  When we dispatch the events to
- * be handled in each context, we don't pass the monitor, but the
- * context itself.
- *
- * We dispatch from the GLib worker context, so if we passed the
- * monitor, we would need to take a ref on it (in case it was destroyed
- * in its own thread meanwhile).  The monitor holds a ref on a context
- * and the dispatch would mean that the context would hold a ref on the
- * monitor.  If someone stopped iterating the context at just this
- * moment both the context and monitor would leak.
- *
- * Instead, we dispatch the context to itself.  We don't hold a ref.
- * There is the danger that the context will be destroyed during the
- * dispatch, but if that is the case then we just won't receive our
- * callback.
- *
- * When the dispatch occurs we just lookup the monitor in the hashtable,
- * by context.  We can now add and remove refs, since the context will
- * have been acquired.
- */
-
 typedef struct _GAppInfoMonitorClass GAppInfoMonitorClass;
 
 struct _GAppInfoMonitor
@@ -1104,9 +1071,8 @@ struct _GAppInfoMonitorClass
   GObjectClass parent_class;
 };
 
-static GHashTable *g_app_info_monitors;
-static GMutex      g_app_info_monitor_lock;
-static guint       g_app_info_monitor_changed_signal;
+static GContextSpecificGroup g_app_info_monitor_group;
+static guint                 g_app_info_monitor_changed_signal;
 
 G_DEFINE_TYPE (GAppInfoMonitor, g_app_info_monitor, G_TYPE_OBJECT)
 
@@ -1115,9 +1081,7 @@ g_app_info_monitor_finalize (GObject *object)
 {
   GAppInfoMonitor *monitor = G_APP_INFO_MONITOR (object);
 
-  g_mutex_lock (&g_app_info_monitor_lock);
-  g_hash_table_remove (g_app_info_monitors, monitor->context);
-  g_mutex_unlock (&g_app_info_monitor_lock);
+  g_context_specific_group_remove (&g_app_info_monitor_group, monitor->context, monitor, NULL);
 
   G_OBJECT_CLASS (g_app_info_monitor_parent_class)->finalize (object);
 }
@@ -1164,91 +1128,14 @@ g_app_info_monitor_class_init (GAppInfoMonitorClass *class)
 GAppInfoMonitor *
 g_app_info_monitor_get (void)
 {
-  GAppInfoMonitor *monitor;
-  GMainContext *context;
-
-  context = g_main_context_get_thread_default ();
-  if (!context)
-    context = g_main_context_default ();
-
-  g_return_val_if_fail (g_main_context_acquire (context), NULL);
-
-  g_mutex_lock (&g_app_info_monitor_lock);
-  if (!g_app_info_monitors)
-    g_app_info_monitors = g_hash_table_new (NULL, NULL);
-
-  monitor = g_hash_table_lookup (g_app_info_monitors, context);
-  g_mutex_unlock (&g_app_info_monitor_lock);
-
-  if (!monitor)
-    {
-      monitor = g_object_new (G_TYPE_APP_INFO_MONITOR, NULL);
-      monitor->context = g_main_context_ref (context);
-
-      g_mutex_lock (&g_app_info_monitor_lock);
-      g_hash_table_insert (g_app_info_monitors, context, monitor);
-      g_mutex_unlock (&g_app_info_monitor_lock);
-    }
-  else
-    g_object_ref (monitor);
-
-  g_main_context_release (context);
-
-  return monitor;
-}
-
-static gboolean
-g_app_info_monitor_emit (gpointer user_data)
-{
-  GMainContext *context = user_data;
-  GAppInfoMonitor *monitor;
-
-  g_mutex_lock (&g_app_info_monitor_lock);
-  monitor = g_hash_table_lookup (g_app_info_monitors, context);
-  g_mutex_unlock (&g_app_info_monitor_lock);
-
-  /* It is possible that the monitor was already destroyed by the time
-   * we get here, so make sure it's not NULL.
-   */
-  if (monitor != NULL)
-    {
-      /* We don't have to worry about another thread disposing the
-       * monitor but we do have to worry about the possibility that one
-       * of the attached handlers may do so.
-       *
-       * Take a ref so that the monitor doesn't disappear in the middle
-       * of the emission.
-       */
-      g_object_ref (monitor);
-      g_signal_emit (monitor, g_app_info_monitor_changed_signal, 0);
-      g_object_unref (monitor);
-    }
-
-  return FALSE;
+  return g_context_specific_group_get (&g_app_info_monitor_group,
+                                       G_TYPE_APP_INFO_MONITOR,
+                                       G_STRUCT_OFFSET (GAppInfoMonitor, context),
+                                       NULL);
 }
 
 void
 g_app_info_monitor_fire (void)
 {
-  GHashTableIter iter;
-  gpointer context;
-
-  g_mutex_lock (&g_app_info_monitor_lock);
-
-  if (g_app_info_monitors)
-    {
-      g_hash_table_iter_init (&iter, g_app_info_monitors);
-      while (g_hash_table_iter_next (&iter, &context, NULL))
-        {
-          GSource *idle;
-
-          idle = g_idle_source_new ();
-          g_source_set_callback (idle, g_app_info_monitor_emit, context, NULL);
-          g_source_set_name (idle, "[gio] g_app_info_monitor_emit");
-          g_source_attach (idle, context);
-          g_source_unref (idle);
-        }
-    }
-
-  g_mutex_unlock (&g_app_info_monitor_lock);
+  g_context_specific_group_emit (&g_app_info_monitor_group, g_app_info_monitor_changed_signal);
 }
