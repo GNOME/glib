@@ -138,39 +138,10 @@ struct _GUnixMountPoint {
   gboolean is_loopback;
 };
 
-enum {
-  MOUNTS_CHANGED,
-  MOUNTPOINTS_CHANGED,
-  LAST_SIGNAL
-};
-
-static guint signals[LAST_SIGNAL];
-
-struct _GUnixMountMonitor {
-  GObject parent;
-
-  GFileMonitor *fstab_monitor;
-  GFileMonitor *mtab_monitor;
-
-  GList *mount_poller_mounts;
-
-  GSource *proc_mounts_watch_source;
-};
-
-struct _GUnixMountMonitorClass {
-  GObjectClass parent_class;
-};
-  
-static GUnixMountMonitor *the_mount_monitor = NULL;
-
 static GList *_g_get_unix_mounts (void);
 static GList *_g_get_unix_mount_points (void);
 
 static guint64 mount_poller_time = 0;
-
-G_DEFINE_TYPE (GUnixMountMonitor, g_unix_mount_monitor, G_TYPE_OBJECT);
-
-#define MOUNT_POLL_INTERVAL 4000
 
 #ifdef HAVE_SYS_MNTTAB_H
 #define MNTOPT_RO	"ro"
@@ -1291,6 +1262,33 @@ g_unix_mount_points_changed_since (guint64 time)
 }
 
 /* GUnixMountMonitor {{{1 */
+
+enum {
+  MOUNTS_CHANGED,
+  MOUNTPOINTS_CHANGED,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL];
+
+struct _GUnixMountMonitor {
+  GObject parent;
+
+  GFileMonitor *fstab_monitor;
+  GFileMonitor *mtab_monitor;
+
+  GList *mount_poller_mounts;
+
+  GSource *proc_mounts_watch_source;
+};
+
+struct _GUnixMountMonitorClass {
+  GObjectClass parent_class;
+};
+
+static GUnixMountMonitor *the_mount_monitor = NULL;
+
+G_DEFINE_TYPE (GUnixMountMonitor, g_unix_mount_monitor, G_TYPE_OBJECT);
 
 static void
 g_unix_mount_monitor_finalize (GObject *object)
