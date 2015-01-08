@@ -209,7 +209,7 @@ static void
 g_unix_volume_monitor_init (GUnixVolumeMonitor *unix_monitor)
 {
 
-  unix_monitor->mount_monitor = g_unix_mount_monitor_new ();
+  unix_monitor->mount_monitor = g_unix_mount_monitor_get ();
 
   g_signal_connect (unix_monitor->mount_monitor,
 		    "mounts-changed", G_CALLBACK (mounts_changed),

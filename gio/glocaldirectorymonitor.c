@@ -109,7 +109,7 @@ g_local_directory_monitor_start (GLocalDirectoryMonitor *local_monitor)
       if (mount)
         g_unix_mount_free (mount);
 
-      local_monitor->mount_monitor = g_unix_mount_monitor_new ();
+      local_monitor->mount_monitor = g_unix_mount_monitor_get ();
       g_signal_connect_object (local_monitor->mount_monitor, "mounts-changed",
                                G_CALLBACK (mounts_changed), local_monitor, 0);
 #endif
