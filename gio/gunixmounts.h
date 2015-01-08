@@ -126,7 +126,9 @@ gboolean       g_unix_mount_points_changed_since    (guint64             time);
 
 GLIB_AVAILABLE_IN_ALL
 GType              g_unix_mount_monitor_get_type       (void) G_GNUC_CONST;
-GLIB_AVAILABLE_IN_ALL
+GLIB_AVAILABLE_IN_2_44
+GUnixMountMonitor *g_unix_mount_monitor_get            (void);
+GLIB_DEPRECATED_IN_2_44_FOR(g_unix_mount_monitor_get)
 GUnixMountMonitor *g_unix_mount_monitor_new            (void);
 GLIB_AVAILABLE_IN_ALL
 void               g_unix_mount_monitor_set_rate_limit (GUnixMountMonitor *mount_monitor,

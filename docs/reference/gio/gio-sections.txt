@@ -1556,6 +1556,7 @@ g_unix_mounts_get
 g_unix_mount_at
 g_unix_mounts_changed_since
 g_unix_mount_points_changed_since
+g_unix_mount_monitor_get
 g_unix_mount_monitor_new
 g_unix_mount_monitor_set_rate_limit
 g_unix_is_mount_path_system_internal

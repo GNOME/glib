@@ -1514,17 +1514,20 @@ g_unix_mount_monitor_set_rate_limit (GUnixMountMonitor *mount_monitor,
 }
 
 /**
- * g_unix_mount_monitor_new:
- * 
- * Gets a new #GUnixMountMonitor. The default rate limit for which the
- * monitor will report consecutive changes for the mount and mount
- * point entry files is the default for a #GFileMonitor. Use
- * g_unix_mount_monitor_set_rate_limit() to change this.
- * 
- * Returns: a #GUnixMountMonitor. 
- */
+ * g_unix_mount_monitor_get:
+ *
+ * Gets the #GUnixMountMonitor.
+ *
+ * The mount monitor can be used to monitor for changes to the list of
+ * mounted filesystems as well as the list of mount points (ie: fstab
+ * entries).
+ *
+ * Returns: (transfer full): the #GUnixMountMonitor.
+ *
+ * Since: 2.44
+ **/
 GUnixMountMonitor *
-g_unix_mount_monitor_new (void)
+g_unix_mount_monitor_get (void)
 {
   if (the_mount_monitor == NULL)
     {
@@ -1533,6 +1536,24 @@ g_unix_mount_monitor_new (void)
     }
   
   return g_object_ref (the_mount_monitor);
+}
+
+/**
+ * g_unix_mount_monitor_new:
+ *
+ * Deprecated alias for g_unix_mount_monitor_get().
+ *
+ * This function was never a true constructor, which is why it was
+ * renamed.
+ *
+ * Returns: a #GUnixMountMonitor.
+ *
+ * Deprecated:2.44:Use g_unix_mount_monitor_get() instead.
+ */
+GUnixMountMonitor *
+g_unix_mount_monitor_new (void)
+{
+  return g_unix_mount_monitor_get ();
 }
 
 /**
