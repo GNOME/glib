@@ -1495,22 +1495,22 @@ g_unix_mount_monitor_init (GUnixMountMonitor *monitor)
  * @limit_msec: a integer with the limit in milliseconds to
  *     poll for changes.
  *
- * Sets the rate limit to which the @mount_monitor will report
- * consecutive change events to the mount and mount point entry files.
+ * This function does nothing.
+ *
+ * Before 2.44, this was a partially-effective way of controlling the
+ * rate at which events would be reported under some uncommon
+ * circumstances.  Since @mount_monitor is a singleton, it also meant
+ * that calling this function would have side effects for other users of
+ * the monitor.
  *
  * Since: 2.18
+ *
+ * Deprecated:2.44:This function does nothing.  Don't call it.
  */
 void
 g_unix_mount_monitor_set_rate_limit (GUnixMountMonitor *mount_monitor,
                                      gint               limit_msec)
 {
-  g_return_if_fail (G_IS_UNIX_MOUNT_MONITOR (mount_monitor));
-
-  if (mount_monitor->fstab_monitor != NULL)
-    g_file_monitor_set_rate_limit (mount_monitor->fstab_monitor, limit_msec);
-
-  if (mount_monitor->mtab_monitor != NULL)
-    g_file_monitor_set_rate_limit (mount_monitor->mtab_monitor, limit_msec);
 }
 
 /**
