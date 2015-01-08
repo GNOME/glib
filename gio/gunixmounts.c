@@ -20,6 +20,8 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
+/* Prologue {{{1 */
+
 #include "config.h"
 
 #include <sys/types.h>
@@ -347,6 +349,9 @@ guess_system_internal (const char *mountpoint,
   return FALSE;
 }
 
+/* GUnixMounts (ie: mtab) implementations {{{1 */
+
+/* mntent.h (Linux, GNU, NSS) {{{2 */
 #ifdef HAVE_MNTENT_H
 
 static char *
@@ -462,6 +467,7 @@ _g_get_unix_mounts (void)
   return g_list_reverse (return_list);
 }
 
+/* mnttab.h {{{2 */
 #elif defined (HAVE_SYS_MNTTAB_H)
 
 G_LOCK_DEFINE_STATIC(getmntent);
@@ -528,6 +534,7 @@ _g_get_unix_mounts (void)
   return g_list_reverse (return_list);
 }
 
+/* mntctl.h (AIX) {{{2 */
 #elif defined(HAVE_SYS_MNTCTL_H) && defined(HAVE_SYS_VMOUNT_H) && defined(HAVE_SYS_VFS_H)
 
 static char *
@@ -602,6 +609,7 @@ _g_get_unix_mounts (void)
   return g_list_reverse (return_list);
 }
 
+/* sys/mount.h {{{2 */
 #elif (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
 
 static char *
@@ -675,6 +683,8 @@ _g_get_unix_mounts (void)
   
   return g_list_reverse (return_list);
 }
+
+/* Interix {{{2 */
 #elif defined(__INTERIX)
 
 static char *
@@ -730,9 +740,13 @@ _g_get_unix_mounts (void)
 
   return return_list;
 }
+
+/* Common code {{{2 */
 #else
 #error No _g_get_unix_mounts() implementation for system
 #endif
+
+/* GUnixMountPoints (ie: fstab) implementations {{{1 */
 
 /* _g_get_unix_mount_points():
  * read the fstab.
@@ -754,6 +768,7 @@ get_fstab_file (void)
 #endif
 }
 
+/* mntent.h (Linux, GNU, NSS) {{{2 */
 #ifdef HAVE_MNTENT_H
 static GList *
 _g_get_unix_mount_points (void)
@@ -835,6 +850,7 @@ _g_get_unix_mount_points (void)
   return g_list_reverse (return_list);
 }
 
+/* mnttab.h {{{2 */
 #elif defined (HAVE_SYS_MNTTAB_H)
 
 static GList *
@@ -896,6 +912,8 @@ _g_get_unix_mount_points (void)
   
   return g_list_reverse (return_list);
 }
+
+/* mntctl.h (AIX) {{{2 */
 #elif defined(HAVE_SYS_MNTCTL_H) && defined(HAVE_SYS_VMOUNT_H) && defined(HAVE_SYS_VFS_H)
 
 /* functions to parse /etc/filesystems on aix */
@@ -1120,12 +1138,15 @@ _g_get_unix_mount_points (void)
   
   return g_list_reverse (return_list);
 }
+/* Interix {{{2 */
 #elif defined(__INTERIX)
 static GList *
 _g_get_unix_mount_points (void)
 {
   return _g_get_unix_mounts ();
 }
+
+/* Common code {{{2 */
 #else
 #error No g_get_mount_table() implementation for system
 #endif
@@ -1268,6 +1289,8 @@ g_unix_mount_points_changed_since (guint64 time)
 {
   return get_mount_points_timestamp () != time;
 }
+
+/* GUnixMountMonitor {{{1 */
 
 static void
 g_unix_mount_monitor_finalize (GObject *object)
@@ -1556,6 +1579,7 @@ g_unix_mount_monitor_new (void)
   return g_unix_mount_monitor_get ();
 }
 
+/* GUnixMount {{{1 */
 /**
  * g_unix_mount_free:
  * @mount_entry: a #GUnixMountEntry.
@@ -1708,6 +1732,7 @@ g_unix_mount_is_system_internal (GUnixMountEntry *mount_entry)
   return mount_entry->is_system_internal;
 }
 
+/* GUnixMountPoint {{{1 */
 /**
  * g_unix_mount_point_compare:
  * @mount1: a #GUnixMount.
@@ -2280,6 +2305,8 @@ g_unix_mount_point_guess_can_eject (GUnixMountPoint *mount_point)
   return FALSE;
 }
 
+/* Utility functions {{{1 */
+
 #ifdef HAVE_MNTENT_H
 /* borrowed from gtk/gtkfilesystemunix.c in GTK+ on 02/23/2006 */
 static void
@@ -2466,3 +2493,6 @@ found:
   return real_dev_root;
 }
 #endif
+
+/* Epilogue {{{1 */
+/* vim:set foldmethod=marker: */
