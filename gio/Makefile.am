@@ -350,6 +350,8 @@ libgio_2_0_la_SOURCES =		\
 	gbytesicon.c		\
 	gcancellable.c 		\
 	gcharsetconverter.c	\
+	gcontextspecificgroup.c	\
+	gcontextspecificgroup.h	\
 	gconverter.c		\
 	gconverterinputstream.c	\
 	gconverteroutputstream.c	\
