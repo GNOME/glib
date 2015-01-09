@@ -113,14 +113,14 @@ g_context_specific_emission_emit_on_instance (GContextSpecificEmission *emission
     g_signal_emit (instance, GPOINTER_TO_UINT (emission) / 2, 0);
 }
 
-typedef struct
+struct _GContextSpecificSource
 {
   GSource   source;
 
   GMutex    lock;
   gpointer  instance;
   GQueue    pending;
-} GContextSpecificSource;
+};
 
 static gboolean
 g_context_specific_source_dispatch (GSource     *source,
@@ -158,9 +158,10 @@ g_context_specific_source_finalize (GSource *source)
   g_mutex_clear (&css->lock);
 }
 
-static GContextSpecificSource *
+gpointer
 g_context_specific_source_new (const gchar *name,
-                               gpointer     instance)
+                               gpointer     instance,
+                               gsize        user_data_size)
 {
   static GSourceFuncs source_funcs = {
     NULL,
@@ -171,7 +172,12 @@ g_context_specific_source_new (const gchar *name,
   GContextSpecificSource *css;
   GSource *source;
 
-  source = g_source_new (&source_funcs, sizeof (GContextSpecificSource));
+  /* generally, simple addition would be unsafe, but in this case we
+   * know that the GContextSpecificSource struct will be at least as
+   * aligned as anything that we will put in the user_data.  In theory
+   * we should change that if this ever becomes a public API.
+   */
+  source = g_source_new (&source_funcs, sizeof (GContextSpecificSource) + user_data_size);
   css = (GContextSpecificSource *) source;
 
   g_source_set_name (source, name);
@@ -181,6 +187,32 @@ g_context_specific_source_new (const gchar *name,
   css->instance = instance;
 
   return css;
+}
+
+gpointer
+g_context_specific_source_get_user_data (GContextSpecificSource *source)
+{
+  return G_STRUCT_MEMBER_P (source, sizeof (GContextSpecificSource));
+}
+
+void
+g_context_specific_source_emit (GContextSpecificSource *css,
+                                guint                   signal_id,
+                                GQuark                  detail,
+                                ...)
+{
+  GContextSpecificEmission *emission;
+  va_list ap;
+
+  va_start (ap, detail);
+  emission = g_context_specific_emission_newv (signal_id, detail, ap);
+  va_end (ap);
+
+  g_mutex_lock (&css->lock);
+  /* this will find repeat instances of void handlers */
+  if (!g_queue_find (&css->pending, emission))
+    g_queue_push_tail (&css->pending, emission);
+  g_mutex_unlock (&css->lock);
 }
 
 gpointer
@@ -218,7 +250,7 @@ g_context_specific_group_get (GContextSpecificGroup *group,
       gpointer instance;
 
       instance = g_object_new (type, NULL);
-      css = g_context_specific_source_new (g_type_name (type), instance);
+      css = g_context_specific_source_new (g_type_name (type), instance, 0);
       G_STRUCT_MEMBER (GMainContext *, instance, context_offset) = context;
       g_source_attach ((GSource *) css, context);
 

@@ -22,6 +22,22 @@
 
 #include <glib-object.h>
 
+typedef struct _GContextSpecificSource GContextSpecificSource;
+
+gpointer
+g_context_specific_source_new (const gchar *name,
+                               gpointer     instance,
+                               gsize        user_data_size);
+
+gpointer
+g_context_specific_source_get_user_data (GContextSpecificSource *css);
+
+void
+g_context_specific_source_emit (GContextSpecificSource *css,
+                                guint                   signal_id,
+                                GQuark                  detail,
+                                ...);
+
 typedef struct
 {
   GHashTable *table;
