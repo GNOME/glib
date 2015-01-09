@@ -1131,5 +1131,5 @@ g_app_info_monitor_get (void)
 void
 g_app_info_monitor_fire (void)
 {
-  g_context_specific_group_emit (&g_app_info_monitor_group, g_app_info_monitor_changed_signal);
+  g_context_specific_group_emit (&g_app_info_monitor_group, g_app_info_monitor_changed_signal, 0);
 }

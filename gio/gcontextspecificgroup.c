@@ -22,7 +22,96 @@
 #include "gcontextspecificgroup.h"
 
 #include <glib-object.h>
+#include <gobject/gvaluecollector.h>
 #include "glib-private.h"
+
+#include <string.h>
+
+typedef struct
+{
+  gint   ref_count;
+  guint  signal_id;
+  GQuark detail;
+  guint  n_params;
+  GValue params[1];
+} GContextSpecificEmission;
+
+static GContextSpecificEmission *
+g_context_specific_emission_newv (guint   signal_id,
+                                  GQuark  detail,
+                                  va_list ap)
+{
+  GContextSpecificEmission *emission;
+  GSignalQuery query;
+  guint i;
+
+  g_signal_query (signal_id, &query);
+
+  if (query.n_params == 0 && detail == 0)
+    return GUINT_TO_POINTER (signal_id * 2 + 1);
+
+  emission = g_malloc (G_STRUCT_OFFSET (GContextSpecificEmission, params[query.n_params]));
+  emission->ref_count = 1;
+  emission->signal_id = signal_id;
+  emission->detail = detail;
+  emission->n_params = query.n_params;
+
+  for (i = 0; i < query.n_params; i++)
+    {
+      gchar *error;
+
+      G_VALUE_COLLECT_INIT (&emission->params[i], query.param_types[i], ap, 0, &error);
+      if (error)
+        g_error ("g_contect_specific_emission_newv: %s", error);
+    }
+
+  return emission;
+}
+
+static GContextSpecificEmission *
+g_context_specific_emission_ref (GContextSpecificEmission *emission)
+{
+  if (~GPOINTER_TO_UINT (emission) & 1)
+    g_atomic_int_inc (&emission->ref_count);
+
+  return emission;
+}
+
+static void
+g_context_specific_emission_unref (GContextSpecificEmission *emission)
+{
+  if (~GPOINTER_TO_UINT (emission) & 1)
+    {
+      if (g_atomic_int_dec_and_test (&emission->ref_count))
+        {
+          guint i;
+
+          for (i = 0; i < emission->n_params; i++)
+            g_value_reset (&emission->params[i]);
+
+          g_free (emission);
+        }
+    }
+}
+
+static void
+g_context_specific_emission_emit_on_instance (GContextSpecificEmission *emission,
+                                              gpointer                  instance)
+{
+  if (~GPOINTER_TO_UINT (emission) & 1)
+    {
+      GValue *instance_and_params;
+
+      instance_and_params = g_newa (GValue, 1 + emission->n_params);
+      instance_and_params[0].g_type = G_TYPE_FROM_INSTANCE (instance);
+      instance_and_params[0].data[0].v_pointer = instance;
+      memcpy (instance_and_params + 1, emission->params, sizeof (GValue) * emission->n_params);
+
+      g_signal_emitv (instance_and_params, emission->signal_id, emission->detail, NULL);
+    }
+  else
+    g_signal_emit (instance, GPOINTER_TO_UINT (emission) / 2, 0);
+}
 
 typedef struct
 {
@@ -39,19 +128,20 @@ g_context_specific_source_dispatch (GSource     *source,
                                     gpointer     user_data)
 {
   GContextSpecificSource *css = (GContextSpecificSource *) source;
-  guint signal_id;
+  GContextSpecificEmission *emission;
 
   g_mutex_lock (&css->lock);
 
   g_assert (!g_queue_is_empty (&css->pending));
-  signal_id = GPOINTER_TO_UINT (g_queue_pop_head (&css->pending));
+  emission = g_queue_pop_head (&css->pending);
 
   if (g_queue_is_empty (&css->pending))
     g_source_set_ready_time (source, -1);
 
   g_mutex_unlock (&css->lock);
 
-  g_signal_emit (css->instance, signal_id, 0);
+  g_context_specific_emission_emit_on_instance (emission, css->instance);
+  g_context_specific_emission_unref (emission);
 
   return TRUE;
 }
@@ -61,8 +151,11 @@ g_context_specific_source_finalize (GSource *source)
 {
   GContextSpecificSource *css = (GContextSpecificSource *) source;
 
-  g_mutex_clear (&css->lock);
+  while (!g_queue_is_empty (&css->pending))
+    g_context_specific_emission_unref (g_queue_pop_head (&css->pending));
+
   g_queue_clear (&css->pending);
+  g_mutex_clear (&css->lock);
 }
 
 static GContextSpecificSource *
@@ -182,17 +275,23 @@ g_context_specific_group_remove (GContextSpecificGroup *group,
 
 void
 g_context_specific_group_emit (GContextSpecificGroup *group,
-                               guint                  signal_id)
+                               guint                  signal_id,
+                               GQuark                 detail,
+                               ...)
 {
+  GContextSpecificEmission *emission;
+  va_list ap;
+
+  va_start (ap, detail);
+  emission = g_context_specific_emission_newv (signal_id, detail, ap);
+  va_end (ap);
+
   g_mutex_lock (&group->lock);
 
   if (group->table)
     {
       GHashTableIter iter;
       gpointer value;
-      gpointer ptr;
-
-      ptr = GUINT_TO_POINTER (signal_id);
 
       g_hash_table_iter_init (&iter, group->table);
       while (g_hash_table_iter_next (&iter, NULL, &value))
@@ -201,8 +300,9 @@ g_context_specific_group_emit (GContextSpecificGroup *group,
 
           g_mutex_lock (&css->lock);
 
-          g_queue_remove (&css->pending, ptr);
-          g_queue_push_tail (&css->pending, ptr);
+          /* this will find repeat instances of void handlers */
+          if (!g_queue_find (&css->pending, emission))
+            g_queue_push_tail (&css->pending, g_context_specific_emission_ref (emission));
 
           g_source_set_ready_time ((GSource *) css, 0);
 
@@ -211,4 +311,6 @@ g_context_specific_group_emit (GContextSpecificGroup *group,
     }
 
   g_mutex_unlock (&group->lock);
+
+  g_context_specific_emission_unref (emission);
 }

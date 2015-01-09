@@ -1303,7 +1303,7 @@ fstab_file_changed (GFileMonitor      *monitor,
       event_type != G_FILE_MONITOR_EVENT_DELETED)
     return;
 
-  g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTPOINTS_CHANGED]);
+  g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTPOINTS_CHANGED], 0);
 }
 
 static void
@@ -1318,7 +1318,7 @@ mtab_file_changed (GFileMonitor      *monitor,
       event_type != G_FILE_MONITOR_EVENT_DELETED)
     return;
 
-  g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTS_CHANGED]);
+  g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTS_CHANGED], 0);
 }
 
 static gboolean
@@ -1327,7 +1327,7 @@ proc_mounts_changed (GIOChannel   *channel,
                      gpointer      user_data)
 {
   if (cond & G_IO_ERR)
-    g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTS_CHANGED]);
+    g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTS_CHANGED], 0);
 
   return TRUE;
 }
@@ -1360,7 +1360,7 @@ mount_change_poller (gpointer user_data)
   if (has_changed)
     {
       mount_poller_time = (guint64) g_get_monotonic_time ();
-      g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTPOINTS_CHANGED]);
+      g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTPOINTS_CHANGED], 0);
     }
 
   return TRUE;

@@ -42,6 +42,8 @@ g_context_specific_group_remove (GContextSpecificGroup *group,
 
 void
 g_context_specific_group_emit (GContextSpecificGroup *group,
-                               guint                  signal_id);
+                               guint                  signal_id,
+                               GQuark                 detail,
+                               ...);
 
 #endif /* __G_CONTEXT_SPECIFIC_GROUP_H__ */
