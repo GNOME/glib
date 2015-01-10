@@ -929,6 +929,99 @@ test_timed_wait (void)
   g_slice_free (IPTestData, data);
 }
 
+static int
+duplicate_fd(int fd)
+{
+#ifdef G_OS_WIN32
+    HANDLE newfd;
+
+    if (!DuplicateHandle (GetCurrentProcess (),
+                          (HANDLE)fd,
+                          GetCurrentProcess (),
+                          &newfd,
+                          0,
+                          FALSE,
+                           DUPLICATE_SAME_ACCESS))
+    {
+        return -1;
+    }
+
+    return (int)newfd;
+#else
+    return dup(fd);
+#endif
+}
+
+static void
+test_fd_roundtrip (void)
+{
+  IPTestData *data;
+  GError *error = NULL;
+  GSocket *client;
+  GSocket *client2;
+  GSocketAddress *addr;
+  int fd;
+  gssize len;
+  gchar buf[128];
+
+  data = create_server (G_SOCKET_FAMILY_IPV4, echo_server_thread, FALSE);
+  addr = g_socket_get_local_address (data->server, &error);
+  g_assert_no_error (error);
+
+  client = g_socket_new (G_SOCKET_FAMILY_IPV4,
+                         G_SOCKET_TYPE_STREAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
+  g_assert_no_error (error);
+
+  g_socket_set_blocking (client, TRUE);
+  g_socket_set_timeout (client, 1);
+
+  g_socket_connect (client, addr, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (g_socket_is_connected (client));
+  g_object_unref (addr);
+
+  /* we have to dup otherwise the fd gets closed twice on unref */
+  fd = duplicate_fd (g_socket_get_fd (client));
+  client2 = g_socket_new_from_fd (fd, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpint (g_socket_get_family (client2), ==, g_socket_get_family (client));
+  g_assert_cmpint (g_socket_get_socket_type (client2), ==, g_socket_get_socket_type (client));
+  g_assert_cmpint (g_socket_get_protocol (client2), ==, G_SOCKET_PROTOCOL_TCP);
+
+  len = g_socket_send (client2, testbuf, strlen (testbuf) + 1, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen (testbuf) + 1);
+
+  len = g_socket_receive (client2, buf, sizeof (buf), NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (len, ==, strlen (testbuf) + 1);
+
+  g_assert_cmpstr (testbuf, ==, buf);
+
+  g_socket_shutdown (client, FALSE, TRUE, &error);
+  g_assert_no_error (error);
+  g_socket_shutdown (client2, FALSE, TRUE, &error);
+  g_assert_no_error (error);
+
+  g_thread_join (data->thread);
+
+  g_socket_close (client, &error);
+  g_assert_no_error (error);
+  g_socket_close (client2, &error);
+  g_assert_no_error (error);
+  g_socket_close (data->server, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (data->server);
+  g_object_unref (client);
+  g_object_unref (client2);
+
+  g_slice_free (IPTestData, data);
+}
+
 static void
 test_sockaddr (void)
 {
@@ -1355,6 +1448,7 @@ main (int   argc,
 #endif
   g_test_add_func ("/socket/close_graceful", test_close_graceful);
   g_test_add_func ("/socket/timed_wait", test_timed_wait);
+  g_test_add_func ("/socket/fd_roundtrip", test_fd_roundtrip);
   g_test_add_func ("/socket/address", test_sockaddr);
 #ifdef G_OS_UNIX
   g_test_add_func ("/socket/unix-from-fd", test_unix_from_fd);
