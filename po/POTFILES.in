@@ -63,7 +63,6 @@ gio/giostream.c
 gio/glib-compile-resources.c
 gio/glib-compile-schemas.c
 gio/gloadableicon.c
-gio/glocaldirectorymonitor.c
 gio/glocalfile.c
 gio/glocalfileenumerator.c
 gio/glocalfileinfo.c

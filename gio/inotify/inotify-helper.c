@@ -29,8 +29,7 @@
 #include <sys/ioctl.h>
 /* Just include the local header to stop all the pain */
 #include <sys/inotify.h>
-#include <gio/glocalfile.h>
-#include <gio/gfilemonitor.h>
+#include <gio/glocalfilemonitor.h>
 #include <gio/gfile.h>
 #include "inotify-helper.h"
 #include "inotify-missing.h"
@@ -109,6 +108,7 @@ _ih_sub_add (inotify_sub *sub)
     _im_add (sub);
   
   G_UNLOCK (inotify_lock);
+
   return TRUE;
 }
 
@@ -129,7 +129,7 @@ _ih_sub_cancel (inotify_sub *sub)
     }
   
   G_UNLOCK (inotify_lock);
-  
+
   return TRUE;
 }
 
@@ -150,113 +150,60 @@ _ih_fullpath_from_event (ik_event_t *event,
    return fullpath;
 }
 
-
-static gboolean
-ih_event_is_paired_move (ik_event_t *event)
-{
-  if (event->pair)
-    {
-      ik_event_t *paired = event->pair;
-      /* intofiy(7): IN_MOVE == IN_MOVED_FROM | IN_MOVED_TO */
-      return (event->mask | paired->mask) & IN_MOVE;
-    }
-
-    return FALSE;
-}
-
 static void
-ih_event_callback (ik_event_t  *event, 
+ih_event_callback (ik_event_t  *event,
                    inotify_sub *sub,
-		   gboolean     file_event)
+                   gboolean     file_event)
 {
-  gchar *fullpath;
-  GFileMonitorEvent eflags;
-  GFile* child;
-  GFile* other;
+  g_assert (!file_event); /* XXX hardlink support */
 
-  eflags = ih_mask_to_EventFlags (event->mask);
-  fullpath = _ih_fullpath_from_event (event, sub->dirname,
-				      file_event ? sub->filename : NULL);
-  child = g_file_new_for_path (fullpath);
-  g_free (fullpath);
-
-  if (ih_event_is_paired_move (event) && sub->pair_moves)
+  if (event->mask & IN_MOVE)
     {
-      const char *parent_dir = (char *) _ip_get_path_for_wd (event->pair->wd);
-      fullpath = _ih_fullpath_from_event (event->pair, parent_dir, NULL);
-      other = g_file_new_for_path (fullpath);
-      g_free (fullpath);
-      eflags = G_FILE_MONITOR_EVENT_MOVED;
-      event->pair = NULL; /* prevents the paired event to be emitted as well */
+      /* We either have a rename (in the same directory) or a move
+       * (between different directories).
+       */
+      if (event->pair && event->pair->wd == event->wd)
+        {
+          /* this is a rename */
+          g_file_monitor_source_handle_event (sub->user_data, G_FILE_MONITOR_EVENT_RENAMED,
+                                              event->name, event->pair->name, NULL, event->timestamp);
+        }
+      else
+        {
+          GFile *other;
+
+          if (event->pair)
+            {
+              const char *parent_dir;
+              gchar *fullpath;
+
+              parent_dir = _ip_get_path_for_wd (event->pair->wd);
+              fullpath = _ih_fullpath_from_event (event->pair, parent_dir, NULL);
+              other = g_file_new_for_path (fullpath);
+              g_free (fullpath);
+            }
+          else
+            other = NULL;
+
+          /* this is either an incoming or outgoing move */
+          g_file_monitor_source_handle_event (sub->user_data, ih_mask_to_EventFlags (event->mask),
+                                              event->name, NULL, other, event->timestamp);
+
+          if (other)
+            g_object_unref (other);
+        }
     }
   else
-    other = NULL;
-
-  g_file_monitor_emit_event (G_FILE_MONITOR (sub->user_data),
-			     child, other, eflags);
-
-  /* For paired moves or moves whose mask has been changed from IN_MOVED_TO to
-   * IN_CREATE, notify also that it's probably the last change to the file,
-   * emitting CHANGES_DONE_HINT.
-   * The first (first part of the if's guard below) is the case of a normal
-   * move within the monitored tree and in the same mounted volume.
-   * The latter (second part of the guard) is the case of a move within the
-   * same mounted volume, but from a not monitored directory.
-   *
-   * It's not needed in cases like moves across mounted volumes as the IN_CREATE
-   * will be followed by a IN_MODIFY and IN_CLOSE_WRITE events.
-   * Also not needed if sub->pair_moves is set as EVENT_MOVED will be emitted
-   * instead of EVENT_CREATED which implies no further modification will be
-   * applied to the file
-   * See: https://bugzilla.gnome.org/show_bug.cgi?id=640077
-   */
-  if ((!sub->pair_moves &&
-        event->is_second_in_pair && (event->mask & IN_MOVED_TO)) ||
-      (!ih_event_is_paired_move (event) &&
-       (event->original_mask & IN_MOVED_TO) && (event->mask & IN_CREATE)))
-    {
-      g_file_monitor_emit_event (G_FILE_MONITOR (sub->user_data),
-          child, NULL, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT);
-    }
-
-  g_object_unref (child);
-  if (other)
-    g_object_unref (other);
+    /* unpaired event -- no 'other' field */
+    g_file_monitor_source_handle_event (sub->user_data, ih_mask_to_EventFlags (event->mask),
+                                        event->name, NULL, NULL, event->timestamp);
 }
 
 static void
 ih_not_missing_callback (inotify_sub *sub)
 {
-  gchar *fullpath;
-  GFileMonitorEvent eflags;
-  guint32 mask;
-  GFile* child;
-
-  if (sub->filename)
-    {
-      fullpath = g_strdup_printf ("%s/%s", sub->dirname, sub->filename);
-      g_warning ("Missing callback called fullpath = %s\n", fullpath);
-      if (!g_file_test (fullpath, G_FILE_TEST_EXISTS))
-	{
-	  g_free (fullpath);
-	  return;
-	}
-      mask = IN_CREATE;
-    }
-  else
-    {
-      fullpath = g_strdup_printf ("%s", sub->dirname);
-      mask = IN_CREATE|IN_ISDIR;
-    }
-
-  eflags = ih_mask_to_EventFlags (mask);
-  child = g_file_new_for_path (fullpath);
-  g_free (fullpath);
-
-  g_file_monitor_emit_event (G_FILE_MONITOR (sub->user_data),
-			     child, NULL, eflags);
-
-  g_object_unref (child);
+  g_file_monitor_source_handle_event (sub->user_data, G_FILE_MONITOR_EVENT_CREATED,
+                                      sub->filename, NULL, NULL, g_get_monotonic_time ());
 }
 
 /* Transforms a inotify event to a GVFS event. */
@@ -273,13 +220,15 @@ ih_mask_to_EventFlags (guint32 mask)
     case IN_ATTRIB:
       return G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED;
     case IN_MOVE_SELF:
-    case IN_MOVED_FROM:
     case IN_DELETE:
     case IN_DELETE_SELF:
       return G_FILE_MONITOR_EVENT_DELETED;
     case IN_CREATE:
-    case IN_MOVED_TO:
       return G_FILE_MONITOR_EVENT_CREATED;
+    case IN_MOVED_FROM:
+      return G_FILE_MONITOR_EVENT_MOVED_OUT;
+    case IN_MOVED_TO:
+      return G_FILE_MONITOR_EVENT_MOVED_IN;
     case IN_UNMOUNT:
       return G_FILE_MONITOR_EVENT_UNMOUNTED;
     case IN_Q_OVERFLOW:

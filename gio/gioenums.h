@@ -328,9 +328,14 @@ typedef enum {
  *   by file renames (moves) and send a single G_FILE_MONITOR_EVENT_MOVED
  *   event instead (NB: not supported on all backends; the default
  *   behaviour -without specifying this flag- is to send single DELETED
- *   and CREATED events).
+ *   and CREATED events).  Deprecated since 2.44: use
+ *   %G_FILE_MONITOR_WATCH_MOVES instead.
  * @G_FILE_MONITOR_WATCH_HARD_LINKS: Watch for changes to the file made
  *   via another hard link. Since 2.36.
+ * @G_FILE_MONITOR_WATCH_MOVES: Watch for rename operations on a
+ *   monitored directory.  This causes %G_FILE_MONITOR_EVENT_RENAMED,
+ *   %G_FILE_MONITOR_EVENT_MOVED_IN and %G_FILE_MONITOR_EVENT_MOVED_OUT
+ *   events to be emitted when possible.  Since: 2.44.
  *
  * Flags used to set what a #GFileMonitor will watch for.
  */
@@ -338,7 +343,8 @@ typedef enum {
   G_FILE_MONITOR_NONE             = 0,
   G_FILE_MONITOR_WATCH_MOUNTS     = (1 << 0),
   G_FILE_MONITOR_SEND_MOVED       = (1 << 1),
-  G_FILE_MONITOR_WATCH_HARD_LINKS = (1 << 2)
+  G_FILE_MONITOR_WATCH_HARD_LINKS = (1 << 2),
+  G_FILE_MONITOR_WATCH_MOVES      = (1 << 3)
 } GFileMonitorFlags;
 
 
@@ -393,7 +399,17 @@ typedef enum {
  * @G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED: a file attribute was changed.
  * @G_FILE_MONITOR_EVENT_PRE_UNMOUNT: the file location will soon be unmounted.
  * @G_FILE_MONITOR_EVENT_UNMOUNTED: the file location was unmounted.
- * @G_FILE_MONITOR_EVENT_MOVED: the file was moved.
+ * @G_FILE_MONITOR_EVENT_MOVED: the file was moved -- only sent if the
+ *   (deprecated) %G_FILE_MONITOR_SEND_MOVED flag is set
+ * @G_FILE_MONITOR_EVENT_RENAMED: the file was renamed within the
+ *   current directory -- only sent if the %G_FILE_MONITOR_WATCH_MOVES
+ *   flag is set.  Since: 2.44.
+ * @G_FILE_MONITOR_EVENT_MOVED_IN: the file was moved into the
+ *   monitored directory from another location -- only sent if the
+ *   %G_FILE_MONITOR_WATCH_MOVES flag is set.  Since: 2.44.
+ * @G_FILE_MONITOR_EVENT_MOVED_OUT: the file was moved out of the
+ *   monitored directory to another location -- only sent if the
+ *   %G_FILE_MONITOR_WATCH_MOVES flag is set.  Since: 2.44
  *
  * Specifies what type of event a monitor event is.
  **/
@@ -405,7 +421,10 @@ typedef enum {
   G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED,
   G_FILE_MONITOR_EVENT_PRE_UNMOUNT,
   G_FILE_MONITOR_EVENT_UNMOUNTED,
-  G_FILE_MONITOR_EVENT_MOVED
+  G_FILE_MONITOR_EVENT_MOVED,
+  G_FILE_MONITOR_EVENT_RENAMED,
+  G_FILE_MONITOR_EVENT_MOVED_IN,
+  G_FILE_MONITOR_EVENT_MOVED_OUT
 } GFileMonitorEvent;
 
 

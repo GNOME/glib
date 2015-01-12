@@ -185,8 +185,6 @@ application_sources = \
 local_sources = \
 	ghttpproxy.c			\
 	ghttpproxy.h			\
-	glocaldirectorymonitor.c 	\
-	glocaldirectorymonitor.h 	\
 	glocalfile.c 			\
 	glocalfile.h 			\
 	glocalfileenumerator.c 		\

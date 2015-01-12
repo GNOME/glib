@@ -46,8 +46,7 @@
 #include "giomodule-priv.h"
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
-#include "glocaldirectorymonitor.h"
-
+#include "glocalfilemonitor.h"
 
 /**
  * SECTION:gdesktopappinfo
@@ -140,7 +139,7 @@ typedef struct
   gchar                      *alternatively_watching;
   gboolean                    is_config;
   gboolean                    is_setup;
-  GLocalDirectoryMonitor     *monitor;
+  GFileMonitor               *monitor;
   GHashTable                 *app_names;
   GHashTable                 *mime_tweaks;
   GHashTable                 *memory_index;
@@ -1335,13 +1334,8 @@ desktop_file_dir_init (DesktopFileDir *dir)
    * does (and we catch the unlikely race), the only degradation is that
    * we will fall back to polling.
    */
-  dir->monitor = g_local_directory_monitor_new_in_worker (watch_dir, G_FILE_MONITOR_NONE, NULL);
-
-  if (dir->monitor)
-    {
-      g_signal_connect (dir->monitor, "changed", G_CALLBACK (desktop_file_dir_changed), dir);
-      g_local_directory_monitor_start (dir->monitor);
-    }
+  dir->monitor = g_local_file_monitor_new_in_worker (watch_dir, TRUE, G_FILE_MONITOR_NONE,
+                                                     desktop_file_dir_changed, dir, NULL);
 
   desktop_file_dir_unindexed_init (dir);
 

@@ -438,9 +438,7 @@ ip_wd_delete (gpointer data,
 
 static void
 ip_event_dispatch (GList      *dir_list, 
-                   GList      *pair_dir_list, 
                    GList      *file_list,
-                   GList      *pair_file_list,
                    ik_event_t *event)
 {
   GList *l;
@@ -521,92 +519,13 @@ ip_event_dispatch (GList      *dir_list,
 	  event_callback (event, sub, TRUE);
         }
     }
-  
-  if (!event->pair)
-    return;
-  
-  for (l = pair_dir_list; l; l = l->next)
-    {
-      GList *subl;
-      ip_watched_dir_t *dir = l->data;
-      
-      for (subl = dir->subs; subl; subl = subl->next)
-	{
-	  inotify_sub *sub = subl->data;
-	  
-	  /* If the subscription and the event
-	   * contain a filename and they don't
-	   * match, we don't deliver this event.
-	   */
-	  if (sub->filename &&
-	      event->pair->name &&
-	      strcmp (sub->filename, event->pair->name))
-	    continue;
-	  
-	  /* If the subscription has a filename
-	   * but this event doesn't, we don't
-	   * deliver this event.
-	   */
-	  if (sub->filename && !event->pair->name)
-	    continue;
-	  
-	  /* If we're also watching the file directly
-	   * don't report events that will also be
-	   * reported on the file itself.
-	   */
-	  if (sub->hardlinks)
-	    {
-	      event->mask &= ~IP_INOTIFY_FILE_MASK;
-	      if (!event->mask)
-		continue;
-	    }
-	  
-	  /* FIXME: We might need to synthesize
-	   * DELETE/UNMOUNT events when
-	   * the filename doesn't match
-	   */
-	  
-	  event_callback (event->pair, sub, FALSE);
-
-          if (sub->hardlinks)
-            {
-              ip_watched_file_t *file;
-
-              file = g_hash_table_lookup (dir->files_hash, sub->filename);
-
-              if (file != NULL)
-                {
-                  if (event->pair->mask & (IN_MOVED_FROM | IN_DELETE))
-                    ip_watched_file_stop (file);
-
-                  if (event->pair->mask & (IN_MOVED_TO | IN_CREATE))
-                    ip_watched_file_start (file);
-                }
-            }
-	}
-    }
-
-  for (l = pair_file_list; l; l = l->next)
-    {
-      ip_watched_file_t *file = l->data;
-      GList *subl;
-
-      for (subl = file->subs; subl; subl = subl->next)
-        {
-	  inotify_sub *sub = subl->data;
-
-	  event_callback (event->pair, sub, TRUE);
-        }
-    }
 }
 
 static void
 ip_event_callback (ik_event_t *event)
 {
   GList* dir_list = NULL;
-  GList* pair_dir_list = NULL;
   GList *file_list = NULL;
-  GList *pair_file_list = NULL;
 
   /* We can ignore the IGNORED events */
   if (event->mask & IN_IGNORED)
@@ -618,15 +537,19 @@ ip_event_callback (ik_event_t *event)
   dir_list = g_hash_table_lookup (wd_dir_hash, GINT_TO_POINTER (event->wd));
   file_list = g_hash_table_lookup (wd_file_hash, GINT_TO_POINTER (event->wd));
 
-  if (event->pair)
+  if (event->mask & IP_INOTIFY_DIR_MASK)
+    ip_event_dispatch (dir_list, file_list, event);
+
+  /* Only deliver paired events if the wds are separate */
+  if (event->pair && event->pair->wd != event->wd)
     {
-      pair_dir_list = g_hash_table_lookup (wd_dir_hash, GINT_TO_POINTER (event->pair->wd));
-      pair_file_list = g_hash_table_lookup (wd_file_hash, GINT_TO_POINTER (event->pair->wd));
+      dir_list = g_hash_table_lookup (wd_dir_hash, GINT_TO_POINTER (event->pair->wd));
+      file_list = g_hash_table_lookup (wd_file_hash, GINT_TO_POINTER (event->pair->wd));
+
+      if (event->pair->mask & IP_INOTIFY_DIR_MASK)
+        ip_event_dispatch (dir_list, file_list, event->pair);
     }
 
-  if (event->mask & IP_INOTIFY_DIR_MASK)
-    ip_event_dispatch (dir_list, pair_dir_list, file_list, pair_file_list, event);
-  
   /* We have to manage the missing list
    * when we get an event that means the
    * file has been deleted/moved/unmounted.

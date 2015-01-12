@@ -31,7 +31,7 @@
 
 struct _GInotifyDirectoryMonitor
 {
-  GLocalDirectoryMonitor parent_instance;
+  GLocalFileMonitor parent_instance;
   inotify_sub *sub;
 };
 
