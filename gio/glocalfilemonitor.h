@@ -37,13 +37,13 @@ G_BEGIN_DECLS
 
 typedef struct _GLocalFileMonitor      GLocalFileMonitor;
 typedef struct _GLocalFileMonitorClass GLocalFileMonitorClass;
+typedef struct _GFileMonitorSource     GFileMonitorSource;
 
 struct _GLocalFileMonitor
 {
   GFileMonitor parent_instance;
 
-  gchar *filename;
-  GFileMonitorFlags flags;
+  GFileMonitorSource *source;
 };
 
 struct _GLocalFileMonitorClass
@@ -51,7 +51,11 @@ struct _GLocalFileMonitorClass
   GFileMonitorClass parent_class;
 
   gboolean (* is_supported) (void);
-  void     (* start)        (GLocalFileMonitor *local_monitor);
+  void     (* start)        (GLocalFileMonitor *local_monitor,
+                             const gchar *dirname,
+                             const gchar *basename,
+                             const gchar *filename,
+                             GFileMonitorSource *source);
 };
 
 #ifdef G_OS_UNIX
@@ -59,18 +63,36 @@ GLIB_AVAILABLE_IN_ALL
 #endif
 GType           g_local_file_monitor_get_type (void) G_GNUC_CONST;
 
-GFileMonitor * _g_local_file_monitor_new      (const char         *pathname,
-                                               GFileMonitorFlags   flags,
-                                               GMainContext       *context,
-                                               gboolean            is_remote_fs,
-                                               gboolean            do_start,
-                                               GError            **error);
-void            g_local_file_monitor_start    (GLocalFileMonitor  *local_monitor);
+/* for glocalfile.c */
+GFileMonitor *
+g_local_file_monitor_new_for_path (const gchar        *pathname,
+                                   gboolean            is_directory,
+                                   GFileMonitorFlags   flags,
+                                   GError            **error);
 
-/* Actually in glocalfile.c */
-GLocalFileMonitor *  g_local_file_monitor_new_in_worker (const char         *pathname,
-                                                         GFileMonitorFlags   flags,
-                                                         GError            **error);
+/* for various users in glib */
+typedef void (* GFileMonitorCallback) (GFileMonitor      *monitor,
+                                       GFile             *child,
+                                       GFile             *other,
+                                       GFileMonitorEvent  event,
+                                       gpointer           user_data);
+GFileMonitor *
+g_local_file_monitor_new_in_worker (const gchar           *pathname,
+                                    gboolean               is_directory,
+                                    GFileMonitorFlags      flags,
+                                    GFileMonitorCallback   callback,
+                                    gpointer               user_data,
+                                    GError               **error);
+
+/* for implementations of GLocalFileMonitor */
+void
+g_file_monitor_source_handle_event (GFileMonitorSource *fms,
+                                    GFileMonitorEvent   event_type,
+                                    const gchar        *child,
+                                    const gchar        *rename_to,
+                                    GFile              *other,
+                                    gint64              event_time);
+
 
 G_END_DECLS
 

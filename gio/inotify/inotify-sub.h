@@ -35,7 +35,6 @@ typedef struct
 
 inotify_sub *_ih_sub_new (const gchar  *dirname,
 			  const gchar  *filename,
-			  gboolean      pair_moves,
 			  gboolean      watch_hardlinks,
 			  gpointer      user_data);
 void         _ih_sub_free (inotify_sub *sub);

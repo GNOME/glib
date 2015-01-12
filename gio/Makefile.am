@@ -183,8 +183,6 @@ application_sources = \
 	$(NULL)
 
 local_sources = \
-	glocaldirectorymonitor.c 	\
-	glocaldirectorymonitor.h 	\
 	glocalfile.c 			\
 	glocalfile.h 			\
 	glocalfileenumerator.c 		\

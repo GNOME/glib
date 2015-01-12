@@ -43,8 +43,15 @@ struct _GLocalFileClass
 GType   _g_local_file_get_type (void) G_GNUC_CONST;
 
 GFile * _g_local_file_new      (const char *filename);
+GFile *  g_local_file_new2     (const char *dirname,
+                                const char *basename);
 
 const char * _g_local_file_get_filename (GLocalFile *file);
+
+GFile * g_local_file_take_path (gchar *path);
+
+/* is NFS? */
+gboolean g_local_file_is_remote (const gchar *filename);
 
 G_END_DECLS
 
