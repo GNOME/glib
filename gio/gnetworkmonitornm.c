@@ -244,6 +244,7 @@ g_network_monitor_nm_initable_init (GInitable     *initable,
   GNetworkMonitorNM *nm = G_NETWORK_MONITOR_NM (initable);
   GDBusProxy *proxy;
   GInitableIface *parent_iface;
+  gchar *name_owner = NULL;
 
   parent_iface = g_type_interface_peek_parent (G_NETWORK_MONITOR_NM_GET_INITABLE_IFACE (initable));
   if (!parent_iface->init (initable, cancellable, error))
@@ -259,6 +260,16 @@ g_network_monitor_nm_initable_init (GInitable     *initable,
                                          error);
   if (!proxy)
     return FALSE;
+
+  name_owner = g_dbus_proxy_get_name_owner (proxy);
+
+  if (!name_owner)
+    {
+      g_object_unref (proxy);
+      return FALSE;
+    }
+
+  g_free (name_owner);
 
   /* Verify it has the PrimaryConnection and Connectivity properties */
   if (!has_property (proxy, "Connectivity"))
