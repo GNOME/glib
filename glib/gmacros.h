@@ -279,10 +279,20 @@
  *   if (x) G_STMT_START { ... } G_STMT_END; else ...
  * This intentionally does not use compiler extensions like GCC's '({...})' to
  * avoid portability issue or side effects when compiled with different compilers.
+ * MSVC complains about "while(0)": C4127: “Conditional expression is constant”,
+ * so we use __pragma to avoid the warning since the use here is intentional.
  */
 #if !(defined (G_STMT_START) && defined (G_STMT_END))
 #define G_STMT_START  do
+#if defined (_MSC_VER) && (_MSC_VER >= 1500)
+#define G_STMT_END \
+    __pragma(warning(push)) \
+    __pragma(warning(disable:4127)) \
+    while(0) \
+    __pragma(warning(pop))
+#else
 #define G_STMT_END    while (0)
+#endif
 #endif
 
 /* Deprecated -- do not use. */
