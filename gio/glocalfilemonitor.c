@@ -287,6 +287,15 @@ g_file_monitor_source_send_event (GFileMonitorSource *fms,
   g_file_monitor_source_queue_event (fms, event_type, child, other);
 }
 
+static void
+g_file_monitor_source_send_synthetic_created (GFileMonitorSource *fms,
+                                              const gchar        *child)
+{
+  g_file_monitor_source_file_changes_done (fms, child);
+  g_file_monitor_source_queue_event (fms, G_FILE_MONITOR_EVENT_CREATED, child, NULL);
+  g_file_monitor_source_queue_event (fms, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, child, NULL);
+}
+
 static gboolean
 is_basename (const gchar *name)
 {
@@ -338,7 +347,7 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
       if (fms->flags & G_FILE_MONITOR_WATCH_MOVES)
         g_file_monitor_source_send_event (fms, G_FILE_MONITOR_EVENT_MOVED_IN, child, other);
       else
-        g_file_monitor_source_file_created (fms, child, event_time);
+        g_file_monitor_source_send_synthetic_created (fms, child);
       break;
 
     case G_FILE_MONITOR_EVENT_MOVED_OUT:
@@ -374,7 +383,7 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
       else
         {
           g_file_monitor_source_send_event (fms, G_FILE_MONITOR_EVENT_DELETED, child, NULL);
-          g_file_monitor_source_file_created (fms, child, event_time);
+          g_file_monitor_source_send_synthetic_created (fms, child);
         }
       break;
 

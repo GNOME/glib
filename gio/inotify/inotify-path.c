@@ -547,7 +547,7 @@ ip_event_callback (ik_event_t *event)
       file_list = g_hash_table_lookup (wd_file_hash, GINT_TO_POINTER (event->pair->wd));
 
       if (event->pair->mask & IP_INOTIFY_DIR_MASK)
-        ip_event_dispatch (dir_list, file_list, event);
+        ip_event_dispatch (dir_list, file_list, event->pair);
     }
 
   /* We have to manage the missing list

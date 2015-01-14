@@ -72,7 +72,10 @@ void
 _ik_event_free (ik_event_t *event)
 {
   if (event->pair)
-    _ik_event_free (event->pair);
+    {
+      event->pair->pair = NULL;
+      _ik_event_free (event->pair);
+    }
 
   g_free (event->name);
   g_free (event);
@@ -148,6 +151,7 @@ ik_source_try_to_pair_head (InotifyKernelSource *iks)
           g_queue_remove (&iks->queue, candidate);
           candidate->is_second_in_pair = TRUE;
           head->pair = candidate;
+          candidate->pair = head;
           return;
         }
     }
