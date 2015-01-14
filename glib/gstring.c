@@ -195,7 +195,7 @@ g_string_new_len (const gchar *init,
 
 /**
  * g_string_free:
- * @string: a #GString
+ * @string: (transfer full): a #GString
  * @free_segment: if %TRUE, the actual character data is freed as well
  *
  * Frees the memory allocated for the #GString.
