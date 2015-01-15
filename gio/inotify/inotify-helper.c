@@ -27,6 +27,7 @@
 #include <time.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
 /* Just include the local header to stop all the pain */
 #include <sys/inotify.h>
 #include <gio/glocalfilemonitor.h>
@@ -197,13 +198,49 @@ ih_event_callback (ik_event_t  *event,
     /* unpaired event -- no 'other' field */
     g_file_monitor_source_handle_event (sub->user_data, ih_mask_to_EventFlags (event->mask),
                                         event->name, NULL, NULL, event->timestamp);
+
+  if (event->mask & IN_CREATE)
+    {
+      const gchar *parent_dir;
+      gchar *fullname;
+      struct stat buf;
+      gint s;
+
+      /* The kernel reports IN_CREATE for two types of events:
+       *
+       *  - creat(), in which case IN_CLOSE_WRITE will come soon; or
+       *  - link(), mkdir(), mknod(), etc., in which case it won't
+       *
+       * We can attempt to detect the second case and send the
+       * CHANGES_DONE immediately so that the user isn't left waiting.
+       *
+       * The detection for link() is not 100% reliable since the link
+       * count could be 1 if the original link was deleted or if
+       * O_TMPFILE was being used, but in that case the virtual
+       * CHANGES_DONE will be emitted to close the loop.
+       */
+
+      parent_dir = _ip_get_path_for_wd (event->wd);
+      fullname = _ih_fullpath_from_event (event, parent_dir, NULL);
+      s = stat (fullname, &buf);
+      g_free (fullname);
+
+      /* if it doesn't look like the result of creat()... */
+      if (s != 0 || !S_ISREG (buf.st_mode) || buf.st_nlink != 1)
+        g_file_monitor_source_handle_event (sub->user_data, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT,
+                                            event->name, NULL, NULL, event->timestamp);
+    }
 }
 
 static void
 ih_not_missing_callback (inotify_sub *sub)
 {
+  gint now = g_get_monotonic_time ();
+
   g_file_monitor_source_handle_event (sub->user_data, G_FILE_MONITOR_EVENT_CREATED,
-                                      sub->filename, NULL, NULL, g_get_monotonic_time ());
+                                      sub->filename, NULL, NULL, now);
+  g_file_monitor_source_handle_event (sub->user_data, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT,
+                                      sub->filename, NULL, NULL, now);
 }
 
 /* Transforms a inotify event to a GVFS event. */
