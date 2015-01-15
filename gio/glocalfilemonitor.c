@@ -178,20 +178,30 @@ g_file_monitor_source_add_pending_change (GFileMonitorSource *fms,
 }
 
 static void
-g_file_monitor_source_update_pending_change (GFileMonitorSource *fms,
-                                             GSequenceIter      *iter,
-                                             gboolean            dirty)
+g_file_monitor_source_set_pending_change_dirty (GFileMonitorSource *fms,
+                                                GSequenceIter      *iter)
 {
   PendingChange *change;
 
   change = g_sequence_get (iter);
 
-  if (change->dirty != dirty)
+  if (!change->dirty)
     {
-      change->dirty = dirty;
+      change->dirty = TRUE;
 
       g_sequence_sort_changed (iter, pending_change_compare_ready_time, fms);
     }
+}
+
+static gboolean
+g_file_monitor_source_get_pending_change_dirty (GFileMonitorSource *fms,
+                                                GSequenceIter      *iter)
+{
+  PendingChange *change;
+
+  change = g_sequence_get (iter);
+
+  return change->dirty;
 }
 
 static void
@@ -242,7 +252,7 @@ g_file_monitor_source_file_changed (GFileMonitorSource *fms,
       g_file_monitor_source_add_pending_change (fms, child, now);
     }
   else
-    g_file_monitor_source_update_pending_change (fms, pending, TRUE);
+    g_file_monitor_source_set_pending_change_dirty (fms, pending);
 
   g_file_monitor_source_update_ready_time (fms);
 }
@@ -256,6 +266,10 @@ g_file_monitor_source_file_changes_done (GFileMonitorSource *fms,
   pending = g_file_monitor_source_find_pending_change (fms, child);
   if (pending)
     {
+      /* If it is dirty, make sure we push out the last CHANGED event */
+      if (g_file_monitor_source_get_pending_change_dirty (fms, pending))
+        g_file_monitor_source_queue_event (fms, G_FILE_MONITOR_EVENT_CHANGED, child, NULL);
+
       g_file_monitor_source_queue_event (fms, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, child, NULL);
       g_file_monitor_source_remove_pending_change (fms, pending, child);
     }
