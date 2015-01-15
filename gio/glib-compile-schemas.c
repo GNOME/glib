@@ -97,9 +97,9 @@ enum_state_add_value (EnumState    *state,
     }
 
   value = g_ascii_strtoll (valuestr, &end, 0);
-  if (*end || state->is_flags ?
+  if (*end || (state->is_flags ?
                 (value > G_MAXUINT32 || value < 0) :
-                (value > G_MAXINT32 || value < G_MININT32))
+                (value > G_MAXINT32 || value < G_MININT32)))
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,

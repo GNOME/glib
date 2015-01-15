@@ -86,6 +86,7 @@ static const SchemaTest tests[] = {
   { "enum",                         NULL, NULL                                                  },
   { "enum-with-aliases",            NULL, NULL                                                  },
   { "enum-with-invalid-alias",      NULL, "*“banger” is not in enumerated type*"                },
+  { "enum-with-invalid-value",      NULL, "*invalid numeric value*"                             },
   { "enum-with-repeated-alias",     NULL, "*<alias value='sausages'/> already specified*"       },
   { "enum-with-repeated-nick",      NULL, "*<value nick='spam'/> already specified*"            },
   { "enum-with-repeated-value",     NULL, "*value='1' already specified*"                       },
