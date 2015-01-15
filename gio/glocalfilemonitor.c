@@ -387,14 +387,6 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
         }
       break;
 
-    case G_FILE_MONITOR_EVENT_APPEARED:
-      g_assert (!other && !rename_to);
-      if (fms->flags & G_FILE_MONITOR_WATCH_MOVES)
-        g_file_monitor_source_send_event (fms, event_type, child, NULL);
-      else
-        g_file_monitor_source_send_synthetic_created (fms, child);
-      break;
-
     case G_FILE_MONITOR_EVENT_DELETED:
     case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
     case G_FILE_MONITOR_EVENT_PRE_UNMOUNT:

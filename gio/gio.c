@@ -67,10 +67,6 @@ gio_watch_callback (GFileMonitor      *monitor,
       g_assert (!other);
       g_print ("%s: deleted", child_str);
       break;
-    case G_FILE_MONITOR_EVENT_APPEARED:
-      g_assert (!other);
-      g_print ("%s: appeared", child_str);
-      break;
     case G_FILE_MONITOR_EVENT_CREATED:
       g_assert (!other);
       g_print ("%s: created", child_str);
