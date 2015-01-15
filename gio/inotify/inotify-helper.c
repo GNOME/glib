@@ -39,9 +39,9 @@
 static gboolean ih_debug_enabled = FALSE;
 #define IH_W if (ih_debug_enabled) g_warning 
 
-static void ih_event_callback (ik_event_t  *event,
-			       inotify_sub *sub,
-			       gboolean     file_event);
+static gboolean ih_event_callback (ik_event_t  *event,
+                                   inotify_sub *sub,
+                                   gboolean     file_event);
 static void ih_not_missing_callback (inotify_sub *sub);
 
 /* We share this lock with inotify-kernel.c and inotify-missing.c
@@ -151,11 +151,13 @@ _ih_fullpath_from_event (ik_event_t *event,
    return fullpath;
 }
 
-static void
+static gboolean
 ih_event_callback (ik_event_t  *event,
                    inotify_sub *sub,
                    gboolean     file_event)
 {
+  gboolean interesting;
+
   g_assert (!file_event); /* XXX hardlink support */
 
   if (event->mask & IN_MOVE)
@@ -166,8 +168,8 @@ ih_event_callback (ik_event_t  *event,
       if (event->pair && event->pair->wd == event->wd)
         {
           /* this is a rename */
-          g_file_monitor_source_handle_event (sub->user_data, G_FILE_MONITOR_EVENT_RENAMED,
-                                              event->name, event->pair->name, NULL, event->timestamp);
+          interesting = g_file_monitor_source_handle_event (sub->user_data, G_FILE_MONITOR_EVENT_RENAMED,
+                                                            event->name, event->pair->name, NULL, event->timestamp);
         }
       else
         {
@@ -187,8 +189,8 @@ ih_event_callback (ik_event_t  *event,
             other = NULL;
 
           /* this is either an incoming or outgoing move */
-          g_file_monitor_source_handle_event (sub->user_data, ih_mask_to_EventFlags (event->mask),
-                                              event->name, NULL, other, event->timestamp);
+          interesting = g_file_monitor_source_handle_event (sub->user_data, ih_mask_to_EventFlags (event->mask),
+                                                            event->name, NULL, other, event->timestamp);
 
           if (other)
             g_object_unref (other);
@@ -196,8 +198,8 @@ ih_event_callback (ik_event_t  *event,
     }
   else
     /* unpaired event -- no 'other' field */
-    g_file_monitor_source_handle_event (sub->user_data, ih_mask_to_EventFlags (event->mask),
-                                        event->name, NULL, NULL, event->timestamp);
+    interesting = g_file_monitor_source_handle_event (sub->user_data, ih_mask_to_EventFlags (event->mask),
+                                                      event->name, NULL, NULL, event->timestamp);
 
   if (event->mask & IN_CREATE)
     {
@@ -230,6 +232,8 @@ ih_event_callback (ik_event_t  *event,
         g_file_monitor_source_handle_event (sub->user_data, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT,
                                             event->name, NULL, NULL, event->timestamp);
     }
+
+  return interesting;
 }
 
 static void
