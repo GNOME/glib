@@ -482,15 +482,33 @@ g_dngettext (const gchar *domain,
  * ]|
  * For an application, note that you also have to call bindtextdomain(),
  * bind_textdomain_codeset(), textdomain() and setlocale() early on in your
- * main() to make gettext() work.
+ * main() to make gettext() work. For example:
+ * |[<!-- language="C" -->
+ * #include <glib/gi18n.h>
+ * #include <locale.h>
+ *
+ * int
+ * main (int argc, char **argv)
+ * {
+ *   setlocale (LC_ALL, "");
+ *   bindtextdomain (GETTEXT_PACKAGE, DATADIR "/locale");
+ *   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+ *   textdomain (GETTEXT_PACKAGE);
+ *
+ *   // Rest of your application.
+ * }
+ * ]|
+ * where `DATADIR` is as typically provided by automake.
  *
  * For a library, you only have to call bindtextdomain() and
  * bind_textdomain_codeset() in your initialization function. If your library
  * doesn't have an initialization function, you can call the functions before
  * the first translated message.
  *
- * The gettext manual covers details of how to set up message extraction
- * with xgettext.
+ * The
+ * [gettext manual](http://www.gnu.org/software/gettext/manual/gettext.html#Maintainers)
+ * covers details of how to integrate gettext into a project’s build system and
+ * workflow.
  */
 
 /**
