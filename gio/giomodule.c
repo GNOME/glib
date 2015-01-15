@@ -35,6 +35,8 @@
 #include "gtlsbackend.h"
 #include "gvfs.h"
 #include "gnotificationbackend.h"
+#include "ginitable.h"
+#include "gnetworkmonitor.h"
 #ifdef G_OS_WIN32
 #include "gregistrysettingsbackend.h"
 #endif
