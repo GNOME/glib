@@ -100,13 +100,13 @@ static GHashTable * wd_file_hash = NULL;
 static ip_watched_dir_t *ip_watched_dir_new  (const char       *path,
 					      int               wd);
 static void              ip_watched_dir_free (ip_watched_dir_t *dir);
-static void              ip_event_callback   (ik_event_t       *event);
+static gboolean          ip_event_callback   (ik_event_t       *event);
 
 
-static void (*event_callback)(ik_event_t *event, inotify_sub *sub, gboolean file_event);
+static gboolean (*event_callback)(ik_event_t *event, inotify_sub *sub, gboolean file_event);
 
 gboolean
-_ip_startup (void (*cb)(ik_event_t *event, inotify_sub *sub, gboolean file_event))
+_ip_startup (gboolean (*cb)(ik_event_t *event, inotify_sub *sub, gboolean file_event))
 {
   static gboolean initialized = FALSE;
   static gboolean result = FALSE;
@@ -436,15 +436,17 @@ ip_wd_delete (gpointer data,
   ip_watched_dir_free (dir);
 }
 
-static void
+static gboolean
 ip_event_dispatch (GList      *dir_list, 
                    GList      *file_list,
                    ik_event_t *event)
 {
+  gboolean interesting = FALSE;
+
   GList *l;
   
   if (!event)
-    return;
+    return FALSE;
 
   for (l = dir_list; l; l = l->next)
     {
@@ -487,7 +489,7 @@ ip_event_dispatch (GList      *dir_list,
 	   * the filename doesn't match
 	   */
 	  
-	  event_callback (event, sub, FALSE);
+	  interesting |= event_callback (event, sub, FALSE);
 
           if (sub->hardlinks)
             {
@@ -516,14 +518,17 @@ ip_event_dispatch (GList      *dir_list,
         {
 	  inotify_sub *sub = subl->data;
 
-	  event_callback (event, sub, TRUE);
+	  interesting |= event_callback (event, sub, TRUE);
         }
     }
+
+  return interesting;
 }
 
-static void
+static gboolean
 ip_event_callback (ik_event_t *event)
 {
+  gboolean interesting = FALSE;
   GList* dir_list = NULL;
   GList *file_list = NULL;
 
@@ -531,14 +536,14 @@ ip_event_callback (ik_event_t *event)
   if (event->mask & IN_IGNORED)
     {
       _ik_event_free (event);
-      return;
+      return TRUE;
     }
 
   dir_list = g_hash_table_lookup (wd_dir_hash, GINT_TO_POINTER (event->wd));
   file_list = g_hash_table_lookup (wd_file_hash, GINT_TO_POINTER (event->wd));
 
   if (event->mask & IP_INOTIFY_DIR_MASK)
-    ip_event_dispatch (dir_list, file_list, event);
+    interesting |= ip_event_dispatch (dir_list, file_list, event);
 
   /* Only deliver paired events if the wds are separate */
   if (event->pair && event->pair->wd != event->wd)
@@ -547,7 +552,7 @@ ip_event_callback (ik_event_t *event)
       file_list = g_hash_table_lookup (wd_file_hash, GINT_TO_POINTER (event->pair->wd));
 
       if (event->pair->mask & IP_INOTIFY_DIR_MASK)
-        ip_event_dispatch (dir_list, file_list, event->pair);
+        interesting |= ip_event_dispatch (dir_list, file_list, event->pair);
     }
 
   /* We have to manage the missing list
@@ -565,6 +570,8 @@ ip_event_callback (ik_event_t *event)
     }
   
   _ik_event_free (event);
+
+  return interesting;
 }
 
 const char *

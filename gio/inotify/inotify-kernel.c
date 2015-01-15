@@ -163,7 +163,7 @@ ik_source_dispatch (GSource     *source,
                     gpointer     user_data)
 {
   InotifyKernelSource *iks = (InotifyKernelSource *) source;
-  void (*user_callback) (ik_event_t *event) = (void *) func;
+  gboolean (*user_callback) (ik_event_t *event) = (void *) func;
   gint64 now = g_source_get_time (source);
 
   now = g_source_get_time (source);
@@ -216,7 +216,7 @@ ik_source_dispatch (GSource     *source,
 }
 
 static InotifyKernelSource *
-ik_source_new (void (* callback) (ik_event_t *event))
+ik_source_new (gboolean (* callback) (ik_event_t *event))
 {
   static GSourceFuncs source_funcs = {
     NULL, NULL,
@@ -247,7 +247,7 @@ ik_source_new (void (* callback) (ik_event_t *event))
 }
 
 gboolean
-_ik_startup (void (*cb)(ik_event_t *event))
+_ik_startup (gboolean (*cb)(ik_event_t *event))
 {
   if (g_once_init_enter (&inotify_source))
     g_once_init_leave (&inotify_source, ik_source_new (cb));
