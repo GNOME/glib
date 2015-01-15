@@ -177,7 +177,7 @@ g_file_monitor_source_add_pending_change (GFileMonitorSource *fms,
   g_hash_table_insert (fms->pending_changes_table, change->child, iter);
 }
 
-static void
+static gboolean
 g_file_monitor_source_set_pending_change_dirty (GFileMonitorSource *fms,
                                                 GSequenceIter      *iter)
 {
@@ -185,12 +185,15 @@ g_file_monitor_source_set_pending_change_dirty (GFileMonitorSource *fms,
 
   change = g_sequence_get (iter);
 
-  if (!change->dirty)
-    {
-      change->dirty = TRUE;
+  /* if it was already dirty then this change is 'uninteresting' */
+  if (change->dirty)
+    return FALSE;
 
-      g_sequence_sort_changed (iter, pending_change_compare_ready_time, fms);
-    }
+  change->dirty = TRUE;
+
+  g_sequence_sort_changed (iter, pending_change_compare_ready_time, fms);
+
+  return TRUE;
 }
 
 static gboolean
@@ -239,12 +242,13 @@ g_file_monitor_source_queue_event (GFileMonitorSource *fms,
   g_queue_push_tail (&fms->event_queue, event);
 }
 
-static void
+static gboolean
 g_file_monitor_source_file_changed (GFileMonitorSource *fms,
                                     const gchar        *child,
                                     gint64              now)
 {
   GSequenceIter *pending;
+  gboolean interesting;
 
   pending = g_file_monitor_source_find_pending_change (fms, child);
 
@@ -255,11 +259,14 @@ g_file_monitor_source_file_changed (GFileMonitorSource *fms,
     {
       g_file_monitor_source_queue_event (fms, G_FILE_MONITOR_EVENT_CHANGED, child, NULL);
       g_file_monitor_source_add_pending_change (fms, child, now);
+      interesting = TRUE;
     }
   else
-    g_file_monitor_source_set_pending_change_dirty (fms, pending);
+    interesting = g_file_monitor_source_set_pending_change_dirty (fms, pending);
 
   g_file_monitor_source_update_ready_time (fms);
+
+  return interesting;
 }
 
 static void
@@ -324,7 +331,7 @@ is_basename (const gchar *name)
   return !strchr (name, '/');
 }
 
-void
+gboolean
 g_file_monitor_source_handle_event (GFileMonitorSource *fms,
                                     GFileMonitorEvent   event_type,
                                     const gchar        *child,
@@ -332,11 +339,13 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
                                     GFile              *other,
                                     gint64              event_time)
 {
+  gboolean interesting = TRUE;
+
   g_assert (!child || is_basename (child));
   g_assert (!rename_to || is_basename (rename_to));
 
   if (fms->basename && (!child || !g_str_equal (child, fms->basename)))
-    return;
+    return TRUE;
 
   g_mutex_lock (&fms->lock);
 
@@ -344,7 +353,7 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
   if (!fms->instance)
     {
       g_mutex_unlock (&fms->lock);
-      return;
+      return TRUE;
     }
 
   switch (event_type)
@@ -356,7 +365,7 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
 
     case G_FILE_MONITOR_EVENT_CHANGED:
       g_assert (!other && !rename_to);
-      g_file_monitor_source_file_changed (fms, child, event_time);
+      interesting = g_file_monitor_source_file_changed (fms, child, event_time);
       break;
 
     case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
@@ -426,6 +435,8 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
   g_file_monitor_source_update_ready_time (fms);
 
   g_mutex_unlock (&fms->lock);
+
+  return interesting;
 }
 
 static gint64
