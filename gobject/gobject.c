@@ -45,6 +45,12 @@
  * construction and destruction, property access methods, and signal
  * support.  Signals are described in detail [here][gobject-Signals].
  *
+ * For a tutorial on implementing a new GObject class, see [How to define and
+ * implement a new GObject][howto-gobject]. For a list of naming conventions for
+ * GObjects and their methods, see the [GType conventions][gtype-conventions].
+ * For the high-level concepts behind GObject, read [Instantiable classed types:
+ * Objects][gtype-instantiable-classed].
+ *
  * ## Floating references # {#floating-ref}
  *
  * GInitiallyUnowned is derived from GObject. The only difference between
