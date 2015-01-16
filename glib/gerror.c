@@ -51,6 +51,12 @@
  * be eliminated by fixing the bug in the program. This is why most
  * functions in GLib and GTK+ do not use the #GError facility.
  *
+ * #GError has several advantages over numeric error codes: importantly, tools
+ * like [gobject-introspection](https://developer.gnome.org/gi/stable/)
+ * understand #GErrors and convert them to exceptions in bindings; the message
+ * includes more information than just a code; and use of a domain helps prevent
+ * misinterpretation of error codes.
+ *
  * Functions that can fail take a return location for a #GError as their
  * last argument. On error, a new #GError instance will be allocated and
  * returned to the caller via this argument. For example:
