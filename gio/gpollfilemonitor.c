@@ -35,7 +35,7 @@ struct _GPollFileMonitor
   GFileMonitor parent_instance;
   GFile *file;
   GFileInfo *last_info;
-  guint timeout;
+  GSource *timeout;
 };
 
 #define POLL_TIME_SECS 5
@@ -171,8 +171,10 @@ poll_file_timeout (gpointer data)
 static void
 schedule_poll_timeout (GPollFileMonitor* poll_monitor)
 {
-  poll_monitor->timeout = g_timeout_add_seconds (POLL_TIME_SECS, poll_file_timeout, poll_monitor);
- }
+  poll_monitor->timeout = g_timeout_source_new_seconds (POLL_TIME_SECS);
+  g_source_set_callback (poll_monitor->timeout, poll_file_timeout, poll_monitor, NULL);
+  g_source_attach (poll_monitor->timeout, g_main_context_get_thread_default ());
+}
 
 static void
 got_initial_info (GObject      *source_object,
@@ -222,8 +224,9 @@ g_poll_file_monitor_cancel (GFileMonitor* monitor)
   
   if (poll_monitor->timeout)
     {
-      g_source_remove (poll_monitor->timeout);
-      poll_monitor->timeout = 0;
+      g_source_destroy (poll_monitor->timeout);
+      g_source_unref (poll_monitor->timeout);
+      poll_monitor->timeout = NULL;
     }
   
   return TRUE;
