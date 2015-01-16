@@ -5,8 +5,6 @@ noinst_LTLIBRARIES += libkqueue.la
 libkqueue_la_SOURCES = \
        gkqueuefilemonitor.c \
        gkqueuefilemonitor.h \
-       gkqueuedirectorymonitor.c \
-       gkqueuedirectorymonitor.h \
        kqueue-helper.c \
        kqueue-helper.h \
        kqueue-thread.c \
