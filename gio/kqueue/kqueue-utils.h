@@ -50,8 +50,4 @@ gboolean _ku_write            (int fd, gconstpointer data, gsize size);
 
 void     _ku_file_information (int fd, int *is_dir, ino_t *inode);
 
-gchar*    _ku_path_concat     (const gchar *dir, const gchar *file);
-
-
-
 #endif /* __KQUEUE_UTILS_H */

@@ -26,6 +26,7 @@
 #include <sys/time.h>
 #include <sys/socket.h>
 #include <gio/glocalfile.h>
+#include <gio/glocalfilemonitor.h>
 #include <gio/gfile.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -37,8 +38,6 @@
 #include "kqueue-thread.h"
 #include "kqueue-missing.h"
 #include "kqueue-exclusions.h"
-
-#include "gkqueuedirectorymonitor.h"
 
 static gboolean kh_debug_enabled = FALSE;
 #define KH_W if (kh_debug_enabled) g_warning
@@ -113,7 +112,7 @@ convert_kqueue_events_to_gio (uint32_t flags, gboolean *done)
 
 typedef struct {
   kqueue_sub *sub;
-  GFileMonitor *monitor;  
+  GFileMonitorSource *source;
 } handle_ctx;
 
 /**
@@ -129,29 +128,15 @@ static void
 handle_created (void *udata, const char *path, ino_t inode)
 {
   handle_ctx *ctx = NULL;
-  GFile *file = NULL;
-  gchar *fpath = NULL;
 
   (void) inode;
   ctx = (handle_ctx *) udata;
   g_assert (udata != NULL);
   g_assert (ctx->sub != NULL);
-  g_assert (ctx->monitor != NULL);
+  g_assert (ctx->source != NULL);
 
-  fpath = _ku_path_concat (ctx->sub->filename, path);
-  if (fpath == NULL)
-    {
-      KH_W ("Failed to allocate a string for a new event");
-      return;
-    }
-
-  file = g_file_new_for_path (fpath);
-  g_file_monitor_emit_event (ctx->monitor,
-                             file,
-                             NULL,
-                             G_FILE_MONITOR_EVENT_CREATED);
-  g_free (fpath);
-  g_object_unref (file);
+  g_file_monitor_source_handle_event (ctx->source, G_FILE_MONITOR_EVENT_CREATED, path,
+                                      NULL, NULL, g_get_monotonic_time ());
 }
 
 /**
@@ -167,29 +152,15 @@ static void
 handle_deleted (void *udata, const char *path, ino_t inode)
 {
   handle_ctx *ctx = NULL;
-  GFile *file = NULL;
-  gchar *fpath = NULL;
 
   (void) inode;
   ctx = (handle_ctx *) udata;
   g_assert (udata != NULL);
   g_assert (ctx->sub != NULL);
-  g_assert (ctx->monitor != NULL);
+  g_assert (ctx->source != NULL);
 
-  fpath = _ku_path_concat (ctx->sub->filename, path);
-  if (fpath == NULL)
-    {
-      KH_W ("Failed to allocate a string for a new event");
-      return;
-    }
-
-  file = g_file_new_for_path (fpath);
-  g_file_monitor_emit_event (ctx->monitor,
-                             file,
-                             NULL,
-                             G_FILE_MONITOR_EVENT_DELETED);
-  g_free (fpath);
-  g_object_unref (file);
+  g_file_monitor_source_handle_event (ctx->source, G_FILE_MONITOR_EVENT_DELETED, path,
+                                      NULL, NULL, g_get_monotonic_time ());
 }
 
 /**
@@ -201,7 +172,7 @@ handle_deleted (void *udata, const char *path, ino_t inode)
  * @to_inode: inode number of the replaced file.
  *
  * A callback function for the directory diff calculation routine,
- * produces G_FILE_MONITOR_EVENT_MOVED event on a move.
+ * produces G_FILE_MONITOR_EVENT_RENAMED event on a move.
  **/
 static void
 handle_moved (void       *udata,
@@ -211,10 +182,6 @@ handle_moved (void       *udata,
               ino_t       to_inode)
 {
   handle_ctx *ctx = NULL;
-  GFile *file = NULL;
-  GFile *other = NULL;
-  gchar *path = NULL;
-  gchar *npath = NULL;
 
   (void) from_inode;
   (void) to_inode;
@@ -222,46 +189,11 @@ handle_moved (void       *udata,
   ctx = (handle_ctx *) udata;
   g_assert (udata != NULL);
   g_assert (ctx->sub != NULL);
-  g_assert (ctx->monitor != NULL);
+  g_assert (ctx->source != NULL);
 
-
-  path = _ku_path_concat (ctx->sub->filename, from_path);
-  npath = _ku_path_concat (ctx->sub->filename, to_path);
-  if (path == NULL || npath == NULL)
-    {
-      KH_W ("Failed to allocate strings for event");
-      return;
-    }
-
-  file = g_file_new_for_path (path);
-  other = g_file_new_for_path (npath);
-
-  if (ctx->sub->pair_moves)
-    {
-      g_file_monitor_emit_event (ctx->monitor,
-                                 file,
-                                 other,
-                                 G_FILE_MONITOR_EVENT_MOVED);
-    }
-  else
-    {
-      g_file_monitor_emit_event (ctx->monitor,
-                                 file,
-                                 NULL,
-                                 G_FILE_MONITOR_EVENT_DELETED);
-      g_file_monitor_emit_event (ctx->monitor,
-                                 other,
-                                 NULL,
-                                 G_FILE_MONITOR_EVENT_CREATED);
-    }
-
-  g_free (path);
-  g_free (npath);
-
-  g_object_unref (file);
-  g_object_unref (other);
+  g_file_monitor_source_handle_event (ctx->source, G_FILE_MONITOR_EVENT_RENAMED,
+                                      from_path, to_path, NULL, g_get_monotonic_time ());
 }
-
 
 /**
  * handle_overwritten:
@@ -277,34 +209,18 @@ static void
 handle_overwritten (void *udata, const char *path, ino_t inode)
 {
   handle_ctx *ctx = NULL;
-  GFile *file = NULL;
-  gchar *fpath = NULL;
 
   (void) inode;
   ctx = (handle_ctx *) udata;
   g_assert (udata != NULL);
   g_assert (ctx->sub != NULL);
-  g_assert (ctx->monitor != NULL);
+  g_assert (ctx->source != NULL);
 
-  fpath = _ku_path_concat (ctx->sub->filename, path);
-  if (fpath == NULL)
-    {
-      KH_W ("Failed to allocate a string for a new event");
-      return;
-    }
+  g_file_monitor_source_handle_event (ctx->source, G_FILE_MONITOR_EVENT_DELETED,
+                                      path, NULL, NULL, g_get_monotonic_time ());
 
-  file = g_file_new_for_path (fpath);
-  g_file_monitor_emit_event (ctx->monitor,
-                             file,
-                             NULL,
-                             G_FILE_MONITOR_EVENT_DELETED);
-  g_file_monitor_emit_event (ctx->monitor,
-                             file,
-                             NULL,
-                             G_FILE_MONITOR_EVENT_CREATED);
-
-  g_free (fpath);
-  g_object_unref (file);
+  g_file_monitor_source_handle_event (ctx->source, G_FILE_MONITOR_EVENT_CREATED,
+                                      path, NULL, NULL, g_get_monotonic_time ());
 }
 
 static const traverse_cbs cbs = {
@@ -320,17 +236,17 @@ static const traverse_cbs cbs = {
 
 
 void
-_kh_dir_diff (kqueue_sub *sub, GFileMonitor *monitor)
+_kh_dir_diff (kqueue_sub *sub, GFileMonitorSource *source)
 {
   dep_list *was;
   handle_ctx ctx;
 
   g_assert (sub != NULL);
-  g_assert (monitor != NULL);
+  g_assert (source != NULL);
 
   memset (&ctx, 0, sizeof (handle_ctx));
   ctx.sub = sub;
-  ctx.monitor = monitor;
+  ctx.source = source;
 
   was = sub->deps;
   sub->deps = dl_listing (sub->filename);
@@ -363,7 +279,7 @@ process_kqueue_notifications (GIOChannel   *gioc,
 {
   struct kqueue_notification n;
   kqueue_sub *sub = NULL;
-  GFileMonitor *monitor = NULL;
+  GFileMonitorSource *source = NULL;
   GFileMonitorEvent mask = 0;
   
   g_assert (kqueue_socket_pair[0] != -1);
@@ -384,8 +300,8 @@ process_kqueue_notifications (GIOChannel   *gioc,
       return TRUE;
     }
 
-  monitor = G_FILE_MONITOR (sub->user_data);
-  g_assert (monitor != NULL);
+  source = sub->user_data;
+  g_assert (source != NULL);
 
   if (n.flags & (NOTE_DELETE | NOTE_REVOKE))
     {
@@ -408,7 +324,7 @@ process_kqueue_notifications (GIOChannel   *gioc,
 
   if (sub->is_dir && n.flags & (NOTE_WRITE | NOTE_EXTEND))
     {
-      _kh_dir_diff (sub, monitor);  
+      _kh_dir_diff (sub, source);
       n.flags &= ~(NOTE_WRITE | NOTE_EXTEND);
     }
 
@@ -417,11 +333,7 @@ process_kqueue_notifications (GIOChannel   *gioc,
       gboolean done = FALSE;
       mask = convert_kqueue_events_to_gio (n.flags, &done);
       if (done == TRUE)
-        {
-          GFile *file = g_file_new_for_path (sub->filename);
-          g_file_monitor_emit_event (monitor, file, NULL, mask);
-          g_object_unref (file);
-        }
+        g_file_monitor_source_handle_event (source, mask, NULL, NULL, NULL, g_get_monotonic_time ());
     }
 
   return TRUE;

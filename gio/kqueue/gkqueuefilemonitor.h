@@ -31,7 +31,7 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_KQUEUE_FILE_MONITOR        (_g_kqueue_file_monitor_get_type ())
+#define G_TYPE_KQUEUE_FILE_MONITOR        (g_kqueue_file_monitor_get_type ())
 #define G_KQUEUE_FILE_MONITOR(o)          (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_KQUEUE_FILE_MONITOR, GKqueueFileMonitor))
 #define G_KQUEUE_FILE_MONITOR_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST ((k), G_TYPE_KQUEUE_FILE_MONITOR, GKqueueFileMonitorClass))
 #define G_IS_KQUEUE_FILE_MONITOR(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_KQUEUE_FILE_MONITOR))
@@ -44,7 +44,7 @@ struct _GKqueueFileMonitorClass {
   GLocalFileMonitorClass parent_class;
 };
 
-GType _g_kqueue_file_monitor_get_type (void);
+GType g_kqueue_file_monitor_get_type (void);
 
 G_END_DECLS
 

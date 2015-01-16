@@ -35,16 +35,13 @@ struct _GKqueueFileMonitor
   GLocalFileMonitor parent_instance;
 
   kqueue_sub *sub;
-  
+
   GFileMonitor *fallback;
   GFile *fbfile;
-
-  gboolean pair_moves;
 };
 
 static gboolean g_kqueue_file_monitor_cancel (GFileMonitor* monitor);
 
-#define g_kqueue_file_monitor_get_type _g_kqueue_file_monitor_get_type
 G_DEFINE_TYPE_WITH_CODE (GKqueueFileMonitor, g_kqueue_file_monitor, G_TYPE_LOCAL_FILE_MONITOR,
        g_io_extension_point_implement (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME,
                g_define_type_id,
@@ -59,16 +56,18 @@ _fallback_callback (GFileMonitor      *unused,
                     GFileMonitorEvent  event,
                     gpointer           udata)
 {
-  GKqueueFileMonitor *kq_mon = G_KQUEUE_FILE_MONITOR (udata); 
+  GKqueueFileMonitor *kq_mon = G_KQUEUE_FILE_MONITOR (udata);
   GFileMonitor *mon = G_FILE_MONITOR (kq_mon);
   g_assert (kq_mon != NULL);
   g_assert (mon != NULL);
   (void) unused;
 
   if (event == G_FILE_MONITOR_EVENT_CHANGED)
-  {
-    _kh_dir_diff (kq_mon->sub, mon);
-  }
+    {
+      GLocalFileMonitor *local_monitor = G_LOCAL_FILE_MONITOR (kq_mon);
+
+      _kh_dir_diff (kq_mon->sub, local_monitor->source);
+    }
   else
     g_file_monitor_emit_event (mon, first, second, event);
 }
@@ -96,38 +95,28 @@ g_kqueue_file_monitor_finalize (GObject *object)
     (*G_OBJECT_CLASS (g_kqueue_file_monitor_parent_class)->finalize) (object);
 }
 
-static GObject*
-g_kqueue_file_monitor_constructor (GType                 type,
-                                   guint                 n_construct_properties,
-                                   GObjectConstructParam *construct_properties)
+static void
+g_kqueue_file_monitor_start (GLocalFileMonitor *local_monitor,
+                             const gchar *dirname,
+                             const gchar *basename,
+                             const gchar *filename,
+                             GFileMonitorSource *source)
 {
+  GKqueueFileMonitor *kqueue_monitor = G_KQUEUE_FILE_MONITOR (local_monitor);
   GObject *obj;
   GKqueueFileMonitorClass *klass;
   GObjectClass *parent_class;
-  GKqueueFileMonitor *kqueue_monitor;
   kqueue_sub *sub = NULL;
   gboolean ret_kh_startup = FALSE;
   const gchar *path = NULL; 
 
-  klass = G_KQUEUE_FILE_MONITOR_CLASS (g_type_class_peek (G_TYPE_KQUEUE_FILE_MONITOR));
-  parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (klass));
-  obj = parent_class->constructor (type,
-                                   n_construct_properties,
-                                   construct_properties);
-
-  kqueue_monitor = G_KQUEUE_FILE_MONITOR (obj);
 
   ret_kh_startup = _kh_startup ();
   g_assert (ret_kh_startup);
 
-  kqueue_monitor->pair_moves = G_LOCAL_FILE_MONITOR (obj)->flags & G_FILE_MONITOR_SEND_MOVED
-                               ? TRUE : FALSE;
-
-  kqueue_monitor->sub = NULL;
-  kqueue_monitor->fallback = NULL;
-  kqueue_monitor->fbfile = NULL;
-
-  path = G_LOCAL_FILE_MONITOR (obj)->filename;
+  path = filename;
+  if (!path)
+    path = dirname;
 
   /* For a directory monitor, create a subscription object anyway.
    * It will be used for directory diff calculation routines. 
@@ -137,9 +126,7 @@ g_kqueue_file_monitor_constructor (GType                 type,
    * will be created under that path, GKqueueFileMonitor will have to
    * handle the directory notifications. */
 
-  sub = _kh_sub_new (path,
-                     kqueue_monitor->pair_moves,
-                     kqueue_monitor);
+  sub = _kh_sub_new (path, TRUE, source);
 
   /* FIXME: what to do about errors here? we can't return NULL or another
    * kind of error and an assertion is probably too hard (same issue as in
@@ -159,8 +146,6 @@ g_kqueue_file_monitor_constructor (GType                 type,
                         G_CALLBACK (_fallback_callback),
                         kqueue_monitor);
     }
-
-  return obj;
 }
 
 static gboolean
@@ -177,10 +162,10 @@ g_kqueue_file_monitor_class_init (GKqueueFileMonitorClass *klass)
   GLocalFileMonitorClass *local_file_monitor_class = G_LOCAL_FILE_MONITOR_CLASS (klass);
 
   gobject_class->finalize = g_kqueue_file_monitor_finalize;
-  gobject_class->constructor = g_kqueue_file_monitor_constructor;
   file_monitor_class->cancel = g_kqueue_file_monitor_cancel;
 
   local_file_monitor_class->is_supported = g_kqueue_file_monitor_is_supported;
+  local_file_monitor_class->start = g_kqueue_file_monitor_start;
 }
 
 static void

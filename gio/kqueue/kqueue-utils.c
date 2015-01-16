@@ -208,35 +208,3 @@ _ku_file_information (int fd, int *is_dir, ino_t *inode)
   if (inode != NULL)
       *inode = st.st_ino;
 }
-
-/**
- * Create a file path using its name and a path to its directory.
- *
- * @param[in] dir  A path to a file directory. May end with a '/'.
- * @param[in] file File name.
- * @return A concatenated path. Should be freed with free().
- **/
-gchar*
-_ku_path_concat (const gchar *dir, const gchar *file)
-{
-  int dir_len = strlen (dir);
-  int file_len = strlen (file);
-
-  char *path = g_malloc (dir_len + file_len + 2);
-  if (path == NULL)
-    {
-      KU_W ("Failed to allocate memory path for concatenation");
-      return NULL;
-    }
-
-  strcpy (path, dir);
-
-  if (dir[dir_len - 1] != '/') {
-      ++dir_len;
-      path[dir_len - 1] = '/';
-  }
-
-  strcpy (path + dir_len, file);
-  return path;
-}
-
