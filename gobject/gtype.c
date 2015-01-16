@@ -76,10 +76,10 @@
  * separately (typically by using #GArray or #GPtrArray) and put a pointer
  * to the buffer in the structure.
  *
- * A final word about type names: Such an identifier needs to be at least
- * three characters long. There is no upper length limit. The first character
- * needs to be a letter (a-z or A-Z) or an underscore '_'. Subsequent
- * characters can be letters, numbers or any of '-_+'.
+ * As mentioned in the [GType conventions][gtype-conventions], type names must
+ * be at least three characters long. There is no upper length limit. The first
+ * character must be a letter (a–z or A–Z) or an underscore (‘_’). Subsequent
+ * characters can be letters, numbers or any of ‘-_+’.
  */
 
 

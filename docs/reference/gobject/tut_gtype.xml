@@ -233,6 +233,10 @@ struct _GTypeValueTable
         which are to be exported in a header file:
         <itemizedlist>
           <listitem><para>
+            Type names (including object names) must be at least three
+            characters long and start with ‘a–z’, ‘A–Z’ or ‘_’.
+          </para></listitem>
+          <listitem><para>
             Use the <function>object_method</function> pattern for function names: to invoke
             the method named foo on an instance of object type bar, call 
             <function>bar_foo</function>.
