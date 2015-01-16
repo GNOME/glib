@@ -30,8 +30,8 @@
  * GLib provides a standard method of reporting errors from a called
  * function to the calling code. (This is the same problem solved by
  * exceptions in other languages.) It's important to understand that
- * this method is both a data type (the #GError struct) and a set of
- * rules. If you use #GError incorrectly, then your code will not
+ * this method is both a data type (the #GError struct) and a [set of
+ * rules][gerror-rules]. If you use #GError incorrectly, then your code will not
  * properly interoperate with other code that uses #GError, and users
  * of your API will probably get confused.
  *
@@ -278,6 +278,8 @@
  *   generally not handle this error code explicitly, but should
  *   instead treat any unrecognized error code as equivalent to
  *   FAILED.
+ *
+ * ## Rules for use of #GError # {#gerror-rules}
  *
  * Summary of rules for use of #GError:
  *
