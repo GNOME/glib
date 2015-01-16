@@ -35,11 +35,11 @@
 
 #include "glib-private.h"
 
-/* Thresholds for the boredom algorithm */
-#define BOREDOM_MIN          (1 * G_TIME_SPAN_MILLISECOND)
-#define BOREDOM_MAX          (1 * G_TIME_SPAN_SECOND)
-#define BOREDOM_THRESHOLD    (16 * G_TIME_SPAN_MILLISECOND)
-#define BOREDOM_FACTOR       (2)
+/* From inotify(7) */
+#define MAX_EVENT_SIZE       (sizeof(struct inotify_event) + NAME_MAX + 1)
+
+/* Amount of time to sleep on receipt of uninteresting events */
+#define BOREDOM_SLEEP_TIME   (100 * G_TIME_SPAN_MILLISECOND)
 
 /* Define limits on the maximum amount of time and maximum amount of
  * interceding events between FROM/TO that can be merged.
@@ -96,8 +96,7 @@ typedef struct
   gint        fd;
 
   GHashTable *unmatched_moves;
-  GTimeSpan   boredom;
-  gboolean    ignored;
+  gboolean    is_bored;
 } InotifyKernelSource;
 
 static InotifyKernelSource *inotify_source;
@@ -136,10 +135,77 @@ ik_source_can_dispatch_now (InotifyKernelSource *iks,
   return 0 <= dispatch_time && dispatch_time <= now;
 }
 
-static gboolean
-ik_source_is_bored (InotifyKernelSource *iks)
+static gsize
+ik_source_read_some_events (InotifyKernelSource *iks,
+                            gchar               *buffer,
+                            gsize                buffer_len)
 {
-  return iks->boredom > BOREDOM_THRESHOLD;
+  gssize result;
+
+again:
+  result = read (iks->fd, buffer, buffer_len);
+
+  if (result < 0)
+    {
+      if (errno == EINTR)
+        goto again;
+
+      if (errno == EAGAIN)
+        return 0;
+
+      g_error ("inotify read(): %s", g_strerror (errno));
+    }
+  else if (result == 0)
+    g_error ("inotify unexpectedly hit eof");
+
+  return result;
+}
+
+static gchar *
+ik_source_read_all_the_events (InotifyKernelSource *iks,
+                               gchar               *buffer,
+                               gsize                buffer_len,
+                               gsize               *length_out)
+{
+  gsize n_read;
+
+  n_read = ik_source_read_some_events (iks, buffer, buffer_len);
+
+  /* Check if we might have gotten another event if we had passed in a
+   * bigger buffer...
+   */
+  if (n_read + MAX_EVENT_SIZE > buffer_len)
+    {
+      gchar *new_buffer;
+      guint n_readable;
+      gint result;
+
+      /* figure out how many more bytes there are to read */
+      result = ioctl (iks->fd, FIONREAD, &n_readable);
+      if (result != 0)
+        g_error ("inotify ioctl(FIONREAD): %s", g_strerror (errno));
+
+      if (n_readable != 0)
+        {
+          /* there is in fact more data.  allocate a new buffer, copy
+           * the existing data, and then append the remaining.
+           */
+          new_buffer = g_malloc (n_read + n_readable);
+          memcpy (new_buffer, buffer, n_read);
+          n_read += ik_source_read_some_events (iks, new_buffer + n_read, n_readable);
+
+          buffer = new_buffer;
+
+          /* There may be new events in the buffer that were added after
+           * the FIONREAD was performed, but we can't risk getting into
+           * a loop.  We'll get them next time.
+           */
+        }
+    }
+
+  *length_out = n_read;
+
+  return buffer;
 }
 
 static gboolean
@@ -150,65 +216,39 @@ ik_source_dispatch (GSource     *source,
   InotifyKernelSource *iks = (InotifyKernelSource *) source;
   gboolean (*user_callback) (ik_event_t *event) = (void *) func;
   gboolean interesting = FALSE;
-  gboolean is_ready;
   gint64 now;
 
   now = g_source_get_time (source);
 
-  /* If we woke up after a timeout caused by boredom, check to see if we
-   * actually have anything to read.  If not, go back to waiting for the
-   * file descriptor to become ready.
-   */
-  if (ik_source_is_bored (iks) && g_source_get_ready_time (source))
+  if (iks->is_bored || g_source_query_unix_fd (source, iks->fd_tag))
     {
-      GPollFD pollfd;
-      gint n_ready;
+      gchar stack_buffer[4096];
+      gsize buffer_len;
+      gchar *buffer;
+      gsize offset;
 
-      pollfd.fd = iks->fd;
-      pollfd.events = G_IO_IN;
-
-      do
-        n_ready = g_poll (&pollfd, 1, 0);
-      while (n_ready == -1 && errno == EINTR);
-
-      if (n_ready == -1)
-        g_error ("Unexpected error on poll() of inotify: %s\n", g_strerror (errno));
-
-      if (!n_ready)
-        {
-          /* Timeout fired but there is nothing to read.  Switch back to
-           * waiting for the fd to become ready, but do not reset
-           * boredom.  We don't want to cancel our back-off and start
-           * all over again just because the delay got longer than the
-           * frequency of the change notifications.
-           */
-          g_source_modify_unix_fd (source, iks->fd_tag, G_IO_IN);
-          g_source_set_ready_time (source, 0);
-
-          return TRUE;
-        }
-
-      is_ready = TRUE;
-    }
-  else
-    is_ready = g_source_query_unix_fd (source, iks->fd_tag);
-
-  if (is_ready && !ik_source_can_dispatch_now (iks, now))
-    {
-      gchar buffer[256 * 1024];
-      gssize result;
-      gssize offset;
-
-      result = read (iks->fd, buffer, sizeof buffer);
-
-      if (result < 0)
-        g_error ("inotify error: %s\n", g_strerror (errno));
-      else if (result == 0)
-        g_error ("inotify unexpectedly hit eof");
+      /* We want to read all of the available events.
+       *
+       * We need to do it in a finite number of steps so that we don't
+       * get caught in a loop of read() with another process
+       * continuously adding events each time we drain them.
+       *
+       * In the normal case we will have only a few events in the queue,
+       * so start out by reading into a small stack-allocated buffer.
+       * Even though we're on a fresh stack frame, there is no need to
+       * pointlessly blow up with the size of the worker thread stack
+       * with a huge buffer here.
+       *
+       * If the result is large enough to cause us to suspect that
+       * another event may be pending then we allocate a buffer on the
+       * heap that can hold all of the events and read (once!) into that
+       * buffer.
+       */
+      buffer = ik_source_read_all_the_events (iks, stack_buffer, sizeof stack_buffer, &buffer_len);
 
       offset = 0;
 
-      while (offset < result)
+      while (offset < buffer_len)
         {
           struct inotify_event *kevent = (struct inotify_event *) (buffer + offset);
           ik_event_t *event;
@@ -232,6 +272,8 @@ ik_source_dispatch (GSource     *source,
                   pair->pair = event;
                   continue;
                 }
+
+              interesting = TRUE;
             }
 
           else if (event->mask & IN_MOVED_FROM)
@@ -241,10 +283,27 @@ ik_source_dispatch (GSource     *source,
               new = g_hash_table_insert (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie), event);
               if G_UNLIKELY (!new)
                 g_warning ("inotify: got IN_MOVED_FROM event with already-pending cookie %#x", event->cookie);
+
+              interesting = TRUE;
             }
 
           g_queue_push_tail (&iks->queue, event);
         }
+
+      if (buffer_len == 0)
+        {
+          /* We can end up reading nothing if we arrived here due to a
+           * boredom timer but the stream of events stopped meanwhile.
+           *
+           * In that case, we need to switch back to polling the file
+           * descriptor in the usual way.
+           */
+          g_assert (iks->is_bored);
+          interesting = TRUE;
+        }
+
+      if (buffer != stack_buffer)
+        g_free (buffer);
     }
 
   while (ik_source_can_dispatch_now (iks, now))
@@ -258,34 +317,45 @@ ik_source_dispatch (GSource     *source,
         g_hash_table_remove (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie));
 
       G_LOCK (inotify_lock);
+
       interesting |= (* user_callback) (event);
+
       G_UNLOCK (inotify_lock);
     }
 
   /* The queue gets blocked iff we have unmatched moves */
   g_assert ((iks->queue.length > 0) == (g_hash_table_size (iks->unmatched_moves) > 0));
 
-  /* Unpaired moves are interesting since they will be reported to the
-   * user, one way or another.  We also want to resolve them as soon as
-   * possible.
+  /* Here's where we decide what will wake us up next.
+   *
+   * If the last event was interesting then we will wake up on the fd or
+   * when the timeout is reached on an unpaired move (if any).
+   *
+   * If the last event was uninteresting then we will wake up after the
+   * shorter of the boredom sleep or any timeout for a unpaired move.
    */
-  interesting |= iks->queue.length > 0;
-
-  if (!interesting)
+  if (interesting)
     {
-      iks->boredom = MAX(BOREDOM_MIN, MIN(iks->boredom * BOREDOM_FACTOR, BOREDOM_MAX));
-
-      if (ik_source_is_bored (iks))
+      if (iks->is_bored)
         {
-          g_source_set_ready_time (source, now + iks->boredom);
-          g_source_modify_unix_fd (source, iks->fd_tag, 0);
+          g_source_modify_unix_fd (source, iks->fd_tag, G_IO_IN);
+          iks->is_bored = FALSE;
         }
+
+      g_source_set_ready_time (source, ik_source_get_dispatch_time (iks));
     }
   else
     {
-      g_source_set_ready_time (source, ik_source_get_dispatch_time (iks));
-      g_source_modify_unix_fd (source, iks->fd_tag, G_IO_IN);
-      iks->boredom = 0;
+      guint64 dispatch_time = ik_source_get_dispatch_time (iks);
+      guint64 boredom_time = now + BOREDOM_SLEEP_TIME;
+
+      if (!iks->is_bored)
+        {
+          g_source_modify_unix_fd (source, iks->fd_tag, 0);
+          iks->is_bored = TRUE;
+        }
+
+      g_source_set_ready_time (source, MIN (dispatch_time, boredom_time));
     }
 
   return TRUE;
