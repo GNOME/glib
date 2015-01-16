@@ -193,7 +193,7 @@ g_file_monitor_source_set_pending_change_dirty (GFileMonitorSource *fms,
 
   g_sequence_sort_changed (iter, pending_change_compare_ready_time, fms);
 
-  return TRUE;
+  return FALSE;
 }
 
 static gboolean

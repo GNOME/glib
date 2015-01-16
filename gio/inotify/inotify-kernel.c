@@ -35,6 +35,12 @@
 
 #include "glib-private.h"
 
+/* Thresholds for the boredom algorithm */
+#define BOREDOM_MIN          (1 * G_TIME_SPAN_MILLISECOND)
+#define BOREDOM_MAX          (1 * G_TIME_SPAN_SECOND)
+#define BOREDOM_THRESHOLD    (16 * G_TIME_SPAN_MILLISECOND)
+#define BOREDOM_FACTOR       (2)
+
 /* Define limits on the maximum amount of time and maximum amount of
  * interceding events between FROM/TO that can be merged.
  */
@@ -83,17 +89,21 @@ _ik_event_free (ik_event_t *event)
 
 typedef struct
 {
-  GSource  source;
+  GSource     source;
 
-  gpointer fd_tag;
-  GQueue   queue;
-  gint     fd;
+  GQueue      queue;
+  gpointer    fd_tag;
+  gint        fd;
+
+  GHashTable *unmatched_moves;
+  GTimeSpan   boredom;
+  gboolean    ignored;
 } InotifyKernelSource;
 
 static InotifyKernelSource *inotify_source;
 
 static gint64
-ik_source_get_ready_time (InotifyKernelSource *iks)
+ik_source_get_dispatch_time (InotifyKernelSource *iks)
 {
   ik_event_t *head;
 
@@ -119,42 +129,17 @@ static gboolean
 ik_source_can_dispatch_now (InotifyKernelSource *iks,
                             gint64               now)
 {
-  gint64 ready_time;
+  gint64 dispatch_time;
 
-  ready_time = ik_source_get_ready_time (iks);
+  dispatch_time = ik_source_get_dispatch_time (iks);
 
-  return 0 <= ready_time && ready_time <= now;
+  return 0 <= dispatch_time && dispatch_time <= now;
 }
 
-static void
-ik_source_try_to_pair_head (InotifyKernelSource *iks)
+static gboolean
+ik_source_is_bored (InotifyKernelSource *iks)
 {
-  ik_event_t *head;
-  GList *node;
-
-  node = g_queue_peek_head_link (&iks->queue);
-
-  if (!node)
-    return;
-
-  head = node->data;
-
-  /* we should only be here if... */
-  g_assert (head->mask & IN_MOVED_FROM && !head->pair);
-
-  while ((node = node->next))
-    {
-      ik_event_t *candidate = node->data;
-
-      if (candidate->cookie == head->cookie && candidate->mask & IN_MOVED_TO)
-        {
-          g_queue_remove (&iks->queue, candidate);
-          candidate->is_second_in_pair = TRUE;
-          head->pair = candidate;
-          candidate->pair = head;
-          return;
-        }
-    }
+  return iks->boredom > BOREDOM_THRESHOLD;
 }
 
 static gboolean
@@ -164,15 +149,53 @@ ik_source_dispatch (GSource     *source,
 {
   InotifyKernelSource *iks = (InotifyKernelSource *) source;
   gboolean (*user_callback) (ik_event_t *event) = (void *) func;
-  gint64 now = g_source_get_time (source);
+  gboolean interesting = FALSE;
+  gboolean is_ready;
+  gint64 now;
 
   now = g_source_get_time (source);
 
-  /* Only try to fill the queue if we don't already have work to do. */
-  if (!ik_source_can_dispatch_now (iks, now) &&
-      g_source_query_unix_fd (source, iks->fd_tag))
+  /* If we woke up after a timeout caused by boredom, check to see if we
+   * actually have anything to read.  If not, go back to waiting for the
+   * file descriptor to become ready.
+   */
+  if (ik_source_is_bored (iks) && g_source_get_ready_time (source))
     {
-      gchar buffer[sizeof(struct inotify_event) + NAME_MAX + 1];
+      GPollFD pollfd;
+      gint n_ready;
+
+      pollfd.fd = iks->fd;
+      pollfd.events = G_IO_IN;
+
+      do
+        n_ready = g_poll (&pollfd, 1, 0);
+      while (n_ready == -1 && errno == EINTR);
+
+      if (n_ready == -1)
+        g_error ("Unexpected error on poll() of inotify: %s\n", g_strerror (errno));
+
+      if (!n_ready)
+        {
+          /* Timeout fired but there is nothing to read.  Switch back to
+           * waiting for the fd to become ready, but do not reset
+           * boredom.  We don't want to cancel our back-off and start
+           * all over again just because the delay got longer than the
+           * frequency of the change notifications.
+           */
+          g_source_modify_unix_fd (source, iks->fd_tag, G_IO_IN);
+          g_source_set_ready_time (source, 0);
+
+          return TRUE;
+        }
+
+      is_ready = TRUE;
+    }
+  else
+    is_ready = g_source_query_unix_fd (source, iks->fd_tag);
+
+  if (is_ready && !ik_source_can_dispatch_now (iks, now))
+    {
+      gchar buffer[256 * 1024];
       gssize result;
       gssize offset;
 
@@ -187,30 +210,83 @@ ik_source_dispatch (GSource     *source,
 
       while (offset < result)
         {
-          struct inotify_event *event = (struct inotify_event *) (buffer + offset);
+          struct inotify_event *kevent = (struct inotify_event *) (buffer + offset);
+          ik_event_t *event;
 
-          g_queue_push_tail (&iks->queue, ik_event_new (event, now));
+          event = ik_event_new (kevent, now);
 
           offset += sizeof (struct inotify_event) + event->len;
+
+          if (event->mask & IN_MOVED_TO)
+            {
+              ik_event_t *pair;
+
+              pair = g_hash_table_lookup (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie));
+              if (pair != NULL)
+                {
+                  g_assert (!pair->pair);
+
+                  g_hash_table_remove (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie));
+                  event->is_second_in_pair = TRUE;
+                  event->pair = pair;
+                  pair->pair = event;
+                  continue;
+                }
+            }
+
+          else if (event->mask & IN_MOVED_FROM)
+            {
+              gboolean new;
+
+              new = g_hash_table_insert (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie), event);
+              if G_UNLIKELY (!new)
+                g_warning ("inotify: got IN_MOVED_FROM event with already-pending cookie %#x", event->cookie);
+            }
+
+          g_queue_push_tail (&iks->queue, event);
         }
     }
 
-  if (!ik_source_can_dispatch_now (iks, now))
-    ik_source_try_to_pair_head (iks);
-
-  if (ik_source_can_dispatch_now (iks, now))
+  while (ik_source_can_dispatch_now (iks, now))
     {
       ik_event_t *event;
 
       /* callback will free the event */
       event = g_queue_pop_head (&iks->queue);
 
+      if (event->mask & IN_MOVED_TO && !event->pair)
+        g_hash_table_remove (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie));
+
       G_LOCK (inotify_lock);
-      (* user_callback) (event);
+      interesting |= (* user_callback) (event);
       G_UNLOCK (inotify_lock);
     }
 
-  g_source_set_ready_time (source, ik_source_get_ready_time (iks));
+  /* The queue gets blocked iff we have unmatched moves */
+  g_assert ((iks->queue.length > 0) == (g_hash_table_size (iks->unmatched_moves) > 0));
+
+  /* Unpaired moves are interesting since they will be reported to the
+   * user, one way or another.  We also want to resolve them as soon as
+   * possible.
+   */
+  interesting |= iks->queue.length > 0;
+
+  if (!interesting)
+    {
+      iks->boredom = MAX(BOREDOM_MIN, MIN(iks->boredom * BOREDOM_FACTOR, BOREDOM_MAX));
+
+      if (ik_source_is_bored (iks))
+        {
+          g_source_set_ready_time (source, now + iks->boredom);
+          g_source_modify_unix_fd (source, iks->fd_tag, 0);
+        }
+    }
+  else
+    {
+      g_source_set_ready_time (source, ik_source_get_dispatch_time (iks));
+      g_source_modify_unix_fd (source, iks->fd_tag, G_IO_IN);
+      iks->boredom = 0;
+    }
 
   return TRUE;
 }
@@ -231,13 +307,21 @@ ik_source_new (gboolean (* callback) (ik_event_t *event))
 
   g_source_set_name (source, "inotify kernel source");
 
+  iks->unmatched_moves = g_hash_table_new (NULL, NULL);
   iks->fd = inotify_init1 (IN_CLOEXEC);
 
   if (iks->fd < 0)
     iks->fd = inotify_init ();
 
   if (iks->fd >= 0)
-    iks->fd_tag = g_source_add_unix_fd (source, iks->fd, G_IO_IN);
+    {
+      GError *error = NULL;
+
+      g_unix_set_fd_nonblocking (iks->fd, TRUE, &error);
+      g_assert_no_error (error);
+
+      iks->fd_tag = g_source_add_unix_fd (source, iks->fd, G_IO_IN);
+    }
 
   g_source_set_callback (source, (GSourceFunc) callback, NULL, NULL);
 
