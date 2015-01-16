@@ -1518,7 +1518,7 @@ g_test_run (void)
  * after that the memory is released.
  *
  * Splitting up a test run into fixture setup, test function and
- * fixture teardown is most usful if the same fixture is used for
+ * fixture teardown is most useful if the same fixture is used for
  * multiple tests. In this cases, g_test_create_case() will be
  * called with the same fixture, but varying @test_name and
  * @data_test arguments.
