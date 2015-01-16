@@ -94,8 +94,9 @@
  * over plain g_assert() is that the assertion messages can be more
  * elaborate, and include the values of the compared entities.
  *
- * GLib ships with two utilities called gtester and gtester-report to
- * facilitate running tests and producing nicely formatted test reports.
+ * GLib ships with two utilities called [gtester][gtester] and
+ * [gtester-report][gtester-report] to facilitate running tests and producing
+ * nicely formatted test reports.
  */
 
 /**
