@@ -227,13 +227,6 @@ platform_libadd += kqueue/libkqueue.la
 platform_deps += kqueue/libkqueue.la
 endif
 
-if HAVE_FEN
-AM_CPPFLAGS += -DHAVE_FEN
-SUBDIRS += fen
-platform_libadd += fen/libfen.la
-platform_deps += fen/libfen.la
-endif
-
 if OS_WIN32
 SUBDIRS += win32
 platform_libadd += win32/libgiowin32.la

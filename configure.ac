@@ -1677,22 +1677,6 @@ AC_CHECK_HEADERS([sys/event.h],
 
 AM_CONDITIONAL(HAVE_KQUEUE, [test "$kqueue_support" = "yes"])
 
-dnl *********************************
-dnl ** Check for Solaris FEN (GIO) **
-dnl *********************************
-fen_support=no
-AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
-#include <port.h> 
-#ifndef PORT_SOURCE_FILE 
-#error "Please upgrade to Nevada 72 or above to suppoert FEN" 
-#endif 
-int main() { return 0; } ]])],
-[
-	fen_support=yes
-],)
-
-AM_CONDITIONAL(HAVE_FEN, [test "$fen_support" = "yes"])
-
 dnl ****************************
 dnl *** Checks for FAM (GIO) ***
 dnl ****************************
@@ -3616,7 +3600,6 @@ gio/gnetworking.h
 gio/xdgmime/Makefile
 gio/inotify/Makefile
 gio/kqueue/Makefile
-gio/fen/Makefile
 gio/fam/Makefile
 gio/win32/Makefile
 gio/tests/Makefile
