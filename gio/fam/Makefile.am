@@ -5,15 +5,7 @@ module_flags = -export_dynamic -avoid-version -module -no-undefined -export-symb
 giomodule_LTLIBRARIES = libgiofam.la
 giomoduledir = $(GIO_MODULE_DIR)
 
-libgiofam_la_SOURCES = 		\
-	fam-helper.c			\
-	fam-helper.h			\
-	fam-module.c			\
-	gfamdirectorymonitor.c		\
-	gfamdirectorymonitor.h		\
-	gfamfilemonitor.c		\
-	gfamfilemonitor.h		\
-	$(NULL)
+libgiofam_la_SOURCES = gfamfilemonitor.c
 
 libgiofam_la_CFLAGS = \
 	-DG_LOG_DOMAIN=\"GLib-GIO\"	\

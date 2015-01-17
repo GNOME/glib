@@ -1,7 +1,5 @@
-/* GIO - GLib Input, Output and Streaming Library
- * 
- * Copyright (C) 2006-2007 Red Hat, Inc.
- * Copyright (C) 2007 Sebastian Dröge.
+/*
+ * Copyright © 2015 Canonical Limited
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,138 +14,224 @@
  * You should have received a copy of the GNU Lesser General
  * Public License along with this library; if not, see <http://www.gnu.org/licenses/>.
  *
- * Authors: Alexander Larsson <alexl@redhat.com>
- *          John McCutchan <john@johnmccutchan.com> 
- *          Sebastian Dröge <slomo@circular-chaos.org>
+ * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
 #include "config.h"
 
-#include "gfamfilemonitor.h"
+#include <gio/glocalfilemonitor.h>
 #include <gio/giomodule.h>
+#include "glib-private.h"
+#include <glib-unix.h>
+#include <fam.h>
 
-#include "fam-helper.h"
+static GMutex         fam_lock;
+static gboolean       fam_initialised;
+static FAMConnection  fam_connection;
+static GSource       *fam_source;
 
-struct _GFamFileMonitor
+#define G_TYPE_FAM_FILE_MONITOR      (g_fam_file_monitor_get_type ())
+#define G_FAM_FILE_MONITOR(inst)     (G_TYPE_CHECK_INSTANCE_CAST ((inst), \
+                                      G_TYPE_FAM_FILE_MONITOR, GFamFileMonitor))
+
+typedef GLocalFileMonitorClass GFamFileMonitorClass;
+
+typedef struct
 {
   GLocalFileMonitor parent_instance;
-  fam_sub *sub;
-};
 
-static gboolean g_fam_file_monitor_cancel (GFileMonitor* monitor);
+  FAMRequest request;
+} GFamFileMonitor;
 
+static GType g_fam_file_monitor_get_type (void);
 G_DEFINE_DYNAMIC_TYPE (GFamFileMonitor, g_fam_file_monitor, G_TYPE_LOCAL_FILE_MONITOR)
 
-static void
-g_fam_file_monitor_finalize (GObject *object)
+static gboolean
+g_fam_file_monitor_callback (gint         fd,
+                             GIOCondition condition,
+                             gpointer     user_data)
 {
-  GFamFileMonitor *fam_monitor = G_FAM_FILE_MONITOR (object);
-  fam_sub *sub = fam_monitor->sub;
+  gint64 now = g_source_get_time (fam_source);
 
-  if (sub) {
-    if (!_fam_sub_cancel (sub))
-      g_warning ("Unexpected error cancelling fam monitor");
-    fam_monitor->sub = NULL;
-  }
+  g_mutex_lock (&fam_lock);
 
-  if (G_OBJECT_CLASS (g_fam_file_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_fam_file_monitor_parent_class)->finalize) (object);
-}
+  while (FAMPending (&fam_connection))
+    {
+      const gchar *child;
+      FAMEvent ev;
 
-static GObject *
-g_fam_file_monitor_constructor (GType type,
-                                guint n_construct_properties,
-                                GObjectConstructParam *construct_properties)
-{
-  GObject *obj;
-  GFamFileMonitorClass *klass;
-  GObjectClass *parent_class;
-  GFamFileMonitor *fam_monitor;
-  const gchar *filename = NULL;
-  fam_sub *sub = NULL;
-  
-  klass = G_FAM_FILE_MONITOR_CLASS (g_type_class_peek (G_TYPE_FAM_FILE_MONITOR));
-  parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (klass));
-  obj = parent_class->constructor (type,
-                                   n_construct_properties,
-                                   construct_properties);
+      if (FAMNextEvent (&fam_connection, &ev) != 1)
+        {
+          /* The daemon died.  We're in a really bad situation now
+           * because we potentially have a bunch of request structures
+           * outstanding which no longer make any sense to anyone.
+           *
+           * The best thing that we can do is do nothing.  Notification
+           * won't work anymore for this process.
+           */
+          g_mutex_unlock (&fam_lock);
 
-  fam_monitor = G_FAM_FILE_MONITOR (obj);
+          g_warning ("Lost connection to FAM (file monitoring) service.  Expect no further file monitor events.");
 
-  filename = G_LOCAL_FILE_MONITOR (obj)->filename;
+          return FALSE;
+        }
 
-  g_assert (filename != NULL);
+      /* We expect ev.filename to be a relative path for children in a
+       * monitored directory, and an absolute path for a monitored file
+       * or the directory itself.
+       */
+      if (ev.filename[0] != '/')
+        child = ev.filename;
+      else
+        child = NULL;
 
-  sub = _fam_sub_add (filename, FALSE, fam_monitor);
-  /* FIXME: what to do about errors here? we can't return NULL or another
-   * kind of error and an assertion is probably too hard */
-  g_assert (sub != NULL);
+      switch (ev.code)
+        {
+        case FAMAcknowledge:
+          g_source_unref (ev.userdata);
+          break;
 
-  fam_monitor->sub = sub;
+        case FAMChanged:
+          g_file_monitor_source_handle_event (ev.userdata, G_FILE_MONITOR_EVENT_CHANGED, child, NULL, NULL, now);
+          break;
 
-  return obj;
-}
+        case FAMDeleted:
+          g_file_monitor_source_handle_event (ev.userdata, G_FILE_MONITOR_EVENT_DELETED, child, NULL, NULL, now);
+          break;
 
-static void
-g_fam_file_monitor_class_finalize (GFamFileMonitorClass *klass)
-{
+        case FAMCreated:
+          g_file_monitor_source_handle_event (ev.userdata, G_FILE_MONITOR_EVENT_CREATED, child, NULL, NULL, now);
+          break;
+
+        default:
+          /* unknown type */
+          break;
+        }
+    }
+
+  g_mutex_unlock (&fam_lock);
+
+  return TRUE;
 }
 
 static gboolean
 g_fam_file_monitor_is_supported (void)
 {
-  return _fam_sub_startup ();
+  g_mutex_lock (&fam_lock);
+
+  if (!fam_initialised)
+    {
+      fam_initialised = FAMOpen2 (&fam_connection, "GLib GIO") == 0;
+
+      if (fam_initialised)
+        {
+#ifdef HAVE_FAM_NO_EXISTS
+          /* This is a gamin extension that avoids sending all the
+           * Exists event for dir monitors
+           */
+          FAMNoExists (&fam_connection);
+#endif
+
+          fam_source = g_unix_fd_source_new (FAMCONNECTION_GETFD (&fam_connection), G_IO_IN);
+          g_source_set_callback (fam_source, (GSourceFunc) g_fam_file_monitor_callback, NULL, NULL);
+          g_source_attach (fam_source, GLIB_PRIVATE_CALL(g_get_worker_context) ());
+        }
+    }
+
+  g_mutex_unlock (&fam_lock);
+
+  g_print ("II %d\n", fam_initialised);
+
+  return fam_initialised;
+}
+
+static gboolean
+g_fam_file_monitor_cancel (GFileMonitor *monitor)
+{
+  GFamFileMonitor *gffm = G_FAM_FILE_MONITOR (monitor);
+
+  g_mutex_lock (&fam_lock);
+
+  g_assert (fam_initialised);
+
+  FAMCancelMonitor (&fam_connection, &gffm->request);
+
+  g_mutex_unlock (&fam_lock);
+
+  return TRUE;
 }
 
 static void
-g_fam_file_monitor_class_init (GFamFileMonitorClass* klass)
+g_fam_file_monitor_start (GLocalFileMonitor  *local_monitor,
+                          const gchar        *dirname,
+                          const gchar        *basename,
+                          const gchar        *filename,
+                          GFileMonitorSource *source)
 {
-  GObjectClass* gobject_class = G_OBJECT_CLASS (klass);
-  GFileMonitorClass *file_monitor_class = G_FILE_MONITOR_CLASS (klass);
-  GLocalFileMonitorClass *local_file_monitor_class = G_LOCAL_FILE_MONITOR_CLASS (klass);
-  
-  gobject_class->finalize = g_fam_file_monitor_finalize;
-  gobject_class->constructor = g_fam_file_monitor_constructor;
-  file_monitor_class->cancel = g_fam_file_monitor_cancel;
+  GFamFileMonitor *gffm = G_FAM_FILE_MONITOR (local_monitor);
 
-  local_file_monitor_class->is_supported = g_fam_file_monitor_is_supported;
+  g_mutex_lock (&fam_lock);
+
+  g_assert (fam_initialised);
+
+  g_source_ref ((GSource *) source);
+
+  if (dirname)
+    FAMMonitorDirectory (&fam_connection, dirname, &gffm->request, source);
+  else
+    FAMMonitorFile (&fam_connection, filename, &gffm->request, source);
+
+  g_mutex_unlock (&fam_lock);
 }
 
 static void
 g_fam_file_monitor_init (GFamFileMonitor* monitor)
 {
-
 }
 
-static gboolean
-g_fam_file_monitor_cancel (GFileMonitor* monitor)
+static void
+g_fam_file_monitor_class_init (GFamFileMonitorClass *class)
 {
-  GFamFileMonitor *fam_monitor = G_FAM_FILE_MONITOR (monitor);
-  fam_sub *sub = fam_monitor->sub;
+  GFileMonitorClass *file_monitor_class = G_FILE_MONITOR_CLASS (class);
 
-  if (sub) {
-    if (!_fam_sub_cancel (sub))
-      g_warning ("Unexpected error cancelling fam monitor");
-    fam_monitor->sub = NULL;
-  }
+  class->is_supported = g_fam_file_monitor_is_supported;
+  class->start = g_fam_file_monitor_start;
+  file_monitor_class->cancel = g_fam_file_monitor_cancel;
+}
 
-  if (G_FILE_MONITOR_CLASS (g_fam_file_monitor_parent_class)->cancel)
-    (*G_FILE_MONITOR_CLASS (g_fam_file_monitor_parent_class)->cancel) (monitor);
-
-  return TRUE;
+static void
+g_fam_file_monitor_class_finalize (GFamFileMonitorClass *class)
+{
 }
 
 void
-g_fam_file_monitor_register (GIOModule *module)
+g_io_module_load (GIOModule *module)
 {
+  g_type_module_use (G_TYPE_MODULE (module));
+
   g_fam_file_monitor_register_type (G_TYPE_MODULE (module));
+
   g_io_extension_point_implement (G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME,
-				  G_TYPE_FAM_FILE_MONITOR,
-				  "fam",
-				  10);
+                                 G_TYPE_FAM_FILE_MONITOR, "fam", 10);
+
   g_io_extension_point_implement (G_NFS_FILE_MONITOR_EXTENSION_POINT_NAME,
-				  G_TYPE_FAM_FILE_MONITOR,
-				  "fam",
-				  10);
+                                 G_TYPE_FAM_FILE_MONITOR, "fam", 10);
 }
 
+void
+g_io_module_unload (GIOModule *module)
+{
+  g_assert_not_reached ();
+}
+
+char **
+g_io_module_query (void)
+{
+  char *eps[] = {
+    G_LOCAL_FILE_MONITOR_EXTENSION_POINT_NAME,
+    G_NFS_FILE_MONITOR_EXTENSION_POINT_NAME,
+    NULL
+  };
+
+  return g_strdupv (eps);
+}
