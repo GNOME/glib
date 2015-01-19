@@ -294,6 +294,7 @@ handle_ip_address (const char  *hostname,
                    GError     **error)
 {
   GInetAddress *addr;
+
 #ifndef G_OS_WIN32
   struct in_addr ip4addr;
 #endif
@@ -307,21 +308,30 @@ handle_ip_address (const char  *hostname,
 
   *addrs = NULL;
 
+#ifdef G_OS_WIN32
+
+  /* Reject IPv6 addresses that have brackets ('[' or ']') and/or port numbers,
+   * as no valid addresses should contain these at this point.
+   * Non-standard IPv4 addresses would be rejected during the call to
+   * getaddrinfo() later.
+   */
+  if (strrchr (hostname, '[') != NULL ||
+      strrchr (hostname, ']') != NULL)
+#else
+
   /* Reject non-standard IPv4 numbers-and-dots addresses.
    * g_inet_address_new_from_string() will have accepted any "real" IP
    * address, so if inet_aton() succeeds, then it's an address we want
-   * to reject.  This check is not necessary for Windows, as getaddrinfo()
-   * already rejects such IPv4 addresses on Windows.
+   * to reject.
    */
-#ifndef G_OS_WIN32
   if (inet_aton (hostname, &ip4addr))
+#endif
     {
       g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
                    _("Error resolving '%s': %s"),
                    hostname, gai_strerror (EAI_NONAME));
       return TRUE;
     }
-#endif
 
   return FALSE;
 }
