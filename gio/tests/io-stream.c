@@ -98,6 +98,65 @@ test_copy_chunks (void)
   g_main_loop_unref (data.main_loop);
 }
 
+static void
+close_async_done (GObject *source,
+                  GAsyncResult *result,
+                  gpointer user_data)
+{
+  gboolean *done = user_data;
+
+  *done = TRUE;
+}
+
+static void
+test_close_file (void)
+{
+#ifdef G_OS_UNIX
+  GFileIOStream *fios;
+  gboolean done;
+  GIOStream *io;
+  GFile *file;
+
+  file = g_file_new_for_path ("/dev/null");
+  fios = g_file_open_readwrite (file, NULL, NULL);
+  g_object_unref (file);
+  g_assert (fios);
+
+  io = g_simple_io_stream_new (g_io_stream_get_input_stream (G_IO_STREAM (fios)),
+                               g_io_stream_get_output_stream (G_IO_STREAM (fios)));
+  g_object_unref (fios);
+
+  g_io_stream_close_async (io, 0, NULL, close_async_done, &done);
+  g_object_unref (io);
+
+  done = FALSE;
+  while (!done)
+    g_main_context_iteration (NULL, TRUE);
+#endif
+}
+
+static void
+test_close_memory (void)
+{
+  GInputStream *in;
+  GOutputStream *out;
+  gboolean done;
+  GIOStream *io;
+
+  in = g_memory_input_stream_new ();
+  out = g_memory_output_stream_new_resizable ();
+  io = g_simple_io_stream_new (in, out);
+  g_object_unref (out);
+  g_object_unref (in);
+
+  g_io_stream_close_async (io, 0, NULL, close_async_done, &done);
+  g_object_unref (io);
+
+  done = FALSE;
+  while (!done)
+    g_main_context_iteration (NULL, TRUE);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -105,6 +164,8 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/io-stream/copy-chunks", test_copy_chunks);
+  g_test_add_func ("/io-stream/close/async/memory", test_close_memory);
+  g_test_add_func ("/io-stream/close/async/file", test_close_file);
 
   return g_test_run();
 }
