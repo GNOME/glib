@@ -1231,7 +1231,7 @@ g_input_stream_clear_pending (GInputStream *stream)
   stream->priv->pending = FALSE;
 }
 
-/**
+/*< internal >
  * g_input_stream_async_read_is_via_threads:
  * @stream: input stream
  *

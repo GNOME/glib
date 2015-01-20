@@ -1683,7 +1683,7 @@ g_output_stream_clear_pending (GOutputStream *stream)
   stream->priv->pending = FALSE;
 }
 
-/**
+/*< internal >
  * g_output_stream_async_write_is_via_threads:
  * @stream: a #GOutputStream.
  *
