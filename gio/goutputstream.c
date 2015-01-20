@@ -1705,6 +1705,25 @@ g_output_stream_async_write_is_via_threads (GOutputStream *stream)
         g_pollable_output_stream_can_poll (G_POLLABLE_OUTPUT_STREAM (stream))));
 }
 
+/*< internal >
+ * g_output_stream_async_close_is_via_threads:
+ * @stream: output stream
+ *
+ * Checks if an output stream's close_async function uses threads.
+ *
+ * Returns: %TRUE if @stream's close_async function uses threads.
+ **/
+gboolean
+g_output_stream_async_close_is_via_threads (GOutputStream *stream)
+{
+  GOutputStreamClass *class;
+
+  g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
+
+  class = G_OUTPUT_STREAM_GET_CLASS (stream);
+
+  return class->close_async == g_output_stream_real_close_async;
+}
 
 /********************************************
  *   Default implementation of async ops    *
