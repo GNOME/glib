@@ -1,3 +1,40 @@
+Overview of changes in GLib 2.43.3
+==================================
+
+* add g_set_object() convenience function
+
+* GNetworkMonitor: check if NM is not running and don't crash
+
+* fix some races with g_mkdir_with_parents
+
+* fix some warnings in MSVC
+
+* avoid use of G_STRLOC in G_OBJECT_WARN_INVALID_PSPEC in order to save
+  on static strings
+
+* fix some content type vs. mime issues
+
+* documentation improvements
+
+* Bugs fixed:
+ 719455  g_file_make_directory_with_parents() can erroneously throw G_IO_ERROR_EXISTS
+ 732439  GSocket: avoid unnecessary g_socket_wait_condition() for blocking sockets
+ 734946  Implement GContentType on OSX
+ 741589  gobject: Add g_set_object() convenience function to set GObject pointers
+ 741653  gnetworkmonitornm: Check if network-manager is running
+ 741654  [patch] gobject: don't use G_STRLOC in G_OBJECT_WARN_INVALID_PSPEC() macro
+ 741707  Gsocket blocks trying to send data
+ 741788  Document GSettings build system integration
+ 742548  configure.ac: stay out of autoconf's namespace
+ 742851  avoid MSVC warnings in G_STMT_END
+ 742972  ggettext: Include an example of setlocale() and friends in the i18n docs
+ 743014  gtestutils: Add an example of using test fixtures 
+
+* Translations updated:
+ Basque
+ Brazilian Portuguese
+ Spanish
+
 Overview of changes in GLib 2.43.2
 ==================================
 
