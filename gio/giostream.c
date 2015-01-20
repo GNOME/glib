@@ -26,6 +26,7 @@
 
 #include "giostream.h"
 #include "gasyncresult.h"
+#include "gioprivate.h"
 #include "gtask.h"
 
 /**
@@ -542,6 +543,53 @@ close_async_thread (GTask        *task,
   g_task_return_boolean (task, TRUE);
 }
 
+typedef struct
+{
+  GError *error;
+  gint pending;
+} CloseAsyncData;
+
+static void
+stream_close_complete (GObject      *source,
+                       GAsyncResult *result,
+                       gpointer      user_data)
+{
+  GTask *task = user_data;
+  CloseAsyncData *data;
+
+  data = g_task_get_task_data (task);
+  data->pending--;
+
+  if (G_IS_OUTPUT_STREAM (source))
+    {
+      GError *error = NULL;
+
+      /* Match behaviour with the sync route and give precedent to the
+       * error returned from closing the output stream.
+       */
+      g_output_stream_close_finish (G_OUTPUT_STREAM (source), result, &error);
+      if (error)
+        {
+          if (data->error)
+            g_error_free (data->error);
+          data->error = error;
+        }
+    }
+  else
+    g_input_stream_close_finish (G_INPUT_STREAM (source), result, data->error ? NULL : &data->error);
+
+  if (data->pending == 0)
+    {
+      if (data->error)
+        g_task_return_error (task, data->error);
+      else
+        g_task_return_boolean (task, TRUE);
+
+      g_slice_free (CloseAsyncData, data);
+      g_object_unref (task);
+    }
+}
+
 static void
 g_io_stream_real_close_async (GIOStream           *stream,
 			      int                  io_priority,
@@ -549,14 +597,41 @@ g_io_stream_real_close_async (GIOStream           *stream,
 			      GAsyncReadyCallback  callback,
 			      gpointer             user_data)
 {
+  GInputStream *input;
+  GOutputStream *output;
   GTask *task;
 
   task = g_task_new (stream, cancellable, callback, user_data);
   g_task_set_check_cancellable (task, FALSE);
   g_task_set_priority (task, io_priority);
-  
-  g_task_run_in_thread (task, close_async_thread);
-  g_object_unref (task);
+
+  input = g_io_stream_get_input_stream (stream);
+  output = g_io_stream_get_output_stream (stream);
+
+  if (g_input_stream_async_close_is_via_threads (input) && g_output_stream_async_close_is_via_threads (output))
+    {
+      /* No sense in dispatching to the thread twice -- just do it all
+       * in one go.
+       */
+      g_task_run_in_thread (task, close_async_thread);
+      g_object_unref (task);
+    }
+  else
+    {
+      CloseAsyncData *data;
+
+      /* We should avoid dispatching to another thread in case either
+       * object that would not do it for itself because it may not be
+       * threadsafe.
+       */
+      data = g_slice_new (CloseAsyncData);
+      data->error = NULL;
+      data->pending = 2;
+
+      g_task_set_task_data (task, data, NULL);
+      g_input_stream_close_async (input, io_priority, cancellable, stream_close_complete, task);
+      g_output_stream_close_async (output, io_priority, cancellable, stream_close_complete, task);
+    }
 }
 
 static gboolean
