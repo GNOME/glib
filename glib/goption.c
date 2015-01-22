@@ -267,6 +267,8 @@ struct _GOptionGroup
   gchar           *description;
   gchar           *help_description;
 
+  gint             ref_count;
+
   GDestroyNotify   destroy_notify;
   gpointer         user_data;
 
@@ -382,10 +384,10 @@ void g_option_context_free (GOptionContext *context)
 {
   g_return_if_fail (context != NULL);
 
-  g_list_free_full (context->groups, (GDestroyNotify) g_option_group_free);
+  g_list_free_full (context->groups, (GDestroyNotify) g_option_group_unref);
 
   if (context->main_group)
-    g_option_group_free (context->main_group);
+    g_option_group_unref (context->main_group);
 
   free_changes_list (context, FALSE);
   free_pending_nulls (context, FALSE);
@@ -549,13 +551,11 @@ g_option_context_get_strict_posix (GOptionContext *context)
 /**
  * g_option_context_add_group:
  * @context: a #GOptionContext
- * @group: the group to add
+ * @group: (transfer full): the group to add
  *
  * Adds a #GOptionGroup to the @context, so that parsing with @context
- * will recognize the options in the group. Note that the group will
- * be freed together with the context when g_option_context_free() is
- * called, so you must not free the group yourself after adding it
- * to a context.
+ * will recognize the options in the group. Note that this will take
+ * ownership of the @group and thus the @group should not be freed.
  *
  * Since: 2.6
  **/
@@ -587,7 +587,7 @@ g_option_context_add_group (GOptionContext *context,
 /**
  * g_option_context_set_main_group:
  * @context: a #GOptionContext
- * @group: the group to set as main group
+ * @group: (transfer full): the group to set as main group
  *
  * Sets a #GOptionGroup as main group of the @context.
  * This has the same effect as calling g_option_context_add_group(),
@@ -619,9 +619,9 @@ g_option_context_set_main_group (GOptionContext *context,
  *
  * Returns a pointer to the main group of @context.
  *
- * Returns: the main group of @context, or %NULL if @context doesn't
- *  have a main group. Note that group belongs to @context and should
- *  not be modified or freed.
+ * Returns: (transfer none): the main group of @context, or %NULL if
+ *  @context doesn't have a main group. Note that group belongs to
+ *  @context and should not be modified or freed.
  *
  * Since: 2.6
  **/
@@ -2232,7 +2232,7 @@ g_option_context_parse (GOptionContext   *context,
  * Creates a new #GOptionGroup.
  *
  * Returns: a newly created option group. It should be added
- *   to a #GOptionContext or freed with g_option_group_free().
+ *   to a #GOptionContext or freed with g_option_group_unref().
  *
  * Since: 2.6
  **/
@@ -2247,6 +2247,7 @@ g_option_group_new (const gchar    *name,
   GOptionGroup *group;
 
   group = g_new0 (GOptionGroup, 1);
+  group->ref_count = 1;
   group->name = g_strdup (name);
   group->description = g_strdup (description);
   group->help_description = g_strdup (help_description);
@@ -2265,27 +2266,67 @@ g_option_group_new (const gchar    *name,
  * which have been added to a #GOptionContext.
  *
  * Since: 2.6
+ *
+ * Deprecated: 2.44: Use g_option_group_unref() instead.
  */
 void
 g_option_group_free (GOptionGroup *group)
 {
-  g_return_if_fail (group != NULL);
-
-  g_free (group->name);
-  g_free (group->description);
-  g_free (group->help_description);
-
-  g_free (group->entries);
-
-  if (group->destroy_notify)
-    (* group->destroy_notify) (group->user_data);
-
-  if (group->translate_notify)
-    (* group->translate_notify) (group->translate_data);
-
-  g_free (group);
+  g_option_group_unref (group);
 }
 
+/**
+ * g_option_group_ref:
+ * @group: a #GOptionGroup
+ *
+ * Increments the reference count of @group by one.
+ *
+ * Returns: a #GoptionGroup
+ *
+ * Since: 2.44
+ */
+GOptionGroup *
+g_option_group_ref (GOptionGroup *group)
+{
+  g_return_val_if_fail (group != NULL, NULL);
+
+  group->ref_count++;
+
+  return group;
+}
+
+/**
+ * g_option_group_unref:
+ * @group: a #GOptionGroup
+ *
+ * Decrements the reference count of @group by one.
+ * If the reference count drops to 0, the @group will be freed.
+ * and all memory allocated by the @group is released.
+ *
+ * Since: 2.44
+ */
+void
+g_option_group_unref (GOptionGroup *group)
+{
+  g_return_if_fail (group != NULL);
+
+  if (--group->ref_count == 0)
+    {
+      g_free (group->name);
+      g_free (group->description);
+      g_free (group->help_description);
+
+      g_free (group->entries);
+
+      if (group->destroy_notify)
+        (* group->destroy_notify) (group->user_data);
+
+      if (group->translate_notify)
+        (* group->translate_notify) (group->translate_data);
+
+      g_free (group);
+    }
+}
 
 /**
  * g_option_group_add_entries:

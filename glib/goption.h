@@ -364,8 +364,12 @@ void	      g_option_group_set_parse_hooks	    (GOptionGroup       *group,
 GLIB_AVAILABLE_IN_ALL
 void	      g_option_group_set_error_hook	    (GOptionGroup       *group,
 						     GOptionErrorFunc	 error_func);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_44
 void          g_option_group_free                   (GOptionGroup       *group);
+GLIB_AVAILABLE_IN_2_44
+GOptionGroup *g_option_group_ref                    (GOptionGroup       *group);
+GLIB_AVAILABLE_IN_2_44
+void          g_option_group_unref                  (GOptionGroup       *group);
 GLIB_AVAILABLE_IN_ALL
 void          g_option_group_add_entries            (GOptionGroup       *group,
 						     const GOptionEntry *entries);
