@@ -1,6 +1,9 @@
+#include "gcontextspecificgroup.c"
 #include <gio/gio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define N_THREADS 10
 
 static gchar *test_file;
 
@@ -180,6 +183,223 @@ test2_fail (gpointer user_data)
   return FALSE;
 }
 
+
+typedef struct
+{
+  GObject parent_instance;
+
+  GMainContext *context;
+} PerThreadThing;
+
+typedef GObjectClass PerThreadThingClass;
+
+static GType per_thread_thing_get_type (void);
+
+G_DEFINE_TYPE (PerThreadThing, per_thread_thing, G_TYPE_OBJECT)
+
+static GContextSpecificGroup group;
+static gpointer instances[N_THREADS];
+static gint is_running;
+static gint current_value;
+static gint observed_values[N_THREADS];
+
+static void
+start_func (void)
+{
+  g_assert (!is_running);
+  g_atomic_int_set (&is_running, TRUE);
+}
+
+static void
+stop_func (void)
+{
+  g_assert (is_running);
+  g_atomic_int_set (&is_running, FALSE);
+}
+
+static void
+per_thread_thing_finalize (GObject *object)
+{
+  PerThreadThing *thing = (PerThreadThing *) object;
+
+  g_context_specific_group_remove (&group, thing->context, thing, stop_func);
+
+  G_OBJECT_CLASS (per_thread_thing_parent_class)->finalize (object);
+}
+
+static void
+per_thread_thing_init (PerThreadThing *thing)
+{
+}
+
+static void
+per_thread_thing_class_init (PerThreadThingClass *class)
+{
+  class->finalize = per_thread_thing_finalize;
+
+  g_signal_new ("changed", per_thread_thing_get_type (), G_SIGNAL_RUN_FIRST, 0,
+                NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+}
+
+static gpointer
+per_thread_thing_get (void)
+{
+  return g_context_specific_group_get (&group, per_thread_thing_get_type (),
+                                       G_STRUCT_OFFSET (PerThreadThing, context),
+                                       start_func);
+}
+
+static gpointer
+test_identity_thread (gpointer user_data)
+{
+  guint thread_nr = GPOINTER_TO_UINT (user_data);
+  GMainContext *my_context;
+  guint i, j;
+
+  my_context = g_main_context_new ();
+  g_main_context_push_thread_default (my_context);
+
+  g_assert (!instances[thread_nr]);
+  instances[thread_nr] = per_thread_thing_get ();
+  g_assert (g_atomic_int_get (&is_running));
+
+  for (i = 0; i < 100; i++)
+    {
+      gpointer instance = per_thread_thing_get ();
+
+      for (j = 0; j < N_THREADS; j++)
+        g_assert ((instance == instances[j]) == (thread_nr == j));
+
+      g_assert (g_atomic_int_get (&is_running));
+
+      g_thread_yield ();
+
+      g_assert (g_atomic_int_get (&is_running));
+    }
+
+  for (i = 0; i < 100; i++)
+    {
+      g_object_unref (instances[thread_nr]);
+
+      for (j = 0; j < N_THREADS; j++)
+        g_assert ((instances[thread_nr] == instances[j]) == (thread_nr == j));
+
+      g_assert (g_atomic_int_get (&is_running));
+
+      g_thread_yield ();
+    }
+
+  /* drop the last ref */
+  g_object_unref (instances[thread_nr]);
+  instances[thread_nr] = NULL;
+
+  g_main_context_pop_thread_default (my_context);
+  g_main_context_unref (my_context);
+
+  /* at least one thread should see this cleared on exit */
+  return GUINT_TO_POINTER (!g_atomic_int_get (&is_running));
+}
+
+static void
+test_context_specific_identity (void)
+{
+  GThread *threads[N_THREADS];
+  gboolean exited = FALSE;
+  guint i;
+
+  g_assert (!g_atomic_int_get (&is_running));
+  for (i = 0; i < N_THREADS; i++)
+    threads[i] = g_thread_new ("test", test_identity_thread, GUINT_TO_POINTER (i));
+  for (i = 0; i < N_THREADS; i++)
+    exited |= GPOINTER_TO_UINT (g_thread_join (threads[i]));
+  g_assert (exited);
+  g_assert (!g_atomic_int_get (&is_running));
+}
+
+static void
+changed_emitted (PerThreadThing *thing,
+                 gpointer        user_data)
+{
+  gint *observed_value = user_data;
+
+  g_atomic_int_set (observed_value, g_atomic_int_get (&current_value));
+}
+
+static gpointer
+test_emit_thread (gpointer user_data)
+{
+  gint *observed_value = user_data;
+  GMainContext *my_context;
+  gpointer instance;
+
+  my_context = g_main_context_new ();
+  g_main_context_push_thread_default (my_context);
+
+  instance = per_thread_thing_get ();
+  g_assert (g_atomic_int_get (&is_running));
+
+  g_signal_connect (instance, "changed", G_CALLBACK (changed_emitted), observed_value);
+
+  /* observe after connection */
+  g_atomic_int_set (observed_value, g_atomic_int_get (&current_value));
+
+  while (g_atomic_int_get (&current_value) != -1)
+    g_main_context_iteration (my_context, TRUE);
+
+  g_object_unref (instance);
+
+  g_main_context_pop_thread_default (my_context);
+  g_main_context_unref (my_context);
+
+  /* at least one thread should see this cleared on exit */
+  return GUINT_TO_POINTER (!g_atomic_int_get (&is_running));
+}
+
+static void
+test_context_specific_emit (void)
+{
+  GThread *threads[N_THREADS];
+  gboolean exited = FALSE;
+  guint i, n;
+
+  g_assert (!g_atomic_int_get (&is_running));
+  for (i = 0; i < N_THREADS; i++)
+    threads[i] = g_thread_new ("test", test_emit_thread, &observed_values[i]);
+
+  /* make changes and ensure that they are observed */
+  for (n = 0; n < 1000; n++)
+    {
+      guint64 expiry;
+
+      /* don't burn CPU forever */
+      expiry = g_get_monotonic_time () + 10 * G_TIME_SPAN_SECOND;
+
+      g_atomic_int_set (&current_value, n);
+
+      /* wake them to notice */
+      for (i = 0; i < g_test_rand_int_range (1, 5); i++)
+        g_context_specific_group_emit (&group, g_signal_lookup ("changed", per_thread_thing_get_type ()));
+
+      for (i = 0; i < N_THREADS; i++)
+        while (g_atomic_int_get (&observed_values[i]) != n)
+          {
+            g_thread_yield ();
+
+            if (g_get_monotonic_time () > expiry)
+              g_error ("timed out");
+          }
+    }
+
+  /* tell them to quit */
+  g_atomic_int_set (&current_value, -1);
+  g_context_specific_group_emit (&group, g_signal_lookup ("notify", G_TYPE_OBJECT));
+
+  for (i = 0; i < N_THREADS; i++)
+    exited |= GPOINTER_TO_UINT (g_thread_join (threads[i]));
+  g_assert (exited);
+  g_assert (!g_atomic_int_get (&is_running));
+}
+
 int
 main (int argc, char **argv)
 {
@@ -195,6 +415,8 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gio/contexts/thread-independence", test_thread_independence);
   g_test_add_func ("/gio/contexts/context-independence", test_context_independence);
+  g_test_add_func ("/gio/contexts/context-specific/identity", test_context_specific_identity);
+  g_test_add_func ("/gio/contexts/context-specific/emit", test_context_specific_emit);
 
   ret = g_test_run();
 
