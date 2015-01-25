@@ -858,7 +858,8 @@ g_ascii_strtod (const gchar *nptr,
  * the string back using g_ascii_strtod() gives the same machine-number
  * (on machines with IEEE compatible 64bit doubles). It is
  * guaranteed that the size of the resulting string will never
- * be larger than @G_ASCII_DTOSTR_BUF_SIZE bytes.
+ * be larger than @G_ASCII_DTOSTR_BUF_SIZE bytes, including the terminating
+ * nul character, which is always added.
  *
  * Returns: The pointer to the buffer with the converted string.
  **/
@@ -885,6 +886,8 @@ g_ascii_dtostr (gchar       *buffer,
  * decimal point. To format the number you pass in
  * a printf()-style format string. Allowed conversion
  * specifiers are 'e', 'E', 'f', 'F', 'g' and 'G'.
+ *
+ * The returned buffer is guaranteed to be nul-terminated.
  *
  * If you just want to want to serialize the value into a
  * string, use g_ascii_dtostr().
