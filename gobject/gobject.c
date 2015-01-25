@@ -1063,7 +1063,7 @@ g_object_dispatch_properties_changed (GObject     *object,
  * Releases all references to other objects. This can be used to break
  * reference cycles.
  *
- * This functions should only be called from object system implementations.
+ * This function should only be called from object system implementations.
  */
 void
 g_object_run_dispose (GObject *object)
