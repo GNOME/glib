@@ -94,6 +94,8 @@ GLIB_AVAILABLE_IN_2_40
 gboolean                g_settings_schema_key_range_check               (GSettingsSchemaKey     *key,
                                                                          GVariant               *value);
 
+GLIB_AVAILABLE_IN_2_44
+const gchar *           g_settings_schema_key_get_name                  (GSettingsSchemaKey     *key);
 GLIB_AVAILABLE_IN_2_40
 const gchar *           g_settings_schema_key_get_summary               (GSettingsSchemaKey     *key);
 GLIB_AVAILABLE_IN_2_40

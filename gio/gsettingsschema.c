@@ -1472,6 +1472,24 @@ g_settings_schema_get_key (GSettingsSchema *schema,
 }
 
 /**
+ * g_settings_schema_key_get_name:
+ * @key: a #GSettingsSchemaKey
+ *
+ * Gets the name of @key.
+ *
+ * Returns: the name of @key.
+ *
+ * Since: 2.44
+ */
+const gchar *
+g_settings_schema_key_get_name (GSettingsSchemaKey *key)
+{
+  g_return_val_if_fail (key != NULL, NULL);
+
+  return key->name;
+}
+
+/**
  * g_settings_schema_key_get_summary:
  * @key: a #GSettingsSchemaKey
  *

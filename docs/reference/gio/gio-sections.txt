@@ -2447,6 +2447,7 @@ g_settings_schema_key_get_range
 g_settings_schema_key_range_check
 
 <SUBSECTION>
+g_settings_schema_key_get_name
 g_settings_schema_key_get_summary
 g_settings_schema_key_get_description
 
