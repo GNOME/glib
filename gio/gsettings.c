@@ -2325,29 +2325,7 @@ g_settings_list_keys (GSettings *settings)
 gchar **
 g_settings_list_children (GSettings *settings)
 {
-  const GQuark *keys;
-  gchar **strv;
-  gint n_keys;
-  gint i, j;
-
-  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
-  strv = g_new (gchar *, n_keys + 1);
-  for (i = j = 0; i < n_keys; i++)
-    {
-      const gchar *key = g_quark_to_string (keys[i]);
-
-      if (g_str_has_suffix (key, "/"))
-        {
-          gint length = strlen (key);
-
-          strv[j] = g_memdup (key, length);
-          strv[j][length - 1] = '\0';
-          j++;
-        }
-    }
-  strv[j] = NULL;
-
-  return strv;
+  return g_settings_schema_list_children (settings->priv->schema);
 }
 
 /**

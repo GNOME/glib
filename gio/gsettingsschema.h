@@ -75,6 +75,9 @@ GLIB_AVAILABLE_IN_2_40
 gboolean                g_settings_schema_has_key                       (GSettingsSchema        *schema,
                                                                          const gchar            *name);
 
+GLIB_AVAILABLE_IN_2_44
+gchar **                g_settings_schema_list_children                 (GSettingsSchema        *schema);
+
 #define                 G_TYPE_SETTINGS_SCHEMA_KEY                      (g_settings_schema_key_get_type ())
 GLIB_AVAILABLE_IN_2_40
 GType                   g_settings_schema_key_get_type                  (void) G_GNUC_CONST;

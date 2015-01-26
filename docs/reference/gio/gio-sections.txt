@@ -2439,6 +2439,7 @@ g_settings_schema_has_key
 g_settings_schema_get_key
 g_settings_schema_key_ref
 g_settings_schema_key_unref
+g_settings_schema_list_children
 
 <SUBSECTION>
 g_settings_schema_key_get_value_type
