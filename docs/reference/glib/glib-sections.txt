@@ -2048,7 +2048,9 @@ g_completion_free
 <TITLE>Windows Compatibility Functions</TITLE>
 <FILE>windows</FILE>
 MAXPATHLEN
+GWin32OSType
 
+g_win32_check_windows_version
 g_win32_get_command_line
 g_win32_error_message
 g_win32_getlocale
