@@ -54,6 +54,10 @@ GLIB_AVAILABLE_IN_2_30
 void                    g_simple_action_set_state                       (GSimpleAction      *simple,
                                                                          GVariant           *value);
 
+GLIB_AVAILABLE_IN_2_44
+void                    g_simple_action_set_state_hint                  (GSimpleAction      *simple,
+                                                                         GVariant           *state_hint);
+
 G_END_DECLS
 
 #endif /* __G_SIMPLE_ACTION_H__ */
