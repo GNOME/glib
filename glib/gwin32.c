@@ -516,8 +516,82 @@ g_win32_get_package_installation_subdirectory (const gchar *package,
 
 #endif
 
+#define gwin32condmask(base,var) VerSetConditionMask (base, var, VER_GREATER_EQUAL)
+
+/**
+ * g_win32_check_windows_version:
+ * @major: major version of Windows
+ * @minor: minor version of Windows
+ * @spver: Windows Service Pack Level, 0 if none
+ * @os_type: Type of Windows OS
+ *
+ * Returns whether the version of the Windows operating system the
+ * code is running on is at least the specified major, minor and
+ * service pack versions.  See MSDN documentation for the Operating
+ * System Version.  Software that needs even more detailed version and
+ * feature information should use the Win32 API VerifyVersionInfo()
+ * directly.
+ *
+ * Successive calls of this function can be used for enabling or
+ * disabling features at run-time for a range of Windows versions,
+ * as per the VerifyVersionInfo() API documentation.
+ *
+ * Returns: %TRUE if the Windows Version is the same or greater than
+ *          the specified major, minor and service pack versions, and
+ *          whether the running Windows is a workstation or server edition
+ *          of Windows, if specifically specified.
+ *
+ * Since: 2.44
+ **/
+gboolean
+g_win32_check_windows_version (const gint major,
+                               const gint minor,
+                               const gint spver,
+                               const GWin32OSType os_type)
+{
+  OSVERSIONINFOEXW osverinfo;
+  gboolean test_os_type;
+  const DWORDLONG conds = gwin32condmask (gwin32condmask (gwin32condmask (0, VER_MAJORVERSION), VER_MINORVERSION), VER_SERVICEPACKMAJOR);
+
+  memset (&osverinfo, 0, sizeof (OSVERSIONINFOEXW));
+  osverinfo.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEXW);
+  osverinfo.dwPlatformId = VER_PLATFORM_WIN32_NT;
+  osverinfo.dwMajorVersion = major;
+  osverinfo.dwMinorVersion = minor;
+  osverinfo.wServicePackMajor = spver;
+
+  switch (os_type)
+    {
+      case G_WIN32_OS_WORKSTATION:
+        osverinfo.wProductType = VER_NT_WORKSTATION;
+        test_os_type = TRUE;
+        break;
+      case G_WIN32_OS_SERVER:
+        osverinfo.wProductType = VER_NT_SERVER;
+        test_os_type = TRUE;
+        break;
+      default:
+        test_os_type = FALSE;
+        break;
+    }
+
+  if (test_os_type)
+    return VerifyVersionInfoW (&osverinfo,
+                               VER_MAJORVERSION | VER_MINORVERSION | VER_SERVICEPACKMAJOR | VER_PRODUCT_TYPE,
+                               gwin32condmask (conds, VER_PRODUCT_TYPE));
+  else
+    return VerifyVersionInfoW (&osverinfo,
+                               VER_MAJORVERSION | VER_MINORVERSION | VER_SERVICEPACKMAJOR,
+                               conds);
+}
+
+#undef gwin32condmask
+
 /**
  * g_win32_get_windows_version:
+ *
+ * This function is deprecated. Use
+ * g_win32_check_windows_version() instead.
  *
  * Returns version information for the Windows operating system the
  * code is running on. See MSDN documentation for the GetVersion()
@@ -530,8 +604,12 @@ g_win32_get_package_installation_subdirectory (const gchar *package,
  * GetVersionEx() and VerifyVersionInfo().
  *
  * Returns: The version information.
- * 
- * Since: 2.6
+ *
+ * Deprecated: 2.44: Be aware that for Windows 8.1 and Windows Server
+ * 2012 R2 and later, this will return 62 unless the application is
+ * manifested for Windows 8.1/Windows Server 2012 R2, for example.
+ * MSDN stated that GetVersion(), which is used here, is subject to
+ * further change or removal after Windows 8.1.
  **/
 guint
 g_win32_get_windows_version (void)
