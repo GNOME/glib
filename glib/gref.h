@@ -60,6 +60,47 @@ gboolean        g_ref_count_dec         (volatile int  *refcount);
 GLIB_AVAILABLE_IN_2_44
 void            g_ref_count_make_atomic (volatile int  *refcount);
 
+GLIB_AVAILABLE_IN_2_44
+const char *    g_string_ref_new        (const char    *str);
+
+/**
+ * g_string_ref:
+ * @str: a reference counted string
+ *
+ * Acquires a reference on the given string.
+ *
+ * Returns: (transfer none): the string, with its reference count increased
+ *
+ * Since: 2.44
+ */
+static inline gconstpointer
+(g_string_ref) (const char *str)
+{
+  return g_ref_pointer_acquire ((char *) str);
+}
+
+/**
+ * g_string_unref:
+ * @str: a reference counted string
+ *
+ * Releases a reference acquired on the given string.
+ *
+ * If it was the last reference, the string will be freed.
+ *
+ * Since: 2.44
+ */
+static inline void
+(g_string_unref) (const char *str)
+{
+  g_ref_pointer_release ((char *) str);
+}
+
+#define g_string_ref(str) \
+  (0 ? (str) : (g_string_ref) (str))
+
+#define g_string_unref(str) \
+  (0 ? (str) : (g_string_unref) (str))
+
 G_END_DECLS
 
 #endif /* __G_REF_H__ */

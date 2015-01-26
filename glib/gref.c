@@ -462,3 +462,45 @@ g_ref_pointer_make_atomic (gpointer ref)
 
   g_ref_count_make_atomic (&real->ref_count);
 }
+
+/**
+ * g_string_ref_new:
+ * @str: the string to reference
+ *
+ * Creates a new reference counted string.
+ *
+ * You can acquire a reference on the string using g_string_ref()
+ * release it using g_string_unref().
+ *
+ * The returned string can be used with any string utility function
+ * transparently. Instead of copying the string, use the reference
+ * counting API to acquire and release references when needed.
+ *
+ * Once the last reference on the string is released, the string will
+ * be freed.
+ *
+ * Returns: a newly allocated reference counted string
+ *
+ * Since: 2.44
+ */
+const char *
+g_string_ref_new (const char *str)
+{
+  gsize len;
+  char *res;
+
+  g_return_val_if_fail (str != NULL || *str != '\0', NULL);
+
+#ifdef G_ENABLE_DEBUG
+  if (g_is_ref_pointer (str))
+    return g_ref_pointer_acquire ((char *) str);
+#endif
+
+  len = strlen (str);
+  res = g_ref_pointer_alloc (len + 1, NULL);
+
+  memcpy (res, str, len);
+  res[len] = '\0';
+
+  return res;
+}

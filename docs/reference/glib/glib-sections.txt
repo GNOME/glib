@@ -1034,6 +1034,11 @@ g_ref_pointer_acquire
 g_ref_pointer_release
 
 <SUBSECTION>
+g_string_ref_new
+g_string_ref
+g_string_unref
+
+<SUBSECTION>
 g_ref_count_init
 g_ref_count_inc
 g_ref_count_dec
