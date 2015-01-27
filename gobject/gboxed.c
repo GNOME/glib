@@ -184,6 +184,36 @@ g_strv_get_type (void)
   return g_define_type_id__volatile;
 }
 
+/* This one can't use G_DEFINE_BOXED_TYPE (GStringRef, g_string_ref, g_string_ref, g_string_unref)
+ *
+ * We also use the g_ref_pointer_* API directly because the g_string_ref/unref
+ * functions are inlined and hidden by a macro, so we can't use them as function
+ * pointers.
+ */
+GType
+g_string_ref_get_type (void)
+{
+  static volatile gsize g_define_type_id__volatile = 0;
+
+  if (g_once_init_enter (&g_define_type_id__volatile))
+    {
+      GType g_define_type_id =
+        g_boxed_type_register_static (g_intern_static_string ("GStringRef"),
+                                      (GBoxedCopyFunc) g_ref_pointer_acquire,
+                                      (GBoxedFreeFunc) g_ref_pointer_release);
+
+      g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
+    }
+
+  return g_define_type_id__volatile;
+}
+
+/**
+ * g_variant_get_gtype:
+ *
+ * Since: 2.24
+ * Deprecated: 2.26
+ */
 GType
 g_variant_get_gtype (void)
 {

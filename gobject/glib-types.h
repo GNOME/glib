@@ -288,6 +288,15 @@ typedef gsize GType;
  */
 #define G_TYPE_CHECKSUM (g_checksum_get_type ())
 
+/**
+ * G_TYPE_STRING_REF:
+ *
+ * The #GType for a boxed type holding a string reference.
+ *
+ * Since: 2.44
+ */
+#define G_TYPE_STRING_REF (g_string_ref_get_type ())
+
 GLIB_AVAILABLE_IN_ALL
 GType   g_date_get_type            (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_ALL
@@ -342,6 +351,8 @@ GLIB_AVAILABLE_IN_2_36
 GType   g_markup_parse_context_get_type (void) G_GNUC_CONST;
 GLIB_AVAILABLE_IN_2_40
 GType   g_mapped_file_get_type (void) G_GNUC_CONST;
+GLIB_AVAILABLE_IN_2_44
+GType   g_string_ref_get_type      (void) G_GNUC_CONST;
 
 GLIB_DEPRECATED_FOR('G_TYPE_VARIANT')
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;
@@ -352,6 +363,15 @@ GType   g_variant_get_gtype        (void) G_GNUC_CONST;
  * A C representable type name for #G_TYPE_STRV.
  */
 typedef gchar** GStrv;
+
+/**
+ * GStringRef:
+ *
+ * A C representable type for #G_TYPE_STRING_REF.
+ *
+ * Since: 2.44
+ */
+typedef char* GStringRef;
 
 G_END_DECLS
 
