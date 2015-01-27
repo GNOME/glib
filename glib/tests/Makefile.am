@@ -76,6 +76,7 @@ test_programs = \
 	queue				\
 	rand				\
 	rec-mutex			\
+	refcounts			\
 	regex				\
 	rwlock				\
 	scannerapi			\
