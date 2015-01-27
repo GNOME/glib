@@ -1464,8 +1464,9 @@ guint     g_type_get_type_registration_serial (void);
  **/
 #define G_DECLARE_DERIVABLE_TYPE(ModuleObjName, module_obj_name, MODULE, OBJ_NAME, ParentName) \
   GType module_obj_name##_get_type (void);                                                               \
-  typedef struct { ParentName parent_instance; } ModuleObjName;                                          \
+  typedef struct _##ModuleObjName ModuleObjName;                                                         \
   typedef struct _##ModuleObjName##Class ModuleObjName##Class;                                           \
+  struct _##ModuleObjName { ParentName parent_instance; };                                               \
                                                                                                          \
   static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                                     \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
