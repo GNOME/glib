@@ -31,7 +31,10 @@
 #define G_CREDENTIALS_SOCKET_GET_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_SPOOFING_SUPPORTED 1
 
-#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__GNU__) || defined(__DragonFly__)
+#elif defined(__FreeBSD__)                                  || \
+      defined(__FreeBSD_kernel__) /* Debian GNU/kFreeBSD */ || \
+      defined(__GNU__)            /* GNU Hurd */            || \
+      defined(__DragonFly__)      /* DragonFly BSD */
 #define G_CREDENTIALS_SUPPORTED 1
 #define G_CREDENTIALS_USE_FREEBSD_CMSGCRED 1
 #define G_CREDENTIALS_NATIVE_TYPE G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED
