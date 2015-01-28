@@ -1365,6 +1365,10 @@ guint     g_type_get_type_registration_serial (void);
  *   and therefore the fact that the size of the class structure is exposed is not a concern and it can be
  *   freely changed at any point in the future.
  *
+ * - g_autoptr() support being added for your type, based on the type of your parent class
+ *
+ * You can only use this function if your parent type also supports g_autoptr().
+ *
  * Because the type macro (MY_APP_TYPE_WINDOW in the above example) is not a callable, you must continue to
  * manually define this as a macro for yourself.
  *
@@ -1386,6 +1390,10 @@ guint     g_type_get_type_registration_serial (void);
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                       \
   typedef struct _##ModuleObjName ModuleObjName;                                                         \
   typedef struct { ParentName##Class parent_class; } ModuleObjName##Class;                               \
+                                                                                                         \
+  typedef ModuleObjName *_GLIB_AUTOPTR_TYPENAME(ModuleObjName);                                          \
+  static inline void _GLIB_AUTOPTR_FUNC_NAME(ModuleObjName) (ModuleObjName **_ptr) {                     \
+    _GLIB_AUTOPTR_FUNC_NAME(ParentName) ((ParentName **) _ptr); }                                        \
                                                                                                          \
   static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                                     \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
@@ -1445,6 +1453,10 @@ guint     g_type_get_type_registration_serial (void);
  *   the GTK_IS_FROBBER() and GTK_IS_FROBBER_CLASS() type checking functions and GTK_FROBBER_GET_CLASS()
  *   function.
  *
+ * - g_autoptr() support being added for your type, based on the type of your parent class
+ *
+ * You can only use this function if your parent type also supports g_autoptr().
+ *
  * Because the type macro (GTK_TYPE_FROBBER in the above example) is not a callable, you must continue to
  * manually define this as a macro for yourself.
  *
@@ -1470,6 +1482,10 @@ guint     g_type_get_type_registration_serial (void);
   typedef struct _##ModuleObjName ModuleObjName;                                                         \
   typedef struct _##ModuleObjName##Class ModuleObjName##Class;                                           \
   struct _##ModuleObjName { ParentName parent_instance; };                                               \
+                                                                                                         \
+  typedef ModuleObjName *_GLIB_AUTOPTR_TYPENAME(ModuleObjName);                                          \
+  static inline void _GLIB_AUTOPTR_FUNC_NAME(ModuleObjName) (ModuleObjName **_ptr) {                     \
+    _GLIB_AUTOPTR_FUNC_NAME(ParentName) ((ParentName **) _ptr); }                                        \
                                                                                                          \
   static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                                     \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
