@@ -373,4 +373,38 @@
 #define GLIB_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj,min) _GLIB_EXTERN
 #endif
 
+#ifdef __GNUC__
+
+/* these macros are private */
+#define _GLIB_AUTOPTR_FUNC_NAME(TypeName) glib_autoptr_cleanup_##TypeName
+#define _GLIB_AUTOPTR_TYPENAME(TypeName)  TypeName##_autoptr
+#define _GLIB_AUTO_FUNC_NAME(TypeName)    glib_auto_cleanup_##TypeName
+#define _GLIB_CLEANUP(func)               __attribute__((cleanup(func)))
+
+/* these macros are API */
+#define G_DEFINE_AUTOPTR_CLEANUP_FUNC(TypeName, func) \
+  typedef TypeName *_GLIB_AUTOPTR_TYPENAME(TypeName);                                                           \
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                              \
+  static inline void _GLIB_AUTOPTR_FUNC_NAME(TypeName) (TypeName **_ptr) { if (*_ptr) (func) (*_ptr); }         \
+  G_GNUC_END_IGNORE_DEPRECATIONS
+#define G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(TypeName, func) \
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                              \
+  static inline void _GLIB_AUTO_FUNC_NAME(TypeName) (TypeName *_ptr) { (func) (_ptr); }                         \
+  G_GNUC_END_IGNORE_DEPRECATIONS
+#define G_DEFINE_AUTO_CLEANUP_FREE_FUNC(TypeName, func, none) \
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS                                                                              \
+  static inline void _GLIB_AUTO_FUNC_NAME(TypeName) (TypeName *_ptr) { if (*_ptr != none) (func) (*_ptr); }     \
+  G_GNUC_END_IGNORE_DEPRECATIONS
+#define g_autoptr(TypeName) _GLIB_CLEANUP(_GLIB_AUTOPTR_FUNC_NAME(TypeName)) _GLIB_AUTOPTR_TYPENAME(TypeName)
+#define g_auto(TypeName) _GLIB_CLEANUP(_GLIB_AUTO_FUNC_NAME(TypeName)) TypeName
+
+#else /* not GNU C */
+
+#define G_DEFINE_AUTOPTR_CLEANUP_FUNC(TypeName, func)
+#define G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(TypeName, func)
+#define G_DEFINE_AUTO_CLEANUP_FREE_FUNC(TypeName, func)
+
+/* no declaration of g_auto() or g_autoptr() here */
+#endif
+
 #endif /* __G_MACROS_H__ */
