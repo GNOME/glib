@@ -1339,7 +1339,7 @@ guint     g_type_get_type_registration_serial (void);
  *
  * #include <gtk/gtk.h>
  *
- * #define MY_APP_WINDOW my_app_window_get_type ()
+ * #define MY_APP_TYPE_WINDOW my_app_window_get_type ()
  * G_DECLARE_FINAL_TYPE (MyAppWindow, my_app_window, GtkWindow, MY_APP, WINDOW)
  *
  * MyAppWindow *    my_app_window_new    (void);
