@@ -111,10 +111,6 @@ gchar **        g_win32_get_command_line (void);
 #define G_WIN32_IS_NT_BASED() TRUE
 #define G_WIN32_HAVE_WIDECHAR_API() TRUE
 
-G_END_DECLS
-
-#endif	 /* G_PLATFORM_WIN32 */
-
 #ifndef __GTK_DOC_IGNORE__
 #ifdef G_OS_WIN32
 #ifdef _WIN64
@@ -129,6 +125,8 @@ GLIB_AVAILABLE_IN_ALL
 gchar *g_win32_get_package_installation_subdirectory_utf8 (const gchar *package,
                                                            const gchar *dll_name,
                                                            const gchar *subdir);
+#endif /* G_OS_WIN32 */
+#endif /* __GTK_DOC_IGNORE__ */
 
 /**
  * GWin32OSType:
@@ -154,7 +152,8 @@ gboolean g_win32_check_windows_version (const gint major,
                                         const gint spver,
                                         const GWin32OSType os_type);
 
-#endif /* G_OS_WIN32 */
-#endif /* __GTK_DOC_IGNORE__ */
+G_END_DECLS
+
+#endif	 /* G_PLATFORM_WIN32 */
 
 #endif /* __G_WIN32_H__ */
