@@ -107,6 +107,8 @@
 #include <glib/deprecated/gthread.h>
 #endif /* G_DISABLE_DEPRECATED */
 
+#include <glib/glib-autocleanups.h>
+
 #undef __GLIB_H_INSIDE__
 
 #endif /* __G_LIB_H__ */

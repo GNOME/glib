@@ -240,6 +240,7 @@ deprecatedinclude_HEADERS = \
 
 glibsubincludedir=$(includedir)/glib-2.0/glib
 glibsubinclude_HEADERS = \
+	glib-autocleanups.h	\
 	galloca.h	\
 	garray.h	\
 	gasyncqueue.h	\
