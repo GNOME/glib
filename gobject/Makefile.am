@@ -61,6 +61,7 @@ libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res)
 #
 # GObject library header files for public installation
 gobject_public_h_sources = \
+	gobject-autocleanups.h	\
 	glib-types.h		\
 	gbinding.h		\
 	gboxed.h		\
