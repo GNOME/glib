@@ -4263,7 +4263,7 @@ g_notification_get_type
 <FILE>glistmodel</FILE>
 <TITLE>GListModel</TITLE>
 GListModel
-g_list_model_new
+GListModelInterface
 <SUBSECTION>
 g_list_model_get_item_type
 g_list_model_get_n_items
@@ -4284,7 +4284,6 @@ g_list_model_get_type
 <TITLE>GListStore</TITLE>
 GListStore
 <SUBSECTION>
-g_list_store_get_type
 g_list_store_new
 g_list_store_insert
 g_list_store_insert_sorted

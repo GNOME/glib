@@ -26,7 +26,7 @@
 #include "glistmodel.h"
 
 /**
- * SECTION:glistmodel
+ * SECTION:gliststore
  * @title: GListStore
  * @short_description: A simple implementation of #GListModel
  * @include: gio/gio.h
@@ -37,6 +37,13 @@
  * It provides insertions, deletions, and lookups in logarithmic time
  * with a fast path for the common case of iterating the list linearly.
  */
+
+/**
+ * GListStore:
+ *
+ * #GListStore is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
 
 struct _GListStore
 {

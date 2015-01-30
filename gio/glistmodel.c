@@ -83,7 +83,8 @@ G_DEFINE_INTERFACE (GListModel, g_list_model, G_TYPE_OBJECT);
  */
 
 /**
- * GListModel:
+ * GListModelInterface:
+ * @g_iface: parent #GTypeInterface
  * @get_item_type: the virtual function pointer for g_list_model_get_item_type()
  * @get_n_items: the virtual function pointer for g_list_model_get_n_items()
  * @get_item: the virtual function pointer for g_list_model_get_item()
@@ -92,6 +93,13 @@ G_DEFINE_INTERFACE (GListModel, g_list_model, G_TYPE_OBJECT);
  *
  * Since: 2.44
  */
+
+/**
+ * GListModel:
+ *
+ * #GListModel is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
 
 static guint g_list_model_changed_signal;
 
