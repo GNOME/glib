@@ -35,6 +35,8 @@ G_BEGIN_DECLS
 typedef struct _GWin32AppInfo        GWin32AppInfo;
 typedef struct _GWin32AppInfoClass   GWin32AppInfoClass;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GWin32AppInfo, g_object_unref)
+
 struct _GWin32AppInfoClass
 {
   GObjectClass parent_class;

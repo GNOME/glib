@@ -37,6 +37,8 @@ typedef struct _GUnixSocketAddress        GUnixSocketAddress;
 typedef struct _GUnixSocketAddressClass   GUnixSocketAddressClass;
 typedef struct _GUnixSocketAddressPrivate GUnixSocketAddressPrivate;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixSocketAddress, g_object_unref)
+
 struct _GUnixSocketAddress
 {
   GSocketAddress parent_instance;

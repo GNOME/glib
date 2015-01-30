@@ -36,6 +36,8 @@ G_BEGIN_DECLS
 typedef struct _GUnixCredentialsMessagePrivate  GUnixCredentialsMessagePrivate;
 typedef struct _GUnixCredentialsMessageClass    GUnixCredentialsMessageClass;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixCredentialsMessage, g_object_unref)
+
 /**
  * GUnixCredentialsMessageClass:
  *

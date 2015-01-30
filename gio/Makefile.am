@@ -567,6 +567,7 @@ gio_headers =			\
 	ginputstream.h 		\
 	ginitable.h		\
 	gio.h			\
+	gio-autocleanups.h	\
 	giotypes.h		\
 	gioenums.h		\
 	gioerror.h 		\

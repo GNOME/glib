@@ -35,6 +35,8 @@ G_BEGIN_DECLS
 typedef struct _GDesktopAppInfo        GDesktopAppInfo;
 typedef struct _GDesktopAppInfoClass   GDesktopAppInfoClass;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GDesktopAppInfo, g_object_unref)
+
 struct _GDesktopAppInfoClass
 {
   GObjectClass parent_class;

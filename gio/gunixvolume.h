@@ -33,6 +33,7 @@ G_BEGIN_DECLS
 #define G_UNIX_VOLUME_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_UNIX_VOLUME, GUnixVolumeClass))
 #define G_IS_UNIX_VOLUME(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_UNIX_VOLUME))
 #define G_IS_UNIX_VOLUME_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_UNIX_VOLUME))
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixVolume, g_object_unref)
 
 typedef struct _GUnixVolumeClass GUnixVolumeClass;
 

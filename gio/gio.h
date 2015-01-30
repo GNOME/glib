@@ -163,6 +163,8 @@
 #include <gio/glistmodel.h>
 #include <gio/gliststore.h>
 
+#include <gio/gio-autocleanups.h>
+
 #undef __GIO_GIO_H_INSIDE__
 
 #endif /* __G_IO_H__ */

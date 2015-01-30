@@ -33,6 +33,7 @@ G_BEGIN_DECLS
 #define G_UNIX_MOUNT_CLASS(k)    (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_UNIX_MOUNT, GUnixMountClass))
 #define G_IS_UNIX_MOUNT(o)       (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_UNIX_MOUNT))
 #define G_IS_UNIX_MOUNT_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_UNIX_MOUNT))
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixMount, g_object_unref)
 
 typedef struct _GUnixMountClass GUnixMountClass;
 

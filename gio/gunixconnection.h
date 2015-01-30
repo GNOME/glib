@@ -41,6 +41,8 @@ typedef struct _GUnixConnection                             GUnixConnection;
 typedef struct _GUnixConnectionPrivate                      GUnixConnectionPrivate;
 typedef struct _GUnixConnectionClass                        GUnixConnectionClass;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixConnection, g_object_unref)
+
 struct _GUnixConnectionClass
 {
   GSocketConnectionClass parent_class;

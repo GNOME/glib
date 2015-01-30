@@ -42,6 +42,8 @@ typedef struct _GUnixFDMessagePrivate                       GUnixFDMessagePrivat
 typedef struct _GUnixFDMessageClass                         GUnixFDMessageClass;
 typedef struct _GUnixFDMessage                              GUnixFDMessage;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixFDMessage, g_object_unref)
+
 struct _GUnixFDMessageClass
 {
   GSocketControlMessageClass parent_class;

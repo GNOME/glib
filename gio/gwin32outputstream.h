@@ -42,6 +42,8 @@ typedef struct _GWin32OutputStream         GWin32OutputStream;
 typedef struct _GWin32OutputStreamClass    GWin32OutputStreamClass;
 typedef struct _GWin32OutputStreamPrivate  GWin32OutputStreamPrivate;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GWin32OutputStream, g_object_unref)
+
 struct _GWin32OutputStream
 {
   GOutputStream parent_instance;

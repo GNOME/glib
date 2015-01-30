@@ -41,6 +41,8 @@ typedef struct _GUnixInputStream         GUnixInputStream;
 typedef struct _GUnixInputStreamClass    GUnixInputStreamClass;
 typedef struct _GUnixInputStreamPrivate  GUnixInputStreamPrivate;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixInputStream, g_object_unref)
+
 struct _GUnixInputStream
 {
   GInputStream parent_instance;

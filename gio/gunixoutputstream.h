@@ -41,6 +41,8 @@ typedef struct _GUnixOutputStream         GUnixOutputStream;
 typedef struct _GUnixOutputStreamClass    GUnixOutputStreamClass;
 typedef struct _GUnixOutputStreamPrivate  GUnixOutputStreamPrivate;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixOutputStream, g_object_unref)
+
 struct _GUnixOutputStream
 {
   GOutputStream parent_instance;

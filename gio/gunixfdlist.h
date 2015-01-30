@@ -36,6 +36,7 @@ G_BEGIN_DECLS
                                                              G_TYPE_UNIX_FD_LIST))
 #define G_UNIX_FD_LIST_GET_CLASS(inst)                      (G_TYPE_INSTANCE_GET_CLASS ((inst),                      \
                                                              G_TYPE_UNIX_FD_LIST, GUnixFDListClass))
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixFDList, g_object_unref)
 
 typedef struct _GUnixFDListPrivate                       GUnixFDListPrivate;
 typedef struct _GUnixFDListClass                         GUnixFDListClass;
