@@ -542,7 +542,7 @@ giotypefuncs.c: Makefile
 	$(AM_V_GEN) echo '#include <gio/gio.h>' > xgen-giosrc.c && \
 	  echo "G_GNUC_BEGIN_IGNORE_DEPRECATIONS" > xgen-gio && \
 	  ${CPP} $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) xgen-giosrc.c | \
-	  $(GREP) -o '\bg_.*_get_type\b' | \
+	  $(GREP) -o '\bg_[A-Za-z0-9_]*_get_type\b' | \
 	  $(GREP) -v 'g_io_extension_get_type\|g_variant_get_type' | \
 	  sort | uniq | \
 	  $(SED) -e 's/^/*tp++ = /' -e 's/$$/ ();/' >> xgen-gio && \
