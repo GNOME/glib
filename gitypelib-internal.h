@@ -201,10 +201,10 @@ typedef enum {
  * @directory: Offset of the directory in the typelib.
  * @n_attributes: Number of attribute blocks
  * @attributes: Offset of the list of attributes in the typelib.
- * @dependencies: Offset of a single string, which is the list of dependencies,
- *   separated by the '|' character.  The dependencies are required in order
- *   to avoid having programs consuming a typelib check for an "Unresolved"
- *   type return from every API call.
+ * @dependencies: Offset of a single string, which is the list of immediate
+ *   dependencies, separated by the '|' character.  The dependencies are
+ *   required in order to avoid having programs consuming a typelib check for
+ *   an "Unresolved" type return from every API call.
  * @size: The size in bytes of the typelib.
  * @namespace: Offset of the namespace string in the typelib.
  * @nsversion: Offset of the namespace version string in the typelib.
