@@ -253,6 +253,8 @@ build_typelib_key (const char *name, const char *source)
   return g_string_free (str, FALSE);
 }
 
+/* Note: Returns %NULL (not an empty %NULL-terminated array) if there are no
+ * dependencies. */
 static char **
 get_typelib_dependencies (GITypelib *typelib)
 {
@@ -450,6 +452,7 @@ g_irepository_get_dependencies (GIRepository *repository,
 				const char *namespace)
 {
   GITypelib *typelib;
+  gchar **deps;
 
   g_return_val_if_fail (namespace != NULL, NULL);
 
@@ -458,7 +461,12 @@ g_irepository_get_dependencies (GIRepository *repository,
   typelib = get_registered (repository, namespace, NULL);
   g_return_val_if_fail (typelib != NULL, NULL);
 
-  return get_typelib_dependencies (typelib);
+  /* Ensure we always return a non-%NULL vector. */
+  deps = get_typelib_dependencies (typelib);
+  if (deps == NULL)
+      deps = g_strsplit ("", "|", 0);
+
+  return deps;
 }
 
 /**
