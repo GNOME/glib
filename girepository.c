@@ -432,24 +432,28 @@ register_internal (GIRepository *repository,
 }
 
 /**
- * g_irepository_get_dependencies:
- * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ * g_irepository_get_immediate_dependencies:
+ * @repository: (nullable): A #GIRepository or %NULL for the singleton
  *   process-global default #GIRepository
  * @namespace_: Namespace of interest
  *
- * Return an array of all (transitive) versioned dependencies for
- * @namespace_. Returned strings are of the form
- * <code>namespace-version</code>.
+ * Return an array of the immediate versioned dependencies for @namespace_.
+ * Returned strings are of the form <code>namespace-version</code>.
  *
  * Note: @namespace_ must have already been loaded using a function
  * such as g_irepository_require() before calling this function.
  *
- * Returns: (transfer full): Zero-terminated string array of versioned
+ * To get the transitive closure of dependencies for @namespace_, use
+ * g_irepository_get_dependencies().
+ *
+ * Returns: (transfer full): Zero-terminated string array of immediate versioned
  *   dependencies
+ *
+ * Since: 1.44
  */
 char **
-g_irepository_get_dependencies (GIRepository *repository,
-				const char *namespace)
+g_irepository_get_immediate_dependencies (GIRepository *repository,
+                                          const char   *namespace)
 {
   GITypelib *typelib;
   gchar **deps;
@@ -467,6 +471,105 @@ g_irepository_get_dependencies (GIRepository *repository,
       deps = g_strsplit ("", "|", 0);
 
   return deps;
+}
+
+/* Load the transitive closure of dependency namespace-version strings for the
+ * given @typelib. @repository must be non-%NULL. @transitive_dependencies must
+ * be a pre-existing GHashTable<owned utf8, owned utf8> set for storing the
+ * dependencies. */
+static void
+get_typelib_dependencies_transitive (GIRepository *repository,
+                                     GITypelib    *typelib,
+                                     GHashTable   *transitive_dependencies)
+{
+  gchar **immediate_dependencies;
+  guint i;
+
+  immediate_dependencies = get_typelib_dependencies (typelib);
+
+  for (i = 0; immediate_dependencies != NULL && immediate_dependencies[i]; i++)
+    {
+      gchar *dependency;
+      const gchar *last_dash;
+      gchar *dependency_namespace;
+
+      dependency = immediate_dependencies[i];
+
+      /* Steal from the strv. */
+      g_hash_table_add (transitive_dependencies, dependency);
+      immediate_dependencies[i] = NULL;
+
+      /* Recurse for this namespace. */
+      last_dash = strrchr (dependency, '-');
+      dependency_namespace = g_strndup (dependency, last_dash - dependency);
+
+      typelib = get_registered (repository, dependency_namespace, NULL);
+      g_return_if_fail (typelib != NULL);
+      get_typelib_dependencies_transitive (repository, typelib,
+                                           transitive_dependencies);
+
+      g_free (dependency_namespace);
+    }
+
+  g_free (immediate_dependencies);
+}
+
+/**
+ * g_irepository_get_dependencies:
+ * @repository: (allow-none): A #GIRepository or %NULL for the singleton
+ *   process-global default #GIRepository
+ * @namespace_: Namespace of interest
+ *
+ * Return an array of all (transitive) versioned dependencies for
+ * @namespace_. Returned strings are of the form
+ * <code>namespace-version</code>.
+ *
+ * Note: @namespace_ must have already been loaded using a function
+ * such as g_irepository_require() before calling this function.
+ *
+ * To get only the immediate dependencies for @namespace_, use
+ * g_irepository_get_immediate_dependencies().
+ *
+ * Returns: (transfer full): Zero-terminated string array of all versioned
+ *   dependencies
+ */
+char **
+g_irepository_get_dependencies (GIRepository *repository,
+				const char *namespace)
+{
+  GITypelib *typelib;
+  GHashTable *transitive_dependencies;  /* set of owned utf8 */
+  GHashTableIter iter;
+  gchar *dependency;
+  GPtrArray *out;  /* owned utf8 elements */
+
+  g_return_val_if_fail (namespace != NULL, NULL);
+
+  repository = get_repository (repository);
+  transitive_dependencies = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                   g_free, NULL);
+
+  /* Load the dependencies. */
+  typelib = get_registered (repository, namespace, NULL);
+  g_return_val_if_fail (typelib != NULL, NULL);
+  get_typelib_dependencies_transitive (repository, typelib,
+                                       transitive_dependencies);
+
+  /* Convert to a string array. */
+  out = g_ptr_array_new_full (g_hash_table_size (transitive_dependencies),
+                              g_free);
+  g_hash_table_iter_init (&iter, transitive_dependencies);
+
+  while (g_hash_table_iter_next (&iter, (gpointer) &dependency, NULL))
+    {
+      g_ptr_array_add (out, dependency);
+      g_hash_table_iter_steal (&iter);
+    }
+
+  /* Add a NULL terminator. */
+  g_ptr_array_add (out, NULL);
+
+  return (gchar **) g_ptr_array_free (out, FALSE);
 }
 
 /**

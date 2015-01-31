@@ -1307,8 +1307,8 @@ gir_writer_write (const char *filename,
 	      "            xmlns:c=\"http://www.gtk.org/introspection/c/1.0\"\n"
 	      "            xmlns:glib=\"http://www.gtk.org/introspection/glib/1.0\"");
 
-  dependencies = g_irepository_get_dependencies (repository,
-						 namespace);
+  dependencies = g_irepository_get_immediate_dependencies (repository,
+                                                           namespace);
   if (dependencies != NULL)
     {
       for (i = 0; dependencies[i]; i++)

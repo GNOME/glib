@@ -143,6 +143,10 @@ GITypelib *    g_irepository_require_private (GIRepository  *repository,
 					     GIRepositoryLoadFlags flags,
 					     GError       **error);
 
+GI_AVAILABLE_IN_1_44
+gchar      ** g_irepository_get_immediate_dependencies (GIRepository *repository,
+                                                        const gchar  *namespace_);
+
 GI_AVAILABLE_IN_ALL
 gchar      ** g_irepository_get_dependencies (GIRepository *repository,
 					      const gchar  *namespace_);
