@@ -75,6 +75,8 @@ copy ..\..\..\gio\gioerror.h $(CopyDir)\include\glib-2.0\gio\gioerror.h&#x0D;&#x
 copy ..\..\..\gio\giomodule.h $(CopyDir)\include\glib-2.0\gio\giomodule.h&#x0D;&#x0A;
 copy ..\..\..\gio\gioscheduler.h $(CopyDir)\include\glib-2.0\gio\gioscheduler.h&#x0D;&#x0A;
 copy ..\..\..\gio\giostream.h $(CopyDir)\include\glib-2.0\gio\giostream.h&#x0D;&#x0A;
+copy ..\..\..\gio\glistmodel.h $(CopyDir)\include\glib-2.0\glib\glistmodel.h&#x0D;&#x0A;
+copy ..\..\..\gio\gliststore.h $(CopyDir)\include\glib-2.0\glib\gliststore.h&#x0D;&#x0A;
 copy ..\..\..\gio\gloadableicon.h $(CopyDir)\include\glib-2.0\gio\gloadableicon.h&#x0D;&#x0A;
 copy ..\..\..\gio\gmount.h $(CopyDir)\include\glib-2.0\gio\gmount.h&#x0D;&#x0A;
 copy ..\..\..\gio\gmemoryinputstream.h $(CopyDir)\include\glib-2.0\gio\gmemoryinputstream.h&#x0D;&#x0A;
@@ -203,8 +205,6 @@ copy ..\..\..\glib\gi18n-lib.h $(CopyDir)\include\glib-2.0\glib\gi18n-lib.h&#x0D
 copy ..\..\..\glib\giochannel.h $(CopyDir)\include\glib-2.0\glib\giochannel.h&#x0D;&#x0A;
 copy ..\..\..\glib\gkeyfile.h $(CopyDir)\include\glib-2.0\glib\gkeyfile.h&#x0D;&#x0A;
 copy ..\..\..\glib\glist.h $(CopyDir)\include\glib-2.0\glib\glist.h&#x0D;&#x0A;
-copy ..\..\..\glib\glistmodel.h $(CopyDir)\include\glib-2.0\glib\glistmodel.h&#x0D;&#x0A;
-copy ..\..\..\glib\gliststore.h $(CopyDir)\include\glib-2.0\glib\gliststore.h&#x0D;&#x0A;
 copy ..\..\..\glib\gmacros.h $(CopyDir)\include\glib-2.0\glib\gmacros.h&#x0D;&#x0A;
 copy ..\..\..\glib\gmain.h $(CopyDir)\include\glib-2.0\glib\gmain.h&#x0D;&#x0A;
 copy ..\..\..\glib\gmappedfile.h $(CopyDir)\include\glib-2.0\glib\gmappedfile.h&#x0D;&#x0A;
