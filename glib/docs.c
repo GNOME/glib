@@ -2314,7 +2314,7 @@
 
 /**
  * g_auto:
- * @typename: a supported variable type
+ * @TypeName: a supported variable type
  *
  * Helper to declare a variable with automatic cleanup.
  *
@@ -2366,7 +2366,7 @@
 
 /**
  * g_autoptr:
- * @typename: a supported variable type
+ * @TypeName: a supported variable type
  *
  * Helper to declare a pointer variable with automatic cleanup.
  *
@@ -2378,7 +2378,7 @@
  * are intended to be portable to those compilers.
  *
  * This is meant to be used to declare pointers to types with cleanup
- * functions.  The type of the variable is a pointer to @typename.  You
+ * functions.  The type of the variable is a pointer to @TypeName.  You
  * must not add your own '*'.
  *
  * This macro can be used to avoid having to do explicit cleanups of
