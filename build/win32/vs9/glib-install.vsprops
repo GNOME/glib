@@ -203,6 +203,8 @@ copy ..\..\..\glib\gi18n-lib.h $(CopyDir)\include\glib-2.0\glib\gi18n-lib.h&#x0D
 copy ..\..\..\glib\giochannel.h $(CopyDir)\include\glib-2.0\glib\giochannel.h&#x0D;&#x0A;
 copy ..\..\..\glib\gkeyfile.h $(CopyDir)\include\glib-2.0\glib\gkeyfile.h&#x0D;&#x0A;
 copy ..\..\..\glib\glist.h $(CopyDir)\include\glib-2.0\glib\glist.h&#x0D;&#x0A;
+copy ..\..\..\glib\glistmodel.h $(CopyDir)\include\glib-2.0\glib\glistmodel.h&#x0D;&#x0A;
+copy ..\..\..\glib\gliststore.h $(CopyDir)\include\glib-2.0\glib\gliststore.h&#x0D;&#x0A;
 copy ..\..\..\glib\gmacros.h $(CopyDir)\include\glib-2.0\glib\gmacros.h&#x0D;&#x0A;
 copy ..\..\..\glib\gmain.h $(CopyDir)\include\glib-2.0\glib\gmain.h&#x0D;&#x0A;
 copy ..\..\..\glib\gmappedfile.h $(CopyDir)\include\glib-2.0\glib\gmappedfile.h&#x0D;&#x0A;
