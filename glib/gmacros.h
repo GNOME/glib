@@ -402,7 +402,7 @@
 
 #define G_DEFINE_AUTOPTR_CLEANUP_FUNC(TypeName, func)
 #define G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(TypeName, func)
-#define G_DEFINE_AUTO_CLEANUP_FREE_FUNC(TypeName, func)
+#define G_DEFINE_AUTO_CLEANUP_FREE_FUNC(TypeName, func, none)
 
 /* no declaration of g_auto() or g_autoptr() here */
 #endif
