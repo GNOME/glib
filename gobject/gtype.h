@@ -1391,9 +1391,7 @@ guint     g_type_get_type_registration_serial (void);
   typedef struct _##ModuleObjName ModuleObjName;                                                         \
   typedef struct { ParentName##Class parent_class; } ModuleObjName##Class;                               \
                                                                                                          \
-  typedef ModuleObjName *_GLIB_AUTOPTR_TYPENAME(ModuleObjName);                                          \
-  static inline void _GLIB_AUTOPTR_FUNC_NAME(ModuleObjName) (ModuleObjName **_ptr) {                     \
-    _GLIB_AUTOPTR_FUNC_NAME(ParentName) ((ParentName **) _ptr); }                                        \
+  _GLIB_DEFINE_AUTOPTR_CHAINUP (ModuleObjName, ParentName)                                               \
                                                                                                          \
   static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                                     \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
@@ -1483,9 +1481,7 @@ guint     g_type_get_type_registration_serial (void);
   typedef struct _##ModuleObjName##Class ModuleObjName##Class;                                           \
   struct _##ModuleObjName { ParentName parent_instance; };                                               \
                                                                                                          \
-  typedef ModuleObjName *_GLIB_AUTOPTR_TYPENAME(ModuleObjName);                                          \
-  static inline void _GLIB_AUTOPTR_FUNC_NAME(ModuleObjName) (ModuleObjName **_ptr) {                     \
-    _GLIB_AUTOPTR_FUNC_NAME(ParentName) ((ParentName **) _ptr); }                                        \
+  _GLIB_DEFINE_AUTOPTR_CHAINUP (ModuleObjName, ParentName)                                               \
                                                                                                          \
   static inline ModuleObjName * MODULE##_##OBJ_NAME (gpointer ptr) {                                     \
     return G_TYPE_CHECK_INSTANCE_CAST (ptr, module_obj_name##_get_type (), ModuleObjName); }             \
