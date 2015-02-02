@@ -40,7 +40,7 @@ typedef struct _GListModelInterface GListModelInterface;
 
 struct _GListModelInterface
 {
-  GTypeInterface interface;
+  GTypeInterface g_iface;
 
   GType     (* get_item_type)   (GListModel *list);
 
