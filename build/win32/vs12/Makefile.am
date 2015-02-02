@@ -29,7 +29,7 @@ EXTRA_DIST = \
 	gio-querymodules.vcxproj.filters \
 	gdbus.vcxproj \
 	gdbus.vcxproj.filters \
-	install.vcxproj	\
+	glib-install.vcxproj	\
 	glib-build-defines.props	\
 	glib-install.props	\
 	glib-version-paths.props	\
