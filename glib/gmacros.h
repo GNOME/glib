@@ -380,6 +380,11 @@
 #define _GLIB_AUTOPTR_TYPENAME(TypeName)  TypeName##_autoptr
 #define _GLIB_AUTO_FUNC_NAME(TypeName)    glib_auto_cleanup_##TypeName
 #define _GLIB_CLEANUP(func)               __attribute__((cleanup(func)))
+#define _GLIB_DEFINE_AUTOPTR_CHAINUP(ModuleObjName, ParentName) \
+  typedef ModuleObjName *_GLIB_AUTOPTR_TYPENAME(ModuleObjName);                                          \
+  static inline void _GLIB_AUTOPTR_FUNC_NAME(ModuleObjName) (ModuleObjName **_ptr) {                     \
+    _GLIB_AUTOPTR_FUNC_NAME(ParentName) ((ParentName **) _ptr); }                                        \
+
 
 /* these macros are API */
 #define G_DEFINE_AUTOPTR_CLEANUP_FUNC(TypeName, func) \
@@ -399,7 +404,10 @@
 #define g_auto(TypeName) _GLIB_CLEANUP(_GLIB_AUTO_FUNC_NAME(TypeName)) TypeName
 
 #else /* not GNU C */
+/* this (dummy) macro is private */
+#define _GLIB_DEFINE_AUTOPTR_CHAINUP(ModuleObjName, ParentName)
 
+/* these (dummy) macros are API */
 #define G_DEFINE_AUTOPTR_CLEANUP_FUNC(TypeName, func)
 #define G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(TypeName, func)
 #define G_DEFINE_AUTO_CLEANUP_FREE_FUNC(TypeName, func, none)
