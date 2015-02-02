@@ -18,7 +18,7 @@ EXTRA_DIST = \
 	gresource.vcproj \
 	gio-querymodules.vcproj \
 	gdbus.vcproj \
-	install.vcproj	\
+	glib-install.vcproj	\
 	glib-build-defines.vsprops	\
 	glib-install.vsprops	\
 	glib-version-paths.vsprops	\

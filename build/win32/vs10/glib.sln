@@ -20,7 +20,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glib-compile-schemas", "gli
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gsettings", "gsettings.vcxproj", "{05041C63-F1C5-49BA-A7DE-61EBB5307EAA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "install", "install.vcxproj", "{2093D218-190E-4194-9421-3BA7CBF33B10}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glib-install", "glib-install.vcxproj", "{2093D218-190E-4194-9421-3BA7CBF33B10}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gresource", "gresource.vcxproj", "{95A1571F-61BE-4C51-BE53-2F2DAB280685}"
 EndProject

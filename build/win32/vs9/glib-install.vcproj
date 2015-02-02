@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="install"
+	Name="glib-install"
 	ProjectGUID="{2093D218-190E-4194-9421-3BA7CBF33B10}"
-	RootNamespace="install"
+	RootNamespace="glibinstall"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>

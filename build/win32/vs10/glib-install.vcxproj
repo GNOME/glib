@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2093D218-190E-4194-9421-3BA7CBF33B10}</ProjectGuid>
-    <RootNamespace>install</RootNamespace>
+    <RootNamespace>glibinstall</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
