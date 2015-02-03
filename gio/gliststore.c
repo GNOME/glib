@@ -295,9 +295,9 @@ g_list_store_insert_sorted (GListStore       *store,
   GSequenceIter *it;
   guint position;
 
-  g_return_if_fail (G_IS_LIST_STORE (store));
-  g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (item), store->item_type));
-  g_return_if_fail (compare_func != NULL);
+  g_return_val_if_fail (G_IS_LIST_STORE (store), 0);
+  g_return_val_if_fail (g_type_is_a (G_OBJECT_TYPE (item), store->item_type), 0);
+  g_return_val_if_fail (compare_func != NULL, 0);
 
   it = g_sequence_insert_sorted (store->items, g_object_ref (item), compare_func, user_data);
   position = g_sequence_iter_get_position (it);
