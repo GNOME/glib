@@ -4287,6 +4287,7 @@ GListStore
 g_list_store_get_type
 g_list_store_new
 g_list_store_insert
+g_list_store_insert_sorted
 g_list_store_append
 g_list_store_remove
 g_list_store_remove_all

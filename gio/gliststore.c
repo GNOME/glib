@@ -269,6 +269,45 @@ g_list_store_insert (GListStore *store,
 }
 
 /**
+ * g_list_store_insert_sorted:
+ * @store: a #GListStore
+ * @item: the new item
+ *
+ * Inserts @item into @store at a position to be determined by the
+ * @compare_func.
+ *
+ * The list must already be sorted before calling this function or the
+ * result is undefined.  Usually you would approach this by only ever
+ * inserting items by way of this function.
+ *
+ * This function takes a ref on @item.
+ *
+ * Returns: the position at which @item was inserted
+ *
+ * Since: 2.44
+ */
+guint
+g_list_store_insert_sorted (GListStore       *store,
+                            gpointer          item,
+                            GCompareDataFunc  compare_func,
+                            gpointer          user_data)
+{
+  GSequenceIter *it;
+  guint position;
+
+  g_return_if_fail (G_IS_LIST_STORE (store));
+  g_return_if_fail (g_type_is_a (G_OBJECT_TYPE (item), store->item_type));
+  g_return_if_fail (compare_func != NULL);
+
+  it = g_sequence_insert_sorted (store->items, g_object_ref (item), compare_func, user_data);
+  position = g_sequence_iter_get_position (it);
+
+  g_list_store_items_changed (store, position, 0, 1);
+
+  return position;
+}
+
+/**
  * g_list_store_append:
  * @store: a #GListStore
  * @item: the new item
