@@ -31,12 +31,9 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_LIST_MODEL            (g_list_model_get_type ())
-#define G_LIST_MODEL(inst)           (G_TYPE_CHECK_INSTANCE_CAST ((inst), G_TYPE_LIST_MODEL, GListModel))
-#define G_IS_LIST_MODEL(inst)        (G_TYPE_CHECK_INSTANCE_TYPE ((inst), G_TYPE_LIST_MODEL))
-#define G_LIST_MODEL_GET_IFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), G_TYPE_LIST_MODEL, GListModelInterface))
-
-typedef struct _GListModelInterface GListModelInterface;
+#define G_TYPE_LIST_MODEL g_list_model_get_type ()
+GLIB_AVAILABLE_IN_2_44
+G_DECLARE_INTERFACE(GListModel, g_list_model, G, LIST_MODEL, GObject)
 
 struct _GListModelInterface
 {
@@ -49,9 +46,6 @@ struct _GListModelInterface
   gpointer  (* get_item)        (GListModel *list,
                                  guint       position);
 };
-
-GLIB_AVAILABLE_IN_2_44
-GType                   g_list_model_get_type                           (void) G_GNUC_CONST;
 
 GLIB_AVAILABLE_IN_2_44
 GType                   g_list_model_get_item_type                      (GListModel *list);
