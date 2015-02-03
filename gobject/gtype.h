@@ -1322,11 +1322,12 @@ guint     g_type_get_type_registration_serial (void);
 /* --- GType boilerplate --- */
 /**
  * G_DECLARE_FINAL_TYPE:
- * @TypeName: The name of the new type, in camel case (like GtkWidget)
- * @type_name: The name of the new type in lowercase, with words * separated by '_' (like 'gtk_widget')
+ * @ModuleObjName: The name of the new type, in camel case (like GtkWidget)
+ * @module_obj_name: The name of the new type in lowercase, with words
+ *  separated by '_' (like 'gtk_widget')
  * @MODULE: The name of the module, in all caps (like 'GTK')
- * @BARENAME: The bare name of the type, in all caps (like 'WIDGET')
- * @ParentType: the name of the parent type, in camel case (like GtkWidget)
+ * @OBJ_NAME: The bare name of the type, in all caps (like 'WIDGET')
+ * @ParentName: the name of the parent type, in camel case (like GtkWidget)
  *
  * A convenience macro for emitting the usual declarations in the header file for a type which is not (at the
  * present time) intended to be subclassed.
@@ -1340,7 +1341,7 @@ guint     g_type_get_type_registration_serial (void);
  * #include <gtk/gtk.h>
  *
  * #define MY_APP_TYPE_WINDOW my_app_window_get_type ()
- * G_DECLARE_FINAL_TYPE (MyAppWindow, my_app_window, GtkWindow, MY_APP, WINDOW)
+ * G_DECLARE_FINAL_TYPE (MyAppWindow, my_app_window, MY_APP, WINDOW, GtkWindow)
  *
  * MyAppWindow *    my_app_window_new    (void);
  *
@@ -1401,11 +1402,12 @@ guint     g_type_get_type_registration_serial (void);
 
 /**
  * G_DECLARE_DERIVABLE_TYPE:
- * @TN: The name of the new type, in Camel case (like GtkWidget)
- * @t_n: The name of the new type in lowercase, with words
- *   separated by '_' (like 'gtk_widget')
- * @MOD: The name of the module, in all caps (like 'GTK')
- * @NAME: The bare name of the type, in all caps (like 'WIDGET')
+ * @ModuleObjName: The name of the new type, in camel case (like GtkWidget)
+ * @module_obj_name: The name of the new type in lowercase, with words
+ *  separated by '_' (like 'gtk_widget')
+ * @MODULE: The name of the module, in all caps (like 'GTK')
+ * @OBJ_NAME: The bare name of the type, in all caps (like 'WIDGET')
+ * @ParentName: the name of the parent type, in camel case (like GtkWidget)
  *
  * A convenience macro for emitting the usual declarations in the header file for a type which will is intended
  * to be subclassed.
@@ -1418,7 +1420,7 @@ guint     g_type_get_type_registration_serial (void);
  *
  * #define GTK_TYPE_FROBBER gtk_frobber_get_type ()
  * GDK_AVAILABLE_IN_3_12
- * G_DECLARE_DERIVABLE_TYPE (GtkFrobber, gtk_frobber, GtkFrobber, GTK, FROBBER)
+ * G_DECLARE_DERIVABLE_TYPE (GtkFrobber, gtk_frobber, GTK, FROBBER, GtkWidget)
  *
  * struct _GtkFrobberClass
  * {
