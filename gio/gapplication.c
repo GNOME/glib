@@ -474,8 +474,10 @@ g_application_parse_command_line (GApplication   *application,
                                   GError        **error)
 {
   gboolean become_service = FALSE;
+  gchar *app_id = NULL;
   GVariantDict *dict = NULL;
   GOptionContext *context;
+  GOptionGroup *gapplication_group;
 
   /* Due to the memory management of GOptionGroup we can only parse
    * options once.  That's because once you add a group to the
@@ -486,6 +488,12 @@ g_application_parse_command_line (GApplication   *application,
   g_return_val_if_fail (!application->priv->options_parsed, NULL);
 
   context = g_option_context_new (NULL);
+
+  gapplication_group = g_option_group_new ("gapplication",
+                                           _("GApplication options"), _("Show GApplication options"),
+                                           NULL, NULL);
+  g_option_group_set_translation_domain (gapplication_group, GETTEXT_PACKAGE);
+  g_option_context_add_group (context, gapplication_group);
 
   /* If the application has not registered local options and it has
    * G_APPLICATION_HANDLES_COMMAND_LINE then we have to assume that
@@ -525,20 +533,25 @@ g_application_parse_command_line (GApplication   *application,
    */
   if ((application->priv->flags & (G_APPLICATION_IS_SERVICE | G_APPLICATION_IS_LAUNCHER)) == 0)
     {
-      GOptionGroup *option_group;
       GOptionEntry entries[] = {
         { "gapplication-service", '\0', 0, G_OPTION_ARG_NONE, &become_service,
           N_("Enter GApplication service mode (use from D-Bus service files)") },
         { NULL }
       };
 
-      option_group = g_option_group_new ("gapplication",
-                                         _("GApplication options"), _("Show GApplication options"),
-                                         NULL, NULL);
-      g_option_group_set_translation_domain (option_group, GETTEXT_PACKAGE);
-      g_option_group_add_entries (option_group, entries);
+      g_option_group_add_entries (gapplication_group, entries);
+    }
 
-      g_option_context_add_group (context, option_group);
+  /* Allow overriding the ID if the application allows it */
+  if (application->priv->flags & G_APPLICATION_CAN_OVERRIDE_APP_ID)
+    {
+      GOptionEntry entries[] = {
+        { "gapplication-app-id", '\0', 0, G_OPTION_ARG_STRING, &app_id,
+          N_("Override the application's ID") },
+        { NULL }
+      };
+
+      g_option_group_add_entries (gapplication_group, entries);
     }
 
   /* Now we parse... */
@@ -548,6 +561,10 @@ g_application_parse_command_line (GApplication   *application,
   /* Check for --gapplication-service */
   if (become_service)
     application->priv->flags |= G_APPLICATION_IS_SERVICE;
+
+  /* Check for --gapplication-app-id */
+  if (app_id)
+    g_application_set_application_id (application, app_id);
 
   dict = g_variant_dict_new (NULL);
   if (application->priv->packed_options)
@@ -562,6 +579,7 @@ out:
   application->priv->options_parsed = TRUE;
 
   g_option_context_free (context);
+  g_free (app_id);
 
   return dict;
 }
