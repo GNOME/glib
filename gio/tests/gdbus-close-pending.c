@@ -174,7 +174,8 @@ delayed_close_free (gpointer data)
   DelayedClose *df = data;
 
   g_object_unref (df->stream);
-  g_object_unref (df->cancellable);
+  if (df->cancellable)
+    g_object_unref (df->cancellable);
   g_free (df);
 }
 
