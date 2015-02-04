@@ -2198,11 +2198,7 @@ g_application_open (GApplication  *application,
  * use.
  *
  * This function sets the prgname (g_set_prgname()), if not already set,
- * to the basename of argv[0].  Since 2.38, if %G_APPLICATION_IS_SERVICE
- * is specified, the prgname is set to the application ID.  The main
- * impact of this is is that the wmclass of windows created by Gtk+ will
- * be set accordingly, which helps the window manager determine which
- * application is showing the window.
+ * to the basename of argv[0].
  *
  * Since 2.40, applications that are not explicitly flagged as services
  * or launchers (ie: neither %G_APPLICATION_IS_SERVICE or
@@ -2250,20 +2246,13 @@ g_application_run (GApplication  *application,
   }
 #endif
 
-  if (g_get_prgname () == NULL)
+  if (g_get_prgname () == NULL && argc > 0)
     {
-      if (application->priv->flags & G_APPLICATION_IS_SERVICE)
-        {
-          g_set_prgname (application->priv->id);
-        }
-      else if (argc > 0)
-        {
-          gchar *prgname;
+      gchar *prgname;
 
-          prgname = g_path_get_basename (argv[0]);
-          g_set_prgname (prgname);
-          g_free (prgname);
-        }
+      prgname = g_path_get_basename (argv[0]);
+      g_set_prgname (prgname);
+      g_free (prgname);
     }
 
   if (!G_APPLICATION_GET_CLASS (application)
