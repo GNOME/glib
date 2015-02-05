@@ -184,12 +184,6 @@ g_strv_get_type (void)
   return g_define_type_id__volatile;
 }
 
-/**
- * g_variant_get_gtype:
- *
- * Since: 2.24
- * Deprecated: 2.26
- */
 GType
 g_variant_get_gtype (void)
 {

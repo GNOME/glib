@@ -25,10 +25,9 @@ CFILE_GLOB=$(top_srcdir)/gobject/*.c
 # Headers to ignore
 IGNORE_HFILES = \
 	tests			\
+	gatomicarray.h		\
 	gobject_trace.h		\
-	gtype-private.h		\
-	gatomicarray.h
-
+	gtype-private.h
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.

@@ -165,6 +165,7 @@ typedef enum
   G_PARAM_EXPLICIT_NOTIFY     = 1 << 30,
   G_PARAM_DEPRECATED          = 1 << 31
 } GParamFlags;
+
 /**
  * G_PARAM_STATIC_STRINGS:
  * 

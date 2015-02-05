@@ -156,6 +156,13 @@ G_STMT_START {										\
   G_VALUE_COLLECT_INIT(value, _value_type, var_args, flags, __error);			\
 } G_STMT_END
 
+/**
+ * G_VALUE_COLLECT_SKIP:
+ * @_value_type: the #GType of the value to skip
+ * @var_args: the va_list variable; it may be evaluated multiple times
+ *
+ * Skip an argument of type @_value_type from @var_args.
+ */
 #define G_VALUE_COLLECT_SKIP(_value_type, var_args)					\
 G_STMT_START {										\
   GTypeValueTable *_vtable = g_type_value_table_peek (_value_type);			\

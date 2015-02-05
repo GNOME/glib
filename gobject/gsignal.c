@@ -1733,6 +1733,19 @@ g_signal_newv (const gchar       *signal_name,
   return signal_id;
 }
 
+/**
+ * g_signal_set_va_marshaller:
+ * @signal_id: the signal id
+ * @instance_type: the instance type on which to set the marshaller.
+ * @va_marshaller: the marshaller to set.
+ *
+ * Change the #GSignalCVaMarshaller used for a given signal.  This is a
+ * specialised form of the marshaller that can often be used for the
+ * common case of a single connected signal handler and avoids the
+ * overhead of #GValue.  Its use is optional.
+ *
+ * Since: 2.32
+ */
 void
 g_signal_set_va_marshaller (guint              signal_id,
 			    GType              instance_type,

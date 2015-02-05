@@ -1523,7 +1523,7 @@ g_value_dup_param (const GValue *value)
 }
 
 /**
- * g_param_get_default_value:
+ * g_param_spec_get_default_value:
  * @param: a #GParamSpec
  *
  * Gets the default value of @param as a pointer to a #GValue.
