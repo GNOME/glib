@@ -4257,6 +4257,11 @@ g_task_get_type
 <FILE>gnetworking</FILE>
 <TITLE>gnetworking.h</TITLE>
 g_networking_init
+<SUBSECTION Private>
+CMSG_LEN
+CMSG_SPACE
+GLIB_ALIGN_TO_SIZEOF
+T_SRV
 </SECTION>
 
 <SECTION>

@@ -110,6 +110,7 @@ struct _GSettingsBackendClass
                                      const gchar         *key,
                                      const GVariantType  *expected_type);
 
+  /*< private >*/
   gpointer padding[23];
 };
 

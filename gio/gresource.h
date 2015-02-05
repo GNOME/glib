@@ -51,6 +51,7 @@ GQuark g_resource_error_quark (void);
 typedef struct _GStaticResource GStaticResource;
 
 struct _GStaticResource {
+  /*< private >*/
   const guint8 *data;
   gsize data_len;
   GResource *resource;

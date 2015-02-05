@@ -186,7 +186,7 @@ g_resource_unref (GResource *resource)
     }
 }
 
-/**
+/*< internal >
  * g_resource_new_from_table:
  * @table: (transfer full): a GvdbTable
  *
