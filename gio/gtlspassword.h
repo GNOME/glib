@@ -46,6 +46,15 @@ struct _GTlsPassword
   GTlsPasswordPrivate *priv;
 };
 
+/**
+ * GTlsPasswordClass:
+ * @get_value: virtual method for g_tls_password_get_value()
+ * @set_value: virtual method for g_tls_password_set_value()
+ * @get_default_warning: virtual method for g_tls_password_get_warning() if no
+ *  value has been set using g_tls_password_set_warning()
+ *
+ * Class structure for #GTlsPassword.
+ */
 struct _GTlsPasswordClass
 {
   GObjectClass parent_class;

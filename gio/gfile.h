@@ -150,6 +150,9 @@ typedef struct _GFileIface    		GFileIface;
  * @eject_mountable_with_operation_finish: Finishes an eject operation using a #GMountOperation. Since 2.22.
  * @poll_mountable: Polls a mountable object for media changes. Since 2.22.
  * @poll_mountable_finish: Finishes an poll operation for media changes. Since 2.22.
+ * @measure_disk_usage: Recursively measures the disk usage of @file. Since 2.38
+ * @measure_disk_usage_async: Asynchronously recursively measures the disk usage of @file. Since 2.38
+ * @measure_disk_usage_finish: Finishes an asynchronous recursive measurement of the disk usage of @file. Since 2.38
  *
  * An interface for writing VFS file handles.
  **/

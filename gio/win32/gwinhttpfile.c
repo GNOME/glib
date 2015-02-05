@@ -75,7 +75,7 @@ g_winhttp_file_init (GWinHttpFile *winhttp)
 {
 }
 
-/**
+/*
  * _g_winhttp_file_new:
  * @vfs: GWinHttpVfs to use
  * @uri: URI of the GWinHttpFile to create.

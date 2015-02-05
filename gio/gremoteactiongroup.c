@@ -56,6 +56,13 @@
  **/
 
 /**
+ * GRemoteActionGroup:
+ *
+ * #GRemoteActionGroup is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
+/**
  * GRemoteActionGroupInterface:
  * @activate_action_full: the virtual function pointer for g_remote_action_group_activate_action_full()
  * @change_action_state_full: the virtual function pointer for g_remote_action_group_change_action_state_full()

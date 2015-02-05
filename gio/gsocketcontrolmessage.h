@@ -54,6 +54,8 @@ typedef struct _GSocketControlMessageClass                  GSocketControlMessag
  * @get_type: gets the protocol specific type of the message.
  * @serialize: Writes out the message data.
  * @deserialize: Tries to deserialize a message.
+ *
+ * Class structure for #GSocketControlMessage.
  **/
 
 struct _GSocketControlMessageClass

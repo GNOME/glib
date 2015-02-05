@@ -230,6 +230,13 @@
  * #G_SETTINGS_BIND_NO_SENSITIVITY flag.
  */
 
+/**
+ * GSettings:
+ *
+ * #GSettings is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
 struct _GSettingsPrivate
 {
   /* where the signals go... */

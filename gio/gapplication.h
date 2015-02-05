@@ -41,11 +41,6 @@ G_BEGIN_DECLS
 typedef struct _GApplicationPrivate                         GApplicationPrivate;
 typedef struct _GApplicationClass                           GApplicationClass;
 
-/**
- * GApplication:
- *
- * Since: 2.28
- */
 struct _GApplication
 {
   /*< private >*/

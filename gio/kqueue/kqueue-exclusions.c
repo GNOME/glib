@@ -29,7 +29,7 @@
 static gboolean ke_debug_enabled = FALSE;
 #define KE_W if (ke_debug_enabled) g_warning
 
-/**
+/*
  * _ke_is_excluded:
  * @full_path - a path to file to check.
  *

@@ -825,7 +825,7 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
 
   object_class->finalize = g_app_launch_context_finalize;
 
-  /*
+  /**
    * GAppLaunchContext::launch-failed:
    * @context: the object emitting the signal
    * @startup_notify_id: the startup notification id for the failed launch
@@ -843,7 +843,7 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
                                          NULL, NULL, NULL,
                                          G_TYPE_NONE, 1, G_TYPE_STRING);
 
-  /*
+  /**
    * GAppLaunchContext::launched:
    * @context: the object emitting the signal
    * @info: the #GAppInfo that was just launched
@@ -1132,6 +1132,12 @@ g_app_info_monitor_class_init (GAppInfoMonitorClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
+  /**
+   * GAppInfoMonitor::changed:
+   *
+   * Signal emitted when the app info database for changes (ie: newly installed
+   * or removed applications).
+   **/
   g_app_info_monitor_changed_signal = g_signal_new ("changed", G_TYPE_APP_INFO_MONITOR, G_SIGNAL_RUN_FIRST,
                                                     0, NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 

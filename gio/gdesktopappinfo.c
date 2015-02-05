@@ -4308,6 +4308,13 @@ g_app_info_get_all (void)
 
 /* GDesktopAppInfoLookup interface {{{2 */
 
+/**
+ * GDesktopAppInfoLookup:
+ *
+ * #GDesktopAppInfoLookup is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
 typedef GDesktopAppInfoLookupIface GDesktopAppInfoLookupInterface;

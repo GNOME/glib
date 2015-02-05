@@ -129,6 +129,13 @@
  **/
 
 /**
+ * GSettingsSchemaKey:
+ *
+ * #GSettingsSchemaKey is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
+/**
  * GSettingsSchema:
  *
  * This is an opaque structure type.  You may not access it directly.
@@ -836,13 +843,15 @@ ensure_schema_lists (void)
 /**
  * g_settings_list_schemas:
  *
+ * <!-- -->
+ *
  * Returns: (element-type utf8) (transfer none):  a list of #GSettings
  *   schemas that are available.  The list must not be modified or
  *   freed.
  *
  * Since: 2.26
  *
- * Deprecated:2.40: Use g_settings_schema_source_list_schemas() instead.
+ * Deprecated: 2.40: Use g_settings_schema_source_list_schemas() instead.
  * If you used g_settings_list_schemas() to check for the presence of
  * a particular schema, use g_settings_schema_source_lookup() instead
  * of your whole loop.
@@ -858,13 +867,15 @@ g_settings_list_schemas (void)
 /**
  * g_settings_list_relocatable_schemas:
  *
+ * <!-- -->
+ *
  * Returns: (element-type utf8) (transfer none): a list of relocatable
  *   #GSettings schemas that are available.  The list must not be
  *   modified or freed.
  *
  * Since: 2.28
  *
- * Deprecated:2.40: Use g_settings_schema_source_list_schemas() instead
+ * Deprecated: 2.40: Use g_settings_schema_source_list_schemas() instead
  **/
 const gchar * const *
 g_settings_list_relocatable_schemas (void)

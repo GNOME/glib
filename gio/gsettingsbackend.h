@@ -59,6 +59,21 @@ G_BEGIN_DECLS
 typedef struct _GSettingsBackendPrivate                     GSettingsBackendPrivate;
 typedef struct _GSettingsBackendClass                       GSettingsBackendClass;
 
+/**
+ * GSettingsBackendClass:
+ * @read: virtual method to read a key's value
+ * @get_writable: virtual method to get if a key is writable
+ * @write: virtual method to change key's value
+ * @write_tree: virtual method to change a tree of keys
+ * @reset: virtual method to reset state
+ * @subscribe: virtual method to subscribe to key changes
+ * @unsubscribe: virtual method to unsubscribe to key changes
+ * @sync: virtual method to sync state
+ * @get_permission: virtual method to get permission of a key
+ * @read_user_value: virtual method to read user's key value
+ *
+ * Class structure for #GSettingsBackend.
+ */
 struct _GSettingsBackendClass
 {
   GObjectClass parent_class;

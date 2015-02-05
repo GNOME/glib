@@ -36,6 +36,14 @@
  *
  * See also #GtkAction.
  */
+
+/**
+ * GSimpleAction:
+ *
+ * #GSimpleAction is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
 struct _GSimpleAction
 {
   GObject       parent_instance;

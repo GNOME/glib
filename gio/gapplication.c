@@ -164,6 +164,14 @@
  */
 
 /**
+ * GApplication:
+ *
+ * #GApplication is an opaque data structure and can only be accessed
+ * using the following functions.
+ * Since: 2.28
+ */
+
+/**
  * GApplicationClass:
  * @startup: invoked on the primary instance immediately after registration
  * @shutdown: invoked only on the registered primary instance immediately
@@ -202,6 +210,8 @@
  * @dbus_unregister: invoked locally during unregistration, if the application
  *     is using its D-Bus backend. Use this to undo anything done by the
  *     @dbus_register vfunc. Since: 2.34
+ * @handle_local_options: invoked locally after the parsing of the commandline
+ *  options has occurred.
  *
  * Virtual function table for #GApplication.
  *

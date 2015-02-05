@@ -35,6 +35,13 @@
  * Since: 2.28
  */
 
+/**
+ * GTcpWrapperConnection:
+ *
+ * #GTcpWrapperConnection is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
 #include "config.h"
 
 #include "gtcpwrapperconnection.h"

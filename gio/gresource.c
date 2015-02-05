@@ -130,6 +130,13 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  */
 
 /**
+ * GStaticResource:
+ *
+ * #GStaticResource is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
+/**
  * g_resource_error_quark:
  *
  * Gets the #GResource Error Quark.

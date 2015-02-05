@@ -43,6 +43,13 @@
  **/
 
 /**
+ * GActionMap:
+ *
+ * #GActionMap is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
+/**
  * GActionMapInterface:
  * @lookup_action: the virtual function pointer for g_action_map_lookup_action()
  * @add_action: the virtual function pointer for g_action_map_add_action()

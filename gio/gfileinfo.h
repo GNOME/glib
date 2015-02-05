@@ -826,7 +826,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * was trashed. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_BYTE_STRING.
  *
- * Since: 2.24.
+ * Since: 2.24
  **/
 #define G_FILE_ATTRIBUTE_TRASH_ORIG_PATH "trash::orig-path"     /* byte string */
 
@@ -838,7 +838,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  * was trashed. The format of the returned string is YYYY-MM-DDThh:mm:ss.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_STRING.
  *
- * Since: 2.24.
+ * Since: 2.24
  **/
 #define G_FILE_ATTRIBUTE_TRASH_DELETION_DATE "trash::deletion-date"  /* string */
 

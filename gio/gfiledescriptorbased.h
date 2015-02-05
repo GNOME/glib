@@ -41,7 +41,9 @@ typedef struct _GFileDescriptorBasedIface   GFileDescriptorBasedIface;
 /**
  * GFileDescriptorBasedIface:
  * @g_iface: The parent interface.
+ * @get_fd: Gets the underlying file descriptor.
  *
+ * An interface for file descriptor based io objects.
  **/
 struct _GFileDescriptorBasedIface
 {

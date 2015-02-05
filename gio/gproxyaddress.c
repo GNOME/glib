@@ -43,6 +43,14 @@
  * Since: 2.26
  **/
 
+/**
+ * GProxyAddressClass:
+ *
+ * Class structure for #GProxyAddress.
+ *
+ * Since: 2.26
+ **/
+
 enum
 {
   PROP_0,

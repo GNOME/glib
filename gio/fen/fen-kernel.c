@@ -301,7 +301,6 @@ psource_new()
 
 /**
  * port_add:
- * @f:
  *
  * Unsafe, need lock fen_lock.
  * port_add will associate a GSource to @f->source

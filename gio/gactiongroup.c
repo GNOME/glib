@@ -77,6 +77,13 @@
  */
 
 /**
+ * GActionGroup:
+ *
+ * #GActionGroup is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
+/**
  * GActionGroupInterface:
  * @has_action: the virtual function pointer for g_action_group_has_action()
  * @list_actions: the virtual function pointer for g_action_group_list_actions()

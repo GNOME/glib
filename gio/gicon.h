@@ -52,6 +52,7 @@ typedef struct _GIconIface GIconIface;
  * @from_tokens: Constructs a #GIcon from tokens. Set the #GError if
  * the tokens are malformed. Don't implement if the #GIcon can't be
  * serialized (Since 2.20).
+ * @serialize: Serializes a #GIcon into a #GVariant. Since: 2.38
  *
  * GIconIface is used to implement GIcon types for various
  * different systems. See #GThemedIcon and #GLoadableIcon for

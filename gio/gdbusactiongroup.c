@@ -38,6 +38,13 @@
  * that is exported over D-Bus with g_dbus_connection_export_action_group().
  */
 
+/**
+ * GDBusActionGroup:
+ *
+ * #GDBusActionGroup is an opaque data structure and can only be accessed
+ * using the following functions.
+ */
+
 struct _GDBusActionGroup
 {
   GObject parent_instance;

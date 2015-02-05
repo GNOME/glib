@@ -34,6 +34,14 @@ G_BEGIN_DECLS
 
 typedef struct _GTlsClientConnectionInterface GTlsClientConnectionInterface;
 
+/**
+ * GTlsClientConnectionInterface:
+ * @g_iface: The parent interface.
+ *
+ * vtable for a #GTlsClientConnection implementation.
+ *
+ * Since: 2.26
+ */
 struct _GTlsClientConnectionInterface
 {
   GTypeInterface g_iface;

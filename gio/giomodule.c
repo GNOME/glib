@@ -224,12 +224,24 @@ static void      g_io_module_finalize      (GObject      *object);
 static gboolean  g_io_module_load_module   (GTypeModule  *gmodule);
 static void      g_io_module_unload_module (GTypeModule  *gmodule);
 
+/**
+ * GIOExtension:
+ *
+ * #GIOExtension is an opaque data structure and can only be accessed
+ * using the following functions.
+ */
 struct _GIOExtension {
   char *name;
   GType type;
   gint priority;
 };
 
+/**
+ * GIOExtensionPoint:
+ *
+ * #GIOExtensionPoint is an opaque data structure and can only be accessed
+ * using the following functions.
+ */
 struct _GIOExtensionPoint {
   GType required_type;
   char *name;

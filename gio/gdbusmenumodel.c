@@ -37,6 +37,13 @@
  * g_dbus_connection_export_menu_model().
  */
 
+/**
+ * GDBusMenuModel:
+ *
+ * #GDBusMenuModel is an opaque data structure and can only be accessed
+ * using the following functions.
+ */
+
 /*
  * There are 3 main (quasi-)classes involved here:
  *

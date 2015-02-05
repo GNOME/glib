@@ -34,6 +34,13 @@
  * file when using it.
  */
 
+/**
+ * GUnixFDMessage:
+ *
+ * #GUnixFDMessage is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
 #include "config.h"
 
 #include <unistd.h>

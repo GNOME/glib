@@ -60,6 +60,10 @@
  * @title: GTlsBackend
  * @short_description: TLS backend implementation
  * @include: gio/gio.h
+ *
+ * TLS (Transport Layer Security, aka SSL) backend
+ *
+ * Since: 2.28
  */
 
 /**

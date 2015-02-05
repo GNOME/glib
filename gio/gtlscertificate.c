@@ -524,7 +524,6 @@ g_tls_certificate_new_from_file (const gchar  *file,
 
 /**
  * g_tls_certificate_new_from_files:
-
  * @cert_file: file containing one or more PEM-encoded certificates to
  * import
  * @key_file: file containing a PEM-encoded private key to import

@@ -41,6 +41,19 @@
  * the method g_socket_connectable_proxy_enumerate().
  */
 
+/**
+ * GProxyResolverInterface:
+ * @g_iface: The parent interface.
+ * @is_supported: the virtual function pointer for g_proxy_resolver_is_supported()
+ * @lookup: the virtual function pointer for g_proxy_resolver_lookup()
+ * @lookup_async: the virtual function pointer for
+ *  g_proxy_resolver_lookup_async()
+ * @lookup_finish: the virtual function pointer for
+ *  g_proxy_resolver_lookup_finish()
+ *
+ * The virtual function table for #GProxyResolver.
+ */
+
 G_DEFINE_INTERFACE (GProxyResolver, g_proxy_resolver, G_TYPE_OBJECT)
 
 static void

@@ -63,6 +63,13 @@ G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
  **/
 
 /**
+ * GAction:
+ *
+ * #GAction is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
+/**
  * GActionInterface:
  * @get_name: the virtual function pointer for g_action_get_name()
  * @get_parameter_type: the virtual function pointer for g_action_get_parameter_type()

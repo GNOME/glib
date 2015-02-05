@@ -41,6 +41,13 @@
  * and #GDBusObjectManagerServer for the service-side implementation.
  */
 
+/**
+ * GDBusObjectManager:
+ *
+ * #GDBusObjectManager is an opaque data structure and can only be accessed
+ * using the following functions.
+ */
+
 typedef GDBusObjectManagerIface GDBusObjectManagerInterface;
 G_DEFINE_INTERFACE (GDBusObjectManager, g_dbus_object_manager, G_TYPE_OBJECT)
 

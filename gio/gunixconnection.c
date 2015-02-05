@@ -46,6 +46,13 @@
  * Since: 2.22
  */
 
+/**
+ * GUnixConnection:
+ *
+ * #GUnixConnection is an opaque data structure and can only be accessed
+ * using the following functions.
+ **/
+
 G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
 			 G_TYPE_SOCKET_CONNECTION,
   g_socket_connection_factory_register_type (g_define_type_id,

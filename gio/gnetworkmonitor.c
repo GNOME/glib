@@ -48,6 +48,22 @@
  * Since: 2.32
  */
 
+/**
+ * GNetworkMonitorInterface:
+ * @g_iface: The parent interface.
+ * @network_changed: the virtual function pointer for the
+ *  GNetworkMonitor::network-changed signal.
+ * @can_reach: the virtual function pointer for g_network_monitor_can_reach()
+ * @can_reach_async: the virtual function pointer for
+ *  g_network_monitor_can_reach_async()
+ * @can_reach_finish: the virtual function pointer for
+ *  g_network_monitor_can_reach_finish()
+ *
+ * The virtual function table for #GNetworkMonitor.
+ *
+ * Since: 2.32
+ */
+
 G_DEFINE_INTERFACE_WITH_CODE (GNetworkMonitor, g_network_monitor, G_TYPE_OBJECT,
                               g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_INITABLE);)
 

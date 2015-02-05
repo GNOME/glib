@@ -25,18 +25,24 @@ IGNORE_HFILES = \
 	gdbus-2.0			\
 	gvdb				\
 	inotify				\
+	kqueue				\
 	libasyncns			\
 	tests				\
 	win32				\
 	xdgmime				\
+	gappinfoprivate.h		\
 	gapplicationimpl.h		\
 	gasynchelper.h			\
 	gcontenttypeprivate.h		\
+	gcredentialsprivate.h		\
+	gdbus-daemon-generated.h	\
+	gdbusactiongroup-private.h	\
 	gdbusauth.h			\
 	gdbusauthmechanismanon.h	\
 	gdbusauthmechanismexternal.h	\
 	gdbusauthmechanism.h		\
 	gdbusauthmechanismsha1.h	\
+	gdbusdaemon.h			\
 	gdbusprivate.h			\
 	gdelayedsettingsbackend.h	\
 	gdummyfile.h			\
@@ -45,6 +51,8 @@ IGNORE_HFILES = \
 	gfileattribute-priv.h		\
 	gfileinfo-priv.h		\
 	giomodule-priv.h		\
+	gioprivate.h			\
+	giowin32-priv.h			\
 	glocaldirectorymonitor.h	\
 	glocalfileenumerator.h		\
 	glocalfile.h			\
@@ -59,10 +67,12 @@ IGNORE_HFILES = \
 	gnetworkingprivate.h		\
 	gnetworkmonitorbase.h		\
 	gnetworkmonitornetlink.h	\
+	gnetworkmonitornm.h		\
 	gnotificationbackend.h		\
 	gnotification-private.h		\
 	gpollfilemonitor.h		\
 	gregistrysettingsbackend.h	\
+	gresourcefile.h			\
 	gsettingsbackendinternal.h	\
 	gsettings-mapping.h		\
 	gsettingsschema-internal.h	\

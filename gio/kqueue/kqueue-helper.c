@@ -428,7 +428,7 @@ process_kqueue_notifications (GIOChannel   *gioc,
 }
 
 
-/**
+/*
  * _kh_startup_impl:
  * @unused: unused
  *
@@ -479,7 +479,7 @@ _kh_startup_impl (gpointer unused)
 }
 
 
-/**
+/*
  * _kh_startup:
  * Kqueue backend initialization.
  *
