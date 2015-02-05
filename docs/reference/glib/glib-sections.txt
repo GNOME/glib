@@ -649,6 +649,11 @@ g_mutex_trylock
 g_mutex_unlock
 
 <SUBSECTION>
+GMutexLocker
+g_mutex_locker_new
+g_mutex_locker_free
+
+<SUBSECTION>
 G_LOCK_DEFINE
 G_LOCK_DEFINE_STATIC
 G_LOCK_EXTERN

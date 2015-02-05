@@ -266,6 +266,75 @@ void            g_once_init_leave               (volatile void  *location,
 GLIB_AVAILABLE_IN_2_36
 guint          g_get_num_processors (void);
 
+/**
+ * GMutexLocker:
+ *
+ * Opaque type. See g_mutex_locker_new() for details.
+ * Since: 2.44
+ */
+typedef void GMutexLocker;
+
+/**
+ * g_mutex_locker_new:
+ * @mutex: a mutex to lock
+ *
+ * Lock @mutex and return a new #GMutexLocker. Unlock with
+ * g_mutex_locker_free(). Using g_mutex_unlock() on @mutex
+ * while a #GMutexLocker exists can lead to undefined behaviour.
+ *
+ * This is intended to be used with g_autoptr().  Note that g_autoptr()
+ * is only available when using GCC or clang, so the following example
+ * will only work with those compilers:
+ * |[
+ * typedef struct
+ * {
+ *   ...
+ *   GMutex mutex;
+ *   ...
+ * } MyObject;
+ *
+ * static void
+ * my_object_do_stuff (MyObject *self)
+ * {
+ *   g_autoptr(GMutexLocker) locker = g_mutex_locker_new (&self->mutex);
+ *
+ *   // Code with mutex locked here
+ *
+ *   if (cond)
+ *     // No need to unlock
+ *     return;
+ *
+ *   // Optionally early unlock
+ *   g_clear_pointer (&locker, g_mutex_locker_free);
+ *
+ *   // Code with mutex unlocked here
+ * }
+ * ]|
+ *
+ * Returns: a #GMutexLocker
+ * Since: 2.44
+ */
+static inline GMutexLocker *
+g_mutex_locker_new (GMutex *mutex)
+{
+  g_mutex_lock (mutex);
+  return (GMutexLocker *) mutex;
+}
+
+/**
+ * g_mutex_locker_free:
+ * @locker: a GMutexLocker
+ *
+ * Unlock @locker's mutex. See g_mutex_locker_new() for details.
+ *
+ * Since: 2.44
+ */
+static inline void
+g_mutex_locker_free (GMutexLocker *locker)
+{
+  g_mutex_unlock ((GMutex *) locker);
+}
+
 G_END_DECLS
 
 #endif /* __G_THREAD_H__ */
