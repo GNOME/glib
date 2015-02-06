@@ -491,6 +491,44 @@ test_clear_pointer (void)
   g_assert (a == NULL);
 }
 
+static int obj_count;
+
+static void
+get_obj (gpointer *obj_out)
+{
+  gpointer obj = g_malloc (5);
+  obj_count++;
+
+  if (obj_out)
+    *obj_out = g_steal_pointer (&obj);
+
+  if (obj)
+    {
+      g_free (obj);
+      obj_count--;
+    }
+}
+
+static void
+test_take_pointer (void)
+{
+  gpointer a;
+  gpointer b;
+
+  get_obj (NULL);
+
+  get_obj (&a);
+  g_assert (a);
+
+  /* ensure that it works to skip the macro */
+  b = (g_steal_pointer) (&a);
+  g_assert (!a);
+  obj_count--;
+  g_free (b);
+
+  g_assert (!obj_count);
+}
+
 static void
 test_misc_mem (void)
 {
@@ -592,6 +630,7 @@ main (int   argc,
   g_test_add_func ("/utils/specialdir", test_special_dir);
   g_test_add_func ("/utils/specialdir/desktop", test_desktop_special_dir);
   g_test_add_func ("/utils/clear-pointer", test_clear_pointer);
+  g_test_add_func ("/utils/take-pointer", test_take_pointer);
   g_test_add_func ("/utils/misc-mem", test_misc_mem);
   g_test_add_func ("/utils/nullify", test_nullify);
   g_test_add_func ("/utils/atexit", test_atexit);
