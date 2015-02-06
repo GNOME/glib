@@ -125,6 +125,77 @@ gpointer g_try_realloc_n  (gpointer	 mem,
       }                                                                        \
   } G_STMT_END
 
+/**
+ * g_steal_pointer:
+ * @pp: a pointer to a pointer
+ *
+ * Sets @pp to %NULL, returning the value that was there before.
+ *
+ * Conceptually, this transfers the ownership of the pointer from the
+ * referenced variable to the "caller" of the macro (ie: "steals" the
+ * reference).
+ *
+ * The return value will be properly typed, according to the type of
+ * @pp.
+ *
+ * This can be very useful when combined with g_autoptr() to prevent the
+ * return value of a function from being automatically freed.  Consider
+ * the following example (which only works on GCC and clang):
+ *
+ * |[
+ * GObject *
+ * create_object (void)
+ * {
+ *   g_autoptr(GObject) obj = g_object_new (G_TYPE_OBJECT, NULL);
+ *
+ *   if (early_error_case)
+ *     return NULL;
+ *
+ *   return g_steal_pointer (&obj);
+ * }
+ * ]|
+ *
+ * It can also be used in similar ways for 'out' parameters and is
+ * particularly useful for dealing with optional out parameters:
+ *
+ * |[
+ * gboolean
+ * get_object (GObject **obj_out)
+ * {
+ *   g_autoptr(GObject) obj = g_object_new (G_TYPE_OBJECT, NULL);
+ *
+ *   if (early_error_case)
+ *     return FALSE;
+ *
+ *   if (obj_out)
+ *     *obj_out = g_steal_pointer (&obj);
+ *
+ *   return TRUE;
+ * }
+ * ]|
+ *
+ * In the above example, the object will be automatically freed in the
+ * early error case and also in the case that %NULL was given for
+ * @obj_out.
+ *
+ * Since: 2.44
+ */
+static inline gpointer
+(g_steal_pointer) (gpointer pp)
+{
+  gpointer *ptr = pp;
+  gpointer ref;
+
+  ref = *ptr;
+  *ptr = NULL;
+
+  return ref;
+}
+
+/* type safety */
+#define g_steal_pointer(pp) \
+  (0 ? (*(pp)) : (g_steal_pointer) (pp))
+
 /* Optimise: avoid the call to the (slower) _n function if we can
  * determine at compile-time that no overflow happens.
  */
