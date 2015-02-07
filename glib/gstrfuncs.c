@@ -342,6 +342,9 @@ get_C_locale (void)
  * The returned string should be freed with g_free()
  * when no longer needed.
  *
+ * You may want to use g_string_ref_new() in order to use
+ * reference counted strings, instead of duplicating them.
+ *
  * Returns: a newly-allocated copy of @str
  */
 gchar*
