@@ -31,6 +31,7 @@
 
 #include <glib/gatomic.h>
 #include <glib/gerror.h>
+#include <glib/gutils.h>
 
 G_BEGIN_DECLS
 

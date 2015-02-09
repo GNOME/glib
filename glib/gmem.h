@@ -29,7 +29,7 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
-#include <glib/gtypes.h>
+#include <glib/gutils.h>
 
 G_BEGIN_DECLS
 
