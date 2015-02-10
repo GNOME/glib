@@ -74,6 +74,7 @@ gdbus-test-codegen-old
 gdbus-test-fixture
 gdbus-testserver
 gdbus-threading
+glistmodel
 gio-du
 giomodule
 giotypefuncs.c
