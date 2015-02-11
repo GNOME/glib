@@ -1,3 +1,46 @@
+Overview of changes in GLib 2.43.4
+==================================
+
+* GType now has type declaration macros G_DECLARE_DERIVABLE_TYPE,
+  G_DECLARE_FINAL_TYPE and G_DECLARE_INTERFACE, which significantly reduce
+  the boilerplate needed for GObject types and interfaces.
+
+* g_autoptr and g_auto are macros for declaring variables with automatic
+  cleanup. They only work with gcc and clang.
+
+* GListModel is a new interface that represents a dynamic list of GObjects.
+
+* GListStore is a GSequence-based implementation of GListModel.
+
+* Support thread names on OS X
+
+* g_simple_action_set_state_hint: New function to set the state hint
+  of GSimpleActions
+
+* g_win32_check_windows_version: New function to check Windows version
+
+* g_settings_schema_list_children and g_settings_schema_key_get_name
+  are new functions to complete the GSettingsSchema API.
+
+* Bugs fixed:
+ 389585 G_DEFINE_TYPE hack for header files
+ 729351 Add GListModel
+ 736914 Docs: various fixes and improvements
+ 741807 Add thread name support on OS X and iOS
+ 741895 gwin32: Add Simple API to check whether we are on at least a v...
+ 742456 object: Add g_steal_pointer() convenience function to mark own...
+ 743508 polkitd fails to start: patch for gio/gcredentialsprivate.h
+ 743517 GSettings API is missing some introspection functions
+ 743521 GSimpleAction: add g_simple_action_set_state_hint
+ 743596 G_DECLARE_DERIVABLE_TYPE() should allow additional typedef for...
+ 743640 add __attribute__((cleanup)) support
+ 743827 Fix build of GListModel (on Visual Studio)
+ 743927 GListStore: add sorted insert function
+ 743936 glib: handle unsigned modifier for long long in internal printf
+ 744012 Add GMutexLocker
+ 744190 Fix build on Compilers That Do Not Use inline for Plain C Code
+
+
 Overview of changes in GLib 2.43.3
 ==================================
 
