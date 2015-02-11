@@ -397,6 +397,7 @@ G_TYPE_MARKUP_PARSE_CONTEXT
 G_TYPE_SOURCE
 G_TYPE_POLLFD
 G_TYPE_THREAD
+G_TYPE_OPTION_GROUP
 GStrv
 
 <SUBSECTION Standard>
@@ -430,6 +431,7 @@ g_checksum_get_type
 g_mapped_file_get_type
 g_markup_parse_context_get_type
 g_thread_get_type
+g_option_group_get_type
 </SECTION>
 
 <SECTION>
