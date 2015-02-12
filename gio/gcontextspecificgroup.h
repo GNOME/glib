@@ -26,6 +26,10 @@ typedef struct
 {
   GHashTable *table;
   GMutex      lock;
+  GCond       cond;
+  gboolean    requested_state;
+  GCallback   requested_func;
+  gboolean    effective_state;
 } GContextSpecificGroup;
 
 gpointer

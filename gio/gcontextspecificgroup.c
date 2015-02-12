@@ -90,27 +90,24 @@ g_context_specific_source_new (const gchar *name,
   return css;
 }
 
-typedef struct
-{
-  GCallback callback;
-  GMutex    mutex;
-  GCond     cond;
-} Closure;
-
 static gboolean
-g_context_specific_group_invoke_closure (gpointer user_data)
+g_context_specific_group_change_state (gpointer user_data)
 {
-  Closure *closure = user_data;
+  GContextSpecificGroup *group = user_data;
 
-  (* closure->callback) ();
+  g_mutex_lock (&group->lock);
 
-  g_mutex_lock (&closure->mutex);
+  if (group->requested_state != group->effective_state)
+    {
+      (* group->requested_func) ();
 
-  closure->callback = NULL;
+      group->effective_state = group->requested_state;
+      group->requested_func = NULL;
 
-  g_cond_broadcast (&closure->cond);
+      g_cond_broadcast (&group->cond);
+    }
 
-  g_mutex_unlock (&closure->mutex);
+  g_mutex_unlock (&group->lock);
 
   return FALSE;
 }
@@ -128,25 +125,43 @@ g_context_specific_group_invoke_closure (gpointer user_data)
  *    example)
  */
 static void
-g_context_specific_group_wait_for_callback (GCallback callback)
+g_context_specific_group_request_state (GContextSpecificGroup *group,
+                                        gboolean               requested_state,
+                                        GCallback              requested_func)
 {
-  Closure closure;
+  if (requested_state != group->requested_state)
+    {
+      if (group->effective_state != group->requested_state)
+        {
+          /* abort the currently pending state transition */
+          g_assert (group->effective_state == requested_state);
 
-  g_mutex_init (&closure.mutex);
-  g_cond_init (&closure.cond);
+          group->requested_state = requested_state;
+          group->requested_func = NULL;
+        }
+      else
+        {
+          /* start a new state transition */
+          group->requested_state = requested_state;
+          group->requested_func = requested_func;
 
-  closure.callback = callback;
+          g_main_context_invoke (GLIB_PRIVATE_CALL(g_get_worker_context) (),
+                                 g_context_specific_group_change_state, group);
+        }
+    }
 
-  g_main_context_invoke (GLIB_PRIVATE_CALL(g_get_worker_context) (),
-                         g_context_specific_group_invoke_closure, &closure);
+  /* we only block for positive transitions */
+  if (requested_state)
+    {
+      while (group->requested_state != group->effective_state)
+        g_cond_wait (&group->cond, &group->lock);
 
-  g_mutex_lock (&closure.mutex);
-  while (closure.callback)
-    g_cond_wait (&closure.cond, &closure.mutex);
-  g_mutex_unlock (&closure.mutex);
-
-  g_mutex_clear (&closure.mutex);
-  g_cond_clear (&closure.cond);
+      /* there is no way this could go back to FALSE because the object
+       * that we just created in this thread would have to have been
+       * destroyed again (from this thread) before that could happen.
+       */
+      g_assert (group->effective_state);
+    }
 }
 
 gpointer
@@ -169,7 +184,7 @@ g_context_specific_group_get (GContextSpecificGroup *group,
 
   /* start only if there are no others */
   if (start_func && g_hash_table_size (group->table) == 0)
-    g_context_specific_group_wait_for_callback (start_func);
+    g_context_specific_group_request_state (group, TRUE, start_func);
 
   css = g_hash_table_lookup (group->table, context);
 
@@ -214,7 +229,7 @@ g_context_specific_group_remove (GContextSpecificGroup *group,
 
   /* stop only if we were the last one */
   if (stop_func && g_hash_table_size (group->table) == 0)
-    g_context_specific_group_wait_for_callback (stop_func);
+    g_context_specific_group_request_state (group, FALSE, stop_func);
 
   g_mutex_unlock (&group->lock);
 

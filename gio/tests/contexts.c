@@ -297,7 +297,7 @@ test_identity_thread (gpointer user_data)
   g_main_context_unref (my_context);
 
   /* at least one thread should see this cleared on exit */
-  return GUINT_TO_POINTER (!g_atomic_int_get (&is_running));
+  return GUINT_TO_POINTER (!group.requested_state);
 }
 
 static void
@@ -352,7 +352,7 @@ test_emit_thread (gpointer user_data)
   g_main_context_unref (my_context);
 
   /* at least one thread should see this cleared on exit */
-  return GUINT_TO_POINTER (!g_atomic_int_get (&is_running));
+  return GUINT_TO_POINTER (!group.requested_state);
 }
 
 static void
