@@ -646,6 +646,7 @@ test_replace_cancel (void)
   GCancellable *cancellable;
   gchar *path;
   gsize nwrote;
+  guint count;
   GError *error = NULL;
 
   g_test_bug ("629301");
@@ -686,6 +687,51 @@ test_replace_cancel (void)
   g_assert_no_error (error);
   g_assert (info != NULL);
   g_object_unref (info);
+
+  g_file_enumerator_close (fenum, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (fenum);
+
+  /* Also test the g_file_enumerator_iterate() API */
+  fenum = g_file_enumerate_children (tmpdir, NULL, 0, NULL, &error);
+  g_assert_no_error (error);
+  count = 0;
+
+  while (TRUE)
+    {
+      gboolean ret = g_file_enumerator_iterate (fenum, &info, NULL, NULL, &error);
+      g_assert (ret);
+      g_assert_no_error (error);
+      if (!info)
+        break;
+      count++;
+    }
+  g_assert_cmpint (count, ==, 2);
+
+  g_file_enumerator_close (fenum, NULL, &error);
+  g_assert_no_error (error);
+  g_object_unref (fenum);
+
+  /* Now test just getting child from the g_file_enumerator_iterate() API */
+  fenum = g_file_enumerate_children (tmpdir, "standard::name", 0, NULL, &error);
+  g_assert_no_error (error);
+  count = 0;
+
+  while (TRUE)
+    {
+      GFile *child;
+      gboolean ret = g_file_enumerator_iterate (fenum, NULL, &child, NULL, &error);
+
+      g_assert (ret);
+      g_assert_no_error (error);
+
+      if (!child)
+        break;
+
+      g_assert (G_IS_FILE (child));
+      count++;
+    }
+  g_assert_cmpint (count, ==, 2);
 
   g_file_enumerator_close (fenum, NULL, &error);
   g_assert_no_error (error);

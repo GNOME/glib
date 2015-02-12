@@ -268,64 +268,75 @@ test_last_used (void)
   g_object_unref (default_app);
 }
 
-static void
-cleanup_dir_recurse (GFile *parent, GFile *root)
+static gboolean
+cleanup_dir_recurse (GFile   *parent,
+                     GFile   *root,
+                     GError **error)
 {
-  gboolean res;
-  GError *error;
+  gboolean ret = FALSE;
   GFileEnumerator *enumerator;
-  GFileInfo *info;
-  GFile *descend;
-  char *relative_path;
+  GError *local_error = NULL;
 
   g_assert (root != NULL);
 
-  error = NULL;
   enumerator =
     g_file_enumerate_children (parent, "*",
                                G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL,
-                               &error);
-  if (! enumerator)
-          return;
-  error = NULL;
-  info = g_file_enumerator_next_file (enumerator, NULL, &error);
-  while ((info) && (!error))
+                               &local_error);
+  if (!enumerator)
     {
-      descend = g_file_get_child (parent, g_file_info_get_name (info));
-      g_assert (descend != NULL);
-      relative_path = g_file_get_relative_path (root, descend);
-      g_assert (relative_path != NULL);
-
-      if (g_file_info_get_file_type (info) == G_FILE_TYPE_DIRECTORY)
-          cleanup_dir_recurse (descend, root);
-
-      error = NULL;
-      res = g_file_delete (descend, NULL, &error);
-      g_assert_cmpint (res, ==, TRUE);
-
-      g_object_unref (descend);
-      error = NULL;
-      info = g_file_enumerator_next_file (enumerator, NULL, &error);
+      if (g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+        {
+          g_clear_error (&local_error);
+          ret = TRUE;
+        }
+      goto out;
     }
-  g_assert (error == NULL);
 
-  error = NULL;
-  res = g_file_enumerator_close (enumerator, NULL, &error);
-  g_assert_cmpint (res, ==, TRUE);
-  g_assert (error == NULL);
+  while (TRUE)
+    {
+      GFile *child;
+      GFileInfo *finfo;
+      char *relative_path;
+
+      if (!g_file_enumerator_iterate (enumerator, &finfo, &child, NULL, error))
+        goto out;
+      if (!finfo)
+        break;
+        
+      relative_path = g_file_get_relative_path (root, child);
+      g_assert (relative_path != NULL);
+      g_free (relative_path);
+
+      if (g_file_info_get_file_type (finfo) == G_FILE_TYPE_DIRECTORY)
+        {
+          if (!cleanup_dir_recurse (child, root, error))
+            goto out;
+        }
+
+      if (!g_file_delete (child, NULL, error))
+        goto out;
+    }
+
+  ret = TRUE;
+ out:
+  return ret;
 }
 
 static void
 cleanup_subdirs (const char *base_dir)
 {
   GFile *base, *file;
+  GError *error = NULL;
  
   base = g_file_new_for_path (base_dir);  
   file = g_file_get_child (base, "applications");
-  cleanup_dir_recurse (file, file);
+  (void) cleanup_dir_recurse (file, file, &error);
+  g_assert_no_error (error);
   g_object_unref (file);
   file = g_file_get_child (base, "mime");
-  cleanup_dir_recurse (file, file);
+  (void) cleanup_dir_recurse (file, file, &error);
+  g_assert_no_error (error);
   g_object_unref (file);
 }
 

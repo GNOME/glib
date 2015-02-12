@@ -139,6 +139,14 @@ GLIB_AVAILABLE_IN_2_36
 GFile *    g_file_enumerator_get_child         (GFileEnumerator *enumerator,
                                                 GFileInfo       *info);
 
+GLIB_AVAILABLE_IN_2_44
+gboolean   g_file_enumerator_iterate           (GFileEnumerator  *direnum,
+                                                GFileInfo       **out_info,
+                                                GFile           **out_child,
+                                                GCancellable     *cancellable,
+                                                GError          **error);
+
+
 G_END_DECLS
 
 #endif /* __G_FILE_ENUMERATOR_H__ */

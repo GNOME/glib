@@ -220,6 +220,7 @@ g_file_get_type
 <FILE>gfileenumerator</FILE>
 <TITLE>GFileEnumerator</TITLE>
 GFileEnumerator
+g_file_enumerator_iterate
 g_file_enumerator_next_file
 g_file_enumerator_close
 g_file_enumerator_next_files_async
