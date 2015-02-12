@@ -52,6 +52,7 @@
 #include "glibintl.h"
 
 static gboolean _g_dbus_worker_do_initial_read (gpointer data);
+static void schedule_pending_close (GDBusWorker *worker);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -817,6 +818,9 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
 
   /* gives up the reference acquired when calling g_input_stream_read_async() */
   _g_dbus_worker_unref (worker);
+
+  /* check if there is any pending close */
+  schedule_pending_close (worker);
 }
 
 /* called in private thread shared by all GDBusConnection instances (with read-lock held) */
@@ -1445,12 +1449,17 @@ continue_writing (GDBusWorker *worker)
   /* if we want to close the connection, that takes precedence */
   if (worker->pending_close_attempts != NULL)
     {
-      worker->close_expected = TRUE;
-      worker->output_pending = PENDING_CLOSE;
+      GInputStream *input = g_io_stream_get_input_stream (worker->stream);
 
-      g_io_stream_close_async (worker->stream, G_PRIORITY_DEFAULT,
-                               NULL, iostream_close_cb,
-                               _g_dbus_worker_ref (worker));
+      if (!g_input_stream_has_pending (input))
+        {
+          worker->close_expected = TRUE;
+          worker->output_pending = PENDING_CLOSE;
+
+          g_io_stream_close_async (worker->stream, G_PRIORITY_DEFAULT,
+                                   NULL, iostream_close_cb,
+                                   _g_dbus_worker_ref (worker));
+        }
     }
   else
     {
@@ -1601,6 +1610,15 @@ schedule_writing_unlocked (GDBusWorker        *worker,
       g_source_attach (idle_source, worker->shared_thread_data->context);
       g_source_unref (idle_source);
     }
+}
+
+static void
+schedule_pending_close (GDBusWorker *worker)
+{
+  if (!worker->pending_close_attempts)
+    return;
+
+  schedule_writing_unlocked (worker, NULL, NULL, NULL);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
