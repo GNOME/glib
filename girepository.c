@@ -1053,15 +1053,16 @@ g_irepository_get_version (GIRepository *repository,
  *   process-global default #GIRepository
  * @namespace_: Namespace to inspect
  *
- * This function returns the full path to the shared C library
- * associated with the given namespace @namespace_. There may be no
- * shared library path associated, in which case this function will
- * return %NULL.
+ * This function returns a comma-separated list of paths to the
+ * shared C libraries associated with the given namespace @namespace_.
+ * There may be no shared library path associated, in which case this
+ * function will return %NULL.
  *
  * Note: The namespace must have already been loaded using a function
  * such as g_irepository_require() before calling this function.
  *
- * Returns: Full path to shared library, or %NULL if none associated
+ * Returns: Comma-separated list of paths to shared libraries,
+ *   or %NULL if none are associated
  */
 const gchar *
 g_irepository_get_shared_library (GIRepository *repository,
