@@ -200,6 +200,12 @@ check-am: gtester-xmllint-check
 private_LDFLAGS = @G_THREAD_LIBS@
 endif
 
+if HAVE_GCC
+test_programs += \
+	autoptr				\
+	$(NULL)
+endif
+
 # -----------------------------------------------------------------------------
 
 if HAVE_EVENTFD

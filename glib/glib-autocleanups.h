@@ -21,6 +21,14 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
+static inline void
+g_autoptr_cleanup_generic_gfree (void *p)
+{ 
+  void **pp = (void**)p;
+  if (*pp)
+    g_free (*pp);
+}
+
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GAsyncQueue, g_async_queue_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GBookmarkFile, g_bookmark_file_free)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GBytes, g_bytes_unref)
