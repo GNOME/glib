@@ -2679,5 +2679,109 @@ g_application_withdraw_notification (GApplication *application,
     g_notification_backend_withdraw_notification (application->priv->notifications, id);
 }
 
+/* Busy binding {{{1 */
+
+typedef struct
+{
+  GApplication *app;
+  gboolean is_busy;
+} GApplicationBusyBinding;
+
+static void
+g_application_busy_binding_destroy (gpointer  data,
+                                    GClosure *closure)
+{
+  GApplicationBusyBinding *binding = data;
+
+  if (binding->is_busy)
+    g_application_unmark_busy (binding->app);
+
+  g_object_unref (binding->app);
+  g_slice_free (GApplicationBusyBinding, binding);
+}
+
+static void
+g_application_notify_busy_binding (GObject    *object,
+                                   GParamSpec *pspec,
+                                   gpointer    user_data)
+{
+  GApplicationBusyBinding *binding = user_data;
+  gboolean is_busy;
+
+  g_object_get (object, pspec->name, &is_busy, NULL);
+
+  if (is_busy && !binding->is_busy)
+    g_application_mark_busy (binding->app);
+  else if (!is_busy && binding->is_busy)
+    g_application_unmark_busy (binding->app);
+
+  binding->is_busy = is_busy;
+}
+
+/**
+ * g_application_bind_busy_property:
+ * @application: a #GApplication
+ * @object: a #GObject
+ * @property: (allow-none): the name of a boolean property of @object
+ *
+ * Marks @application as busy (see g_application_mark_busy()) while
+ * @property on @object is %TRUE.
+ *
+ * Multiple such bindings can exist, but only one property can be bound
+ * per object. Calling this function again for the same object replaces
+ * a previous binding. If @property is %NULL, the binding is destroyed.
+ *
+ * The binding holds a reference to @application while it is active, but
+ * not to @object. Instead, the binding is destroyed when @object is
+ * finalized.
+ *
+ * Since: 2.44
+ */
+void
+g_application_bind_busy_property (GApplication *application,
+                                  gpointer      object,
+                                  const gchar  *property)
+{
+  GClosure *closure = NULL;
+  guint notify_id;
+  gulong handler_id;
+
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (G_IS_OBJECT (object));
+
+  notify_id = g_signal_lookup ("notify", G_TYPE_OBJECT);
+
+  if (property != NULL)
+    {
+      GParamSpec *pspec;
+      GApplicationBusyBinding *binding;
+
+      pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (object), property);
+      g_return_if_fail (pspec != NULL && pspec->value_type == G_TYPE_BOOLEAN);
+
+      binding = g_slice_new (GApplicationBusyBinding);
+      binding->app = g_object_ref (application);
+      binding->is_busy = FALSE;
+
+      /* fetch the initial value */
+      g_application_notify_busy_binding (object, pspec, binding);
+
+      closure = g_cclosure_new (G_CALLBACK (g_application_notify_busy_binding), binding,
+                                g_application_busy_binding_destroy);
+    }
+
+  /* unset a previous binding after fetching the new initial value, so
+   * that we don't switch to FALSE for a brief moment when both the
+   * old and the new property are set to TRUE
+   */
+  handler_id = g_signal_handler_find (object, G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_FUNC, notify_id,
+                                      0, NULL, g_application_notify_busy_binding, NULL);
+  if (handler_id > 0)
+    g_signal_handler_disconnect (object, handler_id);
+
+  if (closure)
+    g_signal_connect_closure_by_id (object, notify_id, g_quark_from_string (property), closure, FALSE);
+}
+
 /* Epilogue {{{1 */
 /* vim:set foldmethod=marker: */

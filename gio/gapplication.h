@@ -226,6 +226,11 @@ GLIB_AVAILABLE_IN_2_40
 void                    g_application_withdraw_notification             (GApplication             *application,
                                                                          const gchar              *id);
 
+GLIB_AVAILABLE_IN_2_44
+void                    g_application_bind_busy_property                (GApplication             *application,
+                                                                         gpointer                  object,
+                                                                         const gchar              *property);
+
 G_END_DECLS
 
 #endif /* __G_APPLICATION_H__ */

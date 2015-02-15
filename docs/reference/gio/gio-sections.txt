@@ -3136,6 +3136,7 @@ g_application_get_default
 <SUBSECTION>
 g_application_mark_busy
 g_application_unmark_busy
+g_application_bind_busy_property
 <SUBSECTION Standard>
 G_TYPE_APPLICATION
 G_APPLICATION
