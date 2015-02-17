@@ -2711,14 +2711,10 @@ g_application_notify_busy_binding (GObject    *object,
  * g_application_bind_busy_property:
  * @application: a #GApplication
  * @object: a #GObject
- * @property: (allow-none): the name of a boolean property of @object
+ * @property: the name of a boolean property of @object
  *
  * Marks @application as busy (see g_application_mark_busy()) while
  * @property on @object is %TRUE.
- *
- * Multiple such bindings can exist, but only one property can be bound
- * per object. Calling this function again for the same object replaces
- * a previous binding. If @property is %NULL, the binding is destroyed.
  *
  * The binding holds a reference to @application while it is active, but
  * not to @object. Instead, the binding is destroyed when @object is
@@ -2731,45 +2727,78 @@ g_application_bind_busy_property (GApplication *application,
                                   gpointer      object,
                                   const gchar  *property)
 {
-  GClosure *closure = NULL;
   guint notify_id;
+  GQuark property_quark;
+  GParamSpec *pspec;
+  GApplicationBusyBinding *binding;
+  GClosure *closure;
+
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (property != NULL);
+
+  notify_id = g_signal_lookup ("notify", G_TYPE_OBJECT);
+  property_quark = g_quark_from_string (property);
+  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (object), property);
+
+  g_return_if_fail (pspec != NULL && pspec->value_type == G_TYPE_BOOLEAN);
+
+  if (g_signal_handler_find (object, G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_DETAIL | G_SIGNAL_MATCH_FUNC,
+                             notify_id, property_quark, NULL, g_application_notify_busy_binding, NULL) > 0)
+    {
+      g_critical ("%s: '%s' is already bound to the busy state of the application", G_STRFUNC, property);
+      return;
+    }
+
+  binding = g_slice_new (GApplicationBusyBinding);
+  binding->app = g_object_ref (application);
+  binding->is_busy = FALSE;
+
+  closure = g_cclosure_new (G_CALLBACK (g_application_notify_busy_binding), binding,
+                            g_application_busy_binding_destroy);
+  g_signal_connect_closure_by_id (object, notify_id, property_quark, closure, FALSE);
+
+  /* fetch the initial value */
+  g_application_notify_busy_binding (object, pspec, binding);
+}
+
+/**
+ * g_application_unbind_busy_property:
+ * @application: a #GApplication
+ * @object: a #GObject
+ * @property: the name of a boolean property of @object
+ *
+ * Destroys a binding between @property and the busy state of
+ * @application that was previously created with
+ * g_application_bind_busy_property().
+ *
+ * Since: 2.44
+ */
+void
+g_application_unbind_busy_property (GApplication *application,
+                                    gpointer      object,
+                                    const gchar  *property)
+{
+  guint notify_id;
+  GQuark property_quark;
   gulong handler_id;
 
   g_return_if_fail (G_IS_APPLICATION (application));
   g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (property != NULL);
 
   notify_id = g_signal_lookup ("notify", G_TYPE_OBJECT);
+  property_quark = g_quark_from_string (property);
 
-  if (property != NULL)
+  handler_id = g_signal_handler_find (object, G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_DETAIL | G_SIGNAL_MATCH_FUNC,
+                                      notify_id, property_quark, NULL, g_application_notify_busy_binding, NULL);
+  if (handler_id == 0)
     {
-      GParamSpec *pspec;
-      GApplicationBusyBinding *binding;
-
-      pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (object), property);
-      g_return_if_fail (pspec != NULL && pspec->value_type == G_TYPE_BOOLEAN);
-
-      binding = g_slice_new (GApplicationBusyBinding);
-      binding->app = g_object_ref (application);
-      binding->is_busy = FALSE;
-
-      /* fetch the initial value */
-      g_application_notify_busy_binding (object, pspec, binding);
-
-      closure = g_cclosure_new (G_CALLBACK (g_application_notify_busy_binding), binding,
-                                g_application_busy_binding_destroy);
+      g_critical ("%s: '%s' is not bound to the busy state of the application", G_STRFUNC, property);
+      return;
     }
 
-  /* unset a previous binding after fetching the new initial value, so
-   * that we don't switch to FALSE for a brief moment when both the
-   * old and the new property are set to TRUE
-   */
-  handler_id = g_signal_handler_find (object, G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_FUNC, notify_id,
-                                      0, NULL, g_application_notify_busy_binding, NULL);
-  if (handler_id > 0)
-    g_signal_handler_disconnect (object, handler_id);
-
-  if (closure)
-    g_signal_connect_closure_by_id (object, notify_id, g_quark_from_string (property), closure, FALSE);
+  g_signal_handler_disconnect (object, handler_id);
 }
 
 /* Epilogue {{{1 */
