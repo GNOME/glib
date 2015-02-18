@@ -1213,9 +1213,9 @@ g_application_finalize (GObject *object)
 {
   GApplication *application = G_APPLICATION (object);
 
-  g_slist_free_full (application->priv->option_groups, (GDestroyNotify) g_option_group_free);
+  g_slist_free_full (application->priv->option_groups, (GDestroyNotify) g_option_group_unref);
   if (application->priv->main_options)
-    g_option_group_free (application->priv->main_options);
+    g_option_group_unref (application->priv->main_options);
   if (application->priv->packed_options)
     {
       g_slist_free_full (application->priv->option_strings, g_free);
