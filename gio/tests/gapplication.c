@@ -749,6 +749,65 @@ test_help (void)
   g_test_trap_assert_stdout ("*Application options*");
 }
 
+static void
+test_busy (void)
+{
+  GApplication *app;
+
+  /* use GSimpleAction to bind to the busy state, because it's easy to
+   * create and has an easily modifiable boolean property */
+  GSimpleAction *action1;
+  GSimpleAction *action2;
+
+  session_bus_up ();
+
+  app = g_application_new ("org.gtk.TestApplication", G_APPLICATION_NON_UNIQUE);
+  g_assert (g_application_register (app, NULL, NULL));
+
+  g_assert (!g_application_get_is_busy (app));
+  g_application_mark_busy (app);
+  g_assert (g_application_get_is_busy (app));
+  g_application_unmark_busy (app);
+  g_assert (!g_application_get_is_busy (app));
+
+  action1 = g_simple_action_new ("action", NULL);
+  g_application_bind_busy_property (app, action1, "enabled");
+  g_assert (g_application_get_is_busy (app));
+
+  g_simple_action_set_enabled (action1, FALSE);
+  g_assert (!g_application_get_is_busy (app));
+
+  g_application_mark_busy (app);
+  g_assert (g_application_get_is_busy (app));
+
+  action2 = g_simple_action_new ("action", NULL);
+  g_application_bind_busy_property (app, action2, "enabled");
+  g_assert (g_application_get_is_busy (app));
+
+  g_application_unmark_busy (app);
+  g_assert (g_application_get_is_busy (app));
+
+  g_object_unref (action2);
+  g_assert (!g_application_get_is_busy (app));
+
+  g_simple_action_set_enabled (action1, TRUE);
+  g_assert (g_application_get_is_busy (app));
+
+  g_application_mark_busy (app);
+  g_assert (g_application_get_is_busy (app));
+
+  g_application_unbind_busy_property (app, action1, "enabled");
+  g_assert (g_application_get_is_busy (app));
+
+  g_application_unmark_busy (app);
+  g_assert (!g_application_get_is_busy (app));
+
+  g_object_unref (action1);
+  g_object_unref (app);
+
+  session_bus_down ();
+}
+
 int
 main (int argc, char **argv)
 {
@@ -769,6 +828,7 @@ main (int argc, char **argv)
 /*  g_test_add_func ("/gapplication/remote-command-line", test_remote_command_line); */
   g_test_add_func ("/gapplication/resource-path", test_resource_path);
   g_test_add_func ("/gapplication/test-help", test_help);
+  g_test_add_func ("/gapplication/test-busy", test_busy);
 
   return g_test_run ();
 }
