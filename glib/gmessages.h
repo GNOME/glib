@@ -198,7 +198,7 @@ void g_assert_warning         (const char *log_domain,
                                        G_LOG_LEVEL_DEBUG,    \
                                        format)
 #else   /* no varargs macros */
-static void g_error (const gchar *format, ...) G_ANALYZER_NORETURN;
+static void g_error (const gchar *format, ...) G_GNUC_NORETURN G_ANALYZER_NORETURN;
 static void g_critical (const gchar *format, ...) G_ANALYZER_NORETURN;
 
 static void
