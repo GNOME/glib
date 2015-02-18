@@ -217,6 +217,8 @@ GLIB_AVAILABLE_IN_2_38
 void                    g_application_mark_busy                         (GApplication             *application);
 GLIB_AVAILABLE_IN_2_38
 void                    g_application_unmark_busy                       (GApplication             *application);
+GLIB_AVAILABLE_IN_2_44
+gboolean                g_application_get_is_busy                       (GApplication             *application);
 
 GLIB_AVAILABLE_IN_2_40
 void                    g_application_send_notification                 (GApplication             *application,

@@ -263,7 +263,8 @@ enum
   PROP_IS_REGISTERED,
   PROP_IS_REMOTE,
   PROP_INACTIVITY_TIMEOUT,
-  PROP_ACTION_GROUP
+  PROP_ACTION_GROUP,
+  PROP_IS_BUSY
 };
 
 enum
@@ -1180,6 +1181,10 @@ g_application_get_property (GObject    *object,
                         g_application_get_inactivity_timeout (application));
       break;
 
+    case PROP_IS_BUSY:
+      g_value_set_boolean (value, g_application_get_is_busy (application));
+      break;
+
     default:
       g_assert_not_reached ();
     }
@@ -1342,6 +1347,20 @@ g_application_class_init (GApplicationClass *class)
                          P_("The group of actions that the application exports"),
                          G_TYPE_ACTION_GROUP,
                          G_PARAM_DEPRECATED | G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GApplication:is-busy:
+   *
+   * Whether the application is currently marked as busy through
+   * g_application_mark_busy() or g_application_bind_busy_property().
+   *
+   * Since: 2.44
+   */
+  g_object_class_install_property (object_class, PROP_IS_BUSY,
+    g_param_spec_boolean ("is-busy",
+                          P_("Is busy"),
+                          P_("If this application is currently marked busy"),
+                          FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
    * GApplication::startup:
@@ -2544,7 +2563,10 @@ g_application_mark_busy (GApplication *application)
   application->priv->busy_count++;
 
   if (!was_busy)
-    g_application_impl_set_busy_state (application->priv->impl, TRUE);
+    {
+      g_application_impl_set_busy_state (application->priv->impl, TRUE);
+      g_object_notify (G_OBJECT (application), "is-busy");
+    }
 }
 
 /**
@@ -2570,7 +2592,29 @@ g_application_unmark_busy (GApplication *application)
   application->priv->busy_count--;
 
   if (application->priv->busy_count == 0)
-    g_application_impl_set_busy_state (application->priv->impl, FALSE);
+    {
+      g_application_impl_set_busy_state (application->priv->impl, FALSE);
+      g_object_notify (G_OBJECT (application), "is-busy");
+    }
+}
+
+/**
+ * g_application_get_is_busy:
+ * @application: a #GApplication
+ *
+ * Gets the application's current busy state, as set through
+ * g_application_mark_busy() or g_application_bind_busy_property().
+ *
+ * Returns: %TRUE if @application is currenty marked as busy
+ *
+ * Since: 2.44
+ */
+gboolean
+g_application_get_is_busy (GApplication *application)
+{
+  g_return_val_if_fail (G_IS_APPLICATION (application), FALSE);
+
+  return application->priv->busy_count > 0;
 }
 
 /* Notifications {{{1 */
