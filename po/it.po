@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-17 06:46+0000\n"
-"PO-Revision-Date: 2015-02-17 14:31+0100\n"
+"POT-Creation-Date: 2015-02-18 06:48+0000\n"
+"PO-Revision-Date: 2015-02-18 09:11+0100\n"
 "Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -42,8 +42,7 @@ msgstr "Opzioni GApplication"
 msgid "Show GApplication options"
 msgstr "Mostra opzioni GApplication"
 
-#: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46 ../gio/gresource-tool.c:485
-#: ../gio/gsettings-tool.c:521
+#: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46 ../gio/gresource-tool.c:485 ../gio/gsettings-tool.c:521
 msgid "Print help"
 msgstr "Stampa l'aiuto"
 
@@ -255,9 +254,9 @@ msgstr ""
 "\n"
 
 # count (gssize) è un parametro delle funzione
-#: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498 ../gio/ginputstream.c:176
-#: ../gio/ginputstream.c:376 ../gio/ginputstream.c:614 ../gio/ginputstream.c:1013 ../gio/goutputstream.c:200
-#: ../gio/goutputstream.c:830 ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
+#: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498 ../gio/ginputstream.c:176 ../gio/ginputstream.c:376
+#: ../gio/ginputstream.c:614 ../gio/ginputstream.c:1013 ../gio/goutputstream.c:200 ../gio/goutputstream.c:830
+#: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Valore count troppo grande passato a %s"
@@ -270,7 +269,7 @@ msgstr "Posizionamento non supportato sullo stream di base"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Impossibile troncare GBufferedInputStream"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202 ../gio/giostream.c:277 ../gio/goutputstream.c:1654
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202 ../gio/giostream.c:278 ../gio/goutputstream.c:1654
 msgid "Stream is already closed"
 msgstr "Lo stream è già chiuso"
 
@@ -278,7 +277,7 @@ msgstr "Lo stream è già chiuso"
 msgid "Truncate not supported on base stream"
 msgstr "Troncamento non supportato sullo stream di base"
 
-#: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1896 ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1417
+#: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1896 ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
 #: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:830 ../gio/gsimpleasyncresult.c:856
 #, c-format
 msgid "Operation was cancelled"
@@ -296,9 +295,9 @@ msgstr "Sequenza multi-byte non valida in ingresso"
 msgid "Not enough space in destination"
 msgstr "Spazio non sufficiente nella destinazione"
 
-#: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848 ../gio/gdatainputstream.c:1256
-#: ../glib/gconvert.c:438 ../glib/gconvert.c:845 ../glib/giochannel.c:1557 ../glib/giochannel.c:1599
-#: ../glib/giochannel.c:2443 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
+#: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848 ../gio/gdatainputstream.c:1256 ../glib/gconvert.c:438
+#: ../glib/gconvert.c:845 ../glib/giochannel.c:1557 ../glib/giochannel.c:1599 ../glib/giochannel.c:2443 ../glib/gutf8.c:837
+#: ../glib/gutf8.c:1289
 msgid "Invalid byte sequence in conversion input"
 msgstr "Sequenza di byte non valida nell'ingresso per la conversione"
 
@@ -396,15 +395,15 @@ msgstr "La coppia chiave/valore %d, \"%s\", nell'elemento indirizzo \"%s\", non 
 #, c-format
 msgid "Error unescaping key or value in Key/Value pair %d, '%s', in address element '%s'"
 msgstr ""
-"Errore nell'eseguire l'unescaping sulla chiave o sul valore nella coppia chiave/valore %d, \"%s\", nell'elemento "
-"di indirizzo \"%s\""
+"Errore nell'eseguire l'unescaping sulla chiave o sul valore nella coppia chiave/valore %d, \"%s\", nell'elemento di indirizzo "
+"\"%s\""
 
 #: ../gio/gdbusaddress.c:565
 #, c-format
 msgid "Error in address '%s' - the unix transport requires exactly one of the keys 'path' or 'abstract' to be set"
 msgstr ""
-"Errore nell'indirizzo \"%s\" -- il trasporto unix richiede espressamente l'impostazione di una tra le chiavi \"path"
-"\" o \"abstract\""
+"Errore nell'indirizzo \"%s\" -- il trasporto unix richiede espressamente l'impostazione di una tra le chiavi \"path\" o "
+"\"abstract\""
 
 #: ../gio/gdbusaddress.c:601
 #, c-format
@@ -486,14 +485,11 @@ msgstr "Impossibile determinare l'indirizzo del bus di sessione (non implementat
 #: ../gio/gdbusaddress.c:1546 ../gio/gdbusconnection.c:6931
 #, c-format
 msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value '%s'"
-msgstr ""
-"Impossibile determinare l'indirizzo del bus dalla variabile d'ambiente DBUS_STARTER_BUS_TYPE - valore \"%s\" "
-"sconosciuto"
+msgstr "Impossibile determinare l'indirizzo del bus dalla variabile d'ambiente DBUS_STARTER_BUS_TYPE - valore \"%s\" sconosciuto"
 
 #: ../gio/gdbusaddress.c:1555 ../gio/gdbusconnection.c:6940
 msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
-msgstr ""
-"Impossibile determinare l'indirizzo del bus poiché la variabile d'ambiente DBUS_STARTER_BUS_TYPE non è impostata"
+msgstr "Impossibile determinare l'indirizzo del bus poiché la variabile d'ambiente DBUS_STARTER_BUS_TYPE non è impostata"
 
 #: ../gio/gdbusaddress.c:1565
 #, c-format
@@ -716,11 +712,11 @@ msgstr "Atteso byte NUL dopo la stringa \"%s\" ma trovato %d byte"
 #: ../gio/gdbusmessage.c:1388
 #, c-format
 msgid ""
-"Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 "
-"string up until that point was '%s'"
+"Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 string up "
+"until that point was '%s'"
 msgstr ""
-"Attesa stringa UTF-8 valida, ma trovati byte non validi a %d byte di offset (la lunghezza della stringa è %d). La "
-"stringa UTF-8 valida fino a quel punto era \"%s\""
+"Attesa stringa UTF-8 valida, ma trovati byte non validi a %d byte di offset (la lunghezza della stringa è %d). La stringa "
+"UTF-8 valida fino a quel punto era \"%s\""
 
 #: ../gio/gdbusmessage.c:1587
 #, c-format
@@ -741,11 +737,8 @@ msgstr[1] "Incontrato un array lungo %u byte. La lunghezza massima è 2<<26 byte
 
 #: ../gio/gdbusmessage.c:1676
 #, c-format
-msgid ""
-"Encountered array of type 'a%c', expected to have a length a multiple of %u bytes, but found to be %u bytes in "
-"length"
-msgstr ""
-"Incontrato un array di tipo \"a%c\" la cui lunghezza attesa era di %u byte, ma lunghezza reale era di %u byte"
+msgid "Encountered array of type 'a%c', expected to have a length a multiple of %u bytes, but found to be %u bytes in length"
+msgstr "Incontrato un array di tipo \"a%c\" la cui lunghezza attesa era di %u byte, ma lunghezza reale era di %u byte"
 
 # VARIANT è uno dei container type di D-Bus
 # anche signature sono cose specifiche del protocollo
@@ -833,12 +826,12 @@ msgstr "Errore di ritorno con corpo di tipo \"%s\""
 msgid "Error return with empty body"
 msgstr "Errore di ritorno con corpo vuoto"
 
-#: ../gio/gdbusprivate.c:2067
+#: ../gio/gdbusprivate.c:2085
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Impossibile ottenere profilo hardware: %s"
 
-#: ../gio/gdbusprivate.c:2112
+#: ../gio/gdbusprivate.c:2130
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Impossibile caricare /var/lib/dbus/machine-id o /etc/machine-id: "
 
@@ -857,8 +850,8 @@ msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the "
 "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
-"Impossibile invocare il metodo; il proxy è per un nome well-known senza un owner e il proxy è stato costruito con "
-"il flag G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
+"Impossibile invocare il metodo; il proxy è per un nome well-known senza un owner e il proxy è stato costruito con il flag "
+"G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
 #: ../gio/gdbusserver.c:708
 msgid "Abstract name space not supported"
@@ -905,8 +898,8 @@ msgstr ""
 "\n"
 "Usare \"%s COMANDO --help\" per informazioni su ciascun comando.\n"
 
-#: ../gio/gdbus-tool.c:164 ../gio/gdbus-tool.c:220 ../gio/gdbus-tool.c:292 ../gio/gdbus-tool.c:316
-#: ../gio/gdbus-tool.c:705 ../gio/gdbus-tool.c:1031 ../gio/gdbus-tool.c:1465
+#: ../gio/gdbus-tool.c:164 ../gio/gdbus-tool.c:220 ../gio/gdbus-tool.c:292 ../gio/gdbus-tool.c:316 ../gio/gdbus-tool.c:705
+#: ../gio/gdbus-tool.c:1031 ../gio/gdbus-tool.c:1465
 #, c-format
 msgid "Error: %s\n"
 msgstr "Errore: %s\n"
@@ -1199,11 +1192,11 @@ msgstr "Numero di token malformato (%d) nella codifica GEmblemedIcon"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Atteso un GEmblem per GEmblemedIcon"
 
-#: ../gio/gfile.c:962 ../gio/gfile.c:1200 ../gio/gfile.c:1338 ../gio/gfile.c:1576 ../gio/gfile.c:1631
-#: ../gio/gfile.c:1689 ../gio/gfile.c:1773 ../gio/gfile.c:1830 ../gio/gfile.c:1894 ../gio/gfile.c:1949
-#: ../gio/gfile.c:3597 ../gio/gfile.c:3652 ../gio/gfile.c:3887 ../gio/gfile.c:3929 ../gio/gfile.c:4392
-#: ../gio/gfile.c:4803 ../gio/gfile.c:4888 ../gio/gfile.c:4978 ../gio/gfile.c:5075 ../gio/gfile.c:5162
-#: ../gio/gfile.c:5263 ../gio/gfile.c:7782 ../gio/gfile.c:7872 ../gio/gfile.c:7956 ../gio/win32/gwinhttpfile.c:437
+#: ../gio/gfile.c:962 ../gio/gfile.c:1200 ../gio/gfile.c:1338 ../gio/gfile.c:1576 ../gio/gfile.c:1631 ../gio/gfile.c:1689
+#: ../gio/gfile.c:1773 ../gio/gfile.c:1830 ../gio/gfile.c:1894 ../gio/gfile.c:1949 ../gio/gfile.c:3597 ../gio/gfile.c:3652
+#: ../gio/gfile.c:3887 ../gio/gfile.c:3929 ../gio/gfile.c:4392 ../gio/gfile.c:4803 ../gio/gfile.c:4888 ../gio/gfile.c:4978
+#: ../gio/gfile.c:5075 ../gio/gfile.c:5162 ../gio/gfile.c:5263 ../gio/gfile.c:7782 ../gio/gfile.c:7872 ../gio/gfile.c:7956
+#: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Operazione non supportata"
 
@@ -1289,8 +1282,7 @@ msgid "Enumerator is closed"
 msgstr "L'enumeratore è chiuso"
 
 # una sola ????
-#: ../gio/gfileenumerator.c:219 ../gio/gfileenumerator.c:278 ../gio/gfileenumerator.c:377
-#: ../gio/gfileenumerator.c:476
+#: ../gio/gfileenumerator.c:219 ../gio/gfileenumerator.c:278 ../gio/gfileenumerator.c:377 ../gio/gfileenumerator.c:476
 msgid "File enumerator has outstanding operation"
 msgstr "L'enumeratore di file presenta un'operazione in sospeso"
 
@@ -1307,8 +1299,8 @@ msgstr "Impossibile gestire la versione %d della codifica GFileIcon"
 msgid "Malformed input data for GFileIcon"
 msgstr "Dati di input malformati per GFileIcon"
 
-#: ../gio/gfileinputstream.c:149 ../gio/gfileinputstream.c:394 ../gio/gfileiostream.c:167
-#: ../gio/gfileoutputstream.c:164 ../gio/gfileoutputstream.c:497
+#: ../gio/gfileinputstream.c:149 ../gio/gfileinputstream.c:394 ../gio/gfileiostream.c:167 ../gio/gfileoutputstream.c:164
+#: ../gio/gfileoutputstream.c:497
 msgid "Stream doesn't support query_info"
 msgstr "Lo stream non supporta query_info"
 
@@ -1398,7 +1390,7 @@ msgstr "Lo stream di input non implementa la lettura"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1212 ../gio/giostream.c:287 ../gio/goutputstream.c:1664
+#: ../gio/ginputstream.c:1212 ../gio/giostream.c:288 ../gio/goutputstream.c:1664
 msgid "Stream has outstanding operation"
 msgstr "Lo stream presenta un'operazione in sospeso"
 
@@ -1519,8 +1511,7 @@ msgstr "nome \"%s\" non valido: i nomi devono cominciare con una lettera minusco
 #: ../gio/glib-compile-schemas.c:794
 #, c-format
 msgid "invalid name '%s': invalid character '%c'; only lowercase letters, numbers and hyphen ('-') are permitted."
-msgstr ""
-"nome \"%s\" non valido: carattere '%c' non valido; sono permessi sono lettere minuscole, numeri e trattino ('-')."
+msgstr "nome \"%s\" non valido: carattere '%c' non valido; sono permessi sono lettere minuscole, numeri e trattino ('-')."
 
 #: ../gio/glib-compile-schemas.c:803
 #, c-format
@@ -1555,8 +1546,7 @@ msgstr "<key name='%s'> già specificato"
 #: ../gio/glib-compile-schemas.c:944
 #, c-format
 msgid "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> to modify value"
-msgstr ""
-"<key name='%s'> esegue lo shadow di <key name='%s'> in <schema id='%s'>; usare <override> per modificare il valore"
+msgstr "<key name='%s'> esegue lo shadow di <key name='%s'> in <schema id='%s'>; usare <override> per modificare il valore"
 
 #: ../gio/glib-compile-schemas.c:955
 #, c-format
@@ -1680,8 +1670,7 @@ msgstr " ed è stato specificato --strict; uscita.\n"
 #: ../gio/glib-compile-schemas.c:1885
 #, c-format
 msgid "error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
-msgstr ""
-"errore nell'analizzare la chiave \"%s\" nello schema \"%s\" come specificato nel file di override \"%s\": %s."
+msgstr "errore nell'analizzare la chiave \"%s\" nello schema \"%s\" come specificato nel file di override \"%s\": %s."
 
 #: ../gio/glib-compile-schemas.c:1895
 #, c-format
@@ -1692,15 +1681,12 @@ msgstr "Ignorato l'override per questa chiave.\n"
 #, c-format
 msgid "override for key '%s' in schema '%s' in override file '%s' is outside the range given in the schema"
 msgstr ""
-"l'override per la chiave \"%s\" nello schema \"%s\" nel file di override \"%s\" è fuori dall'intervallo indicato "
-"nello schema"
+"l'override per la chiave \"%s\" nello schema \"%s\" nel file di override \"%s\" è fuori dall'intervallo indicato nello schema"
 
 #: ../gio/glib-compile-schemas.c:1941
 #, c-format
 msgid "override for key '%s' in schema '%s' in override file '%s' is not in the list of valid choices"
-msgstr ""
-"l'override per la chiave \"%s\" nello schema \"%s\" nel file di override \"%s\" non è nell'elenco delle scelte "
-"valide"
+msgstr "l'override per la chiave \"%s\" nello schema \"%s\" nel file di override \"%s\" non è nell'elenco delle scelte valide"
 
 # FIXME: le altre sono maiuscole
 #: ../gio/glib-compile-schemas.c:1994
@@ -2063,9 +2049,7 @@ msgstr "Ridimensionamento dello stream di output di memoria non riuscito"
 # spero sia write -> scrittura e non write -> write
 #: ../gio/gmemoryoutputstream.c:671
 msgid "Amount of memory required to process the write is larger than available address space"
-msgstr ""
-"La quantità di memoria necessaria per elaborare la scrittura è più grande dello spazio di indirizzamento "
-"disponibile"
+msgstr "La quantità di memoria necessaria per elaborare la scrittura è più grande dello spazio di indirizzamento disponibile"
 
 #: ../gio/gmemoryoutputstream.c:779
 msgid "Requested seek before the beginning of the stream"
@@ -2170,9 +2154,9 @@ msgstr "Lo stream sorgente è già chiuso"
 msgid "Error resolving '%s': %s"
 msgstr "Errore nel risolvere \"%s\": %s"
 
-#: ../gio/gresource.c:298 ../gio/gresource.c:546 ../gio/gresource.c:563 ../gio/gresource.c:684
-#: ../gio/gresource.c:753 ../gio/gresource.c:814 ../gio/gresource.c:894 ../gio/gresourcefile.c:452
-#: ../gio/gresourcefile.c:553 ../gio/gresourcefile.c:655
+#: ../gio/gresource.c:298 ../gio/gresource.c:546 ../gio/gresource.c:563 ../gio/gresource.c:684 ../gio/gresource.c:753
+#: ../gio/gresource.c:814 ../gio/gresource.c:894 ../gio/gresourcefile.c:452 ../gio/gresourcefile.c:553
+#: ../gio/gresourcefile.c:655
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "La risorsa presso \"%s\" non esiste"
@@ -2800,8 +2784,7 @@ msgstr "Non è stato trovato alcun indirizzo valido"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Errore nella risoluzione inversa di \"%s\": %s"
 
-#: ../gio/gthreadedresolver.c:546 ../gio/gthreadedresolver.c:626 ../gio/gthreadedresolver.c:724
-#: ../gio/gthreadedresolver.c:774
+#: ../gio/gthreadedresolver.c:546 ../gio/gthreadedresolver.c:626 ../gio/gthreadedresolver.c:724 ../gio/gthreadedresolver.c:774
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "Nessun record DNS del tipo richiesto per \"%s\""
@@ -3019,8 +3002,7 @@ msgstr "Attributo \"%s\" inatteso per l'elemento \"%s\""
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Attributo \"%s\" dell'elemento \"%s\" non trovato"
 
-#: ../glib/gbookmarkfile.c:1124 ../glib/gbookmarkfile.c:1189 ../glib/gbookmarkfile.c:1253
-#: ../glib/gbookmarkfile.c:1263
+#: ../glib/gbookmarkfile.c:1124 ../glib/gbookmarkfile.c:1189 ../glib/gbookmarkfile.c:1253 ../glib/gbookmarkfile.c:1263
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Tag \"%s\" inatteso; atteso il tag \"%s\""
@@ -3043,12 +3025,11 @@ msgstr "Esiste già un segnalibro per l'URI «%s»"
 
 # vedi sopra per «»
 #
-#: ../glib/gbookmarkfile.c:2003 ../glib/gbookmarkfile.c:2161 ../glib/gbookmarkfile.c:2246
-#: ../glib/gbookmarkfile.c:2326 ../glib/gbookmarkfile.c:2411 ../glib/gbookmarkfile.c:2494
-#: ../glib/gbookmarkfile.c:2572 ../glib/gbookmarkfile.c:2651 ../glib/gbookmarkfile.c:2693
-#: ../glib/gbookmarkfile.c:2790 ../glib/gbookmarkfile.c:2910 ../glib/gbookmarkfile.c:3100
-#: ../glib/gbookmarkfile.c:3176 ../glib/gbookmarkfile.c:3344 ../glib/gbookmarkfile.c:3433
-#: ../glib/gbookmarkfile.c:3522 ../glib/gbookmarkfile.c:3638
+#: ../glib/gbookmarkfile.c:2003 ../glib/gbookmarkfile.c:2161 ../glib/gbookmarkfile.c:2246 ../glib/gbookmarkfile.c:2326
+#: ../glib/gbookmarkfile.c:2411 ../glib/gbookmarkfile.c:2494 ../glib/gbookmarkfile.c:2572 ../glib/gbookmarkfile.c:2651
+#: ../glib/gbookmarkfile.c:2693 ../glib/gbookmarkfile.c:2790 ../glib/gbookmarkfile.c:2910 ../glib/gbookmarkfile.c:3100
+#: ../glib/gbookmarkfile.c:3176 ../glib/gbookmarkfile.c:3344 ../glib/gbookmarkfile.c:3433 ../glib/gbookmarkfile.c:3522
+#: ../glib/gbookmarkfile.c:3638
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Non è stato trovato alcun segnalibro per l'URI «%s»"
@@ -3141,7 +3122,7 @@ msgstr "P.M."
 #: ../glib/gdatetime.c:206
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "%a %e %b %Y %-k:%M:%S"
+msgstr "%a %e %b %Y %H:%M:%S"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:209
@@ -3153,13 +3134,13 @@ msgstr "%d/%m/%y"
 #: ../glib/gdatetime.c:212
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr "%-k:%M:%S"
+msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:215
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%-l:%M:%S %P"
+msgstr "%I:%M:%S %P"
 
 #: ../glib/gdatetime.c:228
 msgctxt "full month name"
@@ -3499,9 +3480,8 @@ msgstr "Nome chiave non valido: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Il file chiavi contiene la codifica non supportata \"%s\""
 
-#: ../glib/gkeyfile.c:1548 ../glib/gkeyfile.c:1721 ../glib/gkeyfile.c:3099 ../glib/gkeyfile.c:3162
-#: ../glib/gkeyfile.c:3288 ../glib/gkeyfile.c:3418 ../glib/gkeyfile.c:3560 ../glib/gkeyfile.c:3789
-#: ../glib/gkeyfile.c:3856
+#: ../glib/gkeyfile.c:1548 ../glib/gkeyfile.c:1721 ../glib/gkeyfile.c:3099 ../glib/gkeyfile.c:3162 ../glib/gkeyfile.c:3288
+#: ../glib/gkeyfile.c:3418 ../glib/gkeyfile.c:3560 ../glib/gkeyfile.c:3789 ../glib/gkeyfile.c:3856
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Il file chiavi non presenta il gruppo \"%s\""
@@ -3524,8 +3504,7 @@ msgstr "Il file chiavi contiene la chiave \"%s\" che presenta un valore che non 
 #: ../glib/gkeyfile.c:2560 ../glib/gkeyfile.c:2928
 #, c-format
 msgid "Key file contains key '%s' in group '%s' which has a value that cannot be interpreted."
-msgstr ""
-"Il file chiavi contiene la chiave \"%s\" nel gruppo \"%s\" che presenta un valore che non può essere interpretato."
+msgstr "Il file chiavi contiene la chiave \"%s\" nel gruppo \"%s\" che presenta un valore che non può essere interpretato."
 
 #: ../glib/gkeyfile.c:2638 ../glib/gkeyfile.c:2715
 #, c-format
@@ -3604,19 +3583,19 @@ msgstr "Errore alla riga %d: %s"
 #: ../glib/gmarkup.c:683
 #, c-format
 msgid ""
-"Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - "
-"perhaps the digit is too large"
+"Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit "
+"is too large"
 msgstr ""
-"Analisi di '%-.*s' non riuscita: dovrebbe presentare un numero all'interno di un riferimento a carattere (es. "
-"&#234;) - probabilmente il numero è troppo grande"
+"Analisi di '%-.*s' non riuscita: dovrebbe presentare un numero all'interno di un riferimento a carattere (es. &#234;) - "
+"probabilmente il numero è troppo grande"
 
 #: ../glib/gmarkup.c:695
 msgid ""
-"Character reference did not end with a semicolon; most likely you used an ampersand character without intending to "
-"start an entity - escape ampersand as &amp;"
+"Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an "
+"entity - escape ampersand as &amp;"
 msgstr ""
-"Il riferimento a carattere non termina con un punto e virgola; probabilmente si è utilizzato un carattere \"e "
-"commerciale\" senza l'intenzione di iniziare una nuova entità. In tal caso ricorrere a &amp;"
+"Il riferimento a carattere non termina con un punto e virgola; probabilmente si è utilizzato un carattere \"e commerciale\" "
+"senza l'intenzione di iniziare una nuova entità. In tal caso ricorrere a &amp;"
 
 #: ../glib/gmarkup.c:721
 #, c-format
@@ -3634,11 +3613,11 @@ msgstr "Il nome di entità \"%-.*s\" è sconosciuto"
 
 #: ../glib/gmarkup.c:772
 msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an "
-"entity - escape ampersand as &amp;"
+"Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape "
+"ampersand as &amp;"
 msgstr ""
-"L'entità non termina con un punto e virgola; probabilmente è stata utilizzata una \"e commerciale\" senza "
-"l'intento di iniziare una entità. In tal caso ricorrere a &amp;"
+"L'entità non termina con un punto e virgola; probabilmente è stata utilizzata una \"e commerciale\" senza l'intento di "
+"iniziare una entità. In tal caso ricorrere a &amp;"
 
 #: ../glib/gmarkup.c:1178
 msgid "Document must begin with an element (e.g. <book>)"
@@ -3662,20 +3641,19 @@ msgstr "Carattere '%s' spaiato, era atteso un carattere '=' dopo il nome dell'at
 #: ../glib/gmarkup.c:1382
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an "
-"attribute; perhaps you used an invalid character in an attribute name"
+"Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps "
+"you used an invalid character in an attribute name"
 msgstr ""
-"Carattere '%s' spaiato, era atteso un carattere '>' oppure '/' per terminare il tag di partenza dell'elemento \"%s"
-"\", oppure opzionalmente un attributo. Probabilmente è stato usato un carattere non valido in un nome di attributo"
+"Carattere '%s' spaiato, era atteso un carattere '>' oppure '/' per terminare il tag di partenza dell'elemento \"%s\", oppure "
+"opzionalmente un attributo. Probabilmente è stato usato un carattere non valido in un nome di attributo"
 
 #: ../glib/gmarkup.c:1426
 #, c-format
 msgid ""
-"Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of "
-"element '%s'"
+"Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Carattere '%s' spaiato, era atteso un simbolo di quoting aperto dopo il segno di uguale per attribuire un valore "
-"all'attributo \"%s\" dell'elemento \"%s\""
+"Carattere '%s' spaiato, era atteso un simbolo di quoting aperto dopo il segno di uguale per attribuire un valore all'attributo "
+"\"%s\" dell'elemento \"%s\""
 
 #: ../glib/gmarkup.c:1559
 #, c-format
@@ -3730,8 +3708,7 @@ msgstr "Il documento è terminato in modo inatteso all'interno di un tag di aper
 #: ../glib/gmarkup.c:1821
 msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
 msgstr ""
-"Il documento è terminato in modo inatteso dopo il segno di uguale che segue un nome di attributo; nessun valore "
-"per l'attributo"
+"Il documento è terminato in modo inatteso dopo il segno di uguale che segue un nome di attributo; nessun valore per l'attributo"
 
 #: ../glib/gmarkup.c:1828
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -4044,8 +4021,7 @@ msgstr "opzioni NEWLINE incoerenti"
 
 #: ../glib/gregex.c:477
 msgid "\\g is not followed by a braced, angle-bracketed, or quoted name or number, or by a plain number"
-msgstr ""
-"\\g non è seguito da un nome o un numero tra parentesi, parentesi angolari, tra virgolette o da un numero semplice"
+msgstr "\\g non è seguito da un nome o un numero tra parentesi, parentesi angolari, tra virgolette o da un numero semplice"
 
 #: ../glib/gregex.c:481
 msgid "a numbered reference must not be zero"
@@ -4340,8 +4316,7 @@ msgstr "Allocazione della memoria non riuscita"
 msgid "Character out of range for UTF-8"
 msgstr "Carattere fuori dall'intervallo per UTF-8"
 
-#: ../glib/gutf8.c:1012 ../glib/gutf8.c:1021 ../glib/gutf8.c:1151 ../glib/gutf8.c:1160 ../glib/gutf8.c:1299
-#: ../glib/gutf8.c:1396
+#: ../glib/gutf8.c:1012 ../glib/gutf8.c:1021 ../glib/gutf8.c:1151 ../glib/gutf8.c:1160 ../glib/gutf8.c:1299 ../glib/gutf8.c:1396
 msgid "Invalid sequence in conversion input"
 msgstr "Sequenza non valida in ingresso per la conversione"
 
