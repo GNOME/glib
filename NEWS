@@ -1,3 +1,30 @@
+Overview of changes in GLib 2.43.90
+===================================
+
+* new GSimpleIOStream class to construct a GIOStream from an arbitrary
+  GInputStream and GOutputStream
+
+* GApplication: new API for marking 'busy' state according to the value
+  of a boolean property on another object
+
+* GOptionGroup: add binding support (boxed type, annotation fixes, etc.)
+
+Bugs fixed:
+ 739724 Test functions should have async scope
+ 741024 glist: Mention that g_list_length() is bad for checking list emptiness
+ 741630 Add GSimpleIOStream class
+ 743349 goption: Add boxed type for GOptionGroup
+ 743990 GDBus connection closing is broken
+ 744565 gapplication: add bind_busy_property()
+
+Translations updated:
+ Greek
+ Italian
+ Norwegian bokmål
+ Russian
+ Slovenian
+ Swedish
+
 Overview of changes in GLib 2.43.4
 ==================================
 
