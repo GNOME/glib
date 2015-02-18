@@ -126,9 +126,15 @@
  * the operation, producing a GAsyncResult which is then passed to the
  * function's matching _finish() operation.
  *
- * Some #GFile operations do not have synchronous analogs, as they may
- * take a very long time to finish, and blocking may leave an application
- * unusable. Notable cases include:
+ * It is highly recommended to use asynchronous calls when running within a
+ * shared main loop, such as in the main thread of an application. This avoids
+ * I/O operations blocking other sources on the main loop from being dispatched.
+ * Synchronous I/O operations should be performed from worker threads. See the
+ * [introduction to asynchronous programming section][async-programming] for
+ * more.
+ *
+ * Some #GFile operations almost always take a noticeable amount of time, and
+ * so do not have synchronous analogs. Notable cases include:
  * - g_file_mount_mountable() to mount a mountable file.
  * - g_file_unmount_mountable_with_operation() to unmount a mountable file.
  * - g_file_eject_mountable_with_operation() to eject a mountable file.
