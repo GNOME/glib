@@ -99,6 +99,7 @@ gio/gsettings.c
 gio/gsettings-tool.c
 gio/gsimpleaction.c
 gio/gsimpleasyncresult.c
+gio/gsimpleiostream.c
 gio/gsimpleproxyresolver.c
 gio/gsocketaddress.c
 gio/gsocket.c
