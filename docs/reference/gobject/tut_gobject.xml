@@ -241,34 +241,6 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
       which can be integrated in applications which use or require different memory management
       models (such as garbage collection). The methods which are used to
       manipulate this reference count are described below.
-<informalexample><programlisting>
-/*
-  Refcounting
-*/
-gpointer    g_object_ref                      (gpointer        object);
-void        g_object_unref                    (gpointer        object);
-
-/*
- * Weak References
- */
-typedef void (*GWeakNotify) (gpointer  data,
-                             GObject  *where_the_object_was);
-
-void g_object_weak_ref            (GObject     *object,
-                                   GWeakNotify  notify,
-                                   gpointer     data);
-void g_object_weak_unref          (GObject     *object,
-                                   GWeakNotify  notify,
-                                   gpointer     data);
-void g_object_add_weak_pointer    (GObject     *object, 
-                                   gpointer    *weak_pointer_location);
-void g_object_remove_weak_pointer (GObject     *object, 
-                                   gpointer    *weak_pointer_location);
-/*
- * Cycle handling
- */
-void g_object_run_dispose         (GObject     *object);
-</programlisting></informalexample>
     </para>
 
     <sect2 id="gobject-memory-refcount">
