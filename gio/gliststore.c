@@ -279,6 +279,8 @@ g_list_store_insert (GListStore *store,
  * g_list_store_insert_sorted:
  * @store: a #GListStore
  * @item: the new item
+ * @compare_func: pairwise comparison function for sorting
+ * @user_data: (closure): user data for @compare_func
  *
  * Inserts @item into @store at a position to be determined by the
  * @compare_func.
