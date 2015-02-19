@@ -126,8 +126,8 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
       Finally, at one point or another, <function>g_object_constructor</function> is invoked
       by the last constructor in the chain. This function allocates the object's instance' buffer 
       through <function><link linkend="g-type-create-instance">g_type_create_instance</link></function>
-      which means that the instance_init function is invoked at this point if one
-      was registered. After instance_init returns, the object is fully initialized and should be 
+      which means that the <function>instance_init</function> function is invoked at this point if one
+      was registered. After <function>instance_init</function> returns, the object is fully initialized and should be 
       ready to answer any user-request. When <function><link linkend="g-type-create-instance">g_type_create_instance</link></function>
       returns, <function>g_object_constructor</function> sets the construction properties
       (i.e. the properties which were given to <function><link linkend="g-object-new">g_object_new</link></function>) and returns
@@ -152,7 +152,7 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
           <thead>
             <row>
               <entry>Invocation time</entry>
-              <entry>Function Invoked</entry>
+              <entry>Function invoked</entry>
               <entry>Function's parameters</entry>
               <entry>Remark</entry>
             </row>
@@ -160,17 +160,17 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
           <tbody>
             <row>
               <entry morerows="3">First call to <function><link linkend="g-object-new">g_object_new</link></function> for target type</entry>
-              <entry>target type's base_init function</entry>
+              <entry>target type's <function>base_init</function> function</entry>
               <entry>On the inheritance tree of classes from fundamental type to target type. 
-                base_init is invoked once for each class structure.</entry>
+                <function>base_init</function> is invoked once for each class structure.</entry>
               <entry>
                 I have no real idea on how this can be used. If you have a good real-life
-                example of how a class' base_init can be used, please, let me know.
+                example of how a class' <function>base_init</function> can be used, please, let me know.
               </entry>
             </row>
             <row>
               <!--entry>First call to <function><link linkend="g-object-new">g_object_new</link></function> for target type</entry-->
-              <entry>target type's class_init function</entry>
+              <entry>target type's <function>class_init</function> function</entry>
               <entry>On target type's class structure</entry>
               <entry>
                 Here, you should make sure to initialize or override class methods (that is,
@@ -180,14 +180,14 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
             </row>
             <row>
               <!--entry>First call to <function><link linkend="g-object-new">g_object_new</link></function> for target type</entry-->
-              <entry>interface' base_init function</entry>
-              <entry>On interface' vtable</entry>
+              <entry>interface's <function>base_init</function> function</entry>
+              <entry>On interface's vtable</entry>
               <entry></entry>
             </row>
             <row>
               <!--entry>First call to <function><link linkend="g-object-new">g_object_new</link></function> for target type</entry-->
-              <entry>interface' interface_init function</entry>
-              <entry>On interface' vtable</entry>
+              <entry>interface's interface_init function</entry>
+              <entry>On interface's vtable</entry>
               <entry></entry>
             </row>
             <row>
@@ -203,12 +203,12 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
             </row>
             <row>
               <!--entry>Each call to <function><link linkend="g-object-new">g_object_new</link></function> for target type</entry-->
-              <entry>type's instance_init function</entry>
+              <entry>type's <function>instance_init</function> function</entry>
               <entry>On the inheritance tree of classes from fundamental type to target type. 
-              the instance_init provided for each type is invoked once for each instance 
+              the <function>instance_init</function> provided for each type is invoked once for each instance 
               structure.</entry>
               <entry>
-                Provide an instance_init function to initialize your object before its construction
+                Provide an <function>instance_init</function> function to initialize your object before its construction
                 properties are set. This is the preferred way to initialize a GObject instance.
                 This function is equivalent to C++ constructors.
               </entry>
@@ -221,12 +221,12 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
     <para>
       Readers should feel concerned about one little twist in the order in
       which functions are invoked: while, technically, the class' constructor
-      method is called <emphasis>before</emphasis> the GType's instance_init
-      function (since <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> which calls instance_init is called by
+      method is called <emphasis>before</emphasis> the GType's <function>instance_init</function>
+      function (since <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> which calls <function>instance_init</function> is called by
       <function>g_object_constructor</function> which is the top-level class 
       constructor method and to which users are expected to chain to), the
       user's code which runs in a user-provided constructor will always
-      run <emphasis>after</emphasis> GType's instance_init function since the
+      run <emphasis>after</emphasis> GType's <function>instance_init</function> function since the
       user-provided constructor <emphasis>must</emphasis> (you've been warned)
       chain up <emphasis>before</emphasis> doing anything useful.
     </para>
@@ -308,7 +308,7 @@ void g_object_run_dispose         (GObject     *object);
             <thead>
               <row>
                 <entry>Invocation time</entry>
-                <entry>Function Invoked</entry>
+                <entry>Function invoked</entry>
                 <entry>Function's parameters</entry>
                 <entry>Remark</entry>
               </row>
@@ -349,16 +349,16 @@ void g_object_run_dispose         (GObject     *object);
                 <entry morerows="3">Last call to <function><link linkend="g-object-unref">g_object_unref</link></function> for the last
                   instance of target type
                  </entry>
-                <entry>interface' interface_finalize function</entry>
-                <entry>On interface' vtable</entry>
+                <entry>interface's interface_finalize function</entry>
+                <entry>On interface's vtable</entry>
                 <entry>Never used in practice. Unlikely you will need it.</entry>
               </row>
               <row>
                 <!--entry>Last call to <function><link linkend="g-object-unref">g_object_unref</link></function>for the last
                   instance of target type
                  </entry-->
-                <entry>interface' base_finalize function</entry>
-                <entry>On interface' vtable</entry>
+                <entry>interface's base_finalize function</entry>
+                <entry>On interface's vtable</entry>
                 <entry>Never used in practice. Unlikely you will need it.</entry>
               </row>
               <row>
@@ -375,7 +375,7 @@ void g_object_run_dispose         (GObject     *object);
                  </entry-->
                 <entry>type's base_finalize function</entry>
                 <entry>On the inheritance tree of classes from fundamental type to target type.
-                  base_init is invoked once for each class structure.</entry>
+                  <function>base_init</function> is invoked once for each class structure.</entry>
                 <entry>Never used in practice. Unlikely you will need it.</entry>
               </row>
             </tbody>
@@ -413,12 +413,7 @@ void g_object_run_dispose         (GObject     *object);
   
     <sect2 id="gobject-memory-cycles">
       <title>Reference counts and cycles</title>
-      
-      <para>
-        Note: the following section was inspired by James Henstridge. I guess this means that 
-        all praise and all curses will be directly forwarded to him.
-      </para>
-  
+
       <para>
         GObject's memory management model was designed to be easily integrated in existing code
         using garbage collection. This is why the destruction process is split in two phases:
@@ -455,10 +450,9 @@ void g_object_run_dispose         (GObject     *object);
       </para>
   
       <para>
-        The above example, which might seem a bit contrived can really happen if your
-        GObject's are being handled by language bindings. I would thus suggest the rules stated above
-        for object destruction are closely followed. Otherwise, <emphasis>Bad Bad Things</emphasis> 
-        will happen.
+        The above example, which might seem a bit contrived, can really happen if
+        GObjects are being handled by language bindings — hence the rules for
+        object destruction should be closely followed.
       </para>
     </sect2>
   </sect1>
@@ -469,7 +463,7 @@ void g_object_run_dispose         (GObject     *object);
     <para>
       One of GObject's nice features is its generic get/set mechanism for object
       properties. When an object
-      is instantiated, the object's class_init handler should be used to register
+      is instantiated, the object's <function>class_init</function> handler should be used to register
       the object's properties with <function><link linkend="g-object-class-install-properties">g_object_class_install_properties</link></function>
       (implemented in <filename>gobject.c</filename>).
     </para>
@@ -589,12 +583,12 @@ g_object_set_property (G_OBJECT (bar), "papa-number", &amp;val);
 
 g_value_unset (&amp;val);
 </programlisting></informalexample>
-      The client code just above looks simple but a lot of things happen under the hood:
+      The client code above looks simple but a lot of things happen under the hood:
     </para>
   
     <para>
       <function><link linkend="g-object-set-property">g_object_set_property</link></function> first ensures a property
-      with this name was registered in bar's class_init handler. If so it walks the class hierarchy,
+      with this name was registered in bar's <function>class_init</function> handler. If so it walks the class hierarchy,
       from bottom, most derived type, to top, fundamental type to find the class
       which registered that property. It then tries to convert the user-provided GValue
       into a GValue whose type is that of the associated property.
@@ -620,7 +614,7 @@ g_value_unset (&amp;val);
       data stored in the <link linkend="GValue"><type>GValue</type></link> matches the characteristics specified by
       the property's <link linkend="GParamSpec"><type>GParamSpec</type></link>.
       Here, the <link linkend="GParamSpec"><type>GParamSpec</type></link> we 
-      provided in class_init has a validation function which makes sure that the GValue
+      provided in <function>class_init</function> has a validation function which makes sure that the GValue
       contains a value which respects the minimum and maximum bounds of the 
       <link linkend="GParamSpec"><type>GParamSpec</type></link>. In the example above, the client's GValue does not
       respect these constraints (it is set to 11, while the maximum is 10). As such, the
@@ -675,7 +669,7 @@ g_value_unset (&amp;val);
   
       <para>
         It is interesting to note that the <function><link linkend="g-object-set">g_object_set</link></function> and 
-        <function><link linkend="g-object-set-valist">g_object_set_valist</link></function> (vararg version) functions can be used to set
+        <function><link linkend="g-object-set-valist">g_object_set_valist</link></function> (variadic version) functions can be used to set
         multiple properties at once. The client code shown above can then be re-written as:
 <informalexample><programlisting>
 MamanBar *foo;
@@ -692,7 +686,7 @@ g_object_set (G_OBJECT (foo),
     
       <para>
         Of course, the _get versions are also available: <function><link linkend="g-object-get">g_object_get</link></function>
-        and <function><link linkend="g-object-get-valist">g_object_get_valist</link></function> (vararg version) can be used to get numerous
+        and <function><link linkend="g-object-get-valist">g_object_get_valist</link></function> (variadic version) can be used to get numerous
         properties at once.
       </para>
       
