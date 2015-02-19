@@ -2338,6 +2338,9 @@ g_settings_reset (GSettings *settings,
 {
   gchar *path;
 
+  g_return_if_fail (G_IS_SETTINGS (settings));
+  g_return_if_fail (key != NULL);
+
   path = g_strconcat (settings->priv->path, key, NULL);
   g_settings_backend_reset (settings->priv->backend, path, NULL);
   g_free (path);
