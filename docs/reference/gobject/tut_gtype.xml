@@ -342,11 +342,13 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
         <para>
           A lot of types are not instantiable by the type system and do not have
           a class. Most of these types are fundamental trivial types such as <emphasis>gchar</emphasis>, 
-          registered in <function>_g_value_types_init</function> (in <filename>gvaluetypes.c</filename>).
+          and are already registered in <function>_g_value_types_init</function>
+          (in <filename>gvaluetypes.c</filename>).
         </para>
 
         <para>
-          To register such a type in the type system, you just need to fill the 
+          In the rare case of needing to register such a type in the type
+          system, fill a
           <link linkend="GTypeInfo"><type>GTypeInfo</type></link> structure with zeros since these types are also most of the time
           fundamental:
           <informalexample><programlisting>
@@ -391,6 +393,12 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
 
       <sect1 id="gtype-instantiable-classed">
         <title>Instantiable classed types: objects</title>
+
+        <para>
+          This section covers the theory behind objects. See
+          <xref linkend="howto-gobject"/> for the recommended way to define a
+          GObject.
+        </para>
 
         <para>
           Types which are registered with a class and are declared instantiable are
@@ -656,6 +664,12 @@ void           g_type_free_instance   (GTypeInstance *instance);
 
       <sect1 id="gtype-non-instantiable-classed">
         <title>Non-instantiable classed types: interfaces</title>
+
+        <para>
+          This section covers the theory behind interfaces. See
+          <xref linkend="howto-interface"/> for the recommended way to define an
+          interface.
+        </para>
 
         <para>
           GType's interfaces are very similar to Java's interfaces. They allow
