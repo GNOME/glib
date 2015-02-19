@@ -248,8 +248,14 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
 
       <para>
         The functions <function><link linkend="g-object-ref">g_object_ref</link></function>/<function><link linkend="g-object-unref">g_object_unref</link></function> respectively 
-        increase and decrease the reference count.These functions are thread-safe as of GLib 2.8.
-        The reference count is, unsurprisingly, initialized to one by 
+        increase and decrease the reference count. These functions are
+        thread-safe.
+        <function><link linkend="g-clear-object">g_clear_object</link></function>
+        is a convenience wrapper around <function>g_object_unref</function>
+        which also clears the pointer passed to it.
+      </para>
+      <para>
+        The reference count is initialized to one by 
         <function><link linkend="g-object-new">g_object_new</link></function> which means that the caller
         is currently the sole owner of the newly-created reference.
         When the reference count reaches zero, that is, 
