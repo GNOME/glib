@@ -48,28 +48,17 @@
     </para>
 
     <para>
-      Objects which inherit from GObject are allowed to override this
-      constructor class method: they should however chain to their parent
-      constructor method before doing so:
-<informalexample><programlisting>
-  GObject *(* constructor) (GType                  gtype,
-                            guint                  n_properties,
-                            GObjectConstructParam *properties);
-</programlisting></informalexample>
+      Once all construction operations have been completed and constructor
+      properties set, the constructed class method is called.
     </para>
 
     <para>
-      The example below shows how <type>MamanBar</type> overrides the parent's constructor:
+      Objects which inherit from GObject are allowed to override this
+      constructed class method.
+      The example below shows how <type>MamanBar</type> overrides the parent's construction process:
 <informalexample><programlisting>
-#define MAMAN_TYPE_BAR                  (maman_bar_get_type ())
-#define MAMAN_BAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_BAR, MamanBar))
-#define MAMAN_IS_BAR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_BAR))
-#define MAMAN_BAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_TYPE_BAR, MamanBarClass))
-#define MAMAN_IS_BAR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_TYPE_BAR))
-#define MAMAN_BAR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_TYPE_BAR, MamanBarClass))
-
-typedef struct _MamanBar        MamanBar;
-typedef struct _MamanBarClass   MamanBarClass;
+#define MAMAN_TYPE_BAR maman_bar_get_type ()
+G_DECLARE_FINAL_TYPE (MamanBar, maman_bar, MAMAN, BAR, GObject)
 
 struct _MamanBar
 {
@@ -78,39 +67,25 @@ struct _MamanBar
   /* instance members */
 };
 
-struct _MamanBarClass
-{
-  GObjectClass parent_class;
-
-  /* class members */
-};
-
 /* will create maman_bar_get_type and set maman_bar_parent_class */
 G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT);
 
-static GObject *
-maman_bar_constructor (GType                  gtype,
-                       guint                  n_properties,
-                       GObjectConstructParam *properties)
+static void
+maman_bar_constructed (GObject *obj)
 {
-  GObject *obj;
-
-  {
-    /* Always chain up to the parent constructor */
-    obj = G_OBJECT_CLASS (maman_bar_parent_class)-&gt;constructor (gtype, n_properties, properties);
-  }
-  
   /* update the object state depending on constructor properties */
 
-  return obj;
+  /* Always chain up to the parent constructed function to complete object
+   * initialisation. */
+  G_OBJECT_CLASS (maman_bar_parent_class)-&gt;constructed (obj);
 }
 
 static void
 maman_bar_class_init (MamanBarClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  gobject_class-&gt;constructor = maman_bar_constructor;
+  object_class-&gt;constructed = maman_bar_constructed;
 }
 
 static void
@@ -509,11 +484,8 @@ void g_object_run_dispose         (GObject     *object);
 
 enum
 {
-  PROP_0,
-
-  PROP_MAMAN_NAME,
+  PROP_MAMAN_NAME = 1,
   PROP_PAPA_NUMBER,
-
   N_PROPERTIES
 };
 
@@ -575,28 +547,28 @@ maman_bar_get_property (GObject    *object,
 static void
 maman_bar_class_init (MamanBarClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  gobject_class-&gt;set_property = maman_bar_set_property;
-  gobject_class-&gt;get_property = maman_bar_get_property;
+  object_class-&gt;set_property = maman_bar_set_property;
+  object_class-&gt;get_property = maman_bar_get_property;
 
-  obj_properties[PROP_NAME] =
+  obj_properties[PROP_MAMAN_NAME] =
     g_param_spec_string ("maman-name",
                          "Maman construct prop",
                          "Set maman's name",
                          "no-name-set" /* default value */,
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
 
-  obj_properties[PROP_NUMBER] =
+  obj_properties[PROP_PAPA_NUMBER] =
     g_param_spec_uchar ("papa-number",
                         "Number of current Papa",
                         "Set/Get papa's number",
                         0  /* minimum value */,
                         10 /* maximum value */,
                         2  /* default value */,
-                        G_PARAM_READWRITE);
+                        G_PARAM_READWRITE));
 
-  g_object_class_install_properties (gobject_class,
+  g_object_class_install_properties (object_class,
                                      N_PROPERTIES,
                                      obj_properties);
 }
