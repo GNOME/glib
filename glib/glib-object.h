@@ -23,6 +23,7 @@
 #include <gobject/gbinding.h>
 #include <gobject/gboxed.h>
 #include <gobject/genums.h>
+#include <gobject/gmultibinding.h>
 #include <gobject/gobject.h>
 #include <gobject/gparam.h>
 #include <gobject/gparamspecs.h>

@@ -64,6 +64,7 @@ gobject_public_h_sources = \
 	gobject-autocleanups.h	\
 	glib-types.h		\
 	gbinding.h		\
+	gmultibinding.h		\
 	gboxed.h		\
 	gclosure.h		\
 	genums.h		\
@@ -92,6 +93,7 @@ gobject_c_sources = \
 	gobject_probes.d	\
 	gatomicarray.c		\
 	gbinding.c		\
+	gmultibinding.c		\
 	gboxed.c		\
 	gclosure.c		\
 	genums.c		\

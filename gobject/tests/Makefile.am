@@ -15,6 +15,7 @@ test_programs = \
 	threadtests			\
 	dynamictests			\
 	binding				\
+	multibinding			\
 	properties			\
 	reference			\
 	valuearray			\
