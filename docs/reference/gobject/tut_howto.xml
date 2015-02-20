@@ -571,9 +571,14 @@ void maman_bar_do_action (MamanBar *self, /* parameters */);
 void
 maman_bar_do_action (MamanBar *self, /* parameters */)
 {
+  MamanBarClass *klass;
+
   g_return_if_fail (MAMAN_IS_BAR (self));
 
-  MAMAN_BAR_GET_CLASS (self)->do_action (self, /* parameters */);
+  klass = MAMAN_BAR_GET_CLASS (self);
+  g_return_if_fail (klass->do_action != NULL);
+
+  klass->do_action (self, /* parameters */);
 }
 </programlisting></informalexample>
         The code above simply redirects the <function>do_action</function> call
@@ -596,7 +601,7 @@ maman_bar_real_do_action_two (MamanBar *self, /* parameters */)
 }
 
 static void
-maman_bar_class_init (BarClass *klass)
+maman_bar_class_init (MamanBarClass *klass)
 {
   /* this is not necessary, except for demonstration purposes.
    *
@@ -611,27 +616,31 @@ maman_bar_class_init (BarClass *klass)
 void
 maman_bar_do_action_one (MamanBar *self, /* parameters */)
 {
+  MamanBarClass *klass;
+
   g_return_if_fail (MAMAN_IS_BAR (self));
+
+  klass = MAMAN_BAR_GET_CLASS (self);
 
   /* if the method is purely virtual, then it is a good idea to
    * check that it has been overridden before calling it, and,
    * depending on the intent of the class, either ignore it silently
    * or warn the user.
-   /
-  if (MAMAN_BAR_GET_CLASS (self)->do_action_one != NULL)
-    MAMAN_BAR_GET_CLASS (self)->do_action_one (self, /* parameters */);
-  else
-    g_warning ("Class '%s' does not override the mandatory "
-               "MamanBarClass.do_action_one() virtual function.",
-               G_OBJECT_TYPE_NAME (self));
+   */
+  g_return_if_fail (klass->do_action != NULL);
+  klass->do_action_one (self, /* parameters */);
 }
 
 void
 maman_bar_do_action_two (MamanBar *self, /* parameters */)
 {
+  MamanBarClass *klass;
+
   g_return_if_fail (MAMAN_IS_BAR (self));
 
-  MAMAN_BAR_GET_CLASS (self)->do_action_two (self, /* parameters */);
+  klass = MAMAN_BAR_GET_CLASS (self);
+  if (klass->do_action_two != NULL)
+    klass->do_action_two (self, /* parameters */);
 }
 </programlisting></informalexample>
       </para>
@@ -653,6 +662,10 @@ struct _MamanBarClass
 
   /* stuff */
   void (* helper_do_specific_action) (MamanBar *self, /* parameters */);
+
+  /* Padding to allow adding up to 12 new virtual functions without
+   * breaking ABI. */
+  gpointer padding[12];
 };
 
 void maman_bar_do_any_action (MamanBar *self, /* parameters */);
@@ -670,6 +683,8 @@ maman_bar_do_specific_action (MamanBar *self, /* parameters */)
 void
 maman_bar_do_any_action (MamanBar *self, /* parameters */)
 {
+  g_return_if_fail (MAMAN_IS_BAR (self));
+
   /* random code here */
 
   /* 
@@ -965,8 +980,7 @@ maman_ibaz_interface_init (MamanIbazInterface *iface)
 static void
 maman_baz_init (MamanBaz *self)
 {
-  MamanBaz *self = MAMAN_BAZ (instance);
-  self->instance_member = 0xdeadbeaf;
+  self->instance_member = 0xdeadbeef;
 }
 </programlisting></informalexample>
     </para>
@@ -1043,7 +1057,7 @@ maman_ibaz_interface_init (MamanIbazInterface *iface)
 static void
 maman_bar_class_init (MamanBarClass *klass)
 {
-
+  /* Nothing here. */
 }
 
 static void
@@ -1118,7 +1132,6 @@ maman_ibaz_default_init (MamanIbazInterface *iface)
       The following code snippet shows the modifications needed in the
       <type>MamanBaz</type> declaration and implementation above:
 <informalexample><programlisting>
-
 struct _MamanBaz
 {
   GObject parent_instance;
@@ -1210,6 +1223,7 @@ static void
 maman_derived_ibaz_do_action (MamanIbaz *ibaz)
 {
   MamanDerivedBaz *self = MAMAN_DERIVED_BAZ (ibaz);
+
   g_print ("DerivedBaz implementation of Ibaz interface Action\n");
 }
 
