@@ -7,8 +7,8 @@
   <partintro>
     <para>
       This chapter tries to answer the real-life questions of users and presents
-      the most common scenario use cases I could come up with.
-      The use cases are presented from most likely to less likely.
+      the most common use cases in order from most likely to least
+      likely.
     </para>
   </partintro>
 
@@ -30,24 +30,12 @@
       The first step before writing the code for your GObject is to write the
       type's header which contains the needed type, function and macro
       definitions. Each of these elements is nothing but a convention which
-      is followed not only by GTK+'s code but also by most users of GObject.
-      If you feel the need not to obey the rules stated below, think about it
-      twice:
-      <itemizedlist>
-        <listitem><para>If your users are a bit accustomed to GTK+ code or any
-        GLib code, they will be a bit surprised and getting used to the
-        conventions you decided upon will take time (money) and will make them
-        grumpy (not a good thing)</para></listitem>
-        <listitem><para>You must assess the fact that these conventions might
-        have been designed by both smart and experienced people: maybe they
-        were at least partly right. Try to put your ego aside.</para></listitem>
-      </itemizedlist>
-      It is, nevertheless, important to note that these rules generally apply
-      to code that is meant to be called by third parties; it is perfectly
-      possible to write a valid, self-contained GObject types without most of
-      the boilerplate used in this tutorial; most of the boilerplate is also
-      not strictly required if you plan to use the GObject types only through
-      language bindings based on introspection.
+      is followed by almost all users of GObject, and has been refined over
+      multiple years of experience developing GObject-based code. If you are
+      writing a library, it is particularly important for you to adhere closely
+      to these conventions; users of your library will assume that you have.
+      Even if not writing a library, it will help other people who want to work
+      on your project.
     </para>
 
     <para>
@@ -68,26 +56,27 @@
     </para>
 
     <para>
-      When you need some private (internal) declarations in several
-      (sub)classes, you can define them in a private header file which
-      is often named by appending the <emphasis>private</emphasis> keyword
-      to the public header name. For example, one could use
-      <filename>maman-bar-private.h</filename>,
-      <filename>maman_bar_private.h</filename> or
-      <filename>mamanbarprivate.h</filename>. Typically, such private header
-      files are not installed.
-    </para>
-
-    <para>
       The basic conventions for any header which exposes a GType are described
       in <xref linkend="gtype-conventions"/>.
     </para>
 
     <para>
-            If you want to declare a type named bar with prefix maman, name the type instance
-            <function>MamanBar</function> and its class <function>MamanBarClass</function>
-            (name is case-sensitive). It is customary to declare them with code similar to the 
-            following:
+      If you want to declare a type named ‘bar’ in namespace ‘maman’, name the
+      type instance <function>MamanBar</function> and its class
+      <function>MamanBarClass</function> (names are case sensitive). The
+      recommended method of declaring a type differs based on whether the type
+      is final or derivable.
+    </para>
+
+    <para>
+      Final types cannot be subclassed further, and should be the default choice
+      for new types — changing a final type to be derivable is always a change
+      that will be compatible with existing uses of the code, but the converse
+      will often cause problems. Final types are declared using
+      <link linkend="G-DECLARE-FINAL-TYPE:CAPS"><function>G_DECLARE_FINAL_TYPE</function></link>,
+      and require a structure to hold the instance data to be declared in the
+      source code (not the header file).
+
 <informalexample><programlisting>
 /*
  * Copyright/Licensing information.
@@ -102,77 +91,92 @@
  * Potentially, include other headers on which this header depends.
  */
 
+G_BEGIN_DECLS
+
 /*
- * Type macros.
+ * Type declaration.
  */
-#define MAMAN_TYPE_BAR                  (maman_bar_get_type ())
-#define MAMAN_BAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_BAR, MamanBar))
-#define MAMAN_IS_BAR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_BAR))
-#define MAMAN_BAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_TYPE_BAR, MamanBarClass))
-#define MAMAN_IS_BAR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_TYPE_BAR))
-#define MAMAN_BAR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_TYPE_BAR, MamanBarClass))
-
-typedef struct _MamanBar        MamanBar;
-typedef struct _MamanBarClass   MamanBarClass;
-
-struct _MamanBar
-{
-  /* Parent instance structure */
-  GObject parent_instance;
-
-  /* instance members */
-};
-
-struct _MamanBarClass
-{
-  /* Parent class structure */
-  GObjectClass parent_class;
-
-  /* class members */
-};
-
-/* used by MAMAN_TYPE_BAR */
-GType maman_bar_get_type (void);
+#define MAMAN_TYPE_BAR maman_bar_get_type ()
+G_DECLARE_FINAL_TYPE (MamanBar, maman_bar, MAMAN, BAR, GObject)
 
 /*
  * Method definitions.
  */
+MamanBar *maman_bar_new (void);
+
+G_END_DECLS
 
 #endif /* __MAMAN_BAR_H__ */
 </programlisting></informalexample>
     </para>
 
     <para>
-      Finally, there are different header include conventions. Again, pick one
-      and stick to it. I personally use indifferently any of the two, depending
-      on the codebase I work on: the rule, as always, is consistency.
-      <itemizedlist>
-        <listitem><para>
-            Some people add at the top of their headers a number of #include
-            directives to pull in all the headers needed to compile client
-            code. This allows client code to simply #include "maman-bar.h".
-          </para></listitem>
-        <listitem><para>
-            Other do not #include anything and expect the client to #include
-            themselves the headers they need before including your header. This
-            speeds up compilation because it minimizes the amount of
-            pre-processor work. This can be used in conjunction with the
-            re-declaration of certain unused types in the client code to
-            minimize compile-time dependencies and thus speed up compilation.
-          </para></listitem>
-      </itemizedlist>
+      Derivable types <emphasis>can</emphasis> be subclassed further, and their class and
+      instance structures form part of the public API which must not be changed
+      if API stability is cared about. They are declared using
+      <link linkend="G-DECLARE-DERIVABLE-TYPE:CAPS"><function>G_DECLARE_DERIVABLE_TYPE</function></link>:
+<informalexample><programlisting>
+/*
+ * Copyright/Licensing information.
+ */
+
+/* inclusion guard */
+#ifndef __MAMAN_BAR_H__
+#define __MAMAN_BAR_H__
+
+#include &lt;glib-object.h&gt;
+/*
+ * Potentially, include other headers on which this header depends.
+ */
+
+G_BEGIN_DECLS
+
+/*
+ * Type declaration.
+ */
+#define MAMAN_TYPE_BAR maman_bar_get_type ()
+G_DECLARE_DERIVABLE_TYPE (MamanBar, maman_bar, MAMAN, BAR, GObject)
+
+struct _MamanBarClass
+{
+  GObjectClass parent_class;
+
+  /* Class virtual function fields. */
+  void (* handle_frob)  (MamanBar *bar,
+                         guint     n_frobs);
+
+  /* Padding to allow adding up to 12 new virtual functions without
+   * breaking ABI. */
+  gpointer padding[12];
+};
+
+/*
+ * Method definitions.
+ */
+MamanBar *maman_bar_new (void);
+
+G_END_DECLS
+
+#endif /* __MAMAN_BAR_H__ */
+</programlisting></informalexample>
     </para>
-      
+
+    <para>
+      The convention for header includes is to add the minimum number of
+      <function>#include</function> directives to the top of your headers needed
+      to compile that header. This
+      allows client code to simply <function>#include "maman-bar.h"</function>,
+      without needing to know the prerequisites for
+      <filename>maman-bar.h</filename>.
+    </para>
   </sect1>
 
   <sect1 id="howto-gobject-code">
     <title>Boilerplate code</title>
 
     <para>
-      In your code, the first step is to #include the needed headers: depending
-      on your header include strategy, this can be as simple as
-      <literal>#include "maman-bar.h"</literal> or as complicated as tens
-      of #include lines ending with <literal>#include "maman-bar.h"</literal>:
+      In your code, the first step is to <function>#include</function> the
+      needed headers:
 <informalexample><programlisting>
 /*
  * Copyright information
@@ -180,15 +184,11 @@ GType maman_bar_get_type (void);
 
 #include "maman-bar.h"
 
-/* If you use Pimpls, include the private structure 
- * definition here. Some people create a maman-bar-private.h header
- * which is included by the maman-bar.c file and which contains the
- * definition for this private structure.
- */
-struct _MamanBarPrivate {
-  int member_1;
+/* Private structure definition. */
+typedef struct {
+  gint member1;
   /* stuff */
-};
+} MamanBarPrivate;
 
 /* 
  * forward definitions
@@ -197,7 +197,24 @@ struct _MamanBarPrivate {
     </para>
 
     <para>
-      Call the <function>G_DEFINE_TYPE</function> macro using the name
+      If the class is being declared as final using
+      <function>G_DECLARE_FINAL_TYPE</function>, its instance structure should
+      be defined in the C file:
+<informalexample><programlisting>
+struct _MamanBar
+{
+  GObject parent_instance;
+
+  /* Other members, including private data. */
+}
+</programlisting></informalexample>
+    </para>
+
+    <para>
+      Call the <function>G_DEFINE_TYPE</function> macro (or
+      <function>G_DEFINE_TYPE_WITH_PRIVATE</function> if your class needs
+      private data — final types do <emphasis>not</emphasis> need private data)
+      using the name
       of the type, the prefix of the functions and the parent GType to
       reduce the amount of boilerplate needed. This macro will:
 
@@ -206,21 +223,40 @@ struct _MamanBarPrivate {
         function</simpara></listitem>
         <listitem><simpara>define a parent class pointer accessible from
         the whole .c file</simpara></listitem>
+        <listitem><simpara>add private instance data to the type (if using
+        <function>G_DEFINE_TYPE_WITH_PRIVATE</function>)</simpara></listitem>
       </itemizedlist>
+    </para>
+
+    <para>
+      If the class has been declared as final using
+      <function>G_DECLARE_FINAL_TYPE</function> (see
+      <xref linkend="howto-gobject-header"/>), private data should be placed in
+      the instance structure, <type>MamanBar</type>, and
+      <function>G_DEFINE_TYPE</function> should be used instead of
+      <function>G_DEFINE_TYPE_WITH_PRIVATE</function>. The instance structure
+      for a final class is not exposed publicly, and is not embedded in the
+      instance structures of any derived classes (because the class is final);
+      so its size can vary without causing incompatibilities for code which uses
+      the class. Conversely, private data for derivable classes
+      <emphasis>must</emphasis> be included in a private structure, and
+      <function>G_DEFINE_TYPE_WITH_PRIVATE</function> must be used.
 
 <informalexample><programlisting>
 G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
+</programlisting></informalexample>
+or
+<informalexample><programlisting>
+G_DEFINE_TYPE_WITH_PRIVATE (MamanBar, maman_bar, G_TYPE_OBJECT)
 </programlisting></informalexample>
     </para>
 
     <para>
       It is also possible to use the
       <function>G_DEFINE_TYPE_WITH_CODE</function> macro to control the
-      get_type function implementation - for instance, to add a call to
-      <function>G_IMPLEMENT_INTERFACE</function> macro which will
-      call the <function>g_type_implement_interface</function> function,
-      or call the <function>G_ADD_PRIVATE</function> macro will add an
-      instance private data structure.
+      <function>get_type</function> function implementation — for instance, to
+      add a call to the <function>G_IMPLEMENT_INTERFACE</function> macro to
+      implement an interface.
     </para>
   </sect1>
 
@@ -477,11 +513,34 @@ maman_bar_do_action (MamanBar *self, /* parameters */)
       <title>Virtual public methods</title>
 
       <para>
-        This is the preferred way to create polymorphic GObjects. All you
-        need to do is to define the common method and its class function in
-        the public header, implement the common method in the source file
-        and re-implement the class function in each object which inherits
-        from you.
+        This is the preferred way to create GObjects with overridable methods:
+        <itemizedlist>
+          <listitem><para>
+            Define the common method and its virtual function in the
+            class structure in the public header
+          </para></listitem>
+          <listitem><para>
+            Define the common method in the header file and implement it in the
+            source file
+          </para></listitem>
+          <listitem><para>
+            Implement a base version of the virtual function in the source
+            file and initialize the virtual function pointer to this
+            implementation in the object’s <function>class_init</function>
+            function; or leave it as <constant>NULL</constant> for a ‘pure
+            virtual’ method which must be overridden by derived classes
+          </para></listitem>
+          <listitem><para>
+            Re-implement the virtual function in each derived class which needs
+            to override it
+          </para></listitem>
+        </itemizedlist>
+      </para>
+      <para>
+        Note that virtual functions can only be defined if the class is
+        derivable, declared using
+        <link linkend="G-DECLARE-DERIVABLE-TYPE:CAPS"><function>G_DECLARE_DERIVABLE_TYPE</function></link>
+        so the class structure can be defined.
 <informalexample><programlisting>
 /* declaration in maman-bar.h. */
 struct _MamanBarClass
@@ -503,8 +562,8 @@ maman_bar_do_action (MamanBar *self, /* parameters */)
   MAMAN_BAR_GET_CLASS (self)->do_action (self, /* parameters */);
 }
 </programlisting></informalexample>
-        The code above simply redirects the do_action call to the relevant
-        class function.
+        The code above simply redirects the <function>do_action</function> call
+        to the relevant virtual function.
       </para>
 
       <para>
@@ -569,7 +628,7 @@ maman_bar_do_action_two (MamanBar *self, /* parameters */)
       <para>
         These are very similar to Virtual Public methods. They just don't
         have a public function to call the function directly. The header
-        file contains only a declaration of the class function:
+        file contains only a declaration of the virtual function:
 <informalexample><programlisting>
 /* declaration in maman-bar.h. */
 struct _MamanBarClass
@@ -582,7 +641,7 @@ struct _MamanBarClass
 
 void maman_bar_do_any_action (MamanBar *self, /* parameters */);
 </programlisting></informalexample>
-        These class functions are often used to delegate part of the job
+        These virtual functions are often used to delegate part of the job
         to child classes:
 <informalexample><programlisting>
 /* this accessor function is static: it is not exported outside of this file. */
@@ -611,7 +670,7 @@ maman_bar_do_any_action (MamanBar *self, /* parameters */)
 
       <para>
         Again, it is possible to provide a default implementation for this
-        private virtual class function:
+        private virtual function:
 <informalexample><programlisting>
 static void
 maman_bar_class_init (MamanBarClass *klass)
@@ -633,7 +692,7 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
 {
   MamanBarClass *bar_class = MAMAN_BAR_CLASS (klass);
 
-  /* implement pure virtual class function. */
+  /* implement pure virtual function. */
   bar_class->do_specific_action_one = maman_bar_subtype_do_specific_action_one;
 }
 </programlisting></informalexample>
@@ -667,7 +726,7 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
     <para>
       To explicitly chain up to the implementation of the virtual method in the parent class, 
       you first need a handle to the original parent class structure. This pointer can then be used to 
-      access the original class function pointer and invoke it directly.
+      access the original virtual function pointer and invoke it directly.
       <footnote>
         <para>
           The <emphasis>original</emphasis> adjective used in this sentence is not innocuous. To fully 
@@ -1662,7 +1721,7 @@ klass->write_signal_id =
     </para>
     
     <para>
-      If the signal's default handler is just a class function pointer, it is also possible to override 
+      If the signal's default handler is just a virtual function pointer, it is also possible to override 
       it yourself from the class_init function of a type which derives from the parent. That way, when the signal
       is emitted, the parent class will use the function provided by the child as a signal default handler.
       Of course, it is also possible (and recommended) to chain up from the child to the parent's default signal 
@@ -1693,9 +1752,9 @@ klass->write_signal_id =
     <para>
       Usually, the <function><link linkend="g-signal-new">g_signal_new</link></function> function is preferred over
       <function><link linkend="g-signal-newv">g_signal_newv</link></function>. When <function><link linkend="g-signal-new">g_signal_new</link></function>
-      is used, the default closure is exported as a class function. For example,
+      is used, the default closure is exported as a virtual function. For example,
       <filename>gobject.h</filename> contains the declaration of <link linkend="GObjectClass"><type>GObjectClass</type></link>
-      whose notify class function is the default handler for the <emphasis>notify</emphasis>
+      whose notify virtual function is the default handler for the <emphasis>notify</emphasis>
       signal:
 <informalexample><programlisting>
 struct  _GObjectClass
@@ -1713,7 +1772,7 @@ struct  _GObjectClass
 
      <para>
        <filename>gobject.c</filename>'s <function><link linkend="g-object-do-class-init">g_object_do_class_init</link></function> function
-       registers the <emphasis>notify</emphasis> signal and initializes this class function
+       registers the <emphasis>notify</emphasis> signal and initializes this virtual function
        to NULL:
 <informalexample><programlisting>
 static void
@@ -1736,24 +1795,24 @@ g_object_do_class_init (GObjectClass *class)
 }
 </programlisting></informalexample>
        <function><link linkend="g-signal-new">g_signal_new</link></function> creates a <link linkend="GClosure"><type>GClosure</type></link> which dereferences the
-       type's class structure to access the class function pointer and invoke it if it not NULL. The
-       class function is ignored it is set to NULL.
+       type's class structure to access the virtual function pointer and invoke it if it not NULL. The
+       virtual function is ignored it is set to NULL.
      </para>
 
      <para>
        To understand the reason for such a complex scheme to access the signal's default handler, 
        you must remember the whole reason for the use of these signals. The goal here is to delegate
        a part of the process to the user without requiring the user to subclass the object to override
-       one of the class functions. The alternative to subclassing, that is, the use of signals
+       one of the virtual functions. The alternative to subclassing, that is, the use of signals
        to delegate processing to the user, is, however, a bit less optimal in terms of speed: rather
        than just dereferencing a function pointer in a class structure, you must start the whole
        process of signal emission which is a bit heavyweight.
      </para>
 
      <para>
-       This is why some people decided to use class functions for some signal's default handlers:
+       This is why some people decided to use virtual functions for some signal's default handlers:
        rather than having users connect a handler to the signal and stop the signal emission
-       from within that handler, you just need to override the default class function which is
+       from within that handler, you just need to override the default virtual function which is
        supposedly more efficient.
      </para>
 
