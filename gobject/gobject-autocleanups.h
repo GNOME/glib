@@ -23,4 +23,5 @@
 
 G_DEFINE_AUTO_CLEANUP_FREE_FUNC(GStrv, g_strfreev, NULL)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GObject, g_object_unref)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GInitiallyUnowned, g_object_unref)
 G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(GValue, g_value_unset)
