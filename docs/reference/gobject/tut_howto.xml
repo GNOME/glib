@@ -550,12 +550,19 @@ maman_bar_do_action (MamanBar *self, /* parameters */)
         so the class structure can be defined.
 <informalexample><programlisting>
 /* declaration in maman-bar.h. */
+#define MAMAN_TYPE_BAR maman_bar_get_type ()
+G_DECLARE_DERIVABLE_TYPE (MamanBar, maman_bar, MAMAN, BAR, GObject)
+
 struct _MamanBarClass
 {
   GObjectClass parent_class;
 
   /* stuff */
   void (*do_action) (MamanBar *self, /* parameters */);
+
+  /* Padding to allow adding up to 12 new virtual functions without
+   * breaking ABI. */
+  gpointer padding[12];
 };
 
 void maman_bar_do_action (MamanBar *self, /* parameters */);
@@ -796,19 +803,19 @@ b_method_to_call (B *obj, int a)
     The first step is to get the header right. This interface
     defines two methods:
 <informalexample><programlisting>
+/*
+ * Copyright/Licensing information.
+ */
+
 #ifndef __MAMAN_IBAZ_H__
 #define __MAMAN_IBAZ_H__
 
 #include &lt;glib-object.h&gt;
 
-#define MAMAN_TYPE_IBAZ                 (maman_ibaz_get_type ())
-#define MAMAN_IBAZ(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_IBAZ, MamanIbaz))
-#define MAMAN_IS_IBAZ(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_IBAZ))
-#define MAMAN_IBAZ_GET_INTERFACE(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), MAMAN_TYPE_IBAZ, MamanIbazInterface))
+G_BEGIN_DECLS
 
-
-typedef struct _MamanIbaz               MamanIbaz; /* dummy object */
-typedef struct _MamanIbazInterface      MamanIbazInterface;
+#define MAMAN_TYPE_IBAZ maman_ibaz_get_type ()
+G_DECLARE_INTERFACE (MamanIbaz, maman_ibaz, MAMAN, IBAZ, GObject)
 
 struct _MamanIbazInterface
 {
@@ -818,10 +825,10 @@ struct _MamanIbazInterface
   void (*do_something) (MamanIbaz *self);
 };
 
-GType maman_ibaz_get_type (void);
-
 void maman_ibaz_do_action    (MamanIbaz *self);
 void maman_ibaz_do_something (MamanIbaz *self);
+
+G_END_DECLS
 
 #endif /* __MAMAN_IBAZ_H__ */
 </programlisting></informalexample>
@@ -829,9 +836,9 @@ void maman_ibaz_do_something (MamanIbaz *self);
     which derives from a <link linkend="GObject"><type>GObject</type></link> except for a few details:
     <itemizedlist>
       <listitem><para>
-        The <function>_GET_CLASS</function> macro is called <function>_GET_INTERFACE</function>
-                  and not implemented with <function><link linkend="G-TYPE-INSTANCE-GET-CLASS:CAPS">G_TYPE_INSTANCE_GET_CLASS</link></function>
-                  but with <function><link linkend="G-TYPE-INSTANCE-GET-INTERFACE:CAPS">G_TYPE_INSTANCE_GET_INTERFACE</link></function>.
+        The <function>_GET_CLASS</function> function is called
+        <function>_GET_IFACE</function> (and is defined by
+        <link linkend="G-DECLARE-INTERFACE:CAPS"><function>G_DECLARE_INTERFACE</function></link>).
       </para></listitem>
       <listitem><para>
         The instance type, <type>MamanIbaz</type> is not fully defined: it is
@@ -839,8 +846,8 @@ void maman_ibaz_do_something (MamanIbaz *self);
         whatever object which implements the interface.
       </para></listitem>
       <listitem><para>
-        The parent of the <type>MamanIbazInterface</type> is not
-        <type>GObjectClass</type> but <type>GTypeInterface</type>.
+        The parent of the <type>MamanIbazInterface</type> is
+        <type>GTypeInterface</type>, not <type>GObjectClass</type>.
       </para></listitem>
     </itemizedlist>
   </para>
@@ -864,7 +871,7 @@ void maman_ibaz_do_something (MamanIbaz *self);
       </para></listitem>
     </itemizedlist>
 <informalexample><programlisting>
-G_DEFINE_INTERFACE (MamanIbaz, maman_ibaz, 0);
+G_DEFINE_INTERFACE (MamanIbaz, maman_ibaz, G_TYPE_OBJECT);
 
 static void
 maman_ibaz_default_init (MamanIbazInterface *iface)
@@ -877,7 +884,7 @@ maman_ibaz_do_action (MamanIbaz *self)
 {
   g_return_if_fail (MAMAN_IS_IBAZ (self));
 
-  MAMAN_IBAZ_GET_INTERFACE (self)->do_action (self);
+  MAMAN_IBAZ_GET_IFACE (self)->do_action (self);
 }
 
 void
@@ -885,7 +892,7 @@ maman_ibaz_do_something (MamanIbaz *self)
 {
   g_return_if_fail (MAMAN_IS_IBAZ (self));
 
-  MAMAN_IBAZ_GET_INTERFACE (self)->do_something (self);
+  MAMAN_IBAZ_GET_IFACE (self)->do_something (self);
 }
 </programlisting></informalexample>
     </para>
@@ -1081,7 +1088,7 @@ G_DEFINE_TYPE_WITH_CODE (MamanBar, maman_bar, G_TYPE_OBJECT,
       below:
 <informalexample><programlisting>
 static void
-maman_ibaz_default_init (MamanIbazInteface *iface)
+maman_ibaz_default_init (MamanIbazInterface *iface)
 {
   g_object_interface_install_property (iface,
                                        g_param_spec_string ("name",
@@ -1213,25 +1220,25 @@ maman_derived_ibaz_interface_init (MamanIbazInterface *iface)
   iface->do_action = maman_derived_ibaz_do_action;
 
   /*
-   * We simply leave iface->do_something alone, it is already set to the
+   * Leave iface->do_something alone, it is already set to the
    * base class implementation.
    */
 }
 
 G_DEFINE_TYPE_WITH_CODE (MamanDerivedBaz, maman_derived_baz, MAMAN_TYPE_BAZ,
                          G_IMPLEMENT_INTERFACE (MAMAN_TYPE_IBAZ,
-                                                maman_derived_ibaz_interface_init)
+                                                maman_derived_ibaz_interface_init))
 
 static void
 maman_derived_baz_class_init (MamanDerivedBazClass *klass)
 {
-
+  /* Nothing here. */
 }
 
 static void
 maman_derived_baz_init (MamanDerivedBaz *self)
 {
-
+  /* Nothing here. */
 }
 </programlisting></informalexample>
     </para>
@@ -1261,9 +1268,10 @@ static void
 maman_derived_ibaz_do_action (MamanIbaz *ibaz)
 {
   MamanDerivedBaz *self = MAMAN_DERIVED_BAZ (ibaz);
+
   g_print ("DerivedBaz implementation of Ibaz interface Action\n");
 
-  /* Now we call the base implementation */
+  /* Now call the base implementation */
   maman_ibaz_parent_interface->do_action (ibaz);
 }
 
@@ -1271,6 +1279,7 @@ static void
 maman_derived_ibaz_interface_init (MamanIbazInterface *iface)
 {
   maman_ibaz_parent_interface = g_type_interface_peek_parent (iface);
+
   iface->do_action = maman_derived_ibaz_do_action;
 }
 
@@ -1281,11 +1290,13 @@ G_DEFINE_TYPE_WITH_CODE (MamanDerivedBaz, maman_derived_baz, MAMAN_TYPE_BAZ,
 static void
 maman_derived_baz_class_init (MamanDerivedBazClass *klass)
 {
+  /* Nothing here. */
 }
 
 static void
 maman_derived_baz_init (MamanDerivedBaz *self)
 {
+  /* Nothing here. */
 }
 </programlisting></informalexample>
     </para>
