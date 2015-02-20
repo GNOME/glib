@@ -273,14 +273,16 @@ G_DEFINE_TYPE_WITH_PRIVATE (MamanBar, maman_bar, G_TYPE_OBJECT)
       <xref linkend="gobject-construction-table"/> shows what user-provided functions
       are invoked during object instantiation and in which order they are invoked.
       A user looking for the equivalent of the simple C++ constructor function should use
-      the instance_init method. It will be invoked after all the parent's instance_init
+      the <function>instance_init</function> method. It will be invoked after
+      all the parents’ <function>instance_init</function>
       functions have been invoked. It cannot take arbitrary construction parameters 
       (as in C++) but if your object needs arbitrary parameters to complete initialization,
       you can use construction properties.
     </para>
 
     <para>
-      Construction properties will be set only after all instance_init functions have run.
+      Construction properties will be set only after all
+      <function>instance_init</function> functions have run.
       No object reference will be returned to the client of <function><link linkend="g-object-new">g_object_new</link></function>
       until all the construction properties have been set.
     </para>
@@ -288,7 +290,9 @@ G_DEFINE_TYPE_WITH_PRIVATE (MamanBar, maman_bar, G_TYPE_OBJECT)
     <para>
       It is important to note that object construction cannot <emphasis>ever</emphasis>
       fail. If you require a fallible GObject construction, you can use the
-      GInitable and GAsyncInitable interfaces provided by the GIO library
+      <link linkend="GInitable"><type>GInitable</type></link> and
+      <link linkend="GAsyncInitable"><type>GAsyncInitable</type></link>
+      interfaces provided by the GIO library.
     </para>
 
     <para>
@@ -364,7 +368,8 @@ bar_class_init (MamanBarClass *klass)
       more simply, using the <function>constructed()</function> class method
       available since GLib 2.12. Note that the <function>constructed()</function>
       virtual function will only be invoked after the properties marked as
-      G_PARAM_CONSTRUCT_ONLY or G_PARAM_CONSTRUCT have been consumed, but
+      <function>G_PARAM_CONSTRUCT_ONLY</function>s or
+      <function>G_PARAM_CONSTRUCT</function> have been consumed, but
       before the regular properties passed to <function>g_object_new()</function>
       have been set.
     </para>
@@ -485,7 +490,7 @@ maman_bar_init (MamanBar *self);
       </itemizedlist>
     </para>
 
-    <sect2>
+    <sect2 id="non-virtual-public-methods">
       <title>Non-virtual public methods</title>
 
       <para>
@@ -509,7 +514,7 @@ maman_bar_do_action (MamanBar *self, /* parameters */)
       </para>
     </sect2>
 
-    <sect2>
+    <sect2 id="virtual-public-methods">
       <title>Virtual public methods</title>
 
       <para>
@@ -570,9 +575,10 @@ maman_bar_do_action (MamanBar *self, /* parameters */)
         Please, note that it is possible for you to provide a default
         implementation for this class method in the object's
         <function>class_init</function> function: initialize the
-        klass-&gt;do_action field to a pointer to the actual implementation.
+        <function>klass-&gt;do_action</function> field to a pointer to the
+        actual implementation.
         By default, class methods that are not inherited are initialized to
-        NULL, and thus are to be considered "pure virtual".
+        <function>NULL</function>, and thus are to be considered "pure virtual".
 <informalexample><programlisting>
 static void
 maman_bar_real_do_action_two (MamanBar *self, /* parameters */)
@@ -622,12 +628,13 @@ maman_bar_do_action_two (MamanBar *self, /* parameters */)
       </para>
     </sect2>
 
-    <sect2>
+    <sect2 id="virtual-private-methods">
       <title>Virtual private Methods</title>
 
       <para>
-        These are very similar to Virtual Public methods. They just don't
-        have a public function to call the function directly. The header
+        These are very similar to <link linkend="virtual-public-methods">virtual
+        public methods</link>. They just don't
+        have a public function to call directly. The header
         file contains only a declaration of the virtual function:
 <informalexample><programlisting>
 /* declaration in maman-bar.h. */
@@ -745,8 +752,8 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
     is used to access the original parent class structure. Its input is a
     pointer to the class of the derived object and it returns a pointer to
     the original parent class structure. Instead of using this function
-    directly, though, you should use the <function>parent_class</function>
-    pointer created and initialized for us by the G_DEFINE_TYPE_* family of
+    directly, though, use the <function>parent_class</function>
+    pointer created and initialized by the <function>G_DEFINE_TYPE_*</function> family of
     macros, for instance:
 <informalexample><programlisting>
 static void
@@ -932,9 +939,9 @@ GType maman_baz_get_type (void);
   
     <para>
       The second step is to implement <type>MamanBaz</type> by defining
-      its GType. Instead of using
-      <function><link linkend="G-DEFINE-TYPE:CAPS">G_DEFINE_TYPE</link></function>
-      we use
+      its <type>GType</type>. Instead of using
+      <function><link linkend="G-DEFINE-TYPE:CAPS">G_DEFINE_TYPE</link></function>,
+      use
       <function><link linkend="G-DEFINE-TYPE-WITH-CODE:CAPS">G_DEFINE_TYPE_WITH_CODE</link></function>
       and the
       <function><link linkend="G-IMPLEMENT-INTERFACE:CAPS">G_IMPLEMENT_INTERFACE</link></function>
@@ -1016,7 +1023,8 @@ G_DEFINE_INTERFACE (MamanIbar, maman_ibar, MAMAN_TYPE_IBAZ);
       In the <function><link linkend="G-DEFINE-INTERFACE:CAPS">G_DEFINE_INTERFACE</link></function>
       call above, the third parameter defines the prerequisite type. This
       is the GType of either an interface or a class. In this case
-      the MamanIbaz interface is a prerequisite of the MamanIbar. The code
+      the <type>MamanIbaz</type> interface is a prerequisite of
+      <type>MamanIbar</type>. The code
       below shows how an implementation can implement both interfaces and
       register their implementations:
 <informalexample><programlisting>
@@ -1225,10 +1233,11 @@ maman_baz_class_init (MamanBazClass *klass)
     </para>
 
     <para>
-      In this example MamanDerivedBaz is derived from MamanBaz. Both
-      implement the MamanIbaz interface. MamanDerivedBaz only implements one
-      method of the MamanIbaz interface and uses the base class implementation
-      of the other.
+      In this example, <type>MamanDerivedBaz</type> is derived from
+      <type>MamanBaz</type>. Both implement the <type>MamanIbaz</type>
+      interface. <type>MamanDerivedBaz</type> only implements one method of the
+      <type>MamanIbaz</type> interface and uses the base class implementation of
+      the other.
 <informalexample><programlisting>
 static void
 maman_derived_ibaz_do_action (MamanIbaz *ibaz)
@@ -1282,7 +1291,7 @@ maman_derived_baz_init (MamanDerivedBaz *self)
     </para>
 
     <para>
-      In this example MamanDerivedBaz overides the
+      In this example <type>MamanDerivedBaz</type> overrides the
       <function>do_action</function> interface method. In its overridden method
       it calls the base class implementation of the same interface method.
 <informalexample><programlisting>
@@ -1365,8 +1374,8 @@ maman_file_write (file, buffer, strlen (buffer));
     </para>
     
     <para>
-      The <type>MamanFile</type> signal is registered in the class_init
-      function:
+      The <type>MamanFile</type> signal is registered in the
+      <function>class_init</function> function:
 <informalexample><programlisting>
 file_signals[CHANGED] = 
   g_signal_newv ("changed",
