@@ -16,11 +16,8 @@
   <title>How to define and implement a new GObject</title>
   
   <para>
-    Clearly, this is one of the most common questions people ask: they just
-    want to crank code and implement a subclass of a GObject. Sometimes because
-    they want to create their own class hierarchy, sometimes because they want
-    to subclass one of GTK+'s widget. This chapter will focus on the 
-    implementation of a subtype of GObject.
+    This chapter focuses on the implementation of a subtype of GObject, for
+    example to create a custom class hierarchy, or to subclass a GTK+ widget.
   </para>
 
   <sect1 id="howto-gobject-header">
@@ -261,7 +258,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (MamanBar, maman_bar, G_TYPE_OBJECT)
   </sect1>
 
   <sect1 id="howto-gobject-construction">
-    <title>Object Construction</title>
+    <title>Object construction</title>
 
     <para>
       People often get confused when trying to construct their GObjects because of the
@@ -296,7 +293,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (MamanBar, maman_bar, G_TYPE_OBJECT)
     </para>
 
     <para>
-      As such, I would recommend writing the following code first:
+      You should write the following code first:
 <informalexample><programlisting>
 G_DEFINE_TYPE_WITH_PRIVATE (MamanBar, maman_bar, G_TYPE_OBJECT)
 
@@ -365,10 +362,10 @@ bar_class_init (MamanBarClass *klass)
       of a type only after the properties passed to the constructors have been
       set. This is possible through the use of the <function>constructor()</function>
       class method as described in <xref linkend="gobject-instantiation"/> or,
-      more simply, using the <function>constructed()</function> class method
-      available since GLib 2.12. Note that the <function>constructed()</function>
+      more simply, using the <function>constructed()</function> class method.
+      Note that the <function>constructed()</function>
       virtual function will only be invoked after the properties marked as
-      <function>G_PARAM_CONSTRUCT_ONLY</function>s or
+      <function>G_PARAM_CONSTRUCT_ONLY</function> or
       <function>G_PARAM_CONSTRUCT</function> have been consumed, but
       before the regular properties passed to <function>g_object_new()</function>
       have been set.
@@ -376,7 +373,7 @@ bar_class_init (MamanBarClass *klass)
   </sect1>
 
   <sect1 id="howto-gobject-destruction">
-    <title>Object Destruction</title>
+    <title>Object destruction</title>
 
     <para>
       Again, it is often difficult to figure out which mechanism to use to
@@ -387,11 +384,12 @@ bar_class_init (MamanBarClass *klass)
     </para>
 
     <para>
-      The destruction process of your object might be split in two different
-      phases: dispose and the finalize. This split is necessary to handle
+      The destruction process of your object is in two phases: dispose and
+      finalize. This split is necessary to handle
       potential cycles due to the nature of the reference counting mechanism
-      used by GObject, as well as dealing with temporary vivification of
+      used by GObject, as well as dealing with temporary revival of
       instances in case of signal emission during the destruction sequence.
+      See <xref linkend="gobject-memory-cycles"/> for more information.
 <informalexample><programlisting>
 struct _MamanBarPrivate
 {
@@ -463,7 +461,7 @@ maman_bar_init (MamanBar *self);
       It is possible that object methods might be invoked after dispose is
       run and before finalize runs. GObject does not consider this to be a
       program error: you must gracefully detect this and neither crash nor
-      warn the user, by having a disposed instance revert to an inhert state.
+      warn the user, by having a disposed instance revert to an inert state.
     </para>
   </sect1>
 
@@ -494,8 +492,8 @@ maman_bar_init (MamanBar *self);
       <title>Non-virtual public methods</title>
 
       <para>
-        These are the simplest: you want to provide a simple method which
-        can act on your object. All you need to do is to provide a function
+        These are the simplest, providing a simple method which
+        acts on the object. Provide a function
         prototype in the header and an implementation of that prototype
         in the source file.
 <informalexample><programlisting>
@@ -572,7 +570,7 @@ maman_bar_do_action (MamanBar *self, /* parameters */)
       </para>
 
       <para>
-        Please, note that it is possible for you to provide a default
+        It is possible to provide a default
         implementation for this class method in the object's
         <function>class_init</function> function: initialize the
         <function>klass-&gt;do_action</function> field to a pointer to the
@@ -716,17 +714,19 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
         <listitem><para>Parent class A defines a public virtual method named <function>foo</function> and 
         provides a default implementation.</para></listitem>
         <listitem><para>Child class B re-implements method <function>foo</function>.</para></listitem>
-        <listitem><para>In the method B::foo, the child class B calls its parent class method A::foo.</para></listitem>
+        <listitem><para>B’s implementation of <function>foo</function> calls (‘chains up to’) its parent class A’s implementation of <function>foo</function>.</para></listitem>
       </itemizedlist>
-      There are various uses to this idiom:
+      There are various uses of this idiom:
       <itemizedlist>
         <listitem><para>You need to extend the behaviour of a class without modifying its code. You create
           a subclass to inherit its implementation, re-implement a public virtual method to modify the behaviour
           and chain up to ensure that the previous behaviour is not really modified, just extended.
           </para></listitem>
-        <listitem><para>You need to implement the Chain Of Responsibility pattern: each object of the inheritance
+        <listitem><para>You need to implement the
+          <ulink url="http://en.wikipedia.org/wiki/Chain-of-responsibility_pattern">Chain
+          Of Responsibility pattern</ulink>: each object of the inheritance
           tree chains up to its parent (typically, at the beginning or the end of the method) to ensure that
-          they each handler is run in turn.</para></listitem>
+          each handler is run in turn.</para></listitem>
       </itemizedlist>
     </para>
 
@@ -737,24 +737,22 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
       <footnote>
         <para>
           The <emphasis>original</emphasis> adjective used in this sentence is not innocuous. To fully 
-          understand its meaning, you need to recall how class structures are initialized: for each object type,
-          the class structure associated to this object is created by first copying the class structure of its 
-          parent type (a simple <function>memcpy</function>) and then by invoking the class_init callback on 
-          the resulting class structure. Since the class_init callback is responsible for overwriting the class structure
-          with the user re-implementations of the class methods, we cannot merely use the modified copy of the parent class
-          structure stored in our derived instance. We want to get a copy of the class structure of an instance of the parent 
-          class.
+          understand its meaning, recall how class structures are initialized: for each object type,
+          the class structure associated with this object is created by first copying the class structure of its
+          parent type (a simple <function>memcpy</function>) and then by invoking the <function>class_init</function> callback on
+          the resulting class structure. Since the <function>class_init</function> callback is responsible for overwriting the class structure
+          with the user re-implementations of the class methods, the modified copy of the parent class
+          structure stored in the derived instance cannot be used. A copy of the class structure of an instance of the parent
+          class is needed.
         </para>
       </footnote>
     </para>
     
-    <para>The function <function><link linkend="g-type-class-peek-parent">g_type_class_peek_parent</link></function>
-    is used to access the original parent class structure. Its input is a
-    pointer to the class of the derived object and it returns a pointer to
-    the original parent class structure. Instead of using this function
-    directly, though, use the <function>parent_class</function>
-    pointer created and initialized by the <function>G_DEFINE_TYPE_*</function> family of
-    macros, for instance:
+    <para>
+      Use the <function>parent_class</function> pointer created and initialized
+      by the
+      <link linkend="G-DEFINE-TYPE:CAPS"><function>G_DEFINE_TYPE</function></link>
+      family of macros, for instance:
 <informalexample><programlisting>
 static void
 b_method_to_call (B *obj, int a)
@@ -785,12 +783,13 @@ b_method_to_call (B *obj, int a)
     <title>Defining interfaces</title>
   
   <para>
-    The bulk of interface definition has already been shown in <xref linkend="gtype-non-instantiable-classed"/>
-    but I feel it is needed to show exactly how to create an interface.
+    The theory behind how GObject interfaces work is given in
+    <xref linkend="gtype-non-instantiable-classed"/>; this section covers how to
+    define and implement an interface.
   </para>
 
   <para>
-    As above, the first step is to get the header right. This interface
+    The first step is to get the header right. This interface
     defines two methods:
 <informalexample><programlisting>
 #ifndef __MAMAN_IBAZ_H__
@@ -896,56 +895,18 @@ maman_ibaz_do_something (MamanIbaz *self)
     </para>
   
     <para>
-      The first step is to define a normal GObject class, like:
-<informalexample><programlisting>
-#ifndef __MAMAN_BAZ_H__
-#define __MAMAN_BAZ_H__
-
-#include &lt;glib-object.h&gt;
-
-#define MAMAN_TYPE_BAZ             (maman_baz_get_type ())
-#define MAMAN_BAZ(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_BAZ, Mamanbaz))
-#define MAMAN_IS_BAZ(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_BAZ))
-#define MAMAN_BAZ_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_TYPE_BAZ, MamanbazClass))
-#define MAMAN_IS_BAZ_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_TYPE_BAZ))
-#define MAMAN_BAZ_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_TYPE_BAZ, MamanbazClass))
-
-
-typedef struct _MamanBaz        MamanBaz;
-typedef struct _MamanBazClass   MamanBazClass;
-
-struct _MamanBaz
-{
-  GObject parent_instance;
-
-  gint instance_member;
-};
-
-struct _MamanBazClass
-{
-  GObjectClass parent_class;
-};
-
-GType maman_baz_get_type (void);
-
-#endif /* __MAMAN_BAZ_H__ */
-</programlisting></informalexample>
-      <!-- Ha ha! "nothing weird or scary". I actually laughed out loud. Oh boy.
-           The fact that we're so intimate with GObject that all this doesn't look
-           wierd, that's the scary thing. :) -->
-      There is clearly nothing specifically weird or scary about this header:
-      it does not define any weird API or derive from a weird type.
+      The first step is to define a normal final GObject class exactly as in
+      <xref linkend="howto-gobject-header"/>.
     </para>
   
     <para>
       The second step is to implement <type>MamanBaz</type> by defining
-      its <type>GType</type>. Instead of using
-      <function><link linkend="G-DEFINE-TYPE:CAPS">G_DEFINE_TYPE</link></function>,
-      use
+      it using
       <function><link linkend="G-DEFINE-TYPE-WITH-CODE:CAPS">G_DEFINE_TYPE_WITH_CODE</link></function>
-      and the
+      and
       <function><link linkend="G-IMPLEMENT-INTERFACE:CAPS">G_IMPLEMENT_INTERFACE</link></function>
-      macros.
+      instead of
+      <function><link linkend="G-DEFINE-TYPE:CAPS">G_DEFINE_TYPE</link></function>:
 <informalexample><programlisting>
 static void maman_ibaz_interface_init (MamanIbazInterface *iface);
 
@@ -953,8 +914,8 @@ G_DEFINE_TYPE_WITH_CODE (MamanBar, maman_bar, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (MAMAN_TYPE_IBAZ,
                                                 maman_ibaz_interface_init))
 </programlisting></informalexample>
-      This definition is very much like all the similar functions we looked
-      at previously. The only interface-specific code present here is the call to
+      This definition is very much like all the similar functions seen
+      previously. The only interface-specific code present here is the use of
       <function><link linkend="G-IMPLEMENT-INTERFACE:CAPS">G_IMPLEMENT_INTERFACE</link></function>.
     </para>
 
@@ -1111,14 +1072,9 @@ G_DEFINE_TYPE_WITH_CODE (MamanBar, maman_bar, G_TYPE_OBJECT,
   
     <para>
       To include a property named 'name' of type <type>string</type> in the 
-      <type>maman_ibaz</type> interface example code above, we only need to
-      add one 
-      <footnote>
-        <para>
-          That really is one line extended to six for the sake of clarity
-        </para>
-      </footnote>  
-      line in the <function>maman_ibaz_default_init</function> as shown below:
+      <type>MamanIbaz</type> interface example code above, we only need to
+      add one call in <function>maman_ibaz_default_init</function> as shown
+      below:
 <informalexample><programlisting>
 static void
 maman_ibaz_default_init (MamanIbazInteface *iface)
@@ -1136,9 +1092,10 @@ maman_ibaz_default_init (MamanIbazInteface *iface)
     <para>
       One point worth noting is that the declared property wasn't assigned an 
       integer ID. The reason being that integer IDs of properties are used
-      only inside the get and set methods and since interfaces do not
-      implement properties, there is no need to assign integer IDs to
-      interface properties.
+      only inside the <function>get_property</function> and
+      <function>set_property</function> virtual methods. Since interfaces
+      declare but do not <emphasis>implement</emphasis> properties, there is no
+      need to assign integer IDs to them.
     </para>
     
     <para>
@@ -1226,10 +1183,10 @@ maman_baz_class_init (MamanBazClass *klass)
     <title>Overriding interface methods</title>
 
     <para>
-      If a base class already implements an interface, and in a derived
-      class you wish to implement the same interface overriding only certain
-      methods of that interface, you just reimplement the interface and
-      set only the interface methods you wish to override.
+      If a base class already implements an interface and a derived
+      class needs to implement the same interface but needs to override certain
+      methods, you must reimplement the interface and set only the interface
+      methods which need overriding.
     </para>
 
     <para>
@@ -1283,9 +1240,9 @@ maman_derived_baz_init (MamanDerivedBaz *self)
     </para>
 
     <para>
-      If you wish to call the base class implementation of an interface
+      To call the base class implementation of an interface
       method from an derived class where than interface method has been
-      overridden then you can stash away the pointer returned from
+      overridden, stash away the pointer returned from
       <function><link linkend="g-type-interface-peek-parent">g_type_interface_peek_parent</link></function>
       in a global variable.
     </para>
@@ -1339,7 +1296,7 @@ maman_derived_baz_init (MamanDerivedBaz *self)
   <title>How to create and use signals</title>
 
   <para>
-    The signal system which was built in GType is pretty complex and
+    The signal system in GType is pretty complex and
     flexible: it is possible for its users to connect at runtime any
     number of callbacks (implemented in any language for which a binding
     exists)
@@ -1350,24 +1307,24 @@ maman_derived_baz_init (MamanDerivedBaz *self)
     </footnote>
     to any signal and to stop the emission of any signal at any 
     state of the signal emission process. This flexibility makes it
-    possible to use GSignal for much more than just emit signals which
-    can be received by numerous clients. 
+    possible to use GSignal for much more than just emitting signals to
+    multiple clients.
   </para>
 
   <sect1 id="howto-simple-signals">
     <title>Simple use of signals</title>
 
     <para>
-      The most basic use of signals is to implement simple event
-      notification: for example, if we have a MamanFile object, and
-      if this object has a write method, we might wish to be notified
-      whenever someone has changed something via our MamanFile instance.
+      The most basic use of signals is to implement event
+      notification. For example, given a <type>MamanFile</type> object with
+      a <function>write</function> method, a signal could be emitted whenever
+      the file is changed using that method.
       The code below shows how the user can connect a callback to the
       "changed" signal.
 <informalexample><programlisting>
 file = g_object_new (MAMAN_FILE_TYPE, NULL);
 
-g_signal_connect (file, "changed", G_CALLBACK (changed_event), NULL);
+g_signal_connect (file, "changed", (GCallback) changed_event, NULL);
 
 maman_file_write (file, buffer, strlen (buffer));
 </programlisting></informalexample>
@@ -1396,32 +1353,26 @@ maman_file_write (MamanFile    *self,
                   const guchar *buffer,
                   gssize        size)
 {
+  g_return_if_fail (MAMAN_IS_FILE (self));
+  g_return_if_fail (buffer != NULL || size == 0);
+
   /* First write data. */
 
   /* Then, notify user of data written. */
   g_signal_emit (self, file_signals[CHANGED], 0 /* details */);
 }
 </programlisting></informalexample>
-      As shown above, you can safely set the details parameter to zero if
-      you do not know what it can be used for. For a discussion of what you
-      could used it for, see <xref linkend="signal-detail"/>
+      As shown above, the details parameter can safely be set to zero if no
+      detail needs to be conveyed. For a discussion of what it can be used for,
+      see <xref linkend="signal-detail"/>
     </para>
 
     <para>
-      The signature of the signal handler in the above example is defined as
-      <function>g_cclosure_marshal_VOID__VOID</function>. Its name follows
-      a simple convention which encodes the function parameter and return value
-      types in the function name. Specifically, the value in front of the
-      double underscore is the type of the return value, while the value(s)
-      after the double underscore denote the parameter types.
-    </para>
-
-    <para>
-      The header <filename>gobject/gmarshal.h</filename> defines a set of
-      commonly needed closures that one can use. If you want to have complex
-      marshallers for your signals you should probably use glib-genmarshal
-      to autogenerate them from a file containing their return and
-      parameter types.
+      The C signal marshaller should always be
+      <function>g_cclosure_marshal_generic</function>, which implements generic
+      conversion of arrays of parameters to C callback invocations. GLib used to
+      use type-specific generated marshallers, but that has been deprecated in
+      favour of the generic marshaller.
     </para>
   </sect1>
 </chapter>
