@@ -305,7 +305,7 @@ maman_bar_class_init (MamanBarClass *klass)
 static void
 maman_bar_init (MamanBar *self)
 {
-  self->priv = maman_bar_get_instance_private (self);
+  MamanBarPrivate *priv = maman_bar_get_instance_private (self);
 
   /* initialize all public and private members to reasonable default values.
    * They are all automatically initialized to 0 to begin with. */
@@ -407,7 +407,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (MamanBar, maman_bar, G_TYPE_OBJECT)
 static void
 maman_bar_dispose (GObject *gobject)
 {
-  MamanBar *self = MAMAN_BAR (gobject);
+  MamanBarPrivate *priv = maman_bar_get_instance_private (MAMAN_BAR (gobject));
 
   /* In dispose(), you are supposed to free all types referenced from this
    * object which might themselves hold a reference to self. Generally,
@@ -419,7 +419,7 @@ maman_bar_dispose (GObject *gobject)
    * calling g_object_unref() on an invalid GObject by setting the member
    * NULL; g_clear_object() does this for us.
    */
-  g_clear_object (&amp;self->priv->an_object);
+  g_clear_object (&amp;priv->an_object);
 
   /* Always chain up to the parent class; there is no need to check if
    * the parent class implements the dispose() virtual function: it is
@@ -431,9 +431,9 @@ maman_bar_dispose (GObject *gobject)
 static void
 maman_bar_finalize (GObject *gobject)
 {
-  MamanBar *self = MAMAN_BAR (gobject);
+  MamanBarPrivate *priv = maman_bar_get_instance_private (MAMAN_BAR (gobject));
 
-  g_free (self->priv->a_string);
+  g_free (priv->a_string);
 
   /* Always chain up to the parent class; as with dispose(), finalize()
    * is guaranteed to exist on the parent's class virtual function table
@@ -444,19 +444,19 @@ maman_bar_finalize (GObject *gobject)
 static void
 maman_bar_class_init (MamanBarClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->dispose = maman_bar_dispose;
-  gobject_class->finalize = maman_bar_finalize;
+  object_class->dispose = maman_bar_dispose;
+  object_class->finalize = maman_bar_finalize;
 }
 
 static void
 maman_bar_init (MamanBar *self);
 {
-  self->priv = maman_bar_get_instance_private (self); 
+  MamanBarPrivate *priv = maman_bar_get_instance_private (self);
 
-  self->priv->an_object = g_object_new (MAMAN_TYPE_BAZ, NULL);
-  self->priv->a_string = g_strdup ("Maman");
+  priv->an_object = g_object_new (MAMAN_TYPE_BAZ, NULL);
+  priv->a_string = g_strdup ("Maman");
 }
 </programlisting></informalexample>
     </para>
