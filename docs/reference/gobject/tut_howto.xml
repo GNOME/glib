@@ -781,7 +781,7 @@ maman_bar_subtype_class_init (MamanBarSubTypeClass *klass)
       family of macros, for instance:
 <informalexample><programlisting>
 static void
-b_method_to_call (B *obj, int a)
+b_method_to_call (B *obj, gint some_param)
 {
   /* do stuff before chain up */
 
@@ -790,7 +790,7 @@ b_method_to_call (B *obj, int a)
    *
    * remember the explicit cast to AClass*
    */
-  A_CLASS (b_parent_class)->method_to_call (obj, a);
+  A_CLASS (b_parent_class)->method_to_call (obj, some_param);
 
   /* do stuff after chain up */
 }
