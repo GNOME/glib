@@ -1364,12 +1364,12 @@ maman_file_write (file, buffer, strlen (buffer));
 <informalexample><programlisting>
 file_signals[CHANGED] = 
   g_signal_newv ("changed",
-                 G_TYPE_FROM_CLASS (gobject_class),
+                 G_TYPE_FROM_CLASS (object_class),
                  G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
                  NULL /* closure */,
                  NULL /* accumulator */,
                  NULL /* accumulator data */,
-                 g_cclosure_marshal_VOID__VOID,
+                 g_cclosure_marshal_generic,
                  G_TYPE_NONE /* return_type */,
                  0     /* n_params */,
                  NULL  /* param_types */);
