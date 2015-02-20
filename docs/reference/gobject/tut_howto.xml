@@ -314,29 +314,33 @@ maman_bar_init (MamanBar *self)
     </para>
 
     <para>
-      If you need special construction properties, install the properties in
+      If you need special construction properties (with
+      <link linkend="G-PARAM-CONSTRUCT-ONLY:CAPS"><function>G_PARAM_CONSTRUCT_ONLY</function></link>
+      set), install the properties in
       the <function>class_init()</function> function, override the <function>set_property()</function>
       and <function>get_property()</function> methods of the GObject class,
       and implement them as described by <xref linkend="gobject-properties"/>.
+    </para>
+
+    <para>
+      Property IDs must start from 1, as 0 is reserved for internal use by
+      GObject.
 <informalexample><programlisting>
-enum {
-  PROP_0,
-
-  PROP_MAMAN,
-
+enum
+{
+  PROP_MAMAN = 1,
   N_PROPERTIES
 };
 
-/* Keep a pointer to the properties definition */
 static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
 
 static void
 bar_class_init (MamanBarClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->set_property = bar_set_property;
-  gobject_class->get_property = bar_get_property;
+  object_class->set_property = bar_set_property;
+  object_class->get_property = bar_get_property;
 
   obj_properties[PROP_MAMAN] =
     g_param_spec_string ("maman",
@@ -345,9 +349,9 @@ bar_class_init (MamanBarClass *klass)
                          "no-name-set" /* default value */,
                          G_PARAM_CONSTRUCT_ONLY |
                          G_PARAM_READWRITE |
-                         G_PARAM_STATIC_STRINGS);
+                         G_PARAM_STATIC_STRINGS));
 
-  g_object_class_install_properties (gobject_class,
+  g_object_class_install_properties (object_class,
                                      N_PROPERTIES,
                                      obj_properties);
 }
@@ -1118,8 +1122,8 @@ struct _MamanBaz
 
 enum
 {
-  PROP_0,
-  PROP_NAME
+  PROP_NAME = 1,
+  N_PROPERTIES
 };
 
 static void
@@ -1166,14 +1170,13 @@ maman_baz_get_property (GObject    *object,
 static void
 maman_baz_class_init (MamanBazClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->set_property = maman_baz_set_property;
-  gobject_class->get_property = maman_baz_get_property;
+  object_class->set_property = maman_baz_set_property;
+  object_class->get_property = maman_baz_get_property;
 
-  g_object_class_override_property (gobject_class, PROP_NAME, "name");
+  g_object_class_override_property (object_class, PROP_NAME, "name");
 }
-
 </programlisting></informalexample>
     </para>
   
