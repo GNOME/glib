@@ -58,7 +58,8 @@
  * fall outside of simple reference counting patterns are prone to
  * subtle bugs and occasionally undefined behaviour.  It is also worth
  * noting that since all of these operations require global
- * synchronisation of the entire machine, they can be quite slow.  In * the case of performing multiple atomic operations it can often be
+ * synchronisation of the entire machine, they can be quite slow.  In
+ * the case of performing multiple atomic operations it can often be
  * faster to simply acquire a mutex lock around the critical area,
  * perform the operations normally and then release the lock.
  **/
