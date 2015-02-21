@@ -2324,6 +2324,9 @@ g_application_run (GApplication  *application,
 
   g_settings_sync ();
 
+  while (g_main_context_iteration (NULL, FALSE))
+    ;
+
   return status;
 }
 
