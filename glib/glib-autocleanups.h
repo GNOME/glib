@@ -29,6 +29,9 @@ g_autoptr_cleanup_generic_gfree (void *p)
     g_free (*pp);
 }
 
+/* If adding a cleanup here, please also add a test case to
+ * glib/glib/autoptr.c
+ */
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GAsyncQueue, g_async_queue_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GBookmarkFile, g_bookmark_file_free)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GBytes, g_bytes_unref)

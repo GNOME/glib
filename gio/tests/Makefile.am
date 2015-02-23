@@ -489,6 +489,12 @@ gdbus_serialization_SOURCES = \
 	gdbus-tests.c
 endif
 
+if HAVE_GCC
+test_programs += \
+	autoptr				\
+	$(NULL)
+endif
+
 # -----------------------------------------------------------------------------
 #  The resources test is a bit more complicated...
 
