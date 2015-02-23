@@ -45,23 +45,16 @@ GType g_type_register_fundamental (GType                       type_id,
       </para>
 
       <para>
-        <function><link linkend="g-type-register-static">g_type_register_static</link></function> and 
+        <function><link linkend="g-type-register-static">g_type_register_static</link></function>,
+        <function><link linkend="g-type-register-dynamic">g_type_register_dynamic</link></function> and 
         <function><link linkend="g-type-register-fundamental">g_type_register_fundamental</link></function>
         are the C functions, defined in
         <filename>gtype.h</filename> and implemented in <filename>gtype.c</filename>
         which you should use to register a new <link linkend="GType"><type>GType</type></link> in the program's type system.
         It is not likely you will ever need to use 
-        <function><link linkend="g-type-register-fundamental">g_type_register_fundamental</link></function> (you have to be Tim Janik 
-        to do that) but in case you want to, the last chapter explains how to create
+        <function><link linkend="g-type-register-fundamental">g_type_register_fundamental</link></function>
+        but in case you want to, the last chapter explains how to create
         new fundamental types.
-        <footnote>
-          <para>
-            Please note that there exists another registration function: the 
-            <function><link linkend="g-type-register-dynamic">g_type_register_dynamic</link></function>. We will not discuss this
-            function here since its use is very similar to the <function>_static</function> 
-            version.
-          </para>
-        </footnote>
       </para>
 
       <para>
@@ -80,8 +73,8 @@ GType g_type_register_fundamental (GType                       type_id,
             class size: the class_size field in <link linkend="GTypeInfo"><type>GTypeInfo</type></link>.
           </para></listitem>
           <listitem><para>
-            class initialization functions (C++ constructor): the base_init and 
-            class_init fields in <link linkend="GTypeInfo"><type>GTypeInfo</type></link>.
+            class initialization functions (C++ constructor): the <function>base_init</function> and 
+            <function>class_init</function> fields in <link linkend="GTypeInfo"><type>GTypeInfo</type></link>.
           </para></listitem>
           <listitem><para>
             class destruction functions (C++ destructor): the base_finalize and 
@@ -131,8 +124,7 @@ GType g_type_register_fundamental (GType                       type_id,
 
         <para>
           The following code shows how you can copy around a 64 bit integer, as well as a <link linkend="GObject"><type>GObject</type></link>
-          instance pointer (sample code for this is located in the source tarball for this document in 
-          <filename>sample/gtype/test.c</filename>):
+          instance pointer:
 <informalexample><programlisting>
 static void test_int (void)
 {
@@ -140,7 +132,7 @@ static void test_int (void)
   GValue b_value = G_VALUE_INIT;
   guint64 a, b;
 
-  a = 0xdeadbeaf;
+  a = 0xdeadbeef;
 
   g_value_init (&amp;a_value, G_TYPE_UINT64);
   g_value_set_uint64 (&amp;a_value, a);
@@ -170,9 +162,9 @@ static void test_object (void)
   g_value_init (&amp;obj_valb, G_TYPE_OBJECT);
 
   /* g_value_copy's semantics for G_TYPE_OBJECT types is to copy the reference.
-     This function thus calls g_object_ref.
-     It is interesting to note that the assignment works here because
-     MAMAN_TYPE_BAR is a G_TYPE_OBJECT.
+   * This function thus calls g_object_ref.
+   * It is interesting to note that the assignment works here because
+   * MAMAN_TYPE_BAR is a G_TYPE_OBJECT.
    */
   g_value_copy (&amp;obj_vala, &amp;obj_valb);
 
@@ -188,39 +180,15 @@ static void test_object (void)
         </para>
         
         <para>
-          The value_table used to specify these assignment functions is defined in
-          <filename>gtype.h</filename> and is thoroughly described in the
-          API documentation provided with GObject (for once ;-) which is why we will
-          not detail its exact semantics. 
-          <informalexample><programlisting>
-typedef struct _GTypeValueTable         GTypeValueTable;
-struct _GTypeValueTable
-{
-  void     (*value_init)         (GValue       *value);
-  void     (*value_free)         (GValue       *value);
-  void     (*value_copy)         (const GValue *src_value,
-                                  GValue       *dest_value);
-  /* varargs functionality (optional) */
-  gpointer (*value_peek_pointer) (const GValue *value);
-  gchar            *collect_format;
-  gchar*   (*collect_value)      (GValue       *value,
-                                  guint         n_collect_values,
-                                  GTypeCValue  *collect_values,
-                                  guint                collect_flags);
-  gchar            *lcopy_format;
-  gchar*   (*lcopy_value)        (const GValue *value,
-                                  guint         n_collect_values,
-                                  GTypeCValue  *collect_values,
-                                  guint                collect_flags);
-};
-          </programlisting></informalexample>
+          The value table used to specify these assignment functions is
+          documented in
+          <link linkend="GTypeValueTable"><type>GTypeValueTable</type></link>.
+        </para>
+        <para>
           Interestingly, it is also very unlikely
           you will ever need to specify a value_table during type registration
           because these value_tables are inherited from the parent types for
-          non-fundamental types which means that unless you want to write a 
-          fundamental type (not a great idea!), you will not need to provide
-          a new value_table since you will inherit the value_table structure
-          from your parent type.
+          non-fundamental types.
         </para>
       </sect1>
 
@@ -246,7 +214,7 @@ struct _GTypeValueTable
             <footnote>
               <para>
                 <emphasis>Maman</emphasis> is the French word for <emphasis>mum</emphasis>
-                or <emphasis>mother</emphasis> - nothing more and nothing less.
+                or <emphasis>mother</emphasis> — nothing more and nothing less.
               </para>
             </footnote>
             
@@ -342,8 +310,7 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
         <para>
           A lot of types are not instantiable by the type system and do not have
           a class. Most of these types are fundamental trivial types such as <emphasis>gchar</emphasis>, 
-          and are already registered in <function>_g_value_types_init</function>
-          (in <filename>gvaluetypes.c</filename>).
+          and are already registered by GLib.
         </para>
 
         <para>
@@ -412,7 +379,8 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
 
         <para>
           For example, the code below shows how you could register 
-          such a fundamental object type in the type system:
+          such a fundamental object type in the type system (using none of the
+          GObject convenience API):
 <informalexample><programlisting>
 typedef struct {
   GObject parent;
@@ -509,7 +477,8 @@ typedef struct {
           The C standard mandates that the first field of a C structure is stored starting
           in the first byte of the buffer used to hold the structure's fields in memory.
           This means that the first field of an instance of an object B is A's first field
-          which in turn is GTypeInstance's first field which in turn is g_class, a pointer
+          which in turn is <type>GTypeInstance</type>'s first field which in
+          turn is <structfield>g_class</structfield>, a pointer
           to B's class structure.
         </para>
 
@@ -523,7 +492,7 @@ b->parent.parent.g_class->g_type
           or, more quickly:
 <informalexample><programlisting>
 B *b;
-((GTypeInstance*)b)->g_class->g_type
+((GTypeInstance *) b)->g_class->g_type
 </programlisting></informalexample>
         </para>
 
@@ -532,14 +501,11 @@ B *b;
 
           <para>
             instantiation of these types can be done with 
-            <function><link linkend="g-type-create-instance">g_type_create_instance</link></function>:
-<informalexample><programlisting>
-GTypeInstance* g_type_create_instance (GType          type);
-void           g_type_free_instance   (GTypeInstance *instance);
-</programlisting></informalexample>
-            <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> will look up the type information
-            structure associated to the type requested. Then, the instance size and instantiation
-            policy (if the n_preallocs field is set to a non-zero value, the type system allocates
+            <function><link linkend="g-type-create-instance">g_type_create_instance</link></function>,
+            which will look up the type information
+            structure associated with the type requested. Then, the instance size and instantiation
+            policy (if the <structfield>n_preallocs</structfield> field is set
+            to a non-zero value, the type system allocates
             the object's instance structures in chunks rather than mallocing for every instance)
             declared by the user are used to get a buffer to hold the object's instance
             structure.
@@ -551,8 +517,9 @@ void           g_type_free_instance   (GTypeInstance *instance);
             class structure (ie: the embedded parent class structure) is initialized by copying the contents from
             the class structure of the parent class. The rest of class structure is initialized to zero.  If there
             is no parent, the entire class structure is initialized to zero. The type system then invokes the
-            base_class_initialization functions (<link linkend="GBaseInitFunc"><type>GBaseInitFunc</type></link>) from topmost 
-            fundamental object to bottom-most most derived object. The object's class_init 
+            <function>base_class_initialization</function> functions
+            (<link linkend="GBaseInitFunc"><type>GBaseInitFunc</type></link>) from topmost 
+            fundamental object to bottom-most most derived object. The object's <function>class_init</function>
             (<link linkend="GClassInitFunc"><type>GClassInitFunc</type></link>) function is invoked afterwards to complete
             initialization of the class structure.
             Finally, the object's interfaces are initialized (we will discuss interface initialization
@@ -562,8 +529,10 @@ void           g_type_free_instance   (GTypeInstance *instance);
           <para>
             Once the type system has a pointer to an initialized class structure, it sets the object's
             instance class pointer to the object's class structure and invokes the object's
-            instance_init (<link linkend="GInstanceInitFunc"><type>GInstanceInitFunc</type></link>)functions, from top-most fundamental 
-            type to bottom-most most derived type.
+            <function>instance_init</function>
+            (<link linkend="GInstanceInitFunc"><type>GInstanceInitFunc</type></link>)
+            functions, from top-most fundamental 
+            type to bottom-most most-derived type.
           </para>
 
           <para>
@@ -585,15 +554,15 @@ void           g_type_free_instance   (GTypeInstance *instance);
           </para>
 
           <para>
-            As many readers have now understood it, the base initialization/finalization process is
+            The base initialization/finalization process is
             very similar to the C++ constructor/destructor paradigm. The practical details are different
             though and it is important not to get confused by superficial similarities. 
             GTypes have no instance destruction mechanism. It is
             the user's responsibility to implement correct destruction semantics on top
-            of the existing GType code. (this is what GObject does. See 
-            <xref linkend="chapter-gobject"/>)
-           Furthermore, C++ code equivalent to the base_init 
-           and class_init callbacks of GType is usually not needed because C++ cannot really create object 
+            of the existing GType code. (This is what GObject does: see 
+            <xref linkend="chapter-gobject"/>.)
+           Furthermore, C++ code equivalent to the <function>base_init</function>
+           and <function>class_init</function> callbacks of GType is usually not needed because C++ cannot really create object 
            types at runtime.
           </para>
 
@@ -609,20 +578,20 @@ void           g_type_free_instance   (GTypeInstance *instance);
                 <thead>
                   <row>
                     <entry>Invocation time</entry>
-                    <entry>Function Invoked</entry>
+                    <entry>Function invoked</entry>
                     <entry>Function's parameters</entry>
                   </row>
                 </thead>
                 <tbody>
                   <row>
                     <entry morerows="2">First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry>
-                    <entry>type's base_init function</entry>
+                    <entry>type's <function>base_init</function> function</entry>
                     <entry>On the inheritance tree of classes from fundamental type to target type. 
-                      base_init is invoked once for each class structure.</entry>
+                      <function>base_init</function> is invoked once for each class structure.</entry>
                   </row>
                   <row>
                     <!--entry>First call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry-->
-                    <entry>target type's class_init function</entry>
+                    <entry>target type's <function>class_init</function> function</entry>
                     <entry>On target type's class structure</entry>
                   </row>
                   <row>
@@ -633,7 +602,7 @@ void           g_type_free_instance   (GTypeInstance *instance);
                   </row>
                   <row>
                     <entry>Each call to <function><link linkend="g-type-create-instance">g_type_create_instance</link></function> for target type</entry>
-                    <entry>target type's instance_init function</entry>
+                    <entry>target type's <function>instance_init</function> function</entry>
                     <entry>On object's instance</entry>
                   </row>
                   <row>
@@ -644,14 +613,14 @@ void           g_type_free_instance   (GTypeInstance *instance);
                   </row>
                   <row>
                     <!--entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry-->
-                    <entry>target type's class_finalize function</entry>
+                    <entry>target type's <function>class_finalize</function> function</entry>
                     <entry>On target type's class structure</entry>
                   </row>
                   <row>
                     <!--entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for target type</entry-->
-                    <entry>type's base_finalize function</entry>
+                    <entry>type's <function>base_finalize</function> function</entry>
                     <entry>On the inheritance tree of classes from fundamental type to target type. 
-                      base_finalize is invoked once for each class structure.</entry>
+                      <function>base_finalize</function> is invoked once for each class structure.</entry>
                   </row>
                 </tbody>
               </tgroup>
@@ -674,7 +643,7 @@ void           g_type_free_instance   (GTypeInstance *instance);
         <para>
           GType's interfaces are very similar to Java's interfaces. They allow
           to describe a common API that several classes will adhere to.
-          Imagine the play, pause and stop buttons on hi-fi equipment - those can
+          Imagine the play, pause and stop buttons on hi-fi equipment — those can
           be seen as a playback interface. Once you know what they do, you can
           control your CD player, MP3 player or anything that uses these symbols.
           To declare an interface you have to register a non-instantiable
@@ -708,8 +677,8 @@ void maman_ibaz_do_action (MamanIbaz *self)
 }
 </programlisting></informalexample>
          <function>maman_ibaz_get_type</function> registers a type named <emphasis>MamanIbaz</emphasis>
-         which inherits from G_TYPE_INTERFACE. All interfaces must be children of G_TYPE_INTERFACE in the 
-         inheritance tree.
+         which inherits from <type>G_TYPE_INTERFACE</type>. All interfaces must
+         be children of <type>G_TYPE_INTERFACE</type> in the  inheritance tree.
         </para>
 
         <para>
@@ -717,7 +686,7 @@ void maman_ibaz_do_action (MamanIbaz *self)
           a <link linkend="GTypeInterface"><type>GTypeInterface</type></link> structure. The interface structure is expected to
           contain the function pointers of the interface methods. It is good style to 
           define helper functions for each of the interface methods which simply call
-          the interface' method directly: <function>maman_ibaz_do_action</function>
+          the interface's method directly: <function>maman_ibaz_do_action</function>
           is one of these.
         </para>
 
@@ -829,10 +798,13 @@ G_DEFINE_TYPE_WITH_CODE (MamanBaz, maman_baz, G_TYPE_OBJECT,
             First a memory buffer is allocated to hold the interface structure. The parent's
             interface structure is then copied over to the new interface structure (the parent
             interface is already initialized at that point). If there is no parent interface,
-            the interface structure is initialized with zeros. The g_type and the g_instance_type
-            fields are then initialized: g_type is set to the type of the most-derived interface
-            and g_instance_type is set to the type of the most derived type which implements 
-            this interface.
+            the interface structure is initialized with zeros. The
+            <structfield>g_type</structfield> and the
+            <structfield>g_instance_type</structfield> fields are then
+            initialized: <structfield>g_type</structfield> is set to the type of
+            the most-derived interface and
+            <structfield>g_instance_type</structfield> is set to the type of the
+            most derived type which implements  this interface.
           </para>
 
           <para>
@@ -900,9 +872,7 @@ maman_ibaz_default_init (MamanIbazInterface *iface)
           </para>
 
         <para>
-          If you have found the stuff about interface hairy, you are right: it is hairy but
-          there is not much I can do about it. What I can do is summarize what you need to know
-          about interfaces:          
+          In summary, interface initialization uses the following functions:
         </para>
 
           <para>
@@ -953,9 +923,6 @@ maman_ibaz_default_init (MamanIbazInterface *iface)
               </tbody>
             </tgroup>
           </table>
-          It is highly unlikely (i.e. I do not know of <emphasis>anyone</emphasis> who actually 
-          used it) you will ever need other more fancy things such as the ones described in the
-          following section (<xref linkend="gtype-non-instantiable-classed-dest"/>).
         </para>
         
         </sect2>
@@ -1007,15 +974,15 @@ maman_ibaz_default_init (MamanIbazInterface *iface)
                   <entry morerows="1">Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function> for type
                     implementing interface
                    </entry>
-                  <entry>interface' interface_finalize function</entry>
-                  <entry>On interface' vtable</entry>
+                  <entry>interface's <function>interface_finalize</function> function</entry>
+                  <entry>On interface's vtable</entry>
                 </row>
                 <row>
                   <!--entry>Last call to <function><link linkend="g-type-free-instance">g_type_free_instance</link></function>for type
                     implementing interface
                    </entry-->
-                  <entry>interface' base_finalize function</entry>
-                  <entry>On interface' vtable</entry>
+                  <entry>interface's <function>base_finalize</function> function</entry>
+                  <entry>On interface's vtable</entry>
                 </row>
               </tbody>
             </tgroup>
