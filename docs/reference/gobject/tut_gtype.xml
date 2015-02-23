@@ -225,57 +225,66 @@ static void test_object (void)
             returns the GType for the associated object type. For an object of type 
             <emphasis>Bar</emphasis> in a library prefixed by <emphasis>maman</emphasis>, 
             use: <function>MAMAN_TYPE_BAR</function>.
-            It is common although not a convention to implement this macro using either a global 
-            static variable or a function named <function>prefix_object_get_type</function>.
-            We will follow the function pattern wherever possible in this document.
+            This macro is implemented using a function named
+            <function>prefix_object_get_type</function>.
           </para></listitem>
-          <listitem><para>Create a macro named <function>PREFIX_OBJECT (obj)</function> which 
-            returns a pointer of type <type>PrefixObject</type>. This macro is used to enforce
-            static type safety by doing explicit casts wherever needed. It also enforces
-            dynamic type safety by doing runtime checks. It is possible to disable the dynamic
-            type checks in production builds (see <link linkend="glib-building">building glib</link>).
-            For example, we would create 
-            <function>MAMAN_BAR (obj)</function> to keep the previous example.
-          </para></listitem>
-          <listitem><para>If the type is classed, create a macro named 
-            <function>PREFIX_OBJECT_CLASS (klass)</function>. This macro
-            is strictly equivalent to the previous casting macro: it does static casting with
-            dynamic type checking of class structures. It is expected to return a pointer
-            to a class structure of type <type>PrefixObjectClass</type>. Again, an example is:
-            <function>MAMAN_BAR_CLASS</function>.
-          </para></listitem>
-          <listitem><para>Create a macro named <function>PREFIX_IS_BAR (obj)</function>: this macro is expected
-            to return a <type>gboolean</type> which indicates whether or not the input
-            object instance pointer of type BAR.
-          </para></listitem>
-          <listitem><para>If the type is classed, create a macro named
-            <function>PREFIX_IS_OBJECT_CLASS (klass)</function> which, as above, returns a boolean
-            if the input class pointer is a pointer to a class of type OBJECT.
-          </para></listitem>
-          <listitem><para>If the type is classed, create a macro named 
-            <function>PREFIX_OBJECT_GET_CLASS (obj)</function>
-            which returns the class pointer associated to an instance of a given type. This macro
-            is used for static and dynamic type safety purposes (just like the previous casting
-            macros).
-          </para></listitem>
+          <listitem>
+            <para>
+              Use <link linkend="G-DECLARE-FINAL-TYPE:CAPS"><function>G_DECLARE_FINAL_TYPE</function></link>
+              or <link linkend="G-DECLARE-DERIVABLE-TYPE:CAPS"><function>G_DECLARE_DERIVABLE_TYPE</function></link>
+              to define various other conventional macros for your object:
+            </para>
+            <itemizedlist>
+              <listitem><para><function>PREFIX_OBJECT (obj)</function>, which 
+                returns a pointer of type <type>PrefixObject</type>. This macro is used to enforce
+                static type safety by doing explicit casts wherever needed. It also enforces
+                dynamic type safety by doing runtime checks. It is possible to disable the dynamic
+                type checks in production builds (see <link linkend="glib-building">building GLib</link>).
+                For example, we would create 
+                <function>MAMAN_BAR (obj)</function> to keep the previous example.
+              </para></listitem>
+              <listitem><para><function>PREFIX_OBJECT_CLASS (klass)</function>, which
+                is strictly equivalent to the previous casting macro: it does static casting with
+                dynamic type checking of class structures. It is expected to return a pointer
+                to a class structure of type <type>PrefixObjectClass</type>. An example is:
+                <function>MAMAN_BAR_CLASS</function>.
+              </para></listitem>
+              <listitem><para><function>PREFIX_IS_BAR (obj)</function>, which
+                returns a <type>gboolean</type> which indicates whether the input
+                object instance pointer is non-<type>NULL</type> and of type BAR.
+              </para></listitem>
+              <listitem><para><function>PREFIX_IS_OBJECT_CLASS (klass)</function>, which returns a boolean
+                if the input class pointer is a pointer to a class of type OBJECT.
+              </para></listitem>
+              <listitem><para><function>PREFIX_OBJECT_GET_CLASS (obj)</function>,
+                which returns the class pointer associated to an instance of a given type. This macro
+                is used for static and dynamic type safety purposes (just like the previous casting
+                macros).
+              </para></listitem>
+            </itemizedlist>
+          </listitem>
         </itemizedlist>
         The implementation of these macros is pretty straightforward: a number of simple-to-use 
         macros are provided in <filename>gtype.h</filename>. For the example we used above, we would 
         write the following trivial code to declare the macros:
 <informalexample><programlisting>
-#define MAMAN_TYPE_BAR                  (maman_bar_get_type ())
-#define MAMAN_BAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_BAR, MamanBar))
-#define MAMAN_BAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), MAMAN_TYPE_BAR, MamanBarClass))
-#define MAMAN_IS_BAR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_BAR))
-#define MAMAN_IS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), MAMAN_TYPE_BAR))
-#define MAMAN_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MAMAN_TYPE_BAR, MamanBarClass))
+#define MAMAN_TYPE_BAR maman_bar_get_type ()
+G_DECLARE_FINAL_TYPE (MamanBar, maman_bar, MAMAN, BAR, GObject)
 </programlisting></informalexample>
-        <note><simpara>Stick to the naming <varname>klass</varname> as <varname>class</varname> is a registered c++ keyword.</simpara></note>
       </para>
 
       <para>
-        The following code shows how to implement the <function>maman_bar_get_type</function>
-        function:
+        Unless your code has special requirements, you can use the
+        <function><link linkend="G-DEFINE-TYPE:CAPS">G_DEFINE_TYPE</link></function>
+	macro to define a class:
+<informalexample><programlisting>
+G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
+</programlisting></informalexample>
+      </para>
+
+      <para>
+        Otherwise, the <function>maman_bar_get_type</function> function must be
+        implemented manually:
 <informalexample><programlisting>
 GType maman_bar_get_type (void)
 {
@@ -290,15 +299,6 @@ GType maman_bar_get_type (void)
   }
   return type;
 }
-</programlisting></informalexample>
-      </para>
-
-      <para>
-        If you have no special requirements you can use the
-        <function><link linkend="G-DEFINE-TYPE:CAPS">G_DEFINE_TYPE</link></function>
-	macro to define a class:
-<informalexample><programlisting>
-G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
 </programlisting></informalexample>
       </para>
 
@@ -650,21 +650,14 @@ B *b;
           classed type which derives from 
           <link linkend="GTypeInterface"><type>GTypeInterface</type></link>. The following piece of code declares such an interface.
 <informalexample><programlisting>
-#define MAMAN_TYPE_IBAZ                (maman_ibaz_get_type ())
-#define MAMAN_IBAZ(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_IBAZ, MamanIbaz))
-#define MAMAN_IS_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_IBAZ))
-#define MAMAN_IBAZ_GET_INTERFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), MAMAN_TYPE_IBAZ, MamanIbazInterface))
-
-typedef struct _MamanIbaz MamanIbaz; /* dummy object */
-typedef struct _MamanIbazInterface MamanIbazInterface;
+#define MAMAN_TYPE_IBAZ maman_ibaz_get_type ()
+G_DECLARE_INTERFACE(MamanIbaz, maman_ibaz, MAMAN, IBAZ, GObject)
 
 struct _MamanIbazInterface {
   GTypeInterface parent;
 
   void (*do_action) (MamanIbaz *self);
 };
-
-GType maman_ibaz_get_type (void);
 
 void maman_ibaz_do_action (MamanIbaz *self);
 </programlisting></informalexample>
@@ -673,6 +666,8 @@ void maman_ibaz_do_action (MamanIbaz *self);
 <informalexample><programlisting>
 void maman_ibaz_do_action (MamanIbaz *self)
 {
+  g_return_if_fail (MAMAN_IS_IBAZ (self));
+
   MAMAN_IBAZ_GET_INTERFACE (self)->do_action (self);
 }
 </programlisting></informalexample>
@@ -691,12 +686,38 @@ void maman_ibaz_do_action (MamanIbaz *self)
         </para>
 
         <para>
-          Once an interface type is registered, you must register implementations for these
-          interfaces. The function named <function>maman_baz_get_type</function> registers
-          a new GType named MamanBaz which inherits from <link linkend="GObject"><type>GObject</type></link> and which
-          implements the interface <type>MamanIbaz</type>.
+        If you have no special requirements you can use the
+        <link linkend="G-IMPLEMENT-INTERFACE:CAPS">G_IMPLEMENT_INTERFACE</link> macro
+        to implement an interface:
 <informalexample><programlisting>
-static void maman_baz_do_action (MamanIbaz *self)
+static void
+maman_baz_do_action (MamanIbaz *self)
+{
+  g_print ("Baz implementation of Ibaz interface Action.\n");
+}
+
+static void
+maman_ibaz_interface_init (MamanIbazInterface *iface)
+{
+  iface->do_action = maman_baz_do_action;
+}
+
+G_DEFINE_TYPE_WITH_CODE (MamanBaz, maman_baz, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (MAMAN_TYPE_IBAZ,
+                                                maman_ibaz_interface_init));
+</programlisting></informalexample>
+        </para>
+
+        <para>
+          If your code does have special requirements, you must write a custom
+          <function>get_type</function> function to register your GType which
+          inherits from some <link linkend="GObject"><type>GObject</type></link>
+          and which implements the interface <type>MamanIbaz</type>. For
+          example, this code registers a new <type>MamanBaz</type> class which
+          implements <type>MamanIbaz</type>:
+<informalexample><programlisting>
+static void
+maman_baz_do_action (MamanIbaz *self)
 {
   g_print ("Baz implementation of Ibaz interface Action.\n");
 }
@@ -756,29 +777,6 @@ struct _GInterfaceInfo
   GInterfaceFinalizeFunc interface_finalize;
   gpointer               interface_data;
 };
-</programlisting></informalexample>
-        </para>
-
-        <para>
-        If you have no special requirements you can use the
-        <link linkend="G-IMPLEMENT-INTERFACE:CAPS">G_IMPLEMENT_INTERFACE</link> macro
-        to implement an interface:
-<informalexample><programlisting>
-static void
-maman_baz_do_action (MamanIbaz *self)
-{
-  g_print ("Baz implementation of Ibaz interface Action.\n");
-}
-
-static void
-maman_ibaz_interface_init (MamanIbazInterface *iface)
-{
-  iface->do_action = maman_baz_do_action;
-}
-
-G_DEFINE_TYPE_WITH_CODE (MamanBaz, maman_baz, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (MAMAN_TYPE_IBAZ,
-                                                maman_ibaz_interface_init));
 </programlisting></informalexample>
         </para>
 
