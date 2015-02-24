@@ -124,7 +124,8 @@ return_type function_callback (… , gpointer user_data);
         A generic C closure marshaller is available as
         <link linkend="g-cclosure-marshal-generic"><function>g_cclosure_marshal_generic</function></link>
         which implements marshalling for all function types using libffi. Custom
-        marshallers for different types are not needed.
+        marshallers for different types are not needed apart from performance
+        critical code where the libffi-based marshaller may be too slow.
       </para>
 
       <para>

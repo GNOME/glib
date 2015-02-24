@@ -1369,7 +1369,7 @@ file_signals[CHANGED] =
                  NULL /* closure */,
                  NULL /* accumulator */,
                  NULL /* accumulator data */,
-                 g_cclosure_marshal_generic,
+                 NULL /* C marshaller */,
                  G_TYPE_NONE /* return_type */,
                  0     /* n_params */,
                  NULL  /* param_types */);
@@ -1396,11 +1396,22 @@ maman_file_write (MamanFile    *self,
     </para>
 
     <para>
-      The C signal marshaller should always be
+      The C signal marshaller should always be <literal>NULL</literal>, in which
+      case the best marshaller for the given closure type will be chosen by
+      GLib. This may be an internal marshaller specific to the closure type, or
       <function>g_cclosure_marshal_generic</function>, which implements generic
       conversion of arrays of parameters to C callback invocations. GLib used to
-      use type-specific generated marshallers, but that has been deprecated in
-      favour of the generic marshaller.
+      require the user to write or generate a type-specific marshaller and pass
+      that, but that has been deprecated in favour of automatic selection of
+      marshallers.
+    </para>
+
+    <para>
+      Note that <function>g_cclosure_marshal_generic</function> is slower than
+      non-generic marshallers, so should be avoided for performance critical
+      code. However, performance critical code should rarely be using signals
+      anyway, as emitting a signal blocks on emitting it to all listeners, which
+      has potentially unbounded cost.
     </para>
   </sect1>
 </chapter>
