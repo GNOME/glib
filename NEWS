@@ -1,3 +1,23 @@
+Overview of changes in GLib 2.42.2
+==================================
+
+* Bugs fixed:
+ 712570 Hang in g_threaded_socket_service_func
+ 719455 g_file_make_directory_with_parents() can erroneously throw...
+ 727829 win32: glibconfig.h.win32 updates
+ 734946 Implement GContentType on OSX
+ 741024 glist: Mention that g_list_length() is bad for checking li...
+ 741654 [patch] gobject: don't use G_STRLOC in G_OBJECT_WARN_INVAL...
+ 741788 Document GSettings build system integration
+ 741807 Add thread name support on OS X and iOS
+ 742851 avoid MSVC warnings in G_STMT_END
+ 743508 polkitd fails to start: patch for gio/gcredentialsprivate.h
+ 743936 handle unsigned modifier for long long in internal printf
+
+* Translation updates:
+ Swedish
+
+
 Overview of changes in GLib 2.42.1
 ==================================
 
@@ -8,7 +28,7 @@ Overview of changes in GLib 2.42.1
  736806 gtask: Fix reference count loop causing leaks
  737143 Include <stdint.h> in glib/valgrind.h
  738170 g_byte_array_new_take() doesn't initialize array->alloc
- 738197 g_cond_timed_wait() doesn't time out on Mac OS X 
+ 738197 g_cond_timed_wait() doesn't time out on Mac OS X
 
 * Translation updates:
  Bengali (India)
