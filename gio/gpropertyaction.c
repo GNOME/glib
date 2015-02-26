@@ -520,7 +520,8 @@ g_property_action_class_init (GPropertyActionClass *class)
 /**
  * g_property_action_new:
  * @name: the name of the action to create
- * @object: the object that has the property to wrap
+ * @object: (type GObject.Object): the object that has the property
+ *   to wrap
  * @property_name: the name of the property
  *
  * Creates a #GAction corresponding to the value of property
