@@ -50,6 +50,7 @@ IGNORE_HFILES = \
 	gdummytlsbackend.h		\
 	gfileattribute-priv.h		\
 	gfileinfo-priv.h		\
+	ghttpproxy.h			\
 	giomodule-priv.h		\
 	gioprivate.h			\
 	giowin32-priv.h			\

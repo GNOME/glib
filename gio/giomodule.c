@@ -30,6 +30,7 @@
 #include "gproxyresolver.h"
 #include "gproxy.h"
 #include "gsettingsbackendinternal.h"
+#include "ghttpproxy.h"
 #include "gsocks4proxy.h"
 #include "gsocks4aproxy.h"
 #include "gsocks5proxy.h"
@@ -1098,6 +1099,8 @@ _g_io_modules_ensure_loaded (void)
 #endif
       g_type_ensure (_g_local_vfs_get_type ());
       g_type_ensure (_g_dummy_proxy_resolver_get_type ());
+      g_type_ensure (_g_http_proxy_get_type ());
+      g_type_ensure (_g_https_proxy_get_type ());
       g_type_ensure (_g_socks4a_proxy_get_type ());
       g_type_ensure (_g_socks4_proxy_get_type ());
       g_type_ensure (_g_socks5_proxy_get_type ());

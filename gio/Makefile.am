@@ -183,6 +183,8 @@ application_sources = \
 	$(NULL)
 
 local_sources = \
+	ghttpproxy.c			\
+	ghttpproxy.h			\
 	glocaldirectorymonitor.c 	\
 	glocaldirectorymonitor.h 	\
 	glocalfile.c 			\
