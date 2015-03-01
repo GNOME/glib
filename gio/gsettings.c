@@ -2928,7 +2928,7 @@ g_settings_bind_writable (GSettings   *settings,
 
 /**
  * g_settings_unbind:
- * @object: the object
+ * @object: (type GObject.Object): the object
  * @property: the property whose binding is removed
  *
  * Removes an existing binding for @property on @object.

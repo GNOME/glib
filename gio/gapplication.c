@@ -2757,7 +2757,7 @@ g_application_notify_busy_binding (GObject    *object,
 /**
  * g_application_bind_busy_property:
  * @application: a #GApplication
- * @object: a #GObject
+ * @object: (type GObject.Object): a #GObject
  * @property: the name of a boolean property of @object
  *
  * Marks @application as busy (see g_application_mark_busy()) while
@@ -2812,7 +2812,7 @@ g_application_bind_busy_property (GApplication *application,
 /**
  * g_application_unbind_busy_property:
  * @application: a #GApplication
- * @object: a #GObject
+ * @object: (type GObject.Object): a #GObject
  * @property: the name of a boolean property of @object
  *
  * Destroys a binding between @property and the busy state of
