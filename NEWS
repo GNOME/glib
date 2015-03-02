@@ -1,3 +1,32 @@
+Overview of changes in GLib 2.43.91
+===================================
+
+We have now added 'g_autofree' as a libgsystem-style autocleanup macro
+that calls g_free() on the content of a local variable when it leaves
+scope (working only on GCC and clang).
+
+GApplication now has an "is-busy" property, allowing one to query the
+effective busy state.
+
+There have been various other bugfixes and cleanups.
+
+Bugs fixed:
+ 661554 GIO's use of GError is wrong
+ 744263 Fix format specifier for __LINE__ in G_OBJECT_WARN_INVALID_PSPEC
+ 744565 gapplication: add bind_busy_property()
+ 744747 Add g_autofree
+ 744756 Can't find out if gapplication is marked as busy
+ 744830 autocleanups: Add GArray and GPtrArray
+ 744876 Unclean exit from from g_application_run
+ 745239 g_property_action_new missing type annotation
+
+Translations updated:
+ Chinese (Taiwan)
+ French
+ Galician
+ Lithuanian
+ Slovak
+
 Overview of changes in GLib 2.43.90
 ===================================
 
