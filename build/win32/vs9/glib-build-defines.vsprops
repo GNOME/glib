@@ -12,6 +12,7 @@
 		AdditionalIncludeDirectories="..\..\..;..\..\..\glib;$(GlibEtcInstallRoot)\include"
 		PreprocessorDefinitions="HAVE_CONFIG_H"
 		ForcedIncludeFiles="msvc_recommended_pragmas.h"
+		AdditionalOptions="/MP"
 	/>
 	<Tool
 		Name="VCLinkerTool"
