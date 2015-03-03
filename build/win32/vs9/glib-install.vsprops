@@ -98,8 +98,11 @@ copy ..\..\..\gio\gproxyresolver.h $(CopyDir)\include\glib-2.0\gio\gproxyresolve
 copy ..\..\..\gio\gresolver.h $(CopyDir)\include\glib-2.0\gio\gresolver.h&#x0D;&#x0A;
 copy ..\..\..\gio\gresource.h $(CopyDir)\include\glib-2.0\gio\gresource.h&#x0D;&#x0A;
 copy ..\..\..\gio\gseekable.h $(CopyDir)\include\glib-2.0\gio\gseekable.h&#x0D;&#x0A;
+copy ..\..\..\gio\gsimpleactiongroup.h $(CopyDir)\include\glib-2.0\gio\gsimpleactiongroup.h&#x0D;&#x0A;
 copy ..\..\..\gio\gsimpleasyncresult.h $(CopyDir)\include\glib-2.0\gio\gsimpleasyncresult.h&#x0D;&#x0A;
+copy ..\..\..\gio\gsimpleiostream.h $(CopyDir)\include\glib-2.0\gio\gsimpleiostream.h&#x0D;&#x0A;
 copy ..\..\..\gio\gsimplepermission.h $(CopyDir)\include\glib-2.0\gio\gsimplepermission.h&#x0D;&#x0A;
+copy ..\..\..\gio\gsimpleproxyresolver.h $(CopyDir)\include\glib-2.0\gio\gsimpleproxyresolver.h&#x0D;&#x0A;
 copy ..\..\..\gio\gsocket.h $(CopyDir)\include\glib-2.0\gio\gsocket.h&#x0D;&#x0A;
 copy ..\..\..\gio\gsocketaddress.h $(CopyDir)\include\glib-2.0\gio\gsocketaddress.h&#x0D;&#x0A;
 copy ..\..\..\gio\gsocketaddressenumerator.h $(CopyDir)\include\glib-2.0\gio\gsocketaddressenumerator.h&#x0D;&#x0A;
@@ -110,7 +113,6 @@ copy ..\..\..\gio\gsocketcontrolmessage.h $(CopyDir)\include\glib-2.0\gio\gsocke
 copy ..\..\..\gio\gsocketlistener.h $(CopyDir)\include\glib-2.0\gio\gsocketlistener.h&#x0D;&#x0A;
 copy ..\..\..\gio\gsocketservice.h $(CopyDir)\include\glib-2.0\gio\gsocketservice.h&#x0D;&#x0A;
 copy ..\..\..\gio\gsrvtarget.h $(CopyDir)\include\glib-2.0\gio\gsrvtarget.h&#x0D;&#x0A;
-copy ..\..\..\gio\gsimpleproxyresolver.h $(CopyDir)\include\glib-2.0\gio\gsimpleproxyresolver.h&#x0D;&#x0A;
 copy ..\..\..\gio\gtask.h $(CopyDir)\include\glib-2.0\gio\gtask.h&#x0D;&#x0A;
 copy ..\..\..\gio\gsubprocess.h $(CopyDir)\include\glib-2.0\gio\gsubprocess.h&#x0D;&#x0A;
 copy ..\..\..\gio\gsubprocesslauncher.h $(CopyDir)\include\glib-2.0\gio\gsubprocesslauncher.h&#x0D;&#x0A;
@@ -136,7 +138,6 @@ copy ..\..\..\gio\gapplication.h $(CopyDir)\include\glib-2.0\gio\gapplication.h&
 copy ..\..\..\gio\gapplicationcommandline.h $(CopyDir)\include\glib-2.0\gio\gapplicationcommandline.h&#x0D;&#x0A;
 copy ..\..\..\gio\gactiongroup.h $(CopyDir)\include\glib-2.0\gio\gactiongroup.h&#x0D;&#x0A;
 copy ..\..\..\gio\gactionmap.h $(CopyDir)\include\glib-2.0\gio\gactionmap.h&#x0D;&#x0A;
-copy ..\..\..\gio\gsimpleactiongroup.h $(CopyDir)\include\glib-2.0\gio\gsimpleactiongroup.h&#x0D;&#x0A;
 copy ..\..\..\gio\gremoteactiongroup.h $(CopyDir)\include\glib-2.0\gio\gremoteactiongroup.h&#x0D;&#x0A;
 copy ..\..\..\gio\gactiongroupexporter.h $(CopyDir)\include\glib-2.0\gio\gactiongroupexporter.h&#x0D;&#x0A;
 copy ..\..\..\gio\gdbusactiongroup.h $(CopyDir)\include\glib-2.0\gio\gdbusactiongroup.h&#x0D;&#x0A;
@@ -262,6 +263,7 @@ copy ..\..\..\gobject\gclosure.h $(CopyDir)\include\glib-2.0\gobject\gclosure.h&
 copy ..\..\..\gobject\genums.h $(CopyDir)\include\glib-2.0\gobject\genums.h&#x0D;&#x0A;
 copy ..\..\..\gobject\gmarshal.h $(CopyDir)\include\glib-2.0\gobject\gmarshal.h&#x0D;&#x0A;
 copy ..\..\..\gobject\gobject.h $(CopyDir)\include\glib-2.0\gobject\gobject.h&#x0D;&#x0A;
+copy ..\..\..\gobject\gobjectnotifyqueue.c $(CopyDir)\include\glib-2.0\gobject\gobjectnotifyqueue.c&#x0D;&#x0A;
 copy ..\..\..\gobject\gparam.h $(CopyDir)\include\glib-2.0\gobject\gparam.h&#x0D;&#x0A;
 copy ..\..\..\gobject\gparamspecs.h $(CopyDir)\include\glib-2.0\gobject\gparamspecs.h&#x0D;&#x0A;
 copy ..\..\..\gobject\gsignal.h $(CopyDir)\include\glib-2.0\gobject\gsignal.h&#x0D;&#x0A;
