@@ -39,7 +39,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib1d.lib $(WindowsNetworkingLibs)"
+				AdditionalDependencies="zlib1.lib $(WindowsNetworkingLibs)"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -103,7 +103,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="zlib1d.lib $(WindowsNetworkingLibs)"
+				AdditionalDependencies="zlib1.lib $(WindowsNetworkingLibs)"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"

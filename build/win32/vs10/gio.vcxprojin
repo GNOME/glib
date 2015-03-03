@@ -86,7 +86,7 @@
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>zlib1d.lib;$(WindowsNetworkingLibs);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>zlib1.lib;$(WindowsNetworkingLibs);%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -137,7 +137,7 @@
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>zlib1d.lib;$(WindowsNetworkingLibs);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>zlib1.lib;$(WindowsNetworkingLibs);%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
