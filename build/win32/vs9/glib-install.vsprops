@@ -257,6 +257,7 @@ copy ..\..\..\gobject\gclosure.h $(CopyDir)\include\glib-2.0\gobject\gclosure.h&
 copy ..\..\..\gobject\genums.h $(CopyDir)\include\glib-2.0\gobject\genums.h&#x0D;&#x0A;
 copy ..\..\..\gobject\gmarshal.h $(CopyDir)\include\glib-2.0\gobject\gmarshal.h&#x0D;&#x0A;
 copy ..\..\..\gobject\gobject.h $(CopyDir)\include\glib-2.0\gobject\gobject.h&#x0D;&#x0A;
+copy ..\..\..\gobject\gobjectnotifyqueue.c $(CopyDir)\include\glib-2.0\gobject\gobjectnotifyqueue.c&#x0D;&#x0A;
 copy ..\..\..\gobject\gparam.h $(CopyDir)\include\glib-2.0\gobject\gparam.h&#x0D;&#x0A;
 copy ..\..\..\gobject\gparamspecs.h $(CopyDir)\include\glib-2.0\gobject\gparamspecs.h&#x0D;&#x0A;
 copy ..\..\..\gobject\gsignal.h $(CopyDir)\include\glib-2.0\gobject\gsignal.h&#x0D;&#x0A;
