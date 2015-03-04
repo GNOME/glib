@@ -131,6 +131,7 @@
     <Link>
       <OutputFile>$(OutDir)gspawn-win64-helper-console.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)gspawn-win64-helper-console.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
@@ -151,6 +152,7 @@
     <Link>
       <OutputFile>$(OutDir)gspawn-win64-helper-console.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)gspawn-win64-helper-console.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
