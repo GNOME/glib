@@ -120,7 +120,7 @@ main (gint   argc,
   gboolean gen_froots = 0;
   gboolean gen_tree = 0;
   gint i;
-  gchar *iindent = "";
+  const gchar *iindent = "";
 
   f_out = stdout;
   
