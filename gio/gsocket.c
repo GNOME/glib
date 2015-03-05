@@ -64,6 +64,11 @@
 #include "gcredentialsprivate.h"
 #include "glibintl.h"
 
+#ifdef G_OS_WIN32
+/* For Windows XP runtime compatibility, but use the system's if_nametoindex() if available */
+#include "gwin32networking.h"
+#endif
+
 /**
  * SECTION:gsocket
  * @short_description: Low-level socket object
@@ -1937,6 +1942,9 @@ if_nametoindex (const gchar *iface)
   gulong addresses_len = 0;
   guint idx = 0;
   DWORD res;
+
+  if (ws2funcs.pIfNameToIndex != NULL)
+    return ws2funcs.pIfNameToIndex (iface);
 
   res = GetAdaptersAddresses (AF_UNSPEC, 0, NULL, NULL, &addresses_len);
   if (res != NO_ERROR && res != ERROR_BUFFER_OVERFLOW)

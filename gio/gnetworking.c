@@ -22,6 +22,13 @@
 
 #include "gnetworking.h"
 
+#ifdef G_OS_WIN32
+/* For Windows XP run-time compatibility */
+#include "gwin32networking.h"
+
+GWin32WinsockFuncs ws2funcs = {0};
+#endif
+
 /**
  * SECTION:gnetworking
  * @title: gnetworking.h
@@ -66,9 +73,39 @@ g_networking_init (void)
   if (g_once_init_enter (&inited))
     {
       WSADATA wsadata;
+      HMODULE ws2dll, iphlpapidll;
 
       if (WSAStartup (MAKEWORD (2, 0), &wsadata) != 0)
-	g_error ("Windows Sockets could not be initialized");
+        g_error ("Windows Sockets could not be initialized");
+
+      /* We want to use these functions if they are available, but
+       * still need to make sure the code still runs on Windows XP
+       */
+      ws2dll = LoadLibraryW (L"ws2_32.dll");
+      iphlpapidll = LoadLibraryW (L"iphlpapi.dll");
+
+      if (ws2dll != NULL)
+        {
+          ws2funcs.pInetNtop =
+            (PFN_InetNtop) GetProcAddress (ws2dll, "inet_ntop");
+          ws2funcs.pInetPton =
+            (PFN_InetPton) GetProcAddress (ws2dll, "inet_pton");
+          FreeLibrary (ws2dll);
+        }
+      else
+        {
+          ws2funcs.pInetNtop = NULL;
+          ws2funcs.pInetPton = NULL;
+        }
+
+      if (iphlpapidll != NULL)
+        {
+          ws2funcs.pIfNameToIndex =
+            (PFN_IfNameToIndex) GetProcAddress (iphlpapidll, "if_nametoindex");
+          FreeLibrary (iphlpapidll);
+        }
+      else
+        ws2funcs.pIfNameToIndex = NULL;
       
       g_once_init_leave (&inited, 1);
     }

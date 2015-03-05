@@ -314,6 +314,7 @@ win32_actual_sources = \
 	gwin32inputstream.c \
 	gwin32outputstream.c \
 	gwin32outputstream.h \
+	gwin32networking.h \
 	$(NULL)
 
 win32_more_sources_for_vcproj = \
