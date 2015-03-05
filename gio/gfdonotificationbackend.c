@@ -27,6 +27,7 @@
 #include "gdbusconnection.h"
 #include "gactiongroup.h"
 #include "gaction.h"
+#include "gthemedicon.h"
 #include "gfileicon.h"
 #include "gfile.h"
 #include "gdbusutils.h"
@@ -262,13 +263,23 @@ call_notify (GDBusConnection     *con,
   urgency = urgency_from_priority (g_notification_get_priority (notification));
   g_variant_builder_add (&hints_builder, "{sv}", "urgency", g_variant_new_byte (urgency));
   icon = g_notification_get_icon (notification);
-  if (icon != NULL && G_IS_FILE_ICON (icon))
+  if (icon != NULL)
     {
-      GFile *file;
+      if (G_IS_FILE_ICON (icon))
+        {
+           GFile *file;
 
-      file = g_file_icon_get_file (G_FILE_ICON (icon));
-      g_variant_builder_add (&hints_builder, "{sv}", "image-path",
-                             g_variant_new_take_string (g_file_get_path (file)));
+           file = g_file_icon_get_file (G_FILE_ICON (icon));
+           g_variant_builder_add (&hints_builder, "{sv}", "image-path",
+                                  g_variant_new_take_string (g_file_get_path (file)));
+        }
+      else if (G_IS_THEMED_ICON (icon))
+        {
+           const gchar* const* icon_names = g_themed_icon_get_names(G_THEMED_ICON (icon));
+           /* Take first name from GThemedIcon */
+           g_variant_builder_add (&hints_builder, "{sv}", "image-path",
+                                  g_variant_new_string (icon_names[0]));
+        }
     }
 
   body = g_notification_get_body (notification);
