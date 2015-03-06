@@ -37,6 +37,7 @@ typedef struct ik_event_s {
    * then event1->pair == event2 and event2->pair == NULL.
    * It will result also in event1->pair->is_second_in_pair == TRUE */
   struct ik_event_s *pair;
+  gint64 timestamp; /* monotonic time that this was created */
 } ik_event_t;
 
 gboolean _ik_startup (void (*cb) (ik_event_t *event));
