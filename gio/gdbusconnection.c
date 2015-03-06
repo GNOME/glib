@@ -3703,10 +3703,10 @@ path_rule_matches (const gchar *path_a,
   len_a = strlen (path_a);
   len_b = strlen (path_b);
 
-  if (len_a < len_b && path_a[len_a - 1] != '/')
+  if (len_a < len_b && (len_a == 0 || path_a[len_a - 1] != '/'))
     return FALSE;
 
-  if (len_b < len_a && path_b[len_b - 1] != '/')
+  if (len_b < len_a && (len_b == 0 || path_b[len_b - 1] != '/'))
     return FALSE;
 
   return memcmp (path_a, path_b, MIN (len_a, len_b)) == 0;
