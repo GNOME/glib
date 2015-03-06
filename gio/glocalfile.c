@@ -305,6 +305,38 @@ _g_local_file_new (const char *filename)
   return G_FILE (local);
 }
 
+/*< internal >
+ * g_local_file_new_from_dirname_and_basename:
+ * @dirname: an absolute, canonical directory name
+ * @basename: the name of a child inside @dirname
+ *
+ * Creates a #GFile from @dirname and @basename.
+ *
+ * This is more efficient than pasting the fields together for yourself
+ * and creating a #GFile from the result, and also more efficient than
+ * creating a #GFile for the dirname and using g_file_get_child().
+ *
+ * @dirname must be canonical, as per GLocalFile's opinion of what
+ * canonical means.  This means that you should only pass strings that
+ * were returned by _g_local_file_get_filename().
+ *
+ * Returns: a #GFile
+ */
+GFile *
+g_local_file_new_from_dirname_and_basename (const gchar *dirname,
+                                            const gchar *basename)
+{
+  GLocalFile *local;
+
+  g_return_val_if_fail (dirname != NULL, NULL);
+  g_return_val_if_fail (basename && basename[0] && !strchr (basename, '/'), NULL);
+
+  local = g_object_new (G_TYPE_LOCAL_FILE, NULL);
+  local->filename = g_build_filename (dirname, basename, NULL);
+
+  return G_FILE (local);
+}
+
 static gboolean
 g_local_file_is_native (GFile *file)
 {
