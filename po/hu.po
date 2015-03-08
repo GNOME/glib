@@ -4,14 +4,14 @@
 #
 # Szabolcs Varga <shirokuma at shirokuma dot hu>, 2005.
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
-# Balázs Úr <urbalazs at gmail dot com>, 2013, 2014.
+# Balázs Úr <urbalazs at gmail dot com>, 2013, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-12-07 06:46+0000\n"
-"PO-Revision-Date: 2014-12-07 10:25+0100\n"
+"POT-Creation-Date: 2015-03-08 14:39+0000\n"
+"PO-Revision-Date: 2015-03-08 18:34+0100\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
@@ -21,17 +21,17 @@ msgstr ""
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../gio/gapplication.c:520
+#: ../gio/gapplication.c:531
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Belépés GApplication szolgáltatásmódba (használja D-Bus "
 "szolgáltatásfájlokból)"
 
-#: ../gio/gapplication.c:525
+#: ../gio/gapplication.c:536
 msgid "GApplication options"
 msgstr "GApplication kapcsolói"
 
-#: ../gio/gapplication.c:525
+#: ../gio/gapplication.c:536
 msgid "Show GApplication options"
 msgstr "A GApplication kapcsolóinak megjelenítése"
 
@@ -273,7 +273,7 @@ msgid "Cannot truncate GBufferedInputStream"
 msgstr "A GBufferedInputStream nem csonkítható"
 
 #: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202
-#: ../gio/giostream.c:277 ../gio/goutputstream.c:1654
+#: ../gio/giostream.c:278 ../gio/goutputstream.c:1654
 msgid "Stream is already closed"
 msgstr "Az adatfolyam már le van zárva"
 
@@ -282,7 +282,7 @@ msgid "Truncate not supported on base stream"
 msgstr "Az alap adatfolyam csonkítása nem engedélyezett"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1896
-#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1417
+#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
 #: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:830
 #: ../gio/gsimpleasyncresult.c:856
 #, c-format
@@ -314,7 +314,7 @@ msgstr "Érvénytelen bájtsorrend az átalakítás bemenetében"
 msgid "Error during conversion: %s"
 msgstr "Hiba az átalakítás során: %s"
 
-#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:985
+#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:990
 msgid "Cancellable initialization not supported"
 msgstr "A megszakítható előkészítés nem támogatott"
 
@@ -900,12 +900,12 @@ msgstr "Hiba került visszaadásra a(z) „%s” típusú törzzsel"
 msgid "Error return with empty body"
 msgstr "Hiba került visszaadásra az üres törzzsel"
 
-#: ../gio/gdbusprivate.c:2067
+#: ../gio/gdbusprivate.c:2085
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Nem kérhető le hardverprofil: %s"
 
-#: ../gio/gdbusprivate.c:2112
+#: ../gio/gdbusprivate.c:2130
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Nem tölthető be a /var/lib/dbus/machine-id vagy az /etc/machine-id: "
 
@@ -1179,7 +1179,7 @@ msgstr "Megfigyelendő objektumútvonal"
 msgid "Monitor a remote object."
 msgstr "Távoli objektum megfigyelése."
 
-#: ../gio/gdesktopappinfo.c:1999 ../gio/gdesktopappinfo.c:4523
+#: ../gio/gdesktopappinfo.c:1999 ../gio/gdesktopappinfo.c:4530
 #: ../gio/gwin32appinfo.c:219
 msgid "Unnamed"
 msgstr "Névtelen"
@@ -1270,14 +1270,14 @@ msgstr "A GEmblemedIcon kódolásban a jelsorok száma (%d) hibásan formált"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Egy GEmblem kellene a GEmblemedIconhoz"
 
-#: ../gio/gfile.c:962 ../gio/gfile.c:1200 ../gio/gfile.c:1338
-#: ../gio/gfile.c:1576 ../gio/gfile.c:1631 ../gio/gfile.c:1689
-#: ../gio/gfile.c:1773 ../gio/gfile.c:1830 ../gio/gfile.c:1894
-#: ../gio/gfile.c:1949 ../gio/gfile.c:3597 ../gio/gfile.c:3652
-#: ../gio/gfile.c:3859 ../gio/gfile.c:3901 ../gio/gfile.c:4364
-#: ../gio/gfile.c:4775 ../gio/gfile.c:4860 ../gio/gfile.c:4950
-#: ../gio/gfile.c:5047 ../gio/gfile.c:5134 ../gio/gfile.c:5235
-#: ../gio/gfile.c:7754 ../gio/gfile.c:7844 ../gio/gfile.c:7928
+#: ../gio/gfile.c:968 ../gio/gfile.c:1206 ../gio/gfile.c:1344
+#: ../gio/gfile.c:1582 ../gio/gfile.c:1637 ../gio/gfile.c:1695
+#: ../gio/gfile.c:1779 ../gio/gfile.c:1836 ../gio/gfile.c:1900
+#: ../gio/gfile.c:1955 ../gio/gfile.c:3603 ../gio/gfile.c:3658
+#: ../gio/gfile.c:3893 ../gio/gfile.c:3935 ../gio/gfile.c:4398
+#: ../gio/gfile.c:4809 ../gio/gfile.c:4894 ../gio/gfile.c:4984
+#: ../gio/gfile.c:5081 ../gio/gfile.c:5168 ../gio/gfile.c:5269
+#: ../gio/gfile.c:7788 ../gio/gfile.c:7878 ../gio/gfile.c:7962
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "A művelet nem támogatott"
@@ -1292,70 +1292,70 @@ msgstr "A művelet nem támogatott"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1461 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
+#: ../gio/gfile.c:1467 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
 #: ../gio/glocalfile.c:1127
 msgid "Containing mount does not exist"
 msgstr "A tartalmazó csatolás nem létezik"
 
-#: ../gio/gfile.c:2508 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2514 ../gio/glocalfile.c:2337
 msgid "Can't copy over directory"
 msgstr "Nem lehet a könyvtárra másolni"
 
-#: ../gio/gfile.c:2568
+#: ../gio/gfile.c:2574
 msgid "Can't copy directory over directory"
 msgstr "A könyvtár nem másolható könyvtárba"
 
-#: ../gio/gfile.c:2576 ../gio/glocalfile.c:2346
+#: ../gio/gfile.c:2582 ../gio/glocalfile.c:2346
 msgid "Target file exists"
 msgstr "A célfájl létezik"
 
-#: ../gio/gfile.c:2595
+#: ../gio/gfile.c:2601
 msgid "Can't recursively copy directory"
 msgstr "A könyvtár nem másolható rekurzívan"
 
-#: ../gio/gfile.c:2877
+#: ../gio/gfile.c:2883
 msgid "Splice not supported"
 msgstr "A fájlillesztés nem támogatott"
 
-#: ../gio/gfile.c:2881
+#: ../gio/gfile.c:2887
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Hiba a fájl illesztése közben: %s"
 
-#: ../gio/gfile.c:3012
+#: ../gio/gfile.c:3018
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "A csatolások közti másolás (reflink/clone) nem támogatott"
 
-#: ../gio/gfile.c:3016
+#: ../gio/gfile.c:3022
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "A másolás (reflink/clone) nem támogatott vagy érvénytelen"
 
-#: ../gio/gfile.c:3021
+#: ../gio/gfile.c:3027
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "A másolás (reflink/clone) nem támogatott vagy nem működött"
 
-#: ../gio/gfile.c:3084
+#: ../gio/gfile.c:3090
 msgid "Can't copy special file"
 msgstr "A speciális fájl nem másolható"
 
-#: ../gio/gfile.c:3849
+#: ../gio/gfile.c:3883
 msgid "Invalid symlink value given"
 msgstr "Érvénytelen szimbolikus link érték került megadásra"
 
-#: ../gio/gfile.c:4010
+#: ../gio/gfile.c:4044
 msgid "Trash not supported"
 msgstr "A Kuka nem támogatott"
 
-#: ../gio/gfile.c:4122
+#: ../gio/gfile.c:4156
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "A fájlnevek nem tartalmazhatnak „%c” karaktert"
 
-#: ../gio/gfile.c:6546 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6580 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "a kötet nem valósítja meg a csatolást"
 
-#: ../gio/gfile.c:6655
+#: ../gio/gfile.c:6689
 msgid "No application is registered as handling this file"
 msgstr "Nincs alkalmazás regisztrálva a fájl kezeléséhez"
 
@@ -1399,6 +1399,33 @@ msgstr "A bemeneti adatfolyam csonkítása nem engedélyezett"
 #: ../gio/gfileiostream.c:455 ../gio/gfileoutputstream.c:447
 msgid "Truncate not supported on stream"
 msgstr "Az adatfolyam csonkítása nem engedélyezett"
+
+#: ../gio/ghttpproxy.c:136
+msgid "Bad HTTP proxy reply"
+msgstr "Rossz HTTP proxy válasz"
+
+#: ../gio/ghttpproxy.c:152
+#| msgid "The connection is closed"
+msgid "HTTP proxy connection not allowed"
+msgstr "A HTTP proxykapcsolat nem engedélyezett"
+
+#: ../gio/ghttpproxy.c:157
+msgid "HTTP proxy authentication failed"
+msgstr "A HTTP proxyhitelesítés meghiúsult"
+
+#: ../gio/ghttpproxy.c:160
+msgid "HTTP proxy authentication required"
+msgstr "HTTP proxyhitelesítés szükséges"
+
+#: ../gio/ghttpproxy.c:164
+#, c-format
+#| msgid "The connection is closed"
+msgid "HTTP proxy connection failed: %i"
+msgstr "A HTTP proxykapcsolat meghiúsult: %i"
+
+#: ../gio/ghttpproxy.c:260
+msgid "HTTP proxy server closed connection unexpectedly."
+msgstr "A HTTP proxykiszolgáló váratlanul lezárta a kapcsolatot."
 
 #: ../gio/gicon.c:290
 #, c-format
@@ -1472,7 +1499,7 @@ msgstr "A bemeneti adatfolyam nem valósítja meg az olvasást"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1212 ../gio/giostream.c:287
+#: ../gio/ginputstream.c:1212 ../gio/giostream.c:288
 #: ../gio/goutputstream.c:1664
 msgid "Stream has outstanding operation"
 msgstr "Az adatfolyam hátralévő művelettel rendelkezik"
@@ -2256,7 +2283,7 @@ msgstr "Nem hozható létre a hálózatfigyelő: "
 msgid "Could not get network status: "
 msgstr "Nem kérhető le a hálózat állapota: "
 
-#: ../gio/gnetworkmonitornm.c:263
+#: ../gio/gnetworkmonitornm.c:278
 #, c-format
 msgid "NetworkManager version too old"
 msgstr "A Hálózatkezelő verziója túl régi"
@@ -2269,21 +2296,21 @@ msgstr "A kimeneti adatfolyam nem valósítja meg az írást"
 msgid "Source stream is already closed"
 msgstr "A forrás adatfolyam már le van zárva"
 
-#: ../gio/gresolver.c:320 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:331 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Hiba a(z) „%s” feloldása közben: %s"
 
-#: ../gio/gresource.c:291 ../gio/gresource.c:539 ../gio/gresource.c:556
-#: ../gio/gresource.c:677 ../gio/gresource.c:746 ../gio/gresource.c:807
-#: ../gio/gresource.c:887 ../gio/gresourcefile.c:452
+#: ../gio/gresource.c:298 ../gio/gresource.c:546 ../gio/gresource.c:563
+#: ../gio/gresource.c:684 ../gio/gresource.c:753 ../gio/gresource.c:814
+#: ../gio/gresource.c:894 ../gio/gresourcefile.c:452
 #: ../gio/gresourcefile.c:553 ../gio/gresourcefile.c:655
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "Az erőforrás nem létezik itt: „%s”"
 
-#: ../gio/gresource.c:456
+#: ../gio/gresource.c:463
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr "Az erőforrás kicsomagolása meghiúsult itt: „%s”"
@@ -2648,133 +2675,133 @@ msgstr "Üres sémanevet adott meg\n"
 msgid "No such key '%s'\n"
 msgstr "Nincs „%s” kulcs\n"
 
-#: ../gio/gsocket.c:266
+#: ../gio/gsocket.c:271
 msgid "Invalid socket, not initialized"
 msgstr "Érvénytelen foglalat, nincs előkészítve"
 
-#: ../gio/gsocket.c:273
+#: ../gio/gsocket.c:278
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Érvénytelen foglalat, az előkészítés meghiúsulásának oka: %s"
 
-#: ../gio/gsocket.c:281
+#: ../gio/gsocket.c:286
 msgid "Socket is already closed"
 msgstr "A foglalat már le van zárva"
 
-#: ../gio/gsocket.c:296 ../gio/gsocket.c:3618 ../gio/gsocket.c:3673
+#: ../gio/gsocket.c:301 ../gio/gsocket.c:3627 ../gio/gsocket.c:3682
 msgid "Socket I/O timed out"
 msgstr "A foglalat I/O túllépte az időkorlátot"
 
-#: ../gio/gsocket.c:443
+#: ../gio/gsocket.c:448
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "GSocket létrehozása fájlleíróból: %s"
 
-#: ../gio/gsocket.c:471 ../gio/gsocket.c:525 ../gio/gsocket.c:532
+#: ../gio/gsocket.c:476 ../gio/gsocket.c:530 ../gio/gsocket.c:537
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Nem sikerült létrehozni foglalatot: %s"
 
-#: ../gio/gsocket.c:525
+#: ../gio/gsocket.c:530
 msgid "Unknown family was specified"
 msgstr "Ismeretlen családot adtak meg"
 
-#: ../gio/gsocket.c:532
+#: ../gio/gsocket.c:537
 msgid "Unknown protocol was specified"
 msgstr "Ismeretlen protokollt adtak meg"
 
-#: ../gio/gsocket.c:1722
+#: ../gio/gsocket.c:1727
 #, c-format
 msgid "could not get local address: %s"
 msgstr "nem kérhető le a helyi cím: %s"
 
-#: ../gio/gsocket.c:1765
+#: ../gio/gsocket.c:1770
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "nem kérhető le a távoli cím: %s"
 
-#: ../gio/gsocket.c:1826
+#: ../gio/gsocket.c:1831
 #, c-format
 msgid "could not listen: %s"
 msgstr "nem lehet figyelni: %s"
 
-#: ../gio/gsocket.c:1925
+#: ../gio/gsocket.c:1930
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Hiba a címhez csatlakozáskor: %s"
 
-#: ../gio/gsocket.c:2037 ../gio/gsocket.c:2074
+#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Hiba a multicast csoporthoz csatlakozáskor: %s"
 
-#: ../gio/gsocket.c:2038 ../gio/gsocket.c:2075
+#: ../gio/gsocket.c:2046 ../gio/gsocket.c:2083
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Hiba a multicast csoport elhagyásakor: %s"
 
-#: ../gio/gsocket.c:2039
+#: ../gio/gsocket.c:2047
 msgid "No support for source-specific multicast"
 msgstr "A forrásspecifikus multicast nem támogatott"
 
-#: ../gio/gsocket.c:2261
+#: ../gio/gsocket.c:2269
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Hiba a kapcsolat elfogadásakor: %s"
 
-#: ../gio/gsocket.c:2382
+#: ../gio/gsocket.c:2392
 msgid "Connection in progress"
 msgstr "Csatlakozás folyamatban"
 
-#: ../gio/gsocket.c:2432
+#: ../gio/gsocket.c:2442
 msgid "Unable to get pending error: "
 msgstr "Nem lehet lekérni a függőben lévő hibát:"
 
-#: ../gio/gsocket.c:2633
+#: ../gio/gsocket.c:2645
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Hiba az adatok fogadásakor: %s"
 
-#: ../gio/gsocket.c:2811
+#: ../gio/gsocket.c:2820
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Hiba az adatok küldésekor: %s"
 
-#: ../gio/gsocket.c:2925
+#: ../gio/gsocket.c:2934
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Nem sikerült leállítani a foglalatot: %s"
 
-#: ../gio/gsocket.c:3004
+#: ../gio/gsocket.c:3013
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Hiba a foglalat lezárásakor: %s"
 
-#: ../gio/gsocket.c:3611
+#: ../gio/gsocket.c:3620
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Várakozás a foglalat állapotára: %s"
 
-#: ../gio/gsocket.c:3897 ../gio/gsocket.c:3978
+#: ../gio/gsocket.c:3907 ../gio/gsocket.c:3990 ../gio/gsocket.c:4218
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Hiba az üzenet küldésekor: %s"
 
-#: ../gio/gsocket.c:3922
+#: ../gio/gsocket.c:3932
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "A GSocketControlMessage nem támogatott Windowson"
 
-#: ../gio/gsocket.c:4259 ../gio/gsocket.c:4394
+#: ../gio/gsocket.c:4546 ../gio/gsocket.c:4684
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Hiba az üzenet fájl eltávolítása fogadásakor: %s"
 
-#: ../gio/gsocket.c:4516
+#: ../gio/gsocket.c:4806
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Nem sikerült olvasni a foglalat hitelesítési adatait: %s"
 
-#: ../gio/gsocket.c:4525
+#: ../gio/gsocket.c:4815
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "a g_socket_get_credentials nincs megvalósítva erre az OS-re"
 
@@ -2792,15 +2819,15 @@ msgstr "Nem sikerült kapcsolódni a következőhöz: %s: "
 msgid "Could not connect: "
 msgstr "Nem sikerült kapcsolódni: "
 
-#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1603
+#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1599
 msgid "Unknown error on connect"
 msgstr "Ismeretlen csatlakozási hiba"
 
-#: ../gio/gsocketclient.c:1082 ../gio/gsocketclient.c:1538
+#: ../gio/gsocketclient.c:1081 ../gio/gsocketclient.c:1535
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "A proxyzás nem TCP kapcsolaton keresztül nem támogatott."
 
-#: ../gio/gsocketclient.c:1108 ../gio/gsocketclient.c:1559
+#: ../gio/gsocketclient.c:1110 ../gio/gsocketclient.c:1561
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "A proxyprotokoll („%s”) nem támogatott."
@@ -2970,56 +2997,56 @@ msgstr ""
 msgid "The password entered is incorrect."
 msgstr "A megadott jelszó helytelen."
 
-#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:554
+#: ../gio/gunixconnection.c:166 ../gio/gunixconnection.c:561
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgid_plural "Expecting 1 control message, got %d"
 msgstr[0] "A várt 1 vezérlőüzenet helyett %d érkezett"
 msgstr[1] "A várt 1 vezérlőüzenet helyett %d érkezett"
 
-#: ../gio/gunixconnection.c:175 ../gio/gunixconnection.c:566
+#: ../gio/gunixconnection.c:182 ../gio/gunixconnection.c:573
 msgid "Unexpected type of ancillary data"
 msgstr "Váratlan típusú kiegészítő adatok"
 
-#: ../gio/gunixconnection.c:193
+#: ../gio/gunixconnection.c:200
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgid_plural "Expecting one fd, but got %d\n"
 msgstr[0] "A várt egy fájlleíró helyett %d érkezett\n"
 msgstr[1] "A várt egy fájlleíró helyett %d érkezett\n"
 
-#: ../gio/gunixconnection.c:212
+#: ../gio/gunixconnection.c:219
 msgid "Received invalid fd"
 msgstr "Érvénytelen fájlleíró érkezett"
 
-#: ../gio/gunixconnection.c:348
+#: ../gio/gunixconnection.c:355
 msgid "Error sending credentials: "
 msgstr "Hiba a hitelesítési adatok küldésekor: "
 
-#: ../gio/gunixconnection.c:496
+#: ../gio/gunixconnection.c:503
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr ""
 "Hiba a SO_PASSCRED engedélyezettségének ellenőrzésekor a foglalathoz: %s"
 
-#: ../gio/gunixconnection.c:511
+#: ../gio/gunixconnection.c:518
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Hiba a SO_PASSCRED engedélyezése közben: %s"
 
-#: ../gio/gunixconnection.c:540
+#: ../gio/gunixconnection.c:547
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "A hitelesítési adatok fogadásához várt egyetlen bájt helyett nulla bájt lett "
 "beolvasva"
 
-#: ../gio/gunixconnection.c:580
+#: ../gio/gunixconnection.c:587
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "A program nem várt vezérlőüzenetet, de %d érkezett"
 
-#: ../gio/gunixconnection.c:604
+#: ../gio/gunixconnection.c:611
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Hiba a SO_PASSCRED letiltásakor: %s"
@@ -3034,7 +3061,7 @@ msgstr "Hiba a fájlleíróból olvasáskor: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Hiba a fájlleíró lezárásakor: %s"
 
-#: ../gio/gunixmounts.c:2054 ../gio/gunixmounts.c:2107
+#: ../gio/gunixmounts.c:2099 ../gio/gunixmounts.c:2152
 msgid "Filesystem root"
 msgstr "Fájlrendszer gyökere"
 
@@ -3590,15 +3617,15 @@ msgstr "A csatorna töredék karakterrel ér véget"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nem lehet nyers (raw) olvasást végezni a g_io_channel_read_to_end-ben"
 
-#: ../glib/gkeyfile.c:719
+#: ../glib/gkeyfile.c:737
 msgid "Valid key file could not be found in search dirs"
 msgstr "A keresési könyvtárakban nem található érvényes kulcsfájl"
 
-#: ../glib/gkeyfile.c:755
+#: ../glib/gkeyfile.c:773
 msgid "Not a regular file"
 msgstr "Nem szabályos fájl"
 
-#: ../glib/gkeyfile.c:1155
+#: ../glib/gkeyfile.c:1173
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -3606,52 +3633,52 @@ msgstr ""
 "A kulcsfájl tartalmazza a(z) „%s” sort, amelyik nem egy kulcs-érték pár, "
 "csoport, vagy megjegyzés"
 
-#: ../glib/gkeyfile.c:1212
+#: ../glib/gkeyfile.c:1230
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Érvénytelen csoportnév: %s"
 
-#: ../glib/gkeyfile.c:1234
+#: ../glib/gkeyfile.c:1252
 msgid "Key file does not start with a group"
 msgstr "A kulcsfájl nem csoporttal kezdődik"
 
-#: ../glib/gkeyfile.c:1260
+#: ../glib/gkeyfile.c:1278
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Érvénytelen kulcsnév: %s"
 
-#: ../glib/gkeyfile.c:1287
+#: ../glib/gkeyfile.c:1305
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "A kulcsfájl a nem támogatott „%s” kódolást tartalmazza"
 
-#: ../glib/gkeyfile.c:1530 ../glib/gkeyfile.c:1692 ../glib/gkeyfile.c:3072
-#: ../glib/gkeyfile.c:3138 ../glib/gkeyfile.c:3264 ../glib/gkeyfile.c:3397
-#: ../glib/gkeyfile.c:3539 ../glib/gkeyfile.c:3768 ../glib/gkeyfile.c:3835
+#: ../glib/gkeyfile.c:1548 ../glib/gkeyfile.c:1721 ../glib/gkeyfile.c:3099
+#: ../glib/gkeyfile.c:3162 ../glib/gkeyfile.c:3288 ../glib/gkeyfile.c:3418
+#: ../glib/gkeyfile.c:3560 ../glib/gkeyfile.c:3789 ../glib/gkeyfile.c:3856
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "A kulcsfájlból hiányzik a(z) „%s” csoport"
 
-#: ../glib/gkeyfile.c:1704
+#: ../glib/gkeyfile.c:1676
 #, c-format
-msgid "Key file does not have key '%s'"
-msgstr "A kulcsfájlban nincs „%s” kulcs"
+msgid "Key file does not have key '%s' in group '%s'"
+msgstr "A kulcsfájl nem tartalmazza a(z) „%s” kulcsot a(z) „%s” csoportban."
 
-#: ../glib/gkeyfile.c:1811 ../glib/gkeyfile.c:1927
+#: ../glib/gkeyfile.c:1838 ../glib/gkeyfile.c:1954
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "A kulcsfájl tartalmazza a(z) „%s” kulcsot „%s” értékkel, amelyik azonban nem "
 "UTF-8"
 
-#: ../glib/gkeyfile.c:1831 ../glib/gkeyfile.c:1947 ../glib/gkeyfile.c:2316
+#: ../glib/gkeyfile.c:1858 ../glib/gkeyfile.c:1974 ../glib/gkeyfile.c:2343
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "A kulcsfájl tartalmazza a(z) „%s” kulcsot, amelynek értéke nem értelmezhető."
 
-#: ../glib/gkeyfile.c:2533 ../glib/gkeyfile.c:2901
+#: ../glib/gkeyfile.c:2560 ../glib/gkeyfile.c:2928
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
@@ -3660,43 +3687,38 @@ msgstr ""
 "A kulcsfájl tartalmazza a(z) „%s” kulcsot a(z) „%s” csoportban, amelynek "
 "értéke nem értelmezhető."
 
-#: ../glib/gkeyfile.c:2611 ../glib/gkeyfile.c:2688
+#: ../glib/gkeyfile.c:2638 ../glib/gkeyfile.c:2715
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr ""
 "A(z) „%s” kulcs a(z) „%s” csoportban „%s” értékkel rendelkezik a várt %s "
 "helyett"
 
-#: ../glib/gkeyfile.c:3087 ../glib/gkeyfile.c:3279 ../glib/gkeyfile.c:3846
-#, c-format
-msgid "Key file does not have key '%s' in group '%s'"
-msgstr "A kulcsfájl nem tartalmazza a(z) „%s” kulcsot a(z) „%s” csoportban."
-
-#: ../glib/gkeyfile.c:4078
+#: ../glib/gkeyfile.c:4096
 msgid "Key file contains escape character at end of line"
 msgstr "A kulcsfájl escape sorozattal megadott karaktert tartalmaz a sor végén"
 
-#: ../glib/gkeyfile.c:4100
+#: ../glib/gkeyfile.c:4118
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "A kulcsfájl érvénytelen escape sorozatot tartalmaz („%s”)"
 
-#: ../glib/gkeyfile.c:4242
+#: ../glib/gkeyfile.c:4260
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "A(z) „%s” érték nem értelmezhető számként."
 
-#: ../glib/gkeyfile.c:4256
+#: ../glib/gkeyfile.c:4274
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "A(z) „%s” egész érték a tartományon kívülre esik"
 
-#: ../glib/gkeyfile.c:4289
+#: ../glib/gkeyfile.c:4307
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "A(z) „%s” érték nem értelmezhető lebegőpontos számként."
 
-#: ../glib/gkeyfile.c:4313
+#: ../glib/gkeyfile.c:4331
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "A(z) „%s” érték nem értelmezhető logikai értékként."
@@ -3924,63 +3946,63 @@ msgstr ""
 "A dokumentum váratlanul véget ért egy megjegyzésen vagy feldolgozási "
 "utasításon belül"
 
-#: ../glib/goption.c:855
+#: ../glib/goption.c:858
 msgid "Usage:"
 msgstr "Használat:"
 
-#: ../glib/goption.c:855
+#: ../glib/goption.c:858
 msgid "[OPTION...]"
 msgstr "[KAPCSOLÓ...]"
 
-#: ../glib/goption.c:971
+#: ../glib/goption.c:974
 msgid "Help Options:"
 msgstr "Súgólehetőségek:"
 
-#: ../glib/goption.c:972
+#: ../glib/goption.c:975
 msgid "Show help options"
 msgstr "Súgólehetőségek megjelenítése"
 
-#: ../glib/goption.c:978
+#: ../glib/goption.c:981
 msgid "Show all help options"
 msgstr "Minden súgólehetőség megjelenítése"
 
-#: ../glib/goption.c:1040
+#: ../glib/goption.c:1043
 msgid "Application Options:"
 msgstr "Alkalmazás kapcsolói:"
 
-#: ../glib/goption.c:1104 ../glib/goption.c:1174
+#: ../glib/goption.c:1107 ../glib/goption.c:1177
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Nem dolgozható fel a(z) „%s” egész érték a következőhöz: %s"
 
-#: ../glib/goption.c:1114 ../glib/goption.c:1182
+#: ../glib/goption.c:1117 ../glib/goption.c:1185
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "A(z) „%s” egész érték a tartományon kívülre esik a következőhöz: %s"
 
-#: ../glib/goption.c:1139
+#: ../glib/goption.c:1142
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Nem dolgozható fel a(z) „%s” dupla hosszúságú érték a következőhöz: %s"
 
-#: ../glib/goption.c:1147
+#: ../glib/goption.c:1150
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr ""
 "A(z) „%s” dupla hosszúságú érték a tartományon kívülre esik a következőhöz: "
 "%s"
 
-#: ../glib/goption.c:1433 ../glib/goption.c:1512
+#: ../glib/goption.c:1436 ../glib/goption.c:1515
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Hiba a kapcsoló feldolgozása során: %s"
 
-#: ../glib/goption.c:1543 ../glib/goption.c:1656
+#: ../glib/goption.c:1546 ../glib/goption.c:1659
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Hiányzó paraméter a következőhöz: %s"
 
-#: ../glib/goption.c:2117
+#: ../glib/goption.c:2120
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ismeretlen kapcsoló: %s"
@@ -4611,6 +4633,9 @@ msgstr[1] "%s bájt"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "Key file does not have key '%s'"
+#~ msgstr "A kulcsfájlban nincs „%s” kulcs"
 
 #~ msgid "URIs not supported"
 #~ msgstr "Az URI címek nem támogatottak"
