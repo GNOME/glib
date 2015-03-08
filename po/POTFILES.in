@@ -49,6 +49,7 @@ gio/gfilenamecompleter.c
 gio/gfileoutputstream.c
 gio/gfilterinputstream.c
 gio/gfilteroutputstream.c
+gio/ghttpproxy.c
 gio/gicon.c
 gio/ginetaddress.c
 gio/ginetaddressmask.c
