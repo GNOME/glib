@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-28 06:48+0000\n"
-"PO-Revision-Date: 2015-02-28 13:53+0100\n"
+"POT-Creation-Date: 2015-03-09 06:50+0000\n"
+"PO-Revision-Date: 2015-03-09 12:48+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -292,7 +292,7 @@ msgstr "Neplatná sekvencia bajtov na vstupe prevodu"
 msgid "Error during conversion: %s"
 msgstr "Chyba počas prevodu: %s"
 
-#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:985
+#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:990
 msgid "Cancellable initialization not supported"
 msgstr "Zrušiteľná inicializácia nie je podporovaná"
 
@@ -577,7 +577,7 @@ msgstr "(Okrem toho zlyhalo aj uvoľnenie zámky pre „%s“: %s)"
 
 #: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2455
 msgid "The connection is closed"
-msgstr "Spojenie je ukončené"
+msgstr "Pripojenie je ukončené"
 
 #: ../gio/gdbusconnection.c:1942
 msgid "Timeout was reached"
@@ -1170,8 +1170,8 @@ msgstr "Chybný počet tokenov (%d) v kódovaní GEmblemedIcon"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Očakávaný GEmblem pre GEmblemedIcon"
 
-#: ../gio/gfile.c:962 ../gio/gfile.c:1200 ../gio/gfile.c:1338 ../gio/gfile.c:1576 ../gio/gfile.c:1631 ../gio/gfile.c:1689 ../gio/gfile.c:1773 ../gio/gfile.c:1830 ../gio/gfile.c:1894 ../gio/gfile.c:1949 ../gio/gfile.c:3597 ../gio/gfile.c:3652 ../gio/gfile.c:3887 ../gio/gfile.c:3929 ../gio/gfile.c:4392 ../gio/gfile.c:4803 ../gio/gfile.c:4888 ../gio/gfile.c:4978 ../gio/gfile.c:5075
-#: ../gio/gfile.c:5162 ../gio/gfile.c:5263 ../gio/gfile.c:7782 ../gio/gfile.c:7872 ../gio/gfile.c:7956 ../gio/win32/gwinhttpfile.c:437
+#: ../gio/gfile.c:968 ../gio/gfile.c:1206 ../gio/gfile.c:1344 ../gio/gfile.c:1582 ../gio/gfile.c:1637 ../gio/gfile.c:1695 ../gio/gfile.c:1779 ../gio/gfile.c:1836 ../gio/gfile.c:1900 ../gio/gfile.c:1955 ../gio/gfile.c:3603 ../gio/gfile.c:3658 ../gio/gfile.c:3893 ../gio/gfile.c:3935 ../gio/gfile.c:4398 ../gio/gfile.c:4809 ../gio/gfile.c:4894 ../gio/gfile.c:4984 ../gio/gfile.c:5081
+#: ../gio/gfile.c:5168 ../gio/gfile.c:5269 ../gio/gfile.c:7788 ../gio/gfile.c:7878 ../gio/gfile.c:7962 ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Nepodporovaná operácia"
 
@@ -1185,71 +1185,71 @@ msgstr "Nepodporovaná operácia"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1461 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114 ../gio/glocalfile.c:1127
+#: ../gio/gfile.c:1467 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114 ../gio/glocalfile.c:1127
 msgid "Containing mount does not exist"
 msgstr "Obklopujúce pripojenie neexistuje"
 
-#: ../gio/gfile.c:2508 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2514 ../gio/glocalfile.c:2337
 msgid "Can't copy over directory"
 msgstr "Nedá sa prepísať adresár pri kopírovaní"
 
-#: ../gio/gfile.c:2568
+#: ../gio/gfile.c:2574
 msgid "Can't copy directory over directory"
 msgstr "Nedá sa prepísať adresár adresárom pri kopírovaní"
 
-#: ../gio/gfile.c:2576 ../gio/glocalfile.c:2346
+#: ../gio/gfile.c:2582 ../gio/glocalfile.c:2346
 msgid "Target file exists"
 msgstr "Cieľový súbor existuje"
 
-#: ../gio/gfile.c:2595
+#: ../gio/gfile.c:2601
 msgid "Can't recursively copy directory"
 msgstr "Adresár sa nedá kopírovať rekurzívne"
 
-#: ../gio/gfile.c:2877
+#: ../gio/gfile.c:2883
 msgid "Splice not supported"
 msgstr "Operácia zreťazovania vstupu s výstupom nie je podporovaná"
 
 # http://developer.gnome.org/gio/2.32/GOutputStream.html#g-output-stream-splice
-#: ../gio/gfile.c:2881
+#: ../gio/gfile.c:2887
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Chyba pri zreťazovaní súboru: %s"
 
-#: ../gio/gfile.c:3012
+#: ../gio/gfile.c:3018
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Kopírovanie (odkaz/klon) medzi pripojeniami nie je podporované"
 
-#: ../gio/gfile.c:3016
+#: ../gio/gfile.c:3022
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopírovanie (odkaz/klon) medzi pripojeniami nie je podporované alebo je neplatné"
 
-#: ../gio/gfile.c:3021
+#: ../gio/gfile.c:3027
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "Kopírovanie (odkaz/klon) medzi pripojeniami nie je podporované alebo nefunguje"
 
-#: ../gio/gfile.c:3084
+#: ../gio/gfile.c:3090
 msgid "Can't copy special file"
 msgstr "Špeciálny súbor sa nedá kopírovať"
 
-#: ../gio/gfile.c:3877
+#: ../gio/gfile.c:3883
 msgid "Invalid symlink value given"
 msgstr "Neplatný daný symbolický odkaz"
 
-#: ../gio/gfile.c:4038
+#: ../gio/gfile.c:4044
 msgid "Trash not supported"
 msgstr "Zahodenie do Koša nie je podporované"
 
 # literal character
-#: ../gio/gfile.c:4150
+#: ../gio/gfile.c:4156
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Názvy súborov nemôžu obsahovať „%c“"
 
-#: ../gio/gfile.c:6574 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6580 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "zväzok neimplementuje pripojenie"
 
-#: ../gio/gfile.c:6683
+#: ../gio/gfile.c:6689
 msgid "No application is registered as handling this file"
 msgstr "Žiadna aplikácia nie je zaregistrovaná na spracovanie tohto súboru"
 
@@ -1291,6 +1291,31 @@ msgstr "Skrátenie vo vstupnom prúde nie je podporované"
 #: ../gio/gfileiostream.c:455 ../gio/gfileoutputstream.c:447
 msgid "Truncate not supported on stream"
 msgstr "Skrátenie nie je v prúde podporované"
+
+#: ../gio/ghttpproxy.c:136
+msgid "Bad HTTP proxy reply"
+msgstr "Nesprávna odpoveď sprostredkovateľa HTTP"
+
+#: ../gio/ghttpproxy.c:152
+msgid "HTTP proxy connection not allowed"
+msgstr "Pripojenie k sprostredkovateľovi HTTP nie je umožnené"
+
+#: ../gio/ghttpproxy.c:157
+msgid "HTTP proxy authentication failed"
+msgstr "Zlyhalo overenie totožnosti sprostredkovateľa HTTP"
+
+#: ../gio/ghttpproxy.c:160
+msgid "HTTP proxy authentication required"
+msgstr "Vyžaduje sa overenie totožnosti sprostredkovateľa HTTP"
+
+#: ../gio/ghttpproxy.c:164
+#, c-format
+msgid "HTTP proxy connection failed: %i"
+msgstr "Pripojenie k sprostredkovateľovi HTTP zlyhalo: %i"
+
+#: ../gio/ghttpproxy.c:260
+msgid "HTTP proxy server closed connection unexpectedly."
+msgstr "Server sprostredkovateľa HTTP neočakávane prerušil pripojenie."
 
 #: ../gio/gicon.c:290
 #, c-format
@@ -2117,7 +2142,7 @@ msgstr "Výstupný prúd neimplementuje zápis"
 msgid "Source stream is already closed"
 msgstr "Zdrojový prúd je už zatvorený"
 
-#: ../gio/gresolver.c:320 ../gio/gthreadedresolver.c:116 ../gio/gthreadedresolver.c:126
+#: ../gio/gresolver.c:331 ../gio/gthreadedresolver.c:116 ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Chyba pri preklade adresy „%s“: %s"
@@ -2489,135 +2514,135 @@ msgstr "Poskytnutý prázdny názov schémy\n"
 msgid "No such key '%s'\n"
 msgstr "Neexistuje kľúč „%s“\n"
 
-#: ../gio/gsocket.c:266
+#: ../gio/gsocket.c:271
 msgid "Invalid socket, not initialized"
 msgstr "Neplatný soket, neinicializované"
 
-#: ../gio/gsocket.c:273
+#: ../gio/gsocket.c:278
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Neplatný soket, inicializácia zlyhala kvôli: %s"
 
-#: ../gio/gsocket.c:281
+#: ../gio/gsocket.c:286
 msgid "Socket is already closed"
 msgstr "Soket je už zatvorený"
 
-#: ../gio/gsocket.c:296 ../gio/gsocket.c:3619 ../gio/gsocket.c:3674
+#: ../gio/gsocket.c:301 ../gio/gsocket.c:3627 ../gio/gsocket.c:3682
 msgid "Socket I/O timed out"
 msgstr "Vypršal časový limit V/V soketu"
 
-#: ../gio/gsocket.c:443
+#: ../gio/gsocket.c:448
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "vytvára sa GSocket z popisovanča súboru: %s"
 
-#: ../gio/gsocket.c:471 ../gio/gsocket.c:525 ../gio/gsocket.c:532
+#: ../gio/gsocket.c:476 ../gio/gsocket.c:530 ../gio/gsocket.c:537
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Nepodarilo sa vytvoriť soket: %s"
 
-#: ../gio/gsocket.c:525
+#: ../gio/gsocket.c:530
 msgid "Unknown family was specified"
 msgstr "Bola zadaná neznáma rodina protokolov"
 
-#: ../gio/gsocket.c:532
+#: ../gio/gsocket.c:537
 msgid "Unknown protocol was specified"
 msgstr "Bol zadaný neznámy protokol"
 
-#: ../gio/gsocket.c:1722
+#: ../gio/gsocket.c:1727
 #, c-format
 msgid "could not get local address: %s"
 msgstr "nepodarilo sa získať lokálnu adresu: %s"
 
-#: ../gio/gsocket.c:1765
+#: ../gio/gsocket.c:1770
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "nepodarilo sa získať vzdialenú adresu: %s"
 
-#: ../gio/gsocket.c:1826
+#: ../gio/gsocket.c:1831
 #, c-format
 msgid "could not listen: %s"
 msgstr "nepodarilo sa počúvať: %s"
 
-#: ../gio/gsocket.c:1925
+#: ../gio/gsocket.c:1930
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Chyba pri viazaní sa na adresu: %s"
 
-#: ../gio/gsocket.c:2037 ../gio/gsocket.c:2074
+#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Chyba pri pripájaní sa k multicast skupine: %s"
 
-#: ../gio/gsocket.c:2038 ../gio/gsocket.c:2075
+#: ../gio/gsocket.c:2046 ../gio/gsocket.c:2083
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Chyba pri odpájaní sa od multicast skupiny: %s"
 
 # PM: SSM je termín neprekladal som to
 # http://en.wikipedia.org/wiki/Source-specific_multicast
-#: ../gio/gsocket.c:2039
+#: ../gio/gsocket.c:2047
 msgid "No support for source-specific multicast"
 msgstr "Nie je podpora pre source-specific multicast"
 
-#: ../gio/gsocket.c:2261
+#: ../gio/gsocket.c:2269
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Chyba pri prijímaní pripojenia: %s"
 
-#: ../gio/gsocket.c:2384
+#: ../gio/gsocket.c:2392
 msgid "Connection in progress"
 msgstr "Prebieha pripájanie"
 
-#: ../gio/gsocket.c:2434
+#: ../gio/gsocket.c:2442
 msgid "Unable to get pending error: "
 msgstr "Nepodarilo sa získať chybu určenú na spracovanie: %s"
 
-#: ../gio/gsocket.c:2637
+#: ../gio/gsocket.c:2645
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Chyba pri prijímaní údajov: %s"
 
-#: ../gio/gsocket.c:2812
+#: ../gio/gsocket.c:2820
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Chyba pri odosielaní údajov: %s"
 
-#: ../gio/gsocket.c:2926
+#: ../gio/gsocket.c:2934
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Nepodarilo sa vypnúť soket: %s"
 
-#: ../gio/gsocket.c:3005
+#: ../gio/gsocket.c:3013
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Chyba pri zatváraní soketu: %s"
 
-#: ../gio/gsocket.c:3612
+#: ../gio/gsocket.c:3620
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Čaká sa na stav soketu: %s"
 
-#: ../gio/gsocket.c:3899 ../gio/gsocket.c:3982 ../gio/gsocket.c:4210
+#: ../gio/gsocket.c:3907 ../gio/gsocket.c:3990 ../gio/gsocket.c:4218
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Chyba pri odosielaní správy: %s"
 
-#: ../gio/gsocket.c:3924
+#: ../gio/gsocket.c:3932
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage nie je podporovaný vo Windows"
 
-#: ../gio/gsocket.c:4538 ../gio/gsocket.c:4676
+#: ../gio/gsocket.c:4546 ../gio/gsocket.c:4684
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Chyba pri prijímaní správy: %s"
 
-#: ../gio/gsocket.c:4798
+#: ../gio/gsocket.c:4806
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Nepodarilo sa prečítať poverenia soketu: %s"
 
-#: ../gio/gsocket.c:4807
+#: ../gio/gsocket.c:4815
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials nie je pre tento operačný systém implementovaný"
 
@@ -2635,15 +2660,15 @@ msgstr "Nepodarilo sa pripojiť k %s: "
 msgid "Could not connect: "
 msgstr "Nepodarilo sa pripojiť: "
 
-#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1603
+#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1599
 msgid "Unknown error on connect"
 msgstr "Neznáma chyba pripájania"
 
-#: ../gio/gsocketclient.c:1082 ../gio/gsocketclient.c:1538
+#: ../gio/gsocketclient.c:1081 ../gio/gsocketclient.c:1535
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Pripojenie cez proxy nepoužívajúce TCP nie je podporované."
 
-#: ../gio/gsocketclient.c:1108 ../gio/gsocketclient.c:1559
+#: ../gio/gsocketclient.c:1110 ../gio/gsocketclient.c:1561
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Protokol proxy „%s“ nie je podporovaný."
@@ -2869,7 +2894,7 @@ msgstr "Chyba pri čítaní z popisovača súboru: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Chyba pri zatváraní popisovača súboru: %s"
 
-#: ../gio/gunixmounts.c:2054 ../gio/gunixmounts.c:2107
+#: ../gio/gunixmounts.c:2099 ../gio/gunixmounts.c:2152
 msgid "Filesystem root"
 msgstr "Koreň súborového systému"
 
