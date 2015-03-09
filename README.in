@@ -67,6 +67,24 @@ and attach the patch to that bug report.
 
 Patches should be in unified diff form. (The -up option to GNU diff.)
 
+Notes about GLib 2.46
+=====================
+
+* GTask no longer imposes a fixed limit on the number of tasks that
+  can be run_in_thread() simultaneously, since doing this inevitably
+  results in deadlocks in some use cases. Instead, it now has a base
+  number of threads that can be used "for free", but will gradually
+  add more threads to the pool if too much time passes without any
+  tasks completing.
+
+  The exact behavior may continue to change in the future, and it's
+  possible that some future version of GLib may not do any
+  rate-limiting at all. As a result, you should no longer assume that
+  GTask will rate-limit tasks itself (or, by extension, that calls to
+  certain async gio methods will automatically be rate-limited for
+  you). If you have a very large number of tasks to run, and don't
+  want them to all run at once, you should rate-limit them yourself.
+
 Notes about GLib 2.40
 =====================
 

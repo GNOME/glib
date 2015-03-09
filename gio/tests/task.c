@@ -10,6 +10,7 @@
  */
 
 #include <gio/gio.h>
+#include <string.h>
 
 static GMainLoop *loop;
 static GThread *main_thread;
@@ -1097,6 +1098,95 @@ test_run_in_thread_nested (void)
   unclog_thread_pool ();
 }
 
+/* test_run_in_thread_overflow: if you queue lots and lots and lots of
+ * tasks, they won't all run at once.
+ */
+static GMutex overflow_mutex;
+
+static void
+run_overflow_task_thread (GTask        *task,
+                          gpointer      source_object,
+                          gpointer      task_data,
+                          GCancellable *cancellable)
+{
+  gchar *result = task_data;
+
+  if (g_task_return_error_if_cancelled (task))
+    {
+      *result = 'X';
+      return;
+    }
+
+  /* Block until the main thread is ready. */
+  g_mutex_lock (&overflow_mutex);
+  g_mutex_unlock (&overflow_mutex);
+
+  *result = '.';
+
+  g_task_return_boolean (task, TRUE);
+}
+
+#define NUM_OVERFLOW_TASKS 1024
+
+static void
+test_run_in_thread_overflow (void)
+{
+  GCancellable *cancellable;
+  GTask *task;
+  gchar buf[NUM_OVERFLOW_TASKS + 1];
+  gint i;
+
+  /* Queue way too many tasks and then sleep for a bit. The first 10
+   * tasks will be dispatched to threads and will then block on
+   * overflow_mutex, so more threads will be created while this thread
+   * is sleeping. Then we cancel the cancellable, unlock the mutex,
+   * wait for all of the tasks to complete, and make sure that we got
+   * the behavior we expected.
+   */
+
+  memset (buf, 0, sizeof (buf));
+  cancellable = g_cancellable_new ();
+
+  g_mutex_lock (&overflow_mutex);
+
+  for (i = 0; i < NUM_OVERFLOW_TASKS; i++)
+    {
+      task = g_task_new (NULL, cancellable, NULL, NULL);
+      g_task_set_task_data (task, buf + i, NULL);
+      g_task_run_in_thread (task, run_overflow_task_thread);
+      g_object_unref (task);
+    }
+
+  if (g_test_slow ())
+    g_usleep (5000000); /* 5 s */
+  else
+    g_usleep (500000);  /* 0.5 s */
+  g_cancellable_cancel (cancellable);
+  g_object_unref (cancellable);
+
+  g_mutex_unlock (&overflow_mutex);
+
+  /* Wait for all tasks to complete. */
+  while (!buf[NUM_OVERFLOW_TASKS - 1])
+    g_usleep (1000);
+
+  i = strspn (buf, ".");
+  /* Given the sleep times above, i should be 14 for normal, 40 for
+   * slow. But if the machine is too slow/busy then the scheduling
+   * might get messed up and we'll get more or fewer threads than
+   * expected. But there are limits to how messed up it could
+   * plausibly get (and we hope that if gtask is actually broken then
+   * it will exceed those limits).
+   */
+  g_assert_cmpint (i, >=, 10);
+  if (g_test_slow ())
+    g_assert_cmpint (i, <, 50);
+  else
+    g_assert_cmpint (i, <, 20);
+
+  g_assert_cmpint (i + strspn (buf + i, "X"), ==, NUM_OVERFLOW_TASKS);
+}
+
 /* test_return_on_cancel */
 
 GMutex roc_init_mutex, roc_finish_mutex;
@@ -1893,6 +1983,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gtask/run-in-thread-sync", test_run_in_thread_sync);
   g_test_add_func ("/gtask/run-in-thread-priority", test_run_in_thread_priority);
   g_test_add_func ("/gtask/run-in-thread-nested", test_run_in_thread_nested);
+  g_test_add_func ("/gtask/run-in-thread-overflow", test_run_in_thread_overflow);
   g_test_add_func ("/gtask/return-on-cancel", test_return_on_cancel);
   g_test_add_func ("/gtask/return-on-cancel-sync", test_return_on_cancel_sync);
   g_test_add_func ("/gtask/return-on-cancel-atomic", test_return_on_cancel_atomic);
