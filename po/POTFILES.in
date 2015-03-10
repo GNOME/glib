@@ -113,6 +113,7 @@ gio/gsocketoutputstream.c
 gio/gsocks4aproxy.c
 gio/gsocks5proxy.c
 gio/gsubprocess.c
+gio/gtask.c
 gio/gtcpconnection.c
 gio/gtcpwrapperconnection.c
 gio/gtestdbus.c
