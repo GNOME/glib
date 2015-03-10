@@ -93,6 +93,20 @@
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gdbus</command>
+    <arg choice="plain">wait</arg>
+    <group>
+      <arg choice="plain">--system</arg>
+      <arg choice="plain">--session</arg>
+      <arg choice="plain">--address <replaceable>address</replaceable></arg>
+    </group>
+    <arg choice="plain">--activate <replaceable>bus_name</replaceable></arg>
+    <group>
+      <arg choice="plain">--timeout <replaceable>seconds</replaceable></arg>
+    </group>
+    <arg choice="plain"><replaceable>bus_name</replaceable></arg>
+  </cmdsynopsis>
+  <cmdsynopsis>
+    <command>gdbus</command>
     <arg choice="plain">help</arg>
   </cmdsynopsis>
 </refsynopsisdiv>
@@ -145,6 +159,15 @@
           Emits a signal. Each argument to include in the signal must be specified as a serialized
           <link linkend="GVariant"><type>GVariant</type></link> except that strings do
           not need explicit quotes.
+        </para></listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>wait</option></term>
+        <listitem><para>
+          Waits until <replaceable>bus_name</replaceable> is owned by some
+          process on the bus. If the <option>--activate</option> is specified,
+          that bus name will be auto-started first. It may be the same as the
+          bus name being waited for, or different.
         </para></listitem>
       </varlistentry>
       <varlistentry>
@@ -335,6 +358,38 @@ $ gdbus emit --session --object-path /foo --signal org.bar.Foo "['foo', 'bar', '
 </para>
 <programlisting>
 $ gdbus emit --session --object-path /bar --signal org.bar.Bar someString --dest :1.42
+</programlisting>
+
+<para>
+  Waiting for a well-known name to be owned on the bus; this will
+  <emphasis>not</emphasis> auto-start the service:
+</para>
+<programlisting>
+$ gdbus wait --session org.bar.SomeName
+</programlisting>
+
+<para>
+  Auto-starting then waiting for a well-known name to be owned on the bus:
+</para>
+<programlisting>
+$ gdbus wait --session --activate org.bar.SomeName
+</programlisting>
+
+<para>
+  Auto-starting a different service, then waiting for a well-known name to be
+  owned on the bus. This is useful in situations where
+  <replaceable>SomeName</replaceable> is not directly activatable:
+</para>
+<programlisting>
+$ gdbus wait --session --activate org.bar.PrerequisiteName org.bar.SomeName
+</programlisting>
+
+<para>
+  Waiting for a well-known name and giving up after 30 seconds. By default,
+  the timeout is disabled; or set <option>--timeout</option> to 0 to disable it:
+</para>
+<programlisting>
+$ gdbus wait --session --timeout 30 org.bar.SomeName
 </programlisting>
 
 </refsect1>
