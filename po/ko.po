@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-07 06:49+0000\n"
-"PO-Revision-Date: 2015-03-08 03:31+0900\n"
+"POT-Creation-Date: 2015-03-11 06:50+0000\n"
+"PO-Revision-Date: 2015-03-12 02:51+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: Korean\n"
@@ -1373,6 +1373,31 @@ msgstr "입력 스트림이 truncate를 허용하지 않습니다"
 #: ../gio/gfileiostream.c:455 ../gio/gfileoutputstream.c:447
 msgid "Truncate not supported on stream"
 msgstr "스트림에서 truncate를 지원하지 않습니다"
+
+#: ../gio/ghttpproxy.c:136
+msgid "Bad HTTP proxy reply"
+msgstr "잘못된 HTTP 프록시 응답"
+
+#: ../gio/ghttpproxy.c:152
+msgid "HTTP proxy connection not allowed"
+msgstr "HTTP 프록시 연결을 허용하지 않습니다"
+
+#: ../gio/ghttpproxy.c:157
+msgid "HTTP proxy authentication failed"
+msgstr "HTTP 프록시 인증이 실패했습니다"
+
+#: ../gio/ghttpproxy.c:160
+msgid "HTTP proxy authentication required"
+msgstr "HTTP 프록시 인증이 필요합니다"
+
+#: ../gio/ghttpproxy.c:164
+#, c-format
+msgid "HTTP proxy connection failed: %i"
+msgstr "HTTP 프록시 연결이 실패했습니다: %i"
+
+#: ../gio/ghttpproxy.c:260
+msgid "HTTP proxy server closed connection unexpectedly."
+msgstr "HTTP 프록시 서버가 예상치 못하게 연결을 닫았습니다."
 
 #: ../gio/gicon.c:290
 #, c-format
