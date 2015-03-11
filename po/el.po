@@ -16,36 +16,36 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-13 21:17+0000\n"
-"PO-Revision-Date: 2015-02-13 23:52+0200\n"
-"Last-Translator: Efstathios Iosifidis <iosifidis@opensuse.org>\n"
+"POT-Creation-Date: 2015-03-11 06:50+0000\n"
+"PO-Revision-Date: 2015-03-11 14:34+0200\n"
+"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
 "Language-Team: Greek, Modern (1453-) <opensuse-translation-el@opensuse.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Poedit 1.7.4\n"
 "X-Project-Style: gnome\n"
 
-#: ../gio/gapplication.c:530
+#: ../gio/gapplication.c:531
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Εισαγωγή τρόπου λειτουργίας της εφαρμογής GApplication (χρήση από αρχεία "
 "υπηρεσίας D-Bus)"
 
-#: ../gio/gapplication.c:535
+#: ../gio/gapplication.c:536
 msgid "GApplication options"
-msgstr "Επιλογές εφαρμογής GApplication:"
+msgstr "Επιλογές GApplication"
 
-#: ../gio/gapplication.c:535
+#: ../gio/gapplication.c:536
 msgid "Show GApplication options"
-msgstr "Επιλογές εφαρμογής GApplication:"
+msgstr "Εμφάνιση επιλογών GApplication"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gresource-tool.c:485 ../gio/gsettings-tool.c:521
 msgid "Print help"
-msgstr "Βοήθεια εκτύπωσης"
+msgstr "Εμφάνιση βοήθειας"
 
 #: ../gio/gapplication-tool.c:47 ../gio/gresource-tool.c:486
 #: ../gio/gresource-tool.c:554
@@ -204,7 +204,7 @@ msgid ""
 "'%s' takes no arguments\n"
 "\n"
 msgstr ""
-"το '%s' δεν παίρνει ορίσματα\n"
+"Το '%s' δεν παίρνει ορίσματα\n"
 "\n"
 
 #: ../gio/gapplication-tool.c:266
@@ -283,7 +283,7 @@ msgid "Cannot truncate GBufferedInputStream"
 msgstr "Αδυναμία περικοπής του GMemoryInputStream"
 
 #: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202
-#: ../gio/giostream.c:277 ../gio/goutputstream.c:1654
+#: ../gio/giostream.c:278 ../gio/goutputstream.c:1654
 msgid "Stream is already closed"
 msgstr "Η ροή έχει ήδη κλείσει"
 
@@ -292,7 +292,7 @@ msgid "Truncate not supported on base stream"
 msgstr "Δεν υποστηρίζεται η περικοπή στη βασική ροή"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1896
-#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1417
+#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
 #: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:830
 #: ../gio/gsimpleasyncresult.c:856
 #, c-format
@@ -325,7 +325,7 @@ msgstr "Άκυρη σειρά byte στην είσοδο μετατροπής"
 msgid "Error during conversion: %s"
 msgstr "Σφάλμα κατά τη μετατροπή: %s"
 
-#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:985
+#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:990
 msgid "Cancellable initialization not supported"
 msgstr "Δεν υποστηρίζεται η ακυρώσιμη αρχικοποίηση"
 
@@ -948,12 +948,12 @@ msgid "Error return with empty body"
 msgstr "Επιστροφή σφάλματος με κενό σώμα"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/gdbusprivate.c:2067
+#: ../gio/gdbusprivate.c:2085
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Αδύνατη η λήψη κατατομής υλικού: %s"
 
-#: ../gio/gdbusprivate.c:2112
+#: ../gio/gdbusprivate.c:2130
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Αδυναμία φόρτωσης /var/lib/dbus/machine-id ή /etc/machine-id: "
 
@@ -1325,14 +1325,14 @@ msgstr ""
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Αναμενόταν GEmblem για το GEmblemedIcon"
 
-#: ../gio/gfile.c:962 ../gio/gfile.c:1200 ../gio/gfile.c:1338
-#: ../gio/gfile.c:1576 ../gio/gfile.c:1631 ../gio/gfile.c:1689
-#: ../gio/gfile.c:1773 ../gio/gfile.c:1830 ../gio/gfile.c:1894
-#: ../gio/gfile.c:1949 ../gio/gfile.c:3597 ../gio/gfile.c:3652
-#: ../gio/gfile.c:3887 ../gio/gfile.c:3929 ../gio/gfile.c:4392
-#: ../gio/gfile.c:4803 ../gio/gfile.c:4888 ../gio/gfile.c:4978
-#: ../gio/gfile.c:5075 ../gio/gfile.c:5162 ../gio/gfile.c:5263
-#: ../gio/gfile.c:7782 ../gio/gfile.c:7872 ../gio/gfile.c:7956
+#: ../gio/gfile.c:968 ../gio/gfile.c:1206 ../gio/gfile.c:1344
+#: ../gio/gfile.c:1582 ../gio/gfile.c:1637 ../gio/gfile.c:1695
+#: ../gio/gfile.c:1779 ../gio/gfile.c:1836 ../gio/gfile.c:1900
+#: ../gio/gfile.c:1955 ../gio/gfile.c:3603 ../gio/gfile.c:3658
+#: ../gio/gfile.c:3893 ../gio/gfile.c:3935 ../gio/gfile.c:4398
+#: ../gio/gfile.c:4809 ../gio/gfile.c:4894 ../gio/gfile.c:4984
+#: ../gio/gfile.c:5081 ../gio/gfile.c:5168 ../gio/gfile.c:5269
+#: ../gio/gfile.c:7788 ../gio/gfile.c:7878 ../gio/gfile.c:7962
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Ανυποστήρικτη λειτουργία"
@@ -1347,73 +1347,73 @@ msgstr "Ανυποστήρικτη λειτουργία"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1461 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
+#: ../gio/gfile.c:1467 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
 #: ../gio/glocalfile.c:1127
 msgid "Containing mount does not exist"
 msgstr "Δεν υπάρχει η περιέχουσα προσάρτηση"
 
-#: ../gio/gfile.c:2508 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2514 ../gio/glocalfile.c:2337
 msgid "Can't copy over directory"
 msgstr "Αδυναμία αντιγραφής σε κατάλογο"
 
-#: ../gio/gfile.c:2568
+#: ../gio/gfile.c:2574
 msgid "Can't copy directory over directory"
 msgstr "Αδυναμία αντιγραφής καταλόγου σε κατάλογο"
 
-#: ../gio/gfile.c:2576 ../gio/glocalfile.c:2346
+#: ../gio/gfile.c:2582 ../gio/glocalfile.c:2346
 msgid "Target file exists"
 msgstr "Το αρχείο προορισμού υπάρχει"
 
-#: ../gio/gfile.c:2595
+#: ../gio/gfile.c:2601
 msgid "Can't recursively copy directory"
 msgstr "Αδυναμία αναδρομικής αντιγραφής καταλόγου"
 
-#: ../gio/gfile.c:2877
+#: ../gio/gfile.c:2883
 msgid "Splice not supported"
 msgstr "Η αρμολόγηση δεν υποστηρίζεται"
 
-#: ../gio/gfile.c:2881
+#: ../gio/gfile.c:2887
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Σφάλμα αρμολόγησης αρχείου: %s"
 
-#: ../gio/gfile.c:3012
+#: ../gio/gfile.c:3018
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr ""
 "Δεν υποστηρίζεται η αντιγραφή (συνδέσμου αναφοράς/κλώνου) μεταξύ προσαρτήσεων"
 
-#: ../gio/gfile.c:3016
+#: ../gio/gfile.c:3022
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr ""
 "Η αντιγραφή (συνδέσμου αναφοράς/κλώνου) δεν υποστηρίζεται ή είναι άκυρη"
 
-#: ../gio/gfile.c:3021
+#: ../gio/gfile.c:3027
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr ""
 "Η αντιγραφή (συνδέσμου αναφοράς/κλώνου) δεν υποστηρίζεται ή δεν δούλεψε"
 
-#: ../gio/gfile.c:3084
+#: ../gio/gfile.c:3090
 msgid "Can't copy special file"
 msgstr "Αδυναμία αντιγραφής του ειδικού αρχείου"
 
-#: ../gio/gfile.c:3877
+#: ../gio/gfile.c:3883
 msgid "Invalid symlink value given"
 msgstr "Άκυρη τιμή συμβολικού συνδέσμου"
 
-#: ../gio/gfile.c:4038
+#: ../gio/gfile.c:4044
 msgid "Trash not supported"
 msgstr "Δεν υποστηρίζονται απορρίμματα"
 
-#: ../gio/gfile.c:4150
+#: ../gio/gfile.c:4156
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Τα ονόματα των αρχείων δεν μπορούν να περιέχουν '%c'"
 
-#: ../gio/gfile.c:6574 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6580 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "ο τόμος δεν υποστηρίζει προσάρτηση"
 
-#: ../gio/gfile.c:6683
+#: ../gio/gfile.c:6689
 msgid "No application is registered as handling this file"
 msgstr "Δεν έχουν οριστεί εφαρμογές για το χειρισμό αυτού του αρχείου"
 
@@ -1457,6 +1457,31 @@ msgstr "Δεν επιτρέπεται η περικοπή για τη ροή ε�
 #: ../gio/gfileiostream.c:455 ../gio/gfileoutputstream.c:447
 msgid "Truncate not supported on stream"
 msgstr "Δεν υποστηρίζεται η περικοπή ροής"
+
+#: ../gio/ghttpproxy.c:136
+msgid "Bad HTTP proxy reply"
+msgstr "Κακή απάντηση από τον διαμεσολαβητή HTTP"
+
+#: ../gio/ghttpproxy.c:152
+msgid "HTTP proxy connection not allowed"
+msgstr "Δεν επιτράπηκε η σύνδεση με τον διαμεσολαβητή HTTP"
+
+#: ../gio/ghttpproxy.c:157
+msgid "HTTP proxy authentication failed"
+msgstr "Απέτυχε η πιστοποποίηση με τον διαμεσολαβητή HTTP"
+
+#: ../gio/ghttpproxy.c:160
+msgid "HTTP proxy authentication required"
+msgstr "Απαιτείται πιστοποίηση με τον διαμεσολαβητή HTTP"
+
+#: ../gio/ghttpproxy.c:164
+#, c-format
+msgid "HTTP proxy connection failed: %i"
+msgstr "Απέτυχε η σύνδεση διαμεσολαβητή HTTP: %i"
+
+#: ../gio/ghttpproxy.c:260
+msgid "HTTP proxy server closed connection unexpectedly."
+msgstr "Έκλεισε απροσδόκητα η σύνδεση με τον διακομιστή διαμεσολάβησης HTTP."
 
 #: ../gio/gicon.c:290
 #, c-format
@@ -1530,7 +1555,7 @@ msgstr "Η ροή εισόδου δεν υποστηρίζει την ανάγν
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1212 ../gio/giostream.c:287
+#: ../gio/ginputstream.c:1212 ../gio/giostream.c:288
 #: ../gio/goutputstream.c:1664
 msgid "Stream has outstanding operation"
 msgstr "Εκκρεμεί μία ενέργεια για τη ροή"
@@ -2352,7 +2377,7 @@ msgid "Source stream is already closed"
 msgstr "Η ροή πηγής έχει ήδη κλείσει"
 
 #
-#: ../gio/gresolver.c:320 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:331 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving '%s': %s"
@@ -2728,140 +2753,140 @@ msgstr "Δόθηκε κενό όνομα σχήματος\n"
 msgid "No such key '%s'\n"
 msgstr "Χωρίς τέτοιο κλειδί '%s'\n"
 
-#: ../gio/gsocket.c:266
+#: ../gio/gsocket.c:271
 msgid "Invalid socket, not initialized"
 msgstr "Άκυρος υποδοχέας, δεν αρχικοποιήθηκε"
 
-#: ../gio/gsocket.c:273
+#: ../gio/gsocket.c:278
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Άκυρος υποδοχέας, η αρχικοποίηση απέτυχε λόγω του: %s"
 
-#: ../gio/gsocket.c:281
+#: ../gio/gsocket.c:286
 msgid "Socket is already closed"
 msgstr "Ο υποδοχέας είναι ήδη κλειστός"
 
-#: ../gio/gsocket.c:296 ../gio/gsocket.c:3619 ../gio/gsocket.c:3674
+#: ../gio/gsocket.c:301 ../gio/gsocket.c:3627 ../gio/gsocket.c:3682
 msgid "Socket I/O timed out"
 msgstr "Η υποδοχή I/O έληξε"
 
-#: ../gio/gsocket.c:443
+#: ../gio/gsocket.c:448
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "δημιουργία GSocket από fd: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/gsocket.c:471 ../gio/gsocket.c:525 ../gio/gsocket.c:532
+#: ../gio/gsocket.c:476 ../gio/gsocket.c:530 ../gio/gsocket.c:537
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Αδυναμία δημιουργίας υποδοχέα: %s"
 
-#: ../gio/gsocket.c:525
+#: ../gio/gsocket.c:530
 msgid "Unknown family was specified"
 msgstr "Ορίστηκε άγνωστη οικογένεια"
 
-#: ../gio/gsocket.c:532
+#: ../gio/gsocket.c:537
 msgid "Unknown protocol was specified"
 msgstr "Ορίστηκε άγνωστο πρωτόκολλο"
 
-#: ../gio/gsocket.c:1722
+#: ../gio/gsocket.c:1727
 #, c-format
 msgid "could not get local address: %s"
 msgstr "αδυναμία λήψης τοπικής διεύθυνσης: %s"
 
-#: ../gio/gsocket.c:1765
+#: ../gio/gsocket.c:1770
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "αδυναμία λήψης απομακρυσμένης διεύθυνσης: %s"
 
-#: ../gio/gsocket.c:1826
+#: ../gio/gsocket.c:1831
 #, c-format
 msgid "could not listen: %s"
 msgstr "αδυναμία ακρόασης: %s"
 
-#: ../gio/gsocket.c:1925
+#: ../gio/gsocket.c:1930
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Σφάλμα σύνδεσης στην διεύθυνση: %s"
 
 # gconf/gconftool.c:1181
-#: ../gio/gsocket.c:2037 ../gio/gsocket.c:2074
+#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Σφάλμα ένωσης ομάδας πολυεκπομπής: %s"
 
 # gconf/gconftool.c:1181
-#: ../gio/gsocket.c:2038 ../gio/gsocket.c:2075
+#: ../gio/gsocket.c:2046 ../gio/gsocket.c:2083
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Σφάλμα απομάκρυνσης ομάδας πολυεκπομπής: %s"
 
-#: ../gio/gsocket.c:2039
+#: ../gio/gsocket.c:2047
 msgid "No support for source-specific multicast"
 msgstr "Χωρίς υποστήριξη για πολυεκπομπή ειδικής πηγής"
 
 # gconf/gconftool.c:1181
-#: ../gio/gsocket.c:2261
+#: ../gio/gsocket.c:2269
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Σφάλμα αποδοχής σύνδεσης: %s"
 
-#: ../gio/gsocket.c:2384
+#: ../gio/gsocket.c:2392
 msgid "Connection in progress"
 msgstr "Σύνδεση σε εξέλιξη"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/gsocket.c:2434
+#: ../gio/gsocket.c:2442
 msgid "Unable to get pending error: "
 msgstr "Αδυναμία λήψης εκκρεμούς σφάλματος: "
 
-#: ../gio/gsocket.c:2637
+#: ../gio/gsocket.c:2645
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Σφάλμα λήψης δεδομένων: %s"
 
-#: ../gio/gsocket.c:2812
+#: ../gio/gsocket.c:2820
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Σφάλμα αποστολής δεδομένων: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/gsocket.c:2926
+#: ../gio/gsocket.c:2934
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Αδυναμία τερματισμού υποδοχής: %s"
 
-#: ../gio/gsocket.c:3005
+#: ../gio/gsocket.c:3013
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Σφάλμα τερματισμού υποδοχέα: %s"
 
-#: ../gio/gsocket.c:3612
+#: ../gio/gsocket.c:3620
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Αναμονή για την συνθήκη υποδοχέα: %s"
 
-#: ../gio/gsocket.c:3899 ../gio/gsocket.c:3982 ../gio/gsocket.c:4210
+#: ../gio/gsocket.c:3907 ../gio/gsocket.c:3990 ../gio/gsocket.c:4218
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Σφάλμα αποστολής μηνύματος: %s"
 
-#: ../gio/gsocket.c:3924
+#: ../gio/gsocket.c:3932
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "Το GSocketControlMessage δεν υποστηρίζεται στα Windows"
 
-#: ../gio/gsocket.c:4538 ../gio/gsocket.c:4676
+#: ../gio/gsocket.c:4546 ../gio/gsocket.c:4684
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Σφάλμα λήψης μηνύματος: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/gsocket.c:4798
+#: ../gio/gsocket.c:4806
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Αδύνατη η ανάγνωση διαπιστευτηρίων υποδοχής: %s"
 
-#: ../gio/gsocket.c:4807
+#: ../gio/gsocket.c:4815
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "Το g_socket_get_credentials δεν έχει υλοποιηθεί για αυτό το λειτουργικό "
@@ -2881,15 +2906,15 @@ msgstr "Αδυναμία σύνδεσης στο %s: "
 msgid "Could not connect: "
 msgstr "Αδυναμία σύνδεσης: "
 
-#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1603
+#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1599
 msgid "Unknown error on connect"
 msgstr "Άγνωστο σφάλμα σύνδεσης"
 
-#: ../gio/gsocketclient.c:1082 ../gio/gsocketclient.c:1538
+#: ../gio/gsocketclient.c:1081 ../gio/gsocketclient.c:1535
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Η προσπάθεια διαμεσολάβησης σε σύνδεση εκτός TCP δεν υποστηρίζεται."
 
-#: ../gio/gsocketclient.c:1108 ../gio/gsocketclient.c:1559
+#: ../gio/gsocketclient.c:1110 ../gio/gsocketclient.c:1561
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Το πρωτόκολλο διαμεσολαβητή '%s' δεν υποστηρίζεται."
@@ -3132,7 +3157,7 @@ msgstr "Σφάλμα ανάγνωσης περιγραφέα αρχείου: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Σφάλμα κλεισίματος περιγραφέα αρχείου: %s"
 
-#: ../gio/gunixmounts.c:2054 ../gio/gunixmounts.c:2107
+#: ../gio/gunixmounts.c:2099 ../gio/gunixmounts.c:2152
 msgid "Filesystem root"
 msgstr "Διαχειριστής συστήματος αρχείων"
 
