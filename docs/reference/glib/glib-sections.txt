@@ -365,6 +365,7 @@ G_INLINE_FUNC
 <SUBSECTION>
 g_auto
 g_autoptr
+g_autofree
 G_DEFINE_AUTOPTR_CLEANUP_FUNC
 G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC
 G_DEFINE_AUTO_CLEANUP_FREE_FUNC
@@ -442,6 +443,7 @@ GLIB_DEPRECATED_FOR
 GLIB_UNAVAILABLE
 G_ANALYZER_ANALYZING
 G_ANALYZER_NORETURN
+g_autoptr_cleanup_generic_gfree
 </SECTION>
 
 <SECTION>
@@ -996,6 +998,7 @@ g_try_realloc_n
 <SUBSECTION>
 g_free
 g_clear_pointer
+g_steal_pointer
 g_mem_gc_friendly
 
 <SUBSECTION>

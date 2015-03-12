@@ -181,7 +181,7 @@ gpointer g_try_realloc_n  (gpointer	 mem,
  * Since: 2.44
  */
 static inline gpointer
-(g_steal_pointer) (gpointer pp)
+g_steal_pointer (gpointer pp)
 {
   gpointer *ptr = (gpointer *) pp;
   gpointer ref;
