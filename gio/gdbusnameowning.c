@@ -784,7 +784,7 @@ bus_own_name_free_func (gpointer user_data)
 }
 
 /**
- * g_bus_own_name_with_closures:
+ * g_bus_own_name_with_closures: (rename-to g_bus_own_name)
  * @bus_type: the type of bus to own a name on
  * @name: the well-known name to own
  * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
@@ -800,8 +800,6 @@ bus_own_name_free_func (gpointer user_data)
  *
  * Returns: an identifier (never 0) that an be used with
  *     g_bus_unown_name() to stop owning the name.
- *
- * Rename to: g_bus_own_name
  *
  * Since: 2.26
  */
@@ -826,7 +824,7 @@ g_bus_own_name_with_closures (GBusType            bus_type,
 }
 
 /**
- * g_bus_own_name_on_connection_with_closures:
+ * g_bus_own_name_on_connection_with_closures: (rename-to g_bus_own_name_on_connection)
  * @connection: a #GDBusConnection
  * @name: the well-known name to own
  * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
@@ -840,8 +838,6 @@ g_bus_own_name_with_closures (GBusType            bus_type,
  *
  * Returns: an identifier (never 0) that an be used with
  *     g_bus_unown_name() to stop owning the name.
- *
- * Rename to: g_bus_own_name_on_connection
  *
  * Since: 2.26
  */

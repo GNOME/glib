@@ -4613,7 +4613,7 @@ g_timeout_source_new_seconds (guint interval)
 
 
 /**
- * g_timeout_add_full:
+ * g_timeout_add_full: (rename-to g_timeout_add)
  * @priority: the priority of the timeout source. Typically this will be in
  *            the range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
  * @interval: the time between calls to the function, in milliseconds
@@ -4645,7 +4645,6 @@ g_timeout_source_new_seconds (guint interval)
  * See g_get_monotonic_time().
  * 
  * Returns: the ID (greater than 0) of the event source.
- * Rename to: g_timeout_add
  **/
 guint
 g_timeout_add_full (gint           priority,
@@ -4716,7 +4715,7 @@ g_timeout_add (guint32        interval,
 }
 
 /**
- * g_timeout_add_seconds_full:
+ * g_timeout_add_seconds_full: (rename-to g_timeout_add_seconds)
  * @priority: the priority of the timeout source. Typically this will be in
  *            the range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
  * @interval: the time between calls to the function, in seconds
@@ -4760,7 +4759,6 @@ g_timeout_add (guint32        interval,
  * 
  * Returns: the ID (greater than 0) of the event source.
  *
- * Rename to: g_timeout_add_seconds
  * Since: 2.14
  **/
 guint
@@ -5260,7 +5258,7 @@ g_child_watch_source_new (GPid pid)
 }
 
 /**
- * g_child_watch_add_full:
+ * g_child_watch_add_full: (rename-to g_child_watch_add)
  * @priority: the priority of the idle source. Typically this will be in the
  *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
  * @pid:      process to watch. On POSIX the positive pid of a child process. On
@@ -5294,7 +5292,6 @@ g_child_watch_source_new (GPid pid)
  *
  * Returns: the ID (greater than 0) of the event source.
  *
- * Rename to: g_child_watch_add
  * Since: 2.4
  **/
 guint
@@ -5421,7 +5418,7 @@ g_idle_source_new (void)
 }
 
 /**
- * g_idle_add_full:
+ * g_idle_add_full: (rename-to g_idle_add)
  * @priority: the priority of the idle source. Typically this will be in the
  *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
  * @function: function to call
@@ -5439,7 +5436,6 @@ g_idle_source_new (void)
  * use a custom main context.
  * 
  * Returns: the ID (greater than 0) of the event source.
- * Rename to: g_idle_add
  **/
 guint 
 g_idle_add_full (gint           priority,

@@ -86,7 +86,7 @@ g_dbus_interface_get_object (GDBusInterface *interface_)
 }
 
 /**
- * g_dbus_interface_dup_object:
+ * g_dbus_interface_dup_object: (rename-to g_dbus_interface_get_object)
  * @interface_: An exported D-Bus interface.
  *
  * Gets the #GDBusObject that @interface_ belongs to, if any.
@@ -95,8 +95,6 @@ g_dbus_interface_get_object (GDBusInterface *interface_)
  * reference should be freed with g_object_unref().
  *
  * Since: 2.32
- *
- * Rename to: g_dbus_interface_get_object
  */
 GDBusObject *
 g_dbus_interface_dup_object (GDBusInterface *interface_)

@@ -740,7 +740,7 @@ bus_watch_name_free_func (gpointer user_data)
 }
 
 /**
- * g_bus_watch_name_with_closures:
+ * g_bus_watch_name_with_closures: (rename-to g_bus_watch_name)
  * @bus_type: The type of bus to watch a name on.
  * @name: The name (well-known or unique) to watch.
  * @flags: Flags from the #GBusNameWatcherFlags enumeration.
@@ -754,8 +754,6 @@ bus_watch_name_free_func (gpointer user_data)
  *
  * Returns: An identifier (never 0) that an be used with
  * g_bus_unwatch_name() to stop watching the name.
- *
- * Rename to: g_bus_watch_name
  *
  * Since: 2.26
  */
@@ -776,7 +774,7 @@ g_bus_watch_name_with_closures (GBusType                 bus_type,
 }
 
 /**
- * g_bus_watch_name_on_connection_with_closures:
+ * g_bus_watch_name_on_connection_with_closures: (rename-to g_bus_watch_name_on_connection)
  * @connection: A #GDBusConnection.
  * @name: The name (well-known or unique) to watch.
  * @flags: Flags from the #GBusNameWatcherFlags enumeration.
@@ -790,8 +788,6 @@ g_bus_watch_name_with_closures (GBusType                 bus_type,
  *
  * Returns: An identifier (never 0) that an be used with
  * g_bus_unwatch_name() to stop watching the name.
- *
- * Rename to: g_bus_watch_name_on_connection
  *
  * Since: 2.26
  */

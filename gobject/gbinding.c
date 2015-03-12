@@ -1165,7 +1165,7 @@ bind_with_closures_free_func (gpointer data)
 }
 
 /**
- * g_object_bind_property_with_closures:
+ * g_object_bind_property_with_closures: (rename-to g_object_bind_property_full)
  * @source: (type GObject.Object): the source #GObject
  * @source_property: the property on @source to bind
  * @target: (type GObject.Object): the target #GObject
@@ -1183,8 +1183,6 @@ bind_with_closures_free_func (gpointer data)
  * This function is the language bindings friendly version of
  * g_object_bind_property_full(), using #GClosures instead of
  * function pointers.
- *
- * Rename to: g_object_bind_property_full
  *
  * Returns: (transfer none): the #GBinding instance representing the
  *     binding between the two #GObject instances. The binding is released

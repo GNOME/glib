@@ -1835,7 +1835,7 @@ g_object_new_internal (GObjectClass          *class,
 }
 
 /**
- * g_object_newv:
+ * g_object_newv: (rename-to g_object_new)
  * @object_type: the type id of the #GObject subtype to instantiate
  * @n_parameters: the length of the @parameters array
  * @parameters: (array length=n_parameters): an array of #GParameter
@@ -1845,7 +1845,6 @@ g_object_new_internal (GObjectClass          *class,
  * Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY)
  * which are not explicitly specified are set to their default values.
  *
- * Rename to: g_object_new
  * Returns: (type GObject.Object) (transfer full): a new instance of
  * @object_type
  */

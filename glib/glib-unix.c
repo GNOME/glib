@@ -222,7 +222,7 @@ g_unix_signal_source_new (int signum)
 }
 
 /**
- * g_unix_signal_add_full:
+ * g_unix_signal_add_full: (rename-to g_unix_signal_add)
  * @priority: the priority of the signal source. Typically this will be in
  *            the range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
  * @signum: Signal number
@@ -236,7 +236,6 @@ g_unix_signal_source_new (int signum)
  *
  * Returns: An ID (greater than 0) for the event source
  *
- * Rename to: g_unix_signal_add
  * Since: 2.30
  */
 guint

@@ -353,7 +353,7 @@ g_value_array_sort (GValueArray *value_array,
 }
 
 /**
- * g_value_array_sort_with_data:
+ * g_value_array_sort_with_data: (rename-to g_value_array_sort)
  * @value_array: #GValueArray to sort
  * @compare_func: (scope call): function to compare elements
  * @user_data: (closure): extra data argument provided for @compare_func
@@ -364,7 +364,6 @@ g_value_array_sort (GValueArray *value_array,
  * The current implementation uses the same sorting algorithm as standard
  * C qsort() function.
  *
- * Rename to: g_value_array_sort
  * Returns: (transfer none): the #GValueArray passed in as @value_array
  *
  * Deprecated: 2.32: Use #GArray and g_array_sort_with_data().
