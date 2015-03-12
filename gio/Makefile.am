@@ -313,11 +313,12 @@ win32_actual_sources = \
 win32_more_sources_for_vcproj = \
 	gwin32appinfo.c \
 	gregistrysettingsbackend.c \
-	win32/gwin32directorymonitor.c \
 	win32/gwinhttpfile.c \
 	win32/gwinhttpfileinputstream.c \
 	win32/gwinhttpfileoutputstream.c \
-	win32/gwinhttpvfs.c
+	win32/gwinhttpvfs.c \
+	win32/gwin32fsmonitorutils.c \
+	win32/gwin32filemonitor.c
 
 if OS_WIN32
 appinfo_sources += gwin32appinfo.c gwin32appinfo.h
