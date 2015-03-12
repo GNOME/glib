@@ -234,7 +234,7 @@ dupfd_cloexec (int parent_fd)
   return fd;
 }
 
-/**
+/*
  * Based on code derived from
  * gnome-terminal:src/terminal-screen.c:terminal_screen_child_setup(),
  * used under the LGPLv2+ with permission from author.

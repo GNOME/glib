@@ -34,6 +34,7 @@ IGNORE_HFILES = \
 	gapplicationimpl.h		\
 	gasynchelper.h			\
 	gcontenttypeprivate.h		\
+	gcontextspecificgroup.h		\
 	gcredentialsprivate.h		\
 	gdbus-daemon-generated.h	\
 	gdbusactiongroup-private.h	\
@@ -95,6 +96,12 @@ IGNORE_HFILES = \
 	gwin32volumemonitor.h		\
 	thumbnail-verify.h
 
+MKDB_IGNORE_FILES = \
+	gdbus-daemon-generated.c	\
+	kqueue				\
+	libasyncns			\
+	tests				\
+	$(NULL)
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
@@ -111,7 +118,7 @@ GTKDOC_LIBS = \
 
 # Extra options to supply to gtkdoc-mkdb
 MKDB_OPTIONS = --output-format=xml --name-space=g \
-	--ignore-files='libasyncns tests'
+	--ignore-files='$(MKDB_IGNORE_FILES)'
 
 # Images to copy into HTML directory
 HTML_IMAGES =			\

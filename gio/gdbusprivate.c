@@ -1564,7 +1564,7 @@ continue_writing_in_idle_cb (gpointer user_data)
   return FALSE;
 }
 
-/**
+/*
  * @write_data: (transfer full) (allow-none):
  * @flush_data: (transfer full) (allow-none):
  * @close_data: (transfer full) (allow-none):
