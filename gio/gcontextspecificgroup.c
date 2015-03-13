@@ -182,10 +182,6 @@ g_context_specific_group_get (GContextSpecificGroup *group,
   if (!group->table)
     group->table = g_hash_table_new (NULL, NULL);
 
-  /* start only if there are no others */
-  if (start_func && g_hash_table_size (group->table) == 0)
-    g_context_specific_group_request_state (group, TRUE, start_func);
-
   css = g_hash_table_lookup (group->table, context);
 
   if (!css)
@@ -201,6 +197,9 @@ g_context_specific_group_get (GContextSpecificGroup *group,
     }
   else
     g_object_ref (css->instance);
+
+  if (start_func)
+    g_context_specific_group_request_state (group, TRUE, start_func);
 
   g_mutex_unlock (&group->lock);
 

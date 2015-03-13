@@ -313,7 +313,7 @@ test_context_specific_identity (void)
   for (i = 0; i < N_THREADS; i++)
     exited |= GPOINTER_TO_UINT (g_thread_join (threads[i]));
   g_assert (exited);
-  g_assert (!g_atomic_int_get (&is_running));
+  g_assert (!group.requested_state);
 }
 
 static void
@@ -362,7 +362,6 @@ test_context_specific_emit (void)
   gboolean exited = FALSE;
   guint i, n;
 
-  g_assert (!g_atomic_int_get (&is_running));
   for (i = 0; i < N_THREADS; i++)
     threads[i] = g_thread_new ("test", test_emit_thread, &observed_values[i]);
 
@@ -397,7 +396,7 @@ test_context_specific_emit (void)
   for (i = 0; i < N_THREADS; i++)
     exited |= GPOINTER_TO_UINT (g_thread_join (threads[i]));
   g_assert (exited);
-  g_assert (!g_atomic_int_get (&is_running));
+  g_assert (!group.requested_state);
 }
 
 int
