@@ -95,8 +95,8 @@ typedef enum
  * @G_OPTION_ARG_NONE: No extra argument. This is useful for simple flags.
  * @G_OPTION_ARG_STRING: The option takes a string argument.
  * @G_OPTION_ARG_INT: The option takes an integer argument.
- * @G_OPTION_ARG_CALLBACK: The option provides a callback to parse the
- *     extra argument.
+ * @G_OPTION_ARG_CALLBACK: The option provides a callback (of type
+ *     #GOptionArgFunc) to parse the extra argument.
  * @G_OPTION_ARG_FILENAME: The option takes a filename as argument.
  * @G_OPTION_ARG_STRING_ARRAY: The option takes a string argument, multiple
  *     uses of the option are collected into an array of strings.
