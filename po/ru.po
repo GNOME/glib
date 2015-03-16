@@ -10,15 +10,16 @@
 # Yuri Kozlov <yuray@komyakino.ru>, 2010, 2011, 2012.
 # Yuri Myasoedov <ymyasoedov@yandex.ru>, 2012-2014.
 # Ivan Komaritsyn <vantu5z@mail.ru>, 2015.
+# Stas Solovey <whats_up@tut.by>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-12 18:49+0000\n"
-"PO-Revision-Date: 2015-02-12 10:52+0300\n"
-"Last-Translator: Ivan Komaritsyn <vantu5z@mail.ru>\n"
+"POT-Creation-Date: 2015-03-16 06:41+0000\n"
+"PO-Revision-Date: 2015-03-16 12:56+0300\n"
+"Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -28,17 +29,17 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#: ../gio/gapplication.c:530
+#: ../gio/gapplication.c:531
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Запустить GApplication в режиме сервиса (использовать из сервисных файлов D-"
 "Bus)"
 
-#: ../gio/gapplication.c:535
+#: ../gio/gapplication.c:536
 msgid "GApplication options"
 msgstr "Параметры GApplication"
 
-#: ../gio/gapplication.c:535
+#: ../gio/gapplication.c:536
 msgid "Show GApplication options"
 msgstr "Показать параметры GApplication"
 
@@ -279,7 +280,7 @@ msgid "Cannot truncate GBufferedInputStream"
 msgstr "Нельзя усечь GBufferedInputStream"
 
 #: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202
-#: ../gio/giostream.c:277 ../gio/goutputstream.c:1654
+#: ../gio/giostream.c:278 ../gio/goutputstream.c:1654
 msgid "Stream is already closed"
 msgstr "Поток уже закрыт"
 
@@ -288,7 +289,7 @@ msgid "Truncate not supported on base stream"
 msgstr "Усечение не поддерживается в базовом потоке"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1896
-#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1417
+#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
 #: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:830
 #: ../gio/gsimpleasyncresult.c:856
 #, c-format
@@ -309,23 +310,23 @@ msgstr "Недостаточно места в целевом расположе
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
 #: ../gio/gdatainputstream.c:1256 ../glib/gconvert.c:438
-#: ../glib/gconvert.c:845 ../glib/giochannel.c:1557 ../glib/giochannel.c:1599
-#: ../glib/giochannel.c:2443 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
+#: ../glib/gconvert.c:845 ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
+#: ../glib/giochannel.c:2442 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
 msgid "Invalid byte sequence in conversion input"
 msgstr "Недопустимая последовательность байтов во входных преобразуемых данных"
 
 #: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:446
-#: ../glib/gconvert.c:770 ../glib/giochannel.c:1564 ../glib/giochannel.c:2455
+#: ../glib/gconvert.c:770 ../glib/giochannel.c:1563 ../glib/giochannel.c:2454
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Произошла ошибка при преобразовании: %s"
 
-#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:985
+#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:990
 msgid "Cancellable initialization not supported"
 msgstr "Прерываемая инициализация не поддерживается"
 
 #: ../gio/gcharsetconverter.c:454 ../glib/gconvert.c:321
-#: ../glib/giochannel.c:1385
+#: ../glib/giochannel.c:1384
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Преобразование из набора символов «%s» в «%s» не поддерживается"
@@ -915,12 +916,12 @@ msgstr "Возвращена ошибка с телом типа «%s»"
 msgid "Error return with empty body"
 msgstr "Возвращена ошибка с пустым телом"
 
-#: ../gio/gdbusprivate.c:2067
+#: ../gio/gdbusprivate.c:2085
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Не удалось получить профиль аппаратуры: %s"
 
-#: ../gio/gdbusprivate.c:2112
+#: ../gio/gdbusprivate.c:2130
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Не удалось загрузить /var/lib/dbus/machine-id или /etc/machine-id: "
 
@@ -1284,14 +1285,14 @@ msgstr "Некорректное число лексем (%d) текстовог
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Для GEmblemedIcon ожидается GEmblem"
 
-#: ../gio/gfile.c:962 ../gio/gfile.c:1200 ../gio/gfile.c:1338
-#: ../gio/gfile.c:1576 ../gio/gfile.c:1631 ../gio/gfile.c:1689
-#: ../gio/gfile.c:1773 ../gio/gfile.c:1830 ../gio/gfile.c:1894
-#: ../gio/gfile.c:1949 ../gio/gfile.c:3597 ../gio/gfile.c:3652
-#: ../gio/gfile.c:3887 ../gio/gfile.c:3929 ../gio/gfile.c:4392
-#: ../gio/gfile.c:4803 ../gio/gfile.c:4888 ../gio/gfile.c:4978
-#: ../gio/gfile.c:5075 ../gio/gfile.c:5162 ../gio/gfile.c:5263
-#: ../gio/gfile.c:7782 ../gio/gfile.c:7872 ../gio/gfile.c:7956
+#: ../gio/gfile.c:968 ../gio/gfile.c:1206 ../gio/gfile.c:1344
+#: ../gio/gfile.c:1582 ../gio/gfile.c:1637 ../gio/gfile.c:1695
+#: ../gio/gfile.c:1779 ../gio/gfile.c:1836 ../gio/gfile.c:1900
+#: ../gio/gfile.c:1955 ../gio/gfile.c:3603 ../gio/gfile.c:3658
+#: ../gio/gfile.c:3893 ../gio/gfile.c:3935 ../gio/gfile.c:4398
+#: ../gio/gfile.c:4809 ../gio/gfile.c:4894 ../gio/gfile.c:4984
+#: ../gio/gfile.c:5081 ../gio/gfile.c:5168 ../gio/gfile.c:5269
+#: ../gio/gfile.c:7788 ../gio/gfile.c:7878 ../gio/gfile.c:7962
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Действие не поддерживается"
@@ -1306,71 +1307,71 @@ msgstr "Действие не поддерживается"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1461 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
+#: ../gio/gfile.c:1467 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
 #: ../gio/glocalfile.c:1127
 msgid "Containing mount does not exist"
 msgstr "Содержащая точка монтирования не существует"
 
-#: ../gio/gfile.c:2508 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2514 ../gio/glocalfile.c:2337
 msgid "Can't copy over directory"
 msgstr "Нельзя скопировать поверх каталога"
 
-#: ../gio/gfile.c:2568
+#: ../gio/gfile.c:2574
 msgid "Can't copy directory over directory"
 msgstr "Нельзя скопировать каталог поверх каталога"
 
-#: ../gio/gfile.c:2576 ../gio/glocalfile.c:2346
+#: ../gio/gfile.c:2582 ../gio/glocalfile.c:2346
 msgid "Target file exists"
 msgstr "Целевой файл существует"
 
-#: ../gio/gfile.c:2595
+#: ../gio/gfile.c:2601
 msgid "Can't recursively copy directory"
 msgstr "Не удалось рекурсивно скопировать каталог"
 
-#: ../gio/gfile.c:2877
+#: ../gio/gfile.c:2883
 msgid "Splice not supported"
 msgstr "Соединение не поддерживается"
 
-#: ../gio/gfile.c:2881
+#: ../gio/gfile.c:2887
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Произошла ошибка при соединении файла: %s"
 
-#: ../gio/gfile.c:3012
+#: ../gio/gfile.c:3018
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr ""
 "Копирование (reflink/clone) между точками монтирования не поддерживается"
 
-#: ../gio/gfile.c:3016
+#: ../gio/gfile.c:3022
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Копирование (reflink/clone) не поддерживается или некорректно"
 
-#: ../gio/gfile.c:3021
+#: ../gio/gfile.c:3027
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "Копирование (reflink/clone) не поддерживается или не работает"
 
-#: ../gio/gfile.c:3084
+#: ../gio/gfile.c:3090
 msgid "Can't copy special file"
 msgstr "Нельзя скопировать специальный файл"
 
-#: ../gio/gfile.c:3877
+#: ../gio/gfile.c:3883
 msgid "Invalid symlink value given"
 msgstr "Дано неверное значение символьной ссылки"
 
-#: ../gio/gfile.c:4038
+#: ../gio/gfile.c:4044
 msgid "Trash not supported"
 msgstr "Корзина не поддерживается"
 
-#: ../gio/gfile.c:4150
+#: ../gio/gfile.c:4156
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Имена файлов не могут содержать «%c»"
 
-#: ../gio/gfile.c:6574 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6580 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "том не поддерживает присоединение"
 
-#: ../gio/gfile.c:6683
+#: ../gio/gfile.c:6689
 msgid "No application is registered as handling this file"
 msgstr "Нет зарегистрированного приложения для обработки данного файла"
 
@@ -1414,6 +1415,34 @@ msgstr "Усечение на входном потоке не разрешен�
 #: ../gio/gfileiostream.c:455 ../gio/gfileoutputstream.c:447
 msgid "Truncate not supported on stream"
 msgstr "Усечение не поддерживается на потоке"
+
+#: ../gio/ghttpproxy.c:136
+msgid "Bad HTTP proxy reply"
+msgstr ""
+
+#: ../gio/ghttpproxy.c:152
+#, fuzzy
+#| msgid "The connection is closed"
+msgid "HTTP proxy connection not allowed"
+msgstr "Соединение закрыто"
+
+#: ../gio/ghttpproxy.c:157
+msgid "HTTP proxy authentication failed"
+msgstr ""
+
+#: ../gio/ghttpproxy.c:160
+msgid "HTTP proxy authentication required"
+msgstr ""
+
+#: ../gio/ghttpproxy.c:164
+#, fuzzy, c-format
+#| msgid "The connection is closed"
+msgid "HTTP proxy connection failed: %i"
+msgstr "Соединение закрыто"
+
+#: ../gio/ghttpproxy.c:260
+msgid "HTTP proxy server closed connection unexpectedly."
+msgstr ""
 
 #: ../gio/gicon.c:290
 #, c-format
@@ -1486,7 +1515,7 @@ msgstr "Входной поток не поддерживает чтение"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1212 ../gio/giostream.c:287
+#: ../gio/ginputstream.c:1212 ../gio/giostream.c:288
 #: ../gio/goutputstream.c:1664
 msgid "Stream has outstanding operation"
 msgstr "Поток имеет незавершённое действие"
@@ -2288,7 +2317,7 @@ msgstr "Выходной поток не поддерживает запись"
 msgid "Source stream is already closed"
 msgstr "Исходный поток уже закрыт"
 
-#: ../gio/gresolver.c:320 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:331 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving '%s': %s"
@@ -2665,133 +2694,133 @@ msgstr "Указано пустое имя схемы\n"
 msgid "No such key '%s'\n"
 msgstr "Ключ «%s» отсутствует\n"
 
-#: ../gio/gsocket.c:266
+#: ../gio/gsocket.c:271
 msgid "Invalid socket, not initialized"
 msgstr "Недопустимый сокет, не инициализировано"
 
-#: ../gio/gsocket.c:273
+#: ../gio/gsocket.c:278
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Недопустимый сокет, инициализация не удалась по причине: %s"
 
-#: ../gio/gsocket.c:281
+#: ../gio/gsocket.c:286
 msgid "Socket is already closed"
 msgstr "Сокет уже закрыт"
 
-#: ../gio/gsocket.c:296 ../gio/gsocket.c:3619 ../gio/gsocket.c:3674
+#: ../gio/gsocket.c:301 ../gio/gsocket.c:3627 ../gio/gsocket.c:3682
 msgid "Socket I/O timed out"
 msgstr "Превышено время ожидания ввода-вывода сокета"
 
-#: ../gio/gsocket.c:443
+#: ../gio/gsocket.c:448
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "создаётся GSocket из fd: %s"
 
-#: ../gio/gsocket.c:471 ../gio/gsocket.c:525 ../gio/gsocket.c:532
+#: ../gio/gsocket.c:476 ../gio/gsocket.c:530 ../gio/gsocket.c:537
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Не удалось создать сокет: %s"
 
-#: ../gio/gsocket.c:525
+#: ../gio/gsocket.c:530
 msgid "Unknown family was specified"
 msgstr "Указано неизвестное семейство"
 
-#: ../gio/gsocket.c:532
+#: ../gio/gsocket.c:537
 msgid "Unknown protocol was specified"
 msgstr "Указан неизвестный протокол"
 
-#: ../gio/gsocket.c:1722
+#: ../gio/gsocket.c:1727
 #, c-format
 msgid "could not get local address: %s"
 msgstr "не удалось получить локальный адрес: %s"
 
-#: ../gio/gsocket.c:1765
+#: ../gio/gsocket.c:1770
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "не удалось получить удаленный адрес: %s"
 
-#: ../gio/gsocket.c:1826
+#: ../gio/gsocket.c:1831
 #, c-format
 msgid "could not listen: %s"
 msgstr "не удалось слушать: %s"
 
-#: ../gio/gsocket.c:1925
+#: ../gio/gsocket.c:1930
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Произошла ошибка при связывании к адресу: %s"
 
-#: ../gio/gsocket.c:2037 ../gio/gsocket.c:2074
+#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Ошибка при вступлении в мультикастовую группу: %s"
 
-#: ../gio/gsocket.c:2038 ../gio/gsocket.c:2075
+#: ../gio/gsocket.c:2046 ../gio/gsocket.c:2083
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Ошибка при выходе из мультикастовой группы: %s"
 
-#: ../gio/gsocket.c:2039
+#: ../gio/gsocket.c:2047
 msgid "No support for source-specific multicast"
 msgstr "Отсутствует поддержка мультикаста по источнику"
 
-#: ../gio/gsocket.c:2261
+#: ../gio/gsocket.c:2269
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Ошибка приёма подключения: %s"
 
-#: ../gio/gsocket.c:2384
+#: ../gio/gsocket.c:2392
 msgid "Connection in progress"
 msgstr "Выполняется соединение"
 
-#: ../gio/gsocket.c:2434
+#: ../gio/gsocket.c:2442
 msgid "Unable to get pending error: "
 msgstr "Не удалось получить ошибку ожидания: "
 
-#: ../gio/gsocket.c:2637
+#: ../gio/gsocket.c:2645
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Ошибка при получении данных: %s"
 
-#: ../gio/gsocket.c:2812
+#: ../gio/gsocket.c:2820
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Ошибка при отправлении данных: %s"
 
-#: ../gio/gsocket.c:2926
+#: ../gio/gsocket.c:2934
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Не удалось выключить сокет: %s"
 
-#: ../gio/gsocket.c:3005
+#: ../gio/gsocket.c:3013
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Произошла ошибка при закрытии сокета: %s"
 
-#: ../gio/gsocket.c:3612
+#: ../gio/gsocket.c:3620
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Ожидание состояния сокета: %s"
 
-#: ../gio/gsocket.c:3899 ../gio/gsocket.c:3982 ../gio/gsocket.c:4210
+#: ../gio/gsocket.c:3907 ../gio/gsocket.c:3990 ../gio/gsocket.c:4218
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Произошла ошибка при отправлении сообщения: %s"
 
-#: ../gio/gsocket.c:3924
+#: ../gio/gsocket.c:3932
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage не поддерживается в Windows"
 
-#: ../gio/gsocket.c:4538 ../gio/gsocket.c:4676
+#: ../gio/gsocket.c:4546 ../gio/gsocket.c:4684
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Произошла ошибка при получении сообщения: %s"
 
-#: ../gio/gsocket.c:4798
+#: ../gio/gsocket.c:4806
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Не удалось прочитать полномочия сокета: %s"
 
-#: ../gio/gsocket.c:4807
+#: ../gio/gsocket.c:4815
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "Функция g_socket_get_credentials не реализована в этой ОС"
 
@@ -2809,15 +2838,15 @@ msgstr "Не удалось подключиться к %s: "
 msgid "Could not connect: "
 msgstr "Не удалось подключиться к: "
 
-#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1603
+#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1599
 msgid "Unknown error on connect"
 msgstr "Неизвестная ошибка при соединении"
 
-#: ../gio/gsocketclient.c:1082 ../gio/gsocketclient.c:1538
+#: ../gio/gsocketclient.c:1081 ../gio/gsocketclient.c:1535
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr "Проксирование через не-TCP соединение не поддерживается."
 
-#: ../gio/gsocketclient.c:1108 ../gio/gsocketclient.c:1559
+#: ../gio/gsocketclient.c:1110 ../gio/gsocketclient.c:1561
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Протокол прокси «%s» не поддерживается."
@@ -3055,7 +3084,7 @@ msgstr "Ошибка при чтении из файлового дескрип�
 msgid "Error closing file descriptor: %s"
 msgstr "Ошибка при закрытии файлового дескриптора: %s"
 
-#: ../gio/gunixmounts.c:2054 ../gio/gunixmounts.c:2107
+#: ../gio/gunixmounts.c:2099 ../gio/gunixmounts.c:2152
 msgid "Filesystem root"
 msgstr "Корень файловой системы"
 
@@ -3287,7 +3316,7 @@ msgstr "п. п."
 #: ../glib/gdatetime.c:206
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "%a %d %b %Y %T"
+msgstr "%A, %e %b. %Y, %H:%M:%S"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:209
@@ -3586,27 +3615,27 @@ msgstr "Не удалось прочитать символьную ссылку
 msgid "Symbolic links not supported"
 msgstr "Символьные ссылки не поддерживаются"
 
-#: ../glib/giochannel.c:1389
+#: ../glib/giochannel.c:1388
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Не удалось открыть преобразователь из «%s» в «%s»: %s"
 
-#: ../glib/giochannel.c:1734
+#: ../glib/giochannel.c:1733
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Невозможно выполнить непосредственное чтение в функции "
 "g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1781 ../glib/giochannel.c:2039
-#: ../glib/giochannel.c:2126
+#: ../glib/giochannel.c:1780 ../glib/giochannel.c:2038
+#: ../glib/giochannel.c:2125
 msgid "Leftover unconverted data in read buffer"
 msgstr "В буфере чтения остались непреобразованные данные"
 
-#: ../glib/giochannel.c:1862 ../glib/giochannel.c:1939
+#: ../glib/giochannel.c:1861 ../glib/giochannel.c:1938
 msgid "Channel terminates in a partial character"
 msgstr "Канал закрывается на неполном символе"
 
-#: ../glib/giochannel.c:1925
+#: ../glib/giochannel.c:1924
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr ""
 "Невозможно выполнить непосредственное чтение в функции "
