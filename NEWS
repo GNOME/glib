@@ -1,3 +1,60 @@
+Overview of changes in GLib 2.43.92
+===================================
+
+GLib is now considered frozen.  We do not expect any major changes
+before the release of 2.44.0.
+
+ * GUnixMountMonitor now properly supports multiple main contexts
+
+ * many documentation improvements and cleanups.  We are now
+   approaching a point where the documentation is 100% complete and the
+   xml will build without warnings.  This will probably be enabled by
+   default in the next cycle.
+
+ * new support for HTTP proxies in GIO
+
+ * new GTask:completed property
+
+ * use "private" futexes in order to further improve the performance of
+   the contended case of GMutex and g_bit_lock()
+
+Bugs fixed:
+ 614684 Make various parts of GObject const-correct
+ 730352 Use inet_pton(), if_nametoindex() and if_indextoname() for newer versions of Windows
+ 733876 Proxy protocol 'http' is not supported.
+ 741442 threads: use FUTEX_WAIT_PRIVATE and FUTEX_WAKE_PRIVATE if possible
+ 742599 Clean up GUnixMountMonitor
+ 743636 gtask: Add a GTask:completed property
+ 743661 g_win32_check_windows_version() is missing from doc
+ 744722 docs: Expand introduction to mention using async calls over sync ones
+ 745589 [Patch] gio: add some missing autocleanup
+ 745634 [GNotifications] Use themed icon as icon-name
+
+Translations updated:
+ Bosnian
+ Bulgarian
+ Catalan
+ Czech
+ French
+ German
+ Greek
+ Hungarian
+ Italian
+ Kazakh
+ Korean
+ Latvian
+ Lithuanian
+ POTFILESin
+ Polish
+ Russian
+ Serbian
+ Slovak
+ Slovenian
+ Spanish
+ Swedish
+ Vietnamese
+ pa  for Gnome
+
 Overview of changes in GLib 2.43.91
 ===================================
 
