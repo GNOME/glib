@@ -318,24 +318,6 @@ g_socket_details_from_fd (GSocket *socket)
   if (!g_socket_get_option (socket, SOL_SOCKET, SO_TYPE, &value, NULL))
     {
       errsv = get_socket_errno ();
-
-      switch (errsv)
-	{
-#ifdef ENOTSOCK
-	 case ENOTSOCK:
-#else
-#ifdef WSAENOTSOCK
-	 case WSAENOTSOCK:
-#endif
-#endif
-	 case EBADF:
-	  /* programmer error */
-	  g_error ("creating GSocket from fd %d: %s\n",
-		   fd, socket_strerror (errsv));
-	 default:
-	   break;
-	}
-
       goto err;
     }
 
@@ -1059,6 +1041,9 @@ g_socket_new (GSocketFamily     family,
  *
  * On success, the returned #GSocket takes ownership of @fd. On failure, the
  * caller must close @fd themselves.
+ *
+ * Since GLib 2.46, it is no longer a fatal error to call this on a non-socket
+ * descriptor.  Instead, a GError will be set with code %G_IO_ERROR_FAILED
  *
  * Returns: a #GSocket or %NULL on error.
  *     Free the returned object with g_object_unref().
