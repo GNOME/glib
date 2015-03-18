@@ -5,6 +5,7 @@ appmonitor
 apps
 async-close-output-stream
 async-splice-output-stream
+autoptr
 basic-application
 buffered-input-stream
 buffered-output-stream

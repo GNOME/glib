@@ -5,6 +5,7 @@
 array-test
 asyncqueue
 atomic
+autoptr
 base64
 bitlock
 bookmarkfile
