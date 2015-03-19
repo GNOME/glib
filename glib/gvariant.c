@@ -1839,6 +1839,9 @@ g_variant_new_bytestring (const gchar *string)
  * the last byte then the returned string is the string, up to the first
  * such nul character.
  *
+ * g_variant_get_fixed_array() should be used instead if the array contains
+ * arbitrary data that could not be nul-terminated or could contain nul bytes.
+ *
  * It is an error to call this function with a @value that is not an
  * array of bytes.
  *
