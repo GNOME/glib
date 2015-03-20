@@ -1440,7 +1440,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 {
   GVariant *ret;
   GError *local_error;
+#ifdef DEBUG_SERIALIZER
   gboolean is_leaf;
+#endif /* DEBUG_SERIALIZER */
   const gchar *type_string;
 
   type_string = g_variant_type_peek_string (type);
@@ -1460,7 +1462,9 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 
   ret = NULL;
 
+#ifdef DEBUG_SERIALIZER
   is_leaf = TRUE;
+#endif /* DEBUG_SERIALIZER */
   local_error = NULL;
   switch (type_string[0])
     {
@@ -1643,8 +1647,8 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 
           array_len = g_memory_buffer_read_uint32 (buf);
 
-          is_leaf = FALSE;
 #ifdef DEBUG_SERIALIZER
+          is_leaf = FALSE;
           g_print (": array spans 0x%04x bytes\n", array_len);
 #endif /* DEBUG_SERIALIZER */
 
@@ -1751,8 +1755,8 @@ parse_value_from_blob (GMemoryBuffer       *buf,
 
           ensure_input_padding (buf, 8);
 
-          is_leaf = FALSE;
 #ifdef DEBUG_SERIALIZER
+          is_leaf = FALSE;
           g_print ("\n");
 #endif /* DEBUG_SERIALIZER */
 
@@ -1786,8 +1790,8 @@ parse_value_from_blob (GMemoryBuffer       *buf,
         {
           ensure_input_padding (buf, 8);
 
-          is_leaf = FALSE;
 #ifdef DEBUG_SERIALIZER
+          is_leaf = FALSE;
           g_print ("\n");
 #endif /* DEBUG_SERIALIZER */
 
@@ -1821,8 +1825,8 @@ parse_value_from_blob (GMemoryBuffer       *buf,
         }
       else if (g_variant_type_is_variant (type))
         {
-          is_leaf = FALSE;
 #ifdef DEBUG_SERIALIZER
+          is_leaf = FALSE;
           g_print ("\n");
 #endif /* DEBUG_SERIALIZER */
 
@@ -1894,8 +1898,6 @@ parse_value_from_blob (GMemoryBuffer       *buf,
           g_free (s);
         }
     }
-#else
-  is_leaf = is_leaf; /* To avoid -Wunused-but-set-variable */
 #endif /* DEBUG_SERIALIZER */
 
   /* sink the reference, if floating */

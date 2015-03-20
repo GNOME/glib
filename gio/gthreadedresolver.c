@@ -537,7 +537,6 @@ g_resolver_records_from_res_query (const gchar      *rrname,
   gchar namebuf[1024];
   guchar *end, *p;
   guint16 type, qclass, rdlength;
-  guint32 ttl;
   HEADER *header;
   GList *records;
   GVariant *record;
@@ -587,8 +586,7 @@ g_resolver_records_from_res_query (const gchar      *rrname,
       p += dn_expand (answer, end, p, namebuf, sizeof (namebuf));
       GETSHORT (type, p);
       GETSHORT (qclass, p);
-      GETLONG  (ttl, p);
-      ttl = ttl; /* To avoid -Wunused-but-set-variable */
+      p += 4; /* ignore the ttl (type=long) value */
       GETSHORT (rdlength, p);
 
       if (type != rrtype || qclass != C_IN)

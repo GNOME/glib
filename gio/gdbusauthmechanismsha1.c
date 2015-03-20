@@ -753,7 +753,6 @@ keyring_generate_entry (const gchar  *cookie_context,
               g_strfreev (tokens);
               goto out;
             }
-          line_when = line_when; /* To avoid -Wunused-but-set-variable */
 
 
           /* D-Bus spec says:
