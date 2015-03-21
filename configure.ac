@@ -2889,10 +2889,8 @@ _______EOF
 
 
 	cat >>$outfile <<_______EOF
-#ifndef G_DISABLE_DEPRECATED
 #define g_ATEXIT(proc)	(atexit (proc))
 #define g_memmove(dest,src,len) G_STMT_START { memmove ((dest), (src), (len)); } G_STMT_END
-#endif
 $glib_defines
 $glib_os
 $glib_static_compilation
