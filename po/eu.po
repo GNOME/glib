@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-01-17 17:12+0100\n"
-"PO-Revision-Date: 2015-01-17 17:14+0100\n"
+"POT-Creation-Date: 2015-03-21 16:05+0100\n"
+"PO-Revision-Date: 2015-03-21 16:06+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.org>\n"
 "Language: eu\n"
@@ -22,17 +22,17 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../gio/gapplication.c:520
+#: ../gio/gapplication.c:531
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Sartu GApplication zerbitzu moduan (erabili D-Bus zerbitzuaren "
 "fitxategietatik)"
 
-#: ../gio/gapplication.c:525
+#: ../gio/gapplication.c:536
 msgid "GApplication options"
 msgstr "GApplication-en aukerak"
 
-#: ../gio/gapplication.c:525
+#: ../gio/gapplication.c:536
 msgid "Show GApplication options"
 msgstr "Erakutsi GApplication-en aukerak"
 
@@ -275,7 +275,7 @@ msgid "Cannot truncate GBufferedInputStream"
 msgstr "Ezin da GBufferedInputStream trunkatu"
 
 #: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202
-#: ../gio/giostream.c:277 ../gio/goutputstream.c:1654
+#: ../gio/giostream.c:278 ../gio/goutputstream.c:1654
 msgid "Stream is already closed"
 msgstr "Korrontea jadanik itxita dago"
 
@@ -284,8 +284,8 @@ msgid "Truncate not supported on base stream"
 msgstr "Trunkatzea ez da onartzen oinarrizko korrontean"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1896
-#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1417
-#: ../gio/glocalfile.c:2181 ../gio/gsimpleasyncresult.c:830
+#: ../gio/gdbusconnection.c:1989 ../gio/gdbusprivate.c:1421
+#: ../gio/glocalfile.c:2212 ../gio/gsimpleasyncresult.c:830
 #: ../gio/gsimpleasyncresult.c:856
 #, c-format
 msgid "Operation was cancelled"
@@ -305,23 +305,23 @@ msgstr "Ez dago nahikoa lekurik helburuan"
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
 #: ../gio/gdatainputstream.c:1256 ../glib/gconvert.c:438
-#: ../glib/gconvert.c:845 ../glib/giochannel.c:1557 ../glib/giochannel.c:1599
-#: ../glib/giochannel.c:2443 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
+#: ../glib/gconvert.c:845 ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
+#: ../glib/giochannel.c:2442 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
 msgid "Invalid byte sequence in conversion input"
 msgstr "Byteen sekuentzia baliogabea bihurketa-sarreran"
 
 #: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:446
-#: ../glib/gconvert.c:770 ../glib/giochannel.c:1564 ../glib/giochannel.c:2455
+#: ../glib/gconvert.c:770 ../glib/giochannel.c:1563 ../glib/giochannel.c:2454
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Errorea bihurtzean: %s"
 
-#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:985
+#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:990
 msgid "Cancellable initialization not supported"
 msgstr "Hasieratzea bertan behera uztea ez dago onartuta"
 
 #: ../gio/gcharsetconverter.c:454 ../glib/gconvert.c:321
-#: ../glib/giochannel.c:1385
+#: ../glib/giochannel.c:1384
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "'%s' karaktere-multzoa '%s' bihurtzea ez da onartzen"
@@ -923,12 +923,12 @@ msgstr "Errorearen itzulera '%s' motako gorputzarekin "
 msgid "Error return with empty body"
 msgstr "Errorearen itzulera gorputz hutsarekin"
 
-#: ../gio/gdbusprivate.c:2067
+#: ../gio/gdbusprivate.c:2085
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Ezin da hardwarearen profila eskuratu: %s"
 
-#: ../gio/gdbusprivate.c:2112
+#: ../gio/gdbusprivate.c:2130
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Ezin da /var/lib/dbus/machine-id edo /etc/machine-id kargatu: "
 
@@ -1203,40 +1203,40 @@ msgstr "Objektuaren bide-izena monitorizatzeko"
 msgid "Monitor a remote object."
 msgstr "Monitorizatu urruneko objektu bat."
 
-#: ../gio/gdesktopappinfo.c:1999 ../gio/gdesktopappinfo.c:4523
+#: ../gio/gdesktopappinfo.c:1993 ../gio/gdesktopappinfo.c:4524
 #: ../gio/gwin32appinfo.c:219
 msgid "Unnamed"
 msgstr "Izengabea"
 
-#: ../gio/gdesktopappinfo.c:2408
+#: ../gio/gdesktopappinfo.c:2402
 msgid "Desktop file didn't specify Exec field"
 msgstr "Mahaigaineko fitxategiak ez du Exec eremua zehaztu"
 
-#: ../gio/gdesktopappinfo.c:2693
+#: ../gio/gdesktopappinfo.c:2687
 msgid "Unable to find terminal required for application"
 msgstr "Ezin izan da aplikazioak eskatzen duen terminala aurkitu"
 
-#: ../gio/gdesktopappinfo.c:3114
+#: ../gio/gdesktopappinfo.c:3108
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Ezin da erabiltzailearen aplikazioaren %s konfigurazio-karpeta sortu: %s"
 
-#: ../gio/gdesktopappinfo.c:3118
+#: ../gio/gdesktopappinfo.c:3112
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Ezin da erabiltzailearen MIMEren %s konfigurazio-karpeta sortu: %s"
 
-#: ../gio/gdesktopappinfo.c:3358 ../gio/gdesktopappinfo.c:3382
+#: ../gio/gdesktopappinfo.c:3352 ../gio/gdesktopappinfo.c:3376
 msgid "Application information lacks an identifier"
 msgstr "Aplikazioaren informazioari identifikatzaile bat falta zaio"
 
-#: ../gio/gdesktopappinfo.c:3615
+#: ../gio/gdesktopappinfo.c:3609
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Ezin da erabiltzailearen mahaigaineko %s fitxategia sortu"
 
-#: ../gio/gdesktopappinfo.c:3749
+#: ../gio/gdesktopappinfo.c:3743
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s(r)en definizio pertsonalizatua"
@@ -1293,14 +1293,14 @@ msgstr "Gaizki osatutako token kopurua (%d) GEmblemedIcon kodeketan"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblen espero zen GEmblemedIcon-entzako"
 
-#: ../gio/gfile.c:962 ../gio/gfile.c:1200 ../gio/gfile.c:1338
-#: ../gio/gfile.c:1576 ../gio/gfile.c:1631 ../gio/gfile.c:1689
-#: ../gio/gfile.c:1773 ../gio/gfile.c:1830 ../gio/gfile.c:1894
-#: ../gio/gfile.c:1949 ../gio/gfile.c:3597 ../gio/gfile.c:3652
-#: ../gio/gfile.c:3887 ../gio/gfile.c:3929 ../gio/gfile.c:4392
-#: ../gio/gfile.c:4803 ../gio/gfile.c:4888 ../gio/gfile.c:4978
-#: ../gio/gfile.c:5075 ../gio/gfile.c:5162 ../gio/gfile.c:5263
-#: ../gio/gfile.c:7782 ../gio/gfile.c:7872 ../gio/gfile.c:7956
+#: ../gio/gfile.c:968 ../gio/gfile.c:1206 ../gio/gfile.c:1344
+#: ../gio/gfile.c:1582 ../gio/gfile.c:1637 ../gio/gfile.c:1695
+#: ../gio/gfile.c:1779 ../gio/gfile.c:1836 ../gio/gfile.c:1900
+#: ../gio/gfile.c:1955 ../gio/gfile.c:3603 ../gio/gfile.c:3658
+#: ../gio/gfile.c:3893 ../gio/gfile.c:3935 ../gio/gfile.c:4398
+#: ../gio/gfile.c:4809 ../gio/gfile.c:4894 ../gio/gfile.c:4984
+#: ../gio/gfile.c:5081 ../gio/gfile.c:5168 ../gio/gfile.c:5269
+#: ../gio/gfile.c:7788 ../gio/gfile.c:7878 ../gio/gfile.c:7962
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Eragiketa ez dago onartuta"
@@ -1315,70 +1315,70 @@ msgstr "Eragiketa ez dago onartuta"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1461 ../gio/glocalfile.c:1103 ../gio/glocalfile.c:1114
-#: ../gio/glocalfile.c:1127
+#: ../gio/gfile.c:1467 ../gio/glocalfile.c:1134 ../gio/glocalfile.c:1145
+#: ../gio/glocalfile.c:1158
 msgid "Containing mount does not exist"
 msgstr "Ontziaren muntaia ez da existitzen"
 
-#: ../gio/gfile.c:2508 ../gio/glocalfile.c:2337
+#: ../gio/gfile.c:2514 ../gio/glocalfile.c:2368
 msgid "Can't copy over directory"
 msgstr "Ezin da direktorioaren gainean kopiatu"
 
-#: ../gio/gfile.c:2568
+#: ../gio/gfile.c:2574
 msgid "Can't copy directory over directory"
 msgstr "Ezin da direktorioa kopiatu direktorio gainean"
 
-#: ../gio/gfile.c:2576 ../gio/glocalfile.c:2346
+#: ../gio/gfile.c:2582 ../gio/glocalfile.c:2377
 msgid "Target file exists"
 msgstr "Helburuko fitxategia existitzen da"
 
-#: ../gio/gfile.c:2595
+#: ../gio/gfile.c:2601
 msgid "Can't recursively copy directory"
 msgstr "Ezin da direktorioa errekurtsiboki kopiatu"
 
-#: ../gio/gfile.c:2877
+#: ../gio/gfile.c:2883
 msgid "Splice not supported"
 msgstr "Lotura ez da onartzen"
 
-#: ../gio/gfile.c:2881
+#: ../gio/gfile.c:2887
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Errorea fitxategia batzean: %s"
 
-#: ../gio/gfile.c:3012
+#: ../gio/gfile.c:3018
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Muntaien artean kopiatzea (reflink/clone) ez dago onartuta"
 
-#: ../gio/gfile.c:3016
+#: ../gio/gfile.c:3022
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopiatzea (reflink/clone) ez dago onartuta edo baliogabea da"
 
-#: ../gio/gfile.c:3021
+#: ../gio/gfile.c:3027
 msgid "Copy (reflink/clone) is not supported or didn't work"
 msgstr "Kopiatzea (reflink/clone) ez dago onartuta edo ez du funtzionatzen"
 
-#: ../gio/gfile.c:3084
+#: ../gio/gfile.c:3090
 msgid "Can't copy special file"
 msgstr "Ezin da fitxategi berezia kopiatu"
 
-#: ../gio/gfile.c:3877
+#: ../gio/gfile.c:3883
 msgid "Invalid symlink value given"
 msgstr "Esteka sinbolikoaren baliogabeko balioa eman da"
 
-#: ../gio/gfile.c:4038
+#: ../gio/gfile.c:4044
 msgid "Trash not supported"
 msgstr "Zakarrontzira botatzea ez dago onartuta"
 
-#: ../gio/gfile.c:4150
+#: ../gio/gfile.c:4156
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Fitxategi-izenek ezin dute '%c' eduki"
 
-#: ../gio/gfile.c:6574 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6580 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "bolumenak ez dauka muntatzea inplementatuta"
 
-#: ../gio/gfile.c:6683
+#: ../gio/gfile.c:6689
 msgid "No application is registered as handling this file"
 msgstr "Ez da aplikaziorik erregistratu fitxategi hau kudeatzeko"
 
@@ -1422,6 +1422,31 @@ msgstr "Trunkatzea ez da baimentzen sarrerako korrontean"
 #: ../gio/gfileiostream.c:455 ../gio/gfileoutputstream.c:447
 msgid "Truncate not supported on stream"
 msgstr "Trunkatzea ez da onartzen korrontean"
+
+#: ../gio/ghttpproxy.c:136
+msgid "Bad HTTP proxy reply"
+msgstr "HTTP proxy-aren okerreko erantzuna"
+
+#: ../gio/ghttpproxy.c:152
+msgid "HTTP proxy connection not allowed"
+msgstr "HTTP proxy-aren konexioa ez dago baimenduta"
+
+#: ../gio/ghttpproxy.c:157
+msgid "HTTP proxy authentication failed"
+msgstr "HTTP proxy-aren autentifikazioak huts egin du"
+
+#: ../gio/ghttpproxy.c:160
+msgid "HTTP proxy authentication required"
+msgstr "HTTP proxy-aren autentifikazioa behar da"
+
+#: ../gio/ghttpproxy.c:164
+#, c-format
+msgid "HTTP proxy connection failed: %i"
+msgstr "HTTP proxy-aren konexioak huts egin du: %i"
+
+#: ../gio/ghttpproxy.c:260
+msgid "HTTP proxy server closed connection unexpectedly."
+msgstr "HTTP proxy zerbitzariak konexioa ustekabean itxi du."
 
 #: ../gio/gicon.c:290
 #, c-format
@@ -1494,7 +1519,7 @@ msgstr "Sarrerako korronteak ez dauka irakurtzea inplementatuta"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1212 ../gio/giostream.c:287
+#: ../gio/ginputstream.c:1212 ../gio/giostream.c:288
 #: ../gio/goutputstream.c:1664
 msgid "Stream has outstanding operation"
 msgstr "Korronteak eragiketa bat du lanean"
@@ -1879,127 +1904,123 @@ msgstr "ezer ez da egiten ari.\n"
 msgid "removed existing output file.\n"
 msgstr "existitzen den irteerako fitxategia kenduta.\n"
 
-#: ../gio/glocaldirectorymonitor.c:224
-msgid "Unable to find default local directory monitor type"
-msgstr "Ezin da lokaleko direktorio lehenetsiaren monitorizazio mota aurkitu"
-
 #
-#: ../gio/glocalfile.c:604 ../gio/win32/gwinhttpfile.c:420
+#: ../gio/glocalfile.c:635 ../gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "%s fitxategi-izen baliogabea"
 
-#: ../gio/glocalfile.c:981
+#: ../gio/glocalfile.c:1012
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Errorea fitxategi-sistemako informazioa lortzean: %s"
 
-#: ../gio/glocalfile.c:1149
+#: ../gio/glocalfile.c:1180
 msgid "Can't rename root directory"
 msgstr "Ezin da erroko direktorioa izenez aldatu"
 
-#: ../gio/glocalfile.c:1169 ../gio/glocalfile.c:1195
+#: ../gio/glocalfile.c:1200 ../gio/glocalfile.c:1226
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Errorea fitxategia izenez aldatzean: %s"
 
-#: ../gio/glocalfile.c:1178
+#: ../gio/glocalfile.c:1209
 msgid "Can't rename file, filename already exists"
 msgstr "Ezin da fitxategia izenez aldatu, fitxategi-izena badago lehendik ere"
 
 #
-#: ../gio/glocalfile.c:1191 ../gio/glocalfile.c:2210 ../gio/glocalfile.c:2239
-#: ../gio/glocalfile.c:2399 ../gio/glocalfileoutputstream.c:549
+#: ../gio/glocalfile.c:1222 ../gio/glocalfile.c:2241 ../gio/glocalfile.c:2270
+#: ../gio/glocalfile.c:2430 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "Fitxategi-izen baliogabea"
 
-#: ../gio/glocalfile.c:1358 ../gio/glocalfile.c:1382
+#: ../gio/glocalfile.c:1389 ../gio/glocalfile.c:1413
 msgid "Can't open directory"
 msgstr "Ezin da direktorioa ireki"
 
-#: ../gio/glocalfile.c:1366
+#: ../gio/glocalfile.c:1397
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Errorea fitxategia irekitzean: %s"
 
-#: ../gio/glocalfile.c:1507
+#: ../gio/glocalfile.c:1538
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Errorea fitxategia kentzean: %s"
 
-#: ../gio/glocalfile.c:1887
+#: ../gio/glocalfile.c:1918
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Errorea fitxategia zakarrontzira botatzean: %s"
 
-#: ../gio/glocalfile.c:1910
+#: ../gio/glocalfile.c:1941
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Ezin izan da zakarrontziaren '%s' direktorioa sortu: %s"
 
-#: ../gio/glocalfile.c:1931
+#: ../gio/glocalfile.c:1962
 msgid "Unable to find toplevel directory for trash"
 msgstr "Ezin da zakarrontziaren goi-mailako direktorioa aurkitu"
 
-#: ../gio/glocalfile.c:2010 ../gio/glocalfile.c:2030
+#: ../gio/glocalfile.c:2041 ../gio/glocalfile.c:2061
 msgid "Unable to find or create trash directory"
 msgstr "Ezin da zakarrontziaren direktorioa aurkitu edo sortu"
 
-#: ../gio/glocalfile.c:2064
+#: ../gio/glocalfile.c:2095
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Ezin da zakarrontziaren informazio-fitxategia sortu: %s"
 
-#: ../gio/glocalfile.c:2095 ../gio/glocalfile.c:2100 ../gio/glocalfile.c:2180
-#: ../gio/glocalfile.c:2187
+#: ../gio/glocalfile.c:2126 ../gio/glocalfile.c:2131 ../gio/glocalfile.c:2211
+#: ../gio/glocalfile.c:2218
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Ezin da fitxategia zakarrontzira bota: %s"
 
-#: ../gio/glocalfile.c:2188 ../glib/gregex.c:281
+#: ../gio/glocalfile.c:2219 ../glib/gregex.c:281
 msgid "internal error"
 msgstr "barneko errorea"
 
-#: ../gio/glocalfile.c:2214
+#: ../gio/glocalfile.c:2245
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Errorea direktorioa sortzean: %s"
 
-#: ../gio/glocalfile.c:2243
+#: ../gio/glocalfile.c:2274
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Fitxategi-sistemak ez ditu esteka sinbolikorik onartzen"
 
-#: ../gio/glocalfile.c:2247
+#: ../gio/glocalfile.c:2278
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Errorea esteka sinbolikoa sortzean: %s"
 
-#: ../gio/glocalfile.c:2309 ../gio/glocalfile.c:2403
+#: ../gio/glocalfile.c:2340 ../gio/glocalfile.c:2434
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Errorea fitxategia lekuz aldatzean: %s"
 
-#: ../gio/glocalfile.c:2332
+#: ../gio/glocalfile.c:2363
 msgid "Can't move directory over directory"
 msgstr "Ezin da direktorioa lekuz aldatu direktorioaren gainera"
 
-#: ../gio/glocalfile.c:2359 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfile.c:2390 ../gio/glocalfileoutputstream.c:925
 #: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
 #: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
 msgid "Backup file creation failed"
 msgstr "Huts egin du babeskopia sortzean"
 
-#: ../gio/glocalfile.c:2378
+#: ../gio/glocalfile.c:2409
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Errorea helburuko fitxategia kentzean: %s"
 
-#: ../gio/glocalfile.c:2392
+#: ../gio/glocalfile.c:2423
 msgid "Move between mounts not supported"
 msgstr "Muntaien artean lekuz aldatzea ez dago onartuta"
 
-#: ../gio/glocalfile.c:2603
+#: ../gio/glocalfile.c:2615
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Ezin izan da '%s' diskoaren erabilpena zehaztu: %s"
@@ -2117,7 +2138,7 @@ msgstr "Errorea fitxategian bilatzean: %s"
 msgid "Error closing file: %s"
 msgstr "Errorea fitxategia ixtean: %s"
 
-#: ../gio/glocalfilemonitor.c:145
+#: ../gio/glocalfilemonitor.c:837
 msgid "Unable to find default local file monitor type"
 msgstr "Ezin da lokaleko fitxategi lehenetsiaren monitorizazio mota aurkitu"
 
@@ -2300,21 +2321,21 @@ msgstr "Irteerako korronteak ez dauka idaztea inplementatuta"
 msgid "Source stream is already closed"
 msgstr "Iturburuko korrontea jadanik itxi da"
 
-#: ../gio/gresolver.c:320 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:331 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Errorea '%s' ebaztean: %s"
 
-#: ../gio/gresource.c:291 ../gio/gresource.c:539 ../gio/gresource.c:556
-#: ../gio/gresource.c:677 ../gio/gresource.c:746 ../gio/gresource.c:807
-#: ../gio/gresource.c:887 ../gio/gresourcefile.c:452
+#: ../gio/gresource.c:298 ../gio/gresource.c:546 ../gio/gresource.c:563
+#: ../gio/gresource.c:684 ../gio/gresource.c:753 ../gio/gresource.c:814
+#: ../gio/gresource.c:894 ../gio/gresourcefile.c:452
 #: ../gio/gresourcefile.c:553 ../gio/gresourcefile.c:655
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "'%s'(e)ko baliabidea ez da existitzen"
 
-#: ../gio/gresource.c:456
+#: ../gio/gresource.c:463
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr "Huts egin du '%s'(e)ko baliabidea deskonprimitzean"
@@ -2680,133 +2701,133 @@ msgstr "Eskemaren izen hutsa eman da\n"
 msgid "No such key '%s'\n"
 msgstr "Ez dago '%s' bezalako gakorik\n"
 
-#: ../gio/gsocket.c:266
+#: ../gio/gsocket.c:271
 msgid "Invalid socket, not initialized"
 msgstr "Baliogabeko socket-a, hasieratu gabe dago"
 
-#: ../gio/gsocket.c:273
+#: ../gio/gsocket.c:278
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Baliogabeko socket-a, hasieratzeak huts egin du: %s"
 
-#: ../gio/gsocket.c:281
+#: ../gio/gsocket.c:286
 msgid "Socket is already closed"
 msgstr "Socket-a jadanik itxita dago"
 
-#: ../gio/gsocket.c:296 ../gio/gsocket.c:3619 ../gio/gsocket.c:3674
+#: ../gio/gsocket.c:301 ../gio/gsocket.c:3627 ../gio/gsocket.c:3682
 msgid "Socket I/O timed out"
 msgstr "S/Iko socket-aren denbora-muga gaindituta"
 
-#: ../gio/gsocket.c:443
+#: ../gio/gsocket.c:448
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "GSocket sortzen fd-tik: %s"
 
-#: ../gio/gsocket.c:471 ../gio/gsocket.c:525 ../gio/gsocket.c:532
+#: ../gio/gsocket.c:476 ../gio/gsocket.c:530 ../gio/gsocket.c:537
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Ezin da socket-a sortu: %s"
 
-#: ../gio/gsocket.c:525
+#: ../gio/gsocket.c:530
 msgid "Unknown family was specified"
 msgstr "Familia ezezaguna zehaztu da"
 
-#: ../gio/gsocket.c:532
+#: ../gio/gsocket.c:537
 msgid "Unknown protocol was specified"
 msgstr "Protokolo ezezaguna zehaztu da"
 
-#: ../gio/gsocket.c:1722
+#: ../gio/gsocket.c:1727
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ezin izan da lokaleko helbidea lortu: %s"
 
-#: ../gio/gsocket.c:1765
+#: ../gio/gsocket.c:1770
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "ezin izan da urruneko helbidea lortu: %s"
 
-#: ../gio/gsocket.c:1826
+#: ../gio/gsocket.c:1831
 #, c-format
 msgid "could not listen: %s"
 msgstr "ezin izan da entzun: %s"
 
-#: ../gio/gsocket.c:1925
+#: ../gio/gsocket.c:1930
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Errorea helbidea lotzean: %s"
 
-#: ../gio/gsocket.c:2037 ../gio/gsocket.c:2074
+#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Errorea multidifusioko taldean elkartzean: %s"
 
-#: ../gio/gsocket.c:2038 ../gio/gsocket.c:2075
+#: ../gio/gsocket.c:2046 ../gio/gsocket.c:2083
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Errorea multidifusioko taldea uztean: %s"
 
-#: ../gio/gsocket.c:2039
+#: ../gio/gsocket.c:2047
 msgid "No support for source-specific multicast"
 msgstr "Iturburu zehatzeko multidifusiorik ez da onartzen"
 
-#: ../gio/gsocket.c:2261
+#: ../gio/gsocket.c:2269
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Errorea konexioa onartzean: %s"
 
-#: ../gio/gsocket.c:2384
+#: ../gio/gsocket.c:2392
 msgid "Connection in progress"
 msgstr "Konexioa lantzen"
 
-#: ../gio/gsocket.c:2434
+#: ../gio/gsocket.c:2442
 msgid "Unable to get pending error: "
 msgstr "Ezin da falta diren erroreak lortu: "
 
-#: ../gio/gsocket.c:2637
+#: ../gio/gsocket.c:2645
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Errorea datuak jasotzean: %s"
 
-#: ../gio/gsocket.c:2812
+#: ../gio/gsocket.c:2820
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Errorea datuak bidaltzean: %s"
 
-#: ../gio/gsocket.c:2926
+#: ../gio/gsocket.c:2934
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Ezin da socket-a itzali: %s"
 
-#: ../gio/gsocket.c:3005
+#: ../gio/gsocket.c:3013
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Errorea socket-a ixtean: %s"
 
-#: ../gio/gsocket.c:3612
+#: ../gio/gsocket.c:3620
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Socket-aren baldintzen zai: %s"
 
-#: ../gio/gsocket.c:3899 ../gio/gsocket.c:3982 ../gio/gsocket.c:4210
+#: ../gio/gsocket.c:3907 ../gio/gsocket.c:3990 ../gio/gsocket.c:4218
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Errorea mezua bidaltzean: %s"
 
-#: ../gio/gsocket.c:3924
+#: ../gio/gsocket.c:3932
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage ez da Windows sisteman onartzen"
 
-#: ../gio/gsocket.c:4538 ../gio/gsocket.c:4676
+#: ../gio/gsocket.c:4546 ../gio/gsocket.c:4684
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Errorea mezua jasotzean: %s"
 
-#: ../gio/gsocket.c:4798
+#: ../gio/gsocket.c:4806
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Ezin da socket-aren kredentzialik irakurri: %s"
 
-#: ../gio/gsocket.c:4807
+#: ../gio/gsocket.c:4815
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ez dago S.E. honetan inplementatuta"
 
@@ -2824,16 +2845,16 @@ msgstr "Ezin izan da %s(r)ekin konektatu: "
 msgid "Could not connect: "
 msgstr "Ezin izan da konektatu: "
 
-#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1603
+#: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1599
 msgid "Unknown error on connect"
 msgstr "Errore ezezaguna konexioan"
 
-#: ../gio/gsocketclient.c:1082 ../gio/gsocketclient.c:1538
+#: ../gio/gsocketclient.c:1081 ../gio/gsocketclient.c:1535
 msgid "Proxying over a non-TCP connection is not supported."
 msgstr ""
 "TCP motakoak ez diren konexioen gainean proxy-a egitea ez dago onartuta."
 
-#: ../gio/gsocketclient.c:1108 ../gio/gsocketclient.c:1559
+#: ../gio/gsocketclient.c:1110 ../gio/gsocketclient.c:1561
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Proxy-aren %s protokoloa ez dago onartuta."
@@ -3007,55 +3028,55 @@ msgstr ""
 msgid "The password entered is incorrect."
 msgstr "Sartutako pasahitza okerrekoa da."
 
-#: ../gio/gunixconnection.c:159 ../gio/gunixconnection.c:554
+#: ../gio/gunixconnection.c:166 ../gio/gunixconnection.c:561
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgid_plural "Expecting 1 control message, got %d"
 msgstr[0] "Kontroleko mezu 1 espero zen, %d lortu da"
 msgstr[1] "Kontroleko mezu 1 espero zen, %d lortu dira"
 
-#: ../gio/gunixconnection.c:175 ../gio/gunixconnection.c:566
+#: ../gio/gunixconnection.c:182 ../gio/gunixconnection.c:573
 msgid "Unexpected type of ancillary data"
 msgstr "Ustekabeko datu-laguntzaile mota"
 
-#: ../gio/gunixconnection.c:193
+#: ../gio/gunixconnection.c:200
 #, c-format
 msgid "Expecting one fd, but got %d\n"
 msgid_plural "Expecting one fd, but got %d\n"
 msgstr[0] "fd bat espero zen, baina %d lortu da\n"
 msgstr[1] "fd bat espero zen, baina %d lortu dira\n"
 
-#: ../gio/gunixconnection.c:212
+#: ../gio/gunixconnection.c:219
 msgid "Received invalid fd"
 msgstr "Baliogabeko fd jasota"
 
-#: ../gio/gunixconnection.c:348
+#: ../gio/gunixconnection.c:355
 msgid "Error sending credentials: "
 msgstr "Errorea kredentzialak bidaltzean: "
 
-#: ../gio/gunixconnection.c:496
+#: ../gio/gunixconnection.c:503
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Errorea SO_PASSCRED gaituta dagoen begiratzean socket-arentzako: %s"
 
-#: ../gio/gunixconnection.c:511
+#: ../gio/gunixconnection.c:518
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Errorea SO_PASSCRED gaitzean: %s"
 
-#: ../gio/gunixconnection.c:540
+#: ../gio/gunixconnection.c:547
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Harrerako kredentzialentzako byte bakar bat irakurtzea espero zen, baina "
 "zero byte irakurri dira."
 
-#: ../gio/gunixconnection.c:580
+#: ../gio/gunixconnection.c:587
 #, c-format
 msgid "Not expecting control message, but got %d"
 msgstr "Ez zen kontroleko mezurik espero, baina %d lortu dira"
 
-#: ../gio/gunixconnection.c:604
+#: ../gio/gunixconnection.c:611
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Errorea SO_PASSCRED desgaitzean: %s"
@@ -3070,7 +3091,7 @@ msgstr "Errorea fitxategiaren deskriptoretik irakurtzean: %s "
 msgid "Error closing file descriptor: %s"
 msgstr "Errorea fitxategiaren deskriptorea ixtean: %s "
 
-#: ../gio/gunixmounts.c:2054 ../gio/gunixmounts.c:2107
+#: ../gio/gunixmounts.c:2099 ../gio/gunixmounts.c:2152
 msgid "Filesystem root"
 msgstr "Fitxategi-sistemaren erroa"
 
@@ -3607,25 +3628,25 @@ msgstr "Ezin izan da '%s' esteka sinbolikorik irakurri: %s"
 msgid "Symbolic links not supported"
 msgstr "Esteka sinbolikoak ez dira onartzen"
 
-#: ../glib/giochannel.c:1389
+#: ../glib/giochannel.c:1388
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Ezin izan da '%s'(e)tik '%s'(e)rako bihurtzailea ireki: %s"
 
-#: ../glib/giochannel.c:1734
+#: ../glib/giochannel.c:1733
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Ezin dira datu gordinak irakurri 'g_io_channel_read_line_string'-en"
 
-#: ../glib/giochannel.c:1781 ../glib/giochannel.c:2039
-#: ../glib/giochannel.c:2126
+#: ../glib/giochannel.c:1780 ../glib/giochannel.c:2038
+#: ../glib/giochannel.c:2125
 msgid "Leftover unconverted data in read buffer"
 msgstr "Irakurketa-bufferrean geratu diren bihurtu gabeko datuak"
 
-#: ../glib/giochannel.c:1862 ../glib/giochannel.c:1939
+#: ../glib/giochannel.c:1861 ../glib/giochannel.c:1938
 msgid "Channel terminates in a partial character"
 msgstr "Kanala karaktere partzial batean bukatzen da"
 
-#: ../glib/giochannel.c:1925
+#: ../glib/giochannel.c:1924
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Ezin dira datu gordinak irakurri 'g_io_channel_read_to_end'-etik"
 
@@ -4641,6 +4662,10 @@ msgstr[1] "%s byte"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "Unable to find default local directory monitor type"
+#~ msgstr ""
+#~ "Ezin da lokaleko direktorio lehenetsiaren monitorizazio mota aurkitu"
 
 #~ msgid "URIs not supported"
 #~ msgstr "URIak ez daude onartuta"
