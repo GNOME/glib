@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-10 18:49+0000\n"
-"PO-Revision-Date: 2014-08-15 11:50+0100\n"
+"POT-Creation-Date: 2015-03-12 20:58+0000\n"
+"PO-Revision-Date: 2015-03-13 22:55+0100\n"
 "Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.7.4\n"
 
 #: ../gio/gapplication.c:531
 msgid "Enter GApplication service mode (use from D-Bus service files)"
@@ -306,13 +306,13 @@ msgstr "Nicht genug Platz im Ziel"
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
 #: ../gio/gdatainputstream.c:1256 ../glib/gconvert.c:438
-#: ../glib/gconvert.c:845 ../glib/giochannel.c:1557 ../glib/giochannel.c:1599
-#: ../glib/giochannel.c:2443 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
+#: ../glib/gconvert.c:845 ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
+#: ../glib/giochannel.c:2442 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 
 #: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:446
-#: ../glib/gconvert.c:770 ../glib/giochannel.c:1564 ../glib/giochannel.c:2455
+#: ../glib/gconvert.c:770 ../glib/giochannel.c:1563 ../glib/giochannel.c:2454
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fehler bei der Umwandlung: %s"
@@ -322,7 +322,7 @@ msgid "Cancellable initialization not supported"
 msgstr "Abbrechbare Initialisierung wird nicht unterstützt"
 
 #: ../gio/gcharsetconverter.c:454 ../glib/gconvert.c:321
-#: ../glib/giochannel.c:1385
+#: ../glib/giochannel.c:1384
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Umwandlung von Zeichensatz »%s« in »%s« wird nicht unterstützt"
@@ -1433,31 +1433,28 @@ msgstr "Abschneiden wird vom Datenstrom nicht unterstützt"
 
 #: ../gio/ghttpproxy.c:136
 msgid "Bad HTTP proxy reply"
-msgstr ""
+msgstr "Ungültige Antwort vom HTTP-Proxy"
 
 #: ../gio/ghttpproxy.c:152
-#, fuzzy
-#| msgid "The connection is closed"
 msgid "HTTP proxy connection not allowed"
-msgstr "Verbindung ist geschlossen"
+msgstr "Verbindung zum ﻿HTTP-Proxy nicht zugelassen"
 
 #: ../gio/ghttpproxy.c:157
 msgid "HTTP proxy authentication failed"
-msgstr ""
+msgstr "Legitimierung am HTTP-Proxy ist fehlgeschlagen"
 
 #: ../gio/ghttpproxy.c:160
 msgid "HTTP proxy authentication required"
-msgstr ""
+msgstr "Legitimierung ist erforderlich am HTTP-Proxy"
 
 #: ../gio/ghttpproxy.c:164
-#, fuzzy, c-format
-#| msgid "The connection is closed"
+#, c-format
 msgid "HTTP proxy connection failed: %i"
-msgstr "Verbindung ist geschlossen"
+msgstr "Verbindung zum ﻿HTTP-Proxy ist fehlgeschlagen: %i"
 
 #: ../gio/ghttpproxy.c:260
 msgid "HTTP proxy server closed connection unexpectedly."
-msgstr ""
+msgstr "﻿HTTP Proxy-Server hat die Verbindung unerwartet geschlossen."
 
 #: ../gio/gicon.c:290
 #, c-format
@@ -2327,7 +2324,7 @@ msgstr "Netzwerkstatus konnte nicht ermittelt werden:"
 #: ../gio/gnetworkmonitornm.c:278
 #, c-format
 msgid "NetworkManager version too old"
-msgstr ""
+msgstr "﻿Die Version von NetworkManager ist zu alt"
 
 #: ../gio/goutputstream.c:209 ../gio/goutputstream.c:557
 msgid "Output stream doesn't implement write"
@@ -3650,25 +3647,25 @@ msgstr "Die symbolische Verknüpfung »%s« konnte nicht gelesen werden: %s"
 msgid "Symbolic links not supported"
 msgstr "Symbolische Verknüpfungen nicht unterstützt"
 
-#: ../glib/giochannel.c:1389
+#: ../glib/giochannel.c:1388
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Konverter von »%s« in »%s« konnte nicht geöffnet werden: %s"
 
-#: ../glib/giochannel.c:1734
+#: ../glib/giochannel.c:1733
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Raw-read in g_io_channel_read_line_string nicht möglich"
 
-#: ../glib/giochannel.c:1781 ../glib/giochannel.c:2039
-#: ../glib/giochannel.c:2126
+#: ../glib/giochannel.c:1780 ../glib/giochannel.c:2038
+#: ../glib/giochannel.c:2125
 msgid "Leftover unconverted data in read buffer"
 msgstr "Nicht konvertierte Daten befinden sich noch im Lesepuffer "
 
-#: ../glib/giochannel.c:1862 ../glib/giochannel.c:1939
+#: ../glib/giochannel.c:1861 ../glib/giochannel.c:1938
 msgid "Channel terminates in a partial character"
 msgstr "Kanal endet mit einem Teilzeichen"
 
-#: ../glib/giochannel.c:1925
+#: ../glib/giochannel.c:1924
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Raw-read in g_io_channel_read_to_end nicht möglich"
 
