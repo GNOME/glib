@@ -661,14 +661,20 @@ main (int argc, char **argv)
       char *base = g_path_get_basename (srcfile);
       char *target_basename;
       if (g_str_has_suffix (base, ".xml"))
-	base[strlen(base) - strlen (".xml")] = 0;
+	base[strlen (base) - strlen (".xml")] = 0;
 
       if (generate_source)
 	{
 	  if (g_str_has_suffix (base, ".gresource"))
-	    base[strlen(base) - strlen (".gresource")] = 0;
+	    base[strlen (base) - sizeof(".gresource")] = 0;
 	  target_basename = g_strconcat (base, ".c", NULL);
 	}
+      else if (generate_header)
+        {
+          if (g_str_has_suffix (base, ".gresource"))
+            base[strlen (base) - sizeof(".gresource")] = 0;
+          target_basename = g_strconcat (base, ".h", NULL);
+        }
       else
 	{
 	  if (g_str_has_suffix (base, ".gresource"))
