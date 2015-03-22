@@ -63,7 +63,8 @@
 #define G_GNUC_NULL_TERMINATED
 #endif
 
-#if     (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3)
+#if     (!defined(__clang__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))) || \
+        (defined(__clang__) && __has_attribute(__alloc_size__))
 #define G_GNUC_ALLOC_SIZE(x) __attribute__((__alloc_size__(x)))
 #define G_GNUC_ALLOC_SIZE2(x,y) __attribute__((__alloc_size__(x,y)))
 #else
