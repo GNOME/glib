@@ -63,8 +63,13 @@
 #define G_GNUC_NULL_TERMINATED
 #endif
 
+/* Clang feature detection: http://clang.llvm.org/docs/LanguageExtensions.html */
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+
 #if     (!defined(__clang__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))) || \
-        (defined(__clang__) && __has_attribute(__alloc_size__))
+        (defined(__clang__) && __has_feature(__alloc_size__))
 #define G_GNUC_ALLOC_SIZE(x) __attribute__((__alloc_size__(x)))
 #define G_GNUC_ALLOC_SIZE2(x,y) __attribute__((__alloc_size__(x,y)))
 #else
@@ -158,11 +163,6 @@
 #define G_GNUC_PRETTY_FUNCTION  ""
 #endif  /* !__GNUC__ */
 #endif  /* !G_DISABLE_DEPRECATED */
-
-/* Clang feature detection: http://clang.llvm.org/docs/LanguageExtensions.html */
-#ifndef __has_feature
-#define __has_feature(x) 0
-#endif
 
 #if __has_feature(attribute_analyzer_noreturn)
 #define G_ANALYZER_ANALYZING 1
