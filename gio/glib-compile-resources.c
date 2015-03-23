@@ -669,6 +669,12 @@ main (int argc, char **argv)
 	    base[strlen(base) - strlen (".gresource")] = 0;
 	  target_basename = g_strconcat (base, ".c", NULL);
 	}
+      else if (generate_header)
+        {
+       	  if (g_str_has_suffix (base, ".gresource"))
+       	    base[strlen(base) - strlen (".gresource")] = 0;
+       	  target_basename = g_strconcat (base, ".h", NULL);
+        }
       else
 	{
 	  if (g_str_has_suffix (base, ".gresource"))
