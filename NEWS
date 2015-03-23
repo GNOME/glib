@@ -1,3 +1,23 @@
+Overview of changes in GLib 2.44.0
+===================================
+
+With the exception of translation and documentation, there have been no
+changes since the prerelease.
+
+Bugs fixed:
+ 730188 gsocket: Document FD ownership with g_socket_new_from_fd()
+
+Translations updated:
+ Basque language
+ Brazilian Portuguese
+ Chinese (Taiwan)
+ Danish
+ Galician s
+ Hebrew
+ Indonesian
+ Norwegian bokmål
+ Turkish
+
 Overview of changes in GLib 2.43.92
 ===================================
 
