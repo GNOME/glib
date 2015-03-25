@@ -316,17 +316,19 @@ dist_test_data += \
 
 test_extra_programs += \
 	appinfo-test				\
-	apps					\
 	$(NULL)
 
 uninstalled_test_extra_programs += \
 	gdbus-example-unix-fd-client		\
 	$(NULL)
 
+if !OS_COCOA
+test_extra_programs += apps
 test_programs += mimeapps
 clean-local: clean-mimeapps
 clean-mimeapps:
 	rm -rf xdgdatadir xdgdatahome xdgconfighome
+endif
 
 uninstalled_test_programs += gsettings gschema-compile
 gsettings_DEPENDENCIES = test.mo

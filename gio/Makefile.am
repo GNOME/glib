@@ -223,6 +223,7 @@ local_sources = \
 platform_libadd =
 platform_deps =
 appinfo_sources =
+appinfo_headers =
 contenttype_sources =
 
 if HAVE_INOTIFY
@@ -253,9 +254,10 @@ if OS_UNIX
 if !OS_COCOA
 platform_libadd += xdgmime/libxdgmime.la
 platform_deps += xdgmime/libxdgmime.la
+
+appinfo_headers += gdesktopappinfo.h
 endif
 
-appinfo_sources += gdesktopappinfo.c
 
 unix_sources = \
 	gfiledescriptorbased.c  \
@@ -284,8 +286,6 @@ unix_sources = \
 	$(portal_sources)	\
 	$(NULL)
 
-appinfo_sources += $(unix_appinfo_sources)
-
 if OS_COCOA
 if MAC_OS_X_9
 unix_sources += gcocoanotificationbackend.c
@@ -294,7 +294,6 @@ endif
 
 giounixincludedir=$(includedir)/gio-unix-2.0/gio
 giounixinclude_HEADERS = \
-	gdesktopappinfo.h	\
 	gfiledescriptorbased.h  \
 	gunixconnection.h	\
 	gunixcredentialsmessage.h	\
@@ -304,6 +303,7 @@ giounixinclude_HEADERS = \
 	gunixinputstream.h 	\
 	gunixoutputstream.h 	\
 	gunixsocketaddress.h	\
+	$(appinfo_headers) \
 	$(NULL)
 
 if HAVE_NETLINK
@@ -348,12 +348,10 @@ win32_more_sources_for_vcproj = \
 	win32/gwin32filemonitor.c
 
 if OS_WIN32
-win32_appinfo_sources = gwin32appinfo.c gwin32appinfo.h
 appinfo_sources += gwin32appinfo.c gwin32appinfo.h
 contenttype_sources += contenttype-win32.c
 platform_libadd += -lshlwapi -lws2_32 -ldnsapi -liphlpapi
 win32_sources = $(win32_actual_sources)
-appinfo_sources += $(win32_appinfo_sources)
 
 giowin32includedir=$(includedir)/gio-win32-2.0/gio
 giowin32include_HEADERS = \
@@ -396,11 +394,13 @@ portal_sources = \
 
 if OS_COCOA
 contenttype_sources += gosxcontenttype.c
+appinfo_sources += gosxappinfo.c gosxappinfo.h
 endif
 
 if OS_UNIX
 if !OS_COCOA
 contenttype_sources += gcontenttype.c
+appinfo_sources += gdesktopappinfo.c
 endif
 endif
 
@@ -879,6 +879,7 @@ gdbus_LDADD = libgio-2.0.la 				\
 	$(NULL)
 
 if OS_UNIX
+if !OS_COCOA
 # ------------------------------------------------------------------------
 # gapplication(1) tool
 bin_PROGRAMS += gapplication
@@ -888,6 +889,7 @@ gapplication_LDADD = libgio-2.0.la 			\
 	$(top_builddir)/gmodule/libgmodule-2.0.la 	\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(NULL)
+endif
 endif
 
 completiondir = $(datadir)/bash-completion/completions
