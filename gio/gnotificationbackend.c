@@ -55,7 +55,9 @@ g_notification_backend_new_default (GApplication *application)
    */
   backend->application = application;
 
-  backend->dbus_connection = g_object_ref (g_application_get_dbus_connection (application));
+  backend->dbus_connection = g_application_get_dbus_connection (application);
+  if (backend->dbus_connection)
+    g_object_ref (backend->dbus_connection);
 
   return backend;
 }

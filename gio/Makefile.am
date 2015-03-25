@@ -265,6 +265,9 @@ unix_sources = \
 	ggtknotificationbackend.c \
 	$(NULL)
 
+if OS_COCOA
+unix_sources += gcocoanotificationbackend.c
+endif
 
 giounixincludedir=$(includedir)/gio-unix-2.0/gio
 giounixinclude_HEADERS = \
@@ -522,7 +525,7 @@ libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 if OS_COCOA
 # This is dumb.  The ObjC source file should be properly named .m
 libgio_2_0_la_CFLAGS += -xobjective-c
-libgio_2_0_la_LDFLAGS += -Wl,-framework,Foundation
+libgio_2_0_la_LDFLAGS += -Wl,-framework,Foundation -Wl,-framework,AppKit
 endif
 
 libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
