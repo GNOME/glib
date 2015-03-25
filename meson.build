@@ -773,6 +773,10 @@ if host_system == 'darwin'
   add_project_link_arguments(osx_ldflags, language : ['objc', 'c'])
 endif
 
+if host_system == 'qnx'
+  glib_conf.set('HAVE_QNX', 1)
+endif
+
 # Check for futex(2)
 if cc.links('''#include <linux/futex.h>
                #include <sys/syscall.h>

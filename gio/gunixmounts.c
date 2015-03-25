@@ -956,6 +956,23 @@ _g_get_unix_mounts (void)
   return return_list;
 }
 
+/* QNX {{{2 */
+#elif defined (HAVE_QNX)
+
+static char *
+get_mtab_monitor_file (void)
+{
+  /* TODO: Not implemented */
+  return NULL;
+}
+
+static GList *
+_g_get_unix_mounts (void)
+{
+  /* TODO: Not implemented */
+  return NULL;
+}
+
 /* Common code {{{2 */
 #else
 #error No _g_get_unix_mounts() implementation for system
@@ -1473,6 +1490,14 @@ _g_get_unix_mount_points (void)
 }
 /* Interix {{{2 */
 #elif defined(__INTERIX)
+static GList *
+_g_get_unix_mount_points (void)
+{
+  return _g_get_unix_mounts ();
+}
+
+/* QNX {{{2 */
+#elif defined (HAVE_QNX)
 static GList *
 _g_get_unix_mount_points (void)
 {
