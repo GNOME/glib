@@ -186,7 +186,10 @@ g_kqueue_file_monitor_cancel (GFileMonitor *monitor)
       kqueue_monitor->sub = NULL;
     }
   else if (kqueue_monitor->fallback)
-    g_file_monitor_cancel (kqueue_monitor->fallback);
+    {
+      g_signal_handlers_disconnect_by_func (kqueue_monitor->fallback, _fallback_callback, kqueue_monitor);
+      g_file_monitor_cancel (kqueue_monitor->fallback);
+    }
 
   if (G_FILE_MONITOR_CLASS (g_kqueue_file_monitor_parent_class)->cancel)
     (*G_FILE_MONITOR_CLASS (g_kqueue_file_monitor_parent_class)->cancel) (monitor);
