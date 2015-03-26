@@ -131,7 +131,8 @@ got_new_info (GObject      *source_object,
 				     poll_monitor->file,
 				     NULL, event);
 	  /* We're polling so slowly anyway, so always emit the done hint */
-	  if (event == G_FILE_MONITOR_EVENT_CHANGED)
+	  if (!g_file_monitor_is_cancelled (G_FILE_MONITOR (poll_monitor)) &&
+             (event == G_FILE_MONITOR_EVENT_CHANGED))
 	    g_file_monitor_emit_event (G_FILE_MONITOR (poll_monitor),
 				       poll_monitor->file,
 				       NULL, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT);
