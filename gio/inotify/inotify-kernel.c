@@ -313,7 +313,7 @@ ik_source_dispatch (GSource     *source,
       /* callback will free the event */
       event = g_queue_pop_head (&iks->queue);
 
-      if (event->mask & IN_MOVED_TO && !event->pair)
+      if (event->mask & IN_MOVED_FROM && !event->pair)
         g_hash_table_remove (iks->unmatched_moves, GUINT_TO_POINTER (event->cookie));
 
       G_LOCK (inotify_lock);
