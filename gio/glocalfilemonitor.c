@@ -408,13 +408,14 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
 
           other = g_local_file_new_from_dirname_and_basename (fms->dirname, rename_to);
           g_file_monitor_source_file_changes_done (fms, rename_to);
+          g_print ("send %s %s\n", child, g_file_get_path (other));
           g_file_monitor_source_send_event (fms, G_FILE_MONITOR_EVENT_MOVED, child, other);
           g_object_unref (other);
         }
       else
         {
           g_file_monitor_source_send_event (fms, G_FILE_MONITOR_EVENT_DELETED, child, NULL);
-          g_file_monitor_source_send_synthetic_created (fms, child);
+          g_file_monitor_source_send_synthetic_created (fms, rename_to);
         }
       break;
 
