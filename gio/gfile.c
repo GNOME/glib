@@ -4337,9 +4337,14 @@ g_file_query_writable_namespaces (GFile         *file,
 
   if (list == NULL)
     {
+      g_warn_if_reached();
+      list = g_file_attribute_info_list_new ();
+    }
+
+  if (my_error != NULL)
+    {
       if (my_error->domain == G_IO_ERROR && my_error->code == G_IO_ERROR_NOT_SUPPORTED)
         {
-          list = g_file_attribute_info_list_new ();
           g_error_free (my_error);
         }
       else
