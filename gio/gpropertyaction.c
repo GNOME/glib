@@ -93,6 +93,7 @@ struct _GPropertyAction
   gpointer            object;
   GParamSpec         *pspec;
   const GVariantType *state_type;
+  gboolean            invert_boolean;
 };
 
 /**
@@ -118,8 +119,17 @@ enum
   PROP_STATE_TYPE,
   PROP_STATE,
   PROP_OBJECT,
-  PROP_PROPERTY_NAME
+  PROP_PROPERTY_NAME,
+  PROP_INVERT_BOOLEAN
 };
+
+static gboolean
+g_property_action_get_invert_boolean (GAction *action)
+{
+  GPropertyAction *paction = G_PROPERTY_ACTION (action);
+
+  return paction->invert_boolean;
+}
 
 static const gchar *
 g_property_action_get_name (GAction *action)
@@ -165,6 +175,10 @@ g_property_action_set_state (GPropertyAction *paction,
 
   g_value_init (&value, paction->pspec->value_type);
   g_settings_get_mapping (&value, variant, NULL);
+
+  if (paction->pspec->value_type == G_TYPE_BOOLEAN && paction->invert_boolean)
+    g_value_set_boolean (&value, !g_value_get_boolean (&value));
+
   g_object_set_property (paction->object, paction->pspec->name, &value);
   g_value_unset (&value);
 }
@@ -189,6 +203,10 @@ g_property_action_get_state (GAction *action)
 
   g_value_init (&value, paction->pspec->value_type);
   g_object_get_property (paction->object, paction->pspec->name, &value);
+
+  if (paction->pspec->value_type == G_TYPE_BOOLEAN && paction->invert_boolean)
+    g_value_set_boolean (&value, !g_value_get_boolean (&value));
+
   result = g_settings_set_mapping (&value, paction->state_type, NULL);
   g_value_unset (&value);
 
@@ -316,6 +334,10 @@ g_property_action_set_property (GObject      *object,
       g_property_action_set_property_name (paction, g_value_get_string (value));
       break;
 
+    case PROP_INVERT_BOOLEAN:
+      paction->invert_boolean = g_value_get_boolean (value);
+      break;
+
     default:
       g_assert_not_reached ();
     }
@@ -349,6 +371,10 @@ g_property_action_get_property (GObject    *object,
 
     case PROP_STATE:
       g_value_take_variant (value, g_property_action_get_state (action));
+      break;
+
+    case PROP_INVERT_BOOLEAN:
+      g_value_set_boolean (value, g_property_action_get_invert_boolean (action));
       break;
 
     default:
@@ -515,6 +541,23 @@ g_property_action_class_init (GPropertyActionClass *class)
                                                         G_PARAM_WRITABLE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GPropertyAction:invert-boolean:
+   *
+   * If %TRUE, the state of the action will be the negation of the
+   * property value, provided the property is boolean.
+   *
+   * Since: 2.46
+   */
+  g_object_class_install_property (object_class, PROP_INVERT_BOOLEAN,
+                                   g_param_spec_boolean ("invert-boolean",
+                                                         P_("Invert boolean"),
+                                                         P_("Whether to invert the value of a boolean property"),
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT_ONLY |
+                                                         G_PARAM_STATIC_STRINGS));
 }
 
 /**

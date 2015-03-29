@@ -1050,6 +1050,16 @@ test_property_actions (void)
   g_action_map_add_action (G_ACTION_MAP (group), G_ACTION (action));
   g_object_unref (action);
 
+  /* inverted */
+  action = g_object_new (G_TYPE_PROPERTY_ACTION,
+                         "name", "disable-proxy",
+                         "object", client,
+                         "property-name", "enable-proxy",
+                         "invert-boolean", TRUE,
+                         NULL);
+  g_action_map_add_action (G_ACTION_MAP (group), G_ACTION (action));
+  g_object_unref (action);
+
   /* enum... */
   action = g_property_action_new ("type", client, "type");
   g_action_map_add_action (G_ACTION_MAP (group), G_ACTION (action));
@@ -1062,6 +1072,7 @@ test_property_actions (void)
   ensure_state (group, "app-id", "'org.gtk.test'");
   ensure_state (group, "keepalive", "uint32 0");
   ensure_state (group, "tls", "false");
+  ensure_state (group, "disable-proxy", "false");
   ensure_state (group, "type", "'stream'");
 
   verify_changed (NULL);
@@ -1102,6 +1113,11 @@ test_property_actions (void)
   g_assert (g_socket_client_get_tls (client));
   ensure_state (group, "tls", "true");
 
+  g_action_group_change_action_state (G_ACTION_GROUP (group), "disable-proxy", g_variant_new ("b", TRUE));
+  verify_changed ("disable-proxy:true");
+  ensure_state (group, "disable-proxy", "true");
+  g_assert (!g_socket_client_get_enable_proxy (client));
+
   /* test toggle true->false */
   g_action_group_activate_action (G_ACTION_GROUP (group), "tls", NULL);
   verify_changed ("tls:false");
@@ -1117,6 +1133,21 @@ test_property_actions (void)
   g_socket_client_set_tls (client, FALSE);
   verify_changed ("tls:false");
   ensure_state (group, "tls", "false");
+
+  /* now do the same for the inverted action */
+  g_action_group_activate_action (G_ACTION_GROUP (group), "disable-proxy", NULL);
+  verify_changed ("disable-proxy:false");
+  g_assert (g_socket_client_get_enable_proxy (client));
+  ensure_state (group, "disable-proxy", "false");
+
+  g_action_group_activate_action (G_ACTION_GROUP (group), "disable-proxy", NULL);
+  verify_changed ("disable-proxy:true");
+  g_assert (!g_socket_client_get_enable_proxy (client));
+  ensure_state (group, "disable-proxy", "true");
+
+  g_socket_client_set_enable_proxy (client, TRUE);
+  verify_changed ("disable-proxy:false");
+  ensure_state (group, "disable-proxy", "false");
 
   /* enum tests */
   g_action_group_change_action_state (G_ACTION_GROUP (group), "type", g_variant_new ("s", "datagram"));
