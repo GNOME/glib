@@ -69,7 +69,7 @@ static const struct help_topic topics[] = {
 static const struct help_substvar substvars[] = {
   { N_("COMMAND"),   N_("The command to print detailed help for")                             },
   { N_("APPID"),     N_("Application identifier in D-Bus format (eg: org.example.viewer)")    },
-  { N_("FILE"),      N_("Optional relative or relative filenames, or URIs to open")           },
+  { N_("FILE"),      N_("Optional relative or absolute filenames, or URIs to open")           },
   { N_("ACTION"),    N_("The action name to invoke")                                          },
   { N_("PARAMETER"), N_("Optional parameter to the action invocation, in GVariant format")    }
 };
