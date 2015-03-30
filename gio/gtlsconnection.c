@@ -846,30 +846,32 @@ g_tls_connection_get_negotiated_protocol (GTlsConnection *conn)
  *
  * Certain pieces of information are available for all connections:
  *
- * - `version` (int16): the negotiated #GTlsVersion. (In fact, this is
- *   just the version number value in the binary format used by the
- *   TLS protocol. For known SSL/TLS versions, this will be one of the
+ * - `version` (`q`): the negotiated #GTlsVersion. (This is just the
+ *   version number value in the binary format used by the TLS
+ *   protocol. For known SSL/TLS versions, this will be one of the
  *   values of the #GTlsVersion enumeration, but future versions of
  *   the backend TLS library may negotiate connections using TLS
  *   versions not yet known to GLib.)
- * - `key-exchange` (string): the key exchange algorithm (eg, "RSA" or
+ * - `key-exchange` (`s`): the key exchange algorithm (eg, "RSA" or
  *   "ECDH_ECDSA")
- * - `cipher` (string): the cipher algorithm (eg, "DES" or
+ * - `cipher` (`s`): the cipher algorithm (eg, "DES" or
  *   "AES_256_CBC")
- * - `mac` (string): the MAC algorithm (eg, "MD5" or "SHA256")
- * - `cipher-suite` (string): the full cipher suite name (eg,
+ * - `mac` (`s`): the MAC algorithm (eg, "MD5" or "SHA256")
+ * - `cipher-suite` (`s`): the full cipher suite name (eg,
  *   "TLS_RSA_WITH_AES128_CBC_SHA")
- * - `key-size` (int32): the size of the key used by the cipher
+ * - `key-size` (`i`): the size of the key used by the cipher
  *   algorithm
- * - `mac-size` (int32): the output size of the MAC algorithm
+ * - `mac-size` (`i`): the output size of the MAC algorithm
  *
  * Additional data may also be available depending on the ciphersuite
  * or extensions:
  *
- * - `dh-prime-size` (int32): for cipher suites using Diffie-Hellman key
+ * - `dh-prime-size` (`i`): for cipher suites using Diffie-Hellman key
  *   exchange, the length in bits of the prime modulus.
- * - `ext-renegotiation-info` (boolean): %TRUE if client and server
+ * - `ext-renegotiation-info` (`b`): %TRUE if client and server
  *   both support the TLS Renegotiation Indication Extension
+ *
+ * Additional items may be added in the future.
  *
  * Returns: (transfer full) (nullable): a variant dictionary
  * containing information about @conn, or %NULL if @conn is not
@@ -888,6 +890,130 @@ g_tls_connection_get_connection_info (GTlsConnection *conn)
                 "connection-info", &info,
                 NULL);
   return info;
+}
+
+/**
+ * g_tls_connection_get_connection_requirements:
+ * @conn: a #GTlsConnection
+ *
+ * Gets information about the available/permitted encryption and other
+ * TLS session parameters of @conn, as a #GVariant dictionary
+ * containing various pieces of information.
+ *
+ * The parameters are similar to those in
+ * g_tls_connection_get_connection_info():
+ *
+ * - `min-version` (`q`): minimum allowed #GTlsVersion
+ * - `max-version` (`q`): maximum allowed #GTlsVersion
+ * - `key-exchange` (`as`): allowed key exchange algorithms
+ * - `cipher` (`as`): allowed cipher algorithms
+ * - `mac` (`as`): allowed MAC algorithms
+ * - `cipher-suite` (`as`): allowed cipher suites
+ * - `min-key-size` (`i`): minimum allowed cipher key size
+ * - `min-mac-size` (`i`): minimum allowed MAC output size
+ * - `min-dh-prime-size` (`i`): minimum DH prime modulus length
+ *
+ * Additional items may be added in the future.
+ *
+ * Returns: (transfer full) (nullable): a variant dictionary
+ * containing information about @conn's requirements.
+ *
+ * Since: 2.46
+ */
+GVariant *
+g_tls_connection_get_connection_requirements (GTlsConnection *conn)
+{
+  GVariant *reqs;
+
+  g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
+
+  g_object_get (G_OBJECT (conn),
+                "connection-requirements", &reqs,
+                NULL);
+  return reqs;
+}
+
+/**
+ * g_tls_connection_set_connection_requirements:
+ * @conn: a #GTlsConnection
+ * @reqs: a vardict containing requirements for @conn
+ *
+ * Sets information about the permitted encryption and other TLS
+ * session parameters of @conn.
+ *
+ * The parameters are as with
+ * g_tls_connection_get_connection_requirements(), with a few
+ * additional possibilities:
+ *
+ * - `min-version` (`q`): minimum #GTlsVersion
+ * - `max-version` (`q`): maximum #GTlsVersion
+ * - `key-exchange` (`as`): all allowed key exchange algorithms
+ * - `enable-key-exchange` (`as`): key exchange algorithms to enable
+ * - `disable-key-exchange` (`as`): key exchange algorithms to disable
+ * - `cipher` (`as`): all allowed cipher algorithms
+ * - `enable-cipher` (`as`): cipher algorithms to enable
+ * - `disable-cipher` (`as`): cipher algorithms to disable
+ * - `mac` (`as`): all allowed MAC algorithms
+ * - `enable-mac` (`as`): MAC algorithms to enable
+ * - `disable-mac` (`as`): MAC algorithms to disable
+ * - `cipher-suite` (`as`): all allowed cipher suites
+ * - `enable-cipher-suite` (`as`): cipher suites to enable
+ * - `disable-cipher-suite` (`as`): cipher suites to disable
+ * - `min-key-size` (`i`): minimum cipher key size
+ * - `min-mac-size` (`i`): minimum MAC output size
+ * - `min-dh-prime-size` (`i`): minimum DH prime modulus length
+ *
+ * Parameters which are not present in @reqs will not have their
+ * requirements changed.
+ *
+ * For the algorithm arrays, you can either specify a complete array
+ * of allowed algorithms using the "base" parameter name, or else you
+ * can provide a list of algorithms to enable in addition to the
+ * defaults, by prefixing `enable-` to the parameter name, or a list
+ * of algorithms to disable by prefixing `disable-` to the parameter
+ * name. You are not allowed to specify both the base form of a
+ * parameter and one of the `enable-` or `disable-` forms (though you
+ * can use both `enable-` and `disable-` if you do not use the base
+ * form). It is also an error to include a `cipher-suite` value that
+ * contradicts the other values.
+ *
+ * Unrecognized parameters will be ignored.
+ *
+ * The system may have policies in place that override this function.
+ * Additionally, setting #GTlsClientConnection:use-ssl3 will override
+ * the `min-version` and `max-version` requirements. You can call
+ * g_tls_connection_get_connection_requirements() to see the actual
+ * result of this call.
+ *
+ * Since: 2.46
+ */
+void
+g_tls_connection_set_connection_requirements (GTlsConnection *conn,
+                                              GVariant       *reqs)
+{
+  g_return_if_fail (G_IS_TLS_CONNECTION (conn));
+  g_return_if_fail (g_variant_is_of_type (reqs, G_VARIANT_TYPE_VARDICT));
+
+  g_return_if_fail (!(g_variant_dict_contains (reqs, "key-exchange") &&
+                      g_variant_dict_contains (reqs, "enable-key-exchange")));
+  g_return_if_fail (!(g_variant_dict_contains (reqs, "key-exchange") &&
+                      g_variant_dict_contains (reqs, "disable-key-exchange")));
+  g_return_if_fail (!(g_variant_dict_contains (reqs, "cipher") &&
+                      g_variant_dict_contains (reqs, "enable-cipher")));
+  g_return_if_fail (!(g_variant_dict_contains (reqs, "cipher") &&
+                      g_variant_dict_contains (reqs, "disable-cipher")));
+  g_return_if_fail (!(g_variant_dict_contains (reqs, "mac") &&
+                      g_variant_dict_contains (reqs, "enable-mac")));
+  g_return_if_fail (!(g_variant_dict_contains (reqs, "mac") &&
+                      g_variant_dict_contains (reqs, "disable-mac")));
+  g_return_if_fail (!(g_variant_dict_contains (reqs, "cipher-suite") &&
+                      g_variant_dict_contains (reqs, "enable-cipher-suite")));
+  g_return_if_fail (!(g_variant_dict_contains (reqs, "cipher-suite") &&
+                      g_variant_dict_contains (reqs, "disable-cipher-suite")));
+
+  g_object_set (G_OBJECT (conn),
+                "connection-requirements", reqs,
+                NULL);
 }
 
 /**
