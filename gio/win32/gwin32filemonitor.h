@@ -1,6 +1,6 @@
 /* GIO - GLib Input, Output and Streaming Library
  *
- * Copyright (C) 2006-2007 Red Hat, Inc.
+ * Copyright (C) 2015 Chun-wei Fan
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,7 @@
 #include "gio/glocalfilemonitor.h"
 #include "gio/giomodule.h"
 
-#include "gwin32fsmonitorutils.h"
+#include "gwin32filemonitorutils.h"
 
 G_BEGIN_DECLS
 
@@ -48,7 +48,7 @@ typedef struct _GWin32FileMonitorPrivate GWin32FileMonitorPrivate;
 
 struct _GWin32FileMonitor {
   GLocalFileMonitor parent_instance;
-  GWin32FSMonitorPrivate * priv;
+  GWin32FileMonitorPrivate * priv;
 };
 struct _GWin32FileMonitorClass {
   GLocalFileMonitorClass parent_class;

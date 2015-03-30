@@ -317,7 +317,8 @@ win32_more_sources_for_vcproj = \
 	win32/gwinhttpfileinputstream.c \
 	win32/gwinhttpfileoutputstream.c \
 	win32/gwinhttpvfs.c \
-	win32/gwin32fsmonitorutils.c \
+	win32/gwin32filemonitorevents.c \
+	win32/gwin32filemonitorutils.c \
 	win32/gwin32filemonitor.c
 
 if OS_WIN32
