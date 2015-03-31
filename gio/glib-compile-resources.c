@@ -573,6 +573,33 @@ write_to_file (GHashTable   *table,
   return success;
 }
 
+static gboolean
+extension_in_set (const char *str,
+                  ...)
+{
+  va_list list;
+  const char *ext, *value;
+  gboolean rv = FALSE;
+
+  ext = strrchr (str, '.');
+  if (ext == NULL)
+    return FALSE;
+
+  ext++;
+  va_start (list, str);
+  while ((value = va_arg (list, const char *)) != NULL)
+    {
+      if (g_ascii_strcasecmp (ext, value) != 0)
+        continue;
+
+      rv = TRUE;
+      break;
+    }
+
+  va_end (list);
+  return rv;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -697,11 +724,11 @@ main (int argc, char **argv)
     }
   else if (generate_automatic)
     {
-      if (g_str_has_suffix (target, ".c"))
+      if (extension_in_set (target, "c", "cc", "cpp", "cxx", "c++", NULL))
         generate_source = TRUE;
-      else if (g_str_has_suffix (target, ".h"))
+      else if (extension_in_set (target, "h", "hh", "hpp", "hxx", "h++", NULL))
         generate_header = TRUE;
-      else if (g_str_has_suffix (target, ".gresource"))
+      else if (extension_in_set (target, "gresource", NULL))
         ;
     }
 
