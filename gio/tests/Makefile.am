@@ -130,6 +130,7 @@ schema_tests = \
 	default-in-aliases.gschema.xml			\
 	default-not-in-choices.gschema.xml		\
 	default-out-of-range.gschema.xml		\
+	description-xmllang.gschema.xml			\
 	empty-key.gschema.xml				\
 	enum-with-aliases.gschema.xml			\
 	enum-with-bad-default.gschema.xml		\
@@ -180,6 +181,7 @@ schema_tests = \
 	range-parse-error.gschema.xml			\
 	range-wrong-type.gschema.xml			\
 	range.gschema.xml				\
+	summary-xmllang.gschema.xml			\
 	wrong-category.gschema.xml			\
 	$(NULL)
 

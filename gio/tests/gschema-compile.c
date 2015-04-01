@@ -126,6 +126,8 @@ static const SchemaTest tests[] = {
   { "flags-more-than-one-bit",      NULL, "*flags values must have at most 1 bit set*"          },
   { "flags-with-enum-attr",         NULL, "*<enum id='flags'> not (yet) defined*"               },
   { "flags-with-enum-tag",          NULL, "*<flags id='flags'> not (yet) defined*"              },
+  { "summary-xmllang",              NULL, "*Only one <summary> element allowed*"                },
+  { "description-xmllang",          NULL, "*Only one <description> element allowed*"            },
   { "inherit-gettext-domain",       NULL, NULL                                                  },
   { "range-type-test",              NULL, NULL                                                  },
   { "cdata",                        NULL, NULL                                                  }
