@@ -1162,7 +1162,7 @@ desktop_file_dir_unindexed_mime_lookup (DesktopFileDir *dir,
 
           if (!desktop_file_dir_app_name_is_masked (dir, app_name) &&
               !array_contains (blacklist, app_name) && !array_contains (hits, app_name))
-            g_ptr_array_add (hits, g_strdup (app_name));
+            g_ptr_array_add (hits, app_name);
         }
     }
 
@@ -1197,7 +1197,7 @@ desktop_file_dir_unindexed_default_lookup (DesktopFileDir *dir,
       gchar *app_name = tweaks->defaults[i];
 
       if (!array_contains (results, app_name))
-        g_ptr_array_add (results, g_strdup (app_name));
+        g_ptr_array_add (results, app_name);
     }
 }
 
@@ -3838,6 +3838,10 @@ g_desktop_app_info_get_desktop_ids_for_content_type (const gchar *content_type,
     for (j = 0; j < n_desktop_file_dirs; j++)
       desktop_file_dir_mime_lookup (&desktop_file_dirs[j], types[i], hits, blacklist);
 
+  /* We will keep the hits past unlocking, so we must dup them */
+  for (i = 0; i < hits->len; i++)
+    hits->pdata[i] = g_strdup (hits->pdata[i]);
+
   desktop_file_dirs_unlock ();
 
   g_ptr_array_add (hits, NULL);
@@ -3846,30 +3850,6 @@ g_desktop_app_info_get_desktop_ids_for_content_type (const gchar *content_type,
   g_strfreev (types);
 
   return (gchar **) g_ptr_array_free (hits, FALSE);
-}
-
-static gchar **
-g_desktop_app_info_get_defaults_for_content_type (const gchar *content_type)
-{
-  GPtrArray *results;
-  gchar **types;
-  gint i, j;
-
-  types = get_list_of_mimetypes (content_type, TRUE);
-  results = g_ptr_array_new ();
-
-  desktop_file_dirs_lock ();
-
-  for (i = 0; types[i]; i++)
-    for (j = 0; j < n_desktop_file_dirs; j++)
-      desktop_file_dir_default_lookup (&desktop_file_dirs[j], types[i], results);
-
-  desktop_file_dirs_unlock ();
-
-  g_ptr_array_add (results, NULL);
-  g_strfreev (types);
-
-  return (gchar **) g_ptr_array_free (results, FALSE);
 }
 
 /**
@@ -4039,56 +4019,63 @@ GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
                                  gboolean    must_support_uris)
 {
-  gchar **desktop_ids;
+  GPtrArray *blacklist;
+  GPtrArray *results;
   GAppInfo *info;
-  gint i;
+  gchar **types;
+  gint i, j, k;
 
   g_return_val_if_fail (content_type != NULL, NULL);
 
-  desktop_ids = g_desktop_app_info_get_defaults_for_content_type (content_type);
+  types = get_list_of_mimetypes (content_type, TRUE);
 
+  blacklist = g_ptr_array_new ();
+  results = g_ptr_array_new ();
   info = NULL;
-  for (i = 0; desktop_ids[i]; i++)
+
+  desktop_file_dirs_lock ();
+
+  for (i = 0; types[i]; i++)
     {
-      info = (GAppInfo *) g_desktop_app_info_new (desktop_ids[i]);
+      /* Collect all the default apps for this type */
+      for (j = 0; j < n_desktop_file_dirs; j++)
+        desktop_file_dir_default_lookup (&desktop_file_dirs[j], types[i], results);
 
-      if (info)
+      /* Consider the associations as well... */
+      for (j = 0; j < n_desktop_file_dirs; j++)
+        desktop_file_dir_mime_lookup (&desktop_file_dirs[j], types[i], results, blacklist);
+
+      /* (If any), see if one of those apps is installed... */
+      for (j = 0; j < results->len; j++)
         {
-          if (!must_support_uris || g_app_info_supports_uris (info))
-            break;
+          const gchar *desktop_id = g_ptr_array_index (results, j);
 
-          g_object_unref (info);
-          info = NULL;
-        }
-    }
-
-  g_strfreev (desktop_ids);
-
-  /* If we can't find a default app for this content type, pick one from
-   * the list of all supported apps.  This will be ordered by the user's
-   * preference and by "recommended" apps first, so the first one we
-   * find is probably the best fallback.
-   */
-  if (info == NULL)
-    {
-      desktop_ids = g_desktop_app_info_get_desktop_ids_for_content_type (content_type, TRUE);
-
-      for (i = 0; desktop_ids[i]; i++)
-        {
-          info = (GAppInfo *) g_desktop_app_info_new (desktop_ids[i]);
-
-          if (info)
+          for (k = 0; k < n_desktop_file_dirs; k++)
             {
-              if (!must_support_uris || g_app_info_supports_uris (info))
-                break;
+              info = (GAppInfo *) desktop_file_dir_get_app (&desktop_file_dirs[k], desktop_id);
 
-              g_object_unref (info);
-              info = NULL;
+              if (info)
+                {
+                  if (!must_support_uris || g_app_info_supports_uris (info))
+                    goto out;
+
+                  g_clear_object (&info);
+                }
             }
         }
 
-      g_strfreev (desktop_ids);
+      /* Reset the list, ready to try again with the next (parent)
+       * mimetype, but keep the blacklist in place.
+       */
+      g_ptr_array_set_size (results, 0);
     }
+
+out:
+  desktop_file_dirs_unlock ();
+
+  g_ptr_array_unref (blacklist);
+  g_ptr_array_unref (results);
+  g_strfreev (types);
 
   return info;
 }
