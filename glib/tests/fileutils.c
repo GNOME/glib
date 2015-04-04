@@ -827,6 +827,7 @@ test_read_link (void)
   g_assert_null (path);
   g_error_free (error);
 
+  remove (newpath);
   g_free (cwd);
   g_free (newpath);
   g_free (badpath);

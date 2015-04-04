@@ -1396,6 +1396,7 @@ test_save (void)
   c = g_key_file_get_uint64 (kf2, "bees", "c", NULL);
   g_assert (c == G_GUINT64_CONSTANT (123456789123456789));
 
+  remove (file);
   g_free (file);
   g_key_file_free (kf);
   g_key_file_free (kf2);

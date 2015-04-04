@@ -63,6 +63,7 @@ test_to_file (void)
   res = g_file_get_contents ("out.xbel", &out, NULL, &error);
   g_assert (res);
   g_assert_no_error (error);
+  remove ("out.xbel");
 
   g_assert_cmpstr (in, ==, out);
   g_free (in);

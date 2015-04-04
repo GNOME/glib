@@ -101,6 +101,7 @@ monitor
 network-address
 network-monitor
 org.gtk.test.enums.xml
+org.gtk.test.gschema.xml
 permission
 pollable
 plugin_resources.c
@@ -134,6 +135,7 @@ unix-fd
 unix-streams
 vfs
 volumemonitor
+xdgconfighome
 xdgdatadir
 xdgdatahome
 xgen-gio
