@@ -1803,7 +1803,7 @@ send_message_with_reply_cleanup (GTask *task, gboolean remove)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* Can be called from any thread with lock held */
+/* Called from GDBus worker thread with lock held */
 static void
 send_message_data_deliver_reply_unlocked (GTask           *task,
                                           GDBusMessage    *reply)
@@ -1821,6 +1821,31 @@ send_message_data_deliver_reply_unlocked (GTask           *task,
   ;
 }
 
+/* Called from a user thread, lock is not held */
+static void
+send_message_data_deliver_error (GTask      *task,
+                                 GQuark      domain,
+                                 gint        code,
+                                 const char *message)
+{
+  GDBusConnection *connection = g_task_get_source_object (task);
+  SendMessageData *data = g_task_get_task_data (task);
+
+  CONNECTION_LOCK (connection);
+  if (data->delivered)
+    {
+      CONNECTION_UNLOCK (connection);
+      return;
+    }
+
+  g_object_ref (task);
+  send_message_with_reply_cleanup (task, TRUE);
+  CONNECTION_UNLOCK (connection);
+
+  g_task_return_new_error (task, domain, code, "%s", message);
+  g_object_unref (task);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* Called from a user thread, lock is not held */
@@ -1828,22 +1853,9 @@ static gboolean
 send_message_with_reply_cancelled_idle_cb (gpointer user_data)
 {
   GTask *task = user_data;
-  GDBusConnection *connection = g_task_get_source_object (task);
-  SendMessageData *data = g_task_get_task_data (task);
 
-  CONNECTION_LOCK (connection);
-  if (data->delivered)
-    goto out;
-
-  g_task_return_new_error (task,
-                           G_IO_ERROR,
-                           G_IO_ERROR_CANCELLED,
-                           _("Operation was cancelled"));
-
-  send_message_with_reply_cleanup (task, TRUE);
-
- out:
-  CONNECTION_UNLOCK (connection);
+  send_message_data_deliver_error (task, G_IO_ERROR, G_IO_ERROR_CANCELLED,
+                                   _("Operation was cancelled"));
   return FALSE;
 }
 
@@ -1871,23 +1883,9 @@ static gboolean
 send_message_with_reply_timeout_cb (gpointer user_data)
 {
   GTask *task = user_data;
-  GDBusConnection *connection = g_task_get_source_object (task);
-  SendMessageData *data = g_task_get_task_data (task);
 
-  CONNECTION_LOCK (connection);
-  if (data->delivered)
-    goto out;
-
-  g_task_return_new_error (task,
-                           G_IO_ERROR,
-                           G_IO_ERROR_TIMED_OUT,
-                           _("Timeout was reached"));
-
-  send_message_with_reply_cleanup (task, TRUE);
-
- out:
-  CONNECTION_UNLOCK (connection);
-
+  send_message_data_deliver_error (task, G_IO_ERROR, G_IO_ERROR_TIMED_OUT,
+                                   _("Timeout was reached"));
   return FALSE;
 }
 

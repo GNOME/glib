@@ -291,6 +291,9 @@ msg_cb_expect_error_disconnected (GDBusConnection *connection,
   GError *error;
   GVariant *result;
 
+  /* Make sure gdbusconnection isn't holding @connection's lock. (#747349) */
+  g_dbus_connection_get_last_serial (connection);
+
   error = NULL;
   result = g_dbus_connection_call_finish (connection,
                                           res,
@@ -310,6 +313,9 @@ msg_cb_expect_error_unknown_method (GDBusConnection *connection,
 {
   GError *error;
   GVariant *result;
+
+  /* Make sure gdbusconnection isn't holding @connection's lock. (#747349) */
+  g_dbus_connection_get_last_serial (connection);
 
   error = NULL;
   result = g_dbus_connection_call_finish (connection,
@@ -331,6 +337,9 @@ msg_cb_expect_success (GDBusConnection *connection,
   GError *error;
   GVariant *result;
 
+  /* Make sure gdbusconnection isn't holding @connection's lock. (#747349) */
+  g_dbus_connection_get_last_serial (connection);
+
   error = NULL;
   result = g_dbus_connection_call_finish (connection,
                                           res,
@@ -349,6 +358,9 @@ msg_cb_expect_error_cancelled (GDBusConnection *connection,
 {
   GError *error;
   GVariant *result;
+
+  /* Make sure gdbusconnection isn't holding @connection's lock. (#747349) */
+  g_dbus_connection_get_last_serial (connection);
 
   error = NULL;
   result = g_dbus_connection_call_finish (connection,
@@ -369,6 +381,9 @@ msg_cb_expect_error_cancelled_2 (GDBusConnection *connection,
 {
   GError *error;
   GVariant *result;
+
+  /* Make sure gdbusconnection isn't holding @connection's lock. (#747349) */
+  g_dbus_connection_get_last_serial (connection);
 
   error = NULL;
   result = g_dbus_connection_call_finish (connection,
