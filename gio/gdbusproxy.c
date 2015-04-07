@@ -35,6 +35,7 @@
 #include "gtask.h"
 #include "gcancellable.h"
 #include "gdbusinterface.h"
+#include "gasyncresult.h"
 
 #ifdef G_OS_UNIX
 #include "gunixfdlist.h"
