@@ -1,3 +1,13 @@
+Overview of changes in GLib 2.45.x
+==================================
+
+* The GSettings schema compiler, glib-compile-schemas has been changed
+  to reject schema xml that has duplicate <summary> or <description>
+  elements. Such elements typically occur when translations are merged
+  into the schema, with xml:lang attributes. This is not the correct
+  way to translate schemas. Instead keep the translations in the .mo
+  file and set the gettext-domain attribute on the <schemalist> element.
+
 Overview of changes in GLib 2.43.92
 ===================================
 
