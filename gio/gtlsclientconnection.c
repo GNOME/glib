@@ -342,7 +342,7 @@ g_tls_client_connection_get_accepted_cas (GTlsClientConnection *conn)
 /**
  * g_tls_client_connection_copy_session_state:
  * @conn: a #GTlsClientConnection
- * @other: a #GTlsClientConnection
+ * @source: a #GTlsClientConnection
  *
  * Copies session state from one connection to another. This is
  * not normally needed, but may be used when the same session

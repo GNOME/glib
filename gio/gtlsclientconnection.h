@@ -37,6 +37,7 @@ typedef struct _GTlsClientConnectionInterface GTlsClientConnectionInterface;
 /**
  * GTlsClientConnectionInterface:
  * @g_iface: The parent interface.
+ * @copy_session_state: Copies session state from one #GTlsClientConnection to another.
  *
  * vtable for a #GTlsClientConnection implementation.
  *
