@@ -273,6 +273,13 @@ DllMain (HINSTANCE hinstDLL,
 #endif
       break;
 
+    case DLL_PROCESS_DETACH:
+#ifdef THREADS_WIN32
+      if (lpvReserved == NULL)
+        g_thread_win32_process_detach ();
+#endif
+      break;
+
     default:
       /* do nothing */
       ;

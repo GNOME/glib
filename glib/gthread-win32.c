@@ -496,10 +496,67 @@ g_system_thread_wait (GRealThread *thread)
   win32_check_for_error (WAIT_FAILED != WaitForSingleObject (wt->handle, INFINITE));
 }
 
+#define EXCEPTION_SET_THREAD_NAME ((DWORD) 0x406D1388)
+
+#ifndef _MSC_VER
+static void *SetThreadName_VEH_handle = NULL;
+
+static LONG __stdcall
+SetThreadName_VEH (PEXCEPTION_POINTERS ExceptionInfo)
+{
+  if (ExceptionInfo->ExceptionRecord != NULL &&
+      ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_SET_THREAD_NAME)
+    return EXCEPTION_CONTINUE_EXECUTION;
+
+  return EXCEPTION_CONTINUE_SEARCH;
+}
+#endif
+
+typedef struct _THREADNAME_INFO
+{
+  DWORD  dwType;	/* must be 0x1000 */
+  LPCSTR szName;	/* pointer to name (in user addr space) */
+  DWORD  dwThreadID;	/* thread ID (-1=caller thread) */
+  DWORD  dwFlags;	/* reserved for future use, must be zero */
+} THREADNAME_INFO;
+
+static void
+SetThreadName (DWORD  dwThreadID,
+               LPCSTR szThreadName)
+{
+   THREADNAME_INFO info;
+   DWORD infosize;
+
+   info.dwType = 0x1000;
+   info.szName = szThreadName;
+   info.dwThreadID = dwThreadID;
+   info.dwFlags = 0;
+
+   infosize = sizeof (info) / sizeof (DWORD);
+
+#ifdef _MSC_VER
+   __try
+     {
+       RaiseException (EXCEPTION_SET_THREAD_NAME, 0, infosize, (DWORD *) &info);
+     }
+   __except (EXCEPTION_EXECUTE_HANDLER)
+     {
+     }
+#else
+   /* Without a debugger we *must* have an exception handler,
+    * otherwise raising an exception will crash the process.
+    */
+   if ((!IsDebuggerPresent ()) && (SetThreadName_VEH_handle == NULL))
+     return;
+
+   RaiseException (EXCEPTION_SET_THREAD_NAME, 0, infosize, (DWORD *) &info);
+#endif
+}
+
 void
 g_system_thread_set_name (const gchar *name)
 {
-  /* FIXME: implement */
+  SetThreadName ((DWORD) -1, name);
 }
 
 /* {{{1 SRWLock and CONDITION_VARIABLE emulation (for Windows XP) */
@@ -988,6 +1045,14 @@ g_thread_win32_init (void)
     g_thread_xp_init ();
 
   InitializeCriticalSection (&g_private_lock);
+
+#ifndef _MSC_VER
+  SetThreadName_VEH_handle = AddVectoredExceptionHandler (1, &SetThreadName_VEH);
+  if (SetThreadName_VEH_handle == NULL)
+    {
+      /* This is bad, but what can we do? */
+    }
+#endif
 }
 
 void
@@ -1026,6 +1091,18 @@ g_thread_win32_thread_detach (void)
 
   if (g_thread_impl_vtable.CallThisOnThreadExit)
     g_thread_impl_vtable.CallThisOnThreadExit ();
+}
+
+void
+g_thread_win32_process_detach (void)
+{
+#ifndef _MSC_VER
+  if (SetThreadName_VEH_handle != NULL)
+    {
+      RemoveVectoredExceptionHandler (SetThreadName_VEH_handle);
+      SetThreadName_VEH_handle = NULL;
+    }
+#endif
 }
 
 /* vim:set foldmethod=marker: */

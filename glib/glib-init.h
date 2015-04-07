@@ -31,6 +31,7 @@ void g_quark_init (void);
 #ifdef G_OS_WIN32
 #include <windows.h>
 
+void g_thread_win32_process_detach (void);
 void g_thread_win32_thread_detach (void);
 void g_thread_win32_init (void);
 void g_clock_win32_init (void);
