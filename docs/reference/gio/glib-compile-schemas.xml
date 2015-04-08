@@ -82,6 +82,14 @@ Store <filename>gschemas.compiled</filename> in the <replaceable>TARGET</replace
 </varlistentry>
 
 <varlistentry>
+<term><option>--strict</option></term>
+<listitem><para>
+Abort on any errors in schemas. Without this option, faulty schema files are
+simply omitted from the resulting compiled schema.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term><option>--dry-run</option></term>
 <listitem><para>
 Don't write <filename>gschemas.compiled</filename>. This option can be used
