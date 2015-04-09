@@ -203,6 +203,12 @@ print_paths (GDBusConnection *c,
   GDBusNodeInfo *node;
   guint n;
 
+  if (!g_dbus_is_name (name))
+    {
+      g_printerr (_("Error: %s is not a valid name\n"), name);
+      goto out;
+    }
+
   error = NULL;
   result = g_dbus_connection_call_sync (c,
                                         name,
@@ -861,6 +867,12 @@ handle_call (gint        *argc,
           print_names (c, g_str_has_prefix (opt_call_dest, ":"));
           goto out;
         }
+    }
+
+  if (!request_completion && !g_dbus_is_name (opt_call_dest))
+    {
+      g_printerr (_("Error: %s is not a valid bus name\n"), opt_call_dest);
+      goto out;
     }
 
   /* validate and complete object path */
@@ -1601,6 +1613,13 @@ handle_introspect (gint        *argc,
       print_paths (c, opt_introspect_dest, "/");
       goto out;
     }
+
+  if (!request_completion && !g_dbus_is_name (opt_introspect_dest))
+    {
+        g_printerr (_("Error: %s is not a valid bus name\n"), opt_introspect_dest);
+      goto out;
+    }
+
   if (opt_introspect_object_path == NULL)
     {
       if (request_completion)
@@ -1824,6 +1843,13 @@ handle_monitor (gint        *argc,
           goto out;
         }
     }
+
+  if (!request_completion && !g_dbus_is_name (opt_monitor_dest))
+    {
+      g_printerr (_("Error: %s is not a valid bus name\n"), opt_monitor_dest);
+      goto out;
+    }
+
   if (complete_paths)
     {
       print_paths (c, opt_monitor_dest, "/");
