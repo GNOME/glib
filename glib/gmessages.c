@@ -360,13 +360,10 @@ dowrite (int          fd,
 #endif
 
 static void
-write_string (int          fd,
+write_string (FILE        *stream,
 	      const gchar *string)
 {
-  int res;
-  do 
-    res = write (fd, string, strlen (string));
-  while (G_UNLIKELY (res == -1 && errno == EINTR));
+  fputs (string, stream);
 }
 
 static GLogDomain*
@@ -881,7 +878,7 @@ format_unsigned (gchar  *buf,
 /* these are filtered by G_MESSAGES_DEBUG by the default log handler */
 #define INFO_LEVELS (G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG)
 
-static int
+static FILE *
 mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
 		GLogLevelFlags log_level)
 {
@@ -932,7 +929,7 @@ mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
   if ((log_level & G_LOG_FLAG_FATAL) != 0 && !g_test_initialized ())
     win32_keep_fatal_message = TRUE;
 #endif
-  return to_stdout ? 1 : 2;
+  return to_stdout ? stdout : stderr;
 }
 
 typedef struct {
@@ -1282,7 +1279,7 @@ _g_log_fallback_handler (const gchar   *log_domain,
 #ifndef G_OS_WIN32
   gchar pid_string[FORMAT_UNSIGNED_BUFSIZE];
 #endif
-  int fd;
+  FILE *stream;
 
   /* we cannot call _any_ GLib functions in this fallback handler,
    * which is why we skip UTF-8 conversion, etc.
@@ -1291,7 +1288,7 @@ _g_log_fallback_handler (const gchar   *log_domain,
    * the process ID unconditionally however.
    */
 
-  fd = mklevel_prefix (level_prefix, log_level);
+  stream = mklevel_prefix (level_prefix, log_level);
   if (!message)
     message = "(NULL) message";
 
@@ -1300,24 +1297,24 @@ _g_log_fallback_handler (const gchar   *log_domain,
 #endif
 
   if (log_domain)
-    write_string (fd, "\n");
+    write_string (stream, "\n");
   else
-    write_string (fd, "\n** ");
+    write_string (stream, "\n** ");
 
 #ifndef G_OS_WIN32
-  write_string (fd, "(process:");
-  write_string (fd, pid_string);
-  write_string (fd, "): ");
+  write_string (stream, "(process:");
+  write_string (stream, pid_string);
+  write_string (stream, "): ");
 #endif
 
   if (log_domain)
     {
-      write_string (fd, log_domain);
-      write_string (fd, "-");
+      write_string (stream, log_domain);
+      write_string (stream, "-");
     }
-  write_string (fd, level_prefix);
-  write_string (fd, ": ");
-  write_string (fd, message);
+  write_string (stream, level_prefix);
+  write_string (stream, ": ");
+  write_string (stream, message);
 }
 
 static void
@@ -1418,7 +1415,7 @@ g_log_default_handler (const gchar   *log_domain,
 {
   gchar level_prefix[STRING_BUFFER_SIZE], *string;
   GString *gstring;
-  int fd;
+  FILE *stream;
   const gchar *domains;
 
   if ((log_level & DEFAULT_LEVELS) || (log_level >> G_LOG_LEVEL_USER_SHIFT))
@@ -1438,7 +1435,7 @@ g_log_default_handler (const gchar   *log_domain,
       return;
     }
 
-  fd = mklevel_prefix (level_prefix, log_level);
+  stream = mklevel_prefix (level_prefix, log_level);
 
   gstring = g_string_new (NULL);
   if (log_level & ALERT_LEVELS)
@@ -1489,7 +1486,7 @@ g_log_default_handler (const gchar   *log_domain,
 
   string = g_string_free (gstring, FALSE);
 
-  write_string (fd, string);
+  write_string (stream, string);
   g_free (string);
 }
 
