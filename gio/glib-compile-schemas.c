@@ -1063,6 +1063,8 @@ override_state_end (KeyState **key_state,
 /* Handling of toplevel state {{{1 */
 typedef struct
 {
+  gboolean     strict;                  /* TRUE if --strict was given */
+
   GHashTable  *schema_table;            /* string -> SchemaState */
   GHashTable  *flags_table;             /* string -> EnumState */
   GHashTable  *enum_table;              /* string -> EnumState */
@@ -1381,7 +1383,7 @@ start_element (GMarkupParseContext  *context,
 
       else if (strcmp (element_name, "summary") == 0)
         {
-          if (state->key_state->summary_seen)
+          if (state->key_state->summary_seen && state->strict)
             g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
                          _("Only one <%s> element allowed inside <%s>"),
                          element_name, container);
@@ -1394,7 +1396,7 @@ start_element (GMarkupParseContext  *context,
 
       else if (strcmp (element_name, "description") == 0)
         {
-          if (state->key_state->description_seen)
+          if (state->key_state->description_seen && state->strict)
             g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
                          _("Only one <%s> element allowed inside <%s>"),
                          element_name, container);
@@ -1720,6 +1722,8 @@ parse_gschema_files (gchar    **files,
   ParseState state = { 0, };
   const gchar *filename;
   GError *error = NULL;
+
+  state.strict = strict;
 
   state.enum_table = g_hash_table_new_full (g_str_hash, g_str_equal,
                                             g_free, enum_state_free);
