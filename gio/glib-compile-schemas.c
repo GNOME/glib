@@ -1383,27 +1383,33 @@ start_element (GMarkupParseContext  *context,
 
       else if (strcmp (element_name, "summary") == 0)
         {
-          if (state->key_state->summary_seen && state->strict)
-            g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                         _("Only one <%s> element allowed inside <%s>"),
-                         element_name, container);
-          state->key_state->summary_seen = TRUE;
-
           if (NO_ATTRS ())
-            state->string = g_string_new (NULL);
+            {
+              if (state->key_state->summary_seen && state->strict)
+                g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                             _("Only one <%s> element allowed inside <%s>"),
+                             element_name, container);
+              else
+                state->string = g_string_new (NULL);
+
+              state->key_state->summary_seen = TRUE;
+            }
           return;
         }
 
       else if (strcmp (element_name, "description") == 0)
         {
-          if (state->key_state->description_seen && state->strict)
-            g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                         _("Only one <%s> element allowed inside <%s>"),
-                         element_name, container);
-          state->key_state->description_seen = TRUE;
-
           if (NO_ATTRS ())
-            state->string = g_string_new (NULL);
+            {
+              if (state->key_state->description_seen && state->strict)
+                g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                             _("Only one <%s> element allowed inside <%s>"),
+                             element_name, container);
+              else
+                state->string = g_string_new (NULL);
+
+            state->key_state->description_seen = TRUE;
+            }
           return;
         }
 
