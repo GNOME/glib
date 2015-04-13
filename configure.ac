@@ -223,6 +223,15 @@ AS_IF([test "x$glib_have_cocoa" = "xyes"], [
   AC_DEFINE(HAVE_COCOA, 1, [define to 1 if Cocoa is available])
   COCOA_LIBS="-Wl,-framework,Foundation"
   LDFLAGS="$LDFLAGS $COCOA_LIBS"
+
+  osx_version=`sw_vers -productVersion`
+  osx_min_version="10.9.0"
+  AC_MSG_CHECKING([OSX version >= $osx_min_version])
+  AS_VERSION_COMPARE([$osx_version], [$osx_min_version], [
+    AC_MSG_RESULT([no])
+    AC_MSG_ERROR([OSX version is too old!])
+  ])
+  AC_MSG_RESULT([yes])
 ], [COCOA_LIBS=""])
 
 AC_SUBST([COCOA_LIBS])
