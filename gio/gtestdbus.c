@@ -838,4 +838,6 @@ g_test_dbus_unset (void)
   g_unsetenv ("DBUS_SESSION_BUS_ADDRESS");
   g_unsetenv ("DBUS_STARTER_ADDRESS");
   g_unsetenv ("DBUS_STARTER_BUS_TYPE");
+  /* avoid using XDG_RUNTIME_DIR/bus */
+  g_unsetenv ("XDG_RUNTIME_DIR");
 }

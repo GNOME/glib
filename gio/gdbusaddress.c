@@ -39,8 +39,12 @@
 #include "gdbusprivate.h"
 #include "giomodule-priv.h"
 #include "gdbusdaemon.h"
+#include "gstdio.h"
 
 #ifdef G_OS_UNIX
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <gio/gunixsocketaddress.h>
 #endif
 
@@ -988,6 +992,49 @@ g_dbus_address_get_stream_sync (const gchar   *address,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/*
+ * Return the address of XDG_RUNTIME_DIR/bus if it exists, belongs to
+ * us, and is a socket, and we are on Unix.
+ */
+static gchar *
+get_session_address_xdg (void)
+{
+#ifdef G_OS_UNIX
+  gchar *ret = NULL;
+  gchar *bus;
+  gchar *tmp;
+  GStatBuf buf;
+
+  bus = g_build_filename (g_get_user_runtime_dir (), "bus", NULL);
+
+  /* if ENOENT, EPERM, etc., quietly don't use it */
+  if (g_stat (bus, &buf) < 0)
+    goto out;
+
+  /* if it isn't ours, we have incorrectly inherited someone else's
+   * XDG_RUNTIME_DIR; silently don't use it
+   */
+  if (buf.st_uid != geteuid ())
+    goto out;
+
+  /* if it isn't a socket, silently don't use it */
+  if ((buf.st_mode & S_IFMT) != S_IFSOCK)
+    goto out;
+
+  tmp = g_dbus_address_escape_value (bus);
+  ret = g_strconcat ("unix:path=", tmp, NULL);
+  g_free (tmp);
+
+out:
+  g_free (bus);
+  return ret;
+#else
+  return NULL;
+#endif
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 #ifdef G_OS_UNIX
 static gchar *
 get_session_address_dbus_launch (GError **error)
@@ -1431,11 +1478,31 @@ get_session_address_dbus_launch (GError **error)
 static gchar *
 get_session_address_platform_specific (GError **error)
 {
+  gchar *ret;
+
+  /* Use XDG_RUNTIME_DIR/bus if it exists and is suitable. This is appropriate
+   * for systems using the "a session is a user-session" model described in
+   * <http://lists.freedesktop.org/archives/dbus/2015-January/016522.html>,
+   * and implemented in dbus >= 1.9.14 and sd-bus.
+   *
+   * On systems following the more traditional "a session is a login-session"
+   * model, this will fail and we'll fall through to X11 autolaunching
+   * (dbus-launch) below.
+   */
+  ret = get_session_address_xdg ();
+
+  if (ret != NULL)
+    return ret;
+
   /* TODO (#694472): try launchd on OS X, like
    * _dbus_lookup_session_address_launchd() does, since
    * 'dbus-launch --autolaunch' probably won't work there
    */
 
+  /* As a last resort, try the "autolaunch:" transport. On Unix this means
+   * X11 autolaunching; on Windows this means a different autolaunching
+   * mechanism based on shared memory.
+   */
   return get_session_address_dbus_launch (error);
 }
 
