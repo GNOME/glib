@@ -250,7 +250,7 @@ struct _TypeNode
 
 #define SIZEOF_BASE_TYPE_NODE()			(G_STRUCT_OFFSET (TypeNode, supers))
 #define MAX_N_SUPERS				(255)
-#define MAX_N_CHILDREN				(4095)
+#define MAX_N_CHILDREN				(G_MAXUINT)
 #define	MAX_N_INTERFACES			(255) /* Limited by offsets being 8 bits */
 #define	MAX_N_PREREQUISITES			(511)
 #define NODE_TYPE(node)				(node->supers[0])
