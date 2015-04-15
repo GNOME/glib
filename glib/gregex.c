@@ -1717,7 +1717,7 @@ g_regex_match (const GRegex      *regex,
  * @regex: a #GRegex structure from g_regex_new()
  * @string: (array length=string_len): the string to scan for matches
  * @string_len: the length of @string, or -1 if @string is nul-terminated
- * @start_position: starting index of the string to match
+ * @start_position: starting index of the string to match, in bytes
  * @match_options: match options
  * @match_info: (out) (allow-none): pointer to location where to store
  *     the #GMatchInfo, or %NULL if you do not need it
@@ -1848,7 +1848,7 @@ g_regex_match_all (const GRegex      *regex,
  * @regex: a #GRegex structure from g_regex_new()
  * @string: (array length=string_len): the string to scan for matches
  * @string_len: the length of @string, or -1 if @string is nul-terminated
- * @start_position: starting index of the string to match
+ * @start_position: starting index of the string to match, in bytes
  * @match_options: match options
  * @match_info: (out) (allow-none): pointer to location where to store
  *     the #GMatchInfo, or %NULL if you do not need it
@@ -2119,7 +2119,7 @@ g_regex_split (const GRegex     *regex,
  * @regex: a #GRegex structure
  * @string: (array length=string_len): the string to split with the pattern
  * @string_len: the length of @string, or -1 if @string is nul-terminated
- * @start_position: starting index of the string to match
+ * @start_position: starting index of the string to match, in bytes
  * @match_options: match time option flags
  * @max_tokens: the maximum number of tokens to split @string into.
  *   If this is less than 1, the string is split completely
@@ -2749,7 +2749,7 @@ interpolation_list_needs_match (GList *list)
  * @regex: a #GRegex structure
  * @string: (array length=string_len): the string to perform matches against
  * @string_len: the length of @string, or -1 if @string is nul-terminated
- * @start_position: starting index of the string to match
+ * @start_position: starting index of the string to match, in bytes
  * @replacement: text to replace each match with
  * @match_options: options for the match
  * @error: location to store the error occurring, or %NULL to ignore errors
@@ -2840,7 +2840,7 @@ literal_replacement (const GMatchInfo *match_info,
  * @regex: a #GRegex structure
  * @string: (array length=string_len): the string to perform matches against
  * @string_len: the length of @string, or -1 if @string is nul-terminated
- * @start_position: starting index of the string to match
+ * @start_position: starting index of the string to match, in bytes
  * @replacement: text to replace each match with
  * @match_options: options for the match
  * @error: location to store the error occurring, or %NULL to ignore errors
@@ -2883,7 +2883,7 @@ g_regex_replace_literal (const GRegex      *regex,
  * @regex: a #GRegex structure from g_regex_new()
  * @string: (array length=string_len): string to perform matches against
  * @string_len: the length of @string, or -1 if @string is nul-terminated
- * @start_position: starting index of the string to match
+ * @start_position: starting index of the string to match, in bytes
  * @match_options: options for the match
  * @eval: a function to call for each match
  * @user_data: user data to pass to the function
