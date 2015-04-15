@@ -64,6 +64,7 @@
  */
 
 static gchar *get_session_address_platform_specific (GError **error);
+static gchar *get_session_address_dbus_launch       (GError **error);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -638,7 +639,7 @@ g_dbus_address_connect (const gchar   *address_entry,
   else if (g_strcmp0 (address_entry, "autolaunch:") == 0)
     {
       gchar *autolaunch_address;
-      autolaunch_address = get_session_address_platform_specific (error);
+      autolaunch_address = get_session_address_dbus_launch (error);
       if (autolaunch_address != NULL)
         {
           ret = g_dbus_address_try_connect_one (autolaunch_address, NULL, cancellable, error);
@@ -1113,9 +1114,9 @@ get_session_address_dbus_launch (GError **error)
   g_free (old_dbus_verbose);
   return ret;
 }
-#endif
 
-#ifdef G_OS_WIN32
+/* end of G_OS_UNIX case */
+#elif defined(G_OS_WIN32)
 
 #define DBUS_DAEMON_ADDRESS_INFO "DBusDaemonAddressInfo"
 #define DBUS_DAEMON_MUTEX "DBusDaemonMutex"
@@ -1413,26 +1414,29 @@ get_session_address_dbus_launch (GError **error)
 
   return address;
 }
-#endif
+#else /* neither G_OS_UNIX nor G_OS_WIN32 */
+static gchar *
+get_session_address_dbus_launch (GError **error)
+{
+  g_set_error (error,
+               G_IO_ERROR,
+               G_IO_ERROR_FAILED,
+               _("Cannot determine session bus address (not implemented for this OS)"));
+  return NULL;
+}
+#endif /* neither G_OS_UNIX nor G_OS_WIN32 */
 
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gchar *
 get_session_address_platform_specific (GError **error)
 {
-  gchar *ret;
-#if defined (G_OS_UNIX) || defined(G_OS_WIN32)
-  /* need to handle OS X in a different way since 'dbus-launch --autolaunch' probably won't work there */
-  ret = get_session_address_dbus_launch (error);
-#else
-  /* TODO: implement for OS X */
-  ret = NULL;
-  g_set_error (error,
-               G_IO_ERROR,
-               G_IO_ERROR_FAILED,
-               _("Cannot determine session bus address (not implemented for this OS)"));
-#endif
-  return ret;
+  /* TODO (#694472): try launchd on OS X, like
+   * _dbus_lookup_session_address_launchd() does, since
+   * 'dbus-launch --autolaunch' probably won't work there
+   */
+
+  return get_session_address_dbus_launch (error);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
