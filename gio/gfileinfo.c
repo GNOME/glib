@@ -616,7 +616,8 @@ g_file_info_has_namespace (GFileInfo  *info,
 /**
  * g_file_info_list_attributes:
  * @info: a #GFileInfo.
- * @name_space: a file attribute key's namespace.
+ * @name_space: (nullable): a file attribute key's namespace, or %NULL to list
+ *   all attributes.
  *
  * Lists the file info structure's attributes.
  *
