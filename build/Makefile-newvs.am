@@ -9,29 +9,19 @@
 
 MSVC_FORMAT_VER=$(shell echo $$(expr $(MSVC_VER) + 1))
 
-$(MSVC_SLN).sln: $(top_srcdir)/build/win32/vs10/$(MSVC_SLN).sln create_vcxproj copy_filters create_props
-	cat $(top_srcdir)/build/win32/vs10/$(MSVC_SLN).sln | sed 's/11\.00/$(MSVC_FORMAT_VER)\.00/g' | sed 's/2010/$(MSVC_VER_LONG)/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$(MSVC_SLN).sln
+$(MSVC_SLN).sln: $(top_srcdir)/build/win32/vs10/$(MSVC_SLN).sln
+	cat $< | sed 's/11\.00/$(MSVC_FORMAT_VER)\.00/g' | sed 's/2010/$(MSVC_VER_LONG)/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
 
 README.txt: $(top_srcdir)/build/win32/vs10/README.txt
-	cat $(top_srcdir)/build/win32/vs10/README.txt | sed 's/vs10/vs$(MSVC_VER)/g' | sed 's/VS10/VS$(MSVC_VER)/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/README.txt
+	cat $< | sed 's/vs10/vs$(MSVC_VER)/g' | sed 's/VS10/VS$(MSVC_VER)/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
 
-create_vcxproj:
-	for F in `(cd $(top_builddir)/build/win32/vs10 && ls *.vcxproj)`; do \
-		case $$F in \
-			*)	cat $(top_builddir)/build/win32/vs10/$$F | sed 's/v100/v$(MSVC_VER)0/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$$F \
-			;; \
-		esac; \
-	done
+%.vcxproj:
+	cat $(top_builddir)/build/win32/vs10/$@ | sed 's/v100/v$(MSVC_VER)0/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
 
-create_props:
-	for F in `(cd $(top_builddir)/build/win32/vs10 && ls *.props)`; do \
-		case $$F in \
-			*)	cat $(top_builddir)/build/win32/vs10/$$F | sed 's/<VSVer>10<\/VSVer>/<VSVer>$(MSVC_VER)<\/VSVer>/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$$F \
-			;; \
-		esac; \
-	done
+%.props:
+	cat $(top_builddir)/build/win32/vs10/$@ | sed 's/<VSVer>10<\/VSVer>/<VSVer>$(MSVC_VER)<\/VSVer>/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
 
-copy_filters:
-	cp  $(top_srcdir)/build/win32/vs10/*.vcxproj.filters $(top_builddir)/build/win32/vs$(MSVC_VER)/
+%.vcxproj.filters:
+	cp $(top_builddir)/build/win32/vs10/$@ $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
 
 
