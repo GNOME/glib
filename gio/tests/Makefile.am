@@ -182,6 +182,7 @@ schema_tests = \
 	range-wrong-type.gschema.xml			\
 	range.gschema.xml				\
 	summary-xmllang.gschema.xml			\
+	summary-xmllang-and-attrs.gschema.xml		\
 	wrong-category.gschema.xml			\
 	$(NULL)
 
