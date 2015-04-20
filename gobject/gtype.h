@@ -2021,7 +2021,17 @@ type_name##_get_type (void) \
  * A convenience macro for boxed type implementations.
  * Similar to G_DEFINE_BOXED_TYPE(), but allows to insert custom code into the
  * type_name_get_type() function, e.g. to register value transformations with
- * g_value_register_transform_func().
+ * g_value_register_transform_func(), for instance:
+ *
+ * |[<!-- language="C" -->
+ * G_DEFINE_BOXED_TYPE_WITH_CODE (GdkRectangle, gdk_rectangle,
+ *                                gdk_rectangle_copy,
+ *                                gdk_rectangle_free,
+ *                                register_rectangle_transform_funcs (g_define_type_id))
+ * ]|
+ *
+ * Similarly to the %G_DEFINE_TYPE family of macros, the #GType of the newly
+ * defined boxed type is exposed in the `g_define_type_id` variable.
  *
  * Since: 2.26
  */
