@@ -16,12 +16,22 @@ README.txt: $(top_srcdir)/build/win32/vs10/README.txt
 	cat $< | sed 's/vs10/vs$(MSVC_VER)/g' | sed 's/VS10/VS$(MSVC_VER)/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
 
 %.vcxproj:
-	cat $(top_builddir)/build/win32/vs10/$@ | sed 's/v100/v$(MSVC_VER)0/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
+	if test -e $(top_srcdir)/build/win32/vs10/$@; then \
+		sed 's/v100/v$(MSVC_VER)0/g' < $(top_srcdir)/build/win32/vs10/$@ > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@; \
+	else
+		sed 's/v100/v$(MSVC_VER)0/g' < $(top_builddir)/build/win32/vs10/$@ > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@; \
+	fi
 
 %.props:
-	cat $(top_builddir)/build/win32/vs10/$@ | sed 's/<VSVer>10<\/VSVer>/<VSVer>$(MSVC_VER)<\/VSVer>/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
+	if test -e $(top_srcdir)/build/win32/vs10/$@; then \
+		sed 's/<VSVer>10<\/VSVer>/<VSVer>$(MSVC_VER)<\/VSVer>/g' < $(top_srcdir)/build/win32/vs10/$@ > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@; \
+	else \
+		sed 's/<VSVer>10<\/VSVer>/<VSVer>$(MSVC_VER)<\/VSVer>/g' < $(top_builddir)/build/win32/vs10/$@ > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@; \
+	fi
 
 %.vcxproj.filters:
-	cp $(top_builddir)/build/win32/vs10/$@ $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
-
-
+	if test -e $(top_srcdir)/build/win32/vs10/$@; then \
+		cp $(top_srcdir)/build/win32/vs10/$@ $(top_builddir)/build/win32/vs$(MSVC_VER)/$@; \
+	else \
+		cp $(top_builddir)/build/win32/vs10/$@ $(top_builddir)/build/win32/vs$(MSVC_VER)/$@; \
+	fi
