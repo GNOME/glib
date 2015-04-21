@@ -1060,33 +1060,23 @@ message_parse_empty_arrays_of_arrays (void)
 static void
 test_double_array (void)
 {
-  GDBusConnection *conn;
-  GError *error = NULL;
   GVariantBuilder builder;
+  GVariant *body;
 
   g_test_bug ("732754");
-
-  conn = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
-  g_assert_no_error (error);
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("ad"));
   g_variant_builder_add (&builder, "d", (gdouble)0.0);
   g_variant_builder_add (&builder, "d", (gdouble)8.0);
   g_variant_builder_add (&builder, "d", (gdouble)22.0);
   g_variant_builder_add (&builder, "d", (gdouble)0.0);
-
-  /*
-   * Some versions of glib encoded arrays of doubles wrong. Here we send such
-   * a message and check that we didn't get bumped from the connection.
-   */
-  g_dbus_connection_call_sync (conn, "org.freedesktop.DBus", "/path",
-                               "org.freedesktop.DBus", "InvalidNonExistantMethod",
-                               g_variant_new ("(@ad)", g_variant_builder_end (&builder)),
-                               NULL, G_DBUS_CALL_FLAGS_NO_AUTO_START, -1, NULL, &error);
-  g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD);
-  g_error_free (error);
-
-  g_object_unref (conn);
+  body = g_variant_new ("(@ad)", g_variant_builder_end (&builder));
+  check_serialization (body,
+      "value 0:   array:\n"
+      "    double: 0.000000\n"
+      "    double: 8.000000\n"
+      "    double: 22.000000\n"
+      "    double: 0.000000\n");
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
