@@ -18,7 +18,7 @@ README.txt: $(top_srcdir)/build/win32/vs10/README.txt
 %.vcxproj:
 	if test -e $(top_srcdir)/build/win32/vs10/$@; then \
 		sed 's/v100/v$(MSVC_VER)0/g' < $(top_srcdir)/build/win32/vs10/$@ > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@; \
-	else
+	else \
 		sed 's/v100/v$(MSVC_VER)0/g' < $(top_builddir)/build/win32/vs10/$@ > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@; \
 	fi
 
