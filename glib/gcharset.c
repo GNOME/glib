@@ -228,17 +228,14 @@ g_get_codeset (void)
 
 #ifndef G_OS_WIN32
 
-static GHashTable *alias_table = NULL;
-
 /* read an alias file for the locales */
 static void
-read_aliases (gchar *file)
+read_aliases (gchar      *file,
+              GHashTable *alias_table)
 {
   FILE *fp;
   char buf[256];
 
-  if (!alias_table)
-    alias_table = g_hash_table_new (g_str_hash, g_str_equal);
   fp = fopen (file,"r");
   if (!fp)
     return;
@@ -289,11 +286,16 @@ static char *
 unalias_lang (char *lang)
 {
 #ifndef G_OS_WIN32
+  static GHashTable *alias_table = NULL;
   char *p;
   int i;
 
-  if (!alias_table)
-    read_aliases ("/usr/share/locale/locale.alias");
+  if (g_once_init_enter (&alias_table))
+    {
+      GHashTable *table = g_hash_table_new (g_str_hash, g_str_equal);
+      read_aliases ("/usr/share/locale/locale.alias", table);
+      g_once_init_leave (&alias_table, table);
+    }
 
   i = 0;
   while ((p = g_hash_table_lookup (alias_table, lang)) && (strcmp (p, lang) != 0))
