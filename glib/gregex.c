@@ -1267,6 +1267,15 @@ g_regex_unref (GRegex *regex)
     }
 }
 
+/*
+ * @match_options: (inout) (optional):
+ */
+static pcre *regex_compile (const gchar         *pattern,
+                            GRegexCompileFlags   compile_options,
+                            GRegexCompileFlags  *compile_options_out,
+                            GRegexMatchFlags    *match_options,
+                            GError             **error);
+
 /**
  * g_regex_new:
  * @pattern: the regular expression
@@ -1291,12 +1300,8 @@ g_regex_new (const gchar         *pattern,
   GRegex *regex;
   pcre *re;
   const gchar *errmsg;
-  gint erroffset;
-  gint errcode;
   gboolean optimize = FALSE;
   static volatile gsize initialised = 0;
-  unsigned long int pcre_compile_options;
-  GRegexCompileFlags nonpcre_compile_options;
 
   g_return_val_if_fail (pattern != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -1325,12 +1330,60 @@ g_regex_new (const gchar         *pattern,
       return NULL;
     }
 
-  nonpcre_compile_options = compile_options & G_REGEX_COMPILE_NONPCRE_MASK;
-
   /* G_REGEX_OPTIMIZE has the same numeric value of PCRE_NO_UTF8_CHECK,
    * as we do not need to wrap PCRE_NO_UTF8_CHECK. */
   if (compile_options & G_REGEX_OPTIMIZE)
     optimize = TRUE;
+
+  re = regex_compile (pattern, compile_options, &compile_options,
+                      &match_options, error);
+
+  if (re == NULL)
+    return NULL;
+
+  regex = g_new0 (GRegex, 1);
+  regex->ref_count = 1;
+  regex->pattern = g_strdup (pattern);
+  regex->pcre_re = re;
+  regex->compile_opts = compile_options;
+  regex->match_opts = match_options;
+
+  if (optimize)
+    {
+      regex->extra = pcre_study (regex->pcre_re, 0, &errmsg);
+      if (errmsg != NULL)
+        {
+          GError *tmp_error = g_error_new (G_REGEX_ERROR,
+                                           G_REGEX_ERROR_OPTIMIZE,
+                                           _("Error while optimizing "
+                                             "regular expression %s: %s"),
+                                           regex->pattern,
+                                           errmsg);
+          g_propagate_error (error, tmp_error);
+
+          g_regex_unref (regex);
+          return NULL;
+        }
+    }
+
+  return regex;
+}
+
+static pcre *
+regex_compile (const gchar         *pattern,
+               GRegexCompileFlags   compile_options,
+               GRegexCompileFlags  *compile_options_out,
+               GRegexMatchFlags    *match_options,
+               GError             **error)
+{
+  pcre *re;
+  const gchar *errmsg;
+  gint erroffset;
+  gint errcode;
+  GRegexCompileFlags nonpcre_compile_options;
+  unsigned long int pcre_compile_options;
+
+  nonpcre_compile_options = compile_options & G_REGEX_COMPILE_NONPCRE_MASK;
 
   /* In GRegex the string are, by default, UTF-8 encoded. PCRE
    * instead uses UTF-8 only if required with PCRE_UTF8. */
@@ -1343,7 +1396,9 @@ g_regex_new (const gchar         *pattern,
     {
       /* enable utf-8 */
       compile_options |= PCRE_UTF8 | PCRE_NO_UTF8_CHECK;
-      match_options |= PCRE_NO_UTF8_CHECK;
+
+      if (match_options != NULL)
+        *match_options |= PCRE_NO_UTF8_CHECK;
     }
 
   /* PCRE_NEWLINE_ANY is the default for the internal PCRE but
@@ -1408,32 +1463,10 @@ g_regex_new (const gchar         *pattern,
         compile_options |= G_REGEX_DUPNAMES;
     }
 
-  regex = g_new0 (GRegex, 1);
-  regex->ref_count = 1;
-  regex->pattern = g_strdup (pattern);
-  regex->pcre_re = re;
-  regex->compile_opts = compile_options;
-  regex->match_opts = match_options;
+  if (compile_options_out != 0)
+    *compile_options_out = compile_options;
 
-  if (optimize)
-    {
-      regex->extra = pcre_study (regex->pcre_re, 0, &errmsg);
-      if (errmsg != NULL)
-        {
-          GError *tmp_error = g_error_new (G_REGEX_ERROR,
-                                           G_REGEX_ERROR_OPTIMIZE,
-                                           _("Error while optimizing "
-                                             "regular expression %s: %s"),
-                                           regex->pattern,
-                                           errmsg);
-          g_propagate_error (error, tmp_error);
-
-          g_regex_unref (regex);
-          return NULL;
-        }
-    }
-
-  return regex;
+  return re;
 }
 
 /**
@@ -1873,12 +1906,37 @@ g_regex_match_all_full (const GRegex      *regex,
 {
   GMatchInfo *info;
   gboolean done;
+  pcre *pcre_re;
+  pcre_extra *extra;
 
   g_return_val_if_fail (regex != NULL, FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
   g_return_val_if_fail (start_position >= 0, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, FALSE);
+
+#ifdef PCRE_NO_AUTO_POSSESS
+  /* For PCRE >= 8.34 we need to turn off PCRE_NO_AUTO_POSSESS, which
+   * is an optimization for normal regex matching, but results in omitting
+   * some shorter matches here, and an observable behaviour change.
+   *
+   * DFA matching is rather niche, and very rarely used according to
+   * codesearch.debian.net, so don't bother caching the recompiled RE. */
+  pcre_re = regex_compile (regex->pattern,
+                           regex->compile_opts | PCRE_NO_AUTO_POSSESS,
+                           NULL, NULL, error);
+
+  if (pcre_re == NULL)
+    return FALSE;
+
+  /* Not bothering to cache the optimization data either, with similar
+   * reasoning */
+  extra = NULL;
+#else
+  /* For PCRE < 8.33 the precompiled regex is fine. */
+  pcre_re = regex->pcre_re;
+  extra = regex->extra;
+#endif
 
   info = match_info_new (regex, string, string_len, start_position,
                          match_options, TRUE);
@@ -1887,7 +1945,7 @@ g_regex_match_all_full (const GRegex      *regex,
   while (!done)
     {
       done = TRUE;
-      info->matches = pcre_dfa_exec (regex->pcre_re, regex->extra,
+      info->matches = pcre_dfa_exec (pcre_re, extra,
                                      info->string, info->string_len,
                                      info->pos,
                                      regex->match_opts | match_options,
@@ -1916,6 +1974,10 @@ g_regex_match_all_full (const GRegex      *regex,
                        regex->pattern, match_error (info->matches));
         }
     }
+
+#ifdef PCRE_NO_AUTO_POSSESS
+  pcre_free (pcre_re);
+#endif
 
   /* set info->pos to -1 so that a call to g_match_info_next() fails. */
   info->pos = -1;
