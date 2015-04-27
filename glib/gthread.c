@@ -1008,21 +1008,31 @@ guint
 g_get_num_processors (void)
 {
 #ifdef G_OS_WIN32
+  unsigned int count;
+  SYSTEM_INFO sysinfo;
   DWORD_PTR process_cpus;
   DWORD_PTR system_cpus;
+
+  /* This *never* fails, use it as fallback */
+  GetNativeSystemInfo (&sysinfo);
+  count = (int) sysinfo.dwNumberOfProcessors;
 
   if (GetProcessAffinityMask (GetCurrentProcess (),
                               &process_cpus, &system_cpus))
     {
-      unsigned int count;
+      unsigned int af_count;
 
-      for (count = 0; process_cpus != 0; process_cpus >>= 1)
+      for (af_count = 0; process_cpus != 0; process_cpus >>= 1)
         if (process_cpus & 1)
-          count++;
+          af_count++;
 
-      if (count > 0)
-        return count;
+      /* Prefer affinity-based result, if available */
+      if (af_count > 0)
+        count = af_count;
     }
+
+  if (count > 0)
+    return count;
 #elif defined(_SC_NPROCESSORS_ONLN)
   {
     int count;
