@@ -244,6 +244,7 @@ test_programs += \
 	contenttype				\
 	file					\
 	gdbus-peer-object-manager		\
+	gdbus-unix-addresses			\
 	live-g-file				\
 	socket-address				\
 	stream-rw_all				\
@@ -253,6 +254,7 @@ test_programs += \
 
 test_extra_programs += \
 	basic-application			\
+	dbus-launch				\
 	$(NULL)
 
 # Uninstalled because of the check-for-executable logic in DesktopAppInfo unable to find the installed executable
