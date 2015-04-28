@@ -2157,7 +2157,7 @@ append_escaped_text (GString     *str,
   p = text;
   end = text + length;
 
-  while (p != end)
+  while (p < end)
     {
       const gchar *next;
       next = g_utf8_next_char (p);
