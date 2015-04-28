@@ -25,6 +25,12 @@
 #include <locale.h>
 #include "glib.h"
 
+#ifdef USE_SYSTEM_PCRE
+#include <pcre.h>
+#else
+#include "glib/pcre/pcre.h"
+#endif
+
 /* U+20AC EURO SIGN (symbol, currency) */
 #define EURO "\xe2\x82\xac"
 /* U+00E0 LATIN SMALL LETTER A WITH GRAVE (letter, lowercase) */
@@ -2446,8 +2452,12 @@ main (int argc, char *argv[])
   /* Test that othercasing in our pcre/glib integration is bug-for-bug compatible
    * with pcre's internal tables. Bug #678273 */
   TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "Ǆ", -1, 0, 0, TRUE);
-  TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "ǅ", -1, 0, 0, FALSE);
   TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "ǆ", -1, 0, 0, TRUE);
+#if PCRE_MAJOR > 8 || (PCRE_MAJOR == 8 && PCRE_MINOR >= 32)
+  /* This would incorrectly fail to match in pcre < 8.32, so only assert
+   * this for known-good pcre. */
+  TEST_MATCH("[Ǆ]", G_REGEX_CASELESS, 0, "ǅ", -1, 0, 0, TRUE);
+#endif
 
   /* TEST_MATCH_NEXT#(pattern, string, string_len, start_position, ...) */
   TEST_MATCH_NEXT0("a", "x", -1, 0);
