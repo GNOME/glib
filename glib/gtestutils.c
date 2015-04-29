@@ -3141,6 +3141,49 @@ log_child_output (const gchar *process_id)
 {
   gchar *escaped;
 
+#ifdef G_OS_UNIX
+  if (WIFEXITED (test_trap_last_status)) /* normal exit */
+    {
+      if (WEXITSTATUS (test_trap_last_status) == 0)
+        g_test_message ("child process (%s) exit status: 0 (success)",
+            process_id);
+      else
+        g_test_message ("child process (%s) exit status: %d (error)",
+            process_id, WEXITSTATUS (test_trap_last_status));
+    }
+  else if (WIFSIGNALED (test_trap_last_status) &&
+      WTERMSIG (test_trap_last_status) == SIGALRM)
+    {
+      g_test_message ("child process (%s) timed out", process_id);
+    }
+  else if (WIFSIGNALED (test_trap_last_status))
+    {
+      const gchar *maybe_dumped_core = "";
+
+#ifdef WCOREDUMP
+      if (WCOREDUMP (test_trap_last_status))
+        maybe_dumped_core = ", core dumped";
+#endif
+
+      g_test_message ("child process (%s) killed by signal %d (%s)%s",
+          process_id, WTERMSIG (test_trap_last_status),
+          g_strsignal (WTERMSIG (test_trap_last_status)),
+          maybe_dumped_core);
+    }
+  else
+    {
+      g_test_message ("child process (%s) unknown wait status %d",
+          process_id, test_trap_last_status);
+    }
+#else
+  if (test_trap_last_status == 0)
+    g_test_message ("child process (%s) exit status: 0 (success)",
+        process_id);
+  else
+    g_test_message ("child process (%s) exit status: %d (error)",
+        process_id, test_trap_last_status);
+#endif
+
   escaped = g_strescape (test_trap_last_stdout, NULL);
   g_test_message ("child process (%s) stdout: \"%s\"", process_id, escaped);
   g_free (escaped);
