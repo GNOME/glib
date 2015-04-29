@@ -905,6 +905,7 @@ int
 main (int   argc,
       char *argv[])
 {
+  g_setenv ("LC_ALL", "C", TRUE);
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/fileutils/build-path", test_build_path);

@@ -379,7 +379,7 @@ main (int argc, char** argv)
     3000, 3001, 3002, 3998, 3999, 4000, 4001, 4002, 4003
   };
 
-  g_setenv ("LANG", "en_US.utf-8", TRUE);
+  g_setenv ("LC_ALL", "en_US.utf-8", TRUE);
   setlocale (LC_ALL, "");
 #ifdef G_OS_WIN32
   SetThreadLocale (MAKELCID (MAKELANGID (LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT));

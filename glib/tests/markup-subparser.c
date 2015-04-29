@@ -373,6 +373,7 @@ TestCase error_cases[] = /* error cases */
 int
 main (int argc, char **argv)
 {
+  g_setenv ("LC_ALL", "C", TRUE);
   g_test_init (&argc, &argv, NULL);
   add_tests (test, "/glib/markup/subparser/success", test_cases);
   add_tests (test, "/glib/markup/subparser/failure", error_cases);

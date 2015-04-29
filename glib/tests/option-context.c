@@ -71,8 +71,6 @@ print_help (GOptionContext *options, gchar **argv)
   gint    argc = 3;
   GError *error = NULL;
 
-  g_setenv ("LANG", "C", TRUE);
-
   g_option_context_parse (options, &argc, &argv, &error);
   g_option_context_free (options);
   exit(0);
@@ -2487,6 +2485,7 @@ main (int   argc,
   int i;
   gchar *test_name;
 
+  g_setenv ("LC_ALL", "C", TRUE);
   g_test_init (&argc, &argv, NULL);
 
   g_test_bug_base ("http://bugzilla.gnome.org/");
