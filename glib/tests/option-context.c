@@ -624,7 +624,7 @@ arg_test5 (void)
   gchar **argv_copy;
   int argc;
   char *old_locale, *current_locale;
-  const char *locale = "de_DE";
+  const char *locale = "de_DE.UTF-8";
   GOptionEntry entries [] =
     { { "test", 0, 0, G_OPTION_ARG_DOUBLE, &arg_test5_double, NULL, NULL },
       { NULL } };
