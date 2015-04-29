@@ -759,7 +759,7 @@ static double      test_user_stamp = 0;
 static GSList     *test_paths = NULL;
 static GSList     *test_paths_skipped = NULL;
 static GTestSuite *test_suite_root = NULL;
-static int         test_trap_last_status = 0;
+static int         test_trap_last_status = 0;  /* unmodified platform-specific status */
 static GPid        test_trap_last_pid = 0;
 static char       *test_trap_last_subprocess = NULL;
 static char       *test_trap_last_stdout = NULL;
@@ -2673,7 +2673,7 @@ sane_dup2 (int fd1,
 typedef struct {
   GPid pid;
   GMainLoop *loop;
-  int child_status;
+  int child_status;  /* unmodified platform-specific status */
 
   GIOChannel *stdout_io;
   gboolean echo_stdout;
@@ -2698,18 +2698,8 @@ child_exited (GPid     pid,
 {
   WaitForChildData *data = user_data;
 
-#ifdef G_OS_UNIX
-  if (WIFEXITED (status)) /* normal exit */
-    data->child_status = WEXITSTATUS (status); /* 0..255 */
-  else if (WIFSIGNALED (status) && WTERMSIG (status) == SIGALRM)
-    data->child_status = G_TEST_STATUS_TIMED_OUT;
-  else if (WIFSIGNALED (status))
-    data->child_status = (WTERMSIG (status) << 12); /* signalled */
-  else /* WCOREDUMP (status) */
-    data->child_status = 512; /* coredump */
-#else
+  g_assert (status != -1);
   data->child_status = status;
-#endif
 
   check_complete (data);
 }
@@ -3118,7 +3108,12 @@ g_test_subprocess (void)
 gboolean
 g_test_trap_has_passed (void)
 {
-  return test_trap_last_status == 0; /* exit_status == 0 && !signal && !coredump */
+#ifdef G_OS_UNIX
+  return (WIFEXITED (test_trap_last_status) &&
+      WEXITSTATUS (test_trap_last_status) == 0);
+#else
+  return test_trap_last_status == 0;
+#endif
 }
 
 /**
@@ -3133,7 +3128,12 @@ g_test_trap_has_passed (void)
 gboolean
 g_test_trap_reached_timeout (void)
 {
+#ifdef G_OS_UNIX
+  return (WIFSIGNALED (test_trap_last_status) &&
+      WTERMSIG (test_trap_last_status) == SIGALRM);
+#else
   return test_trap_last_status == G_TEST_STATUS_TIMED_OUT;
+#endif
 }
 
 static gboolean
