@@ -544,8 +544,6 @@ g_socket_listener_add_inet_port (GSocketListener  *listener,
           g_signal_emit (listener, signals[EVENT], 0,
                          G_SOCKET_LISTENER_LISTENED, socket4);
 
-          g_object_unref (address);
-
           if (source_object)
             g_object_set_qdata_full (G_OBJECT (socket4), source_quark,
                                      g_object_ref (source_object),
