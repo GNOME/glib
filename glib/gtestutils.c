@@ -2964,6 +2964,24 @@ g_test_trap_reached_timeout (void)
   return test_trap_last_status == G_TEST_STATUS_TIMED_OUT;
 }
 
+static gboolean
+log_child_output (const gchar *process_id)
+{
+  gchar *escaped;
+
+  escaped = g_strescape (test_trap_last_stdout, NULL);
+  g_test_message ("child process (%s) stdout: \"%s\"", process_id, escaped);
+  g_free (escaped);
+
+  escaped = g_strescape (test_trap_last_stderr, NULL);
+  g_test_message ("child process (%s) stderr: \"%s\"", process_id, escaped);
+  g_free (escaped);
+
+  /* so we can use short-circuiting:
+   * logged_child_output = logged_child_output || log_child_output (...) */
+  return TRUE;
+}
+
 void
 g_test_trap_assertions (const char     *domain,
                         const char     *file,
@@ -2975,6 +2993,7 @@ g_test_trap_assertions (const char     *domain,
   gboolean must_pass = assertion_flags == 0;
   gboolean must_fail = assertion_flags == 1;
   gboolean match_result = 0 == (assertion_flags & 1);
+  gboolean logged_child_output = FALSE;
   const char *stdout_pattern = (assertion_flags & 2) ? pattern : NULL;
   const char *stderr_pattern = (assertion_flags & 4) ? pattern : NULL;
   const char *match_error = match_result ? "failed to match" : "contains invalid match";
@@ -2997,25 +3016,41 @@ g_test_trap_assertions (const char     *domain,
 
   if (must_pass && !g_test_trap_has_passed())
     {
-      char *msg = g_strdup_printf ("child process (%s) failed unexpectedly", process_id);
+      char *msg;
+
+      logged_child_output = logged_child_output || log_child_output (process_id);
+
+      msg = g_strdup_printf ("child process (%s) failed unexpectedly", process_id);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
   if (must_fail && g_test_trap_has_passed())
     {
-      char *msg = g_strdup_printf ("child process (%s) did not fail as expected", process_id);
+      char *msg;
+
+      logged_child_output = logged_child_output || log_child_output (process_id);
+
+      msg = g_strdup_printf ("child process (%s) did not fail as expected", process_id);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
   if (stdout_pattern && match_result == !g_pattern_match_simple (stdout_pattern, test_trap_last_stdout))
     {
-      char *msg = g_strdup_printf ("stdout of child process (%s) %s: %s", process_id, match_error, stdout_pattern);
+      char *msg;
+
+      logged_child_output = logged_child_output || log_child_output (process_id);
+
+      msg = g_strdup_printf ("stdout of child process (%s) %s: %s", process_id, match_error, stdout_pattern);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
   if (stderr_pattern && match_result == !g_pattern_match_simple (stderr_pattern, test_trap_last_stderr))
     {
-      char *msg = g_strdup_printf ("stderr of child process (%s) %s: %s", process_id, match_error, stderr_pattern);
+      char *msg;
+
+      logged_child_output = logged_child_output || log_child_output (process_id);
+
+      msg = g_strdup_printf ("stderr of child process (%s) %s: %s", process_id, match_error, stderr_pattern);
       g_assertion_message (domain, file, line, func, msg);
       g_free (msg);
     }
