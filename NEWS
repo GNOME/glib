@@ -1,4 +1,4 @@
-Overview of changes in GLib 2.45.x
+Overview of changes in GLib 2.45.1
 ==================================
 
 * The GSettings schema compiler, glib-compile-schemas has been changed
@@ -7,6 +7,80 @@ Overview of changes in GLib 2.45.x
   into the schema, with xml:lang attributes. This is not the correct
   way to translate schemas. Instead keep the translations in the .mo
   file and set the gettext-domain attribute on the <schemalist> element.
+
+* The file monitoring infrastructure has been rewritten, and all backends
+  have seen major improvements.
+
+  The inotify backend is reporting events with less delay (no event will
+  be delayed more than 10ms) and wakeups due to file monitoring have been
+  significantly reduced. A CHANGES_DONE event will also be sent when new
+  files appear.
+
+  The poll implementation is now using the thread default main context.
+
+  The fam implmentation is now running in the worker thread.
+
+  The fen implementation has been removed, since it was unmaintained.
+
+* The GSettings schema compiler, glib-compile-schemas, is more strict
+  about rejecting schemas with xml:lang style merged translations.
+  Schema translations should be done by specifying the gettext domain
+  in the xml, and keeping the translations in gettext. To avoid breaking
+  already-installed schemas, this change is only taking effect when
+  you use the --strict option.
+
+* The hardcoded 10-thread limit of GTask's thread pool has been removed,
+  since it was prone to causing deadlocks. The thread pool is now allowed
+  to grow dynamically and will shrink back over time.
+
+* GSimpleAsyncResult has been deprecated in favor of GTask.
+
+* The algorithm used by GAppInfo to find default handlers for mime types
+  has been tweaked to prefer apps that handle the specific subtype over
+  default handlers for a generic supertype.
+
+* Bug fixes:
+ 627285 inotify file monitor hardwired delay
+ 631597 Segmentation fault in append_escaped_text
+ 661767 merge/improve various bits of run-in-thread functionality
+ 687223 cleverer GThreadPool management
+ 711547 win32: silence some build warnings
+ 719966 glib: Add missing (nullable) and (optional) annotations
+ 726447 Possibly an error in text string
+ 728663 W32: wrong stat struct is used when built with MinGW-w64
+ 728669 W32: GLocalFile can't measure size of files larger than 2^32...
+ 730188 gsocket: Document FD ownership with g_socket_new_from_fd()
+ 733325 Several regex tests fail with pcre3 8.35
+ 738207 Add a way to set SO_SENDBUF and SO_RECVBUF on listener (and...
+ 739850 GClosure: add valgrind hints
+ 741791 gmain: Save errno when handling unix signals
+ 744282 gvfs-open for application/x-virt-viewer changed behaviour bet...
+ 745255 Add support for copying sessions between GTlsClientConnections
+ 745745 gdbus: fix out-of-bound array access
+ 745821 Don't use __alloc_size__ attribute with clang
+ 746749 GLib-GIO:ERROR:inotify-kernel.c:327:ik_source_dispatch: ass...
+ 746753 Glib-compile-resources --generate-header not using ".h" as ...
+ 747209 glib-compile-schemas ought to reject repeated <summary> and...
+ 747349 Conversion of gdbus to use GTask causes deadlocks
+ 747363 gatomic: Add missing new line in API doc comment
+ 747472 Don't ignore already-installed schemas with multiple <summa...
+ 747541 gdbus segfaults with invalid --dest
+ 747772 Having hardcoded utf8 strings in the source code does not p...
+ 748019 gsocketconnection: Fix copy-pasto in documentation
+ 748177 not all test schemas are distributed, "make distcheck" fails
+
+* Translation updates:
+ Basque
+ Czech
+ Danish
+ Finnish
+ German
+ Hebrew
+ Icelandic
+ Norwegian bokmål
+ Russian
+ Turkish
+
 
 Overview of changes in GLib 2.43.92
 ===================================
