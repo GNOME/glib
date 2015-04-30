@@ -299,6 +299,10 @@ g_content_type_from_mime_type (const gchar *mime_type)
 
   g_return_val_if_fail (mime_type != NULL, NULL);
 
+  /* This is a hack to allow directories to have icons in filechooser */
+  if (strcmp ("inode/directory", mime_type) == 0)
+    return g_strdup (mime_type);
+
   key = g_strconcat ("MIME\\DataBase\\Content Type\\", mime_type, NULL);
   content_type = get_registry_classes_key (key, L"Extension");
   g_free (key);
