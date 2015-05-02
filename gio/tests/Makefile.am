@@ -27,6 +27,7 @@ test_programs = \
 	buffered-output-stream			\
 	cancellable				\
 	contexts				\
+	contenttype				\
 	converter-stream			\
 	credentials				\
 	data-input-stream			\
@@ -242,7 +243,6 @@ gdbus_daemon_SOURCES = \
 
 if OS_UNIX
 test_programs += \
-	contenttype				\
 	file					\
 	gdbus-peer-object-manager		\
 	gdbus-unix-addresses			\

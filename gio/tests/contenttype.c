@@ -18,6 +18,7 @@ test_guess (void)
 {
   gchar *res;
   gchar *expected;
+  gchar *existing_directory;
   gboolean uncertain;
   guchar data[] =
     "[Desktop Entry]\n"
@@ -25,7 +26,17 @@ test_guess (void)
     "Name=appinfo-test\n"
     "Exec=./appinfo-test --option\n";
 
-  res = g_content_type_guess ("/etc/", NULL, 0, &uncertain);
+#ifdef G_OS_WIN32
+  existing_directory = (gchar *) g_getenv ("SYSTEMROOT");
+
+  if (existing_directory)
+    existing_directory = g_strdup_printf ("%s/", existing_directory);
+#else
+  existing_directory = g_strdup ("/etc/");
+#endif
+
+  res = g_content_type_guess (existing_directory, NULL, 0, &uncertain);
+  g_free (existing_directory);
   expected = g_content_type_from_mime_type ("inode/directory");
   g_assert_content_type_equals (expected, res);
   g_assert (uncertain);
@@ -237,6 +248,7 @@ test_icon (void)
 static void
 test_symbolic_icon (void)
 {
+#ifndef G_OS_WIN32
   gchar *type;
   GIcon *icon;
 
@@ -271,6 +283,7 @@ test_symbolic_icon (void)
     }
   g_object_unref (icon);
   g_free (type);
+#endif
 }
 
 static void
