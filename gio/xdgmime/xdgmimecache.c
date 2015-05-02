@@ -155,6 +155,12 @@ _xdg_mime_cache_new_from_file (const char *file_name)
   if (fd != -1)
     close (fd);
 
+#else /* HAVE_MMAP */
+  cache = (XdgMimeCache *) malloc (sizeof (XdgMimeCache));
+  cache->minor = 0;
+  cache->ref_count = 1;
+  cache->buffer = NULL;
+  cache->size = 0;
 #endif  /* HAVE_MMAP */
 
   return cache;
@@ -324,9 +330,15 @@ cache_alias_lookup (const char *alias)
   for (i = 0; _caches[i]; i++)
     {
       XdgMimeCache *cache = _caches[i];
-      xdg_uint32_t list_offset = GET_UINT32 (cache->buffer, 4);
-      xdg_uint32_t n_entries = GET_UINT32 (cache->buffer, list_offset);
+      xdg_uint32_t list_offset;
+      xdg_uint32_t n_entries;
       xdg_uint32_t offset;
+
+      if (cache->buffer == NULL)
+        continue;
+
+      list_offset = GET_UINT32 (cache->buffer, 4);
+      n_entries = GET_UINT32 (cache->buffer, list_offset);
 
       min = 0; 
       max = n_entries - 1;
@@ -370,9 +382,15 @@ cache_glob_lookup_literal (const char *file_name,
   for (i = 0; _caches[i]; i++)
     {
       XdgMimeCache *cache = _caches[i];
-      xdg_uint32_t list_offset = GET_UINT32 (cache->buffer, 12);
-      xdg_uint32_t n_entries = GET_UINT32 (cache->buffer, list_offset);
+      xdg_uint32_t list_offset;
+      xdg_uint32_t n_entries;
       xdg_uint32_t offset;
+
+      if (cache->buffer == NULL)
+        continue;
+
+      list_offset = GET_UINT32 (cache->buffer, 12);
+      n_entries = GET_UINT32 (cache->buffer, list_offset);
 
       min = 0; 
       max = n_entries - 1;
@@ -424,8 +442,14 @@ cache_glob_lookup_fnmatch (const char *file_name,
     {
       XdgMimeCache *cache = _caches[i];
 
-      xdg_uint32_t list_offset = GET_UINT32 (cache->buffer, 20);
-      xdg_uint32_t n_entries = GET_UINT32 (cache->buffer, list_offset);
+      xdg_uint32_t list_offset;
+      xdg_uint32_t n_entries;
+
+      if (cache->buffer == NULL)
+        continue;
+
+      list_offset = GET_UINT32 (cache->buffer, 20);
+      n_entries = GET_UINT32 (cache->buffer, list_offset);
 
       for (j = 0; j < n_entries && n < n_mime_types; j++)
 	{
@@ -545,9 +569,16 @@ cache_glob_lookup_suffix (const char *file_name,
     {
       XdgMimeCache *cache = _caches[i];
 
-      xdg_uint32_t list_offset = GET_UINT32 (cache->buffer, 16);
-      xdg_uint32_t n_entries = GET_UINT32 (cache->buffer, list_offset);
-      xdg_uint32_t offset = GET_UINT32 (cache->buffer, list_offset + 4);
+      xdg_uint32_t list_offset;
+      xdg_uint32_t n_entries;
+      xdg_uint32_t offset;
+
+      if (cache->buffer == NULL)
+        continue;
+
+      list_offset = GET_UINT32 (cache->buffer, 16);
+      n_entries = GET_UINT32 (cache->buffer, list_offset);
+      offset = GET_UINT32 (cache->buffer, list_offset + 4);
 
       n += cache_glob_node_lookup_suffix (cache, 
 	 				  n_entries, offset, 
@@ -682,6 +713,9 @@ _xdg_mime_cache_get_max_buffer_extents (void)
     {
       XdgMimeCache *cache = _caches[i];
 
+      if (cache->buffer == NULL)
+        continue;
+
       offset = GET_UINT32 (cache->buffer, 24);
       max_extent = MAX (max_extent, GET_UINT32 (cache->buffer, offset + 4));
     }
@@ -707,6 +741,9 @@ cache_get_mime_type_for_data (const void *data,
 
       int prio;
       const char *match;
+
+      if (cache->buffer == NULL)
+        continue;
 
       match = cache_magic_lookup_data (cache, data, len, &prio, 
 				       mime_types, n_mime_types);
@@ -894,10 +931,15 @@ _xdg_mime_cache_mime_type_subclass (const char *mime,
   for (i = 0; _caches[i]; i++)
     {
       XdgMimeCache *cache = _caches[i];
-      
-      xdg_uint32_t list_offset = GET_UINT32 (cache->buffer, 8);
-      xdg_uint32_t n_entries = GET_UINT32 (cache->buffer, list_offset);
+      xdg_uint32_t list_offset;
+      xdg_uint32_t n_entries;
       xdg_uint32_t offset, n_parents, parent_offset;
+
+      if (cache->buffer == NULL)
+        continue;
+
+      list_offset = GET_UINT32 (cache->buffer, 8);
+      n_entries = GET_UINT32 (cache->buffer, list_offset);
 
       min = 0; 
       max = n_entries - 1;
@@ -957,9 +999,14 @@ _xdg_mime_cache_list_mime_parents (const char *mime)
   for (i = 0; _caches[i]; i++)
     {
       XdgMimeCache *cache = _caches[i];
-  
-      xdg_uint32_t list_offset = GET_UINT32 (cache->buffer, 8);
-      xdg_uint32_t n_entries = GET_UINT32 (cache->buffer, list_offset);
+      xdg_uint32_t list_offset;
+      xdg_uint32_t n_entries;
+
+      if (cache->buffer == NULL)
+        continue;
+
+      list_offset = GET_UINT32 (cache->buffer, 8);
+      n_entries = GET_UINT32 (cache->buffer, list_offset);
 
       for (j = 0; j < n_entries; j++)
 	{
@@ -1009,9 +1056,15 @@ cache_lookup_icon (const char *mime, int header)
   for (i = 0; _caches[i]; i++)
     {
       XdgMimeCache *cache = _caches[i];
-      xdg_uint32_t list_offset = GET_UINT32 (cache->buffer, header);
-      xdg_uint32_t n_entries = GET_UINT32 (cache->buffer, list_offset);
+      xdg_uint32_t list_offset;
+      xdg_uint32_t n_entries;
       xdg_uint32_t offset;
+
+      if (cache->buffer == NULL)
+        continue;
+
+      list_offset = GET_UINT32 (cache->buffer, header);
+      n_entries = GET_UINT32 (cache->buffer, list_offset);
 
       min = 0; 
       max = n_entries - 1;
@@ -1090,6 +1143,10 @@ _xdg_mime_cache_glob_dump (void)
     xdg_uint32_t list_offset;
     xdg_uint32_t n_entries;
     xdg_uint32_t offset;
+
+      if (cache->buffer == NULL)
+        continue;
+
     list_offset = GET_UINT32 (cache->buffer, 16);
     n_entries = GET_UINT32 (cache->buffer, list_offset);
     offset = GET_UINT32 (cache->buffer, list_offset + 4);
