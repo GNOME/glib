@@ -807,18 +807,6 @@ g_irepository_find_by_gtype (GIRepository *repository,
   data.result_typelib = NULL;
   data.found_prefix = FALSE;
 
-  /* There is a corner case regarding GdkRectangle.  GdkRectangle is a
-   * boxed type, but it is just an alias to boxed struct
-   * CairoRectangleInt.  Scanner automatically converts all references
-   * to GdkRectangle to CairoRectangleInt, so GdkRectangle does not
-   * appear in the typelibs at all, although user code might query it.
-   * So if we get such query, we also change it to lookup of
-   * CairoRectangleInt.
-   * https://bugzilla.gnome.org/show_bug.cgi?id=655423
-   */
-  if (G_UNLIKELY (!strcmp (data.gtype_name, "GdkRectangle")))
-    data.gtype_name = "CairoRectangleInt";
-
   /* Inside each typelib, we include the "C prefix" which acts as
    * a namespace mechanism.  For GtkTreeView, the C prefix is Gtk.
    * Given the assumption that GTypes for a library also use the
