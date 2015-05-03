@@ -466,6 +466,8 @@ g_file_monitor_source_set_rate_limit (GFileMonitorSource *fms,
 
       g_sequence_sort (fms->pending_changes, pending_change_compare_ready_time, fms);
       g_file_monitor_source_update_ready_time (fms);
+
+      changed = TRUE;
     }
   else
     changed = FALSE;
