@@ -101,6 +101,13 @@ debug_key_matches (const gchar *key,
   return *key == '\0';
 }
 
+/* The GVariant documentation indirectly says that int is at least 32 bits
+ * (by saying that b, y, n, q, i, u, h are promoted to int). On any
+ * reasonable platform, int is in fact *exactly* 32 bits long, because
+ * otherwise, {signed char, short, int} wouldn't be sufficient to provide
+ * {int8_t, int16_t, int32_t}. */
+G_STATIC_ASSERT (sizeof (int) == sizeof (gint32));
+
 /**
  * g_parse_debug_string:
  * @string: (allow-none): a list of debug options separated by colons, spaces, or
