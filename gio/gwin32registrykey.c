@@ -21,6 +21,9 @@
 #include "ginitable.h"
 #include "gwin32registrykey.h"
 #include <gio/gioerror.h>
+#ifdef _MSC_VER
+#pragma warning ( disable:4005 )
+#endif
 #include <windows.h>
 #include <ntstatus.h>
 #include <winternl.h>
@@ -46,7 +49,7 @@ typedef struct _KEY_BASIC_INFORMATION {
 } KEY_BASIC_INFORMATION, *PKEY_BASIC_INFORMATION;
 #endif
 
-#ifndef __OBJECT_ATTRIBUTES_DEFINED
+#if !defined (__OBJECT_ATTRIBUTES_DEFINED) && defined (__MINGW32_)
 #define __OBJECT_ATTRIBUTES_DEFINED
   typedef struct _OBJECT_ATTRIBUTES {
     ULONG Length;
@@ -68,7 +71,7 @@ typedef struct _KEY_BASIC_INFORMATION {
 #define HKEY_CURRENT_USER_LOCAL_SETTINGS ((HKEY) (ULONG_PTR)((LONG)0x80000007))
 #endif
 
-#ifndef __UNICODE_STRING_DEFINED
+#if !defined (__UNICODE_STRING_DEFINED) && defined (__MINGW32_)
 #define __UNICODE_STRING_DEFINED
 typedef struct _UNICODE_STRING {
   USHORT Length;
@@ -78,12 +81,12 @@ typedef struct _UNICODE_STRING {
 #endif
 typedef const UNICODE_STRING* PCUNICODE_STRING;
 
-typedef NTSTATUS NTAPI
-(* NtQueryKeyFunc)(HANDLE                key_handle,
-                   KEY_INFORMATION_CLASS key_info_class,
-                   PVOID                 key_info_buffer,
-                   ULONG                 key_info_buffer_size,
-                   PULONG                result_size);
+typedef NTSTATUS
+(NTAPI * NtQueryKeyFunc)(HANDLE                key_handle,
+                         KEY_INFORMATION_CLASS key_info_class,
+                         PVOID                 key_info_buffer,
+                         ULONG                 key_info_buffer_size,
+                         PULONG                result_size);
 
 typedef NTSTATUS
 (* NtNotifyChangeMultipleKeysFunc)(HANDLE             key_handle,
@@ -181,7 +184,7 @@ g_win32_registry_subkey_iter_copy (const GWin32RegistrySubkeyIter *iter)
 void
 g_win32_registry_subkey_iter_free (GWin32RegistrySubkeyIter *iter)
 {
-  g_return_val_if_fail (iter != NULL, NULL);
+  g_return_if_fail (iter != NULL);
 
   g_object_unref (iter->key);
   g_free (iter->subkey_name);
@@ -285,7 +288,7 @@ g_win32_registry_value_iter_copy (const GWin32RegistryValueIter *iter)
 void
 g_win32_registry_value_iter_free (GWin32RegistryValueIter *iter)
 {
-  g_return_val_if_fail (iter != NULL, NULL);
+  g_return_if_fail (iter != NULL);
 
   g_object_unref (iter->key);
   g_free (iter->value_name);
@@ -541,8 +544,8 @@ g_win32_registry_key_initable_init (GInitable     *initable,
   HKEY key_handle;
   LONG opened;
 
-  g_return_val_if_fail (G_IS_WIN32_REGISTRY_KEY (initable), NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+  g_return_val_if_fail (G_IS_WIN32_REGISTRY_KEY (initable), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   key = G_WIN32_REGISTRY_KEY (initable);
   priv = key->priv;
@@ -1741,9 +1744,9 @@ _g_win32_registry_key_reread (GWin32RegistryKey        *key,
    * won't be accepted by NtQueryKey(), i suspect.
    */
   if (nt_query_key != NULL && !key->priv->predefined)
-    return _g_win32_registry_key_reread_kernel (key, buf);
+    _g_win32_registry_key_reread_kernel (key, buf);
   else
-    return _g_win32_registry_key_reread_user (key, buf);
+    _g_win32_registry_key_reread_user (key, buf);
 }
 
 static gboolean
