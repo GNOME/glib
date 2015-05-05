@@ -147,7 +147,7 @@ g_wcsdup (const gunichar2 *str,
  * Returns: (transfer full): a copy of the @iter,
  * free with g_win32_registry_subkey_iter_free ()
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 GWin32RegistrySubkeyIter *
 g_win32_registry_subkey_iter_copy (const GWin32RegistrySubkeyIter *iter)
@@ -179,7 +179,7 @@ g_win32_registry_subkey_iter_copy (const GWin32RegistrySubkeyIter *iter)
  * Free an iterator allocated on the heap. For iterators that are allocated
  * on the stack use g_win32_registry_subkey_iter_clear () instead.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 void
 g_win32_registry_subkey_iter_free (GWin32RegistrySubkeyIter *iter)
@@ -202,7 +202,7 @@ g_win32_registry_subkey_iter_free (GWin32RegistrySubkeyIter *iter)
  * with `GWin32RegistrySubkeyIter i = j;`. The
  * function is used by language bindings.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 void
 g_win32_registry_subkey_iter_assign (GWin32RegistrySubkeyIter       *iter,
@@ -229,7 +229,7 @@ G_DEFINE_BOXED_TYPE (GWin32RegistrySubkeyIter, g_win32_registry_subkey_iter,
  * Returns: (transfer full): a copy of the @iter,
  * free with g_win32_registry_value_iter_free ().
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 GWin32RegistryValueIter *
 g_win32_registry_value_iter_copy (const GWin32RegistryValueIter *iter)
@@ -283,7 +283,7 @@ g_win32_registry_value_iter_copy (const GWin32RegistryValueIter *iter)
  * Free an iterator allocated on the heap. For iterators that are allocated
  * on the stack use g_win32_registry_value_iter_clear () instead.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 void
 g_win32_registry_value_iter_free (GWin32RegistryValueIter *iter)
@@ -310,7 +310,7 @@ g_win32_registry_value_iter_free (GWin32RegistryValueIter *iter)
  * with `GWin32RegistryValueIter i = j;`. The
  * function is used by language bindings.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 void
 g_win32_registry_value_iter_assign (GWin32RegistryValueIter       *iter,
@@ -753,7 +753,7 @@ g_win32_registry_key_get_child_w (GWin32RegistryKey  *key,
  *
  * Returns: %TRUE if iterator was initialized successfully, %FALSE on error.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_subkey_iter_init (GWin32RegistrySubkeyIter  *iter,
@@ -797,7 +797,7 @@ g_win32_registry_subkey_iter_init (GWin32RegistrySubkeyIter  *iter,
  *
  * Frees internal buffers of a #GWin32RegistrySubkeyIter.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 void
 g_win32_registry_subkey_iter_clear (GWin32RegistrySubkeyIter *iter)
@@ -822,7 +822,7 @@ g_win32_registry_subkey_iter_clear (GWin32RegistrySubkeyIter *iter)
  *
  * Returns: the number of subkeys in the key
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gsize
 g_win32_registry_subkey_iter_n_subkeys (GWin32RegistrySubkeyIter *iter)
@@ -874,7 +874,7 @@ g_win32_registry_subkey_iter_n_subkeys (GWin32RegistrySubkeyIter *iter)
  *
  * Returns: %TRUE if next subkey info was retrieved, %FALSE otherwise.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_subkey_iter_next (GWin32RegistrySubkeyIter  *iter,
@@ -944,7 +944,7 @@ g_win32_registry_subkey_iter_next (GWin32RegistrySubkeyIter  *iter,
  *
  * Returns: %TRUE if the name was retrieved, %FALSE otherwise.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_subkey_iter_get_name_w (GWin32RegistrySubkeyIter  *iter,
@@ -986,7 +986,7 @@ g_win32_registry_subkey_iter_get_name_w (GWin32RegistrySubkeyIter  *iter,
  *
  * Returns: %TRUE if the name was retrieved, %FALSE otherwise.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_subkey_iter_get_name (GWin32RegistrySubkeyIter  *iter,
@@ -1040,7 +1040,7 @@ g_win32_registry_subkey_iter_get_name (GWin32RegistrySubkeyIter  *iter,
  *
  * Returns: %TRUE if iterator was initialized successfully, %FALSE on error.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_value_iter_init (GWin32RegistryValueIter  *iter,
@@ -1099,7 +1099,7 @@ g_win32_registry_value_iter_init (GWin32RegistryValueIter  *iter,
  *
  * Frees internal buffers of a #GWin32RegistryValueIter.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 void
 g_win32_registry_value_iter_clear (GWin32RegistryValueIter *iter)
@@ -1128,7 +1128,7 @@ g_win32_registry_value_iter_clear (GWin32RegistryValueIter *iter)
  *
  * Returns: the number of values in the key
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gsize
 g_win32_registry_value_iter_n_values (GWin32RegistryValueIter *iter)
@@ -1258,7 +1258,7 @@ ensure_nul_termination (GWin32RegistryValueType  value_type,
  *
  * Returns: %TRUE if next value info was retrieved, %FALSE otherwise.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_value_iter_next (GWin32RegistryValueIter  *iter,
@@ -1339,7 +1339,7 @@ g_win32_registry_value_iter_next (GWin32RegistryValueIter  *iter,
  *
  * Returns: %TRUE if value type was retrieved, %FALSE otherwise.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_value_iter_get_value_type (GWin32RegistryValueIter  *iter,
@@ -1377,7 +1377,7 @@ g_win32_registry_value_iter_get_value_type (GWin32RegistryValueIter  *iter,
  *
  * Returns: %TRUE if value name was retrieved, %FALSE otherwise.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_value_iter_get_name_w (GWin32RegistryValueIter  *iter,
@@ -1419,7 +1419,7 @@ g_win32_registry_value_iter_get_name_w (GWin32RegistryValueIter  *iter,
  *
  * Returns: %TRUE if value name was retrieved, %FALSE otherwise.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_value_iter_get_name (GWin32RegistryValueIter  *iter,
@@ -1512,7 +1512,7 @@ expand_value (gunichar2  *value,
  *
  * Returns: %TRUE if value data was retrieved, %FALSE otherwise.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_value_iter_get_data_w (GWin32RegistryValueIter  *iter,
@@ -1578,7 +1578,7 @@ g_win32_registry_value_iter_get_data_w (GWin32RegistryValueIter  *iter,
  *
  * Returns: %TRUE if value data was retrieved, %FALSE otherwise.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_value_iter_get_data (GWin32RegistryValueIter  *iter,
@@ -1786,7 +1786,7 @@ _g_win32_registry_key_update_path (GWin32RegistryKey *key)
  * Returns: (transfer none): a full path to the key (in UTF-8),
  *     or %NULL if it can't be converted to UTF-8.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 const gchar *
 g_win32_registry_key_get_path (GWin32RegistryKey *key)
@@ -1823,7 +1823,7 @@ g_win32_registry_key_get_path (GWin32RegistryKey *key)
  *
  * Returns: (transfer none): a full path to the key (in UTF-16)
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 const gunichar2 *
 g_win32_registry_key_get_path_w (GWin32RegistryKey *key)
@@ -1858,7 +1858,7 @@ g_win32_registry_key_get_path_w (GWin32RegistryKey *key)
  *
  * Returns: %TRUE on success, %FALSE on failure.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_key_get_value (GWin32RegistryKey        *key,
@@ -1972,7 +1972,7 @@ g_win32_registry_key_get_value (GWin32RegistryKey        *key,
  *
  * Returns: %TRUE on success, %FALSE on failure.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_key_get_value_w (GWin32RegistryKey        *key,
@@ -2164,7 +2164,7 @@ key_changed (PVOID            closure,
  *
  * Returns: %TRUE on success, %FALSE on failure.
  *
- * Since: 2.42
+ * Since: 2.46
  **/
 gboolean
 g_win32_registry_key_watch (GWin32RegistryKey                   *key,
@@ -2266,7 +2266,7 @@ g_win32_registry_key_watch (GWin32RegistryKey                   *key,
  * until the key is put on watch again by calling
  * g_win32_registry_key_watch() again.
  *
- * Since: 2.42
+ * Since: 2.46
  */
 void
 g_win32_registry_key_erase_change_indicator (GWin32RegistryKey *key)
@@ -2285,7 +2285,7 @@ g_win32_registry_key_erase_change_indicator (GWin32RegistryKey *key)
  * Returns: %TRUE if the @key was put under watch at some point and has changed
  * since then, %FALSE if it either wasn't changed or wasn't watched at all.
  *
- * Since: 2.42
+ * Since: 2.46
  */
 gboolean
 g_win32_registry_key_has_changed (GWin32RegistryKey *key)
@@ -2384,7 +2384,7 @@ g_win32_registry_key_class_init (GWin32RegistryKeyClass *klass)
    *
    * A path to the key in the registry, in UTF-8.
    *
-   * Since: 2.42
+   * Since: 2.46
    */
   g_object_class_install_property (gobject_class,
                                    PROP_PATH,
@@ -2401,7 +2401,7 @@ g_win32_registry_key_class_init (GWin32RegistryKeyClass *klass)
    *
    * A path to the key in the registry, in UTF-16.
    *
-   * Since: 2.42
+   * Since: 2.46
    */
   g_object_class_install_property (gobject_class,
                                    PROP_PATH_UTF16,
