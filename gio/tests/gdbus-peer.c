@@ -335,14 +335,34 @@ on_new_connection (GDBusServer *server,
   return TRUE;
 }
 
-static void
-create_service_loop (GMainContext *service_context)
+/* We don't tell the main thread about the new GDBusServer until it has
+ * had a chance to start listening. */
+static gboolean
+idle_in_service_loop (gpointer loop)
 {
   g_assert (service_loop == NULL);
   g_mutex_lock (&service_loop_lock);
-  service_loop = g_main_loop_new (service_context, FALSE);
+  service_loop = loop;
   g_cond_broadcast (&service_loop_cond);
   g_mutex_unlock (&service_loop_lock);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+run_service_loop (GMainContext *service_context)
+{
+  GMainLoop *loop;
+  GSource *source;
+
+  g_assert (service_loop == NULL);
+
+  loop = g_main_loop_new (service_context, FALSE);
+  source = g_idle_source_new ();
+  g_source_set_callback (source, idle_in_service_loop, loop, NULL);
+  g_source_attach (source, service_context);
+  g_source_unref (source);
+  g_main_loop_run (loop);
 }
 
 static void
@@ -417,8 +437,7 @@ service_thread_func (gpointer user_data)
 
   g_dbus_server_start (server);
 
-  create_service_loop (service_context);
-  g_main_loop_run (service_loop);
+  run_service_loop (service_context);
 
   g_main_context_pop_thread_default (service_context);
 
@@ -512,8 +531,7 @@ service_thread_func (gpointer data)
                     data);
   g_socket_service_start (service);
 
-  create_service_loop (service_context);
-  g_main_loop_run (service_loop);
+  run_service_loop (service_context);
 
   g_main_context_pop_thread_default (service_context);
 
@@ -1212,8 +1230,7 @@ nonce_tcp_service_thread_func (gpointer user_data)
 
   g_dbus_server_start (server);
 
-  create_service_loop (service_context);
-  g_main_loop_run (service_loop);
+  run_service_loop (service_context);
 
   g_main_context_pop_thread_default (service_context);
 
@@ -1405,8 +1422,7 @@ tcp_anonymous_service_thread_func (gpointer user_data)
 
   g_dbus_server_start (server);
 
-  create_service_loop (service_context);
-  g_main_loop_run (service_loop);
+  run_service_loop (service_context);
 
   g_main_context_pop_thread_default (service_context);
 
@@ -1561,8 +1577,7 @@ codegen_service_thread_func (gpointer user_data)
                     G_CALLBACK (codegen_on_new_connection),
                     animal);
 
-  create_service_loop (service_context);
-  g_main_loop_run (service_loop);
+  run_service_loop (service_context);
 
   g_object_unref (animal);
 
