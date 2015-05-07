@@ -71,7 +71,7 @@ run_proxy_thread (gpointer data)
       GError *error = NULL;
       GVariant *ret;
 
-      if (!g_test_quiet ())
+      if (g_test_verbose ())
         g_print (".");
 
       proxy = g_dbus_proxy_new_sync (connection,
@@ -232,7 +232,7 @@ test_proxy (void)
   /* TODO: should call session_bus_down() but that requires waiting
    * for all the oustanding method calls to complete...
    */
-  if (!g_test_quiet ())
+  if (g_test_verbose ())
     g_print ("\n");
 }
 

@@ -295,7 +295,7 @@ test_sleep_in_thread_func (gpointer _data)
                              (GAsyncReadyCallback) sleep_cb,
                              data);
           g_main_loop_run (data->thread_loop);
-          if (!g_test_quiet ())
+          if (g_test_verbose ())
             g_print ("A");
           //g_debug ("done invoking async (%p)", g_thread_self ());
         }
@@ -313,7 +313,7 @@ test_sleep_in_thread_func (gpointer _data)
                                            -1,
                                            NULL,
                                            &error);
-          if (!g_test_quiet ())
+          if (g_test_verbose ())
             g_print ("S");
           //g_debug ("done invoking sync (%p)", g_thread_self ());
           g_assert_no_error (error);
@@ -408,7 +408,7 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       g_assert_cmpint (elapsed_msec, >=, 3950);
       g_assert_cmpint (elapsed_msec,  <, 8000);
 
-      if (!g_test_quiet ())
+      if (g_test_verbose ())
         g_print (" ");
     }
 }
@@ -446,7 +446,7 @@ test_method_calls_in_thread (void)
   g_object_unref (proxy);
   g_object_unref (connection);
 
-  if (!g_test_quiet ())
+  if (g_test_verbose ())
     g_print ("\n");
 }
 
