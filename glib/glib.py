@@ -67,6 +67,8 @@ class GListPrinter:
             self.count = self.count + 1
             return ('[%d]' % count, data)
 
+        __next__ = next
+
     def __init__ (self, val, listtype):
         self.val = val
         self.listtype = listtype
@@ -120,6 +122,8 @@ class GHashPrinter:
                     # Return key
                     return ('[%dk]'% (self.pos), key)
             raise StopIteration
+
+        __next__ = next
 
     def __init__ (self, val):
         self.val = val
