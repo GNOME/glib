@@ -70,19 +70,32 @@ test_GDateTime_now (void)
 {
   GDateTime *dt;
   struct tm tm;
+  time_t before;
+  time_t after;
 
-  memset (&tm, 0, sizeof (tm));
-  get_localtime_tm (time (NULL), &tm);
+  /* before <= dt.to_unix() <= after, but the inequalities might not be
+   * equality if we're close to the boundary between seconds.
+   * We loop until before == after (and hence dt.to_unix() should equal both)
+   * to guard against that. */
+  do
+    {
+      before = time (NULL);
 
-  dt = g_date_time_new_now_local ();
+      memset (&tm, 0, sizeof (tm));
+      get_localtime_tm (before, &tm);
+
+      dt = g_date_time_new_now_local ();
+
+      after = time (NULL);
+    }
+  while (before != after);
 
   g_assert_cmpint (g_date_time_get_year (dt), ==, 1900 + tm.tm_year);
   g_assert_cmpint (g_date_time_get_month (dt), ==, 1 + tm.tm_mon);
   g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, tm.tm_mday);
   g_assert_cmpint (g_date_time_get_hour (dt), ==, tm.tm_hour);
   g_assert_cmpint (g_date_time_get_minute (dt), ==, tm.tm_min);
-  /* XXX we need some fuzzyness here */
-  g_assert_cmpint (g_date_time_get_second (dt), >=, tm.tm_sec);
+  g_assert_cmpint (g_date_time_get_second (dt), ==, tm.tm_sec);
 
   g_date_time_unref (dt);
 }
@@ -649,23 +662,35 @@ static void
 test_GDateTime_now_utc (void)
 {
   GDateTime *dt;
-  time_t     t;
   struct tm  tm;
+  time_t     t;
+  time_t     after;
 
-  t = time (NULL);
+  /* t <= dt.to_unix() <= after, but the inequalities might not be
+   * equality if we're close to the boundary between seconds.
+   * We loop until t == after (and hence dt.to_unix() should equal both)
+   * to guard against that. */
+  do
+    {
+      t = time (NULL);
 #ifdef HAVE_GMTIME_R
-  gmtime_r (&t, &tm);
+      gmtime_r (&t, &tm);
 #else
-  {
-    struct tm *tmp = gmtime (&t);
-    /* Assume gmtime() can't fail as we got t from time(NULL). (Note
-     * that on Windows, gmtime() *is* MT-safe, it uses a thread-local
-     * buffer.)
-     */
-    memcpy (&tm, tmp, sizeof (struct tm));
-  }
+      {
+        struct tm *tmp = gmtime (&t);
+        /* Assume gmtime() can't fail as we got t from time(NULL). (Note
+         * that on Windows, gmtime() *is* MT-safe, it uses a thread-local
+         * buffer.)
+         */
+        memcpy (&tm, tmp, sizeof (struct tm));
+      }
 #endif
-  dt = g_date_time_new_now_utc ();
+      dt = g_date_time_new_now_utc ();
+
+      after = time (NULL);
+    }
+  while (t != after);
+
   g_assert_cmpint (tm.tm_year + 1900, ==, g_date_time_get_year (dt));
   g_assert_cmpint (tm.tm_mon + 1, ==, g_date_time_get_month (dt));
   g_assert_cmpint (tm.tm_mday, ==, g_date_time_get_day_of_month (dt));
@@ -742,10 +767,24 @@ test_GDateTime_to_timeval (void)
 static void
 test_GDateTime_to_local (void)
 {
-  GDateTime *utc, *now, *dt;
+  GDateTime *utc = NULL, *now = NULL, *dt;
+  time_t before, after;
 
-  utc = g_date_time_new_now_utc ();
-  now = g_date_time_new_now_local ();
+  /* before <= utc.to_unix() <= now.to_unix() <= after, but the inequalities
+   * might not be equality if we're close to the boundary between seconds.
+   * We loop until before == after (and hence the GDateTimes should match)
+   * to guard against that. */
+  do
+    {
+      before = time (NULL);
+      g_clear_pointer (&utc, g_date_time_unref);
+      g_clear_pointer (&now, g_date_time_unref);
+      utc = g_date_time_new_now_utc ();
+      now = g_date_time_new_now_local ();
+      after = time (NULL);
+    }
+  while (before != after);
+
   dt = g_date_time_to_local (utc);
 
   g_assert_cmpint (g_date_time_get_year (now), ==, g_date_time_get_year (dt));
