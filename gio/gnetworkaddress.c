@@ -354,7 +354,8 @@ g_network_address_new_loopback (guint16 port)
  * is deprecated, because it depends on the contents of /etc/services,
  * which is generally quite sparse on platforms other than Linux.)
  *
- * Returns: (transfer full): the new #GNetworkAddress, or %NULL on error
+ * Returns: (transfer full) (type GNetworkAddress): the new
+ *   #GNetworkAddress, or %NULL on error
  *
  * Since: 2.22
  */
@@ -772,7 +773,8 @@ _g_uri_from_authority (const gchar *protocol,
  * g_network_address_parse() allows #GSocketClient to determine
  * when to use application-specific proxy protocols.
  *
- * Returns: (transfer full): the new #GNetworkAddress, or %NULL on error
+ * Returns: (transfer full) (type GNetworkAddress): the new
+ *   #GNetworkAddress, or %NULL on error
  *
  * Since: 2.26
  */
