@@ -183,7 +183,7 @@ watch_parent (gint fd)
           for (n = 0; n < pids_to_kill->len; n++)
             {
               pid = g_array_index (pids_to_kill, guint, n);
-              g_print ("cleaning up pid %d\n", pid);
+              g_printerr ("cleaning up pid %d\n", pid);
               kill (pid, SIGTERM);
             }
 
