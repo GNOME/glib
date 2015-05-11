@@ -456,7 +456,7 @@ test_create_delete (gconstpointer d)
    */
   if (!strcmp (G_OBJECT_TYPE_NAME (data->monitor), "GPollFileMonitor"))
     {
-      g_print ("skipping test for this GFileMonitor implementation");
+      g_test_skip ("skipping test for this GFileMonitor implementation");
       goto skip;
     }
 
