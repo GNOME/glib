@@ -328,7 +328,7 @@ sp5_func (gpointer data)
   g_assert_cmpint (GPOINTER_TO_INT (value), ==, v);
 
   if (g_test_verbose ())
-    g_print ("thread %d set sp5\n", v);
+    g_printerr ("thread %d set sp5\n", v);
   g_mutex_lock (&m5);
   g_atomic_int_inc (&count5);
   g_cond_signal (&c5a);
@@ -336,7 +336,7 @@ sp5_func (gpointer data)
   g_mutex_unlock (&m5);
 
   if (g_test_verbose ())
-    g_print ("thread %d get sp5\n", v);
+    g_printerr ("thread %d get sp5\n", v);
   value = g_static_private_get (&sp5);
   g_assert (value == NULL);
 
@@ -359,7 +359,7 @@ test_static_private5 (void)
     g_cond_wait (&c5a, &m5);
 
   if (g_test_verbose ())
-    g_print ("sp5 gets nuked\n");
+    g_printerr ("sp5 gets nuked\n");
 
   g_static_private_free (&sp5);
 

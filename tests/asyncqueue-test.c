@@ -10,7 +10,7 @@
 #define DEBUG_MSG(args)
 /* #define DEBUG_MSG(args) g_printerr args ; g_printerr ("\n");  */
 #define PRINT_MSG(args)
-/* #define PRINT_MSG(args) g_print args ; g_print ("\n"); */
+/* #define PRINT_MSG(args) g_printerr args ; g_printerr ("\n"); */
 
 #define MAX_THREADS            50
 #define MAX_SORTS              5    /* only applies if

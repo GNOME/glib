@@ -298,7 +298,7 @@ on_new_connection (GDBusServer *server,
   GError *error;
   guint reg_id;
 
-  //g_print ("Client connected.\n"
+  //g_printerr ("Client connected.\n"
   //         "Negotiated capabilities: unix-fd-passing=%d\n",
   //         g_dbus_connection_get_capabilities (connection) & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
 
@@ -1535,7 +1535,7 @@ codegen_on_new_connection (GDBusServer *server,
   ExampleAnimal *animal = user_data;
   GError        *error = NULL;
 
-  /* g_print ("Client connected.\n" */
+  /* g_printerr ("Client connected.\n" */
   /*          "Negotiated capabilities: unix-fd-passing=%d\n", */
   /*          g_dbus_connection_get_capabilities (connection) & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING); */
 

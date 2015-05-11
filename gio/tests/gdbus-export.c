@@ -1458,13 +1458,13 @@ check_interfaces (GDBusConnection  *c,
 #if 0
   if (g_strv_length ((gchar**)interfaces) != i - 1)
     {
-      g_print ("expected ");
+      g_printerr ("expected ");
       for (i = 0; interfaces[i]; i++)
-        g_print ("%s ", interfaces[i]);
-      g_print ("\ngot ");
+        g_printerr ("%s ", interfaces[i]);
+      g_printerr ("\ngot ");
       for (i = 0; node_info->interfaces[i]; i++)
-        g_print ("%s ", node_info->interfaces[i]->name);
-      g_print ("\n");
+        g_printerr ("%s ", node_info->interfaces[i]->name);
+      g_printerr ("\n");
     }
 #endif
   g_assert_cmpint (g_strv_length ((gchar**)interfaces), ==, i - 1);

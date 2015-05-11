@@ -169,22 +169,22 @@ ref_unref_thread (gpointer data)
   /* first, syncronize with other threads,
    */
   if (g_test_verbose())
-    g_print ("WAITING!\n");
+    g_printerr ("WAITING!\n");
   g_mutex_lock (&sync_mutex);
   g_mutex_unlock (&sync_mutex);
   if (g_test_verbose ())
-    g_print ("STARTING\n");
+    g_printerr ("STARTING\n");
 
   /* ref/unref the klass 10000000 times */
   for (i = N_REFS; i; i--) {
     if (g_test_verbose ())
       if (i % 10)
-	g_print ("%d\n", i);
+	g_printerr ("%d\n", i);
     g_type_class_unref (g_type_class_ref ((GType) data));
   }
 
   if (g_test_verbose())
-    g_print ("DONE !\n");
+    g_printerr ("DONE !\n");
 
   return NULL;
 }

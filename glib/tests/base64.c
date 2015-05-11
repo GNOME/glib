@@ -253,7 +253,7 @@ decode_and_compare (const gchar            *datap,
 
   data2 = g_base64_decode (datap, &len);
   g_assert_cmpint (len, ==, p->length);
-  /* g_print ("length: got %d, expected %d\n",len, length); */
+  /* g_printerr ("length: got %d, expected %d\n",len, length); */
   memcmp_decode = memcmp (p->data, data2, p->length);
   g_assert_cmpint (memcmp_decode, ==, 0);
   g_free (data2);
@@ -271,7 +271,7 @@ decode_inplace_and_compare (const gchar            *datap,
   data = g_strdup (datap);
   data2 = g_base64_decode_inplace (data, &len);
   g_assert_cmpint (len, ==, p->length);
-  /* g_print ("length: got %d, expected %d\n",len, length); */
+  /* g_printerr ("length: got %d, expected %d\n",len, length); */
   memcmp_decode = memcmp (p->data, data2, p->length);
   g_assert_cmpint (memcmp_decode, ==, 0);
   g_free (data2);

@@ -49,7 +49,7 @@ _log (const gchar *format, ...)
   now_tm = localtime (&now_time);
   strftime (time_buf, sizeof time_buf, "%H:%M:%S", now_tm);
 
-  g_print ("%s.%06d: %s\n",
+  g_printerr ("%s.%06d: %s\n",
            time_buf, (gint) now.tv_usec / 1000,
            str);
   g_free (str);

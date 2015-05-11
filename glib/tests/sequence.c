@@ -133,7 +133,7 @@ check_integrity (SequenceInfo *info)
 
 #if 0
   if (g_sequence_get_length (info->sequence) != info->n_items)
-    g_print ("%d %d\n",
+    g_printerr ("%d %d\n",
              g_sequence_get_length (info->sequence), info->n_items);
 #endif
   g_assert (info->n_items == g_queue_get_length (info->queue));
@@ -402,7 +402,7 @@ dump_info (SequenceInfo *seq)
   while (iter != g_sequence_get_end_iter (seq->sequence))
     {
       Item *item = get_item (iter);
-      g_print ("%p  %p    %d\n", list->data, iter, item->number);
+      g_printerr ("%p  %p    %d\n", list->data, iter, item->number);
 
       iter = g_sequence_iter_next (iter);
       list = list->next;
@@ -422,7 +422,7 @@ run_random_tests (gconstpointer d)
   int k;
 
 #if 0
-  g_print ("    seed: %u\n", seed);
+  g_printerr ("    seed: %u\n", seed);
 #endif
 
   g_random_set_seed (seed);
@@ -443,7 +443,7 @@ run_random_tests (gconstpointer d)
       int op = g_random_int_range (0, N_OPS);
 
 #if 0
-      g_print ("%d on %p\n", op, seq);
+      g_printerr ("%d on %p\n", op, seq);
 #endif
 
       switch (op)

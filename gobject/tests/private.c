@@ -29,7 +29,7 @@ test_object_init (TestObject *self)
   TestObjectPrivate *priv = test_object_get_instance_private (self);
 
   if (g_test_verbose ())
-    g_print ("Offset of %sPrivate for type '%s': %d\n",
+    g_printerr ("Offset of %sPrivate for type '%s': %d\n",
              G_OBJECT_TYPE_NAME (self),
              G_OBJECT_TYPE_NAME (self),
              TestObject_private_offset);
@@ -93,7 +93,7 @@ test_derived_init (TestDerived *self)
   TestDerivedPrivate *priv = test_derived_get_instance_private (self);
 
   if (g_test_verbose ())
-    g_print ("Offset of %sPrivate for type '%s': %d\n",
+    g_printerr ("Offset of %sPrivate for type '%s': %d\n",
              G_OBJECT_TYPE_NAME (self),
              G_OBJECT_TYPE_NAME (self),
              TestDerived_private_offset);
@@ -137,7 +137,7 @@ test_mixed_init (TestMixed *self)
   TestMixedPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE (self, test_mixed_get_type (), TestMixedPrivate);
 
   if (g_test_verbose ())
-    g_print ("Offset of %sPrivate for type '%s': %d\n",
+    g_printerr ("Offset of %sPrivate for type '%s': %d\n",
              G_OBJECT_TYPE_NAME (self),
              G_OBJECT_TYPE_NAME (self),
              TestMixed_private_offset);
@@ -181,7 +181,7 @@ test_mixed_derived_init (TestMixedDerived *self)
   TestMixedDerivedPrivate *priv = test_mixed_derived_get_instance_private (self);
 
   if (g_test_verbose ())
-    g_print ("Offset of %sPrivate for type '%s': %d\n",
+    g_printerr ("Offset of %sPrivate for type '%s': %d\n",
              G_OBJECT_TYPE_NAME (self),
              G_OBJECT_TYPE_NAME (self),
              TestMixedDerived_private_offset);

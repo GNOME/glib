@@ -95,7 +95,7 @@ static void
 test_version (void)
 {
   if (g_test_verbose ())
-    g_print ("(header %d.%d.%d library %d.%d.%d) ",
+    g_printerr ("(header %d.%d.%d library %d.%d.%d) ",
               GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION,
               glib_major_version, glib_minor_version, glib_micro_version);
 

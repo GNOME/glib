@@ -296,7 +296,7 @@ test_sleep_in_thread_func (gpointer _data)
                              data);
           g_main_loop_run (data->thread_loop);
           if (g_test_verbose ())
-            g_print ("A");
+            g_printerr ("A");
           //g_debug ("done invoking async (%p)", g_thread_self ());
         }
       else
@@ -314,7 +314,7 @@ test_sleep_in_thread_func (gpointer _data)
                                            NULL,
                                            &error);
           if (g_test_verbose ())
-            g_print ("S");
+            g_printerr ("S");
           //g_debug ("done invoking sync (%p)", g_thread_self ());
           g_assert_no_error (error);
           g_assert (result != NULL);
@@ -409,7 +409,7 @@ test_method_calls_on_proxy (GDBusProxy *proxy)
       g_assert_cmpint (elapsed_msec,  <, 8000);
 
       if (g_test_verbose ())
-        g_print (" ");
+        g_printerr (" ");
     }
 }
 
@@ -447,7 +447,7 @@ test_method_calls_in_thread (void)
   g_object_unref (connection);
 
   if (g_test_verbose ())
-    g_print ("\n");
+    g_printerr ("\n");
 }
 
 #define SLEEP_MIN_USEC 1
@@ -532,7 +532,7 @@ test_threaded_singleton (void)
         g_error ("connection had too many refs");
 
       if (g_test_verbose () && (i % (n/50)) == 0)
-        g_print ("%u%%\n", ((i * 100) / n));
+        g_printerr ("%u%%\n", ((i * 100) / n));
 
       /* Delay for a random time on each side of the race, to perturb the
        * timing. Ideally, we want each side to win half the races; these
@@ -574,7 +574,7 @@ test_threaded_singleton (void)
     }
 
   if (g_test_verbose ())
-    g_print ("Unref won %u races; Get won %u races\n", unref_wins, get_wins);
+    g_printerr ("Unref won %u races; Get won %u races\n", unref_wins, get_wins);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

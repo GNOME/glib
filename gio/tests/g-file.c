@@ -290,7 +290,7 @@ resolve_arg (const gboolean is_uri_only, const char *arg)
   /*  Test if we get URI string */
   uri = g_file_get_uri (file1);
   g_assert_cmpstr (uri, !=, NULL);
-  g_print ("%s\n",uri);
+  g_printerr ("%s\n",uri);
 	
   /*  Test if we get correct value of the local path */
   path = g_file_get_path (file1);
@@ -371,7 +371,7 @@ get_relative_path (const gboolean use_uri, const gboolean should_have_prefix, co
   g_assert (file2 != NULL);
   
   has_prefix = g_file_has_prefix (file2, file1);
-  g_print ("%s %s\n", dir1, dir2);
+  g_printerr ("%s %s\n", dir1, dir2);
   g_assert (has_prefix == should_have_prefix);
 
   relative_path = g_file_get_relative_path (file1, file2);

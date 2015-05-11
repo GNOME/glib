@@ -37,7 +37,7 @@ push_value (gint value)
     g_cond_wait (&cond, &mutex);
   next = value;
   if (g_test_verbose ())
-    g_print ("Thread %p producing next value: %d\n", g_thread_self (), value);
+    g_printerr ("Thread %p producing next value: %d\n", g_thread_self (), value);
   if (value % 10 == 0)
     g_cond_broadcast (&cond);
   else
@@ -54,14 +54,14 @@ pop_value (void)
   while (next == 0)
     {
       if (g_test_verbose ())
-        g_print ("Thread %p waiting for cond\n", g_thread_self ());
+        g_printerr ("Thread %p waiting for cond\n", g_thread_self ());
       g_cond_wait (&cond, &mutex);
     }
   value = next;
   next = 0;
   g_cond_broadcast (&cond);
   if (g_test_verbose ())
-    g_print ("Thread %p consuming value %d\n", g_thread_self (), value);
+    g_printerr ("Thread %p consuming value %d\n", g_thread_self (), value);
   g_mutex_unlock (&mutex);
 
   return value;
@@ -85,7 +85,7 @@ produce_values (gpointer data)
   push_value (-1);
 
   if (g_test_verbose ())
-    g_print ("Thread %p produced %d altogether\n", g_thread_self (), total);
+    g_printerr ("Thread %p produced %d altogether\n", g_thread_self (), total);
 
   return GINT_TO_POINTER (total);
 }
@@ -106,7 +106,7 @@ consume_values (gpointer data)
     }
 
   if (g_test_verbose ())
-    g_print ("Thread %p accumulated %d\n", g_thread_self (), accum);
+    g_printerr ("Thread %p accumulated %d\n", g_thread_self (), accum);
 
   return GINT_TO_POINTER (accum);
 }
@@ -190,21 +190,21 @@ cond2_func (gpointer data)
   g_atomic_int_inc (&check);
 
   if (g_test_verbose ())
-    g_print ("thread %d starting, check %d\n", value, g_atomic_int_get (&check));
+    g_printerr ("thread %d starting, check %d\n", value, g_atomic_int_get (&check));
 
   g_usleep (10000 * value);
 
   g_atomic_int_inc (&check);
 
   if (g_test_verbose ())
-    g_print ("thread %d reaching barrier, check %d\n", value, g_atomic_int_get (&check));
+    g_printerr ("thread %d reaching barrier, check %d\n", value, g_atomic_int_get (&check));
 
   ret = barrier_wait (&b);
 
   g_assert_cmpint (g_atomic_int_get (&check), ==, 10);
 
   if (g_test_verbose ())
-    g_print ("thread %d leaving barrier (%d), check %d\n", value, ret, g_atomic_int_get (&check));
+    g_printerr ("thread %d leaving barrier (%d), check %d\n", value, ret, g_atomic_int_get (&check));
 
   return NULL;
 }

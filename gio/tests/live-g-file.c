@@ -116,15 +116,15 @@ static gboolean verbose;
 static gboolean posix_compat;
 
 #ifdef G_HAVE_ISO_VARARGS
-#define log(...) if (verbose)  g_print (__VA_ARGS__)
+#define log(...) if (verbose)  g_printerr (__VA_ARGS__)
 #elif defined(G_HAVE_GNUC_VARARGS)
-#define log(msg...) if (verbose)  g_print (msg)
+#define log(msg...) if (verbose)  g_printerr (msg)
 #else  /* no varargs macros */
 static void log (const g_char *format, ...)
 {
   va_list args;
   va_start (args, format);
-  if (verbose) g_print (format, args);
+  if (verbose) g_printerr (format, args);
   va_end (args);
 }
 #endif
@@ -1295,7 +1295,7 @@ main (int argc, char *argv[])
   g_option_context_add_main_entries (context, cmd_entries, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
-      g_print ("option parsing failed: %s\n", error->message);
+      g_printerr ("option parsing failed: %s\n", error->message);
       return g_test_run ();
     }
 
@@ -1305,8 +1305,8 @@ main (int argc, char *argv[])
   
   if (! target_path) 
     {
-      g_print ("error: target path was not specified\n");
-      g_print ("%s", g_option_context_get_help (context, TRUE, NULL));
+      g_printerr ("error: target path was not specified\n");
+      g_printerr ("%s", g_option_context_get_help (context, TRUE, NULL));
       return g_test_run ();
     }
 

@@ -132,11 +132,11 @@ test_threaded_class_init (void)
   while (g_atomic_int_get (&mtsafe_call_counter) < (3 + 3 + 3 * 3) * NUM_COUNTER_INCREMENTS)
     {
       if (g_test_verbose())
-        g_print ("Initializers counted: %u\n", g_atomic_int_get (&mtsafe_call_counter));
+        g_printerr ("Initializers counted: %u\n", g_atomic_int_get (&mtsafe_call_counter));
       g_usleep (50 * 1000); /* wait for threads to complete */
     }
   if (g_test_verbose())
-    g_print ("Total initializers: %u\n", g_atomic_int_get (&mtsafe_call_counter));
+    g_printerr ("Total initializers: %u\n", g_atomic_int_get (&mtsafe_call_counter));
   /* ensure non-corrupted counter updates */
   g_assert_cmpint (g_atomic_int_get (&mtsafe_call_counter), ==, unsafe_call_counter);
 
@@ -265,7 +265,7 @@ test_threaded_weak_ref (void)
       GError *error = NULL;
 
       if (g_test_verbose () && (i % (n/20)) == 0)
-        g_print ("%u%%\n", ((i * 100) / n));
+        g_printerr ("%u%%\n", ((i * 100) / n));
 
       /* Have an object and a weak ref to it */
       data.strong = g_object_new (my_tester0_get_type (), NULL);
@@ -332,7 +332,7 @@ test_threaded_weak_ref (void)
     }
 
   if (g_test_verbose ())
-    g_print ("Race won by get %u times, unref %u times\n",
+    g_printerr ("Race won by get %u times, unref %u times\n",
              get_wins, unref_wins);
 }
 

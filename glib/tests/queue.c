@@ -722,7 +722,7 @@ random_test (gconstpointer d)
       if (qinf->head != q->head ||
           qinf->tail != q->tail ||
           qinf->length != q->length)
-        g_print ("op: %d\n", op);
+        g_printerr ("op: %d\n", op);
 
       g_assert (qinf->head == q->head);
       g_assert (qinf->tail == q->tail);

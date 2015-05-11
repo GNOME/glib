@@ -93,7 +93,7 @@ do_cmdline_test (gconstpointer d)
   gboolean res;
 
   err = NULL;
-g_print ("test cmdline: %s\n", test->cmdline);
+  g_printerr ("test cmdline: %s\n", test->cmdline);
   res = g_shell_parse_argv (test->cmdline, &argc, &argv, &err);
   if (test->error_code == -1)
     {

@@ -85,7 +85,7 @@ acquire (gint nr)
   if (!g_rec_mutex_trylock (&locks[nr]))
     {
       if (g_test_verbose ())
-        g_print ("thread %p going to block on lock %d\n", self, nr);
+        g_printerr ("thread %p going to block on lock %d\n", self, nr);
 
       g_rec_mutex_lock (&locks[nr]);
     }
@@ -100,7 +100,7 @@ acquire (gint nr)
   g_assert (owners[nr] == self);   /* hopefully this is still us... */
 
   if (g_test_verbose ())
-    g_print ("thread %p recursively taking lock %d\n", self, nr);
+    g_printerr ("thread %p recursively taking lock %d\n", self, nr);
 
   g_rec_mutex_lock (&locks[nr]);  /* we're recursive, after all */
 

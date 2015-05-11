@@ -250,7 +250,7 @@ celsius_to_fahrenheit (GBinding     *binding,
   fahrenheit = (9 * celsius / 5) + 32.0;
 
   if (g_test_verbose ())
-    g_print ("Converting %.2fC to %.2fF\n", celsius, fahrenheit);
+    g_printerr ("Converting %.2fC to %.2fF\n", celsius, fahrenheit);
 
   g_value_set_double (to_value, fahrenheit);
 
@@ -272,7 +272,7 @@ fahrenheit_to_celsius (GBinding     *binding,
   celsius = 5 * (fahrenheit - 32.0) / 9;
 
   if (g_test_verbose ())
-    g_print ("Converting %.2fF to %.2fC\n", fahrenheit, celsius);
+    g_printerr ("Converting %.2fF to %.2fC\n", fahrenheit, celsius);
 
   g_value_set_double (to_value, celsius);
 

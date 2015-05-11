@@ -153,7 +153,7 @@ test_type (gconstpointer data)
         }
 
       if (g_test_verbose ())
-        g_print ("Property %s.%s\n", g_type_name (pspec->owner_type), pspec->name);
+        g_printerr ("Property %s.%s\n", g_type_name (pspec->owner_type), pspec->name);
       g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       g_object_get_property (instance, pspec->name, &value);
       check_property ("Property", pspec, &value);

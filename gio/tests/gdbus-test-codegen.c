@@ -1572,7 +1572,7 @@ om_on_signal (GDBusConnection *connection,
     {
     default:
     case 0:
-      g_print ("failing and om_data->state=%d on signal %s, params=%s\n",
+      g_printerr ("failing and om_data->state=%d on signal %s, params=%s\n",
                om_data->state,
                signal_name,
                g_variant_print (parameters, TRUE));

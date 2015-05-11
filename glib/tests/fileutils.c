@@ -488,18 +488,18 @@ test_mkdir_with_parents (void)
 {
   gchar *cwd;
   if (g_test_verbose())
-    g_print ("checking g_mkdir_with_parents() in subdir ./hum/");
+    g_printerr ("checking g_mkdir_with_parents() in subdir ./hum/");
   test_mkdir_with_parents_1 ("hum");
   g_remove ("hum");
   if (g_test_verbose())
-    g_print ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
+    g_printerr ("checking g_mkdir_with_parents() in subdir ./hii///haa/hee/");
   test_mkdir_with_parents_1 ("hii///haa/hee");
   g_remove ("hii/haa/hee");
   g_remove ("hii/haa");
   g_remove ("hii");
   cwd = g_get_current_dir ();
   if (g_test_verbose())
-    g_print ("checking g_mkdir_with_parents() in cwd: %s", cwd);
+    g_printerr ("checking g_mkdir_with_parents() in cwd: %s", cwd);
   test_mkdir_with_parents_1 (cwd);
   g_free (cwd);
 

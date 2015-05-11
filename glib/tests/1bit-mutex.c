@@ -76,7 +76,7 @@ acquire (int      nr,
         : g_bit_trylock (&locks[nr], bits[nr])))
     {
       if (g_test_verbose ())
-        g_print ("thread %p going to block on lock %d\n", self, nr);
+        g_printerr ("thread %p going to block on lock %d\n", self, nr);
 
       if (use_pointers)
         g_pointer_bit_lock (&ptrs[nr], bits[nr]);

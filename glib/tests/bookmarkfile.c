@@ -278,7 +278,7 @@ test_load (GBookmarkFile *bookmark,
   
   res = g_bookmark_file_load_from_file (bookmark, filename, &error);
   if (error && g_test_verbose ())
-    g_print ("Load error: %s\n", error->message);
+    g_printerr ("Load error: %s\n", error->message);
 
   g_clear_error (&error);
   return res;
@@ -333,7 +333,7 @@ test_modify (GBookmarkFile *bookmark)
   gchar *mime;
 
   if (g_test_verbose ())
-    g_print ("\t=> check global title/description...");
+    g_printerr ("\t=> check global title/description...");
   g_bookmark_file_set_title (bookmark, NULL, "a file");
   g_bookmark_file_set_description (bookmark, NULL, "a bookmark file");
 
@@ -347,10 +347,10 @@ test_modify (GBookmarkFile *bookmark)
   g_assert_cmpstr (text, ==, "a bookmark file");
   g_free (text);
   if (g_test_verbose ())
-    g_print ("ok\n");
+    g_printerr ("ok\n");
 
   if (g_test_verbose ())
-    g_print ("\t=> check bookmark title/description...");
+    g_printerr ("\t=> check bookmark title/description...");
   g_bookmark_file_set_title (bookmark, TEST_URI_0, "a title");
   g_bookmark_file_set_description (bookmark, TEST_URI_0, "a description");
   g_bookmark_file_set_is_private (bookmark, TEST_URI_0, TRUE);
@@ -386,10 +386,10 @@ test_modify (GBookmarkFile *bookmark)
   g_free (icon);
   g_free (mime);
   if (g_test_verbose ())
-    g_print ("ok\n");
+    g_printerr ("ok\n");
 
   if (g_test_verbose ())
-    g_print ("\t=> check non existing bookmark...");
+    g_printerr ("\t=> check non existing bookmark...");
   g_bookmark_file_get_description (bookmark, TEST_URI_1, &error);
   g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
   g_clear_error (&error);
@@ -406,10 +406,10 @@ test_modify (GBookmarkFile *bookmark)
   g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
   g_clear_error (&error);
   if (g_test_verbose ())
-    g_print ("ok\n");
+    g_printerr ("ok\n");
 
   if (g_test_verbose ())
-    g_print ("\t=> check application...");
+    g_printerr ("\t=> check application...");
   g_bookmark_file_set_mime_type (bookmark, TEST_URI_0, TEST_MIME);
   g_assert (!g_bookmark_file_has_application (bookmark, TEST_URI_0, TEST_APP_NAME, NULL));
   g_bookmark_file_add_application (bookmark, TEST_URI_0,
@@ -443,10 +443,10 @@ test_modify (GBookmarkFile *bookmark)
   g_clear_error (&error);
 
   if (g_test_verbose ())
-    g_print ("ok\n"); 
+    g_printerr ("ok\n");
 
   if (g_test_verbose ())
-    g_print ("\t=> check groups...");
+    g_printerr ("\t=> check groups...");
   g_assert (!g_bookmark_file_has_group (bookmark, TEST_URI_1, "Test", NULL));
   g_bookmark_file_add_group (bookmark, TEST_URI_1, "Test");
   g_assert (g_bookmark_file_has_group (bookmark, TEST_URI_1, "Test", NULL));
@@ -468,17 +468,17 @@ test_modify (GBookmarkFile *bookmark)
   g_assert_no_error (error);
 
   if (g_test_verbose ())
-    g_print ("ok\n");
+    g_printerr ("ok\n");
 
   if (g_test_verbose ())
-    g_print ("\t=> check remove...");
+    g_printerr ("\t=> check remove...");
   g_assert (g_bookmark_file_remove_item (bookmark, TEST_URI_1, &error) == TRUE);
   g_assert_no_error (error);
   g_assert (g_bookmark_file_remove_item (bookmark, TEST_URI_1, &error) == FALSE);
   g_assert_error (error, G_BOOKMARK_FILE_ERROR, G_BOOKMARK_FILE_ERROR_URI_NOT_FOUND);
   g_clear_error (&error);
   if (g_test_verbose ())
-    g_print ("ok\n");
+    g_printerr ("ok\n");
   
   return TRUE;
 }
