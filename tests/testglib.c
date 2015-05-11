@@ -469,7 +469,7 @@ my_hash_callback_remove_test (gpointer key,
   int *d = value;
 
   if ((*d) % 2)
-    g_print ("bad!\n");
+    g_error ("hash table entry %d should have been removed already\n", *d);
 }
 
 static void
