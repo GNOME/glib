@@ -106,7 +106,7 @@
  *
  * For example, GTK+ uses this in its Makefile.am:
  * |[
- * INCLUDES = -DG_LOG_DOMAIN=\"Gtk\"
+ * AM_CPPFLAGS = -DG_LOG_DOMAIN=\"Gtk\"
  * ]|
  */
 
