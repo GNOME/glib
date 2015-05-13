@@ -1,3 +1,20 @@
+Overview of changes in GLib 2.44.1
+==================================
+
+* Don't redefine typedefs to avoid build problems on OpenBSD
+
+* Improve the default application algorithm
+
+* Bump the number of children a GType can have
+
+* Various testsuite improvements
+
+* Translation updates:
+ Czech
+ Icelandic
+ Russian
+
+
 Overview of changes in GLib 2.44.0
 ===================================
 
