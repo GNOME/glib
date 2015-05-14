@@ -438,6 +438,8 @@ static inline void
 g_binding_unbind_internal (GBinding *binding,
                            gboolean  unref_binding)
 {
+  gboolean source_is_target = binding->source == binding->target;
+
   /* dispose of the transformation data */
   if (binding->notify != NULL)
     {
@@ -464,8 +466,11 @@ g_binding_unbind_internal (GBinding *binding,
       if (binding->target_notify != 0)
         g_signal_handler_disconnect (binding->target, binding->target_notify);
 
-      g_object_weak_unref (binding->target, weak_unbind, binding);
-      remove_binding_qdata (binding->target, binding);
+      if (!source_is_target)
+        {
+          g_object_weak_unref (binding->target, weak_unbind, binding);
+          remove_binding_qdata (binding->target, binding);
+        }
 
       binding->target_notify = 0;
       binding->target = NULL;

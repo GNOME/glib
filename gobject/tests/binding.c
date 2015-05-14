@@ -610,6 +610,19 @@ binding_unbind (void)
 
   g_object_unref (source);
   g_object_unref (target);
+
+
+  /* g_binding_unbind() has a special case for this */
+  source = g_object_new (binding_source_get_type (), NULL);
+  binding = g_object_bind_property (source, "foo",
+                                    source, "bar",
+                                    G_BINDING_DEFAULT);
+  g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
+
+  g_binding_unbind (binding);
+  g_assert (binding == NULL);
+
+  g_object_unref (source);
 }
 
 static void
