@@ -183,15 +183,10 @@ static void
 value_transform_enum_string (const GValue *src_value,
                              GValue       *dest_value)
 {
-  GEnumClass *class = g_type_class_ref (G_VALUE_TYPE (src_value));
-  GEnumValue *enum_value = g_enum_get_value (class, src_value->data[0].v_long);
-  
-  if (enum_value)
-    dest_value->data[0].v_pointer = g_strdup (enum_value->value_name);
-  else
-    dest_value->data[0].v_pointer = g_strdup_printf ("%ld", src_value->data[0].v_long);
-  
-  g_type_class_unref (class);
+  gint v_enum = src_value->data[0].v_long;
+  gchar *str = g_enum_to_string (G_VALUE_TYPE (src_value), v_enum);
+
+  dest_value->data[0].v_pointer = str;
 }
 static void
 value_transform_flags_string (const GValue *src_value,
@@ -199,7 +194,10 @@ value_transform_flags_string (const GValue *src_value,
 {
   GFlagsClass *class = g_type_class_ref (G_VALUE_TYPE (src_value));
   GFlagsValue *flags_value = g_flags_get_first_value (class, src_value->data[0].v_ulong);
-  
+
+  /* Note: this does not use g_flags_to_string()
+   * to keep backwards compatibility.
+   */
   if (flags_value)
     {
       GString *gstring = g_string_new (NULL);

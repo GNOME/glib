@@ -15,6 +15,7 @@ test_enum_basic (void)
   GEnumClass *class;
   GEnumValue *val;
   GValue value = G_VALUE_INIT;
+  gchar *to_string;
 
   type = g_enum_register_static ("MyEnum", my_enum_values);
 
@@ -49,6 +50,14 @@ test_enum_basic (void)
   val = g_enum_get_value_by_nick (class, "purple");
   g_assert (val == NULL);
 
+  to_string = g_enum_to_string (type, 2);
+  g_assert_cmpstr (to_string, ==, "the second value");
+  g_free (to_string);
+
+  to_string = g_enum_to_string (type, 15);
+  g_assert_cmpstr (to_string, ==, "15");
+  g_free (to_string);
+
   g_type_class_unref (class);
 }
 
@@ -58,6 +67,12 @@ static const GFlagsValue my_flag_values[] =
   { 1, "the first flag", "one" },
   { 2, "the second flag", "two" },
   { 8, "the third flag", "three" },
+  { 0, NULL, NULL }
+};
+
+static const GFlagsValue no_default_flag_values[] =
+{
+  { 1, "the first flag", "one" },
   { 0, NULL, NULL }
 };
 
@@ -74,12 +89,15 @@ test_flags_transform_to_string (const GValue *value)
 static void
 test_flags_basic (void)
 {
-  GType type;
+  GType type, no_default_type;
   GFlagsClass *class;
   GFlagsValue *val;
   GValue value = G_VALUE_INIT;
+  gchar *to_string;
 
   type = g_flags_register_static ("MyFlags", my_flag_values);
+  no_default_type = g_flags_register_static ("NoDefaultFlags",
+                                             no_default_flag_values);
 
   g_value_init (&value, type);
   g_assert (G_VALUE_HOLDS_FLAGS (&value));
@@ -112,6 +130,30 @@ test_flags_basic (void)
 
   test_flags_transform_to_string (&value);
   g_value_unset (&value);
+
+  to_string = g_flags_to_string (type, 1|8);
+  g_assert_cmpstr (to_string, ==, "the first flag | the third flag");
+  g_free (to_string);
+
+  to_string = g_flags_to_string (type, 0);
+  g_assert_cmpstr (to_string, ==, "no flags");
+  g_free (to_string);
+
+  to_string = g_flags_to_string (type, 16);
+  g_assert_cmpstr (to_string, ==, "0x10");
+  g_free (to_string);
+
+  to_string = g_flags_to_string (type, 1|16);
+  g_assert_cmpstr (to_string, ==, "the first flag | 0x10");
+  g_free (to_string);
+
+  to_string = g_flags_to_string (no_default_type, 0);
+  g_assert_cmpstr (to_string, ==, "0x0");
+  g_free (to_string);
+
+  to_string = g_flags_to_string (no_default_type, 16);
+  g_assert_cmpstr (to_string, ==, "0x10");
+  g_free (to_string);
 
   g_type_class_unref (class);
 }

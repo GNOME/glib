@@ -567,6 +567,133 @@ g_flags_get_first_value (GFlagsClass *flags_class,
 }
 
 /**
+ * g_enum_to_string:
+ * @g_enum_type: the type identifier of a #GEnumClass type
+ * @value: the value
+ *
+ * Pretty-prints @value in the form of the enum’s name.
+ *
+ * This is intended to be used for debugging purposes. The format of the output
+ * may change in the future.
+ *
+ * Returns: (transfer full): a newly-allocated text string
+ *
+ * Since: 2.54
+ */
+gchar *
+g_enum_to_string (GType g_enum_type,
+                  gint  value)
+{
+  gchar *result;
+  GEnumClass *enum_class;
+  GEnumValue *enum_value;
+
+  g_return_val_if_fail (G_TYPE_IS_ENUM (g_enum_type), NULL);
+
+  enum_class = g_type_class_ref (g_enum_type);
+
+  /* Already warned */
+  if (enum_class == NULL)
+    return g_strdup_printf ("%d", value);
+
+  enum_value = g_enum_get_value (enum_class, value);
+
+  if (enum_value == NULL)
+    result = g_strdup_printf ("%d", value);
+  else
+    result = g_strdup (enum_value->value_name);
+
+  g_type_class_unref (enum_class);
+  return result;
+}
+
+/*
+ * g_flags_get_value_string:
+ * @flags_class: a #GFlagsClass
+ * @value: the value
+ *
+ * Pretty-prints @value in the form of the flag names separated by ` | ` and
+ * sorted. Any extra bits will be shown at the end as a hexadecimal number.
+ *
+ * This is intended to be used for debugging purposes. The format of the output
+ * may change in the future.
+ *
+ * Returns: (transfer full): a newly-allocated text string
+ *
+ * Since: 2.54
+ */
+static gchar *
+g_flags_get_value_string (GFlagsClass *flags_class,
+                          guint        value)
+{
+  GString *str;
+  GFlagsValue *flags_value;
+
+  g_return_val_if_fail (G_IS_FLAGS_CLASS (flags_class), NULL);
+
+  str = g_string_new (NULL);
+
+  while ((str->len == 0 || value != 0) &&
+         (flags_value = g_flags_get_first_value (flags_class, value)) != NULL)
+    {
+      if (str->len > 0)
+        g_string_append (str, " | ");
+
+      g_string_append (str, flags_value->value_name);
+
+      value &= ~flags_value->value;
+    }
+
+  /* Show the extra bits */
+  if (value != 0 || str->len == 0)
+    {
+      if (str->len > 0)
+        g_string_append (str, " | ");
+
+      g_string_append_printf (str, "0x%x", value);
+    }
+
+  return g_string_free (str, FALSE);
+}
+
+/**
+ * g_flags_to_string:
+ * @flags_type: the type identifier of a #GFlagsClass type
+ * @value: the value
+ *
+ * Pretty-prints @value in the form of the flag names separated by ` | ` and
+ * sorted. Any extra bits will be shown at the end as a hexadecimal number.
+ *
+ * This is intended to be used for debugging purposes. The format of the output
+ * may change in the future.
+ *
+ * Returns: (transfer full): a newly-allocated text string
+ *
+ * Since: 2.54
+ */
+gchar *
+g_flags_to_string (GType flags_type,
+                   guint value)
+{
+  gchar *result;
+  GFlagsClass *flags_class;
+
+  g_return_val_if_fail (G_TYPE_IS_FLAGS (flags_type), NULL);
+
+  flags_class = g_type_class_ref (flags_type);
+
+  /* Already warned */
+  if (flags_class == NULL)
+    return NULL;
+
+  result = g_flags_get_value_string (flags_class, value);
+
+  g_type_class_unref (flags_class);
+  return result;
+}
+
+
+/**
  * g_value_set_enum:
  * @value: a valid #GValue whose type is derived from %G_TYPE_ENUM
  * @v_enum: enum value to be set
