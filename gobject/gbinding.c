@@ -191,6 +191,7 @@ enum
   PROP_FLAGS
 };
 
+static guint gobject_notify_signal_id;
 static GQuark quark_gbinding = 0;
 
 G_DEFINE_TYPE (GBinding, g_binding, G_TYPE_OBJECT);
@@ -357,17 +358,11 @@ on_source_notify (GObject    *gobject,
                   GParamSpec *pspec,
                   GBinding   *binding)
 {
-  const gchar *p_name;
   GValue from_value = G_VALUE_INIT;
   GValue to_value = G_VALUE_INIT;
   gboolean res;
 
   if (binding->is_frozen)
-    return;
-
-  p_name = g_intern_string (pspec->name);
-
-  if (p_name != binding->source_property)
     return;
 
   g_value_init (&from_value, G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec));
@@ -398,17 +393,11 @@ on_target_notify (GObject    *gobject,
                   GParamSpec *pspec,
                   GBinding   *binding)
 {
-  const gchar *p_name;
   GValue from_value = G_VALUE_INIT;
   GValue to_value = G_VALUE_INIT;
   gboolean res;
 
   if (binding->is_frozen)
-    return;
-
-  p_name = g_intern_string (pspec->name);
-
-  if (p_name != binding->target_property)
     return;
 
   g_value_init (&from_value, G_PARAM_SPEC_VALUE_TYPE (binding->target_pspec));
@@ -566,6 +555,8 @@ static void
 g_binding_constructed (GObject *gobject)
 {
   GBinding *binding = G_BINDING (gobject);
+  GQuark source_property_detail;
+  GClosure *source_notify_closure;
 
   /* assert that we were constructed correctly */
   g_assert (binding->source != NULL);
@@ -589,17 +580,32 @@ g_binding_constructed (GObject *gobject)
   binding->transform_data = NULL;
   binding->notify = NULL;
 
-  binding->source_notify = g_signal_connect (binding->source, "notify",
-                                             G_CALLBACK (on_source_notify),
-                                             binding);
+  source_property_detail = g_quark_from_string (binding->source_property);
+  source_notify_closure = g_cclosure_new (G_CALLBACK (on_source_notify),
+                                          binding, NULL);
+  binding->source_notify = g_signal_connect_closure_by_id (binding->source,
+                                                           gobject_notify_signal_id,
+                                                           source_property_detail,
+                                                           source_notify_closure,
+                                                           FALSE);
 
   g_object_weak_ref (binding->source, weak_unbind, binding);
   add_binding_qdata (binding->source, binding);
 
   if (binding->flags & G_BINDING_BIDIRECTIONAL)
-    binding->target_notify = g_signal_connect (binding->target, "notify",
-                                               G_CALLBACK (on_target_notify),
-                                               binding);
+    {
+      GQuark target_property_detail;
+      GClosure *target_notify_closure;
+
+      target_property_detail = g_quark_from_string (binding->target_property);
+      target_notify_closure = g_cclosure_new (G_CALLBACK (on_target_notify),
+                                              binding, NULL);
+      binding->target_notify = g_signal_connect_closure_by_id (binding->target,
+                                                               gobject_notify_signal_id,
+                                                               target_property_detail,
+                                                               target_notify_closure,
+                                                               FALSE);
+    }
 
   if (binding->target != binding->source)
     {
@@ -614,6 +620,8 @@ g_binding_class_init (GBindingClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
   quark_gbinding = g_quark_from_static_string ("g-binding");
+  gobject_notify_signal_id = g_signal_lookup ("notify", G_TYPE_OBJECT);
+  g_assert (gobject_notify_signal_id != 0);
 
   gobject_class->constructed = g_binding_constructed;
   gobject_class->set_property = g_binding_set_property;
