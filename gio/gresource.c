@@ -109,6 +109,12 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * You can then use [glib-compile-resources][glib-compile-resources] to compile the XML to a
  * binary bundle that you can load with g_resource_load(). However, its more common to use the --generate-source and
  * --generate-header arguments to create a source file and header to link directly into your application.
+ * This will generate `get_resource()`, `register_resource()` and
+ * `unregister_resource()` functions, prefixed by the `--c-name` argument passed
+ * to [glib-compile-resources][glib-compile-resources]. `get_resource()` returns
+ * the generated #GResource object. The register and unregister functions
+ * register the resource so its files can be accessed using
+ * g_resources_lookup_data().
  *
  * Once a #GResource has been created and registered all the data in it can be accessed globally in the process by
  * using API calls like g_resources_open_stream() to stream the data or g_resources_lookup_data() to get a direct pointer
