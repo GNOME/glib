@@ -111,7 +111,7 @@ msgstr "L'ordre per la qual imprimir l'ajuda detallada"
 #: ../gio/gapplication-tool.c:71
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
-"Identificador de l'aplicació en format D-Bus (p.e.: org.example.viewer)"
+"Identificador de l'aplicació en format D-Bus (p. ex.: org.example.viewer)"
 
 #: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:589
 #: ../gio/glib-compile-resources.c:620 ../gio/gresource-tool.c:492
@@ -189,7 +189,7 @@ msgstr ""
 #: ../gio/gapplication-tool.c:171
 #, c-format
 msgid "invalid application id: '%s'\n"
-msgstr "l'identificar de l'aplicació no és vàlid: «%s»\n"
+msgstr "l'identificador de l'aplicació no és vàlid: «%s»\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
 #: ../gio/gapplication-tool.c:182
