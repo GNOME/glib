@@ -469,6 +469,13 @@ key_state_end_default (KeyState  *state,
   state->default_value = g_variant_parse (state->type,
                                           state->unparsed_default_value->str,
                                           NULL, NULL, error);
+  if (!state->default_value)
+    {
+      gchar *type = g_variant_type_dup_string (state->type);
+      g_prefix_error (error, "failed to parse <default> value of type '%s': ", type);
+      g_free (type);
+    }
+
   key_state_check_range (state, error);
 }
 
