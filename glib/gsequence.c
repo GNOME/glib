@@ -184,20 +184,24 @@ check_iter_access (GSequenceIter *iter)
 static gboolean
 is_end (GSequenceIter *iter)
 {
-  GSequence *seq;
+  GSequenceIter *parent = iter->parent;
 
   if (iter->right)
     return FALSE;
 
-  if (!iter->parent)
+  if (!parent)
     return TRUE;
 
-  if (iter->parent->right != iter)
-    return FALSE;
+  while (parent->right == iter)
+    {
+      iter = parent;
+      parent = iter->parent;
 
-  seq = get_sequence (iter);
+      if (!parent)
+        return TRUE;
+    }
 
-  return seq->end_node == iter;
+  return FALSE;
 }
 
 typedef struct
