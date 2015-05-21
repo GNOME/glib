@@ -208,6 +208,17 @@ g_action_group_exporter_dispatch_events (gpointer user_data)
   return FALSE;
 }
 
+static void
+g_action_group_exporter_flush_queue (GActionGroupExporter *exporter)
+{
+  if (exporter->pending_source)
+    {
+      g_source_destroy (exporter->pending_source);
+      g_action_group_exporter_dispatch_events (exporter);
+      g_assert (exporter->pending_source == NULL);
+    }
+}
+
 static guint
 g_action_group_exporter_get_events (GActionGroupExporter *exporter,
                                     const gchar          *name)
@@ -364,6 +375,8 @@ org_gtk_Actions_method_call (GDBusConnection       *connection,
 {
   GActionGroupExporter *exporter = user_data;
   GVariant *result = NULL;
+
+  g_action_group_exporter_flush_queue (exporter);
 
   if (g_str_equal (method_name, "List"))
     {
