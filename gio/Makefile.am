@@ -776,6 +776,35 @@ gresource_LDADD = libgio-2.0.la				\
 	$(LIBELF_LIBS)
 
 # ------------------------------------------------------------------------
+# gio tool
+
+bin_PROGRAMS += gio
+gio_SOURCES = \
+	gio-tool.c					\
+	gio-tool.h					\
+	gio-tool-cat.c					\
+	gio-tool-copy.c					\
+	gio-tool-info.c					\
+	gio-tool-list.c					\
+	gio-tool-mime.c					\
+	gio-tool-mkdir.c				\
+	gio-tool-monitor.c				\
+	gio-tool-mount.c				\
+	gio-tool-move.c					\
+	gio-tool-open.c					\
+	gio-tool-rename.c				\
+	gio-tool-remove.c				\
+	gio-tool-save.c					\
+	gio-tool-set.c					\
+	gio-tool-trash.c				\
+	gio-tool-tree.c					\
+	$(NULL)
+gio_LDADD = libgio-2.0.la 				\
+	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/glib/libglib-2.0.la		\
+	$(NULL)
+
+# ------------------------------------------------------------------------
 
 dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj ../build/win32/vs10/gio.vcxproj ../build/win32/vs10/gio.vcxproj.filters
 	files='$(BUILT_EXTRA_DIST)'; \
