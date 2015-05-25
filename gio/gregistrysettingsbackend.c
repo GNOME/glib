@@ -228,7 +228,7 @@ g_message_win32_error (DWORD result_code,
   if (result_code == ERROR_KEY_DELETED)
     trace ("(%s)", win32_message);
   else
-    g_message (win32_message);
+    g_message ("%s", win32_message);
 };
 
 
