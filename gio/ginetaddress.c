@@ -446,7 +446,7 @@ inet_ntop (gint family,
   else
     {
       /* Fallback codepath for XP/Server 2003 */
-      DWORD buflen = sizeof (addr_str), addrlen;
+      DWORD buflen = size, addrlen;
       struct sockaddr_storage sa;
       struct sockaddr_in *sin = (struct sockaddr_in *)&sa;
       struct sockaddr_in6 *sin6 = (struct sockaddr_in6 *)&sa;
