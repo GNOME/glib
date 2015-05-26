@@ -1,3 +1,35 @@
+Overview of changes in GLib 2.45.2
+==================================
+
+* Improve error reporting in glib-compile-schemas.
+
+* Add introspection annotations to GListStore.
+
+* Bugs fixed:
+ 696749 win32 : failed to compile because of careless mistake in the code
+ 723394 const parameter to GtkPopover gtk_popover_set_pointing_to
+ 724113 gdbus-connection-loss test can fail on slow machines
+ 725981 tap-driver.sh: internal error getting exit status
+ 733325 Several regex tests fail with pcre3 8.35
+ 744895 Unknown or unsupported transport 'this-should-not-be-used-and-will...
+ 747882 gtype: Bump allowed number of children
+ 748534 gtest: if a subprocess assertion fails, print its stdout and stderr
+ 748612 de_DE locale used in option-context test is not supported by FreeBSD
+ 748614 Double unref in g_socket_listener_add_inet_port
+ 748834 glocalfilemonitor: Emit notification on rate limit change
+ 749079 gdbus-peer test: TCP tests can fail with ECONNRESET due to a race...
+ 749080 gdatetime test: fails if close to rollover between seconds
+ 749180 gnetworkaddress: add return type annotation to parse methods
+ 749352 g_binding_unbind() fails when source is also the target
+ 749353 GBinding does not connect to the detailed notify signal
+
+* Translation updates:
+ Catalan
+ French
+ Slovak
+ Thai
+
+
 Overview of changes in GLib 2.45.1
 ==================================
 
