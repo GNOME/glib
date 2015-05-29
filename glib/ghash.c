@@ -29,6 +29,7 @@
 #include "config.h"
 
 #include <string.h>  /* memset */
+#include <math.h> /* isnan, NAN */
 
 #include "ghash.h"
 
@@ -2008,7 +2009,7 @@ g_int64_hash (gconstpointer v)
  * @v2: a pointer to a #gdouble key to compare with @v1
  *
  * Compares the two #gdouble values being pointed to and returns
- * %TRUE if they are equal.
+ * %TRUE if they are equal, or if both are NaN.
  * It can be passed to g_hash_table_new() as the @key_equal_func
  * parameter, when using non-%NULL pointers to doubles as keys in a
  * #GHashTable.
@@ -2021,6 +2022,9 @@ gboolean
 g_double_equal (gconstpointer v1,
                 gconstpointer v2)
 {
+  if(isnan(*(const gdouble*) v1) && isnan(*(const gdouble*) v2))
+    return TRUE;
+
   return *((const gdouble*) v1) == *((const gdouble*) v2);
 }
 
@@ -2028,10 +2032,14 @@ g_double_equal (gconstpointer v1,
  * g_double_hash:
  * @v: a pointer to a #gdouble key
  *
- * Converts a pointer to a #gdouble to a hash value.
- * It can be passed to g_hash_table_new() as the @hash_func parameter,
- * It can be passed to g_hash_table_new() as the @hash_func parameter,
- * when using non-%NULL pointers to doubles as keys in a #GHashTable.
+ * Converts a pointer to a #gdouble to a hash value. Special case
+ * treatment is given to values that compares equal to zero (+0.0 and
+ * -0.0) and to values considered NaN. There is a hash value returned
+ * for each of these cases. On the general case, the hash value is
+ * calculated based on the binary representation of the number.
+ * This function can be passed to g_hash_table_new() as the @hash_func
+ * parameter, when using non-%NULL pointers to doubles as keys in a
+ * #GHashTable.
  *
  * Returns: a hash value corresponding to the key.
  *
@@ -2040,5 +2048,34 @@ g_double_equal (gconstpointer v1,
 guint
 g_double_hash (gconstpointer v)
 {
-  return (guint) *(const gdouble*) v;
+  const size_t N = sizeof(gdouble) / sizeof(guint);
+  gdouble input = *(const gdouble*)v;
+  const guint *p = (const guint*)&input;
+  guint hash = 0;
+  size_t i;
+
+  if(input == 0.0)
+    input = 0.0;
+  else if(isnan(input))
+    input = NAN;
+
+  for(i = 0; i < N; ++i)
+    hash ^= p[i] + 0x9e3779b9 + (hash<<6) + (hash>>2);
+
+  /* This 'if' is evaluated at compile time, will be eliminated by
+   * the compiler on all platforms I know about. */
+  if(sizeof(gdouble) % sizeof(guint) != 0)
+    {
+      const size_t REM = sizeof(gdouble) % sizeof(guint);
+      guint value = 0;
+      guint8 *pb = (guint8*)&p[i];
+
+      /* Fill remaining bytes in a zero padded guint. */
+      for(i = 0; i < REM; ++i)
+        value = (value << 8) | pb[i];
+
+      hash ^= value + 0x9e3779b9 + (hash<<6) + (hash>>2);
+    }
+
+  return hash;
 }
