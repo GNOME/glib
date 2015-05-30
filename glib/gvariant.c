@@ -2618,7 +2618,7 @@ g_variant_print (GVariant *value,
 {
   return g_string_free (g_variant_print_string (value, NULL, type_annotate),
                         FALSE);
-};
+}
 
 /* Hash, Equal, Compare {{{1 */
 /**
