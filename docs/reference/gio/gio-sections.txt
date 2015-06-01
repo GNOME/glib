@@ -1826,6 +1826,26 @@ g_unix_socket_address_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gnativesocketaddress</FILE>
+<TITLE>GNativeSocketAddress</TITLE>
+GNativeSocketAddress
+GNativeSocketAddressType
+g_native_socket_address_new
+<SUBSECTION Standard>
+GNativeSocketAddressClass
+GNativeSocketAddressPrivate
+G_IS_NATIVE_SOCKET_ADDRESS
+G_IS_NATIVE_SOCKET_ADDRESS_CLASS
+G_TYPE_NATIVE_SOCKET_ADDRESS
+G_NATIVE_SOCKET_ADDRESS
+G_NATIVE_SOCKET_ADDRESS_CLASS
+G_NATIVE_SOCKET_ADDRESS_GET_CLASS
+G_TYPE_NATIVE_SOCKET_ADDRESS_TYPE
+<SUBSECTION Private>
+g_native_socket_address_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gresolver</FILE>
 <TITLE>GResolver</TITLE>
 GResolver

@@ -400,6 +400,8 @@ libgio_2_0_la_SOURCES =		\
 	gmountoperation.c 	\
 	gnativevolumemonitor.c 	\
 	gnativevolumemonitor.h 	\
+	gnativesocketaddress.c	\
+	gnativesocketaddress.h	\
 	gnetworkaddress.c	\
 	gnetworking.c		\
 	gnetworkingprivate.h	\

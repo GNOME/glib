@@ -103,6 +103,7 @@ typedef struct _GIcon                         GIcon; /* Dummy typedef */
 typedef struct _GInetAddress                  GInetAddress;
 typedef struct _GInetAddressMask              GInetAddressMask;
 typedef struct _GInetSocketAddress            GInetSocketAddress;
+typedef struct _GNativeSocketAddress          GNativeSocketAddress;
 typedef struct _GInputStream                  GInputStream;
 typedef struct _GInitable                     GInitable;
 typedef struct _GIOModule                     GIOModule;
