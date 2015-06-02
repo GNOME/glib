@@ -40,6 +40,7 @@ enum
   PROP_0,
 
   PROP_NETWORK_AVAILABLE,
+  PROP_NETWORK_METERED,
   PROP_CONNECTIVITY
 };
 
@@ -57,6 +58,7 @@ struct _GNetworkMonitorNMPrivate
 
   GNetworkConnectivity connectivity;
   gboolean network_available;
+  gboolean network_metered;
 };
 
 #define g_network_monitor_nm_get_type _g_network_monitor_nm_get_type
@@ -92,6 +94,10 @@ g_network_monitor_nm_get_property (GObject    *object,
       g_value_set_boolean (value, nm->priv->network_available);
       break;
 
+    case PROP_NETWORK_METERED:
+      g_value_set_boolean (value, nm->priv->network_metered);
+      break;
+
     case PROP_CONNECTIVITY:
       g_value_set_enum (value, nm->priv->connectivity);
       break;
@@ -123,6 +129,24 @@ nm_conn_to_g_conn (int nm_state)
     }
 }
 
+static gboolean
+nm_metered_to_bool (guint nm_metered)
+{
+  switch (nm_metered)
+    {
+      case 0: /* unknown */
+      case 1: /* yes */
+      case 3: /* guess-yes */
+        return TRUE;
+      case 2: /* no */
+      case 4: /* guess-no */
+        return FALSE;
+      default:
+        g_warning ("Unknown NM metered state %d", nm_metered);
+        return FALSE;
+    }
+}
+
 static void
 sync_properties (GNetworkMonitorNM *nm,
                  gboolean           emit_signals)
@@ -130,6 +154,7 @@ sync_properties (GNetworkMonitorNM *nm,
   GVariant *v;
   NMConnectivityState nm_connectivity;
   gboolean new_network_available;
+  gboolean new_network_metered;
   GNetworkConnectivity new_connectivity;
 
   v = g_dbus_proxy_get_cached_property (nm->priv->proxy, "Connectivity");
@@ -139,16 +164,31 @@ sync_properties (GNetworkMonitorNM *nm,
   if (nm_connectivity == NM_CONNECTIVITY_NONE)
     {
       new_network_available = FALSE;
+      new_network_metered = FALSE;
       new_connectivity = G_NETWORK_CONNECTIVITY_LOCAL;
     }
   else
     {
+
+      /* this is only available post 1.0 */
+      v = g_dbus_proxy_get_cached_property (nm->priv->proxy, "Metered");
+      if (v == NULL)
+        {
+          new_network_metered = FALSE;
+        }
+      else
+        {
+          new_network_metered = nm_metered_to_bool (g_variant_get_uint32 (v));
+          g_variant_unref (v);
+        }
+
       new_network_available = TRUE;
       new_connectivity = nm_conn_to_g_conn (nm_connectivity);
     }
 
   if (!emit_signals)
     {
+      nm->priv->network_metered = new_network_metered;
       nm->priv->network_available = new_network_available;
       nm->priv->connectivity = new_connectivity;
       return;
@@ -157,6 +197,11 @@ sync_properties (GNetworkMonitorNM *nm,
   if (new_network_available != nm->priv->network_available)
     {
       nm->priv->network_available = new_network_available;
+      g_object_notify (G_OBJECT (nm), "network-available");
+    }
+  if (new_network_metered != nm->priv->network_metered)
+    {
+      nm->priv->network_metered = new_network_metered;
       g_object_notify (G_OBJECT (nm), "network-available");
     }
   if (new_connectivity != nm->priv->connectivity)
@@ -307,6 +352,7 @@ g_network_monitor_nm_class_init (GNetworkMonitorNMClass *nl_class)
   gobject_class->get_property = g_network_monitor_nm_get_property;
 
   g_object_class_override_property (gobject_class, PROP_NETWORK_AVAILABLE, "network-available");
+  g_object_class_override_property (gobject_class, PROP_NETWORK_METERED, "network-metered");
   g_object_class_override_property (gobject_class, PROP_CONNECTIVITY, "connectivity");
 }
 
