@@ -152,6 +152,16 @@
 #define GLIB_VERSION_2_44       (G_ENCODE_VERSION (2, 44))
 
 /**
+ * GLIB_VERSION_2_46:
+ *
+ * A macro that evaluates to the 2.46 version of GLib, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 2.46
+ */
+#define GLIB_VERSION_2_46       (G_ENCODE_VERSION (2, 46))
+
+/**
  * GLIB_VERSION_MIN_REQUIRED:
  *
  * A macro that should be defined by the user prior to including
@@ -364,6 +374,20 @@
 # define GLIB_AVAILABLE_IN_2_44                 GLIB_UNAVAILABLE(2, 44)
 #else
 # define GLIB_AVAILABLE_IN_2_44                 _GLIB_EXTERN
+#endif
+
+#if GLIB_VERSION_MIN_REQUIRED >= GLIB_VERSION_2_46
+# define GLIB_DEPRECATED_IN_2_46                GLIB_DEPRECATED
+# define GLIB_DEPRECATED_IN_2_46_FOR(f)         GLIB_DEPRECATED_FOR(f)
+#else
+# define GLIB_DEPRECATED_IN_2_46                _GLIB_EXTERN
+# define GLIB_DEPRECATED_IN_2_46_FOR(f)         _GLIB_EXTERN
+#endif
+
+#if GLIB_VERSION_MAX_ALLOWED < GLIB_VERSION_2_46
+# define GLIB_AVAILABLE_IN_2_46                 GLIB_UNAVAILABLE(2, 46)
+#else
+# define GLIB_AVAILABLE_IN_2_46                 _GLIB_EXTERN
 #endif
 
 #endif /*  __G_VERSION_MACROS_H__ */
