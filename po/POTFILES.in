@@ -74,6 +74,7 @@ gio/gmemoryinputstream.c
 gio/gmemoryoutputstream.c
 gio/gmount.c
 gio/gmountoperation.c
+gio/gnativesocketaddress.c
 gio/gnativevolumemonitor.c
 gio/gnetworkaddress.c
 gio/gnetworkmonitorbase.c
