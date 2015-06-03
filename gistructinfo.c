@@ -22,6 +22,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include <glib.h>
 
 #include <girepository.h>
@@ -112,6 +114,47 @@ g_struct_info_get_field (GIStructInfo *info,
 
   return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD, (GIBaseInfo*)info, rinfo->typelib,
                                      g_struct_get_field_offset (info, n));
+}
+
+/**
+ * g_struct_info_find_field:
+ * @info: a #GIStructInfo
+ * @name: a field name
+ *
+ * Obtain the type information for field named @name.
+ *
+ * Returns: (transfer full): the #GIFieldInfo or %NULL if not found,
+ * free it with g_base_info_unref() when done.
+ */
+GIFieldInfo *
+g_struct_info_find_field (GIStructInfo *info,
+                          const gchar  *name)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
+  Header *header = (Header *)rinfo->typelib->data;
+  guint32 offset = rinfo->offset + header->struct_blob_size;
+  gint i;
+
+  for (i = 0; i < blob->n_fields; i++)
+    {
+      FieldBlob *field_blob = (FieldBlob *)&rinfo->typelib->data[offset];
+      const gchar *fname = (const gchar *)&rinfo->typelib->data[field_blob->name];
+
+      if (strcmp (name, fname) == 0)
+        {
+          return (GIFieldInfo *) g_info_new (GI_INFO_TYPE_FIELD,
+                                             (GIBaseInfo* )info,
+                                             rinfo->typelib,
+                                             offset);
+        }
+
+      offset += header->field_blob_size;
+      if (field_blob->has_embedded_type)
+        offset += header->callback_blob_size;
+    }
+
+  return NULL;
 }
 
 /**
