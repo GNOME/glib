@@ -32,8 +32,9 @@ G_DEFINE_BOXED_TYPE (GIOChannel, g_io_channel, g_io_channel_ref, g_io_channel_un
 GType
 g_io_condition_get_type (void)
 {
-  static GType etype = 0;
-  if (etype == 0)
+  static volatile GType etype = 0;
+
+  if (g_once_init_enter (&etype))
     {
       static const GFlagsValue values[] = {
 	{ G_IO_IN,   "G_IO_IN",   "in" },
@@ -44,7 +45,8 @@ g_io_condition_get_type (void)
 	{ G_IO_NVAL, "G_IO_NVAL", "nval" },
 	{ 0, NULL, NULL }
       };
-      etype = g_flags_register_static ("GIOCondition", values);
+      GType type_id = g_flags_register_static ("GIOCondition", values);
+      g_once_init_leave (&etype, type_id);
     }
   return etype;
 }
