@@ -467,6 +467,8 @@ typedef struct {
  *   be skipped.
  * @instance_transfer_ownership: When calling, the function assumes ownership of
  *   the instance parameter.
+ * @throws: Denotes the signature takes an additional #GError argument beyond
+ *   the annotated arguments.
  * @reserved: Reserved for future use.
  * @n_arguments: The number of arguments that this function expects, also the
  *   length of the array of ArgBlobs.
@@ -482,7 +484,8 @@ typedef struct {
   guint16        caller_owns_return_container : 1;
   guint16        skip_return                  : 1;
   guint16        instance_transfer_ownership  : 1;
-  guint16        reserved                     :11;
+  guint16        throws                       : 1;
+  guint16        reserved                     :10;
 
   guint16        n_arguments;
 
@@ -522,7 +525,7 @@ typedef struct {
  * @constructor: The function acts as a constructor for the object it is
  *   contained in.
  * @wraps_vfunc: The function is a simple wrapper for a virtual function.
- * @throws: TODO
+ * @throws: (deprecated): This is now additionally stored in the #SignatureBlob.
  * @index: Index of the property that this function is a setter or getter of
  *   in the array of properties of the containing interface, or index
  *   of the virtual function that this function wraps.
@@ -990,7 +993,7 @@ typedef struct {
  *   virtual function.
  * @class_closure: Set if this virtual function is the class closure of a
  *   signal.
- * @throws: TODO
+ * @throws: (deprecated): This is now additionally stored in the #SignatureBlob.
  * @reserved: Reserved for future use.
  * @signal: The index of the signal in the list of signals of the object or
  *   interface to which this virtual function belongs.

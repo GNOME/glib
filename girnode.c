@@ -1641,7 +1641,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->getter = function->is_getter;
 	blob->constructor = function->is_constructor;
 	blob->wraps_vfunc = function->wraps_vfunc;
-	blob->throws = function->throws;
+	blob->throws = function->throws; /* Deprecated. Also stored in SignatureBlob. */
 	blob->index = 0;
 	blob->name = _g_ir_write_string (node->name, strings, data, offset2);
 	blob->symbol = _g_ir_write_string (function->symbol, strings, data, offset2);
@@ -1667,6 +1667,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
         blob2->instance_transfer_ownership = function->instance_transfer_full;
 	blob2->reserved = 0;
 	blob2->n_arguments = n;
+	blob2->throws = function->throws;
 
 	signature += 4;
 
@@ -1708,6 +1709,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob2->caller_owns_return_container = function->result->shallow_transfer;
 	blob2->reserved = 0;
 	blob2->n_arguments = n;
+	blob2->throws = function->throws;
 
 	signature += 4;
 
@@ -1797,7 +1799,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->must_be_implemented = 0; /* FIXME */
 	blob->must_not_be_implemented = 0; /* FIXME */
 	blob->class_closure = 0; /* FIXME */
-        blob->throws = vfunc->throws;
+	blob->throws = vfunc->throws; /* Deprecated. Also stored in SignatureBlob. */
 	blob->reserved = 0;
 
 	if (vfunc->invoker)
@@ -1825,6 +1827,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
         blob2->instance_transfer_ownership = vfunc->instance_transfer_full;
 	blob2->reserved = 0;
 	blob2->n_arguments = n;
+	blob2->throws = vfunc->throws;
 
 	signature += 4;
 

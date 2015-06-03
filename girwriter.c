@@ -454,6 +454,9 @@ write_callable_info (const gchar    *namespace,
   GITypeInfo *type;
   gint i;
 
+  if (g_callable_info_can_throw_gerror (info))
+    xml_printf (file, " throws=\"1\"");
+
   write_attributes (file, (GIBaseInfo*) info);
 
   type = g_callable_info_get_return_type (info);
@@ -558,13 +561,11 @@ write_function_info (const gchar    *namespace,
   const gchar *name;
   const gchar *symbol;
   gboolean deprecated;
-  gboolean throws;
 
   flags = g_function_info_get_flags (info);
   name = g_base_info_get_name ((GIBaseInfo *)info);
   symbol = g_function_info_get_symbol (info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
-  throws = flags & GI_FUNCTION_THROWS;
 
   if (flags & GI_FUNCTION_IS_CONSTRUCTOR)
     tag = "constructor";
@@ -584,9 +585,6 @@ write_function_info (const gchar    *namespace,
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");
-
-  if (throws)
-    xml_printf (file, " throws=\"1\"");
 
   write_callable_info (namespace, (GICallableInfo*)info, file);
   xml_end_element (file, tag);
@@ -913,9 +911,6 @@ write_vfunc_info (const gchar *namespace,
     xml_printf (file, " override=\"always\"");
   else if (flags & GI_VFUNC_MUST_NOT_OVERRIDE)
     xml_printf (file, " override=\"never\"");
-
-  if (flags & GI_VFUNC_THROWS)
-    xml_printf (file, " throws=\"1\"");
 
   xml_printf (file, " offset=\"%d\"", offset);
 

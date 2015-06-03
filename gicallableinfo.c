@@ -96,6 +96,17 @@ gboolean
 g_callable_info_can_throw_gerror (GICallableInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo*)info;
+  SignatureBlob *signature;
+
+  signature = (SignatureBlob *)&rinfo->typelib->data[signature_offset (info)];
+  if (signature->throws)
+    return TRUE;
+
+  /* Functions and VFuncs store "throws" in their own blobs.
+   * This info was additionally added to the SignatureBlob
+   * to support the other callables. For Functions and VFuncs,
+   * also check their legacy flag for compatibility.
+   */
   switch (rinfo->type) {
   case GI_INFO_TYPE_FUNCTION:
     {
