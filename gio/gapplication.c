@@ -670,7 +670,10 @@ g_application_add_main_option_entries (GApplication       *application,
   g_return_if_fail (entries != NULL);
 
   if (!application->priv->main_options)
-    application->priv->main_options = g_option_group_new (NULL, NULL, NULL, NULL, NULL);
+    {
+      application->priv->main_options = g_option_group_new (NULL, NULL, NULL, NULL, NULL);
+      g_option_group_set_translation_domain (application->priv->main_options, NULL);
+    }
 
   for (i = 0; entries[i].long_name; i++)
     {
