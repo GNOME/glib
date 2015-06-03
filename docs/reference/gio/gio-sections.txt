@@ -3755,6 +3755,7 @@ GTlsPasswordPrivate
 GTlsInteraction
 GTlsInteractionResult
 GTlsCertificateRequestFlags
+GTlsInteractionClass
 g_tls_interaction_invoke_ask_password
 g_tls_interaction_invoke_request_certificate
 g_tls_interaction_ask_password
@@ -3764,7 +3765,6 @@ g_tls_interaction_request_certificate
 g_tls_interaction_request_certificate_async
 g_tls_interaction_request_certificate_finish
 <SUBSECTION Standard>
-GTlsInteractionClass
 G_IS_TLS_INTERACTION
 G_IS_TLS_INTERACTION_CLASS
 G_TYPE_TLS_INTERACTION

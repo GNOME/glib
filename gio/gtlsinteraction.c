@@ -80,6 +80,15 @@
  *     If the implementation returns %G_TLS_INTERACTION_HANDLED, then the
  *     password argument of the async method should have been filled in by using
  *     g_tls_password_set_value() or a similar function.
+ * @request_certificate: ask for a certificate synchronously. If the
+ *     implementation returns %G_TLS_INTERACTION_HANDLED, then the connection
+ *     argument should have been filled in by using
+ *     g_tls_connection_set_certificate().
+ * @request_certificate_async: ask for a certificate asyncronously.
+ * @request_certificate_finish: complete operation to ask for a certificate
+ *     asynchronously. If the implementation returns %G_TLS_INTERACTION_HANDLED,
+ *     then the connection argument of the async method should have been
+ *     filled in by using g_tls_connection_set_certificate().
  *
  * The class for #GTlsInteraction. Derived classes implement the various
  * virtual interaction methods to handle TLS interactions.
