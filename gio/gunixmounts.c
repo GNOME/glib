@@ -210,7 +210,7 @@ gboolean
 g_unix_is_mount_path_system_internal (const char *mount_path)
 {
   const char *ignore_mountpoints[] = {
-    /* Includes all FHS 2.3 toplevel dirs and other specilized
+    /* Includes all FHS 2.3 toplevel dirs and other specialized
      * directories that we want to hide from the user.
      */
     "/",              /* we already have "Filesystem root" in Nautilus */ 
