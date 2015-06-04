@@ -256,14 +256,14 @@ default_transform (GBinding     *binding,
                                    G_VALUE_TYPE (value_b)))
         {
           g_value_copy (value_a, value_b);
-          goto done;
+          return TRUE;
         }
 
       if (g_value_type_transformable (G_VALUE_TYPE (value_a),
                                       G_VALUE_TYPE (value_b)))
         {
           if (g_value_transform (value_a, value_b))
-            goto done;
+            return TRUE;
         }
 
       g_warning ("%s: Unable to convert a value of type %s to a "
@@ -274,10 +274,8 @@ default_transform (GBinding     *binding,
 
       return FALSE;
     }
-  else
-    g_value_copy (value_a, value_b);
 
-done:
+  g_value_copy (value_a, value_b);
   return TRUE;
 }
 
