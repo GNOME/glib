@@ -240,9 +240,11 @@ weak_unbind (gpointer  user_data,
   g_object_unref (binding);
 }
 
-static inline gboolean
-default_transform (const GValue *value_a,
-                   GValue       *value_b)
+static gboolean
+default_transform (GBinding     *binding,
+                   const GValue *value_a,
+                   GValue       *value_b,
+                   gpointer      user_data G_GNUC_UNUSED)
 {
   /* if it's not the same type, try to convert it using the GValue
    * transformation API; otherwise just copy it
@@ -279,9 +281,11 @@ done:
   return TRUE;
 }
 
-static inline gboolean
-default_invert_boolean_transform (const GValue *value_a,
-                                  GValue       *value_b)
+static gboolean
+default_invert_boolean_transform (GBinding     *binding,
+                                  const GValue *value_a,
+                                  GValue       *value_b,
+                                  gpointer      user_data G_GNUC_UNUSED)
 {
   gboolean value;
 
@@ -294,30 +298,6 @@ default_invert_boolean_transform (const GValue *value_a,
   g_value_set_boolean (value_b, value);
 
   return TRUE;
-}
-
-static gboolean
-default_transform_to (GBinding     *binding,
-                      const GValue *value_a,
-                      GValue       *value_b,
-                      gpointer      user_data G_GNUC_UNUSED)
-{
-  if (binding->flags & G_BINDING_INVERT_BOOLEAN)
-    return default_invert_boolean_transform (value_a, value_b);
-
-  return default_transform (value_a, value_b);
-}
-
-static gboolean
-default_transform_from (GBinding     *binding,
-                        const GValue *value_a,
-                        GValue       *value_b,
-                        gpointer      user_data G_GNUC_UNUSED)
-{
-  if (binding->flags & G_BINDING_INVERT_BOOLEAN)
-    return default_invert_boolean_transform (value_a, value_b);
-
-  return default_transform (value_a, value_b);
 }
 
 static void
@@ -518,6 +498,7 @@ static void
 g_binding_constructed (GObject *gobject)
 {
   GBinding *binding = G_BINDING (gobject);
+  GBindingTransformFunc transform_func = default_transform;
   GQuark source_property_detail;
   GClosure *source_notify_closure;
 
@@ -536,9 +517,13 @@ g_binding_constructed (GObject *gobject)
   g_assert (binding->source_pspec != NULL);
   g_assert (binding->target_pspec != NULL);
 
+  /* switch to the invert boolean transform if needed */
+  if (binding->flags & G_BINDING_INVERT_BOOLEAN)
+    transform_func = default_invert_boolean_transform;
+
   /* set the default transformation functions here */
-  binding->transform_s2t = default_transform_to;
-  binding->transform_t2s = default_transform_from;
+  binding->transform_s2t = transform_func;
+  binding->transform_t2s = transform_func;
 
   binding->transform_data = NULL;
   binding->notify = NULL;
