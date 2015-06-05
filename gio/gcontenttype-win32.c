@@ -224,19 +224,18 @@ g_content_type_get_icon (const gchar *type)
       g_free (key);
     }
 
-  /* icon-name similar to how it was with gtk-2-12 */
-  if (name)
+  if (!name)
     {
-      themed_icon = g_themed_icon_new (name);
-    }
-  else
-    {
-      /* if not found an icon fall back to gtk-builtins */
-      name = strcmp (type, "inode/directory") == 0 ? "gtk-directory" : 
-                           g_content_type_can_be_executable (type) ? "gtk-execute" : "gtk-file";
+      /* if no icon found, fall back to standard generic names */
+      if (strcmp (type, "inode/directory") == 0)
+        name = "folder";
+      else if (g_content_type_can_be_executable (type))
+        name = "system-run";
+      else
+        name = "text-x-generic";
       g_hash_table_insert (_type_icons, g_strdup (type), g_strdup (name));
-      themed_icon = g_themed_icon_new_with_default_fallbacks (name);
     }
+  themed_icon = g_themed_icon_new (name);
   G_UNLOCK (_type_icons);
 
   return G_ICON (themed_icon);
