@@ -213,6 +213,10 @@
         <xi:include href="xml/glistmodel.xml"/>
         <xi:include href="xml/gliststore.xml"/>
     </chapter>
+    <chapter id='registry'>
+        <title>Win32 registry support</title>
+        <xi:include href="xml/gwin32registrykey.xml"/>
+    </chapter>
     <chapter id="application">
         <title>Application support</title>
         <xi:include href="xml/gapplication.xml"/>
