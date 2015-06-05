@@ -698,8 +698,8 @@ g_date_get_day_of_year (const GDate *d)
  * @date: a #GDate
  *
  * Returns the week of the year, where weeks are understood to start on
- * Monday. If the date is before the first Monday of the year, return
- * 0. The date must be valid.
+ * Monday. If the date is before the first Monday of the year, return 0.
+ * The date must be valid.
  *
  * Returns: week of the year
  */
@@ -731,9 +731,9 @@ g_date_get_monday_week_of_year (const GDate *d)
  * g_date_get_sunday_week_of_year:
  * @date: a #GDate
  *
- * Returns the week of the year during which this date falls, if weeks
- * are understood to being on Sunday. The date must be valid. Can return
- * 0 if the day is before the first Sunday of the year.
+ * Returns the week of the year during which this date falls, if
+ * weeks are understood to being on Sunday. The date must be valid.
+ * Can return 0 if the day is before the first Sunday of the year.
  *
  * Returns: week number
  */
