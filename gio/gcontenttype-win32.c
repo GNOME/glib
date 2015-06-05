@@ -158,6 +158,7 @@ g_content_type_get_description (const gchar *type)
 
   if (g_content_type_is_unknown (type))
     return g_strdup (_("Unknown type"));
+
   return g_strdup_printf (_("%s filetype"), type);
 }
 
@@ -175,6 +176,8 @@ g_content_type_get_mime_type (const gchar *type)
     return g_strdup ("application/octet-stream");
   else if (*type == '.')
     return g_strdup_printf ("application/x-ext-%s", type+1);
+  else if (strcmp ("inode/directory", type) == 0)
+    return g_strdup (type);
   /* TODO: Map "image" to "image/ *", etc? */
 
   return g_strdup ("application/octet-stream");
