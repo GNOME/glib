@@ -53,6 +53,42 @@
  * Since: 2.30
  */
 
+/**
+ * GTlsDatabaseClass:
+ * @verify_chain: Virtual method implementing
+ *  g_tls_database_verify_chain().
+ * @verify_chain_async: Virtual method implementing
+ *  g_tls_database_verify_chain_async().
+ * @verify_chain_finish: Virtual method implementing
+ *  g_tls_database_verify_chain_finish().
+ * @create_certificate_handle: Virtual method implementing
+ *  g_tls_database_create_certificate_handle().
+ * @lookup_certificate_for_handle: Virtual method implementing
+ *  g_tls_database_lookup_certificate_for_handle().
+ * @lookup_certificate_for_handle_async: Virtual method implementing
+ *  g_tls_database_lookup_certificate_for_handle_async().
+ * @lookup_certificate_for_handle_finish: Virtual method implementing
+ *  g_tls_database_lookup_certificate_for_handle_finish().
+ * @lookup_certificate_issuer: Virtual method implementing
+ *  g_tls_database_lookup_certificate_issuer().
+ * @lookup_certificate_issuer_async: Virtual method implementing
+ *  g_tls_database_lookup_certificate_issuer_async().
+ * @lookup_certificate_issuer_finish: Virtual method implementing
+ *  g_tls_database_lookup_certificate_issuer_finish().
+ * @lookup_certificates_issued_by: Virtual method implementing
+ *  g_tls_database_lookup_certificates_issued_by().
+ * @lookup_certificates_issued_by_async: Virtual method implementing
+ *  g_tls_database_lookup_certificates_issued_by_async().
+ * @lookup_certificates_issued_by_finish: Virtual method implementing
+ *  g_tls_database_lookup_certificates_issued_by_finish().
+ *
+ * The class for #GTlsDatabase. Derived classes should implement the various
+ * virtual methods. _async and _finish methods have a default
+ * implementation that runs the corresponding sync method in a thread.
+ *
+ * Since: 2.30
+ */
+
 G_DEFINE_ABSTRACT_TYPE (GTlsDatabase, g_tls_database, G_TYPE_OBJECT);
 
 enum {

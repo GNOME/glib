@@ -3657,6 +3657,7 @@ g_tls_client_connection_get_type
 <FILE>gtlsdatabase</FILE>
 <TITLE>GTlsDatabase</TITLE>
 GTlsDatabase
+GTlsDatabaseClass
 GTlsDatabaseVerifyFlags
 G_TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER
 G_TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT
