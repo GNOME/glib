@@ -86,7 +86,7 @@ guint           g_log_set_handler       (const gchar    *log_domain,
                                          GLogLevelFlags  log_levels,
                                          GLogFunc        log_func,
                                          gpointer        user_data);
-GLIB_AVAILABLE_IN_2_44
+GLIB_AVAILABLE_IN_2_46
 guint           g_log_set_handler_full  (const gchar    *log_domain,
                                          GLogLevelFlags  log_levels,
                                          GLogFunc        log_func,

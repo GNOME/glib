@@ -590,7 +590,7 @@ g_log_set_handler (const gchar	 *log_domain,
  *
  * Returns: the id of the new handler
  *
- * Since: 2.44
+ * Since: 2.46
  */
 guint
 g_log_set_handler_full (const gchar    *log_domain,
