@@ -55,6 +55,8 @@ void g_on_error_stack_trace (const gchar *prg_name);
 #  define G_BREAKPOINT()        G_STMT_START{ __debugbreak(); }G_STMT_END
 #elif defined (__alpha__) && !defined(__osf__) && defined (__GNUC__) && __GNUC__ >= 2
 #  define G_BREAKPOINT()        G_STMT_START{ __asm__ __volatile__ ("bpt"); }G_STMT_END
+#elif defined (__APPLE__)
+#  define G_BREAKPOINT()        G_STMT_START{ __builtin_trap(); }G_STMT_END
 #else   /* !__i386__ && !__alpha__ */
 #  define G_BREAKPOINT()        G_STMT_START{ raise (SIGTRAP); }G_STMT_END
 #endif  /* __i386__ */
