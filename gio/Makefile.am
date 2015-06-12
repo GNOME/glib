@@ -357,6 +357,7 @@ libgio_2_0_la_SOURCES =		\
 	gconverteroutputstream.c	\
 	gcredentials.c		\
 	gcredentialsprivate.h	\
+	gdatagrambased.c	\
 	gdatainputstream.c 	\
 	gdataoutputstream.c 	\
 	gdrive.c 		\
@@ -548,6 +549,7 @@ gio_headers =			\
 	gconverter.h		\
 	gconverterinputstream.h	\
 	gconverteroutputstream.h	\
+	gdatagrambased.h	\
 	gdatainputstream.h 	\
 	gdataoutputstream.h 	\
 	gdrive.h 		\

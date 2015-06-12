@@ -53,6 +53,7 @@
 #endif
 
 #include "gcancellable.h"
+#include "gdatagrambased.h"
 #include "gioenumtypes.h"
 #include "ginetaddress.h"
 #include "ginitable.h"
@@ -136,6 +137,32 @@ static void     g_socket_initable_iface_init (GInitableIface  *iface);
 static gboolean g_socket_initable_init       (GInitable       *initable,
 					      GCancellable    *cancellable,
 					      GError         **error);
+
+static void     g_socket_datagram_based_iface_init       (GDatagramBasedInterface *iface);
+static gint     g_socket_datagram_based_receive_messages (GDatagramBased  *self,
+                                                          GInputMessage   *messages,
+                                                          guint            num_messages,
+                                                          gint             flags,
+                                                          gint64           timeout,
+                                                          GCancellable    *cancellable,
+                                                          GError         **error);
+static gint     g_socket_datagram_based_send_messages    (GDatagramBased  *self,
+                                                          GOutputMessage  *messages,
+                                                          guint            num_messages,
+                                                          gint             flags,
+                                                          gint64           timeout,
+                                                          GCancellable    *cancellable,
+                                                          GError         **error);
+static GSource *g_socket_datagram_based_create_source    (GDatagramBased           *self,
+                                                          GIOCondition              condition,
+                                                          GCancellable             *cancellable);
+static GIOCondition g_socket_datagram_based_condition_check      (GDatagramBased   *datagram_based,
+                                                                  GIOCondition      condition);
+static gboolean     g_socket_datagram_based_condition_wait       (GDatagramBased   *datagram_based,
+                                                                  GIOCondition      condition,
+                                                                  gint64            timeout,
+                                                                  GCancellable     *cancellable,
+                                                                  GError          **error);
 
 static GSocketAddress *
 cache_recv_address (GSocket *socket, struct sockaddr *native, int native_len);
@@ -241,7 +268,9 @@ G_DEFINE_TYPE_WITH_CODE (GSocket, g_socket, G_TYPE_OBJECT,
                          G_ADD_PRIVATE (GSocket)
 			 g_networking_init ();
 			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_socket_initable_iface_init));
+						g_socket_initable_iface_init);
+                         G_IMPLEMENT_INTERFACE (G_TYPE_DATAGRAM_BASED,
+                                                g_socket_datagram_based_iface_init));
 
 static int
 get_socket_errno (void)
@@ -1008,6 +1037,16 @@ g_socket_initable_iface_init (GInitableIface *iface)
 }
 
 static void
+g_socket_datagram_based_iface_init (GDatagramBasedInterface *iface)
+{
+  iface->receive_messages = g_socket_datagram_based_receive_messages;
+  iface->send_messages = g_socket_datagram_based_send_messages;
+  iface->create_source = g_socket_datagram_based_create_source;
+  iface->condition_check = g_socket_datagram_based_condition_check;
+  iface->condition_wait = g_socket_datagram_based_condition_wait;
+}
+
+static void
 g_socket_init (GSocket *socket)
 {
   socket->priv = g_socket_get_instance_private (socket);
@@ -1051,6 +1090,109 @@ g_socket_initable_init (GInitable *initable,
 
 
   return TRUE;
+}
+
+static gboolean
+check_datagram_based (GDatagramBased  *self,
+                      GError         **error)
+{
+  switch (g_socket_get_socket_type (G_SOCKET (self)))
+    {
+    case G_SOCKET_TYPE_INVALID:
+    case G_SOCKET_TYPE_STREAM:
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                   _("Cannot use datagram operations on a non-datagram "
+                     "socket."));
+      return FALSE;
+    case G_SOCKET_TYPE_DATAGRAM:
+    case G_SOCKET_TYPE_SEQPACKET:
+      /* Fall through. */
+      break;
+    }
+
+  /* Due to us sharing #GSocketSource with the #GSocket implementation, it is
+   * pretty tricky to split out #GSocket:timeout so that it does not affect
+   * #GDatagramBased operations (but still affects #GSocket operations). It is
+   * not worth that effort — just disallow it and require the user to specify
+   * timeouts on a per-operation basis. */
+  if (g_socket_get_timeout (G_SOCKET (self)) != 0)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                   _("Cannot use datagram operations on a socket with a "
+                     "timeout set."));
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gint
+g_socket_datagram_based_receive_messages (GDatagramBased  *self,
+                                          GInputMessage   *messages,
+                                          guint            num_messages,
+                                          gint             flags,
+                                          gint64           timeout,
+                                          GCancellable    *cancellable,
+                                          GError         **error)
+{
+  if (!check_datagram_based (self, error))
+    return FALSE;
+
+  return g_socket_receive_messages_with_timeout (G_SOCKET (self), messages,
+                                                 num_messages, flags, timeout,
+                                                 cancellable, error);
+}
+
+static gint
+g_socket_datagram_based_send_messages (GDatagramBased  *self,
+                                       GOutputMessage  *messages,
+                                       guint            num_messages,
+                                       gint             flags,
+                                       gint64           timeout,
+                                       GCancellable    *cancellable,
+                                       GError         **error)
+{
+  if (!check_datagram_based (self, error))
+    return FALSE;
+
+  return g_socket_send_messages_with_timeout (G_SOCKET (self), messages,
+                                              num_messages, flags, timeout,
+                                              cancellable, error);
+}
+
+static GSource *
+g_socket_datagram_based_create_source (GDatagramBased  *self,
+                                       GIOCondition     condition,
+                                       GCancellable    *cancellable)
+{
+  if (!check_datagram_based (self, NULL))
+    return NULL;
+
+  return g_socket_create_source (G_SOCKET (self), condition, cancellable);
+}
+
+static GIOCondition
+g_socket_datagram_based_condition_check (GDatagramBased  *datagram_based,
+                                         GIOCondition     condition)
+{
+  if (!check_datagram_based (datagram_based, NULL))
+    return G_IO_ERR;
+
+  return g_socket_condition_check (G_SOCKET (datagram_based), condition);
+}
+
+static gboolean
+g_socket_datagram_based_condition_wait (GDatagramBased  *datagram_based,
+                                        GIOCondition     condition,
+                                        gint64           timeout,
+                                        GCancellable    *cancellable,
+                                        GError         **error)
+{
+  if (!check_datagram_based (datagram_based, error))
+    return FALSE;
+
+  return g_socket_condition_timed_wait (G_SOCKET (datagram_based), condition,
+                                        timeout, cancellable, error);
 }
 
 /**

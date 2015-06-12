@@ -40,6 +40,7 @@ typedef struct _GCharsetConverter             GCharsetConverter;
 typedef struct _GConverter                    GConverter;
 typedef struct _GConverterInputStream         GConverterInputStream;
 typedef struct _GConverterOutputStream        GConverterOutputStream;
+typedef struct _GDatagramBased                GDatagramBased;
 typedef struct _GDataInputStream              GDataInputStream;
 typedef struct _GSimplePermission             GSimplePermission;
 typedef struct _GZlibCompressor               GZlibCompressor;
@@ -388,6 +389,24 @@ typedef void (*GSimpleAsyncThreadFunc) (GSimpleAsyncResult *res,
 typedef gboolean (*GSocketSourceFunc) (GSocket *socket,
 				       GIOCondition condition,
 				       gpointer user_data);
+
+/**
+ * GDatagramBasedSourceFunc:
+ * @datagram_based: the #GDatagramBased
+ * @condition: the current condition at the source fired
+ * @user_data: data passed in by the user
+ *
+ * This is the function type of the callback used for the #GSource
+ * returned by g_datagram_based_create_source().
+ *
+ * Returns: %G_SOURCE_REMOVE if the source should be removed,
+ *   %G_SOURCE_CONTINUE otherwise
+ *
+ * Since: 2.48
+ */
+typedef gboolean (*GDatagramBasedSourceFunc) (GDatagramBased *datagram_based,
+                                              GIOCondition    condition,
+                                              gpointer        user_data);
 
 /**
  * GInputVector:

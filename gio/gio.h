@@ -44,6 +44,7 @@
 #include <gio/gconverterinputstream.h>
 #include <gio/gconverteroutputstream.h>
 #include <gio/gcredentials.h>
+#include <gio/gdatagrambased.h>
 #include <gio/gdatainputstream.h>
 #include <gio/gdataoutputstream.h>
 #include <gio/gdbusaddress.h>

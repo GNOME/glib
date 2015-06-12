@@ -1996,6 +1996,27 @@ g_network_service_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gdatagrambased</FILE>
+<TITLE>GDatagramBased</TITLE>
+GDatagramBased
+GDatagramBasedInterface
+GDatagramBasedSourceFunc
+g_datagram_based_receive_messages
+g_datagram_based_send_messages
+g_datagram_based_create_source
+g_datagram_based_condition_check
+g_datagram_based_condition_wait
+<SUBSECTION Standard>
+G_DATAGRAM_BASED
+G_DATAGRAM_BASED_GET_IFACE
+G_IS_DATAGRAM_BASED
+G_TYPE_DATAGRAM_BASED
+G_TYPE_IS_DATAGRAM_BASED
+<SUBSECTION Private>
+g_datagram_based_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gsocket</FILE>
 <TITLE>GSocket</TITLE>
 GSocket

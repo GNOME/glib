@@ -18,6 +18,7 @@ gio/gconverter.c
 gio/gconverterinputstream.c
 gio/gconverteroutputstream.c
 gio/gcredentials.c
+gio/gdatagrambased.c
 gio/gdatainputstream.c
 gio/gdataoutputstream.c
 gio/gdbusaddress.c

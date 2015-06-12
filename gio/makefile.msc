@@ -83,6 +83,7 @@ OBJECTS = \
 	gbufferedoutputstream.obj \
 	gcancellable.obj \
 	gcontenttype.obj \
+	gdatagrambased.obj \
 	gdatainputstream.obj \
 	gdataoutputstream.obj \
 #	gdesktopappinfo.obj \

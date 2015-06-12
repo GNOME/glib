@@ -118,6 +118,7 @@
     <chapter id="networking">
       <title>Low-level network support</title>
       <xi:include href="xml/gsocket.xml"/>
+      <xi:include href="xml/gdatagrambased.xml"/>
       <xi:include href="xml/ginetaddress.xml"/>
       <xi:include href="xml/ginetaddressmask.xml"/>
       <xi:include href="xml/gsocketaddress.xml"/>
