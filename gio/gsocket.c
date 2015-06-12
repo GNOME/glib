@@ -135,6 +135,9 @@ static gboolean g_socket_initable_init       (GInitable       *initable,
 					      GCancellable    *cancellable,
 					      GError         **error);
 
+static GSocketAddress *
+cache_recv_address (GSocket *socket, struct sockaddr *native, int native_len);
+
 static gint
 g_socket_send_messages_with_blocking   (GSocket        *socket,
                                         GOutputMessage *messages,
@@ -3699,6 +3702,227 @@ g_socket_condition_timed_wait (GSocket       *socket,
   #endif
 }
 
+/* Unfortunately these have to be macros rather than inline functions due to
+ * using alloca(). */
+#define output_message_to_msghdr(message, prev_message, msg, prev_msg, error) \
+G_STMT_START { \
+  const GOutputMessage  *_message = (message); \
+  const GOutputMessage *_prev_message = (prev_message); \
+  struct msghdr *_msg = (msg); \
+  const struct msghdr *_prev_msg = (prev_msg); \
+  GError **_error = (error); \
+ \
+  _msg->msg_flags = 0; \
+ \
+  /* name */ \
+  if (_prev_message != NULL && _prev_message->address == _message->address) \
+    { \
+      _msg->msg_name = _prev_msg->msg_name; \
+      _msg->msg_namelen = _prev_msg->msg_namelen; \
+    } \
+  else if (_message->address != NULL) \
+    { \
+      _msg->msg_namelen = g_socket_address_get_native_size (_message->address); \
+      _msg->msg_name = g_alloca (_msg->msg_namelen); \
+      if (!g_socket_address_to_native (_message->address, _msg->msg_name, \
+                                       _msg->msg_namelen, _error)) \
+        break; \
+    } \
+  else \
+    { \
+      _msg->msg_name = NULL; \
+      _msg->msg_namelen = 0; \
+    } \
+ \
+  /* iov */ \
+  { \
+    /* this entire expression will be evaluated at compile time */ \
+    if (sizeof *_msg->msg_iov == sizeof *_message->vectors && \
+        sizeof _msg->msg_iov->iov_base == sizeof _message->vectors->buffer && \
+        G_STRUCT_OFFSET (struct iovec, iov_base) == \
+        G_STRUCT_OFFSET (GOutputVector, buffer) && \
+        sizeof _msg->msg_iov->iov_len == sizeof _message->vectors->size && \
+        G_STRUCT_OFFSET (struct iovec, iov_len) == \
+        G_STRUCT_OFFSET (GOutputVector, size)) \
+      /* ABI is compatible */ \
+      { \
+        _msg->msg_iov = (struct iovec *) _message->vectors; \
+        _msg->msg_iovlen = _message->num_vectors; \
+      } \
+    else \
+      /* ABI is incompatible */ \
+      { \
+        gint i; \
+ \
+        _msg->msg_iov = g_newa (struct iovec, _message->num_vectors); \
+        for (i = 0; i < _message->num_vectors; i++) \
+          { \
+            _msg->msg_iov[i].iov_base = (void *) _message->vectors[i].buffer; \
+            _msg->msg_iov[i].iov_len = _message->vectors[i].size; \
+          } \
+        _msg->msg_iovlen = _message->num_vectors; \
+      } \
+  } \
+ \
+  /* control */ \
+  { \
+    struct cmsghdr *cmsg; \
+    gint i; \
+ \
+    _msg->msg_controllen = 0; \
+    for (i = 0; i < _message->num_control_messages; i++) \
+      _msg->msg_controllen += CMSG_SPACE (g_socket_control_message_get_size (_message->control_messages[i])); \
+ \
+    if (_msg->msg_controllen == 0) \
+      _msg->msg_control = NULL; \
+    else \
+      { \
+        _msg->msg_control = g_alloca (_msg->msg_controllen); \
+        memset (_msg->msg_control, '\0', _msg->msg_controllen); \
+      } \
+ \
+    cmsg = CMSG_FIRSTHDR (_msg); \
+    for (i = 0; i < _message->num_control_messages; i++) \
+      { \
+        cmsg->cmsg_level = g_socket_control_message_get_level (_message->control_messages[i]); \
+        cmsg->cmsg_type = g_socket_control_message_get_msg_type (_message->control_messages[i]); \
+        cmsg->cmsg_len = CMSG_LEN (g_socket_control_message_get_size (_message->control_messages[i])); \
+        g_socket_control_message_serialize (_message->control_messages[i], \
+                                            CMSG_DATA (cmsg)); \
+        cmsg = CMSG_NXTHDR (_msg, cmsg); \
+      } \
+    g_assert (cmsg == NULL); \
+  } \
+} G_STMT_END
+
+#define input_message_to_msghdr(message, msg) \
+G_STMT_START { \
+  const GInputMessage  *_message = (message); \
+  struct msghdr *_msg = (msg); \
+ \
+  /* name */ \
+  if (_message->address) \
+    { \
+      _msg->msg_namelen = sizeof (struct sockaddr_storage); \
+      _msg->msg_name = g_alloca (_msg->msg_namelen); \
+    } \
+  else \
+    { \
+      _msg->msg_name = NULL; \
+      _msg->msg_namelen = 0; \
+    } \
+ \
+  /* iov */ \
+  /* this entire expression will be evaluated at compile time */ \
+  if (sizeof *_msg->msg_iov == sizeof *_message->vectors && \
+      sizeof _msg->msg_iov->iov_base == sizeof _message->vectors->buffer && \
+      G_STRUCT_OFFSET (struct iovec, iov_base) == \
+      G_STRUCT_OFFSET (GInputVector, buffer) && \
+      sizeof _msg->msg_iov->iov_len == sizeof _message->vectors->size && \
+      G_STRUCT_OFFSET (struct iovec, iov_len) == \
+      G_STRUCT_OFFSET (GInputVector, size)) \
+    /* ABI is compatible */ \
+    { \
+      _msg->msg_iov = (struct iovec *) _message->vectors; \
+      _msg->msg_iovlen = _message->num_vectors; \
+    } \
+  else \
+    /* ABI is incompatible */ \
+    { \
+      guint i; \
+ \
+      _msg->msg_iov = g_newa (struct iovec, _message->num_vectors); \
+      for (i = 0; i < _message->num_vectors; i++) \
+        { \
+          _msg->msg_iov[i].iov_base = _message->vectors[i].buffer; \
+          _msg->msg_iov[i].iov_len = _message->vectors[i].size; \
+        } \
+      _msg->msg_iovlen = _message->num_vectors; \
+    } \
+ \
+  /* control */ \
+  _msg->msg_controllen = 2048; \
+  _msg->msg_control = g_alloca (_msg->msg_controllen); \
+ \
+  /* flags */ \
+  _msg->msg_flags = _message->flags; \
+} G_STMT_END
+
+static void
+input_message_from_msghdr (const struct msghdr  *msg,
+                           GInputMessage        *message,
+                           GSocket              *socket)
+{
+  /* decode address */
+  if (message->address != NULL)
+    {
+      *message->address = cache_recv_address (socket, msg->msg_name,
+                                              msg->msg_namelen);
+    }
+
+  /* decode control messages */
+  {
+    GPtrArray *my_messages = NULL;
+    struct cmsghdr *cmsg;
+
+    if (msg->msg_controllen >= sizeof (struct cmsghdr))
+      {
+        for (cmsg = CMSG_FIRSTHDR (msg);
+             cmsg != NULL;
+             cmsg = CMSG_NXTHDR ((struct msghdr *) msg, cmsg))
+          {
+            GSocketControlMessage *control_message;
+
+            control_message = g_socket_control_message_deserialize (cmsg->cmsg_level,
+                                                                    cmsg->cmsg_type,
+                                                                    cmsg->cmsg_len - ((char *)CMSG_DATA (cmsg) - (char *)cmsg),
+                                                                    CMSG_DATA (cmsg));
+            if (control_message == NULL)
+              /* We've already spewed about the problem in the
+                 deserialization code, so just continue */
+              continue;
+
+            if (message->control_messages == NULL)
+              {
+                /* we have to do it this way if the user ignores the
+                 * messages so that we will close any received fds.
+                 */
+                g_object_unref (control_message);
+              }
+            else
+              {
+                if (my_messages == NULL)
+                  my_messages = g_ptr_array_new ();
+                g_ptr_array_add (my_messages, control_message);
+              }
+           }
+      }
+
+    if (message->num_control_messages)
+      *message->num_control_messages = my_messages != NULL ? my_messages->len : 0;
+
+    if (message->control_messages)
+      {
+        if (my_messages == NULL)
+          {
+            *message->control_messages = NULL;
+          }
+        else
+          {
+            g_ptr_array_add (my_messages, NULL);
+            *message->control_messages = (GSocketControlMessage **) g_ptr_array_free (my_messages, FALSE);
+          }
+      }
+    else
+      {
+        g_assert (my_messages == NULL);
+      }
+  }
+
+  /* capture the flags */
+  message->flags = msg->msg_flags;
+}
+
 /**
  * g_socket_send_message:
  * @socket: a #GSocket
@@ -3813,84 +4037,25 @@ g_socket_send_message (GSocket                *socket,
 
 #ifndef G_OS_WIN32
   {
+    GOutputMessage output_message;
     struct msghdr msg;
     gssize result;
+    GError *child_error = NULL;
 
-   msg.msg_flags = 0;
+    output_message.address = address;
+    output_message.vectors = vectors;
+    output_message.num_vectors = num_vectors;
+    output_message.bytes_sent = 0;
+    output_message.control_messages = messages;
+    output_message.num_control_messages = num_messages;
 
-    /* name */
-    if (address)
+    output_message_to_msghdr (&output_message, NULL, &msg, NULL, &child_error);
+
+    if (child_error != NULL)
       {
-	msg.msg_namelen = g_socket_address_get_native_size (address);
-	msg.msg_name = g_alloca (msg.msg_namelen);
-	if (!g_socket_address_to_native (address, msg.msg_name, msg.msg_namelen, error))
-	  return -1;
+        g_propagate_error (error, child_error);
+        return -1;
       }
-    else
-      {
-	msg.msg_name = NULL;
-	msg.msg_namelen = 0;
-      }
-
-    /* iov */
-    {
-      /* this entire expression will be evaluated at compile time */
-      if (sizeof *msg.msg_iov == sizeof *vectors &&
-	  sizeof msg.msg_iov->iov_base == sizeof vectors->buffer &&
-	  G_STRUCT_OFFSET (struct iovec, iov_base) ==
-	  G_STRUCT_OFFSET (GOutputVector, buffer) &&
-	  sizeof msg.msg_iov->iov_len == sizeof vectors->size &&
-	  G_STRUCT_OFFSET (struct iovec, iov_len) ==
-	  G_STRUCT_OFFSET (GOutputVector, size))
-	/* ABI is compatible */
-	{
-	  msg.msg_iov = (struct iovec *) vectors;
-	  msg.msg_iovlen = num_vectors;
-	}
-      else
-	/* ABI is incompatible */
-	{
-	  gint i;
-
-	  msg.msg_iov = g_newa (struct iovec, num_vectors);
-	  for (i = 0; i < num_vectors; i++)
-	    {
-	      msg.msg_iov[i].iov_base = (void *) vectors[i].buffer;
-	      msg.msg_iov[i].iov_len = vectors[i].size;
-	    }
-	  msg.msg_iovlen = num_vectors;
-	}
-    }
-
-    /* control */
-    {
-      struct cmsghdr *cmsg;
-      gint i;
-
-      msg.msg_controllen = 0;
-      for (i = 0; i < num_messages; i++)
-	msg.msg_controllen += CMSG_SPACE (g_socket_control_message_get_size (messages[i]));
-
-      if (msg.msg_controllen == 0)
-        msg.msg_control = NULL;
-      else
-        {
-          msg.msg_control = g_alloca (msg.msg_controllen);
-          memset (msg.msg_control, '\0', msg.msg_controllen);
-        }
-
-      cmsg = CMSG_FIRSTHDR (&msg);
-      for (i = 0; i < num_messages; i++)
-	{
-	  cmsg->cmsg_level = g_socket_control_message_get_level (messages[i]);
-	  cmsg->cmsg_type = g_socket_control_message_get_msg_type (messages[i]);
-	  cmsg->cmsg_len = CMSG_LEN (g_socket_control_message_get_size (messages[i]));
-	  g_socket_control_message_serialize (messages[i],
-					      CMSG_DATA (cmsg));
-	  cmsg = CMSG_NXTHDR (&msg, cmsg);
-	}
-      g_assert (cmsg == NULL);
-    }
 
     while (1)
       {
@@ -4112,90 +4277,19 @@ g_socket_send_messages_with_blocking (GSocket        *socket,
       {
         GOutputMessage *msg = &messages[i];
         struct msghdr *msg_hdr = &msgvec[i].msg_hdr;
+        GError *child_error = NULL;
 
         msgvec[i].msg_len = 0;
 
-        msg_hdr->msg_flags = 0;
+        output_message_to_msghdr (msg, (i > 0) ? &messages[i - 1] : NULL,
+                                  msg_hdr, (i > 0) ? &msgvec[i - 1].msg_hdr : NULL,
+                                  &child_error);
 
-        /* name */
-        if (i > 0 && msg->address == messages[i-1].address)
+        if (child_error != NULL)
           {
-            msg_hdr->msg_name = msgvec[i-1].msg_hdr.msg_name;
-            msg_hdr->msg_namelen = msgvec[i-1].msg_hdr.msg_namelen;
+            g_propagate_error (error, child_error);
+            return -1;
           }
-        else if (msg->address)
-          {
-            msg_hdr->msg_namelen = g_socket_address_get_native_size (msg->address);
-            msg_hdr->msg_name = g_alloca (msg_hdr->msg_namelen);
-            if (!g_socket_address_to_native (msg->address, msg_hdr->msg_name, msg_hdr->msg_namelen, error))
-              return -1;
-          }
-        else
-          {
-            msg_hdr->msg_name = NULL;
-            msg_hdr->msg_namelen = 0;
-          }
-
-        /* iov */
-        {
-          /* this entire expression will be evaluated at compile time */
-          if (sizeof (struct iovec) == sizeof (GOutputVector) &&
-              sizeof msg_hdr->msg_iov->iov_base == sizeof msg->vectors->buffer &&
-              G_STRUCT_OFFSET (struct iovec, iov_base) ==
-              G_STRUCT_OFFSET (GOutputVector, buffer) &&
-              sizeof msg_hdr->msg_iov->iov_len == sizeof msg->vectors->size &&
-              G_STRUCT_OFFSET (struct iovec, iov_len) ==
-              G_STRUCT_OFFSET (GOutputVector, size))
-            /* ABI is compatible */
-            {
-              msg_hdr->msg_iov = (struct iovec *) msg->vectors;
-              msg_hdr->msg_iovlen = msg->num_vectors;
-            }
-          else
-            /* ABI is incompatible */
-            {
-              gint j;
-
-              msg_hdr->msg_iov = g_newa (struct iovec, msg->num_vectors);
-              for (j = 0; j < msg->num_vectors; j++)
-                {
-                  msg_hdr->msg_iov[j].iov_base = (void *) msg->vectors[j].buffer;
-                  msg_hdr->msg_iov[j].iov_len = msg->vectors[j].size;
-                }
-              msg_hdr->msg_iovlen = msg->num_vectors;
-            }
-        }
-
-        /* control */
-        {
-          struct cmsghdr *cmsg;
-          gint j;
-
-          msg_hdr->msg_controllen = 0;
-          for (j = 0; j < msg->num_control_messages; j++)
-            msg_hdr->msg_controllen += CMSG_SPACE (g_socket_control_message_get_size (msg->control_messages[j]));
-
-          if (msg_hdr->msg_controllen == 0)
-            msg_hdr->msg_control = NULL;
-          else
-            {
-              msg_hdr->msg_control = g_alloca (msg_hdr->msg_controllen);
-              memset (msg_hdr->msg_control, '\0', msg_hdr->msg_controllen);
-            }
-
-          cmsg = CMSG_FIRSTHDR (msg_hdr);
-          for (j = 0; j < msg->num_control_messages; j++)
-            {
-              GSocketControlMessage *cm = msg->control_messages[j];
-
-              cmsg->cmsg_level = g_socket_control_message_get_level (cm);
-              cmsg->cmsg_type = g_socket_control_message_get_msg_type (cm);
-              cmsg->cmsg_len = CMSG_LEN (g_socket_control_message_get_size (cm));
-              g_socket_control_message_serialize (cm, CMSG_DATA (cmsg));
-              cmsg = CMSG_NXTHDR (msg_hdr, cmsg);
-            }
-          g_assert (cmsg == NULL);
-        }
       }
 
     num_sent = result = 0;
@@ -4469,67 +4563,27 @@ g_socket_receive_message (GSocket                 *socket,
 
 #ifndef G_OS_WIN32
   {
+    GInputMessage input_message;
     struct msghdr msg;
     gssize result;
-    struct sockaddr_storage one_sockaddr;
 
-    /* name */
-    if (address)
-      {
-	msg.msg_name = &one_sockaddr;
-	msg.msg_namelen = sizeof (struct sockaddr_storage);
-      }
-    else
-      {
-	msg.msg_name = NULL;
-	msg.msg_namelen = 0;
-      }
-
-    /* iov */
-    /* this entire expression will be evaluated at compile time */
-    if (sizeof *msg.msg_iov == sizeof *vectors &&
-	sizeof msg.msg_iov->iov_base == sizeof vectors->buffer &&
-	G_STRUCT_OFFSET (struct iovec, iov_base) ==
-	G_STRUCT_OFFSET (GInputVector, buffer) &&
-	sizeof msg.msg_iov->iov_len == sizeof vectors->size &&
-	G_STRUCT_OFFSET (struct iovec, iov_len) ==
-	G_STRUCT_OFFSET (GInputVector, size))
-      /* ABI is compatible */
-      {
-	msg.msg_iov = (struct iovec *) vectors;
-	msg.msg_iovlen = num_vectors;
-      }
-    else
-      /* ABI is incompatible */
-      {
-	gint i;
-
-	msg.msg_iov = g_newa (struct iovec, num_vectors);
-	for (i = 0; i < num_vectors; i++)
-	  {
-	    msg.msg_iov[i].iov_base = vectors[i].buffer;
-	    msg.msg_iov[i].iov_len = vectors[i].size;
-	  }
-	msg.msg_iovlen = num_vectors;
-      }
-
-    /* control */
-    msg.msg_control = g_alloca (2048);
-    msg.msg_controllen = 2048;
-
-    /* flags */
-    if (flags != NULL)
-      msg.msg_flags = *flags;
-    else
-      msg.msg_flags = 0;
+    input_message.address = address;
+    input_message.vectors = vectors;
+    input_message.num_vectors = num_vectors;
+    input_message.bytes_received = 0;
+    input_message.flags = (flags != NULL) ? *flags : 0;
+    input_message.control_messages = messages;
+    input_message.num_control_messages = (guint *) num_messages;
 
     /* We always set the close-on-exec flag so we don't leak file
      * descriptors into child processes.  Note that gunixfdmessage.c
      * will later call fcntl (fd, FD_CLOEXEC), but that isn't atomic.
      */
 #ifdef MSG_CMSG_CLOEXEC
-    msg.msg_flags |= MSG_CMSG_CLOEXEC;
+    input_message.flags |= MSG_CMSG_CLOEXEC;
 #endif
+
+    input_message_to_msghdr (&input_message, &msg);
 
     /* do it */
     while (1)
@@ -4568,72 +4622,10 @@ g_socket_receive_message (GSocket                 *socket,
 	break;
       }
 
-    /* decode address */
-    if (address != NULL)
-      {
-        *address = cache_recv_address (socket, msg.msg_name, msg.msg_namelen);
-      }
+    input_message_from_msghdr (&msg, &input_message, socket);
 
-    /* decode control messages */
-    {
-      GPtrArray *my_messages = NULL;
-      struct cmsghdr *cmsg;
-
-      if (msg.msg_controllen >= sizeof (struct cmsghdr))
-        {
-          for (cmsg = CMSG_FIRSTHDR (&msg); cmsg; cmsg = CMSG_NXTHDR (&msg, cmsg))
-            {
-              GSocketControlMessage *message;
-
-              message = g_socket_control_message_deserialize (cmsg->cmsg_level,
-                                                              cmsg->cmsg_type,
-                                                              cmsg->cmsg_len - ((char *)CMSG_DATA (cmsg) - (char *)cmsg),
-                                                              CMSG_DATA (cmsg));
-              if (message == NULL)
-                /* We've already spewed about the problem in the
-                   deserialization code, so just continue */
-                continue;
-
-              if (messages == NULL)
-                {
-                  /* we have to do it this way if the user ignores the
-                   * messages so that we will close any received fds.
-                   */
-                  g_object_unref (message);
-                }
-              else
-                {
-                  if (my_messages == NULL)
-                    my_messages = g_ptr_array_new ();
-                  g_ptr_array_add (my_messages, message);
-                }
-            }
-        }
-
-      if (num_messages)
-	*num_messages = my_messages != NULL ? my_messages->len : 0;
-
-      if (messages)
-	{
-	  if (my_messages == NULL)
-	    {
-	      *messages = NULL;
-	    }
-	  else
-	    {
-	      g_ptr_array_add (my_messages, NULL);
-	      *messages = (GSocketControlMessage **) g_ptr_array_free (my_messages, FALSE);
-	    }
-	}
-      else
-	{
-	  g_assert (my_messages == NULL);
-	}
-    }
-
-    /* capture the flags */
     if (flags != NULL)
-      *flags = msg.msg_flags;
+      *flags = input_message.flags;
 
     return result;
   }
