@@ -588,7 +588,9 @@ test_ip_sync_dgram (GSocketFamily family)
 
   {
     GOutputMessage m[3] = { { NULL, }, };
+    GInputMessage im[3] = { { NULL, }, };
     GOutputVector v[7] = { { NULL, }, };
+    GInputVector iv[7] = { { NULL, }, };
 
     v[0].buffer = testbuf2 + 0;
     v[0].size = 3;
@@ -604,6 +606,21 @@ test_ip_sync_dgram (GSocketFamily family)
     v[5].size = 1;
     v[6].buffer = testbuf2 + 3 + 5 + 6 + 2 + 1;
     v[6].size = strlen (testbuf2) - (3 + 5 + 6 + 2 + 1);
+
+    iv[0].buffer = buf + 0;
+    iv[0].size = 3;
+    iv[1].buffer = buf + 3;
+    iv[1].size = 5;
+    iv[2].buffer = buf + 3 + 5;
+    iv[2].size = 0;
+    iv[3].buffer = buf + 3 + 5;
+    iv[3].size = 6;
+    iv[4].buffer = buf + 3 + 5 + 6;
+    iv[4].size = 2;
+    iv[5].buffer = buf + 3 + 5 + 6 + 2;
+    iv[5].size = 1;
+    iv[6].buffer = buf + 3 + 5 + 6 + 2 + 1;
+    iv[6].size = sizeof (buf) - (3 + 5 + 6 + 2 + 1);
 
     len = g_socket_send_message (client, dest_addr, v, G_N_ELEMENTS (v), NULL, 0, 0, NULL, &error);
     g_assert_no_error (error);
@@ -649,6 +666,37 @@ test_ip_sync_dgram (GSocketFamily family)
     g_assert_no_error (error);
     g_assert_cmpint (len, ==, v[6].size);
     g_assert_cmpstr (buf, ==, v[6].buffer);
+
+    /* reset since we're re-using the message structs */
+    m[0].bytes_sent = 0;
+    m[1].bytes_sent = 0;
+    m[2].bytes_sent = 0;
+
+    /* now try receiving multiple messages */
+    len = g_socket_send_messages (client, m, G_N_ELEMENTS (m), 0, NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpint (len, ==, G_N_ELEMENTS (m));
+    g_assert_cmpint (m[0].bytes_sent, ==, 3);
+    g_assert_cmpint (m[1].bytes_sent, ==, 17);
+    g_assert_cmpint (m[2].bytes_sent, ==, v[6].size);
+
+    im[0].vectors = &iv[0];
+    im[0].num_vectors = 1;
+    im[1].vectors = &iv[0];
+    im[1].num_vectors = 6;
+    im[2].vectors = &iv[6];
+    im[2].num_vectors = 1;
+
+    memset (buf, 0, sizeof (buf));
+    len = g_socket_receive_messages (client, im, G_N_ELEMENTS (im), 0,
+                                     NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpint (len, ==, G_N_ELEMENTS (im));
+
+    g_assert_cmpuint (im[0].bytes_received, ==, 3);
+    /* v[0].size + v[1].size + v[2].size + v[3].size + v[4].size + v[5].size */
+    g_assert_cmpuint (im[1].bytes_received, ==, 17);
+    g_assert_cmpuint (im[2].bytes_received, ==, v[6].size);
 
     /* reset since we're re-using the message structs */
     m[0].bytes_sent = 0;
@@ -703,6 +751,119 @@ test_ipv6_sync_dgram (void)
     }
 
   test_ip_sync_dgram (G_SOCKET_FAMILY_IPV6);
+}
+
+static gpointer
+cancellable_thread_cb (gpointer data)
+{
+  GCancellable *cancellable = data;
+
+  g_usleep (0.1 * G_USEC_PER_SEC);
+  g_cancellable_cancel (cancellable);
+  g_object_unref (cancellable);
+
+  return NULL;
+}
+
+static void
+test_ip_sync_dgram_timeouts (GSocketFamily family)
+{
+  GError *error = NULL;
+  GSocket *client = NULL;
+  GCancellable *cancellable = NULL;
+  GThread *cancellable_thread = NULL;
+  gssize len;
+
+  client = g_socket_new (family,
+                         G_SOCKET_TYPE_DATAGRAM,
+                         G_SOCKET_PROTOCOL_DEFAULT,
+                         &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpint (g_socket_get_family (client), ==, family);
+  g_assert_cmpint (g_socket_get_socket_type (client), ==, G_SOCKET_TYPE_DATAGRAM);
+  g_assert_cmpint (g_socket_get_protocol (client), ==, G_SOCKET_PROTOCOL_DEFAULT);
+
+  /* No overall timeout: test the per-operation timeouts instead. */
+  g_socket_set_timeout (client, 0);
+
+  cancellable = g_cancellable_new ();
+
+  /* Check for timeouts when no server is running. */
+  {
+    gint64 start_time;
+    GInputMessage im = { NULL, };
+    GInputVector iv = { NULL, };
+    guint8 buf[128];
+
+    iv.buffer = buf;
+    iv.size = sizeof (buf);
+
+    im.vectors = &iv;
+    im.num_vectors = 1;
+
+    memset (buf, 0, sizeof (buf));
+
+    /* Try a non-blocking read. */
+    g_socket_set_blocking (client, FALSE);
+    len = g_socket_receive_messages (client, &im, 1, 0  /* flags */,
+                                     NULL, &error);
+    g_assert_error (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK);
+    g_assert_cmpint (len, ==, -1);
+    g_clear_error (&error);
+
+    /* Try a timeout read. Can’t really validate the time taken more than
+     * checking it’s positive. */
+    g_socket_set_timeout (client, 1);
+    g_socket_set_blocking (client, TRUE);
+    start_time = g_get_monotonic_time ();
+    len = g_socket_receive_messages (client, &im, 1, 0  /* flags */,
+                                     NULL, &error);
+    g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
+    g_assert_cmpint (len, ==, -1);
+    g_assert_cmpint (g_get_monotonic_time () - start_time, >, 0);
+    g_clear_error (&error);
+
+    /* Try a blocking read, cancelled from another thread. */
+    g_socket_set_timeout (client, 0);
+    cancellable_thread = g_thread_new ("cancellable",
+                                       cancellable_thread_cb,
+                                       g_object_ref (cancellable));
+
+    start_time = g_get_monotonic_time ();
+    len = g_socket_receive_messages (client, &im, 1, 0  /* flags */,
+                                     cancellable, &error);
+    g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+    g_assert_cmpint (len, ==, -1);
+    g_assert_cmpint (g_get_monotonic_time () - start_time, >, 0);
+    g_clear_error (&error);
+
+    g_thread_join (cancellable_thread);
+  }
+
+  g_socket_close (client, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (client);
+  g_object_unref (cancellable);
+}
+
+static void
+test_ipv4_sync_dgram_timeouts (void)
+{
+  test_ip_sync_dgram_timeouts (G_SOCKET_FAMILY_IPV4);
+}
+
+static void
+test_ipv6_sync_dgram_timeouts (void)
+{
+  if (!ipv6_supported)
+    {
+      g_test_skip ("No support for IPv6");
+      return;
+    }
+
+  test_ip_sync_dgram_timeouts (G_SOCKET_FAMILY_IPV6);
 }
 
 static gpointer
@@ -1447,7 +1608,9 @@ main (int   argc,
   g_test_add_func ("/socket/ipv6_sync", test_ipv6_sync);
   g_test_add_func ("/socket/ipv6_async", test_ipv6_async);
   g_test_add_func ("/socket/ipv4_sync/datagram", test_ipv4_sync_dgram);
+  g_test_add_func ("/socket/ipv4_sync/datagram/timeouts", test_ipv4_sync_dgram_timeouts);
   g_test_add_func ("/socket/ipv6_sync/datagram", test_ipv6_sync_dgram);
+  g_test_add_func ("/socket/ipv6_sync/datagram/timeouts", test_ipv6_sync_dgram_timeouts);
 #if defined (IPPROTO_IPV6) && defined (IPV6_V6ONLY)
   g_test_add_func ("/socket/ipv6_v4mapped", test_ipv6_v4mapped);
 #endif

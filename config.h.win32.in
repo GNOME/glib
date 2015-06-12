@@ -401,6 +401,9 @@
 /* Define to 1 if you have the `sendmmsg` function */
 /* #undef HAVE_SENDMMSG */
 
+/* Define to 1 if you have the `recvmmsg` function */
+/* #undef HAVE_RECVMMSG */
+
 /* Define to 1 if you have the <selinux/selinux.h> header file. */
 /* #undef HAVE_SELINUX_SELINUX_H */
 

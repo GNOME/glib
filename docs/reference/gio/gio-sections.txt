@@ -2017,6 +2017,7 @@ g_socket_check_connect_result
 g_socket_receive
 g_socket_receive_from
 g_socket_receive_message
+g_socket_receive_messages
 g_socket_receive_with_blocking
 g_socket_send
 g_socket_send_to
