@@ -134,6 +134,15 @@ static gboolean g_socket_initable_init       (GInitable       *initable,
 					      GCancellable    *cancellable,
 					      GError         **error);
 
+static gint
+g_socket_send_messages_with_blocking   (GSocket        *socket,
+                                        GOutputMessage *messages,
+                                        guint           num_messages,
+                                        gint            flags,
+                                        gboolean        blocking,
+                                        GCancellable   *cancellable,
+                                        GError        **error);
+
 enum
 {
   PROP_0,
@@ -4044,6 +4053,20 @@ g_socket_send_messages (GSocket        *socket,
 		        GCancellable   *cancellable,
 		        GError        **error)
 {
+  return g_socket_send_messages_with_blocking (socket, messages, num_messages,
+                                               flags, socket->priv->blocking,
+                                               cancellable, error);
+}
+
+static gint
+g_socket_send_messages_with_blocking (GSocket        *socket,
+                                      GOutputMessage *messages,
+                                      guint           num_messages,
+                                      gint            flags,
+                                      gboolean        blocking,
+                                      GCancellable   *cancellable,
+                                      GError        **error)
+{
   g_return_val_if_fail (G_IS_SOCKET (socket), -1);
   g_return_val_if_fail (num_messages == 0 || messages != NULL, -1);
   g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), -1);
@@ -4183,7 +4206,7 @@ g_socket_send_messages (GSocket        *socket,
             if (errsv == EINTR)
               continue;
 
-            if (socket->priv->blocking &&
+            if (blocking &&
                 (errsv == EWOULDBLOCK ||
                  errsv == EAGAIN))
               {
