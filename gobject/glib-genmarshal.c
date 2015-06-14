@@ -412,9 +412,9 @@ generate_marshal (const gchar *signame,
       g_fprintf (fout, "%s%s data2);\n", indent (ind), pad ("gpointer"));
 
       /* cfile marshal variables */
-      g_fprintf (fout, "  register GMarshalFunc_%s callback;\n", signame);
-      g_fprintf (fout, "  register GCClosure *cc = (GCClosure*) closure;\n");
-      g_fprintf (fout, "  register gpointer data1, data2;\n");
+      g_fprintf (fout, "  GMarshalFunc_%s callback;\n", signame);
+      g_fprintf (fout, "  GCClosure *cc = (GCClosure*) closure;\n");
+      g_fprintf (fout, "  gpointer data1, data2;\n");
       if (sig->rarg->setter)
 	g_fprintf (fout, "  %s v_return;\n", sig->rarg->ctype);
 
