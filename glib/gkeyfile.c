@@ -3230,9 +3230,13 @@ g_key_file_set_top_comment (GKeyFile     *key_file,
  * @error: return location for a #GError
  *
  * Places a comment above @key from @group_name.
- * If @key is %NULL then @comment will be written above @group_name.  
- * If both @key and @group_name  are %NULL, then @comment will be 
+ *
+ * If @key is %NULL then @comment will be written above @group_name.
+ * If both @key and @group_name  are %NULL, then @comment will be
  * written above the first group in the file.
+ *
+ * Note that this function prepends a '#' comment marker to
+ * each line of @comment.
  *
  * Returns: %TRUE if the comment was written, %FALSE otherwise
  *
@@ -3456,9 +3460,11 @@ g_key_file_get_top_comment (GKeyFile  *key_file,
  * @error: return location for a #GError
  *
  * Retrieves a comment above @key from @group_name.
- * If @key is %NULL then @comment will be read from above 
- * @group_name. If both @key and @group_name are %NULL, then 
+ * If @key is %NULL then @comment will be read from above
+ * @group_name. If both @key and @group_name are %NULL, then
  * @comment will be read from above the first group in the file.
+ *
+ * Note that the returned string includes the '#' comment markers.
  *
  * Returns: a comment that should be freed with g_free()
  *
