@@ -1,3 +1,57 @@
+Overview of changes in GLib 2.45.3
+==================================
+
+* Improve performance of g_signal_handler_disconnect for signals
+  with many handlers
+
+* GDBus has gained a new call flag to allow interactive authorization
+
+* GSettings:
+ - New API: g_settings_schema_list_keys
+ - Deprecated: g_settings_list_keys
+
+* OS X:
+ - Implement GNotification
+ - Bump the OS X requirement to 10.9
+
+* Windows:
+ - Add registry reading API
+ - Reimplement GAppInfo using registry information
+
+* Bugs fixed:
+ 666831 Support URI opening on W32
+ 728489 property action with inverted boolean state
+ 730168 Incorrect annotation on g_action_group_get_action_state_type return...
+ 733325 Several regex tests fail with pcre3 8.35
+ 734888 GLib has no helper functions to work with W32 Registry
+ 737009 signal handler lookup doesn't scale
+ 738185 Misleading language about "file name encoding" in the docs on g_env...
+ 738504 Optimize UTF-8 decoding by unrolling branches and expressions
+ 739122 glib not handling -1 return ("no limit") from sysconf (_SC_THREAD_S...
+ 739424 gnome-shell crashes when files are added, deleted, or modified in $...
+ 739616 DBus; Add new call flag to allow interactive authorization
+ 740308 Add g_settings_schema_list_keys() method
+ 740516 RFE: please provide an introspectible version of g_log_set_handler
+ 741788 Document GSettings build system integration
+ 745013 GBinding not thread safe
+ 747146 Implement GNotification on OSX
+ 747941 try XDG_RUNTIME_DIR/bus before falling back to X11 autolaunch (dbus...
+ 748727 Filechooser dialog shows no icons for directories on W32
+ 749693 GActionGroupExporter: flush queue on requests
+ 750203 GNetworkMonitorNetlink hangs in user namespace
+ 750322 gapplication: Make sure --help output is translated
+ 750344 GTlsInteractionClass is missing from doc
+ 750369 Various GBinding cleanups
+ 750386 Race condition in g_io_condition_get_type
+ 750399 Typo "equilalent" in glib documentation's glib-Error-Reporting.html...
+ 750573 GTlsDatabaseClass is not documented
+ 750918 genmarshal: silence register storage class warnings
+
+* Translation updates:
+ Hungarian
+ Spanish
+
+
 Overview of changes in GLib 2.45.2
 ==================================
 
