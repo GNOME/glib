@@ -1296,7 +1296,10 @@ task_thread_cancelled (GCancellable *cancellable,
 {
   GTask *task = user_data;
 
-  g_task_thread_pool_resort ();
+  /* Move this task to the front of the queue - no need for
+   * a complete resorting of the queue.
+   */
+  g_thread_pool_move_to_front (task_pool, task);
 
   g_mutex_lock (&task->lock);
   task->thread_cancelled = TRUE;
