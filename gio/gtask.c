@@ -582,8 +582,6 @@ typedef enum
   PROP_COMPLETED = 1,
 } GTaskProperty;
 
-static void g_task_thread_pool_resort (void);
-
 static void g_task_async_result_iface_init (GAsyncResultIface *iface);
 static void g_task_thread_pool_init (void);
 
@@ -1895,12 +1893,6 @@ g_task_thread_pool_init (void)
   g_source_attach (task_pool_manager,
                    GLIB_PRIVATE_CALL (g_get_worker_context ()));
   g_source_unref (task_pool_manager);
-}
-
-static void
-g_task_thread_pool_resort (void)
-{
-  g_thread_pool_set_sort_function (task_pool, g_task_compare_priority, NULL);
 }
 
 static void
