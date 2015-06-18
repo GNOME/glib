@@ -767,7 +767,7 @@ g_socket_client_class_init (GSocketClientClass *class)
    * @client: the #GSocketClient
    * @event: the event that is occurring
    * @connectable: the #GSocketConnectable that @event is occurring on
-   * @connection: the current representation of the connection
+   * @connection: (nullable): the current representation of the connection
    *
    * Emitted when @client's activity on @connectable changes state.
    * Among other things, this can be used to provide progress
