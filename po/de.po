@@ -10,14 +10,15 @@
 # Wolfgang Stöggl <c72578@yahoo.de>, 2011.
 # Christian Kirbach <Christian.Kirbach@gmail.com>, 2009, 2010, 2012.
 # Tobias Endrigkeit <tobiasendrigkeit@googlemail.com>, 2012.
+# Bernd Homuth <dev@hmt.im>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-10 18:49+0000\n"
-"PO-Revision-Date: 2014-08-15 11:50+0100\n"
+"POT-Creation-Date: 2015-06-11 17:53+0000\n"
+"PO-Revision-Date: 2015-06-13 15:44+0100\n"
 "Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -25,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.7.5\n"
 
 #: ../gio/gapplication.c:531
 msgid "Enter GApplication service mode (use from D-Bus service files)"
@@ -306,13 +307,13 @@ msgstr "Nicht genug Platz im Ziel"
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
 #: ../gio/gdatainputstream.c:1256 ../glib/gconvert.c:438
-#: ../glib/gconvert.c:845 ../glib/giochannel.c:1557 ../glib/giochannel.c:1599
-#: ../glib/giochannel.c:2443 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
+#: ../glib/gconvert.c:845 ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
+#: ../glib/giochannel.c:2442 ../glib/gutf8.c:837 ../glib/gutf8.c:1289
 msgid "Invalid byte sequence in conversion input"
 msgstr "Ungültige Bytefolge in Konvertierungseingabe"
 
 #: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:446
-#: ../glib/gconvert.c:770 ../glib/giochannel.c:1564 ../glib/giochannel.c:2455
+#: ../glib/gconvert.c:770 ../glib/giochannel.c:1563 ../glib/giochannel.c:2454
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Fehler bei der Umwandlung: %s"
@@ -322,7 +323,7 @@ msgid "Cancellable initialization not supported"
 msgstr "Abbrechbare Initialisierung wird nicht unterstützt"
 
 #: ../gio/gcharsetconverter.c:454 ../glib/gconvert.c:321
-#: ../glib/giochannel.c:1385
+#: ../glib/giochannel.c:1384
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Umwandlung von Zeichensatz »%s« in »%s« wird nicht unterstützt"
@@ -1208,7 +1209,7 @@ msgstr "Zu überwachender Objektpfad"
 msgid "Monitor a remote object."
 msgstr "Ein entferntes Objekt überwachen."
 
-#: ../gio/gdesktopappinfo.c:1999 ../gio/gdesktopappinfo.c:4530
+#: ../gio/gdesktopappinfo.c:1999 ../gio/gdesktopappinfo.c:4517
 #: ../gio/gwin32appinfo.c:219
 msgid "Unnamed"
 msgstr "Unbenannt"
@@ -1433,31 +1434,28 @@ msgstr "Abschneiden wird vom Datenstrom nicht unterstützt"
 
 #: ../gio/ghttpproxy.c:136
 msgid "Bad HTTP proxy reply"
-msgstr ""
+msgstr "Falsche HTTP-Proxy-Antwort"
 
 #: ../gio/ghttpproxy.c:152
-#, fuzzy
-#| msgid "The connection is closed"
 msgid "HTTP proxy connection not allowed"
-msgstr "Verbindung ist geschlossen"
+msgstr "Verbindung zum HTTP-Proxy nicht zulässig"
 
 #: ../gio/ghttpproxy.c:157
 msgid "HTTP proxy authentication failed"
-msgstr ""
+msgstr "Legitimation am HTTP-Proxy fehlgeschlagen"
 
 #: ../gio/ghttpproxy.c:160
 msgid "HTTP proxy authentication required"
-msgstr ""
+msgstr "Legitimation am HTTP-Proxy erforderlich"
 
 #: ../gio/ghttpproxy.c:164
-#, fuzzy, c-format
-#| msgid "The connection is closed"
+#, c-format
 msgid "HTTP proxy connection failed: %i"
-msgstr "Verbindung ist geschlossen"
+msgstr "Verbindung zum HTTP-Proxy fehlgeschlagen: %i"
 
 #: ../gio/ghttpproxy.c:260
 msgid "HTTP proxy server closed connection unexpectedly."
-msgstr ""
+msgstr "Verbindung zum HTTP-Proxy-Server unerwartet geschlossen."
 
 #: ../gio/gicon.c:290
 #, c-format
@@ -2322,12 +2320,12 @@ msgstr "Netzwerkmonitor konnte nicht erstellt werden:"
 
 #: ../gio/gnetworkmonitornetlink.c:175
 msgid "Could not get network status: "
-msgstr "Netzwerkstatus konnte nicht ermittelt werden:"
+msgstr "Netzwerkstatus konnte nicht ermittelt werden: "
 
 #: ../gio/gnetworkmonitornm.c:278
 #, c-format
 msgid "NetworkManager version too old"
-msgstr ""
+msgstr "Version von NetworkManager ist zu alt"
 
 #: ../gio/goutputstream.c:209 ../gio/goutputstream.c:557
 msgid "Output stream doesn't implement write"
@@ -2732,7 +2730,7 @@ msgstr "Ungültiger Socket, Initialisierung schlug fehl wegen: %s"
 msgid "Socket is already closed"
 msgstr "Der Socket ist bereits geschlossen"
 
-#: ../gio/gsocket.c:301 ../gio/gsocket.c:3627 ../gio/gsocket.c:3682
+#: ../gio/gsocket.c:301 ../gio/gsocket.c:3630 ../gio/gsocket.c:3685
 msgid "Socket I/O timed out"
 msgstr "Zeitüberschreitung bei Ein-/Ausgabeoperation des Sockets"
 
@@ -2754,98 +2752,98 @@ msgstr "Eine unbekannte Familie wurde angegeben"
 msgid "Unknown protocol was specified"
 msgstr "Ein unbekanntes Protokoll wurde angegeben"
 
-#: ../gio/gsocket.c:1727
+#: ../gio/gsocket.c:1730
 #, c-format
 msgid "could not get local address: %s"
 msgstr "Lokale Adresse konnte nicht gelesen werden: %s"
 
-#: ../gio/gsocket.c:1770
+#: ../gio/gsocket.c:1773
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "Entfernte Adresse konnte nicht gelesen werden: %s"
 
-#: ../gio/gsocket.c:1831
+#: ../gio/gsocket.c:1834
 #, c-format
 msgid "could not listen: %s"
 msgstr "Es konnte nicht gelauscht werden: %s"
 
-#: ../gio/gsocket.c:1930
+#: ../gio/gsocket.c:1933
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Fehler beim Binden an Adresse: %s"
 
-#: ../gio/gsocket.c:2045 ../gio/gsocket.c:2082
+#: ../gio/gsocket.c:2048 ../gio/gsocket.c:2085
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Fehler beim Beitreten zur Multicast-Gruppe: %s"
 
-#: ../gio/gsocket.c:2046 ../gio/gsocket.c:2083
+#: ../gio/gsocket.c:2049 ../gio/gsocket.c:2086
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Fehler beim Verlassen der Multicast-Gruppe: %s"
 
-#: ../gio/gsocket.c:2047
+#: ../gio/gsocket.c:2050
 msgid "No support for source-specific multicast"
 msgstr "Quellen-spezifisches Multicast wird nicht unterstützt"
 
-#: ../gio/gsocket.c:2269
+#: ../gio/gsocket.c:2272
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Fehler bei Annahme der Verbindung: %s"
 
-#: ../gio/gsocket.c:2392
+#: ../gio/gsocket.c:2395
 msgid "Connection in progress"
 msgstr "Verbindungsvorgang läuft"
 
-#: ../gio/gsocket.c:2442
+#: ../gio/gsocket.c:2445
 msgid "Unable to get pending error: "
 msgstr "Ausstehender Fehler konnte nicht erhalten werden: "
 
-#: ../gio/gsocket.c:2645
+#: ../gio/gsocket.c:2648
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Fehler beim Erhalt von Daten: %s"
 
-#: ../gio/gsocket.c:2820
+#: ../gio/gsocket.c:2823
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Fehler beim Senden von Daten: %s"
 
-#: ../gio/gsocket.c:2934
+#: ../gio/gsocket.c:2937
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Socket kann nicht heruntergefahren werden: %s"
 
-#: ../gio/gsocket.c:3013
+#: ../gio/gsocket.c:3016
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Fehler beim Schließen des Sockets: %s"
 
-#: ../gio/gsocket.c:3620
+#: ../gio/gsocket.c:3623
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Es wird auf eine Socket-Bedingung gewartet: %s"
 
-#: ../gio/gsocket.c:3907 ../gio/gsocket.c:3990 ../gio/gsocket.c:4218
+#: ../gio/gsocket.c:3910 ../gio/gsocket.c:3993 ../gio/gsocket.c:4221
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Fehler beim Senden der Nachricht: %s"
 
-#: ../gio/gsocket.c:3932
+#: ../gio/gsocket.c:3935
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage wird unter Windows nicht unterstützt"
 
-#: ../gio/gsocket.c:4546 ../gio/gsocket.c:4684
+#: ../gio/gsocket.c:4549 ../gio/gsocket.c:4687
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Fehler beim Empfang der Nachricht: %s"
 
-#: ../gio/gsocket.c:4806
+#: ../gio/gsocket.c:4809
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Socket-Berechtigungen konnten nicht gelesen werden: %s"
 
-#: ../gio/gsocket.c:4815
+#: ../gio/gsocket.c:4818
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials ist für dieses Betriebssystem nicht implementiert"
@@ -3650,25 +3648,25 @@ msgstr "Die symbolische Verknüpfung »%s« konnte nicht gelesen werden: %s"
 msgid "Symbolic links not supported"
 msgstr "Symbolische Verknüpfungen nicht unterstützt"
 
-#: ../glib/giochannel.c:1389
+#: ../glib/giochannel.c:1388
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Konverter von »%s« in »%s« konnte nicht geöffnet werden: %s"
 
-#: ../glib/giochannel.c:1734
+#: ../glib/giochannel.c:1733
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Raw-read in g_io_channel_read_line_string nicht möglich"
 
-#: ../glib/giochannel.c:1781 ../glib/giochannel.c:2039
-#: ../glib/giochannel.c:2126
+#: ../glib/giochannel.c:1780 ../glib/giochannel.c:2038
+#: ../glib/giochannel.c:2125
 msgid "Leftover unconverted data in read buffer"
 msgstr "Nicht konvertierte Daten befinden sich noch im Lesepuffer "
 
-#: ../glib/giochannel.c:1862 ../glib/giochannel.c:1939
+#: ../glib/giochannel.c:1861 ../glib/giochannel.c:1938
 msgid "Channel terminates in a partial character"
 msgstr "Kanal endet mit einem Teilzeichen"
 
-#: ../glib/giochannel.c:1925
+#: ../glib/giochannel.c:1924
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Raw-read in g_io_channel_read_to_end nicht möglich"
 
