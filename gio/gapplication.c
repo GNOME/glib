@@ -1279,7 +1279,7 @@ g_application_handle_local_options_accumulator (GSignalInvocationHint *ihint,
   value = g_value_get_int (handler_return);
   g_value_set_int (return_accu, value);
 
-  return value >= 0;
+  return value < 0;
 }
 
 static void
