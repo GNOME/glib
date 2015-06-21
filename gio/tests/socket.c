@@ -1005,8 +1005,10 @@ test_fd_reuse (void)
 
   g_socket_shutdown (client, FALSE, TRUE, &error);
   g_assert_no_error (error);
-  g_socket_shutdown (client2, FALSE, TRUE, &error);
-  g_assert_no_error (error);
+  /* The semantics of dup()+shutdown() are ambiguous; this call will succeed
+   * on Linux, but return ENOTCONN on OS X.
+   */
+  g_socket_shutdown (client2, FALSE, TRUE, NULL);
 
   g_thread_join (data->thread);
 
