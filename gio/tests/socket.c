@@ -930,30 +930,30 @@ test_timed_wait (void)
 }
 
 static int
-duplicate_fd(int fd)
+duplicate_fd (int fd)
 {
 #ifdef G_OS_WIN32
-    HANDLE newfd;
+  HANDLE newfd;
 
-    if (!DuplicateHandle (GetCurrentProcess (),
-                          (HANDLE)fd,
-                          GetCurrentProcess (),
-                          &newfd,
-                          0,
-                          FALSE,
-                           DUPLICATE_SAME_ACCESS))
+  if (!DuplicateHandle (GetCurrentProcess (),
+                        (HANDLE)fd,
+                        GetCurrentProcess (),
+                        &newfd,
+                        0,
+                        FALSE,
+                        DUPLICATE_SAME_ACCESS))
     {
-        return -1;
+      return -1;
     }
 
-    return (int)newfd;
+  return (int)newfd;
 #else
-    return dup(fd);
+  return dup (fd);
 #endif
 }
 
 static void
-test_fd_roundtrip (void)
+test_fd_reuse (void)
 {
   IPTestData *data;
   GError *error = NULL;
@@ -963,6 +963,8 @@ test_fd_roundtrip (void)
   int fd;
   gssize len;
   gchar buf[128];
+
+  g_test_bug ("741707");
 
   data = create_server (G_SOCKET_FAMILY_IPV4, echo_server_thread, FALSE);
   addr = g_socket_get_local_address (data->server, &error);
@@ -1421,6 +1423,7 @@ main (int   argc,
   GError *error = NULL;
 
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("https://bugzilla.gnome.org/");
 
   sock = g_socket_new (G_SOCKET_FAMILY_IPV6,
                        G_SOCKET_TYPE_STREAM,
@@ -1448,7 +1451,7 @@ main (int   argc,
 #endif
   g_test_add_func ("/socket/close_graceful", test_close_graceful);
   g_test_add_func ("/socket/timed_wait", test_timed_wait);
-  g_test_add_func ("/socket/fd_roundtrip", test_fd_roundtrip);
+  g_test_add_func ("/socket/fd_reuse", test_fd_reuse);
   g_test_add_func ("/socket/address", test_sockaddr);
 #ifdef G_OS_UNIX
   g_test_add_func ("/socket/unix-from-fd", test_unix_from_fd);
