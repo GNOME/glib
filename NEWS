@@ -46,6 +46,8 @@ Overview of changes in GLib 2.45.3
  750399 Typo "equilalent" in glib documentation's glib-Error-Reporting.html...
  750573 GTlsDatabaseClass is not documented
  750918 genmarshal: silence register storage class warnings
+ 751122 gsocket: avoid unnecessary g_socket_cond_wait() in _send_messages()
+ 479730 The "g_key_file_set_comment" interface prepends '#' character to...
 
 * Translation updates:
  Hungarian
