@@ -2715,8 +2715,10 @@ g_application_withdraw_notification (GApplication *application,
   g_return_if_fail (G_IS_APPLICATION (application));
   g_return_if_fail (id != NULL);
 
-  if (application->priv->notifications)
-    g_notification_backend_withdraw_notification (application->priv->notifications, id);
+  if (application->priv->notifications == NULL)
+    application->priv->notifications = g_notification_backend_new_default (application);
+
+  g_notification_backend_withdraw_notification (application->priv->notifications, id);
 }
 
 /* Busy binding {{{1 */
