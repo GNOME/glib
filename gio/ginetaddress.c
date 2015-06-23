@@ -417,7 +417,8 @@ inet_pton (gint family,
               /* XXX: Figure out when WSAStringToAddress() accepts a IPv4 address but the
                       numbers-and-dots address is actually not complete.  This code will be
                       removed once XP/Server 2003 support is dropped... */
-              addr = &sin->sin_addr;
+              *(IN_ADDR *) addr = sin->sin_addr;
+
               return 1;
             }
         }
@@ -425,7 +426,7 @@ inet_pton (gint family,
         {
           if (WSAStringToAddress ((LPTSTR) addr_string, AF_INET6, NULL, (LPSOCKADDR) &sa, &len) == 0)
             {
-              addr = &sin6->sin6_addr;
+              *(IN6_ADDR *) addr = sin6->sin6_addr;
               return 1;
             }
         }
