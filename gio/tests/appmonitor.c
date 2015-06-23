@@ -86,7 +86,6 @@ test_app_monitor (void)
   /* FIXME: this shouldn't be required */
   g_list_free_full (g_app_info_get_all (), g_object_unref);
 
-  g_idle_add (delete_app, path);
   g_timeout_add_seconds (3, quit_loop, loop);
 
   g_main_loop_run (loop);
@@ -95,6 +94,9 @@ test_app_monitor (void)
   g_main_loop_unref (loop);
 
   g_object_unref (monitor);
+
+  delete_app (path);
+
   g_free (path);
 }
 
