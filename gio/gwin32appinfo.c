@@ -3526,7 +3526,7 @@ g_win32_app_info_new_from_app (GWin32AppInfoApplication *app,
 
   new_info->supported_types[i] = NULL;
 
-  new_info->handler = g_object_ref (handler);
+  new_info->handler = handler ? g_object_ref (handler) : NULL;
 
   return G_APP_INFO (new_info);
 }
