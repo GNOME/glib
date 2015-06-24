@@ -4590,3 +4590,80 @@ g_app_info_get_all (void)
 
   return infos;
 }
+
+GList *
+g_app_info_get_all_for_type (const char *content_type)
+{
+  GWin32AppInfoFileExtension *ext;
+  char *ext_down;
+  GWin32AppInfoHandler *handler;
+  GWin32AppInfoApplication *app;
+  GHashTableIter iter;
+  GList *result;
+
+  ext_down = g_utf8_casefold (content_type, -1);
+
+  if (!ext_down)
+    return NULL;
+
+  g_win32_appinfo_init ();
+  G_LOCK (gio_win32_appinfo);
+
+  /* Assuming that "content_type" is a file extension, not a MIME type */
+  ext = g_hash_table_lookup (extensions, ext_down);
+  g_free (ext_down);
+
+  result = NULL;
+
+  if (ext != NULL)
+    g_object_ref (ext);
+
+  G_UNLOCK (gio_win32_appinfo);
+
+  if (ext == NULL)
+    return NULL;
+
+  if (ext->chosen_handler != NULL &&
+      ext->chosen_handler->app != NULL)
+    result = g_list_prepend (result,
+                             g_win32_app_info_new_from_app (ext->chosen_handler->app,
+                                                            ext->chosen_handler));
+
+  g_hash_table_iter_init (&iter, ext->handlers);
+
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &handler))
+    {
+      if (handler->app &&
+          (ext->chosen_handler == NULL || ext->chosen_handler->app != app))
+          result = g_list_prepend (result,
+                                   g_win32_app_info_new_from_app (handler->app,
+                                                                  handler));
+    }
+
+  g_hash_table_iter_init (&iter, ext->other_apps);
+
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &app))
+    {
+      result = g_list_prepend (result, g_win32_app_info_new_from_app (app, NULL));
+    }
+
+  g_object_unref (ext);
+
+  result = g_list_reverse (result);
+
+  return result;
+}
+
+GList *
+g_app_info_get_fallback_for_type (const gchar *content_type)
+{
+  /* TODO: fix this once gcontenttype support is improved */
+  return g_app_info_get_all_for_type (content_type);
+}
+
+GList *
+g_app_info_get_recommended_for_type (const gchar *content_type)
+{
+  /* TODO: fix this once gcontenttype support is improved */
+  return g_app_info_get_all_for_type (content_type);
+}
