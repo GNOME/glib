@@ -223,6 +223,9 @@ typedef struct _GTcpWrapperConnection                       GTcpWrapperConnectio
  * Since: 2.22
  **/
 typedef struct _GThreadedSocketService                      GThreadedSocketService;
+typedef struct _GDtlsConnection               GDtlsConnection;
+typedef struct _GDtlsClientConnection         GDtlsClientConnection; /* Dummy typedef */
+typedef struct _GDtlsServerConnection         GDtlsServerConnection; /* Dummy typedef */
 typedef struct _GThemedIcon                   GThemedIcon;
 typedef struct _GTlsCertificate               GTlsCertificate;
 typedef struct _GTlsClientConnection          GTlsClientConnection; /* Dummy typedef */

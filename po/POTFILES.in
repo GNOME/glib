@@ -41,6 +41,9 @@ gio/gdbusserver.c
 gio/gdbus-tool.c
 gio/gdesktopappinfo.c
 gio/gdrive.c
+gio/gdtlsclientconnection.c
+gio/gdtlsconnection.c
+gio/gdtlsserverconnection.c
 gio/gdummyfile.c
 gio/gdummytlsbackend.c
 gio/gemblem.c

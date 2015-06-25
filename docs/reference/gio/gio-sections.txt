@@ -3578,10 +3578,13 @@ GTlsBackend
 GTlsBackendInterface
 g_tls_backend_get_default
 g_tls_backend_supports_tls
+g_tls_backend_supports_dtls
 g_tls_backend_get_default_database
 g_tls_backend_get_certificate_type
 g_tls_backend_get_client_connection_type
 g_tls_backend_get_server_connection_type
+g_tls_backend_get_dtls_client_connection_type
+g_tls_backend_get_dtls_server_connection_type
 g_tls_backend_get_file_database_type
 <SUBSECTION Standard>
 G_IS_TLS_BACKEND
@@ -3805,6 +3808,84 @@ G_TYPE_TLS_CERTIFICATE_REQUEST_FLAGS
 GTlsInteractionPrivate
 g_tls_interaction_get_type
 g_tls_interaction_result_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gdtlsconnection</FILE>
+<TITLE>GDtlsConnection</TITLE>
+GDtlsConnection
+g_dtls_connection_set_certificate
+g_dtls_connection_get_certificate
+g_dtls_connection_get_peer_certificate
+g_dtls_connection_get_peer_certificate_errors
+g_dtls_connection_set_require_close_notify
+g_dtls_connection_get_require_close_notify
+g_dtls_connection_set_rehandshake_mode
+g_dtls_connection_get_rehandshake_mode
+g_dtls_connection_get_database
+g_dtls_connection_set_database
+g_dtls_connection_get_interaction
+g_dtls_connection_set_interaction
+<SUBSECTION>
+g_dtls_connection_handshake
+g_dtls_connection_handshake_async
+g_dtls_connection_handshake_finish
+<SUBSECTION>
+g_dtls_connection_shutdown
+g_dtls_connection_shutdown_async
+g_dtls_connection_shutdown_finish
+g_dtls_connection_close
+g_dtls_connection_close_async
+g_dtls_connection_close_finish
+<SUBSECTION>
+g_dtls_connection_emit_accept_certificate
+<SUBSECTION Standard>
+GDtlsConnectionClass
+GDtlsConnectionPrivate
+G_IS_DTLS_CONNECTION
+G_IS_DTLS_CONNECTION_CLASS
+G_DTLS_CONNECTION
+G_DTLS_CONNECTION_CLASS
+G_DTLS_CONNECTION_GET_CLASS
+G_TYPE_DTLS_CONNECTION
+G_DTLS_CONNECTION_GET_INTERFACE
+<SUBSECTION Private>
+g_dtls_connection_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gdtlsclientconnection</FILE>
+<TITLE>GDtlsClientConnection</TITLE>
+GDtlsClientConnection
+GDtlsClientConnectionInterface
+g_dtls_client_connection_new
+g_dtls_client_connection_set_server_identity
+g_dtls_client_connection_get_server_identity
+g_dtls_client_connection_set_validation_flags
+g_dtls_client_connection_get_validation_flags
+g_dtls_client_connection_get_accepted_cas
+<SUBSECTION Standard>
+G_IS_DTLS_CLIENT_CONNECTION
+G_DTLS_CLIENT_CONNECTION
+G_DTLS_CLIENT_CONNECTION_GET_INTERFACE
+G_TYPE_DTLS_CLIENT_CONNECTION
+<SUBSECTION Private>
+g_dtls_client_connection_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gdtlsserverconnection</FILE>
+<TITLE>GDtlsServerConnection</TITLE>
+GDtlsServerConnection
+GDtlsServerConnectionInterface
+g_dtls_server_connection_new
+<SUBSECTION Standard>
+G_IS_DTLS_SERVER_CONNECTION
+G_DTLS_SERVER_CONNECTION
+G_DTLS_SERVER_CONNECTION_GET_INTERFACE
+G_TYPE_DTLS_SERVER_CONNECTION
+<SUBSECTION Private>
+g_dtls_server_connection_get_type
 </SECTION>
 
 <SECTION>

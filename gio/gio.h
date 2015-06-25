@@ -60,6 +60,9 @@
 #include <gio/gdbusserver.h>
 #include <gio/gdbusutils.h>
 #include <gio/gdrive.h>
+#include <gio/gdtlsclientconnection.h>
+#include <gio/gdtlsconnection.h>
+#include <gio/gdtlsserverconnection.h>
 #include <gio/gemblemedicon.h>
 #include <gio/gfileattribute.h>
 #include <gio/gfileenumerator.h>

@@ -1,6 +1,7 @@
 /* GIO - GLib Input, Output and Streaming Library
  *
  * Copyright © 2010 Red Hat, Inc
+ * Copyright © 2015 Collabora, Ltd.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,7 +35,12 @@
  * Security, previously known as SSL, Secure Sockets Layer) support for
  * gio-based network streams.
  *
- * In the simplest case, for a client connection, you can just set the
+ * #GDtlsConnection and related classes provide DTLS (Datagram TLS) support for
+ * GIO-based network sockets, using the #GDatagramBased interface. The TLS and
+ * DTLS APIs are almost identical, except TLS is stream-based and DTLS is
+ * datagram-based. They share certificate and backend infrastructure.
+ *
+ * In the simplest case, for a client TLS connection, you can just set the
  * #GSocketClient:tls flag on a #GSocketClient, and then any
  * connections created by that client will have TLS negotiated
  * automatically, using appropriate default settings, and rejecting
@@ -61,7 +67,7 @@
  * @short_description: TLS backend implementation
  * @include: gio/gio.h
  *
- * TLS (Transport Layer Security, aka SSL) backend
+ * TLS (Transport Layer Security, aka SSL) and DTLS backend.
  *
  * Since: 2.28
  */
@@ -69,7 +75,7 @@
 /**
  * GTlsBackend:
  *
- * TLS (Transport Layer Security, aka SSL) backend. This is an
+ * TLS (Transport Layer Security, aka SSL) and DTLS backend. This is an
  * internal type used to coordinate the different classes implemented
  * by a TLS backend.
  *
@@ -115,6 +121,28 @@ g_tls_backend_supports_tls (GTlsBackend *backend)
 {
   if (G_TLS_BACKEND_GET_INTERFACE (backend)->supports_tls)
     return G_TLS_BACKEND_GET_INTERFACE (backend)->supports_tls (backend);
+  else if (G_IS_DUMMY_TLS_BACKEND (backend))
+    return FALSE;
+  else
+    return TRUE;
+}
+
+/**
+ * g_tls_backend_supports_dtls:
+ * @backend: the #GTlsBackend
+ *
+ * Checks if DTLS is supported. DTLS support may not be available even if TLS
+ * support is available, and vice-versa.
+ *
+ * Returns: whether DTLS is supported
+ *
+ * Since: 2.48
+ */
+gboolean
+g_tls_backend_supports_dtls (GTlsBackend *backend)
+{
+  if (G_TLS_BACKEND_GET_INTERFACE (backend)->supports_dtls)
+    return G_TLS_BACKEND_GET_INTERFACE (backend)->supports_dtls (backend);
   else if (G_IS_DUMMY_TLS_BACKEND (backend))
     return FALSE;
   else
@@ -193,6 +221,40 @@ GType
 g_tls_backend_get_server_connection_type (GTlsBackend *backend)
 {
   return G_TLS_BACKEND_GET_INTERFACE (backend)->get_server_connection_type ();
+}
+
+/**
+ * g_tls_backend_get_dtls_client_connection_type:
+ * @backend: the #GTlsBackend
+ *
+ * Gets the #GType of @backend’s #GDtlsClientConnection implementation.
+ *
+ * Returns: the #GType of @backend’s #GDtlsClientConnection
+ *   implementation.
+ *
+ * Since: 2.48
+ */
+GType
+g_tls_backend_get_dtls_client_connection_type (GTlsBackend *backend)
+{
+  return G_TLS_BACKEND_GET_INTERFACE (backend)->get_dtls_client_connection_type ();
+}
+
+/**
+ * g_tls_backend_get_dtls_server_connection_type:
+ * @backend: the #GTlsBackend
+ *
+ * Gets the #GType of @backend’s #GDtlsServerConnection implementation.
+ *
+ * Returns: the #GType of @backend’s #GDtlsServerConnection
+ *   implementation.
+ *
+ * Since: 2.48
+ */
+GType
+g_tls_backend_get_dtls_server_connection_type (GTlsBackend *backend)
+{
+  return G_TLS_BACKEND_GET_INTERFACE (backend)->get_dtls_server_connection_type ();
 }
 
 /**

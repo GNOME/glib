@@ -152,6 +152,9 @@
       <xi:include href="xml/gtlsconnection.xml"/>
       <xi:include href="xml/gtlsclientconnection.xml"/>
       <xi:include href="xml/gtlsserverconnection.xml"/>
+      <xi:include href="xml/gdtlsconnection.xml"/>
+      <xi:include href="xml/gdtlsclientconnection.xml"/>
+      <xi:include href="xml/gdtlsserverconnection.xml"/>
       <xi:include href="xml/gtlsbackend.xml"/>
       <xi:include href="xml/gtlsdatabase.xml"/>
       <xi:include href="xml/gtlsfiledatabase.xml"/>

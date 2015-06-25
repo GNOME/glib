@@ -40,6 +40,8 @@
  * subclasses, #GTlsClientConnection and #GTlsServerConnection,
  * implement client-side and server-side TLS, respectively.
  *
+ * For DTLS (Datagram TLS) support, see #GDtlsConnection.
+ *
  * Since: 2.28
  */
 
