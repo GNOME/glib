@@ -83,7 +83,7 @@ possible to select which one to operate on with the
 <term><option>list</option></term>
 <listitem><para>
 Lists resources. If <replaceable>SECTION</replaceable> is given, only
-list resourcs in this section. If <replaceable>PATH</replaceable> is
+list resources in this section. If <replaceable>PATH</replaceable> is
 given, only list matching resources.
 </para></listitem>
 </varlistentry>
