@@ -65,6 +65,10 @@ GLIB_AVAILABLE_IN_ALL
 void            g_thread_pool_set_sort_function (GThreadPool      *pool,
                                                  GCompareDataFunc  func,
                                                  gpointer          user_data);
+GLIB_AVAILABLE_IN_2_46
+gboolean        g_thread_pool_move_to_front     (GThreadPool      *pool,
+                                                 gpointer          data);
+
 GLIB_AVAILABLE_IN_ALL
 gboolean        g_thread_pool_set_max_threads   (GThreadPool     *pool,
                                                  gint             max_threads,

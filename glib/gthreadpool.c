@@ -963,6 +963,36 @@ g_thread_pool_set_sort_function (GThreadPool      *pool,
 }
 
 /**
+ * g_thread_pool_move_to_front:
+ * @pool: a #GThreadPool
+ * @data: an unprocessed item in the pool
+ *
+ * Moves the item to the front of the queue of unprocessed
+ * items, so that it will be processed next.
+ *
+ * Returns: %TRUE if the item was found and moved
+ *
+ * Since: 2.46
+ */
+gboolean
+g_thread_pool_move_to_front (GThreadPool *pool,
+                             gpointer     data)
+{
+  GRealThreadPool *real = (GRealThreadPool*) pool;
+  gboolean found;
+
+  g_async_queue_lock (real->queue);
+
+  found = g_async_queue_remove_unlocked (real->queue, data);
+  if (found)
+    g_async_queue_push_front_unlocked (real->queue, data);
+
+  g_async_queue_unlock (real->queue);
+
+  return found;
+}
+
+/**
  * g_thread_pool_set_max_idle_time:
  * @interval: the maximum @interval (in milliseconds)
  *     a thread can be idle

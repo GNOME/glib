@@ -827,6 +827,7 @@ g_thread_pool_stop_unused_threads
 g_thread_pool_set_sort_function
 g_thread_pool_set_max_idle_time
 g_thread_pool_get_max_idle_time
+g_thread_pool_move_to_front
 </SECTION>
 
 <SECTION>
