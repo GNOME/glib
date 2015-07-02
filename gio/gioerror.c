@@ -254,6 +254,12 @@ g_io_error_from_errno (gint err_no)
       break;
 #endif
 
+#ifdef EMSGSIZE
+    case EMSGSIZE:
+      return G_IO_ERROR_MESSAGE_TOO_LARGE;
+      break;
+#endif
+
     default:
       return G_IO_ERROR_FAILED;
       break;
@@ -336,6 +342,9 @@ g_io_error_from_win32_error (gint error_code)
     case WSAENOTCONN:
     case ERROR_PIPE_LISTENING:
       return G_IO_ERROR_NOT_CONNECTED;
+
+    case WSAEMSGSIZE:
+      return G_IO_ERROR_MESSAGE_TOO_LARGE;
 
     default:
       return G_IO_ERROR_FAILED;

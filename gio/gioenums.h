@@ -495,6 +495,7 @@ typedef enum {
  *     returned %G_IO_ERROR_FAILED. Now they should all return the same
  *     value, which has this more logical name. Since 2.44.
  * @G_IO_ERROR_NOT_CONNECTED: Transport endpoint is not connected. Since 2.44
+ * @G_IO_ERROR_MESSAGE_TOO_LARGE: Message too large. Since 2.48.
  *
  * Error codes returned by GIO functions.
  *
@@ -559,7 +560,8 @@ typedef enum {
   G_IO_ERROR_PROXY_NOT_ALLOWED,
   G_IO_ERROR_BROKEN_PIPE,
   G_IO_ERROR_CONNECTION_CLOSED = G_IO_ERROR_BROKEN_PIPE,
-  G_IO_ERROR_NOT_CONNECTED
+  G_IO_ERROR_NOT_CONNECTED,
+  G_IO_ERROR_MESSAGE_TOO_LARGE,
 } GIOErrorEnum;
 
 
