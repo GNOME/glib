@@ -4667,3 +4667,9 @@ g_app_info_get_recommended_for_type (const gchar *content_type)
   /* TODO: fix this once gcontenttype support is improved */
   return g_app_info_get_all_for_type (content_type);
 }
+
+void
+g_app_info_reset_type_associations (const char *content_type)
+{
+  /* nothing to do */
+}
