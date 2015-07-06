@@ -385,7 +385,7 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
       g_assert (!rename_to);
       if (fms->flags & G_FILE_MONITOR_WATCH_MOVES)
         g_file_monitor_source_send_event (fms, G_FILE_MONITOR_EVENT_MOVED_OUT, child, other);
-      else if (fms->flags & G_FILE_MONITOR_SEND_MOVED)
+      else if (other && (fms->flags & G_FILE_MONITOR_SEND_MOVED))
         g_file_monitor_source_send_event (fms, G_FILE_MONITOR_EVENT_MOVED, child, other);
       else
         g_file_monitor_source_send_event (fms, G_FILE_MONITOR_EVENT_DELETED, child, NULL);
