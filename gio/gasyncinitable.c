@@ -381,6 +381,7 @@ g_async_initable_newv_async (GType                object_type,
   g_async_initable_init_async (G_ASYNC_INITABLE (obj),
 			       io_priority, cancellable,
 			       callback, user_data);
+  g_object_unref (obj); /* Passed ownership to async call */
 }
 
 /**
