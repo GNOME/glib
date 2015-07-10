@@ -120,6 +120,7 @@ socket
 socket-address
 socket-client
 socket-listener
+socket-service
 socket-server
 srvtarget
 task

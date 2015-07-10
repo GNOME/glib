@@ -57,6 +57,7 @@ test_programs = \
 	sleepy-stream				\
 	socket					\
 	socket-listener				\
+	socket-service				\
 	srvtarget				\
 	task					\
 	tls-interaction				\
