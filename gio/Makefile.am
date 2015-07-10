@@ -92,7 +92,18 @@ gdbus_sources = 							\
 # These are not built into the library yet
 EXTRA_DIST += gdbusdaemon.c gdbusdaemon.h dbus-daemon.xml
 
-gdbus-daemon-generated.h gdbus-daemon-generated.c: $(srcdir)/dbus-daemon.xml $(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in
+GDBUS_PYTHON_DEPS = 					\
+	$(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in	\
+	$(srcdir)/gdbus-2.0/codegen/codegen_main.py 	\
+	$(srcdir)/gdbus-2.0/codegen/parser.py 		\
+	$(srcdir)/gdbus-2.0/codegen/codegen_docbook.py 	\
+	$(srcdir)/gdbus-2.0/codegen/codegen.py 		\
+	$(srcdir)/gdbus-2.0/codegen/__init__.py 	\
+	$(srcdir)/gdbus-2.0/codegen/dbustypes.py 	\
+	$(srcdir)/gdbus-2.0/codegen/config.py 		\
+	$(srcdir)/gdbus-2.0/codegen/utils.py
+
+gdbus-daemon-generated.h gdbus-daemon-generated.c: $(srcdir)/dbus-daemon.xml $(GDBUS_PYTHON_DEPS)
 	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
 		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
 		$(PYTHON) $(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in \
