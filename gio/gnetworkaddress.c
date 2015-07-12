@@ -99,15 +99,7 @@ g_network_address_finalize (GObject *object)
 
   g_free (addr->priv->hostname);
   g_free (addr->priv->scheme);
-
-  if (addr->priv->sockaddrs)
-    {
-      GList *a;
-
-      for (a = addr->priv->sockaddrs; a; a = a->next)
-        g_object_unref (a->data);
-      g_list_free (addr->priv->sockaddrs);
-    }
+  g_list_free_full (addr->priv->sockaddrs, g_object_unref);
 
   G_OBJECT_CLASS (g_network_address_parent_class)->finalize (object);
 }
