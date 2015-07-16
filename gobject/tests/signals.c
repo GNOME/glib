@@ -358,6 +358,22 @@ test_class_init (TestClass *klass)
 		G_TYPE_UINT64);
 }
 
+typedef struct _Test Test2;
+typedef struct _TestClass Test2Class;
+
+static GType test2_get_type (void);
+G_DEFINE_TYPE (Test2, test2, G_TYPE_OBJECT)
+
+static void
+test2_init (Test2 *test)
+{
+}
+
+static void
+test2_class_init (Test2Class *klass)
+{
+}
+
 static void
 test_variant_signal (void)
 {
@@ -1090,6 +1106,42 @@ test_stop_emission (void)
   g_object_unref (test1);
 }
 
+static void
+test_signal_disconnect_wrong_object (void)
+{
+  Test *object, *object2;
+  Test2 *object3;
+  guint signal_id;
+
+  object = g_object_new (test_get_type (), NULL);
+  object2 = g_object_new (test_get_type (), NULL);
+  object3 = g_object_new (test2_get_type (), NULL);
+
+  signal_id = g_signal_connect (object,
+                                "simple",
+                                G_CALLBACK (simple_handler1),
+                                NULL);
+
+  /* disconnect from the wrong object (same type), should warn */
+  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_WARNING,
+                         "*: instance '*' has no handler with id '*'");
+  g_signal_handler_disconnect (object2, signal_id);
+  g_test_assert_expected_messages ();
+
+  /* and from an object of the wrong type */
+  g_test_expect_message ("GLib-GObject", G_LOG_LEVEL_WARNING,
+                         "*: instance '*' has no handler with id '*'");
+  g_signal_handler_disconnect (object3, signal_id);
+  g_test_assert_expected_messages ();
+
+  /* it's still connected */
+  g_assert (g_signal_handler_is_connected (object, signal_id));
+
+  g_object_unref (object);
+  g_object_unref (object2);
+  g_object_unref (object3);
+}
+
 /* --- */
 
 int
@@ -1113,6 +1165,7 @@ main (int argc,
   g_test_add_func ("/gobject/signals/block-handler", test_block_handler);
   g_test_add_func ("/gobject/signals/stop-emission", test_stop_emission);
   g_test_add_func ("/gobject/signals/invocation-hint", test_invocation_hint);
+  g_test_add_func ("/gobject/signals/test-disconnection-wrong-object", test_signal_disconnect_wrong_object);
 
   return g_test_run ();
 }
