@@ -1167,7 +1167,7 @@ test_run_in_thread_overflow (void)
   g_mutex_unlock (&overflow_mutex);
 
   /* Wait for all tasks to complete. */
-  while (!buf[NUM_OVERFLOW_TASKS - 1])
+  while (strlen (buf) != NUM_OVERFLOW_TASKS)
     g_usleep (1000);
 
   i = strspn (buf, ".");
