@@ -110,6 +110,7 @@ gio/gsocketconnection.c
 gio/gsocketinputstream.c
 gio/gsocketlistener.c
 gio/gsocketoutputstream.c
+gio/gsocketservice.c
 gio/gsocks4aproxy.c
 gio/gsocks5proxy.c
 gio/gsubprocess.c
