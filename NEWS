@@ -1,3 +1,30 @@
+Overview of changes in GLib 2.45.4
+==================================
+
+* Bugs fixed:
+ 727829 win32: glibconfig.h.win32 updates
+ 741901 Clang cannot know that g_error don't return
+ 746339 GSocket kills process when fd is not a socket
+ 747676 gio/tests/socket fails: test_fd_roundtrip
+ 748610 Some tests fail with non-English locales
+ 749911 g_inet_address_to_string broken on XP/2003
+ 749912 g_inet_address_new_from_string broken on XP/2003
+ 750625 Should dismiss Software Updates Available notification after...
+ 750807 G_BREAKPOINT doesn't work as intended on Darwin
+ 751160 gtask does unnecessary work
+ 751672 -Wduplicate-decl-specifier in glib/tests/keyfile.c
+ 751731 GFile/DirectoryMonitor emit move events with other_file=NULL
+ 751737 gio/tests/appmonitor test fails in 2.45.3
+ 751798 Wrong enum type used in some test-cases
+ 752089 make gsocketservice::active a property
+ 752293 small cleanup: use list_free_full
+
+* Translation updates:
+ Greek
+ Hebrew
+ Portuguese
+
+
 Overview of changes in GLib 2.45.3
 ==================================
 
