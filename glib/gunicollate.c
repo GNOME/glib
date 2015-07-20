@@ -215,26 +215,30 @@ collate_key_to_string (UCCollationValue *key,
                        gsize             key_len)
 {
   gchar *result;
-  gsize result_len = 0;
-  const gsize start = 2 * sizeof (void *) / sizeof (UCCollationValue);
-  gsize i;
+  gsize result_len;
+  long *lkey = (long *) key;
 
-  /* The first codes should be skipped: the same string on the same
-   * system can get different values at runtime in those positions,
-   * and they do not sort correctly.  The exact size of the prefix
-   * depends on whether we are building 64 or 32 bit.
+  /* UCCollationValue format:
+   *
+   * UCCollateOptions (32/64 bits)
+   * SizeInBytes      (32/64 bits)
+   * Value            (8 bits arrey)
+   *
+   * UCCollateOptions: ordering option mask of the collator
+   * used to create the key. Size changes on 32-bit / 64-bit
+   * hosts. On 64-bits also the extra half-word seems to have
+   * some extra (unknown) meaning.
+   * SizeInBytes: size of the whole structure, in bytes
+   * (including UCCollateOptions and SizeInBytes fields). Size
+   * changes on 32-bit & 64-bit hosts.
+   * Value: array of bytes containing the comparison weights.
+   * Seems to have several sub-strings separated by \001 and \002
+   * chars. Also, experience shows this is directly strcmp-able.
    */
-  if (key_len <= start)
-    return g_strdup ("");
 
-  for (i = start; i < key_len; i++)
-    result_len += utf8_encode (NULL, g_htonl (key[i] + 1));
-
+  result_len = lkey[1];
   result = g_malloc (result_len + 1);
-  result_len = 0;
-  for (i = start; i < key_len; i++)
-    result_len += utf8_encode (result + result_len, g_htonl (key[i] + 1));
-
+  memcpy (result, &lkey[2], result_len);
   result[result_len] = '\0';
 
   return result;
