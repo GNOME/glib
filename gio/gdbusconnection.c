@@ -3330,7 +3330,8 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  *     all object paths
  * @arg0: (allow-none): contents of first string argument to match on or %NULL
  *     to match on all kinds of arguments
- * @flags: flags describing how to subscribe to the signal (currently unused)
+ * @flags: #GDBusSignalFlags describing how arg0 is used in subscribing to the
+ *     signal
  * @callback: callback to invoke when there is a signal matching the requested data
  * @user_data: user data to pass to @callback
  * @user_data_free_func: (allow-none): function to free @user_data with when
