@@ -95,13 +95,15 @@
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #define HAVE_BIND_TEXTDOMAIN_CODESET 1
 
+#if (_MSC_VER >= 1900)
 /* Define if you have a version of the snprintf function with semantics as
    specified by the ISO C99 standard. */
-/* #undef HAVE_C99_SNPRINTF */
+#define HAVE_C99_SNPRINTF 1
 
 /* Define if you have a version of the vsnprintf function with semantics as
    specified by the ISO C99 standard. */
-/* #undef HAVE_C99_VSNPRINTF */
+#define HAVE_C99_VSNPRINTF 1
+#endif
 
 /* define to 1 if Carbon is available */
 /* #undef HAVE_CARBON */
@@ -233,27 +235,24 @@
 #define HAVE_INT64_AND_I64 1
 
 /* Define if you have the 'intmax_t' type in <stdint.h> or <inttypes.h>. */
-#ifndef _MSC_VER
+#if !defined (_MSC_VER) || (_MSC_VER >= 1600)
 #define HAVE_INTMAX_T 1
-#else /* _MSC_VER */
-#if (_MSC_VER >= 1600)
-#define HAVE_INTMAX_T 1
-#endif
+#else /* !_MSC_VER || _MSC_VER >= 1600 */
 /* #undef HAVE_INTMAX_T */
-#endif /* _MSC_VER */
+#endif /* _MSC_VER < 1600 */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
-#ifndef _MSC_VER
+#if !defined (_MSC_VER) || (_MSC_VER >= 1800)
 #define HAVE_INTTYPES_H 1
-#else /* _MSC_VER */
+#else /* !_MSC_VER || _MSC_VER >= 1800 */
 /* #undef HAVE_INTTYPES_H */
-#endif /* _MSC_VER */
+#endif /* _MSC_VER < 1800 */
 
 /* Define if <inttypes.h> exists, doesn't clash with <sys/types.h>, and
    declares uintmax_t. */
 #ifndef _MSC_VER
 #define HAVE_INTTYPES_H_WITH_UINTMAX 1
-#else /* _MSC_VER */
+#else /* !_MSC_VER */
 /* #undef HAVE_INTTYPES_H_WITH_UINTMAX */
 #endif /* _MSC_VER */
 
@@ -415,14 +414,14 @@
 #define HAVE_SIG_ATOMIC_T 1
 
 /* Define to 1 if you have the `snprintf' function. */
-#ifndef _MSC_VER
+#if !defined (_MSC_VER) || (_MSC_VER >= 1900)
 #define HAVE_SNPRINTF 1
 #ifdef __DMC__
 #define snprintf _snprintf
 #endif
-#else /* _MSC_VER */
+#else /* !_MSC_VER || _MSC_VER >= 1900 */
 /* #undef HAVE_SNPRINTF */
-#endif /* _MSC_VER */
+#endif /* _MSC_VER < 1900 */
 
 /* Define to 1 if you have the `splice' function. */
 /* #undef HAVE_SPLICE */
@@ -654,17 +653,14 @@
 #define HAVE_VASPRINTF 1
 
 /* Define to 1 if you have the `vsnprintf' function. */
-#ifndef _MSC_VER
+#if !defined (_MSC_VER) || (_MSC_VER >= 1500)
 #define HAVE_VSNPRINTF 1
 #ifdef __DMC__
 #define vsnprintf _vsnprintf
 #endif
-#else /* _MSC_VER */
-#if (_MSC_VER >= 1500)
-#define HAVE_VSNPRINTF 1
-#endif /* VS 2008+ has vsnprintf */
+#else /* !_MSC_VER || _MSC_VER >= 1500 */
 /* #undef HAVE_VSNPRINTF */
-#endif /* _MSC_VER */
+#endif /* _MSC_VER < 1500 */
 
 /* Define if you have the 'wchar_t' type. */
 #define HAVE_WCHAR_T 1
