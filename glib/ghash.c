@@ -1267,7 +1267,7 @@ g_hash_table_insert (GHashTable *hash_table,
  * If you supplied a @key_destroy_func when creating the
  * #GHashTable, the old key is freed using that function.
  *
- * Returns: %TRUE of the key did not exist yet
+ * Returns: %TRUE if the key did not exist yet
  */
 gboolean
 g_hash_table_replace (GHashTable *hash_table,
