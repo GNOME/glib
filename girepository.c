@@ -739,7 +739,6 @@ g_irepository_get_info (GIRepository *repository,
 typedef struct {
   const gchar *gtype_name;
   GITypelib *result_typelib;
-  gboolean found_prefix;
 } FindByGTypeData;
 
 static DirEntry *
@@ -757,8 +756,6 @@ find_by_gtype (GHashTable *table, FindByGTypeData *data, gboolean check_prefix)
         {
           if (!g_typelib_matches_gtype_name_prefix (typelib, data->gtype_name))
             continue;
-
-          data->found_prefix = TRUE;
         }
 
       ret = g_typelib_get_dir_entry_by_gtype_name (typelib, data->gtype_name);
@@ -805,7 +802,6 @@ g_irepository_find_by_gtype (GIRepository *repository,
 
   data.gtype_name = g_type_name (gtype);
   data.result_typelib = NULL;
-  data.found_prefix = FALSE;
 
   /* Inside each typelib, we include the "C prefix" which acts as
    * a namespace mechanism.  For GtkTreeView, the C prefix is Gtk.
@@ -817,13 +813,6 @@ g_irepository_find_by_gtype (GIRepository *repository,
   entry = find_by_gtype (repository->priv->typelibs, &data, TRUE);
   if (entry == NULL)
     entry = find_by_gtype (repository->priv->lazy_typelibs, &data, TRUE);
-
-  /* If we have no result, but we did find a typelib claiming to
-   * offer bindings for such a prefix, bail out now on the assumption
-   * that a more exhaustive search would not produce any results.
-   */
-  if (entry == NULL && data.found_prefix)
-      return NULL;
 
   /* Not ever class library necessarily specifies a correct c_prefix,
    * so take a second pass. This time we will try a global lookup,
