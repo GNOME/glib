@@ -854,9 +854,9 @@ g_option_context_get_help (GOptionContext *context,
         }
     }
 
-  g_string_append_printf (string, "%s\n  %s", _("Usage:"), g_get_prgname());
+  g_string_append_printf (string, "%s\n  %s", _("Usage:"), g_get_prgname ());
   if (context->help_enabled ||
-      context->main_group->n_entries > 0 ||
+      (context->main_group && context->main_group->n_entries > 0) ||
       context->groups != NULL)
     g_string_append_printf (string, " %s", _("[OPTION...]"));
 
