@@ -790,7 +790,7 @@ g_async_queue_sort_unlocked (GAsyncQueue      *queue,
  * @queue: a #GAsyncQueue
  * @data: the @data to remove from the @queue
  *
- * Remove an item from the queue. This function does not block.
+ * Remove an item from the queue.
  *
  * Returns: %TRUE if the item was removed
  *
@@ -817,7 +817,7 @@ g_async_queue_remove (GAsyncQueue *queue,
  * @queue: a #GAsyncQueue
  * @data: the @data to remove from the @queue
  *
- * Remove an item from the queue. This function does not block.
+ * Remove an item from the queue.
  *
  * This function must be called while holding the @queue's lock.
  *
