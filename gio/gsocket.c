@@ -4399,6 +4399,8 @@ cache_recv_address (GSocket *socket, struct sockaddr *native, int native_len)
  * values there are the same as the system values, and the flags
  * are passed in as-is, so you can pass in system-specific flags too
  * (and g_socket_receive_message() may pass system-specific flags out).
+ * Flags passed in to the parameter affect the receive operation; flags returned
+ * out of it are relevant to the specific returned message.
  *
  * As with g_socket_receive(), data may be discarded if @socket is
  * %G_SOCKET_TYPE_DATAGRAM or %G_SOCKET_TYPE_SEQPACKET and you do not
