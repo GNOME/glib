@@ -1860,6 +1860,10 @@ g_str_equal (gconstpointer v1,
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
  * when using non-%NULL strings as keys in a #GHashTable.
  *
+ * Note that this function may not be a perfect fit for all use cases.
+ * For example, it produces some hash collisions with strings as short
+ * as 2.
+ *
  * Returns: a hash value corresponding to the key
  */
 guint
