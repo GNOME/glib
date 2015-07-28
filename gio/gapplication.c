@@ -2238,6 +2238,9 @@ g_application_open (GApplication  *application,
  * This function sets the prgname (g_set_prgname()), if not already set,
  * to the basename of argv[0].
  *
+ * Much like g_main_loop_run(), this function will acquire the main context
+ * for the duration that the application is running.
+ *
  * Since 2.40, applications that are not explicitly flagged as services
  * or launchers (ie: neither %G_APPLICATION_IS_SERVICE or
  * %G_APPLICATION_IS_LAUNCHER are given as flags) will check (from the
@@ -2266,6 +2269,7 @@ g_application_run (GApplication  *application,
 {
   gchar **arguments;
   int status;
+  gboolean acquired_context;
 
   g_return_val_if_fail (G_IS_APPLICATION (application), 1);
   g_return_val_if_fail (argc == 0 || argv != NULL, 1);
@@ -2292,6 +2296,9 @@ g_application_run (GApplication  *application,
       g_set_prgname (prgname);
       g_free (prgname);
     }
+
+  acquired_context = g_main_context_acquire (NULL);
+  g_return_val_if_fail (acquired_context, 0);
 
   if (!G_APPLICATION_GET_CLASS (application)
         ->local_command_line (application, &arguments, &status))
@@ -2350,6 +2357,8 @@ g_application_run (GApplication  *application,
   if (!application->priv->must_quit_now)
     while (g_main_context_iteration (NULL, FALSE))
       ;
+
+  g_main_context_release (NULL);
 
   return status;
 }
