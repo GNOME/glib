@@ -57,7 +57,6 @@ test_programs = \
 	list				\
 	logging				\
 	mainloop			\
-	malloc				\
 	mappedfile			\
 	markup				\
 	markup-parse			\
