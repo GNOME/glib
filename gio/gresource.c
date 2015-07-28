@@ -530,6 +530,9 @@ g_resource_get_info (GResource             *resource,
  * The return result is a %NULL terminated list of strings which should
  * be released with g_strfreev().
  *
+ * If @path is invalid or does not exist in the #GResource,
+ * %G_RESOURCE_ERROR_NOT_FOUND will be returned.
+ *
  * @lookup_flags controls the behaviour of the lookup.
  *
  * Returns: (array zero-terminated=1) (transfer full): an array of constant strings
