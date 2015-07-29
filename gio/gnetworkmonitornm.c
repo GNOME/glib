@@ -134,10 +134,13 @@ nm_metered_to_bool (guint nm_metered)
 {
   switch (nm_metered)
     {
-      case 0: /* unknown */
       case 1: /* yes */
       case 3: /* guess-yes */
         return TRUE;
+      case 0: /* unknown */
+        /* We default to FALSE in the unknown-because-you're-not-running-NM
+         * case, so we should return FALSE in the
+         * unknown-when-you-are-running-NM case too. */
       case 2: /* no */
       case 4: /* guess-no */
         return FALSE;
@@ -170,7 +173,7 @@ sync_properties (GNetworkMonitorNM *nm,
   else
     {
 
-      /* this is only available post 1.0 */
+      /* this is only available post NM 1.0 */
       v = g_dbus_proxy_get_cached_property (nm->priv->proxy, "Metered");
       if (v == NULL)
         {
@@ -202,7 +205,7 @@ sync_properties (GNetworkMonitorNM *nm,
   if (new_network_metered != nm->priv->network_metered)
     {
       nm->priv->network_metered = new_network_metered;
-      g_object_notify (G_OBJECT (nm), "network-available");
+      g_object_notify (G_OBJECT (nm), "network-metered");
     }
   if (new_connectivity != nm->priv->connectivity)
     {

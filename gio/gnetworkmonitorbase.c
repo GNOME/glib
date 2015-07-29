@@ -39,6 +39,7 @@ enum
   PROP_0,
 
   PROP_NETWORK_AVAILABLE,
+  PROP_NETWORK_METERED,
   PROP_CONNECTIVITY
 };
 
@@ -119,6 +120,11 @@ g_network_monitor_base_get_property (GObject    *object,
       g_value_set_boolean (value, monitor->priv->is_available);
       break;
 
+    case PROP_NETWORK_METERED:
+      /* Default to FALSE in the unknown case. */
+      g_value_set_boolean (value, FALSE);
+      break;
+
     case PROP_CONNECTIVITY:
       g_value_set_enum (value,
                         monitor->priv->is_available ?
@@ -160,6 +166,7 @@ g_network_monitor_base_class_init (GNetworkMonitorBaseClass *monitor_class)
   gobject_class->finalize     = g_network_monitor_base_finalize;
 
   g_object_class_override_property (gobject_class, PROP_NETWORK_AVAILABLE, "network-available");
+  g_object_class_override_property (gobject_class, PROP_NETWORK_METERED, "network-metered");
   g_object_class_override_property (gobject_class, PROP_CONNECTIVITY, "connectivity");
 }
 
