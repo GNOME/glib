@@ -2004,6 +2004,7 @@ GSocketType
 GSocketProtocol
 GSocketMsgFlags
 GInputVector
+GInputMessage
 GOutputVector
 GOutputMessage
 g_socket_new
