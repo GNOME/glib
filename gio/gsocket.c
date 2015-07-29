@@ -92,7 +92,8 @@
  * %NULL.
  *
  * Sockets operate in two general modes, blocking or non-blocking. When
- * in blocking mode all operations block until the requested operation
+ * in blocking mode all operations (which don’t take an explicit blocking
+ * parameter) block until the requested operation
  * is finished or there is an error. In non-blocking mode all calls that
  * would block return immediately with a %G_IO_ERROR_WOULD_BLOCK error.
  * To know when a call would successfully run you can call g_socket_condition_check(),
@@ -1093,7 +1094,8 @@ g_socket_new_from_fd (gint     fd,
  * @blocking: Whether to use blocking I/O or not.
  *
  * Sets the blocking mode of the socket. In blocking mode
- * all operations block until they succeed or there is an error. In
+ * all operations (which don’t take an explicit blocking parameter) block until
+ * they succeed or there is an error. In
  * non-blocking mode all functions return results immediately or
  * with a %G_IO_ERROR_WOULD_BLOCK error.
  *
