@@ -101,7 +101,9 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     function may be %NULL if the source was never connected to a callback
  *     using g_source_set_callback(). The @dispatch function should call the
  *     callback function with @user_data and whatever additional parameters
- *     are needed for this type of event source.
+ *     are needed for this type of event source. The return value of the
+ *     @dispatch function should be #G_SOURCE_REMOVE if the source should be
+ *     removed or #G_SOURCE_CONTINUE to keep it.
  * @finalize: Called when the source is finalized.
  *
  * The `GSourceFuncs` struct contains a table of
