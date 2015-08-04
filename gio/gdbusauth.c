@@ -1064,6 +1064,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
               if (!g_data_output_stream_put_string (dos, s, cancellable, error))
                 {
                   g_free (s);
+                  g_free (line);
                   goto out;
                 }
               g_free (s);
@@ -1077,7 +1078,6 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
               GType auth_mech_to_use_gtype;
 
               tokens = g_strsplit (line, " ", 0);
-              g_free (line);
 
               switch (g_strv_length (tokens))
                 {
@@ -1100,8 +1100,11 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                                "Unexpected line '%s' while in WaitingForAuth state",
                                line);
                   g_strfreev (tokens);
+                  g_free (line);
                   goto out;
                 }
+
+              g_free (line);
 
               /* TODO: record that the client has attempted to use this mechanism */
               //g_debug ("client is trying '%s'", mech_name);
