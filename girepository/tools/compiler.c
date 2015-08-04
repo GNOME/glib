@@ -153,6 +153,15 @@ main (int argc, char ** argv)
   g_option_context_parse (context, &argc, &argv, &error);
   g_option_context_free (context);
 
+  if (error)
+    {
+      g_fprintf (stderr, "error parsing arguments: %s\n", error->message);
+
+      g_error_free (error);
+
+      return 1;
+    }
+
   logged_levels = G_LOG_LEVEL_MASK & ~(G_LOG_LEVEL_MESSAGE|G_LOG_LEVEL_DEBUG);
   if (debug)
     logged_levels = logged_levels | G_LOG_LEVEL_DEBUG;
