@@ -929,9 +929,10 @@ g_dbus_object_manager_server_emit_interfaces_added (GDBusObjectManagerServer *ma
                                                 object_path,
                                                 &array_builder),
                                  &error);
-  if (error && !g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CLOSED))
+  if (error)
     {
-      g_warning ("Couldn't emit InterfacesAdded signal: %s", error->message);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CLOSED))
+        g_warning ("Couldn't emit InterfacesAdded signal: %s", error->message);
       g_error_free (error);
     }
  out:
@@ -966,9 +967,10 @@ g_dbus_object_manager_server_emit_interfaces_removed (GDBusObjectManagerServer *
                                                 object_path,
                                                 &array_builder),
                                  &error);
-  if (error && !g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CLOSED))
+  if (error)
     {
-      g_warning ("Couldn't emit InterfacesRemoved signal: %s", error->message);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CLOSED))
+        g_warning ("Couldn't emit InterfacesRemoved signal: %s", error->message);
       g_error_free (error);
     }
  out:
