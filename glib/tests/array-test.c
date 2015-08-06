@@ -198,42 +198,6 @@ array_ref_count (void)
   g_array_unref (garray2);
 }
 
-static gpointer
-array_large_size_remalloc_impl (gpointer mem,
-				gsize n_bytes)
-{
-  /* We only care that g_array_set_size() doesn't hang before
-   * calling g_realloc(). So if we got here, we already won.
-   */
-  exit (0);
-}
-
-static GMemVTable array_large_size_mem_vtable = {
-  malloc, array_large_size_remalloc_impl, free,
-  NULL, NULL, NULL
-};
-
-static void
-array_large_size (void)
-{
-  g_test_bug ("568760");
-
-  if (g_test_subprocess ())
-    {
-      GArray *array;
-
-      array = g_array_new (FALSE, FALSE, sizeof (char));
-
-      g_mem_set_vtable (&array_large_size_mem_vtable);
-      g_array_set_size (array, 1073750016);
-      g_assert_not_reached ();
-      return;
-    }
-
-  g_test_trap_subprocess (NULL, 5000000, 0);
-  g_test_trap_assert_passed ();
-}
-
 static int
 int_compare (gconstpointer p1, gconstpointer p2)
 {
@@ -871,7 +835,6 @@ main (int argc, char *argv[])
   g_test_add_func ("/array/remove-fast", array_remove_fast);
   g_test_add_func ("/array/remove-range", array_remove_range);
   g_test_add_func ("/array/ref-count", array_ref_count);
-  g_test_add_func ("/array/large-size", array_large_size);
   g_test_add_func ("/array/sort", array_sort);
   g_test_add_func ("/array/sort-with-data", array_sort_with_data);
   g_test_add_func ("/array/clear-func", array_clear_func);
