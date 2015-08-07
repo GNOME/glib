@@ -29,7 +29,6 @@
 #include "gcancellable.h"
 #include "giomodule.h"
 #include "giomodule-priv.h"
-#include "gsimpleasyncresult.h"
 
 /**
  * SECTION:gproxyresolver

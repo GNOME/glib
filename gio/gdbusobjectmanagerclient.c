@@ -27,7 +27,6 @@
 #include "gioenumtypes.h"
 #include "ginitable.h"
 #include "gasyncresult.h"
-#include "gsimpleasyncresult.h"
 #include "gasyncinitable.h"
 #include "gdbusconnection.h"
 #include "gdbusutils.h"

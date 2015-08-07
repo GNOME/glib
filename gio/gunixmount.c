@@ -39,7 +39,6 @@
 #include "gfile.h"
 #include "gvolumemonitor.h"
 #include "gthemedicon.h"
-#include "gsimpleasyncresult.h"
 #include "gioerror.h"
 #include "glibintl.h"
 /* for BUFSIZ */

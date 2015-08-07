@@ -24,7 +24,6 @@
 
 #include "gconverteroutputstream.h"
 #include "gpollableoutputstream.h"
-#include "gsimpleasyncresult.h"
 #include "gcancellable.h"
 #include "gioenumtypes.h"
 #include "gioerror.h"

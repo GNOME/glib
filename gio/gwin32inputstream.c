@@ -27,7 +27,6 @@
 
 #include <glib.h>
 #include "gioerror.h"
-#include "gsimpleasyncresult.h"
 #include "gwin32inputstream.h"
 #include "giowin32-priv.h"
 #include "gcancellable.h"

@@ -24,7 +24,7 @@
 #include "gioerror.h"
 #include "gioenums.h"
 #include "gasyncresult.h"
-#include "gsimpleasyncresult.h"
+#include "gtask.h"
 #include "glibintl.h"
 
 
@@ -406,10 +406,11 @@ acquire_or_release_async (GPermission         *permission,
                           GAsyncReadyCallback  callback,
                           gpointer             user_data)
 {
-  g_simple_async_report_error_in_idle (G_OBJECT (permission),
-                                       callback, user_data,
-                                       G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                                       "Can't acquire or release permission");
+  g_task_report_new_error (permission,
+                           callback, user_data,
+                           NULL,
+                           G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                           "Can't acquire or release permission");
 }
 
 static gboolean
