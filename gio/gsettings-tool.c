@@ -430,7 +430,7 @@ gsettings_monitor (void)
    * If the schema has zero keys then we won't be displaying any
    * notifications anyway.
    */
-  keys = g_settings_list_keys (global_settings);
+  keys = g_settings_schema_list_keys (global_schema);
   if (keys[0])
     g_variant_unref (g_settings_get_value (global_settings, keys[0]));
   g_strfreev (keys);
