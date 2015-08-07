@@ -316,13 +316,6 @@ g_vasprintf (gchar      **string,
   len = vasprintf (string, format, args);
   if (len < 0)
     *string = NULL;
-  else if (!g_mem_is_system_malloc ()) 
-    {
-      /* vasprintf returns malloc-allocated memory */
-      gchar *string1 = g_strndup (*string, len);
-      free (*string);
-      *string = string1;
-    }
 
 #else
 
