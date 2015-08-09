@@ -1375,7 +1375,7 @@ g_menu_item_set_icon (GMenuItem *menu_item,
   GVariant *value;
 
   g_return_if_fail (G_IS_MENU_ITEM (menu_item));
-  g_return_if_fail (G_IS_ICON (icon));
+  g_return_if_fail (icon == NULL || G_IS_ICON (icon));
 
   if (icon != NULL)
     value = g_icon_serialize (icon);
