@@ -3712,8 +3712,8 @@ g_socket_condition_timed_wait (GSocket       *socket,
  * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Send data to @address on @socket.  This is the most complicated and
- * fully-featured version of this call. For easier use, see
+ * Send data to @address on @socket.  For sending multiple messages see
+ * g_socket_send_messages(); for easier use, see
  * g_socket_send() and g_socket_send_to().
  *
  * If @address is %NULL then the message is sent to the default receiver
