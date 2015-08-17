@@ -4295,7 +4295,9 @@ g_socket_send_message (GSocket                *socket,
  * notified of a %G_IO_OUT condition. (On Windows in particular, this is
  * very common due to the way the underlying APIs work.)
  *
- * On error -1 is returned and @error is set accordingly.
+ * On error -1 is returned and @error is set accordingly. An error will only
+ * be returned if zero messages could be sent; otherwise the number of messages
+ * successfully sent before the error will be returned.
  *
  * Returns: number of messages sent, or -1 on error. Note that the number of
  *     messages sent may be smaller than @num_messages if the socket is
@@ -4351,7 +4353,7 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
 #if !defined (G_OS_WIN32) && defined (HAVE_SENDMMSG)
   {
     struct mmsghdr *msgvec;
-    gint i, num_sent, result, max_sent;
+    gint i, num_sent;
 
 #ifdef UIO_MAXIOV
 #define MAX_NUM_MESSAGES UIO_MAXIOV
@@ -4383,9 +4385,7 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
           }
       }
 
-    num_sent = result = 0;
-    max_sent = num_messages;
-    while (num_sent < num_messages)
+    for (num_sent = 0; num_sent < num_messages;)
       {
         gint ret;
 
@@ -4418,32 +4418,22 @@ g_socket_send_messages_with_timeout (GSocket        *socket,
                 continue;
               }
 
-            if (num_sent > 0 &&
-                (errsv == EWOULDBLOCK ||
-                 errsv == EAGAIN))
-              {
-                max_sent = num_sent;
-                break;
-              }
+            /* If any messages were successfully sent, do not error. */
+            if (num_sent > 0)
+              break;
 
             socket_set_error_lazy (error, errsv, _("Error sending message: %s"));
 
-            /* we have to iterate over all messages below now, because we don't
-             * know where between num_sent and num_messages the error occured */
-            max_sent = num_messages;
-
-            result = -1;
-            break;
+            return -1;
           }
 
         num_sent += ret;
-        result = num_sent;
       }
 
-    for (i = 0; i < max_sent; ++i)
+    for (i = 0; i < num_sent; ++i)
       messages[i].bytes_sent = msgvec[i].msg_len;
 
-    return result;
+    return num_sent;
   }
 #else
   {

@@ -703,14 +703,31 @@ test_ip_sync_dgram (GSocketFamily family)
     m[1].bytes_sent = 0;
     m[2].bytes_sent = 0;
 
-    /* now try to generate an error by omitting the destination address on [1] */
+    /* now try to generate an early return by omitting the destination address on [1] */
     m[1].address = NULL;
+    len = g_socket_send_messages (client, m, G_N_ELEMENTS (m), 0, NULL, &error);
+    g_assert_no_error (error);
+    g_assert_cmpint (len, ==, 1);
+
+    g_assert_cmpint (m[0].bytes_sent, ==, 3);
+    g_assert_cmpint (m[1].bytes_sent, ==, 0);
+    g_assert_cmpint (m[2].bytes_sent, ==, 0);
+
+    /* reset since we're re-using the message structs */
+    m[0].bytes_sent = 0;
+    m[1].bytes_sent = 0;
+    m[2].bytes_sent = 0;
+
+    /* now try to generate an error by omitting all destination addresses */
+    m[0].address = NULL;
+    m[1].address = NULL;
+    m[2].address = NULL;
     len = g_socket_send_messages (client, m, G_N_ELEMENTS (m), 0, NULL, &error);
     g_assert_error (error, G_IO_ERROR, G_IO_ERROR_FAILED);
     g_clear_error (&error);
     g_assert_cmpint (len, ==, -1);
 
-    g_assert_cmpint (m[0].bytes_sent, ==, 3);
+    g_assert_cmpint (m[0].bytes_sent, ==, 0);
     g_assert_cmpint (m[1].bytes_sent, ==, 0);
     g_assert_cmpint (m[2].bytes_sent, ==, 0);
 
