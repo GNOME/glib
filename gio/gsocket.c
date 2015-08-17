@@ -204,7 +204,8 @@ struct _GSocketPrivate
   guint           blocking : 1;
   guint           keepalive : 1;
   guint           closed : 1;
-  guint           connected : 1;
+  guint           connected_read : 1;
+  guint           connected_write : 1;
   guint           listening : 1;
   guint           timed_out : 1;
   guint           connect_pending : 1;
@@ -461,7 +462,10 @@ g_socket_details_from_fd (GSocket *socket)
     {
       addrlen = sizeof address;
       if (getpeername (fd, (struct sockaddr *) &address, &addrlen) >= 0)
-	socket->priv->connected = TRUE;
+        {
+          socket->priv->connected_read = TRUE;
+          socket->priv->connected_write = TRUE;
+        }
     }
 
   if (g_socket_get_option (socket, SOL_SOCKET, SO_KEEPALIVE, &value, NULL))
@@ -1825,6 +1829,11 @@ g_socket_get_remote_address (GSocket  *socket,
  * Check whether the socket is connected. This is only useful for
  * connection-oriented sockets.
  *
+ * If using g_socket_shutdown(), this function will return %TRUE until the
+ * socket has been shut down for reading and writing. If you do a non-blocking
+ * connect, this function will not return %TRUE until after you call
+ * g_socket_check_connect_result().
+ *
  * Returns: %TRUE if socket is connected, %FALSE otherwise.
  *
  * Since: 2.22
@@ -1834,7 +1843,7 @@ g_socket_is_connected (GSocket *socket)
 {
   g_return_val_if_fail (G_IS_SOCKET (socket), FALSE);
 
-  return socket->priv->connected;
+  return (socket->priv->connected_read || socket->priv->connected_write);
 }
 
 /**
@@ -2444,7 +2453,8 @@ g_socket_connect (GSocket         *socket,
 
   win32_unset_event_mask (socket, FD_CONNECT);
 
-  socket->priv->connected = TRUE;
+  socket->priv->connected_read = TRUE;
+  socket->priv->connected_write = TRUE;
 
   return TRUE;
 }
@@ -2494,7 +2504,9 @@ g_socket_check_connect_result (GSocket  *socket,
       return FALSE;
     }
 
-  socket->priv->connected = TRUE;
+  socket->priv->connected_read = TRUE;
+  socket->priv->connected_write = TRUE;
+
   return TRUE;
 }
 
@@ -3035,8 +3047,10 @@ g_socket_shutdown (GSocket   *socket,
       return FALSE;
     }
 
-  if (shutdown_read && shutdown_write)
-    socket->priv->connected = FALSE;
+  if (shutdown_read)
+    socket->priv->connected_read = FALSE;
+  if (shutdown_write)
+    socket->priv->connected_write = FALSE;
 
   return TRUE;
 }
@@ -3117,7 +3131,8 @@ g_socket_close (GSocket  *socket,
       break;
     }
 
-  socket->priv->connected = FALSE;
+  socket->priv->connected_read = FALSE;
+  socket->priv->connected_write = FALSE;
   socket->priv->closed = TRUE;
   if (socket->priv->remote_address)
     {
