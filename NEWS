@@ -1,3 +1,8 @@
+Overview of changes in GLib 2.45.6
+==================================
+
+* Fix a test failure and a build failure
+
 Overview of changes in GLib 2.45.5
 ==================================
 
