@@ -157,6 +157,10 @@ atomic_replace_step (gpointer user_data)
       break;
     case 2:
       record_event (data, -1, NULL, NULL, 2);
+      g_file_delete (data->file, NULL, NULL);
+      break;
+    case 3:
+      record_event (data, -1, NULL, NULL, 3);
       g_main_loop_quit (data->loop);
       return G_SOURCE_REMOVE;
     }
@@ -175,6 +179,8 @@ static RecordedEvent atomic_replace_output[] = {
   { -1, NULL, NULL, 1 },
   { G_FILE_MONITOR_EVENT_RENAMED, (gchar*)DONT_CARE, "atomic_replace_file", -1 },
   { -1, NULL, NULL, 2 },
+  { G_FILE_MONITOR_EVENT_DELETED, "atomic_replace_file", NULL, -1 },
+  { -1, NULL, NULL, 3 }
 };
 
 static void
@@ -198,15 +204,238 @@ test_atomic_replace (void)
 
   data.loop = g_main_loop_new (NULL, TRUE);
 
-  g_timeout_add (1000, atomic_replace_step, &data);
+  g_timeout_add (500, atomic_replace_step, &data);
 
   g_main_loop_run (data.loop);
 
   /*output_events (data.events);*/
   check_expected_events (atomic_replace_output, G_N_ELEMENTS (atomic_replace_output), data.events);
 
-  /* clean up */
+  g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
+  g_main_loop_unref (data.loop);
+  g_object_unref (data.monitor);
+  g_object_unref (data.file);
+  g_string_free (data.output, TRUE);
+}
+
+static gboolean
+change_step (gpointer user_data)
+{
+  TestData *data = user_data;
+  GOutputStream *stream;
+  GError *error = NULL;
+  guint32 mode = 0660;
+
+  switch (data->step)
+    {
+    case 0:
+      record_event (data, -1, NULL, NULL, 0);
+      g_file_replace_contents (data->file, "step 0", 6, NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL, &error);
+      g_assert_no_error (error);
+      break;
+    case 1:
+      record_event (data, -1, NULL, NULL, 1);
+      stream = (GOutputStream *)g_file_append_to (data->file, G_FILE_CREATE_NONE, NULL, &error);
+      g_assert_no_error (error);
+      g_output_stream_write_all (stream, " step 1", 7, NULL, NULL, &error);
+      g_assert_no_error (error);
+      g_output_stream_close (stream, NULL, &error);
+      g_assert_no_error (error);
+      break;
+    case 2:
+      record_event (data, -1, NULL, NULL, 2);
+      g_file_set_attribute (data->file,
+                            G_FILE_ATTRIBUTE_UNIX_MODE,
+                            G_FILE_ATTRIBUTE_TYPE_UINT32,
+                            &mode,
+                            G_FILE_QUERY_INFO_NONE,
+                            NULL,
+                            &error);
+      g_assert_no_error (error);
+      break;
+    case 3:
+      record_event (data, -1, NULL, NULL, 3);
+      g_file_delete (data->file, NULL, NULL);
+      break;
+    case 4:
+      record_event (data, -1, NULL, NULL, 4);
+      g_main_loop_quit (data->loop);
+      return G_SOURCE_REMOVE;
+    }
+
+  data->step++;
+
+  return G_SOURCE_CONTINUE;
+}
+
+/* this is the output we expect from the above steps */
+static RecordedEvent change_output[] = {
+  { -1, NULL, NULL, 0 },
+  { G_FILE_MONITOR_EVENT_CREATED, "change_file", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_CHANGED, "change_file", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "change_file", NULL, -1 },
+  { -1, NULL, NULL, 1 },
+  { G_FILE_MONITOR_EVENT_CHANGED, "change_file", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "change_file", NULL, -1 },
+  { -1, NULL, NULL, 2 },
+  { G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED, "change_file", NULL, -1 },
+  { -1, NULL, NULL, 3 },
+  { G_FILE_MONITOR_EVENT_DELETED, "change_file", NULL, -1 },
+  { -1, NULL, NULL, 4 }
+};
+
+static void
+test_file_changes (void)
+{
+  GError *error = NULL;
+  TestData data;
+
+  data.output = g_string_new ("");
+  data.step = 0;
+  data.events = NULL;
+
+  data.file = g_file_new_for_path ("change_file");
   g_file_delete (data.file, NULL, NULL);
+
+  data.monitor = g_file_monitor_file (data.file, G_FILE_MONITOR_WATCH_MOVES, NULL, &error);
+  g_assert_no_error (error);
+
+  g_file_monitor_set_rate_limit (data.monitor, 200);
+  g_signal_connect (data.monitor, "changed", G_CALLBACK (monitor_changed), &data);
+
+  data.loop = g_main_loop_new (NULL, TRUE);
+
+  g_timeout_add (500, change_step, &data);
+
+  g_main_loop_run (data.loop);
+
+  /*output_events (data.events);*/
+  check_expected_events (change_output, G_N_ELEMENTS (change_output), data.events);
+
+  g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
+  g_main_loop_unref (data.loop);
+  g_object_unref (data.monitor);
+  g_object_unref (data.file);
+  g_string_free (data.output, TRUE);
+}
+
+static gboolean
+dir_step (gpointer user_data)
+{
+  TestData *data = user_data;
+  GFile *parent, *file, *file2;
+  GError *error = NULL;
+
+  switch (data->step)
+    {
+#if 0
+    /* FIXME directory monitoring doesn't seem to work if the directory does not
+     * exist yet
+     */
+    case 0:
+      record_event (data, -1, NULL, NULL, 0);
+      g_file_make_directory (data.file, NULL, &error);
+      g_assert_no_error (error);
+      break;
+#endif
+    case 1:
+      record_event (data, -1, NULL, NULL, 1);
+      parent = g_file_get_parent (data->file);
+      file = g_file_get_child (parent, "dir_test_file");
+      g_file_replace_contents (file, "step 1", 6, NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL, &error);
+      g_assert_no_error (error);
+      g_object_unref (file);
+      g_object_unref (parent);
+      break;
+    case 2:
+      record_event (data, -1, NULL, NULL, 2);
+      parent = g_file_get_parent (data->file);
+      file = g_file_get_child (parent, "dir_test_file");
+      file2 = g_file_get_child (data->file, "dir_test_file");
+      g_file_move (file, file2, G_FILE_COPY_NONE, NULL, NULL, NULL, &error);
+      g_assert_no_error (error);
+      g_object_unref (file);
+      g_object_unref (file2);
+      g_object_unref (parent);
+      break;
+    case 3:
+      record_event (data, -1, NULL, NULL, 3);
+      file = g_file_get_child (data->file, "dir_test_file");
+      file2 = g_file_get_child (data->file, "dir_test_file2");
+      g_file_move (file, file2, G_FILE_COPY_NONE, NULL, NULL, NULL, &error);
+      g_assert_no_error (error);
+      g_object_unref (file);
+      g_object_unref (file2);
+      break;
+    case 4:
+      record_event (data, -1, NULL, NULL, 4);
+      parent = g_file_get_parent (data->file);
+      file = g_file_get_child (data->file, "dir_test_file2");
+      file2 = g_file_get_child (parent, "dir_test_file2");
+      g_file_move (file, file2, G_FILE_COPY_NONE, NULL, NULL, NULL, &error);
+      g_assert_no_error (error);
+      g_file_delete (file2, NULL, NULL);
+      g_object_unref (file);
+      g_object_unref (file2);
+      g_object_unref (parent);
+      break;
+    case 5:
+      record_event (data, -1, NULL, NULL, 5);
+      g_file_delete (data->file, NULL, NULL);
+      break;
+    case 6:
+      record_event (data, -1, NULL, NULL, 6);
+      g_main_loop_quit (data->loop);
+      return G_SOURCE_REMOVE;
+    }
+
+  data->step++;
+
+  return G_SOURCE_CONTINUE;
+}
+
+/* this is the output we expect from the above steps */
+static RecordedEvent dir_output[] = {
+  { -1, NULL, NULL, 1 },
+  { -1, NULL, NULL, 2 },
+  { G_FILE_MONITOR_EVENT_MOVED_IN, "dir_test_file", NULL, -1 },
+  { -1, NULL, NULL, 3 },
+  { G_FILE_MONITOR_EVENT_RENAMED, "dir_test_file", "dir_test_file2", -1 },
+  { -1, NULL, NULL, 4 },
+  { G_FILE_MONITOR_EVENT_MOVED_OUT, "dir_test_file2", NULL, -1 },
+  { -1, NULL, NULL, 5 },
+  { G_FILE_MONITOR_EVENT_DELETED, "dir_monitor_test", NULL, -1 },
+  { -1, NULL, NULL, 6 }
+};
+
+static void
+test_dir_monitor (void)
+{
+  GError *error = NULL;
+  TestData data;
+
+  data.output = g_string_new ("");
+  data.step = 0;
+  data.events = NULL;
+
+  data.file = g_file_new_for_path ("dir_monitor_test");
+  g_file_delete (data.file, NULL, NULL);
+  g_file_make_directory (data.file, NULL, &error);
+
+  data.monitor = g_file_monitor_directory (data.file, G_FILE_MONITOR_WATCH_MOVES, NULL, &error);
+  g_assert_no_error (error);
+
+  g_file_monitor_set_rate_limit (data.monitor, 200);
+  g_signal_connect (data.monitor, "changed", G_CALLBACK (monitor_changed), &data);
+
+  data.loop = g_main_loop_new (NULL, TRUE);
+
+  g_timeout_add (500, dir_step, &data);
+
+  g_main_loop_run (data.loop);
+
+  /*output_events (data.events);*/
+  check_expected_events (dir_output, G_N_ELEMENTS (dir_output), data.events);
 
   g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
   g_main_loop_unref (data.loop);
@@ -221,6 +450,8 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/monitor/atomic-replace", test_atomic_replace);
+  g_test_add_func ("/monitor/file-changes", test_file_changes);
+  g_test_add_func ("/monitor/dir-monitor", test_dir_monitor);
 
   return g_test_run ();
 }
