@@ -1,3 +1,43 @@
+Overview of changes in GLib 2.45.5
+==================================
+
+* GNetworkMonitor now provides information about metered networks
+
+* g_mem_set_vtable has been deprecated; it has not been working for
+  quite a while. The recommendation is to use valgrind, or replace
+  malloc itself.
+
+* Bugs fixed:
+ 656325 Make GDBusInterfaceVTable binding friendly
+ 741779 Documentation tweaks addressing real-world API misuses
+ 741822 Fails to build with VS 2015
+ 742386 gdbusconnection: Don't g_printerr() when exiting
+ 743018 gobject: Add more cross-links between documentation pages
+ 750282 Add g_network_monitor_get_network_metered() to get if the connection...
+ 751358 GFileMonitor doesn't react to "mv some-file watched-file"
+ 751592 Stop using GMemVtable
+ 751598 Stop 'handle-local-options' propagation when callback reports an err...
+ 751610 g_str_hash produces collisions with strings of length 2
+ 751751 Wrong docs of g_async_queue_remove
+ 752210 gdbus command crashes with SIGSEGV
+ 752656 gdbusconnection: Fix signal subscription documentation
+ 752767 Fix typo in g_hash_table_replace() documentation
+ 753278 gdbus: Don't use g_assert_no_error() GDBusObjectManagerServer
+ 753285 g_menu_item_set_icon fails if called with NULL icon
+
+* Translation updates:
+ Catalan
+ Czech
+ French
+ Indonesian
+ Lithuanian
+ Norwegian bokmål
+ Slovak
+ Spanish
+ Thai
+ Turkish
+
+
 Overview of changes in GLib 2.45.4
 ==================================
 
