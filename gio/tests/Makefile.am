@@ -503,8 +503,10 @@ test_programs += \
 endif
 
 # -----------------------------------------------------------------------------
-#  The resources test is a bit more complicated...
+#  The resources test is a bit more complicated, and we cannot build it when
+#  cross-compiling GIO because it requires running a binary...
 
+if !CROSS_COMPILING
 test_programs += resources
 resources_SOURCES = resources.c
 nodist_resources_SOURCES = test_resources.c test_resources2.c test_resources2.h
@@ -526,11 +528,7 @@ if !ENABLE_INSTALLED_TESTS
 libresourceplugin_la_LDFLAGS += -rpath /
 endif
 
-if CROSS_COMPILING
-  glib_compile_resources=$(GLIB_COMPILE_RESOURCES)
-else
-  glib_compile_resources=$(top_builddir)/gio/glib-compile-resources
-endif
+glib_compile_resources=$(top_builddir)/gio/glib-compile-resources
 
 resources.o: test_resources2.h
 test_resources.c: test2.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test2.gresource.xml)
@@ -546,8 +544,8 @@ test.gresource: test.gresource.xml Makefile $(shell $(glib_compile_resources) --
 	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) $<
 
 EXTRA_DIST += test.gresource.xml test1.txt test2.gresource.xml test2.txt test3.gresource.xml test3.txt test4.gresource.xml
-
 CLEANFILES += test_resources.c test_resources2.[ch] plugin_resources.c test.gresource
+endif # !CROSS_COMPILING
 
 BUILT_SOURCES += giotypefuncs.c
 
