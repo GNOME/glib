@@ -505,7 +505,8 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
   error = NULL;
   if (!g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, &error))
     {
-      g_warning ("Error sending message: %s", error->message);
+      if (!g_error_matches (G_IO_ERROR, G_IO_ERROR_CLOSED))
+        g_warning ("Error sending message: %s", error->message);
       g_error_free (error);
     }
   g_object_unref (reply);
