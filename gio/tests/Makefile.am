@@ -64,6 +64,7 @@ test_programs = \
 	vfs					\
 	volumemonitor				\
 	glistmodel				\
+	testfilemonitor				\
 	$(NULL)
 
 uninstalled_test_programs = \
