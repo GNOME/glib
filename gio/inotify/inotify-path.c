@@ -463,7 +463,8 @@ ip_event_dispatch (GList      *dir_list,
 	   */
 	  if (sub->filename &&
 	      event->name &&
-	      strcmp (sub->filename, event->name))
+	      strcmp (sub->filename, event->name) &&
+              (!event->pair || !event->pair->name || strcmp (sub->filename, event->pair->name)))
 	    continue;
 	  
 	  /* If the subscription has a filename

@@ -344,7 +344,8 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
   g_assert (!child || is_basename (child));
   g_assert (!rename_to || is_basename (rename_to));
 
-  if (fms->basename && (!child || !g_str_equal (child, fms->basename)))
+  if (fms->basename && (!child || !g_str_equal (child, fms->basename))
+                    && (!rename_to || !g_str_equal (rename_to, fms->basename)))
     return TRUE;
 
   g_mutex_lock (&fms->lock);
@@ -408,7 +409,6 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
 
           other = g_local_file_new_from_dirname_and_basename (fms->dirname, rename_to);
           g_file_monitor_source_file_changes_done (fms, rename_to);
-          g_print ("send %s %s\n", child, g_file_get_path (other));
           g_file_monitor_source_send_event (fms, G_FILE_MONITOR_EVENT_MOVED, child, other);
           g_object_unref (other);
         }
