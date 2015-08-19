@@ -706,6 +706,7 @@ bin_PROGRAMS = gio-querymodules glib-compile-schemas glib-compile-resources gset
 
 glib_compile_resources_LDADD = libgio-2.0.la 		\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/gmodule/libgmodule-2.0.la 	\
 	$(top_builddir)/glib/libglib-2.0.la 		\
 	$(NULL)
 
@@ -735,6 +736,7 @@ glib_compile_schemas_SOURCES = \
 
 gsettings_LDADD = libgio-2.0.la 			\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/gmodule/libgmodule-2.0.la 	\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(NULL)
 gsettings_SOURCES = gsettings-tool.c
@@ -749,6 +751,7 @@ bin_PROGRAMS += gdbus
 gdbus_SOURCES = gdbus-tool.c
 gdbus_LDADD = libgio-2.0.la 				\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/gmodule/libgmodule-2.0.la 	\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(NULL)
 
@@ -759,6 +762,7 @@ bin_PROGRAMS += gapplication
 gapplication_SOURCES = gapplication-tool.c
 gapplication_LDADD = libgio-2.0.la 			\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/gmodule/libgmodule-2.0.la 	\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(NULL)
 endif
@@ -779,6 +783,7 @@ gresource_SOURCES = gresource-tool.c
 gresource_CPPFLAGS = $(LIBELF_CFLAGS) $(AM_CPPFLAGS)
 gresource_LDADD = libgio-2.0.la				\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
+	$(top_builddir)/gmodule/libgmodule-2.0.la 	\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(LIBELF_LIBS)
 
