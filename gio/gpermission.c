@@ -418,8 +418,7 @@ acquire_or_release_finish (GPermission   *permission,
                            GAsyncResult  *result,
                            GError       **error)
 {
-  g_async_result_legacy_propagate_error (result, error);
-  return FALSE;
+  return g_task_propagate_boolean (G_TASK (result), error);
 }
 
 static void
