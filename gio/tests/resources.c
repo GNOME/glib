@@ -449,6 +449,8 @@ test_uri_query_info (void)
   GFile *file;
   GFileInfo *info;
   const char *content_type, *mime_type;
+  const char *fs_type;
+  gboolean readonly;
 
   loaded_file = g_file_get_contents (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL),
                                      &content, &content_size, NULL);
@@ -472,6 +474,16 @@ test_uri_query_info (void)
   mime_type = g_content_type_get_mime_type (content_type);
   g_assert (mime_type);
   g_assert_cmpstr (mime_type, ==, "text/plain");
+
+  g_object_unref (info);
+
+  info = g_file_query_filesystem_info (file, "*", NULL, &error);
+  g_assert_no_error (error);
+
+  fs_type = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE);
+  g_assert_cmpstr (fs_type, ==, "resource");
+  readonly = g_file_info_get_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY);
+  g_assert_true (readonly);
 
   g_object_unref (info);
 
