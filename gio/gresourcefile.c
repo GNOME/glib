@@ -518,6 +518,28 @@ g_resource_file_query_info (GFile                *file,
   return info;
 }
 
+static GFileInfo *
+g_resource_file_query_filesystem_info (GFile         *file,
+                                       const char    *attributes,
+                                       GCancellable  *cancellable,
+                                       GError       **error)
+{
+  GFileInfo *info;
+  GFileAttributeMatcher *matcher;
+
+  info = g_file_info_new ();
+
+  matcher = g_file_attribute_matcher_new (attributes);
+  if (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE))
+    g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_FILESYSTEM_TYPE, "resource");
+
+  if (g_file_attribute_matcher_matches (matcher, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY))    g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_READONLY, TRUE);
+
+  g_file_attribute_matcher_unref (matcher);
+
+  return info;
+}
+
 static GFileAttributeInfoList *
 g_resource_file_query_settable_attributes (GFile         *file,
 					   GCancellable  *cancellable,
@@ -612,6 +634,7 @@ g_resource_file_file_iface_init (GFileIface *iface)
   iface->get_child_for_display_name = g_resource_file_get_child_for_display_name;
   iface->enumerate_children = g_resource_file_enumerate_children;
   iface->query_info = g_resource_file_query_info;
+  iface->query_filesystem_info = g_resource_file_query_filesystem_info;
   iface->query_settable_attributes = g_resource_file_query_settable_attributes;
   iface->query_writable_namespaces = g_resource_file_query_writable_namespaces;
   iface->read_fn = g_resource_file_read;
