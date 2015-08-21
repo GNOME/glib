@@ -29,7 +29,6 @@ typedef struct
   GMainLoop *loop;
   gint step;
   GList *events;
-  GString *output;
 } TestData;
 
 #if 0
@@ -194,7 +193,6 @@ test_atomic_replace (void)
   GError *error = NULL;
   TestData data;
 
-  data.output = g_string_new ("");
   data.step = 0;
   data.events = NULL;
 
@@ -220,7 +218,6 @@ test_atomic_replace (void)
   g_main_loop_unref (data.loop);
   g_object_unref (data.monitor);
   g_object_unref (data.file);
-  g_string_free (data.output, TRUE);
 }
 
 static gboolean
@@ -295,7 +292,6 @@ test_file_changes (void)
   GError *error = NULL;
   TestData data;
 
-  data.output = g_string_new ("");
   data.step = 0;
   data.events = NULL;
 
@@ -321,7 +317,6 @@ test_file_changes (void)
   g_main_loop_unref (data.loop);
   g_object_unref (data.monitor);
   g_object_unref (data.file);
-  g_string_free (data.output, TRUE);
 }
 
 static gboolean
@@ -409,7 +404,6 @@ test_dir_monitor (void)
   GError *error = NULL;
   TestData data;
 
-  data.output = g_string_new ("");
   data.step = 0;
   data.events = NULL;
 
@@ -436,7 +430,6 @@ test_dir_monitor (void)
   g_main_loop_unref (data.loop);
   g_object_unref (data.monitor);
   g_object_unref (data.file);
-  g_string_free (data.output, TRUE);
 }
 
 static gboolean
@@ -503,7 +496,6 @@ test_dir_non_existent (void)
   TestData data;
   GError *error = NULL;
 
-  data.output = g_string_new ("");
   data.step = 0;
   data.events = NULL;
 
@@ -530,7 +522,6 @@ test_dir_non_existent (void)
   g_main_loop_unref (data.loop);
   g_object_unref (data.monitor);
   g_object_unref (data.file);
-  g_string_free (data.output, TRUE);
 }
 
 static gboolean
@@ -609,7 +600,6 @@ test_cross_dir_moves (void)
   GError *error = NULL;
   TestData data[2];
 
-  data[0].output = g_string_new ("");
   data[0].step = 0;
   data[0].events = NULL;
 
@@ -623,7 +613,6 @@ test_cross_dir_moves (void)
   g_file_monitor_set_rate_limit (data[0].monitor, 200);
   g_signal_connect (data[0].monitor, "changed", G_CALLBACK (monitor_changed), &data[0]);
 
-  data[1].output = g_string_new ("");
   data[1].step = 0;
   data[1].events = NULL;
 
@@ -657,12 +646,10 @@ test_cross_dir_moves (void)
   g_main_loop_unref (data[0].loop);
   g_object_unref (data[0].monitor);
   g_object_unref (data[0].file);
-  g_string_free (data[0].output, TRUE);
 
   g_list_free_full (data[1].events, (GDestroyNotify)free_recorded_event);
   g_object_unref (data[1].monitor);
   g_object_unref (data[1].file);
-  g_string_free (data[1].output, TRUE);
 }
 
 int
