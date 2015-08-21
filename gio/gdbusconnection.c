@@ -2163,17 +2163,52 @@ g_dbus_connection_send_message_with_reply_sync (GDBusConnection        *connecti
 
 typedef struct
 {
-  GDBusMessageFilterFunction func;
-  gpointer user_data;
-} FilterCallback;
-
-typedef struct
-{
   guint                       id;
+  guint                       ref_count;
   GDBusMessageFilterFunction  filter_function;
   gpointer                    user_data;
   GDestroyNotify              user_data_free_func;
+  GMainContext               *context;
 } FilterData;
+
+/* requires CONNECTION_LOCK */
+static FilterData **
+copy_filter_list (GPtrArray *filters)
+{
+  FilterData **copy;
+  guint n;
+
+  copy = g_new (FilterData *, filters->len + 1);
+  for (n = 0; n < filters->len; n++)
+    {
+      copy[n] = filters->pdata[n];
+      copy[n]->ref_count++;
+    }
+  copy[n] = NULL;
+
+  return copy;
+}
+
+/* requires CONNECTION_LOCK */
+static void
+free_filter_list (FilterData **filters)
+{
+  guint n;
+
+  for (n = 0; filters[n]; n++)
+    {
+      filters[n]->ref_count--;
+      if (filters[n]->ref_count == 0)
+        {
+          call_destroy_notify (filters[n]->context,
+                               filters[n]->user_data_free_func,
+                               filters[n]->user_data);
+          g_main_context_unref (filters[n]->context);
+          g_free (filters[n]);
+        }
+    }
+  g_free (filters);
+}
 
 /* Called in GDBusWorker's thread - we must not block - with no lock held */
 static void
@@ -2182,8 +2217,7 @@ on_worker_message_received (GDBusWorker  *worker,
                             gpointer      user_data)
 {
   GDBusConnection *connection;
-  FilterCallback *filters;
-  guint num_filters;
+  FilterData **filters;
   guint n;
   gboolean alive;
 
@@ -2207,27 +2241,24 @@ on_worker_message_received (GDBusWorker  *worker,
 
   /* First collect the set of callback functions */
   CONNECTION_LOCK (connection);
-  num_filters = connection->filters->len;
-  filters = g_new0 (FilterCallback, num_filters);
-  for (n = 0; n < num_filters; n++)
-    {
-      FilterData *data = connection->filters->pdata[n];
-      filters[n].func = data->filter_function;
-      filters[n].user_data = data->user_data;
-    }
+  filters = copy_filter_list (connection->filters);
   CONNECTION_UNLOCK (connection);
 
   /* then call the filters in order (without holding the lock) */
-  for (n = 0; n < num_filters; n++)
+  for (n = 0; filters[n]; n++)
     {
-      message = filters[n].func (connection,
-                                 message,
-                                 TRUE,
-                                 filters[n].user_data);
+      message = filters[n]->filter_function (connection,
+                                             message,
+                                             TRUE,
+                                             filters[n]->user_data);
       if (message == NULL)
         break;
       g_dbus_message_lock (message);
     }
+
+  CONNECTION_LOCK (connection);
+  free_filter_list (filters);
+  CONNECTION_UNLOCK (connection);
 
   /* Standard dispatch unless the filter ate the message - no need to
    * do anything if the message was altered
@@ -2274,7 +2305,6 @@ on_worker_message_received (GDBusWorker  *worker,
   if (message != NULL)
     g_object_unref (message);
   g_object_unref (connection);
-  g_free (filters);
 }
 
 /* Called in GDBusWorker's thread, lock is not held */
@@ -2284,8 +2314,7 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
                                     gpointer      user_data)
 {
   GDBusConnection *connection;
-  FilterCallback *filters;
-  guint num_filters;
+  FilterData **filters;
   guint n;
   gboolean alive;
 
@@ -2304,30 +2333,26 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
 
   /* First collect the set of callback functions */
   CONNECTION_LOCK (connection);
-  num_filters = connection->filters->len;
-  filters = g_new0 (FilterCallback, num_filters);
-  for (n = 0; n < num_filters; n++)
-    {
-      FilterData *data = connection->filters->pdata[n];
-      filters[n].func = data->filter_function;
-      filters[n].user_data = data->user_data;
-    }
+  filters = copy_filter_list (connection->filters);
   CONNECTION_UNLOCK (connection);
 
   /* then call the filters in order (without holding the lock) */
-  for (n = 0; n < num_filters; n++)
+  for (n = 0; filters[n]; n++)
     {
       g_dbus_message_lock (message);
-      message = filters[n].func (connection,
-                                 message,
-                                 FALSE,
-                                 filters[n].user_data);
+      message = filters[n]->filter_function (connection,
+                                             message,
+                                             FALSE,
+                                             filters[n]->user_data);
       if (message == NULL)
         break;
     }
 
+  CONNECTION_LOCK (connection);
+  free_filter_list (filters);
+  CONNECTION_UNLOCK (connection);
+
   g_object_unref (connection);
-  g_free (filters);
 
   return message;
 }
@@ -3059,6 +3084,13 @@ static guint _global_filter_id = 1;
  * message. Similary, if a filter consumes an outgoing message, the
  * message will not be sent to the other peer.
  *
+ * If @user_data_free_func is non-%NULL, it will be called (in the
+ * thread-default main context of the thread you are calling this
+ * method from) at some point after @user_data is no longer
+ * needed. (It is not guaranteed to be called synchronously when the
+ * filter is removed, and may be called after @connection has been
+ * destroyed.)
+ *
  * Returns: a filter identifier that can be used with
  *     g_dbus_connection_remove_filter()
  *
@@ -3079,9 +3111,11 @@ g_dbus_connection_add_filter (GDBusConnection            *connection,
   CONNECTION_LOCK (connection);
   data = g_new0 (FilterData, 1);
   data->id = _global_filter_id++; /* TODO: overflow etc. */
+  data->ref_count = 1;
   data->filter_function = filter_function;
   data->user_data = user_data;
   data->user_data_free_func = user_data_free_func;
+  data->context = g_main_context_ref_thread_default ();
   g_ptr_array_add (connection->filters, data);
   CONNECTION_UNLOCK (connection);
 
@@ -3096,8 +3130,11 @@ purge_all_filters (GDBusConnection *connection)
   for (n = 0; n < connection->filters->len; n++)
     {
       FilterData *data = connection->filters->pdata[n];
-      if (data->user_data_free_func != NULL)
-        data->user_data_free_func (data->user_data);
+
+      call_destroy_notify (data->context,
+                           data->user_data_free_func,
+                           data->user_data);
+      g_main_context_unref (data->context);
       g_free (data);
     }
 }
@@ -3108,6 +3145,13 @@ purge_all_filters (GDBusConnection *connection)
  * @filter_id: an identifier obtained from g_dbus_connection_add_filter()
  *
  * Removes a filter.
+ *
+ * Note that since filters run in a different thread, there is a race
+ * condition where it is possible that the filter will be running even
+ * after calling g_dbus_connection_remove_filter(), so you cannot just
+ * free data that the filter might be using. Instead, you should pass
+ * a #GDestroyNotify to g_dbus_connection_add_filter(), which will be
+ * called when it is guaranteed that the data is no longer needed.
  *
  * Since: 2.26
  */
@@ -3129,7 +3173,9 @@ g_dbus_connection_remove_filter (GDBusConnection *connection,
       if (data->id == filter_id)
         {
           g_ptr_array_remove_index (connection->filters, n);
-          to_destroy = data;
+          data->ref_count--;
+          if (data->ref_count == 0)
+            to_destroy = data;
           break;
         }
     }
@@ -3140,6 +3186,7 @@ g_dbus_connection_remove_filter (GDBusConnection *connection,
     {
       if (to_destroy->user_data_free_func != NULL)
         to_destroy->user_data_free_func (to_destroy->user_data);
+      g_main_context_unref (to_destroy->context);
       g_free (to_destroy);
     }
   else
@@ -3345,6 +3392,13 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * %G_DBUS_SIGNAL_FLAGS_MATCH_ARG0_PATH are given, @arg0 is
  * interpreted as part of a namespace or path.  The first argument
  * of a signal is matched against that part as specified by D-Bus.
+ *
+ * If @user_data_free_func is non-%NULL, it will be called (in the
+ * thread-default main context of the thread you are calling this
+ * method from) at some point after @user_data is no longer
+ * needed. (It is not guaranteed to be called synchronously when the
+ * signal is unsubscribed from, and may be called after @connection
+ * has been destroyed.)
  *
  * Returns: a subscription identifier that can be used with g_dbus_connection_signal_unsubscribe()
  *
