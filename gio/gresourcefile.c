@@ -28,6 +28,7 @@
 #include <gfileattribute-priv.h>
 #include <gfileinfo-priv.h>
 #include "gfile.h"
+#include "gfilemonitor.h"
 #include "gseekable.h"
 #include "gfileinputstream.h"
 #include "gfileinfo.h"
@@ -565,6 +566,32 @@ g_resource_file_read (GFile         *file,
   return res;
 }
 
+typedef GFileMonitor GResourceFileMonitor;
+typedef GFileMonitorClass GResourceFileMonitorClass;
+
+GType g_resource_file_monitor_get_type (void);
+
+G_DEFINE_TYPE (GResourceFileMonitor, g_resource_file_monitor, G_TYPE_FILE_MONITOR)
+
+static void
+g_resource_file_monitor_init (GResourceFileMonitor *monitor)
+{
+}
+
+static void
+g_resource_file_monitor_class_init (GResourceFileMonitorClass *class)
+{
+}
+
+static GFileMonitor *
+g_resource_file_monitor_file (GFile              *file,
+                              GFileMonitorFlags   flags,
+                              GCancellable       *cancellable,
+                              GError            **error)
+{
+  return g_object_new (g_resource_file_monitor_get_type (), NULL);
+}
+
 static void
 g_resource_file_file_iface_init (GFileIface *iface)
 {
@@ -588,6 +615,7 @@ g_resource_file_file_iface_init (GFileIface *iface)
   iface->query_settable_attributes = g_resource_file_query_settable_attributes;
   iface->query_writable_namespaces = g_resource_file_query_writable_namespaces;
   iface->read_fn = g_resource_file_read;
+  iface->monitor_file = g_resource_file_monitor_file;
 
   iface->supports_thread_contexts = TRUE;
 }
