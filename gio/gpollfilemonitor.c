@@ -72,20 +72,6 @@ g_poll_file_monitor_init (GPollFileMonitor* poll_monitor)
 {
 }
 
-static int 
-safe_strcmp (const char *a, 
-             const char *b)
-{
-  if (a == NULL && b == NULL)
-    return 0;
-  if (a == NULL)
-    return -1;
-  if (b == NULL)
-    return 1;
-  
-  return strcmp (a, b);
-}
-
 static int
 calc_event_type (GFileInfo *last,
 		 GFileInfo *new)
@@ -99,12 +85,10 @@ calc_event_type (GFileInfo *last,
   if (last != NULL && new == NULL)
     return G_FILE_MONITOR_EVENT_DELETED;
 
-  if (safe_strcmp (g_file_info_get_etag (last),
-		   g_file_info_get_etag (new)))
+  if (g_strcmp0 (g_file_info_get_etag (last), g_file_info_get_etag (new)))
     return G_FILE_MONITOR_EVENT_CHANGED;
   
-  if (g_file_info_get_size (last) !=
-      g_file_info_get_size (new))
+  if (g_file_info_get_size (last) != g_file_info_get_size (new))
     return G_FILE_MONITOR_EVENT_CHANGED;
 
   return -1;
@@ -196,7 +180,7 @@ got_initial_info (GObject      *source_object,
 }
 
 /**
- * g_poll_file_monitor_new:
+ * _g_poll_file_monitor_new:
  * @file: a #GFile.
  * 
  * Polls @file for changes.
