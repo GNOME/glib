@@ -154,7 +154,7 @@ static void test_object (void)
   GObject *obj;
   GValue obj_vala = G_VALUE_INIT;
   GValue obj_valb = G_VALUE_INIT;
-  obj = g_object_new (NAMESPACE_TYPE_OBJECT, NULL);
+  obj = g_object_new (MAMAN_TYPE_BAR, NULL);
 
   g_value_init (&amp;obj_vala, MAMAN_TYPE_BAR);
   g_value_set_object (&amp;obj_vala, obj);
