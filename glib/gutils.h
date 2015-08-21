@@ -254,7 +254,7 @@ int atexit (void (*)(void));
 #define g_atexit(func) atexit(func)
 #endif
 
-#endif  /* G_DISABLE_DEPRECATED */
+#endif
 
 
 /* Look for an executable in PATH, following execvp() rules */
