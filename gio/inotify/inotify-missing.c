@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 
-/* inotify-helper.c - Gnome VFS Monitor based on inotify.
+/* inotify-missing.c - GVFS Monitor based on inotify.
 
    Copyright (C) 2005 John McCutchan
 

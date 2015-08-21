@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 
-/* inotify-path.c - GVFS Directory Monitor based on inotify.
+/* inotify-path.c - GVFS Monitor based on inotify.
 
    Copyright (C) 2006 John McCutchan
    Copyright (C) 2009 Codethink Limited

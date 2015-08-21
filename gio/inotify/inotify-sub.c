@@ -1,6 +1,6 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 
-/* inotify-sub.c - GMonitor based on inotify.
+/* inotify-sub.c - GVFS Monitor based on inotify.
 
    Copyright (C) 2006 John McCutchan
 

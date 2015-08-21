@@ -1,6 +1,11 @@
 #include <stdlib.h>
 #include <gio/gio.h>
 
+/* These tests were written for the inotify implementation.
+ * Other implementations may require slight adjustments in
+ * the tests, e.g. the length of timeouts
+ */
+
 typedef struct
 {
   gint event_type;
@@ -328,16 +333,6 @@ dir_step (gpointer user_data)
 
   switch (data->step)
     {
-#if 0
-    /* FIXME directory monitoring doesn't seem to work if the directory does not
-     * exist yet
-     */
-    case 0:
-      record_event (data, -1, NULL, NULL, 0);
-      g_file_make_directory (data.file, NULL, &error);
-      g_assert_no_error (error);
-      break;
-#endif
     case 1:
       record_event (data, -1, NULL, NULL, 1);
       parent = g_file_get_parent (data->file);
@@ -444,6 +439,100 @@ test_dir_monitor (void)
   g_string_free (data.output, TRUE);
 }
 
+static gboolean
+nodir_step (gpointer user_data)
+{
+  TestData *data = user_data;
+  GFile *parent;
+  GError *error = NULL;
+
+  switch (data->step)
+    {
+    case 0:
+      record_event (data, -1, NULL, NULL, 0);
+      parent = g_file_get_parent (data->file);
+      g_file_make_directory (parent, NULL, &error);
+      g_assert_no_error (error);
+      g_object_unref (parent);
+      break;
+    case 1:
+      record_event (data, -1, NULL, NULL, 1);
+      g_file_replace_contents (data->file, "step 1", 6, NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL, &error);
+      g_assert_no_error (error);
+      break;
+    case 2:
+      record_event (data, -1, NULL, NULL, 2);
+      g_file_delete (data->file, NULL, &error);
+      g_assert_no_error (error);
+      break;
+    case 3:
+      record_event (data, -1, NULL, NULL, 3);
+      parent = g_file_get_parent (data->file);
+      g_file_delete (parent, NULL, &error);
+      g_assert_no_error (error);
+      g_object_unref (parent);
+      break;
+    case 4:
+      record_event (data, -1, NULL, NULL, 4);
+      g_main_loop_quit (data->loop);
+      return G_SOURCE_REMOVE;
+    }
+
+  data->step++;
+
+  return G_SOURCE_CONTINUE;
+}
+
+static RecordedEvent nodir_output[] = {
+  { -1, NULL, NULL, 0 },
+  { G_FILE_MONITOR_EVENT_CREATED, "nosuchfile", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "nosuchfile", NULL, -1 },
+  { -1, NULL, NULL, 1 },
+  { G_FILE_MONITOR_EVENT_CREATED, "nosuchfile", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_CHANGED, "nosuchfile", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "nosuchfile", NULL, -1 },
+  { -1, NULL, NULL, 2 },
+  { G_FILE_MONITOR_EVENT_DELETED, "nosuchfile", NULL, -1 },
+  { -1, NULL, NULL, 3 },
+  { -1, NULL, NULL, 4 }
+};
+
+static void
+test_dir_non_existent (void)
+{
+  TestData data;
+  GError *error = NULL;
+
+  data.output = g_string_new ("");
+  data.step = 0;
+  data.events = NULL;
+
+  data.file = g_file_new_for_path ("nosuchdir/nosuchfile");
+  data.monitor = g_file_monitor_file (data.file, G_FILE_MONITOR_WATCH_MOVES, NULL, &error);
+  g_assert_no_error (error);
+
+  g_file_monitor_set_rate_limit (data.monitor, 200);
+  g_signal_connect (data.monitor, "changed", G_CALLBACK (monitor_changed), &data);
+
+  data.loop = g_main_loop_new (NULL, TRUE);
+
+  /* we need a long timeout here, since the inotify implementation only scans
+   * for missing files every 4 seconds.
+   */
+  g_timeout_add (5000, nodir_step, &data);
+
+  g_main_loop_run (data.loop);
+
+  /*output_events (data.events);*/
+  check_expected_events (nodir_output, G_N_ELEMENTS (nodir_output), data.events);
+
+  g_list_free_full (data.events, (GDestroyNotify)free_recorded_event);
+  g_main_loop_unref (data.loop);
+  g_object_unref (data.monitor);
+  g_object_unref (data.file);
+  g_string_free (data.output, TRUE);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -452,6 +541,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/monitor/atomic-replace", test_atomic_replace);
   g_test_add_func ("/monitor/file-changes", test_file_changes);
   g_test_add_func ("/monitor/dir-monitor", test_dir_monitor);
+  g_test_add_func ("/monitor/dir-not-existent", test_dir_non_existent);
 
   return g_test_run ();
 }
