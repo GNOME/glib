@@ -197,7 +197,7 @@
  * The first, and preferred, option is to store the source ID returned by
  * functions such as g_timeout_add() or g_source_attach(), and explicitly
  * remove that source from the main context using g_source_remove() when the
- * owning object is finalised. This ensures that the callback can only be
+ * owning object is finalized. This ensures that the callback can only be
  * invoked while the object is still alive.
  *
  * The second option is to hold a strong reference to the object in the
