@@ -533,6 +533,138 @@ test_dir_non_existent (void)
   g_string_free (data.output, TRUE);
 }
 
+static gboolean
+cross_dir_step (gpointer user_data)
+{
+  TestData *data = user_data;
+  GFile *file, *file2;
+  GError *error = NULL;
+
+  switch (data[0].step)
+    {
+    case 0:
+      record_event (&data[0], -1, NULL, NULL, 0);
+      record_event (&data[1], -1, NULL, NULL, 0);
+      file = g_file_get_child (data[1].file, "a");
+      g_file_replace_contents (file, "step 0", 6, NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL, &error);
+      g_assert_no_error (error);
+      g_object_unref (file);
+      break;
+    case 1:
+      record_event (&data[0], -1, NULL, NULL, 1);
+      record_event (&data[1], -1, NULL, NULL, 1);
+      file = g_file_get_child (data[1].file, "a");
+      file2 = g_file_get_child (data[0].file, "a");
+      g_file_move (file, file2, 0, NULL, NULL, NULL, &error);
+      g_assert_no_error (error);
+      g_object_unref (file);
+      g_object_unref (file2);
+      break;
+    case 2:
+      record_event (&data[0], -1, NULL, NULL, 2);
+      record_event (&data[1], -1, NULL, NULL, 2);
+      file2 = g_file_get_child (data[0].file, "a");
+      g_file_delete (file2, NULL, NULL);
+      g_file_delete (data[0].file, NULL, NULL);
+      g_file_delete (data[1].file, NULL, NULL);
+      g_object_unref (file2);
+      break;
+    case 3:
+      record_event (&data[0], -1, NULL, NULL, 3);
+      record_event (&data[1], -1, NULL, NULL, 3);
+      g_main_loop_quit (data->loop);
+      return G_SOURCE_REMOVE;
+    }
+
+  data->step++;
+
+  return G_SOURCE_CONTINUE;
+}
+
+static RecordedEvent cross_dir_a_output[] = {
+  { -1, NULL, NULL, 0 },
+  { -1, NULL, NULL, 1 },
+  { G_FILE_MONITOR_EVENT_CREATED, "a", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "a", NULL, -1 },
+  { -1, NULL, NULL, 2 },
+  { G_FILE_MONITOR_EVENT_DELETED, "a", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_DELETED, "cross_dir_a", NULL, -1 },
+  { -1, NULL, NULL, 3 },
+};
+
+static RecordedEvent cross_dir_b_output[] = {
+  { -1, NULL, NULL, 0 },
+  { G_FILE_MONITOR_EVENT_CREATED, "a", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_CHANGED, "a", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "a", NULL, -1 },
+  { -1, NULL, NULL, 1 },
+  { G_FILE_MONITOR_EVENT_MOVED_OUT, "a", "a", -1 },
+  { -1, NULL, NULL, 2 },
+  { G_FILE_MONITOR_EVENT_DELETED, "cross_dir_b", NULL, -1 },
+  { -1, NULL, NULL, 3 },
+};
+static void
+test_cross_dir_moves (void)
+{
+  GError *error = NULL;
+  TestData data[2];
+
+  data[0].output = g_string_new ("");
+  data[0].step = 0;
+  data[0].events = NULL;
+
+  data[0].file = g_file_new_for_path ("cross_dir_a");
+  g_file_delete (data[0].file, NULL, NULL);
+  g_file_make_directory (data[0].file, NULL, &error);
+
+  data[0].monitor = g_file_monitor_directory (data[0].file, 0, NULL, &error);
+  g_assert_no_error (error);
+
+  g_file_monitor_set_rate_limit (data[0].monitor, 200);
+  g_signal_connect (data[0].monitor, "changed", G_CALLBACK (monitor_changed), &data[0]);
+
+  data[1].output = g_string_new ("");
+  data[1].step = 0;
+  data[1].events = NULL;
+
+  data[1].file = g_file_new_for_path ("cross_dir_b");
+  g_file_delete (data[1].file, NULL, NULL);
+  g_file_make_directory (data[1].file, NULL, &error);
+
+  data[1].monitor = g_file_monitor_directory (data[1].file, G_FILE_MONITOR_WATCH_MOVES, NULL, &error);
+  g_assert_no_error (error);
+
+  g_file_monitor_set_rate_limit (data[1].monitor, 200);
+  g_signal_connect (data[1].monitor, "changed", G_CALLBACK (monitor_changed), &data[1]);
+
+  data[0].loop = g_main_loop_new (NULL, TRUE);
+
+  g_timeout_add (500, cross_dir_step, data);
+
+  g_main_loop_run (data[0].loop);
+
+#if 0
+  g_print ("monitor a:\n");
+  output_events (data[0].events);
+  g_print ("monitor b:\n");
+  output_events (data[1].events);
+#endif
+
+  check_expected_events (cross_dir_a_output, G_N_ELEMENTS (cross_dir_a_output), data[0].events);
+  check_expected_events (cross_dir_b_output, G_N_ELEMENTS (cross_dir_b_output), data[1].events);
+
+  g_list_free_full (data[0].events, (GDestroyNotify)free_recorded_event);
+  g_main_loop_unref (data[0].loop);
+  g_object_unref (data[0].monitor);
+  g_object_unref (data[0].file);
+  g_string_free (data[0].output, TRUE);
+
+  g_list_free_full (data[1].events, (GDestroyNotify)free_recorded_event);
+  g_object_unref (data[1].monitor);
+  g_object_unref (data[1].file);
+  g_string_free (data[1].output, TRUE);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -542,6 +674,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/monitor/file-changes", test_file_changes);
   g_test_add_func ("/monitor/dir-monitor", test_dir_monitor);
   g_test_add_func ("/monitor/dir-not-existent", test_dir_non_existent);
+  g_test_add_func ("/monitor/cross-dir-moves", test_cross_dir_moves);
 
   return g_test_run ();
 }
