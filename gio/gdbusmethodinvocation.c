@@ -29,6 +29,7 @@
 #include "gdbusintrospection.h"
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
+#include "gioerror.h"
 
 #ifdef G_OS_UNIX
 #include "gunixfdlist.h"
