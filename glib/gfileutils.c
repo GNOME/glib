@@ -1609,6 +1609,8 @@ g_file_open_tmp (const gchar  *tmpl,
   gchar *fulltemplate;
   gint result;
 
+  g_return_val_if_fail (error == NULL || *error == NULL, -1);
+
   result = g_get_tmp_name (tmpl, &fulltemplate,
                            wrap_g_open,
                            O_CREAT | O_EXCL | O_RDWR | O_BINARY,
@@ -1655,6 +1657,8 @@ g_dir_make_tmp (const gchar  *tmpl,
                 GError      **error)
 {
   gchar *fulltemplate;
+
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   if (g_get_tmp_name (tmpl, &fulltemplate, wrap_g_mkdir, 0, 0700, error) == -1)
     return NULL;
@@ -2053,7 +2057,10 @@ g_file_read_link (const gchar  *filename,
   size_t size;
   ssize_t read_size;
   
-  size = 256; 
+  g_return_val_if_fail (filename != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  size = 256;
   buffer = g_malloc (size);
   
   while (TRUE) 
@@ -2080,6 +2087,9 @@ g_file_read_link (const gchar  *filename,
       buffer = g_realloc (buffer, size);
     }
 #else
+  g_return_val_if_fail (filename != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
   g_set_error_literal (error,
                        G_FILE_ERROR,
                        G_FILE_ERROR_INVAL,
