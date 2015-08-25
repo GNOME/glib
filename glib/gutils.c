@@ -493,7 +493,8 @@ g_find_program_in_path (const gchar *program)
  * from 0 (least significant) to sizeof(#gulong) * 8 - 1 (31 or 63,
  * usually). To start searching from the 0th bit, set @nth_bit to -1.
  *
- * Returns: the index of the first bit set which is higher than @nth_bit
+ * Returns: the index of the first bit set which is higher than @nth_bit, or -1
+ *    if no higher bits are set
  */
 
 /**
@@ -507,7 +508,8 @@ g_find_program_in_path (const gchar *program)
  * usually). To start searching from the last bit, set @nth_bit to
  * -1 or GLIB_SIZEOF_LONG * 8.
  *
- * Returns: the index of the first bit set which is lower than @nth_bit
+ * Returns: the index of the first bit set which is lower than @nth_bit, or -1
+ *    if no lower bits are set
  */
 
 /**
