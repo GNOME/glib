@@ -244,6 +244,24 @@ socket_strerror (int err)
 #endif
 }
 
+/* Wrapper around g_set_error() to avoid doing excess work */
+#define socket_set_error_lazy(err, errsv, fmt)                          \
+  G_STMT_START {                                                        \
+    GError **__err = (err);                                             \
+    int __errsv = (errsv);                                              \
+                                                                        \
+    if (__err)                                                          \
+      {                                                                 \
+        int __code = socket_io_error_from_errno (__errsv);              \
+        const char *__strerr = socket_strerror (__errsv);               \
+                                                                        \
+        if (__code == G_IO_ERROR_WOULD_BLOCK)                           \
+          g_set_error_literal (__err, G_IO_ERROR, __code, __strerr);    \
+        else                                                            \
+          g_set_error (__err, G_IO_ERROR, __code, fmt, __strerr);       \
+      }                                                                 \
+  } G_STMT_END
+
 #ifdef G_OS_WIN32
 #define win32_unset_event_mask(_socket, _mask) _win32_unset_event_mask (_socket, _mask)
 static void
@@ -2261,9 +2279,7 @@ g_socket_accept (GSocket       *socket,
                 }
             }
 
-	  g_set_error (error, G_IO_ERROR,
-		       socket_io_error_from_errno (errsv),
-		       _("Error accepting connection: %s"), socket_strerror (errsv));
+	  socket_set_error_lazy (error, errsv, _("Error accepting connection: %s"));
 	  return NULL;
 	}
       break;
@@ -2637,9 +2653,7 @@ g_socket_receive_with_blocking (GSocket       *socket,
 
 	  win32_unset_event_mask (socket, FD_READ);
 
-	  g_set_error (error, G_IO_ERROR,
-		       socket_io_error_from_errno (errsv),
-		       _("Error receiving data: %s"), socket_strerror (errsv));
+	  socket_set_error_lazy (error, errsv, _("Error receiving data: %s"));
 	  return -1;
 	}
 
@@ -2812,9 +2826,7 @@ g_socket_send_with_blocking (GSocket       *socket,
                 }
             }
 
-	  g_set_error (error, G_IO_ERROR,
-		       socket_io_error_from_errno (errsv),
-		       _("Error sending data: %s"), socket_strerror (errsv));
+	  socket_set_error_lazy (error, errsv, _("Error sending data: %s"));
 	  return -1;
 	}
       break;
@@ -3899,10 +3911,7 @@ g_socket_send_message (GSocket                *socket,
                 continue;
               }
 
-	    g_set_error (error, G_IO_ERROR,
-			 socket_io_error_from_errno (errsv),
-			 _("Error sending message: %s"), socket_strerror (errsv));
-
+	    socket_set_error_lazy (error, errsv, _("Error sending message: %s"));
 	    return -1;
 	  }
 	break;
@@ -3982,10 +3991,7 @@ g_socket_send_message (GSocket                *socket,
                   }
               }
 
-	    g_set_error (error, G_IO_ERROR,
-			 socket_io_error_from_errno (errsv),
-			 _("Error sending message: %s"), socket_strerror (errsv));
-
+	    socket_set_error_lazy (error, errsv, _("Error sending message: %s"));
 	    return -1;
 	  }
 	break;
@@ -4225,9 +4231,7 @@ g_socket_send_messages_with_blocking (GSocket        *socket,
                 break;
               }
 
-            g_set_error (error, G_IO_ERROR,
-                         socket_io_error_from_errno (errsv),
-                         _("Error sending message: %s"), socket_strerror (errsv));
+            socket_set_error_lazy (error, errsv, _("Error sending message: %s"));
 
             /* we have to iterate over all messages below now, because we don't
              * know where between num_sent and num_messages the error occured */
@@ -4554,10 +4558,7 @@ g_socket_receive_message (GSocket                 *socket,
 		continue;
 	      }
 
-	    g_set_error (error, G_IO_ERROR,
-			 socket_io_error_from_errno (errsv),
-			 _("Error receiving message: %s"), socket_strerror (errsv));
-
+	    socket_set_error_lazy (error, errsv, _("Error receiving message: %s"));
 	    return -1;
 	  }
 	break;
@@ -4692,10 +4693,7 @@ g_socket_receive_message (GSocket                 *socket,
                   }
               }
 
-	    g_set_error (error, G_IO_ERROR,
-			 socket_io_error_from_errno (errsv),
-			 _("Error receiving message: %s"), socket_strerror (errsv));
-
+	    socket_set_error_lazy (error, errsv, _("Error receiving message: %s"));
 	    return -1;
 	  }
 	win32_unset_event_mask (socket, FD_READ);
