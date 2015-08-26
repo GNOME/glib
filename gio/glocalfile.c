@@ -956,6 +956,21 @@ get_filesystem_readonly (GFileInfo  *info,
 
 #endif /* G_OS_WIN32 */
 
+static void
+g_set_io_error (GError      **error,
+                const gchar  *msg,
+                GFile        *file,
+                gint          errsv)
+{
+  GLocalFile *local = G_LOCAL_FILE (file);
+  gchar *display_name;
+
+  display_name = g_filename_display_name (local->filename);
+  g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
+               msg, display_name, g_strerror (errsv));
+  g_free (display_name);
+}
+
 static GFileInfo *
 g_local_file_query_filesystem_info (GFile         *file,
 				    const char    *attributes,
@@ -1010,10 +1025,9 @@ g_local_file_query_filesystem_info (GFile         *file,
     {
       int errsv = errno;
 
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Error getting filesystem info: %s"),
-		   g_strerror (errsv));
+      g_set_io_error (error,
+                      _("Error getting filesystem info for %s: %s"),
+                      file, errsv);
       return NULL;
     }
 
@@ -1134,36 +1148,26 @@ g_local_file_find_enclosing_mount (GFile         *file,
   GMount *mount;
 
   if (g_lstat (local->filename, &buf) != 0)
-    {
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-		      /* Translators: This is an error message when trying to
-		       * find the enclosing (user visible) mount of a file, but
-		       * none exists. */
-		      _("Containing mount does not exist"));
-      return NULL;
-    }
+    goto error;
 
   mountpoint = find_mountpoint_for (local->filename, buf.st_dev);
   if (mountpoint == NULL)
-    {
-      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-		      /* Translators: This is an error message when trying to
-		       * find the enclosing (user visible) mount of a file, but
-		       * none exists. */
-		      _("Containing mount does not exist"));
-      return NULL;
-    }
+    goto error;
 
   mount = _g_mount_get_for_mount_path (mountpoint, cancellable);
   g_free (mountpoint);
   if (mount)
     return mount;
 
-  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-		  /* Translators: This is an error message when trying to find
-		   * the enclosing (user visible) mount of a file, but none
-		   * exists. */
-		  _("Containing mount does not exist"));
+error:
+  /* Translators: This is an error message when trying to find
+   * the enclosing (user visible) mount of a file, but none
+   * exists.
+   */
+  g_set_io_error (error,
+		  _("Containing mount for file %s not found"),
+                  file, 0);
+
   return NULL;
 }
 
@@ -1183,8 +1187,7 @@ g_local_file_set_display_name (GFile         *file,
   parent = g_file_get_parent (file);
   if (parent == NULL)
     {
-      g_set_error_literal (error, G_IO_ERROR,
-                           G_IO_ERROR_FAILED,
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                            _("Can't rename root directory"));
       return NULL;
     }
@@ -1203,17 +1206,13 @@ g_local_file_set_display_name (GFile         *file,
 
       if (errsv != ENOENT)
         {
-	  g_set_error (error, G_IO_ERROR,
-		       g_io_error_from_errno (errsv),
-		       _("Error renaming file: %s"),
-		       g_strerror (errsv));
+          g_set_io_error (error, _("Error renaming file %s: %s"), new_file, errsv);
           return NULL;
         }
     }
   else
     {
-      g_set_error_literal (error, G_IO_ERROR,
-                           G_IO_ERROR_EXISTS,
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_EXISTS,
                            _("Can't rename file, filename already exists"));
       return NULL;
     }
@@ -1223,16 +1222,15 @@ g_local_file_set_display_name (GFile         *file,
       errsv = errno;
 
       if (errsv == EINVAL)
-	/* We can't get a rename file into itself error herer,
-	   so this must be an invalid filename, on e.g. FAT */
-	g_set_error_literal (error, G_IO_ERROR,
-                             G_IO_ERROR_INVALID_FILENAME,
+	/* We can't get a rename file into itself error here,
+	 * so this must be an invalid filename, on e.g. FAT
+         */
+	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_INVALID_FILENAME,
                              _("Invalid filename"));
       else
-	g_set_error (error, G_IO_ERROR,
-		     g_io_error_from_errno (errsv),
-		     _("Error renaming file: %s"),
-		     g_strerror (errsv));
+        g_set_io_error (error,
+		        _("Error renaming file %s: %s"),
+                        file, errsv);
       g_object_unref (new_file);
       return NULL;
     }
@@ -1391,19 +1389,12 @@ g_local_file_read (GFile         *file,
 	{
 	  ret = _stati64 (local->filename, &buf);
 	  if (ret == 0 && S_ISDIR (buf.st_mode))
-	    {
-	      g_set_error_literal (error, G_IO_ERROR,
-				   G_IO_ERROR_IS_DIRECTORY,
-				   _("Can't open directory"));
-	      return NULL;
-	    }
+            errsv = EISDIR;
 	}
 #endif
-
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Error opening file: %s"),
-		   g_strerror (errsv));
+      g_set_io_error (error,
+		      _("Error opening file %s: %s"),
+                      file, errsv);
       return NULL;
     }
 
@@ -1416,9 +1407,9 @@ g_local_file_read (GFile         *file,
   if (ret == 0 && S_ISDIR (buf.st_mode))
     {
       (void) g_close (fd, NULL);
-      g_set_error_literal (error, G_IO_ERROR,
-                           G_IO_ERROR_IS_DIRECTORY,
-                           _("Can't open directory"));
+      g_set_io_error (error,
+		      _("Error opening file %s: %s"),
+                      file, EISDIR);
       return NULL;
     }
   
@@ -1541,10 +1532,9 @@ g_local_file_delete (GFile         *file,
       if (errsv == EEXIST)
 	errsv = ENOTEMPTY;
 
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Error removing file: %s"),
-		   g_strerror (errsv));
+      g_set_io_error (error,
+		      _("Error removing file %s: %s"),
+                      file, errsv);
       return FALSE;
     }
 
@@ -1925,10 +1915,9 @@ g_local_file_trash (GFile         *file,
     {
       int errsv = errno;
 
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Error trashing file: %s"),
-		   g_strerror (errsv));
+      g_set_io_error (error,
+		      _("Error trashing file %s: %s"),
+                      file, errsv);
       return FALSE;
     }
     
@@ -1969,9 +1958,9 @@ g_local_file_trash (GFile         *file,
       topdir = find_topdir_for (local->filename);
       if (topdir == NULL)
 	{
-	  g_set_error_literal (error, G_IO_ERROR,
-                               G_IO_ERROR_NOT_SUPPORTED,
-                               _("Unable to find toplevel directory for trash"));
+          g_set_io_error (error,
+                          _("Unable to find toplevel directory to trash %s"),
+                          file, G_IO_ERROR_NOT_SUPPORTED);
 	  return FALSE;
 	}
       
@@ -2048,9 +2037,9 @@ g_local_file_trash (GFile         *file,
       if (trashdir == NULL)
 	{
 	  g_free (topdir);
-	  g_set_error_literal (error, G_IO_ERROR,
-                               G_IO_ERROR_NOT_SUPPORTED,
-                               _("Unable to find or create trash directory"));
+          g_set_io_error (error,
+                          _("Unable to find or create trash directory for %s"),
+                          file, G_IO_ERROR_NOT_SUPPORTED);
 	  return FALSE;
 	}
     }
@@ -2068,11 +2057,11 @@ g_local_file_trash (GFile         *file,
       g_free (topdir);
       g_free (infodir);
       g_free (filesdir);
-      g_set_error_literal (error, G_IO_ERROR,
-                           G_IO_ERROR_NOT_SUPPORTED,
-                           _("Unable to find or create trash directory"));
+      g_set_io_error (error,
+                      _("Unable to find or create trash directory for %s"),
+                      file, G_IO_ERROR_NOT_SUPPORTED);
       return FALSE;
-    }  
+    }
 
   basename = g_path_get_basename (local->filename);
   i = 1;
@@ -2101,11 +2090,10 @@ g_local_file_trash (GFile         *file,
       g_free (topdir);
       g_free (trashname);
       g_free (infofile);
-      
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Unable to create trashing info file: %s"),
-		   g_strerror (errsv));
+
+      g_set_io_error (error,
+		      _("Unable to create trashing info file for %s: %s"),
+                      file, errsv);
       return FALSE;
     }
 
@@ -2140,7 +2128,8 @@ g_local_file_trash (GFile         *file,
   g_file_set_contents (infofile, data, -1, NULL);
 
   /* TODO: Maybe we should verify that you can delete the file from the trash
-     before moving it? OTOH, that is hard, as it needs a recursive scan */
+   * before moving it? OTOH, that is hard, as it needs a recursive scan
+   */
 
   trashfile = g_build_filename (filesdir, trashname, NULL);
 
@@ -2158,17 +2147,16 @@ g_local_file_trash (GFile         *file,
 
       if (errsv == EXDEV)
 	/* The trash dir was actually on another fs anyway!?
-	   This can happen when the same device is mounted multiple
-	   times, or with bind mounts of the same fs. */
-	g_set_error (error, G_IO_ERROR,
-		     G_IO_ERROR_NOT_SUPPORTED,
-		     _("Unable to trash file: %s"),
-		     g_strerror (errsv));
+	 * This can happen when the same device is mounted multiple
+	 * times, or with bind mounts of the same fs.
+	 */
+        g_set_io_error (error,
+                        _("Unable to trash file %s across filesystem boundaries"),
+                        file, ENOTSUP);
       else
-	g_set_error (error, G_IO_ERROR,
-		     g_io_error_from_errno (errsv),
-		     _("Unable to trash file: %s"),
-		     g_strerror (errsv));
+        g_set_io_error (error,
+		        _("Unable to trash file %s: %s"),
+                        file, errsv);
       return FALSE;
     }
 
@@ -2222,17 +2210,15 @@ g_local_file_trash (GFile         *file,
     {
       if (cancellable && !g_cancellable_is_cancelled (cancellable))
 	g_cancellable_cancel (cancellable);
-      g_set_error (error, G_IO_ERROR,
-		   G_IO_ERROR_CANCELLED,
-		   _("Unable to trash file: %s"),
-		   _("Operation was cancelled"));
+      g_set_io_error (error,
+                      _("Unable to trash file %s: %s"),
+                      file, ECANCELED);
       success = FALSE;
     }
   else if (!success)
-    g_set_error (error, G_IO_ERROR,
-		 G_IO_ERROR_FAILED,
-		 _("Unable to trash file: %s"),
-		 _("internal error"));
+    g_set_io_error (error,
+                    _("Unable to trash file %s"),
+                    file, 0);
 
   g_free (wfilename);
   return success;
@@ -2256,10 +2242,9 @@ g_local_file_make_directory (GFile         *file,
                              G_IO_ERROR_INVALID_FILENAME,
                              _("Invalid filename"));
       else
-	g_set_error (error, G_IO_ERROR,
-		     g_io_error_from_errno (errsv),
-		     _("Error creating directory: %s"),
-		     g_strerror (errsv));
+        g_set_io_error (error,
+		        _("Error creating directory %s: %s"),
+                        file, errsv);
       return FALSE;
     }
   
@@ -2289,15 +2274,14 @@ g_local_file_make_symbolic_link (GFile         *file,
 		     G_IO_ERROR_NOT_SUPPORTED,
 		     _("Filesystem does not support symbolic links"));
       else
-	g_set_error (error, G_IO_ERROR,
-		     g_io_error_from_errno (errsv),
-		     _("Error making symbolic link: %s"),
-		     g_strerror (errsv));
+        g_set_io_error (error,
+		        _("Error making symbolic link %s: %s"),
+                        file, errsv);
       return FALSE;
     }
   return TRUE;
 #else
-  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, "Symlinks not supported");
+  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED, _("Symbolic links not supported"));
   return FALSE;
 #endif
 }
@@ -2351,10 +2335,9 @@ g_local_file_move (GFile                  *source,
     {
       int errsv = errno;
 
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Error moving file: %s"),
-		   g_strerror (errsv));
+      g_set_io_error (error,
+                      _("Error moving file %s: %s"),
+                      source, errsv);
       return FALSE;
     }
 
@@ -2387,10 +2370,9 @@ g_local_file_move (GFile                  *source,
 	}
       else
 	{
-	  g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_EXISTS,
-                               _("Target file exists"));
+          g_set_io_error (error,
+                          _("Error moving file %s: %s"),
+                          source, EEXIST);
 	  return FALSE;
 	}
     }
@@ -2445,10 +2427,9 @@ g_local_file_move (GFile                  *source,
                              G_IO_ERROR_INVALID_FILENAME,
                              _("Invalid filename"));
       else
-	g_set_error (error, G_IO_ERROR,
-		     g_io_error_from_errno (errsv),
-		     _("Error moving file: %s"),
-		     g_strerror (errsv));
+        g_set_io_error (error,
+                        _("Error moving file %s: %s"),
+                        source, errsv);
       return FALSE;
     }
 
