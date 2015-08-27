@@ -49,6 +49,11 @@ guint                   g_list_store_insert_sorted                      (GListSt
                                                                          GCompareDataFunc  compare_func,
                                                                          gpointer          user_data);
 
+GLIB_AVAILABLE_IN_2_46
+void                   g_list_store_sort                                (GListStore       *store,
+                                                                         GCompareDataFunc  compare_func,
+                                                                         gpointer          user_data);
+
 GLIB_AVAILABLE_IN_2_44
 void                    g_list_store_append                             (GListStore *store,
                                                                          gpointer    item);

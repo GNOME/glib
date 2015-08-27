@@ -317,6 +317,32 @@ g_list_store_insert_sorted (GListStore       *store,
 }
 
 /**
+ * g_list_store_sort:
+ * @store: a #GListStore
+ * @compare_func: (scope call): pairwise comparison function for sorting
+ * @user_data: (closure): user data for @compare_func
+ *
+ * Sort the items in @store according to @compare_func.
+ *
+ * Since: 2.46
+ */
+void
+g_list_store_sort (GListStore       *store,
+                   GCompareDataFunc  compare_func,
+                   gpointer          user_data)
+{
+  gint n_items;
+
+  g_return_if_fail (G_IS_LIST_STORE (store));
+  g_return_val_if_fail (compare_func != NULL, 0);
+
+  g_sequence_sort (store->items, compare_func, user_data);
+
+  n_items = g_sequence_get_length (store->items);
+  g_list_store_items_changed (store, 0, n_items, n_items);
+}
+
+/**
  * g_list_store_append:
  * @store: a #GListStore
  * @item: (type GObject): the new item
