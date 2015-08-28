@@ -1243,23 +1243,35 @@ g_ascii_strtoll (const gchar *nptr,
  * strerror(), because it returns a string in UTF-8 encoding, and since
  * not all platforms support the strerror() function.
  *
+ * Note that the string may be translated according to the current locale.
+ *
  * Returns: a UTF-8 string describing the error code. If the error code
- *     is unknown, it returns "unknown error (<code>)".
+ *     is unknown, it returns a string like "unknown error (<code>)".
  */
 const gchar *
 g_strerror (gint errnum)
 {
+  gchar buf[1024];
   gchar *msg;
   gchar *tofree = NULL;
   const gchar *ret;
   gint saved_errno = errno;
+  GError *error = NULL;
 
-  msg = strerror (errnum);
+  /* Since we are building with _GNU_SOURCE, we get the
+   * GNU variant of strerror_r (with glibc).
+   */
+  msg = strerror_r (errnum, buf, sizeof (buf));
   if (!g_get_charset (NULL))
-    msg = tofree = g_locale_to_utf8 (msg, -1, NULL, NULL, NULL);
+    {
+      msg = tofree = g_locale_to_utf8 (msg, -1, NULL, NULL, &error);
+      if (error)
+        g_print ("%s\n", error->message);
+    }
 
   ret = g_intern_string (msg);
   g_free (tofree);
+
   errno = saved_errno;
   return ret;
 }
