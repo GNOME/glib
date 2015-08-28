@@ -823,6 +823,10 @@ test_remove_all (void)
   g_assert_cmpint (destroy_counter, ==, 2);
   g_assert_cmpint (destroy_key_counter, ==, 2);
 
+  g_hash_table_remove_all (h);
+  g_assert_cmpint (destroy_counter, ==, 2);
+  g_assert_cmpint (destroy_key_counter, ==, 2);
+
   g_hash_table_unref (h);
 }
 
