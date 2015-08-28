@@ -1321,7 +1321,9 @@ test_strerror (void)
   gint i;
   const gchar *str;
 
-  for (i = 1; i < 100; i++)
+  setlocale (LC_ALL, "C");
+
+  for (i = 1; i < 200; i++)
     {
       str = g_strerror (i);
       g_assert (str != NULL);
