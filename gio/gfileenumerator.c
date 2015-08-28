@@ -657,11 +657,6 @@ g_file_enumerator_iterate (GFileEnumerator  *direnum,
 
   if (ret_info)
     { 
-      if (out_info != NULL)
-        {
-          g_object_set_qdata_full ((GObject*)direnum, cached_info_quark, ret_info, (GDestroyNotify)g_object_unref);
-          *out_info = ret_info;
-        }
       if (out_child != NULL)
         {
           const char *name = g_file_info_get_name (ret_info);
@@ -674,6 +669,13 @@ g_file_enumerator_iterate (GFileEnumerator  *direnum,
               g_object_set_qdata_full ((GObject*)direnum, cached_child_quark, *out_child, (GDestroyNotify)g_object_unref);
             }
         }
+      if (out_info != NULL)
+        {
+          g_object_set_qdata_full ((GObject*)direnum, cached_info_quark, ret_info, (GDestroyNotify)g_object_unref);
+          *out_info = ret_info;
+        }
+      else
+        g_object_unref (ret_info);
     }
   else
     {
