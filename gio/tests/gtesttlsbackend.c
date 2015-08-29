@@ -68,6 +68,7 @@ struct _GTestTlsCertificate {
   GTlsCertificate parent_instance;
   gchar *key_pem;
   gchar *cert_pem;
+  GTlsCertificate *issuer;
 };
 
 struct _GTestTlsCertificateClass {
@@ -117,6 +118,9 @@ g_test_tls_certificate_get_property (GObject    *object,
     case PROP_CERT_PRIVATE_KEY_PEM:
       g_value_set_string (value, cert->key_pem);
       break;
+    case PROP_CERT_ISSUER:
+      g_value_set_object (value, cert->issuer);
+      break;
     default:
       g_assert_not_reached ();
       break;
@@ -139,9 +143,11 @@ g_test_tls_certificate_set_property (GObject      *object,
     case PROP_CERT_PRIVATE_KEY_PEM:
       cert->key_pem = g_value_dup_string (value);
       break;
+    case PROP_CERT_ISSUER:
+      cert->issuer = g_value_dup_object (value);
+      break;
     case PROP_CERT_CERTIFICATE:
     case PROP_CERT_PRIVATE_KEY:
-    case PROP_CERT_ISSUER:
       /* ignore */
       break;
     default:
@@ -157,6 +163,7 @@ g_test_tls_certificate_finalize (GObject *object)
 
   g_free (cert->cert_pem);
   g_free (cert->key_pem);
+  g_clear_object (&cert->issuer);
 }
 
 static void

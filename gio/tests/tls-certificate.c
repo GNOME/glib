@@ -123,6 +123,73 @@ pem_parser (const Reference *ref)
 }
 
 static void
+pem_parser_handles_chain (const Reference *ref)
+{
+  GTlsCertificate *cert;
+  GTlsCertificate *issuer;
+  GTlsCertificate *original_cert;
+  gchar *pem;
+  gchar *parsed_cert_pem = NULL;
+  const gchar *parsed_key_pem = NULL;
+  GError *error = NULL;
+
+  /* Check that a chain with exactly three certificates is returned */
+  g_file_get_contents (g_test_get_filename (G_TEST_DIST, "cert-tests", "cert-list.pem", NULL), &pem, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (pem);
+
+  cert = original_cert = g_tls_certificate_new_from_pem (pem, -1, &error);
+  g_free (pem);
+  g_assert_no_error (error);
+  g_assert (cert);
+
+  g_object_get (cert,
+      "certificate-pem", &parsed_cert_pem,
+      NULL);
+  g_assert_cmpstr (parsed_cert_pem, ==, ref->cert_pems[0]);
+  g_clear_pointer (&parsed_cert_pem, g_free);
+
+  /* Make sure the private key was parsed */
+  parsed_key_pem = g_test_tls_connection_get_private_key_pem (cert);
+  g_assert_cmpstr (parsed_key_pem, ==, ref->key_pem);
+  parsed_key_pem = NULL;
+
+  /* Now test the second cert */
+  issuer = g_tls_certificate_get_issuer (cert);
+  g_assert (issuer);
+
+  cert = issuer;
+  issuer = g_tls_certificate_get_issuer (cert);
+  g_assert (issuer);
+
+  g_object_get (cert,
+      "certificate-pem", &parsed_cert_pem,
+      NULL);
+  g_assert_cmpstr (parsed_cert_pem, ==, ref->cert_pems[1]);
+  g_clear_pointer (&parsed_cert_pem, g_free);
+
+  /* Only the first cert should have a private key */
+  parsed_key_pem = g_test_tls_connection_get_private_key_pem (cert);
+  g_assert (!parsed_key_pem);
+
+  /* Now test the final cert */
+  cert = issuer;
+  issuer = g_tls_certificate_get_issuer (cert);
+  g_assert (!issuer);
+
+  g_object_get (cert,
+      "certificate-pem", &parsed_cert_pem,
+      NULL);
+  g_assert_cmpstr (parsed_cert_pem, ==, ref->cert_pems[2]);
+  g_clear_pointer (&parsed_cert_pem, g_free);
+
+  parsed_key_pem = g_test_tls_connection_get_private_key_pem (cert);
+  g_assert (!parsed_key_pem);
+
+  g_object_unref (original_cert);
+}
+
+static void
 from_file (const Reference *ref)
 {
   GTlsCertificate *cert;
@@ -305,6 +372,8 @@ main (int   argc,
 
   g_test_add_data_func ("/tls-certificate/pem-parser",
                         &ref, (GTestDataFunc)pem_parser);
+  g_test_add_data_func ("/tls-certificate/pem-parser-handles-chain",
+                        &ref, (GTestDataFunc)pem_parser_handles_chain);
   g_test_add_data_func ("/tls-certificate/from_file",
                         &ref, (GTestDataFunc)from_file);
   g_test_add_data_func ("/tls-certificate/from_files",
