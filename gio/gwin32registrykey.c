@@ -471,8 +471,6 @@ GWin32RegistryKey *
 g_win32_registry_key_new (const gchar  *path,
                           GError      **error)
 {
-  GObject *result;
-
   g_return_val_if_fail (path != NULL, NULL);
 
   return g_initable_new (G_TYPE_WIN32_REGISTRY_KEY,
