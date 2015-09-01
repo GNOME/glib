@@ -426,24 +426,18 @@ g_settings_real_writable_change_event (GSettings *settings,
 }
 
 static gboolean
-g_settings_has_signal_handlers (GSettings   *settings,
-                                const gchar *key)
+g_settings_has_signal_handlers (GSettings *settings)
 {
   GSettingsClass *class = G_SETTINGS_GET_CLASS (settings);
-  GQuark keyq;
 
   if (class->change_event != g_settings_real_change_event ||
       class->writable_change_event != g_settings_real_writable_change_event)
     return TRUE;
 
-  keyq = g_quark_from_string (key);
-
   if (g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT], 0, TRUE) ||
       g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGED], 0, TRUE) ||
-      g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGED], keyq, TRUE) ||
       g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_CHANGE_EVENT], 0, TRUE) ||
-      g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_CHANGED], 0, TRUE) ||
-      g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_CHANGED], keyq, TRUE))
+      g_signal_has_handler_pending (settings, g_settings_signals[SIGNAL_CHANGED], 0, TRUE))
     return TRUE;
 
   /* None of that?  Then surely nobody is watching.... */
@@ -1193,7 +1187,7 @@ g_settings_read_from_backend (GSettings          *settings,
   gchar *path;
 
   /* If we are not yet watching for changes, consider doing it now... */
-  if (!settings->priv->is_subscribed && g_settings_has_signal_handlers (settings, key->name))
+  if (!settings->priv->is_subscribed && g_settings_has_signal_handlers (settings))
     {
       g_settings_backend_subscribe (settings->priv->backend, settings->priv->path);
       settings->priv->is_subscribed = TRUE;
