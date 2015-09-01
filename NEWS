@@ -1,3 +1,50 @@
+Overview of changes in GLib 2.45.7
+==================================
+
+* Add G_FILE_ATTRIBUTE_STANDARD_IS_VOLATILE for use by non-POSIX-like
+  backends (e.g. cloud storage).
+
+* GFileMonitor: Make the inotify backend work with atomic renames again
+
+* GSettings: change notification is again working unconditionally
+
+* GListStore has a sort function now
+
+* Test infrastructure:
+ - Tests are now required to have unique names
+ - TAP support has been improved
+ - A macro for asserting that two memory regions have identical content
+   has been added
+
+* Bugs fixed:
+ 708525 A "g_file_query_info" on the file path "/sys/kernel/debug/hid"...
+ 742849 inotify: send paired events to both sides
+ 744060 Update GObject tutorial documentation to use G_DECLARE_FINAL_T...
+ 747364 Fix GError leak in g_file_query_writable_namespaces()
+ 749492 Support file creation time on FreeBSD and NetBSD
+ 752769 (g_socket_receive_message | g_socket_send_message) performance
+ 753745 glib-genmarshal still needed for cross-compilation
+ 754152 Add g_list_store_sort
+ 754211 Memory leak in g_file_enumerator_iterate ()
+ 754264 GLib 2.44 certificate chain construction fails if the PEM incl...
+ 754283 gtestutils: add g_assert_cmpmem()
+ 754284 gtestutils: print the TAP test plan first, not last
+ 754286 misc gtestutils fixes
+ 754307 size of array '_GStaticAssertCompileTimeAssertion_3387' is neg...
+
+
+* Translation updates:
+ Chinese (Taiwan)
+ French
+ Galician
+ Greek
+ Hebrew
+ Hungarian
+ Indonesian
+ Polish
+ Portuguese
+
+
 Overview of changes in GLib 2.45.6
 ==================================
 
