@@ -1261,7 +1261,12 @@ g_strerror (gint errnum)
   /* Since we are building with _GNU_SOURCE, we get the
    * GNU variant of strerror_r (with glibc).
    */
+#ifdef G_OS_WIN32
+  strerror_s (buf, sizeof (buf), errnum);
+  msg = buf;
+#else
   msg = strerror_r (errnum, buf, sizeof (buf));
+#endif
   if (!g_get_charset (NULL))
     {
       msg = tofree = g_locale_to_utf8 (msg, -1, NULL, NULL, &error);
