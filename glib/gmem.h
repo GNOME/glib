@@ -313,7 +313,7 @@ g_steal_pointer (gpointer pp)
  * to 0's, and returns %NULL on failure. Contrast with g_new0(), which aborts
  * the program on failure.
  * The returned pointer is cast to a pointer to the given type.
- * The function returns %NULL when @n_structs is 0 of if an overflow occurs.
+ * The function returns %NULL when @n_structs is 0 or if an overflow occurs.
  * 
  * Since: 2.8
  * Returns: a pointer to the allocated memory, cast to a pointer to @struct_type
