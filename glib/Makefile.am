@@ -448,47 +448,23 @@ glib.def: libglib-2.0.la
 glib-2.0.lib: libglib-2.0.la glib.def
 	$(AM_V_GEN) lib.exe -machine:@LIB_EXE_MACHINE_FLAG@ -name:libglib-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/glib.def -out:$@
 
-dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj ../build/win32/vs10/glib.vcxproj ../build/win32/vs10/glib.vcxproj.filters
+# ------ MSVC Project File Generation ------
+MSVCPROJS = glib
+
+glib_FILES = $(libglib_2_0_la_SOURCES)
+glib_EXCLUDES = *-unix.c|gthread-*.c
+
+glib_HEADERS_DIR = $(glibsubincludedir)
+glib_HEADERS_INST = $(deprecatedinclude_HEADERS) $(glibsubinclude_HEADERS)
+glib_HEADERS_EXCLUDES = dummy
+
+include $(top_srcdir)/build/Makefile.msvcproj
+
+dist-hook: $(BUILT_EXTRA_DIST) $(top_builddir)/build/win32/vs9/glib.vcproj $(top_builddir)/build/win32/vs9/glib.headers
 	files='$(BUILT_EXTRA_DIST)'; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
 	  cp $$d/$$f $(distdir) || exit 1; done
-
-../build/win32/vs9/glib.vcproj: $(top_srcdir)/build/win32/vs9/glib.vcprojin
-	for F in `echo $(libglib_2_0_la_SOURCES) | tr '/' '\\'`; do \
-		case $$F in \
-		*-unix.c|gthread-*.c) \
-			;; \
-		*.c)	echo '   <File RelativePath="..\..\..\glib\'$$F'" />' \
-			;; \
-		esac; \
-	done >libglib.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/glib.vcprojin >$@
-	rm libglib.sourcefiles
-
-../build/win32/vs10/glib.vcxproj: $(top_srcdir)/build/win32/vs10/glib.vcxprojin
-	for F in `echo $(libglib_2_0_la_SOURCES) | tr '/' '\\'`; do \
-		case $$F in \
-		*-unix.c|gthread-*.c) \
-			;; \
-		*.c) echo '    <ClCompile Include="..\..\..\glib\'$$F'" />' \
-		     ;; \
-		esac; \
-	done >libglib.vs10.sourcefiles
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/glib.vcxprojin >$@
-	rm libglib.vs10.sourcefiles
-
-../build/win32/vs10/glib.vcxproj.filters: $(top_srcdir)/build/win32/vs10/glib.vcxproj.filtersin
-	for F in `echo $(libglib_2_0_la_SOURCES) | tr '/' '\\'`; do \
-		case $$F in \
-		*-unix.c|gthread-*.c) \
-			;; \
-		*.c) echo '    <ClCompile Include="..\..\..\glib\'$$F'"><Filter>Source Files</Filter></ClCompile>' \
-		     ;; \
-		esac; \
-	done >libglib.vs10.sourcefiles.filters
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/glib.vcxproj.filtersin >$@	
-	rm libglib.vs10.sourcefiles.filters
 
 # install gdb scripts
 gdbdir = $(datadir)/glib-2.0/gdb

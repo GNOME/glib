@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-#include "libgio.vs10.sourcefiles.filters"
+#include "gio.vs10.sourcefiles.filters"
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\gio\gnetworking.h.win32"><Filter>Resource Files</Filter></CustomBuild>

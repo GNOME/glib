@@ -280,7 +280,7 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-#include "libglib.sourcefiles"
+#include "glib.sourcefiles"
 			<File RelativePath="..\..\..\glib\giowin32.c" />
 			<File RelativePath="..\..\..\glib\gspawn-win32.c" />
 			<File RelativePath="..\..\..\glib\gthread-win32.c" />

@@ -24,7 +24,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-#include "libglib.vs10.sourcefiles.filters"
+#include "glib.vs10.sourcefiles.filters"
     <ClCompile Include="..\..\..\glib\giowin32.c">
       <Filter>Source Files</Filter>
     </ClCompile>

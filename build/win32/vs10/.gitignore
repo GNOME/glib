@@ -4,3 +4,8 @@ glib.vcxproj
 glib.vcxproj.filters
 gobject.vcxproj
 gobject.vcxproj.filters
+glib-compile-resources.vcxproj
+glib-compile-resources.vcxproj.filters
+glib-compile-schemas.vcxproj
+glib-compile-schemas.vcxproj.filters
+glib-install.props

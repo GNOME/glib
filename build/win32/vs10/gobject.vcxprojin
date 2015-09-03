@@ -177,7 +177,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-#include "libgobject.vs10.sourcefiles"
+#include "gobject.vs10.sourcefiles"
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\gobject\glib-mkenums.in">

@@ -339,7 +339,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-#include "libglib.vs10.sourcefiles"
+#include "glib.vs10.sourcefiles"
     <ClCompile Include="..\..\..\glib\giowin32.c" />
     <ClCompile Include="..\..\..\glib\gspawn-win32.c" />
     <ClCompile Include="..\..\..\glib\gthread-win32.c" />

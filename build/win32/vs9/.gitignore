@@ -1,3 +1,6 @@
 glib.vcproj
 gobject.vcproj
 gio.vcproj
+glib-compile-resources.vcproj
+glib-compile-schemas.vcproj
+glib-install.vsprops
