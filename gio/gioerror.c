@@ -301,6 +301,7 @@ g_io_error_from_win32_error (gint error_code)
 
     case WSA_INVALID_HANDLE:
     case WSA_INVALID_PARAMETER:
+    case WSAEINVAL:
     case WSAEBADF:
     case WSAENOTSOCK:
       return G_IO_ERROR_INVALID_ARGUMENT;
@@ -320,6 +321,19 @@ g_io_error_from_win32_error (gint error_code)
     case WSAECONNRESET:
       return G_IO_ERROR_CONNECTION_CLOSED;
 
+    case WSAEHOSTUNREACH:
+      return G_IO_ERROR_HOST_UNREACHABLE;
+
+    case WSAENETUNREACH:
+      return G_IO_ERROR_NETWORK_UNREACHABLE;
+
+    case WSAECONNREFUSED:
+      return G_IO_ERROR_CONNECTION_REFUSED;
+
+    case WSAETIMEDOUT:
+      return G_IO_ERROR_TIMED_OUT;
+
+    case WSAENOTCONN:
     case ERROR_PIPE_LISTENING:
       return G_IO_ERROR_NOT_CONNECTED;
 
