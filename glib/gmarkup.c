@@ -657,7 +657,7 @@ unescape_gstring_inplace (GMarkupParseContext  *context,
           from++;
           if (*from == '#')
             {
-              gboolean is_hex = FALSE;
+              gint base = 10;
               gulong l;
               gchar *end = NULL;
 
@@ -665,16 +665,13 @@ unescape_gstring_inplace (GMarkupParseContext  *context,
 
               if (*from == 'x')
                 {
-                  is_hex = TRUE;
+                  base = 16;
                   from++;
                 }
 
               /* digit is between start and p */
               errno = 0;
-              if (is_hex)
-                l = strtoul (from, &end, 16);
-              else
-                l = strtoul (from, &end, 10);
+              l = strtoul (from, &end, base);
 
               if (end == from || errno != 0)
                 {
