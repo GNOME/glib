@@ -1258,14 +1258,19 @@ g_strerror (gint errnum)
   gint saved_errno = errno;
   GError *error = NULL;
 
-  /* Since we are building with _GNU_SOURCE, we get the
-   * GNU variant of strerror_r (with glibc).
-   */
 #ifdef G_OS_WIN32
   strerror_s (buf, sizeof (buf), errnum);
   msg = buf;
-#else
+  /* If we're using glibc, since we are building with _GNU_SOURCE, we
+   * expect to get the GNU variant of strerror_r.  However, use the
+   * provided check from man strerror_r(3) in case we ever stop using
+   * _GNU_SOURCE (admittedly unlikely).
+   */
+#elif (defined __GLIBC__) && !((_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE)
   msg = strerror_r (errnum, buf, sizeof (buf));
+#else
+  strerror_r (errnum, buf, sizeof (buf));
+  msg = buf;
 #endif
   if (!g_get_charset (NULL))
     {
