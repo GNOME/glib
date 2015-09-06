@@ -665,22 +665,42 @@ get_fs_type (long f_type)
       return "autofs";
     case 0xADFF:
       return "affs";
+    case 0x62646576:
+      return "bdevfs";
     case 0x42465331:
       return "befs";
     case 0x1BADFACE:
       return "bfs";
+    case 0x42494e4d:
+      return "binfmt_misc";
     case 0x9123683E:
       return "btrfs";
+    case 0x73727279:
+      return "btrfs_test_fs";
+    case 0x27e0eb:
+      return "cgroup";
+    case 0x63677270:
+      return "cgroup2";
     case 0xFF534D42:
       return "cifs";
     case 0x73757245:
       return "coda";
     case 0x012FF7B7:
       return "coh";
+    case 0x62656570:
+      return "configfs";
     case 0x28cd3d45:
       return "cramfs";
+    case 0x64626720:
+      return "debugfs";
     case 0x1373:
       return "devfs";
+    case 0x1cd1:
+      return "devpts";
+    case 0xf15f:
+      return "ecryptfs";
+    case 0xde5e81e4:
+      return "efivarfs";
     case 0x00414A53:
       return "efs";
     case 0x137D:
@@ -689,8 +709,18 @@ get_fs_type (long f_type)
       return "ext2";
     case 0xEF53:
       return "ext3/ext4";
+    case 0xF2F52010:
+      return "f2fs";
+    case 0x65735546:
+      return "fuse";
+    case 0x65735543:
+      return "fusectl";
+    case 0xBAD1DEA:
+      return "futexfs";
     case 0x4244:
       return "hfs";
+    case 0x00c0ffee:
+      return "hostfs";
     case 0xF995E849:
       return "hpfs";
     case 0x958458f6:
@@ -709,42 +739,80 @@ get_fs_type (long f_type)
       return "minix2";
     case 0x2478:
       return "minix22";
+    case 0x4d5a:
+      return "minix3";
+    case 0x19800202:
+      return "mqueue";
     case 0x4d44:
       return "msdos";
     case 0x564c:
       return "ncp";
     case 0x6969:
       return "nfs";
+    case 0x3434:
+      return "nilfs";
+    case 0x6e736673:
+      return "nsfs";
     case 0x5346544e:
       return "ntfs";
+    case 0x7461636f:
+      return "ocfs2";
     case 0x9fa1:
       return "openprom";
+    case 0x794c7630:
+      return "overlay";
+    case 0x50495045:
+      return "pipefs";
     case 0x9fa0:
       return "proc";
+    case 0x6165676C:
+      return "pstore";
     case 0x002f:
       return "qnx4";
+    case 0x68191122:
+      return "qnx6";
+    case 0x858458f6:
+      return "ramfs";
     case 0x52654973:
       return "reiserfs";
     case 0x7275:
       return "romfs";
+    case 0x67596969:
+      return "rpc_pipefs";
+    case 0x73636673:
+      return "securityfs";
+    case 0xf97cff8c:
+      return "selinuxfs";
+    case 0x43415d53:
+      return "smackfs";
     case 0x517B:
       return "smb";
+    case 0x534F434B:
+      return "sockfs";
     case 0x73717368:
       return "squashfs";
+    case 0x62656572:
+      return "sysfs";
     case 0x012FF7B6:
       return "sysv2";
     case 0x012FF7B5:
       return "sysv4";
     case 0x01021994:
       return "tmpfs";
+    case 0x74726163:
+      return "tracefs";
     case 0x15013346:
       return "udf";
     case 0x00011954:
       return "ufs";
     case 0x9fa2:
       return "usbdevice";
+    case 0x01021997:
+      return "v9fs";
     case 0xa501FCF5:
       return "vxfs";
+    case 0xabba1974:
+      return "xenfs";
     case 0x012FF7B4:
       return "xenix";
     case 0x58465342:
@@ -753,8 +821,6 @@ get_fs_type (long f_type)
       return "xiafs";
     case 0x52345362:
       return "reiser4";
-    case 0x65735546:
-      return "fuse";
     default:
       return NULL;
     }
