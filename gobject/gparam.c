@@ -579,7 +579,9 @@ g_param_spec_steal_qdata (GParamSpec *pspec,
 GParamSpec*
 g_param_spec_get_redirect_target (GParamSpec *pspec)
 {
-  if (G_IS_PARAM_SPEC_OVERRIDE (pspec))
+  GTypeInstance *inst = (GTypeInstance *)pspec;
+
+  if (inst && inst->g_class && inst->g_class->g_type == G_TYPE_PARAM_OVERRIDE)
     return ((GParamSpecOverride*)pspec)->overridden;
   else
     return NULL;
