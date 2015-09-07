@@ -5,15 +5,19 @@
 # Author: Fan, Chun-wei
 # November 05, 2012
 
-# MSVC_SLN: name of root project
+# MSVC_VER_LONG: Long Version of Visual Studio (2012, 2013, 2015 and so on)
+# MSVC_VER: Short Version of Visual Studio (11 for 2012, 12 for 2013, 14 for 2015 and so on)
+# MSVC_FORMAT_VER: Use 12 for MSVC 2012 through 2015
 
-MSVC_FORMAT_VER=$(shell echo $$(expr $(MSVC_VER) + 1))
+%.sln:
+	sed 's/11\.00/$(MSVC_FORMAT_VER)\.00/g' < $(top_srcdir)/build/win32/vs10/$@ > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@.tmp
+	sed 's/2010/$(MSVC_VER_LONG)/g' < $(top_builddir)/build/win32/vs$(MSVC_VER)/$@.tmp > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
+	rm $(top_builddir)/build/win32/vs$(MSVC_VER)/$@.tmp
 
-$(MSVC_SLN).sln: $(top_srcdir)/build/win32/vs10/$(MSVC_SLN).sln
-	cat $< | sed 's/11\.00/$(MSVC_FORMAT_VER)\.00/g' | sed 's/2010/$(MSVC_VER_LONG)/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
-
-README.txt: $(top_srcdir)/build/win32/vs10/README.txt
-	cat $< | sed 's/vs10/vs$(MSVC_VER)/g' | sed 's/VS10/VS$(MSVC_VER)/g' > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
+%.txt:
+	sed 's/vs10/vs$(MSVC_VER)/g' < $(top_srcdir)/build/win32/vs10/$@ > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@.tmp
+	sed 's/VS10/VS$(MSVC_VER)/g' < $(top_builddir)/build/win32/vs$(MSVC_VER)/$@.tmp > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@
+	rm $(top_builddir)/build/win32/vs$(MSVC_VER)/$@.tmp
 
 %.vcxproj:
 	if test -e $(top_srcdir)/build/win32/vs10/$@; then \
