@@ -690,20 +690,24 @@ static inline gboolean
 (g_set_object) (GObject **object_ptr,
                 GObject  *new_object)
 {
+  GObject *old_object = *object_ptr;
+
   /* rely on g_object_[un]ref() to check the pointers are actually GObjects;
    * elide a (object_ptr != NULL) check because most of the time we will be
    * operating on struct members with a constant offset, so a NULL check would
-   * not catch bugs */
+   * not catch bugs
+   */
 
-  if (*object_ptr == new_object)
+  if (old_object == new_object)
     return FALSE;
 
   if (new_object != NULL)
     g_object_ref (new_object);
-  if (*object_ptr != NULL)
-    g_object_unref (*object_ptr);
 
   *object_ptr = new_object;
+
+  if (old_object != NULL)
+    g_object_unref (old_object);
 
   return TRUE;
 }
