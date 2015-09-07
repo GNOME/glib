@@ -304,7 +304,7 @@ g_object_notify_queue_add (GObject            *object,
 {
   G_LOCK(notify_lock);
 
-  g_return_if_fail (nqueue->n_pspecs < 65535);
+  g_assert (nqueue->n_pspecs < 65535);
 
   if (g_slist_find (nqueue->pspecs, pspec) == NULL)
     {
