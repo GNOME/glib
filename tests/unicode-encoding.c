@@ -161,7 +161,7 @@ process (gint      line,
       if (!ucs4_equal (ucs4_result, ucs4) ||
 	  items_written != ucs4_len)
 	{
-	  fail ("line %d: results of conversion to ucs4 do not match expected.\n", line);
+	  fail ("line %d: results of fast conversion to ucs4 do not match expected.\n", line);
 	  return;
 	}
 
