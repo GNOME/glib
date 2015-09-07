@@ -579,14 +579,8 @@ g_param_spec_steal_qdata (GParamSpec *pspec,
 GParamSpec*
 g_param_spec_get_redirect_target (GParamSpec *pspec)
 {
-  g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
-
   if (G_IS_PARAM_SPEC_OVERRIDE (pspec))
-    {
-      GParamSpecOverride *ospec = G_PARAM_SPEC_OVERRIDE (pspec);
-
-      return ospec->overridden;
-    }
+    return ((GParamSpecOverride*)pspec)->overridden;
   else
     return NULL;
 }
