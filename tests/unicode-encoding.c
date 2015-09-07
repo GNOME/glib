@@ -78,6 +78,16 @@ utf16_count (gunichar2 *a)
 }
 
 static void
+print_ucs4 (const gchar *prefix, gunichar *ucs4, gint ucs4_len)
+{
+  gint i;
+  g_print ("%s ", prefix);
+  for (i = 0; i < ucs4_len; i++)
+    g_print ("%x ", ucs4[i]);
+  g_print ("\n");
+}
+
+static void
 process (gint      line,
 	 gchar    *utf8,
 	 Status    status,
@@ -112,7 +122,7 @@ process (gint      line,
 
   if (status == INCOMPLETE)
     {
-      gunichar *ucs4_result;      
+      gunichar *ucs4_result;
 
       ucs4_result = g_utf8_to_ucs4 (utf8, -1, NULL, NULL, &error);
 
@@ -137,31 +147,40 @@ process (gint      line,
   if (status == VALID || status == NOTUNICODE)
     {
       gunichar *ucs4_result;
-      gchar *utf8_result;
 
       ucs4_result = g_utf8_to_ucs4 (utf8, -1, &items_read, &items_written, &error);
       if (!ucs4_result)
 	{
-	  fail ("line %d: conversion to ucs4 failed: %s\n", line, error->message);
+	  fail ("line %d: conversion with status %d to ucs4 failed: %s\n", line, status, error->message);
 	  return;
 	}
-      
+
       if (!ucs4_equal (ucs4_result, ucs4) ||
 	  items_read != strlen (utf8) ||
 	  items_written != ucs4_len)
 	{
-	  fail ("line %d: results of conversion to ucs4 do not match expected.\n", line);
+	  fail ("line %d: results of conversion with status %d to ucs4 do not match expected.\n", line, status);
+          print_ucs4 ("expected: ", ucs4, ucs4_len);
+          print_ucs4 ("received: ", ucs4_result, items_written);
 	  return;
 	}
 
       g_free (ucs4_result);
+    }
+
+  if (status == VALID)
+     {
+      gunichar *ucs4_result;
+      gchar *utf8_result;
 
       ucs4_result = g_utf8_to_ucs4_fast (utf8, -1, &items_written);
-      
+
       if (!ucs4_equal (ucs4_result, ucs4) ||
 	  items_written != ucs4_len)
 	{
-	  fail ("line %d: results of fast conversion to ucs4 do not match expected.\n", line);
+	  fail ("line %d: results of fast conversion with status %d to ucs4 do not match expected.\n", line, status);
+          print_ucs4 ("expected: ", ucs4, ucs4_len);
+          print_ucs4 ("received: ", ucs4_result, items_written);
 	  return;
 	}
 
