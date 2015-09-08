@@ -81,6 +81,7 @@ static gchar*	value_param_lcopy_value		(const GValue	*value,
 typedef struct
 {
   GValue default_value;
+  GQuark name_quark;
 } GParamSpecPrivate;
 
 static gint g_param_private_offset;
@@ -426,6 +427,7 @@ g_param_spec_internal (GType        param_type,
 		       GParamFlags  flags)
 {
   GParamSpec *pspec;
+  GParamSpecPrivate *priv;
   
   g_return_val_if_fail (G_TYPE_IS_PARAM (param_type) && param_type != G_TYPE_PARAM, NULL);
   g_return_val_if_fail (name != NULL, NULL);
@@ -453,6 +455,9 @@ g_param_spec_internal (GType        param_type,
           g_free (tmp);
         }
     }
+
+  priv = g_param_spec_get_private (pspec);
+  priv->name_quark = g_quark_from_string (pspec->name);
 
   if (flags & G_PARAM_STATIC_NICK)
     pspec->_nick = (gchar*) nick;
@@ -1520,11 +1525,11 @@ g_value_dup_param (const GValue *value)
 
 /**
  * g_param_spec_get_default_value:
- * @param: a #GParamSpec
+ * @pspec: a #GParamSpec
  *
- * Gets the default value of @param as a pointer to a #GValue.
+ * Gets the default value of @pspec as a pointer to a #GValue.
  *
- * The #GValue will remain value for the life of @param.
+ * The #GValue will remain value for the life of @pspec.
  *
  * Returns: a pointer to a #GValue which must not be modified
  *
@@ -1563,4 +1568,27 @@ g_param_spec_get_default_value (GParamSpec *pspec)
     }
 
   return &priv->default_value;
+}
+
+/**
+ * g_param_spec_get_name_quark:
+ * @param: a #GParamSpec
+ *
+ * Gets the GQuark for the name.
+ *
+ * Returns: the GQuark for @pspec->name.
+ *
+ * Since: 2.38
+ */
+GQuark
+g_param_spec_get_name_quark (GParamSpec *pspec)
+{
+  GParamSpecPrivate *priv = g_param_spec_get_private (pspec);
+
+  /* Return the quark that we've stashed away at creation time.
+   * This lets us avoid a lock and a hash table lookup when
+   * dispatching property change notification.
+   */
+
+  return priv->name_quark;
 }
