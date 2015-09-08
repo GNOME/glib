@@ -1578,7 +1578,7 @@ g_param_spec_get_default_value (GParamSpec *pspec)
  *
  * Returns: the GQuark for @pspec->name.
  *
- * Since: 2.38
+ * Since: 2.46
  */
 GQuark
 g_param_spec_get_name_quark (GParamSpec *pspec)
