@@ -1050,7 +1050,6 @@ g_object_finalize (GObject *object)
 #endif	/* G_ENABLE_DEBUG */
 }
 
-
 static void
 g_object_dispatch_properties_changed (GObject     *object,
 				      guint        n_pspecs,
@@ -1059,7 +1058,7 @@ g_object_dispatch_properties_changed (GObject     *object,
   guint i;
 
   for (i = 0; i < n_pspecs; i++)
-    g_signal_emit (object, gobject_signals[NOTIFY], g_quark_from_string (pspecs[i]->name), pspecs[i]);
+    g_signal_emit (object, gobject_signals[NOTIFY], g_param_spec_get_name_quark (pspecs[i]), pspecs[i]);
 }
 
 /**
