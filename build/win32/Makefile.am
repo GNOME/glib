@@ -8,4 +8,4 @@ SUBDIRS = 	\
 EXTRA_DIST = 		\
 	make.msc 	\
 	module.defs	\
-	process_in_win32.py
+	replace.py

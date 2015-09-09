@@ -9,7 +9,40 @@ import string
 import subprocess
 import optparse
 
-from process_in_win32 import get_version, process_in, get_srcroot
+def get_version(srcroot):
+    ver = {}
+    RE_VERSION = re.compile(r'^m4_define\(\[(glib_\w+)\],\s*\[(\d+)\]\)')
+    with open(os.path.join(srcroot, 'configure.ac'), 'r') as ac:
+        for i in ac:
+            mo = RE_VERSION.search(i)
+            if mo:
+                ver[mo.group(1).upper()] = int(mo.group(2))
+    ver['GLIB_BINARY_AGE'] = 100 * ver['GLIB_MINOR_VERSION'] + ver['GLIB_MICRO_VERSION']
+    ver['GLIB_VERSION'] = '%d.%d.%d' % (ver['GLIB_MAJOR_VERSION'],
+                                        ver['GLIB_MINOR_VERSION'],
+                                        ver['GLIB_MICRO_VERSION'])
+    ver['LT_RELEASE'] = '%d.%d' % (ver['GLIB_MAJOR_VERSION'], ver['GLIB_MINOR_VERSION'])
+    ver['LT_CURRENT'] = 100 * ver['GLIB_MINOR_VERSION'] + ver['GLIB_MICRO_VERSION'] - ver['GLIB_INTERFACE_AGE']
+    ver['LT_REVISION'] = ver['GLIB_INTERFACE_AGE']
+    ver['LT_AGE'] = ver['GLIB_BINARY_AGE'] - ver['GLIB_INTERFACE_AGE']
+    ver['LT_CURRENT_MINUS_AGE'] = ver['LT_CURRENT'] - ver['LT_AGE']
+    return ver
+
+def process_in(src, dest, vars):
+    RE_VARS = re.compile(r'@(\w+?)@')
+    with open(src, 'r') as s:
+        with open(dest, 'w') as d:
+            for i in s:
+                i = RE_VARS.sub(lambda x: str(vars[x.group(1)]), i)
+                d.write(i)
+
+def get_srcroot():
+    if not os.path.isabs(__file__):
+        path = os.path.abspath(__file__)
+    else:
+        path = __file__
+    dirname = os.path.dirname(path)
+    return os.path.abspath(os.path.join(dirname, '..', '..'))
 
 def process_include(src, dest, includes):
     RE_INCLUDE = re.compile(r'^\s*#include\s+"(.*)"')

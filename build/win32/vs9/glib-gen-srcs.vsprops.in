@@ -23,6 +23,6 @@
 	/>
 	<UserMacro
 		Name="GenGLibMKEnums"
-		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\process_in_win32.py --glib-mkenums"
+		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\replace.py --action=replace-var --input=..\..\..\gobject\glib-mkenums.in --output=..\..\..\gobject\glib-mkenums --var=GLIB_VERSION --outstring=@GLIB_VERSION@"
 	/>
 </VisualStudioPropertySheet>

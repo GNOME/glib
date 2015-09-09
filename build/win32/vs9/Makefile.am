@@ -4,6 +4,7 @@ GENERATED_ITEMS = \
 	gio.vcproj		\
 	glib-compile-schemas.vcproj	\
 	glib-compile-resources.vcproj	\
+	glib-gen-srcs.vsprops	\
 	glib-install.vsprops
 
 EXTRA_DIST = \
@@ -26,7 +27,7 @@ EXTRA_DIST = \
 	glib-install.vcproj	\
 	glib-build-defines.vsprops	\
 	glib-version-paths.vsprops	\
-	glib-gen-srcs.vsprops	\
+	glib-gen-srcs.vsprops.in	\
 	glib-install.vspropsin	\
 	$(GENERATED_ITEMS)
 
