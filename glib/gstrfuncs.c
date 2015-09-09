@@ -1238,12 +1238,14 @@ g_ascii_strtoll (const gchar *nptr,
  * @errnum: the system error number. See the standard C %errno
  *     documentation
  *
- * Returns a string corresponding to the given error code, e.g.
- * "no such process". You should use this function in preference to
- * strerror(), because it returns a string in UTF-8 encoding, and since
- * not all platforms support the strerror() function.
+ * Returns a string corresponding to the given error code, e.g. "no
+ * such process". Unlike strerror(), this always returns a string in
+ * UTF-8 encoding, and the pointer is guaranteed to remain valid for
+ * the lifetime of the process.
  *
  * Note that the string may be translated according to the current locale.
+ *
+ * The value of %errno will not be changed by this function.
  *
  * Returns: a UTF-8 string describing the error code. If the error code
  *     is unknown, it returns a string like "unknown error (<code>)".
@@ -1258,18 +1260,19 @@ g_strerror (gint errnum)
   gint saved_errno = errno;
   GError *error = NULL;
 
-#ifdef G_OS_WIN32
+#if defined(G_OS_WIN32)
   strerror_s (buf, sizeof (buf), errnum);
   msg = buf;
-  /* If we're using glibc, since we are building with _GNU_SOURCE, we
-   * expect to get the GNU variant of strerror_r.  However, use the
-   * provided check from man strerror_r(3) in case we ever stop using
-   * _GNU_SOURCE (admittedly unlikely).
-   */
-#elif (defined __GLIBC__) && !((_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE)
+#elif defined(HAVE_STRERROR_R)
+      /* Match the condition in strerror_r(3) for glibc */
+#  if defined(__GLIBC__) && !((_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE)
   msg = strerror_r (errnum, buf, sizeof (buf));
-#else
+#  else
   strerror_r (errnum, buf, sizeof (buf));
+  msg = buf;
+#  endif /* HAVE_STRERROR_R */
+#else
+  g_strlcpy (buf, strerror (errnum), sizeof (buf));
   msg = buf;
 #endif
   if (!g_get_charset (NULL))

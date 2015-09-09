@@ -1317,17 +1317,28 @@ test_strip_context (void)
 static void
 test_strerror (void)
 {
+  GHashTable *strs;
   gint i;
   const gchar *str;
+  GHashTableIter iter;
 
   setlocale (LC_ALL, "C");
 
+  strs = g_hash_table_new (g_str_hash, g_str_equal);
   for (i = 1; i < 200; i++)
     {
       str = g_strerror (i);
       g_assert (str != NULL);
       g_assert (g_utf8_validate (str, -1, NULL));
+      g_assert_false (g_hash_table_contains (strs, str));
+      g_hash_table_add (strs, (char *)str);
     }
+
+  g_hash_table_iter_init (&iter, strs);
+  while (g_hash_table_iter_next (&iter, (gpointer *)&str, NULL))
+    g_assert (g_utf8_validate (str, -1, NULL));
+
+  g_hash_table_unref (strs);
 }
 
 static void

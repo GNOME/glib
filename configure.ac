@@ -525,7 +525,7 @@ AM_CONDITIONAL(OS_WIN32_AND_DLL_COMPILATION, [test x$glib_native_win32 = xyes -a
 # Checks for library functions.
 AC_FUNC_ALLOCA
 AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2 issetugid)
-AC_CHECK_FUNCS(timegm gmtime_r)
+AC_CHECK_FUNCS(timegm gmtime_r strerror_r)
 
 AC_CACHE_CHECK([for __libc_enable_secure], glib_cv_have_libc_enable_secure,
   [AC_TRY_LINK([#include <unistd.h>
