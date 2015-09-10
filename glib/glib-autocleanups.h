@@ -29,8 +29,15 @@ g_autoptr_cleanup_generic_gfree (void *p)
     g_free (*pp);
 }
 
+static inline void
+g_autoptr_cleanup_gstring_free (GString *string)
+{
+  if (string)
+    g_string_free (string, TRUE);
+}
+
 /* If adding a cleanup here, please also add a test case to
- * glib/glib/autoptr.c
+ * glib/tests/autoptr.c
  */
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GAsyncQueue, g_async_queue_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GBookmarkFile, g_bookmark_file_free)
@@ -64,6 +71,7 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(GMatchInfo, g_match_info_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GScanner, g_scanner_destroy)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GSequence, g_sequence_free)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GSList, g_slist_free)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GString, g_autoptr_cleanup_gstring_free)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GStringChunk, g_string_chunk_free)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GThread, g_thread_unref)
 G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(GMutex, g_mutex_clear)
