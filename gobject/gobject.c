@@ -1503,7 +1503,7 @@ object_interface_check_properties (gpointer check_data,
        *
        * If the interface was not writable to begin with then we don't
        * really have any problems here because "writable at construct
-       * type only" is still more permissive than "read only".
+       * time only" is still more permissive than "read only".
        */
       if (pspecs[n]->flags & G_PARAM_WRITABLE)
         {
