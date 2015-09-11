@@ -433,6 +433,32 @@ interval_compare (const void *key, const void *elt)
   return 0;
 }
 
+#define G_WIDTH_TABLE_MIDPOINT (G_N_ELEMENTS (g_unicode_width_table_wide) / 2)
+
+static inline gboolean
+g_unichar_iswide_bsearch (gunichar ch)
+{
+  int lower = 0;
+  int upper = G_N_ELEMENTS (g_unicode_width_table_wide) + 1;
+  static int saved_mid = G_WIDTH_TABLE_MIDPOINT;
+  int mid = saved_mid;
+
+  do
+    {
+      if (ch < g_unicode_width_table_wide[mid].start)
+	upper = mid - 1;
+      else if (ch > g_unicode_width_table_wide[mid].end)
+	lower = mid + 1;
+      else
+	return TRUE;
+
+      mid = (lower + upper) / 2;
+    }
+  while (lower <= upper);
+
+  return FALSE;
+}
+
 /**
  * g_unichar_iswide:
  * @c: a Unicode character
@@ -445,14 +471,10 @@ interval_compare (const void *key, const void *elt)
 gboolean
 g_unichar_iswide (gunichar c)
 {
-  if (bsearch (GUINT_TO_POINTER (c),
-               g_unicode_width_table_wide,
-               G_N_ELEMENTS (g_unicode_width_table_wide),
-               sizeof g_unicode_width_table_wide[0],
-	       interval_compare))
-    return TRUE;
-
-  return FALSE;
+  if (c < g_unicode_width_table_wide[0].start)
+    return FALSE;
+  else
+    return g_unichar_iswide_bsearch (c);
 }
 
 
