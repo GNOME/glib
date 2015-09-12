@@ -4,18 +4,6 @@
 /* We test deprecated functionality here */
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 
-static void
-test_slice_config (void)
-{
-  if (g_test_subprocess ())
-    {
-      g_slice_set_config (G_SLICE_CONFIG_ALWAYS_MALLOC, TRUE);
-      return;
-    }
-  g_test_trap_subprocess (NULL, 1000000, 0);
-  g_test_trap_assert_failed ();
-}
-
 #ifdef G_ENABLE_DEBUG
 static void
 test_slice_nodebug (void)
@@ -165,17 +153,8 @@ test_allocate (void)
 int
 main (int argc, char **argv)
 {
-  /* have to do this before using gtester since it uses gslice */
-  gboolean was;
-
-  was = g_slice_get_config (G_SLICE_CONFIG_ALWAYS_MALLOC);
-  g_slice_set_config (G_SLICE_CONFIG_ALWAYS_MALLOC, !was);
-  g_assert_cmpint (g_slice_get_config (G_SLICE_CONFIG_ALWAYS_MALLOC), !=, was);
-  g_slice_set_config (G_SLICE_CONFIG_ALWAYS_MALLOC, was);
-
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/slice/config", test_slice_config);
 #ifdef G_ENABLE_DEBUG
   g_test_add_func ("/slice/nodebug", test_slice_nodebug);
   g_test_add_func ("/slice/debug", test_slice_debug);
