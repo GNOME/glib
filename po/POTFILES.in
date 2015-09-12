@@ -24,9 +24,16 @@ gio/gdbusaddress.c
 gio/gdbusauth.c
 gio/gdbusauthmechanism.c
 gio/gdbusauthmechanismsha1.c
+gio/gdbusauthobserver.c
 gio/gdbusconnection.c
+gio/gdbusdaemon.c
+gio/gdbusinterfaceskeleton.c
 gio/gdbusmessage.c
 gio/gdbusmethodinvocation.c
+gio/gdbusobject.c
+gio/gdbusobjectmanager.c
+gio/gdbusobjectmanagerclient.c
+gio/gdbusobjectskeleton.c
 gio/gdbusprivate.c
 gio/gdbusproxy.c
 gio/gdbusserver.c
@@ -62,6 +69,7 @@ gio/gioscheduler.c
 gio/giostream.c
 gio/glib-compile-resources.c
 gio/glib-compile-schemas.c
+gio/glistmodel.c
 gio/gloadableicon.c
 gio/glocalfile.c
 gio/glocalfileenumerator.c
@@ -72,6 +80,7 @@ gio/glocalfileoutputstream.c
 gio/glocalvfs.c
 gio/gmemoryinputstream.c
 gio/gmemoryoutputstream.c
+gio/gmenumodel.c
 gio/gmount.c
 gio/gmountoperation.c
 gio/gnativesocketaddress.c
