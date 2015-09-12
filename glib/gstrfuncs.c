@@ -354,10 +354,19 @@ get_C_locale (void)
 gchar*
 g_strdup (const gchar *str)
 {
+  gchar *new_str;
+  gsize length;
+
   if (str)
-    return strdup (str);
+    {
+      length = strlen (str) + 1;
+      new_str = g_new (char, length);
+      memcpy (new_str, str, length);
+    }
   else
-    return NULL;
+    new_str = NULL;
+
+  return new_str;
 }
 
 /**
@@ -409,10 +418,18 @@ gchar*
 g_strndup (const gchar *str,
            gsize        n)
 {
+  gchar *new_str;
+
   if (str)
-    return strndup (str, n);
+    {
+      new_str = g_new (gchar, n + 1);
+      strncpy (new_str, str, n);
+      new_str[n] = '\0';
+    }
   else
-    return NULL;
+    new_str = NULL;
+
+  return new_str;
 }
 
 /**
