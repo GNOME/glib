@@ -21,6 +21,8 @@
 
 #include "gmenumodel.h"
 
+#include "glibintl.h"
+
 /**
  * SECTION:gmenumodel
  * @title: GMenuModel
@@ -448,7 +450,7 @@ g_menu_model_class_init (GMenuModelClass *class)
    * reported.  The signal is emitted after the modification.
    **/
   g_menu_model_items_changed_signal =
-    g_signal_new ("items-changed", G_TYPE_MENU_MODEL,
+    g_signal_new (I_("items-changed"), G_TYPE_MENU_MODEL,
                   G_SIGNAL_RUN_LAST, 0, NULL, NULL,
                   g_cclosure_marshal_generic, G_TYPE_NONE,
                   3, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT);

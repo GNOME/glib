@@ -166,7 +166,7 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
    * Since: 2.26
    */
   signals[AUTHORIZE_AUTHENTICATED_PEER_SIGNAL] =
-    g_signal_new ("authorize-authenticated-peer",
+    g_signal_new (I_("authorize-authenticated-peer"),
                   G_TYPE_DBUS_AUTH_OBSERVER,
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GDBusAuthObserverClass, authorize_authenticated_peer),
@@ -190,7 +190,7 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
    * Since: 2.34
    */
   signals[ALLOW_MECHANISM_SIGNAL] =
-    g_signal_new ("allow-mechanism",
+    g_signal_new (I_("allow-mechanism"),
                   G_TYPE_DBUS_AUTH_OBSERVER,
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GDBusAuthObserverClass, allow_mechanism),

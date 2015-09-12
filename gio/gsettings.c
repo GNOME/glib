@@ -732,7 +732,7 @@ g_settings_class_init (GSettingsClass *class)
    * when key "x" changes.
    */
   g_settings_signals[SIGNAL_CHANGED] =
-    g_signal_new ("changed", G_TYPE_SETTINGS,
+    g_signal_new (I_("changed"), G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GSettingsClass, changed),
                   NULL, NULL, g_cclosure_marshal_VOID__STRING, G_TYPE_NONE,
@@ -765,7 +765,7 @@ g_settings_class_init (GSettingsClass *class)
    *          event. FALSE to propagate the event further.
    */
   g_settings_signals[SIGNAL_CHANGE_EVENT] =
-    g_signal_new ("change-event", G_TYPE_SETTINGS,
+    g_signal_new (I_("change-event"), G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSettingsClass, change_event),
                   g_signal_accumulator_true_handled, NULL,
@@ -786,7 +786,7 @@ g_settings_class_init (GSettingsClass *class)
    * callbacks when the writability of "x" changes.
    */
   g_settings_signals[SIGNAL_WRITABLE_CHANGED] =
-    g_signal_new ("writable-changed", G_TYPE_SETTINGS,
+    g_signal_new (I_("writable-changed"), G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GSettingsClass, writable_changed),
                   NULL, NULL, g_cclosure_marshal_VOID__STRING, G_TYPE_NONE,
@@ -820,7 +820,7 @@ g_settings_class_init (GSettingsClass *class)
    *          event. FALSE to propagate the event further.
    */
   g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT] =
-    g_signal_new ("writable-change-event", G_TYPE_SETTINGS,
+    g_signal_new (I_("writable-change-event"), G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSettingsClass, writable_change_event),
                   g_signal_accumulator_true_handled, NULL,

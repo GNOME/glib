@@ -1373,7 +1373,7 @@ g_application_class_init (GApplicationClass *class)
    * after registration. See g_application_register().
    */
   g_application_signals[SIGNAL_STARTUP] =
-    g_signal_new ("startup", G_TYPE_APPLICATION, G_SIGNAL_RUN_FIRST,
+    g_signal_new (I_("startup"), G_TYPE_APPLICATION, G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (GApplicationClass, startup),
                   NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
@@ -1385,7 +1385,7 @@ g_application_class_init (GApplicationClass *class)
    * immediately after the main loop terminates.
    */
   g_application_signals[SIGNAL_SHUTDOWN] =
-    g_signal_new ("shutdown", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("shutdown"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, shutdown),
                   NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
@@ -1397,7 +1397,7 @@ g_application_class_init (GApplicationClass *class)
    * activation occurs. See g_application_activate().
    */
   g_application_signals[SIGNAL_ACTIVATE] =
-    g_signal_new ("activate", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("activate"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, activate),
                   NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
@@ -1413,7 +1413,7 @@ g_application_class_init (GApplicationClass *class)
    * files to open. See g_application_open() for more information.
    */
   g_application_signals[SIGNAL_OPEN] =
-    g_signal_new ("open", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("open"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, open),
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 3, G_TYPE_POINTER, G_TYPE_INT, G_TYPE_STRING);
@@ -1432,7 +1432,7 @@ g_application_class_init (GApplicationClass *class)
    *   process. See g_application_command_line_set_exit_status().
    */
   g_application_signals[SIGNAL_COMMAND_LINE] =
-    g_signal_new ("command-line", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("command-line"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, command_line),
                   g_signal_accumulator_first_wins, NULL,
                   NULL,
@@ -1493,7 +1493,7 @@ g_application_class_init (GApplicationClass *class)
    * Since: 2.40
    **/
   g_application_signals[SIGNAL_HANDLE_LOCAL_OPTIONS] =
-    g_signal_new ("handle-local-options", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("handle-local-options"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, handle_local_options),
                   g_application_handle_local_options_accumulator, NULL, NULL,
                   G_TYPE_INT, 1, G_TYPE_VARIANT_DICT);

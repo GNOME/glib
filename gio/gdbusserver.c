@@ -419,7 +419,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    *
    * Since: 2.26
    */
-  _signals[NEW_CONNECTION_SIGNAL] = g_signal_new ("new-connection",
+  _signals[NEW_CONNECTION_SIGNAL] = g_signal_new (I_("new-connection"),
                                                   G_TYPE_DBUS_SERVER,
                                                   G_SIGNAL_RUN_LAST,
                                                   G_STRUCT_OFFSET (GDBusServerClass, new_connection),

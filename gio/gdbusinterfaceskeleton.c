@@ -242,7 +242,7 @@ g_dbus_interface_skeleton_class_init (GDBusInterfaceSkeletonClass *klass)
    * Since: 2.30
    */
   signals[G_AUTHORIZE_METHOD_SIGNAL] =
-    g_signal_new ("g-authorize-method",
+    g_signal_new (I_("g-authorize-method"),
                   G_TYPE_DBUS_INTERFACE_SKELETON,
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GDBusInterfaceSkeletonClass, g_authorize_method),

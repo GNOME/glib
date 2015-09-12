@@ -837,7 +837,7 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
    *
    * Since: 2.36
    */
-  signals[LAUNCH_FAILED] = g_signal_new ("launch-failed",
+  signals[LAUNCH_FAILED] = g_signal_new (I_("launch-failed"),
                                          G_OBJECT_CLASS_TYPE (object_class),
                                          G_SIGNAL_RUN_LAST,
                                          G_STRUCT_OFFSET (GAppLaunchContextClass, launch_failed),
@@ -858,7 +858,7 @@ g_app_launch_context_class_init (GAppLaunchContextClass *klass)
    *
    * Since: 2.36
    */
-  signals[LAUNCHED] = g_signal_new ("launched",
+  signals[LAUNCHED] = g_signal_new (I_("launched"),
                                     G_OBJECT_CLASS_TYPE (object_class),
                                     G_SIGNAL_RUN_LAST,
                                     G_STRUCT_OFFSET (GAppLaunchContextClass, launched),
@@ -1102,7 +1102,7 @@ g_app_info_monitor_class_init (GAppInfoMonitorClass *class)
    * Signal emitted when the app info database for changes (ie: newly installed
    * or removed applications).
    **/
-  g_app_info_monitor_changed_signal = g_signal_new ("changed", G_TYPE_APP_INFO_MONITOR, G_SIGNAL_RUN_FIRST,
+  g_app_info_monitor_changed_signal = g_signal_new (I_("changed"), G_TYPE_APP_INFO_MONITOR, G_SIGNAL_RUN_FIRST,
                                                     0, NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
   object_class->finalize = g_app_info_monitor_finalize;

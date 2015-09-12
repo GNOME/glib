@@ -63,7 +63,7 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
    *
    * Since: 2.30
    */
-  g_signal_new ("object-added",
+  g_signal_new (I_("object-added"),
                 G_TYPE_FROM_INTERFACE (iface),
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET (GDBusObjectManagerIface, object_added),
@@ -83,7 +83,7 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
    *
    * Since: 2.30
    */
-  g_signal_new ("object-removed",
+  g_signal_new (I_("object-removed"),
                 G_TYPE_FROM_INTERFACE (iface),
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET (GDBusObjectManagerIface, object_removed),
@@ -107,7 +107,7 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
    *
    * Since: 2.30
    */
-  g_signal_new ("interface-added",
+  g_signal_new (I_("interface-added"),
                 G_TYPE_FROM_INTERFACE (iface),
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET (GDBusObjectManagerIface, interface_added),
@@ -132,7 +132,7 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
    *
    * Since: 2.30
    */
-  g_signal_new ("interface-removed",
+  g_signal_new (I_("interface-removed"),
                 G_TYPE_FROM_INTERFACE (iface),
                 G_SIGNAL_RUN_LAST,
                 G_STRUCT_OFFSET (GDBusObjectManagerIface, interface_removed),

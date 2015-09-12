@@ -337,7 +337,7 @@ g_socket_service_class_init (GSocketServiceClass *class)
    * Since: 2.22
    */
   g_socket_service_incoming_signal =
-    g_signal_new ("incoming", G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("incoming"), G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSocketServiceClass, incoming),
                   g_signal_accumulator_true_handled, NULL,
                   NULL, G_TYPE_BOOLEAN,

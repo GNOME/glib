@@ -590,7 +590,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    *
    * Since: 2.26
    */
-  signals[PROPERTIES_CHANGED_SIGNAL] = g_signal_new ("g-properties-changed",
+  signals[PROPERTIES_CHANGED_SIGNAL] = g_signal_new (I_("g-properties-changed"),
                                                      G_TYPE_DBUS_PROXY,
                                                      G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
                                                      G_STRUCT_OFFSET (GDBusProxyClass, g_properties_changed),
@@ -613,7 +613,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    *
    * Since: 2.26
    */
-  signals[SIGNAL_SIGNAL] = g_signal_new ("g-signal",
+  signals[SIGNAL_SIGNAL] = g_signal_new (I_("g-signal"),
                                          G_TYPE_DBUS_PROXY,
                                          G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
                                          G_STRUCT_OFFSET (GDBusProxyClass, g_signal),

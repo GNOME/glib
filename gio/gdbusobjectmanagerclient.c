@@ -511,7 +511,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * Since: 2.30
    */
   signals[INTERFACE_PROXY_SIGNAL_SIGNAL] =
-    g_signal_new ("interface-proxy-signal",
+    g_signal_new (I_("interface-proxy-signal"),
                   G_TYPE_DBUS_OBJECT_MANAGER_CLIENT,
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GDBusObjectManagerClientClass, interface_proxy_signal),
@@ -549,7 +549,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * Since: 2.30
    */
   signals[INTERFACE_PROXY_PROPERTIES_CHANGED_SIGNAL] =
-    g_signal_new ("interface-proxy-properties-changed",
+    g_signal_new (I_("interface-proxy-properties-changed"),
                   G_TYPE_DBUS_OBJECT_MANAGER_CLIENT,
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GDBusObjectManagerClientClass, interface_proxy_properties_changed),

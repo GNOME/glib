@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include "glistmodel.h"
+#include "glibintl.h"
 
 G_DEFINE_INTERFACE (GListModel, g_list_model, G_TYPE_OBJECT);
 
@@ -119,7 +120,7 @@ g_list_model_default_init (GListModelInterface *iface)
    *
    * Since: 2.44
    */
-  g_list_model_changed_signal = g_signal_new ("items-changed",
+  g_list_model_changed_signal = g_signal_new (I_("items-changed"),
                                               G_TYPE_LIST_MODEL,
                                               G_SIGNAL_RUN_LAST,
                                               0,

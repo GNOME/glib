@@ -1047,7 +1047,7 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    *
    * Since: 2.26
    */
-  signals[CLOSED_SIGNAL] = g_signal_new ("closed",
+  signals[CLOSED_SIGNAL] = g_signal_new (I_("closed"),
                                          G_TYPE_DBUS_CONNECTION,
                                          G_SIGNAL_RUN_LAST,
                                          G_STRUCT_OFFSET (GDBusConnectionClass, closed),
