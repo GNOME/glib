@@ -1482,7 +1482,7 @@ fast_validate (const char *str)
 	  last = p;
 	  if (*(guchar *)p < 0xe0) /* 110xxxxx */
 	    {
-	      if (G_UNLIKELY ((*(guchar *)p & 0x1e) == 0))
+	      if (G_UNLIKELY (*(guchar *)p < 0xc2))
 		goto error;
 	    }
 	  else
@@ -1559,7 +1559,7 @@ fast_validate_len (const char *str,
 	      if (G_UNLIKELY (max_len - (p - str) < 2))
 		goto error;
 	      
-	      if (G_UNLIKELY ((*(guchar *)p & 0x1e) == 0))
+	      if (G_UNLIKELY (*(guchar *)p < 0xc2))
 		goto error;
 	    }
 	  else
