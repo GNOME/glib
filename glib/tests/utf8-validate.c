@@ -84,6 +84,7 @@ Test test[] = {
   /* continuation bytes */
   { "\x80", -1, 0, FALSE },
   { "\xbf", -1, 0, FALSE },
+  { "\xbf\x80", -1, 0, FALSE },
   { "\x80\xbf", -1, 0, FALSE },
   { "\x80\xbf\x80", -1, 0, FALSE },
   { "\x80\xbf\x80\xbf", -1, 0, FALSE },
