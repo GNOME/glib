@@ -849,16 +849,14 @@ g_datalist_id_dup_data (GData          **datalist,
   GData *d;
   GDataElt *data, *data_end;
 
-  g_return_val_if_fail (datalist != NULL, NULL);
-
   g_datalist_lock (datalist);
 
   d = G_DATALIST_GET_POINTER (datalist);
   if (d)
     {
       data = d->data;
-      data_end = data + d->len - 1;
-      while (data <= data_end)
+      data_end = data + d->len;
+      do
         {
           if (data->key == key_id)
             {
@@ -867,6 +865,7 @@ g_datalist_id_dup_data (GData          **datalist,
             }
           data++;
         }
+      while (data < data_end);
     }
 
   if (dup_func)
