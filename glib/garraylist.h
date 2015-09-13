@@ -95,6 +95,11 @@ gpointer    *g_array_list_copy_reversed(GArrayList     *list,
                                         GCopyFunc       copy_func,
                                         gpointer        copy_data);
 
+GLIB_AVAILABLE_IN_2_46
+void         g_array_list_move         (GArrayList     *list,
+                                        gsize           src,
+                                        gsize           dest);
+
 #define g_array_list_empty(list) ((list)->len == 0)
 #define g_array_list_first(list) (((list)->len == 0) ? NULL : g_array_list_index((list),0))
 #define g_array_list_last(list) (((list)->len == 0) ? NULL : g_array_list_index((list),(list)->len-1))

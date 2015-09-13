@@ -76,13 +76,23 @@ test_basic (GArrayList *al)
 
   g_assert_cmpint (al->len, ==, 500);
   g_assert_cmpint (test_basic_counter, ==, 500);
+  g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_last (al)), ==, 1000);
 
   g_array_list_prepend (al, GSIZE_TO_POINTER (191919));
   g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_index (al, 0)), ==, 191919);
+  g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_last (al)), ==, 1000);
+
+  g_array_list_move (al, 0, al->len - 1);
+  g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_index (al, 0)), ==, 501);
+  g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_last (al)), ==, 191919);
+
+  g_array_list_move (al, al->len - 1, 0);
+  g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_index (al, 0)), ==, 191919);
+  g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_last (al)), ==, 1000);
 
   g_array_list_clear (al);
   g_assert_cmpint (al->len, ==, 0);
-  g_assert_cmpint (test_basic_counter, ==, 1000);
+  g_assert_cmpint (test_basic_counter, ==, 1001);
 
   g_array_list_destroy (al);
 

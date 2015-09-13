@@ -644,3 +644,51 @@ g_array_list_copy_reversed (GArrayList *self,
 
   return ret;
 }
+
+/**
+ * g_array_list_move:
+ * @self: A #GListArray
+ * @src: the index of the item to move
+ * @dest: the new index to place the item.
+ *
+ * This function is analagous to calling g_array_list_remove_index() followed
+ * by g_array_list_insert() but allows for avoiding the need to copy the item
+ * as well as re-build the linked list twice.
+ */
+void
+g_array_list_move (GArrayList *self,
+                   gsize       src,
+                   gsize       dest)
+{
+  GArrayListAny *any = (GArrayListAny *)self;
+  GArrayListEmbed *embed = (GArrayListEmbed *)self;
+  GArrayListAlloc *alloc = (GArrayListAlloc *)self;
+  GList *items;
+  gpointer src_data;
+  gsize i;
+
+  g_return_if_fail (self != NULL);
+  g_return_if_fail (src < any->len);
+  g_return_if_fail (dest < any->len);
+
+  if (src == dest)
+    return;
+
+  items = (any->mode == MODE_EMBED) ? embed->items : alloc->items;
+
+  src_data = items [src].data;
+
+  if (dest < src)
+    {
+      for (i = src; i > dest; i--)
+        items [i].data = items [i - 1].data;
+    }
+  else
+    {
+      for (i = src; i < dest; i++)
+        items [i].data = items [i + 1].data;
+    }
+
+  items [dest].data = src_data;
+  _g_array_list_update_pointers (items, any->len);
+}
