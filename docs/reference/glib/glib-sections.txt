@@ -2525,6 +2525,20 @@ g_ptr_array_foreach
 </SECTION>
 
 <SECTION>
+<TITLE>List Arrays</TITLE>
+<FILE>arraylist</FILE>
+GArrayList
+g_array_list_new
+g_array_list_init
+g_array_list_peek
+g_array_list_index
+g_array_list_add
+g_array_list_remove
+g_array_list_remove_index
+g_array_list_destroy
+</SECTION>
+
+<SECTION>
 <TITLE>Byte Arrays</TITLE>
 <FILE>arrays_byte</FILE>
 <SUBSECTION>

@@ -31,6 +31,7 @@ test_extra_programs = \
 
 test_programs = \
 	array-test			\
+	arraylist			\
 	asyncqueue			\
 	base64				\
 	bitlock				\

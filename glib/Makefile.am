@@ -103,6 +103,7 @@ libglib_2_0_la_SOURCES = 	\
 	$(deprecated_sources)	\
 	glib_probes.d		\
 	garray.c		\
+	garraylist.c		\
 	gasyncqueue.c		\
 	gasyncqueueprivate.h	\
 	gatomic.c		\
@@ -245,6 +246,7 @@ glibsubinclude_HEADERS = \
 	glib-autocleanups.h	\
 	galloca.h	\
 	garray.h	\
+	garraylist.h	\
 	gasyncqueue.h	\
 	gatomic.h	\
 	gbacktrace.h	\
