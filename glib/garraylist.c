@@ -165,7 +165,7 @@ g_array_list_peek (GArrayList *self)
 
 gpointer
 g_array_list_index (GArrayList *self,
-                    guint       index)
+                    gsize       index)
 {
   GArrayListAny *any = (GArrayListAny *)self;
   GArrayListEmbed *embed = (GArrayListEmbed *)self;
@@ -425,4 +425,25 @@ g_array_list_destroy (GArrayList *self)
 
   if (any->on_heap)
     g_slice_free (GArrayListAny, any);
+}
+
+const GList *
+g_array_list_last_link (GArrayList *self)
+{
+  GArrayListAny *any = (GArrayListAny *)self;
+  GArrayListEmbed *embed = (GArrayListEmbed *)self;
+  GArrayListAlloc *alloc = (GArrayListAlloc *)self;
+  GList *items;
+
+  g_return_val_if_fail (self != NULL, NULL);
+
+  if (self->len == 0)
+    return NULL;
+
+  if (any->mode == MODE_EMBED)
+    items = embed->items;
+  else
+    items = alloc->items;
+
+  return &items [self->len - 1];
 }
