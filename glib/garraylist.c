@@ -183,12 +183,31 @@ g_array_list_index (GArrayList *self,
   return items [index].data;
 }
 
+static inline void
+_g_array_list_update_pointers (GList *array,
+                               gsize  array_len)
+{
+  gsize i;
+
+  if (array_len > 0)
+    array [0].next = &array [1];
+
+  for (i = 1; i < (array_len - 1); i++)
+    {
+      array [i].prev = &array [i - 1];
+      array [i].next = &array [i + 1];
+    }
+
+  if (array_len > 1)
+    array [array_len- 1].prev = &array [array_len - 1 - 1];
+}
+
 static void
-_g_array_list_grow (GArrayList *self)
+_g_array_list_grow (GArrayList *self,
+                    gboolean    update_pointers)
 {
   GArrayListAlloc *alloc = (GArrayListAlloc *)self;
   gpointer old_items;
-  gsize i;
 
   DEBUG_ASSERT (self != NULL);
   DEBUG_ASSERT (alloc->mode == MODE_ALLOC);
@@ -203,17 +222,10 @@ _g_array_list_grow (GArrayList *self)
   if (G_LIKELY (old_items == alloc->items))
     return;
 
-  if (alloc->len > 0)
-    alloc->items [0].next = &alloc->items [1];
+  if (!update_pointers)
+    return;
 
-  for (i = 1; i < (alloc->len - 1); i++)
-    {
-      alloc->items [i].prev = &alloc->items [i-1];
-      alloc->items [i].next = &alloc->items [i+1];
-    }
-
-  if (alloc->len > 1)
-    alloc->items [alloc->len - 1].prev = &alloc->items [alloc->len - 1 - 1];
+  _g_array_list_update_pointers (alloc->items, alloc->len);
 }
 
 static void
@@ -301,7 +313,7 @@ g_array_list_add (GArrayList *self,
   DEBUG_ASSERT (any->mode == MODE_ALLOC);
 
   if (G_UNLIKELY (alloc->len == alloc->items_len))
-    _g_array_list_grow (self);
+    _g_array_list_grow (self, TRUE);
 
   item = &alloc->items [alloc->len];
   prev = (alloc->len > 0) ? &alloc->items [alloc->len - 1] : NULL;
@@ -318,6 +330,47 @@ g_array_list_add (GArrayList *self,
   DEBUG_ASSERT (alloc->len <= alloc->items_len);
   DEBUG_ASSERT (alloc->len > 0);
   DEBUG_ASSERT (alloc->items [alloc->len - 1].data == data);
+}
+
+void
+g_array_list_prepend (GArrayList *self,
+                      gpointer    data)
+{
+  GArrayListAny *any = (GArrayListAny *)self;
+  GArrayListEmbed *embed = (GArrayListEmbed *)self;
+  GArrayListAlloc *alloc = (GArrayListAlloc *)self;
+
+  g_return_if_fail (self != NULL);
+
+  if (G_LIKELY (any->mode == MODE_EMBED))
+    {
+      if (G_LIKELY (embed->len < G_N_ELEMENTS (embed->items)))
+        {
+          memmove (&embed->items [1], &embed->items [0], sizeof (GList) * embed->len);
+          embed->items [0].prev = NULL;
+          embed->items [0].next = &embed->items [1];
+          embed->items [0].data = data;
+          embed->len++;
+          return;
+        }
+
+      _g_array_list_transition (self);
+    }
+
+  DEBUG_ASSERT (any->mode == MODE_ALLOC);
+
+  if (G_UNLIKELY (alloc->len == alloc->items_len))
+    _g_array_list_grow (self, FALSE);
+
+  memmove (&alloc->items [1], &alloc->items [0], sizeof (GList) * alloc->len);
+
+  alloc->items [0].data = data;
+
+  _g_array_list_update_pointers (alloc->items, alloc->len);
+
+  DEBUG_ASSERT (alloc->len <= alloc->items_len);
+  DEBUG_ASSERT (alloc->len > 0);
+  DEBUG_ASSERT (alloc->items [0].data == data);
 }
 
 void

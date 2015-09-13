@@ -74,6 +74,10 @@ void         g_array_list_destroy      (GArrayList     *list);
 GLIB_AVAILABLE_IN_2_46
 const GList *g_array_list_last_link    (GArrayList     *list);
 
+GLIB_AVAILABLE_IN_2_46
+void         g_array_list_prepend      (GArrayList     *list,
+                                        gpointer        data);
+
 #define g_array_list_first(list) (((list)->len == 0) ? NULL : g_array_list_index((list),0))
 #define g_array_list_last(list) (((list)->len == 0) ? NULL : g_array_list_index((list),(list)->len-1))
 
