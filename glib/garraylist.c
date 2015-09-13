@@ -366,6 +366,8 @@ g_array_list_prepend (GArrayList *self,
 
   alloc->items [0].data = data;
 
+  alloc->len++;
+
   _g_array_list_update_pointers (alloc->items, alloc->len);
 
   DEBUG_ASSERT (alloc->len <= alloc->items_len);
