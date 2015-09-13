@@ -71,6 +71,8 @@ void         g_array_list_remove_index (GArrayList     *list,
 GLIB_AVAILABLE_IN_2_46
 void         g_array_list_destroy      (GArrayList     *list);
 
+#define g_array_list_last(list) (((list)->len == 0) ? NULL : g_array_list_index((list),(list)->len-1))
+
 G_END_DECLS
 
 #endif /* __G_ARRAY_LIST_H__ */
