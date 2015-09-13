@@ -47,6 +47,9 @@ test_basic (GArrayList *al)
       g_assert_cmpint (al->len, ==, i);
     }
 
+  g_assert_cmpint (g_array_list_find (al, GSIZE_TO_POINTER (12345)), ==, -1);
+  g_assert_cmpint (g_array_list_find (al, GSIZE_TO_POINTER (500)), ==, 499);
+
   g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_first(al)), ==, 1);
   g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_last(al)), ==, 1000);
 

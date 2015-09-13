@@ -81,6 +81,20 @@ void         g_array_list_prepend      (GArrayList     *list,
 GLIB_AVAILABLE_IN_2_46
 void         g_array_list_clear        (GArrayList     *list);
 
+GLIB_AVAILABLE_IN_2_46
+gssize       g_array_list_find         (GArrayList     *list,
+                                        gpointer        data);
+
+GLIB_AVAILABLE_IN_2_46
+gpointer    *g_array_list_copy         (GArrayList     *list,
+                                        GCopyFunc       copy_func,
+                                        gpointer        copy_data);
+
+GLIB_AVAILABLE_IN_2_46
+gpointer    *g_array_list_copy_reversed(GArrayList     *list,
+                                        GCopyFunc       copy_func,
+                                        gpointer        copy_data);
+
 #define g_array_list_empty(list) ((list)->len == 0)
 #define g_array_list_first(list) (((list)->len == 0) ? NULL : g_array_list_index((list),0))
 #define g_array_list_last(list) (((list)->len == 0) ? NULL : g_array_list_index((list),(list)->len-1))

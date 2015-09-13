@@ -427,6 +427,29 @@ g_array_list_remove_index (GArrayList *self,
     any->destroy (data);
 }
 
+gssize
+g_array_list_find (GArrayList *self,
+                   gpointer    data)
+{
+  GArrayListAny *any = (GArrayListAny *)self;
+  GArrayListEmbed *embed = (GArrayListEmbed *)self;
+  GArrayListAlloc *alloc = (GArrayListAlloc *)self;
+  GList *items;
+  gsize i;
+
+  g_return_if_fail (self != NULL);
+
+  items = (any->mode == MODE_EMBED) ? embed->items : alloc->items;
+
+  for (i = 0; i < any->len; i++)
+    {
+      if (items [i].data == data)
+        return i;
+    }
+
+  return -1;
+}
+
 void
 g_array_list_remove (GArrayList *self,
                      gpointer    data)
@@ -526,4 +549,96 @@ g_array_list_clear (GArrayList *self)
 
   any->len = 0;
   any->mode = MODE_EMBED;
+}
+
+/**
+ * g_array_list_copy:
+ * @self: A #GArrayList.
+ * @copy_func: (scope call): A #GCopyFunc
+ * @copy_data: (allow-none): data for @copy_func or %NULL.
+ *
+ * Creates a new array containing the data found within the #GListArray.
+ * The result should be freed with g_free() when no longer used. If you
+ * incremented a reference count or allocated a new structure in your
+ * copy func, you are responsible for freeing it as well.
+ *
+ * Returns: (transfer full): A newly allocated array that should be freed
+ *   with g_free().
+ */
+gpointer *
+g_array_list_copy (GArrayList *self,
+                   GCopyFunc   copy_func, 
+                   gpointer    copy_data)
+{
+  GArrayListAny *any = (GArrayListAny *)self;
+  GArrayListEmbed *embed = (GArrayListEmbed *)self;
+  GArrayListAlloc *alloc = (GArrayListAlloc *)self;
+  const GList *items;
+  gpointer *ret;
+  gsize i;
+
+  g_return_if_fail (self != NULL);
+
+  ret = g_malloc_n (self->len, sizeof (gpointer));
+  items = (any->mode == MODE_EMBED) ? embed->items : alloc->items;
+
+  if (!copy_func)
+    {
+      for (i = 0; i < self->len; i++)
+        ret [i] = items [i].data;
+    }
+  else
+    {
+      for (i = 0; i < self->len; i++)
+        ret [i] = copy_func (items [i].data, copy_data);
+    }
+
+  return ret;
+}
+
+/**
+ * g_array_list_copy_reversed:
+ * @self: A #GArrayList.
+ * @copy_func: (scope call): A #GCopyFunc
+ * @copy_data: (allow-none): data for @copy_func or %NULL.
+ *
+ * Creates a new array containing the data found within the #GListArray.
+ * The result should be freed with g_free() when no longer used. If you
+ * incremented a reference count or allocated a new structure in your
+ * copy func, you are responsible for freeing it as well.
+ *
+ * This function creates the array in reverse order.
+ *
+ * Returns: (transfer full): A newly allocated array that should be freed
+ *   with g_free().
+ */
+gpointer *
+g_array_list_copy_reversed (GArrayList *self,
+                            GCopyFunc   copy_func, 
+                            gpointer    copy_data)
+{
+  GArrayListAny *any = (GArrayListAny *)self;
+  GArrayListEmbed *embed = (GArrayListEmbed *)self;
+  GArrayListAlloc *alloc = (GArrayListAlloc *)self;
+  const GList *items;
+  gpointer *ret;
+  gsize i;
+
+  g_return_if_fail (self != NULL);
+
+  ret = g_malloc_n (self->len, sizeof (gpointer));
+  items = (any->mode == MODE_EMBED) ? embed->items : alloc->items;
+
+  if (!copy_func)
+    {
+      for (i = self->len; i > 0; i--)
+        ret [i-1] = items [i-1].data;
+    }
+  else
+    {
+      for (i = self->len; i > 0; i--)
+        ret [i-1] = copy_func (items [i-1].data, copy_data);
+    }
+
+  return ret;
 }
