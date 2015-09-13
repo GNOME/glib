@@ -7,6 +7,7 @@
 #include <gio/gio.h>
 #include <gio/gunixsocketaddress.h>
 #include "gdbusdaemon.h"
+#include "glibintl.h"
 
 #include "gdbus-daemon-generated.h"
 
