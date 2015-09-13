@@ -500,3 +500,30 @@ g_array_list_last_link (GArrayList *self)
 
   return &items [self->len - 1];
 }
+
+void
+g_array_list_clear (GArrayList *self)
+{
+  GArrayListAny *any = (GArrayListAny *)self;
+  GArrayListEmbed *embed = (GArrayListEmbed *)self;
+  GArrayListAlloc *alloc = (GArrayListAlloc *)self;
+
+  g_return_if_fail (self != NULL);
+
+  if (any->destroy != NULL)
+    {
+      GList *items;
+      gsize i;
+
+      items = (any->mode == MODE_EMBED) ? embed->items : alloc->items;
+
+      for (i = 0; i < any->len; i++)
+        any->destroy (items [i].data);
+    }
+
+  if (any->mode == MODE_ALLOC)
+    g_free (alloc->items);
+
+  any->len = 0;
+  any->mode = MODE_EMBED;
+}

@@ -78,6 +78,10 @@ GLIB_AVAILABLE_IN_2_46
 void         g_array_list_prepend      (GArrayList     *list,
                                         gpointer        data);
 
+GLIB_AVAILABLE_IN_2_46
+void         g_array_list_clear        (GArrayList     *list);
+
+#define g_array_list_empty(list) ((list)->len == 0)
 #define g_array_list_first(list) (((list)->len == 0) ? NULL : g_array_list_index((list),0))
 #define g_array_list_last(list) (((list)->len == 0) ? NULL : g_array_list_index((list),(list)->len-1))
 
