@@ -54,7 +54,7 @@ const GList *g_array_list_peek         (GArrayList     *list);
 
 GLIB_AVAILABLE_IN_2_46
 gpointer     g_array_list_index        (GArrayList     *list,
-                                        guint           index);
+                                        gsize           index);
 
 GLIB_AVAILABLE_IN_2_46
 void         g_array_list_add          (GArrayList     *list,
