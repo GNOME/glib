@@ -39,12 +39,15 @@ test_basic (GArrayList *al)
   g_assert (al != NULL);
   g_assert_cmpint (al->len, ==, 0);
 
+  g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_first(al)), ==, 0);
+
   for (i = 1; i <= 1000; i++)
     {
       g_array_list_add (al, GSIZE_TO_POINTER (i));
       g_assert_cmpint (al->len, ==, i);
     }
 
+  g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_first(al)), ==, 1);
   g_assert_cmpint (GPOINTER_TO_SIZE (g_array_list_last(al)), ==, 1000);
 
   list = g_array_list_peek (al);
