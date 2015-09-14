@@ -1526,7 +1526,14 @@ signal_find_class_closure (SignalNode *node,
       ClassClosure key;
 
       /* cc->instance_type is 0 for default closure */
-      
+
+      if (g_bsearch_array_get_n_nodes (bsa) == 1)
+        {
+          cc = g_bsearch_array_get_nth (bsa, &g_class_closure_bconfig, 0);
+          if (cc && cc->instance_type == 0) /* check for default closure */
+            return cc;
+        }
+
       key.instance_type = itype;
       cc = g_bsearch_array_lookup (bsa, &g_class_closure_bconfig, &key);
       while (!cc && key.instance_type)
@@ -1546,12 +1553,6 @@ signal_lookup_closure (SignalNode    *node,
 {
   ClassClosure *cc;
 
-  if (node->class_closure_bsa && g_bsearch_array_get_n_nodes (node->class_closure_bsa) == 1)
-    {
-      cc = g_bsearch_array_get_nth (node->class_closure_bsa, &g_class_closure_bconfig, 0);
-      if (cc && cc->instance_type == 0) /* check for default closure */
-        return cc->closure;
-    }
   cc = signal_find_class_closure (node, G_TYPE_FROM_INSTANCE (instance));
   return cc ? cc->closure : NULL;
 }
@@ -2951,6 +2952,9 @@ g_signal_handlers_disconnect_matched (gpointer         instance,
  * consistent with how a signal emitted with @detail would be delivered
  * to those handlers.
  *
+ * Since 2.46 this also checks for a non-default class closure being
+ * installed, as this is basically always what you want.
+ *
  * One example of when you might use this is when the arguments to the
  * signal are difficult to compute. A class implementor may opt to not
  * emit the signal if no one is attached anyway, thus saving the cost
@@ -2967,15 +2971,16 @@ g_signal_has_handler_pending (gpointer instance,
 {
   HandlerMatch *mlist;
   gboolean has_pending;
+  SignalNode *node;
   
   g_return_val_if_fail (G_TYPE_CHECK_INSTANCE (instance), FALSE);
   g_return_val_if_fail (signal_id > 0, FALSE);
   
   SIGNAL_LOCK ();
+
+  node = LOOKUP_SIGNAL_NODE (signal_id);
   if (detail)
     {
-      SignalNode *node = LOOKUP_SIGNAL_NODE (signal_id);
-      
       if (!(node->flags & G_SIGNAL_DETAILED))
 	{
 	  g_warning ("%s: signal id '%u' does not support detail (%u)", G_STRLOC, signal_id, detail);
@@ -2992,9 +2997,15 @@ g_signal_has_handler_pending (gpointer instance,
       handler_match_free1_R (mlist, instance);
     }
   else
-    has_pending = FALSE;
+    {
+      ClassClosure *class_closure = signal_find_class_closure (node, G_TYPE_FROM_INSTANCE (instance));
+      if (class_closure != NULL && class_closure->instance_type != 0)
+        has_pending = TRUE;
+      else
+        has_pending = FALSE;
+    }
   SIGNAL_UNLOCK ();
-  
+
   return has_pending;
 }
 
