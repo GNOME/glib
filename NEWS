@@ -1,3 +1,36 @@
+Overview of changes in GLib 2.45.8
+==================================
+
+* utf8 validation and utf8-to-ucs4 conversion are faster
+
+* Small speedups to property change notification
+
+* Various other small optimizations for GQuark, GData
+
+* Bugs fixed:
+ 696426 GParamSpecTypeInfo do not need to be static
+ 735429 Cleanup MSVC Project Files Generation
+ 738504 Optimize UTF-8 decoding by unrolling branches and expressions
+ 742903 Add missing (transfer) annotation to GString
+ 748633 g_set_object order of operations
+ 754431 Fix build of glib/gstrfuncs.c on Windows
+ 754560 gioerror: Add more mappings for WinSock error codes
+ 754582 Glib cannot compile
+ 754601 Make g_strerror work with non-glibc POSIX systems
+ 754636 tests/unicode-encoding test fails for glib 2.45.7 on x86-64
+ 754788 more g_strerror stuff
+ 754831 autocleanups: Add GString type
+ 754924 Improve test coverage of g_utf8_validate() by added known-...
+
+* Translation updates:
+ Italian
+ Kazakh
+ Korean
+ Lithuanian
+ Slovenian
+ Swedish
+
+
 Overview of changes in GLib 2.45.7
 ==================================
 
