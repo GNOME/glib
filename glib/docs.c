@@ -2393,8 +2393,7 @@
  * gboolean
  * check_exists(GVariant *dict)
  * {
- *   g_autoptr(GVariant) dirname;
- *   g_autoptr(GVariant) basename = NULL;
+ *   g_autoptr(GVariant) dirname, basename = NULL;
  *   g_autoptr(gchar) path = NULL;
  *
  *   dirname = g_variant_lookup_value (dict, "dirname", G_VARIANT_TYPE_STRING);
@@ -2418,6 +2417,8 @@
  * You must initialise the variable in some way -- either by use of an
  * initialiser or by ensuring that it is assigned to unconditionally
  * before it goes out of scope.
+ *
+ * See also g_steal_pointer().
  *
  * Since: 2.44
  */
