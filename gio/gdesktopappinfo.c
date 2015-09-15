@@ -2669,7 +2669,7 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       GPid pid;
       GList *launched_uris;
       GList *iter;
-      char *display, *sn_id = NULL;
+      char *sn_id = NULL;
 
       old_uris = uris;
       if (!expand_application_parameters (info, exec_line, &uris, &argc, &argv, error))
@@ -2708,17 +2708,10 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           data.pid_envvar = NULL;
         }
 
-      display = NULL;
       sn_id = NULL;
       if (launch_context)
         {
           GList *launched_files = create_files_for_uris (launched_uris);
-
-          display = g_app_launch_context_get_display (launch_context,
-                                                      G_APP_INFO (info),
-                                                      launched_files);
-          if (display)
-            envp = g_environ_setenv (envp, "DISPLAY", display, TRUE);
 
           if (info->startup_notify)
             {
@@ -2744,7 +2737,6 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
           if (sn_id)
             g_app_launch_context_launch_failed (launch_context, sn_id);
 
-          g_free (display);
           g_free (sn_id);
           g_list_free (launched_uris);
 
@@ -2771,11 +2763,10 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       notify_desktop_launch (session_bus,
                              info,
                              pid,
-                             display,
+                             NULL,
                              sn_id,
                              launched_uris);
 
-      g_free (display);
       g_free (sn_id);
       g_list_free (launched_uris);
 
