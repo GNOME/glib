@@ -317,6 +317,8 @@ gboolean
 g_file_test (const gchar *filename,
              GFileTest    test)
 {
+  g_return_val_if_fail (filename != NULL, FALSE);
+
 #ifdef G_OS_WIN32
 /* stuff missing in std vc6 api */
 #  ifndef INVALID_FILE_ATTRIBUTES
