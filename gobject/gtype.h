@@ -1823,6 +1823,8 @@ guint     g_type_get_type_registration_serial (void);
  *   {
  *     MyObjectPrivate *priv = my_object_get_instance_private (obj);
  *
+ *     g_return_val_if_fail (MY_IS_OBJECT (obj), 0);
+ *
  *     return priv->foo;
  *   }
  *
@@ -1831,6 +1833,8 @@ guint     g_type_get_type_registration_serial (void);
  *                      gint      bar)
  *   {
  *     MyObjectPrivate *priv = my_object_get_instance_private (obj);
+ *
+ *     g_return_if_fail (MY_IS_OBJECT (obj));
  *
  *     if (priv->bar != bar)
  *       priv->bar = bar;
@@ -1842,6 +1846,10 @@ guint     g_type_get_type_registration_serial (void);
  *
  * Also note that private structs added with these macros must have a struct
  * name of the form `TypeNamePrivate`.
+ *
+ * It is safe to call _get_instance_private on %NULL or invalid object since
+ * it's only adding an offset to the instance pointer. In that case the returned
+ * pointer must not be dereferenced.
  *
  * Since: 2.38
  */
