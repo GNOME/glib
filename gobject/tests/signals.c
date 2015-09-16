@@ -7,6 +7,12 @@
                                                  g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                              #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'i'); \
                                             } G_STMT_END
+#define g_assert_cmpenum(type,n1, cmp, n2) G_STMT_START { \
+                                               type __n1 = (n1), __n2 = (n2); \
+                                               if (__n1 cmp __n2) ; else \
+                                                 g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                                             #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'i'); \
+                                            } G_STMT_END
 
 typedef enum {
   TEST_ENUM_NEGATIVE = -30,
@@ -65,10 +71,13 @@ test_unsigned_enum_get_type (void)
   return g_define_type_id__volatile;
 }
 
+typedef enum {
+  MY_ENUM_VALUE = 1,
+} MyEnum;
 
 static const GEnumValue my_enum_values[] =
 {
-  { 1, "the first value", "one" },
+  { MY_ENUM_VALUE, "the first value", "one" },
   { 0, NULL, NULL }
 };
 
@@ -100,15 +109,15 @@ struct _Test
   GObject parent_instance;
 };
 
-static void all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, gint e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
+static void all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
 
 struct _TestClass
 {
   GObjectClass parent_class;
 
   void (* variant_changed) (Test *, GVariant *);
-  void (* all_types) (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, gint e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
-  void (* all_types_null) (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, gint e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
+  void (* all_types) (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
+  void (* all_types_null) (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64);
 };
 
 static GType test_get_type (void);
@@ -696,7 +705,7 @@ test_generic_marshaller_signal_uint_return (void)
 static int all_type_handlers_count = 0;
 
 static void
-all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, gint e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64)
+all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, MyFlags f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64)
 {
   all_type_handlers_count++;
 
@@ -707,7 +716,7 @@ all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, g
   g_assert_cmpuint (ui, ==, G_MAXUINT - 42);
   g_assert_cmpint (l, ==, -1117);
   g_assert_cmpuint (ul, ==, G_MAXULONG - 999);
-  g_assert_cmpint (e, ==, 1);
+  g_assert_cmpenum (MyEnum, e, ==, MY_ENUM_VALUE);
   g_assert_cmpflags (MyFlags, f, ==, MY_FLAGS_FIRST_BIT | MY_FLAGS_THIRD_BIT | MY_FLAGS_LAST_BIT);
   g_assert_cmpfloat (fl, ==, 0.25);
   g_assert_cmpfloat (db, ==, 1.5);
@@ -721,7 +730,7 @@ all_types_handler (Test *test, int i, gboolean b, char c, guchar uc, guint ui, g
 }
 
 static void
-all_types_handler_cb (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, gint e, guint f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64, gpointer user_data)
+all_types_handler_cb (Test *test, int i, gboolean b, char c, guchar uc, guint ui, glong l, gulong ul, MyEnum e, guint f, float fl, double db, char *str, GParamSpec *param, GBytes *bytes, gpointer ptr, Test *obj, GVariant *var, gint64 i64, guint64 ui64, gpointer user_data)
 {
   g_assert (user_data == &flags_type);
   all_types_handler (test, i, b, c, uc, ui, l, ul, e, f, fl, db, str, param, bytes, ptr, obj, var, i64, ui64);
@@ -739,7 +748,7 @@ test_all_types (void)
   guint ui = G_MAXUINT - 42;
   glong l =  -1117;
   gulong ul = G_MAXULONG - 999;
-  gint e = 1;
+  MyEnum e = MY_ENUM_VALUE;
   MyFlags f = MY_FLAGS_FIRST_BIT | MY_FLAGS_THIRD_BIT | MY_FLAGS_LAST_BIT;
   float fl = 0.25;
   double db = 1.5;
