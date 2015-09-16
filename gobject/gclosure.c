@@ -1186,9 +1186,15 @@ value_to_ffi_type (const GValue *gvalue,
       *value = enum_tmpval;
       *tmpval_used = TRUE;
       break;
+    case G_TYPE_FLAGS:
+      g_assert (enum_tmpval != NULL);
+      rettype = &ffi_type_uint;
+      *enum_tmpval = g_value_get_flags (gvalue);
+      *value = enum_tmpval;
+      *tmpval_used = TRUE;
+      break;
     case G_TYPE_UCHAR:
     case G_TYPE_UINT:
-    case G_TYPE_FLAGS:
       rettype = &ffi_type_uint;
       *value = (gpointer)&(gvalue->data[0].v_uint);
       break;
