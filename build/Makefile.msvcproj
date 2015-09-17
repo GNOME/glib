@@ -2,12 +2,13 @@
 # Common Autotools file used to generate Visual Studio 2008+
 # Projects from their templates
 
-# This autotools file can be used in other projects that have
-# Visual Studio build support, and can be copied into
+# This autotools file, from GLib, can be used in other projects
+# that have Visual Studio build support, and is copied into
 # $(srcroot)/build/, except those that have their main sources
-# in their $(srcroot), or those that have their build files in
-# $(srcroot).  Those that should not use this include:
-# gobject-introspection, librsvg.
+# in their $(srcroot), or those that have their autotools build
+# files in $(srcroot).  Those that should not use this include:
+# gobject-introspection, librsvg, instead they would currently
+# need a modified version of this.
 
 # * Input variables:
 #
