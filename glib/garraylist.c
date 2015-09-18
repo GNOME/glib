@@ -29,7 +29,7 @@
  * @title: GArrayList
  * @short_description: Linked lists implemented as arrays.
  *
- * Sometimes, when building APIs we make mistakes about the undelrying
+ * Sometimes, when building APIs we make mistakes about the underlying
  * data structure that should have been used. GArrayList is a data structure
  * that allows read-only compatability with #GList but is implemented as an
  * array underneath. This means fast forward and backward iteration using
