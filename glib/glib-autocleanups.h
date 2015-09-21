@@ -23,10 +23,9 @@
 
 static inline void
 g_autoptr_cleanup_generic_gfree (void *p)
-{ 
+{
   void **pp = (void**)p;
-  if (*pp)
-    g_free (*pp);
+  g_free (*pp);
 }
 
 static inline void
