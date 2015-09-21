@@ -2456,6 +2456,7 @@ g_string_equal
 
 <SUBSECTION Private>
 g_string_append_c_inline
+g_autoptr_cleanup_gstring_free
 </SECTION>
 
 <SECTION>

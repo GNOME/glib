@@ -1496,12 +1496,11 @@ expand_value (gunichar2  *value,
  * g_win32_registry_value_iter_get_data_w:
  * @iter: (in) (transfer none): a #GWin32RegistryValueIter
  * @auto_expand: (in): %TRUE to automatically expand G_WIN32_REGISTRY_VALUE_EXPAND_STR to
- *     G_WIN32_REGISTRY_VALUE_STR.
+ *     G_WIN32_REGISTRY_VALUE_STR
  * @value_data: (out callee-allocates) (optional) (transfer none): Pointer to a
- *     location to store the data of the value (in UTF-16, if it's a string).
- * @value_data_len: (out) (optional): Pointer to a location to store the size
- *     of @value_data, in bytes (including any NUL-terminators, if it's a
- *     string).
+ *     location to store the data of the value (in UTF-16, if it's a string)
+ * @value_data_size: (out) (optional): Pointer to a location to store the size
+ *     of @value_data, in bytes (including any NUL-terminators, if it's a string).
  *     %NULL if length is not needed.
  * @error: (nullable): a pointer to %NULL #GError, or %NULL
  *
@@ -1563,12 +1562,13 @@ g_win32_registry_value_iter_get_data_w (GWin32RegistryValueIter  *iter,
 /**
  * g_win32_registry_value_iter_get_data:
  * @iter: (in) (transfer none): a #GWin32RegistryValueIter
+ * @auto_expand: (in): %TRUE to automatically expand G_WIN32_REGISTRY_VALUE_EXPAND_STR to
+ *     G_WIN32_REGISTRY_VALUE_STR
  * @value_data: (out callee-allocates) (optional) (transfer none): Pointer to a
- *     location to store the data of the value (in UTF-8, if it's a string).
+ *     location to store the data of the value (in UTF-8, if it's a string)
  * @value_data_size: (out) (optional): Pointer to a location to store the length
- *     of @value_data, in bytes (including any NUL-terminators, if it's a
- *     string).
- *     %NULL if length is not needed.
+ *     of @value_data, in bytes (including any NUL-terminators, if it's a string).
+ *     %NULL if length is not needed
  * @error: (nullable): a pointer to %NULL #GError, or %NULL
  *
  * Stores the data of the value currently being iterated over in @value_data,
@@ -2135,7 +2135,7 @@ key_changed (PVOID            closure,
  * @key: (in) (transfer none): a #GWin32RegistryKey
  * @watch_children: (in) %TRUE also watch the children of the @key, %FALSE
  *     to watch the key only.
- * @change_flags: (in): specifies the types of changes to watch for.
+ * @watch_flags: (in): specifies the types of changes to watch for.
  * @callback: (in) (nullable): a function to invoke when a change occurs.
  * @user_data: (in) (nullable): a pointer to pass to @callback on invocation.
  * @error: (nullable): a pointer to %NULL #GError, or %NULL

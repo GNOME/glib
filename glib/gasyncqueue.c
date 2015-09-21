@@ -788,7 +788,7 @@ g_async_queue_sort_unlocked (GAsyncQueue      *queue,
 /**
  * g_async_queue_remove:
  * @queue: a #GAsyncQueue
- * @data: the @data to remove from the @queue
+ * @item: the data to remove from the @queue
  *
  * Remove an item from the queue.
  *
@@ -798,15 +798,15 @@ g_async_queue_sort_unlocked (GAsyncQueue      *queue,
  */
 gboolean
 g_async_queue_remove (GAsyncQueue *queue,
-                      gpointer     data)
+                      gpointer     item)
 {
   gboolean ret;
 
   g_return_val_if_fail (queue != NULL, FALSE);
-  g_return_val_if_fail (data != NULL, FALSE);
+  g_return_val_if_fail (item != NULL, FALSE);
 
   g_mutex_lock (&queue->mutex);
-  ret = g_async_queue_remove_unlocked (queue, data);
+  ret = g_async_queue_remove_unlocked (queue, item);
   g_mutex_unlock (&queue->mutex);
 
   return ret;
@@ -815,7 +815,7 @@ g_async_queue_remove (GAsyncQueue *queue,
 /**
  * g_async_queue_remove_unlocked:
  * @queue: a #GAsyncQueue
- * @data: the @data to remove from the @queue
+ * @item: the data to remove from the @queue
  *
  * Remove an item from the queue.
  *
@@ -827,20 +827,20 @@ g_async_queue_remove (GAsyncQueue *queue,
  */
 gboolean
 g_async_queue_remove_unlocked (GAsyncQueue *queue,
-                               gpointer     data)
+                               gpointer     item)
 {
   g_return_val_if_fail (queue != NULL, FALSE);
-  g_return_val_if_fail (data != NULL, FALSE);
+  g_return_val_if_fail (item != NULL, FALSE);
 
-  return g_queue_remove (&queue->queue, data);
+  return g_queue_remove (&queue->queue, item);
 }
 
 /**
  * g_async_queue_push_front:
  * @queue: a #GAsyncQueue
- * @data: @data to push into the @queue
+ * @item: data to push into the @queue
  *
- * Pushes the @data into the @queue. @data must not be %NULL.
+ * Pushes the @item into the @queue. @item must not be %NULL.
  * In contrast to g_async_queue_push(), this function
  * pushes the new item ahead of the items already in the queue,
  * so that it will be the next one to be popped off the queue.
@@ -849,22 +849,22 @@ g_async_queue_remove_unlocked (GAsyncQueue *queue,
  */
 void
 g_async_queue_push_front (GAsyncQueue *queue,
-                          gpointer     data)
+                          gpointer     item)
 {
   g_return_if_fail (queue != NULL);
-  g_return_if_fail (data != NULL);
+  g_return_if_fail (item != NULL);
 
   g_mutex_lock (&queue->mutex);
-  g_async_queue_push_front_unlocked (queue, data);
+  g_async_queue_push_front_unlocked (queue, item);
   g_mutex_unlock (&queue->mutex);
 }
 
 /**
  * g_async_queue_push_front_unlocked:
  * @queue: a #GAsyncQueue
- * @data: @data to push into the @queue
+ * @item: data to push into the @queue
  *
- * Pushes the @data into the @queue. @data must not be %NULL.
+ * Pushes the @item into the @queue. @item must not be %NULL.
  * In contrast to g_async_queue_push_unlocked(), this function
  * pushes the new item ahead of the items already in the queue,
  * so that it will be the next one to be popped off the queue.
@@ -875,12 +875,12 @@ g_async_queue_push_front (GAsyncQueue *queue,
  */
 void
 g_async_queue_push_front_unlocked (GAsyncQueue *queue,
-                                   gpointer     data)
+                                   gpointer     item)
 {
   g_return_if_fail (queue != NULL);
-  g_return_if_fail (data != NULL);
+  g_return_if_fail (item != NULL);
 
-  g_queue_push_tail (&queue->queue, data);
+  g_queue_push_tail (&queue->queue, item);
   if (queue->waiting_threads > 0)
     g_cond_signal (&queue->cond);
 }

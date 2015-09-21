@@ -132,10 +132,10 @@ g_native_socket_address_init (GNativeSocketAddress *address)
 
 /**
  * g_native_socket_address_new:
- * @address: a #GNativeAddress
- * @port: a port number
+ * @native: a native address object
+ * @len: the length of @native, in bytes
  *
- * Creates a new #GNativeSocketAddress for @address and @port.
+ * Creates a new #GNativeSocketAddress for @native and @len.
  *
  * Returns: a new #GNativeSocketAddress
  *

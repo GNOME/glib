@@ -1830,7 +1830,6 @@ g_unix_socket_address_get_type
 <FILE>gnativesocketaddress</FILE>
 <TITLE>GNativeSocketAddress</TITLE>
 GNativeSocketAddress
-GNativeSocketAddressType
 g_native_socket_address_new
 <SUBSECTION Standard>
 GNativeSocketAddressClass
@@ -2268,6 +2267,7 @@ G_SOCKET_LISTENER
 G_SOCKET_LISTENER_CLASS
 G_SOCKET_LISTENER_GET_CLASS
 G_TYPE_SOCKET_LISTENER
+G_TYPE_SOCKET_LISTENER_EVENT
 <SUBSECTION Private>
 GSocketListenerPrivate
 g_socket_listener_get_type
@@ -4517,4 +4517,6 @@ G_WIN32_REGISTRY_KEY_CLASS
 G_IS_WIN32_REGISTRY_KEY
 G_IS_WIN32_REGISTRY_KEY_CLASS
 G_WIN32_REGISTRY_KEY_GET_CLASS
+G_TYPE_WIN32_REGISTRY_SUBKEY_ITER
+G_TYPE_WIN32_REGISTRY_VALUE_ITER
 </SECTION>
