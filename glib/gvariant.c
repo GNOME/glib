@@ -5446,6 +5446,10 @@ g_variant_get_child (GVariant    *value,
   GVariant *child;
   va_list ap;
 
+  /* if any direct-pointer-access formats are in use, flatten first */
+  if (strchr (format_string, '&'))
+    g_variant_get_data (value);
+
   child = g_variant_get_child_value (value, index_);
   g_return_if_fail (valid_format_string (format_string, TRUE, child));
 
