@@ -357,13 +357,6 @@ GType   g_option_group_get_type    (void) G_GNUC_CONST;
 GLIB_DEPRECATED_FOR('G_TYPE_VARIANT')
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;
 
-/**
- * GStrv:
- *
- * A C representable type name for #G_TYPE_STRV.
- */
-typedef gchar** GStrv;
-
 G_END_DECLS
 
 #endif  /* __GLIB_TYPES_H__ */

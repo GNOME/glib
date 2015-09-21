@@ -398,6 +398,13 @@ test_g_variant_type (void)
   g_assert (val != NULL);
 }
 
+static void
+test_strv (void)
+{
+  g_auto(GStrv) val = g_strsplit("a:b:c", ":", -1);
+  g_assert (val != NULL);
+}
+
 int
 main (int argc, gchar *argv[])
 {
@@ -449,6 +456,7 @@ main (int argc, gchar *argv[])
   g_test_add_func ("/autoptr/g_variant_iter", test_g_variant_iter);
   g_test_add_func ("/autoptr/g_variant_dict", test_g_variant_dict);
   g_test_add_func ("/autoptr/g_variant_type", test_g_variant_type);
+  g_test_add_func ("/autoptr/strv", test_strv);
 
   return g_test_run ();
 }

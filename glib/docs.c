@@ -2343,8 +2343,10 @@
  * {
  *   g_auto(GQueue) queue = G_QUEUE_INIT;
  *   g_auto(GVariantBuilder) builder;
+ *   g_auto(GStrv) strv;
  *
  *   g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
+ *   strv = g_strsplit("a:b:c", ":", -1);
  *
  *   ...
  *

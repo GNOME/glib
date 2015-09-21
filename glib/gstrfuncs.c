@@ -2459,6 +2459,13 @@ g_strsplit_set (const gchar *string,
 }
 
 /**
+ * GStrv:
+ *
+ * A typedef alias for gchar**. This is mostly useful when used together with
+ * g_auto().
+ */
+
+/**
  * g_strfreev:
  * @str_array: a %NULL-terminated array of strings to free
  *

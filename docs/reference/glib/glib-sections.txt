@@ -1453,6 +1453,9 @@ g_strfreev
 g_strconcat
 g_strjoin
 g_strjoinv
+
+<SUBSECTION>
+GStrv
 g_strv_length
 g_strv_contains
 
