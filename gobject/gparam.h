@@ -341,10 +341,10 @@ GLIB_DEPRECATED_FOR(g_value_take_param)
 void           g_value_set_param_take_ownership (GValue        *value,
                                                  GParamSpec    *param);
 GLIB_AVAILABLE_IN_2_36
-const GValue *  g_param_spec_get_default_value  (GParamSpec     *param);
+const GValue *  g_param_spec_get_default_value  (GParamSpec    *pspec);
 
 GLIB_AVAILABLE_IN_2_46
-GQuark          g_param_spec_get_name_quark     (GParamSpec     *param);
+GQuark          g_param_spec_get_name_quark     (GParamSpec    *pspec);
 
 /* --- convenience functions --- */
 typedef struct _GParamSpecTypeInfo GParamSpecTypeInfo;

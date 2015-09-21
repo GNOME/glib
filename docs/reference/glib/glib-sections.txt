@@ -2319,6 +2319,7 @@ GSequenceIterCompareFunc
 g_sequence_new
 g_sequence_free
 g_sequence_get_length
+g_sequence_is_empty
 g_sequence_foreach
 g_sequence_foreach_range
 g_sequence_sort

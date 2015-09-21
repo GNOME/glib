@@ -259,6 +259,21 @@ g_file_monitor_set_rate_limit (GFileMonitor *monitor,
   g_object_set (monitor, "rate-limit", limit_msecs, NULL);
 }
 
+/**
+ * g_file_monitor_emit_event:
+ * @monitor: a #GFileMonitor.
+ * @child: a #GFile.
+ * @other_file: a #GFile.
+ * @event_type: a set of #GFileMonitorEvent flags.
+ *
+ * Emits the #GFileMonitor::changed signal if a change
+ * has taken place. Should be called from file monitor
+ * implementations only.
+ *
+ * Implementations are responsible to call this method from the
+ * [thread-default main context][g-main-context-push-thread-default] of the
+ * thread that the monitor was created in.
+ **/
 void
 g_file_monitor_emit_event (GFileMonitor      *monitor,
                            GFile             *child,

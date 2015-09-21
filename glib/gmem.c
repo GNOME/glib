@@ -486,6 +486,9 @@ g_mem_set_vtable (GMemVTable *vtable)
 /**
  * glib_mem_profiler_table:
  *
+ * Used to be a #GMemVTable containing profiling variants of the memory
+ * allocation functions, but this variable shouldn't be modified anymore.
+ *
  * Deprecated: 2.46: Use other memory profiling tools instead
  */
 GMemVTable *glib_mem_profiler_table = &glib_mem_vtable;

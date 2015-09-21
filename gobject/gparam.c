@@ -1572,7 +1572,7 @@ g_param_spec_get_default_value (GParamSpec *pspec)
 
 /**
  * g_param_spec_get_name_quark:
- * @param: a #GParamSpec
+ * @pspec: a #GParamSpec
  *
  * Gets the GQuark for the name.
  *

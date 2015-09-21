@@ -73,7 +73,7 @@ GLIB_AVAILABLE_IN_ALL
 GSocketAddressEnumerator *g_socket_connectable_proxy_enumerate (GSocketConnectable *connectable);
 
 GLIB_AVAILABLE_IN_2_48
-gchar                    *g_socket_connectable_to_string (GSocketConnectable *addr);
+gchar                    *g_socket_connectable_to_string (GSocketConnectable *connectable);
 
 G_END_DECLS
 
