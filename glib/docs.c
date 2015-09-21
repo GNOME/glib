@@ -2394,7 +2394,7 @@
  * check_exists(GVariant *dict)
  * {
  *   g_autoptr(GVariant) dirname, basename = NULL;
- *   g_autoptr(gchar) path = NULL;
+ *   g_autofree gchar *path = NULL;
  *
  *   dirname = g_variant_lookup_value (dict, "dirname", G_VARIANT_TYPE_STRING);
  *
@@ -2418,7 +2418,7 @@
  * initialiser or by ensuring that it is assigned to unconditionally
  * before it goes out of scope.
  *
- * See also g_steal_pointer().
+ * See also g_auto(), g_autofree() and g_steal_pointer().
  *
  * Since: 2.44
  */
