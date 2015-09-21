@@ -138,6 +138,13 @@ GLIB_AVAILABLE_IN_ALL
 gboolean                g_settings_set_int                              (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          gint                value);
+GLIB_AVAILABLE_IN_2_50
+gint64                  g_settings_get_int64                            (GSettings          *settings,
+                                                                         const gchar        *key);
+GLIB_AVAILABLE_IN_2_50
+gboolean                g_settings_set_int64                            (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         gint64              value);
 GLIB_AVAILABLE_IN_2_32
 guint                   g_settings_get_uint                             (GSettings          *settings,
                                                                          const gchar        *key);
@@ -145,6 +152,13 @@ GLIB_AVAILABLE_IN_2_32
 gboolean                g_settings_set_uint                             (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          guint               value);
+GLIB_AVAILABLE_IN_2_50
+guint64                 g_settings_get_uint64                           (GSettings          *settings,
+                                                                         const gchar        *key);
+GLIB_AVAILABLE_IN_2_50
+gboolean                g_settings_set_uint64                           (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         guint64             value);
 GLIB_AVAILABLE_IN_ALL
 gchar *                 g_settings_get_string                           (GSettings          *settings,
                                                                          const gchar        *key);
