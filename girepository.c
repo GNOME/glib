@@ -27,6 +27,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifdef HAVE_GETAUXVAL
+#include <sys/auxv.h>
+#endif
+
 #include <glib.h>
 #include <glib/gprintf.h>
 #include <gmodule.h>
@@ -146,6 +150,14 @@ init_globals (void)
 
   if (!g_once_init_enter (&initialized))
     return;
+
+#ifdef HAVE_GETAUXVAL
+  if (getauxval (AT_SECURE))
+    {
+      g_printerr ("error: libgirepository.so (gobject-introspection) is not audited for use in setuid applications\nSee https://bugzilla.gnome.org/show_bug.cgi?id=755472\n");
+      _exit (1);
+    }
+#endif
 
   if (default_repository == NULL)
     default_repository = g_object_new (G_TYPE_IREPOSITORY, NULL);
