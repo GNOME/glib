@@ -7,6 +7,8 @@ GENERATED_ITEMS = \
 	glib-gen-srcs.vsprops	\
 	glib-install.vsprops
 
+MSVC_HEADERS_LIST = glib.headers gobject.headers gio.headers
+
 EXTRA_DIST = \
 	README.txt		\
 	glib.sln		\
@@ -31,10 +33,8 @@ EXTRA_DIST = \
 	glib-install.vspropsin	\
 	$(GENERATED_ITEMS)
 
-glib-install.vsprops: $(top_srcdir)/build/win32/vs9/glib-install.vspropsin glib.headers gobject.headers gio.headers
+glib-install.vsprops: $(top_srcdir)/build/win32/vs9/glib-install.vspropsin $(MSVC_HEADERS_LIST)
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/glib-install.vspropsin >$@
-	rm glib.headers
-	rm gobject.headers
-	rm gio.headers
+	rm $(MSVC_HEADERS_LIST)
 
 DISTCLEANFILES = $(GENERATED_ITEMS)
