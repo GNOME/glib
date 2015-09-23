@@ -139,8 +139,7 @@ static GSequenceNode *node_find_closest  (GSequenceNode            *haystack,
                                           GSequenceNode            *needle,
                                           GSequenceNode            *end,
                                           GSequenceIterCompareFunc  cmp,
-                                          gpointer                  user_data,
-                                          gboolean                  return_match);
+                                          gpointer                  user_data);
 static gint           node_get_length    (GSequenceNode            *node);
 static void           node_free          (GSequenceNode            *node,
                                           GSequence                *seq);
@@ -1080,7 +1079,7 @@ g_sequence_search_iter (GSequence                *seq,
   dummy = g_sequence_append (tmp_seq, data);
 
   node = node_find_closest (seq->end_node, dummy,
-                            seq->end_node, iter_cmp, cmp_data, TRUE);
+                            seq->end_node, iter_cmp, cmp_data);
 
   g_sequence_free (tmp_seq);
 
@@ -1734,8 +1733,7 @@ node_find_closest (GSequenceNode            *haystack,
                    GSequenceNode            *needle,
                    GSequenceNode            *end,
                    GSequenceIterCompareFunc  iter_cmp,
-                   gpointer                  cmp_data,
-                   gboolean                  return_match)
+                   gpointer                  cmp_data)
 {
   GSequenceNode *best;
   gint c;
@@ -1765,12 +1763,10 @@ node_find_closest (GSequenceNode            *haystack,
     }
   while (haystack != NULL);
 
-  /* If the best node is smaller than the data, then move one step
-   * to the right to make sure the best one is strictly bigger than the data.
-   * We do return the last exact match or the node after it, depending on
-   * the return_match argument.
+  /* If the best node is smaller or equal to the data, then move one step
+   * to the right to make sure the best one is strictly bigger than the data
    */
-  if (best != end && (c < 0 || (c == 0 && !return_match)))
+  if (best != end && c <= 0)
     best = node_get_next (best);
 
   return best;
@@ -1992,7 +1988,7 @@ node_insert_sorted (GSequenceNode            *node,
 {
   GSequenceNode *closest;
 
-  closest = node_find_closest (node, new, end, iter_cmp, cmp_data, FALSE);
+  closest = node_find_closest (node, new, end, iter_cmp, cmp_data);
 
   node_unlink (new);
 
