@@ -4,11 +4,7 @@
 
 # This autotools file, from GLib, can be used in other projects
 # that have Visual Studio build support, and is copied into
-# $(srcroot)/build/, except those that have their main sources
-# in their $(srcroot), or those that have their autotools build
-# files in $(srcroot).  Those that should not use this include:
-# gobject-introspection, librsvg, instead they would currently
-# need a modified version of this.
+# $(srcroot)/build/.
 
 # * Input variables:
 #
@@ -35,9 +31,9 @@
 ## Transform the MSVC project filename (no filename extensions) to something which can reference through a variable
 ## without automake/make complaining, eg Gtk-2.0 -> Gtk_2_0
 _proj_name=$(subst /,_,$(subst -,_,$(subst .,_,$(1))))
-_proj_path_raw:=$(subst $(abs_top_srcdir)/,,$(abs_srcdir))
+_proj_path_raw:=$(subst $(abs_top_srcdir),,$(abs_srcdir))
 _proj_path=$(subst /,\\,$(_proj_path_raw))
-_proj_subdir_int=$(if $(ifeq $(_proj_path),\.),\\,\\$(_proj_path)\\)
+_proj_subdir_int=$(subst \\\\,\\,\\$(_proj_path)\\)
 _proj_subdir=$(subst \\.\\,\\,$(_proj_subdir_int))
 
 _proj_files_raw=$(subst /,\\,$($(_proj_name)_FILES))
