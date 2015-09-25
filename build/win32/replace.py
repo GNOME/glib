@@ -2,7 +2,11 @@
 #
 # Simple utility script to manipulate
 # certain types of strings in a file
-#
+
+# This can be used in various projects where
+# there is the need to replace strings in files,
+# and is copied from GLib's $(srcroot)/build/win32
+
 # Author: Fan, Chun-wei
 # Date: September 03, 2014
 
