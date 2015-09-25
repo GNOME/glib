@@ -1,11 +1,15 @@
 # Centralized autotools file
-# Create the Visual Studio 2012/2013 project files
+# Create the Visual Studio 2012/2013/2015 project files
 # from the Visual Studio 2010 project files
+
+# This autotools file, from GLib, can be used in other projects
+# that have Visual Studio build support, and is copied into
+# $(srcroot)/build/.
 
 # Author: Fan, Chun-wei
 # November 05, 2012
 
-# MSVC_VER_LONG: Long Version of Visual Studio (2012, 2013, 2015 and so on)
+# MSVC_VER_LONG: Long Version of Visual Studio (2012, 2013, 14 and so on)
 # MSVC_VER: Short Version of Visual Studio (11 for 2012, 12 for 2013, 14 for 2015 and so on)
 # MSVC_FORMAT_VER: Use 12 for MSVC 2012 through 2015
 
