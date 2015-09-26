@@ -28,6 +28,7 @@
 #include <stdlib.h>
 
 #ifdef HAVE_GETAUXVAL
+#include <unistd.h>
 #include <sys/auxv.h>
 #endif
 
