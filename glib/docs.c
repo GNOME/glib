@@ -2359,7 +2359,7 @@
  * }
  * ]|
  *
- * You must initialise the variable in some way -- either by use of an
+ * You must initialize the variable in some way -- either by use of an
  * initialiser or by ensuring that an _init function will be called on
  * it unconditionally before it goes out of scope.
  *
