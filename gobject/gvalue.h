@@ -134,6 +134,8 @@ GLIB_AVAILABLE_IN_ALL
 GValue*         g_value_reset   	(GValue       *value);
 GLIB_AVAILABLE_IN_ALL
 void            g_value_unset   	(GValue       *value);
+GLIB_AVAILABLE_IN_2_48
+void            g_value_clear   	(GValue       *value);
 GLIB_AVAILABLE_IN_ALL
 void		g_value_set_instance	(GValue	      *value,
 					 gpointer      instance);
