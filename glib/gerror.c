@@ -33,7 +33,9 @@
  * this method is both a data type (the #GError struct) and a [set of
  * rules][gerror-rules]. If you use #GError incorrectly, then your code will not
  * properly interoperate with other code that uses #GError, and users
- * of your API will probably get confused.
+ * of your API will probably get confused. In most cases, [using #GError is
+ * preferred over numeric error codes][gerror-comparison], but there are
+ * situations where numeric error codes are useful for performance.
  *
  * First and foremost: #GError should only be used to report recoverable
  * runtime errors, never to report programming errors. If the programmer
@@ -50,12 +52,6 @@
  * should be handled or reported to the user, programming errors should
  * be eliminated by fixing the bug in the program. This is why most
  * functions in GLib and GTK+ do not use the #GError facility.
- *
- * #GError has several advantages over numeric error codes: importantly, tools
- * like [gobject-introspection](https://developer.gnome.org/gi/stable/)
- * understand #GErrors and convert them to exceptions in bindings; the message
- * includes more information than just a code; and use of a domain helps prevent
- * misinterpretation of error codes.
  *
  * Functions that can fail take a return location for a #GError as their
  * last argument. On error, a new #GError instance will be allocated and
@@ -284,6 +280,27 @@
  *   generally not handle this error code explicitly, but should
  *   instead treat any unrecognized error code as equivalent to
  *   FAILED.
+ *
+ * ## Comparison of #GError and traditional error handling # {#gerror-comparison}
+ *
+ * #GError has several advantages over traditional numeric error codes:
+ * importantly, tools like
+ * [gobject-introspection](https://developer.gnome.org/gi/stable/) understand
+ * #GErrors and convert them to exceptions in bindings; the message includes
+ * more information than just a code; and use of a domain helps prevent
+ * misinterpretation of error codes.
+ *
+ * #GError has disadvantages though: it requires a memory allocation, and
+ * formatting the error message string has a performance overhead. This makes it
+ * unsuitable for use in retry loops where errors are a common case, rather than
+ * being unusual. For example, using %G_IO_ERROR_WOULD_BLOCK means hitting these
+ * overheads in the normal control flow. String formatting overhead can be
+ * eliminated by using g_set_error_literal() in some cases.
+ *
+ * These performance issues can be compounded if a function wraps the #GErrors
+ * returned by the functions it calls: this multiplies the number of allocations
+ * and string formatting operations. This can be partially mitigated by using
+ * g_prefix_error().
  *
  * ## Rules for use of #GError # {#gerror-rules}
  *
