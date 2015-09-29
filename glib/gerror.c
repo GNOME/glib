@@ -663,7 +663,7 @@ g_propagate_error (GError **dest,
  * g_clear_error:
  * @err: a #GError return location
  *
- * If @err is %NULL, does nothing. If @err is non-%NULL,
+ * If @err or *@err is %NULL, does nothing. Otherwise,
  * calls g_error_free() on *@err and sets *@err to %NULL.
  */
 void
