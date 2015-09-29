@@ -257,7 +257,9 @@ g_value_reset (GValue *value)
  * Clears the current value in @value and "unsets" the type,
  * this releases all resources associated with this GValue.
  * An unset value is the same as an uninitialized (zero-filled)
- * #GValue structure.
+ * #GValue structure. Note that you cannot call this method on
+ * uninitialized structure, for that, g_value_clear() method can
+ * be used.
  */
 void
 g_value_unset (GValue *value)
