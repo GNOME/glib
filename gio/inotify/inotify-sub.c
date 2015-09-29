@@ -44,16 +44,27 @@ dup_dirname (const gchar *dirname)
 
 inotify_sub*
 _ih_sub_new (const gchar *dirname, 
+             const gchar *basename,
              const gchar *filename,
-             gboolean     watch_hardlinks,
              gpointer     user_data)
 {
   inotify_sub *sub = NULL;
   
   sub = g_new0 (inotify_sub, 1);
-  sub->dirname = dup_dirname (dirname);
-  sub->filename = g_strdup (filename);
-  sub->hardlinks = watch_hardlinks;
+
+  if (filename)
+    {
+      sub->dirname = g_path_get_dirname (filename);
+      sub->filename = g_path_get_basename (filename);
+      sub->hardlinks = TRUE;
+    }
+  else
+    {
+      sub->dirname = dup_dirname (dirname);
+      sub->filename = g_strdup (basename);
+      sub->hardlinks = FALSE;
+    }
+
   sub->user_data = user_data;
 
   IS_W ("new subscription for %s being setup\n", sub->dirname);
