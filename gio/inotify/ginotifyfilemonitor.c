@@ -61,7 +61,7 @@ g_inotify_file_monitor_start (GLocalFileMonitor  *local_monitor,
   success = _ih_startup ();
   g_assert (success);
 
-  inotify_monitor->sub = _ih_sub_new (dirname, basename, filename != NULL, source);
+  inotify_monitor->sub = _ih_sub_new (dirname, basename, filename, source);
   _ih_sub_add (inotify_monitor->sub);
 }
 

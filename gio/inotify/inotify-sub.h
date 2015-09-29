@@ -33,8 +33,8 @@ typedef struct
 } inotify_sub;
 
 inotify_sub *_ih_sub_new (const gchar  *dirname,
+			  const gchar  *basename,
 			  const gchar  *filename,
-			  gboolean      watch_hardlinks,
 			  gpointer      user_data);
 void         _ih_sub_free (inotify_sub *sub);
 
