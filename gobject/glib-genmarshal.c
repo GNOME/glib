@@ -441,9 +441,9 @@ generate_marshal (const gchar *signame,
       g_fprintf (fout, "\n");
       g_fprintf (fout, "  if (G_CCLOSURE_SWAP_DATA (closure))\n    {\n");
       g_fprintf (fout, "      data1 = closure->data;\n");
-      g_fprintf (fout, "      data2 = g_value_peek_pointer (param_values + 0);\n");
+      g_fprintf (fout, "      data2 = g_marshal_value_peek_pointer (param_values + 0);\n");
       g_fprintf (fout, "    }\n  else\n    {\n");
-      g_fprintf (fout, "      data1 = g_value_peek_pointer (param_values + 0);\n");
+      g_fprintf (fout, "      data1 = g_marshal_value_peek_pointer (param_values + 0);\n");
       g_fprintf (fout, "      data2 = closure->data;\n");
       g_fprintf (fout, "    }\n");
       g_fprintf (fout, "  callback = (GMarshalFunc_%s) (marshal_data ? marshal_data : cc->callback);\n", signame);
