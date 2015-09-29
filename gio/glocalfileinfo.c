@@ -1240,6 +1240,17 @@ get_content_type (const char          *basename,
     return g_content_type_from_mime_type ("inode/blockdevice");
   else if (statbuf != NULL && S_ISFIFO(statbuf->st_mode))
     return g_content_type_from_mime_type ("inode/fifo");
+  else if (statbuf != NULL && S_ISREG(statbuf->st_mode) && statbuf->st_size == 0)
+    {
+      /* Don't sniff zero-length files in order to avoid reading files
+       * that appear normal but are not (eg: files in /proc and /sys)
+       *
+       * Note that we need to return text/plain here so that
+       * newly-created text files are opened by the text editor.
+       * See https://bugzilla.gnome.org/show_bug.cgi?id=755795
+       */
+      return g_content_type_from_mime_type ("text/plain");
+    }
 #endif
 #ifdef S_ISSOCK
   else if (statbuf != NULL && S_ISSOCK(statbuf->st_mode))
@@ -1249,14 +1260,11 @@ get_content_type (const char          *basename,
     {
       char *content_type;
       gboolean result_uncertain;
-      
+
       content_type = g_content_type_guess (basename, NULL, 0, &result_uncertain);
       
 #ifndef G_OS_WIN32
-      /* Don't sniff zero-length files in order to avoid reading files
-       * that appear normal but are not (eg: files in /proc and /sys)
-       */
-      if (!fast && result_uncertain && path != NULL && statbuf && statbuf->st_size != 0)
+      if (!fast && result_uncertain && path != NULL)
 	{
 	  guchar sniff_buffer[4096];
 	  gsize sniff_length;
