@@ -2103,6 +2103,34 @@ g_local_file_trash (GFile         *file,
 
   (void) g_close (fd, NULL);
 
+  /* Write the full content of the info file before trashing to make
+   * sure someone doesn't read an empty file.  See #749314
+   */
+
+  /* Use absolute names for homedir */
+  if (is_homedir_trash)
+    original_name = g_strdup (local->filename);
+  else
+    original_name = try_make_relative (local->filename, topdir);
+  original_name_escaped = g_uri_escape_string (original_name, "/", FALSE);
+  
+  g_free (original_name);
+  g_free (topdir);
+  
+  {
+    time_t t;
+    struct tm now;
+    t = time (NULL);
+    localtime_r (&t, &now);
+    delete_time[0] = 0;
+    strftime(delete_time, sizeof (delete_time), "%Y-%m-%dT%H:%M:%S", &now);
+  }
+
+  data = g_strdup_printf ("[Trash Info]\nPath=%s\nDeletionDate=%s\n",
+			  original_name_escaped, delete_time);
+
+  g_file_set_contents (infofile, data, -1, NULL);
+
   /* TODO: Maybe we should verify that you can delete the file from the trash
      before moving it? OTOH, that is hard, as it needs a recursive scan */
 
@@ -2146,29 +2174,6 @@ g_local_file_trash (GFile         *file,
 
   /* TODO: Do we need to update mtime/atime here after the move? */
 
-  /* Use absolute names for homedir */
-  if (is_homedir_trash)
-    original_name = g_strdup (local->filename);
-  else
-    original_name = try_make_relative (local->filename, topdir);
-  original_name_escaped = g_uri_escape_string (original_name, "/", FALSE);
-  
-  g_free (original_name);
-  g_free (topdir);
-  
-  {
-    time_t t;
-    struct tm now;
-    t = time (NULL);
-    localtime_r (&t, &now);
-    delete_time[0] = 0;
-    strftime(delete_time, sizeof (delete_time), "%Y-%m-%dT%H:%M:%S", &now);
-  }
-
-  data = g_strdup_printf ("[Trash Info]\nPath=%s\nDeletionDate=%s\n",
-			  original_name_escaped, delete_time);
-
-  g_file_set_contents (infofile, data, -1, NULL);
   g_free (infofile);
   g_free (data);
   
