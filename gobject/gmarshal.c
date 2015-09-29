@@ -863,11 +863,11 @@ g_cclosure_marshal_VOID__VOID (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__VOID) (marshal_data ? marshal_data : cc->callback);
@@ -928,11 +928,11 @@ g_cclosure_marshal_VOID__BOOLEAN (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__BOOLEAN) (marshal_data ? marshal_data : cc->callback);
@@ -1002,11 +1002,11 @@ g_cclosure_marshal_VOID__CHAR (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__CHAR) (marshal_data ? marshal_data : cc->callback);
@@ -1076,11 +1076,11 @@ g_cclosure_marshal_VOID__UCHAR (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__UCHAR) (marshal_data ? marshal_data : cc->callback);
@@ -1150,11 +1150,11 @@ g_cclosure_marshal_VOID__INT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__INT) (marshal_data ? marshal_data : cc->callback);
@@ -1224,11 +1224,11 @@ g_cclosure_marshal_VOID__UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__UINT) (marshal_data ? marshal_data : cc->callback);
@@ -1298,11 +1298,11 @@ g_cclosure_marshal_VOID__LONG (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__LONG) (marshal_data ? marshal_data : cc->callback);
@@ -1372,11 +1372,11 @@ g_cclosure_marshal_VOID__ULONG (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__ULONG) (marshal_data ? marshal_data : cc->callback);
@@ -1446,11 +1446,11 @@ g_cclosure_marshal_VOID__ENUM (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__ENUM) (marshal_data ? marshal_data : cc->callback);
@@ -1520,11 +1520,11 @@ g_cclosure_marshal_VOID__FLAGS (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__FLAGS) (marshal_data ? marshal_data : cc->callback);
@@ -1594,11 +1594,11 @@ g_cclosure_marshal_VOID__FLOAT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__FLOAT) (marshal_data ? marshal_data : cc->callback);
@@ -1668,11 +1668,11 @@ g_cclosure_marshal_VOID__DOUBLE (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__DOUBLE) (marshal_data ? marshal_data : cc->callback);
@@ -1742,11 +1742,11 @@ g_cclosure_marshal_VOID__STRING (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__STRING) (marshal_data ? marshal_data : cc->callback);
@@ -1820,11 +1820,11 @@ g_cclosure_marshal_VOID__PARAM (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__PARAM) (marshal_data ? marshal_data : cc->callback);
@@ -1898,11 +1898,11 @@ g_cclosure_marshal_VOID__BOXED (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__BOXED) (marshal_data ? marshal_data : cc->callback);
@@ -1976,11 +1976,11 @@ g_cclosure_marshal_VOID__POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -2050,11 +2050,11 @@ g_cclosure_marshal_VOID__OBJECT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__OBJECT) (marshal_data ? marshal_data : cc->callback);
@@ -2128,11 +2128,11 @@ g_cclosure_marshal_VOID__VARIANT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__VARIANT) (marshal_data ? marshal_data : cc->callback);
@@ -2207,11 +2207,11 @@ g_cclosure_marshal_VOID__UINT_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__UINT_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -2288,11 +2288,11 @@ g_cclosure_marshal_BOOLEAN__FLAGS (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__FLAGS) (marshal_data ? marshal_data : cc->callback);
@@ -2372,11 +2372,11 @@ g_cclosure_marshal_STRING__OBJECT_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_STRING__OBJECT_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -2465,11 +2465,11 @@ g_cclosure_marshal_BOOLEAN__BOXED_BOXED (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = g_marshal_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = g_marshal_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__BOXED_BOXED) (marshal_data ? marshal_data : cc->callback);
