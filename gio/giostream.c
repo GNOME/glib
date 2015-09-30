@@ -337,7 +337,7 @@ g_io_stream_real_close (GIOStream     *stream,
  * @error: location to store the error occurring, or %NULL to ignore
  *
  * Closes the stream, releasing resources related to it. This will also
- * closes the individual input and output streams, if they are not already
+ * close the individual input and output streams, if they are not already
  * closed.
  *
  * Once the stream is closed, all other operations will return
