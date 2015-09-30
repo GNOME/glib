@@ -113,9 +113,8 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
     <para>
       Once <function><link linkend="g-object-new">g_object_new</link></function> has obtained a reference to an initialized
       class structure, it invokes its constructor method to create an instance of the new 
-      object. Since it has just been overridden by <function>maman_bar_class_init</function> 
-      to <function>maman_bar_constructor</function>, the latter is called and, because it
-      was implemented correctly, it chains up to its parent's constructor. In
+      object, if the constructor has been overridden in <function>maman_bar_class_init</function>.
+      Overridden constructors must chain up to their parent’s constructor. In
       order to find the parent class and chain up to the parent class
       constructor, we can use the <literal>maman_bar_parent_class</literal>
       pointer that has been set up for us by the
@@ -190,12 +189,12 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
               <entry></entry>
             </row>
             <row>
-              <entry morerows="1">Each call to <function><link linkend="g-object-new">g_object_new</link></function> for target type</entry>
-              <entry>target type's class constructor method: GObjectClass->constructor</entry>
+              <entry morerows="2">Each call to <function><link linkend="g-object-new">g_object_new</link></function> for target type</entry>
+              <entry>target type's class <function>constructor</function> method: <function>GObjectClass->constructor</function></entry>
               <entry>On object's instance</entry>
               <entry>
-                If you need to complete the object initialization after all the construction properties
-                are set, override the constructor method and make sure to chain up to the object's
+                If you need to handle construct properties in a custom way, or implement a singleton class, override the constructor
+                method and make sure to chain up to the object's
                 parent class before doing your own initialization.
                 In doubt, do not override the constructor method.
               </entry>
@@ -210,6 +209,16 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
                 Provide an <function>instance_init</function> function to initialize your object before its construction
                 properties are set. This is the preferred way to initialize a GObject instance.
                 This function is equivalent to C++ constructors.
+              </entry>
+            </row>
+            <row>
+              <!--entry>Each call to <function><link linkend="g-object-new">g_object_new</link></function> for target type</entry-->
+              <entry>target type's class <function>constructed</function> method: <function>GObjectClass->constructed</function></entry>
+              <entry>On object's instance</entry>
+              <entry>
+                If you need to perform object initialization steps after all construct properties have been set.
+                This is the final step in the object initialization process, and is only called if the <function>constructor</function>
+                method returned a new object instance (rather than, for example, an existing singleton).
               </entry>
             </row>
           </tbody>
