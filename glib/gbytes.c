@@ -75,7 +75,7 @@ struct _GBytes
 
 /**
  * g_bytes_new:
- * @data: (transfer none) (array length=size) (element-type guint8) (allow-none):
+ * @data: (transfer none) (array length=size) (element-type guint8) (nullable):
  *        the data to be used for the bytes
  * @size: the size of @data
  *
@@ -98,7 +98,7 @@ g_bytes_new (gconstpointer data,
 
 /**
  * g_bytes_new_take:
- * @data: (transfer full) (array length=size) (element-type guint8) (allow-none):
+ * @data: (transfer full) (array length=size) (element-type guint8) (nullable):
           the data to be used for the bytes
  * @size: the size of @data
  *
@@ -129,7 +129,7 @@ g_bytes_new_take (gpointer data,
 
 /**
  * g_bytes_new_static: (skip)
- * @data: (transfer full) (array length=size) (element-type guint8) (allow-none):
+ * @data: (transfer full) (array length=size) (element-type guint8) (nullable):
           the data to be used for the bytes
  * @size: the size of @data
  *
@@ -151,7 +151,8 @@ g_bytes_new_static (gconstpointer data,
 
 /**
  * g_bytes_new_with_free_func:
- * @data: (array length=size) (allow-none): the data to be used for the bytes
+ * @data: (array length=size) (element-type guint8) (nullable):
+          the data to be used for the bytes
  * @size: the size of @data
  * @free_func: the function to call to release the data
  * @user_data: data to pass to @free_func
@@ -223,7 +224,7 @@ g_bytes_new_from_bytes (GBytes  *bytes,
 /**
  * g_bytes_get_data:
  * @bytes: a #GBytes
- * @size: (out) (allow-none): location to return size of byte data
+ * @size: (out) (optional): location to return size of byte data
  *
  * Get the byte data in the #GBytes. This data should not be modified.
  *
@@ -233,8 +234,8 @@ g_bytes_new_from_bytes (GBytes  *bytes,
  * may represent an empty string with @data non-%NULL and @size as 0. %NULL will
  * not be returned if @size is non-zero.
  *
- * Returns: (transfer none) (array length=size) (type guint8) (allow-none): a pointer to the
- *          byte data, or %NULL
+ * Returns: (transfer none) (array length=size) (element-type guint8) (nullable):
+ *          a pointer to the byte data, or %NULL
  *
  * Since: 2.32
  */
@@ -290,7 +291,7 @@ g_bytes_ref (GBytes *bytes)
 
 /**
  * g_bytes_unref:
- * @bytes: (allow-none): a #GBytes
+ * @bytes: (nullable): a #GBytes
  *
  * Releases a reference on @bytes.  This may result in the bytes being
  * freed.
@@ -425,7 +426,7 @@ try_steal_and_unref (GBytes         *bytes,
 /**
  * g_bytes_unref_to_data:
  * @bytes: (transfer full): a #GBytes
- * @size: location to place the length of the returned data
+ * @size: (out): location to place the length of the returned data
  *
  * Unreferences the bytes, and returns a pointer the same byte data
  * contents.
@@ -435,8 +436,8 @@ try_steal_and_unref (GBytes         *bytes,
  * g_bytes_new_take() or g_byte_array_free_to_bytes(). In all other cases the
  * data is copied.
  *
- * Returns: (transfer full): a pointer to the same byte data, which should
- *          be freed with g_free()
+ * Returns: (transfer full) (array length=size) (element-type guint8):
+ *          a pointer to the same byte data, which should be freed with g_free()
  *
  * Since: 2.32
  */
