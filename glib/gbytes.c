@@ -150,7 +150,7 @@ g_bytes_new_static (gconstpointer data,
 }
 
 /**
- * g_bytes_new_with_free_func:
+ * g_bytes_new_with_free_func: (skip)
  * @data: (array length=size) (element-type guint8) (nullable):
           the data to be used for the bytes
  * @size: the size of @data
