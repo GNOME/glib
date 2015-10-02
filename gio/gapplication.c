@@ -813,6 +813,12 @@ g_application_real_shutdown (GApplication *application)
   application->priv->did_shutdown = TRUE;
 }
 
+static gboolean
+g_application_real_should_quit (GApplication *application)
+{
+  return TRUE;
+}
+
 static void
 g_application_real_activate (GApplication *application)
 {
@@ -1304,6 +1310,7 @@ g_application_class_init (GApplicationClass *class)
   class->add_platform_data = g_application_real_add_platform_data;
   class->dbus_register = g_application_real_dbus_register;
   class->dbus_unregister = g_application_real_dbus_unregister;
+  class->should_quit = g_application_real_should_quit;
 
   g_object_class_install_property (object_class, PROP_APPLICATION_ID,
     g_param_spec_string ("application-id",

@@ -113,8 +113,10 @@ struct _GApplicationClass
   gint                      (* handle_local_options)(GApplication              *application,
                                                      GVariantDict              *options);
 
+  gboolean                  (* should_quit)         (GApplication              *application);
+
   /*< private >*/
-  gpointer padding[8];
+  gpointer padding[7];
 };
 
 GLIB_AVAILABLE_IN_ALL
