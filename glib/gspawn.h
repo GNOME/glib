@@ -104,7 +104,7 @@ typedef enum
 
 /**
  * GSpawnChildSetupFunc:
- * @user_data: user data to pass to the function.
+ * @user_data: (closure): user data to pass to the function.
  *
  * Specifies the type of the setup function passed to g_spawn_async(),
  * g_spawn_sync() and g_spawn_async_with_pipes(), which can, in very
