@@ -274,26 +274,6 @@ g_value_unset (GValue *value)
 }
 
 /**
- * g_value_clear:
- * @value: An #GValue structure.
- *
- * Clears the current value in @value and "unsets" the type,
- * this releases all resources associated with this GValue.
- * Unlike g_value_unset() this method will accept uninitialized
- * (zero-filled) #GValue structure as @value.
- *
- * Since 2.48
- */
-void
-g_value_clear (GValue *value)
-{
-  if (value && value->g_type == 0)
-    return;
-
-  g_value_unset (value);
-}
-
-/**
  * g_value_fits_pointer:
  * @value: An initialized #GValue structure.
  *
