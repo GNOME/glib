@@ -12,6 +12,6 @@ reference
 signals
 threadtests
 type
-valuearray
+value
 private
 marshalers.[ch]

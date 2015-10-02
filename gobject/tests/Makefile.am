@@ -17,7 +17,7 @@ test_programs = \
 	binding				\
 	properties			\
 	reference			\
-	valuearray			\
+	value				\
 	type				\
 	private				\
 	closure				\

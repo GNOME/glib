@@ -1,6 +1,36 @@
 #define GLIB_VERSION_MIN_REQUIRED       GLIB_VERSION_2_30
 #include <glib-object.h>
 
+static void
+test_value_basic (void)
+{
+  GValue value = G_VALUE_INIT;
+
+  g_assert_false (G_IS_VALUE (&value));
+  g_assert_false (G_VALUE_HOLDS_INT (&value));
+  g_value_unset (&value);
+  g_assert_false (G_IS_VALUE (&value));
+  g_assert_false (G_VALUE_HOLDS_INT (&value));
+
+  g_value_init (&value, G_TYPE_INT);
+  g_assert_true (G_IS_VALUE (&value));
+  g_assert_true (G_VALUE_HOLDS_INT (&value));
+  g_assert_false (G_VALUE_HOLDS_UINT (&value));
+  g_assert_cmpint (g_value_get_int (&value), ==, 0);
+
+  g_value_set_int (&value, 10);
+  g_assert_cmpint (g_value_get_int (&value), ==, 10);
+
+  g_value_reset (&value);
+  g_assert_true (G_IS_VALUE (&value));
+  g_assert_true (G_VALUE_HOLDS_INT (&value));
+  g_assert_cmpint (g_value_get_int (&value), ==, 0);
+
+  g_value_unset (&value);
+  g_assert_false (G_IS_VALUE (&value));
+  g_assert_false (G_VALUE_HOLDS_INT (&value));
+}
+
 static gint
 cmpint (gconstpointer a, gconstpointer b)
 {
@@ -11,7 +41,7 @@ cmpint (gconstpointer a, gconstpointer b)
 }
 
 static void
-test_basic (void)
+test_valuearray_basic (void)
 {
   GValueArray *a;
   GValueArray *a2;
@@ -58,7 +88,8 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/valuearray/basic", test_basic);
+  g_test_add_func ("/value/basic", test_value_basic);
+  g_test_add_func ("/value/array/basic", test_valuearray_basic);
 
   return g_test_run ();
 }
