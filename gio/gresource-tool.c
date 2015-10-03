@@ -91,7 +91,10 @@ list_resource (GResource   *resource,
 
       len = MIN (strlen (child), strlen (prefix));
       if (strncmp (child, prefix, len) != 0)
-        continue;
+        {
+          g_free (child);
+          continue;
+        }
 
       if (g_resource_get_info (resource, child, 0, &size, &flags, NULL))
         {
