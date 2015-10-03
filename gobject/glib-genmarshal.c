@@ -993,10 +993,10 @@ parse_args (gint    *argc_p,
           gchar *equal = argv[i] + 8;
 
 	  if (*equal == '=')
-	    marshaller_prefix = g_strdup (equal + 1);
+	    marshaller_prefix = equal + 1;
 	  else if (i + 1 < argc)
 	    {
-	      marshaller_prefix = g_strdup (argv[i + 1]);
+	      marshaller_prefix = argv[i + 1];
 	      argv[i] = NULL;
 	      i += 1;
 	    }
