@@ -276,6 +276,7 @@ enum
   SIGNAL_ACTION,
   SIGNAL_COMMAND_LINE,
   SIGNAL_HANDLE_LOCAL_OPTIONS,
+  SIGNAL_QUIT,
   NR_SIGNALS
 };
 
@@ -1408,7 +1409,6 @@ g_application_class_init (GApplicationClass *class)
                   G_STRUCT_OFFSET (GApplicationClass, activate),
                   NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-
   /**
    * GApplication::open:
    * @application: the application
@@ -1424,6 +1424,20 @@ g_application_class_init (GApplicationClass *class)
                   G_STRUCT_OFFSET (GApplicationClass, open),
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 3, G_TYPE_POINTER, G_TYPE_INT, G_TYPE_STRING);
+
+  /**
+   * GApplication:quit:
+   * @application: the application
+   *
+   * The ::quit signal is emitted on the primary instance when the application
+   * is requested to terminate. See g_application_quit().
+   *
+   * Since: 2.48
+   */
+  g_application_signals[SIGNAL_QUIT] =
+    g_signal_new (I_("quit"), G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GApplicationClass, quit),
+                  NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
   /**
    * GApplication::command-line:
