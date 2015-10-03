@@ -65,7 +65,10 @@ static const gchar org_gtk_Application_xml[] =
         "<arg type='a{sv}' name='platform-data' direction='in'/>"
         "<arg type='i' name='exit-status' direction='out'/>"
       "</method>"
-    "<property name='Busy' type='b' access='read'/>"
+      "<method name='Quit'>"
+        "<arg type='a{sv}' name='platform-data' direction='in'/>"
+      "</method>"
+      "<property name='Busy' type='b' access='read'/>"
     "</interface>"
   "</node>";
 
@@ -84,6 +87,9 @@ static const gchar org_freedesktop_Application_xml[] =
       "<method name='ActivateAction'>"
         "<arg type='s' name='action-name' direction='in'/>"
         "<arg type='av' name='parameter' direction='in'/>"
+        "<arg type='a{sv}' name='platform-data' direction='in'/>"
+      "</method>"
+      "<method name='Quit'>"
         "<arg type='a{sv}' name='platform-data' direction='in'/>"
       "</method>"
     "</interface>"
@@ -296,6 +302,19 @@ g_application_impl_method_call (GDBusConnection       *connection,
       if (parameter)
         g_variant_unref (parameter);
 
+      g_variant_unref (platform_data);
+
+      g_dbus_method_invocation_return_value (invocation, NULL);
+    }
+  else if (g_str_equal (method_name, "Quit"))
+    {
+      /* Completely the same for both freedesktop and gtk interfaces */
+
+      g_variant_get (parameters, "(@a{sv})", &platform_data);
+
+      class->before_emit (impl->app, platform_data);
+      g_signal_emit_by_name (impl->app, "quit");
+      class->after_emit (impl->app, platform_data);
       g_variant_unref (platform_data);
 
       g_dbus_method_invocation_return_value (invocation, NULL);
