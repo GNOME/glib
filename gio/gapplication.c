@@ -2534,6 +2534,10 @@ g_application_set_default (GApplication *application)
  * Upon return to the mainloop, g_application_run() will return,
  * calling only the 'shutdown' function before doing so.
  *
+ * It's possible to prevent quitting the application in subclasses
+ * of #GApplication, by overriding the #GApplicationClass.should_quit()
+ * virtual function.
+ *
  * The hold count is ignored.
  *
  * The result of calling g_application_run() again after it returns is
@@ -2546,7 +2550,8 @@ g_application_quit (GApplication *application)
 {
   g_return_if_fail (G_IS_APPLICATION (application));
 
-  application->priv->must_quit_now = TRUE;
+  application->priv->must_quit_now =
+    G_APPLICATION_GET_CLASS (application)->should_quit (application);
 }
 
 /**
