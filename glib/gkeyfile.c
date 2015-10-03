@@ -1546,7 +1546,7 @@ g_key_file_get_keys (GKeyFile     *key_file,
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
                    _("Key file does not have group '%s'"),
-                   group_name ? group_name : "(null)");
+                   group_name);
       return NULL;
     }
 
@@ -1719,7 +1719,7 @@ g_key_file_get_value (GKeyFile     *key_file,
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
                    _("Key file does not have group '%s'"),
-                   group_name ? group_name : "(null)");
+                   group_name);
       return NULL;
     }
 
@@ -3564,7 +3564,7 @@ g_key_file_has_key_full (GKeyFile     *key_file,
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
                    _("Key file does not have group '%s'"),
-                   group_name ? group_name : "(null)");
+                   group_name);
 
       return FALSE;
     }
@@ -3860,7 +3860,7 @@ g_key_file_remove_key (GKeyFile     *key_file,
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
                    _("Key file does not have group '%s'"),
-                   group_name ? group_name : "(null)");
+                   group_name);
       return FALSE;
     }
 
