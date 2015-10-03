@@ -1705,13 +1705,17 @@ static char *
 find_topdir_for (const char *file)
 {
   char *dir;
+  char *mountpoint = NULL;
   dev_t dir_dev;
 
   dir = get_parent (file, &dir_dev);
   if (dir == NULL)
     return NULL;
 
-  return find_mountpoint_for (dir, dir_dev);
+  mountpoint = find_mountpoint_for (dir, dir_dev);
+  g_free (dir);
+
+  return mountpoint;
 }
 
 static char *
