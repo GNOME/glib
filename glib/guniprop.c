@@ -1414,6 +1414,13 @@ static const guint32 iso15924_tags[] =
     PACK ('T','i','r','h'), /* G_UNICODE_SCRIPT_TIRHUTA */
     PACK ('W','a','r','a'), /* G_UNICODE_SCRIPT_WARANG_CITI */
 
+  /* Unicode 8.0 additions */
+    PACK ('A','h','o','m'), /* G_UNICODE_SCRIPT_AHOM */
+    PACK ('H','l','u','w'), /* G_UNICODE_SCRIPT_ANATOLIAN_HIEROGLYPHS */
+    PACK ('H','a','t','r'), /* G_UNICODE_SCRIPT_HATRAN */
+    PACK ('M','u','l','t'), /* G_UNICODE_SCRIPT_MULTANI */
+    PACK ('H','u','n','g'), /* G_UNICODE_SCRIPT_OLD_HUNGARIAN */
+    PACK ('S','g','n','w'), /* G_UNICODE_SCRIPT_SIGNWRITING */
 #undef PACK
 };
 

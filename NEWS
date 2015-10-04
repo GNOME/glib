@@ -1,3 +1,9 @@
+Overview of changes in GLib 2.47.0
+==================================
+
+* The Unicode support has been updated to version 8.0 of the Unicode standard
+
+
 Overview of changes in GLib 2.46.0
 ==================================
 

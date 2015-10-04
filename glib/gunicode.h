@@ -394,6 +394,12 @@ typedef enum
  * @G_UNICODE_SCRIPT_SIDDHAM:              Siddham. Since: 2.42
  * @G_UNICODE_SCRIPT_TIRHUTA:              Tirhuta. Since: 2.42
  * @G_UNICODE_SCRIPT_WARANG_CITI:          Warang Citi. Since: 2.42
+ * @G_UNICODE_SCRIPT_AHOM:                 Ahom. Since 2.48
+ * @G_UNICODE_SCRIPT_ANATOLIAN_HIEROGLYPHS: Anatolian Hieroglyphs. Since 2.48
+ * @G_UNICODE_SCRIPT_HATRAN:               Hatran. Since 2.48
+ * @G_UNICODE_SCRIPT_MULTANI:              Multani. Since 2.48
+ * @G_UNICODE_SCRIPT_OLD_HUNGARIAN:        Old Hungarian. Since 2.48
+ * @G_UNICODE_SCRIPT_SIGNWRITING:          Signwriting. Since 2.48
  *
  * The #GUnicodeScript enumeration identifies different writing
  * systems. The values correspond to the names as defined in the
@@ -550,7 +556,15 @@ typedef enum
   G_UNICODE_SCRIPT_PSALTER_PAHLAVI,        /* Phlp */
   G_UNICODE_SCRIPT_SIDDHAM,                /* Sidd */
   G_UNICODE_SCRIPT_TIRHUTA,                /* Tirh */
-  G_UNICODE_SCRIPT_WARANG_CITI             /* Wara */
+  G_UNICODE_SCRIPT_WARANG_CITI,            /* Wara */
+
+  /* Unicode 8.0 additions */
+  G_UNICODE_SCRIPT_AHOM,                   /* Ahom */
+  G_UNICODE_SCRIPT_ANATOLIAN_HIEROGLYPHS,  /* Hluw */
+  G_UNICODE_SCRIPT_HATRAN,                 /* Hatr */
+  G_UNICODE_SCRIPT_MULTANI,                /* Mult */
+  G_UNICODE_SCRIPT_OLD_HUNGARIAN,          /* Hung */
+  G_UNICODE_SCRIPT_SIGNWRITING             /* Sgnw */
 } GUnicodeScript;
 
 GLIB_AVAILABLE_IN_ALL
