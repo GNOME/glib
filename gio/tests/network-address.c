@@ -477,6 +477,43 @@ test_loopback_async (void)
   g_object_unref (addr);
 }
 
+static void
+test_to_string (void)
+{
+  GSocketConnectable *addr = NULL;
+  gchar *str = NULL;
+  GError *error = NULL;
+
+  /* Without port. */
+  addr = g_network_address_new ("some-hostname", 0);
+  str = g_socket_connectable_to_string (addr);
+  g_assert_cmpstr (str, ==, "some-hostname");
+  g_free (str);
+  g_object_unref (addr);
+
+  /* With port. */
+  addr = g_network_address_new ("some-hostname", 123);
+  str = g_socket_connectable_to_string (addr);
+  g_assert_cmpstr (str, ==, "some-hostname:123");
+  g_free (str);
+  g_object_unref (addr);
+
+  /* With scheme and port. */
+  addr = g_network_address_parse_uri ("http://some-hostname:123", 80, &error);
+  g_assert_no_error (error);
+  str = g_socket_connectable_to_string (addr);
+  g_assert_cmpstr (str, ==, "http:some-hostname:123");
+  g_free (str);
+  g_object_unref (addr);
+
+  /* Loopback. */
+  addr = g_network_address_new ("localhost", 456);
+  str = g_socket_connectable_to_string (addr);
+  g_assert_cmpstr (str, ==, "localhost:456");
+  g_free (str);
+  g_object_unref (addr);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -520,6 +557,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/network-address/loopback/basic", test_loopback_basic);
   g_test_add_func ("/network-address/loopback/sync", test_loopback_sync);
   g_test_add_func ("/network-address/loopback/async", test_loopback_async);
+  g_test_add_func ("/network-address/to-string", test_to_string);
 
   return g_test_run ();
 }

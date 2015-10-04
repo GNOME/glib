@@ -89,6 +89,7 @@ static void g_network_service_get_property (GObject      *object,
 static void                      g_network_service_connectable_iface_init       (GSocketConnectableIface *iface);
 static GSocketAddressEnumerator *g_network_service_connectable_enumerate        (GSocketConnectable      *connectable);
 static GSocketAddressEnumerator *g_network_service_connectable_proxy_enumerate  (GSocketConnectable      *connectable);
+static gchar                    *g_network_service_connectable_to_string        (GSocketConnectable      *connectable);
 
 G_DEFINE_TYPE_WITH_CODE (GNetworkService, g_network_service, G_TYPE_OBJECT,
                          G_ADD_PRIVATE (GNetworkService)
@@ -159,6 +160,7 @@ g_network_service_connectable_iface_init (GSocketConnectableIface *connectable_i
 {
   connectable_iface->enumerate = g_network_service_connectable_enumerate;
   connectable_iface->proxy_enumerate = g_network_service_connectable_proxy_enumerate;
+  connectable_iface->to_string = g_network_service_connectable_to_string;
 }
 
 static void
@@ -742,4 +744,16 @@ g_network_service_connectable_proxy_enumerate (GSocketConnectable *connectable)
   srv_enum->use_proxy = TRUE;
 
   return addr_enum;
+}
+
+static gchar *
+g_network_service_connectable_to_string (GSocketConnectable *connectable)
+{
+  GNetworkService *service;
+
+  service = G_NETWORK_SERVICE (connectable);
+
+  return g_strdup_printf ("(%s, %s, %s, %s)", service->priv->service,
+                          service->priv->protocol, service->priv->domain,
+                          service->priv->scheme);
 }

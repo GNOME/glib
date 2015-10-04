@@ -44,6 +44,8 @@ typedef struct _GSocketConnectableIface GSocketConnectableIface;
  * @g_iface: The parent interface.
  * @enumerate: Creates a #GSocketAddressEnumerator
  * @proxy_enumerate: Creates a #GProxyAddressEnumerator
+ * @to_string: Format the connectable’s address as a string for debugging.
+ *    Implementing this is optional. (Since: 2.48.0.)
  *
  * Provides an interface for returning a #GSocketAddressEnumerator
  * and #GProxyAddressEnumerator
@@ -58,6 +60,7 @@ struct _GSocketConnectableIface
 
   GSocketAddressEnumerator * (* proxy_enumerate) (GSocketConnectable *connectable);
 
+  gchar                    * (* to_string)       (GSocketConnectable *connectable);
 };
 
 GLIB_AVAILABLE_IN_ALL
@@ -68,6 +71,9 @@ GSocketAddressEnumerator *g_socket_connectable_enumerate (GSocketConnectable *co
 
 GLIB_AVAILABLE_IN_ALL
 GSocketAddressEnumerator *g_socket_connectable_proxy_enumerate (GSocketConnectable *connectable);
+
+GLIB_AVAILABLE_IN_2_48
+gchar                    *g_socket_connectable_to_string (GSocketConnectable *addr);
 
 G_END_DECLS
 

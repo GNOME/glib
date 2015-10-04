@@ -129,6 +129,7 @@ g_socket_address_connectable_iface_init (GSocketConnectableIface *connectable_if
 {
   connectable_iface->enumerate  = g_socket_address_connectable_enumerate;
   connectable_iface->proxy_enumerate  = g_socket_address_connectable_proxy_enumerate;
+  /* to_string() is implemented by subclasses */
 }
 
 static void

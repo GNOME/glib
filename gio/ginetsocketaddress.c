@@ -26,6 +26,7 @@
 #include "ginetsocketaddress.h"
 #include "ginetaddress.h"
 #include "gnetworkingprivate.h"
+#include "gsocketconnectable.h"
 #include "gioerror.h"
 #include "glibintl.h"
 
@@ -54,7 +55,13 @@ struct _GInetSocketAddressPrivate
   guint32       scope_id;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GInetSocketAddress, g_inet_socket_address, G_TYPE_SOCKET_ADDRESS)
+static void   g_inet_socket_address_connectable_iface_init (GSocketConnectableIface *iface);
+static gchar *g_inet_socket_address_connectable_to_string  (GSocketConnectable      *connectable);
+
+G_DEFINE_TYPE_WITH_CODE (GInetSocketAddress, g_inet_socket_address, G_TYPE_SOCKET_ADDRESS,
+                         G_ADD_PRIVATE (GInetSocketAddress)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_SOCKET_CONNECTABLE,
+                                                g_inet_socket_address_connectable_iface_init))
 
 enum {
   PROP_0,
@@ -299,6 +306,59 @@ g_inet_socket_address_class_init (GInetSocketAddressClass *klass)
                                                       G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
+}
+
+static void
+g_inet_socket_address_connectable_iface_init (GSocketConnectableIface *iface)
+{
+  GSocketConnectableIface *parent_iface = g_type_interface_peek_parent (iface);
+
+  iface->enumerate = parent_iface->enumerate;
+  iface->proxy_enumerate = parent_iface->proxy_enumerate;
+  iface->to_string = g_inet_socket_address_connectable_to_string;
+}
+
+static gchar *
+g_inet_socket_address_connectable_to_string (GSocketConnectable *connectable)
+{
+  GInetSocketAddress *sa;
+  GInetAddress *a;
+  gchar *a_string;
+  GString *out;
+  guint16 port;
+
+  sa = G_INET_SOCKET_ADDRESS (connectable);
+  a = g_inet_socket_address_get_address (sa);
+  out = g_string_new ("");
+
+  /* Address. */
+  a_string = g_inet_address_to_string (a);
+  g_string_append (out, a_string);
+  g_free (a_string);
+
+  /* Scope ID (IPv6 only). */
+  if (g_inet_address_get_family (a) == G_SOCKET_FAMILY_IPV6 &&
+      g_inet_socket_address_get_scope_id (sa) != 0)
+    {
+      g_string_append_printf (out, "%%%u",
+                              g_inet_socket_address_get_scope_id (sa));
+    }
+
+  /* Port. */
+  port = g_inet_socket_address_get_port (sa);
+  if (port != 0)
+    {
+      /* Disambiguate ports from IPv6 addresses using square brackets. */
+      if (g_inet_address_get_family (a) == G_SOCKET_FAMILY_IPV6)
+        {
+          g_string_prepend (out, "[");
+          g_string_append (out, "]");
+        }
+
+      g_string_append_printf (out, ":%u", port);
+    }
+
+  return g_string_free (out, FALSE);
 }
 
 static void

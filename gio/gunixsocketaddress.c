@@ -24,6 +24,7 @@
 #include <string.h>
 
 #include "gunixsocketaddress.h"
+#include "gsocketconnectable.h"
 #include "glibintl.h"
 #include "gnetworking.h"
 
@@ -76,7 +77,13 @@ struct _GUnixSocketAddressPrivate
   GUnixSocketAddressType address_type;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (GUnixSocketAddress, g_unix_socket_address, G_TYPE_SOCKET_ADDRESS)
+static void   g_unix_socket_address_connectable_iface_init (GSocketConnectableIface *iface);
+static gchar *g_unix_socket_address_connectable_to_string  (GSocketConnectable      *connectable);
+
+G_DEFINE_TYPE_WITH_CODE (GUnixSocketAddress, g_unix_socket_address, G_TYPE_SOCKET_ADDRESS,
+                         G_ADD_PRIVATE (GUnixSocketAddress)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_SOCKET_CONNECTABLE,
+                                                g_unix_socket_address_connectable_iface_init))
 
 static void
 g_unix_socket_address_set_property (GObject      *object,
@@ -297,6 +304,49 @@ g_unix_socket_address_class_init (GUnixSocketAddressClass *klass)
 						      G_PARAM_READWRITE |
 						      G_PARAM_CONSTRUCT_ONLY |
 						      G_PARAM_STATIC_STRINGS));
+}
+
+static void
+g_unix_socket_address_connectable_iface_init (GSocketConnectableIface *iface)
+{
+  GSocketConnectableIface *parent_iface = g_type_interface_peek_parent (iface);
+
+  iface->enumerate = parent_iface->enumerate;
+  iface->proxy_enumerate = parent_iface->proxy_enumerate;
+  iface->to_string = g_unix_socket_address_connectable_to_string;
+}
+
+static gchar *
+g_unix_socket_address_connectable_to_string (GSocketConnectable *connectable)
+{
+  GUnixSocketAddress *ua;
+  GString *out;
+  const gchar *path;
+  gsize path_len, i;
+
+  ua = G_UNIX_SOCKET_ADDRESS (connectable);
+
+  /* Anonymous sockets have no path. */
+  if (ua->priv->address_type == G_UNIX_SOCKET_ADDRESS_ANONYMOUS)
+    return g_strdup ("anonymous");
+
+  path = g_unix_socket_address_get_path (ua);
+  path_len = g_unix_socket_address_get_path_len (ua);
+  out = g_string_sized_new (path_len);
+
+  /* Return the #GUnixSocketAddress:path, but with all non-printable characters
+   * (including nul bytes) escaped to hex. */
+  for (i = 0; i < path_len; i++)
+    {
+      guint8 c = path[i];
+
+      if (g_ascii_isprint (path[i]))
+        g_string_append_c (out, c);
+      else
+        g_string_append_printf (out, "\\x%02x", (guint) c);
+    }
+
+  return g_string_free (out, FALSE);
 }
 
 static void

@@ -236,6 +236,55 @@ test_socket_address (void)
 }
 
 static void
+test_socket_address_to_string (void)
+{
+  GSocketAddress *sa = NULL;
+  GInetAddress *ia = NULL;
+  gchar *str = NULL;
+
+  /* IPv4. */
+  ia = g_inet_address_new_from_string ("123.1.123.1");
+  sa = g_inet_socket_address_new (ia, 80);
+  str = g_socket_connectable_to_string (G_SOCKET_CONNECTABLE (sa));
+  g_assert_cmpstr (str, ==, "123.1.123.1:80");
+  g_free (str);
+  g_object_unref (sa);
+  g_object_unref (ia);
+
+  /* IPv6. */
+  ia = g_inet_address_new_from_string ("::80");
+  sa = g_inet_socket_address_new (ia, 80);
+  str = g_socket_connectable_to_string (G_SOCKET_CONNECTABLE (sa));
+  g_assert_cmpstr (str, ==, "[::80]:80");
+  g_free (str);
+  g_object_unref (sa);
+  g_object_unref (ia);
+
+  /* IPv6 without port. */
+  ia = g_inet_address_new_from_string ("::80");
+  sa = g_inet_socket_address_new (ia, 0);
+  str = g_socket_connectable_to_string (G_SOCKET_CONNECTABLE (sa));
+  g_assert_cmpstr (str, ==, "::80");
+  g_free (str);
+  g_object_unref (sa);
+  g_object_unref (ia);
+
+  /* IPv6 with scope. */
+  ia = g_inet_address_new_from_string ("::1");
+  sa = G_SOCKET_ADDRESS (g_object_new (G_TYPE_INET_SOCKET_ADDRESS,
+                                       "address", ia,
+                                       "port", 123,
+                                       "flowinfo", 10,
+                                       "scope-id", 25,
+                                       NULL));
+  str = g_socket_connectable_to_string (G_SOCKET_CONNECTABLE (sa));
+  g_assert_cmpstr (str, ==, "[::1%25]:123");
+  g_free (str);
+  g_object_unref (sa);
+  g_object_unref (ia);
+}
+
+static void
 test_mask_parse (void)
 {
   GInetAddressMask *mask;
@@ -368,6 +417,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/inet-address/bytes", test_bytes);
   g_test_add_func ("/inet-address/property", test_property);
   g_test_add_func ("/socket-address/basic", test_socket_address);
+  g_test_add_func ("/socket-address/to-string", test_socket_address_to_string);
   g_test_add_func ("/address-mask/parse", test_mask_parse);
   g_test_add_func ("/address-mask/property", test_mask_property);
   g_test_add_func ("/address-mask/equal", test_mask_equal);

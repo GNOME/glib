@@ -67,6 +67,45 @@ test_unix_socket_address_construct (void)
   g_object_unref (a);
 }
 
+static void
+test_unix_socket_address_to_string (void)
+{
+  GSocketAddress *addr = NULL;
+  gchar *str = NULL;
+
+  /* ADDRESS_PATH. */
+  addr = g_unix_socket_address_new_with_type ("/some/path", -1,
+                                              G_UNIX_SOCKET_ADDRESS_PATH);
+  str = g_socket_connectable_to_string (G_SOCKET_CONNECTABLE (addr));
+  g_assert_cmpstr (str, ==, "/some/path");
+  g_free (str);
+  g_object_unref (addr);
+
+  /* ADDRESS_ANONYMOUS. */
+  addr = g_unix_socket_address_new_with_type ("", 0,
+                                              G_UNIX_SOCKET_ADDRESS_ANONYMOUS);
+  str = g_socket_connectable_to_string (G_SOCKET_CONNECTABLE (addr));
+  g_assert_cmpstr (str, ==, "anonymous");
+  g_free (str);
+  g_object_unref (addr);
+
+  /* ADDRESS_ABSTRACT. */
+  addr = g_unix_socket_address_new_with_type ("abstract-path\0✋", 17,
+                                              G_UNIX_SOCKET_ADDRESS_ABSTRACT);
+  str = g_socket_connectable_to_string (G_SOCKET_CONNECTABLE (addr));
+  g_assert_cmpstr (str, ==, "abstract-path\\x00\\xe2\\x9c\\x8b");
+  g_free (str);
+  g_object_unref (addr);
+
+  /* ADDRESS_ABSTRACT_PADDED. */
+  addr = g_unix_socket_address_new_with_type ("abstract-path\0✋", 17,
+                                              G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED);
+  str = g_socket_connectable_to_string (G_SOCKET_CONNECTABLE (addr));
+  g_assert_cmpstr (str, ==, "abstract-path\\x00\\xe2\\x9c\\x8b");
+  g_free (str);
+  g_object_unref (addr);
+}
+
 int
 main (int    argc,
       char **argv)
@@ -74,6 +113,7 @@ main (int    argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/socket/address/unix/construct", test_unix_socket_address_construct);
+  g_test_add_func ("/socket/address/unix/to-string", test_unix_socket_address_to_string);
 
   return g_test_run ();
 }
