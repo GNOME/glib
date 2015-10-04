@@ -1066,9 +1066,9 @@ start_instance_parameter (GMarkupParseContext *context,
 
   state_switch (ctx, STATE_PASSTHROUGH);
 
-  if (strcmp (transfer, "full") == 0)
+  if (g_strcmp0 (transfer, "full") == 0)
     transfer_full = TRUE;
-  else if (strcmp (transfer, "none") == 0)
+  else if (g_strcmp0 (transfer, "none") == 0)
     transfer_full = FALSE;
   else
     {
