@@ -97,7 +97,7 @@ test_find (void)
    * U+0041 Latin Capital Letter A (\101)
    * U+1EB6 Latin Capital Letter A With Breve And Dot Below (\341\272\266)
    */
-  const gchar *str = "\340\254\213\360\220\244\200\101\341\272\266";
+  const gchar *str = "\340\254\213\360\220\244\200\101\341\272\266\0\101";
   const gchar *p = str + strlen (str);
   const gchar *q;
 
@@ -122,6 +122,12 @@ test_find (void)
   g_assert (q == str + 3);
   q = g_utf8_find_next_char (q, str + 6);
   g_assert (q == NULL);
+
+  q = g_utf8_find_next_char (str, str);
+  g_assert (q == NULL);
+
+  q = g_utf8_find_next_char (str + strlen (str), NULL);
+  g_assert (q == str + strlen (str) + 1);
 }
 
 int main (int argc, char *argv[])

@@ -168,16 +168,18 @@ gchar *
 g_utf8_find_next_char (const gchar *p,
 		       const gchar *end)
 {
-  if (*p)
+  if (end)
     {
-      if (end)
-	for (++p; p < end && (*p & 0xc0) == 0x80; ++p)
-	  ;
-      else
-	for (++p; (*p & 0xc0) == 0x80; ++p)
-	  ;
+      for (++p; p < end && (*p & 0xc0) == 0x80; ++p)
+        ;
+      return (p >= end) ? NULL : (gchar *)p;
     }
-  return (p == end) ? NULL : (gchar *)p;
+  else
+    {
+      for (++p; (*p & 0xc0) == 0x80; ++p)
+        ;
+      return (gchar *)p;
+    }
 }
 
 /**
