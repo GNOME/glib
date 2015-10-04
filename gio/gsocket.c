@@ -2514,7 +2514,7 @@ g_socket_check_connect_result (GSocket  *socket,
  * g_socket_get_available_bytes:
  * @socket: a #GSocket
  *
- * Get the amount of data pending in the OS input buffer.
+ * Get the amount of data pending in the OS input buffer, without blocking.
  *
  * If @socket is a UDP or SCTP socket, this will return the size of
  * just the next packet, even if additional packets are buffered after
@@ -2988,7 +2988,7 @@ g_socket_send_to (GSocket         *socket,
  * @shutdown_write: whether to shut down the write side
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Shut down part of a full-duplex connection.
+ * Shut down part or all of a full-duplex connection.
  *
  * If @shutdown_read is %TRUE then the receiving side of the connection
  * is shut down, and further reading is disallowed.
@@ -2998,9 +2998,10 @@ g_socket_send_to (GSocket         *socket,
  *
  * It is allowed for both @shutdown_read and @shutdown_write to be %TRUE.
  *
- * One example where this is used is graceful disconnect for TCP connections
- * where you close the sending side, then wait for the other side to close
- * the connection, thus ensuring that the other side saw all sent data.
+ * One example where it is useful to shut down only one side of a connection is
+ * graceful disconnect for TCP connections where you close the sending side,
+ * then wait for the other side to close the connection, thus ensuring that the
+ * other side saw all sent data.
  *
  * Returns: %TRUE on success, %FALSE on error
  *
