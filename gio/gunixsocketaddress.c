@@ -362,6 +362,9 @@ g_unix_socket_address_new_abstract (const gchar *path,
  * If @type is %G_UNIX_SOCKET_ADDRESS_PATH, this is equivalent to
  * calling g_unix_socket_address_new().
  *
+ * If @type is %G_UNIX_SOCKET_ADDRESS_ANONYMOUS, @path and @path_len will be
+ * ignored.
+ *
  * If @path_type is %G_UNIX_SOCKET_ADDRESS_ABSTRACT, then @path_len
  * bytes of @path will be copied to the socket's path, and only those
  * bytes will be considered part of the name. (If @path_len is -1,
