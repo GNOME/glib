@@ -1566,7 +1566,7 @@ G_DEFINE_QUARK (g-bookmark-file-error-quark, g_bookmark_file_error)
  ********************/
 
 /**
- * g_bookmark_file_new:
+ * g_bookmark_file_new: (constructor)
  *
  * Creates a new empty #GBookmarkFile object.
  *
