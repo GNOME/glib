@@ -159,6 +159,17 @@ g_socket_receive_messages_with_timeout (GSocket        *socket,
                                         gint64          timeout,
                                         GCancellable   *cancellable,
                                         GError        **error);
+static gssize
+g_socket_send_message_with_timeout     (GSocket                 *socket,
+                                        GSocketAddress          *address,
+                                        GOutputVector           *vectors,
+                                        gint                     num_vectors,
+                                        GSocketControlMessage  **messages,
+                                        gint                     num_messages,
+                                        gint                     flags,
+                                        gint64                   timeout,
+                                        GCancellable            *cancellable,
+                                        GError                 **error);
 static gint
 g_socket_send_messages_with_timeout    (GSocket        *socket,
                                         GOutputMessage *messages,
@@ -4095,8 +4106,28 @@ g_socket_send_message (GSocket                *socket,
 		       GCancellable           *cancellable,
 		       GError                **error)
 {
+  return g_socket_send_message_with_timeout (socket, address,
+                                             vectors, num_vectors,
+                                             messages, num_messages, flags,
+                                             socket->priv->blocking ? -1 : 0,
+                                             cancellable, error);
+}
+
+static gssize
+g_socket_send_message_with_timeout (GSocket                *socket,
+                                    GSocketAddress         *address,
+                                    GOutputVector          *vectors,
+                                    gint                    num_vectors,
+                                    GSocketControlMessage **messages,
+                                    gint                    num_messages,
+                                    gint                    flags,
+                                    gint64                  timeout,
+                                    GCancellable           *cancellable,
+                                    GError                **error)
+{
   GOutputVector one_vector;
   char zero;
+  gint64 start_time;
 
   g_return_val_if_fail (G_IS_SOCKET (socket), -1);
   g_return_val_if_fail (address == NULL || G_IS_SOCKET_ADDRESS (address), -1);
@@ -4104,6 +4135,8 @@ g_socket_send_message (GSocket                *socket,
   g_return_val_if_fail (num_messages == 0 || messages != NULL, -1);
   g_return_val_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable), -1);
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
+
+  start_time = g_get_monotonic_time ();
 
   if (!check_socket (socket, error))
     return -1;
@@ -4172,12 +4205,12 @@ g_socket_send_message (GSocket                *socket,
 	    if (errsv == EINTR)
 	      continue;
 
-	    if (socket->priv->blocking &&
+	    if (timeout != 0 &&
 		(errsv == EWOULDBLOCK ||
 		 errsv == EAGAIN))
               {
-                if (!g_socket_condition_wait (socket,
-                                              G_IO_OUT, cancellable, error))
+                if (!block_on_timeout (socket, G_IO_OUT, timeout, start_time,
+                                       cancellable, error))
                   return -1;
 
                 continue;
@@ -4253,10 +4286,10 @@ g_socket_send_message (GSocket                *socket,
               {
                 win32_unset_event_mask (socket, FD_WRITE);
 
-                if (socket->priv->blocking)
+                if (timeout != 0)
                   {
-                    if (!g_socket_condition_wait (socket,
-                                                  G_IO_OUT, cancellable, error))
+                    if (!block_on_timeout (socket, G_IO_OUT, timeout,
+                                           start_time, cancellable, error))
                       return -1;
 
                     continue;
