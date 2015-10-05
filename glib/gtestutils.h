@@ -263,7 +263,11 @@ GLIB_AVAILABLE_IN_ALL
 double   g_test_rand_double_range       (double          range_start,
                                          double          range_end);
 
-/* semi-internal API */
+/*
+ * semi-internal API: non-documented symbols with stable ABI. You
+ * should use the non-internal helper macros instead. However, for
+ * compatibility reason, you may use this semi-internal API.
+ */
 GLIB_AVAILABLE_IN_ALL
 GTestCase*    g_test_create_case        (const char       *test_name,
                                          gsize             data_size,
@@ -284,7 +288,6 @@ void          g_test_suite_add_suite    (GTestSuite     *suite,
 GLIB_AVAILABLE_IN_ALL
 int           g_test_run_suite          (GTestSuite     *suite);
 
-/* internal ABI */
 GLIB_AVAILABLE_IN_ALL
 void    g_test_trap_assertions          (const char     *domain,
                                          const char     *file,
