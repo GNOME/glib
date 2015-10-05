@@ -3519,7 +3519,7 @@ g_main_context_prepare (GMainContext *context,
  * @timeout_: (out): location to store timeout to be used in polling
  * @fds: (out caller-allocates) (array length=n_fds): location to
  *       store #GPollFD records that need to be polled.
- * @n_fds: length of @fds.
+ * @n_fds: (in): length of @fds.
  *
  * Determines information necessary to poll this main loop.
  *
