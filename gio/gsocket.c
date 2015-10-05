@@ -3804,6 +3804,8 @@ g_socket_condition_timed_wait (GSocket       *socket,
   #endif
 }
 
+#ifndef G_OS_WIN32
+
 /* Unfortunately these have to be macros rather than inline functions due to
  * using alloca(). */
 #define output_message_to_msghdr(message, prev_message, msg, prev_msg, error) \
@@ -4024,6 +4026,7 @@ input_message_from_msghdr (const struct msghdr  *msg,
   /* capture the flags */
   message->flags = msg->msg_flags;
 }
+#endif
 
 /**
  * g_socket_send_message:
