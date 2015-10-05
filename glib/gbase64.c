@@ -298,10 +298,10 @@ static const unsigned char mime_base64_rank[256] = {
 };
 
 /**
- * g_base64_decode_step:
+ * g_base64_decode_step: (skip)
  * @in: (array length=len) (element-type guint8): binary input data
  * @len: max length of @in data to decode
- * @out: (out) (array) (element-type guint8): output buffer
+ * @out: (out caller-allocates) (array) (element-type guint8): output buffer
  * @state: (inout): Saved state between steps, initialize to 0
  * @save: (inout): Saved state between steps, initialize to 0
  *
