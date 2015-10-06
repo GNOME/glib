@@ -231,6 +231,13 @@ g_debug_init (void)
 static void
 glib_init (void)
 {
+  static gboolean glib_inited;
+
+  if (glib_inited)
+    return;
+
+  glib_inited = TRUE;
+
   g_messages_prefixed_init ();
   g_debug_init ();
   g_quark_init ();
