@@ -202,7 +202,7 @@ try_to_aliases (const char **to_aliases,
 }
 
 /**
- * g_iconv_open:
+ * g_iconv_open: (skip)
  * @to_codeset: destination codeset
  * @from_codeset: source codeset
  * 
@@ -251,7 +251,7 @@ g_iconv_open (const gchar  *to_codeset,
 }
 
 /**
- * g_iconv:
+ * g_iconv: (skip)
  * @converter: conversion descriptor from g_iconv_open()
  * @inbuf: bytes to convert
  * @inbytes_left: inout parameter, bytes remaining to convert in @inbuf
@@ -280,7 +280,7 @@ g_iconv (GIConv   converter,
 }
 
 /**
- * g_iconv_close:
+ * g_iconv_close: (skip)
  * @converter: a conversion descriptor from g_iconv_open()
  *
  * Same as the standard UNIX routine iconv_close(), but
@@ -340,7 +340,7 @@ close_converter (GIConv cd)
 }
 
 /**
- * g_convert_with_iconv:
+ * g_convert_with_iconv: (skip)
  * @str:           the string to convert
  * @len:           the length of the string in bytes, or -1 if the string is
  *                 nul-terminated (Note that some encodings may allow nul
