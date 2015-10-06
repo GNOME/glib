@@ -228,7 +228,7 @@ g_debug_init (void)
   g_mem_gc_friendly = flags & 1;
 }
 
-static void
+void
 glib_init (void)
 {
   static gboolean glib_inited;

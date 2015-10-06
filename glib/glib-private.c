@@ -20,6 +20,7 @@
 #include "config.h"
 
 #include "glib-private.h"
+#include "glib-init.h"
 
 /**
  * glib__private__:
@@ -32,6 +33,8 @@ GLibPrivateVTable *
 glib__private__ (void)
 {
   static GLibPrivateVTable table = {
+    glib_init,
+
     g_wakeup_new,
     g_wakeup_free,
     g_wakeup_get_pollfd,

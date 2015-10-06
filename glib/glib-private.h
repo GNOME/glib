@@ -61,6 +61,9 @@ typedef struct {
                                                          guint        flags);
   GDir *                (* g_dir_new_from_dirp)         (gpointer dirp);
 
+  /* See glib-init.c */
+  void                  (* glib_init)                   (void);
+
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
 
