@@ -191,6 +191,13 @@ g_simple_action_group_add_action (GActionMap *action_map,
   GAction *old_action;
 
   action_name = g_action_get_name (action);
+  if (action_name == NULL)
+    {
+      g_critical ("The supplied action has no name. You must set the "
+                  "GAction:name property when creating an action.");
+      return;
+    }
+
   old_action = g_hash_table_lookup (simple->priv->table, action_name);
 
   if (old_action != action)

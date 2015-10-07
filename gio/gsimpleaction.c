@@ -605,6 +605,8 @@ GSimpleAction *
 g_simple_action_new (const gchar        *name,
                      const GVariantType *parameter_type)
 {
+  g_return_val_if_fail (name != NULL, NULL);
+
   return g_object_new (G_TYPE_SIMPLE_ACTION,
                        "name", name,
                        "parameter-type", parameter_type,
