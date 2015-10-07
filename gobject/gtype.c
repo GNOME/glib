@@ -31,6 +31,7 @@
 #include "gatomicarray.h"
 #include "gobject_trace.h"
 
+#include "glib-private.h"
 #include "gconstructor.h"
 
 #ifdef	G_ENABLE_DEBUG
@@ -4375,6 +4376,11 @@ gobject_init_ctor (void)
   GTypeInfo info;
   TypeNode *node;
   GType type;
+
+  /* Ensure GLib is initialized first, see
+   * https://bugzilla.gnome.org/show_bug.cgi?id=756139
+   */
+  GLIB_PRIVATE_CALL (glib_init) ();
 
   G_WRITE_LOCK (&type_rw_lock);
 
