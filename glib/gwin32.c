@@ -49,6 +49,18 @@
 #  include <io.h>
 #endif /* _MSC_VER || __DMC__ */
 
+#define MODERN_API_FAMILY 2
+
+#if WINAPI_FAMILY == MODERN_API_FAMILY
+/* This is for modern UI Builds, where we can't use LoadLibraryW()/GetProcAddress() */
+/* ntddk.h is found in the WDK, and MinGW */
+#include <ntddk.h>
+
+#ifdef _MSC_VER
+#pragma comment (lib, "ntoskrnl.lib")
+#endif
+#endif
+
 #include "glib.h"
 #include "gthreadprivate.h"
 
@@ -516,8 +528,6 @@ g_win32_get_package_installation_subdirectory (const gchar *package,
 
 #endif
 
-#define gwin32condmask(base,var) VerSetConditionMask (base, var, VER_GREATER_EQUAL)
-
 /**
  * g_win32_check_windows_version:
  * @major: major version of Windows
@@ -550,42 +560,75 @@ g_win32_check_windows_version (const gint major,
                                const GWin32OSType os_type)
 {
   OSVERSIONINFOEXW osverinfo;
-  gboolean test_os_type;
-  const DWORDLONG conds = gwin32condmask (gwin32condmask (gwin32condmask (0, VER_MAJORVERSION), VER_MINORVERSION), VER_SERVICEPACKMAJOR);
+  gboolean is_ver_checked = FALSE;
+  gboolean is_type_checked = FALSE;
+
+#if WINAPI_FAMILY != MODERN_API_FAMILY
+  /* For non-modern UI Apps, use the LoadLibraryW()/GetProcAddress() thing */
+  typedef NTSTATUS fRtlGetVersion (PRTL_OSVERSIONINFOEXW);
+
+  fRtlGetVersion *RtlGetVersion;
+  HMODULE hmodule;
+#endif
+  /* We Only Support Checking for XP or later */
+  g_return_val_if_fail (major >= 5 && (major <=6 || major == 10), FALSE);
+  g_return_val_if_fail ((major >= 5 && minor >= 1) || major >= 6, FALSE);
+
+  /* Check for Service Pack Version >= 0 */
+  g_return_val_if_fail (spver >= 0, FALSE);
+
+#if WINAPI_FAMILY != MODERN_API_FAMILY
+  hmodule = LoadLibraryW (L"ntdll.dll");
+  g_return_val_if_fail (hmodule != NULL, FALSE);
+
+  RtlGetVersion = (fRtlGetVersion *) GetProcAddress (hmodule, "RtlGetVersion");
+  g_return_val_if_fail (RtlGetVersion != NULL, FALSE);
+#endif
 
   memset (&osverinfo, 0, sizeof (OSVERSIONINFOEXW));
   osverinfo.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEXW);
-  osverinfo.dwPlatformId = VER_PLATFORM_WIN32_NT;
-  osverinfo.dwMajorVersion = major;
-  osverinfo.dwMinorVersion = minor;
-  osverinfo.wServicePackMajor = spver;
+  RtlGetVersion (&osverinfo);
 
-  switch (os_type)
+  /* check the OS and Service Pack Versions */
+  if (osverinfo.dwMajorVersion > major)
+    is_ver_checked = TRUE;
+  else if (osverinfo.dwMajorVersion == major)
+    if (osverinfo.dwMinorVersion > minor)
+      is_ver_checked = TRUE;
+    else if (osverinfo.dwMinorVersion == minor)
+      if (osverinfo.wServicePackMajor >= spver)
+          is_ver_checked = TRUE;
+
+  /* Check OS Type */
+  if (is_ver_checked)
     {
-      case G_WIN32_OS_WORKSTATION:
-        osverinfo.wProductType = VER_NT_WORKSTATION;
-        test_os_type = TRUE;
-        break;
-      case G_WIN32_OS_SERVER:
-        osverinfo.wProductType = VER_NT_SERVER;
-        test_os_type = TRUE;
-        break;
-      default:
-        test_os_type = FALSE;
-        break;
+      switch (os_type)
+        {
+          case G_WIN32_OS_ANY:
+            is_type_checked = TRUE;
+            break;
+          case G_WIN32_OS_WORKSTATION:
+            if (osverinfo.wProductType == VER_NT_WORKSTATION)
+              is_type_checked = TRUE;
+            break;
+          case G_WIN32_OS_SERVER:
+            if (osverinfo.wProductType == VER_NT_SERVER ||
+                osverinfo.wProductType == VER_NT_DOMAIN_CONTROLLER)
+              is_type_checked = TRUE;
+            break;
+          default:
+            /* shouldn't get here normally */
+            g_warning ("Invalid os_type specified");
+            break;
+        }
     }
 
-  if (test_os_type)
-    return VerifyVersionInfoW (&osverinfo,
-                               VER_MAJORVERSION | VER_MINORVERSION | VER_SERVICEPACKMAJOR | VER_PRODUCT_TYPE,
-                               gwin32condmask (conds, VER_PRODUCT_TYPE));
-  else
-    return VerifyVersionInfoW (&osverinfo,
-                               VER_MAJORVERSION | VER_MINORVERSION | VER_SERVICEPACKMAJOR,
-                               conds);
-}
+#if WINAPI_FAMILY != MODERN_API_FAMILY
+  FreeLibrary (hmodule);
+#endif
 
-#undef gwin32condmask
+  return is_ver_checked && is_type_checked;
+}
 
 /**
  * g_win32_get_windows_version:
