@@ -627,7 +627,7 @@ end_element (GMarkupParseContext *context,
 
           normalised = normalise_whitespace (info->string->str);
 
-          if (gettext_domain)
+          if (gettext_domain && normalised[0])
             {
               gchar *translated;
 
