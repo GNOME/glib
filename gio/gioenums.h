@@ -984,14 +984,14 @@ typedef enum
  * @G_DBUS_PROXY_FLAGS_NONE: No flags set.
  * @G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES: Don't load properties.
  * @G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS: Don't connect to signals on the remote object.
- * @G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START: If not set and the proxy if for a well-known name,
- * then request the bus to launch an owner for the name if no-one owns the name. This flag can
- * only be used in proxies for well-known names.
+ * @G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START: If the proxy is for a well-known name,
+ * do not ask the bus to launch an owner during proxy initialization or a method call.
+ * This flag is only meaningful in proxies for well-known names.
  * @G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES: If set, the property value for any <emphasis>invalidated property</emphasis> will be (asynchronously) retrieved upon receiving the <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">PropertiesChanged</ulink> D-Bus signal and the property will not cause emission of the #GDBusProxy::g-properties-changed signal. When the value is received the #GDBusProxy::g-properties-changed signal is emitted for the property along with the retrieved value. Since 2.32.
  * @G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION: If the proxy is for a well-known name,
  * do not ask the bus to launch an owner during proxy initialization, but allow it to be
  * autostarted by a method call. This flag is only meaningful in proxies for well-known names,
- * and only if %G_DBUS_PROXY_FLAGS_DO_NOT_AUTOSTART is not also specified.
+ * and only if %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is not also specified.
  *
  * Flags used when constructing an instance of a #GDBusProxy derived class.
  *
