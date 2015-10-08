@@ -2212,7 +2212,7 @@ g_param_spec_double (const gchar *name,
  * @name: canonical name of the property specified
  * @nick: nick name for the property specified
  * @blurb: description of the property specified
- * @default_value: default value for the property specified
+ * @default_value: (nullable): default value for the property specified
  * @flags: flags for the property specified
  *
  * Creates a new #GParamSpecString instance.
