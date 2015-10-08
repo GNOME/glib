@@ -601,8 +601,8 @@ g_strconcat (const gchar *string1, ...)
 /**
  * g_strtod:
  * @nptr:    the string to convert to a numeric value.
- * @endptr:  if non-%NULL, it returns the character after
- *           the last character used in the conversion.
+ * @endptr:  (out) (transfer none) (optional): if non-%NULL, it returns the
+ *           character after the last character used in the conversion.
  *
  * Converts a string to a #gdouble value.
  * It calls the standard strtod() function to handle the conversion, but
@@ -654,8 +654,8 @@ g_strtod (const gchar *nptr,
 /**
  * g_ascii_strtod:
  * @nptr:    the string to convert to a numeric value.
- * @endptr:  if non-%NULL, it returns the character after
- *           the last character used in the conversion.
+ * @endptr:  (out) (transfer none) (optional): if non-%NULL, it returns the
+ *           character after the last character used in the conversion.
  *
  * Converts a string to a #gdouble value.
  *
@@ -1130,8 +1130,8 @@ g_parse_long_long (const gchar  *nptr,
 /**
  * g_ascii_strtoull:
  * @nptr:    the string to convert to a numeric value.
- * @endptr:  if non-%NULL, it returns the character after
- *           the last character used in the conversion.
+ * @endptr:  (out) (transfer none) (optional): if non-%NULL, it returns the
+ *           character after the last character used in the conversion.
  * @base:    to be used for the conversion, 2..36 or 0
  *
  * Converts a string to a #guint64 value.
@@ -1177,8 +1177,8 @@ g_ascii_strtoull (const gchar *nptr,
 /**
  * g_ascii_strtoll:
  * @nptr:    the string to convert to a numeric value.
- * @endptr:  if non-%NULL, it returns the character after
- *           the last character used in the conversion.
+ * @endptr:  (out) (transfer none) (optional): if non-%NULL, it returns the
+ *           character after the last character used in the conversion.
  * @base:    to be used for the conversion, 2..36 or 0
  *
  * Converts a string to a #gint64 value.
