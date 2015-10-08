@@ -626,11 +626,13 @@ g_set_error_literal (GError      **err,
 
 /**
  * g_propagate_error:
- * @dest: error return location
- * @src: error to move into the return location
+ * @dest: (out callee-allocates) (optional) (nullable): error return location
+ * @src: (transfer full): error to move into the return location
  *
  * If @dest is %NULL, free @src; otherwise, moves @src into *@dest.
  * The error variable @dest points to must be %NULL.
+ *
+ * @src must be non-%NULL.
  *
  * Note that @src is no longer valid after this call. If you want
  * to keep using the same GError*, you need to set it to %NULL
