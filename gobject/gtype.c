@@ -33,6 +33,10 @@
 
 #include "gconstructor.h"
 
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
+
 #ifdef	G_ENABLE_DEBUG
 #define	IF_DEBUG(debug_type)	if (_g_type_debug_flags & G_TYPE_DEBUG_ ## debug_type)
 #endif
@@ -4359,17 +4363,8 @@ g_type_init (void)
   g_assert_type_system_initialized ();
 }
 
-#if defined (G_HAS_CONSTRUCTORS)
-#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
-#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(gobject_init_ctor)
-#endif
-G_DEFINE_CONSTRUCTOR(gobject_init_ctor)
-#else
-# error Your platform/compiler is missing constructor support
-#endif
-
 static void
-gobject_init_ctor (void)
+gobject_init (void)
 {
   const gchar *env_string;
   GTypeInfo info;
@@ -4390,25 +4385,25 @@ gobject_init_ctor (void)
 
       _g_type_debug_flags = g_parse_debug_string (env_string, debug_keys, G_N_ELEMENTS (debug_keys));
     }
-  
+
   /* quarks */
   static_quark_type_flags = g_quark_from_static_string ("-g-type-private--GTypeFlags");
   static_quark_iface_holder = g_quark_from_static_string ("-g-type-private--IFaceHolder");
   static_quark_dependants_array = g_quark_from_static_string ("-g-type-private--dependants-array");
-  
+
   /* type qname hash table */
   static_type_nodes_ht = g_hash_table_new (g_str_hash, g_str_equal);
-  
+
   /* invalid type G_TYPE_INVALID (0)
    */
   static_fundamental_type_nodes[0] = NULL;
-  
+
   /* void type G_TYPE_NONE
    */
   node = type_node_fundamental_new_W (G_TYPE_NONE, g_intern_static_string ("void"), 0);
   type = NODE_TYPE (node);
   g_assert (type == G_TYPE_NONE);
-  
+
   /* interface fundamental type G_TYPE_INTERFACE (!classed)
    */
   memset (&info, 0, sizeof (info));
@@ -4416,47 +4411,88 @@ gobject_init_ctor (void)
   type = NODE_TYPE (node);
   type_data_make_W (node, &info, NULL);
   g_assert (type == G_TYPE_INTERFACE);
-  
+
   G_WRITE_UNLOCK (&type_rw_lock);
-  
+
   _g_value_c_init ();
 
   /* G_TYPE_TYPE_PLUGIN
    */
   g_type_ensure (g_type_plugin_get_type ());
-  
+
   /* G_TYPE_* value types
    */
   _g_value_types_init ();
-  
+
   /* G_TYPE_ENUM & G_TYPE_FLAGS
    */
   _g_enum_types_init ();
-  
+
   /* G_TYPE_BOXED
    */
   _g_boxed_type_init ();
-  
+
   /* G_TYPE_PARAM
    */
   _g_param_type_init ();
-  
+
   /* G_TYPE_OBJECT
    */
   _g_object_type_init ();
-  
+
   /* G_TYPE_PARAM_* pspec types
    */
   _g_param_spec_types_init ();
-  
+
   /* Value Transformations
    */
   _g_value_transforms_init ();
-  
+
   /* Signal system
    */
   _g_signal_init ();
 }
+
+#if defined (G_OS_WIN32)
+
+BOOL WINAPI DllMain (HINSTANCE hinstDLL,
+                     DWORD     fdwReason,
+                     LPVOID    lpvReserved);
+
+BOOL WINAPI
+DllMain (HINSTANCE hinstDLL,
+         DWORD     fdwReason,
+         LPVOID    lpvReserved)
+{
+  switch (fdwReason)
+    {
+    case DLL_PROCESS_ATTACH:
+      gobject_init ();
+      break;
+
+    default:
+      /* do nothing */
+      ;
+    }
+
+  return TRUE;
+}
+
+#elif defined (G_HAS_CONSTRUCTORS)
+#ifdef G_DEFINE_CONSTRUCTOR_NEEDS_PRAGMA
+#pragma G_DEFINE_CONSTRUCTOR_PRAGMA_ARGS(gobject_init_ctor)
+#endif
+G_DEFINE_CONSTRUCTOR(gobject_init_ctor)
+
+static void
+gobject_init_ctor (void)
+{
+  gobject_init ();
+}
+
+#else
+# error Your platform/compiler is missing constructor support
+#endif
 
 /**
  * g_type_class_add_private:
