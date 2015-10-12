@@ -58,7 +58,7 @@
 			>
 			<Tool
 				Name="VCCLCompilerTool"
-				WholeProgramOptimization="false"
+				WholeProgramOptimization="true"
 				PreprocessorDefinitions="$(GObjectBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -120,7 +120,7 @@
 			>
 			<Tool
 				Name="VCCLCompilerTool"
-				WholeProgramOptimization="false"
+				WholeProgramOptimization="true"
 				PreprocessorDefinitions="$(GObjectBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
