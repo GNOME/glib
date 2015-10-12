@@ -1797,7 +1797,7 @@ validate_object_blob (ValidateContext *ctx,
                    G_TYPELIB_ERROR,
                    G_TYPELIB_ERROR_INVALID_BLOB,
                    "Incorrect number of field callbacks; expected "
-                   G_GUINT16_FORMAT ", got " G_GUINT16_FORMAT,
+                   "%" G_GUINT16_FORMAT ", got %" G_GUINT16_FORMAT,
                    blob->n_field_callbacks, n_field_callbacks);
       return FALSE;
     }
