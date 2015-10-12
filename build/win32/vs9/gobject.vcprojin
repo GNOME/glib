@@ -58,7 +58,6 @@
 			>
 			<Tool
 				Name="VCCLCompilerTool"
-				WholeProgramOptimization="true"
 				PreprocessorDefinitions="$(GObjectBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -74,7 +73,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				LinkTimeCodeGeneration="0"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
@@ -120,7 +118,6 @@
 			>
 			<Tool
 				Name="VCCLCompilerTool"
-				WholeProgramOptimization="true"
 				PreprocessorDefinitions="$(GObjectBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -136,7 +133,6 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				LinkTimeCodeGeneration="0"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
