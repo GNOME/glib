@@ -1,3 +1,29 @@
+Overview of changes in GLib 2.46.1
+==================================
+
+* Bugs fixed:
+ 735754 Implement close on TLS GOutputStream
+ 743011 Minor additions to GError documentation
+ 749161 undefined reference to `__imp__stat32i64'
+ 751924 Add recvmmsg()-like API on GSocket
+ 752837 gobject and glib-compile-resources rely on .CRT$XCU section, no longer...
+ 753310 Remove `#pragma GCC system_header` from gmessages.h
+ 755083 Clarify in G_ADD_PRIVATE that it is safe to call _get_instance_private(NULL)
+ 755351 Example still contains g_autoptr(gchar)
+ 755355 Move GStrv to glib.h so it can be used with g_auto()
+ 755496 glib 2.46 fails GStreamer test suite
+ 755795 2.46 considers empty files as octet-stream rather than text (leads to...
+ 756179 gwin32.c: Replace VerifyVersionInfoW() with RtlGetVersion() due to API...
+ 756251 The documentation of G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is confusing
+ 756255 GOutputStream swallowing errors in splice with G_OUTPUT_STREAM_SPLICE_...
+
+* Translation updates:
+ Czech
+ Serbian
+ Serbian Latin
+ Vietnamese
+
+
 Overview of changes in GLib 2.46.0
 ==================================
 
