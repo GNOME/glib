@@ -243,7 +243,7 @@ g_datalist_clear_i (GData **datalist)
 }
 
 /**
- * g_datalist_clear:
+ * g_datalist_clear: (skip)
  * @datalist: a datalist.
  *
  * Frees all the data elements of the datalist.
@@ -486,7 +486,7 @@ g_data_set_internal (GData	  **datalist,
 }
 
 /**
- * g_dataset_id_set_data_full:
+ * g_dataset_id_set_data_full: (skip)
  * @dataset_location: (not nullable): the location identifying the dataset.
  * @key_id: the #GQuark id to identify the data element.
  * @data: the data element.
@@ -501,7 +501,7 @@ g_data_set_internal (GData	  **datalist,
  * is called.
  **/
 /**
- * g_dataset_set_data_full:
+ * g_dataset_set_data_full: (skip)
  * @l: the location identifying the dataset.
  * @k: the string to identify the data element.
  * @d: the data element.
@@ -585,7 +585,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
 }
 
 /**
- * g_datalist_id_set_data_full:
+ * g_datalist_id_set_data_full: (skip)
  * @datalist: a datalist.
  * @key_id: the #GQuark to identify the data element.
  * @data: (nullable): the data element or %NULL to remove any previous element
@@ -602,7 +602,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
  * function is called.
  **/
 /**
- * g_datalist_set_data_full:
+ * g_datalist_set_data_full: (skip)
  * @dl: a datalist.
  * @k: the string to identify the data element.
  * @d: (nullable): the data element, or %NULL to remove any previous element
@@ -671,7 +671,7 @@ g_datalist_id_set_data_full (GData	  **datalist,
 }
 
 /**
- * g_dataset_id_remove_no_notify:
+ * g_dataset_id_remove_no_notify: (skip)
  * @dataset_location: (not nullable): the location identifying the dataset.
  * @key_id: the #GQuark ID identifying the data element.
  *
@@ -682,7 +682,7 @@ g_datalist_id_set_data_full (GData	  **datalist,
  *          or %NULL if none.
  **/
 /**
- * g_dataset_remove_no_notify:
+ * g_dataset_remove_no_notify: (skip)
  * @l: the location identifying the dataset.
  * @k: the string identifying the data element.
  *
@@ -711,7 +711,7 @@ g_dataset_id_remove_no_notify (gconstpointer  dataset_location,
 }
 
 /**
- * g_datalist_id_remove_no_notify:
+ * g_datalist_id_remove_no_notify: (skip)
  * @datalist: a datalist.
  * @key_id: the #GQuark identifying a data element.
  *
@@ -722,7 +722,7 @@ g_dataset_id_remove_no_notify (gconstpointer  dataset_location,
  *          or %NULL if none.
  **/
 /**
- * g_datalist_remove_no_notify:
+ * g_datalist_remove_no_notify: (skip)
  * @dl: a datalist.
  * @k: the string identifying the data element.
  *
@@ -816,7 +816,7 @@ g_datalist_id_get_data (GData  **datalist,
  */
 
 /**
- * g_datalist_id_dup_data:
+ * g_datalist_id_dup_data: (skip)
  * @datalist: location of a datalist
  * @key_id: the #GQuark identifying a data element
  * @dup_func: (nullable) (scope call): function to duplicate the old value
@@ -883,7 +883,7 @@ g_datalist_id_dup_data (GData          **datalist,
 }
 
 /**
- * g_datalist_id_replace_data:
+ * g_datalist_id_replace_data: (skip)
  * @datalist: location of a datalist
  * @key_id: the #GQuark identifying a data element
  * @oldval: (nullable): the old value to compare against
@@ -1148,7 +1148,7 @@ g_datalist_foreach (GData	   **datalist,
 }
 
 /**
- * g_datalist_init:
+ * g_datalist_init: (skip)
  * @datalist: a pointer to a pointer to a datalist.
  *
  * Resets the datalist to %NULL. It does not free any memory or call
