@@ -699,9 +699,36 @@ vasnprintf (char *resultbuf, size_t *lengthp, const char *format, va_list args)
 		  }
 		*p = dp->conversion;
 #if HAVE_SNPRINTF
+# if !(((__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 3)) && !defined __UCLIBC__) || ((defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__))
 		p[1] = '%';
 		p[2] = 'n';
 		p[3] = '\0';
+# else
+		/* On glibc2 systems from glibc >= 2.3 - probably also older
+		 * ones - we know that snprintf's returns value conforms to
+		 * ISO C 99: the gl_SNPRINTF_DIRECTIVE_N test passes.
+		 * Therefore we can avoid using %n in this situation.
+		 * On glibc2 systems from 2004-10-18 or newer, the use of %n
+		 * in format strings in writable memory may crash the program
+		 * (if compiled with _FORTIFY_SOURCE=2), so we should avoid it
+		 * in this situation.  */
+		/* On native Win32 systems (such as mingw), we can avoid using
+		 * %n because:
+		 *   - Although the gl_SNPRINTF_TRUNCATION_C99 test fails,
+		 *     snprintf does not write more than the specified number
+		 *     of bytes. (snprintf (buf, 3, "%d %d", 4567, 89) writes
+		 *     '4', '5', '6' into buf, not '4', '5', '\0'.)
+		 *   - Although the gl_SNPRINTF_RETVAL_C99 test fails, snprintf
+		 *     allows us to recognize the case of an insufficient
+		 *     buffer size: it returns -1 in this case.
+		 * On native Win32 systems (such as mingw) where the OS is
+		 * Windows Vista, the use of %n in format strings by default
+		 * crashes the program. See
+		 * <http://gcc.gnu.org/ml/gcc/2007-06/msg00122.html> and
+		 * <http://msdn2.microsoft.com/en-us/library/ms175782(VS.80).aspx>
+		 * So we should avoid %n in this situation.  */
+		p[1] = '\0';
+# endif
 #else
 		p[1] = '\0';
 #endif
