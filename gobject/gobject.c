@@ -3413,7 +3413,7 @@ g_object_set_qdata (GObject *object,
 }
 
 /**
- * g_object_dup_qdata:
+ * g_object_dup_qdata: (skip)
  * @object: the #GObject to store user data on
  * @quark: a #GQuark, naming the user data pointer
  * @dup_func: (nullable): function to dup the value
@@ -3454,7 +3454,7 @@ g_object_dup_qdata (GObject        *object,
 }
 
 /**
- * g_object_replace_qdata:
+ * g_object_replace_qdata: (skip)
  * @object: the #GObject to store user data on
  * @quark: a #GQuark, naming the user data pointer
  * @oldval: (nullable): the old value to compare against
@@ -3621,7 +3621,7 @@ g_object_set_data (GObject     *object,
 }
 
 /**
- * g_object_dup_data:
+ * g_object_dup_data: (skip)
  * @object: the #GObject to store user data on
  * @key: a string, naming the user data pointer
  * @dup_func: (nullable): function to dup the value
@@ -3664,7 +3664,7 @@ g_object_dup_data (GObject        *object,
 }
 
 /**
- * g_object_replace_data:
+ * g_object_replace_data: (skip)
  * @object: the #GObject to store user data on
  * @key: a string, naming the user data pointer
  * @oldval: (nullable): the old value to compare against
