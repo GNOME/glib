@@ -1,6 +1,25 @@
 Overview of changes in GLib 2.46.1
 ==================================
 
+* Remove system_header pragma
+  (should fix lack of warnings with things like g_return_if_fail)
+
+* move GStrv typedef (and auto-cleanup) from libgobject to libglib
+
+* fix order of trashing files to be closer to what is required in the
+  specification.  Namely, trashinfo files are written first.  This
+  should fix issues with the gvfs trash backend failing to correctly
+  read the info for recently trashed files (preventing 'restore').
+
+* tweak mime logic to return text/plain on all empty files instead of
+  returning application/octet-stream.  This includes files that have
+  extensions that imply that they may be other types of files, which is
+  a slight change of behaviour with respect to old GLib versions.
+
+* Many win32 fixes
+
+* Many docs fixes
+
 * Bugs fixed:
  735754 Implement close on TLS GOutputStream
  743011 Minor additions to GError documentation
