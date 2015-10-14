@@ -21,6 +21,8 @@ libgnulib_la_SOURCES = 	\
 	vasnprintf.h \
 	printf.c \
 	printf.h \
+	verify.h \
+	xsize.h \
 	g-gnulib.h
 
 
