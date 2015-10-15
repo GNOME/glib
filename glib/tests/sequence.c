@@ -1356,6 +1356,31 @@ test_stable_sort (void)
   g_sequence_free (seq);
 }
 
+static void
+test_empty (void)
+{
+  GSequence *seq;
+  int i;
+
+  seq = g_sequence_new (NULL);
+  g_assert_cmpint (TRUE, ==, g_sequence_is_empty (seq));
+
+  for (i = 0; i < 1000; i++)
+    {
+      g_sequence_append (seq, GINT_TO_POINTER (i));
+      g_assert_false (g_sequence_is_empty (seq));
+    }
+
+  for (i = 0; i < 1000; i++)
+    {
+      GSequenceIter *end = g_sequence_get_end_iter (seq);
+      g_assert_false (g_sequence_is_empty (seq));
+      g_sequence_remove (g_sequence_iter_prev (end));
+    }
+
+  g_assert_true (g_sequence_is_empty (seq));
+}
+
 int
 main (int argc,
       char **argv)
@@ -1371,6 +1396,7 @@ main (int argc,
   g_test_add_func ("/sequence/iter-move", test_iter_move);
   g_test_add_func ("/sequence/insert-sorted-non-pointer", test_insert_sorted_non_pointer);
   g_test_add_func ("/sequence/stable-sort", test_stable_sort);
+  g_test_add_func ("/sequence/is_empty", test_empty);
 
   /* Regression tests */
   for (i = 0; i < G_N_ELEMENTS (seeds); ++i)

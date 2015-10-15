@@ -59,6 +59,8 @@ GLIB_AVAILABLE_IN_ALL
 void           g_sequence_sort_iter          (GSequence                *seq,
                                               GSequenceIterCompareFunc  cmp_func,
                                               gpointer                  cmp_data);
+GLIB_AVAILABLE_IN_2_48
+gboolean       g_sequence_is_empty           (GSequence                *seq);
 
 
 /* Getting iters */

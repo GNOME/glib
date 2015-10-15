@@ -1244,6 +1244,26 @@ g_sequence_get_length (GSequence *seq)
 }
 
 /**
+ * g_sequence_is_empty:
+ * @seq: a #GSequence
+ *
+ * Returns %TRUE if the sequence contains zero items.
+ *
+ * This function is functionally identical to checking the result of
+ * g_sequence_get_length() being equal to zero. However this function is
+ * implemented in O(1) running time.
+ *
+ * Returns: %TRUE if the sequence is empty, otherwise %FALSE.
+ *
+ * Since: 2.48
+ */
+gboolean
+g_sequence_is_empty (GSequence *seq)
+{
+  return (seq->end_node->parent == NULL) && (seq->end_node->left == NULL);
+}
+
+/**
  * g_sequence_get_end_iter:
  * @seq: a #GSequence
  *
