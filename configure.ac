@@ -3429,8 +3429,6 @@ if test "x${enable_Bsymbolic}" = "xyes"; then
   GLIB_LINK_FLAGS=-Wl,-Bsymbolic-functions
 fi
 
-AC_SUBST(GLIB_LINK_FLAGS)
-
 dnl
 dnl Check for -z,nodelete linker flag: the type system assumes that
 dnl libgobject stays loaded for the lifetime of the process.
@@ -3461,10 +3459,10 @@ AC_ARG_ENABLE([znodelete],
                LDFLAGS="${SAVED_LDFLAGS}" LIBS="${SAVED_LIBS}"])
 
 if test "x${enable_znodelete}" = "xyes"; then
-  GOBJECT_LINK_FLAGS=-Wl,-z,nodelete
+  GLIB_LINK_FLAGS="$GLIB_LINK_FLAGS -Wl,-z,nodelete"
 fi
 
-AC_SUBST(GOBJECT_LINK_FLAGS)
+AC_SUBST(GLIB_LINK_FLAGS)
 
 dnl
 dnl Check for -fvisibility=hidden to determine if we can do GNU-style
