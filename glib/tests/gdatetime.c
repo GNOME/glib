@@ -79,14 +79,14 @@ test_GDateTime_now (void)
    * to guard against that. */
   do
     {
-      before = time (NULL);
+      before = g_get_real_time () / G_TIME_SPAN_SECOND;
 
       memset (&tm, 0, sizeof (tm));
       get_localtime_tm (before, &tm);
 
       dt = g_date_time_new_now_local ();
 
-      after = time (NULL);
+      after = g_get_real_time () / G_TIME_SPAN_SECOND;
     }
   while (before != after);
 
@@ -672,7 +672,7 @@ test_GDateTime_now_utc (void)
    * to guard against that. */
   do
     {
-      t = time (NULL);
+      t = g_get_real_time () / G_TIME_SPAN_SECOND;
 #ifdef HAVE_GMTIME_R
       gmtime_r (&t, &tm);
 #else
@@ -687,7 +687,7 @@ test_GDateTime_now_utc (void)
 #endif
       dt = g_date_time_new_now_utc ();
 
-      after = time (NULL);
+      after = g_get_real_time () / G_TIME_SPAN_SECOND;
     }
   while (t != after);
 
@@ -733,7 +733,7 @@ test_GDateTime_get_utc_offset (void)
   struct tm tm;
 
   memset (&tm, 0, sizeof (tm));
-  get_localtime_tm (time (NULL), &tm);
+  get_localtime_tm (g_get_real_time () / G_TIME_SPAN_SECOND, &tm);
 
   dt = g_date_time_new_now_local ();
   ts = g_date_time_get_utc_offset (dt);
@@ -776,12 +776,12 @@ test_GDateTime_to_local (void)
    * to guard against that. */
   do
     {
-      before = time (NULL);
+      before = g_get_real_time () / G_TIME_SPAN_SECOND;
       g_clear_pointer (&utc, g_date_time_unref);
       g_clear_pointer (&now, g_date_time_unref);
       utc = g_date_time_new_now_utc ();
       now = g_date_time_new_now_local ();
-      after = time (NULL);
+      after = g_get_real_time () / G_TIME_SPAN_SECOND;
     }
   while (before != after);
 
