@@ -448,7 +448,7 @@ PRINTF_PARSE (const CHAR_T *format, DIRECTIVES *d, arguments *a)
               switch (c)
                 {
                 case 'd': case 'i':
-#if HAVE_LONG_LONG_INT
+#if HAVE_LONG_LONG
                   /* If 'long long' exists and is larger than 'long':  */
                   if (flags >= 16 || (flags & 4))
                     type = TYPE_LONGLONGINT;
@@ -466,7 +466,7 @@ PRINTF_PARSE (const CHAR_T *format, DIRECTIVES *d, arguments *a)
                     type = TYPE_INT;
                   break;
                 case 'o': case 'u': case 'x': case 'X':
-#if HAVE_LONG_LONG_INT
+#if HAVE_LONG_LONG
                   /* If 'long long' exists and is larger than 'long':  */
                   if (flags >= 16 || (flags & 4))
                     type = TYPE_ULONGLONGINT;
@@ -526,7 +526,7 @@ PRINTF_PARSE (const CHAR_T *format, DIRECTIVES *d, arguments *a)
                   type = TYPE_POINTER;
                   break;
                 case 'n':
-#if HAVE_LONG_LONG_INT
+#if HAVE_LONG_LONG
                   /* If 'long long' exists and is larger than 'long':  */
                   if (flags >= 16 || (flags & 4))
                     type = TYPE_COUNT_LONGLONGINT_POINTER;

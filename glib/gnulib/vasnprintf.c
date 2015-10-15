@@ -1526,7 +1526,7 @@ MAX_ROOM_NEEDED (const arguments *ap, size_t arg_index, FCHAR_T conversion,
   switch (conversion)
     {
     case 'd': case 'i': case 'u':
-# if HAVE_LONG_LONG_INT
+# if HAVE_LONG_LONG
       if (type == TYPE_LONGLONGINT || type == TYPE_ULONGLONGINT)
         tmp_length =
           (unsigned int) (sizeof (unsigned long long) * CHAR_BIT
@@ -1556,7 +1556,7 @@ MAX_ROOM_NEEDED (const arguments *ap, size_t arg_index, FCHAR_T conversion,
       break;
 
     case 'o':
-# if HAVE_LONG_LONG_INT
+# if HAVE_LONG_LONG
       if (type == TYPE_LONGLONGINT || type == TYPE_ULONGLONGINT)
         tmp_length =
           (unsigned int) (sizeof (unsigned long long) * CHAR_BIT
@@ -1584,7 +1584,7 @@ MAX_ROOM_NEEDED (const arguments *ap, size_t arg_index, FCHAR_T conversion,
       break;
 
     case 'x': case 'X':
-# if HAVE_LONG_LONG_INT
+# if HAVE_LONG_LONG
       if (type == TYPE_LONGLONGINT || type == TYPE_ULONGLONGINT)
         tmp_length =
           (unsigned int) (sizeof (unsigned long long) * CHAR_BIT
@@ -1912,7 +1912,7 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *lengthp,
                   case TYPE_COUNT_LONGINT_POINTER:
                     *a.arg[dp->arg_index].a.a_count_longint_pointer = length;
                     break;
-#if HAVE_LONG_LONG_INT
+#if HAVE_LONG_LONG
                   case TYPE_COUNT_LONGLONGINT_POINTER:
                     *a.arg[dp->arg_index].a.a_count_longlongint_pointer = length;
                     break;
@@ -4808,7 +4808,7 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *lengthp,
 
                 switch (type)
                   {
-#if HAVE_LONG_LONG_INT
+#if HAVE_LONG_LONG
                   case TYPE_LONGLONGINT:
                   case TYPE_ULONGLONGINT:
 # if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
@@ -5017,7 +5017,7 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *lengthp,
                           SNPRINTF_BUF (arg);
                         }
                         break;
-#if HAVE_LONG_LONG_INT
+#if HAVE_LONG_LONG
                       case TYPE_LONGLONGINT:
                         {
                           long long int arg = a.arg[dp->arg_index].a.a_longlongint;
