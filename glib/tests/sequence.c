@@ -1363,7 +1363,7 @@ test_empty (void)
   int i;
 
   seq = g_sequence_new (NULL);
-  g_assert_cmpint (TRUE, ==, g_sequence_is_empty (seq));
+  g_assert_true (g_sequence_is_empty (seq));
 
   for (i = 0; i < 1000; i++)
     {
