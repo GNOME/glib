@@ -2052,85 +2052,8 @@ glib_save_LIBS="$LIBS"
 # we are not doing the following for now, as this might require glib 
 # to always be linked with the thread libs on some platforms. 
 # LIBS="$LIBS $G_THREAD_LIBS"
-AC_CHECK_FUNCS(localtime_r gmtime_r)
-AS_IF([ test "$glib_native_win32" != "yes"], [
- 	AC_CACHE_CHECK([for posix getpwuid_r],
-		ac_cv_func_posix_getpwuid_r,
-		[AC_TRY_RUN([
-#include <errno.h>
-#include <pwd.h>
-int main () { 
-    char buffer[10000];
-    struct passwd pwd, *pwptr = &pwd;
-    int error;
-    errno = 0;
-    error = getpwuid_r (0, &pwd, buffer, 
-                        sizeof (buffer), &pwptr);
-   return (error < 0 && errno == ENOSYS) 
-	   || error == ENOSYS; 
-}                               ],
-			[ac_cv_func_posix_getpwuid_r=yes],
-			[ac_cv_func_posix_getpwuid_r=no])])
-	GLIB_ASSERT_SET(ac_cv_func_posix_getpwuid_r)
-	if test "$ac_cv_func_posix_getpwuid_r" = yes; then
-		AC_DEFINE(HAVE_POSIX_GETPWUID_R,1,
-			[Have POSIX function getpwuid_r])
-	else
- 		AC_CACHE_CHECK([for nonposix getpwuid_r],
-			ac_cv_func_nonposix_getpwuid_r,
-			[AC_TRY_LINK([#include <pwd.h>],
-                        	[char buffer[10000];
-                        	struct passwd pwd;
-                        	getpwuid_r (0, &pwd, buffer, 
-                                		sizeof (buffer));],
-				[ac_cv_func_nonposix_getpwuid_r=yes],
-				[ac_cv_func_nonposix_getpwuid_r=no])])
-		GLIB_ASSERT_SET(ac_cv_func_nonposix_getpwuid_r)
-		if test "$ac_cv_func_nonposix_getpwuid_r" = yes; then
-			AC_DEFINE(HAVE_NONPOSIX_GETPWUID_R,1,
-				[Have non-POSIX function getpwuid_r])
-		fi
-	fi
-])
-AS_IF([ test "$glib_native_win32" != "yes"], [
-   	AC_CACHE_CHECK([for posix getgrgid_r],
-		ac_cv_func_posix_getgrgid_r,
-		[AC_TRY_RUN([
-#include <errno.h>
-#include <grp.h>
-int main () { 
-    char buffer[10000];
-    struct group grp, *grpptr = &grp;
-    int error;
-    errno = 0;
-    error = getgrgid_r (0, &grp, buffer, 
-                        sizeof (buffer), &grpptr);
-   return (error < 0 && errno == ENOSYS) 
-	   || error == ENOSYS; 
-}                              ],
-		       [ac_cv_func_posix_getgrgid_r=yes],
-		       [ac_cv_func_posix_getgrgid_r=no])])
-	GLIB_ASSERT_SET(ac_cv_func_posix_getgrgid_r)
-	AS_IF([ test "$ac_cv_func_posix_getgrgid_r" = yes ], [
-	   	AC_DEFINE(HAVE_POSIX_GETGRGID_R,1,
-			[Have POSIX function getgrgid_r])
-	], [
-		AC_CACHE_CHECK([for nonposix getgrgid_r],
-			ac_cv_func_nonposix_getgrgid_r,
-			[AC_TRY_LINK([#include <grp.h>],
-                       		[char buffer[10000];
-				struct group grp;	
-				getgrgid_r (0, &grp, buffer, 
-                               	sizeof (buffer));],
-			[ac_cv_func_nonposix_getgrgid_r=yes],
-			[ac_cv_func_nonposix_getgrgid_r=no])])
-		GLIB_ASSERT_SET(ac_cv_func_nonposix_getgrgid_r)
-		if test "$ac_cv_func_nonposix_getgrgid_r" = yes; then
-		   	AC_DEFINE(HAVE_NONPOSIX_GETGRGID_R,1,
-				[Have non-POSIX function getgrgid_r])
-		fi
-	])
-])
+AC_CHECK_FUNCS(localtime_r gmtime_r getpwuid_r getgrgid_r)
+
 LIBS="$G_THREAD_LIBS $LIBS"
 AS_IF([ test x"$have_threads" = xposix], [
         glib_save_CPPFLAGS="$CPPFLAGS"
@@ -2180,8 +2103,7 @@ AS_IF([ test x"$have_threads" = xposix], [
 LIBS="$glib_save_LIBS"
 
 # now spit out all the warnings.
-if test "$ac_cv_func_posix_getpwuid_r" != "yes" && 
-   test "$ac_cv_func_nonposix_getpwuid_r" != "yes"; then
+if test "$ac_cv_func_getpwuid_r" != "yes"; then
 	AC_MSG_WARN($FUNC_NO_GETPWUID_R)
 fi
 if test "$ac_cv_func_localtime_r" != "yes"; then

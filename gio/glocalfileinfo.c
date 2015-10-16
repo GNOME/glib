@@ -1096,10 +1096,8 @@ lookup_uid_data (uid_t uid)
 
   data = g_new0 (UidData, 1);
 
-#if defined(HAVE_POSIX_GETPWUID_R)
+#if defined(HAVE_GETPWUID_R)
   getpwuid_r (uid, &pwbuf, buffer, sizeof(buffer), &pwbufp);
-#elif defined(HAVE_NONPOSIX_GETPWUID_R)
-  pwbufp = getpwuid_r (uid, &pwbuf, buffer, sizeof(buffer));
 #else
   pwbufp = getpwuid (uid);
 #endif
@@ -1184,10 +1182,8 @@ lookup_gid_name (gid_t gid)
   if (name)
     return name;
 
-#if defined (HAVE_POSIX_GETGRGID_R)
+#if defined (HAVE_GETGRGID_R)
   getgrgid_r (gid, &gbuf, buffer, sizeof(buffer), &gbufp);
-#elif defined (HAVE_NONPOSIX_GETGRGID_R)
-  gbufp = getgrgid_r (gid, &gbuf, buffer, sizeof(buffer));
 #else
   gbufp = getgrgid (gid);
 #endif

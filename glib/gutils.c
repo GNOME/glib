@@ -626,7 +626,7 @@ g_get_user_database_entry (void)
         gint error;
         gchar *logname;
 
-#  if defined (HAVE_POSIX_GETPWUID_R) || defined (HAVE_NONPOSIX_GETPWUID_R)
+#  if defined (HAVE_GETPWUID_R)
         struct passwd pwd;
 #    ifdef _SC_GETPW_R_SIZE_MAX
         /* This reurns the maximum length */
@@ -649,7 +649,6 @@ g_get_user_database_entry (void)
             buffer = g_malloc (bufsize + 6);
             errno = 0;
 
-#    ifdef HAVE_POSIX_GETPWUID_R
             if (logname) {
               error = getpwnam_r (logname, &pwd, buffer, bufsize, &pw);
               if (!pw || (pw->pw_uid != getuid ())) {
@@ -660,23 +659,6 @@ g_get_user_database_entry (void)
               error = getpwuid_r (getuid (), &pwd, buffer, bufsize, &pw);
             }
             error = error < 0 ? errno : error;
-#    else /* HAVE_NONPOSIX_GETPWUID_R */
-#      if defined(_AIX)
-            error = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-            pw = error == 0 ? &pwd : NULL;
-#      else /* !_AIX */
-            if (logname) {
-              pw = getpwnam_r (logname, &pwd, buffer, bufsize);
-              if (!pw || (pw->pw_uid != getuid ())) {
-                /* LOGNAME is lying, fall back to looking up the uid */
-                pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-              }
-            } else {
-              pw = getpwuid_r (getuid (), &pwd, buffer, bufsize);
-            }
-            error = pw ? 0 : errno;
-#      endif /* !_AIX */
-#    endif /* HAVE_NONPOSIX_GETPWUID_R */
 
             if (!pw)
               {
@@ -702,7 +684,7 @@ g_get_user_database_entry (void)
               }
           }
         while (!pw);
-#  endif /* HAVE_POSIX_GETPWUID_R || HAVE_NONPOSIX_GETPWUID_R */
+#  endif /* HAVE_GETPWUID_R */
 
         if (!pw)
           {
