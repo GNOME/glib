@@ -154,9 +154,9 @@ static void test_object (void)
   GObject *obj;
   GValue obj_vala = G_VALUE_INIT;
   GValue obj_valb = G_VALUE_INIT;
-  obj = g_object_new (MAMAN_TYPE_BAR, NULL);
+  obj = g_object_new (VIEWER_TYPE_FILE, NULL);
 
-  g_value_init (&amp;obj_vala, MAMAN_TYPE_BAR);
+  g_value_init (&amp;obj_vala, VIEWER_TYPE_FILE);
   g_value_set_object (&amp;obj_vala, obj);
 
   g_value_init (&amp;obj_valb, G_TYPE_OBJECT);
@@ -164,7 +164,7 @@ static void test_object (void)
   /* g_value_copy's semantics for G_TYPE_OBJECT types is to copy the reference.
    * This function thus calls g_object_ref.
    * It is interesting to note that the assignment works here because
-   * MAMAN_TYPE_BAR is a G_TYPE_OBJECT.
+   * VIEWER_TYPE_FILE is a G_TYPE_OBJECT.
    */
   g_value_copy (&amp;obj_vala, &amp;obj_valb);
 
@@ -206,27 +206,20 @@ static void test_object (void)
           </para></listitem>
           <listitem><para>
             Use the <function>object_method</function> pattern for function names: to invoke
-            the method named foo on an instance of object type bar, call 
-            <function>bar_foo</function>.
+            the method named <function>save</function> on an instance of object type <type>file</type>, call 
+            <function>file_save</function>.
           </para></listitem>
           <listitem><para>Use prefixing to avoid namespace conflicts with other projects.
-            If your library (or application) is named <emphasis>Maman</emphasis>,
-            <footnote>
-              <para>
-                <emphasis>Maman</emphasis> is the French word for <emphasis>mum</emphasis>
-                or <emphasis>mother</emphasis> — nothing more and nothing less.
-              </para>
-            </footnote>
-            
-            prefix all your function names with <emphasis>maman_</emphasis>.
-            For example: <function>maman_object_method</function>.
+            If your library (or application) is named <emphasis>Viewer</emphasis>,
+            prefix all your function names with <emphasis>viewer_</emphasis>.
+            For example: <function>viewer_object_method</function>.
           </para></listitem>
           <listitem><para>Create a macro named <function>PREFIX_TYPE_OBJECT</function> which always 
             returns the GType for the associated object type. For an object of type 
-            <emphasis>Bar</emphasis> in a library prefixed by <emphasis>maman</emphasis>, 
-            use: <function>MAMAN_TYPE_BAR</function>.
+            <emphasis>File</emphasis> in the <emphasis>Viewer</emphasis> namespace,
+            use: <function>VIEWER_TYPE_FILE</function>.
             This macro is implemented using a function named
-            <function>prefix_object_get_type</function>.
+            <function>prefix_object_get_type</function>; for example, <function>viewer_file_get_type</function>.
           </para></listitem>
           <listitem>
             <para>
@@ -241,25 +234,28 @@ static void test_object (void)
                 dynamic type safety by doing runtime checks. It is possible to disable the dynamic
                 type checks in production builds (see <link linkend="glib-building">building GLib</link>).
                 For example, we would create 
-                <function>MAMAN_BAR (obj)</function> to keep the previous example.
+                <function>VIEWER_FILE (obj)</function> to keep the previous example.
               </para></listitem>
               <listitem><para><function>PREFIX_OBJECT_CLASS (klass)</function>, which
                 is strictly equivalent to the previous casting macro: it does static casting with
                 dynamic type checking of class structures. It is expected to return a pointer
                 to a class structure of type <type>PrefixObjectClass</type>. An example is:
-                <function>MAMAN_BAR_CLASS</function>.
+                <function>VIEWER_FILE_CLASS</function>.
               </para></listitem>
-              <listitem><para><function>PREFIX_IS_BAR (obj)</function>, which
+              <listitem><para><function>PREFIX_IS_OBJECT (obj)</function>, which
                 returns a <type>gboolean</type> which indicates whether the input
-                object instance pointer is non-<type>NULL</type> and of type BAR.
+                object instance pointer is non-<type>NULL</type> and of type <type>OBJECT</type>.
+                For example, <function>VIEWER_IS_FILE</function>.
               </para></listitem>
               <listitem><para><function>PREFIX_IS_OBJECT_CLASS (klass)</function>, which returns a boolean
                 if the input class pointer is a pointer to a class of type OBJECT.
+                For example, <function>VIEWER_IS_FILE_CLASS</function>.
               </para></listitem>
               <listitem><para><function>PREFIX_OBJECT_GET_CLASS (obj)</function>,
                 which returns the class pointer associated to an instance of a given type. This macro
                 is used for static and dynamic type safety purposes (just like the previous casting
                 macros).
+                For example, <function>VIEWER_FILE_GET_CLASS</function>.
               </para></listitem>
             </itemizedlist>
           </listitem>
@@ -268,8 +264,8 @@ static void test_object (void)
         macros are provided in <filename>gtype.h</filename>. For the example we used above, we would 
         write the following trivial code to declare the macros:
 <informalexample><programlisting>
-#define MAMAN_TYPE_BAR maman_bar_get_type ()
-G_DECLARE_FINAL_TYPE (MamanBar, maman_bar, MAMAN, BAR, GObject)
+#define VIEWER_TYPE_FILE viewer_file_get_type ()
+G_DECLARE_FINAL_TYPE (ViewerFile, viewer_file, VIEWER, FILE, GObject)
 </programlisting></informalexample>
       </para>
 
@@ -278,15 +274,15 @@ G_DECLARE_FINAL_TYPE (MamanBar, maman_bar, MAMAN, BAR, GObject)
         <function><link linkend="G-DEFINE-TYPE:CAPS">G_DEFINE_TYPE</link></function>
 	macro to define a class:
 <informalexample><programlisting>
-G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
+G_DEFINE_TYPE (ViewerFile, viewer_file, G_TYPE_OBJECT)
 </programlisting></informalexample>
       </para>
 
       <para>
-        Otherwise, the <function>maman_bar_get_type</function> function must be
+        Otherwise, the <function>viewer_file_get_type</function> function must be
         implemented manually:
 <informalexample><programlisting>
-GType maman_bar_get_type (void)
+GType viewer_file_get_type (void)
 {
   static GType type = 0;
   if (type == 0) {
@@ -294,7 +290,7 @@ GType maman_bar_get_type (void)
       /* You fill this structure. */
     };
     type = g_type_register_static (G_TYPE_OBJECT,
-                                   "MamanBarType",
+                                   "ViewerFile",
                                    &amp;info, 0);
   }
   return type;
@@ -384,45 +380,51 @@ GType maman_bar_get_type (void)
 <informalexample><programlisting>
 typedef struct {
   GObject parent;
+
   /* instance members */
-  int field_a;
-} MamanBar;
+  gchar *filename;
+} ViewerFile;
 
 typedef struct {
   GObjectClass parent;
+
   /* class members */
-  void (*do_action_public_virtual) (MamanBar *self, guint8 i);
+  /* the first is public, pure and virtual */
+  void (*open)  (ViewerFile  *self,
+                 GError     **error);
 
-  void (*do_action_public_pure_virtual) (MamanBar *self, guint8 i);
-} MamanBarClass;
+  /* the second is public and virtual */
+  void (*close) (ViewerFile  *self,
+                 GError     **error);
+} ViewerFileClass;
 
-#define MAMAN_TYPE_BAR (maman_bar_get_type ())
+#define VIEWER_TYPE_FILE (viewer_file_get_type ())
 
 GType 
-maman_bar_get_type (void)
+viewer_file_get_type (void)
 {
   static GType type = 0;
   if (type == 0) {
     const GTypeInfo info = {
-      sizeof (MamanBarClass),
+      sizeof (ViewerFileClass),
       NULL,           /* base_init */
       NULL,           /* base_finalize */
-      (GClassInitFunc) foo_class_init,
+      (GClassInitFunc) viewer_file_class_init,
       NULL,           /* class_finalize */
       NULL,           /* class_data */
-      sizeof (MamanBar),
+      sizeof (ViewerFile),
       0,              /* n_preallocs */
       (GInstanceInitFunc) NULL /* instance_init */
     };
     type = g_type_register_static (G_TYPE_OBJECT,
-                                   "BarType",
+                                   "ViewerFile",
                                    &amp;info, 0);
   }
   return type;
 }
 </programlisting></informalexample>
-          Upon the first call to <function>maman_bar_get_type</function>, the type named
-          <emphasis>BarType</emphasis> will be registered in the type system as inheriting
+          Upon the first call to <function>viewer_file_get_type</function>, the type named
+          <emphasis>ViewerFile</emphasis> will be registered in the type system as inheriting
           from the type <emphasis>G_TYPE_OBJECT</emphasis>.
         </para>
 
@@ -650,28 +652,37 @@ B *b;
           classed type which derives from 
           <link linkend="GTypeInterface"><type>GTypeInterface</type></link>. The following piece of code declares such an interface.
 <informalexample><programlisting>
-#define MAMAN_TYPE_IBAZ maman_ibaz_get_type ()
-G_DECLARE_INTERFACE(MamanIbaz, maman_ibaz, MAMAN, IBAZ, GObject)
+#define VIEWER_TYPE_EDITABLE viewer_editable_get_type ()
+G_DECLARE_INTERFACE (ViewerEditable, viewer_editable, VIEWER, EDITABLE, GObject)
 
-struct _MamanIbazInterface {
+struct _ViewerEditableInterface {
   GTypeInterface parent;
 
-  void (*do_action) (MamanIbaz *self);
+  void (*save) (ViewerEditable  *self,
+                GError         **error);
 };
 
-void maman_ibaz_do_action (MamanIbaz *self);
+void viewer_editable_save (ViewerEditable  *self,
+                           GError         **error);
 </programlisting></informalexample>
-          The interface function, <function>maman_ibaz_do_action</function> is implemented
+          The interface function, <function>viewer_editable_save</function> is implemented
           in a pretty simple way:
 <informalexample><programlisting>
-void maman_ibaz_do_action (MamanIbaz *self)
+void
+viewer_editable_save (ViewerEditable  *self,
+                      GError         **error)
 {
-  g_return_if_fail (MAMAN_IS_IBAZ (self));
+  ViewerEditableinterface *iface;
 
-  MAMAN_IBAZ_GET_INTERFACE (self)->do_action (self);
+  g_return_if_fail (VIEWER_IS_EDITABLE (self));
+  g_return_if_fail (error == NULL || *error == NULL);
+
+  iface = VIEWER_EDITABLE_GET_INTERFACE (self);
+  g_return_if_fail (iface->save != NULL);
+  iface->save (self);
 }
 </programlisting></informalexample>
-         <function>maman_ibaz_get_type</function> registers a type named <emphasis>MamanIbaz</emphasis>
+         <function>viewer_editable_get_type</function> registers a type named <emphasis>ViewerEditable</emphasis>
          which inherits from <type>G_TYPE_INTERFACE</type>. All interfaces must
          be children of <type>G_TYPE_INTERFACE</type> in the  inheritance tree.
         </para>
@@ -681,7 +692,7 @@ void maman_ibaz_do_action (MamanIbaz *self)
           a <link linkend="GTypeInterface"><type>GTypeInterface</type></link> structure. The interface structure is expected to
           contain the function pointers of the interface methods. It is good style to 
           define helper functions for each of the interface methods which simply call
-          the interface's method directly: <function>maman_ibaz_do_action</function>
+          the interface's method directly: <function>viewer_editable_save</function>
           is one of these.
         </para>
 
@@ -691,20 +702,20 @@ void maman_ibaz_do_action (MamanIbaz *self)
         to implement an interface:
 <informalexample><programlisting>
 static void
-maman_baz_do_action (MamanIbaz *self)
+viewer_file_save (ViewerEditable *self)
 {
-  g_print ("Baz implementation of Ibaz interface Action.\n");
+  g_print ("File implementation of editable interface save method.\n");
 }
 
 static void
-maman_ibaz_interface_init (MamanIbazInterface *iface)
+viewer_file_editable_interface_init (ViewerEditableInterface *iface)
 {
-  iface->do_action = maman_baz_do_action;
+  iface->save = viewer_file_save;
 }
 
-G_DEFINE_TYPE_WITH_CODE (MamanBaz, maman_baz, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (MAMAN_TYPE_IBAZ,
-                                                maman_ibaz_interface_init));
+G_DEFINE_TYPE_WITH_CODE (ViewerFile, viewer_file, VIEWER_TYPE_FILE,
+                         G_IMPLEMENT_INTERFACE (VIEWER_TYPE_EDITABLE,
+                                                viewer_file_editable_interface_init));
 </programlisting></informalexample>
         </para>
 
@@ -712,51 +723,52 @@ G_DEFINE_TYPE_WITH_CODE (MamanBaz, maman_baz, G_TYPE_OBJECT,
           If your code does have special requirements, you must write a custom
           <function>get_type</function> function to register your GType which
           inherits from some <link linkend="GObject"><type>GObject</type></link>
-          and which implements the interface <type>MamanIbaz</type>. For
-          example, this code registers a new <type>MamanBaz</type> class which
-          implements <type>MamanIbaz</type>:
+          and which implements the interface <type>ViewerEditable</type>. For
+          example, this code registers a new <type>ViewerFile</type> class which
+          implements <type>ViewerEditable</type>:
 <informalexample><programlisting>
 static void
-maman_baz_do_action (MamanIbaz *self)
+viewer_file_save (ViewerEditable *editable)
 {
-  g_print ("Baz implementation of Ibaz interface Action.\n");
+  g_print ("File implementation of editable interface save method.\n");
 }
 
 static void
-baz_interface_init (gpointer         g_iface,
-                    gpointer         iface_data)
+viewer_file_editable_interface_init (gpointer g_iface,
+                                     gpointer iface_data)
 {
-  MamanIbazInterface *iface = (MamanIbazInterface *)g_iface;
-  iface->do_action = maman_baz_do_action;
+  ViewerEditableInterface *iface = g_iface;
+
+  iface->save = viewer_file_save;
 }
 
 GType 
-maman_baz_get_type (void)
+viewer_file_get_type (void)
 {
   static GType type = 0;
   if (type == 0) {
     const GTypeInfo info = {
-      sizeof (MamanBazClass),
+      sizeof (ViewerFileClass),
       NULL,   /* base_init */
       NULL,   /* base_finalize */
       NULL,   /* class_init */
       NULL,   /* class_finalize */
       NULL,   /* class_data */
-      sizeof (MamanBaz),
+      sizeof (ViewerFile),
       0,      /* n_preallocs */
       NULL    /* instance_init */
     };
-    const GInterfaceInfo ibaz_info = {
-      (GInterfaceInitFunc) baz_interface_init,    /* interface_init */
-      NULL,               /* interface_finalize */
-      NULL          /* interface_data */
+    const GInterfaceInfo editable_info = {
+      (GInterfaceInitFunc) viewer_file_editable_interface_init,  /* interface_init */
+      NULL,   /* interface_finalize */
+      NULL    /* interface_data */
     };
-    type = g_type_register_static (G_TYPE_OBJECT,
-                                   "MamanBazType",
+    type = g_type_register_static (VIEWER_TYPE_FILE,
+                                   "ViewerFile",
                                    &amp;info, 0);
     g_type_add_interface_static (type,
-                                 MAMAN_TYPE_IBAZ,
-                                 &amp;ibaz_info);
+                                 VIEWER_TYPE_EDITABLE,
+                                 &amp;editable_info);
   }
   return type;
 }
@@ -824,12 +836,12 @@ struct _GInterfaceInfo
             <link linkend="G-DEFINE-INTERFACE:CAPS">G_DEFINE_INTERFACE</link>
             which can be used to define the interface:
 <informalexample><programlisting>
-G_DEFINE_INTERFACE (MamanIbaz, maman_ibaz, G_TYPE_OBJECT);
+G_DEFINE_INTERFACE (ViewerEditable, viewer_editable, G_TYPE_OBJECT);
 
 static void
-maman_ibaz_default_init (MamanIbazInterface *iface)
+viewer_editable_default_init (ViewerEditableInterface *iface)
 {
-  /* add properties and signals here, will only called once */
+  /* add properties and signals here, will only be called once */
 }
 </programlisting></informalexample>
           </para>
@@ -838,15 +850,15 @@ maman_ibaz_default_init (MamanIbazInterface *iface)
             Or you can do that yourself in a GType function for your interface:
 <informalexample><programlisting>
 GType
-maman_ibaz_get_type (void)
+viewer_editable_get_type (void)
 {
   static volatile gsize type_id = 0;
   if (g_once_init_enter (&amp;type_id)) {
     const GTypeInfo info = {
-      sizeof (MamanIbazInterface),
+      sizeof (ViewerEditableInterface),
       NULL,   /* base_init */
       NULL,   /* base_finalize */
-      maman_ibaz_default_init, /* class_init */
+      viewer_editable_default_init, /* class_init */
       NULL,   /* class_finalize */
       NULL,   /* class_data */
       0,      /* instance_size */
@@ -854,15 +866,15 @@ maman_ibaz_get_type (void)
       NULL    /* instance_init */
     };
     GType type = g_type_register_static (G_TYPE_INTERFACE,
-                                        "MamanIbaz",
-                                        &amp;info, 0);
+                                         "ViewerEditable",
+                                         &amp;info, 0);
     g_once_init_leave (&amp;type_id, type);
   }
   return type_id;
 }
 
 static void
-maman_ibaz_default_init (MamanIbazInterface *iface)
+viewer_editable_default_init (ViewerEditableInterface *iface)
 {
   /* add properties and signals here, will only called once */
 }

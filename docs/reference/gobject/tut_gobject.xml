@@ -55,68 +55,68 @@
     <para>
       Objects which inherit from GObject are allowed to override this
       constructed class method.
-      The example below shows how <type>MamanBar</type> overrides the parent's construction process:
+      The example below shows how <type>ViewerFile</type> overrides the parent's construction process:
 <informalexample><programlisting>
-#define MAMAN_TYPE_BAR maman_bar_get_type ()
-G_DECLARE_FINAL_TYPE (MamanBar, maman_bar, MAMAN, BAR, GObject)
+#define VIEWER_TYPE_FILE viewer_file_get_type ()
+G_DECLARE_FINAL_TYPE (ViewerFile, viewer_file, VIEWER, FILE, GObject)
 
-struct _MamanBar
+struct _ViewerFile
 {
   GObject parent_instance;
 
   /* instance members */
 };
 
-/* will create maman_bar_get_type and set maman_bar_parent_class */
-G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT);
+/* will create viewer_file_get_type and set viewer_file_parent_class */
+G_DEFINE_TYPE (ViewerFile, viewer_file, G_TYPE_OBJECT)
 
 static void
-maman_bar_constructed (GObject *obj)
+viewer_file_constructed (GObject *obj)
 {
   /* update the object state depending on constructor properties */
 
   /* Always chain up to the parent constructed function to complete object
    * initialisation. */
-  G_OBJECT_CLASS (maman_bar_parent_class)-&gt;constructed (obj);
+  G_OBJECT_CLASS (viewer_file_parent_class)-&gt;constructed (obj);
 }
 
 static void
-maman_bar_class_init (MamanBarClass *klass)
+viewer_file_class_init (ViewerFileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class-&gt;constructed = maman_bar_constructed;
+  object_class-&gt;constructed = viewer_file_constructed;
 }
 
 static void
-maman_bar_init (MamanBar *self)
+viewer_file_init (ViewerFile *self)
 {
   /* initialize the object */
 }
 
 </programlisting></informalexample>
-      If the user instantiates an object <type>MamanBar</type> with:
+      If the user instantiates an object <type>ViewerFile</type> with:
 <informalexample><programlisting>
-MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
+ViewerFile *file = g_object_new (VIEWER_TYPE_FILE, NULL);
 </programlisting></informalexample>        
       If this is the first instantiation of such an object, the
-      <function>maman_bar_class_init</function> function will be invoked
-      after any <function>maman_bar_base_class_init</function> function.
+      <function>viewer_file_class_init</function> function will be invoked
+      after any <function>viewer_file_base_class_init</function> function.
       This will make sure the class structure of this new object is
-      correctly initialized. Here, <function>maman_bar_class_init</function>
+      correctly initialized. Here, <function>viewer_file_class_init</function>
       is expected to override the object's class methods and setup the
       class' own methods. In the example above, the constructor method is
       the only overridden method: it is set to
-      <function>maman_bar_constructor</function>.
+      <function>viewer_file_constructor</function>.
     </para>
 
     <para>
       Once <function><link linkend="g-object-new">g_object_new</link></function> has obtained a reference to an initialized
       class structure, it invokes its constructor method to create an instance of the new 
-      object, if the constructor has been overridden in <function>maman_bar_class_init</function>.
+      object, if the constructor has been overridden in <function>viewer_file_class_init</function>.
       Overridden constructors must chain up to their parent’s constructor. In
       order to find the parent class and chain up to the parent class
-      constructor, we can use the <literal>maman_bar_parent_class</literal>
+      constructor, we can use the <literal>viewer_file_parent_class</literal>
       pointer that has been set up for us by the
       <link linkend="G-DEFINE-TYPE:CAPS"><literal>G_DEFINE_TYPE</literal></link>
       macro.
@@ -467,32 +467,32 @@ MamanBar *bar = g_object_new (MAMAN_TYPE_BAR, NULL);
 
 enum
 {
-  PROP_MAMAN_NAME = 1,
-  PROP_PAPA_NUMBER,
+  PROP_FILENAME = 1,
+  PROP_ZOOM_LEVEL,
   N_PROPERTIES
 };
 
 static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
 
 static void
-maman_bar_set_property (GObject      *object,
-                        guint         property_id,
-                        const GValue *value,
-                        GParamSpec   *pspec)
+viewer_file_set_property (GObject      *object,
+                          guint         property_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
 {
-  MamanBar *self = MAMAN_BAR (object);
+  ViewerFile *self = VIEWER_FILE (object);
 
   switch (property_id)
     {
-    case PROP_MAMAN_NAME:
-      g_free (self-&gt;priv-&gt;name);
-      self-&gt;priv-&gt;name = g_value_dup_string (value);
-      g_print ("maman: %s\n", self-&gt;priv-&gt;name);
+    case PROP_FILENAME:
+      g_free (self-&gt;priv-&gt;filename);
+      self-&gt;priv-&gt;filename = g_value_dup_string (value);
+      g_print ("filename: %s\n", self-&gt;priv-&gt;filename);
       break;
 
-    case PROP_PAPA_NUMBER:
-      self-&gt;priv-&gt;papa_number = g_value_get_uchar (value);
-      g_print ("papa: &percnt;u\n", self-&gt;priv-&gt;papa_number);
+    case PROP_ZOOM_LEVEL:
+      self-&gt;priv-&gt;zoom_level = g_value_get_uint (value);
+      g_print ("zoom level: &percnt;u\n", self-&gt;priv-&gt;zoom_level);
       break;
 
     default:
@@ -503,21 +503,21 @@ maman_bar_set_property (GObject      *object,
 }
 
 static void
-maman_bar_get_property (GObject    *object,
-                        guint       property_id,
-                        GValue     *value,
-                        GParamSpec *pspec)
+viewer_file_get_property (GObject    *object,
+                          guint       property_id,
+                          GValue     *value,
+                          GParamSpec *pspec)
 {
-  MamanBar *self = MAMAN_BAR (object);
+  ViewerFile *self = VIEWER_FILE (object);
 
   switch (property_id)
     {
-    case PROP_MAMAN_NAME:
-      g_value_set_string (value, self-&gt;priv-&gt;name);
+    case PROP_FILENAME:
+      g_value_set_string (value, self-&gt;priv-&gt;filename);
       break;
 
-    case PROP_PAPA_NUMBER:
-      g_value_set_uchar (value, self-&gt;priv-&gt;papa_number);
+    case PROP_ZOOM_LEVEL:
+      g_value_set_uint (value, self-&gt;priv-&gt;zoom_level);
       break;
 
     default:
@@ -528,28 +528,28 @@ maman_bar_get_property (GObject    *object,
 }
 
 static void
-maman_bar_class_init (MamanBarClass *klass)
+viewer_file_class_init (ViewerFileClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class-&gt;set_property = maman_bar_set_property;
-  object_class-&gt;get_property = maman_bar_get_property;
+  object_class-&gt;set_property = viewer_file_set_property;
+  object_class-&gt;get_property = viewer_file_get_property;
 
-  obj_properties[PROP_MAMAN_NAME] =
-    g_param_spec_string ("maman-name",
-                         "Maman construct prop",
-                         "Set maman's name",
-                         "no-name-set" /* default value */,
+  obj_properties[PROP_FILENAME] =
+    g_param_spec_string ("filename",
+                         "Filename",
+                         "Name of the file to load and display from.",
+                         NULL  /* default value */,
                          G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
 
-  obj_properties[PROP_PAPA_NUMBER] =
-    g_param_spec_uchar ("papa-number",
-                        "Number of current Papa",
-                        "Set/Get papa's number",
-                        0  /* minimum value */,
-                        10 /* maximum value */,
-                        2  /* default value */,
-                        G_PARAM_READWRITE));
+  obj_properties[PROP_ZOOM_LEVEL] =
+    g_param_spec_uint ("zoom-level",
+                       "Zoom level",
+                       "Zoom level to view the file at.",
+                       0  /* minimum value */,
+                       10 /* maximum value */,
+                       2  /* default value */,
+                       G_PARAM_READWRITE));
 
   g_object_class_install_properties (object_class,
                                      N_PROPERTIES,
@@ -560,15 +560,15 @@ maman_bar_class_init (MamanBarClass *klass)
 /* Use                                          */
 /************************************************/
 
-GObject *bar;
+ViewerFile *file;
 GValue val = G_VALUE_INIT;
 
-bar = g_object_new (MAMAN_TYPE_BAR, NULL);
+file = g_object_new (VIEWER_TYPE_FILE, NULL);
 
-g_value_init (&amp;val, G_TYPE_CHAR);
+g_value_init (&amp;val, G_TYPE_UINT);
 g_value_set_char (&amp;val, 11);
 
-g_object_set_property (G_OBJECT (bar), "papa-number", &amp;val);
+g_object_set_property (G_OBJECT (file), "zoom-level", &amp;val);
 
 g_value_unset (&amp;val);
 </programlisting></informalexample>
@@ -577,7 +577,7 @@ g_value_unset (&amp;val);
   
     <para>
       <function><link linkend="g-object-set-property">g_object_set_property</link></function> first ensures a property
-      with this name was registered in bar's <function>class_init</function> handler. If so it walks the class hierarchy,
+      with this name was registered in <emphasis>file</emphasis>'s <function>class_init</function> handler. If so it walks the class hierarchy,
       from bottom-most most-derived type, to top-most fundamental type to find the class
       which registered that property. It then tries to convert the user-provided
       <link linkend="GValue"><type>GValue</type></link>
@@ -615,13 +615,13 @@ g_value_unset (&amp;val);
       If the user's GValue had been set to a valid value, <function><link linkend="g-object-set-property">g_object_set_property</link></function>
       would have proceeded with calling the object's
       <function>set_property</function> class method. Here, since our
-      implementation of <type>Foo</type> did override this method, execution would jump to
-      <function>foo_set_property</function> after having retrieved from the 
+      implementation of <type>ViewerFile</type> did override this method, execution would jump to
+      <function>viewer_file_set_property</function> after having retrieved from the 
       <link linkend="GParamSpec"><type>GParamSpec</type></link> the <emphasis>param_id</emphasis>
       <footnote>
         <para>
           It should be noted that the param_id used here need only to uniquely identify each 
-          <link linkend="GParamSpec"><type>GParamSpec</type></link> within the <type>FooClass</type> such that the switch
+          <link linkend="GParamSpec"><type>GParamSpec</type></link> within the <type>ViewerFileClass</type> such that the switch
           used in the set and get methods actually works. Of course, this locally-unique 
           integer is purely an optimization: it would have been possible to use a set of 
           <emphasis>if (strcmp (a, b) == 0) {} else if (strcmp (a, b) == 0) {}</emphasis> statements.
@@ -667,11 +667,11 @@ g_value_unset (&amp;val);
         <function><link linkend="g-object-set-valist">g_object_set_valist</link></function> (variadic version) functions can be used to set
         multiple properties at once. The client code shown above can then be re-written as:
 <informalexample><programlisting>
-MamanBar *foo;
-foo = /* */;
-g_object_set (G_OBJECT (foo),
-              "papa-number", 2, 
-              "maman-name", "test", 
+ViewerFile *file;
+file = /* */;
+g_object_set (G_OBJECT (file),
+              "zoom-level", 6, 
+              "filename", "~/some-file.txt", 
               NULL);
 </programlisting></informalexample>
         This saves us from managing the GValues that we were needing to handle when using
