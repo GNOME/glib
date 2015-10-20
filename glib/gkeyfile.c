@@ -4319,16 +4319,29 @@ g_key_file_parse_value_as_double  (GKeyFile     *key_file,
   return double_value;
 }
 
+static gint
+strcmp_sized (const gchar *s1, size_t len1, const gchar *s2)
+{
+  size_t len2 = strlen (s2);
+  return strncmp (s1, s2, MAX (len1, len2));
+}
+
 static gboolean
 g_key_file_parse_value_as_boolean (GKeyFile     *key_file,
 				   const gchar  *value,
 				   GError      **error)
 {
   gchar *value_utf8;
+  gint i, length = 0;
 
-  if (strcmp (value, "true") == 0 || strcmp (value, "1") == 0)
+  /* Count the number of non-whitespace characters */
+  for (i = 0; value[i]; i++)
+    if (!g_ascii_isspace (value[i]))
+      length = i + 1;
+
+  if (strcmp_sized (value, length, "true") == 0 || strcmp_sized (value, length, "1") == 0)
     return TRUE;
-  else if (strcmp (value, "false") == 0 || strcmp (value, "0") == 0)
+  else if (strcmp_sized (value, length, "false") == 0 || strcmp_sized (value, length, "0") == 0)
     return FALSE;
 
   value_utf8 = _g_utf8_make_valid (value);

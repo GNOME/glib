@@ -574,6 +574,8 @@ test_boolean (void)
     "key2=false\n"
     "key3=1\n"
     "key4=0\n"
+    "key5= true\n"
+    "key6=true \n"
     "[invalid]\n"
     "key1=t\n"
     "key2=f\n"
@@ -586,6 +588,8 @@ test_boolean (void)
   check_boolean_value (keyfile, "valid", "key2", FALSE);
   check_boolean_value (keyfile, "valid", "key3", TRUE);
   check_boolean_value (keyfile, "valid", "key4", FALSE);
+  check_boolean_value (keyfile, "valid", "key5", TRUE);
+  check_boolean_value (keyfile, "valid", "key6", TRUE);
 
   g_key_file_get_boolean (keyfile, "invalid", "key1", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
