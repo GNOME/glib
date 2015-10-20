@@ -51,6 +51,10 @@
 
 #define MODERN_API_FAMILY 2
 
+#if WINAPI_FAMILY != MODERN_API_FAMILY
+#  include <ntdef.h>
+#endif
+
 #if WINAPI_FAMILY == MODERN_API_FAMILY
 /* This is for modern UI Builds, where we can't use LoadLibraryW()/GetProcAddress() */
 /* ntddk.h is found in the WDK, and MinGW */
