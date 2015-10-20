@@ -957,7 +957,7 @@ _g_io_win32_get_module (void)
  */
 #define GIO_MODULE_DIR \
   g_build_filename (g_win32_get_package_installation_directory_of_module (gio_dll), \
-		    "lib/gio/modules", \
+		    "lib", "gio", "modules", \
 		    NULL)
 
 #endif
