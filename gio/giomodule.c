@@ -1036,7 +1036,7 @@ get_gio_module_dir (void)
 #endif
       g_free (install_dir);
 #else
-      module_dir = GIO_MODULE_DIR;
+      module_dir = g_strdup (GIO_MODULE_DIR);
 #endif
     }
 
