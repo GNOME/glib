@@ -1033,7 +1033,9 @@ g_io_win32_msg_read (GIOChannel *channel,
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   MSG msg;               /* In case of alignment problems */
-  
+
+  *bytes_read = 0;
+
   if (count < sizeof (MSG))
     {
       g_set_error_literal (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
@@ -1062,7 +1064,9 @@ g_io_win32_msg_write (GIOChannel  *channel,
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   MSG msg;
-  
+
+  *bytes_written = 0;
+
   if (count != sizeof (MSG))
     {
       g_set_error_literal (err, G_IO_CHANNEL_ERROR, G_IO_CHANNEL_ERROR_INVAL,
