@@ -18,6 +18,7 @@ credentials
 data-input-stream
 data-output-stream
 dbus-appinfo
+dbus-launch
 de/
 defaultvalue
 desktop-app-info
@@ -75,6 +76,7 @@ gdbus-test-codegen-old
 gdbus-test-fixture
 gdbus-testserver
 gdbus-threading
+gdbus-unix-addresses
 glistmodel
 gio-du
 giomodule
@@ -124,11 +126,12 @@ socket-service
 socket-server
 srvtarget
 task
-test.mo
 test.gresource
+test.mo
 test_resources.c
 test_resources2.c
 test_resources2.h
+testfilemonitor
 thumbnail-verification
 tls-certificate
 tls-interaction
