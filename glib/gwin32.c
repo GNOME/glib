@@ -59,6 +59,8 @@
 #ifdef _MSC_VER
 #pragma comment (lib, "ntoskrnl.lib")
 #endif
+#else
+#include <winternl.h>
 #endif
 
 #include "glib.h"
