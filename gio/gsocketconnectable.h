@@ -45,7 +45,7 @@ typedef struct _GSocketConnectableIface GSocketConnectableIface;
  * @enumerate: Creates a #GSocketAddressEnumerator
  * @proxy_enumerate: Creates a #GProxyAddressEnumerator
  * @to_string: Format the connectable’s address as a string for debugging.
- *    Implementing this is optional. (Since: 2.48.0.)
+ *    Implementing this is optional. (Since: 2.48)
  *
  * Provides an interface for returning a #GSocketAddressEnumerator
  * and #GProxyAddressEnumerator

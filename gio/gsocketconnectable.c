@@ -161,7 +161,7 @@ g_socket_connectable_proxy_enumerate (GSocketConnectable *connectable)
  *
  * Returns: (transfer full): the formatted string
  *
- * Since: 2.48.0
+ * Since: 2.48
  */
 gchar *
 g_socket_connectable_to_string (GSocketConnectable *connectable)
