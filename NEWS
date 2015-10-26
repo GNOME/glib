@@ -1,7 +1,60 @@
-Overview of changes in GLib 2.47.0
+Overview of changes in GLib 2.47.1
 ==================================
 
 * The Unicode support has been updated to version 8.0 of the Unicode standard
+
+* GDesktopAppInfo no longer sets the DISPLAY environment variable when
+  launching apps. This is now done in the GAppLaunchContext implementations
+  when appropriate
+
+* Bug fixes:
+ 664740 Key-value file parser, space after integer
+ 687223 cleverer GThreadPool management
+ 692085 stderr and stdout are not always file descriptors 1 and 2
+ 697907 Add interface for socket-like things (GSocket, DTLS, etc)
+ 735754 Implement close on TLS GOutputStream
+ 737116 Add functions to print GSocketConnectables and addresses as strings
+ 743011 Minor additions to GError documentation
+ 749161 undefined reference to `__imp__stat32i64'
+ 749314 Cannot restore a just-trashed file
+ 751924 Add recvmmsg()-like API on GSocket
+ 752240 Add DTLS support to GIO
+ 752837 gobject and glib-compile-resources rely on .CRT$XCU section, no longer...
+ 753310 Remove `#pragma GCC system_header` from gmessages.h
+ 753935 Update example namespace and class names in GObject tutorial
+ 754855 Object instantiation documentation refers to example that no longer ex...
+ 754983 Wayland: g_desktop_app_info_launch_uris_with_spawn() forces DISPLAY va...
+ 754994 g_date_time_get_second () sometimes returns an off-by-one result
+ 755083 Clarify in G_ADD_PRIVATE that it is safe to call _get_instance_private...
+ 755351 Example still contains g_autoptr(gchar)
+ 755355 Move GStrv to glib.h so it can be used with g_auto()
+ 755374 g_variant_get_child(): flatten-first logic on '&'
+ 755496 glib 2.46 fails GStreamer test suite
+ 755609 glib 2.46.0 breaks Sun Java JVM 1.8.0.60
+ 755766 gvalue: The g_auto cleanup function assert if value is G_VALUE_INIT
+ 755795 2.46 considers empty files as octet-stream rather than text (leads to...
+ 755961 Fix up annotations in gbytes.c
+ 756053 MSVC doesn't understand the symbol 'msghdr'
+ 756054 MSVC linker error due to 'g_socket_send_message_with_timeout()'
+ 756077 testutils: remove internal ABI comment
+ 756099 g_main_context_query(): Annotate @n_fds as (in) parameter
+ 756139 musl: ctors called in the wrong order
+ 756179 gwin32.c: Replace VerifyVersionInfoW() with RtlGetVersion() due to AP...
+ 756251 The documentation of G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is confusing
+ 756255 GOutputStream swallowing errors in splice with G_OUTPUT_STREAM_SPLICE...
+ 756316 GSequence should provide fast api to check if empty
+ 756382 snprintf used on Windows with VS2015 doesn't support %n
+ 756477 gio/gthreadedresolver.c has outdated copy of bionic headers (for android)
+ 756550 gtypes.h: Make G_MININTn literals negative
+ 756875 Include ntdef.h for NTSTATUS
+ 756952 giomodule: return a copy of module name
+
+* Translation updates:
+ Basque
+ Czech
+ Serbian
+ Serbian Latin
+ Vietnamese
 
 
 Overview of changes in GLib 2.46.0
