@@ -172,14 +172,15 @@ test_fallback (void)
   apps = g_app_info_get_all_for_type ("text/x-python");
   g_assert_cmpint (g_list_length (apps), ==, old_length + 2);
 
-  /* check the ordering */
-  app = g_list_nth_data (apps, 0);
-  g_assert (g_app_info_equal (info1, app));
-
-  /* check that Test1 is the first recommended app */
+  /* check that Test1 is among the recommended apps */
   recomm = g_app_info_get_recommended_for_type ("text/x-python");
   g_assert (recomm != NULL);
-  app = g_list_nth_data (recomm, 0);
+  for (l = recomm; l; l = l->next)
+    {
+      app = l->data;
+      if (g_app_info_equal (info1, app))
+        break;
+    }
   g_assert (g_app_info_equal (info1, app));
 
   /* and that Test2 is among the fallback apps */
