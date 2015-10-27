@@ -567,7 +567,7 @@ g_win32_check_windows_version (const gint major,
 
 #if WINAPI_FAMILY != MODERN_API_FAMILY
   /* For non-modern UI Apps, use the LoadLibraryW()/GetProcAddress() thing */
-  typedef NTSTATUS fRtlGetVersion (PRTL_OSVERSIONINFOEXW);
+  typedef NTSTATUS (WINAPI fRtlGetVersion) (PRTL_OSVERSIONINFOEXW);
 
   fRtlGetVersion *RtlGetVersion;
   HMODULE hmodule;
