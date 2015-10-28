@@ -68,6 +68,10 @@
 #define __has_feature(x) 0
 #endif
 
+#ifndef __has_builtin
+#define __has_builtin(x) 0
+#endif
+
 #if     (!defined(__clang__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))) || \
         (defined(__clang__) && __has_feature(__alloc_size__))
 #define G_GNUC_ALLOC_SIZE(x) __attribute__((__alloc_size__(x)))
