@@ -69,6 +69,8 @@ test_programs = \
 	once				\
 	option-context			\
 	option-argv0			\
+	overflow			\
+	overflow-fallback		\
 	pattern				\
 	private				\
 	protocol			\
@@ -164,6 +166,9 @@ atomic_CFLAGS  = $(AM_CFLAGS)
 if HAVE_GCC
 atomic_CFLAGS += -Wstrict-aliasing=2
 endif
+
+overflow_fallback_SOURCES = overflow.c
+overflow_fallback_FALGS = $(AM_CFLAGS) -D_GLIB_TEST_OVERFLOW_FALLBACK
 
 test_programs += 642026-ec
 642026_ec_SOURCES = 642026.c
