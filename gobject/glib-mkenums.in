@@ -148,7 +148,7 @@ sub usage {
     print "  --fhead <text>               Output file header\n";
     print "  --fprod <text>               Per input file production\n";
     print "  --ftail <text>               Output file trailer\n";
-    print "  --eprod <text>               Per enum text (produced prior to value itarations)\n";
+    print "  --eprod <text>               Per enum text (produced prior to value iterations)\n";
     print "  --vhead <text>               Value header, produced before iterating over enum values\n";
     print "  --vprod <text>               Value text, produced for each enum value\n";
     print "  --vtail <text>               Value tail, produced after iterating over enum values\n";
