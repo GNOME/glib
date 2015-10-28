@@ -347,6 +347,17 @@ GUINT64_SWAP_LE_BE_X86_64
 </SECTION>
 
 <SECTION>
+<TITLE>Bounds-checked integer arithmetic</TITLE>
+<FILE>checkedmath</FILE>
+g_uint_checked_add
+g_uint_checked_mul
+g_uint64_checked_add
+g_uint64_checked_mul
+g_size_checked_add
+g_size_checked_mul
+</SECTION>
+
+<SECTION>
 <TITLE>Numerical Definitions</TITLE>
 <FILE>numerical</FILE>
 G_IEEE754_FLOAT_BIAS

@@ -371,13 +371,68 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 #define GSIZE_FROM_BE(val)	(GSIZE_TO_BE (val))
 #define GSSIZE_FROM_BE(val)	(GSSIZE_TO_BE (val))
 
-
 /* Portable versions of host-network order stuff
  */
 #define g_ntohl(val) (GUINT32_FROM_BE (val))
 #define g_ntohs(val) (GUINT16_FROM_BE (val))
 #define g_htonl(val) (GUINT32_TO_BE (val))
 #define g_htons(val) (GUINT16_TO_BE (val))
+
+/* Overflow-checked unsigned integer arithmetic
+ */
+#ifndef _GLIB_TEST_OVERFLOW_FALLBACK
+#if __GNUC__ >= 5
+#define _GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS
+#elif __has_builtin(__builtin_uadd_overflow)
+#define _GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS
+#endif
+#endif
+
+#define g_uint_checked_add(dest, a, b) \
+    _GLIB_CHECKED_ADD_U32(dest, a, b)
+#define g_uint_checked_mul(dest, a, b) \
+    _GLIB_CHECKED_MUL_U32(dest, a, b)
+
+#define g_uint64_checked_add(dest, a, b) \
+    _GLIB_CHECKED_ADD_U64(dest, a, b)
+#define g_uint64_checked_mul(dest, a, b) \
+    _GLIB_CHECKED_MUL_U64(dest, a, b)
+
+#if GLIB_SIZEOF_SIZE_T == 8
+#define g_size_checked_add(dest, a, b) \
+    _GLIB_CHECKED_ADD_U64(dest, a, b)
+#define g_size_checked_mul(dest, a, b) \
+    _GLIB_CHECKED_MUL_U64(dest, a, b)
+#else
+#define g_size_checked_add(dest, a, b) \
+    _GLIB_CHECKED_ADD_U32(dest, a, b)
+#define g_size_checked_mul(dest, a, b) \
+    _GLIB_CHECKED_MUL_U32(dest, a, b)
+#endif
+
+/* The names of the following inlines are private.  Use the macro
+ * definitions above.
+ */
+#ifdef _GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS
+static inline gboolean _GLIB_CHECKED_ADD_U32 (guint32 *dest, guint32 a, guint32 b) {
+  return !__builtin_uadd_overflow(a, b, dest); }
+static inline gboolean _GLIB_CHECKED_MUL_U32 (guint32 *dest, guint32 a, guint32 b) {
+  return !__builtin_umul_overflow(a, b, dest); }
+static inline gboolean _GLIB_CHECKED_ADD_U64 (guint64 *dest, guint64 a, guint64 b) {
+  return !__builtin_uaddll_overflow(a, b, (unsigned long long *) dest); }
+  G_STATIC_ASSERT(sizeof (unsigned long long) == sizeof (guint64));
+static inline gboolean _GLIB_CHECKED_MUL_U64 (guint64 *dest, guint64 a, guint64 b) {
+  return !__builtin_umulll_overflow(a, b, (unsigned long long *) dest); }
+#else
+static inline gboolean _GLIB_CHECKED_ADD_U32 (guint32 *dest, guint32 a, guint32 b) {
+  *dest = a + b; return *dest >= a; }
+static inline gboolean _GLIB_CHECKED_MUL_U32 (guint32 *dest, guint32 a, guint32 b) {
+  *dest = a * b; return !a || *dest / a == b; }
+static inline gboolean _GLIB_CHECKED_ADD_U64 (guint64 *dest, guint64 a, guint64 b) {
+  *dest = a + b; return *dest >= a; }
+static inline gboolean _GLIB_CHECKED_MUL_U64 (guint64 *dest, guint64 a, guint64 b) {
+  *dest = a * b; return !a || *dest / a == b; }
+#endif
 
 /* IEEE Standard 754 Single Precision Storage Format (gfloat):
  *

@@ -1423,6 +1423,130 @@
  * Returns: @val converted to the opposite byte order
  */
  
+/* Bounds-checked integer arithmetic {{{1 */
+/**
+ * SECTION:checkedmath
+ * @title: Bounds-checking integer arithmetic
+ * @short_description: a set of helpers for performing checked integer arithmetic
+ *
+ * GLib offers a set of macros for doing additions and multiplications
+ * of unsigned integers, with checks for overflows.
+ *
+ * The helpers all have three arguments.  A pointer to the destination
+ * is always the first argument and the operands to the operation are
+ * the other two.
+ *
+ * Following standard GLib convention, the helpers return %TRUE in case
+ * of success (ie: no overflow).
+ *
+ * The helpers may be macros, normal functions or inlines.  They may be
+ * implemented with inline assembly or compiler intrinsics where
+ * available.
+ *
+ * Since: 2.48
+ */
+
+/**
+ * g_uint_checked_add
+ * @dest: a pointer to the #guint destination
+ * @a: the #guint left operand
+ * @b: the #guint right operand
+ *
+ * Performs a checked addition of @a and @b, storing the result in
+ * @dest.
+ *
+ * If the operation is successful, %TRUE is returned.  If the operation
+ * overflows then the state of @dest is undefined and %FALSE is
+ * returned.
+ *
+ * Returns: %TRUE if there was no overflow
+ * Since: 2.48
+ */
+
+/**
+ * g_uint_checked_mul
+ * @dest: a pointer to the #guint destination
+ * @a: the #guint left operand
+ * @b: the #guint right operand
+ *
+ * Performs a checked multiplication of @a and @b, storing the result in
+ * @dest.
+ *
+ * If the operation is successful, %TRUE is returned.  If the operation
+ * overflows then the state of @dest is undefined and %FALSE is
+ * returned.
+ *
+ * Returns: %TRUE if there was no overflow
+ * Since: 2.48
+ */
+
+/**
+ * g_uint64_checked_add
+ * @dest: a pointer to the #guint64 destination
+ * @a: the #guint64 left operand
+ * @b: the #guint64 right operand
+ *
+ * Performs a checked addition of @a and @b, storing the result in
+ * @dest.
+ *
+ * If the operation is successful, %TRUE is returned.  If the operation
+ * overflows then the state of @dest is undefined and %FALSE is
+ * returned.
+ *
+ * Returns: %TRUE if there was no overflow
+ * Since: 2.48
+ */
+
+/**
+ * g_uint64_checked_mul
+ * @dest: a pointer to the #guint64 destination
+ * @a: the #guint64 left operand
+ * @b: the #guint64 right operand
+ *
+ * Performs a checked multiplication of @a and @b, storing the result in
+ * @dest.
+ *
+ * If the operation is successful, %TRUE is returned.  If the operation
+ * overflows then the state of @dest is undefined and %FALSE is
+ * returned.
+ *
+ * Returns: %TRUE if there was no overflow
+ * Since: 2.48
+ */
+
+/**
+ * g_size_checked_add
+ * @dest: a pointer to the #gsize destination
+ * @a: the #gsize left operand
+ * @b: the #gsize right operand
+ *
+ * Performs a checked addition of @a and @b, storing the result in
+ * @dest.
+ *
+ * If the operation is successful, %TRUE is returned.  If the operation
+ * overflows then the state of @dest is undefined and %FALSE is
+ * returned.
+ *
+ * Returns: %TRUE if there was no overflow
+ * Since: 2.48
+ */
+
+/**
+ * g_size_checked_mul
+ * @dest: a pointer to the #gsize destination
+ * @a: the #gsize left operand
+ * @b: the #gsize right operand
+ *
+ * Performs a checked multiplication of @a and @b, storing the result in
+ * @dest.
+ *
+ * If the operation is successful, %TRUE is returned.  If the operation
+ * overflows then the state of @dest is undefined and %FALSE is
+ * returned.
+ *
+ * Returns: %TRUE if there was no overflow
+ * Since: 2.48
+ */
 /* Numerical Definitions {{{1 */
 
 /**

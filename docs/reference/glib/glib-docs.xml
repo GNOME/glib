@@ -41,6 +41,7 @@
     <xi:include href="xml/macros.xml" />
     <xi:include href="xml/type_conversion.xml" />
     <xi:include href="xml/byte_order.xml" />
+    <xi:include href="xml/checkedmath.xml" />
     <xi:include href="xml/numerical.xml" />
     <xi:include href="xml/macros_misc.xml" />
     <xi:include href="xml/atomic_operations.xml" />
