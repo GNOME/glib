@@ -252,6 +252,11 @@ typedef void * GPid;
 #define GLIB_SYSDEF_MSG_PEEK      2
 #define GLIB_SYSDEF_MSG_DONTROUTE 4
 
+#define G_DIR_SEPARATOR '\\'
+#define G_DIR_SEPARATOR_S "\\"
+#define G_SEARCHPATH_SEPARATOR ';'
+#define G_SEARCHPATH_SEPARATOR_S ";"
+
 G_END_DECLS
 
 #endif /* GLIBCONFIG_H */

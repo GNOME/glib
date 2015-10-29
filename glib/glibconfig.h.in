@@ -204,6 +204,11 @@ typedef @g_pid_type@ GPid;
 #define GLIB_SYSDEF_MSG_PEEK @g_msg_peek@
 #define GLIB_SYSDEF_MSG_DONTROUTE @g_msg_dontroute@
 
+#define G_DIR_SEPARATOR '@g_dir_separator@'
+#define G_DIR_SEPARATOR_S "@g_dir_separator@"
+#define G_SEARCHPATH_SEPARATOR '@g_searchpath_separator@'
+#define G_SEARCHPATH_SEPARATOR_S "@g_searchpath_separator@"
+
 G_END_DECLS
 
 #endif /* __GLIBCONFIG_H__ */
