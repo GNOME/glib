@@ -637,6 +637,7 @@ main (int argc, char **argv)
   if (argc != 2)
     {
       g_printerr (_("You should give exactly one file name\n"));
+      g_free (c_name);
       return 1;
     }
 
@@ -701,6 +702,7 @@ main (int argc, char **argv)
   if ((table = parse_resource_file (srcfile, !generate_dependencies)) == NULL)
     {
       g_free (target);
+      g_free (c_name);
       return 1;
     }
 
@@ -725,6 +727,7 @@ main (int argc, char **argv)
 	  if (fd == -1)
 	    {
 	      g_printerr ("Can't open temp file\n");
+	      g_free (c_name);
 	      return 1;
 	    }
 	  close (fd);
@@ -770,6 +773,7 @@ main (int argc, char **argv)
     {
       g_printerr ("%s\n", error->message);
       g_free (target);
+      g_free (c_name);
       return 1;
     }
 
@@ -781,6 +785,7 @@ main (int argc, char **argv)
       if (file == NULL)
 	{
 	  g_printerr ("can't write to file %s", target);
+	  g_free (c_name);
 	  return 1;
 	}
 
@@ -817,6 +822,7 @@ main (int argc, char **argv)
 				&data_size, NULL))
 	{
 	  g_printerr ("can't read back temporary file");
+	  g_free (c_name);
 	  return 1;
 	}
       g_unlink (binary_target);
@@ -825,6 +831,7 @@ main (int argc, char **argv)
       if (file == NULL)
 	{
 	  g_printerr ("can't write to file %s", target);
+	  g_free (c_name);
 	  return 1;
 	}
 
@@ -920,6 +927,7 @@ main (int argc, char **argv)
   g_free (target);
   g_hash_table_destroy (table);
   g_free (xmllint);
+  g_free (c_name);
 
   return 0;
 }
