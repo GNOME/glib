@@ -22,6 +22,7 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
+#include <glibconfig.h>
 #include <glib/gtypes.h>
 
 G_BEGIN_DECLS
@@ -106,15 +107,7 @@ struct _GPollFD
  * A format specifier that can be used in printf()-style format strings
  * when printing the @fd member of a #GPollFD.
  */
-#ifdef G_OS_WIN32
-#if GLIB_SIZEOF_VOID_P == 8
-#define G_POLLFD_FORMAT "%#I64x"
-#else
-#define G_POLLFD_FORMAT "%#x"
-#endif
-#else
-#define G_POLLFD_FORMAT "%d"
-#endif
+/* defined in glibconfig.h */
 
 GLIB_AVAILABLE_IN_ALL
 gint

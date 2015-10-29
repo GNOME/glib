@@ -115,6 +115,8 @@ typedef gint64 goffset;
 
 #ifndef _WIN64
 
+#define G_POLLFD_FORMAT "%#x"
+
 #define GPOINTER_TO_INT(p)	((gint)   (p))
 #define GPOINTER_TO_UINT(p)	((guint)  (p))
 
@@ -129,6 +131,8 @@ typedef unsigned int guintptr;
 #define G_GUINTPTR_FORMAT       "u"
 
 #else
+
+#define G_POLLFD_FORMAT "%#I64x"
 
 #define GPOINTER_TO_INT(p)	((gint)  (gint64) (p))
 #define GPOINTER_TO_UINT(p)	((guint) (guint64) (p))

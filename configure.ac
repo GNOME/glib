@@ -125,6 +125,7 @@ case "$host" in
   *-*-mingw*)
     glib_native_win32=yes
     glib_pid_type='void *'
+    glib_pollfd_format='%#x'
     glib_cv_stack_grows=no
     # Unfortunately the mingw implementations of C99-style snprintf and vsnprintf
     # don't seem to be quite good enough, at least not in mingw-runtime-3.14.
@@ -138,6 +139,7 @@ case "$host" in
     case "$host" in
     x86_64-*-*)
       LIB_EXE_MACHINE_FLAG=X64
+      glib_pollfd_format='%#I64x'
       ;;
     esac
 
@@ -146,6 +148,7 @@ case "$host" in
   *)
     glib_native_win32=no
     glib_pid_type=int
+    glib_pollfd_format='%d'
     ;;
 esac
 case $host in
@@ -2866,6 +2869,8 @@ typedef gint64 goffset;
 #define G_GOFFSET_FORMAT        G_GINT64_FORMAT
 #define G_GOFFSET_CONSTANT(val) G_GINT64_CONSTANT(val)
 
+#define G_POLLFD_FORMAT $g_pollfd_format
+
 _______EOF
 
 	if test -z "$glib_unknown_void_p"; then
@@ -3333,8 +3338,9 @@ g_memory_barrier_needed="$glib_memory_barrier_needed"
 g_gcc_atomic_ops="$glib_cv_gcc_has_builtin_atomic_operations"
 
 g_module_suffix="$glib_gmodule_suffix"
-
 g_pid_type="$glib_pid_type"
+g_pollfd_format="\"$glib_pollfd_format\""
+
 case $host in
   *-*-cygwin*)
     glib_os="#define G_OS_UNIX
