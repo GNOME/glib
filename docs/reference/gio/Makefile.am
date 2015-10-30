@@ -126,6 +126,22 @@ HTML_IMAGES =			\
 	menu-example.png	\
 	menu-model.png
 
+example_files = \
+	gdbus-example-objectmanager.xml \
+	gdbus-example-objectmanager-server.c \
+	gdbus-example-objectmanager-client.c \
+	gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml \
+	gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml \
+	$(NULL)
+
+gdbus-example-objectmanager.xml: %: $(top_srcdir)/gio/tests/gdbus-object-manager-example/%
+gdbus-example-objectmanager-server.c: %: $(top_srcdir)/gio/tests/%
+gdbus-example-objectmanager-client.c: %: $(top_srcdir)/gio/tests/%
+gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml: %: $(top_builddir)/gio/tests/gdbus-object-manager-example/%
+gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml: %: $(top_builddir)/gio/tests/gdbus-object-manager-example/%
+$(example_files):
+	cp $< $@
+
 content_files =			\
 	version.xml		\
 	overview.xml		\
@@ -141,6 +157,7 @@ content_files =			\
 	gresource.xml		\
 	gdbus.xml		\
 	gdbus-codegen.xml	\
+	$(example_files)	\
 	$(NULL)
 
 expand_content_files =		\
@@ -192,7 +209,7 @@ XSLTPROC_FLAGS = \
 endif
 
 CLEANFILES ?=
-CLEANFILES += $(man_MANS)
+CLEANFILES += $(man_MANS) $(example_files)
 
 EXTRA_DIST += $(man_MANS)
 
