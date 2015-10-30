@@ -377,7 +377,7 @@ g_menu_exporter_group_subscribe (GMenuExporterGroup *group,
       guint id = GPOINTER_TO_INT (key);
       GMenuExporterMenu *menu = val;
 
-      if (g_sequence_get_length (menu->item_links))
+      if (!g_sequence_is_empty (menu->item_links))
         {
           g_variant_builder_open (builder, G_VARIANT_TYPE ("(uuaa{sv})"));
           g_variant_builder_add (builder, "u", group->id);

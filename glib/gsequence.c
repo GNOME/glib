@@ -883,7 +883,7 @@ g_sequence_sort_iter (GSequence                *seq,
   seq->access_prohibited = TRUE;
   tmp->access_prohibited = TRUE;
 
-  while (g_sequence_get_length (tmp) > 0)
+  while (!g_sequence_is_empty (tmp))
     {
       GSequenceNode *node = g_sequence_get_begin_iter (tmp);
 

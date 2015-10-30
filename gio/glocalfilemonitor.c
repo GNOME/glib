@@ -504,7 +504,7 @@ g_file_monitor_source_dispatch (GSource     *source,
   g_mutex_lock (&fms->lock);
 
   /* Create events for any pending changes that are due to fire */
-  while (g_sequence_get_length (fms->pending_changes))
+  while (!g_sequence_is_empty (fms->pending_changes))
     {
       GSequenceIter *iter = g_sequence_get_begin_iter (fms->pending_changes);
       PendingChange *pending = g_sequence_get (iter);
@@ -572,7 +572,7 @@ g_file_monitor_source_dispose (GFileMonitorSource *fms)
       while ((event = g_queue_pop_head (&fms->event_queue)))
         queued_event_free (event);
 
-      g_assert (g_sequence_get_length (fms->pending_changes) == 0);
+      g_assert (g_sequence_is_empty (fms->pending_changes));
       g_assert (g_hash_table_size (fms->pending_changes_table) == 0);
       g_assert (fms->event_queue.length == 0);
       fms->instance = NULL;
@@ -592,7 +592,7 @@ g_file_monitor_source_finalize (GSource *source)
 
   /* should already have been cleared in dispose of the monitor */
   g_assert (fms->instance == NULL);
-  g_assert (g_sequence_get_length (fms->pending_changes) == 0);
+  g_assert (g_sequence_is_empty (fms->pending_changes));
   g_assert (g_hash_table_size (fms->pending_changes_table) == 0);
   g_assert (fms->event_queue.length == 0);
 
