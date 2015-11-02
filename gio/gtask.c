@@ -198,7 +198,7 @@
  *       g_object_unref (task);
  *     }
  *
- *     static void
+ *     static gboolean
  *     decorator_ready (gpointer user_data)
  *     {
  *       GTask *task = user_data;
@@ -207,6 +207,8 @@
  *       cake_decorate_async (bd->cake, bd->frosting, bd->message,
  *                            g_task_get_cancellable (task),
  *                            decorated_cb, task);
+ *
+ *       return G_SOURCE_REMOVE;
  *     }
  *
  *     static void
@@ -243,8 +245,7 @@
  *           source = cake_decorator_wait_source_new (cake);
  *           // Attach @source to @task's GMainContext and have it call
  *           // decorator_ready() when it is ready.
- *           g_task_attach_source (task, source,
- *                                 G_CALLBACK (decorator_ready));
+ *           g_task_attach_source (task, source, decorator_ready);
  *           g_source_unref (source);
  *         }
  *     }
