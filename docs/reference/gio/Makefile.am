@@ -13,10 +13,11 @@ SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED" \
              --ignore-decorators="G_GNUC_WARN_UNUSED_RESULT"
 
 # The directory containing the source code. Relative to $(srcdir)
-DOC_SOURCE_DIR=$(top_srcdir)/gio
+DOC_SOURCE_DIR =$(top_srcdir)/gio $(top_builddir)/gio
 
-BUILT_HFILES=gioenumtypes.h
-HFILE_GLOB=$(top_srcdir)/gio/*.h
+HFILE_GLOB= \
+    $(top_srcdir)/gio/*.h \
+    $(top_builddir)/gio/gioenumtypes.h
 CFILE_GLOB=$(top_srcdir)/gio/*.c
 
 IGNORE_HFILES = \

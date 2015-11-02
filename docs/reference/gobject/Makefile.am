@@ -9,7 +9,7 @@ DOC_MODULE=gobject
 DOC_MAIN_SGML_FILE=gobject-docs.xml
 
 # The directory containing the source code. Relative to $(srcdir)
-DOC_SOURCE_DIR=$(top_srcdir)/gobject
+DOC_SOURCE_DIR =$(top_srcdir)/gobject $(top_builddir)/gobject
 
 # Extra options to supply to gtkdoc-scan
 SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED" \
