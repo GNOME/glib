@@ -9,7 +9,9 @@ DOC_MODULE=glib
 DOC_MAIN_SGML_FILE=glib-docs.xml
 
 # The directory containing the source code. Relative to $(srcdir)
-DOC_SOURCE_DIR=$(top_srcdir)/glib $(top_srcdir)/gmodule
+DOC_SOURCE_DIR = \
+    $(top_srcdir)/glib $(top_srcdir)/gmodule \
+    $(top_builddir)/glib $(top_builddir)/gmodule
 
 # Extra options to supply to gtkdoc-scan
 SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED" --ignore-decorators="GLIB_VAR|G_GNUC_WARN_UNUSED_RESULT"
@@ -18,8 +20,11 @@ SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED" --ignore-decorators="GLI
 MKDB_OPTIONS=--output-format=xml --name-space=g
 
 # Used for dependencies
-HFILE_GLOB=$(top_srcdir)/glib/*.h $(top_srcdir)/gmodule/*.h
-CFILE_GLOB=$(top_srcdir)/glib/*.c $(top_srcdir)/gmodule/*.c
+HFILE_GLOB = \
+    $(top_srcdir)/glib/*.h \
+    $(top_srcdir)/gmodule/*.h \
+    $(top_builddir)/glib/glibconfig.h
+CFILE_GLOB= $(top_srcdir)/glib/*.c $(top_srcdir)/gmodule/*.c
 
 # Ignore some private headers
 IGNORE_HFILES = \
