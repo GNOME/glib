@@ -375,6 +375,9 @@ gdbus_non_socket_SOURCES = \
 uninstalled_test_extra_programs += gdbus-example-objectmanager-client
 gdbus_example_objectmanager_client_LDADD = gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
 
+uninstalled_test_extra_programs += gdbus-example-objectmanager-server
+gdbus_example_objectmanager_server_LDADD = gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
+
 test_extra_programs += gsubprocess-testprog
 
 uninstalled_test_extra_programs += gdbus-test-fixture
