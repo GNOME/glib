@@ -1145,7 +1145,7 @@ g_settings_schema_list (GSettingsSchema *schema,
 
             child_table = NULL;
 
-            for (source = schema_sources; source; source = source->parent)
+            for (source = schema->source; source; source = source->parent)
               if ((child_table = gvdb_table_get_table (source->table, g_variant_get_string (child_schema, NULL))))
                 break;
 
