@@ -76,7 +76,6 @@ dist_test_data = \
 	$(NULL)
 
 test_data = \
-	test.gresource				\
 	$(NULL)
 
 uninstalled_test_extra_programs = \
@@ -519,6 +518,8 @@ test_ltlibraries += libresourceplugin.la
 libresourceplugin_la_SOURCES = resourceplugin.c plugin_resources.c
 libresourceplugin_la_LDFLAGS = -avoid-version -module -export-dynamic $(no_undefined)
 libresourceplugin_la_LIBADD = $(LDADD)
+
+test_data += test.gresource
 
 # libtool contains a bug whereby the created .la file doesn't contain the correct dlname='' in the case that
 # you're building a library but not installing it.  This is apparently because the only considered use for an
