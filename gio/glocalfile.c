@@ -2140,7 +2140,6 @@ g_local_file_trash (GFile         *file,
 
       g_unlink (infofile);
 
-      g_free (topdir);
       g_free (trashname);
       g_free (infofile);
       g_free (trashfile);
