@@ -1,3 +1,19 @@
+Overview of changes in GLib 2.46.2
+==================================
+
+* Varioius small fixes, with a focus on win32
+
+* The docs should now be complete when doing non-srcdir builds
+
+Bugs fixed:
+ 687223 cleverer GThreadPool management
+ 754983 Wayland: g_desktop_app_info_launch_uris_with_spawn() forces DISPLAY variable to Wayland display
+ 754994 g_date_time_get_second () sometimes returns an off-by-one result
+ 755609 glib 2.46.0 breaks Sun Java JVM 1.8.0.60
+ 756179 gwin32.c: Replace VerifyVersionInfoW() with RtlGetVersion() due to API deprecation
+ 756382 snprintf used on Windows with VS2015 doesn't support %n
+ 757628 gio tests fail to build when cross compiling 2.46.1
+
 Overview of changes in GLib 2.46.1
 ==================================
 
