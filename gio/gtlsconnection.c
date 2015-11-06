@@ -128,7 +128,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * GTlsConnection:database:
    *
    * The certificate database to use when verifying this TLS connection.
-   * If no cerificate database is set, then the default database will be
+   * If no certificate database is set, then the default database will be
    * used. See g_tls_backend_get_default_database().
    *
    * Since: 2.30
