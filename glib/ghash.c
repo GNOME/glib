@@ -679,10 +679,10 @@ g_hash_table_new (GHashFunc  hash_func,
  * g_hash_table_new_full:
  * @hash_func: a function to create a hash value from a key
  * @key_equal_func: a function to check two keys for equality
- * @key_destroy_func: (allow-none): a function to free the memory allocated for the key
+ * @key_destroy_func: (nullable): a function to free the memory allocated for the key
  *     used when removing the entry from the #GHashTable, or %NULL
  *     if you don't want to supply such a function.
- * @value_destroy_func: (allow-none): a function to free the memory allocated for the
+ * @value_destroy_func: (nullable): a function to free the memory allocated for the
  *     value used when removing the entry from the #GHashTable, or %NULL
  *     if you don't want to supply such a function.
  *
@@ -886,7 +886,7 @@ g_hash_table_iter_remove (GHashTableIter *iter)
  * @hash_table: our #GHashTable
  * @node_index: pointer to node to insert/replace
  * @key_hash: key hash
- * @key: (allow-none): key to replace with, or %NULL
+ * @key: (nullable): key to replace with, or %NULL
  * @value: value to replace with
  * @keep_new_key: whether to replace the key in the node with @key
  * @reusing_key: whether @key was taken out of the existing node
@@ -1133,7 +1133,7 @@ g_hash_table_destroy (GHashTable *hash_table)
  * and has the value %NULL. If you need this distinction, use
  * g_hash_table_lookup_extended().
  *
- * Returns: (allow-none): the associated value, or %NULL if the key is not found
+ * Returns: (nullable): the associated value, or %NULL if the key is not found
  */
 gpointer
 g_hash_table_lookup (GHashTable    *hash_table,
@@ -1155,7 +1155,7 @@ g_hash_table_lookup (GHashTable    *hash_table,
  * g_hash_table_lookup_extended:
  * @hash_table: a #GHashTable
  * @lookup_key: the key to look up
- * @orig_key: (allow-none): return location for the original key
+ * @orig_key: (out) (optional) (nullable): return location for the original key
  * @value: (out) (optional) (nullable): return location for the value associated
  * with the key
  *
@@ -1633,7 +1633,7 @@ g_hash_table_foreach (GHashTable *hash_table,
  * (keep in mind that an O(n) find/foreach operation issued for all n
  * values in a hash table ends up needing O(n*n) operations).
  *
- * Returns: (allow-none): The value of the first key/value pair is returned,
+ * Returns: (nullable): The value of the first key/value pair is returned,
  *     for which @predicate evaluates to %TRUE. If no pair with the
  *     requested property is found, %NULL is returned.
  *
@@ -1881,7 +1881,7 @@ g_str_hash (gconstpointer v)
 
 /**
  * g_direct_hash:
- * @v: (allow-none): a #gpointer key
+ * @v: (nullable): a #gpointer key
  *
  * Converts a gpointer to a hash value.
  * It can be passed to g_hash_table_new() as the @hash_func parameter,
@@ -1901,8 +1901,8 @@ g_direct_hash (gconstpointer v)
 
 /**
  * g_direct_equal:
- * @v1: (allow-none): a key
- * @v2: (allow-none): a key to compare with @v1
+ * @v1: (nullable): a key
+ * @v2: (nullable): a key to compare with @v1
  *
  * Compares two #gpointer arguments and returns %TRUE if they are equal.
  * It can be passed to g_hash_table_new() as the @key_equal_func
