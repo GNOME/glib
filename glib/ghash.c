@@ -1706,10 +1706,10 @@ g_hash_table_size (GHashTable *hash_table)
  * To iterate over the entries in a #GHashTable more efficiently, use a
  * #GHashTableIter.
  *
- * Returns: a #GList containing all the keys inside the hash
- *     table. The content of the list is owned by the hash table and
- *     should not be modified or freed. Use g_list_free() when done
- *     using the list.
+ * Returns: (transfer container): a #GList containing all the keys
+ *     inside the hash table. The content of the list is owned by the
+ *     hash table and should not be modified or freed. Use g_list_free()
+ *     when done using the list.
  *
  * Since: 2.14
  */
@@ -1792,10 +1792,10 @@ g_hash_table_get_keys_as_array (GHashTable *hash_table,
  * To iterate over the entries in a #GHashTable more efficiently, use a
  * #GHashTableIter.
  *
- * Returns: a #GList containing all the values inside the hash
- *     table. The content of the list is owned by the hash table and
- *     should not be modified or freed. Use g_list_free() when done
- *     using the list.
+ * Returns: (transfer container): a #GList containing all the values
+ *     inside the hash table. The content of the list is owned by the
+ *     hash table and should not be modified or freed. Use g_list_free()
+ *     when done using the list.
  *
  * Since: 2.14
  */
