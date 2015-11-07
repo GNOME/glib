@@ -2903,7 +2903,7 @@ g_test_trap_fork (guint64        usec_timeout,
  *
  * |[<!-- language="C" --> 
  *   static void
- *   test_create_large_object_subprocess (void)
+ *   test_create_large_object (void)
  *   {
  *     if (g_test_subprocess ())
  *       {
