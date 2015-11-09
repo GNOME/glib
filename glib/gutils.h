@@ -262,19 +262,29 @@ GLIB_AVAILABLE_IN_ALL
 gchar*  g_find_program_in_path  (const gchar *program);
 
 /* Bit tests
+ *
+ * These are defined in a convoluted way because we want the compiler to
+ * be able to inline the code for performance reasons, but for
+ * historical reasons, we must continue to provide non-inline versions
+ * on our ABI.
+ *
+ * We define these as functions in gutils.c which are just implemented
+ * as calls to the _impl() versions in order to preserve the ABI.
  */
-G_INLINE_FUNC gint	g_bit_nth_lsf (gulong  mask,
-				       gint    nth_bit) G_GNUC_CONST;
-G_INLINE_FUNC gint	g_bit_nth_msf (gulong  mask,
-				       gint    nth_bit) G_GNUC_CONST;
-G_INLINE_FUNC guint	g_bit_storage (gulong  number) G_GNUC_CONST;
 
-/* inline function implementations
- */
-#if defined (G_CAN_INLINE) || defined (__G_UTILS_C__)
-G_INLINE_FUNC gint
-g_bit_nth_lsf (gulong mask,
-	       gint   nth_bit)
+#define g_bit_nth_lsf(mask, nth_bit) g_bit_nth_lsf_impl(mask, nth_bit)
+#define g_bit_nth_msf(mask, nth_bit) g_bit_nth_msf_impl(mask, nth_bit)
+#define g_bit_storage(number)        g_bit_storage_impl(number)
+
+gint    (g_bit_nth_lsf)         (gulong mask,
+                                 gint   nth_bit);
+gint    (g_bit_nth_msf)         (gulong mask,
+                                 gint   nth_bit);
+guint   (g_bit_storage)         (gulong number);
+
+static inline gint
+g_bit_nth_lsf_impl (gulong mask,
+                    gint   nth_bit)
 {
   if (G_UNLIKELY (nth_bit < -1))
     nth_bit = -1;
@@ -282,13 +292,14 @@ g_bit_nth_lsf (gulong mask,
     {
       nth_bit++;
       if (mask & (1UL << nth_bit))
-	return nth_bit;
+        return nth_bit;
     }
   return -1;
 }
-G_INLINE_FUNC gint
-g_bit_nth_msf (gulong mask,
-	       gint   nth_bit)
+
+static inline gint
+g_bit_nth_msf_impl (gulong mask,
+                    gint   nth_bit)
 {
   if (nth_bit < 0 || G_UNLIKELY (nth_bit > GLIB_SIZEOF_LONG * 8))
     nth_bit = GLIB_SIZEOF_LONG * 8;
@@ -296,19 +307,20 @@ g_bit_nth_msf (gulong mask,
     {
       nth_bit--;
       if (mask & (1UL << nth_bit))
-	return nth_bit;
+        return nth_bit;
     }
   return -1;
 }
-G_INLINE_FUNC guint
-g_bit_storage (gulong number)
+
+static inline guint
+g_bit_storage_impl (gulong number)
 {
 #if defined(__GNUC__) && (__GNUC__ >= 4) && defined(__OPTIMIZE__)
   return G_LIKELY (number) ?
-	   ((GLIB_SIZEOF_LONG * 8U - 1) ^ (guint) __builtin_clzl(number)) + 1 : 1;
+           ((GLIB_SIZEOF_LONG * 8U - 1) ^ (guint) __builtin_clzl(number)) + 1 : 1;
 #else
   guint n_bits = 0;
-  
+
   do
     {
       n_bits++;
@@ -318,7 +330,6 @@ g_bit_storage (gulong number)
   return n_bits;
 #endif
 }
-#endif  /* G_CAN_INLINE || __G_UTILS_C__ */
 
 #ifndef G_DISABLE_DEPRECATED
 
