@@ -47,41 +47,6 @@ G_BEGIN_DECLS
 #  endif /* va_list is a pointer */
 #endif /* !G_VA_COPY */
 
-/* inlining hassle. for compilers that don't allow the 'inline' keyword,
- * mostly because of strict ANSI C compliance or dumbness, we try to fall
- * back to either '__inline__' or '__inline'.
- * G_CAN_INLINE is defined in glibconfig.h if the compiler seems to be 
- * actually *capable* to do function inlining, in which case inline 
- * function bodies do make sense. we also define G_INLINE_FUNC to properly 
- * export the function prototypes if no inlining can be performed.
- * inline function bodies have to be special cased with G_CAN_INLINE and a
- * .c file specific macro to allow one compiled instance with extern linkage
- * of the functions by defining G_IMPLEMENT_INLINES and the .c file macro.
- */
-#if defined (G_HAVE_INLINE) && defined (__GNUC__) && defined (__STRICT_ANSI__)
-#  undef inline
-#  define inline __inline__
-#elif !defined (G_HAVE_INLINE)
-#  undef inline
-#  if defined (G_HAVE___INLINE__)
-#    define inline __inline__
-#  elif defined (G_HAVE___INLINE)
-#    define inline __inline
-#  else /* !inline && !__inline__ && !__inline */
-#    define inline  /* don't inline, then */
-#  endif
-#endif
-#ifdef G_IMPLEMENT_INLINES
-#  define G_INLINE_FUNC _GLIB_EXTERN
-#  undef  G_CAN_INLINE
-#elif defined (__GNUC__) 
-#  define G_INLINE_FUNC static __inline __attribute__ ((unused))
-#elif defined (G_CAN_INLINE) 
-#  define G_INLINE_FUNC static inline
-#else /* can't inline */
-#  define G_INLINE_FUNC _GLIB_EXTERN
-#endif /* !G_INLINE_FUNC */
-
 GLIB_AVAILABLE_IN_ALL
 const gchar *         g_get_user_name        (void);
 GLIB_AVAILABLE_IN_ALL

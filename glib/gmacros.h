@@ -47,6 +47,27 @@
 #define G_GNUC_EXTENSION
 #endif
 
+/* Every compiler that we target supports inlining, but some of them may
+ * complain about it if we don't say "__inline".  If we have C99, then
+ * we can use "inline" directly.  Otherwise, we say "__inline" to avoid
+ * the warning.
+ */
+#define G_CAN_INLINE
+#if !(__STDC_VERSION__ > 199900)
+#undef inline
+#define inline __inline
+#endif
+
+/* For historical reasons we need to continue to support those who
+ * define G_IMPLEMENT_INLINES to mean "don't implement this here".
+ */
+#ifdef G_IMPLEMENT_INLINES
+#  define G_INLINE_FUNC extern
+#  undef  G_CAN_INLINE
+#else
+#  define G_INLINE_FUNC static inline
+#endif /* G_IMPLEMENT_INLINES */
+
 /* Provide macros to feature the GCC function attribute.
  */
 #if    __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)

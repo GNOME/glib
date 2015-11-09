@@ -1850,16 +1850,15 @@
 /**
  * G_INLINE_FUNC:
  *
- * This macro is used to export function prototypes so they can be linked
- * with an external version when no inlining is performed. The file which
- * implements the functions should define %G_IMPLEMENTS_INLINES
- * before including the headers which contain %G_INLINE_FUNC declarations.
- * Since inlining is very compiler-dependent using these macros correctly
- * is very difficult. Their use is strongly discouraged.
+ * This macro used to be used to conditionally define inline functions
+ * in a compatible way before this feature was supported in all
+ * compilers.  These days, GLib requires inlining support from the
+ * compiler, so your GLib-using programs can safely assume that the
+ * "inline" keywork works properly.
  *
- * This macro is often mistaken for a replacement for the inline keyword;
- * inline is already declared in a portable manner in the GLib headers
- * and can be used normally.
+ * Never use this macro anymore.  Just say "static inline".
+ *
+ * Deprecated: 2.48: Use "static inline" instead
  */
 
 /**
