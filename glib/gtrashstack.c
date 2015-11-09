@@ -24,6 +24,8 @@
 
 #include "config.h"
 
+#include "gtrashstack.h"
+
 /**
  * SECTION:trash_stack
  * @title: Trash Stacks
@@ -36,6 +38,11 @@
  *
  * There is no function to create a #GTrashStack. A %NULL #GTrashStack*
  * is a perfectly valid empty stack.
+ *
+ * There is no longer any good reason to use #GTrashStack.  If you have
+ * extra pieces of memory, free() them and allocate them again later.
+ *
+ * Deprecated: 2.48: #GTrashStack is deprecated without replacement
  */
 
 /**
@@ -46,6 +53,8 @@
  *
  * Each piece of memory that is pushed onto the stack
  * is cast to a GTrashStack*.
+ *
+ * Deprecated: 2.48: #GTrashStack is deprecated without replacement
  */
 
 /**
@@ -54,7 +63,17 @@
  * @data_p: (not nullable): the piece of memory to push on the stack
  *
  * Pushes a piece of memory onto a #GTrashStack.
+ * Deprecated: 2.48: #GTrashStack is deprecated without replacement
  */
+void
+g_trash_stack_push (GTrashStack **stack_p,
+                    gpointer      data_p)
+{
+  GTrashStack *data = (GTrashStack *) data_p;
+
+  data->next = *stack_p;
+  *stack_p = data;
+}
 
 /**
  * g_trash_stack_pop:
@@ -63,7 +82,25 @@
  * Pops a piece of memory off a #GTrashStack.
  *
  * Returns: the element at the top of the stack
+ * Deprecated: 2.48: #GTrashStack is deprecated without replacement
  */
+gpointer
+g_trash_stack_pop (GTrashStack **stack_p)
+{
+  GTrashStack *data;
+
+  data = *stack_p;
+  if (data)
+    {
+      *stack_p = data->next;
+      /* NULLify private pointer here, most platforms store NULL as
+       * subsequent 0 bytes
+       */
+      data->next = NULL;
+    }
+
+  return data;
+}
 
 /**
  * g_trash_stack_peek:
@@ -73,7 +110,17 @@
  * which may be %NULL.
  *
  * Returns: the element at the top of the stack
+ * Deprecated: 2.48: #GTrashStack is deprecated without replacement
  */
+gpointer
+g_trash_stack_peek (GTrashStack **stack_p)
+{
+  GTrashStack *data;
+
+  data = *stack_p;
+
+  return data;
+}
 
 /**
  * g_trash_stack_height:
@@ -85,8 +132,16 @@
  * where N denotes the number of items on the stack.
  *
  * Returns: the height of the stack
+ * Deprecated: 2.48: #GTrashStack is deprecated without replacement
  */
+guint
+g_trash_stack_height (GTrashStack **stack_p)
+{
+  GTrashStack *data;
+  guint i = 0;
 
-#define G_IMPLEMENT_INLINES 1
-#define __G_TRASH_STACK_C__
-#include "gtrashstack.h"
+  for (data = *stack_p; data; data = data->next)
+    i++;
+
+  return i;
+}
