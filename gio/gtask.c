@@ -194,7 +194,7 @@
  *
  *       // baking_data_free() will drop its ref on the cake, so we have to
  *       // take another here to give to the caller.
- *       g_task_return_pointer (result, g_object_ref (cake), g_object_unref);
+ *       g_task_return_pointer (task, g_object_ref (cake), g_object_unref);
  *       g_object_unref (task);
  *     }
  *
