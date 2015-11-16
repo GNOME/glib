@@ -56,7 +56,7 @@ G_BEGIN_DECLS
  *     Since 2.16
  * @G_REGEX_ERROR_NOTHING_TO_REPEAT: Nothing to repeat. Since 2.16
  * @G_REGEX_ERROR_UNRECOGNIZED_CHARACTER: Unrecognized character after "(?",
- *     "(?&lt;" or "(?P". Since 2.16
+ *     "(?<" or "(?P". Since 2.16
  * @G_REGEX_ERROR_POSIX_NAMED_CLASS_OUTSIDE_CLASS: POSIX named classes are
  *     supported only within a class. Since 2.16
  * @G_REGEX_ERROR_UNMATCHED_PARENTHESIS: Missing terminating ")" or ")"

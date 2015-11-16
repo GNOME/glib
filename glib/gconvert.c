@@ -79,13 +79,13 @@
  * "Presentaci&oacute;n.sxi". If the application which created it uses
  * ISO-8859-1 for its encoding,
  * |[
- * Character:  P  r  e  s  e  n  t  a  c  i  &oacute;  n  .  s  x  i
+ * Character:  P  r  e  s  e  n  t  a  c  i  ó  n  .  s  x  i
  * Hex code:   50 72 65 73 65 6e 74 61 63 69 f3 6e 2e 73 78 69
  * ]|
  * However, if the application use UTF-8, the actual file name on
  * disk would look like this:
  * |[
- * Character:  P  r  e  s  e  n  t  a  c  i  &oacute;     n  .  s  x  i
+ * Character:  P  r  e  s  e  n  t  a  c  i  ó     n  .  s  x  i
  * Hex code:   50 72 65 73 65 6e 74 61 63 69 c3 b3 6e 2e 73 78 69
  * ]|
  * Glib uses UTF-8 for its strings, and GUI toolkits like GTK+ that use
@@ -986,7 +986,7 @@ filename_charset_cache_free (gpointer data)
  * and said environment variables have no effect.
  *
  * `G_FILENAME_ENCODING` may be set to a comma-separated list of
- * character set names. The special token "&commat;locale" is taken
+ * character set names. The special token "\@locale" is taken
  * to  mean the character set for the [current locale][setlocale].
  * If `G_FILENAME_ENCODING` is not set, but `G_BROKEN_FILENAMES` is,
  * the character set of the current locale is taken as the filename
