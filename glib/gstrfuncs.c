@@ -1293,6 +1293,8 @@ g_strerror (gint errnum)
           if (error)
             g_print ("%s\n", error->message);
         }
+      else if (msg == (const gchar *)buf)
+        msg = g_strdup (buf);
 
       g_hash_table_insert (errors, GINT_TO_POINTER (errnum), (char *) msg);
     }
