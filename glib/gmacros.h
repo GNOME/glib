@@ -53,7 +53,7 @@
  * the warning.
  */
 #define G_CAN_INLINE
-#if !(__STDC_VERSION__ > 199900)
+#if !defined(__STDC_VERSION__) || (__STDC_VERSION__ < 199900)
 #undef inline
 #define inline __inline
 #endif
