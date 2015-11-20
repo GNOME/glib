@@ -1155,7 +1155,7 @@ gt_TYPE_WINT_T
 AC_TYPE_SIZE_T
 AC_CHECK_TYPES(ptrdiff_t)
 jm_AC_TYPE_INTMAX_T
-AC_CHECK_FUNCS([snprintf wcslen])
+AC_CHECK_FUNCS([snprintf strnlen wcslen wcsnlen mbrtowc wcrtomb])
 AC_FUNC_SNPRINTF_C99
 
 # Check if <sys/select.h> needs to be included for fd_set
