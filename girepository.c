@@ -559,12 +559,12 @@ g_irepository_get_dependencies (GIRepository *repository,
   g_return_val_if_fail (namespace != NULL, NULL);
 
   repository = get_repository (repository);
-  transitive_dependencies = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                   g_free, NULL);
 
-  /* Load the dependencies. */
   typelib = get_registered (repository, namespace, NULL);
   g_return_val_if_fail (typelib != NULL, NULL);
+
+  /* Load the dependencies. */
+  transitive_dependencies = g_hash_table_new (g_str_hash, g_str_equal);
   get_typelib_dependencies_transitive (repository, typelib,
                                        transitive_dependencies);
 
@@ -578,6 +578,8 @@ g_irepository_get_dependencies (GIRepository *repository,
       g_ptr_array_add (out, dependency);
       g_hash_table_iter_steal (&iter);
     }
+
+  g_hash_table_unref (transitive_dependencies);
 
   /* Add a NULL terminator. */
   g_ptr_array_add (out, NULL);
