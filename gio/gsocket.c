@@ -5220,16 +5220,16 @@ g_socket_receive_messages_with_timeout (GSocket        *socket,
 /**
  * g_socket_receive_message:
  * @socket: a #GSocket
- * @address: (out) (allow-none): a pointer to a #GSocketAddress
+ * @address: (out) (nullable): a pointer to a #GSocketAddress
  *     pointer, or %NULL
  * @vectors: (array length=num_vectors): an array of #GInputVector structs
  * @num_vectors: the number of elements in @vectors, or -1
- * @messages: (array length=num_messages) (allow-none): a pointer which
+ * @messages: (array length=num_messages) (out) (nullable): a pointer which
  *    may be filled with an array of #GSocketControlMessages, or %NULL
- * @num_messages: a pointer which will be filled with the number of
+ * @num_messages: (out): a pointer which will be filled with the number of
  *    elements in @messages, or %NULL
- * @flags: a pointer to an int containing #GSocketMsgFlags flags
- * @cancellable: (allow-none): a %GCancellable or %NULL
+ * @flags: (inout): a pointer to an int containing #GSocketMsgFlags flags
+ * @cancellable: a %GCancellable or %NULL
  * @error: a #GError pointer, or %NULL
  *
  * Receive data from a socket.  For receiving multiple messages, see
