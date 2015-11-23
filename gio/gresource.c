@@ -24,7 +24,7 @@
 
 #include "gresource.h"
 #include <gvdb/gvdb-reader.h>
-#include <gi18n.h>
+#include <gi18n-lib.h>
 #include <gio/gmemoryinputstream.h>
 #include <gio/gzlibdecompressor.h>
 #include <gio/gconverterinputstream.h>
