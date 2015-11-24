@@ -1,3 +1,40 @@
+Overview of changes in GLib 2.47.2
+==================================
+
+* We have formalised the assumption that all compilers that are
+  interested in support 'static inline' and simplified the macros around
+  this considerably.  Please watch for and report unintentional fallout.
+
+* New API: hardware-assisted helpers for overflow-checked integer math.
+
+* other fixes
+
+Bugs fixed:
+ 696324 gtester-report doesn't work with Python 3.x
+ 719966 glib: Add missing (nullable) and (optional) annotations
+ 752837 gobject and glib-compile-resources rely on .CRT$XCU section, no longer works with Win 10 UCRT (VS 2015)
+ 755364 make gtkdoc-check happy again
+ 756134 Segmentation fault on calling g_simple_action_group_add_action with bad action constructor call
+ 756179 gwin32.c: Replace VerifyVersionInfoW() with RtlGetVersion() due to API deprecation
+ 756988 GSequence should document each function's complexity
+ 757294 Move G_POLLFD_FORMAT to glibconfig.h
+ 757374 macros: clean up "inline" mess
+ 757451 doc: fix g_task_attach_source() example
+ 757628 gio tests fail to build when cross compiling 2.46.1
+ 757693 Invalid free in g_local_file_trash()
+ 757742 Fix up annotations in ghash.c
+ 758181 GTask: fix wrong example code
+
+Translations updated:
+ Greek
+ Hebrew
+ Hungarian
+ Norwegian bokmål
+ Portuguese
+ Scottish Gaelic
+ Simplified Chinese
+ Spanish
+
 Overview of changes in GLib 2.47.1
 ==================================
 
