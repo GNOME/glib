@@ -1720,6 +1720,7 @@ async_initable_init_second_finish (GAsyncInitable  *initable,
   if (result != NULL)
     {
       process_get_all_reply (proxy, result);
+      g_variant_unref (result);
     }
 
   proxy->priv->initialized = TRUE;
