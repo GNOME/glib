@@ -241,10 +241,13 @@ gchar*  g_find_program_in_path  (const gchar *program);
 #define g_bit_nth_msf(mask, nth_bit) g_bit_nth_msf_impl(mask, nth_bit)
 #define g_bit_storage(number)        g_bit_storage_impl(number)
 
+GLIB_AVAILABLE_IN_ALL
 gint    (g_bit_nth_lsf)         (gulong mask,
                                  gint   nth_bit);
+GLIB_AVAILABLE_IN_ALL
 gint    (g_bit_nth_msf)         (gulong mask,
                                  gint   nth_bit);
+GLIB_AVAILABLE_IN_ALL
 guint   (g_bit_storage)         (gulong number);
 
 static inline gint
