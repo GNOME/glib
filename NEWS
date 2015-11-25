@@ -1,3 +1,13 @@
+Overview of changes in GLib 2.47.3
+==================================
+
+The inline cleanup in the last release accidentally removed three
+symbols from libglib-2.0.so.  It is unlikely that this will have caused
+any problems because these symbols were only backup symbols for
+definitions exported as inlines in the header files, but ABI is ABI.
+
+This release corrects only this problem.
+
 Overview of changes in GLib 2.47.2
 ==================================
 
