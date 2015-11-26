@@ -658,6 +658,17 @@ add_packed_option (GApplication *application,
  * consumed, they will no longer be visible to the default handling
  * (which treats them as filenames to be opened).
  *
+ * It is important to use the proper GVariant format when retrieving
+ * the options with g_variant_dict_lookup():
+ * - for %G_OPTION_ARG_NONE, use b
+ * - for %G_OPTION_ARG_STRING, use &s
+ * - for %G_OPTION_ARG_INT, use i
+ * - for %G_OPTION_ARG_INT64, use x
+ * - for %G_OPTION_ARG_DOUBLE, use d
+ * - for %G_OPTION_ARG_FILENAME, use ^ay
+ * - for %G_OPTION_ARG_STRING_ARRAY, use &as
+ * - for %G_OPTION_ARG_FILENAME_ARRAY, use ^aay
+ *
  * Since: 2.40
  */
 void
