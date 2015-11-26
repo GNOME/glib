@@ -16,7 +16,7 @@
 typedef struct
 {
   gboolean success;
-  gsize c, a, b;
+  guint64 c, a, b;
 } Case;
 
 static void
