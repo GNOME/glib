@@ -419,8 +419,8 @@ static inline gboolean _GLIB_CHECKED_ADD_U32 (guint32 *dest, guint32 a, guint32 
 static inline gboolean _GLIB_CHECKED_MUL_U32 (guint32 *dest, guint32 a, guint32 b) {
   return !__builtin_umul_overflow(a, b, dest); }
 static inline gboolean _GLIB_CHECKED_ADD_U64 (guint64 *dest, guint64 a, guint64 b) {
-  return !__builtin_uaddll_overflow(a, b, (unsigned long long *) dest); }
   G_STATIC_ASSERT(sizeof (unsigned long long) == sizeof (guint64));
+  return !__builtin_uaddll_overflow(a, b, (unsigned long long *) dest); }
 static inline gboolean _GLIB_CHECKED_MUL_U64 (guint64 *dest, guint64 a, guint64 b) {
   return !__builtin_umulll_overflow(a, b, (unsigned long long *) dest); }
 #else
