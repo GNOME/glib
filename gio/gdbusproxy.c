@@ -1736,6 +1736,10 @@ static void
 async_initable_init_first (GAsyncInitable *initable)
 {
   GDBusProxy *proxy = G_DBUS_PROXY (initable);
+  GDBusSignalFlags signal_flags = G_DBUS_SIGNAL_FLAGS_NONE;
+
+  if (proxy->priv->flags & G_DBUS_PROXY_FLAGS_NO_MATCH_RULE)
+    signal_flags |= G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE;
 
   if (!(proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES))
     {
@@ -1747,7 +1751,7 @@ async_initable_init_first (GAsyncInitable *initable)
                                             "PropertiesChanged",
                                             proxy->priv->object_path,
                                             proxy->priv->interface_name,
-                                            G_DBUS_SIGNAL_FLAGS_NONE,
+                                            signal_flags,
                                             on_properties_changed,
                                             signal_subscription_ref (proxy->priv->signal_subscription_data),
                                             (GDestroyNotify) signal_subscription_unref);
@@ -1763,7 +1767,7 @@ async_initable_init_first (GAsyncInitable *initable)
                                             NULL,                        /* member */
                                             proxy->priv->object_path,
                                             NULL,                        /* arg0 */
-                                            G_DBUS_SIGNAL_FLAGS_NONE,
+                                            signal_flags,
                                             on_signal_received,
                                             signal_subscription_ref (proxy->priv->signal_subscription_data),
                                             (GDestroyNotify) signal_subscription_unref);
@@ -1778,7 +1782,7 @@ async_initable_init_first (GAsyncInitable *initable)
                                             "NameOwnerChanged",      /* signal name */
                                             "/org/freedesktop/DBus", /* path */
                                             proxy->priv->name,       /* arg0 */
-                                            G_DBUS_SIGNAL_FLAGS_NONE,
+                                            signal_flags,
                                             on_name_owner_changed,
                                             signal_subscription_ref (proxy->priv->signal_subscription_data),
                                             (GDestroyNotify) signal_subscription_unref);
