@@ -184,8 +184,6 @@ typedef unsigned __int64 guintptr;
 #endif /* !_MSC_VER and !__DMC__ */
 #endif	/* !__cplusplus */
 
-#define G_CAN_INLINE	1
-
 #ifndef _MSC_VER
 #define G_HAVE_ISO_VARARGS 1
 
