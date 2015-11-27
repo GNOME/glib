@@ -476,6 +476,7 @@ inet_ntop (gint family,
  *
  * Returns: a new #GInetAddress corresponding to @string, or %NULL if
  * @string could not be parsed.
+ *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
  */
@@ -513,6 +514,7 @@ g_inet_address_new_from_string (const gchar *string)
  * %G_SOCKET_FAMILY_IPV6.
  *
  * Returns: a new #GInetAddress corresponding to @family and @bytes.
+ *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
  */
@@ -536,6 +538,7 @@ g_inet_address_new_from_bytes (const guint8         *bytes,
  *
  * Returns: a new #GInetAddress corresponding to the loopback address
  * for @family.
+ *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
  */
@@ -563,6 +566,7 @@ g_inet_address_new_loopback (GSocketFamily family)
  *
  * Returns: a new #GInetAddress corresponding to the "any" address
  * for @family.
+ *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
  */
