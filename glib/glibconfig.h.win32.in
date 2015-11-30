@@ -172,18 +172,6 @@ typedef unsigned __int64 guintptr;
 #define G_VA_COPY	va_copy
 #endif /* not _MSC_VER */
 
-#ifdef	__cplusplus
-#define	G_HAVE_INLINE	1
-#else	/* !__cplusplus */
-#ifndef _MSC_VER
-#define G_HAVE_INLINE 1
-#endif /* _MSC_VER */
-#define G_HAVE___INLINE 1
-#if !defined(_MSC_VER) && !defined(__DMC__)
-#define G_HAVE___INLINE__ 1
-#endif /* !_MSC_VER and !__DMC__ */
-#endif	/* !__cplusplus */
-
 #ifndef _MSC_VER
 #define G_HAVE_ISO_VARARGS 1
 
