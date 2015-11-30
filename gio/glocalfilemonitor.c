@@ -748,6 +748,9 @@ g_local_file_monitor_start (GLocalFileMonitor *local_monitor,
 
   g_assert (!local_monitor->source);
 
+  source = g_file_monitor_source_new (local_monitor, filename, is_directory, flags);
+  local_monitor->source = source; /* owns the ref */
+
   if (is_directory && !class->mount_notify && (flags & G_FILE_MONITOR_WATCH_MOUNTS))
     {
 #ifdef G_OS_WIN32
@@ -770,9 +773,6 @@ g_local_file_monitor_start (GLocalFileMonitor *local_monitor,
                                G_CALLBACK (g_local_file_monitor_mounts_changed), local_monitor, 0);
 #endif
     }
-
-  source = g_file_monitor_source_new (local_monitor, filename, is_directory, flags);
-  local_monitor->source = source; /* owns the ref */
 
   G_LOCAL_FILE_MONITOR_GET_CLASS (local_monitor)->start (local_monitor,
                                                          source->dirname, source->basename, source->filename,
