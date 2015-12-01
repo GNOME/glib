@@ -1767,7 +1767,12 @@ g_application_get_resource_base_path (GApplication *application)
  *
  * Changing the resource base path once the application is running is
  * not recommended.  The point at which the resource path is consulted
- * for forming paths for various purposes is unspecified.
+ * for forming paths for various purposes is unspecified.  When writing
+ * a sub-class of #GApplication you should either set the
+ * #GApplication:resource-base-path property at construction time, or call
+ * this function during the instance initialization. Alternatively, you
+ * can call this function in the #GApplicationClass.startup virtual function,
+ * before chaining up to the parent implementation.
  *
  * Since: 2.42
  */
