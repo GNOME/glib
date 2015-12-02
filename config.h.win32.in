@@ -55,23 +55,6 @@
 /* Define to the GLIB minor version */
 #define GLIB_MINOR_VERSION @GLIB_MINOR_VERSION@
 
-/* Have inline keyword */
-#ifndef _MSC_VER
-#define G_HAVE_INLINE 1
-#else /* _MSC_VER */
-/* #undef G_HAVE_INLINE */
-#endif /* _MSC_VER */
-
-/* Have __inline keyword */
-#define G_HAVE___INLINE 1
-
-/* Have __inline__ keyword */
-#if !defined(_MSC_VER) && !defined(__DMC__)
-#define G_HAVE___INLINE__ 1
-#else /* _MSC_VER or __DMC__ */
-/* #undef G_HAVE___INLINE__ */
-#endif /* _MSC_VER or __DMC__ */
-
 /* A 'va_copy' style function */
 #ifndef _MSC_VER
 #define G_VA_COPY va_copy
