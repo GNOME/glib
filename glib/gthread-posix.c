@@ -1231,6 +1231,8 @@ g_system_thread_set_name (const gchar *name)
   prctl (PR_SET_NAME, name, 0, 0, 0, 0); /* on Linux */
 #elif defined(HAVE_PTHREAD_SETNAME_NP_WITHOUT_TID)
   pthread_setname_np(name); /* on OS X and iOS */
+#elif defined(HAVE_PTHREAD_SETNAME_NP_WITH_TID)
+  pthread_setname_np(pthread_self(), name); /* on Solaris */
 #endif
 }
 

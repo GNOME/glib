@@ -2095,6 +2095,16 @@ AS_IF([ test x"$have_threads" = xposix], [
              AC_DEFINE(HAVE_PTHREAD_SETNAME_NP_WITHOUT_TID,1,
                 [Have function pthread_setname_np(const char*)])],
             [AC_MSG_RESULT(no)])
+        dnl Sets thread names on Solaris 11.3 & higher
+        AC_MSG_CHECKING(for pthread_setname_np(pthread_t, const char*))
+        AC_LINK_IFELSE(
+            [AC_LANG_PROGRAM(
+                [#include <pthread.h>],
+                [pthread_setname_np(pthread_self(), "example")])],
+            [AC_MSG_RESULT(yes)
+             AC_DEFINE(HAVE_PTHREAD_SETNAME_NP_WITH_TID,1,
+                [Have function pthread_setname_np(pthread_t, const char*)])],
+            [AC_MSG_RESULT(no)])
         CPPFLAGS="$glib_save_CPPFLAGS"
 ])
 
