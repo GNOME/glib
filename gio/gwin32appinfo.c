@@ -4634,7 +4634,7 @@ g_app_info_get_all_for_type (const char *content_type)
   while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &handler))
     {
       if (handler->app &&
-          (ext->chosen_handler == NULL || ext->chosen_handler->app != app))
+          (ext->chosen_handler == NULL || ext->chosen_handler->app != handler->app))
           result = g_list_prepend (result,
                                    g_win32_app_info_new_from_app (handler->app,
                                                                   handler));
