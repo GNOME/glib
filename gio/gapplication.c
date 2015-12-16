@@ -2269,6 +2269,7 @@ g_application_run (GApplication  *application,
 {
   gchar **arguments;
   int status;
+  GMainContext *context;
   gboolean acquired_context;
 
   g_return_val_if_fail (G_IS_APPLICATION (application), 1);
@@ -2297,7 +2298,8 @@ g_application_run (GApplication  *application,
       g_free (prgname);
     }
 
-  acquired_context = g_main_context_acquire (NULL);
+  context = g_main_context_default ();
+  acquired_context = g_main_context_acquire (context);
   g_return_val_if_fail (acquired_context, 0);
 
   if (!G_APPLICATION_GET_CLASS (application)
@@ -2331,7 +2333,7 @@ g_application_run (GApplication  *application,
       if (application->priv->must_quit_now)
         break;
 
-      g_main_context_iteration (NULL, TRUE);
+      g_main_context_iteration (context, TRUE);
       status = 0;
     }
 
@@ -2355,10 +2357,10 @@ g_application_run (GApplication  *application,
   g_settings_sync ();
 
   if (!application->priv->must_quit_now)
-    while (g_main_context_iteration (NULL, FALSE))
+    while (g_main_context_iteration (context, FALSE))
       ;
 
-  g_main_context_release (NULL);
+  g_main_context_release (context);
 
   return status;
 }
