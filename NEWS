@@ -18,6 +18,7 @@ Overview of changes in GLib 2.47.4
  756214 gsettings: Don't translate ""
  710243 Add GParamSpec object ref management annotations
  735696 xdgmime: Finer handling for cases where mmap() is not available
+ 752983 gapplication: Acquire the main context before running
 
 * Translation updates:
  Swedish
