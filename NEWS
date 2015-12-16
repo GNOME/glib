@@ -1,3 +1,28 @@
+Overview of changes in GLib 2.47.4
+==================================
+
+* The GApplication documentation has been improved in several areas.
+
+* Bugs fixed:
+ 749092 gdb pretty-printers fail on Python 3 with a TypeError...
+ 757374 macros: clean up "inline" mess
+ 758641 Memory leak in g_dbus_proxy_new_for_bus_sync()
+ 759134 Add missing checks for gnulib vasnprintf()
+ 759408 Do not use uninitialized var 
+ 756475 Stop supporting non-POSIX getpwuid_r, getgrgid_r
+ 757372 GApplication: destroy the impl on shutdown
+ 728099 macros: add G_GNUC_CHECK_VERSION() for compiler checks
+ 757299 glib-compile-resources: do not leak c_name
+ 758553 Fix gettext use
+ 758823 file monitors: reorder some code to avoid segfault
+ 756214 gsettings: Don't translate ""
+ 710243 Add GParamSpec object ref management annotations
+ 735696 xdgmime: Finer handling for cases where mmap() is not available
+
+* Translation updates:
+ Swedish
+
+
 Overview of changes in GLib 2.47.3
 ==================================
 
