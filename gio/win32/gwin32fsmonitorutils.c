@@ -237,8 +237,8 @@ g_win32_fs_monitor_callback (DWORD        error,
 
 void
 g_win32_fs_monitor_init (GWin32FSMonitorPrivate *monitor,
-                         gchar *dirname,
-                         gchar *filename,
+                         const gchar *dirname,
+                         const gchar *filename,
                          gboolean isfile)
 {
   wchar_t *wdirname_with_long_prefix = NULL;

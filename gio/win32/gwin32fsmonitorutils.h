@@ -63,8 +63,8 @@ enum GWin32FileMonitorFileAlias
 GWin32FSMonitorPrivate* g_win32_fs_monitor_create (gboolean isfile);
 
 void g_win32_fs_monitor_init (GWin32FSMonitorPrivate *monitor,
-                              gchar *dirname,
-                              gchar *filename,
+                              const gchar *dirname,
+                              const gchar *filename,
                               gboolean isfile);
 
 void g_win32_fs_monitor_finalize (GWin32FSMonitorPrivate *monitor);
