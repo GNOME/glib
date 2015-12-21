@@ -2277,7 +2277,34 @@ g_application_run (GApplication  *application,
   g_return_val_if_fail (!application->priv->must_quit_now, 1);
 
 #ifdef G_OS_WIN32
-  arguments = g_win32_get_command_line ();
+  {
+    gint new_argc = 0;
+
+    arguments = g_win32_get_command_line ();
+
+    /*
+     * CommandLineToArgvW(), which is called by g_win32_get_command_line(),
+     * pulls in the whole command line that is used to call the program.  This is
+     * fine in cases where the program is a .exe program, but in the cases where the
+     * program is a called via a script, such as PyGObject's gtk-demo.py, which is normally
+     * called using 'python gtk-demo.py' on Windows, the program name (argv[0])
+     * returned by g_win32_get_command_line() will not be the argv[0] that ->local_command_line()
+     * would expect, causing the program to fail with "This application can not open files."
+     */
+    new_argc = g_strv_length (arguments);
+
+    if (new_argc > argc)
+      {
+        gint i;
+
+        for (i = 0; i < new_argc - argc; i++)
+          g_free (arguments[i]);
+
+        memmove (&arguments[0],
+                 &arguments[new_argc - argc],
+                 sizeof (arguments[0]) * (argc + 1));
+      }
+  }
 #else
   {
     gint i;
