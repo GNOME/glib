@@ -31,6 +31,7 @@
 
 #include "config.h"
 #include "glibconfig.h"
+#include "glib_trace.h"
 
 /* Uncomment the next line (and the corresponding line in gpoll.c) to
  * enable debugging printouts if the environment variable
@@ -628,6 +629,8 @@ g_main_context_new (void)
 
   context = g_new0 (GMainContext, 1);
 
+  TRACE (GLIB_MAIN_CONTEXT_NEW (context));
+
   g_mutex_init (&context->mutex);
   g_cond_init (&context->cond);
 
@@ -687,6 +690,9 @@ g_main_context_default (void)
   if (!default_main_context)
     {
       default_main_context = g_main_context_new ();
+
+      TRACE (GLIB_MAIN_CONTEXT_DEFAULT (default_main_context));
+
 #ifdef G_MAIN_POLL_DEBUG
       if (_g_main_poll_debug)
 	g_print ("default context=%p\n", default_main_context);
@@ -702,6 +708,8 @@ static void
 free_context (gpointer data)
 {
   GMainContext *context = data;
+
+  TRACE (GLIB_MAIN_CONTEXT_FREE (context));
 
   g_main_context_release (context);
   if (context)
@@ -783,6 +791,8 @@ g_main_context_push_thread_default (GMainContext *context)
     }
 
   g_queue_push_head (stack, context);
+
+  TRACE (GLIB_MAIN_CONTEXT_PUSH_THREAD_DEFAULT (context));
 }
 
 /**
@@ -806,6 +816,8 @@ g_main_context_pop_thread_default (GMainContext *context)
 
   g_return_if_fail (stack != NULL);
   g_return_if_fail (g_queue_peek_head (stack) == context);
+
+  TRACE (GLIB_MAIN_CONTEXT_POP_THREAD_DEFAULT (context));
 
   g_queue_pop_head (stack);
 
@@ -912,7 +924,11 @@ g_source_new (GSourceFuncs *source_funcs,
   source->priv->ready_time = -1;
 
   /* NULL/0 initialization for all other fields */
-  
+
+  TRACE (GLIB_SOURCE_NEW (source, source_funcs->prepare, source_funcs->check,
+                          source_funcs->dispatch, source_funcs->finalize,
+                          struct_size));
+
   return source;
 }
 
@@ -1174,14 +1190,15 @@ g_source_attach (GSource      *source,
   g_return_val_if_fail (source->context == NULL, 0);
   g_return_val_if_fail (!SOURCE_DESTROYED (source), 0);
   
-  TRACE (GLIB_MAIN_SOURCE_ATTACH (g_source_get_name (source)));
-
   if (!context)
     context = g_main_context_default ();
 
   LOCK_CONTEXT (context);
 
   result = g_source_attach_unlocked (source, context, TRUE);
+
+  TRACE (GLIB_MAIN_SOURCE_ATTACH (g_source_get_name (source), source, context,
+                                  result));
 
   UNLOCK_CONTEXT (context);
 
@@ -1193,7 +1210,8 @@ g_source_destroy_internal (GSource      *source,
 			   GMainContext *context,
 			   gboolean      have_lock)
 {
-  TRACE (GLIB_MAIN_SOURCE_DESTROY (g_source_get_name (source)));
+  TRACE (GLIB_MAIN_SOURCE_DESTROY (g_source_get_name (source), source,
+                                   context));
 
   if (!have_lock)
     LOCK_CONTEXT (context);
@@ -1507,6 +1525,46 @@ g_source_remove_child_source (GSource *source,
     UNLOCK_CONTEXT (context);
 }
 
+static void
+g_source_callback_ref (gpointer cb_data)
+{
+  GSourceCallback *callback = cb_data;
+
+  callback->ref_count++;
+}
+
+static void
+g_source_callback_unref (gpointer cb_data)
+{
+  GSourceCallback *callback = cb_data;
+
+  callback->ref_count--;
+  if (callback->ref_count == 0)
+    {
+      if (callback->notify)
+        callback->notify (callback->data);
+      g_free (callback);
+    }
+}
+
+static void
+g_source_callback_get (gpointer     cb_data,
+		       GSource     *source, 
+		       GSourceFunc *func,
+		       gpointer    *data)
+{
+  GSourceCallback *callback = cb_data;
+
+  *func = callback->func;
+  *data = callback->data;
+}
+
+static GSourceCallbackFuncs g_source_callback_funcs = {
+  g_source_callback_ref,
+  g_source_callback_unref,
+  g_source_callback_get,
+};
+
 /**
  * g_source_set_callback_indirect:
  * @source: the source
@@ -1538,6 +1596,12 @@ g_source_set_callback_indirect (GSource              *source,
   if (context)
     LOCK_CONTEXT (context);
 
+  if (callback_funcs != &g_source_callback_funcs)
+    TRACE (GLIB_SOURCE_SET_CALLBACK_INDIRECT (source, callback_data,
+                                              callback_funcs->ref,
+                                              callback_funcs->unref,
+                                              callback_funcs->get));
+
   old_cb_data = source->callback_data;
   old_cb_funcs = source->callback_funcs;
 
@@ -1550,47 +1614,6 @@ g_source_set_callback_indirect (GSource              *source,
   if (old_cb_funcs)
     old_cb_funcs->unref (old_cb_data);
 }
-
-static void
-g_source_callback_ref (gpointer cb_data)
-{
-  GSourceCallback *callback = cb_data;
-
-  callback->ref_count++;
-}
-
-
-static void
-g_source_callback_unref (gpointer cb_data)
-{
-  GSourceCallback *callback = cb_data;
-
-  callback->ref_count--;
-  if (callback->ref_count == 0)
-    {
-      if (callback->notify)
-	callback->notify (callback->data);
-      g_free (callback);
-    }
-}
-
-static void
-g_source_callback_get (gpointer     cb_data,
-		       GSource     *source, 
-		       GSourceFunc *func,
-		       gpointer    *data)
-{
-  GSourceCallback *callback = cb_data;
-
-  *func = callback->func;
-  *data = callback->data;
-}
-
-static GSourceCallbackFuncs g_source_callback_funcs = {
-  g_source_callback_ref,
-  g_source_callback_unref,
-  g_source_callback_get,
-};
 
 /**
  * g_source_set_callback:
@@ -1621,6 +1644,8 @@ g_source_set_callback (GSource        *source,
   GSourceCallback *new_callback;
 
   g_return_if_fail (source != NULL);
+
+  TRACE (GLIB_SOURCE_SET_CALLBACK (source, func, data, notify));
 
   new_callback = g_new (GSourceCallback, 1);
 
@@ -1664,6 +1689,8 @@ g_source_set_priority_unlocked (GSource      *source,
   
   g_return_if_fail (source->priv->parent_source == NULL ||
 		    source->priv->parent_source->priority == priority);
+
+  TRACE (GLIB_SOURCE_SET_PRIORITY (source, context, priority));
 
   if (context)
     {
@@ -1804,6 +1831,8 @@ g_source_set_ready_time (GSource *source,
 
   source->priv->ready_time = ready_time;
 
+  TRACE (GLIB_SOURCE_SET_READY_TIME (source, ready_time));
+
   if (context)
     {
       /* Quite likely that we need to change the timeout on the poll */
@@ -1919,6 +1948,8 @@ g_source_set_name (GSource    *source,
 
   if (context)
     LOCK_CONTEXT (context);
+
+  TRACE (GLIB_SOURCE_SET_NAME (source, name));
 
   /* setting back to NULL is allowed, just because it's
    * weird if get_name can return NULL but you can't
@@ -2037,6 +2068,9 @@ g_source_unref_internal (GSource      *source,
   source->ref_count--;
   if (source->ref_count == 0)
     {
+      TRACE (GLIB_SOURCE_BEFORE_FREE (source, context,
+                                      source->source_funcs->finalize));
+
       old_cb_data = source->callback_data;
       old_cb_funcs = source->callback_funcs;
 
@@ -3161,9 +3195,11 @@ g_main_dispatch (GMainContext *context)
           current->source = source;
           current->depth++;
 
-	  TRACE( GLIB_MAIN_BEFORE_DISPATCH (g_source_get_name (source)));
+          TRACE (GLIB_MAIN_BEFORE_DISPATCH (g_source_get_name (source), source,
+                                            dispatch, callback, user_data));
           need_destroy = !(* dispatch) (source, callback, user_data);
-	  TRACE( GLIB_MAIN_AFTER_DISPATCH (g_source_get_name (source)));
+          TRACE (GLIB_MAIN_AFTER_DISPATCH (g_source_get_name (source), source,
+                                           dispatch, need_destroy));
 
           current->source = prev_source;
           current->depth--;
@@ -3228,6 +3264,7 @@ g_main_context_acquire (GMainContext *context)
     {
       context->owner = self;
       g_assert (context->owner_count == 0);
+      TRACE (GLIB_MAIN_CONTEXT_ACQUIRE (context, TRUE  /* success */));
     }
 
   if (context->owner == self)
@@ -3235,9 +3272,13 @@ g_main_context_acquire (GMainContext *context)
       context->owner_count++;
       result = TRUE;
     }
+  else
+    {
+      TRACE (GLIB_MAIN_CONTEXT_ACQUIRE (context, FALSE  /* failure */));
+    }
 
   UNLOCK_CONTEXT (context); 
-  
+
   return result;
 }
 
@@ -3261,6 +3302,8 @@ g_main_context_release (GMainContext *context)
   context->owner_count--;
   if (context->owner_count == 0)
     {
+      TRACE (GLIB_MAIN_CONTEXT_RELEASE (context));
+
       context->owner = NULL;
 
       if (context->waiters)
@@ -3402,6 +3445,8 @@ g_main_context_prepare (GMainContext *context,
       return FALSE;
     }
 
+  TRACE (GLIB_MAIN_CONTEXT_BEFORE_PREPARE (context));
+
 #if 0
   /* If recursing, finish up current dispatch, before starting over */
   if (context->pending_dispatches)
@@ -3451,6 +3496,7 @@ g_main_context_prepare (GMainContext *context,
               UNLOCK_CONTEXT (context);
 
               result = (* prepare) (source, &source_timeout);
+              TRACE (GLIB_MAIN_AFTER_PREPARE (source, prepare, source_timeout));
 
               LOCK_CONTEXT (context);
               context->in_check_or_prepare--;
@@ -3515,6 +3561,8 @@ g_main_context_prepare (GMainContext *context,
     }
   g_source_iter_clear (&iter);
 
+  TRACE (GLIB_MAIN_CONTEXT_AFTER_PREPARE (context, current_priority, n_ready));
+
   UNLOCK_CONTEXT (context);
   
   if (priority)
@@ -3553,6 +3601,8 @@ g_main_context_query (GMainContext *context,
   gushort events;
   
   LOCK_CONTEXT (context);
+
+  TRACE (GLIB_MAIN_CONTEXT_BEFORE_QUERY (context, max_priority));
 
   n_poll = 0;
   lastpollrec = NULL;
@@ -3596,7 +3646,10 @@ g_main_context_query (GMainContext *context,
       if (*timeout != 0)
         context->time_is_fresh = FALSE;
     }
-  
+
+  TRACE (GLIB_MAIN_CONTEXT_AFTER_QUERY (context, context->timeout,
+                                        fds, n_poll));
+
   UNLOCK_CONTEXT (context);
 
   return n_poll;
@@ -3639,14 +3692,21 @@ g_main_context_check (GMainContext *context,
       return FALSE;
     }
 
+  TRACE (GLIB_MAIN_CONTEXT_BEFORE_CHECK (context, max_priority, fds, n_fds));
+
   if (context->wake_up_rec.revents)
-    g_wakeup_acknowledge (context->wakeup);
+    {
+      TRACE (GLIB_MAIN_CONTEXT_WAKEUP_ACKNOWLEDGE (context));
+      g_wakeup_acknowledge (context->wakeup);
+    }
 
   /* If the set of poll file descriptors changed, bail out
    * and let the main loop rerun
    */
   if (context->poll_changed)
     {
+      TRACE (GLIB_MAIN_CONTEXT_AFTER_CHECK (context, 0));
+
       UNLOCK_CONTEXT (context);
       return FALSE;
     }
@@ -3690,6 +3750,8 @@ g_main_context_check (GMainContext *context,
               UNLOCK_CONTEXT (context);
 
               result = (* check) (source);
+
+              TRACE (GLIB_MAIN_AFTER_CHECK (source, check, result));
 
               LOCK_CONTEXT (context);
               context->in_check_or_prepare--;
@@ -3756,6 +3818,8 @@ g_main_context_check (GMainContext *context,
     }
   g_source_iter_clear (&iter);
 
+  TRACE (GLIB_MAIN_CONTEXT_AFTER_CHECK (context, n_ready));
+
   UNLOCK_CONTEXT (context);
 
   return n_ready > 0;
@@ -3775,10 +3839,14 @@ g_main_context_dispatch (GMainContext *context)
 {
   LOCK_CONTEXT (context);
 
+  TRACE (GLIB_MAIN_CONTEXT_BEFORE_DISPATCH (context));
+
   if (context->pending_dispatches->len > 0)
     {
       g_main_dispatch (context);
     }
+
+  TRACE (GLIB_MAIN_CONTEXT_AFTER_DISPATCH (context));
 
   UNLOCK_CONTEXT (context);
 }
@@ -3941,7 +4009,9 @@ g_main_loop_new (GMainContext *context,
   loop->context = context;
   loop->is_running = is_running != FALSE;
   loop->ref_count = 1;
-  
+
+  TRACE (GLIB_MAIN_LOOP_NEW (loop, context));
+
   return loop;
 }
 
@@ -4074,6 +4144,8 @@ g_main_loop_quit (GMainLoop *loop)
   g_cond_broadcast (&loop->context->cond);
 
   UNLOCK_CONTEXT (loop->context);
+
+  TRACE (GLIB_MAIN_LOOP_QUIT (loop));
 }
 
 /**
@@ -4489,6 +4561,8 @@ g_main_context_wakeup (GMainContext *context)
 
   g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0);
 
+  TRACE (GLIB_MAIN_CONTEXT_WAKEUP (context));
+
   g_wakeup_signal (context->wakeup);
 }
 
@@ -4586,6 +4660,8 @@ g_timeout_dispatch (GSource     *source,
     }
 
   again = callback (user_data);
+
+  TRACE (GLIB_TIMEOUT_DISPATCH (source, source->context, callback, user_data, again));
 
   if (again)
     g_timeout_set_expiration (timeout_source, g_source_get_time (source));
@@ -4711,6 +4787,9 @@ g_timeout_add_full (gint           priority,
 
   g_source_set_callback (source, function, data, notify);
   id = g_source_attach (source, NULL);
+
+  TRACE (GLIB_TIMEOUT_ADD (source, g_main_context_default (), id, priority, interval, function, data));
+
   g_source_unref (source);
 
   return id;
@@ -5442,14 +5521,20 @@ g_idle_dispatch (GSource    *source,
 		 GSourceFunc callback,
 		 gpointer    user_data)
 {
+  gboolean again;
+
   if (!callback)
     {
       g_warning ("Idle source dispatched without callback\n"
 		 "You must call g_source_set_callback().");
       return FALSE;
     }
-  
-  return callback (user_data);
+
+  again = callback (user_data);
+
+  TRACE (GLIB_IDLE_DISPATCH (source, source->context, callback, user_data, again));
+
+  return again;
 }
 
 /**
@@ -5517,6 +5602,9 @@ g_idle_add_full (gint           priority,
 
   g_source_set_callback (source, function, data, notify);
   id = g_source_attach (source, NULL);
+
+  TRACE (GLIB_IDLE_ADD (source, g_main_context_default (), id, priority, function, data));
+
   g_source_unref (source);
 
   return id;

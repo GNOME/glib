@@ -57,6 +57,7 @@
 #include "gslice.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
+#include "glib_trace.h"
 
 /**
  * SECTION:threads
@@ -769,6 +770,9 @@ g_thread_proxy (gpointer data)
    */
   G_LOCK (g_thread_new);
   G_UNLOCK (g_thread_new);
+
+  TRACE (GLIB_THREAD_SPAWNED (thread->thread.func, thread->thread.data,
+                              thread->name));
 
   if (thread->name)
     {
