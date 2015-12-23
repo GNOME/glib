@@ -889,7 +889,7 @@ g_utf8_to_ucs4 (const gchar *str,
  *     If @len < 0, then the string is nul-terminated.
  * @items_read: (out caller-allocates) (optional): location to store number of
  *     characters read, or %NULL.
- * @items_written: (out caller-allocates) (optioanl): location to store number
+ * @items_written: (out caller-allocates) (optional): location to store number
  *     of bytes written or %NULL. The value here stored does not include the
  *     trailing 0 byte.
  * @error: location to store the error occurring, or %NULL to ignore
