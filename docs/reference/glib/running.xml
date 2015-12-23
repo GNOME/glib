@@ -310,7 +310,8 @@ Which would print the contents of each widget in a list of widgets.
 <ulink url="http://sourceware.org/systemtap/">SystemTap</ulink> is a dynamic whole-system
 analysis toolkit.  GLib ships with a file <filename>glib.stp</filename> which defines a
 set of probe points, which you can hook into with custom SystemTap scripts.
-See the files <filename>glib.stp</filename> and <filename>gobject.stp</filename> which
+See the files <filename>glib.stp</filename>, <filename>gobject.stp</filename>
+and <filename>gio.stp</filename> which
 are in your shared SystemTap scripts directory.
 </para>
 

@@ -51,6 +51,7 @@ IGNORE_HFILES = \
 	gfileattribute-priv.h		\
 	gfileinfo-priv.h		\
 	ghttpproxy.h			\
+	gio_trace.h			\
 	giomodule-priv.h		\
 	gioprivate.h			\
 	giowin32-priv.h			\

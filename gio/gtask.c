@@ -17,6 +17,7 @@
  */
 
 #include "config.h"
+#include "gio_trace.h"
 
 #include "gtask.h"
 
@@ -700,6 +701,9 @@ g_task_new (gpointer              source_object,
   if (source)
     task->creation_time = g_source_get_time (source);
 
+  TRACE (GIO_TASK_NEW (task, source_object, cancellable,
+                       callback, callback_data));
+
   return task;
 }
 
@@ -803,6 +807,8 @@ g_task_set_task_data (GTask          *task,
 
   task->task_data = task_data;
   task->task_data_destroy = task_data_destroy;
+
+  TRACE (GIO_TASK_SET_TASK_DATA (task, task_data, task_data_destroy));
 }
 
 /**
@@ -825,6 +831,8 @@ g_task_set_priority (GTask *task,
                      gint   priority)
 {
   task->priority = priority;
+
+  TRACE (GIO_TASK_SET_PRIORITY (task, priority));
 }
 
 /**
@@ -951,6 +959,8 @@ g_task_set_source_tag (GTask    *task,
                        gpointer  source_tag)
 {
   task->source_tag = source_tag;
+
+  TRACE (GIO_TASK_SET_SOURCE_TAG (task, source_tag));
 }
 
 /**
@@ -1101,6 +1111,9 @@ g_task_get_source_tag (GTask *task)
 static void
 g_task_return_now (GTask *task)
 {
+  TRACE (GIO_TASK_BEFORE_RETURN (task, task->source_object, task->callback,
+                                 task->callback_data));
+
   g_main_context_push_thread_default (task->context);
 
   if (task->callback != NULL)
@@ -1218,6 +1231,8 @@ g_task_thread_complete (GTask *task)
       g_mutex_unlock (&task->lock);
       return;
     }
+
+  TRACE (GIO_TASK_AFTER_RUN_IN_THREAD (task, task->thread_cancelled));
 
   task->thread_complete = TRUE;
   g_mutex_unlock (&task->lock);
@@ -1338,6 +1353,8 @@ g_task_start_task_thread (GTask           *task,
 
   g_mutex_lock (&task->lock);
 
+  TRACE (GIO_TASK_BEFORE_RUN_IN_THREAD (task, task_func));
+
   task->task_func = task_func;
 
   if (task->cancellable)
@@ -1347,6 +1364,7 @@ g_task_start_task_thread (GTask           *task,
                                                 &task->error))
         {
           task->thread_cancelled = task->thread_complete = TRUE;
+          TRACE (GIO_TASK_AFTER_RUN_IN_THREAD (task, task->thread_cancelled));
           g_thread_pool_push (task_pool, g_object_ref (task), NULL);
           return;
         }
@@ -1453,6 +1471,10 @@ g_task_run_in_thread_sync (GTask           *task,
 
   g_mutex_unlock (&task->lock);
 
+  TRACE (GIO_TASK_BEFORE_RETURN (task, task->source_object,
+                                 NULL  /* callback */,
+                                 NULL  /* callback data */));
+
   /* Notify of completion in this thread. */
   task->completed = TRUE;
   g_object_notify (G_OBJECT (task), "completed");
@@ -1491,18 +1513,24 @@ static gboolean
 g_task_propagate_error (GTask   *task,
                         GError **error)
 {
+  gboolean error_set;
+
   if (task->check_cancellable &&
       g_cancellable_set_error_if_cancelled (task->cancellable, error))
-    return TRUE;
+    error_set = TRUE;
   else if (task->error)
     {
       g_propagate_error (error, task->error);
       task->error = NULL;
       task->had_error = TRUE;
-      return TRUE;
+      error_set = TRUE;
     }
   else
-    return FALSE;
+    error_set = FALSE;
+
+  TRACE (GIO_TASK_PROPAGATE (task, error_set));
+
+  return error_set;
 }
 
 /**

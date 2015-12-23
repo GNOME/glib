@@ -391,6 +391,7 @@ libgio_2_0_la_SOURCES =		\
 	ginetsocketaddress.c	\
 	ginitable.c		\
 	ginputstream.c 		\
+	gio_trace.h		\
 	gioenums.h		\
 	gioerror.c 		\
 	giomodule.c 		\
@@ -754,6 +755,40 @@ dist_schema_DATA = gschema.dtd
 
 itsdir = $(datadir)/gettext/its
 dist_its_DATA = gschema.loc gschema.its
+
+# ------------------------------------------------------------------------
+# SystemTap and dtrace
+
+if ENABLE_DTRACE
+DTCOMPILE = $(patsubst -W%,,$(LTCOMPILE))
+DTCFLAGS = $(patsubst -W%,,$(CFLAGS))
+
+gio_probes.h: gio_probes.d
+	$(AM_V_GEN) $(DTRACE) -C -h -s $< -o $@.tmp
+	@$(SED) -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
+
+gio_probes.lo: gio_probes.d
+	$(AM_V_GEN) env CC="$(DTCOMPILE)" CFLAGS="$(DTCFLAGS)" $(DTRACE) -G -s $< -o $@
+
+BUILT_SOURCES += gio_probes.h gio_probes.lo
+CLEANFILES += gio_probes.h gio_probes.h.tmp
+libgio_2_0_la_LIBADD += gio_probes.lo
+endif
+
+if ENABLE_SYSTEMTAP
+tapset_in_files = gio.stp.in
+tapsetdir   = @ABS_TAPSET_DIR@
+tapset_DATA = $(tapset_in_files:.stp.in=.stp)
+EXTRA_DIST += $(tapset_in_files)
+CLEANFILES += $(tapset_in_files:.stp.in=.stp)
+
+$(tapset_DATA): %.stp: %.stp.in Makefile
+	$(AM_V_GEN)$(SED) \
+		-e 's|[@]ABS_GLIB_RUNTIME_LIBDIR[@]|$(ABS_GLIB_RUNTIME_LIBDIR)|g' \
+		-e 's|[@]LT_CURRENT[@]|$(LT_CURRENT)|g' \
+		-e 's|[@]LT_REVISION[@]|$(LT_REVISION)|g' \
+		$< > $@
+endif
 
 # ------------------------------------------------------------------------
 # gdbus(1) tool
