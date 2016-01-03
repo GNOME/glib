@@ -357,6 +357,32 @@ test_order (void)
   g_assert (g_date_compare (&d1, &d2) == 1);
 }
 
+static void
+test_copy (void)
+{
+  GDate *d;
+  GDate *c;
+
+  d = g_date_new ();
+  g_assert_false (g_date_valid (d));
+
+  c = g_date_copy (d);
+  g_assert_nonnull (c);
+  g_assert_false (g_date_valid (c));
+  g_date_free (c);
+
+  g_date_set_day (d, 10);
+
+  c = g_date_copy (d);
+  g_date_set_month (c, 1);
+  g_date_set_year (c, 2015);
+  g_assert_true (g_date_valid (c));
+  g_assert_cmpuint (g_date_get_day (c), ==, 10);
+  g_date_free (c);
+
+  g_date_free (d);
+}
+
 int
 main (int argc, char** argv)
 {
@@ -401,6 +427,7 @@ main (int argc, char** argv)
       g_test_add_data_func (path, GINT_TO_POINTER(check_years[i]), test_year);
       g_free (path);
     }
+  g_test_add_func ("/date/copy", test_copy);
 
   return g_test_run ();
 }

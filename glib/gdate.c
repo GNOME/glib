@@ -343,6 +343,35 @@ g_date_free (GDate *date)
 }
 
 /**
+ * g_date_copy:
+ * @date: a #GDate to copy
+ *
+ * Copies a GDate to a newly-allocated GDate. If the input was invalid
+ * (as determined by g_date_valid()), the invalid state will be copied
+ * as is into the new object.
+ *
+ * Returns: (transfer full): a newly-allocated #GDate initialized from @date
+ *
+ * Since: 2.56
+ */
+GDate *
+g_date_copy (const GDate *date)
+{
+  GDate *res;
+  g_return_val_if_fail (date != NULL, NULL);
+
+  if (g_date_valid (date))
+    res = g_date_new_julian (g_date_get_julian (date));
+  else
+    {
+      res = g_date_new ();
+      *res = *date;
+    }
+
+  return res;
+}
+
+/**
  * g_date_valid:
  * @date: a #GDate to check
  *

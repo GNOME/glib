@@ -1551,6 +1551,7 @@ g_date_new_dmy
 g_date_new_julian
 g_date_clear
 g_date_free
+g_date_copy
 
 <SUBSECTION>
 g_date_set_day

@@ -109,12 +109,6 @@ _g_boxed_type_init (void)
   g_assert (type == G_TYPE_BOXED);
 }
 
-static GDate *
-gdate_copy (GDate *date)
-{
-  return g_date_new_julian (g_date_get_julian (date));
-}
-
 static GString *
 gstring_copy (GString *src_gstring)
 {
@@ -130,7 +124,7 @@ gstring_free (GString *gstring)
 G_DEFINE_BOXED_TYPE (GClosure, g_closure, g_closure_ref, g_closure_unref)
 G_DEFINE_BOXED_TYPE (GValue, g_value, value_copy, value_free)
 G_DEFINE_BOXED_TYPE (GValueArray, g_value_array, g_value_array_copy, g_value_array_free)
-G_DEFINE_BOXED_TYPE (GDate, g_date, gdate_copy, g_date_free)
+G_DEFINE_BOXED_TYPE (GDate, g_date, g_date_copy, g_date_free)
 /* the naming is a bit odd, but GString is obviously not G_TYPE_STRING */
 G_DEFINE_BOXED_TYPE (GString, g_gstring, gstring_copy, gstring_free)
 G_DEFINE_BOXED_TYPE (GHashTable, g_hash_table, g_hash_table_ref, g_hash_table_unref)
