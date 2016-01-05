@@ -746,6 +746,9 @@ gsettings_SOURCES = gsettings-tool.c
 schemadir = $(datadir)/glib-2.0/schemas
 dist_schema_DATA = gschema.dtd
 
+itsdir = $(datadir)/gettext/its
+dist_its_DATA = gschema.loc gschema.its
+
 # ------------------------------------------------------------------------
 # gdbus(1) tool
 
