@@ -59,6 +59,9 @@
 #ifdef _MSC_VER
 #pragma comment (lib, "ntoskrnl.lib")
 #endif
+#elif defined (__MINGW32__)
+/* mingw-w64, not MinGW, has winternl.h */
+#include <ntdef.h>
 #else
 #include <winternl.h>
 #endif
