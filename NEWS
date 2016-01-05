@@ -1,3 +1,10 @@
+Overview of changes in GLib 2.47.5
+==================================
+
+* The system copy of PCRE is now used by default to implement GRegex.
+  Configure with --with-pcre=internal if a system PCRE version
+  is unavailable or undesired.
+
 Overview of changes in GLib 2.47.4
 ==================================
 

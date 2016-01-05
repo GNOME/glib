@@ -2312,7 +2312,9 @@ PCRE_REQUIRED_VERSION=8.13
 # Check if we should use the internal or the system-supplied pcre
 AC_ARG_WITH(pcre,
             [AS_HELP_STRING([--with-pcre=@<:@internal/system@:>@],
-                            [whether to use system PCRE [default=internal]])])
+                            [whether to use system PCRE [default=system]])],
+            [],
+            [with_pcre=system])
 
 AM_CONDITIONAL(USE_SYSTEM_PCRE, [test "x$with_pcre" = xsystem])
 
