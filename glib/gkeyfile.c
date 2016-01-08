@@ -789,7 +789,7 @@ find_file_in_data_dirs (const gchar   *file,
                              "found in search dirs"));
     }
 
-  if (output_file != NULL && fd > 0)
+  if (output_file != NULL && fd != -1)
     *output_file = g_strdup (path);
 
   g_free (path);
