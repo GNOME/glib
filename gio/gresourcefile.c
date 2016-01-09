@@ -595,6 +595,12 @@ GType g_resource_file_monitor_get_type (void);
 
 G_DEFINE_TYPE (GResourceFileMonitor, g_resource_file_monitor, G_TYPE_FILE_MONITOR)
 
+static gboolean
+g_resource_file_monitor_cancel (GFileMonitor *monitor)
+{
+  return TRUE;
+}
+
 static void
 g_resource_file_monitor_init (GResourceFileMonitor *monitor)
 {
@@ -603,6 +609,7 @@ g_resource_file_monitor_init (GResourceFileMonitor *monitor)
 static void
 g_resource_file_monitor_class_init (GResourceFileMonitorClass *class)
 {
+  class->cancel = g_resource_file_monitor_cancel;
 }
 
 static GFileMonitor *
