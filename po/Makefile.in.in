@@ -28,7 +28,7 @@ exec_prefix = @exec_prefix@
 datarootdir = @datarootdir@
 datadir = @datadir@
 localedir = @localedir@
-gettextsrcdir = $(datadir)/gettext/po
+gettextsrcdir = $(datadir)/glib-2.0/gettext/po
 
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -241,7 +241,7 @@ $(POFILES): $(POFILESDEPS)
 install: install-exec install-data
 install-exec:
 install-data: install-data-@USE_NLS@
-	if test "$(PACKAGE)" = "gettext-tools"; then \
+	if test "$(PACKAGE)" = "glib"; then \
 	  $(mkdir_p) $(DESTDIR)$(gettextsrcdir); \
 	  for file in $(DISTFILES.common) Makevars.template; do \
 	    $(INSTALL_DATA) $(srcdir)/$$file \
