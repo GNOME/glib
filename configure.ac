@@ -462,8 +462,16 @@ dnl
 dnl gettext support
 dnl
 
-AM_GNU_GETTEXT_VERSION([0.19.2])
-AM_GNU_GETTEXT([external])
+ALL_LINGUAS="`grep -v '^#' "$srcdir/po/LINGUAS" | tr '\n' ' '`"
+AC_SUBST([CONFIG_STATUS_DEPENDENCIES],['$(top_srcdir)/po/LINGUAS'])
+GLIB_GNU_GETTEXT
+
+if test "$gt_cv_have_gettext" != "yes" ; then
+  AC_MSG_ERROR([
+*** You must have either have gettext support in your C library, or use the 
+*** GNU gettext library. (http://www.gnu.org/software/gettext/gettext.html
+])
+fi
 
 LIBS="$INTLLIBS $LIBS"
 
@@ -471,6 +479,8 @@ GETTEXT_PACKAGE=glib20
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, ["$GETTEXT_PACKAGE"], 
   [Define the gettext package to be used])
+
+GLIB_DEFINE_LOCALEDIR(GLIB_LOCALE_DIR)
 
 dnl
 dnl Now we are done with gettext checks, figure out ICONV_LIBS

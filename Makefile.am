@@ -34,7 +34,6 @@ EXTRA_DIST += 			\
 	ChangeLog.pre-2-2	\
 	ChangeLog.pre-2-0	\
 	ChangeLog.pre-1-2	\
-	config.rpath		\
 	glib-zip.in		\
 	NEWS.pre-1-3		\
 	acglib.m4		\
