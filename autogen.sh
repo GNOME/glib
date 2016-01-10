@@ -30,7 +30,7 @@ fi
 # regenerated from their corresponding *.in files by ./configure anyway.
 touch README INSTALL
 
-autoreconf --force --install --verbose || exit $?
+AUTOPOINT=true autoreconf --force --install --verbose || exit $?
 
 cd "$olddir"
 test -n "$NOCONFIGURE" || "$srcdir/configure" "$@"
