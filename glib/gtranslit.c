@@ -323,6 +323,8 @@ get_default_item_id (void)
  * @from_locale.
  *
  * Returns: a string in plain ASCII
+ *
+ * Since: 2.40
  **/
 gchar *
 g_str_to_ascii (const gchar *str,
