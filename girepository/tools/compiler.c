@@ -20,6 +20,7 @@
  */
 
 #include <errno.h>
+#include <locale.h>
 #include <string.h>
 
 #include <glib.h>
@@ -147,6 +148,8 @@ main (int argc, char ** argv)
   GIrModule *module;
   gint i;
   g_typelib_check_sanity ();
+
+  setlocale (LC_ALL, "");
 
   context = g_option_context_new ("");
   g_option_context_add_main_entries (context, options, NULL);
