@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <locale.h>
+
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <gmodule.h>
@@ -53,6 +55,8 @@ main (int argc, char *argv[])
   g_log_set_always_fatal (G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL);
 
   g_typelib_check_sanity ();
+
+  setlocale (LC_ALL, "");
 
   context = g_option_context_new ("");
   g_option_context_add_main_entries (context, options, NULL);
