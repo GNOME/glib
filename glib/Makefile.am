@@ -382,6 +382,14 @@ tapset_in_files = glib.stp.in
 tapsetdir   = @ABS_TAPSET_DIR@
 tapset_DATA = $(tapset_in_files:.stp.in=.stp)
 EXTRA_DIST += $(tapset_in_files)
+CLEANFILES += $(tapset_in_files:.stp.in=.stp)
+
+$(tapset_DATA): %.stp: %.stp.in Makefile
+	$(AM_V_GEN)$(SED) \
+		-e 's|[@]ABS_GLIB_RUNTIME_LIBDIR[@]|$(ABS_GLIB_RUNTIME_LIBDIR)|g' \
+		-e 's|[@]LT_CURRENT[@]|$(LT_CURRENT)|g' \
+		-e 's|[@]LT_REVISION[@]|$(LT_REVISION)|g' \
+		$< > $@
 endif
 
 gspawn-win32-helper-console.c:
@@ -473,6 +481,11 @@ dist_gdb_SCRIPTS = glib.py
 libglib-gdb.py: libglib-gdb.py.in
 	$(AM_V_GEN) $(SED) -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libglib-gdb.py.in > $(builddir)/libglib-gdb.py
 
+if HAVE_GLIB_RUNTIME_LIBDIR
+ABS_GLIB_RUNTIME_LIBDIR = $(realpath $(libdir)/$(GLIB_RUNTIME_LIBDIR))
+else
+ABS_GLIB_RUNTIME_LIBDIR = $(libdir)
+endif
 
 install-data-hook: libglib-gdb.py
 	mkdir -p $(DESTDIR)$(datadir)/gdb/auto-load$(ABS_GLIB_RUNTIME_LIBDIR)

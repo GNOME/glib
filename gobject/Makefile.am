@@ -130,6 +130,14 @@ tapset_in_files = gobject.stp.in
 tapsetdir   = @ABS_TAPSET_DIR@
 tapset_DATA = $(tapset_in_files:.stp.in=.stp)
 EXTRA_DIST += $(tapset_in_files)
+CLEANFILES += $(tapset_in_files:.stp.in=.stp)
+
+$(tapset_DATA): %.stp: %.stp.in Makefile
+	$(AM_V_GEN)$(SED) \
+		-e 's|[@]ABS_GLIB_RUNTIME_LIBDIR[@]|$(ABS_GLIB_RUNTIME_LIBDIR)|g' \
+		-e 's|[@]LT_CURRENT[@]|$(LT_CURRENT)|g' \
+		-e 's|[@]LT_REVISION[@]|$(LT_REVISION)|g' \
+		$< > $@
 endif
 
 # non-header sources (headers should be specified in the above variables)
@@ -259,6 +267,12 @@ libgobject-gdb.py: libgobject-gdb.py.in
 
 uninstall-gdb:
 	-rm -r $(DESTDIR)$(datadir)/gdb
+
+if HAVE_GLIB_RUNTIME_LIBDIR
+ABS_GLIB_RUNTIME_LIBDIR = $(realpath $(libdir)/$(GLIB_RUNTIME_LIBDIR))
+else
+ABS_GLIB_RUNTIME_LIBDIR = $(libdir)
+endif
 
 install-data-hook: libgobject-gdb.py
 	mkdir -p $(DESTDIR)$(datadir)/gdb/auto-load/$(ABS_GLIB_RUNTIME_LIBDIR)

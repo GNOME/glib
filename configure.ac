@@ -282,9 +282,7 @@ AC_ARG_WITH(runtime-libdir,
            [],
 	   [with_runtime_libdir=""])
 GLIB_RUNTIME_LIBDIR="$with_runtime_libdir"
-ABS_GLIB_RUNTIME_LIBDIR="`readlink -f $libdir/$with_runtime_libdir`"
 AC_SUBST(GLIB_RUNTIME_LIBDIR)
-AC_SUBST(ABS_GLIB_RUNTIME_LIBDIR)
 AM_CONDITIONAL(HAVE_GLIB_RUNTIME_LIBDIR, [test "x$with_runtime_libdir" != "x"])
 
 dnl Check for a working C++ compiler, but do not bail out, if none is found.
@@ -3395,7 +3393,6 @@ build/win32/vs11/Makefile
 build/win32/vs12/Makefile
 build/win32/vs14/Makefile
 glib/Makefile
-glib/glib.stp
 glib/libcharset/Makefile
 glib/gnulib/Makefile
 glib/pcre/Makefile
@@ -3404,7 +3401,6 @@ glib/tests/Makefile
 gmodule/Makefile
 gmodule/gmoduleconf.h
 gobject/Makefile
-gobject/gobject.stp
 gobject/glib-mkenums
 gobject/tests/Makefile
 gthread/Makefile
