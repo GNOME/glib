@@ -7,15 +7,15 @@
 # Gintautas Miliauskas <gintas@akl.lt>, 2007, 2008.
 # Rimas Kudelis <rq@akl.lt>, 2010.
 # Algimantas Margevičius <gymka@mail.ru>, 2011.
-# Aurimas Černius <aurisc4@gmail.com>, 2010, 2013, 2014, 2015.
+# Aurimas Černius <aurisc4@gmail.com>, 2010, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-12-17 19:39+0000\n"
-"PO-Revision-Date: 2015-12-18 00:40+0200\n"
+"POT-Creation-Date: 2016-01-11 16:01+0000\n"
+"PO-Revision-Date: 2016-01-12 22:29+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 "X-Project-Style: gnome\n"
 
 #: ../gio/gapplication.c:531
@@ -125,7 +125,7 @@ msgstr "FAILAS"
 #: ../gio/gapplication-tool.c:72
 msgid "Optional relative or absolute filenames, or URIs to open"
 msgstr ""
-"Nebūtini absoliutus arba santykiniai failų pavadinimai ar URI atvėrimui"
+"Nebūtini absoliutūs arba santykiniai failų pavadinimai ar URI atvėrimui"
 
 #: ../gio/gapplication-tool.c:73
 msgid "ACTION"
@@ -241,7 +241,7 @@ msgstr "list-actions komanda priima tik programos id"
 #: ../gio/gapplication-tool.c:421
 #, c-format
 msgid "unable to find desktop file for application %s\n"
-msgstr "nepavyksta rasi desktop failo programai %s\n"
+msgstr "nepavyksta rasti desktop failo programai %s\n"
 
 #: ../gio/gapplication-tool.c:466
 #, c-format
@@ -253,9 +253,9 @@ msgstr ""
 "\n"
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
-#: ../gio/ginputstream.c:176 ../gio/ginputstream.c:376
-#: ../gio/ginputstream.c:614 ../gio/ginputstream.c:1013
-#: ../gio/goutputstream.c:200 ../gio/goutputstream.c:831
+#: ../gio/ginputstream.c:179 ../gio/ginputstream.c:379
+#: ../gio/ginputstream.c:617 ../gio/ginputstream.c:1016
+#: ../gio/goutputstream.c:203 ../gio/goutputstream.c:834
 #: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
 msgid "Too large count value passed to %s"
@@ -270,8 +270,8 @@ msgstr "Pozicijos perkėlimas sraute nepalaikomas"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Nepavyko sutrumpinti GBufferedInputStream"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202
-#: ../gio/giostream.c:278 ../gio/goutputstream.c:1655
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1205
+#: ../gio/giostream.c:300 ../gio/goutputstream.c:1658
 msgid "Stream is already closed"
 msgstr "Srautas jau užvertas"
 
@@ -664,7 +664,7 @@ msgstr "Savybė „%s“ nėra rašoma"
 #: ../gio/gdbusconnection.c:4290
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
-msgstr "Klaida nustatant savybę „%s“: tikėtasi tipo „%s“, bet gauta „%s“"
+msgstr "Klaida, nustatant savybę „%s“: tikėtasi tipo „%s“, bet gauta „%s“"
 
 #: ../gio/gdbusconnection.c:4395 ../gio/gdbusconnection.c:6568
 #, c-format
@@ -1019,11 +1019,11 @@ msgstr "Prisijungti prie pateikto D-Bus adreso"
 
 #: ../gio/gdbus-tool.c:368
 msgid "Connection Endpoint Options:"
-msgstr "Ryšio pabaigos parinktys:"
+msgstr "Ryšio pabaigos parametrai:"
 
 #: ../gio/gdbus-tool.c:369
 msgid "Options specifying the connection endpoint"
-msgstr "Parinktys, nurodančios ryšio pabaigą"
+msgstr "Parametrai, nurodantys ryšio pabaigą"
 
 #: ../gio/gdbus-tool.c:391
 #, c-format
@@ -1510,7 +1510,7 @@ msgstr "Nepakanka vietos lizdo adresui"
 msgid "Unsupported socket address"
 msgstr "Nepalaikomas lizdo adresas"
 
-#: ../gio/ginputstream.c:185
+#: ../gio/ginputstream.c:188
 msgid "Input stream doesn't implement read"
 msgstr "Šaltinio srautas nerealizuoja skaitymo"
 
@@ -1520,8 +1520,8 @@ msgstr "Šaltinio srautas nerealizuoja skaitymo"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1212 ../gio/giostream.c:288
-#: ../gio/goutputstream.c:1665
+#: ../gio/ginputstream.c:1215 ../gio/giostream.c:310
+#: ../gio/goutputstream.c:1668
 msgid "Stream has outstanding operation"
 msgstr "Srautui liko neįvykdyta operacija"
 
@@ -2038,7 +2038,7 @@ msgstr "netaisyklingas išplėstinio atributo pavadinimas"
 #: ../gio/glocalfileinfo.c:775
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
-msgstr "Klaida nurodant išplėstinį atributą „%s“: %s"
+msgstr "Klaida nustatant išplėstinį atributą „%s“: %s"
 
 #: ../gio/glocalfileinfo.c:1575
 msgid " (invalid encoding)"
@@ -2092,7 +2092,7 @@ msgstr "Klaida nustatant simbolinę nuorodą: %s"
 
 #: ../gio/glocalfileinfo.c:2262
 msgid "Error setting symlink: file is not a symlink"
-msgstr "Klaida nustatant simbolinę nuorodą: failas nėra simbolinė nuoroda"
+msgstr "Klaida, nustatant simbolinę nuorodą: failas nėra simbolinė nuoroda"
 
 #: ../gio/glocalfileinfo.c:2388
 #, c-format
@@ -2309,11 +2309,11 @@ msgstr "Nepavyko gauti tinklo būsenos: "
 msgid "NetworkManager version too old"
 msgstr "Per sena NetworkManager versija"
 
-#: ../gio/goutputstream.c:209 ../gio/goutputstream.c:557
+#: ../gio/goutputstream.c:212 ../gio/goutputstream.c:560
 msgid "Output stream doesn't implement write"
 msgstr "Išvedimo srautas nepalaiko rašymo"
 
-#: ../gio/goutputstream.c:518 ../gio/goutputstream.c:1219
+#: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1222
 msgid "Source stream is already closed"
 msgstr "Šaltinio srautas jau užvertas"
 
@@ -2326,7 +2326,7 @@ msgstr "Klaida išrišant „%s“: %s"
 #: ../gio/gresource.c:304 ../gio/gresource.c:555 ../gio/gresource.c:572
 #: ../gio/gresource.c:693 ../gio/gresource.c:762 ../gio/gresource.c:823
 #: ../gio/gresource.c:903 ../gio/gresourcefile.c:453 ../gio/gresourcefile.c:576
-#: ../gio/gresourcefile.c:706
+#: ../gio/gresourcefile.c:713
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "Resursas vietoje „%s“ neegzistuoja"
@@ -2336,12 +2336,12 @@ msgstr "Resursas vietoje „%s“ neegzistuoja"
 msgid "The resource at '%s' failed to decompress"
 msgstr "Resurso vietoje „%s“ nepavyko išskleisti"
 
-#: ../gio/gresourcefile.c:702
+#: ../gio/gresourcefile.c:709
 #, c-format
 msgid "The resource at '%s' is not a directory"
 msgstr "Resursas vietoje „%s“ nėra katalogas"
 
-#: ../gio/gresourcefile.c:910
+#: ../gio/gresourcefile.c:917
 msgid "Input stream doesn't implement seek"
 msgstr "Švesties srautas nerealizuoja paieškos"
 
@@ -2458,7 +2458,7 @@ msgstr "[KELIAS]"
 
 #: ../gio/gresource-tool.c:574
 msgid "  PATH      An (optional) resource path (may be partial)\n"
-msgstr "  KELIAS    (Nebūtinas) resurso kelias (gali būti dalinis)\n"
+msgstr "  KELIAS    (Nebūtinas) išteklio kelias (gali būti dalinis)\n"
 
 #: ../gio/gresource-tool.c:575
 msgid "PATH"
@@ -2632,12 +2632,12 @@ msgstr ""
 "  range                     Užklausia rakto rėžių\n"
 "  get                       Gauti rakto reikšmę\n"
 "  set                       Nustatyti rakto reikšmę\n"
-"  reset                     Nuvalyti rakto reikšmę\n"
-"  reset-recursively         Nuvalyti visas pateiktos schemos vertes\n"
+"  reset                     Atstatyti rakto reikšmę\n"
+"  reset-recursively         Atstatyti visas pateiktos schemos vertes\n"
 "  writable                  Patikrinti, ar raktas yra rašomas\n"
 "  monitor                   Stebėti pasikeitimus\n"
 "\n"
-"Naudokite 'gsettings help KOMANDA' detalesnei pagalbai gauti.\n"
+"Naudokite 'gsettings help KOMANDA' išsamesnei pagalbai gauti.\n"
 "\n"
 
 #: ../gio/gsettings-tool.c:629
@@ -3958,27 +3958,27 @@ msgstr "Naudojimas:"
 
 #: ../glib/goption.c:861
 msgid "[OPTION...]"
-msgstr "[PARINKTIS…]"
+msgstr "[PARAMETRAS…]"
 
 #: ../glib/goption.c:977
 msgid "Help Options:"
-msgstr "Pagalbos parinktys:"
+msgstr "Pagalbos parametrai:"
 
 #: ../glib/goption.c:978
 msgid "Show help options"
-msgstr "Rodyti pagalbos parinktis"
+msgstr "Rodyti pagalbos parametrus"
 
 #: ../glib/goption.c:984
 msgid "Show all help options"
-msgstr "Rodyti visas pagalbos parinktis"
+msgstr "Rodyti visus pagalbos parametrus"
 
 #: ../glib/goption.c:1047
 msgid "Application Options:"
-msgstr "Programos parinktys:"
+msgstr "Programos parametrai:"
 
 #: ../glib/goption.c:1049
 msgid "Options:"
-msgstr "Parinktys:"
+msgstr "Parametrai:"
 
 #: ../glib/goption.c:1113 ../glib/goption.c:1183
 #, c-format
@@ -4003,7 +4003,7 @@ msgstr "Dviguboji reikšmė „%s“, reikalinga %s, viršija ribas"
 #: ../glib/goption.c:1442 ../glib/goption.c:1521
 #, c-format
 msgid "Error parsing option %s"
-msgstr "Klaida apdorojant parinktį %s"
+msgstr "Klaida apdorojant parametrą %s"
 
 #: ../glib/goption.c:1552 ../glib/goption.c:1665
 #, c-format
@@ -4013,7 +4013,7 @@ msgstr "%s trūksta argumento"
 #: ../glib/goption.c:2126
 #, c-format
 msgid "Unknown option %s"
-msgstr "Nežinoma parinktis %s"
+msgstr "Nežinomas parametras %s"
 
 #: ../glib/gregex.c:258
 msgid "corrupted object"
@@ -4228,7 +4228,7 @@ msgstr "aštuntainė reikšmė didesnė už \\377"
 
 #: ../glib/gregex.c:464
 msgid "overran compiling workspace"
-msgstr "perpildyta kompiliavimo sritis"
+msgstr "perpildyta kompiliavimo darbo sritis"
 
 #: ../glib/gregex.c:468
 msgid "previously-checked referenced subpattern not found"
@@ -4240,7 +4240,7 @@ msgstr "DEFINE grupėje yra daugiau negu viena šaka"
 
 #: ../glib/gregex.c:474
 msgid "inconsistent NEWLINE options"
-msgstr "nenuoseklios NEWLINE savybės"
+msgstr "nenuoseklūs NEWLINE parametrai"
 
 #: ../glib/gregex.c:477
 msgid ""
@@ -4326,12 +4326,12 @@ msgstr "PCRE biblioteka sukompiliuota be UTF8 ypatybių palaikymo"
 
 #: ../glib/gregex.c:1329
 msgid "PCRE library is compiled with incompatible options"
-msgstr "PCRE biblioteka sukompiliuota su nesuderinamomis parinktimis"
+msgstr "PCRE biblioteka sukompiliuota su nesuderinamais parametrais"
 
 #: ../glib/gregex.c:1358
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
-msgstr "Klaida optimizuojant reguliariąją išraišką %s: %s"
+msgstr "Klaida, optimizuojant reguliariąją išraišką %s: %s"
 
 #: ../glib/gregex.c:1438
 #, c-format
@@ -4519,7 +4519,7 @@ msgstr "Netinka seka aplinkoje: %s"
 #: ../glib/gspawn-win32.c:718 ../glib/gspawn-win32.c:1278
 #, c-format
 msgid "Invalid working directory: %s"
-msgstr "Netinkamas darbinis aplankas: %s"
+msgstr "Netinkamas darbinis katalogas: %s"
 
 #: ../glib/gspawn-win32.c:783
 #, c-format
