@@ -116,6 +116,7 @@ settings_sources = \
 	gnullsettingsbackend.c		\
 	gsettingsbackendinternal.h	\
 	gsettingsbackend.c		\
+	gsettingsbackendchangeset.c	\
 	gsettingsschema.h		\
 	gsettingsschema-internal.h	\
 	gsettingsschema.c		\

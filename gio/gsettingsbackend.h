@@ -60,6 +60,13 @@ typedef struct _GSettingsBackendPrivate                     GSettingsBackendPriv
 typedef struct _GSettingsBackendClass                       GSettingsBackendClass;
 
 /**
+ * GSettingsBackendChangeset:
+ *
+ * A utility class for grouping changes to a #GSettingsBackend.
+ */
+typedef struct _GSettingsBackendChangeset                   GSettingsBackendChangeset;
+
+/**
  * GSettingsBackendClass:
  * @read: virtual method to read a key's value
  * @get_writable: virtual method to get if a key is writable
@@ -176,7 +183,72 @@ gboolean                g_settings_backend_is_key                       (const g
 GLIB_AVAILABLE_IN_2_48
 gboolean                g_settings_backend_is_dir                       (const gchar         *string);
 
+
+typedef gboolean             (* GSettingsBackendChangesetPredicate)             (const gchar                         *path,
+                                                                                 GVariant                            *value,
+                                                                                 gpointer                             user_data);
+
+GLIB_AVAILABLE_IN_2_48
+GSettingsBackendChangeset *     g_settings_backend_changeset_new                (void);
+GLIB_AVAILABLE_IN_2_48
+GSettingsBackendChangeset *     g_settings_backend_changeset_new_database       (GSettingsBackendChangeset           *copy_of);
+
+GLIB_AVAILABLE_IN_2_48
+GSettingsBackendChangeset *     g_settings_backend_changeset_new_write          (const gchar                         *path,
+                                                                                 GVariant                            *value);
+
+GLIB_AVAILABLE_IN_2_48
+GSettingsBackendChangeset *     g_settings_backend_changeset_ref                (GSettingsBackendChangeset           *changeset);
+GLIB_AVAILABLE_IN_2_48
+void                            g_settings_backend_changeset_unref              (GSettingsBackendChangeset           *changeset);
+
+GLIB_AVAILABLE_IN_2_48
+gboolean                        g_settings_backend_changeset_is_empty           (GSettingsBackendChangeset           *changeset);
+
+GLIB_AVAILABLE_IN_2_48
+void                            g_settings_backend_changeset_set                (GSettingsBackendChangeset           *changeset,
+                                                                                 const gchar                         *path,
+                                                                                 GVariant                            *value);
+
+GLIB_AVAILABLE_IN_2_48
+gboolean                        g_settings_backend_changeset_get                (GSettingsBackendChangeset           *changeset,
+                                                                                 const gchar                         *key,
+                                                                                 GVariant                           **value);
+
+GLIB_AVAILABLE_IN_2_48
+gboolean                        g_settings_backend_changeset_is_similar_to      (GSettingsBackendChangeset           *changeset,
+                                                                                 GSettingsBackendChangeset           *other);
+
+GLIB_AVAILABLE_IN_2_48
+gboolean                        g_settings_backend_changeset_all                (GSettingsBackendChangeset           *changeset,
+                                                                                 GSettingsBackendChangesetPredicate   predicate,
+                                                                                 gpointer                             user_data);
+
+GLIB_AVAILABLE_IN_2_48
+guint                           g_settings_backend_changeset_describe           (GSettingsBackendChangeset           *changeset,
+                                                                                 const gchar                        **prefix,
+                                                                                 const gchar * const                **paths,
+                                                                                 GVariant * const                   **values);
+
+GLIB_AVAILABLE_IN_2_48
+GVariant *                      g_settings_backend_changeset_serialise          (GSettingsBackendChangeset           *changeset);
+GLIB_AVAILABLE_IN_2_48
+GSettingsBackendChangeset *     g_settings_backend_changeset_deserialise        (GVariant                            *serialised);
+
+GLIB_AVAILABLE_IN_2_48
+void                            g_settings_backend_changeset_change             (GSettingsBackendChangeset           *changeset,
+                                                                                 GSettingsBackendChangeset           *changes);
+
+GLIB_AVAILABLE_IN_2_48
+GSettingsBackendChangeset *     g_settings_backend_changeset_diff               (GSettingsBackendChangeset           *from,
+                                                                                 GSettingsBackendChangeset           *to);
+
+GLIB_AVAILABLE_IN_2_48
+void                            g_settings_backend_changeset_seal               (GSettingsBackendChangeset           *changeset);
+
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GSettingsBackend, g_object_unref)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GSettingsBackendChangeset, g_settings_backend_changeset_unref)
+
 G_END_DECLS
 
 #endif /* __G_SETTINGS_BACKEND_H__ */
