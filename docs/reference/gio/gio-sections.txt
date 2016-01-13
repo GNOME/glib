@@ -2497,6 +2497,9 @@ G_TYPE_FILE_DESCRIPTOR_BASED
 GSettingsBackend
 GSettingsBackendClass
 G_SETTINGS_BACKEND_EXTENSION_POINT_NAME
+g_settings_backend_is_path
+g_settings_backend_is_key
+g_settings_backend_is_dir
 g_settings_backend_get_default
 g_settings_backend_changed
 g_settings_backend_path_changed

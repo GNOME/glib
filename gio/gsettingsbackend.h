@@ -169,6 +169,13 @@ GSettingsBackend *      g_null_settings_backend_new                     (void);
 GLIB_AVAILABLE_IN_ALL
 GSettingsBackend *      g_memory_settings_backend_new                   (void);
 
+GLIB_AVAILABLE_IN_2_48
+gboolean                g_settings_backend_is_path                      (const gchar         *string);
+GLIB_AVAILABLE_IN_2_48
+gboolean                g_settings_backend_is_key                       (const gchar         *string);
+GLIB_AVAILABLE_IN_2_48
+gboolean                g_settings_backend_is_dir                       (const gchar         *string);
+
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GSettingsBackend, g_object_unref)
 G_END_DECLS
 

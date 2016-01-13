@@ -1044,3 +1044,90 @@ g_settings_backend_sync_default (void)
         class->sync (backend);
     }
 }
+
+/**
+ * g_settings_backend_is_path:
+ * @string: a string
+ *
+ * Checks if @string is a valid #GSettingsBackend path.  Paths must
+ * start with '/' and not contain '//'.
+ *
+ * A path may be either a key or a dir.  See g_settings_backend_is_key()
+ * and g_settings_backend_is_dir() for examples of each.
+ *
+ * Returns: %TRUE if @string is a path
+ **/
+gboolean
+g_settings_backend_is_path (const gchar *string)
+{
+  if (string[0] != '/')
+    return FALSE;
+
+  if (strstr (string, "//"))
+    return FALSE;
+
+  return TRUE;
+}
+
+/**
+ * g_settings_backend_is_key:
+ * @string: a string
+ *
+ * Checks if @string is a valid #GSettingsBackend key.  Keys must
+ * start with '/', not contain '//' and not end with '/'.
+ *
+ * A key is the potential location of a single value within a
+ * #GSettingsBackend.
+ *
+ * "/a", "/a/b" and "/a/b/c" are examples of keys.  "", "/", "a", "a/b",
+ * "//a/b", "/a//b", and "/a/" are examples of strings that are not
+ * keys.
+ *
+ * Returns: %TRUE if @string is a key
+ **/
+gboolean
+g_settings_backend_is_key (const gchar *string)
+{
+  if (string[0] != '/')
+    return FALSE;
+
+  if (strstr (string, "//"))
+    return FALSE;
+
+  if (g_str_has_suffix (string, "/"))
+    return FALSE;
+
+  return TRUE;
+}
+
+/**
+ * g_settings_backend_is_dir:
+ * @string: a string
+ *
+ * Checks if @string is a valid #GSettingsBackend dir.  dirs must start
+ * and end with '/' and not contain '//'.
+ *
+ * A dir refers to a subtree of the database that can contain other dirs
+ * or keys.  If @string is a dir, then it will be a prefix of any key or
+ * dir contained within it.
+ *
+ * "/", "/a/" and "/a/b/" are examples of dirs.  "", "a/", "a/b/",
+ * "//a/b/", "/a//b/" and "/a" are examples of strings that are not
+ * dirs.
+ *
+ * Returns: %TRUE if @string is a dir
+ **/
+gboolean
+g_settings_backend_is_dir (const gchar *string)
+{
+  if (string[0] != '/')
+    return FALSE;
+
+  if (strstr (string, "//"))
+    return FALSE;
+
+  if (!g_str_has_suffix (string, "/"))
+    return FALSE;
+
+  return TRUE;
+}
