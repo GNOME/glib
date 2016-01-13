@@ -538,6 +538,11 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
  *
  * This method will free @invocation, you cannot use it afterwards.
  *
+ * Since 2.48, if the method call requested for a reply not to be sent
+ * then this call will sink @parameters and free @invocation, but
+ * otherwise do nothing (as per the recommendations of the D-Bus
+ * specification).
+ *
  * Since: 2.26
  */
 void
@@ -595,6 +600,10 @@ g_dbus_method_invocation_return_value_with_unix_fd_list (GDBusMethodInvocation *
  * or use g_dbus_method_invocation_return_dbus_error().
  *
  * This method will free @invocation, you cannot use it afterwards.
+ *
+ * Since 2.48, if the method call requested for a reply not to be sent
+ * then this call will free @invocation but otherwise do nothing (as per
+ * the recommendations of the D-Bus specification).
  *
  * Since: 2.26
  */
