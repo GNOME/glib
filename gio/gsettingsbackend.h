@@ -169,6 +169,7 @@ GSettingsBackend *      g_null_settings_backend_new                     (void);
 GLIB_AVAILABLE_IN_ALL
 GSettingsBackend *      g_memory_settings_backend_new                   (void);
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GSettingsBackend, g_object_unref)
 G_END_DECLS
 
 #endif /* __G_SETTINGS_BACKEND_H__ */
