@@ -1355,6 +1355,25 @@ idle_timeout_cb (GDBusDaemon *daemon, gpointer user_data)
   g_main_loop_quit (loop);
 }
 
+/* Satisfies STARTF_FORCEONFEEDBACK */
+static void
+turn_off_the_starting_cursor (void)
+{
+  MSG msg;
+  BOOL bRet;
+
+  PostQuitMessage (0);
+
+  while ((bRet = GetMessage (&msg, 0, 0, 0)) != 0)
+    {
+      if (bRet == -1)
+        continue;
+
+      TranslateMessage (&msg);
+      DispatchMessage (&msg);
+    }
+}
+
 __declspec(dllexport) void CALLBACK g_win32_run_session_bus (HWND hwnd, HINSTANCE hinst, char *cmdline, int nCmdShow);
 
 __declspec(dllexport) void CALLBACK
@@ -1364,6 +1383,8 @@ g_win32_run_session_bus (HWND hwnd, HINSTANCE hinst, char *cmdline, int nCmdShow
   GMainLoop *loop;
   const char *address;
   GError *error = NULL;
+
+  turn_off_the_starting_cursor ();
 
   if (g_getenv ("GDBUS_DAEMON_DEBUG") != NULL)
     open_console_window ();
