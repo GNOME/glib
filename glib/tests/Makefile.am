@@ -1,9 +1,20 @@
 include $(top_srcdir)/glib-tap.mk
 
+if USE_SYSTEM_PCRE
+pcre_lib = $(PCRE_LIBS)
+pcre_inc = $(PCRE_CFLAGS)
+else
+pcre_lib = pcre/libpcre.la
+pcre_inc =
+endif
+
 LDADD = $(top_builddir)/glib/libglib-2.0.la -lm
 AM_CPPFLAGS = -g $(glib_INCLUDES) $(GLIB_DEBUG_FLAGS)
 DEFS = -DG_LOG_DOMAIN=\"GLib\" -DEXEEXT=\"$(EXEEXT)\"
-AM_CFLAGS = $(GLIB_WARN_CFLAGS)
+AM_CFLAGS = $(GLIB_WARN_CFLAGS) $(pcre_inc)
+
+# The regex test uses pcre_version()
+regex_LDADD = $(LDADD) $(pcre_lib)
 
 # These tests corrupt the gcov bookkeeping, so we
 # skip them. See bug 682133
