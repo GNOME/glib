@@ -2282,13 +2282,21 @@ main (int argc, char *argv[])
   if (pcre_ge (8, 37))
     {
       /* The expected errors changed here. */
-      TEST_NEW_FAIL ("(?P<sub>foo)\\g<sub", 0, G_REGEX_ERROR_MISSING_SUBPATTERN_NAME_TERMINATOR);
       TEST_NEW_FAIL ("(?(?<ab))", 0, G_REGEX_ERROR_ASSERTION_EXPECTED);
     }
   else
     {
-      TEST_NEW_FAIL ("(?P<sub>foo)\\g<sub", 0, G_REGEX_ERROR_MISSING_BACK_REFERENCE);
       TEST_NEW_FAIL ("(?(?<ab))", 0, G_REGEX_ERROR_MISSING_SUBPATTERN_NAME_TERMINATOR);
+    }
+
+  if (pcre_ge (8, 35))
+    {
+      /* The expected errors changed here. */
+      TEST_NEW_FAIL ("(?P<sub>foo)\\g<sub", 0, G_REGEX_ERROR_MISSING_SUBPATTERN_NAME_TERMINATOR);
+    }
+  else
+    {
+      TEST_NEW_FAIL ("(?P<sub>foo)\\g<sub", 0, G_REGEX_ERROR_MISSING_BACK_REFERENCE);
     }
   TEST_NEW_FAIL ("(?P<x>eks)(?P<x>eccs)", 0, G_REGEX_ERROR_DUPLICATE_SUBPATTERN_NAME);
 #if 0
