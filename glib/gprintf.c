@@ -38,6 +38,8 @@
  * new-line character to the message, so typically @format should end with its
  * own new-line character.
  *
+ * `glib/gprintf.h` must be explicitly included in order to use this function.
+ *
  * Returns: the number of bytes printed.
  *
  * Since: 2.2
@@ -65,6 +67,8 @@ g_printf (gchar const *format,
  *
  * An implementation of the standard fprintf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
+ *
+ * `glib/gprintf.h` must be explicitly included in order to use this function.
  *
  * Returns: the number of bytes printed.
  *
@@ -99,6 +103,8 @@ g_fprintf (FILE        *file,
  *
  * Note that it is usually better to use g_snprintf(), to avoid the
  * risk of buffer overflow.
+ *
+ * `glib/gprintf.h` must be explicitly included in order to use this function.
  *
  * See also g_strdup_printf().
  *
@@ -176,6 +182,8 @@ g_snprintf (gchar	*string,
  * An implementation of the standard vprintf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
  *
+ * `glib/gprintf.h` must be explicitly included in order to use this function.
+ *
  * Returns: the number of bytes printed.
  *
  * Since: 2.2
@@ -198,6 +206,8 @@ g_vprintf (gchar const *format,
  *
  * An implementation of the standard fprintf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
+ *
+ * `glib/gprintf.h` must be explicitly included in order to use this function.
  *
  * Returns: the number of bytes printed.
  *
@@ -222,6 +232,8 @@ g_vfprintf (FILE        *file,
  *
  * An implementation of the standard vsprintf() function which supports 
  * positional parameters, as specified in the Single Unix Specification.
+ *
+ * `glib/gprintf.h` must be explicitly included in order to use this function.
  *
  * Returns: the number of bytes printed.
  *
@@ -292,6 +304,8 @@ g_vsnprintf (gchar	 *string,
  * This function is similar to g_vsprintf(), except that it allocates a 
  * string to hold the output, instead of putting the output in a buffer 
  * you allocate in advance.
+ *
+ * `glib/gprintf.h` must be explicitly included in order to use this function.
  *
  * Returns: the number of bytes printed.
  *
