@@ -1,9 +1,38 @@
 Overview of changes in GLib 2.47.5
 ==================================
 
-* The system copy of PCRE is now used by default to implement GRegex.
+* the system copy of PCRE is now used by default to implement GRegex.
   Configure with --with-pcre=internal if a system PCRE version
   is unavailable or undesired.
+
+* interfaces for DTLS support have been added.  A new version of
+  glib-networking will also be required.
+
+* GDBusMethodInvocation now drops replies if the sender set the
+  NO_REPLY_EXPECTED flag
+
+* several GApplication fixes, including fixes for commandline arguments
+  in interpreted languages on Windows
+
+Bugs fixed:
+ 624186 Deprecate glib-gettext macros
+ 734095 gtk-demo.py of PyGObject fails to run on Windows (and likely other binding scripts using g_application_run())
+ 735754 Implement close on TLS GOutputStream
+ 748064 gnulib vfprintf returns desired (not actual) number of bytes, ignores errors
+ 752240 Add DTLS support to GIO
+ 755421 GDBus ignores NO_REPLY_EXPECTED flag in messages, leading to warnings on system bus
+ 756875 Include ntdef.h for NTSTATUS
+ 759554 g_application_run() calls g_main_context_default() repeatidly
+ 760199 gsettings: Install gettext ITS rules
+ 760215 G_LIKELY/_UNLIKELY macros need more parentheses
+ 760683 regex test: Check the expected PCRE exceptions at runtime
+
+Translations updated:
+ Brazilian Portuguese
+ Czech
+ German
+ Lithuanian
+ Swedish
 
 Overview of changes in GLib 2.47.4
 ==================================
