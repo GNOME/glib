@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug_ExtPCRE|Win32">
-      <Configuration>Debug_ExtPCRE</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug_ExtPCRE|x64">
-      <Configuration>Debug_ExtPCRE</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -17,12 +9,12 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_ExtPCRE|Win32">
-      <Configuration>Release_ExtPCRE</Configuration>
+    <ProjectConfiguration Include="Debug_BundledPCRE|Win32">
+      <Configuration>Debug_BundledPCRE</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release_ExtPCRE|x64">
-      <Configuration>Release_ExtPCRE</Configuration>
+    <ProjectConfiguration Include="Debug_BundledPCRE|x64">
+      <Configuration>Debug_BundledPCRE</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
@@ -33,6 +25,14 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_BundledPCRE|Win32">
+      <Configuration>Release_BundledPCRE</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_BundledPCRE|x64">
+      <Configuration>Release_BundledPCRE</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{12BCA020-EABF-429E-876A-A476BC9C10C0}</ProjectGuid>
@@ -40,21 +40,16 @@
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v100</PlatformToolset>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -62,10 +57,9 @@
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -74,9 +68,10 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -84,18 +79,19 @@
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="glib-gen-srcs.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="glib-gen-srcs.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="glib-gen-srcs.props" />
   </ImportGroup>
@@ -103,7 +99,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="glib-gen-srcs.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="glib-gen-srcs.props" />
   </ImportGroup>
@@ -111,7 +107,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="glib-gen-srcs.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="glib-gen-srcs.props" />
   </ImportGroup>
@@ -119,22 +115,26 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="glib-gen-srcs.props" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="glib-gen-srcs.props" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">Debug\$(Platform)\bin\</OutDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">Debug\$(Platform)\bin\</OutDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">Debug\$(Platform)\bin\</OutDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">Debug\$(Platform)\bin\</OutDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">Release\$(Platform)\bin\</OutDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">Release\$(Platform)\bin\</OutDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">Release\$(Platform)\bin\</OutDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">Release\$(Platform)\bin\</OutDir>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;$(GLibBuildDefines);G_ENABLE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -160,7 +160,7 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;$(GLibBuildDefines);G_ENABLE_DEBUG;$(UseSystemPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -184,37 +184,37 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;$(GLibBuildDefines);G_ENABLE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).pdb</ProgramDatabaseFile>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;$(GLibBuildDefines);G_ENABLE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <CompileAs>CompileAsC</CompileAs>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>ws2_32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).pdb</ProgramDatabaseFile>
-      <ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
-      <SubSystem>Windows</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX64</TargetMachine>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;$(GLibBuildDefines);G_ENABLE_DEBUG;$(UseSystemPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -238,7 +238,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>$(GLibBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -263,7 +263,7 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>$(GLibBuildDefines);$(UseSystemPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -288,7 +288,7 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">
     <ClCompile>
       <PreprocessorDefinitions>$(GLibBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -313,7 +313,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PreprocessorDefinitions>$(GLibBuildDefines);$(UseSystemPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -345,14 +345,14 @@
     <ClCompile Include="..\..\..\glib\gthread-win32.c" />
     <ClCompile Include="..\..\..\glib\gwin32.c" />
     <ClCompile Include="..\..\..\glib\libcharset\localcharset.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(LocalCharsetDefs);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\gnulib\asnprintf.c" />
     <ClCompile Include="..\..\..\glib\gnulib\printf-args.c" />
@@ -360,296 +360,296 @@
     <ClCompile Include="..\..\..\glib\gnulib\printf.c" />
     <ClCompile Include="..\..\..\glib\gnulib\vasnprintf.c" />
     <ClCompile Include="..\..\..\glib\pcre\pcre_byte_order.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_chartables.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_compile.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_config.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_dfa_exec.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_exec.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_fullinfo.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_get.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_globals.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_jit_compile.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_newline.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_ord2utf8.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_string_utils.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_study.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_tables.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_valid_utf8.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_xclass.c">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">true</ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\config.h.win32">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">Copying config.h from config.h.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GenConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">..\..\..\config.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Copying config.h from config.h.win32...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenConfigH)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\config.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">Copying config.h from config.h.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">$(GenConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">..\..\..\config.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">Copying config.h from config.h.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GenConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">..\..\..\config.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Copying config.h from config.h.win32...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenConfigH)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\config.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">Copying config.h from config.h.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">$(GenConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">..\..\..\config.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">Copying config.h from config.h.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GenConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">..\..\..\config.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Copying config.h from config.h.win32...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenConfigH)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\config.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">Copying config.h from config.h.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">$(GenConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">..\..\..\config.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">Copying config.h from config.h.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GenConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">..\..\..\config.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Copying config.h from config.h.win32...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenConfigH)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\config.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">Copying config.h from config.h.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">$(GenConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">..\..\..\config.h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\..\..\glib\glibconfig.h.win32">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">Copying glibconfig.h from glibconfig.h.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GenGLibConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Copying glibconfig.h from glibconfig.h.win32...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GenGLibConfigH)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">Copying glibconfig.h from glibconfig.h.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">$(GenGLibConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|Win32'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">Copying glibconfig.h from glibconfig.h.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GenGLibConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Copying glibconfig.h from glibconfig.h.win32...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GenGLibConfigH)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">Copying glibconfig.h from glibconfig.h.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">$(GenGLibConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_ExtPCRE|x64'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">Copying glibconfig.h from glibconfig.h.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GenGLibConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Copying glibconfig.h from glibconfig.h.win32...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(GenGLibConfigH)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">Copying glibconfig.h from glibconfig.h.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">$(GenGLibConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|Win32'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">Copying glibconfig.h from glibconfig.h.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GenGLibConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Copying glibconfig.h from glibconfig.h.win32...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GenGLibConfigH)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">Copying glibconfig.h from glibconfig.h.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">$(GenGLibConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">..\..\..\glib\glibconfig.h;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

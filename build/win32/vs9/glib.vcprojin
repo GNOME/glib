@@ -20,8 +20,9 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
+			Name="Debug_BundledPCRE|Win32"
 			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
+			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -51,9 +52,8 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug_ExtPCRE|Win32"
+			Name="Debug|Win32"
 			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
-			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -80,6 +80,38 @@
 				DataExecutionPrevention="0"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
 				TargetMachine="1"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug_BundledPCRE|x64"
+			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
+			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
+			ConfigurationType="2"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				PreprocessorDefinitions="_DEBUG;$(GLibBuildDefines);G_ENABLE_DEBUG"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+				CompileAs="1"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="ws2_32.lib winmm.lib"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
+				LinkIncremental="2"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
+				TargetMachine="17"
 			/>
 		</Configuration>
 		<Configuration
@@ -91,38 +123,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;$(GLibBuildDefines);G_ENABLE_DEBUG"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-				CompileAs="1"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="ws2_32.lib winmm.lib"
-				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
-				TargetMachine="17"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug_ExtPCRE|x64"
-			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
-			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
-			ConfigurationType="2"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
 				PreprocessorDefinitions="_DEBUG;$(GLibBuildDefines);G_ENABLE_DEBUG;$(UseSystemPCREDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -146,8 +146,9 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
+			Name="Release_BundledPCRE|Win32"
 			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
+			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -177,9 +178,8 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release_ExtPCRE|Win32"
+			Name="Release|Win32"
 			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
-			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -209,8 +209,9 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|x64"
+			Name="Release_BundledPCRE|x64"
 			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
+			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -240,9 +241,8 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release_ExtPCRE|x64"
+			Name="Release|x64"
 			InheritedPropertySheets=".\glib-gen-srcs.vsprops"
-			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -289,14 +289,14 @@
 				Name="libcharset"
 				>
 				<File RelativePath="..\..\..\glib\libcharset\localcharset.c">
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
 					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
 					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
 					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
 					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(LocalCharsetDefs)"/></FileConfiguration>
 				</File>
 			</Filter>
 			<Filter
@@ -312,174 +312,174 @@
 				Name="pcre"
 				>
 				<File RelativePath="..\..\..\glib\pcre\pcre_byte_order.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_chartables.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_compile.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_config.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_dfa_exec.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_exec.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_fullinfo.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_get.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_globals.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_jit_compile.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_newline.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_ord2utf8.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_string_utils.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_study.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_tables.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_valid_utf8.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 				<File RelativePath="..\..\..\glib\pcre\pcre_xclass.c" >
-					<FileConfiguration Name="Debug|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Debug|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
-					<FileConfiguration Name="Release|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
-					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|Win32"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_BundledPCRE|x64"><Tool Name="VCCLCompilerTool" PreprocessorDefinitions="$(GLibBundledPCREDefines)" AdditionalOptions="$(GLibBundledPCREUndefs)" /></FileConfiguration>
+					<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
 				</File>
 			</Filter>
 		</Filter>
@@ -495,6 +495,14 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File RelativePath="..\..\..\config.h.win32">
+				<FileConfiguration Name="Debug_BundledPCRE|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying config.h from config.h.win32..."
+						CommandLine="$(GenConfigH)"
+						Outputs="..\..\..\config.h"
+					/>
+				</FileConfiguration>
 				<FileConfiguration Name="Debug|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
@@ -503,7 +511,7 @@
 						Outputs="..\..\..\config.h"
 					/>
 				</FileConfiguration>
-				<FileConfiguration Name="Debug_ExtPCRE|Win32">
+				<FileConfiguration Name="Release_BundledPCRE|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Copying config.h from config.h.win32..."
@@ -519,7 +527,7 @@
 						Outputs="..\..\..\config.h"
 					/>
 				</FileConfiguration>
-				<FileConfiguration Name="Release_ExtPCRE|Win32">
+				<FileConfiguration Name="Debug_BundledPCRE|x64">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Copying config.h from config.h.win32..."
@@ -535,7 +543,7 @@
 						Outputs="..\..\..\config.h"
 					/>
 				</FileConfiguration>
-				<FileConfiguration Name="Debug_ExtPCRE|x64">
+				<FileConfiguration Name="Release_BundledPCRE|x64">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Copying config.h from config.h.win32..."
@@ -544,14 +552,6 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration Name="Release|x64">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Copying config.h from config.h.win32..."
-						CommandLine="$(GenConfigH)"
-						Outputs="..\..\..\config.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration Name="Release_ExtPCRE|x64">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Copying config.h from config.h.win32..."
@@ -561,6 +561,14 @@
 				</FileConfiguration>
 			</File>
 			<File RelativePath="..\..\..\glib\glibconfig.h.win32">
+				<FileConfiguration Name="Debug_BundledPCRE|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying glibconfig.h from glibconfig.h.win32..."
+						CommandLine="$(GenGLibConfigH)"
+						Outputs="..\..\..\glib\glibconfig.h"
+					/>
+				</FileConfiguration>
 				<FileConfiguration Name="Debug|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
@@ -569,7 +577,7 @@
 						Outputs="..\..\..\glib\glibconfig.h"
 					/>
 				</FileConfiguration>
-				<FileConfiguration Name="Debug_ExtPCRE|Win32">
+				<FileConfiguration Name="Release_BundledPCRE|Win32">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Copying glibconfig.h from glibconfig.h.win32..."
@@ -585,7 +593,7 @@
 						Outputs="..\..\..\glib\glibconfig.h"
 					/>
 				</FileConfiguration>
-				<FileConfiguration Name="Release_ExtPCRE|Win32">
+				<FileConfiguration Name="Debug_BundledPCRE|x64">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Copying glibconfig.h from glibconfig.h.win32..."
@@ -601,7 +609,7 @@
 						Outputs="..\..\..\glib\glibconfig.h"
 					/>
 				</FileConfiguration>
-				<FileConfiguration Name="Debug_ExtPCRE|x64">
+				<FileConfiguration Name="Release_BundledPCRE|x64">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Copying glibconfig.h from glibconfig.h.win32..."
@@ -610,14 +618,6 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration Name="Release|x64">
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Copying glibconfig.h from glibconfig.h.win32..."
-						CommandLine="$(GenGLibConfigH)"
-						Outputs="..\..\..\glib\glibconfig.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration Name="Release_ExtPCRE|x64">
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Copying glibconfig.h from glibconfig.h.win32..."
