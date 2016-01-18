@@ -4,7 +4,7 @@ if USE_SYSTEM_PCRE
 pcre_lib = $(PCRE_LIBS)
 pcre_inc = $(PCRE_CFLAGS)
 else
-pcre_lib = pcre/libpcre.la
+pcre_lib = $(top_builddir)/glib/pcre/libpcre.la
 pcre_inc =
 endif
 
