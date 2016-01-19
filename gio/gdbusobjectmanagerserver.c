@@ -242,8 +242,8 @@ g_dbus_object_manager_server_init (GDBusObjectManagerServer *manager)
  *
  * The returned server isn't yet exported on any connection. To do so,
  * use g_dbus_object_manager_server_set_connection(). Normally you
- * want to export all of your objects before doing so to avoid <ulink
- * url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager">InterfacesAdded</ulink>
+ * want to export all of your objects before doing so to avoid
+ * [InterfacesAdded](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
  * signals being emitted.
  *
  * Returns: A #GDBusObjectManagerServer object. Free with g_object_unref().
