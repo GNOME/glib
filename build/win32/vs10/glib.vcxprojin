@@ -587,6 +587,20 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_ExtPCRE|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\glib\pcre\pcre_version.c">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREDefines);$(GlibBundledPCREExportDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREDefines);$(GlibBundledPCREExportDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREDefines);$(GlibBundledPCREExportDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREDefines);$(GlibBundledPCREExportDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release_BundledPCRE|x64'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\glib\pcre\pcre_xclass.c">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(GLibBundledPCREUndefs) %(AdditionalOptions)</AdditionalOptions>
