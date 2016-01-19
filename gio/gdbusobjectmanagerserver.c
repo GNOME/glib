@@ -48,6 +48,14 @@
  * clients can keep caches up to date by only listening to D-Bus
  * signals.
  *
+ * The recommended path to export an object manager at is the path form of the
+ * well-known name of a D-Bus service, or below. For example, if a D-Bus service
+ * is available at the well-known name `net.example.ExampleService1`, the object
+ * manager should typically be exported at `/net/example/ExampleService1`, or
+ * below (to allow for multiple object managers in a service).
+ *
+ * It is not supported to export an object manager at the root path, `/`.
+ *
  * See #GDBusObjectManagerClient for the client-side code that is
  * intended to be used with #GDBusObjectManagerServer or any D-Bus
  * object implementing the org.freedesktop.DBus.ObjectManager
@@ -236,7 +244,8 @@ g_dbus_object_manager_server_init (GDBusObjectManagerServer *manager)
 
 /**
  * g_dbus_object_manager_server_new:
- * @object_path: The object path to export the manager object at.
+ * @object_path: The object path to export the manager object at, which should
+ * not be `/`.
  *
  * Creates a new #GDBusObjectManagerServer object.
  *
