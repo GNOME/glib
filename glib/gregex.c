@@ -1286,8 +1286,8 @@ static pcre *regex_compile (const gchar         *pattern,
  * Compiles the regular expression to an internal form, and does
  * the initial setup of the #GRegex structure.
  *
- * Returns: a #GRegex structure. Call g_regex_unref() when you
- *   are done with it
+ * Returns: (nullable): a #GRegex structure or %NULL if an error occured. Call
+ *   g_regex_unref() when you are done with it
  *
  * Since: 2.14
  */
