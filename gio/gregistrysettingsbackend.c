@@ -118,7 +118,6 @@ typedef struct
   GNode *cache_node;
 } RegistryWatch;
 
-
 /* Simple message passing for the watch thread. Not enough traffic to
  * justify a queue.
  */
@@ -135,7 +134,6 @@ typedef struct
   WatchThreadMessageType type;
   RegistryWatch watch;
 } WatchThreadMessage;
-
 
 typedef struct
 {
@@ -156,13 +154,11 @@ typedef struct
   HANDLE message_sent_event, message_received_event;
 } WatchThreadState;
 
-
 #define G_TYPE_REGISTRY_BACKEND      (g_registry_backend_get_type ())
 #define G_REGISTRY_BACKEND(inst)     (G_TYPE_CHECK_INSTANCE_CAST ((inst),         \
                                       G_TYPE_REGISTRY_BACKEND, GRegistryBackend))
 #define G_IS_REGISTRY_BACKEND(inst)  (G_TYPE_CHECK_INSTANCE_TYPE ((inst),         \
                                       G_TYPE_REGISTRY_BACKEND))
-
 
 typedef GSettingsBackendClass GRegistryBackendClass;
 
@@ -185,21 +181,21 @@ G_DEFINE_TYPE_WITH_CODE (GRegistryBackend,
                          g_io_extension_point_implement (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
                                                          g_define_type_id, "registry", 90))
 
-
 /**********************************************************************************
  * Utility functions
  **********************************************************************************/
 
 #include <stdio.h>
 static void
-trace (const char *format, ...)
+trace (const char *format,
+       ...)
 {
-  #ifdef TRACE
+#ifdef TRACE
   va_list va; va_start (va, format);
   vprintf (format, va); fflush (stdout);
   va_end (va);
-  #endif
-};
+#endif
+}
 
 /* g_message including a windows error message. It is not useful to have an
  * equivalent function for g_warning because none of the registry errors can
@@ -229,8 +225,7 @@ g_message_win32_error (DWORD result_code,
     trace ("(%s)", win32_message);
   else
     g_message ("%s", win32_message);
-};
-
+}
 
 /* Make gsettings key into a registry path & value pair. 
  * 
@@ -251,35 +246,45 @@ parse_key (const gchar  *key_name,
     key_name ++;
 
   if (registry_prefix == NULL)
-      path_name = g_strdup (key_name);
+    path_name = g_strdup (key_name);
   else
-      path_name = g_strjoin ("/", registry_prefix, key_name, NULL);
+    path_name = g_strjoin ("/", registry_prefix, key_name, NULL);
 
   /* Prefix is expected to be in registry format (\ separators) so don't escape that. */
-  for (c=path_name+(registry_prefix?strlen(registry_prefix):0); *c!=0; c++)
+  for (c = path_name + (registry_prefix ? strlen(registry_prefix) : 0); *c != 0; c++)
+    {
       if (*c == '/')
         {
           *c = '\\';
           (*value_name) = c;
         }
+    }
 
-  **value_name = 0; (*value_name)++;
+  **value_name = 0;
+  (*value_name)++;
+
   return path_name;
-};
-
+}
 
 static DWORD
 g_variant_get_as_dword (GVariant *variant)
 {
   switch (g_variant_get_type_string (variant)[0])
     {
-      case 'b': return g_variant_get_boolean (variant);
-      case 'y': return g_variant_get_byte (variant);
-      case 'n': return g_variant_get_int16 (variant);
-      case 'q': return g_variant_get_uint16 (variant);
-      case 'i': return g_variant_get_int32 (variant);
-      case 'u': return g_variant_get_uint32 (variant);
-      default:  g_warn_if_reached ();
+    case 'b':
+      return g_variant_get_boolean (variant);
+    case 'y':
+      return g_variant_get_byte (variant);
+    case 'n':
+      return g_variant_get_int16 (variant);
+    case 'q':
+      return g_variant_get_uint16 (variant);
+    case 'i':
+      return g_variant_get_int32 (variant);
+    case 'u':
+      return g_variant_get_uint32 (variant);
+    default:
+      g_warn_if_reached ();
     }
   return 0;
 }
@@ -289,13 +294,15 @@ g_variant_get_as_qword (GVariant *variant)
 {
   switch (g_variant_get_type_string (variant)[0])
     {
-      case 'x': return g_variant_get_int64 (variant);
-      case 't': return g_variant_get_uint64 (variant);
-      default:  g_warn_if_reached ();
+    case 'x':
+      return g_variant_get_int64 (variant);
+    case 't':
+      return g_variant_get_uint64 (variant);
+    default:
+      g_warn_if_reached ();
     }
   return 0;
 }
-
 
 static void
 handle_read_error (LONG         result,
@@ -346,7 +353,6 @@ registry_value_free (RegistryValue value)
   value.ptr = NULL;
 }
 
-
 /* The registry cache is stored as a tree, for easy traversal. Right now we
  * don't sort it in a clever way. Each node corresponds to a path element
  * ('key' in registry terms) or a value.
@@ -376,8 +382,6 @@ typedef struct
   gint32 touched            : 1;
   RegistryValue value;
 } RegistryCacheItem;
-
-
 
 static GNode *
 registry_cache_add_item (GNode        *parent,
@@ -411,7 +415,6 @@ registry_cache_add_item (GNode        *parent,
  * it) the reference count of that node and everything below is increased, as
  * well as each parent up to the root.
  */
-
 
 static void
 _ref_down (GNode *node)
@@ -547,13 +550,14 @@ registry_cache_find_immediate_child (GNode *node,
                                      gchar *name)
 {
   RegistryCacheSearch search;
+
   search.result = NULL;
   search.name = name;
   g_node_traverse (node, G_POST_ORDER, G_TRAVERSE_ALL, 2,
                    registry_cache_find_compare, &search);
-  return search.result;  
-}
 
+  return search.result;
+}
 
 static GNode *
 registry_cache_get_node_for_key_recursive (GNode    *node,
@@ -673,54 +677,54 @@ registry_cache_update_node (GNode        *cache_node,
  
   switch (registry_value.type)
     {
-      case REG_DWORD:
-        {
-          if (cache_item->value.dword == registry_value.dword)
+    case REG_DWORD:
+      {
+        if (cache_item->value.dword == registry_value.dword)
+          return FALSE;
+        else
+          {
+            cache_item->value.dword = registry_value.dword;
+            return TRUE;
+          }
+      }
+    case REG_QWORD:
+      {
+        g_return_val_if_fail (registry_value.ptr != NULL &&
+                              cache_item->value.ptr != NULL, FALSE);
+
+        if (memcmp (registry_value.ptr, cache_item->value.ptr, 8)==0)
+          {
+            g_free (registry_value.ptr);
             return FALSE;
-          else
-            {
-              cache_item->value.dword = registry_value.dword;
-              return TRUE;
-            }
-        }
-      case REG_QWORD:
-        {
-          g_return_val_if_fail (registry_value.ptr != NULL &&
-                                cache_item->value.ptr != NULL, FALSE);
+          }
+        else
+          {
+            g_free (cache_item->value.ptr);
+            cache_item->value.ptr = registry_value.ptr;
+            return TRUE;
+          }
+      }
+    case REG_SZ:
+      {
+        /* Value should not exist if it is NULL, an empty string is "" */
+        g_return_val_if_fail (cache_item->value.ptr != NULL, FALSE);
+        g_return_val_if_fail (registry_value.ptr != NULL, FALSE);
 
-          if (memcmp (registry_value.ptr, cache_item->value.ptr, 8)==0)
-            {
-              g_free (registry_value.ptr);
-              return FALSE;
-            }
-          else
-            {
-              g_free (cache_item->value.ptr);
-              cache_item->value.ptr = registry_value.ptr;
-              return TRUE;
-            }
-        }
-      case REG_SZ:
-        {
-          /* Value should not exist if it is NULL, an empty string is "" */
-          g_return_val_if_fail (cache_item->value.ptr != NULL, FALSE);
-          g_return_val_if_fail (registry_value.ptr != NULL, FALSE);
-
-          if (strcmp (registry_value.ptr, cache_item->value.ptr) == 0)
-            {
-              g_free (registry_value.ptr);
-              return FALSE;
-            }
-          else
-            {
-              g_free (cache_item->value.ptr);
-              cache_item->value.ptr = registry_value.ptr;
-              return TRUE;
-            }
-        }
-      default:
-        g_warning ("gregistrybackend: registry_cache_update_node: Unhandled value type :(");
-        return FALSE;
+        if (strcmp (registry_value.ptr, cache_item->value.ptr) == 0)
+          {
+            g_free (registry_value.ptr);
+            return FALSE;
+          }
+        else
+          {
+            g_free (cache_item->value.ptr);
+            cache_item->value.ptr = registry_value.ptr;
+            return TRUE;
+          }
+      }
+    default:
+      g_warning ("gregistrybackend: registry_cache_update_node: Unhandled value type :(");
+      return FALSE;
     }
 }
 
@@ -745,9 +749,8 @@ registry_cache_block_notification (GNode *node)
     registry_cache_block_notification (node->parent);
 }
 
-static void
-registry_cache_destroy_tree (GNode            *node,
-                             WatchThreadState *self);
+static void registry_cache_destroy_tree (GNode            *node,
+                                         WatchThreadState *self);
 
 /***************************************************************************
  * Reading and writing
@@ -796,7 +799,6 @@ registry_read (HKEY           hpath,
 
   return TRUE;
 }
-
 
 static GVariant *
 g_registry_backend_read (GSettingsBackend   *backend,
@@ -863,7 +865,7 @@ g_registry_backend_read (GSettingsBackend   *backend,
                 gsettings_value = g_variant_parse (expected_type, registry_value.ptr, NULL, NULL, &error);
 
                 if (error != NULL)
-                g_message ("gregistrysettingsbackend: error parsing key %s: %s\n",
+                g_message ("gregistrysettingsbackend: error parsing key %s: %s",
                            key_name, error->message);
               }
           }
@@ -911,38 +913,38 @@ g_registry_backend_write_one (const char *key_name,
 
   switch (type_string[0])
     {
-      case 'b': case 'y': case 'n': case 'q': case 'i': case 'u':
-        value.type = REG_DWORD;
-        value.dword = g_variant_get_as_dword (variant);
-        value_data_size = 4;
-        value_data = &value.dword;
-        break;
+    case 'b': case 'y': case 'n': case 'q': case 'i': case 'u':
+      value.type = REG_DWORD;
+      value.dword = g_variant_get_as_dword (variant);
+      value_data_size = 4;
+      value_data = &value.dword;
+      break;
 
-      case 'x': case 't':
-        value.type = REG_QWORD;
-        value.ptr = g_malloc (8);
-        *(DWORDLONG *)value.ptr = g_variant_get_as_qword (variant);
-        value_data_size = 8;
-        value_data = value.ptr;
-        break;
+    case 'x': case 't':
+      value.type = REG_QWORD;
+      value.ptr = g_malloc (8);
+      *(DWORDLONG *)value.ptr = g_variant_get_as_qword (variant);
+      value_data_size = 8;
+      value_data = value.ptr;
+      break;
 
-      default:
-        value.type = REG_SZ;
-        if (type_string[0]=='s')
-          {
-            gsize length;
-            value.ptr = g_strdup (g_variant_get_string (variant, &length));
-            value_data_size = length + 1;
-            value_data = value.ptr;
-          }
-        else
-          {
-            GString *value_string;
-            value_string = g_variant_print_string (variant, NULL, FALSE);
-            value_data_size = value_string->len+1;
-            value.ptr = value_data = g_string_free (value_string, FALSE);
-          }
-        break;
+    default:
+      value.type = REG_SZ;
+      if (type_string[0]=='s')
+        {
+          gsize length;
+          value.ptr = g_strdup (g_variant_get_string (variant, &length));
+          value_data_size = length + 1;
+          value_data = value.ptr;
+        }
+      else
+        {
+          GString *value_string;
+          value_string = g_variant_print_string (variant, NULL, FALSE);
+          value_data_size = value_string->len+1;
+          value.ptr = value_data = g_string_free (value_string, FALSE);
+        }
+      break;
     }
 
   /* First update the cache, because the value may not have changed and we can
@@ -993,7 +995,7 @@ g_registry_backend_write_one (const char *key_name,
   g_free (path_name);
 
   return FALSE;
-};
+}
 
 /* The dconf write policy is to do the write while making out it succeeded, 
  * and then backtrack if it didn't. The registry functions are synchronous so
@@ -1326,9 +1328,7 @@ registry_cache_update (GRegistryBackend *self,
 
   trace ("registry cache update complete.\n");
   g_free (key_name);
-};
-
-
+}
 
 /***********************************************************************************
  * Thread to watch for registry change events
@@ -1342,7 +1342,6 @@ registry_watch_key (HKEY hpath, HANDLE event)
                                   REG_NOTIFY_CHANGE_NAME | REG_NOTIFY_CHANGE_LAST_SET,
                                   event, TRUE);
 }
-
 
 /* One of these is sent down the pipe when something happens in the registry. */
 typedef struct
@@ -1364,17 +1363,16 @@ watch_handler (RegistryEvent *event)
   g_settings_backend_keys_changed (G_SETTINGS_BACKEND (event->self), event->prefix,
                                    (gchar const **)event->items->pdata, NULL);
 
-  for (i=0; i<event->items->len; i++)
+  for (i = 0; i < event->items->len; i++)
     g_free (g_ptr_array_index (event->items, i));
   g_ptr_array_free (event->items, TRUE);
 
   g_free (event->prefix);
   g_object_unref (event->self);
-  
   g_slice_free (RegistryEvent, event);
-  return G_SOURCE_REMOVE;
-};
 
+  return G_SOURCE_REMOVE;
+}
 
 static void
 _free_watch (WatchThreadState *self,
@@ -1387,9 +1385,9 @@ _free_watch (WatchThreadState *self,
 
   g_return_if_fail (index > 0 && index < self->events->len);
 
-  cond       = g_ptr_array_index (self->events,      index);
-  hpath      = g_ptr_array_index (self->handles,     index);
-  prefix     = g_ptr_array_index (self->prefixes,    index);
+  cond = g_ptr_array_index (self->events,      index);
+  hpath = g_ptr_array_index (self->handles,     index);
+  prefix = g_ptr_array_index (self->prefixes,    index);
 
   trace ("Freeing watch %i [%s]\n", index, prefix);
  
@@ -1413,9 +1411,9 @@ _free_watch (WatchThreadState *self,
   /* As long as we remove from each array at the same time, it doesn't matter that
    * their orders get messed up - they all get messed up the same.
    */
-  g_ptr_array_remove_index_fast (self->handles,     index);
-  g_ptr_array_remove_index_fast (self->events,      index);
-  g_ptr_array_remove_index_fast (self->prefixes,    index);
+  g_ptr_array_remove_index_fast (self->handles, index);
+  g_ptr_array_remove_index_fast (self->events, index);
+  g_ptr_array_remove_index_fast (self->prefixes, index);
   g_ptr_array_remove_index_fast (self->cache_nodes, index);
 }
 
@@ -1424,97 +1422,96 @@ watch_thread_handle_message (WatchThreadState *self)
 {
   switch (self->message.type)
     {
-      case WATCH_THREAD_NONE:
-        trace ("watch thread: you woke me up for nothin', man!");
+    case WATCH_THREAD_NONE:
+      trace ("watch thread: you woke me up for nothin', man!");
+      break;
+
+    case WATCH_THREAD_ADD_WATCH:
+      {
+        RegistryWatch *watch = &self->message.watch;
+        LONG           result;
+        result = registry_watch_key (watch->hpath, watch->event);
+        if (result == ERROR_SUCCESS)
+          {
+            g_ptr_array_add (self->events,      watch->event);
+            g_ptr_array_add (self->handles,     watch->hpath);
+            g_ptr_array_add (self->prefixes,    watch->prefix);
+            g_ptr_array_add (self->cache_nodes, watch->cache_node);
+            trace ("watch thread: new watch on %s, %i total\n", watch->prefix,
+                   self->events->len);
+          }
+        else
+          {
+            g_message_win32_error (result, "watch thread: could not watch %s", watch->prefix);
+            CloseHandle (watch->event);
+            RegCloseKey (watch->hpath);
+            g_free (watch->prefix);
+            registry_cache_unref_tree (watch->cache_node);
+          }
         break;
+      }
 
-      case WATCH_THREAD_ADD_WATCH:
-        {
-          RegistryWatch *watch = &self->message.watch;
-          LONG           result;
-          result = registry_watch_key (watch->hpath, watch->event);
-          if (result == ERROR_SUCCESS)
-            {
-              g_ptr_array_add (self->events,      watch->event);
-              g_ptr_array_add (self->handles,     watch->hpath);
-              g_ptr_array_add (self->prefixes,    watch->prefix);
-              g_ptr_array_add (self->cache_nodes, watch->cache_node);
-              trace ("watch thread: new watch on %s, %i total\n", watch->prefix,
-                     self->events->len);
-            }
-          else
-            {
-              g_message_win32_error (result, "watch thread: could not watch %s", watch->prefix);
-              CloseHandle (watch->event);
-              RegCloseKey (watch->hpath);
-              g_free (watch->prefix);
-              registry_cache_unref_tree (watch->cache_node);
-            }
-          break;
-        }
+    case WATCH_THREAD_REMOVE_WATCH:
+      {
+        GNode             *cache_node;
+        RegistryCacheItem *cache_item;
+        gint               i;
 
-      case WATCH_THREAD_REMOVE_WATCH:
-        {
-          GNode             *cache_node;
-          RegistryCacheItem *cache_item;
-          gint               i;
-
-          for (i=1; i<self->prefixes->len; i++)
-            if (strcmp (g_ptr_array_index (self->prefixes, i),
-                        self->message.watch.prefix) == 0)
-                break;
- 
-          if (i >= self->prefixes->len)
-            {
-              /* Don't make a fuss if the prefix is not being watched because
-               * maybe the path was deleted so we removed the watch.
-               */
-              trace ("unsubscribe: prefix %s is not being watched [%i things are]!\n",
-                     self->message.watch.prefix, self->prefixes->len);
-              g_free (self->message.watch.prefix);
+        for (i=1; i<self->prefixes->len; i++)
+          if (strcmp (g_ptr_array_index (self->prefixes, i),
+                      self->message.watch.prefix) == 0)
               break;
-            }
 
-          cache_node = g_ptr_array_index (self->cache_nodes, i);
+        if (i >= self->prefixes->len)
+          {
+            /* Don't make a fuss if the prefix is not being watched because
+             * maybe the path was deleted so we removed the watch.
+             */
+            trace ("unsubscribe: prefix %s is not being watched [%i things are]!\n",
+                   self->message.watch.prefix, self->prefixes->len);
+            g_free (self->message.watch.prefix);
+            break;
+          }
 
-          trace ("watch thread: unsubscribe: freeing node %x, prefix %s, index %i\n",
-                 (guint)cache_node, self->message.watch.prefix, i);
-          if (cache_node != NULL)
-            {
-              cache_item = cache_node->data;
+        cache_node = g_ptr_array_index (self->cache_nodes, i);
 
-              /* There may be more than one GSettings object subscribed to this
-               * path, only free the watch when the last one unsubscribes.
-               */
-              cache_item->subscription_count --;
-              if (cache_item->subscription_count > 0)
-                break;
-            }
+        trace ("watch thread: unsubscribe: freeing node %x, prefix %s, index %i\n",
+               (guint)cache_node, self->message.watch.prefix, i);
+        if (cache_node != NULL)
+          {
+            cache_item = cache_node->data;
 
-          _free_watch (self, i, cache_node);
-          g_free (self->message.watch.prefix);
+            /* There may be more than one GSettings object subscribed to this
+             * path, only free the watch when the last one unsubscribes.
+             */
+            cache_item->subscription_count --;
+            if (cache_item->subscription_count > 0)
+              break;
+          }
 
-          g_atomic_int_inc (&self->watches_remaining);
-          break;
-        }
+        _free_watch (self, i, cache_node);
+        g_free (self->message.watch.prefix);
 
-      case WATCH_THREAD_STOP:
-        {
-          gint i;
+        g_atomic_int_inc (&self->watches_remaining);
+        break;
+      }
 
-          /* Free any remaining cache and watch handles */
-          for (i=1; i<self->events->len; i++)
-            _free_watch (self, i, g_ptr_array_index (self->cache_nodes, i));
+    case WATCH_THREAD_STOP:
+      {
+        gint i;
 
-          SetEvent (self->message_received_event);
-          ExitThread (0);
-        }
+        /* Free any remaining cache and watch handles */
+        for (i=1; i<self->events->len; i++)
+          _free_watch (self, i, g_ptr_array_index (self->cache_nodes, i));
+
+        SetEvent (self->message_received_event);
+        ExitThread (0);
+      }
     }
 
   self->message.type = WATCH_THREAD_NONE;
   SetEvent (self->message_received_event);
 }
-
 
 /* Thread which watches for win32 registry events */
 static DWORD WINAPI
@@ -1723,7 +1720,7 @@ watch_stop_unlocked (GRegistryBackend *self)
 
   trace ("\nwatch thread: %x: all data freed.\n", self);
   self->watch = NULL;
-};
+}
 
 static gboolean
 watch_add_notify (GRegistryBackend *self,
@@ -1795,8 +1792,7 @@ watch_add_notify (GRegistryBackend *self,
   LeaveCriticalSection (watch->message_lock);
 
   return TRUE;
-};
-
+}
 
 static void
 watch_remove_notify (GRegistryBackend *self,
@@ -1824,7 +1820,7 @@ watch_remove_notify (GRegistryBackend *self,
   result = WaitForSingleObject (watch->message_received_event, INFINITE);
 
   if (result != ERROR_SUCCESS)
-    g_warning ("unsubscribe from %s: message not acknowledged\n", key_name);
+    g_warning ("unsubscribe from %s: message not acknowledged", key_name);
 
   if (g_atomic_int_get (&watch->watches_remaining) >= MAX_WATCHES)
     /* Stop it before any new ones can get added and confuse things */
@@ -1853,7 +1849,7 @@ g_registry_backend_subscribe (GSettingsBackend *backend,
   if (g_atomic_int_dec_and_test (&self->watch->watches_remaining))
     {
       g_atomic_int_inc (&self->watch->watches_remaining);
-      g_warning ("subscribe() failed: only %i different paths may be watched.\n", MAX_WATCHES);
+      g_warning ("subscribe() failed: only %i different paths may be watched.", MAX_WATCHES);
       return;
     }
 
@@ -1864,10 +1860,9 @@ g_registry_backend_subscribe (GSettingsBackend *backend,
    * end in a slash!
    */
   if (value_name != NULL && *value_name != 0)
-    g_warning ("subscribe() failed: path must end in a /, got %s\n", key_name);
+    g_warning ("subscribe() failed: path must end in a /, got %s", key_name);
 
   trace ("Subscribing to %s [registry %s / %s] - watch %x\n", key_name, path_name, value_name, self->watch);
-
 
   /* Give the caller the benefit of the doubt if the key doesn't exist and create it. The caller
    * is almost certainly a new g_settings with this path as base path. */
@@ -1885,7 +1880,7 @@ g_registry_backend_subscribe (GSettingsBackend *backend,
   event = CreateEvent (NULL, FALSE, FALSE, NULL);
   if (event == NULL)
     {
-      g_message_win32_error (result, "gregistrybackend: CreateEvent failed.\n");
+      g_message_win32_error (result, "gregistrybackend: CreateEvent failed.");
       g_atomic_int_inc (&self->watch->watches_remaining);
       RegCloseKey (hpath);
       return;
