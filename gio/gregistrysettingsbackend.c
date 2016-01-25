@@ -335,7 +335,7 @@ registry_value_dump (RegistryValue value)
   if (value.type == REG_DWORD)
     return g_strdup_printf ("%i", value.dword);
   else if (value.type == REG_QWORD)
-    return g_strdup_printf ("%I64i", value.ptr==NULL? 0: *(DWORDLONG *)value.ptr);
+    return g_strdup_printf ("%I64i", value.ptr == NULL ? 0: *(DWORDLONG *)value.ptr);
   else if (value.type == REG_SZ)
     return g_strdup_printf ("%s", (char *)value.ptr);
   else if (value.type == REG_NONE)
@@ -349,6 +349,7 @@ registry_value_free (RegistryValue value)
 {
   if (value.type == REG_SZ || value.type == REG_QWORD)
     g_free (value.ptr);
+
   value.type = REG_NONE;
   value.ptr = NULL;
 }
@@ -420,10 +421,12 @@ static void
 _ref_down (GNode *node)
 {
   RegistryCacheItem *item = node->data;
+
   g_node_children_foreach (node, G_TRAVERSE_ALL,
                            (GNodeForeachFunc)_ref_down, NULL);
-  item->ref_count ++;
+  item->ref_count++;
 }
+
 static void
 registry_cache_ref_tree (GNode *tree)
 {
@@ -437,7 +440,7 @@ registry_cache_ref_tree (GNode *tree)
   g_node_children_foreach (tree, G_TRAVERSE_ALL,
                            (GNodeForeachFunc)_ref_down, NULL);
 
-  for (node=tree->parent; node; node=node->parent)
+  for (node=tree->parent; node; node = node->parent)
     {
       item = node->data;
       item->ref_count ++;
@@ -542,6 +545,7 @@ registry_cache_find_compare (GNode    *node,
       search->result = node;
       return TRUE;
     }
+
   return FALSE;
 }
 
@@ -579,7 +583,7 @@ registry_cache_get_node_for_key_recursive (GNode    *node,
    */
   item = node->data;
   if (item->subscription_count > 0)
-    n_parent_watches ++;  
+    n_parent_watches ++;
 
   child = registry_cache_find_immediate_child (node, component);
   if (child == NULL && create_if_not_found)
@@ -597,12 +601,11 @@ registry_cache_get_node_for_key_recursive (GNode    *node,
   /* We are done if there are no more path components. Allow for a trailing /. */
   if (child==NULL || c == NULL || *(c+1)==0)
     return child;
-  else
-    {
-      trace ("get node for key recursive: next: %s.\n", c+1);
-      return registry_cache_get_node_for_key_recursive
-               (child, c+1, create_if_not_found, n_parent_watches);
-    }
+
+  trace ("get node for key recursive: next: %s.\n", c + 1);
+  return registry_cache_get_node_for_key_recursive (child, c + 1,
+                                                    create_if_not_found,
+                                                    n_parent_watches);
 }
 
 /* Look up a GSettings key in the cache. */
@@ -642,10 +645,11 @@ registry_cache_get_node_for_key (GNode       *root,
 
   if (c == NULL)
     result = root;
-  else if (*(c+1)==0)
+  else if (*(c + 1)==0)
     result = child;
   else if (child != NULL)
-    result = registry_cache_get_node_for_key_recursive (child, c+1, create_if_not_found, 0);
+    result = registry_cache_get_node_for_key_recursive (child, c + 1,
+                                                        create_if_not_found, 0);
 
   g_free (component);
 
@@ -773,10 +777,10 @@ registry_read (HKEY           hpath,
 
   result = RegQueryValueExA (hpath, value_name, 0, &p_value->type, NULL, &value_data_size);
   if (result != ERROR_SUCCESS)
-     {
+    {
       handle_read_error (result, path_name, value_name);
       return FALSE;
-     }
+    }
 
   if (p_value->type == REG_SZ && value_data_size == 0)
     {
@@ -807,7 +811,6 @@ g_registry_backend_read (GSettingsBackend   *backend,
                          gboolean            default_value)
 {
   GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
-
   GNode         *cache_node;
   RegistryValue  registry_value;
   GVariant      *gsettings_value = NULL;
@@ -841,35 +844,43 @@ g_registry_backend_read (GSettingsBackend   *backend,
   /* The registry is user-editable, so we need to be fault-tolerant here. */
   switch (gsettings_type[0])
     {
-      case 'b': case 'y': case 'n': case 'q': case 'i': case 'u':
-        if (registry_value.type == REG_DWORD)
-          gsettings_value = g_variant_new (gsettings_type, registry_value.dword);
-        break;
+    case 'b':
+    case 'y':
+    case 'n':
+    case 'q':
+    case 'i':
+    case 'u':
+      if (registry_value.type == REG_DWORD)
+        gsettings_value = g_variant_new (gsettings_type, registry_value.dword);
+      break;
 
-      case 't': case 'x':
-        if (registry_value.type == REG_QWORD)
-          {
-            DWORDLONG qword_value = *(DWORDLONG *)registry_value.ptr;
-            gsettings_value = g_variant_new (gsettings_type, qword_value);
-          }
-        break;
+    case 't':
+    case 'x':
+      if (registry_value.type == REG_QWORD)
+        {
+          DWORDLONG qword_value = *(DWORDLONG *)registry_value.ptr;
+          gsettings_value = g_variant_new (gsettings_type, qword_value);
+        }
+      break;
 
-      default:
-        if (registry_value.type == REG_SZ)
-          {
-            if (gsettings_type[0]=='s')
-              gsettings_value = g_variant_new_string ((char *)registry_value.ptr);
-            else
-              {
-                GError *error = NULL;
-                gsettings_value = g_variant_parse (expected_type, registry_value.ptr, NULL, NULL, &error);
+    default:
+      if (registry_value.type == REG_SZ)
+        {
+          if (gsettings_type[0] == 's')
+            gsettings_value = g_variant_new_string ((char *)registry_value.ptr);
+          else
+            {
+              GError *error = NULL;
 
-                if (error != NULL)
+              gsettings_value = g_variant_parse (expected_type, registry_value.ptr,
+                                                 NULL, NULL, &error);
+
+              if (error != NULL)
                 g_message ("gregistrysettingsbackend: error parsing key %s: %s",
                            key_name, error->message);
-              }
-          }
-          break;
+            }
+        }
+        break;
     }
 
   g_free (gsettings_type);
@@ -913,14 +924,20 @@ g_registry_backend_write_one (const char *key_name,
 
   switch (type_string[0])
     {
-    case 'b': case 'y': case 'n': case 'q': case 'i': case 'u':
+    case 'b':
+    case 'y':
+    case 'n':
+    case 'q':
+    case 'i':
+    case 'u':
       value.type = REG_DWORD;
       value.dword = g_variant_get_as_dword (variant);
       value_data_size = 4;
       value_data = &value.dword;
       break;
 
-    case 'x': case 't':
+    case 'x':
+    case 't':
       value.type = REG_QWORD;
       value.ptr = g_malloc (8);
       *(DWORDLONG *)value.ptr = g_variant_get_as_qword (variant);
@@ -930,7 +947,7 @@ g_registry_backend_write_one (const char *key_name,
 
     default:
       value.type = REG_SZ;
-      if (type_string[0]=='s')
+      if (type_string[0] == 's')
         {
           gsize length;
           value.ptr = g_strdup (g_variant_get_string (variant, &length));
@@ -975,7 +992,8 @@ g_registry_backend_write_one (const char *key_name,
   result = RegCreateKeyExA (hroot, path_name, 0, NULL, 0, KEY_WRITE, NULL, &hpath, NULL);
   if (result != ERROR_SUCCESS)
     {
-      g_message_win32_error (result, "gregistrybackend: opening key %s failed", path_name+1);
+      g_message_win32_error (result, "gregistrybackend: opening key %s failed",
+                             path_name + 1);
       registry_value_free (value);
       g_free (path_name);
       return FALSE;
@@ -1117,7 +1135,6 @@ g_registry_backend_get_permission (GSettingsBackend *backend,
   return g_simple_permission_new (TRUE);
 }
 
-
 /********************************************************************************
  * Spot-the-difference engine
  ********************************************************************************/
@@ -1250,7 +1267,6 @@ registry_cache_update (GRegistryBackend *self,
                                                      null_value, n_watches);
             }
 
-
           registry_cache_update (self, hsubpath, prefix, buffer, subkey_node,
                                  n_watches, changes);
           child_item = subkey_node->data;
@@ -1336,7 +1352,8 @@ registry_cache_update (GRegistryBackend *self,
 
 /* Called by watch thread. Apply for notifications on a registry key and its subkeys. */
 static DWORD
-registry_watch_key (HKEY hpath, HANDLE event)
+registry_watch_key (HKEY   hpath,
+                    HANDLE event)
 {
   return RegNotifyChangeKeyValue (hpath, TRUE,
                                   REG_NOTIFY_CHANGE_NAME | REG_NOTIFY_CHANGE_LAST_SET,
@@ -1430,7 +1447,9 @@ watch_thread_handle_message (WatchThreadState *self)
       {
         RegistryWatch *watch = &self->message.watch;
         LONG           result;
+
         result = registry_watch_key (watch->hpath, watch->event);
+
         if (result == ERROR_SUCCESS)
           {
             g_ptr_array_add (self->events,      watch->event);
@@ -1457,7 +1476,7 @@ watch_thread_handle_message (WatchThreadState *self)
         RegistryCacheItem *cache_item;
         gint               i;
 
-        for (i=1; i<self->prefixes->len; i++)
+        for (i = 1; i < self->prefixes->len; i++)
           if (strcmp (g_ptr_array_index (self->prefixes, i),
                       self->message.watch.prefix) == 0)
               break;
@@ -1484,7 +1503,7 @@ watch_thread_handle_message (WatchThreadState *self)
             /* There may be more than one GSettings object subscribed to this
              * path, only free the watch when the last one unsubscribes.
              */
-            cache_item->subscription_count --;
+            cache_item->subscription_count--;
             if (cache_item->subscription_count > 0)
               break;
           }
@@ -1501,7 +1520,7 @@ watch_thread_handle_message (WatchThreadState *self)
         gint i;
 
         /* Free any remaining cache and watch handles */
-        for (i=1; i<self->events->len; i++)
+        for (i = 1; i < self->events->len; i++)
           _free_watch (self, i, g_ptr_array_index (self->cache_nodes, i));
 
         SetEvent (self->message_received_event);
@@ -1588,6 +1607,7 @@ watch_thread_function (LPVOID parameter)
                */
              if (result != ERROR_KEY_DELETED)
                g_message_win32_error (result, "watch thread: failed to watch %s", prefix);
+
              _free_watch (self, notify_index, cache_node);
              g_atomic_int_inc (&self->watches_remaining);
              continue;
@@ -1599,11 +1619,11 @@ watch_thread_function (LPVOID parameter)
           cache_item = cache_node->data;
           if (cache_item->block_count)
             {
-              cache_item->block_count --;
+              cache_item->block_count--;
               trace ("Watch thread: notify blocked at %s\n", prefix);
               continue;
             }
-  
+
           /* Now we update our stored cache from registry data, and find which keys have
            * actually changed. If more changes happen while we are processing, we will get
            * another event because we have reapplied for change notifications already.
@@ -1769,9 +1789,9 @@ watch_add_notify (GRegistryBackend *self,
 
   EnterCriticalSection (watch->message_lock);
   watch->message.type = WATCH_THREAD_ADD_WATCH;
-  watch->message.watch.event      = event;
-  watch->message.watch.hpath      = hpath;
-  watch->message.watch.prefix     = gsettings_prefix;
+  watch->message.watch.event = event;
+  watch->message.watch.hpath = hpath;
+  watch->message.watch.prefix = gsettings_prefix;
   watch->message.watch.cache_node = cache_node;
 
   SetEvent (watch->message_sent_event);
@@ -1799,7 +1819,7 @@ watch_remove_notify (GRegistryBackend *self,
                      const gchar      *key_name)
 {
   WatchThreadState *watch = self->watch;
-  LONG     result;
+  LONG result;
 
   if (self->watch == NULL)
     /* Here we assume that the unsubscribe message is for somewhere that was
@@ -1842,9 +1862,8 @@ g_registry_backend_subscribe (GSettingsBackend *backend,
   HANDLE event;
   LONG result;
 
-  if (self->watch == NULL)
-    if (!watch_start (self))
-      return;
+  if (self->watch == NULL && !watch_start (self))
+    return;
 
   if (g_atomic_int_dec_and_test (&self->watch->watches_remaining))
     {
@@ -1900,7 +1919,6 @@ g_registry_backend_unsubscribe (GSettingsBackend *backend,
 
   watch_remove_notify (G_REGISTRY_BACKEND (backend), key_name);
 }
-
 
 /********************************************************************************
  * Object management junk
