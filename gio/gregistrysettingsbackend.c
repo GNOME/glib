@@ -673,10 +673,12 @@ static gboolean
 registry_cache_update_node (GNode        *cache_node,
                             RegistryValue registry_value)
 {
-  RegistryCacheItem *cache_item = cache_node->data;
+  RegistryCacheItem *cache_item;
 
   g_return_val_if_fail (cache_node != NULL, FALSE);
-  g_return_val_if_fail (cache_item != NULL, FALSE);
+  g_return_val_if_fail (cache_node->data != NULL, FALSE);
+
+  cache_item = cache_node->data;
 
   if (registry_value.type != cache_item->value.type)
     {
