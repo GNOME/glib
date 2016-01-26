@@ -113,8 +113,8 @@
 typedef struct
 {
   HANDLE event;
-  HKEY   hpath;
-  char  *prefix;
+  HKEY hpath;
+  char *prefix;
   GNode *cache_node;
 } RegistryWatch;
 
@@ -138,7 +138,7 @@ typedef struct
 typedef struct
 {
   GSettingsBackend *owner;
-  HANDLE           *thread;
+  HANDLE *thread;
 
   /* Details of the things we are watching. */
   int watches_remaining;
@@ -163,14 +163,14 @@ typedef struct
 typedef GSettingsBackendClass GRegistryBackendClass;
 
 typedef struct {
-  GSettingsBackend  parent_instance;
+  GSettingsBackend parent_instance;
 
-  char             *base_path;
+  char *base_path;
 
   /* A stored copy of the whole tree being watched. When we receive a change notification
    * we have to check against this to see what has changed ... every time ...*/
   CRITICAL_SECTION *cache_lock;
-  GNode            *cache_root;
+  GNode *cache_root;
 
   WatchThreadState *watch;
 } GRegistryBackend;
@@ -254,7 +254,7 @@ parse_key (const gchar  *key_name,
     path_name = g_strjoin ("/", registry_prefix, key_name, NULL);
 
   /* Prefix is expected to be in registry format (\ separators) so don't escape that. */
-  for (c = path_name + (registry_prefix ? strlen(registry_prefix) : 0); *c != 0; c++)
+  for (c = path_name + (registry_prefix ? strlen (registry_prefix) : 0); *c != 0; c++)
     {
       if (*c == '/')
         {
@@ -456,7 +456,7 @@ registry_cache_ref_tree (GNode *tree)
 }
 
 static void
-_free_cache_item (RegistryCacheItem *item)
+registry_cache_item_free (RegistryCacheItem *item)
 {
   trace ("\t -- Free node %s\n", item->name);
 
@@ -477,7 +477,7 @@ _unref_node (GNode *node)
 
   if (item->ref_count == 0)
     {
-      _free_cache_item (item);
+      registry_cache_item_free (item);
       g_node_destroy (node);
     }
 }
@@ -823,10 +823,10 @@ g_registry_backend_read (GSettingsBackend   *backend,
                          gboolean            default_value)
 {
   GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
-  GNode         *cache_node;
-  RegistryValue  registry_value;
-  GVariant      *gsettings_value = NULL;
-  gchar         *gsettings_type;
+  GNode *cache_node;
+  RegistryValue registry_value;
+  GVariant *gsettings_value = NULL;
+  gchar *gsettings_type;
 
   g_return_val_if_fail (expected_type != NULL, NULL);
 
@@ -903,8 +903,8 @@ g_registry_backend_read (GSettingsBackend   *backend,
 
 typedef struct
 {
-  GRegistryBackend  *self;
-  HKEY               hroot;
+  GRegistryBackend *self;
+  HKEY hroot;
 } RegistryWrite;
 
 static gboolean
@@ -913,20 +913,20 @@ g_registry_backend_write_one (const char *key_name,
                               gpointer    user_data)
 {
   GRegistryBackend *self;
-  RegistryWrite    *action;
-  RegistryValue     value;
+  RegistryWrite *action;
+  RegistryValue value;
+  HKEY hroot;
+  HKEY hpath;
+  gchar *path_name;
+  gchar *value_name = NULL;
+  DWORD value_data_size;
+  LPVOID value_data;
+  LONG result;
+  GNode *node;
+  gboolean changed;
+  const gchar *type_string;
 
-  HKEY    hroot, hpath;
-  gchar  *path_name, *value_name = NULL;
-  DWORD   value_data_size;
-  LPVOID  value_data;
-  LONG    result;
-
-  GNode    *node;
-  gboolean  changed;
-
-  const gchar *type_string = g_variant_get_type_string (variant);
-
+  type_string = g_variant_get_type_string (variant);
   action = user_data;
   self = G_REGISTRY_BACKEND (action->self);
   hroot = action->hroot;
@@ -1013,8 +1013,8 @@ g_registry_backend_write_one (const char *key_name,
 
   result = RegSetValueExA (hpath, value_name, 0, value.type, value_data, value_data_size);
   if (result != ERROR_SUCCESS)
-      g_message_win32_error (result, "gregistrybackend: setting value %s\\%s\\%s failed.\n",
-                             self->base_path, path_name, value_name);
+    g_message_win32_error (result, "gregistrybackend: setting value %s\\%s\\%s failed.\n",
+                           self->base_path, path_name, value_name);
 
   /* If the write fails then it will seem like the value has changed until the
    * next execution (because we wrote to the cache first). There's no reason
@@ -1128,7 +1128,6 @@ g_registry_backend_reset (GSettingsBackend *backend,
 
   g_free (path_name);
 
-
   g_settings_backend_changed (backend, key_name, origin_tag);
 }
 
@@ -1198,7 +1197,7 @@ registry_cache_destroy_tree (GNode            *node,
           g_atomic_int_inc (&self->watches_remaining);
         }
     }
-  _free_cache_item (node->data);
+  registry_cache_item_free (node->data);
   g_node_destroy (node);
 }
 
@@ -1235,10 +1234,10 @@ registry_cache_update (GRegistryBackend *self,
                        int               n_watches, 
                        GPtrArray        *changes)
 {
-  gchar  buffer[MAX_KEY_NAME_LENGTH + 1];
+  gchar buffer[MAX_KEY_NAME_LENGTH + 1];
   gchar *key_name;
-  gint   i;
-  LONG   result;
+  gint i;
+  LONG result;
 
   RegistryCacheItem *item = cache_node->data;
 
@@ -1298,11 +1297,11 @@ registry_cache_update (GRegistryBackend *self,
   i = 0;
   while (1)
     {
-      DWORD              buffer_size = MAX_KEY_NAME_LENGTH;
-      GNode             *cache_child_node;
+      DWORD buffer_size = MAX_KEY_NAME_LENGTH;
+      GNode *cache_child_node;
       RegistryCacheItem *child_item;
-      RegistryValue      value;
-      gboolean           changed = FALSE;
+      RegistryValue value;
+      gboolean changed = FALSE;
 
       result = RegEnumValue (hpath, i++, buffer, &buffer_size, NULL, NULL, NULL, NULL);
       if (result != ERROR_SUCCESS)
@@ -1317,7 +1316,8 @@ registry_cache_update (GRegistryBackend *self,
       if (!registry_read (hpath, key_name, buffer, &value))
         continue;
 
-      trace ("\tgot value %s for %s, node %x\n", registry_value_dump (value), buffer, cache_child_node);
+      trace ("\tgot value %s for %s, node %x\n",
+             registry_value_dump (value), buffer, cache_child_node);
 
       if (cache_child_node == NULL)
         {
@@ -1413,15 +1413,15 @@ _free_watch (WatchThreadState *self,
              gint              index,
              GNode            *cache_node)
 {
-  HKEY    hpath;
-  HANDLE  cond;
-  gchar  *prefix;
+  HKEY hpath;
+  HANDLE cond;
+  gchar *prefix;
 
   g_return_if_fail (index > 0 && index < self->events->len);
 
-  cond = g_ptr_array_index (self->events,      index);
-  hpath = g_ptr_array_index (self->handles,     index);
-  prefix = g_ptr_array_index (self->prefixes,    index);
+  cond = g_ptr_array_index (self->events, index);
+  hpath = g_ptr_array_index (self->handles, index);
+  prefix = g_ptr_array_index (self->prefixes, index);
 
   trace ("Freeing watch %i [%s]\n", index, prefix);
  
@@ -1463,22 +1463,24 @@ watch_thread_handle_message (WatchThreadState *self)
     case WATCH_THREAD_ADD_WATCH:
       {
         RegistryWatch *watch = &self->message.watch;
-        LONG           result;
+        LONG result;
 
         result = registry_watch_key (watch->hpath, watch->event);
 
         if (result == ERROR_SUCCESS)
           {
-            g_ptr_array_add (self->events,      watch->event);
-            g_ptr_array_add (self->handles,     watch->hpath);
-            g_ptr_array_add (self->prefixes,    watch->prefix);
+            g_ptr_array_add (self->events, watch->event);
+            g_ptr_array_add (self->handles, watch->hpath);
+            g_ptr_array_add (self->prefixes, watch->prefix);
             g_ptr_array_add (self->cache_nodes, watch->cache_node);
+
             trace ("watch thread: new watch on %s, %i total\n", watch->prefix,
                    self->events->len);
           }
         else
           {
             g_message_win32_error (result, "watch thread: could not watch %s", watch->prefix);
+
             CloseHandle (watch->event);
             RegCloseKey (watch->hpath);
             g_free (watch->prefix);
@@ -1489,9 +1491,9 @@ watch_thread_handle_message (WatchThreadState *self)
 
     case WATCH_THREAD_REMOVE_WATCH:
       {
-        GNode             *cache_node;
+        GNode *cache_node;
         RegistryCacheItem *cache_item;
-        gint               i;
+        gint i;
 
         for (i = 1; i < self->prefixes->len; i++)
           {
@@ -1515,6 +1517,7 @@ watch_thread_handle_message (WatchThreadState *self)
 
         trace ("watch thread: unsubscribe: freeing node %x, prefix %s, index %i\n",
                (guint)cache_node, self->message.watch.prefix, i);
+
         if (cache_node != NULL)
           {
             cache_item = cache_node->data;
@@ -1582,22 +1585,23 @@ watch_thread_function (LPVOID parameter)
         }
       else if (result > WAIT_OBJECT_0 && result <= WAIT_OBJECT_0 + self->events->len)
         {
-          HKEY               hpath;
-          HANDLE             cond;
-          gchar             *prefix;
-          GNode             *cache_node;
+          HKEY hpath;
+          HANDLE cond;
+          gchar *prefix;
+          GNode *cache_node;
           RegistryCacheItem *cache_item;
-          RegistryEvent     *event;
+          RegistryEvent *event;
+          gint notify_index;
 
           /* One of our notifications has triggered. All we know is which one, and which key
            * this is for. We do most of the processing here, because we may as well. If the
            * registry changes further while we are processing it doesn't matter - we will then
            * receive another change notification from the OS anyway.
            */
-          gint notify_index = result - WAIT_OBJECT_0;
-          hpath      = g_ptr_array_index (self->handles,     notify_index);
-          cond       = g_ptr_array_index (self->events,      notify_index);
-          prefix     = g_ptr_array_index (self->prefixes,    notify_index);
+          notify_index = result - WAIT_OBJECT_0;
+          hpath = g_ptr_array_index (self->handles, notify_index);
+          cond = g_ptr_array_index (self->events, notify_index);
+          prefix = g_ptr_array_index (self->prefixes, notify_index);
           cache_node = g_ptr_array_index (self->cache_nodes, notify_index);
 
           trace ("Watch thread: notify received on prefix %i: %s.\n", notify_index, prefix);
@@ -1768,14 +1772,15 @@ watch_add_notify (GRegistryBackend *self,
                   HKEY              hpath,
                   gchar            *gsettings_prefix)
 {
-  WatchThreadState  *watch = self->watch;
-  GNode             *cache_node;
+  WatchThreadState *watch = self->watch;
+  GNode *cache_node;
   RegistryCacheItem *cache_item;
 #ifdef TRACE
-  DWORD              result;
+  DWORD result;
 #endif
 
   g_return_val_if_fail (watch != NULL, FALSE);
+
   trace ("watch_add_notify: prefix %s.\n", gsettings_prefix);
 
   /* Duplicate tree into the cache in the main thread, before we add the notify: if we do it in the
@@ -1947,13 +1952,13 @@ g_registry_backend_unsubscribe (GSettingsBackend *backend,
 static void
 g_registry_backend_finalize (GObject *object)
 {
-  GRegistryBackend  *self = G_REGISTRY_BACKEND (object);
+  GRegistryBackend *self = G_REGISTRY_BACKEND (object);
   RegistryCacheItem *item;
 
   item = self->cache_root->data;
   g_warn_if_fail (item->ref_count == 1);
 
-  _free_cache_item (item);
+  registry_cache_item_free (item);
   g_node_destroy (self->cache_root);
 
   if (self->watch != NULL)
