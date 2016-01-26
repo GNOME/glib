@@ -219,7 +219,7 @@ g_message_win32_error (DWORD        result_code,
   win32_error = g_win32_error_message (result_code);
   win32_message = g_strdup_printf ("%s: %s", message, win32_error);
   g_free (message);
-  g_free (win32_message);
+  g_free (win32_error);
 
   if (result_code == ERROR_KEY_DELETED)
     trace ("(%s)", win32_message);
