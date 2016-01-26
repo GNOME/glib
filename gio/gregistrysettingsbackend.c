@@ -1933,7 +1933,11 @@ g_registry_backend_subscribe (GSettingsBackend *backend,
   /* The actual watch is added by the thread, which has to re-subscribe each time it
    * receives a change. */
   if (!watch_add_notify (self, event, hpath, g_strdup (key_name)))
-    g_atomic_int_inc (&self->watch->watches_remaining);
+    {
+      g_atomic_int_inc (&self->watch->watches_remaining);
+      RegCloseKey (hpath);
+      CloseHandle (event);
+    }
 }
 
 static void
