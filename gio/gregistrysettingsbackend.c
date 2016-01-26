@@ -246,7 +246,7 @@ parse_key (const gchar  *key_name,
    * preceding /.
    */
   if (key_name[0] == '/')
-    key_name ++;
+    key_name++;
 
   if (registry_prefix == NULL)
     path_name = g_strdup (key_name);
@@ -443,7 +443,7 @@ registry_cache_ref_tree (GNode *tree)
 
   g_return_if_fail (tree != NULL);
 
-  item->ref_count ++;
+  item->ref_count++;
 
   g_node_children_foreach (tree, G_TRAVERSE_ALL,
                            (GNodeForeachFunc)_ref_down, NULL);
@@ -451,7 +451,7 @@ registry_cache_ref_tree (GNode *tree)
   for (node = tree->parent; node; node = node->parent)
     {
       item = node->data;
-      item->ref_count ++;
+      item->ref_count++;
     }
 }
 
@@ -593,7 +593,7 @@ registry_cache_get_node_for_key_recursive (GNode    *node,
    */
   item = node->data;
   if (item->subscription_count > 0)
-    n_parent_watches ++;
+    n_parent_watches++;
 
   child = registry_cache_find_immediate_child (node, component);
   if (child == NULL && create_if_not_found)
@@ -631,7 +631,7 @@ registry_cache_get_node_for_key (GNode       *root,
   g_return_val_if_fail (key_name != NULL, NULL);
 
   if (key_name[0] == '/')
-    key_name ++;
+    key_name++;
 
   /* Ignore preceding / */
   component = g_strdup (key_name);
@@ -757,7 +757,7 @@ registry_cache_block_notification (GNode *node)
   g_return_if_fail (node != NULL);
 
   if (item->subscription_count > 0)
-    item->block_count ++;
+    item->block_count++;
 
   if (node->parent != NULL)
     registry_cache_block_notification (node->parent);
@@ -1241,7 +1241,7 @@ registry_cache_update (GRegistryBackend *self,
   RegistryCacheItem *item = cache_node->data;
 
   if (item->subscription_count > 0)
-    n_watches ++;
+    n_watches++;
 
   /* prefix is the level that all changes occur below; partial_key_name should
    * be NULL on the first call to this function */
@@ -1791,7 +1791,7 @@ watch_add_notify (GRegistryBackend *self,
   
   cache_item = cache_node->data;
 
-  cache_item->subscription_count ++;
+  cache_item->subscription_count++;
   if (cache_item->subscription_count > 1)
     {
       trace ("watch_add_notify: prefix %s already watched, %i subscribers.\n",
