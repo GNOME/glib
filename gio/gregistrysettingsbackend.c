@@ -336,9 +336,9 @@ static char *
 registry_value_dump (RegistryValue value)
 {
   if (value.type == REG_DWORD)
-    return g_strdup_printf ("%i", value.dword);
+    return g_strdup_printf ("%d", value.dword);
   else if (value.type == REG_QWORD)
-    return g_strdup_printf ("%I64i", value.ptr == NULL ? 0: *(DWORDLONG *)value.ptr);
+    return g_strdup_printf ("%"G_GINT64_FORMAT, value.ptr == NULL ? 0: *(DWORDLONG *)value.ptr);
   else if (value.type == REG_SZ)
     return g_strdup_printf ("%s", (char *)value.ptr);
   else if (value.type == REG_NONE)
