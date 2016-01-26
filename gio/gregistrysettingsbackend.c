@@ -738,7 +738,7 @@ registry_cache_update_node (GNode        *cache_node,
           }
       }
     default:
-      g_warning ("gregistrybackend: registry_cache_update_node: Unhandled value type :(");
+      g_warning ("gregistrybackend: registry_cache_update_node: Unhandled value type");
       return FALSE;
     }
 }
@@ -1608,7 +1608,7 @@ watch_thread_function (LPVOID parameter)
           if (cache_node == NULL)
             {
               /* This path has been deleted */
-              trace ("Notify received on a path that was deleted :(\n");
+              trace ("Notify received on a path that was deleted\n");
               continue;
             }
 
