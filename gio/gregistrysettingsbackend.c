@@ -208,25 +208,25 @@ g_message_win32_error (DWORD        result_code,
                       ...)
 {
   va_list va;
-  gint pos;
-  gchar win32_message[1024];
+  gchar *message;
+  gchar *win32_error;
+  gchar *win32_message;
 
   g_return_if_fail (result_code != 0);
 
   va_start (va, format);
-  pos = g_vsnprintf (win32_message, 512, format, va);
-
-  win32_message[pos++] = ':';
-  win32_message[pos++] = ' ';
-
-  FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL,
-                 result_code, 0, (LPTSTR)(win32_message + pos),
-                 1023 - pos, NULL);
+  message = g_strdup_vprintf (format, va);
+  win32_error = g_win32_error_message (result_code);
+  win32_message = g_strdup_printf ("%s: %s", message, win32_error);
+  g_free (message);
+  g_free (win32_message);
 
   if (result_code == ERROR_KEY_DELETED)
     trace ("(%s)", win32_message);
   else
     g_message ("%s", win32_message);
+
+  g_free (win32_message);
 }
 
 /* Make gsettings key into a registry path & value pair. 
