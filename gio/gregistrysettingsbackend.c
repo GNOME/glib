@@ -192,7 +192,8 @@ trace (const char *format,
 {
 #ifdef TRACE
   va_list va; va_start (va, format);
-  vprintf (format, va); fflush (stdout);
+  vprintf (format, va);
+  fflush (stdout);
   va_end (va);
 #endif
 }
@@ -202,7 +203,7 @@ trace (const char *format,
  * result from programmer error (Microsoft programmers don't count), instead
  * they will mostly occur from people messing with the registry by hand. */
 static void
-g_message_win32_error (DWORD result_code,
+g_message_win32_error (DWORD        result_code,
                        const gchar *format,
                       ...)
 {
@@ -216,10 +217,12 @@ g_message_win32_error (DWORD result_code,
   va_start (va, format);
   pos = g_vsnprintf (win32_message, 512, format, va);
 
-  win32_message[pos++] = ':'; win32_message[pos++] = ' ';
+  win32_message[pos++] = ':';
+  win32_message[pos++] = ' ';
 
-  FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL, result_code, 0, (LPTSTR)(win32_message+pos),
-                1023 - pos, NULL);
+  FormatMessage (FORMAT_MESSAGE_FROM_SYSTEM, NULL,
+                 result_code, 0, (LPTSTR)(win32_message + pos),
+                 1023 - pos, NULL);
 
   if (result_code == ERROR_KEY_DELETED)
     trace ("(%s)", win32_message);
@@ -256,7 +259,7 @@ parse_key (const gchar  *key_name,
       if (*c == '/')
         {
           *c = '\\';
-          (*value_name) = c;
+          *value_name = c;
         }
     }
 
@@ -311,8 +314,8 @@ handle_read_error (LONG         result,
 {
   /* file not found means key value not set, this isn't an error for us. */
   if (result != ERROR_FILE_NOT_FOUND)
-      g_message_win32_error (result, "Unable to query value %s/%s: %s.\n",
-                             path_name, value_name);
+    g_message_win32_error (result, "Unable to query value %s/%s: %s.\n",
+                           path_name, value_name);
 }
 
 /***************************************************************************
@@ -365,22 +368,22 @@ registry_value_free (RegistryValue value)
 typedef struct
 {
   /* Component of path that this node represents */
-  gchar *name;           
+  gchar *name;
 
   /* If a watch is subscribed at this point (subscription_count > 0) we can
    * block its next notification. This is useful because if two watches cover
    * the same path, both will trigger when it changes. It also allows changes
    * done by the application to be ignored by the watch thread.
    */
-  gint32 block_count        : 8;
+  gint32 block_count : 8;
 
   /* Number of times g_settings_subscribe has been called for this location
    * (I guess you can't subscribe more than 16383 times) */
   gint32 subscription_count : 14;
   
-  gint32 ref_count          : 9;
+  gint32 ref_count : 9;
 
-  gint32 touched            : 1;
+  gint32 touched : 1;
   RegistryValue value;
 } RegistryCacheItem;
 
@@ -404,7 +407,9 @@ registry_cache_add_item (GNode        *parent,
   item->subscription_count = 0;
   item->block_count = 0;
   item->touched = FALSE;
-  trace ("\treg cache: adding %s to %s\n", name, ((RegistryCacheItem *)parent->data)->name);
+
+  trace ("\treg cache: adding %s to %s\n",
+         name, ((RegistryCacheItem *)parent->data)->name);
 
   cache_node = g_node_new (item);
   g_node_append (parent, cache_node);
@@ -440,7 +445,7 @@ registry_cache_ref_tree (GNode *tree)
   g_node_children_foreach (tree, G_TRAVERSE_ALL,
                            (GNodeForeachFunc)_ref_down, NULL);
 
-  for (node=tree->parent; node; node = node->parent)
+  for (node = tree->parent; node; node = node->parent)
     {
       item = node->data;
       item->ref_count ++;
@@ -451,6 +456,7 @@ static void
 _free_cache_item (RegistryCacheItem *item)
 {
   trace ("\t -- Free node %s\n", item->name);
+
   g_free (item->name);
   registry_value_free (item->value);
   g_slice_free (RegistryCacheItem, item);
@@ -462,7 +468,7 @@ _unref_node (GNode *node)
 {
   RegistryCacheItem *item = node->data;
 
-  item->ref_count --;
+  item->ref_count--;
 
   g_warn_if_fail (item->ref_count >= 0);
 
@@ -557,6 +563,7 @@ registry_cache_find_immediate_child (GNode *node,
 
   search.result = NULL;
   search.name = name;
+
   g_node_traverse (node, G_POST_ORDER, G_TRAVERSE_ALL, 2,
                    registry_cache_find_compare, &search);
 
@@ -570,8 +577,8 @@ registry_cache_get_node_for_key_recursive (GNode    *node,
                                            gint      n_parent_watches)
 {
   RegistryCacheItem *item;
-  gchar *component = key_name,
-        *c         = strchr (component, '/');
+  gchar *component = key_name;
+  gchar *c = strchr (component, '/');
   GNode *child;
 
   if (c != NULL)
@@ -599,7 +606,7 @@ registry_cache_get_node_for_key_recursive (GNode    *node,
     }
 
   /* We are done if there are no more path components. Allow for a trailing /. */
-  if (child==NULL || c == NULL || *(c+1)==0)
+  if (child==NULL || c == NULL || *(c + 1) == 0)
     return child;
 
   trace ("get node for key recursive: next: %s.\n", c + 1);
@@ -614,8 +621,8 @@ registry_cache_get_node_for_key (GNode       *root,
                                  const gchar *key_name,
                                  gboolean     create_if_not_found)
 {
-  GNode *child = NULL,
-        *result = NULL;
+  GNode *child = NULL;
+  GNode *result = NULL;
   gchar *component, *c;
 
   g_return_val_if_fail (key_name != NULL, NULL);
@@ -645,7 +652,7 @@ registry_cache_get_node_for_key (GNode       *root,
 
   if (c == NULL)
     result = root;
-  else if (*(c + 1)==0)
+  else if (*(c + 1) == 0)
     result = child;
   else if (child != NULL)
     result = registry_cache_get_node_for_key_recursive (child, c + 1,
@@ -958,7 +965,7 @@ g_registry_backend_write_one (const char *key_name,
         {
           GString *value_string;
           value_string = g_variant_print_string (variant, NULL, FALSE);
-          value_data_size = value_string->len+1;
+          value_data_size = value_string->len + 1;
           value.ptr = value_data = g_string_free (value_string, FALSE);
         }
       break;
@@ -1164,18 +1171,22 @@ registry_cache_destroy_tree (GNode            *node,
 
   if (item->subscription_count > 0)
     {
-	  gint i;
+      gint i;
+
       /* There must be some watches active if this node is a watch point */
       g_warn_if_fail (self->cache_nodes->len > 1);
 
       /* This is a watch point that has been deleted. Let's free the watch! */
-      for (i=1; i<self->cache_nodes->len; i++)
-        if (g_ptr_array_index (self->cache_nodes, i) == node)
-          break;
+      for (i = 1; i < self->cache_nodes->len; i++)
+        {
+          if (g_ptr_array_index (self->cache_nodes, i) == node)
+            break;
+        }
+
       if (i >= self->cache_nodes->len)
         g_warning ("watch thread: a watch point was deleted, but unable to "
                    "find '%s' in the list of %i watch nodes\n", item->name,
-                   self->cache_nodes->len-1);
+                   self->cache_nodes->len - 1);
       else
         {
           _free_watch (self, i, node);
@@ -1373,6 +1384,7 @@ static gboolean
 watch_handler (RegistryEvent *event)
 {
   gint i;
+
   trace ("Watch handler: got event in %s, items %i.\n", event->prefix, event->items->len);
 
   /* GSettings requires us to NULL-terminate the array. */
@@ -1477,9 +1489,11 @@ watch_thread_handle_message (WatchThreadState *self)
         gint               i;
 
         for (i = 1; i < self->prefixes->len; i++)
-          if (strcmp (g_ptr_array_index (self->prefixes, i),
-                      self->message.watch.prefix) == 0)
+          {
+            if (strcmp (g_ptr_array_index (self->prefixes, i),
+                        self->message.watch.prefix) == 0)
               break;
+          }
 
         if (i >= self->prefixes->len)
           {
@@ -1714,6 +1728,7 @@ watch_stop_unlocked (GRegistryBackend *self)
 {
   WatchThreadState *watch = self->watch;
   DWORD result;
+
   g_return_if_fail (watch != NULL);
 
   watch->message.type = WATCH_THREAD_STOP;
@@ -1844,7 +1859,7 @@ watch_remove_notify (GRegistryBackend *self,
 
   if (g_atomic_int_get (&watch->watches_remaining) >= MAX_WATCHES)
     /* Stop it before any new ones can get added and confuse things */
-    watch_stop_unlocked (self); 
+    watch_stop_unlocked (self);
   else
     LeaveCriticalSection (watch->message_lock);
 }
