@@ -124,6 +124,9 @@ test.gresource: test.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --generate-
 </programlisting>
 Note that this may or may not be portable to non-GNU <command>make</command>.
 </para>
+<para>
+Also see <option>--dependency-file</option>.
+</para>
 </listitem>
 </varlistentry>
 
@@ -157,6 +160,17 @@ usually want to use the functions only internally it can be more useful to
 declare them as
 <link linkend="G-GNUC-INTERNAL:CAPS"><literal>G_GNUC_INTERNAL</literal></link>
 which is what <option>--internal</option> does.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>--dependency-file=<replaceable>FILE</replaceable></option></term>
+<listitem><para>
+Write dependencies in the same style as gcc -M -MF to the given file.
+If <option>FILE</option> is -, the dependencies are written to the standard
+output. Unlike <option>--generate-dependencies</option>, this option can be
+combined with other <option>--generate</option> options to generate dependencies
+as a side-effect of generating sources.
 </para></listitem>
 </varlistentry>
 
