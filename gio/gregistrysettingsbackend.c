@@ -1706,7 +1706,7 @@ watch_start (GRegistryBackend *self)
   if (watch->message_sent_event == NULL || watch->message_received_event == NULL)
     {
       g_message_win32_error (0, "gregistrybackend: Failed to create sync objects.");
-      goto fail_1;
+      goto fail;
     }
 
   /* Use a small stack to make the thread more lightweight. */
@@ -1714,20 +1714,22 @@ watch_start (GRegistryBackend *self)
   if (watch->thread == NULL)
     {
       g_message_win32_error (0, "gregistrybackend: Failed to create notify watch thread.");
-      goto fail_2;
+      goto fail;
     }
 
   self->watch = watch;
 
   return TRUE;
 
-fail_2:
+fail:
   DeleteCriticalSection (watch->message_lock);
   g_slice_free (CRITICAL_SECTION, watch->message_lock);
-  CloseHandle (watch->message_sent_event);
-  CloseHandle (watch->message_received_event);
-fail_1:
+  if (watch->message_sent_event != NULL)
+    CloseHandle (watch->message_sent_event);
+  if (watch->message_received_event != NULL)
+    CloseHandle (watch->message_received_event);
   g_slice_free (WatchThreadState, watch);
+
   return FALSE;
 }
 
