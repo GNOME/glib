@@ -1514,8 +1514,8 @@ watch_thread_handle_message (WatchThreadState *self)
 
         cache_node = g_ptr_array_index (self->cache_nodes, i);
 
-        trace ("watch thread: unsubscribe: freeing node %x, prefix %s, index %i\n",
-               (guint)cache_node, self->message.watch.prefix, i);
+        trace ("watch thread: unsubscribe: freeing node %p, prefix %s, index %i\n",
+               cache_node, self->message.watch.prefix, i);
 
         if (cache_node != NULL)
           {
