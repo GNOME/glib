@@ -211,8 +211,7 @@ g_message_win32_error (DWORD        result_code,
   gint pos;
   gchar win32_message[1024];
 
-  if (result_code == 0)
-    result_code = GetLastError ();
+  g_return_if_fail (result_code != 0);
 
   va_start (va, format);
   pos = g_vsnprintf (win32_message, 512, format, va);
@@ -1705,7 +1704,7 @@ watch_start (GRegistryBackend *self)
   watch->message_received_event = CreateEvent (NULL, FALSE, FALSE, NULL);
   if (watch->message_sent_event == NULL || watch->message_received_event == NULL)
     {
-      g_message_win32_error (0, "gregistrybackend: Failed to create sync objects.");
+      g_message_win32_error (GetLastError (), "gregistrybackend: Failed to create sync objects.");
       goto fail;
     }
 
@@ -1713,7 +1712,7 @@ watch_start (GRegistryBackend *self)
   watch->thread = CreateThread (NULL, 1024, watch_thread_function, watch, 0, NULL);
   if (watch->thread == NULL)
     {
-      g_message_win32_error (0, "gregistrybackend: Failed to create notify watch thread.");
+      g_message_win32_error (GetLastError (), "gregistrybackend: Failed to create notify watch thread.");
       goto fail;
     }
 
