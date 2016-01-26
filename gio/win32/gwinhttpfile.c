@@ -549,7 +549,7 @@ g_winhttp_file_query_info (GFile                *file,
       gint64 cl;
       int n;
 
-      if (swscanf (content_length, L"%I64d%n", &cl, &n) == 1 &&
+      if (swscanf (content_length, L"%"G_GINT64_FORMAT"%n", &cl, &n) == 1 &&
           n == wcslen (content_length))
         g_file_info_set_size (info, cl);
 
