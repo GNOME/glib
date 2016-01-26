@@ -388,16 +388,18 @@ typedef struct
 } RegistryCacheItem;
 
 static GNode *
-registry_cache_add_item (GNode        *parent,
-                         gchar        *name,
-                         RegistryValue value,
-                         gint          ref_count)
+registry_cache_add_item (GNode         *parent,
+                         gchar         *name,
+                         RegistryValue  value,
+                         gint           ref_count)
 {
-  RegistryCacheItem *item = g_slice_new (RegistryCacheItem);
+  RegistryCacheItem *item;
   GNode *cache_node;
 
   g_return_val_if_fail (name != NULL, NULL);
   g_return_val_if_fail (parent != NULL, NULL);
+
+  item = g_slice_new (RegistryCacheItem);
 
   /* Ref count should be the number of watch points above this node */
   item->ref_count = ref_count;
@@ -413,6 +415,7 @@ registry_cache_add_item (GNode        *parent,
 
   cache_node = g_node_new (item);
   g_node_append (parent, cache_node);
+
   return cache_node;
 }
 
