@@ -598,11 +598,13 @@ g_win32_check_windows_version (const gint major,
   if (osverinfo.dwMajorVersion > major)
     is_ver_checked = TRUE;
   else if (osverinfo.dwMajorVersion == major)
-    if (osverinfo.dwMinorVersion > minor)
-      is_ver_checked = TRUE;
-    else if (osverinfo.dwMinorVersion == minor)
-      if (osverinfo.wServicePackMajor >= spver)
+    {
+      if (osverinfo.dwMinorVersion > minor)
+        is_ver_checked = TRUE;
+      else if (osverinfo.dwMinorVersion == minor)
+        if (osverinfo.wServicePackMajor >= spver)
           is_ver_checked = TRUE;
+    }
 
   /* Check OS Type */
   if (is_ver_checked)
