@@ -232,11 +232,15 @@ _g_local_file_enumerator_new (GLocalFile *file,
   dir = opendir (filename);
   if (dir == NULL)
     {
+      gchar *utf8_filename;
       errsv = errno;
 
-      g_set_error_literal (error, G_IO_ERROR,
-                           g_io_error_from_errno (errsv),
-                           g_strerror (errsv));
+      utf8_filename = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
+      g_set_error (error, G_IO_ERROR,
+                   g_io_error_from_errno (errsv),
+                   "Error opening directory '%s': %s",
+                   utf8_filename, g_strerror (errsv));
+      g_free (utf8_filename);
       g_free (filename);
       return NULL;
     }
