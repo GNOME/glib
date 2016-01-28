@@ -5660,7 +5660,6 @@ typedef struct
 {
   GVariantType *reply_type;
   gchar *method_name; /* for error message */
-  guint32 serial;
 
   GUnixFDList *fd_list;
 } CallState;
@@ -5701,7 +5700,7 @@ g_dbus_connection_call_done (GObject      *source,
                " <<<< ASYNC COMPLETE %s() (serial %d)\n"
                "      ",
                state->method_name,
-               state->serial);
+               g_dbus_message_get_reply_serial (reply));
       if (reply != NULL)
         {
           g_print ("SUCCESS\n");
@@ -5798,11 +5797,10 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
                                                  message,
                                                  G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                  timeout_msec,
-                                                 &state->serial,
+                                                 &serial,
                                                  cancellable,
                                                  g_dbus_connection_call_done,
                                                  task);
-      serial = state->serial;
     }
   else
     {
