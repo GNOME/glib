@@ -244,6 +244,8 @@ struct _TypeNode
   GType       *children; /* writable with lock */
   TypeData * volatile data;
   GQuark       qname;
+  GQuark       qversion;
+  TypeNode    *next_with_same_name;
   GData       *global_gdata;
   union {
     GAtomicArray iface_entries;		/* for !iface types */
@@ -262,6 +264,7 @@ struct _TypeNode
 #define NODE_PARENT_TYPE(node)			(node->supers[1])
 #define NODE_FUNDAMENTAL_TYPE(node)		(node->supers[node->n_supers])
 #define NODE_NAME(node)				(g_quark_to_string (node->qname))
+#define NODE_VERSION(node)			(g_quark_to_string (node->qversion))
 #define NODE_REFCOUNT(node)                     ((guint) g_atomic_int_get ((int *) &(node)->ref_count))
 #define	NODE_IS_BOXED(node)			(NODE_FUNDAMENTAL_TYPE (node) == G_TYPE_BOXED)
 #define	NODE_IS_IFACE(node)			(NODE_FUNDAMENTAL_TYPE (node) == G_TYPE_INTERFACE)
@@ -428,11 +431,12 @@ static TypeNode*
 type_node_any_new_W (TypeNode             *pnode,
 		     GType                 ftype,
 		     const gchar          *name,
+		     const gchar          *version,
 		     GTypePlugin          *plugin,
 		     GTypeFundamentalFlags type_flags)
 {
   guint n_supers;
-  GType type;
+  GType type, old_type;
   TypeNode *node;
   guint i, node_size = 0;
 
@@ -516,7 +520,13 @@ type_node_any_new_W (TypeNode             *pnode,
   node->children = NULL;
   node->data = NULL;
   node->qname = g_quark_from_string (name);
+  if (version)
+    node->qversion = g_quark_from_string (version);
   node->global_gdata = NULL;
+
+  old_type = (GType)g_hash_table_lookup (static_type_nodes_ht, name);
+  if (old_type)
+    node->next_with_same_name = lookup_type_node_I (old_type);
   g_hash_table_insert (static_type_nodes_ht,
 		       (gpointer) g_quark_to_string (node->qname),
 		       (gpointer) type);
@@ -553,7 +563,7 @@ type_node_fundamental_new_W (GType                 ftype,
   
   type_flags &= TYPE_FUNDAMENTAL_FLAG_MASK;
   
-  node = type_node_any_new_W (NULL, ftype, name, NULL, type_flags);
+  node = type_node_any_new_W (NULL, ftype, name, NULL, NULL, type_flags);
   
   finfo = type_node_fundamental_info_I (node);
   finfo->type_flags = type_flags;
@@ -564,14 +574,16 @@ type_node_fundamental_new_W (GType                 ftype,
 static TypeNode*
 type_node_new_W (TypeNode    *pnode,
 		 const gchar *name,
+		 const gchar *version,
 		 GTypePlugin *plugin)
      
 {
   g_assert (pnode);
   g_assert (pnode->n_supers < MAX_N_SUPERS);
   g_assert (pnode->n_children < MAX_N_CHILDREN);
-  
-  return type_node_any_new_W (pnode, NODE_FUNDAMENTAL_TYPE (pnode), name, plugin, 0);
+
+  return type_node_any_new_W (pnode, NODE_FUNDAMENTAL_TYPE (pnode),
+                              name, version, plugin, 0);
 }
 
 static inline IFaceEntry*
@@ -740,8 +752,33 @@ check_plugin_U (GTypePlugin *plugin,
   return TRUE;
 }
 
+static void split_type_and_version (const gchar *type_name_and_version,
+                                    gchar **name_out,
+                                    const gchar **version_out)
+{
+  const char *version;
+
+  version = strstr (type_name_and_version, "@@");
+  if (version)
+    {
+      *name_out = g_strndup (type_name_and_version, version - type_name_and_version);
+      version += 2;
+
+      /* Empty version is same as no version */
+      if (*version == 0)
+        *version_out = NULL;
+      else
+        *version_out = version;
+    }
+  else
+    {
+      *name_out = g_strdup (type_name_and_version);
+      *version_out = NULL;
+    }
+}
+
 static gboolean
-check_type_name_I (const gchar *type_name)
+check_type_name_I (const gchar *type_name, const char *version)
 {
   static const gchar extra_chars[] = "-_+";
   const gchar *p = type_name;
@@ -764,9 +801,12 @@ check_type_name_I (const gchar *type_name)
       g_warning ("type name '%s' contains invalid characters", type_name);
       return FALSE;
     }
-  if (g_type_from_name (type_name))
+  if (g_type_from_name_and_version (type_name, version))
     {
-      g_warning ("cannot register existing type '%s'", type_name);
+      if (version)
+        g_warning ("cannot register existing type '%s' version '%s'", type_name, version);
+      else
+        g_warning ("cannot register existing type '%s'", type_name);
       return FALSE;
     }
   
@@ -2638,7 +2678,7 @@ g_type_register_fundamental (GType                       type_id,
   g_return_val_if_fail (info != NULL, 0);
   g_return_val_if_fail (finfo != NULL, 0);
   
-  if (!check_type_name_I (type_name))
+  if (!check_type_name_I (type_name, NULL))
     return 0;
   if ((type_id & TYPE_ID_MASK) ||
       type_id > G_TYPE_FUNDAMENTAL_MAX)
@@ -2742,23 +2782,32 @@ g_type_register_static_simple (GType             parent_type,
  */
 GType
 g_type_register_static (GType            parent_type,
-			const gchar     *type_name,
+			const gchar     *type_name_and_version,
 			const GTypeInfo *info,
 			GTypeFlags	 flags)
 {
   TypeNode *pnode, *node;
   GType type = 0;
+  gchar *type_name;
+  const gchar *version;
   
   g_assert_type_system_initialized ();
   g_return_val_if_fail (parent_type > 0, 0);
-  g_return_val_if_fail (type_name != NULL, 0);
+  g_return_val_if_fail (type_name_and_version != NULL, 0);
   g_return_val_if_fail (info != NULL, 0);
+
+  split_type_and_version (type_name_and_version, &type_name, &version);
   
-  if (!check_type_name_I (type_name) ||
+  if (!check_type_name_I (type_name, version) ||
       !check_derivation_I (parent_type, type_name))
-    return 0;
+    {
+      g_free (type_name);
+      return 0;
+    }
+
   if (info->class_finalize)
     {
+      g_free (type_name);
       g_warning ("class finalizer specified for static type '%s'",
 		 type_name);
       return 0;
@@ -2769,13 +2818,15 @@ g_type_register_static (GType            parent_type,
   type_data_ref_Wm (pnode);
   if (check_type_info_I (pnode, NODE_FUNDAMENTAL_TYPE (pnode), type_name, info))
     {
-      node = type_node_new_W (pnode, type_name, NULL);
+      node = type_node_new_W (pnode, type_name, version, NULL);
       type_add_flags_W (node, flags);
       type = NODE_TYPE (node);
       type_data_make_W (node, info,
 			check_value_table_I (type_name, info->value_table) ? info->value_table : NULL);
     }
   G_WRITE_UNLOCK (&type_rw_lock);
+
+  g_free (type_name);
   
   return type;
 }
@@ -2783,7 +2834,7 @@ g_type_register_static (GType            parent_type,
 /**
  * g_type_register_dynamic:
  * @parent_type: type from which this type will be derived
- * @type_name: 0-terminated string used as the name of the new type
+ * @type_name_and_version: 0-terminated string used as the name of the new type
  * @plugin: #GTypePlugin structure to retrieve the #GTypeInfo from
  * @flags: bitwise combination of #GTypeFlags values
  *
@@ -2797,29 +2848,38 @@ g_type_register_static (GType            parent_type,
  */
 GType
 g_type_register_dynamic (GType        parent_type,
-			 const gchar *type_name,
+			 const gchar *type_name_and_version,
 			 GTypePlugin *plugin,
 			 GTypeFlags   flags)
 {
   TypeNode *pnode, *node;
   GType type;
+  gchar *type_name;
+  const gchar *version;
   
   g_assert_type_system_initialized ();
   g_return_val_if_fail (parent_type > 0, 0);
-  g_return_val_if_fail (type_name != NULL, 0);
+  g_return_val_if_fail (type_name_and_version != NULL, 0);
   g_return_val_if_fail (plugin != NULL, 0);
+
+  split_type_and_version (type_name_and_version, &type_name, &version);
   
-  if (!check_type_name_I (type_name) ||
+  if (!check_type_name_I (type_name, version) ||
       !check_derivation_I (parent_type, type_name) ||
       !check_plugin_U (plugin, TRUE, FALSE, type_name))
-    return 0;
+    {
+      g_free (type_name);
+      return 0;
+    }
   
   G_WRITE_LOCK (&type_rw_lock);
   pnode = lookup_type_node_I (parent_type);
-  node = type_node_new_W (pnode, type_name, plugin);
+  node = type_node_new_W (pnode, type_name, version, plugin);
   type_add_flags_W (node, flags);
   type = NODE_TYPE (node);
   G_WRITE_UNLOCK (&type_rw_lock);
+
+  g_free (type_name);
   
   return type;
 }
@@ -3345,6 +3405,52 @@ g_type_qname (GType type)
 }
 
 /**
+ * g_type_qversion:
+ * @type: type to return quark of type version for
+ *
+ * Get the corresponding quark of the type IDs version.
+ *
+ * Returns: the type version quark or 0
+ *
+ * Since: 2.48
+ */
+GQuark
+g_type_qversion (GType type)
+{
+  TypeNode *node;
+
+  node = lookup_type_node_I (type);
+
+  return node ? node->qversion : 0;
+}
+
+/**
+ * g_type_version:
+ * @type: type to return version for
+ *
+ * Get the unique versoin that is assigned to a type ID.  Note that this
+ * function (like all other GType API) cannot cope with invalid type
+ * IDs. %G_TYPE_INVALID may be passed to this function, as may be any
+ * other validly registered type ID, but randomized type IDs should
+ * not be passed in and will most likely lead to a crash.
+ *
+ * Returns: static type version or %NULL
+ *
+ * Since: 2.48
+ */
+const gchar *
+g_type_version (GType type)
+{
+  TypeNode *node;
+
+  g_assert_type_system_initialized ();
+
+  node = lookup_type_node_I (type);
+
+  return node ? NODE_VERSION (node) : NULL;
+}
+
+/**
  * g_type_from_name:
  * @name: type name to lookup
  *
@@ -3359,13 +3465,107 @@ GType
 g_type_from_name (const gchar *name)
 {
   GType type = 0;
+  const char *type_version = NULL;
+  TypeNode *node = NULL;
+  gboolean conflict = FALSE;
+
+  g_return_val_if_fail (name != NULL, 0);
+
+  G_READ_LOCK (&type_rw_lock);
+  type = (GType) g_hash_table_lookup (static_type_nodes_ht, name);
+
+  if (type != 0)
+    {
+      node = lookup_type_node_I (type);
+      conflict = node->next_with_same_name != NULL;
+
+      type = 0;
+      while (node != NULL)
+        {
+          if (node->qversion == 0)
+            {
+              /* Prefer unversioned types, because apps introducing
+                 versioned types should use from_name_and_version */
+              type = NODE_TYPE (node);
+              type_version = NULL;
+              break;
+            }
+
+          /* For conflicting versioned types, pick the alphabetically
+             largest (i.e. newest) version, so we get at least
+             reproducible results. */
+          if (type_version == NULL ||
+              strcmp (type_version, g_quark_to_string (node->qversion)) > 0)
+            {
+              type = NODE_TYPE (node);
+              type_version = g_quark_to_string (node->qversion);
+            }
+
+          node = node->next_with_same_name;
+        }
+    }
+
+  G_READ_UNLOCK (&type_rw_lock);
+
+  if (conflict)
+    {
+      if (type_version != NULL)
+        g_warning ("Looking up typename %s, with multiple versions, prefering %s", name, type_version);
+      else
+        g_warning ("Looking up typename %s, with multiple versions, prefering unversioned", name);
+    }
+
+  return type;
+}
+
+/**
+ * g_type_from_name_and_version:
+ * @name: type name to lookup
+ * @version: (nullable): type version to lookup, or %NULL for default
+ *
+ * Lookup the type ID from a given type name and version, returning 0 if no type
+ * has been registered under this name and version (this is the preferred method
+ * to find out by name whether a specific type has been registered
+ * yet).
+ *
+ * Returns: corresponding type ID or 0
+ */
+GType
+g_type_from_name_and_version (const gchar     *name,
+                              const gchar     *version)
+{
+  GType type = 0;
+  TypeNode *node;
   
   g_return_val_if_fail (name != NULL, 0);
   
   G_READ_LOCK (&type_rw_lock);
   type = (GType) g_hash_table_lookup (static_type_nodes_ht, name);
+
+  if (type != 0)
+    {
+      GQuark qversion = 0;
+      node = lookup_type_node_I (type);
+
+      type = 0;
+      if (version)
+        qversion = g_quark_try_string (version);
+      if (qversion != 0 || version == NULL)
+        {
+          while (node != NULL)
+            {
+              if (node->qversion == qversion)
+                {
+                  type = NODE_TYPE (node);
+                  break;
+                }
+              node = node->next_with_same_name;
+            }
+        }
+    }
+
   G_READ_UNLOCK (&type_rw_lock);
-  
+
   return type;
 }
 

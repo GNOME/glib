@@ -685,8 +685,15 @@ GLIB_AVAILABLE_IN_ALL
 const gchar *         g_type_name                    (GType            type);
 GLIB_AVAILABLE_IN_ALL
 GQuark                g_type_qname                   (GType            type);
+GLIB_AVAILABLE_IN_2_48
+const gchar *         g_type_version                 (GType            type);
+GLIB_AVAILABLE_IN_2_48
+GQuark                g_type_qversion                (GType            type);
 GLIB_AVAILABLE_IN_ALL
 GType                 g_type_from_name               (const gchar     *name);
+GLIB_AVAILABLE_IN_2_48
+GType                 g_type_from_name_and_version   (const gchar     *name,
+                                                      const gchar     *version);
 GLIB_AVAILABLE_IN_ALL
 GType                 g_type_parent                  (GType            type);
 GLIB_AVAILABLE_IN_ALL
@@ -1938,6 +1945,12 @@ static void     type_name##_class_intern_init (gpointer klass) \
 }
 #endif /* GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38 */
 
+#ifdef G_DEFINE_TYPE_DEFAULT_VERSION
+#define G_TYPE_GET_VERSIONED_NAME(TypeName) #TypeName "@@" G_STRINGIFY(G_DEFINE_TYPE_DEFAULT_VERSION)
+#else
+#define G_TYPE_GET_VERSIONED_NAME(TypeName) #TypeName
+#endif
+
 #define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
 \
 static void     type_name##_init              (TypeName        *self); \
@@ -1962,7 +1975,7 @@ type_name##_get_type (void) \
     { \
       GType g_define_type_id = \
         g_type_register_static_simple (TYPE_PARENT, \
-                                       g_intern_static_string (#TypeName), \
+                                       g_intern_static_string (G_TYPE_GET_VERSIONED_NAME(TypeName)), \
                                        sizeof (TypeName##Class), \
                                        (GClassInitFunc) type_name##_class_intern_init, \
                                        sizeof (TypeName), \
@@ -1989,7 +2002,7 @@ type_name##_get_type (void) \
     { \
       GType g_define_type_id = \
         g_type_register_static_simple (G_TYPE_INTERFACE, \
-                                       g_intern_static_string (#TypeName), \
+                                       g_intern_static_string (G_TYPE_GET_VERSIONED_NAME(TypeName)), \
                                        sizeof (TypeName##Interface), \
                                        (GClassInitFunc)type_name##_default_init, \
                                        0, \
@@ -2074,7 +2087,7 @@ type_name##_get_type (void) \
            } __attribute__((__transparent_union__)) \
         ) = g_boxed_type_register_static; \
       GType g_define_type_id = \
-        _g_register_boxed (g_intern_static_string (#TypeName), copy_func, free_func); \
+        _g_register_boxed (g_intern_static_string (G_TYPE_GET_VERSIONED_NAME(TypeName)), copy_func, free_func); \
       { /* custom code follows */
 #else
 #define _G_DEFINE_BOXED_TYPE_BEGIN(TypeName, type_name, copy_func, free_func) \
@@ -2085,7 +2098,7 @@ type_name##_get_type (void) \
   if (g_once_init_enter (&g_define_type_id__volatile))  \
     { \
       GType g_define_type_id = \
-        g_boxed_type_register_static (g_intern_static_string (#TypeName), \
+        g_boxed_type_register_static (g_intern_static_string (G_TYPE_GET_VERSIONED_NAME(TypeName)), \
                                       (GBoxedCopyFunc) copy_func, \
                                       (GBoxedFreeFunc) free_func); \
       { /* custom code follows */
@@ -2126,7 +2139,7 @@ type_name##_get_type (void) \
   if (g_once_init_enter (&g_define_type_id__volatile))  \
     { \
       GType g_define_type_id = \
-        g_pointer_type_register_static (g_intern_static_string (#TypeName)); \
+        g_pointer_type_register_static (g_intern_static_string (G_TYPE_GET_VERSIONED_NAME(TypeName))); \
       { /* custom code follows */
 
 /* --- protected (for fundamental type implementations) --- */

@@ -1437,7 +1437,7 @@ g_pointer_type_register_static (const gchar *name)
   GType type;
 
   g_return_val_if_fail (name != NULL, 0);
-  g_return_val_if_fail (g_type_from_name (name) == 0, 0);
+  //g_return_val_if_fail (g_type_from_name (name) == 0, 0);
 
   type = g_type_register_static (G_TYPE_POINTER, name, &type_info, 0);
 
