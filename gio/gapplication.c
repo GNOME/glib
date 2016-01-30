@@ -759,7 +759,7 @@ g_application_add_main_option (GApplication *application,
 /**
  * g_application_add_option_group:
  * @application: the #GApplication
- * @group: a #GOptionGroup
+ * @group: (transfer full): a #GOptionGroup
  *
  * Adds a #GOptionGroup to the commandline handling of @application.
  *
