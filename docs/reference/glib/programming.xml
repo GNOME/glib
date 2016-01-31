@@ -30,7 +30,7 @@ structure, they must use a lock to synchronize their operation.
 </para>
 
 <para>
-GLib is creating a worker thread for its own purposes, so GLib applications
+GLib creates a worker thread for its own purposes so GLib applications
 will always have at least 2 threads.
 </para>
 
