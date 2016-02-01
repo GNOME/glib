@@ -1145,7 +1145,7 @@ g_registry_backend_get_permission (GSettingsBackend *backend,
 
 static void
 _free_watch (WatchThreadState *self,
-             gint              index,
+             guint             index,
              GNode            *cache_node);
 
 static void
@@ -1168,7 +1168,7 @@ registry_cache_destroy_tree (GNode            *node,
 
   if (item->subscription_count > 0)
     {
-      gint i;
+      guint i;
 
       /* There must be some watches active if this node is a watch point */
       g_warn_if_fail (self->cache_nodes->len > 1);
@@ -1381,7 +1381,7 @@ typedef struct
 static gboolean
 watch_handler (RegistryEvent *event)
 {
-  gint i;
+  guint i;
 
   trace ("Watch handler: got event in %s, items %i.\n", event->prefix, event->items->len);
 
@@ -1403,7 +1403,7 @@ watch_handler (RegistryEvent *event)
 
 static void
 _free_watch (WatchThreadState *self,
-             gint              index,
+             guint             index,
              GNode            *cache_node)
 {
   HKEY hpath;
@@ -1486,7 +1486,7 @@ watch_thread_handle_message (WatchThreadState *self)
       {
         GNode *cache_node;
         RegistryCacheItem *cache_item;
-        gint i;
+        guint i;
 
         for (i = 1; i < self->prefixes->len; i++)
           {
@@ -1532,7 +1532,7 @@ watch_thread_handle_message (WatchThreadState *self)
 
     case WATCH_THREAD_STOP:
       {
-        gint i;
+        guint i;
 
         /* Free any remaining cache and watch handles */
         for (i = 1; i < self->events->len; i++)
@@ -2008,3 +2008,4 @@ g_registry_backend_init (GRegistryBackend *self)
 
   self->watch = NULL;
 }
+
