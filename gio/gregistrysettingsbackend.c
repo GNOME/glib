@@ -154,15 +154,9 @@ typedef struct
   HANDLE message_sent_event, message_received_event;
 } WatchThreadState;
 
-#define G_TYPE_REGISTRY_BACKEND      (g_registry_backend_get_type ())
-#define G_REGISTRY_BACKEND(inst)     (G_TYPE_CHECK_INSTANCE_CAST ((inst),         \
-                                      G_TYPE_REGISTRY_BACKEND, GRegistryBackend))
-#define G_IS_REGISTRY_BACKEND(inst)  (G_TYPE_CHECK_INSTANCE_TYPE ((inst),         \
-                                      G_TYPE_REGISTRY_BACKEND))
+G_DECLARE_FINAL_TYPE (GRegistryBackend, g_registry_backend, G, REGISTRY_BACKEND, GSettingsBackend)
 
-typedef GSettingsBackendClass GRegistryBackendClass;
-
-typedef struct {
+struct _GRegistryBackend {
   GSettingsBackend parent_instance;
 
   char *base_path;
@@ -173,7 +167,7 @@ typedef struct {
   GNode *cache_root;
 
   WatchThreadState *watch;
-} GRegistryBackend;
+};
 
 G_DEFINE_TYPE_WITH_CODE (GRegistryBackend,
                          g_registry_backend,
