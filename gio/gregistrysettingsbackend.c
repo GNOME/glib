@@ -1037,10 +1037,11 @@ g_registry_backend_write (GSettingsBackend *backend,
 
   result = RegCreateKeyExA (HKEY_CURRENT_USER, self->base_path, 0, NULL, 0,
                             KEY_WRITE, NULL, &hroot, NULL);
-  if (result != ERROR_SUCCESS) {
-    trace ("Error opening/creating key %s.\n", self->base_path);
-    return FALSE;
-  }
+  if (result != ERROR_SUCCESS)
+    {
+      trace ("Error opening/creating key %s.\n", self->base_path);
+      return FALSE;
+    }
 
   action.self = self;
   action.hroot = hroot;
@@ -1064,10 +1065,11 @@ g_registry_backend_write_tree (GSettingsBackend *backend,
 
   result = RegCreateKeyExA (HKEY_CURRENT_USER, self->base_path, 0, NULL, 0,
                             KEY_WRITE, NULL, &hroot, NULL);
-  if (result != ERROR_SUCCESS) {
-    trace ("Error opening/creating key %s.\n", self->base_path);
-    return FALSE;
-  }
+  if (result != ERROR_SUCCESS)
+    {
+      trace ("Error opening/creating key %s.\n", self->base_path);
+      return FALSE;
+    }
 
   action.self =  self;
   action.hroot = hroot;
