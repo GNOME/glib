@@ -1185,11 +1185,40 @@ g_registry_backend_reset (GSettingsBackend *backend,
   g_settings_backend_changed (backend, key_name, origin_tag);
 }
 
-/* Not implemented and probably beyond the scope of this backend */
 static gboolean
 g_registry_backend_get_writable (GSettingsBackend *backend,
                                  const gchar      *key_name)
 {
+  GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
+  gchar *path_name;
+  gunichar2 *path_namew;
+  gchar *value_name;
+  HKEY hpath;
+  LONG result;
+
+  path_name = parse_key (key_name, self->base_path, &value_name);
+  path_namew = g_utf8_to_utf16 (path_name, -1, NULL, NULL, NULL);
+
+  /* Note: we create the key if it wasn't created yet, but it is not much
+   * of a problem since at the end of the day we have to create it anyway
+   * to read or to write from it
+   */
+  result = RegCreateKeyExW (HKEY_CURRENT_USER, path_namew, 0, NULL, 0,
+                            KEY_WRITE, NULL, &hpath, NULL);
+  g_free (path_namew);
+
+  if (result != ERROR_SUCCESS)
+    {
+      trace ("Error opening/creating key to check writability: %s.\n",
+             path_name);
+      g_free (path_name);
+
+      return FALSE;
+    }
+
+  g_free (path_name);
+  RegCloseKey (hpath);
+
   return TRUE;
 }
 
