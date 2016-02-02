@@ -377,12 +377,15 @@ typedef struct
 
   gint32 readable : 1;
   RegistryValue value;
+
+  gint32 writable : 1;
 } RegistryCacheItem;
 
 static GNode *
 registry_cache_add_item (GNode         *parent,
                          gchar         *name,
                          RegistryValue  value,
+                         gboolean       writable,
                          gint           ref_count)
 {
   RegistryCacheItem *item;
@@ -401,6 +404,7 @@ registry_cache_add_item (GNode         *parent,
   item->subscription_count = 0;
   item->block_count = 0;
   item->readable = FALSE;
+  item->writable = writable;
 
   trace ("\treg cache: adding %s to %s\n",
          name, ((RegistryCacheItem *)parent->data)->name);
@@ -1285,6 +1289,7 @@ typedef struct
   GRegistryBackend *self;
   gchar *prefix;          /* prefix is a gsettings path, all items are subkeys of this. */
   GPtrArray *items;       /* each item is a subkey below prefix that has changed. */
+  gboolean writability_changed; /* whether the writability of any of the items from prefix changed */
 } RegistryEvent;
 
 typedef struct
@@ -1392,12 +1397,22 @@ registry_cache_update (GRegistryBackend *self,
     {
       DWORD bufferw_size = MAX_KEY_NAME_LENGTH + 1;
       HKEY  hsubpath;
+      gboolean writable = TRUE;
 
       result = RegEnumKeyExW (hpath, i++, bufferw, &bufferw_size, NULL, NULL, NULL, NULL);
       if (result != ERROR_SUCCESS)
         break;
 
-      result = RegOpenKeyExW (hpath, bufferw, 0, KEY_READ, &hsubpath);
+      /* First try to open the key for writing so we can understand if the path
+       * is writable, if not we fallback to just read from it.
+       */
+      result = RegOpenKeyExW (hpath, bufferw, 0, KEY_READ | KEY_WRITE, &hsubpath);
+      if (result == ERROR_ACCESS_DENIED)
+        {
+          result = RegOpenKeyExW (hpath, bufferw, 0, KEY_READ, &hsubpath);
+          writable = FALSE;
+        }
+
       if (result == ERROR_SUCCESS)
         {
           GNode *subkey_node;
@@ -1413,7 +1428,8 @@ registry_cache_update (GRegistryBackend *self,
             {
               RegistryValue null_value = {REG_NONE, {0}};
               subkey_node = registry_cache_add_item (cache_node, buffer,
-                                                     null_value, n_watches);
+                                                     null_value, writable,
+                                                     n_watches);
             }
 
           new_partial_key_name = g_build_path ("/", partial_key_name, buffer, NULL);
@@ -1422,7 +1438,13 @@ registry_cache_update (GRegistryBackend *self,
           g_free (new_partial_key_name);
 
           child_item = subkey_node->data;
+
+          if (event != NULL)
+            event->writability_changed = event->writability_changed ||
+                                         child_item->writable != writable;
+
           child_item->readable = TRUE;
+          child_item->writable = writable;
 
           g_free (buffer);
           RegCloseKey (hsubpath);
@@ -1470,7 +1492,7 @@ registry_cache_update (GRegistryBackend *self,
         {
           /* This is a new value */
           cache_child_node = registry_cache_add_item (cache_node, buffer, value,
-                                                      n_watches);
+                                                      item->writable, n_watches);
           changed = TRUE;
         }
       else
@@ -1524,7 +1546,9 @@ registry_watch_key (HKEY   hpath,
                     HANDLE event)
 {
   return RegNotifyChangeKeyValue (hpath, TRUE,
-                                  REG_NOTIFY_CHANGE_NAME | REG_NOTIFY_CHANGE_LAST_SET,
+                                  REG_NOTIFY_CHANGE_NAME |
+                                  REG_NOTIFY_CHANGE_LAST_SET |
+                                  REG_NOTIFY_CHANGE_SECURITY,
                                   event, TRUE);
 }
 
@@ -1539,7 +1563,11 @@ watch_handler (RegistryEvent *event)
   /* GSettings requires us to NULL-terminate the array. */
   g_ptr_array_add (event->items, NULL);
   g_settings_backend_keys_changed (G_SETTINGS_BACKEND (event->self), event->prefix,
-                                   (gchar const **)event->items->pdata, NULL);
+                                   (gchar const * const *)event->items->pdata, NULL);
+
+  if (event->writability_changed)
+    g_settings_backend_path_writable_changed (G_SETTINGS_BACKEND (event->self),
+                                              event->prefix);
 
   g_ptr_array_free (event->items, TRUE);
   g_free (event->prefix);
@@ -1799,6 +1827,7 @@ watch_thread_function (LPVOID parameter)
           event->self = g_object_ref (self->owner);
           event->prefix = g_strdup (prefix);
           event->items = g_ptr_array_new_with_free_func (g_free);
+          event->writability_changed = FALSE;
 
           EnterCriticalSection (G_REGISTRY_BACKEND (self->owner)->cache_lock);
           registry_cache_update (G_REGISTRY_BACKEND (self->owner), hpath,
@@ -2144,6 +2173,8 @@ static void
 g_registry_backend_init (GRegistryBackend *self)
 {
   RegistryCacheItem *item;
+  LONG result;
+  HKEY hroot;
 
   self->base_path = g_strdup_printf ("Software\\GSettings");
   self->base_pathw = g_utf8_to_utf16 (self->base_path, -1, NULL, NULL, NULL);
@@ -2154,6 +2185,17 @@ g_registry_backend_init (GRegistryBackend *self)
   item->name = g_strdup ("<root>");
   item->ref_count = 1;
   self->cache_root = g_node_new (item);
+
+  /* Understand whether the root is writable or not */
+  result = RegCreateKeyExW (HKEY_CURRENT_USER, self->base_pathw, 0, NULL, 0,
+                            KEY_WRITE, NULL, &hroot, NULL);
+  if (result == ERROR_SUCCESS)
+    {
+      item->writable = TRUE;
+      RegCloseKey (hroot);
+    }
+  else
+    item->writable = FALSE;
 
   self->cache_lock = g_slice_new (CRITICAL_SECTION);
   InitializeCriticalSection (self->cache_lock);
