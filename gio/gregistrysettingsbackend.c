@@ -376,7 +376,7 @@ typedef struct
   
   gint32 ref_count : 9;
 
-  gint32 touched : 1;
+  gint32 readable : 1;
   RegistryValue value;
 } RegistryCacheItem;
 
@@ -401,7 +401,7 @@ registry_cache_add_item (GNode         *parent,
   item->value = value;
   item->subscription_count = 0;
   item->block_count = 0;
-  item->touched = FALSE;
+  item->readable = FALSE;
 
   trace ("\treg cache: adding %s to %s\n",
          name, ((RegistryCacheItem *)parent->data)->name);
@@ -1151,11 +1151,11 @@ _free_watch (WatchThreadState *self,
              GNode            *cache_node);
 
 static void
-registry_cache_item_reset_touched (GNode    *node,
-                                   gpointer  data)
+registry_cache_item_reset_readable (GNode    *node,
+                                    gpointer  data)
 {
   RegistryCacheItem *item = node->data;
-  item->touched = FALSE;
+  item->readable = FALSE;
 }
 
 /* Delete a node and any children, for when it has been deleted from the registry */
@@ -1202,7 +1202,7 @@ registry_cache_remove_deleted (GNode    *node,
 {
   RegistryCacheItem *item = node->data;
 
-  if (!item->touched)
+  if (!item->readable)
     registry_cache_destroy_tree (node, data);
 }
 
@@ -1246,11 +1246,11 @@ registry_cache_update (GRegistryBackend *self,
   trace ("registry cache update: %s. Node %x has %i children\n", key_name,
          cache_node, g_node_n_children (cache_node));
 
-  /* Start by zeroing 'touched' flag. When the registry traversal is done, any untouched nodes
+  /* Start by zeroing 'readable' flag. When the registry traversal is done, any unreadable nodes
    * must have been deleted from the registry.
    */
   g_node_children_foreach (cache_node, G_TRAVERSE_ALL,
-                           registry_cache_item_reset_touched, NULL);
+                           registry_cache_item_reset_readable, NULL);
 
   /* Recurse into each subpath at the current level, if any */
   i = 0;
@@ -1280,7 +1280,7 @@ registry_cache_update (GRegistryBackend *self,
           registry_cache_update (self, hsubpath, prefix, buffer, subkey_node,
                                  n_watches, changes);
           child_item = subkey_node->data;
-          child_item->touched = TRUE;
+          child_item->readable = TRUE;
 
           RegCloseKey (hsubpath);
         }
@@ -1335,7 +1335,7 @@ registry_cache_update (GRegistryBackend *self,
         }
 
       child_item = cache_child_node->data;
-      child_item->touched = TRUE;
+      child_item->readable = TRUE;
       if (changed == TRUE && changes != NULL)
         {
           gchar *item;
@@ -1350,7 +1350,7 @@ registry_cache_update (GRegistryBackend *self,
   if (result != ERROR_NO_MORE_ITEMS)
     g_message_win32_error (result, "gregistrybackend: error enumerating values for cache");
 
-  /* Any nodes now left untouched must have been deleted, remove them from cache */
+  /* Any nodes now left unreadable must have been deleted, remove them from cache */
   g_node_children_foreach (cache_node, G_TRAVERSE_ALL,
                            registry_cache_remove_deleted, self->watch);
 
@@ -2008,4 +2008,3 @@ g_registry_backend_init (GRegistryBackend *self)
 
   self->watch = NULL;
 }
-
