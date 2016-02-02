@@ -1223,6 +1223,38 @@ typedef struct
   GPtrArray *items;       /* each item is a subkey below prefix that has changed. */
 } RegistryEvent;
 
+typedef struct
+{
+  RegistryEvent *event;
+  gchar *current_key_name;
+} DeletedItemData;
+
+static void
+mark_all_subkeys_as_changed (GNode    *node,
+                             gpointer  data)
+{
+  RegistryCacheItem *item = node->data;
+  DeletedItemData *item_data = data;
+
+  if (item_data->current_key_name == NULL)
+    item_data->current_key_name = g_strdup (item->name);
+  else
+    {
+      gchar *name;
+
+      name = g_build_path ("/", item_data->current_key_name, item->name, NULL);
+      g_free (item_data->current_key_name);
+      item_data->current_key_name = name;
+    }
+
+  /* Iterate until we find an item that is a value */
+  if (item->value.type == REG_NONE)
+    g_node_children_foreach (node, G_TRAVERSE_ALL,
+                             mark_all_subkeys_as_changed, data);
+  else
+    g_ptr_array_add (item_data->event->items, item_data->current_key_name);
+}
+
 static void
 registry_cache_remove_deleted (GNode    *node,
                                gpointer  data)
@@ -1231,7 +1263,15 @@ registry_cache_remove_deleted (GNode    *node,
   RegistryEvent *event = data;
 
   if (!item->readable)
-    registry_cache_destroy_tree (node, event->self->watch);
+    {
+      DeletedItemData item_data;
+
+      item_data.event = event;
+      item_data.current_key_name = NULL;
+
+      mark_all_subkeys_as_changed (node, &item_data);
+      registry_cache_destroy_tree (node, event->self->watch);
+    }
 }
 
 /* Update cache from registry, and optionally report on the changes.
