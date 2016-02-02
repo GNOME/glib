@@ -1392,10 +1392,7 @@ watch_handler (RegistryEvent *event)
   g_settings_backend_keys_changed (G_SETTINGS_BACKEND (event->self), event->prefix,
                                    (gchar const **)event->items->pdata, NULL);
 
-  for (i = 0; i < event->items->len; i++)
-    g_free (g_ptr_array_index (event->items, i));
   g_ptr_array_free (event->items, TRUE);
-
   g_free (event->prefix);
   g_object_unref (event->self);
   g_slice_free (RegistryEvent, event);
@@ -1654,7 +1651,7 @@ watch_thread_function (LPVOID parameter)
           event->self = G_REGISTRY_BACKEND (self->owner);
           g_object_ref (self->owner);
 
-          event->items = g_ptr_array_new ();
+          event->items = g_ptr_array_new_with_free_func (g_free);
 
           EnterCriticalSection (G_REGISTRY_BACKEND (self->owner)->cache_lock);
           registry_cache_update (G_REGISTRY_BACKEND (self->owner), hpath,
