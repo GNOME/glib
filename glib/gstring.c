@@ -240,7 +240,7 @@ g_string_free (GString  *string,
  * #GBytes does not include this extra nul; i.e. it has length exactly
  * equal to the "len" member.
  *
- * Returns: A newly allocated #GBytes containing contents of @string; @string itself is freed
+ * Returns: (transfer full): A newly allocated #GBytes containing contents of @string; @string itself is freed
  * Since: 2.34
  */
 GBytes*
@@ -330,7 +330,7 @@ g_string_hash (const GString *str)
  * the standard strcpy() function, except that you do not
  * have to worry about having enough space to copy the string.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_assign (GString     *string,
@@ -359,7 +359,7 @@ g_string_assign (GString     *string,
  *
  * Cuts off the end of the GString, leaving the first @len bytes.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_truncate (GString *string,
@@ -384,7 +384,7 @@ g_string_truncate (GString *string,
  * of the newly added area are undefined. (However, as
  * always, string->str[string->len] will be a nul byte.)
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_set_size (GString *string,
@@ -418,7 +418,7 @@ g_string_set_size (GString *string,
  * the caller's responsibility to ensure that @val has at
  * least @len addressable bytes.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_insert_len (GString     *string,
@@ -534,7 +534,7 @@ gunichar_ok (gunichar c)
  * Appends @unescaped to @string, escaped any characters that
  * are reserved in URIs using URI-style escape sequences.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  *
  * Since: 2.16
  */
@@ -587,7 +587,7 @@ g_string_append_uri_escaped (GString     *string,
  * Adds a string onto the end of a #GString, expanding
  * it if necessary.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_append (GString     *string,
@@ -610,7 +610,7 @@ g_string_append (GString     *string,
  * the caller's responsibility to ensure that @val has at
  * least @len addressable bytes.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_append_len (GString     *string,
@@ -628,7 +628,7 @@ g_string_append_len (GString     *string,
  * Adds a byte onto the end of a #GString, expanding
  * it if necessary.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 #undef g_string_append_c
 GString *
@@ -648,7 +648,7 @@ g_string_append_c (GString *string,
  * Converts a Unicode character into UTF-8, and appends it
  * to the string.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_append_unichar (GString  *string,
@@ -667,7 +667,7 @@ g_string_append_unichar (GString  *string,
  * Adds a string on to the start of a #GString,
  * expanding it if necessary.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_prepend (GString     *string,
@@ -690,7 +690,7 @@ g_string_prepend (GString     *string,
  * it is the caller's responsibility to ensure that
  * @val has at least @len addressable bytes.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_prepend_len (GString     *string,
@@ -708,7 +708,7 @@ g_string_prepend_len (GString     *string,
  * Adds a byte onto the start of a #GString,
  * expanding it if necessary.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_prepend_c (GString *string,
@@ -727,7 +727,7 @@ g_string_prepend_c (GString *string,
  * Converts a Unicode character into UTF-8, and prepends it
  * to the string.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_prepend_unichar (GString  *string,
@@ -747,7 +747,7 @@ g_string_prepend_unichar (GString  *string,
  * Inserts a copy of a string into a #GString,
  * expanding it if necessary.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_insert (GString     *string,
@@ -765,7 +765,7 @@ g_string_insert (GString     *string,
  *
  * Inserts a byte into a #GString, expanding it if necessary.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_insert_c (GString *string,
@@ -804,7 +804,7 @@ g_string_insert_c (GString *string,
  * Converts a Unicode character into UTF-8, and insert it
  * into the string at the given position.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_insert_unichar (GString  *string,
@@ -885,7 +885,7 @@ g_string_insert_unichar (GString  *string,
  *
  * Overwrites part of a string, lengthening it if necessary.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  *
  * Since: 2.14
  */
@@ -908,7 +908,7 @@ g_string_overwrite (GString     *string,
  * Overwrites part of a string, lengthening it if necessary.
  * This function will work with embedded nuls.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  *
  * Since: 2.14
  */
@@ -957,7 +957,7 @@ g_string_overwrite_len (GString     *string,
  * Removes @len bytes from a #GString, starting at position @pos.
  * The rest of the #GString is shifted down to fill the gap.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  */
 GString *
 g_string_erase (GString *string,
@@ -991,7 +991,7 @@ g_string_erase (GString *string,
  *
  * Converts all uppercase ASCII letters to lowercase ASCII letters.
  *
- * Returns: passed-in @string pointer, with all the
+ * Returns: (transfer none): passed-in @string pointer, with all the
  *     uppercase characters converted to lowercase in place,
  *     with semantics that exactly match g_ascii_tolower().
  */
@@ -1022,7 +1022,7 @@ g_string_ascii_down (GString *string)
  *
  * Converts all lowercase ASCII letters to uppercase ASCII letters.
  *
- * Returns: passed-in @string pointer, with all the
+ * Returns: (transfer none): passed-in @string pointer, with all the
  *     lowercase characters converted to uppercase in place,
  *     with semantics that exactly match g_ascii_toupper().
  */
@@ -1053,7 +1053,7 @@ g_string_ascii_up (GString *string)
  *
  * Converts a #GString to lowercase.
  *
- * Returns: the #GString
+ * Returns: (transfer none): the #GString
  *
  * Deprecated:2.2: This function uses the locale-specific
  *     tolower() function, which is almost never the right thing.
@@ -1087,7 +1087,7 @@ g_string_down (GString *string)
  *
  * Converts a #GString to uppercase.
  *
- * Returns: @string
+ * Returns: (transfer none): @string
  *
  * Deprecated:2.2: This function uses the locale-specific
  *     toupper() function, which is almost never the right thing.
