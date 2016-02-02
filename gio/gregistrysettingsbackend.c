@@ -1281,8 +1281,9 @@ registry_cache_update (GRegistryBackend *self,
                                  n_watches, changes);
           child_item = subkey_node->data;
           child_item->touched = TRUE;
+
+          RegCloseKey (hsubpath);
         }
-      RegCloseKey (hsubpath);
     }
 
   if (result != ERROR_NO_MORE_ITEMS)
