@@ -1196,14 +1196,23 @@ registry_cache_destroy_tree (GNode            *node,
   g_node_destroy (node);
 }
 
+/* One of these is sent down the pipe when something happens in the registry. */
+typedef struct
+{
+  GRegistryBackend *self;
+  gchar *prefix;          /* prefix is a gsettings path, all items are subkeys of this. */
+  GPtrArray *items;       /* each item is a subkey below prefix that has changed. */
+} RegistryEvent;
+
 static void
 registry_cache_remove_deleted (GNode    *node,
                                gpointer  data)
 {
   RegistryCacheItem *item = node->data;
+  RegistryEvent *event = data;
 
   if (!item->readable)
-    registry_cache_destroy_tree (node, data);
+    registry_cache_destroy_tree (node, event->self->watch);
 }
 
 /* Update cache from registry, and optionally report on the changes.
@@ -1226,15 +1235,16 @@ registry_cache_update (GRegistryBackend *self,
                        const gchar      *prefix,
                        const gchar      *partial_key_name,
                        GNode            *cache_node,
-                       int               n_watches, 
-                       GPtrArray        *changes)
+                       int               n_watches,
+                       RegistryEvent    *event)
 {
   gchar buffer[MAX_KEY_NAME_LENGTH + 1];
   gchar *key_name;
   gint i;
   LONG result;
+  RegistryCacheItem *item;
 
-  RegistryCacheItem *item = cache_node->data;
+  item = cache_node->data;
 
   if (item->subscription_count > 0)
     n_watches++;
@@ -1280,7 +1290,7 @@ registry_cache_update (GRegistryBackend *self,
 
           new_partial_key_name = g_build_path ("/", partial_key_name, buffer, NULL);
           registry_cache_update (self, hsubpath, prefix, new_partial_key_name,
-                                 subkey_node, n_watches, changes);
+                                 subkey_node, n_watches, event);
           g_free (new_partial_key_name);
 
           child_item = subkey_node->data;
@@ -1340,14 +1350,16 @@ registry_cache_update (GRegistryBackend *self,
 
       child_item = cache_child_node->data;
       child_item->readable = TRUE;
-      if (changed == TRUE && changes != NULL)
+      if (changed && event != NULL)
         {
           gchar *item;
+
           if (partial_key_name == NULL)
             item = g_strdup (buffer);
           else
             item = g_build_path ("/", partial_key_name, buffer, NULL);
-          g_ptr_array_add (changes, item);
+
+          g_ptr_array_add (event->items, item);
         }
     }
 
@@ -1356,7 +1368,7 @@ registry_cache_update (GRegistryBackend *self,
 
   /* Any nodes now left unreadable must have been deleted, remove them from cache */
   g_node_children_foreach (cache_node, G_TRAVERSE_ALL,
-                           registry_cache_remove_deleted, self->watch);
+                           registry_cache_remove_deleted, event);
 
   trace ("registry cache update complete.\n");
   g_free (key_name);
@@ -1375,14 +1387,6 @@ registry_watch_key (HKEY   hpath,
                                   REG_NOTIFY_CHANGE_NAME | REG_NOTIFY_CHANGE_LAST_SET,
                                   event, TRUE);
 }
-
-/* One of these is sent down the pipe when something happens in the registry. */
-typedef struct
-{
-  GRegistryBackend *self;
-  gchar *prefix;          /* prefix is a gsettings path, all items are subkeys of this. */
-  GPtrArray *items;       /* each item is a subkey below prefix that has changed. */
-} RegistryEvent;
 
 /* This handler runs in the main thread to emit the changed signals */
 static gboolean
@@ -1660,7 +1664,7 @@ watch_thread_function (LPVOID parameter)
 
           EnterCriticalSection (G_REGISTRY_BACKEND (self->owner)->cache_lock);
           registry_cache_update (G_REGISTRY_BACKEND (self->owner), hpath,
-                                 prefix, NULL, cache_node, 0, event->items);
+                                 prefix, NULL, cache_node, 0, event);
           LeaveCriticalSection (G_REGISTRY_BACKEND (self->owner)->cache_lock);
 
           if (event->items->len > 0)
