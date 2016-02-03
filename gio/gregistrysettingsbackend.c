@@ -1266,8 +1266,9 @@ registry_cache_update (GRegistryBackend *self,
       result = RegOpenKeyEx (hpath, buffer, 0, KEY_READ, &hsubpath);
       if (result == ERROR_SUCCESS)
         {
-          GNode             *subkey_node;
+          GNode *subkey_node;
           RegistryCacheItem *child_item;
+          gchar *new_partial_key_name;
 
           subkey_node = registry_cache_find_immediate_child (cache_node, buffer);
           if (subkey_node == NULL)
@@ -1277,8 +1278,11 @@ registry_cache_update (GRegistryBackend *self,
                                                      null_value, n_watches);
             }
 
-          registry_cache_update (self, hsubpath, prefix, buffer, subkey_node,
-                                 n_watches, changes);
+          new_partial_key_name = g_build_path ("/", partial_key_name, buffer, NULL);
+          registry_cache_update (self, hsubpath, prefix, new_partial_key_name,
+                                 subkey_node, n_watches, changes);
+          g_free (new_partial_key_name);
+
           child_item = subkey_node->data;
           child_item->readable = TRUE;
 
