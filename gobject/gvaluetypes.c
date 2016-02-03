@@ -1239,7 +1239,7 @@ g_value_set_variant (GValue   *value,
 /**
  * g_value_take_variant:
  * @value: a valid #GValue of type %G_TYPE_VARIANT
- * @variant: (allow-none): a #GVariant, or %NULL
+ * @variant: (nullable) (transfer full): a #GVariant, or %NULL
  *
  * Set the contents of a variant #GValue to @variant, and takes over
  * the ownership of the caller's reference to @variant;

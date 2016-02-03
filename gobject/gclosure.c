@@ -755,7 +755,7 @@ g_closure_remove_finalize_notifier (GClosure      *closure,
 /**
  * g_closure_invoke:
  * @closure: a #GClosure
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (optional) (out): a #GValue to store the return
  *                value. May be %NULL if the callback of @closure
  *                doesn't return a value.
  * @n_param_values: the length of the @param_values array

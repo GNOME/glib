@@ -1265,7 +1265,7 @@ g_signal_lookup (const gchar *name,
  * created. Further information about the signals can be acquired through
  * g_signal_query().
  *
- * Returns: (array length=n_ids): Newly allocated array of signal IDs.
+ * Returns: (array length=n_ids) (transfer full): Newly allocated array of signal IDs.
  */
 guint*
 g_signal_list_ids (GType  itype,
