@@ -1134,13 +1134,6 @@ g_registry_backend_get_writable (GSettingsBackend *backend,
   return TRUE;
 }
 
-static GPermission *
-g_registry_backend_get_permission (GSettingsBackend *backend,
-                                   const gchar      *key_name)
-{
-  return g_simple_permission_new (TRUE);
-}
-
 /********************************************************************************
  * Spot-the-difference engine
  ********************************************************************************/
@@ -1993,7 +1986,6 @@ g_registry_backend_class_init (GRegistryBackendClass *class)
   backend_class->write_tree = g_registry_backend_write_tree;
   backend_class->reset = g_registry_backend_reset;
   backend_class->get_writable = g_registry_backend_get_writable;
-  backend_class->get_permission = g_registry_backend_get_permission;
   backend_class->subscribe = g_registry_backend_subscribe;
   backend_class->unsubscribe = g_registry_backend_unsubscribe;
 }
