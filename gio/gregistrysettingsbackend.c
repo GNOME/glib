@@ -1732,10 +1732,8 @@ watch_thread_function (LPVOID parameter)
            * likely to block (only when changing notification subscriptions).
            */
           event = g_slice_new (RegistryEvent);
-
-          event->self = G_REGISTRY_BACKEND (self->owner);
-          g_object_ref (self->owner);
-
+          event->self = g_object_ref (self->owner);
+          event->prefix = g_strdup (prefix);
           event->items = g_ptr_array_new_with_free_func (g_free);
 
           EnterCriticalSection (G_REGISTRY_BACKEND (self->owner)->cache_lock);
@@ -1744,12 +1742,11 @@ watch_thread_function (LPVOID parameter)
           LeaveCriticalSection (G_REGISTRY_BACKEND (self->owner)->cache_lock);
 
           if (event->items->len > 0)
-            {
-              event->prefix = g_strdup (prefix);
-              g_idle_add ((GSourceFunc) watch_handler, event);
-            }
+            g_idle_add ((GSourceFunc) watch_handler, event);
           else
             {
+              g_object_unref (event->self);
+              g_free (event->prefix);
               g_ptr_array_free (event->items, TRUE);
               g_slice_free (RegistryEvent, event);
             }
