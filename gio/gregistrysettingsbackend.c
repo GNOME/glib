@@ -90,7 +90,6 @@
 #include "config.h"
 
 #include "gregistrysettingsbackend.h"
-#include "gsimplepermission.h"
 #include "gsettingsbackend.h"
 #include "giomodule.h"
 
