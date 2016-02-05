@@ -590,18 +590,16 @@ registry_cache_get_node_for_key_recursive (GNode    *node,
   child = registry_cache_find_immediate_child (node, component);
   if (child == NULL && create_if_not_found)
     {
-      item = g_slice_new (RegistryCacheItem);
-      item->name = g_strdup (component);
-      item->value.type = REG_NONE;
-      item->value.ptr = NULL;
-      item->ref_count = n_parent_watches;
-      child = g_node_new (item);
-      g_node_append (node, child);
-      trace ("\tget node for key recursive: new %x = %s.\n", node, item->name);
+      RegistryValue null_value = { REG_NONE, {0} };
+
+      child = registry_cache_add_item (node, component,
+                                       null_value, n_parent_watches);
+
+      trace ("\tget node for key recursive: new %x = %s.\n", node, component);
     }
 
   /* We are done if there are no more path components. Allow for a trailing /. */
-  if (child==NULL || c == NULL || *(c + 1) == 0)
+  if (child == NULL || c == NULL || *(c + 1) == 0)
     return child;
 
   trace ("get node for key recursive: next: %s.\n", c + 1);
