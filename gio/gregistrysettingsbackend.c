@@ -603,6 +603,7 @@ registry_cache_get_node_for_key_recursive (GNode    *node,
     return child;
 
   trace ("get node for key recursive: next: %s.\n", c + 1);
+
   return registry_cache_get_node_for_key_recursive (child, c + 1,
                                                     create_if_not_found,
                                                     n_parent_watches);
@@ -632,15 +633,13 @@ registry_cache_get_node_for_key (GNode       *root,
   child = registry_cache_find_immediate_child (root, component);
   if (child == NULL && create_if_not_found)
     {
+      RegistryValue null_value = { REG_NONE, {0} };
+
       /* Reference count is set to 0, tree should be referenced by the caller */
-      RegistryCacheItem *item = g_slice_new (RegistryCacheItem);
-      item->value.type = REG_NONE;
-      item->value.ptr = NULL;
-      item->name = g_strdup (component);
-      item->ref_count = 0;
-      trace ("get_node_for_key: New node for component '%s'\n", item->name);
-      child = g_node_new (item);
-      g_node_append (root, child);
+      child = registry_cache_add_item (root, component,
+                                       null_value, 0);
+
+      trace ("get_node_for_key: New node for component '%s'\n", component);
     }
 
   if (c == NULL)
