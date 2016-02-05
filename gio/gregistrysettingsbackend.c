@@ -809,6 +809,10 @@ registry_read (HKEY           hpath,
   if (result != ERROR_SUCCESS)
     {
       handle_read_error (result, path_name, value_name);
+
+      if (p_value->type != REG_DWORD)
+        g_free (buffer);
+
       return FALSE;
     }
 
