@@ -816,6 +816,13 @@ registry_read (HKEY           hpath,
       return FALSE;
     }
 
+  if (p_value->type == REG_SZ)
+    {
+      gchar *valueu8 = g_utf16_to_utf8 (p_value->ptr, -1, NULL, NULL, NULL);
+      g_free (p_value->ptr);
+      p_value->ptr = valueu8;
+    }
+
   return TRUE;
 }
 
@@ -926,6 +933,7 @@ g_registry_backend_write_one (const char *key_name,
   gunichar2 *value_namew;
   DWORD value_data_size;
   LPVOID value_data;
+  gunichar2 *value_dataw;
   LONG result;
   GNode *node;
   gboolean changed;
@@ -1023,7 +1031,28 @@ g_registry_backend_write_one (const char *key_name,
 
   value_namew = g_utf8_to_utf16 (value_name, -1, NULL, NULL, NULL);
 
+  value_dataw = NULL;
+
+  switch (type_string[0])
+    {
+    case 'b':
+    case 'y':
+    case 'n':
+    case 'q':
+    case 'i':
+    case 'u':
+    case 'x':
+    case 't':
+      break;
+    default:
+      value_dataw = g_utf8_to_utf16 (value_data, -1, NULL, NULL, NULL);
+      value_data = value_dataw;
+      value_data_size = (DWORD)((wcslen (value_data) + 1) * sizeof (gunichar2));
+      break;
+    }
+
   result = RegSetValueExW (hpath, value_namew, 0, value.type, value_data, value_data_size);
+
   if (result != ERROR_SUCCESS)
     g_message_win32_error (result, "gregistrybackend: setting value %s\\%s\\%s failed.\n",
                            self->base_path, path_name, value_name);
@@ -1036,6 +1065,7 @@ g_registry_backend_write_one (const char *key_name,
   RegCloseKey (hpath);
   g_free (path_name);
   g_free (value_namew);
+  g_free (value_dataw);
 
   return FALSE;
 }
