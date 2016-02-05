@@ -627,6 +627,13 @@ registry_cache_get_node_for_key (GNode       *root,
   /* Ignore preceding / */
   component = g_strdup (key_name);
   c = strchr (component, '/');
+
+  if (c == NULL)
+    {
+      g_free (component);
+      return root;
+    }
+
   if (c != NULL)
     *c = 0;
 
@@ -642,9 +649,7 @@ registry_cache_get_node_for_key (GNode       *root,
       trace ("get_node_for_key: New node for component '%s'\n", component);
     }
 
-  if (c == NULL)
-    result = root;
-  else if (*(c + 1) == 0)
+  if (*(c + 1) == 0)
     result = child;
   else if (child != NULL)
     result = registry_cache_get_node_for_key_recursive (child, c + 1,
