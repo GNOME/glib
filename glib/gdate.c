@@ -2494,7 +2494,10 @@ g_date_strftime (gchar       *s,
        * recognize whether strftime actually failed or just returned "".
        */
       tmpbuf[0] = '\1';
+      #pragma GCC diagnostic push
+      #pragma GCC diagnostic ignored "-Wformat-nonliteral"
       tmplen = strftime (tmpbuf, tmpbufsize, locale_format, &tm);
+      #pragma GCC diagnostic pop
 
       if (tmplen == 0 && tmpbuf[0] != '\0')
         {
