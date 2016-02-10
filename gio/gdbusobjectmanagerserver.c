@@ -54,7 +54,8 @@
  * manager should typically be exported at `/net/example/ExampleService1`, or
  * below (to allow for multiple object managers in a service).
  *
- * It is not supported to export an object manager at the root path, `/`.
+ * It is supported, but not recommended, to export an object manager at the root
+ * path, `/`.
  *
  * See #GDBusObjectManagerClient for the client-side code that is
  * intended to be used with #GDBusObjectManagerServer or any D-Bus
@@ -176,7 +177,10 @@ g_dbus_object_manager_server_set_property (GObject       *object,
       g_assert (manager->priv->object_path == NULL);
       g_assert (g_variant_is_object_path (g_value_get_string (value)));
       manager->priv->object_path = g_value_dup_string (value);
-      manager->priv->object_path_ending_in_slash = g_strdup_printf ("%s/", manager->priv->object_path);
+      if (g_str_equal (manager->priv->object_path, "/"))
+        manager->priv->object_path_ending_in_slash = g_strdup (manager->priv->object_path);
+      else
+        manager->priv->object_path_ending_in_slash = g_strdup_printf ("%s/", manager->priv->object_path);
       break;
 
     default:
@@ -244,8 +248,7 @@ g_dbus_object_manager_server_init (GDBusObjectManagerServer *manager)
 
 /**
  * g_dbus_object_manager_server_new:
- * @object_path: The object path to export the manager object at, which should
- * not be `/`.
+ * @object_path: The object path to export the manager object at.
  *
  * Creates a new #GDBusObjectManagerServer object.
  *

@@ -282,7 +282,7 @@ on_result (GObject *source,
 
 static void
 test_object_manager (Test *test,
-                     gconstpointer unused)
+                     gconstpointer test_data)
 {
   GDBusObjectManager *client;
   GDBusObjectManagerServer *server;
@@ -292,18 +292,31 @@ test_object_manager (Test *test,
   GError *error = NULL;
   GDBusInterface *proxy;
   GVariant *prop;
+  const gchar *object_path = test_data;
+  gchar *number1_path = NULL, *number2_path = NULL;
 
-  server = g_dbus_object_manager_server_new ("/objects");
+  if (g_strcmp0 (object_path, "/") == 0)
+    {
+      number1_path = g_strdup ("/number_1");
+      number2_path = g_strdup ("/number_2");
+    }
+  else
+    {
+      number1_path = g_strdup_printf ("%s/number_1", object_path);
+      number2_path = g_strdup_printf ("%s/number_2", object_path);
+    }
+
+  server = g_dbus_object_manager_server_new (object_path);
 
   mock = g_object_new (mock_interface_get_type (), NULL);
   mock->number = 1;
-  skeleton = g_dbus_object_skeleton_new ("/objects/number_1");
+  skeleton = g_dbus_object_skeleton_new (number1_path);
   g_dbus_object_skeleton_add_interface (skeleton, G_DBUS_INTERFACE_SKELETON (mock));
   g_dbus_object_manager_server_export (server, skeleton);
 
   mock = g_object_new (mock_interface_get_type (), NULL);
   mock->number = 2;
-  skeleton = g_dbus_object_skeleton_new ("/objects/number_2");
+  skeleton = g_dbus_object_skeleton_new (number2_path);
   g_dbus_object_skeleton_add_interface (skeleton, G_DBUS_INTERFACE_SKELETON (mock));
   g_dbus_object_manager_server_export (server, skeleton);
 
@@ -312,19 +325,19 @@ test_object_manager (Test *test,
   dbus_name = NULL;
 
   g_dbus_object_manager_client_new (test->client, G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START,
-                                    dbus_name, "/objects", NULL, NULL, NULL, NULL, on_result, test);
+                                    dbus_name, object_path, NULL, NULL, NULL, NULL, on_result, test);
 
   g_main_loop_run (test->loop);
   client = g_dbus_object_manager_client_new_finish (test->result, &error);
   g_assert_no_error (error);
   g_clear_object (&test->result);
 
-  proxy = g_dbus_object_manager_get_interface (client, "/objects/number_1", "org.mock.Interface");
+  proxy = g_dbus_object_manager_get_interface (client, number1_path, "org.mock.Interface");
   g_assert (proxy != NULL);
   prop = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "Path");
   g_assert (prop != NULL);
   g_assert_cmpstr ((gchar *)g_variant_get_type (prop), ==, (gchar *)G_VARIANT_TYPE_OBJECT_PATH);
-  g_assert_cmpstr (g_variant_get_string (prop, NULL), ==, "/objects/number_1");
+  g_assert_cmpstr (g_variant_get_string (prop, NULL), ==, number1_path);
   g_variant_unref (prop);
   prop = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "Number");
   g_assert (prop != NULL);
@@ -333,12 +346,12 @@ test_object_manager (Test *test,
   g_variant_unref (prop);
   g_object_unref (proxy);
 
-  proxy = g_dbus_object_manager_get_interface (client, "/objects/number_2", "org.mock.Interface");
+  proxy = g_dbus_object_manager_get_interface (client, number2_path, "org.mock.Interface");
   g_assert (proxy != NULL);
   prop = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "Path");
   g_assert (prop != NULL);
   g_assert_cmpstr ((gchar *)g_variant_get_type (prop), ==, (gchar *)G_VARIANT_TYPE_OBJECT_PATH);
-  g_assert_cmpstr (g_variant_get_string (prop, NULL), ==, "/objects/number_2");
+  g_assert_cmpstr (g_variant_get_string (prop, NULL), ==, number2_path);
   g_variant_unref (prop);
   prop = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), "Number");
   g_assert (prop != NULL);
@@ -349,6 +362,9 @@ test_object_manager (Test *test,
 
   g_object_unref (server);
   g_object_unref (client);
+
+  g_free (number2_path);
+  g_free (number1_path);
 }
 
 int
@@ -357,7 +373,10 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add ("/gdbus/peer-object-manager", Test, NULL, setup, test_object_manager, teardown);
+  g_test_add ("/gdbus/peer-object-manager/normal", Test, "/objects",
+              setup, test_object_manager, teardown);
+  g_test_add ("/gdbus/peer-object-manager/root", Test, "/",
+              setup, test_object_manager, teardown);
 
   return g_test_run();
 }
