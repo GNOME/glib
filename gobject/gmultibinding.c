@@ -154,16 +154,23 @@ on_source_notify (GObject       *gobject,
   GValue *to_values;
   gboolean res;
   gint i;
+  gint notified;
 
   if (binding->is_frozen)
     return;
 
+  notified = -1;
   from_values = g_new0 (GValue, binding->n_sources);
   for (i = 0; i < binding->n_sources; i++)
     {
       g_value_init (&from_values[i], G_PARAM_SPEC_VALUE_TYPE (binding->source_pspec[i]));
       g_object_get_property (binding->source[i], binding->source_pspec[i]->name, &from_values[i]);
+
+      if (gobject == binding->source[i])
+        notified = i;
     }
+
+  g_assert (0 <= notified && notified < binding->n_sources);
 
   to_values = g_new0 (GValue, binding->n_targets);
   for (i = 0; i < binding->n_targets; i++)
@@ -172,7 +179,7 @@ on_source_notify (GObject       *gobject,
       g_object_get_property (binding->target[i], binding->target_pspec[i]->name, &to_values[i]);
     }
 
-  res = binding->transform (binding, (const GValue *)from_values, to_values, binding->transform_data);
+  res = binding->transform (binding, notified, (const GValue *)from_values, to_values, binding->transform_data);
 
   if (res)
     {
@@ -339,6 +346,7 @@ g_object_multi_bind_property_v (gint                        n_sources,
                                 gint                        n_targets,
                                 GObject                    *targets[],
                                 const gchar                *target_properties[],
+                                GMultiBindingFlags          flags,
                                 GMultiBindingTransformFunc  transform,
                                 gpointer                    user_data,
                                 GDestroyNotify              notify)
@@ -442,6 +450,9 @@ g_object_multi_bind_property_v (gint                        n_sources,
           add_binding_qdata (binding->target[i], binding);
         }
     }
+
+  if (flags & G_MULTI_BINDING_SYNC_CREATE)
+    on_source_notify (binding->source[0], binding->source_pspec[0], binding);
 
   return binding;
 }

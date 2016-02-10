@@ -34,6 +34,11 @@ G_BEGIN_DECLS
 #define G_MULTI_BINDING(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_MULTI_BINDING, GMultiBinding))
 #define G_IS_MULTI_BINDING(obj)       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_MULTI_BINDING))
 
+typedef enum { /*< prefix=G_MULTI_BINDING >*/
+  G_MULTI_BINDING_DEFAULT        = 0,
+  G_MULTI_BINDING_SYNC_CREATE    = 1 << 1
+} GMultiBindingFlags;
+
 /**
  * GMultiBinding:
  *
@@ -45,6 +50,7 @@ G_BEGIN_DECLS
 typedef struct _GMultiBinding   GMultiBinding;
 
 typedef gboolean (* GMultiBindingTransformFunc) (GMultiBinding  *binding,
+                                                 gint            notified,
                                                  const GValue    from_values[],
                                                  GValue          to_values[],
                                                  gpointer        user_data);
@@ -74,15 +80,26 @@ GLIB_AVAILABLE_IN_ALL
 void                  g_multi_binding_unbind              (GMultiBinding *binding);
 
 GLIB_AVAILABLE_IN_ALL
-GMultiBinding        *g_object_multi_bind_property_v      (gint                       n_sources,
+GMultiBinding        *g_object_bind_properties_v          (gint                       n_sources,
                                                            GObject                   *sources[],
                                                            const gchar               *source_properties[],
                                                            gint                       n_targets,
                                                            GObject                   *targets[],
                                                            const gchar               *target_properties[],
+                                                           GMultiBindingFlags         flags,
                                                            GMultiBindingTransformFunc transform,
                                                            gpointer                   user_data,
                                                            GDestroyNotify             notify);
-
+GLIB_AVAILABLE_IN_ALL
+GMultiBinding        *g_object_bind_properties            (GObject                   *source,
+                                                           const gchar               *property,
+                                                           ...
+                                                           GObject                   *target,
+                                                           const gchar               *property,
+                                                           ...
+                                                           GMultiBindingFlags         flags,
+                                                           GMultiBindingTransformFunc transform,
+                                                           gpointer                   user_data,
+                                                           GDestroyNotify             notify);
 
 #endif /* __G_MULTI_BINDING_H__ */

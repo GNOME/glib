@@ -237,6 +237,7 @@ binding_target_init (BindingTarget *self)
 
 static gboolean
 munge_two_ints (GMultiBinding  *binding,
+                gint            notified,
                 const GValue    from_values[],
                 GValue          to_values[],
                 gpointer        user_data)
@@ -273,6 +274,7 @@ multibinding_basic (void)
   target_props[1] = "bar";
   binding = g_object_multi_bind_property_v (2, sources, source_props,
                                             2, targets, target_props,
+                                            G_MULTI_BINDING_DEFAULT,
                                             munge_two_ints,
                                             NULL, NULL);
   g_object_add_weak_pointer (G_OBJECT (binding), (gpointer *) &binding);
