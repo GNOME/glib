@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-01-10 19:39+0000\n"
-"PO-Revision-Date: 2015-11-07 12:04+0100\n"
-"Last-Translator: Sebastian Rasmussen <sebras@gmail.com>\n"
+"POT-Creation-Date: 2016-02-12 19:38+0000\n"
+"PO-Revision-Date: 2016-02-12 23:25+0100\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.7\n"
 
 #: ../gio/gapplication.c:531
 msgid "Enter GApplication service mode (use from D-Bus service files)"
@@ -251,9 +251,9 @@ msgstr ""
 "\n"
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
-#: ../gio/ginputstream.c:176 ../gio/ginputstream.c:376
-#: ../gio/ginputstream.c:614 ../gio/ginputstream.c:1013
-#: ../gio/goutputstream.c:200 ../gio/goutputstream.c:831
+#: ../gio/ginputstream.c:179 ../gio/ginputstream.c:379
+#: ../gio/ginputstream.c:617 ../gio/ginputstream.c:1016
+#: ../gio/goutputstream.c:203 ../gio/goutputstream.c:834
 #: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
 msgid "Too large count value passed to %s"
@@ -268,8 +268,8 @@ msgstr "Sökning stöds inte på basströmmen"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Kan inte kapa av GBufferedInputStream"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202
-#: ../gio/giostream.c:278 ../gio/goutputstream.c:1655
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1205
+#: ../gio/giostream.c:300 ../gio/goutputstream.c:1658
 msgid "Stream is already closed"
 msgstr "Strömmen är redan stängd"
 
@@ -1250,10 +1250,14 @@ msgstr "enheten har inte implementerat start"
 msgid "drive doesn't implement stop"
 msgstr "enheten har inte implementerat stop"
 
-#: ../gio/gdummytlsbackend.c:188 ../gio/gdummytlsbackend.c:310
-#: ../gio/gdummytlsbackend.c:400
+#: ../gio/gdummytlsbackend.c:195 ../gio/gdummytlsbackend.c:317
+#: ../gio/gdummytlsbackend.c:509
 msgid "TLS support is not available"
 msgstr "TLS-stöd finns inte tillgängligt"
+
+#: ../gio/gdummytlsbackend.c:419
+msgid "DTLS support is not available"
+msgstr "DTLS-stöd finns inte tillgängligt"
 
 #: ../gio/gemblem.c:323
 #, c-format
@@ -1495,7 +1499,7 @@ msgstr "Inte tillräckligt med utrymme för uttagsadress"
 msgid "Unsupported socket address"
 msgstr "Uttagsadressen stöds inte"
 
-#: ../gio/ginputstream.c:185
+#: ../gio/ginputstream.c:188
 msgid "Input stream doesn't implement read"
 msgstr "Inmatningsströmmen har inte implementerat läsning"
 
@@ -1505,8 +1509,8 @@ msgstr "Inmatningsströmmen har inte implementerat läsning"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1212 ../gio/giostream.c:288
-#: ../gio/goutputstream.c:1665
+#: ../gio/ginputstream.c:1215 ../gio/giostream.c:310
+#: ../gio/goutputstream.c:1668
 msgid "Stream has outstanding operation"
 msgstr "Strömmen har kvarstående åtgärd"
 
@@ -2288,11 +2292,11 @@ msgstr "Kunde inte få nätverksstatus: "
 msgid "NetworkManager version too old"
 msgstr "Nätverkshanterare är för gammal"
 
-#: ../gio/goutputstream.c:209 ../gio/goutputstream.c:557
+#: ../gio/goutputstream.c:212 ../gio/goutputstream.c:560
 msgid "Output stream doesn't implement write"
 msgstr "Utmatningsström har inte implementerat skrivning"
 
-#: ../gio/goutputstream.c:518 ../gio/goutputstream.c:1219
+#: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1222
 msgid "Source stream is already closed"
 msgstr "Källströmmen är redan stängd"
 
