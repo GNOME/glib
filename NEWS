@@ -1,3 +1,35 @@
+Overview of changes in GLib 2.47.6
+==================================
+
+* Windows usupport:
+ - Fixes and improvements to the GSettings registry backend
+ - Handle readability and writability of registry keys
+ - Use Unicode registry APIs
+
+* Bugs fixed:
+760852 744772 761126 747927 761337 744570 761504 761550 761843
+ 744570 GString is missing (transfer none) annotations on many of its methods
+ 744772 systemtap and gdb scripts install in wrong place
+ 747927 Documentation: various small improvements
+ 760852 gdbusobjectmanagerserver: Clarify recommended ObjectManager paths
+ 761126 winiconv: update to upstream version
+ 761337 Fix some annotations
+ 761504 W32 registry GSettings backend does not use Unicode
+ 761550 Cannot build with default flags under Fedora rawhide (-Werror=format-...
+ 761843 gmacros.h is testing attributes with __has_feature (when compiling wi...
+
+* Translation updates:
+ Brazilian Portuguese
+ Bulagarian
+ Chinese (Taiwan)
+ Hungarian
+ Polish
+ Slovak
+ Slovenian
+ Spanish
+ Swedish
+
+
 Overview of changes in GLib 2.47.5
 ==================================
 
