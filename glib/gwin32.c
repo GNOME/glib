@@ -202,12 +202,12 @@ g_win32_error_message (gint error)
   if (msg != NULL)
     {
       nchars = wcslen (msg);
-      
+
       if (nchars >= 2 && msg[nchars-1] == '\n' && msg[nchars-2] == '\r')
-	msg[nchars-2] = '\0';
-      
+        msg[nchars-2] = '\0';
+
       retval = g_utf16_to_utf8 (msg, -1, NULL, NULL, NULL);
-      
+
       LocalFree (msg);
     }
   else
