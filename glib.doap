@@ -31,9 +31,9 @@
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Ryan Lortie</foaf:name>
+      <foaf:name>Allison Ryan Lortie</foaf:name>
       <foaf:mbox rdf:resource="mailto:desrt@desrt.ca"/>
-      <gnome:userid>ryanl</gnome:userid>
+      <gnome:userid>desrt</gnome:userid>
     </foaf:Person>
   </maintainer>
 
