@@ -30,6 +30,7 @@
 #endif
 
 #include <stdarg.h>
+#include <stdio.h>
 #include <glib/gtypes.h>
 #include <glib/gmacros.h>
 
@@ -112,6 +113,266 @@ GLogLevelFlags  g_log_set_fatal_mask    (const gchar    *log_domain,
                                          GLogLevelFlags  fatal_mask);
 GLIB_AVAILABLE_IN_ALL
 GLogLevelFlags  g_log_set_always_fatal  (GLogLevelFlags  fatal_mask);
+
+/* Structured logging mechanism. */
+
+/**
+ * GLogWriterOutput:
+ * @G_LOG_WRITER_HANDLED: Log writer has handled the log entry.
+ * @G_LOG_WRITER_UNHANDLED: Log writer could not handle the log entry.
+ *
+ * Return values from #GLogWriterFuncs to indicate whether the given log entry
+ * was successfully handled by the writer, or whether there was an error in
+ * handling it (and hence a fallback writer should be used).
+ *
+ * If a #GLogWriterFunc ignores a log entry, it should return
+ * %G_LOG_WRITER_HANDLED.
+ *
+ * Since: 2.50
+ */
+typedef enum
+{
+  G_LOG_WRITER_HANDLED = 1,
+  G_LOG_WRITER_UNHANDLED = 0,
+} GLogWriterOutput;
+
+/**
+ * GLogField:
+ * @key: field name (UTF-8 string)
+ * @value: field value (arbitrary bytes)
+ * @length: length of @value, in bytes, or -1 if it is nul-terminated
+ *
+ * Structure representing a single field in a structured log entry. See
+ * g_log_structured() for details.
+ *
+ * Log fields may contain arbitrary values, including binary with embedded nul
+ * bytes. If the field contains a string, the string must be UTF-8 encoded and
+ * have a trailing nul byte. Otherwise, @length must be set to a non-negative
+ * value.
+ *
+ * Since: 2.50
+ */
+typedef struct
+{
+  const gchar *key;
+  gconstpointer value;
+  gssize length;
+} GLogField;
+
+/**
+ * GLogWriterFunc:
+ * @log_level: log level of the message
+ * @fields: (array length=n_fields): fields forming the message
+ * @n_fields: number of @fields
+ * @user_data: user data passed to g_log_set_writer_func()
+ *
+ * Writer function for log entries. A log entry is a collection of one or more
+ * #GLogFields, using the standard [field names from journal
+ * specification](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html).
+ * See g_log_structured() for more information.
+ *
+ * Writer functions must ignore fields which they do not recognise, unless they
+ * can write arbitrary binary output, as field values may be arbitrary binary.
+ *
+ * @log_level is guaranteed to be included in @fields as the `PRIORITY` field,
+ * but is provided separately for convenience of deciding whether or where to
+ * output the log entry.
+ *
+ * Returns: %G_LOG_WRITER_HANDLED if the log entry was handled successfully;
+ *    %G_LOG_WRITER_UNHANDLED otherwise
+ * Since: 2.50
+ */
+typedef GLogWriterOutput (*GLogWriterFunc)     (GLogLevelFlags   log_level,
+                                                const GLogField *fields,
+                                                gsize            n_fields,
+                                                gpointer         user_data);
+
+GLIB_AVAILABLE_IN_2_50
+void             g_log_structured              (const gchar     *log_domain,
+                                                GLogLevelFlags   log_level,
+                                                const gchar     *format,
+                                                ...)
+                                                G_GNUC_NULL_TERMINATED;
+
+GLIB_AVAILABLE_IN_2_50
+void             g_log_structured_array        (GLogLevelFlags   log_level,
+                                                const GLogField *fields,
+                                                gsize            n_fields);
+
+GLIB_AVAILABLE_IN_2_50
+void             g_log_set_writer_func         (GLogWriterFunc   func,
+                                                gpointer         user_data,
+                                                GDestroyNotify   user_data_free);
+
+GLIB_AVAILABLE_IN_2_50
+gboolean         g_log_writer_is_journald      (gint             output_fd);
+
+GLIB_AVAILABLE_IN_2_50
+gchar           *g_log_writer_format_fields    (GLogLevelFlags   log_level,
+                                                const GLogField *fields,
+                                                gsize            n_fields);
+
+GLIB_AVAILABLE_IN_2_50
+GLogWriterOutput g_log_writer_journald         (GLogLevelFlags   log_level,
+                                                const GLogField *fields,
+                                                gsize            n_fields,
+                                                gpointer         user_data);
+GLIB_AVAILABLE_IN_2_50
+GLogWriterOutput g_log_writer_standard_streams (GLogLevelFlags   log_level,
+                                                const GLogField *fields,
+                                                gsize            n_fields,
+                                                gpointer         user_data);
+GLIB_AVAILABLE_IN_2_50
+GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
+                                                const GLogField *fields,
+                                                gsize            n_fields,
+                                                gpointer         user_data);
+
+/**
+ * G_DEBUG_HERE:
+ *
+ * A convenience form of g_debug_structured(), recommended to be added to
+ * functions when debugging. It prints the current monotonic time and the code
+ * location using %G_STRLOC.
+ *
+ * Since: 2.50
+ */
+#define G_DEBUG_HERE() \
+  g_debug_structured ("%" G_GINT64_FORMAT ": %s", g_get_monotonic_time (), \
+                      G_STRLOC)
+
+/**
+ * g_debug_structured:
+ * @format: message format, in printf() style
+ * @...: parameters to insert into the format string
+ *
+ * Convenience wrapper around g_log_structured() to output a log message at
+ * %G_LOG_LEVEL_DEBUG in %G_LOG_DOMAIN with the given message and the
+ * `CODE_FILE`, `CODE_LINE` and `CODE_FUNC` fields added automatically. As this
+ * macro uses `__LINE__`, it cannot be wrapped in a helper function.
+ *
+ * The provided structured fields may change in future.
+ *
+ * Since: 2.50
+ */
+#define g_debug_structured(format, __va_args__) \
+  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, \
+                    format, ##__va_args__, \
+                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    "CODE_LINE", G_STRINGIFY (__LINE__), \
+                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    NULL)
+
+/**
+ * g_info_structured:
+ * @format: message format, in printf() style
+ * @...: parameters to insert into the format string
+ *
+ * Convenience wrapper around g_log_structured() to output a log message at
+ * %G_LOG_LEVEL_INFO in %G_LOG_DOMAIN with the given message and the
+ * `CODE_FILE`, `CODE_LINE` and `CODE_FUNC` fields added automatically. As this
+ * macro uses `__LINE__`, it cannot be wrapped in a helper function.
+ *
+ * The provided structured fields may change in future.
+ *
+ * Since: 2.50
+ */
+#define g_info_structured(format, __va_args__) \
+  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, \
+                    format, ##__va_args__, \
+                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    "CODE_LINE", G_STRINGIFY (__LINE__), \
+                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    NULL)
+
+/**
+ * g_message_structured:
+ * @format: message format, in printf() style
+ * @...: parameters to insert into the format string
+ *
+ * Convenience wrapper around g_log_structured() to output a log message at
+ * %G_LOG_LEVEL_MESSAGE in %G_LOG_DOMAIN with the given message and the
+ * `CODE_FILE`, `CODE_LINE` and `CODE_FUNC` fields added automatically. As this
+ * macro uses `__LINE__`, it cannot be wrapped in a helper function.
+ *
+ * The provided structured fields may change in future.
+ *
+ * Since: 2.50
+ */
+#define g_message_structured(format, __va_args__) \
+  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, \
+                    format, ##__va_args__, \
+                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    "CODE_LINE", G_STRINGIFY (__LINE__), \
+                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    NULL)
+
+
+/**
+ * g_warning_structured:
+ * @format: message format, in printf() style
+ * @...: parameters to insert into the format string
+ *
+ * Convenience wrapper around g_log_structured() to output a log message at
+ * %G_LOG_LEVEL_WARNING in %G_LOG_DOMAIN with the given message and the
+ * `CODE_FILE`, `CODE_LINE` and `CODE_FUNC` fields added automatically. As this
+ * macro uses `__LINE__`, it cannot be wrapped in a helper function.
+ *
+ * The provided structured fields may change in future.
+ *
+ * Since: 2.50
+ */
+#define g_warning_structured(format, __va_args__) \
+  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, \
+                    format, ##__va_args__, \
+                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    "CODE_LINE", G_STRINGIFY (__LINE__), \
+                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    NULL)
+
+/**
+ * g_critical_structured:
+ * @format: message format, in printf() style
+ * @...: parameters to insert into the format string
+ *
+ * Convenience wrapper around g_log_structured() to output a log message at
+ * %G_LOG_LEVEL_CRITICAL in %G_LOG_DOMAIN with the given message and the
+ * `CODE_FILE`, `CODE_LINE` and `CODE_FUNC` fields added automatically. As this
+ * macro uses `__LINE__`, it cannot be wrapped in a helper function.
+ *
+ * The provided structured fields may change in future.
+ *
+ * Since: 2.50
+ */
+#define g_critical_structured(format, __va_args__) \
+  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, \
+                    format, ##__va_args__, \
+                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    "CODE_LINE", G_STRINGIFY (__LINE__), \
+                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    NULL)
+
+/**
+ * g_error_structured:
+ * @format: message format, in printf() style
+ * @...: parameters to insert into the format string
+ *
+ * Convenience wrapper around g_log_structured() to output a log message at
+ * %G_LOG_LEVEL_ERROR in %G_LOG_DOMAIN with the given message and the
+ * `CODE_FILE`, `CODE_LINE` and `CODE_FUNC` fields added automatically. As this
+ * macro uses `__LINE__`, it cannot be wrapped in a helper function.
+ *
+ * The provided structured fields may change in future.
+ *
+ * Since: 2.50
+ */
+#define g_error_structured(format, __va_args__) \
+  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, \
+                    format, ##__va_args__, \
+                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    "CODE_LINE", G_STRINGIFY (__LINE__), \
+                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    NULL)
 
 /* internal */
 void	_g_log_fallback_handler	(const gchar   *log_domain,

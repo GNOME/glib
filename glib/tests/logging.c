@@ -294,6 +294,34 @@ test_gibberish (void)
   g_test_trap_assert_stderr ("*bla bla \\x9e\\x9f\\u000190*");
 }
 
+static void
+test_structured_logging_no_state (void)
+{
+  gpointer some_pointer = GUINT_TO_POINTER (0x100);
+  guint some_integer = 123;
+
+  g_log_structured ("some-domain", G_LOG_LEVEL_MESSAGE,
+                    "This is a debug message about pointer %p and integer %u.",
+                    some_pointer, some_integer,
+                    "MESSAGE_ID", "06d4df59e6c24647bfe69d2c27ef0b4e",
+                    "MY_APPLICATION_CUSTOM_FIELD", "some debug string",
+                    NULL);
+}
+
+static void
+test_structured_logging_some_state (void)
+{
+  gpointer state_object = NULL;  /* this must not be dereferenced */
+  const GLogField fields[] = {
+    { "MESSAGE", "This is a debug message.", -1 },
+    { "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893", -1 },
+    { "MY_APPLICATION_CUSTOM_FIELD", "some debug string", -1 },
+    { "MY_APPLICATION_STATE", state_object, 0 },
+  };
+
+  g_log_structured_array (G_LOG_LEVEL_DEBUG, fields, G_N_ELEMENTS (fields));
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -319,6 +347,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/printerr-handler", test_printerr_handler);
   g_test_add_func ("/logging/653052", bug653052);
   g_test_add_func ("/logging/gibberish", test_gibberish);
+  g_test_add_func ("/structured-logging/no-state", test_structured_logging_no_state);
+  g_test_add_func ("/structured-logging/some-state", test_structured_logging_some_state);
 
   return g_test_run ();
 }
