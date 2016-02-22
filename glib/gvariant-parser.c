@@ -237,7 +237,7 @@ token_stream_prepare (TokenStream *stream)
        * Also: ] and > are never in format strings.
        */
       for (end = stream->stream + 1;
-           end != stream->end && *end != ',' &&
+           end != stream->end && *end != '\0' && *end != ',' &&
            *end != ':' && *end != '>' && *end != ']' && !g_ascii_isspace (*end);
            end++)
 
