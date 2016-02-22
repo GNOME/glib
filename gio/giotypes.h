@@ -257,6 +257,10 @@ typedef struct _GProxyAddressEnumerator	      GProxyAddressEnumerator;
 typedef struct _GVolume                       GVolume; /* Dummy typedef */
 typedef struct _GVolumeMonitor                GVolumeMonitor;
 
+#ifdef G_OS_WIN32
+typedef struct _GWin32NamedPipeConnection GWin32NamedPipeConnection;
+#endif
+
 /**
  * GAsyncReadyCallback:
  * @source_object: the object the asynchronous operation was started with.

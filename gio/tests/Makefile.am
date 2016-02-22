@@ -481,7 +481,7 @@ tls_interaction_SOURCES = tls-interaction.c gtesttlsbackend.c gtesttlsbackend.h
 # -----------------------------------------------------------------------------
 
 if OS_WIN32
-test_programs += win32-streams
+test_programs += win32-streams win32-named-pipe
 endif
 
 if PLATFORM_WIN32

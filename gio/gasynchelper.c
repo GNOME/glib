@@ -80,4 +80,102 @@ end:
 
   return result;
 }
+
+typedef struct {
+  GSource source;
+  GPollFD pollfd;
+} GWin32HandleSource;
+
+static gboolean
+g_win32_handle_source_prepare (GSource *source,
+                               gint    *timeout)
+{
+  *timeout = -1;
+  return FALSE;
+}
+
+static gboolean
+g_win32_handle_source_check (GSource *source)
+{
+  GWin32HandleSource *hsource = (GWin32HandleSource *)source;
+
+  return hsource->pollfd.revents;
+}
+
+static gboolean
+g_win32_handle_source_dispatch (GSource     *source,
+                                GSourceFunc  callback,
+                                gpointer     user_data)
+{
+  GWin32HandleSourceFunc func = (GWin32HandleSourceFunc)callback;
+  GWin32HandleSource *hsource = (GWin32HandleSource *)source;
+
+  return func (hsource->pollfd.fd, user_data);
+}
+
+static void
+g_win32_handle_source_finalize (GSource *source)
+{
+}
+
+static gboolean
+g_win32_handle_source_closure_callback (HANDLE   handle,
+                                        gpointer data)
+{
+  GClosure *closure = data;
+
+  GValue param = G_VALUE_INIT;
+  GValue result_value = G_VALUE_INIT;
+  gboolean result;
+
+  g_value_init (&result_value, G_TYPE_BOOLEAN);
+
+  g_value_init (&param, G_TYPE_POINTER);
+  g_value_set_pointer (&param, handle);
+
+  g_closure_invoke (closure, &result_value, 1, &param, NULL);
+
+  result = g_value_get_boolean (&result_value);
+  g_value_unset (&result_value);
+  g_value_unset (&param);
+
+  return result;
+}
+
+GSourceFuncs g_win32_handle_source_funcs = {
+  g_win32_handle_source_prepare,
+  g_win32_handle_source_check,
+  g_win32_handle_source_dispatch,
+  g_win32_handle_source_finalize,
+  (GSourceFunc)g_win32_handle_source_closure_callback,
+};
+
+GSource *
+_g_win32_handle_create_source (HANDLE        handle,
+                               GCancellable *cancellable)
+{
+  GWin32HandleSource *hsource;
+  GSource *source;
+
+  source = g_source_new (&g_win32_handle_source_funcs, sizeof (GWin32HandleSource));
+  hsource = (GWin32HandleSource *)source;
+  g_source_set_name (source, "GWin32Handle");
+
+  if (cancellable)
+    {
+      GSource *cancellable_source;
+
+      cancellable_source = g_cancellable_source_new (cancellable);
+      g_source_add_child_source (source, cancellable_source);
+      g_source_set_dummy_callback (cancellable_source);
+      g_source_unref (cancellable_source);
+    }
+
+  hsource->pollfd.fd = (gint)handle;
+  hsource->pollfd.events = G_IO_IN;
+  hsource->pollfd.revents = 0;
+  g_source_add_poll (source, &hsource->pollfd);
+
+  return source;
+}
 #endif

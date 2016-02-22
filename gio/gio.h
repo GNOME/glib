@@ -168,6 +168,12 @@
 #include <gio/glistmodel.h>
 #include <gio/gliststore.h>
 
+#ifdef G_OS_WIN32
+#include <gio/gwin32namedpipeclient.h>
+#include <gio/gwin32namedpipelistener.h>
+#include <gio/gwin32namedpipeconnection.h>
+#endif
+
 #include <gio/gio-autocleanups.h>
 
 #undef __GIO_GIO_H_INSIDE__

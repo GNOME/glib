@@ -2337,6 +2337,60 @@ g_threaded_socket_service_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gwin32namedpipeclient</FILE>
+<TITLE>GWin32NamedPipeClient</TITLE>
+GWin32NamedPipeClient
+g_win32_named_pipe_client_new
+g_win32_named_pipe_client_connect
+g_win32_named_pipe_client_connect_async
+g_win32_named_pipe_client_connect_finish
+<SUBSECTION Standard>
+GWin32NamedPipeClientClass
+G_IS_WIN32_NAMED_PIPE_CLIENT
+G_IS_WIN32_NAMED_PIPE_CLIENT_CLASS
+G_WIN32_NAMED_PIPE_CLIENT
+G_WIN32_NAMED_PIPE_CLIENT_CLASS
+G_WIN32_NAMED_PIPE_CLIENT_GET_CLASS
+G_TYPE_WIN32_NAMED_PIPE_CLIENT
+<SUBSECTION Private>
+g_win32_named_pipe_client_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gwin32namedpipelistener</FILE>
+<TITLE>GWin32NamedPipeListener</TITLE>
+GWin32NamedPipeListener
+g_win32_named_pipe_listener_new
+g_win32_named_pipe_listener_add_named_pipe
+g_win32_named_pipe_listener_accept
+g_win32_named_pipe_listener_accept_async
+g_win32_named_pipe_listener_accept_finish
+<SUBSECTION Standard>
+GWin32NamedPipeListenerClass
+G_IS_WIN32_NAMED_PIPE_LISTENER
+G_IS_WIN32_NAMED_PIPE_LISTENER_CLASS
+G_WIN32_NAMED_PIPE_LISTENER
+G_WIN32_NAMED_PIPE_LISTENER_CLASS
+G_WIN32_NAMED_PIPE_LISTENER_GET_CLASS
+G_TYPE_WIN32_NAMED_PIPE_LISTENER
+<SUBSECTION Private>
+g_win32_named_pipe_listener_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gwin32namedpipeconnection</FILE>
+<TITLE>GWin32NamedPipeConnection</TITLE>
+GWin32NamedPipeConnection
+g_win32_named_pipe_connection_new
+<SUBSECTION Standard>
+G_IS_WIN32_NAMED_PIPE_CONNECTION
+G_WIN32_NAMED_PIPE_CONNECTION
+G_TYPE_WIN32_NAMED_PIPE_CONNECTION
+<SUBSECTION Private>
+g_win32_named_pipe_connection_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gunixfdmessage</FILE>
 <TITLE>GUnixFDMessage</TITLE>
 GUnixFDMessage

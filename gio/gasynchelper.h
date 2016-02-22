@@ -30,10 +30,17 @@
 G_BEGIN_DECLS
 
 #ifdef G_OS_WIN32
+typedef gboolean (* GWin32HandleSourceFunc) (HANDLE   handle,
+                                             gpointer user_data);
+
 gboolean _g_win32_overlap_wait_result (HANDLE           hfile,
                                        OVERLAPPED      *overlap,
                                        DWORD           *transferred,
                                        GCancellable    *cancellable);
+
+GSource *_g_win32_handle_create_source (HANDLE        handle,
+                                        GCancellable *cancellable);
+
 #endif
 
 G_END_DECLS

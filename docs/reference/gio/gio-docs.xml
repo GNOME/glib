@@ -145,6 +145,12 @@
       <xi:include href="xml/gthreadedsocketservice.xml"/>
       <xi:include href="xml/gnetworkmonitor.xml"/>
     </chapter>
+    <chapter id="highlevel-named-pipes">
+      <title>High-level named pipes functionality</title>
+      <xi:include href="xml/gwin32namedpipeclient.xml"/>
+      <xi:include href="xml/gwin32namedpipelistener.xml"/>
+      <xi:include href="xml/gwin32namedpipeconnection.xml"/>
+    </chapter>
     <chapter id="tls">
       <title>TLS (SSL) support</title>
       <xi:include href="xml/gtls.xml"/>

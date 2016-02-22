@@ -313,6 +313,12 @@ win32_actual_sources = \
 	gwin32outputstream.c \
 	gwin32outputstream.h \
 	gwin32networking.h \
+	gwin32namedpipelistener.c \
+	gwin32namedpipelistener.h \
+	gwin32namedpipeclient.c \
+	gwin32namedpipeclient.h \
+	gwin32namedpipeconnection.c \
+	gwin32namedpipeconnection.h \
 	$(NULL)
 
 win32_more_sources_for_vcproj = \
@@ -334,6 +340,9 @@ giowin32includedir=$(includedir)/gio-win32-2.0/gio
 giowin32include_HEADERS = \
 	gwin32inputstream.h \
 	gwin32outputstream.h \
+	gwin32namedpipelistener.h \
+	gwin32namedpipeclient.h \
+	gwin32namedpipeconnection.h \
 	$(NULL)
 
 endif
