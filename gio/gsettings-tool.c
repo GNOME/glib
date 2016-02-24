@@ -697,7 +697,7 @@ main (int argc, char **argv)
   if (argc < 2)
     return gsettings_help (FALSE, NULL);
 
-  global_schema_source = g_settings_schema_source_ref (g_settings_schema_source_get_default ());
+  global_schema_source = g_settings_schema_source_get_default ();
 
   if (argc > 3 && g_str_equal (argv[1], "--schemadir"))
     {
@@ -705,7 +705,6 @@ main (int argc, char **argv)
       GError *error = NULL;
 
       global_schema_source = g_settings_schema_source_new_from_directory (argv[2], parent, FALSE, &error);
-      g_settings_schema_source_unref (parent);
 
       if (global_schema_source == NULL)
         {
@@ -719,6 +718,13 @@ main (int argc, char **argv)
       argv = argv + 2;
       argc -= 2;
     }
+  else if (global_schema_source == NULL)
+    {
+      g_printerr (_("No schemas installed\n"));
+      return 1;
+    }
+  else
+    g_settings_schema_source_ref (global_schema_source);
 
   need_settings = TRUE;
 
