@@ -1532,8 +1532,6 @@ registry_watch_key (HKEY   hpath,
 static gboolean
 watch_handler (RegistryEvent *event)
 {
-  guint i;
-
   trace ("Watch handler: got event in %s, items %i.\n", event->prefix, event->items->len);
 
   /* GSettings requires us to NULL-terminate the array. */
