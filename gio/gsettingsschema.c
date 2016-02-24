@@ -950,7 +950,7 @@ g_settings_schema_get_value (GSettingsSchema *schema,
 {
   GSettingsSchema *s = schema;
   GVariantIter *iter;
-  GVariant *value;
+  GVariant *value = NULL;
 
   g_return_val_if_fail (schema != NULL, NULL);
 
