@@ -262,8 +262,10 @@ g_rand_new (void)
       seed[3] = getppid ();
     }
 #else /* G_OS_WIN32 */
-  /* rand_s() is only available since Visual Studio 2005 */
-#if defined(_MSC_VER) && _MSC_VER >= 1400
+  /* rand_s() is only available since Visual Studio 2005 and
+   * MinGW-w64 has a wrapper that will emulate rand_s() if it's not in msvcrt
+   */
+#if (defined(_MSC_VER) && _MSC_VER >= 1400) || defined(__MINGW64_VERSION_MAJOR)
   gint i;
 
   for (i = 0; i < G_N_ELEMENTS (seed); i++)
