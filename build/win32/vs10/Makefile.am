@@ -9,7 +9,7 @@ GENERATED_ITEMS = \
 	glib-compile-schemas.vcxproj.filters	\
 	glib-compile-resources.vcxproj	\
 	glib-compile-resources.vcxproj.filters	\
-	glib-gen-srcs.props	\
+	glib-version-paths.props	\
 	glib-install.props
 
 MSVC10_HEADERS_LIST = glib.vs10.headers gobject.vs10.headers gio.vs10.headers
@@ -46,10 +46,10 @@ EXTRA_DIST = \
 	gdbus.vcxproj			\
 	gdbus.vcxproj.filters		\
 	glib-install.vcxproj		\
-	glib-build-defines.props		\
+	glib-build-defines.props	\
 	glib-install.propsin		\
-	glib-version-paths.props	\
-	glib-gen-srcs.props.in		\
+	glib-version-paths.props.in	\
+	glib-gen-srcs.props		\
 	$(GENERATED_ITEMS)
 
 glib-install.props: $(top_srcdir)/build/win32/vs10/glib-install.propsin $(MSVC10_HEADERS_LIST)

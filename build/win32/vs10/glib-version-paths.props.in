@@ -2,9 +2,10 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <VSVer>10</VSVer>
+    <GlibVersion>@GLIB_VERSION@</GlibVersion>
+    <ApiVersion>2.0</ApiVersion>
     <GlibEtcInstallRoot>..\..\..\..\vs$(VSVer)\$(Platform)</GlibEtcInstallRoot>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
-    <ApiVersion>2.0</ApiVersion>
     <GlibLibtoolCompatibleDllPrefix>lib</GlibLibtoolCompatibleDllPrefix>
     <GlibLibtoolCompatibleDllSuffix>-$(ApiVersion)-0</GlibLibtoolCompatibleDllSuffix>
     <GlibSeparateVSDllPrefix />
@@ -20,14 +21,17 @@
     <BuildMacro Include="VSVer">
       <Value>$(VSVer)</Value>
     </BuildMacro>
+    <BuildMacro Include="GlibVersion">
+      <Value>$(GlibVersion)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ApiVersion">
+      <Value>$(ApiVersion)</Value>
+    </BuildMacro>
     <BuildMacro Include="GlibEtcInstallRoot">
       <Value>$(GlibEtcInstallRoot)</Value>
     </BuildMacro>
     <BuildMacro Include="CopyDir">
       <Value>$(CopyDir)</Value>
-    </BuildMacro>
-    <BuildMacro Include="ApiVersion">
-      <Value>$(ApiVersion)</Value>
     </BuildMacro>
     <BuildMacro Include="GlibLibtoolCompatibleDllPrefix">
       <Value>$(GlibLibtoolCompatibleDllPrefix)</Value>

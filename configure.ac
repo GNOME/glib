@@ -3386,9 +3386,9 @@ build/Makefile
 build/win32/Makefile
 build/win32/dirent/Makefile
 build/win32/vs9/Makefile
-build/win32/vs9/glib-gen-srcs.vsprops
+build/win32/vs9/glib-version-paths.vsprops
 build/win32/vs10/Makefile
-build/win32/vs10/glib-gen-srcs.props
+build/win32/vs10/glib-version-paths.props
 build/win32/vs11/Makefile
 build/win32/vs12/Makefile
 build/win32/vs14/Makefile

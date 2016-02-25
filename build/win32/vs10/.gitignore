@@ -8,5 +8,5 @@ glib-compile-resources.vcxproj
 glib-compile-resources.vcxproj.filters
 glib-compile-schemas.vcxproj
 glib-compile-schemas.vcxproj.filters
-glib-gen-srcs.props
+glib-version-paths.props
 glib-install.props

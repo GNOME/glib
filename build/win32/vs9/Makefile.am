@@ -4,7 +4,7 @@ GENERATED_ITEMS = \
 	gio.vcproj		\
 	glib-compile-schemas.vcproj	\
 	glib-compile-resources.vcproj	\
-	glib-gen-srcs.vsprops	\
+	glib-version-paths.vsprops	\
 	glib-install.vsprops
 
 MSVC_HEADERS_LIST = glib.headers gobject.headers gio.headers
@@ -28,8 +28,8 @@ EXTRA_DIST = \
 	glib-compile-resources.vcprojin	\
 	glib-install.vcproj	\
 	glib-build-defines.vsprops	\
-	glib-version-paths.vsprops	\
-	glib-gen-srcs.vsprops.in	\
+	glib-version-paths.vsprops.in	\
+	glib-gen-srcs.vsprops	\
 	glib-install.vspropsin	\
 	$(GENERATED_ITEMS)
 
