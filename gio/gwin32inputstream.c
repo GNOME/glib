@@ -210,9 +210,12 @@ g_win32_input_stream_close (GInputStream  *stream,
     {
       if (close (win32_stream->priv->fd) < 0)
 	{
-	  g_set_error_literal (error, G_IO_ERROR,
-			       g_io_error_from_errno (errno),
-			       g_strerror (errno));
+	  int errsv = errno;
+
+	  g_set_error (error, G_IO_ERROR,
+	               g_io_error_from_errno (errsv),
+	               _("Error closing file descriptor: %s"),
+	               g_strerror (errsv));
 	  return FALSE;
 	}
     }
