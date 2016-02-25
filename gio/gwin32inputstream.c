@@ -33,7 +33,6 @@
 #include "gasynchelper.h"
 #include "glibintl.h"
 
-
 /**
  * SECTION:gwin32inputstream
  * @short_description: Streaming input operations for Windows file handles
@@ -48,78 +47,22 @@
  * when using it.
  */
 
-enum {
-  PROP_0,
-  PROP_HANDLE,
-  PROP_CLOSE_HANDLE
-};
-
 struct _GWin32InputStreamPrivate {
   HANDLE handle;
   gboolean close_handle;
   gint fd;
 };
 
+enum {
+  PROP_0,
+  PROP_HANDLE,
+  PROP_CLOSE_HANDLE,
+  LAST_PROP
+};
+
+static GParamSpec *props[LAST_PROP];
+
 G_DEFINE_TYPE_WITH_PRIVATE (GWin32InputStream, g_win32_input_stream, G_TYPE_INPUT_STREAM)
-
-static void     g_win32_input_stream_set_property (GObject              *object,
-						   guint                 prop_id,
-						   const GValue         *value,
-						   GParamSpec           *pspec);
-static void     g_win32_input_stream_get_property (GObject              *object,
-						   guint                 prop_id,
-						   GValue               *value,
-						   GParamSpec           *pspec);
-static gssize   g_win32_input_stream_read         (GInputStream         *stream,
-						   void                 *buffer,
-						   gsize                 count,
-						   GCancellable         *cancellable,
-						   GError              **error);
-static gboolean g_win32_input_stream_close        (GInputStream         *stream,
-						   GCancellable         *cancellable,
-						   GError              **error);
-
-static void
-g_win32_input_stream_class_init (GWin32InputStreamClass *klass)
-{
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GInputStreamClass *stream_class = G_INPUT_STREAM_CLASS (klass);
-
-  gobject_class->get_property = g_win32_input_stream_get_property;
-  gobject_class->set_property = g_win32_input_stream_set_property;
-
-  stream_class->read_fn = g_win32_input_stream_read;
-  stream_class->close_fn = g_win32_input_stream_close;
-
-  /**
-   * GWin32InputStream:handle:
-   *
-   * The handle that the stream reads from.
-   *
-   * Since: 2.26
-   */
-  g_object_class_install_property (gobject_class,
-				   PROP_HANDLE,
-				   g_param_spec_pointer ("handle",
-							 P_("File handle"),
-							 P_("The file handle to read from"),
-							 G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
-
-  /**
-   * GWin32InputStream:close-handle:
-   *
-   * Whether to close the file handle when the stream is closed.
-   *
-   * Since: 2.26
-   */
-  g_object_class_install_property (gobject_class,
-				   PROP_CLOSE_HANDLE,
-				   g_param_spec_boolean ("close-handle",
-							 P_("Close file handle"),
-							 P_("Whether to close the file handle when the stream is closed"),
-							 TRUE,
-							 G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
-}
 
 static void
 g_win32_input_stream_set_property (GObject         *object,
@@ -166,107 +109,6 @@ g_win32_input_stream_get_property (GObject    *object,
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
-}
-
-static void
-g_win32_input_stream_init (GWin32InputStream *win32_stream)
-{
-  win32_stream->priv = g_win32_input_stream_get_instance_private (win32_stream);
-  win32_stream->priv->handle = NULL;
-  win32_stream->priv->close_handle = TRUE;
-  win32_stream->priv->fd = -1;
-}
-
-/**
- * g_win32_input_stream_new:
- * @handle: a Win32 file handle
- * @close_handle: %TRUE to close the handle when done
- *
- * Creates a new #GWin32InputStream for the given @handle.
- *
- * If @close_handle is %TRUE, the handle will be closed
- * when the stream is closed.
- *
- * Note that "handle" here means a Win32 HANDLE, not a "file descriptor"
- * as used in the Windows C libraries.
- *
- * Returns: a new #GWin32InputStream
- **/
-GInputStream *
-g_win32_input_stream_new (void     *handle,
-			  gboolean close_handle)
-{
-  GWin32InputStream *stream;
-
-  g_return_val_if_fail (handle != NULL, NULL);
-
-  stream = g_object_new (G_TYPE_WIN32_INPUT_STREAM,
-			 "handle", handle,
-			 "close-handle", close_handle,
-			 NULL);
-
-  return G_INPUT_STREAM (stream);
-}
-
-/**
- * g_win32_input_stream_set_close_handle:
- * @stream: a #GWin32InputStream
- * @close_handle: %TRUE to close the handle when done
- *
- * Sets whether the handle of @stream shall be closed
- * when the stream is closed.
- *
- * Since: 2.26
- */
-void
-g_win32_input_stream_set_close_handle (GWin32InputStream *stream,
-				       gboolean          close_handle)
-{
-  g_return_if_fail (G_IS_WIN32_INPUT_STREAM (stream));
-
-  close_handle = close_handle != FALSE;
-  if (stream->priv->close_handle != close_handle)
-    {
-      stream->priv->close_handle = close_handle;
-      g_object_notify (G_OBJECT (stream), "close-handle");
-    }
-}
-
-/**
- * g_win32_input_stream_get_close_handle:
- * @stream: a #GWin32InputStream
- *
- * Returns whether the handle of @stream will be
- * closed when the stream is closed.
- *
- * Returns: %TRUE if the handle is closed when done
- *
- * Since: 2.26
- */
-gboolean
-g_win32_input_stream_get_close_handle (GWin32InputStream *stream)
-{
-  g_return_val_if_fail (G_IS_WIN32_INPUT_STREAM (stream), FALSE);
-
-  return stream->priv->close_handle;
-}
-
-/**
- * g_win32_input_stream_get_handle:
- * @stream: a #GWin32InputStream
- *
- * Return the Windows file handle that the stream reads from.
- *
- * Returns: The file handle of @stream
- *
- * Since: 2.26
- */
-void *
-g_win32_input_stream_get_handle (GWin32InputStream *stream)
-{
-  g_return_val_if_fail (G_IS_WIN32_INPUT_STREAM (stream), NULL);
-
-  return stream->priv->handle;
 }
 
 static gssize
@@ -392,6 +234,154 @@ g_win32_input_stream_close (GInputStream  *stream,
     }
 
   return TRUE;
+}
+
+static void
+g_win32_input_stream_class_init (GWin32InputStreamClass *klass)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GInputStreamClass *stream_class = G_INPUT_STREAM_CLASS (klass);
+
+  gobject_class->get_property = g_win32_input_stream_get_property;
+  gobject_class->set_property = g_win32_input_stream_set_property;
+
+  stream_class->read_fn = g_win32_input_stream_read;
+  stream_class->close_fn = g_win32_input_stream_close;
+
+  /**
+   * GWin32InputStream:handle:
+   *
+   * The handle that the stream reads from.
+   *
+   * Since: 2.26
+   */
+  props[PROP_HANDLE] =
+    g_param_spec_pointer ("handle",
+                          P_("File handle"),
+                          P_("The file handle to read from"),
+                          G_PARAM_READABLE |
+                          G_PARAM_WRITABLE |
+                          G_PARAM_CONSTRUCT_ONLY |
+                          G_PARAM_STATIC_STRINGS);
+
+  /**
+   * GWin32InputStream:close-handle:
+   *
+   * Whether to close the file handle when the stream is closed.
+   *
+   * Since: 2.26
+   */
+  props[PROP_CLOSE_HANDLE] =
+    g_param_spec_boolean ("close-handle",
+                          P_("Close file handle"),
+                          P_("Whether to close the file handle when the stream is closed"),
+                          TRUE,
+                          G_PARAM_READABLE |
+                          G_PARAM_WRITABLE |
+                          G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (gobject_class, LAST_PROP, props);
+}
+
+static void
+g_win32_input_stream_init (GWin32InputStream *win32_stream)
+{
+  win32_stream->priv = g_win32_input_stream_get_instance_private (win32_stream);
+  win32_stream->priv->handle = NULL;
+  win32_stream->priv->close_handle = TRUE;
+  win32_stream->priv->fd = -1;
+}
+
+/**
+ * g_win32_input_stream_new:
+ * @handle: a Win32 file handle
+ * @close_handle: %TRUE to close the handle when done
+ *
+ * Creates a new #GWin32InputStream for the given @handle.
+ *
+ * If @close_handle is %TRUE, the handle will be closed
+ * when the stream is closed.
+ *
+ * Note that "handle" here means a Win32 HANDLE, not a "file descriptor"
+ * as used in the Windows C libraries.
+ *
+ * Returns: a new #GWin32InputStream
+ **/
+GInputStream *
+g_win32_input_stream_new (void     *handle,
+			  gboolean close_handle)
+{
+  GWin32InputStream *stream;
+
+  g_return_val_if_fail (handle != NULL, NULL);
+
+  stream = g_object_new (G_TYPE_WIN32_INPUT_STREAM,
+			 "handle", handle,
+			 "close-handle", close_handle,
+			 NULL);
+
+  return G_INPUT_STREAM (stream);
+}
+
+/**
+ * g_win32_input_stream_set_close_handle:
+ * @stream: a #GWin32InputStream
+ * @close_handle: %TRUE to close the handle when done
+ *
+ * Sets whether the handle of @stream shall be closed
+ * when the stream is closed.
+ *
+ * Since: 2.26
+ */
+void
+g_win32_input_stream_set_close_handle (GWin32InputStream *stream,
+				       gboolean          close_handle)
+{
+  g_return_if_fail (G_IS_WIN32_INPUT_STREAM (stream));
+
+  close_handle = close_handle != FALSE;
+  if (stream->priv->close_handle != close_handle)
+    {
+      stream->priv->close_handle = close_handle;
+      g_object_notify (G_OBJECT (stream), "close-handle");
+    }
+}
+
+/**
+ * g_win32_input_stream_get_close_handle:
+ * @stream: a #GWin32InputStream
+ *
+ * Returns whether the handle of @stream will be
+ * closed when the stream is closed.
+ *
+ * Returns: %TRUE if the handle is closed when done
+ *
+ * Since: 2.26
+ */
+gboolean
+g_win32_input_stream_get_close_handle (GWin32InputStream *stream)
+{
+  g_return_val_if_fail (G_IS_WIN32_INPUT_STREAM (stream), FALSE);
+
+  return stream->priv->close_handle;
+}
+
+/**
+ * g_win32_input_stream_get_handle:
+ * @stream: a #GWin32InputStream
+ *
+ * Return the Windows file handle that the stream reads from.
+ *
+ * Returns: The file handle of @stream
+ *
+ * Since: 2.26
+ */
+void *
+g_win32_input_stream_get_handle (GWin32InputStream *stream)
+{
+  g_return_val_if_fail (G_IS_WIN32_INPUT_STREAM (stream), NULL);
+
+  return stream->priv->handle;
 }
 
 GInputStream *
