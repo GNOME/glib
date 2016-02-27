@@ -33,24 +33,22 @@ G_DEFINE_TYPE_WITH_CODE (GWin32FileMonitor, g_win32_file_monitor, G_TYPE_LOCAL_F
                                                          g_define_type_id, "win32filemonitor", 20))
 
 static void
-g_win32_file_monitor_start (GLocalFileMonitor *monitor,
-                            const gchar *dirname,
-                            const gchar *basename,
-                            const gchar *filename,
+g_win32_file_monitor_start (GLocalFileMonitor  *monitor,
+                            const gchar        *dirname,
+                            const gchar        *basename,
+                            const gchar        *filename,
                             GFileMonitorSource *source)
 {
   GWin32FileMonitor *win32_monitor = G_WIN32_FILE_MONITOR (monitor);
-  gboolean isfile = (filename == NULL && basename == NULL) ? FALSE : TRUE;
 
   win32_monitor->priv->fms = source;
 
-  if (isfile)
-    if (basename != NULL)
-      g_win32_fs_monitor_init (win32_monitor->priv, dirname, basename, TRUE);
-    else
-      g_win32_fs_monitor_init (win32_monitor->priv, NULL, filename, TRUE);
-  else
+  if (filename == NULL && basename == NULL)
     g_win32_fs_monitor_init (win32_monitor->priv, dirname, NULL, FALSE);
+  else if (basename != NULL)
+    g_win32_fs_monitor_init (win32_monitor->priv, dirname, basename, TRUE);
+  else
+    g_win32_fs_monitor_init (win32_monitor->priv, NULL, filename, TRUE);
 }
 
 static gboolean
@@ -60,7 +58,7 @@ g_win32_file_monitor_is_supported (void)
 }
 
 static void
-g_win32_file_monitor_init (GWin32FileMonitor* monitor)
+g_win32_file_monitor_init (GWin32FileMonitor *monitor)
 {
   monitor->priv = g_win32_fs_monitor_create (TRUE);
 
@@ -68,21 +66,22 @@ g_win32_file_monitor_init (GWin32FileMonitor* monitor)
 }
 
 static void
-g_win32_file_monitor_finalize (GObject *base)
+g_win32_file_monitor_finalize (GObject *object)
 {
   GWin32FileMonitor *monitor;
-  monitor = G_WIN32_FILE_MONITOR (base);
+
+  monitor = G_WIN32_FILE_MONITOR (object);
 
   g_win32_fs_monitor_finalize (monitor->priv);
 
-  if (G_OBJECT_CLASS (g_win32_file_monitor_parent_class)->finalize)
-    (*G_OBJECT_CLASS (g_win32_file_monitor_parent_class)->finalize) (base);
+  G_OBJECT_CLASS (g_win32_file_monitor_parent_class)->finalize (object);
 }
 
 static gboolean
 g_win32_file_monitor_cancel (GFileMonitor* monitor)
 {
   GWin32FileMonitor *file_monitor;
+
   file_monitor = G_WIN32_FILE_MONITOR (monitor);
 
   g_win32_fs_monitor_close_handle (file_monitor->priv);
