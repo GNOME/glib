@@ -219,10 +219,10 @@ static GWeakRef the_system_bus;
  * message, and we're being called from its thread, so no memory barrier is
  * required before accessing them.
  */
-#define SEND_MESSAGE_FLAGS_INITIALIZING (1<<31)
+#define SEND_MESSAGE_FLAGS_INITIALIZING (1u << 31)
 
 /* Same as SEND_MESSAGE_FLAGS_INITIALIZING, but in GDBusCallFlags */
-#define CALL_FLAGS_INITIALIZING (1<<31)
+#define CALL_FLAGS_INITIALIZING (1u << 31)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
