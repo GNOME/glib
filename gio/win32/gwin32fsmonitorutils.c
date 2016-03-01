@@ -382,6 +382,10 @@ g_win32_fs_monitor_create (gboolean isfile)
 void
 g_win32_fs_monitor_finalize (GWin32FSMonitorPrivate *monitor)
 {
+  g_free (monitor->wfullpath_with_long_prefix);
+  g_free (monitor->wfilename_long);
+  g_free (monitor->wfilename_short);
+
   if (monitor->hDirectory == INVALID_HANDLE_VALUE)
     {
       /* If we don't have a directory handle we can free
@@ -404,10 +408,6 @@ g_win32_fs_monitor_finalize (GWin32FSMonitorPrivate *monitor)
        */
       monitor->self = NULL;
     }
-
-  g_free (monitor->wfullpath_with_long_prefix);
-  g_free (monitor->wfilename_long);
-  g_free (monitor->wfilename_short);
 }
 
 void
