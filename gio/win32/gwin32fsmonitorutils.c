@@ -352,8 +352,7 @@ g_win32_fs_monitor_init (GWin32FSMonitorPrivate *monitor,
                                      FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED,
                                      NULL);
 
-  if (wdirname_with_long_prefix != NULL)
-    g_free (wdirname_with_long_prefix);
+  g_free (wdirname_with_long_prefix);
   g_free (dirname_with_long_prefix);
 
   if (monitor->hDirectory != INVALID_HANDLE_VALUE)
@@ -405,11 +404,10 @@ void g_win32_fs_monitor_finalize (GWin32FSMonitorPrivate *monitor)
        */
       monitor->self = NULL;
     }
+
   g_free (monitor->wfullpath_with_long_prefix);
-  if (monitor->wfilename_long != NULL)
-    g_free (monitor->wfilename_long);
-  if (monitor->wfilename_short != NULL)
-    g_free (monitor->wfilename_short);
+  g_free (monitor->wfilename_long);
+  g_free (monitor->wfilename_short);
 }
 
 void g_win32_fs_monitor_close_handle (GWin32FSMonitorPrivate *monitor)
