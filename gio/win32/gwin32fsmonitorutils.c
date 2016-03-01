@@ -368,19 +368,19 @@ g_win32_fs_monitor_init (GWin32FSMonitorPrivate *monitor,
     }
 }
 
-GWin32FSMonitorPrivate* g_win32_fs_monitor_create (gboolean isfile)
+GWin32FSMonitorPrivate *
+g_win32_fs_monitor_create (gboolean isfile)
 {
-  GWin32FSMonitorPrivate* monitor = (GWin32FSMonitorPrivate*) g_new0 (GWin32FSMonitorPrivate, 1);
-  g_assert (monitor != 0);
+  GWin32FSMonitorPrivate *monitor = (GWin32FSMonitorPrivate *)g_new0 (GWin32FSMonitorPrivate, 1);
 
   monitor->buffer_allocated_bytes = 32784;
   monitor->file_notify_buffer = g_new0 (FILE_NOTIFY_INFORMATION, monitor->buffer_allocated_bytes);
-  g_assert (monitor->file_notify_buffer);
 
   return monitor;
 }
 
-void g_win32_fs_monitor_finalize (GWin32FSMonitorPrivate *monitor)
+void
+g_win32_fs_monitor_finalize (GWin32FSMonitorPrivate *monitor)
 {
   if (monitor->hDirectory == INVALID_HANDLE_VALUE)
     {
@@ -410,7 +410,8 @@ void g_win32_fs_monitor_finalize (GWin32FSMonitorPrivate *monitor)
   g_free (monitor->wfilename_short);
 }
 
-void g_win32_fs_monitor_close_handle (GWin32FSMonitorPrivate *monitor)
+void
+g_win32_fs_monitor_close_handle (GWin32FSMonitorPrivate *monitor)
 {
   /* This triggers a last callback() with nBytes==0. */
 
