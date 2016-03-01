@@ -31,9 +31,9 @@
 #define MAX_PATH_LONG 32767 /* Support Paths longer than MAX_PATH (260) characters */
 
 static gboolean
-g_win32_fs_monitor_handle_event (GWin32FSMonitorPrivate *monitor,
-                                 gchar *filename,
-                                 PFILE_NOTIFY_INFORMATION pfni)
+g_win32_fs_monitor_handle_event (GWin32FSMonitorPrivate   *monitor,
+                                 const gchar              *filename,
+                                 PFILE_NOTIFY_INFORMATION  pfni)
 {
   GFileMonitorEvent fme;
   PFILE_NOTIFY_INFORMATION pfni_next;
@@ -42,67 +42,68 @@ g_win32_fs_monitor_handle_event (GWin32FSMonitorPrivate *monitor,
 
   switch (pfni->Action)
     {
-      case FILE_ACTION_ADDED:
-        fme = G_FILE_MONITOR_EVENT_CREATED;
-        break;
+    case FILE_ACTION_ADDED:
+      fme = G_FILE_MONITOR_EVENT_CREATED;
+      break;
 
-      case FILE_ACTION_REMOVED:
-        fme = G_FILE_MONITOR_EVENT_DELETED;
-        break;
+    case FILE_ACTION_REMOVED:
+      fme = G_FILE_MONITOR_EVENT_DELETED;
+      break;
 
-      case FILE_ACTION_MODIFIED:
+    case FILE_ACTION_MODIFIED:
+      {
+        gboolean success_attribs = GetFileAttributesExW (monitor->wfullpath_with_long_prefix,
+                                                         GetFileExInfoStandard,
+                                                         &attrib_data);
+
+        if (monitor->file_attribs != INVALID_FILE_ATTRIBUTES &&
+            success_attribs &&
+            attrib_data.dwFileAttributes != monitor->file_attribs)
+          fme = G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED;
+        else
+          fme = G_FILE_MONITOR_EVENT_CHANGED;
+
+        monitor->file_attribs = attrib_data.dwFileAttributes;
+      }
+      break;
+
+    case FILE_ACTION_RENAMED_OLD_NAME:
+      if (pfni->NextEntryOffset != 0)
         {
-          gboolean success_attribs = GetFileAttributesExW (monitor->wfullpath_with_long_prefix,
-                                                           GetFileExInfoStandard,
-                                                           &attrib_data);
+          /* If the file was renamed in the same directory, we would get a
+           * FILE_ACTION_RENAMED_NEW_NAME action in the next FILE_NOTIFY_INFORMATION
+           * structure.
+           */
+          glong file_name_len = 0;
 
-          if (monitor->file_attribs != INVALID_FILE_ATTRIBUTES &&
-              success_attribs &&
-              attrib_data.dwFileAttributes != monitor->file_attribs)
-            fme = G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED;
+          pfni_next = (PFILE_NOTIFY_INFORMATION) ((BYTE*)pfni + pfni->NextEntryOffset);
+          renamed_file = g_utf16_to_utf8 (pfni_next->FileName, pfni_next->FileNameLength / sizeof(WCHAR), NULL, &file_name_len, NULL);
+          if (pfni_next->Action == FILE_ACTION_RENAMED_NEW_NAME)
+           fme = G_FILE_MONITOR_EVENT_RENAMED;
           else
-            fme = G_FILE_MONITOR_EVENT_CHANGED;
-
-          monitor->file_attribs = attrib_data.dwFileAttributes;
+           fme = G_FILE_MONITOR_EVENT_MOVED_OUT;
         }
-        break;
+      else
+        fme = G_FILE_MONITOR_EVENT_MOVED_OUT;
+      break;
 
-      case FILE_ACTION_RENAMED_OLD_NAME:
-        if (pfni->NextEntryOffset != 0)
-          {
-            /* If the file was renamed in the same directory, we would get a
-             * FILE_ACTION_RENAMED_NEW_NAME action in the next FILE_NOTIFY_INFORMATION
-             * structure.
-             */
-            glong file_name_len = 0;
+    case FILE_ACTION_RENAMED_NEW_NAME:
+      if (monitor->pfni_prev != NULL &&
+          monitor->pfni_prev->Action == FILE_ACTION_RENAMED_OLD_NAME)
+        {
+          /* don't bother sending events, was already sent (rename) */
+          fme = -1;
+        }
+      else
+        fme = G_FILE_MONITOR_EVENT_MOVED_IN;
+      break;
 
-            pfni_next = (PFILE_NOTIFY_INFORMATION) ((BYTE*)pfni + pfni->NextEntryOffset);
-            renamed_file = g_utf16_to_utf8 (pfni_next->FileName, pfni_next->FileNameLength / sizeof(WCHAR), NULL, &file_name_len, NULL);
-            if (pfni_next->Action == FILE_ACTION_RENAMED_NEW_NAME)
-               fme = G_FILE_MONITOR_EVENT_RENAMED;
-            else
-               fme = G_FILE_MONITOR_EVENT_MOVED_OUT;
-          }
-        else
-          fme = G_FILE_MONITOR_EVENT_MOVED_OUT;
-        break;
-
-      case FILE_ACTION_RENAMED_NEW_NAME:
-        if (monitor->pfni_prev != NULL &&
-            monitor->pfni_prev->Action == FILE_ACTION_RENAMED_OLD_NAME)
-          {
-            /* don't bother sending events, was already sent (rename) */
-            fme = -1;
-          }
-        else
-          fme = G_FILE_MONITOR_EVENT_MOVED_IN;
-        break;
-
-      default:
-        /* The possible Windows actions are all above, so shouldn't get here */
-        g_assert_not_reached ();
-        break;
+    default:
+      /* The possible Windows actions are all above, so shouldn't get here */
+      g_assert_not_reached ();
+      break;
     }
+
   if (fme != -1)
     return g_file_monitor_source_handle_event (monitor->fms,
                                                fme,
@@ -147,13 +148,15 @@ g_win32_fs_monitor_callback (DWORD        error,
 
   do
     {
-      pfile_notify_walker = (PFILE_NOTIFY_INFORMATION)((BYTE*)monitor->file_notify_buffer + offset);
+      pfile_notify_walker = (PFILE_NOTIFY_INFORMATION)((BYTE *)monitor->file_notify_buffer + offset);
       if (pfile_notify_walker->Action > 0)
         {
           glong file_name_len;
           gchar *changed_file;
 
-          changed_file = g_utf16_to_utf8 (pfile_notify_walker->FileName, pfile_notify_walker->FileNameLength / sizeof(WCHAR), NULL, &file_name_len, NULL);
+          changed_file = g_utf16_to_utf8 (pfile_notify_walker->FileName,
+                                          pfile_notify_walker->FileNameLength / sizeof(WCHAR),
+                                          NULL, &file_name_len, NULL);
 
           if (monitor->isfile)
             {
@@ -198,17 +201,17 @@ g_win32_fs_monitor_callback (DWORD        error,
 
                   switch (alias_state)
                     {
-                      case G_WIN32_FILE_MONITOR_NO_ALIAS:
-                        monitored_file = g_strdup (changed_file);
-                        break;
-                      case G_WIN32_FILE_MONITOR_LONG_FILENAME:
-                      case G_WIN32_FILE_MONITOR_SHORT_FILENAME:
-                        monitored_file_w = wcsrchr (monitor->wfullpath_with_long_prefix, L'\\');
-                        monitored_file = g_utf16_to_utf8 (monitored_file_w + 1, -1, NULL, NULL, NULL);
-                        break;
-                      default:
-                        g_assert_not_reached ();
-                        break;
+                    case G_WIN32_FILE_MONITOR_NO_ALIAS:
+                      monitored_file = g_strdup (changed_file);
+                      break;
+                    case G_WIN32_FILE_MONITOR_LONG_FILENAME:
+                    case G_WIN32_FILE_MONITOR_SHORT_FILENAME:
+                      monitored_file_w = wcsrchr (monitor->wfullpath_with_long_prefix, L'\\');
+                      monitored_file = g_utf16_to_utf8 (monitored_file_w + 1, -1, NULL, NULL, NULL);
+                      break;
+                    default:
+                      g_assert_not_reached ();
+                      break;
                     }
 
                   g_win32_fs_monitor_handle_event (monitor, monitored_file, pfile_notify_walker);
@@ -220,6 +223,7 @@ g_win32_fs_monitor_callback (DWORD        error,
 
           g_free (changed_file);
         }
+
       monitor->pfni_prev = pfile_notify_walker;
       offset += pfile_notify_walker->NextEntryOffset;
     }
