@@ -371,7 +371,7 @@ g_win32_fs_monitor_init (GWin32FSMonitorPrivate *monitor,
 GWin32FSMonitorPrivate *
 g_win32_fs_monitor_create (gboolean isfile)
 {
-  GWin32FSMonitorPrivate *monitor = (GWin32FSMonitorPrivate *)g_new0 (GWin32FSMonitorPrivate, 1);
+  GWin32FSMonitorPrivate *monitor = g_new0 (GWin32FSMonitorPrivate, 1);
 
   monitor->buffer_allocated_bytes = 32784;
   monitor->file_notify_buffer = g_new0 (FILE_NOTIFY_INFORMATION, monitor->buffer_allocated_bytes);
