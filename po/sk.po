@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-06 07:39+0000\n"
-"PO-Revision-Date: 2016-02-06 15:17+0100\n"
+"POT-Creation-Date: 2016-03-01 19:41+0000\n"
+"PO-Revision-Date: 2016-03-01 21:05+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -22,21 +22,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.7\n"
 
-#: ../gio/gapplication.c:531
+#: ../gio/gapplication.c:493
+msgid "GApplication options"
+msgstr "Voľby GApplication"
+
+#: ../gio/gapplication.c:493
+msgid "Show GApplication options"
+msgstr "Zobrazí voľby GApplication"
+
+#: ../gio/gapplication.c:538
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Vstúpi do režimu služby GApplication (použije súbory zo služby zbernice D-"
 "Bus)"
 
-#: ../gio/gapplication.c:536
-msgid "GApplication options"
-msgstr "Voľby GApplication"
-
-#: ../gio/gapplication.c:536
-msgid "Show GApplication options"
-msgstr "Zobrazí voľby GApplication"
+#: ../gio/gapplication.c:550
+msgid "Override the application's ID"
+msgstr "Preváži ID aplikácie"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gresource-tool.c:488 ../gio/gsettings-tool.c:512
@@ -3169,6 +3173,7 @@ msgid "Error reading from file descriptor: %s"
 msgstr "Chyba pri čítaní z popisovača súboru: %s"
 
 #: ../gio/gunixinputstream.c:423 ../gio/gunixoutputstream.c:409
+#: ../gio/gwin32inputstream.c:217 ../gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Chyba pri zatváraní popisovača súboru: %s"
@@ -3201,17 +3206,17 @@ msgstr ""
 "s operáciou)"
 
 # PŠ: file handle (win32) je ekvivalent file descriptor - dovolil som si to preložiť rovnako. Keďže používané manipulátor, alebo rukoväť sú oba zlé preklady (obsluha je handler)... A dokonca aj v slovenskom preklade Správcu úloh vo win je použitý popisovač.
-#: ../gio/gwin32inputstream.c:343
+#: ../gio/gwin32inputstream.c:185
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "Chyba pri čítaní z popisovača: %s"
 
-#: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:374
+#: ../gio/gwin32inputstream.c:232 ../gio/gwin32outputstream.c:219
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "Chyba pri zatváraní popisovača: %s"
 
-#: ../gio/gwin32outputstream.c:330
+#: ../gio/gwin32outputstream.c:172
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "Chyba pri zápise do popisovača: %s"
