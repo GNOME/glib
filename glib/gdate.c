@@ -2439,6 +2439,9 @@ win32_strftime_helper (const GDate     *d,
  *
  * Returns: number of characters written to the buffer, or 0 the buffer was too small
  */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
 gsize     
 g_date_strftime (gchar       *s, 
                  gsize        slen, 
@@ -2494,10 +2497,7 @@ g_date_strftime (gchar       *s,
        * recognize whether strftime actually failed or just returned "".
        */
       tmpbuf[0] = '\1';
-      #pragma GCC diagnostic push
-      #pragma GCC diagnostic ignored "-Wformat-nonliteral"
       tmplen = strftime (tmpbuf, tmpbufsize, locale_format, &tm);
-      #pragma GCC diagnostic pop
 
       if (tmplen == 0 && tmpbuf[0] != '\0')
         {
@@ -2552,3 +2552,5 @@ g_date_strftime (gchar       *s,
   return retval;
 #endif
 }
+
+#pragma GCC diagnostic pop
