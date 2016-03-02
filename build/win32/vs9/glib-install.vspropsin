@@ -56,6 +56,9 @@ mkdir $(CopyDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 mkdir $(CopyDir)\include\gio-win32-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gwin32inputstream.h $(CopyDir)\include\gio-win32-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gwin32outputstream.h $(CopyDir)\include\gio-win32-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gwin32namedpipelistener.h $(CopyDir)\include\gio-win32-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gwin32namedpipeclient.h $(CopyDir)\include\gio-win32-$(ApiVersion)\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gwin32namedpipeconnection.h $(CopyDir)\include\gio-win32-$(ApiVersion)\gio&#x0D;&#x0A;
 
 mkdir $(CopyDir)\lib\glib-$(ApiVersion)\include&#x0D;&#x0A;
 copy ..\..\..\glib\glibconfig.h $(CopyDir)\lib\glib-$(ApiVersion)\include&#x0D;&#x0A;
