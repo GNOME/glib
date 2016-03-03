@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-20 16:29+0100\n"
-"PO-Revision-Date: 2016-02-20 16:30+0100\n"
+"POT-Creation-Date: 2016-03-03 17:01+0100\n"
+"PO-Revision-Date: 2016-03-03 17:02+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -510,21 +510,21 @@ msgstr "Błąd podczas wywoływania wiersza poleceń „%s”: "
 msgid "(Type any character to close this window)\n"
 msgstr "(Wpisanie dowolnego znaku zamknie to okno)\n"
 
-#: ../gio/gdbusaddress.c:1460
+#: ../gio/gdbusaddress.c:1481
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
 "Magistrala D-Bus sesji nie jest uruchomiona, i automatyczne uruchomienie się "
 "nie powiodło"
 
-#: ../gio/gdbusaddress.c:1471
+#: ../gio/gdbusaddress.c:1492
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Nie można ustalić adresu magistrali sesji (nie jest zaimplementowane dla "
 "tego systemu operacyjnego)"
 
-#: ../gio/gdbusaddress.c:1606 ../gio/gdbusconnection.c:7128
+#: ../gio/gdbusaddress.c:1627 ../gio/gdbusconnection.c:7128
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -533,7 +533,7 @@ msgstr ""
 "Nie można ustalić adresu magistrali ze zmiennej środowiskowej "
 "DBUS_STARTER_BUS_TYPE — nieznana wartość „%s”"
 
-#: ../gio/gdbusaddress.c:1615 ../gio/gdbusconnection.c:7137
+#: ../gio/gdbusaddress.c:1636 ../gio/gdbusconnection.c:7137
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -541,7 +541,7 @@ msgstr ""
 "Nie można ustalić adresu magistrali, ponieważ nie ustawiono zmiennej "
 "środowiskowej DBUS_STARTER_BUS_TYPE"
 
-#: ../gio/gdbusaddress.c:1625
+#: ../gio/gdbusaddress.c:1646
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Nieznany typ magistrali %d"
@@ -2505,7 +2505,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  ŚCIEŻKA   Ścieżka do zasobu\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:824
+#: ../gio/gsettings-tool.c:830
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Brak schematu „%s”\n"
@@ -2666,7 +2666,7 @@ msgstr ""
 "                            które można przenosić\n"
 "  list-keys                 Wyświetla listę kluczy w schemacie\n"
 "  list-children             Wyświetla listę elementów potomnych schematu\n"
-"  list-recursively          Wyświetla listę kluczy i wartości, rekursywanie\n"
+"  list-recursively          Wyświetla listę kluczy i wartości, rekursywnie\n"
 "  range                     Odpytuje zakres klucza\n"
 "  get                       Uzyskuje wartość klucza\n"
 "  set                       Ustawia wartość klucza\n"
@@ -2718,17 +2718,22 @@ msgstr "  KLUCZ     Klucz w schemacie\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  WARTOŚĆ   Wartość do ustawienia\n"
 
-#: ../gio/gsettings-tool.c:712
+#: ../gio/gsettings-tool.c:711
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Nie można wczytać schematów z %s: %s\n"
 
-#: ../gio/gsettings-tool.c:782
+#: ../gio/gsettings-tool.c:723
+#, c-format
+msgid "No schemas installed\n"
+msgstr "Nie zainstalowano schematów\n"
+
+#: ../gio/gsettings-tool.c:788
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Podano pustą nazwę schematu\n"
 
-#: ../gio/gsettings-tool.c:837
+#: ../gio/gsettings-tool.c:843
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Brak klucza „%s”\n"
@@ -3135,6 +3140,7 @@ msgid "Error reading from file descriptor: %s"
 msgstr "Błąd podczas odczytywania z deskryptora pliku: %s"
 
 #: ../gio/gunixinputstream.c:423 ../gio/gunixoutputstream.c:409
+#: ../gio/gwin32inputstream.c:217 ../gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Błąd podczas zamykania deskryptora pliku: %s"
@@ -3165,17 +3171,17 @@ msgstr "wolumin nie obsługuje wysunięcia"
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "wolumin nie obsługuje wysunięcia lub „eject_with_operation”"
 
-#: ../gio/gwin32inputstream.c:343
+#: ../gio/gwin32inputstream.c:185
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "Błąd podczas odczytywania z pliku obsługi: %s"
 
-#: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:374
+#: ../gio/gwin32inputstream.c:232 ../gio/gwin32outputstream.c:219
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "Błąd podczas zamykania pliku obsługi: %s"
 
-#: ../gio/gwin32outputstream.c:330
+#: ../gio/gwin32outputstream.c:172
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "Błąd podczas zapisywania do pliku obsługi: %s"
