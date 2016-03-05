@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-01 22:22+0100\n"
-"PO-Revision-Date: 2016-02-01 22:24+0100\n"
+"POT-Creation-Date: 2016-03-03 21:37+0100\n"
+"PO-Revision-Date: 2016-03-03 21:37+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -23,17 +23,21 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.8.4\n"
 
-#: ../gio/gapplication.c:531
-msgid "Enter GApplication service mode (use from D-Bus service files)"
-msgstr "Vstopi v način storitev (uporabi iz storitvenih datotek D-Bus)"
-
-#: ../gio/gapplication.c:536
+#: ../gio/gapplication.c:493
 msgid "GApplication options"
 msgstr "Možnosti programa"
 
-#: ../gio/gapplication.c:536
+#: ../gio/gapplication.c:493
 msgid "Show GApplication options"
 msgstr "Prikaže možnosti programa"
+
+#: ../gio/gapplication.c:538
+msgid "Enter GApplication service mode (use from D-Bus service files)"
+msgstr "Vstopi v način storitev (uporabi iz storitvenih datotek D-Bus)"
+
+#: ../gio/gapplication.c:550
+msgid "Override the application's ID"
+msgstr "Prepiši ID programa"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gresource-tool.c:488 ../gio/gsettings-tool.c:512
@@ -497,17 +501,17 @@ msgstr "Napaka med oživljanjem ukazne vrstice '%s': "
 msgid "(Type any character to close this window)\n"
 msgstr "(S pritiskom na katerikoli znak, se okno zapre)\n"
 
-#: ../gio/gdbusaddress.c:1460
+#: ../gio/gdbusaddress.c:1481
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Vodilo seje DBus ni zagnano, zato je samodejni zagon spodletel"
 
-#: ../gio/gdbusaddress.c:1471
+#: ../gio/gdbusaddress.c:1492
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Ni mogoče določiti naslova vodila seje (ni podprto v tem OS)"
 
-#: ../gio/gdbusaddress.c:1606 ../gio/gdbusconnection.c:7128
+#: ../gio/gdbusaddress.c:1627 ../gio/gdbusconnection.c:7128
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -516,7 +520,7 @@ msgstr ""
 "Ni mogoče določiti naslova vodila iz okoljske spremenljivke "
 "DBUS_STARTER_BUS_TYPE - neznana vrednost '%s'"
 
-#: ../gio/gdbusaddress.c:1615 ../gio/gdbusconnection.c:7137
+#: ../gio/gdbusaddress.c:1636 ../gio/gdbusconnection.c:7137
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -524,7 +528,7 @@ msgstr ""
 "Ni mogoče določiti naslova vodila, kajti okoljska spremenljivka "
 "DBUS_STARTER_BUS_TYPE ni nastavljena"
 
-#: ../gio/gdbusaddress.c:1625
+#: ../gio/gdbusaddress.c:1646
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Neznana vrsta vodila %d"
@@ -2475,7 +2479,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  POT       Pot vira\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:824
+#: ../gio/gsettings-tool.c:830
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Shema '%s' ne obstaja.\n"
@@ -2684,17 +2688,22 @@ msgstr "  KLJUČ           Ključ znotraj sheme\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  VREDNOST   Vrednost za nastavitev\n"
 
-#: ../gio/gsettings-tool.c:712
+#: ../gio/gsettings-tool.c:711
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Ni mogoče odpreti shem iz %s: %s\n"
 
-#: ../gio/gsettings-tool.c:782
+#: ../gio/gsettings-tool.c:723
+#, c-format
+msgid "No schemas installed\n"
+msgstr "Ni nameščenih shem\n"
+
+#: ../gio/gsettings-tool.c:788
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Ni podanega imena sheme.\n"
 
-#: ../gio/gsettings-tool.c:837
+#: ../gio/gsettings-tool.c:843
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Ključ '%s' ne obstaja.\n"
@@ -3097,6 +3106,7 @@ msgid "Error reading from file descriptor: %s"
 msgstr "Napaka med branjem iz opisovalnika datoteke: %s"
 
 #: ../gio/gunixinputstream.c:423 ../gio/gunixoutputstream.c:409
+#: ../gio/gwin32inputstream.c:217 ../gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Napaka med zapiranjem opisovalnika datoteke: %s"
@@ -3125,17 +3135,17 @@ msgstr "nosilca ni mogoče izvreči"
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "nosilec ne prepozna ukaza izvrzi ali izvrzi_z_dejanjem"
 
-#: ../gio/gwin32inputstream.c:343
+#: ../gio/gwin32inputstream.c:185
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "Napaka branja iz ročnika: %s"
 
-#: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:374
+#: ../gio/gwin32inputstream.c:232 ../gio/gwin32outputstream.c:219
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "Napaka med zapiranjem ročnika: %s."
 
-#: ../gio/gwin32outputstream.c:330
+#: ../gio/gwin32outputstream.c:172
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "Napaka pisanja v ročnik: %s."
