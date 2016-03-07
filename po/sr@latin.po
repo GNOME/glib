@@ -1,27 +1,32 @@
 # Serbian translation of glib
 # Courtesy of Prevod.org team (http://prevod.org/) -- 2003—2016.
 # This file is distributed under the same license as the glib package.
+#
+# Translators: 
 # Danilo Šegan <danilo@gnome.org>, 2004—2005.
 # Slobodan D. Sredojević <slobo@akrep.be>, 2006.
 # Branko Kokanović <branko.kokanovic@gmail.com>, 2010.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011—2016.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011—2015.
 # Miloš Popović <gpopac@gmail.com>, 2010, 2015.
+# Marko M. Kostić <marko.m.kostic@gmail.com>, 2016.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&ke"
-"ywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-18 19:36+0000\n"
-"PO-Revision-Date: 2016-02-18 21:02+0200\n"
-"Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <gnom@prevod.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-03-06 19:40+0000\n"
+"PO-Revision-Date: 2016-03-06 21:28+0100\n"
+"Last-Translator: Marko M. Kostić <marko.m.kostic@gmail.com>\n"
+"Language-Team: srpski <gnom@prevod.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #: ../gio/gapplication.c:493
 msgid "GApplication options"
@@ -37,9 +42,8 @@ msgstr ""
 "Ulazi u režim usluge Gprograma (koristi sa datoteka usluge D-sabirnice)"
 
 #: ../gio/gapplication.c:550
-#| msgid "List applications"
 msgid "Override the application's ID"
-msgstr "Prepisuje IB programa"
+msgstr "Nadglašava IB programa"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gresource-tool.c:488 ../gio/gsettings-tool.c:512
@@ -504,19 +508,19 @@ msgstr "Greška pri pokretanju naredbe „%s“: "
 msgid "(Type any character to close this window)\n"
 msgstr "(Upišite bilo koji znak da zatvorite ovaj prozor)\n"
 
-#: ../gio/gdbusaddress.c:1460
+#: ../gio/gdbusaddress.c:1481
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "D-magistrala sesije nije pokrenuta, samopokretanje nije uspelo"
 
-#: ../gio/gdbusaddress.c:1471
+#: ../gio/gdbusaddress.c:1492
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Ne mogu da odredim adresu magistrale sesije (nije napravljeno za ovaj "
 "operativni sistem)"
 
-#: ../gio/gdbusaddress.c:1606 ../gio/gdbusconnection.c:7128
+#: ../gio/gdbusaddress.c:1627 ../gio/gdbusconnection.c:7128
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -525,7 +529,7 @@ msgstr ""
 "Ne mogu da odredim adresu magistrale sesije iz promenljive okruženja "
 "DBUS_STARTER_BUS_TYPE — nepoznata vrednost „%s“"
 
-#: ../gio/gdbusaddress.c:1615 ../gio/gdbusconnection.c:7137
+#: ../gio/gdbusaddress.c:1636 ../gio/gdbusconnection.c:7137
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -533,7 +537,7 @@ msgstr ""
 "Ne mogu da odredim adresu magistrale sesije jer nije postavljena promenljiva "
 "okruženja DBUS_STARTER_BUS_TYPE"
 
-#: ../gio/gdbusaddress.c:1625
+#: ../gio/gdbusaddress.c:1646
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Nepoznat tip magistrale %d"
@@ -1284,7 +1288,6 @@ msgid "TLS support is not available"
 msgstr "TLS podrška nije dostupna"
 
 #: ../gio/gdummytlsbackend.c:419
-#| msgid "TLS support is not available"
 msgid "DTLS support is not available"
 msgstr "DTLS podrška nije dostupna"
 
@@ -2479,7 +2482,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  PUTANJA     Putanja resursa\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:824
+#: ../gio/gsettings-tool.c:830
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Nema takve šeme „%s“\n"
@@ -2688,17 +2691,22 @@ msgstr "  KLJUČ      Ključ unutar šeme\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  VREDNOST  Vrednost za podešavanje\n"
 
-#: ../gio/gsettings-tool.c:712
+#: ../gio/gsettings-tool.c:711
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Ne mogu da učitam šeme iz „%s“: %s\n"
 
-#: ../gio/gsettings-tool.c:782
+#: ../gio/gsettings-tool.c:723
+#, c-format
+msgid "No schemas installed\n"
+msgstr "Nijedna šema nije instalirana\n"
+
+#: ../gio/gsettings-tool.c:788
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Dat je prazan naziv šeme\n"
 
-#: ../gio/gsettings-tool.c:837
+#: ../gio/gsettings-tool.c:843
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Nema takvog ključa „%s“\n"
@@ -2742,13 +2750,14 @@ msgstr "Zadat je nepoznati protokol"
 #: ../gio/gsocket.c:1104
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
-msgstr "Ne mogu da koristim radnje datagrama na utičnici ne-datagrama."
+msgstr "Ne mogu da koristim datagram radnje nad nedatagramskom utičnicom."
 
 #: ../gio/gsocket.c:1121
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr ""
-"Ne mogu da koristim radnje datagrama na utičnici sa podešenim istekom vremena."
+"Ne mogu da koristim datagramske radnje nad utičnicom sa podešenim isticanjem "
+"vremena."
 
 #: ../gio/gsocket.c:1925
 #, c-format
@@ -3070,12 +3079,12 @@ msgstr "Greška u slanju akreditiva: "
 #: ../gio/gunixconnection.c:503
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
-msgstr "Greška prilikom provere da li je „SO_PASSCRED“ omogućen za utičnicu: %s"
+msgstr "Greška prilikom provere da li je SO_PASSCRED omogućen za utičnicu: %s"
 
 #: ../gio/gunixconnection.c:518
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
-msgstr "Greška prilikom omogućavanja „SO_PASSCRED“: %s"
+msgstr "Greška prilikom omogućavanja SO_PASSCRED: %s"
 
 #: ../gio/gunixconnection.c:547
 msgid ""
@@ -3092,7 +3101,7 @@ msgstr "Ne očekivah kontrolnu poruku, ali dobih %d"
 #: ../gio/gunixconnection.c:611
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
-msgstr "Greška prilikom onemogućavanja „SO_PASSCRED“: %s"
+msgstr "Greška prilikom onemogućavanja SO_PASSCRED: %s"
 
 #: ../gio/gunixinputstream.c:369 ../gio/gunixinputstream.c:390
 #, c-format
@@ -3100,6 +3109,7 @@ msgid "Error reading from file descriptor: %s"
 msgstr "Greška prilikom čitanja iz opisivača datoteke: %s"
 
 #: ../gio/gunixinputstream.c:423 ../gio/gunixoutputstream.c:409
+#: ../gio/gwin32inputstream.c:217 ../gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Greška prilikom zatvaranja opisnika datoteke: %s"
@@ -3128,17 +3138,17 @@ msgstr "disk ne podržava izbacivanje"
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "disk ne podržava „izbaci“ ili „izbaci_sa_radnjom“"
 
-#: ../gio/gwin32inputstream.c:343
+#: ../gio/gwin32inputstream.c:185
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "Greška prilikom čitanja ručke: %s"
 
-#: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:374
+#: ../gio/gwin32inputstream.c:232 ../gio/gwin32outputstream.c:219
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "Greška prilikom zatvaranja ručke: %s"
 
-#: ../gio/gwin32outputstream.c:330
+#: ../gio/gwin32outputstream.c:172
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "Greška prilikom upisa u ručku: %s"
@@ -3166,7 +3176,7 @@ msgstr "Adresa na kojoj vršiti osluškivanje"
 
 #: ../gio/tests/gdbus-daemon.c:19
 msgid "Ignored, for compat with GTestDbus"
-msgstr "Zanemareno, zbog saglasnosti sa D-sabirnicom G-testa"
+msgstr "Zanemareno, zbog saglasnosti sa GTestDmagistralom"
 
 #: ../gio/tests/gdbus-daemon.c:20
 msgid "Print address"
@@ -3178,7 +3188,7 @@ msgstr "Ispisuje adresu u režimu školjke"
 
 #: ../gio/tests/gdbus-daemon.c:28
 msgid "Run a dbus service"
-msgstr "Pokreće uslugu d-sabirnice"
+msgstr "Pokreće uslugu d-magistrale"
 
 #: ../gio/tests/gdbus-daemon.c:42
 #, c-format
@@ -3920,8 +3930,7 @@ msgstr "Dokument je prazan ili sadrži samo beline"
 #: ../glib/gmarkup.c:1775
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
-"Dokument je završen neočekivano neposredno nakon otvorene kosougle zagrade "
-"„<“"
+"Dokument je završen neočekivano neposredno nakon otvorene kosougle zagrade „<“"
 
 #: ../glib/gmarkup.c:1783 ../glib/gmarkup.c:1828
 #, c-format

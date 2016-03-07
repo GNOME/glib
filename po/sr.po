@@ -1,27 +1,32 @@
 # Serbian translation of glib
 # Courtesy of Prevod.org team (http://prevod.org/) -- 2003—2016.
 # This file is distributed under the same license as the glib package.
+#
+# Translators: 
 # Данило Шеган <danilo@gnome.org>, 2004—2005.
 # Слободан Д. Средојевић <slobo@akrep.be>, 2006.
 # Бранко Кокановић <branko.kokanovic@gmail.com>, 2010.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2016.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2015.
 # Милош Поповић <gpopac@gmail.com>, 2010, 2015.
+# Марко М. Костић <marko.m.kostic@gmail.com>, 2016.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&ke"
-"ywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-18 19:36+0000\n"
-"PO-Revision-Date: 2016-02-18 21:02+0200\n"
-"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <gnom@prevod.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-03-06 19:40+0000\n"
+"PO-Revision-Date: 2016-03-06 21:28+0100\n"
+"Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
+"Language-Team: српски <gnom@prevod.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #: ../gio/gapplication.c:493
 msgid "GApplication options"
@@ -37,9 +42,8 @@ msgstr ""
 "Улази у режим услуге Гпрограма (користи са датотека услуге Д-сабирнице)"
 
 #: ../gio/gapplication.c:550
-#| msgid "List applications"
 msgid "Override the application's ID"
-msgstr "Преписује ИБ програма"
+msgstr "Надглашава ИБ програма"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gresource-tool.c:488 ../gio/gsettings-tool.c:512
@@ -504,19 +508,19 @@ msgstr "Грешка при покретању наредбе „%s“: "
 msgid "(Type any character to close this window)\n"
 msgstr "(Упишите било који знак да затворите овај прозор)\n"
 
-#: ../gio/gdbusaddress.c:1460
+#: ../gio/gdbusaddress.c:1481
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Д-магистрала сесије није покренута, самопокретање није успело"
 
-#: ../gio/gdbusaddress.c:1471
+#: ../gio/gdbusaddress.c:1492
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Не могу да одредим адресу магистрале сесије (није направљено за овај "
 "оперативни систем)"
 
-#: ../gio/gdbusaddress.c:1606 ../gio/gdbusconnection.c:7128
+#: ../gio/gdbusaddress.c:1627 ../gio/gdbusconnection.c:7128
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -525,7 +529,7 @@ msgstr ""
 "Не могу да одредим адресу магистрале сесије из променљиве окружења "
 "DBUS_STARTER_BUS_TYPE — непозната вредност „%s“"
 
-#: ../gio/gdbusaddress.c:1615 ../gio/gdbusconnection.c:7137
+#: ../gio/gdbusaddress.c:1636 ../gio/gdbusconnection.c:7137
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -533,7 +537,7 @@ msgstr ""
 "Не могу да одредим адресу магистрале сесије јер није постављена променљива "
 "окружења DBUS_STARTER_BUS_TYPE"
 
-#: ../gio/gdbusaddress.c:1625
+#: ../gio/gdbusaddress.c:1646
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Непознат тип магистрале %d"
@@ -1284,7 +1288,6 @@ msgid "TLS support is not available"
 msgstr "ТЛС подршка није доступна"
 
 #: ../gio/gdummytlsbackend.c:419
-#| msgid "TLS support is not available"
 msgid "DTLS support is not available"
 msgstr "ДТЛС подршка није доступна"
 
@@ -2479,7 +2482,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  ПУТАЊА     Путања ресурса\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:824
+#: ../gio/gsettings-tool.c:830
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Нема такве шеме „%s“\n"
@@ -2688,17 +2691,22 @@ msgstr "  КЉУЧ      Кључ унутар шеме\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  ВРЕДНОСТ  Вредност за подешавање\n"
 
-#: ../gio/gsettings-tool.c:712
+#: ../gio/gsettings-tool.c:711
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Не могу да учитам шеме из „%s“: %s\n"
 
-#: ../gio/gsettings-tool.c:782
+#: ../gio/gsettings-tool.c:723
+#, c-format
+msgid "No schemas installed\n"
+msgstr "Ниједна шема није инсталирана\n"
+
+#: ../gio/gsettings-tool.c:788
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Дат је празан назив шеме\n"
 
-#: ../gio/gsettings-tool.c:837
+#: ../gio/gsettings-tool.c:843
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Нема таквог кључа „%s“\n"
@@ -2742,13 +2750,14 @@ msgstr "Задат је непознати протокол"
 #: ../gio/gsocket.c:1104
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
-msgstr "Не могу да користим радње датаграма на утичници не-датаграма."
+msgstr "Не могу да користим датаграм радње над недатаграмском утичницом."
 
 #: ../gio/gsocket.c:1121
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr ""
-"Не могу да користим радње датаграма на утичници са подешеним истеком времена."
+"Не могу да користим датаграмске радње над утичницом са подешеним истицањем "
+"времена."
 
 #: ../gio/gsocket.c:1925
 #, c-format
@@ -3070,12 +3079,12 @@ msgstr "Грешка у слању акредитива: "
 #: ../gio/gunixconnection.c:503
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
-msgstr "Грешка приликом провере да ли је „SO_PASSCRED“ омогућен за утичницу: %s"
+msgstr "Грешка приликом провере да ли је SO_PASSCRED омогућен за утичницу: %s"
 
 #: ../gio/gunixconnection.c:518
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
-msgstr "Грешка приликом омогућавања „SO_PASSCRED“: %s"
+msgstr "Грешка приликом омогућавања SO_PASSCRED: %s"
 
 #: ../gio/gunixconnection.c:547
 msgid ""
@@ -3092,7 +3101,7 @@ msgstr "Не очекивах контролну поруку, али добих
 #: ../gio/gunixconnection.c:611
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
-msgstr "Грешка приликом онемогућавања „SO_PASSCRED“: %s"
+msgstr "Грешка приликом онемогућавања SO_PASSCRED: %s"
 
 #: ../gio/gunixinputstream.c:369 ../gio/gunixinputstream.c:390
 #, c-format
@@ -3100,6 +3109,7 @@ msgid "Error reading from file descriptor: %s"
 msgstr "Грешка приликом читања из описивача датотеке: %s"
 
 #: ../gio/gunixinputstream.c:423 ../gio/gunixoutputstream.c:409
+#: ../gio/gwin32inputstream.c:217 ../gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Грешка приликом затварања описника датотеке: %s"
@@ -3128,17 +3138,17 @@ msgstr "диск не подржава избацивање"
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "диск не подржава „избаци“ или „избаци_са_радњом“"
 
-#: ../gio/gwin32inputstream.c:343
+#: ../gio/gwin32inputstream.c:185
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "Грешка приликом читања ручке: %s"
 
-#: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:374
+#: ../gio/gwin32inputstream.c:232 ../gio/gwin32outputstream.c:219
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "Грешка приликом затварања ручке: %s"
 
-#: ../gio/gwin32outputstream.c:330
+#: ../gio/gwin32outputstream.c:172
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "Грешка приликом уписа у ручку: %s"
@@ -3166,7 +3176,7 @@ msgstr "Адреса на којој вршити ослушкивање"
 
 #: ../gio/tests/gdbus-daemon.c:19
 msgid "Ignored, for compat with GTestDbus"
-msgstr "Занемарено, због сагласности са Д-сабирницом Г-теста"
+msgstr "Занемарено, због сагласности са ГТестДмагистралом"
 
 #: ../gio/tests/gdbus-daemon.c:20
 msgid "Print address"
@@ -3178,7 +3188,7 @@ msgstr "Исписује адресу у режиму шкољке"
 
 #: ../gio/tests/gdbus-daemon.c:28
 msgid "Run a dbus service"
-msgstr "Покреће услугу д-сабирнице"
+msgstr "Покреће услугу д-магистрале"
 
 #: ../gio/tests/gdbus-daemon.c:42
 #, c-format
@@ -3920,8 +3930,7 @@ msgstr "Документ је празан или садржи само бели
 #: ../glib/gmarkup.c:1775
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
-"Документ је завршен неочекивано непосредно након отворене косоугле заграде "
-"„<“"
+"Документ je завршен неочекивано непосредно након отворене косоугле заграде „<“"
 
 #: ../glib/gmarkup.c:1783 ../glib/gmarkup.c:1828
 #, c-format
@@ -3929,7 +3938,7 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Документ је завршен неочекивано са отвореним елементима — „%s“ је последње "
+"Документ je завршен неочекивано са отвореним елементима — „%s“ је последње "
 "отворен елемент"
 
 #: ../glib/gmarkup.c:1791
@@ -3943,36 +3952,36 @@ msgstr ""
 
 #: ../glib/gmarkup.c:1797
 msgid "Document ended unexpectedly inside an element name"
-msgstr "Документ је завршен неочекивано усред имена елемента"
+msgstr "Документ je завршен неочекивано усред имена елемента"
 
 #: ../glib/gmarkup.c:1803
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Документ је завршен неочекивано усред имена атрибута"
+msgstr "Документ je завршен неочекивано усред имена атрибута"
 
 #: ../glib/gmarkup.c:1808
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Документ је завршен неочекивано усред почетне ознаке елемента."
+msgstr "Документ je завршен неочекивано усред почетне ознаке елемента."
 
 #: ../glib/gmarkup.c:1814
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Документ је завршен неочекивано након знака једнакости после имена атрибута; "
+"Документ je завршен неочекивано након знака једнакости после имена атрибута; "
 "вредност атрибута није наведена"
 
 #: ../glib/gmarkup.c:1821
 msgid "Document ended unexpectedly while inside an attribute value"
-msgstr "Документ је завршен неочекивано усред вредности атрибута"
+msgstr "Документ je завршен неочекивано усред вредности атрибута"
 
 #: ../glib/gmarkup.c:1837
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Документ је завршен неочекивано усред завршне ознаке елемента „%s“"
+msgstr "Документ je завршен неочекивано усред завршне ознаке елемента „%s“"
 
 #: ../glib/gmarkup.c:1843
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "Документ је завршен неочекивано усред примедбе или упута за обраду"
+msgstr "Документ je завршен неочекивано усред примедбе или упута за обраду"
 
 #: ../glib/goption.c:857
 msgid "Usage:"
