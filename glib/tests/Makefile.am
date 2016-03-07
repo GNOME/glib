@@ -180,6 +180,7 @@ atomic_CFLAGS += -Wstrict-aliasing=2
 endif
 
 overflow_fallback_SOURCES = overflow.c
+# FIXME: FLAGS?
 overflow_fallback_FALGS = $(AM_CFLAGS) -D_GLIB_TEST_OVERFLOW_FALLBACK
 
 test_programs += 642026-ec

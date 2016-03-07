@@ -2,7 +2,101 @@ configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h', configuration
 
 subdir('libcharset')
 
-if host.name() == 'windows'
+glib_headers = [
+  'glib.h',
+  'glib-unix.h',
+  'glib-object.h',
+]
+install_headers(glib_headers, subdir : 'glib-2.0/')
+
+glib_deprecated_headers = [
+  'deprecated/gallocator.h',
+  'deprecated/gcache.h',
+  'deprecated/gcompletion.h',
+  'deprecated/gmain.h',
+  'deprecated/grel.h',
+  'deprecated/gthread.h',
+]
+install_headers(glib_deprecated_headers, subdir : 'glib-2.0/deprecated/')
+
+glib_sub_headers = [
+  'glib-autocleanups.h',
+  'galloca.h',
+  'garray.h',
+  'gasyncqueue.h',
+  'gatomic.h',
+  'gbacktrace.h',
+  'gbase64.h',
+  'gbitlock.h',
+  'gbookmarkfile.h',
+  'gbytes.h',
+  'gcharset.h',
+  'gchecksum.h',
+  'gconvert.h',
+  'gdataset.h',
+  'gdate.h',
+  'gdatetime.h',
+  'gdir.h',
+  'genviron.h',
+  'gerror.h',
+  'gfileutils.h',
+  'ggettext.h',
+  'ghash.h',
+  'ghmac.h',
+  'ghook.h',
+  'ghostutils.h',
+  'gi18n.h',
+  'gi18n-lib.h',
+  'giochannel.h',
+  'gkeyfile.h',
+  'glist.h',
+  'gmacros.h',
+  'gmain.h',
+  'gmappedfile.h',
+  'gmarkup.h',
+  'gmem.h',
+  'gmessages.h',
+  'gnode.h',
+  'goption.h',
+  'gpattern.h',
+  'gpoll.h',
+  'gprimes.h',
+  'gqsort.h',
+  'gquark.h',
+  'gqueue.h',
+  'grand.h',
+  'gregex.h',
+  'gscanner.h',
+  'gsequence.h',
+  'gshell.h',
+  'gslice.h',
+  'gslist.h',
+  'gspawn.h',
+  'gstdio.h',
+  'gstrfuncs.h',
+  'gtestutils.h',
+  'gstring.h',
+  'gstringchunk.h',
+  'gthread.h',
+  'gthreadpool.h',
+  'gtimer.h',
+  'gtimezone.h',
+  'gtrashstack.h',
+  'gtree.h',
+  'gtypes.h',
+  'gunicode.h',
+  'gurifuncs.h',
+  'gutils.h',
+  'gvarianttype.h',
+  'gvariant.h',
+  'gversion.h',
+  'gversionmacros.h',
+  'gwin32.h',
+  'gprintf.h',
+]
+install_headers(glib_sub_headers, subdir : 'glib-2.0/glib/')
+
+if host_machine.system() == 'windows'
   thread_src = ['gthread-win32.c']
   plat_src = []
 else
@@ -70,11 +164,13 @@ glib_sources = [
 'gstrfuncs.c',
 'gstring.c',
 'gstringchunk.c',
+'gtester.c',
 'gtestutils.c',
 'gthread.c',
 'gthreadpool.c',
 'gtimer.c',
 'gtimezone.c',
+'gtranslit.c',
 'gtrashstack.c',
 'gtree.c',
 'guniprop.c',
@@ -96,11 +192,17 @@ glib_sources = [
 
 extra_src = ['gspawn.c', 'giounix.c']
 
+#'gspawn-win32.c', # FIXME
+#'gspawn-win32-helper.c', # FIXME
+
 libglib = shared_library('glib',
 sources : [deprecated_sources, glib_sources, thread_src, plat_src, extra_src],
 version : glib_version,
 soversion : interface_version,
-include_dirs : inc_dirs,
+install : true,
+include_directories : inc_dirs,
 link_with : charset_lib,
-deps : [pcre, thread_lib],
+dependencies : [ pcre, thread_dep, libiconv, librt ],
 c_args : ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION', '-DPCRE_STATIC'])
+
+subdir('tests')

@@ -1,3 +1,3 @@
-charset_lib = shared_library('charset', 'localcharset.c',
+charset_lib = static_library('charset', 'localcharset.c',
   include_directories : inc_dirs,
-  c_args : [ '-DLIBDIR="lib"' ])
+  c_args : [ '-DLIBDIR="lib"', '-fPIC' ])

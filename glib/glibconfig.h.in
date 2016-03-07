@@ -8,12 +8,9 @@
 
 #include <glib/gmacros.h>
 
-@INC_LIMITS_H@
-@INC_FLOAT_H@
-@INC_VALUES_H@
-
+#include <limits.h>
+#include <float.h>
 #mesondefine GLIB_HAVE_ALLOCA_H
-#mesondefine GLIB_HAVE_SYS_POLL_H
 
 /* Specifies that GLib's g_print*() functions wrap the
  * system printf functions.  This is useful to know, for example,
@@ -23,21 +20,20 @@
 
 G_BEGIN_DECLS
 
-#define G_MINFLOAT	@glib_mf@
-#define G_MAXFLOAT	@glib_Mf@
-#define G_MINDOUBLE	@glib_md@
-#define G_MAXDOUBLE	@glib_Md@
-#define G_MINSHORT	@glib_ms@
-#define G_MAXSHORT	@glib_Ms@
-#define G_MAXUSHORT	@glib_Mus@
-#define G_MININT	@glib_mi@
-#define G_MAXINT	@glib_Mi@
-#define G_MAXUINT	@glib_Mui@
-#define G_MINLONG	@glib_ml@
-#define G_MAXLONG	@glib_Ml@
-#define G_MAXULONG	@glib_Mul@
+#define G_MINFLOAT	FLT_MIN
+#define G_MAXFLOAT	FLT_MAX
+#define G_MINDOUBLE	DBL_MIN
+#define G_MAXDOUBLE	DBL_MAX
+#define G_MINSHORT	SHRT_MIN
+#define G_MAXSHORT	SHRT_MAX
+#define G_MAXUSHORT	USHRT_MAX
+#define G_MININT	INT_MIN
+#define G_MAXINT	INT_MAX
+#define G_MAXUINT	UINT_MAX
+#define G_MINLONG	LONG_MIN
+#define G_MAXLONG	LONG_MAX
+#define G_MAXULONG	ULONG_MAX
 
-/* this should always be true in a modern C/C++ compiler */
 typedef signed char gint8;
 typedef unsigned char guint8;
 
@@ -73,12 +69,14 @@ typedef unsigned @gint32@ guint32;
 #define GLIB_SIZEOF_VOID_P @glib_void_p@
 #define GLIB_SIZEOF_LONG   @glib_long@
 #define GLIB_SIZEOF_SIZE_T @glib_size_t@
+#define GLIB_SIZEOF_SSIZE_T @glib_ssize_t@
 
 typedef signed @glib_size_type_define@ gssize;
 typedef unsigned @glib_size_type_define@ gsize;
 #define G_GSIZE_MODIFIER @gsize_modifier@
-#define G_GSSIZE_FORMAT @gssize_format@
+#define G_GSSIZE_MODIFIER @gssize_modifier@
 #define G_GSIZE_FORMAT @gsize_format@
+#define G_GSSIZE_FORMAT @gssize_format@
 
 #define G_MAXSIZE	G_MAXU@glib_msize_type@
 #define G_MINSSIZE	G_MIN@glib_msize_type@
@@ -91,6 +89,8 @@ typedef gint64 goffset;
 #define G_GOFFSET_MODIFIER      G_GINT64_MODIFIER
 #define G_GOFFSET_FORMAT        G_GINT64_FORMAT
 #define G_GOFFSET_CONSTANT(val) G_GINT64_CONSTANT(val)
+
+#define G_POLLFD_FORMAT @g_pollfd_format@
 
 #define GPOINTER_TO_INT(p)	((gint)  @glib_gpi_cast@ (p))
 #define GPOINTER_TO_UINT(p)	((guint) @glib_gpui_cast@ (p))
@@ -105,33 +105,22 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
 #define G_GINTPTR_FORMAT        @gintptr_format@
 #define G_GUINTPTR_FORMAT       @guintptr_format@
 
-@glib_atexit@
-@glib_memmove@
-@glib_defines@
+#ifndef G_DISABLE_DEPRECATED
+#define g_ATEXIT(proc)	(atexit (proc))
+#define g_memmove(dest,src,len) G_STMT_START { memmove ((dest), (src), (len)); } G_STMT_END
+#endif
+
+#define GLIB_MAJOR_VERSION @GLIB_MAJOR_VERSION@
+#define GLIB_MINOR_VERSION @GLIB_MINOR_VERSION@
+#define GLIB_MICRO_VERSION @GLIB_MICRO_VERSION@
+
 @glib_os@
 @glib_static_compilation@
 
 @glib_vacopy@
 
-#ifdef	__cplusplus
-#define	G_HAVE_INLINE	1
-#else	/* !__cplusplus */
-@glib_inline@
-#endif	/* !__cplusplus */
-
-#ifdef	__cplusplus
-#define G_CAN_INLINE	1
-#else	/* !__cplusplus */
-#mesondefine G_CAN_INLINE
-#endif
-
-#ifndef __cplusplus
-#mesondefine G_HAVE_ISO_VARARGS
-#endif
-
-#ifdef __cplusplus
-#mesondefine G_HAVE_ISO_VARARGS
-#endif
+@g_have_iso_c_varargs@
+@g_have_iso_cxx_varargs@
 
 /* gcc-2.95.x supports both gnu style and ISO varargs, but if -ansi
  * is passed ISO vararg support is turned off, and there is no work
@@ -145,13 +134,7 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
 
 #mesondefine G_HAVE_GROWING_STACK
 
-/* On some systems, like SunOS and NetBSD, EILSEQ is not defined.
- * The correspondence between this and the corresponding definition
- * in libiconv is essential.
- */
-#mesondefine EILSEQ
-
-#mesondefine G_HAVE_GNUC_VISIBILITY
+#define G_HAVE_GNUC_VISIBILITY 1
 
 #if defined(__SUNPRO_C) && (__SUNPRO_C >= 0x590)
 #define G_GNUC_INTERNAL __attribute__((visibility("hidden")))
