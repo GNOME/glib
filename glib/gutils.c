@@ -1314,8 +1314,8 @@ g_get_user_cache_dir (void)
  * [XDG Base Directory Specification](http://www.freedesktop.org/Standards/basedir-spec).
  * This is the directory
  * specified in the `XDG_RUNTIME_DIR` environment variable.
- * In the case that this variable is not set, GLib will issue a warning
- * message to stderr and return the value of g_get_user_cache_dir().
+ * In the case that this variable is not set, we return the value of
+ * g_get_user_cache_dir(), after verifying that it exists.
  *
  * On Windows this is the folder to use for local (as opposed to
  * roaming) application data. See documentation for
@@ -1331,24 +1331,40 @@ g_get_user_runtime_dir (void)
 {
 #ifndef G_OS_WIN32
   static const gchar *runtime_dir;
-  static gsize initialised;
 
-  if (g_once_init_enter (&initialised))
+  if (g_once_init_enter (&runtime_dir))
     {
-      runtime_dir = g_strdup (getenv ("XDG_RUNTIME_DIR"));
-      
-      g_once_init_leave (&initialised, 1);
+      const gchar *dir;
+
+      dir = g_strdup (getenv ("XDG_RUNTIME_DIR"));
+
+      if (dir == NULL)
+        {
+          /* No need to strdup this one since it is valid forever. */
+          dir = g_get_user_cache_dir ();
+
+          /* The user should be able to rely on the directory existing
+           * when the function returns.  Probably it already does, but
+           * let's make sure.  Just do mkdir() directly since it will be
+           * no more expensive than a stat() in the case that the
+           * directory already exists and is a lot easier.
+           *
+           * $XDG_CACHE_HOME is probably ~/.cache/ so as long as $HOME
+           * exists this will work.  If the user changed $XDG_CACHE_HOME
+           * then they can make sure that it exists...
+           */
+          (void) mkdir (dir, 0700);
+        }
+
+      g_assert (dir != NULL);
+
+      g_once_init_leave (&runtime_dir, dir);
     }
 
-  if (runtime_dir)
-    return runtime_dir;
-
-  /* Both fallback for UNIX and the default
-   * in Windows: use the user cache directory.
-   */
-#endif
-
+  return runtime_dir;
+#else /* Windows */
   return g_get_user_cache_dir ();
+#endif
 }
 
 #ifdef HAVE_CARBON
