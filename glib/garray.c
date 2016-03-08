@@ -666,7 +666,7 @@ g_array_remove_range (GArray *farray,
   GRealArray *array = (GRealArray*) farray;
 
   g_return_val_if_fail (array, NULL);
-  g_return_val_if_fail (index_ < array->len, NULL);
+  g_return_val_if_fail (index_ <= array->len, NULL);
   g_return_val_if_fail (index_ + length <= array->len, NULL);
 
   if (array->clear_func != NULL)
@@ -1263,7 +1263,7 @@ g_ptr_array_remove_range (GPtrArray *array,
   guint n;
 
   g_return_val_if_fail (rarray != NULL, NULL);
-  g_return_val_if_fail (index_ < rarray->len, NULL);
+  g_return_val_if_fail (index_ <= rarray->len, NULL);
   g_return_val_if_fail (index_ + length <= rarray->len, NULL);
 
   if (rarray->element_free_func != NULL)
@@ -1813,7 +1813,7 @@ g_byte_array_remove_range (GByteArray *array,
                            guint       length)
 {
   g_return_val_if_fail (array, NULL);
-  g_return_val_if_fail (index_ < array->len, NULL);
+  g_return_val_if_fail (index_ <= array->len, NULL);
   g_return_val_if_fail (index_ + length <= array->len, NULL);
 
   return (GByteArray *)g_array_remove_range ((GArray *)array, index_, length);

@@ -168,6 +168,10 @@ array_remove_range (void)
       prev = cur;
     }
 
+  /* Ensure the entire array can be cleared, even when empty. */
+  g_array_remove_range (garray, 0, garray->len);
+  g_array_remove_range (garray, 0, garray->len);
+
   g_array_free (garray, TRUE);
 }
 
@@ -710,6 +714,10 @@ byte_array_remove_range (void)
       g_assert (gbarray->data[4*i+2] == 'c');
       g_assert (gbarray->data[4*i+3] == 'd');
     }
+
+  /* Ensure the entire array can be cleared, even when empty. */
+  g_byte_array_remove_range (gbarray, 0, gbarray->len);
+  g_byte_array_remove_range (gbarray, 0, gbarray->len);
 
   g_byte_array_free (gbarray, TRUE);
 }
