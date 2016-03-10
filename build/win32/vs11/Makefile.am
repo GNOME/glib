@@ -30,6 +30,7 @@ EXTRA_DIST = \
 	gdbus.vcxproj \
 	gdbus.vcxproj.filters \
 	glib-install.vcxproj	\
+	glib-install.vcxproj.filters	\
 	glib-build-defines.props	\
 	glib-install.props	\
 	glib-version-paths.props	\

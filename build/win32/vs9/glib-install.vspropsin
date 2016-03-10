@@ -66,11 +66,25 @@ copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gmodule-$(ApiVersion
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gobject-$(ApiVersion).lib $(CopyDir)\lib&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gio-$(ApiVersion).lib $(CopyDir)\lib&#x0D;&#x0A;
 
+mkdir $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+copy ..\gio-windows-2.0.pc $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+copy ..\gio-2.0.pc $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+copy ..\gobject-2.0.pc $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+copy ..\gmodule-no-export-2.0.pc $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+copy ..\gmodule-export-2.0.pc $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+copy ..\gmodule-2.0.pc $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+copy ..\gthread-2.0.pc $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+copy ..\glib-2.0.pc $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+
 mkdir $(CopyDir)\share\glib-$(ApiVersion)\schemas&#x0D;&#x0A;
 copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas&#x0D;&#x0A;
 
 mkdir $(CopyDir)\share\glib-$(ApiVersion)\codegen&#x0D;&#x0A;
 copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\codegen&#x0D;&#x0A;
 "
+	/>
+	<UserMacro
+		Name="GlibGenPC"
+		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\glibpc.py --prefix=$(CopyDir) --version=$(GlibVersion)"
 	/>
 </VisualStudioPropertySheet>

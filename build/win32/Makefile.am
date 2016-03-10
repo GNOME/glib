@@ -7,6 +7,8 @@ SUBDIRS = 	\
 	vs14
 
 EXTRA_DIST = 		\
+	glibpc.py	\
 	make.msc 	\
 	module.defs	\
+	pc_base.py	\
 	replace.py
