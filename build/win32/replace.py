@@ -32,11 +32,8 @@ def replace_multi(src, dest, replace_items):
                         replace_dict[re.escape(m.group(0))], line))
 
 def replace(src, dest, instring, outstring):
-    with open(src, 'r') as s:
-        with open(dest, 'w') as d:
-            for line in s:
-                i = line.replace(instring, outstring)
-                d.write(i)
+    replace_item = {instring: outstring}
+    replace_multi(src, dest, replace_item)
 
 def check_required_args(args, params):
     for param in params:
