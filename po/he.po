@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-30 12:49+0200\n"
-"PO-Revision-Date: 2015-10-30 12:49+0200\n"
+"POT-Creation-Date: 2016-03-11 14:55+0200\n"
+"PO-Revision-Date: 2016-03-11 14:55+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -25,17 +25,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#: ../gio/gapplication.c:531
-msgid "Enter GApplication service mode (use from D-Bus service files)"
-msgstr "Enter GApplication service mode (use from D-Bus service files)"
-
-#: ../gio/gapplication.c:536
+#: ../gio/gapplication.c:493
 msgid "GApplication options"
 msgstr "GApplication options"
 
-#: ../gio/gapplication.c:536
+#: ../gio/gapplication.c:493
 msgid "Show GApplication options"
 msgstr "Show GApplication options"
+
+#: ../gio/gapplication.c:538
+msgid "Enter GApplication service mode (use from D-Bus service files)"
+msgstr "Enter GApplication service mode (use from D-Bus service files)"
+
+#: ../gio/gapplication.c:550
+msgid "Override the application's ID"
+msgstr "Override the application's ID"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gresource-tool.c:488 ../gio/gsettings-tool.c:512
@@ -254,9 +258,9 @@ msgstr ""
 "\n"
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
-#: ../gio/ginputstream.c:176 ../gio/ginputstream.c:376
-#: ../gio/ginputstream.c:614 ../gio/ginputstream.c:1013
-#: ../gio/goutputstream.c:200 ../gio/goutputstream.c:831
+#: ../gio/ginputstream.c:179 ../gio/ginputstream.c:379
+#: ../gio/ginputstream.c:617 ../gio/ginputstream.c:1016
+#: ../gio/goutputstream.c:203 ../gio/goutputstream.c:834
 #: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
 msgid "Too large count value passed to %s"
@@ -271,8 +275,8 @@ msgstr "Seek not supported on base stream"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Cannot truncate GBufferedInputStream"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202
-#: ../gio/giostream.c:278 ../gio/goutputstream.c:1655
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1205
+#: ../gio/giostream.c:300 ../gio/goutputstream.c:1658
 msgid "Stream is already closed"
 msgstr "Stream is already closed"
 
@@ -281,7 +285,7 @@ msgid "Truncate not supported on base stream"
 msgstr "Truncate not supported on base stream"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1847
-#: ../gio/gdbusprivate.c:1375 ../gio/glocalfile.c:2221
+#: ../gio/gdbusprivate.c:1375 ../gio/glocalfile.c:2220
 #: ../gio/gsimpleasyncresult.c:870 ../gio/gsimpleasyncresult.c:896
 #, c-format
 msgid "Operation was cancelled"
@@ -302,7 +306,7 @@ msgstr "Not enough space in destination"
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
 #: ../gio/gdatainputstream.c:1256 ../glib/gconvert.c:438 ../glib/gconvert.c:845
 #: ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
-#: ../glib/giochannel.c:2442 ../glib/gutf8.c:852 ../glib/gutf8.c:1304
+#: ../glib/giochannel.c:2442 ../glib/gutf8.c:853 ../glib/gutf8.c:1306
 msgid "Invalid byte sequence in conversion input"
 msgstr "Invalid byte sequence in conversion input"
 
@@ -491,17 +495,17 @@ msgstr "Error spawning command line '%s': "
 msgid "(Type any character to close this window)\n"
 msgstr "(Type any character to close this window)\n"
 
-#: ../gio/gdbusaddress.c:1460
+#: ../gio/gdbusaddress.c:1481
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Session dbus not running, and autolaunch failed"
 
-#: ../gio/gdbusaddress.c:1471
+#: ../gio/gdbusaddress.c:1492
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Cannot determine session bus address (not implemented for this OS)"
 
-#: ../gio/gdbusaddress.c:1606 ../gio/gdbusconnection.c:7128
+#: ../gio/gdbusaddress.c:1627 ../gio/gdbusconnection.c:7128
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -510,7 +514,7 @@ msgstr ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value '%s'"
 
-#: ../gio/gdbusaddress.c:1615 ../gio/gdbusconnection.c:7137
+#: ../gio/gdbusaddress.c:1636 ../gio/gdbusconnection.c:7137
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -518,7 +522,7 @@ msgstr ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 
-#: ../gio/gdbusaddress.c:1625
+#: ../gio/gdbusaddress.c:1646
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Unknown bus type %d"
@@ -914,7 +918,7 @@ msgstr "Error calling StartServiceByName for %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Unexpected reply %d from StartServiceByName(\"%s\") method"
 
-#: ../gio/gdbusproxy.c:2708 ../gio/gdbusproxy.c:2842
+#: ../gio/gdbusproxy.c:2709 ../gio/gdbusproxy.c:2843
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -1243,10 +1247,14 @@ msgstr "drive doesn't implement start"
 msgid "drive doesn't implement stop"
 msgstr "drive doesn't implement stop"
 
-#: ../gio/gdummytlsbackend.c:188 ../gio/gdummytlsbackend.c:310
-#: ../gio/gdummytlsbackend.c:400
+#: ../gio/gdummytlsbackend.c:195 ../gio/gdummytlsbackend.c:317
+#: ../gio/gdummytlsbackend.c:509
 msgid "TLS support is not available"
 msgstr "TLS support is not available"
+
+#: ../gio/gdummytlsbackend.c:419
+msgid "DTLS support is not available"
+msgstr "DTLS support is not available"
 
 #: ../gio/gemblem.c:323
 #, c-format
@@ -1299,7 +1307,7 @@ msgstr "Operation not supported"
 msgid "Containing mount does not exist"
 msgstr "Containing mount does not exist"
 
-#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2377
+#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2376
 msgid "Can't copy over directory"
 msgstr "Can't copy over directory"
 
@@ -1307,7 +1315,7 @@ msgstr "Can't copy over directory"
 msgid "Can't copy directory over directory"
 msgstr "Can't copy directory over directory"
 
-#: ../gio/gfile.c:2583 ../gio/glocalfile.c:2386
+#: ../gio/gfile.c:2583 ../gio/glocalfile.c:2385
 msgid "Target file exists"
 msgstr "Target file exists"
 
@@ -1488,7 +1496,7 @@ msgstr "Not enough space for socket address"
 msgid "Unsupported socket address"
 msgstr "Unsupported socket address"
 
-#: ../gio/ginputstream.c:185
+#: ../gio/ginputstream.c:188
 msgid "Input stream doesn't implement read"
 msgstr "Input stream doesn't implement read"
 
@@ -1498,8 +1506,8 @@ msgstr "Input stream doesn't implement read"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1212 ../gio/giostream.c:288
-#: ../gio/goutputstream.c:1665
+#: ../gio/ginputstream.c:1215 ../gio/giostream.c:310
+#: ../gio/goutputstream.c:1668
 msgid "Stream has outstanding operation"
 msgstr "Stream has outstanding operation"
 
@@ -1903,8 +1911,8 @@ msgstr "Error renaming file: %s"
 msgid "Can't rename file, filename already exists"
 msgstr "Can't rename file, filename already exists"
 
-#: ../gio/glocalfile.c:1222 ../gio/glocalfile.c:2250 ../gio/glocalfile.c:2279
-#: ../gio/glocalfile.c:2439 ../gio/glocalfileoutputstream.c:549
+#: ../gio/glocalfile.c:1222 ../gio/glocalfile.c:2249 ../gio/glocalfile.c:2278
+#: ../gio/glocalfile.c:2438 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "Invalid filename"
 
@@ -1945,56 +1953,56 @@ msgstr "Unable to find or create trash directory"
 msgid "Unable to create trashing info file: %s"
 msgstr "Unable to create trashing info file: %s"
 
-#: ../gio/glocalfile.c:2158 ../gio/glocalfile.c:2163 ../gio/glocalfile.c:2220
-#: ../gio/glocalfile.c:2227
+#: ../gio/glocalfile.c:2157 ../gio/glocalfile.c:2162 ../gio/glocalfile.c:2219
+#: ../gio/glocalfile.c:2226
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Unable to trash file: %s"
 
-#: ../gio/glocalfile.c:2228 ../glib/gregex.c:281
+#: ../gio/glocalfile.c:2227 ../glib/gregex.c:281
 msgid "internal error"
 msgstr "internal error"
 
-#: ../gio/glocalfile.c:2254
+#: ../gio/glocalfile.c:2253
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Error creating directory: %s"
 
-#: ../gio/glocalfile.c:2283
+#: ../gio/glocalfile.c:2282
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Filesystem does not support symbolic links"
 
-#: ../gio/glocalfile.c:2287
+#: ../gio/glocalfile.c:2286
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Error making symbolic link: %s"
 
-#: ../gio/glocalfile.c:2349 ../gio/glocalfile.c:2443
+#: ../gio/glocalfile.c:2348 ../gio/glocalfile.c:2442
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Error moving file: %s"
 
-#: ../gio/glocalfile.c:2372
+#: ../gio/glocalfile.c:2371
 msgid "Can't move directory over directory"
 msgstr "Can't move directory over directory"
 
-#: ../gio/glocalfile.c:2399 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfile.c:2398 ../gio/glocalfileoutputstream.c:925
 #: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
 #: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
 msgid "Backup file creation failed"
 msgstr "Backup file creation failed"
 
-#: ../gio/glocalfile.c:2418
+#: ../gio/glocalfile.c:2417
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Error removing target file: %s"
 
-#: ../gio/glocalfile.c:2432
+#: ../gio/glocalfile.c:2431
 msgid "Move between mounts not supported"
 msgstr "Move between mounts not supported"
 
-#: ../gio/glocalfile.c:2624
+#: ../gio/glocalfile.c:2623
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Could not determine the disk usage of %s: %s"
@@ -2016,80 +2024,80 @@ msgstr "Invalid extended attribute name"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Error setting extended attribute '%s': %s"
 
-#: ../gio/glocalfileinfo.c:1579
+#: ../gio/glocalfileinfo.c:1575
 msgid " (invalid encoding)"
 msgstr " (invalid encoding)"
 
-#: ../gio/glocalfileinfo.c:1770 ../gio/glocalfileoutputstream.c:803
+#: ../gio/glocalfileinfo.c:1766 ../gio/glocalfileoutputstream.c:803
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Error when getting information for file '%s': %s"
 
-#: ../gio/glocalfileinfo.c:2021
+#: ../gio/glocalfileinfo.c:2017
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Error when getting information for file descriptor: %s"
 
-#: ../gio/glocalfileinfo.c:2066
+#: ../gio/glocalfileinfo.c:2062
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Invalid attribute type (uint32 expected)"
 
-#: ../gio/glocalfileinfo.c:2084
+#: ../gio/glocalfileinfo.c:2080
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Invalid attribute type (uint64 expected)"
 
-#: ../gio/glocalfileinfo.c:2103 ../gio/glocalfileinfo.c:2122
+#: ../gio/glocalfileinfo.c:2099 ../gio/glocalfileinfo.c:2118
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Invalid attribute type (byte string expected)"
 
-#: ../gio/glocalfileinfo.c:2157
+#: ../gio/glocalfileinfo.c:2153
 msgid "Cannot set permissions on symlinks"
 msgstr "Cannot set permissions on symlinks"
 
-#: ../gio/glocalfileinfo.c:2173
+#: ../gio/glocalfileinfo.c:2169
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Error setting permissions: %s"
 
-#: ../gio/glocalfileinfo.c:2224
+#: ../gio/glocalfileinfo.c:2220
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Error setting owner: %s"
 
-#: ../gio/glocalfileinfo.c:2247
+#: ../gio/glocalfileinfo.c:2243
 msgid "symlink must be non-NULL"
 msgstr "symlink must be non-NULL"
 
-#: ../gio/glocalfileinfo.c:2257 ../gio/glocalfileinfo.c:2276
-#: ../gio/glocalfileinfo.c:2287
+#: ../gio/glocalfileinfo.c:2253 ../gio/glocalfileinfo.c:2272
+#: ../gio/glocalfileinfo.c:2283
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Error setting symlink: %s"
 
-#: ../gio/glocalfileinfo.c:2266
+#: ../gio/glocalfileinfo.c:2262
 msgid "Error setting symlink: file is not a symlink"
 msgstr "Error setting symlink: file is not a symlink"
 
-#: ../gio/glocalfileinfo.c:2392
+#: ../gio/glocalfileinfo.c:2388
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Error setting modification or access time: %s"
 
 # c-format
-#: ../gio/glocalfileinfo.c:2415
+#: ../gio/glocalfileinfo.c:2411
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux context must be non-NULL"
 
-#: ../gio/glocalfileinfo.c:2430
+#: ../gio/glocalfileinfo.c:2426
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Error setting SELinux context: %s"
 
-#: ../gio/glocalfileinfo.c:2437
+#: ../gio/glocalfileinfo.c:2433
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux is not enabled on this system"
 
-#: ../gio/glocalfileinfo.c:2529
+#: ../gio/glocalfileinfo.c:2525
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Setting attribute %s not supported"
@@ -2165,7 +2173,7 @@ msgstr "The file was externally modified"
 msgid "Error removing old file: %s"
 msgstr "Error removing old file: %s"
 
-#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:769
+#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:771
 msgid "Invalid GSeekType supplied"
 msgstr "Invalid GSeekType supplied"
 
@@ -2177,15 +2185,15 @@ msgstr "Invalid seek request"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Cannot truncate GMemoryInputStream"
 
-#: ../gio/gmemoryoutputstream.c:565
+#: ../gio/gmemoryoutputstream.c:567
 msgid "Memory output stream not resizable"
 msgstr "Memory output stream not resizable"
 
-#: ../gio/gmemoryoutputstream.c:581
+#: ../gio/gmemoryoutputstream.c:583
 msgid "Failed to resize memory output stream"
 msgstr "Failed to resize memory output stream"
 
-#: ../gio/gmemoryoutputstream.c:671
+#: ../gio/gmemoryoutputstream.c:673
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
@@ -2193,11 +2201,11 @@ msgstr ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 
-#: ../gio/gmemoryoutputstream.c:779
+#: ../gio/gmemoryoutputstream.c:781
 msgid "Requested seek before the beginning of the stream"
 msgstr "Requested seek before the beginning of the stream"
 
-#: ../gio/gmemoryoutputstream.c:794
+#: ../gio/gmemoryoutputstream.c:796
 msgid "Requested seek beyond the end of the stream"
 msgstr "Requested seek beyond the end of the stream"
 
@@ -2282,11 +2290,11 @@ msgstr "Could not get network status: "
 msgid "NetworkManager version too old"
 msgstr "NetworkManager version too old"
 
-#: ../gio/goutputstream.c:209 ../gio/goutputstream.c:557
+#: ../gio/goutputstream.c:212 ../gio/goutputstream.c:560
 msgid "Output stream doesn't implement write"
 msgstr "Output stream doesn't implement write"
 
-#: ../gio/goutputstream.c:518 ../gio/goutputstream.c:1219
+#: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1222
 msgid "Source stream is already closed"
 msgstr "Source stream is already closed"
 
@@ -2299,7 +2307,7 @@ msgstr "Error resolving '%s': %s"
 #: ../gio/gresource.c:304 ../gio/gresource.c:555 ../gio/gresource.c:572
 #: ../gio/gresource.c:693 ../gio/gresource.c:762 ../gio/gresource.c:823
 #: ../gio/gresource.c:903 ../gio/gresourcefile.c:453 ../gio/gresourcefile.c:576
-#: ../gio/gresourcefile.c:706
+#: ../gio/gresourcefile.c:713
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "The resource at '%s' does not exist"
@@ -2309,12 +2317,12 @@ msgstr "The resource at '%s' does not exist"
 msgid "The resource at '%s' failed to decompress"
 msgstr "The resource at '%s' failed to decompress"
 
-#: ../gio/gresourcefile.c:702
+#: ../gio/gresourcefile.c:709
 #, c-format
 msgid "The resource at '%s' is not a directory"
 msgstr "The resource at '%s' is not a directory"
 
-#: ../gio/gresourcefile.c:910
+#: ../gio/gresourcefile.c:917
 msgid "Input stream doesn't implement seek"
 msgstr "Input stream doesn't implement seek"
 
@@ -2441,7 +2449,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  PATH      A resource path\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:824
+#: ../gio/gsettings-tool.c:830
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "No such schema '%s'\n"
@@ -2651,17 +2659,22 @@ msgstr "  KEY       The key within the schema\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     The value to set\n"
 
-#: ../gio/gsettings-tool.c:712
+#: ../gio/gsettings-tool.c:711
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Could not load schemas from %s: %s\n"
 
-#: ../gio/gsettings-tool.c:782
+#: ../gio/gsettings-tool.c:723
+#, c-format
+msgid "No schemas installed\n"
+msgstr "No schemas installed\n"
+
+#: ../gio/gsettings-tool.c:788
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Empty schema name given\n"
 
-#: ../gio/gsettings-tool.c:837
+#: ../gio/gsettings-tool.c:843
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "No such key '%s'\n"
@@ -3058,6 +3071,7 @@ msgid "Error reading from file descriptor: %s"
 msgstr "Error reading from file descriptor: %s"
 
 #: ../gio/gunixinputstream.c:423 ../gio/gunixoutputstream.c:409
+#: ../gio/gwin32inputstream.c:217 ../gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Error closing file descriptor: %s"
@@ -3086,17 +3100,17 @@ msgstr "volume doesn't implement eject"
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "volume doesn't implement eject or eject_with_operation"
 
-#: ../gio/gwin32inputstream.c:343
+#: ../gio/gwin32inputstream.c:185
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "Error reading from file: %s"
 
-#: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:374
+#: ../gio/gwin32inputstream.c:232 ../gio/gwin32outputstream.c:219
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "Error closing file: %s"
 
-#: ../gio/gwin32outputstream.c:330
+#: ../gio/gwin32outputstream.c:172
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "Error writing to file: %s"
@@ -3213,8 +3227,8 @@ msgstr "No application with name '%s' registered a bookmark for '%s'"
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Failed to expand exec line '%s' with URI '%s'"
 
-#: ../glib/gconvert.c:477 ../glib/gutf8.c:848 ../glib/gutf8.c:1059
-#: ../glib/gutf8.c:1196 ../glib/gutf8.c:1300
+#: ../glib/gconvert.c:477 ../glib/gutf8.c:849 ../glib/gutf8.c:1061
+#: ../glib/gutf8.c:1198 ../glib/gutf8.c:1302
 msgid "Partial character sequence at end of input"
 msgstr "Partial character sequence at end of input"
 
@@ -3223,37 +3237,37 @@ msgstr "Partial character sequence at end of input"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Cannot convert fallback '%s' to codeset '%s'"
 
-#: ../glib/gconvert.c:1566
+#: ../glib/gconvert.c:1567
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "The URI '%s' is not an absolute URI using the \"file\" scheme"
 
-#: ../glib/gconvert.c:1576
+#: ../glib/gconvert.c:1577
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "The local file URI '%s' may not include a '#'"
 
-#: ../glib/gconvert.c:1593
+#: ../glib/gconvert.c:1594
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "The URI '%s' is invalid"
 
-#: ../glib/gconvert.c:1605
+#: ../glib/gconvert.c:1606
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "The hostname of the URI '%s' is invalid"
 
-#: ../glib/gconvert.c:1621
+#: ../glib/gconvert.c:1622
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "The URI '%s' contains invalidly escaped characters"
 
-#: ../glib/gconvert.c:1716
+#: ../glib/gconvert.c:1717
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "The pathname '%s' is not an absolute path"
 
-#: ../glib/gconvert.c:1726
+#: ../glib/gconvert.c:1727
 msgid "Invalid hostname"
 msgstr "Invalid hostname"
 
@@ -4488,88 +4502,88 @@ msgstr ""
 msgid "Failed to allocate memory"
 msgstr "Failed to allocate memory"
 
-#: ../glib/gutf8.c:927
+#: ../glib/gutf8.c:928
 msgid "Character out of range for UTF-8"
 msgstr "Character out of range for UTF-8"
 
-#: ../glib/gutf8.c:1027 ../glib/gutf8.c:1036 ../glib/gutf8.c:1166
-#: ../glib/gutf8.c:1175 ../glib/gutf8.c:1314 ../glib/gutf8.c:1411
+#: ../glib/gutf8.c:1029 ../glib/gutf8.c:1038 ../glib/gutf8.c:1168
+#: ../glib/gutf8.c:1177 ../glib/gutf8.c:1316 ../glib/gutf8.c:1413
 msgid "Invalid sequence in conversion input"
 msgstr "Invalid sequence in conversion input"
 
-#: ../glib/gutf8.c:1325 ../glib/gutf8.c:1422
+#: ../glib/gutf8.c:1327 ../glib/gutf8.c:1424
 msgid "Character out of range for UTF-16"
 msgstr "Character out of range for UTF-16"
 
-#: ../glib/gutils.c:2118 ../glib/gutils.c:2145 ../glib/gutils.c:2251
+#: ../glib/gutils.c:2133 ../glib/gutils.c:2160 ../glib/gutils.c:2266
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "בית אחד"
 msgstr[1] "%u בתים"
 
-#: ../glib/gutils.c:2124
+#: ../glib/gutils.c:2139
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2126
+#: ../glib/gutils.c:2141
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2129
+#: ../glib/gutils.c:2144
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2132
+#: ../glib/gutils.c:2147
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2135
+#: ../glib/gutils.c:2150
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2138
+#: ../glib/gutils.c:2153
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2151
+#: ../glib/gutils.c:2166
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f ק״ב"
 
-#: ../glib/gutils.c:2154 ../glib/gutils.c:2269
+#: ../glib/gutils.c:2169 ../glib/gutils.c:2284
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f מ״ב"
 
-#: ../glib/gutils.c:2157 ../glib/gutils.c:2274
+#: ../glib/gutils.c:2172 ../glib/gutils.c:2289
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ג״ב"
 
-#: ../glib/gutils.c:2159 ../glib/gutils.c:2279
+#: ../glib/gutils.c:2174 ../glib/gutils.c:2294
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ט״ב"
 
-#: ../glib/gutils.c:2162 ../glib/gutils.c:2284
+#: ../glib/gutils.c:2177 ../glib/gutils.c:2299
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f פ״ב"
 
-#: ../glib/gutils.c:2165 ../glib/gutils.c:2289
+#: ../glib/gutils.c:2180 ../glib/gutils.c:2304
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f א״ב"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2202
+#: ../glib/gutils.c:2217
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4581,7 +4595,7 @@ msgstr[1] "%s בתים"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2264
+#: ../glib/gutils.c:2279
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f ק״ב"
