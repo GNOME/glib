@@ -343,7 +343,7 @@ g_action_group_default_init (GActionGroupInterface *iface)
  * it is no longer required.
  *
  * Returns: (transfer full): a %NULL-terminated array of the names of the
- * actions in the groupb
+ * actions in the group
  *
  * Since: 2.28
  **/
