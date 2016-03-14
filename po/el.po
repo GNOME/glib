@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-11-23 07:35+0000\n"
-"PO-Revision-Date: 2015-11-23 16:55+0200\n"
+"POT-Creation-Date: 2016-03-11 07:38+0000\n"
+"PO-Revision-Date: 2016-03-12 11:28+0200\n"
 "Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
 "Language-Team: www.gnome.gr\n"
 "Language: el\n"
@@ -24,30 +24,34 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Project-Style: gnome\n"
 
-#: ../gio/gapplication.c:531
+#: ../gio/gapplication.c:493
+msgid "GApplication options"
+msgstr "Επιλογές GApplication"
+
+#: ../gio/gapplication.c:493
+msgid "Show GApplication options"
+msgstr "Εμφάνιση επιλογών GApplication"
+
+#: ../gio/gapplication.c:538
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Εισαγωγή τρόπου λειτουργίας της εφαρμογής GApplication (χρήση από αρχεία "
 "υπηρεσίας D-Bus)"
 
-#: ../gio/gapplication.c:536
-msgid "GApplication options"
-msgstr "Επιλογές GApplication"
-
-#: ../gio/gapplication.c:536
-msgid "Show GApplication options"
-msgstr "Εμφάνιση επιλογών GApplication"
+#: ../gio/gapplication.c:550
+msgid "Override the application's ID"
+msgstr "Αντικατάσταση αναγνωριστικού της εφαρμογής"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
-#: ../gio/gresource-tool.c:485 ../gio/gsettings-tool.c:512
+#: ../gio/gresource-tool.c:488 ../gio/gsettings-tool.c:512
 msgid "Print help"
 msgstr "Εμφάνιση βοήθειας"
 
-#: ../gio/gapplication-tool.c:47 ../gio/gresource-tool.c:486
-#: ../gio/gresource-tool.c:554
+#: ../gio/gapplication-tool.c:47 ../gio/gresource-tool.c:489
+#: ../gio/gresource-tool.c:557
 msgid "[COMMAND]"
 msgstr "[ΕΝΤΟΛΗ]"
 
@@ -66,8 +70,8 @@ msgstr "Κατάλογος εφαρμογών"
 #: ../gio/gapplication-tool.c:53
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
 msgstr ""
-"Καταλογοποιεί τις εγκατεστημένες ενεργοποιήσιμες εφαρμογές D-Bus (από .desktop "
-"files)"
+"Καταλογοποιεί τις εγκατεστημένες ενεργοποιήσιμες εφαρμογές D-Bus (από ."
+"desktop files)"
 
 #: ../gio/gapplication-tool.c:55
 msgid "Launch an application"
@@ -119,8 +123,8 @@ msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Το αναγνωριστικό εφαρμογής σε μορφή D-Bus (πχ: org.example.viewer)"
 
 #: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:589
-#: ../gio/glib-compile-resources.c:620 ../gio/gresource-tool.c:492
-#: ../gio/gresource-tool.c:558
+#: ../gio/glib-compile-resources.c:620 ../gio/gresource-tool.c:495
+#: ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "ΑΡΧΕΙΟ"
 
@@ -144,7 +148,7 @@ msgstr "ΠΑΡΑΜΕΤΡΟΣ"
 msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Προαιρετική παράμετρος στην κλήση ενέργειας, στη μορφή GVariant"
 
-#: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:523
+#: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:526
 #: ../gio/gsettings-tool.c:598
 #, c-format
 msgid ""
@@ -158,7 +162,7 @@ msgstr ""
 msgid "Usage:\n"
 msgstr "Χρήση:\n"
 
-#: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:548
+#: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:551
 #: ../gio/gsettings-tool.c:632
 msgid "Arguments:\n"
 msgstr "Ορίσματα:\n"
@@ -246,7 +250,8 @@ msgstr "οι ενέργειες δέχονται το πολύ μία παράμ
 #: ../gio/gapplication-tool.c:411
 #, c-format
 msgid "list-actions command takes only the application id"
-msgstr "η εντολή ενεργειών καταλόγου παίρνει μόνο το αναγνωριστικό της εφαρμογής"
+msgstr ""
+"η εντολή ενεργειών καταλόγου παίρνει μόνο το αναγνωριστικό της εφαρμογής"
 
 #: ../gio/gapplication-tool.c:421
 #, c-format
@@ -263,10 +268,10 @@ msgstr ""
 "\n"
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
-#: ../gio/ginputstream.c:176 ../gio/ginputstream.c:376 ../gio/ginputstream.c:614
-#: ../gio/ginputstream.c:1013 ../gio/goutputstream.c:200
-#: ../gio/goutputstream.c:831 ../gio/gpollableinputstream.c:205
-#: ../gio/gpollableoutputstream.c:206
+#: ../gio/ginputstream.c:179 ../gio/ginputstream.c:379
+#: ../gio/ginputstream.c:617 ../gio/ginputstream.c:1016
+#: ../gio/goutputstream.c:203 ../gio/goutputstream.c:834
+#: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Η τιμή που διαβιβάστηκε στο %s είναι υπερβολικά μεγάλη"
@@ -280,8 +285,8 @@ msgstr "Δεν υποστηρίζεται η αναζήτηση στη βασι�
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "Αδυναμία περικοπής του GMemoryInputStream"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1202
-#: ../gio/giostream.c:278 ../gio/goutputstream.c:1655
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1205
+#: ../gio/giostream.c:300 ../gio/goutputstream.c:1658
 msgid "Stream is already closed"
 msgstr "Η ροή έχει ήδη κλείσει"
 
@@ -290,7 +295,7 @@ msgid "Truncate not supported on base stream"
 msgstr "Δεν υποστηρίζεται η περικοπή στη βασική ροή"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1847
-#: ../gio/gdbusprivate.c:1375 ../gio/glocalfile.c:2216
+#: ../gio/gdbusprivate.c:1375 ../gio/glocalfile.c:2220
 #: ../gio/gsimpleasyncresult.c:870 ../gio/gsimpleasyncresult.c:896
 #, c-format
 msgid "Operation was cancelled"
@@ -310,8 +315,8 @@ msgstr "Μη επαρκής χώρος στην περιοχή προορισμ�
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
 #: ../gio/gdatainputstream.c:1256 ../glib/gconvert.c:438 ../glib/gconvert.c:845
-#: ../glib/giochannel.c:1556 ../glib/giochannel.c:1598 ../glib/giochannel.c:2442
-#: ../glib/gutf8.c:852 ../glib/gutf8.c:1304
+#: ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
+#: ../glib/giochannel.c:2442 ../glib/gutf8.c:853 ../glib/gutf8.c:1306
 msgid "Invalid byte sequence in conversion input"
 msgstr "Άκυρη σειρά byte στην είσοδο μετατροπής"
 
@@ -322,11 +327,12 @@ msgstr "Άκυρη σειρά byte στην είσοδο μετατροπής"
 msgid "Error during conversion: %s"
 msgstr "Σφάλμα κατά τη μετατροπή: %s"
 
-#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:1000
+#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:1078
 msgid "Cancellable initialization not supported"
 msgstr "Δεν υποστηρίζεται η ακυρώσιμη αρχικοποίηση"
 
-#: ../gio/gcharsetconverter.c:454 ../glib/gconvert.c:321 ../glib/giochannel.c:1384
+#: ../gio/gcharsetconverter.c:454 ../glib/gconvert.c:321
+#: ../glib/giochannel.c:1384
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Η μετατροπή από την ομάδα χαρακτήρων '%s' σε '%s' δεν υποστηρίζεται"
@@ -373,7 +379,8 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr "Αναπάντεχο πρόωρο τέλος ροής"
 
-#: ../gio/gdbusaddress.c:153 ../gio/gdbusaddress.c:241 ../gio/gdbusaddress.c:322
+#: ../gio/gdbusaddress.c:153 ../gio/gdbusaddress.c:241
+#: ../gio/gdbusaddress.c:322
 #, c-format
 msgid "Unsupported key '%s' in address entry '%s'"
 msgstr "Ανυποστήρικτο κλειδί '%s' στην εισαγωγή διεύθυνσης'%s'"
@@ -390,7 +397,8 @@ msgstr ""
 #, c-format
 msgid "Meaningless key/value pair combination in address entry '%s'"
 msgstr ""
-"Συνδυασμός χωρίς νόημα ζευγαριού κλειδιού/τιμής στην εισαγόμενη διεύθυνση '%s'"
+"Συνδυασμός χωρίς νόημα ζευγαριού κλειδιού/τιμής στην εισαγόμενη διεύθυνση "
+"'%s'"
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, c-format
@@ -410,7 +418,8 @@ msgstr "Το στοιχείο διευθύνσεως '%s' δεν περιέχε�
 #: ../gio/gdbusaddress.c:478
 #, c-format
 msgid ""
-"Key/Value pair %d, '%s', in address element '%s' does not contain an equal sign"
+"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
+"sign"
 msgstr ""
 "Το δίδυμο κλειδί/τιμή %d, '%s', στο στοιχείο διεύθυνσης'%s' δεν περιέχει τον "
 "τελεστή ίσον"
@@ -421,8 +430,8 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, '%s', in address element "
 "'%s'"
 msgstr ""
-"Σφάλμα στη μη διαφυγή του κλειδιού ή της τιμής στο δίδυμο κλειδί/τιμή %d, '%s', "
-"στο στοιχείο διεύθυνσης '%s'"
+"Σφάλμα στη μη διαφυγή του κλειδιού ή της τιμής στο δίδυμο κλειδί/τιμή %d, "
+"'%s', στο στοιχείο διεύθυνσης '%s'"
 
 #: ../gio/gdbusaddress.c:570
 #, c-format
@@ -480,8 +489,8 @@ msgstr "Σφάλμα ανάγνωσης από το παρόν αρχείο '%s'
 #, c-format
 msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
 msgstr ""
-"Σφάλμα ανάγνωσης από το παρόν αρχείο '%s', αναμενόμενες 16 bytes, παραλήφθηκαν "
-"%d"
+"Σφάλμα ανάγνωσης από το παρόν αρχείο '%s', αναμενόμενες 16 bytes, "
+"παραλήφθηκαν %d"
 
 #: ../gio/gdbusaddress.c:744
 #, c-format
@@ -510,30 +519,31 @@ msgstr "Σφάλμα δημιουργίας στη γραμμή εντολών '
 #: ../gio/gdbusaddress.c:1329
 #, c-format
 msgid "(Type any character to close this window)\n"
-msgstr "(Πληκτρολογήστε οποιοδήποτε χαρακτήρα για να κλείσετε αυτό το παράθυρο)\n"
+msgstr ""
+"(Πληκτρολογήστε οποιοδήποτε χαρακτήρα για να κλείσετε αυτό το παράθυρο)\n"
 
-#: ../gio/gdbusaddress.c:1460
+#: ../gio/gdbusaddress.c:1481
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Η σύνοδος dbus δεν εκτελείται και η αυτόματη εκκίνηση απέτυχε"
 
-#: ../gio/gdbusaddress.c:1471
+#: ../gio/gdbusaddress.c:1492
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
-"Αδυναμία καθορισμού της διεύθυνσης διαύλου συνόδου (μη υλοποιημένος σε αυτό το "
-"λειτουργικό)"
+"Αδυναμία καθορισμού της διεύθυνσης διαύλου συνόδου (μη υλοποιημένος σε αυτό "
+"το λειτουργικό)"
 
-#: ../gio/gdbusaddress.c:1604 ../gio/gdbusconnection.c:7128
+#: ../gio/gdbusaddress.c:1627 ../gio/gdbusconnection.c:7128
 #, c-format
 msgid ""
-"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - "
-"unknown value '%s'"
+"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
+"- unknown value '%s'"
 msgstr ""
 "Αδυναμία καθορισμού της διεύθυνση διαύλου από την μεταβλητή περιβάλλοντος "
 "DBUS_STARTER_BUS_TYPE - άγνωστη τιμή '%s'"
 
-#: ../gio/gdbusaddress.c:1613 ../gio/gdbusconnection.c:7137
+#: ../gio/gdbusaddress.c:1636 ../gio/gdbusconnection.c:7137
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -541,7 +551,7 @@ msgstr ""
 "Αδυναμία καθορισμού της διεύθυνσης διαύλου επειδή η μεταβλητή περιβάλλοντος "
 "DBUS_STARTER_BUS_TYPE δεν είναι ορισθεί"
 
-#: ../gio/gdbusaddress.c:1623
+#: ../gio/gdbusaddress.c:1646
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Άγνωστος τύπος διαύλου %d"
@@ -577,7 +587,8 @@ msgstr "Σφάλμα λήψης πληροφορίας του καταλόγου
 
 #: ../gio/gdbusauthmechanismsha1.c:273
 #, c-format
-msgid "Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
+msgid ""
+"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Δικαιώματα στον κατάλογο '%s' είναι κακοδιατυπωμένα. Αναμενόμενη κατάσταση "
 "0700, ελήφθη 0%o"
@@ -664,13 +675,15 @@ msgid "Timeout was reached"
 msgstr "Έφτασε ο χρόνος λήξης"
 
 #: ../gio/gdbusconnection.c:2495
-msgid "Unsupported flags encountered when constructing a client-side connection"
+msgid ""
+"Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Βρέθηκαν ανυποστήρικτες σημαίες κατά την κατασκευή μίας client-side σύνδεσης"
 
 #: ../gio/gdbusconnection.c:4105 ../gio/gdbusconnection.c:4452
 #, c-format
-msgid "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
+msgid ""
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Καμία τέτοια διεπαφή 'org.freedesktop.DBus.Properties' στο αντικείμενο στη "
 "διαδρομή %s"
@@ -798,17 +811,18 @@ msgstr[1] "Απαίτηση για ανάγνωση %lu bytes αλλά ελήφ�
 #: ../gio/gdbusmessage.c:1369
 #, c-format
 msgid "Expected NUL byte after the string '%s' but found byte %d"
-msgstr "Αναμενόμενo byte NUL μετά από τη συμβολοσειρά '%s' αλλά βρέθηκε byte %d"
+msgstr ""
+"Αναμενόμενo byte NUL μετά από τη συμβολοσειρά '%s' αλλά βρέθηκε byte %d"
 
 #: ../gio/gdbusmessage.c:1388
 #, c-format
 msgid ""
-"Expected valid UTF-8 string but found invalid bytes at byte offset %d (length "
-"of string is %d). The valid UTF-8 string up until that point was '%s'"
+"Expected valid UTF-8 string but found invalid bytes at byte offset %d "
+"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
 msgstr ""
-"Αναμενόταν έγκυρh συμβολοσειρά UTF-8 αλλά βρέθηκαν άκυρα bytes στη μετατόπιση "
-"byte %d (μήκος thw συμβολοσειράς %d). Η έγκυρη συμβολοσειρά UTF-8 μέχρι εκείνο "
-"το σημείο ήταν '%s'"
+"Αναμενόταν έγκυρh συμβολοσειρά UTF-8 αλλά βρέθηκαν άκυρα bytes στη "
+"μετατόπιση byte %d (μήκος thw συμβολοσειράς %d). Η έγκυρη συμβολοσειρά UTF-8 "
+"μέχρι εκείνο το σημείο ήταν '%s'"
 
 #: ../gio/gdbusmessage.c:1587
 #, c-format
@@ -837,13 +851,14 @@ msgid ""
 "Encountered array of type 'a%c', expected to have a length a multiple of %u "
 "bytes, but found to be %u bytes in length"
 msgstr ""
-"Βρέθηκε πίνακας τύπου 'a%c', αναμενόταν να έχει μήκος πολλαπλάσιο από %u bytes, "
-"αλλά βρέθηκε να έχει μήκος %u bytes"
+"Βρέθηκε πίνακας τύπου 'a%c', αναμενόταν να έχει μήκος πολλαπλάσιο από %u "
+"bytes, αλλά βρέθηκε να έχει μήκος %u bytes"
 
 #: ../gio/gdbusmessage.c:1843
 #, c-format
 msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
-msgstr "Η αναλυμένη τιμή '%s' για την παραλλαγή δεν είναι αποδεκτή υπογραφή D-Bus"
+msgstr ""
+"Η αναλυμένη τιμή '%s' για την παραλλαγή δεν είναι αποδεκτή υπογραφή D-Bus"
 
 #: ../gio/gdbusmessage.c:1867
 #, c-format
@@ -856,8 +871,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2051
 #, c-format
 msgid ""
-"Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value 0x"
-"%02x"
+"Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
+"0x%02x"
 msgstr ""
 "Άκυρη τιμή διάταξης ψηφιολέξεων. Αναμενόμενη 0x6c ('l') ή 0x42 ('B') αλλά "
 "βρέθηκε η τιμή 0x%02x"
@@ -871,8 +886,8 @@ msgstr "Άκυρη κύρια έκδοση πρωτοκόλλου. Αναμεν�
 #, c-format
 msgid "Signature header with signature '%s' found but message body is empty"
 msgstr ""
-"Η κεφαλίδα υπογραφών με υπογραφή '%s' βρέθηκε αλλά το σώμα του μηνύματος είναι "
-"κενό"
+"Η κεφαλίδα υπογραφών με υπογραφή '%s' βρέθηκε αλλά το σώμα του μηνύματος "
+"είναι κενό"
 
 #: ../gio/gdbusmessage.c:2134
 #, c-format
@@ -884,11 +899,11 @@ msgstr "Η αναλυμένη τιμή '%s' δεν είναι αποδεκτή �
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] ""
-"Δεν υπάρχει κεφαλίδα υπογραφών στο μήνυμα αλλά το σώμα του μηνυμάτων είναι %u "
-"byte"
+"Δεν υπάρχει κεφαλίδα υπογραφών στο μήνυμα αλλά το σώμα του μηνυμάτων είναι "
+"%u byte"
 msgstr[1] ""
-"Δεν υπάρχει κεφαλίδα υπογραφών στο μήνυμα αλλά το σώμα του μηνυμάτων είναι %u "
-"bytes"
+"Δεν υπάρχει κεφαλίδα υπογραφών στο μήνυμα αλλά το σώμα του μηνυμάτων είναι "
+"%u bytes"
 
 #: ../gio/gdbusmessage.c:2174
 msgid "Cannot deserialize message: "
@@ -896,7 +911,8 @@ msgstr "Αδυναμία αποσειριοποίησης μηνύματος: "
 
 #: ../gio/gdbusmessage.c:2515
 #, c-format
-msgid "Error serializing GVariant with type string '%s' to the D-Bus wire format"
+msgid ""
+"Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
 "Σφάλμα στην σειριακή διάταξη GVariant με τύπο συμβολοσειράς '%s' στην μορφή "
 "δικτυώματος D-Bus"
@@ -923,7 +939,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2714
 #, c-format
 msgid ""
-"Message body has type signature '%s' but signature in the header field is '%s'"
+"Message body has type signature '%s' but signature in the header field is "
+"'%s'"
 msgstr ""
 "Το σώμα του μηνύματος έχει την υπογραφή τύπου '%s' αλλά η υπογραφή στο πεδίο "
 "κεφαλίδας είναι '%s'"
@@ -964,10 +981,10 @@ msgstr "Σφάλμα στην κλήση StartServiceByName για το %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Απροσδόκητη απάντηση %d από την μέθοδο StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2708 ../gio/gdbusproxy.c:2842
+#: ../gio/gdbusproxy.c:2709 ../gio/gdbusproxy.c:2843
 msgid ""
-"Cannot invoke method; proxy is for a well-known name without an owner and proxy "
-"was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
+"Cannot invoke method; proxy is for a well-known name without an owner and "
+"proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
 "Αδυναμία επίκλησης της μεθόδου· ο διαμεσολαβητής είναι για ένα γνωστό όνομα "
 "χωρίς ιδιοκτήτη και ο διαμεσολαβητής δημιουργήθηκε με την σημαία "
@@ -979,7 +996,8 @@ msgstr "Δεν υποστηρίζονται αφηρημένα ονόματα χ
 
 #: ../gio/gdbusserver.c:795
 msgid "Cannot specify nonce file when creating a server"
-msgstr "Αδυναμία διευκρίνισης του τρέχοντος αρχείου κατά τη δημιουργία διακομιστή"
+msgstr ""
+"Αδυναμία διευκρίνισης του τρέχοντος αρχείου κατά τη δημιουργία διακομιστή"
 
 #: ../gio/gdbusserver.c:873
 #, c-format
@@ -1068,9 +1086,11 @@ msgstr "Διευκρινίστηκαν πολλαπλά σημεία τέλου�
 
 #: ../gio/gdbus-tool.c:471
 #, c-format
-msgid "Warning: According to introspection data, interface '%s' does not exist\n"
+msgid ""
+"Warning: According to introspection data, interface '%s' does not exist\n"
 msgstr ""
-"Προειδοποίηση: Σύμφωνα με τα στοιχεία ενδοσκόπησης, η διεπαφή '%s' δεν υπάρχει\n"
+"Προειδοποίηση: Σύμφωνα με τα στοιχεία ενδοσκόπησης, η διεπαφή '%s' δεν "
+"υπάρχει\n"
 
 #: ../gio/gdbus-tool.c:480
 #, c-format
@@ -1078,8 +1098,8 @@ msgid ""
 "Warning: According to introspection data, method '%s' does not exist on "
 "interface '%s'\n"
 msgstr ""
-"Προειδοποίηση: Σύμφωνα με τα στοιχεία ενδοσκόπησης, η μέθοδος '%s' δεν υπάρχει "
-"στη διεπαφή '%s'\n"
+"Προειδοποίηση: Σύμφωνα με τα στοιχεία ενδοσκόπησης, η μέθοδος '%s' δεν "
+"υπάρχει στη διεπαφή '%s'\n"
 
 #: ../gio/gdbus-tool.c:542
 msgid "Optional destination for signal (unique name)"
@@ -1298,10 +1318,14 @@ msgstr "ο οδηγός δεν υποστηρίζει έναρξη"
 msgid "drive doesn't implement stop"
 msgstr "ο οδηγός δεν υποστηρίζει τερματισμό"
 
-#: ../gio/gdummytlsbackend.c:188 ../gio/gdummytlsbackend.c:310
-#: ../gio/gdummytlsbackend.c:400
+#: ../gio/gdummytlsbackend.c:195 ../gio/gdummytlsbackend.c:317
+#: ../gio/gdummytlsbackend.c:509
 msgid "TLS support is not available"
 msgstr "Η υποστήριξη TLS δεν είναι διαθέσιμη"
+
+#: ../gio/gdummytlsbackend.c:419
+msgid "DTLS support is not available"
+msgstr "Η υποστήριξη DTLS δεν είναι διαθέσιμη"
 
 #: ../gio/gemblem.c:323
 #, c-format
@@ -1321,18 +1345,21 @@ msgstr "Αδυναμία χειρισμού της έκδοσης %d της κω
 #: ../gio/gemblemedicon.c:372
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
-msgstr "Κακοδιατυπωμένος αριθμός κουπονιών (%d) στην κωδικοποίηση GEmblemedIcon"
+msgstr ""
+"Κακοδιατυπωμένος αριθμός κουπονιών (%d) στην κωδικοποίηση GEmblemedIcon"
 
 #: ../gio/gemblemedicon.c:395
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Αναμενόταν GEmblem για το GEmblemedIcon"
 
-#: ../gio/gfile.c:969 ../gio/gfile.c:1207 ../gio/gfile.c:1345 ../gio/gfile.c:1583
-#: ../gio/gfile.c:1638 ../gio/gfile.c:1696 ../gio/gfile.c:1780 ../gio/gfile.c:1837
-#: ../gio/gfile.c:1901 ../gio/gfile.c:1956 ../gio/gfile.c:3604 ../gio/gfile.c:3659
-#: ../gio/gfile.c:3894 ../gio/gfile.c:3936 ../gio/gfile.c:4404 ../gio/gfile.c:4815
-#: ../gio/gfile.c:4900 ../gio/gfile.c:4990 ../gio/gfile.c:5087 ../gio/gfile.c:5174
-#: ../gio/gfile.c:5275 ../gio/gfile.c:7796 ../gio/gfile.c:7886 ../gio/gfile.c:7970
+#: ../gio/gfile.c:969 ../gio/gfile.c:1207 ../gio/gfile.c:1345
+#: ../gio/gfile.c:1583 ../gio/gfile.c:1638 ../gio/gfile.c:1696
+#: ../gio/gfile.c:1780 ../gio/gfile.c:1837 ../gio/gfile.c:1901
+#: ../gio/gfile.c:1956 ../gio/gfile.c:3604 ../gio/gfile.c:3659
+#: ../gio/gfile.c:3894 ../gio/gfile.c:3936 ../gio/gfile.c:4404
+#: ../gio/gfile.c:4815 ../gio/gfile.c:4900 ../gio/gfile.c:4990
+#: ../gio/gfile.c:5087 ../gio/gfile.c:5174 ../gio/gfile.c:5275
+#: ../gio/gfile.c:7796 ../gio/gfile.c:7886 ../gio/gfile.c:7970
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Ανυποστήρικτη λειτουργία"
@@ -1352,7 +1379,7 @@ msgstr "Ανυποστήρικτη λειτουργία"
 msgid "Containing mount does not exist"
 msgstr "Δεν υπάρχει η περιέχουσα προσάρτηση"
 
-#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2372
+#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2376
 msgid "Can't copy over directory"
 msgstr "Αδυναμία αντιγραφής σε κατάλογο"
 
@@ -1360,7 +1387,7 @@ msgstr "Αδυναμία αντιγραφής σε κατάλογο"
 msgid "Can't copy directory over directory"
 msgstr "Αδυναμία αντιγραφής καταλόγου σε κατάλογο"
 
-#: ../gio/gfile.c:2583 ../gio/glocalfile.c:2381
+#: ../gio/gfile.c:2583 ../gio/glocalfile.c:2385
 msgid "Target file exists"
 msgstr "Το αρχείο προορισμού υπάρχει"
 
@@ -1384,11 +1411,13 @@ msgstr ""
 
 #: ../gio/gfile.c:3023
 msgid "Copy (reflink/clone) is not supported or invalid"
-msgstr "Η αντιγραφή (συνδέσμου αναφοράς/κλώνου) δεν υποστηρίζεται ή είναι άκυρη"
+msgstr ""
+"Η αντιγραφή (συνδέσμου αναφοράς/κλώνου) δεν υποστηρίζεται ή είναι άκυρη"
 
 #: ../gio/gfile.c:3028
 msgid "Copy (reflink/clone) is not supported or didn't work"
-msgstr "Η αντιγραφή (συνδέσμου αναφοράς/κλώνου) δεν υποστηρίζεται ή δεν δούλεψε"
+msgstr ""
+"Η αντιγραφή (συνδέσμου αναφοράς/κλώνου) δεν υποστηρίζεται ή δεν δούλεψε"
 
 #: ../gio/gfile.c:3091
 msgid "Can't copy special file"
@@ -1534,16 +1563,16 @@ msgstr "Η διεύθυνση έχει σύνολα δυαδικών πέρα α
 msgid "Could not parse '%s' as IP address mask"
 msgstr "Αδυναμία ανάλυσης του '%s' ως μάσκα διεύθυνσης IP"
 
-#: ../gio/ginetsocketaddress.c:196 ../gio/ginetsocketaddress.c:213
-#: ../gio/gnativesocketaddress.c:106 ../gio/gunixsocketaddress.c:209
+#: ../gio/ginetsocketaddress.c:203 ../gio/ginetsocketaddress.c:220
+#: ../gio/gnativesocketaddress.c:106 ../gio/gunixsocketaddress.c:216
 msgid "Not enough space for socket address"
 msgstr "Ανεπαρκής χώρος για την διεύθυνση υποδοχέα"
 
-#: ../gio/ginetsocketaddress.c:228
+#: ../gio/ginetsocketaddress.c:235
 msgid "Unsupported socket address"
 msgstr "Ανυποστήρικτη διεύθυνση υποδοχέα"
 
-#: ../gio/ginputstream.c:185
+#: ../gio/ginputstream.c:188
 msgid "Input stream doesn't implement read"
 msgstr "Η ροή εισόδου δεν υποστηρίζει την ανάγνωση"
 
@@ -1553,7 +1582,8 @@ msgstr "Η ροή εισόδου δεν υποστηρίζει την ανάγν
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1212 ../gio/giostream.c:288 ../gio/goutputstream.c:1665
+#: ../gio/ginputstream.c:1215 ../gio/giostream.c:310
+#: ../gio/goutputstream.c:1668
 msgid "Stream has outstanding operation"
 msgstr "Εκκρεμεί μία ενέργεια για τη ροή"
 
@@ -1615,7 +1645,8 @@ msgstr "όνομα του αρχείου εξόδου"
 
 #: ../gio/glib-compile-resources.c:590
 msgid ""
-"The directories where files are to be read from (default to current directory)"
+"The directories where files are to be read from (default to current "
+"directory)"
 msgstr ""
 "Οι κατάλογοι από όπου πρόκειται να διαβαστούν αρχεία (προεπιλογή ο τρέχον "
 "κατάλογος)"
@@ -1638,7 +1669,8 @@ msgstr "Δημιουργία κεφαλίδας πηγής"
 
 #: ../gio/glib-compile-resources.c:593
 msgid "Generate sourcecode used to link in the resource file into your code"
-msgstr "Δημιουργία πηγαίου κώδικα για σύνδεση στο πηγαίο αρχείο στον κωδικά σας"
+msgstr ""
+"Δημιουργία πηγαίου κώδικα για σύνδεση στο πηγαίο αρχείο στον κωδικά σας"
 
 #: ../gio/glib-compile-resources.c:594
 msgid "Generate dependency list"
@@ -1684,8 +1716,8 @@ msgstr "άκυρο όνομα '%s': τα ονόματα πρέπει να αρχ
 #: ../gio/glib-compile-schemas.c:806
 #, c-format
 msgid ""
-"invalid name '%s': invalid character '%c'; only lowercase letters, numbers and "
-"hyphen ('-') are permitted."
+"invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
+"and hyphen ('-') are permitted."
 msgstr ""
 "άκυρο όνομα '%s': άκυρος χαρακτήρας '%c'· μόνο πεζά γράμματα, αριθμοί και "
 "παύλες ('-') επιτρέπονται."
@@ -1723,8 +1755,8 @@ msgstr "<key name='%s'> έχει ήδη οριστεί"
 #: ../gio/glib-compile-schemas.c:956
 #, c-format
 msgid ""
-"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> to "
-"modify value"
+"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
+"to modify value"
 msgstr ""
 "<key name='%s'> σκιές <key name='%s'> στο <schema id='%s'>· χρησιμοποιεί "
 "<override> για τροποποίηση της τιμής"
@@ -1732,11 +1764,11 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:967
 #, c-format
 msgid ""
-"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute to "
-"<key>"
+"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
+"to <key>"
 msgstr ""
-"ακριβώς ένα από 'type', 'enum' ή 'flags' πρέπει να διευκρινιστείτε ως ιδιότητα "
-"στο <key>"
+"ακριβώς ένα από 'type', 'enum' ή 'flags' πρέπει να διευκρινιστείτε ως "
+"ιδιότητα στο <key>"
 
 #: ../gio/glib-compile-schemas.c:986
 #, c-format
@@ -1775,7 +1807,8 @@ msgstr "<schema id='%s'> επεκτείνει ένα μη υπάρχον ακό�
 #: ../gio/glib-compile-schemas.c:1153
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr "<schema id='%s'> είναι κατάλογος ενός μη υπάρχοντος ακόμα σχήματος '%s'"
+msgstr ""
+"<schema id='%s'> είναι κατάλογος ενός μη υπάρχοντος ακόμα σχήματος '%s'"
 
 #: ../gio/glib-compile-schemas.c:1161
 #, c-format
@@ -1789,7 +1822,8 @@ msgstr "Αδυναμία επέκτασης σχήματος με διαδρομ
 
 #: ../gio/glib-compile-schemas.c:1181
 #, c-format
-msgid "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
+msgid ""
+"<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
 "Το <schema id='%s'> είναι λίστα, που επεκτείνει το <schema id='%s'> που δεν "
 "είναι λίστα"
@@ -1800,8 +1834,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> επεκτείνει το <schema id='%s' list-of='%s'> αλλά "
-"το '%s' δεν επεκτείνει το '%s'"
+"<schema id='%s' list-of='%s'> επεκτείνει το <schema id='%s' list-of='%s'> "
+"αλλά το '%s' δεν επεκτείνει το '%s'"
 
 #: ../gio/glib-compile-schemas.c:1208
 #, c-format
@@ -1881,8 +1915,8 @@ msgstr "Παράβλεψη αντικατάστασης για αυτό το κ�
 #: ../gio/glib-compile-schemas.c:1955
 #, c-format
 msgid ""
-"override for key '%s' in schema '%s' in override file '%s' is outside the range "
-"given in the schema"
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
+"range given in the schema"
 msgstr ""
 "η αντικατάσταση για το κλειδί '%s' στο σχήμα '%s' στο αρχείο αντικατάστασης "
 "'%s' είναι εκτός της εμβέλειας που έχει δοθεί στο σχήμα"
@@ -1890,11 +1924,11 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1983
 #, c-format
 msgid ""
-"override for key '%s' in schema '%s' in override file '%s' is not in the list "
-"of valid choices"
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
+"list of valid choices"
 msgstr ""
-"η αντικατάσταση για το κλειδί'%s' στο σχήμα '%s' στο αρχείο αντικατάστασης '%s' "
-"δεν είναι στον κατάλογο έγκυρων επιλογών"
+"η αντικατάσταση για το κλειδί'%s' στο σχήμα '%s' στο αρχείο αντικατάστασης "
+"'%s' δεν είναι στον κατάλογο έγκυρων επιλογών"
 
 #: ../gio/glib-compile-schemas.c:2036
 msgid "where to store the gschemas.compiled file"
@@ -1965,8 +1999,8 @@ msgstr "Σφάλμα μετονομασίας αρχείου: %s"
 msgid "Can't rename file, filename already exists"
 msgstr "Αδυναμία μετονομασίας του αρχείου, το όνομα αρχείου υπάρχει ήδη"
 
-#: ../gio/glocalfile.c:1222 ../gio/glocalfile.c:2245 ../gio/glocalfile.c:2274
-#: ../gio/glocalfile.c:2434 ../gio/glocalfileoutputstream.c:549
+#: ../gio/glocalfile.c:1222 ../gio/glocalfile.c:2249 ../gio/glocalfile.c:2278
+#: ../gio/glocalfile.c:2438 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "Άκυρο όνομα αρχείου"
 
@@ -1984,84 +2018,84 @@ msgstr "Σφάλμα ανοίγματος αρχείου: %s"
 msgid "Error removing file: %s"
 msgstr "Σφάλμα αφαίρεσης αρχείου: %s"
 
-#: ../gio/glocalfile.c:1918
+#: ../gio/glocalfile.c:1922
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Σφάλμα μεταφοράς αρχείου στα απορρίμματα: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/glocalfile.c:1941
+#: ../gio/glocalfile.c:1945
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Αποτυχία δημιουργίας καταλόγου απορριμμάτων %s: %s"
 
-#: ../gio/glocalfile.c:1962
+#: ../gio/glocalfile.c:1966
 msgid "Unable to find toplevel directory for trash"
 msgstr "Αδυναμία εύρεσης καταλόγου ανωτάτου επιπέδου για τα απορρίμματα"
 
-#: ../gio/glocalfile.c:2041 ../gio/glocalfile.c:2061
+#: ../gio/glocalfile.c:2045 ../gio/glocalfile.c:2065
 msgid "Unable to find or create trash directory"
 msgstr "Αδύνατη η εύρεση ή δημιουργία του καταλόγου απορριμμάτων"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/glocalfile.c:2095
+#: ../gio/glocalfile.c:2099
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Αποτυχία δημιουργίας αρχείου πληροφοριών απορριμμάτων: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/glocalfile.c:2153 ../gio/glocalfile.c:2158 ../gio/glocalfile.c:2215
-#: ../gio/glocalfile.c:2222
+#: ../gio/glocalfile.c:2157 ../gio/glocalfile.c:2162 ../gio/glocalfile.c:2219
+#: ../gio/glocalfile.c:2226
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Αδύνατη η μεταφορά του αρχείου στα απορρίμματα: %s"
 
-#: ../gio/glocalfile.c:2223 ../glib/gregex.c:281
+#: ../gio/glocalfile.c:2227 ../glib/gregex.c:281
 msgid "internal error"
 msgstr "εσωτερικό σφάλμα"
 
-#: ../gio/glocalfile.c:2249
+#: ../gio/glocalfile.c:2253
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Σφάλμα δημιουργίας καταλόγου: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/glocalfile.c:2278
+#: ../gio/glocalfile.c:2282
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Το σύστημα αρχείων δεν υποστηρίζει συμβολικούς συνδέσμους"
 
 # gconf/gconftool.c:1181
-#: ../gio/glocalfile.c:2282
+#: ../gio/glocalfile.c:2286
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Σφάλμα δημιουργίας συμβολικού συνδέσμου: %s"
 
-#: ../gio/glocalfile.c:2344 ../gio/glocalfile.c:2438
+#: ../gio/glocalfile.c:2348 ../gio/glocalfile.c:2442
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Σφάλμα μετακίνησης αρχείου: %s"
 
-#: ../gio/glocalfile.c:2367
+#: ../gio/glocalfile.c:2371
 msgid "Can't move directory over directory"
 msgstr "Αδυναμία μετακίνησης καταλόγου σε άλλον"
 
-#: ../gio/glocalfile.c:2394 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfile.c:2398 ../gio/glocalfileoutputstream.c:925
 #: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
 #: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
 msgid "Backup file creation failed"
 msgstr "Αποτυχία δημιουργίας αντιγράφου ασφαλείας"
 
-#: ../gio/glocalfile.c:2413
+#: ../gio/glocalfile.c:2417
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Σφάλμα αφαίρεσης του αρχείου προορισμού: %s"
 
-#: ../gio/glocalfile.c:2427
+#: ../gio/glocalfile.c:2431
 msgid "Move between mounts not supported"
 msgstr "Δεν υποστηρίζεται η μετακίνηση μεταξύ προσαρτήσεων"
 
-#: ../gio/glocalfile.c:2619
+#: ../gio/glocalfile.c:2623
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Αδυναμία προσδιορισμού της χρήσης δίσκου %s: %s"
@@ -2083,86 +2117,86 @@ msgstr "Άκυρο εκτεταμένο όνομα γνωρίσματος"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Σφάλμα ορισμού εκτεταμένου γνωρίσματος '%s': %s"
 
-#: ../gio/glocalfileinfo.c:1579
+#: ../gio/glocalfileinfo.c:1575
 msgid " (invalid encoding)"
 msgstr " (άκυρη κωδικοποίηση)"
 
 #
-#: ../gio/glocalfileinfo.c:1770 ../gio/glocalfileoutputstream.c:803
+#: ../gio/glocalfileinfo.c:1766 ../gio/glocalfileoutputstream.c:803
 #, c-format
 msgid "Error when getting information for file '%s': %s"
 msgstr "Σφάλμα λήψης πληροφοριών αρχείου '%s': %s"
 
-#: ../gio/glocalfileinfo.c:2021
+#: ../gio/glocalfileinfo.c:2017
 #, c-format
 msgid "Error when getting information for file descriptor: %s"
 msgstr "Σφάλμα λήψης πληροφοριών για περιγραφέα αρχείου: %s"
 
-#: ../gio/glocalfileinfo.c:2066
+#: ../gio/glocalfileinfo.c:2062
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Άκυρος τύπος γνωρίσματος (αναμένεται uint32)"
 
-#: ../gio/glocalfileinfo.c:2084
+#: ../gio/glocalfileinfo.c:2080
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Άκυρος τύπος γνωρίσματος (αναμένεται uint64)"
 
-#: ../gio/glocalfileinfo.c:2103 ../gio/glocalfileinfo.c:2122
+#: ../gio/glocalfileinfo.c:2099 ../gio/glocalfileinfo.c:2118
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Άκυρος τύπος γνωρίσματος (αναμένεται συμβολοσειρά byte)"
 
 # gconf/gconftool.c:1181
-#: ../gio/glocalfileinfo.c:2157
+#: ../gio/glocalfileinfo.c:2153
 msgid "Cannot set permissions on symlinks"
 msgstr "Αδυναμία ορισμού δικαιωμάτων σε συμβολικούς συνδέσμους"
 
 # gconf/gconftool.c:1181
-#: ../gio/glocalfileinfo.c:2173
+#: ../gio/glocalfileinfo.c:2169
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Σφάλμα ρύθμισης δικαιωμάτων: %s"
 
 # gconf/gconftool.c:1181
-#: ../gio/glocalfileinfo.c:2224
+#: ../gio/glocalfileinfo.c:2220
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Σφάλμα ρύθμισης ιδιοκτήτη: %s"
 
-#: ../gio/glocalfileinfo.c:2247
+#: ../gio/glocalfileinfo.c:2243
 msgid "symlink must be non-NULL"
 msgstr "ο συμβολικός σύνδεσμος πρέπει να είναι μη μηδενικός"
 
-#: ../gio/glocalfileinfo.c:2257 ../gio/glocalfileinfo.c:2276
-#: ../gio/glocalfileinfo.c:2287
+#: ../gio/glocalfileinfo.c:2253 ../gio/glocalfileinfo.c:2272
+#: ../gio/glocalfileinfo.c:2283
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Σφάλμα ορισμού συμβολικού συνδέσμου: %s"
 
-#: ../gio/glocalfileinfo.c:2266
+#: ../gio/glocalfileinfo.c:2262
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Σφάλμα ορισμού συμβολικού συνδέσμου: το αρχείο δεν είναι συμβολικός σύνδεσμος"
 
 # gconf/gconftool.c:1181
-#: ../gio/glocalfileinfo.c:2392
+#: ../gio/glocalfileinfo.c:2388
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Σφάλμα ρύθμισης τροποποίησης ή χρόνου πρόσβασης: %s"
 
-#: ../gio/glocalfileinfo.c:2415
+#: ../gio/glocalfileinfo.c:2411
 msgid "SELinux context must be non-NULL"
 msgstr "Το περιεχόμενο SELinux πρέπει να είναι μη μηδενικό"
 
 # gconf/gconftool.c:1181
-#: ../gio/glocalfileinfo.c:2430
+#: ../gio/glocalfileinfo.c:2426
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Σφάλμα ρύθμισης του περιεχομένου SELinux: %s"
 
-#: ../gio/glocalfileinfo.c:2437
+#: ../gio/glocalfileinfo.c:2433
 msgid "SELinux is not enabled on this system"
 msgstr "Το SELinux δεν έχει ενεργοποιηθεί στο σύστημά σας"
 
-#: ../gio/glocalfileinfo.c:2529
+#: ../gio/glocalfileinfo.c:2525
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Δεν υποστηρίζεται ο ορισμός του γνωρίσματος %s"
@@ -2243,7 +2277,7 @@ msgstr "Το αρχείο τροποποιήθηκε εξωτερικά"
 msgid "Error removing old file: %s"
 msgstr "Σφάλμα αφαίρεσης παλαιού αρχείου: %s"
 
-#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:769
+#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:771
 msgid "Invalid GSeekType supplied"
 msgstr "Δόθηκε άκυρο GSeekType"
 
@@ -2255,27 +2289,27 @@ msgstr "Άκυρη αίτηση αναζήτησης"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Αδυναμία περικοπής του GMemoryInputStream"
 
-#: ../gio/gmemoryoutputstream.c:565
+#: ../gio/gmemoryoutputstream.c:567
 msgid "Memory output stream not resizable"
 msgstr "Η ροή εξόδου μνήμης δεν είναι κλιμακώσιμη"
 
-#: ../gio/gmemoryoutputstream.c:581
+#: ../gio/gmemoryoutputstream.c:583
 msgid "Failed to resize memory output stream"
 msgstr "Αποτυχία κλιμάκωσης της ροής εξόδου μνήμης"
 
-#: ../gio/gmemoryoutputstream.c:671
+#: ../gio/gmemoryoutputstream.c:673
 msgid ""
-"Amount of memory required to process the write is larger than available address "
-"space"
+"Amount of memory required to process the write is larger than available "
+"address space"
 msgstr ""
-"Το ποσό μνήμης που απαιτείται για την επεξεργασία της εγγραφής είναι μεγαλύτερο "
-"από το διαθέσιμο χώρο διευθύνσεων"
+"Το ποσό μνήμης που απαιτείται για την επεξεργασία της εγγραφής είναι "
+"μεγαλύτερο από το διαθέσιμο χώρο διευθύνσεων"
 
-#: ../gio/gmemoryoutputstream.c:779
+#: ../gio/gmemoryoutputstream.c:781
 msgid "Requested seek before the beginning of the stream"
 msgstr "Αίτηση αναζήτησης πριν την έναρξη της ροής"
 
-#: ../gio/gmemoryoutputstream.c:794
+#: ../gio/gmemoryoutputstream.c:796
 msgid "Requested seek beyond the end of the stream"
 msgstr "Αίτηση αναζήτησης πέραν του τέλους της ροής"
 
@@ -2299,7 +2333,8 @@ msgstr "η προσάρτηση δεν υποστηρίζει \"εξαγωγή\"
 #: ../gio/gmount.c:547
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr ""
-"η προσάρτηση δεν υποστηρίζει \"αποπροσάρτηση\" ή την \"unmount_with_operation\""
+"η προσάρτηση δεν υποστηρίζει \"αποπροσάρτηση\" ή την \"unmount_with_operation"
+"\""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2329,7 +2364,7 @@ msgstr "η προσάρτηση δεν υποστηρίζει την πρόβλ�
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "η προσάρτηση δεν υποστηρίζει την πρόβλεψη σύγχρονου τύπου περιεχομένου"
 
-#: ../gio/gnetworkaddress.c:376
+#: ../gio/gnetworkaddress.c:378
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Το όνομα κεντρικού υπολογιστή '%s' περιέχει το '[' αλλά όχι το ']'"
@@ -2361,11 +2396,11 @@ msgstr "Αδυναμία λήψης κατάστασης δικτύου: "
 msgid "NetworkManager version too old"
 msgstr "Πολύ παλιά έκδοση του NetworkManager"
 
-#: ../gio/goutputstream.c:209 ../gio/goutputstream.c:557
+#: ../gio/goutputstream.c:212 ../gio/goutputstream.c:560
 msgid "Output stream doesn't implement write"
 msgstr "Η ροή εξόδου δεν υποστηρίζει την εγγραφή"
 
-#: ../gio/goutputstream.c:518 ../gio/goutputstream.c:1219
+#: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1222
 msgid "Source stream is already closed"
 msgstr "Η ροή πηγής έχει ήδη κλείσει"
 
@@ -2379,7 +2414,7 @@ msgstr "Σφάλμα επίλυσης του '%s': %s"
 #: ../gio/gresource.c:304 ../gio/gresource.c:555 ../gio/gresource.c:572
 #: ../gio/gresource.c:693 ../gio/gresource.c:762 ../gio/gresource.c:823
 #: ../gio/gresource.c:903 ../gio/gresourcefile.c:453 ../gio/gresourcefile.c:576
-#: ../gio/gresourcefile.c:706
+#: ../gio/gresourcefile.c:713
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "Η πηγή στο '%s' δεν υπάρχει"
@@ -2389,20 +2424,20 @@ msgstr "Η πηγή στο '%s' δεν υπάρχει"
 msgid "The resource at '%s' failed to decompress"
 msgstr "Αποτυχία αποσυμπίεσης πηγής στο '%s'"
 
-#: ../gio/gresourcefile.c:702
+#: ../gio/gresourcefile.c:709
 #, c-format
 msgid "The resource at '%s' is not a directory"
 msgstr "Η πηγή στο '%s' δεν είναι κατάλογος"
 
-#: ../gio/gresourcefile.c:910
+#: ../gio/gresourcefile.c:917
 msgid "Input stream doesn't implement seek"
 msgstr "Η ροή εισόδου δεν υποστηρίζει αναζήτηση"
 
-#: ../gio/gresource-tool.c:491
+#: ../gio/gresource-tool.c:494
 msgid "List sections containing resources in an elf FILE"
 msgstr "Οι ενότητες λίστας περιέχουν πηγές σε ΑΡΧΕΙΟ elf"
 
-#: ../gio/gresource-tool.c:497
+#: ../gio/gresource-tool.c:500
 msgid ""
 "List resources\n"
 "If SECTION is given, only list resources in this section\n"
@@ -2412,16 +2447,16 @@ msgstr ""
 "Εάν δίνεται ΕΝΟΤΗΤΑ, μόνο πηγές λίστας σε αυτήν την ενότητα\n"
 "Εάν δίνεται ΔΙΑΔΡΟΜΗ, μόνο λίστα που ταιριάζει στις πηγές"
 
-#: ../gio/gresource-tool.c:500 ../gio/gresource-tool.c:510
+#: ../gio/gresource-tool.c:503 ../gio/gresource-tool.c:513
 msgid "FILE [PATH]"
 msgstr "ΑΡΧΕΙΟ [ΔΙΑΔΡΟΜΗ]"
 
-#: ../gio/gresource-tool.c:501 ../gio/gresource-tool.c:511
-#: ../gio/gresource-tool.c:518
+#: ../gio/gresource-tool.c:504 ../gio/gresource-tool.c:514
+#: ../gio/gresource-tool.c:521
 msgid "SECTION"
 msgstr "ΕΝΟΤΗΤΑ"
 
-#: ../gio/gresource-tool.c:506
+#: ../gio/gresource-tool.c:509
 msgid ""
 "List resources with details\n"
 "If SECTION is given, only list resources in this section\n"
@@ -2433,15 +2468,15 @@ msgstr ""
 "Εάν δίνεται ΔΙΑΔΡΟΜΗ, μόνο λίστα που ταιριάζει στις πηγές\n"
 "Οι λεπτομέρειες περιλαμβάνουν την ενότητα, μέγεθος και συμπίεση"
 
-#: ../gio/gresource-tool.c:516
+#: ../gio/gresource-tool.c:519
 msgid "Extract a resource file to stdout"
 msgstr "Εξαγωγή αρχείου πηγής σε τυπική έξοδο"
 
-#: ../gio/gresource-tool.c:517
+#: ../gio/gresource-tool.c:520
 msgid "FILE PATH"
 msgstr "ΔΙΑΔΡΟΜΗ ΑΡΧΕΙΟΥ"
 
-#: ../gio/gresource-tool.c:531
+#: ../gio/gresource-tool.c:534
 msgid ""
 "Usage:\n"
 "  gresource [--section SECTION] COMMAND [ARGS...]\n"
@@ -2469,7 +2504,7 @@ msgstr ""
 "Χρήση 'gresource help COMMAND' για λήψη αναλυτικής βοήθειας.\n"
 "\n"
 
-#: ../gio/gresource-tool.c:545
+#: ../gio/gresource-tool.c:548
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2484,19 +2519,19 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gresource-tool.c:552
+#: ../gio/gresource-tool.c:555
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SECTION   Ένα (προαιρετικό) όνομα ενότητας elf\n"
 
-#: ../gio/gresource-tool.c:556 ../gio/gsettings-tool.c:639
+#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:639
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMMAND   Η (προαιρετική) εντολή για επεξήγηση\n"
 
-#: ../gio/gresource-tool.c:562
+#: ../gio/gresource-tool.c:565
 msgid "  FILE      An elf file (a binary or a shared library)\n"
 msgstr "  FILE      Ένα αρχείο elf (δυαδικό ή κοινόχρηστης βιβλιοθήκης)\n"
 
-#: ../gio/gresource-tool.c:565
+#: ../gio/gresource-tool.c:568
 msgid ""
 "  FILE      An elf file (a binary or a shared library)\n"
 "            or a compiled resource file\n"
@@ -2504,24 +2539,24 @@ msgstr ""
 "  FILE      Αρχείο elf (δυαδικό ή κοινόχρηστης βιβλιοθήκης)\n"
 "            ή μεταγλωττισμένο πηγαίο αρχείο\n"
 
-#: ../gio/gresource-tool.c:569
+#: ../gio/gresource-tool.c:572
 msgid "[PATH]"
 msgstr "[ΔΙΑΔΡΟΜΗ]"
 
-#: ../gio/gresource-tool.c:571
+#: ../gio/gresource-tool.c:574
 msgid "  PATH      An (optional) resource path (may be partial)\n"
 msgstr "  PATH      (Προαιρετική) διαδρομή πηγής (μπορεί να είναι μερικό)\n"
 
-#: ../gio/gresource-tool.c:572
+#: ../gio/gresource-tool.c:575
 msgid "PATH"
 msgstr "ΔΙΑΔΡΟΜΗ"
 
-#: ../gio/gresource-tool.c:574
+#: ../gio/gresource-tool.c:577
 msgid "  PATH      A resource path\n"
 msgstr "  PATH      Διαδρομή πηγής\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:824
+#: ../gio/gsettings-tool.c:830
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Χωρίς τέτοιο σχήμα '%s'\n"
@@ -2732,158 +2767,177 @@ msgstr "  KEY       Το κλειδί στο σχήμα\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     Η τιμή που θα ορισθεί\n"
 
-#: ../gio/gsettings-tool.c:712
+#: ../gio/gsettings-tool.c:711
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Αδυναμία φόρτωσης διατάξεων από %s: %s\n"
 
-#: ../gio/gsettings-tool.c:782
+#: ../gio/gsettings-tool.c:723
+#, c-format
+msgid "No schemas installed\n"
+msgstr "Δεν εγκαταστάθηκαν σχήματα\n"
+
+#: ../gio/gsettings-tool.c:788
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Δόθηκε κενό όνομα σχήματος\n"
 
-#: ../gio/gsettings-tool.c:837
+#: ../gio/gsettings-tool.c:843
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Χωρίς τέτοιο κλειδί '%s'\n"
 
-#: ../gio/gsocket.c:299
+#: ../gio/gsocket.c:364
 msgid "Invalid socket, not initialized"
 msgstr "Άκυρος υποδοχέας, δεν αρχικοποιήθηκε"
 
-#: ../gio/gsocket.c:306
+#: ../gio/gsocket.c:371
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Άκυρος υποδοχέας, η αρχικοποίηση απέτυχε λόγω του: %s"
 
-#: ../gio/gsocket.c:314
+#: ../gio/gsocket.c:379
 msgid "Socket is already closed"
 msgstr "Ο υποδοχέας είναι ήδη κλειστός"
 
-#: ../gio/gsocket.c:329 ../gio/gsocket.c:3638 ../gio/gsocket.c:3693
+#: ../gio/gsocket.c:394 ../gio/gsocket.c:2751 ../gio/gsocket.c:3896
+#: ../gio/gsocket.c:3951
 msgid "Socket I/O timed out"
 msgstr "Η υποδοχή I/O έληξε"
 
-#: ../gio/gsocket.c:458
+#: ../gio/gsocket.c:526
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "δημιουργία GSocket από fd: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/gsocket.c:486 ../gio/gsocket.c:540 ../gio/gsocket.c:547
+#: ../gio/gsocket.c:554 ../gio/gsocket.c:608 ../gio/gsocket.c:615
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Αδυναμία δημιουργίας υποδοχέα: %s"
 
-#: ../gio/gsocket.c:540
+#: ../gio/gsocket.c:608
 msgid "Unknown family was specified"
 msgstr "Ορίστηκε άγνωστη οικογένεια"
 
-#: ../gio/gsocket.c:547
+#: ../gio/gsocket.c:615
 msgid "Unknown protocol was specified"
 msgstr "Ορίστηκε άγνωστο πρωτόκολλο"
 
-#: ../gio/gsocket.c:1744
+#: ../gio/gsocket.c:1104
+#, c-format
+msgid "Cannot use datagram operations on a non-datagram socket."
+msgstr "Αδυναμία χρήσης αυτοδύναμων λειτουργιών σε μια μη αυτοδύναμη υποδοχή."
+
+#: ../gio/gsocket.c:1121
+#, c-format
+msgid "Cannot use datagram operations on a socket with a timeout set."
+msgstr ""
+"Αδυναμία χρήσης αυτοδύναμων λειτουργιών σε μια υποδοχή με ορισμένο χρόνο "
+"λήξης."
+
+#: ../gio/gsocket.c:1925
 #, c-format
 msgid "could not get local address: %s"
 msgstr "αδυναμία λήψης τοπικής διεύθυνσης: %s"
 
-#: ../gio/gsocket.c:1787
+#: ../gio/gsocket.c:1968
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "αδυναμία λήψης απομακρυσμένης διεύθυνσης: %s"
 
-#: ../gio/gsocket.c:1848
+#: ../gio/gsocket.c:2034
 #, c-format
 msgid "could not listen: %s"
 msgstr "αδυναμία ακρόασης: %s"
 
-#: ../gio/gsocket.c:1947
+#: ../gio/gsocket.c:2133
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Σφάλμα σύνδεσης στην διεύθυνση: %s"
 
 # gconf/gconftool.c:1181
-#: ../gio/gsocket.c:2062 ../gio/gsocket.c:2099
+#: ../gio/gsocket.c:2248 ../gio/gsocket.c:2285
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Σφάλμα ένωσης ομάδας πολυεκπομπής: %s"
 
 # gconf/gconftool.c:1181
-#: ../gio/gsocket.c:2063 ../gio/gsocket.c:2100
+#: ../gio/gsocket.c:2249 ../gio/gsocket.c:2286
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Σφάλμα απομάκρυνσης ομάδας πολυεκπομπής: %s"
 
-#: ../gio/gsocket.c:2064
+#: ../gio/gsocket.c:2250
 msgid "No support for source-specific multicast"
 msgstr "Χωρίς υποστήριξη για πολυεκπομπή ειδικής πηγής"
 
 # gconf/gconftool.c:1181
-#: ../gio/gsocket.c:2284
+#: ../gio/gsocket.c:2470
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Σφάλμα αποδοχής σύνδεσης: %s"
 
-#: ../gio/gsocket.c:2407
+#: ../gio/gsocket.c:2593
 msgid "Connection in progress"
 msgstr "Σύνδεση σε εξέλιξη"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/gsocket.c:2457
+#: ../gio/gsocket.c:2644
 msgid "Unable to get pending error: "
 msgstr "Αδυναμία λήψης εκκρεμούς σφάλματος: "
 
-#: ../gio/gsocket.c:2658
+#: ../gio/gsocket.c:2816
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Σφάλμα λήψης δεδομένων: %s"
 
-#: ../gio/gsocket.c:2831
+#: ../gio/gsocket.c:3013
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Σφάλμα αποστολής δεδομένων: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/gsocket.c:2945
+#: ../gio/gsocket.c:3200
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Αδυναμία τερματισμού υποδοχής: %s"
 
-#: ../gio/gsocket.c:3024
+#: ../gio/gsocket.c:3281
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Σφάλμα τερματισμού υποδοχέα: %s"
 
-#: ../gio/gsocket.c:3631
+#: ../gio/gsocket.c:3889
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Αναμονή για την συνθήκη υποδοχέα: %s"
 
-#: ../gio/gsocket.c:3916 ../gio/gsocket.c:3996 ../gio/gsocket.c:4236
+#: ../gio/gsocket.c:4361 ../gio/gsocket.c:4441 ../gio/gsocket.c:4619
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Σφάλμα αποστολής μηνύματος: %s"
 
-#: ../gio/gsocket.c:3940
+#: ../gio/gsocket.c:4385
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "Το GSocketControlMessage δεν υποστηρίζεται στα Windows"
 
-#: ../gio/gsocket.c:4565 ../gio/gsocket.c:4700
+#: ../gio/gsocket.c:4840 ../gio/gsocket.c:4913 ../gio/gsocket.c:5140
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Σφάλμα λήψης μηνύματος: %s"
 
 # gconf/gconf-internals.c:2416
-#: ../gio/gsocket.c:4821
+#: ../gio/gsocket.c:5412
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Αδύνατη η ανάγνωση διαπιστευτηρίων υποδοχής: %s"
 
-#: ../gio/gsocket.c:4830
+#: ../gio/gsocket.c:5421
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
-"Το g_socket_get_credentials δεν έχει υλοποιηθεί για αυτό το λειτουργικό σύστημα"
+"Το g_socket_get_credentials δεν έχει υλοποιηθεί για αυτό το λειτουργικό "
+"σύστημα"
 
 #: ../gio/gsocketclient.c:176
 #, c-format
@@ -2944,7 +2998,8 @@ msgstr "Ο διακομιστής δεν είναι διαμεσολαβητής
 msgid "Connection through SOCKSv4 server was rejected"
 msgstr "Η σύνδεση μέσω διακομιστή SOCKSv4 απορρίφθηκε"
 
-#: ../gio/gsocks5proxy.c:153 ../gio/gsocks5proxy.c:324 ../gio/gsocks5proxy.c:334
+#: ../gio/gsocks5proxy.c:153 ../gio/gsocks5proxy.c:324
+#: ../gio/gsocks5proxy.c:334
 msgid "The server is not a SOCKSv5 proxy server."
 msgstr "Ο διακομιστής δεν είναι διαμεσολαβητής SOCKSv5."
 
@@ -2974,7 +3029,8 @@ msgstr "Αποτυχία επικύρωσης SOCKSv5 οφειλόμενη σε 
 #, c-format
 msgid "Hostname '%s' is too long for SOCKSv5 protocol"
 msgstr ""
-"Το όνομα κεντρικού υπολογιστή '%s' είναι πολύ μεγάλο για το πρωτόκολλο SOCKSv5"
+"Το όνομα κεντρικού υπολογιστή '%s' είναι πολύ μεγάλο για το πρωτόκολλο "
+"SOCKSv5"
 
 #: ../gio/gsocks5proxy.c:348
 msgid "The SOCKSv5 proxy server uses unknown address type."
@@ -3007,7 +3063,8 @@ msgstr "Ο διαμεσολαβητής SOCKSv5 δεν υποστηρίζει τ
 
 #: ../gio/gsocks5proxy.c:392
 msgid "SOCKSv5 proxy does not support provided address type."
-msgstr "Ο διαμεσολαβητής SOCKSv5 δεν υποστηρίζει τον παρεχόμενο τύπο διεύθυνσης."
+msgstr ""
+"Ο διαμεσολαβητής SOCKSv5 δεν υποστηρίζει τον παρεχόμενο τύπο διεύθυνσης."
 
 #: ../gio/gsocks5proxy.c:398
 msgid "Unknown SOCKSv5 proxy error."
@@ -3066,11 +3123,11 @@ msgstr "Αδυναμία ανάλυσης πιστοποιητικού κωδι�
 
 #: ../gio/gtlspassword.c:111
 msgid ""
-"This is the last chance to enter the password correctly before your access is "
-"locked out."
+"This is the last chance to enter the password correctly before your access "
+"is locked out."
 msgstr ""
-"Αυτή είναι η τελευταία ευκαιρία εισαγωγής σωστού κωδικού πριν το κλείδωμα της "
-"πρόσβασής σας."
+"Αυτή είναι η τελευταία ευκαιρία εισαγωγής σωστού κωδικού πριν το κλείδωμα "
+"της πρόσβασής σας."
 
 #: ../gio/gtlspassword.c:113
 msgid ""
@@ -3143,6 +3200,7 @@ msgid "Error reading from file descriptor: %s"
 msgstr "Σφάλμα ανάγνωσης περιγραφέα αρχείου: %s"
 
 #: ../gio/gunixinputstream.c:423 ../gio/gunixoutputstream.c:409
+#: ../gio/gwin32inputstream.c:217 ../gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "Σφάλμα κλεισίματος περιγραφέα αρχείου: %s"
@@ -3156,10 +3214,11 @@ msgstr "Διαχειριστής συστήματος αρχείων"
 msgid "Error writing to file descriptor: %s"
 msgstr "Σφάλμα εγγραφής περιγραφέα αρχείου: %s"
 
-#: ../gio/gunixsocketaddress.c:232
+#: ../gio/gunixsocketaddress.c:239
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr ""
-"Δεν υποστηρίζονται αφηρημένες διευθύνσεις υποδοχής τομέα unix σε αυτό το σύστημα"
+"Δεν υποστηρίζονται αφηρημένες διευθύνσεις υποδοχής τομέα unix σε αυτό το "
+"σύστημα"
 
 #: ../gio/gvolume.c:437
 msgid "volume doesn't implement eject"
@@ -3172,17 +3231,17 @@ msgstr "ο τόμος δεν υποστηρίζει εξαγωγή"
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "ο τόμος δεν υποστηρίζει την εξαγωγή ή eject_with_operation"
 
-#: ../gio/gwin32inputstream.c:343
+#: ../gio/gwin32inputstream.c:185
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "Σφάλμα ανάγνωσης χειριστηρίου: %s"
 
-#: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:374
+#: ../gio/gwin32inputstream.c:232 ../gio/gwin32outputstream.c:219
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "Σφάλμα κλεισίματος χειριστηρίου: %s"
 
-#: ../gio/gwin32outputstream.c:330
+#: ../gio/gwin32outputstream.c:172
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "Σφάλμα εγγραφής επεξεργασίας: %s"
@@ -3302,8 +3361,8 @@ msgstr ""
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Αποτυχία ανάπτυξης της γραμμής exec '%s' με URI '%s'"
 
-#: ../glib/gconvert.c:477 ../glib/gutf8.c:848 ../glib/gutf8.c:1059
-#: ../glib/gutf8.c:1196 ../glib/gutf8.c:1300
+#: ../glib/gconvert.c:477 ../glib/gutf8.c:849 ../glib/gutf8.c:1061
+#: ../glib/gutf8.c:1198 ../glib/gutf8.c:1302
 msgid "Partial character sequence at end of input"
 msgstr "Ημιτελής σειρά χαρακτήρα στο τέλος της εισόδου"
 
@@ -3312,38 +3371,38 @@ msgstr "Ημιτελής σειρά χαρακτήρα στο τέλος της 
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Αδυναμία μετατροπής υποχώρησης '%s' σε σύνολο κώδικα '%s'"
 
-#: ../glib/gconvert.c:1566
+#: ../glib/gconvert.c:1567
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "Το URI '%s' δεν είναι ένα απόλυτο URI με την χρήση του σχήματος \"αρχείου\""
 
-#: ../glib/gconvert.c:1576
+#: ../glib/gconvert.c:1577
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Το URI τοπικού αρχείου '%s' μπορεί να μην περιέχει ένα '#'"
 
-#: ../glib/gconvert.c:1593
+#: ../glib/gconvert.c:1594
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Το URI '%s' δεν είναι έγκυρο"
 
-#: ../glib/gconvert.c:1605
+#: ../glib/gconvert.c:1606
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Το όνομα κεντρικού υπολογιστή του URI '%s' είναι άκυρο"
 
-#: ../glib/gconvert.c:1621
+#: ../glib/gconvert.c:1622
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Το URI '%s' περιέχει άκυρους χαρακτήρες διαφυγής"
 
-#: ../glib/gconvert.c:1716
+#: ../glib/gconvert.c:1717
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Το όνομα διαδρομής '%s' δεν είναι απόλυτη διαδρομή"
 
-#: ../glib/gconvert.c:1726
+#: ../glib/gconvert.c:1727
 msgid "Invalid hostname"
 msgstr "Άκυρο όνομα κεντρικού υπολογιστή"
 
@@ -3649,7 +3708,8 @@ msgstr "Αποτυχία εγγραφής αρχείου '%s': fsync() απέτ�
 #: ../glib/gfileutils.c:1235
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
-msgstr "Αδυναμία απομάκρυνσης του υπάρχοντος αρχείου '%s': g_unlink() απέτυχε: %s"
+msgstr ""
+"Αδυναμία απομάκρυνσης του υπάρχοντος αρχείου '%s': g_unlink() απέτυχε: %s"
 
 #: ../glib/gfileutils.c:1506
 #, c-format
@@ -3680,7 +3740,8 @@ msgstr "Αδυναμία ανοίγματος μετατροπέα από '%s' �
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Αδυναμία ανάγνωσης raw σε g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1780 ../glib/giochannel.c:2038 ../glib/giochannel.c:2125
+#: ../glib/giochannel.c:1780 ../glib/giochannel.c:2038
+#: ../glib/giochannel.c:2125
 msgid "Leftover unconverted data in read buffer"
 msgstr "Εναπομείναντα αμετάτρεπτα δεδομένα σε μνήμη ανάγνωσης"
 
@@ -3742,14 +3803,16 @@ msgstr "Το αρχείο κλειδιού δεν έχει κλειδί '%s' σ�
 #: ../glib/gkeyfile.c:1838 ../glib/gkeyfile.c:1954
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "Το αρχείο κλειδιού περιέχει κλειδί '%s' με τιμή '%s' που δεν είναι UTF-8"
+msgstr ""
+"Το αρχείο κλειδιού περιέχει κλειδί '%s' με τιμή '%s' που δεν είναι UTF-8"
 
 #: ../glib/gkeyfile.c:1858 ../glib/gkeyfile.c:1974 ../glib/gkeyfile.c:2343
 #, c-format
-msgid "Key file contains key '%s' which has a value that cannot be interpreted."
+msgid ""
+"Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
-"Το αρχείο κλειδιού περιέχει κλειδί '%s' που περιέχει μια τιμή που δεν μπορεί να "
-"ερμηνευθεί."
+"Το αρχείο κλειδιού περιέχει κλειδί '%s' που περιέχει μια τιμή που δεν μπορεί "
+"να ερμηνευθεί."
 
 #: ../glib/gkeyfile.c:2560 ../glib/gkeyfile.c:2928
 #, c-format
@@ -3789,7 +3852,7 @@ msgstr "Η ακέραιη τιμή '%s' είναι εκτός εύρους"
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως αριθμός κινητής υποδιαστολής."
 
-#: ../glib/gkeyfile.c:4337
+#: ../glib/gkeyfile.c:4350
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Η τιμή '%s' δεν μπορεί να ερμηνευθεί ως Μπουλ."
@@ -3846,25 +3909,28 @@ msgid ""
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
 "Αποτυχία ανάλυσης του '%-.*s', που θα έπρεπε να υπήρχε ένα ψηφίο μέσα στην "
-"αναφορά χαρακτήρα (&#234; για παράδειγμα) - ίσως το ψηφίο να είναι πολύ μεγάλο"
+"αναφορά χαρακτήρα (&#234; για παράδειγμα) - ίσως το ψηφίο να είναι πολύ "
+"μεγάλο"
 
 #: ../glib/gmarkup.c:688
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity - escape ampersand as "
-"&amp;"
+"ampersand character without intending to start an entity - escape ampersand "
+"as &amp;"
 msgstr ""
-"Η αναφορά χαρακτήρα δεν τελειώνει με ερωτηματικό ;· πιθανόν να χρησιμοποιήσατε "
-"συμπλεκτικό χαρακτήρα χωρίς να θέλετε να ξεκινήσετε μια οντότητα - διαφυγή "
-"συμπλεκτικού ως &amp;"
+"Η αναφορά χαρακτήρα δεν τελειώνει με ερωτηματικό ;· πιθανόν να "
+"χρησιμοποιήσατε συμπλεκτικό χαρακτήρα χωρίς να θέλετε να ξεκινήσετε μια "
+"οντότητα - διαφυγή συμπλεκτικού ως &amp;"
 
 #: ../glib/gmarkup.c:714
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Η αναφορά χαρακτήρα '%-.*s' δεν κωδικοποιεί έναν επιτρεπόμενο χαρακτήρα"
+msgstr ""
+"Η αναφορά χαρακτήρα '%-.*s' δεν κωδικοποιεί έναν επιτρεπόμενο χαρακτήρα"
 
 #: ../glib/gmarkup.c:752
-msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid ""
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Κενή οντότητα '&;' παρατηρήθηκε· έγκυρες οντότητες είναι: &amp; &quot; &lt; "
 "&gt; &apos;"
@@ -3893,16 +3959,17 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"Το '%s' δεν είναι έγκυρος χαρακτήρας όταν ακολουθείται από χαρακτήρα '<'· δεν "
-"μπορεί να ξεκινά όνομα στοιχείου"
+"Το '%s' δεν είναι έγκυρος χαρακτήρας όταν ακολουθείται από χαρακτήρα '<'· "
+"δεν μπορεί να ξεκινά όνομα στοιχείου"
 
 #: ../glib/gmarkup.c:1253
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
-"Περίεργος χαρακτήρας '%s', αναμενόταν ο χαρακτήρας '>' στο τέλος της ετικέτας "
-"του κενού-στοιχείου '%s'"
+"Περίεργος χαρακτήρας '%s', αναμενόταν ο χαρακτήρας '>' στο τέλος της "
+"ετικέτας του κενού-στοιχείου '%s'"
 
 #: ../glib/gmarkup.c:1334
 #, c-format
@@ -3916,12 +3983,12 @@ msgstr ""
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
-"element '%s', or optionally an attribute; perhaps you used an invalid character "
-"in an attribute name"
+"element '%s', or optionally an attribute; perhaps you used an invalid "
+"character in an attribute name"
 msgstr ""
-"Περίεργος χαρακτήρας '%s', αναμενόταν ένας χαρακτήρας '>' ή '/' στο τέλος της "
-"ετικέτας έναρξης του στοιχείου '%s' ή προαιρετικά ένα γνώρισμα· πιθανόν να "
-"χρησιμοποιήσατε έναν άκυρο χαρακτήρα σε όνομα γνωρίσματος"
+"Περίεργος χαρακτήρας '%s', αναμενόταν ένας χαρακτήρας '>' ή '/' στο τέλος "
+"της ετικέτας έναρξης του στοιχείου '%s' ή προαιρετικά ένα γνώρισμα· πιθανόν "
+"να χρησιμοποιήσατε έναν άκυρο χαρακτήρα σε όνομα γνωρίσματος"
 
 #: ../glib/gmarkup.c:1419
 #, c-format
@@ -3935,8 +4002,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1552
 #, c-format
 msgid ""
-"'%s' is not a valid character following the characters '</'; '%s' may not begin "
-"an element name"
+"'%s' is not a valid character following the characters '</'; '%s' may not "
+"begin an element name"
 msgstr ""
 "Το '%s' δεν είναι έγκυρος χαρακτήρας ακολουθούμενος από χαρακτήρες '</'· το "
 "'%s' δεν μπορεί να αρχίζει όνομα στοιχείου"
@@ -3967,8 +4034,8 @@ msgstr "Το έγγραφο ήταν κενό ή περιέχει μόνο λε�
 #: ../glib/gmarkup.c:1775
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
-"Το έγγραφο τερματίστηκε απρόσμενα αμέσως μετά από μια ανοικτή γωνιακή παρένθεση "
-"'<'"
+"Το έγγραφο τερματίστηκε απρόσμενα αμέσως μετά από μια ανοικτή γωνιακή "
+"παρένθεση '<'"
 
 #: ../glib/gmarkup.c:1783 ../glib/gmarkup.c:1828
 #, c-format
@@ -3982,11 +4049,11 @@ msgstr ""
 #: ../glib/gmarkup.c:1791
 #, c-format
 msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending the "
-"tag <%s/>"
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
 msgstr ""
-"Το έγγραφο τερματίστηκε απρόσμενα, αναμενόταν μια γωνιακή παρένθεση κλεισίματος "
-"στο τέλος της ετικέτας <%s/>"
+"Το έγγραφο τερματίστηκε απρόσμενα, αναμενόταν μια γωνιακή παρένθεση "
+"κλεισίματος στο τέλος της ετικέτας <%s/>"
 
 #: ../glib/gmarkup.c:1797
 msgid "Document ended unexpectedly inside an element name"
@@ -3998,15 +4065,16 @@ msgstr "Το έγγραφο τερματίστηκε απρόσμενα σε ό�
 
 #: ../glib/gmarkup.c:1808
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Το έγγραφο τερματίστηκε απρόσμενα μέσα σε ετικέτα ανοίγματος στοιχείου."
+msgstr ""
+"Το έγγραφο τερματίστηκε απρόσμενα μέσα σε ετικέτα ανοίγματος στοιχείου."
 
 #: ../glib/gmarkup.c:1814
 msgid ""
-"Document ended unexpectedly after the equals sign following an attribute name; "
-"no attribute value"
+"Document ended unexpectedly after the equals sign following an attribute "
+"name; no attribute value"
 msgstr ""
-"Το έγγραφο τερματίστηκε απρόσμενα μετά το σύμβολο ίσον ακολουθούμενο από όνομα "
-"γνωρίσματος· δεν υπάρχει τιμή γνωρίσματος"
+"Το έγγραφο τερματίστηκε απρόσμενα μετά το σύμβολο ίσον ακολουθούμενο από "
+"όνομα γνωρίσματος· δεν υπάρχει τιμή γνωρίσματος"
 
 #: ../glib/gmarkup.c:1821
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -4104,7 +4172,8 @@ msgstr "εξάντληση ορίου οπισθοανίχνευσης"
 
 #: ../glib/gregex.c:279 ../glib/gregex.c:287
 msgid "the pattern contains items not supported for partial matching"
-msgstr "το πρότυπο περιέχει στοιχεία που δεν υποστηρίζονται για μερικό ταίριασμα"
+msgstr ""
+"το πρότυπο περιέχει στοιχεία που δεν υποστηρίζονται για μερικό ταίριασμα"
 
 #: ../glib/gregex.c:289
 msgid "back references as conditions are not supported for partial matching"
@@ -4287,7 +4356,8 @@ msgstr "άγνωστο όνομα ιδιότητας μετά το \\P ή το \
 
 #: ../glib/gregex.c:454
 msgid "subpattern name is too long (maximum 32 characters)"
-msgstr "το όνομα του υποπροτύπου είναι υπερβολικά μεγάλο (μέγιστο 32 χαρακτήρες)"
+msgstr ""
+"το όνομα του υποπροτύπου είναι υπερβολικά μεγάλο (μέγιστο 32 χαρακτήρες)"
 
 #: ../glib/gregex.c:457
 msgid "too many named subpatterns (maximum 10,000)"
@@ -4315,11 +4385,11 @@ msgstr "αντιφατικές επιλογές NEWLINE"
 
 #: ../glib/gregex.c:477
 msgid ""
-"\\g is not followed by a braced, angle-bracketed, or quoted name or number, or "
-"by a plain number"
+"\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
+"or by a plain number"
 msgstr ""
-"το \\g δεν ακολουθείται από ένα άγκιστρο, γωνιώδεις αγκύλες, όνομα ή αριθμό σε "
-"εισαγωγικά, ή από έναν απλό αριθμό"
+"το \\g δεν ακολουθείται από ένα άγκιστρο, γωνιώδεις αγκύλες, όνομα ή αριθμό "
+"σε εισαγωγικά, ή από έναν απλό αριθμό"
 
 #: ../glib/gregex.c:481
 msgid "a numbered reference must not be zero"
@@ -4453,7 +4523,8 @@ msgstr "άγνωστη ακολουθία διαφυγής"
 #: ../glib/gregex.c:2586
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr "Σφάλμα ανάλυσης του κειμένου αντικατάστασης \"%s\" στον χαρακτήρα %lu: %s"
+msgstr ""
+"Σφάλμα ανάλυσης του κειμένου αντικατάστασης \"%s\" στον χαρακτήρα %lu: %s"
 
 # gconf/gconf-internals.c:1577
 #: ../glib/gshell.c:96
@@ -4463,7 +4534,8 @@ msgstr "Το παρατιθέμενο αλφαριθμητικό δεν αρχί
 #: ../glib/gshell.c:186
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
-"Αταίριαστο ερωτηματικό στη γραμμή εντολών ή άλλο παρατιθέμενο κείμενο κελύφους"
+"Αταίριαστο ερωτηματικό στη γραμμή εντολών ή άλλο παρατιθέμενο κείμενο "
+"κελύφους"
 
 #: ../glib/gshell.c:582
 #, c-format
@@ -4475,8 +4547,8 @@ msgstr ""
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"Το κείμενο τερματίστηκε πριν να βρεθεί ταιριαστή παράθεση για %c. (Το κείμενο "
-"ήταν '%s')"
+"Το κείμενο τερματίστηκε πριν να βρεθεί ταιριαστή παράθεση για %c. (Το "
+"κείμενο ήταν '%s')"
 
 #: ../glib/gshell.c:601
 msgid "Text was empty (or contained only whitespace)"
@@ -4492,7 +4564,8 @@ msgstr "Αποτυχία ανάγνωσης δεδομένων από θυγατ
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
-"Απρόσμενο σφάλμα στο select() ανάγνωσης δεδομένων από θυγατρική διεργασία (%s)"
+"Απρόσμενο σφάλμα στο select() ανάγνωσης δεδομένων από θυγατρική διεργασία "
+"(%s)"
 
 #: ../glib/gspawn.c:438
 #, c-format
@@ -4570,7 +4643,8 @@ msgstr "Αποτυχία ανάγνωσης δεδομένων από θυγατ
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
-"Αποτυχία δημιουργίας διοχέτευσης για την επικοινωνία με θυγατρική διεργασία (%s)"
+"Αποτυχία δημιουργίας διοχέτευσης για την επικοινωνία με θυγατρική διεργασία "
+"(%s)"
 
 #: ../glib/gspawn-win32.c:376 ../glib/gspawn-win32.c:495
 #, c-format
@@ -4607,97 +4681,98 @@ msgstr "Αποτυχία εκτέλεσης βοηθητικού προγράμ�
 
 #: ../glib/gspawn-win32.c:997
 msgid ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+"Unexpected error in g_io_channel_win32_poll() reading data from a child "
+"process"
 msgstr ""
-"Απρόσμενο σφάλμα στο g_io_channel_win32_poll() ανάγνωση δεδομένων από θυγατρική "
-"διεργασία"
+"Απρόσμενο σφάλμα στο g_io_channel_win32_poll() ανάγνωση δεδομένων από "
+"θυγατρική διεργασία"
 
 #: ../glib/gutf8.c:795
 msgid "Failed to allocate memory"
 msgstr "Αποτυχία κατανομής μνήμης"
 
-#: ../glib/gutf8.c:927
+#: ../glib/gutf8.c:928
 msgid "Character out of range for UTF-8"
 msgstr "Ο χαρακτήρας είναι εκτός περιοχής UTF-8"
 
-#: ../glib/gutf8.c:1027 ../glib/gutf8.c:1036 ../glib/gutf8.c:1166
-#: ../glib/gutf8.c:1175 ../glib/gutf8.c:1314 ../glib/gutf8.c:1411
+#: ../glib/gutf8.c:1029 ../glib/gutf8.c:1038 ../glib/gutf8.c:1168
+#: ../glib/gutf8.c:1177 ../glib/gutf8.c:1316 ../glib/gutf8.c:1413
 msgid "Invalid sequence in conversion input"
 msgstr "Άκυρη σειρά στην είσοδο μετατροπής"
 
-#: ../glib/gutf8.c:1325 ../glib/gutf8.c:1422
+#: ../glib/gutf8.c:1327 ../glib/gutf8.c:1424
 msgid "Character out of range for UTF-16"
 msgstr "Ο χαρακτήρας είναι εκτός περιοχής UTF-16"
 
-#: ../glib/gutils.c:2118 ../glib/gutils.c:2145 ../glib/gutils.c:2251
+#: ../glib/gutils.c:2133 ../glib/gutils.c:2160 ../glib/gutils.c:2266
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: ../glib/gutils.c:2124
+#: ../glib/gutils.c:2139
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2126
+#: ../glib/gutils.c:2141
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2129
+#: ../glib/gutils.c:2144
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2132
+#: ../glib/gutils.c:2147
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2135
+#: ../glib/gutils.c:2150
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2138
+#: ../glib/gutils.c:2153
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2151
+#: ../glib/gutils.c:2166
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f KB"
 
-#: ../glib/gutils.c:2154 ../glib/gutils.c:2269
+#: ../glib/gutils.c:2169 ../glib/gutils.c:2284
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2157 ../glib/gutils.c:2274
+#: ../glib/gutils.c:2172 ../glib/gutils.c:2289
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2159 ../glib/gutils.c:2279
+#: ../glib/gutils.c:2174 ../glib/gutils.c:2294
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2162 ../glib/gutils.c:2284
+#: ../glib/gutils.c:2177 ../glib/gutils.c:2299
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2165 ../glib/gutils.c:2289
+#: ../glib/gutils.c:2180 ../glib/gutils.c:2304
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2202
+#: ../glib/gutils.c:2217
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4709,13 +4784,14 @@ msgstr[1] "%s bytes"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2264
+#: ../glib/gutils.c:2279
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
 #~ msgid "Unable to find default local directory monitor type"
-#~ msgstr "Δε βρέθηκε ο τύπος παρακολούθησης του προεπιλεγμένου τοπικού καταλόγου"
+#~ msgstr ""
+#~ "Δε βρέθηκε ο τύπος παρακολούθησης του προεπιλεγμένου τοπικού καταλόγου"
 
 #~ msgid "Can't find application"
 #~ msgstr "Αδυναμία εύρεσης εφαρμογής"
@@ -4791,8 +4867,8 @@ msgstr "%.1f KB"
 
 #~ msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 #~ msgstr ""
-#~ "δεν επιτρέπονται εδώ οι διαφυγές εναλλαγής πεζών-κεφαλαίων (\\l, \\L, \\u, "
-#~ "\\U)"
+#~ "δεν επιτρέπονται εδώ οι διαφυγές εναλλαγής πεζών-κεφαλαίων (\\l, \\L, "
+#~ "\\u, \\U)"
 
 #~ msgid "repeating a DEFINE group is not allowed"
 #~ msgstr "δεν επιτρέπεται η επανάληψη ομάδας DEFINE"
@@ -4800,8 +4876,10 @@ msgstr "%.1f KB"
 #~ msgid "File is empty"
 #~ msgstr "Το αρχείο είναι κενό"
 
-#~ msgid "Key file contains key '%s' which has value that cannot be interpreted."
-#~ msgstr "Το key file περιέχει key '%s' που η τιμή του δεν μπορεί να ερμηνευθεί."
+#~ msgid ""
+#~ "Key file contains key '%s' which has value that cannot be interpreted."
+#~ msgstr ""
+#~ "Το key file περιέχει key '%s' που η τιμή του δεν μπορεί να ερμηνευθεί."
 
 #~ msgid "This option will be removed soon."
 #~ msgstr "Αυτή η επιλογή θα αφαιρεθεί σύντομα."
@@ -4820,7 +4898,8 @@ msgstr "%.1f KB"
 #~ msgstr "Σφάλμα σύνδεσης: %s"
 
 #~ msgid "SOCKSv4 implementation limits username to %i characters"
-#~ msgstr "Η υλοποίηση του SOCKSv4a περιορίζει το όνομα χρήστη σε %i χαρακτήρες"
+#~ msgstr ""
+#~ "Η υλοποίηση του SOCKSv4a περιορίζει το όνομα χρήστη σε %i χαρακτήρες"
 
 #~ msgid "SOCKSv4a implementation limits hostname to %i characters"
 #~ msgstr ""
@@ -4852,8 +4931,8 @@ msgstr "%.1f KB"
 #~ "Ο τύπος της τιμής επιστροφής είναι ανακριβής, δόθηκε '%s', αναμενόταν '%s'"
 
 #~ msgid ""
-#~ "Trying to set property %s of type %s but according to the expected interface "
-#~ "the type is %s"
+#~ "Trying to set property %s of type %s but according to the expected "
+#~ "interface the type is %s"
 #~ msgstr ""
 #~ "Προσπάθεια να τεθεί η ιδιότητα %s του τύπου %s αλλά σύμφωνα με την "
 #~ "αναμενόμενη διεπαφή ο τύπος είναι %s"
@@ -4892,7 +4971,8 @@ msgstr "%.1f KB"
 #~ "Ορίσματα:\n"
 #~ "  SCHEMA      Η ταυτότητα του σχήματος \n"
 #~ "  KEY         Το όνομα του κλειδιού \n"
-#~ "  VALUE       Η τιμή για να οριστεί το κλειδί, ως σειριακή διάταξη GVariant\n"
+#~ "  VALUE       Η τιμή για να οριστεί το κλειδί, ως σειριακή διάταξη "
+#~ "GVariant\n"
 
 #~ msgid ""
 #~ "Monitor KEY for changes and print the changed values.\n"
@@ -4922,13 +5002,13 @@ msgstr "%.1f KB"
 #~ msgstr "χρήση αναπτυγμένης μορφής λιστών"
 
 #~ msgid ""
-#~ "Character '%s' is not valid at the start of an entity name; the & character "
-#~ "begins an entity; if this ampersand isn't supposed to be an entity, escape "
-#~ "it as &amp;"
+#~ "Character '%s' is not valid at the start of an entity name; the & "
+#~ "character begins an entity; if this ampersand isn't supposed to be an "
+#~ "entity, escape it as &amp;"
 #~ msgstr ""
-#~ "Ο χαρακτήρας '%s' δεν επιτρέπεται στην αρχή ονόματος οντότητας, ο χαρακτήρας "
-#~ "& ξεκινά οντότητα. Αν δεν επιθυμείτε να ξεκινήσετε οντότητα, χρησιμοποιήστε "
-#~ "το συνδυασμό διαφυγής &amp; στη θέση του &"
+#~ "Ο χαρακτήρας '%s' δεν επιτρέπεται στην αρχή ονόματος οντότητας, ο "
+#~ "χαρακτήρας & ξεκινά οντότητα. Αν δεν επιθυμείτε να ξεκινήσετε οντότητα, "
+#~ "χρησιμοποιήστε το συνδυασμό διαφυγής &amp; στη θέση του &"
 
 #~ msgid "Character '%s' is not valid inside an entity name"
 #~ msgstr "Ο χαρακτήρας '%s' δεν επιτρέπεται να περιέχεται σε όνομα οντότητας"
@@ -4968,8 +5048,8 @@ msgstr "%.1f KB"
 #~ "characters. Ignores names after the first if multiple names are given."
 #~ msgstr ""
 #~ "Αν θα χρησιμοποιούνται τα προεπιλεγμένα εφεδρικά που προκύπτουν από τη "
-#~ "συντόμευση του ονόματος στους χαρακτήρες '-'. Αγνοεί όλα τα ονόματα μετά το "
-#~ "πρώτο, αν έχουν δοθεί πολλαπλά ονόματα."
+#~ "συντόμευση του ονόματος στους χαρακτήρες '-'. Αγνοεί όλα τα ονόματα μετά "
+#~ "το πρώτο, αν έχουν δοθεί πολλαπλά ονόματα."
 
 #~ msgid "File descriptor"
 #~ msgstr "Περιγραφέας αρχείου"
