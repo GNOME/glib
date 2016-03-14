@@ -125,7 +125,7 @@ g_parse_debug_string  (const gchar     *string,
       /* using stdio directly for the reason stated above */
       fprintf (stderr, "Supported debug values:");
       for (i = 0; i < nkeys; i++)
-       fprintf (stderr, " %s", keys[i].key);
+        fprintf (stderr, " %s", keys[i].key);
       fprintf (stderr, " all help\n");
     }
   else
