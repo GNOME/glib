@@ -559,7 +559,7 @@ giotypefuncs.c: Makefile
 	  ${CPP} $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) xgen-giosrc.c | \
 	  $(GREP) -o '\bg_[A-Za-z0-9_]*_get_type\b' | \
 	  $(GREP) -v 'g_io_extension_get_type\|g_variant_get_type' | \
-	  sort | uniq | \
+	  LC_ALL=C sort | uniq | \
 	  $(SED) -e 's/^/*tp++ = /' -e 's/$$/ ();/' >> xgen-gio && \
 	  cp xgen-gio $@ # && rm -f xgen-gio xgen-giosrc.c
 
