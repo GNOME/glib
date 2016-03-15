@@ -311,6 +311,8 @@ static void _g_log_abort (gboolean breakpoint);
 static void
 _g_log_abort (gboolean breakpoint)
 {
+  gboolean debugger_present;
+
   if (g_test_subprocess ())
     {
       /* If this is a test case subprocess then it probably caused
@@ -321,7 +323,14 @@ _g_log_abort (gboolean breakpoint)
       _exit (1);
     }
 
-  if (breakpoint)
+#ifdef G_OS_WIN32
+  debugger_present = IsDebuggerPresent ();
+#else
+  /* Assume GDB is attached. */
+  debugger_present = TRUE;
+#endif /* !G_OS_WIN32 */
+
+  if (debugger_present && breakpoint)
     G_BREAKPOINT ();
   else
     g_abort ();
@@ -1075,10 +1084,9 @@ g_logv (const gchar   *log_domain,
                   MessageBox (NULL, locale_msg, NULL,
                               MB_ICONERROR|MB_SETFOREGROUND);
                 }
-	      _g_log_abort (IsDebuggerPresent () && !(test_level & G_LOG_FLAG_RECURSION));
-#else
-	      _g_log_abort (!(test_level & G_LOG_FLAG_RECURSION));
 #endif /* !G_OS_WIN32 */
+
+              _g_log_abort (!(test_level & G_LOG_FLAG_RECURSION));
 	    }
 	  
 	  depth--;
