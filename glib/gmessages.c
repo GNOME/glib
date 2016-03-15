@@ -82,7 +82,7 @@
  *    its log writer function so that, for example, it can use the correct
  *    server connection to submit logs to, that user data can be passed as a
  *    zero-length #GLogField to g_log_structured_array().
- *  * Colour output needed to be supported on the terminal, to make reading
+ *  * Color output needed to be supported on the terminal, to make reading
  *    through logs easier.
  */
 
@@ -969,48 +969,58 @@ format_unsigned (gchar  *buf,
 /* these are filtered by G_MESSAGES_DEBUG by the default log handler */
 #define INFO_LEVELS (G_LOG_LEVEL_INFO | G_LOG_LEVEL_DEBUG)
 
+static const gchar *log_level_to_color (GLogLevelFlags log_level,
+                                        gboolean       use_color);
+static const gchar *color_reset        (gboolean       use_color);
+
 static FILE *
 mklevel_prefix (gchar          level_prefix[STRING_BUFFER_SIZE],
-		GLogLevelFlags log_level)
+                GLogLevelFlags log_level,
+                gboolean       use_color)
 {
   gboolean to_stdout = TRUE;
 
   /* we may not call _any_ GLib functions here */
 
+  strcpy (level_prefix, log_level_to_color (log_level, use_color));
+
   switch (log_level & G_LOG_LEVEL_MASK)
     {
     case G_LOG_LEVEL_ERROR:
-      strcpy (level_prefix, "ERROR");
+      strcat (level_prefix, "ERROR");
       to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_CRITICAL:
-      strcpy (level_prefix, "CRITICAL");
+      strcat (level_prefix, "CRITICAL");
       to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_WARNING:
-      strcpy (level_prefix, "WARNING");
+      strcat (level_prefix, "WARNING");
       to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_MESSAGE:
-      strcpy (level_prefix, "Message");
+      strcat (level_prefix, "Message");
       to_stdout = FALSE;
       break;
     case G_LOG_LEVEL_INFO:
-      strcpy (level_prefix, "INFO");
+      strcat (level_prefix, "INFO");
       break;
     case G_LOG_LEVEL_DEBUG:
-      strcpy (level_prefix, "DEBUG");
+      strcat (level_prefix, "DEBUG");
       break;
     default:
       if (log_level)
 	{
-	  strcpy (level_prefix, "LOG-");
+	  strcat (level_prefix, "LOG-");
 	  format_unsigned (level_prefix + 4, log_level & G_LOG_LEVEL_MASK, 16);
 	}
       else
-	strcpy (level_prefix, "LOG");
+	strcat (level_prefix, "LOG");
       break;
     }
+
+  strcat (level_prefix, color_reset (use_color));
+
   if (log_level & G_LOG_FLAG_RECURSION)
     strcat (level_prefix, " (recursed)");
   if (log_level & ALERT_LEVELS)
@@ -1097,7 +1107,7 @@ g_logv (const gchar   *log_domain,
           gchar level_prefix[STRING_BUFFER_SIZE];
           gchar *expected_message;
 
-          mklevel_prefix (level_prefix, expected->log_level);
+          mklevel_prefix (level_prefix, expected->log_level, FALSE);
           expected_message = g_strdup_printf ("Did not see expected message %s-%s: %s",
                                               expected->log_domain ? expected->log_domain : "**",
                                               level_prefix, expected->pattern);
@@ -1240,6 +1250,43 @@ log_level_to_file (GLogLevelFlags log_level)
     return stderr;
   else
     return stdout;
+}
+
+static const gchar *
+log_level_to_color (GLogLevelFlags log_level,
+                    gboolean       use_color)
+{
+  /* we may not call _any_ GLib functions here */
+
+  if (!use_color)
+    return "";
+
+  if (log_level & G_LOG_LEVEL_ERROR)
+    return "\033[1;31m";
+  else if (log_level & G_LOG_LEVEL_CRITICAL)
+    return "\033[1;35m";
+  else if (log_level & G_LOG_LEVEL_WARNING)
+    return "\033[1;33m";
+  else if (log_level & G_LOG_LEVEL_MESSAGE)
+    return "\033[1;32m";
+  else if (log_level & G_LOG_LEVEL_INFO)
+    return "\033[1;32m";
+  else if (log_level & G_LOG_LEVEL_DEBUG)
+    return "\033[1;32m";
+
+  /* No color for custom log levels. */
+  return "";
+}
+
+static const gchar *
+color_reset (gboolean use_color)
+{
+  /* we may not call _any_ GLib functions here */
+
+  if (!use_color)
+    return "";
+
+  return "\033[0m";
 }
 
 /**
@@ -1506,6 +1553,39 @@ g_log_set_writer_func (GLogWriterFunc func,
 }
 
 /**
+ * g_log_writer_supports_color:
+ * @output_fd: output file descriptor to check
+ *
+ * Check whether the given @output_fd file descriptor supports ANSI color
+ * escape sequences. If so, they can safely be used when formatting log
+ * messages.
+ *
+ * Returns: %TRUE if ANSI color escapes are supported, %FALSE otherwise
+ * Since: 2.50
+ */
+gboolean
+g_log_writer_supports_color (gint output_fd)
+{
+  g_return_val_if_fail (output_fd >= 0, FALSE);
+
+  /* FIXME: This check could easily be expanded in future to be more robust
+   * against different types of terminal, which still vary in their color
+   * support. cmd.exe on Windows, for example, does not support ANSI colors;
+   * but bash on Windows does.
+   *
+   * On UNIX systems, we probably want to use the functions from terminfo to
+   * work out whether colors are supported.
+   *
+   * Some examples:
+   *  - https://github.com/chalk/supports-color/blob/9434c93918301a6b47faa01999482adfbf1b715c/index.js#L61
+   *  - http://stackoverflow.com/questions/16755142/how-to-make-win32-console-recognize-ansi-vt100-escape-sequences
+   *  - http://blog.mmediasys.com/2010/11/24/we-all-love-colors/
+   *  - http://unix.stackexchange.com/questions/198794/where-does-the-term-environment-variable-default-get-set
+   */
+  return isatty (output_fd);
+}
+
+/**
  * g_log_writer_is_journald:
  * @output_fd: output file descriptor to check
  *
@@ -1563,6 +1643,8 @@ static void escape_string (GString *string);
  * @fields: (array length=n_fields): key–value pairs of structured data forming
  *    the log message
  * @n_fields: number of elements in the @fields array
+ * @use_color: %TRUE to use ANSI color escape sequences when formatting the
+ *    message, %FALSE to not
  *
  * Format a structured log message as a string suitable for outputting to the
  * terminal (or elsewhere). This will include the values of all fields it knows
@@ -1581,7 +1663,8 @@ static void escape_string (GString *string);
 gchar *
 g_log_writer_format_fields (GLogLevelFlags   log_level,
                             const GLogField *fields,
-                            gsize            n_fields)
+                            gsize            n_fields,
+                            gboolean         use_color)
 {
   gsize i;
   const gchar *message = NULL;
@@ -1601,7 +1684,7 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
     }
 
   /* Format things. */
-  mklevel_prefix (level_prefix, log_level);
+  mklevel_prefix (level_prefix, log_level, use_color);
 
   gstring = g_string_new (NULL);
   if (log_level & ALERT_LEVELS)
@@ -1751,6 +1834,9 @@ g_log_writer_journald (GLogLevelFlags   log_level,
  * which are understood by this function are included in the formatted string
  * which is printed.
  *
+ * If the output stream supports ANSI color escape sequences, they will be used
+ * in the output.
+ *
  * A trailing new-line character is added to the log message when it is printed.
  *
  * This is suitable for use as a #GLogWriterFunc.
@@ -1771,7 +1857,8 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
   g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
 
   stream = log_level_to_file (log_level);
-  out = g_log_writer_format_fields (log_level, fields, n_fields);
+  out = g_log_writer_format_fields (log_level, fields, n_fields,
+                                    g_log_writer_supports_color (fileno (stream)));
   _g_fprintf (stream, "%s\n", out);
   g_free (out);
 
@@ -2081,7 +2168,7 @@ g_test_assert_expected_messages_internal (const char     *domain,
 
       expected = expected_messages->data;
 
-      mklevel_prefix (level_prefix, expected->log_level);
+      mklevel_prefix (level_prefix, expected->log_level, FALSE);
       message = g_strdup_printf ("Did not see expected message %s-%s: %s",
                                  expected->log_domain ? expected->log_domain : "**",
                                  level_prefix, expected->pattern);
@@ -2121,7 +2208,7 @@ _g_log_fallback_handler (const gchar   *log_domain,
    * the process ID unconditionally however.
    */
 
-  stream = mklevel_prefix (level_prefix, log_level);
+  stream = mklevel_prefix (level_prefix, log_level, FALSE);
   if (!message)
     message = "(NULL) message";
 
@@ -2269,7 +2356,7 @@ g_log_default_handler (const gchar   *log_domain,
       return;
     }
 
-  stream = mklevel_prefix (level_prefix, log_level);
+  stream = mklevel_prefix (level_prefix, log_level, FALSE);
 
   gstring = g_string_new (NULL);
   if (log_level & ALERT_LEVELS)

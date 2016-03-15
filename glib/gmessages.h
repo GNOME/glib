@@ -205,12 +205,15 @@ void             g_log_set_writer_func         (GLogWriterFunc   func,
                                                 GDestroyNotify   user_data_free);
 
 GLIB_AVAILABLE_IN_2_50
+gboolean         g_log_writer_supports_color   (gint             output_fd);
+GLIB_AVAILABLE_IN_2_50
 gboolean         g_log_writer_is_journald      (gint             output_fd);
 
 GLIB_AVAILABLE_IN_2_50
 gchar           *g_log_writer_format_fields    (GLogLevelFlags   log_level,
                                                 const GLogField *fields,
-                                                gsize            n_fields);
+                                                gsize            n_fields,
+                                                gboolean         use_color);
 
 GLIB_AVAILABLE_IN_2_50
 GLogWriterOutput g_log_writer_journald         (GLogLevelFlags   log_level,
