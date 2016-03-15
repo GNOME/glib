@@ -480,6 +480,8 @@ g_network_service_address_enumerator_next (GSocketAddressEnumerator  *enumerator
             {
               if (srv_enum->error == NULL)
                 srv_enum->error = error;
+              else
+                g_error_free (error);
               continue;
             }
 
