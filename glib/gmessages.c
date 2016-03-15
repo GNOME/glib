@@ -139,7 +139,8 @@
  * @G_LOG_FLAG_FATAL: internal flag
  * @G_LOG_LEVEL_ERROR: log level for errors, see g_error().
  *     This level is also used for messages produced by g_assert().
- * @G_LOG_LEVEL_CRITICAL: log level for critical messages, see g_critical().
+ * @G_LOG_LEVEL_CRITICAL: log level for critical warning messages, see
+ *     g_critical().
  *     This level is also used for messages produced by g_return_if_fail()
  *     and g_return_val_if_fail().
  * @G_LOG_LEVEL_WARNING: log level for warnings, see g_warning()
