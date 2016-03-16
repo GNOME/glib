@@ -1,3 +1,62 @@
+Overview of chnages in GLib 2.47.92
+===================================
+
+ * gdbus-codegen now supports g_autoptr()
+
+ * g_get_user_runtime_dir() now reliably returns an existing directory
+
+ * g_array_remove_range() can now remove 0 items from the end of an array
+
+ * Many fixes for Windows
+   * build fixes
+   * file monitoring
+   * gsettings backend
+   * streams
+   * random numbers
+   * wide character support
+
+ * documentation improvements
+
+ * other small bugfixes
+
+Bugs fixed:
+ 724847 Segmentation fault on "gsettings list-recursively"
+ 743933 gapplication: add --app-id command line option
+ 756706 [PATCH] gio/gtestdbus.c: don't use non-standard %m printf modifier
+ 757506 gsettings: schema_list should use the passed schema's source
+ 760694 W32: Apps linked with -mwindows make cursor busy sometimes
+ 762202 g_win32_error_message improvements
+ 762637 build: Unconditionally dist tapset files
+ 762748 Undefined behavior
+ 762937 Mention that g_clear_error can be used with an "empty" GError
+ 763339 array: Support clearing an empty array with g_array_remove_range()
+ 763344 g_get_user_runtime_dir(): ensure directory exists
+ 763379 codegen: Add support for g_autoptr to gdbus-codegen–generated objects
+
+Translations updated:
+ Brazilian Portuguese
+ Czech
+ Finnish
+ French
+ Galician s
+ German
+ Greek
+ Hebrew
+ Hungarian
+ Italian
+ Kazakh
+ Korean
+ Latvian
+ Lithuanian
+ Occitan
+ Polish
+ Russian
+ Serbian
+ Slovak
+ Slovenian
+ Spanish
+ Swedish
+
 Overview of changes in GLib 2.47.6
 ==================================
 
