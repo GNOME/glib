@@ -125,11 +125,12 @@ CLEANFILES += gobject_probes.h
 libgobject_2_0_la_LIBADD += gobject_probes.lo
 endif
 
-if ENABLE_SYSTEMTAP
 tapset_in_files = gobject.stp.in
+EXTRA_DIST += $(tapset_in_files)
+
+if ENABLE_SYSTEMTAP
 tapsetdir   = @ABS_TAPSET_DIR@
 tapset_DATA = $(tapset_in_files:.stp.in=.stp)
-EXTRA_DIST += $(tapset_in_files)
 CLEANFILES += $(tapset_in_files:.stp.in=.stp)
 
 $(tapset_DATA): %.stp: %.stp.in Makefile
