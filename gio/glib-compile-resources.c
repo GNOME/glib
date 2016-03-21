@@ -216,7 +216,7 @@ end_element (GMarkupParseContext  *context,
     {
       gchar *file, *real_file;
       gchar *key;
-      FileData *data;
+      FileData *data = NULL;
       char *tmp_file = NULL;
       char *tmp_file2 = NULL;
 
@@ -237,8 +237,6 @@ end_element (GMarkupParseContext  *context,
 		       key);
 	  return;
 	}
-
-      data = g_new0 (FileData, 1);
 
       if (sourcedirs != NULL)
         {
@@ -263,6 +261,7 @@ end_element (GMarkupParseContext  *context,
 	  real_file = g_strdup (file);
 	}
 
+      data = g_new0 (FileData, 1);
       data->filename = g_strdup (real_file);
       if (!state->collect_data)
         goto done;
@@ -416,6 +415,7 @@ end_element (GMarkupParseContext  *context,
     done:
 
       g_hash_table_insert (state->table, key, data);
+      data = NULL;
 
     cleanup:
       /* Cleanup */
@@ -440,6 +440,9 @@ end_element (GMarkupParseContext  *context,
           unlink (tmp_file2);
           g_free (tmp_file2);
         }
+
+      if (data != NULL)
+        file_data_free (data);
     }
 }
 
