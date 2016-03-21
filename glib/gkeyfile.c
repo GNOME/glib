@@ -970,6 +970,7 @@ g_key_file_load_from_dirs (GKeyFile       *key_file,
   while (*data_dirs != NULL && !found_file)
     {
       g_free (output_path);
+      output_path = NULL;
 
       fd = find_file_in_data_dirs (file, data_dirs, &output_path,
                                    &key_file_error);
