@@ -1,4 +1,18 @@
-Overview of chnages in GLib 2.47.92
+Overview of changes in GLib 2.48.0
+==================================
+
+ * a minor build fix in the name of determinism
+
+ * a few coverity fixes
+
+Bugs fixed:
+ 763617 giotypefuncs.c: Sort _get_type functions in the 'C' locale
+
+Translations updated:
+ Danish
+ Italian
+
+Overview of changes in GLib 2.47.92
 ===================================
 
  * gdbus-codegen now supports g_autoptr()
