@@ -2539,6 +2539,10 @@ g_strdupv (gchar **str_array)
  * optional @separator inserted between each of them. The returned string
  * should be freed with g_free().
  *
+ * If @str_array has no items, the return value will be an
+ * empty string. If @str_array contains a single item, @separator will not
+ * appear in the resulting string.
+ *
  * Returns: a newly-allocated string containing all of the strings joined
  *     together, with @separator between them
  */
