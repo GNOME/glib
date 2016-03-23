@@ -1114,6 +1114,8 @@ test_bounds (void)
   char *tmp, *tmp2;
   char **array;
   char *string;
+  const char * const strjoinv_0[] = { NULL };
+  const char * const strjoinv_1[] = { "foo", NULL };
 
   /* if we allocate the file between two others and then free those
    * other two, then hopefully we end up with unmapped memory on either
@@ -1263,6 +1265,14 @@ test_bounds (void)
   g_strfreev (array);
 
   g_assert_cmpmem (tmp, strlen (tmp), string, 4095);
+  g_free (tmp);
+
+  tmp = g_strjoinv ("/", (char **) strjoinv_0);
+  g_assert_cmpstr (tmp, ==, "");
+  g_free (tmp);
+
+  tmp = g_strjoinv ("/", (char **) strjoinv_1);
+  g_assert_cmpstr (tmp, ==, "foo");
   g_free (tmp);
 
   tmp = g_strconcat (string, string, string, NULL);
