@@ -569,6 +569,7 @@ struct _GTask {
     gboolean boolean;
   } result;
   GDestroyNotify result_destroy;
+  gboolean had_error;
   gboolean result_set;
 };
 
@@ -1497,6 +1498,7 @@ g_task_propagate_error (GTask   *task,
     {
       g_propagate_error (error, task->error);
       task->error = NULL;
+      task->had_error = TRUE;
       return TRUE;
     }
   else
@@ -1793,7 +1795,7 @@ g_task_return_error_if_cancelled (GTask *task)
 gboolean
 g_task_had_error (GTask *task)
 {
-  if (task->error != NULL)
+  if (task->error != NULL || task->had_error)
     return TRUE;
 
   if (task->check_cancellable && g_cancellable_is_cancelled (task->cancellable))
