@@ -37,6 +37,9 @@ G_BEGIN_DECLS
  *
  * The "typelib" is a binary, readonly, memory-mappable database
  * containing reflective information about a GObject library.
+ * What the typelib describes and the types used are the same for every
+ * platform so, apart the endianness of its scalar values, the typelib
+ * database must be considered architecture-independent.
  *
  * The format of GObject typelib is strongly influenced by the Mozilla XPCOM
  * format.
