@@ -798,7 +798,7 @@ g_io_win32_prepare (GSource *source,
 
     default:
       g_assert_not_reached ();
-      abort ();
+      g_abort ();
     }
   if (channel->debug)
     g_print ("\n");
@@ -945,7 +945,7 @@ g_io_win32_check (GSource *source)
 
     default:
       g_assert_not_reached ();
-      abort ();
+      g_abort ();
     }
 }
 
@@ -1010,7 +1010,7 @@ g_io_win32_finalize (GSource *source)
 
     default:
       g_assert_not_reached ();
-      abort ();
+      g_abort ();
     }
   if (channel->debug)
     g_print ("\n");
@@ -1299,7 +1299,7 @@ g_io_win32_fd_seek (GIOChannel *channel,
     default:
       whence = -1; /* Keep the compiler quiet */
       g_assert_not_reached ();
-      abort ();
+      g_abort ();
     }
 
   tmp_offset = offset;
@@ -1694,7 +1694,7 @@ g_io_channel_new_file (const gchar  *filename,
         break;
       default:
         g_assert_not_reached ();
-	abort ();
+        g_abort ();
     }
 
   /* always open 'untranslated' */
@@ -1740,7 +1740,7 @@ g_io_channel_new_file (const gchar  *filename,
         break;
       default:
         g_assert_not_reached ();
-	abort ();
+        g_abort ();
     }
 
   return channel;
@@ -2229,7 +2229,7 @@ g_io_channel_win32_make_pollfd (GIOChannel   *channel,
 
     default:
       g_assert_not_reached ();
-      abort ();
+      g_abort ();
     }
   
   fd->events = condition;

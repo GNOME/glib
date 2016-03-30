@@ -46,6 +46,7 @@
 #include "gmessages.h"
 #include "gstrfuncs.h"
 #include "gmain.h"
+#include "gutils.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -74,7 +75,7 @@ g_thread_abort (gint         status,
 {
   fprintf (stderr, "GLib (gthread-posix.c): Unexpected error from C library during '%s': %s.  Aborting.\n",
            function, strerror (status));
-  abort ();
+  g_abort ();
 }
 
 /* {{{1 GMutex */
@@ -1296,7 +1297,7 @@ g_mutex_clear (GMutex *mutex)
   if G_UNLIKELY (mutex->i[0] != 0)
     {
       fprintf (stderr, "g_mutex_clear() called on uninitialised or locked mutex\n");
-      abort ();
+      g_abort ();
     }
 }
 
@@ -1322,7 +1323,7 @@ g_mutex_unlock_slowpath (GMutex *mutex,
   if G_UNLIKELY (prev == 0)
     {
       fprintf (stderr, "Attempt to unlock mutex that was not locked\n");
-      abort ();
+      g_abort ();
     }
 
   syscall (__NR_futex, &mutex->i[0], (gsize) FUTEX_WAKE_PRIVATE, (gsize) 1, NULL);

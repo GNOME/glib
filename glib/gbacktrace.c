@@ -254,7 +254,7 @@ g_on_error_stack_trace (const gchar *prg_name)
   if (IsDebuggerPresent ())
     G_BREAKPOINT ();
   else
-    abort ();
+    g_abort ();
 #endif
 }
 

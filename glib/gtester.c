@@ -94,7 +94,7 @@ static void
 terminate (void)
 {
   kill (getpid(), SIGTERM);
-  abort();
+  g_abort();
 }
 
 static void

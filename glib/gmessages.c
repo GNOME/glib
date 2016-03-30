@@ -324,7 +324,7 @@ _g_log_abort (gboolean breakpoint)
   if (breakpoint)
     G_BREAKPOINT ();
   else
-    abort ();
+    g_abort ();
 }
 
 #ifdef G_OS_WIN32
@@ -1190,7 +1190,7 @@ g_assert_warning (const char *log_domain,
 	   line,
 	   pretty_function);
   _g_log_abort (FALSE);
-  abort ();
+  g_abort ();
 }
 
 /**

@@ -846,7 +846,7 @@ g_test_log (GTestLogType lbit,
         {
           if (test_tap_log)
             g_print ("Bail out!\n");
-          abort();
+          g_abort();
         }
       if (result == G_TEST_RUN_SKIPPED)
         test_skipped_count++;
@@ -2426,7 +2426,7 @@ g_assertion_message (const char     *domain,
       _exit (1);
     }
   else
-    abort ();
+    g_abort ();
 }
 
 /**
@@ -2459,7 +2459,7 @@ g_assertion_message_expr (const char     *domain,
   if (test_in_subprocess)
     _exit (1);
   else
-    abort ();
+    g_abort ();
 }
 
 void

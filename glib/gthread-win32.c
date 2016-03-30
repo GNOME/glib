@@ -58,7 +58,7 @@ g_thread_abort (gint         status,
 {
   fprintf (stderr, "GLib (gthread-win32.c): Unexpected error from C library during '%s': %s.  Aborting.\n",
            strerror (status), function);
-  abort ();
+  g_abort ();
 }
 
 /* Starting with Vista and Windows 2008, we have access to the
