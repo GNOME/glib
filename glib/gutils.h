@@ -299,6 +299,16 @@ g_bit_storage_impl (gulong number)
 #endif
 }
 
+/* Crashes the program. */
+#if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_50
+#ifndef G_OS_WIN32
+#  define g_abort() abort ()
+#else
+GLIB_AVAILABLE_IN_2_50
+void g_abort (void) G_GNUC_NORETURN G_ANALYZER_NORETURN;
+#endif
+#endif
+
 #ifndef G_DISABLE_DEPRECATED
 
 /*

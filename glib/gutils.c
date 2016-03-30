@@ -2390,3 +2390,27 @@ g_check_setuid (void)
   return FALSE;
 #endif
 }
+
+/**
+ * g_abort:
+ *
+ * A wrapper for the POSIX abort() function.
+ *
+ * On Windows it is a function that makes extra effort (including a call
+ * to abort()) to ensure that a debugger-catchable exception is thrown
+ * before the program terminates.
+ *
+ * See your C library manual for more details about abort().
+ *
+ * Since: 2.50
+ */
+void
+g_abort (void)
+{
+  /* One call to break the debugger */
+  DebugBreak ();
+  /* One call in case CRT does get saner about abort() behaviour */
+  abort ();
+  /* And one call to bind them all and terminate the program for sure */
+  ExitProcess (127);
+}
