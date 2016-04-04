@@ -1326,6 +1326,8 @@ test_z (void)
   g_time_zone_unref (tz);
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-y2k"
 static void
 test_strftime (void)
 {
@@ -1351,6 +1353,7 @@ test_strftime (void)
     }
 #endif
 }
+#pragma GCC diagnostic pop
 
 static void
 test_find_interval (void)
