@@ -1064,7 +1064,7 @@ AS_IF([test "$ac_cv_func_statfs" = yes], [
   #ifdef HAVE_SYS_STATFS_H
   #include <sys/statfs.h>
   #endif], [struct statfs st;
-  statfs(NULL, &st);],[
+  statfs("/", &st);],[
     AC_MSG_RESULT([2])
     AC_DEFINE(STATFS_ARGS, 2, [Number of arguments to statfs()])],[
     AC_TRY_COMPILE([#include <unistd.h>
@@ -1080,7 +1080,7 @@ AS_IF([test "$ac_cv_func_statfs" = yes], [
   #ifdef HAVE_SYS_STATFS_H
   #include <sys/statfs.h>
   #endif], [struct statfs st;
-  statfs(NULL, &st, sizeof (st), 0);],[
+  statfs("/", &st, sizeof (st), 0);],[
       AC_MSG_RESULT([4])
       AC_DEFINE(STATFS_ARGS, 4, [Number of arguments to statfs()])],[
       AC_MSG_RESULT(unknown)
