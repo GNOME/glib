@@ -211,7 +211,7 @@
  *     is using its D-Bus backend. Use this to undo anything done by the
  *     @dbus_register vfunc. Since: 2.34
  * @handle_local_options: invoked locally after the parsing of the commandline
- *  options has occurred.
+ *  options has occurred. Since: 2.40
  *
  * Virtual function table for #GApplication.
  *
