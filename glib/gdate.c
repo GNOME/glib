@@ -732,7 +732,7 @@ g_date_get_monday_week_of_year (const GDate *d)
  * @date: a #GDate
  *
  * Returns the week of the year during which this date falls, if
- * weeks are understood to being on Sunday. The date must be valid.
+ * weeks are understood to begin on Sunday. The date must be valid.
  * Can return 0 if the day is before the first Sunday of the year.
  *
  * Returns: week number
