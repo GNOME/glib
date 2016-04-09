@@ -548,10 +548,9 @@ bad_fmt:
  *
  * It is an error to call this function with an invalid action name.
  *
- * This function is the opposite of
- * g_action_parse_detailed_action_name().  It will produce a string that
- * can be parsed back to the @action_name and @target_value by that
- * function.
+ * This function is the opposite of g_action_parse_detailed_name().
+ * It will produce a string that can be parsed back to the @action_name
+ * and @target_value by that function.
  *
  * See that function for the types of strings that will be printed by
  * this function.
