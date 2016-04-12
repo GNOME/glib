@@ -1794,7 +1794,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
         {
           *last_dot = '\0';
 
-          if (g_dbus_is_interface_name (basename))
+          if (g_dbus_is_name (basename) && basename[0] != ':')
             info->app_id = g_strdup (basename);
         }
 
@@ -2785,25 +2785,21 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
 }
 
 static gchar *
-object_path_from_appid (const gchar *app_id)
+object_path_from_appid (const gchar *appid)
 {
-  gchar *path;
-  gint i, n;
+  gchar *appid_path, *iter;
 
-  n = strlen (app_id);
-  path = g_malloc (n + 2);
+  appid_path = g_strconcat ("/", appid, NULL);
+  for (iter = appid_path; *iter; iter++)
+    {
+      if (*iter == '.')
+        *iter = '/';
 
-  path[0] = '/';
+      if (*iter == '-')
+        *iter = '_';
+    }
 
-  for (i = 0; i < n; i++)
-    if (app_id[i] != '.')
-      path[i + 1] = app_id[i];
-    else
-      path[i + 1] = '/';
-
-  path[i + 1] = '\0';
-
-  return path;
+  return appid_path;
 }
 
 static GVariant *
