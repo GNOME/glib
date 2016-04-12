@@ -42,19 +42,33 @@
  *
  * #GVariant is a variant datatype; it can contain one or more values
  * along with information about the type of the values.
- * A GVariant can for example contain an array of two strings, an integer or a dictionary.
- * This is useful for example when sending data via D-Bus, or when
- * interacting with GSettings or GActions.
- * When declaring a new GVariant, you parse the data you want to store in it
- * along with a string representing the type of data you wish to parse to it.
- * If you, for example, want to make a GVariant holding a string:
+ *
+ * A #GVariant may contain simple types, like an integer, or a boolean value;
+ * or complex types, like an array of two strings, or a dictionary of key
+ * value pairs. A #GVariant is also immutable: once it's been created neither
+ * its type nor its content can be modified further.
+ *
+ * GVariant is useful whenever data needs to be serialized, for example when
+ * sending method parameters in DBus, or when saving settings using GSettings.
+ *
+ * When creating a new #GVariant, you pass the data you want to store in it
+ * along with a string representing the type of data you wish to pass to it.
+ *
+ * For instance, if you want to create a #GVariant holding an integer value you
+ * can use:
+ *
  * |[<!-- language="C" -->
- * g_variant_new('u','40');
+ *   GVariant *v = g_variant_new ('u', 40);
  * ]|
- * The string 'u' tells GVariant that the data parsed to it (40) is an integer.
+ *
+ * The string 'u' in the first argument tells #GVariant that the data passed to
+ * the constructor (40) is going to be an unsigned integer.
+ *
  * More advanced examples of #GVariant in use can be found in documentation for
  * [GVariant format strings][gvariant-format-strings-pointers].
+ *
  * The range of possible values is determined by the type.
+ *
  * The type system used by #GVariant is #GVariantType. 
  *
  * #GVariant instances always have a type and a value (which are given
