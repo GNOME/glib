@@ -180,11 +180,11 @@
  * @open: invoked on the primary instance when there are files to open
  * @command_line: invoked on the primary instance when a command-line is
  *   not handled locally
- * @local_command_line: invoked (locally) when the process has been invoked
- *     via commandline execution (as opposed to, say, D-Bus activation - which
- *     is not currently supported by GApplication). The virtual function has
- *     the chance to inspect (and possibly replace) the list of command line
- *     arguments. See g_application_run() for more information.
+ * @local_command_line: invoked (locally). The virtual function has the chance
+ *     to inspect (and possibly replace) command line arguments. See
+ *     g_application_run() for more information. Also see the
+ *     #GApplication::handle-local-options signal, which is a simpler
+ *     alternative to handling some commandline options locally
  * @before_emit: invoked on the primary instance before 'activate', 'open',
  *     'command-line' or any action invocation, gets the 'platform data' from
  *     the calling instance
