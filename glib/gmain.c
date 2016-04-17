@@ -733,9 +733,20 @@ static GPrivate thread_context_stack = G_PRIVATE_INIT (free_context_stack);
  * Normally you would call this function shortly after creating a new
  * thread, passing it a #GMainContext which will be run by a
  * #GMainLoop in that thread, to set a new default context for all
- * async operations in that thread. (In this case, you don't need to
- * ever call g_main_context_pop_thread_default().) In some cases
- * however, you may want to schedule a single operation in a
+ * async operations in that thread. In this case you may not need to
+ * ever call g_main_context_pop_thread_default(), assuming you want the
+ * new #GMainContext to be the default for the whole lifecycle of the
+ * thread.
+ *
+ * If you don't have control over how the new thread was created (e.g.
+ * in the new thread isn't newly created, or if the thread life
+ * cycle is managed by a #GThreadPool), it is always suggested to wrap
+ * the logic that needs to use the new #GMainContext inside a
+ * g_main_context_push_thread_default() / g_main_context_pop_thread_default()
+ * pair, otherwise threads that are re-used will end up never explicitly
+ * releasing the #GMainContext reference they hold.
+
+ * In some cases you may want to schedule a single operation in a
  * non-default context, or temporarily use a non-default context in
  * the main thread. In that case, you can wrap the call to the
  * asynchronous operation inside a
