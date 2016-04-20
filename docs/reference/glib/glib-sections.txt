@@ -3011,6 +3011,7 @@ g_hmac_get_digest
 <SUBSECTION>
 g_compute_hmac_for_data
 g_compute_hmac_for_string
+g_compute_hmac_for_bytes
 </SECTION>
 
 <SECTION>
