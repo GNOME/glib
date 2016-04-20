@@ -333,7 +333,7 @@ g_hmac_get_digest (GHmac  *hmac,
  * @digest_type: a #GChecksumType to use for the HMAC
  * @key: (array length=key_len): the key to use in the HMAC
  * @key_len: the length of the key
- * @data: binary blob to compute the HMAC of
+ * @data: (array length=length): binary blob to compute the HMAC of
  * @length: length of @data
  *
  * Computes the HMAC for a binary @data of @length. This is a
