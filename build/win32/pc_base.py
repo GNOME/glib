@@ -26,17 +26,18 @@ class BasePCItems:
         self.top_srcdir = self.srcdir + '\\..\\..'
         self.version = ''
 
-    def setup(self, argv):
-        parser = argparse.ArgumentParser(description='Setup basic .pc file info')
+    def setup(self, argv, parser=None):
+        if parser is None:
+            parser = argparse.ArgumentParser(description='Setup basic .pc file info')
         parser.add_argument('--prefix', help='prefix of the installed library',
                             required=True)
-        parser.add_argument('--exec-prefix', 
+        parser.add_argument('--exec-prefix',
                             help='prefix of the installed programs, \
                                   if different from the prefix')
-        parser.add_argument('--includedir', 
+        parser.add_argument('--includedir',
                             help='includedir of the installed library, \
                                   if different from ${prefix}/include')
-        parser.add_argument('--libdir', 
+        parser.add_argument('--libdir',
                             help='libdir of the installed library, \
                                   if different from ${prefix}/lib')
         parser.add_argument('--version', help='Version of the package',
