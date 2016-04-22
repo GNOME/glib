@@ -480,10 +480,17 @@ g_irepository_dump (const char *arg, GError **error)
   g_strfreev (args);
 
   input = g_file_read (input_file, NULL, error);
+  g_object_unref (input_file);
+
   if (input == NULL)
-    return FALSE;
+    {
+      g_object_unref (output_file);
+      return FALSE;
+    }
 
   output = g_file_replace (output_file, NULL, FALSE, 0, NULL, error);
+  g_object_unref (output_file);
+
   if (output == NULL)
     {
       g_input_stream_close (G_INPUT_STREAM (input), NULL, NULL);
