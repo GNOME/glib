@@ -66,6 +66,14 @@ typedef struct _GSettingsBackendClass                       GSettingsBackendClas
  */
 typedef struct _GSettingsBackendChangeset                   GSettingsBackendChangeset;
 
+
+typedef enum
+{
+  G_SETTINGS_BACKEND_READ_FLAGS_NONE    = 0,
+  G_SETTINGS_BACKEND_READ_DEFAULT_VALUE = (1u << 0),
+  G_SETTINGS_BACKEND_READ_USER_VALUE =    (1u << 1)
+} GSettingsBackendReadFlags;
+
 /**
  * GSettingsBackendClass:
  * @read: virtual method to read a key's value
@@ -85,6 +93,7 @@ struct _GSettingsBackendClass
 {
   GObjectClass parent_class;
 
+  /* Deprecated.  Implement ::read_value and ::read_simple instead */
   GVariant *    (*read)             (GSettingsBackend    *backend,
                                      const gchar         *key,
                                      const GVariantType  *expected_type,
@@ -97,6 +106,7 @@ struct _GSettingsBackendClass
                                      const gchar         *key,
                                      GVariant            *value,
                                      gpointer             origin_tag);
+  /* Deprecated.  Implement ::write_changeset instead. */
   gboolean      (*write_tree)       (GSettingsBackend    *backend,
                                      GTree               *tree,
                                      gpointer             origin_tag);
@@ -113,12 +123,28 @@ struct _GSettingsBackendClass
   GPermission * (*get_permission)   (GSettingsBackend    *backend,
                                      const gchar         *path);
 
+  /* Deprecated.  Implement ::read_value and ::read_simple instead */
   GVariant *    (*read_user_value)  (GSettingsBackend    *backend,
                                      const gchar         *key,
                                      const GVariantType  *expected_type);
 
+  /* "new" GSettingsBackendChangeset-enabled API (since 2.48) */
+  GVariant *    (*read_simple)      (GSettingsBackend          *backend,
+                                     const gchar               *key,
+                                     const GVariantType        *expected_type);
+
+  GVariant *    (*read_value)       (GSettingsBackend          *backend,
+                                     const gchar               *key,
+                                     GSettingsBackendReadFlags  flags,
+                                     GQueue                    *read_through,
+                                     const GVariantType        *expected_type);
+
+  gboolean      (*write_changeset)  (GSettingsBackend          *backend,
+                                     GSettingsBackendChangeset *changes,
+                                     gpointer                   origin_tag);
+
   /*< private >*/
-  gpointer padding[23];
+  gpointer padding[20];
 };
 
 struct _GSettingsBackend
@@ -161,6 +187,10 @@ GLIB_AVAILABLE_IN_ALL
 void                    g_settings_backend_changed_tree                 (GSettingsBackend    *backend,
                                                                          GTree               *tree,
                                                                          gpointer             origin_tag);
+GLIB_AVAILABLE_IN_2_48
+void                    g_settings_backend_changeset_applied            (GSettingsBackend    *backend,
+                                                                         GSettingsBackendChangeset *changeset,
+                                                                         gpointer             origin_tag);
 
 GLIB_AVAILABLE_IN_ALL
 GSettingsBackend *      g_settings_backend_get_default                  (void);
@@ -175,6 +205,7 @@ GSettingsBackend *      g_null_settings_backend_new                     (void);
 
 GLIB_AVAILABLE_IN_ALL
 GSettingsBackend *      g_memory_settings_backend_new                   (void);
+
 
 GLIB_AVAILABLE_IN_2_48
 gboolean                g_settings_backend_is_path                      (const gchar         *string);
@@ -245,6 +276,12 @@ GSettingsBackendChangeset *     g_settings_backend_changeset_diff               
 
 GLIB_AVAILABLE_IN_2_48
 void                            g_settings_backend_changeset_seal               (GSettingsBackendChangeset           *changeset);
+
+GLIB_AVAILABLE_IN_2_48
+gboolean                        g_settings_backend_check_changeset_queue        (const GQueue                        *queue,
+                                                                                 const gchar                         *key,
+                                                                                 GSettingsBackendReadFlags            flags,
+                                                                                 GVariant                           **value);
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GSettingsBackend, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GSettingsBackendChangeset, g_settings_backend_changeset_unref)

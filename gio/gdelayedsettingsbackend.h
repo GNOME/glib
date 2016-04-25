@@ -24,37 +24,12 @@
 
 #include <gio/gsettingsbackend.h>
 
-#define G_TYPE_DELAYED_SETTINGS_BACKEND                     (g_delayed_settings_backend_get_type ())
-#define G_DELAYED_SETTINGS_BACKEND(inst)                    (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
-                                                             G_TYPE_DELAYED_SETTINGS_BACKEND,                        \
-                                                             GDelayedSettingsBackend))
-#define G_DELAYED_SETTINGS_BACKEND_CLASS(class)             (G_TYPE_CHECK_CLASS_CAST ((class),                       \
-                                                             G_TYPE_DELAYED_SETTINGS_BACKEND,                        \
-                                                             GDelayedSettingsBackendClass))
-#define G_IS_DELAYED_SETTINGS_BACKEND(inst)                 (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
-                                                             G_TYPE_DELAYED_SETTINGS_BACKEND))
-#define G_IS_DELAYED_SETTINGS_BACKEND_CLASS(class)          (G_TYPE_CHECK_CLASS_TYPE ((class),                       \
-                                                             G_TYPE_DELAYED_SETTINGS_BACKEND))
-#define G_DELAYED_SETTINGS_BACKEND_GET_CLASS(inst)          (G_TYPE_INSTANCE_GET_CLASS ((inst),                      \
-                                                             G_TYPE_DELAYED_SETTINGS_BACKEND,                        \
-                                                             GDelayedSettingsBackendClass))
+#define G_TYPE_DELAYED_SETTINGS_BACKEND (g_delayed_settings_backend_get_type ())
+G_DECLARE_FINAL_TYPE(GDelayedSettingsBackend,
+                     g_delayed_settings_backend,
+                     G, DELAYED_SETTINGS_BACKEND,
+                     GSettingsBackend)
 
-typedef struct _GDelayedSettingsBackendPrivate              GDelayedSettingsBackendPrivate;
-typedef struct _GDelayedSettingsBackendClass                GDelayedSettingsBackendClass;
-typedef struct _GDelayedSettingsBackend                     GDelayedSettingsBackend;
-
-struct _GDelayedSettingsBackendClass
-{
-  GSettingsBackendClass parent_class;
-};
-
-struct _GDelayedSettingsBackend
-{
-  GSettingsBackend parent_instance;
-  GDelayedSettingsBackendPrivate *priv;
-};
-
-GType                           g_delayed_settings_backend_get_type     (void);
 GDelayedSettingsBackend *       g_delayed_settings_backend_new          (GSettingsBackend        *backend,
                                                                          gpointer                 owner,
                                                                          GMainContext            *owner_context);

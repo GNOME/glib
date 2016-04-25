@@ -1145,20 +1145,16 @@ g_settings_write_to_backend (GSettings          *settings,
 }
 
 static GVariant *
-g_settings_read_from_backend (GSettings          *settings,
-                              GSettingsSchemaKey *key,
-                              gboolean            user_value_only,
-                              gboolean            default_value)
+g_settings_read_from_backend (GSettings                 *settings,
+                              GSettingsSchemaKey        *key,
+                              GSettingsBackendReadFlags  flags)
 {
   GVariant *value;
   GVariant *fixup;
   gchar *path;
 
   path = g_strconcat (settings->priv->path, key->name, NULL);
-  if (user_value_only)
-    value = g_settings_backend_read_user_value (settings->priv->backend, path, key->type);
-  else
-    value = g_settings_backend_read (settings->priv->backend, path, key->type, default_value);
+  value = g_settings_backend_read_value (settings->priv->backend, path, flags, NULL, key->type);
   g_free (path);
 
   if (value != NULL)
@@ -1198,7 +1194,7 @@ g_settings_get_value (GSettings   *settings,
   g_return_val_if_fail (key != NULL, NULL);
 
   g_settings_schema_key_init (&skey, settings->priv->schema, key);
-  value = g_settings_read_from_backend (settings, &skey, FALSE, FALSE);
+  value = g_settings_read_from_backend (settings, &skey, G_SETTINGS_BACKEND_READ_FLAGS_NONE);
 
   if (value == NULL)
     value = g_settings_schema_key_get_translated_default (&skey);
@@ -1250,7 +1246,7 @@ g_settings_get_user_value (GSettings   *settings,
   g_return_val_if_fail (key != NULL, NULL);
 
   g_settings_schema_key_init (&skey, settings->priv->schema, key);
-  value = g_settings_read_from_backend (settings, &skey, TRUE, FALSE);
+  value = g_settings_read_from_backend (settings, &skey, G_SETTINGS_BACKEND_READ_USER_VALUE);
   g_settings_schema_key_clear (&skey);
 
   return value;
@@ -1298,7 +1294,7 @@ g_settings_get_default_value (GSettings   *settings,
   g_return_val_if_fail (key != NULL, NULL);
 
   g_settings_schema_key_init (&skey, settings->priv->schema, key);
-  value = g_settings_read_from_backend (settings, &skey, FALSE, TRUE);
+  value = g_settings_read_from_backend (settings, &skey, G_SETTINGS_BACKEND_READ_DEFAULT_VALUE);
 
   if (value == NULL)
     value = g_settings_schema_key_get_translated_default (&skey);
@@ -1354,7 +1350,7 @@ g_settings_get_enum (GSettings   *settings,
       return -1;
     }
 
-  value = g_settings_read_from_backend (settings, &skey, FALSE, FALSE);
+  value = g_settings_read_from_backend (settings, &skey, G_SETTINGS_BACKEND_READ_FLAGS_NONE);
 
   if (value == NULL)
     value = g_settings_schema_key_get_translated_default (&skey);
@@ -1467,7 +1463,7 @@ g_settings_get_flags (GSettings   *settings,
       return -1;
     }
 
-  value = g_settings_read_from_backend (settings, &skey, FALSE, FALSE);
+  value = g_settings_read_from_backend (settings, &skey, G_SETTINGS_BACKEND_READ_FLAGS_NONE);
 
   if (value == NULL)
     value = g_settings_schema_key_get_translated_default (&skey);
@@ -1732,7 +1728,7 @@ g_settings_get_mapped (GSettings           *settings,
 
   g_settings_schema_key_init (&skey, settings->priv->schema, key);
 
-  if ((value = g_settings_read_from_backend (settings, &skey, FALSE, FALSE)))
+  if ((value = g_settings_read_from_backend (settings, &skey, G_SETTINGS_BACKEND_READ_FLAGS_NONE)))
     {
       okay = mapping (value, &result, user_data);
       g_variant_unref (value);
@@ -2514,7 +2510,7 @@ g_settings_binding_key_changed (GSettings   *settings,
 
   g_value_init (&value, binding->property->value_type);
 
-  variant = g_settings_read_from_backend (binding->settings, &binding->key, FALSE, FALSE);
+  variant = g_settings_read_from_backend (binding->settings, &binding->key, G_SETTINGS_BACKEND_READ_FLAGS_NONE);
   if (variant && !binding->get_mapping (&value, variant, binding->user_data))
     {
       /* silently ignore errors in the user's config database */
@@ -3060,7 +3056,7 @@ g_settings_action_get_state (GAction *action)
   GSettingsAction *gsa = (GSettingsAction *) action;
   GVariant *value;
 
-  value = g_settings_read_from_backend (gsa->settings, &gsa->key, FALSE, FALSE);
+  value = g_settings_read_from_backend (gsa->settings, &gsa->key, G_SETTINGS_BACKEND_READ_FLAGS_NONE);
 
   if (value == NULL)
     value = g_settings_schema_key_get_translated_default (&gsa->key);

@@ -54,21 +54,17 @@ void                    g_settings_backend_watch                        (GSettin
 void                    g_settings_backend_unwatch                      (GSettingsBackend               *backend,
                                                                          GObject                        *target);
 
-GTree *                 g_settings_backend_create_tree                  (void);
-
-GVariant *              g_settings_backend_read                         (GSettingsBackend               *backend,
+GVariant *              g_settings_backend_read_value                   (GSettingsBackend               *backend,
                                                                          const gchar                    *key,
-                                                                         const GVariantType             *expected_type,
-                                                                         gboolean                        default_value);
-GVariant *              g_settings_backend_read_user_value              (GSettingsBackend               *backend,
-                                                                         const gchar                    *key,
+                                                                         GSettingsBackendReadFlags       flags,
+                                                                         GQueue                         *read_through,
                                                                          const GVariantType             *expected_type);
 gboolean                g_settings_backend_write                        (GSettingsBackend               *backend,
                                                                          const gchar                    *key,
                                                                          GVariant                       *value,
                                                                          gpointer                        origin_tag);
-gboolean                g_settings_backend_write_tree                   (GSettingsBackend               *backend,
-                                                                         GTree                          *tree,
+gboolean                g_settings_backend_write_changeset              (GSettingsBackend               *backend,
+                                                                         GSettingsBackendChangeset      *changeset,
                                                                          gpointer                        origin_tag);
 void                    g_settings_backend_reset                        (GSettingsBackend               *backend,
                                                                          const gchar                    *key,
