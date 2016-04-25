@@ -1,5 +1,6 @@
 /*
  * Copyright © 2010 Codethink Limited
+ * Copyright © 2015 Canonical Limited
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
  *
- * Author: Ryan Lortie <desrt@desrt.ca>
+ * Author: Allison Lortie <desrt@desrt.ca>
  */
 
 #include "config.h"
@@ -24,17 +25,16 @@
 #include "giomodule.h"
 
 
-#define G_TYPE_MEMORY_SETTINGS_BACKEND  (g_memory_settings_backend_get_type())
-#define G_MEMORY_SETTINGS_BACKEND(inst) (G_TYPE_CHECK_INSTANCE_CAST ((inst), \
-                                         G_TYPE_MEMORY_SETTINGS_BACKEND,     \
-                                         GMemorySettingsBackend))
+#define G_TYPE_MEMORY_SETTINGS_BACKEND (g_memory_settings_backend_get_type ())
+G_DECLARE_FINAL_TYPE(GMemorySettingsBackend, g_memory_settings_backend, G, MEMORY_SETTINGS_BACKEND, GSettingsBackend)
 
-typedef GSettingsBackendClass GMemorySettingsBackendClass;
-typedef struct
+struct _GMemorySettingsBackend
 {
   GSettingsBackend parent_instance;
-  GHashTable *table;
-} GMemorySettingsBackend;
+
+  GSettingsBackendChangeset *database;
+  GMutex lock;
+};
 
 G_DEFINE_TYPE_WITH_CODE (GMemorySettingsBackend,
                          g_memory_settings_backend,
@@ -43,21 +43,18 @@ G_DEFINE_TYPE_WITH_CODE (GMemorySettingsBackend,
                                                          g_define_type_id, "memory", 10))
 
 static GVariant *
-g_memory_settings_backend_read (GSettingsBackend   *backend,
-                                const gchar        *key,
-                                const GVariantType *expected_type,
-                                gboolean            default_value)
+g_memory_settings_backend_read_simple (GSettingsBackend   *backend,
+                                       const gchar        *key,
+                                       const GVariantType *expected_type)
 {
-  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
-  GVariant *value;
+  GMemorySettingsBackend *self = G_MEMORY_SETTINGS_BACKEND (backend);
+  GVariant *value = NULL;
 
-  if (default_value)
-    return NULL;
+  g_mutex_lock (&self->lock);
 
-  value = g_hash_table_lookup (memory->table, key);
+  g_settings_backend_changeset_get (self->database, key, &value);
 
-  if (value != NULL)
-    g_variant_ref (value);
+  g_mutex_unlock (&self->lock);
 
   return value;
 }
@@ -68,93 +65,53 @@ g_memory_settings_backend_write (GSettingsBackend *backend,
                                  GVariant         *value,
                                  gpointer          origin_tag)
 {
-  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
-  GVariant *old_value;
+  GMemorySettingsBackend *self = G_MEMORY_SETTINGS_BACKEND (backend);
 
-  old_value = g_hash_table_lookup (memory->table, key);
-  g_variant_ref_sink (value);
+  g_mutex_lock (&self->lock);
 
-  if (old_value == NULL || !g_variant_equal (value, old_value))
-    {
-      g_hash_table_insert (memory->table, g_strdup (key), value);
-      g_settings_backend_changed (backend, key, origin_tag);
-    }
-  else
-    g_variant_unref (value);
+  g_settings_backend_changeset_set (self->database, key, value);
+
+  g_mutex_unlock (&self->lock);
+
+  g_settings_backend_changed (backend, key, origin_tag);
 
   return TRUE;
 }
 
 static gboolean
-g_memory_settings_backend_write_one (gpointer key,
-                                     gpointer value,
-                                     gpointer data)
+g_memory_settings_backend_write_changeset (GSettingsBackend          *backend,
+                                           GSettingsBackendChangeset *changeset,
+                                           gpointer                   origin_tag)
 {
-  GMemorySettingsBackend *memory = data;
+  GMemorySettingsBackend *self = G_MEMORY_SETTINGS_BACKEND (backend);
 
-  if (value != NULL)
-    g_hash_table_insert (memory->table, g_strdup (key), g_variant_ref (value));
-  else
-    g_hash_table_remove (memory->table, key);
+  g_mutex_lock (&self->lock);
 
-  return FALSE;
-}
+  g_settings_backend_changeset_change (self->database, changeset);
 
-static gboolean
-g_memory_settings_backend_write_tree (GSettingsBackend *backend,
-                                      GTree            *tree,
-                                      gpointer          origin_tag)
-{
-  g_tree_foreach (tree, g_memory_settings_backend_write_one, backend);
-  g_settings_backend_changed_tree (backend, tree, origin_tag);
+  g_mutex_unlock (&self->lock);
+
+  g_settings_backend_changeset_applied (backend, changeset, origin_tag);
 
   return TRUE;
-}
-
-static void
-g_memory_settings_backend_reset (GSettingsBackend *backend,
-                                 const gchar      *key,
-                                 gpointer          origin_tag)
-{
-  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
-
-  if (g_hash_table_lookup (memory->table, key))
-    {
-      g_hash_table_remove (memory->table, key);
-      g_settings_backend_changed (backend, key, origin_tag);
-    }
-}
-
-static gboolean
-g_memory_settings_backend_get_writable (GSettingsBackend *backend,
-                                        const gchar      *name)
-{
-  return TRUE;
-}
-
-static GPermission *
-g_memory_settings_backend_get_permission (GSettingsBackend *backend,
-                                          const gchar      *path)
-{
-  return g_simple_permission_new (TRUE);
 }
 
 static void
 g_memory_settings_backend_finalize (GObject *object)
 {
-  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (object);
+  GMemorySettingsBackend *self = G_MEMORY_SETTINGS_BACKEND (object);
 
-  g_hash_table_unref (memory->table);
+  g_settings_backend_changeset_unref (self->database);
+  g_mutex_clear (&self->lock);
 
-  G_OBJECT_CLASS (g_memory_settings_backend_parent_class)
-    ->finalize (object);
+  G_OBJECT_CLASS (g_memory_settings_backend_parent_class)->finalize (object);
 }
 
 static void
-g_memory_settings_backend_init (GMemorySettingsBackend *memory)
+g_memory_settings_backend_init (GMemorySettingsBackend *self)
 {
-  memory->table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
-                                         (GDestroyNotify) g_variant_unref);
+  self->database = g_settings_backend_changeset_new_database (NULL);
+  g_mutex_init (&self->lock);
 }
 
 static void
@@ -163,12 +120,9 @@ g_memory_settings_backend_class_init (GMemorySettingsBackendClass *class)
   GSettingsBackendClass *backend_class = G_SETTINGS_BACKEND_CLASS (class);
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  backend_class->read = g_memory_settings_backend_read;
+  backend_class->read_simple = g_memory_settings_backend_read_simple;
   backend_class->write = g_memory_settings_backend_write;
-  backend_class->write_tree = g_memory_settings_backend_write_tree;
-  backend_class->reset = g_memory_settings_backend_reset;
-  backend_class->get_writable = g_memory_settings_backend_get_writable;
-  backend_class->get_permission = g_memory_settings_backend_get_permission;
+  backend_class->write_changeset = g_memory_settings_backend_write_changeset;
   object_class->finalize = g_memory_settings_backend_finalize;
 }
 
