@@ -79,7 +79,7 @@ test_app_monitor (void)
 
   g_timeout_add_seconds (3, quit_loop, loop);
 
-  delete_app (path);
+  delete_app (app_path);
 
   g_main_loop_run (loop);
 
