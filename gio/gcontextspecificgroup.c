@@ -234,6 +234,7 @@ g_context_specific_group_remove (GContextSpecificGroup *group,
 
   g_assert (css->instance == instance);
 
+  g_source_destroy ((GSource *) css);
   g_source_unref ((GSource *) css);
   g_main_context_unref (context);
 }
