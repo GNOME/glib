@@ -399,6 +399,19 @@ test_context_specific_emit (void)
   g_assert (!group.requested_state);
 }
 
+static void
+test_context_specific_emit_and_unref (void)
+{
+  gpointer obj;
+
+  obj = per_thread_thing_get ();
+  g_context_specific_group_emit (&group, g_signal_lookup ("changed", per_thread_thing_get_type ()));
+  g_object_unref (obj);
+
+  while (g_main_context_iteration (NULL, 0))
+    ;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -416,6 +429,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gio/contexts/context-independence", test_context_independence);
   g_test_add_func ("/gio/contexts/context-specific/identity", test_context_specific_identity);
   g_test_add_func ("/gio/contexts/context-specific/emit", test_context_specific_emit);
+  g_test_add_func ("/gio/contexts/context-specific/emit-and-unref", test_context_specific_emit_and_unref);
 
   ret = g_test_run();
 
