@@ -59,9 +59,6 @@
 #ifdef HAVE_SCHED_H
 #include <sched.h>
 #endif
-#ifdef HAVE_SYS_PRCTL_H
-#include <sys/prctl.h>
-#endif
 #ifdef G_OS_WIN32
 #include <windows.h>
 #endif
@@ -1227,12 +1224,10 @@ g_system_thread_exit (void)
 void
 g_system_thread_set_name (const gchar *name)
 {
-#if defined(HAVE_SYS_PRCTL_H) && defined(PR_SET_NAME)
-  prctl (PR_SET_NAME, name, 0, 0, 0, 0); /* on Linux */
+#if defined(HAVE_PTHREAD_SETNAME_NP_WITH_TID)
+  pthread_setname_np (pthread_self(), name); /* on Linux and Solaris */
 #elif defined(HAVE_PTHREAD_SETNAME_NP_WITHOUT_TID)
-  pthread_setname_np(name); /* on OS X and iOS */
-#elif defined(HAVE_PTHREAD_SETNAME_NP_WITH_TID)
-  pthread_setname_np(pthread_self(), name); /* on Solaris */
+  pthread_setname_np (name); /* on OS X and iOS */
 #endif
 }
 

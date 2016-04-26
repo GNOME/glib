@@ -170,14 +170,12 @@ test_thread5 (void)
 static gpointer
 thread6_func (gpointer data)
 {
-#ifdef HAVE_SYS_PRCTL_H
-#ifdef PR_GET_NAME
-  const gchar name[16];
+#ifdef HAVE_PTHREAD_SETNAME_NP_WITH_TID
+  char name[16];
 
-  prctl (PR_GET_NAME, name, 0, 0, 0, 0);
+  pthread_getname_np (pthread_self(), name, 16);
 
-  g_assert_cmpstr (name, ==, (gchar*)data);
-#endif
+  g_assert_cmpstr (name, ==, data);
 #endif
 
   return NULL;
