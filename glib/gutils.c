@@ -2391,6 +2391,7 @@ g_check_setuid (void)
 #endif
 }
 
+#ifdef G_OS_WIN32
 /**
  * g_abort:
  *
@@ -2414,3 +2415,4 @@ g_abort (void)
   /* And one call to bind them all and terminate the program for sure */
   ExitProcess (127);
 }
+#endif
