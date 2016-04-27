@@ -25,6 +25,9 @@
 #include "gresource.h"
 #include <gvdb/gvdb-reader.h>
 #include <gi18n-lib.h>
+#include <gstdio.h>
+#include <gio/gfile.h>
+#include <gio/gioerror.h>
 #include <gio/gmemoryinputstream.h>
 #include <gio/gzlibdecompressor.h>
 #include <gio/gconverterinputstream.h>
@@ -132,6 +135,34 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * when the library is unloaded. However, in practice this is not generally a problem, since most resource accesses
  * is for your own resources, and resource data is often used once, during parsing, and then released.
  *
+ * When debugging a program or testing a change to an installed version, it is often useful to be able to
+ * replace resources in the program or library, without recompiling, for debugging or quick hacking and testing
+ * purposes.
+ *
+ * Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment variable to selectively overlay
+ * resources with replacements from the filesystem.  It is a colon-separated list of substitutions to perform
+ * during resource lookups.
+ *
+ * A substitution has the form
+ *
+ * |[
+ *    /org/gtk/libgtk=/home/desrt/gtk-overlay
+ * ]|
+ *
+ * The part before the `=` is the resource subpath for which the overlay applies.  The part after is a
+ * filesystem path which contains files and subdirectories as you would like to be loaded as resources with the
+ * equivalent names.
+ *
+ * In the example above, if an application tried to load a resource with the resource path
+ * `/org/gtk/libgtk/ui/gtkdialog.ui` then GResource would check the filesystem path
+ * `/home/desrt/gtk-overlay/ui/gtkdialog.ui`.  If a file was found there, it would be used instead.  This is an
+ * overlay, not an outright replacement, which means that if a file is not found at that path, the built-in
+ * version will be used instead.  Whiteouts are not currently supported.
+ *
+ * Substitutions must start with a slash, and must not contain a trailing slash before the '='.  The path after
+ * the slash should ideally be absolute, but this is not strictly required.  It is possible to overlay the
+ * location of a single resource with an individual file.
+ *
  * Since: 2.32
  */
 
@@ -141,6 +172,267 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * #GStaticResource is an opaque data structure and can only be accessed
  * using the following functions.
  **/
+typedef gboolean (* CheckCandidate) (const gchar *candidate, gpointer user_data);
+
+static gboolean
+open_overlay_stream (const gchar *candidate,
+                     gpointer     user_data)
+{
+  GInputStream **res = (GInputStream **) user_data;
+  GError *error = NULL;
+  GFile *file;
+
+  file = g_file_new_for_path (candidate);
+  *res = (GInputStream *) g_file_read (file, NULL, &error);
+
+  if (*res)
+    {
+      g_message ("Opened file '%s' as a resource overlay", candidate);
+    }
+  else
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+        g_warning ("Can't open overlay file '%s': %s", candidate, error->message);
+      g_error_free (error);
+    }
+
+  g_object_unref (file);
+
+  return *res != NULL;
+}
+
+static gboolean
+get_overlay_bytes (const gchar *candidate,
+                   gpointer     user_data)
+{
+  GBytes **res = (GBytes **) user_data;
+  GMappedFile *mapped_file;
+  GError *error = NULL;
+
+  mapped_file = g_mapped_file_new (candidate, FALSE, &error);
+
+  if (mapped_file)
+    {
+      g_message ("Mapped file '%s' as a resource overlay", candidate);
+      *res = g_mapped_file_get_bytes (mapped_file);
+      g_mapped_file_unref (mapped_file);
+    }
+  else
+    {
+      if (!g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT))
+        g_warning ("Can't mmap overlay file '%s': %s", candidate, error->message);
+      g_error_free (error);
+    }
+
+  return *res != NULL;
+}
+
+static gboolean
+enumerate_overlay_dir (const gchar *candidate,
+                       gpointer     user_data)
+{
+  GHashTable **hash = (GHashTable **) user_data;
+  GError *error = NULL;
+  GDir *dir;
+  const gchar *name;
+
+  dir = g_dir_open (candidate, 0, &error);
+  if (dir)
+    {
+      if (*hash == NULL)
+        /* note: keep in sync with same line below */
+        *hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+
+      g_message ("Enumerating directory '%s' as resource overlay", candidate);
+
+      while ((name = g_dir_read_name (dir)))
+        {
+          gchar *fullname = g_build_filename (candidate, name, NULL);
+          GStatBuf buf;
+
+          /* match gvdb behaviour by suffixing "/" on dirs */
+          if (g_stat (fullname, &buf) == 0 && S_ISDIR (buf.st_mode))
+            g_hash_table_add (*hash, g_strconcat (name, "/", NULL));
+          else
+            g_hash_table_add (*hash, g_strdup (name));
+
+          g_free (fullname);
+        }
+
+      g_dir_close (dir);
+    }
+  else
+    {
+      if (!g_error_matches (error, G_FILE_ERROR, G_FILE_ERROR_NOENT))
+        g_warning ("Can't enumerate overlay directory '%s': %s", candidate, error->message);
+      g_error_free (error);
+      return FALSE;
+    }
+
+  /* We may want to enumerate results from more than one overlay
+   * directory.
+   */
+  return FALSE;
+}
+
+static gboolean
+g_resource_find_overlay (const gchar    *path,
+                         CheckCandidate  check,
+                         gpointer        user_data)
+{
+  /* This is a null-terminated array of replacement strings (with '=' inside) */
+  static const gchar * const *overlay_dirs;
+  gboolean res = FALSE;
+  gint path_len = -1;
+  gint i;
+
+  /* We try to be very fast in case there are no overlays.  Otherwise,
+   * we can take a bit more time...
+   */
+
+  if (g_once_init_enter (&overlay_dirs))
+    {
+      const gchar * const *result;
+      const gchar *envvar;
+
+      envvar = g_getenv ("G_RESOURCE_OVERLAYS");
+      if (envvar != NULL)
+        {
+          gchar **parts;
+          gint i, j;
+
+          parts = g_strsplit (envvar, ":", 0);
+
+          /* Sanity check the parts, dropping those that are invalid.
+           * 'i' may grow faster than 'j'.
+           */
+          for (i = j = 0; parts[i]; i++)
+            {
+              gchar *part = parts[i];
+              gchar *eq;
+
+              eq = strchr (part, '=');
+              if (eq == NULL)
+                {
+                  g_critical ("G_RESOURCE_OVERLAYS segment '%s' lacks '='.  Ignoring.", part);
+                  g_free (part);
+                  continue;
+                }
+
+              if (eq == part)
+                {
+                  g_critical ("G_RESOURCE_OVERLAYS segment '%s' lacks path before '='.  Ignoring.", part);
+                  g_free (part);
+                  continue;
+                }
+
+              if (eq[1] == '\0')
+                {
+                  g_critical ("G_RESOURCE_OVERLAYS segment '%s' lacks path after '='.  Ignoring", part);
+                  g_free (part);
+                  continue;
+                }
+
+              if (part[0] != '/')
+                {
+                  g_critical ("G_RESOURCE_OVERLAYS segment '%s' lacks leading '/'.  Ignoring.", part);
+                  g_free (part);
+                  continue;
+                }
+
+              if (eq[-1] == '/')
+                {
+                  g_critical ("G_RESOURCE_OVERLAYS segment '%s' has trailing '/' before '='.  Ignoring", part);
+                  g_free (part);
+                  continue;
+                }
+
+              if (eq[1] != '/')
+                {
+                  g_critical ("G_RESOURCE_OVERLAYS segment '%s' lacks leading '/' after '='.  Ignoring", part);
+                  g_free (part);
+                  continue;
+                }
+
+              g_message ("Adding GResources overlay '%s'", part);
+              parts[j++] = part;
+            }
+
+          parts[j] = NULL;
+
+          result = (const gchar **) parts;
+        }
+      else
+        {
+          /* We go out of the way to avoid malloc() in the normal case
+           * where the environment variable is not set.
+           */
+          static const gchar * const empty_strv[0 + 1];
+          result = empty_strv;
+        }
+
+      g_once_init_leave (&overlay_dirs, result);
+    }
+
+  for (i = 0; overlay_dirs[i]; i++)
+    {
+      const gchar *src;
+      gint src_len;
+      const gchar *dst;
+      gint dst_len;
+      gchar *candidate;
+
+      {
+        gchar *eq;
+
+        /* split the overlay into src/dst */
+        src = overlay_dirs[i];
+        eq = strchr (src, '=');
+        g_assert (eq); /* we checked this already */
+        src_len = eq - src;
+        dst = eq + 1;
+        /* hold off on dst_len because we will probably fail the checks below */
+      }
+
+      if (path_len == -1)
+        path_len = strlen (path);
+
+      /* The entire path is too short to match the source */
+      if (path_len < src_len)
+        continue;
+
+      /* It doesn't match the source */
+      if (memcmp (path, src, src_len) != 0)
+        continue;
+
+      /* The prefix matches, but it's not a complete path component */
+      if (path[src_len] && path[src_len] != '/')
+        continue;
+
+      /* OK.  Now we need this. */
+      dst_len = strlen (dst);
+
+      /* The candidate will be composed of:
+       *
+       *    dst + remaining_path + nul
+       */
+      candidate = g_malloc (dst_len + (path_len - src_len) + 1);
+      memcpy (candidate, dst, dst_len);
+      memcpy (candidate + dst_len, path + src_len, path_len - src_len);
+      candidate[dst_len + (path_len - src_len)] = '\0';
+
+      /* No matter what, 'r' is what we need, including the case where
+       * we are trying to enumerate a directory.
+       */
+      res = (* check) (candidate, user_data);
+      g_free (candidate);
+
+      if (res)
+        break;
+    }
+
+  return res;
+}
 
 /**
  * g_resource_error_quark:
@@ -664,6 +956,9 @@ g_resources_open_stream (const gchar           *path,
   GList *l;
   GInputStream *stream;
 
+  if (g_resource_find_overlay (path, open_overlay_stream, &res))
+    return res;
+
   register_lazy_static_resources ();
 
   g_rw_lock_reader_lock (&resources_lock);
@@ -733,6 +1028,9 @@ g_resources_lookup_data (const gchar           *path,
   GList *l;
   GBytes *data;
 
+  if (g_resource_find_overlay (path, get_overlay_bytes, &res))
+    return res;
+
   register_lazy_static_resources ();
 
   g_rw_lock_reader_lock (&resources_lock);
@@ -794,6 +1092,17 @@ g_resources_enumerate_children (const gchar           *path,
   char **children;
   int i;
 
+  /* This will enumerate actual files found in overlay directories but
+   * will not enumerate the overlays themselves.  For example, if we
+   * have an overlay "/org/gtk=/path/to/files" and we enumerate "/org"
+   * then we will not see "gtk" in the result set unless it is provided
+   * by another resource file.
+   *
+   * This is probably not going to be a problem since if we are doing
+   * such an overlay, we probably will already have that path.
+   */
+  g_resource_find_overlay (path, enumerate_overlay_dir, &hash);
+
   register_lazy_static_resources ();
 
   g_rw_lock_reader_lock (&resources_lock);
@@ -807,6 +1116,7 @@ g_resources_enumerate_children (const gchar           *path,
       if (children != NULL)
         {
           if (hash == NULL)
+            /* note: keep in sync with same line above */
             hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
           for (i = 0; children[i] != NULL; i++)
