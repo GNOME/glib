@@ -303,12 +303,9 @@ g_poll (GPollFD *fds,
 
       /* If not, and we have a significant timeout, poll again with
        * timeout then. Note that this will return indication for only
-       * one event, or only for messages. We ignore timeouts less than
-       * ten milliseconds as they are mostly pointless on Windows, the
-       * MsgWaitForMultipleObjectsEx() call will timeout right away
-       * anyway.
+       * one event, or only for messages.
        */
-      if (retval == 0 && (timeout == INFINITE || timeout >= 10))
+      if (retval == 0 && (timeout == INFINITE || timeout > 0))
 	retval = poll_rest (poll_msgs, handles, nhandles, fds, nfds, timeout);
     }
   else
