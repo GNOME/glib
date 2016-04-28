@@ -810,7 +810,7 @@ g_resources_enumerate_children (const gchar           *path,
             hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
           for (i = 0; children[i] != NULL; i++)
-            g_hash_table_insert (hash, children[i], children[i]);
+            g_hash_table_add (hash, children[i]);
           g_free (children);
         }
     }
@@ -826,18 +826,8 @@ g_resources_enumerate_children (const gchar           *path,
     }
   else
     {
-      GHashTableIter iter;
-      const char *key;
-      guint n_children;
-      n_children = g_hash_table_size (hash);
-      children = g_new (char *, n_children + 1);
-      i = 0;
-
-      g_hash_table_iter_init (&iter, hash);
-      while (g_hash_table_iter_next (&iter, (gpointer *)&key, NULL))
-        children[i++] = g_strdup (key);
-      children[i++] = NULL;
-
+      children = (gchar **) g_hash_table_get_keys_as_array (hash, NULL);
+      g_hash_table_steal_all (hash);
       g_hash_table_destroy (hash);
 
       return children;
