@@ -1038,25 +1038,31 @@ handle_call (gint        *argc,
                                         &error);
   if (result == NULL)
     {
-      if (error)
+      g_printerr (_("Error: %s\n"), error->message);
+
+      if (g_error_matches (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS) && in_signature_types != NULL)
         {
-          g_printerr (_("Error: %s\n"), error->message);
-          g_error_free (error);
-        }
-      if (in_signature_types != NULL)
-        {
-          GString *s;
-          s = g_string_new (NULL);
-          for (n = 0; n < in_signature_types->len; n++)
+          if (in_signature_types->len > 0)
             {
-              GVariantType *type = in_signature_types->pdata[n];
-              g_string_append_len (s,
-                                   g_variant_type_peek_string (type),
-                                   g_variant_type_get_string_length (type));
+              GString *s;
+              s = g_string_new (NULL);
+
+              for (n = 0; n < in_signature_types->len; n++)
+                {
+                  GVariantType *type = in_signature_types->pdata[n];
+                  g_string_append_len (s,
+                                       g_variant_type_peek_string (type),
+                                       g_variant_type_get_string_length (type));
+                }
+
+              g_printerr ("(According to introspection data, you need to pass '%s')\n", s->str);
+              g_string_free (s, TRUE);
             }
-          g_printerr ("(According to introspection data, you need to pass '%s')\n", s->str);
-          g_string_free (s, TRUE);
+          else
+            g_printerr ("(According to introspection data, you need to pass no arguments)\n");
         }
+
+      g_error_free (error);
       goto out;
     }
 
