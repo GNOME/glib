@@ -213,6 +213,7 @@ CLEANFILES += tmpsample.xml
 check-am: gtester-xmllint-check
 
 private_LDFLAGS = @G_THREAD_LIBS@
+thread_LDFLAGS = @G_THREAD_LIBS@
 endif
 
 if HAVE_GCC
