@@ -46,7 +46,6 @@
 
 static GIRepository *default_repository = NULL;
 static GSList *search_path = NULL;
-static GSList *override_search_path = NULL;
 
 struct _GIRepositoryPrivate
 {
@@ -163,7 +162,6 @@ init_globals (void)
       type_lib_path_env = g_getenv ("GI_TYPELIB_PATH");
 
       search_path = NULL;
-      override_search_path = NULL;
       if (type_lib_path_env)
         {
           gchar **custom_dirs;
@@ -174,16 +172,13 @@ init_globals (void)
           d = custom_dirs;
           while (*d)
             {
-              override_search_path = g_slist_prepend (override_search_path, *d);
+              search_path = g_slist_prepend (search_path, *d);
               d++;
             }
 
           /* ownership of the array content was passed to the list */
           g_free (custom_dirs);
         }
-
-      if (override_search_path != NULL)
-        override_search_path = g_slist_reverse (override_search_path);
 
       libdir = GOBJECT_INTROSPECTION_LIBDIR;
 
@@ -225,23 +220,6 @@ GSList *
 g_irepository_get_search_path (void)
 {
   return search_path;
-}
-
-static GSList *
-build_search_path_with_overrides (void)
-{
-  GSList *result;
-
-  init_globals ();
-
-  if (override_search_path != NULL)
-    {
-      result = g_slist_copy (override_search_path);
-      g_slist_last (result)->next = g_slist_copy (search_path);
-    }
-  else
-    result = g_slist_copy (search_path);
-  return result;
 }
 
 static char *
@@ -1394,13 +1372,11 @@ g_irepository_enumerate_versions (GIRepository *repository,
 			 const gchar  *namespace_)
 {
   GList *ret = NULL;
-  GSList *search_path;
   GSList *candidates, *link;
   const gchar *loaded_version;
 
-  search_path = build_search_path_with_overrides ();
+  init_globals ();
   candidates = enumerate_namespace_versions (namespace_, search_path);
-  g_slist_free (search_path);
 
   for (link = candidates; link; link = link->next)
     {
@@ -1563,13 +1539,11 @@ g_irepository_require (GIRepository  *repository,
 		       GIRepositoryLoadFlags flags,
 		       GError       **error)
 {
-  GSList *search_path;
   GITypelib *typelib;
 
-  search_path = build_search_path_with_overrides ();
+  init_globals ();
   typelib = require_internal (repository, namespace, version, flags,
 			      search_path, error);
-  g_slist_free (search_path);
 
   return typelib;
 }
