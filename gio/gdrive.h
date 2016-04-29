@@ -45,6 +45,7 @@ G_BEGIN_DECLS
  * @get_icon: Returns a #GIcon for the given #GDrive.
  * @has_volumes: Returns %TRUE if the #GDrive has mountable volumes.
  * @get_volumes: Returns a list #GList of #GVolume for the #GDrive.
+ * @is_removable: Returns %TRUE if the #GDrive and/or its media is considered removable by the user. Since 2.50.
  * @is_media_removable: Returns %TRUE if the #GDrive supports removal and insertion of media.
  * @has_media: Returns %TRUE if the #GDrive has media inserted.
  * @is_media_check_automatic: Returns %TRUE if the #GDrive is capabable of automatically detecting media changes.
@@ -90,6 +91,7 @@ struct _GDriveIface
   GIcon *  (* get_icon)                 (GDrive              *drive);
   gboolean (* has_volumes)              (GDrive              *drive);
   GList *  (* get_volumes)              (GDrive              *drive);
+  gboolean (* is_removable)             (GDrive              *drive);
   gboolean (* is_media_removable)       (GDrive              *drive);
   gboolean (* has_media)                (GDrive              *drive);
   gboolean (* is_media_check_automatic) (GDrive              *drive);
@@ -170,6 +172,8 @@ GLIB_AVAILABLE_IN_ALL
 gboolean g_drive_has_volumes              (GDrive               *drive);
 GLIB_AVAILABLE_IN_ALL
 GList *  g_drive_get_volumes              (GDrive               *drive);
+GLIB_AVAILABLE_IN_2_50
+gboolean g_drive_is_removable             (GDrive               *drive);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_drive_is_media_removable       (GDrive               *drive);
 GLIB_AVAILABLE_IN_ALL

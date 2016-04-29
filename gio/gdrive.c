@@ -267,6 +267,31 @@ g_drive_is_media_check_automatic (GDrive *drive)
 }
 
 /**
+ * g_drive_is_removable:
+ * @drive: a #GDrive.
+ *
+ * Checks if the #GDrive and/or its media is considered removable by the user.
+ * See g_drive_is_media_removable().
+ *
+ * Returns: %TRUE if @drive and/or its media is considered removable, %FALSE otherwise.
+ *
+ * Since: 2.50
+ **/
+gboolean
+g_drive_is_removable (GDrive *drive)
+{
+  GDriveIface *iface;
+
+  g_return_val_if_fail (G_IS_DRIVE (drive), FALSE);
+
+  iface = G_DRIVE_GET_IFACE (drive);
+  if (iface->is_removable != NULL)
+    return iface->is_removable (drive);
+
+  return FALSE;
+}
+
+/**
  * g_drive_is_media_removable:
  * @drive: a #GDrive.
  * 
