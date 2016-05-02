@@ -307,6 +307,10 @@ class CodeGenerator:
 
             self.h.write('};\n')
             self.h.write('\n')
+            self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
+            self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%s, g_object_unref)\n' % (i.camel_name))
+            self.h.write('#endif\n')
+            self.h.write('\n')
             self.h.write('GType %s_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.h.write('\n')
             self.h.write('GDBusInterfaceInfo *%s_interface_info (void);\n'%(i.name_lower))
