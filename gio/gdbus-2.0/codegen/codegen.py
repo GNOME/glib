@@ -28,9 +28,10 @@ from . import dbustypes
 # ----------------------------------------------------------------------------------------------------
 
 class CodeGenerator:
-    def __init__(self, ifaces, namespace, interface_prefix, generate_objmanager, docbook_gen, h, c):
+    def __init__(self, ifaces, namespace, interface_prefix, generate_objmanager, generate_autocleanup, docbook_gen, h, c):
         self.docbook_gen = docbook_gen
         self.generate_objmanager = generate_objmanager
+        self.generate_autocleanup = generate_autocleanup
         self.ifaces = ifaces
         self.h = h
         self.c = c
@@ -307,10 +308,11 @@ class CodeGenerator:
 
             self.h.write('};\n')
             self.h.write('\n')
-            self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0) && defined(GLIB_VERSION_2_50) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_50\n')
-            self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%s, g_object_unref)\n' % (i.camel_name))
-            self.h.write('#endif\n')
-            self.h.write('\n')
+            if self.generate_autocleanup == 'all':
+                self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
+                self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%s, g_object_unref)\n' % (i.camel_name))
+                self.h.write('#endif\n')
+                self.h.write('\n')
             self.h.write('GType %s_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.h.write('\n')
             self.h.write('GDBusInterfaceInfo *%s_interface_info (void);\n'%(i.name_lower))
@@ -455,11 +457,11 @@ class CodeGenerator:
             self.h.write('\n')
             self.h.write('GType %s_proxy_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.h.write('\n')
-            self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
-            self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sProxy, g_object_unref)\n' % (i.camel_name))
-            self.h.write('#endif\n')
-
-            self.h.write('\n')
+            if self.generate_autocleanup in ('objects', 'all'):
+                self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
+                self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sProxy, g_object_unref)\n' % (i.camel_name))
+                self.h.write('#endif\n')
+                self.h.write('\n')
             if i.deprecated:
                 self.h.write('G_GNUC_DEPRECATED ')
             self.h.write('void %s_proxy_new (\n'
@@ -546,10 +548,11 @@ class CodeGenerator:
             self.h.write('\n')
             self.h.write('GType %s_skeleton_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.h.write('\n')
-            self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
-            self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sSkeleton, g_object_unref)\n' % (i.camel_name))
-            self.h.write('#endif\n')
-            self.h.write('\n')
+            if self.generate_autocleanup in ('objects', 'all'):
+                self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
+                self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sSkeleton, g_object_unref)\n' % (i.camel_name))
+                self.h.write('#endif\n')
+                self.h.write('\n')
             if i.deprecated:
                 self.h.write('G_GNUC_DEPRECATED ')
             self.h.write('%s *%s_skeleton_new (void);\n'%(i.camel_name, i.name_lower))
@@ -614,10 +617,11 @@ class CodeGenerator:
             self.h.write('\n')
             self.h.write('GType %sobject_proxy_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
             self.h.write('\n')
-            self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
-            self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectProxy, g_object_unref)\n' % (self.namespace))
-            self.h.write('#endif\n')
-            self.h.write('\n')
+            if self.generate_autocleanup in ('objects', 'all'):
+                self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
+                self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectProxy, g_object_unref)\n' % (self.namespace))
+                self.h.write('#endif\n')
+                self.h.write('\n')
             self.h.write('%sObjectProxy *%sobject_proxy_new (GDBusConnection *connection, const gchar *object_path);\n'%(self.namespace, self.ns_lower))
             self.h.write('\n')
             self.h.write('#define %sTYPE_OBJECT_SKELETON (%sobject_skeleton_get_type ())\n'%(self.ns_upper, self.ns_lower))
@@ -645,10 +649,11 @@ class CodeGenerator:
             self.h.write('\n')
             self.h.write('GType %sobject_skeleton_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
             self.h.write('\n')
-            self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
-            self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectSkeleton, g_object_unref)\n' % (self.namespace))
-            self.h.write('#endif\n')
-            self.h.write('\n')
+            if self.generate_autocleanup in ('objects', 'all'):
+                self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
+                self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectSkeleton, g_object_unref)\n' % (self.namespace))
+                self.h.write('#endif\n')
+                self.h.write('\n')
             self.h.write('%sObjectSkeleton *%sobject_skeleton_new (const gchar *object_path);\n'
                          %(self.namespace, self.ns_lower))
             for i in self.ifaces:
@@ -683,10 +688,11 @@ class CodeGenerator:
             self.h.write('  GDBusObjectManagerClientClass parent_class;\n')
             self.h.write('};\n')
             self.h.write('\n')
-            self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
-            self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectManagerClient, g_object_unref)\n' % (self.namespace))
-            self.h.write('#endif\n')
-            self.h.write('\n')
+            if self.generate_autocleanup in ('objects', 'all'):
+                self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
+                self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%sObjectManagerClient, g_object_unref)\n' % (self.namespace))
+                self.h.write('#endif\n')
+                self.h.write('\n')
             self.h.write('GType %sobject_manager_client_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
             self.h.write('\n')
             self.h.write('GType %sobject_manager_client_get_proxy_type (GDBusObjectManagerClient *manager, const gchar *object_path, const gchar *interface_name, gpointer user_data);\n'%(self.ns_lower))

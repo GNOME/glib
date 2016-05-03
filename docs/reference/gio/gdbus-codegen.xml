@@ -32,6 +32,7 @@
     <arg><option>--generate-c-code</option> <replaceable>OUTFILES</replaceable></arg>
     <arg><option>--c-namespace</option> <replaceable>YourProject</replaceable></arg>
     <arg><option>--c-generate-object-manager</option></arg>
+    <arg><option>--c-generate-autocleanup</option> none|objects|all</arg>
     <arg><option>--generate-docbook</option> <replaceable>OUTFILES</replaceable></arg>
     <arg><option>--xml-files</option> <replaceable>FILE</replaceable></arg>
     <group choice="plain" rep="repeat">
@@ -210,6 +211,21 @@
           If this option is passed, suitable #GDBusObject,
           #GDBusObjectProxy, #GDBusObjectSkeleton and
           #GDBusObjectManagerClient subclasses are generated.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--c-generate-autocleanup</option> none|objects|all</term>
+      <listitem>
+        <para>
+          This option influences what types autocleanup functions are
+          generated for. 'none' means to not generate any autocleanup functions.
+          'objects' means to generate them for object types, and 'all' means to
+          generate them for object types and interfaces. The default is 'objects'
+          due to a corner case in backwards compatibility with a few projects,
+          but you should likely switch your project to use 'all'.
+          This option was added in GLib 2.50.
         </para>
       </listitem>
     </varlistentry>

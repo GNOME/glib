@@ -156,6 +156,8 @@ def codegen_main():
                             help='Generate a GDBusObjectManagerClient subclass when generating C code')
     arg_parser.add_option('', '--generate-c-code', metavar='OUTFILES',
                           help='Generate C code in OUTFILES.[ch]')
+    arg_parser.add_option('', '--c-generate-autocleanup', type='choice', choices=['none', 'objects', 'all'], default='objects',
+                             help='Generate autocleanup support')
     arg_parser.add_option('', '--generate-docbook', metavar='OUTFILES',
                           help='Generate Docbook in OUTFILES-org.Project.IFace.xml')
     arg_parser.add_option('', '--annotate', nargs=3, action='append', metavar='WHAT KEY VALUE',
@@ -189,6 +191,7 @@ def codegen_main():
                                     opts.c_namespace,
                                     opts.interface_prefix,
                                     opts.c_generate_object_manager,
+                                    opts.c_generate_autocleanup,
                                     docbook_gen,
                                     h, c);
         ret = gen.generate()
