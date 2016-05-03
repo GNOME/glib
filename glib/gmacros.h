@@ -54,15 +54,30 @@
 #endif
 
 /* Every compiler that we target supports inlining, but some of them may
- * complain about it if we don't say "__inline".  If we have C99, then
- * we can use "inline" directly.  Otherwise, we say "__inline" to avoid
- * the warning.
+ * complain about it if we don't say "__inline".  If we have C99, or if
+ * we are using C++, then we can use "inline" directly.  Unfortunately
+ * Visual Studio does not support __STDC_VERSION__, so we need to check
+ * whether we are on Visual Studio 2013 or earlier to see that we need to
+ * say "__inline" in C mode.
+ * Otherwise, we say "__inline" to avoid the warning.
  */
 #define G_CAN_INLINE
-#if !defined(__STDC_VERSION__) || (__STDC_VERSION__ < 199900)
-#undef inline
-#define inline __inline
+#ifndef __cplusplus
+# ifdef _MSC_VER
+#  if (_MSC_VER < 1900)
+#   define G_INLINE_DEFINE_NEEDED
+#  endif
+# elif !defined(__STDC_VERSION__) || (__STDC_VERSION__ < 199900)
+#  define G_INLINE_DEFINE_NEEDED
+# endif
 #endif
+
+#ifdef G_INLINE_DEFINE_NEEDED
+# undef inline
+# define inline __inline
+#endif
+
+#undef G_INLINE_DEFINE_NEEDED
 
 /* For historical reasons we need to continue to support those who
  * define G_IMPLEMENT_INLINES to mean "don't implement this here".
