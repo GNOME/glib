@@ -307,7 +307,7 @@ class CodeGenerator:
 
             self.h.write('};\n')
             self.h.write('\n')
-            self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0)\n')
+            self.h.write('#if GLIB_CHECK_VERSION(2, 44, 0) && defined(GLIB_VERSION_2_50) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_50\n')
             self.h.write('G_DEFINE_AUTOPTR_CLEANUP_FUNC (%s, g_object_unref)\n' % (i.camel_name))
             self.h.write('#endif\n')
             self.h.write('\n')
