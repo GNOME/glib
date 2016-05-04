@@ -248,10 +248,9 @@ enumerate_overlay_dir (const gchar *candidate,
       while ((name = g_dir_read_name (dir)))
         {
           gchar *fullname = g_build_filename (candidate, name, NULL);
-          GStatBuf buf;
 
           /* match gvdb behaviour by suffixing "/" on dirs */
-          if (g_stat (fullname, &buf) == 0 && S_ISDIR (buf.st_mode))
+          if (g_file_test (fullname, G_FILE_TEST_IS_DIR))
             g_hash_table_add (*hash, g_strconcat (name, "/", NULL));
           else
             g_hash_table_add (*hash, g_strdup (name));
