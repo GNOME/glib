@@ -3285,6 +3285,7 @@ g_socket_close (GSocket  *socket,
       break;
     }
 
+  socket->priv->fd = -1;
   socket->priv->connected_read = FALSE;
   socket->priv->connected_write = FALSE;
   socket->priv->closed = TRUE;
