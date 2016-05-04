@@ -1197,6 +1197,10 @@ test_fd_reuse (void)
   g_socket_close (data->server, &error);
   g_assert_no_error (error);
 
+  g_assert_cmpint (g_socket_get_fd (client), ==, -1);
+  g_assert_cmpint (g_socket_get_fd (client2), ==, -1);
+  g_assert_cmpint (g_socket_get_fd (data->server), ==, -1);
+
   g_object_unref (data->server);
   g_object_unref (client);
   g_object_unref (client2);
