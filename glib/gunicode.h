@@ -112,7 +112,7 @@ typedef guint16 gunichar2;
  *
  * These are the possible character classifications from the
  * Unicode specification.
- * See <ulink url="http://www.unicode.org/Public/UNIDATA/UnicodeData.html">http://www.unicode.org/Public/UNIDATA/UnicodeData.html</ulink>.
+ * See <ulink url="http://www.unicode.org/reports/tr44/#General_Category_Values">Unicode Character Database</unlink>.
  */
 typedef enum
 {
