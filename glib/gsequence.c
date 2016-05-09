@@ -176,6 +176,13 @@ get_sequence (GSequenceNode *node)
 }
 
 static gboolean
+seq_is_end (GSequence     *seq,
+            GSequenceIter *iter)
+{
+  return seq->end_node == iter;
+}
+
+static gboolean
 is_end (GSequenceIter *iter)
 {
   GSequenceIter *parent = iter->parent;
@@ -533,9 +540,10 @@ g_sequence_remove (GSequenceIter *iter)
   GSequence *seq;
 
   g_return_if_fail (iter != NULL);
-  g_return_if_fail (!is_end (iter));
 
   seq = get_sequence (iter);
+  g_return_if_fail (!seq_is_end (seq, iter));
+
   check_seq_access (seq);
 
   node_unlink (iter);
@@ -748,10 +756,11 @@ g_sequence_sort_changed (GSequenceIter    *iter,
   GSequence *seq;
   SortInfo info;
 
-  g_return_if_fail (!is_end (iter));
+  g_return_if_fail (iter != NULL);
 
   seq = get_sequence (iter);
   /* check_seq_access() call is done by g_sequence_sort_changed_iter() */
+  g_return_if_fail (!seq_is_end (seq, iter));
 
   info.cmp_func = cmp_func;
   info.cmp_data = cmp_data;
@@ -935,10 +944,11 @@ g_sequence_sort_changed_iter (GSequenceIter            *iter,
   GSequenceIter *next, *prev;
 
   g_return_if_fail (iter != NULL);
-  g_return_if_fail (!is_end (iter));
   g_return_if_fail (iter_cmp != NULL);
 
   seq = get_sequence (iter);
+  g_return_if_fail (!seq_is_end (seq, iter));
+
   check_seq_access (seq);
 
   /* If one of the neighbours is equal to iter, then
@@ -1220,9 +1230,9 @@ g_sequence_set (GSequenceIter *iter,
   GSequence *seq;
 
   g_return_if_fail (iter != NULL);
-  g_return_if_fail (!is_end (iter));
 
   seq = get_sequence (iter);
+  g_return_if_fail (!seq_is_end (seq, iter));
 
   /* If @data is identical to iter->data, it is destroyed
    * here. This will work right in case of ref-counted objects. Also
