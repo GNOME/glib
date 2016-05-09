@@ -175,12 +175,6 @@ get_sequence (GSequenceNode *node)
   return (GSequence *)node_get_last (node)->data;
 }
 
-static void
-check_iter_access (GSequenceIter *iter)
-{
-  check_seq_access (get_sequence (iter));
-}
-
 static gboolean
 is_end (GSequenceIter *iter)
 {
@@ -412,13 +406,17 @@ g_sequence_iter_compare (GSequenceIter *a,
                          GSequenceIter *b)
 {
   gint a_pos, b_pos;
+  GSequence *seq_a, *seq_b;
 
   g_return_val_if_fail (a != NULL, 0);
   g_return_val_if_fail (b != NULL, 0);
-  g_return_val_if_fail (get_sequence (a) == get_sequence (b), 0);
 
-  check_iter_access (a);
-  check_iter_access (b);
+  seq_a = get_sequence (a);
+  seq_b = get_sequence (b);
+  g_return_val_if_fail (seq_a == seq_b, 0);
+
+  check_seq_access (seq_a);
+  check_seq_access (seq_b);
 
   a_pos = node_get_pos (a);
   b_pos = node_get_pos (b);
@@ -502,11 +500,13 @@ GSequenceIter *
 g_sequence_insert_before (GSequenceIter *iter,
                           gpointer       data)
 {
+  GSequence *seq;
   GSequenceNode *node;
 
   g_return_val_if_fail (iter != NULL, NULL);
 
-  check_iter_access (iter);
+  seq = get_sequence (iter);
+  check_seq_access (seq);
 
   node = node_new (data);
 
@@ -535,9 +535,8 @@ g_sequence_remove (GSequenceIter *iter)
   g_return_if_fail (iter != NULL);
   g_return_if_fail (!is_end (iter));
 
-  check_iter_access (iter);
-
   seq = get_sequence (iter);
+  check_seq_access (seq);
 
   node_unlink (iter);
   node_free (iter, seq);
@@ -559,10 +558,12 @@ void
 g_sequence_remove_range (GSequenceIter *begin,
                          GSequenceIter *end)
 {
-  g_return_if_fail (get_sequence (begin) == get_sequence (end));
+  GSequence *seq_begin, *seq_end;
 
-  check_iter_access (begin);
-  check_iter_access (end);
+  seq_begin = get_sequence (begin);
+  seq_end = get_sequence (end);
+  g_return_if_fail (seq_begin == seq_end);
+  /* check_seq_access() calls are done by g_sequence_move_range() */
 
   g_sequence_move_range (NULL, begin, end);
 }
@@ -589,20 +590,25 @@ g_sequence_move_range (GSequenceIter *dest,
                        GSequenceIter *begin,
                        GSequenceIter *end)
 {
-  GSequence *src_seq;
+  GSequence *src_seq, *end_seq, *dest_seq;
   GSequenceNode *first;
 
   g_return_if_fail (begin != NULL);
   g_return_if_fail (end != NULL);
 
-  check_iter_access (begin);
-  check_iter_access (end);
-  if (dest)
-    check_iter_access (dest);
-
   src_seq = get_sequence (begin);
+  check_seq_access (src_seq);
 
-  g_return_if_fail (src_seq == get_sequence (end));
+  end_seq = get_sequence (end);
+  check_seq_access (end_seq);
+
+  if (dest)
+    {
+      dest_seq = get_sequence (dest);
+      check_seq_access (dest_seq);
+    }
+
+  g_return_if_fail (src_seq == end_seq);
 
   /* Dest points to begin or end? */
   if (dest == begin || dest == end)
@@ -613,14 +619,12 @@ g_sequence_move_range (GSequenceIter *dest,
     return;
 
   /* dest points somewhere in the (begin, end) range? */
-  if (dest && get_sequence (dest) == src_seq &&
+  if (dest && dest_seq == src_seq &&
       g_sequence_iter_compare (dest, begin) > 0 &&
       g_sequence_iter_compare (dest, end) < 0)
     {
       return;
     }
-
-  src_seq = get_sequence (begin);
 
   first = node_get_first (begin);
 
@@ -741,14 +745,17 @@ g_sequence_sort_changed (GSequenceIter    *iter,
                          GCompareDataFunc  cmp_func,
                          gpointer          cmp_data)
 {
+  GSequence *seq;
   SortInfo info;
 
   g_return_if_fail (!is_end (iter));
 
+  seq = get_sequence (iter);
+  /* check_seq_access() call is done by g_sequence_sort_changed_iter() */
+
   info.cmp_func = cmp_func;
   info.cmp_data = cmp_data;
-  info.end_node = get_sequence (iter)->end_node;
-  check_iter_access (iter);
+  info.end_node = seq->end_node;
 
   g_sequence_sort_changed_iter (iter, iter_compare, &info);
 }
@@ -930,7 +937,9 @@ g_sequence_sort_changed_iter (GSequenceIter            *iter,
   g_return_if_fail (iter != NULL);
   g_return_if_fail (!is_end (iter));
   g_return_if_fail (iter_cmp != NULL);
-  check_iter_access (iter);
+
+  seq = get_sequence (iter);
+  check_seq_access (seq);
 
   /* If one of the neighbours is equal to iter, then
    * don't move it. This ensures that sort_changed() is
@@ -945,8 +954,6 @@ g_sequence_sort_changed_iter (GSequenceIter            *iter,
 
   if (!is_end (next) && iter_cmp (next, iter, cmp_data) == 0)
     return;
-
-  seq = get_sequence (iter);
 
   seq->access_prohibited = TRUE;
 
