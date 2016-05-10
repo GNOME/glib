@@ -439,7 +439,7 @@ static inline gboolean
 g_unichar_iswide_bsearch (gunichar ch)
 {
   int lower = 0;
-  int upper = G_N_ELEMENTS (g_unicode_width_table_wide) + 1;
+  int upper = G_N_ELEMENTS (g_unicode_width_table_wide) - 1;
   static int saved_mid = G_WIDTH_TABLE_MIDPOINT;
   int mid = saved_mid;
 
