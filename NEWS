@@ -1,3 +1,33 @@
+Overview of changes in GLib 2.48.1
+==================================
+
+Bugs fixed:
+ 731988 glocalfile: Avoid a potential NULL pointer dereference
+ 747107 GVariant varargs documentation: g_variant_get() example
+ 747478 g_system_thread_set_name() is not implemented for gthread-win32
+ 748474 g_get_language_names() is not thread-safe
+ 748530 gthread: W32 implementation of g_get_num_processors() has lame fallback
+ 748806 GVariant: Better introduction to the concepts and its uses
+ 749606 tests: always remove app.desktop
+ 758174 Fix documentation typos
+ 758738 Usage of GType properties causes crashes due to gulong/gpointer mismatch
+ 762994 Race condition in GIO/AppFileChooser crashes Firefox/Gtk3
+ 763379 codegen: Add support for g_autoptr to gdbus-codegen–generated objects
+ 763821 build: Also dist Systemtap files always for gobject/
+ 764092 gstrfuncs: Document the behaviour of g_strjoinv()
+ 764574 build: Fix all statfs() tests failing
+ 764575 tests: Fix compilation errors due to Y2K format problems
+ 764685 GApplication documentation about handling command-line options is confusing
+ 764754 '-' in application id: unbreak bus activation and notifications
+ 765959 socket: set fd field to -1 after closing socket
+ 765990 Visual Studio: Define inline only when necessary
+
+Translations updated:
+ Basque language
+ Catalan
+ Vietnamese
+ zh_CN
+
 Overview of changes in GLib 2.48.0
 ==================================
 
