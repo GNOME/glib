@@ -447,6 +447,8 @@ test_wide (void)
     {   0xFFFC, NOT_WIDE },
     {  0x10000, NOT_WIDE },
     {  0xE0001, NOT_WIDE },
+    {  0x2FFFE, NOT_WIDE },
+    {  0x3FFFE, NOT_WIDE },
 
     /* Narrow */
     {   0x0020, NOT_WIDE },
