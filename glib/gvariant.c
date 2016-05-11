@@ -3591,7 +3591,10 @@ g_variant_make_array_type (GVariant *element)
  * It is not permissible to use @builder in any way after this call
  * except for reference counting operations (in the case of a
  * heap-allocated #GVariantBuilder) or by reinitialising it with
- * g_variant_builder_init() (in the case of stack-allocated).
+ * g_variant_builder_init() (in the case of stack-allocated). This
+ * means that for the stack-allocated builders there is no need to
+ * call g_variant_builder_clear() after the call to
+ * g_variant_builder_end().
  *
  * It is an error to call this function in any way that would create an
  * inconsistent value to be constructed (ie: insufficient number of
