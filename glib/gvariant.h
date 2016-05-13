@@ -297,7 +297,15 @@ gboolean                        g_variant_iter_loop                     (GVarian
 typedef struct _GVariantBuilder GVariantBuilder;
 struct _GVariantBuilder {
   /*< private >*/
-  gsize x[16];
+  union
+  {
+    struct {
+      gsize partial_magic;
+      const GVariantType *type;
+      gsize y[14];
+    };
+    gsize x[16];
+  };
 };
 
 typedef enum
@@ -328,6 +336,30 @@ GQuark                          g_variant_parser_get_error_quark        (void);
 
 GLIB_AVAILABLE_IN_ALL
 GQuark                          g_variant_parse_error_quark             (void);
+
+/**
+ * G_VARIANT_BUILDER_INIT:
+ * @variant_type: a const GVariantType*
+ *
+ * A stack-allocated #GVariantBuilder must be initialized if it is
+ * used together with g_auto() to avoid warnings or crashes if
+ * function returns before g_variant_builder_init() is called on the
+ * builder.  This macro can be used as initializer instead of an
+ * explicit zeroing a variable when declaring it and a following
+ * g_variant_builder_init(), but it cannot be assigned to a variable.
+ *
+ * The passed @variant_type should be a static GVariantType to avoid
+ * lifetime issues, as copying the @variant_type does not happen in
+ * the G_VARIANT_BUILDER_INIT() call, but rather in functions that
+ * make sure that #GVariantBuilder is valid.
+ *
+ * |[
+ *   g_auto(GVariantBuilder) builder = G_VARIANT_BUILDER_INIT (G_VARIANT_TYPE_BYTESTRING);
+ * ]|
+ *
+ * Since: 2.50
+ */
+#define G_VARIANT_BUILDER_INIT(variant_type) { { { 2942751021u, variant_type, { 0, } } } }
 
 GLIB_AVAILABLE_IN_ALL
 GVariantBuilder *               g_variant_builder_new                   (const GVariantType   *type);

@@ -3329,6 +3329,7 @@ g_variant_iter_next
 g_variant_iter_loop
 
 <SUBSECTION>
+G_VARIANT_BUILDER_INIT
 GVariantBuilder
 g_variant_builder_unref
 g_variant_builder_ref

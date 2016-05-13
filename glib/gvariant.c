@@ -3169,10 +3169,35 @@ struct heap_builder
 #define GVSB(b)                  ((struct stack_builder *) (b))
 #define GVHB(b)                  ((struct heap_builder *) (b))
 #define GVSB_MAGIC               ((gsize) 1033660112u)
+#define GVSB_MAGIC_PARTIAL       ((gsize) 2942751021u)
 #define GVHB_MAGIC               ((gsize) 3087242682u)
 #define is_valid_builder(b)      (b != NULL && \
                                   GVSB(b)->magic == GVSB_MAGIC)
 #define is_valid_heap_builder(b) (GVHB(b)->magic == GVHB_MAGIC)
+
+/* Just to make sure that by adding a union to GVariantBuilder, we
+ * didn't accidentally change ABI. */
+G_STATIC_ASSERT (sizeof (GVariantBuilder) == sizeof (gsize[16]));
+
+static gboolean
+ensure_valid_builder (GVariantBuilder *builder)
+{
+  if (is_valid_builder (builder))
+    return TRUE;
+  if (builder->partial_magic == GVSB_MAGIC_PARTIAL)
+    {
+      static GVariantBuilder cleared_builder;
+
+      /* Make sure that only first two fields were set and the rest is
+       * zeroed to avoid messing up the builder that had parent
+       * address equal to GVSB_MAGIC_PARTIAL. */
+      if (memcmp (cleared_builder.y, builder->y, sizeof cleared_builder.y))
+        return FALSE;
+
+      g_variant_builder_init (builder, builder->type);
+    }
+  return is_valid_builder (builder);
+}
 
 /**
  * g_variant_builder_new:
@@ -3283,10 +3308,10 @@ g_variant_builder_clear (GVariantBuilder *builder)
   gsize i;
 
   if (GVSB(builder)->magic == 0)
-    /* all-zeros case */
+    /* all-zeros or partial case */
     return;
 
-  g_return_if_fail (is_valid_builder (builder));
+  g_return_if_fail (ensure_valid_builder (builder));
 
   g_variant_type_free (GVSB(builder)->type);
 
@@ -3449,7 +3474,7 @@ void
 g_variant_builder_add_value (GVariantBuilder *builder,
                              GVariant        *value)
 {
-  g_return_if_fail (is_valid_builder (builder));
+  g_return_if_fail (ensure_valid_builder (builder));
   g_return_if_fail (GVSB(builder)->offset < GVSB(builder)->max_items);
   g_return_if_fail (!GVSB(builder)->expected_type ||
                     g_variant_is_of_type (value,
@@ -3500,7 +3525,7 @@ g_variant_builder_open (GVariantBuilder    *builder,
 {
   GVariantBuilder *parent;
 
-  g_return_if_fail (is_valid_builder (builder));
+  g_return_if_fail (ensure_valid_builder (builder));
   g_return_if_fail (GVSB(builder)->offset < GVSB(builder)->max_items);
   g_return_if_fail (!GVSB(builder)->expected_type ||
                     g_variant_type_is_subtype_of (type,
@@ -3546,7 +3571,7 @@ g_variant_builder_close (GVariantBuilder *builder)
 {
   GVariantBuilder *parent;
 
-  g_return_if_fail (is_valid_builder (builder));
+  g_return_if_fail (ensure_valid_builder (builder));
   g_return_if_fail (GVSB(builder)->parent != NULL);
 
   parent = GVSB(builder)->parent;
@@ -3614,7 +3639,7 @@ g_variant_builder_end (GVariantBuilder *builder)
   GVariantType *my_type;
   GVariant *value;
 
-  g_return_val_if_fail (is_valid_builder (builder), NULL);
+  g_return_val_if_fail (ensure_valid_builder (builder), NULL);
   g_return_val_if_fail (GVSB(builder)->offset >= GVSB(builder)->min_items,
                         NULL);
   g_return_val_if_fail (!GVSB(builder)->uniform_item_types ||

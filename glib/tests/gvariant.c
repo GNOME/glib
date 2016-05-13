@@ -4533,6 +4533,27 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
+static void
+test_stack_builder_init (void)
+{
+  GVariantBuilder builder = G_VARIANT_BUILDER_INIT (G_VARIANT_TYPE_BYTESTRING);
+  GVariant *variant;
+
+  g_variant_builder_add_value (&builder, g_variant_new_byte ('g'));
+  g_variant_builder_add_value (&builder, g_variant_new_byte ('l'));
+  g_variant_builder_add_value (&builder, g_variant_new_byte ('i'));
+  g_variant_builder_add_value (&builder, g_variant_new_byte ('b'));
+  g_variant_builder_add_value (&builder, g_variant_new_byte ('\0'));
+
+  variant = g_variant_ref_sink (g_variant_builder_end (&builder));
+  g_assert_nonnull (variant);
+  g_assert (g_variant_type_equal (g_variant_get_type (variant),
+                                  G_VARIANT_TYPE_BYTESTRING));
+  g_assert_cmpuint (g_variant_n_children (variant), ==, 5);
+  g_assert_cmpstr (g_variant_get_bytestring (variant), ==, "glib");
+  g_variant_unref (variant);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -4592,5 +4613,6 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/print-context", test_print_context);
   g_test_add_func ("/gvariant/error-quark", test_error_quark);
 
+  g_test_add_func ("/gvariant/stack-builder-init", test_stack_builder_init);
   return g_test_run ();
 }
