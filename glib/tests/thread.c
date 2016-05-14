@@ -37,6 +37,10 @@
 #include <sys/resource.h>
 #endif
 
+#ifdef THREADS_POSIX
+#include <pthread.h>
+#endif
+
 static gpointer
 thread1_func (gpointer data)
 {
