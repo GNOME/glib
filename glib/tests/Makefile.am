@@ -5,7 +5,7 @@ pcre_lib = $(PCRE_LIBS)
 pcre_inc = $(PCRE_CFLAGS)
 else
 pcre_lib = $(top_builddir)/glib/pcre/libpcre.la
-pcre_inc =
+pcre_inc = -DPCRE_STATIC
 endif
 
 LDADD = $(top_builddir)/glib/libglib-2.0.la -lm
