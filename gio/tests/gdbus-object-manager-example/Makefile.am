@@ -45,3 +45,5 @@ libgdbus_example_objectmanager_la_LIBADD = \
 EXTRA_DIST += gdbus-example-objectmanager.xml
 
 CLEANFILES += $(GDBUS_GENERATED)
+
+check-TESTS:
