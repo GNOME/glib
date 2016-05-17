@@ -1730,6 +1730,30 @@ if test x$have_libelf = xyes; then
   AC_DEFINE(HAVE_LIBELF, 1, [Define if libelf is available])
 fi
 
+dnl ************************
+dnl *** check for libmount ***
+dnl ************************
+AC_ARG_ENABLE(mount,
+              AS_HELP_STRING([--disable-libmount], [build without libmount support]))
+AS_IF([ test "x$enable_libmount" != "xno"],[
+PKG_CHECK_MODULES([LIBMOUNT], [mount >= 2.28], [have_libmount=yes], [have_libmount=maybe])
+AS_IF([ test $have_libmount = maybe ], [
+  glib_save_LIBS=$LIBS
+  AC_CHECK_HEADER([libmount/libmount.h], [:], [have_libmount=no])
+  LIBS=$glib_save_LIBS
+
+  if test $have_libmount != no; then
+    LIBMOUNT_LIBS=-lmount
+    have_libmount=yes
+  fi
+])
+])
+
+if test x$have_libmount = xyes; then
+  AC_DEFINE(HAVE_LIBMOUNT, 1, [Define if libmount is available])
+fi
+AM_CONDITIONAL(HAVE_LIBMOUNT, [test x$have_libmount = xyes])
+
 dnl ****************************************
 dnl *** platform dependent source checks ***
 dnl ****************************************

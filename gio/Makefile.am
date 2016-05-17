@@ -586,6 +586,11 @@ libgio_2_0_la_CFLAGS += -xobjective-c
 libgio_2_0_la_LDFLAGS += -Wl,-framework,Foundation -Wl,-framework,AppKit
 endif
 
+if HAVE_LIBMOUNT
+libgio_2_0_la_CFLAGS += $(LIBMOUNT_CFLAGS)
+libgio_2_0_la_LIBADD += $(LIBMOUNT_LIBS)
+endif
+
 libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
 
 gio-win32-res.o: gio.rc
