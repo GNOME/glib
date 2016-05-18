@@ -267,7 +267,7 @@ g_callable_info_skip_return (GICallableInfo *info)
  * See whether the caller owns the return value of this callable.
  * #GITransfer contains a list of possible transfer values.
  *
- * Returns: %TRUE if the caller owns the return value, %FALSE otherwise.
+ * Returns: the transfer mode for the return value of the callable
  */
 GITransfer
 g_callable_info_get_caller_owns (GICallableInfo *info)
