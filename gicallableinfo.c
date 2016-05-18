@@ -295,7 +295,7 @@ g_callable_info_get_caller_owns (GICallableInfo *info)
  * Obtains the ownership transfer for the instance argument.
  * #GITransfer contains a list of possible transfer values.
  *
- * Returns: the transfer
+ * Returns: the transfer mode of the instance argument
  */
 GITransfer
 g_callable_info_get_instance_ownership_transfer (GICallableInfo *info)
