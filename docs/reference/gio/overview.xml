@@ -398,8 +398,8 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
         This variable can be set to the name of a #GVolumeMonitor
         implementation to override the default for debugging purposes.
         The #GVolumeMonitor implementation for local files that is included
-        in GIO has the name "unix", the hal-based implementation in the
-        gvfs module has the name "hal".
+        in GIO has the name "unix", the udisks2-based implementation in the
+        gvfs module has the name "udisks2".
       </para>
     </formalpara>
 
@@ -627,7 +627,7 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
       </para>
       <para>
          GIO implements this extension point for local mounts,
-         gvfs contains a hal-based implementation.
+         gvfs contains a udisks2-based implementation.
       </para>
    </formalpara>
 
