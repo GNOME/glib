@@ -91,7 +91,6 @@ struct _GDriveIface
   GIcon *  (* get_icon)                 (GDrive              *drive);
   gboolean (* has_volumes)              (GDrive              *drive);
   GList *  (* get_volumes)              (GDrive              *drive);
-  gboolean (* is_removable)             (GDrive              *drive);
   gboolean (* is_media_removable)       (GDrive              *drive);
   gboolean (* has_media)                (GDrive              *drive);
   gboolean (* is_media_check_automatic) (GDrive              *drive);
@@ -156,6 +155,7 @@ struct _GDriveIface
 
   const gchar * (* get_sort_key)        (GDrive              *drive);
   GIcon *       (* get_symbolic_icon)   (GDrive              *drive);
+  gboolean      (* is_removable)        (GDrive              *drive);
 
 };
 
