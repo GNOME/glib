@@ -941,7 +941,7 @@ _g_get_unix_mount_points (void)
   struct mntent *mntent;
   FILE *file;
   char *read_file;
-  GUnixMountPoint *mount_entry;
+  GUnixMountPoint *mount_point;
   GList *return_list;
   
   read_file = get_fstab_file ();
@@ -959,6 +959,11 @@ _g_get_unix_mount_points (void)
   while ((mntent = getmntent (file)) != NULL)
 #endif
     {
+      const char *device_path = NULL;
+      gboolean is_read_only = FALSE;
+      gboolean is_user_mountable = FALSE;
+      gboolean is_loopback = FALSE;
+
       if ((strcmp (mntent->mnt_dir, "ignore") == 0) ||
           (strcmp (mntent->mnt_dir, "swap") == 0) ||
           (strcmp (mntent->mnt_dir, "none") == 0))
@@ -970,24 +975,20 @@ _g_get_unix_mount_points (void)
         continue;
 #endif
 
-      mount_entry = g_new0 (GUnixMountPoint, 1);
-      mount_entry->mount_path = g_strdup (mntent->mnt_dir);
       if (strcmp (mntent->mnt_fsname, "/dev/root") == 0)
-        mount_entry->device_path = g_strdup (_resolve_dev_root ());
+        device_path = _resolve_dev_root ();
       else
-        mount_entry->device_path = g_strdup (mntent->mnt_fsname);
-      mount_entry->filesystem_type = g_strdup (mntent->mnt_type);
-      mount_entry->options = g_strdup (mntent->mnt_opts);
-      
+        device_path = mntent->mnt_fsname;
+
 #ifdef HAVE_HASMNTOPT
       if (hasmntopt (mntent, MNTOPT_RO) != NULL)
-	mount_entry->is_read_only = TRUE;
-      
+	is_read_only = TRUE;
+
       if (hasmntopt (mntent, "loop") != NULL)
-	mount_entry->is_loopback = TRUE;
-      
+	is_loopback = TRUE;
+
 #endif
-      
+
       if ((mntent->mnt_type != NULL && strcmp ("supermount", mntent->mnt_type) == 0)
 #ifdef HAVE_HASMNTOPT
 	  || (hasmntopt (mntent, "user") != NULL
@@ -997,9 +998,17 @@ _g_get_unix_mount_points (void)
 	  || hasmntopt (mntent, "owner") != NULL
 #endif
 	  )
-	mount_entry->is_user_mountable = TRUE;
-      
-      return_list = g_list_prepend (return_list, mount_entry);
+	is_user_mountable = TRUE;
+
+      mount_point = create_unix_mount_point (device_path,
+                                             mntent->mnt_dir,
+                                             mntent->mnt_type,
+                                             mntent->mnt_opts,
+                                             is_read_only,
+                                             is_user_mountable,
+                                             is_loopback);
+
+      return_list = g_list_prepend (return_list, mount_point);
     }
   
   endmntent (file);
@@ -1022,7 +1031,7 @@ _g_get_unix_mount_points (void)
   struct mnttab mntent;
   FILE *file;
   char *read_file;
-  GUnixMountPoint *mount_entry;
+  GUnixMountPoint *mount_point;
   GList *return_list;
   
   read_file = get_fstab_file ();
@@ -1036,26 +1045,23 @@ _g_get_unix_mount_points (void)
   G_LOCK (getmntent);
   while (! getmntent (file, &mntent))
     {
+      gboolean is_read_only = FALSE;
+      gboolean is_user_mountable = FALSE;
+      gboolean is_loopback = FALSE;
+
       if ((strcmp (mntent.mnt_mountp, "ignore") == 0) ||
           (strcmp (mntent.mnt_mountp, "swap") == 0) ||
           (strcmp (mntent.mnt_mountp, "none") == 0))
 	continue;
-      
-      mount_entry = g_new0 (GUnixMountPoint, 1);
-      
-      mount_entry->mount_path = g_strdup (mntent.mnt_mountp);
-      mount_entry->device_path = g_strdup (mntent.mnt_special);
-      mount_entry->filesystem_type = g_strdup (mntent.mnt_fstype);
-      mount_entry->options = g_strdup (mntent.mnt_mntopts);
-      
+
 #ifdef HAVE_HASMNTOPT
       if (hasmntopt (&mntent, MNTOPT_RO) != NULL)
-	mount_entry->is_read_only = TRUE;
-      
+	is_read_only = TRUE;
+
       if (hasmntopt (&mntent, "lofs") != NULL)
-	mount_entry->is_loopback = TRUE;
+	is_loopback = TRUE;
 #endif
-      
+
       if ((mntent.mnt_fstype != NULL)
 #ifdef HAVE_HASMNTOPT
 	  || (hasmntopt (&mntent, "user") != NULL
@@ -1065,9 +1071,17 @@ _g_get_unix_mount_points (void)
 	  || hasmntopt (&mntent, "owner") != NULL
 #endif
 	  )
-	mount_entry->is_user_mountable = TRUE;
-      
-      return_list = g_list_prepend (return_list, mount_entry);
+	is_user_mountable = TRUE;
+
+      mount_point = create_unix_mount_point (mntent.mnt_special,
+                                             mntent.mnt_mountp,
+                                             mntent.mnt_fstype,
+                                             mntent.mnt_mntopts,
+                                             is_read_only,
+                                             is_user_mountable,
+                                             is_loopback);
+
+      return_list = g_list_prepend (return_list, mount_point);
     }
   
   endmntent (file);
@@ -1192,7 +1206,7 @@ _g_get_unix_mount_points (void)
   struct mntent *mntent;
   FILE *file;
   char *read_file;
-  GUnixMountPoint *mount_entry;
+  GUnixMountPoint *mount_point;
   AixMountTableEntry mntent;
   GList *return_list;
   
@@ -1208,16 +1222,15 @@ _g_get_unix_mount_points (void)
     {
       if (strcmp ("cdrfs", mntent.mnt_fstype) == 0)
 	{
-	  mount_entry = g_new0 (GUnixMountPoint, 1);
-	  
-	  mount_entry->mount_path = g_strdup (mntent.mnt_mount);
-	  mount_entry->device_path = g_strdup (mntent.mnt_special);
-	  mount_entry->filesystem_type = g_strdup (mntent.mnt_fstype);
-	  mount_entry->options = g_strdup (mntent.mnt_options);
-	  mount_entry->is_read_only = TRUE;
-	  mount_entry->is_user_mountable = TRUE;
-	  
-	  return_list = g_list_prepend (return_list, mount_entry);
+          mount_point = create_unix_mount_point (mntent.mnt_special,
+                                                 mntent.mnt_mount,
+                                                 mntent.mnt_fstype,
+                                                 mntent.mnt_options,
+                                                 TRUE,
+                                                 TRUE,
+                                                 FALSE);
+
+	  return_list = g_list_prepend (return_list, mount_point);
 	}
     }
 	
@@ -1232,7 +1245,7 @@ static GList *
 _g_get_unix_mount_points (void)
 {
   struct fstab *fstab = NULL;
-  GUnixMountPoint *mount_entry;
+  GUnixMountPoint *mount_point;
   GList *return_list;
 #ifdef HAVE_SYS_SYSCTL_H
   int usermnt = 0;
@@ -1269,18 +1282,14 @@ _g_get_unix_mount_points (void)
   
   while ((fstab = getfsent ()) != NULL)
     {
+      gboolean is_read_only = FALSE;
+      gboolean is_user_mountable = FALSE;
+
       if (strcmp (fstab->fs_vfstype, "swap") == 0)
 	continue;
-      
-      mount_entry = g_new0 (GUnixMountPoint, 1);
-      
-      mount_entry->mount_path = g_strdup (fstab->fs_file);
-      mount_entry->device_path = g_strdup (fstab->fs_spec);
-      mount_entry->filesystem_type = g_strdup (fstab->fs_vfstype);
-      mount_entry->options = g_strdup (fstab->fs_mntops);
-      
+
       if (strcmp (fstab->fs_type, "ro") == 0)
-	mount_entry->is_read_only = TRUE;
+	is_read_only = TRUE;
 
 #ifdef HAVE_SYS_SYSCTL_H
       if (usermnt != 0)
@@ -1289,12 +1298,20 @@ _g_get_unix_mount_points (void)
 	  if (stat (fstab->fs_file, &sb) == 0)
 	    {
 	      if (uid == 0 || sb.st_uid == uid)
-		mount_entry->is_user_mountable = TRUE;
+		is_user_mountable = TRUE;
 	    }
 	}
 #endif
 
-      return_list = g_list_prepend (return_list, mount_entry);
+      mount_point = create_unix_mount_point (fstab->fs_spec,
+                                             fstab->fs_file,
+                                             fstab->fs_vfstype,
+                                             fstab->fs_mntops,
+                                             is_read_only,
+                                             is_user_mountable,
+                                             FALSE);
+
+      return_list = g_list_prepend (return_list, mount_point);
     }
   
   endfsent ();
