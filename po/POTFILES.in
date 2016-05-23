@@ -169,7 +169,6 @@ glib/gfileutils.c
 glib/giochannel.c
 glib/giowin32.c
 glib/gkeyfile.c
-glib/glib.py
 glib/gmappedfile.c
 glib/gmarkup.c
 glib/goption.c
