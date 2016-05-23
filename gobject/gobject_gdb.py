@@ -1,6 +1,6 @@
 import os.path
 import gdb
-import glib
+import glib_gdb
 import sys
 
 if sys.version_info[0] >= 3:
@@ -37,7 +37,7 @@ def g_type_to_name (gtype):
     else:
         typenode = lookup_fundamental_type (typenode)
     if typenode != None:
-        return glib.g_quark_to_string (typenode["qname"])
+        return glib_gdb.g_quark_to_string (typenode["qname"])
     return None
 
 def is_g_type_instance (val):
@@ -161,7 +161,7 @@ class SignalFrame(FrameDecorator):
 
     def get_detailed_signal_from_frame(self, frame, signal):
         detail = self.read_var (frame, "detail")
-        detail = glib.g_quark_to_string (detail)
+        detail = glib_gdb.g_quark_to_string (detail)
         if detail is not None:
             return signal + ":" + detail
         else:
