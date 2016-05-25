@@ -60,7 +60,11 @@
 #  include <inttypes.h>
 # endif
 #else
-# include <stdint.h>
+# if !defined (_MSC_VER) || (_MSC_VER >= 1600)
+#  include <stdint.h>
+# else
+typedef signed __int64 intmax_t;
+# endif
 #endif
 
 /* malloc(), realloc(), free().  */
