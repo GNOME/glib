@@ -614,7 +614,7 @@ typedef struct _GDBusObjectManagerServer    GDBusObjectManagerServer;
  * that @manager was constructed in.
  *
  * Returns: A #GType to use for the remote object. The returned type
- *   must be a #GDBusProxy<!-- -->- or #GDBusObjectProxy<!-- -->-derived
+ *   must be a #GDBusProxy or #GDBusObjectProxy -derived
  *   type.
  *
  * Since: 2.30
