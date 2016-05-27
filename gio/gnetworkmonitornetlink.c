@@ -295,7 +295,7 @@ read_netlink_messages (GSocket      *socket,
   gssize len;
   gint flags;
   GError *error = NULL;
-  GSocketAddress *addr;
+  GSocketAddress *addr = NULL;
   struct nlmsghdr *msg;
   struct rtmsg *rtmsg;
   struct rtattr *attr;
@@ -326,6 +326,7 @@ read_netlink_messages (GSocket      *socket,
   if (len < 0)
     {
       g_warning ("Error on netlink socket: %s", error->message);
+      g_clear_object (&addr);
       g_error_free (error);
       if (nl->priv->dump_networks)
         finish_dump (nl);
@@ -335,6 +336,7 @@ read_netlink_messages (GSocket      *socket,
   if (!g_socket_address_to_native (addr, &source_sockaddr, sizeof (source_sockaddr), &error))
     {
       g_warning ("Error on netlink socket: %s", error->message);
+      g_clear_object (&addr);
       g_error_free (error);
       if (nl->priv->dump_networks)
         finish_dump (nl);
@@ -425,6 +427,7 @@ read_netlink_messages (GSocket      *socket,
 
  done:
   g_free (iv.buffer);
+  g_clear_object (&addr);
 
   if (!retval && nl->priv->dump_networks)
     finish_dump (nl);
