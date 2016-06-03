@@ -516,7 +516,7 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  *     gtk_widget_hide (other_widget);
  * }
  *
- * …
+ * ...
  *
  * g_signal_connect (button, "clicked",
  *                   (GCallback) button_clicked_cb, other_widget);
