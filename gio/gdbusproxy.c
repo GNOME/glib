@@ -1454,8 +1454,9 @@ async_init_data_set_name_owner (GTask       *task,
 
   if (name_owner != NULL)
     {
-      /* it starts as NULL anyway */
       G_LOCK (properties_lock);
+      /* Must free first, since on_name_owner_changed() could run before us */
+      g_free (proxy->priv->name_owner);
       proxy->priv->name_owner = g_strdup (name_owner);
       G_UNLOCK (properties_lock);
     }
