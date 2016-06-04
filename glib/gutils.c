@@ -298,7 +298,7 @@ g_find_program_in_path (const gchar *program)
 
 /**
  * g_find_program_in_path:
- * @program: a program name in the GLib file name encoding
+ * @program: (type filename): a program name in the GLib file name encoding
  * 
  * Locates the first executable named @program in the user's path, in the
  * same way that execvp() would locate it. Returns an allocated string
@@ -318,7 +318,8 @@ g_find_program_in_path (const gchar *program)
  * the program is found, the return value contains the full name
  * including the type suffix.
  *
- * Returns: a newly-allocated string with the absolute path, or %NULL
+ * Returns: (type filename): a newly-allocated string with the absolute path,
+ *     or %NULL
  **/
 #ifdef G_OS_WIN32
 static gchar *
@@ -750,7 +751,7 @@ g_get_user_database_entry (void)
  * encoding, or something else, and there is no guarantee that it is even
  * consistent on a machine. On Windows, it is always UTF-8.
  *
- * Returns: the user name of the current user.
+ * Returns: (type filename): the user name of the current user.
  */
 const gchar *
 g_get_user_name (void)
@@ -771,7 +772,7 @@ g_get_user_name (void)
  * real user name cannot be determined, the string "Unknown" is 
  * returned.
  *
- * Returns: the user's real name.
+ * Returns: (type filename): the user's real name.
  */
 const gchar *
 g_get_real_name (void)
@@ -807,7 +808,7 @@ g_get_real_name (void)
  * should either directly check the `HOME` environment variable yourself
  * or unset it before calling any functions in GLib.
  *
- * Returns: the current user's home directory
+ * Returns: (type filename): the current user's home directory
  */
 const gchar *
 g_get_home_dir (void)
@@ -903,7 +904,7 @@ g_get_home_dir (void)
  * it is always UTF-8. The return value is never %NULL or the empty
  * string.
  *
- * Returns: the directory to use for temporary files.
+ * Returns: (type filename): the directory to use for temporary files.
  */
 const gchar *
 g_get_tmp_dir (void)
@@ -1145,7 +1146,7 @@ g_set_application_name (const gchar *application_name)
  * CSIDL_LOCAL_APPDATA. Note that on Windows it thus is the same as
  * what g_get_user_config_dir() returns.
  *
- * Returns: a string owned by GLib that must not be modified 
+ * Returns: (type filename): a string owned by GLib that must not be modified
  *               or freed.
  * Since: 2.6
  **/
@@ -1231,7 +1232,7 @@ g_init_user_config_dir (void)
  * CSIDL_LOCAL_APPDATA. Note that on Windows it thus is the same as
  * what g_get_user_data_dir() returns.
  *
- * Returns: a string owned by GLib that must not be modified 
+ * Returns: (type filename): a string owned by GLib that must not be modified
  *               or freed.
  * Since: 2.6
  **/
@@ -1263,7 +1264,7 @@ g_get_user_config_dir (void)
  * C:\Documents and Settings\username\Local Settings\Temporary Internet Files.
  * See documentation for CSIDL_INTERNET_CACHE.
  *
- * Returns: a string owned by GLib that must not be modified 
+ * Returns: (type filename): a string owned by GLib that must not be modified
  *               or freed.
  * Since: 2.6
  **/
@@ -1322,7 +1323,8 @@ g_get_user_cache_dir (void)
  * CSIDL_LOCAL_APPDATA.  Note that on Windows it thus is the same as
  * what g_get_user_config_dir() returns.
  *
- * Returns: a string owned by GLib that must not be modified or freed.
+ * Returns: (type filename): a string owned by GLib that must not be
+ *     modified or freed.
  *
  * Since: 2.28
  **/
@@ -1718,8 +1720,8 @@ g_reload_user_special_dirs_cache (void)
  * of the special directory without requiring the session to restart; GLib
  * will not reflect any change once the special directories are loaded.
  *
- * Returns: the path to the specified special directory, or %NULL
- *   if the logical id was not found. The returned string is owned by
+ * Returns: (type filename): the path to the specified special directory, or
+ *   %NULL if the logical id was not found. The returned string is owned by
  *   GLib and should not be modified or freed.
  *
  * Since: 2.14
@@ -1936,8 +1938,10 @@ g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void))
  * Note that on Windows the returned list can vary depending on where
  * this function is called.
  *
- * Returns: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib that must 
- *               not be modified or freed.
+ * Returns: (array zero-terminated=1) (element-type filename) (transfer none):
+ *     a %NULL-terminated array of strings owned by GLib that must not be
+ *     modified or freed.
+ * 
  * Since: 2.6
  **/
 const gchar * const * 
@@ -1988,8 +1992,10 @@ g_get_system_data_dirs (void)
  * of clip art, or a log file in the CSIDL_COMMON_APPDATA folder.
  * This information will not roam and is available to anyone using the computer.
  *
- * Returns: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib that must 
- *               not be modified or freed.
+ * Returns: (array zero-terminated=1) (element-type filename) (transfer none):
+ *     a %NULL-terminated array of strings owned by GLib that must not be
+ *     modified or freed.
+ * 
  * Since: 2.6
  **/
 const gchar * const *

@@ -194,7 +194,7 @@
 
 /**
  * g_mkdir_with_parents:
- * @pathname: a pathname in the GLib file name encoding
+ * @pathname: (type filename): a pathname in the GLib file name encoding
  * @mode: permissions to use for newly created directories
  *
  * Create a directory if it doesn't already exist. Create intermediate
@@ -266,7 +266,8 @@ g_mkdir_with_parents (const gchar *pathname,
 
 /**
  * g_file_test:
- * @filename: a filename to test in the GLib file name encoding
+ * @filename: (type filename): a filename to test in the
+ *     GLib file name encoding
  * @test: bitfield of #GFileTest flags
  * 
  * Returns %TRUE if any of the tests in the bitfield @test are
@@ -1365,7 +1366,7 @@ wrap_g_open (const gchar *filename,
  * in the GLib file name encoding. Most importantly, on Windows it
  * should be in UTF-8.
  *
- * Returns: A pointer to @tmpl, which has been modified
+ * Returns: (type filename): A pointer to @tmpl, which has been modified
  *     to hold the directory name. In case of errors, %NULL is
  *     returned, and %errno will be set.
  *
@@ -1397,7 +1398,7 @@ g_mkdtemp_full (gchar *tmpl,
  * The string should be in the GLib file name encoding. Most importantly,
  * on Windows it should be in UTF-8.
  *
- * Returns: A pointer to @tmpl, which has been modified
+ * Returns: (type filename): A pointer to @tmpl, which has been modified
  *     to hold the directory name.  In case of errors, %NULL is
  *     returned and %errno will be set.
  *
@@ -1745,13 +1746,15 @@ g_build_path_va (const gchar  *separator,
 /**
  * g_build_pathv:
  * @separator: a string used to separator the elements of the path.
- * @args: (array zero-terminated=1): %NULL-terminated array of strings containing the path elements.
+ * @args: (array zero-terminated=1) (element-type filename): %NULL-terminated
+ *     array of strings containing the path elements.
  * 
  * Behaves exactly like g_build_path(), but takes the path elements 
  * as a string array, instead of varargs. This function is mainly
  * meant for language bindings.
  *
- * Returns: a newly-allocated string that must be freed with g_free().
+ * Returns: (type filename): a newly-allocated string that must be freed
+ *     with g_free().
  *
  * Since: 2.8
  */
@@ -1936,13 +1939,15 @@ g_build_pathname_va (const gchar  *first_element,
 
 /**
  * g_build_filenamev:
- * @args: (array zero-terminated=1): %NULL-terminated array of strings containing the path elements.
+ * @args: (array zero-terminated=1) (element-type filename): %NULL-terminated
+ *     array of strings containing the path elements.
  * 
  * Behaves exactly like g_build_filename(), but takes the path elements 
  * as a string array, instead of varargs. This function is mainly
  * meant for language bindings.
  *
- * Returns: a newly-allocated string that must be freed with g_free().
+ * Returns: (type filename): a newly-allocated string that must be freed
+ *     with g_free().
  * 
  * Since: 2.8
  */
@@ -2003,15 +2008,15 @@ g_build_filename (const gchar *first_element,
 
 /**
  * g_file_read_link:
- * @filename: the symbolic link
+ * @filename: (type filename): the symbolic link
  * @error: return location for a #GError
  *
  * Reads the contents of the symbolic link @filename like the POSIX
  * readlink() function.  The returned string is in the encoding used
  * for filenames. Use g_filename_to_utf8() to convert it to UTF-8.
  *
- * Returns: A newly-allocated string with the contents of the symbolic link, 
- *          or %NULL if an error occurred.
+ * Returns: (type filename): A newly-allocated string with the contents of
+ *     the symbolic link, or %NULL if an error occurred.
  *
  * Since: 2.4
  */
@@ -2062,7 +2067,7 @@ g_file_read_link (const gchar  *filename,
 
 /**
  * g_path_is_absolute:
- * @file_name: a file name
+ * @file_name: (type filename): a file name
  *
  * Returns %TRUE if the given @file_name is an absolute file name.
  * Note that this is a somewhat vague concept on Windows.
@@ -2111,13 +2116,14 @@ g_path_is_absolute (const gchar *file_name)
 
 /**
  * g_path_skip_root:
- * @file_name: a file name
+ * @file_name: (type filename): a file name
  *
  * Returns a pointer into @file_name after the root component,
  * i.e. after the "/" in UNIX or "C:\" under Windows. If @file_name
  * is not an absolute path it returns %NULL.
  *
- * Returns: (nullable): a pointer into @file_name after the root component
+ * Returns: (type filename) (nullable): a pointer into @file_name after the
+ *     root component
  */
 const gchar *
 g_path_skip_root (const gchar *file_name)
@@ -2181,13 +2187,13 @@ g_path_skip_root (const gchar *file_name)
 
 /**
  * g_basename:
- * @file_name: the name of the file
+ * @file_name: (type filename): the name of the file
  *
  * Gets the name of the file without any leading directory
  * components. It returns a pointer into the given file name
  * string.
  *
- * Returns: the name of the file without any leading
+ * Returns: (type filename): the name of the file without any leading
  *     directory components
  *
  * Deprecated:2.2: Use g_path_get_basename() instead, but notice
@@ -2226,7 +2232,7 @@ g_basename (const gchar *file_name)
 
 /**
  * g_path_get_basename:
- * @file_name: the name of the file
+ * @file_name: (type filename): the name of the file
  *
  * Gets the last component of the filename.
  *
@@ -2235,7 +2241,7 @@ g_basename (const gchar *file_name)
  * separators (and on Windows, possibly a drive letter), a single
  * separator is returned. If @file_name is empty, it gets ".".
  *
- * Returns: a newly allocated string containing the last
+ * Returns: (type filename): a newly allocated string containing the last
  *    component of the filename
  */
 gchar *
@@ -2303,14 +2309,14 @@ g_path_get_basename (const gchar *file_name)
 
 /**
  * g_path_get_dirname:
- * @file_name: the name of the file
+ * @file_name: (type filename): the name of the file
  *
  * Gets the directory components of a file name.
  *
  * If the file name has no directory components "." is returned.
  * The returned string should be freed when no longer needed.
  *
- * Returns: the directory components of the file
+ * Returns: (type filename): the directory components of the file
  */
 gchar *
 g_path_get_dirname (const gchar *file_name)
@@ -2430,7 +2436,7 @@ g_path_get_dirname (const gchar *file_name)
  * the current directory.  This can make a difference in the case that
  * the current directory is the target of a symbolic link.
  *
- * Returns: the current directory
+ * Returns: (type filename): the current directory
  */
 gchar *
 g_get_current_dir (void)

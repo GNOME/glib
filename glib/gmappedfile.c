@@ -212,7 +212,8 @@ mapped_file_new_from_fd (int           fd,
 
 /**
  * g_mapped_file_new:
- * @filename: The path of the file to load, in the GLib filename encoding
+ * @filename: (type filename): The path of the file to load, in the GLib
+ *     filename encoding
  * @writable: whether the mapping should be writable
  * @error: return location for a #GError, or %NULL
  *

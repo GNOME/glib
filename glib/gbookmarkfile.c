@@ -1657,7 +1657,8 @@ g_bookmark_file_load_from_data (GBookmarkFile  *bookmark,
 /**
  * g_bookmark_file_load_from_file:
  * @bookmark: an empty #GBookmarkFile struct
- * @filename: the path of a filename to load, in the GLib file name encoding
+ * @filename: (type filename): the path of a filename to load, in the
+ *     GLib file name encoding
  * @error: return location for a #GError, or %NULL
  *
  * Loads a desktop bookmark file into an empty #GBookmarkFile structure.
@@ -1765,9 +1766,9 @@ find_file_in_data_dirs (const gchar   *file,
 /**
  * g_bookmark_file_load_from_data_dirs:
  * @bookmark: a #GBookmarkFile
- * @file: a relative path to a filename to open and parse
- * @full_path: (allow-none): return location for a string containing the full path
- *   of the file, or %NULL
+ * @file: (type filename): a relative path to a filename to open and parse
+ * @full_path: (type filename) (allow-none): return location for a string
+ *    containing the full path of the file, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * This function looks for a desktop bookmark file named @file in the
@@ -1881,7 +1882,7 @@ g_bookmark_file_to_data (GBookmarkFile  *bookmark,
 /**
  * g_bookmark_file_to_file:
  * @bookmark: a #GBookmarkFile
- * @filename: path of the output file
+ * @filename: (type filename): path of the output file
  * @error: return location for a #GError, or %NULL
  *
  * This function outputs @bookmark into a file.  The write process is
