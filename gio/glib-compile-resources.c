@@ -214,7 +214,8 @@ end_element (GMarkupParseContext  *context,
 
   else if (strcmp (element_name, "file") == 0)
     {
-      gchar *file, *real_file;
+      gchar *file;
+      gchar *real_file = NULL;
       gchar *key;
       FileData *data = NULL;
       char *tmp_file = NULL;
@@ -241,7 +242,7 @@ end_element (GMarkupParseContext  *context,
       if (sourcedirs != NULL)
         {
 	  real_file = find_file (file);
-	  if (real_file == NULL)
+	  if (real_file == NULL && state->collect_data)
 	    {
 		g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
 			     _("Failed to locate '%s' in any source directory"), file);
@@ -252,14 +253,16 @@ end_element (GMarkupParseContext  *context,
         {
 	  gboolean exists;
 	  exists = g_file_test (file, G_FILE_TEST_EXISTS);
-	  if (!exists)
+	  if (!exists && state->collect_data)
 	    {
 	      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
 			   _("Failed to locate '%s' in current directory"), file);
 	      return;
 	    }
-	  real_file = g_strdup (file);
 	}
+
+      if (real_file == NULL)
+        real_file = g_strdup (file);
 
       data = g_new0 (FileData, 1);
       data->filename = g_strdup (real_file);

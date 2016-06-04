@@ -126,6 +126,7 @@ socket-service
 socket-server
 srvtarget
 task
+test-generated.txt
 test.gresource
 test.mo
 test_resources.c
