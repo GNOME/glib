@@ -4554,6 +4554,51 @@ test_stack_builder_init (void)
   g_variant_unref (variant);
 }
 
+static GVariant *
+get_asv (void)
+{
+  GVariantBuilder builder = G_VARIANT_BUILDER_INIT (G_VARIANT_TYPE_VARDICT);
+
+  g_variant_builder_add (&builder, "{s@v}", "foo", g_variant_new_variant (g_variant_new_string ("FOO")));
+  g_variant_builder_add (&builder, "{s@v}", "bar", g_variant_new_variant (g_variant_new_string ("BAR")));
+
+  return g_variant_ref_sink (g_variant_builder_end (&builder));
+}
+
+static void
+test_stack_dict_init (void)
+{
+  GVariant *asv = get_asv ();
+  GVariantDict dict = G_VARIANT_DICT_INIT (asv);
+  GVariant *variant;
+  GVariantIter iter;
+  gchar *key;
+  GVariant *value;
+
+  g_variant_dict_insert_value (&dict, "baz", g_variant_new_string ("BAZ"));
+  g_variant_dict_insert_value (&dict, "quux", g_variant_new_string ("QUUX"));
+
+  variant = g_variant_ref_sink (g_variant_dict_end (&dict));
+  g_assert_nonnull (variant);
+  g_assert (g_variant_type_equal (g_variant_get_type (variant),
+                                  G_VARIANT_TYPE_VARDICT));
+  g_assert_cmpuint (g_variant_n_children (variant), ==, 4);
+
+  g_variant_iter_init (&iter, variant);
+  while (g_variant_iter_next (&iter, "{sv}", &key, &value))
+    {
+      gchar *strup = g_ascii_strup (key, -1);
+
+      g_assert_cmpstr (strup, ==, g_variant_get_string (value, NULL));
+      g_free (key);
+      g_free (strup);
+      g_variant_unref (value);
+    }
+
+  g_variant_unref (asv);
+  g_variant_unref (variant);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -4614,5 +4659,6 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/error-quark", test_error_quark);
 
   g_test_add_func ("/gvariant/stack-builder-init", test_stack_builder_init);
+  g_test_add_func ("/gvariant/stack-dict-init", test_stack_dict_init);
   return g_test_run ();
 }

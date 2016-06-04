@@ -3796,10 +3796,35 @@ struct heap_dict
 #define GVSD(d)                 ((struct stack_dict *) (d))
 #define GVHD(d)                 ((struct heap_dict *) (d))
 #define GVSD_MAGIC              ((gsize) 2579507750u)
+#define GVSD_MAGIC_PARTIAL      ((gsize) 3488698669u)
 #define GVHD_MAGIC              ((gsize) 2450270775u)
 #define is_valid_dict(d)        (d != NULL && \
                                  GVSD(d)->magic == GVSD_MAGIC)
 #define is_valid_heap_dict(d)   (GVHD(d)->magic == GVHD_MAGIC)
+
+/* Just to make sure that by adding a union to GVariantDict, we didn't
+ * accidentally change ABI. */
+G_STATIC_ASSERT (sizeof (GVariantDict) == sizeof (gsize[16]));
+
+static gboolean
+ensure_valid_dict (GVariantDict *dict)
+{
+  if (is_valid_dict (dict))
+    return TRUE;
+  if (dict->partial_magic == GVSD_MAGIC_PARTIAL)
+    {
+      static GVariantDict cleared_dict;
+
+      /* Make sure that only first two fields were set and the rest is
+       * zeroed to avoid messing up the builder that had parent
+       * address equal to GVSB_MAGIC_PARTIAL. */
+      if (memcmp (cleared_dict.y, dict->y, sizeof cleared_dict.y))
+        return FALSE;
+
+      g_variant_dict_init (dict, dict->asv);
+    }
+  return is_valid_dict (dict);
+}
 
 /**
  * g_variant_dict_new:
@@ -3908,7 +3933,7 @@ g_variant_dict_lookup (GVariantDict *dict,
   GVariant *value;
   va_list ap;
 
-  g_return_val_if_fail (is_valid_dict (dict), FALSE);
+  g_return_val_if_fail (ensure_valid_dict (dict), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
   g_return_val_if_fail (format_string != NULL, FALSE);
 
@@ -3953,7 +3978,7 @@ g_variant_dict_lookup_value (GVariantDict       *dict,
 {
   GVariant *result;
 
-  g_return_val_if_fail (is_valid_dict (dict), NULL);
+  g_return_val_if_fail (ensure_valid_dict (dict), NULL);
   g_return_val_if_fail (key != NULL, NULL);
 
   result = g_hash_table_lookup (GVSD(dict)->values, key);
@@ -3979,7 +4004,7 @@ gboolean
 g_variant_dict_contains (GVariantDict *dict,
                          const gchar  *key)
 {
-  g_return_val_if_fail (is_valid_dict (dict), FALSE);
+  g_return_val_if_fail (ensure_valid_dict (dict), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
   return g_hash_table_contains (GVSD(dict)->values, key);
@@ -4007,7 +4032,7 @@ g_variant_dict_insert (GVariantDict *dict,
 {
   va_list ap;
 
-  g_return_if_fail (is_valid_dict (dict));
+  g_return_if_fail (ensure_valid_dict (dict));
   g_return_if_fail (key != NULL);
   g_return_if_fail (format_string != NULL);
 
@@ -4033,7 +4058,7 @@ g_variant_dict_insert_value (GVariantDict *dict,
                              const gchar  *key,
                              GVariant     *value)
 {
-  g_return_if_fail (is_valid_dict (dict));
+  g_return_if_fail (ensure_valid_dict (dict));
   g_return_if_fail (key != NULL);
   g_return_if_fail (value != NULL);
 
@@ -4055,7 +4080,7 @@ gboolean
 g_variant_dict_remove (GVariantDict *dict,
                        const gchar  *key)
 {
-  g_return_val_if_fail (is_valid_dict (dict), FALSE);
+  g_return_val_if_fail (ensure_valid_dict (dict), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
   return g_hash_table_remove (GVSD(dict)->values, key);
@@ -4089,7 +4114,7 @@ g_variant_dict_clear (GVariantDict *dict)
     /* all-zeros case */
     return;
 
-  g_return_if_fail (is_valid_dict (dict));
+  g_return_if_fail (ensure_valid_dict (dict));
 
   g_hash_table_unref (GVSD(dict)->values);
   GVSD(dict)->values = NULL;
@@ -4120,7 +4145,7 @@ g_variant_dict_end (GVariantDict *dict)
   GHashTableIter iter;
   gpointer key, value;
 
-  g_return_val_if_fail (is_valid_dict (dict), NULL);
+  g_return_val_if_fail (ensure_valid_dict (dict), NULL);
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE_VARDICT);
 

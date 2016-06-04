@@ -436,8 +436,45 @@ gint                            g_variant_compare                       (gconstp
 typedef struct _GVariantDict GVariantDict;
 struct _GVariantDict {
   /*< private >*/
-  gsize x[16];
+  union
+  {
+    struct {
+      GVariant *asv;
+      gsize partial_magic;
+      gsize y[14];
+    };
+    gsize x[16];
+  };
 };
+
+/**
+ * G_VARIANT_DICT_INIT:
+ * @asv: (nullable): a GVariant*
+ *
+ * A stack-allocated #GVariantDict must be initialized if it is used
+ * together with g_auto() to avoid warnings or crashes if function
+ * returns before g_variant_dict_init() is called on the builder.
+ * This macro can be used as initializer instead of an explicit
+ * zeroing a variable when declaring it and a following
+ * g_variant_dict_init(), but it cannot be assigned to a variable.
+ *
+ * The passed @asv has to live long enough for #GVariantDict to gather
+ * the entries from, as the gathering does not happen in the
+ * G_VARIANT_DICT_INIT() call, but rather in functions that make sure
+ * that #GVariantDict is valid.  In context where the initialization
+ * value has to be a constant expression, the only possible value of
+ * @asv is %NULL.  It is still possible to call g_variant_dict_init()
+ * safely with a different @asv right after the variable was
+ * initialized with G_VARIANT_DICT_INIT().
+ *
+ * |[
+ *   g_autoptr(GVariant) variant = get_asv_variant ();
+ *   g_auto(GVariantDict) dict = G_VARIANT_DICT_INIT (variant);
+ * ]|
+ *
+ * Since: 2.50
+ */
+#define G_VARIANT_DICT_INIT(asv) { { { asv, 3488698669u, { 0, } } } }
 
 GLIB_AVAILABLE_IN_2_40
 GVariantDict *                  g_variant_dict_new                      (GVariant             *from_asv);
