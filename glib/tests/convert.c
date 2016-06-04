@@ -168,7 +168,7 @@ check_utf8_to_ucs4 (const char     *utf8,
       error2 = NULL;
       result2 = g_utf8_to_ucs4 (utf8, -1, &items_read2, &items_written2, &error2);
       g_assert (error || items_read2 == items_read);
-      g_assert (error || items_written2 == items_written2);
+      g_assert (error || items_written2 == items_written);
       g_assert_cmpint (!!result, ==, !!result2);
       g_assert_cmpint (!!error, ==, !!error2);
       if (result)
@@ -309,7 +309,7 @@ check_utf8_to_utf16 (const char      *utf8,
       error2 = NULL;
       result2 = g_utf8_to_utf16 (utf8, -1, &items_read2, &items_written2, &error2);
       g_assert (error || items_read2 == items_read);
-      g_assert (error || items_written2 == items_written2);
+      g_assert (error || items_written2 == items_written);
       g_assert_cmpint (!!result, ==, !!result2);
       g_assert_cmpint (!!error, ==, !!error2);
       if (result)
@@ -526,7 +526,7 @@ check_utf16_to_ucs4 (const gunichar2 *utf16,
       error2 = NULL;
       result2 = g_utf16_to_ucs4 (utf16, -1, &items_read2, &items_written2, &error2);
       g_assert (error || items_read2 == items_read);
-      g_assert (error || items_written2 == items_written2);
+      g_assert (error || items_written2 == items_written);
       g_assert_cmpint (!!result, ==, !!result2);
       g_assert_cmpint (!!error, ==, !!error2);
       if (result)
