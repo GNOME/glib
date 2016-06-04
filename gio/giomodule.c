@@ -339,7 +339,7 @@ g_io_module_unload_module (GTypeModule *gmodule)
 
 /**
  * g_io_module_new:
- * @filename: filename of the shared library module.
+ * @filename: (type filename): filename of the shared library module.
  * 
  * Creates a new GIOModule that will load the specific
  * shared library when in use.
@@ -389,7 +389,8 @@ is_valid_module_name (const gchar        *basename,
 
 /**
  * g_io_modules_scan_all_in_directory_with_scope:
- * @dirname: pathname for a directory containing modules to scan.
+ * @dirname: (type filename): pathname for a directory containing modules
+ *     to scan.
  * @scope: a scope to use when scanning the modules
  *
  * Scans all the modules in the specified directory, ensuring that
@@ -531,7 +532,8 @@ g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
 
 /**
  * g_io_modules_scan_all_in_directory:
- * @dirname: pathname for a directory containing modules to scan.
+ * @dirname: (type filename): pathname for a directory containing modules
+ *     to scan.
  *
  * Scans all the modules in the specified directory, ensuring that
  * any extension point implemented by a module is registered.
@@ -555,7 +557,8 @@ g_io_modules_scan_all_in_directory (const char *dirname)
 
 /**
  * g_io_modules_load_all_in_directory_with_scope:
- * @dirname: pathname for a directory containing modules to load.
+ * @dirname: (type filename): pathname for a directory containing modules
+ *     to load.
  * @scope: a scope to use when scanning the modules.
  *
  * Loads all the modules in the specified directory.
@@ -620,7 +623,8 @@ g_io_modules_load_all_in_directory_with_scope (const char     *dirname,
 
 /**
  * g_io_modules_load_all_in_directory:
- * @dirname: pathname for a directory containing modules to load.
+ * @dirname: (type filename): pathname for a directory containing modules
+ *     to load.
  *
  * Loads all the modules in the specified directory.
  *

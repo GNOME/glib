@@ -496,7 +496,7 @@ g_tls_certificate_new_from_pem  (const gchar  *data,
 
 /**
  * g_tls_certificate_new_from_file:
- * @file: file containing a PEM-encoded certificate to import
+ * @file: (type filename): file containing a PEM-encoded certificate to import
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates a #GTlsCertificate from the PEM-encoded data in @file. The
@@ -535,9 +535,10 @@ g_tls_certificate_new_from_file (const gchar  *file,
 
 /**
  * g_tls_certificate_new_from_files:
- * @cert_file: file containing one or more PEM-encoded certificates to
- * import
- * @key_file: file containing a PEM-encoded private key to import
+ * @cert_file: (type filename): file containing one or more PEM-encoded
+ *     certificates to import
+ * @key_file: (type filename): file containing a PEM-encoded private key
+ *     to import
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates a #GTlsCertificate from the PEM-encoded data in @cert_file
@@ -591,7 +592,7 @@ g_tls_certificate_new_from_files (const gchar  *cert_file,
 
 /**
  * g_tls_certificate_list_new_from_file:
- * @file: file containing PEM-encoded certificates to import
+ * @file: (type filename): file containing PEM-encoded certificates to import
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates one or more #GTlsCertificates from the PEM-encoded

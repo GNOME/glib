@@ -240,7 +240,7 @@ g_app_info_get_description (GAppInfo *appinfo)
  * 
  * Gets the executable's name for the installed application.
  *
- * Returns: a string containing the @appinfo's application 
+ * Returns: (type filename): a string containing the @appinfo's application
  * binaries name
  **/
 const char *
@@ -263,7 +263,7 @@ g_app_info_get_executable (GAppInfo *appinfo)
  * Gets the commandline with which the application will be
  * started.  
  *
- * Returns: a string containing the @appinfo's commandline, 
+ * Returns: (type filename): a string containing the @appinfo's commandline,
  *     or %NULL if this information is not available
  *
  * Since: 2.20
@@ -339,7 +339,8 @@ g_app_info_set_as_last_used_for_type (GAppInfo    *appinfo,
 /**
  * g_app_info_set_as_default_for_extension:
  * @appinfo: a #GAppInfo.
- * @extension: a string containing the file extension (without the dot).
+ * @extension: (type filename): a string containing the file extension
+ *     (without the dot).
  * @error: a #GError.
  * 
  * Sets the application as the default handler for the given file extension.
@@ -876,8 +877,8 @@ g_app_launch_context_init (GAppLaunchContext *context)
 /**
  * g_app_launch_context_setenv:
  * @context: a #GAppLaunchContext
- * @variable: the environment variable to set
- * @value: the value for to set the variable to.
+ * @variable: (type filename): the environment variable to set
+ * @value: (type filename): the value for to set the variable to.
  *
  * Arranges for @variable to be set to @value in the child's
  * environment when @context is used to launch an application.
@@ -899,7 +900,7 @@ g_app_launch_context_setenv (GAppLaunchContext *context,
 /**
  * g_app_launch_context_unsetenv:
  * @context: a #GAppLaunchContext
- * @variable: the environment variable to remove
+ * @variable: (type filename): the environment variable to remove
  *
  * Arranges for @variable to be unset in the child's environment
  * when @context is used to launch an application.
@@ -926,8 +927,8 @@ g_app_launch_context_unsetenv (GAppLaunchContext *context,
  * This is a %NULL-terminated array of strings, where each string has
  * the form `KEY=VALUE`.
  *
- * Returns: (array zero-terminated=1) (transfer full): the
- *     child's environment
+ * Returns: (array zero-terminated=1) (element-type filename) (transfer full):
+ *     the child's environment
  *
  * Since: 2.32
  */

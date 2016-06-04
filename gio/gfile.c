@@ -492,9 +492,9 @@ g_file_get_uri_scheme (GFile *file)
  *
  * This call does no blocking I/O.
  *
- * Returns: (nullable): string containing the #GFile's base name, or
- *     %NULL if given #GFile is invalid. The returned string should be
- *     freed with g_free() when no longer needed.
+ * Returns: (type filename) (nullable): string containing the #GFile's
+ *     base name, or %NULL if given #GFile is invalid. The returned string
+ *     should be freed with g_free() when no longer needed.
  */
 char *
 g_file_get_basename (GFile *file)
@@ -517,8 +517,8 @@ g_file_get_basename (GFile *file)
  *
  * This call does no blocking I/O.
  *
- * Returns: (nullable): string containing the #GFile's path, or %NULL
- *     if no such path exists. The returned string should be freed
+ * Returns: (type filename) (nullable): string containing the #GFile's path,
+ *     or %NULL if no such path exists. The returned string should be freed
  *     with g_free() when no longer needed.
  */
 char *
@@ -861,8 +861,8 @@ g_file_has_prefix (GFile *file,
  *
  * This call does no blocking I/O.
  *
- * Returns: (nullable): string with the relative path from @descendant
- *     to @parent, or %NULL if @descendant doesn't have @parent as
+ * Returns: (type filename) (nullable): string with the relative path from
+ *     @descendant to @parent, or %NULL if @descendant doesn't have @parent as
  *     prefix. The returned string should be freed with g_free() when
  *     no longer needed.
  */
@@ -3849,7 +3849,8 @@ g_file_make_directory_with_parents (GFile         *file,
 /**
  * g_file_make_symbolic_link:
  * @file: a #GFile with the name of the symlink to create
- * @symlink_value: a string with the path for the target of the new symlink
+ * @symlink_value: (type filename): a string with the path for the target
+ *     of the new symlink
  * @cancellable: (allow-none): optional #GCancellable object,
  *     %NULL to ignore
  * @error: a #GError
@@ -6317,7 +6318,7 @@ g_file_real_copy_finish (GFile        *file,
 
 /**
  * g_file_new_for_path:
- * @path: a string containing a relative or absolute path.
+ * @path: (type filename): a string containing a relative or absolute path.
  *     The string must be encoded in the glib filename encoding.
  *
  * Constructs a #GFile for a given path. This operation never
@@ -6482,7 +6483,7 @@ new_for_cmdline_arg (const gchar *arg,
 
 /**
  * g_file_new_for_commandline_arg:
- * @arg: a command line string
+ * @arg: (type filename): a command line string
  *
  * Creates a #GFile with the given argument from the command line.
  * The value of @arg can be either a URI, an absolute path or a
@@ -6512,8 +6513,8 @@ g_file_new_for_commandline_arg (const char *arg)
 
 /**
  * g_file_new_for_commandline_arg_and_cwd:
- * @arg: a command line string
- * @cwd: the current working directory of the commandline
+ * @arg: (type filename): a command line string
+ * @cwd: (type filename): the current working directory of the commandline
  *
  * Creates a #GFile with the given argument from the command line.
  *

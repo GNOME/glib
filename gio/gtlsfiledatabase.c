@@ -74,7 +74,7 @@ g_tls_file_database_default_init (GTlsFileDatabaseInterface *iface)
 
 /**
  * g_tls_file_database_new:
- * @anchors: filename of anchor certificate authorities.
+ * @anchors: (type filename): filename of anchor certificate authorities.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates a new #GTlsFileDatabase which uses anchor certificate authorities

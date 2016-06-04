@@ -1852,7 +1852,8 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
 
 /**
  * g_desktop_app_info_new_from_filename:
- * @filename: the path of a desktop file, in the GLib filename encoding
+ * @filename: (type filename): the path of a desktop file, in the GLib
+ *      filename encoding
  *
  * Creates a new #GDesktopAppInfo.
  *
@@ -2027,7 +2028,8 @@ g_desktop_app_info_get_is_hidden (GDesktopAppInfo *info)
  * situations such as the #GDesktopAppInfo returned from
  * g_desktop_app_info_new_from_keyfile(), this function will return %NULL.
  *
- * Returns: The full path to the file for @info, or %NULL if not known.
+ * Returns: (type filename): The full path to the file for @info,
+ *     or %NULL if not known.
  * Since: 2.24
  */
 const char *
@@ -3674,7 +3676,7 @@ g_desktop_app_info_delete (GAppInfo *appinfo)
 /* Create for commandline {{{2 */
 /**
  * g_app_info_create_from_commandline:
- * @commandline: the commandline to use
+ * @commandline: (type filename): the commandline to use
  * @application_name: (allow-none): the application name, or %NULL to use @commandline
  * @flags: flags that can specify details of the created #GAppInfo
  * @error: a #GError location to store the error occurring, %NULL to ignore.
