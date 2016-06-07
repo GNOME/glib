@@ -67,15 +67,15 @@ g_environ_find (gchar       **envp,
 
 /**
  * g_environ_getenv:
- * @envp: (allow-none) (array zero-terminated=1) (transfer none) (element-type filename):
- *     an environment list (eg, as returned from g_get_environ()), or %NULL
+ * @envp: (allow-none) (array zero-terminated=1) (transfer none): an environment
+ *     list (eg, as returned from g_get_environ()), or %NULL
  *     for an empty environment list
- * @variable: (type filename): the environment variable to get
+ * @variable: the environment variable to get
  *
  * Returns the value of the environment variable @variable in the
  * provided list @envp.
  *
- * Returns: (type filename): the value of the environment variable, or %NULL if
+ * Returns: the value of the environment variable, or %NULL if
  *     the environment variable is not set in @envp. The returned
  *     string is owned by @envp, and will be freed if @variable is
  *     set or unset again.
@@ -99,20 +99,19 @@ g_environ_getenv (gchar       **envp,
 
 /**
  * g_environ_setenv:
- * @envp: (allow-none) (array zero-terminated=1) (element-type filename) (transfer full):
- *     an environment list that can be freed using g_strfreev() (e.g., as
+ * @envp: (allow-none) (array zero-terminated=1) (transfer full): an
+ *     environment list that can be freed using g_strfreev() (e.g., as
  *     returned from g_get_environ()), or %NULL for an empty
  *     environment list
- * @variable: (type filename): the environment variable to set, must not
- *     contain '='
- * @value: (type filename): the value for to set the variable to
+ * @variable: the environment variable to set, must not contain '='
+ * @value: the value for to set the variable to
  * @overwrite: whether to change the variable if it already exists
  *
  * Sets the environment variable @variable in the provided list
  * @envp to @value.
  *
- * Returns: (array zero-terminated=1) (element-type filename) (transfer full):
- *     the updated environment list. Free it using g_strfreev().
+ * Returns: (array zero-terminated=1) (transfer full): the
+ *     updated environment list. Free it using g_strfreev().
  *
  * Since: 2.32
  */
@@ -187,17 +186,16 @@ g_environ_unsetenv_internal (gchar        **envp,
 
 /**
  * g_environ_unsetenv:
- * @envp: (allow-none) (array zero-terminated=1) (element-type filename) (transfer full):
- *     an environment list that can be freed using g_strfreev() (e.g., as
- *     returned from g_get_environ()), or %NULL for an empty environment list
- * @variable: (type filename): the environment variable to remove, must not
- *     contain '='
+ * @envp: (allow-none) (array zero-terminated=1) (transfer full): an environment
+ *     list that can be freed using g_strfreev() (e.g., as returned from g_get_environ()), 
+ *     or %NULL for an empty environment list
+ * @variable: the environment variable to remove, must not contain '='
  *
  * Removes the environment variable @variable from the provided
  * environment @envp.
  *
- * Returns: (array zero-terminated=1) (element-type filename) (transfer full):
- *     the updated environment list. Free it using g_strfreev().
+ * Returns: (array zero-terminated=1) (transfer full): the
+ *     updated environment list. Free it using g_strfreev().
  *
  * Since: 2.32
  */
@@ -219,7 +217,7 @@ g_environ_unsetenv (gchar       **envp,
 
 /**
  * g_getenv:
- * @variable: (type filename): the environment variable to get
+ * @variable: the environment variable to get
  *
  * Returns the value of an environment variable.
  *
@@ -229,7 +227,7 @@ g_environ_unsetenv (gchar       **envp,
  * On Windows, in case the environment variable's value contains
  * references to other environment variables, they are expanded.
  *
- * Returns: (type filename): the value of the environment variable, or %NULL if
+ * Returns: the value of the environment variable, or %NULL if
  *     the environment variable is not found. The returned string
  *     may be overwritten by the next call to g_getenv(), g_setenv()
  *     or g_unsetenv().
@@ -244,9 +242,8 @@ g_getenv (const gchar *variable)
 
 /**
  * g_setenv:
- * @variable: (type filename): the environment variable to set, must not
- *     contain '='.
- * @value: (type filename): the value for to set the variable to.
+ * @variable: the environment variable to set, must not contain '='.
+ * @value: the value for to set the variable to.
  * @overwrite: whether to change the variable if it already exists.
  *
  * Sets an environment variable. On UNIX, both the variable's name and
@@ -314,8 +311,7 @@ extern char **environ;
 
 /**
  * g_unsetenv:
- * @variable: (type filename): the environment variable to remove, must
- *     not contain '='
+ * @variable: the environment variable to remove, must not contain '='
  *
  * Removes an environment variable from the environment.
  *
@@ -365,9 +361,8 @@ g_unsetenv (const gchar *variable)
  * use cases for environment variables in GLib-using programs you want
  * the UTF-8 encoding that this function and g_getenv() provide.
  *
- * Returns: (array zero-terminated=1) (element-type filename) (transfer full):
- *     a %NULL-terminated list of strings which must be freed with
- *     g_strfreev().
+ * Returns: (array zero-terminated=1) (transfer full): a %NULL-terminated
+ *     list of strings which must be freed with g_strfreev().
  *
  * Since: 2.8
  */
@@ -407,8 +402,8 @@ g_listenv (void)
  * The return value is freshly allocated and it should be freed with
  * g_strfreev() when it is no longer needed.
  *
- * Returns: (array zero-terminated=1) (element-type filename) (transfer full):
- *     the list of environment variables
+ * Returns: (array zero-terminated=1) (transfer full): the list of
+ *     environment variables
  *
  * Since: 2.28
  */
