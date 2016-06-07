@@ -877,8 +877,8 @@ g_app_launch_context_init (GAppLaunchContext *context)
 /**
  * g_app_launch_context_setenv:
  * @context: a #GAppLaunchContext
- * @variable: (type filename): the environment variable to set
- * @value: (type filename): the value for to set the variable to.
+ * @variable: the environment variable to set
+ * @value: the value for to set the variable to.
  *
  * Arranges for @variable to be set to @value in the child's
  * environment when @context is used to launch an application.
@@ -900,7 +900,7 @@ g_app_launch_context_setenv (GAppLaunchContext *context,
 /**
  * g_app_launch_context_unsetenv:
  * @context: a #GAppLaunchContext
- * @variable: (type filename): the environment variable to remove
+ * @variable: the environment variable to remove
  *
  * Arranges for @variable to be unset in the child's environment
  * when @context is used to launch an application.
@@ -927,8 +927,8 @@ g_app_launch_context_unsetenv (GAppLaunchContext *context,
  * This is a %NULL-terminated array of strings, where each string has
  * the form `KEY=VALUE`.
  *
- * Returns: (array zero-terminated=1) (element-type filename) (transfer full):
- *     the child's environment
+ * Returns: (array zero-terminated=1) (transfer full): the
+ *     child's environment
  *
  * Since: 2.32
  */

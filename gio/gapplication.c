@@ -2198,8 +2198,7 @@ g_application_open (GApplication  *application,
  * g_application_run:
  * @application: a #GApplication
  * @argc: the argc from main() (or 0 if @argv is %NULL)
- * @argv: (array length=argc) (element-type filename) (allow-none):
- *     the argv from main(), or %NULL
+ * @argv: (array length=argc) (allow-none): the argv from main(), or %NULL
  *
  * Runs the application.
  *

@@ -225,8 +225,7 @@ g_subprocess_launcher_new (GSubprocessFlags flags)
 /**
  * g_subprocess_launcher_set_environ:
  * @self: a #GSubprocess
- * @env: (array zero-terminated=1) (element-type filename) (nullable) (transfer none):
- *     the replacement environment
+ * @env: the replacement environment
  *
  * Replace the entire environment of processes launched from this
  * launcher with the given 'environ' variable.
@@ -254,9 +253,8 @@ g_subprocess_launcher_set_environ (GSubprocessLauncher  *self,
 /**
  * g_subprocess_launcher_setenv:
  * @self: a #GSubprocess
- * @variable: (type filename): the environment variable to set,
- *     must not contain '='
- * @value: (type filename): the new value for the variable
+ * @variable: the environment variable to set, must not contain '='
+ * @value: the new value for the variable
  * @overwrite: whether to change the variable if it already exists
  *
  * Sets the environment variable @variable in the environment of
@@ -280,8 +278,7 @@ g_subprocess_launcher_setenv (GSubprocessLauncher *self,
 /**
  * g_subprocess_launcher_unsetenv:
  * @self: a #GSubprocess
- * @variable: (type filename): the environment variable to unset,
- *     must not contain '='
+ * @variable: the environment variable to unset, must not contain '='
  *
  * Removes the environment variable @variable from the environment of
  * processes launched from this launcher.
@@ -301,7 +298,7 @@ g_subprocess_launcher_unsetenv (GSubprocessLauncher *self,
 /**
  * g_subprocess_launcher_getenv:
  * @self: a #GSubprocess
- * @variable: (type filename): the environment variable to get
+ * @variable: the environment variable to get
  *
  * Returns the value of the environment variable @variable in the
  * environment of processes launched from this launcher.
@@ -309,8 +306,7 @@ g_subprocess_launcher_unsetenv (GSubprocessLauncher *self,
  * On UNIX, the returned string can be an arbitrary byte string.
  * On Windows, it will be UTF-8.
  *
- * Returns: (type filename): the value of the environment variable,
- *     %NULL if unset
+ * Returns: the value of the environment variable, %NULL if unset
  *
  * Since: 2.40
  **/
@@ -715,7 +711,7 @@ g_subprocess_launcher_spawn (GSubprocessLauncher  *launcher,
 /**
  * g_subprocess_launcher_spawnv:
  * @self: a #GSubprocessLauncher
- * @argv: (array zero-terminated=1) (element-type filename): Command line arguments
+ * @argv: (array zero-terminated=1) (element-type utf8): Command line arguments
  * @error: Error
  *
  * Creates a #GSubprocess given a provided array of arguments.
