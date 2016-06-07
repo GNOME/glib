@@ -288,11 +288,7 @@
 #define HAVE_LONG_DOUBLE 1
 
 /* Define if you have the 'long long' type. */
-#ifndef _MSC_VER
 #define HAVE_LONG_LONG 1
-#else /* _MSC_VER */
-/* #undef HAVE_LONG_LONG */
-#endif /* _MSC_VER */
 
 /* define if system printf can print long long */
 #define HAVE_LONG_LONG_FORMAT 1
