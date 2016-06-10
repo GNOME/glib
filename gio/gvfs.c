@@ -37,16 +37,70 @@
  *
  */
 
-G_DEFINE_TYPE (GVfs, g_vfs, G_TYPE_OBJECT);
+/**
+ * GVfsURILookupFunc:
+ * @vfs: A #GVfs
+ * @uri: A URI to look up
+ * @user_data: User data passed to g_vfs_register_uri_scheme().
+ *
+ * Returns: (transfer full): A #GFile for the passed in @uri.
+ *
+ * Since: 2.50
+ */
+
+typedef struct {
+  GVfsURILookupFunc func;
+  gpointer user_data;
+  GDestroyNotify destroy;
+} GVfsURILookupFuncClosure;
+
+struct _GVfsPrivate {
+  GHashTable *additional_schemes;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE (GVfs, g_vfs, G_TYPE_OBJECT);
+
+static void
+g_vfs_dispose (GObject *object)
+{
+  GVfs *vfs = G_VFS (object);
+  GVfsPrivate *priv = g_vfs_get_instance_private (vfs);
+
+  g_clear_pointer (&priv->additional_schemes, g_hash_table_destroy);
+
+  G_OBJECT_CLASS (g_vfs_parent_class)->dispose (object);
+}
 
 static void
 g_vfs_class_init (GVfsClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  object_class->dispose = g_vfs_dispose;
+}
+
+static GFile *
+resource_get_file_for_uri (GVfs *vfs, const char *uri, gpointer user_data)
+{
+  return _g_resource_file_new (uri);
+}
+
+static void
+g_vfs_uri_lookup_func_closure_free (GVfsURILookupFuncClosure *closure)
+{
+  if (closure->destroy)
+    closure->destroy (closure->user_data);
+  g_free (closure);
 }
 
 static void
 g_vfs_init (GVfs *vfs)
 {
+  GVfsPrivate *priv = g_vfs_get_instance_private (vfs);
+
+  priv->additional_schemes = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                    g_free, (GDestroyNotify) g_vfs_uri_lookup_func_closure_free);
+
+  g_vfs_register_uri_scheme (vfs, "resource", resource_get_file_for_uri, NULL, NULL);
 }
 
 /**
@@ -69,7 +123,6 @@ g_vfs_is_active (GVfs *vfs)
 
   return (* class->is_active) (vfs);
 }
-
 
 /**
  * g_vfs_get_file_for_path:
@@ -95,6 +148,26 @@ g_vfs_get_file_for_path (GVfs       *vfs,
   return (* class->get_file_for_path) (vfs, path);
 }
 
+static GFile *
+get_file_for_uri_internal (GVfs *vfs, const char *uri)
+{
+  GVfsPrivate *priv = g_vfs_get_instance_private (vfs);
+  char *scheme;
+  GVfsURILookupFuncClosure *closure;
+
+  scheme = g_uri_parse_scheme (uri);
+  if (scheme == NULL)
+    return NULL;
+
+  closure = g_hash_table_lookup (priv->additional_schemes, scheme);
+  g_free (scheme);
+
+  if (closure)
+    return closure->func (vfs, uri, closure->user_data);
+  else
+    return NULL;
+}
+
 /**
  * g_vfs_get_file_for_uri:
  * @vfs: a#GVfs.
@@ -114,19 +187,16 @@ g_vfs_get_file_for_uri (GVfs       *vfs,
                         const char *uri)
 {
   GVfsClass *class;
+  GFile *ret;
  
   g_return_val_if_fail (G_IS_VFS (vfs), NULL);
   g_return_val_if_fail (uri != NULL, NULL);
 
   class = G_VFS_GET_CLASS (vfs);
 
-  /* This is an unfortunate placement, but we really
-   * need to check this before chaining to the vfs,
-   * because we want to support resource uris for
-   * all vfs:es, even those that predate resources.
-   */
-  if (g_str_has_prefix (uri, "resource:"))
-    return _g_resource_file_new (uri);
+  ret = get_file_for_uri_internal (vfs, uri);
+  if (ret)
+    return ret;
 
   return (* class->get_file_for_uri) (vfs, uri);
 }
@@ -216,3 +286,37 @@ g_vfs_get_local (void)
 
   return G_VFS (vfs);
 }
+
+/**
+ * g_vfs_register_uri_scheme:
+ * @vfs: A #GVfs
+ * @scheme: The scheme to register a URI handler on.
+ * @func: The lookup function to register.
+ * @user_data: (nullable): User data to call the lookup function with.
+ * @destroy: (nullable): Called when the closure is destroyed.
+ *
+ * Registers the scheme @scheme so that when URIs with this scheme are
+ * looked up, the registered @func is called. There is currently no way
+ * to unregister a scheme. It is undefined if two pieces of code try to
+ * register the same scheme.
+ *
+ * Since: 2.50
+ */
+void
+g_vfs_register_uri_scheme (GVfs              *vfs,
+                           const char        *scheme,
+                           GVfsURILookupFunc  func,
+                           gpointer           user_data,
+                           GDestroyNotify     destroy)
+{
+  GVfsPrivate *priv = g_vfs_get_instance_private (vfs);
+  GVfsURILookupFuncClosure *closure;
+
+  closure = g_new (GVfsURILookupFuncClosure, 1);
+  closure->func = func;
+  closure->user_data = user_data;
+  closure->destroy = destroy;
+
+  g_hash_table_replace (priv->additional_schemes, g_strdup (scheme), closure);
+}
+

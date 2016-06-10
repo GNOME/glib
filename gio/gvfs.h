@@ -36,6 +36,8 @@ G_BEGIN_DECLS
 #define G_IS_VFS(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_VFS))
 #define G_IS_VFS_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_VFS))
 
+typedef GFile * (* GVfsURILookupFunc) (GVfs *vfs, const char *uri, gpointer user_data);
+
 /**
  * G_VFS_EXTENSION_POINT_NAME:
  *
@@ -50,6 +52,7 @@ G_BEGIN_DECLS
  * Virtual File System object.
  **/
 typedef struct _GVfsClass    GVfsClass;
+typedef struct _GVfsPrivate  GVfsPrivate;
 
 struct _GVfs
 {
@@ -126,6 +129,13 @@ GLIB_AVAILABLE_IN_ALL
 GVfs *                g_vfs_get_default               (void);
 GLIB_AVAILABLE_IN_ALL
 GVfs *                g_vfs_get_local                 (void);
+
+GLIB_AVAILABLE_IN_2_50
+void                  g_vfs_register_uri_scheme       (GVfs              *vfs,
+                                                       const char        *scheme,
+                                                       GVfsURILookupFunc  func,
+                                                       gpointer           user_data,
+                                                       GDestroyNotify     destroy);
 
 G_END_DECLS
 
