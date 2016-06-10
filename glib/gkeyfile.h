@@ -76,6 +76,11 @@ gboolean  g_key_file_load_from_data         (GKeyFile             *key_file,
 					     gsize                 length,
 					     GKeyFileFlags         flags,
 					     GError              **error);
+GLIB_AVAILABLE_IN_2_50
+gboolean  g_key_file_load_from_string       (GKeyFile             *key_file,
+                                             const gchar          *string,
+                                             GKeyFileFlags         flags,
+                                             GError              **error);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_key_file_load_from_dirs          (GKeyFile             *key_file,
 					     const gchar	  *file,

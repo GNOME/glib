@@ -1925,6 +1925,7 @@ g_key_file_unref
 g_key_file_set_list_separator
 g_key_file_load_from_file
 g_key_file_load_from_data
+g_key_file_load_from_string
 g_key_file_load_from_data_dirs
 g_key_file_load_from_dirs
 g_key_file_to_data

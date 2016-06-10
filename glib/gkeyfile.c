@@ -927,6 +927,29 @@ g_key_file_load_from_data (GKeyFile       *key_file,
 }
 
 /**
+ * g_key_file_load_from_string:
+ * @key_file: an empty #GKeyFile struct
+ * @string: key file loaded in memory
+ * @flags: flags from #GKeyFileFlags
+ * @error: return location for a #GError, or %NULL
+ *
+ * Loads a key file from memory into an empty #GKeyFile structure.
+ * If the object cannot be created then %error is set to a #GKeyFileError.
+ *
+ * Returns: %TRUE if a key file could be loaded, %FALSE otherwise
+ *
+ * Since: 2.50
+ **/
+gboolean
+g_key_file_load_from_string (GKeyFile       *key_file,
+                             const gchar    *string,
+                             GKeyFileFlags   flags,
+                             GError        **error)
+{
+  return g_key_file_load_from_data (key_file, string, (gsize) -1, flags, error);
+}
+
+/**
  * g_key_file_load_from_dirs:
  * @key_file: an empty #GKeyFile struct
  * @file: (type filename): a relative path to a filename to open and parse
