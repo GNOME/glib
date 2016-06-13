@@ -32,7 +32,6 @@ test_programs = \
 	credentials				\
 	data-input-stream			\
 	data-output-stream			\
-	defaultvalue				\
 	fileattributematcher			\
 	filter-streams				\
 	giomodule				\
@@ -245,7 +244,6 @@ if OS_UNIX
 test_programs += \
 	file					\
 	gdbus-peer-object-manager		\
-	gdbus-unix-addresses			\
 	live-g-file				\
 	socket-address				\
 	stream-rw_all				\
@@ -383,7 +381,6 @@ uninstalled_test_extra_programs += gdbus-test-fixture
 gdbus_test_fixture_LDADD = gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
 
 # This is peer to peer so it doesn't need a session bus (so we can run it normally)
-test_programs += gdbus-peer
 gdbus_peer_LDADD = gdbus-object-manager-example/libgdbus-example-objectmanager.la $(LDADD)
 
 # This test is currently unreliable
@@ -398,6 +395,7 @@ gdbus_sessionbus_sources = gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h g
 test_programs += \
 	actions					\
 	dbus-appinfo				\
+	defaultvalue				\
 	gapplication				\
 	gdbus-auth				\
 	gdbus-bz627724				\
@@ -410,6 +408,7 @@ test_programs += \
 	gdbus-export				\
 	gdbus-introspection			\
 	gdbus-names				\
+	gdbus-peer				\
 	gdbus-proxy				\
 	gdbus-proxy-threads			\
 	gdbus-proxy-well-known-name		\
@@ -419,6 +418,10 @@ test_programs += \
 	gmenumodel				\
 	gnotification				\
 	$(NULL)
+
+if OS_UNIX
+test_programs += gdbus-unix-addresses
+endif
 
 gdbus_proxy_threads_CFLAGS = $(AM_CFLAGS) $(DBUS1_CFLAGS)
 actions_SOURCES                          = $(gdbus_sessionbus_sources) actions.c
