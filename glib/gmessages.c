@@ -1865,6 +1865,25 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
   return G_LOG_WRITER_HANDLED;
 }
 
+/* The old g_log() API is implemented in terms of the new structured log API.
+ * However, some of the checks do not line up between the two APIs: the
+ * structured API only handles fatalness of messages for log levels; the old API
+ * handles it per-domain as well. Consequently, we need to disable fatalness
+ * handling in the structured log API when called from the old g_log() API.
+ *
+ * We can guarantee that g_log_default_handler() will pass GLIB_OLD_LOG_API as
+ * the first field to g_log_structured(), if that is the case. This results in
+ * it appearing as the fourth field in g_log_structured_array().
+ */
+static gboolean
+log_is_old_api (const GLogField *fields,
+                gsize            n_fields)
+{
+  return (n_fields >= 4 &&
+          g_strcmp0 (fields[3].key, "GLIB_OLD_LOG_API") == 0 &&
+          g_strcmp0 (fields[3].value, "1") == 0);
+}
+
 /**
  * g_log_writer_default:
  * @log_level: log level, either from #GLogLevelFlags, or a user-defined
@@ -1927,7 +1946,7 @@ g_log_writer_default (GLogLevelFlags   log_level,
   /* Mark messages as fatal if they have a level set in
    * g_log_set_always_fatal().
    */
-  if (log_level & g_log_always_fatal)
+  if ((log_level & g_log_always_fatal) && !log_is_old_api (fields, n_fields))
     log_level |= G_LOG_FLAG_FATAL;
 
   /* Try logging to the systemd journal as first choice. */
@@ -2334,9 +2353,6 @@ g_log_default_handler (const gchar   *log_domain,
 		       const gchar   *message,
 		       gpointer	      unused_data)
 {
-  gchar level_prefix[STRING_BUFFER_SIZE], *string;
-  GString *gstring;
-  FILE *stream;
   const gchar *domains;
 
   if ((log_level & DEFAULT_LEVELS) || (log_level >> G_LOG_LEVEL_USER_SHIFT))
@@ -2356,59 +2372,14 @@ g_log_default_handler (const gchar   *log_domain,
       return;
     }
 
-  stream = mklevel_prefix (level_prefix, log_level, FALSE);
-
-  gstring = g_string_new (NULL);
-  if (log_level & ALERT_LEVELS)
-    g_string_append (gstring, "\n");
-  if (!log_domain)
-    g_string_append (gstring, "** ");
-
-  if ((g_log_msg_prefix & (log_level & G_LOG_LEVEL_MASK)) == (log_level & G_LOG_LEVEL_MASK))
-    {
-      const gchar *prg_name = g_get_prgname ();
-
-      if (!prg_name)
-	g_string_append_printf (gstring, "(process:%lu): ", (gulong)getpid ());
-      else
-	g_string_append_printf (gstring, "(%s:%lu): ", prg_name, (gulong)getpid ());
-    }
-
-  if (log_domain)
-    {
-      g_string_append (gstring, log_domain);
-      g_string_append_c (gstring, '-');
-    }
-  g_string_append (gstring, level_prefix);
-
-  g_string_append (gstring, ": ");
-  if (!message)
-    g_string_append (gstring, "(NULL) message");
-  else
-    {
-      GString *msg;
-      const gchar *charset;
-
-      msg = g_string_new (message);
-      escape_string (msg);
-
-      if (g_get_charset (&charset))
-	g_string_append (gstring, msg->str);	/* charset is UTF-8 already */
-      else
-	{
-	  string = strdup_convert (msg->str, charset);
-	  g_string_append (gstring, string);
-	  g_free (string);
-	}
-
-      g_string_free (msg, TRUE);
-    }
-  g_string_append (gstring, "\n");
-
-  string = g_string_free (gstring, FALSE);
-
-  write_string (stream, string);
-  g_free (string);
+  /* Print out via the structured log API, but drop any fatal flags since we
+   * have already handled them. The fatal handling in the structured logging
+   * API is more coarse-grained than in the old g_log() API, so we don't want
+   * to use it here.
+   */
+  g_log_structured (log_domain, log_level & ~G_LOG_FLAG_FATAL, "%s", message,
+                    "GLIB_OLD_LOG_API", "1",
+                    NULL);
 }
 
 /**
