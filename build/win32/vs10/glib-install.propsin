@@ -5,10 +5,6 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
     <BinDir>$(SolutionDir)$(Configuration)\$(Platform)\bin</BinDir>
-    <InstalledDlls>$(BinDir)\$(GlibDllPrefix)glib(GlibDllSuffix).dll;$(BinDir)\$(GlibDllPrefix)gthread(GlibDllSuffix).dll;$(BinDir)\$(GlibDllPrefix)gmodule(GlibDllSuffix).dll;$(BinDir)\$(GlibDllPrefix)gobject(GlibDllSuffix).dll;$(BinDir)\$(GlibDllPrefix)gio(GlibDllSuffix).dll</InstalledDlls>
-    <InstalledBins>$(BinDir)\glib-genmarshal.exe;$(BinDir)\glib-compile-schemas.exe;$(BinDir)\gsettings.exe;$(BinDir)\glib-compile-resources.exe;$(BinDir)\gresource.exe;$(BinDir)\gio-querymodules.exe;$(BinDir)\gdbus.exe</InstalledBins>
-    <InstalledWin32Bins>$(BinDir)\gspawn-win32-helper.exe;$(BinDir)\gspawn-win32-helper-console.exe</InstalledWin32Bins>
-    <InstalledX64Bins>$(BinDir)\gspawn-win64-helper.exe;$(BinDir)\gspawn-win64-helper-console.exe</InstalledX64Bins>
     <GlibDoInstall>
 mkdir $(CopyDir)
 mkdir $(CopyDir)\bin
@@ -94,18 +90,6 @@ copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\cod
   <ItemGroup>
     <BuildMacro Include="BinDir">
       <Value>$(BinDir)</Value>
-    </BuildMacro>
-    <BuildMacro Include="InstalledDlls">
-      <Value>$(InstalledDlls)</Value>
-    </BuildMacro>
-    <BuildMacro Include="InstalledBins">
-      <Value>$(InstalledBins)</Value>
-    </BuildMacro>
-    <BuildMacro Include="InstalledWin32Bins">
-      <Value>$(InstalledWin32Bins)</Value>
-    </BuildMacro>
-    <BuildMacro Include="InstalledX64Bins">
-      <Value>$(InstalledX64Bins)</Value>
     </BuildMacro>
     <BuildMacro Include="GlibDoInstall">
       <Value>$(GlibDoInstall)</Value>
