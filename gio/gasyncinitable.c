@@ -166,6 +166,9 @@ g_async_initable_default_init (GAsyncInitableInterface *iface)
  * initial construction. If the object also implements #GInitable you can
  * optionally call g_initable_init() instead.
  *
+ * This method is intended for language bindings. If writing in C,
+ * g_async_initable_new_async() should typically be used instead.
+ *
  * When the initialization is finished, @callback will be called. You can
  * then call g_async_initable_init_finish() to get the result of the
  * initialization.
@@ -183,11 +186,11 @@ g_async_initable_default_init (GAsyncInitableInterface *iface)
  * have undefined behaviour. They will often fail with g_critical() or
  * g_warning(), but this must not be relied on.
  *
- * Implementations of this method must be idempotent: i.e. multiple calls
- * to this function with the same argument should return the same results.
- * Only the first call initializes the object; further calls return the result
- * of the first call. This is so that it's safe to implement the singleton
- * pattern in the GObject constructor function.
+ * Callers should not assume that a class which implements #GAsyncInitable can
+ * be initialized multiple times; for more information, see g_initable_init().
+ * If a class explicitly supports being initialized multiple times,
+ * implementation requires yielding all subsequent calls to init_async() on the
+ * results of the first call.
  *
  * For classes that also support the #GInitable interface, the default
  * implementation of this method will run the g_initable_init() function
