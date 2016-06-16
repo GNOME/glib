@@ -571,6 +571,7 @@ g_idle_remove_by_data
 
 <SUBSECTION>
 GPid
+G_PID_FORMAT
 GChildWatchFunc
 g_child_watch_source_new
 g_child_watch_add

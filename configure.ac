@@ -125,6 +125,7 @@ case "$host" in
   *-*-mingw*)
     glib_native_win32=yes
     glib_pid_type='void *'
+    glib_pid_format='p'
     glib_pollfd_format='%#x'
     glib_cv_stack_grows=no
     # Unfortunately the mingw implementations of C99-style snprintf and vsnprintf
@@ -148,6 +149,7 @@ case "$host" in
   *)
     glib_native_win32=no
     glib_pid_type=int
+    glib_pid_format='i'
     glib_pollfd_format='%d'
     ;;
 esac
@@ -2884,6 +2886,7 @@ _______EOF
 #define G_MODULE_SUFFIX "$g_module_suffix"
 
 typedef $g_pid_type GPid;
+#define G_PID_FORMAT $g_pid_format
 
 #define GLIB_SYSDEF_AF_UNIX $g_af_unix
 #define GLIB_SYSDEF_AF_INET $g_af_inet
@@ -3166,6 +3169,7 @@ g_gcc_atomic_ops="$glib_cv_gcc_has_builtin_atomic_operations"
 
 g_module_suffix="$glib_gmodule_suffix"
 g_pid_type="$glib_pid_type"
+g_pid_format="\"$glib_pid_format\""
 g_pollfd_format="\"$glib_pollfd_format\""
 
 case $host in

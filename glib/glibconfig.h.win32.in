@@ -242,6 +242,7 @@ typedef unsigned __int64 guintptr;
  * not a process identifier.
  */
 typedef void * GPid;
+#define G_PID_FORMAT "p"
 
 #define GLIB_SYSDEF_AF_UNIX 1
 #define GLIB_SYSDEF_AF_INET 2
