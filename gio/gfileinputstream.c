@@ -410,6 +410,7 @@ g_file_input_stream_real_query_info_async (GFileInputStream    *stream,
   GTask *task;
 
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_input_stream_real_query_info_async);
   g_task_set_task_data (task, g_strdup (attributes), g_free);
   g_task_set_priority (task, io_priority);
   

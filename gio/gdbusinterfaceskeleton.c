@@ -627,6 +627,7 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceSkeleton       *interface
       data->ref_count = 1;
 
       task = g_task_new (interface, NULL, NULL, NULL);
+      g_task_set_source_tag (task, g_dbus_interface_method_dispatch_helper);
       g_task_set_task_data (task, data, (GDestroyNotify) dispatch_data_unref);
       g_task_run_in_thread (task, dispatch_in_thread_func);
       g_object_unref (task);

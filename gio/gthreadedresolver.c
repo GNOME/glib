@@ -141,6 +141,7 @@ lookup_by_name (GResolver     *resolver,
   GList *addresses;
 
   task = g_task_new (resolver, cancellable, NULL, NULL);
+  g_task_set_source_tag (task, lookup_by_name);
   g_task_set_task_data (task, g_strdup (hostname), g_free);
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread_sync (task, do_lookup_by_name);
@@ -160,6 +161,7 @@ lookup_by_name_async (GResolver           *resolver,
   GTask *task;
 
   task = g_task_new (resolver, cancellable, callback, user_data);
+  g_task_set_source_tag (task, lookup_by_name_async);
   g_task_set_task_data (task, g_strdup (hostname), g_free);
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread (task, do_lookup_by_name);
@@ -225,6 +227,7 @@ lookup_by_address (GResolver        *resolver,
   gchar *name;
 
   task = g_task_new (resolver, cancellable, NULL, NULL);
+  g_task_set_source_tag (task, lookup_by_address);
   g_task_set_task_data (task, g_object_ref (address), g_object_unref);
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread_sync (task, do_lookup_by_address);
@@ -244,6 +247,7 @@ lookup_by_address_async (GResolver           *resolver,
   GTask *task;
 
   task = g_task_new (resolver, cancellable, callback, user_data);
+  g_task_set_source_tag (task, lookup_by_address_async);
   g_task_set_task_data (task, g_object_ref (address), g_object_unref);
   g_task_set_return_on_cancel (task, TRUE);
   g_task_run_in_thread (task, do_lookup_by_address);
@@ -875,6 +879,7 @@ lookup_records (GResolver              *resolver,
   LookupRecordsData *lrd;
 
   task = g_task_new (resolver, cancellable, NULL, NULL);
+  g_task_set_source_tag (task, lookup_records);
 
   lrd = g_slice_new (LookupRecordsData);
   lrd->rrname = g_strdup (rrname);
@@ -901,6 +906,7 @@ lookup_records_async (GResolver           *resolver,
   LookupRecordsData *lrd;
 
   task = g_task_new (resolver, cancellable, callback, user_data);
+  g_task_set_source_tag (task, lookup_records_async);
 
   lrd = g_slice_new (LookupRecordsData);
   lrd->rrname = g_strdup (rrname);

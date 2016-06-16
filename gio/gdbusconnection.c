@@ -1250,6 +1250,7 @@ g_dbus_connection_flush (GDBusConnection     *connection,
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
 
   task = g_task_new (connection, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_dbus_connection_flush);
   g_task_run_in_thread (task, flush_in_thread_func);
   g_object_unref (task);
 }
@@ -1446,6 +1447,7 @@ g_dbus_connection_close (GDBusConnection     *connection,
   g_assert (connection->worker != NULL);
 
   task = g_task_new (connection, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_dbus_connection_close);
   _g_dbus_worker_close (connection->worker, task);
   g_object_unref (task);
 }
@@ -1904,6 +1906,8 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
 
   data = g_slice_new0 (SendMessageData);
   task = g_task_new (connection, cancellable, callback, user_data);
+  g_task_set_source_tag (task,
+                         g_dbus_connection_send_message_with_reply_unlocked);
   g_task_set_task_data (task, data, (GDestroyNotify) send_message_data_free);
 
   if (g_task_return_error_if_cancelled (task))
@@ -5772,6 +5776,7 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
       state->reply_type = g_variant_type_copy (reply_type);
 
       task = g_task_new (connection, cancellable, callback, user_data);
+      g_task_set_source_tag (task, g_dbus_connection_call_internal);
       g_task_set_task_data (task, state, (GDestroyNotify) call_state_free);
 
       g_dbus_connection_send_message_with_reply (connection,
@@ -7312,6 +7317,7 @@ g_bus_get (GBusType             bus_type,
   GError *error = NULL;
 
   task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_bus_get);
 
   connection = get_uninitialized_connection (bus_type, cancellable, &error);
   if (connection == NULL)

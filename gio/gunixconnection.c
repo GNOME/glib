@@ -409,7 +409,7 @@ g_unix_connection_send_credentials_async (GUnixConnection      *connection,
   GTask *task;
 
   task = g_task_new (connection, cancellable, callback, user_data);
-
+  g_task_set_source_tag (task, g_unix_connection_send_credentials_async);
   g_task_run_in_thread (task, send_credentials_async_thread);
 }
 
@@ -670,7 +670,7 @@ g_unix_connection_receive_credentials_async (GUnixConnection      *connection,
   GTask *task;
 
   task = g_task_new (connection, cancellable, callback, user_data);
-
+  g_task_set_source_tag (task, g_unix_connection_receive_credentials_async);
   g_task_run_in_thread (task, receive_credentials_async_thread);
 }
 

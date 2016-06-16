@@ -138,6 +138,9 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
   G_UNLOCK (active_jobs);
 
   task = g_task_new (NULL, cancellable, NULL, NULL);
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  g_task_set_source_tag (task, g_io_scheduler_push_job);
+G_GNUC_END_IGNORE_DEPRECATIONS
   g_task_set_task_data (task, job, (GDestroyNotify)g_io_job_free);
   g_task_set_priority (task, io_priority);
   g_task_run_in_thread (task, io_job_thread);

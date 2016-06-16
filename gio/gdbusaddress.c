@@ -865,6 +865,7 @@ g_dbus_address_get_stream (const gchar         *address,
   data->address = g_strdup (address);
 
   task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_dbus_address_get_stream);
   g_task_set_task_data (task, data, (GDestroyNotify) get_stream_data_free);
   g_task_run_in_thread (task, get_stream_thread_func);
   g_object_unref (task);

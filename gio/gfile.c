@@ -5420,6 +5420,7 @@ g_file_real_query_info_async (GFile               *file,
   data->flags = flags;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_query_info_async);
   g_task_set_task_data (task, data, (GDestroyNotify)query_info_data_free);
   g_task_set_priority (task, io_priority);
   g_task_run_in_thread (task, query_info_async_thread);
@@ -5464,6 +5465,7 @@ g_file_real_query_filesystem_info_async (GFile               *file,
   GTask *task;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_query_filesystem_info_async);
   g_task_set_task_data (task, g_strdup (attributes), g_free);
   g_task_set_priority (task, io_priority);
   g_task_run_in_thread (task, query_filesystem_info_async_thread);
@@ -5514,6 +5516,7 @@ g_file_real_enumerate_children_async (GFile               *file,
   data->flags = flags;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_enumerate_children_async);
   g_task_set_task_data (task, data, (GDestroyNotify)query_info_data_free);
   g_task_set_priority (task, io_priority);
   g_task_run_in_thread (task, enumerate_children_async_thread);
@@ -5556,6 +5559,7 @@ g_file_real_read_async (GFile               *file,
   GTask *task;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_read_async);
   g_task_set_priority (task, io_priority);
   g_task_run_in_thread (task, open_read_async_thread);
   g_object_unref (task);
@@ -5603,6 +5607,7 @@ g_file_real_append_to_async (GFile               *file,
   *data = flags;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_append_to_async);
   g_task_set_task_data (task, data, g_free);
   g_task_set_priority (task, io_priority);
 
@@ -5652,6 +5657,7 @@ g_file_real_create_async (GFile               *file,
   *data = flags;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_create_async);
   g_task_set_task_data (task, data, g_free);
   g_task_set_priority (task, io_priority);
 
@@ -5727,6 +5733,7 @@ g_file_real_replace_async (GFile               *file,
   data->flags = flags;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_replace_async);
   g_task_set_task_data (task, data, (GDestroyNotify)replace_async_data_free);
   g_task_set_priority (task, io_priority);
 
@@ -5768,6 +5775,7 @@ g_file_real_delete_async (GFile               *file,
   GTask *task;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_delete_async);
   g_task_set_priority (task, io_priority);
   g_task_run_in_thread (task, delete_async_thread);
   g_object_unref (task);
@@ -5807,6 +5815,7 @@ g_file_real_trash_async (GFile               *file,
   GTask *task;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_trash_async);
   g_task_set_priority (task, io_priority);
   g_task_run_in_thread (task, trash_async_thread);
   g_object_unref (task);
@@ -5846,6 +5855,7 @@ g_file_real_make_directory_async (GFile               *file,
   GTask *task;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_make_directory_async);
   g_task_set_priority (task, io_priority);
   g_task_run_in_thread (task, make_directory_async_thread);
   g_object_unref (task);
@@ -5888,6 +5898,7 @@ g_file_real_open_readwrite_async (GFile               *file,
   GTask *task;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_open_readwrite_async);
   g_task_set_priority (task, io_priority);
 
   g_task_run_in_thread (task, open_readwrite_async_thread);
@@ -5937,6 +5948,7 @@ g_file_real_create_readwrite_async (GFile               *file,
   *data = flags;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_create_readwrite_async);
   g_task_set_task_data (task, data, g_free);
   g_task_set_priority (task, io_priority);
 
@@ -6009,6 +6021,7 @@ g_file_real_replace_readwrite_async (GFile               *file,
   data->flags = flags;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_replace_readwrite_async);
   g_task_set_task_data (task, data, (GDestroyNotify)replace_rw_async_data_free);
   g_task_set_priority (task, io_priority);
 
@@ -6055,6 +6068,7 @@ g_file_real_set_display_name_async (GFile               *file,
   GTask *task;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_set_display_name_async);
   g_task_set_task_data (task, g_strdup (display_name), g_free);
   g_task_set_priority (task, io_priority);
 
@@ -6122,6 +6136,7 @@ g_file_real_set_attributes_async (GFile               *file,
   data->flags = flags;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_set_attributes_async);
   g_task_set_task_data (task, data, (GDestroyNotify)set_info_data_free);
   g_task_set_priority (task, io_priority);
 
@@ -6177,6 +6192,7 @@ g_file_real_find_enclosing_mount_async (GFile               *file,
   GTask *task;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_find_enclosing_mount_async);
   g_task_set_priority (task, io_priority);
 
   g_task_run_in_thread (task, find_enclosing_mount_async_thread);
@@ -6295,6 +6311,7 @@ g_file_real_copy_async (GFile                  *source,
   data->progress_cb_data = progress_callback_data;
 
   task = g_task_new (source, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_copy_async);
   g_task_set_task_data (task, data, (GDestroyNotify)copy_async_data_free);
   g_task_set_priority (task, io_priority);
   g_task_run_in_thread (task, copy_async_thread);
@@ -6975,6 +6992,7 @@ g_file_load_partial_contents_async (GFile                 *file,
   data->content = g_byte_array_new ();
 
   data->task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (data->task, g_file_load_partial_contents_async);
   g_task_set_task_data (data->task, data, (GDestroyNotify)load_contents_data_free);
 
   g_file_read_async (file,
@@ -7418,6 +7436,7 @@ g_file_replace_contents_bytes_async  (GFile               *file,
   data->content = g_bytes_ref (contents);
 
   data->task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (data->task, g_file_replace_contents_bytes_async);
   g_task_set_task_data (data->task, data, (GDestroyNotify)replace_contents_data_free);
 
   g_file_replace_async (file,
@@ -7589,6 +7608,7 @@ g_file_real_measure_disk_usage_async (GFile                        *file,
   data.progress_data = progress_data;
 
   task = g_task_new (file, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_real_measure_disk_usage_async);
   g_task_set_task_data (task, g_memdup (&data, sizeof data), g_free);
   g_task_set_priority (task, io_priority);
 

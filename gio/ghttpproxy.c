@@ -327,6 +327,7 @@ g_http_proxy_connect_async (GProxy              *proxy,
   data->proxy_address = g_object_ref (proxy_address);
 
   task = g_task_new (proxy, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_http_proxy_connect_async);
   g_task_set_task_data (task, data, (GDestroyNotify) free_connect_data);
 
   g_task_run_in_thread (task, connect_thread);

@@ -492,6 +492,7 @@ g_io_stream_close_async (GIOStream           *stream,
   g_return_if_fail (G_IS_IO_STREAM (stream));
 
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_io_stream_close_async);
 
   if (stream->priv->closed)
     {
@@ -624,6 +625,7 @@ g_io_stream_real_close_async (GIOStream           *stream,
   GTask *task;
 
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_io_stream_real_close_async);
   g_task_set_check_cancellable (task, FALSE);
   g_task_set_priority (task, io_priority);
 
@@ -870,6 +872,7 @@ g_io_stream_splice_async (GIOStream            *stream1,
   ctx->completed = 0;
 
   task = g_task_new (NULL, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_io_stream_splice_async);
   g_task_set_task_data (task, ctx, (GDestroyNotify) splice_context_free);
 
   if (cancellable != NULL)

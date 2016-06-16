@@ -322,6 +322,7 @@ g_file_icon_load_async (GLoadableIcon       *icon,
   GTask *task;
 
   task = g_task_new (icon, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_icon_load_async);
   
   g_file_read_async (file_icon->file, 0,
                      cancellable,

@@ -424,6 +424,7 @@ g_unix_output_stream_close_async (GOutputStream       *stream,
   GError *error = NULL;
 
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_unix_output_stream_close_async);
   g_task_set_priority (task, io_priority);
 
   if (g_unix_output_stream_close (stream, cancellable, &error))

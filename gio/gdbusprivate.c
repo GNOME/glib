@@ -173,6 +173,7 @@ _g_socket_read_with_control_messages (GSocket                 *socket,
   data->num_messages = num_messages;
 
   task = g_task_new (socket, cancellable, callback, user_data);
+  g_task_set_source_tag (task, _g_socket_read_with_control_messages);
   g_task_set_task_data (task, data, (GDestroyNotify) read_with_control_data_free);
 
   if (g_socket_condition_check (socket, G_IO_IN))
@@ -1091,6 +1092,7 @@ write_message_async (GDBusWorker         *worker,
                      gpointer             user_data)
 {
   data->task = g_task_new (NULL, NULL, callback, user_data);
+  g_task_set_source_tag (data->task, write_message_async);
   data->total_written = 0;
   write_message_continue_writing (data);
 }

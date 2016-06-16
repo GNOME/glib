@@ -95,6 +95,7 @@ g_dummy_proxy_resolver_lookup_async (GProxyResolver      *resolver,
   gchar **proxies;
 
   task = g_task_new (resolver, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_dummy_proxy_resolver_lookup_async);
 
   proxies = g_dummy_proxy_resolver_lookup (resolver, uri, cancellable, &error);
   if (proxies)

@@ -98,6 +98,7 @@ g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator *enumerato
   GError *error = NULL;
 
   task = g_task_new (enumerator, NULL, callback, user_data);
+  g_task_set_source_tag (task, g_socket_address_enumerator_real_next_async);
 
   address = g_socket_address_enumerator_next (enumerator, cancellable, &error);
   if (error)

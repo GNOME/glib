@@ -316,6 +316,7 @@ g_socks4a_proxy_connect_async (GProxy               *proxy,
   data->io_stream = g_object_ref (io_stream);
 
   task = g_task_new (proxy, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_socks4a_proxy_connect_async);
   g_task_set_task_data (task, data, (GDestroyNotify) free_connect_data);
 
   hostname = g_proxy_address_get_destination_hostname (proxy_address);

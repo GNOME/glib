@@ -272,6 +272,7 @@ g_async_initable_real_init_async (GAsyncInitable      *initable,
   g_return_if_fail (G_IS_INITABLE (initable));
 
   task = g_task_new (initable, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_async_initable_real_init_async);
   g_task_set_priority (task, io_priority);
   g_task_run_in_thread (task, async_init_thread);
   g_object_unref (task);

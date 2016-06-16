@@ -379,6 +379,8 @@ g_memory_input_stream_skip_async (GInputStream        *stream,
 
   nskipped = G_INPUT_STREAM_GET_CLASS (stream)->skip (stream, count, cancellable, &error);
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_memory_input_stream_skip_async);
+
   if (error)
     g_task_return_error (task, error);
   else
@@ -406,6 +408,7 @@ g_memory_input_stream_close_async (GInputStream        *stream,
   GTask *task;
 
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_memory_input_stream_close_async);
   g_task_return_boolean (task, TRUE);
   g_object_unref (task);
 }

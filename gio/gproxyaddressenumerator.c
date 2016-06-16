@@ -527,6 +527,7 @@ g_proxy_address_enumerator_next_async (GSocketAddressEnumerator *enumerator,
   GTask *task;
 
   task = g_task_new (enumerator, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_proxy_address_enumerator_next_async);
   g_task_set_task_data (task, priv, NULL);
 
   if (priv->proxies == NULL)

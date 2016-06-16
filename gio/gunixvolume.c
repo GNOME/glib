@@ -307,6 +307,7 @@ eject_mount_do (GVolume              *volume,
   GTask *task;
 
   task = g_task_new (volume, cancellable, callback, user_data);
+  g_task_set_source_tag (task, eject_mount_do);
 
   if (g_task_return_error_if_cancelled (task))
     {

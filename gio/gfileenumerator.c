@@ -803,6 +803,7 @@ g_file_enumerator_real_next_files_async (GFileEnumerator     *enumerator,
   GTask *task;
 
   task = g_task_new (enumerator, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_enumerator_real_next_files_async);
   g_task_set_task_data (task, GINT_TO_POINTER (num_files), NULL);
   g_task_set_priority (task, io_priority);
 
@@ -849,6 +850,7 @@ g_file_enumerator_real_close_async (GFileEnumerator     *enumerator,
   GTask *task;
 
   task = g_task_new (enumerator, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_file_enumerator_real_close_async);
   g_task_set_priority (task, io_priority);
   
   g_task_run_in_thread (task, close_async_thread);

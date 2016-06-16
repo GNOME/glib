@@ -238,6 +238,7 @@ g_bytes_icon_load_async (GLoadableIcon       *icon,
   GTask *task;
 
   task = g_task_new (icon, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_bytes_icon_load_async);
   g_task_return_pointer (task, g_memory_input_stream_new_from_bytes (bytes_icon->bytes), g_object_unref);
   g_object_unref (task);
 }

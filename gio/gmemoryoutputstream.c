@@ -693,6 +693,7 @@ g_memory_output_stream_close_async (GOutputStream       *stream,
   GTask *task;
 
   task = g_task_new (stream, cancellable, callback, data);
+  g_task_set_source_tag (task, g_memory_output_stream_close_async);
 
   /* will always return TRUE */
   g_memory_output_stream_close (stream, cancellable, NULL);

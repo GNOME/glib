@@ -302,6 +302,7 @@ g_network_monitor_base_can_reach_async (GNetworkMonitor     *monitor,
   GSocketAddressEnumerator *enumerator;
 
   task = g_task_new (monitor, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_network_monitor_base_can_reach_async);
 
   if (G_NETWORK_MONITOR_BASE (monitor)->priv->networks->len == 0)
     {

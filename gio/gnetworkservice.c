@@ -545,6 +545,7 @@ g_network_service_address_enumerator_next_async (GSocketAddressEnumerator  *enum
   GTask *task;
 
   task = g_task_new (enumerator, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_network_service_address_enumerator_next_async);
 
   /* If we haven't yet resolved srv, do that */
   if (!srv_enum->srv->priv->targets)

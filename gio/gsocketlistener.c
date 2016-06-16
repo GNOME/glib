@@ -813,6 +813,7 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
   GError *error = NULL;
 
   task = g_task_new (listener, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_socket_listener_accept_socket_async);
 
   if (!check_listener (listener, &error))
     {

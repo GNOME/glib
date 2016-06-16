@@ -1679,6 +1679,7 @@ g_socket_client_connect_async (GSocketClient       *client,
     data->enumerator = g_socket_connectable_enumerate (connectable);
 
   data->task = g_task_new (client, cancellable, callback, user_data);
+  g_task_set_source_tag (data->task, g_socket_client_connect_async);
   g_task_set_task_data (data->task, data, (GDestroyNotify)g_socket_client_async_connect_data_free);
 
   enumerator_next_async (data);

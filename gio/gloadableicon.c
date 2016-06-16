@@ -200,6 +200,7 @@ g_loadable_icon_real_load_async (GLoadableIcon       *icon,
   LoadData *data;
 
   task = g_task_new (icon, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_loadable_icon_real_load_async);
   data = g_new0 (LoadData, 1);
   g_task_set_task_data (task, data, (GDestroyNotify) load_data_free);
   g_task_run_in_thread (task, load_async_thread);

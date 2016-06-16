@@ -783,6 +783,7 @@ g_input_stream_read_all_async (GInputStream        *stream,
   data->buffer = buffer;
   data->to_read = count;
 
+  g_task_set_source_tag (task, g_input_stream_read_all_async);
   g_task_set_task_data (task, data, free_async_read_all);
   g_task_set_priority (task, io_priority);
 
@@ -919,6 +920,8 @@ g_input_stream_read_bytes_async (GInputStream          *stream,
   guchar *buf;
 
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_input_stream_read_bytes_async);
+
   buf = g_malloc (count);
   g_task_set_task_data (task, buf, NULL);
 
@@ -1378,6 +1381,7 @@ g_input_stream_real_read_async (GInputStream        *stream,
   
   op = g_slice_new0 (ReadData);
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_input_stream_real_read_async);
   g_task_set_task_data (task, op, (GDestroyNotify) free_read_data);
   g_task_set_priority (task, io_priority);
   op->buffer = buffer;
@@ -1489,6 +1493,7 @@ g_input_stream_real_skip_async (GInputStream        *stream,
   class = G_INPUT_STREAM_GET_CLASS (stream);
 
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_input_stream_real_skip_async);
   g_task_set_priority (task, io_priority);
 
   if (g_input_stream_async_read_is_via_threads (stream))
@@ -1564,6 +1569,7 @@ g_input_stream_real_close_async (GInputStream        *stream,
   GTask *task;
 
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_input_stream_real_close_async);
   g_task_set_check_cancellable (task, FALSE);
   g_task_set_priority (task, io_priority);
   

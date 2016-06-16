@@ -224,6 +224,8 @@ g_network_monitor_real_can_reach_async (GNetworkMonitor     *monitor,
   GError *error = NULL;
 
   task = g_task_new (monitor, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_network_monitor_real_can_reach_async);
+
   if (g_network_monitor_can_reach (monitor, connectable, cancellable, &error))
     g_task_return_boolean (task, TRUE);
   else

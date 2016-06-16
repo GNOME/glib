@@ -1079,6 +1079,7 @@ g_buffered_input_stream_real_fill_async (GBufferedInputStream *stream,
     compact_buffer (stream);
 
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_buffered_input_stream_real_fill_async);
 
   base_stream = G_FILTER_INPUT_STREAM (stream)->base_stream;
   g_input_stream_read_async (base_stream,
@@ -1212,6 +1213,7 @@ g_buffered_input_stream_skip_async (GInputStream        *stream,
   data = g_slice_new (SkipAsyncData);
   data->bytes_skipped = 0;
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_buffered_input_stream_skip_async);
   g_task_set_task_data (task, data, free_skip_async_data);
 
   available = priv->end - priv->pos;

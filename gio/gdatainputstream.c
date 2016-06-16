@@ -1085,6 +1085,7 @@ g_data_input_stream_read_async (GDataInputStream    *stream,
   data->last_saw_cr = FALSE;
 
   task = g_task_new (stream, cancellable, callback, user_data);
+  g_task_set_source_tag (task, g_data_input_stream_read_async);
   g_task_set_task_data (task, data, g_data_input_stream_read_data_free);
   g_task_set_priority (task, io_priority);
 
