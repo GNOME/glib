@@ -776,11 +776,12 @@ CLEANFILES += gio_probes.h gio_probes.h.tmp
 libgio_2_0_la_LIBADD += gio_probes.lo
 endif
 
-if ENABLE_SYSTEMTAP
 tapset_in_files = gio.stp.in
+EXTRA_DIST += $(tapset_in_files)
+
+if ENABLE_SYSTEMTAP
 tapsetdir   = @ABS_TAPSET_DIR@
 tapset_DATA = $(tapset_in_files:.stp.in=.stp)
-EXTRA_DIST += $(tapset_in_files)
 CLEANFILES += $(tapset_in_files:.stp.in=.stp)
 
 $(tapset_DATA): %.stp: %.stp.in Makefile
