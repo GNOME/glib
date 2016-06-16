@@ -123,15 +123,14 @@ CLEANFILES += gobject_probes.h
 libgobject_2_0_la_LIBADD += gobject_probes.lo
 endif
 
-tapset_in_files = gobject.stp.in
-EXTRA_DIST += $(tapset_in_files)
+tapsetdir   = @ABS_TAPSET_DIR@
+EXTRA_DIST += gobject.stp.in
 
 if ENABLE_SYSTEMTAP
-tapsetdir   = @ABS_TAPSET_DIR@
-tapset_DATA = $(tapset_in_files:.stp.in=.stp)
-CLEANFILES += $(tapset_in_files:.stp.in=.stp)
+tapset_DATA = libgobject-2.0.so.0.@LT_CURRENT@.@LT_REVISION@.stp
+CLEANFILES += $(tapset_DATA)
 
-$(tapset_DATA): %.stp: %.stp.in Makefile
+$(tapset_DATA): gobject.stp.in Makefile
 	$(AM_V_GEN)$(SED) \
 		-e 's|[@]ABS_GLIB_RUNTIME_LIBDIR[@]|$(ABS_GLIB_RUNTIME_LIBDIR)|g' \
 		-e 's|[@]LT_CURRENT[@]|$(LT_CURRENT)|g' \

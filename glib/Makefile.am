@@ -374,15 +374,14 @@ CLEANFILES += glib_probes.h glib_probes.h.tmp
 libglib_2_0_la_LIBADD += glib_probes.lo
 endif
 
-tapset_in_files = glib.stp.in
 tapsetdir   = @ABS_TAPSET_DIR@
-EXTRA_DIST += $(tapset_in_files)
+EXTRA_DIST += glib.stp.in
 
 if ENABLE_SYSTEMTAP
-tapset_DATA = $(tapset_in_files:.stp.in=.stp)
-CLEANFILES += $(tapset_in_files:.stp.in=.stp)
+tapset_DATA = libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@.stp
+CLEANFILES += $(tapset_DATA)
 
-$(tapset_DATA): %.stp: %.stp.in Makefile
+$(tapset_DATA): glib.stp.in Makefile
 	$(AM_V_GEN)$(SED) \
 		-e 's|[@]ABS_GLIB_RUNTIME_LIBDIR[@]|$(ABS_GLIB_RUNTIME_LIBDIR)|g' \
 		-e 's|[@]LT_CURRENT[@]|$(LT_CURRENT)|g' \
