@@ -349,7 +349,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
 
 #ifndef G_OS_WIN32
   /* A simple try to close the fd in case we fail before the actual close */
-  (void) g_close (file->priv->fd, NULL);
+  g_close (file->priv->fd, NULL);
 #endif
   if (file->priv->tmp_filename)
     g_unlink (file->priv->tmp_filename);
@@ -893,14 +893,14 @@ handle_overwrite_open (const char    *filename,
 	      original_stat.st_gid != tmp_statbuf.st_gid ||
 	      original_stat.st_mode != tmp_statbuf.st_mode)
 	    {
-	      (void) g_close (tmpfd, NULL);
+	      g_close (tmpfd, NULL);
 	      g_unlink (tmp_filename);
 	      g_free (tmp_filename);
 	      goto fallback_strategy;
 	    }
 	}
 
-      (void) g_close (fd, NULL);
+      g_close (fd, NULL);
       *temp_filename = tmp_filename;
       return tmpfd;
     }
@@ -953,7 +953,7 @@ handle_overwrite_open (const char    *filename,
                                G_IO_ERROR_CANT_CREATE_BACKUP,
                                _("Backup file creation failed"));
 	  g_unlink (backup_filename);
-	  (void) g_close (bfd, NULL);
+	  g_close (bfd, NULL);
 	  g_free (backup_filename);
 	  goto err_out;
 	}
@@ -970,7 +970,7 @@ handle_overwrite_open (const char    *filename,
                                    G_IO_ERROR_CANT_CREATE_BACKUP,
                                    _("Backup file creation failed"));
 	      g_unlink (backup_filename);
-	      (void) g_close (bfd, NULL);
+	      g_close (bfd, NULL);
 	      g_free (backup_filename);
 	      goto err_out;
 	    }
@@ -984,13 +984,13 @@ handle_overwrite_open (const char    *filename,
                                G_IO_ERROR_CANT_CREATE_BACKUP,
                                _("Backup file creation failed"));
 	  g_unlink (backup_filename);
-          (void) g_close (bfd, NULL);
+          g_close (bfd, NULL);
 	  g_free (backup_filename);
 	  
 	  goto err_out;
 	}
       
-      (void) g_close (bfd, NULL);
+      g_close (bfd, NULL);
       g_free (backup_filename);
 
       /* Seek back to the start of the file after the backup copy */
@@ -1008,7 +1008,7 @@ handle_overwrite_open (const char    *filename,
 
   if (flags & G_FILE_CREATE_REPLACE_DESTINATION)
     {
-      (void) g_close (fd, NULL);
+      g_close (fd, NULL);
       
       if (g_unlink (filename) != 0)
 	{
@@ -1060,7 +1060,7 @@ handle_overwrite_open (const char    *filename,
   return fd;
 
  err_out:
-  (void) g_close (fd, NULL);
+  g_close (fd, NULL);
  err_out2:
   return -1;
 }
