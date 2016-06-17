@@ -367,12 +367,22 @@
  *   to add a check at the top of your function that the error return
  *   location is either %NULL or contains a %NULL error (e.g.
  *   `g_return_if_fail (error == NULL || *error == NULL);`).
+ *
+ * - Since GLib 2.56 #GError can also hold extra data in the key-value
+ *   store. It is recommended to specify some rules about adding and
+ *   modifying extra data. For example documenting what keys will be
+ *   added for each error domain or error code and what is the type of
+ *   the extra data for each key; documenting which extra data can be
+ *   modified during propagation (say, propagators can append a string
+ *   to the GPtrArray holding strings under the "context" key).
  */
 
 #include "config.h"
 
 #include "gerror.h"
 
+#include "gdataset.h"
+#include "ghash.h"
 #include "gslice.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
@@ -490,10 +500,70 @@ g_error_free (GError *error)
 {
   g_return_if_fail (error != NULL);
 
+  g_dataset_destroy (error);
   g_free (error->message);
-
   g_slice_free (GError, error);
 }
+
+typedef struct
+{
+  gpointer data;
+  GErrorDataCopyFunc copy;
+  GDestroyNotify destroy;
+} GErrorExtraDataNode;
+
+static GErrorExtraDataNode*
+g_error_extra_data_node_new (gpointer           data,
+                             GErrorDataCopyFunc copy,
+                             GDestroyNotify     destroy)
+{
+  GErrorExtraDataNode *node;
+
+  node = g_slice_new (GErrorExtraDataNode);
+
+  node->data = data;
+  node->copy = copy;
+  node->destroy = destroy;
+
+  return node;
+}
+
+static GErrorExtraDataNode*
+g_error_extra_data_node_copy (GErrorExtraDataNode *node)
+{
+  gpointer data_copy = node->data;
+
+  if (node->copy != NULL)
+    data_copy = node->copy (node->data);
+
+  return g_error_extra_data_node_new (data_copy, node->copy, node->destroy);
+}
+
+static void
+g_error_extra_data_node_destroy (gpointer ptr)
+{
+  GErrorExtraDataNode *node = ptr;
+
+  if (node->destroy)
+    node->destroy (node->data);
+
+  g_slice_free (GErrorExtraDataNode, node);
+}
+
+static void
+copy_extra_data (GQuark key_id,
+                 gpointer data,
+                 gpointer user_data)
+{
+  GError *copy = user_data;
+  GErrorExtraDataNode *extra_data = data;
+
+  g_dataset_id_set_data_full (copy,
+                              key_id,
+                              g_error_extra_data_node_copy (extra_data),
+                              g_error_extra_data_node_destroy);
+}
+
 
 /**
  * g_error_copy:
@@ -507,7 +577,7 @@ GError*
 g_error_copy (const GError *error)
 {
   GError *copy;
- 
+
   g_return_val_if_fail (error != NULL, NULL);
   /* See g_error_new_valist for why these don't return */
   g_warn_if_fail (error->domain != 0);
@@ -518,6 +588,9 @@ g_error_copy (const GError *error)
   *copy = *error;
 
   copy->message = g_strdup (error->message);
+  g_dataset_foreach (error,
+                     copy_extra_data,
+                     copy);
 
   return copy;
 }
@@ -549,6 +622,112 @@ g_error_matches (const GError *error,
   return error &&
     error->domain == domain &&
     error->code == code;
+}
+
+/**
+ * g_error_add_extra_data:
+ * @error: a #GError
+ * @key: a key
+ * @extra_data: data to add under the @key
+ * @copy: function for copying @extra_data
+ * @destroy: function for destroying @extra_data
+ *
+ * Adds extra data to the key-value store inside @error under the
+ * @key. When @error is copied with g_error_copy() extra data will be
+ * also copied if @copy is not %NULL; otherwise it will be just a
+ * shallow copy. When @error is destroyed with g_error_free(), extra
+ * data will be freed with @destroy, if @destroy is not %NULL.
+ *
+ * Both @copy and @destroy must be either %NULL or not - it is not
+ * allowed to provide only the copy function or only the destroy
+ * function. Also please note, that @extra_data is not checked for
+ * %NULL to omit copying or destructing.
+ *
+ * Since: 2.60
+ */
+void
+g_error_add_extra_data (GError              *error,
+                        const gchar         *key,
+                        gpointer             extra_data,
+                        GErrorDataCopyFunc   copy,
+                        GDestroyNotify       destroy)
+{
+  g_return_if_fail (error != NULL);
+  g_return_if_fail (key != NULL);
+  g_return_if_fail ((copy == NULL && destroy == NULL) || (copy != NULL && destroy != NULL));
+
+  g_dataset_set_data_full (error,
+                           key,
+                           g_error_extra_data_node_new (extra_data,
+                                                        copy,
+                                                        destroy),
+                           g_error_extra_data_node_destroy);
+}
+
+/**
+ * g_error_get_extra_data:
+ * @error: a #GError
+ * @key: a key
+ * @exists: (out) (optional): whether the key exists
+ *
+ * Returns: (transfer none): an extra data
+ *
+ * Since: 2.60
+ */
+gpointer
+g_error_get_extra_data (const GError *error,
+                        const gchar  *key,
+                        gboolean     *exists)
+{
+  GErrorExtraDataNode *node;
+
+  g_return_val_if_fail (error != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+
+  node = g_dataset_get_data (error, key);
+  if (exists != NULL)
+    *exists = node != NULL;
+  if (node != NULL)
+    return node->data;
+  return NULL;
+}
+
+static void
+get_extra_key (GQuark key_id,
+               gpointer data,
+               gpointer user_data)
+{
+  GPtrArray *keys = user_data;
+
+  /* cast to ignore the warning about discard const qualifier - we are
+   * not freeing those strings anyway.
+   */
+  g_ptr_array_add (keys, (gpointer)g_quark_to_string (key_id));
+}
+
+/**
+ * g_error_get_extra_data_keys:
+ * @error: a #GError
+ *
+ * Gets all the keys in the @error as a %NULL-terminated array. The
+ * array should be freed with g_free().
+ *
+ * Returns: (transfer container): an array of keys
+ *
+ * Since: 2.60
+ */
+const gchar**
+g_error_get_extra_data_keys (const GError *error)
+{
+  GPtrArray *keys;
+
+  g_return_val_if_fail (error != NULL, NULL);
+
+  keys = g_ptr_array_new ();
+  g_dataset_foreach (error, get_extra_key, keys);
+  g_ptr_array_add (keys, NULL);
+
+  return (const gchar**) g_ptr_array_free (keys, FALSE);
 }
 
 #define ERROR_OVERWRITTEN_WARNING "GError set over the top of a previous GError or uninitialized memory.\n" \
@@ -753,4 +932,42 @@ g_propagate_prefixed_error (GError      **dest,
       g_error_add_prefix (&(*dest)->message, format, ap);
       va_end (ap);
     }
+}
+
+/**
+ * g_add_error_extra_data:
+ * @error: a #GError return location
+ * @key: a key
+ * @extra_data: data to add under the @key
+ * @copy: function for copying @extra_data
+ * @destroy: function for destroying @extra_data
+ *
+ * If @error is %NULL, frees @extra_data with @destroy if @destroy is
+ * not %NULL. Otherwise adds extra data to the key-value store inside
+ * @error under the @key. When @error is copied with g_error_copy()
+ * extra data will be also copied if @copy is not %NULL; otherwise it
+ * will be just a shallow copy. When @error is destroyed with
+ * g_error_free(), extra data will be freed with @destroy, if @destroy
+ * is not %NULL.
+ *
+ * Both @copy and @destroy must be either %NULL or not - it is not
+ * allowed to provide only the copy function or only the destroy
+ * function. Also please note, that @extra_data is not checked for
+ * %NULL to omit copying or destructing.
+ *
+ * If @error is not %NULL, then *@error can't be %NULL too.
+ *
+ * Since: 2.60
+ */
+void
+g_add_error_extra_data (GError             **error,
+                        const gchar         *key,
+                        gpointer             extra_data,
+                        GErrorDataCopyFunc   copy,
+                        GDestroyNotify       destroy)
+{
+  if (error != NULL)
+    g_error_add_extra_data (*error, key, extra_data, copy, destroy);
+  else if (destroy != NULL)
+    destroy (extra_data);
 }
