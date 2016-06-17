@@ -511,18 +511,23 @@ g_macro__has_feature
 <TITLE>Error Reporting</TITLE>
 <FILE>error_reporting</FILE>
 GError
+GErrorDataCopyFunc
 g_error_new
 g_error_new_literal
 g_error_new_valist
 g_error_free
 g_error_copy
 g_error_matches
+g_error_add_extra_data
+g_error_get_extra_data
+g_error_get_extra_data_keys
 g_set_error
 g_set_error_literal
 g_propagate_error
 g_clear_error
 g_prefix_error
 g_propagate_prefixed_error
+g_add_error_extra_data
 </SECTION>
 
 <SECTION>
