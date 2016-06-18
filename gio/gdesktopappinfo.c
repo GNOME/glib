@@ -2907,12 +2907,19 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
 
   session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
 
-  g_print ("show uris %s, have bus: %d, want portal %d\n",
-           uris ? (char *)uris->data : "", session_bus != NULL, should_use_portal ());
   if (session_bus && uris && should_use_portal ())
     {
       GDBusMessage *message;
       GVariantBuilder opt_builder;
+      const char *parent_window = NULL;
+
+      if (launch_context)
+        {
+          char **env;
+          env = g_app_launch_context_get_environment (launch_context);
+          parent_window = g_environ_getenv (env, "PARENT_WINDOW_ID");
+          g_strfreev (env);
+        }
 
       g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
 
@@ -2924,7 +2931,7 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
       g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
 
       g_dbus_message_set_body (message, g_variant_new ("(ss@a{sv})",
-                                                       "", /*TODO find parent window */
+                                                       parent_window ? parent_window : "",
                                                        (const char *)uris->data,
                                                        g_variant_builder_end (&opt_builder)));
 
