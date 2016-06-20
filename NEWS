@@ -1,3 +1,24 @@
+Overview of changes in GLib 2.49.2
+==================================
+
+ * GMainContext and GTask have gained more systemtap probes
+
+Bugs fixed:
+ 673101 resource compiler dependency generation not working for gen...
+ 700756 GFile.new_for_path arguments misses (type filename) annotation
+ 730187 glocalfileoutputstream: Fix an FD leak in an error path
+ 755439 Memory leak in gdbusproxy.c
+ 759813 Add more SystemTap/DTrace probes for main context and GTask
+ 761810 gio: Support using GDBusObjectManagerServer at path ‘/’
+ 767172 docs: Move GIO_USE_VFS to "okay for production" section
+ 767218 Remove a UTF-8 ellipsis from gsignal.h
+ 767245 Add filename type annotations
+ 767824 Some UTC timezones incorrectly recognized on Windows 7
+
+Translation updates:
+ Occitan
+
+
 Overview of changes in GLib 2.49.1
 ==================================
 
