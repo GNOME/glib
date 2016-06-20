@@ -1645,6 +1645,42 @@ test_roundtrip (void)
   g_key_file_free (kf);
 }
 
+static void
+test_bytes (void)
+{
+  const gchar data[] =
+    "[Group1]\n"
+    "key1=value1\n"
+    "\n"
+    "[Group2]\n"
+    "key2=value2\n";
+
+  GKeyFile *kf = g_key_file_new ();
+  GBytes *bytes = g_bytes_new (data, strlen (data));
+  GError *error = NULL;
+
+  gchar **names;
+  gsize len;
+
+  g_key_file_load_from_bytes (kf, bytes, 0, &error);
+
+  g_assert_no_error (error);
+
+  names = g_key_file_get_groups (kf, &len);
+  g_assert_nonnull (names);
+
+  check_length ("groups", g_strv_length (names), len, 2);
+  check_name ("group name", names[0], "Group1", 0);
+  check_name ("group name", names[1], "Group2", 1);
+
+  check_string_value (kf, "Group1", "key1", "value1");
+  check_string_value (kf, "Group2", "key2", "value2");
+
+  g_strfreev (names);
+  g_bytes_unref (bytes);
+  g_key_file_free (kf);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1688,6 +1724,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/limbo", test_limbo);
   g_test_add_func ("/keyfile/utf8", test_utf8);
   g_test_add_func ("/keyfile/roundtrip", test_roundtrip);
+  g_test_add_func ("/keyfile/bytes", test_bytes);
 
   return g_test_run ();
 }

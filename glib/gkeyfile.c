@@ -927,6 +927,36 @@ g_key_file_load_from_data (GKeyFile       *key_file,
 }
 
 /**
+ * g_key_file_load_from_bytes:
+ * @key_file: an empty #GKeyFile struct
+ * @bytes: a #GBytes
+ * @flags: flags from #GKeyFileFlags
+ * @error: return location for a #GError, or %NULL
+ *
+ * Loads a key file from the data in @bytes into an empty #GKeyFile structure.
+ * If the object cannot be created then %error is set to a #GKeyFileError.
+ *
+ * Returns: %TRUE if a key file could be loaded, %FALSE otherwise
+ *
+ * Since: 2.50
+ **/
+gboolean
+g_key_file_load_from_bytes (GKeyFile       *key_file,
+                            GBytes         *bytes,
+                            GKeyFileFlags   flags,
+                            GError        **error)
+{
+  const guchar *data;
+  gsize size;
+
+  g_return_val_if_fail (key_file != NULL, FALSE);
+  g_return_val_if_fail (bytes != NULL, FALSE);
+
+  data = g_bytes_get_data (bytes, &size);
+  return g_key_file_load_from_data (key_file, (const gchar *) data, size, flags, error);
+}
+
+/**
  * g_key_file_load_from_dirs:
  * @key_file: an empty #GKeyFile struct
  * @file: (type filename): a relative path to a filename to open and parse

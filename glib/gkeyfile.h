@@ -26,6 +26,7 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
+#include <glib/gbytes.h>
 #include <glib/gerror.h>
 
 G_BEGIN_DECLS
@@ -76,6 +77,11 @@ gboolean  g_key_file_load_from_data         (GKeyFile             *key_file,
 					     gsize                 length,
 					     GKeyFileFlags         flags,
 					     GError              **error);
+GLIB_AVAILABLE_IN_2_50
+gboolean  g_key_file_load_from_bytes        (GKeyFile             *key_file,
+                                             GBytes               *bytes,
+                                             GKeyFileFlags         flags,
+                                             GError              **error);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_key_file_load_from_dirs          (GKeyFile             *key_file,
 					     const gchar	  *file,
