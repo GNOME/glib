@@ -50,9 +50,13 @@ class BasePCItems:
         if not os.path.exists(args.prefix):
             raise SystemExit('Specified prefix \'%s\' is invalid' % args.prefix)
 
+        # use absolute paths for prefix
+        self.prefix = os.path.abspath(args.prefix).replace('\\','/')
+
         # check and setup the exec_prefix
         if getattr(args, 'exec_prefix', None) is None:
-            input_exec_prefix = args.prefix
+            exec_prefix_use_shorthand = True
+            self.exec_prefix = '${prefix}'
         else:
             if args.exec_prefix.startswith('${prefix}'):
                 exec_prefix_use_shorthand = True
@@ -111,13 +115,6 @@ class BasePCItems:
                 self.libdir = args.libdir.replace('\\','/')
             else:
                 self.libdir = os.path.abspath(input_libdir).replace('\\','/')
-
-        # use absolute paths for prefix and exec_prefix
-        self.prefix = os.path.abspath(args.prefix).replace('\\','/')
-        if exec_prefix_use_shorthand is True:
-            self.exec_prefix = args.exec_prefix.replace('\\','/')
-        else:
-            self.exec_prefix = os.path.abspath(input_exec_prefix).replace('\\','/')
 
         # setup dictionary for replacing items in *.pc.in
         self.base_replace_items.update({'@VERSION@': self.version})
