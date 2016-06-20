@@ -23,6 +23,78 @@
 
 #include <gio/gio.h>
 
+static GFile *
+test_vfs_parse_name (GVfs       *vfs,
+                     const char *parse_name,
+                     gpointer    user_data)
+{
+  GFile *file = NULL;
+
+  if (g_strcmp0 ((parse_name), "testfile") == 0)
+    {
+      file = g_file_new_for_uri ("file:///");
+      g_object_set_data (G_OBJECT (file), "testfile", GINT_TO_POINTER (1));
+    }
+
+  return file;
+}
+
+static GFile *
+test_vfs_lookup (GVfs       *vfs,
+                 const char *uri,
+                 gpointer    user_data)
+{
+  GFile *file;
+  file = g_file_new_for_uri ("file:///");
+  g_object_set_data (G_OBJECT (file), "testfile", GINT_TO_POINTER (1));
+
+  return file;
+}
+
+static void
+test_register_scheme (void)
+{
+  GVfs *vfs;
+  GFile *file;
+  const gchar * const *schemes;
+  gboolean res;
+
+  vfs = g_vfs_get_default ();
+  g_assert_nonnull (vfs);
+  g_assert_true (g_vfs_is_active (vfs));
+
+  res = g_vfs_unregister_uri_scheme (vfs, "test");
+  g_assert_false (res);
+
+  res = g_vfs_register_uri_scheme (vfs, "test",
+                                   test_vfs_lookup, NULL, NULL,
+                                   test_vfs_parse_name, NULL, NULL);
+  g_assert_true (res);
+
+  schemes = g_vfs_get_supported_uri_schemes (vfs);
+  g_assert_true (g_strv_contains (schemes, "test"));
+
+  file = g_file_new_for_uri ("test:///foo");
+  g_assert_cmpint (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (file), "testfile")), ==, 1);
+  g_object_unref (file);
+
+  file = g_file_parse_name ("testfile");
+  g_assert_cmpint (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (file), "testfile")), ==, 1);
+  g_object_unref (file);
+
+  res = g_vfs_register_uri_scheme (vfs, "test",
+                                   test_vfs_lookup, NULL, NULL,
+                                   test_vfs_parse_name, NULL, NULL);
+  g_assert_false (res);
+
+  res = g_vfs_unregister_uri_scheme (vfs, "test");
+  g_assert_true (res);
+
+  file = g_file_new_for_uri ("test:///foo");
+  g_assert_null (g_object_get_data (G_OBJECT (file), "testfile"));
+  g_object_unref (file);
+}
+
 static void
 test_local (void)
 {
@@ -49,6 +121,7 @@ main (int argc, char *argv[])
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gvfs/local", test_local);
+  g_test_add_func ("/gvfs/register-scheme", test_register_scheme);
 
   return g_test_run ();
 }

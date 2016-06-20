@@ -37,16 +37,87 @@
  *
  */
 
-G_DEFINE_TYPE (GVfs, g_vfs, G_TYPE_OBJECT);
+static GRWLock additional_schemes_lock;
+
+typedef struct _GVfsPrivate {
+  GHashTable *additional_schemes;
+  char const **supported_schemes;
+} GVfsPrivate;
+
+typedef struct {
+  GVfsFileLookupFunc uri_func;
+  gpointer uri_data;
+  GDestroyNotify uri_destroy;
+
+  GVfsFileLookupFunc parse_name_func;
+  gpointer parse_name_data;
+  GDestroyNotify parse_name_destroy;
+} GVfsURISchemeData;
+
+G_DEFINE_TYPE_WITH_PRIVATE (GVfs, g_vfs, G_TYPE_OBJECT);
+
+static void
+g_vfs_dispose (GObject *object)
+{
+  GVfs *vfs = G_VFS (object);
+  GVfsPrivate *priv = g_vfs_get_instance_private (vfs);
+
+  g_clear_pointer (&priv->additional_schemes, g_hash_table_destroy);
+  g_clear_pointer (&priv->supported_schemes, g_free);
+
+  G_OBJECT_CLASS (g_vfs_parent_class)->dispose (object);
+}
 
 static void
 g_vfs_class_init (GVfsClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  object_class->dispose = g_vfs_dispose;
+}
+
+static GFile *
+resource_parse_name (GVfs       *vfs,
+                     const char *parse_name,
+                     gpointer    user_data)
+{
+  if (g_str_has_prefix (parse_name, "resource:"))
+    return _g_resource_file_new (parse_name);
+
+  return NULL;
+}
+
+static GFile *
+resource_get_file_for_uri (GVfs       *vfs,
+                           const char *uri,
+                           gpointer    user_data)
+{
+  return _g_resource_file_new (uri);
+}
+
+static void
+g_vfs_uri_lookup_func_closure_free (gpointer data)
+{
+  GVfsURISchemeData *closure = data;
+
+  if (closure->uri_destroy)
+    closure->uri_destroy (closure->uri_data);
+  if (closure->parse_name_destroy)
+    closure->parse_name_destroy (closure->parse_name_data);
+
+  g_free (closure);
 }
 
 static void
 g_vfs_init (GVfs *vfs)
 {
+  GVfsPrivate *priv = g_vfs_get_instance_private (vfs);
+  priv->additional_schemes =
+    g_hash_table_new_full (g_str_hash, g_str_equal,
+                           g_free, g_vfs_uri_lookup_func_closure_free);
+
+  g_vfs_register_uri_scheme (vfs, "resource",
+                             resource_get_file_for_uri, NULL, NULL,
+                             resource_parse_name, NULL, NULL);
 }
 
 /**
@@ -95,6 +166,58 @@ g_vfs_get_file_for_path (GVfs       *vfs,
   return (* class->get_file_for_path) (vfs, path);
 }
 
+static GFile *
+parse_name_internal (GVfs       *vfs,
+                     const char *parse_name)
+{
+  GVfsPrivate *priv = g_vfs_get_instance_private (vfs);
+  GHashTableIter iter;
+  GVfsURISchemeData *closure;
+  GFile *ret = NULL;
+
+  g_rw_lock_reader_lock (&additional_schemes_lock);
+  g_hash_table_iter_init (&iter, priv->additional_schemes);
+
+  while (TRUE)
+    {
+      if (g_hash_table_iter_next (&iter, NULL, (gpointer *) &closure))
+        ret = closure->parse_name_func (vfs, parse_name,
+                                        closure->parse_name_data);
+
+      if (ret)
+        break;
+    }
+
+  g_rw_lock_reader_unlock (&additional_schemes_lock);
+
+  return ret;
+}
+
+static GFile *
+get_file_for_uri_internal (GVfs       *vfs,
+                           const char *uri)
+{
+  GVfsPrivate *priv = g_vfs_get_instance_private (vfs);
+  GFile *ret = NULL;
+  char *scheme;
+  GVfsURISchemeData *closure;
+
+  scheme = g_uri_parse_scheme (uri);
+  if (scheme == NULL)
+    return NULL;
+
+  g_rw_lock_reader_lock (&additional_schemes_lock);
+  closure = g_hash_table_lookup (priv->additional_schemes, scheme);
+
+  if (closure)
+    ret = closure->uri_func (vfs, uri, closure->uri_data);
+
+  g_rw_lock_reader_unlock (&additional_schemes_lock);
+
+  g_free (scheme);
+  return ret;
+}
+
 /**
  * g_vfs_get_file_for_uri:
  * @vfs: a#GVfs.
@@ -114,19 +237,16 @@ g_vfs_get_file_for_uri (GVfs       *vfs,
                         const char *uri)
 {
   GVfsClass *class;
+  GFile *ret;
  
   g_return_val_if_fail (G_IS_VFS (vfs), NULL);
   g_return_val_if_fail (uri != NULL, NULL);
 
   class = G_VFS_GET_CLASS (vfs);
 
-  /* This is an unfortunate placement, but we really
-   * need to check this before chaining to the vfs,
-   * because we want to support resource uris for
-   * all vfs:es, even those that predate resources.
-   */
-  if (g_str_has_prefix (uri, "resource:"))
-    return _g_resource_file_new (uri);
+  ret = get_file_for_uri_internal (vfs, uri);
+  if (ret)
+    return ret;
 
   return (* class->get_file_for_uri) (vfs, uri);
 }
@@ -144,13 +264,44 @@ g_vfs_get_file_for_uri (GVfs       *vfs,
 const gchar * const *
 g_vfs_get_supported_uri_schemes (GVfs *vfs)
 {
-  GVfsClass *class;
+  GVfsPrivate *priv;
 
   g_return_val_if_fail (G_IS_VFS (vfs), NULL);
 
-  class = G_VFS_GET_CLASS (vfs);
+  priv = g_vfs_get_instance_private (vfs);
 
-  return (* class->get_supported_uri_schemes) (vfs);
+  if (!priv->supported_schemes)
+    {
+      GVfsClass *class;
+      const char * const *default_schemes;
+      const char *additional_scheme;
+      GPtrArray *supported_schemes;
+      GHashTableIter iter;
+      int idx;
+
+      class = G_VFS_GET_CLASS (vfs);
+
+      default_schemes = (* class->get_supported_uri_schemes) (vfs);
+      supported_schemes = g_ptr_array_new ();
+
+      for (idx = 0; idx < G_N_ELEMENTS (default_schemes); idx++)
+        g_ptr_array_add (supported_schemes, (gpointer) default_schemes[idx]);
+
+      g_rw_lock_reader_lock (&additional_schemes_lock);
+      g_hash_table_iter_init (&iter, priv->additional_schemes);
+
+      while (g_hash_table_iter_next
+             (&iter, (gpointer *) &additional_scheme, NULL))
+        g_ptr_array_add (supported_schemes, (gpointer) additional_scheme);
+
+      g_rw_lock_reader_unlock (&additional_schemes_lock);
+
+      g_free (priv->supported_schemes);
+      priv->supported_schemes =
+        (char const **) g_ptr_array_free (supported_schemes, FALSE);
+    }
+
+  return priv->supported_schemes;
 }
 
 /**
@@ -170,14 +321,16 @@ g_vfs_parse_name (GVfs       *vfs,
                   const char *parse_name)
 {
   GVfsClass *class;
+  GFile *ret;
 
   g_return_val_if_fail (G_IS_VFS (vfs), NULL);
   g_return_val_if_fail (parse_name != NULL, NULL);
 
   class = G_VFS_GET_CLASS (vfs);
 
-  if (g_str_has_prefix (parse_name, "resource:"))
-    return _g_resource_file_new (parse_name);
+  ret = parse_name_internal (vfs, parse_name);
+  if (ret)
+    return ret;
 
   return (* class->parse_name) (vfs, parse_name);
 }
@@ -215,4 +368,129 @@ g_vfs_get_local (void)
     g_once_init_leave (&vfs, (gsize)_g_local_vfs_new ());
 
   return G_VFS (vfs);
+}
+
+/**
+ * g_vfs_register_uri_scheme:
+ * @vfs: a #GVfs
+ * @scheme: an URI scheme, e.g. "http"
+ * @uri_func: (scope notified) (nullable): a #GVfsFileLookupFunc
+ * @uri_data: (nullable): custom data passed to be passed to @uri_func, or %NULL
+ * @uri_destroy: (nullable): function to be called when unregistering the
+ *     URI scheme, or when @vfs is disposed, to free the resources used
+ *     by the URI lookup function
+ * @parse_name_func: (scope notified) (nullable): a #GVfsFileLookupFunc
+ * @parse_name_data: (nullable): custom data passed to be passed to
+ *     @parse_name_func, or %NULL
+ * @parse_name_destroy: (nullable): function to be called when unregistering the
+ *     URI scheme, or when @vfs is disposed, to free the resources used
+ *     by the parse name lookup function
+ *
+ * Registers @uri_func and @parse_name_func as the #GFile URI and parse name
+ * lookup functions for URIs with a scheme matching @scheme.
+ * Note that @scheme is registered only within the running application, as
+ * opposed to desktop-wide as it happens with GVfs backends.
+ *
+ * When a #GFile is requested with an URI containing @scheme (e.g. through
+ * g_file_new_for_uri()), @uri_func will be called to allow a custom
+ * constructor. The implementation of @uri_func should not be blocking, and
+ * must not call g_vfs_register_uri_scheme() or g_vfs_unregister_uri_scheme().
+ *
+ * When g_file_parse_name() is called with a parse name obtained from such file,
+ * @parse_name_func will be called to allow the #GFile to be created again. In
+ * that case, it's responsibility of @parse_name_func to make sure the parse
+ * name matches what the custom #GFile implementation returned when
+ * g_file_get_parse_name() was previously called. The implementation of
+ * @parse_name_func should not be blocking, and must not call
+ * g_vfs_register_uri_scheme() or g_vfs_unregister_uri_scheme().
+ *
+ * It's an error to call this function twice with the same scheme. To unregister
+ * a custom URI scheme, use g_vfs_unregister_uri_scheme().
+ *
+ * Returns: %TRUE if @scheme was successfully registered, or %FALSE if a handler
+ *     for @scheme already exists.
+ *
+ * Since: 2.50
+ */
+gboolean
+g_vfs_register_uri_scheme (GVfs              *vfs,
+                           const char        *scheme,
+                           GVfsFileLookupFunc uri_func,
+                           gpointer           uri_data,
+                           GDestroyNotify     uri_destroy,
+                           GVfsFileLookupFunc parse_name_func,
+                           gpointer           parse_name_data,
+                           GDestroyNotify     parse_name_destroy)
+{
+  GVfsPrivate *priv;
+  GVfsURISchemeData *closure;
+
+  g_return_val_if_fail (G_IS_VFS (vfs), FALSE);
+  g_return_val_if_fail (scheme != NULL, FALSE);
+
+  priv = g_vfs_get_instance_private (vfs);
+
+  g_rw_lock_reader_lock (&additional_schemes_lock);
+  closure = g_hash_table_lookup (priv->additional_schemes, scheme);
+  g_rw_lock_reader_unlock (&additional_schemes_lock);
+
+  if (closure != NULL)
+    return FALSE;
+
+  closure = g_new0 (GVfsURISchemeData, 1);
+  closure->uri_func = uri_func;
+  closure->uri_data = uri_data;
+  closure->uri_destroy = uri_destroy;
+  closure->parse_name_func = parse_name_func;
+  closure->parse_name_data = parse_name_data;
+  closure->parse_name_destroy = parse_name_destroy;
+
+  g_rw_lock_writer_lock (&additional_schemes_lock);
+  g_hash_table_insert (priv->additional_schemes, g_strdup (scheme), closure);
+  g_rw_lock_writer_unlock (&additional_schemes_lock);
+
+  /* Invalidate supported schemes */
+  g_clear_pointer (&priv->supported_schemes, g_free);
+
+  return TRUE;
+}
+
+/**
+ * g_vfs_unregister_uri_scheme:
+ * @vfs: a #GVfs
+ * @scheme: an URI scheme, e.g. "http"
+ *
+ * Unregisters the URI handler for @scheme previously registered with
+ * g_vfs_register_uri_scheme().
+ *
+ * Returns: %TRUE if @scheme was successfully unregistered, or %FALSE if a
+ *     handler for @scheme does not exist.
+ *
+ * Since: 2.50
+ */
+gboolean
+g_vfs_unregister_uri_scheme (GVfs       *vfs,
+                             const char *scheme)
+{
+  GVfsPrivate *priv;
+  gboolean res;
+
+  g_return_val_if_fail (G_IS_VFS (vfs), FALSE);
+  g_return_val_if_fail (scheme != NULL, FALSE);
+
+  priv = g_vfs_get_instance_private (vfs);
+
+  g_rw_lock_writer_lock (&additional_schemes_lock);
+  res = g_hash_table_remove (priv->additional_schemes, scheme);
+  g_rw_lock_writer_unlock (&additional_schemes_lock);
+
+  if (res)
+    {
+      /* Invalidate supported schemes */
+      g_clear_pointer (&priv->supported_schemes, g_free);
+
+      return TRUE;
+    }
+
+  return FALSE;
 }
