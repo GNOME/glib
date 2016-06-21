@@ -20,9 +20,13 @@
 
 #include "config.h"
 
+#include <unistd.h>
+
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
 #include "gcontextspecificgroup.h"
+#include "gdbusconnection.h"
+#include "gdbusmessage.h"
 
 #include "glibintl.h"
 #include <gioerror.h>
@@ -665,6 +669,68 @@ g_app_info_should_show (GAppInfo *appinfo)
   return (* iface->should_show) (appinfo);
 }
 
+static gboolean
+should_use_portal (void)
+{
+  const char *use_portal;
+  char *path;
+
+  path = g_strdup_printf ("/run/user/%d/flatpak-info", getuid());
+  if (g_file_test (path, G_FILE_TEST_EXISTS))
+    use_portal = "1";
+  else
+    {
+      use_portal = g_getenv ("GTK_USE_PORTAL");
+      if (!use_portal)
+        use_portal = "";
+    }
+  g_free (path);
+
+  return g_str_equal (use_portal, "1");
+}
+
+static gboolean
+launch_default_with_portal (const char         *uri,
+                            GAppLaunchContext  *context,
+                            GError            **error)
+{
+  GDBusConnection *bus;
+  GDBusMessage *message;
+  GVariantBuilder opt_builder;
+  const char *parent_window = NULL;
+
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  if (context)
+    {
+      char **env;
+      env = g_app_launch_context_get_environment (context);
+      parent_window = g_environ_getenv (env, "PARENT_WINDOW_ID");
+      g_strfreev (env);
+    }
+
+  g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
+
+  message = g_dbus_message_new_method_call ("org.freedesktop.portal.Desktop",
+                                            "/org/freedesktop/portal/desktop",
+                                            "org.freedesktop.portal.AppChooser",
+                                            "OpenURI");
+
+  g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
+
+  g_dbus_message_set_body (message, g_variant_new ("(ss@a{sv})",
+                                                   parent_window ? parent_window : "",
+                                                   uri,
+                                                   g_variant_builder_end (&opt_builder)));
+
+  g_dbus_connection_send_message (bus,
+                                  message,
+                                  G_DBUS_SEND_MESSAGE_FLAGS_NONE,
+                                  NULL,
+                                  NULL);
+  return TRUE;
+}
+
 /**
  * g_app_info_launch_default_for_uri:
  * @uri: the uri to show
@@ -687,6 +753,9 @@ g_app_info_launch_default_for_uri (const char         *uri,
   GAppInfo *app_info = NULL;
   GList l;
   gboolean res;
+
+  if (should_use_portal ())
+    return launch_default_with_portal (uri, launch_context, error);
 
   /* g_file_query_default_handler() calls
    * g_app_info_get_default_for_uri_scheme() too, but we have to do it
