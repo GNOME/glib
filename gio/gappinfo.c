@@ -20,13 +20,18 @@
 
 #include "config.h"
 
+#include <unistd.h>
+
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
 #include "gcontextspecificgroup.h"
+#include "gdbusconnection.h"
+#include "gdbusmessage.h"
 
 #include "glibintl.h"
 #include <gioerror.h>
 #include <gfile.h>
+#include "gportalsupport.h"
 
 
 /**
@@ -84,6 +89,10 @@
  * Different launcher applications (e.g. file managers) may have
  * different ideas of what a given URI means.
  */
+
+struct _GAppLaunchContextPrivate {
+  char **envp;
+};
 
 typedef GAppInfoIface GAppInfoInterface;
 G_DEFINE_INTERFACE (GAppInfo, g_app_info, G_TYPE_OBJECT)
@@ -665,6 +674,46 @@ g_app_info_should_show (GAppInfo *appinfo)
   return (* iface->should_show) (appinfo);
 }
 
+static gboolean
+launch_default_with_portal (const char         *uri,
+                            GAppLaunchContext  *context,
+                            GError            **error)
+{
+  GDBusConnection *session_bus;
+  GVariantBuilder opt_builder;
+  const char *parent_window = NULL;
+
+  session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
+  if (session_bus == NULL)
+    return FALSE;
+
+  if (context && context->priv->envp)
+    parent_window = g_environ_getenv (context->priv->envp, "PARENT_WINDOW_ID");
+
+  g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
+
+  g_dbus_connection_call (session_bus,
+                          "org.freedesktop.portal.Desktop",
+                          "/org/freedesktop/portal/desktop",
+                          "org.freedesktop.portal.OpenURI",
+                          "OpenURI",
+                          g_variant_new ("(ss@a{sv})",
+                                         parent_window ? parent_window : "",
+                                         uri,
+                                         g_variant_builder_end (&opt_builder)),
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          G_MAXINT,
+                          NULL,
+                          NULL,
+                          NULL);
+
+  g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
+  g_object_unref (session_bus);
+
+  return TRUE;
+}
+
 /**
  * g_app_info_launch_default_for_uri:
  * @uri: the uri to show
@@ -687,6 +736,9 @@ g_app_info_launch_default_for_uri (const char         *uri,
   GAppInfo *app_info = NULL;
   GList l;
   gboolean res;
+
+  if (glib_should_use_portal ())
+    return launch_default_with_portal (uri, launch_context, error);
 
   /* g_file_query_default_handler() calls
    * g_app_info_get_default_for_uri_scheme() too, but we have to do it
@@ -786,10 +838,6 @@ enum {
   LAUNCH_FAILED,
   LAUNCHED,
   LAST_SIGNAL
-};
-
-struct _GAppLaunchContextPrivate {
-  char **envp;
 };
 
 static guint signals[LAST_SIGNAL] = { 0 };
