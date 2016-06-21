@@ -2871,26 +2871,6 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
 }
 
 static gboolean
-should_use_portal (void)
-{
-  const char *use_portal;
-  char *path;
-
-  path = g_strdup_printf ("/run/user/%d/flatpak-info", getuid());
-  if (g_file_test (path, G_FILE_TEST_EXISTS))
-    use_portal = "1";
-  else
-    {
-      use_portal = g_getenv ("GTK_USE_PORTAL");
-      if (!use_portal)
-        use_portal = "";
-    }
-  g_free (path);
-
-  return g_str_equal (use_portal, "1");
-}
-
-static gboolean
 g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
                                          GList                      *uris,
                                          GAppLaunchContext          *launch_context,
@@ -2906,35 +2886,6 @@ g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
   gboolean success = TRUE;
 
   session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
-
-  g_print ("show uris %s, have bus: %d, want portal %d\n",
-           uris ? (char *)uris->data : "", session_bus != NULL, should_use_portal ());
-  if (session_bus && uris && should_use_portal ())
-    {
-      GDBusMessage *message;
-      GVariantBuilder opt_builder;
-
-      g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
-
-      message = g_dbus_message_new_method_call ("org.freedesktop.portal.Desktop",
-                                                "/org/freedesktop/portal/desktop",
-                                                "org.freedesktop.portal.AppChooser",
-                                                "OpenURI");
-
-      g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
-
-      g_dbus_message_set_body (message, g_variant_new ("(ss@a{sv})",
-                                                       "", /*TODO find parent window */
-                                                       (const char *)uris->data,
-                                                       g_variant_builder_end (&opt_builder)));
-
-      g_dbus_connection_send_message (session_bus,
-                                      message,
-                                      G_DBUS_SEND_MESSAGE_FLAGS_NONE,
-                                      NULL,
-                                      NULL);
-      return TRUE;
-    }
 
   if (session_bus && info->app_id)
     g_desktop_app_info_launch_uris_with_dbus (info, session_bus, uris, launch_context);
