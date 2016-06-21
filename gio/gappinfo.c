@@ -713,7 +713,7 @@ launch_default_with_portal (const char         *uri,
 
   message = g_dbus_message_new_method_call ("org.freedesktop.portal.Desktop",
                                             "/org/freedesktop/portal/desktop",
-                                            "org.freedesktop.portal.AppChooser",
+                                            "org.freedesktop.portal.OpenURI",
                                             "OpenURI");
 
   g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
