@@ -341,23 +341,29 @@ endif
 xdp_dbus_built_sources = xdp-dbus.c xdp-dbus.h
 BUILT_SOURCES += $(xdp_dbus_built_sources)
 
-EXTRA_DIST += org.freedesktop.portal.NetworkMonitor.xml
+portal_interfaces = \
+	org.freedesktop.portal.NetworkMonitor.xml \
+	org.freedesktop.portal.ProxyResolver.xml \
+	$(NULL)
 
-$(xdp_dbus_built_sources) : $(srcdir)/org.freedesktop.portal.NetworkMonitor.xml
+EXTRA_DIST += $(portal_interfaces)
+
+$(xdp_dbus_built_sources) : $(portal_interfaces)
 	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) 		\
 		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) 		\
 		$(PYTHON) $(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in 	\
 		--interface-prefix org.freedesktop.portal.      	\
 		--c-namespace Xdp					\
 		--generate-c-code $(builddir)/xdp-dbus			\
-		$(srcdir)/org.freedesktop.portal.NetworkMonitor.xml	\
-		$(NULL)
+		$^
 
 portal_sources = \
 	gportalsupport.c		\
 	gportalsupport.h		\
 	gnetworkmonitorportal.c 	\
 	gnetworkmonitorportal.h		\
+	gproxyresolverportal.c		\
+	gproxyresolverportal.h		\
 	$(xdp_dbus_built_sources)	\
 	$(NULL)
 
