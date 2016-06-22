@@ -21,7 +21,7 @@
           url="http://www.freedesktop.org/wiki/Software/dbus#ReferenceImplementation.28dbus-daemonandlibdbus.29">libdbus
           reference implementation</ulink>, GDBus doesn't. Instead, it
           relies on GIO streams as transport layer, and has its own
-          implementation for the the D-Bus connection setup and
+          implementation for the D-Bus connection setup and
           authentication. Apart from using streams as transport,
           avoiding libdbus also lets GDBus avoid some thorny
           multithreading issues.

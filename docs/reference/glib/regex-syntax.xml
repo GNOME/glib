@@ -455,7 +455,7 @@ of them fail, since there is no character to match.
 
 <para>
 For compatibility with Perl, \s does not match the VT character (code
-11). This makes it different from the the POSIX "space" class. The \s
+11). This makes it different from the POSIX "space" class. The \s
 characters are HT (9), LF (10), FF (12), CR (13), and space (32).
 </para>
 
