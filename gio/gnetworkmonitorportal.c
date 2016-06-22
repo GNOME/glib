@@ -39,6 +39,7 @@ enum
 struct _GNetworkMonitorPortalPrivate
 {
   XdpNetworkMonitor *proxy;
+  gboolean network_available;
 };
 
 G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorPortal, g_network_monitor_portal, G_TYPE_NETWORK_MONITOR_BASE,
@@ -70,15 +71,22 @@ g_network_monitor_portal_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_NETWORK_AVAILABLE:
-      g_value_set_boolean (value, xdp_network_monitor_get_available (nm->priv->proxy));
+      g_value_set_boolean (value,
+                           nm->priv->network_available &&
+                           xdp_network_monitor_get_available (nm->priv->proxy));
       break;
 
     case PROP_NETWORK_METERED:
-      g_value_set_boolean (value, xdp_network_monitor_get_metered (nm->priv->proxy));
+      g_value_set_boolean (value,
+                           nm->priv->network_available &&
+                           xdp_network_monitor_get_metered (nm->priv->proxy));
       break;
 
     case PROP_CONNECTIVITY:
-      g_value_set_enum (value, xdp_network_monitor_get_connectivity (nm->priv->proxy));
+      g_value_set_enum (value,
+                        nm->priv->network_available
+                        ? xdp_network_monitor_get_connectivity (nm->priv->proxy)
+                        : G_NETWORK_CONNECTIVITY_LOCAL);
       break;
 
     default:
@@ -88,11 +96,12 @@ g_network_monitor_portal_get_property (GObject    *object,
 }
 
 static void
-proxy_changed (XdpNetworkMonitor *proxy,
-               gboolean           available,
-               GNetworkMonitor   *monitor)
+proxy_changed (XdpNetworkMonitor     *proxy,
+               gboolean               available,
+               GNetworkMonitorPortal *nm)
 {
-  g_signal_emit_by_name (monitor, "network-changed", available);
+  if (nm->priv->network_available)
+    g_signal_emit_by_name (nm, "network-changed", available);
 }
 
 
@@ -114,6 +123,25 @@ should_use_portal (void)
   g_free (path);
 
   return g_str_equal (use_portal, "1");
+}
+
+static gboolean
+network_available_in_sandbox (void)
+{
+  char *path;
+  g_autoptr(GKeyFile) keyfile = g_key_file_new ();
+
+  path = g_strdup_printf ("/run/user/%d/flatpak-info", getuid());
+  if (g_key_file_load_from_file (keyfile, path, G_KEY_FILE_NONE, NULL))
+    {
+      g_auto(GStrv) shared = NULL;
+
+      shared = g_key_file_get_string_list (keyfile, "Context", "shared", NULL, NULL);
+
+      return g_strv_contains ((const char * const *)shared, "network");
+    }
+
+  return TRUE;
 }
 
 static gboolean
@@ -153,6 +181,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
 
   g_signal_connect (G_OBJECT (proxy), "changed", G_CALLBACK (proxy_changed), nm);
   nm->priv->proxy = proxy;
+  nm->priv->network_available = network_available_in_sandbox ();
 
   return TRUE;
 }
