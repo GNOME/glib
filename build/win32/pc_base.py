@@ -50,15 +50,27 @@ class BasePCItems:
         if not os.path.exists(args.prefix):
             raise SystemExit('Specified prefix \'%s\' is invalid' % args.prefix)
 
+        # use absolute paths for prefix
+        self.prefix = os.path.abspath(args.prefix).replace('\\','/')
+
         # check and setup the exec_prefix
         if getattr(args, 'exec_prefix', None) is None:
-            input_exec_prefix = args.prefix
+            exec_prefix_use_shorthand = True
+            self.exec_prefix = '${prefix}'
         else:
-            input_exec_prefix = args.exec_prefix
-        if not os.path.exists(input_exec_prefix):
-            raise SystemExit('Specified exec-prefix \'%s\' is invalid' %
-                             input_exec_prefix)
-
+            if args.exec_prefix.startswith('${prefix}'):
+                exec_prefix_use_shorthand = True
+                input_exec_prefix = args.prefix + args.exec_prefix[len('${prefix}'):]
+            else:
+                exec_prefix_use_shorthand = False
+                input_exec_prefix = args.exec_prefix
+            if not os.path.exists(input_exec_prefix):
+                raise SystemExit('Specified exec_prefix \'%s\' is invalid' %
+                                  args.exec_prefix)
+            if exec_prefix_use_shorthand is True:
+                self.exec_prefix = args.exec_prefix.replace('\\','/')
+            else:
+                self.exec_prefix = os.path.abspath(input_exec_prefix).replace('\\','/')
 
         # check and setup the includedir
         if getattr(args, 'includedir', None) is None:
@@ -68,8 +80,12 @@ class BasePCItems:
                 includedir_use_shorthand = True
                 input_includedir = args.prefix + args.includedir[len('${prefix}'):]
             else:
-                includedir_use_shorthand = False
-                input_includedir = args.includedir
+                if args.includedir.startswith('${exec_prefix}'):
+                    includedir_use_shorthand = True
+                    input_includedir = input_exec_prefix + args.includedir[len('${exec_prefix}'):]
+                else:
+                    includedir_use_shorthand = False
+                    input_includedir = args.includedir
             if not os.path.exists(input_includedir):
                 raise SystemExit('Specified includedir \'%s\' is invalid' %
                                   args.includedir)
@@ -86,8 +102,12 @@ class BasePCItems:
                 libdir_use_shorthand = True
                 input_libdir = args.prefix + args.libdir[len('${prefix}'):]
             else:
-                libdir_use_shorthand = False
-                input_libdir = args.libdir
+                if args.libdir.startswith('${exec_prefix}'):
+                    libdir_use_shorthand = True
+                    input_libdir = input_exec_prefix + args.libdir[len('${exec_prefix}'):]
+                else:
+                    libdir_use_shorthand = False
+                    input_libdir = args.libdir
             if not os.path.exists(input_libdir):
                 raise SystemExit('Specified libdir \'%s\' is invalid' %
 			                      args.libdir)
@@ -95,10 +115,6 @@ class BasePCItems:
                 self.libdir = args.libdir.replace('\\','/')
             else:
                 self.libdir = os.path.abspath(input_libdir).replace('\\','/')
-
-        # use absolute paths for prefix and exec_prefix
-        self.prefix = os.path.abspath(args.prefix).replace('\\','/')
-        self.exec_prefix = os.path.abspath(input_exec_prefix).replace('\\','/')
 
         # setup dictionary for replacing items in *.pc.in
         self.base_replace_items.update({'@VERSION@': self.version})
