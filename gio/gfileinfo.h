@@ -805,6 +805,15 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 #define G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW "filesystem::use-preview"        /* uint32 (GFilesystemPreviewType) */
 
 /**
+ * G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE:
+ *
+ * A key in the "filesystem" namespace for checking if the file system
+ * is remote. Is set to %TRUE if the file system is remote.
+ * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_BOOLEAN.
+ **/
+#define G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE "filesystem::remote"                   /* boolean */
+
+/**
  * G_FILE_ATTRIBUTE_GVFS_BACKEND:
  *
  * A key in the "gvfs" namespace that gets the name of the current

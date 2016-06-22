@@ -1113,6 +1113,11 @@ g_local_file_query_filesystem_info (GFile         *file,
 #endif /* G_OS_WIN32 */
     }
   
+  if (g_file_attribute_matcher_matches (attribute_matcher,
+					G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE))
+      g_file_info_set_attribute_boolean (info, G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE,
+					 g_local_file_is_remote (local->filename));
+
   g_file_attribute_matcher_unref (attribute_matcher);
   
   return info;
