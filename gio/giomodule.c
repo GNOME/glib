@@ -903,6 +903,7 @@ extern GType _g_win32_volume_monitor_get_type (void);
 extern GType _g_winhttp_vfs_get_type (void);
 
 extern GType _g_dummy_proxy_resolver_get_type (void);
+extern GType g_proxy_resolver_portal_get_type (void);
 extern GType _g_dummy_tls_backend_get_type (void);
 extern GType g_network_monitor_base_get_type (void);
 extern GType g_network_monitor_portal_get_type (void);
@@ -1124,6 +1125,7 @@ _g_io_modules_ensure_loaded (void)
 #endif
       g_type_ensure (_g_local_vfs_get_type ());
       g_type_ensure (_g_dummy_proxy_resolver_get_type ());
+      g_type_ensure (g_proxy_resolver_portal_get_type ());
       g_type_ensure (_g_http_proxy_get_type ());
       g_type_ensure (_g_https_proxy_get_type ());
       g_type_ensure (_g_socks4a_proxy_get_type ());
