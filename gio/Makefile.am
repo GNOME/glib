@@ -391,6 +391,7 @@ libgio_2_0_la_SOURCES =		\
 	ginetsocketaddress.c	\
 	ginitable.c		\
 	ginputstream.c 		\
+	gio_probes.d		\
 	gio_trace.h		\
 	gioenums.h		\
 	gioerror.c 		\
