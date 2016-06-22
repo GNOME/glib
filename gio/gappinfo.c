@@ -31,6 +31,7 @@
 #include "glibintl.h"
 #include <gioerror.h>
 #include <gfile.h>
+#include "gportalsupport.h"
 
 
 /**
@@ -670,26 +671,6 @@ g_app_info_should_show (GAppInfo *appinfo)
 }
 
 static gboolean
-should_use_portal (void)
-{
-  const char *use_portal;
-  char *path;
-
-  path = g_strdup_printf ("/run/user/%d/flatpak-info", getuid());
-  if (g_file_test (path, G_FILE_TEST_EXISTS))
-    use_portal = "1";
-  else
-    {
-      use_portal = g_getenv ("GTK_USE_PORTAL");
-      if (!use_portal)
-        use_portal = "";
-    }
-  g_free (path);
-
-  return g_str_equal (use_portal, "1");
-}
-
-static gboolean
 launch_default_with_portal (const char         *uri,
                             GAppLaunchContext  *context,
                             GError            **error)
@@ -754,7 +735,7 @@ g_app_info_launch_default_for_uri (const char         *uri,
   GList l;
   gboolean res;
 
-  if (should_use_portal ())
+  if (glib_should_use_portal ())
     return launch_default_with_portal (uri, launch_context, error);
 
   /* g_file_query_default_handler() calls

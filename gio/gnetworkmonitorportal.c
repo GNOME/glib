@@ -23,6 +23,7 @@
 #include "giomodule-priv.h"
 #include "gnetworkmonitor.h"
 #include "xdp-dbus.h"
+#include "gportalsupport.h"
 
 
 static void g_network_monitor_portal_iface_init (GNetworkMonitorInterface *iface);
@@ -104,46 +105,6 @@ proxy_changed (XdpNetworkMonitor     *proxy,
     g_signal_emit_by_name (nm, "network-changed", available);
 }
 
-
-static gboolean
-should_use_portal (void)
-{
-  const char *use_portal;
-  char *path;
-
-  path = g_strdup_printf ("/run/user/%d/flatpak-info", getuid());
-  if (g_file_test (path, G_FILE_TEST_EXISTS))
-    use_portal = "1";
-  else
-    {
-      use_portal = g_getenv ("GTK_USE_PORTAL");
-      if (!use_portal)
-        use_portal = "";
-    }
-  g_free (path);
-
-  return g_str_equal (use_portal, "1");
-}
-
-static gboolean
-network_available_in_sandbox (void)
-{
-  char *path;
-  g_autoptr(GKeyFile) keyfile = g_key_file_new ();
-
-  path = g_strdup_printf ("/run/user/%d/flatpak-info", getuid());
-  if (g_key_file_load_from_file (keyfile, path, G_KEY_FILE_NONE, NULL))
-    {
-      g_auto(GStrv) shared = NULL;
-
-      shared = g_key_file_get_string_list (keyfile, "Context", "shared", NULL, NULL);
-
-      return g_strv_contains ((const char * const *)shared, "network");
-    }
-
-  return TRUE;
-}
-
 static gboolean
 g_network_monitor_portal_initable_init (GInitable     *initable,
                                         GCancellable  *cancellable,
@@ -153,7 +114,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   XdpNetworkMonitor *proxy;
   gchar *name_owner = NULL;
 
-  if (!should_use_portal ())
+  if (!glib_should_use_portal ())
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Not using portals");
       return FALSE;
@@ -181,7 +142,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
 
   g_signal_connect (G_OBJECT (proxy), "changed", G_CALLBACK (proxy_changed), nm);
   nm->priv->proxy = proxy;
-  nm->priv->network_available = network_available_in_sandbox ();
+  nm->priv->network_available = glib_network_available_in_sandbox ();
 
   return TRUE;
 }

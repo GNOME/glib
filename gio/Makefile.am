@@ -354,6 +354,8 @@ $(xdp_dbus_built_sources) : $(srcdir)/org.freedesktop.portal.NetworkMonitor.xml
 		$(NULL)
 
 portal_sources = \
+	gportalsupport.c		\
+	gportalsupport.h		\
 	gnetworkmonitorportal.c 	\
 	gnetworkmonitorportal.h		\
 	$(xdp_dbus_built_sources)	\
