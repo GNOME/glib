@@ -664,7 +664,7 @@ my_app_frobber_proxy_new_sync   (GDBusConnection     *connection,
       the generated methods such as
       <function>my_app_frobber_call_hello_world()</function> to invoke
       the <function>net.Corp.MyApp.Frobber.HelloWorld()</function>
-      D-Bus method, connect to the the
+      D-Bus method, connect to the
       <function>::notification</function> GObject signal to receive
       the <function>net.Corp.MyApp.Frobber::Notication</function>
       D-Bus signal and get/set the
