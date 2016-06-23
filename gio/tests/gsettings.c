@@ -1182,7 +1182,7 @@ test_simple_binding (void)
 
   g_settings_bind (settings, "uint64", obj, "uint64", G_SETTINGS_BIND_DEFAULT);
 
-  g_object_set (obj, "uint64", 12345, NULL);
+  g_object_set (obj, "uint64", (guint64) 12345, NULL);
   g_assert_cmpuint (g_settings_get_uint64 (settings, "uint64"), ==, 12345);
 
   g_settings_set_uint64 (settings, "uint64", 54321);
