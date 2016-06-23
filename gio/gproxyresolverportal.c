@@ -28,6 +28,7 @@ struct _GProxyResolverPortal {
   GObject parent_instance;
 
   XdpProxyResolver *resolver;
+  gboolean network_available;
 };
 
 static void g_proxy_resolver_portal_iface_init (GProxyResolverInterface *iface);
@@ -50,6 +51,8 @@ g_proxy_resolver_portal_init (GProxyResolverPortal *resolver)
                                                                 "/org/freedesktop/portal/desktop",
                                                                 NULL,
                                                                 NULL);
+
+  resolver->network_available = glib_network_available_in_sandbox ();
 }
 
 static gboolean
@@ -59,9 +62,7 @@ g_proxy_resolver_portal_is_supported (GProxyResolver *object)
   char *name_owner;
   gboolean has_portal;
 
-  if (!glib_should_use_portal () ||
-      !glib_network_available_in_sandbox () ||
-      !resolver->resolver)
+  if (!glib_should_use_portal () || !resolver->resolver)
     return FALSE;
 
   name_owner = g_dbus_proxy_get_name_owner (G_DBUS_PROXY (resolver->resolver));
@@ -70,6 +71,8 @@ g_proxy_resolver_portal_is_supported (GProxyResolver *object)
 
   return has_portal;
 }
+
+static const char *no_proxy[2] = { "direct://", NULL };
 
 static gchar **
 g_proxy_resolver_portal_lookup (GProxyResolver *proxy_resolver,
@@ -86,6 +89,12 @@ g_proxy_resolver_portal_lookup (GProxyResolver *proxy_resolver,
                                             cancellable,
                                             error))
     return NULL;
+
+  if (!resolver->network_available)
+    {
+      g_strfreev ((gchar **)proxy);
+      proxy = g_strdupv ((gchar **)no_proxy);
+    }
 
   return proxy;
 }
@@ -119,6 +128,12 @@ g_proxy_resolver_portal_lookup_finish (GProxyResolver  *proxy_resolver,
                                               result,
                                               error))
     return NULL;
+
+  if (!resolver->network_available)
+    {
+      g_strfreev ((gchar **)proxy);
+      proxy = g_strdupv ((gchar **)no_proxy);
+    }
 
   return proxy;
 }
