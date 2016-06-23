@@ -620,6 +620,8 @@ GLIB_AVAILABLE_IN_ALL
 char *                  g_file_get_basename               (GFile                      *file);
 GLIB_AVAILABLE_IN_ALL
 char *                  g_file_get_path                   (GFile                      *file);
+GLIB_AVAILABLE_IN_2_56
+const char *            g_file_peek_path                  (GFile                      *file);
 GLIB_AVAILABLE_IN_ALL
 char *                  g_file_get_uri                    (GFile                      *file);
 GLIB_AVAILABLE_IN_ALL

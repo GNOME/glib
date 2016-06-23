@@ -534,6 +534,107 @@ g_file_get_path (GFile *file)
   return (* iface->get_path) (file);
 }
 
+/* Original commit introducing this in libgsystem:
+ *
+ *  fileutil: Handle recent: and trash: URIs
+ *
+ *  The gs_file_get_path_cached() was rather brittle in its handling
+ *  of URIs. It would assert() when a GFile didn't have a backing path
+ *  (such as when handling trash: or recent: URIs), and didn't know
+ *  how to get the target URI for those items either.
+ *
+ *  Make sure that we do not assert() when a backing path cannot be
+ *  found, and handle recent: and trash: URIs.
+ *
+ *  https://bugzilla.gnome.org/show_bug.cgi?id=708435
+ */
+static char *
+file_get_target_path (GFile *file)
+{
+  GFileInfo *info;
+  const char *target;
+  char *path;
+
+  info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_TARGET_URI, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+  if (info == NULL)
+    return NULL;
+  target = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_TARGET_URI);
+  path = g_filename_from_uri (target, NULL, NULL);
+  g_object_unref (info);
+
+  return path;
+}
+
+static const char *
+file_peek_path_generic (GFile *file)
+{
+  const char *path;
+  static GQuark _file_path_quark = 0;
+
+  if (G_UNLIKELY (_file_path_quark) == 0)
+    _file_path_quark = g_quark_from_static_string ("gio-file-path");
+
+  /* We need to be careful about threading, as two threads calling
+   * g_file_peek_path() on the same file could race: both would see
+   * (g_object_get_qdata(…) == NULL) to begin with, both would generate and add
+   * the path, but the second thread to add it would end up freeing the path
+   * set by the first thread. The first thread would still return the pointer
+   * to that freed path, though, resulting an a read-after-free. Handle that
+   * with a compare-and-swap loop. The g_object_*_qdata() functions are atomic. */
+
+  while (TRUE)
+    {
+      gchar *new_path = NULL;
+
+      path = g_object_get_qdata ((GObject*)file, _file_path_quark);
+
+      if (path != NULL)
+        break;
+
+      if (g_file_has_uri_scheme (file, "trash") ||
+          g_file_has_uri_scheme (file, "recent"))
+        new_path = file_get_target_path (file);
+      else
+        new_path = g_file_get_path (file);
+      if (new_path == NULL)
+        return NULL;
+
+      /* By passing NULL here, we ensure we never replace existing data: */
+      if (g_object_replace_qdata ((GObject *) file, _file_path_quark,
+                                  NULL, (gpointer) new_path,
+                                  (GDestroyNotify) g_free, NULL))
+        break;
+      else
+        g_free (new_path);
+    }
+
+  return path;
+}
+
+/**
+ * g_file_peek_path:
+ * @file: input #GFile
+ *
+ * Exactly like g_file_get_path(), but caches the result via
+ * g_object_set_qdata_full().  This is useful for example in C
+ * applications which mix `g_file_*` APIs with native ones.  It
+ * also avoids an extra duplicated string when possible, so will be
+ * generally more efficient.
+ *
+ * This call does no blocking I/O.
+ *
+ * Returns: (type filename) (nullable): string containing the #GFile's path,
+ *     or %NULL if no such path exists. The returned string is owned by @file.
+ * Since: 2.56
+ */
+const char *
+g_file_peek_path (GFile *file)
+{
+  if (G_IS_LOCAL_FILE (file))
+    return _g_local_file_get_filename ((GLocalFile *) file);
+  return file_peek_path_generic (file);
+}
+
 /**
  * g_file_get_uri:
  * @file: input #GFile

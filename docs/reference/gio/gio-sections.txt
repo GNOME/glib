@@ -91,6 +91,7 @@ g_file_hash
 g_file_equal
 g_file_get_basename
 g_file_get_path
+g_file_peek_path
 g_file_get_uri
 g_file_get_parse_name
 g_file_get_parent

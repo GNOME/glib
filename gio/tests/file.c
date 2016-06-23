@@ -169,9 +169,12 @@ monitor_changed (GFileMonitor      *monitor,
 {
   CreateDeleteData *data = user_data;
   gchar *path;
+  const gchar *peeked_path;
 
   path = g_file_get_path (file);
+  peeked_path = g_file_peek_path (file);
   g_assert_cmpstr (data->monitor_path, ==, path);
+  g_assert_cmpstr (path, ==, peeked_path);
   g_free (path);
 
   if (event_type == G_FILE_MONITOR_EVENT_CREATED)
@@ -619,7 +622,7 @@ static void
 test_replace_load (void)
 {
   ReplaceLoadData *data;
-  gchar *path;
+  const gchar *path;
   GFileIOStream *iostream;
 
   data = g_new0 (ReplaceLoadData, 1);
@@ -631,7 +634,7 @@ test_replace_load (void)
   g_assert (data->file != NULL);
   g_object_unref (iostream);
 
-  path = g_file_get_path (data->file);
+  path = g_file_peek_path (data->file);
   remove (path);
 
   g_assert (!g_file_query_exists (data->file, NULL));
@@ -653,7 +656,6 @@ test_replace_load (void)
   g_main_loop_unref (data->loop);
   g_object_unref (data->file);
   g_free (data);
-  free (path);
 }
 
 static void
