@@ -57,8 +57,11 @@ glib_network_available_in_sandbox (void)
       char **shared = NULL;
 
       shared = g_key_file_get_string_list (keyfile, "Context", "shared", NULL, NULL);
-      available = g_strv_contains ((const char * const *)shared, "network");
-      g_strfreev (shared);
+      if (shared)
+        {
+          available = g_strv_contains ((const char * const *)shared, "network");
+          g_strfreev (shared);
+        }
     }
 
   g_key_file_free (keyfile);
