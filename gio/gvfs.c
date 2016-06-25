@@ -178,11 +178,10 @@ parse_name_internal (GVfs       *vfs,
   g_rw_lock_reader_lock (&additional_schemes_lock);
   g_hash_table_iter_init (&iter, priv->additional_schemes);
 
-  while (TRUE)
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &closure))
     {
-      if (g_hash_table_iter_next (&iter, NULL, (gpointer *) &closure))
-        ret = closure->parse_name_func (vfs, parse_name,
-                                        closure->parse_name_data);
+      ret = closure->parse_name_func (vfs, parse_name,
+                                      closure->parse_name_data);
 
       if (ret)
         break;
