@@ -295,6 +295,8 @@ g_vfs_get_supported_uri_schemes (GVfs *vfs)
 
       g_rw_lock_reader_unlock (&additional_schemes_lock);
 
+      g_ptr_array_add (supported_schemes, NULL);
+
       g_free (priv->supported_schemes);
       priv->supported_schemes =
         (char const **) g_ptr_array_free (supported_schemes, FALSE);

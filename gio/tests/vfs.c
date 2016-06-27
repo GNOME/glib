@@ -63,6 +63,9 @@ test_register_scheme (void)
   g_assert_nonnull (vfs);
   g_assert_true (g_vfs_is_active (vfs));
 
+  schemes = g_vfs_get_supported_uri_schemes (vfs);
+  g_assert_false (g_strv_contains (schemes, "test"));
+
   res = g_vfs_unregister_uri_scheme (vfs, "test");
   g_assert_false (res);
 
