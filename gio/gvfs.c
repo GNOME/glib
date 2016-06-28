@@ -276,15 +276,14 @@ g_vfs_get_supported_uri_schemes (GVfs *vfs)
       const char *additional_scheme;
       GPtrArray *supported_schemes;
       GHashTableIter iter;
-      int idx;
 
       class = G_VFS_GET_CLASS (vfs);
 
       default_schemes = (* class->get_supported_uri_schemes) (vfs);
       supported_schemes = g_ptr_array_new ();
 
-      for (idx = 0; idx < G_N_ELEMENTS (default_schemes); idx++)
-        g_ptr_array_add (supported_schemes, (gpointer) default_schemes[idx]);
+      for (; default_schemes && *default_schemes; default_schemes++)
+        g_ptr_array_add (supported_schemes, (gpointer) *default_schemes);
 
       g_rw_lock_reader_lock (&additional_schemes_lock);
       g_hash_table_iter_init (&iter, priv->additional_schemes);
