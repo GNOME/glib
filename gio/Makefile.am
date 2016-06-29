@@ -761,15 +761,12 @@ dist_its_DATA = gschema.loc gschema.its
 # SystemTap and dtrace
 
 if ENABLE_DTRACE
-DTCOMPILE = $(patsubst -W%,,$(LTCOMPILE))
-DTCFLAGS = $(patsubst -W%,,$(CFLAGS))
-
 gio_probes.h: gio_probes.d
 	$(AM_V_GEN) $(DTRACE) -C -h -s $< -o $@.tmp
 	@$(SED) -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
 
 gio_probes.lo: gio_probes.d
-	$(AM_V_GEN) env CC="$(DTCOMPILE)" CFLAGS="$(DTCFLAGS)" $(DTRACE) -G -s $< -o $@
+	$(AM_V_GEN) $(LIBTOOL) --mode=compile $(AM_V_lt) --tag=CC $(DTRACE) -G -s $< -o $@
 
 BUILT_SOURCES += gio_probes.h gio_probes.lo
 CLEANFILES += gio_probes.h gio_probes.h.tmp
