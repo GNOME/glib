@@ -2554,13 +2554,13 @@ AM_CONDITIONAL([ENABLE_SYSTEMTAP], [test x$have_systemtap = xyes])
 
 AC_ARG_WITH([tapset-install-dir],
             AS_HELP_STRING([--with-tapset-install-dir=DIR],
-                            [path where systemtap tapsets are installed [DATADIR/systemtap/tapset]]),
+                            [path where systemtap tapsets are installed [DATADIR/systemtap/tapset/HOST_CPU]]),
             [if test "x${withval}" = x; then
-	       ABS_TAPSET_DIR="\$(datadir)/systemtap/tapset"
+	       ABS_TAPSET_DIR="\$(datadir)/systemtap/tapset/${host_cpu}"
 	     else
 	       ABS_TAPSET_DIR="${withval}"
 	      fi],
-	    [ABS_TAPSET_DIR="\$(datadir)/systemtap/tapset"])
+	    [ABS_TAPSET_DIR="\$(datadir)/systemtap/tapset/${host_cpu}"])
 AC_SUBST(ABS_TAPSET_DIR)
 
 dnl ************************************
