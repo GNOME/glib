@@ -28,7 +28,7 @@ glib_should_use_portal (void)
   const char *use_portal;
   char *path;
 
-  path = g_strdup_printf ("/run/user/%d/flatpak-info", getuid());
+  path = g_strdup_printf ("%s/flatpak-info", g_get_user_runtime_dir ());
   if (g_file_test (path, G_FILE_TEST_EXISTS))
     use_portal = "1";
   else
@@ -49,7 +49,7 @@ glib_network_available_in_sandbox (void)
   GKeyFile *keyfile;
   gboolean available = TRUE;
 
-  path = g_strdup_printf ("/run/user/%d/flatpak-info", getuid());
+  path = g_strdup_printf ("%s/flatpak-info", g_get_user_runtime_dir ());
 
   keyfile = g_key_file_new ();
   if (g_key_file_load_from_file (keyfile, path, G_KEY_FILE_NONE, NULL))
