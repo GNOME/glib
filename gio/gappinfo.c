@@ -680,7 +680,9 @@ launch_default_with_portal (const char         *uri,
   GVariantBuilder opt_builder;
   const char *parent_window = NULL;
 
-  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
+  if (bus == NULL)
+    return FALSE;
 
   if (context)
     {
