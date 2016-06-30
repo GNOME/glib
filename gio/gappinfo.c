@@ -675,13 +675,12 @@ launch_default_with_portal (const char         *uri,
                             GAppLaunchContext  *context,
                             GError            **error)
 {
-  GDBusConnection *bus;
-  GDBusMessage *message;
+  GDBusConnection *session_bus;
   GVariantBuilder opt_builder;
   const char *parent_window = NULL;
 
-  bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
-  if (bus == NULL)
+  session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
+  if (session_bus == NULL)
     return FALSE;
 
   if (context)
@@ -694,7 +693,7 @@ launch_default_with_portal (const char         *uri,
 
   g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
 
-  g_dbus_connection_call (bus,
+  g_dbus_connection_call (session_bus,
                           "org.freedesktop.portal.Desktop",
                           "/org/freedesktop/portal/desktop",
                           "org.freedesktop.portal.OpenURI",
@@ -709,7 +708,9 @@ launch_default_with_portal (const char         *uri,
                           NULL,
                           NULL,
                           NULL);
-  g_object_unref (bus);
+
+  g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
+  g_object_unref (session_bus);
 
   return TRUE;
 }
