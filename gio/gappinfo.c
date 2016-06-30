@@ -694,23 +694,23 @@ launch_default_with_portal (const char         *uri,
 
   g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
 
-  message = g_dbus_message_new_method_call ("org.freedesktop.portal.Desktop",
-                                            "/org/freedesktop/portal/desktop",
-                                            "org.freedesktop.portal.OpenURI",
-                                            "OpenURI");
+  g_dbus_connection_call (bus,
+                          "org.freedesktop.portal.Desktop",
+                          "/org/freedesktop/portal/desktop",
+                          "org.freedesktop.portal.OpenURI",
+                          "OpenURI",
+                          g_variant_new ("(ss@a{sv})",
+                                         parent_window ? parent_window : "",
+                                         uri,
+                                         g_variant_builder_end (&opt_builder)),
+                          NULL,
+                          G_DBUS_CALL_FLAGS_NONE,
+                          G_MAXINT,
+                          NULL,
+                          NULL,
+                          NULL);
+  g_object_unref (bus);
 
-  g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
-
-  g_dbus_message_set_body (message, g_variant_new ("(ss@a{sv})",
-                                                   parent_window ? parent_window : "",
-                                                   uri,
-                                                   g_variant_builder_end (&opt_builder)));
-
-  g_dbus_connection_send_message (bus,
-                                  message,
-                                  G_DBUS_SEND_MESSAGE_FLAGS_NONE,
-                                  NULL,
-                                  NULL);
   return TRUE;
 }
 
