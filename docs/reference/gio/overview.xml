@@ -338,7 +338,7 @@ Gvfs is also heavily distributed and relies on a session bus to be present.
     <title>Running GIO applications</title>
 
     <para>
-      GIO inspects a few of environment variables in addition to the
+      GIO inspects a few environment variables in addition to the
       ones used by GLib.
     </para>
 
