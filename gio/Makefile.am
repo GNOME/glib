@@ -263,6 +263,7 @@ unix_sources = \
 	gcontenttypeprivate.h 	\
 	gfdonotificationbackend.c \
 	ggtknotificationbackend.c \
+	gportalnotificationbackend.c \
 	$(NULL)
 
 if OS_COCOA
