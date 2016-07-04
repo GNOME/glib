@@ -23,6 +23,18 @@
 #include <gi18n.h>
 #include <errno.h>
 
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
+
+#ifndef STDOUT_FILENO
+#define STDOUT_FILENO 1
+#endif
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 #include "gio-tool.h"
 
 
@@ -56,7 +68,7 @@ cat (GFile *file)
       res = g_input_stream_read (in, buffer, sizeof (buffer) - 1, NULL, &error);
       if (res > 0)
         {
-          ssize_t written;
+          gssize written;
 
           p = buffer;
           while (res > 0)

@@ -22,8 +22,19 @@
 #include <gio/gio.h>
 #include <gi18n.h>
 
-#include "gio-tool.h"
+#ifdef G_OS_WIN32
+#include <io.h>
+#endif
 
+#ifndef STDIN_FILENO
+#define STDIN_FILENO 0
+#endif
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#include "gio-tool.h"
 
 static char *etag = NULL;
 static gboolean backup = FALSE;
@@ -84,7 +95,7 @@ save (GFile *file)
       res = read (STDIN_FILENO, buffer, 1024);
       if (res > 0)
 	{
-	  ssize_t written;
+	  gssize written;
 
 	  p = buffer;
 	  while (res > 0)
