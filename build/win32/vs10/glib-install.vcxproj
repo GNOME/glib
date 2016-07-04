@@ -175,6 +175,10 @@
       <Project>{95a1571f-61be-4c51-be53-2f2dab280687}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="gio-tool.vcxproj">
+      <Project>{d0403e9a-2b00-4fd3-b3dd-3c8f9cb9a338}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

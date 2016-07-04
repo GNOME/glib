@@ -9,6 +9,8 @@ GENERATED_ITEMS = \
 	glib-compile-schemas.vcxproj.filters	\
 	glib-compile-resources.vcxproj	\
 	glib-compile-resources.vcxproj.filters	\
+	gio-tool.vcxproj	\
+	gio-tool.vcxproj.filters	\
 	glib-version-paths.props	\
 	glib-install.props
 
@@ -39,6 +41,8 @@ EXTRA_DIST = \
 	gsettings.vcxproj.filters		\
 	glib-compile-resources.vcxprojin		\
 	glib-compile-resources.vcxproj.filtersin	\
+	gio-tool.vcxprojin	\
+	gio-tool.vcxproj.filtersin	\
 	gresource.vcxproj		\
 	gresource.vcxproj.filters		\
 	gio-querymodules.vcxproj		\

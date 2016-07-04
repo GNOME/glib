@@ -4,6 +4,7 @@ GENERATED_ITEMS = \
 	gio.vcproj		\
 	glib-compile-schemas.vcproj	\
 	glib-compile-resources.vcproj	\
+	gio-tool.vcproj	\
 	glib-version-paths.vsprops	\
 	glib-install.vsprops
 
@@ -26,6 +27,7 @@ EXTRA_DIST = \
 	gdbus.vcproj		\
 	glib-compile-schemas.vcprojin	\
 	glib-compile-resources.vcprojin	\
+	gio-tool.vcprojin	\
 	glib-install.vcproj	\
 	glib-build-defines.vsprops	\
 	glib-version-paths.vsprops.in	\

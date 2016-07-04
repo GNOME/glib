@@ -34,6 +34,8 @@ copy $(BinDir)\gio-querymodules.exe $(CopyDir)\bin
 copy $(BinDir)\gio-querymodules.pdb $(CopyDir)\bin
 copy $(BinDir)\gdbus.exe $(CopyDir)\bin
 copy $(BinDir)\gdbus.pdb $(CopyDir)\bin
+copy $(BinDir)\gio.exe $(CopyDir)\bin
+copy $(BinDir)\gio.pdb $(CopyDir)\bin
 copy ..\..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in $(CopyDir)\bin\gdbus-codegen
 
 if exist ..\..\..\gobject\glib-mkenums copy ..\..\..\gobject\glib-mkenums $(CopyDir)\bin

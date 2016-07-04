@@ -23,6 +23,8 @@ EXTRA_DIST = \
 	gsettings.vcxproj.filters \
 	glib-compile-resources.vcxproj \
 	glib-compile-resources.vcxproj.filters \
+	gio-tool.vcxproj	\
+	gio-tool.vcxproj.filters	\
 	gresource.vcxproj \
 	gresource.vcxproj.filters \
 	gio-querymodules.vcxproj \
