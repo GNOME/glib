@@ -39,7 +39,7 @@ enum
 
 struct _GNetworkMonitorPortalPrivate
 {
-  XdpNetworkMonitor *proxy;
+  GXdpNetworkMonitor *proxy;
   gboolean network_available;
 };
 
@@ -74,19 +74,19 @@ g_network_monitor_portal_get_property (GObject    *object,
     case PROP_NETWORK_AVAILABLE:
       g_value_set_boolean (value,
                            nm->priv->network_available &&
-                           xdp_network_monitor_get_available (nm->priv->proxy));
+                           gxdp_network_monitor_get_available (nm->priv->proxy));
       break;
 
     case PROP_NETWORK_METERED:
       g_value_set_boolean (value,
                            nm->priv->network_available &&
-                           xdp_network_monitor_get_metered (nm->priv->proxy));
+                           gxdp_network_monitor_get_metered (nm->priv->proxy));
       break;
 
     case PROP_CONNECTIVITY:
       g_value_set_enum (value,
                         nm->priv->network_available
-                        ? xdp_network_monitor_get_connectivity (nm->priv->proxy)
+                        ? gxdp_network_monitor_get_connectivity (nm->priv->proxy)
                         : G_NETWORK_CONNECTIVITY_LOCAL);
       break;
 
@@ -97,7 +97,7 @@ g_network_monitor_portal_get_property (GObject    *object,
 }
 
 static void
-proxy_changed (XdpNetworkMonitor     *proxy,
+proxy_changed (GXdpNetworkMonitor    *proxy,
                gboolean               available,
                GNetworkMonitorPortal *nm)
 {
@@ -111,7 +111,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
                                         GError       **error)
 {
   GNetworkMonitorPortal *nm = G_NETWORK_MONITOR_PORTAL (initable);
-  XdpNetworkMonitor *proxy;
+  GXdpNetworkMonitor *proxy;
   gchar *name_owner = NULL;
 
   if (!glib_should_use_portal ())
@@ -120,12 +120,12 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
       return FALSE;
     }
 
-  proxy = xdp_network_monitor_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
-                                         G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START
-                                         | G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES,
-                                         "org.freedesktop.portal.Desktop",
-                                         "/org/freedesktop/portal/desktop",
-                                         cancellable,
+  proxy = gxdp_network_monitor_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                          G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START
+                                          | G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES,
+                                          "org.freedesktop.portal.Desktop",
+                                          "/org/freedesktop/portal/desktop",
+                                          cancellable,
                                          error);
   if (!proxy)
     return FALSE;

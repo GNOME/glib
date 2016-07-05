@@ -27,7 +27,7 @@
 struct _GProxyResolverPortal {
   GObject parent_instance;
 
-  XdpProxyResolver *resolver;
+  GXdpProxyResolver *resolver;
   gboolean network_available;
 };
 
@@ -45,7 +45,7 @@ G_DEFINE_TYPE_WITH_CODE (GProxyResolverPortal, g_proxy_resolver_portal, G_TYPE_O
 static void
 g_proxy_resolver_portal_init (GProxyResolverPortal *resolver)
 {
-  resolver->resolver = xdp_proxy_resolver_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+  resolver->resolver = gxdp_proxy_resolver_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
                                                                 G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
                                                                 "org.freedesktop.portal.Desktop",
                                                                 "/org/freedesktop/portal/desktop",
@@ -83,11 +83,11 @@ g_proxy_resolver_portal_lookup (GProxyResolver *proxy_resolver,
   GProxyResolverPortal *resolver = G_PROXY_RESOLVER_PORTAL (proxy_resolver);
   char **proxy = NULL;
 
-  if (!xdp_proxy_resolver_call_lookup_sync (resolver->resolver,
-                                            uri,
-                                            &proxy,
-                                            cancellable,
-                                            error))
+  if (!gxdp_proxy_resolver_call_lookup_sync (resolver->resolver,
+                                             uri,
+                                             &proxy,
+                                             cancellable,
+                                             error))
     return NULL;
 
   if (!resolver->network_available)
@@ -108,11 +108,11 @@ g_proxy_resolver_portal_lookup_async (GProxyResolver      *proxy_resolver,
 {
   GProxyResolverPortal *resolver = G_PROXY_RESOLVER_PORTAL (proxy_resolver);
 
-  xdp_proxy_resolver_call_lookup (resolver->resolver,
-                                  uri,
-                                  cancellable,
-                                  callback,
-                                  user_data);
+  gxdp_proxy_resolver_call_lookup (resolver->resolver,
+                                   uri,
+                                   cancellable,
+                                   callback,
+                                   user_data);
 }
 
 static gchar **
@@ -123,10 +123,10 @@ g_proxy_resolver_portal_lookup_finish (GProxyResolver  *proxy_resolver,
   GProxyResolverPortal *resolver = G_PROXY_RESOLVER_PORTAL (proxy_resolver);
   char **proxy = NULL;
 
-  if (!xdp_proxy_resolver_call_lookup_finish (resolver->resolver,
-                                              &proxy,
-                                              result,
-                                              error))
+  if (!gxdp_proxy_resolver_call_lookup_finish (resolver->resolver,
+                                               &proxy,
+                                               result,
+                                               error))
     return NULL;
 
   if (!resolver->network_available)

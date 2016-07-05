@@ -354,7 +354,7 @@ $(xdp_dbus_built_sources) : $(portal_interfaces)
 		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) 		\
 		$(PYTHON) $(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in 	\
 		--interface-prefix org.freedesktop.portal.      	\
-		--c-namespace Xdp					\
+		--c-namespace GXdp					\
 		--generate-c-code $(builddir)/xdp-dbus			\
 		$^
 
