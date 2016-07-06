@@ -144,7 +144,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
 
   g_free (name_owner);
 
-  g_signal_connect (G_OBJECT (proxy), "changed", G_CALLBACK (proxy_changed), nm);
+  g_signal_connect (proxy, "changed", G_CALLBACK (proxy_changed), nm);
   nm->priv->proxy = proxy;
   nm->priv->network_available = glib_network_available_in_sandbox ();
 
