@@ -92,7 +92,7 @@ g_proxy_resolver_portal_lookup (GProxyResolver *proxy_resolver,
 
   if (!resolver->network_available)
     {
-      g_strfreev ((gchar **)proxy);
+      g_strfreev (proxy);
       proxy = g_strdupv ((gchar **)no_proxy);
     }
 
@@ -131,7 +131,7 @@ g_proxy_resolver_portal_lookup_finish (GProxyResolver  *proxy_resolver,
 
   if (!resolver->network_available)
     {
-      g_strfreev ((gchar **)proxy);
+      g_strfreev (proxy);
       proxy = g_strdupv ((gchar **)no_proxy);
     }
 
