@@ -55,7 +55,6 @@ g_portal_notification_backend_send_notification (GNotificationBackend *backend,
                                                  const gchar          *id,
                                                  GNotification        *notification)
 {
-g_print ("use portal backend\n");
   g_dbus_connection_call (backend->dbus_connection,
                           "org.freedesktop.portal.Desktop",
                           "/org/freedesktop/portal/desktop",
