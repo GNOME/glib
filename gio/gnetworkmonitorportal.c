@@ -135,6 +135,10 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   if (!name_owner)
     {
       g_object_unref (proxy);
+      g_set_error (error,
+                   G_DBUS_ERROR,
+                   G_DBUS_ERROR_NAME_HAS_NO_OWNER,
+                   "Desktop portal not found");
       return FALSE;
     }
 
