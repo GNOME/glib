@@ -424,6 +424,8 @@ libgio_2_0_la_SOURCES =		\
 	gpollableutils.c	\
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
+	gportalsupport.c	\
+	gportalsupport.h	\
 	gproxy.c		\
 	gproxyaddress.c         \
 	gproxyaddressenumerator.c \
