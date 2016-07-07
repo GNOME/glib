@@ -4315,6 +4315,8 @@ g_key_file_parse_value_as_double  (GKeyFile     *key_file,
 		     "as a float number."), 
 		   value_utf8);
       g_free (value_utf8);
+
+      double_value = 0;
     }
 
   return double_value;
