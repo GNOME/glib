@@ -615,6 +615,7 @@ test_number (void)
 {
   GKeyFile *keyfile;
   GError *error = NULL;
+  gdouble dval = 0.0;
 
   const gchar *data =
     "[valid]\n"
@@ -665,17 +666,21 @@ test_number (void)
   g_key_file_get_integer (keyfile, "invalid", "key4", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
 
-  g_key_file_get_double (keyfile, "invalid", "key5", &error);
+  dval = g_key_file_get_double (keyfile, "invalid", "key5", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+  g_assert_cmpfloat (dval, ==, 0.0);
 
-  g_key_file_get_double (keyfile, "invalid", "key6", &error);
+  dval = g_key_file_get_double (keyfile, "invalid", "key6", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+  g_assert_cmpfloat (dval, ==, 0.0);
 
-  g_key_file_get_double (keyfile, "invalid", "key7", &error);
+  dval = g_key_file_get_double (keyfile, "invalid", "key7", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+  g_assert_cmpfloat (dval, ==, 0.0);
 
-  g_key_file_get_double (keyfile, "invalid", "key8", &error);
+  dval = g_key_file_get_double (keyfile, "invalid", "key8", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+  g_assert_cmpfloat (dval, ==, 0.0);
 
   g_key_file_free (keyfile);
 }
