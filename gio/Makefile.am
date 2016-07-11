@@ -344,6 +344,7 @@ BUILT_SOURCES += $(xdp_dbus_built_sources)
 CLEANFILES += $(xdp_dbus_built_sources)
 
 portal_interfaces = \
+	org.freedesktop.portal.Documents.xml \
 	org.freedesktop.portal.NetworkMonitor.xml \
 	org.freedesktop.portal.ProxyResolver.xml \
 	$(NULL)
@@ -357,6 +358,8 @@ $(xdp_dbus_built_sources) : $(portal_interfaces)
 		--interface-prefix org.freedesktop.portal.      	\
 		--c-namespace GXdp					\
 		--generate-c-code $(builddir)/xdp-dbus			\
+		--annotate "org.freedesktop.portal.Documents.Add()" "org.gtk.GDBus.C.UnixFD" "true" \
+		--annotate "org.freedesktop.portal.Documents.AddNamed()" "org.gtk.GDBus.C.UnixFD" "true" \
 		$^
 
 portal_sources = \
@@ -389,6 +392,8 @@ libgio_2_0_la_SOURCES =		\
 	gdatagrambased.c	\
 	gdatainputstream.c 	\
 	gdataoutputstream.c 	\
+	gdocumentportal.c	\
+	gdocumentportal.h	\
 	gdrive.c 		\
 	gdummyfile.h 		\
 	gdummyfile.c 		\

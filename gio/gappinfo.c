@@ -29,6 +29,7 @@
 #include "glibintl.h"
 #include <gioerror.h>
 #include <gfile.h>
+#include "gdocumentportal.h"
 #include "gportalsupport.h"
 
 
@@ -680,6 +681,8 @@ launch_default_with_portal (const char         *uri,
   GDBusConnection *session_bus;
   GVariantBuilder opt_builder;
   const char *parent_window = NULL;
+  GFile *file;
+  char *real_uri;
 
   session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
   if (session_bus == NULL)
@@ -690,6 +693,28 @@ launch_default_with_portal (const char         *uri,
 
   g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
 
+  file = g_file_new_for_uri (uri);
+
+  if (g_file_is_native (file))
+    {
+      GError *local_error = NULL;
+
+      real_uri = g_document_portal_add_document (file, &local_error);
+      g_object_unref (file);
+
+      if (real_uri == NULL)
+        {
+          g_warning ("Can't register with document portal: %s", local_error->message);
+          g_propagate_error (error, local_error);
+          return FALSE;
+        }
+    }
+  else
+    {
+      g_object_unref (file);
+      real_uri = g_strdup (uri);
+    }
+
   g_dbus_connection_call (session_bus,
                           "org.freedesktop.portal.Desktop",
                           "/org/freedesktop/portal/desktop",
@@ -697,7 +722,7 @@ launch_default_with_portal (const char         *uri,
                           "OpenURI",
                           g_variant_new ("(ss@a{sv})",
                                          parent_window ? parent_window : "",
-                                         uri,
+                                         real_uri,
                                          g_variant_builder_end (&opt_builder)),
                           NULL,
                           G_DBUS_CALL_FLAGS_NONE,
@@ -708,6 +733,7 @@ launch_default_with_portal (const char         *uri,
 
   g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
   g_object_unref (session_bus);
+  g_free (real_uri);
 
   return TRUE;
 }
