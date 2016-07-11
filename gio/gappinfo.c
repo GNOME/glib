@@ -20,8 +20,6 @@
 
 #include "config.h"
 
-#include <unistd.h>
-
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
 #include "gcontextspecificgroup.h"
