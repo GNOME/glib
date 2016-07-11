@@ -176,7 +176,7 @@ handle_save (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
-  if (argc > 2);
+  if (argc > 2)
     {
       show_help (context, _("Too many arguments"));
       return 1;
