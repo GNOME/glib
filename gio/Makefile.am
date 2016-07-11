@@ -341,6 +341,7 @@ endif
 
 xdp_dbus_built_sources = xdp-dbus.c xdp-dbus.h
 BUILT_SOURCES += $(xdp_dbus_built_sources)
+CLEANFILES += $(xdp_dbus_built_sources)
 
 portal_interfaces = \
 	org.freedesktop.portal.NetworkMonitor.xml \
