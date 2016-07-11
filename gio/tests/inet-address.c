@@ -252,19 +252,19 @@ test_socket_address_to_string (void)
   g_object_unref (ia);
 
   /* IPv6. */
-  ia = g_inet_address_new_from_string ("::80");
+  ia = g_inet_address_new_from_string ("fe80::80");
   sa = g_inet_socket_address_new (ia, 80);
   str = g_socket_connectable_to_string (G_SOCKET_CONNECTABLE (sa));
-  g_assert_cmpstr (str, ==, "[::80]:80");
+  g_assert_cmpstr (str, ==, "[fe80::80]:80");
   g_free (str);
   g_object_unref (sa);
   g_object_unref (ia);
 
   /* IPv6 without port. */
-  ia = g_inet_address_new_from_string ("::80");
+  ia = g_inet_address_new_from_string ("fe80::80");
   sa = g_inet_socket_address_new (ia, 0);
   str = g_socket_connectable_to_string (G_SOCKET_CONNECTABLE (sa));
-  g_assert_cmpstr (str, ==, "::80");
+  g_assert_cmpstr (str, ==, "fe80::80");
   g_free (str);
   g_object_unref (sa);
   g_object_unref (ia);
