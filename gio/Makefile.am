@@ -105,7 +105,7 @@ settings_headers = \
 	gsettingsschema.h		\
 	gsettings.h
 
-settings_sources = \
+settings_base_sources = \
 	gvdb/gvdb-format.h		\
 	gvdb/gvdb-reader.h		\
 	gvdb/gvdb-reader.c		\
@@ -123,15 +123,21 @@ settings_sources = \
 	gsettings-mapping.c		\
 	gsettings.c
 
+settings_sources = $(settings_base_sources)
+
 if OS_WIN32
-settings_sources += \
+win32_settings_sources = \
 	gregistrysettingsbackend.h	\
 	gregistrysettingsbackend.c
+
+settings_sources += $(win32_settings_sources)
 endif
 
 if OS_COCOA
-settings_sources += \
+cocoa_settings_sources = \
 	gnextstepsettingsbackend.c
+
+settings_sources += $(cocoa_settings_sources)
 endif
 
 application_headers = \
@@ -240,7 +246,7 @@ SUBDIRS += fam
 endif
 
 if OS_UNIX
-appinfo_sources += gdesktopappinfo.c
+unix_appinfo_sources = gdesktopappinfo.c
 platform_libadd += xdgmime/libxdgmime.la
 platform_deps += xdgmime/libxdgmime.la
 unix_sources = \
@@ -264,7 +270,14 @@ unix_sources = \
 	gfdonotificationbackend.c \
 	ggtknotificationbackend.c \
 	gportalnotificationbackend.c \
+	gdocumentportal.c	\
+	gdocumentportal.h	\
+	gportalsupport.c	\
+	gportalsupport.h	\
+	$(portal_sources)	\
 	$(NULL)
+
+appinfo_sources += $(unix_appinfo_sources)
 
 if OS_COCOA
 unix_sources += gcocoanotificationbackend.c
@@ -327,9 +340,10 @@ win32_more_sources_for_vcproj = \
 	win32/gwin32filemonitor.c
 
 if OS_WIN32
-appinfo_sources += gwin32appinfo.c gwin32appinfo.h
+win32_appinfo_sources = gwin32appinfo.c gwin32appinfo.h
 platform_libadd += -lshlwapi -lws2_32 -ldnsapi -liphlpapi
 win32_sources = $(win32_actual_sources)
+appinfo_sources += $(win32_appinfo_sources)
 
 giowin32includedir=$(includedir)/gio-win32-2.0/gio
 giowin32include_HEADERS = \
@@ -370,7 +384,7 @@ portal_sources = \
 	$(xdp_dbus_built_sources)	\
 	$(NULL)
 
-libgio_2_0_la_SOURCES =		\
+gio_base_sources =		\
 	gappinfo.c 		\
 	gappinfoprivate.h	\
 	gasynchelper.c 		\
@@ -392,8 +406,6 @@ libgio_2_0_la_SOURCES =		\
 	gdatagrambased.c	\
 	gdatainputstream.c 	\
 	gdataoutputstream.c 	\
-	gdocumentportal.c	\
-	gdocumentportal.h	\
 	gdrive.c 		\
 	gdummyfile.h 		\
 	gdummyfile.c 		\
@@ -458,8 +470,6 @@ libgio_2_0_la_SOURCES =		\
 	gpollableutils.c	\
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
-	gportalsupport.c	\
-	gportalsupport.h	\
 	gproxy.c		\
 	gproxyaddress.c         \
 	gproxyaddressenumerator.c \
@@ -520,15 +530,18 @@ libgio_2_0_la_SOURCES =		\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
 	glistmodel.c 		\
-	gliststore.c 		\
+	gliststore.c		\
+	$(application_sources) 	\
+	$(gdbus_sources) 	\
+	$(local_sources) 	\
+	$(NULL)
+
+libgio_2_0_la_SOURCES =		\
+	$(gio_base_sources)	\
 	$(appinfo_sources) 	\
 	$(unix_sources) 	\
 	$(win32_sources) 	\
-	$(application_sources) 	\
 	$(settings_sources) 	\
-	$(gdbus_sources) 	\
-	$(local_sources) 	\
-	$(portal_sources)	\
 	$(NULL)
 
 EXTRA_DIST += strinfo.c
@@ -903,8 +916,14 @@ gio_LDADD = libgio-2.0.la 				\
 #
 MSVCPROJS = gio glib-compile-resources glib-compile-schemas
 
-gio_FILES = $(libgio_2_0_la_SOURCES) $(win32_actual_sources) $(win32_more_sources_for_vcproj)
-gio_EXCLUDES = gunix*.c|gdesktopappinfo.c|gnetworkmonitornetlink.c|gcontenttype.c|gnetworkmonitornm.c
+gio_FILES =	\
+	$(gio_base_sources)			\
+	$(win32_actual_sources)			\
+	$(win32_more_sources_for_vcproj)	\
+	$(settings_base_sources)		\
+	$(win32_settings_sources)
+
+gio_EXCLUDES = dummy
 
 gio_HEADERS_DIR = $(includedir)/glib-2.0/gio
 gio_HEADERS_INST = $(gioinclude_HEADERS) $(nodist_gioinclude_HEADERS)

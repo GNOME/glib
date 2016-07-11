@@ -23,14 +23,18 @@
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
 #include "gcontextspecificgroup.h"
-#include "gdbusconnection.h"
-#include "gdbusmessage.h"
 
 #include "glibintl.h"
 #include <gioerror.h>
 #include <gfile.h>
+
+#ifdef G_OS_UNIX
+#include "gdbusconnection.h"
+#include "gdbusmessage.h"
 #include "gdocumentportal.h"
 #include "gportalsupport.h"
+#endif
+
 
 
 /**
@@ -673,6 +677,7 @@ g_app_info_should_show (GAppInfo *appinfo)
   return (* iface->should_show) (appinfo);
 }
 
+#ifdef G_OS_UNIX
 static gboolean
 launch_default_with_portal (const char         *uri,
                             GAppLaunchContext  *context,
@@ -737,6 +742,7 @@ launch_default_with_portal (const char         *uri,
 
   return TRUE;
 }
+#endif
 
 /**
  * g_app_info_launch_default_for_uri:
@@ -761,8 +767,10 @@ g_app_info_launch_default_for_uri (const char         *uri,
   GList l;
   gboolean res;
 
+#ifdef G_OS_UNIX
   if (glib_should_use_portal ())
     return launch_default_with_portal (uri, launch_context, error);
+#endif
 
   /* g_file_query_default_handler() calls
    * g_app_info_get_default_for_uri_scheme() too, but we have to do it

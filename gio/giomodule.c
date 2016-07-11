@@ -903,10 +903,8 @@ extern GType _g_win32_volume_monitor_get_type (void);
 extern GType _g_winhttp_vfs_get_type (void);
 
 extern GType _g_dummy_proxy_resolver_get_type (void);
-extern GType g_proxy_resolver_portal_get_type (void);
 extern GType _g_dummy_tls_backend_get_type (void);
 extern GType g_network_monitor_base_get_type (void);
-extern GType g_network_monitor_portal_get_type (void);
 #ifdef HAVE_NETLINK
 extern GType _g_network_monitor_netlink_get_type (void);
 extern GType _g_network_monitor_nm_get_type (void);
@@ -916,6 +914,8 @@ extern GType _g_network_monitor_nm_get_type (void);
 extern GType g_fdo_notification_backend_get_type (void);
 extern GType g_gtk_notification_backend_get_type (void);
 extern GType g_portal_notification_backend_get_type (void);
+extern GType g_proxy_resolver_portal_get_type (void);
+extern GType g_network_monitor_portal_get_type (void);
 #endif
 
 #ifdef HAVE_COCOA
@@ -1118,6 +1118,8 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (g_fdo_notification_backend_get_type ());
       g_type_ensure (g_gtk_notification_backend_get_type ());
       g_type_ensure (g_portal_notification_backend_get_type ());
+      g_type_ensure (g_network_monitor_portal_get_type ());
+      g_type_ensure (g_proxy_resolver_portal_get_type ());
 #endif
 #ifdef HAVE_COCOA
       g_type_ensure (g_cocoa_notification_backend_get_type ());
@@ -1127,7 +1129,6 @@ _g_io_modules_ensure_loaded (void)
 #endif
       g_type_ensure (_g_local_vfs_get_type ());
       g_type_ensure (_g_dummy_proxy_resolver_get_type ());
-      g_type_ensure (g_proxy_resolver_portal_get_type ());
       g_type_ensure (_g_http_proxy_get_type ());
       g_type_ensure (_g_https_proxy_get_type ());
       g_type_ensure (_g_socks4a_proxy_get_type ());
@@ -1135,7 +1136,6 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (_g_socks5_proxy_get_type ());
       g_type_ensure (_g_dummy_tls_backend_get_type ());
       g_type_ensure (g_network_monitor_base_get_type ());
-      g_type_ensure (g_network_monitor_portal_get_type ());
 #ifdef HAVE_NETLINK
       g_type_ensure (_g_network_monitor_netlink_get_type ());
       g_type_ensure (_g_network_monitor_nm_get_type ());
