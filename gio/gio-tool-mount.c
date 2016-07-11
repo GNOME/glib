@@ -246,6 +246,8 @@ mount_mountable_done_cb (GObject *object,
         g_printerr (_("Error mounting location: Anonymous access denied\n"));
       else if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED_HANDLED))
         g_printerr (_("Error mounting location: %s\n"), error->message);
+
+      g_error_free (error);
     }
   else
     g_object_unref (target);
@@ -274,6 +276,8 @@ mount_done_cb (GObject *object,
         g_printerr (_("Error mounting location: Anonymous access denied\n"));
       else if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED_HANDLED))
         g_printerr (_("Error mounting location: %s\n"), error->message);
+
+      g_error_free (error);
     }
 
   outstanding_mounts--;
@@ -336,6 +340,7 @@ unmount_done_cb (GObject *object,
     {
       g_printerr (_("Error unmounting mount: %s\n"), error->message);
       success = FALSE;
+      g_error_free (error);
     }
 
   outstanding_mounts--;
@@ -360,6 +365,7 @@ unmount (GFile *file)
     {
       g_printerr (_("Error finding enclosing mount: %s\n"), error->message);
       success = FALSE;
+      g_error_free (error);
       return;
     }
 
@@ -387,6 +393,7 @@ eject_done_cb (GObject *object,
     {
       g_printerr (_("Error ejecting mount: %s\n"), error->message);
       success = FALSE;
+      g_error_free (error);
     }
 
   outstanding_mounts--;
@@ -411,6 +418,7 @@ eject (GFile *file)
     {
       g_printerr (_("Error finding enclosing mount: %s\n"), error->message);
       success = FALSE;
+      g_error_free (error);
       return;
     }
 
@@ -867,6 +875,7 @@ mount_with_device_file_cb (GObject *object,
       g_printerr (_("Error mounting %s: %s\n"),
                   g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE),
                   error->message);
+      g_error_free (error);
       success = FALSE;
     }
   else
