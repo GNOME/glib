@@ -33,7 +33,7 @@
 static GXdpDocuments *documents;
 static char *documents_mountpoint;
 
-static void
+static gboolean
 init_document_portal (void)
 {
   static gsize documents_inited = 0;
@@ -48,10 +48,24 @@ init_document_portal (void)
           documents = gxdp_documents_proxy_new_sync (connection, 0,
                                                      "org.freedesktop.portal.Documents",
                                                      "/org/freedesktop/portal/documents",
-                                                     NULL, NULL);
-          gxdp_documents_call_get_mount_point_sync (documents,
-                                                    &documents_mountpoint,
-                                                    NULL, NULL);
+                                                     NULL, &error);
+          if (documents != NULL)
+            {
+              gxdp_documents_call_get_mount_point_sync (documents,
+                                                        &documents_mountpoint,
+                                                        NULL, &error);
+
+              if (error != NULL)
+                {
+                  g_warning ("Cannot get document portal mount point: %s", error->message);
+                  g_error_free (error);
+                }
+            }
+          else
+            {
+              g_warning ("Cannot create document portal proxy: %s", error->message);
+              g_error_free (error);
+            }
 
           g_object_unref (connection);
         }
@@ -64,20 +78,28 @@ init_document_portal (void)
 
       g_once_init_leave (&documents_inited, 1);
     }
+
+  return (documents != NULL && documents_mountpoint != NULL);
 }
 
 char *
 g_document_portal_add_document (GFile   *file,
                                 GError **error)
 {
-  char *doc_path, *path, *basename;
+  char *doc_path, *basename;
   char *doc_id = NULL;
   char *doc_uri = NULL;
+  char *path = NULL;
   GUnixFDList *fd_list = NULL;
   int fd, fd_in;
   gboolean ret;
 
-  init_document_portal ();
+  if (!init_document_portal ())
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Document portal is not available");
+      goto out;
+    }
 
   path = g_file_get_path (file);
   fd = g_open (path, O_PATH | O_CLOEXEC);
