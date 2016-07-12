@@ -54,6 +54,8 @@ read_flatpak_info (void)
               g_strfreev (shared);
             }
         }
+
+      g_key_file_unref (keyfile);
     }
   else
     {
