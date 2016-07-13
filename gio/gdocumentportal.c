@@ -30,6 +30,10 @@
 #include "gunixfdlist.h"
 #endif
 
+#ifndef O_PATH
+#define O_PATH 0
+#endif
+
 static GXdpDocuments *documents;
 static char *documents_mountpoint;
 
