@@ -869,14 +869,6 @@ gresource_LDADD = libgio-2.0.la				\
 	$(LIBELF_LIBS)
 
 # ------------------------------------------------------------------------
-# ------ MSVC Project File Generation ------
-# ------------------------------------------------------------------------
-#
-MSVCPROJS = gio glib-compile-resources glib-compile-schemas
-
-gio_FILES = $(libgio_2_0_la_SOURCES) $(win32_actual_sources) $(win32_more_sources_for_vcproj)
-gio_EXCLUDES = gunix*.c|gdesktopappinfo.c|gnetworkmonitornetlink.c|gcontenttype.c|gnetworkmonitornm.c
-
 # gio tool
 
 bin_PROGRAMS += gio
@@ -904,6 +896,15 @@ gio_LDADD = libgio-2.0.la 				\
 	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(NULL)
+
+# ------------------------------------------------------------------------
+# ------ MSVC Project File Generation ------
+# ------------------------------------------------------------------------
+#
+MSVCPROJS = gio glib-compile-resources glib-compile-schemas
+
+gio_FILES = $(libgio_2_0_la_SOURCES) $(win32_actual_sources) $(win32_more_sources_for_vcproj)
+gio_EXCLUDES = gunix*.c|gdesktopappinfo.c|gnetworkmonitornetlink.c|gcontenttype.c|gnetworkmonitornm.c
 
 gio_HEADERS_DIR = $(includedir)/glib-2.0/gio
 gio_HEADERS_INST = $(gioinclude_HEADERS) $(nodist_gioinclude_HEADERS)
