@@ -561,6 +561,8 @@ handle_emit (gint        *argc,
   gchar *interface_name;
   gchar *signal_name;
   GVariantBuilder builder;
+  gboolean skip_dashes;
+  guint parm;
   guint n;
 
   ret = FALSE;
@@ -663,9 +665,19 @@ handle_emit (gint        *argc,
 
   /* Read parameters */
   g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
+  skip_dashes = TRUE;
+  parm = 0;
   for (n = 1; n < (guint) *argc; n++)
     {
       GVariant *value;
+
+      /* Under certain conditions, g_option_context_parse returns the "--"
+         itself (setting off unparsed arguments), too: */
+      if (skip_dashes && g_strcmp0 ((*argv)[n], "--") == 0)
+        {
+          skip_dashes = FALSE;
+          continue;
+        }
 
       error = NULL;
       value = g_variant_parse (NULL,
@@ -685,7 +697,7 @@ handle_emit (gint        *argc,
             {
               /* Use the original non-"parse-me-harder" error */
               g_printerr (_("Error parsing parameter %d: %s\n"),
-                          n,
+                          parm + 1,
                           context);
               g_error_free (error);
               g_free (context);
@@ -695,6 +707,7 @@ handle_emit (gint        *argc,
           g_free (context);
         }
       g_variant_builder_add_value (&builder, value);
+      ++parm;
     }
   parameters = g_variant_builder_end (&builder);
 
@@ -770,6 +783,8 @@ handle_call (gint        *argc,
   gboolean complete_paths;
   gboolean complete_methods;
   GVariantBuilder builder;
+  gboolean skip_dashes;
+  guint parm;
   guint n;
 
   ret = FALSE;
@@ -958,18 +973,28 @@ handle_call (gint        *argc,
 
   /* Read parameters */
   g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
+  skip_dashes = TRUE;
+  parm = 0;
   for (n = 1; n < (guint) *argc; n++)
     {
       GVariant *value;
       GVariantType *type;
 
+      /* Under certain conditions, g_option_context_parse returns the "--"
+         itself (setting off unparsed arguments), too: */
+      if (skip_dashes && g_strcmp0 ((*argv)[n], "--") == 0)
+        {
+          skip_dashes = FALSE;
+          continue;
+        }
+
       type = NULL;
       if (in_signature_types != NULL)
         {
-          if (n - 1 >= in_signature_types->len)
+          if (parm >= in_signature_types->len)
             {
               /* Only warn for the first param */
-              if (n - 1 == in_signature_types->len)
+              if (parm == in_signature_types->len)
                 {
                   g_printerr ("Warning: Introspection data indicates %d parameters but more was passed\n",
                               in_signature_types->len);
@@ -977,7 +1002,7 @@ handle_call (gint        *argc,
             }
           else
             {
-              type = in_signature_types->pdata[n - 1];
+              type = in_signature_types->pdata[parm];
             }
         }
 
@@ -1001,7 +1026,7 @@ handle_call (gint        *argc,
                 {
                   s = g_variant_type_dup_string (type);
                   g_printerr (_("Error parsing parameter %d of type '%s': %s\n"),
-                              n,
+                              parm + 1,
                               s,
                               context);
                   g_free (s);
@@ -1009,7 +1034,7 @@ handle_call (gint        *argc,
               else
                 {
                   g_printerr (_("Error parsing parameter %d: %s\n"),
-                              n,
+                              parm + 1,
                               context);
                 }
               g_error_free (error);
@@ -1020,6 +1045,7 @@ handle_call (gint        *argc,
           g_free (context);
         }
       g_variant_builder_add_value (&builder, value);
+      ++parm;
     }
   parameters = g_variant_builder_end (&builder);
 
