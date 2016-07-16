@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: glib 2.31.21\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-10 07:40+0000\n"
-"PO-Revision-Date: 2016-02-13 14:34+0800\n"
+"POT-Creation-Date: 2016-07-01 20:09+0000\n"
+"PO-Revision-Date: 2016-07-16 10:11+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (traditional)\n"
 "Language: zh_TW\n"
@@ -22,20 +22,25 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 1.8.6\n"
 
-#: ../gio/gapplication.c:531
-msgid "Enter GApplication service mode (use from D-Bus service files)"
-msgstr "進入 GApplication 服務模式 (用於來自 D-Bus 服務檔案)"
-
-#: ../gio/gapplication.c:536
+#: ../gio/gapplication.c:493
 msgid "GApplication options"
 msgstr "GApplication 選項"
 
-#: ../gio/gapplication.c:536
+#: ../gio/gapplication.c:493
 msgid "Show GApplication options"
 msgstr "顯示 GApplication  選項"
 
+#: ../gio/gapplication.c:538
+msgid "Enter GApplication service mode (use from D-Bus service files)"
+msgstr "進入 GApplication 服務模式 (用於來自 D-Bus 服務檔案)"
+
+#: ../gio/gapplication.c:550
+msgid "Override the application's ID"
+msgstr "覆蓋此應用程式 ID"
+
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
-#: ../gio/gresource-tool.c:488 ../gio/gsettings-tool.c:512
+#: ../gio/gio-tool.c:209 ../gio/gresource-tool.c:488
+#: ../gio/gsettings-tool.c:512
 msgid "Print help"
 msgstr "顯示求助"
 
@@ -44,7 +49,7 @@ msgstr "顯示求助"
 msgid "[COMMAND]"
 msgstr "[指令]"
 
-#: ../gio/gapplication-tool.c:49
+#: ../gio/gapplication-tool.c:49 ../gio/gio-tool.c:210
 msgid "Print version"
 msgstr "顯示版本"
 
@@ -97,7 +102,7 @@ msgid "APPID"
 msgstr "APPID"
 
 #: ../gio/gapplication-tool.c:70 ../gio/gapplication-tool.c:133
-#: ../gio/gdbus-tool.c:90
+#: ../gio/gdbus-tool.c:90 ../gio/gio-tool.c:206
 msgid "COMMAND"
 msgstr "指令"
 
@@ -109,8 +114,8 @@ msgstr "顯示詳細求助的指令"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "D-Bus 格式的應用程式辨別碼(例如：org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:589
-#: ../gio/glib-compile-resources.c:620 ../gio/gresource-tool.c:495
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:595
+#: ../gio/glib-compile-resources.c:626 ../gio/gresource-tool.c:495
 #: ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "FILE"
@@ -154,7 +159,7 @@ msgstr "用法：\n"
 msgid "Arguments:\n"
 msgstr "引數：\n"
 
-#: ../gio/gapplication-tool.c:133
+#: ../gio/gapplication-tool.c:133 ../gio/gio-tool.c:206
 msgid "[ARGS...]"
 msgstr "[ARGS...]"
 
@@ -252,7 +257,7 @@ msgstr ""
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
 #: ../gio/ginputstream.c:179 ../gio/ginputstream.c:379
-#: ../gio/ginputstream.c:617 ../gio/ginputstream.c:1016
+#: ../gio/ginputstream.c:617 ../gio/ginputstream.c:1019
 #: ../gio/goutputstream.c:203 ../gio/goutputstream.c:834
 #: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
@@ -268,8 +273,8 @@ msgstr "不支援在基礎串流中搜尋"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "不能截短 GBufferedInputStream"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1205
-#: ../gio/giostream.c:300 ../gio/goutputstream.c:1658
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1208
+#: ../gio/giostream.c:300 ../gio/goutputstream.c:1660
 msgid "Stream is already closed"
 msgstr "串流已經關閉"
 
@@ -277,8 +282,8 @@ msgstr "串流已經關閉"
 msgid "Truncate not supported on base stream"
 msgstr "在基礎串流中不支援截短(truncate)"
 
-#: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1847
-#: ../gio/gdbusprivate.c:1375 ../gio/glocalfile.c:2220
+#: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1849
+#: ../gio/gdbusprivate.c:1377 ../gio/glocalfile.c:2228
 #: ../gio/gsimpleasyncresult.c:870 ../gio/gsimpleasyncresult.c:896
 #, c-format
 msgid "Operation was cancelled"
@@ -297,7 +302,7 @@ msgid "Not enough space in destination"
 msgstr "在目的端中沒有足夠的空間"
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
-#: ../gio/gdatainputstream.c:1256 ../glib/gconvert.c:438 ../glib/gconvert.c:845
+#: ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:438 ../glib/gconvert.c:845
 #: ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
 #: ../glib/giochannel.c:2442 ../glib/gutf8.c:853 ../glib/gutf8.c:1306
 msgid "Invalid byte sequence in conversion input"
@@ -456,53 +461,53 @@ msgstr "讀取臨時檔案「%s」時發生錯誤，預期為 16 位元組，卻
 msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr "寫入臨時檔案「%s」的內容到串流時發生錯誤："
 
-#: ../gio/gdbusaddress.c:950
+#: ../gio/gdbusaddress.c:951
 msgid "The given address is empty"
 msgstr "指定的位址是空白的"
 
-#: ../gio/gdbusaddress.c:1063
+#: ../gio/gdbusaddress.c:1064
 #, c-format
 msgid "Cannot spawn a message bus when setuid"
 msgstr "在 setuid 時不能產生訊息匯流排"
 
-#: ../gio/gdbusaddress.c:1070
+#: ../gio/gdbusaddress.c:1071
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "沒有 machine-id 不能產生訊息匯流排："
 
-#: ../gio/gdbusaddress.c:1112
+#: ../gio/gdbusaddress.c:1113
 #, c-format
 msgid "Error spawning command line '%s': "
 msgstr "產生命令列「%s」時出現錯誤："
 
-#: ../gio/gdbusaddress.c:1329
+#: ../gio/gdbusaddress.c:1330
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(輸入任何字元以關閉這個視窗)\n"
 
-#: ../gio/gdbusaddress.c:1460
+#: ../gio/gdbusaddress.c:1482
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "作業階段 dbus 尚未執行，且自動執行失敗"
 
-#: ../gio/gdbusaddress.c:1471
+#: ../gio/gdbusaddress.c:1493
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "不能判斷作業階段匯流排位址（沒有在這個 OS 實作）"
 
-#: ../gio/gdbusaddress.c:1606 ../gio/gdbusconnection.c:7128
+#: ../gio/gdbusaddress.c:1628 ../gio/gdbusconnection.c:7133
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value '%s'"
 msgstr "不能從 DBUS_STARTER_BUS_TYPE 環境變數判斷匯流排位址 - 不明的數值「%s」"
 
-#: ../gio/gdbusaddress.c:1615 ../gio/gdbusconnection.c:7137
+#: ../gio/gdbusaddress.c:1637 ../gio/gdbusconnection.c:7142
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr "不能判斷匯流排位址，因為尚未設定 DBUS_STARTER_BUS_TYPE 環境變數"
 
-#: ../gio/gdbusaddress.c:1625
+#: ../gio/gdbusaddress.c:1647
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "不明的匯流排類型 %d"
@@ -598,95 +603,95 @@ msgstr "開啟鑰匙圈「%s」寫入時發生錯誤："
 msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(另外，釋放「%s」的鎖定失敗：%s)"
 
-#: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2373
+#: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2377
 msgid "The connection is closed"
 msgstr "這個連線已關閉"
 
-#: ../gio/gdbusconnection.c:1877
+#: ../gio/gdbusconnection.c:1879
 msgid "Timeout was reached"
 msgstr "已達逾時時間"
 
-#: ../gio/gdbusconnection.c:2495
+#: ../gio/gdbusconnection.c:2499
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "當建立客戶端連線時遇到不支援的旗標"
 
-#: ../gio/gdbusconnection.c:4105 ../gio/gdbusconnection.c:4452
+#: ../gio/gdbusconnection.c:4109 ../gio/gdbusconnection.c:4456
 #, c-format
 msgid ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "在路徑 %s 的物件沒有「org.freedesktop.DBus.Properties」這個介面"
 
-#: ../gio/gdbusconnection.c:4247
+#: ../gio/gdbusconnection.c:4251
 #, c-format
 msgid "No such property '%s'"
 msgstr "沒有這個屬性「%s」"
 
-#: ../gio/gdbusconnection.c:4259
+#: ../gio/gdbusconnection.c:4263
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "屬性「%s」無法讀取"
 
-#: ../gio/gdbusconnection.c:4270
+#: ../gio/gdbusconnection.c:4274
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "屬性「%s」無法寫入"
 
-#: ../gio/gdbusconnection.c:4290
+#: ../gio/gdbusconnection.c:4294
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr "設定屬性「%s」錯誤：預期的類型為「%s」但得到「%s」"
 
-#: ../gio/gdbusconnection.c:4395 ../gio/gdbusconnection.c:6568
+#: ../gio/gdbusconnection.c:4399 ../gio/gdbusconnection.c:6573
 #, c-format
 msgid "No such interface '%s'"
 msgstr "沒有這個介面「%s」"
 
-#: ../gio/gdbusconnection.c:4603
+#: ../gio/gdbusconnection.c:4607
 msgid "No such interface"
 msgstr "沒有這個介面"
 
-#: ../gio/gdbusconnection.c:4821 ../gio/gdbusconnection.c:7077
+#: ../gio/gdbusconnection.c:4825 ../gio/gdbusconnection.c:7082
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "在路徑 %2$s 的物件沒有「%1$s」這個介面"
 
-#: ../gio/gdbusconnection.c:4919
+#: ../gio/gdbusconnection.c:4923
 #, c-format
 msgid "No such method '%s'"
 msgstr "沒有這個方法「%s」"
 
-#: ../gio/gdbusconnection.c:4950
+#: ../gio/gdbusconnection.c:4954
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "訊息的類型，「%s」，不符合預期的類型「%s」"
 
-#: ../gio/gdbusconnection.c:5148
+#: ../gio/gdbusconnection.c:5152
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "有物件已為介面 %s 匯出於 %s"
 
-#: ../gio/gdbusconnection.c:5374
+#: ../gio/gdbusconnection.c:5378
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "無法取回屬性 %s.%s"
 
-#: ../gio/gdbusconnection.c:5430
+#: ../gio/gdbusconnection.c:5434
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "無法設定屬性%s.%s"
 
-#: ../gio/gdbusconnection.c:5606
+#: ../gio/gdbusconnection.c:5610
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "方法「%s」傳回類型「%s」，但預期為「%s」"
 
-#: ../gio/gdbusconnection.c:6679
+#: ../gio/gdbusconnection.c:6684
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "介面「%2$s」簽章「%3$s」的方法「%1$s」不存在"
 
-#: ../gio/gdbusconnection.c:6800
+#: ../gio/gdbusconnection.c:6805
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "子樹狀目錄已為 %s 匯出"
@@ -856,26 +861,26 @@ msgstr "傳回類型「%s」主體時發生錯誤"
 msgid "Error return with empty body"
 msgstr "傳回空白主體錯誤"
 
-#: ../gio/gdbusprivate.c:2036
+#: ../gio/gdbusprivate.c:2038
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "無法取得硬體設定檔：%s"
 
-#: ../gio/gdbusprivate.c:2081
+#: ../gio/gdbusprivate.c:2083
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "無法載入 /var/lib/dbus/machine-id 或 /etc/machine-id："
 
-#: ../gio/gdbusproxy.c:1610
+#: ../gio/gdbusproxy.c:1611
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "呼叫 %s StartServiceByName 時發生錯誤："
 
-#: ../gio/gdbusproxy.c:1633
+#: ../gio/gdbusproxy.c:1634
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "來自 StartServiceByName(\"%2$s\") 方法的未預期回應 %1$d"
 
-#: ../gio/gdbusproxy.c:2709 ../gio/gdbusproxy.c:2843
+#: ../gio/gdbusproxy.c:2713 ../gio/gdbusproxy.c:2847
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -928,13 +933,13 @@ msgstr ""
 "使用「%s COMMAND --help」來取得每個指令的求助資訊。\n"
 
 #: ../gio/gdbus-tool.c:164 ../gio/gdbus-tool.c:226 ../gio/gdbus-tool.c:298
-#: ../gio/gdbus-tool.c:322 ../gio/gdbus-tool.c:711 ../gio/gdbus-tool.c:1043
-#: ../gio/gdbus-tool.c:1477
+#: ../gio/gdbus-tool.c:322 ../gio/gdbus-tool.c:711 ../gio/gdbus-tool.c:1041
+#: ../gio/gdbus-tool.c:1483 ../gio/gio-tool-rename.c:84
 #, c-format
 msgid "Error: %s\n"
 msgstr "錯誤：%s\n"
 
-#: ../gio/gdbus-tool.c:175 ../gio/gdbus-tool.c:239 ../gio/gdbus-tool.c:1493
+#: ../gio/gdbus-tool.c:175 ../gio/gdbus-tool.c:239 ../gio/gdbus-tool.c:1499
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "解析檢討 XML 時出現錯誤：%s\n"
@@ -1003,8 +1008,8 @@ msgstr "信號和介面名稱"
 msgid "Emit a signal."
 msgstr "發出信號。"
 
-#: ../gio/gdbus-tool.c:610 ../gio/gdbus-tool.c:842 ../gio/gdbus-tool.c:1583
-#: ../gio/gdbus-tool.c:1818
+#: ../gio/gdbus-tool.c:610 ../gio/gdbus-tool.c:842 ../gio/gdbus-tool.c:1589
+#: ../gio/gdbus-tool.c:1824
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "連線錯誤：%s\n"
@@ -1014,8 +1019,8 @@ msgstr "連線錯誤：%s\n"
 msgid "Error: object path not specified.\n"
 msgstr "錯誤：沒有指定物件路徑。\n"
 
-#: ../gio/gdbus-tool.c:627 ../gio/gdbus-tool.c:909 ../gio/gdbus-tool.c:1648
-#: ../gio/gdbus-tool.c:1884
+#: ../gio/gdbus-tool.c:627 ../gio/gdbus-tool.c:909 ../gio/gdbus-tool.c:1654
+#: ../gio/gdbus-tool.c:1890
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "錯誤：%s 不是有效的物件路徑\n"
@@ -1076,17 +1081,17 @@ msgstr "逾時時間(秒)"
 msgid "Invoke a method on a remote object."
 msgstr "呼叫遠端物件的方法。"
 
-#: ../gio/gdbus-tool.c:862 ../gio/gdbus-tool.c:1602 ../gio/gdbus-tool.c:1837
+#: ../gio/gdbus-tool.c:862 ../gio/gdbus-tool.c:1608 ../gio/gdbus-tool.c:1843
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "錯誤：尚未指定目的端\n"
 
-#: ../gio/gdbus-tool.c:874 ../gio/gdbus-tool.c:1619 ../gio/gdbus-tool.c:1849
+#: ../gio/gdbus-tool.c:874 ../gio/gdbus-tool.c:1625 ../gio/gdbus-tool.c:1855
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "錯誤：%s 不是有效的匯流排名稱\n"
 
-#: ../gio/gdbus-tool.c:889 ../gio/gdbus-tool.c:1628
+#: ../gio/gdbus-tool.c:889 ../gio/gdbus-tool.c:1634
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "錯誤：沒有指定物件路徑\n"
@@ -1106,98 +1111,98 @@ msgstr "錯誤：方法名稱「%s」是無效的\n"
 msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "解析類型「%2$s」的參數 %1$d 時發生錯誤：%3$s\n"
 
-#: ../gio/gdbus-tool.c:1440
+#: ../gio/gdbus-tool.c:1446
 msgid "Destination name to introspect"
 msgstr "要檢討的目的端名稱"
 
-#: ../gio/gdbus-tool.c:1441
+#: ../gio/gdbus-tool.c:1447
 msgid "Object path to introspect"
 msgstr "要檢討的物件路徑"
 
-#: ../gio/gdbus-tool.c:1442
+#: ../gio/gdbus-tool.c:1448
 msgid "Print XML"
 msgstr "顯示 XML"
 
-#: ../gio/gdbus-tool.c:1443
+#: ../gio/gdbus-tool.c:1449
 msgid "Introspect children"
 msgstr "Introspect 子項目"
 
-#: ../gio/gdbus-tool.c:1444
+#: ../gio/gdbus-tool.c:1450
 msgid "Only print properties"
 msgstr "只有列印屬性"
 
-#: ../gio/gdbus-tool.c:1535
+#: ../gio/gdbus-tool.c:1541
 msgid "Introspect a remote object."
 msgstr "檢查遠端物件。"
 
-#: ../gio/gdbus-tool.c:1740
+#: ../gio/gdbus-tool.c:1746
 msgid "Destination name to monitor"
 msgstr "要監控的目的端名稱"
 
-#: ../gio/gdbus-tool.c:1741
+#: ../gio/gdbus-tool.c:1747
 msgid "Object path to monitor"
 msgstr "要監控的物件路徑"
 
-#: ../gio/gdbus-tool.c:1770
+#: ../gio/gdbus-tool.c:1776
 msgid "Monitor a remote object."
 msgstr "監控遠端物件。"
 
-#: ../gio/gdesktopappinfo.c:1993 ../gio/gdesktopappinfo.c:4502
+#: ../gio/gdesktopappinfo.c:1994 ../gio/gdesktopappinfo.c:4501
 msgid "Unnamed"
 msgstr "未命名的"
 
-#: ../gio/gdesktopappinfo.c:2402
+#: ../gio/gdesktopappinfo.c:2404
 msgid "Desktop file didn't specify Exec field"
 msgstr "桌面(Desktop)檔案未指定 Exec 欄位"
 
-#: ../gio/gdesktopappinfo.c:2687
+#: ../gio/gdesktopappinfo.c:2689
 msgid "Unable to find terminal required for application"
 msgstr "無法找到應用程式要求的終端機"
 
-#: ../gio/gdesktopappinfo.c:3099
+#: ../gio/gdesktopappinfo.c:3097
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "不能建立使用者應用程式設定資料夾 %s：%s"
 
-#: ../gio/gdesktopappinfo.c:3103
+#: ../gio/gdesktopappinfo.c:3101
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "不能建立使用者 MIME 設定資料夾 %s：%s"
 
-#: ../gio/gdesktopappinfo.c:3343 ../gio/gdesktopappinfo.c:3367
+#: ../gio/gdesktopappinfo.c:3341 ../gio/gdesktopappinfo.c:3365
 msgid "Application information lacks an identifier"
 msgstr "應用程式資訊缺少識別碼"
 
-#: ../gio/gdesktopappinfo.c:3600
+#: ../gio/gdesktopappinfo.c:3599
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "不能建立使用者桌面檔案 %s"
 
-#: ../gio/gdesktopappinfo.c:3734
+#: ../gio/gdesktopappinfo.c:3733
 #, c-format
 msgid "Custom definition for %s"
 msgstr "自訂 %s 的定義"
 
-#: ../gio/gdrive.c:392
+#: ../gio/gdrive.c:417
 msgid "drive doesn't implement eject"
 msgstr "裝置無法實作退出功能(eject)"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gdrive.c:470
+#: ../gio/gdrive.c:495
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "裝置無法實作退出功能(eject) 或 eject_with_operation"
 
-#: ../gio/gdrive.c:546
+#: ../gio/gdrive.c:571
 msgid "drive doesn't implement polling for media"
 msgstr "裝置無法實作媒體的輪詢"
 
-#: ../gio/gdrive.c:751
+#: ../gio/gdrive.c:776
 msgid "drive doesn't implement start"
 msgstr "裝置無法實作啟動功能(start)"
 
-#: ../gio/gdrive.c:853
+#: ../gio/gdrive.c:878
 msgid "drive doesn't implement stop"
 msgstr "裝置無法實作停止功能(stop)"
 
@@ -1238,10 +1243,10 @@ msgstr "預期為 GEmblemedIcon 的 GEmblem"
 #: ../gio/gfile.c:1583 ../gio/gfile.c:1638 ../gio/gfile.c:1696
 #: ../gio/gfile.c:1780 ../gio/gfile.c:1837 ../gio/gfile.c:1901
 #: ../gio/gfile.c:1956 ../gio/gfile.c:3604 ../gio/gfile.c:3659
-#: ../gio/gfile.c:3894 ../gio/gfile.c:3936 ../gio/gfile.c:4404
-#: ../gio/gfile.c:4815 ../gio/gfile.c:4900 ../gio/gfile.c:4990
-#: ../gio/gfile.c:5087 ../gio/gfile.c:5174 ../gio/gfile.c:5275
-#: ../gio/gfile.c:7796 ../gio/gfile.c:7886 ../gio/gfile.c:7970
+#: ../gio/gfile.c:3895 ../gio/gfile.c:3937 ../gio/gfile.c:4405
+#: ../gio/gfile.c:4816 ../gio/gfile.c:4901 ../gio/gfile.c:4991
+#: ../gio/gfile.c:5088 ../gio/gfile.c:5175 ../gio/gfile.c:5276
+#: ../gio/gfile.c:7817 ../gio/gfile.c:7907 ../gio/gfile.c:7991
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "不支援的操作"
@@ -1256,12 +1261,12 @@ msgstr "不支援的操作"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1468 ../gio/glocalfile.c:1134 ../gio/glocalfile.c:1145
-#: ../gio/glocalfile.c:1158
+#: ../gio/gfile.c:1468 ../gio/glocalfile.c:1142 ../gio/glocalfile.c:1153
+#: ../gio/glocalfile.c:1166
 msgid "Containing mount does not exist"
 msgstr "包含了不存在的掛載點"
 
-#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2376
+#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2384
 msgid "Can't copy over directory"
 msgstr "不能複製整個目錄"
 
@@ -1269,7 +1274,7 @@ msgstr "不能複製整個目錄"
 msgid "Can't copy directory over directory"
 msgstr "不能將目錄複製到目錄上"
 
-#: ../gio/gfile.c:2583 ../gio/glocalfile.c:2385
+#: ../gio/gfile.c:2583 ../gio/glocalfile.c:2393
 msgid "Target file exists"
 msgstr "目標檔案已存在"
 
@@ -1302,24 +1307,24 @@ msgstr "複製 (參照連結/重製) 不支援或無法運作"
 msgid "Can't copy special file"
 msgstr "不能複製特殊的檔案"
 
-#: ../gio/gfile.c:3884
+#: ../gio/gfile.c:3885
 msgid "Invalid symlink value given"
 msgstr "提供了無效的符號連結值"
 
-#: ../gio/gfile.c:4045
+#: ../gio/gfile.c:4046
 msgid "Trash not supported"
 msgstr "不支援回收筒"
 
-#: ../gio/gfile.c:4157
+#: ../gio/gfile.c:4158
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "檔案名稱不能包含「%c」"
 
-#: ../gio/gfile.c:6586 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6604 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "儲存區尚未實作掛載功能"
 
-#: ../gio/gfile.c:6695
+#: ../gio/gfile.c:6713
 msgid "No application is registered as handling this file"
 msgstr "沒有應用程式註冊為用以處理這個檔案"
 
@@ -1460,10 +1465,706 @@ msgstr "輸入串流尚未實作讀取"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1215 ../gio/giostream.c:310
-#: ../gio/goutputstream.c:1668
+#: ../gio/ginputstream.c:1218 ../gio/giostream.c:310
+#: ../gio/goutputstream.c:1670
 msgid "Stream has outstanding operation"
 msgstr "串流有異常操作"
+
+#: ../gio/gio-tool.c:142
+msgid "Copy with file"
+msgstr "複製檔案"
+
+#: ../gio/gio-tool.c:146
+msgid "Keep with file when moved"
+msgstr "移動時保持檔案"
+
+#: ../gio/gio-tool.c:187
+msgid "'version' takes no arguments"
+msgstr "「version」不需要引數"
+
+#: ../gio/gio-tool.c:189 ../gio/gio-tool.c:205 ../glib/goption.c:857
+msgid "Usage:"
+msgstr "用法："
+
+#: ../gio/gio-tool.c:192
+msgid "Print version information and exit."
+msgstr "輸出版本資訊並離開。"
+
+#: ../gio/gio-tool.c:208
+msgid "Commands:"
+msgstr "指令："
+
+#: ../gio/gio-tool.c:211
+msgid "Concatenate files to standard output"
+msgstr "將檔案連接並顯示至標準輸出"
+
+#: ../gio/gio-tool.c:212
+msgid "Copy one or more files"
+msgstr "複製一或多個檔案"
+
+#: ../gio/gio-tool.c:213
+msgid "Show information about locations"
+msgstr "顯示位置的相關資訊"
+
+#: ../gio/gio-tool.c:214
+msgid "List the contents of locations"
+msgstr "列出位置的內容"
+
+#: ../gio/gio-tool.c:215
+msgid "Get or set the handler for a mimetype"
+msgstr "取得或設定 MIME 類型的處理程式"
+
+#: ../gio/gio-tool.c:216
+msgid "Create directories"
+msgstr "建立目錄"
+
+#: ../gio/gio-tool.c:217
+msgid "Monitor files and directories for changes"
+msgstr "監控檔案與目錄的變更"
+
+#: ../gio/gio-tool.c:218
+msgid "Mount or unmount the locations"
+msgstr "掛載或卸載位置"
+
+#: ../gio/gio-tool.c:219
+msgid "Move one or more files"
+msgstr "移動一個或多個檔案"
+
+#: ../gio/gio-tool.c:220
+msgid "Open files with the default application"
+msgstr "以預設的應用程式開啟檔案"
+
+#: ../gio/gio-tool.c:221
+msgid "Rename a file"
+msgstr "重新命名檔案"
+
+#: ../gio/gio-tool.c:222
+msgid "Delete one or more files"
+msgstr "刪除一個或多個檔案"
+
+#: ../gio/gio-tool.c:223
+msgid "Read from standard input and save"
+msgstr "從標準輸入讀取並儲存"
+
+#: ../gio/gio-tool.c:224
+msgid "Set a file attribute"
+msgstr "設定檔案屬性"
+
+#: ../gio/gio-tool.c:225
+msgid "Move files or directories to the trash"
+msgstr "將檔案或目錄移至回收筒"
+
+#: ../gio/gio-tool.c:226
+msgid "Lists the contents of locations in a tree"
+msgstr "以樹狀圖列出位置的內容"
+
+#: ../gio/gio-tool.c:228
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr "使用 %s 以取得詳細的求助。\n"
+
+#. Translators: commandline placeholder
+#: ../gio/gio-tool-cat.c:112 ../gio/gio-tool-info.c:278
+#: ../gio/gio-tool-list.c:165 ../gio/gio-tool-mkdir.c:48
+#: ../gio/gio-tool-monitor.c:37 ../gio/gio-tool-monitor.c:39
+#: ../gio/gio-tool-monitor.c:41 ../gio/gio-tool-monitor.c:43
+#: ../gio/gio-tool-monitor.c:202 ../gio/gio-tool-mount.c:1123
+#: ../gio/gio-tool-open.c:45 ../gio/gio-tool-remove.c:48
+#: ../gio/gio-tool-rename.c:45 ../gio/gio-tool-set.c:89
+#: ../gio/gio-tool-trash.c:81 ../gio/gio-tool-tree.c:239
+msgid "LOCATION"
+msgstr "LOCATION"
+
+#: ../gio/gio-tool-cat.c:117
+msgid "Concatenate files and print to standard output."
+msgstr "將檔案連接並顯示至標準輸出。"
+
+#: ../gio/gio-tool-cat.c:119
+msgid ""
+"gio cat works just like the traditional cat utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/file.txt as location."
+msgstr ""
+"gio cat 類似傳統的 cat 工具程式，只是使用 GIO\n"
+"位置來取代本地端檔案：例如您可以使用類似\n"
+" smb://server/resource/file.txt 做為位置。"
+
+#: ../gio/gio-tool-cat.c:139
+msgid "No files given"
+msgstr "尚未指定檔案"
+
+#: ../gio/gio-tool-copy.c:42 ../gio/gio-tool-move.c:38
+msgid "No target directory"
+msgstr "不是目標目錄"
+
+#: ../gio/gio-tool-copy.c:43 ../gio/gio-tool-move.c:39
+msgid "Show progress"
+msgstr "顯示進度"
+
+#: ../gio/gio-tool-copy.c:44 ../gio/gio-tool-move.c:40
+msgid "Prompt before overwrite"
+msgstr "在覆蓋前提示"
+
+#: ../gio/gio-tool-copy.c:45
+msgid "Preserve all attributes"
+msgstr "保留所有屬性"
+
+#: ../gio/gio-tool-copy.c:46 ../gio/gio-tool-move.c:41
+#: ../gio/gio-tool-save.c:38
+msgid "Backup existing destination files"
+msgstr "備份既有的目的檔案"
+
+#: ../gio/gio-tool-copy.c:47
+msgid "Never follow symbolic links"
+msgstr "永不追蹤符號連結"
+
+#: ../gio/gio-tool-copy.c:72 ../gio/gio-tool-move.c:67
+#, c-format
+msgid "Transferred %s out of %s (%s/s)"
+msgstr "已傳輸 %s / %s (%s/s)"
+
+#. Translators: commandline placeholder
+#: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
+msgid "SOURCE"
+msgstr "SOURCE"
+
+#. Translators: commandline placeholder
+#: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
+#: ../gio/gio-tool-save.c:154
+msgid "DESTINATION"
+msgstr "DESTINATION"
+
+#: ../gio/gio-tool-copy.c:103
+msgid "Copy one or more files from SOURCE to DESTINATION."
+msgstr "將一或多個檔案從 SOURCE 複製到 DESTINATION。"
+
+#: ../gio/gio-tool-copy.c:105
+msgid ""
+"gio copy is similar to the traditional cp utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/file.txt as location."
+msgstr ""
+"gio copy 類似傳統的 cp 工具程式，只是使用 GIO\n"
+"位置來取代本地端檔案：例如您可以使用類似\n"
+" smb://server/resource/file.txt 做為位置。"
+
+#: ../gio/gio-tool-copy.c:143
+#, c-format
+msgid "Destination %s is not a directory"
+msgstr "目的端 %s 不是一個目錄"
+
+#: ../gio/gio-tool-copy.c:187 ../gio/gio-tool-move.c:181
+#, c-format
+msgid "%s: overwrite '%s' ? "
+msgstr "%s：覆寫「%s」？"
+
+#: ../gio/gio-tool-info.c:34
+msgid "List writable attributes"
+msgstr "列出可寫屬性"
+
+#: ../gio/gio-tool-info.c:35
+msgid "Get file system info"
+msgstr "取得檔案系統資訊"
+
+#: ../gio/gio-tool-info.c:36 ../gio/gio-tool-list.c:35
+msgid "The attributes to get"
+msgstr "要取得的屬性"
+
+#: ../gio/gio-tool-info.c:36 ../gio/gio-tool-list.c:35
+msgid "ATTRIBUTES"
+msgstr "ATTRIBUTES"
+
+#: ../gio/gio-tool-info.c:37 ../gio/gio-tool-list.c:38 ../gio/gio-tool-set.c:34
+msgid "Don't follow symbolic links"
+msgstr "不要追蹤符號連結"
+
+#: ../gio/gio-tool-info.c:75
+#, c-format
+msgid "attributes:\n"
+msgstr "屬性：\n"
+
+#. Translators: This is a noun and represents and attribute of a file
+#: ../gio/gio-tool-info.c:127
+#, c-format
+msgid "display name: %s\n"
+msgstr "顯示名稱：%s\n"
+
+#. Translators: This is a noun and represents and attribute of a file
+#: ../gio/gio-tool-info.c:132
+#, c-format
+msgid "edit name: %s\n"
+msgstr "編輯名稱：%s\n"
+
+#: ../gio/gio-tool-info.c:138
+#, c-format
+msgid "name: %s\n"
+msgstr "名稱：%s\n"
+
+#: ../gio/gio-tool-info.c:145
+#, c-format
+msgid "type: %s\n"
+msgstr "類型：%s\n"
+
+#: ../gio/gio-tool-info.c:151
+#, c-format
+msgid "size: "
+msgstr "大小："
+
+#: ../gio/gio-tool-info.c:156
+#, c-format
+msgid "hidden\n"
+msgstr "隱藏\n"
+
+#: ../gio/gio-tool-info.c:159
+#, c-format
+msgid "uri: %s\n"
+msgstr "uri： %s\n"
+
+#: ../gio/gio-tool-info.c:221
+#, c-format
+msgid "Error getting writable attributes: %s\n"
+msgstr "取得可寫入屬性時發生錯誤：%s\n"
+
+#: ../gio/gio-tool-info.c:226
+#, c-format
+msgid "Settable attributes:\n"
+msgstr "可設定屬性：\n"
+
+#: ../gio/gio-tool-info.c:249
+#, c-format
+msgid "Writable attribute namespaces:\n"
+msgstr "可寫入屬性命名空間：\n"
+
+#: ../gio/gio-tool-info.c:283
+msgid "Show information about locations."
+msgstr "顯示位置的相關資訊。"
+
+#: ../gio/gio-tool-info.c:285
+msgid ""
+"gio info is similar to the traditional ls utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/file.txt as location. File attributes can\n"
+"be specified with their GIO name, e.g. standard::icon, or just by\n"
+"namespace, e.g. unix, or by '*', which matches all attributes"
+msgstr ""
+"gio info 類似傳統的 ls 工具程式，只是使用 GIO\n"
+"位置來取代本地端檔案：例如您可以使用類似\n"
+" smb://server/resource/file.txt 做為位置。檔案\n"
+"屬性可以使用它們的 GIO 名稱來指定，如 standard::icon\n"
+"或只使用命名空間，像 unix，或 '*' 比對所有的屬性"
+
+#: ../gio/gio-tool-info.c:307
+msgid "No locations given"
+msgstr "未提供位置"
+
+#: ../gio/gio-tool-list.c:36 ../gio/gio-tool-tree.c:32
+msgid "Show hidden files"
+msgstr "顯示隱藏檔案"
+
+#: ../gio/gio-tool-list.c:37
+msgid "Use a long listing format"
+msgstr "使用長式表列格式"
+
+#: ../gio/gio-tool-list.c:39
+msgid "Print full URIs"
+msgstr "顯示完整 URI"
+
+#: ../gio/gio-tool-list.c:170
+msgid "List the contents of the locations."
+msgstr "列出位置的內容。"
+
+#: ../gio/gio-tool-list.c:172
+msgid ""
+"gio list is similar to the traditional ls utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/file.txt as location. File attributes can\n"
+"be specified with their GIO name, e.g. standard::icon"
+msgstr ""
+"gio list 類似傳統的 ls 工具程式，只是使用 GIO\n"
+"位置來取代本地端檔案：例如您可以使用類似\n"
+" smb://server/resource/file.txt 做為位置。檔案\n"
+"屬性可以使用它們的 GIO 名稱來指定，如 standard::icon"
+
+#. Translators: commandline placeholder
+#: ../gio/gio-tool-mime.c:71
+msgid "MIMETYPE"
+msgstr "MIMETYPE"
+
+#: ../gio/gio-tool-mime.c:71
+msgid "HANDLER"
+msgstr "HANDLER"
+
+#: ../gio/gio-tool-mime.c:76
+msgid "Get or set the handler for a mimetype."
+msgstr "取得或設定 MIME-類型的處理程式。"
+
+#: ../gio/gio-tool-mime.c:78
+msgid ""
+"If no handler is given, lists registered and recommended applications\n"
+"for the mimetype. If a handler is given, it is set as the default\n"
+"handler for the mimetype."
+msgstr ""
+"如果沒有指定處理程式，列出該 MIME 類型註冊與建議的應用程式。\n"
+"如果有指定處理程式，會將它設定為此 MIME 類型的預設\n"
+"處理程式。"
+
+#: ../gio/gio-tool-mime.c:98
+msgid "Must specify a single mimetype, and maybe a handler"
+msgstr "必須指定一個 MIME 類型，可能是一種處理程式"
+
+#: ../gio/gio-tool-mime.c:113
+#, c-format
+msgid "No default applications for '%s'\n"
+msgstr "「%s」沒有預設的應用程式\n"
+
+#: ../gio/gio-tool-mime.c:119
+#, c-format
+msgid "Default application for '%s': %s\n"
+msgstr "「%s」的預設應用程式：%s\n"
+
+#: ../gio/gio-tool-mime.c:124
+#, c-format
+msgid "Registered applications:\n"
+msgstr "已註冊的應用程式：\n"
+
+#: ../gio/gio-tool-mime.c:126
+#, c-format
+msgid "No registered applications\n"
+msgstr "沒有註冊的應用程式\n"
+
+#: ../gio/gio-tool-mime.c:137
+#, c-format
+msgid "Recommended applications:\n"
+msgstr "建議的應用程式：\n"
+
+#: ../gio/gio-tool-mime.c:139
+#, c-format
+msgid "No recommended applications\n"
+msgstr "沒有建議的應用程式\n"
+
+#: ../gio/gio-tool-mime.c:159
+#, c-format
+msgid "Failed to load info for handler '%s'\n"
+msgstr "無法載入處理程式「%s」的資訊\n"
+
+#: ../gio/gio-tool-mime.c:165
+#, c-format
+msgid "Failed to set '%s' as the default handler for '%s': %s\n"
+msgstr "無法將「%s」設定為「%s」的預設處理程式：%s\n"
+
+#: ../gio/gio-tool-mkdir.c:31
+msgid "Create parent directories"
+msgstr "建立上層目錄"
+
+#: ../gio/gio-tool-mkdir.c:52
+msgid "Create directories."
+msgstr "建立目錄。"
+
+#: ../gio/gio-tool-mkdir.c:54
+msgid ""
+"gio mkdir is similar to the traditional mkdir utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/mydir as location."
+msgstr ""
+"gio mkdir 類似傳統的 mkdir 工具程式，只是使用 GIO\n"
+"位置來取代本地端檔案：例如您可以使用類似\n"
+" smb://server/resource/file.txt 做為位置。"
+
+#: ../gio/gio-tool-mkdir.c:74
+msgid "No locations gives"
+msgstr "未提供位置"
+
+#: ../gio/gio-tool-monitor.c:37
+msgid "Monitor a directory (default: depends on type)"
+msgstr "監控目錄 (預設值︰取決於類型)"
+
+#: ../gio/gio-tool-monitor.c:39
+msgid "Monitor a file (default: depends on type)"
+msgstr "監控檔案 (預設值︰取決於類型)"
+
+#: ../gio/gio-tool-monitor.c:41
+msgid "Monitor a file directly (notices changes made via hardlinks)"
+msgstr "直接監控檔案 (透過硬連結來注意變更)"
+
+#: ../gio/gio-tool-monitor.c:43
+msgid "Monitors a file directly, but doesn't report changes"
+msgstr "直接監控檔案，但不回報變更"
+
+#: ../gio/gio-tool-monitor.c:45
+msgid "Report moves and renames as simple deleted/created events"
+msgstr "回報移動與重新命名為簡單的刪除/建立事件"
+
+#: ../gio/gio-tool-monitor.c:47
+msgid "Watch for mount events"
+msgstr "監看掛載事件"
+
+#: ../gio/gio-tool-monitor.c:207
+msgid "Monitor files or directories for changes."
+msgstr "監控檔案或目錄的變更。"
+
+#: ../gio/gio-tool-mount.c:58
+msgid "Mount as mountable"
+msgstr "掛載為可掛載形式"
+
+#: ../gio/gio-tool-mount.c:59
+msgid "Mount volume with device file"
+msgstr "以裝置檔案掛載儲存區"
+
+#: ../gio/gio-tool-mount.c:59
+msgid "DEVICE"
+msgstr "DEVICE"
+
+#: ../gio/gio-tool-mount.c:60
+msgid "Unmount"
+msgstr "卸載"
+
+#: ../gio/gio-tool-mount.c:61
+msgid "Eject"
+msgstr "退出"
+
+#: ../gio/gio-tool-mount.c:62
+msgid "Unmount all mounts with the given scheme"
+msgstr "以指定的方式卸載所有的掛載"
+
+#: ../gio/gio-tool-mount.c:62
+msgid "SCHEME"
+msgstr "SCHEME"
+
+#: ../gio/gio-tool-mount.c:63
+msgid "Ignore outstanding file operations when unmounting or ejecting"
+msgstr "在卸載或退出時忽略優先的檔案操作"
+
+#: ../gio/gio-tool-mount.c:64
+msgid "Use an anonymous user when authenticating"
+msgstr "核對時使用匿名使用者"
+
+#. Translator: List here is a verb as in 'List all mounts'
+#: ../gio/gio-tool-mount.c:66
+msgid "List"
+msgstr "列出"
+
+#: ../gio/gio-tool-mount.c:67
+msgid "Monitor events"
+msgstr "監視事件"
+
+#: ../gio/gio-tool-mount.c:68
+msgid "Show extra information"
+msgstr "顯示額外的資訊"
+
+#: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:274
+#, c-format
+msgid "Error mounting location: Anonymous access denied\n"
+msgstr "掛載位置時發生錯誤：匿名存取已被拒絕\n"
+
+#: ../gio/gio-tool-mount.c:248 ../gio/gio-tool-mount.c:276
+#, c-format
+msgid "Error mounting location: %s\n"
+msgstr "掛載位置時發生錯誤： %s\n"
+
+#: ../gio/gio-tool-mount.c:337
+#, c-format
+msgid "Error unmounting mount: %s\n"
+msgstr "卸載時發生錯誤： %s\n"
+
+#: ../gio/gio-tool-mount.c:361 ../gio/gio-tool-mount.c:412
+#, c-format
+msgid "Error finding enclosing mount: %s\n"
+msgstr "尋找封裝掛載發生錯誤：%s\n"
+
+#: ../gio/gio-tool-mount.c:388
+#, c-format
+msgid "Error ejecting mount: %s\n"
+msgstr "退出掛載時發生錯誤：%s\n"
+
+#: ../gio/gio-tool-mount.c:867
+#, c-format
+msgid "Error mounting %s: %s\n"
+msgstr "掛載 %s 時發生錯誤：%s\n"
+
+#: ../gio/gio-tool-mount.c:882
+#, c-format
+msgid "Mounted %s at %s\n"
+msgstr "%s 已掛載於 %s\n"
+
+#: ../gio/gio-tool-mount.c:932
+#, c-format
+msgid "No volume for device file %s\n"
+msgstr "裝置檔案 %s 中沒有儲存區\n"
+
+#: ../gio/gio-tool-mount.c:1127
+msgid "Mount or unmount the locations."
+msgstr "掛載或卸載位置。"
+
+#: ../gio/gio-tool-move.c:42
+msgid "Don't use copy and delete fallback"
+msgstr "不要使用複製與刪除回饋"
+
+#: ../gio/gio-tool-move.c:99
+msgid "Move one or more files from SOURCE to DEST."
+msgstr "將一或多個檔案從 SOURCE 移動到 DEST。"
+
+#: ../gio/gio-tool-move.c:101
+msgid ""
+"gio move is similar to the traditional mv utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/file.txt as location"
+msgstr ""
+"gio move 類似傳統的 mv 工具程式，只是使用 GIO\n"
+"位置來取代本地端檔案：例如您可以使用類似\n"
+" smb://server/resource/file.txt 做為位置。"
+
+#: ../gio/gio-tool-move.c:139
+#, c-format
+msgid "Target %s is not a directory"
+msgstr "目標 %s 不是目錄"
+
+#: ../gio/gio-tool-open.c:50
+msgid ""
+"Open files with the default application that\n"
+"is registered to handle files of this type."
+msgstr ""
+"使用註冊為處理該檔案類型的\n"
+"預設應用程式來開啟檔案。"
+
+#: ../gio/gio-tool-open.c:69
+msgid "No files to open"
+msgstr "沒有檔案可開啟"
+
+#: ../gio/gio-tool-remove.c:31 ../gio/gio-tool-trash.c:31
+msgid "Ignore nonexistent files, never prompt"
+msgstr "忽略不存在的檔案，永不提示"
+
+#: ../gio/gio-tool-remove.c:52
+msgid "Delete the given files."
+msgstr "刪除指定的檔案。"
+
+#: ../gio/gio-tool-remove.c:70
+msgid "No files to delete"
+msgstr "沒有要刪除的檔案"
+
+#: ../gio/gio-tool-rename.c:45
+msgid "NAME"
+msgstr "NAME"
+
+#: ../gio/gio-tool-rename.c:50
+msgid "Rename a file."
+msgstr "重新命名檔案。"
+
+#: ../gio/gio-tool-rename.c:68
+msgid "Missing argument"
+msgstr "缺少引數"
+
+#: ../gio/gio-tool-rename.c:73 ../gio/gio-tool-save.c:181
+#: ../gio/gio-tool-set.c:134
+msgid "Too many arguments"
+msgstr "引數太多"
+
+#: ../gio/gio-tool-rename.c:91
+#, c-format
+msgid "Rename successful. New uri: %s\n"
+msgstr "重新命名成功。新的 URI：%s\n"
+
+#: ../gio/gio-tool-save.c:39
+msgid "Only create if not existing"
+msgstr "只在不存在時建立"
+
+#: ../gio/gio-tool-save.c:40
+msgid "Append to end of file"
+msgstr "添加到檔案的結尾"
+
+#: ../gio/gio-tool-save.c:41
+msgid "When creating, restrict access to the current user"
+msgstr "當建立時，存取權僅限於目前的使用者"
+
+#: ../gio/gio-tool-save.c:42
+msgid "When replacing, replace as if the destination did not exist"
+msgstr "在取代時，即使目的端不存在也取代"
+
+#. Translators: The "etag" is a token allowing to verify whether a file has been modified
+#: ../gio/gio-tool-save.c:44
+msgid "Print new etag at end"
+msgstr "在結尾列出新的 etag"
+
+#. Translators: The "etag" is a token allowing to verify whether a file has been modified
+#: ../gio/gio-tool-save.c:46
+msgid "The etag of the file being overwritten"
+msgstr "即將複蓋的檔案 etag"
+
+#: ../gio/gio-tool-save.c:46
+msgid "ETAG"
+msgstr "ETAG"
+
+#. Translators: The "etag" is a token allowing to verify whether a file has been modified
+#: ../gio/gio-tool-save.c:134
+#, c-format
+msgid "Etag not available\n"
+msgstr "Etag 無法使用\n"
+
+#: ../gio/gio-tool-save.c:157
+msgid "Read from standard input and save to DEST."
+msgstr "從標準輸入讀取並儲存到 DEST。"
+
+#: ../gio/gio-tool-save.c:175
+msgid "No destination given"
+msgstr "沒有指定目的端"
+
+#: ../gio/gio-tool-set.c:33
+msgid "Type of the attribute"
+msgstr "屬性的類型"
+
+#: ../gio/gio-tool-set.c:33
+msgid "TYPE"
+msgstr "TYPE"
+
+#: ../gio/gio-tool-set.c:89
+msgid "ATTRIBUTE"
+msgstr "ATTRIBUTE"
+
+#: ../gio/gio-tool-set.c:89
+msgid "VALUE"
+msgstr "VALUE"
+
+#: ../gio/gio-tool-set.c:93
+msgid "Set a file attribute of LOCATION."
+msgstr "設定 LOCATION 的檔案屬性。"
+
+#: ../gio/gio-tool-set.c:111
+msgid "Location not specified"
+msgstr "尚未指定位置"
+
+#: ../gio/gio-tool-set.c:119
+msgid "Attribute not specified"
+msgstr "尚未指定屬性"
+
+#: ../gio/gio-tool-set.c:128
+msgid "Value not specified"
+msgstr "尚未指定數值"
+
+#: ../gio/gio-tool-set.c:176
+#, c-format
+msgid "Invalid attribute type %s\n"
+msgstr "無效的屬性類型 %s\n"
+
+#: ../gio/gio-tool-set.c:189
+#, c-format
+msgid "Error setting attribute: %s\n"
+msgstr "設定屬性時發生錯誤：%s\n"
+
+#: ../gio/gio-tool-trash.c:32
+msgid "Empty the trash"
+msgstr "清理回收筒"
+
+#: ../gio/gio-tool-trash.c:86
+msgid "Move files or directories to the trash."
+msgstr "將檔案或目錄移至回收筒。"
+
+#: ../gio/gio-tool-tree.c:33
+msgid "Follow symbolic links, mounts and shortcuts"
+msgstr "追蹤符號連結、掛載和捷徑"
+
+#: ../gio/gio-tool-tree.c:244
+msgid "List contents of directories in a tree-like format."
+msgstr "以樹狀格式列出目錄的內容。"
 
 #: ../gio/glib-compile-resources.c:142 ../gio/glib-compile-schemas.c:1491
 #, c-format
@@ -1475,91 +2176,91 @@ msgstr "元素 <%s> 不可出現在 <%s> 內"
 msgid "Element <%s> not allowed at toplevel"
 msgstr "元素 <%s> 不允許在頂端層級"
 
-#: ../gio/glib-compile-resources.c:236
+#: ../gio/glib-compile-resources.c:237
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr "檔案 %s 似乎在這個資源出出現多次"
 
-#: ../gio/glib-compile-resources.c:249
+#: ../gio/glib-compile-resources.c:248
 #, c-format
 msgid "Failed to locate '%s' in any source directory"
 msgstr "無法在任何來源目錄中定位「%s」"
 
-#: ../gio/glib-compile-resources.c:260
+#: ../gio/glib-compile-resources.c:259
 #, c-format
 msgid "Failed to locate '%s' in current directory"
 msgstr "無法在目前的目錄中定位「%s」"
 
-#: ../gio/glib-compile-resources.c:288
+#: ../gio/glib-compile-resources.c:290
 #, c-format
 msgid "Unknown processing option \"%s\""
 msgstr "不明的置處理選項「%s」"
 
-#: ../gio/glib-compile-resources.c:306 ../gio/glib-compile-resources.c:352
+#: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:354
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "無法建立暫存檔案：%s"
 
-#: ../gio/glib-compile-resources.c:380
+#: ../gio/glib-compile-resources.c:382
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "讀取檔案 %s 時發生錯誤：%s"
 
-#: ../gio/glib-compile-resources.c:400
+#: ../gio/glib-compile-resources.c:402
 #, c-format
 msgid "Error compressing file %s"
 msgstr "壓縮檔案 %s 時發生錯誤"
 
-#: ../gio/glib-compile-resources.c:464 ../gio/glib-compile-schemas.c:1603
+#: ../gio/glib-compile-resources.c:470 ../gio/glib-compile-schemas.c:1603
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "在 <%s> 內不能出現文字"
 
-#: ../gio/glib-compile-resources.c:589
+#: ../gio/glib-compile-resources.c:595
 msgid "name of the output file"
 msgstr "輸出檔案的名稱"
 
-#: ../gio/glib-compile-resources.c:590
+#: ../gio/glib-compile-resources.c:596
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "用來讀取檔案的目錄 (預設為目前的目錄)"
 
-#: ../gio/glib-compile-resources.c:590 ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-resources.c:596 ../gio/glib-compile-schemas.c:2036
 #: ../gio/glib-compile-schemas.c:2065
 msgid "DIRECTORY"
 msgstr "目錄"
 
-#: ../gio/glib-compile-resources.c:591
+#: ../gio/glib-compile-resources.c:597
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "以目標檔案名稱的延伸檔名來選擇要產生輸出的格式"
 
-#: ../gio/glib-compile-resources.c:592
+#: ../gio/glib-compile-resources.c:598
 msgid "Generate source header"
 msgstr "產生來源標頭"
 
-#: ../gio/glib-compile-resources.c:593
+#: ../gio/glib-compile-resources.c:599
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "產生源碼用來連結資源檔到您的程式碼中"
 
-#: ../gio/glib-compile-resources.c:594
+#: ../gio/glib-compile-resources.c:600
 msgid "Generate dependency list"
 msgstr "產生相依性清單"
 
-#: ../gio/glib-compile-resources.c:595
+#: ../gio/glib-compile-resources.c:601
 msgid "Don't automatically create and register resource"
 msgstr "不要自動建立與註冊資源"
 
-#: ../gio/glib-compile-resources.c:596
+#: ../gio/glib-compile-resources.c:602
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "不用匯出函式；宣告他們為 G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:597
+#: ../gio/glib-compile-resources.c:603
 msgid "C identifier name used for the generated source code"
 msgstr "用於產生源碼的 C 識別碼名稱"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:629
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -1569,7 +2270,7 @@ msgstr ""
 "資源規格檔案的延伸檔名必須為 .gresource.xml，\n"
 "而資源檔案的延伸檔名叫做 .gresource。"
 
-#: ../gio/glib-compile-resources.c:639
+#: ../gio/glib-compile-resources.c:645
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "您應該明確指定一個檔案名稱\n"
@@ -1834,121 +2535,121 @@ msgstr "不做任何事。\n"
 msgid "removed existing output file.\n"
 msgstr "移除現有的輸出檔案。\n"
 
-#: ../gio/glocalfile.c:635 ../gio/win32/gwinhttpfile.c:420
+#: ../gio/glocalfile.c:638 ../gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "無效的檔案名稱 %s"
 
-#: ../gio/glocalfile.c:1012
+#: ../gio/glocalfile.c:1015
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "取得檔案系統資訊時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:1180
+#: ../gio/glocalfile.c:1188
 msgid "Can't rename root directory"
 msgstr "不能重新命名根目錄"
 
-#: ../gio/glocalfile.c:1200 ../gio/glocalfile.c:1226
+#: ../gio/glocalfile.c:1208 ../gio/glocalfile.c:1234
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "重新命名檔案時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:1209
+#: ../gio/glocalfile.c:1217
 msgid "Can't rename file, filename already exists"
 msgstr "不能重新命名檔案，該檔案名稱已存在"
 
-#: ../gio/glocalfile.c:1222 ../gio/glocalfile.c:2249 ../gio/glocalfile.c:2278
-#: ../gio/glocalfile.c:2438 ../gio/glocalfileoutputstream.c:549
+#: ../gio/glocalfile.c:1230 ../gio/glocalfile.c:2257 ../gio/glocalfile.c:2286
+#: ../gio/glocalfile.c:2446 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "無效的檔案名稱"
 
-#: ../gio/glocalfile.c:1389 ../gio/glocalfile.c:1413
+#: ../gio/glocalfile.c:1397 ../gio/glocalfile.c:1421
 msgid "Can't open directory"
 msgstr "不能開啟目錄"
 
-#: ../gio/glocalfile.c:1397
+#: ../gio/glocalfile.c:1405
 #, c-format
 msgid "Error opening file: %s"
 msgstr "開啓檔案時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:1538
+#: ../gio/glocalfile.c:1546
 #, c-format
 msgid "Error removing file: %s"
 msgstr "移除檔案時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:1922
+#: ../gio/glocalfile.c:1930
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "移動檔案至回收筒時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:1945
+#: ../gio/glocalfile.c:1953
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "無法建立回收筒目錄 %s：%s"
 
-#: ../gio/glocalfile.c:1966
+#: ../gio/glocalfile.c:1974
 msgid "Unable to find toplevel directory for trash"
 msgstr "無法找到回收筒的頂端層級目錄"
 
-#: ../gio/glocalfile.c:2045 ../gio/glocalfile.c:2065
+#: ../gio/glocalfile.c:2053 ../gio/glocalfile.c:2073
 msgid "Unable to find or create trash directory"
 msgstr "無法找到或建立回收筒目錄"
 
-#: ../gio/glocalfile.c:2099
+#: ../gio/glocalfile.c:2107
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "無法建立回收筒資訊檔案：%s"
 
-#: ../gio/glocalfile.c:2157 ../gio/glocalfile.c:2162 ../gio/glocalfile.c:2219
-#: ../gio/glocalfile.c:2226
+#: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2170 ../gio/glocalfile.c:2227
+#: ../gio/glocalfile.c:2234
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "無法將檔案移至回收筒：%s"
 
-#: ../gio/glocalfile.c:2227 ../glib/gregex.c:281
+#: ../gio/glocalfile.c:2235 ../glib/gregex.c:281
 msgid "internal error"
 msgstr "內部的錯誤"
 
-#: ../gio/glocalfile.c:2253
+#: ../gio/glocalfile.c:2261
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "建立目錄發生錯誤：%s"
 
-#: ../gio/glocalfile.c:2282
+#: ../gio/glocalfile.c:2290
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "檔案系統不支援符號連結"
 
-#: ../gio/glocalfile.c:2286
+#: ../gio/glocalfile.c:2294
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "建立符號連結時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:2348 ../gio/glocalfile.c:2442
+#: ../gio/glocalfile.c:2356 ../gio/glocalfile.c:2450
 #, c-format
 msgid "Error moving file: %s"
 msgstr "移動檔案時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:2371
+#: ../gio/glocalfile.c:2379
 msgid "Can't move directory over directory"
 msgstr "不能將目錄移動至目錄上"
 
-#: ../gio/glocalfile.c:2398 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfile.c:2406 ../gio/glocalfileoutputstream.c:925
 #: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
-#: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
+#: ../gio/glocalfileoutputstream.c:971 ../gio/glocalfileoutputstream.c:985
 msgid "Backup file creation failed"
 msgstr "建立備份檔案失敗"
 
-#: ../gio/glocalfile.c:2417
+#: ../gio/glocalfile.c:2425
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "移除目標檔案時發生錯誤：%s"
 
-#: ../gio/glocalfile.c:2431
+#: ../gio/glocalfile.c:2439
 msgid "Move between mounts not supported"
 msgstr "不支援在掛載點之間移動"
 
-#: ../gio/glocalfile.c:2623
+#: ../gio/glocalfile.c:2631
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "無法決定 %s 的磁碟使用量：%s"
@@ -2054,7 +2755,7 @@ msgstr "從檔案讀取時發生錯誤：%s"
 
 #: ../gio/glocalfileinputstream.c:199 ../gio/glocalfileinputstream.c:211
 #: ../gio/glocalfileinputstream.c:225 ../gio/glocalfileinputstream.c:333
-#: ../gio/glocalfileoutputstream.c:456 ../gio/glocalfileoutputstream.c:1002
+#: ../gio/glocalfileoutputstream.c:456 ../gio/glocalfileoutputstream.c:1003
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "在檔案中搜尋時發生錯誤：%s"
@@ -2090,13 +2791,13 @@ msgstr "建立備份複本時發生錯誤：%s"
 msgid "Error renaming temporary file: %s"
 msgstr "重新命名暫存檔案時發生錯誤：%s"
 
-#: ../gio/glocalfileoutputstream.c:502 ../gio/glocalfileoutputstream.c:1053
+#: ../gio/glocalfileoutputstream.c:502 ../gio/glocalfileoutputstream.c:1054
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "截短檔案時發生錯誤：%s"
 
 #: ../gio/glocalfileoutputstream.c:555 ../gio/glocalfileoutputstream.c:785
-#: ../gio/glocalfileoutputstream.c:1034 ../gio/gsubprocess.c:360
+#: ../gio/glocalfileoutputstream.c:1035 ../gio/gsubprocess.c:360
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "開啟檔案「%s」時發生錯誤：%s"
@@ -2113,20 +2814,20 @@ msgstr "目標檔案不是正規的檔案"
 msgid "The file was externally modified"
 msgstr "該檔案已被外部程式修改過"
 
-#: ../gio/glocalfileoutputstream.c:1018
+#: ../gio/glocalfileoutputstream.c:1019
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "移除舊檔案時發生錯誤：%s"
 
-#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:771
+#: ../gio/gmemoryinputstream.c:474 ../gio/gmemoryoutputstream.c:772
 msgid "Invalid GSeekType supplied"
 msgstr "提供了無效的 GSeek 類型"
 
-#: ../gio/gmemoryinputstream.c:481
+#: ../gio/gmemoryinputstream.c:484
 msgid "Invalid seek request"
 msgstr "無效的搜尋要求"
 
-#: ../gio/gmemoryinputstream.c:505
+#: ../gio/gmemoryinputstream.c:508
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "不能截短 GMemoryInputStream"
 
@@ -2144,11 +2845,11 @@ msgid ""
 "address space"
 msgstr "進行寫入所需的記憶體總額大於可用的位址空間"
 
-#: ../gio/gmemoryoutputstream.c:781
+#: ../gio/gmemoryoutputstream.c:782
 msgid "Requested seek before the beginning of the stream"
 msgstr "在串流的開頭之前要求的搜索"
 
-#: ../gio/gmemoryoutputstream.c:796
+#: ../gio/gmemoryoutputstream.c:797
 msgid "Requested seek beyond the end of the stream"
 msgstr "在串流的開頭之後要求的搜索"
 
@@ -2206,7 +2907,7 @@ msgstr "掛載點尚未實作同步內容類型預測"
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "主機名稱「%s」含有 '[' but not ']'"
 
-#: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:309
+#: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:310
 msgid "Network unreachable"
 msgstr "無法連接網路"
 
@@ -2237,7 +2938,7 @@ msgstr "NetworkManager 版本太舊"
 msgid "Output stream doesn't implement write"
 msgstr "輸出串流尚未實作寫入"
 
-#: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1222
+#: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1224
 msgid "Source stream is already closed"
 msgstr "來源串流已經關閉"
 
@@ -2247,15 +2948,15 @@ msgstr "來源串流已經關閉"
 msgid "Error resolving '%s': %s"
 msgstr "解析「%s」時發生錯誤：%s"
 
-#: ../gio/gresource.c:304 ../gio/gresource.c:555 ../gio/gresource.c:572
-#: ../gio/gresource.c:693 ../gio/gresource.c:762 ../gio/gresource.c:823
-#: ../gio/gresource.c:903 ../gio/gresourcefile.c:453 ../gio/gresourcefile.c:576
-#: ../gio/gresourcefile.c:713
+#: ../gio/gresource.c:595 ../gio/gresource.c:846 ../gio/gresource.c:863
+#: ../gio/gresource.c:987 ../gio/gresource.c:1059 ../gio/gresource.c:1132
+#: ../gio/gresource.c:1202 ../gio/gresourcefile.c:453
+#: ../gio/gresourcefile.c:576 ../gio/gresourcefile.c:713
 #, c-format
 msgid "The resource at '%s' does not exist"
 msgstr "「%s」的資源不存在"
 
-#: ../gio/gresource.c:469
+#: ../gio/gresource.c:760
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr "「%s」的資源無法解壓縮"
@@ -2392,7 +3093,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  PATH      資源路徑\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:824
+#: ../gio/gsettings-tool.c:830
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "沒有這個 schema「%s」\n"
@@ -2602,17 +3303,22 @@ msgstr "  KEY       schema 中的設定鍵\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     要設定的數值\n"
 
-#: ../gio/gsettings-tool.c:712
+#: ../gio/gsettings-tool.c:711
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "無法載入 %s 的 schema：%s\n"
 
-#: ../gio/gsettings-tool.c:782
+#: ../gio/gsettings-tool.c:723
+#, c-format
+msgid "No schemas installed\n"
+msgstr "尚未安裝基模\n"
+
+#: ../gio/gsettings-tool.c:788
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "指定了空的 schema 名稱\n"
 
-#: ../gio/gsettings-tool.c:837
+#: ../gio/gsettings-tool.c:843
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "沒有設定鍵「%s」\n"
@@ -2630,8 +3336,8 @@ msgstr "無效的 socket，初始化失敗原因為：%s"
 msgid "Socket is already closed"
 msgstr "Socket 已經關閉"
 
-#: ../gio/gsocket.c:394 ../gio/gsocket.c:2751 ../gio/gsocket.c:3896
-#: ../gio/gsocket.c:3951
+#: ../gio/gsocket.c:394 ../gio/gsocket.c:2751 ../gio/gsocket.c:3897
+#: ../gio/gsocket.c:3952
 msgid "Socket I/O timed out"
 msgstr "Socket I/O 逾時"
 
@@ -2656,12 +3362,12 @@ msgstr "指定了不明的通訊協定"
 #: ../gio/gsocket.c:1104
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
-msgstr "不能在非資料電報插槽上使用資料電報操作。"
+msgstr "不能在非資料電報 socket 上使用資料電報操作。"
 
 #: ../gio/gsocket.c:1121
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
-msgstr "不能在有逾時設定插槽上使用資料電報操作。"
+msgstr "不能在有逾時設定 socket 上使用資料電報操作。"
 
 #: ../gio/gsocket.c:1925
 #, c-format
@@ -2730,31 +3436,31 @@ msgstr "無法關閉 socket：%s"
 msgid "Error closing socket: %s"
 msgstr "關閉 socket 時發生錯誤：%s"
 
-#: ../gio/gsocket.c:3889
+#: ../gio/gsocket.c:3890
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "等候 socket 情況：%s"
 
-#: ../gio/gsocket.c:4361 ../gio/gsocket.c:4441 ../gio/gsocket.c:4619
+#: ../gio/gsocket.c:4362 ../gio/gsocket.c:4442 ../gio/gsocket.c:4620
 #, c-format
 msgid "Error sending message: %s"
 msgstr "傳送訊息時發生錯誤：%s"
 
-#: ../gio/gsocket.c:4385
+#: ../gio/gsocket.c:4386
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "視窗不支援 GSocketControlMessage"
 
-#: ../gio/gsocket.c:4840 ../gio/gsocket.c:4913 ../gio/gsocket.c:5140
+#: ../gio/gsocket.c:4841 ../gio/gsocket.c:4914 ../gio/gsocket.c:5141
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "取回郵件發生錯誤：%s"
 
-#: ../gio/gsocket.c:5412
+#: ../gio/gsocket.c:5413
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "無法讀取 socket 機密：%s"
 
-#: ../gio/gsocket.c:5421
+#: ../gio/gsocket.c:5422
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials 沒有在這個 OS 上實作"
 
@@ -2888,23 +3594,23 @@ msgstr "不能處理版本為 %d 的 GThemedIcon 編碼"
 msgid "No valid addresses were found"
 msgstr "找不到有效的位址"
 
-#: ../gio/gthreadedresolver.c:211
+#: ../gio/gthreadedresolver.c:213
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "反向解析「%s」時發生錯誤：%s"
 
-#: ../gio/gthreadedresolver.c:546 ../gio/gthreadedresolver.c:626
-#: ../gio/gthreadedresolver.c:724 ../gio/gthreadedresolver.c:774
+#: ../gio/gthreadedresolver.c:550 ../gio/gthreadedresolver.c:630
+#: ../gio/gthreadedresolver.c:728 ../gio/gthreadedresolver.c:778
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr "「%s」的要求類型沒有 DNS 紀錄"
 
-#: ../gio/gthreadedresolver.c:551 ../gio/gthreadedresolver.c:729
+#: ../gio/gthreadedresolver.c:555 ../gio/gthreadedresolver.c:733
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "暫時無法解析「%s」"
 
-#: ../gio/gthreadedresolver.c:556 ../gio/gthreadedresolver.c:734
+#: ../gio/gthreadedresolver.c:560 ../gio/gthreadedresolver.c:738
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "解析「%s」時發生錯誤"
@@ -3001,6 +3707,7 @@ msgid "Error reading from file descriptor: %s"
 msgstr "讀取檔案描述狀態時發生錯誤：%s"
 
 #: ../gio/gunixinputstream.c:423 ../gio/gunixoutputstream.c:409
+#: ../gio/gwin32inputstream.c:217 ../gio/gwin32outputstream.c:204
 #, c-format
 msgid "Error closing file descriptor: %s"
 msgstr "關閉檔案描述狀態時發生錯誤：%s"
@@ -3029,17 +3736,17 @@ msgstr "儲存區尚未實作退出(eject)"
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "儲存區尚未實作退出(eject) 或 eject_with_operation"
 
-#: ../gio/gwin32inputstream.c:343
+#: ../gio/gwin32inputstream.c:185
 #, c-format
 msgid "Error reading from handle: %s"
 msgstr "從處理器讀取時發生錯誤：%s"
 
-#: ../gio/gwin32inputstream.c:387 ../gio/gwin32outputstream.c:374
+#: ../gio/gwin32inputstream.c:232 ../gio/gwin32outputstream.c:219
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "關閉處理器時發生錯誤：%s"
 
-#: ../gio/gwin32outputstream.c:330
+#: ../gio/gwin32outputstream.c:172
 #, c-format
 msgid "Error writing to handle: %s"
 msgstr "寫入至處理器時發生錯誤：%s"
@@ -3109,49 +3816,49 @@ msgstr "未預期的標籤「%s」，應為標籤「%s」"
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "「%2$s」中有未預期的標籤「%1$s」"
 
-#: ../glib/gbookmarkfile.c:1756
+#: ../glib/gbookmarkfile.c:1757
 msgid "No valid bookmark file found in data dirs"
 msgstr "在資料目錄中找不到有效的書籤檔案"
 
-#: ../glib/gbookmarkfile.c:1957
+#: ../glib/gbookmarkfile.c:1958
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI「%s」的書籤已經存在"
 
-#: ../glib/gbookmarkfile.c:2003 ../glib/gbookmarkfile.c:2161
-#: ../glib/gbookmarkfile.c:2246 ../glib/gbookmarkfile.c:2326
-#: ../glib/gbookmarkfile.c:2411 ../glib/gbookmarkfile.c:2494
-#: ../glib/gbookmarkfile.c:2572 ../glib/gbookmarkfile.c:2651
-#: ../glib/gbookmarkfile.c:2693 ../glib/gbookmarkfile.c:2790
-#: ../glib/gbookmarkfile.c:2910 ../glib/gbookmarkfile.c:3100
-#: ../glib/gbookmarkfile.c:3176 ../glib/gbookmarkfile.c:3344
-#: ../glib/gbookmarkfile.c:3433 ../glib/gbookmarkfile.c:3522
-#: ../glib/gbookmarkfile.c:3638
+#: ../glib/gbookmarkfile.c:2004 ../glib/gbookmarkfile.c:2162
+#: ../glib/gbookmarkfile.c:2247 ../glib/gbookmarkfile.c:2327
+#: ../glib/gbookmarkfile.c:2412 ../glib/gbookmarkfile.c:2495
+#: ../glib/gbookmarkfile.c:2573 ../glib/gbookmarkfile.c:2652
+#: ../glib/gbookmarkfile.c:2694 ../glib/gbookmarkfile.c:2791
+#: ../glib/gbookmarkfile.c:2911 ../glib/gbookmarkfile.c:3101
+#: ../glib/gbookmarkfile.c:3177 ../glib/gbookmarkfile.c:3345
+#: ../glib/gbookmarkfile.c:3434 ../glib/gbookmarkfile.c:3523
+#: ../glib/gbookmarkfile.c:3639
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "找不到 URI「%s」的書籤"
 
-#: ../glib/gbookmarkfile.c:2335
+#: ../glib/gbookmarkfile.c:2336
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI「%s」書籤中沒有定義 MIME 類型"
 
-#: ../glib/gbookmarkfile.c:2420
+#: ../glib/gbookmarkfile.c:2421
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI「%s」書籤中沒有私有旗幟"
 
-#: ../glib/gbookmarkfile.c:2799
+#: ../glib/gbookmarkfile.c:2800
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI「%s」書籤中沒有設定群組"
 
-#: ../glib/gbookmarkfile.c:3197 ../glib/gbookmarkfile.c:3354
+#: ../glib/gbookmarkfile.c:3198 ../glib/gbookmarkfile.c:3355
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "沒有名為「%s」的應用程式註冊書籤「%s」"
 
-#: ../glib/gbookmarkfile.c:3377
+#: ../glib/gbookmarkfile.c:3378
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "以 URI‘%2$s’ 展開 exec 行‘%1$s’失敗"
@@ -3431,84 +4138,84 @@ msgstr "週日"
 msgid "Error opening directory '%s': %s"
 msgstr "開啟目錄‘%s’時發生錯誤：%s"
 
-#: ../glib/gfileutils.c:700 ../glib/gfileutils.c:792
+#: ../glib/gfileutils.c:701 ../glib/gfileutils.c:793
 #, c-format
 msgid "Could not allocate %lu byte to read file \"%s\""
 msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "無法配置 %lu 位元組來讀取檔案「%s」"
 
-#: ../glib/gfileutils.c:717
+#: ../glib/gfileutils.c:718
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "讀取檔案‘%s’時發生錯誤：%s"
 
-#: ../glib/gfileutils.c:753
+#: ../glib/gfileutils.c:754
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "檔案「%s」太過巨大"
 
-#: ../glib/gfileutils.c:817
+#: ../glib/gfileutils.c:818
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "讀取檔案‘%s’失敗：%s"
 
-#: ../glib/gfileutils.c:865 ../glib/gfileutils.c:937
+#: ../glib/gfileutils.c:866 ../glib/gfileutils.c:938
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "開啟檔案「%s」失敗：%s"
 
-#: ../glib/gfileutils.c:877
+#: ../glib/gfileutils.c:878
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "獲取檔案‘%s’的屬性失敗：fstat() 失敗：%s"
 
-#: ../glib/gfileutils.c:907
+#: ../glib/gfileutils.c:908
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "開啟檔案‘%s’失敗：fdopen() 失敗：%s"
 
-#: ../glib/gfileutils.c:1006
+#: ../glib/gfileutils.c:1007
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "檔案名稱由‘%s’改為‘%s’失敗：g_rename() 失敗：%s"
 
-#: ../glib/gfileutils.c:1041 ../glib/gfileutils.c:1540
+#: ../glib/gfileutils.c:1042 ../glib/gfileutils.c:1541
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "建立檔案‘%s’失敗：%s"
 
-#: ../glib/gfileutils.c:1068
+#: ../glib/gfileutils.c:1069
 #, c-format
 msgid "Failed to write file '%s': write() failed: %s"
 msgstr "無法寫入檔案「%s」：write() 失敗：%s"
 
-#: ../glib/gfileutils.c:1111
+#: ../glib/gfileutils.c:1112
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "無法寫入檔案「%s」：fsync() 失敗：%s"
 
-#: ../glib/gfileutils.c:1235
+#: ../glib/gfileutils.c:1236
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "現存檔案‘%s’無法移除：g_unlink() 失敗：%s"
 
-#: ../glib/gfileutils.c:1506
+#: ../glib/gfileutils.c:1507
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "樣式‘%s’無效，不應含有‘%s’"
 
 # (Abel) this is file template for mktemp/mkstemp
-#: ../glib/gfileutils.c:1519
+#: ../glib/gfileutils.c:1520
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "檔案樣式‘%s’沒有包含 XXXXXX"
 
-#: ../glib/gfileutils.c:2038
+#: ../glib/gfileutils.c:2045
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "讀取符號連結‘%s’失敗：%s"
 
-#: ../glib/gfileutils.c:2057
+#: ../glib/gfileutils.c:2064
 msgid "Symbolic links not supported"
 msgstr "不支援符號連結"
 
@@ -3542,91 +4249,91 @@ msgstr "在資料目錄中找不到有效的設定鍵檔案"
 msgid "Not a regular file"
 msgstr "不是正規的檔案"
 
-#: ../glib/gkeyfile.c:1173
+#: ../glib/gkeyfile.c:1204
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "設定鍵檔案中‘%s’行並非設定鍵值配對、群組或註解"
 
-#: ../glib/gkeyfile.c:1230
+#: ../glib/gkeyfile.c:1261
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "無效的群組名稱：%s"
 
-#: ../glib/gkeyfile.c:1252
+#: ../glib/gkeyfile.c:1283
 msgid "Key file does not start with a group"
 msgstr "設定鍵檔案並非以群組開頭"
 
-#: ../glib/gkeyfile.c:1278
+#: ../glib/gkeyfile.c:1309
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "無效的設定鍵名稱：%s"
 
-#: ../glib/gkeyfile.c:1305
+#: ../glib/gkeyfile.c:1336
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "設定鍵檔案包含不支援的編碼‘%s’"
 
-#: ../glib/gkeyfile.c:1548 ../glib/gkeyfile.c:1721 ../glib/gkeyfile.c:3099
-#: ../glib/gkeyfile.c:3162 ../glib/gkeyfile.c:3292 ../glib/gkeyfile.c:3422
-#: ../glib/gkeyfile.c:3566 ../glib/gkeyfile.c:3795 ../glib/gkeyfile.c:3862
+#: ../glib/gkeyfile.c:1579 ../glib/gkeyfile.c:1752 ../glib/gkeyfile.c:3130
+#: ../glib/gkeyfile.c:3193 ../glib/gkeyfile.c:3323 ../glib/gkeyfile.c:3453
+#: ../glib/gkeyfile.c:3597 ../glib/gkeyfile.c:3826 ../glib/gkeyfile.c:3893
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "設定鍵檔案沒有群組‘%s’"
 
-#: ../glib/gkeyfile.c:1676
+#: ../glib/gkeyfile.c:1707
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "設定鍵檔案的群組‘%2$s’中沒有設定鍵‘%1$s’"
 
-#: ../glib/gkeyfile.c:1838 ../glib/gkeyfile.c:1954
+#: ../glib/gkeyfile.c:1869 ../glib/gkeyfile.c:1985
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "設定鍵檔案包含的設定鍵‘%s’（數值為‘%s’）並非 UTF-8"
 
-#: ../glib/gkeyfile.c:1858 ../glib/gkeyfile.c:1974 ../glib/gkeyfile.c:2343
+#: ../glib/gkeyfile.c:1889 ../glib/gkeyfile.c:2005 ../glib/gkeyfile.c:2374
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "設定鍵檔案包含的設定鍵「%s」的數值無法解譯。"
 
-#: ../glib/gkeyfile.c:2560 ../glib/gkeyfile.c:2928
+#: ../glib/gkeyfile.c:2591 ../glib/gkeyfile.c:2959
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
 "interpreted."
 msgstr "設定鍵檔案包含的群組「%2$s」中設定鍵「%1$s」數值無法解譯。"
 
-#: ../glib/gkeyfile.c:2638 ../glib/gkeyfile.c:2715
+#: ../glib/gkeyfile.c:2669 ../glib/gkeyfile.c:2746
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr "群組「%2$s」中設定鍵「%1$s」包含數值「%3$s」，但預期為「%4$s」"
 
-#: ../glib/gkeyfile.c:4102
+#: ../glib/gkeyfile.c:4133
 msgid "Key file contains escape character at end of line"
 msgstr "設定鍵檔案在行尾包含跳出字元"
 
-#: ../glib/gkeyfile.c:4124
+#: ../glib/gkeyfile.c:4155
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "設定鍵檔案含有不正確的「跳出字元」‘%s’"
 
-#: ../glib/gkeyfile.c:4266
+#: ../glib/gkeyfile.c:4297
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "數值‘%s’不能被解譯為數字。"
 
-#: ../glib/gkeyfile.c:4280
+#: ../glib/gkeyfile.c:4311
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "整數值‘%s’超出範圍"
 
-#: ../glib/gkeyfile.c:4313
+#: ../glib/gkeyfile.c:4344
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "數值‘%s’不能被解譯為浮點數。"
 
-#: ../glib/gkeyfile.c:4350
+#: ../glib/gkeyfile.c:4381
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "數值‘%s’不能被解譯為邏輯值。"
@@ -3641,7 +4348,7 @@ msgstr "獲取檔案 「%s%s%s%s」的屬性失敗：fstat() 失敗：%s"
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
 msgstr "對應檔案 %s%s%s%s 失敗：mmap() 失敗：%s"
 
-#: ../glib/gmappedfile.c:261
+#: ../glib/gmappedfile.c:262
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "開啟檔案‘%s’失敗：open() 失敗：%s"
@@ -3828,10 +4535,6 @@ msgstr "在元素‘%s’的關閉標籤內，文件突然結束"
 #: ../glib/gmarkup.c:1843
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "在註解或處理指示內，文件突然結束"
-
-#: ../glib/goption.c:857
-msgid "Usage:"
-msgstr "用法："
 
 #: ../glib/goption.c:861
 msgid "[OPTION...]"
@@ -4414,74 +5117,74 @@ msgstr "轉換輸入資料時出現無效的字元次序"
 msgid "Character out of range for UTF-16"
 msgstr "字元不在 UTF-16 範圍之內"
 
-#: ../glib/gutils.c:2117 ../glib/gutils.c:2144 ../glib/gutils.c:2250
+#: ../glib/gutils.c:2139 ../glib/gutils.c:2166 ../glib/gutils.c:2272
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u 位元組"
 
-#: ../glib/gutils.c:2123
+#: ../glib/gutils.c:2145
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2125
+#: ../glib/gutils.c:2147
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2128
+#: ../glib/gutils.c:2150
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2131
+#: ../glib/gutils.c:2153
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2134
+#: ../glib/gutils.c:2156
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2137
+#: ../glib/gutils.c:2159
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2150
+#: ../glib/gutils.c:2172
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gutils.c:2153 ../glib/gutils.c:2268
+#: ../glib/gutils.c:2175 ../glib/gutils.c:2290
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2156 ../glib/gutils.c:2273
+#: ../glib/gutils.c:2178 ../glib/gutils.c:2295
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2158 ../glib/gutils.c:2278
+#: ../glib/gutils.c:2180 ../glib/gutils.c:2300
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2161 ../glib/gutils.c:2283
+#: ../glib/gutils.c:2183 ../glib/gutils.c:2305
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2164 ../glib/gutils.c:2288
+#: ../glib/gutils.c:2186 ../glib/gutils.c:2310
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2201
+#: ../glib/gutils.c:2223
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4492,19 +5195,13 @@ msgstr[0] "%s 位元組"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2263
+#: ../glib/gutils.c:2285
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
 #~ msgid "Unable to find default local directory monitor type"
 #~ msgstr "無法找到預設的本地端目錄監視器類型"
-
-#~ msgid "Can't find application"
-#~ msgstr "找不到應用程式"
-
-#~ msgid "Error launching application: %s"
-#~ msgstr "執行應用程式時發生錯誤：%s"
 
 #~ msgid "association changes not supported on win32"
 #~ msgstr "關聯變更在 win32 上不支援"
