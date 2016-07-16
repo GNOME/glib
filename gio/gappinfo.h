@@ -230,6 +230,17 @@ gboolean  g_app_info_launch_default_for_uri      (const char              *uri,
                                                   GAppLaunchContext       *launch_context,
                                                   GError                 **error);
 
+GLIB_AVAILABLE_IN_2_50
+void      g_app_info_launch_default_for_uri_async  (const char           *uri,
+                                                    GAppLaunchContext    *launch_context,
+                                                    GCancellable         *cancellable,
+                                                    GAsyncReadyCallback   callback,
+                                                    gpointer              user_data);
+GLIB_AVAILABLE_IN_2_50
+gboolean  g_app_info_launch_default_for_uri_finish (GAsyncResult         *result,
+                                                    GError              **error);
+
+
 /**
  * GAppLaunchContext:
  *
