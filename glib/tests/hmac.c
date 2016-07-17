@@ -417,6 +417,28 @@ test_hmac_for_string (void)
   g_free (string);
 }
 
+static void
+test_hmac_for_bytes (void)
+{
+  gchar *string;
+  GHmac *hmac;
+  GBytes *key, *data;
+
+  key = g_bytes_new ("aaa", 3);
+  data = g_bytes_new ("bcdef", 5);
+
+  string = g_compute_hmac_for_bytes (G_CHECKSUM_SHA1, key, data);
+
+  hmac = g_hmac_new (G_CHECKSUM_SHA1, (guchar*)"aaa", 3);
+  g_hmac_update (hmac, (guchar*)"bcdef", 5);
+  g_assert_cmpstr (string, ==, g_hmac_get_string (hmac));
+  g_hmac_unref (hmac);
+  g_free (string);
+
+  g_bytes_unref (key);
+  g_bytes_unref (data);
+}
+
 int
 main (int argc,
     char **argv)
@@ -460,6 +482,7 @@ main (int argc,
   g_test_add_func ("/hmac/copy", test_hmac_copy);
   g_test_add_func ("/hmac/for-data", test_hmac_for_data);
   g_test_add_func ("/hmac/for-string", test_hmac_for_string);
+  g_test_add_func ("/hmac/for-bytes", test_hmac_for_bytes);
 
   return g_test_run ();
 }
