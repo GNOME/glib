@@ -1311,7 +1311,9 @@ color_reset (gboolean use_color)
  * structured data, use g_log_structured_array(). The keys for structured data
  * should follow the [systemd journal
  * fields](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html)
- * specification.
+ * specification. It is suggested that custom keys are namespaced according to
+ * the code which sets them. For example, custom keys from GLib all have a
+ * `GLIB_` prefix.
  *
  * The @log_domain will be converted into a `GLIB_DOMAIN` field. @log_level will
  * be converted into a `PRIORITY` field. @format will have its placeholders
