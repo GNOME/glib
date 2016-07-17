@@ -956,6 +956,8 @@ get_filesystem_readonly (GFileInfo  *info,
 
 #endif /* G_OS_WIN32 */
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
 static void
 g_set_io_error (GError      **error,
                 const gchar  *msg,
@@ -970,6 +972,7 @@ g_set_io_error (GError      **error,
                msg, display_name, g_strerror (errsv));
   g_free (display_name);
 }
+#pragma GCC diagnostic pop
 
 static GFileInfo *
 g_local_file_query_filesystem_info (GFile         *file,
