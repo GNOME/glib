@@ -258,9 +258,9 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_debug_structured(format, __va_args__) \
+#define g_debug_structured(format, ...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, \
-                    format, ##__va_args__, \
+                    format, __VA_ARGS__, \
                     "CODE_FILE", G_STRINGIFY (__FILE__), \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
                     "CODE_FUNC", G_STRINGIFY (__FUNC__), \
@@ -280,9 +280,9 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_info_structured(format, __va_args__) \
+#define g_info_structured(format, ...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, \
-                    format, ##__va_args__, \
+                    format, __VA_ARGS__, \
                     "CODE_FILE", G_STRINGIFY (__FILE__), \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
                     "CODE_FUNC", G_STRINGIFY (__FUNC__), \
@@ -302,9 +302,9 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_message_structured(format, __va_args__) \
+#define g_message_structured(format, ...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, \
-                    format, ##__va_args__, \
+                    format, __VA_ARGS__, \
                     "CODE_FILE", G_STRINGIFY (__FILE__), \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
                     "CODE_FUNC", G_STRINGIFY (__FUNC__), \
@@ -325,9 +325,9 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_warning_structured(format, __va_args__) \
+#define g_warning_structured(format, ...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, \
-                    format, ##__va_args__, \
+                    format, __VA_ARGS__, \
                     "CODE_FILE", G_STRINGIFY (__FILE__), \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
                     "CODE_FUNC", G_STRINGIFY (__FUNC__), \
@@ -347,9 +347,9 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_critical_structured(format, __va_args__) \
+#define g_critical_structured(format, ...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, \
-                    format, ##__va_args__, \
+                    format, __VA_ARGS__, \
                     "CODE_FILE", G_STRINGIFY (__FILE__), \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
                     "CODE_FUNC", G_STRINGIFY (__FUNC__), \
@@ -369,9 +369,9 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_error_structured(format, __va_args__) \
+#define g_error_structured(format, ...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, \
-                    format, ##__va_args__, \
+                    format, __VA_ARGS__, \
                     "CODE_FILE", G_STRINGIFY (__FILE__), \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
                     "CODE_FUNC", G_STRINGIFY (__FUNC__), \
