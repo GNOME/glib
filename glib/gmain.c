@@ -3695,10 +3695,17 @@ g_main_context_check (GMainContext *context,
 
   TRACE (GLIB_MAIN_CONTEXT_BEFORE_CHECK (context, max_priority, fds, n_fds));
 
-  if (context->wake_up_rec.revents)
+  for (i = 0; i < n_fds; i++)
     {
-      TRACE (GLIB_MAIN_CONTEXT_WAKEUP_ACKNOWLEDGE (context));
-      g_wakeup_acknowledge (context->wakeup);
+      if (fds[i].fd == context->wake_up_rec.fd)
+        {
+          if (fds[i].revents)
+            {
+              TRACE (GLIB_MAIN_CONTEXT_WAKEUP_ACKNOWLEDGE (context));
+              g_wakeup_acknowledge (context->wakeup);
+            }
+          break;
+        }
     }
 
   /* If the set of poll file descriptors changed, bail out
