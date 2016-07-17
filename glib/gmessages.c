@@ -122,6 +122,7 @@
 #endif
 
 #ifdef HAVE_LIBSYSTEMD
+#define SD_JOURNAL_SUPPRESS_LOCATION 1
 #include <sys/uio.h>
 #include <systemd/sd-journal.h>
 #endif
