@@ -1,3 +1,74 @@
+Overview of changes in GLib 2.49.3
+==================================
+
+* GLib has a structured logging API, g_log_structured, with support
+  for writing to the systemd journal. It also supports colored output
+  in terminals
+
+* Some new GBytes API has been added:
+ - g_key_file_load_from_bytes
+ - g_compute_hmac_for_bytes
+
+* Stack-allocated GVariantBuilder and GVariantDict objects can now be
+  initialized with G_VARIANT_BUILDER_INIT and G_VARIANT_DICT_INIT
+
+* gio:
+ - Add a way to register handlers for custom uri schemes
+ - Add a G_FILE_ATTRIBUTE_FILESYSTEM_REMOTE attribute to
+   have these heuristics in a single place
+ - Include a gio tool that makes the functionality of the
+   various gvfs commandline tools available in a single place
+ - Add portal support to g_app_info_launch_default_for_uri
+ - Add portal support to GNetworkMonitor
+ - Add portal support to GProxyResolver
+ - Add portal support to g_application_send_notification
+
+Bugs fixed:
+ 547200 g_utf8_find_next_char() issues
+ 662802 systemtap multiarch issue
+ 723506 fork/exec from non-main thread when autolaunching could be avoided...
+ 725902 build: simplify dtrace configuration
+ 728207 gsocketservice: Documentation does not mention that is already act...
+ 729914 instead of DEBUG_CODE and IF_DEBUG, provide a common macro to supp...
+ 744456 Structured logging API
+ 744678 Unable to delete relocatable schemas
+ 746685 clarify that g_variant_get_data() can be used instead of g_variant...
+ 747134 glib-compile-resources --generate should detect common C++ file ex...
+ 750257 GSettings changed signal should clearly state the order required
+ 753231 Memory is potentially used after free
+ 754012 missing filename in "Error loading css: Failed to import: Error op...
+ 760115 gtestutils: add missing dash in seed argument's --help documentation
+ 760423 gio-querymodules prints error messages as question marks on some l...
+ 761102 Increase performance for main loop
+ 765338 GLib.compute_hmac_for_data throws every time
+ 766370 Add a macro for initializing g_auto(GVariantBuilder)
+ 766899 Superflous HTML/XML comments in GDBusProxyTypeFunc documentation s...
+ 766933 GSocketAddress leaks in gnetworkmonitornetlink.c:read_netlink_mess...
+ 767765 Add names and tags to various GSources and GTasks constructed in GLib
+ 767880 gkeyfile: add g_key_file_load_from_bytes() API
+ 767887 vfs: add g_vfs_register_uri_scheme()
+ 767949 [patch] Typos in glib docs
+ 768029 infinite loop in parse_name_internal()
+ 768119 Fix fallout from get_supported_schemes() changes
+ 768357 Build the gio tool on Windows/MSVC
+ 768498 portal support for glib
+ 768504 keyfile: g_key_file_get_double behavior doesn't follow documentation
+ 768549 Test failure: test_ip_sync_dgram
+ 768551 Test failure: test_socket_address_to_string
+ 768560 gio/tests/gsettings: fix GSettings reference leaks in some tests
+ 768780 O_PATH is a non-standard flag which may be unavailable on non-Lin...
+ 768806 gdbus tool must swallow -- argument
+
+Translation updates:
+ Chinese (Taiwan)
+ French
+ Hebrew
+ Indonesian
+ Lithuanian
+ Portuguese
+ Spanish
+
+
 Overview of changes in GLib 2.49.2
 ==================================
 
