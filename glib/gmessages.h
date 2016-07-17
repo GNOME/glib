@@ -258,12 +258,12 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_debug_structured(format, ...) \
+#define g_debug_structured(...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, \
-                    format, __VA_ARGS__, \
-                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    __VA_ARGS__, \
+                    "CODE_FILE", __FILE__, \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
-                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    "CODE_FUNC", __func__, \
                     NULL)
 
 /**
@@ -280,12 +280,12 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_info_structured(format, ...) \
+#define g_info_structured(...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, \
-                    format, __VA_ARGS__, \
-                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    __VA_ARGS__, \
+                    "CODE_FILE", __FILE__, \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
-                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    "CODE_FUNC", __func__, \
                     NULL)
 
 /**
@@ -302,12 +302,12 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_message_structured(format, ...) \
+#define g_message_structured(...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, \
-                    format, __VA_ARGS__, \
-                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    __VA_ARGS__, \
+                    "CODE_FILE", __FILE__, \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
-                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    "CODE_FUNC", __func__, \
                     NULL)
 
 
@@ -325,12 +325,12 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_warning_structured(format, ...) \
+#define g_warning_structured(...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, \
-                    format, __VA_ARGS__, \
-                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    __VA_ARGS__, \
+                    "CODE_FILE", __FILE__, \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
-                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    "CODE_FUNC", __func__, \
                     NULL)
 
 /**
@@ -347,12 +347,12 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_critical_structured(format, ...) \
+#define g_critical_structured(...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, \
-                    format, __VA_ARGS__, \
-                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    __VA_ARGS__, \
+                    "CODE_FILE", __FILE__, \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
-                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    "CODE_FUNC", __func__, \
                     NULL)
 
 /**
@@ -369,12 +369,12 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
  *
  * Since: 2.50
  */
-#define g_error_structured(format, ...) \
+#define g_error_structured(...) \
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, \
-                    format, __VA_ARGS__, \
-                    "CODE_FILE", G_STRINGIFY (__FILE__), \
+                    __VA_ARGS__, \
+                    "CODE_FILE", __FILE__, \
                     "CODE_LINE", G_STRINGIFY (__LINE__), \
-                    "CODE_FUNC", G_STRINGIFY (__FUNC__), \
+                    "CODE_FUNC", __func__, \
                     NULL)
 
 /* internal */
