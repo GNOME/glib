@@ -84,6 +84,10 @@
 #ifndef S_ISLNK
 #define S_ISLNK(m) (0)
 #endif
+
+#ifndef ECANCELED
+#define ECANCELED 105
+#endif
 #endif
 
 
