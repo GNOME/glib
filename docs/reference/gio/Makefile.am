@@ -141,6 +141,7 @@ content_files =			\
 	gresource.xml		\
 	gdbus.xml		\
 	gdbus-codegen.xml	\
+	gio.xml			\
 	$(NULL)
 
 expand_content_files =		\
