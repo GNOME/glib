@@ -191,7 +191,7 @@ GLIB_AVAILABLE_IN_2_50
 void             g_log_structured              (const gchar     *log_domain,
                                                 GLogLevelFlags   log_level,
                                                 const gchar     *format,
-                                                ...)
+                                                ...) G_GNUC_PRINTF (3, 4)
                                                 G_GNUC_NULL_TERMINATED;
 
 GLIB_AVAILABLE_IN_2_50
