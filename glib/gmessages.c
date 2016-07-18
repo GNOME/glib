@@ -1408,7 +1408,7 @@ g_log_structured (const gchar    *log_domain,
   priority = log_level_to_priority (log_level);
 
   /* Work out how many fields we have. */
-  va_copy (field_args, args);
+  G_VA_COPY (field_args, args);
 
   for (p = va_arg (args, gchar *), n_fields = 0;
        p != NULL;
