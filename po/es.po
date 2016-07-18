@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-07-01 20:09+0000\n"
-"PO-Revision-Date: 2016-07-05 12:32+0200\n"
+"POT-Creation-Date: 2016-07-17 03:09+0000\n"
+"PO-Revision-Date: 2016-07-18 10:16+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -296,8 +296,8 @@ msgid "Truncate not supported on base stream"
 msgstr "No se soporta el truncado en el flujo base"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1849
-#: ../gio/gdbusprivate.c:1377 ../gio/glocalfile.c:2228
-#: ../gio/gsimpleasyncresult.c:870 ../gio/gsimpleasyncresult.c:896
+#: ../gio/gdbusprivate.c:1377 ../gio/gsimpleasyncresult.c:870
+#: ../gio/gsimpleasyncresult.c:896
 #, c-format
 msgid "Operation was cancelled"
 msgstr "Se canceló la operación"
@@ -317,7 +317,7 @@ msgstr "No hay suficiente espacio en el destino"
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
 #: ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:438
 #: ../glib/gconvert.c:845 ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
-#: ../glib/giochannel.c:2442 ../glib/gutf8.c:853 ../glib/gutf8.c:1306
+#: ../glib/giochannel.c:2442 ../glib/gutf8.c:855 ../glib/gutf8.c:1308
 msgid "Invalid byte sequence in conversion input"
 msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 
@@ -506,30 +506,35 @@ msgstr "No se puede lanzar («spawn») un mensaje al bus con setuid"
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "No se puede lanzar («spawn») un mensaje al bus sin un ID de máquina: "
 
-#: ../gio/gdbusaddress.c:1113
+#: ../gio/gdbusaddress.c:1078
+#, c-format
+msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
+msgstr "No se puede lanzar D-Bus automáticamente sin X11 $DISPLAY"
+
+#: ../gio/gdbusaddress.c:1120
 #, c-format
 msgid "Error spawning command line '%s': "
 msgstr "Error al lanzar («spawn») el comando «%s»: "
 
-#: ../gio/gdbusaddress.c:1330
+#: ../gio/gdbusaddress.c:1337
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Escriba un carácter cualquiera para cerrar esta ventana)\n"
 
-#: ../gio/gdbusaddress.c:1482
+#: ../gio/gdbusaddress.c:1489
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
 "La sesión de dbus no está en ejecución, y falló el lanzamiento automático"
 
-#: ../gio/gdbusaddress.c:1493
+#: ../gio/gdbusaddress.c:1500
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "No se puede determinar la dirección del bus de sesión (no implementado para "
 "este SO)"
 
-#: ../gio/gdbusaddress.c:1628 ../gio/gdbusconnection.c:7133
+#: ../gio/gdbusaddress.c:1635 ../gio/gdbusconnection.c:7133
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -538,7 +543,7 @@ msgstr ""
 "No se puede determinar la dirección del bus desde la variable de entorno "
 "DBUS_STARTER_BUS_TYPE; variable «%s» desconocida"
 
-#: ../gio/gdbusaddress.c:1637 ../gio/gdbusconnection.c:7142
+#: ../gio/gdbusaddress.c:1644 ../gio/gdbusconnection.c:7142
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -546,7 +551,7 @@ msgstr ""
 "No se puede determinar la dirección del bus porque la variable de entorno "
 "DBUS_STARTER_BUS_TYPE no está establecida"
 
-#: ../gio/gdbusaddress.c:1647
+#: ../gio/gdbusaddress.c:1654
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Tipo de bus %d desconocido"
@@ -1031,13 +1036,13 @@ msgstr ""
 "Use «%s COMANDO --help» para obtener ayuda de los comandos individuales.\n"
 
 #: ../gio/gdbus-tool.c:164 ../gio/gdbus-tool.c:226 ../gio/gdbus-tool.c:298
-#: ../gio/gdbus-tool.c:322 ../gio/gdbus-tool.c:711 ../gio/gdbus-tool.c:1041
-#: ../gio/gdbus-tool.c:1483 ../gio/gio-tool-rename.c:84
+#: ../gio/gdbus-tool.c:322 ../gio/gdbus-tool.c:724 ../gio/gdbus-tool.c:1067
+#: ../gio/gdbus-tool.c:1509 ../gio/gio-tool-rename.c:84
 #, c-format
 msgid "Error: %s\n"
 msgstr "Error: %s\n"
 
-#: ../gio/gdbus-tool.c:175 ../gio/gdbus-tool.c:239 ../gio/gdbus-tool.c:1499
+#: ../gio/gdbus-tool.c:175 ../gio/gdbus-tool.c:239 ../gio/gdbus-tool.c:1525
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Error al analizar la introspección XML: %s\n"
@@ -1106,146 +1111,146 @@ msgstr "Ruta del objeto sobre el que emitir la señal"
 msgid "Signal and interface name"
 msgstr "Nombres de la interfaz y señal"
 
-#: ../gio/gdbus-tool.c:576
+#: ../gio/gdbus-tool.c:578
 msgid "Emit a signal."
 msgstr "Emitir una señal."
 
-#: ../gio/gdbus-tool.c:610 ../gio/gdbus-tool.c:842 ../gio/gdbus-tool.c:1589
-#: ../gio/gdbus-tool.c:1824
+#: ../gio/gdbus-tool.c:612 ../gio/gdbus-tool.c:857 ../gio/gdbus-tool.c:1615
+#: ../gio/gdbus-tool.c:1850
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Error al conectar: %s\n"
 
-#: ../gio/gdbus-tool.c:622
+#: ../gio/gdbus-tool.c:624
 #, c-format
 msgid "Error: object path not specified.\n"
 msgstr "Error: no se especificó la ruta del objeto.\n"
 
-#: ../gio/gdbus-tool.c:627 ../gio/gdbus-tool.c:909 ../gio/gdbus-tool.c:1654
-#: ../gio/gdbus-tool.c:1890
+#: ../gio/gdbus-tool.c:629 ../gio/gdbus-tool.c:924 ../gio/gdbus-tool.c:1680
+#: ../gio/gdbus-tool.c:1916
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Error: %s no es una ruta de objeto válida\n"
 
-#: ../gio/gdbus-tool.c:633
+#: ../gio/gdbus-tool.c:635
 #, c-format
 msgid "Error: signal not specified.\n"
 msgstr "Error: no se especificó la señal.\n"
 
-#: ../gio/gdbus-tool.c:640
+#: ../gio/gdbus-tool.c:642
 #, c-format
 msgid "Error: signal must be the fully-qualified name.\n"
 msgstr "Error: la señal debe ser el nombre completamente cualificado.\n"
 
-#: ../gio/gdbus-tool.c:648
+#: ../gio/gdbus-tool.c:650
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Error: %s no es un nombre de interfaz válida\n"
 
-#: ../gio/gdbus-tool.c:654
+#: ../gio/gdbus-tool.c:656
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Error: %s no es un nombre de miembro válido\n"
 
-#: ../gio/gdbus-tool.c:660
+#: ../gio/gdbus-tool.c:662
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Error: %s no es un nombre de bus único válido.\n"
 
 #. Use the original non-"parse-me-harder" error
-#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1011
+#: ../gio/gdbus-tool.c:699 ../gio/gdbus-tool.c:1036
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Error al analizar el parámetro %d: %s\n"
 
-#: ../gio/gdbus-tool.c:718
+#: ../gio/gdbus-tool.c:731
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Error al limpiar la conexión: %s\n"
 
-#: ../gio/gdbus-tool.c:745
+#: ../gio/gdbus-tool.c:758
 msgid "Destination name to invoke method on"
 msgstr "Nombre del detino sobre el que invocar elmétodo"
 
-#: ../gio/gdbus-tool.c:746
+#: ../gio/gdbus-tool.c:759
 msgid "Object path to invoke method on"
 msgstr "Ruta del objeto sobre la que invocar el método"
 
-#: ../gio/gdbus-tool.c:747
+#: ../gio/gdbus-tool.c:760
 msgid "Method and interface name"
 msgstr "Nombre de la interfaz y método"
 
-#: ../gio/gdbus-tool.c:748
+#: ../gio/gdbus-tool.c:761
 msgid "Timeout in seconds"
 msgstr "Tiempo de expiración en segundos"
 
-#: ../gio/gdbus-tool.c:787
+#: ../gio/gdbus-tool.c:802
 msgid "Invoke a method on a remote object."
 msgstr "Invocar un método en un objeto remoto."
 
-#: ../gio/gdbus-tool.c:862 ../gio/gdbus-tool.c:1608 ../gio/gdbus-tool.c:1843
+#: ../gio/gdbus-tool.c:877 ../gio/gdbus-tool.c:1634 ../gio/gdbus-tool.c:1869
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Error: el destino no está especificado\n"
 
-#: ../gio/gdbus-tool.c:874 ../gio/gdbus-tool.c:1625 ../gio/gdbus-tool.c:1855
+#: ../gio/gdbus-tool.c:889 ../gio/gdbus-tool.c:1651 ../gio/gdbus-tool.c:1881
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Error: %s no es un nombre de bus válido\n"
 
-#: ../gio/gdbus-tool.c:889 ../gio/gdbus-tool.c:1634
+#: ../gio/gdbus-tool.c:904 ../gio/gdbus-tool.c:1660
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Error: no se especificó la ruta del objeto\n"
 
-#: ../gio/gdbus-tool.c:924
+#: ../gio/gdbus-tool.c:939
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Error: no se especificó el nombre del método\n"
 
-#: ../gio/gdbus-tool.c:935
+#: ../gio/gdbus-tool.c:950
 #, c-format
 msgid "Error: Method name '%s' is invalid\n"
 msgstr "Error: el nombre del método «%s» no es válido\n"
 
-#: ../gio/gdbus-tool.c:1003
+#: ../gio/gdbus-tool.c:1028
 #, c-format
 msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "Error al analizar el parámetro %d del tipo «%s»: %s\n"
 
-#: ../gio/gdbus-tool.c:1446
+#: ../gio/gdbus-tool.c:1472
 msgid "Destination name to introspect"
 msgstr "Nombre de destino que introspeccionar"
 
-#: ../gio/gdbus-tool.c:1447
+#: ../gio/gdbus-tool.c:1473
 msgid "Object path to introspect"
 msgstr "Ruta del objeto que introspeccionar"
 
-#: ../gio/gdbus-tool.c:1448
+#: ../gio/gdbus-tool.c:1474
 msgid "Print XML"
 msgstr "Imprimir XML"
 
-#: ../gio/gdbus-tool.c:1449
+#: ../gio/gdbus-tool.c:1475
 msgid "Introspect children"
 msgstr "Introspeccionar hijo"
 
-#: ../gio/gdbus-tool.c:1450
+#: ../gio/gdbus-tool.c:1476
 msgid "Only print properties"
 msgstr "Solo mostrar propiedades"
 
-#: ../gio/gdbus-tool.c:1541
+#: ../gio/gdbus-tool.c:1567
 msgid "Introspect a remote object."
 msgstr "Introspeccionar un objeto remoto."
 
-#: ../gio/gdbus-tool.c:1746
+#: ../gio/gdbus-tool.c:1772
 msgid "Destination name to monitor"
 msgstr "Nombre de destino para monitorizar"
 
-#: ../gio/gdbus-tool.c:1747
+#: ../gio/gdbus-tool.c:1773
 msgid "Object path to monitor"
 msgstr "Ruta objeto para monitorizar"
 
-#: ../gio/gdbus-tool.c:1776
+#: ../gio/gdbus-tool.c:1802
 msgid "Monitor a remote object."
 msgstr "Monitorizar un objeto remoto."
 
@@ -1359,18 +1364,11 @@ msgstr "Operación no soportada"
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#. Translators: This is an error message when trying to
-#. * find the enclosing (user visible) mount of a file, but
-#. * none exists.
-#. Translators: This is an error message when trying to find
-#. * the enclosing (user visible) mount of a file, but none
-#. * exists.
-#: ../gio/gfile.c:1468 ../gio/glocalfile.c:1142 ../gio/glocalfile.c:1153
-#: ../gio/glocalfile.c:1166
+#: ../gio/gfile.c:1468
 msgid "Containing mount does not exist"
 msgstr "El punto de montaje contenido no existe"
 
-#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2384
+#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2367
 msgid "Can't copy over directory"
 msgstr "No se puede copiar sobre la carpeta"
 
@@ -1378,7 +1376,7 @@ msgstr "No se puede copiar sobre la carpeta"
 msgid "Can't copy directory over directory"
 msgstr "No se puede copiar una carpeta sobre otra"
 
-#: ../gio/gfile.c:2583 ../gio/glocalfile.c:2393
+#: ../gio/gfile.c:2583
 msgid "Target file exists"
 msgstr "El archivo destino ya existe"
 
@@ -1584,9 +1582,6 @@ msgid "Keep with file when moved"
 msgstr "Mantener con archivo cuando se mueva"
 
 #: ../gio/gio-tool.c:187
-#| msgid ""
-#| "'%s' takes no arguments\n"
-#| "\n"
 msgid "'version' takes no arguments"
 msgstr "«version» no lleva ningún argumento"
 
@@ -1595,12 +1590,10 @@ msgid "Usage:"
 msgstr "Uso:"
 
 #: ../gio/gio-tool.c:192
-#| msgid "Print version information and exit"
 msgid "Print version information and exit."
 msgstr "Mostrar información de la versión y salir."
 
 #: ../gio/gio-tool.c:208
-#| msgid "Commands:\n"
 msgid "Commands:"
 msgstr "Comandos:"
 
@@ -1613,7 +1606,6 @@ msgid "Copy one or more files"
 msgstr "Copiar uno o más archivos"
 
 #: ../gio/gio-tool.c:213
-#| msgid "Show GApplication options"
 msgid "Show information about locations"
 msgstr "Mostrar información sobre las ubicaciones"
 
@@ -1626,12 +1618,10 @@ msgid "Get or set the handler for a mimetype"
 msgstr "Obtener o establecer el manejador para un tipo MIME"
 
 #: ../gio/gio-tool.c:216
-#| msgid "Can't open directory"
 msgid "Create directories"
 msgstr "Crear carpetas"
 
 #: ../gio/gio-tool.c:217
-#| msgid "Monitor KEY for changes"
 msgid "Monitor files and directories for changes"
 msgstr "Monitorizar cambios en archivos y claves"
 
@@ -1664,7 +1654,6 @@ msgid "Set a file attribute"
 msgstr "Establecer el atributo de un archivo"
 
 #: ../gio/gio-tool.c:225
-#| msgid "The file descriptor to write to"
 msgid "Move files or directories to the trash"
 msgstr "Mover archivos o carpetas a la papelera"
 
@@ -1674,32 +1663,28 @@ msgstr "Listar el contenido de las ubicaciones en un árbol"
 
 #: ../gio/gio-tool.c:228
 #, c-format
-#| msgid ""
-#| "Use '%s help COMMAND' to get detailed help.\n"
-#| "\n"
 msgid "Use %s to get detailed help.\n"
 msgstr ""
 "Use %s para obtener ayuda detallada.\n"
 "\n"
 
 #. Translators: commandline placeholder
-#: ../gio/gio-tool-cat.c:112 ../gio/gio-tool-info.c:278
+#: ../gio/gio-tool-cat.c:124 ../gio/gio-tool-info.c:278
 #: ../gio/gio-tool-list.c:165 ../gio/gio-tool-mkdir.c:48
 #: ../gio/gio-tool-monitor.c:37 ../gio/gio-tool-monitor.c:39
 #: ../gio/gio-tool-monitor.c:41 ../gio/gio-tool-monitor.c:43
-#: ../gio/gio-tool-monitor.c:202 ../gio/gio-tool-mount.c:1123
+#: ../gio/gio-tool-monitor.c:202 ../gio/gio-tool-mount.c:1132
 #: ../gio/gio-tool-open.c:45 ../gio/gio-tool-remove.c:48
 #: ../gio/gio-tool-rename.c:45 ../gio/gio-tool-set.c:89
 #: ../gio/gio-tool-trash.c:81 ../gio/gio-tool-tree.c:239
-#| msgid "ACTION"
 msgid "LOCATION"
 msgstr "UBICACIÓN"
 
-#: ../gio/gio-tool-cat.c:117
+#: ../gio/gio-tool-cat.c:129
 msgid "Concatenate files and print to standard output."
 msgstr "Concatenar archivos e imprimir por la salida estándar."
 
-#: ../gio/gio-tool-cat.c:119
+#: ../gio/gio-tool-cat.c:131
 msgid ""
 "gio cat works just like the traditional cat utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1709,12 +1694,11 @@ msgstr ""
 "ubicaciones GIO en lugar de archivos locales: por ejemplo, puede\n"
 "usar algo como smb://servidor/recurso/archivo.txt como ubicación"
 
-#: ../gio/gio-tool-cat.c:139
+#: ../gio/gio-tool-cat.c:151
 msgid "No files given"
 msgstr "No se han proporcionado archivos"
 
 #: ../gio/gio-tool-copy.c:42 ../gio/gio-tool-move.c:38
-#| msgid "Target file is a directory"
 msgid "No target directory"
 msgstr "No hay carpeta de destino"
 
@@ -1731,8 +1715,7 @@ msgid "Preserve all attributes"
 msgstr "Conservar todos los atributos"
 
 #: ../gio/gio-tool-copy.c:46 ../gio/gio-tool-move.c:41
-#: ../gio/gio-tool-save.c:38
-#| msgid "Backup file creation failed"
+#: ../gio/gio-tool-save.c:49
 msgid "Backup existing destination files"
 msgstr "Respaldar los archivos de destino existentes"
 
@@ -1752,7 +1735,7 @@ msgstr "ORIGEN"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
-#: ../gio/gio-tool-save.c:154
+#: ../gio/gio-tool-save.c:165
 msgid "DESTINATION"
 msgstr "DESTINO"
 
@@ -1772,7 +1755,6 @@ msgstr ""
 
 #: ../gio/gio-tool-copy.c:143
 #, c-format
-#| msgid "The resource at '%s' is not a directory"
 msgid "Destination %s is not a directory"
 msgstr "El destino %s no es una carpeta"
 
@@ -1782,12 +1764,10 @@ msgid "%s: overwrite '%s' ? "
 msgstr "%s: ¿sobrescribir «%s» ? "
 
 #: ../gio/gio-tool-info.c:34
-#| msgid "List available actions"
 msgid "List writable attributes"
 msgstr "Listar los atributos que se pueden escribir"
 
 #: ../gio/gio-tool-info.c:35
-#| msgid "Error getting filesystem info: %s"
 msgid "Get file system info"
 msgstr "Obtener información del sistema de archivos"
 
@@ -1823,7 +1803,6 @@ msgstr "nombre editado: %s\n"
 
 #: ../gio/gio-tool-info.c:138
 #, c-format
-#| msgid "names"
 msgid "name: %s\n"
 msgstr "nombre: %s\n"
 
@@ -1844,13 +1823,11 @@ msgstr "oculto\n"
 
 #: ../gio/gio-tool-info.c:159
 #, c-format
-#| msgid "Error: %s\n"
 msgid "uri: %s\n"
 msgstr "URI: %s\n"
 
 #: ../gio/gio-tool-info.c:221
 #, c-format
-#| msgid "Error setting extended attribute '%s': %s"
 msgid "Error getting writable attributes: %s\n"
 msgstr "Error al obtener los atributos que se pueden escribir: %s\n"
 
@@ -1865,7 +1842,6 @@ msgid "Writable attribute namespaces:\n"
 msgstr "Espacios de nombres de atributos que se pueden escribir:\n"
 
 #: ../gio/gio-tool-info.c:283
-#| msgid "Show GApplication options"
 msgid "Show information about locations."
 msgstr "Mostrar información sobre las ubicaciones."
 
@@ -1893,7 +1869,6 @@ msgid "Show hidden files"
 msgstr "Mostrar archivos ocultos"
 
 #: ../gio/gio-tool-list.c:37
-#| msgid "use a long listing format"
 msgid "Use a long listing format"
 msgstr "Usar un formato de listado largo"
 
@@ -1944,66 +1919,55 @@ msgstr ""
 "predeterminado para el tipo MIME."
 
 #: ../gio/gio-tool-mime.c:98
-#| msgid "You must specify a schema, a key and a value\n"
 msgid "Must specify a single mimetype, and maybe a handler"
 msgstr "Debe especificar un único tipo MIME, y tal vez un manejador"
 
 #: ../gio/gio-tool-mime.c:113
 #, c-format
-#| msgid "invalid application id: '%s'\n"
 msgid "No default applications for '%s'\n"
 msgstr "No hay aplicación predeterminada para «%s»\n"
 
 #: ../gio/gio-tool-mime.c:119
 #, c-format
-#| msgid "invalid application id: '%s'\n"
 msgid "Default application for '%s': %s\n"
 msgstr "Aplicación predeterminada para «%s»: %s\n"
 
 #: ../gio/gio-tool-mime.c:124
 #, c-format
-#| msgid "List applications"
 msgid "Registered applications:\n"
 msgstr "Aplicaciones registradas:\n"
 
 #: ../gio/gio-tool-mime.c:126
 #, c-format
-#| msgid "List applications"
 msgid "No registered applications\n"
 msgstr "No hay aplicaciones registradas\n"
 
 #: ../gio/gio-tool-mime.c:137
 #, c-format
-#| msgid "List applications"
 msgid "Recommended applications:\n"
 msgstr "Aplicaciones recomendadas:\n"
 
 #: ../gio/gio-tool-mime.c:139
 #, c-format
-#| msgid "Can't find application"
 msgid "No recommended applications\n"
 msgstr "No hay aplicaciones recomendadas\n"
 
 #: ../gio/gio-tool-mime.c:159
 #, c-format
-#| msgid "Failed to read from file '%s': %s"
 msgid "Failed to load info for handler '%s'\n"
 msgstr "Falló al cargar la información para el manejador «%s»\n"
 
 #: ../gio/gio-tool-mime.c:165
 #, c-format
-#| msgid "Failed to create file '%s': %s"
 msgid "Failed to set '%s' as the default handler for '%s': %s\n"
 msgstr ""
 "Falló al establecer el manejador «%s» como predeterminado para «%s»: %s\n"
 
 #: ../gio/gio-tool-mkdir.c:31
-#| msgid "Can't open directory"
 msgid "Create parent directories"
 msgstr "Crear carpetas padre"
 
 #: ../gio/gio-tool-mkdir.c:52
-#| msgid "Can't open directory"
 msgid "Create directories."
 msgstr "Crear carpetas."
 
@@ -2050,7 +2014,6 @@ msgid "Watch for mount events"
 msgstr "Vigilar eventos de montaje"
 
 #: ../gio/gio-tool-monitor.c:207
-#| msgid "Monitor KEY for changes"
 msgid "Monitor files or directories for changes."
 msgstr "Monitorizar cambios en archivos o carpetas."
 
@@ -2100,62 +2063,54 @@ msgid "Monitor events"
 msgstr "Monitorizar eventos"
 
 #: ../gio/gio-tool-mount.c:68
-#| msgid "Show help options"
 msgid "Show extra information"
 msgstr "Mostrar información adicional"
 
-#: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:274
+#: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
 #, c-format
-#| msgid "Error setting modification or access time: %s"
 msgid "Error mounting location: Anonymous access denied\n"
 msgstr "Error al montar la ubicación: acceso anónimo denegado\n"
 
-#: ../gio/gio-tool-mount.c:248 ../gio/gio-tool-mount.c:276
+#: ../gio/gio-tool-mount.c:248 ../gio/gio-tool-mount.c:278
 #, c-format
-#| msgid "Error launching application: %s"
 msgid "Error mounting location: %s\n"
 msgstr "Error al montar la ubicación: %s\n"
 
-#: ../gio/gio-tool-mount.c:337
+#: ../gio/gio-tool-mount.c:341
 #, c-format
-#| msgid "Error connecting: %s\n"
 msgid "Error unmounting mount: %s\n"
 msgstr "Error al desmontar: %s\n"
 
-#: ../gio/gio-tool-mount.c:361 ../gio/gio-tool-mount.c:412
+#: ../gio/gio-tool-mount.c:366 ../gio/gio-tool-mount.c:419
 #, c-format
-#| msgid "Error closing unix: %s"
 msgid "Error finding enclosing mount: %s\n"
 msgstr "Error al buscar el punto de montaje: %s\n"
 
-#: ../gio/gio-tool-mount.c:388
+#: ../gio/gio-tool-mount.c:394
 #, c-format
-#| msgid "Error setting owner: %s"
 msgid "Error ejecting mount: %s\n"
 msgstr "Error al expulsar el punto de montaje: %s\n"
 
-#: ../gio/gio-tool-mount.c:867
+#: ../gio/gio-tool-mount.c:875
 #, c-format
-#| msgid "Error connecting: %s\n"
 msgid "Error mounting %s: %s\n"
 msgstr "Error al montar %s: %s\n"
 
-#: ../gio/gio-tool-mount.c:882
+#: ../gio/gio-tool-mount.c:891
 #, c-format
 msgid "Mounted %s at %s\n"
 msgstr "%s montado en %s\n"
 
-#: ../gio/gio-tool-mount.c:932
+#: ../gio/gio-tool-mount.c:941
 #, c-format
 msgid "No volume for device file %s\n"
 msgstr "No hay volumen para el archivo de dispositivo %s\n"
 
-#: ../gio/gio-tool-mount.c:1127
+#: ../gio/gio-tool-mount.c:1136
 msgid "Mount or unmount the locations."
 msgstr "Montar o desmontar las ubicaciones."
 
 #: ../gio/gio-tool-move.c:42
-#| msgid "use default fallbacks"
 msgid "Don't use copy and delete fallback"
 msgstr "No usar copia y eliminación de reserva"
 
@@ -2175,7 +2130,6 @@ msgstr ""
 
 #: ../gio/gio-tool-move.c:139
 #, c-format
-#| msgid "Target file is a directory"
 msgid "Target %s is not a directory"
 msgstr "El destino %s no es una carpeta"
 
@@ -2212,15 +2166,11 @@ msgid "Rename a file."
 msgstr "Renombrar un archivo."
 
 #: ../gio/gio-tool-rename.c:68
-#| msgid "Missing argument for %s"
 msgid "Missing argument"
 msgstr "Falta el argumento"
 
-#: ../gio/gio-tool-rename.c:73 ../gio/gio-tool-save.c:181
+#: ../gio/gio-tool-rename.c:73 ../gio/gio-tool-save.c:192
 #: ../gio/gio-tool-set.c:134
-#| msgid ""
-#| "'%s' takes no arguments\n"
-#| "\n"
 msgid "Too many arguments"
 msgstr "Demasiados argumentos"
 
@@ -2229,48 +2179,47 @@ msgstr "Demasiados argumentos"
 msgid "Rename successful. New uri: %s\n"
 msgstr "Renombrado correcto. Nuevo URI: %s\n"
 
-#: ../gio/gio-tool-save.c:39
+#: ../gio/gio-tool-save.c:50
 msgid "Only create if not existing"
 msgstr "Crear sólo si no existe"
 
-#: ../gio/gio-tool-save.c:40
+#: ../gio/gio-tool-save.c:51
 msgid "Append to end of file"
 msgstr "Añadir al final de un archivo"
 
-#: ../gio/gio-tool-save.c:41
+#: ../gio/gio-tool-save.c:52
 msgid "When creating, restrict access to the current user"
 msgstr "Al crear, restringir el acceso al usuario actual"
 
-#: ../gio/gio-tool-save.c:42
+#: ../gio/gio-tool-save.c:53
 msgid "When replacing, replace as if the destination did not exist"
 msgstr "Al reemplazar, hacerlo como si el destino no existiera"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
-#: ../gio/gio-tool-save.c:44
+#: ../gio/gio-tool-save.c:55
 msgid "Print new etag at end"
 msgstr "Imprimir nueva etag al final"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
-#: ../gio/gio-tool-save.c:46
+#: ../gio/gio-tool-save.c:57
 msgid "The etag of the file being overwritten"
 msgstr "La etag del archivo que se está sobrescribiendo"
 
-#: ../gio/gio-tool-save.c:46
+#: ../gio/gio-tool-save.c:57
 msgid "ETAG"
 msgstr "ETAG"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
-#: ../gio/gio-tool-save.c:134
+#: ../gio/gio-tool-save.c:145
 #, c-format
-#| msgid "TLS support is not available"
 msgid "Etag not available\n"
 msgstr "Etag no disponible\n"
 
-#: ../gio/gio-tool-save.c:157
+#: ../gio/gio-tool-save.c:168
 msgid "Read from standard input and save to DEST."
 msgstr "Leer de la entrada estándar y guardar en DESTINO."
 
-#: ../gio/gio-tool-save.c:175
+#: ../gio/gio-tool-save.c:186
 msgid "No destination given"
 msgstr "No se ha indicado el destino"
 
@@ -2295,29 +2244,24 @@ msgid "Set a file attribute of LOCATION."
 msgstr "Establecer el atributo UBICACIÓN de un archivo."
 
 #: ../gio/gio-tool-set.c:111
-#| msgid "No connection endpoint specified"
 msgid "Location not specified"
 msgstr "Ubicación no encontrada"
 
 #: ../gio/gio-tool-set.c:119
-#| msgid "Error: signal not specified.\n"
 msgid "Attribute not specified"
 msgstr "Atributo no especificado"
 
 #: ../gio/gio-tool-set.c:128
-#| msgid "Error: signal not specified.\n"
 msgid "Value not specified"
 msgstr "Valor no especificado"
 
 #: ../gio/gio-tool-set.c:176
 #, c-format
-#| msgid "Invalid attribute type (string expected)"
 msgid "Invalid attribute type %s\n"
 msgstr "Tipo de atributo %s no válido\n"
 
 #: ../gio/gio-tool-set.c:189
 #, c-format
-#| msgid "Error setting extended attribute '%s': %s"
 msgid "Error setting attribute: %s\n"
 msgstr "Error al establecer el atributo: %s\n"
 
@@ -2326,7 +2270,6 @@ msgid "Empty the trash"
 msgstr "Vaciar la papelera"
 
 #: ../gio/gio-tool-trash.c:86
-#| msgid "The file descriptor to write to"
 msgid "Move files or directories to the trash."
 msgstr "Mover archivos o carpetas a la papelera."
 
@@ -2730,116 +2673,144 @@ msgstr "se quitó el archivo de salida existente.\n"
 msgid "Invalid filename %s"
 msgstr "Nombre de archivo no válido %s"
 
-#: ../gio/glocalfile.c:1015
+#: ../gio/glocalfile.c:1029
 #, c-format
-msgid "Error getting filesystem info: %s"
-msgstr "Error al obtener la información del sistema de archivos: %s"
+#| msgid "Error getting filesystem info: %s"
+msgid "Error getting filesystem info for %s: %s"
+msgstr "Error al obtener la información del sistema de archivos para %s: %s"
 
-#: ../gio/glocalfile.c:1188
+#: ../gio/glocalfile.c:1168
+#, c-format
+#| msgid "Containing mount does not exist"
+msgid "Containing mount for file %s not found"
+msgstr "No se ha encontrado el punto de montaje para el archivo %s"
+
+#: ../gio/glocalfile.c:1191
 msgid "Can't rename root directory"
 msgstr "No se puede renombrar la carpeta raíz"
 
-#: ../gio/glocalfile.c:1208 ../gio/glocalfile.c:1234
+#: ../gio/glocalfile.c:1209 ../gio/glocalfile.c:1232
 #, c-format
-msgid "Error renaming file: %s"
-msgstr "Error al renombrar el archivo: %s"
+#| msgid "Error reading file %s: %s"
+msgid "Error renaming file %s: %s"
+msgstr "Error al leer el archivo %s: %s"
 
-#: ../gio/glocalfile.c:1217
+#: ../gio/glocalfile.c:1216
 msgid "Can't rename file, filename already exists"
 msgstr "No se puede renombrar el archivo, el nombre de archivo ya existe"
 
-#: ../gio/glocalfile.c:1230 ../gio/glocalfile.c:2257 ../gio/glocalfile.c:2286
-#: ../gio/glocalfile.c:2446 ../gio/glocalfileoutputstream.c:549
+#: ../gio/glocalfile.c:1229 ../gio/glocalfile.c:2243 ../gio/glocalfile.c:2271
+#: ../gio/glocalfile.c:2428 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "Nombre de archivo no válido"
 
-#: ../gio/glocalfile.c:1397 ../gio/glocalfile.c:1421
-msgid "Can't open directory"
-msgstr "No se puede abrir la carpeta"
-
-#: ../gio/glocalfile.c:1405
+#: ../gio/glocalfile.c:1396 ../gio/glocalfile.c:1411
 #, c-format
-msgid "Error opening file: %s"
-msgstr "Error al abrir el archivo: %s"
+#| msgid "Error opening file '%s': %s"
+msgid "Error opening file %s: %s"
+msgstr "Error al abrir el archivo %s: %s"
 
-#: ../gio/glocalfile.c:1546
+#: ../gio/glocalfile.c:1536
 #, c-format
-msgid "Error removing file: %s"
-msgstr "Error al eliminar el archivo: %s"
+#| msgid "Error removing file: %s"
+msgid "Error removing file %s: %s"
+msgstr "Error al eliminar el archivo %s: %s"
 
-#: ../gio/glocalfile.c:1930
+#: ../gio/glocalfile.c:1919
 #, c-format
-msgid "Error trashing file: %s"
-msgstr "Error al mover a la papelera el archivo: %s"
+#| msgid "Error trashing file: %s"
+msgid "Error trashing file %s: %s"
+msgstr "Error al mover a la papelera el archivo %s: %s"
 
-#: ../gio/glocalfile.c:1953
+#: ../gio/glocalfile.c:1942
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "No se pudo crear la carpeta de papelera %s: %s"
 
-#: ../gio/glocalfile.c:1974
-msgid "Unable to find toplevel directory for trash"
-msgstr "No se pudo encontrar la carpeta de nivel superior para la papelera"
-
-#: ../gio/glocalfile.c:2053 ../gio/glocalfile.c:2073
-msgid "Unable to find or create trash directory"
-msgstr "No se pudo encontrar o crear la carpeta de la papelera"
-
-#: ../gio/glocalfile.c:2107
+#: ../gio/glocalfile.c:1962
 #, c-format
-msgid "Unable to create trashing info file: %s"
-msgstr "No se pudo crear la información de papelera para el archivo: %s"
+#| msgid "Unable to find toplevel directory for trash"
+msgid "Unable to find toplevel directory to trash %s"
+msgstr "No se pudo encontrar la carpeta de nivel superior para la papelera %s"
 
-#: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2170 ../gio/glocalfile.c:2227
-#: ../gio/glocalfile.c:2234
+#: ../gio/glocalfile.c:2041 ../gio/glocalfile.c:2061
 #, c-format
-msgid "Unable to trash file: %s"
-msgstr "No se pudo enviar a la papelera el archivo: %s"
+#| msgid "Unable to find or create trash directory"
+msgid "Unable to find or create trash directory for %s"
+msgstr "No se pudo encontrar o crear la carpeta de la papelera para %s"
 
-#: ../gio/glocalfile.c:2235 ../glib/gregex.c:281
-msgid "internal error"
-msgstr "error interno"
-
-#: ../gio/glocalfile.c:2261
+#: ../gio/glocalfile.c:2095
 #, c-format
-msgid "Error creating directory: %s"
-msgstr "Error al crear la carpeta: %s"
+#| msgid "Unable to create trashing info file: %s"
+msgid "Unable to create trashing info file for %s: %s"
+msgstr "No se pudo crear la información de papelera para el archivo %s: %s"
 
-#: ../gio/glocalfile.c:2290
+#: ../gio/glocalfile.c:2154
+#, c-format
+#| msgid "Unable to trash file: %s"
+msgid "Unable to trash file %s across filesystem boundaries"
+msgstr ""
+"No se pudo enviar a la papelera el archivo %s entre sistemas de archivos"
+
+#: ../gio/glocalfile.c:2158 ../gio/glocalfile.c:2214
+#, c-format
+#| msgid "Unable to trash file: %s"
+msgid "Unable to trash file %s: %s"
+msgstr "No se pudo enviar a la papelera el archivo %s: %s"
+
+#: ../gio/glocalfile.c:2220
+#, c-format
+#| msgid "Unable to trash file: %s"
+msgid "Unable to trash file %s"
+msgstr "No se pudo enviar a la papelera el archivo %s"
+
+#: ../gio/glocalfile.c:2246
+#, c-format
+#| msgid "Error creating directory '%s': %s"
+msgid "Error creating directory %s: %s"
+msgstr "Error al crear la carpeta %s: %s"
+
+#: ../gio/glocalfile.c:2275
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "El sistema de archivos no soporta enlaces simbólicos"
 
-#: ../gio/glocalfile.c:2294
+#: ../gio/glocalfile.c:2278
 #, c-format
-msgid "Error making symbolic link: %s"
-msgstr "Error al crear el enlace simbólico: %s"
+#| msgid "Error making symbolic link: %s"
+msgid "Error making symbolic link %s: %s"
+msgstr "Error al crear el enlace simbólico %s: %s"
 
-#: ../gio/glocalfile.c:2356 ../gio/glocalfile.c:2450
+#: ../gio/glocalfile.c:2284 ../glib/gfileutils.c:2064
+msgid "Symbolic links not supported"
+msgstr "Enlaces simbólicos no soportados"
+
+#: ../gio/glocalfile.c:2339 ../gio/glocalfile.c:2374 ../gio/glocalfile.c:2431
 #, c-format
-msgid "Error moving file: %s"
-msgstr "Error al mover el archivo: %s"
+#| msgid "Error moving file: %s"
+msgid "Error moving file %s: %s"
+msgstr "Error al mover el archivo %s: %s"
 
-#: ../gio/glocalfile.c:2379
+#: ../gio/glocalfile.c:2362
 msgid "Can't move directory over directory"
 msgstr "No se puede mover una carpeta sobre una carpeta"
 
-#: ../gio/glocalfile.c:2406 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfile.c:2388 ../gio/glocalfileoutputstream.c:925
 #: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
 #: ../gio/glocalfileoutputstream.c:971 ../gio/glocalfileoutputstream.c:985
 msgid "Backup file creation failed"
 msgstr "Falló la creación del archivo de respaldo"
 
-#: ../gio/glocalfile.c:2425
+#: ../gio/glocalfile.c:2407
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Error al eliminar el archivo destino: %s"
 
-#: ../gio/glocalfile.c:2439
+#: ../gio/glocalfile.c:2421
 msgid "Move between mounts not supported"
 msgstr "No se soporta mover archivos entre puntos de montaje"
 
-#: ../gio/glocalfile.c:2631
+#: ../gio/glocalfile.c:2612
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "No se pudo determinar el uso de disco de %s: %s"
@@ -3657,17 +3628,17 @@ msgstr "Error al enviar el mensaje: %s"
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage no está soportado en Windows"
 
-#: ../gio/gsocket.c:4841 ../gio/gsocket.c:4914 ../gio/gsocket.c:5141
+#: ../gio/gsocket.c:4839 ../gio/gsocket.c:4912 ../gio/gsocket.c:5139
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Error al recibir el mensaje: %s"
 
-#: ../gio/gsocket.c:5413
+#: ../gio/gsocket.c:5411
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "No se pudieron leer las credenciales del socket: %s"
 
-#: ../gio/gsocket.c:5422
+#: ../gio/gsocket.c:5420
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials no está implementado en este SO"
 
@@ -4087,8 +4058,8 @@ msgstr "Ninguna aplicación con nombre «%s» registró un marcador para «%s»"
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Falló la expansión de la la linea ejecutable «%s» con el URI «%s»"
 
-#: ../glib/gconvert.c:477 ../glib/gutf8.c:849 ../glib/gutf8.c:1061
-#: ../glib/gutf8.c:1198 ../glib/gutf8.c:1302
+#: ../glib/gconvert.c:477 ../glib/gutf8.c:851 ../glib/gutf8.c:1063
+#: ../glib/gutf8.c:1200 ../glib/gutf8.c:1304
 msgid "Partial character sequence at end of input"
 msgstr "Hay una secuencia parcial de caracteres en el final de la entrada"
 
@@ -4439,10 +4410,6 @@ msgstr "La plantilla «%s» no contiene XXXXXX"
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Falló al leer el enlace simbólico «%s»: %s"
 
-#: ../glib/gfileutils.c:2064
-msgid "Symbolic links not supported"
-msgstr "Enlaces simbólicos no soportados"
-
 #: ../glib/giochannel.c:1388
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
@@ -4570,7 +4537,7 @@ msgstr "El valor entero «%s» está fuera de rango"
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "El valor «%s» no puede interpretarse como un número de coma flotante."
 
-#: ../glib/gkeyfile.c:4381
+#: ../glib/gkeyfile.c:4383
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "El valor «%s» no puede interpretarse como un booleano."
@@ -4886,6 +4853,10 @@ msgstr "se alcanzó el límite de «backtracking»"
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "el patrón contiene elementos no soportados para una coincidencia parcial"
+
+#: ../glib/gregex.c:281
+msgid "internal error"
+msgstr "error interno"
 
 #: ../glib/gregex.c:289
 msgid "back references as conditions are not supported for partial matching"
@@ -5392,20 +5363,20 @@ msgstr ""
 "Falló inesperado en g_io_channel_win32_poll() al leer datos desde un proceso "
 "hijo"
 
-#: ../glib/gutf8.c:795
+#: ../glib/gutf8.c:797
 msgid "Failed to allocate memory"
 msgstr "Falló al obtener memoria"
 
-#: ../glib/gutf8.c:928
+#: ../glib/gutf8.c:930
 msgid "Character out of range for UTF-8"
 msgstr "El carácter se sale del rango para UTF-8"
 
-#: ../glib/gutf8.c:1029 ../glib/gutf8.c:1038 ../glib/gutf8.c:1168
-#: ../glib/gutf8.c:1177 ../glib/gutf8.c:1316 ../glib/gutf8.c:1413
+#: ../glib/gutf8.c:1031 ../glib/gutf8.c:1040 ../glib/gutf8.c:1170
+#: ../glib/gutf8.c:1179 ../glib/gutf8.c:1318 ../glib/gutf8.c:1415
 msgid "Invalid sequence in conversion input"
 msgstr "Secuencia no válida en la entrada de conversión"
 
-#: ../glib/gutf8.c:1327 ../glib/gutf8.c:1424
+#: ../glib/gutf8.c:1329 ../glib/gutf8.c:1426
 msgid "Character out of range for UTF-16"
 msgstr "El carácter se sale del rango para UTF-16"
 
@@ -5493,6 +5464,18 @@ msgstr[1] "%s bytes"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "Error renaming file: %s"
+#~ msgstr "Error al renombrar el archivo: %s"
+
+#~ msgid "Can't open directory"
+#~ msgstr "No se puede abrir la carpeta"
+
+#~ msgid "Error opening file: %s"
+#~ msgstr "Error al abrir el archivo: %s"
+
+#~ msgid "Error creating directory: %s"
+#~ msgstr "Error al crear la carpeta: %s"
 
 #~ msgid "association changes not supported on win32"
 #~ msgstr "los cambios de asociación no están soportados en win32"
