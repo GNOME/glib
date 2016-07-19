@@ -347,6 +347,29 @@ create_unix_mount_entry (const char *device_path,
   return mount_entry;
 }
 
+static GUnixMountPoint *
+create_unix_mount_point (const char *device_path,
+                         const char *mount_path,
+                         const char *filesystem_type,
+                         const char *options,
+                         gboolean    is_read_only,
+                         gboolean    is_user_mountable,
+                         gboolean    is_loopback)
+{
+  GUnixMountPoint *mount_point = NULL;
+
+  mount_point = g_new0 (GUnixMountPoint, 1);
+  mount_point->device_path = g_strdup (device_path);
+  mount_point->mount_path = g_strdup (mount_path);
+  mount_point->filesystem_type = g_strdup (filesystem_type);
+  mount_point->options = g_strdup (options);
+  mount_point->is_read_only = is_read_only;
+  mount_point->is_user_mountable = is_user_mountable;
+  mount_point->is_loopback = is_loopback;
+
+  return mount_point;
+}
+
 /* mntent.h (Linux, GNU, NSS) {{{2 */
 #ifdef HAVE_MNTENT_H
 
@@ -817,6 +840,97 @@ get_fstab_file (void)
 
 /* mntent.h (Linux, GNU, NSS) {{{2 */
 #ifdef HAVE_MNTENT_H
+
+#ifdef HAVE_LIBMOUNT
+
+static GList *
+_g_get_unix_mount_points (void)
+{
+  struct libmnt_table *table = NULL;
+  struct libmnt_context *ctxt = NULL;
+  struct libmnt_iter* iter = NULL;
+  struct libmnt_fs *fs = NULL;
+  GUnixMountPoint *mount_point = NULL;
+  GList *return_list = NULL;
+
+  ctxt = mnt_new_context ();
+  mnt_context_get_fstab (ctxt, &table);
+  if (!table)
+    return NULL;
+
+  iter = mnt_new_iter (MNT_ITER_FORWARD);
+  while (mnt_table_next_fs (table, iter, &fs) == 0)
+    {
+      const char *device_path = NULL;
+      const char *mount_path = NULL;
+      const char *mount_fstype = NULL;
+      char *mount_options = NULL;
+      gboolean is_read_only = FALSE;
+      gboolean is_user_mountable = FALSE;
+      gboolean is_loopback = FALSE;
+
+      mount_path = mnt_fs_get_target (fs);
+      if ((strcmp (mount_path, "ignore") == 0) ||
+          (strcmp (mount_path, "swap") == 0) ||
+          (strcmp (mount_path, "none") == 0))
+        continue;
+
+      mount_fstype = mnt_fs_get_fstype (fs);
+      mount_options = mnt_fs_strdup_options (fs);
+      if (mount_options)
+        {
+          unsigned long mount_flags = 0;
+          unsigned long userspace_flags = 0;
+
+          mnt_optstr_get_flags (mount_options, &mount_flags, mnt_get_builtin_optmap (MNT_LINUX_MAP));
+          mnt_optstr_get_flags (mount_options, &userspace_flags, mnt_get_builtin_optmap (MNT_USERSPACE_MAP));
+
+          /* We ignore bind fstab entries, as we ignore bind mounts anyway */
+          if (mount_flags & MS_BIND)
+            {
+              g_free (mount_options);
+              continue;
+            }
+
+          is_read_only = (mount_flags & MS_RDONLY) != 0;
+          is_loopback = (userspace_flags & MNT_MS_LOOP) != 0;
+
+          if ((mount_fstype != NULL && g_strcmp0 ("supermount", mount_fstype) == 0) ||
+              ((userspace_flags & MNT_MS_USER) &&
+               (g_strstr_len (mount_options, -1, "user_xattr") == NULL)) ||
+              (g_strstr_len (mount_options, -1, "pamconsole") == NULL) ||
+              (userspace_flags & MNT_MS_USERS) ||
+              (userspace_flags & MNT_MS_OWNER))
+            {
+              is_user_mountable = TRUE;
+            }
+        }
+
+      device_path = mnt_fs_get_source (fs);
+      if (g_strcmp0 (device_path, "/dev/root") == 0)
+        device_path = _resolve_dev_root ();
+
+      mount_point = create_unix_mount_point (device_path,
+                                             mount_path,
+                                             mount_fstype,
+                                             mount_options,
+                                             is_read_only,
+                                             is_user_mountable,
+                                             is_loopback);
+      if (mount_options)
+        g_free (mount_options);
+
+      return_list = g_list_prepend (return_list, mount_point);
+    }
+
+  mnt_free_iter (iter);
+  mnt_free_context (ctxt);
+
+  return g_list_reverse (return_list);
+}
+
+#else
+
 static GList *
 _g_get_unix_mount_points (void)
 {
@@ -896,6 +1010,8 @@ _g_get_unix_mount_points (void)
   
   return g_list_reverse (return_list);
 }
+
+#endif /* HAVE_LIBMOUNT */
 
 /* mnttab.h {{{2 */
 #elif defined (HAVE_SYS_MNTTAB_H)
