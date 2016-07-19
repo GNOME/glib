@@ -459,6 +459,9 @@ _g_get_unix_mounts (void)
   while ((mntent = getmntent (file)) != NULL)
 #endif
     {
+      const char *device_path = NULL;
+      gboolean is_read_only = FALSE;
+
       /* ignore any mnt_fsname that is repeated and begins with a '/'
        *
        * We do this to avoid being fooled by --bind mounts, since
@@ -473,29 +476,26 @@ _g_get_unix_mounts (void)
 	  mntent->mnt_fsname[0] == '/' &&
 	  g_hash_table_lookup (mounts_hash, mntent->mnt_fsname))
         continue;
-      
-      mount_entry = g_new0 (GUnixMountEntry, 1);
-      mount_entry->mount_path = g_strdup (mntent->mnt_dir);
+
       if (g_strcmp0 (mntent->mnt_fsname, "/dev/root") == 0)
-        mount_entry->device_path = g_strdup (_resolve_dev_root ());
+        device_path = _resolve_dev_root ();
       else
-        mount_entry->device_path = g_strdup (mntent->mnt_fsname);
-      mount_entry->filesystem_type = g_strdup (mntent->mnt_type);
-      
+        device_path = mntent->mnt_fsname;
+
 #if defined (HAVE_HASMNTOPT)
       if (hasmntopt (mntent, MNTOPT_RO) != NULL)
-	mount_entry->is_read_only = TRUE;
+	is_read_only = TRUE;
 #endif
-      
-      mount_entry->is_system_internal =
-	guess_system_internal (mount_entry->mount_path,
-			       mount_entry->filesystem_type,
-			       mount_entry->device_path);
-      
+
+      mount_entry = create_unix_mount_entry (device_path,
+                                             mntent->mnt_dir,
+                                             mntent->mnt_type,
+                                             is_read_only);
+
       g_hash_table_insert (mounts_hash,
 			   mount_entry->device_path,
 			   mount_entry->device_path);
-      
+
       return_list = g_list_prepend (return_list, mount_entry);
     }
   g_hash_table_destroy (mounts_hash);
@@ -566,22 +566,18 @@ _g_get_unix_mounts (void)
   G_LOCK (getmntent);
   while (! getmntent (file, &mntent))
     {
-      mount_entry = g_new0 (GUnixMountEntry, 1);
-      
-      mount_entry->mount_path = g_strdup (mntent.mnt_mountp);
-      mount_entry->device_path = g_strdup (mntent.mnt_special);
-      mount_entry->filesystem_type = g_strdup (mntent.mnt_fstype);
-      
+      gboolean is_read_only = FALSE;
+
 #if defined (HAVE_HASMNTOPT)
       if (hasmntopt (&mntent, MNTOPT_RO) != NULL)
-	mount_entry->is_read_only = TRUE;
+	is_read_only = TRUE;
 #endif
 
-      mount_entry->is_system_internal =
-	guess_system_internal (mount_entry->mount_path,
-			       mount_entry->filesystem_type,
-			       mount_entry->device_path);
-      
+      mount_entry = create_unix_mount_entry (mntent.mnt_special,
+                                             mntent.mnt_mountp,
+                                             mntent.mnt_fstype,
+                                             is_read_only);
+
       return_list = g_list_prepend (return_list, mount_entry);
     }
   
@@ -636,25 +632,18 @@ _g_get_unix_mounts (void)
   return_list = NULL;
   while (vmount_number > 0)
     {
-      mount_entry = g_new0 (GUnixMountEntry, 1);
-      
-      mount_entry->device_path = g_strdup (vmt2dataptr (vmount_info, VMT_OBJECT));
-      mount_entry->mount_path = g_strdup (vmt2dataptr (vmount_info, VMT_STUB));
-      /* is_removable = (vmount_info->vmt_flags & MNT_REMOVABLE) ? 1 : 0; */
-      mount_entry->is_read_only = (vmount_info->vmt_flags & MNT_READONLY) ? 1 : 0;
+      gboolean is_read_only = FALSE;
 
       fs_info = getvfsbytype (vmount_info->vmt_gfstype);
-      
-      if (fs_info == NULL)
-	mount_entry->filesystem_type = g_strdup ("unknown");
-      else
-	mount_entry->filesystem_type = g_strdup (fs_info->vfsent_name);
 
-      mount_entry->is_system_internal =
-	guess_system_internal (mount_entry->mount_path,
-			       mount_entry->filesystem_type,
-			       mount_entry->device_path);
-      
+      /* is_removable = (vmount_info->vmt_flags & MNT_REMOVABLE) ? 1 : 0; */
+      is_read_only = (vmount_info->vmt_flags & MNT_READONLY) ? 1 : 0;
+
+      mount_entry = create_unix_mount_entry (vmt2dataptr (vmount_info, VMT_OBJECT),
+                                             vmt2dataptr (vmount_info, VMT_STUB),
+                                             fs_info == NULL ? "unknown" : fs_info->vfsent_name,
+                                             is_read_only);
+
       return_list = g_list_prepend (return_list, mount_entry);
       
       vmount_info = (struct vmount *)( (char*)vmount_info 
@@ -714,11 +703,7 @@ _g_get_unix_mounts (void)
   
   for (i = 0; i < num_mounts; i++)
     {
-      mount_entry = g_new0 (GUnixMountEntry, 1);
-      
-      mount_entry->mount_path = g_strdup (mntent[i].f_mntonname);
-      mount_entry->device_path = g_strdup (mntent[i].f_mntfromname);
-      mount_entry->filesystem_type = g_strdup (mntent[i].f_fstypename);
+      gboolean is_read_only = FALSE;
 
 #if defined(USE_STATVFS)
       if (mntent[i].f_flag & ST_RDONLY)
@@ -727,13 +712,13 @@ _g_get_unix_mounts (void)
 #else
       #error statfs juggling failed
 #endif
-        mount_entry->is_read_only = TRUE;
+        is_read_only = TRUE;
 
-      mount_entry->is_system_internal =
-        guess_system_internal (mount_entry->mount_path,
-                               mount_entry->filesystem_type,
-                               mount_entry->device_path);
-      
+      mount_entry = create_unix_mount_entry (mntent[i].f_mntfromname,
+                                             mntent[i].f_mntonname,
+                                             mntent[i].f_fstypename,
+                                             is_read_only);
+
       return_list = g_list_prepend (return_list, mount_entry);
     }
 
