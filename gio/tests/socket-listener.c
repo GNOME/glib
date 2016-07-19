@@ -74,12 +74,9 @@ test_event_signal (void)
                                  NULL,
                                  &error);
   g_assert_no_error (error);
+  g_assert_true (success);
+
   g_object_unref (saddr);
-
-  do
-    g_main_context_iteration (NULL, TRUE);
-  while (!success);
-
   g_object_unref (listener);
 }
 
