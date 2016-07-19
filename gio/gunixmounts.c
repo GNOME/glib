@@ -326,25 +326,92 @@ guess_system_internal (const char *mountpoint,
 
 /* GUnixMounts (ie: mtab) implementations {{{1 */
 
+static GUnixMountEntry *
+create_unix_mount_entry (const char *device_path,
+                         const char *mount_path,
+                         const char *filesystem_type,
+                         gboolean    is_read_only)
+{
+  GUnixMountEntry *mount_entry = NULL;
+
+  mount_entry = g_new0 (GUnixMountEntry, 1);
+  mount_entry->device_path = g_strdup (device_path);
+  mount_entry->mount_path = g_strdup (mount_path);
+  mount_entry->filesystem_type = g_strdup (filesystem_type);
+  mount_entry->is_read_only = is_read_only;
+
+  mount_entry->is_system_internal =
+    guess_system_internal (mount_entry->mount_path,
+                           mount_entry->filesystem_type,
+                           mount_entry->device_path);
+  return mount_entry;
+}
+
 /* mntent.h (Linux, GNU, NSS) {{{2 */
 #ifdef HAVE_MNTENT_H
 
-static char *
-get_mtab_read_file (void)
+#ifdef HAVE_LIBMOUNT
+
+static GList *
+_g_get_unix_mounts (void)
 {
-#ifdef _PATH_MOUNTED
-# ifdef __linux__
-  return "/proc/mounts";
-# else
-  return _PATH_MOUNTED;
-# endif
-#else
-  return "/etc/mtab";
-#endif
+  struct libmnt_table *table = NULL;
+  struct libmnt_context *ctxt = NULL;
+  struct libmnt_iter* iter = NULL;
+  struct libmnt_fs *fs = NULL;
+  GUnixMountEntry *mount_entry = NULL;
+  GList *return_list = NULL;
+
+  ctxt = mnt_new_context ();
+  mnt_context_get_table (ctxt, "/proc/self/mountinfo", &table);
+  if (!table)
+    mnt_context_get_mtab (ctxt, &table);
+
+  /* Not much to do if neither mountinfo nor mtab are available */
+  if (!table)
+    return NULL;
+
+  iter = mnt_new_iter (MNT_ITER_FORWARD);
+  while (mnt_table_next_fs (table, iter, &fs) == 0)
+    {
+      const char *device_path = NULL;
+      char *mount_options = NULL;
+      unsigned long mount_flags = 0;
+      gboolean is_read_only = FALSE;
+
+      if (!mnt_table_is_fs_mounted (table, fs))
+        continue;
+
+      device_path = mnt_fs_get_source (fs);
+      if (g_strcmp0 (device_path, "/dev/root") == 0)
+        device_path = _resolve_dev_root ();
+
+      mount_options = mnt_fs_strdup_options (fs);
+      if (mount_options)
+        {
+          mnt_optstr_get_flags (mount_options, &mount_flags, mnt_get_builtin_optmap (MNT_LINUX_MAP));
+          g_free (mount_options);
+        }
+      is_read_only = (mount_flags & MS_RDONLY) ? TRUE : FALSE;
+
+      mount_entry = create_unix_mount_entry (device_path,
+                                             mnt_fs_get_target (fs),
+                                             mnt_fs_get_fstype (fs),
+                                             is_read_only);
+
+      return_list = g_list_prepend (return_list, mount_entry);
+    }
+
+  mnt_free_iter (iter);
+  mnt_free_context (ctxt);
+
+  return g_list_reverse (return_list);
 }
 
+#else
+
 static char *
-get_mtab_monitor_file (void)
+get_mtab_read_file (void)
 {
 #ifdef _PATH_MOUNTED
 # ifdef __linux__
@@ -440,6 +507,22 @@ _g_get_unix_mounts (void)
 #endif
   
   return g_list_reverse (return_list);
+}
+
+#endif /* HAVE_LIBMOUNT */
+
+static char *
+get_mtab_monitor_file (void)
+{
+#ifdef _PATH_MOUNTED
+# ifdef __linux__
+  return "/proc/mounts";
+# else
+  return _PATH_MOUNTED;
+# endif
+#else
+  return "/etc/mtab";
+#endif
 }
 
 /* mnttab.h {{{2 */
