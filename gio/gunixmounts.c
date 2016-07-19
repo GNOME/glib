@@ -150,6 +150,9 @@ static guint64 mount_poller_time = 0;
 
 #ifdef HAVE_MNTENT_H
 #include <mntent.h>
+#ifdef HAVE_LIBMOUNT
+#include <libmount/libmount.h>
+#endif
 #elif defined (HAVE_SYS_MNTTAB_H)
 #include <sys/mnttab.h>
 #endif
@@ -728,6 +731,9 @@ _g_get_unix_mounts (void)
 static char *
 get_fstab_file (void)
 {
+#ifdef HAVE_LIBMOUNT
+  return (char *) mnt_get_fstab_path ();
+#else
 #if defined(HAVE_SYS_MNTCTL_H) && defined(HAVE_SYS_VMOUNT_H) && defined(HAVE_SYS_VFS_H)
   /* AIX */
   return "/etc/filesystems";
@@ -737,6 +743,7 @@ get_fstab_file (void)
   return VFSTAB;
 #else
   return "/etc/fstab";
+#endif
 #endif
 }
 
