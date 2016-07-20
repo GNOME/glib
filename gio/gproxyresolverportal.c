@@ -100,6 +100,26 @@ g_proxy_resolver_portal_lookup (GProxyResolver *proxy_resolver,
 }
 
 static void
+lookup_done (GObject      *source,
+             GAsyncResult *result,
+             gpointer      data)
+{
+  GTask *task = data;
+  GError *error = NULL;
+  gchar **proxies = NULL;
+
+  if (!gxdp_proxy_resolver_call_lookup_finish (GXDP_PROXY_RESOLVER (source),
+                                               &proxies,
+                                               result,
+                                               &error))
+    g_task_return_error (task, error);
+  else
+    g_task_return_pointer (task, proxies, NULL);
+
+  g_object_unref (task);
+}
+
+static void
 g_proxy_resolver_portal_lookup_async (GProxyResolver      *proxy_resolver,
                                       const gchar         *uri,
                                       GCancellable        *cancellable,
@@ -107,12 +127,15 @@ g_proxy_resolver_portal_lookup_async (GProxyResolver      *proxy_resolver,
                                       gpointer             user_data)
 {
   GProxyResolverPortal *resolver = G_PROXY_RESOLVER_PORTAL (proxy_resolver);
+  GTask *task;
 
+  task = g_task_new (proxy_resolver, cancellable, callback, user_data);
   gxdp_proxy_resolver_call_lookup (resolver->resolver,
                                    uri,
                                    cancellable,
-                                   callback,
-                                   user_data);
+                                   lookup_done,
+                                   g_object_ref (task));
+  g_object_unref (task);
 }
 
 static gchar **
@@ -121,21 +144,20 @@ g_proxy_resolver_portal_lookup_finish (GProxyResolver  *proxy_resolver,
                                        GError         **error)
 {
   GProxyResolverPortal *resolver = G_PROXY_RESOLVER_PORTAL (proxy_resolver);
-  char **proxy = NULL;
+  GTask *task = G_TASK (result);
+  char **proxies;
 
-  if (!gxdp_proxy_resolver_call_lookup_finish (resolver->resolver,
-                                               &proxy,
-                                               result,
-                                               error))
+  proxies = g_task_propagate_pointer (task, error);
+  if (proxies == NULL)
     return NULL;
 
   if (!resolver->network_available)
     {
-      g_strfreev (proxy);
-      proxy = g_strdupv ((gchar **)no_proxy);
+      g_strfreev (proxies);
+      proxies = g_strdupv ((gchar **)no_proxy);
     }
 
-  return proxy;
+  return proxies;
 }
 
 static void
