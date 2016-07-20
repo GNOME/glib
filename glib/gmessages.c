@@ -1875,16 +1875,15 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
  * handling in the structured log API when called from the old g_log() API.
  *
  * We can guarantee that g_log_default_handler() will pass GLIB_OLD_LOG_API as
- * the first field to g_log_structured(), if that is the case. This results in
- * it appearing as the fourth field in g_log_structured_array().
+ * the first field to g_log_structured_array(), if that is the case.
  */
 static gboolean
 log_is_old_api (const GLogField *fields,
                 gsize            n_fields)
 {
-  return (n_fields >= 4 &&
-          g_strcmp0 (fields[3].key, "GLIB_OLD_LOG_API") == 0 &&
-          g_strcmp0 (fields[3].value, "1") == 0);
+  return (n_fields >= 1 &&
+          g_strcmp0 (fields[0].key, "GLIB_OLD_LOG_API") == 0 &&
+          g_strcmp0 (fields[0].value, "1") == 0);
 }
 
 /**
@@ -2357,6 +2356,7 @@ g_log_default_handler (const gchar   *log_domain,
 		       gpointer	      unused_data)
 {
   const gchar *domains;
+  GLogField fields[4];
 
   if ((log_level & DEFAULT_LEVELS) || (log_level >> G_LOG_LEVEL_USER_SHIFT))
     goto emit;
@@ -2375,14 +2375,28 @@ g_log_default_handler (const gchar   *log_domain,
       return;
     }
 
+  fields[0].key = "GLIB_OLD_LOG_API";
+  fields[0].value = "1";
+  fields[0].length = -1;
+
+  fields[1].key = "MESSAGE";
+  fields[1].value = message;
+  fields[1].length = -1;
+
+  fields[2].key = "PRIORITY";
+  fields[2].value = log_level_to_priority (log_level);
+  fields[2].length = 1;
+
+  fields[3].key = "GLIB_DOMAIN";
+  fields[3].value = log_domain;
+  fields[3].length = -1;
+
   /* Print out via the structured log API, but drop any fatal flags since we
    * have already handled them. The fatal handling in the structured logging
    * API is more coarse-grained than in the old g_log() API, so we don't want
    * to use it here.
    */
-  g_log_structured (log_domain, log_level & ~G_LOG_FLAG_FATAL, "%s", message,
-                    "GLIB_OLD_LOG_API", "1",
-                    NULL);
+  g_log_structured_array (log_level & ~G_LOG_FLAG_FATAL, fields, 4);
 }
 
 /**
