@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <string.h>
+#define G_LOG_USE_STRUCTURED 1
 #include <glib.h>
 
 /* Test g_warn macros */
@@ -301,11 +303,10 @@ test_structured_logging_no_state (void)
   guint some_integer = 123;
 
   g_log_structured ("some-domain", G_LOG_LEVEL_MESSAGE,
-                    "This is a debug message about pointer %p and integer %u.",
-                    some_pointer, some_integer,
                     "MESSAGE_ID", "06d4df59e6c24647bfe69d2c27ef0b4e",
                     "MY_APPLICATION_CUSTOM_FIELD", "some debug string",
-                    NULL);
+                    "MESSAGE", "This is a debug message about pointer %p and integer %u.",
+                    some_pointer, some_integer);
 }
 
 static void
@@ -320,6 +321,131 @@ test_structured_logging_some_state (void)
   };
 
   g_log_structured_array (G_LOG_LEVEL_DEBUG, fields, G_N_ELEMENTS (fields));
+}
+
+typedef struct {
+  const GLogField *fields;
+  gsize n_fields;
+} MyLogFields;
+
+static void
+compare_field (const GLogField *f1, const GLogField *f2)
+{
+  g_assert_cmpstr (f1->key, ==, f2->key);
+  g_assert_cmpuint (f1->length, ==, f2->length);
+  if (f1->length == -1)
+    g_assert_cmpstr (f1->value, ==, f2->value);
+  else
+    g_assert (memcmp (f1->value, f2->value, f1->length) == 0);
+}
+
+static void
+compare_fields (const GLogField *f1, gsize n1, const GLogField *f2, gsize n2)
+{
+  int i, j;
+
+  for (i = 0; i < n1; i++)
+    {
+      for (j = 0; j < n2; j++)
+        {
+          if (strcmp (f1[i].key, f2[j].key) == 0)
+            {
+              compare_field (&f1[i], &f2[j]);
+              break;
+            }
+        }
+      g_assert (j < n2);
+    }
+
+  g_assert_cmpint (n1, ==, n2);
+}
+
+static GLogWriterOutput
+my_writer_func (GLogLevelFlags   log_level,
+                const GLogField *fields,
+                gsize            n_fields,
+                gpointer         user_data)
+{
+  MyLogFields *data = user_data;
+
+  compare_fields (fields, n_fields, data->fields, data->n_fields);
+
+  return G_LOG_WRITER_HANDLED;
+}
+
+static void
+test_structured_logging_roundtrip1 (void)
+{
+  gpointer some_pointer = GUINT_TO_POINTER (0x100);
+  gint some_integer = 123;
+  const GLogField fields[] = {
+    { "GLIB_DOMAIN", "some-domain", -1 },
+    { "PRIORITY", "5", 1 },
+    { "MESSAGE", "This is a debug message about pointer 0x100 and integer 123.", -1 },
+    { "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893", -1 },
+    { "MY_APPLICATION_CUSTOM_FIELD", "some debug string", -1 }
+  };
+  MyLogFields data = { fields, 5 };
+
+  g_log_set_writer_func (my_writer_func, &data, NULL);
+
+  g_log_structured ("some-domain", G_LOG_LEVEL_MESSAGE,
+                    "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893",
+                    "MY_APPLICATION_CUSTOM_FIELD", "some debug string",
+                    "MESSAGE", "This is a debug message about pointer %p and integer %u.",
+                    some_pointer, some_integer);
+  exit (0);
+}
+
+static void
+test_structured_logging_roundtrip2 (void)
+{
+  const gchar *some_string = "abc";
+  const GLogField fields[] = {
+    { "GLIB_DOMAIN", "some-domain", -1 },
+    { "PRIORITY", "5", 1 },
+    { "MESSAGE", "This is a debug message about string 'abc'.", -1 },
+    { "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893", -1 },
+    { "MY_APPLICATION_CUSTOM_FIELD", "some debug string", -1 }
+  };
+  MyLogFields data = { fields, 5 };
+
+  g_log_set_writer_func (my_writer_func, &data, NULL);
+
+  g_log_structured ("some-domain", G_LOG_LEVEL_MESSAGE,
+                    "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893",
+                    "MY_APPLICATION_CUSTOM_FIELD", "some debug string",
+                    "MESSAGE", "This is a debug message about string '%s'.",
+                    some_string);
+  exit (0);
+}
+
+static void
+test_structured_logging_roundtrip3 (void)
+{
+  const GLogField fields[] = {
+    { "GLIB_DOMAIN", "some-domain", -1 },
+    { "PRIORITY", "4", 1 },
+    { "MESSAGE", "Test test test.", -1 }
+  };
+  MyLogFields data = { fields, 3 };
+
+  g_log_set_writer_func (my_writer_func, &data, NULL);
+
+  g_log_structured ("some-domain", G_LOG_LEVEL_WARNING,
+                    "MESSAGE", "Test test test.");
+  exit (0);
+}
+
+static void
+test_structured_logging_roundtrip (void)
+{
+  g_test_trap_subprocess ("/structured-logging/roundtrip/subprocess/1", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_subprocess ("/structured-logging/roundtrip/subprocess/2", 0, 0);
+  g_test_trap_assert_passed ();
+  g_test_trap_subprocess ("/structured-logging/roundtrip/subprocess/3", 0, 0);
+  g_test_trap_assert_passed ();
 }
 
 int
@@ -349,7 +475,12 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/gibberish", test_gibberish);
   g_test_add_func ("/structured-logging/no-state", test_structured_logging_no_state);
   g_test_add_func ("/structured-logging/some-state", test_structured_logging_some_state);
+  g_test_add_func ("/structured-logging/roundtrip", test_structured_logging_roundtrip);
+  g_test_add_func ("/structured-logging/roundtrip/subprocess/1", test_structured_logging_roundtrip1);
+  g_test_add_func ("/structured-logging/roundtrip/subprocess/2", test_structured_logging_roundtrip2);
+  g_test_add_func ("/structured-logging/roundtrip/subprocess/3", test_structured_logging_roundtrip3);
 
   return g_test_run ();
 }
 
+  guint some_integer = 123;
