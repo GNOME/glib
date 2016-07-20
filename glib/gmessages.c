@@ -95,6 +95,9 @@
 #include <signal.h>
 #include <locale.h>
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 
 #include "glib-init.h"
 #include "galloca.h"
@@ -1614,31 +1617,22 @@ g_log_writer_is_journald (gint output_fd)
    * journal. See: https://github.com/systemd/systemd/issues/2473
    */
   static gsize initialized;
-  static gboolean stdout_is_socket;
+  static gboolean fd_is_journal = FALSE;
 
   g_return_val_if_fail (output_fd >= 0, FALSE);
 
   if (g_once_init_enter (&initialized))
     {
-      guint64 pid = (guint64) getpid ();
-      char *fdpath = g_strdup_printf ("/proc/%" G_GUINT64_FORMAT "/fd/%d",
-                                      pid, output_fd);
-      char buf[1024];
-      ssize_t bytes_read;
-
-      if ((bytes_read = readlink (fdpath, buf, sizeof(buf) - 1)) != -1)
-        {
-          buf[bytes_read] = '\0';
-          stdout_is_socket = g_str_has_prefix (buf, "socket:");
-        }
-      else
-        stdout_is_socket = FALSE;
-
-      g_free (fdpath);
+      struct sockaddr_storage addr;
+      socklen_t addr_len = sizeof(addr);
+      int err = getpeername (output_fd, (struct sockaddr *) &addr, &addr_len);
+      if (err == 0 && addr.ss_family == AF_UNIX)
+        fd_is_journal = g_str_has_prefix (((struct sockaddr_un *)&addr)->sun_path,
+                                          "/run/systemd/journal/");
       g_once_init_leave (&initialized, TRUE);
     }
 
-  return stdout_is_socket;
+  return fd_is_journal;
 #else /* if !HAVE_LIBSYSTEMD */
   return FALSE;
 #endif
