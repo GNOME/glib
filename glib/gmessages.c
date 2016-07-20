@@ -1295,10 +1295,9 @@ color_reset (gboolean use_color)
  * @log_domain: log domain, usually %G_LOG_DOMAIN
  * @log_level: log level, either from #GLogLevelFlags, or a user-defined
  *    level
- * @format: message format, in printf() style
- * @...: parameters to insert into the format string, followed by key–value
- *    pairs of structured data to add to the log message, terminated with a
- *    %NULL
+ * @...: key-value pairs of structured data to add to the log entry, followed
+ *    by the key "MESSAGE", followed by a printf()-style message format,
+ *    followed by parameters to insert in the format string
  *
  * Log a message with structured data. The message will be passed through to the
  * log writer set by the application using g_log_set_writer_func(). If the
@@ -1335,11 +1334,10 @@ color_reset (gboolean use_color)
  * For example:
  * ```
  * g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,
- *                   "This is a debug message about pointer %p and integer %u.",
- *                   some_pointer, some_integer,
  *                   "MESSAGE_ID", "06d4df59e6c24647bfe69d2c27ef0b4e",
  *                   "MY_APPLICATION_CUSTOM_FIELD", "some debug string",
- *                   NULL);
+ *                   "MESSAGE", "This is a debug message about pointer %p and integer %u.",
+ *                   some_pointer, some_integer);
  * ```
  *
  * Note that each `MESSAGE_ID` **must** be [uniquely and randomly
@@ -1364,8 +1362,8 @@ color_reset (gboolean use_color)
  * g_log_structured_array (G_LOG_LEVEL_DEBUG, fields, G_N_ELEMENTS (fields));
  * ```
  *
- * Note also that, even if no structured fields are specified, the argument list
- * **must** be %NULL-terminated.
+ * Note also that, even if no structured fields are specified, the key-value part
+ * of the argument list **must** be %NULL-terminated.
  *
  * The default writer function for `stdout` and `stderr` will automatically
  * append a new-line character to the @format, so you should not add one
@@ -1376,18 +1374,60 @@ color_reset (gboolean use_color)
 void
 g_log_structured (const gchar    *log_domain,
                   GLogLevelFlags  log_level,
-                  const gchar    *format,
                   ...)
 {
-  va_list args, field_args;
+  va_list args;
   gchar buffer[1025], *message_allocated = NULL;
-  const gchar *message, *priority;
+  const char *format;
+  const gchar *message;
   gpointer p;
   gsize n_fields, i;
-  GLogField *fields = NULL;
+  GLogField stack_fields[16];
+  GLogField *fields = stack_fields;
+  GLogField *fields_allocated = NULL;
+  GArray *array = NULL;
 
-  /* Format the message. */
-  va_start (args, format);
+  va_start (args, log_level);
+
+  for (p = va_arg (args, gchar *), i = 3;
+       strcmp (p, "MESSAGE") != 0;
+       p = va_arg (args, gchar *), i++)
+    {
+      GLogField field;
+      const gchar *key = p;
+      gconstpointer value = va_arg (args, gpointer);
+
+      field.key = key;
+      field.value = value;
+      field.length = -1;
+
+      if (i < 16)
+        stack_fields[i] = field;
+      else
+        {
+          /* Don't allow dynamic allocation, since we're likely
+           * in an out-of-memory situation. For lack of a better solution,
+           * just ignore further key-value pairs.
+           */
+          if (log_level & G_LOG_FLAG_RECURSION)
+            continue;
+
+          if (i == 16)
+            {
+              array = g_array_sized_new (FALSE, FALSE, sizeof (GLogField), 32);
+              g_array_append_vals (array, stack_fields, 16);
+            }
+
+          g_array_append_val (array, field);
+        }
+    }
+
+  n_fields = i;
+
+  if (array)
+    fields = fields_allocated = (GLogField *) g_array_free (array, FALSE);
+
+  format = va_arg (args, gchar *);
 
   if (log_level & G_LOG_FLAG_RECURSION)
     {
@@ -1404,58 +1444,25 @@ g_log_structured (const gchar    *log_domain,
       message = message_allocated = g_strdup_vprintf (format, args);
     }
 
-  /* Format the priority. */
-  priority = log_level_to_priority (log_level);
-
-  /* Work out how many fields we have. */
-  G_VA_COPY (field_args, args);
-
-  for (p = va_arg (args, gchar *), n_fields = 0;
-       p != NULL;
-       p = va_arg (args, gchar *), n_fields++)
-    va_arg (args, gpointer);
-
   /* Add MESSAGE, PRIORITY and GLIB_DOMAIN. */
-  n_fields += 3;
-
-  /* Build the fields array. */
-  fields = g_alloca (sizeof (GLogField) * n_fields);
-
   fields[0].key = "MESSAGE";
   fields[0].value = message;
   fields[0].length = -1;
 
   fields[1].key = "PRIORITY";
-  fields[1].value = priority;
-  fields[1].length = 1;  /* byte */
+  fields[1].value = log_level_to_priority (log_level);
+  fields[1].length = 1;
 
   fields[2].key = "GLIB_DOMAIN";
   fields[2].value = log_domain;
   fields[2].length = -1;
 
-  for (p = va_arg (field_args, gchar *), i = 3;
-       p != NULL;
-       p = va_arg (field_args, gchar *), i++)
-    {
-      GLogField *field = &fields[i];
-      const gchar *key = p;
-      gconstpointer value = va_arg (field_args, gpointer);
-
-      /* These are already provided as @format, @log_level and @log_domain. */
-      g_warn_if_fail (g_strcmp0 (key, "MESSAGE") != 0);
-      g_warn_if_fail (g_strcmp0 (key, "PRIORITY") != 0);
-      g_warn_if_fail (g_strcmp0 (key, "GLIB_DOMAIN") != 0);
-
-      field->key = key;
-      field->value = value;
-      field->length = -1;
-    }
-
   /* Log it. */
   g_log_structured_array (log_level, fields, n_fields);
 
+  g_free (fields_allocated);
   g_free (message_allocated);
-  va_end (field_args);
+
   va_end (args);
 }
 
