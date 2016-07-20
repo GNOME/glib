@@ -1174,6 +1174,23 @@ g_log_set_always_fatal
 g_log_set_fatal_mask
 g_log_default_handler
 g_log_set_default_handler
+
+<SUBSECTION>
+g_log_structured
+GLogField
+g_log_structured_array
+G_DEBUG_HERE
+
+<SUBSECTION>
+GLogWriterOutput
+GLogWriterFunc
+g_log_set_writer_func
+g_log_writer_supports_color
+g_log_writer_is_journald
+g_log_writer_format_fields
+g_log_writer_journald
+g_log_writer_standard_streams
+g_log_writer_default
 </SECTION>
 
 <SECTION>
