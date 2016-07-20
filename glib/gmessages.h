@@ -152,12 +152,13 @@ typedef enum
  *
  * Since: 2.50
  */
-typedef struct
+typedef struct _GLogField GLogField;
+struct _GLogField
 {
   const gchar *key;
   gconstpointer value;
   gssize length;
-} GLogField;
+};
 
 /**
  * GLogWriterFunc:
