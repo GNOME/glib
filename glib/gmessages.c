@@ -50,6 +50,12 @@
  * rather than as a single string containing all the information in an arbitrary
  * format.
  *
+ * The convenience macros g_info(), g_message(), g_debug(), g_warning() and g_error()
+ * will use the traditional g_log() API unless you define the symbol
+ * `G_LOG_USE_STRUCTURED` before including `glib.h`. But note that even messages
+ * logged through the traditional g_log() API are ultimatively passed to
+ * g_log_structured(), so that all log messages end up in same destination.
+ *
  * The support for structured logging was motivated by the following needs (some
  * of which were supported previously; others weren’t):
  *  * Support for multiple logging levels.
@@ -1372,8 +1378,10 @@ color_reset (gboolean use_color)
  * g_log_structured_array (G_LOG_LEVEL_DEBUG, fields, G_N_ELEMENTS (fields));
  * ]|
  *
- * Note also that, even if no structured fields are specified, the key-value
- * part of the argument list must be %NULL-terminated.
+ * Note also that, even if no other structured fields are specified, there
+ * must always be a "MESSAGE" key before the format string. The "MESSAGE"-format
+ * pair has to be the last of the key-value pairs, and "MESSAGE" is the only
+ * field for which printf()-style formatting is supported.
  *
  * The default writer function for `stdout` and `stderr` will automatically
  * append a new-line character after the message, so you should not add one
