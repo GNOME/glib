@@ -1302,8 +1302,8 @@ color_reset (gboolean use_color)
  *    by the key "MESSAGE", followed by a printf()-style message format,
  *    followed by parameters to insert in the format string
  *
- * Log a message with structured data. The message will be passed through to the
- * log writer set by the application using g_log_set_writer_func(). If the
+ * Log a message with structured data. The message will be passed through to
+ * the log writer set by the application using g_log_set_writer_func(). If the
  * message is fatal (i.e. its log level is %G_LOG_LEVEL_ERROR), the program will
  * be aborted at the end of this function.
  *
@@ -1318,8 +1318,12 @@ color_reset (gboolean use_color)
  * `GLIB_` prefix.
  *
  * The @log_domain will be converted into a `GLIB_DOMAIN` field. @log_level will
- * be converted into a `PRIORITY` field. @format will have its placeholders
- * substituted for the provided values and be converted into a `MESSAGE` field.
+ * be converted into a
+ * [`PRIORITY`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html#PRIORITY=)
+ * field. The format string will have its placeholders substituted for the provided
+ * values and be converted into a
+ * [`MESSAGE`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html#MESSAGE=)
+ * field.
  *
  * Other fields you may commonly want to pass into this function:
  *
@@ -1330,20 +1334,20 @@ color_reset (gboolean use_color)
  *  * [`ERRNO`](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html#ERRNO=)
  *
  * Note that `CODE_FILE`, `CODE_LINE` and `CODE_FUNC` are automatically set by
- * the logging macros, g_debug_structured(), G_DEBUG_HERE(),
- * g_message_structured(), g_warning_structured(), g_critical_structured() and
- * g_error_structured().
+ * the logging macros, G_DEBUG_HERE(), g_message(), g_warning(), g_critical(),
+ * g_error(), etc, if the symbols `G_LOG_USE_STRUCTURED` is defined before including
+ * glib.h.
  *
  * For example:
- * ```
+ * |[<!-- language="C" -->
  * g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,
  *                   "MESSAGE_ID", "06d4df59e6c24647bfe69d2c27ef0b4e",
  *                   "MY_APPLICATION_CUSTOM_FIELD", "some debug string",
  *                   "MESSAGE", "This is a debug message about pointer %p and integer %u.",
  *                   some_pointer, some_integer);
- * ```
+ * ]|
  *
- * Note that each `MESSAGE_ID` **must** be [uniquely and randomly
+ * Note that each `MESSAGE_ID` must be [uniquely and randomly
  * generated](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html#MESSAGE_ID=).
  * If adding a `MESSAGE_ID`, consider shipping a [message
  * catalog](https://www.freedesktop.org/wiki/Software/systemd/catalog/) with
@@ -1355,7 +1359,7 @@ color_reset (gboolean use_color)
  * interpreted as a string.
  *
  * For example:
- * ```
+ * |[<!-- language="C" -->
  * const GLogField fields[] = {
  *   { "MESSAGE", "This is a debug message.", -1 },
  *   { "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893", -1 },
@@ -1363,14 +1367,14 @@ color_reset (gboolean use_color)
  *   { "MY_APPLICATION_STATE", state_object, 0 },
  * };
  * g_log_structured_array (G_LOG_LEVEL_DEBUG, fields, G_N_ELEMENTS (fields));
- * ```
+ * ]|
  *
- * Note also that, even if no structured fields are specified, the key-value part
- * of the argument list **must** be %NULL-terminated.
+ * Note also that, even if no structured fields are specified, the key-value
+ * part of the argument list must be %NULL-terminated.
  *
  * The default writer function for `stdout` and `stderr` will automatically
- * append a new-line character to the @format, so you should not add one
- * manually.
+ * append a new-line character after the message, so you should not add one
+ * manually to the format string.
  *
  * Since: 2.50
  */
