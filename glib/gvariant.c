@@ -3187,17 +3187,17 @@ ensure_valid_builder (GVariantBuilder *builder)
 {
   if (is_valid_builder (builder))
     return TRUE;
-  if (builder->partial_magic == GVSB_MAGIC_PARTIAL)
+  if (builder->u.s.partial_magic == GVSB_MAGIC_PARTIAL)
     {
       static GVariantBuilder cleared_builder;
 
       /* Make sure that only first two fields were set and the rest is
        * zeroed to avoid messing up the builder that had parent
        * address equal to GVSB_MAGIC_PARTIAL. */
-      if (memcmp (cleared_builder.y, builder->y, sizeof cleared_builder.y))
+      if (memcmp (cleared_builder.u.s.y, builder->u.s.y, sizeof cleared_builder.u.s.y))
         return FALSE;
 
-      g_variant_builder_init (builder, builder->type);
+      g_variant_builder_init (builder, builder->u.s.type);
     }
   return is_valid_builder (builder);
 }
@@ -3814,17 +3814,17 @@ ensure_valid_dict (GVariantDict *dict)
 {
   if (is_valid_dict (dict))
     return TRUE;
-  if (dict->partial_magic == GVSD_MAGIC_PARTIAL)
+  if (dict->u.s.partial_magic == GVSD_MAGIC_PARTIAL)
     {
       static GVariantDict cleared_dict;
 
       /* Make sure that only first two fields were set and the rest is
        * zeroed to avoid messing up the builder that had parent
        * address equal to GVSB_MAGIC_PARTIAL. */
-      if (memcmp (cleared_dict.y, dict->y, sizeof cleared_dict.y))
+      if (memcmp (cleared_dict.u.s.y, dict->u.s.y, sizeof cleared_dict.u.s.y))
         return FALSE;
 
-      g_variant_dict_init (dict, dict->asv);
+      g_variant_dict_init (dict, dict->u.s.asv);
     }
   return is_valid_dict (dict);
 }

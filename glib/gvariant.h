@@ -303,9 +303,9 @@ struct _GVariantBuilder {
       gsize partial_magic;
       const GVariantType *type;
       gsize y[14];
-    };
+    } s;
     gsize x[16];
-  };
+  } u;
 };
 
 typedef enum
@@ -442,9 +442,9 @@ struct _GVariantDict {
       GVariant *asv;
       gsize partial_magic;
       gsize y[14];
-    };
+    } s;
     gsize x[16];
-  };
+  } u;
 };
 
 /**
