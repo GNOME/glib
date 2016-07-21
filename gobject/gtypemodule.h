@@ -36,6 +36,8 @@ typedef struct _GTypeModuleClass GTypeModuleClass;
 #define G_IS_TYPE_MODULE_CLASS(class)   (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_TYPE_MODULE))
 #define G_TYPE_MODULE_GET_CLASS(module) (G_TYPE_INSTANCE_GET_CLASS ((module), G_TYPE_TYPE_MODULE, GTypeModuleClass))
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GTypeModule, g_object_unref)
+
 /**
  * GTypeModule:
  * @name: the name of the module
