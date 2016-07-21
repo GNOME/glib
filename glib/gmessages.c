@@ -1293,6 +1293,9 @@ color_reset (gboolean use_color)
   return "\033[0m";
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+
 /**
  * g_log_structured:
  * @log_domain: log domain, usually %G_LOG_DOMAIN
@@ -1472,6 +1475,8 @@ g_log_structured (const gchar    *log_domain,
 
   va_end (args);
 }
+
+#pragma GCC diagnostic pop
 
 static GLogWriterOutput _g_log_writer_fallback (GLogLevelFlags   log_level,
                                                 const GLogField *fields,
