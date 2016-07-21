@@ -33,6 +33,11 @@
 #ifndef O_PATH
 #define O_PATH 0
 #endif
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#else
+#define HAVE_O_CLOEXEC 1
+#endif
 
 static GXdpDocuments *documents;
 static char *documents_mountpoint;
@@ -114,6 +119,10 @@ g_document_portal_add_document (GFile   *file,
                    "Failed to open %s", path);
       goto out;
     }
+
+#ifndef HAVE_O_CLOEXEC
+  fcntl (fd, F_SETFD, FD_CLOEXEC);
+#endif
 
   fd_list = g_unix_fd_list_new ();
   fd_in = g_unix_fd_list_append (fd_list, fd, error);
