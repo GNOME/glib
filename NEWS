@@ -1,3 +1,20 @@
+Overview of changes in GLib 2.49.4
+==================================
+
+* Change the just-introduced structured logging API. The arguments
+  of g_log_structured() had to be reordered to enable an implementation
+  within the limits of what the standards guarantee about var args.
+
+Bugs fixed:
+ 744456 Structured logging API
+ 768936 gio doc build fails because of missing gio.xml in the tarballs
+ 768963 improper va_list use in g_log_structured()
+ 768968 gio/tests/socket-listener hangs since e4ee307
+
+Translation updates:
+ Spanish
+
+
 Overview of changes in GLib 2.49.3
 ==================================
 
