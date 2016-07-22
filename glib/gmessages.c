@@ -1407,7 +1407,13 @@ g_log_structured (const gchar    *log_domain,
 
   va_start (args, log_level);
 
-  for (p = va_arg (args, gchar *), i = 3;
+  /* MESSAGE and PRIORITY are a given */
+  n_fields = 2;
+
+  if (log_domain)
+    n_fields++;
+
+  for (p = va_arg (args, gchar *), i = n_fields;
        strcmp (p, "MESSAGE") != 0;
        p = va_arg (args, gchar *), i++)
     {
@@ -1471,9 +1477,12 @@ g_log_structured (const gchar    *log_domain,
   fields[1].value = log_level_to_priority (log_level);
   fields[1].length = 1;
 
-  fields[2].key = "GLIB_DOMAIN";
-  fields[2].value = log_domain;
-  fields[2].length = -1;
+  if (log_domain)
+    {
+      fields[2].key = "GLIB_DOMAIN";
+      fields[2].value = log_domain;
+      fields[2].length = -1;
+    }
 
   /* Log it. */
   g_log_structured_array (log_level, fields, n_fields);
@@ -2375,6 +2384,7 @@ g_log_default_handler (const gchar   *log_domain,
 {
   const gchar *domains;
   GLogField fields[4];
+  int n_fields = 0;
 
   if ((log_level & DEFAULT_LEVELS) || (log_level >> G_LOG_LEVEL_USER_SHIFT))
     goto emit;
@@ -2396,25 +2406,32 @@ g_log_default_handler (const gchar   *log_domain,
   fields[0].key = "GLIB_OLD_LOG_API";
   fields[0].value = "1";
   fields[0].length = -1;
+  n_fields++;
 
   fields[1].key = "MESSAGE";
   fields[1].value = message;
   fields[1].length = -1;
+  n_fields++;
 
   fields[2].key = "PRIORITY";
   fields[2].value = log_level_to_priority (log_level);
   fields[2].length = 1;
+  n_fields++;
 
-  fields[3].key = "GLIB_DOMAIN";
-  fields[3].value = log_domain;
-  fields[3].length = -1;
+  if (log_domain)
+    {
+      fields[3].key = "GLIB_DOMAIN";
+      fields[3].value = log_domain;
+      fields[3].length = -1;
+      n_fields++;
+    }
 
   /* Print out via the structured log API, but drop any fatal flags since we
    * have already handled them. The fatal handling in the structured logging
    * API is more coarse-grained than in the old g_log() API, so we don't want
    * to use it here.
    */
-  g_log_structured_array (log_level & ~G_LOG_FLAG_FATAL, fields, 4);
+  g_log_structured_array (log_level & ~G_LOG_FLAG_FATAL, fields, n_fields);
 }
 
 /**
