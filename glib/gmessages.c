@@ -1582,7 +1582,6 @@ g_log_set_writer_func (GLogWriterFunc func,
                        GDestroyNotify user_data_free)
 {
   g_return_if_fail (func != NULL);
-  g_return_if_fail (log_writer_func == g_log_writer_default);
 
   g_mutex_lock (&g_messages_lock);
   log_writer_func = func;
