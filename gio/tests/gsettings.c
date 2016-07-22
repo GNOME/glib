@@ -1186,9 +1186,9 @@ test_simple_binding (void)
   g_assert_cmpuint (g_settings_get_uint64 (settings, "uint64"), ==, 12345);
 
   g_settings_set_uint64 (settings, "uint64", 54321);
-  u = 1111;
-  g_object_get (obj, "uint64", &u, NULL);
-  g_assert_cmpuint (u, ==, 54321);
+  u64 = 1111;
+  g_object_get (obj, "uint64", &u64, NULL);
+  g_assert_cmpuint (u64, ==, 54321);
 
   g_settings_bind (settings, "int64", obj, "int64", G_SETTINGS_BIND_DEFAULT);
 
