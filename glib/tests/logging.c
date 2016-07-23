@@ -428,7 +428,7 @@ test_structured_logging_roundtrip1 (void)
   gint some_integer = 123;
   const GLogField fields[] = {
     { "GLIB_DOMAIN", "some-domain", -1 },
-    { "PRIORITY", "5", 1 },
+    { "PRIORITY", "5", -1 },
     { "MESSAGE", "This is a debug message about pointer 0x100 and integer 123.", -1 },
     { "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893", -1 },
     { "MY_APPLICATION_CUSTOM_FIELD", "some debug string", -1 }
@@ -462,7 +462,7 @@ test_structured_logging_roundtrip2 (void)
   const gchar *some_string = "abc";
   const GLogField fields[] = {
     { "GLIB_DOMAIN", "some-domain", -1 },
-    { "PRIORITY", "5", 1 },
+    { "PRIORITY", "5", -1 },
     { "MESSAGE", "This is a debug message about string 'abc'.", -1 },
     { "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893", -1 },
     { "MY_APPLICATION_CUSTOM_FIELD", "some debug string", -1 }
@@ -486,7 +486,7 @@ test_structured_logging_roundtrip3 (void)
 {
   const GLogField fields[] = {
     { "GLIB_DOMAIN", "some-domain", -1 },
-    { "PRIORITY", "4", 1 },
+    { "PRIORITY", "4", -1 },
     { "MESSAGE", "Test test test.", -1 }
   };
   ExpectedMessage expected = { fields, 3 };
