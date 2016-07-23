@@ -1730,21 +1730,6 @@ if test x$have_libelf = xyes; then
   AC_DEFINE(HAVE_LIBELF, 1, [Define if libelf is available])
 fi
 
-dnl *************************
-dnl *** check for systemd ***
-dnl *************************
-AC_ARG_ENABLE([libsystemd],
-              [AS_HELP_STRING([--disable-libsystemd],
-                              [build without libsystemd support])])
-AS_IF([test "$enable_libsystemd" != "no"],[
-  PKG_CHECK_MODULES([LIBSYSTEMD], [libsystemd],
-                    [have_libsystemd=yes], [have_libsystemd=no])
-])
-
-AS_IF([test "$have_libsystemd" = "yes"],[
-  AC_DEFINE([HAVE_LIBSYSTEMD],[1],[Define if libsystemd is available])
-])
-
 dnl ****************************************
 dnl *** platform dependent source checks ***
 dnl ****************************************

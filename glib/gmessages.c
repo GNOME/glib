@@ -104,6 +104,8 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <fcntl.h>
+#include <sys/uio.h>
 
 #include "glib-init.h"
 #include "galloca.h"
@@ -128,12 +130,6 @@
 #include <io.h>
 #  define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
 #  include <windows.h>
-#endif
-
-#ifdef HAVE_LIBSYSTEMD
-#define SD_JOURNAL_SUPPRESS_LOCATION 1
-#include <sys/uio.h>
-#include <systemd/sd-journal.h>
 #endif
 
 
@@ -1475,7 +1471,7 @@ g_log_structured (const gchar    *log_domain,
 
   fields[1].key = "PRIORITY";
   fields[1].value = log_level_to_priority (log_level);
-  fields[1].length = 1;
+  fields[1].length = -1;
 
   if (log_domain)
     {
@@ -1623,6 +1619,21 @@ g_log_writer_supports_color (gint output_fd)
   return isatty (output_fd);
 }
 
+static int journal_fd = -1;
+
+static void
+open_journal (void)
+{
+  if ((journal_fd = socket (AF_UNIX, SOCK_DGRAM, 0)) < 0)
+    return;
+
+  if (fcntl (journal_fd, F_SETFD, FD_CLOEXEC) < 0)
+    {
+      close (journal_fd);
+      journal_fd = -1;
+    }
+}
+
 /**
  * g_log_writer_is_journald:
  * @output_fd: output file descriptor to check
@@ -1637,7 +1648,6 @@ g_log_writer_supports_color (gint output_fd)
 gboolean
 g_log_writer_is_journald (gint output_fd)
 {
-#ifdef HAVE_LIBSYSTEMD
   /* FIXME: Use the new journal API for detecting whether we’re writing to the
    * journal. See: https://github.com/systemd/systemd/issues/2473
    */
@@ -1654,13 +1664,14 @@ g_log_writer_is_journald (gint output_fd)
       if (err == 0 && addr.ss_family == AF_UNIX)
         fd_is_journal = g_str_has_prefix (((struct sockaddr_un *)&addr)->sun_path,
                                           "/run/systemd/journal/");
+
+      if (fd_is_journal)
+        open_journal ();
+
       g_once_init_leave (&initialized, TRUE);
     }
 
   return fd_is_journal;
-#else /* if !HAVE_LIBSYSTEMD */
-  return FALSE;
-#endif
 }
 
 static void escape_string (GString *string);
@@ -1771,6 +1782,78 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   return g_string_free (gstring, FALSE);
 }
 
+static int
+journal_sendv (struct iovec *iov,
+               gsize         iovlen)
+{
+  int buf_fd = -1;
+  struct msghdr mh;
+  struct sockaddr_un sa;
+  union {
+    struct cmsghdr cmsghdr;
+    guint8 buf[CMSG_SPACE(sizeof(int))];
+  } control;
+  struct cmsghdr *cmsg;
+  char path[] = "/dev/shm/journal.XXXXXX";
+
+  if (journal_fd < 0)
+    return -1;
+
+  memset (&sa, 0, sizeof (sa));
+  sa.sun_family = AF_UNIX;
+  if (g_strlcpy (sa.sun_path, "/run/systemd/journal/socket", sizeof (sa.sun_path)) >= sizeof (sa.sun_path))
+    return -1;
+
+  memset (&mh, 0, sizeof (mh));
+  mh.msg_name = &sa;
+  mh.msg_namelen = offsetof (struct sockaddr_un, sun_path) + strlen (sa.sun_path);
+  mh.msg_iov = iov;
+  mh.msg_iovlen = iovlen;
+
+  if (sendmsg (journal_fd, &mh, MSG_NOSIGNAL) >= 0)
+    return 0;
+
+  if (errno != EMSGSIZE && errno != ENOBUFS)
+    return -1;
+
+  /* Message was too large, so dump to temporary file
+   * and pass an FD to the journal
+   */
+  if ((buf_fd = mkostemp (path, O_CLOEXEC|O_RDWR)) < 0)
+    return -1;
+
+  if (unlink (path) < 0)
+    {
+      close (buf_fd);
+      return -1;
+    }
+
+  if (writev (buf_fd, iov, iovlen) < 0)
+    {
+      close (buf_fd);
+      return -1;
+    }
+
+  mh.msg_iov = NULL;
+  mh.msg_iovlen = 0;
+
+  memset (&control, 0, sizeof (control));
+  mh.msg_control = &control;
+  mh.msg_controllen = sizeof (control);
+
+  cmsg = CMSG_FIRSTHDR (&mh);
+  cmsg->cmsg_level = SOL_SOCKET;
+  cmsg->cmsg_type = SCM_RIGHTS;
+  cmsg->cmsg_len = CMSG_LEN (sizeof (int));
+  memcpy (CMSG_DATA (cmsg), &buf_fd, sizeof (int));
+
+  mh.msg_controllen = cmsg->cmsg_len;
+
+  (void) sendmsg (journal_fd, &mh, MSG_NOSIGNAL);
+
+  return 0;
+}
+
 /**
  * g_log_writer_journald:
  * @log_level: log level, either from #GLogLevelFlags, or a user-defined
@@ -1799,9 +1882,11 @@ g_log_writer_journald (GLogLevelFlags   log_level,
                        gsize            n_fields,
                        gpointer         user_data)
 {
-#ifdef HAVE_LIBSYSTEMD
-  gsize i;
-  struct iovec *pairs;
+  const char equals = '=';
+  const char newline = '\n';
+  gsize i, k;
+  struct iovec *iov, *v;
+  char *buf;
   gint retval;
 
   g_return_val_if_fail (fields != NULL, G_LOG_WRITER_UNHANDLED);
@@ -1814,38 +1899,66 @@ g_log_writer_journald (GLogLevelFlags   log_level,
    * locale’s character set.
    */
 
-  pairs = g_alloca (sizeof (struct iovec) * n_fields);
+  iov = g_alloca (sizeof (struct iovec) * 5 * n_fields);
+  buf = g_alloca (32 * n_fields);
 
+  k = 0;
+  v = iov;
   for (i = 0; i < n_fields; i++)
     {
-      guint8 *buf = NULL;
-      gsize key_length;
-      gsize value_length;
+      gsize length;
+      gboolean binary;
 
-      /* Build the iovec for this field. */
-      key_length = strlen (fields[i].key);
-      value_length =
-          (fields[i].length < 0) ? strlen (fields[i].value) : fields[i].length;
+      if (fields[i].length < 0)
+        {
+          length = strlen (fields[i].value);
+          binary = strchr (fields[i].value, '\n') != NULL;
+        }
+      else
+        {
+          length = fields[i].length;
+          binary = TRUE;
+        }
 
-      buf = g_malloc (key_length + 1 + value_length + 1);
-      pairs[i].iov_base = buf;
-      pairs[i].iov_len = key_length + 1 + value_length;
+      if (binary)
+        {
+          guint64 nstr;
 
-      strncpy ((char *) buf, fields[i].key, key_length);
-      buf[key_length] = '=';
-      memcpy ((char *) buf + key_length + 1, fields[i].value, value_length);
-      buf[key_length + 1 + value_length] = '\0';
+          v[0].iov_base = (gpointer)fields[i].key;
+          v[0].iov_len = strlen (fields[i].key);
+
+          v[1].iov_base = (gpointer)&newline;
+          v[1].iov_len = 1;
+
+          nstr = htole64 (length);
+          memcpy (&buf[k], &nstr, sizeof (nstr));
+
+          v[2].iov_base = &buf[k];
+          v[2].iov_len = sizeof (nstr);
+          v += 3;
+          k += sizeof (nstr);
+        }
+      else
+        {
+          v[0].iov_base = (gpointer)fields[i].key;
+          v[0].iov_len = strlen (fields[i].key);
+
+          v[1].iov_base = (gpointer)&equals;
+          v[1].iov_len = 1;
+          v += 2;
+        }
+
+      v[0].iov_base = (gpointer)fields[i].value;
+      v[0].iov_len = length;
+
+      v[1].iov_base = (gpointer)&newline;
+      v[1].iov_len = 1;
+      v += 2;
     }
 
-  retval = sd_journal_sendv (pairs, n_fields);
+  retval = journal_sendv (iov, v - iov);
 
-  for (i = 0; i < n_fields; i++)
-    g_free (pairs[i].iov_base);
-
-  return (retval == 0) ? G_LOG_WRITER_HANDLED : G_LOG_WRITER_UNHANDLED;
-#else /* if !HAVE_LIBSYSTEMD */
-  return G_LOG_WRITER_UNHANDLED;
-#endif
+  return retval == 0 ? G_LOG_WRITER_HANDLED : G_LOG_WRITER_UNHANDLED;
 }
 
 /**
@@ -2414,7 +2527,7 @@ g_log_default_handler (const gchar   *log_domain,
 
   fields[2].key = "PRIORITY";
   fields[2].value = log_level_to_priority (log_level);
-  fields[2].length = 1;
+  fields[2].length = -1;
   n_fields++;
 
   if (log_domain)
