@@ -1117,6 +1117,7 @@ parse_args (gint    *argc_p,
  * - `--verbose`: Run tests verbosely.
  * - `-q`, `--quiet`: Run tests quietly.
  * - `-p PATH`: Execute all tests matching the given path.
+ * - `-s PATH`: Skip all tests matching the given path.
  *   This can also be used to force a test to run that would otherwise
  *   be skipped (ie, a test whose name contains "/subprocess").
  * - `-m {perf|slow|thorough|quick|undefined|no-undefined}`: Execute tests according to these test modes:
@@ -1557,8 +1558,9 @@ g_test_get_root (void)
  * Runs all tests under the toplevel suite which can be retrieved
  * with g_test_get_root(). Similar to g_test_run_suite(), the test
  * cases to be run are filtered according to test path arguments
- * (`-p testpath`) as parsed by g_test_init(). g_test_run_suite()
- * or g_test_run() may only be called once in a program.
+ * (`-p testpath` and `-s testpath`) as parsed by g_test_init().
+ * g_test_run_suite() or g_test_run() may only be called once in a
+ * program.
  *
  * In general, the tests and sub-suites within each suite are run in
  * the order in which they are defined. However, note that prior to
@@ -2294,9 +2296,10 @@ g_test_suite_count (GTestSuite *suite)
  *
  * Execute the tests within @suite and all nested #GTestSuites.
  * The test suites to be executed are filtered according to
- * test path arguments (`-p testpath`) as parsed by g_test_init().
- * See the g_test_run() documentation for more information on the
- * order that tests are run in.
+ * test path arguments (`-p testpath` and `-s testpath`) as parsed by
+ * g_test_init(). See the g_test_run() documentation for more
+ * information on the order that tests are run in.
+
  *
  * g_test_run_suite() or g_test_run() may only be called once
  * in a program.
