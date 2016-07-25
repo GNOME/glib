@@ -1818,8 +1818,12 @@ journal_sendv (struct iovec *iov,
   mh.msg_iov = iov;
   mh.msg_iovlen = iovlen;
 
+retry:
   if (sendmsg (journal_fd, &mh, MSG_NOSIGNAL) >= 0)
     return 0;
+
+  if (errno == EINTR)
+    goto retry;
 
   if (errno != EMSGSIZE && errno != ENOBUFS)
     return -1;
@@ -1857,9 +1861,14 @@ journal_sendv (struct iovec *iov,
 
   mh.msg_controllen = cmsg->cmsg_len;
 
-  (void) sendmsg (journal_fd, &mh, MSG_NOSIGNAL);
+retry2:
+  if (sendmsg (journal_fd, &mh, MSG_NOSIGNAL) >= 0)
+    return 0;
 
-  return 0;
+  if (errno == EINTR)
+    goto retry2;
+
+  return -1;
 }
 
 /**
