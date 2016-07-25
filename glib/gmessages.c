@@ -106,6 +106,7 @@
 #include <sys/un.h>
 #include <fcntl.h>
 #include <sys/uio.h>
+#include <endian.h>
 
 #include "glib-init.h"
 #include "galloca.h"
