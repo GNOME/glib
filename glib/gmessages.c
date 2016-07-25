@@ -106,7 +106,6 @@
 #include <sys/un.h>
 #include <fcntl.h>
 #include <sys/uio.h>
-#include <endian.h>
 
 #include "glib-init.h"
 #include "galloca.h"
@@ -1923,7 +1922,7 @@ g_log_writer_journald (GLogLevelFlags   log_level,
   v = iov;
   for (i = 0; i < n_fields; i++)
     {
-      gsize length;
+      guint64 length;
       gboolean binary;
 
       if (fields[i].length < 0)
@@ -1947,7 +1946,7 @@ g_log_writer_journald (GLogLevelFlags   log_level,
           v[1].iov_base = (gpointer)&newline;
           v[1].iov_len = 1;
 
-          nstr = htole64 (length);
+          nstr = GUINT64_TO_LE(length);
           memcpy (&buf[k], &nstr, sizeof (nstr));
 
           v[2].iov_base = &buf[k];
