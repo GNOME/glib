@@ -132,7 +132,6 @@
 #  include <windows.h>
 #endif
 
-
 /**
  * SECTION:messages
  * @title: Message Logging
@@ -1621,17 +1620,25 @@ g_log_writer_supports_color (gint output_fd)
 
 static int journal_fd = -1;
 
+#ifndef SOCK_CLOEXEC
+#define SOCK_CLOEXEC 0
+#else
+#define HAVE_SOCK_CLOEXEC 1
+#endif
+
 static void
 open_journal (void)
 {
-  if ((journal_fd = socket (AF_UNIX, SOCK_DGRAM, 0)) < 0)
+  if ((journal_fd = socket (AF_UNIX, SOCK_DGRAM | SOCK_CLOEXEC, 0)) < 0)
     return;
 
+#ifndef HAVE_SOCK_CLOEXEC
   if (fcntl (journal_fd, F_SETFD, FD_CLOEXEC) < 0)
     {
       close (journal_fd);
       journal_fd = -1;
     }
+#endif
 }
 
 /**
