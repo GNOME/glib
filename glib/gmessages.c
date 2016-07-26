@@ -101,11 +101,14 @@
 #include <signal.h>
 #include <locale.h>
 #include <errno.h>
+
+#ifdef __linux__
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <fcntl.h>
 #include <sys/uio.h>
+#endif
 
 #include "glib-init.h"
 #include "galloca.h"
@@ -1618,6 +1621,7 @@ g_log_writer_supports_color (gint output_fd)
   return isatty (output_fd);
 }
 
+#ifdef __linux__
 static int journal_fd = -1;
 
 #ifndef SOCK_CLOEXEC
@@ -1640,6 +1644,7 @@ open_journal (void)
     }
 #endif
 }
+#endif
 
 /**
  * g_log_writer_is_journald:
@@ -1655,6 +1660,7 @@ open_journal (void)
 gboolean
 g_log_writer_is_journald (gint output_fd)
 {
+#ifdef __linux__
   /* FIXME: Use the new journal API for detecting whether we’re writing to the
    * journal. See: https://github.com/systemd/systemd/issues/2473
    */
@@ -1679,6 +1685,9 @@ g_log_writer_is_journald (gint output_fd)
     }
 
   return fd_is_journal;
+#else
+  return FALSE;
+#endif
 }
 
 static void escape_string (GString *string);
@@ -1789,6 +1798,7 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   return g_string_free (gstring, FALSE);
 }
 
+#ifdef __linux__
 static int
 journal_sendv (struct iovec *iov,
                gsize         iovlen)
@@ -1869,6 +1879,7 @@ retry2:
 
   return -1;
 }
+#endif
 
 /**
  * g_log_writer_journald:
@@ -1898,6 +1909,7 @@ g_log_writer_journald (GLogLevelFlags   log_level,
                        gsize            n_fields,
                        gpointer         user_data)
 {
+#ifdef __linux__
   const char equals = '=';
   const char newline = '\n';
   gsize i, k;
@@ -1975,6 +1987,9 @@ g_log_writer_journald (GLogLevelFlags   log_level,
   retval = journal_sendv (iov, v - iov);
 
   return retval == 0 ? G_LOG_WRITER_HANDLED : G_LOG_WRITER_UNHANDLED;
+#else
+  return G_LOG_WRITER_UNHANDLED;
+#endif
 }
 
 /**
