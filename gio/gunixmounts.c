@@ -391,11 +391,7 @@ _g_get_unix_mounts (void)
   GList *return_list = NULL;
 
   ctxt = mnt_new_context ();
-  mnt_context_get_table (ctxt, PROC_MOUNTINFO_PATH, &table);
-  if (!table)
-    mnt_context_get_mtab (ctxt, &table);
-
-  /* Not much to do if neither mountinfo nor mtab are available */
+  mnt_context_get_mtab (ctxt, &table);
   if (!table)
     return NULL;
 
