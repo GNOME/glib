@@ -393,7 +393,7 @@ _g_get_unix_mounts (void)
   ctxt = mnt_new_context ();
   mnt_context_get_mtab (ctxt, &table);
   if (!table)
-    return NULL;
+    goto out;
 
   iter = mnt_new_iter (MNT_ITER_FORWARD);
   while (mnt_table_next_fs (table, iter, &fs) == 0)
@@ -425,8 +425,9 @@ _g_get_unix_mounts (void)
 
       return_list = g_list_prepend (return_list, mount_entry);
     }
-
   mnt_free_iter (iter);
+
+ out:
   mnt_free_context (ctxt);
 
   return g_list_reverse (return_list);
@@ -876,7 +877,7 @@ _g_get_unix_mount_points (void)
   ctxt = mnt_new_context ();
   mnt_context_get_fstab (ctxt, &table);
   if (!table)
-    return NULL;
+    goto out;
 
   iter = mnt_new_iter (MNT_ITER_FORWARD);
   while (mnt_table_next_fs (table, iter, &fs) == 0)
@@ -942,8 +943,9 @@ _g_get_unix_mount_points (void)
 
       return_list = g_list_prepend (return_list, mount_point);
     }
-
   mnt_free_iter (iter);
+
+ out:
   mnt_free_context (ctxt);
 
   return g_list_reverse (return_list);
