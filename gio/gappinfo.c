@@ -23,6 +23,7 @@
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
 #include "gcontextspecificgroup.h"
+#include "gtask.h"
 
 #include "glibintl.h"
 #include <gioerror.h>
