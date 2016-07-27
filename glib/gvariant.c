@@ -2916,8 +2916,8 @@ struct heap_iter
 #define GVHI_MAGIC              ((gsize) 1450270775u)
 #define is_valid_iter(i)        (i != NULL && \
                                  GVSI(i)->magic == GVSI_MAGIC)
-#define is_valid_heap_iter(i)   (GVHI(i)->magic == GVHI_MAGIC && \
-                                 is_valid_iter(i))
+#define is_valid_heap_iter(i)   (is_valid_iter(i) && \
+                                 GGVHI(i)->magic == GVHI_MAGIC)
 
 /**
  * g_variant_iter_new:
