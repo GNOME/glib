@@ -242,7 +242,7 @@ GLogWriterOutput g_log_writer_default          (GLogLevelFlags   log_level,
   g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,            \
                     "CODE_FILE", __FILE__,                      \
                     "CODE_LINE", G_STRINGIFY (__LINE__),        \
-                    "CODE_FUNC", __func__,                      \
+                    "CODE_FUNC", G_STRFUNC,                      \
                     "MESSAGE", "%" G_GINT64_FORMAT ": %s",      \
                     g_get_monotonic_time (), G_STRLOC)
 
@@ -281,34 +281,34 @@ void g_assert_warning         (const char *log_domain,
                         g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR,      \
                                           "CODE_FILE", __FILE__,                \
                                           "CODE_LINE", G_STRINGIFY (__LINE__),  \
-                                          "CODE_FUNC", __func__,                \
+                                          "CODE_FUNC", G_STRFUNC,                \
                                           "MESSAGE", __VA_ARGS__);              \
                         for (;;) ;                                              \
                       } G_STMT_END
 #define g_message(...)  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE,    \
                                           "CODE_FILE", __FILE__,                \
                                           "CODE_LINE", G_STRINGIFY (__LINE__),  \
-                                          "CODE_FUNC", __func__,                \
+                                          "CODE_FUNC", G_STRFUNC,                \
                                           "MESSAGE", __VA_ARGS__)
 #define g_critical(...) g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,   \
                                           "CODE_FILE", __FILE__,                \
                                           "CODE_LINE", G_STRINGIFY (__LINE__),  \
-                                          "CODE_FUNC", __func__,                \
+                                          "CODE_FUNC", G_STRFUNC,                \
                                           "MESSAGE", __VA_ARGS__)
 #define g_warning(...)  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,    \
                                           "CODE_FILE", __FILE__,                \
                                           "CODE_LINE", G_STRINGIFY (__LINE__),  \
-                                          "CODE_FUNC", __func__,                \
+                                          "CODE_FUNC", G_STRFUNC,                \
                                           "MESSAGE", __VA_ARGS__)
 #define g_info(...)     g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_INFO,       \
                                           "CODE_FILE", __FILE__,                \
                                           "CODE_LINE", G_STRINGIFY (__LINE__),  \
-                                          "CODE_FUNC", __func__,                \
+                                          "CODE_FUNC", G_STRFUNC,                \
                                           "MESSAGE", __VA_ARGS__)
 #define g_debug(...)    g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,      \
                                           "CODE_FILE", __FILE__,                \
                                           "CODE_LINE", G_STRINGIFY (__LINE__),  \
-                                          "CODE_FUNC", __func__,                \
+                                          "CODE_FUNC", G_STRFUNC,                \
                                           "MESSAGE", __VA_ARGS__)
 #else
 /* for(;;) ; so that GCC knows that control doesn't go past g_error().
@@ -342,34 +342,34 @@ void g_assert_warning         (const char *log_domain,
                                g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR,    \
                                                 "CODE_FILE", __FILE__,               \
                                                 "CODE_LINE", G_STRINGIFY (__LINE__), \
-                                                "CODE_FUNC", __func__,               \
+                                                "CODE_FUNC", G_STRFUNC,               \
                                                 "MESSAGE", format);                  \
                                for (;;) ;                                            \
                              } G_STMT_END
 #define g_message(format...)  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE,   \
                                                "CODE_FILE", __FILE__,                \
                                                "CODE_LINE", G_STRINGIFY (__LINE__),  \
-                                               "CODE_FUNC", __func__,                \
+                                               "CODE_FUNC", G_STRFUNC,                \
                                                "MESSAGE", format)
 #define g_critical(format...) g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,  \
                                                 "CODE_FILE", __FILE__,               \
                                                 "CODE_LINE", G_STRINGIFY (__LINE__), \
-                                                "CODE_FUNC", __func__,               \
+                                                "CODE_FUNC", G_STRFUNC,               \
                                                 "MESSAGE", format)
 #define g_warning(format...)  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,   \
                                                 "CODE_FILE", __FILE__,               \
                                                 "CODE_LINE", G_STRINGIFY (__LINE__), \
-                                                "CODE_FUNC", __func__,               \
+                                                "CODE_FUNC", G_STRFUNC,               \
                                                 "MESSAGE", format)
 #define g_info(format...)     g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_INFO,      \
                                                 "CODE_FILE", __FILE__,               \
                                                 "CODE_LINE", G_STRINGIFY (__LINE__), \
-                                                "CODE_FUNC", __func__,               \
+                                                "CODE_FUNC", G_STRFUNC,               \
                                                 "MESSAGE", format)
 #define g_debug(format...)    g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,     \
                                                 "CODE_FILE", __FILE__,               \
                                                 "CODE_LINE", G_STRINGIFY (__LINE__), \
-                                                "CODE_FUNC", __func__,               \
+                                                "CODE_FUNC", G_STRFUNC,               \
                                                 "MESSAGE", format)
 #else
 #define g_error(format...)    G_STMT_START {                 \
