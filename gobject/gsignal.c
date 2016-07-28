@@ -1628,6 +1628,7 @@ g_signal_newv (const gchar       *signal_name,
   guint signal_id, i;
   SignalNode *node;
   GSignalCMarshaller builtin_c_marshaller;
+  GSignalCVaMarshaller builtin_va_marshaller;
   GSignalCVaMarshaller va_marshaller;
   
   g_return_val_if_fail (signal_name != NULL, 0);
@@ -1736,14 +1737,14 @@ g_signal_newv (const gchar       *signal_name,
     node->accumulator = NULL;
 
   builtin_c_marshaller = NULL;
-  va_marshaller = NULL;
+  builtin_va_marshaller = NULL;
 
   /* Pick up built-in va marshallers for standard types, and
      instead of generic marshaller if no marshaller specified */
   if (n_params == 0 && return_type == G_TYPE_NONE)
     {
       builtin_c_marshaller = g_cclosure_marshal_VOID__VOID;
-      va_marshaller = g_cclosure_marshal_VOID__VOIDv;
+      builtin_va_marshaller = g_cclosure_marshal_VOID__VOIDv;
     }
   else if (n_params == 1 && return_type == G_TYPE_NONE)
     {
@@ -1751,7 +1752,7 @@ g_signal_newv (const gchar       *signal_name,
       else if (g_type_is_a (param_types[0] & ~G_SIGNAL_TYPE_STATIC_SCOPE, G_TYPE_ ##__type__))         \
 	{                                                                \
 	  builtin_c_marshaller = g_cclosure_marshal_VOID__ ## __type__;  \
-	  va_marshaller = g_cclosure_marshal_VOID__ ## __type__ ##v;     \
+	  builtin_va_marshaller = g_cclosure_marshal_VOID__ ## __type__ ##v;     \
 	}
 
       if (0) {}
@@ -1777,13 +1778,18 @@ g_signal_newv (const gchar       *signal_name,
   if (c_marshaller == NULL)
     {
       if (builtin_c_marshaller)
-	c_marshaller = builtin_c_marshaller;
+        {
+	  c_marshaller = builtin_c_marshaller;
+          va_marshaller = builtin_va_marshaller;
+        }
       else
 	{
 	  c_marshaller = g_cclosure_marshal_generic;
 	  va_marshaller = g_cclosure_marshal_generic_va;
 	}
     }
+  else
+    va_marshaller = NULL;
 
   node->c_marshaller = c_marshaller;
   node->va_marshaller = va_marshaller;
