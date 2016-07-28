@@ -29,6 +29,40 @@ typedef enum {
    */
 } TestUnsignedEnum;
 
+static void
+custom_marshal_VOID__INVOCATIONHINT (GClosure     *closure,
+                                     GValue       *return_value G_GNUC_UNUSED,
+                                     guint         n_param_values,
+                                     const GValue *param_values,
+                                     gpointer      invocation_hint,
+                                     gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__INVOCATIONHINT) (gpointer     data1,
+                                                     gpointer     invocation_hint,
+                                                     gpointer     data2);
+  GMarshalFunc_VOID__INVOCATIONHINT callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 2);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__INVOCATIONHINT) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            invocation_hint,
+            data2);
+}
+
 static GType
 test_enum_get_type (void)
 {
@@ -224,6 +258,15 @@ test_class_init (TestClass *klass)
                 0);
   g_signal_set_va_marshaller (s, G_TYPE_FROM_CLASS (klass),
 			      test_UINT__VOIDv);
+  simple_id = g_signal_new ("custom-marshaller",
+                G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST,
+                0,
+                NULL, NULL,
+                custom_marshal_VOID__INVOCATIONHINT,
+                G_TYPE_NONE,
+                1,
+                G_TYPE_POINTER);
   g_signal_new ("variant-changed-no-slot",
                 G_TYPE_FROM_CLASS (klass),
                 G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
@@ -698,6 +741,41 @@ test_generic_marshaller_signal_uint_return (void)
   g_signal_emit_by_name (test, "va-marshaller-uint-return", &retval);
   g_assert_cmpint (retval, ==, G_MAXUINT);
   g_signal_handler_disconnect (test, id);
+
+  g_object_unref (test);
+}
+
+static const GSignalInvocationHint dont_use_this = { 0, };
+
+static void
+custom_marshaller_callback (Test                  *test,
+                            GSignalInvocationHint *hint,
+                            gpointer               unused)
+{
+  GSignalInvocationHint *ihint;
+
+  g_assert (hint != &dont_use_this);
+
+  ihint = g_signal_get_invocation_hint (test);
+
+  g_assert_cmpuint (hint->signal_id, ==, ihint->signal_id);
+  g_assert_cmpuint (hint->detail , ==, ihint->detail);
+  g_assert_cmpflags (GSignalFlags, hint->run_type, ==, ihint->run_type); 
+}
+
+static void
+test_custom_marshaller (void)
+{
+  Test *test;
+
+  test = g_object_new (test_get_type (), NULL);
+
+  g_signal_connect (test,
+                    "custom-marshaller",
+                    G_CALLBACK (custom_marshaller_callback),
+                    NULL);
+
+  g_signal_emit_by_name (test, "custom-marshaller", &dont_use_this);
 
   g_object_unref (test);
 }
@@ -1183,6 +1261,7 @@ main (int argc,
   g_test_add_func ("/gobject/signals/generic-marshaller-enum-return-unsigned", test_generic_marshaller_signal_enum_return_unsigned);
   g_test_add_func ("/gobject/signals/generic-marshaller-int-return", test_generic_marshaller_signal_int_return);
   g_test_add_func ("/gobject/signals/generic-marshaller-uint-return", test_generic_marshaller_signal_uint_return);
+  g_test_add_func ("/gobject/signals/custom-marshaller", test_custom_marshaller);
   g_test_add_func ("/gobject/signals/connect", test_connect);
   g_test_add_func ("/gobject/signals/emission-hook", test_emission_hook);
   g_test_add_func ("/gobject/signals/introspection", test_introspection);
