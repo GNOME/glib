@@ -1733,9 +1733,12 @@ fi
 dnl ************************
 dnl *** check for libmount ***
 dnl ************************
-AC_ARG_ENABLE(mount,
-              AS_HELP_STRING([--disable-libmount], [build without libmount support]))
-AS_IF([ test "x$enable_libmount" != "xno"],[
+AC_ARG_ENABLE(libmount,
+              [AS_HELP_STRING([--enable-libmount],
+                              [build with libmount support [default=no]])],,
+              [enable_libmount=no])
+
+AS_IF([ test "x$enable_libmount" = "xyes"],[
 PKG_CHECK_MODULES([LIBMOUNT], [mount >= 2.28], [have_libmount=yes], [have_libmount=maybe])
 AS_IF([ test $have_libmount = maybe ], [
   glib_save_LIBS=$LIBS
