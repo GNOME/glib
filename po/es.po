@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-07-17 03:09+0000\n"
+"POT-Creation-Date: 2016-07-18 14:45+0000\n"
 "PO-Revision-Date: 2016-07-18 10:16+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
@@ -124,8 +124,8 @@ msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
 "Identificador de la aplicación en formato D-Bus (ej. org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:595
-#: ../gio/glib-compile-resources.c:626 ../gio/gresource-tool.c:495
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:653 ../gio/gresource-tool.c:495
 #: ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "ARCHIVO"
@@ -315,14 +315,14 @@ msgid "Not enough space in destination"
 msgstr "No hay suficiente espacio en el destino"
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
-#: ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:438
-#: ../glib/gconvert.c:845 ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
+#: ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:438 ../glib/gconvert.c:845
+#: ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
 #: ../glib/giochannel.c:2442 ../glib/gutf8.c:855 ../glib/gutf8.c:1308
 msgid "Invalid byte sequence in conversion input"
 msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 
-#: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:446
-#: ../glib/gconvert.c:770 ../glib/giochannel.c:1563 ../glib/giochannel.c:2454
+#: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:446 ../glib/gconvert.c:770
+#: ../glib/giochannel.c:1563 ../glib/giochannel.c:2454
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Falló durante la conversión: %s"
@@ -573,7 +573,7 @@ msgstr ""
 "Se agotaron todos los mecanismos de autenticación (intentados: %s) "
 "(disponibles: %s)"
 
-#: ../gio/gdbusauth.c:1170
+#: ../gio/gdbusauth.c:1173
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Cancelado a través de GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -1368,7 +1368,7 @@ msgstr "Operación no soportada"
 msgid "Containing mount does not exist"
 msgstr "El punto de montaje contenido no existe"
 
-#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2367
+#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2374
 msgid "Can't copy over directory"
 msgstr "No se puede copiar sobre la carpeta"
 
@@ -1692,7 +1692,7 @@ msgid ""
 msgstr ""
 "gio cat funciona igual que la utilidad «cat» tradicional, pero usando\n"
 "ubicaciones GIO en lugar de archivos locales: por ejemplo, puede\n"
-"usar algo como smb://servidor/recurso/archivo.txt como ubicación"
+"usar algo como smb://servidor/recurso/archivo.txt como ubicación."
 
 #: ../gio/gio-tool-cat.c:151
 msgid "No files given"
@@ -1751,7 +1751,7 @@ msgid ""
 msgstr ""
 "gio copy es similar a la utilidad «cp» tradicional, pero usando\n"
 "ubicaciones GIO en lugar de archivos locales: por ejemplo, puede\n"
-"usar algo como smb://servidor/recurso/archivo.txt como ubicación"
+"usar algo como smb://servidor/recurso/archivo.txt como ubicación."
 
 #: ../gio/gio-tool-copy.c:143
 #, c-format
@@ -1779,8 +1779,7 @@ msgstr "Los atributos que obtener"
 msgid "ATTRIBUTES"
 msgstr "ATRIBUTOS"
 
-#: ../gio/gio-tool-info.c:37 ../gio/gio-tool-list.c:38
-#: ../gio/gio-tool-set.c:34
+#: ../gio/gio-tool-info.c:37 ../gio/gio-tool-list.c:38 ../gio/gio-tool-set.c:34
 msgid "Don't follow symbolic links"
 msgstr "No seguir enlaces simbólicos"
 
@@ -1979,7 +1978,7 @@ msgid ""
 msgstr ""
 "gio mkdir es similar a la utilidad «mkdir» tradicional, pero usando\n"
 "ubicaciones GIO en lugar de archivos locales: por ejemplo, puede\n"
-"usar algo como smb://servidor/recurso/archivo.txt como ubicación"
+"usar algo como smb://servidor/recurso/archivo.txt como ubicación."
 
 #: ../gio/gio-tool-mkdir.c:74
 msgid "No locations gives"
@@ -2331,11 +2330,11 @@ msgstr "Error al comprimir el archivo %s"
 msgid "text may not appear inside <%s>"
 msgstr "El texto no debe aparecer dentro de <%s>"
 
-#: ../gio/glib-compile-resources.c:595
+#: ../gio/glib-compile-resources.c:622
 msgid "name of the output file"
 msgstr "nombre del archivo de salida"
 
-#: ../gio/glib-compile-resources.c:596
+#: ../gio/glib-compile-resources.c:623
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
@@ -2343,45 +2342,45 @@ msgstr ""
 "La carpeta de la que se tienen que leer los archivos (la predeterminada es "
 "la carpeta actual)"
 
-#: ../gio/glib-compile-resources.c:596 ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-resources.c:623 ../gio/glib-compile-schemas.c:2036
 #: ../gio/glib-compile-schemas.c:2065
 msgid "DIRECTORY"
 msgstr "CARPETA"
 
-#: ../gio/glib-compile-resources.c:597
+#: ../gio/glib-compile-resources.c:624
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Generar salida en el formato seleccionado por la extensión del nombre del "
 "archivo objetivo"
 
-#: ../gio/glib-compile-resources.c:598
+#: ../gio/glib-compile-resources.c:625
 msgid "Generate source header"
 msgstr "Generar cabecera fuente"
 
-#: ../gio/glib-compile-resources.c:599
+#: ../gio/glib-compile-resources.c:626
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Generar el código fuente usado para enlazar el archivo del recurso en su "
 "código fuente"
 
-#: ../gio/glib-compile-resources.c:600
+#: ../gio/glib-compile-resources.c:627
 msgid "Generate dependency list"
 msgstr "Generar lista de dependencias"
 
-#: ../gio/glib-compile-resources.c:601
+#: ../gio/glib-compile-resources.c:628
 msgid "Don't automatically create and register resource"
 msgstr "No crear y registrar automáticamente un recurso"
 
-#: ../gio/glib-compile-resources.c:602
+#: ../gio/glib-compile-resources.c:629
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "No exportar funciones; declararlas como G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:603
+#: ../gio/glib-compile-resources.c:630
 msgid "C identifier name used for the generated source code"
 msgstr "Nombre del identificador C usado para el código fuente generado"
 
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:656
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2392,7 +2391,7 @@ msgstr ""
 "gresource.xml,\n"
 "y el archivo del recurso debe tener la extensión se llama .gresource."
 
-#: ../gio/glib-compile-resources.c:645
+#: ../gio/glib-compile-resources.c:672
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Deberá proporcionar exactamente un nombre de archivo\n"
@@ -2668,149 +2667,134 @@ msgstr "sin hacer nada.\n"
 msgid "removed existing output file.\n"
 msgstr "se quitó el archivo de salida existente.\n"
 
-#: ../gio/glocalfile.c:638 ../gio/win32/gwinhttpfile.c:420
+#: ../gio/glocalfile.c:642 ../gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nombre de archivo no válido %s"
 
-#: ../gio/glocalfile.c:1029
+#: ../gio/glocalfile.c:1036
 #, c-format
-#| msgid "Error getting filesystem info: %s"
 msgid "Error getting filesystem info for %s: %s"
 msgstr "Error al obtener la información del sistema de archivos para %s: %s"
 
-#: ../gio/glocalfile.c:1168
+#: ../gio/glocalfile.c:1175
 #, c-format
-#| msgid "Containing mount does not exist"
 msgid "Containing mount for file %s not found"
 msgstr "No se ha encontrado el punto de montaje para el archivo %s"
 
-#: ../gio/glocalfile.c:1191
+#: ../gio/glocalfile.c:1198
 msgid "Can't rename root directory"
 msgstr "No se puede renombrar la carpeta raíz"
 
-#: ../gio/glocalfile.c:1209 ../gio/glocalfile.c:1232
+#: ../gio/glocalfile.c:1216 ../gio/glocalfile.c:1239
 #, c-format
-#| msgid "Error reading file %s: %s"
 msgid "Error renaming file %s: %s"
 msgstr "Error al leer el archivo %s: %s"
 
-#: ../gio/glocalfile.c:1216
+#: ../gio/glocalfile.c:1223
 msgid "Can't rename file, filename already exists"
 msgstr "No se puede renombrar el archivo, el nombre de archivo ya existe"
 
-#: ../gio/glocalfile.c:1229 ../gio/glocalfile.c:2243 ../gio/glocalfile.c:2271
-#: ../gio/glocalfile.c:2428 ../gio/glocalfileoutputstream.c:549
+#: ../gio/glocalfile.c:1236 ../gio/glocalfile.c:2250 ../gio/glocalfile.c:2278
+#: ../gio/glocalfile.c:2435 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "Nombre de archivo no válido"
 
-#: ../gio/glocalfile.c:1396 ../gio/glocalfile.c:1411
+#: ../gio/glocalfile.c:1403 ../gio/glocalfile.c:1418
 #, c-format
-#| msgid "Error opening file '%s': %s"
 msgid "Error opening file %s: %s"
 msgstr "Error al abrir el archivo %s: %s"
 
-#: ../gio/glocalfile.c:1536
+#: ../gio/glocalfile.c:1543
 #, c-format
-#| msgid "Error removing file: %s"
 msgid "Error removing file %s: %s"
 msgstr "Error al eliminar el archivo %s: %s"
 
-#: ../gio/glocalfile.c:1919
+#: ../gio/glocalfile.c:1926
 #, c-format
-#| msgid "Error trashing file: %s"
 msgid "Error trashing file %s: %s"
 msgstr "Error al mover a la papelera el archivo %s: %s"
 
-#: ../gio/glocalfile.c:1942
+#: ../gio/glocalfile.c:1949
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "No se pudo crear la carpeta de papelera %s: %s"
 
-#: ../gio/glocalfile.c:1962
+#: ../gio/glocalfile.c:1969
 #, c-format
-#| msgid "Unable to find toplevel directory for trash"
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "No se pudo encontrar la carpeta de nivel superior para la papelera %s"
 
-#: ../gio/glocalfile.c:2041 ../gio/glocalfile.c:2061
+#: ../gio/glocalfile.c:2048 ../gio/glocalfile.c:2068
 #, c-format
-#| msgid "Unable to find or create trash directory"
 msgid "Unable to find or create trash directory for %s"
 msgstr "No se pudo encontrar o crear la carpeta de la papelera para %s"
 
-#: ../gio/glocalfile.c:2095
+#: ../gio/glocalfile.c:2102
 #, c-format
-#| msgid "Unable to create trashing info file: %s"
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "No se pudo crear la información de papelera para el archivo %s: %s"
 
-#: ../gio/glocalfile.c:2154
+#: ../gio/glocalfile.c:2161
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr ""
 "No se pudo enviar a la papelera el archivo %s entre sistemas de archivos"
 
-#: ../gio/glocalfile.c:2158 ../gio/glocalfile.c:2214
+#: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2221
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s: %s"
 msgstr "No se pudo enviar a la papelera el archivo %s: %s"
 
-#: ../gio/glocalfile.c:2220
+#: ../gio/glocalfile.c:2227
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s"
 msgstr "No se pudo enviar a la papelera el archivo %s"
 
-#: ../gio/glocalfile.c:2246
+#: ../gio/glocalfile.c:2253
 #, c-format
-#| msgid "Error creating directory '%s': %s"
 msgid "Error creating directory %s: %s"
 msgstr "Error al crear la carpeta %s: %s"
 
-#: ../gio/glocalfile.c:2275
+#: ../gio/glocalfile.c:2282
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "El sistema de archivos no soporta enlaces simbólicos"
 
-#: ../gio/glocalfile.c:2278
+#: ../gio/glocalfile.c:2285
 #, c-format
-#| msgid "Error making symbolic link: %s"
 msgid "Error making symbolic link %s: %s"
 msgstr "Error al crear el enlace simbólico %s: %s"
 
-#: ../gio/glocalfile.c:2284 ../glib/gfileutils.c:2064
+#: ../gio/glocalfile.c:2291 ../glib/gfileutils.c:2064
 msgid "Symbolic links not supported"
 msgstr "Enlaces simbólicos no soportados"
 
-#: ../gio/glocalfile.c:2339 ../gio/glocalfile.c:2374 ../gio/glocalfile.c:2431
+#: ../gio/glocalfile.c:2346 ../gio/glocalfile.c:2381 ../gio/glocalfile.c:2438
 #, c-format
-#| msgid "Error moving file: %s"
 msgid "Error moving file %s: %s"
 msgstr "Error al mover el archivo %s: %s"
 
-#: ../gio/glocalfile.c:2362
+#: ../gio/glocalfile.c:2369
 msgid "Can't move directory over directory"
 msgstr "No se puede mover una carpeta sobre una carpeta"
 
-#: ../gio/glocalfile.c:2388 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfile.c:2395 ../gio/glocalfileoutputstream.c:925
 #: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
 #: ../gio/glocalfileoutputstream.c:971 ../gio/glocalfileoutputstream.c:985
 msgid "Backup file creation failed"
 msgstr "Falló la creación del archivo de respaldo"
 
-#: ../gio/glocalfile.c:2407
+#: ../gio/glocalfile.c:2414
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Error al eliminar el archivo destino: %s"
 
-#: ../gio/glocalfile.c:2421
+#: ../gio/glocalfile.c:2428
 msgid "Move between mounts not supported"
 msgstr "No se soporta mover archivos entre puntos de montaje"
 
-#: ../gio/glocalfile.c:2612
+#: ../gio/glocalfile.c:2619
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "No se pudo determinar el uso de disco de %s: %s"
@@ -3838,7 +3822,7 @@ msgstr ""
 
 #: ../gio/gtlspassword.c:115
 msgid "The password entered is incorrect."
-msgstr "La contraseña introducida no es correcta"
+msgstr "La contraseña introducida no es correcta."
 
 #: ../gio/gunixconnection.c:166 ../gio/gunixconnection.c:561
 #, c-format
@@ -4056,7 +4040,7 @@ msgstr "Ninguna aplicación con nombre «%s» registró un marcador para «%s»"
 #: ../glib/gbookmarkfile.c:3378
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "Falló la expansión de la la linea ejecutable «%s» con el URI «%s»"
+msgstr "Falló la expansión de lalinea ejecutable «%s» con el URI «%s»"
 
 #: ../glib/gconvert.c:477 ../glib/gutf8.c:851 ../glib/gutf8.c:1063
 #: ../glib/gutf8.c:1200 ../glib/gutf8.c:1304
@@ -5095,7 +5079,7 @@ msgstr "el número es demasiado grande"
 
 #: ../glib/gregex.c:493
 msgid "missing subpattern name after (?&"
-msgstr "falta el el nombre del subpatrón después de (?&"
+msgstr "falta elnombre del subpatrón después de (?&"
 
 #: ../glib/gregex.c:496
 msgid "digit expected after (?+"
