@@ -55,6 +55,9 @@
  * `G_LOG_USE_STRUCTURED` before including `glib.h`. But note that even messages
  * logged through the traditional g_log() API are ultimatively passed to
  * g_log_structured(), so that all log messages end up in same destination.
+ * If `G_LOG_USE_STRUCTURED` is defined, g_test_expect_message() will become
+ * will become ineffective for the wrapper macros g_warning() and friends (see
+ * [Testing for Messages][testing-for-messages]).
  *
  * The support for structured logging was motivated by the following needs (some
  * of which were supported previously; others weren’t):
@@ -90,6 +93,41 @@
  *    zero-length #GLogField to g_log_structured_array().
  *  * Color output needed to be supported on the terminal, to make reading
  *    through logs easier.
+ *
+ * ## Testing for Messages
+ *
+ * With the old g_log() API, g_test_expect_message() and
+ * g_test_assert_expected_messages() could be used in simple cases to check
+ * whether some code under test had emitted a given log message. These
+ * functions have been deprecated with the structured logging API, for several
+ * reasons:
+ *  * They relied on an internal queue which was too inflexible for many use
+ *    cases, where messages might be emitted in several orders, some
+ *    messages might not be emitted deterministically, or messages might be
+ *    emitted by unrelated log domains.
+ *  * They do not support structured log fields.
+ *  * Examining the log output of code is a bad approach to testing it, and
+ *    while it might be necessary for legacy code which uses g_log(), it should
+ *    be avoided for new code using g_log_structured().
+ *
+ * They will continue to work as before if g_log() is in use (and
+ * %G_LOG_USE_STRUCTURED is not defined). They will do nothing if used with the
+ * structured logging API.
+ *
+ * Examining the log output of code is discouraged: libraries should not emit to
+ * `stderr` during defined behaviour, and hence this should not be tested. If
+ * the log emissions of a library during undefined behaviour need to be tested,
+ * they should be limited to asserting that the library aborts and prints a
+ * suitable error message before aborting. This should be done with
+ * g_test_trap_assert_stderr().
+ *
+ * If it is really necessary to test the structured log messages emitted by a
+ * particular piece of code – and the code cannot be restructured to be more
+ * suitable to more conventional unit testing – you should write a custom log
+ * writer function (see g_log_set_writer_func()) which appends all log messages
+ * to a queue. When you want to check the log messages, examine and clear the
+ * queue, ignoring irrelevant log messages (for example, from log domains other
+ * than the one under test).
  */
 
 #include "config.h"
@@ -2298,6 +2336,10 @@ g_assert_warning (const char *log_domain,
  * message is logged, it will not be printed, and the test case will
  * not abort.
  *
+ * This API may only be used with the old logging API (g_log() without
+ * %G_LOG_USE_STRUCTURED defined). It will not work with the structured logging
+ * API. See [Testing for Messages][testing-for-messages].
+ *
  * Use g_test_assert_expected_messages() to assert that all
  * previously-expected messages have been seen and suppressed.
  *
@@ -2373,6 +2415,10 @@ g_test_assert_expected_messages_internal (const char     *domain,
  *
  * Asserts that all messages previously indicated via
  * g_test_expect_message() have been seen and suppressed.
+ *
+ * This API may only be used with the old logging API (g_log() without
+ * %G_LOG_USE_STRUCTURED defined). It will not work with the structured logging
+ * API. See [Testing for Messages][testing-for-messages].
  *
  * If messages at %G_LOG_LEVEL_DEBUG are emitted, but not explicitly
  * expected via g_test_expect_message() then they will be ignored.
