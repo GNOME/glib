@@ -369,14 +369,6 @@ test_expected_messages_warning (void)
 }
 
 static void
-test_expected_messages_warning_structured (void)
-{
-  g_log_structured (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-                    "MESSAGE", "This is a %d warning", g_random_int ());
-  g_return_if_reached ();
-}
-
-static void
 test_expected_messages_expect_warning (void)
 {
   g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
@@ -401,20 +393,6 @@ test_expected_messages_expected (void)
                          "*should not be reached");
 
   test_expected_messages_warning ();
-
-  g_test_assert_expected_messages ();
-  exit (0);
-}
-
-static void
-test_expected_messages_structured (void)
-{
-  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-                         "This is a * warning");
-  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
-                         "*should not be reached");
-
-  test_expected_messages_warning_structured ();
 
   g_test_assert_expected_messages ();
   exit (0);
@@ -488,10 +466,6 @@ test_expected_messages (void)
   g_test_trap_assert_stderr ("*GLib-CRITICAL*Did not see expected message testing-CRITICAL*should not be *WARNING*This is a * warning*");
 
   g_test_trap_subprocess ("/misc/expected-messages/subprocess/expected", 0, 0);
-  g_test_trap_assert_passed ();
-  g_test_trap_assert_stderr ("");
-
-  g_test_trap_subprocess ("/misc/expected-messages/subprocess/structured", 0, 7);
   g_test_trap_assert_passed ();
   g_test_trap_assert_stderr ("");
 
@@ -795,7 +769,6 @@ main (int   argc,
   g_test_add_func ("/misc/expected-messages/subprocess/expect-warning", test_expected_messages_expect_warning);
   g_test_add_func ("/misc/expected-messages/subprocess/wrong-warning", test_expected_messages_wrong_warning);
   g_test_add_func ("/misc/expected-messages/subprocess/expected", test_expected_messages_expected);
-  g_test_add_func ("/misc/expected-messages/subprocess/structured", test_expected_messages_structured);
   g_test_add_func ("/misc/expected-messages/subprocess/null-domain", test_expected_messages_null_domain);
   g_test_add_func ("/misc/expected-messages/subprocess/extra-warning", test_expected_messages_extra_warning);
   g_test_add_func ("/misc/expected-messages/subprocess/unexpected-extra-warning", test_expected_messages_unexpected_extra_warning);
