@@ -1049,41 +1049,6 @@ typedef struct {
 
 static GSList *expected_messages = NULL;
 
-static gboolean
-check_expected_message (const char     *log_domain,
-                        GLogLevelFlags *log_level,
-                        const char     *msg)
-{
-  GTestExpectedMessage *expected = expected_messages->data;
-
-  if (g_strcmp0 (expected->log_domain, log_domain) == 0 &&
-      ((*log_level & expected->log_level) == expected->log_level) &&
-      g_pattern_match_simple (expected->pattern, msg))
-    {
-      expected_messages = g_slist_delete_link (expected_messages, expected_messages);
-      g_free (expected->log_domain);
-      g_free (expected->pattern);
-      g_free (expected);
-      return TRUE;
-    }
-  else if ((*log_level & G_LOG_LEVEL_DEBUG) != G_LOG_LEVEL_DEBUG)
-    {
-      gchar level_prefix[STRING_BUFFER_SIZE];
-      gchar *expected_message;
-
-      mklevel_prefix (level_prefix, expected->log_level, FALSE);
-      expected_message = g_strdup_printf ("Did not see expected message %s-%s: %s",
-                                          expected->log_domain ? expected->log_domain : "**",
-                                          level_prefix, expected->pattern);
-      g_log_default_handler (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, expected_message, NULL);
-      g_free (expected_message);
-
-      *log_level |= G_LOG_FLAG_FATAL;
-    }
-
-  return FALSE;
-}
-
 /**
  * g_logv:
  * @log_domain: (nullable): the log domain, or %NULL for the default ""
@@ -1129,10 +1094,36 @@ g_logv (const gchar   *log_domain,
   else
     msg = msg_alloc = g_strdup_vprintf (format, args);
 
-  if (expected_messages && check_expected_message (log_domain, &log_level, msg))
+  if (expected_messages)
     {
-      g_free (msg_alloc);
-      return;
+      GTestExpectedMessage *expected = expected_messages->data;
+
+      if (g_strcmp0 (expected->log_domain, log_domain) == 0 &&
+          ((log_level & expected->log_level) == expected->log_level) &&
+          g_pattern_match_simple (expected->pattern, msg))
+        {
+          expected_messages = g_slist_delete_link (expected_messages,
+                                                   expected_messages);
+          g_free (expected->log_domain);
+          g_free (expected->pattern);
+          g_free (expected);
+          g_free (msg_alloc);
+          return;
+        }
+      else if ((log_level & G_LOG_LEVEL_DEBUG) != G_LOG_LEVEL_DEBUG)
+        {
+          gchar level_prefix[STRING_BUFFER_SIZE];
+          gchar *expected_message;
+
+          mklevel_prefix (level_prefix, expected->log_level, FALSE);
+          expected_message = g_strdup_printf ("Did not see expected message %s-%s: %s",
+                                              expected->log_domain ? expected->log_domain : "**",
+                                              level_prefix, expected->pattern);
+          g_log_default_handler (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, expected_message, NULL);
+          g_free (expected_message);
+
+          log_level |= G_LOG_FLAG_FATAL;
+        }
     }
 
   for (i = g_bit_nth_msf (log_level, -1); i >= 0; i = g_bit_nth_msf (log_level, i))
@@ -2065,24 +2056,6 @@ log_is_old_api (const GLogField *fields,
           g_strcmp0 (fields[0].value, "1") == 0);
 }
 
-static gboolean
-get_field (const GLogField  *fields,
-           gsize             n_fields,
-           const char       *key,
-           const char      **value)
-{
-  int i;
-  for (i = 0; i < n_fields; i++)
-    {
-      if (strcmp (key, fields[i].key) == 0)
-        {
-          *value = fields[i].value;
-          return TRUE;
-        }
-    }
-  return FALSE;
-}
-
 /**
  * g_log_writer_default:
  * @log_level: log level, either from #GLogLevelFlags, or a user-defined
@@ -2113,9 +2086,6 @@ g_log_writer_default (GLogLevelFlags   log_level,
                       gsize            n_fields,
                       gpointer         user_data)
 {
-  gboolean old_api;
-  const char *domain, *msg;
-
   g_return_val_if_fail (fields != NULL, G_LOG_WRITER_UNHANDLED);
   g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
 
@@ -2148,15 +2118,7 @@ g_log_writer_default (GLogLevelFlags   log_level,
   /* Mark messages as fatal if they have a level set in
    * g_log_set_always_fatal().
    */
-  old_api = log_is_old_api (fields, n_fields);
-
-  if (!old_api && expected_messages &&
-      get_field (fields, n_fields, "GLIB_DOMAIN", &domain) &&
-      get_field (fields, n_fields, "MESSAGE", &msg) &&
-      check_expected_message (domain, &log_level, msg))
-    goto handled;
-
-  if ((log_level & g_log_always_fatal) && !old_api)
+  if ((log_level & g_log_always_fatal) && !log_is_old_api (fields, n_fields))
     log_level |= G_LOG_FLAG_FATAL;
 
   /* Try logging to the systemd journal as first choice. */
