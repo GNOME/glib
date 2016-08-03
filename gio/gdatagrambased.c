@@ -71,12 +71,13 @@
  * instance, on Windows a socket is always seen as writable until a write
  * returns %G_IO_ERROR_WOULD_BLOCK.
  *
- * As with #GSocket, #GDatagramBaseds can be either connection oriented or
- * connectionless. The interface does not cover connection establishment — use
- * methods on the underlying type to establish a connection before sending and
- * receiving data through the #GDatagramBased API. For connectionless socket
- * types the target/source address is specified or received in each I/O
- * operation.
+ * As with #GSocket, #GDatagramBaseds can be either connection oriented (for
+ * example, SCTP) or connectionless (for example, UDP). #GDatagramBaseds must be
+ * datagram-based, not stream-based. The interface does not cover connection
+ * establishment — use methods on the underlying type to establish a connection
+ * before sending and receiving data through the #GDatagramBased API. For
+ * connectionless socket types the target/source address is specified or
+ * received in each I/O operation.
  *
  * Like most other APIs in GLib, #GDatagramBased is not inherently thread safe.
  * To use a #GDatagramBased concurrently from multiple threads, you must
