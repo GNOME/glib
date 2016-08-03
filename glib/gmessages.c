@@ -94,6 +94,31 @@
  *  * Color output needed to be supported on the terminal, to make reading
  *    through logs easier.
  *
+ * ## Log Domains
+ *
+ * Log domains may be used to broadly split up the origins of log messages.
+ * Typically, there are one or a few log domains per application or library.
+ * %G_LOG_DOMAIN should be used to define the default log domain for the current
+ * compilation unit — it is typically defined at the top of a source file, or in
+ * the preprocessor flags for a group of source files.
+ *
+ * Log domains must be unique, and it is recommended that they are the
+ * application or library name, optionally followed by a hyphen and a sub-domain
+ * name. For example, `bloatpad` or `bloatpad-io`.
+ *
+ * ## Debug Message Output
+ *
+ * The default log functions (g_log_default_handler() for the old-style API and
+ * g_log_writer_default() for the structured API) both drop debug and
+ * informational messages by default, unless the log domains of those messages
+ * are listed in the `G_MESSAGES_DEBUG` environment variable (or it is set to
+ * `all`).
+ *
+ * It is recommended that custom log writer functions re-use the
+ * `G_MESSAGES_DEBUG` environment variable, rather than inventing a custom one,
+ * so that developers can re-use the same debugging techniques and tools across
+ * projects.
+ *
  * ## Testing for Messages
  *
  * With the old g_log() API, g_test_expect_message() and
@@ -342,8 +367,9 @@
  * character will automatically be appended to @..., and need not be entered
  * manually.
  *
- * Such messages are suppressed by the g_log_default_handler() unless
- * the G_MESSAGES_DEBUG environment variable is set appropriately.
+ * Such messages are suppressed by the g_log_default_handler() and
+ * g_log_writer_default() unless the `G_MESSAGES_DEBUG` environment variable is
+ * set appropriately.
  *
  * Since: 2.40
  */
@@ -359,8 +385,9 @@
  * character will automatically be appended to @..., and need not be entered
  * manually.
  *
- * Such messages are suppressed by the g_log_default_handler() unless
- * the G_MESSAGES_DEBUG environment variable is set appropriately.
+ * Such messages are suppressed by the g_log_default_handler() and
+ * g_log_writer_default() unless the `G_MESSAGES_DEBUG` environment variable is
+ * set appropriately.
  *
  * Since: 2.6
  */
@@ -2114,6 +2141,10 @@ log_is_old_api (const GLogField *fields,
  *
  * This is suitable for use as a #GLogWriterFunc, and is the default writer used
  * if no other is set using g_log_set_writer_func().
+ *
+ * As with g_log_default_handler(), this function drops debug and informational
+ * messages unless their log domain (or `all`) is listed in the space-separated
+ * `G_MESSAGES_DEBUG` environment variable.
  *
  * Returns: %G_LOG_WRITER_HANDLED on success, %G_LOG_WRITER_UNHANDLED otherwise
  * Since: 2.50
