@@ -1687,9 +1687,6 @@ g_log_writer_is_journald (gint output_fd)
         fd_is_journal = g_str_has_prefix (((struct sockaddr_un *)&addr)->sun_path,
                                           "/run/systemd/journal/");
 
-      if (fd_is_journal)
-        open_journal ();
-
       g_once_init_leave (&initialized, TRUE);
     }
 
@@ -1821,6 +1818,9 @@ journal_sendv (struct iovec *iov,
   } control;
   struct cmsghdr *cmsg;
   char path[] = "/dev/shm/journal.XXXXXX";
+
+  if (journal_fd < 0)
+    open_journal ();
 
   if (journal_fd < 0)
     return -1;
