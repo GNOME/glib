@@ -393,14 +393,23 @@ _g_object_type_init (void)
   type = g_type_register_fundamental (G_TYPE_OBJECT, g_intern_static_string ("GObject"), &info, &finfo, 0);
   g_assert (type == G_TYPE_OBJECT);
   g_value_register_transform_func (G_TYPE_OBJECT, G_TYPE_OBJECT, g_value_object_transform_value);
-  
-  GOBJECT_IF_DEBUG (OBJECTS,
+
+#if G_ENABLE_DEBUG
+  /* We cannot use GOBJECT_IF_DEBUG here because of the G_HAS_CONSTRUCTORS
+   * conditional in between, as the C spec leaves conditionals inside macro
+   * expansions as undefined behavior. Only GCC and Clang are known to work
+   * but compilation breaks on MSVC.
+   *
+   * See: https://bugzilla.gnome.org/show_bug.cgi?id=769504
+   */
+  if (_g_type_debug_flags & G_TYPE_DEBUG_OBJECTS) \
     {
       debug_objects_ht = g_hash_table_new (g_direct_hash, NULL);
-#ifndef G_HAS_CONSTRUCTORS
+# ifndef G_HAS_CONSTRUCTORS
       g_atexit (debug_objects_atexit);
-#endif /* G_HAS_CONSTRUCTORS */
-    });
+# endif /* G_HAS_CONSTRUCTORS */
+    }
+#endif /* G_ENABLE_DEBUG */
 }
 
 static void
