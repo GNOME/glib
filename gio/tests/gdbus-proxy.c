@@ -74,11 +74,15 @@ test_methods (GDBusProxy *proxy)
   g_assert_cmpstr (error->message, ==, "Yo is not a proper greeting");
   g_clear_error (&error);
 
-  /* Check that we get a timeout if the method handling is taking longer than timeout */
+  /* Check that we get a timeout if the method handling is taking longer than
+   * timeout. We use such a long sleep because on slow machines, if the
+   * sleep isn't much longer than the timeout and we're doing a parallel
+   * build, there's no guarantee we'll be scheduled in the window between
+   * the timeout being hit and the sleep finishing. */
   error = NULL;
   result = g_dbus_proxy_call_sync (proxy,
                                    "Sleep",
-                                   g_variant_new ("(i)", 500 /* msec */),
+                                   g_variant_new ("(i)", 10000 /* msec */),
                                    G_DBUS_CALL_FLAGS_NONE,
                                    100 /* msec */,
                                    NULL,
@@ -104,12 +108,14 @@ test_methods (GDBusProxy *proxy)
   g_assert_cmpstr (g_variant_get_type_string (result), ==, "()");
   g_variant_unref (result);
 
-  /* now set the proxy-default timeout to 250 msec and try the 500 msec call - this should FAIL */
+  /* Now set the proxy-default timeout to 250 msec and try the 10000 msec
+   * call - this should FAIL. Again, we use such a long sleep because on slow
+   * machines there's no guarantee we'll be scheduled when we want to be. */
   g_dbus_proxy_set_default_timeout (proxy, 250);
   g_assert_cmpint (g_dbus_proxy_get_default_timeout (proxy), ==, 250);
   result = g_dbus_proxy_call_sync (proxy,
                                    "Sleep",
-                                   g_variant_new ("(i)", 500 /* msec */),
+                                   g_variant_new ("(i)", 10000 /* msec */),
                                    G_DBUS_CALL_FLAGS_NONE,
                                    -1, /* use proxy default (e.g. 250 msec) */
                                    NULL,
