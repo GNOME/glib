@@ -466,7 +466,7 @@ test_create_delete (gconstpointer d)
 
   data->loop = g_main_loop_new (NULL, FALSE);
 
-  data->timeout = g_timeout_add (5000, stop_timeout, NULL);
+  data->timeout = g_timeout_add (10000, stop_timeout, NULL);
 
   g_file_create_async (data->file, 0, 0, NULL, created_cb, data);
 
