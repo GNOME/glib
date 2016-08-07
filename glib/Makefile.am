@@ -364,7 +364,10 @@ INSTALL_PROGS=
 if ENABLE_DTRACE
 glib_probes.h: glib_probes.d
 	$(AM_V_GEN) $(DTRACE) -C -h -s $< -o $@.tmp
-	@$(SED) -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
+	@$(SED) \
+		-e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," \
+		-e "s,define _SDT_HAS_SEMAPHORES 1,undef _SDT_HAS_SEMAPHORES," \
+		< $@.tmp > $@ && rm -f $@.tmp
 
 glib_probes.lo: glib_probes.d
 	$(AM_V_GEN) $(LIBTOOL) --mode=compile $(AM_V_lt) --tag=CC $(DTRACE) -G -s $< -o $@
