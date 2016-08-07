@@ -77,7 +77,7 @@ main (gint   argc,
     { NULL },
   };
 
-  g_autoptr(GOptionContext) context = g_option_context_new ("- Inspect GI typelib");
+  GOptionContext *context = g_option_context_new ("- Inspect GI typelib");
   g_option_context_add_main_entries (context, options, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
@@ -122,6 +122,7 @@ main (gint   argc,
     print_typelibs (namespace);
 
 out:
+  g_option_context_free (context);
   if (error)
     g_error_free (error);
   if (typelib)
