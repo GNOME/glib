@@ -64,6 +64,7 @@ testcase (void)
       freed = 0;
 
       t1 = g_thread_create (thread_func, NULL, TRUE, NULL);
+      g_assert (t1 != NULL);
 
       /* wait for t1 to set up its thread-private data */
       g_cond_wait (cond, mutex);
