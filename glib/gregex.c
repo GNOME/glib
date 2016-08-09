@@ -1582,6 +1582,10 @@ g_regex_get_max_lookbehind (const GRegex *regex)
  *
  * Returns the compile options that @regex was created with.
  *
+ * Depending on the version of PCRE that is used, this may or may not
+ * include flags set by option expressions such as `(?i)` found at the
+ * top-level within the compiled pattern.
+ *
  * Returns: flags from #GRegexCompileFlags
  *
  * Since: 2.26

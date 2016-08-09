@@ -2218,17 +2218,16 @@ main (int argc, char *argv[])
   TEST_NEW("(?P<A>x)|(?P<A>y)", G_REGEX_DUPNAMES | G_REGEX_OPTIMIZE, 0);
   /* This gives "internal error: code overflow" with pcre 6.0 */
   TEST_NEW("(?i)(?-i)", 0, 0);
+  TEST_NEW ("(?i)a", 0, 0);
+  TEST_NEW ("(?m)a", 0, 0);
+  TEST_NEW ("(?s)a", 0, 0);
+  TEST_NEW ("(?x)a", 0, 0);
+  TEST_NEW ("(?J)a", 0, 0);
+  TEST_NEW ("(?U)[a-z]+", 0, 0);
 
-  /* Check that flags are correct if the pattern modifies them */
   /* TEST_NEW_CHECK_FLAGS(pattern, compile_opts, match_ops, real_compile_opts, real_match_opts) */
   TEST_NEW_CHECK_FLAGS ("a", G_REGEX_OPTIMIZE, 0, G_REGEX_OPTIMIZE, 0);
   TEST_NEW_CHECK_FLAGS ("a", G_REGEX_RAW, 0, G_REGEX_RAW, 0);
-  TEST_NEW_CHECK_FLAGS ("(?i)a", 0, 0, G_REGEX_CASELESS, 0);
-  TEST_NEW_CHECK_FLAGS ("(?m)a", 0, 0, G_REGEX_MULTILINE, 0);
-  TEST_NEW_CHECK_FLAGS ("(?s)a", 0, 0, G_REGEX_DOTALL, 0);
-  TEST_NEW_CHECK_FLAGS ("(?x)a", 0, 0, G_REGEX_EXTENDED, 0);
-  TEST_NEW_CHECK_FLAGS ("(?J)a", 0, 0, G_REGEX_DUPNAMES, 0);
-  TEST_NEW_CHECK_FLAGS ("(?U)[a-z]+", 0, 0, G_REGEX_UNGREEDY, 0);
   TEST_NEW_CHECK_FLAGS ("(?X)a", 0, 0, 0 /* not exposed by GRegex */, 0);
   TEST_NEW_CHECK_FLAGS ("^.*", 0, 0, G_REGEX_ANCHORED, 0);
   TEST_NEW_CHECK_FLAGS ("(*UTF8)a", 0, 0, 0 /* this is the default in GRegex */, 0);
