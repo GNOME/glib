@@ -802,6 +802,8 @@ g_task_set_task_data (GTask          *task,
                       gpointer        task_data,
                       GDestroyNotify  task_data_destroy)
 {
+  g_return_if_fail (G_IS_TASK (task));
+
   if (task->task_data_destroy)
     task->task_data_destroy (task->task_data);
 
@@ -830,6 +832,8 @@ void
 g_task_set_priority (GTask *task,
                      gint   priority)
 {
+  g_return_if_fail (G_IS_TASK (task));
+
   task->priority = priority;
 
   TRACE (GIO_TASK_SET_PRIORITY (task, priority));
@@ -862,6 +866,7 @@ void
 g_task_set_check_cancellable (GTask    *task,
                               gboolean  check_cancellable)
 {
+  g_return_if_fail (G_IS_TASK (task));
   g_return_if_fail (check_cancellable || !task->return_on_cancel);
 
   task->check_cancellable = check_cancellable;
@@ -914,6 +919,7 @@ gboolean
 g_task_set_return_on_cancel (GTask    *task,
                              gboolean  return_on_cancel)
 {
+  g_return_val_if_fail (G_IS_TASK (task), FALSE);
   g_return_val_if_fail (task->check_cancellable || !return_on_cancel, FALSE);
 
   if (!G_TASK_IS_THREADED (task))
@@ -958,6 +964,8 @@ void
 g_task_set_source_tag (GTask    *task,
                        gpointer  source_tag)
 {
+  g_return_if_fail (G_IS_TASK (task));
+
   task->source_tag = source_tag;
 
   TRACE (GIO_TASK_SET_SOURCE_TAG (task, source_tag));
@@ -977,6 +985,8 @@ g_task_set_source_tag (GTask    *task,
 gpointer
 g_task_get_source_object (GTask *task)
 {
+  g_return_val_if_fail (G_IS_TASK (task), NULL);
+
   return task->source_object;
 }
 
@@ -1004,6 +1014,8 @@ g_task_ref_source_object (GAsyncResult *res)
 gpointer
 g_task_get_task_data (GTask *task)
 {
+  g_return_val_if_fail (G_IS_TASK (task), NULL);
+
   return task->task_data;
 }
 
@@ -1020,6 +1032,8 @@ g_task_get_task_data (GTask *task)
 gint
 g_task_get_priority (GTask *task)
 {
+  g_return_val_if_fail (G_IS_TASK (task), G_PRIORITY_DEFAULT);
+
   return task->priority;
 }
 
@@ -1042,6 +1056,8 @@ g_task_get_priority (GTask *task)
 GMainContext *
 g_task_get_context (GTask *task)
 {
+  g_return_val_if_fail (G_IS_TASK (task), NULL);
+
   return task->context;
 }
 
@@ -1058,6 +1074,8 @@ g_task_get_context (GTask *task)
 GCancellable *
 g_task_get_cancellable (GTask *task)
 {
+  g_return_val_if_fail (G_IS_TASK (task), NULL);
+
   return task->cancellable;
 }
 
@@ -1073,6 +1091,8 @@ g_task_get_cancellable (GTask *task)
 gboolean
 g_task_get_check_cancellable (GTask *task)
 {
+  g_return_val_if_fail (G_IS_TASK (task), FALSE);
+
   return task->check_cancellable;
 }
 
@@ -1088,6 +1108,8 @@ g_task_get_check_cancellable (GTask *task)
 gboolean
 g_task_get_return_on_cancel (GTask *task)
 {
+  g_return_val_if_fail (G_IS_TASK (task), FALSE);
+
   return task->return_on_cancel;
 }
 
@@ -1104,6 +1126,8 @@ g_task_get_return_on_cancel (GTask *task)
 gpointer
 g_task_get_source_tag (GTask *task)
 {
+  g_return_val_if_fail (G_IS_TASK (task), NULL);
+
   return task->source_tag;
 }
 
@@ -1502,6 +1526,8 @@ g_task_attach_source (GTask       *task,
                       GSource     *source,
                       GSourceFunc  callback)
 {
+  g_return_if_fail (G_IS_TASK (task));
+
   g_source_set_callback (source, callback,
                          g_object_ref (task), g_object_unref);
   g_source_set_priority (source, task->priority);
@@ -1566,6 +1592,7 @@ g_task_return_pointer (GTask          *task,
                        gpointer        result,
                        GDestroyNotify  result_destroy)
 {
+  g_return_if_fail (G_IS_TASK (task));
   g_return_if_fail (task->result_set == FALSE);
 
   task->result.pointer = result;
@@ -1596,6 +1623,8 @@ gpointer
 g_task_propagate_pointer (GTask   *task,
                           GError **error)
 {
+  g_return_val_if_fail (G_IS_TASK (task), NULL);
+
   if (g_task_propagate_error (task, error))
     return NULL;
 
@@ -1621,6 +1650,7 @@ void
 g_task_return_int (GTask  *task,
                    gssize  result)
 {
+  g_return_if_fail (G_IS_TASK (task));
   g_return_if_fail (task->result_set == FALSE);
 
   task->result.size = result;
@@ -1649,6 +1679,8 @@ gssize
 g_task_propagate_int (GTask   *task,
                       GError **error)
 {
+  g_return_val_if_fail (G_IS_TASK (task), -1);
+
   if (g_task_propagate_error (task, error))
     return -1;
 
@@ -1673,6 +1705,7 @@ void
 g_task_return_boolean (GTask    *task,
                        gboolean  result)
 {
+  g_return_if_fail (G_IS_TASK (task));
   g_return_if_fail (task->result_set == FALSE);
 
   task->result.boolean = result;
@@ -1701,6 +1734,8 @@ gboolean
 g_task_propagate_boolean (GTask   *task,
                           GError **error)
 {
+  g_return_val_if_fail (G_IS_TASK (task), FALSE);
+
   if (g_task_propagate_error (task, error))
     return FALSE;
 
@@ -1733,6 +1768,7 @@ void
 g_task_return_error (GTask  *task,
                      GError *error)
 {
+  g_return_if_fail (G_IS_TASK (task));
   g_return_if_fail (task->result_set == FALSE);
   g_return_if_fail (error != NULL);
 
@@ -1793,6 +1829,7 @@ g_task_return_error_if_cancelled (GTask *task)
 {
   GError *error = NULL;
 
+  g_return_val_if_fail (G_IS_TASK (task), FALSE);
   g_return_val_if_fail (task->result_set == FALSE, FALSE);
 
   if (g_cancellable_set_error_if_cancelled (task->cancellable, &error))
@@ -1823,6 +1860,8 @@ g_task_return_error_if_cancelled (GTask *task)
 gboolean
 g_task_had_error (GTask *task)
 {
+  g_return_val_if_fail (G_IS_TASK (task), FALSE);
+
   if (task->error != NULL || task->had_error)
     return TRUE;
 
