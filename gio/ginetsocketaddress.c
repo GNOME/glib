@@ -396,7 +396,7 @@ g_inet_socket_address_new (GInetAddress *address,
  * Creates a new #GInetSocketAddress for @address and @port.
  *
  * If @address is an IPv6 address, it can also contain a scope ID
- * (separated from the address by a "<literal>%</literal>").
+ * (separated from the address by a `%`).
  *
  * Returns: a new #GInetSocketAddress, or %NULL if @address cannot be
  * parsed.
