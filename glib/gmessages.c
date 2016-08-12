@@ -27,7 +27,7 @@
  */
 
 /**
- * SECTION:warnings
+ * SECTION:messages
  * @Title: Message Output and Debugging Functions
  * @Short_description: functions to output messages and help debug applications
  *
@@ -197,19 +197,6 @@
 #  define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
 #  include <windows.h>
 #endif
-
-/**
- * SECTION:messages
- * @title: Message Logging
- * @short_description: versatile support for logging messages
- *     with different levels of importance
- *
- * These functions provide support for logging error messages
- * or messages used for debugging.
- *
- * There are several built-in levels of messages, defined in
- * #GLogLevelFlags. These can be extended with user-defined levels.
- */
 
 /**
  * G_LOG_DOMAIN:
