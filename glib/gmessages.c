@@ -52,11 +52,11 @@
  *
  * The convenience macros g_info(), g_message(), g_debug(), g_warning() and g_error()
  * will use the traditional g_log() API unless you define the symbol
- * `G_LOG_USE_STRUCTURED` before including `glib.h`. But note that even messages
+ * %G_LOG_USE_STRUCTURED before including `glib.h`. But note that even messages
  * logged through the traditional g_log() API are ultimatively passed to
  * g_log_structured(), so that all log messages end up in same destination.
- * If `G_LOG_USE_STRUCTURED` is defined, g_test_expect_message() will become
- * will become ineffective for the wrapper macros g_warning() and friends (see
+ * If %G_LOG_USE_STRUCTURED is defined, g_test_expect_message() will become
+ * ineffective for the wrapper macros g_warning() and friends (see
  * [Testing for Messages][testing-for-messages]).
  *
  * The support for structured logging was motivated by the following needs (some
@@ -93,6 +93,16 @@
  *    zero-length #GLogField to g_log_structured_array().
  *  * Color output needed to be supported on the terminal, to make reading
  *    through logs easier.
+ *
+ * ## Using Structured Logging
+ *
+ * To use structured logging (rather than the old-style logging), either use
+ * the g_log_structured() and g_log_structured_array() functions; or define
+ * `G_LOG_USE_STRUCTURED` before including any GLib header, and use the
+ * g_message(), g_debug(), g_error() (etc.) macros.
+ *
+ * You do not need to define `G_LOG_USE_STRUCTURED` to use g_log_structured(),
+ * but it is a good idea to avoid confusion.
  *
  * ## Log Domains
  *
@@ -219,6 +229,9 @@
  * G_LOG_FATAL_MASK:
  *
  * GLib log levels that are considered fatal by default.
+ *
+ * This is not used if structured logging is enabled; see
+ * [Using Structured Logging][using-structured-logging].
  */
 
 /**
@@ -236,6 +249,9 @@
  * custom log handler functions behave similarly, so that logging calls in user
  * code do not need modifying to add a new-line character to the message if the
  * log handler is changed.
+ *
+ * This is not used if structured logging is enabled; see
+ * [Using Structured Logging][using-structured-logging].
  */
 
 /**
@@ -277,6 +293,10 @@
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
+ *
+ * If structured logging is enabled, this will use g_log_structured();
+ * otherwise it will use g_log(). See
+ * [Using Structured Logging][using-structured-logging].
  */
 
 /**
@@ -297,6 +317,10 @@
  * If g_log_default_handler() is used as the log handler function,
  * a newline character will automatically be appended to @..., and
  * need not be entered manually.
+ *
+ * If structured logging is enabled, this will use g_log_structured();
+ * otherwise it will use g_log(). See
+ * [Using Structured Logging][using-structured-logging].
  */
 
 /**
@@ -318,6 +342,10 @@
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
+ *
+ * If structured logging is enabled, this will use g_log_structured();
+ * otherwise it will use g_log(). See
+ * [Using Structured Logging][using-structured-logging].
  */
 
 /**
@@ -341,6 +369,9 @@
  * character will automatically be appended to @..., and need not be entered
  * manually.
  *
+ * If structured logging is enabled, this will use g_log_structured();
+ * otherwise it will use g_log(). See
+ * [Using Structured Logging][using-structured-logging].
  */
 
 /**
@@ -357,6 +388,10 @@
  * Such messages are suppressed by the g_log_default_handler() and
  * g_log_writer_default() unless the `G_MESSAGES_DEBUG` environment variable is
  * set appropriately.
+ *
+ * If structured logging is enabled, this will use g_log_structured();
+ * otherwise it will use g_log(). See
+ * [Using Structured Logging][using-structured-logging].
  *
  * Since: 2.40
  */
@@ -375,6 +410,10 @@
  * Such messages are suppressed by the g_log_default_handler() and
  * g_log_writer_default() unless the `G_MESSAGES_DEBUG` environment variable is
  * set appropriately.
+ *
+ * If structured logging is enabled, this will use g_log_structured();
+ * otherwise it will use g_log(). See
+ * [Using Structured Logging][using-structured-logging].
  *
  * Since: 2.6
  */
@@ -604,7 +643,7 @@ g_log_domain_get_handler_L (GLogDomain	*domain,
  * Structured log messages (using g_log_structured() and
  * g_log_structured_array()) are fatal only if the default log writer is used;
  * otherwise it is up to the writer function to determine which log messages
- * are fatal.
+ * are fatal. See [Using Structured Logging][using-structured-logging].
  *
  * Returns: the old fatal mask
  */
@@ -641,7 +680,8 @@ g_log_set_always_fatal (GLogLevelFlags fatal_mask)
  * This has no effect on structured log messages (using g_log_structured() or
  * g_log_structured_array()). To change the fatal behaviour for specific log
  * messages, programs must install a custom log writer function using
- * g_log_set_writer_func().
+ * g_log_set_writer_func(). See
+ * [Using Structured Logging][using-structured-logging].
  *
  * Returns: the old fatal mask for the log domain
  */
@@ -695,6 +735,9 @@ g_log_set_fatal_mask (const gchar   *log_domain,
  * you want to set a handler for this log level you must combine it with
  * #G_LOG_FLAG_FATAL.
  *
+ * This has no effect if structured logging is enabled; see
+ * [Using Structured Logging][using-structured-logging].
+ *
  * Here is an example for adding a log handler for all warning messages
  * in the default domain:
  * |[<!-- language="C" --> 
@@ -738,6 +781,9 @@ g_log_set_handler (const gchar	 *log_domain,
  * @destroy: destroy notify for @user_data, or %NULL
  *
  * Like g_log_sets_handler(), but takes a destroy notify for the @user_data.
+ *
+ * This has no effect if structured logging is enabled; see
+ * [Using Structured Logging][using-structured-logging].
  *
  * Returns: the id of the new handler
  *
@@ -791,6 +837,9 @@ g_log_set_handler_full (const gchar    *log_domain,
  * and log level combination. By default, GLib uses
  * g_log_default_handler() as default log handler.
  *
+ * This has no effect if structured logging is enabled; see
+ * [Using Structured Logging][using-structured-logging].
+ *
  * Returns: the previous default log handler
  *
  * Since: 2.6
@@ -834,7 +883,8 @@ g_log_set_default_handler (GLogFunc log_func,
  * This handler also has no effect on structured log messages (using
  * g_log_structured() or g_log_structured_array()). To change the fatal
  * behaviour for specific log messages, programs must install a custom log
- * writer function using g_log_set_writer_func().
+ * writer function using g_log_set_writer_func().See
+ * [Using Structured Logging][using-structured-logging].
  *
  * Since: 2.22
  **/
@@ -855,6 +905,9 @@ g_test_log_set_fatal_handler (GTestLogFatalFunc log_func,
  *     in g_log_set_handler()
  *
  * Removes the log handler.
+ *
+ * This has no effect if structured logging is enabled; see
+ * [Using Structured Logging][using-structured-logging].
  */
 void
 g_log_remove_handler (const gchar *log_domain,
@@ -1117,6 +1170,9 @@ static GSList *expected_messages = NULL;
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
+ *
+ * If [structured logging is enabled][using-structured-logging] this will
+ * output via the structured log writer function (see g_log_set_writer_func()).
  */
 void
 g_logv (const gchar   *log_domain,
@@ -1265,6 +1321,9 @@ g_logv (const gchar   *log_domain,
  * If g_log_default_handler() is used as the log handler function, a new-line
  * character will automatically be appended to @..., and need not be entered
  * manually.
+ *
+ * If [structured logging is enabled][using-structured-logging] this will
+ * output via the structured log writer function (see g_log_set_writer_func()).
  */
 void
 g_log (const gchar   *log_domain,
@@ -2582,6 +2641,9 @@ escape_string (GString *string)
  * stderr is used for levels %G_LOG_LEVEL_ERROR, %G_LOG_LEVEL_CRITICAL,
  * %G_LOG_LEVEL_WARNING and %G_LOG_LEVEL_MESSAGE. stdout is used for
  * the rest.
+ *
+ * This has no effect if structured logging is enabled; see
+ * [Using Structured Logging][using-structured-logging].
  */
 void
 g_log_default_handler (const gchar   *log_domain,
@@ -2681,8 +2743,8 @@ g_set_print_handler (GPrintFunc func)
  * g_print() should not be used from within libraries for debugging
  * messages, since it may be redirected by applications to special
  * purpose message windows or even files. Instead, libraries should
- * use g_log(), or the convenience functions g_message(), g_warning()
- * and g_error().
+ * use g_log(), g_log_structured(), or the convenience macros g_message(),
+ * g_warning() and g_error().
  */
 void
 g_print (const gchar *format,
@@ -2760,8 +2822,8 @@ g_set_printerr_handler (GPrintFunc func)
  * new-line character.
  *
  * g_printerr() should not be used from within libraries.
- * Instead g_log() should be used, or the convenience functions
- * g_message(), g_warning() and g_error().
+ * Instead g_log() or g_log_structured() should be used, or the convenience
+ * macros g_message(), g_warning() and g_error().
  */
 void
 g_printerr (const gchar *format,
