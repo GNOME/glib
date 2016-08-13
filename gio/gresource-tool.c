@@ -99,7 +99,7 @@ list_resource (GResource   *resource,
       if (g_resource_get_info (resource, child, 0, &size, &flags, NULL))
         {
           if (details)
-            g_print ("%s%s%6"G_GSIZE_FORMAT " %s %s\n", section, section[0] ? " " : "", size, flags & G_RESOURCE_FLAGS_COMPRESSED ? "c" : "u", child);
+            g_print ("%s%s%6"G_GSIZE_FORMAT " %s %s\n", section, section[0] ? " " : "", size, (flags & G_RESOURCE_FLAGS_COMPRESSED) ? "c" : "u", child);
           else
             g_print ("%s\n", child);
         }
