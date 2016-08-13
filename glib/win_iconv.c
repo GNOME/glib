@@ -1989,6 +1989,7 @@ main(int argc, char **argv)
     size_t r;
     FILE *in = stdin;
     FILE *out = stdout;
+    FILE *in_allocated = NULL, *out_allocated = NULL;
     int ignore = 0;
     char *p;
 
@@ -2012,7 +2013,7 @@ main(int argc, char **argv)
             ignore = 1;
         else if (strcmp(argv[i], "--output") == 0)
         {
-            out = fopen(argv[++i], "wb");
+            out_allocated = out = fopen(argv[++i], "wb");
             if(out == NULL)
             {
                 fprintf(stderr, "cannot open %s\n", argv[i]);
@@ -2021,7 +2022,7 @@ main(int argc, char **argv)
         }
         else
         {
-            in = fopen(argv[i], "rb");
+            in_allocated = in = fopen(argv[i], "rb");
             if (in == NULL)
             {
                 fprintf(stderr, "cannot open %s\n", argv[i]);
@@ -2085,6 +2086,11 @@ main(int argc, char **argv)
     }
 
     iconv_close(cd);
+
+    if (in_allocated != NULL)
+        fclose (in_allocated);
+    if (out_allocated != NULL)
+        fclose (out_allocated);
 
     return 0;
 }
