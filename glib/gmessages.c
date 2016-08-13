@@ -189,6 +189,7 @@
 #include "gcharset.h"
 #include "gconvert.h"
 #include "genviron.h"
+#include "gmain.h"
 #include "gmem.h"
 #include "gprintfint.h"
 #include "gtestutils.h"
@@ -2205,6 +2206,10 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   const gchar *log_domain = NULL;
   gchar level_prefix[STRING_BUFFER_SIZE];
   GString *gstring;
+  gint64 now;
+  time_t now_secs;
+  struct tm *now_tm;
+  gchar time_buf[128];
 
   /* Extract some common fields. */
   for (i = 0; (message == NULL || log_domain == NULL) && i < n_fields; i++)
@@ -2246,6 +2251,18 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   g_string_append (gstring, level_prefix);
 
   g_string_append (gstring, ": ");
+
+  /* Timestamp */
+  now = g_get_real_time ();
+  now_secs = (time_t) now / 1000000;
+  now_tm = localtime (&now_secs);
+  strftime (time_buf, sizeof (time_buf), "%H:%M:%S", now_tm);
+
+  g_string_append_printf (gstring, "%s%s.%03d%s: ",
+                          use_color ? "\033[34m" : "",
+                          time_buf, (gint) ((now / 1000) % 1000),
+                          color_reset (use_color));
+
   if (message == NULL)
     {
       g_string_append (gstring, "(NULL) message");
