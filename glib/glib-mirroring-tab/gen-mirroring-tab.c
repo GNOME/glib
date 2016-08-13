@@ -139,7 +139,7 @@ read_bidi_mirroring_txt (
 
       k = sscanf (s, "%lx; %lx", &i, &j);
       if (k != 2 || i >= UNICODE_CHARS || j >= UNICODE_CHARS)
-	die4 ("invalid pair in input at line %ld: %04lX, %04lX", l, i, j);
+	die4 ("invalid pair in input at line %lu: %04lX, %04lX", l, i, j);
       dist = ((signed long) j - (signed long) i);
       table[i] = dist;
       if (dist > max_dist)
