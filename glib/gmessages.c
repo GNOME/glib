@@ -525,6 +525,7 @@ static gpointer          fatal_log_data;
 static GLogWriterFunc log_writer_func = g_log_writer_default;
 static gpointer       log_writer_user_data = NULL;
 static GDestroyNotify log_writer_user_data_free = NULL;
+static gboolean       g_log_debug_enabled = FALSE;  /* (atomic) */
 
 /* --- functions --- */
 
@@ -2646,7 +2647,9 @@ should_drop_message (GLogLevelFlags   log_level,
                      gsize            n_fields)
 {
   /* Disable debug message output unless specified in G_MESSAGES_DEBUG. */
-  if (!(log_level & DEFAULT_LEVELS) && !(log_level >> G_LOG_LEVEL_USER_SHIFT))
+  if (!(log_level & DEFAULT_LEVELS) &&
+      !(log_level >> G_LOG_LEVEL_USER_SHIFT) &&
+      !g_log_get_debug_enabled ())
     {
       const gchar *domains;
       gsize i;
@@ -2875,6 +2878,47 @@ _g_log_writer_fallback (GLogLevelFlags   log_level,
 #endif
 
   return G_LOG_WRITER_HANDLED;
+}
+
+/**
+ * g_log_get_debug_enabled:
+ *
+ * Return whether debug output from the GLib logging system is enabled.
+ *
+ * Note that this should not be used to conditionalise calls to g_debug() or
+ * other logging functions; it should only be used from %GLogWriterFunc
+ * implementations.
+ *
+ * Note also that the value of this does not depend on `G_MESSAGES_DEBUG`, as
+ * it is domain-dependent.
+ *
+ * Returns: %TRUE if debug output is enabled, %FALSE otherwise
+ *
+ * Since: 2.72
+ */
+gboolean
+g_log_get_debug_enabled (void)
+{
+  return g_atomic_int_get (&g_log_debug_enabled);
+}
+
+/**
+ * g_log_set_debug_enabled:
+ * @enabled: %TRUE to enable debug output, %FALSE otherwise
+ *
+ * Enable or disable debug output from the GLib logging system is enabled. This
+ * value interacts disjunctively with `G_MESSAGES_DEBUG` — if either of them
+ * would allow a debug message to be outputted, it will be.
+ *
+ * Note that this should not be used from within library code to enable debug
+ * output — it is intended for external use.
+ *
+ * Since: 2.72
+ */
+void
+g_log_set_debug_enabled (gboolean enabled)
+{
+  g_atomic_int_set (&g_log_debug_enabled, enabled);
 }
 
 /**
