@@ -240,6 +240,8 @@ get_expected_filename (const gchar       *filename,
     expected = g_strconcat (f, ".expected", NULL);
   else if (flags == G_MARKUP_TREAT_CDATA_AS_TEXT)
     expected = g_strconcat (f, ".cdata-as-text", NULL);
+  else
+    g_assert_not_reached ();
 
   g_free (f);
 
