@@ -2587,9 +2587,9 @@
  *
  *   membuf = g_malloc (8192);
  *
- *   /* Some computation on membuf */
+ *   /<!-- -->* Some computation on membuf *<!-- -->/
  *
- *   /* membuf will be automatically freed here */
+ *   /<!-- -->* membuf will be automatically freed here *<!-- -->/
  *   return TRUE;
  * }
  * ]|
