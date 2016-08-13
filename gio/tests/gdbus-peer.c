@@ -646,7 +646,7 @@ read_all_from_fd (gint fd, gsize *out_len, GError **error)
 
  error:
   if (out_len != NULL)
-    out_len = 0;
+    *out_len = 0;
   g_string_free (str, TRUE);
   return NULL;
 }
