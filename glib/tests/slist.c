@@ -204,7 +204,7 @@ test_slist_remove_all (void)
 
   g_assert_cmpint (g_slist_length (slist), ==, 20);
 
-  for (i = 0; i < 10; i++)
+  for (i = 0; i < 5; i++)
     {
       slist = g_slist_remove_all (slist, &nums[2 * i + 1]);
       slist = g_slist_remove_all (slist, &nums[8 - 2 * i]);
