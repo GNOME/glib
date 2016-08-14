@@ -1751,7 +1751,6 @@ msgid "DESTINATION"
 msgstr "DESTINACIÓ"
 
 #: ../gio/gio-tool-copy.c:103
-#, fuzzy
 msgid "Copy one or more files from SOURCE to DESTINATION."
 msgstr "Copia un, o més, fitxers des de la FONT a la DESTINACIÓ."
 
@@ -1971,41 +1970,34 @@ msgid ""
 msgstr ""
 
 #: ../gio/gio-tool-mkdir.c:74
-#, fuzzy
 msgid "No locations gives"
-msgstr "Ubicacions..."
+msgstr "No s'ha donat cap ubicació"
 
 #: ../gio/gio-tool-monitor.c:37
-#, fuzzy
 msgid "Monitor a directory (default: depends on type)"
-msgstr ""
-"No s'ha pogut trobar el tipus de seguiment de directoris locals predeterminat"
+msgstr "Fes el seguiment a un directori (per defecte: depèn del tipus)"
 
 #: ../gio/gio-tool-monitor.c:39
-#, fuzzy
 msgid "Monitor a file (default: depends on type)"
-msgstr ""
-"No s'ha pogut trobar el tipus de monitorització de fitxer local predeterminat"
+msgstr "Fes el seguiment a un fitxer (per defecte: depèn del tipus)"
 
 #: ../gio/gio-tool-monitor.c:41
 msgid "Monitor a file directly (notices changes made via hardlinks)"
-msgstr ""
+msgstr "Fes el seguiment a un fitxer directament (s'adona de canvis fets mitjançant enllaços forts)"
 
 #: ../gio/gio-tool-monitor.c:43
 msgid "Monitors a file directly, but doesn't report changes"
-msgstr ""
+msgstr "Fes el seguiment a un fitxer directament, però no informa dels canvis"
 
 #: ../gio/gio-tool-monitor.c:45
 msgid "Report moves and renames as simple deleted/created events"
-msgstr ""
+msgstr "Informa de moviments i canvis de nom com a esdeveniments de supressió i creació simples"
 
 #: ../gio/gio-tool-monitor.c:47
-#, fuzzy
 msgid "Watch for mount events"
-msgstr "veure"
+msgstr "Vigila els esdeveniments de muntatge"
 
 #: ../gio/gio-tool-monitor.c:207
-#, fuzzy
 msgid "Monitor files or directories for changes."
 msgstr "Fes un seguiment dels directoris per veure si hi ha canvis."
 
@@ -2014,7 +2006,6 @@ msgid "Mount as mountable"
 msgstr "Munta com a muntable"
 
 #: ../gio/gio-tool-mount.c:59
-#, fuzzy
 msgid "Mount volume with device file"
 msgstr "Munta el volum amb el fitxer de dispositiu"
 
@@ -2053,7 +2044,6 @@ msgid "List"
 msgstr "Llista"
 
 #: ../gio/gio-tool-mount.c:67
-#, fuzzy
 msgid "Monitor events"
 msgstr "Fes un seguiment dels esdeveniments"
 
@@ -2062,43 +2052,42 @@ msgid "Show extra information"
 msgstr "Mostra informació addicional"
 
 #: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
-#, fuzzy, c-format
+#, c-format
 msgid "Error mounting location: Anonymous access denied\n"
-msgstr ""
-"S'ha produït un error en establir el temps de modificació o d'accés: %s"
+msgstr "S'ha produït un error en muntar la ubicació: s'ha denegat l'accés anònim\n"
 
 #: ../gio/gio-tool-mount.c:248 ../gio/gio-tool-mount.c:278
-#, fuzzy, c-format
+#, c-format
 msgid "Error mounting location: %s\n"
 msgstr "S'ha produït un error en muntar la ubicació: %s\n"
 
 #: ../gio/gio-tool-mount.c:341
-#, fuzzy, c-format
+#, c-format
 msgid "Error unmounting mount: %s\n"
 msgstr "S'ha produït un error desmuntar el muntatge: %s\n"
 
 #: ../gio/gio-tool-mount.c:366 ../gio/gio-tool-mount.c:419
-#, fuzzy, c-format
+#, c-format
 msgid "Error finding enclosing mount: %s\n"
 msgstr "No s'ha pogut trobar el punt de muntatge de tancament: %s\n"
 
 #: ../gio/gio-tool-mount.c:394
-#, fuzzy, c-format
+#, c-format
 msgid "Error ejecting mount: %s\n"
 msgstr "S'ha produït un error en expulsar el muntatge: %s\n"
 
 #: ../gio/gio-tool-mount.c:875
-#, fuzzy, c-format
+#, c-format
 msgid "Error mounting %s: %s\n"
 msgstr "S'ha produït un error en muntar %s: %s\n"
 
 #: ../gio/gio-tool-mount.c:891
-#, fuzzy, c-format
+#, c-format
 msgid "Mounted %s at %s\n"
 msgstr "S'ha muntat %s a %s\n"
 
 #: ../gio/gio-tool-mount.c:941
-#, fuzzy, c-format
+#,c-format
 msgid "No volume for device file %s\n"
 msgstr "No hi ha cap volum pel fitxer de dispositiu %s\n"
 
