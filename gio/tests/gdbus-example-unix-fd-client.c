@@ -82,7 +82,7 @@ on_name_appeared (GDBusConnection *connection,
       now = time (NULL);
       strftime (now_buf,
                 sizeof now_buf,
-                "%c",
+                "%Y-%m-%d %H:%M:%S",
                 localtime (&now));
 
       str = g_strdup_printf ("On %s, gdbus-example-unix-fd-client with pid %d was here!\n",
