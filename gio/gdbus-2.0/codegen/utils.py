@@ -96,7 +96,13 @@ def lookup_brief_docs(annotations):
         return s
 
 def version_cmp_key(key):
-    # If the 'since' version is empty put a 0 in its place as this will
+    # If the 'since' version is 'UNRELEASED', compare higher than anything else
+    # If it is empty put a 0 in its place as this will
     # allow LooseVersion to work and will always compare lower.
-    v = key[0] if key[0] else '0'
+    if key[0] == 'UNRELEASED':
+        v = '9999'
+    elif key[0]:
+        v = str(key[0])
+    else:
+        v = '0'
     return (distutils.version.LooseVersion(v), key[1])
