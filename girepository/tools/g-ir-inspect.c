@@ -70,7 +70,7 @@ main (gint   argc,
   GStrv namespaces = NULL;
   const gchar *namespace = NULL;
   const GOptionEntry options[] = {
-    { "version", 0, 0, G_OPTION_ARG_STRING, &version, "Version", "VERSION" },
+    { "version", 0, 0, G_OPTION_ARG_STRING, &version, "Typelib version to inspect", "VERSION" },
     { "print-shlibs", 0, 0, G_OPTION_ARG_NONE, &opt_shlibs, "List the shared libraries the typelib requires" },
     { "print-typelibs", 0, 0, G_OPTION_ARG_NONE, &opt_typelibs, "List other typelibs the inspected typelib requires" },
     { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &namespaces, "The typelib to inspect", "NAMESPACE" },
