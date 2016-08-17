@@ -1,3 +1,44 @@
+Overview of changes in GLib 2.49.5
+==================================
+
+* Structured logging:
+ - drop libsystemd dependency
+ - document that g_test_expect_message does not work with structured logs
+
+* Use libmount for unix mount support
+
+* Add an async variant of g_app_info_launch_default_for_uri
+
+Bugs fixed:
+ 522053 GUnixMountMonitor needs to use /proc/self/mountinfo on recent Linux
+ 682794 Add usage guidance to logging documentation
+ 744456 Structured logging API
+ 766370 Add a macro for initializing g_auto(GVariantBuilder)
+ 767240 Regex failures with pcre 8.38
+ 768198 Can't build glib with systemtap enabled
+ 768453 Gdbus test: compilation fails due to -Werror=format-y2k errors
+ 768752 Add async variant of g_app_info_launch_default_for_uri
+ 769027 Docs misleadingly imply G_CHECKSUM_SHA512 is available since 2.16
+ 769029 gmessage: compiler complains about -Wformat-nonliteral
+ 769042 'O_CLOEXEC' undeclared (first use in this function)
+ 769087 gmessages: support NULL log domain
+ 769089 Fix gsettings uint64 testcase
+ 769104 Build failure when using _GLIB_CHECKED_ADD_U32 with the Intel compiler
+ 769139 g_log_writer_journald uses non-standard 'htole64' function
+ 769238 memory increases every time I umount and mount my secondary hard disk.
+ 769245 is_valid_heap_iter define misses NULL pointer check
+ 769507 gmessages: Don’t require is_journald() call before writer_journald()
+ 769785 gmessages: Expand documentation further for structured logging
+ 769995 gdbus-codegen: Allow '@since: UNRELEASED' in documentation comments
+
+Translation updates:
+ Catalan
+ Hebrew
+ Lithuanian
+ Slovak
+ Spanish
+
+
 Overview of changes in GLib 2.49.4
 ==================================
 
