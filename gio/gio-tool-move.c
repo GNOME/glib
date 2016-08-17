@@ -178,7 +178,7 @@ handle_move (int argc, char *argv[], gboolean do_help)
               error = NULL;
 
               uri = g_file_get_uri (target);
-              g_print (_("%s: overwrite '%s' ? "), argv[0], uri);
+              g_print (_("%s: overwrite '%s'? "), argv[0], uri);
               g_free (uri);
               if (fgets (line, sizeof (line), stdin) &&
                   (line[0] == 'y' || line[0] == 'Y'))

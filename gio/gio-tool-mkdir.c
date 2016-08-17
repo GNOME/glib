@@ -71,7 +71,7 @@ handle_mkdir (int argc, char *argv[], gboolean do_help)
 
   if (argc < 2)
     {
-      show_help (context, _("No locations gives"));
+      show_help (context, _("No locations given"));
       return 1;
     }
 
