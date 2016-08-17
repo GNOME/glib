@@ -1,3 +1,40 @@
+Overview of changes in GLib 2.48.2
+==================================
+
+Bugs fixed:
+ 547200 g_utf8_find_next_char() issues
+ 673101 resource compiler dependency generation not working for generated files
+ 700756 GFile.new_for_path arguments misses (type filename) annotation
+ 725902 build: simplify dtrace configuration
+ 728207 gsocketservice: Documentation does not mention that is already active...
+ 730187 glocalfileoutputstream: Fix an FD leak in an error path
+ 746685 Doc: clarify that g_variant_get_data() can be used instead of g_varia...
+ 750257 GSettings changed signal should clearly state the order required
+ 753231 Memory is potentially used after free
+ 755439 Memory leak in gdbusproxy.c
+ 760115 gtestutils: add missing dash in seed argument's --help documentation
+ 760423 gio-querymodules prints error messages as question marks on some locales
+ 761810 gio: Support using GDBusObjectManagerServer at path ‘/’
+ 766211 Fix the upper bound in g_unichar_iswide_bsearch
+ 766899 Superflous HTML/XML comments in GDBusProxyTypeFunc documentation string
+ 766933 GSocketAddress leaks in gnetworkmonitornetlink.c:read_netlink_messages()
+ 767172 docs: Move GIO_USE_VFS to "okay for production" section
+ 767218 Remove a UTF-8 ellipsis from gsignal.h
+ 767824 Some UTC timezones incorrectly recognized on Windows 7
+ 767949 Typos in glib docs
+ 768453 Gdbus test: compilation fails due to -Werror=format-y2k errors
+ 768504 keyfile: g_key_file_get_double behavior doesn't follow documentation
+ 768551 Test failure: test_socket_address_to_string
+ 768560 gio/tests/gsettings: fix GSettings reference leaks in some tests
+ 768806 gdbus tool must swallow -- argument
+ 769027 Docs misleadingly imply G_CHECKSUM_SHA512 is available since 2.16
+
+Translations updated:
+ Indonesian
+ Portuguese
+ Turkish
+
+
 Overview of changes in GLib 2.48.1
 ==================================
 
