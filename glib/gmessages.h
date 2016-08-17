@@ -30,7 +30,6 @@
 #endif
 
 #include <stdarg.h>
-#include <stdio.h>
 #include <glib/gtypes.h>
 #include <glib/gmacros.h>
 
