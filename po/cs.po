@@ -1885,12 +1885,12 @@ msgstr "Doporučené aplikace:\n"
 #: ../gio/gio-tool-mime.c:139
 #, c-format
 msgid "No recommended applications\n"
-msgstr "Žádné aplikace nejsou doporučené"
+msgstr "Žádné aplikace nejsou doporučené\n"
 
 #: ../gio/gio-tool-mime.c:159
 #, c-format
 msgid "Failed to load info for handler '%s'\n"
-msgstr "Selhalo načtení informací pro obsluhu „%s“"
+msgstr "Selhalo načtení informací pro obsluhu „%s“\n"
 
 #: ../gio/gio-tool-mime.c:165
 #, c-format
@@ -2110,7 +2110,7 @@ msgstr "Příliš mnoho argumentů"
 #: ../gio/gio-tool-rename.c:91
 #, c-format
 msgid "Rename successful. New uri: %s\n"
-msgstr "Přejmenování bylo úspěšné. Nová adresa URI je: %s"
+msgstr "Přejmenování bylo úspěšné. Nová adresa URI je: %s\n"
 
 #: ../gio/gio-tool-save.c:50
 msgid "Only create if not existing"
