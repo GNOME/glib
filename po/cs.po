@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-17 18:35+0000\n"
-"PO-Revision-Date: 2016-08-18 09:51+0200\n"
+"POT-Creation-Date: 2016-08-18 08:01+0000\n"
+"PO-Revision-Date: 2016-08-19 14:28+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -1519,21 +1519,15 @@ msgstr "Proud má otevřenou operaci"
 
 #: ../gio/gio-tool.c:142
 msgid "Copy with file"
-msgstr ""
+msgstr "Kopírovat se souborem"
 
 #: ../gio/gio-tool.c:146
 msgid "Keep with file when moved"
-msgstr ""
+msgstr "Zachovat u souboru, když je přesunut"
 
 #: ../gio/gio-tool.c:187
-#, fuzzy
-#| msgid ""
-#| "'%s' takes no arguments\n"
-#| "\n"
 msgid "'version' takes no arguments"
-msgstr ""
-"„%s“ nelze použít s argumenty\n"
-"\n"
+msgstr "„version“ nepřebírá žádné argumenty"
 
 #: ../gio/gio-tool.c:189 ../gio/gio-tool.c:205 ../glib/goption.c:857
 msgid "Usage:"
@@ -1740,13 +1734,13 @@ msgstr "atributy:\n"
 #: ../gio/gio-tool-info.c:127
 #, c-format
 msgid "display name: %s\n"
-msgstr ""
+msgstr "zobrazovaný název: %s\n"
 
 #. Translators: This is a noun and represents and attribute of a file
 #: ../gio/gio-tool-info.c:132
 #, c-format
 msgid "edit name: %s\n"
-msgstr ""
+msgstr "upravovaný název: %s\n"
 
 #: ../gio/gio-tool-info.c:138
 #, c-format
@@ -1800,6 +1794,11 @@ msgid ""
 "be specified with their GIO name, e.g. standard::icon, or just by\n"
 "namespace, e.g. unix, or by '*', which matches all attributes"
 msgstr ""
+"info z gio je podobné jako tradiční příkaz ls, ale používá namísto\n"
+"lokálních souborů umístění GIO: například můžete pro umístění použít\n"
+"něco jako smb://server/cesta/soubor.txt. Atributy souboru lze zadat\n"
+"jejich názvy GIO: např. standard::icon, nebo jednoduše pomocí jmenného\n"
+"prostoru, např. unix, nebo pomocí „*“, která odpovídá všem atributům."
 
 #: ../gio/gio-tool-info.c:307 ../gio/gio-tool-mkdir.c:74
 msgid "No locations given"
@@ -1852,6 +1851,9 @@ msgid ""
 "for the mimetype. If a handler is given, it is set as the default\n"
 "handler for the mimetype."
 msgstr ""
+"Když není zadaná žádná obsluha, vypsat registrované a doporučené\n"
+"aplikace pro typ MIME. Když je obsluha zadaná, nastaví se jako\n"
+"výchozí obsluha pro typ MIME."
 
 #: ../gio/gio-tool-mime.c:98
 msgid "Must specify a single mimetype, and maybe a handler"
@@ -1925,7 +1927,7 @@ msgstr "Sledovat soubor (výchozí: závisí na typu)"
 
 #: ../gio/gio-tool-monitor.c:41
 msgid "Monitor a file directly (notices changes made via hardlinks)"
-msgstr ""
+msgstr "Sledovat soubor přímo (všimne si i změn přes tvrdé odkazy)"
 
 #: ../gio/gio-tool-monitor.c:43
 msgid "Monitors a file directly, but doesn't report changes"
@@ -1933,11 +1935,11 @@ msgstr "Sledovat soubor přímo, ale nehlásit změny"
 
 #: ../gio/gio-tool-monitor.c:45
 msgid "Report moves and renames as simple deleted/created events"
-msgstr ""
+msgstr "Hlásit přesuny a přejmenování jako oddělené události smazání/vytvoření"
 
 #: ../gio/gio-tool-monitor.c:47
 msgid "Watch for mount events"
-msgstr ""
+msgstr "Sledovat události připojení"
 
 #: ../gio/gio-tool-monitor.c:207
 msgid "Monitor files or directories for changes."
@@ -1945,11 +1947,11 @@ msgstr "Sledovat soubory nebo složky ohledně změn."
 
 #: ../gio/gio-tool-mount.c:58
 msgid "Mount as mountable"
-msgstr ""
+msgstr "Připojit jako připojitelný"
 
 #: ../gio/gio-tool-mount.c:59
 msgid "Mount volume with device file"
-msgstr ""
+msgstr "Připojit svazek pomocí souboru zařízení"
 
 #: ../gio/gio-tool-mount.c:59
 msgid "DEVICE"
@@ -1973,7 +1975,7 @@ msgstr "SCHÉMA"
 
 #: ../gio/gio-tool-mount.c:63
 msgid "Ignore outstanding file operations when unmounting or ejecting"
-msgstr ""
+msgstr "Při odpojování nebo vysouvání ignorovat nedokončené operace se soubory"
 
 #: ../gio/gio-tool-mount.c:64
 msgid "Use an anonymous user when authenticating"
@@ -1993,34 +1995,30 @@ msgid "Show extra information"
 msgstr "Zobrazit doplňující informace"
 
 #: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
-#, fuzzy, c-format
-#| msgid "Error setting modification or access time: %s"
+#, c-format
 msgid "Error mounting location: Anonymous access denied\n"
-msgstr "Chyba při nastavování změny nebo času přístupu: %s"
+msgstr "Chyba při připojování umístění: anonymní přístup byl zamítnut\n"
 
 #: ../gio/gio-tool-mount.c:248 ../gio/gio-tool-mount.c:278
-#, fuzzy, c-format
-#| msgid "Error flushing connection: %s\n"
+#, c-format
 msgid "Error mounting location: %s\n"
-msgstr "Chyba při vyprazdňování spojení: %s\n"
+msgstr "Chyba při připojování umístění: %s\n"
 
 #: ../gio/gio-tool-mount.c:341
-#, fuzzy, c-format
-#| msgid "Error connecting: %s\n"
+#, c-format
 msgid "Error unmounting mount: %s\n"
-msgstr "Chyba při spojení: %s\n"
+msgstr "Chyba při odpojování připojení: %s\n"
 
 #: ../gio/gio-tool-mount.c:366 ../gio/gio-tool-mount.c:419
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error closing socket: %s"
 msgid "Error finding enclosing mount: %s\n"
-msgstr "Chyba při zavírání soketu: %s"
+msgstr "Chyba při vyhledání příslušejícího připojení: %s\n"
 
 #: ../gio/gio-tool-mount.c:394
-#, fuzzy, c-format
-#| msgid "Error setting owner: %s"
+#, c-format
 msgid "Error ejecting mount: %s\n"
-msgstr "Chyba při nastavování vlastníka: %s"
+msgstr "Chyba při vysouvání připojení: %s\n"
 
 #: ../gio/gio-tool-mount.c:875
 #, c-format
@@ -2035,7 +2033,7 @@ msgstr "Připojeno %s do %s\n"
 #: ../gio/gio-tool-mount.c:941
 #, c-format
 msgid "No volume for device file %s\n"
-msgstr ""
+msgstr "Pro soubor zařízení %s není žádný svazek\n"
 
 #: ../gio/gio-tool-mount.c:1136
 msgid "Mount or unmount the locations."
@@ -2043,7 +2041,7 @@ msgstr "Připojit nebo odpojit umístění."
 
 #: ../gio/gio-tool-move.c:42
 msgid "Don't use copy and delete fallback"
-msgstr ""
+msgstr "Nepoužívat jako náhradu kopírování a mazání"
 
 #: ../gio/gio-tool-move.c:99
 msgid "Move one or more files from SOURCE to DEST."
@@ -2069,6 +2067,8 @@ msgid ""
 "Open files with the default application that\n"
 "is registered to handle files of this type."
 msgstr ""
+"Otevřít soubory pomocí výchozí aplikace, která\n"
+"je registrovaná k obsluze souborů tohoto typu."
 
 #: ../gio/gio-tool-open.c:69
 msgid "No files to open"
@@ -2095,15 +2095,11 @@ msgid "Rename a file."
 msgstr "Přejmenovat soubor."
 
 #: ../gio/gio-tool-rename.c:68
-#| msgid "Missing argument for %s"
 msgid "Missing argument"
 msgstr "Schází argument"
 
 #: ../gio/gio-tool-rename.c:73 ../gio/gio-tool-save.c:192
 #: ../gio/gio-tool-set.c:134
-#| msgid ""
-#| "'%s' takes no arguments\n"
-#| "\n"
 msgid "Too many arguments"
 msgstr "Příliš mnoho argumentů"
 
@@ -2126,32 +2122,31 @@ msgstr "Při vytváření omezit přístup jen na aktuálního uživatele"
 
 #: ../gio/gio-tool-save.c:53
 msgid "When replacing, replace as if the destination did not exist"
-msgstr ""
+msgstr "Při nahrazování nahradit, jako by cíl neexistoval"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: ../gio/gio-tool-save.c:55
 msgid "Print new etag at end"
-msgstr ""
+msgstr "Vypsat nový etag a skončit"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: ../gio/gio-tool-save.c:57
 msgid "The etag of the file being overwritten"
-msgstr ""
+msgstr "Etag souboru, který je přepisován"
 
 #: ../gio/gio-tool-save.c:57
 msgid "ETAG"
-msgstr ""
+msgstr "ETAG"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: ../gio/gio-tool-save.c:145
-#, fuzzy, c-format
-#| msgid "TLS support is not available"
+#, c-format
 msgid "Etag not available\n"
-msgstr "Podpora TLS není dostupná"
+msgstr "Etag není dostupný\n"
 
 #: ../gio/gio-tool-save.c:168
 msgid "Read from standard input and save to DEST."
-msgstr ""
+msgstr "Číst ze standardního vstupu a uložit do CÍLE."
 
 #: ../gio/gio-tool-save.c:186
 msgid "No destination given"
@@ -2178,35 +2173,30 @@ msgid "Set a file attribute of LOCATION."
 msgstr "Nastavit souborový atribut UMÍSTĚNÍ."
 
 #: ../gio/gio-tool-set.c:111
-#| msgid "No connection endpoint specified"
 msgid "Location not specified"
 msgstr "Není zadáno umístění"
 
 #: ../gio/gio-tool-set.c:119
-#| msgid "Error: signal not specified.\n"
 msgid "Attribute not specified"
 msgstr "Není zadán atribut"
 
 #: ../gio/gio-tool-set.c:128
-#| msgid "Error: signal not specified.\n"
 msgid "Value not specified"
 msgstr "Není určena hodnota"
 
 #: ../gio/gio-tool-set.c:176
 #, c-format
-#| msgid "Invalid attribute type (string expected)"
 msgid "Invalid attribute type %s\n"
 msgstr "Neplatný typ atributu %s\n"
 
 #: ../gio/gio-tool-set.c:189
 #, c-format
-#| msgid "Error setting extended attribute '%s': %s"
 msgid "Error setting attribute: %s\n"
 msgstr "Chyba při nastavování atributu: %s\n"
 
 #: ../gio/gio-tool-trash.c:32
 msgid "Empty the trash"
-msgstr ""
+msgstr "Vysypat koš"
 
 #: ../gio/gio-tool-trash.c:86
 msgid "Move files or directories to the trash."
@@ -2612,10 +2602,9 @@ msgid "Error getting filesystem info for %s: %s"
 msgstr "Chyba při získávání informace o souborovém systému pro %s: %s"
 
 #: ../gio/glocalfile.c:1175
-#, fuzzy, c-format
-#| msgid "Containing mount does not exist"
+#, c-format
 msgid "Containing mount for file %s not found"
-msgstr "Obsahující připojené neexistuje"
+msgstr "Přípojení obsahující soubor %s nebylo nalezen"
 
 #: ../gio/glocalfile.c:1198
 msgid "Can't rename root directory"
@@ -2656,10 +2645,10 @@ msgid "Unable to create trash dir %s: %s"
 msgstr "Nelze vytvořit složku koše %s: %s"
 
 #: ../gio/glocalfile.c:1969
-#, fuzzy, c-format
+#, c-format
 #| msgid "Unable to find toplevel directory for trash"
 msgid "Unable to find toplevel directory to trash %s"
-msgstr "Ke koši nelze nalézt složku nejvyšší úrovně"
+msgstr "Nelze nalézt složku nejvyšší úrovně pro vyhození %s"
 
 #: ../gio/glocalfile.c:2048 ../gio/glocalfile.c:2068
 #, c-format
@@ -2667,22 +2656,20 @@ msgid "Unable to find or create trash directory for %s"
 msgstr "Nelze nalézt nebo vytvořit složku koše pro %s"
 
 #: ../gio/glocalfile.c:2102
-#, fuzzy, c-format
-#| msgid "Unable to create trashing info file: %s"
+#, c-format
 msgid "Unable to create trashing info file for %s: %s"
-msgstr "Nelze vytvořit informační soubor o zahozeném: %s"
+msgstr "Nelze vytvořit informační soubor o koši pro %s: %s"
 
 #: ../gio/glocalfile.c:2161
-#, fuzzy, c-format
+#, c-format
 #| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s across filesystem boundaries"
-msgstr "Nelze zahodit soubor: %s"
+msgstr "Nelze zahodit soubor %s do koše mimo hranice souborového systému"
 
 #: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2221
-#, fuzzy, c-format
-#| msgid "Unable to trash file: %s"
+#, c-format
 msgid "Unable to trash file %s: %s"
-msgstr "Nelze zahodit soubor: %s"
+msgstr "Nelze zahodit soubor %s do koše: %s"
 
 #: ../gio/glocalfile.c:2227
 #, c-format
