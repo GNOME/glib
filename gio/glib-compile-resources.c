@@ -415,8 +415,7 @@ end_element (GMarkupParseContext  *context,
 	  data->flags |= G_RESOURCE_FLAGS_COMPRESSED;
 	}
 
-    done:
-
+done:
       g_hash_table_insert (state->table, key, data);
       data = NULL;
 
@@ -476,7 +475,8 @@ text (GMarkupParseContext  *context,
 
 static GHashTable *
 parse_resource_file (const gchar *filename,
-                     gboolean collect_data)
+                     gboolean     collect_data,
+                     GHashTable  *files)
 {
   GMarkupParser parser = { start_element, end_element, text };
   ParseState state = { 0, };
@@ -493,8 +493,8 @@ parse_resource_file (const gchar *filename,
       return NULL;
     }
 
-  state.table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify)file_data_free);
   state.collect_data = collect_data;
+  state.table = g_hash_table_ref (files);
 
   context = g_markup_parse_context_new (&parser,
 					G_MARKUP_TREAT_CDATA_AS_TEXT |
@@ -507,7 +507,7 @@ parse_resource_file (const gchar *filename,
       g_printerr ("%s: %s.\n", filename, error->message);
       g_clear_error (&error);
     }
-  else if (collect_data)
+  else
     {
       GHashTableIter iter;
       const char *key;
@@ -546,10 +546,6 @@ parse_resource_file (const gchar *filename,
 	  gvdb_item_set_value (item,
 			       g_variant_builder_end (&builder));
 	}
-    }
-  else
-    {
-      table = g_hash_table_ref (state.table);
     }
 
   g_hash_table_unref (state.table);
@@ -605,6 +601,7 @@ main (int argc, char **argv)
 {
   GError *error;
   GHashTable *table;
+  GHashTable *files;
   gchar *srcfile;
   gchar *target = NULL;
   gchar *binary_target = NULL;
@@ -614,6 +611,7 @@ main (int argc, char **argv)
   gboolean manual_register = FALSE;
   gboolean internal = FALSE;
   gboolean generate_dependencies = FALSE;
+  char *dependency_file = NULL;
   char *c_name = NULL;
   char *c_name_no_underscores;
   const char *linkage = "extern";
@@ -625,6 +623,7 @@ main (int argc, char **argv)
     { "generate-header", 0, 0, G_OPTION_ARG_NONE, &generate_header, N_("Generate source header"), NULL },
     { "generate-source", 0, 0, G_OPTION_ARG_NONE, &generate_source, N_("Generate sourcecode used to link in the resource file into your code"), NULL },
     { "generate-dependencies", 0, 0, G_OPTION_ARG_NONE, &generate_dependencies, N_("Generate dependency list"), NULL },
+    { "dependency-file", 0, 0, G_OPTION_ARG_FILENAME, &dependency_file, N_("name of the dependency file to generate"), N_("FILE") },
     { "manual-register", 0, 0, G_OPTION_ARG_NONE, &manual_register, N_("Don't automatically create and register resource"), NULL },
     { "internal", 0, 0, G_OPTION_ARG_NONE, &internal, N_("Don't export functions; declare them G_GNUC_INTERNAL"), NULL },
     { "c-name", 0, 0, G_OPTION_ARG_STRING, &c_name, N_("C identifier name used for the generated source code"), NULL },
@@ -732,24 +731,77 @@ main (int argc, char **argv)
         ;
     }
 
-  if ((table = parse_resource_file (srcfile, !generate_dependencies)) == NULL)
+  files = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify)file_data_free);
+
+  if ((table = parse_resource_file (srcfile, !generate_dependencies, files)) == NULL)
     {
       g_free (target);
       g_free (c_name);
       return 1;
     }
 
-  if (generate_dependencies)
+  if (generate_dependencies || dependency_file != NULL)
     {
       GHashTableIter iter;
       gpointer key, data;
       FileData *file_data;
 
-      g_hash_table_iter_init (&iter, table);
-      while (g_hash_table_iter_next (&iter, &key, &data))
+      g_hash_table_iter_init (&iter, files);
+      if (dependency_file == NULL)
         {
-          file_data = data;
-          g_print ("%s\n",file_data->filename);
+          /* Generate list of files for direct use as dependencies in a Makefile */
+          while (g_hash_table_iter_next (&iter, &key, &data))
+            {
+              file_data = data;
+              g_print ("%s\n", file_data->filename);
+            }
+        }
+      else
+        {
+          /* Generate a .d file that describes the dependencies for
+           * build tools, gcc -M -MF style */
+          GString *dep_string;
+
+          dep_string = g_string_new (NULL);
+          g_string_printf (dep_string, "%s:", srcfile);
+
+          /* First rule: foo.xml: resource1 resource2.. */
+          while (g_hash_table_iter_next (&iter, &key, &data))
+            {
+              file_data = data;
+              if (!g_str_equal (file_data->filename, srcfile))
+                g_string_append_printf (dep_string, " %s", file_data->filename);
+            }
+
+          g_string_append (dep_string, "\n\n");
+
+          /* One rule for every resource: resourceN: */
+          g_hash_table_iter_init (&iter, files);
+          while (g_hash_table_iter_next (&iter, &key, &data))
+            {
+              file_data = data;
+              if (!g_str_equal (file_data->filename, srcfile))
+                g_string_append_printf (dep_string, "%s:\n\n", file_data->filename);
+            }
+
+          if (g_str_equal (dependency_file, "-"))
+            {
+              g_print ("%s\n", dep_string->str);
+            }
+          else
+            {
+              if (!g_file_set_contents (dependency_file, dep_string->str, dep_string->len, &error))
+                {
+                  g_printerr ("Error writing dependency file: %s\n", error->message);
+                  g_string_free (dep_string, TRUE);
+                  g_free (dependency_file);
+                  g_error_free (error);
+                  return 1;
+                }
+            }
+
+          g_string_free (dep_string, TRUE);
+          g_free (dependency_file);
         }
     }
   else if (generate_source || generate_header)
