@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-18 08:01+0000\n"
-"PO-Revision-Date: 2016-08-19 14:28+0200\n"
+"POT-Creation-Date: 2016-08-20 20:58+0000\n"
+"PO-Revision-Date: 2016-08-21 10:49+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -122,9 +122,9 @@ msgstr "Příkaz, ke kterému vypsat podrobnou nápovědu"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Identifikátor aplikace ve formátu D-Bus (např. org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:622
-#: ../gio/glib-compile-resources.c:653 ../gio/gresource-tool.c:495
-#: ../gio/gresource-tool.c:561
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:626 ../gio/glib-compile-resources.c:652
+#: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "SOUBOR"
 
@@ -2011,7 +2011,6 @@ msgstr "Chyba při odpojování připojení: %s\n"
 
 #: ../gio/gio-tool-mount.c:366 ../gio/gio-tool-mount.c:419
 #, c-format
-#| msgid "Error closing socket: %s"
 msgid "Error finding enclosing mount: %s\n"
 msgstr "Chyba při vyhledání příslušejícího připojení: %s\n"
 
@@ -2255,59 +2254,63 @@ msgstr "Chyba čtení souboru „%s“: %s"
 msgid "Error compressing file %s"
 msgstr "Chyba při komprimaci souboru „%s“"
 
-#: ../gio/glib-compile-resources.c:470 ../gio/glib-compile-schemas.c:1603
+#: ../gio/glib-compile-resources.c:469 ../gio/glib-compile-schemas.c:1603
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "text nemůže být umístěn uvnitř <%s>"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:620
 msgid "name of the output file"
 msgstr "název výstupního souboru"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:621
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "Složka, ze které mají být čteny soubory (výchozí je aktuální složka)"
 
-#: ../gio/glib-compile-resources.c:623 ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2036
 #: ../gio/glib-compile-schemas.c:2065
 msgid "DIRECTORY"
 msgstr "SLOŽKA"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:622
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Generovat výstup ve formátu vybraného podle přípony v názvu cílového souboru"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:623
 msgid "Generate source header"
 msgstr "Generovat hlavičkový soubor"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:624
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Generovat zdrojový kód, který se použije ve vašem zdrojovém kódu jako odkaz "
 "na soubor prostředků"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:625
 msgid "Generate dependency list"
 msgstr "Generovat seznam závislostí"
 
-#: ../gio/glib-compile-resources.c:628
+#: ../gio/glib-compile-resources.c:626
+msgid "name of the dependency file to generate"
+msgstr "název souboru se závislostmi, který se má vygenerovat"
+
+#: ../gio/glib-compile-resources.c:627
 msgid "Don't automatically create and register resource"
 msgstr "Prostředek nevytvářet a neregistrovat automaticky"
 
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:628
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "Neexportovat funkce; označit je za G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:630
+#: ../gio/glib-compile-resources.c:629
 msgid "C identifier name used for the generated source code"
 msgstr "Název identifikátoru C použitý ke generování zdrojového kódu"
 
-#: ../gio/glib-compile-resources.c:656
+#: ../gio/glib-compile-resources.c:655
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2317,7 +2320,7 @@ msgstr ""
 "Soubory se specifikacemi prostředků musí mít příponu .gschema.xml,\n"
 "a soubor prostředků musí mít příponu .gresource."
 
-#: ../gio/glib-compile-resources.c:672
+#: ../gio/glib-compile-resources.c:671
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Měl by být zadán právě jeden název souboru\n"
@@ -2646,7 +2649,6 @@ msgstr "Nelze vytvořit složku koše %s: %s"
 
 #: ../gio/glocalfile.c:1969
 #, c-format
-#| msgid "Unable to find toplevel directory for trash"
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Nelze nalézt složku nejvyšší úrovně pro vyhození %s"
 
@@ -2662,7 +2664,6 @@ msgstr "Nelze vytvořit informační soubor o koši pro %s: %s"
 
 #: ../gio/glocalfile.c:2161
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "Nelze zahodit soubor %s do koše mimo hranice souborového systému"
 
