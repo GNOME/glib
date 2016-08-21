@@ -2,6 +2,9 @@
 
 use warnings;
 use File::Basename;
+use File::Copy "move";
+use File::Temp;
+use Cwd;
 use Safe;
 
 # glib-mkenums.pl 
@@ -24,6 +27,8 @@ my $enumindex = 0;		# Global enum counter
 my $firstenum = 1;		# Is this the first enumeration per file?
 my @entries;			# [ $name, $val ] for each entry
 my $sandbox = Safe->new;        # sandbox for safe evaluation of expressions
+
+my $output_file;		# Filename to write result into
 
 sub parse_trigraph {
     my $opts = shift;
@@ -154,6 +159,7 @@ sub usage {
     print "  --vtail <text>               Value tail, produced after iterating over enum values\n";
     print "  --comments <text>            Comment structure\n";
     print "  --template file              Template file\n";
+    print "  --output file                Output file\n";
     print "  -v, --version                Print version informations\n\n";
     print "Production text substitutions:\n";
     print "  \@EnumName\@            PrefixTheXEnum\n";
@@ -247,10 +253,21 @@ while ($_=$ARGV[0],/^-/) {
     elsif (/^--vprod$/)                      { $vprod = $vprod . shift }
     elsif (/^--vtail$/)                      { $vtail = $vtail . shift }
     elsif (/^--comments$/)                   { $comment_tmpl = shift }
+    elsif (/^--output$/)                     { $output = shift }
     elsif (/^--help$/ || /^-h$/ || /^-\?$/)  { usage; }
     elsif (/^--version$/ || /^-v$/)          { version; }
     else { usage; }
     last if not defined($ARGV[0]);
+}
+
+if (defined ($output)) {
+    my($out_fn, $out_dir, $out_suffix) = fileparse($output, qr{\.\w+$});
+    if ($out_dir eq '') { $out_dir = cwd(); }
+
+    $out_suffix =~ s/^\./_/;   # .foo -> _foo
+
+    $OUTPUT = File::Temp->new("$out_fn$out_suffix\_XXXXXX", DIR => $out_dir, UNLINK => 0);
+    select $OUTPUT;         # Make all print calls from here on go to OUTPUT
 }
 
 # put auto-generation comment
@@ -562,4 +579,13 @@ if (length($ftail)) {
     my $comment = $comment_tmpl;
     $comment =~ s/\@comment\@/Generated data ends here/;
     print "\n" . $comment . "\n\n";
+}
+
+if (defined ($output)) {
+    select STDOUT;
+    my $tmpfilename = $OUTPUT->filename;
+    close ($OUTPUT)
+      || warn "Closing output file $tmpfilename failed: $!";
+    move ($tmpfilename, $output)
+      || die "Could not rename $tmpfilename to $output: $!";
 }
