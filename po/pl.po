@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-17 20:32+0200\n"
-"PO-Revision-Date: 2016-08-17 20:33+0200\n"
+"POT-Creation-Date: 2016-08-23 12:04+0200\n"
+"PO-Revision-Date: 2016-08-23 12:05+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -120,9 +120,9 @@ msgstr ""
 "Identyfikator programu w formacie usługi D-Bus (np. org.przykład."
 "przeglądarka)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:622
-#: ../gio/glib-compile-resources.c:653 ../gio/gresource-tool.c:495
-#: ../gio/gresource-tool.c:561
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:626 ../gio/glib-compile-resources.c:652
+#: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "PLIK"
 
@@ -2303,56 +2303,60 @@ msgstr "Błąd podczas odczytywania pliku %s: %s"
 msgid "Error compressing file %s"
 msgstr "Błąd podczas kompresowania pliku %s"
 
-#: ../gio/glib-compile-resources.c:470 ../gio/glib-compile-schemas.c:1603
+#: ../gio/glib-compile-resources.c:469 ../gio/glib-compile-schemas.c:1603
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "tekst nie może znajdować się wewnątrz <%s>"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:620
 msgid "name of the output file"
 msgstr "nazwa pliku wyjściowego"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:621
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "Katalog, z którego odczytywać pliki (domyślnie bieżący katalog)"
 
-#: ../gio/glib-compile-resources.c:623 ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2036
 #: ../gio/glib-compile-schemas.c:2065
 msgid "DIRECTORY"
 msgstr "KATALOG"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:622
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Tworzy wyjście w formacie wybranym przez rozszerzenie pliku docelowego"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:623
 msgid "Generate source header"
 msgstr "Tworzy nagłówek źródła"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:624
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Tworzy kod źródłowy używany do dowiązania pliku zasobu do kodu"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:625
 msgid "Generate dependency list"
 msgstr "Tworzy listę zależności"
 
-#: ../gio/glib-compile-resources.c:628
+#: ../gio/glib-compile-resources.c:626
+msgid "name of the dependency file to generate"
+msgstr "nazwa pliku zależności do utworzenia"
+
+#: ../gio/glib-compile-resources.c:627
 msgid "Don't automatically create and register resource"
 msgstr "Bez automatycznego tworzenia i rejestrowania zasobu"
 
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:628
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "Bez eksportowania funkcji; deklaruje je jako G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:630
+#: ../gio/glib-compile-resources.c:629
 msgid "C identifier name used for the generated source code"
 msgstr "Nazwa identyfikatora języka C używana dla utworzonego kodu źródłowego"
 
-#: ../gio/glib-compile-resources.c:656
+#: ../gio/glib-compile-resources.c:655
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2362,7 +2366,7 @@ msgstr ""
 "zasobów posiadają rozszerzenie .gresource.xml, a pliki\n"
 "zasobów posiadają rozszerzenie .gresource."
 
-#: ../gio/glib-compile-resources.c:672
+#: ../gio/glib-compile-resources.c:671
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Należy podać dokładnie jedną nazwę pliku\n"
