@@ -1667,6 +1667,7 @@ g_date_time_new_from_unix_utc
 <SUBSECTION>
 g_date_time_new_from_timeval_local
 g_date_time_new_from_timeval_utc
+g_date_time_new_from_iso8601
 
 <SUBSECTION>
 g_date_time_new
