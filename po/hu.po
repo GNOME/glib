@@ -1,24 +1,24 @@
-# Hungarian translation of glib
+# Hungarian translation for glib.
+# Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016. Free Software Foundation, Inc.
 # This file is distributed under the same license as the glib package.
-# Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, Free Software Foundation, Inc.
 #
 # Szabolcs Varga <shirokuma at shirokuma dot hu>, 2005.
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2016.
-# Balázs Úr <urbalazs at gmail dot com>, 2013, 2014, 2015.
+# Balázs Úr <urbalazs at gmail dot com>, 2013, 2014, 2015, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-23 10:06+0000\n"
-"PO-Revision-Date: 2016-08-24 09:04+0200\n"
-"Last-Translator: Gabor Kelemen <kelemeng at ubuntu dot com>\n"
+"POT-Creation-Date: 2016-08-25 18:43+0000\n"
+"PO-Revision-Date: 2016-08-25 23:41+0200\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../gio/gapplication.c:493
@@ -41,7 +41,7 @@ msgstr "Alkalmazások azonosítójának felülbírálása"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gio-tool.c:209 ../gio/gresource-tool.c:488
-#: ../gio/gsettings-tool.c:512
+#: ../gio/gsettings-tool.c:520
 msgid "Print help"
 msgstr "Súgó kiírása"
 
@@ -54,7 +54,7 @@ msgstr "[PARANCS]"
 msgid "Print version"
 msgstr "Verzió kiírása"
 
-#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:518
+#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:526
 msgid "Print version information and exit"
 msgstr "Verzióinformációk kiírása és kilépés"
 
@@ -144,7 +144,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "A művelethívás elhagyható paramétere GVariant formátumban"
 
 #: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:526
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:612
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -158,7 +158,7 @@ msgid "Usage:\n"
 msgstr "Használat:\n"
 
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:551
-#: ../gio/gsettings-tool.c:632
+#: ../gio/gsettings-tool.c:647
 msgid "Arguments:\n"
 msgstr "Argumentumok:\n"
 
@@ -3154,7 +3154,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SZAKASZ   Egy elhagyható elf szakasznév\n"
 
-#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:639
+#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:654
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  PARANCS   A megmagyarázandó (elhagyható) parancs\n"
 
@@ -3188,7 +3188,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  ÚTVONAL   Egy erőforrás-útvonal\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:830
+#: ../gio/gsettings-tool.c:851
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Nincs „%s” séma\n"
@@ -3223,38 +3223,38 @@ msgstr "Az útvonalnak osztásjellel (/) kell végződnie\n"
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "Az útvonal nem tartalmazhat két szomszédos osztásjelet (//)\n"
 
-#: ../gio/gsettings-tool.c:481
+#: ../gio/gsettings-tool.c:489
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "A megadott érték kívül esik az érvényes tartományon\n"
 
-#: ../gio/gsettings-tool.c:488
+#: ../gio/gsettings-tool.c:496
 #, c-format
 msgid "The key is not writable\n"
 msgstr "A kulcs nem írható\n"
 
-#: ../gio/gsettings-tool.c:524
+#: ../gio/gsettings-tool.c:532
 msgid "List the installed (non-relocatable) schemas"
 msgstr "A telepített (át nem helyezhető) sémák felsorolása"
 
-#: ../gio/gsettings-tool.c:530
+#: ../gio/gsettings-tool.c:538
 msgid "List the installed relocatable schemas"
 msgstr "A telepített áthelyezhető sémák felsorolása"
 
-#: ../gio/gsettings-tool.c:536
+#: ../gio/gsettings-tool.c:544
 msgid "List the keys in SCHEMA"
 msgstr "A SÉMA kulcsainak felsorolása"
 
-#: ../gio/gsettings-tool.c:537 ../gio/gsettings-tool.c:543
-#: ../gio/gsettings-tool.c:580
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:551
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH]"
 msgstr "SÉMA[:ÚTVONAL]"
 
-#: ../gio/gsettings-tool.c:542
+#: ../gio/gsettings-tool.c:550
 msgid "List the children of SCHEMA"
 msgstr "A SÉMA gyermekeinek felsorolása"
 
-#: ../gio/gsettings-tool.c:548
+#: ../gio/gsettings-tool.c:556
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3262,44 +3262,49 @@ msgstr ""
 "Kulcsok és értékek rekurzív felsorolása\n"
 "Ha nincs megadva SÉMA, az összes kulcs felsorolása\n"
 
-#: ../gio/gsettings-tool.c:550
+#: ../gio/gsettings-tool.c:558
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SÉMA[:ÚTVONAL]]"
 
-#: ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:563
 msgid "Get the value of KEY"
 msgstr "A KULCS értékének lekérése"
 
-#: ../gio/gsettings-tool.c:556 ../gio/gsettings-tool.c:562
-#: ../gio/gsettings-tool.c:574 ../gio/gsettings-tool.c:586
+#: ../gio/gsettings-tool.c:564 ../gio/gsettings-tool.c:570
+#: ../gio/gsettings-tool.c:576 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SÉMA[:ÚTVONAL] KULCS"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:569
 msgid "Query the range of valid values for KEY"
-msgstr "A KULCS érvényes értékeinek tartományának lekérése"
+msgstr "A KULCS érvényes értékei tartományának lekérése"
 
-#: ../gio/gsettings-tool.c:567
+#: ../gio/gsettings-tool.c:575
+msgid "Query the description for KEY"
+msgstr "A KULCS leírásának lekérése"
+
+#: ../gio/gsettings-tool.c:581
 msgid "Set the value of KEY to VALUE"
 msgstr "A KULCS értékének beállítása az ÉRTÉKRE"
 
-#: ../gio/gsettings-tool.c:568
+#: ../gio/gsettings-tool.c:582
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SÉMA[:ÚTVONAL] KULCS ÉRTÉK"
 
-#: ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:587
 msgid "Reset KEY to its default value"
 msgstr "A KULCS visszaállítása az alapértékére"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:593
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "A SÉMA minden kulcsának visszaállítása az alapértékekre"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:599
 msgid "Check if KEY is writable"
 msgstr "A KULCS írhatóságának ellenőrzése"
 
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:605
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3309,11 +3314,11 @@ msgstr ""
 "Ha nincs megadva KULCS, akkor a SÉMA összes kulcsának figyelése.\n"
 "A figyelés befejezéséhez nyomja meg a ^C kombinációt.\n"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:608
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SÉMA[:ÚTVONAL] [KULCS]"
 
-#: ../gio/gsettings-tool.c:606
+#: ../gio/gsettings-tool.c:620
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3327,6 +3332,7 @@ msgid ""
 "  list-children             List children of a schema\n"
 "  list-recursively          List keys and values, recursively\n"
 "  range                     Queries the range of a key\n"
+"  describe                  Queries the description of a key\n"
 "  get                       Get the value of a key\n"
 "  set                       Set the value of a key\n"
 "  reset                     Reset the value of a key\n"
@@ -3349,17 +3355,18 @@ msgstr ""
 "  list-children             Séma gyermekeinek felsorolása\n"
 "  list-recursively          Kulcsok és értékek rekurzív felsorolása\n"
 "  range                     Kulcs tartományának lekérése\n"
+"  describe                  Kulcs leírásának lekérése\n"
 "  get                       Kulcs értékének lekérése\n"
 "  set                       Kulcs értékének beállítása\n"
 "  reset                     Kulcs értékének visszaállítása\n"
-"  reset-recursively         Reset all values in a given schema\n"
+"  reset-recursively         Az összes érték visszaállítása egy adott sémában\n"
 "  writable                  Kulcs írhatóságának ellenőrzése\n"
 "  monitor                   Változások figyelése\n"
 "\n"
 "Részletes segítségért adja ki a „gsettings help PARANCS” parancsot.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:629
+#: ../gio/gsettings-tool.c:644
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3374,11 +3381,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:635
+#: ../gio/gsettings-tool.c:650
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SÉMAKVT    További sémák keresése ebben a könyvtárban\n"
 
-#: ../gio/gsettings-tool.c:643
+#: ../gio/gsettings-tool.c:658
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3386,34 +3393,34 @@ msgstr ""
 "  SÉMA      A séma neve\n"
 "  ÚTVONAL   Az áthelyezhető sémák útvonala\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:663
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KULCS     A sémán belüli (elhagyható) kulcs\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:667
 msgid "  KEY       The key within the schema\n"
 msgstr "  KULCS     A sémán belüli kulcs\n"
 
-#: ../gio/gsettings-tool.c:656
+#: ../gio/gsettings-tool.c:671
 msgid "  VALUE     The value to set\n"
 msgstr "  ÉRTÉK     A beállítandó érték\n"
 
-#: ../gio/gsettings-tool.c:711
+#: ../gio/gsettings-tool.c:726
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Nem lehet sémákat betölteni ebből: %s: %s\n"
 
-#: ../gio/gsettings-tool.c:723
+#: ../gio/gsettings-tool.c:738
 #, c-format
 msgid "No schemas installed\n"
 msgstr "Nincsenek telepítve sémák\n"
 
-#: ../gio/gsettings-tool.c:788
+#: ../gio/gsettings-tool.c:809
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Üres sémanevet adott meg\n"
 
-#: ../gio/gsettings-tool.c:843
+#: ../gio/gsettings-tool.c:864
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Nincs „%s” kulcs\n"
@@ -5373,64 +5380,3 @@ msgstr[1] "%s bájt"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
-
-#~ msgid "Error renaming file: %s"
-#~ msgstr "Hiba a fájl átnevezése közben: %s"
-
-#~ msgid "Error opening file: %s"
-#~ msgstr "Hiba a fájl megnyitása közben: %s"
-
-#~ msgid "Error creating directory: %s"
-#~ msgstr "Hiba a könyvtár létrehozásakor: %s"
-
-#~ msgid "association changes not supported on win32"
-#~ msgstr "a társításmódosítások nem támogatottak win32 rendszeren"
-
-#~ msgid "Association creation not supported on win32"
-#~ msgstr "A társítás létrehozása nem támogatott win32 rendszeren"
-
-#~ msgid "Unable to find default local directory monitor type"
-#~ msgstr "Nem található az alapértelmezett helyi könyvtárfigyelő típus"
-
-#~ msgid "Key file does not have key '%s'"
-#~ msgstr "A kulcsfájlban nincs „%s” kulcs"
-
-#~ msgid "URIs not supported"
-#~ msgstr "Az URI címek nem támogatottak"
-
-#~ msgid ""
-#~ "Error processing input file with xmllint:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Hiba a bemeneti fájl feldolgozásakor az xmllint-tel:\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "Error processing input file with to-pixdata:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Hiba a bemeneti fájl feldolgozásakor a to-pixdata-val:\n"
-#~ "%s"
-
-#~ msgid "Unable to get pending error: %s"
-#~ msgstr "Nem lehet lekérni a függőben lévő hibát: %s"
-
-#~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-#~ msgstr ""
-#~ "Nem sikerült írásra megnyitni a(z) „%s” fájlt: Az fdopen() sikertelen: %s"
-
-#~ msgid "Failed to write file '%s': fflush() failed: %s"
-#~ msgstr "Nem sikerült írni a(z) „%s” fájlt: az fflush() sikertelen: %s"
-
-#~ msgid "Failed to close file '%s': fclose() failed: %s"
-#~ msgstr "Nem sikerült lezárni a(z) „%s” fájlt: az fclose() sikertelen: %s"
-
-#~ msgid "Incomplete data received for '%s'"
-#~ msgstr "Hiányos adatok érkeztek ehhez: „%s”"
-
-#~ msgid ""
-#~ "Unexpected option length while checking if SO_PASSCRED is enabled for "
-#~ "socket. Expected %d bytes, got %d"
-#~ msgstr ""
-#~ "Váratlan beállításhossz a SO_PASSCRED engedélyezettségének ellenőrzésekor "
-#~ "a foglalathoz. A várt %d bájt helyett %d érkezett"
