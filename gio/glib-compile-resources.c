@@ -780,7 +780,7 @@ main (int argc, char **argv)
       else if (extension_in_set (target, "h", "hh", "hpp", "hxx", "h++", NULL))
         generate_header = TRUE;
       else if (extension_in_set (target, "gresource", NULL))
-        ;
+        { }
     }
 
   files = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, (GDestroyNotify)file_data_free);
