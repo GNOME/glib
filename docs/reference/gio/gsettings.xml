@@ -50,6 +50,12 @@
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gsettings</command>
+    <arg choice="plain">describe</arg>
+    <arg choice="plain"><replaceable>SCHEMA</replaceable><arg choice="opt">:<replaceable>PATH</replaceable></arg></arg>
+    <arg choice="plain"><replaceable>KEY</replaceable></arg>
+  </cmdsynopsis>
+  <cmdsynopsis>
+    <command>gsettings</command>
     <arg choice="plain">set</arg>
     <arg choice="plain"><replaceable>SCHEMA</replaceable><arg choice="opt">:<replaceable>PATH</replaceable></arg></arg>
     <arg choice="plain"><replaceable>KEY</replaceable></arg>
@@ -154,6 +160,13 @@ Finds out whether <replaceable>KEY</replaceable> is writable.
 <term><option>range</option></term>
 <listitem><para>
 Queries the range of valid values for <replaceable>KEY</replaceable>.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>describe</option></term>
+<listitem><para>
+Queries the description of valid values for <replaceable>KEY</replaceable>.
 </para></listitem>
 </varlistentry>
 

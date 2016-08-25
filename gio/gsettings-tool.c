@@ -271,6 +271,14 @@ gsettings_list_recursively (void)
 }
 
 static void
+gsettings_description (void)
+{
+  const gchar *description;
+  description = g_settings_schema_key_get_description (global_schema_key);
+  g_print ("%s\n", description);
+}
+
+static void
 gsettings_range (void)
 {
   GVariant *range, *detail;
@@ -562,6 +570,12 @@ gsettings_help (gboolean     requested,
       synopsis = N_("SCHEMA[:PATH] KEY");
     }
 
+  else if (strcmp (command, "describe") == 0)
+    {
+      description = _("Query the description for KEY");
+      synopsis = N_("SCHEMA[:PATH] KEY");
+    }
+
   else if (strcmp (command, "set") == 0)
     {
       description = _("Set the value of KEY to VALUE");
@@ -615,6 +629,7 @@ gsettings_help (gboolean     requested,
         "  list-children             List children of a schema\n"
         "  list-recursively          List keys and values, recursively\n"
         "  range                     Queries the range of a key\n"
+        "  describe                  Queries the description of a key\n"
         "  get                       Get the value of a key\n"
         "  set                       Set the value of a key\n"
         "  reset                     Reset the value of a key\n"
@@ -751,6 +766,12 @@ main (int argc, char **argv)
 
   else if ((argc == 2 || argc == 3) && strcmp (argv[1], "list-recursively") == 0)
     function = gsettings_list_recursively;
+
+  else if (argc == 4 && strcmp (argv[1], "describe") == 0)
+    {
+      need_settings = FALSE;
+      function = gsettings_description;
+    }
 
   else if (argc == 4 && strcmp (argv[1], "range") == 0)
     {
