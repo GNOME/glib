@@ -209,7 +209,10 @@ token_stream_prepare (TokenStream *stream)
           break;
         }
 
-      else    /* ↓↓↓ */;
+      else
+        {
+          /* ↓↓↓ */
+        }
 
     case 'a': /* 'b' */ case 'c': case 'd': case 'e': case 'f':
     case 'g': case 'h': case 'i': case 'j': case 'k': case 'l':

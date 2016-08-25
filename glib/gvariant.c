@@ -2278,7 +2278,9 @@ g_variant_print_string (GVariant *value,
             }
 
           else
-            /* fall through and handle normally... */;
+            {
+              /* fall through and handle normally... */
+            }
         }
 
       /*
