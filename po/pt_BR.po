@@ -1,5 +1,5 @@
 # Brazilian Portuguese translation of glib.
-# Copyright (C) 2001-2014 Free Software Foundation, Inc.
+# Copyright (C) 2001-2016 Free Software Foundation, Inc.
 # This file is distributed under the same license as the glib package.
 # Gustavo Noronha Silva <kov@debian.org>, 2001-2005
 # Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2006-2009.
@@ -12,25 +12,26 @@
 # Djavan Fagundes <djavan@comum.org>, 2011.
 # Adorilson Bezerra <adorilson@gmail.com>, 2011.
 # Jonh Wendell <jwendell@gnome.org>, 2009, 2010, 2012.
-# Enrico Nicoletto <liverig@gmail.com>, 2013, 2014.
 # Felipe Braga <fbobraga@gmail.com>, 2015.
 # Artur de Aquino Morais <artur.morais93@outlook.com>, 2016.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2013, 2016.
+# Enrico Nicoletto <liverig@gmail.com>, 2013, 2014, 2016.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&ke"
-"ywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-20 20:58+0000\n"
-"PO-Revision-Date: 2016-08-23 18:25-0200\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-08-25 18:43+0000\n"
+"PO-Revision-Date: 2016-08-25 20:20-0300\n"
+"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Project-Style: gnome\n"
 
 #: ../gio/gapplication.c:493
@@ -44,8 +45,8 @@ msgstr "Mostrar opções do GApplication"
 #: ../gio/gapplication.c:538
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
-"Digite o modo de serviço do GApplication (usar dos arquivos de serviços do "
-"D-Bus)"
+"Digite o modo de serviço do GApplication (usar dos arquivos de serviços do D-"
+"Bus)"
 
 #: ../gio/gapplication.c:550
 msgid "Override the application's ID"
@@ -53,7 +54,7 @@ msgstr "Substituir ID do aplicativo"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gio-tool.c:209 ../gio/gresource-tool.c:488
-#: ../gio/gsettings-tool.c:512
+#: ../gio/gsettings-tool.c:520
 msgid "Print help"
 msgstr "Exibe a ajuda"
 
@@ -66,7 +67,7 @@ msgstr "[COMANDO]"
 msgid "Print version"
 msgstr "Exibe a versão"
 
-#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:518
+#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:526
 msgid "Print version information and exit"
 msgstr "Exibe a informação da versão e sai"
 
@@ -158,7 +159,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr " Parâmetro opcional para a invocação da ação, em formato GVariant"
 
 #: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:526
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:612
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -172,7 +173,7 @@ msgid "Usage:\n"
 msgstr "Uso:\n"
 
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:551
-#: ../gio/gsettings-tool.c:632
+#: ../gio/gsettings-tool.c:647
 msgid "Arguments:\n"
 msgstr "Argumentos:\n"
 
@@ -340,7 +341,8 @@ msgstr "Sem suporte a inicialização cancelável"
 #: ../glib/giochannel.c:1384
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Não há suporte à conversão do conjunto de caracteres \"%s\" para \"%s\""
+msgstr ""
+"Não há suporte à conversão do conjunto de caracteres \"%s\" para \"%s\""
 
 #: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:325
 #, c-format
@@ -433,8 +435,8 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, '%s', in address element "
 "'%s'"
 msgstr ""
-"Erro ao distinguir a chave sem escape ou valor no par chave/valor %d, \"%s\""
-", no elemento endereço \"%s\""
+"Erro ao distinguir a chave sem escape ou valor no par chave/valor %d, \"%s"
+"\", no elemento endereço \"%s\""
 
 #: ../gio/gdbusaddress.c:570
 #, c-format
@@ -697,8 +699,8 @@ msgstr "A propriedade \"%s\" está sem escrita"
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
-"Erro ao definir a propriedade \"%s\": o tipo esperado é \"%s\", mas obteve \""
-"%s\""
+"Erro ao definir a propriedade \"%s\": o tipo esperado é \"%s\", mas obteve "
+"\"%s\""
 
 #: ../gio/gdbusconnection.c:4399 ../gio/gdbusconnection.c:6573
 #, c-format
@@ -785,8 +787,8 @@ msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
 msgstr ""
-"Mensagem de SIGNAL: O campo de cabeçalho PATH está usando o valor reservado "
-"/org/freedesktop/DBus/Local"
+"Mensagem de SIGNAL: O campo de cabeçalho PATH está usando o valor reservado /"
+"org/freedesktop/DBus/Local"
 
 #: ../gio/gdbusmessage.c:1307
 msgid ""
@@ -873,8 +875,8 @@ msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
-"Valor identificador de endian inválido. Era esperado 0x6c ('l') ou 0x42 ('B')"
-", mas foi localizado o valor 0x%02x"
+"Valor identificador de endian inválido. Era esperado 0x6c ('l') ou 0x42 "
+"('B'), mas foi localizado o valor 0x%02x"
 
 #: ../gio/gdbusmessage.c:2064
 #, c-format
@@ -952,8 +954,8 @@ msgstr ""
 #, c-format
 msgid "Message body is empty but signature in the header field is '(%s)'"
 msgstr ""
-"O corpo da mensagem está vazio, mas a assinatura no campo de cabeçalho é \""
-"(%s)\""
+"O corpo da mensagem está vazio, mas a assinatura no campo de cabeçalho é "
+"\"(%s)\""
 
 #: ../gio/gdbusmessage.c:3283
 #, c-format
@@ -971,7 +973,8 @@ msgstr "Não foi possível obter o perfil da máquina: %s"
 
 #: ../gio/gdbusprivate.c:2083
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr "Não foi possível carregar /var/lib/dbus/machine-id ou /etc/machine-id: "
+msgstr ""
+"Não foi possível carregar /var/lib/dbus/machine-id ou /etc/machine-id: "
 
 #: ../gio/gdbusproxy.c:1611
 #, c-format
@@ -1582,9 +1585,6 @@ msgid "Keep with file when moved"
 msgstr "Manter com o arquivo quando movido"
 
 #: ../gio/gio-tool.c:187
-#| msgid ""
-#| "'%s' takes no arguments\n"
-#| "\n"
 msgid "'version' takes no arguments"
 msgstr "'version' não leva argumentos"
 
@@ -1593,12 +1593,10 @@ msgid "Usage:"
 msgstr "Uso:"
 
 #: ../gio/gio-tool.c:192
-#| msgid "Print version information and exit"
 msgid "Print version information and exit."
 msgstr "Exibe a informação da versão e sai."
 
 #: ../gio/gio-tool.c:208
-#| msgid "Commands:\n"
 msgid "Commands:"
 msgstr "Comandos:"
 
@@ -1611,7 +1609,6 @@ msgid "Copy one or more files"
 msgstr "Copia um ou mais arquivos"
 
 #: ../gio/gio-tool.c:213
-#| msgid "Show GApplication options"
 msgid "Show information about locations"
 msgstr "Mostra informações sobre locais"
 
@@ -1624,7 +1621,6 @@ msgid "Get or set the handler for a mimetype"
 msgstr "Obtém ou define o manipulador para um tipo mime"
 
 #: ../gio/gio-tool.c:216
-#| msgid "Can't open directory"
 msgid "Create directories"
 msgstr "Cria diretórios"
 
@@ -1670,9 +1666,6 @@ msgstr "Lista o conteúdo de locais em uma árvore"
 
 #: ../gio/gio-tool.c:228
 #, c-format
-#| msgid ""
-#| "Use '%s help COMMAND' to get detailed help.\n"
-#| "\n"
 msgid "Use %s to get detailed help.\n"
 msgstr "Use %s para obter ajuda detalhada.\n"
 
@@ -1685,7 +1678,6 @@ msgstr "Use %s para obter ajuda detalhada.\n"
 #: ../gio/gio-tool-open.c:45 ../gio/gio-tool-remove.c:48
 #: ../gio/gio-tool-rename.c:45 ../gio/gio-tool-set.c:89
 #: ../gio/gio-tool-trash.c:81 ../gio/gio-tool-tree.c:239
-#| msgid "ACTION"
 msgid "LOCATION"
 msgstr "LOCAL"
 
@@ -1708,7 +1700,6 @@ msgid "No files given"
 msgstr "Nenhum arquivo fornecido"
 
 #: ../gio/gio-tool-copy.c:42 ../gio/gio-tool-move.c:38
-#| msgid "Target file is a directory"
 msgid "No target directory"
 msgstr "Nenhum diretório alvo"
 
@@ -1726,7 +1717,6 @@ msgstr "Preserva todos os atributos"
 
 #: ../gio/gio-tool-copy.c:46 ../gio/gio-tool-move.c:41
 #: ../gio/gio-tool-save.c:49
-#| msgid "Backup file creation failed"
 msgid "Backup existing destination files"
 msgstr "Cria backup dos arquivos de destino existentes"
 
@@ -1766,7 +1756,6 @@ msgstr ""
 
 #: ../gio/gio-tool-copy.c:143
 #, c-format
-#| msgid "The resource at '%s' is not a directory"
 msgid "Destination %s is not a directory"
 msgstr "O destino %s não é um diretório"
 
@@ -1776,12 +1765,10 @@ msgid "%s: overwrite '%s'? "
 msgstr "%s: sobrescrever \"%s\"? "
 
 #: ../gio/gio-tool-info.c:34
-#| msgid "List available actions"
 msgid "List writable attributes"
 msgstr "Lista os atributos graváveis"
 
 #: ../gio/gio-tool-info.c:35
-#| msgid "Error getting filesystem info: %s"
 msgid "Get file system info"
 msgstr "Obtém informação de sistema de arquivos"
 
@@ -1836,13 +1823,11 @@ msgstr "oculto\n"
 
 #: ../gio/gio-tool-info.c:159
 #, c-format
-#| msgid "Error: %s\n"
 msgid "uri: %s\n"
 msgstr "uri: %s\n"
 
 #: ../gio/gio-tool-info.c:221
 #, c-format
-#| msgid "Error setting extended attribute '%s': %s"
 msgid "Error getting writable attributes: %s\n"
 msgstr "Erro ao obter atributos graváveis: %s\n"
 
@@ -1857,7 +1842,6 @@ msgid "Writable attribute namespaces:\n"
 msgstr "Atributos graváveis no namespace:\n"
 
 #: ../gio/gio-tool-info.c:283
-#| msgid "Show GApplication options"
 msgid "Show information about locations."
 msgstr "Mostra informações sobre locais."
 
@@ -1938,59 +1922,49 @@ msgstr "Deve-se especificar um único tipo mime, e talvez um manipulado"
 
 #: ../gio/gio-tool-mime.c:113
 #, c-format
-#| msgid "invalid application id: '%s'\n"
 msgid "No default applications for '%s'\n"
 msgstr "Nenhum aplicativo padrão para \"%s\"\n"
 
 #: ../gio/gio-tool-mime.c:119
 #, c-format
-#| msgid "invalid application id: '%s'\n"
 msgid "Default application for '%s': %s\n"
 msgstr "Aplicativo padrão para \"%s\": %s\n"
 
 #: ../gio/gio-tool-mime.c:124
 #, c-format
-#| msgid "List applications"
 msgid "Registered applications:\n"
 msgstr "Aplicativos registrados:\n"
 
 #: ../gio/gio-tool-mime.c:126
 #, c-format
-#| msgid "List applications"
 msgid "No registered applications\n"
 msgstr "Nenhum aplicativo registrado\n"
 
 #: ../gio/gio-tool-mime.c:137
 #, c-format
-#| msgid "List applications"
 msgid "Recommended applications:\n"
 msgstr "Aplicativos recomendados:\n"
 
 #: ../gio/gio-tool-mime.c:139
 #, c-format
-#| msgid "Can't find application"
 msgid "No recommended applications\n"
 msgstr "Nenhum aplicativo recomendado\n"
 
 #: ../gio/gio-tool-mime.c:159
 #, c-format
-#| msgid "Failed to read from file '%s': %s"
 msgid "Failed to load info for handler '%s'\n"
 msgstr "Falha ao carregar informação para manipulador de \"%s\"\n"
 
 #: ../gio/gio-tool-mime.c:165
 #, c-format
-#| msgid "Failed to create file '%s': %s"
 msgid "Failed to set '%s' as the default handler for '%s': %s\n"
 msgstr "Falha ao definir \"%s\" como o manipulador padrão para \"%s\": %s\n"
 
 #: ../gio/gio-tool-mkdir.c:31
-#| msgid "Can't open directory"
 msgid "Create parent directories"
 msgstr "Criar diretórios pais"
 
 #: ../gio/gio-tool-mkdir.c:52
-#| msgid "Can't open directory"
 msgid "Create directories."
 msgstr "Cria diretórios."
 
@@ -2022,7 +1996,8 @@ msgstr "Monitora um arquivo diretamente, mas não relata alterações"
 
 #: ../gio/gio-tool-monitor.c:45
 msgid "Report moves and renames as simple deleted/created events"
-msgstr "Relata movimentos e renomeação como eventos de exclusão/criação simples"
+msgstr ""
+"Relata movimentos e renomeação como eventos de exclusão/criação simples"
 
 #: ../gio/gio-tool-monitor.c:47
 msgid "Watch for mount events"
@@ -2093,25 +2068,21 @@ msgstr "Erro ao montar o local: %s\n"
 
 #: ../gio/gio-tool-mount.c:341
 #, c-format
-#| msgid "Error connecting: %s\n"
 msgid "Error unmounting mount: %s\n"
 msgstr "Erro ao desmontar a montagem: %s\n"
 
 #: ../gio/gio-tool-mount.c:366 ../gio/gio-tool-mount.c:419
 #, c-format
-#| msgid "Error closing unix: %s"
 msgid "Error finding enclosing mount: %s\n"
 msgstr "Erro ao localizar a montagem: %s\n"
 
 #: ../gio/gio-tool-mount.c:394
 #, c-format
-#| msgid "Error setting owner: %s"
 msgid "Error ejecting mount: %s\n"
 msgstr "Erro ao ejetar a montagem: %s\n"
 
 #: ../gio/gio-tool-mount.c:875
 #, c-format
-#| msgid "Error connecting: %s\n"
 msgid "Error mounting %s: %s\n"
 msgstr "Erro ao montar %s: %s\n"
 
@@ -2149,7 +2120,6 @@ msgstr ""
 
 #: ../gio/gio-tool-move.c:139
 #, c-format
-#| msgid "Target file is a directory"
 msgid "Target %s is not a directory"
 msgstr "Alvo %s não é um diretório"
 
@@ -2186,15 +2156,11 @@ msgid "Rename a file."
 msgstr "Renomeia um arquivo."
 
 #: ../gio/gio-tool-rename.c:68
-#| msgid "Missing argument for %s"
 msgid "Missing argument"
 msgstr "Faltando argumento"
 
 #: ../gio/gio-tool-rename.c:73 ../gio/gio-tool-save.c:192
 #: ../gio/gio-tool-set.c:134
-#| msgid ""
-#| "'%s' takes no arguments\n"
-#| "\n"
 msgid "Too many arguments"
 msgstr "Número excessivo de argumentos"
 
@@ -2236,7 +2202,6 @@ msgstr "ETAG"
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: ../gio/gio-tool-save.c:145
 #, c-format
-#| msgid "TLS support is not available"
 msgid "Etag not available\n"
 msgstr "Etag não disponível\n"
 
@@ -2269,29 +2234,24 @@ msgid "Set a file attribute of LOCATION."
 msgstr "Define um atributo de arquivos de LOCAL."
 
 #: ../gio/gio-tool-set.c:111
-#| msgid "No connection endpoint specified"
 msgid "Location not specified"
 msgstr "Local não especificado"
 
 #: ../gio/gio-tool-set.c:119
-#| msgid "Error: signal not specified.\n"
 msgid "Attribute not specified"
 msgstr "Atributo não especificado"
 
 #: ../gio/gio-tool-set.c:128
-#| msgid "Error: signal not specified.\n"
 msgid "Value not specified"
 msgstr "Valor não especificado"
 
 #: ../gio/gio-tool-set.c:176
 #, c-format
-#| msgid "Invalid attribute type (string expected)"
 msgid "Invalid attribute type %s\n"
 msgstr "Tipo de atributo inválido %s\n"
 
 #: ../gio/gio-tool-set.c:189
 #, c-format
-#| msgid "Error setting extended attribute '%s': %s"
 msgid "Error setting attribute: %s\n"
 msgstr "Erro ao definir o atributo: %s\n"
 
@@ -2701,13 +2661,11 @@ msgstr "Nome de arquivo inválido: %s"
 
 #: ../gio/glocalfile.c:1036
 #, c-format
-#| msgid "Error getting filesystem info: %s"
 msgid "Error getting filesystem info for %s: %s"
 msgstr "Erro ao obter informações do sistema de arquivos para %s: %s"
 
 #: ../gio/glocalfile.c:1175
 #, c-format
-#| msgid "Containing mount does not exist"
 msgid "Containing mount for file %s not found"
 msgstr "Ponto de montagem contido para arquivo %s não existe"
 
@@ -2717,7 +2675,6 @@ msgstr "Não é possível renomear o diretório root"
 
 #: ../gio/glocalfile.c:1216 ../gio/glocalfile.c:1239
 #, c-format
-#| msgid "Error reading file %s: %s"
 msgid "Error renaming file %s: %s"
 msgstr "Erro ao renomear arquivo %s: %s"
 
@@ -2732,19 +2689,16 @@ msgstr "Nome de arquivo inválido"
 
 #: ../gio/glocalfile.c:1403 ../gio/glocalfile.c:1418
 #, c-format
-#| msgid "Error opening file '%s': %s"
 msgid "Error opening file %s: %s"
 msgstr "Erro ao abrir arquivo %s: %s"
 
 #: ../gio/glocalfile.c:1543
 #, c-format
-#| msgid "Error removing file: %s"
 msgid "Error removing file %s: %s"
 msgstr "Erro ao remover arquivo %s: %s"
 
 #: ../gio/glocalfile.c:1926
 #, c-format
-#| msgid "Error trashing file: %s"
 msgid "Error trashing file %s: %s"
 msgstr "Erro ao mover para a lixeira o arquivo %s: %s"
 
@@ -2755,25 +2709,21 @@ msgstr "Não é possível criar o diretório da lixeira %s: %s"
 
 #: ../gio/glocalfile.c:1969
 #, c-format
-#| msgid "Unable to find toplevel directory for trash"
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Não é possível localizar diretório de nível superior para a lixeira %s"
 
 #: ../gio/glocalfile.c:2048 ../gio/glocalfile.c:2068
 #, c-format
-#| msgid "Unable to find or create trash directory"
 msgid "Unable to find or create trash directory for %s"
 msgstr "Não é possível localizar ou criar o diretório da lixeira para %s"
 
 #: ../gio/glocalfile.c:2102
 #, c-format
-#| msgid "Unable to create trashing info file: %s"
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "Não é possível criar o arquivo de informações da lixeira para %s: %s"
 
 #: ../gio/glocalfile.c:2161
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr ""
 "Não é possível mover para a lixeira o arquivo %s entre os limites de sistema "
@@ -2781,19 +2731,16 @@ msgstr ""
 
 #: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2221
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s: %s"
 msgstr "Não é possível mover para a lixeira o arquivo %s: %s"
 
 #: ../gio/glocalfile.c:2227
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s"
 msgstr "Não é possível mover para a lixeira o arquivo %s"
 
 #: ../gio/glocalfile.c:2253
 #, c-format
-#| msgid "Error creating directory '%s': %s"
 msgid "Error creating directory %s: %s"
 msgstr "Erro ao criar o diretório %s: %s"
 
@@ -2804,7 +2751,6 @@ msgstr "O sistema de arquivos não tem suporte a links simbólicos"
 
 #: ../gio/glocalfile.c:2285
 #, c-format
-#| msgid "Error making symbolic link: %s"
 msgid "Error making symbolic link %s: %s"
 msgstr "Erro ao criar link simbólico %s: %s"
 
@@ -2814,7 +2760,6 @@ msgstr "Não há suporte a links simbólicos"
 
 #: ../gio/glocalfile.c:2346 ../gio/glocalfile.c:2381 ../gio/glocalfile.c:2438
 #, c-format
-#| msgid "Error moving file: %s"
 msgid "Error moving file %s: %s"
 msgstr "Erro ao mover arquivo %s: %s"
 
@@ -3253,7 +3198,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SEÇÃO     Um nome de seção elf (opcional)\n"
 
-#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:639
+#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:654
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMANDO   O comando a ser explicado (opcional)\n"
 
@@ -3286,7 +3231,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  CAMINHO   Um caminho do recurso\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:830
+#: ../gio/gsettings-tool.c:851
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Nenhum esquema \"%s\"\n"
@@ -3322,38 +3267,38 @@ msgstr "O caminho deve terminar com uma barra (/)\n"
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "O caminho não pode conter duas barras adjacentes (//)\n"
 
-#: ../gio/gsettings-tool.c:481
+#: ../gio/gsettings-tool.c:489
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "O valor fornecido está fora do intervalo válido\n"
 
-#: ../gio/gsettings-tool.c:488
+#: ../gio/gsettings-tool.c:496
 #, c-format
 msgid "The key is not writable\n"
 msgstr "A chave não é gravável\n"
 
-#: ../gio/gsettings-tool.c:524
+#: ../gio/gsettings-tool.c:532
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Lista os esquemas instalados (não-recolocáveis)"
 
-#: ../gio/gsettings-tool.c:530
+#: ../gio/gsettings-tool.c:538
 msgid "List the installed relocatable schemas"
 msgstr "Lista os esquemas recolocáveis instalados"
 
-#: ../gio/gsettings-tool.c:536
+#: ../gio/gsettings-tool.c:544
 msgid "List the keys in SCHEMA"
 msgstr "Lista as chaves no ESQUEMA"
 
-#: ../gio/gsettings-tool.c:537 ../gio/gsettings-tool.c:543
-#: ../gio/gsettings-tool.c:580
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:551
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH]"
 msgstr "ESQUEMA[:CAMINHO]"
 
-#: ../gio/gsettings-tool.c:542
+#: ../gio/gsettings-tool.c:550
 msgid "List the children of SCHEMA"
 msgstr "Lista os filhos do ESQUEMA"
 
-#: ../gio/gsettings-tool.c:548
+#: ../gio/gsettings-tool.c:556
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3361,44 +3306,49 @@ msgstr ""
 "Lista as chaves e valores, recursivamente\n"
 "Se nenhum ESQUEMA for fornecido, lista todas as chaves\n"
 
-#: ../gio/gsettings-tool.c:550
+#: ../gio/gsettings-tool.c:558
 msgid "[SCHEMA[:PATH]]"
 msgstr "[ESQUEMA[:CAMINHO]]"
 
-#: ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:563
 msgid "Get the value of KEY"
 msgstr "Obtém o valor de CHAVE"
 
-#: ../gio/gsettings-tool.c:556 ../gio/gsettings-tool.c:562
-#: ../gio/gsettings-tool.c:574 ../gio/gsettings-tool.c:586
+#: ../gio/gsettings-tool.c:564 ../gio/gsettings-tool.c:570
+#: ../gio/gsettings-tool.c:576 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600
 msgid "SCHEMA[:PATH] KEY"
 msgstr "ESQUEMA[:CAMINHO] CHAVE"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:569
 msgid "Query the range of valid values for KEY"
 msgstr "Consulta o intervalo de valores válidos para CHAVE"
 
-#: ../gio/gsettings-tool.c:567
+#: ../gio/gsettings-tool.c:575
+msgid "Query the description for KEY"
+msgstr "Consulta a descrição para a CHAVE"
+
+#: ../gio/gsettings-tool.c:581
 msgid "Set the value of KEY to VALUE"
 msgstr "Define o valor de CHAVE para VALOR"
 
-#: ../gio/gsettings-tool.c:568
+#: ../gio/gsettings-tool.c:582
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "ESQUEMA[:CAMINHO] CHAVE VALOR"
 
-#: ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:587
 msgid "Reset KEY to its default value"
 msgstr "Restaurar CHAVE para seu valor padrão"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:593
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Restaurar todas as chaves no ESQUEMA para seus padrões"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:599
 msgid "Check if KEY is writable"
 msgstr "Verifica se CHAVE é gravável"
 
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:605
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3408,11 +3358,11 @@ msgstr ""
 "Se nenhuma CHAVE for especificada, monitora todas as chaves no ESQUEMA.\n"
 "Use ^C para parar o monitoramento.\n"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:608
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "ESQUEMA[:CAMINHO] [CHAVE]"
 
-#: ../gio/gsettings-tool.c:606
+#: ../gio/gsettings-tool.c:620
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3426,6 +3376,7 @@ msgid ""
 "  list-children             List children of a schema\n"
 "  list-recursively          List keys and values, recursively\n"
 "  range                     Queries the range of a key\n"
+"  describe                  Queries the description of a key\n"
 "  get                       Get the value of a key\n"
 "  set                       Set the value of a key\n"
 "  reset                     Reset the value of a key\n"
@@ -3448,17 +3399,19 @@ msgstr ""
 "  list-children             Lista os filhos de um esquema\n"
 "  list-recursively          Lista as chaves e valores, recursivamente\n"
 "  range                     Consulta o intervalo de uma chave\n"
-"  get                       Obtêm o valor de uma chave\n"
+"  describe                  Consulta a descrição de uma chave\n"
+"  get                       Obtém o valor de uma chave\n"
 "  set                       Define o valor de uma chave\n"
 "  reset                     Redefine o valor de uma chave\n"
-"  reset-recursively         Restaura todas as chaves em um determinado\n"
+"  reset-recursively         Restaura todas as chaves em um determinado "
+"esquema\n"
 "  writable                  Verifica se uma chave é gravável\n"
 "  monitor                   Monitora alterações\n"
 "\n"
 "Use \"gsettings help COMANDO\" para obter ajuda detalhada.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:629
+#: ../gio/gsettings-tool.c:644
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3473,11 +3426,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:635
+#: ../gio/gsettings-tool.c:650
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SCHEMADIR Um diretório para procurar por esquemas adicionais\n"
 
-#: ../gio/gsettings-tool.c:643
+#: ../gio/gsettings-tool.c:658
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3485,34 +3438,34 @@ msgstr ""
 "  ESQUEMA   O nome do esquema\n"
 "  CAMINHO   O caminho, para esquemas recolocáveis\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:663
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  CHAVE     A chave (opcional) com o esquema\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:667
 msgid "  KEY       The key within the schema\n"
 msgstr "  CHAVE     A chave com o esquema\n"
 
-#: ../gio/gsettings-tool.c:656
+#: ../gio/gsettings-tool.c:671
 msgid "  VALUE     The value to set\n"
 msgstr "  VALOR     O valor para definir\n"
 
-#: ../gio/gsettings-tool.c:711
+#: ../gio/gsettings-tool.c:726
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Não foi possível carregar esquemas de %s: %s\n"
 
-#: ../gio/gsettings-tool.c:723
+#: ../gio/gsettings-tool.c:738
 #, c-format
 msgid "No schemas installed\n"
 msgstr "Nenhum esquema instalado\n"
 
-#: ../gio/gsettings-tool.c:788
+#: ../gio/gsettings-tool.c:809
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Nome de esquema vazio\n"
 
-#: ../gio/gsettings-tool.c:843
+#: ../gio/gsettings-tool.c:864
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Nenhuma chave \"%s\"\n"
@@ -3735,7 +3688,8 @@ msgstr "O SOCKSv5 requer um método de autenticação sem suporte pelo GLib."
 
 #: ../gio/gsocks5proxy.c:206
 msgid "Username or password is too long for SOCKSv5 protocol."
-msgstr "O nome de usuário ou a senha são muito longos para o protocolo SOCKSv5."
+msgstr ""
+"O nome de usuário ou a senha são muito longos para o protocolo SOCKSv5."
 
 #: ../gio/gsocks5proxy.c:236
 msgid "SOCKSv5 authentication failed due to wrong username or password."
@@ -4662,8 +4616,8 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Caractere estranho \"%s\", esperava-se um \"=\" após o nome do atributo \"%"
-"s\" do elemento \"%s\""
+"Caractere estranho \"%s\", esperava-se um \"=\" após o nome do atributo \"%s"
+"\" do elemento \"%s\""
 
 #: ../glib/gmarkup.c:1375
 #, c-format
@@ -4736,8 +4690,8 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Documento terminou inesperadamente, esperava-se ver um sinal de maior (\">\")"
-" para terminar a marca <%s/>"
+"Documento terminou inesperadamente, esperava-se ver um sinal de maior (\">"
+"\") para terminar a marca <%s/>"
 
 #: ../glib/gmarkup.c:1797
 msgid "Document ended unexpectedly inside an element name"
