@@ -156,7 +156,8 @@ class DBusXMLParser:
                     short_description = self.doc_comment_params['short_description']
                     self._cur_object.doc_string_brief = short_description
                 if 'since' in self.doc_comment_params:
-                    self._cur_object.since = self.doc_comment_params['since']
+                    self._cur_object.since = \
+                        self.doc_comment_params['since'].strip()
 
         elif self.state == DBusXMLParser.STATE_INTERFACE:
             if name == DBusXMLParser.STATE_METHOD:
@@ -186,7 +187,8 @@ class DBusXMLParser:
             if 'name' in attrs and self.doc_comment_last_symbol == attrs['name']:
                 self._cur_object.doc_string = self.doc_comment_body
                 if 'since' in self.doc_comment_params:
-                    self._cur_object.since = self.doc_comment_params['since']
+                    self._cur_object.since = \
+                        self.doc_comment_params['since'].strip()
 
         elif self.state == DBusXMLParser.STATE_METHOD:
             if name == DBusXMLParser.STATE_ARG:
@@ -218,7 +220,8 @@ class DBusXMLParser:
                     if doc_string != None:
                         self._cur_object.doc_string = doc_string
                     if 'since' in self.doc_comment_params:
-                        self._cur_object.since = self.doc_comment_params['since']
+                        self._cur_object.since = \
+                            self.doc_comment_params['since'].strip()
 
         elif self.state == DBusXMLParser.STATE_SIGNAL:
             if name == DBusXMLParser.STATE_ARG:
@@ -244,7 +247,8 @@ class DBusXMLParser:
                     if doc_string != None:
                         self._cur_object.doc_string = doc_string
                     if 'since' in self.doc_comment_params:
-                        self._cur_object.since = self.doc_comment_params['since']
+                        self._cur_object.since = \
+                            self.doc_comment_params['since'].strip()
 
         elif self.state == DBusXMLParser.STATE_PROPERTY:
             if name == DBusXMLParser.STATE_ANNOTATION:
