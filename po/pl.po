@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-23 12:04+0200\n"
-"PO-Revision-Date: 2016-08-23 12:05+0200\n"
+"POT-Creation-Date: 2016-08-26 13:42+0200\n"
+"PO-Revision-Date: 2016-08-26 13:43+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -42,7 +42,7 @@ msgstr "Zastępuje identyfikator programu"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gio-tool.c:209 ../gio/gresource-tool.c:488
-#: ../gio/gsettings-tool.c:512
+#: ../gio/gsettings-tool.c:520
 msgid "Print help"
 msgstr "Wyświetla pomoc"
 
@@ -55,7 +55,7 @@ msgstr "[POLECENIE]"
 msgid "Print version"
 msgstr "Wyświetla wersję"
 
-#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:518
+#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:526
 msgid "Print version information and exit"
 msgstr "Wyświetla informację o wersji i kończy działanie"
 
@@ -148,7 +148,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Opcjonalny parametr do wywołania działania w formacie GVariant"
 
 #: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:526
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:612
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -162,7 +162,7 @@ msgid "Usage:\n"
 msgstr "Użycie:\n"
 
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:551
-#: ../gio/gsettings-tool.c:632
+#: ../gio/gsettings-tool.c:647
 msgid "Arguments:\n"
 msgstr "Parametry:\n"
 
@@ -3184,7 +3184,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SEKCJA    (Opcjonalna) nazwa sekcji formatu ELF\n"
 
-#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:639
+#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:654
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  POLECENIE (Opcjonalne) polecenie do wyjaśnienia\n"
 
@@ -3219,7 +3219,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  ŚCIEŻKA   Ścieżka do zasobu\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:830
+#: ../gio/gsettings-tool.c:851
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Brak schematu „%s”\n"
@@ -3254,39 +3254,39 @@ msgstr "Ścieżka musi kończyć się ukośnikiem (/)\n"
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "Ścieżka nie może zawierać dwóch sąsiadujących ukośników (//)\n"
 
-#: ../gio/gsettings-tool.c:481
+#: ../gio/gsettings-tool.c:489
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Podana wartość jest poza prawidłowym zakresem\n"
 
-#: ../gio/gsettings-tool.c:488
+#: ../gio/gsettings-tool.c:496
 #, c-format
 msgid "The key is not writable\n"
 msgstr "Klucz nie jest zapisywalny\n"
 
-#: ../gio/gsettings-tool.c:524
+#: ../gio/gsettings-tool.c:532
 msgid "List the installed (non-relocatable) schemas"
 msgstr ""
 "Wyświetla listę zainstalowanych schematów (których nie można przenosić)"
 
-#: ../gio/gsettings-tool.c:530
+#: ../gio/gsettings-tool.c:538
 msgid "List the installed relocatable schemas"
 msgstr "Wyświetla listę zainstalowanych schematów (które można przenosić)"
 
-#: ../gio/gsettings-tool.c:536
+#: ../gio/gsettings-tool.c:544
 msgid "List the keys in SCHEMA"
 msgstr "Wyświetla listę kluczy w SCHEMACIE"
 
-#: ../gio/gsettings-tool.c:537 ../gio/gsettings-tool.c:543
-#: ../gio/gsettings-tool.c:580
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:551
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMAT[:ŚCIEŻKA]"
 
-#: ../gio/gsettings-tool.c:542
+#: ../gio/gsettings-tool.c:550
 msgid "List the children of SCHEMA"
 msgstr "Wyświetla listę elementów potomnych SCHEMATU"
 
-#: ../gio/gsettings-tool.c:548
+#: ../gio/gsettings-tool.c:556
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3294,44 +3294,49 @@ msgstr ""
 "Wyświetla listę kluczy i wartości, rekursywnie\n"
 "Jeśli nie podano SCHEMATU, to wyświetla listę wszystkich kluczy\n"
 
-#: ../gio/gsettings-tool.c:550
+#: ../gio/gsettings-tool.c:558
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SCHEMAT[:ŚCIEŻKA]]"
 
-#: ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:563
 msgid "Get the value of KEY"
 msgstr "Uzyskuje wartość KLUCZA"
 
-#: ../gio/gsettings-tool.c:556 ../gio/gsettings-tool.c:562
-#: ../gio/gsettings-tool.c:574 ../gio/gsettings-tool.c:586
+#: ../gio/gsettings-tool.c:564 ../gio/gsettings-tool.c:570
+#: ../gio/gsettings-tool.c:576 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMAT[:ŚCIEŻKA] KLUCZ"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:569
 msgid "Query the range of valid values for KEY"
 msgstr "Odpytuje zakres prawidłowych wartości KLUCZA"
 
-#: ../gio/gsettings-tool.c:567
+#: ../gio/gsettings-tool.c:575
+msgid "Query the description for KEY"
+msgstr "Odpytuje opis KLUCZA"
+
+#: ../gio/gsettings-tool.c:581
 msgid "Set the value of KEY to VALUE"
 msgstr "Ustawia wartość KLUCZA na WARTOŚĆ"
 
-#: ../gio/gsettings-tool.c:568
+#: ../gio/gsettings-tool.c:582
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMAT[:ŚCIEŻKA] KLUCZ WARTOŚĆ"
 
-#: ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:587
 msgid "Reset KEY to its default value"
 msgstr "Przywraca KLUCZ na jego domyślną wartość"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:593
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Przywraca wszystkie klucze w SCHEMACIE do domyślnych wartości"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:599
 msgid "Check if KEY is writable"
 msgstr "Sprawdza, czy KLUCZ jest zapisywalny"
 
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:605
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3341,11 +3346,11 @@ msgstr ""
 "Jeśli nie podano KLUCZA, to monitoruje wszystkie klucze w SCHEMACIE.\n"
 "Użycie ^C zatrzymuje monitorowanie.\n"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:608
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMAT[:ŚCIEŻKA] [KLUCZ]"
 
-#: ../gio/gsettings-tool.c:606
+#: ../gio/gsettings-tool.c:620
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3359,6 +3364,7 @@ msgid ""
 "  list-children             List children of a schema\n"
 "  list-recursively          List keys and values, recursively\n"
 "  range                     Queries the range of a key\n"
+"  describe                  Queries the description of a key\n"
 "  get                       Get the value of a key\n"
 "  set                       Set the value of a key\n"
 "  reset                     Reset the value of a key\n"
@@ -3382,6 +3388,7 @@ msgstr ""
 "  list-children             Wyświetla listę elementów potomnych schematu\n"
 "  list-recursively          Wyświetla listę kluczy i wartości, rekursywnie\n"
 "  range                     Odpytuje zakres klucza\n"
+"  describe                  Odpytuje opis klucza\n"
 "  get                       Uzyskuje wartość klucza\n"
 "  set                       Ustawia wartość klucza\n"
 "  reset                     Przywraca wartość klucza\n"
@@ -3393,7 +3400,7 @@ msgstr ""
 "Polecenie „gsettings help POLECENIE” wyświetla szczegółową pomoc.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:629
+#: ../gio/gsettings-tool.c:644
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3408,11 +3415,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:635
+#: ../gio/gsettings-tool.c:650
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  KATALOG-SCHEMATÓW Katalog do wyszukiwania dodatkowych schematów\n"
 
-#: ../gio/gsettings-tool.c:643
+#: ../gio/gsettings-tool.c:658
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3420,34 +3427,34 @@ msgstr ""
 "  SCHEMAT   Identyfikator schematu\n"
 "  ŚCIEŻKA   Ścieżka (dla schematów, które można przenosić)\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:663
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KLUCZ     (Opcjonalny) klucz w schemacie\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:667
 msgid "  KEY       The key within the schema\n"
 msgstr "  KLUCZ     Klucz w schemacie\n"
 
-#: ../gio/gsettings-tool.c:656
+#: ../gio/gsettings-tool.c:671
 msgid "  VALUE     The value to set\n"
 msgstr "  WARTOŚĆ   Wartość do ustawienia\n"
 
-#: ../gio/gsettings-tool.c:711
+#: ../gio/gsettings-tool.c:726
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Nie można wczytać schematów z %s: %s\n"
 
-#: ../gio/gsettings-tool.c:723
+#: ../gio/gsettings-tool.c:738
 #, c-format
 msgid "No schemas installed\n"
 msgstr "Nie zainstalowano schematów\n"
 
-#: ../gio/gsettings-tool.c:788
+#: ../gio/gsettings-tool.c:809
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Podano pustą nazwę schematu\n"
 
-#: ../gio/gsettings-tool.c:843
+#: ../gio/gsettings-tool.c:864
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Brak klucza „%s”\n"
