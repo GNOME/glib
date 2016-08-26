@@ -1,3 +1,23 @@
+Overview of changes in GLib 2.49.6
+==================================
+
+* The gsettings commandline tool now has a describe command
+
+Bugs fixed:
+ 745754 Add gcc-style dependency output to glib-compile-resources
+ 769076 Fix warning: attempt to override closure->va_marshal with new marshal
+ 770372 gdbus-codegen: Strip @since parameters before comparison
+
+Translation updates:
+ Brazilian Portuguese
+ Czech
+ German
+ Hungarian
+ Polish
+ Portuguese
+ Spanish
+
+
 Overview of changes in GLib 2.49.5
 ==================================
 
