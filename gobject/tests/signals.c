@@ -258,7 +258,7 @@ test_class_init (TestClass *klass)
                 0);
   g_signal_set_va_marshaller (s, G_TYPE_FROM_CLASS (klass),
 			      test_UINT__VOIDv);
-  simple_id = g_signal_new ("custom-marshaller",
+  g_signal_new ("custom-marshaller",
                 G_TYPE_FROM_CLASS (klass),
                 G_SIGNAL_RUN_LAST,
                 0,
@@ -1080,6 +1080,7 @@ test_introspection (void)
     "all-types-generic",
     "all-types-null",
     "all-types-empty",
+    "custom-marshaller",
     NULL
   };
   GSignalQuery query;
