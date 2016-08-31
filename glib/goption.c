@@ -1281,9 +1281,12 @@ parse_arg (GOptionContext *context,
 
         change = get_change (context, G_OPTION_ARG_STRING,
                              entry->arg_data);
-        g_free (change->allocated.str);
 
-        change->prev.str = *(gchar **)entry->arg_data;
+        if (!change->allocated.str)
+          change->prev.str = *(gchar **)entry->arg_data;
+        else
+          g_free (change->allocated.str);
+
         change->allocated.str = data;
 
         *(gchar **)entry->arg_data = data;
@@ -1345,9 +1348,12 @@ parse_arg (GOptionContext *context,
 #endif
         change = get_change (context, G_OPTION_ARG_FILENAME,
                              entry->arg_data);
-        g_free (change->allocated.str);
 
-        change->prev.str = *(gchar **)entry->arg_data;
+        if (!change->allocated.str)
+          change->prev.str = *(gchar **)entry->arg_data;
+        else
+          g_free (change->allocated.str);
+
         change->allocated.str = data;
 
         *(gchar **)entry->arg_data = data;
