@@ -1,9 +1,9 @@
-global gquarks
+global glib_quarks_2_0_@LT_CURRENT@_@LT_REVISION@
 
 /* This is needed to keep track of gquark for use in other probes.*/
 probe process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("quark__new")
 {
-  gquarks[pid(), $arg2] = user_string($arg1)
+  glib_quarks_2_0_@LT_CURRENT@_@LT_REVISION@[pid(), $arg2] = user_string($arg1)
 }
 
 /**
