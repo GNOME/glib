@@ -20,10 +20,10 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-13 07:39+0000\n"
-"PO-Revision-Date: 2016-03-13 16:42+0200\n"
+"POT-Creation-Date: 2016-08-25 18:43+0000\n"
+"PO-Revision-Date: 2016-09-04 19:20+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
-"Language-Team: suomi <gnome-fi-laatu@lists.sourceforge.net>\n"
+"Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +51,8 @@ msgid "Override the application's ID"
 msgstr "Ohjelmaa ei löydy"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
-#: ../gio/gresource-tool.c:488 ../gio/gsettings-tool.c:512
+#: ../gio/gio-tool.c:209 ../gio/gresource-tool.c:488
+#: ../gio/gsettings-tool.c:520
 msgid "Print help"
 msgstr "Tulosta ohje"
 
@@ -61,11 +62,11 @@ msgstr "Tulosta ohje"
 msgid "[COMMAND]"
 msgstr "KOMENTO"
 
-#: ../gio/gapplication-tool.c:49
+#: ../gio/gapplication-tool.c:49 ../gio/gio-tool.c:210
 msgid "Print version"
 msgstr "Tulosta versio"
 
-#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:518
+#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:526
 msgid "Print version information and exit"
 msgstr "Tulosta ohjelman versio ja poistu"
 
@@ -116,7 +117,7 @@ msgid "APPID"
 msgstr ""
 
 #: ../gio/gapplication-tool.c:70 ../gio/gapplication-tool.c:133
-#: ../gio/gdbus-tool.c:90
+#: ../gio/gdbus-tool.c:90 ../gio/gio-tool.c:206
 msgid "COMMAND"
 msgstr "KOMENTO"
 
@@ -128,9 +129,9 @@ msgstr ""
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:589
-#: ../gio/glib-compile-resources.c:620 ../gio/gresource-tool.c:495
-#: ../gio/gresource-tool.c:561
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:626 ../gio/glib-compile-resources.c:652
+#: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr ""
 
@@ -157,7 +158,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr ""
 
 #: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:526
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:612
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -171,11 +172,11 @@ msgid "Usage:\n"
 msgstr "Käyttö:\n"
 
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:551
-#: ../gio/gsettings-tool.c:632
+#: ../gio/gsettings-tool.c:647
 msgid "Arguments:\n"
 msgstr "Argumentit:\n"
 
-#: ../gio/gapplication-tool.c:133
+#: ../gio/gapplication-tool.c:133 ../gio/gio-tool.c:206
 msgid "[ARGS...]"
 msgstr ""
 
@@ -272,7 +273,7 @@ msgstr ""
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498
 #: ../gio/ginputstream.c:179 ../gio/ginputstream.c:379
-#: ../gio/ginputstream.c:617 ../gio/ginputstream.c:1016
+#: ../gio/ginputstream.c:617 ../gio/ginputstream.c:1019
 #: ../gio/goutputstream.c:203 ../gio/goutputstream.c:834
 #: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
@@ -292,8 +293,8 @@ msgstr "Virta ei tue siirtymistä"
 msgid "Cannot truncate GBufferedInputStream"
 msgstr "GMemoryInputStream-kohdetta ei voi kutistaa"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1205
-#: ../gio/giostream.c:300 ../gio/goutputstream.c:1658
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1208
+#: ../gio/giostream.c:300 ../gio/goutputstream.c:1660
 msgid "Stream is already closed"
 msgstr "Virta on jo suljettu"
 
@@ -303,9 +304,9 @@ msgstr "Virta on jo suljettu"
 msgid "Truncate not supported on base stream"
 msgstr "Virta ei tue kutistamista"
 
-#: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1847
-#: ../gio/gdbusprivate.c:1375 ../gio/glocalfile.c:2220
-#: ../gio/gsimpleasyncresult.c:870 ../gio/gsimpleasyncresult.c:896
+#: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1849
+#: ../gio/gdbusprivate.c:1377 ../gio/gsimpleasyncresult.c:870
+#: ../gio/gsimpleasyncresult.c:896
 #, c-format
 msgid "Operation was cancelled"
 msgstr "Toiminto oli peruttu"
@@ -323,9 +324,9 @@ msgid "Not enough space in destination"
 msgstr "Kohteessa ei ole tarpeeksi tilaa"
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
-#: ../gio/gdatainputstream.c:1256 ../glib/gconvert.c:438 ../glib/gconvert.c:845
+#: ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:438 ../glib/gconvert.c:845
 #: ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
-#: ../glib/giochannel.c:2442 ../glib/gutf8.c:853 ../glib/gutf8.c:1306
+#: ../glib/giochannel.c:2442 ../glib/gutf8.c:855 ../glib/gutf8.c:1308
 msgid "Invalid byte sequence in conversion input"
 msgstr "Virheellinen tavusarja muunnettavassa syötteessä"
 
@@ -504,43 +505,48 @@ msgid "Error writing contents of nonce file '%s' to stream:"
 msgstr ""
 "Virhe kirjoitettaessa kertakäyttölukujen tiedoston ”%s” sisältöä virtaan:"
 
-#: ../gio/gdbusaddress.c:950
+#: ../gio/gdbusaddress.c:951
 msgid "The given address is empty"
 msgstr "Annettu osoite on tyhjä"
 
-#: ../gio/gdbusaddress.c:1063
+#: ../gio/gdbusaddress.c:1064
 #, fuzzy, c-format
 #| msgid "Cannot spawn a message bus without a machine-id: "
 msgid "Cannot spawn a message bus when setuid"
 msgstr "Ei voida käynnistää viestiväylää ilman tietokonetunnistetta: "
 
-#: ../gio/gdbusaddress.c:1070
+#: ../gio/gdbusaddress.c:1071
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Ei voida käynnistää viestiväylää ilman tietokonetunnistetta: "
 
-#: ../gio/gdbusaddress.c:1112
+#: ../gio/gdbusaddress.c:1078
+#, c-format
+msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
+msgstr ""
+
+#: ../gio/gdbusaddress.c:1120
 #, c-format
 msgid "Error spawning command line '%s': "
 msgstr "Virhe käynnistettäessä komentoriviä ”%s”: "
 
-#: ../gio/gdbusaddress.c:1329
+#: ../gio/gdbusaddress.c:1337
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr ""
 
-#: ../gio/gdbusaddress.c:1481
+#: ../gio/gdbusaddress.c:1489
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr ""
 
-#: ../gio/gdbusaddress.c:1492
+#: ../gio/gdbusaddress.c:1500
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Ei voi päätellä istuntoväylän osoitetta (ei toteutettu tälle "
 "käyttöjärjestelmälle)"
 
-#: ../gio/gdbusaddress.c:1627 ../gio/gdbusconnection.c:7128
+#: ../gio/gdbusaddress.c:1635 ../gio/gdbusconnection.c:7133
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -549,7 +555,7 @@ msgstr ""
 "Ei voitu päätellä väyläosoitetta DBUS_STARTER_BUS_TYPE-ympäristömuuttujasta "
 "- tuntematon arvo ”%s”"
 
-#: ../gio/gdbusaddress.c:1636 ../gio/gdbusconnection.c:7137
+#: ../gio/gdbusaddress.c:1644 ../gio/gdbusconnection.c:7142
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -557,7 +563,7 @@ msgstr ""
 "Ei voitu päätellä väyläosoitetta, koska DBUS_STARTER_BUS_TYPE-"
 "ympäristömuuttujaa ei ole asetettu"
 
-#: ../gio/gdbusaddress.c:1646
+#: ../gio/gdbusaddress.c:1654
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Tuntematon väylätyyppi %d"
@@ -578,7 +584,7 @@ msgstr ""
 "Kulutettu kaikki saatavilla olevat todennusmenetelmät (kokeiltu: %s) "
 "(saatavilla: %s)"
 
-#: ../gio/gdbusauth.c:1170
+#: ../gio/gdbusauth.c:1173
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr ""
 "Peruutus kohteen GDBusAuthObserver::authorize-authenticated-peer kautta"
@@ -661,99 +667,99 @@ msgstr "Virhe avattaessa avainrengasta ”%s” kirjoitusta varten: "
 msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
 msgstr "(Lisäksi myös tiedoston ”%s” lukon vapauttaminen epäonnistui: %s) "
 
-#: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2373
+#: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2377
 msgid "The connection is closed"
 msgstr "Yhteys on suljettu"
 
-#: ../gio/gdbusconnection.c:1877
+#: ../gio/gdbusconnection.c:1879
 msgid "Timeout was reached"
 msgstr "Aikakatkaisu saavutettiin"
 
-#: ../gio/gdbusconnection.c:2495
+#: ../gio/gdbusconnection.c:2499
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Ei-tuettuja lippuja kohdattu muodostettaessa asiakaspuolen yhteyttä"
 
-#: ../gio/gdbusconnection.c:4105 ../gio/gdbusconnection.c:4452
+#: ../gio/gdbusconnection.c:4109 ../gio/gdbusconnection.c:4456
 #, c-format
 msgid ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "Ei rajapintaa ”org.freedesktop.DBus.Properties” oliolla polussa %s"
 
-#: ../gio/gdbusconnection.c:4247
+#: ../gio/gdbusconnection.c:4251
 #, c-format
 msgid "No such property '%s'"
 msgstr "Ei ominaisuutta ”%s”"
 
-#: ../gio/gdbusconnection.c:4259
+#: ../gio/gdbusconnection.c:4263
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "Ominaisuus ”%s” ei ole luettavissa"
 
-#: ../gio/gdbusconnection.c:4270
+#: ../gio/gdbusconnection.c:4274
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "Ominaisuus ”%s” ei ole kirjoitettavissa"
 
-#: ../gio/gdbusconnection.c:4290
+#: ../gio/gdbusconnection.c:4294
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 "Virhe asetettaessa ominaisuutta ”%s”: Odotettiin tyyppiä ”%s” mutta saatiin "
 "”%s”"
 
-#: ../gio/gdbusconnection.c:4395 ../gio/gdbusconnection.c:6568
+#: ../gio/gdbusconnection.c:4399 ../gio/gdbusconnection.c:6573
 #, c-format
 msgid "No such interface '%s'"
 msgstr "Ei rajapintaa ”%s”"
 
-#: ../gio/gdbusconnection.c:4603
+#: ../gio/gdbusconnection.c:4607
 msgid "No such interface"
 msgstr "Ei rajapintaa"
 
-#: ../gio/gdbusconnection.c:4821 ../gio/gdbusconnection.c:7077
+#: ../gio/gdbusconnection.c:4825 ../gio/gdbusconnection.c:7082
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "Ei rajapintaa ”%s” oliolla polussa %s"
 
-#: ../gio/gdbusconnection.c:4919
+#: ../gio/gdbusconnection.c:4923
 #, c-format
 msgid "No such method '%s'"
 msgstr "Ei metodia ”%s”"
 
-#: ../gio/gdbusconnection.c:4950
+#: ../gio/gdbusconnection.c:4954
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Viestin tyyppi ”%s” ei täsmää odotettuun tyyppiin ”%s”"
 
-#: ../gio/gdbusconnection.c:5148
+#: ../gio/gdbusconnection.c:5152
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Olio on jo viety rajapintana %s polussa %s"
 
-#: ../gio/gdbusconnection.c:5374
+#: ../gio/gdbusconnection.c:5378
 #, fuzzy, c-format
 #| msgid "Unable to create socket: %s"
 msgid "Unable to retrieve property %s.%s"
 msgstr "Pistoketta ei voi luoda: %s"
 
-#: ../gio/gdbusconnection.c:5430
+#: ../gio/gdbusconnection.c:5434
 #, fuzzy, c-format
 #| msgid "Unable to create socket: %s"
 msgid "Unable to set property %s.%s"
 msgstr "Pistoketta ei voi luoda: %s"
 
-#: ../gio/gdbusconnection.c:5606
+#: ../gio/gdbusconnection.c:5610
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Metodi ”%s” palautti tyypin ”%s” mutta odotettiin ”%s”"
 
-#: ../gio/gdbusconnection.c:6679
+#: ../gio/gdbusconnection.c:6684
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Metodi ”%s” rajapinnassa ”%s” tyyppimäärittelyllä ”%s” ei ole olemassa"
 
-#: ../gio/gdbusconnection.c:6800
+#: ../gio/gdbusconnection.c:6805
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Alipuu on jo viety polkuun %s"
@@ -951,28 +957,28 @@ msgstr "Virhepaluu runkotyypillä ”%s”"
 msgid "Error return with empty body"
 msgstr "Virhepaluu tyhjällä rungolla"
 
-#: ../gio/gdbusprivate.c:2036
+#: ../gio/gdbusprivate.c:2038
 #, fuzzy, c-format
 #| msgid "Unable to trash file: %s"
 msgid "Unable to get Hardware profile: %s"
 msgstr "Tiedosto ei voi siirtää roskakoriin: %s"
 
-#: ../gio/gdbusprivate.c:2081
+#: ../gio/gdbusprivate.c:2083
 #, fuzzy
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Ei voitu ladata /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:1610
+#: ../gio/gdbusproxy.c:1611
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Virhe kutsuttaessa StartServiceByName kohteelle %s: "
 
-#: ../gio/gdbusproxy.c:1633
+#: ../gio/gdbusproxy.c:1634
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Odottamaton vastaus %d metodilta StartServiceByName(”%s”)"
 
-#: ../gio/gdbusproxy.c:2709 ../gio/gdbusproxy.c:2843
+#: ../gio/gdbusproxy.c:2713 ../gio/gdbusproxy.c:2847
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -1026,22 +1032,22 @@ msgstr ""
 "Käytä ”%s KOMENTO --help” saadaksesi ohjeen kustakin komennosta.\n"
 
 #: ../gio/gdbus-tool.c:164 ../gio/gdbus-tool.c:226 ../gio/gdbus-tool.c:298
-#: ../gio/gdbus-tool.c:322 ../gio/gdbus-tool.c:711 ../gio/gdbus-tool.c:1043
-#: ../gio/gdbus-tool.c:1477
+#: ../gio/gdbus-tool.c:322 ../gio/gdbus-tool.c:724 ../gio/gdbus-tool.c:1067
+#: ../gio/gdbus-tool.c:1509 ../gio/gio-tool-rename.c:84
 #, c-format
 msgid "Error: %s\n"
 msgstr "Virhe: %s\n"
 
-#: ../gio/gdbus-tool.c:175 ../gio/gdbus-tool.c:239 ../gio/gdbus-tool.c:1493
+#: ../gio/gdbus-tool.c:175 ../gio/gdbus-tool.c:239 ../gio/gdbus-tool.c:1525
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Virhe jäsennettäessä introspektio-XML:ää: %s\n"
 
 #: ../gio/gdbus-tool.c:208
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error: %s is not a valid member name\n"
 msgid "Error: %s is not a valid name\n"
-msgstr "Virhe: %s ei ole kelvollinen jäsenen nimi\n"
+msgstr "Virhe: %s ei ole kelvollinen nimi\n"
 
 #: ../gio/gdbus-tool.c:356
 msgid "Connect to the system bus"
@@ -1100,207 +1106,207 @@ msgstr "Oliopolku johon lähetetään signaali"
 msgid "Signal and interface name"
 msgstr "Signaalin ja rajapinnan nimi"
 
-#: ../gio/gdbus-tool.c:576
+#: ../gio/gdbus-tool.c:578
 msgid "Emit a signal."
 msgstr "Lähetä signaali."
 
-#: ../gio/gdbus-tool.c:610 ../gio/gdbus-tool.c:842 ../gio/gdbus-tool.c:1583
-#: ../gio/gdbus-tool.c:1818
+#: ../gio/gdbus-tool.c:612 ../gio/gdbus-tool.c:857 ../gio/gdbus-tool.c:1615
+#: ../gio/gdbus-tool.c:1850
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Virhe yhteydenotossa: %s\n"
 
-#: ../gio/gdbus-tool.c:622
+#: ../gio/gdbus-tool.c:624
 #, c-format
 msgid "Error: object path not specified.\n"
 msgstr "Virhe: oliopolkua ei määritelty\n"
 
-#: ../gio/gdbus-tool.c:627 ../gio/gdbus-tool.c:909 ../gio/gdbus-tool.c:1648
-#: ../gio/gdbus-tool.c:1884
+#: ../gio/gdbus-tool.c:629 ../gio/gdbus-tool.c:924 ../gio/gdbus-tool.c:1680
+#: ../gio/gdbus-tool.c:1916
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Virhe: %s ei ole kelvollinen oliopolku\n"
 
-#: ../gio/gdbus-tool.c:633
+#: ../gio/gdbus-tool.c:635
 #, c-format
 msgid "Error: signal not specified.\n"
 msgstr "Virhe: signaalia ei määritetty.\n"
 
-#: ../gio/gdbus-tool.c:640
+#: ../gio/gdbus-tool.c:642
 #, fuzzy, c-format
 #| msgid "Error: signal not specified.\n"
 msgid "Error: signal must be the fully-qualified name.\n"
 msgstr "Virhe: signaalia ei määritetty.\n"
 
-#: ../gio/gdbus-tool.c:648
+#: ../gio/gdbus-tool.c:650
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Virhe: %s ei ole kelvollinen rajapinnan nimi\n"
 
-#: ../gio/gdbus-tool.c:654
+#: ../gio/gdbus-tool.c:656
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Virhe: %s ei ole kelvollinen jäsenen nimi\n"
 
-#: ../gio/gdbus-tool.c:660
+#: ../gio/gdbus-tool.c:662
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Virhe: %s ei ole kelvollinen yksikäsitteinen väylänimi\n"
 
 #. Use the original non-"parse-me-harder" error
-#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1011
+#: ../gio/gdbus-tool.c:699 ../gio/gdbus-tool.c:1036
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Virhe jäsennettäessä parametriä %d: %s\n"
 
-#: ../gio/gdbus-tool.c:718
+#: ../gio/gdbus-tool.c:731
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Virhe huuhdottaessa yhteyttä: %s\n"
 
-#: ../gio/gdbus-tool.c:745
+#: ../gio/gdbus-tool.c:758
 msgid "Destination name to invoke method on"
 msgstr "Kohdenimi jossa metodia kutsutaan"
 
-#: ../gio/gdbus-tool.c:746
+#: ../gio/gdbus-tool.c:759
 msgid "Object path to invoke method on"
 msgstr "Oliopolku jossa metodia kutsutaan"
 
-#: ../gio/gdbus-tool.c:747
+#: ../gio/gdbus-tool.c:760
 msgid "Method and interface name"
 msgstr "Metodi ja rajapinnan nimi"
 
-#: ../gio/gdbus-tool.c:748
+#: ../gio/gdbus-tool.c:761
 msgid "Timeout in seconds"
 msgstr "Aikakatkaisu sekunteina"
 
-#: ../gio/gdbus-tool.c:787
+#: ../gio/gdbus-tool.c:802
 msgid "Invoke a method on a remote object."
 msgstr "Kutsu metodia etäoliolla"
 
-#: ../gio/gdbus-tool.c:862 ../gio/gdbus-tool.c:1602 ../gio/gdbus-tool.c:1837
+#: ../gio/gdbus-tool.c:877 ../gio/gdbus-tool.c:1634 ../gio/gdbus-tool.c:1869
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Virhe: Kohdetta ei määritelty\n"
 
-#: ../gio/gdbus-tool.c:874 ../gio/gdbus-tool.c:1619 ../gio/gdbus-tool.c:1849
-#, fuzzy, c-format
+#: ../gio/gdbus-tool.c:889 ../gio/gdbus-tool.c:1651 ../gio/gdbus-tool.c:1881
+#, c-format
 #| msgid "Error: %s is not a valid member name\n"
 msgid "Error: %s is not a valid bus name\n"
-msgstr "Virhe: %s ei ole kelvollinen jäsenen nimi\n"
+msgstr "Virhe: %s ei ole kelvollinen väylän nimi\n"
 
-#: ../gio/gdbus-tool.c:889 ../gio/gdbus-tool.c:1628
+#: ../gio/gdbus-tool.c:904 ../gio/gdbus-tool.c:1660
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Virhe: Oliopolkua ei määritelty\n"
 
-#: ../gio/gdbus-tool.c:924
+#: ../gio/gdbus-tool.c:939
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Virhe: Metodin nimeä ei määritelty\n"
 
-#: ../gio/gdbus-tool.c:935
+#: ../gio/gdbus-tool.c:950
 #, c-format
 msgid "Error: Method name '%s' is invalid\n"
 msgstr "Virhe: Metodin nimi ”%s” on virheellinen\n"
 
-#: ../gio/gdbus-tool.c:1003
+#: ../gio/gdbus-tool.c:1028
 #, c-format
 msgid "Error parsing parameter %d of type '%s': %s\n"
 msgstr "Virhe jäsennettäessä parametria %d tyyppiä ”%s”: %s\n"
 
-#: ../gio/gdbus-tool.c:1440
+#: ../gio/gdbus-tool.c:1472
 msgid "Destination name to introspect"
 msgstr "Kohdenimi joka katsastetaan"
 
-#: ../gio/gdbus-tool.c:1441
+#: ../gio/gdbus-tool.c:1473
 msgid "Object path to introspect"
 msgstr "Oliopolku joka katsastetaan"
 
-#: ../gio/gdbus-tool.c:1442
+#: ../gio/gdbus-tool.c:1474
 msgid "Print XML"
 msgstr "Tulosta XML"
 
-#: ../gio/gdbus-tool.c:1443
+#: ../gio/gdbus-tool.c:1475
 msgid "Introspect children"
 msgstr "Katsasta lapset"
 
-#: ../gio/gdbus-tool.c:1444
+#: ../gio/gdbus-tool.c:1476
 msgid "Only print properties"
 msgstr "Tulosta vain ominaisuudet"
 
-#: ../gio/gdbus-tool.c:1535
+#: ../gio/gdbus-tool.c:1567
 msgid "Introspect a remote object."
 msgstr "Katsasta etäolio"
 
-#: ../gio/gdbus-tool.c:1740
+#: ../gio/gdbus-tool.c:1772
 msgid "Destination name to monitor"
 msgstr "Kohdenimi jota monitoroidaan"
 
-#: ../gio/gdbus-tool.c:1741
+#: ../gio/gdbus-tool.c:1773
 msgid "Object path to monitor"
 msgstr "Oliopolku jota monitoroidaan"
 
-#: ../gio/gdbus-tool.c:1770
+#: ../gio/gdbus-tool.c:1802
 msgid "Monitor a remote object."
 msgstr "Monitoroi etäoliota."
 
-#: ../gio/gdesktopappinfo.c:1993 ../gio/gdesktopappinfo.c:4502
+#: ../gio/gdesktopappinfo.c:1994 ../gio/gdesktopappinfo.c:4501
 msgid "Unnamed"
 msgstr "Nimeämätön"
 
-#: ../gio/gdesktopappinfo.c:2402
+#: ../gio/gdesktopappinfo.c:2404
 msgid "Desktop file didn't specify Exec field"
 msgstr "Työpöytätiedosto ei määrittele Exec-kenttää"
 
-#: ../gio/gdesktopappinfo.c:2687
+#: ../gio/gdesktopappinfo.c:2689
 msgid "Unable to find terminal required for application"
 msgstr "Sovelluksen vaatimaa päätettä ei löydy"
 
-#: ../gio/gdesktopappinfo.c:3099
+#: ../gio/gdesktopappinfo.c:3097
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Käyttäjän sovellusten asetuskansiota %s ei voi luoda: %s"
 
-#: ../gio/gdesktopappinfo.c:3103
+#: ../gio/gdesktopappinfo.c:3101
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Käyttäjän MIME-asetusten kansiota %s ei voi luoda: %s"
 
-#: ../gio/gdesktopappinfo.c:3343 ../gio/gdesktopappinfo.c:3367
+#: ../gio/gdesktopappinfo.c:3341 ../gio/gdesktopappinfo.c:3365
 msgid "Application information lacks an identifier"
 msgstr ""
 
-#: ../gio/gdesktopappinfo.c:3600
+#: ../gio/gdesktopappinfo.c:3599
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Käyttäjän työpöytätiedostoa %s ei voi luoda"
 
-#: ../gio/gdesktopappinfo.c:3734
+#: ../gio/gdesktopappinfo.c:3733
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Oma määrittely kohteelle %s"
 
-#: ../gio/gdrive.c:392
+#: ../gio/gdrive.c:417
 msgid "drive doesn't implement eject"
 msgstr "asema ei toteuta aseman avausta"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gdrive.c:470
+#: ../gio/gdrive.c:495
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "asema ei toteuta aseman avausta (eject tai eject_with_operation)"
 
-#: ../gio/gdrive.c:546
+#: ../gio/gdrive.c:571
 msgid "drive doesn't implement polling for media"
 msgstr "asema ei toteuta median tarkkailua"
 
-#: ../gio/gdrive.c:751
+#: ../gio/gdrive.c:776
 msgid "drive doesn't implement start"
 msgstr "asema ei toteuta käynnistystä"
 
-#: ../gio/gdrive.c:853
+#: ../gio/gdrive.c:878
 msgid "drive doesn't implement stop"
 msgstr "asema ei toteuta pysäytystä"
 
@@ -1310,7 +1316,6 @@ msgid "TLS support is not available"
 msgstr "TLS-tukea ei ole saatavilla"
 
 #: ../gio/gdummytlsbackend.c:419
-#| msgid "TLS support is not available"
 msgid "DTLS support is not available"
 msgstr "DTLS-tukea ei ole saatavilla"
 
@@ -1342,10 +1347,10 @@ msgstr "Oletettiin GEmblen kohteelle GEmblemedIcon"
 #: ../gio/gfile.c:1583 ../gio/gfile.c:1638 ../gio/gfile.c:1696
 #: ../gio/gfile.c:1780 ../gio/gfile.c:1837 ../gio/gfile.c:1901
 #: ../gio/gfile.c:1956 ../gio/gfile.c:3604 ../gio/gfile.c:3659
-#: ../gio/gfile.c:3894 ../gio/gfile.c:3936 ../gio/gfile.c:4404
-#: ../gio/gfile.c:4815 ../gio/gfile.c:4900 ../gio/gfile.c:4990
-#: ../gio/gfile.c:5087 ../gio/gfile.c:5174 ../gio/gfile.c:5275
-#: ../gio/gfile.c:7796 ../gio/gfile.c:7886 ../gio/gfile.c:7970
+#: ../gio/gfile.c:3895 ../gio/gfile.c:3937 ../gio/gfile.c:4405
+#: ../gio/gfile.c:4816 ../gio/gfile.c:4901 ../gio/gfile.c:4991
+#: ../gio/gfile.c:5088 ../gio/gfile.c:5175 ../gio/gfile.c:5276
+#: ../gio/gfile.c:7817 ../gio/gfile.c:7907 ../gio/gfile.c:7991
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Toiminto ei ole tuettu"
@@ -1354,18 +1359,11 @@ msgstr "Toiminto ei ole tuettu"
 #. * trying to find the enclosing (user visible)
 #. * mount of a file, but none exists.
 #.
-#. Translators: This is an error message when trying to
-#. * find the enclosing (user visible) mount of a file, but
-#. * none exists.
-#. Translators: This is an error message when trying to find
-#. * the enclosing (user visible) mount of a file, but none
-#. * exists.
-#: ../gio/gfile.c:1468 ../gio/glocalfile.c:1134 ../gio/glocalfile.c:1145
-#: ../gio/glocalfile.c:1158
+#: ../gio/gfile.c:1468
 msgid "Containing mount does not exist"
 msgstr "Yllä olevaa liitospistettä ei löydy"
 
-#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2376
+#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2374
 msgid "Can't copy over directory"
 msgstr "Kansion päälle ei voi kopioida"
 
@@ -1373,7 +1371,7 @@ msgstr "Kansion päälle ei voi kopioida"
 msgid "Can't copy directory over directory"
 msgstr "Kansiota ei voi kopioida kansion päälle"
 
-#: ../gio/gfile.c:2583 ../gio/glocalfile.c:2385
+#: ../gio/gfile.c:2583
 msgid "Target file exists"
 msgstr "Kohdetiedosto on olemassa"
 
@@ -1408,24 +1406,24 @@ msgstr ""
 msgid "Can't copy special file"
 msgstr "Erikoistiedostoa ei voi kopioida"
 
-#: ../gio/gfile.c:3884
+#: ../gio/gfile.c:3885
 msgid "Invalid symlink value given"
 msgstr "Saatiin virheellinen symbolisen linkin arvo"
 
-#: ../gio/gfile.c:4045
+#: ../gio/gfile.c:4046
 msgid "Trash not supported"
 msgstr "Roskakori ei ole tuettu"
 
-#: ../gio/gfile.c:4157
+#: ../gio/gfile.c:4158
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Tiedostonimi ei voi sisältää merkkiä ”%c”"
 
-#: ../gio/gfile.c:6586 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6604 ../gio/gvolume.c:363
 msgid "volume doesn't implement mount"
 msgstr "taltio ei toteuta liittämistä"
 
-#: ../gio/gfile.c:6695
+#: ../gio/gfile.c:6713
 msgid "No application is registered as handling this file"
 msgstr "Tiedoston käsittelyyn ei ole rekisteröity mitään sovellusta"
 
@@ -1568,10 +1566,724 @@ msgstr "Syötevirta ei toteuta lukua"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:1215 ../gio/giostream.c:310
-#: ../gio/goutputstream.c:1668
+#: ../gio/ginputstream.c:1218 ../gio/giostream.c:310
+#: ../gio/goutputstream.c:1670
 msgid "Stream has outstanding operation"
 msgstr "Virrassa on toiminto odottamassa"
+
+#: ../gio/gio-tool.c:142
+msgid "Copy with file"
+msgstr "Kopioi tiedoston kanssa"
+
+#: ../gio/gio-tool.c:146
+msgid "Keep with file when moved"
+msgstr ""
+
+#: ../gio/gio-tool.c:187
+msgid "'version' takes no arguments"
+msgstr ""
+
+#: ../gio/gio-tool.c:189 ../gio/gio-tool.c:205 ../glib/goption.c:857
+msgid "Usage:"
+msgstr "Käyttö:"
+
+#: ../gio/gio-tool.c:192
+#| msgid "Print version information and exit"
+msgid "Print version information and exit."
+msgstr "Tulosta ohjelman versio ja poistu."
+
+#: ../gio/gio-tool.c:208
+#| msgid "Commands:\n"
+msgid "Commands:"
+msgstr "Komennot:"
+
+#: ../gio/gio-tool.c:211
+msgid "Concatenate files to standard output"
+msgstr ""
+
+#: ../gio/gio-tool.c:212
+msgid "Copy one or more files"
+msgstr "Kopioi yksi tai useampi tiedosto"
+
+#: ../gio/gio-tool.c:213
+#, fuzzy
+#| msgid "Show GApplication options"
+msgid "Show information about locations"
+msgstr "Näytä GApplication-valitsimet"
+
+#: ../gio/gio-tool.c:214
+msgid "List the contents of locations"
+msgstr ""
+
+#: ../gio/gio-tool.c:215
+msgid "Get or set the handler for a mimetype"
+msgstr ""
+
+#: ../gio/gio-tool.c:216
+#, fuzzy
+#| msgid "Can't open directory"
+msgid "Create directories"
+msgstr "Kansiota ei voi avata"
+
+#: ../gio/gio-tool.c:217
+msgid "Monitor files and directories for changes"
+msgstr ""
+
+#: ../gio/gio-tool.c:218
+msgid "Mount or unmount the locations"
+msgstr ""
+
+#: ../gio/gio-tool.c:219
+msgid "Move one or more files"
+msgstr ""
+
+#: ../gio/gio-tool.c:220
+msgid "Open files with the default application"
+msgstr ""
+
+#: ../gio/gio-tool.c:221
+msgid "Rename a file"
+msgstr "Nimeä tiedosto uudelleen"
+
+#: ../gio/gio-tool.c:222
+msgid "Delete one or more files"
+msgstr "Poista yksi tai useampi tiedosto"
+
+#: ../gio/gio-tool.c:223
+msgid "Read from standard input and save"
+msgstr ""
+
+#: ../gio/gio-tool.c:224
+msgid "Set a file attribute"
+msgstr ""
+
+#: ../gio/gio-tool.c:225
+msgid "Move files or directories to the trash"
+msgstr ""
+
+#: ../gio/gio-tool.c:226
+msgid "Lists the contents of locations in a tree"
+msgstr ""
+
+#: ../gio/gio-tool.c:228
+#, c-format
+msgid "Use %s to get detailed help.\n"
+msgstr ""
+
+#. Translators: commandline placeholder
+#: ../gio/gio-tool-cat.c:124 ../gio/gio-tool-info.c:278
+#: ../gio/gio-tool-list.c:165 ../gio/gio-tool-mkdir.c:48
+#: ../gio/gio-tool-monitor.c:37 ../gio/gio-tool-monitor.c:39
+#: ../gio/gio-tool-monitor.c:41 ../gio/gio-tool-monitor.c:43
+#: ../gio/gio-tool-monitor.c:202 ../gio/gio-tool-mount.c:1132
+#: ../gio/gio-tool-open.c:45 ../gio/gio-tool-remove.c:48
+#: ../gio/gio-tool-rename.c:45 ../gio/gio-tool-set.c:89
+#: ../gio/gio-tool-trash.c:81 ../gio/gio-tool-tree.c:239
+msgid "LOCATION"
+msgstr ""
+
+#: ../gio/gio-tool-cat.c:129
+msgid "Concatenate files and print to standard output."
+msgstr ""
+
+#: ../gio/gio-tool-cat.c:131
+msgid ""
+"gio cat works just like the traditional cat utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/file.txt as location."
+msgstr ""
+
+#: ../gio/gio-tool-cat.c:151
+msgid "No files given"
+msgstr ""
+
+#: ../gio/gio-tool-copy.c:42 ../gio/gio-tool-move.c:38
+#, fuzzy
+#| msgid "Target file is a directory"
+msgid "No target directory"
+msgstr "Kohdetiedosto on kansio"
+
+#: ../gio/gio-tool-copy.c:43 ../gio/gio-tool-move.c:39
+msgid "Show progress"
+msgstr "Näytä edistyminen"
+
+#: ../gio/gio-tool-copy.c:44 ../gio/gio-tool-move.c:40
+msgid "Prompt before overwrite"
+msgstr ""
+
+#: ../gio/gio-tool-copy.c:45
+msgid "Preserve all attributes"
+msgstr ""
+
+#: ../gio/gio-tool-copy.c:46 ../gio/gio-tool-move.c:41
+#: ../gio/gio-tool-save.c:49
+#, fuzzy
+#| msgid "Backup file creation failed"
+msgid "Backup existing destination files"
+msgstr "Varmuuskopiotiedoston luonti epäonnistui"
+
+#: ../gio/gio-tool-copy.c:47
+msgid "Never follow symbolic links"
+msgstr "Älä koskaan seuraa symbolisia linkkejä"
+
+#: ../gio/gio-tool-copy.c:72 ../gio/gio-tool-move.c:67
+#, c-format
+msgid "Transferred %s out of %s (%s/s)"
+msgstr "Siirretty %s/%s (%s/s)"
+
+#. Translators: commandline placeholder
+#: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
+msgid "SOURCE"
+msgstr ""
+
+#. Translators: commandline placeholder
+#: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
+#: ../gio/gio-tool-save.c:165
+msgid "DESTINATION"
+msgstr ""
+
+#: ../gio/gio-tool-copy.c:103
+msgid "Copy one or more files from SOURCE to DESTINATION."
+msgstr ""
+
+#: ../gio/gio-tool-copy.c:105
+msgid ""
+"gio copy is similar to the traditional cp utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/file.txt as location."
+msgstr ""
+
+#: ../gio/gio-tool-copy.c:143
+#, c-format
+#| msgid "Destination name to introspect"
+msgid "Destination %s is not a directory"
+msgstr "Kohde %s ei ole kansio"
+
+#: ../gio/gio-tool-copy.c:187 ../gio/gio-tool-move.c:181
+#, c-format
+msgid "%s: overwrite '%s'? "
+msgstr "%s: korvataanko '%s'? "
+
+#: ../gio/gio-tool-info.c:34
+msgid "List writable attributes"
+msgstr ""
+
+#: ../gio/gio-tool-info.c:35
+#, fuzzy
+#| msgid "Error getting filesystem info: %s"
+msgid "Get file system info"
+msgstr "Virhe haettaessa tietoja tiedostojärjestelmästä: %s"
+
+#: ../gio/gio-tool-info.c:36 ../gio/gio-tool-list.c:35
+msgid "The attributes to get"
+msgstr ""
+
+#: ../gio/gio-tool-info.c:36 ../gio/gio-tool-list.c:35
+msgid "ATTRIBUTES"
+msgstr ""
+
+#: ../gio/gio-tool-info.c:37 ../gio/gio-tool-list.c:38 ../gio/gio-tool-set.c:34
+msgid "Don't follow symbolic links"
+msgstr ""
+
+#: ../gio/gio-tool-info.c:75
+#, c-format
+msgid "attributes:\n"
+msgstr ""
+
+#. Translators: This is a noun and represents and attribute of a file
+#: ../gio/gio-tool-info.c:127
+#, c-format
+msgid "display name: %s\n"
+msgstr ""
+
+#. Translators: This is a noun and represents and attribute of a file
+#: ../gio/gio-tool-info.c:132
+#, c-format
+msgid "edit name: %s\n"
+msgstr ""
+
+#: ../gio/gio-tool-info.c:138
+#, c-format
+msgid "name: %s\n"
+msgstr "nimi: %s\n"
+
+#: ../gio/gio-tool-info.c:145
+#, c-format
+msgid "type: %s\n"
+msgstr "tyyppi: %s\n"
+
+#: ../gio/gio-tool-info.c:151
+#, c-format
+msgid "size: "
+msgstr "koko: "
+
+#: ../gio/gio-tool-info.c:156
+#, c-format
+msgid "hidden\n"
+msgstr "piilotettu\n"
+
+#: ../gio/gio-tool-info.c:159
+#, fuzzy, c-format
+#| msgid "Error: %s\n"
+msgid "uri: %s\n"
+msgstr "Virhe: %s\n"
+
+#: ../gio/gio-tool-info.c:221
+#, fuzzy, c-format
+#| msgid "Error setting extended attribute '%s': %s"
+msgid "Error getting writable attributes: %s\n"
+msgstr "Virhe asetettaessa laajennettua ominaisuutta ”%s”: %s"
+
+#: ../gio/gio-tool-info.c:226
+#, c-format
+msgid "Settable attributes:\n"
+msgstr ""
+
+#: ../gio/gio-tool-info.c:249
+#, c-format
+msgid "Writable attribute namespaces:\n"
+msgstr ""
+
+#: ../gio/gio-tool-info.c:283
+#, fuzzy
+#| msgid "Show GApplication options"
+msgid "Show information about locations."
+msgstr "Näytä GApplication-valitsimet"
+
+#: ../gio/gio-tool-info.c:285
+msgid ""
+"gio info is similar to the traditional ls utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/file.txt as location. File attributes can\n"
+"be specified with their GIO name, e.g. standard::icon, or just by\n"
+"namespace, e.g. unix, or by '*', which matches all attributes"
+msgstr ""
+
+#: ../gio/gio-tool-info.c:307 ../gio/gio-tool-mkdir.c:74
+msgid "No locations given"
+msgstr ""
+
+#: ../gio/gio-tool-list.c:36 ../gio/gio-tool-tree.c:32
+msgid "Show hidden files"
+msgstr "Näytä piilotetut tiedostot"
+
+#: ../gio/gio-tool-list.c:37
+msgid "Use a long listing format"
+msgstr ""
+
+#: ../gio/gio-tool-list.c:39
+msgid "Print full URIs"
+msgstr ""
+
+#: ../gio/gio-tool-list.c:170
+msgid "List the contents of the locations."
+msgstr ""
+
+#: ../gio/gio-tool-list.c:172
+msgid ""
+"gio list is similar to the traditional ls utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/file.txt as location. File attributes can\n"
+"be specified with their GIO name, e.g. standard::icon"
+msgstr ""
+
+#. Translators: commandline placeholder
+#: ../gio/gio-tool-mime.c:71
+msgid "MIMETYPE"
+msgstr ""
+
+#: ../gio/gio-tool-mime.c:71
+msgid "HANDLER"
+msgstr ""
+
+#: ../gio/gio-tool-mime.c:76
+msgid "Get or set the handler for a mimetype."
+msgstr ""
+
+#: ../gio/gio-tool-mime.c:78
+msgid ""
+"If no handler is given, lists registered and recommended applications\n"
+"for the mimetype. If a handler is given, it is set as the default\n"
+"handler for the mimetype."
+msgstr ""
+
+#: ../gio/gio-tool-mime.c:98
+msgid "Must specify a single mimetype, and maybe a handler"
+msgstr ""
+
+#: ../gio/gio-tool-mime.c:113
+#, c-format
+#| msgid "invalid GVariant type string '%s'"
+msgid "No default applications for '%s'\n"
+msgstr "Tyypille '%s' ei ole oletussovellusta\n"
+
+#: ../gio/gio-tool-mime.c:119
+#, c-format
+#| msgid "invalid GVariant type string '%s'"
+msgid "Default application for '%s': %s\n"
+msgstr "Oletussovellus tyypille '%s': %s\n"
+
+#: ../gio/gio-tool-mime.c:124
+#, c-format
+#| msgid "Can't find application"
+msgid "Registered applications:\n"
+msgstr "Rekisteröidyt sovellukset:\n"
+
+#: ../gio/gio-tool-mime.c:126
+#, c-format
+#| msgid "Can't find application"
+msgid "No registered applications\n"
+msgstr "Ei rekisteröityjä sovelluksia\n"
+
+#: ../gio/gio-tool-mime.c:137
+#, c-format
+#| msgid "Can't find application"
+msgid "Recommended applications:\n"
+msgstr "Suositellut sovellukset:\n"
+
+#: ../gio/gio-tool-mime.c:139
+#, c-format
+#| msgid "Can't find application"
+msgid "No recommended applications\n"
+msgstr "Ei suositeltuja sovelluksia\n"
+
+#: ../gio/gio-tool-mime.c:159
+#, fuzzy, c-format
+#| msgid "Failed to read from file '%s': %s"
+msgid "Failed to load info for handler '%s'\n"
+msgstr "Tiedoston ”%s” lukeminen epäonnistui: %s"
+
+#: ../gio/gio-tool-mime.c:165
+#, fuzzy, c-format
+#| msgid "Failed to create file '%s': %s"
+msgid "Failed to set '%s' as the default handler for '%s': %s\n"
+msgstr "Tiedoston ”%s” luominen epäonnistui: %s"
+
+#: ../gio/gio-tool-mkdir.c:31
+#, fuzzy
+#| msgid "Can't open directory"
+msgid "Create parent directories"
+msgstr "Kansiota ei voi avata"
+
+#: ../gio/gio-tool-mkdir.c:52
+#, fuzzy
+#| msgid "Can't open directory"
+msgid "Create directories."
+msgstr "Kansiota ei voi avata"
+
+#: ../gio/gio-tool-mkdir.c:54
+msgid ""
+"gio mkdir is similar to the traditional mkdir utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/mydir as location."
+msgstr ""
+
+#: ../gio/gio-tool-monitor.c:37
+msgid "Monitor a directory (default: depends on type)"
+msgstr ""
+
+#: ../gio/gio-tool-monitor.c:39
+msgid "Monitor a file (default: depends on type)"
+msgstr ""
+
+#: ../gio/gio-tool-monitor.c:41
+msgid "Monitor a file directly (notices changes made via hardlinks)"
+msgstr ""
+
+#: ../gio/gio-tool-monitor.c:43
+msgid "Monitors a file directly, but doesn't report changes"
+msgstr ""
+
+#: ../gio/gio-tool-monitor.c:45
+msgid "Report moves and renames as simple deleted/created events"
+msgstr ""
+
+#: ../gio/gio-tool-monitor.c:47
+msgid "Watch for mount events"
+msgstr ""
+
+#: ../gio/gio-tool-monitor.c:207
+msgid "Monitor files or directories for changes."
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:58
+msgid "Mount as mountable"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:59
+msgid "Mount volume with device file"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:59
+msgid "DEVICE"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:60
+msgid "Unmount"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:61
+msgid "Eject"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:62
+msgid "Unmount all mounts with the given scheme"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:62
+msgid "SCHEME"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:63
+msgid "Ignore outstanding file operations when unmounting or ejecting"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:64
+msgid "Use an anonymous user when authenticating"
+msgstr ""
+
+#. Translator: List here is a verb as in 'List all mounts'
+#: ../gio/gio-tool-mount.c:66
+msgid "List"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:67
+msgid "Monitor events"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:68
+#| msgid "Show help options"
+msgid "Show extra information"
+msgstr "Näytä lisätietoja"
+
+#: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
+#, fuzzy, c-format
+#| msgid "Error setting modification or access time: %s"
+msgid "Error mounting location: Anonymous access denied\n"
+msgstr "Virhe asetettaessa muokkaus- tai käyttöaikaa: %s"
+
+#: ../gio/gio-tool-mount.c:248 ../gio/gio-tool-mount.c:278
+#, fuzzy, c-format
+#| msgid "Error launching application: %s"
+msgid "Error mounting location: %s\n"
+msgstr "Virhe käynnistettäessä ohjelmaa: %s"
+
+#: ../gio/gio-tool-mount.c:341
+#, fuzzy, c-format
+#| msgid "Error connecting: %s\n"
+msgid "Error unmounting mount: %s\n"
+msgstr "Virhe yhteydenotossa: %s\n"
+
+#: ../gio/gio-tool-mount.c:366 ../gio/gio-tool-mount.c:419
+#, fuzzy, c-format
+#| msgid "Error closing socket: %s"
+msgid "Error finding enclosing mount: %s\n"
+msgstr "Virhe suljettaessa pistoketta: %s"
+
+#: ../gio/gio-tool-mount.c:394
+#, fuzzy, c-format
+#| msgid "Error setting owner: %s"
+msgid "Error ejecting mount: %s\n"
+msgstr "Virhe asetettaessa omistajaa: %s"
+
+#: ../gio/gio-tool-mount.c:875
+#, fuzzy, c-format
+#| msgid "Error connecting: %s\n"
+msgid "Error mounting %s: %s\n"
+msgstr "Virhe yhteydenotossa: %s\n"
+
+#: ../gio/gio-tool-mount.c:891
+#, c-format
+msgid "Mounted %s at %s\n"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:941
+#, c-format
+msgid "No volume for device file %s\n"
+msgstr ""
+
+#: ../gio/gio-tool-mount.c:1136
+msgid "Mount or unmount the locations."
+msgstr ""
+
+#: ../gio/gio-tool-move.c:42
+msgid "Don't use copy and delete fallback"
+msgstr ""
+
+#: ../gio/gio-tool-move.c:99
+msgid "Move one or more files from SOURCE to DEST."
+msgstr ""
+
+#: ../gio/gio-tool-move.c:101
+msgid ""
+"gio move is similar to the traditional mv utility, but using GIO\n"
+"locations instead of local files: for example, you can use something\n"
+"like smb://server/resource/file.txt as location"
+msgstr ""
+
+#: ../gio/gio-tool-move.c:139
+#, fuzzy, c-format
+#| msgid "Target file is a directory"
+msgid "Target %s is not a directory"
+msgstr "Kohdetiedosto on kansio"
+
+#: ../gio/gio-tool-open.c:50
+msgid ""
+"Open files with the default application that\n"
+"is registered to handle files of this type."
+msgstr ""
+
+#: ../gio/gio-tool-open.c:69
+msgid "No files to open"
+msgstr ""
+
+#: ../gio/gio-tool-remove.c:31 ../gio/gio-tool-trash.c:31
+msgid "Ignore nonexistent files, never prompt"
+msgstr ""
+
+#: ../gio/gio-tool-remove.c:52
+msgid "Delete the given files."
+msgstr ""
+
+#: ../gio/gio-tool-remove.c:70
+msgid "No files to delete"
+msgstr ""
+
+#: ../gio/gio-tool-rename.c:45
+msgid "NAME"
+msgstr ""
+
+#: ../gio/gio-tool-rename.c:50
+msgid "Rename a file."
+msgstr "Nimeä tiedosto uudelleen."
+
+#: ../gio/gio-tool-rename.c:68
+#, fuzzy
+#| msgid "Missing argument for %s"
+msgid "Missing argument"
+msgstr "Puuttuva argumentti kohteelle %s"
+
+#: ../gio/gio-tool-rename.c:73 ../gio/gio-tool-save.c:192
+#: ../gio/gio-tool-set.c:134
+msgid "Too many arguments"
+msgstr ""
+
+#: ../gio/gio-tool-rename.c:91
+#, c-format
+msgid "Rename successful. New uri: %s\n"
+msgstr ""
+
+#: ../gio/gio-tool-save.c:50
+msgid "Only create if not existing"
+msgstr ""
+
+#: ../gio/gio-tool-save.c:51
+msgid "Append to end of file"
+msgstr ""
+
+#: ../gio/gio-tool-save.c:52
+msgid "When creating, restrict access to the current user"
+msgstr ""
+
+#: ../gio/gio-tool-save.c:53
+msgid "When replacing, replace as if the destination did not exist"
+msgstr ""
+
+#. Translators: The "etag" is a token allowing to verify whether a file has been modified
+#: ../gio/gio-tool-save.c:55
+msgid "Print new etag at end"
+msgstr ""
+
+#. Translators: The "etag" is a token allowing to verify whether a file has been modified
+#: ../gio/gio-tool-save.c:57
+msgid "The etag of the file being overwritten"
+msgstr ""
+
+#: ../gio/gio-tool-save.c:57
+msgid "ETAG"
+msgstr ""
+
+#. Translators: The "etag" is a token allowing to verify whether a file has been modified
+#: ../gio/gio-tool-save.c:145
+#, fuzzy, c-format
+#| msgid "TLS support is not available"
+msgid "Etag not available\n"
+msgstr "TLS-tukea ei ole saatavilla"
+
+#: ../gio/gio-tool-save.c:168
+msgid "Read from standard input and save to DEST."
+msgstr ""
+
+#: ../gio/gio-tool-save.c:186
+msgid "No destination given"
+msgstr ""
+
+#: ../gio/gio-tool-set.c:33
+msgid "Type of the attribute"
+msgstr ""
+
+#: ../gio/gio-tool-set.c:33
+msgid "TYPE"
+msgstr ""
+
+#: ../gio/gio-tool-set.c:89
+msgid "ATTRIBUTE"
+msgstr ""
+
+#: ../gio/gio-tool-set.c:89
+msgid "VALUE"
+msgstr ""
+
+#: ../gio/gio-tool-set.c:93
+msgid "Set a file attribute of LOCATION."
+msgstr ""
+
+#: ../gio/gio-tool-set.c:111
+#, fuzzy
+#| msgid "No connection endpoint specified"
+msgid "Location not specified"
+msgstr "Yhteyden päätepistettä ei määritetty"
+
+#: ../gio/gio-tool-set.c:119
+#, fuzzy
+#| msgid "Error: signal not specified.\n"
+msgid "Attribute not specified"
+msgstr "Virhe: signaalia ei määritetty.\n"
+
+#: ../gio/gio-tool-set.c:128
+#, fuzzy
+#| msgid "Error: signal not specified.\n"
+msgid "Value not specified"
+msgstr "Virhe: signaalia ei määritetty.\n"
+
+#: ../gio/gio-tool-set.c:176
+#, fuzzy, c-format
+#| msgid "Invalid attribute type (string expected)"
+msgid "Invalid attribute type %s\n"
+msgstr "Virheellinen ominaisuustyyppi (piti olla merkkijono)"
+
+#: ../gio/gio-tool-set.c:189
+#, fuzzy, c-format
+#| msgid "Error setting extended attribute '%s': %s"
+msgid "Error setting attribute: %s\n"
+msgstr "Virhe asetettaessa laajennettua ominaisuutta ”%s”: %s"
+
+#: ../gio/gio-tool-trash.c:32
+msgid "Empty the trash"
+msgstr "Tyhjennä roskakori"
+
+#: ../gio/gio-tool-trash.c:86
+msgid "Move files or directories to the trash."
+msgstr "Siirrä tiedostoja tai kansioita roskakoriin."
+
+#: ../gio/gio-tool-tree.c:33
+msgid "Follow symbolic links, mounts and shortcuts"
+msgstr ""
+
+#: ../gio/gio-tool-tree.c:244
+msgid "List contents of directories in a tree-like format."
+msgstr ""
 
 #: ../gio/glib-compile-resources.c:142 ../gio/glib-compile-schemas.c:1491
 #, c-format
@@ -1583,92 +2295,96 @@ msgstr "Elementti <%s> ei ole sallittu elementin <%s> sisällä"
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Elementti <%s> ei ole sallittu päätasolla"
 
-#: ../gio/glib-compile-resources.c:236
+#: ../gio/glib-compile-resources.c:237
 #, c-format
 msgid "File %s appears multiple times in the resource"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:249
+#: ../gio/glib-compile-resources.c:248
 #, c-format
 msgid "Failed to locate '%s' in any source directory"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:260
+#: ../gio/glib-compile-resources.c:259
 #, fuzzy, c-format
 msgid "Failed to locate '%s' in current directory"
 msgstr "Hakemistoon ”%s” siirtyminen epäonnistui (%s)"
 
-#: ../gio/glib-compile-resources.c:288
+#: ../gio/glib-compile-resources.c:290
 #, fuzzy, c-format
 msgid "Unknown processing option \"%s\""
 msgstr "Tuntematon valitsin %s"
 
-#: ../gio/glib-compile-resources.c:306 ../gio/glib-compile-resources.c:352
+#: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:354
 #, c-format
 msgid "Failed to create temp file: %s"
 msgstr "Väliaikaistiedoston luominen epäonnistui: %s"
 
-#: ../gio/glib-compile-resources.c:380
+#: ../gio/glib-compile-resources.c:382
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Virhe lukiessa tiedostoa %s: %s"
 
-#: ../gio/glib-compile-resources.c:400
+#: ../gio/glib-compile-resources.c:402
 #, fuzzy, c-format
 msgid "Error compressing file %s"
 msgstr "Virhe avattaessa tiedostoa: %s"
 
-#: ../gio/glib-compile-resources.c:464 ../gio/glib-compile-schemas.c:1603
+#: ../gio/glib-compile-resources.c:469 ../gio/glib-compile-schemas.c:1603
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "teksti ei voi esiintyä elementin <%s> sisällä"
 
-#: ../gio/glib-compile-resources.c:589
+#: ../gio/glib-compile-resources.c:620
 #, fuzzy
 msgid "name of the output file"
 msgstr "Kuvakkeen nimi"
 
-#: ../gio/glib-compile-resources.c:590
+#: ../gio/glib-compile-resources.c:621
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:590 ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2036
 #: ../gio/glib-compile-schemas.c:2065
 msgid "DIRECTORY"
 msgstr "HAKEMISTO"
 
-#: ../gio/glib-compile-resources.c:591
+#: ../gio/glib-compile-resources.c:622
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:592
+#: ../gio/glib-compile-resources.c:623
 msgid "Generate source header"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:593
+#: ../gio/glib-compile-resources.c:624
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:594
+#: ../gio/glib-compile-resources.c:625
 msgid "Generate dependency list"
+msgstr "Luo riippuvuusluettelo"
+
+#: ../gio/glib-compile-resources.c:626
+msgid "name of the dependency file to generate"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:595
+#: ../gio/glib-compile-resources.c:627
 msgid "Don't automatically create and register resource"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:596
+#: ../gio/glib-compile-resources.c:628
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:597
+#: ../gio/glib-compile-resources.c:629
 msgid "C identifier name used for the generated source code"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:655
 #, fuzzy
 msgid ""
 "Compile a resource specification into a resource file.\n"
@@ -1679,7 +2395,7 @@ msgstr ""
 "Skeematiedostoilla tulee olla pääte .gschema.xml ja\n"
 "välimuistitiedoston nimi on gschemas.compiled."
 
-#: ../gio/glib-compile-resources.c:639
+#: ../gio/glib-compile-resources.c:671
 #, fuzzy, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Sinun tulisi antaa täsmälleen yksi hakemistonimi\n"
@@ -1967,121 +2683,148 @@ msgstr "ei tehdä mitään.\n"
 msgid "removed existing output file.\n"
 msgstr "poistettiin olemassaoleva tulostetiedosto.\n"
 
-#: ../gio/glocalfile.c:635 ../gio/win32/gwinhttpfile.c:420
+#: ../gio/glocalfile.c:642 ../gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Virheellinen tiedostonimi %s"
 
-#: ../gio/glocalfile.c:1012
-#, c-format
-msgid "Error getting filesystem info: %s"
+#: ../gio/glocalfile.c:1036
+#, fuzzy, c-format
+#| msgid "Error getting filesystem info: %s"
+msgid "Error getting filesystem info for %s: %s"
 msgstr "Virhe haettaessa tietoja tiedostojärjestelmästä: %s"
 
-#: ../gio/glocalfile.c:1180
+#: ../gio/glocalfile.c:1175
+#, fuzzy, c-format
+#| msgid "Containing mount does not exist"
+msgid "Containing mount for file %s not found"
+msgstr "Yllä olevaa liitospistettä ei löydy"
+
+#: ../gio/glocalfile.c:1198
 msgid "Can't rename root directory"
 msgstr "Juurikansiota ei voi nimetä uudestaan"
 
-#: ../gio/glocalfile.c:1200 ../gio/glocalfile.c:1226
-#, c-format
-msgid "Error renaming file: %s"
-msgstr "Virhe nimettäessä tiedostoa uudestaan: %s"
+#: ../gio/glocalfile.c:1216 ../gio/glocalfile.c:1239
+#, fuzzy, c-format
+#| msgid "Error reading file %s: %s"
+msgid "Error renaming file %s: %s"
+msgstr "Virhe lukiessa tiedostoa %s: %s"
 
-#: ../gio/glocalfile.c:1209
+#: ../gio/glocalfile.c:1223
 msgid "Can't rename file, filename already exists"
 msgstr "Tiedostoa ei voi nimetä uudestaan, tiedostonimi on jo olemassa"
 
-#: ../gio/glocalfile.c:1222 ../gio/glocalfile.c:2249 ../gio/glocalfile.c:2278
-#: ../gio/glocalfile.c:2438 ../gio/glocalfileoutputstream.c:549
+#: ../gio/glocalfile.c:1236 ../gio/glocalfile.c:2250 ../gio/glocalfile.c:2278
+#: ../gio/glocalfile.c:2435 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "Virheellinen tiedostonimi"
 
-#: ../gio/glocalfile.c:1389 ../gio/glocalfile.c:1413
-msgid "Can't open directory"
-msgstr "Kansiota ei voi avata"
+#: ../gio/glocalfile.c:1403 ../gio/glocalfile.c:1418
+#, fuzzy, c-format
+#| msgid "Error opening file '%s': %s"
+msgid "Error opening file %s: %s"
+msgstr "Virhe avattaessa tiedostoa ”%s”: %s"
 
-#: ../gio/glocalfile.c:1397
-#, c-format
-msgid "Error opening file: %s"
-msgstr "Virhe avattaessa tiedostoa: %s"
-
-#: ../gio/glocalfile.c:1538
-#, c-format
-msgid "Error removing file: %s"
+#: ../gio/glocalfile.c:1543
+#, fuzzy, c-format
+#| msgid "Error removing file: %s"
+msgid "Error removing file %s: %s"
 msgstr "Virhe poistettaessa tiedostoa: %s"
 
-#: ../gio/glocalfile.c:1922
-#, c-format
-msgid "Error trashing file: %s"
+#: ../gio/glocalfile.c:1926
+#, fuzzy, c-format
+#| msgid "Error trashing file: %s"
+msgid "Error trashing file %s: %s"
 msgstr "Virhe siirrettäessä tiedostoa roskakoriin: %s"
 
-#: ../gio/glocalfile.c:1945
+#: ../gio/glocalfile.c:1949
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Roskakorikansiota %s ei voi luoda: %s"
 
-#: ../gio/glocalfile.c:1966
-msgid "Unable to find toplevel directory for trash"
+#: ../gio/glocalfile.c:1969
+#, fuzzy, c-format
+#| msgid "Unable to find toplevel directory for trash"
+msgid "Unable to find toplevel directory to trash %s"
 msgstr "Päätasoa roskakoria varten ei löydy"
 
-#: ../gio/glocalfile.c:2045 ../gio/glocalfile.c:2065
-msgid "Unable to find or create trash directory"
+#: ../gio/glocalfile.c:2048 ../gio/glocalfile.c:2068
+#, fuzzy, c-format
+#| msgid "Unable to find or create trash directory"
+msgid "Unable to find or create trash directory for %s"
 msgstr "Roskakori kansiota ei löydy tai sitä ei voi luoda"
 
-#: ../gio/glocalfile.c:2099
-#, c-format
-msgid "Unable to create trashing info file: %s"
+#: ../gio/glocalfile.c:2102
+#, fuzzy, c-format
+#| msgid "Unable to create trashing info file: %s"
+msgid "Unable to create trashing info file for %s: %s"
 msgstr "Roskakorin informaatiotiedostoa ei voi luoda: %s"
 
-#: ../gio/glocalfile.c:2157 ../gio/glocalfile.c:2162 ../gio/glocalfile.c:2219
-#: ../gio/glocalfile.c:2226
-#, c-format
-msgid "Unable to trash file: %s"
+#: ../gio/glocalfile.c:2161
+#, fuzzy, c-format
+#| msgid "Unable to trash file: %s"
+msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "Tiedosto ei voi siirtää roskakoriin: %s"
 
-#: ../gio/glocalfile.c:2227 ../glib/gregex.c:281
-msgid "internal error"
-msgstr "sisäinen virhe"
+#: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2221
+#, fuzzy, c-format
+#| msgid "Unable to trash file: %s"
+msgid "Unable to trash file %s: %s"
+msgstr "Tiedosto ei voi siirtää roskakoriin: %s"
+
+#: ../gio/glocalfile.c:2227
+#, fuzzy, c-format
+#| msgid "Unable to trash file: %s"
+msgid "Unable to trash file %s"
+msgstr "Tiedosto ei voi siirtää roskakoriin: %s"
 
 #: ../gio/glocalfile.c:2253
-#, c-format
-msgid "Error creating directory: %s"
-msgstr "Virhe luotaessa kansiota: %s"
+#, fuzzy, c-format
+#| msgid "Error creating directory '%s': %s"
+msgid "Error creating directory %s: %s"
+msgstr "Virhe luotaessa hakemistoa ”%s”: %s"
 
 #: ../gio/glocalfile.c:2282
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Tiedostojärjestelmä ei tue symbolisia linkkejä"
 
-#: ../gio/glocalfile.c:2286
+#: ../gio/glocalfile.c:2285
 #, c-format
-msgid "Error making symbolic link: %s"
-msgstr "Virhe luotaessa symbolista linkkiä: %s"
+#| msgid "Error making symbolic link: %s"
+msgid "Error making symbolic link %s: %s"
+msgstr "Virhe luotaessa symbolista linkkiä %s: %s"
 
-#: ../gio/glocalfile.c:2348 ../gio/glocalfile.c:2442
+#: ../gio/glocalfile.c:2291 ../glib/gfileutils.c:2064
+msgid "Symbolic links not supported"
+msgstr "Symbolisia linkkejä ei tueta"
+
+#: ../gio/glocalfile.c:2346 ../gio/glocalfile.c:2381 ../gio/glocalfile.c:2438
 #, c-format
-msgid "Error moving file: %s"
-msgstr "Virhe siirrettäessä tiedostoa: %s"
+#| msgid "Error moving file: %s"
+msgid "Error moving file %s: %s"
+msgstr "Virhe siirrettäessä tiedostoa %s: %s"
 
-#: ../gio/glocalfile.c:2371
+#: ../gio/glocalfile.c:2369
 msgid "Can't move directory over directory"
 msgstr "Kansiota ei voi siirtää kansion päälle"
 
-#: ../gio/glocalfile.c:2398 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfile.c:2395 ../gio/glocalfileoutputstream.c:925
 #: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
-#: ../gio/glocalfileoutputstream.c:970 ../gio/glocalfileoutputstream.c:984
+#: ../gio/glocalfileoutputstream.c:971 ../gio/glocalfileoutputstream.c:985
 msgid "Backup file creation failed"
 msgstr "Varmuuskopiotiedoston luonti epäonnistui"
 
-#: ../gio/glocalfile.c:2417
+#: ../gio/glocalfile.c:2414
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Virhe poistettaessa kohdetiedostoa: %s"
 
-#: ../gio/glocalfile.c:2431
+#: ../gio/glocalfile.c:2428
 msgid "Move between mounts not supported"
 msgstr "Siirto liitospisteiden välillä ei ole tuettu"
 
-#: ../gio/glocalfile.c:2623
+#: ../gio/glocalfile.c:2619
 #, fuzzy, c-format
 #| msgid "could not get remote address: %s"
 msgid "Could not determine the disk usage of %s: %s"
@@ -2189,7 +2932,7 @@ msgstr "Virhe luettaessa tiedostosta: %s"
 
 #: ../gio/glocalfileinputstream.c:199 ../gio/glocalfileinputstream.c:211
 #: ../gio/glocalfileinputstream.c:225 ../gio/glocalfileinputstream.c:333
-#: ../gio/glocalfileoutputstream.c:456 ../gio/glocalfileoutputstream.c:1002
+#: ../gio/glocalfileoutputstream.c:456 ../gio/glocalfileoutputstream.c:1003
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Virhe siirryttäessä tiedostossa: %s"
@@ -2225,13 +2968,13 @@ msgstr "Virhe luotaessa varmuuskopiota: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "Virhe nimettäessä uudestaan väliaikaistiedostoa: %s"
 
-#: ../gio/glocalfileoutputstream.c:502 ../gio/glocalfileoutputstream.c:1053
+#: ../gio/glocalfileoutputstream.c:502 ../gio/glocalfileoutputstream.c:1054
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Virhe katkaistaessa tiedostoa: %s"
 
 #: ../gio/glocalfileoutputstream.c:555 ../gio/glocalfileoutputstream.c:785
-#: ../gio/glocalfileoutputstream.c:1034 ../gio/gsubprocess.c:360
+#: ../gio/glocalfileoutputstream.c:1035 ../gio/gsubprocess.c:360
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Virhe avattaessa tiedostoa ”%s”: %s"
@@ -2248,20 +2991,20 @@ msgstr "Kohdetiedosto ei ole tavallinen tiedosto"
 msgid "The file was externally modified"
 msgstr "Tiedostoa muokattiin muualta"
 
-#: ../gio/glocalfileoutputstream.c:1018
+#: ../gio/glocalfileoutputstream.c:1019
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Virhe poistettaessa vanhaa tiedostoa: %s"
 
-#: ../gio/gmemoryinputstream.c:471 ../gio/gmemoryoutputstream.c:771
+#: ../gio/gmemoryinputstream.c:474 ../gio/gmemoryoutputstream.c:772
 msgid "Invalid GSeekType supplied"
 msgstr "Saatiin virheellinen GSeekType"
 
-#: ../gio/gmemoryinputstream.c:481
+#: ../gio/gmemoryinputstream.c:484
 msgid "Invalid seek request"
 msgstr "Virheellinen siirtymispyyntö"
 
-#: ../gio/gmemoryinputstream.c:505
+#: ../gio/gmemoryinputstream.c:508
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "GMemoryInputStream-kohdetta ei voi kutistaa"
 
@@ -2281,11 +3024,11 @@ msgstr ""
 "Kirjoituksen käsittelemiseksi tarvittava muistinmäärä on suurempi kuin "
 "käytettävissä oleva osoiteavaruus"
 
-#: ../gio/gmemoryoutputstream.c:781
+#: ../gio/gmemoryoutputstream.c:782
 msgid "Requested seek before the beginning of the stream"
 msgstr "Pyydetty kelausta virtauksen alkua edeltävään kohtaan"
 
-#: ../gio/gmemoryoutputstream.c:796
+#: ../gio/gmemoryoutputstream.c:797
 msgid "Requested seek beyond the end of the stream"
 msgstr "Pyydetty kelausta virtauksen lopun jälkeiseen kohtaan"
 
@@ -2345,7 +3088,7 @@ msgstr "mount ei toteuta synkronista sisältötyypin arvausta"
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Isäntänimi ”%s” sisältää merkin ”[”, mutta ei ”]”"
 
-#: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:309
+#: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:310
 msgid "Network unreachable"
 msgstr "Verkko ei ole tavoitettavissa"
 
@@ -2376,7 +3119,7 @@ msgstr "NetworkManagerin versio on liian vanha"
 msgid "Output stream doesn't implement write"
 msgstr "Tulostevirta ei toteuta kirjoitusta"
 
-#: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1222
+#: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1224
 msgid "Source stream is already closed"
 msgstr "Lähdevirta on jo suljettu"
 
@@ -2386,15 +3129,15 @@ msgstr "Lähdevirta on jo suljettu"
 msgid "Error resolving '%s': %s"
 msgstr "Virhe selvitettäessä osoitetta ”%s”: %s"
 
-#: ../gio/gresource.c:304 ../gio/gresource.c:555 ../gio/gresource.c:572
-#: ../gio/gresource.c:693 ../gio/gresource.c:762 ../gio/gresource.c:823
-#: ../gio/gresource.c:903 ../gio/gresourcefile.c:453 ../gio/gresourcefile.c:576
-#: ../gio/gresourcefile.c:713
+#: ../gio/gresource.c:595 ../gio/gresource.c:846 ../gio/gresource.c:863
+#: ../gio/gresource.c:987 ../gio/gresource.c:1059 ../gio/gresource.c:1132
+#: ../gio/gresource.c:1202 ../gio/gresourcefile.c:453
+#: ../gio/gresourcefile.c:576 ../gio/gresourcefile.c:713
 #, c-format
 msgid "The resource at '%s' does not exist"
-msgstr ""
+msgstr "Resurssia '%s' ei ole olemassa"
 
-#: ../gio/gresource.c:469
+#: ../gio/gresource.c:760
 #, c-format
 msgid "The resource at '%s' failed to decompress"
 msgstr ""
@@ -2480,7 +3223,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr ""
 
-#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:639
+#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:654
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  KOMENTO   (valinnainen) selitettävä komento\n"
 
@@ -2512,7 +3255,7 @@ msgid "  PATH      A resource path\n"
 msgstr ""
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:830
+#: ../gio/gsettings-tool.c:851
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Ei tällaista skeemaa ”%s”\n"
@@ -2547,39 +3290,39 @@ msgstr "Polun täytyy päättyä kauttaviivaan (/)\n"
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "Polku ei saa sisältää kahta perättäistä kauttaviivaa (//)\n"
 
-#: ../gio/gsettings-tool.c:481
+#: ../gio/gsettings-tool.c:489
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Annettu arvo on yli sallittujen rajojen\n"
 
-#: ../gio/gsettings-tool.c:488
+#: ../gio/gsettings-tool.c:496
 #, fuzzy, c-format
 #| msgid "Property '%s' is not writable"
 msgid "The key is not writable\n"
 msgstr "Ominaisuus ”%s” ei ole kirjoitettavissa"
 
-#: ../gio/gsettings-tool.c:524
+#: ../gio/gsettings-tool.c:532
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Luettelo asennetuista (ei-siirrettävistä) skeemoista"
 
-#: ../gio/gsettings-tool.c:530
+#: ../gio/gsettings-tool.c:538
 msgid "List the installed relocatable schemas"
 msgstr "Luettelo asennetuista siirrettävistä skeemoista"
 
-#: ../gio/gsettings-tool.c:536
+#: ../gio/gsettings-tool.c:544
 msgid "List the keys in SCHEMA"
 msgstr "Luettelo avaimsta SKEEMAssa"
 
-#: ../gio/gsettings-tool.c:537 ../gio/gsettings-tool.c:543
-#: ../gio/gsettings-tool.c:580
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:551
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH]"
 msgstr "SKEEMA[:POLKU]"
 
-#: ../gio/gsettings-tool.c:542
+#: ../gio/gsettings-tool.c:550
 msgid "List the children of SCHEMA"
 msgstr "Luettelo SKEEMAn lapsista"
 
-#: ../gio/gsettings-tool.c:548
+#: ../gio/gsettings-tool.c:556
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -2587,44 +3330,51 @@ msgstr ""
 "Luettelo avaimista ja arvoista rekursiivisesti\n"
 "Jos SKEEMA ei annettu, luettele kaikki avaimet\n"
 
-#: ../gio/gsettings-tool.c:550
+#: ../gio/gsettings-tool.c:558
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SKEEMA[:POLKU]]"
 
-#: ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:563
 msgid "Get the value of KEY"
 msgstr "Hae avaimen AVAIN arvo"
 
-#: ../gio/gsettings-tool.c:556 ../gio/gsettings-tool.c:562
-#: ../gio/gsettings-tool.c:574 ../gio/gsettings-tool.c:586
+#: ../gio/gsettings-tool.c:564 ../gio/gsettings-tool.c:570
+#: ../gio/gsettings-tool.c:576 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SKEEMA:[POLKU] AVAIN"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:569
 msgid "Query the range of valid values for KEY"
 msgstr "Kysy AVAIMEN sallittujen arvojen rajat"
 
-#: ../gio/gsettings-tool.c:567
+#: ../gio/gsettings-tool.c:575
+#, fuzzy
+#| msgid "Query the range of valid values for KEY"
+msgid "Query the description for KEY"
+msgstr "Kysy AVAIMEN sallittujen arvojen rajat"
+
+#: ../gio/gsettings-tool.c:581
 msgid "Set the value of KEY to VALUE"
 msgstr "Aseta avaimelle AVAIN arvoksi ARVO"
 
-#: ../gio/gsettings-tool.c:568
+#: ../gio/gsettings-tool.c:582
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SKEEMA[:POLKU] AVAIN ARVO"
 
-#: ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:587
 msgid "Reset KEY to its default value"
 msgstr "Palauta AVAIN sen oletusarvoon"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:593
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Palauta kaikki avaimet SKEEMAssa oletusarvoihin"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:599
 msgid "Check if KEY is writable"
 msgstr "Tarkista onko AVAIN kirjoitettavissa"
 
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:605
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -2634,11 +3384,11 @@ msgstr ""
 "Jos AVAIN ei ole määrietty, monitoroi kaikkia avaimia SKEEMAssa.\n"
 "Paina ^C lopettaaksesi monitorointi.\n"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:608
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SKEEMA:[POLKU] [AVAIN]"
 
-#: ../gio/gsettings-tool.c:606
+#: ../gio/gsettings-tool.c:620
 #, fuzzy
 msgid ""
 "Usage:\n"
@@ -2653,6 +3403,7 @@ msgid ""
 "  list-children             List children of a schema\n"
 "  list-recursively          List keys and values, recursively\n"
 "  range                     Queries the range of a key\n"
+"  describe                  Queries the description of a key\n"
 "  get                       Get the value of a key\n"
 "  set                       Set the value of a key\n"
 "  reset                     Reset the value of a key\n"
@@ -2684,7 +3435,7 @@ msgstr ""
 "Komenna ”gsettings help KOMENTO” saadaksesi tarkemman ohjeen.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:629
+#: ../gio/gsettings-tool.c:644
 #, fuzzy, c-format
 msgid ""
 "Usage:\n"
@@ -2699,11 +3450,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:635
+#: ../gio/gsettings-tool.c:650
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:643
+#: ../gio/gsettings-tool.c:658
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -2711,36 +3462,36 @@ msgstr ""
 "  SKEEMA    Skeeman nimi\n"
 "  POLKU     Polku, uudelleensijoiteltaville skeemoille\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:663
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  AVAIN     (Valinnainen) avain skeemassa\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:667
 msgid "  KEY       The key within the schema\n"
 msgstr "  AVAIN     Avain skeemassa\n"
 
-#: ../gio/gsettings-tool.c:656
+#: ../gio/gsettings-tool.c:671
 msgid "  VALUE     The value to set\n"
 msgstr "  ARVO      Asetettava arvo\n"
 
-#: ../gio/gsettings-tool.c:711
+#: ../gio/gsettings-tool.c:726
 #, fuzzy, c-format
 #| msgid "Could not open converter from '%s' to '%s'"
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Muunninta merkistöstä ”%s” merkistöön ”%s” ei voitu avata"
 
-#: ../gio/gsettings-tool.c:723
+#: ../gio/gsettings-tool.c:738
 #, fuzzy, c-format
 #| msgid "No schema files found: "
 msgid "No schemas installed\n"
 msgstr "Skeema-tiedostoja ei löytynyt: "
 
-#: ../gio/gsettings-tool.c:788
+#: ../gio/gsettings-tool.c:809
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Annettu tyhjä skeemanimi\n"
 
-#: ../gio/gsettings-tool.c:843
+#: ../gio/gsettings-tool.c:864
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Ei avainta ”%s”\n"
@@ -2758,8 +3509,8 @@ msgstr "Virheellinen pistoke, alustus epäonnistui: %s"
 msgid "Socket is already closed"
 msgstr "Pistoke on jo suljettu"
 
-#: ../gio/gsocket.c:394 ../gio/gsocket.c:2751 ../gio/gsocket.c:3896
-#: ../gio/gsocket.c:3951
+#: ../gio/gsocket.c:394 ../gio/gsocket.c:2751 ../gio/gsocket.c:3897
+#: ../gio/gsocket.c:3952
 msgid "Socket I/O timed out"
 msgstr "Pistoke I/O:n aikakatkaisu"
 
@@ -2862,34 +3613,34 @@ msgstr "Pistoketta ei voi sammuttaa: %s"
 msgid "Error closing socket: %s"
 msgstr "Virhe suljettaessa pistoketta: %s"
 
-#: ../gio/gsocket.c:3889
+#: ../gio/gsocket.c:3890
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Odotetaan pistoke-ehtoa: %s"
 
-#: ../gio/gsocket.c:4361 ../gio/gsocket.c:4441 ../gio/gsocket.c:4619
+#: ../gio/gsocket.c:4362 ../gio/gsocket.c:4442 ../gio/gsocket.c:4620
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Virhe lähetettäessä viestiä: %s"
 
-#: ../gio/gsocket.c:4385
+#: ../gio/gsocket.c:4386
 #, fuzzy
 #| msgid "GSocketControlMessage not supported on windows"
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage ei ole tuettu windows-alustalla"
 
-#: ../gio/gsocket.c:4840 ../gio/gsocket.c:4913 ../gio/gsocket.c:5140
+#: ../gio/gsocket.c:4839 ../gio/gsocket.c:4912 ../gio/gsocket.c:5139
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Virhe vastaanotettaessa viestiä: %s"
 
-#: ../gio/gsocket.c:5412
+#: ../gio/gsocket.c:5411
 #, fuzzy, c-format
 #| msgid "Unable to create socket: %s"
 msgid "Unable to read socket credentials: %s"
 msgstr "Pistoketta ei voi luoda: %s"
 
-#: ../gio/gsocket.c:5421
+#: ../gio/gsocket.c:5420
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ei ole toteutettu tälle käyttöjärjestemälle"
 
@@ -3032,23 +3783,23 @@ msgstr "GThemeIcon-koodauksen versiota %d ei voi käsitellä"
 msgid "No valid addresses were found"
 msgstr "Kelvollisia osoitteita ei löytynyt"
 
-#: ../gio/gthreadedresolver.c:211
+#: ../gio/gthreadedresolver.c:213
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Virhe selvitettäessä käänteisosoitetta ”%s”: %s"
 
-#: ../gio/gthreadedresolver.c:546 ../gio/gthreadedresolver.c:626
-#: ../gio/gthreadedresolver.c:724 ../gio/gthreadedresolver.c:774
+#: ../gio/gthreadedresolver.c:550 ../gio/gthreadedresolver.c:630
+#: ../gio/gthreadedresolver.c:728 ../gio/gthreadedresolver.c:778
 #, c-format
 msgid "No DNS record of the requested type for '%s'"
 msgstr ""
 
-#: ../gio/gthreadedresolver.c:551 ../gio/gthreadedresolver.c:729
+#: ../gio/gthreadedresolver.c:555 ../gio/gthreadedresolver.c:733
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Tilapäisesti ei voida selvittää palvelua ”%s”"
 
-#: ../gio/gthreadedresolver.c:556 ../gio/gthreadedresolver.c:734
+#: ../gio/gthreadedresolver.c:560 ../gio/gthreadedresolver.c:738
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Virhe selvitettäessä palvelua ”%s”"
@@ -3157,7 +3908,7 @@ msgstr "Tiedostokahvasta lukeminen epäonnistui: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Tiedostokahvan sulkeminen epäonnistui: %s"
 
-#: ../gio/gunixmounts.c:2099 ../gio/gunixmounts.c:2152
+#: ../gio/gunixmounts.c:2329 ../gio/gunixmounts.c:2382
 msgid "Filesystem root"
 msgstr "Tiedostojärjestelmän juuri"
 
@@ -3267,55 +4018,55 @@ msgstr "Odottamaton merkintä ”%s”, odotettiin merkintää ”%s”"
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Odottamaton merkintä ”%s” kohdassa ”%s”"
 
-#: ../glib/gbookmarkfile.c:1756
+#: ../glib/gbookmarkfile.c:1757
 msgid "No valid bookmark file found in data dirs"
 msgstr "Kelvollista kirjanmerkkitiedostoa ei löytynyt datahakemistoista"
 
-#: ../glib/gbookmarkfile.c:1957
+#: ../glib/gbookmarkfile.c:1958
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI:lle ”%s” on jo olemassa kirjanmerkki"
 
-#: ../glib/gbookmarkfile.c:2003 ../glib/gbookmarkfile.c:2161
-#: ../glib/gbookmarkfile.c:2246 ../glib/gbookmarkfile.c:2326
-#: ../glib/gbookmarkfile.c:2411 ../glib/gbookmarkfile.c:2494
-#: ../glib/gbookmarkfile.c:2572 ../glib/gbookmarkfile.c:2651
-#: ../glib/gbookmarkfile.c:2693 ../glib/gbookmarkfile.c:2790
-#: ../glib/gbookmarkfile.c:2910 ../glib/gbookmarkfile.c:3100
-#: ../glib/gbookmarkfile.c:3176 ../glib/gbookmarkfile.c:3344
-#: ../glib/gbookmarkfile.c:3433 ../glib/gbookmarkfile.c:3522
-#: ../glib/gbookmarkfile.c:3638
+#: ../glib/gbookmarkfile.c:2004 ../glib/gbookmarkfile.c:2162
+#: ../glib/gbookmarkfile.c:2247 ../glib/gbookmarkfile.c:2327
+#: ../glib/gbookmarkfile.c:2412 ../glib/gbookmarkfile.c:2495
+#: ../glib/gbookmarkfile.c:2573 ../glib/gbookmarkfile.c:2652
+#: ../glib/gbookmarkfile.c:2694 ../glib/gbookmarkfile.c:2791
+#: ../glib/gbookmarkfile.c:2911 ../glib/gbookmarkfile.c:3101
+#: ../glib/gbookmarkfile.c:3177 ../glib/gbookmarkfile.c:3345
+#: ../glib/gbookmarkfile.c:3434 ../glib/gbookmarkfile.c:3523
+#: ../glib/gbookmarkfile.c:3639
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URI:lle ”%s” ei löydy kirjanmerkkiä"
 
-#: ../glib/gbookmarkfile.c:2335
+#: ../glib/gbookmarkfile.c:2336
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI:n ”%s” kirjanmerkissä ei ole määritelty MIME-tyyppiä"
 
-#: ../glib/gbookmarkfile.c:2420
+#: ../glib/gbookmarkfile.c:2421
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI:n ”%s” kirjanmerkissä ei ole määritelty yksityisyyslippua"
 
-#: ../glib/gbookmarkfile.c:2799
+#: ../glib/gbookmarkfile.c:2800
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI:n ”%s” kirjanmerkissä ei ole asetettu ryhmiä"
 
-#: ../glib/gbookmarkfile.c:3197 ../glib/gbookmarkfile.c:3354
+#: ../glib/gbookmarkfile.c:3198 ../glib/gbookmarkfile.c:3355
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Sovellus nimeltä ”%s” ei rekisteröinyt kirjanmerkkiä kohteelle ”%s”"
 
-#: ../glib/gbookmarkfile.c:3377
+#: ../glib/gbookmarkfile.c:3378
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Suoritettavaa riviä ”%s” ei voitu laajentaa URI:lla ”%s”"
 
-#: ../glib/gconvert.c:477 ../glib/gutf8.c:849 ../glib/gutf8.c:1061
-#: ../glib/gutf8.c:1198 ../glib/gutf8.c:1302
+#: ../glib/gconvert.c:477 ../glib/gutf8.c:851 ../glib/gutf8.c:1063
+#: ../glib/gutf8.c:1200 ../glib/gutf8.c:1304
 msgid "Partial character sequence at end of input"
 msgstr "Osittainen tavusarja syötteen lopussa"
 
@@ -3589,7 +4340,7 @@ msgstr "su"
 msgid "Error opening directory '%s': %s"
 msgstr "Virhe hakemiston ”%s” avaamisessa: %s"
 
-#: ../glib/gfileutils.c:700 ../glib/gfileutils.c:792
+#: ../glib/gfileutils.c:701 ../glib/gfileutils.c:793
 #, fuzzy, c-format
 #| msgid "Could not allocate %lu bytes to read file \"%s\""
 msgid "Could not allocate %lu byte to read file \"%s\""
@@ -3597,84 +4348,80 @@ msgid_plural "Could not allocate %lu bytes to read file \"%s\""
 msgstr[0] "Ei voitu varata %lu tavua muistia tiedoston ”%s” lukemiseksi"
 msgstr[1] "Ei voitu varata %lu tavua muistia tiedoston ”%s” lukemiseksi"
 
-#: ../glib/gfileutils.c:717
+#: ../glib/gfileutils.c:718
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Virhe tiedoston ”%s” lukemisessa: %s"
 
-#: ../glib/gfileutils.c:753
+#: ../glib/gfileutils.c:754
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Tiedosto ”%s” on liian suuri"
 
-#: ../glib/gfileutils.c:817
+#: ../glib/gfileutils.c:818
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Tiedoston ”%s” lukeminen epäonnistui: %s"
 
-#: ../glib/gfileutils.c:865 ../glib/gfileutils.c:937
+#: ../glib/gfileutils.c:866 ../glib/gfileutils.c:938
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Tiedoston ”%s” avaaminen epäonnistui: %s"
 
-#: ../glib/gfileutils.c:877
+#: ../glib/gfileutils.c:878
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Tiedoston ”%s” ominaisuuksien lukeminen epäonnistui: fstat() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:907
+#: ../glib/gfileutils.c:908
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Tiedoston ”%s” avaaminen epäonnistui: fdopen() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1006
+#: ../glib/gfileutils.c:1007
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Tiedoston ”%s” uudelleen nimeäminen nimelle ”%s” epäonnistui: g_rename() "
 "epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1041 ../glib/gfileutils.c:1540
+#: ../glib/gfileutils.c:1042 ../glib/gfileutils.c:1541
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Tiedoston ”%s” luominen epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1068
+#: ../glib/gfileutils.c:1069
 #, fuzzy, c-format
 #| msgid "Failed to write file '%s': fwrite() failed: %s"
 msgid "Failed to write file '%s': write() failed: %s"
 msgstr "Tiedoston ”%s” kirjoittaminen epäonnistui: fwrite() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1111
+#: ../glib/gfileutils.c:1112
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Tiedoston ”%s” kirjoittaminen epäonnistui: fsync() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1235
+#: ../glib/gfileutils.c:1236
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Olemassa olevan tiedoston ”%s” poisto epäonnistui: g_unlink epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1506
+#: ../glib/gfileutils.c:1507
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Malli ”%s” on virheellinen, se ei saa sisältää merkkijonoa ”%s”"
 
-#: ../glib/gfileutils.c:1519
+#: ../glib/gfileutils.c:1520
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Malli ”%s” ei sisällä merkkijonoa XXXXXX"
 
-#: ../glib/gfileutils.c:2038
+#: ../glib/gfileutils.c:2045
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Symbolisen linkin ”%s” lukeminen epäonnistui: %s"
-
-#: ../glib/gfileutils.c:2057
-msgid "Symbolic links not supported"
-msgstr "Symbolisia linkkejä ei tueta"
 
 #: ../glib/giochannel.c:1388
 #, c-format
@@ -3707,7 +4454,7 @@ msgstr "Kelvollista avaintiedostoa ei löytynyt haetuista kansioista"
 msgid "Not a regular file"
 msgstr "Ei tavallinen tiedosto"
 
-#: ../glib/gkeyfile.c:1173
+#: ../glib/gkeyfile.c:1204
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -3715,52 +4462,52 @@ msgstr ""
 "Avaintiedosto sisältää rivin ”%s”, joka ei ole avain-arvopari, ryhmä tai "
 "kommentti"
 
-#: ../glib/gkeyfile.c:1230
+#: ../glib/gkeyfile.c:1261
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Virheellinen ryhmän nimi: %s"
 
-#: ../glib/gkeyfile.c:1252
+#: ../glib/gkeyfile.c:1283
 msgid "Key file does not start with a group"
 msgstr "Avaintiedosto ei ala ryhmällä"
 
-#: ../glib/gkeyfile.c:1278
+#: ../glib/gkeyfile.c:1309
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Virheellinen avaimen nimi: %s"
 
-#: ../glib/gkeyfile.c:1305
+#: ../glib/gkeyfile.c:1336
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Avaintiedosto sisältää ei-tuetun koodauksen ”%s”"
 
-#: ../glib/gkeyfile.c:1548 ../glib/gkeyfile.c:1721 ../glib/gkeyfile.c:3099
-#: ../glib/gkeyfile.c:3162 ../glib/gkeyfile.c:3292 ../glib/gkeyfile.c:3422
-#: ../glib/gkeyfile.c:3566 ../glib/gkeyfile.c:3795 ../glib/gkeyfile.c:3862
+#: ../glib/gkeyfile.c:1579 ../glib/gkeyfile.c:1752 ../glib/gkeyfile.c:3130
+#: ../glib/gkeyfile.c:3193 ../glib/gkeyfile.c:3323 ../glib/gkeyfile.c:3453
+#: ../glib/gkeyfile.c:3597 ../glib/gkeyfile.c:3826 ../glib/gkeyfile.c:3893
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Avaintiedostossa ei ole ryhmää ”%s”"
 
-#: ../glib/gkeyfile.c:1676
+#: ../glib/gkeyfile.c:1707
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Avaintiedostossa ei ole avainta ”%s” ryhmässä ”%s”"
 
-#: ../glib/gkeyfile.c:1838 ../glib/gkeyfile.c:1954
+#: ../glib/gkeyfile.c:1869 ../glib/gkeyfile.c:1985
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Avaintiedosto sisältää avaimen ”%s” arvolla ”%s”, joka ei ole UTF-8-"
 "merkkijono"
 
-#: ../glib/gkeyfile.c:1858 ../glib/gkeyfile.c:1974 ../glib/gkeyfile.c:2343
+#: ../glib/gkeyfile.c:1889 ../glib/gkeyfile.c:2005 ../glib/gkeyfile.c:2374
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "Avaintiedosto sisältää avaimen ”%s”, jolla on arvo, jota ei voida tulkita."
 
-#: ../glib/gkeyfile.c:2560 ../glib/gkeyfile.c:2928
+#: ../glib/gkeyfile.c:2591 ../glib/gkeyfile.c:2959
 #, fuzzy, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
@@ -3769,38 +4516,38 @@ msgstr ""
 "Avaintiedosto sisältää avaimen ”%s”, jolla on arvo, jota ei voida tulkita, "
 "ryhmässä ”%s”."
 
-#: ../glib/gkeyfile.c:2638 ../glib/gkeyfile.c:2715
+#: ../glib/gkeyfile.c:2669 ../glib/gkeyfile.c:2746
 #, fuzzy, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
 msgstr ""
 "Avaintiedosto sisältää avaimen ”%s”, jolla on arvo, jota ei voida tulkita, "
 "ryhmässä ”%s”."
 
-#: ../glib/gkeyfile.c:4102
+#: ../glib/gkeyfile.c:4133
 msgid "Key file contains escape character at end of line"
 msgstr "Avaintiedosto sisältää escape-jonon rivin lopussa"
 
-#: ../glib/gkeyfile.c:4124
+#: ../glib/gkeyfile.c:4155
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Avaintiedostossa on virheellinen escape-jono ”%s”"
 
-#: ../glib/gkeyfile.c:4266
+#: ../glib/gkeyfile.c:4297
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Arvoa ”%s” ei voida tulkita numeroksi."
 
-#: ../glib/gkeyfile.c:4280
+#: ../glib/gkeyfile.c:4311
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Kokonaisluku ”%s” on sallitun alueen ulkopuolella"
 
-#: ../glib/gkeyfile.c:4313
+#: ../glib/gkeyfile.c:4344
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Arvoa ”%s” ei voida tulkita liukuluvuksi."
 
-#: ../glib/gkeyfile.c:4350
+#: ../glib/gkeyfile.c:4383
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Arvoa ”%s” ei voida tulkita totuusarvoksi."
@@ -3816,7 +4563,7 @@ msgstr ""
 msgid "Failed to map %s%s%s%s: mmap() failed: %s"
 msgstr "Tiedoston ”%s” mappaaminen epäonnistui: mmap() epäonnistui: %s"
 
-#: ../glib/gmappedfile.c:261
+#: ../glib/gmappedfile.c:262
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Tiedoston ”%s” avaaminen epäonnistui: open() epäonnistui: %s"
@@ -3833,15 +4580,14 @@ msgstr "Virheellinen UTF-8-koodattu teksti nimessä - epäkelpo ”%s”"
 
 #: ../glib/gmarkup.c:473
 #, c-format
-#| msgid "'%s' is not a valid name "
 msgid "'%s' is not a valid name"
 msgstr "'%s' ei ole kelvollinen nimi"
 
 #: ../glib/gmarkup.c:489
-#, fuzzy, c-format
+#, c-format
 #| msgid "'%s' is not a valid name: '%c' "
 msgid "'%s' is not a valid name: '%c'"
-msgstr "”%s” ei ole kelvollinen nimi: ”%c” "
+msgstr "'%s' ei ole kelvollinen nimi: '%c'"
 
 #: ../glib/gmarkup.c:599
 #, c-format
@@ -4029,10 +4775,6 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Asiakirja loppui odottamattomasti kommentin tai käsittelykomennon kohdalla"
 
-#: ../glib/goption.c:857
-msgid "Usage:"
-msgstr "Käyttö:"
-
 #: ../glib/goption.c:861
 msgid "[OPTION...]"
 msgstr "[VALITSIN…]"
@@ -4054,10 +4796,9 @@ msgid "Application Options:"
 msgstr "Sovelluksen valitsimet:"
 
 #: ../glib/goption.c:1049
-#, fuzzy
 #| msgid "Help Options:"
 msgid "Options:"
-msgstr "Ohjevalitsimet:"
+msgstr "Valitsimet:"
 
 #: ../glib/goption.c:1113 ../glib/goption.c:1183
 #, c-format
@@ -4114,6 +4855,10 @@ msgstr "taakseviittausten raja saavutettu"
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "malli sisältää kohtia, jotka eivät ole tuettu osittaisessa täsmäyksessä"
+
+#: ../glib/gregex.c:281
+msgid "internal error"
+msgstr "sisäinen virhe"
 
 #: ../glib/gregex.c:289
 msgid "back references as conditions are not supported for partial matching"
@@ -4416,7 +5161,7 @@ msgstr ""
 msgid "character value in \\u.... sequence is too large"
 msgstr "Merkin arvo sekvenssissä \\x{…} on liian suuri"
 
-#: ../glib/gregex.c:746 ../glib/gregex.c:1973
+#: ../glib/gregex.c:746 ../glib/gregex.c:1977
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Virhe täsmätessä säännöllistä lauseketta %s: %s"
@@ -4445,43 +5190,43 @@ msgstr "Virhe optimoitaessa säännöllistä lauseketta %s: %s"
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Virhe säännöllisessä lausekkeessa %s kohdassa %d: %s"
 
-#: ../glib/gregex.c:2409
+#: ../glib/gregex.c:2413
 msgid "hexadecimal digit or '}' expected"
 msgstr "odotettiin heksadesimaalista numeroa tai merkkiä ”}”"
 
-#: ../glib/gregex.c:2425
+#: ../glib/gregex.c:2429
 msgid "hexadecimal digit expected"
 msgstr "odotettiin heksadesimaalista numeroa"
 
-#: ../glib/gregex.c:2465
+#: ../glib/gregex.c:2469
 msgid "missing '<' in symbolic reference"
 msgstr "merkki '<' puuttuu symbolisesta viitteestä"
 
-#: ../glib/gregex.c:2474
+#: ../glib/gregex.c:2478
 msgid "unfinished symbolic reference"
 msgstr "päättämätön symbolinen viite"
 
-#: ../glib/gregex.c:2481
+#: ../glib/gregex.c:2485
 msgid "zero-length symbolic reference"
 msgstr "nollan mittainen symbolinen viite"
 
-#: ../glib/gregex.c:2492
+#: ../glib/gregex.c:2496
 msgid "digit expected"
 msgstr "odotettiin numeroa"
 
-#: ../glib/gregex.c:2510
+#: ../glib/gregex.c:2514
 msgid "illegal symbolic reference"
 msgstr "virheellinen symbolinen viite"
 
-#: ../glib/gregex.c:2572
+#: ../glib/gregex.c:2576
 msgid "stray final '\\'"
 msgstr "ylimääräinen päättävä '\\'"
 
-#: ../glib/gregex.c:2576
+#: ../glib/gregex.c:2580
 msgid "unknown escape sequence"
 msgstr "tuntematon escape-jono"
 
-#: ../glib/gregex.c:2586
+#: ../glib/gregex.c:2590
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Virhe tulkittaessa korvaavaa tekstiä ”%s” kohdassa %lu: %s"
@@ -4637,93 +5382,92 @@ msgstr ""
 "Odottamaton virhe funktiossa g_io_channel_win32_poll() luettaessa dataa "
 "lapsiprosessilta"
 
-#: ../glib/gutf8.c:795
-#| msgid "failed to get memory"
+#: ../glib/gutf8.c:797
 msgid "Failed to allocate memory"
 msgstr "Muistia ei voitu varata"
 
-#: ../glib/gutf8.c:928
+#: ../glib/gutf8.c:930
 msgid "Character out of range for UTF-8"
 msgstr "Merkki on sallitun UTF-8-välin ulkopuolella"
 
-#: ../glib/gutf8.c:1029 ../glib/gutf8.c:1038 ../glib/gutf8.c:1168
-#: ../glib/gutf8.c:1177 ../glib/gutf8.c:1316 ../glib/gutf8.c:1413
+#: ../glib/gutf8.c:1031 ../glib/gutf8.c:1040 ../glib/gutf8.c:1170
+#: ../glib/gutf8.c:1179 ../glib/gutf8.c:1318 ../glib/gutf8.c:1415
 msgid "Invalid sequence in conversion input"
 msgstr "Virheellinen sarja muunnettavassa syötteessä"
 
-#: ../glib/gutf8.c:1327 ../glib/gutf8.c:1424
+#: ../glib/gutf8.c:1329 ../glib/gutf8.c:1426
 msgid "Character out of range for UTF-16"
 msgstr "Merkki on sallitun UTF-16-välin ulkopuolella"
 
-#: ../glib/gutils.c:2133 ../glib/gutils.c:2160 ../glib/gutils.c:2266
+#: ../glib/gutils.c:2139 ../glib/gutils.c:2166 ../glib/gutils.c:2272
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u tavu"
 msgstr[1] "%u tavua"
 
-#: ../glib/gutils.c:2139
-#, fuzzy, c-format
+#: ../glib/gutils.c:2145
+#, c-format
 msgid "%.1f KiB"
-msgstr "%.1f kt"
-
-#: ../glib/gutils.c:2141
-#, fuzzy, c-format
-msgid "%.1f MiB"
-msgstr "%.1f Mt"
-
-#: ../glib/gutils.c:2144
-#, fuzzy, c-format
-msgid "%.1f GiB"
-msgstr "%.1f Gt"
+msgstr "%.1f KiB"
 
 #: ../glib/gutils.c:2147
-#, fuzzy, c-format
-msgid "%.1f TiB"
-msgstr "%.1f Tt"
+#, c-format
+msgid "%.1f MiB"
+msgstr "%.1f MiB"
 
 #: ../glib/gutils.c:2150
-#, fuzzy, c-format
-msgid "%.1f PiB"
-msgstr "%.1f Pt"
+#, c-format
+msgid "%.1f GiB"
+msgstr "%.1f GiB"
 
 #: ../glib/gutils.c:2153
-#, fuzzy, c-format
-msgid "%.1f EiB"
-msgstr "%.1f Et"
+#, c-format
+msgid "%.1f TiB"
+msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2166
+#: ../glib/gutils.c:2156
+#, c-format
+msgid "%.1f PiB"
+msgstr "%.1f PiB"
+
+#: ../glib/gutils.c:2159
+#, c-format
+msgid "%.1f EiB"
+msgstr "%.1f EiB"
+
+#: ../glib/gutils.c:2172
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kt"
 
-#: ../glib/gutils.c:2169 ../glib/gutils.c:2284
+#: ../glib/gutils.c:2175 ../glib/gutils.c:2290
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f Mt"
 
-#: ../glib/gutils.c:2172 ../glib/gutils.c:2289
+#: ../glib/gutils.c:2178 ../glib/gutils.c:2295
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f Gt"
 
-#: ../glib/gutils.c:2174 ../glib/gutils.c:2294
+#: ../glib/gutils.c:2180 ../glib/gutils.c:2300
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f Tt"
 
-#: ../glib/gutils.c:2177 ../glib/gutils.c:2299
+#: ../glib/gutils.c:2183 ../glib/gutils.c:2305
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f Pt"
 
-#: ../glib/gutils.c:2180 ../glib/gutils.c:2304
+#: ../glib/gutils.c:2186 ../glib/gutils.c:2310
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f Et"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2217
+#: ../glib/gutils.c:2223
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -4735,19 +5479,22 @@ msgstr[1] "%s tavua"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2279
+#: ../glib/gutils.c:2285
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f kt"
 
+#~ msgid "Error renaming file: %s"
+#~ msgstr "Virhe nimettäessä tiedostoa uudestaan: %s"
+
+#~ msgid "Error opening file: %s"
+#~ msgstr "Virhe avattaessa tiedostoa: %s"
+
+#~ msgid "Error creating directory: %s"
+#~ msgstr "Virhe luotaessa kansiota: %s"
+
 #~ msgid "Unable to find default local directory monitor type"
 #~ msgstr "Paikallista kansiontarkkailun oletustyyppiä ei voi selvittää"
-
-#~ msgid "Can't find application"
-#~ msgstr "Ohjelmaa ei löydy"
-
-#~ msgid "Error launching application: %s"
-#~ msgstr "Virhe käynnistettäessä ohjelmaa: %s"
 
 #~ msgid "association changes not supported on win32"
 #~ msgstr "assosiaation muutokset eivät ole tuettu win32-alustalla"
