@@ -25,7 +25,6 @@
 #error "Only <glib.h> can be included directly."
 #endif
 
-#include <glib/gmessages.h>
 #include <glib/gtypes.h>
 
 G_BEGIN_DECLS
