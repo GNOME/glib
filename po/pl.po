@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-26 13:42+0200\n"
-"PO-Revision-Date: 2016-08-26 13:43+0200\n"
+"POT-Creation-Date: 2016-09-08 23:02+0200\n"
+"PO-Revision-Date: 2016-09-08 23:03+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -762,7 +762,7 @@ msgstr "Komunikat METHOD_RETURN: brak pola nagłówka REPLY_SERIAL"
 
 #: ../gio/gdbusmessage.c:1278
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
-msgstr "Komunikat BŁĘDU: brak pola nagłówka REPLY_SERIAL lub ERROR_NAME"
+msgstr "Komunikat o BŁĘDZIE: brak pola nagłówka REPLY_SERIAL lub ERROR_NAME"
 
 #: ../gio/gdbusmessage.c:1291
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
@@ -915,7 +915,7 @@ msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
 msgstr ""
-"Komunikat posiada %d deskryptorów plików, ale pole nagłówka wskazuje na %d "
+"Komunikat ma %d deskryptorów plików, ale pole nagłówka wskazuje na %d "
 "deskryptorów plików"
 
 #: ../gio/gdbusmessage.c:2660
@@ -925,15 +925,14 @@ msgstr "Nie można serializować komunikatu: "
 #: ../gio/gdbusmessage.c:2704
 #, c-format
 msgid "Message body has signature '%s' but there is no signature header"
-msgstr "Treść komunikatu posiada podpis „%s”, ale brak nagłówka podpisu"
+msgstr "Treść komunikatu ma podpis „%s”, ale brak nagłówka podpisu"
 
 #: ../gio/gdbusmessage.c:2714
 #, c-format
 msgid ""
 "Message body has type signature '%s' but signature in the header field is "
 "'%s'"
-msgstr ""
-"Treść komunikatu posiada podpis „%s”, ale podpis w polu nagłówka to „%s”"
+msgstr "Treść komunikatu ma podpis „%s”, ale podpis w polu nagłówka to „%s”"
 
 #: ../gio/gdbusmessage.c:2730
 #, c-format
@@ -1525,7 +1524,7 @@ msgstr "Długość %u jest za długa na adres"
 
 #: ../gio/ginetaddressmask.c:223
 msgid "Address has bits set beyond prefix length"
-msgstr "Adres posiada bity ustawione poza długością przedrostka"
+msgstr "Adres ma bity ustawione poza długością przedrostka"
 
 #: ../gio/ginetaddressmask.c:300
 #, c-format
@@ -1591,7 +1590,7 @@ msgstr "Kopiuje jeden lub więcej plików"
 
 #: ../gio/gio-tool.c:213
 msgid "Show information about locations"
-msgstr "Wyświetla informacje dla położeniach"
+msgstr "Wyświetla informacje o położeniach"
 
 #: ../gio/gio-tool.c:214
 msgid "List the contents of locations"
@@ -1672,7 +1671,7 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
-"Program gio cat działa jak zwykłe narzędzie cat, ale używając położeń\n"
+"Program gio cat działa jak zwykłe narzędzie cat, ale za pomocą położeń\n"
 "GIO zamiast plików lokalnych: przykładowo można użyć czegoś takiego jak\n"
 "smb://serwer/zasób/plik.txt jako położenia."
 
@@ -1731,7 +1730,7 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
-"Program gio copy działa jak zwykłe narzędzie cp, ale używając położeń\n"
+"Program gio copy działa jak zwykłe narzędzie cp, ale za pomocą położeń\n"
 "GIO zamiast plików lokalnych: przykładowo można użyć czegoś takiego jak\n"
 "smb://serwer/zasób/plik.txt jako położenia."
 
@@ -1824,7 +1823,7 @@ msgstr "Przestrzeń nazw atrybutów możliwych do ustawienia:\n"
 
 #: ../gio/gio-tool-info.c:283
 msgid "Show information about locations."
-msgstr "Wyświetla informacje dla położeniach."
+msgstr "Wyświetla informacje o położeniach."
 
 #: ../gio/gio-tool-info.c:285
 msgid ""
@@ -1834,7 +1833,7 @@ msgid ""
 "be specified with their GIO name, e.g. standard::icon, or just by\n"
 "namespace, e.g. unix, or by '*', which matches all attributes"
 msgstr ""
-"Program gio info działa jak zwykłe narzędzie ls, ale używając położenia\n"
+"Program gio info działa jak zwykłe narzędzie ls, ale za pomocą położenia\n"
 "GIO zamiast plików lokalnych: przykładowo można użyć czegoś takiego jak\n"
 "smb://serwer/zasób/plik.txt jako położenia. Atrybuty plików mogą być\n"
 "podawane za pomocą ich nazwy GIO, np. standard::icon, przestrzeni nazw,\n"
@@ -1867,7 +1866,7 @@ msgid ""
 "like smb://server/resource/file.txt as location. File attributes can\n"
 "be specified with their GIO name, e.g. standard::icon"
 msgstr ""
-"Program gio list działa jak zwykłe narzędzie ls, ale używając położenia\n"
+"Program gio list działa jak zwykłe narzędzie ls, ale za pomocą położenia\n"
 "GIO zamiast plików lokalnych: przykładowo można użyć czegoś takiego jak\n"
 "smb://serwer/zasób/plik.txt jako położenia. Atrybuty plików mogą być\n"
 "podawane za pomocą ich nazwy GIO, np. standard::icon"
@@ -1898,7 +1897,7 @@ msgstr ""
 
 #: ../gio/gio-tool-mime.c:98
 msgid "Must specify a single mimetype, and maybe a handler"
-msgstr "Należy podać jeden typ MIME, i może też program obsługujący"
+msgstr "Należy podać jeden typ MIME i opcjonalnie program obsługujący"
 
 #: ../gio/gio-tool-mime.c:113
 #, c-format
@@ -1955,7 +1954,7 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/mydir as location."
 msgstr ""
-"Program gio mkdir działa jak zwykłe narzędzie mkdir, ale używając położeń\n"
+"Program gio mkdir działa jak zwykłe narzędzie mkdir, ale za pomocą położeń\n"
 "GIO zamiast plików lokalnych: przykładowo można użyć czegoś takiego jak\n"
 "smb://serwer/zasób/plik.txt jako położenia."
 
@@ -2099,7 +2098,7 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location"
 msgstr ""
-"Program gio move działa jak zwykłe narzędzie mv, ale używając położeń\n"
+"Program gio move działa jak zwykłe narzędzie mv, ale za pomocą położeń\n"
 "GIO zamiast plików lokalnych: przykładowo można użyć czegoś takiego jak\n"
 "smb://serwer/zasób/plik.txt jako położenia"
 
@@ -2363,8 +2362,8 @@ msgid ""
 "and the resource file have the extension called .gresource."
 msgstr ""
 "Kompiluje określenie zasobu do pliku zasobu. Pliki określeń\n"
-"zasobów posiadają rozszerzenie .gresource.xml, a pliki\n"
-"zasobów posiadają rozszerzenie .gresource."
+"zasobów mają rozszerzenie .gresource.xml, a pliki\n"
+"zasobów mają rozszerzenie .gresource."
 
 #: ../gio/glib-compile-resources.c:671
 #, c-format
@@ -2617,7 +2616,7 @@ msgid ""
 "and the cache file is called gschemas.compiled."
 msgstr ""
 "Kompiluje wszystkie pliki schematów GSettings do pamięci\n"
-"podręcznej schematów. Pliki schematów muszą posiadać\n"
+"podręcznej schematów. Pliki schematów muszą mieć\n"
 "rozszerzenie .gschema.xml, a pliki pamięci podręcznej\n"
 "nazywają się gschemas.compiled."
 
@@ -2964,8 +2963,8 @@ msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr ""
-"Ilość pamięci wymagana dla przetworzenia zapisu jest większa, niż dostępna "
-"przestrzeń adresowa"
+"Ilość pamięci wymagana dla przetworzenia zapisu jest większa od dostępnej "
+"przestrzeni adresowej"
 
 #: ../gio/gmemoryoutputstream.c:782
 msgid "Requested seek before the beginning of the stream"
@@ -3624,7 +3623,7 @@ msgstr "Nieznany błąd połączenia"
 
 #: ../gio/gsocketclient.c:1081 ../gio/gsocketclient.c:1535
 msgid "Proxying over a non-TCP connection is not supported."
-msgstr "Pośredniczenie przez połączenie nie będące TCP nie jest obsługiwana."
+msgstr "Pośredniczenie przez połączenie niebędące TCP nie jest obsługiwane."
 
 #: ../gio/gsocketclient.c:1110 ../gio/gsocketclient.c:1561
 #, c-format
@@ -4474,14 +4473,13 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has a value that cannot be "
 "interpreted."
 msgstr ""
-"Plik klucza zawiera klucz „%s” w grupie „%s”, która posiada wartość "
-"niemożliwą do zinterpretowania."
+"Plik klucza zawiera klucz „%s” w grupie „%s”, która ma wartość niemożliwą do "
+"zinterpretowania."
 
 #: ../glib/gkeyfile.c:2669 ../glib/gkeyfile.c:2746
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
-msgstr ""
-"Klucz „%s” w grupie „%s” posiada wartość „%s”, podczas gdy oczekiwano %s"
+msgstr "Klucz „%s” w grupie „%s” ma wartość „%s”, podczas gdy oczekiwano %s"
 
 #: ../glib/gkeyfile.c:4133
 msgid "Key file contains escape character at end of line"
@@ -4563,7 +4561,7 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Nie można przetworzyć znaku „%-.*s”, w miejscu którego powinna wystąpić "
+"Nie można przetworzyć znaku „%-.*s”, w którego miejscu powinna wystąpić "
 "liczba, będąca częścią odniesienia do znaku (np. &#234;) — być może liczba "
 "jest za duża"
 
@@ -5081,7 +5079,7 @@ msgstr "różne nazwy dla podwzorów tej samej liczby nie są dozwolone"
 
 #: ../glib/gregex.c:505
 msgid "(*MARK) must have an argument"
-msgstr "(*MARK) musi posiadać parametr"
+msgstr "(*MARK) musi mieć parametr"
 
 #: ../glib/gregex.c:508
 msgid "\\c must be followed by an ASCII character"
