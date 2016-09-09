@@ -129,6 +129,8 @@ _gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder)
   builder->dirmap_offset = ALIGN_VALUE (offset, 4);
   builder->packed_size = builder->dirmap_offset + (num_elts * sizeof(guint16));
  out:
+  cmph_config_destroy (config);
+  cmph_io_vector_adapter_destroy (io);
   return builder->buildable;
 }
 
