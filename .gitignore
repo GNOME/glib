@@ -2,6 +2,7 @@
 Makefile.in
 Makefile
 TAGS
+tags
 .libs
 .deps
 *.o
