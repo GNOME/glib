@@ -534,5 +534,3 @@ main (int argc, char *argv[])
 
   return g_test_run ();
 }
-
-  guint some_integer = 123;
