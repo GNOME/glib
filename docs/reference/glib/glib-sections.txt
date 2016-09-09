@@ -1177,6 +1177,7 @@ g_log_set_default_handler
 
 <SUBSECTION>
 g_log_structured
+g_log_variant
 GLogField
 g_log_structured_array
 G_DEBUG_HERE

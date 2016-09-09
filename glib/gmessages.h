@@ -32,6 +32,7 @@
 #include <stdarg.h>
 #include <glib/gtypes.h>
 #include <glib/gmacros.h>
+#include <glib/gvariant.h>
 
 G_BEGIN_DECLS
 
@@ -195,6 +196,11 @@ GLIB_AVAILABLE_IN_2_50
 void             g_log_structured_array        (GLogLevelFlags   log_level,
                                                 const GLogField *fields,
                                                 gsize            n_fields);
+
+GLIB_AVAILABLE_IN_2_50
+void             g_log_variant                 (const gchar     *log_domain,
+                                                GLogLevelFlags   log_level,
+                                                GVariant        *fields);
 
 GLIB_AVAILABLE_IN_2_50
 void             g_log_set_writer_func         (GLogWriterFunc   func,

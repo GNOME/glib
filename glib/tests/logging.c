@@ -345,6 +345,8 @@ compare_fields (const GLogField *f1, gsize n1, const GLogField *f2, gsize n2)
 }
 
 static GSList *expected_messages = NULL;
+static const guchar binary_field[] = {1, 2, 3, 4, 5};
+
 
 static GLogWriterOutput
 expect_log_writer (GLogLevelFlags   log_level,
@@ -500,6 +502,58 @@ test_structured_logging_roundtrip3 (void)
   g_assert (expected_messages == NULL);
 }
 
+static GVariant *
+create_variant_fields (void)
+{
+  GVariant *binary;
+  GVariantBuilder builder;
+
+  binary = g_variant_new_fixed_array (G_VARIANT_TYPE_BYTE, binary_field, G_N_ELEMENTS (binary_field), sizeof (binary_field[0]));
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_add (&builder, "{sv}", "MESSAGE_ID", g_variant_new_string ("06d4df59e6c24647bfe69d2c27ef0b4e"));
+  g_variant_builder_add (&builder, "{sv}", "MESSAGE", g_variant_new_string ("This is a debug message"));
+  g_variant_builder_add (&builder, "{sv}", "MY_APPLICATION_CUSTOM_FIELD", g_variant_new_string ("some debug string"));
+  g_variant_builder_add (&builder, "{sv}", "MY_APPLICATION_CUSTOM_FIELD_BINARY", binary);
+
+  return g_variant_builder_end (&builder);
+}
+
+static void
+test_structured_logging_variant1 (void)
+{
+  GVariant *v = create_variant_fields ();
+
+  log_count = 0;
+  g_log_set_writer_func (null_log_writer, NULL, NULL);
+
+  g_log_variant ("some-domain", G_LOG_LEVEL_MESSAGE, v);
+  g_variant_unref (v);
+  g_assert_cmpint (log_count, ==, 1);
+}
+
+static void
+test_structured_logging_variant2 (void)
+{
+  const GLogField fields[] = {
+    { "GLIB_DOMAIN", "some-domain", -1 },
+    { "PRIORITY", "5", -1 },
+    { "MESSAGE", "This is a debug message", -1 },
+    { "MESSAGE_ID", "06d4df59e6c24647bfe69d2c27ef0b4e", -1 },
+    { "MY_APPLICATION_CUSTOM_FIELD", "some debug string", -1 },
+    { "MY_APPLICATION_CUSTOM_FIELD_BINARY", binary_field, sizeof (binary_field) }
+  };
+  ExpectedMessage expected = { fields, 6 };
+  GVariant *v = create_variant_fields ();
+
+  expected_messages = g_slist_append (NULL, &expected);
+  g_log_set_writer_func (expect_log_writer, NULL, NULL);
+
+  g_log_variant ("some-domain", G_LOG_LEVEL_MESSAGE, v);
+  g_variant_unref (v);
+  g_assert (expected_messages == NULL);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -531,6 +585,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/structured-logging/roundtrip1", test_structured_logging_roundtrip1);
   g_test_add_func ("/structured-logging/roundtrip2", test_structured_logging_roundtrip2);
   g_test_add_func ("/structured-logging/roundtrip3", test_structured_logging_roundtrip3);
+  g_test_add_func ("/structured-logging/variant1", test_structured_logging_variant1);
+  g_test_add_func ("/structured-logging/variant2", test_structured_logging_variant2);
 
   return g_test_run ();
 }

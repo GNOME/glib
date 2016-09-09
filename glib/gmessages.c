@@ -1602,6 +1602,116 @@ g_log_structured (const gchar    *log_domain,
   va_end (args);
 }
 
+/**
+ * g_log_variant:
+ * @log_domain: log domain, usually %G_LOG_DOMAIN
+ * @log_level: log level, either from #GLogLevelFlags, or a user-defined
+ *    level
+ * @fields: a dictionary (#GVariant of the type %G_VARIANT_TYPE_VARDICT)
+ * containing the key-value pairs of message data.
+ *
+ * Log a message with structured data, accepting the data within a #GVariant. This
+ * version is especially useful for use in other languages, via introspection.
+ *
+ * The only mandatory item in the @fields dictionary is the "MESSAGE" which must
+ * contain the text shown to the user.
+ *
+ * The values in the @fields dictionary are likely to be of type String
+ * (#G_VARIANT_TYPE_STRING). Array of bytes (#G_VARIANT_TYPE_BYTESTRING) is also
+ * supported. In this case the message is handled as binary and will be forwarded
+ * to the log writer as such. The size of the array should not be higher than
+ * %G_MAXSSIZE. Otherwise it will be truncated to this size. For other types
+ * g_variant_print() will be used to convert the value into a string.
+ *
+ * For more details on its usage and about the parameters, see g_log_structured().
+ *
+ * Since: 2.50
+ */
+
+void
+g_log_variant (const gchar    *log_domain,
+               GLogLevelFlags  log_level,
+               GVariant       *fields)
+{
+  GVariantIter iter;
+  GVariant *value;
+  gchar *key;
+  GArray *fields_array;
+  GLogField field;
+  GSList *values_list, *print_list;
+
+  g_return_if_fail (g_variant_is_of_type (fields, G_VARIANT_TYPE_VARDICT));
+
+  values_list = print_list = NULL;
+  fields_array = g_array_new (FALSE, FALSE, sizeof (GLogField));
+
+  field.key = "PRIORITY";
+  field.value = log_level_to_priority (log_level);
+  field.length = -1;
+  g_array_append_val (fields_array, field);
+
+  if (log_domain)
+    {
+      field.key = "GLIB_DOMAIN";
+      field.value = log_domain;
+      field.length = -1;
+      g_array_append_val (fields_array, field);
+    }
+
+  g_variant_iter_init (&iter, fields);
+  while (g_variant_iter_next (&iter, "{&sv}", &key, &value))
+    {
+      gboolean defer_unref = TRUE;
+
+      field.key = key;
+      field.length = -1;
+
+      if (g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
+        {
+          field.value = g_variant_get_string (value, NULL);
+        }
+      else if (g_variant_is_of_type (value, G_VARIANT_TYPE_BYTESTRING))
+        {
+          gsize s;
+          field.value = g_variant_get_fixed_array (value, &s, sizeof (guchar));
+          if (G_LIKELY (s <= G_MAXSSIZE))
+            {
+              field.length = s;
+            }
+          else
+            {
+               _g_fprintf (stderr,
+                           "Byte array too large (%" G_GSIZE_FORMAT " bytes)"
+                           " passed to g_log_variant(). Truncating to " G_STRINGIFY (G_MAXSSIZE)
+                           " bytes.", s);
+              field.length = G_MAXSSIZE;
+            }
+        }
+      else
+        {
+          char *s = g_variant_print (value, FALSE);
+          field.value = s;
+          print_list = g_slist_prepend (print_list, s);
+          defer_unref = FALSE;
+        }
+
+      g_array_append_val (fields_array, field);
+
+      if (G_LIKELY (defer_unref))
+        values_list = g_slist_prepend (values_list, value);
+      else
+        g_variant_unref (value);
+    }
+
+  /* Log it. */
+  g_log_structured_array (log_level, (GLogField *) fields_array->data, fields_array->len);
+
+  g_array_free (fields_array, TRUE);
+  g_slist_free_full (values_list, (GDestroyNotify) g_variant_unref);
+  g_slist_free_full (print_list, g_free);
+}
+
+
 #pragma GCC diagnostic pop
 
 static GLogWriterOutput _g_log_writer_fallback (GLogLevelFlags   log_level,
