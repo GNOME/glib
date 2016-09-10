@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-07-17 03:09+0000\n"
-"PO-Revision-Date: 2016-08-08 13:51+0200\n"
+"POT-Creation-Date: 2016-08-31 10:35+0000\n"
+"PO-Revision-Date: 2016-09-10 16:32+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -44,7 +44,7 @@ msgstr "Preváži ID aplikácie"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gio-tool.c:209 ../gio/gresource-tool.c:488
-#: ../gio/gsettings-tool.c:512
+#: ../gio/gsettings-tool.c:520
 msgid "Print help"
 msgstr "Zobrazí pomocníka"
 
@@ -58,7 +58,7 @@ msgid "Print version"
 msgstr "Vypíše verziu"
 
 # MČ: „Vypíše …“, podobne ako nasledujúce reťazce.
-#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:518
+#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:526
 msgid "Print version information and exit"
 msgstr "Vypíše informácie o verzii a skončí"
 
@@ -123,9 +123,9 @@ msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
 "Identifikátor aplikácie vo formáte zbernice D-Bus (napr.: org.príklad.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:595
-#: ../gio/glib-compile-resources.c:626 ../gio/gresource-tool.c:495
-#: ../gio/gresource-tool.c:561
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:626 ../gio/glib-compile-resources.c:652
+#: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "SÚBOR"
 
@@ -151,7 +151,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Voliteľný parameter pre vyvolanie akcie vo formáte GVariant"
 
 #: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:526
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:612
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -165,7 +165,7 @@ msgid "Usage:\n"
 msgstr "Použitie:\n"
 
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:551
-#: ../gio/gsettings-tool.c:632
+#: ../gio/gsettings-tool.c:647
 msgid "Arguments:\n"
 msgstr "Parametre:\n"
 
@@ -499,7 +499,7 @@ msgstr "Zbernica správ sa nedá spustiť bez machine-id: "
 #: ../gio/gdbusaddress.c:1078
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
-msgstr ""
+msgstr "Zbernica D-Bus sa nedá spustiť automaticky bez X11 $DISPLAY"
 
 # MČ: v tomto prípade „spawn“ znamená: Spustí a posiela dáta, cez stdin a očakáva dáta cez stdout, takže by som skôr dal spustiť.
 #: ../gio/gdbusaddress.c:1120
@@ -564,7 +564,7 @@ msgstr ""
 "Vyčerpané všetky dostupné mechanizmy overenia totožnosti (pokusy: %s) "
 "(dostupné: %s)"
 
-#: ../gio/gdbusauth.c:1170
+#: ../gio/gdbusauth.c:1173
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Zrušené cez GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -816,12 +816,13 @@ msgstr ""
 #: ../gio/gdbusmessage.c:1587
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus object path"
-msgstr "Analyzovaná hodnota „%s“ nie je platnou cestou k objektu D-Bus"
+msgstr ""
+"Analyzovaná hodnota „%s“ nie je platnou cestou k objektu zbernice D-Bus"
 
 #: ../gio/gdbusmessage.c:1609
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature"
-msgstr "Analyzovaná hodnota „%s“ nie je platným označením D-Bus"
+msgstr "Analyzovaná hodnota „%s“ nie je platným označením zbernice D-Bus"
 
 #: ../gio/gdbusmessage.c:1656
 #, c-format
@@ -848,15 +849,16 @@ msgstr ""
 #: ../gio/gdbusmessage.c:1843
 #, c-format
 msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
-msgstr "Analyzovaná hodnota „%s“ pre variant nie je platným označením D-Bus"
+msgstr ""
+"Analyzovaná hodnota „%s“ pre variant nie je platným označením zbernice D-Bus"
 
 #: ../gio/gdbusmessage.c:1867
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string '%s' from the D-Bus wire format"
 msgstr ""
-"Chyba pri deserializovaní GVariant pomocou reťazca typu „%s“ z prenosového "
-"formátu D-Bus"
+"Chyba pri deserializovaní GVariantu pomocou reťazca typu „%s“ z prenosového "
+"formátu zbernice D-Bus"
 
 # tu musia byt taketo uvodzovky, kedze je to tak aj v C alebo Java
 #: ../gio/gdbusmessage.c:2051
@@ -884,7 +886,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2134
 #, c-format
 msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
-msgstr "Analyzovaná hodnota „%s“ nie je platným označením D-Bus (pre telo)"
+msgstr ""
+"Analyzovaná hodnota „%s“ nie je platným označením zbernice D-Bus (pre telo)"
 
 #: ../gio/gdbusmessage.c:2164
 #, c-format
@@ -907,7 +910,7 @@ msgid ""
 "Error serializing GVariant with type string '%s' to the D-Bus wire format"
 msgstr ""
 "Chyba pri serializovaní Gvariant pomocou reťazca typu „%s“ z prenosového "
-"formátu D-Bus"
+"formátu zbernice D-Bus"
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=658713
 #: ../gio/gdbusmessage.c:2652
@@ -1048,7 +1051,7 @@ msgstr "Pripojiť k relačnej zbernici"
 
 #: ../gio/gdbus-tool.c:358
 msgid "Connect to given D-Bus address"
-msgstr "Pripojiť k danej adrese D-Bus"
+msgstr "Pripojiť k danej adrese zbernice D-Bus"
 
 #: ../gio/gdbus-tool.c:368
 msgid "Connection Endpoint Options:"
@@ -1356,7 +1359,7 @@ msgstr "Nepodporovaná operácia"
 msgid "Containing mount does not exist"
 msgstr "Obklopujúce pripojenie neexistuje"
 
-#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2367
+#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2374
 msgid "Can't copy over directory"
 msgstr "Nedá sa prepísať adresár pri kopírovaní"
 
@@ -1600,7 +1603,7 @@ msgstr "Príkazy:"
 
 #: ../gio/gio-tool.c:211
 msgid "Concatenate files to standard output"
-msgstr ""
+msgstr "Spojí súbory na štandardný výstup"
 
 #: ../gio/gio-tool.c:212
 msgid "Copy one or more files"
@@ -1681,7 +1684,7 @@ msgstr "UMIESTNENIE"
 
 #: ../gio/gio-tool-cat.c:129
 msgid "Concatenate files and print to standard output."
-msgstr ""
+msgstr "Spojí súbory a vypíše na štandardný výstup."
 
 #: ../gio/gio-tool-cat.c:131
 msgid ""
@@ -1689,6 +1692,10 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
+"gio cat pracuje podobne ako tradičná utilita cat, iba že \n"
+"s použitím umiestnení GIO namiesto lokálnych súborov: napríklad môžete "
+"použiť niečo ako \n"
+"smb://server/resource/file.txt ako umiestnenie."
 
 #: ../gio/gio-tool-cat.c:151
 msgid "No files given"
@@ -1737,7 +1744,7 @@ msgstr "CIEĽ"
 
 #: ../gio/gio-tool-copy.c:103
 msgid "Copy one or more files from SOURCE to DESTINATION."
-msgstr ""
+msgstr "Skopíruje jeden alebo viaceré súbory zo ZDROJA do CIEĽA."
 
 #: ../gio/gio-tool-copy.c:105
 msgid ""
@@ -1745,16 +1752,20 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
+"gio copy pracuje podobne ako tradičná utilita cp, iba že \n"
+"s použitím umiestnení GIO namiesto lokálnych súborov: napríklad môžete "
+"použiť niečo ako \n"
+"smb://server/resource/file.txt ako umiestnenie."
 
 # %s je cesta
 #: ../gio/gio-tool-copy.c:143
 #, c-format
 msgid "Destination %s is not a directory"
-msgstr "Zdroj v %s nie je adresárom"
+msgstr "Cieľ %s nie je adresárom"
 
 #: ../gio/gio-tool-copy.c:187 ../gio/gio-tool-move.c:181
 #, c-format
-msgid "%s: overwrite '%s' ? "
+msgid "%s: overwrite '%s'? "
 msgstr "%s: prepísať „%s“? "
 
 #: ../gio/gio-tool-info.c:34
@@ -1846,8 +1857,15 @@ msgid ""
 "be specified with their GIO name, e.g. standard::icon, or just by\n"
 "namespace, e.g. unix, or by '*', which matches all attributes"
 msgstr ""
+"gio info pracuje podobne ako tradičná utilita ls, iba že \n"
+"s použitím umiestnení GIO namiesto lokálnych súborov: napríklad môžete "
+"použiť niečo ako \n"
+"smb://server/resource/file.txt ako umiestnenie. Vlastnosti súborov môžu byť\n"
+"zadané pomocou názvov GIO, napr. standard::icon, alebo použitím\n"
+"menného priestoru, napr. unix, alebo zadaním '*', čo zastupuje všetky "
+"vlastnosti"
 
-#: ../gio/gio-tool-info.c:307
+#: ../gio/gio-tool-info.c:307 ../gio/gio-tool-mkdir.c:74
 msgid "No locations given"
 msgstr "Neposkytnuté žiadne umiestnenia"
 
@@ -1874,6 +1892,13 @@ msgid ""
 "like smb://server/resource/file.txt as location. File attributes can\n"
 "be specified with their GIO name, e.g. standard::icon"
 msgstr ""
+"gio list pracuje podobne ako tradičná utilita ls, iba že \n"
+"s použitím umiestnení GIO namiesto lokálnych súborov: napríklad môžete "
+"použiť niečo ako \n"
+"smb://server/resource/file.txt ako umiestnenie. Vlastnosti súborov môžu byť\n"
+"zadané pomocou názvov GIO, napr. standard::icon, alebo použitím\n"
+"menného priestoru, napr. unix, alebo zadaním '*', čo zastupuje všetky "
+"vlastnosti"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-mime.c:71
@@ -1894,10 +1919,14 @@ msgid ""
 "for the mimetype. If a handler is given, it is set as the default\n"
 "handler for the mimetype."
 msgstr ""
+"Ak nie je zadaný obslužný program, vypíše zaregistrované a odporúčané "
+"aplikácie\n"
+"pre typ mime. Ak je zadaný obslužný program, je nastavený ako predvolený\n"
+"obslužný program pre zadaný typ mime."
 
 #: ../gio/gio-tool-mime.c:98
 msgid "Must specify a single mimetype, and maybe a handler"
-msgstr ""
+msgstr "Je potrebné zadať jeden typ mime a možno tiež obslužný program"
 
 #: ../gio/gio-tool-mime.c:113
 #, c-format
@@ -1954,30 +1983,32 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/mydir as location."
 msgstr ""
-
-#: ../gio/gio-tool-mkdir.c:74
-msgid "No locations gives"
-msgstr "Neposkytnuté žiadne umiestnenia"
+"gio mkdir pracuje podobne ako tradičná utilita mkdir, iba že \n"
+"s použitím umiestnení GIO namiesto lokálnych súborov: napríklad môžete "
+"použiť niečo ako \n"
+"smb://server/resource/mydir ako umiestnenie."
 
 #: ../gio/gio-tool-monitor.c:37
 msgid "Monitor a directory (default: depends on type)"
-msgstr ""
+msgstr "Sledovať adresár (predvolené: závisí od typu)"
 
 #: ../gio/gio-tool-monitor.c:39
 msgid "Monitor a file (default: depends on type)"
-msgstr ""
+msgstr "Sledovať súbor (predvolené: závisí od typu)"
 
 #: ../gio/gio-tool-monitor.c:41
 msgid "Monitor a file directly (notices changes made via hardlinks)"
-msgstr ""
+msgstr "Sledovať súbor priamo (zaznamenáva tiež zmeny cez hardlink)"
 
 #: ../gio/gio-tool-monitor.c:43
 msgid "Monitors a file directly, but doesn't report changes"
-msgstr ""
+msgstr "Sleduje súbor priamo, ale oznamuje zmeny"
 
 #: ../gio/gio-tool-monitor.c:45
 msgid "Report moves and renames as simple deleted/created events"
 msgstr ""
+"Oznamovať premenovanie a presunutie ako jednoduché udalosti odstrániť a "
+"vytvoriť"
 
 #: ../gio/gio-tool-monitor.c:47
 msgid "Watch for mount events"
@@ -2094,6 +2125,10 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location"
 msgstr ""
+"gio move pracuje podobne ako tradičná utilita mv, iba že \n"
+"s použitím umiestnení GIO namiesto lokálnych súborov: napríklad môžete "
+"použiť niečo ako \n"
+"smb://server/resource/file.txt ako umiestnenie."
 
 #: ../gio/gio-tool-move.c:139
 #, c-format
@@ -2293,68 +2328,72 @@ msgstr "Chyba pri čítaní súboru %s: %s"
 msgid "Error compressing file %s"
 msgstr "Chyba pri komprimovaní súboru %s"
 
-#: ../gio/glib-compile-resources.c:470 ../gio/glib-compile-schemas.c:1603
+#: ../gio/glib-compile-resources.c:469 ../gio/glib-compile-schemas.c:1603
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "text sa nemôže nachádzať vo vnútri <%s>"
 
 # cmd desc
-#: ../gio/glib-compile-resources.c:595
+#: ../gio/glib-compile-resources.c:620
 msgid "name of the output file"
 msgstr "názov výstupného súboru"
 
 # cmd desc
-#: ../gio/glib-compile-resources.c:596
+#: ../gio/glib-compile-resources.c:621
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr ""
 "Adresáre, z ktorých sa majú čítať súbory (predvolený je aktuálny adresár)"
 
-#: ../gio/glib-compile-resources.c:596 ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2036
 #: ../gio/glib-compile-schemas.c:2065
 msgid "DIRECTORY"
 msgstr "ADRESÁR"
 
 # cmd desc
-#: ../gio/glib-compile-resources.c:597
+#: ../gio/glib-compile-resources.c:622
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Vygeneruje výstup vo formáte stanovenom podľa prípony cielového súboru"
 
 #  cmd desc
-#: ../gio/glib-compile-resources.c:598
+#: ../gio/glib-compile-resources.c:623
 msgid "Generate source header"
 msgstr "Vygeneruje zdrojové hlavičky"
 
 # cmd desc
-#: ../gio/glib-compile-resources.c:599
+#: ../gio/glib-compile-resources.c:624
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Vygeneruje zdrojový kód použitý na prepojenie súboru zdrojov s vaším kódom"
 
 # cmd desc
-#: ../gio/glib-compile-resources.c:600
+#: ../gio/glib-compile-resources.c:625
 msgid "Generate dependency list"
 msgstr "Vygeneruje zoznam závislostí"
 
+#: ../gio/glib-compile-resources.c:626
+msgid "name of the dependency file to generate"
+msgstr "Názov súboru závislostí na vygenerovanie"
+
 # cmd desc
-#: ../gio/glib-compile-resources.c:601
+#: ../gio/glib-compile-resources.c:627
 msgid "Don't automatically create and register resource"
 msgstr "Nebude vytvárať a registrovať zdroj automaticky"
 
 # cmd desc
-#: ../gio/glib-compile-resources.c:602
+#: ../gio/glib-compile-resources.c:628
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "Nebude exportovať funkcie; deklaruje ich pomocou G_GNUC_INTERNAL"
 
 # cmd desc
-#: ../gio/glib-compile-resources.c:603
+#: ../gio/glib-compile-resources.c:629
 msgid "C identifier name used for the generated source code"
 msgstr "Identifikačný názov v jazyku C použitý pre generovaný zdrojový kód"
 
 # cmd program desc
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:655
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2364,7 +2403,7 @@ msgstr ""
 "Súbory špecifikácie zdrojov majú príponu .gresource.xml,\n"
 "a súbor zdrojov má príponu s názvom .gresource."
 
-#: ../gio/glib-compile-resources.c:645
+#: ../gio/glib-compile-resources.c:671
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Mali by ste zadať práve jeden názov súboru\n"
@@ -2644,136 +2683,135 @@ msgstr "neurobí sa nič.\n"
 msgid "removed existing output file.\n"
 msgstr "odstránený existujúci výstupný súbor.\n"
 
-#: ../gio/glocalfile.c:638 ../gio/win32/gwinhttpfile.c:420
+#: ../gio/glocalfile.c:642 ../gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Neplatný názov súboru %s"
 
-#: ../gio/glocalfile.c:1029
+#: ../gio/glocalfile.c:1036
 #, c-format
 msgid "Error getting filesystem info for %s: %s"
 msgstr "Chyba pri získavaní informácií o súborovom systéme pre %s: %s"
 
-#: ../gio/glocalfile.c:1168
-#, fuzzy, c-format
-#| msgid "Containing mount does not exist"
+#: ../gio/glocalfile.c:1175
+#, c-format
 msgid "Containing mount for file %s not found"
-msgstr "Obklopujúce pripojenie neexistuje"
+msgstr "Obklopujúce pripojenie pre súbor %s sa nepodarilo nájsť"
 
-#: ../gio/glocalfile.c:1191
+#: ../gio/glocalfile.c:1198
 msgid "Can't rename root directory"
 msgstr "Koreňový adresár sa nedá premenovať"
 
-#: ../gio/glocalfile.c:1209 ../gio/glocalfile.c:1232
+#: ../gio/glocalfile.c:1216 ../gio/glocalfile.c:1239
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "Chyba pri premenovaní súboru %s: %s"
 
-#: ../gio/glocalfile.c:1216
+#: ../gio/glocalfile.c:1223
 msgid "Can't rename file, filename already exists"
 msgstr "Nedá sa premenovať súbor, názov súboru už existuje"
 
-#: ../gio/glocalfile.c:1229 ../gio/glocalfile.c:2243 ../gio/glocalfile.c:2271
-#: ../gio/glocalfile.c:2428 ../gio/glocalfileoutputstream.c:549
+#: ../gio/glocalfile.c:1236 ../gio/glocalfile.c:2250 ../gio/glocalfile.c:2278
+#: ../gio/glocalfile.c:2435 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "Neplatný názov súboru"
 
-#: ../gio/glocalfile.c:1396 ../gio/glocalfile.c:1411
+#: ../gio/glocalfile.c:1403 ../gio/glocalfile.c:1418
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "Chyba pri otváraní súboru %s: %s"
 
-#: ../gio/glocalfile.c:1536
+#: ../gio/glocalfile.c:1543
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "Chyba pri odstraňovaní súboru %s: %s"
 
-#: ../gio/glocalfile.c:1919
+#: ../gio/glocalfile.c:1926
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Chyba pri zahadzovaní súboru %s do Koša: %s"
 
-#: ../gio/glocalfile.c:1942
+#: ../gio/glocalfile.c:1949
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Nepodarilo sa vytvoriť adresár Kôš %s: %s"
 
-#: ../gio/glocalfile.c:1962
+#: ../gio/glocalfile.c:1969
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Nepodarilo sa nájsť adresár najvyššej úrovne pre Kôš %s"
 
-#: ../gio/glocalfile.c:2041 ../gio/glocalfile.c:2061
+#: ../gio/glocalfile.c:2048 ../gio/glocalfile.c:2068
 #, c-format
 msgid "Unable to find or create trash directory for %s"
 msgstr "Nepodarilo sa nájsť ani vytvoriť adresár Kôš pre %s"
 
-#: ../gio/glocalfile.c:2095
+#: ../gio/glocalfile.c:2102
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr ""
 "Nepodarilo sa vytvoriť informačný súbor o zahadzovaní do Koša pre %s: %s"
 
-#: ../gio/glocalfile.c:2154
-#, fuzzy, c-format
-#| msgid "Unable to trash file: %s"
+#: ../gio/glocalfile.c:2161
+#, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
-msgstr "Nepodarilo sa zahodiť súbor do Koša: %s"
+msgstr ""
+"Nepodarilo sa zahodiť súbor do Koša cez hranice súborových systémov: %s"
 
-#: ../gio/glocalfile.c:2158 ../gio/glocalfile.c:2214
+#: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2221
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Nepodarilo sa zahodiť súbor %s do Koša: %s"
 
-#: ../gio/glocalfile.c:2220
+#: ../gio/glocalfile.c:2227
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Nepodarilo sa zahodiť súbor %s do Koša"
 
-#: ../gio/glocalfile.c:2246
+#: ../gio/glocalfile.c:2253
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Chyba pri vytváraní adresára %s: %s"
 
-#: ../gio/glocalfile.c:2275
+#: ../gio/glocalfile.c:2282
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Súborový systém nepodporuje symbolické odkazy"
 
-#: ../gio/glocalfile.c:2278
+#: ../gio/glocalfile.c:2285
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Chyba pri vytváraní symbolického odkazu %s: %s"
 
-#: ../gio/glocalfile.c:2284 ../glib/gfileutils.c:2064
+#: ../gio/glocalfile.c:2291 ../glib/gfileutils.c:2064
 msgid "Symbolic links not supported"
 msgstr "Symbolické odkazy nie sú podporované"
 
-#: ../gio/glocalfile.c:2339 ../gio/glocalfile.c:2374 ../gio/glocalfile.c:2431
+#: ../gio/glocalfile.c:2346 ../gio/glocalfile.c:2381 ../gio/glocalfile.c:2438
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Chyba pri presúvaní súboru %s: %s"
 
-#: ../gio/glocalfile.c:2362
+#: ../gio/glocalfile.c:2369
 msgid "Can't move directory over directory"
 msgstr "Nedá sa prepísať adresár adresárom počas presúvania"
 
-#: ../gio/glocalfile.c:2388 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfile.c:2395 ../gio/glocalfileoutputstream.c:925
 #: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
 #: ../gio/glocalfileoutputstream.c:971 ../gio/glocalfileoutputstream.c:985
 msgid "Backup file creation failed"
 msgstr "Vytvorenie súboru zálohy zlyhalo"
 
-#: ../gio/glocalfile.c:2407
+#: ../gio/glocalfile.c:2414
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Chyba pri odstraňovaní cieľového súboru: %s"
 
-#: ../gio/glocalfile.c:2421
+#: ../gio/glocalfile.c:2428
 msgid "Move between mounts not supported"
 msgstr "Presun medzi pripojeniami nie je podporovaný"
 
-#: ../gio/glocalfile.c:2612
+#: ../gio/glocalfile.c:2619
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Nepodarilo sa určiť využitie disku %s: %s"
@@ -3195,7 +3233,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  ČASŤ      (voliteľný) názov časti elf\n"
 
-#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:639
+#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:654
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  PRÍKAZ    (voliteľný) príkaz na vysvetlenie\n"
 
@@ -3228,7 +3266,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  CESTA     Cesta k súboru zdrojov\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:830
+#: ../gio/gsettings-tool.c:851
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Neexistuje schéma „%s“\n"
@@ -3263,38 +3301,38 @@ msgstr "Cesta musí končiť lomkou (/)\n"
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "Cesta nesmie obsahovať dve po sebe nasledujúce lomky (//)\n"
 
-#: ../gio/gsettings-tool.c:481
+#: ../gio/gsettings-tool.c:489
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Poskytnutá hodnota nepatrí do platného rozsahu\n"
 
-#: ../gio/gsettings-tool.c:488
+#: ../gio/gsettings-tool.c:496
 #, c-format
 msgid "The key is not writable\n"
 msgstr "Kľúč nie je zapisovateľný\n"
 
-#: ../gio/gsettings-tool.c:524
+#: ../gio/gsettings-tool.c:532
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Vypíše nainštalované (nepremiestniteľné) schémy"
 
-#: ../gio/gsettings-tool.c:530
+#: ../gio/gsettings-tool.c:538
 msgid "List the installed relocatable schemas"
 msgstr "Vypíše nainštalované premiestniteľné schémy"
 
-#: ../gio/gsettings-tool.c:536
+#: ../gio/gsettings-tool.c:544
 msgid "List the keys in SCHEMA"
 msgstr "Vypíše kľúče v SCHÉME"
 
-#: ../gio/gsettings-tool.c:537 ../gio/gsettings-tool.c:543
-#: ../gio/gsettings-tool.c:580
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:551
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH]"
 msgstr "SCHÉMA[:CESTA]"
 
-#: ../gio/gsettings-tool.c:542
+#: ../gio/gsettings-tool.c:550
 msgid "List the children of SCHEMA"
 msgstr "Vypíše potomkov SCHÉMY"
 
-#: ../gio/gsettings-tool.c:548
+#: ../gio/gsettings-tool.c:556
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3302,44 +3340,49 @@ msgstr ""
 "Vypíše rekurzívne všetky kľúče a hodnoty\n"
 "Ak SCHÉMA nie je zadaná, vypíše všetky kľúče\n"
 
-#: ../gio/gsettings-tool.c:550
+#: ../gio/gsettings-tool.c:558
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SCHÉMA[:CESTA]]"
 
-#: ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:563
 msgid "Get the value of KEY"
 msgstr "Získa hodnotu KĽÚČA"
 
-#: ../gio/gsettings-tool.c:556 ../gio/gsettings-tool.c:562
-#: ../gio/gsettings-tool.c:574 ../gio/gsettings-tool.c:586
+#: ../gio/gsettings-tool.c:564 ../gio/gsettings-tool.c:570
+#: ../gio/gsettings-tool.c:576 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHÉMA[:CESTA] KĽÚČ"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:569
 msgid "Query the range of valid values for KEY"
 msgstr "Spýta sa na platný rozsah hodnôt KĽÚČA"
 
-#: ../gio/gsettings-tool.c:567
+#: ../gio/gsettings-tool.c:575
+msgid "Query the description for KEY"
+msgstr "Spýta sa na popis KĽÚČA"
+
+#: ../gio/gsettings-tool.c:581
 msgid "Set the value of KEY to VALUE"
 msgstr "Nastaví hodnotu KĽÚČA na HODNOTU"
 
-#: ../gio/gsettings-tool.c:568
+#: ../gio/gsettings-tool.c:582
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHÉMA[:CESTA] KĽÚČ HODNOTA"
 
-#: ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:587
 msgid "Reset KEY to its default value"
 msgstr "Nastaví KĽÚČ na jeho predvolenú hodnotu"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:593
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Nastaví všetky kľúče v SCHÉME na ich predvolené hodnoty"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:599
 msgid "Check if KEY is writable"
 msgstr "Skontroluje, či je KĽÚČ zapisovateľný"
 
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:605
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3349,11 +3392,11 @@ msgstr ""
 "Ak KĽÚČ nie určený, sleduje všetky kľúče v SCHÉME.\n"
 "Sledovanie zastavíte pomocou ^C.\n"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:608
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHÉMA[:CESTA] [KĽÚČ]"
 
-#: ../gio/gsettings-tool.c:606
+#: ../gio/gsettings-tool.c:620
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3367,6 +3410,7 @@ msgid ""
 "  list-children             List children of a schema\n"
 "  list-recursively          List keys and values, recursively\n"
 "  range                     Queries the range of a key\n"
+"  describe                  Queries the description of a key\n"
 "  get                       Get the value of a key\n"
 "  set                       Set the value of a key\n"
 "  reset                     Reset the value of a key\n"
@@ -3378,7 +3422,7 @@ msgid ""
 "\n"
 msgstr ""
 "Použitie:\n"
-"  gsettings --vresion\n"
+"  gsettings --version\n"
 "  gsettings [--schemadir ADRESÁR_SCHÉMY] PRÍKAZ [PARAMETRE...]\n"
 "\n"
 "Príkazy:\n"
@@ -3389,6 +3433,7 @@ msgstr ""
 "  list-children             Vypíše potomkov schémy\n"
 "  list-recursively          Rekurzívne vypíše kľúče a hodnoty\n"
 "  range                     Zistí rozsah hodnôt kľúča\n"
+"  describe                  Zistí popis kľúča\n"
 "  get                       Získa hodnotu kľúča\n"
 "  set                       Nastaví hodnotu kľúča\n"
 "  reset                     Obnoví predvolenú hodnotu kľúča\n"
@@ -3399,7 +3444,7 @@ msgstr ""
 "Podrobnejšieho pomocníka získate pomocou „gsettings help PRÍKAZ“.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:629
+#: ../gio/gsettings-tool.c:644
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3414,11 +3459,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:635
+#: ../gio/gsettings-tool.c:650
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  ADRESÁR_SCHÉMY Adresár, v ktorom sa majú hľadať dodatočné schémy\n"
 
-#: ../gio/gsettings-tool.c:643
+#: ../gio/gsettings-tool.c:658
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3426,34 +3471,34 @@ msgstr ""
 "  SCHÉMA    Názov schémy\n"
 "  CESTA     Cesta pre premiestniteľné schémy\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:663
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KĽÚČ      (voliteľný) kľúč vo vnútri schémy\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:667
 msgid "  KEY       The key within the schema\n"
 msgstr "  KĽÚČ      Kľúč vo vnútri schémy\n"
 
-#: ../gio/gsettings-tool.c:656
+#: ../gio/gsettings-tool.c:671
 msgid "  VALUE     The value to set\n"
 msgstr "  HODNOTA   Hodnota, ktorá sa má nastaviť\n"
 
-#: ../gio/gsettings-tool.c:711
+#: ../gio/gsettings-tool.c:726
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Nepodarilo sa načítať schémy z %s: %s\n"
 
-#: ../gio/gsettings-tool.c:723
+#: ../gio/gsettings-tool.c:738
 #, c-format
 msgid "No schemas installed\n"
 msgstr "Nie sú nainštalované žiadne schémy\n"
 
-#: ../gio/gsettings-tool.c:788
+#: ../gio/gsettings-tool.c:809
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Poskytnutý prázdny názov schémy\n"
 
-#: ../gio/gsettings-tool.c:843
+#: ../gio/gsettings-tool.c:864
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Neexistuje kľúč „%s“\n"
@@ -3872,7 +3917,7 @@ msgstr "Chyba pri čítaní z popisovača súboru: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Chyba pri zatváraní popisovača súboru: %s"
 
-#: ../gio/gunixmounts.c:2099 ../gio/gunixmounts.c:2152
+#: ../gio/gunixmounts.c:2329 ../gio/gunixmounts.c:2382
 msgid "Filesystem root"
 msgstr "Koreň súborového systému"
 
@@ -5092,7 +5137,7 @@ msgstr "názov v (*MARK), (*PRUNE), (*SKIP) alebo (*THEN) je príliš dlhý"
 msgid "character value in \\u.... sequence is too large"
 msgstr "hodnota znaku v postupnosti \\u.... je príliš veľká"
 
-#: ../glib/gregex.c:746 ../glib/gregex.c:1973
+#: ../glib/gregex.c:746 ../glib/gregex.c:1977
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Chyba počas porovnávania regulárneho výrazu %s: %s"
@@ -5119,43 +5164,43 @@ msgstr "Chyba počas optimalizovania regulárneho výrazu %s: %s"
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Chyba počas prekladu regulárneho výrazu %s pri znaku %d: %s"
 
-#: ../glib/gregex.c:2409
+#: ../glib/gregex.c:2413
 msgid "hexadecimal digit or '}' expected"
 msgstr "očakávaná šestnástková číslica alebo „}“"
 
-#: ../glib/gregex.c:2425
+#: ../glib/gregex.c:2429
 msgid "hexadecimal digit expected"
 msgstr "očakávaná šestnástková číslica"
 
-#: ../glib/gregex.c:2465
+#: ../glib/gregex.c:2469
 msgid "missing '<' in symbolic reference"
 msgstr "chýba „<“ v symbolickom odkaze"
 
-#: ../glib/gregex.c:2474
+#: ../glib/gregex.c:2478
 msgid "unfinished symbolic reference"
 msgstr "neukončený symbolický odkaz"
 
-#: ../glib/gregex.c:2481
+#: ../glib/gregex.c:2485
 msgid "zero-length symbolic reference"
 msgstr "symbolický odkaz s nulovou dĺžkou"
 
-#: ../glib/gregex.c:2492
+#: ../glib/gregex.c:2496
 msgid "digit expected"
 msgstr "očakávaná číslica"
 
-#: ../glib/gregex.c:2510
+#: ../glib/gregex.c:2514
 msgid "illegal symbolic reference"
 msgstr "neplatný symbolický odkaz"
 
-#: ../glib/gregex.c:2572
+#: ../glib/gregex.c:2576
 msgid "stray final '\\'"
 msgstr "zabudnuté koncové „\\“"
 
-#: ../glib/gregex.c:2576
+#: ../glib/gregex.c:2580
 msgid "unknown escape sequence"
 msgstr "neznáma špeciálna (escape) sekvencia"
 
-#: ../glib/gregex.c:2586
+#: ../glib/gregex.c:2590
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Chyba počas analyzovania nahrádzajúceho textu „%s“ pri znaku %lu: %s"
@@ -5415,6 +5460,9 @@ msgstr[2] "%s bajty"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f kB"
+
+#~ msgid "No locations gives"
+#~ msgstr "Neposkytnuté žiadne umiestnenia"
 
 #~ msgid "Error renaming file: %s"
 #~ msgstr "Chyba pri premenovaní súboru: %s"
