@@ -8,19 +8,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-20 20:58+0000\n"
-"PO-Revision-Date: 2016-09-11 12:28+0300\n"
-"Last-Translator: Ingmārs Dīriņš <melhiors14@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib"
+"&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-09-11 09:41+0000\n"
+"PO-Revision-Date: 2016-09-11 12:43+0200\n"
+"Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.8\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
-"2);\n"
+"X-Generator: Lokalize 2.0\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 :"
+" 2);\n"
 
 #: ../gio/gapplication.c:493
 msgid "GApplication options"
@@ -41,7 +41,7 @@ msgstr "Pārrakstīt lietotnes ID"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gio-tool.c:209 ../gio/gresource-tool.c:488
-#: ../gio/gsettings-tool.c:512
+#: ../gio/gsettings-tool.c:520
 msgid "Print help"
 msgstr "Drukāšanas palīdzība"
 
@@ -54,7 +54,7 @@ msgstr "[KOMANDA]"
 msgid "Print version"
 msgstr "Drukāt versiju"
 
-#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:518
+#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:526
 msgid "Print version information and exit"
 msgstr "Parādīt informāciju par versiju un iziet"
 
@@ -144,7 +144,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Neobligāts parametrs darbības izsaukšanai, GVariant formātā"
 
 #: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:526
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:612
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -158,7 +158,7 @@ msgid "Usage:\n"
 msgstr "Lietošana:\n"
 
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:551
-#: ../gio/gsettings-tool.c:632
+#: ../gio/gsettings-tool.c:647
 msgid "Arguments:\n"
 msgstr "Argumenti:\n"
 
@@ -3144,7 +3144,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SADAĻA   (Neobligāts) elf sadaļas nosaukums\n"
 
-#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:639
+#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:654
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  KOMANDA  (neobligāta) komanda, ko izskaidrot\n"
 
@@ -3177,7 +3177,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  CEĻŠ      Resursa ceļš\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:830
+#: ../gio/gsettings-tool.c:851
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "Nav tādas shēmas “%s”\n"
@@ -3212,38 +3212,38 @@ msgstr "Ceļam jābeidzas ar slīpsvītru (/)\n"
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "Ceļš nedrīkst saturēt divas blakus esošas slīpsvītras (//)\n"
 
-#: ../gio/gsettings-tool.c:481
+#: ../gio/gsettings-tool.c:489
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Dotā vērtība ir ārpus derīgo vērtību intervāla\n"
 
-#: ../gio/gsettings-tool.c:488
+#: ../gio/gsettings-tool.c:496
 #, c-format
 msgid "The key is not writable\n"
 msgstr "Atslēga nav rakstāma\n"
 
-#: ../gio/gsettings-tool.c:524
+#: ../gio/gsettings-tool.c:532
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Saraksts ar instalētām (nepārvietojamām) shēmām"
 
-#: ../gio/gsettings-tool.c:530
+#: ../gio/gsettings-tool.c:538
 msgid "List the installed relocatable schemas"
 msgstr "Saraksts ar instalētam pārvietojamām shēmām"
 
-#: ../gio/gsettings-tool.c:536
+#: ../gio/gsettings-tool.c:544
 msgid "List the keys in SCHEMA"
 msgstr "Atslēgu saraksts SHĒMĀ"
 
-#: ../gio/gsettings-tool.c:537 ../gio/gsettings-tool.c:543
-#: ../gio/gsettings-tool.c:580
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:551
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH]"
 msgstr "SHĒMA[:CEĻŠ]"
 
-#: ../gio/gsettings-tool.c:542
+#: ../gio/gsettings-tool.c:550
 msgid "List the children of SCHEMA"
 msgstr "Bērnu skaits SHĒMĀ"
 
-#: ../gio/gsettings-tool.c:548
+#: ../gio/gsettings-tool.c:556
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3251,44 +3251,50 @@ msgstr ""
 "Saraksts ar atslēgām un vērtībām; rekursīvi\n"
 "Ja nav dota shēma, rādīt visas atslēgas\n"
 
-#: ../gio/gsettings-tool.c:550
+#: ../gio/gsettings-tool.c:558
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SHĒMA[:CEĻŠ]"
 
-#: ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:563
 msgid "Get the value of KEY"
 msgstr "Saņemt vērtību ATSLĒGAI"
 
-#: ../gio/gsettings-tool.c:556 ../gio/gsettings-tool.c:562
-#: ../gio/gsettings-tool.c:574 ../gio/gsettings-tool.c:586
+#: ../gio/gsettings-tool.c:564 ../gio/gsettings-tool.c:570
+#: ../gio/gsettings-tool.c:576 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SHĒMA[:CEĻŠ] ATSLĒGA"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:569
 msgid "Query the range of valid values for KEY"
 msgstr "Vaicājums derīgo vērtību intervālam ATSLĒGAI"
 
-#: ../gio/gsettings-tool.c:567
+#: ../gio/gsettings-tool.c:575
+#| msgid "Query the range of valid values for KEY"
+msgid "Query the description for KEY"
+msgstr "Vaicāt aprakstu ATSLĒGAI"
+
+#: ../gio/gsettings-tool.c:581
 msgid "Set the value of KEY to VALUE"
 msgstr "Iestatīt ATSLĒGTAS vērtību uz VĒRTĪBA"
 
-#: ../gio/gsettings-tool.c:568
+#: ../gio/gsettings-tool.c:582
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SHĒMA[:CEĻŠ] ATSLĒGA VĒRTĪBA"
 
-#: ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:587
 msgid "Reset KEY to its default value"
 msgstr "Pārstatīt ATSLĒGAS vērtību uz tās noklusēto"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:593
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Atstatīt visas atslēgas SHĒMĀ uz to noklusētajām vērtībām"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:599
 msgid "Check if KEY is writable"
 msgstr "Pārbaudīt, vai ATSLĒGA ir rakstāma"
 
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:605
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3298,11 +3304,33 @@ msgstr ""
 "Ja nav norādīta ATSLĒGA, novērot visas atslēgas SHĒMĀ.\n"
 "Izmantojiet ^C, lai pārtrauktu novērošanu.\n"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:608
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SHĒMA[:CEĻŠ] [ATSLĒGA]"
 
-#: ../gio/gsettings-tool.c:606
+#: ../gio/gsettings-tool.c:620
+#| msgid ""
+#| "Usage:\n"
+#| "  gsettings --version\n"
+#| "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
+#| "\n"
+#| "Commands:\n"
+#| "  help                      Show this information\n"
+#| "  list-schemas              List installed schemas\n"
+#| "  list-relocatable-schemas  List relocatable schemas\n"
+#| "  list-keys                 List keys in a schema\n"
+#| "  list-children             List children of a schema\n"
+#| "  list-recursively          List keys and values, recursively\n"
+#| "  range                     Queries the range of a key\n"
+#| "  get                       Get the value of a key\n"
+#| "  set                       Set the value of a key\n"
+#| "  reset                     Reset the value of a key\n"
+#| "  reset-recursively         Reset all values in a given schema\n"
+#| "  writable                  Check if a key is writable\n"
+#| "  monitor                   Watch for changes\n"
+#| "\n"
+#| "Use 'gsettings help COMMAND' to get detailed help.\n"
+#| "\n"
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3316,6 +3344,7 @@ msgid ""
 "  list-children             List children of a schema\n"
 "  list-recursively          List keys and values, recursively\n"
 "  range                     Queries the range of a key\n"
+"  describe                  Queries the description of a key\n"
 "  get                       Get the value of a key\n"
 "  set                       Set the value of a key\n"
 "  reset                     Reset the value of a key\n"
@@ -3338,6 +3367,7 @@ msgstr ""
 "  list-children             Uzrāda shēmas bērnus\n"
 "  list-recursively          Uzrāda atslēgas un vērtības, rekursīvi\n"
 "  range                     Vaicā atslēgu apgabalu\n"
+"  describe                  Vaicā atslēgas aprakstu\n"
 "  get                       Saņem atslēgas vērtību\n"
 "  set                       Iestata atslēgas vērtību\n"
 "  reset                     Atstata atslēgas vērtību\n"
@@ -3348,7 +3378,7 @@ msgstr ""
 "Lietojiet “gsettings help KOMANDA”, lai saņemtu sīkāku palīdzību.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:629
+#: ../gio/gsettings-tool.c:644
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3363,11 +3393,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:635
+#: ../gio/gsettings-tool.c:650
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SHĒMAS_MAPE Mape, kurā meklēt papildu shēmas\n"
 
-#: ../gio/gsettings-tool.c:643
+#: ../gio/gsettings-tool.c:658
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3375,34 +3405,34 @@ msgstr ""
 "  SHĒMA     Shēmas nosaukums\n"
 "  CEĻŠ      Ceļš pārvietojamām shēmām\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:663
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  ATSLĒGA   (neobligāta) atslēga shēmā\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:667
 msgid "  KEY       The key within the schema\n"
 msgstr "  ATSLĒGA   Atslēga shēmā\n"
 
-#: ../gio/gsettings-tool.c:656
+#: ../gio/gsettings-tool.c:671
 msgid "  VALUE     The value to set\n"
 msgstr "  VĒRTĪBA   Vērtība, ko iestatīt\n"
 
-#: ../gio/gsettings-tool.c:711
+#: ../gio/gsettings-tool.c:726
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Nevarēja ielādēt shēmas no “%s” — “%s”\n"
 
-#: ../gio/gsettings-tool.c:723
+#: ../gio/gsettings-tool.c:738
 #, c-format
 msgid "No schemas installed\n"
 msgstr "Nav instalētu shēmu\n"
 
-#: ../gio/gsettings-tool.c:788
+#: ../gio/gsettings-tool.c:809
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Dots tukšs shēmas nosaukums\n"
 
-#: ../gio/gsettings-tool.c:843
+#: ../gio/gsettings-tool.c:864
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "Nav tādas atslēgas “%s”\n"
