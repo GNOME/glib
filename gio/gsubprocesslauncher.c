@@ -225,7 +225,7 @@ g_subprocess_launcher_new (GSubprocessFlags flags)
 /**
  * g_subprocess_launcher_set_environ:
  * @self: a #GSubprocess
- * @env: the replacement environment
+ * @env: (array zero-terminated=1): the replacement environment
  *
  * Replace the entire environment of processes launched from this
  * launcher with the given 'environ' variable.
