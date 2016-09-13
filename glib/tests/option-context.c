@@ -2478,6 +2478,38 @@ short_remaining (void)
   g_option_context_free (context);
 }
 
+static void
+double_free (void)
+{
+  gchar* text = NULL;
+  GOptionEntry entries[] =
+  {
+    { "known", 0, 0, G_OPTION_ARG_STRING, &text, NULL, NULL },
+    { NULL }
+  };
+  GOptionContext* context;
+  gchar **argv;
+  gint argc;
+  GError *error = NULL;
+
+  g_test_bug ("646926");
+
+  argv = split_string ("program --known=foo --known=bar --unknown=baz", &argc);
+
+  context = g_option_context_new (NULL);
+
+  g_option_context_add_main_entries (context, entries, NULL);
+  g_option_context_set_ignore_unknown_options (context, FALSE);
+  g_option_context_parse (context, &argc, &argv, &error);
+
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_UNKNOWN_OPTION);
+  g_assert_null (text);
+
+  g_option_context_free (context);
+  g_clear_error (&error);
+
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -2589,7 +2621,8 @@ main (int   argc,
   g_test_add_func ("/option/bug/lonely-dash", lonely_dash_test);
   g_test_add_func ("/option/bug/missing-arg", missing_arg_test);
   g_test_add_func ("/option/bug/dash-arg", dash_arg_test);
-  g_test_add_func ("/option/bug/short-remaining", short_remaining); 
+  g_test_add_func ("/option/bug/short-remaining", short_remaining);
+  g_test_add_func ("/option/bug/double-free", double_free);
 
   return g_test_run();
 }
