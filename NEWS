@@ -1,3 +1,30 @@
+Overview of changes in GLib 2.49.7
+==================================
+
+* Add g_log_variant, binding-friendly api for structured logging
+
+Bugs fixed:
+ 646926 arg_data invalid after g_option_context_parse() fails
+
+* Translation updates:
+ Danish
+ Finnish
+ Galician
+ German
+ Hebrew
+ Kazakh
+ Korean
+ Latvian
+ Lithuanian
+ Polish
+ Portuguese
+ Serbian
+ Slovak
+ Spanish
+ Swedish
+ Thai
+
+
 Overview of changes in GLib 2.49.6
 ==================================
 
