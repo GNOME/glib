@@ -1733,11 +1733,15 @@ fi
 dnl ************************
 dnl *** check for libmount ***
 dnl ************************
+
+dnl The fallback code doesn't really implement the same behaviors - e.g.
+dnl so on linux we want to require libmount unless specifically disabled
+dnl
+enable_libmount_default=${glib_os_linux:-no}
 AC_ARG_ENABLE(libmount,
               [AS_HELP_STRING([--enable-libmount],
-                              [build with libmount support [default=no]])],,
-              [enable_libmount=no])
-
+                              [build with libmount support [default for Linux]])],,
+              [enable_libmount=$enable_libmount_default])
 AS_IF([ test "x$enable_libmount" = "xyes"],[
 PKG_CHECK_MODULES([LIBMOUNT], [mount >= 2.28], [have_libmount=yes], [have_libmount=maybe])
 AS_IF([ test $have_libmount = maybe ], [
@@ -1750,6 +1754,9 @@ AS_IF([ test $have_libmount = maybe ], [
     have_libmount=yes
   fi
 ])
+if test $have_libmount = no ; then
+   AC_MSG_ERROR([*** Could not find libmount])
+fi
 ])
 
 if test x$have_libmount = xyes; then
