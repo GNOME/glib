@@ -424,7 +424,7 @@ g_callable_info_get_return_attribute (GICallableInfo  *info,
 /**
  * g_callable_info_iterate_return_attributes:
  * @info: a #GICallableInfo
- * @iterator: a #GIAttributeIter structure, must be initialized; see below
+ * @iterator: (inout): a #GIAttributeIter structure, must be initialized; see below
  * @name: (out) (transfer none): Returned name, must not be freed
  * @value: (out) (transfer none): Returned name, must not be freed
  *

@@ -558,7 +558,7 @@ _attribute_blob_find_first (GIBaseInfo *info,
 /**
  * g_base_info_iterate_attributes:
  * @info: a #GIBaseInfo
- * @iterator: a #GIAttributeIter structure, must be initialized; see below
+ * @iterator: (inout): a #GIAttributeIter structure, must be initialized; see below
  * @name: (out) (transfer none): Returned name, must not be freed
  * @value: (out) (transfer none): Returned name, must not be freed
  *
