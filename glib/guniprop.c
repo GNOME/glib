@@ -1421,6 +1421,14 @@ static const guint32 iso15924_tags[] =
     PACK ('M','u','l','t'), /* G_UNICODE_SCRIPT_MULTANI */
     PACK ('H','u','n','g'), /* G_UNICODE_SCRIPT_OLD_HUNGARIAN */
     PACK ('S','g','n','w'), /* G_UNICODE_SCRIPT_SIGNWRITING */
+
+  /* Unicode 9.0 additions */
+    PACK ('O','s','g','e'), /* G_UNICODE_SCRIPT_OSAGE */
+    PACK ('N','e','w','a'), /* G_UNICODE_SCRIPT_NEWA */
+    PACK ('B','h','k','s'), /* G_UNICODE_SCRIPT_BHAIKSUKI */
+    PACK ('M','a','r','c'), /* G_UNICODE_SCRIPT_MARCHEN */
+    PACK ('T','a','n','g'), /* G_UNICODE_SCRIPT_TANGUT */
+    PACK ('A','d','l','m'), /* G_UNICODE_SCRIPT_ADLAM */
 #undef PACK
 };
 
