@@ -1604,7 +1604,7 @@ g_log_structured (const gchar    *log_domain,
 
 /**
  * g_log_variant:
- * @log_domain: log domain, usually %G_LOG_DOMAIN
+ * @log_domain: (allow-none): log domain, usually %G_LOG_DOMAIN
  * @log_level: log level, either from #GLogLevelFlags, or a user-defined
  *    level
  * @fields: a dictionary (#GVariant of the type %G_VARIANT_TYPE_VARDICT)
