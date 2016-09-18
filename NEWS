@@ -1,3 +1,15 @@
+Overview of changes in GLib 2.50.0
+==================================
+
+* Bugs fixed:
+ 771438 Turn on libmount by default on linux
+        Fix the annotation for g_log_variant
+
+* Translation updates:
+ British English
+ French
+
+
 Overview of changes in GLib 2.49.7
 ==================================
 
