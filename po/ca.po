@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-12 04:15+0200\n"
+"POT-Creation-Date: 2016-09-19 22:37+0200\n"
 "PO-Revision-Date: 2016-08-12 04:15+0200\n"
 "Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -42,7 +42,7 @@ msgstr "Sobreescriu l'identificador de l'aplicació"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gio-tool.c:209 ../gio/gresource-tool.c:488
-#: ../gio/gsettings-tool.c:512
+#: ../gio/gsettings-tool.c:520
 msgid "Print help"
 msgstr "Mostra l'ajuda"
 
@@ -55,7 +55,7 @@ msgstr "[ORDRE]"
 msgid "Print version"
 msgstr "Mostra la versió"
 
-#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:518
+#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:526
 msgid "Print version information and exit"
 msgstr "Mostra la informació de la versió i surt"
 
@@ -119,9 +119,9 @@ msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
 "Identificador de l'aplicació en format D-Bus (p. ex.: org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:622
-#: ../gio/glib-compile-resources.c:653 ../gio/gresource-tool.c:495
-#: ../gio/gresource-tool.c:561
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:626 ../gio/glib-compile-resources.c:652
+#: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "FITXER"
 
@@ -146,7 +146,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "Paràmetre opcional per la invocació de l'acció, en format GVariant"
 
 #: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:526
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:612
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -160,7 +160,7 @@ msgid "Usage:\n"
 msgstr "Forma d'ús:\n"
 
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:551
-#: ../gio/gsettings-tool.c:632
+#: ../gio/gsettings-tool.c:647
 msgid "Arguments:\n"
 msgstr "Arguments:\n"
 
@@ -1681,7 +1681,6 @@ msgstr "Llista els continguts de les ubicacions en un arbre"
 msgid "Use %s to get detailed help.\n"
 msgstr "Feu servir %s per obtenir ajuda detallada.\n"
 
-
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-cat.c:124 ../gio/gio-tool-info.c:278
 #: ../gio/gio-tool-list.c:165 ../gio/gio-tool-mkdir.c:48
@@ -1728,7 +1727,8 @@ msgstr "Conserva tots els atributs"
 #: ../gio/gio-tool-copy.c:46 ../gio/gio-tool-move.c:41
 #: ../gio/gio-tool-save.c:49
 msgid "Backup existing destination files"
-msgstr "Crea una còpia de seguretat dels fitxers existents al directori de destinació"
+msgstr ""
+"Crea una còpia de seguretat dels fitxers existents al directori de destinació"
 
 #: ../gio/gio-tool-copy.c:47
 msgid "Never follow symbolic links"
@@ -1768,7 +1768,7 @@ msgstr "La destinació «%s» no és un directori"
 
 #: ../gio/gio-tool-copy.c:187 ../gio/gio-tool-move.c:181
 #, c-format
-msgid "%s: overwrite '%s' ? "
+msgid "%s: overwrite '%s'? "
 msgstr "%s: voleu sobreescriure «%s»?"
 
 #: ../gio/gio-tool-info.c:34
@@ -1861,7 +1861,7 @@ msgid ""
 "namespace, e.g. unix, or by '*', which matches all attributes"
 msgstr ""
 
-#: ../gio/gio-tool-info.c:307
+#: ../gio/gio-tool-info.c:307 ../gio/gio-tool-mkdir.c:74
 msgid "No locations given"
 msgstr "No s'ha donat cap ubicació"
 
@@ -1924,7 +1924,7 @@ msgid "Default application for '%s': %s\n"
 msgstr "Aplicació per defecte per a «%s»: %s\n"
 
 #: ../gio/gio-tool-mime.c:124
-#,c-format
+#, c-format
 msgid "Registered applications:\n"
 msgstr "Aplicacions registrades:\n"
 
@@ -1944,7 +1944,7 @@ msgid "No recommended applications\n"
 msgstr "No hi ha cap aplicació recomanada\n"
 
 #: ../gio/gio-tool-mime.c:159
-#,  c-format
+#, c-format
 msgid "Failed to load info for handler '%s'\n"
 msgstr "No s'ha pogut carregar la informació del gestor «%s»\n"
 
@@ -1969,10 +1969,6 @@ msgid ""
 "like smb://server/resource/mydir as location."
 msgstr ""
 
-#: ../gio/gio-tool-mkdir.c:74
-msgid "No locations gives"
-msgstr "No s'ha donat cap ubicació"
-
 #: ../gio/gio-tool-monitor.c:37
 msgid "Monitor a directory (default: depends on type)"
 msgstr "Fes el seguiment a un directori (per defecte: depèn del tipus)"
@@ -1983,7 +1979,9 @@ msgstr "Fes el seguiment a un fitxer (per defecte: depèn del tipus)"
 
 #: ../gio/gio-tool-monitor.c:41
 msgid "Monitor a file directly (notices changes made via hardlinks)"
-msgstr "Fes el seguiment a un fitxer directament (s'adona de canvis fets mitjançant enllaços forts)"
+msgstr ""
+"Fes el seguiment a un fitxer directament (s'adona de canvis fets mitjançant "
+"enllaços forts)"
 
 #: ../gio/gio-tool-monitor.c:43
 msgid "Monitors a file directly, but doesn't report changes"
@@ -1991,7 +1989,9 @@ msgstr "Fes el seguiment a un fitxer directament, però no informa dels canvis"
 
 #: ../gio/gio-tool-monitor.c:45
 msgid "Report moves and renames as simple deleted/created events"
-msgstr "Informa de moviments i canvis de nom com a esdeveniments de supressió i creació simples"
+msgstr ""
+"Informa de moviments i canvis de nom com a esdeveniments de supressió i "
+"creació simples"
 
 #: ../gio/gio-tool-monitor.c:47
 msgid "Watch for mount events"
@@ -2054,7 +2054,8 @@ msgstr "Mostra informació addicional"
 #: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
 #, c-format
 msgid "Error mounting location: Anonymous access denied\n"
-msgstr "S'ha produït un error en muntar la ubicació: s'ha denegat l'accés anònim\n"
+msgstr ""
+"S'ha produït un error en muntar la ubicació: s'ha denegat l'accés anònim\n"
 
 #: ../gio/gio-tool-mount.c:248 ../gio/gio-tool-mount.c:278
 #, c-format
@@ -2087,7 +2088,7 @@ msgid "Mounted %s at %s\n"
 msgstr "S'ha muntat %s a %s\n"
 
 #: ../gio/gio-tool-mount.c:941
-#,c-format
+#, c-format
 msgid "No volume for device file %s\n"
 msgstr "No hi ha cap volum pel fitxer de dispositiu %s\n"
 
@@ -2102,7 +2103,6 @@ msgid "Don't use copy and delete fallback"
 msgstr "no usis enllaços durs locals, sempre copia"
 
 #: ../gio/gio-tool-move.c:99
-#, fuzzy
 msgid "Move one or more files from SOURCE to DEST."
 msgstr "Mou un, o més, fitxers des de la FONT a la DESTINACIÓ."
 
@@ -2114,12 +2114,11 @@ msgid ""
 msgstr ""
 
 #: ../gio/gio-tool-move.c:139
-#, fuzzy, c-format
+#, c-format
 msgid "Target %s is not a directory"
-msgstr "la destinació %s no és un directori"
+msgstr "La destinació %s no és un directori"
 
 #: ../gio/gio-tool-open.c:50
-#, fuzzy
 msgid ""
 "Open files with the default application that\n"
 "is registered to handle files of this type."
@@ -2128,12 +2127,10 @@ msgstr ""
 "defecte per gestionar aquest tipus de fitxer."
 
 #: ../gio/gio-tool-open.c:69
-#, fuzzy
 msgid "No files to open"
-msgstr "Fitxers a obrir"
+msgstr "Cap fitxer a obrir"
 
 #: ../gio/gio-tool-remove.c:31 ../gio/gio-tool-trash.c:31
-#, fuzzy
 msgid "Ignore nonexistent files, never prompt"
 msgstr "Ignora els fitxers que no existeixin, no ho preguntis mai"
 
@@ -2177,24 +2174,20 @@ msgid "Append to end of file"
 msgstr "Afegeix al final del fitxer"
 
 #: ../gio/gio-tool-save.c:52
-#, fuzzy
 msgid "When creating, restrict access to the current user"
 msgstr "En crear un fitxer, limita'n l'accés a només l'usuari actual"
 
 #: ../gio/gio-tool-save.c:53
-#, fuzzy
 msgid "When replacing, replace as if the destination did not exist"
 msgstr "Quan es reemplaci, fes com si el destí no existís"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: ../gio/gio-tool-save.c:55
-#, fuzzy
 msgid "Print new etag at end"
 msgstr "Mostra la nova etag al final"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: ../gio/gio-tool-save.c:57
-#, fuzzy
 msgid "The etag of the file being overwritten"
 msgstr "L'etag del fitxer que s'està sobreescrivint"
 
@@ -2209,7 +2202,6 @@ msgid "Etag not available\n"
 msgstr "L'etag no està disponible\n"
 
 #: ../gio/gio-tool-save.c:168
-#, fuzzy
 msgid "Read from standard input and save to DEST."
 msgstr "Llegeix de l'entrada estàndard i desa-ho a la DESTINACIÓ."
 
@@ -2226,18 +2218,16 @@ msgid "Type of the attribute"
 msgstr "El tipus de l'atribut"
 
 #: ../gio/gio-tool-set.c:33
-#, fuzzy
 msgid "TYPE"
-msgstr "tipus"
+msgstr "TIPUS"
 
 #: ../gio/gio-tool-set.c:89
 msgid "ATTRIBUTE"
 msgstr "ATRIBUT"
 
 #: ../gio/gio-tool-set.c:89
-#, fuzzy
 msgid "VALUE"
-msgstr "Valor"
+msgstr "VALOR"
 
 #: ../gio/gio-tool-set.c:93
 #, fuzzy
@@ -2245,22 +2235,19 @@ msgid "Set a file attribute of LOCATION."
 msgstr "Establiu un atribut de fitxer a la UBICACIÓ."
 
 #: ../gio/gio-tool-set.c:111
-#, fuzzy
 msgid "Location not specified"
-msgstr "No s'ha especificat la ubicació\n"
+msgstr "No s'ha especificat la ubicació"
 
 #: ../gio/gio-tool-set.c:119
-#, fuzzy
 msgid "Attribute not specified"
-msgstr "No s'ha especificat l'atribut\n"
+msgstr "No s'ha especificat l'atribut"
 
 #: ../gio/gio-tool-set.c:128
-#, fuzzy
 msgid "Value not specified"
-msgstr "No s'ha especificat el valor\n"
+msgstr "No s'ha especificat el valor"
 
 #: ../gio/gio-tool-set.c:176
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid attribute type %s\n"
 msgstr "El tipus d'atribut no és vàlid %s\n"
 
@@ -2270,22 +2257,18 @@ msgid "Error setting attribute: %s\n"
 msgstr "S'ha produït un error en establir l'atribut: %s\n"
 
 #: ../gio/gio-tool-trash.c:32
-#, fuzzy
 msgid "Empty the trash"
 msgstr "Buida la paperera"
 
 #: ../gio/gio-tool-trash.c:86
-#, fuzzy
 msgid "Move files or directories to the trash."
 msgstr "Mou els fitxers o directoris a la paperera."
 
 #: ../gio/gio-tool-tree.c:33
-#, fuzzy
 msgid "Follow symbolic links, mounts and shortcuts"
 msgstr "Segueix els enllaços simbòlics, els punts de muntatge i les dreceres"
 
 #: ../gio/gio-tool-tree.c:244
-#, fuzzy
 msgid "List contents of directories in a tree-like format."
 msgstr "Llista el contingut dels directoris en un format d'arbre."
 
@@ -2334,16 +2317,16 @@ msgstr "S'ha produït un error en llegir el fitxer %s: %s"
 msgid "Error compressing file %s"
 msgstr "S'ha produït un error en comprimir el fitxer %s"
 
-#: ../gio/glib-compile-resources.c:470 ../gio/glib-compile-schemas.c:1603
+#: ../gio/glib-compile-resources.c:469 ../gio/glib-compile-schemas.c:1603
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "no pot haver-hi text dins de <%s>"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:620
 msgid "name of the output file"
 msgstr "el nom del fitxer de sortida"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:621
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
@@ -2351,46 +2334,50 @@ msgstr ""
 "Els directoris des d'on s'han de llegir els fitxers (per defecte és el "
 "directori actual)"
 
-#: ../gio/glib-compile-resources.c:623 ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2036
 #: ../gio/glib-compile-schemas.c:2065
 msgid "DIRECTORY"
 msgstr "DIRECTORI"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:622
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Genera la sortida en el format seleccionat per l'extensió del nom de fitxer "
 "de destinació"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:623
 msgid "Generate source header"
 msgstr "Genera la capçalera del codi"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:624
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Genera el codi font que es fa servir per enllaçar el fitxer de recurs amb el "
 "codi"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:625
 msgid "Generate dependency list"
 msgstr "Genera una llista de dependències"
 
-#: ../gio/glib-compile-resources.c:628
+#: ../gio/glib-compile-resources.c:626
+msgid "name of the dependency file to generate"
+msgstr ""
+
+#: ../gio/glib-compile-resources.c:627
 msgid "Don't automatically create and register resource"
 msgstr "No creïs ni registris automàticament els recursos"
 
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:628
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "No exportis les funcions, declara-les com a «G_GNUC_INTERNAL»"
 
-#: ../gio/glib-compile-resources.c:630
+#: ../gio/glib-compile-resources.c:629
 msgid "C identifier name used for the generated source code"
 msgstr ""
 "El nom de l'identificador de C que s'utilitzarà en el codi font generat"
 
-#: ../gio/glib-compile-resources.c:656
+#: ../gio/glib-compile-resources.c:655
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2400,7 +2387,7 @@ msgstr ""
 "Els fitxers d'especificació de recursos tenen l'extensió .gresource.xml\n"
 "i els fitxers de recursos tenen l'extensió .gresource."
 
-#: ../gio/glib-compile-resources.c:672
+#: ../gio/glib-compile-resources.c:671
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Heu de donar un sol nom de fitxer\n"
@@ -2751,14 +2738,14 @@ msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "No s'ha pogut enviar el fitxer a la paperera: %s"
 
 #: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2221
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to trash file %s: %s"
-msgstr "No s'ha pogut enviar el fitxer a la paperera: %s"
+msgstr "No s'ha pogut enviar el fitxer a la paperera %s: %s"
 
 #: ../gio/glocalfile.c:2227
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to trash file %s"
-msgstr "No s'ha pogut enviar el fitxer a la paperera: %s"
+msgstr "No s'ha pogut enviar el fitxer %s a la paperera"
 
 #: ../gio/glocalfile.c:2253
 #, fuzzy, c-format
@@ -2801,7 +2788,7 @@ msgstr "S'ha produït un error en suprimir el fitxer objectiu: %s"
 
 #: ../gio/glocalfile.c:2428
 msgid "Move between mounts not supported"
-msgstr "No està implementat el moure entre muntatges"
+msgstr "No està implementat moure entre muntatges"
 
 #: ../gio/glocalfile.c:2619
 #, c-format
@@ -3051,7 +3038,7 @@ msgstr ""
 #. * don't implement remount.
 #: ../gio/gmount.c:720
 msgid "mount doesn't implement \"remount\""
-msgstr "el muntatge no implementa el tornar-se a muntar («remount»)"
+msgstr "el muntatge no implementa tornar-se a muntar («remount»)"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -3225,7 +3212,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SECCIÓ   El nom (opcional) d'una secció elf\n"
 
-#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:639
+#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:654
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  ORDRE     L'ordre (opcional) que s'explicarà\n"
 
@@ -3259,7 +3246,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  CAMÍ      Un camí de recurs\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:830
+#: ../gio/gsettings-tool.c:851
 #, c-format
 msgid "No such schema '%s'\n"
 msgstr "No existeix l'esquema «%s»\n"
@@ -3295,38 +3282,38 @@ msgstr "El camí ha d'acabar amb una barra inclinada (/)\n"
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "El camí no pot contenir dues barres inclinades seguides (//)\n"
 
-#: ../gio/gsettings-tool.c:481
+#: ../gio/gsettings-tool.c:489
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "El valor proporcionat està fora del rang vàlid\n"
 
-#: ../gio/gsettings-tool.c:488
+#: ../gio/gsettings-tool.c:496
 #, c-format
 msgid "The key is not writable\n"
 msgstr "La clau no és d'escriptura\n"
 
-#: ../gio/gsettings-tool.c:524
+#: ../gio/gsettings-tool.c:532
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Llista els esquemes instal·lats (que no es poden canviar de lloc)"
 
-#: ../gio/gsettings-tool.c:530
+#: ../gio/gsettings-tool.c:538
 msgid "List the installed relocatable schemas"
 msgstr "Llista els esquemes instal·lats que es poden canviar de lloc"
 
-#: ../gio/gsettings-tool.c:536
+#: ../gio/gsettings-tool.c:544
 msgid "List the keys in SCHEMA"
 msgstr "Llista les claus a l'ESQUEMA"
 
-#: ../gio/gsettings-tool.c:537 ../gio/gsettings-tool.c:543
-#: ../gio/gsettings-tool.c:580
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:551
+#: ../gio/gsettings-tool.c:594
 msgid "SCHEMA[:PATH]"
 msgstr "ESQUEMA[:CAMÍ]"
 
-#: ../gio/gsettings-tool.c:542
+#: ../gio/gsettings-tool.c:550
 msgid "List the children of SCHEMA"
 msgstr "Llista els fills de l'ESQUEMA"
 
-#: ../gio/gsettings-tool.c:548
+#: ../gio/gsettings-tool.c:556
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3334,44 +3321,50 @@ msgstr ""
 "Llista les claus i els valors recursivament\n"
 "Si no es passa cap ESQUEMA, es llista totes les claus\n"
 
-#: ../gio/gsettings-tool.c:550
+#: ../gio/gsettings-tool.c:558
 msgid "[SCHEMA[:PATH]]"
 msgstr "[ESQUEMA[:CAMÍ]]"
 
-#: ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:563
 msgid "Get the value of KEY"
 msgstr "Obtén el valor de la CLAU"
 
-#: ../gio/gsettings-tool.c:556 ../gio/gsettings-tool.c:562
-#: ../gio/gsettings-tool.c:574 ../gio/gsettings-tool.c:586
+#: ../gio/gsettings-tool.c:564 ../gio/gsettings-tool.c:570
+#: ../gio/gsettings-tool.c:576 ../gio/gsettings-tool.c:588
+#: ../gio/gsettings-tool.c:600
 msgid "SCHEMA[:PATH] KEY"
 msgstr "ESQUEMA[:CAMÍ] CLAU"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:569
 msgid "Query the range of valid values for KEY"
 msgstr "Consulta el rang de valors vàlids per a la CLAU"
 
-#: ../gio/gsettings-tool.c:567
+#: ../gio/gsettings-tool.c:575
+#, fuzzy
+msgid "Query the description for KEY"
+msgstr "Consulta el rang de valors vàlids per a la CLAU"
+
+#: ../gio/gsettings-tool.c:581
 msgid "Set the value of KEY to VALUE"
 msgstr "Estableix el valor de la CLAU a VALOR"
 
-#: ../gio/gsettings-tool.c:568
+#: ../gio/gsettings-tool.c:582
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "ESQUEMA[:CAMÍ] CLAU VALOR"
 
-#: ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:587
 msgid "Reset KEY to its default value"
 msgstr "Reinicia la CLAU al seu valor predeterminat"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:593
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Reinicia totes les claus de l'ESQUEMA als seus valors per defecte"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:599
 msgid "Check if KEY is writable"
 msgstr "Comprova si la CLAU és d'escriptura"
 
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:605
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3382,11 +3375,11 @@ msgstr ""
 "totes les claus de l'ESQUEMA.\n"
 "Utilitzeu ^C per deixar de fer el seguiment.\n"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:608
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "ESQUEMA[:CAMÍ] [CLAU]"
 
-#: ../gio/gsettings-tool.c:606
+#: ../gio/gsettings-tool.c:620
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3400,6 +3393,7 @@ msgid ""
 "  list-children             List children of a schema\n"
 "  list-recursively          List keys and values, recursively\n"
 "  range                     Queries the range of a key\n"
+"  describe                  Queries the description of a key\n"
 "  get                       Get the value of a key\n"
 "  set                       Set the value of a key\n"
 "  reset                     Reset the value of a key\n"
@@ -3433,7 +3427,7 @@ msgstr ""
 "Utilitzeu «gsettings help ORDRE» per veure l'ajuda més detallada.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:629
+#: ../gio/gsettings-tool.c:644
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3448,12 +3442,12 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:635
+#: ../gio/gsettings-tool.c:650
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr ""
 "  DIRECTORI_D'ESQUEMES Un directori on cercar-hi esquemes addicionals\n"
 
-#: ../gio/gsettings-tool.c:643
+#: ../gio/gsettings-tool.c:658
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3461,34 +3455,34 @@ msgstr ""
 "  ESQUEMA   El nom de l'esquema\n"
 "  CAMÍ      El camí, pels esquemes que es poden canviar de lloc\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:663
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  CLAU      La clau (opcional) de l'esquema\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:667
 msgid "  KEY       The key within the schema\n"
 msgstr "  CLAU      La clau de l'esquema\n"
 
-#: ../gio/gsettings-tool.c:656
+#: ../gio/gsettings-tool.c:671
 msgid "  VALUE     The value to set\n"
 msgstr "  VALOR     El valor a establir\n"
 
-#: ../gio/gsettings-tool.c:711
+#: ../gio/gsettings-tool.c:726
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "No s'han pogut carregar els esquemes %s: %s\n"
 
-#: ../gio/gsettings-tool.c:723
+#: ../gio/gsettings-tool.c:738
 #, c-format
 msgid "No schemas installed\n"
 msgstr "No hi ha cap esquema instal·lat\n"
 
-#: ../gio/gsettings-tool.c:788
+#: ../gio/gsettings-tool.c:809
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "S'ha donat un nom d'esquema buit\n"
 
-#: ../gio/gsettings-tool.c:843
+#: ../gio/gsettings-tool.c:864
 #, c-format
 msgid "No such key '%s'\n"
 msgstr "No existeix la clau «%s»\n"
@@ -4827,17 +4821,17 @@ msgstr "No es pot analitzar el valor doble «%s» per a %s"
 msgid "Double value '%s' for %s out of range"
 msgstr "El valor doble «%s» per a %s és fora de l'interval"
 
-#: ../glib/goption.c:1442 ../glib/goption.c:1521
+#: ../glib/goption.c:1448 ../glib/goption.c:1527
 #, c-format
 msgid "Error parsing option %s"
 msgstr "S'ha produït un error en analitzar l'opció %s"
 
-#: ../glib/goption.c:1552 ../glib/goption.c:1665
+#: ../glib/goption.c:1558 ../glib/goption.c:1671
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Manca un argument per a %s"
 
-#: ../glib/goption.c:2126
+#: ../glib/goption.c:2132
 #, c-format
 msgid "Unknown option %s"
 msgstr "Es desconeix l'opció %s"
@@ -5012,7 +5006,7 @@ msgstr "no es poden utilitzar els elements d'ordenació de POSIX"
 
 #: ../glib/gregex.c:419
 msgid "character value in \\x{...} sequence is too large"
-msgstr "el valor del caràcter a la seqüència «\\x{...}» és massa llarg"
+msgstr "el valor del caràcter a la seqüència «\\x{...}» és massa gran"
 
 #: ../glib/gregex.c:422
 msgid "invalid condition (?(0)"
@@ -5148,9 +5142,9 @@ msgstr "el nom és massa llarg a «(*MARK)«, «(*PRUNE)«, «(*SKIP)» o «(*TH
 
 #: ../glib/gregex.c:523
 msgid "character value in \\u.... sequence is too large"
-msgstr "el valor del caràcter a la seqüència «\\u...» és massa llarg"
+msgstr "el valor del caràcter a la seqüència «\\u...» és massa gran"
 
-#: ../glib/gregex.c:746 ../glib/gregex.c:1973
+#: ../glib/gregex.c:746 ../glib/gregex.c:1977
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "S'ha produït un error en fer coincidir l'expressió regular %s: %s"
@@ -5179,43 +5173,43 @@ msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr ""
 "S'ha produït un error en compilar l'expressió regular %s al caràcter %d: %s"
 
-#: ../glib/gregex.c:2409
+#: ../glib/gregex.c:2413
 msgid "hexadecimal digit or '}' expected"
 msgstr "s'esperava un dígit hexadecimal o bé «}»"
 
-#: ../glib/gregex.c:2425
+#: ../glib/gregex.c:2429
 msgid "hexadecimal digit expected"
 msgstr "s'esperava un dígit hexadecimal"
 
-#: ../glib/gregex.c:2465
+#: ../glib/gregex.c:2469
 msgid "missing '<' in symbolic reference"
 msgstr "falta un «<» en la referència simbòlica"
 
-#: ../glib/gregex.c:2474
+#: ../glib/gregex.c:2478
 msgid "unfinished symbolic reference"
 msgstr "la referència simbòlica no està acabada"
 
-#: ../glib/gregex.c:2481
+#: ../glib/gregex.c:2485
 msgid "zero-length symbolic reference"
 msgstr "referència simbòlica de longitud zero"
 
-#: ../glib/gregex.c:2492
+#: ../glib/gregex.c:2496
 msgid "digit expected"
 msgstr "s'esperava un dígit"
 
-#: ../glib/gregex.c:2510
+#: ../glib/gregex.c:2514
 msgid "illegal symbolic reference"
 msgstr "la referència simbòlica no és vàlida"
 
-#: ../glib/gregex.c:2572
+#: ../glib/gregex.c:2576
 msgid "stray final '\\'"
 msgstr "«\\» final extraviat"
 
-#: ../glib/gregex.c:2576
+#: ../glib/gregex.c:2580
 msgid "unknown escape sequence"
 msgstr "no es reconeix la seqüència d'escapament"
 
-#: ../glib/gregex.c:2586
+#: ../glib/gregex.c:2590
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
@@ -5478,6 +5472,9 @@ msgstr[1] "%s bytes"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "No locations gives"
+#~ msgstr "No s'ha donat cap ubicació"
 
 #~ msgid "Error renaming file: %s"
 #~ msgstr "S'ha produït un error en canviar el nom del fitxer: %s"
