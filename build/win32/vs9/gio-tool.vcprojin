@@ -31,6 +31,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\gio;..\..\..\gmodule"
 				PreprocessorDefinitions="_DEBUG;$(GioInBuildMacro)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -58,7 +59,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=""
+				AdditionalIncludeDirectories="..\..\..\gio;..\..\..\gmodule"
 				PreprocessorDefinitions="_DEBUG;$(GioInBuildMacro)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -93,6 +94,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
+				AdditionalIncludeDirectories="..\..\..\gio;..\..\..\gmodule"
 				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="$(GioInBuildMacro)"
 				RuntimeLibrary="2"
@@ -122,8 +124,8 @@
 			>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\gmodule"
 				PreprocessorDefinitions="$(GioInBuildMacro)"
+				AdditionalIncludeDirectories="..\..\..\gio;..\..\..\gmodule"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
