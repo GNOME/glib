@@ -1461,6 +1461,8 @@ g_source_add_child_source (GSource *source,
   if (context)
     LOCK_CONTEXT (context);
 
+  TRACE (GLIB_SOURCE_ADD_CHILD_SOURCE (source, child_source));
+
   source->priv->child_sources = g_slist_prepend (source->priv->child_sources,
 						 g_source_ref (child_source));
   child_source->priv->parent_source = source;

@@ -548,6 +548,18 @@ probe glib.source_set_priority = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.
 }
 
 /**
+ * probe glib.source_add_child_source - Called when a child #GSource is added to another
+ * @source: the parent #GSource
+ * @child_source: the child #GSource
+ */
+probe glib.source_add_child_source = process("@ABS_GLIB_RUNTIME_LIBDIR@/libglib-2.0.so.0.@LT_CURRENT@.@LT_REVISION@").mark("source__add_child_source")
+{
+  source = $arg1;
+  child_source = $arg2;
+  probestr = sprintf("glib.source_add_child_source(%p, %p)", source, child_source);
+}
+
+/**
  * probe glib.source_set_name - Called when the name is set for a #GSource
  * @source: the #GSource
  * @name: the new name

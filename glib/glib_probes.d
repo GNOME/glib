@@ -39,6 +39,7 @@ provider glib {
 	probe source__set_callback_indirect(void*, void*, void*, void*, void*);
 	probe source__set_ready_time(void*, unsigned int);
 	probe source__set_priority(void*, void*, unsigned int);
+	probe source__add_child_source(void*, void*);
 	probe source__set_name(void*, const char*);
 	probe source__before_free(void*, void*, void*);
 	probe thread__spawned(void*, void*, char*);
