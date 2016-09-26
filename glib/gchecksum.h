@@ -33,6 +33,7 @@ G_BEGIN_DECLS
  * @G_CHECKSUM_MD5: Use the MD5 hashing algorithm
  * @G_CHECKSUM_SHA1: Use the SHA-1 hashing algorithm
  * @G_CHECKSUM_SHA256: Use the SHA-256 hashing algorithm
+ * @G_CHECKSUM_SHA384: Use the SHA-384 hashing algorithm (Since: 2.51)
  * @G_CHECKSUM_SHA512: Use the SHA-512 hashing algorithm (Since: 2.36)
  *
  * The hashing algorithm to be used by #GChecksum when performing the
@@ -47,6 +48,7 @@ typedef enum {
   G_CHECKSUM_MD5,
   G_CHECKSUM_SHA1,
   G_CHECKSUM_SHA256,
+  G_CHECKSUM_SHA384,
   G_CHECKSUM_SHA512
 } GChecksumType;
 

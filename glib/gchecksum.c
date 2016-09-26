@@ -100,14 +100,16 @@ typedef struct
   guchar digest[SHA256_DIGEST_LEN];
 } Sha256sum;
 
-#define SHA512_BLOCK_LEN       128 /* 1024 bits message block */
+/* SHA2 is common thing for SHA-384, SHA-512, SHA-512/224 and SHA-512/256 */
+#define SHA2_BLOCK_LEN         128 /* 1024 bits message block */
+#define SHA384_DIGEST_LEN       48
 #define SHA512_DIGEST_LEN       64
 
 typedef struct
 {
   guint64 H[8];
 
-  guint8 block[SHA512_BLOCK_LEN];
+  guint8 block[SHA2_BLOCK_LEN];
   guint8 block_len;
 
   guint64 data_len[2];
@@ -1084,16 +1086,17 @@ sha256_sum_digest (Sha256sum *sha256,
 }
 
 /*
- * SHA-512 Checksum
+ * SHA-384, SHA-512, SHA-512/224 and SHA-512/256 Checksums
  *
- * Implemented following FIPS-180-2 standard at
- * http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf.
+ * Implemented following FIPS-180-4 standard at
+ * http://csrc.nist.gov/publications/fips/fips180-4/fips180-4.pdf.
  * References in the form [§x.y.z] map to sections in that document.
  *
- *   Author: Eduardo Lima Mitev <elima@igalia.com>
+ *   Author(s): Eduardo Lima Mitev <elima@igalia.com>
+ *              Igor Gnatenko <ignatenko@src.gnome.org>
  */
 
-/* SHA-384 and SHA-512 functions [§4.1.3] */
+/* SHA-384, SHA-512, SHA-512/224 and SHA-512/256 functions [§4.1.3] */
 #define Ch(x,y,z)  ((x & y) ^ (~x & z))
 #define Maj(x,y,z) ((x & y) ^ (x & z) ^ (y & z))
 #define SHR(n,x)   (x >> n)
@@ -1113,27 +1116,8 @@ sha256_sum_digest (Sha256sum *sha256,
     (b)[(i) + 6] = (guint8) (n >>  8);                   \
     (b)[(i) + 7] = (guint8) (n      ); } G_STMT_END
 
-static void
-sha512_sum_init (Sha512sum *sha512)
-{
-  /* Initial Hash Value [§5.3.4] */
-  sha512->H[0] = 0x6a09e667f3bcc908;
-  sha512->H[1] = 0xbb67ae8584caa73b;
-  sha512->H[2] = 0x3c6ef372fe94f82b;
-  sha512->H[3] = 0xa54ff53a5f1d36f1;
-  sha512->H[4] = 0x510e527fade682d1;
-  sha512->H[5] = 0x9b05688c2b3e6c1f;
-  sha512->H[6] = 0x1f83d9abfb41bd6b;
-  sha512->H[7] = 0x5be0cd19137e2179;
-
-  sha512->block_len = 0;
-
-  sha512->data_len[0] = 0;
-  sha512->data_len[1] = 0;
-}
-
 /* SHA-384 and SHA-512 constants [§4.2.3] */
-static const guint64 SHA512_K[80] = {
+static const guint64 SHA2_K[80] = {
   0x428a2f98d728ae22, 0x7137449123ef65cd,
   0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc,
   0x3956c25bf348b538, 0x59f111f1b605d019,
@@ -1176,9 +1160,48 @@ static const guint64 SHA512_K[80] = {
   0x5fcb6fab3ad6faec, 0x6c44198c4a475817
 };
 
+
+static void
+sha384_sum_init (Sha512sum *sha512)
+{
+  /* Initial Hash Value [§5.3.4] */
+  sha512->H[0] = 0xcbbb9d5dc1059ed8;
+  sha512->H[1] = 0x629a292a367cd507;
+  sha512->H[2] = 0x9159015a3070dd17;
+  sha512->H[3] = 0x152fecd8f70e5939;
+  sha512->H[4] = 0x67332667ffc00b31;
+  sha512->H[5] = 0x8eb44a8768581511;
+  sha512->H[6] = 0xdb0c2e0d64f98fa7;
+  sha512->H[7] = 0x47b5481dbefa4fa4;
+
+  sha512->block_len = 0;
+
+  sha512->data_len[0] = 0;
+  sha512->data_len[1] = 0;
+}
+
+static void
+sha512_sum_init (Sha512sum *sha512)
+{
+  /* Initial Hash Value [§5.3.5] */
+  sha512->H[0] = 0x6a09e667f3bcc908;
+  sha512->H[1] = 0xbb67ae8584caa73b;
+  sha512->H[2] = 0x3c6ef372fe94f82b;
+  sha512->H[3] = 0xa54ff53a5f1d36f1;
+  sha512->H[4] = 0x510e527fade682d1;
+  sha512->H[5] = 0x9b05688c2b3e6c1f;
+  sha512->H[6] = 0x1f83d9abfb41bd6b;
+  sha512->H[7] = 0x5be0cd19137e2179;
+
+  sha512->block_len = 0;
+
+  sha512->data_len[0] = 0;
+  sha512->data_len[1] = 0;
+}
+
 static void
 sha512_transform (guint64      H[8],
-                  guint8 const data[SHA512_BLOCK_LEN])
+                  guint8 const data[SHA2_BLOCK_LEN])
 {
   gint i;
   gint t;
@@ -1186,7 +1209,7 @@ sha512_transform (guint64      H[8],
   guint64 M[16];
   guint64 W[80];
 
-  /* SHA-512 hash computation [§6.3.2] */
+  /* SHA-512 hash computation [§6.4.2] */
 
   /* prepare the message schedule */
   for (i = 0; i < 16; i++)
@@ -1224,7 +1247,7 @@ sha512_transform (guint64      H[8],
     {
       guint64 T1, T2;
 
-      T1 = h + SIGMA1 (e) + Ch (e, f, g) + SHA512_K[t] + W[t];
+      T1 = h + SIGMA1 (e) + Ch (e, f, g) + SHA2_K[t] + W[t];
       T2 = SIGMA0 (a) + Maj (a, b, c);
       h = g;
       g = f;
@@ -1262,7 +1285,7 @@ sha512_sum_update (Sha512sum    *sha512,
     sha512->data_len[1]++;
 
   /* try to fill current block */
-  block_left = SHA512_BLOCK_LEN - sha512->block_len;
+  block_left = SHA2_BLOCK_LEN - sha512->block_len;
   if (block_left > 0)
     {
       gsize fill_len;
@@ -1273,7 +1296,7 @@ sha512_sum_update (Sha512sum    *sha512,
       length -= fill_len;
       offset += fill_len;
 
-      if (sha512->block_len == SHA512_BLOCK_LEN)
+      if (sha512->block_len == SHA2_BLOCK_LEN)
         {
           sha512_transform (sha512->H, sha512->block);
           sha512->block_len = 0;
@@ -1281,14 +1304,14 @@ sha512_sum_update (Sha512sum    *sha512,
     }
 
   /* process complete blocks */
-  while (length >= SHA512_BLOCK_LEN)
+  while (length >= SHA2_BLOCK_LEN)
     {
-      memcpy (sha512->block, buffer + offset, SHA512_BLOCK_LEN);
+      memcpy (sha512->block, buffer + offset, SHA2_BLOCK_LEN);
 
       sha512_transform (sha512->H, sha512->block);
 
-      length -= SHA512_BLOCK_LEN;
-      offset += SHA512_BLOCK_LEN;
+      length -= SHA2_BLOCK_LEN;
+      offset += SHA2_BLOCK_LEN;
     }
 
   /* keep remaining data for next block */
@@ -1304,7 +1327,7 @@ sha512_sum_close (Sha512sum *sha512)
 {
   guint l;
   gint zeros;
-  guint8 pad[SHA512_BLOCK_LEN * 2] = { 0, };
+  guint8 pad[SHA2_BLOCK_LEN * 2] = { 0, };
   guint pad_len = 0;
   gint i;
 
@@ -1339,9 +1362,22 @@ sha512_sum_close (Sha512sum *sha512)
 }
 
 static gchar *
+sha384_sum_to_string (Sha512sum *sha512)
+{
+  return digest_to_string (sha512->digest, SHA384_DIGEST_LEN);
+}
+
+static gchar *
 sha512_sum_to_string (Sha512sum *sha512)
 {
   return digest_to_string (sha512->digest, SHA512_DIGEST_LEN);
+}
+
+static void
+sha384_sum_digest (Sha512sum *sha512,
+                   guint8    *digest)
+{
+  memcpy (digest, sha512->digest, SHA384_DIGEST_LEN);
 }
 
 static void
@@ -1392,6 +1428,9 @@ g_checksum_type_get_length (GChecksumType checksum_type)
       break;
     case G_CHECKSUM_SHA256:
       len = SHA256_DIGEST_LEN;
+      break;
+    case G_CHECKSUM_SHA384:
+      len = SHA384_DIGEST_LEN;
       break;
     case G_CHECKSUM_SHA512:
       len = SHA512_DIGEST_LEN;
@@ -1469,6 +1508,9 @@ g_checksum_reset (GChecksum *checksum)
       break;
     case G_CHECKSUM_SHA256:
       sha256_sum_init (&(checksum->sum.sha256));
+      break;
+    case G_CHECKSUM_SHA384:
+      sha384_sum_init (&(checksum->sum.sha512));
       break;
     case G_CHECKSUM_SHA512:
       sha512_sum_init (&(checksum->sum.sha512));
@@ -1568,6 +1610,7 @@ g_checksum_update (GChecksum    *checksum,
     case G_CHECKSUM_SHA256:
       sha256_sum_update (&(checksum->sum.sha256), data, length);
       break;
+    case G_CHECKSUM_SHA384:
     case G_CHECKSUM_SHA512:
       sha512_sum_update (&(checksum->sum.sha512), data, length);
       break;
@@ -1617,6 +1660,10 @@ g_checksum_get_string (GChecksum *checksum)
     case G_CHECKSUM_SHA256:
       sha256_sum_close (&(checksum->sum.sha256));
       str = sha256_sum_to_string (&(checksum->sum.sha256));
+      break;
+    case G_CHECKSUM_SHA384:
+      sha512_sum_close (&(checksum->sum.sha512));
+      str = sha384_sum_to_string (&(checksum->sum.sha512));
       break;
     case G_CHECKSUM_SHA512:
       sha512_sum_close (&(checksum->sum.sha512));
@@ -1688,6 +1735,14 @@ g_checksum_get_digest (GChecksum  *checksum,
           str = sha256_sum_to_string (&(checksum->sum.sha256));
         }
       sha256_sum_digest (&(checksum->sum.sha256), buffer);
+      break;
+    case G_CHECKSUM_SHA384:
+      if (checksum_open)
+        {
+          sha512_sum_close (&(checksum->sum.sha512));
+          str = sha384_sum_to_string (&(checksum->sum.sha512));
+        }
+      sha384_sum_digest (&(checksum->sum.sha512), buffer);
       break;
     case G_CHECKSUM_SHA512:
       if (checksum_open)
