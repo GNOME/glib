@@ -66,6 +66,14 @@
     <key name="test-array" type="ai">
       <default>[0,1,2,3,4,5]</default>
     </key>
+    <key name="test-dict" type="a{sau}">
+      <default>
+      {
+        "AC": [0,0, 0,0,0,0,0,0],
+        "IV": [0,0, 0,0,0,0,0,0]
+      }
+      </default>
+    </key>
   </schema>
 
   <schema id="org.gtk.test.localized" path="/tests/localized/" gettext-domain="test">

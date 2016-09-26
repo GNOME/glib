@@ -335,6 +335,7 @@ test_complex_types (void)
   gchar *s;
   gint i1, i2;
   GVariantIter *iter = NULL;
+  GVariant *v = NULL;
 
   settings = g_settings_new ("org.gtk.test.complex-types");
 
@@ -369,6 +370,22 @@ test_complex_types (void)
   g_assert_cmpint (i1, ==, 5);
   g_assert (!g_variant_iter_next (iter, "i", &i1));
   g_variant_iter_free (iter);
+
+  g_settings_get (settings, "test-dict", "a{sau}", &iter);
+  g_assert_cmpint (g_variant_iter_n_children (iter), ==, 2);
+  g_assert (g_variant_iter_next (iter, "{&s@au}", &s, &v));
+  g_assert_cmpstr (s, ==, "AC");
+  g_assert_cmpstr ((char *)g_variant_get_type (v), ==, "au");
+  g_variant_unref (v);
+  g_assert (g_variant_iter_next (iter, "{&s@au}", &s, &v));
+  g_assert_cmpstr (s, ==, "IV");
+  g_assert_cmpstr ((char *)g_variant_get_type (v), ==, "au");
+  g_variant_unref (v);
+  g_variant_iter_free (iter);
+
+  v = g_settings_get_value (settings, "test-dict");
+  g_assert_cmpstr ((char *)g_variant_get_type (v), ==, "a{sau}");
+  g_variant_unref (v);
 
   g_object_unref (settings);
 }
