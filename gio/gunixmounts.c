@@ -1637,17 +1637,17 @@ mount_monitor_start (void)
       const gchar *mtab_path;
 
       mtab_path = get_mtab_monitor_file ();
-      /* /proc/mounts monitoring is special - can't just use GFileMonitor.
+      /* Monitoring files in /proc/ is special - can't just use GFileMonitor.
        * See 'man proc' for more details.
        */
-      if (g_strcmp0 (mtab_path, "/proc/mounts") == 0)
+      if (g_str_has_prefix (mtab_path, "/proc/"))
         {
           GIOChannel *proc_mounts_channel;
           GError *error = NULL;
-          proc_mounts_channel = g_io_channel_new_file ("/proc/mounts", "r", &error);
+          proc_mounts_channel = g_io_channel_new_file (mtab_path, "r", &error);
           if (proc_mounts_channel == NULL)
             {
-              g_warning ("Error creating IO channel for /proc/mounts: %s (%s, %d)",
+              g_warning ("Error creating IO channel for %s: %s (%s, %d)", mtab_path,
                          error->message, g_quark_to_string (error->domain), error->code);
               g_error_free (error);
             }
