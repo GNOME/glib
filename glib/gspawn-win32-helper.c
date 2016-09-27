@@ -70,14 +70,12 @@ write_err_and_exit (gint    fd,
 /* Copy of protect_argv that handles wchar_t strings */
 
 static gint
-protect_wargv (wchar_t  **wargv,
+protect_wargv (gint       argc,
+	       wchar_t  **wargv,
 	       wchar_t ***new_wargv)
 {
   gint i;
-  gint argc = 0;
   
-  while (wargv[argc])
-    ++argc;
   *new_wargv = g_new (wchar_t *, argc+1);
 
   /* Quote each argv element if necessary, so that it will get
@@ -350,7 +348,7 @@ main (int ignored_argc, char **ignored_argv)
   /* For the program name passed to spawnv(), don't use the quoted
    * version.
    */
-  protect_wargv (wargv + argv_zero_offset, &new_wargv);
+  protect_wargv (argc, wargv + argv_zero_offset, &new_wargv);
 
   if (argv[ARG_USE_PATH][0] == 'y')
     handle = _wspawnvp (mode, wargv[ARG_PROGRAM], (const wchar_t **) new_wargv);
