@@ -193,6 +193,7 @@ local_sources = \
 	ghttpproxy.h			\
 	glocalfile.c 			\
 	glocalfile.h 			\
+	glocalfileprivate.h		\
 	glocalfileenumerator.c 		\
 	glocalfileenumerator.h 		\
 	glocalfileinfo.c 		\

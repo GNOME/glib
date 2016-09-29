@@ -64,6 +64,7 @@
 #endif
 
 #include "gunixmounts.h"
+#include "glocalfileprivate.h"
 #include "gfile.h"
 #include "gfilemonitor.h"
 #include "glibintl.h"
@@ -1441,6 +1442,40 @@ g_unix_mount_at (const char *mount_path,
   g_list_free (mounts);
 
   return found;
+}
+
+/**
+ * g_unix_mount_for: (skip)
+ * @file_path: file path on some unix mount.
+ * @time_read: (out) (allow-none): guint64 to contain a timestamp.
+ *
+ * Gets a #GUnixMountEntry for a given file path. If @time_read
+ * is set, it will be filled with a unix timestamp for checking
+ * if the mounts have changed since with g_unix_mounts_changed_since().
+ *
+ * Returns: (transfer full): a #GUnixMountEntry.
+ *
+ * Since: 2.52
+ **/
+GUnixMountEntry *
+g_unix_mount_for (const char *file_path,
+                  guint64    *time_read)
+{
+  GUnixMountEntry *entry;
+
+  g_return_val_if_fail (file_path != NULL, NULL);
+
+  entry = g_unix_mount_at (file_path, time_read);
+  if (entry == NULL)
+    {
+      char *topdir;
+
+      topdir = _g_local_file_find_topdir_for (file_path);
+      entry = g_unix_mount_at (topdir, time_read);
+      g_free (topdir);
+    }
+
+  return entry;
 }
 
 /**

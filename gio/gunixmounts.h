@@ -119,6 +119,9 @@ GList *        g_unix_mounts_get                    (guint64            *time_re
 GLIB_AVAILABLE_IN_ALL
 GUnixMountEntry *g_unix_mount_at                    (const char         *mount_path,
 						     guint64            *time_read);
+GLIB_AVAILABLE_IN_2_52
+GUnixMountEntry *g_unix_mount_for                   (const char         *file_path,
+                                                     guint64            *time_read);
 GLIB_AVAILABLE_IN_ALL
 gboolean       g_unix_mounts_changed_since          (guint64             time);
 GLIB_AVAILABLE_IN_ALL
