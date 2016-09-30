@@ -2025,6 +2025,7 @@ main (int argc, char **argv)
   GDir *dir;
   const gchar *file;
   gchar *srcdir;
+  gboolean show_version_and_exit = FALSE;
   gchar *targetdir = NULL;
   gchar *target;
   gboolean dry_run = FALSE;
@@ -2033,6 +2034,7 @@ main (int argc, char **argv)
   gchar **override_files = NULL;
   GOptionContext *context;
   GOptionEntry entries[] = {
+    { "version", 0, 0, G_OPTION_ARG_NONE, &show_version_and_exit, N_("Show program version and exit"), NULL },
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
     { "strict", 0, 0, G_OPTION_ARG_NONE, &strict, N_("Abort on any errors in schemas"), NULL },
     { "dry-run", 0, 0, G_OPTION_ARG_NONE, &dry_run, N_("Do not write the gschema.compiled file"), NULL },
@@ -2078,6 +2080,12 @@ main (int argc, char **argv)
     }
 
   g_option_context_free (context);
+
+  if (show_version_and_exit)
+    {
+      g_print (PACKAGE_VERSION "\n");
+      return 0;
+    }
 
   if (!schema_files && argc != 2)
     {
