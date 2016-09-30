@@ -1107,7 +1107,7 @@ g_socket_client_connect (GSocketClient       *client,
 	  else
 	    {
 	      g_set_error (&last_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-			   _("Proxy protocol '%s' is not supported."),
+			   _("Proxy protocol “%s” is not supported."),
 			   protocol);
 	      g_object_unref (connection);
 	      connection = NULL;
@@ -1558,7 +1558,7 @@ g_socket_client_connected_callback (GObject      *source,
       g_clear_error (&data->last_error);
 
       g_set_error (&data->last_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-          _("Proxy protocol '%s' is not supported."),
+          _("Proxy protocol “%s” is not supported."),
           protocol);
 
       enumerator_next_async (data);

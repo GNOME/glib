@@ -390,7 +390,7 @@ g_mount_unmount (GMount              *mount,
                                /* Translators: This is an error
                                 * message for mount objects that
                                 * don't implement unmount. */
-                               _("mount doesn't implement \"unmount\""));
+                               _("mount doesn’t implement “unmount”"));
       return;
     }
   
@@ -466,7 +466,7 @@ g_mount_eject (GMount              *mount,
                                /* Translators: This is an error
                                 * message for mount objects that
                                 * don't implement eject. */
-                               _("mount doesn't implement \"eject\""));
+                               _("mount doesn’t implement “eject”"));
       return;
     }
   
@@ -544,7 +544,7 @@ g_mount_unmount_with_operation (GMount              *mount,
                                /* Translators: This is an error
                                 * message for mount objects that
                                 * don't implement any of unmount or unmount_with_operation. */
-                               _("mount doesn't implement \"unmount\" or \"unmount_with_operation\""));
+                               _("mount doesn’t implement “unmount” or “unmount_with_operation”"));
       return;
     }
 
@@ -629,7 +629,7 @@ g_mount_eject_with_operation (GMount              *mount,
                                /* Translators: This is an error
                                 * message for mount objects that
                                 * don't implement any of eject or eject_with_operation. */
-                               _("mount doesn't implement \"eject\" or \"eject_with_operation\""));
+                               _("mount doesn’t implement “eject” or “eject_with_operation”"));
       return;
     }
 
@@ -717,7 +717,7 @@ g_mount_remount (GMount              *mount,
                                /* Translators: This is an error
                                 * message for mount objects that
                                 * don't implement remount. */
-                               _("mount doesn't implement \"remount\""));
+                               _("mount doesn’t implement “remount”"));
       return;
     }
   
@@ -799,7 +799,7 @@ g_mount_guess_content_type (GMount              *mount,
                                /* Translators: This is an error
                                 * message for mount objects that
                                 * don't implement content type guessing. */
-                               _("mount doesn't implement content type guessing"));
+                               _("mount doesn’t implement content type guessing"));
       return;
     }
   
@@ -886,7 +886,7 @@ g_mount_guess_content_type_sync (GMount              *mount,
                            /* Translators: This is an error
                             * message for mount objects that
                             * don't implement content type guessing. */
-                           _("mount doesn't implement synchronous content type guessing"));
+                           _("mount doesn’t implement synchronous content type guessing"));
 
       return NULL;
     }

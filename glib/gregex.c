@@ -2410,7 +2410,7 @@ expand_escape (const gchar        *replacement,
               h = g_ascii_xdigit_value (*p);
               if (h < 0)
                 {
-                  error_detail = _("hexadecimal digit or '}' expected");
+                  error_detail = _("hexadecimal digit or “}” expected");
                   goto error;
                 }
               x = x * 16 + h;
@@ -2466,7 +2466,7 @@ expand_escape (const gchar        *replacement,
       p++;
       if (*p != '<')
         {
-          error_detail = _("missing '<' in symbolic reference");
+          error_detail = _("missing “<” in symbolic reference");
           goto error;
         }
       q = p + 1;
@@ -2573,7 +2573,7 @@ expand_escape (const gchar        *replacement,
         }
       break;
     case 0:
-      error_detail = _("stray final '\\'");
+      error_detail = _("stray final “\\”");
       goto error;
       break;
     default:
@@ -2588,7 +2588,7 @@ expand_escape (const gchar        *replacement,
   tmp_error = g_error_new (G_REGEX_ERROR,
                            G_REGEX_ERROR_REPLACE,
                            _("Error while parsing replacement "
-                             "text \"%s\" at char %lu: %s"),
+                             "text “%s” at char %lu: %s"),
                            replacement,
                            (gulong)(p - replacement),
                            error_detail);

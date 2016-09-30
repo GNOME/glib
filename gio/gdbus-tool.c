@@ -99,7 +99,7 @@ usage (gint *argc, gchar **argv[], gboolean use_stdout)
                          "  call         Invoke a method on a remote object\n"
                          "  emit         Emit a signal\n"
                          "\n"
-                         "Use \"%s COMMAND --help\" to get help on each command.\n"),
+                         "Use “%s COMMAND --help” to get help on each command.\n"),
                        program_name);
   g_free (program_name);
   g_option_context_set_description (o, s);
@@ -468,7 +468,7 @@ call_helper_get_method_in_signature (GDBusConnection  *c,
   if (interface_info == NULL)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   _("Warning: According to introspection data, interface '%s' does not exist\n"),
+                   _("Warning: According to introspection data, interface “%s” does not exist\n"),
                    interface_name);
       goto out;
     }
@@ -477,7 +477,7 @@ call_helper_get_method_in_signature (GDBusConnection  *c,
   if (method_info == NULL)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   _("Warning: According to introspection data, method '%s' does not exist on interface '%s'\n"),
+                   _("Warning: According to introspection data, method “%s” does not exist on interface “%s”\n"),
                    method_name,
                    interface_name);
       goto out;
@@ -947,7 +947,7 @@ handle_call (gint        *argc,
   s = strrchr (opt_call_method, '.');
   if (!request_completion && s == NULL)
     {
-      g_printerr (_("Error: Method name '%s' is invalid\n"), opt_call_method);
+      g_printerr (_("Error: Method name “%s” is invalid\n"), opt_call_method);
       goto out;
     }
   method_name = g_strdup (s + 1);
@@ -1025,7 +1025,7 @@ handle_call (gint        *argc,
               if (type != NULL)
                 {
                   s = g_variant_type_dup_string (type);
-                  g_printerr (_("Error parsing parameter %d of type '%s': %s\n"),
+                  g_printerr (_("Error parsing parameter %d of type “%s”: %s\n"),
                               parm + 1,
                               s,
                               context);

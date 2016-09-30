@@ -858,7 +858,7 @@ g_option_context_get_help (GOptionContext *context,
   if (context->help_enabled ||
       (context->main_group && context->main_group->n_entries > 0) ||
       context->groups != NULL)
-    g_string_append_printf (string, " %s", _("[OPTION...]"));
+    g_string_append_printf (string, " %s", _("[OPTION…]"));
 
   if (rest_description)
     {
@@ -1110,7 +1110,7 @@ parse_int (const gchar *arg_name,
     {
       g_set_error (error,
                    G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-                   _("Cannot parse integer value '%s' for %s"),
+                   _("Cannot parse integer value “%s” for %s"),
                    arg, arg_name);
       return FALSE;
     }
@@ -1120,7 +1120,7 @@ parse_int (const gchar *arg_name,
     {
       g_set_error (error,
                    G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-                   _("Integer value '%s' for %s out of range"),
+                   _("Integer value “%s” for %s out of range"),
                    arg, arg_name);
       return FALSE;
     }
@@ -1145,7 +1145,7 @@ parse_double (const gchar *arg_name,
     {
       g_set_error (error,
                    G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-                   _("Cannot parse double value '%s' for %s"),
+                   _("Cannot parse double value “%s” for %s"),
                    arg, arg_name);
       return FALSE;
     }
@@ -1153,7 +1153,7 @@ parse_double (const gchar *arg_name,
     {
       g_set_error (error,
                    G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-                   _("Double value '%s' for %s out of range"),
+                   _("Double value “%s” for %s out of range"),
                    arg, arg_name);
       return FALSE;
     }
@@ -1180,7 +1180,7 @@ parse_int64 (const gchar *arg_name,
     {
       g_set_error (error,
                    G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-                   _("Cannot parse integer value '%s' for %s"),
+                   _("Cannot parse integer value “%s” for %s"),
                    arg, arg_name);
       return FALSE;
     }
@@ -1188,7 +1188,7 @@ parse_int64 (const gchar *arg_name,
     {
       g_set_error (error,
                    G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE,
-                   _("Integer value '%s' for %s out of range"),
+                   _("Integer value “%s” for %s out of range"),
                    arg, arg_name);
       return FALSE;
     }

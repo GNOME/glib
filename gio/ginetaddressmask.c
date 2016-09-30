@@ -297,7 +297,7 @@ g_inet_address_mask_new_from_string (const gchar  *mask_string,
 	{
 	parse_error:
 	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-		       _("Could not parse '%s' as IP address mask"),
+		       _("Could not parse “%s” as IP address mask"),
 		       mask_string);
 	  return NULL;
 	}

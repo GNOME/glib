@@ -185,7 +185,7 @@ g_input_stream_read  (GInputStream  *stream,
   if (class->read_fn == NULL) 
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                           _("Input stream doesn't implement read"));
+                           _("Input stream doesn’t implement read"));
       return -1;
     }
 

@@ -93,7 +93,7 @@ unquote_string_inplace (gchar* str, gchar** end, GError** err)
       g_set_error_literal (err,
                            G_SHELL_ERROR,
                            G_SHELL_ERROR_BAD_QUOTING,
-                           _("Quoted text doesn't begin with a quotation mark"));
+                           _("Quoted text doesn’t begin with a quotation mark"));
       *end = str;
       return FALSE;
     }
@@ -579,15 +579,15 @@ tokenize_command_line (const gchar *command_line,
         g_set_error (error,
                      G_SHELL_ERROR,
                      G_SHELL_ERROR_BAD_QUOTING,
-                     _("Text ended just after a '\\' character."
-                       " (The text was '%s')"),
+                     _("Text ended just after a “\\” character."
+                       " (The text was “%s”)"),
                      command_line);
       else
         g_set_error (error,
                      G_SHELL_ERROR,
                      G_SHELL_ERROR_BAD_QUOTING,
                      _("Text ended before matching quote was found for %c."
-                       " (The text was '%s')"),
+                       " (The text was “%s”)"),
                      current_quote, command_line);
       
       goto error;

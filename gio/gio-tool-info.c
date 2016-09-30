@@ -34,7 +34,7 @@ static const GOptionEntry entries[] = {
   { "query-writable", 'w', 0, G_OPTION_ARG_NONE, &writable, N_("List writable attributes"), NULL },
   { "filesystem", 'f', 0, G_OPTION_ARG_NONE, &filesystem, N_("Get file system info"), NULL },
   { "attributes", 'a', 0, G_OPTION_ARG_STRING, &attributes, N_("The attributes to get"), N_("ATTRIBUTES") },
-  { "nofollow-symlinks", 'n', 0, G_OPTION_ARG_NONE, &nofollow_symlinks, N_("Don't follow symbolic links"), NULL },
+  { "nofollow-symlinks", 'n', 0, G_OPTION_ARG_NONE, &nofollow_symlinks, N_("Don’t follow symbolic links"), NULL },
   { NULL }
 };
 
@@ -286,7 +286,7 @@ handle_info (int argc, char *argv[], gboolean do_help)
         "locations instead of local files: for example, you can use something\n"
         "like smb://server/resource/file.txt as location. File attributes can\n"
         "be specified with their GIO name, e.g. standard::icon, or just by\n"
-        "namespace, e.g. unix, or by '*', which matches all attributes"));
+        "namespace, e.g. unix, or by “*”, which matches all attributes"));
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 
   if (do_help)

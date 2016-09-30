@@ -115,7 +115,7 @@ set_connect_msg (guint8      *msg,
   if (addr_len != 4)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-		  _("SOCKSv4 does not support IPv6 address '%s'"),
+		  _("SOCKSv4 does not support IPv6 address “%s”"),
 		  ip);
       g_object_unref (addr);
       return -1;
@@ -150,7 +150,7 @@ set_connect_msg (guint8      *msg,
       if (host_len > SOCKS4_MAX_LEN)
 	{
 	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-		       _("Hostname '%s' is too long for SOCKSv4 protocol"),
+		       _("Hostname “%s” is too long for SOCKSv4 protocol"),
 		       hostname);
 	  return -1;
 	}

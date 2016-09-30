@@ -1487,7 +1487,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
               g_set_error (error,
                            G_SPAWN_ERROR,
                            G_SPAWN_ERROR_CHDIR,
-                           _("Failed to change to directory '%s' (%s)"),
+                           _("Failed to change to directory “%s” (%s)"),
                            working_directory,
                            g_strerror (buf[1]));
 
@@ -1497,7 +1497,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
               g_set_error (error,
                            G_SPAWN_ERROR,
                            exec_err_to_g_error (buf[1]),
-                           _("Failed to execute child process \"%s\" (%s)"),
+                           _("Failed to execute child process “%s” (%s)"),
                            argv[0],
                            g_strerror (buf[1]));
 
@@ -1524,7 +1524,7 @@ fork_exec_with_pipes (gboolean              intermediate_child,
               g_set_error (error,
                            G_SPAWN_ERROR,
                            G_SPAWN_ERROR_FAILED,
-                           _("Unknown error executing child process \"%s\""),
+                           _("Unknown error executing child process “%s”"),
                            argv[0]);
               break;
             }

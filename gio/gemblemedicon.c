@@ -359,7 +359,7 @@ g_emblemed_icon_from_tokens (gchar  **tokens,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Can't handle version %d of GEmblemedIcon encoding"),
+                   _("Can’t handle version %d of GEmblemedIcon encoding"),
                    version);
       goto fail;
     }

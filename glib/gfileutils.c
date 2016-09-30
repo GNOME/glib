@@ -698,7 +698,7 @@ get_contents_stdio (const gchar  *filename,
               g_set_error (error,
                            G_FILE_ERROR,
                            G_FILE_ERROR_NOMEM,
-                           g_dngettext (GETTEXT_PACKAGE, "Could not allocate %lu byte to read file \"%s\"", "Could not allocate %lu bytes to read file \"%s\"", (gulong)total_allocated),
+                           g_dngettext (GETTEXT_PACKAGE, "Could not allocate %lu byte to read file “%s”", "Could not allocate %lu bytes to read file “%s”", (gulong)total_allocated),
                            (gulong) total_allocated,
 			   display_filename);
               g_free (display_filename);
@@ -715,7 +715,7 @@ get_contents_stdio (const gchar  *filename,
           g_set_error (error,
                        G_FILE_ERROR,
                        g_file_error_from_errno (save_errno),
-                       _("Error reading file '%s': %s"),
+                       _("Error reading file “%s”: %s"),
                        display_filename,
 		       g_strerror (save_errno));
           g_free (display_filename);
@@ -751,7 +751,7 @@ get_contents_stdio (const gchar  *filename,
   g_set_error (error,
                G_FILE_ERROR,
                G_FILE_ERROR_FAILED,
-               _("File \"%s\" is too large"),
+               _("File “%s” is too large"),
                display_filename);
   g_free (display_filename);
 
@@ -790,7 +790,7 @@ get_contents_regfile (const gchar  *filename,
       g_set_error (error,
                    G_FILE_ERROR,
                    G_FILE_ERROR_NOMEM,
-                           g_dngettext (GETTEXT_PACKAGE, "Could not allocate %lu byte to read file \"%s\"", "Could not allocate %lu bytes to read file \"%s\"", (gulong)alloc_size),
+                           g_dngettext (GETTEXT_PACKAGE, "Could not allocate %lu byte to read file “%s”", "Could not allocate %lu bytes to read file “%s”", (gulong)alloc_size),
                    (gulong) alloc_size, 
 		   display_filename);
       g_free (display_filename);
@@ -815,7 +815,7 @@ get_contents_regfile (const gchar  *filename,
               g_set_error (error,
                            G_FILE_ERROR,
                            g_file_error_from_errno (save_errno),
-                           _("Failed to read from file '%s': %s"),
+                           _("Failed to read from file “%s”: %s"),
                            display_filename, 
 			   g_strerror (save_errno));
               g_free (display_filename);
@@ -863,7 +863,7 @@ get_contents_posix (const gchar  *filename,
       int saved_errno = errno;
       set_file_error (error,
                       filename,
-                      _("Failed to open file '%s': %s"),
+                      _("Failed to open file “%s”: %s"),
                       saved_errno);
 
       return FALSE;
@@ -875,7 +875,7 @@ get_contents_posix (const gchar  *filename,
       int saved_errno = errno;
       set_file_error (error,
                       filename,
-                      _("Failed to get attributes of file '%s': fstat() failed: %s"),
+                      _("Failed to get attributes of file “%s”: fstat() failed: %s"),
                       saved_errno);
       close (fd);
 
@@ -905,7 +905,7 @@ get_contents_posix (const gchar  *filename,
           int saved_errno = errno;
           set_file_error (error,
                           filename,
-                          _("Failed to open file '%s': fdopen() failed: %s"),
+                          _("Failed to open file “%s”: fdopen() failed: %s"),
                           saved_errno);
 
           return FALSE;
@@ -935,7 +935,7 @@ get_contents_win32 (const gchar  *filename,
       int saved_errno = errno;
       set_file_error (error,
                       filename,
-                      _("Failed to open file '%s': %s"),
+                      _("Failed to open file “%s”: %s"),
                       saved_errno);
 
       return FALSE;
@@ -1004,7 +1004,7 @@ rename_file (const char  *old_name,
       g_set_error (err,
 		   G_FILE_ERROR,
 		   g_file_error_from_errno (save_errno),
-		   _("Failed to rename file '%s' to '%s': g_rename() failed: %s"),
+		   _("Failed to rename file “%s” to “%s”: g_rename() failed: %s"),
 		   display_old_name,
 		   display_new_name,
 		   g_strerror (save_errno));
@@ -1039,7 +1039,7 @@ write_to_temp_file (const gchar  *contents,
     {
       int saved_errno = errno;
       set_file_error (err,
-                      tmp_name, _("Failed to create file '%s': %s"),
+                      tmp_name, _("Failed to create file “%s”: %s"),
                       saved_errno);
       goto out;
     }
@@ -1066,7 +1066,7 @@ write_to_temp_file (const gchar  *contents,
             continue;
 
           set_file_error (err,
-                          tmp_name, _("Failed to write file '%s': write() failed: %s"),
+                          tmp_name, _("Failed to write file “%s”: write() failed: %s"),
                           saved_errno);
           close (fd);
           g_unlink (tmp_name);
@@ -1109,7 +1109,7 @@ write_to_temp_file (const gchar  *contents,
       {
         int saved_errno = errno;
         set_file_error (err,
-                        tmp_name, _("Failed to write file '%s': fsync() failed: %s"),
+                        tmp_name, _("Failed to write file “%s”: fsync() failed: %s"),
                         saved_errno);
         close (fd);
         g_unlink (tmp_name);
@@ -1233,7 +1233,7 @@ g_file_set_contents (const gchar  *filename,
           int saved_errno = errno;
           set_file_error (error,
                           filename,
-		          _("Existing file '%s' could not be removed: g_unlink() failed: %s"),
+		          _("Existing file “%s” could not be removed: g_unlink() failed: %s"),
                           saved_errno);
 	  g_unlink (tmp_filename);
 	  retval = FALSE;
@@ -1504,7 +1504,7 @@ g_get_tmp_name (const gchar      *tmpl,
       g_set_error (error,
                    G_FILE_ERROR,
                    G_FILE_ERROR_FAILED,
-                   _("Template '%s' invalid, should not contain a '%s'"),
+                   _("Template “%s” invalid, should not contain a “%s”"),
                    display_tmpl, c);
       g_free (display_tmpl);
 
@@ -1517,7 +1517,7 @@ g_get_tmp_name (const gchar      *tmpl,
       g_set_error (error,
                    G_FILE_ERROR,
                    G_FILE_ERROR_FAILED,
-                   _("Template '%s' doesn't contain XXXXXX"),
+                   _("Template “%s” doesn’t contain XXXXXX"),
                    display_tmpl);
       g_free (display_tmpl);
       return -1;
@@ -1538,7 +1538,7 @@ g_get_tmp_name (const gchar      *tmpl,
       int saved_errno = errno;
       set_file_error (error,
                       fulltemplate,
-                      _("Failed to create file '%s': %s"),
+                      _("Failed to create file “%s”: %s"),
                       saved_errno);
       g_free (fulltemplate);
       return -1;
@@ -2042,7 +2042,7 @@ g_file_read_link (const gchar  *filename,
           int saved_errno = errno;
           set_file_error (error,
                           filename,
-                          _("Failed to read the symbolic link '%s': %s"),
+                          _("Failed to read the symbolic link “%s”: %s"),
                           saved_errno);
           g_free (buffer);
           return NULL;

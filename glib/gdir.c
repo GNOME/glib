@@ -152,7 +152,7 @@ g_dir_open (const gchar  *path,
       utf8_path = g_filename_to_utf8 (path, -1, NULL, NULL, NULL);
 
       g_set_error (error, G_FILE_ERROR, g_file_error_from_errno (saved_errno),
-                   _("Error opening directory '%s': %s"), utf8_path, g_strerror (saved_errno));
+                   _("Error opening directory “%s”: %s"), utf8_path, g_strerror (saved_errno));
       g_free (utf8_path);
     }
 

@@ -547,7 +547,7 @@ g_application_parse_command_line (GApplication   *application,
     {
       GOptionEntry entries[] = {
         { "gapplication-app-id", '\0', 0, G_OPTION_ARG_STRING, &app_id,
-          N_("Override the application's ID") },
+          N_("Override the application’s ID") },
         { NULL }
       };
 

@@ -367,7 +367,7 @@ set_child_error (gintptr      report[2],
     {
     case CHILD_CHDIR_FAILED:
       g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_CHDIR,
-		   _("Failed to change to directory '%s' (%s)"),
+		   _("Failed to change to directory “%s” (%s)"),
 		   working_directory,
 		   g_strerror (report[1]));
       break;

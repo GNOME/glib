@@ -209,7 +209,7 @@ g_output_stream_write (GOutputStream  *stream,
   if (class->write_fn == NULL) 
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                           _("Output stream doesn't implement write"));
+                           _("Output stream doesn’t implement write"));
       return -1;
     }
   
@@ -557,7 +557,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
   if (class->write_fn == NULL)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                           _("Output stream doesn't implement write"));
+                           _("Output stream doesn’t implement write"));
       res = FALSE;
       goto notsupported;
     }

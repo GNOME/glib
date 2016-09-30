@@ -357,7 +357,7 @@ unix_open_file (const char  *filename,
 
       display_name = g_filename_display_name (filename);
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (saved_errno),
-                   _("Error opening file '%s': %s"), display_name,
+                   _("Error opening file “%s”: %s"), display_name,
                    g_strerror (saved_errno));
       g_free (display_name);
       /* fall through... */

@@ -2512,7 +2512,7 @@ copy_symlink (GFile           *destination,
               if (file_type == G_FILE_TYPE_DIRECTORY)
                 {
                   g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_IS_DIRECTORY,
-                                       _("Can't copy over directory"));
+                                       _("Can’t copy over directory"));
                   return FALSE;
                 }
             }
@@ -2572,7 +2572,7 @@ open_source_for_copy (GFile           *source,
               if (file_type == G_FILE_TYPE_DIRECTORY)
                 {
                   g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_WOULD_MERGE,
-                                       _("Can't copy directory over directory"));
+                                       _("Can’t copy directory over directory"));
                   return NULL;
                 }
               /* continue to would_recurse error */
@@ -2599,7 +2599,7 @@ open_source_for_copy (GFile           *source,
         }
 
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_WOULD_RECURSE,
-                           _("Can't recursively copy directory"));
+                           _("Can’t recursively copy directory"));
       return NULL;
     }
 
@@ -3025,7 +3025,7 @@ btrfs_reflink_with_progress (GInputStream           *in,
 	/* Most probably something odd happened; retry with fallback */
 	g_set_error_literal (error, G_IO_ERROR,
 			     G_IO_ERROR_NOT_SUPPORTED,
-			     _("Copy (reflink/clone) is not supported or didn't work"));
+			     _("Copy (reflink/clone) is not supported or didn’t work"));
       /* We retry with fallback for all error cases because Btrfs is currently
        * unstable, and so we can't trust it to do clone properly.
        * In addition, any hard errors here would cause the same failure in the
@@ -3088,7 +3088,7 @@ file_copy_fallback (GFile                  *source,
     {
       /* FIXME: could try to recreate device nodes and others? */
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                           _("Can't copy special file"));
+                           _("Can’t copy special file"));
       goto out;
     }
 
@@ -4155,7 +4155,7 @@ g_file_set_display_name (GFile         *file,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("File names cannot contain '%c'"), G_DIR_SEPARATOR);
+                   _("File names cannot contain “%c”"), G_DIR_SEPARATOR);
       return NULL;
     }
 
@@ -6601,7 +6601,7 @@ g_file_mount_enclosing_volume (GFile               *location,
       g_task_report_new_error (location, callback, user_data,
                                g_file_mount_enclosing_volume,
                                G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               _("volume doesn't implement mount"));
+                               _("volume doesn’t implement mount"));
       return;
     }
 

@@ -183,7 +183,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
   g_object_interface_install_property (iface,
                                        g_param_spec_object ("certificate",
                                                             P_("Certificate"),
-                                                            P_("The connection's certificate"),
+                                                            P_("The connection’s certificate"),
                                                             G_TYPE_TLS_CERTIFICATE,
                                                             G_PARAM_READWRITE |
                                                             G_PARAM_STATIC_STRINGS));
@@ -203,7 +203,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
   g_object_interface_install_property (iface,
                                        g_param_spec_object ("peer-certificate",
                                                             P_("Peer Certificate"),
-                                                            P_("The connection's peer's certificate"),
+                                                            P_("The connection’s peer’s certificate"),
                                                             G_TYPE_TLS_CERTIFICATE,
                                                             G_PARAM_READABLE |
                                                             G_PARAM_STATIC_STRINGS));
@@ -222,7 +222,7 @@ g_dtls_connection_default_init (GDtlsConnectionInterface *iface)
   g_object_interface_install_property (iface,
                                        g_param_spec_flags ("peer-certificate-errors",
                                                            P_("Peer Certificate Errors"),
-                                                           P_("Errors found with the peer's certificate"),
+                                                           P_("Errors found with the peer’s certificate"),
                                                            G_TYPE_TLS_CERTIFICATE_FLAGS,
                                                            0,
                                                            G_PARAM_READABLE |

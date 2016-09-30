@@ -414,7 +414,7 @@ g_drive_eject (GDrive              *drive,
       g_task_report_new_error (drive, callback, user_data,
                                g_drive_eject_with_operation,
                                G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               _("drive doesn't implement eject"));
+                               _("drive doesn’t implement eject"));
       return;
     }
   
@@ -492,7 +492,7 @@ g_drive_eject_with_operation (GDrive              *drive,
                                /* Translators: This is an error
                                 * message for drive objects that
                                 * don't implement any of eject or eject_with_operation. */
-                               _("drive doesn't implement eject or eject_with_operation"));
+                               _("drive doesn’t implement eject or eject_with_operation"));
       return;
     }
 
@@ -568,7 +568,7 @@ g_drive_poll_for_media (GDrive              *drive,
       g_task_report_new_error (drive, callback, user_data,
                                g_drive_poll_for_media,
                                G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               _("drive doesn't implement polling for media"));
+                               _("drive doesn’t implement polling for media"));
       return;
     }
   
@@ -773,7 +773,7 @@ g_drive_start (GDrive              *drive,
       g_task_report_new_error (drive, callback, user_data,
                                g_drive_start,
                                G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               _("drive doesn't implement start"));
+                               _("drive doesn’t implement start"));
       return;
     }
 
@@ -875,7 +875,7 @@ g_drive_stop (GDrive               *drive,
       g_task_report_new_error (drive, callback, user_data,
                                g_drive_start,
                                G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               _("drive doesn't implement stop"));
+                               _("drive doesn’t implement stop"));
       return;
     }
 

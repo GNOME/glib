@@ -375,7 +375,7 @@ g_network_address_parse (const gchar  *host_and_port,
       if (end == NULL)
         {
           g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Hostname '%s' contains '[' but not ']'"), host_and_port);
+                       _("Hostname “%s” contains “[” but not “]”"), host_and_port);
           return NULL;
         }
 

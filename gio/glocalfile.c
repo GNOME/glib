@@ -1196,7 +1196,7 @@ g_local_file_set_display_name (GFile         *file,
   if (parent == NULL)
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                           _("Can't rename root directory"));
+                           _("Can’t rename root directory"));
       return NULL;
     }
   
@@ -1221,7 +1221,7 @@ g_local_file_set_display_name (GFile         *file,
   else
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_EXISTS,
-                           _("Can't rename file, filename already exists"));
+                           _("Can’t rename file, filename already exists"));
       return NULL;
     }
 
@@ -2367,12 +2367,12 @@ g_local_file_move (GFile                  *source,
 		g_set_error_literal (error,
                                      G_IO_ERROR,
                                      G_IO_ERROR_WOULD_MERGE,
-                                     _("Can't move directory over directory"));
+                                     _("Can’t move directory over directory"));
               else
 		g_set_error_literal (error,
                                      G_IO_ERROR,
                                      G_IO_ERROR_IS_DIRECTORY,
-                                     _("Can't copy over directory"));
+                                     _("Can’t copy over directory"));
 	      return FALSE;
 	    }
 	}

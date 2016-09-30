@@ -184,7 +184,7 @@ handle_version (int argc, char *argv[], gboolean do_help)
   if (do_help || argc > 1)
     {
       if (!do_help)
-        g_printerr ("gio: %s\n\n", _("'version' takes no arguments"));
+        g_printerr ("gio: %s\n\n", _("“version” takes no arguments"));
 
       g_printerr ("%s\n", _("Usage:"));
       g_printerr ("  gio version\n");
@@ -225,7 +225,7 @@ usage (void)
   g_printerr ("  trash    %s\n", _("Move files or directories to the trash"));
   g_printerr ("  tree     %s\n", _("Lists the contents of locations in a tree"));
   g_printerr ("\n");
-  g_printerr (_("Use %s to get detailed help.\n"), "'gio help COMMAND'");
+  g_printerr (_("Use %s to get detailed help.\n"), "“gio help COMMAND”");
   exit (1);
 }
 

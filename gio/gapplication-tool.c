@@ -54,7 +54,7 @@ static const struct help_topic topics[] = {
   },
   { "launch",       N_("Launch an application"),
                     N_("Launch the application (with optional files to open)"),
-                    N_("APPID [FILE...]")
+                    N_("APPID [FILE…]")
   },
   { "action",       N_("Activate an action"),
                     N_("Invoke an action on the application"),
@@ -130,7 +130,7 @@ app_help (gboolean     requested,
       gint maxwidth;
       gint i;
 
-      g_string_append_printf (string, "\n  %s %s %s\n\n", "gapplication", _("COMMAND"), _("[ARGS...]"));
+      g_string_append_printf (string, "\n  %s %s %s\n\n", "gapplication", _("COMMAND"), _("[ARGS…]"));
       g_string_append_printf (string, _("Commands:\n"));
 
       maxwidth = 0;
@@ -143,7 +143,7 @@ app_help (gboolean     requested,
 
       g_string_append (string, "\n");
       /* Translators: do not translate 'help', but please translate 'COMMAND'. */
-      g_string_append_printf (string, _("Use '%s help COMMAND' to get detailed help.\n\n"), "gapplication");
+      g_string_append_printf (string, _("Use “%s help COMMAND” to get detailed help.\n\n"), "gapplication");
     }
 
   if (requested)
@@ -168,7 +168,7 @@ app_check_name (gchar       **args,
 
   if (!g_dbus_is_name (args[0]))
     {
-      g_printerr (_("invalid application id: '%s'\n"), args[0]);
+      g_printerr (_("invalid application id: “%s”\n"), args[0]);
       return FALSE;
     }
 
@@ -179,7 +179,7 @@ static int
 app_no_args (const gchar *command)
 {
   /* Translators: %s is replaced with a command name like 'list-actions' */
-  g_printerr (_("'%s' takes no arguments\n\n"), command);
+  g_printerr (_("“%s” takes no arguments\n\n"), command);
   return app_help (FALSE, command);
 }
 
@@ -322,8 +322,8 @@ app_action (gchar **args)
 
   if (!g_action_name_is_valid (name))
     {
-      g_printerr (_("invalid action name: '%s'\n"
-                    "action names must consist of only alphanumerics, '-' and '.'\n"), name);
+      g_printerr (_("invalid action name: “%s”\n"
+                    "action names must consist of only alphanumerics, “-” and “.”\n"), name);
       return 1;
     }
 

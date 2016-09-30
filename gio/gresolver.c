@@ -330,7 +330,7 @@ handle_ip_address (const char  *hostname,
 #endif
     {
       g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
-                   _("Error resolving '%s': %s"),
+                   _("Error resolving “%s”: %s"),
                    hostname, gai_strerror (EAI_NONAME));
       return TRUE;
     }

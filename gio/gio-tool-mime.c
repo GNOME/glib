@@ -110,13 +110,13 @@ handle_mime (int argc, char *argv[], gboolean do_help)
       info = g_app_info_get_default_for_type (mimetype, FALSE);
       if (!info)
         {
-          g_print (_("No default applications for '%s'\n"), mimetype);
+          g_print (_("No default applications for “%s”\n"), mimetype);
         }
       else
         {
           GList *list, *l;
 
-          g_print (_("Default application for '%s': %s\n"), mimetype, g_app_info_get_id (info));
+          g_print (_("Default application for “%s”: %s\n"), mimetype, g_app_info_get_id (info));
           g_object_unref (info);
 
           list = g_app_info_get_all_for_type (mimetype);
@@ -156,13 +156,13 @@ handle_mime (int argc, char *argv[], gboolean do_help)
       info = get_app_info_for_id (handler);
       if (info == NULL)
         {
-          g_printerr (_("Failed to load info for handler '%s'\n"), handler);
+          g_printerr (_("Failed to load info for handler “%s”\n"), handler);
           return 1;
         }
 
       if (g_app_info_set_as_default_for_type (info, mimetype, &error) == FALSE)
         {
-          g_printerr (_("Failed to set '%s' as the default handler for '%s': %s\n"),
+          g_printerr (_("Failed to set “%s” as the default handler for “%s”: %s\n"),
                       handler, mimetype, error->message);
           g_error_free (error);
           g_object_unref (info);

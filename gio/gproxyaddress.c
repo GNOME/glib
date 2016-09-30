@@ -272,7 +272,7 @@ g_proxy_address_class_init (GProxyAddressClass *klass)
 				   PROP_URI,
 				   g_param_spec_string ("uri",
 							P_("URI"),
-							P_("The proxy's URI"),
+							P_("The proxy’s URI"),
 							NULL,
 							G_PARAM_READWRITE |
 							G_PARAM_CONSTRUCT_ONLY |

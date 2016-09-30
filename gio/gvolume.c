@@ -360,7 +360,7 @@ g_volume_mount (GVolume             *volume,
       g_task_report_new_error (volume, callback, user_data,
                                g_volume_mount,
                                G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               _("volume doesn't implement mount"));
+                               _("volume doesn’t implement mount"));
       return;
     }
   
@@ -434,7 +434,7 @@ g_volume_eject (GVolume             *volume,
       g_task_report_new_error (volume, callback, user_data,
                                g_volume_eject_with_operation,
                                G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-                               _("volume doesn't implement eject"));
+                               _("volume doesn’t implement eject"));
       return;
     }
   
@@ -511,7 +511,7 @@ g_volume_eject_with_operation (GVolume              *volume,
                                /* Translators: This is an error
                                 * message for volume objects that
                                 * don't implement any of eject or eject_with_operation. */
-                               _("volume doesn't implement eject or eject_with_operation"));
+                               _("volume doesn’t implement eject or eject_with_operation"));
       return;
     }
 

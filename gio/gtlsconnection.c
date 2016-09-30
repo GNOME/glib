@@ -206,7 +206,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
   g_object_class_install_property (gobject_class, PROP_CERTIFICATE,
 				   g_param_spec_object ("certificate",
 							P_("Certificate"),
-							P_("The connection's certificate"),
+							P_("The connection’s certificate"),
 							G_TYPE_TLS_CERTIFICATE,
 							G_PARAM_READWRITE |
 							G_PARAM_STATIC_STRINGS));
@@ -226,7 +226,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
   g_object_class_install_property (gobject_class, PROP_PEER_CERTIFICATE,
 				   g_param_spec_object ("peer-certificate",
 							P_("Peer Certificate"),
-							P_("The connection's peer's certificate"),
+							P_("The connection’s peer’s certificate"),
 							G_TYPE_TLS_CERTIFICATE,
 							G_PARAM_READABLE |
 							G_PARAM_STATIC_STRINGS));
@@ -245,7 +245,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
   g_object_class_install_property (gobject_class, PROP_PEER_CERTIFICATE_ERRORS,
 				   g_param_spec_flags ("peer-certificate-errors",
 						       P_("Peer Certificate Errors"),
-						       P_("Errors found with the peer's certificate"),
+						       P_("Errors found with the peer’s certificate"),
 						       G_TYPE_TLS_CERTIFICATE_FLAGS,
 						       0,
 						       G_PARAM_READABLE |

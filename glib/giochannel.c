@@ -1381,11 +1381,11 @@ g_io_channel_set_encoding (GIOChannel	*channel,
 
           if (err == EINVAL)
             g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
-                         _("Conversion from character set '%s' to '%s' is not supported"),
+                         _("Conversion from character set “%s” to “%s” is not supported"),
                          from_enc, to_enc);
           else
             g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                         _("Could not open converter from '%s' to '%s': %s"),
+                         _("Could not open converter from “%s” to “%s”: %s"),
                          from_enc, to_enc, g_strerror (err));
 
           if (read_cd != (GIConv) -1)
@@ -1730,7 +1730,7 @@ g_io_channel_read_line_backend (GIOChannel  *channel,
     {
       /* Can't do a raw read in read_line */
       g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                           _("Can't do a raw read in g_io_channel_read_line_string"));
+                           _("Can’t do a raw read in g_io_channel_read_line_string"));
       return G_IO_STATUS_ERROR;
     }
 
@@ -1921,7 +1921,7 @@ g_io_channel_read_to_end (GIOChannel  *channel,
   if (!channel->use_buffer)
     {
       g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                           _("Can't do a raw read in g_io_channel_read_to_end"));
+                           _("Can’t do a raw read in g_io_channel_read_to_end"));
       return G_IO_STATUS_ERROR;
     }
 

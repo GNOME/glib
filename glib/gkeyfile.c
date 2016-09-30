@@ -1201,7 +1201,7 @@ g_key_file_parse_line (GKeyFile     *key_file,
       gchar *line_utf8 = _g_utf8_make_valid (line);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_PARSE,
-                   _("Key file contains line '%s' which is not "
+                   _("Key file contains line “%s” which is not "
                      "a key-value pair, group, or comment"),
                    line_utf8);
       g_free (line_utf8);
@@ -1334,7 +1334,7 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
                        _("Key file contains unsupported "
-			 "encoding '%s'"), value_utf8);
+			 "encoding “%s”"), value_utf8);
 	  g_free (value_utf8);
 
           g_free (key);
@@ -1576,7 +1576,7 @@ g_key_file_get_keys (GKeyFile     *key_file,
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                   _("Key file does not have group '%s'"),
+                   _("Key file does not have group “%s”"),
                    group_name);
       return NULL;
     }
@@ -1704,7 +1704,7 @@ set_not_found_key_error (const char *group_name,
 {
   g_set_error (error, G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_KEY_NOT_FOUND,
-               _("Key file does not have key '%s' in group '%s'"),
+               _("Key file does not have key “%s” in group “%s”"),
                key, group_name);
 }
 
@@ -1749,7 +1749,7 @@ g_key_file_get_value (GKeyFile     *key_file,
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                   _("Key file does not have group '%s'"),
+                   _("Key file does not have group “%s”"),
                    group_name);
       return NULL;
     }
@@ -1866,7 +1866,7 @@ g_key_file_get_string (GKeyFile     *key_file,
       gchar *value_utf8 = _g_utf8_make_valid (value);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
-                   _("Key file contains key '%s' with value '%s' "
+                   _("Key file contains key “%s” with value “%s” "
                      "which is not UTF-8"), key, value_utf8);
       g_free (value_utf8);
       g_free (value);
@@ -1886,7 +1886,7 @@ g_key_file_get_string (GKeyFile     *key_file,
         {
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_INVALID_VALUE,
-                       _("Key file contains key '%s' "
+                       _("Key file contains key “%s” "
                          "which has a value that cannot be interpreted."),
                        key);
           g_error_free (key_file_error);
@@ -1982,7 +1982,7 @@ g_key_file_get_string_list (GKeyFile     *key_file,
       gchar *value_utf8 = _g_utf8_make_valid (value);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
-                   _("Key file contains key '%s' with value '%s' "
+                   _("Key file contains key “%s” with value “%s” "
                      "which is not UTF-8"), key, value_utf8);
       g_free (value_utf8);
       g_free (value);
@@ -2002,7 +2002,7 @@ g_key_file_get_string_list (GKeyFile     *key_file,
         {
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_INVALID_VALUE,
-                       _("Key file contains key '%s' "
+                       _("Key file contains key “%s” "
                          "which has a value that cannot be interpreted."),
                        key);
           g_error_free (key_file_error);
@@ -2371,7 +2371,7 @@ g_key_file_get_boolean (GKeyFile     *key_file,
         {
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_INVALID_VALUE,
-                       _("Key file contains key '%s' "
+                       _("Key file contains key “%s” "
                          "which has a value that cannot be interpreted."),
                        key);
           g_error_free (key_file_error);
@@ -2588,7 +2588,7 @@ g_key_file_get_integer (GKeyFile     *key_file,
         {
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_INVALID_VALUE,
-                       _("Key file contains key '%s' in group '%s' "
+                       _("Key file contains key “%s” in group “%s” "
                          "which has a value that cannot be interpreted."),
                          key, group_name);
           g_error_free (key_file_error);
@@ -2666,7 +2666,7 @@ g_key_file_get_int64 (GKeyFile     *key_file,
   if (*s == '\0' || *end != '\0')
     {
       g_set_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE,
-                   _("Key '%s' in group '%s' has value '%s' "
+                   _("Key “%s” in group “%s” has value “%s” "
                      "where %s was expected"),
                    key, group_name, s, "int64");
       g_free (s);
@@ -2743,7 +2743,7 @@ g_key_file_get_uint64 (GKeyFile     *key_file,
   if (*s == '\0' || *end != '\0')
     {
       g_set_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE,
-                   _("Key '%s' in group '%s' has value '%s' "
+                   _("Key “%s” in group “%s” has value “%s” "
                      "where %s was expected"),
                    key, group_name, s, "uint64");
       g_free (s);
@@ -2956,7 +2956,7 @@ g_key_file_get_double  (GKeyFile     *key_file,
         {
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_INVALID_VALUE,
-                       _("Key file contains key '%s' in group '%s' "
+                       _("Key file contains key “%s” in group “%s” "
                          "which has a value that cannot be interpreted."),
                        key, group_name);
           g_error_free (key_file_error);
@@ -3127,7 +3127,7 @@ g_key_file_set_key_comment (GKeyFile     *key_file,
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                   _("Key file does not have group '%s'"),
+                   _("Key file does not have group “%s”"),
                    group_name ? group_name : "(null)");
 
       return FALSE;
@@ -3190,7 +3190,7 @@ g_key_file_set_group_comment (GKeyFile     *key_file,
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                   _("Key file does not have group '%s'"),
+                   _("Key file does not have group “%s”"),
                    group_name ? group_name : "(null)");
 
       return FALSE;
@@ -3320,7 +3320,7 @@ g_key_file_get_key_comment (GKeyFile     *key_file,
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                   _("Key file does not have group '%s'"),
+                   _("Key file does not have group “%s”"),
                    group_name ? group_name : "(null)");
 
       return NULL;
@@ -3450,7 +3450,7 @@ g_key_file_get_group_comment (GKeyFile     *key_file,
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                   _("Key file does not have group '%s'"),
+                   _("Key file does not have group “%s”"),
                    group_name ? group_name : "(null)");
 
       return NULL;
@@ -3594,7 +3594,7 @@ g_key_file_has_key_full (GKeyFile     *key_file,
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                   _("Key file does not have group '%s'"),
+                   _("Key file does not have group “%s”"),
                    group_name);
 
       return FALSE;
@@ -3823,7 +3823,7 @@ g_key_file_remove_group (GKeyFile     *key_file,
     {
       g_set_error (error, G_KEY_FILE_ERROR,
 		   G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-		   _("Key file does not have group '%s'"),
+		   _("Key file does not have group “%s”"),
 		   group_name);
       return FALSE;
     }
@@ -3890,7 +3890,7 @@ g_key_file_remove_key (GKeyFile     *key_file,
     {
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                   _("Key file does not have group '%s'"),
+                   _("Key file does not have group “%s”"),
                    group_name);
       return FALSE;
     }
@@ -4153,7 +4153,7 @@ g_key_file_parse_value_as_string (GKeyFile     *key_file,
 		      g_set_error (error, G_KEY_FILE_ERROR,
 				   G_KEY_FILE_ERROR_INVALID_VALUE,
 				   _("Key file contains invalid escape "
-				     "sequence '%s'"), sequence);
+				     "sequence “%s”"), sequence);
 		    }
 		}
               break;
@@ -4294,7 +4294,7 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
       gchar *value_utf8 = _g_utf8_make_valid (value);
       g_set_error (error, G_KEY_FILE_ERROR,
 		   G_KEY_FILE_ERROR_INVALID_VALUE,
-		   _("Value '%s' cannot be interpreted "
+		   _("Value “%s” cannot be interpreted "
 		     "as a number."), value_utf8);
       g_free (value_utf8);
 
@@ -4308,7 +4308,7 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
       g_set_error (error,
 		   G_KEY_FILE_ERROR, 
 		   G_KEY_FILE_ERROR_INVALID_VALUE,
-		   _("Integer value '%s' out of range"), 
+		   _("Integer value “%s” out of range"), 
 		   value_utf8);
       g_free (value_utf8);
 
@@ -4341,7 +4341,7 @@ g_key_file_parse_value_as_double  (GKeyFile     *key_file,
       gchar *value_utf8 = _g_utf8_make_valid (value);
       g_set_error (error, G_KEY_FILE_ERROR,
 		   G_KEY_FILE_ERROR_INVALID_VALUE,
-		   _("Value '%s' cannot be interpreted "
+		   _("Value “%s” cannot be interpreted "
 		     "as a float number."), 
 		   value_utf8);
       g_free (value_utf8);
@@ -4380,7 +4380,7 @@ g_key_file_parse_value_as_boolean (GKeyFile     *key_file,
   value_utf8 = _g_utf8_make_valid (value);
   g_set_error (error, G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_INVALID_VALUE,
-               _("Value '%s' cannot be interpreted "
+               _("Value “%s” cannot be interpreted "
 		 "as a boolean."), value_utf8);
   g_free (value_utf8);
 

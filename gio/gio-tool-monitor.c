@@ -40,7 +40,7 @@ static const GOptionEntry entries[] = {
   { "direct", 'D', 0, G_OPTION_ARG_FILENAME_ARRAY, &watch_direct,
       N_("Monitor a file directly (notices changes made via hardlinks)"), N_("LOCATION") },
   { "silent", 's', 0, G_OPTION_ARG_FILENAME_ARRAY, &watch_silent,
-      N_("Monitors a file directly, but doesn't report changes"), N_("LOCATION") },
+      N_("Monitors a file directly, but doesn’t report changes"), N_("LOCATION") },
   { "no-moves", 'n', 0, G_OPTION_ARG_NONE, &no_moves,
       N_("Report moves and renames as simple deleted/created events"), NULL },
   { "mounts", 'm', 0, G_OPTION_ARG_NONE, &mounts,

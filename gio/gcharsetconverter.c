@@ -451,11 +451,11 @@ g_charset_converter_initable_init (GInitable     *initable,
     {
       if (errno == EINVAL)
 	g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-		     _("Conversion from character set '%s' to '%s' is not supported"),
+		     _("Conversion from character set “%s” to “%s” is not supported"),
 		     conv->from, conv->to);
       else
 	g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-		     _("Could not open converter from '%s' to '%s'"),
+		     _("Could not open converter from “%s” to “%s”"),
 		     conv->from, conv->to);
       return FALSE;
     }

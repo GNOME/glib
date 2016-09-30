@@ -146,7 +146,7 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
   g_object_class_install_property (gobject_class, PROP_PRIVATE_KEY,
 				   g_param_spec_boxed ("private-key",
 						       P_("Private key"),
-						       P_("The DER representation of the certificate's private key"),
+						       P_("The DER representation of the certificate’s private key"),
 						       G_TYPE_BYTE_ARRAY,
 						       G_PARAM_WRITABLE |
 						       G_PARAM_CONSTRUCT_ONLY |
@@ -170,7 +170,7 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
   g_object_class_install_property (gobject_class, PROP_PRIVATE_KEY_PEM,
 				   g_param_spec_string ("private-key-pem",
 							P_("Private key (PEM)"),
-							P_("The PEM representation of the certificate's private key"),
+							P_("The PEM representation of the certificate’s private key"),
 							NULL,
 							G_PARAM_WRITABLE |
 							G_PARAM_CONSTRUCT_ONLY |

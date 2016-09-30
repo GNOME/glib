@@ -532,7 +532,7 @@ cmd_help (gboolean     requested,
     {
       g_string_append (string,
       _("Usage:\n"
-        "  gresource [--section SECTION] COMMAND [ARGS...]\n"
+        "  gresource [--section SECTION] COMMAND [ARGS…]\n"
         "\n"
         "Commands:\n"
         "  help                      Show this information\n"
@@ -541,7 +541,7 @@ cmd_help (gboolean     requested,
         "  details                   List resources with details\n"
         "  extract                   Extract a resource\n"
         "\n"
-        "Use 'gresource help COMMAND' to get detailed help.\n\n"));
+        "Use “gresource help COMMAND” to get detailed help.\n\n"));
     }
   else
     {

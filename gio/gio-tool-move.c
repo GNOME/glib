@@ -39,7 +39,7 @@ static const GOptionEntry entries[] = {
   { "progress", 'p', 0, G_OPTION_ARG_NONE, &progress, N_("Show progress"), NULL },
   { "interactive", 'i', 0, G_OPTION_ARG_NONE, &interactive, N_("Prompt before overwrite"), NULL },
   { "backup", 'b', 0, G_OPTION_ARG_NONE, &backup, N_("Backup existing destination files"), NULL },
-  { "no-copy-fallback", 'C', 0, G_OPTION_ARG_NONE, &no_copy_fallback, N_("Don't use copy and delete fallback"), NULL },
+  { "no-copy-fallback", 'C', 0, G_OPTION_ARG_NONE, &no_copy_fallback, N_("Don’t use copy and delete fallback"), NULL },
   { NULL }
 };
 
@@ -178,7 +178,7 @@ handle_move (int argc, char *argv[], gboolean do_help)
               error = NULL;
 
               uri = g_file_get_uri (target);
-              g_print (_("%s: overwrite '%s'? "), argv[0], uri);
+              g_print (_("%s: overwrite “%s”? "), argv[0], uri);
               g_free (uri);
               if (fgets (line, sizeof (line), stdin) &&
                   (line[0] == 'y' || line[0] == 'Y'))

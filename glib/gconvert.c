@@ -318,11 +318,11 @@ open_converter (const gchar *to_codeset,
 	{
 	  if (errno == EINVAL)
 	    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NO_CONVERSION,
-			 _("Conversion from character set '%s' to '%s' is not supported"),
+			 _("Conversion from character set “%s” to “%s” is not supported"),
 			 from_codeset, to_codeset);
 	  else
 	    g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-			 _("Could not open converter from '%s' to '%s'"),
+			 _("Could not open converter from “%s” to “%s”"),
 			 from_codeset, to_codeset);
 	}
     }
@@ -739,7 +739,7 @@ g_convert_with_fallback (const gchar *str,
 		  /* Error converting fallback string - fatal
 		   */
 		  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-			       _("Cannot convert fallback '%s' to codeset '%s'"),
+			       _("Cannot convert fallback “%s” to codeset “%s”"),
 			       insert_str, to_codeset);
 		  have_error = TRUE;
 		  break;
@@ -1564,7 +1564,7 @@ g_filename_from_uri (const gchar *uri,
   if (!has_case_prefix (uri, "file:/"))
     {
       g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
-		   _("The URI '%s' is not an absolute URI using the \"file\" scheme"),
+		   _("The URI “%s” is not an absolute URI using the “file” scheme"),
 		   uri);
       return NULL;
     }
@@ -1574,7 +1574,7 @@ g_filename_from_uri (const gchar *uri,
   if (strchr (path_part, '#') != NULL)
     {
       g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
-		   _("The local file URI '%s' may not include a '#'"),
+		   _("The local file URI “%s” may not include a “#”"),
 		   uri);
       return NULL;
     }
@@ -1591,7 +1591,7 @@ g_filename_from_uri (const gchar *uri,
       if (path_part == NULL)
 	{
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
-		       _("The URI '%s' is invalid"),
+		       _("The URI “%s” is invalid"),
 		       uri);
 	  return NULL;
 	}
@@ -1603,7 +1603,7 @@ g_filename_from_uri (const gchar *uri,
 	{
 	  g_free (unescaped_hostname);
 	  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
-		       _("The hostname of the URI '%s' is invalid"),
+		       _("The hostname of the URI “%s” is invalid"),
 		       uri);
 	  return NULL;
 	}
@@ -1619,7 +1619,7 @@ g_filename_from_uri (const gchar *uri,
   if (filename == NULL)
     {
       g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_BAD_URI,
-		   _("The URI '%s' contains invalidly escaped characters"),
+		   _("The URI “%s” contains invalidly escaped characters"),
 		   uri);
       return NULL;
     }
@@ -1714,7 +1714,7 @@ g_filename_to_uri (const gchar *filename,
   if (!g_path_is_absolute (filename))
     {
       g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_NOT_ABSOLUTE_PATH,
-		   _("The pathname '%s' is not an absolute path"),
+		   _("The pathname “%s” is not an absolute path"),
 		   filename);
       return NULL;
     }

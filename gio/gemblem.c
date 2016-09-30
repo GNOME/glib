@@ -138,7 +138,7 @@ g_emblem_class_init (GEmblemClass *klass)
   g_object_class_install_property (gobject_class,
                                    PROP_ORIGIN,
                                    g_param_spec_enum ("origin",
-                                                      P_("GEmblem's origin"),
+                                                      P_("GEmblem’s origin"),
                                                       P_("Tells which origin the emblem is derived from"),
                                                       G_TYPE_EMBLEM_ORIGIN,
                                                       G_EMBLEM_ORIGIN_UNKNOWN,
@@ -320,7 +320,7 @@ g_emblem_from_tokens (gchar  **tokens,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Can't handle version %d of GEmblem encoding"),
+                   _("Can’t handle version %d of GEmblem encoding"),
                    version);
       return NULL;
     }

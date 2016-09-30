@@ -113,7 +113,7 @@ do_lookup_by_name (GTask         *task,
           g_task_return_new_error (task,
                                    G_RESOLVER_ERROR,
                                    G_RESOLVER_ERROR_NOT_FOUND,
-                                   _("Error resolving '%s': %s"),
+                                   _("Error resolving “%s”: %s"),
                                    hostname,
                                    _("No valid addresses were found"));
         }
@@ -123,7 +123,7 @@ do_lookup_by_name (GTask         *task,
       g_task_return_new_error (task,
                                G_RESOLVER_ERROR,
                                g_resolver_error_from_addrinfo_error (retval),
-                               _("Error resolving '%s': %s"),
+                               _("Error resolving “%s”: %s"),
                                hostname, gai_strerror (retval));
     }
 
@@ -210,7 +210,7 @@ do_lookup_by_address (GTask         *task,
       g_task_return_new_error (task,
                                G_RESOLVER_ERROR,
                                g_resolver_error_from_addrinfo_error (retval),
-                               _("Error reverse-resolving '%s': %s"),
+                               _("Error reverse-resolving “%s”: %s"),
                                phys ? phys : "(unknown)",
                                gai_strerror (retval));
       g_free (phys);
@@ -547,17 +547,17 @@ g_resolver_records_from_res_query (const gchar      *rrname,
       if (len == 0 || herr == HOST_NOT_FOUND || herr == NO_DATA)
         {
           g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
-                       _("No DNS record of the requested type for '%s'"), rrname);
+                       _("No DNS record of the requested type for “%s”"), rrname);
         }
       else if (herr == TRY_AGAIN)
         {
           g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_TEMPORARY_FAILURE,
-                       _("Temporarily unable to resolve '%s'"), rrname);
+                       _("Temporarily unable to resolve “%s”"), rrname);
         }
       else
         {
           g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL,
-                       _("Error resolving '%s'"), rrname);
+                       _("Error resolving “%s”"), rrname);
         }
 
       return NULL;
@@ -627,7 +627,7 @@ g_resolver_records_from_res_query (const gchar      *rrname,
   if (records == NULL)
     {
       g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
-                   _("No DNS record of the requested type for '%s'"), rrname);
+                   _("No DNS record of the requested type for “%s”"), rrname);
 
       return NULL;
     }
@@ -725,17 +725,17 @@ g_resolver_records_from_DnsQuery (const gchar  *rrname,
       if (status == DNS_ERROR_RCODE_NAME_ERROR)
         {
           g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
-                       _("No DNS record of the requested type for '%s'"), rrname);
+                       _("No DNS record of the requested type for “%s”"), rrname);
         }
       else if (status == DNS_ERROR_RCODE_SERVER_FAILURE)
         {
           g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_TEMPORARY_FAILURE,
-                       _("Temporarily unable to resolve '%s'"), rrname);
+                       _("Temporarily unable to resolve “%s”"), rrname);
         }
       else
         {
           g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_INTERNAL,
-                       _("Error resolving '%s'"), rrname);
+                       _("Error resolving “%s”"), rrname);
         }
 
       return NULL;
@@ -775,7 +775,7 @@ g_resolver_records_from_DnsQuery (const gchar  *rrname,
   if (records == NULL)
     {
       g_set_error (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND,
-                   _("No DNS record of the requested type for '%s'"), rrname);
+                   _("No DNS record of the requested type for “%s”"), rrname);
 
       return NULL;
     }

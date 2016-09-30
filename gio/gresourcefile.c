@@ -450,7 +450,7 @@ g_resource_file_query_info (GFile                *file,
 	  if (g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
 	    {
 	      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-			   _("The resource at '%s' does not exist"),
+			   _("The resource at “%s” does not exist"),
 			   resource->path);
 	    }
 	  else
@@ -573,7 +573,7 @@ g_resource_file_read (GFile         *file,
       if (g_error_matches (my_error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND))
 	{
 	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-		       _("The resource at '%s' does not exist"),
+		       _("The resource at “%s” does not exist"),
 		       resource->path);
 	}
       else
@@ -706,11 +706,11 @@ _g_resource_file_enumerator_new (GResourceFile *file,
       res = g_resources_get_info (file->path, 0, NULL, NULL, NULL);
       if (res)
 	g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_DIRECTORY,
-		     _("The resource at '%s' is not a directory"),
+		     _("The resource at “%s” is not a directory"),
 		     file->path);
       else
 	g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-		     _("The resource at '%s' does not exist"),
+		     _("The resource at “%s” does not exist"),
 		     file->path);
       return NULL;
     }
@@ -914,7 +914,7 @@ g_resource_file_input_stream_seek (GFileInputStream  *stream,
   if (!G_IS_SEEKABLE (file->stream))
     {
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
-			   _("Input stream doesn't implement seek"));
+			   _("Input stream doesn’t implement seek"));
       return FALSE;
     }
 

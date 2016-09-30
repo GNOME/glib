@@ -935,7 +935,7 @@ g_settings_class_init (GSettingsClass *class)
    g_object_class_install_property (object_class, PROP_DELAY_APPLY,
      g_param_spec_boolean ("delay-apply",
                            P_("Delay-apply mode"),
-                           P_("Whether this settings object is in 'delay-apply' mode"),
+                           P_("Whether this settings object is in “delay-apply” mode"),
                            FALSE,
                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 }
