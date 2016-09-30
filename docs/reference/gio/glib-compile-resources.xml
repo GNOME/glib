@@ -57,6 +57,13 @@ Print help and exit
 </varlistentry>
 
 <varlistentry>
+<term><option>--version</option></term>
+<listitem><para>
+Print program version and exit
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term><option>--target=<replaceable>TARGET</replaceable></option></term>
 <listitem><para>
 Store the compiled resources in the file <replaceable>TARGET</replaceable>.

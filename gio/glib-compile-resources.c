@@ -603,6 +603,7 @@ main (int argc, char **argv)
   GHashTable *table;
   GHashTable *files;
   gchar *srcfile;
+  gboolean show_version_and_exit = FALSE;
   gchar *target = NULL;
   gchar *binary_target = NULL;
   gboolean generate_automatic = FALSE;
@@ -617,6 +618,7 @@ main (int argc, char **argv)
   const char *linkage = "extern";
   GOptionContext *context;
   GOptionEntry entries[] = {
+    { "version", 0, 0, G_OPTION_ARG_NONE, &show_version_and_exit, N_("Show program version and exit"), NULL },
     { "target", 0, 0, G_OPTION_ARG_FILENAME, &target, N_("name of the output file"), N_("FILE") },
     { "sourcedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &sourcedirs, N_("The directories where files are to be read from (default to current directory)"), N_("DIRECTORY") },
     { "generate", 0, 0, G_OPTION_ARG_NONE, &generate_automatic, N_("Generate output in the format selected for by the target filename extension"), NULL },
@@ -665,6 +667,12 @@ main (int argc, char **argv)
     }
 
   g_option_context_free (context);
+
+  if (show_version_and_exit)
+    {
+      g_print (PACKAGE_VERSION "\n");
+      return 0;
+    }
 
   if (argc != 2)
     {
