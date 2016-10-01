@@ -21,7 +21,7 @@ __gsettings() {
 
   case "$((${COMP_CWORD}-$coffset))" in
     1)
-      choices=$'--schemadir\n--version\nhelp \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nlist-recursively \nget \nrange \nset \nreset \nreset-recursively \nwritable \nmonitor'
+      choices=$'--schemadir\n--version\nhelp \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nlist-recursively \nget \nrange \nset \nreset \nreset-recursively \nwritable \nmonitor \ndescribe '
       ;;
 
     2)
@@ -38,7 +38,7 @@ __gsettings() {
           choices="$(gsettings $schemadir list-schemas)"$'\n'"$(gsettings $schemadir list-relocatable-schemas | sed -e 's.$.:/.')"
           ;;
 
-        get|range|set|reset|writable|monitor)
+        get|range|set|reset|writable|monitor|describe)
           choices="$(gsettings $schemadir list-schemas | sed -e 's.$. .')"$'\n'"$(gsettings $schemadir list-relocatable-schemas | sed -e 's.$.:/.')"
           ;;
       esac
@@ -50,7 +50,7 @@ __gsettings() {
           choices="$(gsettings $schemadir list-keys ${COMP_WORDS[$(($coffset+2))]} 2> /dev/null | sed -e 's.$. .')"
           ;;
 
-        get|range|reset|writable|monitor)
+        get|range|reset|writable|monitor|describe)
           choices="$(gsettings $schemadir list-keys ${COMP_WORDS[$(($coffset+2))]} 2> /dev/null)"
           ;;
       esac
