@@ -2251,6 +2251,9 @@ g_log_writer_standard_streams (GLogLevelFlags   log_level,
   g_return_val_if_fail (n_fields > 0, G_LOG_WRITER_UNHANDLED);
 
   stream = log_level_to_file (log_level);
+  if (!stream || fileno (stream) < 0)
+    return G_LOG_WRITER_UNHANDLED;
+
   out = g_log_writer_format_fields (log_level, fields, n_fields,
                                     g_log_writer_supports_color (fileno (stream)));
   _g_fprintf (stream, "%s\n", out);
