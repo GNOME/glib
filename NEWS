@@ -1,3 +1,30 @@
+Overview of changes in GLib 2.50.1
+==================================
+
+* Update Unicode support to Unicode 9.0.0
+
+* Bugs fixed:
+ 662946 gunixmounts monitoring doesn't work correctly with libmount
+ 771591 Update to Unicode 9.0.0
+ 772054 glib/gspawn-win32-helper.c: unexpected behavior re CommandLineToArgvW()
+ 772255 gresolver: Mark GResolver as an abstract class
+ 772269 Add --version options to glib-compile-resources and glib-compile-schemas
+ 772297 completion: Complete gsettings describe
+ 772511 g_log_default_handler crashes windows apps with "Unspecified fatal err...
+
+* Translation updates:
+ Brazilian Portuguese
+ Catalan
+ Croatian
+ Czech
+ Danish
+ Hungarian
+ Italian
+ Latvian
+ Polish
+ Swedish
+
+
 Overview of changes in GLib 2.50.0
 ==================================
 
