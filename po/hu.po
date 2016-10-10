@@ -10,15 +10,15 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-25 18:43+0000\n"
-"PO-Revision-Date: 2016-08-25 23:41+0200\n"
-"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
+"POT-Creation-Date: 2016-10-06 20:10+0000\n"
+"PO-Revision-Date: 2016-10-09 13:50+0200\n"
+"Last-Translator: Meskó Balázs <meskobalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Poedit 1.8.9\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../gio/gapplication.c:493
@@ -117,8 +117,8 @@ msgstr "Részletes súgó kiírása ezen parancshoz"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Alkalmazásazonosító D-Bus formátumban (például: org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:620
-#: ../gio/glib-compile-resources.c:626 ../gio/glib-compile-resources.c:652
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:628 ../gio/glib-compile-resources.c:654
 #: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "FÁJL"
@@ -2274,57 +2274,61 @@ msgstr "Hiba a fájl tömörítésekor: %s"
 msgid "text may not appear inside <%s>"
 msgstr "nem jelenhet meg szöveg ezen belül: <%s>"
 
-#: ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2037
+msgid "Show program version and exit"
+msgstr "A programverzió megjelenítése és kilépés"
+
+#: ../gio/glib-compile-resources.c:622
 msgid "name of the output file"
 msgstr "a kimeneti fájl neve"
 
-#: ../gio/glib-compile-resources.c:621
+#: ../gio/glib-compile-resources.c:623
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr ""
 "A fájlok olvasása ebből a könyvtárból (alapértelmezett: aktuális könyvtár)"
 
-#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2036
-#: ../gio/glib-compile-schemas.c:2065
+#: ../gio/glib-compile-resources.c:623 ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-schemas.c:2067
 msgid "DIRECTORY"
 msgstr "KÖNYVTÁR"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:624
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Kimenet előállítása a célfájl kiterjesztése által kiválasztott formátumban"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:625
 msgid "Generate source header"
 msgstr "Forrásfejléc előállítása"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:626
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Az erőforrásfájl kódba linkelésére használt forráskód előállítása"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:627
 msgid "Generate dependency list"
 msgstr "Függőséglista előállítása"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:628
 msgid "name of the dependency file to generate"
 msgstr "az előállítandó függőségfájl neve"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:629
 msgid "Don't automatically create and register resource"
 msgstr "Ne hozza létre és ne regisztrálja automatikusan az erőforrást"
 
-#: ../gio/glib-compile-resources.c:628
+#: ../gio/glib-compile-resources.c:630
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "Ne exportáljon függvényeket; deklarálja azokat G_GNUC_INTERNAL-ként"
 
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:631
 msgid "C identifier name used for the generated source code"
 msgstr "Az előállított forráskódhoz használt C azonosító neve"
 
-#: ../gio/glib-compile-resources.c:655
+#: ../gio/glib-compile-resources.c:657
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2334,7 +2338,7 @@ msgstr ""
 "Az erőforrás-specifikációs fájlok kiterjesztése .gresource.xml,\n"
 "az erőforrásfájl kiterjesztése pedig .gresource."
 
-#: ../gio/glib-compile-resources.c:671
+#: ../gio/glib-compile-resources.c:679
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Pontosan egy fájlnevet kell megadnia\n"
@@ -2562,23 +2566,23 @@ msgstr ""
 "a(z) „%2$s” séma „%1$s” kulcsának felülbírálása a(z) „%3$s” felülbírálási "
 "fájlban nincs az érvényes lehetőségek listájában"
 
-#: ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-schemas.c:2038
 msgid "where to store the gschemas.compiled file"
 msgstr "a gschemas.compiled fájl tárolási helye"
 
-#: ../gio/glib-compile-schemas.c:2037
+#: ../gio/glib-compile-schemas.c:2039
 msgid "Abort on any errors in schemas"
 msgstr "Megszakítás a sémák bármely hibája esetén"
 
-#: ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-schemas.c:2040
 msgid "Do not write the gschema.compiled file"
 msgstr "Ne írja ki a gschema.compiled fájlt"
 
-#: ../gio/glib-compile-schemas.c:2039
+#: ../gio/glib-compile-schemas.c:2041
 msgid "Do not enforce key name restrictions"
 msgstr "Ne kényszerítse ki a kulcsnévmegszorításokat"
 
-#: ../gio/glib-compile-schemas.c:2068
+#: ../gio/glib-compile-schemas.c:2070
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2588,22 +2592,22 @@ msgstr ""
 "A sémafájloknak .gschema.xml kiterjesztéssel kell rendelkezniük,\n"
 "és a gyorsítótárfájl neve gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:2084
+#: ../gio/glib-compile-schemas.c:2092
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Pontosan egy könyvtárnevet kell megadnia\n"
 
-#: ../gio/glib-compile-schemas.c:2123
+#: ../gio/glib-compile-schemas.c:2131
 #, c-format
 msgid "No schema files found: "
 msgstr "Nem találhatók sémafájlok: "
 
-#: ../gio/glib-compile-schemas.c:2126
+#: ../gio/glib-compile-schemas.c:2134
 #, c-format
 msgid "doing nothing.\n"
 msgstr "nem történik semmi.\n"
 
-#: ../gio/glib-compile-schemas.c:2129
+#: ../gio/glib-compile-schemas.c:2137
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "meglévő kimeneti fájl eltávolítva.\n"
@@ -3033,7 +3037,7 @@ msgstr "A kimeneti adatfolyam nem valósítja meg az írást"
 msgid "Source stream is already closed"
 msgstr "A forrás adatfolyam már le van zárva"
 
-#: ../gio/gresolver.c:330 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:333 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving '%s': %s"
@@ -3359,7 +3363,8 @@ msgstr ""
 "  get                       Kulcs értékének lekérése\n"
 "  set                       Kulcs értékének beállítása\n"
 "  reset                     Kulcs értékének visszaállítása\n"
-"  reset-recursively         Az összes érték visszaállítása egy adott sémában\n"
+"  reset-recursively         Az összes érték visszaállítása egy adott "
+"sémában\n"
 "  writable                  Kulcs írhatóságának ellenőrzése\n"
 "  monitor                   Változások figyelése\n"
 "\n"
@@ -4735,17 +4740,17 @@ msgstr ""
 "A(z) „%s” dupla hosszúságú érték a tartományon kívülre esik a következőhöz: "
 "%s"
 
-#: ../glib/goption.c:1442 ../glib/goption.c:1521
+#: ../glib/goption.c:1448 ../glib/goption.c:1527
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Hiba a kapcsoló feldolgozásakor: %s"
 
-#: ../glib/goption.c:1552 ../glib/goption.c:1665
+#: ../glib/goption.c:1558 ../glib/goption.c:1671
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Hiányzó paraméter a következőhöz: %s"
 
-#: ../glib/goption.c:2126
+#: ../glib/goption.c:2132
 #, c-format
 msgid "Unknown option %s"
 msgstr "Ismeretlen kapcsoló: %s"
