@@ -322,6 +322,13 @@ Print version and exit.
 </para></listitem>
 </varlistentry>
 
+<varlistentry>
+<term><option>--output=FILE</option></term>
+<listitem><para>
+Write output to FILE instead of stdout.
+</para></listitem>
+</varlistentry>
+
 </variablelist>
 </refsect1>
 
