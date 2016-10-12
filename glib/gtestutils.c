@@ -3408,7 +3408,7 @@ g_test_build_filename_va (GTestFileType  file_type,
  * 'built' terminology that automake uses and are explicitly used to
  * distinguish between the 'srcdir' and 'builddir' being separate.  All
  * files in your project should either be dist (in the
- * `DIST_EXTRA` or `dist_schema_DATA`
+ * `EXTRA_DIST` or `dist_schema_DATA`
  * sense, in which case they will always be in the srcdir) or built (in
  * the `BUILT_SOURCES` sense, in which case they will
  * always be in the builddir).
