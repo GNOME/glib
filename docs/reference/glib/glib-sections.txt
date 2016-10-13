@@ -2923,6 +2923,7 @@ g_utf8_strrchr
 g_utf8_strreverse
 g_utf8_substring
 g_utf8_validate
+g_utf8_make_valid
 
 <SUBSECTION>
 g_utf8_strup

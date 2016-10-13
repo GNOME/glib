@@ -885,9 +885,8 @@ GLIB_AVAILABLE_IN_ALL
 gchar *g_utf8_collate_key_for_filename (const gchar *str,
                                         gssize       len) G_GNUC_MALLOC;
 
-
-/* private */
-gchar *_g_utf8_make_valid (const gchar *name);
+GLIB_AVAILABLE_IN_2_52
+gchar *g_utf8_make_valid (const gchar *str);
 
 G_END_DECLS
 

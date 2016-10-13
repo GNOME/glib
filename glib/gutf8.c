@@ -1735,19 +1735,36 @@ g_utf8_strreverse (const gchar *str,
   return result;
 }
 
-
+/**
+ * g_utf8_make_valid:
+ * @str: string to coerce into UTF-8
+ *
+ * If the provided string is valid UTF-8, return a copy of it. If not,
+ * return a copy in which bytes that could not be interpreted as valid Unicode
+ * are replaced with the Unicode replacement character (U+FFFD).
+ *
+ * For example, this is an appropriate function to use if you have received
+ * a string that was incorrectly declared to be UTF-8, and you need a valid
+ * UTF-8 version of it that can be logged or displayed to the user, with the
+ * assumption that it is close enough to ASCII or UTF-8 to be mostly
+ * readable as-is.
+ *
+ * Returns: (transfer full): a valid UTF-8 string whose content resembles @str
+ *
+ * Since: 2.52
+ */
 gchar *
-_g_utf8_make_valid (const gchar *name)
+g_utf8_make_valid (const gchar *str)
 {
   GString *string;
   const gchar *remainder, *invalid;
   gint remaining_bytes, valid_bytes;
 
-  g_return_val_if_fail (name != NULL, NULL);
+  g_return_val_if_fail (str != NULL, NULL);
 
   string = NULL;
-  remainder = name;
-  remaining_bytes = strlen (name);
+  remainder = str;
+  remaining_bytes = strlen (str);
 
   while (remaining_bytes != 0) 
     {
@@ -1767,7 +1784,7 @@ _g_utf8_make_valid (const gchar *name)
     }
   
   if (string == NULL)
-    return g_strdup (name);
+    return g_strdup (str);
   
   g_string_append (string, remainder);
 
