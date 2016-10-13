@@ -348,7 +348,7 @@ main (int ignored_argc, char **ignored_argv)
   /* For the program name passed to spawnv(), don't use the quoted
    * version.
    */
-  protect_wargv (argc, wargv + argv_zero_offset, &new_wargv);
+  protect_wargv (argc - argv_zero_offset, wargv + argv_zero_offset, &new_wargv);
 
   if (argv[ARG_USE_PATH][0] == 'y')
     handle = _wspawnvp (mode, wargv[ARG_PROGRAM], (const wchar_t **) new_wargv);
