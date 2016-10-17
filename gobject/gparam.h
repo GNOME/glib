@@ -163,7 +163,8 @@ typedef enum
   G_PARAM_STATIC_BLURB	      = 1 << 7,
   /* User defined flags go here */
   G_PARAM_EXPLICIT_NOTIFY     = 1 << 30,
-  G_PARAM_DEPRECATED          = 1 << 31
+  /* Avoid warning with -Wpedantic for gcc6 */
+  G_PARAM_DEPRECATED          = (gint)(1u << 31)
 } GParamFlags;
 
 /**
