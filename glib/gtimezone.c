@@ -639,7 +639,13 @@ rules_from_windows_time_zone (const gchar *identifier, TimeZoneRule **rules)
 
   if (RegOpenKeyExA (HKEY_LOCAL_MACHINE, subkey, 0,
                      KEY_QUERY_VALUE, &key) != ERROR_SUCCESS)
+    {
+      g_free (subkey);
+      g_free (subkey_dynamic);
+      g_free (key_name);
       return 0;
+    }
+  
   size = sizeof tzi.StandardName;
   if (RegQueryValueExA (key, "Std", NULL, NULL,
                         (LPBYTE)&(tzi.StandardName), &size) != ERROR_SUCCESS)
