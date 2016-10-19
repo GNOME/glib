@@ -60,10 +60,17 @@ $(1).sourcefiles: $(top_builddir)/build/win32/vs9/$(1).vcproj
 $(1).vs10.sourcefiles: $(top_builddir)/build/win32/vs9/$(1).vcproj
 $(1).vs10.sourcefiles.filters: $(top_builddir)/build/win32/vs9/$(1).vcproj
 
-$(top_builddir)/build/win32/vs9/$(1).vcproj:
+$(top_builddir)/build/win32/vs9/$(1).vcproj: Makefile
 	-$(RM) $(top_builddir)/build/win32/vs9/$(1).vcproj
 	-$(RM) $(top_builddir)/build/win32/vs10/$(1).vcxproj
 	-$(RM) $(top_builddir)/build/win32/vs10/$(1).vcxproj.filters
+	-$(RM) $(top_builddir)/build/win32/vs11/$(1).vcxproj
+	-$(RM) $(top_builddir)/build/win32/vs11/$(1).vcxproj.filters
+	-$(RM) $(top_builddir)/build/win32/vs12/$(1).vcxproj
+	-$(RM) $(top_builddir)/build/win32/vs12/$(1).vcxproj.filters
+	-$(RM) $(top_builddir)/build/win32/vs14/$(1).vcxproj
+	-$(RM) $(top_builddir)/build/win32/vs14/$(1).vcxproj.filters
+
 
 	for F in $(_proj_files); do \
 		case $$$$F in \
@@ -87,7 +94,7 @@ $(top_builddir)/build/win32/vs9/$(1).vcproj:
 
 $(top_builddir)/build/win32/vs10/$(1).vs10.headers: $(top_builddir)/build/win32/vs9/$(1).headers
 
-$(top_builddir)/build/win32/vs9/$(1).headers:
+$(top_builddir)/build/win32/vs9/$(1).headers: Makefile
 	-$(RM) $(top_builddir)/build/win32/vs9/$(1).headers
 	-$(RM) $(top_builddir)/build/win32/vs10/$(1).vs10.headers
 

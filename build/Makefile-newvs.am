@@ -30,7 +30,7 @@
 		sed 's/v100/v$(MSVC_VER)0/g' < $(top_builddir)/build/win32/vs10/$@ > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@; \
 	fi
 
-%.props:
+%.props: $(top_builddir)/build/win32/vs10/Makefile
 	if test -e $(top_srcdir)/build/win32/vs10/$@; then \
 		sed 's/<VSVer>10<\/VSVer>/<VSVer>$(MSVC_VER)<\/VSVer>/g' < $(top_srcdir)/build/win32/vs10/$@ > $(top_builddir)/build/win32/vs$(MSVC_VER)/$@; \
 	else \
