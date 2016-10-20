@@ -185,6 +185,7 @@ g_resolver_init (GResolver *resolver)
 #endif
 }
 
+G_LOCK_DEFINE_STATIC (default_resolver);
 static GResolver *default_resolver;
 
 /**
@@ -201,10 +202,15 @@ static GResolver *default_resolver;
 GResolver *
 g_resolver_get_default (void)
 {
+  GResolver *ret;
+
+  G_LOCK (default_resolver);
   if (!default_resolver)
     default_resolver = g_object_new (G_TYPE_THREADED_RESOLVER, NULL);
+  ret = g_object_ref (default_resolver);
+  G_UNLOCK (default_resolver);
 
-  return g_object_ref (default_resolver);
+  return ret;
 }
 
 /**
@@ -226,9 +232,11 @@ g_resolver_get_default (void)
 void
 g_resolver_set_default (GResolver *resolver)
 {
+  G_LOCK (default_resolver);
   if (default_resolver)
     g_object_unref (default_resolver);
   default_resolver = g_object_ref (resolver);
+  G_UNLOCK (default_resolver);
 }
 
 /* Bionic has res_init() but it's not in any header */
