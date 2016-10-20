@@ -1497,7 +1497,7 @@ g_task_start_task_thread (GTask           *task,
 /**
  * g_task_run_in_thread:
  * @task: a #GTask
- * @task_func: a #GTaskThreadFunc
+ * @task_func: (scope async): a #GTaskThreadFunc
  *
  * Runs @task_func in another thread. When @task_func returns, @task's
  * #GAsyncReadyCallback will be invoked in @task's #GMainContext.
@@ -1540,7 +1540,7 @@ g_task_run_in_thread (GTask           *task,
 /**
  * g_task_run_in_thread_sync:
  * @task: a #GTask
- * @task_func: a #GTaskThreadFunc
+ * @task_func: (scope async): a #GTaskThreadFunc
  *
  * Runs @task_func in another thread, and waits for it to return or be
  * cancelled. You can use g_task_propagate_pointer(), etc, afterward
