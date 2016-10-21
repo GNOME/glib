@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-13 03:44+0000\n"
-"PO-Revision-Date: 2016-09-15 18:51+0200\n"
+"POT-Creation-Date: 2016-10-12 19:22+0000\n"
+"PO-Revision-Date: 2016-10-13 21:35+0200\n"
 "Last-Translator: Charles Monzat <superboa@hotmail.fr>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -126,8 +126,8 @@ msgstr "La commande pour laquelle l'aide détaillée doit être affichée"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Identifiant d'application au format D-Bus (ex. : org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:620
-#: ../gio/glib-compile-resources.c:626 ../gio/glib-compile-resources.c:652
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:628 ../gio/glib-compile-resources.c:654
 #: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "FICHIER"
@@ -2355,11 +2355,15 @@ msgstr "Erreur à la compression du fichier %s"
 msgid "text may not appear inside <%s>"
 msgstr "<%s> ne peut pas contenir du texte"
 
-#: ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2037
+msgid "Show program version and exit"
+msgstr "Affiche la version du programme et quitte"
+
+#: ../gio/glib-compile-resources.c:622
 msgid "name of the output file"
 msgstr "nom du fichier de sortie"
 
-#: ../gio/glib-compile-resources.c:621
+#: ../gio/glib-compile-resources.c:623
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
@@ -2367,49 +2371,49 @@ msgstr ""
 "Les répertoires à partir desquels les fichiers seront lus (par défaut le "
 "répertoire actuel)"
 
-#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2036
-#: ../gio/glib-compile-schemas.c:2065
+#: ../gio/glib-compile-resources.c:623 ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-schemas.c:2067
 msgid "DIRECTORY"
 msgstr "RÉPERTOIRE"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:624
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Générer la sortie dans le format sélectionné par l'extension du nom de "
 "fichier cible"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:625
 msgid "Generate source header"
 msgstr "Générer l'en-tête de la source"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:626
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Générer le code source utilisé pour lier vers le fichier ressource dans "
 "votre code"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:627
 msgid "Generate dependency list"
 msgstr "Générer la liste des dépendances"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:628
 msgid "name of the dependency file to generate"
 msgstr "nom du fichier des dépendances à générer"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:629
 msgid "Don't automatically create and register resource"
 msgstr "Ne pas créer et enregistrer automatiquement la ressource"
 
-#: ../gio/glib-compile-resources.c:628
+#: ../gio/glib-compile-resources.c:630
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "Ne pas exporter les fonctions ; les déclarer G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:631
 msgid "C identifier name used for the generated source code"
 msgstr "Nom d'identifiant C utilisé pour le code source généré"
 
-#: ../gio/glib-compile-resources.c:655
+#: ../gio/glib-compile-resources.c:657
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2420,7 +2424,7 @@ msgstr ""
 "xml\n"
 "et le fichier de ressource possède l'extension .gresource."
 
-#: ../gio/glib-compile-resources.c:671
+#: ../gio/glib-compile-resources.c:679
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Vous devez indiquer un et un seul nom de fichier\n"
@@ -2655,23 +2659,23 @@ msgstr ""
 "la redéfinition de la clé « %s » dans le schéma « %s » du fichier de "
 "redéfinition « %s » n'est pas dans la liste des choix valides"
 
-#: ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-schemas.c:2038
 msgid "where to store the gschemas.compiled file"
 msgstr "endroit où enregistrer le fichier gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:2037
+#: ../gio/glib-compile-schemas.c:2039
 msgid "Abort on any errors in schemas"
 msgstr "Annulation en cas d'erreurs dans des schémas"
 
-#: ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-schemas.c:2040
 msgid "Do not write the gschema.compiled file"
 msgstr "Ne pas écrire de fichier gschema.compiled"
 
-#: ../gio/glib-compile-schemas.c:2039
+#: ../gio/glib-compile-schemas.c:2041
 msgid "Do not enforce key name restrictions"
 msgstr "Ne pas appliquer les limitations de nom de clé"
 
-#: ../gio/glib-compile-schemas.c:2068
+#: ../gio/glib-compile-schemas.c:2070
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2681,22 +2685,22 @@ msgstr ""
 "L'extension .gschema.xml est requise pour les fichiers schémas,\n"
 "et le fichier cache est nommé gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:2084
+#: ../gio/glib-compile-schemas.c:2092
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Vous devez indiquer un et un seul nom de répertoire\n"
 
-#: ../gio/glib-compile-schemas.c:2123
+#: ../gio/glib-compile-schemas.c:2131
 #, c-format
 msgid "No schema files found: "
 msgstr "Aucun fichier schéma trouvé : "
 
-#: ../gio/glib-compile-schemas.c:2126
+#: ../gio/glib-compile-schemas.c:2134
 #, c-format
 msgid "doing nothing.\n"
 msgstr "aucune action effectuée.\n"
 
-#: ../gio/glib-compile-schemas.c:2129
+#: ../gio/glib-compile-schemas.c:2137
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "fichier de sortie existant supprimé.\n"
@@ -2758,7 +2762,8 @@ msgstr "Impossible de créer le répertoire de la corbeille %s : %s"
 #: ../gio/glocalfile.c:1969
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
-msgstr "Impossible de trouver le répertoire racine pour mettre %s à la corbeille"
+msgstr ""
+"Impossible de trouver le répertoire racine pour mettre %s à la corbeille"
 
 #: ../gio/glocalfile.c:2048 ../gio/glocalfile.c:2068
 #, c-format
@@ -3134,7 +3139,7 @@ msgstr "Le flux de sortie n'implémente pas « write »"
 msgid "Source stream is already closed"
 msgstr "Le flux source est déjà fermé"
 
-#: ../gio/gresolver.c:330 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:333 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving '%s': %s"
