@@ -1254,10 +1254,10 @@ g_application_finalize (GObject *object)
   if (application->priv->main_options)
     g_option_group_unref (application->priv->main_options);
   if (application->priv->packed_options)
-    {
-      g_slist_free_full (application->priv->option_strings, g_free);
-      g_hash_table_unref (application->priv->packed_options);
-    }
+    g_hash_table_unref (application->priv->packed_options);
+
+  g_slist_free_full (application->priv->option_strings, g_free);
+
   if (application->priv->impl)
     g_application_impl_destroy (application->priv->impl);
   g_free (application->priv->id);
