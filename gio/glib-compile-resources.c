@@ -748,68 +748,74 @@ main (int argc, char **argv)
       return 1;
     }
 
-  if (generate_dependencies || dependency_file != NULL)
+  /* This can be used in the same invocation
+     as other generate commands */
+  if (dependency_file != NULL)
+    {
+      /* Generate a .d file that describes the dependencies for
+       * build tools, gcc -M -MF style */
+      GString *dep_string;
+      GHashTableIter iter;
+      gpointer key, data;
+      FileData *file_data;
+
+      g_hash_table_iter_init (&iter, files);
+
+      dep_string = g_string_new (NULL);
+      g_string_printf (dep_string, "%s:", srcfile);
+
+      /* First rule: foo.xml: resource1 resource2.. */
+      while (g_hash_table_iter_next (&iter, &key, &data))
+        {
+          file_data = data;
+          if (!g_str_equal (file_data->filename, srcfile))
+            g_string_append_printf (dep_string, " %s", file_data->filename);
+        }
+
+      g_string_append (dep_string, "\n\n");
+
+      /* One rule for every resource: resourceN: */
+      g_hash_table_iter_init (&iter, files);
+      while (g_hash_table_iter_next (&iter, &key, &data))
+        {
+          file_data = data;
+          if (!g_str_equal (file_data->filename, srcfile))
+            g_string_append_printf (dep_string, "%s:\n\n", file_data->filename);
+        }
+
+      if (g_str_equal (dependency_file, "-"))
+        {
+          g_print ("%s\n", dep_string->str);
+        }
+      else
+        {
+          if (!g_file_set_contents (dependency_file, dep_string->str, dep_string->len, &error))
+            {
+              g_printerr ("Error writing dependency file: %s\n", error->message);
+              g_string_free (dep_string, TRUE);
+              g_free (dependency_file);
+              g_error_free (error);
+              return 1;
+            }
+        }
+
+      g_string_free (dep_string, TRUE);
+      g_free (dependency_file);
+    }
+
+  if (generate_dependencies)
     {
       GHashTableIter iter;
       gpointer key, data;
       FileData *file_data;
 
       g_hash_table_iter_init (&iter, files);
-      if (dependency_file == NULL)
+
+      /* Generate list of files for direct use as dependencies in a Makefile */
+      while (g_hash_table_iter_next (&iter, &key, &data))
         {
-          /* Generate list of files for direct use as dependencies in a Makefile */
-          while (g_hash_table_iter_next (&iter, &key, &data))
-            {
-              file_data = data;
-              g_print ("%s\n", file_data->filename);
-            }
-        }
-      else
-        {
-          /* Generate a .d file that describes the dependencies for
-           * build tools, gcc -M -MF style */
-          GString *dep_string;
-
-          dep_string = g_string_new (NULL);
-          g_string_printf (dep_string, "%s:", srcfile);
-
-          /* First rule: foo.xml: resource1 resource2.. */
-          while (g_hash_table_iter_next (&iter, &key, &data))
-            {
-              file_data = data;
-              if (!g_str_equal (file_data->filename, srcfile))
-                g_string_append_printf (dep_string, " %s", file_data->filename);
-            }
-
-          g_string_append (dep_string, "\n\n");
-
-          /* One rule for every resource: resourceN: */
-          g_hash_table_iter_init (&iter, files);
-          while (g_hash_table_iter_next (&iter, &key, &data))
-            {
-              file_data = data;
-              if (!g_str_equal (file_data->filename, srcfile))
-                g_string_append_printf (dep_string, "%s:\n\n", file_data->filename);
-            }
-
-          if (g_str_equal (dependency_file, "-"))
-            {
-              g_print ("%s\n", dep_string->str);
-            }
-          else
-            {
-              if (!g_file_set_contents (dependency_file, dep_string->str, dep_string->len, &error))
-                {
-                  g_printerr ("Error writing dependency file: %s\n", error->message);
-                  g_string_free (dep_string, TRUE);
-                  g_free (dependency_file);
-                  g_error_free (error);
-                  return 1;
-                }
-            }
-
-          g_string_free (dep_string, TRUE);
-          g_free (dependency_file);
+          file_data = data;
+          g_print ("%s\n", file_data->filename);
         }
     }
   else if (generate_source || generate_header)
