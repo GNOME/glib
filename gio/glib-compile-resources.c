@@ -789,6 +789,17 @@ main (int argc, char **argv)
         }
       else
         {
+          /* Output depfile next to generated file */
+          if (!g_path_is_absolute (dependency_file) && target != NULL)
+            {
+              char *targetdir = g_path_get_dirname (target);
+              char *tmp = dependency_file;
+
+              dependency_file = g_build_filename (targetdir, dependency_file, NULL);
+
+              g_free (tmp);
+              g_free (targetdir);
+            }
           if (!g_file_set_contents (dependency_file, dep_string->str, dep_string->len, &error))
             {
               g_printerr ("Error writing dependency file: %s\n", error->message);
