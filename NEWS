@@ -1,3 +1,34 @@
+Overview of changes in GLib 2.51.0
+==================================
+
+* glib-genmarshal and glib-mkenums have gained --output options
+  for better build system integration
+
+* New API: g_utf8_make_valid
+
+* Bugs fixed:
+ 591603 Make _g_utf8_make_valid public
+ 610969 Nice to have g_utf8_make_valid as public
+ 767882 Bit shift overflow (-Wshift-overflow) warning in gparam.h
+ 769135 External control for g_test_add/g_test_run
+ 769630 gfile: G_FILE_MONITOR_WATCH_MOVES was actually introduced in 2.46
+ 772160 Add g_unix_mount_for() support
+ 772221 Take advantage of Unicode
+ 773303 GApplication leaks option_strings 
+
+* Translation updates:
+ French
+ Galician
+ German
+ Hungarian
+ Lithuanian
+ Norwegian bokmål
+ Occitan
+ Polish
+ Slovak
+ Turkish
+
+
 Overview of changes in GLib 2.50.1
 ==================================
 
