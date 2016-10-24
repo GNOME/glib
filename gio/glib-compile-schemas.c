@@ -791,7 +791,7 @@ is_valid_keyname (const gchar  *key,
   if (!g_ascii_islower (key[0]))
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("invalid name “%s”: names must begin "
+                   _("invalid name '%s': names must begin "
                      "with a lowercase letter"), key);
       return FALSE;
     }
@@ -803,8 +803,8 @@ is_valid_keyname (const gchar  *key,
           !g_ascii_isdigit (key[i]))
         {
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("invalid name “%s”: invalid character “%c”; "
-                         "only lowercase letters, numbers and hyphen (“-”) "
+                       _("invalid name '%s': invalid character '%c'; "
+                         "only lowercase letters, numbers and hyphen ('-') "
                          "are permitted."), key, key[i]);
           return FALSE;
         }
@@ -812,7 +812,7 @@ is_valid_keyname (const gchar  *key,
       if (key[i] == '-' && key[i + 1] == '-')
         {
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("invalid name “%s”: two successive hyphens (“--”) "
+                       _("invalid name '%s': two successive hyphens ('--') "
                          "are not permitted."), key);
           return FALSE;
         }
@@ -821,15 +821,15 @@ is_valid_keyname (const gchar  *key,
   if (key[i - 1] == '-')
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("invalid name “%s”: the last character may not be a "
-                     "hyphen (“-”)."), key);
+                   _("invalid name '%s': the last character may not be a "
+                     "hyphen ('-')."), key);
       return FALSE;
     }
 
   if (i > 1024)
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("invalid name “%s”: maximum length is 1024"), key);
+                   _("invalid name '%s': maximum length is 1024"), key);
       return FALSE;
     }
 
@@ -924,7 +924,7 @@ schema_state_add_key (SchemaState  *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           _("cannot add keys to a “list-of” schema"));
+                           _("cannot add keys to a 'list-of' schema"));
       return NULL;
     }
 
@@ -964,7 +964,7 @@ schema_state_add_key (SchemaState  *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_MISSING_ATTRIBUTE,
-                   _("exactly one of “type”, “enum” or “flags” must "
+                   _("exactly one of 'type', 'enum' or 'flags' must "
                      "be specified as an attribute to <key>"));
       return NULL;
     }
@@ -998,7 +998,7 @@ schema_state_add_key (SchemaState  *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("invalid GVariant type string “%s”"), type_string);
+                       _("invalid GVariant type string '%s'"), type_string);
           return NULL;
         }
 
@@ -1028,7 +1028,7 @@ schema_state_add_override (SchemaState  *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           _("<override> given but schema isn’t "
+                           _("<override> given but schema isn't "
                              "extending anything"));
       return;
     }
@@ -1135,7 +1135,7 @@ parse_state_start_schema (ParseState  *state,
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
                        _("<schema id='%s'> extends not yet existing "
-                         "schema “%s”"), id, extends_name);
+                         "schema '%s'"), id, extends_name);
           return;
         }
     }
@@ -1151,7 +1151,7 @@ parse_state_start_schema (ParseState  *state,
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
                        _("<schema id='%s'> is list of not yet existing "
-                         "schema “%s”"), id, list_of);
+                         "schema '%s'"), id, list_of);
           return;
         }
 
@@ -1189,8 +1189,8 @@ parse_state_start_schema (ParseState  *state,
               g_set_error (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
                            _("<schema id='%s' list-of='%s'> extends <schema "
-                             "id='%s' list-of='%s'> but “%s” does not "
-                             "extend “%s”"), id, list_of, extends_name,
+                             "id='%s' list-of='%s'> but '%s' does not "
+                             "extend '%s'"), id, list_of, extends_name,
                            extends->list_of, list_of, extends->list_of);
               return;
             }
@@ -1212,7 +1212,7 @@ parse_state_start_schema (ParseState  *state,
   if (path && list_of && !g_str_has_suffix (path, ":/"))
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("the path of a list must end with “:/”"));
+                   _("the path of a list must end with ':/'"));
       return;
     }
 
@@ -1898,8 +1898,8 @@ set_overrides (GHashTable  *schema_table,
 
               if (state == NULL)
                 {
-                  fprintf (stderr, _("No such key “%s” in schema “%s” as "
-                                     "specified in override file “%s”"),
+                  fprintf (stderr, _("No such key '%s' in schema '%s' as "
+                                     "specified in override file '%s'"),
                            key, group, filename);
 
                   if (!strict)
@@ -1924,8 +1924,8 @@ set_overrides (GHashTable  *schema_table,
 
               if (value == NULL)
                 {
-                  fprintf (stderr, _("error parsing key “%s” in schema “%s” "
-                                     "as specified in override file “%s”: "
+                  fprintf (stderr, _("error parsing key '%s' in schema '%s' "
+                                     "as specified in override file '%s': "
                                      "%s."),
                            key, group, filename, error->message);
 
@@ -1952,8 +1952,8 @@ set_overrides (GHashTable  *schema_table,
                       g_variant_compare (value, state->maximum) > 0)
                     {
                       fprintf (stderr,
-                               _("override for key “%s” in schema “%s” in "
-                                 "override file “%s” is outside the range "
+                               _("override for key '%s' in schema '%s' in "
+                                 "override file '%s' is outside the range "
                                  "given in the schema"),
                                key, group, filename);
 
@@ -1980,8 +1980,8 @@ set_overrides (GHashTable  *schema_table,
                   if (!is_valid_choices (value, state->strinfo))
                     {
                       fprintf (stderr,
-                               _("override for key “%s” in schema “%s” in "
-                                 "override file “%s” is not in the list "
+                               _("override for key '%s' in schema '%s' in "
+                                 "override file '%s' is not in the list "
                                  "of valid choices"),
                                key, group, filename);
 
