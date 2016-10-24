@@ -178,6 +178,8 @@ If <option>FILE</option> is -, the dependencies are written to the standard
 output. Unlike <option>--generate-dependencies</option>, this option can be
 combined with other <option>--generate</option> options to generate dependencies
 as a side-effect of generating sources.
+If <option>FILE</option> is not an absolute path and <option>--target</option>
+is passed then it will be relative to the same directory as the target output.
 </para></listitem>
 </varlistentry>
 
