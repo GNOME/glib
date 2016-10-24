@@ -1471,8 +1471,11 @@ g_unix_mount_for (const char *file_path,
       char *topdir;
 
       topdir = _g_local_file_find_topdir_for (file_path);
-      entry = g_unix_mount_at (topdir, time_read);
-      g_free (topdir);
+      if (topdir != NULL)
+        {
+          entry = g_unix_mount_at (topdir, time_read);
+          g_free (topdir);
+        }
     }
 
   return entry;
