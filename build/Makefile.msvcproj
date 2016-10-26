@@ -109,6 +109,39 @@ $(top_builddir)/build/win32/vs9/$(1).headers: Makefile
 		esac;	\
 	done
 
+$(top_builddir)/build/win32/vs12/$(1).vcxproj.filters: $(top_builddir)/build/win32/vs12/$(1).vcxproj
+
+$(top_builddir)/build/win32/vs12/$(1).vcxproj: Makefile
+	-$(RM) $(top_builddir)/build/win32/vs14/$(1).vcxproj
+	-$(RM) $(top_builddir)/build/win32/vs14/$(1).vcxproj.filters
+
+	for F in $(_proj_files); do \
+		case $$$$F in \
+		$(_proj_filters)) \
+			;; \
+		*.c|*.cpp|*.cc|*.cxx) \
+			echo '   <ClCompile Include="..\..\..'$(_proj_subdir)$$$$F'" />' >>$(1).vs12.sourcefiles && \
+			echo '   <ClCompile Include="..\..\..'$(_proj_subdir)$$$$F'"><Filter>Source Files</Filter></ClCompile>' >>$(1).vs12.sourcefiles.filters \
+			;; \
+		esac;	\
+	done
+
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs12/$(1).vcxprojin >$(top_builddir)/build/win32/vs12/$(1).vcxproj
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs12/$(1).vcxproj.filtersin >$(top_builddir)/build/win32/vs12/$(1).vcxproj.filters
+
+$(top_builddir)/build/win32/vs12/$(1).vs12.headers: Makefile
+	-$(RM) $(top_builddir)/build/win32/vs12/$(1).vs12.headers
+
+	for F in $(_proj_headers); do \
+		case $$$$F in \
+		$(_proj_headers_excludes)) \
+			;; \
+		*.h|*.hpp|*.hh|*.hxx) \
+			echo 'copy ..\..\..'$(_proj_subdir)$$$$F' $$$$(CopyDir)\include'$(_headers_destdir)'\'$$$$F >>$(top_builddir)/build/win32/vs12/$(1).vs12.headers \
+			;; \
+		esac;	\
+	done
+
 endef
 
 $(foreach proj,$(MSVCPROJS),$(eval $(call msvcproj-builder,$(proj))))
