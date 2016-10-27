@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&ke"
 "ywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-25 18:43+0000\n"
-"PO-Revision-Date: 2016-08-30 21:29+0200\n"
+"POT-Creation-Date: 2016-10-12 19:22+0000\n"
+"PO-Revision-Date: 2016-10-27 19:25+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: srpski <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
@@ -120,8 +120,8 @@ msgstr "Naredba za koju će ispisati opširniju pomoć"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Odrednik programa u zapisu D-sabirnice (npr: „org.example.viewer“)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:620
-#: ../gio/glib-compile-resources.c:626 ../gio/glib-compile-resources.c:652
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:628 ../gio/glib-compile-resources.c:654
 #: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "DATOTEKA"
@@ -1551,9 +1551,6 @@ msgid "Keep with file when moved"
 msgstr "Zadrži sa datotekom prilikom premeštanja"
 
 #: ../gio/gio-tool.c:187
-#| msgid ""
-#| "'%s' takes no arguments\n"
-#| "\n"
 msgid "'version' takes no arguments"
 msgstr "„version“ ne prihvata argumente"
 
@@ -1562,12 +1559,10 @@ msgid "Usage:"
 msgstr "Upotreba:"
 
 #: ../gio/gio-tool.c:192
-#| msgid "Print version information and exit"
 msgid "Print version information and exit."
 msgstr "Ispisuje podatke o izdanju i izlazi."
 
 #: ../gio/gio-tool.c:208
-#| msgid "Commands:\n"
 msgid "Commands:"
 msgstr "Naredbe:"
 
@@ -1580,7 +1575,6 @@ msgid "Copy one or more files"
 msgstr "Umnožava jednu ili više datoteka"
 
 #: ../gio/gio-tool.c:213
-#| msgid "Show GApplication options"
 msgid "Show information about locations"
 msgstr "Prikazuje podatke o mestima"
 
@@ -1593,7 +1587,6 @@ msgid "Get or set the handler for a mimetype"
 msgstr "Dobavlja i postavlja rukovaoca za mime vrstu"
 
 #: ../gio/gio-tool.c:216
-#| msgid "Can't open directory"
 msgid "Create directories"
 msgstr "Pravi direktorijume"
 
@@ -1639,9 +1632,6 @@ msgstr "Ispisuje sadržaj mesta u stablu"
 
 #: ../gio/gio-tool.c:228
 #, c-format
-#| msgid ""
-#| "Use '%s help COMMAND' to get detailed help.\n"
-#| "\n"
 msgid "Use %s to get detailed help.\n"
 msgstr "Koristite „%s“ da dobavite opširniju pomoć.\n"
 
@@ -1654,7 +1644,6 @@ msgstr "Koristite „%s“ da dobavite opširniju pomoć.\n"
 #: ../gio/gio-tool-open.c:45 ../gio/gio-tool-remove.c:48
 #: ../gio/gio-tool-rename.c:45 ../gio/gio-tool-set.c:89
 #: ../gio/gio-tool-trash.c:81 ../gio/gio-tool-tree.c:239
-#| msgid "ACTION"
 msgid "LOCATION"
 msgstr "MESTO"
 
@@ -1677,7 +1666,6 @@ msgid "No files given"
 msgstr "Nije data datoteka"
 
 #: ../gio/gio-tool-copy.c:42 ../gio/gio-tool-move.c:38
-#| msgid "Target file is a directory"
 msgid "No target directory"
 msgstr "Nema ciljne datoteke"
 
@@ -1695,7 +1683,6 @@ msgstr "Očuvava sve atribute"
 
 #: ../gio/gio-tool-copy.c:46 ../gio/gio-tool-move.c:41
 #: ../gio/gio-tool-save.c:49
-#| msgid "Backup file creation failed"
 msgid "Backup existing destination files"
 msgstr "Pravi rezervu postojećih odredišnih datoteka"
 
@@ -1735,7 +1722,6 @@ msgstr ""
 
 #: ../gio/gio-tool-copy.c:143
 #, c-format
-#| msgid "The resource at '%s' is not a directory"
 msgid "Destination %s is not a directory"
 msgstr "Odredište „%s“ nije direktorijum"
 
@@ -1745,12 +1731,10 @@ msgid "%s: overwrite '%s'? "
 msgstr "%s: da prepišem „%s“? "
 
 #: ../gio/gio-tool-info.c:34
-#| msgid "List available actions"
 msgid "List writable attributes"
 msgstr "Ispisuje ispisive atribute"
 
 #: ../gio/gio-tool-info.c:35
-#| msgid "Error getting filesystem info: %s"
 msgid "Get file system info"
 msgstr "Dobavlja podatake o sistemu datoteka"
 
@@ -1805,13 +1789,11 @@ msgstr "skriveno\n"
 
 #: ../gio/gio-tool-info.c:159
 #, c-format
-#| msgid "Error: %s\n"
 msgid "uri: %s\n"
 msgstr "putanja: %s\n"
 
 #: ../gio/gio-tool-info.c:221
 #, c-format
-#| msgid "Error setting extended attribute '%s': %s"
 msgid "Error getting writable attributes: %s\n"
 msgstr "Greška dobavljanja zapisivih osobina: %s\n"
 
@@ -1826,7 +1808,6 @@ msgid "Writable attribute namespaces:\n"
 msgstr "Nazivni prostori zapisive osobine:\n"
 
 #: ../gio/gio-tool-info.c:283
-#| msgid "Show GApplication options"
 msgid "Show information about locations."
 msgstr "Prikazuje podatke o mestima."
 
@@ -1907,59 +1888,49 @@ msgstr "Morate navesti jednu mime vrstu, i možda rukovaoca"
 
 #: ../gio/gio-tool-mime.c:113
 #, c-format
-#| msgid "invalid application id: '%s'\n"
 msgid "No default applications for '%s'\n"
 msgstr "nema osnovnog programa za „%s“\n"
 
 #: ../gio/gio-tool-mime.c:119
 #, c-format
-#| msgid "invalid application id: '%s'\n"
 msgid "Default application for '%s': %s\n"
 msgstr "Osnovni program za „%s“: %s\n"
 
 #: ../gio/gio-tool-mime.c:124
 #, c-format
-#| msgid "List applications"
 msgid "Registered applications:\n"
 msgstr "Zabeleženi programi:\n"
 
 #: ../gio/gio-tool-mime.c:126
 #, c-format
-#| msgid "List applications"
 msgid "No registered applications\n"
 msgstr "Nema zabeleženih programa\n"
 
 #: ../gio/gio-tool-mime.c:137
 #, c-format
-#| msgid "List applications"
 msgid "Recommended applications:\n"
 msgstr "Preporučeni programi:\n"
 
 #: ../gio/gio-tool-mime.c:139
 #, c-format
-#| msgid "Can't find application"
 msgid "No recommended applications\n"
 msgstr "Nema preporučenih programa\n"
 
 #: ../gio/gio-tool-mime.c:159
 #, c-format
-#| msgid "Failed to read from file '%s': %s"
 msgid "Failed to load info for handler '%s'\n"
 msgstr "Nisam uspeo da učitam podatke za rukovaoca „%s“\n"
 
 #: ../gio/gio-tool-mime.c:165
 #, c-format
-#| msgid "Failed to create file '%s': %s"
 msgid "Failed to set '%s' as the default handler for '%s': %s\n"
 msgstr "Nisam uspeo da podesim „%s“ kao osnovnog rukovaoca za „%s“: %s\n"
 
 #: ../gio/gio-tool-mkdir.c:31
-#| msgid "Can't open directory"
 msgid "Create parent directories"
 msgstr "Pravi roditeljske direktorijume"
 
 #: ../gio/gio-tool-mkdir.c:52
-#| msgid "Can't open directory"
 msgid "Create directories."
 msgstr "Pravi direktorijume."
 
@@ -1992,8 +1963,8 @@ msgstr "Prati datoteku direktno, ali ne izveštava o izmenama"
 #: ../gio/gio-tool-monitor.c:45
 msgid "Report moves and renames as simple deleted/created events"
 msgstr ""
-"Izveštava o premeštanjima i preimenovanjima kao o jednom događaju "
-"brisanja/stvaranja"
+"Izveštava o premeštanjima i preimenovanjima kao o jednom događaju brisanja/"
+"stvaranja"
 
 #: ../gio/gio-tool-monitor.c:47
 msgid "Watch for mount events"
@@ -2049,43 +2020,36 @@ msgid "Monitor events"
 msgstr "Prati događaje"
 
 #: ../gio/gio-tool-mount.c:68
-#| msgid "Show help options"
 msgid "Show extra information"
 msgstr "Prikazuje dodatne podatke"
 
 #: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
 #, c-format
-#| msgid "Error setting modification or access time: %s"
 msgid "Error mounting location: Anonymous access denied\n"
 msgstr "Greška kačenja mesta: Anoniman pristup je zabranjen\n"
 
 #: ../gio/gio-tool-mount.c:248 ../gio/gio-tool-mount.c:278
 #, c-format
-#| msgid "Error launching application: %s"
 msgid "Error mounting location: %s\n"
 msgstr "Greška kačenja mesta: %s\n"
 
 #: ../gio/gio-tool-mount.c:341
 #, c-format
-#| msgid "Error connecting: %s\n"
 msgid "Error unmounting mount: %s\n"
 msgstr "Greška otkačinjanja kačenja: %s\n"
 
 #: ../gio/gio-tool-mount.c:366 ../gio/gio-tool-mount.c:419
 #, c-format
-#| msgid "Error closing socket: %s"
 msgid "Error finding enclosing mount: %s\n"
 msgstr "Greška u nalaženju ugneždenog kačenja: %s\n"
 
 #: ../gio/gio-tool-mount.c:394
 #, c-format
-#| msgid "Error setting owner: %s"
 msgid "Error ejecting mount: %s\n"
 msgstr "Greška izbacivanja kačenja: %s\n"
 
 #: ../gio/gio-tool-mount.c:875
 #, c-format
-#| msgid "Error connecting: %s\n"
 msgid "Error mounting %s: %s\n"
 msgstr "Greška kačenja „%s“: %s\n"
 
@@ -2123,7 +2087,6 @@ msgstr ""
 
 #: ../gio/gio-tool-move.c:139
 #, c-format
-#| msgid "Target file is a directory"
 msgid "Target %s is not a directory"
 msgstr "Cilj „%s“ nije direktorijum"
 
@@ -2160,15 +2123,11 @@ msgid "Rename a file."
 msgstr "Preimenujte datoteku."
 
 #: ../gio/gio-tool-rename.c:68
-#| msgid "Missing argument for %s"
 msgid "Missing argument"
 msgstr "Nedostaje argument"
 
 #: ../gio/gio-tool-rename.c:73 ../gio/gio-tool-save.c:192
 #: ../gio/gio-tool-set.c:134
-#| msgid ""
-#| "'%s' takes no arguments\n"
-#| "\n"
 msgid "Too many arguments"
 msgstr "Previše argumenata"
 
@@ -2210,7 +2169,6 @@ msgstr "E-OZNAKA"
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: ../gio/gio-tool-save.c:145
 #, c-format
-#| msgid "TLS support is not available"
 msgid "Etag not available\n"
 msgstr "E-oznaka nije dostupna\n"
 
@@ -2243,29 +2201,24 @@ msgid "Set a file attribute of LOCATION."
 msgstr "Podešava atribut datoteke za MESTO."
 
 #: ../gio/gio-tool-set.c:111
-#| msgid "No connection endpoint specified"
 msgid "Location not specified"
 msgstr "Nije navedeno mesto"
 
 #: ../gio/gio-tool-set.c:119
-#| msgid "Error: signal not specified.\n"
 msgid "Attribute not specified"
 msgstr "Nije naveden atribut"
 
 #: ../gio/gio-tool-set.c:128
-#| msgid "Error: signal not specified.\n"
 msgid "Value not specified"
 msgstr "Nije navedena vrednost"
 
 #: ../gio/gio-tool-set.c:176
 #, c-format
-#| msgid "Invalid attribute type (string expected)"
 msgid "Invalid attribute type %s\n"
 msgstr "Nije ispravna vrsta atributa „%s“\n"
 
 #: ../gio/gio-tool-set.c:189
 #, c-format
-#| msgid "Error setting extended attribute '%s': %s"
 msgid "Error setting attribute: %s\n"
 msgstr "Greška postavljanja atributa: %s\n"
 
@@ -2335,11 +2288,15 @@ msgstr "Greška pri sažimanju datoteke „%s“"
 msgid "text may not appear inside <%s>"
 msgstr "tekst ne može da se pojavljuje unutar <%s>"
 
-#: ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2037
+msgid "Show program version and exit"
+msgstr "Prikazuje izdanje programa i izlazi"
+
+#: ../gio/glib-compile-resources.c:622
 msgid "name of the output file"
 msgstr "naziv izlazne datoteke"
 
-#: ../gio/glib-compile-resources.c:621
+#: ../gio/glib-compile-resources.c:623
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
@@ -2347,45 +2304,45 @@ msgstr ""
 "Direktorijumi iz kojih će datoteke biti čitane (osnovno je tekući "
 "direktorijum)"
 
-#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2036
-#: ../gio/glib-compile-schemas.c:2065
+#: ../gio/glib-compile-resources.c:623 ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-schemas.c:2067
 msgid "DIRECTORY"
 msgstr "DIREKTORIJUM"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:624
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Stvara izlaz u formatu izabranom proširenjem naziva ciljne datoteke"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:625
 msgid "Generate source header"
 msgstr "Stvara zaglavlje izvora"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:626
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Stvara izvorni kod korišćen da poveže datoteku resursa u vaš kod"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:627
 msgid "Generate dependency list"
 msgstr "Stvara spisak zavisnosti"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:628
 msgid "name of the dependency file to generate"
 msgstr "naziv datoteke zavisnosti za stvaranje"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:629
 msgid "Don't automatically create and register resource"
 msgstr "Ne stvara samostalno i ne beleži izvor"
 
-#: ../gio/glib-compile-resources.c:628
+#: ../gio/glib-compile-resources.c:630
 msgid "Don't export functions; declare them G_GNUC_INTERNAL"
 msgstr "Ne izvozi funkcije; objavljuje ih „G_GNUC_UNUTRAŠNJIM“"
 
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:631
 msgid "C identifier name used for the generated source code"
 msgstr "Naziv C odrednika korišćenog za stvoreni izvorni kod"
 
-#: ../gio/glib-compile-resources.c:655
+#: ../gio/glib-compile-resources.c:657
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2395,7 +2352,7 @@ msgstr ""
 "Datoteke odrednice resursa imaju proširenje „.gresource.xml“,\n"
 "a datoteke resursa imaju proširenje „.gresource“."
 
-#: ../gio/glib-compile-resources.c:671
+#: ../gio/glib-compile-resources.c:679
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Treba da navedete tačno jedan naziv datoteke\n"
@@ -2621,23 +2578,23 @@ msgstr ""
 "preklapanje za ključ „%s“ u šemi „%s“ u preklopljenoj datoteci „%s“ nije u "
 "spisku dozvoljenih izbora"
 
-#: ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-schemas.c:2038
 msgid "where to store the gschemas.compiled file"
 msgstr "gde da skladištim „gschemas.compiled“ datoteku"
 
-#: ../gio/glib-compile-schemas.c:2037
+#: ../gio/glib-compile-schemas.c:2039
 msgid "Abort on any errors in schemas"
 msgstr "Prekini pri bilo kojoj grešci u šemama"
 
-#: ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-schemas.c:2040
 msgid "Do not write the gschema.compiled file"
 msgstr "Ne upisuj „gschemas.compiled“ datoteku"
 
-#: ../gio/glib-compile-schemas.c:2039
+#: ../gio/glib-compile-schemas.c:2041
 msgid "Do not enforce key name restrictions"
 msgstr "Ne nameće ograničenja naziva ključa"
 
-#: ../gio/glib-compile-schemas.c:2068
+#: ../gio/glib-compile-schemas.c:2070
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2647,22 +2604,22 @@ msgstr ""
 "Datoteke šema moraju da se završavaju sa „.gschema.xml“,\n"
 "a datoteke keša imaju naziv „gschemas.compiled“."
 
-#: ../gio/glib-compile-schemas.c:2084
+#: ../gio/glib-compile-schemas.c:2092
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Trebate navesti tačno jedan naziv fascikle\n"
 
-#: ../gio/glib-compile-schemas.c:2123
+#: ../gio/glib-compile-schemas.c:2131
 #, c-format
 msgid "No schema files found: "
 msgstr "Nijedna datoteka sa šemama nije nađena: "
 
-#: ../gio/glib-compile-schemas.c:2126
+#: ../gio/glib-compile-schemas.c:2134
 #, c-format
 msgid "doing nothing.\n"
 msgstr "ne radim ništa.\n"
 
-#: ../gio/glib-compile-schemas.c:2129
+#: ../gio/glib-compile-schemas.c:2137
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "uklonjena postojeća izlazna datoteka.\n"
@@ -2674,13 +2631,11 @@ msgstr "Neispravan naziv datoteke %s"
 
 #: ../gio/glocalfile.c:1036
 #, c-format
-#| msgid "Error getting filesystem info: %s"
 msgid "Error getting filesystem info for %s: %s"
 msgstr "Greška dobavljanja podataka o sistemu datoteka za „%s“: %s"
 
 #: ../gio/glocalfile.c:1175
 #, c-format
-#| msgid "Containing mount does not exist"
 msgid "Containing mount for file %s not found"
 msgstr "Nisam našao sadržano kačenje za datoteku „%s“"
 
@@ -2690,7 +2645,6 @@ msgstr "Ne mogu da preimenujem koreni direktorijum"
 
 #: ../gio/glocalfile.c:1216 ../gio/glocalfile.c:1239
 #, c-format
-#| msgid "Error reading file %s: %s"
 msgid "Error renaming file %s: %s"
 msgstr "Greška preimenovanja datoteke „%s“: %s"
 
@@ -2705,19 +2659,16 @@ msgstr "Neispravan naziv datoteke"
 
 #: ../gio/glocalfile.c:1403 ../gio/glocalfile.c:1418
 #, c-format
-#| msgid "Error opening file '%s': %s"
 msgid "Error opening file %s: %s"
 msgstr "Greška otvaranja datoteke „%s“: %s"
 
 #: ../gio/glocalfile.c:1543
 #, c-format
-#| msgid "Error removing file: %s"
 msgid "Error removing file %s: %s"
 msgstr "Greška uklanjanja datoteke „%s“: %s"
 
 #: ../gio/glocalfile.c:1926
 #, c-format
-#| msgid "Error trashing file: %s"
 msgid "Error trashing file %s: %s"
 msgstr "Greška premeštanja datoteke „%s“ u smeće: %s"
 
@@ -2728,43 +2679,36 @@ msgstr "Ne mogu da napravim direktorijum za smeće %s: %s"
 
 #: ../gio/glocalfile.c:1969
 #, c-format
-#| msgid "Unable to find toplevel directory for trash"
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Ne mogu da nađem koreni direktorijum da bacim u smeće „%s“"
 
 #: ../gio/glocalfile.c:2048 ../gio/glocalfile.c:2068
 #, c-format
-#| msgid "Unable to find or create trash directory"
 msgid "Unable to find or create trash directory for %s"
 msgstr "Ne mogu da nađem ili napravim direktorijum smeća za „%s“"
 
 #: ../gio/glocalfile.c:2102
 #, c-format
-#| msgid "Unable to create trashing info file: %s"
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "Ne mogu da napravim datoteku podataka smeća za „%s“: %s"
 
 #: ../gio/glocalfile.c:2161
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "Ne mogu da bacim u smeće datoteku „%s“ preko granica sistema datoteka"
 
 #: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2221
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s: %s"
 msgstr "Ne mogu da bacim datoteku „%s“ u smeće: %s"
 
 #: ../gio/glocalfile.c:2227
 #, c-format
-#| msgid "Unable to trash file: %s"
 msgid "Unable to trash file %s"
 msgstr "Ne mogu da bacim datoteku „%s“ u smeće"
 
 #: ../gio/glocalfile.c:2253
 #, c-format
-#| msgid "Error creating directory '%s': %s"
 msgid "Error creating directory %s: %s"
 msgstr "Greška stvaranja direktorijuma „%s“: %s"
 
@@ -2775,7 +2719,6 @@ msgstr "Sistem datoteka ne podržava simboličke veze"
 
 #: ../gio/glocalfile.c:2285
 #, c-format
-#| msgid "Error making symbolic link: %s"
 msgid "Error making symbolic link %s: %s"
 msgstr "Greška stvaranja simboličke veze „%s“: %s"
 
@@ -2785,7 +2728,6 @@ msgstr "Simboličke veze nisu podržane"
 
 #: ../gio/glocalfile.c:2346 ../gio/glocalfile.c:2381 ../gio/glocalfile.c:2438
 #, c-format
-#| msgid "Error moving file: %s"
 msgid "Error moving file %s: %s"
 msgstr "Greška premeštanja datoteke „%s“: %s"
 
@@ -3101,7 +3043,7 @@ msgstr "Izlazni tok ne podržava upis"
 msgid "Source stream is already closed"
 msgstr "Izvorni tok je već zatvoren"
 
-#: ../gio/gresolver.c:330 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:333 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving '%s': %s"
@@ -3345,7 +3287,6 @@ msgid "Query the range of valid values for KEY"
 msgstr "Propituje opseg važećih vrednosti za KLJUČ"
 
 #: ../gio/gsettings-tool.c:575
-#| msgid "Query the range of valid values for KEY"
 msgid "Query the description for KEY"
 msgstr "Propituje opis za KLJUČ"
 
@@ -3384,28 +3325,6 @@ msgid "SCHEMA[:PATH] [KEY]"
 msgstr "ŠEMA [:PUTANJA] [KLJUČ]"
 
 #: ../gio/gsettings-tool.c:620
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings --version\n"
-#| "  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
-#| "\n"
-#| "Commands:\n"
-#| "  help                      Show this information\n"
-#| "  list-schemas              List installed schemas\n"
-#| "  list-relocatable-schemas  List relocatable schemas\n"
-#| "  list-keys                 List keys in a schema\n"
-#| "  list-children             List children of a schema\n"
-#| "  list-recursively          List keys and values, recursively\n"
-#| "  range                     Queries the range of a key\n"
-#| "  get                       Get the value of a key\n"
-#| "  set                       Set the value of a key\n"
-#| "  reset                     Reset the value of a key\n"
-#| "  reset-recursively         Reset all values in a given schema\n"
-#| "  writable                  Check if a key is writable\n"
-#| "  monitor                   Watch for changes\n"
-#| "\n"
-#| "Use 'gsettings help COMMAND' to get detailed help.\n"
-#| "\n"
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -4825,17 +4744,17 @@ msgstr "Ne mogu da raščlanim realnu vrednost dvostruke tačnosti „%s“ za %
 msgid "Double value '%s' for %s out of range"
 msgstr "Realna vrednost dvostruke tačnosti „%s“ za %s je izvan opsega"
 
-#: ../glib/goption.c:1442 ../glib/goption.c:1521
+#: ../glib/goption.c:1448 ../glib/goption.c:1527
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Greška pri raščlanjivanju mogućnosti %s"
 
-#: ../glib/goption.c:1552 ../glib/goption.c:1665
+#: ../glib/goption.c:1558 ../glib/goption.c:1671
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Nedostaje argument za %s"
 
-#: ../glib/goption.c:2126
+#: ../glib/goption.c:2132
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nepoznata opcija %s"
