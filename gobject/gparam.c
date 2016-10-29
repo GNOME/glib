@@ -1430,7 +1430,7 @@ g_param_type_register_static (const gchar              *name,
 /**
  * g_value_set_param:
  * @value: a valid #GValue of type %G_TYPE_PARAM
- * @param: (allow-none): the #GParamSpec to be set
+ * @param: (nullable): the #GParamSpec to be set
  *
  * Set the contents of a %G_TYPE_PARAM #GValue to @param.
  */
@@ -1452,7 +1452,7 @@ g_value_set_param (GValue     *value,
 /**
  * g_value_set_param_take_ownership: (skip)
  * @value: a valid #GValue of type %G_TYPE_PARAM
- * @param: (allow-none): the #GParamSpec to be set
+ * @param: (nullable): the #GParamSpec to be set
  *
  * This is an internal function introduced mainly for C marshallers.
  *
@@ -1468,7 +1468,7 @@ g_value_set_param_take_ownership (GValue     *value,
 /**
  * g_value_take_param: (skip)
  * @value: a valid #GValue of type %G_TYPE_PARAM
- * @param: (allow-none): the #GParamSpec to be set
+ * @param: (nullable): the #GParamSpec to be set
  *
  * Sets the contents of a %G_TYPE_PARAM #GValue to @param and takes
  * over the ownership of the callers reference to @param; the caller

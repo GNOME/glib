@@ -173,7 +173,7 @@ g_settings_backend_watch_weak_notify (gpointer  data,
  * g_settings_backend_watch:
  * @backend: a #GSettingsBackend
  * @target: the GObject (typically GSettings instance) to call back to
- * @context: (allow-none): a #GMainContext, or %NULL
+ * @context: (nullable): a #GMainContext, or %NULL
  * ...: callbacks...
  *
  * Registers a new watch on a #GSettingsBackend.
@@ -586,7 +586,7 @@ g_settings_backend_flatten_one (gpointer key,
  * @path: (out): the location to save the path
  * @keys: (out) (transfer container) (array zero-terminated=1): the
  *        location to save the relative keys
- * @values: (out) (allow-none) (transfer container) (array zero-terminated=1):
+ * @values: (out) (optional) (transfer container) (array zero-terminated=1):
  *          the location to save the values, or %NULL
  *
  * Calculate the longest common prefix of all keys in a tree and write

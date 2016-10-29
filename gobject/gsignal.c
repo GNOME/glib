@@ -1389,7 +1389,7 @@ g_signal_query (guint         signal_id,
  *  not associate a class method slot with this signal.
  * @accumulator: the accumulator for this signal; may be %NULL.
  * @accu_data: user data for the @accumulator.
- * @c_marshaller: (allow-none): the function to translate arrays of parameter
+ * @c_marshaller: (nullable): the function to translate arrays of parameter
  *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or #G_TYPE_NONE for a signal
  *  without a return value.
@@ -1457,7 +1457,7 @@ g_signal_new (const gchar	 *signal_name,
  *  not associate a class method with this signal.
  * @accumulator: the accumulator for this signal; may be %NULL.
  * @accu_data: user data for the @accumulator.
- * @c_marshaller: (allow-none): the function to translate arrays of parameter
+ * @c_marshaller: (nullable): the function to translate arrays of parameter
  *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or #G_TYPE_NONE for a signal
  *  without a return value.
@@ -1590,11 +1590,11 @@ signal_add_class_closure (SignalNode *node,
  * @signal_flags: a combination of #GSignalFlags specifying detail of when
  *     the default handler is to be invoked. You should at least specify
  *     %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST
- * @class_closure: (allow-none): The closure to invoke on signal emission;
+ * @class_closure: (nullable): The closure to invoke on signal emission;
  *     may be %NULL
- * @accumulator: (allow-none): the accumulator for this signal; may be %NULL
+ * @accumulator: (nullable): the accumulator for this signal; may be %NULL
  * @accu_data: user data for the @accumulator
- * @c_marshaller: (allow-none): the function to translate arrays of
+ * @c_marshaller: (nullable): the function to translate arrays of
  *     parameter values to signal emissions into C language callback
  *     invocations or %NULL
  * @return_type: the type of return value, or #G_TYPE_NONE for a signal
@@ -1857,7 +1857,7 @@ g_signal_set_va_marshaller (guint              signal_id,
  * @class_closure: The closure to invoke on signal emission; may be %NULL.
  * @accumulator: the accumulator for this signal; may be %NULL.
  * @accu_data: user data for the @accumulator.
- * @c_marshaller: (allow-none): the function to translate arrays of parameter
+ * @c_marshaller: (nullable): the function to translate arrays of parameter
  *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or #G_TYPE_NONE for a signal
  *  without a return value.
@@ -2727,7 +2727,7 @@ g_signal_handlers_destroy (gpointer instance)
  *  and/or @data the handler has to match.
  * @signal_id: Signal the handler has to be connected to.
  * @detail: Signal detail the handler has to be connected to.
- * @closure: (allow-none): The closure the handler will invoke.
+ * @closure: (nullable): The closure the handler will invoke.
  * @func: The C closure callback of the handler (useless for non-C closures).
  * @data: The closure data of the handler's closure.
  *
@@ -2807,7 +2807,7 @@ signal_handlers_foreach_matched_R (gpointer         instance,
  *  and/or @data the handlers have to match.
  * @signal_id: Signal the handlers have to be connected to.
  * @detail: Signal detail the handlers have to be connected to.
- * @closure: (allow-none): The closure the handlers will invoke.
+ * @closure: (nullable): The closure the handlers will invoke.
  * @func: The C closure callback of the handlers (useless for non-C closures).
  * @data: The closure data of the handlers' closures.
  *
@@ -2854,7 +2854,7 @@ g_signal_handlers_block_matched (gpointer         instance,
  *  and/or @data the handlers have to match.
  * @signal_id: Signal the handlers have to be connected to.
  * @detail: Signal detail the handlers have to be connected to.
- * @closure: (allow-none): The closure the handlers will invoke.
+ * @closure: (nullable): The closure the handlers will invoke.
  * @func: The C closure callback of the handlers (useless for non-C closures).
  * @data: The closure data of the handlers' closures.
  *
@@ -2902,7 +2902,7 @@ g_signal_handlers_unblock_matched (gpointer         instance,
  *  and/or @data the handlers have to match.
  * @signal_id: Signal the handlers have to be connected to.
  * @detail: Signal detail the handlers have to be connected to.
- * @closure: (allow-none): The closure the handlers will invoke.
+ * @closure: (nullable): The closure the handlers will invoke.
  * @func: The C closure callback of the handlers (useless for non-C closures).
  * @data: The closure data of the handlers' closures.
  *

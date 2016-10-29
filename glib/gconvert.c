@@ -1530,8 +1530,7 @@ hostname_validate (const char *hostname)
 /**
  * g_filename_from_uri:
  * @uri: a uri describing a filename (escaped, encoded in ASCII).
- * @hostname: (out) (optional) (nullable): Location to store hostname for the
- *            URI.
+ * @hostname: (out) (optional): Location to store hostname for the URI.
  *            If there is no hostname in the URI, %NULL will be
  *            stored in this location.
  * @error: location to store the error occurring, or %NULL to ignore
@@ -1692,7 +1691,7 @@ g_filename_from_uri (const gchar *uri,
  * @filename: (type filename): an absolute filename specified in the GLib file
  *     name encoding, which is the on-disk file name bytes on Unix, and UTF-8
  *     on Windows
- * @hostname: (allow-none): A UTF-8 encoded hostname, or %NULL for none.
+ * @hostname: (nullable): A UTF-8 encoded hostname, or %NULL for none.
  * @error: location to store the error occurring, or %NULL to ignore
  *         errors. Any of the errors in #GConvertError may occur.
  * 

@@ -1632,7 +1632,7 @@ g_type_interface_add_prerequisite (GType interface_type,
 /**
  * g_type_interface_prerequisites:
  * @interface_type: an interface type
- * @n_prerequisites: (out) (allow-none): location to return the number
+ * @n_prerequisites: (out) (optional): location to return the number
  *     of prerequisites, or %NULL
  *
  * Returns the prerequisites of an interfaces type.
@@ -3528,7 +3528,7 @@ g_type_is_a (GType type,
 /**
  * g_type_children:
  * @type: the parent type
- * @n_children: (out) (allow-none): location to store the length of
+ * @n_children: (out) (optional): location to store the length of
  *     the returned array, or %NULL
  *
  * Return a newly allocated and 0-terminated array of type IDs, listing
@@ -3571,7 +3571,7 @@ g_type_children (GType  type,
 /**
  * g_type_interfaces:
  * @type: the type to list interface types for
- * @n_interfaces: (out) (allow-none): location to store the length of
+ * @n_interfaces: (out) (optional): location to store the length of
  *     the returned array, or %NULL
  *
  * Return a newly allocated and 0-terminated array of type IDs, listing

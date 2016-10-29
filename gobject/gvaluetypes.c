@@ -1023,7 +1023,7 @@ g_value_get_double (const GValue *value)
 /**
  * g_value_set_string:
  * @value: a valid #GValue of type %G_TYPE_STRING
- * @v_string: (allow-none): caller-owned string to be duplicated for the #GValue
+ * @v_string: (nullable): caller-owned string to be duplicated for the #GValue
  *
  * Set the contents of a %G_TYPE_STRING #GValue to @v_string.
  */
@@ -1048,7 +1048,7 @@ g_value_set_string (GValue	*value,
 /**
  * g_value_set_static_string:
  * @value: a valid #GValue of type %G_TYPE_STRING
- * @v_string: (allow-none): static string to be set
+ * @v_string: (nullable): static string to be set
  *
  * Set the contents of a %G_TYPE_STRING #GValue to @v_string.
  * The string is assumed to be static, and is thus not duplicated
@@ -1069,7 +1069,7 @@ g_value_set_static_string (GValue      *value,
 /**
  * g_value_set_string_take_ownership:
  * @value: a valid #GValue of type %G_TYPE_STRING
- * @v_string: (allow-none): duplicated unowned string to be set
+ * @v_string: (nullable): duplicated unowned string to be set
  *
  * This is an internal function introduced mainly for C marshallers.
  *
@@ -1085,7 +1085,7 @@ g_value_set_string_take_ownership (GValue *value,
 /**
  * g_value_take_string:
  * @value: a valid #GValue of type %G_TYPE_STRING
- * @v_string: (allow-none): string to take ownership of
+ * @v_string: (nullable): string to take ownership of
  *
  * Sets the contents of a %G_TYPE_STRING #GValue to @v_string.
  *
@@ -1210,7 +1210,7 @@ g_value_get_gtype (const GValue *value)
 /**
  * g_value_set_variant:
  * @value: a valid #GValue of type %G_TYPE_VARIANT
- * @variant: (allow-none): a #GVariant, or %NULL
+ * @variant: (nullable): a #GVariant, or %NULL
  *
  * Set the contents of a variant #GValue to @variant.
  * If the variant is floating, it is consumed.

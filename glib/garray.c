@@ -913,7 +913,7 @@ g_ptr_array_sized_new (guint reserved_size)
 
 /**
  * g_ptr_array_new_with_free_func:
- * @element_free_func: (allow-none): A function to free elements with
+ * @element_free_func: (nullable): A function to free elements with
  *     destroy @array or %NULL
  *
  * Creates a new #GPtrArray with a reference count of 1 and use
@@ -939,7 +939,7 @@ g_ptr_array_new_with_free_func (GDestroyNotify element_free_func)
 /**
  * g_ptr_array_new_full:
  * @reserved_size: number of pointers preallocated
- * @element_free_func: (allow-none): A function to free elements with
+ * @element_free_func: (nullable): A function to free elements with
  *     destroy @array or %NULL
  *
  * Creates a new #GPtrArray with @reserved_size pointers preallocated
@@ -969,7 +969,7 @@ g_ptr_array_new_full (guint          reserved_size,
 /**
  * g_ptr_array_set_free_func:
  * @array: A #GPtrArray
- * @element_free_func: (allow-none): A function to free elements with
+ * @element_free_func: (nullable): A function to free elements with
  *     destroy @array or %NULL
  *
  * Sets a function for freeing each element when @array is destroyed

@@ -290,7 +290,7 @@ g_simple_async_result_init (GSimpleAsyncResult *simple)
 
 /**
  * g_simple_async_result_new:
- * @source_object: (allow-none): a #GObject, or %NULL.
+ * @source_object: (nullable): a #GObject, or %NULL.
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @user_data: (closure): user data passed to @callback.
  * @source_tag: the asynchronous function.
@@ -334,7 +334,7 @@ g_simple_async_result_new (GObject             *source_object,
 
 /**
  * g_simple_async_result_new_from_error:
- * @source_object: (allow-none): a #GObject, or %NULL.
+ * @source_object: (nullable): a #GObject, or %NULL.
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @user_data: (closure): user data passed to @callback.
  * @error: a #GError
@@ -365,7 +365,7 @@ g_simple_async_result_new_from_error (GObject             *source_object,
 
 /**
  * g_simple_async_result_new_take_error: (skip)
- * @source_object: (allow-none): a #GObject, or %NULL
+ * @source_object: (nullable): a #GObject, or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback
  * @user_data: (closure): user data passed to @callback
  * @error: a #GError
@@ -399,7 +399,7 @@ g_simple_async_result_new_take_error (GObject             *source_object,
 
 /**
  * g_simple_async_result_new_error:
- * @source_object: (allow-none): a #GObject, or %NULL.
+ * @source_object: (nullable): a #GObject, or %NULL.
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @user_data: (closure): user data passed to @callback.
  * @domain: a #GQuark.
@@ -915,7 +915,7 @@ run_in_thread (GIOSchedulerJob *job,
  * @simple: a #GSimpleAsyncResult.
  * @func: a #GSimpleAsyncThreadFunc.
  * @io_priority: the io priority of the request.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  *
  * Runs the asynchronous job in a separate thread and then calls
  * g_simple_async_result_complete_in_idle() on @simple to return
@@ -951,8 +951,8 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
 /**
  * g_simple_async_result_is_valid:
  * @result: the #GAsyncResult passed to the _finish function.
- * @source: (allow-none): the #GObject passed to the _finish function.
- * @source_tag: (allow-none): the asynchronous function.
+ * @source: (nullable): the #GObject passed to the _finish function.
+ * @source_tag: (nullable): the asynchronous function.
  *
  * Ensures that the data passed to the _finish function of an async
  * operation is consistent.  Three checks are performed.
@@ -1003,7 +1003,7 @@ g_simple_async_result_is_valid (GAsyncResult *result,
 
 /**
  * g_simple_async_report_error_in_idle: (skip)
- * @object: (allow-none): a #GObject, or %NULL.
+ * @object: (nullable): a #GObject, or %NULL.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * @domain: a #GQuark containing the error domain (usually #G_IO_ERROR).
@@ -1046,7 +1046,7 @@ g_simple_async_report_error_in_idle (GObject             *object,
 
 /**
  * g_simple_async_report_gerror_in_idle:
- * @object: (allow-none): a #GObject, or %NULL
+ * @object: (nullable): a #GObject, or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @user_data: (closure): user data passed to @callback.
  * @error: the #GError to report
@@ -1078,7 +1078,7 @@ g_simple_async_report_gerror_in_idle (GObject *object,
 
 /**
  * g_simple_async_report_take_gerror_in_idle: (skip)
- * @object: (allow-none): a #GObject, or %NULL
+ * @object: (nullable): a #GObject, or %NULL
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * @error: the #GError to report
@@ -1113,7 +1113,7 @@ g_simple_async_report_take_gerror_in_idle (GObject *object,
 /**
  * g_simple_async_result_set_check_cancellable:
  * @simple: a #GSimpleAsyncResult
- * @check_cancellable: (allow-none): a #GCancellable to check, or %NULL to unset
+ * @check_cancellable: (nullable): a #GCancellable to check, or %NULL to unset
  *
  * Sets a #GCancellable to check before dispatching results.
  *

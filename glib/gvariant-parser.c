@@ -2320,11 +2320,11 @@ parse (TokenStream  *stream,
 
 /**
  * g_variant_parse:
- * @type: (allow-none): a #GVariantType, or %NULL
+ * @type: (nullable): a #GVariantType, or %NULL
  * @text: a string containing a GVariant in text form
- * @limit: (allow-none): a pointer to the end of @text, or %NULL
- * @endptr: (allow-none): a location to store the end pointer, or %NULL
- * @error: (allow-none): a pointer to a %NULL #GError pointer, or %NULL
+ * @limit: (nullable): a pointer to the end of @text, or %NULL
+ * @endptr: (nullable): a location to store the end pointer, or %NULL
+ * @error: (nullable): a pointer to a %NULL #GError pointer, or %NULL
  *
  * Parses a #GVariant from a text representation.
  *

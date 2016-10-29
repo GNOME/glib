@@ -325,12 +325,12 @@ g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation)
 
 /* < internal >
  * _g_dbus_method_invocation_new:
- * @sender: (allow-none): The bus name that invoked the method or %NULL if @connection is not a bus connection.
+ * @sender: (nullable): The bus name that invoked the method or %NULL if @connection is not a bus connection.
  * @object_path: The object path the method was invoked on.
  * @interface_name: The name of the D-Bus interface the method was invoked on.
  * @method_name: The name of the method that was invoked.
- * @method_info: (allow-none): Information about the method call or %NULL.
- * @property_info: (allow-none): Information about the property or %NULL.
+ * @method_info: (nullable): Information about the method call or %NULL.
+ * @property_info: (nullable): Information about the property or %NULL.
  * @connection: The #GDBusConnection the method was invoked on.
  * @message: The D-Bus message as a #GDBusMessage.
  * @parameters: The parameters as a #GVariant tuple.
@@ -529,7 +529,7 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
 /**
  * g_dbus_method_invocation_return_value:
  * @invocation: (transfer full): A #GDBusMethodInvocation.
- * @parameters: (allow-none): A #GVariant tuple with out parameters for the method or %NULL if not passing any parameters.
+ * @parameters: (nullable): A #GVariant tuple with out parameters for the method or %NULL if not passing any parameters.
  *
  * Finishes handling a D-Bus method call by returning @parameters.
  * If the @parameters GVariant is floating, it is consumed.
@@ -558,8 +558,8 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
 /**
  * g_dbus_method_invocation_return_value_with_unix_fd_list:
  * @invocation: (transfer full): A #GDBusMethodInvocation.
- * @parameters: (allow-none): A #GVariant tuple with out parameters for the method or %NULL if not passing any parameters.
- * @fd_list: (allow-none): A #GUnixFDList or %NULL.
+ * @parameters: (nullable): A #GVariant tuple with out parameters for the method or %NULL if not passing any parameters.
+ * @fd_list: (nullable): A #GUnixFDList or %NULL.
  *
  * Like g_dbus_method_invocation_return_value() but also takes a #GUnixFDList.
  *

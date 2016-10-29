@@ -350,7 +350,7 @@ handle_ip_address (const char  *hostname,
  * g_resolver_lookup_by_name:
  * @resolver: a #GResolver
  * @hostname: the hostname to look up
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Synchronously resolves @hostname to determine its associated IP
@@ -417,7 +417,7 @@ g_resolver_lookup_by_name (GResolver     *resolver,
  * g_resolver_lookup_by_name_async:
  * @resolver: a #GResolver
  * @hostname: the hostname to look up the address of
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): callback to call after resolution completes
  * @user_data: (closure): data for @callback
  *
@@ -536,7 +536,7 @@ g_resolver_free_addresses (GList *addresses)
  * g_resolver_lookup_by_address:
  * @resolver: a #GResolver
  * @address: the address to reverse-resolve
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Synchronously reverse-resolves @address to determine its
@@ -572,7 +572,7 @@ g_resolver_lookup_by_address (GResolver     *resolver,
  * g_resolver_lookup_by_address_async:
  * @resolver: a #GResolver
  * @address: the address to reverse-resolve
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): callback to call after resolution completes
  * @user_data: (closure): data for @callback
  *
@@ -651,7 +651,7 @@ g_resolver_get_service_rrname (const char *service,
  * @service: the service type to look up (eg, "ldap")
  * @protocol: the networking protocol to use for @service (eg, "tcp")
  * @domain: the DNS domain to look up the service in
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Synchronously performs a DNS SRV lookup for the given @service and
@@ -715,7 +715,7 @@ g_resolver_lookup_service (GResolver     *resolver,
  * @service: the service type to look up (eg, "ldap")
  * @protocol: the networking protocol to use for @service (eg, "tcp")
  * @domain: the DNS domain to look up the service in
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): callback to call after resolution completes
  * @user_data: (closure): data for @callback
  *
@@ -811,7 +811,7 @@ g_resolver_free_targets (GList *targets)
  * @resolver: a #GResolver
  * @rrname: the DNS name to lookup the record for
  * @record_type: the type of DNS record to lookup
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Synchronously performs a DNS record lookup for the given @rrname and returns
@@ -856,7 +856,7 @@ g_resolver_lookup_records (GResolver            *resolver,
  * @resolver: a #GResolver
  * @rrname: the DNS name to lookup the record for
  * @record_type: the type of DNS record to lookup
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): callback to call after resolution completes
  * @user_data: (closure): data for @callback
  *

@@ -571,7 +571,7 @@ dir_changed (GFileMonitor       *monitor,
  * g_keyfile_settings_backend_new:
  * @filename: the filename of the keyfile
  * @root_path: the path under which all settings keys appear
- * @root_group: (allow-none): the group name corresponding to
+ * @root_group: (nullable): the group name corresponding to
  *              @root_path, or %NULL
  *
  * Creates a keyfile-backed #GSettingsBackend.

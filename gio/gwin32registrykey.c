@@ -484,7 +484,7 @@ g_win32_registry_key_new (const gchar  *path,
 /**
  * g_win32_registry_key_new_w:
  * @path: (in) (transfer none): absolute full name of a key to open (in UTF-16)
- * @error: (inout) (nullable): a pointer to a %NULL #GError, or %NULL
+ * @error: (inout) (optional): a pointer to a %NULL #GError, or %NULL
  *
  * Creates an object that represents a registry key specified by @path.
  * @path must start with one of the following pre-defined names:
@@ -628,7 +628,7 @@ g_win32_registry_key_initable_init (GInitable     *initable,
  * g_win32_registry_key_get_child:
  * @key: (in) (transfer none): a parent #GWin32RegistryKey
  * @subkey: (in) (transfer none): name of a child key to open (in UTF-8), relative to @key
- * @error: (inout) (nullable): a pointer to a %NULL #GError, or %NULL
+ * @error: (inout) (optional): a pointer to a %NULL #GError, or %NULL
  *
  * Opens a @subkey of the @key.
  *
@@ -662,7 +662,7 @@ g_win32_registry_key_get_child (GWin32RegistryKey  *key,
  * g_win32_registry_key_get_child_w:
  * @key: (in) (transfer none): a parent #GWin32RegistryKey
  * @subkey: (in) (transfer none): name of a child key to open (in UTF-8), relative to @key
- * @error: (inout) (nullable): a pointer to a %NULL #GError, or %NULL
+ * @error: (inout) (optional): a pointer to a %NULL #GError, or %NULL
  *
  * Opens a @subkey of the @key.
  *
@@ -739,7 +739,7 @@ g_win32_registry_key_get_child_w (GWin32RegistryKey  *key,
  * g_win32_registry_subkey_iter_init:
  * @iter: (in) (transfer none): a pointer to a #GWin32RegistrySubkeyIter
  * @key: (in) (transfer none): a #GWin32RegistryKey to iterate over
- * @error: (inout) (nullable): a pointer to %NULL #GError, or %NULL
+ * @error: (inout) (optional): a pointer to %NULL #GError, or %NULL
  *
  * Initialises (without allocating) a #GWin32RegistrySubkeyIter.  @iter may be
  * completely uninitialised prior to this call; its old value is

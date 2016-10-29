@@ -495,10 +495,10 @@ connection_get_cb (GObject      *source_object,
  * @connection: a #GDBusConnection
  * @name: the well-known name to own
  * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
- * @name_acquired_handler: (allow-none): handler to invoke when @name is acquired or %NULL
- * @name_lost_handler: (allow-none): handler to invoke when @name is lost or %NULL
+ * @name_acquired_handler: (nullable): handler to invoke when @name is acquired or %NULL
+ * @name_lost_handler: (nullable): handler to invoke when @name is lost or %NULL
  * @user_data: user data to pass to handlers
- * @user_data_free_func: (allow-none): function for freeing @user_data or %NULL
+ * @user_data_free_func: (nullable): function for freeing @user_data or %NULL
  *
  * Like g_bus_own_name() but takes a #GDBusConnection instead of a
  * #GBusType.
@@ -557,11 +557,11 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
  * @bus_type: the type of bus to own a name on
  * @name: the well-known name to own
  * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
- * @bus_acquired_handler: (allow-none): handler to invoke when connected to the bus of type @bus_type or %NULL
- * @name_acquired_handler: (allow-none): handler to invoke when @name is acquired or %NULL
- * @name_lost_handler: (allow-none): handler to invoke when @name is lost or %NULL
+ * @bus_acquired_handler: (nullable): handler to invoke when connected to the bus of type @bus_type or %NULL
+ * @name_acquired_handler: (nullable): handler to invoke when @name is acquired or %NULL
+ * @name_lost_handler: (nullable): handler to invoke when @name is lost or %NULL
  * @user_data: user data to pass to handlers
- * @user_data_free_func: (allow-none): function for freeing @user_data or %NULL
+ * @user_data_free_func: (nullable): function for freeing @user_data or %NULL
  *
  * Starts acquiring @name on the bus specified by @bus_type and calls
  * @name_acquired_handler and @name_lost_handler when the name is
@@ -788,11 +788,11 @@ bus_own_name_free_func (gpointer user_data)
  * @bus_type: the type of bus to own a name on
  * @name: the well-known name to own
  * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
- * @bus_acquired_closure: (allow-none): #GClosure to invoke when connected to
+ * @bus_acquired_closure: (nullable): #GClosure to invoke when connected to
  *     the bus of type @bus_type or %NULL
- * @name_acquired_closure: (allow-none): #GClosure to invoke when @name is
+ * @name_acquired_closure: (nullable): #GClosure to invoke when @name is
  *     acquired or %NULL
- * @name_lost_closure: (allow-none): #GClosure to invoke when @name is lost or
+ * @name_lost_closure: (nullable): #GClosure to invoke when @name is lost or
  *     %NULL
  *
  * Version of g_bus_own_name() using closures instead of callbacks for
@@ -828,9 +828,9 @@ g_bus_own_name_with_closures (GBusType            bus_type,
  * @connection: a #GDBusConnection
  * @name: the well-known name to own
  * @flags: a set of flags from the #GBusNameOwnerFlags enumeration
- * @name_acquired_closure: (allow-none): #GClosure to invoke when @name is
+ * @name_acquired_closure: (nullable): #GClosure to invoke when @name is
  *     acquired or %NULL
- * @name_lost_closure: (allow-none): #GClosure to invoke when @name is lost
+ * @name_lost_closure: (nullable): #GClosure to invoke when @name is lost
  *     or %NULL
  *
  * Version of g_bus_own_name_on_connection() using closures instead of

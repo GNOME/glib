@@ -528,8 +528,8 @@ g_app_info_get_icon (GAppInfo *appinfo)
 /**
  * g_app_info_launch:
  * @appinfo: a #GAppInfo
- * @files: (allow-none) (element-type GFile): a #GList of #GFile objects
- * @launch_context: (allow-none): a #GAppLaunchContext or %NULL
+ * @files: (nullable) (element-type GFile): a #GList of #GFile objects
+ * @launch_context: (nullable): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
  * Launches the application. Passes @files to the launched application
@@ -623,8 +623,8 @@ g_app_info_supports_files (GAppInfo *appinfo)
 /**
  * g_app_info_launch_uris:
  * @appinfo: a #GAppInfo
- * @uris: (allow-none) (element-type utf8): a #GList containing URIs to launch.
- * @launch_context: (allow-none): a #GAppLaunchContext or %NULL
+ * @uris: (nullable) (element-type utf8): a #GList containing URIs to launch.
+ * @launch_context: (nullable): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
  * Launches the application. This passes the @uris to the launched application
@@ -877,7 +877,7 @@ launch_default_for_uri (const char         *uri,
 /**
  * g_app_info_launch_default_for_uri:
  * @uri: the uri to show
- * @launch_context: (allow-none): an optional #GAppLaunchContext
+ * @launch_context: (nullable): an optional #GAppLaunchContext
  * @error: (nullable): return location for an error, or %NULL
  *
  * Utility function that launches the default application
@@ -903,10 +903,10 @@ g_app_info_launch_default_for_uri (const char         *uri,
 /**
  * g_app_info_launch_default_for_uri_async:
  * @uri: the uri to show
- * @context: (allow-none): an optional #GAppLaunchContext
- * cancellable: (allow-none): a #GCancellable
- * @callback: (allow-none): a #GASyncReadyCallback to call when the request is done
- * @user_data: (allow-none): data to pass to @callback
+ * @context: (nullable): an optional #GAppLaunchContext
+ * cancellable: (nullable): a #GCancellable
+ * @callback: (nullable): a #GASyncReadyCallback to call when the request is done
+ * @user_data: (nullable): data to pass to @callback
  *
  * Async version of g_app_info_launch_default_for_uri().
  *

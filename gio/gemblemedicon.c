@@ -143,7 +143,7 @@ g_emblemed_icon_init (GEmblemedIcon *emblemed)
 /**
  * g_emblemed_icon_new:
  * @icon: a #GIcon
- * @emblem: (allow-none): a #GEmblem, or %NULL
+ * @emblem: (nullable): a #GEmblem, or %NULL
  *
  * Creates a new emblemed icon for @icon with the emblem @emblem.
  *

@@ -197,8 +197,8 @@ g_variant_type_check (const GVariantType *type)
 /**
  * g_variant_type_string_scan:
  * @string: a pointer to any string
- * @limit: (allow-none): the end of @string, or %NULL
- * @endptr: (out) (allow-none): location to store the end pointer, or %NULL
+ * @limit: (nullable): the end of @string, or %NULL
+ * @endptr: (out) (optional): location to store the end pointer, or %NULL
  *
  * Scan for a single complete and valid GVariant type string in @string.
  * The memory pointed to by @limit (or bytes beyond it) is never
@@ -292,7 +292,7 @@ g_variant_type_string_is_valid (const gchar *type_string)
 
 /**
  * g_variant_type_free:
- * @type: (allow-none): a #GVariantType, or %NULL
+ * @type: (nullable): a #GVariantType, or %NULL
  *
  * Frees a #GVariantType that was allocated with
  * g_variant_type_copy(), g_variant_type_new() or one of the container

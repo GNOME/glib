@@ -118,7 +118,7 @@ g_quark_init (void)
 
 /**
  * g_quark_try_string:
- * @string: (allow-none): a string
+ * @string: (nullable): a string
  *
  * Gets the #GQuark associated with the given string, or 0 if string is
  * %NULL or it has no associated #GQuark.
@@ -192,7 +192,7 @@ quark_from_string (const gchar *string,
 
 /**
  * g_quark_from_string:
- * @string: (allow-none): a string
+ * @string: (nullable): a string
  *
  * Gets the #GQuark identifying the given string. If the string does
  * not currently have an associated #GQuark, a new #GQuark is created,
@@ -217,7 +217,7 @@ g_quark_from_string (const gchar *string)
 
 /**
  * g_quark_from_static_string:
- * @string: (allow-none): a string
+ * @string: (nullable): a string
  *
  * Gets the #GQuark identifying the given (static) string. If the
  * string does not currently have an associated #GQuark, a new #GQuark
@@ -303,7 +303,7 @@ quark_new (gchar *string)
 
 /**
  * g_intern_string:
- * @string: (allow-none): a string
+ * @string: (nullable): a string
  *
  * Returns a canonical representation for @string. Interned strings
  * can be compared for equality by comparing the pointers, instead of
@@ -332,7 +332,7 @@ g_intern_string (const gchar *string)
 
 /**
  * g_intern_static_string:
- * @string: (allow-none): a static string
+ * @string: (nullable): a static string
  *
  * Returns a canonical representation for @string. Interned strings
  * can be compared for equality by comparing the pointers, instead of

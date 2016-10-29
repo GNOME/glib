@@ -479,7 +479,7 @@ value_set_boxed_internal (GValue       *value,
 /**
  * g_value_set_boxed:
  * @value: a valid #GValue of %G_TYPE_BOXED derived type
- * @v_boxed: (allow-none): boxed value to be set
+ * @v_boxed: (nullable): boxed value to be set
  *
  * Set the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed.
  */
@@ -496,7 +496,7 @@ g_value_set_boxed (GValue       *value,
 /**
  * g_value_set_static_boxed:
  * @value: a valid #GValue of %G_TYPE_BOXED derived type
- * @v_boxed: (allow-none): static boxed value to be set
+ * @v_boxed: (nullable): static boxed value to be set
  *
  * Set the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed.
  * The boxed value is assumed to be static, and is thus not duplicated
@@ -515,7 +515,7 @@ g_value_set_static_boxed (GValue       *value,
 /**
  * g_value_set_boxed_take_ownership:
  * @value: a valid #GValue of %G_TYPE_BOXED derived type
- * @v_boxed: (allow-none): duplicated unowned boxed value to be set
+ * @v_boxed: (nullable): duplicated unowned boxed value to be set
  *
  * This is an internal function introduced mainly for C marshallers.
  *
@@ -531,7 +531,7 @@ g_value_set_boxed_take_ownership (GValue       *value,
 /**
  * g_value_take_boxed:
  * @value: a valid #GValue of %G_TYPE_BOXED derived type
- * @v_boxed: (allow-none): duplicated unowned boxed value to be set
+ * @v_boxed: (nullable): duplicated unowned boxed value to be set
  *
  * Sets the contents of a %G_TYPE_BOXED derived #GValue to @v_boxed
  * and takes over the ownership of the callers reference to @v_boxed;

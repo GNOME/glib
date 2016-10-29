@@ -241,7 +241,7 @@ g_tls_password_new (GTlsPasswordFlags  flags,
 /**
  * g_tls_password_get_value:
  * @password: a #GTlsPassword object
- * @length: (allow-none): location to place the length of the password.
+ * @length: (nullable): location to place the length of the password.
  *
  * Get the password value. If @length is not %NULL then it will be
  * filled in with the length of the password value. (Note that the
@@ -295,7 +295,7 @@ g_tls_password_set_value (GTlsPassword  *password,
  * @password: a #GTlsPassword object
  * @value: the value for the password
  * @length: the length of the password, or -1
- * @destroy: (allow-none): a function to use to free the password.
+ * @destroy: (nullable): a function to use to free the password.
  *
  * Provide the value for this password.
  *

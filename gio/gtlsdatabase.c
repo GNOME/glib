@@ -449,11 +449,11 @@ g_tls_database_class_init (GTlsDatabaseClass *klass)
  * @self: a #GTlsDatabase
  * @chain: a #GTlsCertificate chain
  * @purpose: the purpose that this certificate chain will be used for.
- * @identity: (allow-none): the expected peer identity
- * @interaction: (allow-none): used to interact with the user if necessary
+ * @identity: (nullable): the expected peer identity
+ * @interaction: (nullable): used to interact with the user if necessary
  * @flags: additional verify flags
- * @cancellable: (allow-none): a #GCancellable, or %NULL
- * @error: (allow-none): a #GError, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @error: (nullable): a #GError, or %NULL
  *
  * Verify's a certificate chain after looking up and adding any missing
  * certificates to the chain.
@@ -525,10 +525,10 @@ g_tls_database_verify_chain (GTlsDatabase           *self,
  * @self: a #GTlsDatabase
  * @chain: a #GTlsCertificate chain
  * @purpose: the purpose that this certificate chain will be used for.
- * @identity: (allow-none): the expected peer identity
- * @interaction: (allow-none): used to interact with the user if necessary
+ * @identity: (nullable): the expected peer identity
+ * @interaction: (nullable): used to interact with the user if necessary
  * @flags: additional verify flags
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: callback to call when the operation completes
  * @user_data: the data to pass to the callback function
  *
@@ -631,10 +631,10 @@ g_tls_database_create_certificate_handle (GTlsDatabase            *self,
  * g_tls_database_lookup_certificate_for_handle:
  * @self: a #GTlsDatabase
  * @handle: a certificate handle
- * @interaction: (allow-none): used to interact with the user if necessary
+ * @interaction: (nullable): used to interact with the user if necessary
  * @flags: Flags which affect the lookup.
- * @cancellable: (allow-none): a #GCancellable, or %NULL
- * @error: (allow-none): a #GError, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @error: (nullable): a #GError, or %NULL
  *
  * Lookup a certificate by its handle.
  *
@@ -649,7 +649,7 @@ g_tls_database_create_certificate_handle (GTlsDatabase            *self,
  * This function can block, use g_tls_database_lookup_certificate_for_handle_async() to perform
  * the lookup operation asynchronously.
  *
- * Returns: (transfer full) (allow-none): a newly allocated
+ * Returns: (transfer full) (nullable): a newly allocated
  * #GTlsCertificate, or %NULL. Use g_object_unref() to release the certificate.
  *
  * Since: 2.30
@@ -681,9 +681,9 @@ g_tls_database_lookup_certificate_for_handle (GTlsDatabase            *self,
  * g_tls_database_lookup_certificate_for_handle_async:
  * @self: a #GTlsDatabase
  * @handle: a certificate handle
- * @interaction: (allow-none): used to interact with the user if necessary
+ * @interaction: (nullable): used to interact with the user if necessary
  * @flags: Flags which affect the lookup.
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: callback to call when the operation completes
  * @user_data: the data to pass to the callback function
  *
@@ -750,10 +750,10 @@ g_tls_database_lookup_certificate_for_handle_finish (GTlsDatabase            *se
  * g_tls_database_lookup_certificate_issuer:
  * @self: a #GTlsDatabase
  * @certificate: a #GTlsCertificate
- * @interaction: (allow-none): used to interact with the user if necessary
+ * @interaction: (nullable): used to interact with the user if necessary
  * @flags: flags which affect the lookup operation
- * @cancellable: (allow-none): a #GCancellable, or %NULL
- * @error: (allow-none): a #GError, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @error: (nullable): a #GError, or %NULL
  *
  * Lookup the issuer of @certificate in the database.
  *
@@ -795,9 +795,9 @@ g_tls_database_lookup_certificate_issuer (GTlsDatabase           *self,
  * g_tls_database_lookup_certificate_issuer_async:
  * @self: a #GTlsDatabase
  * @certificate: a #GTlsCertificate
- * @interaction: (allow-none): used to interact with the user if necessary
+ * @interaction: (nullable): used to interact with the user if necessary
  * @flags: flags which affect the lookup operation
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: callback to call when the operation completes
  * @user_data: the data to pass to the callback function
  *
@@ -862,10 +862,10 @@ g_tls_database_lookup_certificate_issuer_finish (GTlsDatabase          *self,
  * g_tls_database_lookup_certificates_issued_by:
  * @self: a #GTlsDatabase
  * @issuer_raw_dn: a #GByteArray which holds the DER encoded issuer DN.
- * @interaction: (allow-none): used to interact with the user if necessary
+ * @interaction: (nullable): used to interact with the user if necessary
  * @flags: Flags which affect the lookup operation.
- * @cancellable: (allow-none): a #GCancellable, or %NULL
- * @error: (allow-none): a #GError, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
+ * @error: (nullable): a #GError, or %NULL
  *
  * Lookup certificates issued by this issuer in the database.
  *
@@ -903,9 +903,9 @@ g_tls_database_lookup_certificates_issued_by (GTlsDatabase           *self,
  * g_tls_database_lookup_certificates_issued_by_async:
  * @self: a #GTlsDatabase
  * @issuer_raw_dn: a #GByteArray which holds the DER encoded issuer DN.
- * @interaction: (allow-none): used to interact with the user if necessary
+ * @interaction: (nullable): used to interact with the user if necessary
  * @flags: Flags which affect the lookup operation.
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: callback to call when the operation completes
  * @user_data: the data to pass to the callback function
  *

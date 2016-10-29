@@ -423,12 +423,12 @@
 /**
  * g_cclosure_marshal_VOID__VOIDv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -441,12 +441,12 @@
 /**
  * g_cclosure_marshal_VOID__BOOLEANv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -458,12 +458,12 @@
 /**
  * g_cclosure_marshal_VOID__CHARv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -475,12 +475,12 @@
 /**
  * g_cclosure_marshal_VOID__UCHARv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -492,12 +492,12 @@
 /**
  * g_cclosure_marshal_VOID__INTv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -509,12 +509,12 @@
 /**
  * g_cclosure_marshal_VOID__UINTv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -526,12 +526,12 @@
 /**
  * g_cclosure_marshal_VOID__LONGv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -543,12 +543,12 @@
 /**
  * g_cclosure_marshal_VOID__ULONGv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -560,12 +560,12 @@
 /**
  * g_cclosure_marshal_VOID__ENUMv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -577,12 +577,12 @@
 /**
  * g_cclosure_marshal_VOID__FLAGSv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -594,12 +594,12 @@
 /**
  * g_cclosure_marshal_VOID__FLOATv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -611,12 +611,12 @@
 /**
  * g_cclosure_marshal_VOID__DOUBLEv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -628,12 +628,12 @@
 /**
  * g_cclosure_marshal_VOID__STRINGv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -645,12 +645,12 @@
 /**
  * g_cclosure_marshal_VOID__PARAMv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -662,12 +662,12 @@
 /**
  * g_cclosure_marshal_VOID__BOXEDv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -679,12 +679,12 @@
 /**
  * g_cclosure_marshal_VOID__POINTERv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -696,12 +696,12 @@
 /**
  * g_cclosure_marshal_VOID__OBJECTv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -713,12 +713,12 @@
 /**
  * g_cclosure_marshal_VOID__VARIANTv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -730,12 +730,12 @@
 /**
  * g_cclosure_marshal_STRING__OBJECT_POINTERv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -747,12 +747,12 @@
 /**
  * g_cclosure_marshal_VOID__UINT_POINTERv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -764,12 +764,12 @@
 /**
  * g_cclosure_marshal_BOOLEAN__FLAGSv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array
@@ -781,12 +781,12 @@
 /**
  * g_cclosure_marshal_BOOLEAN__BOXED_BOXEDv:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: (allow-none): a #GValue to store the return
+ * @return_value: (nullable): a #GValue to store the return
  *  value. May be %NULL if the callback of @closure doesn't return a
  *  value.
  * @instance: (type GObject.TypeInstance): the instance on which the closure is invoked.
  * @args: va_list of arguments to be passed to the closure.
- * @marshal_data: (allow-none): additional data specified when
+ * @marshal_data: (nullable): additional data specified when
  *  registering the marshaller, see g_closure_set_marshal() and
  *  g_closure_set_meta_marshal()
  * @n_params: the length of the @param_types array

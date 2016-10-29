@@ -505,12 +505,12 @@ struct _GOutputVector {
 
 /**
  * GOutputMessage:
- * @address: (allow-none): a #GSocketAddress, or %NULL
+ * @address: (nullable): a #GSocketAddress, or %NULL
  * @vectors: pointer to an array of output vectors
  * @num_vectors: the number of output vectors pointed to by @vectors.
  * @bytes_sent: initialize to 0. Will be set to the number of bytes
  *     that have been sent
- * @control_messages: (array length=num_control_messages) (allow-none): a pointer
+ * @control_messages: (array length=num_control_messages) (nullable): a pointer
  *   to an array of #GSocketControlMessages, or %NULL.
  * @num_control_messages: number of elements in @control_messages.
  *
@@ -602,7 +602,7 @@ typedef struct _GDBusObjectManagerServer    GDBusObjectManagerServer;
  * GDBusProxyTypeFunc:
  * @manager: A #GDBusObjectManagerClient.
  * @object_path: The object path of the remote object.
- * @interface_name: (allow-none): The interface name of the remote object or %NULL if a #GDBusObjectProxy #GType is requested.
+ * @interface_name: (nullable): The interface name of the remote object or %NULL if a #GDBusObjectProxy #GType is requested.
  * @user_data: User data.
  *
  * Function signature for a function used to determine the #GType to

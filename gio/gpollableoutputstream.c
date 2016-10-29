@@ -115,7 +115,7 @@ g_pollable_output_stream_is_writable (GPollableOutputStream *stream)
 /**
  * g_pollable_output_stream_create_source:
  * @stream: a #GPollableOutputStream.
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  *
  * Creates a #GSource that triggers when @stream can be written, or
  * @cancellable is triggered or an error occurs. The callback on the
@@ -163,7 +163,7 @@ g_pollable_output_stream_default_write_nonblocking (GPollableOutputStream  *stre
  * @buffer: (array length=count) (element-type guint8): a buffer to write
  *     data from
  * @count: the number of bytes you want to write
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Attempts to write up to @count bytes from @buffer to @stream, as

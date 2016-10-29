@@ -62,9 +62,9 @@ unescape_character (const char *scanner)
 
 /**
  * g_uri_unescape_segment:
- * @escaped_string: (allow-none): A string, may be %NULL
- * @escaped_string_end: (allow-none): Pointer to end of @escaped_string, may be %NULL
- * @illegal_characters: (allow-none): An optional string of illegal characters not to be allowed, may be %NULL
+ * @escaped_string: (nullable): A string, may be %NULL
+ * @escaped_string_end: (nullable): Pointer to end of @escaped_string, may be %NULL
+ * @illegal_characters: (nullable): An optional string of illegal characters not to be allowed, may be %NULL
  * 
  * Unescapes a segment of an escaped string.
  *
@@ -138,7 +138,7 @@ g_uri_unescape_segment (const char *escaped_string,
 /**
  * g_uri_unescape_string:
  * @escaped_string: an escaped string to be unescaped.
- * @illegal_characters: (allow-none): a string of illegal characters not to be
+ * @illegal_characters: (nullable): a string of illegal characters not to be
  *      allowed, or %NULL.
  * 
  * Unescapes a whole escaped string.
@@ -217,7 +217,7 @@ g_uri_parse_scheme (const char  *uri)
 /**
  * g_uri_escape_string:
  * @unescaped: the unescaped input string.
- * @reserved_chars_allowed: (allow-none): a string of reserved characters that
+ * @reserved_chars_allowed: (nullable): a string of reserved characters that
  *      are allowed to be used, or %NULL.
  * @allow_utf8: %TRUE if the result can include UTF-8 characters.
  * 

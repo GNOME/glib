@@ -775,9 +775,9 @@ g_binding_unbind (GBinding *binding)
  * @target: (type GObject.Object): the target #GObject
  * @target_property: the property on @target to bind
  * @flags: flags to pass to #GBinding
- * @transform_to: (scope notified) (allow-none): the transformation function
+ * @transform_to: (scope notified) (nullable): the transformation function
  *     from the @source to the @target, or %NULL to use the default
- * @transform_from: (scope notified) (allow-none): the transformation function
+ * @transform_from: (scope notified) (nullable): the transformation function
  *     from the @target to the @source, or %NULL to use the default
  * @user_data: custom data to be passed to the transformation functions,
  *     or %NULL

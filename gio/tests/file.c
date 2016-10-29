@@ -498,7 +498,7 @@ static const gchar *replace_data =
     " * @file: input #GFile.\n"
     " * @contents: string of contents to replace the file with.\n"
     " * @length: the length of @contents in bytes.\n"
-    " * @etag: (allow-none): a new <link linkend=\"gfile-etag\">entity tag</link> for the @file, or %NULL\n"
+    " * @etag: (nullable): a new <link linkend=\"gfile-etag\">entity tag</link> for the @file, or %NULL\n"
     " * @make_backup: %TRUE if a backup should be created.\n"
     " * @flags: a set of #GFileCreateFlags.\n"
     " * @cancellable: optional #GCancellable object, %NULL to ignore.\n"

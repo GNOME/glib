@@ -588,7 +588,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
  * g_datalist_id_set_data_full:
  * @datalist: a datalist.
  * @key_id: the #GQuark to identify the data element.
- * @data: (allow-none): the data element or %NULL to remove any previous element
+ * @data: (nullable): the data element or %NULL to remove any previous element
  *        corresponding to @key_id.
  * @destroy_func: the function to call when the data element is
  *                removed. This function will be called with the data
@@ -605,7 +605,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
  * g_datalist_set_data_full:
  * @dl: a datalist.
  * @k: the string to identify the data element.
- * @d: (allow-none): the data element, or %NULL to remove any previous element
+ * @d: (nullable): the data element, or %NULL to remove any previous element
  *     corresponding to @k.
  * @f: the function to call when the data element is removed. This
  *     function will be called with the data element and can be used to
@@ -619,7 +619,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
  * g_datalist_id_set_data:
  * @dl: a datalist.
  * @q: the #GQuark to identify the data element.
- * @d: (allow-none): the data element, or %NULL to remove any previous element
+ * @d: (nullable): the data element, or %NULL to remove any previous element
  *     corresponding to @q.
  *
  * Sets the data corresponding to the given #GQuark id. Any previous
@@ -630,7 +630,7 @@ g_dataset_id_set_data_full (gconstpointer  dataset_location,
  * g_datalist_set_data:
  * @dl: a datalist.
  * @k: the string to identify the data element.
- * @d: (allow-none): the data element, or %NULL to remove any previous element
+ * @d: (nullable): the data element, or %NULL to remove any previous element
  *     corresponding to @k.
  *
  * Sets the data element corresponding to the given string identifier.
@@ -815,8 +815,8 @@ g_datalist_id_get_data (GData  **datalist,
  * g_datalist_id_dup_data:
  * @datalist: location of a datalist
  * @key_id: the #GQuark identifying a data element
- * @dup_func: (allow-none): function to duplicate the old value
- * @user_data: (allow-none): passed as user_data to @dup_func
+ * @dup_func: (nullable): function to duplicate the old value
+ * @user_data: (nullable): passed as user_data to @dup_func
  *
  * This is a variant of g_datalist_id_get_data() which
  * returns a 'duplicate' of the value. @dup_func defines the
@@ -882,10 +882,10 @@ g_datalist_id_dup_data (GData          **datalist,
  * g_datalist_id_replace_data:
  * @datalist: location of a datalist
  * @key_id: the #GQuark identifying a data element
- * @oldval: (allow-none): the old value to compare against
- * @newval: (allow-none): the new value to replace it with
- * @destroy: (allow-none): destroy notify for the new value
- * @old_destroy: (allow-none): destroy notify for the existing value
+ * @oldval: (nullable): the old value to compare against
+ * @newval: (nullable): the new value to replace it with
+ * @destroy: (nullable): destroy notify for the new value
+ * @old_destroy: (nullable): destroy notify for the existing value
  *
  * Compares the member that is associated with @key_id in
  * @datalist to @oldval, and if they are the same, replace

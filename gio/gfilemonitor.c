@@ -144,7 +144,7 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
    * GFileMonitor::changed:
    * @monitor: a #GFileMonitor.
    * @file: a #GFile.
-   * @other_file: (allow-none): a #GFile or #NULL.
+   * @other_file: (nullable): a #GFile or #NULL.
    * @event_type: a #GFileMonitorEvent.
    *
    * Emitted when @file has been changed.

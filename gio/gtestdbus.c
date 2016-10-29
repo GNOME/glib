@@ -715,7 +715,7 @@ g_test_dbus_get_flags (GTestDBus *self)
  * been called yet, %NULL is returned. This can be used with
  * g_dbus_connection_new_for_address().
  *
- * Returns: (allow-none): the address of the bus, or %NULL.
+ * Returns: (nullable): the address of the bus, or %NULL.
  */
 const gchar *
 g_test_dbus_get_bus_address (GTestDBus *self)

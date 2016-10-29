@@ -1279,7 +1279,7 @@ rules_from_identifier (const gchar   *identifier,
 /* Construction {{{1 */
 /**
  * g_time_zone_new:
- * @identifier: (allow-none): a timezone identifier
+ * @identifier: (nullable): a timezone identifier
  *
  * Creates a #GTimeZone corresponding to @identifier.
  *

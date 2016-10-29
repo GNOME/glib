@@ -114,7 +114,7 @@ g_pollable_input_stream_is_readable (GPollableInputStream *stream)
 /**
  * g_pollable_input_stream_create_source:
  * @stream: a #GPollableInputStream.
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  *
  * Creates a #GSource that triggers when @stream can be read, or
  * @cancellable is triggered or an error occurs. The callback on the
@@ -162,7 +162,7 @@ g_pollable_input_stream_default_read_nonblocking (GPollableInputStream  *stream,
  * @buffer: (array length=count) (element-type guint8): a buffer to
  *     read data into (which should be at least @count bytes long).
  * @count: the number of bytes you want to read
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Attempts to read up to @count bytes from @stream into @buffer, as

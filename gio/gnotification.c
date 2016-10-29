@@ -214,7 +214,7 @@ g_notification_set_title (GNotification *notification,
  *
  * Gets the current body of @notification.
  *
- * Returns: (allow-none): the body of @notification
+ * Returns: (nullable): the body of @notification
  *
  * Since: 2.40
  */
@@ -229,7 +229,7 @@ g_notification_get_body (GNotification *notification)
 /**
  * g_notification_set_body:
  * @notification: a #GNotification
- * @body: (allow-none): the new body for @notification, or %NULL
+ * @body: (nullable): the new body for @notification, or %NULL
  *
  * Sets the body of @notification to @body.
  *
@@ -384,7 +384,7 @@ g_notification_add_button (GNotification *notification,
  * @notification: a #GNotification
  * @label: label of the button
  * @action: an action name
- * @target_format: (allow-none): a #GVariant format string, or %NULL
+ * @target_format: (nullable): a #GVariant format string, or %NULL
  * @...: positional parameters, as determined by @target_format
  *
  * Adds a button to @notification that activates @action when clicked.
@@ -422,7 +422,7 @@ g_notification_add_button_with_target (GNotification *notification,
  * @notification: a #GNotification
  * @label: label of the button
  * @action: an action name
- * @target: (allow-none): a #GVariant to use as @action's parameter, or %NULL
+ * @target: (nullable): a #GVariant to use as @action's parameter, or %NULL
  *
  * Adds a button to @notification that activates @action when clicked.
  * @action must be an application-wide action (it must start with "app.").
@@ -538,8 +538,8 @@ g_notification_get_button_with_action (GNotification *notification,
 /*< private >
  * g_notification_get_default_action:
  * @notification: a #GNotification
- * @action: (allow-none): return location for the default action
- * @target: (allow-none): return location for the target of the default action
+ * @action: (nullable): return location for the default action
+ * @target: (nullable): return location for the target of the default action
  *
  * Gets the action and target for the default action of @notification.
  *
@@ -612,7 +612,7 @@ g_notification_set_default_action (GNotification *notification,
  * g_notification_set_default_action_and_target: (skip)
  * @notification: a #GNotification
  * @action: an action name
- * @target_format: (allow-none): a #GVariant format string, or %NULL
+ * @target_format: (nullable): a #GVariant format string, or %NULL
  * @...: positional parameters, as determined by @target_format
  *
  * Sets the default action of @notification to @action. This action is
@@ -652,7 +652,7 @@ g_notification_set_default_action_and_target (GNotification *notification,
  * g_notification_set_default_action_and_target_value: (rename-to g_notification_set_default_action_and_target)
  * @notification: a #GNotification
  * @action: an action name
- * @target: (allow-none): a #GVariant to use as @action's parameter, or %NULL
+ * @target: (nullable): a #GVariant to use as @action's parameter, or %NULL
  *
  * Sets the default action of @notification to @action. This action is
  * activated when the notification is clicked on. It must be an

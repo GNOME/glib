@@ -126,8 +126,8 @@ g_pollable_source_new (GObject *pollable_stream)
  * g_pollable_source_new_full:
  * @pollable_stream: (type GObject): the stream associated with the
  *   new source
- * @child_source: (allow-none): optional child source to attach
- * @cancellable: (allow-none): optional #GCancellable to attach
+ * @child_source: (nullable): optional child source to attach
+ * @cancellable: (nullable): optional #GCancellable to attach
  *
  * Utility method for #GPollableInputStream and #GPollableOutputStream
  * implementations. Creates a new #GSource, as with
@@ -173,7 +173,7 @@ g_pollable_source_new_full (gpointer      pollable_stream,
  *   read data into
  * @count: the number of bytes to read
  * @blocking: whether to do blocking I/O
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
  *
  * Tries to read from @stream, as with g_input_stream_read() (if
@@ -219,7 +219,7 @@ g_pollable_stream_read (GInputStream   *stream,
  *   containing the data to write.
  * @count: the number of bytes to write
  * @blocking: whether to do blocking I/O
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
  *
  * Tries to write to @stream, as with g_output_stream_write() (if
@@ -268,7 +268,7 @@ g_pollable_stream_write (GOutputStream   *stream,
  * @blocking: whether to do blocking I/O
  * @bytes_written: (out): location to store the number of bytes that was 
  *   written to the stream
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
  *
  * Tries to write @count bytes to @stream, as with

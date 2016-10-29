@@ -274,7 +274,7 @@ g_dbus_object_manager_server_new (const gchar     *object_path)
 /**
  * g_dbus_object_manager_server_set_connection:
  * @manager: A #GDBusObjectManagerServer.
- * @connection: (allow-none): A #GDBusConnection or %NULL.
+ * @connection: (nullable): A #GDBusConnection or %NULL.
  *
  * Exports all objects managed by @manager on @connection. If
  * @connection is %NULL, stops exporting objects.

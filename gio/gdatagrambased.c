@@ -102,7 +102,7 @@ g_datagram_based_default_init (GDatagramBasedInterface *iface)
  * @flags: an int containing #GSocketMsgFlags flags for the overall operation
  * @timeout: the maximum time (in microseconds) to wait, 0 to not block, or -1
  *   to block indefinitely
- * @cancellable: (allow-none): a %GCancellable
+ * @cancellable: (nullable): a %GCancellable
  * @error: return location for a #GError
  *
  * Receive one or more data messages from @datagram_based in one go.

@@ -717,7 +717,7 @@ g_log_set_fatal_mask (const gchar   *log_domain,
 
 /**
  * g_log_set_handler:
- * @log_domain: (allow-none): the log domain, or %NULL for the default ""
+ * @log_domain: (nullable): the log domain, or %NULL for the default ""
  *     application domain
  * @log_levels: the log levels to apply the log handler for.
  *     To handle fatal and recursive messages as well, combine
@@ -770,7 +770,7 @@ g_log_set_handler (const gchar	 *log_domain,
 
 /**
  * g_log_set_handler_full: (rename-to g_log_set_handler)
- * @log_domain: (allow-none): the log domain, or %NULL for the default ""
+ * @log_domain: (nullable): the log domain, or %NULL for the default ""
  *     application domain
  * @log_levels: the log levels to apply the log handler for.
  *     To handle fatal and recursive messages as well, combine
@@ -1604,7 +1604,7 @@ g_log_structured (const gchar    *log_domain,
 
 /**
  * g_log_variant:
- * @log_domain: (allow-none): log domain, usually %G_LOG_DOMAIN
+ * @log_domain: (nullable): log domain, usually %G_LOG_DOMAIN
  * @log_level: log level, either from #GLogLevelFlags, or a user-defined
  *    level
  * @fields: a dictionary (#GVariant of the type %G_VARIANT_TYPE_VARDICT)
@@ -2517,7 +2517,7 @@ g_assert_warning (const char *log_domain,
 
 /**
  * g_test_expect_message:
- * @log_domain: (allow-none): the log domain of the message
+ * @log_domain: (nullable): the log domain of the message
  * @log_level: the log level of the message
  * @pattern: a glob-style [pattern][glib-Glob-style-pattern-matching]
  *

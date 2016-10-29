@@ -961,7 +961,7 @@ g_key_file_load_from_bytes (GKeyFile       *key_file,
  * @key_file: an empty #GKeyFile struct
  * @file: (type filename): a relative path to a filename to open and parse
  * @search_dirs: (array zero-terminated=1) (element-type filename): %NULL-terminated array of directories to search
- * @full_path: (out) (type filename) (allow-none): return location for a string containing the full path
+ * @full_path: (out) (type filename) (optional): return location for a string containing the full path
  *   of the file, or %NULL
  * @flags: flags from #GKeyFileFlags
  * @error: return location for a #GError, or %NULL
@@ -1035,7 +1035,7 @@ g_key_file_load_from_dirs (GKeyFile       *key_file,
  * g_key_file_load_from_data_dirs:
  * @key_file: an empty #GKeyFile struct
  * @file: (type filename): a relative path to a filename to open and parse
- * @full_path: (out) (type filename) (allow-none): return location for a string containing the full path
+ * @full_path: (out) (type filename) (optional): return location for a string containing the full path
  *   of the file, or %NULL
  * @flags: flags from #GKeyFileFlags 
  * @error: return location for a #GError, or %NULL
@@ -1472,7 +1472,7 @@ g_key_file_flush_parse_buffer (GKeyFile  *key_file,
 /**
  * g_key_file_to_data:
  * @key_file: a #GKeyFile
- * @length: (out) (allow-none): return location for the length of the
+ * @length: (out) (optional): return location for the length of the
  *   returned string, or %NULL
  * @error: return location for a #GError, or %NULL
  *
@@ -1542,7 +1542,7 @@ g_key_file_to_data (GKeyFile  *key_file,
  * g_key_file_get_keys:
  * @key_file: a #GKeyFile
  * @group_name: a group name
- * @length: (out) (allow-none): return location for the number of keys returned, or %NULL
+ * @length: (out) (optional): return location for the number of keys returned, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Returns all keys for the group name @group_name.  The array of
@@ -1640,7 +1640,7 @@ g_key_file_get_start_group (GKeyFile *key_file)
 /**
  * g_key_file_get_groups:
  * @key_file: a #GKeyFile
- * @length: (out) (allow-none): return location for the number of returned groups, or %NULL
+ * @length: (out) (optional): return location for the number of returned groups, or %NULL
  *
  * Returns all groups in the key file loaded with @key_file.  
  * The array of returned groups will be %NULL-terminated, so 
@@ -1934,7 +1934,7 @@ g_key_file_set_string (GKeyFile    *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @length: (out) (allow-none): return location for the number of returned strings, or %NULL
+ * @length: (out) (optional): return location for the number of returned strings, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Returns the values associated with @key under @group_name.
@@ -2110,7 +2110,7 @@ g_key_file_set_locale_string (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @locale: (allow-none): a locale identifier or %NULL
+ * @locale: (nullable): a locale identifier or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Returns the value associated with @key under @group_name
@@ -2197,8 +2197,8 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @locale: (allow-none): a locale identifier or %NULL
- * @length: (out) (allow-none): return location for the number of returned strings or %NULL
+ * @locale: (nullable): a locale identifier or %NULL
+ * @length: (out) (optional): return location for the number of returned strings or %NULL
  * @error: return location for a #GError or %NULL
  *
  * Returns the values associated with @key under @group_name
@@ -3255,8 +3255,8 @@ g_key_file_set_top_comment (GKeyFile     *key_file,
 /**
  * g_key_file_set_comment:
  * @key_file: a #GKeyFile
- * @group_name: (allow-none): a group name, or %NULL
- * @key: (allow-none): a key
+ * @group_name: (nullable): a group name, or %NULL
+ * @key: (nullable): a key
  * @comment: a comment
  * @error: return location for a #GError
  *
@@ -3486,7 +3486,7 @@ g_key_file_get_top_comment (GKeyFile  *key_file,
 /**
  * g_key_file_get_comment:
  * @key_file: a #GKeyFile
- * @group_name: (allow-none): a group name, or %NULL
+ * @group_name: (nullable): a group name, or %NULL
  * @key: a key
  * @error: return location for a #GError
  *
@@ -3520,8 +3520,8 @@ g_key_file_get_comment (GKeyFile     *key_file,
 /**
  * g_key_file_remove_comment:
  * @key_file: a #GKeyFile
- * @group_name: (allow-none): a group name, or %NULL
- * @key: (allow-none): a key
+ * @group_name: (nullable): a group name, or %NULL
+ * @key: (nullable): a key
  * @error: return location for a #GError
  *
  * Removes a comment above @key from @group_name.

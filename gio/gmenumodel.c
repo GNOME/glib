@@ -521,7 +521,7 @@ g_menu_model_iterate_item_attributes (GMenuModel *model,
  * @model: a #GMenuModel
  * @item_index: the index of the item
  * @attribute: the attribute to query
- * @expected_type: (allow-none): the expected type of the attribute, or
+ * @expected_type: (nullable): the expected type of the attribute, or
  *     %NULL
  *
  * Queries the item at position @item_index in @model for the attribute
@@ -702,8 +702,8 @@ G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GMenuAttributeIter, g_menu_attribute_iter, 
 /**
  * g_menu_attribute_iter_get_next:
  * @iter: a #GMenuAttributeIter
- * @out_name: (out) (allow-none) (transfer none): the type of the attribute
- * @value: (out) (allow-none) (transfer full): the attribute value
+ * @out_name: (out) (optional) (transfer none): the type of the attribute
+ * @value: (out) (optional) (transfer full): the attribute value
  *
  * This function combines g_menu_attribute_iter_next() with
  * g_menu_attribute_iter_get_name() and g_menu_attribute_iter_get_value().
@@ -858,8 +858,8 @@ G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GMenuLinkIter, g_menu_link_iter, G_TYPE_OBJ
 /**
  * g_menu_link_iter_get_next:
  * @iter: a #GMenuLinkIter
- * @out_link: (out) (allow-none) (transfer none): the name of the link
- * @value: (out) (allow-none) (transfer full): the linked #GMenuModel
+ * @out_link: (out) (optional) (transfer none): the name of the link
+ * @value: (out) (optional) (transfer full): the linked #GMenuModel
  *
  * This function combines g_menu_link_iter_next() with
  * g_menu_link_iter_get_name() and g_menu_link_iter_get_value().

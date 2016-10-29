@@ -581,12 +581,12 @@ g_dbus_object_manager_client_init (GDBusObjectManagerClient *manager)
  * g_dbus_object_manager_client_new_sync:
  * @connection: A #GDBusConnection.
  * @flags: Zero or more flags from the #GDBusObjectManagerClientFlags enumeration.
- * @name: (allow-none): The owner of the control object (unique or well-known name), or %NULL when not using a message bus connection.
+ * @name: (nullable): The owner of the control object (unique or well-known name), or %NULL when not using a message bus connection.
  * @object_path: The object path of the control object.
- * @get_proxy_type_func: (allow-none): A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
+ * @get_proxy_type_func: (nullable): A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
  * @get_proxy_type_user_data: User data to pass to @get_proxy_type_func.
- * @get_proxy_type_destroy_notify: (allow-none): Free function for @get_proxy_type_user_data or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL
+ * @get_proxy_type_destroy_notify: (nullable): Free function for @get_proxy_type_user_data or %NULL.
+ * @cancellable: (nullable): A #GCancellable or %NULL
  * @error: Return location for error or %NULL.
  *
  * Creates a new #GDBusObjectManagerClient object.
@@ -643,10 +643,10 @@ g_dbus_object_manager_client_new_sync (GDBusConnection               *connection
  * @flags: Zero or more flags from the #GDBusObjectManagerClientFlags enumeration.
  * @name: The owner of the control object (unique or well-known name).
  * @object_path: The object path of the control object.
- * @get_proxy_type_func: (allow-none): A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
+ * @get_proxy_type_func: (nullable): A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
  * @get_proxy_type_user_data: User data to pass to @get_proxy_type_func.
- * @get_proxy_type_destroy_notify: (allow-none): Free function for @get_proxy_type_user_data or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL
+ * @get_proxy_type_destroy_notify: (nullable): Free function for @get_proxy_type_user_data or %NULL.
+ * @cancellable: (nullable): A #GCancellable or %NULL
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
  * @user_data: The data to pass to @callback.
  *
@@ -735,10 +735,10 @@ g_dbus_object_manager_client_new_finish (GAsyncResult   *res,
  * @flags: Zero or more flags from the #GDBusObjectManagerClientFlags enumeration.
  * @name: The owner of the control object (unique or well-known name).
  * @object_path: The object path of the control object.
- * @get_proxy_type_func: (allow-none): A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
+ * @get_proxy_type_func: (nullable): A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
  * @get_proxy_type_user_data: User data to pass to @get_proxy_type_func.
- * @get_proxy_type_destroy_notify: (allow-none): Free function for @get_proxy_type_user_data or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL
+ * @get_proxy_type_destroy_notify: (nullable): Free function for @get_proxy_type_user_data or %NULL.
+ * @cancellable: (nullable): A #GCancellable or %NULL
  * @error: Return location for error or %NULL.
  *
  * Like g_dbus_object_manager_client_new_sync() but takes a #GBusType instead
@@ -795,10 +795,10 @@ g_dbus_object_manager_client_new_for_bus_sync (GBusType                       bu
  * @flags: Zero or more flags from the #GDBusObjectManagerClientFlags enumeration.
  * @name: The owner of the control object (unique or well-known name).
  * @object_path: The object path of the control object.
- * @get_proxy_type_func: (allow-none): A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
+ * @get_proxy_type_func: (nullable): A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
  * @get_proxy_type_user_data: User data to pass to @get_proxy_type_func.
- * @get_proxy_type_destroy_notify: (allow-none): Free function for @get_proxy_type_user_data or %NULL.
- * @cancellable: (allow-none): A #GCancellable or %NULL
+ * @get_proxy_type_destroy_notify: (nullable): Free function for @get_proxy_type_user_data or %NULL.
+ * @cancellable: (nullable): A #GCancellable or %NULL
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
  * @user_data: The data to pass to @callback.
  *

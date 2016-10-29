@@ -678,8 +678,8 @@ g_tls_certificate_get_issuer (GTlsCertificate  *cert)
 /**
  * g_tls_certificate_verify:
  * @cert: a #GTlsCertificate
- * @identity: (allow-none): the expected peer identity
- * @trusted_ca: (allow-none): the certificate of a trusted authority
+ * @identity: (nullable): the expected peer identity
+ * @trusted_ca: (nullable): the certificate of a trusted authority
  *
  * This verifies @cert and returns a set of #GTlsCertificateFlags
  * indicating any problems found with it. This can be used to verify a

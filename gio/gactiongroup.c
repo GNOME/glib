@@ -573,7 +573,7 @@ g_action_group_change_action_state (GActionGroup *action_group,
  * g_action_group_activate_action:
  * @action_group: a #GActionGroup
  * @action_name: the name of the action to activate
- * @parameter: (allow-none): parameters to the activation
+ * @parameter: (nullable): parameters to the activation
  *
  * Activate the named action within @action_group.
  *
@@ -705,10 +705,10 @@ g_action_group_action_state_changed (GActionGroup *action_group,
  * @action_group: a #GActionGroup
  * @action_name: the name of an action in the group
  * @enabled: (out): if the action is presently enabled
- * @parameter_type: (out) (allow-none): the parameter type, or %NULL if none needed
- * @state_type: (out) (allow-none): the state type, or %NULL if stateless
- * @state_hint: (out) (allow-none): the state hint, or %NULL if none
- * @state: (out) (allow-none): the current state, or %NULL if stateless
+ * @parameter_type: (out) (optional): the parameter type, or %NULL if none needed
+ * @state_type: (out) (optional): the state type, or %NULL if stateless
+ * @state_hint: (out) (optional): the state hint, or %NULL if none
+ * @state: (out) (optional): the current state, or %NULL if stateless
  *
  * Queries all aspects of the named action within an @action_group.
  *

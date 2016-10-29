@@ -744,7 +744,7 @@ g_settings_class_init (GSettingsClass *class)
   /**
    * GSettings::change-event:
    * @settings: the object on which the signal was emitted
-   * @keys: (array length=n_keys) (element-type GQuark) (allow-none):
+   * @keys: (array length=n_keys) (element-type GQuark) (nullable):
    *        an array of #GQuarks for the changed keys, or %NULL
    * @n_keys: the length of the @keys array, or 0
    *
@@ -1084,8 +1084,8 @@ g_settings_new_with_backend_and_path (const gchar      *schema_id,
 /**
  * g_settings_new_full:
  * @schema: a #GSettingsSchema
- * @backend: (allow-none): a #GSettingsBackend
- * @path: (allow-none): the path to use
+ * @backend: (nullable): a #GSettingsBackend
+ * @path: (nullable): the path to use
  *
  * Creates a new #GSettings object with a given schema, backend and
  * path.
@@ -1238,7 +1238,7 @@ g_settings_get_value (GSettings   *settings,
  * It is a programmer error to give a @key that isn't contained in the
  * schema for @settings.
  *
- * Returns: (allow-none) (transfer full): the user's value, if set
+ * Returns: (nullable) (transfer full): the user's value, if set
  *
  * Since: 2.40
  **/
@@ -1286,7 +1286,7 @@ g_settings_get_user_value (GSettings   *settings,
  * It is a programmer error to give a @key that isn't contained in the
  * schema for @settings.
  *
- * Returns: (allow-none) (transfer full): the default value
+ * Returns: (nullable) (transfer full): the default value
  *
  * Since: 2.40
  **/
@@ -2194,7 +2194,7 @@ g_settings_get_strv (GSettings   *settings,
  * g_settings_set_strv:
  * @settings: a #GSettings object
  * @key: the name of the key to set
- * @value: (allow-none) (array zero-terminated=1): the value to set it to, or %NULL
+ * @value: (nullable) (array zero-terminated=1): the value to set it to, or %NULL
  *
  * Sets @key in @settings to @value.
  *

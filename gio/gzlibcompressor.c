@@ -311,7 +311,7 @@ g_zlib_compressor_get_file_info (GZlibCompressor *compressor)
 /**
  * g_zlib_compressor_set_file_info:
  * @compressor: a #GZlibCompressor
- * @file_info: (allow-none): a #GFileInfo
+ * @file_info: (nullable): a #GFileInfo
  *
  * Sets @file_info in @compressor. If non-%NULL, and @compressor's
  * #GZlibCompressor:format property is %G_ZLIB_COMPRESSOR_FORMAT_GZIP,

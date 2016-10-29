@@ -282,7 +282,7 @@ g_cancellable_reset (GCancellable *cancellable)
 
 /**
  * g_cancellable_is_cancelled:
- * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @cancellable: (nullable): a #GCancellable or %NULL
  *
  * Checks if a cancellable job has been cancelled.
  *
@@ -297,7 +297,7 @@ g_cancellable_is_cancelled (GCancellable *cancellable)
 
 /**
  * g_cancellable_set_error_if_cancelled:
- * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @cancellable: (nullable): a #GCancellable or %NULL
  * @error: #GError to append error state to
  *
  * If the @cancellable is cancelled, sets the error to notify
@@ -361,7 +361,7 @@ g_cancellable_get_fd (GCancellable *cancellable)
 
 /**
  * g_cancellable_make_pollfd:
- * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @cancellable: (nullable): a #GCancellable or %NULL
  * @pollfd: a pointer to a #GPollFD
  * 
  * Creates a #GPollFD corresponding to @cancellable; this can be passed
@@ -524,7 +524,7 @@ g_cancellable_cancel (GCancellable *cancellable)
  * @cancellable: A #GCancellable.
  * @callback: The #GCallback to connect.
  * @data: Data to pass to @callback.
- * @data_destroy_func: (allow-none): Free function for @data or %NULL.
+ * @data_destroy_func: (nullable): Free function for @data or %NULL.
  *
  * Convenience function to connect to the #GCancellable::cancelled
  * signal. Also handles the race condition that may happen
@@ -593,7 +593,7 @@ g_cancellable_connect (GCancellable   *cancellable,
 
 /**
  * g_cancellable_disconnect:
- * @cancellable: (allow-none): A #GCancellable or %NULL.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
  * @handler_id: Handler id of the handler to be disconnected, or %0.
  *
  * Disconnects a handler from a cancellable instance similar to
@@ -714,7 +714,7 @@ static GSourceFuncs cancellable_source_funcs =
 
 /**
  * g_cancellable_source_new: (skip)
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  *
  * Creates a source that triggers if @cancellable is cancelled and
  * calls its callback of type #GCancellableSourceFunc. This is

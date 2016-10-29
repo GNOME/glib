@@ -784,9 +784,9 @@ g_resource_lookup_data (GResource             *resource,
  * @resource: A #GResource
  * @path: A pathname inside the resource
  * @lookup_flags: A #GResourceLookupFlags
- * @size:  (out) (allow-none): a location to place the length of the contents of the file,
+ * @size:  (out) (optional): a location to place the length of the contents of the file,
  *    or %NULL if the length is not needed
- * @flags:  (out) (allow-none): a location to place the flags about the file,
+ * @flags:  (out) (optional): a location to place the flags about the file,
  *    or %NULL if the length is not needed
  * @error: return location for a #GError, or %NULL
  *
@@ -1147,9 +1147,9 @@ g_resources_enumerate_children (const gchar           *path,
  * g_resources_get_info:
  * @path: A pathname inside the resource
  * @lookup_flags: A #GResourceLookupFlags
- * @size:  (out) (allow-none): a location to place the length of the contents of the file,
+ * @size:  (out) (optional): a location to place the length of the contents of the file,
  *    or %NULL if the length is not needed
- * @flags:  (out) (allow-none): a location to place the flags about the file,
+ * @flags:  (out) (optional): a location to place the flags about the file,
  *    or %NULL if the length is not needed
  * @error: return location for a #GError, or %NULL
  *

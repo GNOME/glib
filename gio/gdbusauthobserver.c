@@ -156,7 +156,7 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
    * GDBusAuthObserver::authorize-authenticated-peer:
    * @observer: The #GDBusAuthObserver emitting the signal.
    * @stream: A #GIOStream for the #GDBusConnection.
-   * @credentials: (allow-none): Credentials received from the peer or %NULL.
+   * @credentials: (nullable): Credentials received from the peer or %NULL.
    *
    * Emitted to check if a peer that is successfully authenticated
    * is authorized.
@@ -228,7 +228,7 @@ g_dbus_auth_observer_new (void)
  * g_dbus_auth_observer_authorize_authenticated_peer:
  * @observer: A #GDBusAuthObserver.
  * @stream: A #GIOStream for the #GDBusConnection.
- * @credentials: (allow-none): Credentials received from the peer or %NULL.
+ * @credentials: (nullable): Credentials received from the peer or %NULL.
  *
  * Emits the #GDBusAuthObserver::authorize-authenticated-peer signal on @observer.
  *

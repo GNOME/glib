@@ -149,7 +149,7 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
 /**
  * g_tls_client_connection_new:
  * @base_io_stream: the #GIOStream to wrap
- * @server_identity: (allow-none): the expected identity of the server
+ * @server_identity: (nullable): the expected identity of the server
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates a new #GTlsClientConnection wrapping @base_io_stream (which

@@ -153,7 +153,7 @@ g_output_stream_init (GOutputStream *stream)
  * @stream: a #GOutputStream.
  * @buffer: (array length=count) (element-type guint8): the buffer containing the data to write. 
  * @count: the number of bytes to write
- * @cancellable: (allow-none): optional cancellable object
+ * @cancellable: (nullable): optional cancellable object
  * @error: location to store the error occurring, or %NULL to ignore
  *
  * Tries to write @count bytes from @buffer into the stream. Will block
@@ -236,7 +236,7 @@ g_output_stream_write (GOutputStream  *stream,
  * @count: the number of bytes to write
  * @bytes_written: (out): location to store the number of bytes that was 
  *     written to the stream
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
  *
  * Tries to write @count bytes from @buffer into the stream. Will block
@@ -304,7 +304,7 @@ g_output_stream_write_all (GOutputStream  *stream,
  * @stream: a #GOutputStream.
  * @bytes_written: (out): location to store the number of bytes that was
  *     written to the stream
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
  * @format: the format string. See the printf() documentation
  * @...: the parameters to insert into the format string
@@ -350,7 +350,7 @@ g_output_stream_printf (GOutputStream  *stream,
  * @stream: a #GOutputStream.
  * @bytes_written: (out): location to store the number of bytes that was
  *     written to the stream
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
  * @format: the format string. See the printf() documentation
  * @args: the parameters to insert into the format string
@@ -401,7 +401,7 @@ g_output_stream_vprintf (GOutputStream  *stream,
  * g_output_stream_write_bytes:
  * @stream: a #GOutputStream.
  * @bytes: the #GBytes to write
- * @cancellable: (allow-none): optional cancellable object
+ * @cancellable: (nullable): optional cancellable object
  * @error: location to store the error occurring, or %NULL to ignore
  *
  * A wrapper function for g_output_stream_write() which takes a
@@ -438,7 +438,7 @@ g_output_stream_write_bytes (GOutputStream  *stream,
 /**
  * g_output_stream_flush:
  * @stream: a #GOutputStream.
- * @cancellable: (allow-none): optional cancellable object
+ * @cancellable: (nullable): optional cancellable object
  * @error: location to store the error occurring, or %NULL to ignore
  *
  * Forces a write of all user-space buffered data for the given
@@ -490,7 +490,7 @@ g_output_stream_flush (GOutputStream  *stream,
  * @stream: a #GOutputStream.
  * @source: a #GInputStream.
  * @flags: a set of #GOutputStreamSpliceFlags.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
@@ -670,7 +670,7 @@ g_output_stream_internal_close (GOutputStream  *stream,
 /**
  * g_output_stream_close:
  * @stream: A #GOutputStream.
- * @cancellable: (allow-none): optional cancellable object
+ * @cancellable: (nullable): optional cancellable object
  * @error: location to store the error occurring, or %NULL to ignore
  *
  * Closes the stream, releasing resources related to it.
@@ -761,7 +761,7 @@ async_ready_write_callback_wrapper (GObject      *source_object,
  * @buffer: (array length=count) (element-type guint8): the buffer containing the data to write. 
  * @count: the number of bytes to write
  * @io_priority: the io priority of the request.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): callback to call when the request is satisfied
  * @user_data: (closure): the data to pass to callback function
  *
@@ -956,7 +956,7 @@ write_all_async_thread (GTask        *task,
  * @buffer: (array length=count) (element-type guint8): the buffer containing the data to write
  * @count: the number of bytes to write
  * @io_priority: the io priority of the request
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
  * @callback: (scope async): callback to call when the request is satisfied
  * @user_data: (closure): the data to pass to callback function
  *
@@ -1083,7 +1083,7 @@ write_bytes_callback (GObject      *stream,
  * @stream: A #GOutputStream.
  * @bytes: The bytes to write
  * @io_priority: the io priority of the request.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): callback to call when the request is satisfied
  * @user_data: (closure): the data to pass to callback function
  *
@@ -1184,7 +1184,7 @@ async_ready_splice_callback_wrapper (GObject      *source_object,
  * @source: a #GInputStream. 
  * @flags: a set of #GOutputStreamSpliceFlags.
  * @io_priority: the io priority of the request.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore. 
  * @callback: (scope async): a #GAsyncReadyCallback. 
  * @user_data: (closure): user data passed to @callback.
  * 
@@ -1300,7 +1300,7 @@ async_ready_flush_callback_wrapper (GObject      *source_object,
  * g_output_stream_flush_async:
  * @stream: a #GOutputStream.
  * @io_priority: the io priority of the request.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: (closure): the data to pass to callback function
  * 
@@ -1458,7 +1458,7 @@ real_close_async_cb (GObject      *source_object,
  * g_output_stream_close_async:
  * @stream: A #GOutputStream.
  * @io_priority: the io priority of the request.
- * @cancellable: (allow-none): optional cancellable object
+ * @cancellable: (nullable): optional cancellable object
  * @callback: (scope async): callback to call when the request is satisfied
  * @user_data: (closure): the data to pass to callback function
  *

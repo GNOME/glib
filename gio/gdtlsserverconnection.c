@@ -67,7 +67,7 @@ g_dtls_server_connection_default_init (GDtlsServerConnectionInterface *iface)
 /**
  * g_dtls_server_connection_new:
  * @base_socket: the #GDatagramBased to wrap
- * @certificate: (allow-none): the default server certificate, or %NULL
+ * @certificate: (nullable): the default server certificate, or %NULL
  * @error: #GError for error reporting, or %NULL to ignore
  *
  * Creates a new #GDtlsServerConnection wrapping @base_socket.

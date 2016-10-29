@@ -648,7 +648,7 @@ g_subprocess_class_init (GSubprocessClass *class)
 /**
  * g_subprocess_new: (skip)
  * @flags: flags that define the behaviour of the subprocess
- * @error: (allow-none): return location for an error, or %NULL
+ * @error: (nullable): return location for an error, or %NULL
  * @argv0: first commandline argument to pass to the subprocess
  * @...:   more commandline arguments, followed by %NULL
  *
@@ -699,7 +699,7 @@ g_subprocess_new (GSubprocessFlags   flags,
  * g_subprocess_newv: (rename-to g_subprocess_new)
  * @argv: (array zero-terminated=1) (element-type utf8): commandline arguments for the subprocess
  * @flags: flags that define the behaviour of the subprocess
- * @error: (allow-none): return location for an error, or %NULL
+ * @error: (nullable): return location for an error, or %NULL
  *
  * Create a new process with the given flags and argument list.
  *
@@ -1577,7 +1577,7 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
 /**
  * g_subprocess_communicate:
  * @subprocess: a #GSubprocess
- * @stdin_buf: (allow-none): data to send to the stdin of the subprocess, or %NULL
+ * @stdin_buf: (nullable): data to send to the stdin of the subprocess, or %NULL
  * @cancellable: a #GCancellable
  * @stdout_buf: (out): data read from the subprocess stdout
  * @stderr_buf: (out): data read from the subprocess stderr
@@ -1658,8 +1658,8 @@ g_subprocess_communicate (GSubprocess   *subprocess,
 /**
  * g_subprocess_communicate_async:
  * @subprocess: Self
- * @stdin_buf: (allow-none): Input data, or %NULL
- * @cancellable: (allow-none): Cancellable
+ * @stdin_buf: (nullable): Input data, or %NULL
+ * @cancellable: (nullable): Cancellable
  * @callback: Callback
  * @user_data: User data
  *
@@ -1724,7 +1724,7 @@ g_subprocess_communicate_finish (GSubprocess   *subprocess,
 /**
  * g_subprocess_communicate_utf8:
  * @subprocess: a #GSubprocess
- * @stdin_buf: (allow-none): data to send to the stdin of the subprocess, or %NULL
+ * @stdin_buf: (nullable): data to send to the stdin of the subprocess, or %NULL
  * @cancellable: a #GCancellable
  * @stdout_buf: (out): data read from the subprocess stdout
  * @stderr_buf: (out): data read from the subprocess stderr
@@ -1769,7 +1769,7 @@ g_subprocess_communicate_utf8 (GSubprocess   *subprocess,
 /**
  * g_subprocess_communicate_utf8_async:
  * @subprocess: Self
- * @stdin_buf: (allow-none): Input data, or %NULL
+ * @stdin_buf: (nullable): Input data, or %NULL
  * @cancellable: Cancellable
  * @callback: Callback
  * @user_data: User data

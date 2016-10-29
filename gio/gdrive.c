@@ -384,8 +384,8 @@ g_drive_can_poll_for_media (GDrive *drive)
  * g_drive_eject:
  * @drive: a #GDrive.
  * @flags: flags affecting the unmount if required for eject
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
+ * @callback: (nullable): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data to pass to @callback
  * 
  * Asynchronously ejects a drive.
@@ -458,10 +458,10 @@ g_drive_eject_finish (GDrive        *drive,
  * g_drive_eject_with_operation:
  * @drive: a #GDrive.
  * @flags: flags affecting the unmount if required for eject
- * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid
+ * @mount_operation: (nullable): a #GMountOperation or %NULL to avoid
  *     user interaction.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
+ * @callback: (nullable): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  *
  * Ejects a drive. This is an asynchronous operation, and is
@@ -541,8 +541,8 @@ g_drive_eject_with_operation_finish (GDrive        *drive,
 /**
  * g_drive_poll_for_media:
  * @drive: a #GDrive.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
+ * @callback: (nullable): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data to pass to @callback
  * 
  * Asynchronously polls @drive to see if media has been inserted or removed.
@@ -740,10 +740,10 @@ g_drive_can_start_degraded (GDrive *drive)
  * g_drive_start:
  * @drive: a #GDrive.
  * @flags: flags affecting the start operation.
- * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid
+ * @mount_operation: (nullable): a #GMountOperation or %NULL to avoid
  *     user interaction.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
+ * @callback: (nullable): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data to pass to @callback
  *
  * Asynchronously starts a drive.
@@ -842,10 +842,10 @@ g_drive_can_stop (GDrive *drive)
  * g_drive_stop:
  * @drive: a #GDrive.
  * @flags: flags affecting the unmount if required for stopping.
- * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid
+ * @mount_operation: (nullable): a #GMountOperation or %NULL to avoid
  *     user interaction.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
+ * @callback: (nullable): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data to pass to @callback
  *
  * Asynchronously stops a drive.

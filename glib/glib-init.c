@@ -110,7 +110,7 @@ G_STATIC_ASSERT (sizeof (int) == sizeof (gint32));
 
 /**
  * g_parse_debug_string:
- * @string: (allow-none): a list of debug options separated by colons, spaces, or
+ * @string: (nullable): a list of debug options separated by colons, spaces, or
  * commas, or %NULL.
  * @keys: (array length=nkeys): pointer to an array of #GDebugKey which associate
  *     strings with bit flags.

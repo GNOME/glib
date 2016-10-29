@@ -678,7 +678,7 @@ g_match_info_unref (GMatchInfo *match_info)
 
 /**
  * g_match_info_free:
- * @match_info: (allow-none): a #GMatchInfo, or %NULL
+ * @match_info: (nullable): a #GMatchInfo, or %NULL
  *
  * If @match_info is not %NULL, calls g_match_info_unref(); otherwise does
  * nothing.
@@ -895,7 +895,7 @@ g_match_info_is_partial_match (const GMatchInfo *match_info)
 
 /**
  * g_match_info_expand_references:
- * @match_info: (allow-none): a #GMatchInfo or %NULL
+ * @match_info: (nullable): a #GMatchInfo or %NULL
  * @string_to_expand: the string to expand
  * @error: location to store the error occurring, or %NULL to ignore errors
  *
@@ -917,7 +917,7 @@ g_match_info_is_partial_match (const GMatchInfo *match_info)
  * Use g_regex_check_replacement() to find out whether @string_to_expand
  * contains references.
  *
- * Returns: (allow-none): the expanded string, or %NULL if an error occurred
+ * Returns: (nullable): the expanded string, or %NULL if an error occurred
  *
  * Since: 2.14
  */
@@ -978,7 +978,7 @@ g_match_info_expand_references (const GMatchInfo  *match_info,
  * The string is fetched from the string passed to the match function,
  * so you cannot call this function after freeing the string.
  *
- * Returns: (allow-none): The matched substring, or %NULL if an error
+ * Returns: (nullable): The matched substring, or %NULL if an error
  *     occurred. You have to free the string yourself
  *
  * Since: 2.14
@@ -1011,9 +1011,9 @@ g_match_info_fetch (const GMatchInfo *match_info,
  * g_match_info_fetch_pos:
  * @match_info: #GMatchInfo structure
  * @match_num: number of the sub expression
- * @start_pos: (out) (allow-none): pointer to location where to store
+ * @start_pos: (out) (optional): pointer to location where to store
  *     the start position, or %NULL
- * @end_pos: (out) (allow-none): pointer to location where to store
+ * @end_pos: (out) (optional): pointer to location where to store
  *     the end position, or %NULL
  *
  * Retrieves the position in bytes of the @match_num'th capturing
@@ -1109,7 +1109,7 @@ get_matched_substring_number (const GMatchInfo *match_info,
  * The string is fetched from the string passed to the match function,
  * so you cannot call this function after freeing the string.
  *
- * Returns: (allow-none): The matched substring, or %NULL if an error
+ * Returns: (nullable): The matched substring, or %NULL if an error
  *     occurred. You have to free the string yourself
  *
  * Since: 2.14
@@ -1136,9 +1136,9 @@ g_match_info_fetch_named (const GMatchInfo *match_info,
  * g_match_info_fetch_named_pos:
  * @match_info: #GMatchInfo structure
  * @name: name of the subexpression
- * @start_pos: (out) (allow-none): pointer to location where to store
+ * @start_pos: (out) (optional): pointer to location where to store
  *     the start position, or %NULL
- * @end_pos: (out) (allow-none): pointer to location where to store
+ * @end_pos: (out) (optional): pointer to location where to store
  *     the end position, or %NULL
  *
  * Retrieves the position in bytes of the capturing parentheses named @name.
@@ -1660,7 +1660,7 @@ g_regex_match_simple (const gchar        *pattern,
  * @regex: a #GRegex structure from g_regex_new()
  * @string: the string to scan for matches
  * @match_options: match options
- * @match_info: (out) (allow-none): pointer to location where to store
+ * @match_info: (out) (optional): pointer to location where to store
  *     the #GMatchInfo, or %NULL if you do not need it
  *
  * Scans for a match in string for the pattern in @regex.
@@ -1723,7 +1723,7 @@ g_regex_match (const GRegex      *regex,
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: match options
- * @match_info: (out) (allow-none): pointer to location where to store
+ * @match_info: (out) (optional): pointer to location where to store
  *     the #GMatchInfo, or %NULL if you do not need it
  * @error: location to store the error occurring, or %NULL to ignore errors
  *
@@ -1815,7 +1815,7 @@ g_regex_match_full (const GRegex      *regex,
  * @regex: a #GRegex structure from g_regex_new()
  * @string: the string to scan for matches
  * @match_options: match options
- * @match_info: (out) (allow-none): pointer to location where to store
+ * @match_info: (out) (optional): pointer to location where to store
  *     the #GMatchInfo, or %NULL if you do not need it
  *
  * Using the standard algorithm for regular expression matching only
@@ -1854,7 +1854,7 @@ g_regex_match_all (const GRegex      *regex,
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: match options
- * @match_info: (out) (allow-none): pointer to location where to store
+ * @match_info: (out) (optional): pointer to location where to store
  *     the #GMatchInfo, or %NULL if you do not need it
  * @error: location to store the error occurring, or %NULL to ignore errors
  *
@@ -2997,7 +2997,7 @@ g_regex_replace_eval (const GRegex        *regex,
 /**
  * g_regex_check_replacement:
  * @replacement: the replacement string
- * @has_references: (out) (allow-none): location to store information about
+ * @has_references: (out) (optional): location to store information about
  *   references in @replacement or %NULL
  * @error: location to store error
  *

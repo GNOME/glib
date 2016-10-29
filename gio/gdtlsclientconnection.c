@@ -128,7 +128,7 @@ g_dtls_client_connection_default_init (GDtlsClientConnectionInterface *iface)
 /**
  * g_dtls_client_connection_new:
  * @base_socket: the #GDatagramBased to wrap
- * @server_identity: (allow-none): the expected identity of the server
+ * @server_identity: (nullable): the expected identity of the server
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates a new #GDtlsClientConnection wrapping @base_socket which is

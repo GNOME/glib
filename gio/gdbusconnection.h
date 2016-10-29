@@ -652,7 +652,7 @@ void             g_dbus_connection_signal_unsubscribe         (GDBusConnection  
  * check this ahead of time using g_dbus_message_to_blob() passing a
  * #GDBusCapabilityFlags value obtained from @connection.
  *
- * Returns: (transfer full) (allow-none): A #GDBusMessage that will be freed with
+ * Returns: (transfer full) (nullable): A #GDBusMessage that will be freed with
  * g_object_unref() or %NULL to drop the message. Passive filter
  * functions can simply return the passed @message object.
  *

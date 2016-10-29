@@ -694,7 +694,7 @@ g_error_add_prefix (gchar       **string,
 
 /**
  * g_prefix_error:
- * @err: (inout) (optional) (nullable): a return location for a #GError
+ * @err: (inout) (optional): a return location for a #GError
  * @format: printf()-style format string
  * @...: arguments to @format
  *

@@ -580,9 +580,9 @@ g_dbus_message_new (void)
 
 /**
  * g_dbus_message_new_method_call:
- * @name: (allow-none): A valid D-Bus name or %NULL.
+ * @name: (nullable): A valid D-Bus name or %NULL.
  * @path: A valid object path.
- * @interface_: (allow-none): A valid D-Bus interface name or %NULL.
+ * @interface_: (nullable): A valid D-Bus interface name or %NULL.
  * @method: A valid method name.
  *
  * Creates a new #GDBusMessage for a method call.
@@ -999,7 +999,7 @@ g_dbus_message_get_header (GDBusMessage             *message,
  * g_dbus_message_set_header:
  * @message: A #GDBusMessage.
  * @header_field: A 8-bit unsigned integer (typically a value from the #GDBusMessageHeaderField enumeration)
- * @value: (allow-none): A #GVariant to set the header field or %NULL to clear the header field.
+ * @value: (nullable): A #GVariant to set the header field or %NULL to clear the header field.
  *
  * Sets a header field on @message.
  *
@@ -1162,7 +1162,7 @@ g_dbus_message_get_unix_fd_list (GDBusMessage  *message)
 /**
  * g_dbus_message_set_unix_fd_list:
  * @message: A #GDBusMessage.
- * @fd_list: (allow-none): A #GUnixFDList or %NULL.
+ * @fd_list: (nullable): A #GUnixFDList or %NULL.
  *
  * Sets the UNIX file descriptors associated with @message. As a
  * side-effect the %G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header

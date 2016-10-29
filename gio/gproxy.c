@@ -84,7 +84,7 @@ g_proxy_get_default_for_protocol (const gchar *protocol)
  * @proxy: a #GProxy
  * @connection: a #GIOStream
  * @proxy_address: a #GProxyAddress
- * @cancellable: (allow-none): a #GCancellable
+ * @cancellable: (nullable): a #GCancellable
  * @error: return #GError
  *
  * Given @connection to communicate with a proxy (eg, a
@@ -123,7 +123,7 @@ g_proxy_connect (GProxy            *proxy,
  * @proxy: a #GProxy
  * @connection: a #GIOStream
  * @proxy_address: a #GProxyAddress
- * @cancellable: (allow-none): a #GCancellable
+ * @cancellable: (nullable): a #GCancellable
  * @callback: (scope async): a #GAsyncReadyCallback
  * @user_data: (closure): callback data
  *

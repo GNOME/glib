@@ -210,7 +210,7 @@ g_value_array_copy (const GValueArray *value_array)
 /**
  * g_value_array_prepend:
  * @value_array: #GValueArray to add an element to
- * @value: (allow-none): #GValue to copy into #GValueArray, or %NULL
+ * @value: (nullable): #GValue to copy into #GValueArray, or %NULL
  *
  * Insert a copy of @value as first element of @value_array. If @value is
  * %NULL, an uninitialized value is prepended.
@@ -234,7 +234,7 @@ g_value_array_prepend (GValueArray  *value_array,
 /**
  * g_value_array_append:
  * @value_array: #GValueArray to add an element to
- * @value: (allow-none): #GValue to copy into #GValueArray, or %NULL
+ * @value: (nullable): #GValue to copy into #GValueArray, or %NULL
  *
  * Insert a copy of @value as last element of @value_array. If @value is
  * %NULL, an uninitialized value is appended.
@@ -258,7 +258,7 @@ g_value_array_append (GValueArray  *value_array,
  * g_value_array_insert:
  * @value_array: #GValueArray to add an element to
  * @index_: insertion position, must be <= value_array->;n_values
- * @value: (allow-none): #GValue to copy into #GValueArray, or %NULL
+ * @value: (nullable): #GValue to copy into #GValueArray, or %NULL
  *
  * Insert a copy of @value at specified position into @value_array. If @value
  * is %NULL, an uninitialized value is inserted.

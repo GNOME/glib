@@ -2532,7 +2532,7 @@ g_param_spec_override (const gchar *name,
  * @nick: nick name for the property specified
  * @blurb: description of the property specified
  * @type: a #GVariantType
- * @default_value: (allow-none) (transfer full): a #GVariant of type @type to
+ * @default_value: (nullable) (transfer full): a #GVariant of type @type to
  *                 use as the default value, or %NULL
  * @flags: flags for the property specified
  *

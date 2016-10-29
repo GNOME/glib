@@ -664,7 +664,7 @@ try_class (GIOExtension *extension,
 /**
  * _g_io_module_get_default_type:
  * @extension_point: the name of an extension point
- * @envvar: (allow-none): the name of an environment variable to
+ * @envvar: (nullable): the name of an environment variable to
  *     override the default implementation.
  * @is_supported_offset: a vtable offset, or zero
  *
@@ -785,9 +785,9 @@ try_implementation (GIOExtension         *extension,
 /**
  * _g_io_module_get_default:
  * @extension_point: the name of an extension point
- * @envvar: (allow-none): the name of an environment variable to
+ * @envvar: (nullable): the name of an environment variable to
  *     override the default implementation.
- * @verify_func: (allow-none): a function to call to verify that
+ * @verify_func: (nullable): a function to call to verify that
  *     a given implementation is usable in the current environment.
  *
  * Retrieves the default object implementing @extension_point.

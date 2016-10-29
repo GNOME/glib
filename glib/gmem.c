@@ -137,7 +137,7 @@ g_malloc0 (gsize n_bytes)
 
 /**
  * g_realloc:
- * @mem: (allow-none): the memory to reallocate
+ * @mem: (nullable): the memory to reallocate
  * @n_bytes: new size of the memory in bytes
  * 
  * Reallocates the memory pointed to by @mem, so that it now has space for
@@ -175,7 +175,7 @@ g_realloc (gpointer mem,
 
 /**
  * g_free:
- * @mem: (allow-none): the memory to free
+ * @mem: (nullable): the memory to free
  * 
  * Frees the memory pointed to by @mem.
  *
@@ -273,7 +273,7 @@ g_try_malloc0 (gsize n_bytes)
 
 /**
  * g_try_realloc:
- * @mem: (allow-none): previously-allocated memory, or %NULL.
+ * @mem: (nullable): previously-allocated memory, or %NULL.
  * @n_bytes: number of bytes to allocate.
  * 
  * Attempts to realloc @mem to a new size, @n_bytes, and returns %NULL
@@ -357,7 +357,7 @@ g_malloc0_n (gsize n_blocks,
 
 /**
  * g_realloc_n:
- * @mem: (allow-none): the memory to reallocate
+ * @mem: (nullable): the memory to reallocate
  * @n_blocks: the number of blocks to allocate
  * @n_block_bytes: the size of each block in bytes
  * 
@@ -425,7 +425,7 @@ g_try_malloc0_n (gsize n_blocks,
 
 /**
  * g_try_realloc_n:
- * @mem: (allow-none): previously-allocated memory, or %NULL.
+ * @mem: (nullable): previously-allocated memory, or %NULL.
  * @n_blocks: the number of blocks to allocate
  * @n_block_bytes: the size of each block in bytes
  * 

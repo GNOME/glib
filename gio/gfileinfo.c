@@ -2663,7 +2663,7 @@ g_file_attribute_matcher_enumerate_next (GFileAttributeMatcher *matcher)
 
 /**
  * g_file_attribute_matcher_to_string:
- * @matcher: (allow-none): a #GFileAttributeMatcher.
+ * @matcher: (nullable): a #GFileAttributeMatcher.
  *
  * Prints what the matcher is matching against. The format will be 
  * equal to the format passed to g_file_attribute_matcher_new().

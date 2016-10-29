@@ -1964,7 +1964,7 @@ g_strncasecmp (const gchar *s1,
 /**
  * g_strdelimit:
  * @string: the string to convert
- * @delimiters: (allow-none): a string containing the current delimiters,
+ * @delimiters: (nullable): a string containing the current delimiters,
  *     or %NULL to use the standard delimiters defined in #G_STR_DELIMITERS
  * @new_delimiter: the new delimiter character
  *
@@ -2531,7 +2531,7 @@ g_strdupv (gchar **str_array)
 
 /**
  * g_strjoinv:
- * @separator: (allow-none): a string to insert between each of the
+ * @separator: (nullable): a string to insert between each of the
  *     strings, or %NULL
  * @str_array: a %NULL-terminated array of strings to join
  *
@@ -2588,7 +2588,7 @@ g_strjoinv (const gchar  *separator,
 
 /**
  * g_strjoin:
- * @separator: (allow-none): a string to insert between each of the
+ * @separator: (nullable): a string to insert between each of the
  *     strings, or %NULL
  * @...: a %NULL-terminated list of strings to join
  *
@@ -2979,7 +2979,7 @@ split_words (const gchar *value)
 /**
  * g_str_tokenize_and_fold:
  * @string: a string
- * @translit_locale: (allow-none): the language code (like 'de' or
+ * @translit_locale: (nullable): the language code (like 'de' or
  *   'en_GB') from which @string originates
  * @ascii_alternates: (out) (transfer full) (array zero-terminated=1): a
  *   return location for ASCII alternates

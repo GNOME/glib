@@ -65,7 +65,7 @@ g_tls_server_connection_default_init (GTlsServerConnectionInterface *iface)
 /**
  * g_tls_server_connection_new:
  * @base_io_stream: the #GIOStream to wrap
- * @certificate: (allow-none): the default server certificate, or %NULL
+ * @certificate: (nullable): the default server certificate, or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates a new #GTlsServerConnection wrapping @base_io_stream (which

@@ -686,7 +686,7 @@ g_unichar_compose (gunichar  a,
  * g_unichar_fully_decompose:
  * @ch: a Unicode character.
  * @compat: whether perform canonical or compatibility decomposition
- * @result: (allow-none): location to store decomposed result, or %NULL
+ * @result: (nullable): location to store decomposed result, or %NULL
  * @result_len: length of @result
  *
  * Computes the canonical or compatibility decomposition of a

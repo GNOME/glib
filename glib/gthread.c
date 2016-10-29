@@ -788,7 +788,7 @@ g_thread_proxy (gpointer data)
 
 /**
  * g_thread_new:
- * @name: (allow-none): an (optional) name for the new thread
+ * @name: (nullable): an (optional) name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
  *
@@ -834,7 +834,7 @@ g_thread_new (const gchar *name,
 
 /**
  * g_thread_try_new:
- * @name: (allow-none): an (optional) name for the new thread
+ * @name: (nullable): an (optional) name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
  * @error: return location for error, or %NULL

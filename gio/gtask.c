@@ -654,9 +654,9 @@ g_task_finalize (GObject *object)
 
 /**
  * g_task_new:
- * @source_object: (allow-none) (type GObject): the #GObject that owns
+ * @source_object: (nullable) (type GObject): the #GObject that owns
  *   this task, or %NULL.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @callback_data: (closure): user data passed to @callback.
  *
@@ -709,7 +709,7 @@ g_task_new (gpointer              source_object,
 
 /**
  * g_task_report_error:
- * @source_object: (allow-none) (type GObject): the #GObject that owns
+ * @source_object: (nullable) (type GObject): the #GObject that owns
  *   this task, or %NULL.
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @callback_data: (closure): user data passed to @callback.
@@ -744,7 +744,7 @@ g_task_report_error (gpointer             source_object,
 
 /**
  * g_task_report_new_error:
- * @source_object: (allow-none) (type GObject): the #GObject that owns
+ * @source_object: (nullable) (type GObject): the #GObject that owns
  *   this task, or %NULL.
  * @callback: (scope async): a #GAsyncReadyCallback.
  * @callback_data: (closure): user data passed to @callback.
@@ -790,8 +790,8 @@ g_task_report_new_error (gpointer             source_object,
 /**
  * g_task_set_task_data:
  * @task: the #GTask
- * @task_data: (allow-none): task-specific data
- * @task_data_destroy: (allow-none): #GDestroyNotify for @task_data
+ * @task_data: (nullable): task-specific data
+ * @task_data_destroy: (nullable): #GDestroyNotify for @task_data
  *
  * Sets @task's task data (freeing the existing task data, if any).
  *
@@ -1562,9 +1562,9 @@ g_task_propagate_error (GTask   *task,
 /**
  * g_task_return_pointer:
  * @task: a #GTask
- * @result: (allow-none) (transfer full): the pointer result of a task
+ * @result: (nullable) (transfer full): the pointer result of a task
  *     function
- * @result_destroy: (allow-none): a #GDestroyNotify function.
+ * @result_destroy: (nullable): a #GDestroyNotify function.
  *
  * Sets @task's result to @result and completes the task. If @result
  * is not %NULL, then @result_destroy will be used to free @result if
@@ -1894,7 +1894,7 @@ g_task_get_completed (GTask *task)
 /**
  * g_task_is_valid:
  * @result: (type Gio.AsyncResult): A #GAsyncResult
- * @source_object: (allow-none) (type GObject): the source object
+ * @source_object: (nullable) (type GObject): the source object
  *   expected to be associated with the task
  *
  * Checks that @result is a #GTask, and that @source_object is its

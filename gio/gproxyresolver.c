@@ -105,7 +105,7 @@ g_proxy_resolver_is_supported (GProxyResolver *resolver)
  * g_proxy_resolver_lookup:
  * @resolver: a #GProxyResolver
  * @uri: a URI representing the destination to connect to
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Looks into the system proxy configuration to determine what proxy,
@@ -150,7 +150,7 @@ g_proxy_resolver_lookup (GProxyResolver  *resolver,
  * g_proxy_resolver_lookup_async:
  * @resolver: a #GProxyResolver
  * @uri: a URI representing the destination to connect to
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: (scope async): callback to call after resolution completes
  * @user_data: (closure): data for @callback
  *

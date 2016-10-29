@@ -98,7 +98,7 @@ g_seekable_can_seek (GSeekable *seekable)
  * @seekable: a #GSeekable.
  * @offset: a #goffset.
  * @type: a #GSeekType.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
@@ -161,7 +161,7 @@ g_seekable_can_truncate (GSeekable *seekable)
  * g_seekable_truncate:
  * @seekable: a #GSeekable.
  * @offset: a #goffset.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 

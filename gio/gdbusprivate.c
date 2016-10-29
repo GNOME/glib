@@ -1521,9 +1521,9 @@ continue_writing_in_idle_cb (gpointer user_data)
 }
 
 /*
- * @write_data: (transfer full) (allow-none):
- * @flush_data: (transfer full) (allow-none):
- * @close_data: (transfer full) (allow-none):
+ * @write_data: (transfer full) (nullable):
+ * @flush_data: (transfer full) (nullable):
+ * @close_data: (transfer full) (nullable):
  *
  * Can be called from any thread
  *

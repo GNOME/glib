@@ -261,7 +261,7 @@ g_unix_fd_message_new_with_fd_list (GUnixFDList *fd_list)
 /**
  * g_unix_fd_message_steal_fds:
  * @message: a #GUnixFDMessage
- * @length: (out) (allow-none): pointer to the length of the returned
+ * @length: (out) (optional): pointer to the length of the returned
  *     array, or %NULL
  *
  * Returns the array of file descriptors that is contained in this

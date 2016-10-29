@@ -67,7 +67,7 @@ g_environ_find (gchar       **envp,
 
 /**
  * g_environ_getenv:
- * @envp: (allow-none) (array zero-terminated=1) (transfer none): an environment
+ * @envp: (nullable) (array zero-terminated=1) (transfer none): an environment
  *     list (eg, as returned from g_get_environ()), or %NULL
  *     for an empty environment list
  * @variable: the environment variable to get
@@ -99,7 +99,7 @@ g_environ_getenv (gchar       **envp,
 
 /**
  * g_environ_setenv:
- * @envp: (allow-none) (array zero-terminated=1) (transfer full): an
+ * @envp: (nullable) (array zero-terminated=1) (transfer full): an
  *     environment list that can be freed using g_strfreev() (e.g., as
  *     returned from g_get_environ()), or %NULL for an empty
  *     environment list
@@ -186,7 +186,7 @@ g_environ_unsetenv_internal (gchar        **envp,
 
 /**
  * g_environ_unsetenv:
- * @envp: (allow-none) (array zero-terminated=1) (transfer full): an environment
+ * @envp: (nullable) (array zero-terminated=1) (transfer full): an environment
  *     list that can be freed using g_strfreev() (e.g., as returned from g_get_environ()), 
  *     or %NULL for an empty environment list
  * @variable: the environment variable to remove, must not contain '='

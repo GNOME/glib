@@ -2733,7 +2733,7 @@ g_object_weak_unref (GObject    *object,
 /**
  * g_object_add_weak_pointer: (skip)
  * @object: The object that should be weak referenced.
- * @weak_pointer_location: (inout) (not optional) (nullable): The memory address
+ * @weak_pointer_location: (inout) (not optional): The memory address
  *    of a pointer.
  *
  * Adds a weak reference from weak_pointer to @object to indicate that
@@ -2761,7 +2761,7 @@ g_object_add_weak_pointer (GObject  *object,
 /**
  * g_object_remove_weak_pointer: (skip)
  * @object: The object that is weak referenced.
- * @weak_pointer_location: (inout) (not optional) (nullable): The memory address
+ * @weak_pointer_location: (inout) (not optional): The memory address
  *    of a pointer.
  *
  * Removes a weak reference from @object that was previously added
@@ -3271,8 +3271,8 @@ g_object_set_qdata (GObject *object,
  * g_object_dup_qdata:
  * @object: the #GObject to store user data on
  * @quark: a #GQuark, naming the user data pointer
- * @dup_func: (allow-none): function to dup the value
- * @user_data: (allow-none): passed as user_data to @dup_func
+ * @dup_func: (nullable): function to dup the value
+ * @user_data: (nullable): passed as user_data to @dup_func
  *
  * This is a variant of g_object_get_qdata() which returns
  * a 'duplicate' of the value. @dup_func defines the
@@ -3312,10 +3312,10 @@ g_object_dup_qdata (GObject        *object,
  * g_object_replace_qdata:
  * @object: the #GObject to store user data on
  * @quark: a #GQuark, naming the user data pointer
- * @oldval: (allow-none): the old value to compare against
- * @newval: (allow-none): the new value
- * @destroy: (allow-none): a destroy notify for the new value
- * @old_destroy: (allow-none): destroy notify for the existing value
+ * @oldval: (nullable): the old value to compare against
+ * @newval: (nullable): the new value
+ * @destroy: (nullable): a destroy notify for the new value
+ * @old_destroy: (nullable): destroy notify for the existing value
  *
  * Compares the user data for the key @quark on @object with
  * @oldval, and if they are the same, replaces @oldval with
@@ -3478,8 +3478,8 @@ g_object_set_data (GObject     *object,
  * g_object_dup_data:
  * @object: the #GObject to store user data on
  * @key: a string, naming the user data pointer
- * @dup_func: (allow-none): function to dup the value
- * @user_data: (allow-none): passed as user_data to @dup_func
+ * @dup_func: (nullable): function to dup the value
+ * @user_data: (nullable): passed as user_data to @dup_func
  *
  * This is a variant of g_object_get_data() which returns
  * a 'duplicate' of the value. @dup_func defines the
@@ -3521,10 +3521,10 @@ g_object_dup_data (GObject        *object,
  * g_object_replace_data:
  * @object: the #GObject to store user data on
  * @key: a string, naming the user data pointer
- * @oldval: (allow-none): the old value to compare against
- * @newval: (allow-none): the new value
- * @destroy: (allow-none): a destroy notify for the new value
- * @old_destroy: (allow-none): destroy notify for the existing value
+ * @oldval: (nullable): the old value to compare against
+ * @newval: (nullable): the new value
+ * @destroy: (nullable): a destroy notify for the new value
+ * @old_destroy: (nullable): destroy notify for the existing value
  *
  * Compares the user data for the key @key on @object with
  * @oldval, and if they are the same, replaces @oldval with
@@ -3706,7 +3706,7 @@ g_value_object_lcopy_value (const GValue *value,
 /**
  * g_value_set_object:
  * @value: a valid #GValue of %G_TYPE_OBJECT derived type
- * @v_object: (type GObject.Object) (allow-none): object value to be set
+ * @v_object: (type GObject.Object) (nullable): object value to be set
  *
  * Set the contents of a %G_TYPE_OBJECT derived #GValue to @v_object.
  *
@@ -3748,7 +3748,7 @@ g_value_set_object (GValue   *value,
 /**
  * g_value_set_object_take_ownership: (skip)
  * @value: a valid #GValue of %G_TYPE_OBJECT derived type
- * @v_object: (allow-none): object value to be set
+ * @v_object: (nullable): object value to be set
  *
  * This is an internal function introduced mainly for C marshallers.
  *
@@ -3764,7 +3764,7 @@ g_value_set_object_take_ownership (GValue  *value,
 /**
  * g_value_take_object: (skip)
  * @value: a valid #GValue of %G_TYPE_OBJECT derived type
- * @v_object: (allow-none): object value to be set
+ * @v_object: (nullable): object value to be set
  *
  * Sets the contents of a %G_TYPE_OBJECT derived #GValue to @v_object
  * and takes over the ownership of the callers reference to @v_object;

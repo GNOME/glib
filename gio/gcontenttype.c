@@ -486,7 +486,7 @@ g_content_type_get_symbolic_icon (const gchar *type)
  * [shared-mime-info](http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
  * specification for more on the generic icon name.
  *
- * Returns: (allow-none): the registered generic icon name for the given @type,
+ * Returns: (nullable): the registered generic icon name for the given @type,
  *     or %NULL if unknown. Free with g_free()
  *
  * Since: 2.34
@@ -591,10 +591,10 @@ g_content_type_from_mime_type (const gchar *mime_type)
 
 /**
  * g_content_type_guess:
- * @filename: (allow-none): a string, or %NULL
- * @data: (allow-none) (array length=data_size): a stream of data, or %NULL
+ * @filename: (nullable): a string, or %NULL
+ * @data: (nullable) (array length=data_size): a stream of data, or %NULL
  * @data_size: the size of @data
- * @result_uncertain: (allow-none) (out): return location for the certainty
+ * @result_uncertain: (out) (optional): return location for the certainty
  *     of the result, or %NULL
  *
  * Guesses the content type based on example data. If the function is

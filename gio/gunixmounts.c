@@ -1390,7 +1390,7 @@ get_mount_points_timestamp (void)
 
 /**
  * g_unix_mounts_get: (skip)
- * @time_read: (out) (allow-none): guint64 to contain a timestamp, or %NULL
+ * @time_read: (out) (optional): guint64 to contain a timestamp, or %NULL
  *
  * Gets a #GList of #GUnixMountEntry containing the unix mounts.
  * If @time_read is set, it will be filled with the mount
@@ -1412,7 +1412,7 @@ g_unix_mounts_get (guint64 *time_read)
 /**
  * g_unix_mount_at: (skip)
  * @mount_path: path for a possible unix mount.
- * @time_read: (out) (allow-none): guint64 to contain a timestamp.
+ * @time_read: (out) (optional): guint64 to contain a timestamp.
  * 
  * Gets a #GUnixMountEntry for a given mount path. If @time_read
  * is set, it will be filled with a unix timestamp for checking
@@ -1447,7 +1447,7 @@ g_unix_mount_at (const char *mount_path,
 /**
  * g_unix_mount_for: (skip)
  * @file_path: file path on some unix mount.
- * @time_read: (out) (allow-none): guint64 to contain a timestamp.
+ * @time_read: (out) (optional): guint64 to contain a timestamp.
  *
  * Gets a #GUnixMountEntry for a given file path. If @time_read
  * is set, it will be filled with a unix timestamp for checking
@@ -1483,7 +1483,7 @@ g_unix_mount_for (const char *file_path,
 
 /**
  * g_unix_mount_points_get: (skip)
- * @time_read: (out) (allow-none): guint64 to contain a timestamp.
+ * @time_read: (out) (optional): guint64 to contain a timestamp.
  *
  * Gets a #GList of #GUnixMountPoint containing the unix mount points.
  * If @time_read is set, it will be filled with the mount timestamp,

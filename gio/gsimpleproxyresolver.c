@@ -484,9 +484,9 @@ g_simple_proxy_resolver_iface_init (GProxyResolverInterface *iface)
 
 /**
  * g_simple_proxy_resolver_new:
- * @default_proxy: (allow-none): the default proxy to use, eg
+ * @default_proxy: (nullable): the default proxy to use, eg
  *     "socks://192.168.1.1"
- * @ignore_hosts: (allow-none): an optional list of hosts/IP addresses
+ * @ignore_hosts: (nullable): an optional list of hosts/IP addresses
  *     to not use a proxy for.
  *
  * Creates a new #GSimpleProxyResolver. See

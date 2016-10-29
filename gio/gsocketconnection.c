@@ -139,7 +139,7 @@ g_socket_connection_is_connected (GSocketConnection  *connection)
  * g_socket_connection_connect:
  * @connection: a #GSocketConnection
  * @address: a #GSocketAddress specifying the remote address.
- * @cancellable: (allow-none): a %GCancellable or %NULL
+ * @cancellable: (nullable): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Connect @connection to the specified remote address.
@@ -169,7 +169,7 @@ static gboolean g_socket_connection_connect_callback (GSocket      *socket,
  * g_socket_connection_connect_async:
  * @connection: a #GSocketConnection
  * @address: a #GSocketAddress specifying the remote address.
- * @cancellable: (allow-none): a %GCancellable or %NULL
+ * @cancellable: (nullable): a %GCancellable or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback
  * @user_data: (closure): user data for the callback
  *

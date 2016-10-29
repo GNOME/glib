@@ -953,7 +953,7 @@ get_contents_win32 (const gchar  *filename,
  * @filename: (type filename): name of a file to read contents from, in the GLib file name encoding
  * @contents: (out) (array length=length) (element-type guint8): location to store an allocated string, use g_free() to free
  *     the returned string
- * @length: (allow-none): location to store length in bytes of the contents, or %NULL
+ * @length: (nullable): location to store length in bytes of the contents, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Reads an entire file into allocated memory, with good error
@@ -1551,7 +1551,7 @@ g_get_tmp_name (const gchar      *tmpl,
 
 /**
  * g_file_open_tmp:
- * @tmpl: (type filename) (allow-none): Template for file name, as in
+ * @tmpl: (type filename) (nullable): Template for file name, as in
  *     g_mkstemp(), basename only, or %NULL for a default template
  * @name_used: (out) (type filename): location to store actual name used,
  *     or %NULL
@@ -1605,7 +1605,7 @@ g_file_open_tmp (const gchar  *tmpl,
 
 /**
  * g_dir_make_tmp:
- * @tmpl: (type filename) (allow-none): Template for directory name,
+ * @tmpl: (type filename) (nullable): Template for directory name,
  *     as in g_mkdtemp(), basename only, or %NULL for a default template
  * @error: return location for a #GError
  *

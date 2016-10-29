@@ -301,7 +301,7 @@ get_default_item_id (void)
 /**
  * g_str_to_ascii:
  * @str: a string, in UTF-8
- * @from_locale: (allow-none): the source locale, if known
+ * @from_locale: (nullable): the source locale, if known
  *
  * Transliterate @str to plain ASCII.
  *

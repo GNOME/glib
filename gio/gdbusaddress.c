@@ -833,7 +833,7 @@ get_stream_thread_func (GTask         *task,
 /**
  * g_dbus_address_get_stream:
  * @address: A valid D-Bus address.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
  * @user_data: Data to pass to @callback.
  *
@@ -912,7 +912,7 @@ g_dbus_address_get_stream_finish (GAsyncResult        *res,
  * g_dbus_address_get_stream_sync:
  * @address: A valid D-Bus address.
  * @out_guid: (optional) (out): %NULL or return location to store the GUID extracted from @address, if any.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Synchronously connects to an endpoint specified by @address and
@@ -1540,7 +1540,7 @@ get_session_address_platform_specific (GError **error)
 /**
  * g_dbus_address_get_for_bus_sync:
  * @bus_type: a #GBusType
- * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @cancellable: (nullable): a #GCancellable or %NULL
  * @error: return location for error or %NULL
  *
  * Synchronously looks up the D-Bus address for the well-known message

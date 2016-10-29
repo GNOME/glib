@@ -162,7 +162,7 @@ g_pattern_ph_match (const gchar *match_pattern,
  * @string_length: the length of @string (in bytes, i.e. strlen(),
  *     not g_utf8_strlen())
  * @string: the UTF-8 encoded string to match
- * @string_reversed: (allow-none): the reverse of @string or %NULL
+ * @string_reversed: (nullable): the reverse of @string or %NULL
  *
  * Matches a string against a compiled pattern. Passing the correct
  * length of the string given is mandatory. The reversed string can be

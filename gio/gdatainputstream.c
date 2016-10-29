@@ -318,7 +318,7 @@ read_data (GDataInputStream  *stream,
 /**
  * g_data_input_stream_read_byte:
  * @stream: a given #GDataInputStream.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
  * Reads an unsigned 8-bit/1-byte value from @stream.
@@ -345,7 +345,7 @@ g_data_input_stream_read_byte (GDataInputStream  *stream,
 /**
  * g_data_input_stream_read_int16:
  * @stream: a given #GDataInputStream.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
  * Reads a 16-bit/2-byte value from @stream.
@@ -389,7 +389,7 @@ g_data_input_stream_read_int16 (GDataInputStream  *stream,
 /**
  * g_data_input_stream_read_uint16:
  * @stream: a given #GDataInputStream.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  *
  * Reads an unsigned 16-bit/2-byte value from @stream.
@@ -433,7 +433,7 @@ g_data_input_stream_read_uint16 (GDataInputStream  *stream,
 /**
  * g_data_input_stream_read_int32:
  * @stream: a given #GDataInputStream.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
  * Reads a signed 32-bit/4-byte value from @stream.
@@ -481,7 +481,7 @@ g_data_input_stream_read_int32 (GDataInputStream  *stream,
 /**
  * g_data_input_stream_read_uint32:
  * @stream: a given #GDataInputStream.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
  * Reads an unsigned 32-bit/4-byte value from @stream.
@@ -529,7 +529,7 @@ g_data_input_stream_read_uint32 (GDataInputStream  *stream,
 /**
  * g_data_input_stream_read_int64:
  * @stream: a given #GDataInputStream.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
  * Reads a 64-bit/8-byte value from @stream.
@@ -577,7 +577,7 @@ g_data_input_stream_read_int64 (GDataInputStream  *stream,
 /**
  * g_data_input_stream_read_uint64:
  * @stream: a given #GDataInputStream.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  * 
  * Reads an unsigned 64-bit/8-byte value from @stream.
@@ -724,7 +724,7 @@ scan_for_newline (GDataInputStream *stream,
  * g_data_input_stream_read_line:
  * @stream: a given #GDataInputStream.
  * @length: (out): a #gsize to get the length of the data read in.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  *
  * Reads a line from the data input stream.  Note that no encoding
@@ -810,7 +810,7 @@ g_data_input_stream_read_line (GDataInputStream  *stream,
  * g_data_input_stream_read_line_utf8:
  * @stream: a given #GDataInputStream.
  * @length: (out): a #gsize to get the length of the data read in.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  *
  * Reads a UTF-8 encoded line from the data input stream.
@@ -896,7 +896,7 @@ scan_for_chars (GDataInputStream *stream,
  * @stream: a given #GDataInputStream.
  * @stop_chars: characters to terminate the read.
  * @length: (out): a #gsize to get the length of the data read in.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  *
  * Reads a string from the data input stream, up to the first
@@ -1117,7 +1117,7 @@ g_data_input_stream_read_finish (GDataInputStream  *stream,
  * g_data_input_stream_read_line_async:
  * @stream: a given #GDataInputStream.
  * @io_priority: the [I/O priority][io-priority] of the request
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): callback to call when the request is satisfied.
  * @user_data: (closure): the data to pass to callback function.
  *
@@ -1149,7 +1149,7 @@ g_data_input_stream_read_line_async (GDataInputStream    *stream,
  * @stream: a given #GDataInputStream.
  * @stop_chars: characters to terminate the read.
  * @io_priority: the [I/O priority][io-priority] of the request
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): callback to call when the request is satisfied.
  * @user_data: (closure): the data to pass to callback function.
  *
@@ -1296,7 +1296,7 @@ g_data_input_stream_read_until_finish (GDataInputStream  *stream,
  * @stop_chars_len: length of @stop_chars. May be -1 if @stop_chars is
  *     nul-terminated
  * @length: (out): a #gsize to get the length of the data read in
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
  * @error: #GError for error reporting
  *
  * Reads a string from the data input stream, up to the first
@@ -1388,7 +1388,7 @@ g_data_input_stream_read_upto (GDataInputStream  *stream,
  * @stop_chars_len: length of @stop_chars. May be -1 if @stop_chars is
  *     nul-terminated
  * @io_priority: the [I/O priority][io-priority] of the request
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
  * @callback: (scope async): callback to call when the request is satisfied
  * @user_data: (closure): the data to pass to callback function
  *

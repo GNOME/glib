@@ -405,7 +405,7 @@ g_dtls_connection_get_certificate (GDtlsConnection *conn)
 /**
  * g_dtls_connection_set_interaction:
  * @conn: a connection
- * @interaction: (allow-none): an interaction object, or %NULL
+ * @interaction: (nullable): an interaction object, or %NULL
  *
  * Set the object that will be used to interact with the user. It will be used
  * for things like prompting the user for passwords.
@@ -636,7 +636,7 @@ g_dtls_connection_get_rehandshake_mode (GDtlsConnection       *conn)
 /**
  * g_dtls_connection_handshake:
  * @conn: a #GDtlsConnection
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @error: a #GError, or %NULL
  *
  * Attempts a TLS handshake on @conn.
@@ -681,7 +681,7 @@ g_dtls_connection_handshake (GDtlsConnection  *conn,
  * g_dtls_connection_handshake_async:
  * @conn: a #GDtlsConnection
  * @io_priority: the [I/O priority][io-priority] of the request
- * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @cancellable: (nullable): a #GCancellable, or %NULL
  * @callback: callback to call when the handshake is complete
  * @user_data: the data to pass to the callback function
  *

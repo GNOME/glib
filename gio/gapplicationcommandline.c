@@ -449,7 +449,7 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
 /**
  * g_application_command_line_get_arguments:
  * @cmdline: a #GApplicationCommandLine
- * @argc: (out) (allow-none): the length of the arguments array, or %NULL
+ * @argc: (out) (optional): the length of the arguments array, or %NULL
  *
  * Gets the list of arguments that was passed on the command line.
  *

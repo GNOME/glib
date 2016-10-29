@@ -65,8 +65,8 @@ G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
  * g_unix_connection_send_fd:
  * @connection: a #GUnixConnection
  * @fd: a file descriptor
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @error: (allow-none): #GError for error reporting, or %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
+ * @error: (nullable): #GError for error reporting, or %NULL to ignore.
  *
  * Passes a file descriptor to the receiving side of the
  * connection. The receiving end has to call g_unix_connection_receive_fd()
@@ -119,8 +119,8 @@ g_unix_connection_send_fd (GUnixConnection  *connection,
 /**
  * g_unix_connection_receive_fd:
  * @connection: a #GUnixConnection
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
- * @error: (allow-none): #GError for error reporting, or %NULL to ignore
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
+ * @error: (nullable): #GError for error reporting, or %NULL to ignore
  *
  * Receives a file descriptor from the sending end of the connection.
  * The sending end has to call g_unix_connection_send_fd() for this
@@ -288,7 +288,7 @@ gboolean                g_unix_connection_create_pair                   (GUnixCo
 /**
  * g_unix_connection_send_credentials:
  * @connection: A #GUnixConnection.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Passes the credentials of the current user the receiving side
@@ -386,7 +386,7 @@ send_credentials_async_thread (GTask         *task,
 /**
  * g_unix_connection_send_credentials_async:
  * @connection: A #GUnixConnection.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: (closure): the data to pass to callback function
  *
@@ -439,7 +439,7 @@ g_unix_connection_send_credentials_finish (GUnixConnection *connection,
 /**
  * g_unix_connection_receive_credentials:
  * @connection: A #GUnixConnection.
- * @cancellable: (allow-none): A #GCancellable or %NULL.
+ * @cancellable: (nullable): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Receives credentials from the sending end of the connection.  The
@@ -647,7 +647,7 @@ receive_credentials_async_thread (GTask         *task,
 /**
  * g_unix_connection_receive_credentials_async:
  * @connection: A #GUnixConnection.
- * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
  * @user_data: (closure): the data to pass to callback function
  *

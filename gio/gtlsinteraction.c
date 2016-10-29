@@ -457,8 +457,8 @@ g_tls_interaction_ask_password (GTlsInteraction    *interaction,
  * @interaction: a #GTlsInteraction object
  * @password: a #GTlsPassword object
  * @cancellable: an optional #GCancellable cancellation object
- * @callback: (allow-none): will be called when the interaction completes
- * @user_data: (allow-none): data to pass to the @callback
+ * @callback: (nullable): will be called when the interaction completes
+ * @user_data: (nullable): data to pass to the @callback
  *
  * Run asynchronous interaction to ask the user for a password. In general,
  * g_tls_interaction_invoke_ask_password() should be used instead of this
@@ -754,8 +754,8 @@ g_tls_interaction_request_certificate (GTlsInteraction              *interaction
  * @connection: a #GTlsConnection object
  * @flags: flags providing more information about the request
  * @cancellable: an optional #GCancellable cancellation object
- * @callback: (allow-none): will be called when the interaction completes
- * @user_data: (allow-none): data to pass to the @callback
+ * @callback: (nullable): will be called when the interaction completes
+ * @user_data: (nullable): data to pass to the @callback
  *
  * Run asynchronous interaction to ask the user for a certificate to use with
  * the connection. In general, g_tls_interaction_invoke_request_certificate() should
