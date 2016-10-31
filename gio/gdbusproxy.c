@@ -2021,6 +2021,8 @@ g_dbus_proxy_new (GDBusConnection     *connection,
                   GAsyncReadyCallback  callback,
                   gpointer             user_data)
 {
+  _g_dbus_initialize ();
+
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
   g_return_if_fail ((name == NULL && g_dbus_connection_get_unique_name (connection) == NULL) || g_dbus_is_name (name));
   g_return_if_fail (g_variant_is_object_path (object_path));
@@ -2171,6 +2173,8 @@ g_dbus_proxy_new_for_bus (GBusType             bus_type,
                           GAsyncReadyCallback  callback,
                           gpointer             user_data)
 {
+  _g_dbus_initialize ();
+
   g_return_if_fail (g_dbus_is_name (name));
   g_return_if_fail (g_variant_is_object_path (object_path));
   g_return_if_fail (g_dbus_is_interface_name (interface_name));
@@ -2238,6 +2242,8 @@ g_dbus_proxy_new_for_bus_sync (GBusType             bus_type,
                                GError             **error)
 {
   GInitable *initable;
+
+  _g_dbus_initialize ();
 
   g_return_val_if_fail (g_dbus_is_name (name), NULL);
   g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);
