@@ -2688,7 +2688,10 @@ g_dbus_connection_new (GIOStream            *stream,
                        GAsyncReadyCallback   callback,
                        gpointer              user_data)
 {
+  _g_dbus_initialize ();
+
   g_return_if_fail (G_IS_IO_STREAM (stream));
+
   g_async_initable_new_async (G_TYPE_DBUS_CONNECTION,
                               G_PRIORITY_DEFAULT,
                               cancellable,
@@ -2773,6 +2776,7 @@ g_dbus_connection_new_sync (GIOStream             *stream,
                             GCancellable          *cancellable,
                             GError               **error)
 {
+  _g_dbus_initialize ();
   g_return_val_if_fail (G_IS_IO_STREAM (stream), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   return g_initable_new (G_TYPE_DBUS_CONNECTION,
@@ -2828,7 +2832,10 @@ g_dbus_connection_new_for_address (const gchar          *address,
                                    GAsyncReadyCallback   callback,
                                    gpointer              user_data)
 {
+  _g_dbus_initialize ();
+
   g_return_if_fail (address != NULL);
+
   g_async_initable_new_async (G_TYPE_DBUS_CONNECTION,
                               G_PRIORITY_DEFAULT,
                               cancellable,
@@ -2912,6 +2919,8 @@ g_dbus_connection_new_for_address_sync (const gchar           *address,
                                         GCancellable          *cancellable,
                                         GError               **error)
 {
+  _g_dbus_initialize ();
+
   g_return_val_if_fail (address != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
   return g_initable_new (G_TYPE_DBUS_CONNECTION,
@@ -7252,6 +7261,8 @@ g_bus_get_sync (GBusType       bus_type,
 {
   GDBusConnection *connection;
 
+  _g_dbus_initialize ();
+
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   connection = get_uninitialized_connection (bus_type, cancellable, error);
@@ -7317,6 +7328,8 @@ g_bus_get (GBusType             bus_type,
   GDBusConnection *connection;
   GTask *task;
   GError *error = NULL;
+
+  _g_dbus_initialize ();
 
   task = g_task_new (NULL, cancellable, callback, user_data);
   g_task_set_source_tag (task, g_bus_get);
