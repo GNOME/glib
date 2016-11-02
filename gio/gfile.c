@@ -2765,7 +2765,8 @@ g_file_copy_attributes (GFile           *source,
   return res;
 }
 
-#define STREAM_BUFFER_SIZE (1024*64)
+/* 256k minus malloc overhead */
+#define STREAM_BUFFER_SIZE (1024*256 - 2 *sizeof(gpointer))
 
 static gboolean
 copy_stream_with_progress (GInputStream           *in,
