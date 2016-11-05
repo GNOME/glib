@@ -3322,8 +3322,9 @@ dnl
 AC_ARG_ENABLE([znodelete],
               [AS_HELP_STRING([--disable-znodelete],
                               [avoid linking with -z,nodelete])],,
-              [SAVED_LDFLAGS="${LDFLAGS}" SAVED_LIBS="${LIBS}"
+              [SAVED_CFLAGS="${CFLAGS}" SAVED_LDFLAGS="${LDFLAGS}" SAVED_LIBS="${LIBS}"
                AC_MSG_CHECKING([for --fatal-warnings linker flag])
+               CFLAGS="${SAVED_CFLAGS} ${shared_flag:- -shared}"
                LDFLAGS=-Wl,--fatal-warnings
                LIBS=
                AC_TRY_LINK([], [return 0],
@@ -3338,7 +3339,7 @@ AC_ARG_ENABLE([znodelete],
                            enable_znodelete=yes,
                            AC_MSG_RESULT(no)
                            enable_znodelete=no)
-               LDFLAGS="${SAVED_LDFLAGS}" LIBS="${SAVED_LIBS}"])
+               CFLAGS="${SAVED_CFLAGS}" LDFLAGS="${SAVED_LDFLAGS}" LIBS="${SAVED_LIBS}"])
 
 if test "x${enable_znodelete}" = "xyes"; then
   GLIB_LINK_FLAGS="$GLIB_LINK_FLAGS -Wl,-z,nodelete"
