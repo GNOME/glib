@@ -1,3 +1,25 @@
+Overview of changes in GLib 2.50.2
+==================================
+
+* Bugs fixed:
+ 767882 Bit shift overflow (-Wshift-overflow) warning in gparam.h
+ 769135 External control for g_test_add/g_test_run
+ 769630 gfile: G_FILE_MONITOR_WATCH_MOVES was actually introduced in 2.46
+ 772054 Patch for glib/gspawn-win32-helper.c: unexpected behavior re CommandLineToArgvW()
+ 773303 GApplication leaks option_strings
+ 773344 glib-compile-resources: Fix creating depfile with other targets
+
+* Translation updates:
+ French
+ Galician
+ German
+ Lithuanian
+ Norwegian bokmål
+ Occitan
+ Serbian
+ Slovak
+
+
 Overview of changes in GLib 2.50.1
 ==================================
 
