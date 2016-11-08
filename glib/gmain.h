@@ -366,10 +366,10 @@ gint     g_main_context_query    (GMainContext *context,
                                   GPollFD      *fds,
                                   gint          n_fds);
 GLIB_AVAILABLE_IN_ALL
-gint     g_main_context_check    (GMainContext *context,
-                                  gint          max_priority,
-                                  GPollFD      *fds,
-                                  gint          n_fds);
+gboolean     g_main_context_check    (GMainContext *context,
+                                      gint          max_priority,
+                                      GPollFD      *fds,
+                                      gint          n_fds);
 GLIB_AVAILABLE_IN_ALL
 void     g_main_context_dispatch (GMainContext *context);
 
