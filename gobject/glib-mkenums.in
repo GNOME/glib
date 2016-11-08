@@ -28,7 +28,7 @@ my $firstenum = 1;		# Is this the first enumeration per file?
 my @entries;			# [ $name, $val ] for each entry
 my $sandbox = Safe->new;        # sandbox for safe evaluation of expressions
 
-my $output_file;		# Filename to write result into
+my $output;			# Filename to write result into
 
 sub parse_trigraph {
     my $opts = shift;
