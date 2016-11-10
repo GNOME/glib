@@ -4259,7 +4259,7 @@ g_variant_dict_unref (GVariantDict *dict)
  * returned.  If @endptr is non-%NULL then it is updated to point to the
  * first character after the format string.
  *
- * If @limit is non-%NULL then @limit (and any charater after it) will
+ * If @limit is non-%NULL then @limit (and any character after it) will
  * not be accessed and the effect is otherwise equivalent to if the
  * character at @limit were nul.
  *

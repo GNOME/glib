@@ -230,7 +230,7 @@ GQuark g_regex_error_quark (void);
  *     newline in the string, respectively, as well as at the very start
  *     and end. This can be changed within a pattern by a "(?m)" option
  *     setting.
- * @G_REGEX_DOTALL: A dot metacharater (".") in the pattern matches all
+ * @G_REGEX_DOTALL: A dot metacharacter (".") in the pattern matches all
  *     characters, including newlines. Without it, newlines are excluded.
  *     This option can be changed within a pattern by a ("?s") option setting.
  * @G_REGEX_EXTENDED: Whitespace data characters in the pattern are
@@ -243,7 +243,7 @@ GQuark g_regex_error_quark (void);
  *     it is constrained to match only at the first matching point in the
  *     string that is being searched. This effect can also be achieved by
  *     appropriate constructs in the pattern itself such as the "^"
- *     metacharater.
+ *     metacharacter.
  * @G_REGEX_DOLLAR_ENDONLY: A dollar metacharacter ("$") in the pattern
  *     matches only at the end of the string. Without this option, a
  *     dollar also matches immediately before the final character if
@@ -321,7 +321,7 @@ typedef enum
  *     it is constrained to match only at the first matching point in the
  *     string that is being searched. This effect can also be achieved by
  *     appropriate constructs in the pattern itself such as the "^"
- *     metacharater.
+ *     metacharacter.
  * @G_REGEX_MATCH_NOTBOL: Specifies that first character of the string is
  *     not the beginning of a line, so the circumflex metacharacter should
  *     not match before it. Setting this without #G_REGEX_MULTILINE (at

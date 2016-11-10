@@ -2515,7 +2515,7 @@ g_io_channel_write_unichar (GIOChannel  *channel,
 
   if (channel->partial_write_buf[0] != '\0')
     {
-      g_warning ("Partial charater written before writing unichar.\n");
+      g_warning ("Partial character written before writing unichar.\n");
       channel->partial_write_buf[0] = '\0';
     }
 
