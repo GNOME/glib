@@ -2312,7 +2312,7 @@ g_signal_get_invocation_hint (gpointer instance)
  *
  * Connects a closure to a signal for a particular object.
  *
- * Returns: the handler id (always greater than 0 for successful connections)
+ * Returns: the handler ID (always greater than 0 for successful connections)
  */
 gulong
 g_signal_connect_closure_by_id (gpointer  instance,
@@ -2371,7 +2371,7 @@ g_signal_connect_closure_by_id (gpointer  instance,
  *
  * Connects a closure to a signal for a particular object.
  *
- * Returns: the handler id (always greater than 0 for successful connections)
+ * Returns: the handler ID (always greater than 0 for successful connections)
  */
 gulong
 g_signal_connect_closure (gpointer     instance,
@@ -2464,7 +2464,7 @@ node_check_deprecated (const SignalNode *node)
  * used. Specify @connect_flags if you need `..._after()` or
  * `..._swapped()` variants of this function.
  *
- * Returns: the handler id (always greater than 0 for successful connections)
+ * Returns: the handler ID (always greater than 0 for successful connections)
  */
 gulong
 g_signal_connect_data (gpointer       instance,
@@ -2645,9 +2645,9 @@ g_signal_handler_disconnect (gpointer instance,
 /**
  * g_signal_handler_is_connected:
  * @instance: (type GObject.Object): The instance where a signal handler is sought.
- * @handler_id: the handler id.
+ * @handler_id: the handler ID.
  *
- * Returns whether @handler_id is the id of a handler connected to @instance.
+ * Returns whether @handler_id is the ID of a handler connected to @instance.
  *
  * Returns: whether @handler_id identifies a handler connected to @instance.
  */

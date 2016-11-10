@@ -469,7 +469,7 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * See [memory management of signal handlers][signal-memory-management] for
  * details on how to handle the return value and memory management of @data.
  * 
- * Returns: the handler id (always greater than 0 for successful connections)
+ * Returns: the handler ID, of type #gulong (always greater than 0 for successful connections)
  */
 #define g_signal_connect(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, (GConnectFlags) 0)
@@ -484,7 +484,7 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  * 
  * The handler will be called after the default handler of the signal.
  * 
- * Returns: the handler id (always greater than 0 for successful connections)
+ * Returns: the handler ID, of type #gulong (always greater than 0 for successful connections)
  */
 #define g_signal_connect_after(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_AFTER)
@@ -522,7 +522,7 @@ void   g_signal_chain_from_overridden_handler (gpointer           instance,
  *                   (GCallback) button_clicked_cb, other_widget);
  * ]|
  * 
- * Returns: the handler ID (always greater than 0 for successful connections)
+ * Returns: the handler ID, of type #gulong (always greater than 0 for successful connections)
  */
 #define g_signal_connect_swapped(instance, detailed_signal, c_handler, data) \
     g_signal_connect_data ((instance), (detailed_signal), (c_handler), (data), NULL, G_CONNECT_SWAPPED)
