@@ -51,7 +51,7 @@ esac
 datarootdir=@datarootdir@
 datadir=@datadir@
 
-gettext_dir=$prefix/share/glib-2.0/gettext
+gettext_dir=$datadir/glib-2.0/gettext
 
 while test $# -gt 0; do
   case "$1" in
