@@ -12,7 +12,7 @@
 #define MY_IS_TEST_CLASS(tclass)   (G_TYPE_CHECK_CLASS_TYPE ((tclass), G_TYPE_TEST))
 #define MY_TEST_GET_CLASS(test)    (G_TYPE_INSTANCE_GET_CLASS ((test), G_TYPE_TEST, GTestClass))
 
-static GRand *rand;
+static GRand *grand;
 
 typedef struct _GTest GTest;
 typedef struct _GTestClass GTestClass;
@@ -87,7 +87,7 @@ my_test_get_type (void)
       NULL
     };
 
-    rand = g_rand_new();
+    grand = g_rand_new();
 
     test_type = g_type_register_static (G_TYPE_OBJECT, "GTest",
         &test_info, 0);
@@ -221,7 +221,7 @@ my_test_do_signal3 (GTest * test)
 static void
 my_test_do_prop (GTest * test)
 {
-  test->value = g_rand_int (rand);
+  test->value = g_rand_int (grand);
   g_object_notify (G_OBJECT (test), "test-prop");
 }
 
