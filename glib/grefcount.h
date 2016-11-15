@@ -38,6 +38,27 @@ void            g_ref_counter_make_atomic       (volatile int *ref_count);
 GLIB_AVAILABLE_IN_2_52
 gboolean        g_ref_counter_is_atomic         (volatile int *ref_count);
 
+#define g_ref_new(Type,Notify) \
+  (Type *) g_ref_alloc (sizeof (Type), Notify)
+
+#define g_ref_new0(Type,Notify) \
+  (Type *) g_ref_alloc0 (sizeof (Type), Notify)
+
+GLIB_AVAILABLE_IN_2_52
+gpointer        g_ref_alloc                     (gsize          size,
+                                                 GDestroyNotify notify);
+GLIB_AVAILABLE_IN_2_52
+gpointer        g_ref_alloc0                    (gsize          size,
+                                                 GDestroyNotify notify);
+GLIB_AVAILABLE_IN_2_52
+gpointer        g_ref_dup                       (gconstpointer  data,
+                                                 gsize          size,
+                                                 GDestroyNotify notify);
+GLIB_AVAILABLE_IN_2_52
+gpointer        g_ref_acquire                   (gpointer       ref);
+GLIB_AVAILABLE_IN_2_52
+void            g_ref_release                   (gpointer       ref);
+
 G_END_DECLS
 
 #endif /* __G_REF_COUNT_H__ */

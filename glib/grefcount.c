@@ -23,7 +23,14 @@
 
 #include "grefcount.h"
 
+#include <string.h>
+#include <stdlib.h>
+
 #include "gatomic.h"
+#include "gmem.h"
+#include "gmessages.h"
+#include "gtestutils.h"
+#include "valgrind.h"
 
 /**
  * SECTION:refcount
@@ -177,4 +184,145 @@ g_ref_counter_is_atomic (volatile int *ref_count)
   int sign = g_atomic_int_get (ref_count);
 
   return sign < 0;
+}
+
+typedef struct {
+  int ref_count;
+
+  gsize alloc_size;
+
+  GDestroyNotify notify_func;
+} GRef;
+
+#define STRUCT_ALIGNMENT        (2 * sizeof (gsize))
+#define ALIGN_STRUCT(offset)    ((offset + (STRUCT_ALIGNMENT - 1)) & -STRUCT_ALIGNMENT)
+
+#define G_REF_SIZE              sizeof (GRef)
+#define G_REF(ptr)              (GRef *) (((char *) (ptr)) - G_REF_SIZE)
+
+static void
+g_ref_free (gpointer ref)
+{
+  GRef *real_ref = G_REF (ref);
+  gsize alloc_size = real_ref->alloc_size;
+  gsize private_size = G_REF_SIZE;
+  char *allocated = ((char *) ref) - private_size;
+
+  if (real_ref->notify_func != NULL)
+    real_ref->notify_func (ref);
+
+  if (RUNNING_ON_VALGRIND)
+    {
+      private_size += ALIGN_STRUCT (1);
+      allocated -= ALIGN_STRUCT (1);
+
+      *(gpointer *) (allocated + private_size + alloc_size) = NULL;
+    }
+
+  g_free (allocated);
+}
+
+static gpointer
+g_ref_alloc_internal (gsize          alloc_size,
+                      gboolean       clear,
+                      gboolean       atomic,
+                      GDestroyNotify notify)
+{
+  gsize private_size = G_REF_SIZE;
+  char *allocated = NULL;
+  GRef *real_ref;
+
+  g_assert (alloc_size != 0);
+
+  /* When running under Valgrind we grow the allocation by one pointer, and we
+   * use the pointer at the end to keep a reference to the beginning of the
+   * public data; this way, we allow Valgrind to do some accounting and spot
+   * eventual leaks
+   */
+  if (RUNNING_ON_VALGRIND)
+    {
+      private_size += ALIGN_STRUCT (1);
+
+      if (clear)
+        allocated = g_malloc0 (private_size + alloc_size + sizeof (gpointer));
+      else
+        allocated = g_malloc (private_size + alloc_size + sizeof (gpointer));
+
+      *(gpointer *) (allocated + private_size + alloc_size) = allocated + ALIGN_STRUCT (1);
+
+      VALGRIND_MALLOCLIKE_BLOCK (allocated + private_size, alloc_size + sizeof (gpointer), 0, TRUE);
+      VALGRIND_MALLOCLIKE_BLOCK (allocated + ALIGN_STRUCT (1), private_size - ALIGN_STRUCT (1), 0, TRUE);
+    }
+  else
+    {
+      if (clear)
+        allocated = g_malloc0 (private_size + alloc_size);
+      else
+        allocated = g_malloc (private_size + alloc_size);
+    }
+
+  real_ref = (GRef *) allocated;
+  real_ref->alloc_size = alloc_size;
+  real_ref->notify_func = notify;
+
+  g_ref_counter_init (&real_ref->ref_count, atomic);
+
+  return allocated + private_size;
+}
+
+gpointer
+g_ref_alloc (gsize          size,
+             GDestroyNotify notify)
+{
+  g_return_val_if_fail (size > 0, NULL);
+
+  return g_ref_alloc_internal (size, FALSE, FALSE, notify);
+}
+
+gpointer
+g_ref_alloc0 (gsize          size,
+              GDestroyNotify notify)
+{
+  g_return_val_if_fail (size > 0, NULL);
+
+  return g_ref_alloc_internal (size, TRUE, FALSE, notify);
+}
+
+gpointer
+g_ref_dup (gconstpointer  data,
+           gsize          size,
+           GDestroyNotify notify)
+{
+  gpointer res;
+
+  g_return_val_if_fail (size > 0, NULL);
+
+  res = g_ref_alloc_internal (size, FALSE, FALSE, notify);
+
+  memcpy (res, data, size);
+
+  return res;
+}
+
+gpointer
+g_ref_acquire (gpointer ref)
+{
+  GRef *real_ref = G_REF (ref);
+
+  g_return_val_if_fail (ref != NULL, NULL);
+
+  g_ref_counter_acquire (&real_ref->ref_count);
+
+  return ref;
+}
+
+void
+g_ref_release (gpointer ref)
+{
+  GRef *real_ref = G_REF (ref);
+
+  g_return_if_fail (ref != NULL);
+
+  if (g_ref_counter_release (&real_ref->ref_count))
+    g_ref_free (ref);
 }
