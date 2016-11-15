@@ -612,6 +612,7 @@ main (int argc, char **argv)
   gboolean manual_register = FALSE;
   gboolean internal = FALSE;
   gboolean generate_dependencies = FALSE;
+  gboolean generate_phony_targets = FALSE;
   char *dependency_file = NULL;
   char *c_name = NULL;
   char *c_name_no_underscores;
@@ -626,6 +627,7 @@ main (int argc, char **argv)
     { "generate-source", 0, 0, G_OPTION_ARG_NONE, &generate_source, N_("Generate sourcecode used to link in the resource file into your code"), NULL },
     { "generate-dependencies", 0, 0, G_OPTION_ARG_NONE, &generate_dependencies, N_("Generate dependency list"), NULL },
     { "dependency-file", 0, 0, G_OPTION_ARG_FILENAME, &dependency_file, N_("name of the dependency file to generate"), N_("FILE") },
+    { "generate-phony-targets", 0, 0, G_OPTION_ARG_NONE, &generate_phony_targets, N_("Include phony targets in the generated dependency file"), NULL },
     { "manual-register", 0, 0, G_OPTION_ARG_NONE, &manual_register, N_("Don’t automatically create and register resource"), NULL },
     { "internal", 0, 0, G_OPTION_ARG_NONE, &internal, N_("Don’t export functions; declare them G_GNUC_INTERNAL"), NULL },
     { "c-name", 0, 0, G_OPTION_ARG_STRING, &c_name, N_("C identifier name used for the generated source code"), NULL },
@@ -772,15 +774,23 @@ main (int argc, char **argv)
             g_string_append_printf (dep_string, " %s", file_data->filename);
         }
 
-      g_string_append (dep_string, "\n\n");
+      g_string_append (dep_string, "\n");
 
-      /* One rule for every resource: resourceN: */
-      g_hash_table_iter_init (&iter, files);
-      while (g_hash_table_iter_next (&iter, &key, &data))
+      /* Optionally include phony targets as it silences `make` but
+       * isn't supported on `ninja` at the moment. See also: `gcc -MP`
+       */
+      if (generate_phony_targets)
         {
-          file_data = data;
-          if (!g_str_equal (file_data->filename, srcfile))
-            g_string_append_printf (dep_string, "%s:\n\n", file_data->filename);
+					g_string_append (dep_string, "\n");
+
+          /* One rule for every resource: resourceN: */
+          g_hash_table_iter_init (&iter, files);
+          while (g_hash_table_iter_next (&iter, &key, &data))
+            {
+              file_data = data;
+              if (!g_str_equal (file_data->filename, srcfile))
+                g_string_append_printf (dep_string, "%s:\n\n", file_data->filename);
+            }
         }
 
       if (g_str_equal (dependency_file, "-"))

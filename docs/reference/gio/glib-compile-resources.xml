@@ -181,6 +181,15 @@ as a side-effect of generating sources.
 </para></listitem>
 </varlistentry>
 
+<varlistentry>
+<term><option>--generate-phony-targets</option></term>
+<listitem><para>
+When creating a dependency file with <option>--dependency-file</option>
+include phony targets in the same style as gcc -MP. This would typically
+be used with <literal>make</literal>.
+</para></listitem>
+</varlistentry>
+
 </variablelist>
 </refsect1>
 
