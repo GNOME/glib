@@ -64,6 +64,7 @@
 #include "ghash.h"
 #include "gmain.h"
 #include "gmappedfile.h"
+#include "grefcount.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gthread.h"
@@ -427,7 +428,8 @@ g_date_time_alloc (GTimeZone *tz)
 
   datetime = g_slice_new0 (GDateTime);
   datetime->tz = g_time_zone_ref (tz);
-  datetime->ref_count = 1;
+
+  g_ref_counter_init (&datetime->ref_count, TRUE);
 
   return datetime;
 }
@@ -446,9 +448,8 @@ GDateTime *
 g_date_time_ref (GDateTime *datetime)
 {
   g_return_val_if_fail (datetime != NULL, NULL);
-  g_return_val_if_fail (datetime->ref_count > 0, NULL);
 
-  g_atomic_int_inc (&datetime->ref_count);
+  g_ref_counter_acquire (&datetime->ref_count);
 
   return datetime;
 }
@@ -468,9 +469,8 @@ void
 g_date_time_unref (GDateTime *datetime)
 {
   g_return_if_fail (datetime != NULL);
-  g_return_if_fail (datetime->ref_count > 0);
 
-  if (g_atomic_int_dec_and_test (&datetime->ref_count))
+  if (g_ref_counter_release (&datetime->ref_count))
     {
       g_time_zone_unref (datetime->tz);
       g_slice_free (GDateTime, datetime);
