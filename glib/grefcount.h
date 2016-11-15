@@ -59,6 +59,27 @@ gpointer        g_ref_acquire                   (gpointer       ref);
 GLIB_AVAILABLE_IN_2_52
 void            g_ref_release                   (gpointer       ref);
 
+#define g_atomic_ref_new(Type,Notify) \
+  (Type *) g_atomic_ref_alloc (sizeof (Type), Notify)
+
+#define g_atomic_ref_new0(Type,Notify) \
+  (Type *) g_atomic_ref_alloc0 (sizeof (Type), Notify)
+
+GLIB_AVAILABLE_IN_2_52
+gpointer        g_atomic_ref_alloc              (gsize          size,
+                                                 GDestroyNotify notify);
+GLIB_AVAILABLE_IN_2_52
+gpointer        g_atomic_ref_alloc0             (gsize          size,
+                                                 GDestroyNotify notify);
+GLIB_AVAILABLE_IN_2_52
+gpointer        g_atomic_ref_dup                (gconstpointer  data,
+                                                 gsize          size,
+                                                 GDestroyNotify notify);
+GLIB_AVAILABLE_IN_2_52
+gpointer        g_atomic_ref_acquire            (gpointer       ref);
+GLIB_AVAILABLE_IN_2_52
+void            g_atomic_ref_release            (gpointer       ref);
+
 G_END_DECLS
 
 #endif /* __G_REF_COUNT_H__ */

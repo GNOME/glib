@@ -326,3 +326,60 @@ g_ref_release (gpointer ref)
   if (g_ref_counter_release (&real_ref->ref_count))
     g_ref_free (ref);
 }
+
+gpointer
+g_atomic_ref_alloc (gsize          size,
+                    GDestroyNotify notify)
+{
+  g_return_val_if_fail (size > 0, NULL);
+
+  return g_ref_alloc_internal (size, FALSE, TRUE, notify);
+}
+
+gpointer
+g_atomic_ref_alloc0 (gsize          size,
+                     GDestroyNotify notify)
+{
+  g_return_val_if_fail (size > 0, NULL);
+
+  return g_ref_alloc_internal (size, TRUE, TRUE, notify);
+}
+
+gpointer
+g_atomic_ref_dup (gconstpointer  data,
+                  gsize          size,
+                  GDestroyNotify notify)
+{
+  gpointer res;
+
+  g_return_val_if_fail (size > 0, NULL);
+
+  res = g_ref_alloc_internal (size, FALSE, TRUE, notify);
+
+  memcpy (res, data, size);
+
+  return res;
+}
+
+gpointer
+g_atomic_ref_acquire (gpointer ref)
+{
+  GRef *real_ref = G_REF (ref);
+
+  g_return_val_if_fail (ref != NULL, NULL);
+
+  g_ref_counter_acquire (&real_ref->ref_count);
+
+  return ref;
+}
+
+void
+g_atomic_ref_release (gpointer ref)
+{
+  GRef *real_ref = G_REF (ref);
+
+  g_return_if_fail (ref != NULL);
+
+  if (g_ref_counter_release (&real_ref->ref_count))
+    g_ref_free (ref);
+}
