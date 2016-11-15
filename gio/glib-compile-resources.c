@@ -596,6 +596,48 @@ extension_in_set (const char *str,
   return rv;
 }
 
+/*
+ * We must escape any characters that `make` finds significant.
+ * This is largely a duplicate of the logic in gcc's `mkdeps.c:munge()`.
+ */
+static char *
+escape_makefile_string (const char *string)
+{
+  GString *str;
+  const char *p, *q;
+
+  str = g_string_sized_new (strlen (string) + 1);
+  for (p = string; *p != '\0'; ++p)
+    {
+      switch (*p)
+        {
+        case ' ':
+        case '\t':
+          /* GNU make uses a weird quoting scheme for white space.
+             A space or tab preceded by 2N+1 backslashes represents
+             N backslashes followed by space; a space or tab
+             preceded by 2N backslashes represents N backslashes at
+             the end of a file name; and backslashes in other
+             contexts should not be doubled.  */
+          for (q = p - 1; string <= q && *q == '\\';  q--)
+            g_string_append_c (str, '\\');
+          g_string_append_c (str, '\\');
+          break;
+
+        case '$':
+          g_string_append_c (str, '$');
+          break;
+
+        case '#':
+          g_string_append_c (str, '\\');
+          break;
+        }
+      g_string_append_c (str, *p);
+    }
+
+  return g_string_free (str, FALSE);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -760,18 +802,25 @@ main (int argc, char **argv)
       GHashTableIter iter;
       gpointer key, data;
       FileData *file_data;
+      char *escaped;
 
       g_hash_table_iter_init (&iter, files);
 
       dep_string = g_string_new (NULL);
-      g_string_printf (dep_string, "%s:", srcfile);
+      escaped = escape_makefile_string (srcfile);
+      g_string_printf (dep_string, "%s:", escaped);
+      g_free (escaped);
 
       /* First rule: foo.xml: resource1 resource2.. */
       while (g_hash_table_iter_next (&iter, &key, &data))
         {
           file_data = data;
           if (!g_str_equal (file_data->filename, srcfile))
-            g_string_append_printf (dep_string, " %s", file_data->filename);
+            {
+              escaped = escape_makefile_string (file_data->filename);
+              g_string_append_printf (dep_string, " %s", escaped);
+              g_free (escaped);
+            }
         }
 
       g_string_append (dep_string, "\n");
@@ -789,7 +838,11 @@ main (int argc, char **argv)
             {
               file_data = data;
               if (!g_str_equal (file_data->filename, srcfile))
-                g_string_append_printf (dep_string, "%s:\n\n", file_data->filename);
+                {
+                  escaped = escape_makefile_string (file_data->filename);
+                  g_string_append_printf (dep_string, "%s:\n\n", escaped);
+                  g_free (escaped);
+                }
             }
         }
 
