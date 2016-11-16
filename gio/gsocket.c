@@ -4099,8 +4099,16 @@ G_STMT_START { \
     } \
  \
   /* control */ \
-  _msg->msg_controllen = 2048; \
-  _msg->msg_control = g_alloca (_msg->msg_controllen); \
+  if (_message->control_messages == NULL) \
+    { \
+	  _msg->msg_controllen = 0; \
+	  _msg->msg_control = NULL; \
+    } \
+  else \
+    { \
+      _msg->msg_controllen = 2048; \
+      _msg->msg_control = g_alloca (_msg->msg_controllen); \
+    } \
  \
   /* flags */ \
   _msg->msg_flags = _message->flags; \
@@ -4125,6 +4133,7 @@ input_message_from_msghdr (const struct msghdr  *msg,
 
     if (msg->msg_controllen >= sizeof (struct cmsghdr))
       {
+        g_assert (message->control_messages != NULL);
         for (cmsg = CMSG_FIRSTHDR (msg);
              cmsg != NULL;
              cmsg = CMSG_NXTHDR ((struct msghdr *) msg, cmsg))
@@ -4140,19 +4149,9 @@ input_message_from_msghdr (const struct msghdr  *msg,
                  deserialization code, so just continue */
               continue;
 
-            if (message->control_messages == NULL)
-              {
-                /* we have to do it this way if the user ignores the
-                 * messages so that we will close any received fds.
-                 */
-                g_object_unref (control_message);
-              }
-            else
-              {
-                if (my_messages == NULL)
-                  my_messages = g_ptr_array_new ();
-                g_ptr_array_add (my_messages, control_message);
-              }
+            if (my_messages == NULL)
+              my_messages = g_ptr_array_new ();
+            g_ptr_array_add (my_messages, control_message);
            }
       }
 
