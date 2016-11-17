@@ -1148,15 +1148,26 @@ g_system_thread_free (GRealThread *thread)
 }
 
 GRealThread *
-g_system_thread_new (GThreadFunc   thread_func,
+g_system_thread_new (GThreadFunc   proxy,
                      gulong        stack_size,
+                     const char   *name,
+                     GThreadFunc   func,
+                     gpointer      data,
                      GError      **error)
 {
   GThreadPosix *thread;
+  GRealThread *base_thread;
   pthread_attr_t attr;
   gint ret;
 
   thread = g_slice_new0 (GThreadPosix);
+  base_thread = (GRealThread*)thread;
+  base_thread->ref_count = 2;
+  base_thread->ours = TRUE;
+  base_thread->thread.joinable = TRUE;
+  base_thread->thread.func = func;
+  base_thread->thread.data = data;
+  base_thread->name = g_strdup (name);
 
   posix_check_cmd (pthread_attr_init (&attr));
 
@@ -1174,7 +1185,7 @@ g_system_thread_new (GThreadFunc   thread_func,
     }
 #endif /* HAVE_PTHREAD_ATTR_SETSTACKSIZE */
 
-  ret = pthread_create (&thread->system_thread, &attr, (void* (*)(void*))thread_func, thread);
+  ret = pthread_create (&thread->system_thread, &attr, (void* (*)(void*))proxy, thread);
 
   posix_check_cmd (pthread_attr_destroy (&attr));
 
