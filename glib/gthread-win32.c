@@ -429,15 +429,26 @@ g_thread_win32_proxy (gpointer data)
 }
 
 GRealThread *
-g_system_thread_new (GThreadFunc   func,
+g_system_thread_new (GThreadFunc   proxy,
                      gulong        stack_size,
+                     const char   *name,
+                     GThreadFunc   func,
+                     gpointer      data,
                      GError      **error)
 {
   GThreadWin32 *thread;
+  GRealThread *base_thread;
   guint ignore;
 
   thread = g_slice_new0 (GThreadWin32);
-  thread->proxy = func;
+  thread->proxy = proxy;
+  base_thread = (GRealThread*)thread;
+  base_thread->ref_count = 2;
+  base_thread->ours = TRUE;
+  base_thread->thread.joinable = TRUE;
+  base_thread->thread.func = func;
+  base_thread->thread.data = data;
+  base_thread->name = g_strdup (name);
 
   thread->handle = (HANDLE) _beginthreadex (NULL, stack_size, g_thread_win32_proxy, thread, 0, &ignore);
 
