@@ -3210,9 +3210,9 @@ gpointer
   gint old_val;
 
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
-  g_return_val_if_fail (object->ref_count > 0, NULL);
   
   old_val = g_atomic_int_add (&object->ref_count, 1);
+  g_return_val_if_fail (old_val > 0, NULL);
 
   if (old_val == 1 && OBJECT_HAS_TOGGLE_REF (object))
     toggle_refs_notify (object, FALSE);
@@ -3241,7 +3241,6 @@ g_object_unref (gpointer _object)
   gint old_ref;
   
   g_return_if_fail (G_IS_OBJECT (object));
-  g_return_if_fail (object->ref_count > 0);
   
   /* here we want to atomically do: if (ref_count>1) { ref_count--; return; } */
  retry_atomic_decrement1:
@@ -3336,6 +3335,7 @@ g_object_unref (gpointer _object)
       
       /* decrement the last reference */
       old_ref = g_atomic_int_add (&object->ref_count, -1);
+      g_return_if_fail (old_ref > 0);
 
       TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
 
