@@ -37,8 +37,11 @@ struct  _GRealThread
 /* system thread implementation (gthread-posix.c, gthread-win32.c) */
 void            g_system_thread_wait            (GRealThread  *thread);
 
-GRealThread *   g_system_thread_new             (GThreadFunc   func,
+GRealThread *   g_system_thread_new             (GThreadFunc   proxy,
                                                  gulong        stack_size,
+                                                 const char   *name,
+                                                 GThreadFunc   func,
+                                                 gpointer      data,
                                                  GError      **error);
 void            g_system_thread_free            (GRealThread  *thread);
 
