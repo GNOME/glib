@@ -202,7 +202,8 @@ _g_socket_read_with_control_messages_finish (GSocket       *socket,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* Work-around for https://bugzilla.gnome.org/show_bug.cgi?id=627724 */
+/* Work-around for https://bugzilla.gnome.org/show_bug.cgi?id=674885
+   and see also the original https://bugzilla.gnome.org/show_bug.cgi?id=627724  */
 
 static GPtrArray *ensured_classes = NULL;
 
@@ -227,6 +228,8 @@ ensure_required_types (void)
   ensured_classes = g_ptr_array_new ();
   ensure_type (G_TYPE_TASK);
   ensure_type (G_TYPE_MEMORY_INPUT_STREAM);
+  ensure_type (G_TYPE_DBUS_CONNECTION);
+  ensure_type (G_TYPE_DBUS_PROXY);
 }
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -263,9 +266,6 @@ _g_dbus_shared_thread_ref (void)
   if (g_once_init_enter (&shared_thread_data))
     {
       SharedThreadData *data;
-
-      /* Work-around for https://bugzilla.gnome.org/show_bug.cgi?id=627724 */
-      ensure_required_types ();
 
       data = g_new0 (SharedThreadData, 1);
       data->refcount = 0;
@@ -1920,6 +1920,9 @@ _g_dbus_initialize (void)
           if (_gdbus_debug_flags & G_DBUS_DEBUG_PAYLOAD)
             _gdbus_debug_flags |= G_DBUS_DEBUG_MESSAGE;
         }
+
+      /* Work-around for https://bugzilla.gnome.org/show_bug.cgi?id=627724 */
+      ensure_required_types ();
 
       g_once_init_leave (&initialized, 1);
     }
