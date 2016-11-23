@@ -15,7 +15,7 @@ from pc_base import BasePCItems
 
 def main(argv):
     base_pc = BasePCItems()
-    
+
     base_pc.setup(argv)
     pkg_replace_items = {'@G_THREAD_CFLAGS@': '',
                          '@G_THREAD_LIBS@': '',
@@ -73,6 +73,7 @@ def main(argv):
                          '@ZLIB_LIBS@': '-lzlib1',
                          '@NETWORK_LIBS@': '-lws2_32',
                          '@SELINUX_LIBS@': '',
+                         '@LIBMOUNT_LIBS@': '',
                          'glib-compile-schemas': '${exec_prefix}/bin/glib-compile-schemas',
                          'glib-compile-resources': '${exec_prefix}/bin/glib-compile-resources',
                          'gdbus-codegen': 'python ${exec_prefix}/bin/gdbus-codegen'}
