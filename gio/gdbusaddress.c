@@ -1356,6 +1356,7 @@ open_console_window (void)
       atexit (wait_console_window);
     }
 }
+
 static void
 idle_timeout_cb (GDBusDaemon *daemon, gpointer user_data)
 {
@@ -1404,12 +1405,13 @@ g_win32_run_session_bus (HWND hwnd, HINSTANCE hinst, char *cmdline, int nCmdShow
   if (daemon == NULL)
     {
       g_printerr ("Can't init bus: %s\n", error->message);
+      g_error_free (error);
       return;
     }
 
   g_signal_connect (daemon, "idle-timeout", G_CALLBACK (idle_timeout_cb), loop);
 
-  if ( publish_session_bus (_g_dbus_daemon_get_address (daemon)))
+  if (publish_session_bus (_g_dbus_daemon_get_address (daemon)))
     {
       g_main_loop_run (loop);
 
