@@ -1207,19 +1207,25 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                       {
                         gchar *data;
                         gsize data_len;
-                        gchar *encoded_data;
+
                         data = _g_dbus_auth_mechanism_server_data_send (mech, &data_len);
-                        encoded_data = hexencode (data);
-                        s = g_strdup_printf ("DATA %s\r\n", encoded_data);
-                        g_free (encoded_data);
-                        g_free (data);
-                        debug_print ("SERVER: writing '%s'", s);
-                        if (!g_data_output_stream_put_string (dos, s, cancellable, error))
+                        if (data != NULL)
                           {
+                            gchar *encoded_data;
+
+                            encoded_data = hexencode (data);
+                            s = g_strdup_printf ("DATA %s\r\n", encoded_data);
+                            g_free (encoded_data);
+                            g_free (data);
+
+                            debug_print ("SERVER: writing '%s'", s);
+                            if (!g_data_output_stream_put_string (dos, s, cancellable, error))
+                              {
+                                g_free (s);
+                                goto out;
+                              }
                             g_free (s);
-                            goto out;
                           }
-                        g_free (s);
                       }
                       goto change_state;
                       break;
