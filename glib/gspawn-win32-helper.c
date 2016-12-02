@@ -159,16 +159,12 @@ protect_wargv (gint       argc,
  * Please see http://msdn.microsoft.com/zh-tw/library/ks2530z6%28v=vs.80%29.aspx
  * for an explanation on this.
  */
-void myInvalidParameterHandler(
-   const wchar_t * expression,
-   const wchar_t * function,
-   const wchar_t * file,
-   unsigned int line,
-   uintptr_t pReserved
-)
-{
-  return;
-}
+extern void
+myInvalidParameterHandler(const wchar_t *expression,
+                          const wchar_t *function,
+                          const wchar_t *file,
+                          unsigned int   line,
+                          uintptr_t      pReserved);
 #endif
 
 
