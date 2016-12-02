@@ -785,7 +785,12 @@ g_hostname_is_ip_address (const gchar *hostname)
       else
         {
           for (end = p; g_ascii_isdigit (*end); end++)
-            octet = 10 * octet + (*end - '0');
+            {
+              octet = 10 * octet + (*end - '0');
+
+              if (octet > 255)
+                break;
+            }
         }
       if (end == p || end > p + 3 || octet > 255)
         return FALSE;
