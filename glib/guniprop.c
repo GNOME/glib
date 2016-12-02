@@ -503,6 +503,11 @@ g_unichar_iswide_cjk (gunichar c)
   if (g_unichar_iswide (c))
     return TRUE;
 
+  /* bsearch() is declared attribute(nonnull(1)) so we can't validly search
+   * for a NULL key */
+  if (c == 0)
+    return FALSE;
+
   if (bsearch (GUINT_TO_POINTER (c), 
                g_unicode_width_table_ambiguous,
                G_N_ELEMENTS (g_unicode_width_table_ambiguous),
