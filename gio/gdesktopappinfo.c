@@ -506,7 +506,8 @@ add_token_result (const gchar *app_name,
 static void
 merge_token_results (gboolean first)
 {
-  qsort (static_token_results, static_token_results_size, sizeof (struct search_result), compare_results);
+  if (static_token_results_size != 0)
+    qsort (static_token_results, static_token_results_size, sizeof (struct search_result), compare_results);
 
   /* If this is the first token then we are basically merging a list with
    * itself -- we only perform de-duplication.
@@ -606,7 +607,8 @@ reset_total_search_results (void)
 static void
 sort_total_search_results (void)
 {
-  qsort (static_total_results, static_total_results_size, sizeof (struct search_result), compare_categories);
+  if (static_total_results_size != 0)
+    qsort (static_total_results, static_total_results_size, sizeof (struct search_result), compare_categories);
 }
 
 static void
@@ -620,9 +622,10 @@ merge_directory_results (void)
       static_total_results = g_renew (struct search_result, static_total_results, static_total_results_allocated);
     }
 
-  memcpy (static_total_results + static_total_results_size,
-          static_search_results,
-          static_search_results_size * sizeof (struct search_result));
+  if (static_total_results + static_total_results_size != 0)
+    memcpy (static_total_results + static_total_results_size,
+            static_search_results,
+            static_search_results_size * sizeof (struct search_result));
 
   static_total_results_size += static_search_results_size;
 

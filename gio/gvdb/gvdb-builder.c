@@ -291,7 +291,8 @@ file_builder_add_string (FileBuilder *fb,
   chunk->offset = fb->offset;
   chunk->size = length;
   chunk->data = g_malloc (length);
-  memcpy (chunk->data, string, length);
+  if (length != 0)
+    memcpy (chunk->data, string, length);
 
   *start = guint32_to_le (fb->offset);
   *size = guint16_to_le (length);

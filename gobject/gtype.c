@@ -3550,7 +3550,8 @@ g_type_children (GType  type,
       
       G_READ_LOCK (&type_rw_lock);	/* ->children is relocatable */
       children = g_new (GType, node->n_children + 1);
-      memcpy (children, node->children, sizeof (GType) * node->n_children);
+      if (node->n_children != 0)
+        memcpy (children, node->children, sizeof (GType) * node->n_children);
       children[node->n_children] = 0;
       
       if (n_children)

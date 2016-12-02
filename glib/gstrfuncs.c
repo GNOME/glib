@@ -386,7 +386,7 @@ g_memdup (gconstpointer mem,
 {
   gpointer new_mem;
 
-  if (mem)
+  if (mem && byte_size != 0)
     {
       new_mem = g_malloc (byte_size);
       memcpy (new_mem, mem, byte_size);

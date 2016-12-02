@@ -415,6 +415,9 @@ g_array_append_vals (GArray       *farray,
 
   g_return_val_if_fail (array, NULL);
 
+  if (len == 0)
+    return farray;
+
   g_array_maybe_expand (array, len);
 
   memcpy (g_array_elt_pos (array, array->len), data, 
@@ -468,6 +471,9 @@ g_array_prepend_vals (GArray        *farray,
 
   g_return_val_if_fail (array, NULL);
 
+  if (len == 0)
+    return farray;
+
   g_array_maybe_expand (array, len);
 
   memmove (g_array_elt_pos (array, len), g_array_elt_pos (array, 0),
@@ -516,6 +522,9 @@ g_array_insert_vals (GArray        *farray,
   GRealArray *array = (GRealArray*) farray;
 
   g_return_val_if_fail (array, NULL);
+
+  if (len == 0)
+    return farray;
 
   g_array_maybe_expand (array, len);
 

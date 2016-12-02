@@ -2361,7 +2361,10 @@ g_option_group_add_entries (GOptionGroup       *group,
 
   group->entries = g_renew (GOptionEntry, group->entries, group->n_entries + n_entries);
 
-  memcpy (group->entries + group->n_entries, entries, sizeof (GOptionEntry) * n_entries);
+  /* group->entries could be NULL in the trivial case where we add no
+   * entries to no entries */
+  if (n_entries != 0)
+    memcpy (group->entries + group->n_entries, entries, sizeof (GOptionEntry) * n_entries);
 
   for (i = group->n_entries; i < group->n_entries + n_entries; i++)
     {

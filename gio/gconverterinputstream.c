@@ -262,7 +262,9 @@ buffer_read (Buffer *buffer,
 	     char *dest,
 	     gsize count)
 {
-  memcpy (dest, buffer->data + buffer->start, count);
+  if (count != 0)
+    memcpy (dest, buffer->data + buffer->start, count);
+
   buffer_consumed (buffer, count);
 }
 
@@ -293,9 +295,11 @@ grow_buffer (Buffer *buffer)
   data = g_malloc (size);
   in_buffer = buffer_data_size (buffer);
 
-  memcpy (data,
-	  buffer->data + buffer->start,
-	  in_buffer);
+  if (in_buffer != 0)
+    memcpy (data,
+            buffer->data + buffer->start,
+            in_buffer);
+
   g_free (buffer->data);
   buffer->data = data;
   buffer->end -= buffer->start;

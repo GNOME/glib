@@ -116,7 +116,9 @@ g_unix_socket_address_set_property (GObject      *object,
 	  /* Clip to fit in UNIX_PATH_MAX with zero termination or first byte */
 	  len = MIN (array->len, UNIX_PATH_MAX-1);
 
-	  memcpy (address->priv->path, array->data, len);
+	  if (len != 0)
+	    memcpy (address->priv->path, array->data, len);
+
 	  address->priv->path[len] = 0; /* Ensure null-terminated */
 	  address->priv->path_len = len;
 	}

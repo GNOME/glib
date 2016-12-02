@@ -74,7 +74,7 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                              if (__l1 != __l2) \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                            #l1 " (len(" #m1 ")) == " #l2 " (len(" #m2 "))", __l1, "==", __l2, 'i'); \
-                                             else if (memcmp (__m1, __m2, __l1) != 0) \
+                                             else if (__l1 != 0 && memcmp (__m1, __m2, __l1) != 0) \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #m1 " == " #m2 ")"); \
                                         } G_STMT_END
