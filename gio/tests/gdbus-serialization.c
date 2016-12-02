@@ -650,7 +650,7 @@ message_serialize_basic (void)
                                       60000,
                                       -44,
                                       100000,
-                                      -G_GINT64_CONSTANT(2)<<34,
+                                      -(G_GUINT64_CONSTANT(2)<<34),
                                       G_GUINT64_CONSTANT(0xffffffffffffffff),
                                       42.5),
                        "value 0:   string: 'this is a string'\n"
