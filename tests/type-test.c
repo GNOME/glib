@@ -88,15 +88,15 @@ main (int   argc,
   g_assert (gsz == 0);
 
   gs = G_MAXSHORT;
-  gs++;
+  gs = (gshort) (1 + (gushort) gs);
   g_assert (gs == G_MINSHORT);
 
   gi = G_MAXINT;
-  gi++;
+  gi = (gint) (1 + (guint) gi);
   g_assert (gi == G_MININT);
 
   gl = G_MAXLONG;
-  gl++;
+  gl = (glong) (1 + (gulong) gl);
   g_assert (gl == G_MINLONG);
 
   /* Test the G_G(U)?INT(16|32|64)_FORMAT macros */
