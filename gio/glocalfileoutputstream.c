@@ -763,7 +763,13 @@ handle_overwrite_open (const char    *filename,
 #ifdef O_NOFOLLOW
   is_symlink = FALSE;
   fd = g_open (filename, open_flags | O_NOFOLLOW, mode);
+#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+  if (fd == -1 && errno == EMLINK)
+#elif defined(__NetBSD__)
+  if (fd == -1 && errno == EFTYPE)
+#else
   if (fd == -1 && errno == ELOOP)
+#endif
     {
       /* Could be a symlink, or it could be a regular ELOOP error,
        * but then the next open will fail too. */
