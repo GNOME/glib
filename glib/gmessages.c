@@ -206,6 +206,28 @@
 #include <io.h>
 #  define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
 #  include <windows.h>
+
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+
+#if defined (_MSC_VER) && (_MSC_VER >=1400)
+/* This is ugly, but we need it for isatty() in case we have bad fd's,
+ * otherwise Windows will abort() the program on msvcrt80.dll and later
+ */
+#include <crtdbg.h>
+
+void
+myInvalidParameterHandler (const wchar_t *expression,
+                           const wchar_t *function,
+                           const wchar_t *file,
+                           unsigned int   line,
+                           uintptr_t      pReserved)
+{
+}
+#endif
+
+#include "gwin32.h"
 #endif
 
 /**
@@ -1827,8 +1849,14 @@ g_log_writer_supports_color (gint output_fd)
 
   /* FIXME: This check could easily be expanded in future to be more robust
    * against different types of terminal, which still vary in their color
-   * support. cmd.exe on Windows, for example, does not support ANSI colors;
-   * but bash on Windows does.
+   * support. cmd.exe on Windows, for example, supports ANSI colors only
+   * from Windows 10 onwards; bash on Windows has always supported ANSI colors.
+   * The Windows 10 color support is supported on:
+   * -Output in the cmd.exe, MSYS/Cygwin standard consoles.
+   * -Output in the cmd.exe, MSYS/Cygwin piped to the less program.
+   * but not:
+   * -Output in Cygwin via mintty (https://github.com/mintty/mintty/issues/482)
+   * -Color code output when output redirected to file (i.e. program 2> some.txt)
    *
    * On UNIX systems, we probably want to use the functions from terminfo to
    * work out whether colors are supported.
@@ -1839,7 +1867,59 @@ g_log_writer_supports_color (gint output_fd)
    *  - http://blog.mmediasys.com/2010/11/24/we-all-love-colors/
    *  - http://unix.stackexchange.com/questions/198794/where-does-the-term-environment-variable-default-get-set
    */
+#ifdef G_OS_WIN32
+  if (g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_ANY))
+    {
+      HANDLE h_stdout, h_stderr, h_output;
+      DWORD dw_mode;
+      int prev_report_mode = 0;
+      int isatty_result;
+
+#if (defined (_MSC_VER) && _MSC_VER >= 1400)
+      /* Set up our empty invalid parameter handler, for isatty(),
+       * in case of bad fd's passed in for isatty(), so that
+       * msvcrt80.dll+ won't abort the program
+       */
+      _invalid_parameter_handler oldHandler, newHandler;
+      newHandler = myInvalidParameterHandler;
+      oldHandler = _set_invalid_parameter_handler (newHandler);
+
+      /* Disable the message box for assertions. */
+      prev_report_mode = _CrtSetReportMode(_CRT_ASSERT, 0);
+#endif
+
+      isatty_result = isatty (output_fd);
+
+#if defined (_MSC_VER) && (_MSC_VER >= 1400)
+      _CrtSetReportMode(_CRT_ASSERT, prev_report_mode);
+      _set_invalid_parameter_handler (oldHandler);
+#endif
+
+      if (!isatty_result)
+        return FALSE;
+
+      h_output = (HANDLE) _get_osfhandle (output_fd);
+
+      if (!GetConsoleMode (h_output, &dw_mode))
+        return FALSE;
+
+      if (dw_mode & ENABLE_VIRTUAL_TERMINAL_PROCESSING)
+        return TRUE;
+
+      if (!SetConsoleMode (h_output, dw_mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING))
+        return FALSE;
+
+      return TRUE;
+    }
+
+  /* FIXME: Support colored outputs for structured logs for pre-Windows 10,
+   *        perhaps using WriteConsoleOutput or SetConsoleTextAttribute
+   *        (bug 775468)
+   */
+  return FALSE;
+#else
   return isatty (output_fd);
+#endif
 }
 
 #ifdef __linux__
