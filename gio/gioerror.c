@@ -325,6 +325,7 @@ g_io_error_from_win32_error (gint error_code)
       return G_IO_ERROR_NOT_SUPPORTED;
 
     case WSAECONNRESET:
+    case WSAESHUTDOWN:
       return G_IO_ERROR_CONNECTION_CLOSED;
 
     case WSAEHOSTUNREACH:
