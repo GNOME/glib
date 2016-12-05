@@ -175,7 +175,7 @@
 #include <locale.h>
 #include <errno.h>
 
-#ifdef __linux__
+#if defined(__linux__) && !defined(__BIONIC__)
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -1922,7 +1922,7 @@ g_log_writer_supports_color (gint output_fd)
 #endif
 }
 
-#ifdef __linux__
+#if defined(__linux__) && !defined(__BIONIC__)
 static int journal_fd = -1;
 
 #ifndef SOCK_CLOEXEC
@@ -1961,7 +1961,7 @@ open_journal (void)
 gboolean
 g_log_writer_is_journald (gint output_fd)
 {
-#ifdef __linux__
+#if defined(__linux__) && !defined(__BIONIC__)
   /* FIXME: Use the new journal API for detecting whether we’re writing to the
    * journal. See: https://github.com/systemd/systemd/issues/2473
    */
@@ -2096,7 +2096,7 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   return g_string_free (gstring, FALSE);
 }
 
-#ifdef __linux__
+#if defined(__linux__) && !defined(__BIONIC__)
 static int
 journal_sendv (struct iovec *iov,
                gsize         iovlen)
@@ -2210,7 +2210,7 @@ g_log_writer_journald (GLogLevelFlags   log_level,
                        gsize            n_fields,
                        gpointer         user_data)
 {
-#ifdef __linux__
+#if defined(__linux__) && !defined(__BIONIC__)
   const char equals = '=';
   const char newline = '\n';
   gsize i, k;
