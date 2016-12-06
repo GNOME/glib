@@ -4,6 +4,8 @@ gio_c_args = [
   '-DGIO_MODULE_DIR="@0@"'.format(glib_giomodulesdir),
 ]
 
+# FIXME: Install empty glib_giomodulesdir
+
 gnetworking_h_conf = configuration_data()
 
 gnetworking_h_wspiapi_include = ''
@@ -503,14 +505,6 @@ gio.def: libgio-2.0.la
 
 gio-2.0.lib: libgio-2.0.la gio.def
   '$(AM_V_GEN) lib.exe -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gio.def -out:$@
-
-completiondir = $(datadir)/bash-completion/completions
-completion_DATA =',
-  'completion/gapplication',
-  'completion/gdbus',
-  'completion/gsettings',
-  'completion/gresource
-EXTRA_DIST += $(completion_DATA)
 '''
 
 gio_headers = [
@@ -670,6 +664,14 @@ endif
 #  subdir('fam')
 #endif
 
+install_data([
+  'completion/gapplication',
+  'completion/gdbus',
+  'completion/gsettings',
+  'completion/gresource'
+],
+install_dir: get_option('datadir') + '/bash-completion/completions')
+
 libgio = shared_library('gio-2.0',
   gioenumtypes_h, gioenumtypes_c, gnetworking_h, gio_sources,
   version : library_version,
@@ -741,8 +743,11 @@ executable('gsettings', 'gsettings-tool.c',
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
-install_data(['gschema.dtd', 'gschema.loc', 'gschema.its'],
-  install_dir : 'share/glib-2.0/schemas')
+install_data('gschema.dtd',
+  install_dir : get_option('datadir') + '/glib-2.0/schemas')
+
+install_data(['gschema.loc', 'gschema.its'],
+  install_dir : get_option('datadir') + '/gettext/its')
 
 executable('gdbus', 'gdbus-tool.c',
   install : true,

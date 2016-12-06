@@ -1,0 +1,2 @@
+option('with-docs', type : 'boolean', value : false)
+option('with-man', type : 'boolean', value : true)

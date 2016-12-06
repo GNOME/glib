@@ -83,4 +83,15 @@ glib_genmarshal = executable('glib-genmarshal',
   c_args : ['-DHAVE_CONFIG_H=1'],
   dependencies : [libglib_dep, libgobject_dep])
 
+install_data('gobject.py', install_dir : glib_pkgdatadir + '/gdb')
+gdb_conf = configuration_data()
+gdb_conf.set('datadir', glib_datadir)
+configure_file(
+  input: 'libgobject-gdb.py.in',
+  output: 'libgobject-2.0.so.@0@-gdb.py'.format(library_version),
+  configuration: gdb_conf,
+  install: true,
+  install_dir: get_option('datadir') + '/gdb/auto-load/' + glib_libdir
+)
+
 subdir('tests')

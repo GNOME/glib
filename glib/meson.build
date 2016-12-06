@@ -249,6 +249,19 @@ else
     dependencies : [libglib_dep])
 endif
 
+install_data('gtester-report', install_dir : get_option('bindir'))
+install_data('glib.py', install_dir : glib_pkgdatadir + '/gdb')
+
+gdb_conf = configuration_data()
+gdb_conf.set('datadir', glib_datadir)
+configure_file(
+  input: 'libglib-gdb.py.in',
+  output: 'libglib-2.0.so.@0@-gdb.py'.format(library_version),
+  configuration: gdb_conf,
+  install: true,
+  install_dir: get_option('datadir') + '/gdb/auto-load/' + glib_libdir
+)
+
 # gtester doesn't work on native windows
 if cc.get_id() != 'msvc'
   subdir('tests')
