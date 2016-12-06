@@ -36,7 +36,7 @@ micro_version = version_arr[2]
 soversion = 0
 # Maintain compatibility with previous libtool versioning
 # current = minor * 100 + micro
-library_version = '@0@.@1@.0'.format(soversion, minor_version.to_int() * 100 + micro_version.to_int())
+library_version = '@0@.@1@.@2@'.format(soversion, minor_version.to_int() * 100, micro_version.to_int())
 
 configinc = include_directories('.')
 glibinc = include_directories('glib')
