@@ -403,6 +403,13 @@ g_resolver_lookup_by_name (GResolver     *resolver,
   if (g_hostname_is_non_ascii (hostname))
     hostname = ascii_hostname = g_hostname_to_ascii (hostname);
 
+  if (!hostname)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Invalid hostname"));
+      return NULL;
+    }
+
   g_resolver_maybe_reload (resolver);
   addrs = G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_name (resolver, hostname, cancellable, error);
@@ -459,6 +466,19 @@ g_resolver_lookup_by_name_async (GResolver           *resolver,
 
   if (g_hostname_is_non_ascii (hostname))
     hostname = ascii_hostname = g_hostname_to_ascii (hostname);
+
+  if (!hostname)
+    {
+      GTask *task;
+
+      g_set_error_literal (&error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Invalid hostname"));
+      task = g_task_new (resolver, cancellable, callback, user_data);
+      g_task_set_source_tag (task, g_resolver_lookup_by_name_async);
+      g_task_return_error (task, error);
+      g_object_unref (task);
+      return;
+    }
 
   g_resolver_maybe_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
