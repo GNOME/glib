@@ -2765,6 +2765,8 @@ g_file_copy_attributes (GFile           *source,
   return res;
 }
 
+#define STREAM_BUFFER_SIZE (1024*64)
+
 static gboolean
 copy_stream_with_progress (GInputStream           *in,
                            GOutputStream          *out,
@@ -2776,7 +2778,7 @@ copy_stream_with_progress (GInputStream           *in,
 {
   gssize n_read, n_written;
   goffset current_size;
-  char buffer[1024*64], *p;
+  char *buffer, *p;
   gboolean res;
   goffset total_size;
   GFileInfo *info;
@@ -2813,11 +2815,12 @@ copy_stream_with_progress (GInputStream           *in,
   if (total_size == -1)
     total_size = 0;
 
+  buffer = g_malloc0 (STREAM_BUFFER_SIZE);
   current_size = 0;
   res = TRUE;
   while (TRUE)
     {
-      n_read = g_input_stream_read (in, buffer, sizeof (buffer), cancellable, error);
+      n_read = g_input_stream_read (in, buffer, STREAM_BUFFER_SIZE, cancellable, error);
       if (n_read == -1)
         {
           res = FALSE;
@@ -2849,6 +2852,7 @@ copy_stream_with_progress (GInputStream           *in,
       if (progress_callback)
         progress_callback (current_size, total_size, progress_callback_data);
     }
+  g_free (buffer);
 
   /* Make sure we send full copied size */
   if (progress_callback)
