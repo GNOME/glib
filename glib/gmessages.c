@@ -204,11 +204,51 @@
 #ifdef G_OS_WIN32
 #include <process.h>		/* For getpid() */
 #include <io.h>
-#  define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
 #  include <windows.h>
 
 #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
 #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+
+/* XXX: Remove once XP support really dropped */
+#if _WIN32_WINNT < 0x0600
+
+typedef enum _FILE_INFO_BY_HANDLE_CLASS
+{
+  FileBasicInfo                   = 0,
+  FileStandardInfo                = 1,
+  FileNameInfo                    = 2,
+  FileRenameInfo                  = 3,
+  FileDispositionInfo             = 4,
+  FileAllocationInfo              = 5,
+  FileEndOfFileInfo               = 6,
+  FileStreamInfo                  = 7,
+  FileCompressionInfo             = 8,
+  FileAttributeTagInfo            = 9,
+  FileIdBothDirectoryInfo         = 10,
+  FileIdBothDirectoryRestartInfo  = 11,
+  FileIoPriorityHintInfo          = 12,
+  FileRemoteProtocolInfo          = 13,
+  FileFullDirectoryInfo           = 14,
+  FileFullDirectoryRestartInfo    = 15,
+  FileStorageInfo                 = 16,
+  FileAlignmentInfo               = 17,
+  FileIdInfo                      = 18,
+  FileIdExtdDirectoryInfo         = 19,
+  FileIdExtdDirectoryRestartInfo  = 20,
+  MaximumFileInfoByHandlesClass
+} FILE_INFO_BY_HANDLE_CLASS;
+
+typedef struct _FILE_NAME_INFO
+{
+  DWORD FileNameLength;
+  WCHAR FileName[1];
+} FILE_NAME_INFO;
+
+typedef BOOL (WINAPI fGetFileInformationByHandleEx) (HANDLE,
+                                                     FILE_INFO_BY_HANDLE_CLASS,
+                                                     LPVOID,
+                                                     DWORD);
 #endif
 
 #if defined (_MSC_VER) && (_MSC_VER >=1400)
@@ -509,7 +549,6 @@ _g_log_abort (gboolean breakpoint)
 }
 
 #ifdef G_OS_WIN32
-#  include <windows.h>
 static gboolean win32_keep_fatal_message = FALSE;
 
 /* This default message will usually be overwritten. */
@@ -1430,6 +1469,108 @@ color_reset (gboolean use_color)
   return "\033[0m";
 }
 
+#ifdef G_OS_WIN32
+
+/* We might be using tty emulators such as mintty, so try to detect it, if we passed in a valid FD
+ * so we need to check the name of the pipe if _isatty (fd) == 0
+ */
+
+static gboolean
+win32_is_pipe_tty (int fd)
+{
+  gboolean result = FALSE;
+  int error;
+  HANDLE h_fd;
+  FILE_NAME_INFO *info = NULL;
+  gint info_size = sizeof (FILE_NAME_INFO) + sizeof (WCHAR) * MAX_PATH;
+  wchar_t *name = NULL;
+  gint length;
+
+  /* XXX: Remove once XP support really dropped */
+#if _WINNT_WIN32 < 0x0600
+  HANDLE h_kerneldll = NULL;
+  fGetFileInformationByHandleEx *GetFileInformationByHandleEx;
+#endif
+
+  h_fd = (HANDLE) _get_osfhandle (fd);
+
+  if (h_fd == INVALID_HANDLE_VALUE || GetFileType (h_fd) != FILE_TYPE_PIPE)
+    goto done_query;
+
+  /* The following check is available on Vista or later, so on XP, no color support */
+  /* mintty uses a pipe, in the form of \{cygwin|msys}-xxxxxxxxxxxxxxxx-ptyN-{from|to}-master */
+
+  /* XXX: Remove once XP support really dropped */
+#if _WINNT_WIN32 < 0x0600
+  h_kerneldll = LoadLibraryW (L"kernel32.dll");
+
+  if (h_kerneldll == NULL)
+    goto done_query;
+
+  GetFileInformationByHandleEx =
+    (fGetFileInformationByHandleEx *) GetProcAddress (h_kerneldll, "GetFileInformationByHandleEx");
+
+  if (GetFileInformationByHandleEx == NULL)
+    goto done_query;
+#endif
+
+  info = g_try_malloc (info_size);
+
+  if (info == NULL ||
+      !GetFileInformationByHandleEx (h_fd, FileNameInfo, info, info_size))
+    goto done_query;
+
+  info->FileName[info->FileNameLength / sizeof (WCHAR)] = L'\0';
+  name = info->FileName;
+
+  length = wcslen (L"\\cygwin-");
+  if (wcsncmp (name, L"\\cygwin-", length))
+    {
+      length = wcslen (L"\\msys-");
+      if (wcsncmp (name, L"\\msys-", length))
+        goto done_query;
+    }
+
+  name += length;
+  length = wcsspn (name, L"0123456789abcdefABCDEF");
+  if (length != 16)
+    goto done_query;
+
+  name += length;
+  length = wcslen (L"-pty");
+  if (wcsncmp (name, L"-pty", length))
+    goto done_query;
+
+  name += length;
+  length = wcsspn (name, L"0123456789");
+  if (length != 1)
+    goto done_query;
+
+  name += length;
+  length = wcslen (L"-to-master");
+  if (wcsncmp (name, L"-to-master", length))
+    {
+      length = wcslen (L"-from-master");
+      if (wcsncmp (name, L"-from-master", length))
+        goto done_query;
+    }
+
+  result = TRUE;
+
+done_query:
+  if (info != NULL)
+    g_free (info);
+
+  /* XXX: Remove once XP support really dropped */
+#if _WINNT_WIN32 < 0x0600
+  if (h_kerneldll != NULL)
+    FreeLibrary (h_kerneldll);
+#endif
+
+  return result;
+}
+#endif
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"
 
@@ -1845,6 +1986,16 @@ g_log_set_writer_func (GLogWriterFunc func,
 gboolean
 g_log_writer_supports_color (gint output_fd)
 {
+#ifdef G_OS_WIN32
+  gboolean result = FALSE;
+
+#if (defined (_MSC_VER) && _MSC_VER >= 1400)
+  _invalid_parameter_handler oldHandler, newHandler;
+  int prev_report_mode = 0;
+#endif
+
+#endif
+
   g_return_val_if_fail (output_fd >= 0, FALSE);
 
   /* FIXME: This check could easily be expanded in future to be more robust
@@ -1868,55 +2019,55 @@ g_log_writer_supports_color (gint output_fd)
    *  - http://unix.stackexchange.com/questions/198794/where-does-the-term-environment-variable-default-get-set
    */
 #ifdef G_OS_WIN32
-  if (g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_ANY))
-    {
-      HANDLE h_stdout, h_stderr, h_output;
-      DWORD dw_mode;
-      int prev_report_mode = 0;
-      int isatty_result;
 
 #if (defined (_MSC_VER) && _MSC_VER >= 1400)
-      /* Set up our empty invalid parameter handler, for isatty(),
-       * in case of bad fd's passed in for isatty(), so that
-       * msvcrt80.dll+ won't abort the program
-       */
-      _invalid_parameter_handler oldHandler, newHandler;
-      newHandler = myInvalidParameterHandler;
-      oldHandler = _set_invalid_parameter_handler (newHandler);
+  /* Set up our empty invalid parameter handler, for isatty(),
+   * in case of bad fd's passed in for isatty(), so that
+   * msvcrt80.dll+ won't abort the program
+   */
+  newHandler = myInvalidParameterHandler;
+  oldHandler = _set_invalid_parameter_handler (newHandler);
 
-      /* Disable the message box for assertions. */
-      prev_report_mode = _CrtSetReportMode(_CRT_ASSERT, 0);
+  /* Disable the message box for assertions. */
+  prev_report_mode = _CrtSetReportMode(_CRT_ASSERT, 0);
 #endif
 
-      isatty_result = isatty (output_fd);
+  if (g_win32_check_windows_version (10, 0, 0, G_WIN32_OS_ANY))
+    {
+      HANDLE h_output;
+      DWORD dw_mode;
 
+      if (_isatty (output_fd))
+        {
+          h_output = (HANDLE) _get_osfhandle (output_fd);
+
+          if (!GetConsoleMode (h_output, &dw_mode))
+            goto reset_invalid_param_handler;
+
+          if (dw_mode & ENABLE_VIRTUAL_TERMINAL_PROCESSING)
+            result = TRUE;
+
+          if (!SetConsoleMode (h_output, dw_mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING))
+            goto reset_invalid_param_handler;
+
+          result = TRUE;
+        }
+    }
+
+  /* FIXME: Support colored outputs for structured logs for pre-Windows 10,
+   *        perhaps using WriteConsoleOutput or SetConsoleTextAttribute
+   *        (bug 775468), on standard Windows consoles, such as cmd.exe
+   */
+  if (!result)
+    result = win32_is_pipe_tty (output_fd);
+
+reset_invalid_param_handler:
 #if defined (_MSC_VER) && (_MSC_VER >= 1400)
       _CrtSetReportMode(_CRT_ASSERT, prev_report_mode);
       _set_invalid_parameter_handler (oldHandler);
 #endif
 
-      if (!isatty_result)
-        return FALSE;
-
-      h_output = (HANDLE) _get_osfhandle (output_fd);
-
-      if (!GetConsoleMode (h_output, &dw_mode))
-        return FALSE;
-
-      if (dw_mode & ENABLE_VIRTUAL_TERMINAL_PROCESSING)
-        return TRUE;
-
-      if (!SetConsoleMode (h_output, dw_mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING))
-        return FALSE;
-
-      return TRUE;
-    }
-
-  /* FIXME: Support colored outputs for structured logs for pre-Windows 10,
-   *        perhaps using WriteConsoleOutput or SetConsoleTextAttribute
-   *        (bug 775468)
-   */
-  return FALSE;
+  return result;
 #else
   return isatty (output_fd);
 #endif
