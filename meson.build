@@ -28,6 +28,7 @@ host_system = host_machine.system()
 #add_global_arguments('-Werror', language : 'c') # FIXME
 
 glib_version = meson.project_version()
+glib_api_version = '2.0'
 version_arr = glib_version.split('.')
 major_version = version_arr[0]
 minor_version = version_arr[1]
@@ -1361,6 +1362,28 @@ configure_file(input : 'config.h.meson',
   output : 'config.h',
   configuration : glib_conf)
 
-if get_option('with-docs')
-  subdir('docs/reference/glib')
+if get_option('with-docs') and not meson.version().version_compare('>= 0.37.0')
+  error('In order to build docs you must have Meson >= 0.37.0')
 endif
+
+if get_option('with-man')
+  xsltproc = find_program('xsltproc')
+  xsltproc_command = [
+    xsltproc,
+    '--nonet',
+    '--stringparam', 'man.output.quietly', '1',
+    '--stringparam', 'funcsynopsis.style', 'ansi',
+    '--stringparam', 'man.th.extra1.suppress', '1',
+    '--stringparam', 'man.authors.section.enabled', '0',
+    '--stringparam', 'man.copyright.section.enabled', '0',
+    '-o', '@OUTPUT@',
+    'http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl',
+    '@INPUT@',
+  ]
+  man1_dir = get_option('mandir') + '/man1'
+endif
+
+gnome = import('gnome')
+subdir('docs/reference/glib')
+subdir('docs/reference/gobject')
+subdir('docs/reference/gio')
