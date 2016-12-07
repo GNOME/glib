@@ -69,8 +69,9 @@ g_http_proxy_init (GHttpProxy *proxy)
 }
 
 static gchar *
-create_request (GProxyAddress *proxy_address,
-                gboolean      *has_cred)
+create_request (GProxyAddress  *proxy_address,
+                gboolean       *has_cred,
+                GError        **error)
 {
   const gchar *hostname;
   gint port;
@@ -83,13 +84,19 @@ create_request (GProxyAddress *proxy_address,
     *has_cred = FALSE;
 
   hostname = g_proxy_address_get_destination_hostname (proxy_address);
+  ascii_hostname = g_hostname_to_ascii (hostname);
+  if (!ascii_hostname)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Invalid hostname"));
+      return NULL;
+    }
   port = g_proxy_address_get_destination_port (proxy_address);
   username = g_proxy_address_get_username (proxy_address);
   password = g_proxy_address_get_password (proxy_address);
 
   request = g_string_new (NULL);
 
-  ascii_hostname = g_hostname_to_ascii (hostname);
   g_string_append_printf (request,
                           "CONNECT %s:%i HTTP/1.0\r\n"
                           "Host: %s:%i\r\n"
@@ -214,7 +221,9 @@ g_http_proxy_connect (GProxy         *proxy,
   in = g_io_stream_get_input_stream (io_stream);
   out = g_io_stream_get_output_stream (io_stream);
 
-  buffer = create_request (proxy_address, &has_cred);
+  buffer = create_request (proxy_address, &has_cred, error);
+  if (!buffer)
+    goto error;
   if (!g_output_stream_write_all (out, buffer, strlen (buffer), NULL,
                                   cancellable, error))
     goto error;
