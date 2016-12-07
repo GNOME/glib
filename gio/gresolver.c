@@ -659,6 +659,8 @@ g_resolver_get_service_rrname (const char *service,
 
   if (g_hostname_is_non_ascii (domain))
     domain = ascii_domain = g_hostname_to_ascii (domain);
+  if (!domain)
+    return NULL;
 
   rrname = g_strdup_printf ("_%s._%s.%s", service, protocol, domain);
 
@@ -721,6 +723,12 @@ g_resolver_lookup_service (GResolver     *resolver,
   g_return_val_if_fail (domain != NULL, NULL);
 
   rrname = g_resolver_get_service_rrname (service, protocol, domain);
+  if (!rrname)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Invalid domain"));
+      return NULL;
+    }
 
   g_resolver_maybe_reload (resolver);
   targets = G_RESOLVER_GET_CLASS (resolver)->
@@ -765,6 +773,14 @@ g_resolver_lookup_service_async (GResolver           *resolver,
   g_return_if_fail (domain != NULL);
 
   rrname = g_resolver_get_service_rrname (service, protocol, domain);
+  if (!rrname)
+    {
+      g_task_report_new_error (resolver, callback, user_data,
+                               g_resolver_lookup_service_async,
+                               G_IO_ERROR, G_IO_ERROR_FAILED,
+                               _("Invalid domain"));
+      return;
+    }
 
   g_resolver_maybe_reload (resolver);
   G_RESOLVER_GET_CLASS (resolver)->
