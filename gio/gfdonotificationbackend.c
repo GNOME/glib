@@ -424,7 +424,7 @@ g_fdo_notification_backend_withdraw_notification (GNotificationBackend *backend,
                                   "org.freedesktop.Notifications",
                                   "/org/freedesktop/Notifications",
                                   "org.freedesktop.Notifications", "CloseNotification",
-                                  g_variant_new ("(u)", n->id), NULL,
+                                  g_variant_new ("(u)", n->notify_id), NULL,
                                   G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
         }
 
