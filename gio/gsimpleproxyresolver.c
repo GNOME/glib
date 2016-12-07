@@ -287,11 +287,13 @@ ignore_host (GSimpleProxyResolver *resolver,
 
   if (priv->ignore_domains)
     {
+      length = 0;
       if (g_hostname_is_non_ascii (host))
         host = ascii_host = g_hostname_to_ascii (host);
-      length = strlen (host);
+      if (host)
+        length = strlen (host);
 
-      for (i = 0; priv->ignore_domains[i].length; i++)
+      for (i = 0; length > 0 && priv->ignore_domains[i].length; i++)
 	{
 	  GSimpleProxyResolverDomain *domain = &priv->ignore_domains[i];
 
