@@ -104,7 +104,7 @@ gnetworking_h_conf.set('NAMESER_COMPAT_INCLUDE', gnetworking_h_nameser_compat_in
 
 gnetworking_h = configure_file(input : 'gnetworking.h.in',
                                output : 'gnetworking.h',
-                               install_dir : 'include/glib-2.0/gio',
+                               install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
                                configuration : gnetworking_h_conf)
 
 gdbus_headers = [
@@ -626,8 +626,7 @@ gioenumtypes_h = custom_target('gioenumtypes_h',
   output : 'gioenumtypes.h',
   input : gio_headers,
   install : true,
-  install_dir : 'include/glib-2.0/gio/',
-  depends : [],
+  install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
   command : [gio_build_mkenum, perl, glib_mkenums,
              '@OUTPUT@', meson.current_source_dir(),
              '@INPUT@', gnetworking_h])
@@ -670,7 +669,7 @@ install_data([
   'completion/gsettings',
   'completion/gresource'
 ],
-install_dir: get_option('datadir') + '/bash-completion/completions')
+install_dir: join_paths(get_option('datadir'), 'bash-completion/completions'))
 
 libgio = shared_library('gio-2.0',
   gioenumtypes_h, gioenumtypes_c, gnetworking_h, gio_sources,
@@ -744,10 +743,10 @@ executable('gsettings', 'gsettings-tool.c',
   link_args : noseh_link_args,
   dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 install_data('gschema.dtd',
-  install_dir : get_option('datadir') + '/glib-2.0/schemas')
+  install_dir : join_paths(get_option('datadir'), 'glib-2.0/schemas'))
 
 install_data(['gschema.loc', 'gschema.its'],
-  install_dir : get_option('datadir') + '/gettext/its')
+  install_dir : join_paths(get_option('datadir'), 'gettext/its'))
 
 executable('gdbus', 'gdbus-tool.c',
   install : true,

@@ -17,12 +17,18 @@ gdbus_codegen_conf.set('PYTHON', python.path())
 gdbus_codegen = configure_file(input : 'gdbus-codegen.in',
   output : 'gdbus-codegen',
   install : true,
-  install_dir : 'bin', configuration : gdbus_codegen_conf)
+  install_dir : get_option('bindir'),
+  configuration : gdbus_codegen_conf
+)
+
+codegen_dir = join_paths(get_option('datadir'), 'glib-2.0/codegen')
 
 configure_file(input : 'config.py.in',
   output : 'config.py',
   install : true,
-  install_dir : 'share/glib-2.0/codegen', configuration : gdbus_codegen_conf)
+  install_dir : codegen_dir,
+  configuration : gdbus_codegen_conf
+)
 
 blank_conf = configuration_data()
 foreach f : gdbus_codegen_files
@@ -30,6 +36,6 @@ foreach f : gdbus_codegen_files
   # and then install it too so that it can be used after installation
   configure_file(input : f, output : f,
     install : true,
-    install_dir : 'share/glib-2.0/codegen',
+    install_dir : codegen_dir,
     configuration : blank_conf)
 endforeach

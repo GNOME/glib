@@ -20,7 +20,7 @@ gobject_install_headers = [
   'gvaluetypes.h',
   'gobjectnotifyqueue.c', # sic
 ]
-install_headers(gobject_install_headers, subdir : 'glib-2.0/gobject/')
+install_headers(gobject_install_headers, subdir : 'glib-2.0/gobject')
 
 gobject_c_sources = [
 #  'gobject_probes.d',
@@ -83,7 +83,7 @@ glib_genmarshal = executable('glib-genmarshal',
   c_args : ['-DHAVE_CONFIG_H=1'],
   dependencies : [libglib_dep, libgobject_dep])
 
-install_data('gobject.py', install_dir : glib_pkgdatadir + '/gdb')
+install_data('gobject.py', install_dir : join_paths(glib_pkgdatadir + 'gdb'))
 gdb_conf = configuration_data()
 gdb_conf.set('datadir', glib_datadir)
 configure_file(
@@ -91,7 +91,7 @@ configure_file(
   output: 'libgobject-2.0.so.@0@-gdb.py'.format(library_version),
   configuration: gdb_conf,
   install: true,
-  install_dir: get_option('datadir') + '/gdb/auto-load/' + glib_libdir
+  install_dir: join_paths(get_option('datadir'), 'gdb/auto-load/' + glib_libdir)
 )
 
 subdir('tests')

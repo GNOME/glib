@@ -1,6 +1,6 @@
 configure_file(input : 'glibconfig.h.in', output : 'glibconfig.h',
   install : true,
-  install_dir : 'lib/glib-2.0/include',
+  install_dir : join_paths(get_option('libdir'), 'glib-2.0/include'),
   configuration : glibconfig_conf)
 
 subdir('libcharset')
@@ -13,7 +13,7 @@ glib_headers = [
   'glib-unix.h',
   'glib-object.h',
 ]
-install_headers(glib_headers, subdir : 'glib-2.0/')
+install_headers(glib_headers, subdir : 'glib-2.0')
 
 glib_deprecated_headers = [
   'deprecated/gallocator.h',
@@ -23,7 +23,7 @@ glib_deprecated_headers = [
   'deprecated/grel.h',
   'deprecated/gthread.h',
 ]
-install_headers(glib_deprecated_headers, subdir : 'glib-2.0/glib/deprecated/')
+install_headers(glib_deprecated_headers, subdir : 'glib-2.0/glib/deprecated')
 
 glib_sub_headers = [
   'glib-autocleanups.h',
@@ -100,92 +100,94 @@ glib_sub_headers = [
   'gwin32.h',
   'gprintf.h',
 ]
-install_headers(glib_sub_headers, subdir : 'glib-2.0/glib/')
+install_headers(glib_sub_headers, subdir : 'glib-2.0/glib')
 
 deprecated_sources = [
-'deprecated/gallocator.c',
-'deprecated/gcache.c',
-'deprecated/gcompletion.c',
-'deprecated/grel.c',
-'deprecated/gthread-deprecated.c']
+  'deprecated/gallocator.c',
+  'deprecated/gcache.c',
+  'deprecated/gcompletion.c',
+  'deprecated/grel.c',
+  'deprecated/gthread-deprecated.c'
+]
 
 glib_sources = [
-'garray.c',
-'gasyncqueue.c',
-'gatomic.c',
-'gbacktrace.c',
-'gbase64.c',
-'gbitlock.c',
-'gbookmarkfile.c',
-'gbytes.c',
-'gcharset.c',
-'gchecksum.c',
-'gconvert.c',
-'gdataset.c',
-'gdate.c',
-'gdatetime.c',
-'gdir.c',
-'genviron.c',
-'gerror.c',
-'gfileutils.c',
-'ggettext.c',
-'ghash.c',
-'ghmac.c',
-'ghook.c',
-'ghostutils.c',
-'giochannel.c',
-'gkeyfile.c',
-'glib-init.c',
-'glib-private.c',
-'glist.c',
-'gmain.c',
-'gmappedfile.c',
-'gmarkup.c',
-'gmem.c',
-'gmessages.c',
-'gnode.c',
-'goption.c',
-'gpattern.c',
-'gpoll.c',
-'gprimes.c',
-'gqsort.c',
-'gquark.c',
-'gqueue.c',
-'grand.c',
-'gregex.c',
-'gscanner.c',
-'gsequence.c',
-'gshell.c',
-'gslice.c',
-'gslist.c',
-'gstdio.c',
-'gstrfuncs.c',
-'gstring.c',
-'gstringchunk.c',
-'gtestutils.c',
-'gthread.c',
-'gthreadpool.c',
-'gtimer.c',
-'gtimezone.c',
-'gtranslit.c',
-'gtrashstack.c',
-'gtree.c',
-'guniprop.c',
-'gutf8.c',
-'gunibreak.c',
-'gunicollate.c',
-'gunidecomp.c',
-'gurifuncs.c',
-'gutils.c',
-'gvariant.c',
-'gvariant-core.c',
-'gvariant-parser.c',
-'gvariant-serialiser.c',
-'gvarianttypeinfo.c',
-'gvarianttype.c',
-'gversion.c',
-'gwakeup.c',
-'gprintf.c',]
+  'garray.c',
+  'gasyncqueue.c',
+  'gatomic.c',
+  'gbacktrace.c',
+  'gbase64.c',
+  'gbitlock.c',
+  'gbookmarkfile.c',
+  'gbytes.c',
+  'gcharset.c',
+  'gchecksum.c',
+  'gconvert.c',
+  'gdataset.c',
+  'gdate.c',
+  'gdatetime.c',
+  'gdir.c',
+  'genviron.c',
+  'gerror.c',
+  'gfileutils.c',
+  'ggettext.c',
+  'ghash.c',
+  'ghmac.c',
+  'ghook.c',
+  'ghostutils.c',
+  'giochannel.c',
+  'gkeyfile.c',
+  'glib-init.c',
+  'glib-private.c',
+  'glist.c',
+  'gmain.c',
+  'gmappedfile.c',
+  'gmarkup.c',
+  'gmem.c',
+  'gmessages.c',
+  'gnode.c',
+  'goption.c',
+  'gpattern.c',
+  'gpoll.c',
+  'gprimes.c',
+  'gqsort.c',
+  'gquark.c',
+  'gqueue.c',
+  'grand.c',
+  'gregex.c',
+  'gscanner.c',
+  'gsequence.c',
+  'gshell.c',
+  'gslice.c',
+  'gslist.c',
+  'gstdio.c',
+  'gstrfuncs.c',
+  'gstring.c',
+  'gstringchunk.c',
+  'gtestutils.c',
+  'gthread.c',
+  'gthreadpool.c',
+  'gtimer.c',
+  'gtimezone.c',
+  'gtranslit.c',
+  'gtrashstack.c',
+  'gtree.c',
+  'guniprop.c',
+  'gutf8.c',
+  'gunibreak.c',
+  'gunicollate.c',
+  'gunidecomp.c',
+  'gurifuncs.c',
+  'gutils.c',
+  'gvariant.c',
+  'gvariant-core.c',
+  'gvariant-parser.c',
+  'gvariant-serialiser.c',
+  'gvarianttypeinfo.c',
+  'gvarianttype.c',
+  'gversion.c',
+  'gwakeup.c',
+  'gprintf.c',
+]
 
 if host_system == 'windows'
   thread_src = ['gthread-win32.c']
@@ -250,7 +252,7 @@ else
 endif
 
 install_data('gtester-report', install_dir : get_option('bindir'))
-install_data('glib.py', install_dir : glib_pkgdatadir + '/gdb')
+install_data('glib.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
 
 gdb_conf = configuration_data()
 gdb_conf.set('datadir', glib_datadir)
@@ -259,7 +261,7 @@ configure_file(
   output: 'libglib-2.0.so.@0@-gdb.py'.format(library_version),
   configuration: gdb_conf,
   install: true,
-  install_dir: get_option('datadir') + '/gdb/auto-load/' + glib_libdir
+  install_dir: join_paths(get_option('datadir'), 'gdb/auto-load' + glib_libdir)
 )
 
 # gtester doesn't work on native windows

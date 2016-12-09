@@ -24,27 +24,27 @@ pcre_sources = [
 
 libpcre = static_library('pcre',
   sources : [pcre_sources],
-  install : false,
   include_directories : [configinc, glibinc],
-  dependencies : [],
-  c_args : ['-DG_LOG_DOMAIN="GLib-GRegex"',
-            '-DHAVE_MEMMOVE',
-            '-DSUPPORT_UCP',
-            '-DSUPPORT_UTF',
-            '-DSUPPORT_UTF8',
-            '-DNEWLINE=-1',
-            '-DMATCH_LIMIT=10000000',
-            '-DMATCH_LIMIT_RECURSION=8192',
-            '-DMAX_NAME_SIZE=32',
-            '-DMAX_NAME_COUNT=10000',
-            '-DMAX_DUPLENGTH=30000',
-            '-DLINK_SIZE=2',
-            '-DPOSIX_MALLOC_THRESHOLD=10',
-            '-DPCRE_STATIC',
-            '-UBSR_ANYCRLF',
-            '-UEBCDIC',
-            '-DGLIB_COMPILATION',
-	    '-fPIC',]
+  pic : true,
+  c_args : [
+    '-DG_LOG_DOMAIN="GLib-GRegex"',
+    '-DHAVE_MEMMOVE',
+    '-DSUPPORT_UCP',
+    '-DSUPPORT_UTF',
+    '-DSUPPORT_UTF8',
+    '-DNEWLINE=-1',
+    '-DMATCH_LIMIT=10000000',
+    '-DMATCH_LIMIT_RECURSION=8192',
+    '-DMAX_NAME_SIZE=32',
+    '-DMAX_NAME_COUNT=10000',
+    '-DMAX_DUPLENGTH=30000',
+    '-DLINK_SIZE=2',
+    '-DPOSIX_MALLOC_THRESHOLD=10',
+    '-DPCRE_STATIC',
+    '-UBSR_ANYCRLF',
+    '-UEBCDIC',
+    '-DGLIB_COMPILATION'
+  ]
 )
 
 pcre = declare_dependency(link_with : libpcre)

@@ -82,7 +82,7 @@ gmoduleconf_h = configure_file(input : 'gmoduleconf.h.in',
                                output : 'gmoduleconf.h',
                                configuration : gmoduleconf_conf)
 
-install_headers(['gmodule.h'], subdir : 'glib-2.0/')
+install_headers(['gmodule.h'], subdir : 'glib-2.0')
 
 libgmodule = shared_library('gmodule-2.0',
   sources : ['gmodule.c'],

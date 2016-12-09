@@ -1,9 +1,11 @@
 project('glib', 'c', 'cpp',
   version : '2.51.0',
-  meson_version : '>= 0.32.0',
-  default_options : [ 'warning_level=1',
-                      'c_std=gnu89',
-                      'buildtype=debugoptimized' ])
+  meson_version : '>= 0.36.0',
+  default_options : [
+    'warning_level=1',
+    'c_std=gnu89'
+  ]
+)
 
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
@@ -46,13 +48,13 @@ gmoduleinc = include_directories('gmodule')
 gioinc = include_directories('gio')
 
 glib_prefix = get_option('prefix')
-glib_libdir = glib_prefix + '/' + get_option('libdir')
-glib_datadir = glib_prefix + '/' + get_option('datadir')
-glib_pkgdatadir = glib_datadir + '/glib-2.0'
-glib_includedir = glib_prefix + '/' + get_option('includedir')
-glib_giomodulesdir = glib_libdir + '/gio/modules'
+glib_libdir = join_paths(glib_prefix, get_option('libdir'))
+glib_datadir = join_paths(glib_prefix, get_option('datadir'))
+glib_pkgdatadir = join_paths(glib_datadir, 'glib-2.0')
+glib_includedir = join_paths(glib_prefix, get_option('includedir'))
+glib_giomodulesdir = join_paths(glib_libdir + 'gio/modules')
 
-glib_pkgconfigreldir = get_option('libdir') + '/pkgconfig'
+glib_pkgconfigreldir = join_paths(get_option('libdir'), 'pkgconfig')
 
 ########################
 # Configuration begins #
@@ -70,13 +72,13 @@ glib_conf.set('GLIB_MINOR_VERSION', minor_version)
 glib_conf.set('GLIB_MICRO_VERSION', micro_version)
 glib_conf.set('GLIB_INTERFACE_AGE', micro_version)
 glib_conf.set('GLIB_BINARY_AGE', 100 * minor_version.to_int() + micro_version.to_int())
-glib_conf.set('GETTEXT_PACKAGE', '"glib20"')
-glib_conf.set('PACKAGE_BUGREPORT', '"http://bugzilla.gnome.org/enter_bug.cgi?product=glib"')
-glib_conf.set('PACKAGE_NAME', '"glib"')
-glib_conf.set('PACKAGE_STRING', '"glib @0@"'.format(meson.project_version()))
-glib_conf.set('PACKAGE_TARNAME', '"glib"')
-glib_conf.set('PACKAGE_URL', '""')
-glib_conf.set('PACKAGE_VERSION', '"@0@"'.format(meson.project_version()))
+glib_conf.set_quoted('GETTEXT_PACKAGE', 'glib20')
+glib_conf.set_quoted('PACKAGE_BUGREPORT', 'http://bugzilla.gnome.org/enter_bug.cgi?product=glib')
+glib_conf.set_quoted('PACKAGE_NAME', 'glib')
+glib_conf.set_quoted('PACKAGE_STRING', 'glib @0@'.format(meson.project_version()))
+glib_conf.set_quoted('PACKAGE_TARNAME', 'glib')
+glib_conf.set_quoted('PACKAGE_URL', '')
+glib_conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 glib_conf.set('ENABLE_NLS', 1)
 glib_conf.set('HAVE_GOOD_PRINTF', 1) # FIXME
 
@@ -118,7 +120,7 @@ if run_command('xgettext', '--help').returncode() != 0
   error('GNU Gettext required currently.')
 endif
 glib_conf.set('HAVE_GETTEXT', 1)
-glib_conf.set('GLIB_LOCALE_DIR', '"@0@/share/locale"'.format(get_option('prefix')))
+glib_conf.set_quoted('GLIB_LOCALE_DIR', join_paths(glib_datadir, 'locale'))
 
 # FIXME: what about Cygwin (G_WITH_CYGWIN)
 if host_system == 'windows'
@@ -1356,7 +1358,7 @@ configure_file(input : 'glib-gettextize.in',
 
 # Install m4 macros that other projects use
 install_data('m4macros/glib-2.0.m4', 'm4macros/glib-gettext.m4', 'm4macros/gsettings.m4',
-  install_dir : 'share/aclocal')
+  install_dir : join_paths(get_option('datadir'), 'aclocal'))
 
 configure_file(input : 'config.h.meson',
   output : 'config.h',

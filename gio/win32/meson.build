@@ -10,4 +10,5 @@ giowin32_sources = [
 giowin32_lib = static_library('giowin32',
   sources : [giowin32_sources, gioenumtypes_h],
   include_directories : [configinc, glibinc, gioinc, gmoduleinc],
-  c_args : [ '-DHAVE_CONFIG_H', '-fPIC', '-DG_DISABLE_DEPRECATED' ] + gio_c_args)
+  pic : true,
+  c_args : [ '-DHAVE_CONFIG_H', '-DG_DISABLE_DEPRECATED' ] + gio_c_args)

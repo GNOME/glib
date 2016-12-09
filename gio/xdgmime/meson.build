@@ -12,4 +12,5 @@ xdgmime_sources = [
 xdgmime_lib = static_library('xdgmime',
   sources : xdgmime_sources,
   include_directories : [configinc],
-  c_args : [ '-DHAVE_CONFIG_H', '-DXDG_PREFIX=_gio_xdg', '-fPIC' ])
+  pic : true,
+  c_args : [ '-DHAVE_CONFIG_H', '-DXDG_PREFIX=_gio_xdg' ])

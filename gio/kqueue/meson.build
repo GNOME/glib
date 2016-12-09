@@ -14,4 +14,5 @@ kqueue_sources = [
 kqueue_lib = static_library('kqueue',
   sources : kqueue_sources,
   include_directories : [configinc, glibinc, gmoduleinc],
-  c_args : [ '-DHAVE_CONFIG_H', '-fPIC', '-DG_DISABLE_DEPRECATED' ] + gio_c_args)
+  pic : true,
+  c_args : [ '-DHAVE_CONFIG_H', '-DG_DISABLE_DEPRECATED' ] + gio_c_args)
