@@ -23,11 +23,7 @@ if get_option('with-docs')
     gobject_typesfile : 'gobject.types',
     mode : 'none',
     dependencies : [libgobject_dep, libglib_dep],
-    src_dir : [
-      # TODO: Cleanup upstream
-      join_paths(meson.source_root(), 'gobject'),
-      join_paths(meson.build_root(), 'gobject'),
-    ],
+    src_dir : 'gobject',
     scan_args : [
       '--deprecated-guards=G_DISABLE_DEPRECATED',
       '--ignore-decorators=G_GNUC_INTERNAL|G_GNUC_WARN_UNUSED_RESULT',

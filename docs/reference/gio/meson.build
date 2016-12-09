@@ -101,11 +101,7 @@ if get_option('with-docs')
     gobject_typesfile : 'gio.types',
     mode : 'none',
     dependencies : [libgio_dep, libgobject_dep, libglib_dep],
-    src_dir : [
-      # TODO: Cleanup upstream
-      join_paths(meson.source_root(), 'gio'),
-      join_paths(meson.build_root(), 'gio'),
-    ],
+    src_dir : 'gio',
     scan_args : [
       '--rebuild-types',
       '--deprecated-guards=G_DISABLE_DEPRECATED',

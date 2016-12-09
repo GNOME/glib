@@ -49,13 +49,7 @@ if get_option('with-docs')
                main_xml : 'glib-docs.xml',
                namespace : 'g',
                mode : 'none',
-               src_dir : [
-                 # TODO: Cleanup upstream
-                 join_paths(meson.source_root(), 'glib'),
-                 join_paths(meson.build_root(), 'glib'),
-                 join_paths(meson.source_root(), 'gmodule'),
-                 join_paths(meson.build_root(), 'gmodule'),
-               ],
+               src_dir : [ 'glib', 'gmodule' ],
                dependencies : libglib_dep,
                scan_args : [
                  '--rebuild-types',
