@@ -226,11 +226,11 @@ g_invoke_error_quark (void)
 /**
  * g_function_info_invoke: (skip)
  * @info: a #GIFunctionInfo describing the function to invoke
- * @in_args: an array of #GIArgument<!-- -->s, one for each in
+ * @in_args: (array length=n_in_args): an array of #GIArgument<!-- -->s, one for each in
  *    parameter of @info. If there are no in parameter, @in_args
  *    can be %NULL
  * @n_in_args: the length of the @in_args array
- * @out_args: an array of #GIArgument<!-- -->s, one for each out
+ * @out_args: (array length=n_out_args): an array of #GIArgument<!-- -->s, one for each out
  *    parameter of @info. If there are no out parameters, @out_args
  *    may be %NULL
  * @n_out_args: the length of the @out_args array

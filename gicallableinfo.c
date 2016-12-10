@@ -552,9 +552,9 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
  * g_callable_info_invoke:
  * @info: TODO
  * @function: TODO
- * @in_args: TODO
+ * @in_args: (array length=n_in_args): TODO
  * @n_in_args: TODO
- * @out_args: TODO
+ * @out_args: (array length=n_out_args): TODO
  * @n_out_args: TODO
  * @return_value: TODO
  * @is_method: TODO
