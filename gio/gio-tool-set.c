@@ -112,8 +112,6 @@ handle_set (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
-  file = g_file_new_for_commandline_arg (argv[1]);
-
   if (argc < 3)
     {
       show_help (context, _("Attribute not specified"));
@@ -177,6 +175,8 @@ handle_set (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
+  file = g_file_new_for_commandline_arg (argv[1]);
+
   if (!g_file_set_attribute (file,
 			     attribute,
 			     type,
@@ -188,8 +188,11 @@ handle_set (int argc, char *argv[], gboolean do_help)
     {
       print_error (error->message);
       g_error_free (error);
+      g_object_unref (file);
       return 1;
     }
+
+  g_object_unref (file);
 
   return 0;
 }

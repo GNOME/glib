@@ -254,6 +254,7 @@ get_writable_info (GFile *file)
                    list->infos[i].name,
                    attribute_type_to_string (list->infos[i].type),
                    (*flags != 0)?", ":"", flags);
+          g_free (flags);
         }
     }
 

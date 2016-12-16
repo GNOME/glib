@@ -176,12 +176,14 @@ add_watch (const gchar       *cmdline,
     g_signal_connect (monitor, "changed", G_CALLBACK (watch_callback), g_strdup (cmdline));
 
   monitor = NULL; /* leak */
+  g_object_unref (file);
 
   return TRUE;
 
 err:
   print_file_error (file, error->message);
   g_error_free (error);
+  g_object_unref (file);
 
   return FALSE;
 }
