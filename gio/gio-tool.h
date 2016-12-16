@@ -20,8 +20,11 @@
 #ifndef __GIO_TOOL_H__
 #define __GIO_TOOL_H__
 
+void print_error      (const gchar    *format,
+                       ...);
 void print_file_error (GFile          *file,
-                       const char     *message);
+                       const gchar    *format,
+                       ...);
 void show_help        (GOptionContext *context,
                        const char     *message);
 

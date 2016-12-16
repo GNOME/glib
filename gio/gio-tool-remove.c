@@ -67,7 +67,7 @@ handle_remove (int argc, char *argv[], gboolean do_help)
 
   if (argc == 1)
     {
-      show_help (context, _("No files to delete"));
+      show_help (context, _("No locations given"));
       return 1;
     }
 

@@ -66,7 +66,7 @@ handle_open (int argc, char *argv[], gboolean do_help)
 
   if (argc < 2)
     {
-      show_help (context, _("No files to open"));
+      show_help (context, _("No locations given"));
       return 1;
     }
 

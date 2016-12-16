@@ -173,7 +173,7 @@ handle_set (int argc, char *argv[], gboolean do_help)
       break;
     case G_FILE_ATTRIBUTE_TYPE_OBJECT:
     default:
-      g_printerr (_("Invalid attribute type %s\n"), attr_type);
+      print_error (_("Invalid attribute type “%s“"), attr_type);
       return 1;
     }
 
@@ -186,7 +186,7 @@ handle_set (int argc, char *argv[], gboolean do_help)
                                G_FILE_QUERY_INFO_NONE,
                              NULL, &error))
     {
-      g_printerr (_("Error setting attribute: %s\n"), error->message);
+      print_error (error->message);
       g_error_free (error);
       return 1;
     }

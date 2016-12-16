@@ -180,7 +180,7 @@ add_watch (const gchar       *cmdline,
   return TRUE;
 
 err:
-  g_printerr ("error: %s: %s", cmdline, error->message);
+  print_file_error (file, error->message);
   g_error_free (error);
 
   return FALSE;
@@ -193,7 +193,6 @@ handle_monitor (int argc, gchar *argv[], gboolean do_help)
   gchar *param;
   GError *error = NULL;
   GFileMonitorFlags flags;
-  guint total = 0;
   guint i;
 
   g_set_prgname ("gio monitor");
@@ -220,6 +219,12 @@ handle_monitor (int argc, gchar *argv[], gboolean do_help)
       return 1;
     }
 
+  if (!watch_dirs || !watch_files || !watch_direct || !watch_silent || !watch_default)
+    {
+      show_help (context, _("No locations given"));
+      return 1;
+    }
+
   g_option_context_free (context);
 
   flags = (no_moves ? 0 : G_FILE_MONITOR_WATCH_MOVES) |
@@ -230,7 +235,6 @@ handle_monitor (int argc, gchar *argv[], gboolean do_help)
       for (i = 0; watch_dirs[i]; i++)
         if (!add_watch (watch_dirs[i], WATCH_DIR, flags, TRUE))
           return 1;
-      total++;
     }
 
   if (watch_files)
@@ -238,7 +242,6 @@ handle_monitor (int argc, gchar *argv[], gboolean do_help)
       for (i = 0; watch_files[i]; i++)
         if (!add_watch (watch_files[i], WATCH_FILE, flags, TRUE))
           return 1;
-      total++;
     }
 
   if (watch_direct)
@@ -246,7 +249,6 @@ handle_monitor (int argc, gchar *argv[], gboolean do_help)
       for (i = 0; watch_direct[i]; i++)
         if (!add_watch (watch_direct[i], WATCH_FILE, flags | G_FILE_MONITOR_WATCH_HARD_LINKS, TRUE))
           return 1;
-      total++;
     }
 
   if (watch_silent)
@@ -254,7 +256,6 @@ handle_monitor (int argc, gchar *argv[], gboolean do_help)
       for (i = 0; watch_silent[i]; i++)
         if (!add_watch (watch_silent[i], WATCH_FILE, flags | G_FILE_MONITOR_WATCH_HARD_LINKS, FALSE))
           return 1;
-      total++;
     }
 
   if (watch_default)
@@ -262,13 +263,6 @@ handle_monitor (int argc, gchar *argv[], gboolean do_help)
       for (i = 0; watch_default[i]; i++)
         if (!add_watch (watch_default[i], WATCH_AUTO, flags, TRUE))
           return 1;
-      total++;
-    }
-
-  if (!total)
-    {
-      g_printerr ("gio: Must give at least one file to monitor\n");
-      return 1;
     }
 
   while (TRUE)

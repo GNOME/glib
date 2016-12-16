@@ -77,7 +77,7 @@ cat (GFile *file)
 
               if (written == -1 && errno != EINTR)
                 {
-                  print_file_error (file, "error writing to stdout");
+                  print_file_error (file, _("Error writing to stdout"));
                   success = FALSE;
                   goto out;
                 }
@@ -148,7 +148,7 @@ handle_cat (int argc, char *argv[], gboolean do_help)
 
   if (argc < 2)
     {
-      show_help (context, _("No files given"));
+      show_help (context, _("No locations given"));
       return 1;
     }
 

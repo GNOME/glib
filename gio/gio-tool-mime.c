@@ -156,14 +156,14 @@ handle_mime (int argc, char *argv[], gboolean do_help)
       info = get_app_info_for_id (handler);
       if (info == NULL)
         {
-          g_printerr (_("Failed to load info for handler “%s”\n"), handler);
+          print_error (_("Failed to load info for handler “%s”"), handler);
           return 1;
         }
 
       if (g_app_info_set_as_default_for_type (info, mimetype, &error) == FALSE)
         {
-          g_printerr (_("Failed to set “%s” as the default handler for “%s”: %s\n"),
-                      handler, mimetype, error->message);
+          print_error (_("Failed to set “%s” as the default handler for “%s”: %s\n"),
+                       handler, mimetype, error->message);
           g_error_free (error);
           g_object_unref (info);
           return 1;

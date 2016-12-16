@@ -187,7 +187,7 @@ query_info (GFile *file)
 
   if (info == NULL)
     {
-      g_printerr ("Error getting info: %s\n", error->message);
+      print_file_error (file, error->message);
       g_error_free (error);
       return FALSE;
     }
@@ -218,7 +218,7 @@ get_writable_info (GFile *file)
   list = g_file_query_settable_attributes (file, NULL, &error);
   if (list == NULL)
     {
-      g_printerr (_("Error getting writable attributes: %s\n"), error->message);
+      print_file_error (file, error->message);
       g_error_free (error);
       return FALSE;
     }
@@ -239,7 +239,7 @@ get_writable_info (GFile *file)
   list = g_file_query_writable_namespaces (file, NULL, &error);
   if (list == NULL)
     {
-      g_printerr ("Error getting writable namespaces: %s\n", error->message);
+      print_file_error (file, error->message);
       g_error_free (error);
       return FALSE;
     }

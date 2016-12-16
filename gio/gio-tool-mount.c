@@ -243,9 +243,9 @@ mount_mountable_done_cb (GObject *object,
     {
       success = FALSE;
       if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (op), "state")) == MOUNT_OP_ABORTED)
-        g_printerr (_("Error mounting location: Anonymous access denied\n"));
+        print_file_error (G_FILE (object), _("Anonymous access denied"));
       else if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED_HANDLED))
-        g_printerr (_("Error mounting location: %s\n"), error->message);
+        print_file_error (G_FILE (object), error->message);
 
       g_error_free (error);
     }
@@ -273,9 +273,9 @@ mount_done_cb (GObject *object,
     {
       success = FALSE;
       if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (op), "state")) == MOUNT_OP_ABORTED)
-        g_printerr (_("Error mounting location: Anonymous access denied\n"));
+        print_file_error (G_FILE (object), _("Anonymous access denied"));
       else if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED_HANDLED))
-        g_printerr (_("Error mounting location: %s\n"), error->message);
+        print_file_error (G_FILE (object), error->message);
 
       g_error_free (error);
     }
@@ -331,6 +331,7 @@ unmount_done_cb (GObject *object,
 {
   gboolean succeeded;
   GError *error = NULL;
+  GFile *file = G_FILE (user_data);
 
   succeeded = g_mount_unmount_with_operation_finish (G_MOUNT (object), res, &error);
 
@@ -338,10 +339,12 @@ unmount_done_cb (GObject *object,
 
   if (!succeeded)
     {
-      g_printerr (_("Error unmounting mount: %s\n"), error->message);
+      print_file_error (file, error->message);
       success = FALSE;
       g_error_free (error);
     }
+
+  g_object_unref (file);
 
   outstanding_mounts--;
 
@@ -363,7 +366,7 @@ unmount (GFile *file)
   mount = g_file_find_enclosing_mount (file, NULL, &error);
   if (mount == NULL)
     {
-      g_printerr (_("Error finding enclosing mount: %s\n"), error->message);
+      print_file_error (file, error->message);
       success = FALSE;
       g_error_free (error);
       return;
@@ -371,7 +374,7 @@ unmount (GFile *file)
 
   mount_op = new_mount_op ();
   flags = force ? G_MOUNT_UNMOUNT_FORCE : G_MOUNT_UNMOUNT_NONE;
-  g_mount_unmount_with_operation (mount, flags, mount_op, NULL, unmount_done_cb, NULL);
+  g_mount_unmount_with_operation (mount, flags, mount_op, NULL, unmount_done_cb, g_object_ref (file));
   g_object_unref (mount_op);
 
   outstanding_mounts++;
@@ -384,6 +387,7 @@ eject_done_cb (GObject *object,
 {
   gboolean succeeded;
   GError *error = NULL;
+  GFile *file = G_FILE (user_data);
 
   succeeded = g_mount_eject_with_operation_finish (G_MOUNT (object), res, &error);
 
@@ -391,10 +395,12 @@ eject_done_cb (GObject *object,
 
   if (!succeeded)
     {
-      g_printerr (_("Error ejecting mount: %s\n"), error->message);
+      print_file_error (file, error->message);
       success = FALSE;
       g_error_free (error);
     }
+
+  g_object_unref (file);
 
   outstanding_mounts--;
 
@@ -416,7 +422,7 @@ eject (GFile *file)
   mount = g_file_find_enclosing_mount (file, NULL, &error);
   if (mount == NULL)
     {
-      g_printerr (_("Error finding enclosing mount: %s\n"), error->message);
+      print_file_error (file, error->message);
       success = FALSE;
       g_error_free (error);
       return;
@@ -424,7 +430,7 @@ eject (GFile *file)
 
   mount_op = new_mount_op ();
   flags = force ? G_MOUNT_UNMOUNT_FORCE : G_MOUNT_UNMOUNT_NONE;
-  g_mount_eject_with_operation (mount, flags, mount_op, NULL, eject_done_cb, NULL);
+  g_mount_eject_with_operation (mount, flags, mount_op, NULL, eject_done_cb, g_object_ref (file));
   g_object_unref (mount_op);
 
   outstanding_mounts++;
@@ -865,6 +871,7 @@ mount_with_device_file_cb (GObject *object,
   GVolume *volume;
   gboolean succeeded;
   GError *error = NULL;
+  gchar *device_path = (gchar *)user_data;
 
   volume = G_VOLUME (object);
 
@@ -872,9 +879,7 @@ mount_with_device_file_cb (GObject *object,
 
   if (!succeeded)
     {
-      g_printerr (_("Error mounting %s: %s\n"),
-                  g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE),
-                  error->message);
+      print_error ("%s: %s", device_path, error->message);
       g_error_free (error);
       success = FALSE;
     }
@@ -888,14 +893,14 @@ mount_with_device_file_cb (GObject *object,
       root = g_mount_get_root (mount);
       mount_path = g_file_get_path (root);
 
-      g_print (_("Mounted %s at %s\n"),
-               g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE),
-               mount_path);
+      g_print (_("Mounted %s at %s\n"), device_path, mount_path);
 
       g_object_unref (mount);
       g_object_unref (root);
       g_free (mount_path);
     }
+
+  g_free (device_path);
 
   outstanding_mounts--;
 
@@ -916,9 +921,10 @@ mount_with_device_file (const char *device_file)
   for (l = volumes; l != NULL; l = l->next)
     {
       GVolume *volume = G_VOLUME (l->data);
+      gchar *id;
 
-      if (g_strcmp0 (g_volume_get_identifier (volume,
-                                              G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE), device_file) == 0)
+      id = g_volume_get_identifier (volume, G_VOLUME_IDENTIFIER_KIND_UNIX_DEVICE);
+      if (g_strcmp0 (id, device_file) == 0)
         {
           GMountOperation *op;
 
@@ -929,16 +935,18 @@ mount_with_device_file (const char *device_file)
                           op,
                           NULL,
                           mount_with_device_file_cb,
-                          op);
+                          id);
 
           outstanding_mounts++;
         }
+      else
+        g_free (id);
     }
   g_list_free_full (volumes, g_object_unref);
 
   if (outstanding_mounts == 0)
     {
-      g_print (_("No volume for device file %s\n"), device_file);
+      g_print ("%s: %s\n", device_file, _("No volume for device file"));
       return;
     }
 

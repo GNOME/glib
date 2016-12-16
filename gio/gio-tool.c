@@ -31,9 +31,35 @@
 
 
 void
-print_file_error (GFile *file, const char *message)
+print_error (const char *format, ...)
 {
-  g_printerr ("gio: %s: %s\n", g_file_get_uri (file), message);
+  gchar *message;
+  va_list args;
+
+  va_start (args, format);
+  message = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  g_printerr ("gio: %s\n", message);
+  g_free (message);
+}
+
+void
+print_file_error (GFile *file, const gchar *format, ...)
+{
+  gchar *uri;
+  gchar *message;
+  va_list args;
+
+  va_start (args, format);
+  message = g_strdup_vprintf (format, args);
+  va_end (args);
+
+  uri = g_file_get_uri (file);
+  print_error ("%s: %s", uri, message);
+  g_free (uri);
+
+  g_free (message);
 }
 
 void
