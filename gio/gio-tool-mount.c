@@ -946,8 +946,8 @@ mount_with_device_file (const char *device_file)
 
   if (outstanding_mounts == 0)
     {
-      g_print ("%s: %s\n", device_file, _("No volume for device file"));
-      return;
+      print_error ("%s: %s", device_file, _("No volume for device file"));
+      success = FALSE;
     }
 
   g_object_unref (volume_monitor);
