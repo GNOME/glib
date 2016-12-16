@@ -223,15 +223,18 @@ get_writable_info (GFile *file)
       return FALSE;
     }
 
-  g_print (_("Settable attributes:\n"));
-  for (i = 0; i < list->n_infos; i++)
+  if (list->n_infos > 0)
     {
-      flags = attribute_flags_to_string (list->infos[i].flags);
-      g_print (" %s (%s%s%s)\n",
-               list->infos[i].name,
-               attribute_type_to_string (list->infos[i].type),
-               (*flags != 0)?", ":"", flags);
-      g_free (flags);
+      g_print (_("Settable attributes:\n"));
+      for (i = 0; i < list->n_infos; i++)
+        {
+          flags = attribute_flags_to_string (list->infos[i].flags);
+          g_print (" %s (%s%s%s)\n",
+                   list->infos[i].name,
+                   attribute_type_to_string (list->infos[i].type),
+                   (*flags != 0)?", ":"", flags);
+          g_free (flags);
+        }
     }
 
   g_file_attribute_info_list_unref (list);
