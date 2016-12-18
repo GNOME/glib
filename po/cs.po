@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-10-24 14:43+0000\n"
-"PO-Revision-Date: 2016-10-28 17:09+0200\n"
+"POT-Creation-Date: 2016-12-08 10:06+0000\n"
+"PO-Revision-Date: 2016-12-18 23:58+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -122,8 +122,8 @@ msgstr "Příkaz, ke kterému vypsat podrobnou nápovědu"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Identifikátor aplikace ve formátu D-Bus (např. org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:622
-#: ../gio/glib-compile-resources.c:628 ../gio/glib-compile-resources.c:654
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:665
+#: ../gio/glib-compile-resources.c:671 ../gio/glib-compile-resources.c:698
 #: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "SOUBOR"
@@ -324,7 +324,7 @@ msgstr "Neplatná posloupnost bajtů na vstupu převodu"
 msgid "Error during conversion: %s"
 msgstr "Chyba při převodu: %s"
 
-#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:1078
+#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:1085
 msgid "Cancellable initialization not supported"
 msgstr "Zrušitelné spuštění není podporováno"
 
@@ -505,17 +505,17 @@ msgstr "Chyba při spouštění příkazového řádku „%s“: "
 msgid "(Type any character to close this window)\n"
 msgstr "(Zmáčknutím libovolného znaku okno zavřete)\n"
 
-#: ../gio/gdbusaddress.c:1489
+#: ../gio/gdbusaddress.c:1491
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Služba dbus sezení neběží a automatické spuštění selhalo"
 
-#: ../gio/gdbusaddress.c:1500
+#: ../gio/gdbusaddress.c:1502
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Nelze určit adresu sběrnice sezení (v tomto OS neimplementováno)"
 
-#: ../gio/gdbusaddress.c:1635
+#: ../gio/gdbusaddress.c:1637
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -524,7 +524,7 @@ msgstr ""
 "Nelze určit adresu sběrnice z proměnné prostředí DBUS_STARTER_BUS_TYPE – "
 "neznámá hodnota „%s“"
 
-#: ../gio/gdbusaddress.c:1644 ../gio/gdbusconnection.c:7142
+#: ../gio/gdbusaddress.c:1646 ../gio/gdbusconnection.c:7142
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -532,7 +532,7 @@ msgstr ""
 "Nelze určit adresu sběrnice, jelikož proměnná prostředí "
 "DBUS_STARTER_BUS_TYPE není nastavena"
 
-#: ../gio/gdbusaddress.c:1654
+#: ../gio/gdbusaddress.c:1656
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Neznámý typ sběrnice %d"
@@ -791,9 +791,8 @@ msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
 "(length of string is %d). The valid UTF-8 string up until that point was “%s”"
 msgstr ""
-"Očekáván platný řetězec UTF-8, ale byly nalezeny neplatné bajty na pozici "
-"%d (délka řetězce je %d). Platný řetězec UTF-8 až do příslušného bodu "
-"byl „%s“"
+"Očekáván platný řetězec UTF-8, ale byly nalezeny neplatné bajty na pozici %d "
+"(délka řetězce je %d). Platný řetězec UTF-8 až do příslušného bodu byl „%s“"
 
 #: ../gio/gdbusmessage.c:1587
 #, c-format
@@ -1052,7 +1051,8 @@ msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
 "interface “%s”\n"
 msgstr ""
-"Varování: Podle introspektivních dat metoda „%s“ neexistuje na rozhraní „%s“\n"
+"Varování: Podle introspektivních dat metoda „%s“ neexistuje na rozhraní "
+"„%s“\n"
 
 #: ../gio/gdbus-tool.c:542
 msgid "Optional destination for signal (unique name)"
@@ -1209,38 +1209,38 @@ msgstr "Cesta objektu určená ke sledování"
 msgid "Monitor a remote object."
 msgstr "Sledovat vzdálený objekt."
 
-#: ../gio/gdesktopappinfo.c:1994 ../gio/gdesktopappinfo.c:4501
+#: ../gio/gdesktopappinfo.c:1997 ../gio/gdesktopappinfo.c:4504
 msgid "Unnamed"
 msgstr "Bez názvu"
 
-#: ../gio/gdesktopappinfo.c:2404
+#: ../gio/gdesktopappinfo.c:2407
 msgid "Desktop file didn’t specify Exec field"
 msgstr "V souboru .desktop není určeno pole Exec"
 
-#: ../gio/gdesktopappinfo.c:2689
+#: ../gio/gdesktopappinfo.c:2692
 msgid "Unable to find terminal required for application"
 msgstr "Nezdařilo se najít  terminál vyžadovaný pro aplikaci"
 
-#: ../gio/gdesktopappinfo.c:3097
+#: ../gio/gdesktopappinfo.c:3100
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Nezdařilo se vytvořit složku %s s uživatelským nastavením aplikace: %s"
 
-#: ../gio/gdesktopappinfo.c:3101
+#: ../gio/gdesktopappinfo.c:3104
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Nezdařilo se vytvořit složku %s s uživatelským nastavením MIME: %s"
 
-#: ../gio/gdesktopappinfo.c:3341 ../gio/gdesktopappinfo.c:3365
+#: ../gio/gdesktopappinfo.c:3344 ../gio/gdesktopappinfo.c:3368
 msgid "Application information lacks an identifier"
 msgstr "Informace o aplikaci postrádá identifikátor"
 
-#: ../gio/gdesktopappinfo.c:3599
+#: ../gio/gdesktopappinfo.c:3602
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Nezdařilo se vytvořit uživatelský soubor .desktop %s"
 
-#: ../gio/gdesktopappinfo.c:3733
+#: ../gio/gdesktopappinfo.c:3736
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Vlastní definice %s"
@@ -1503,7 +1503,7 @@ msgid "Could not parse “%s” as IP address mask"
 msgstr "Nelze zpracovat „%s“ jak masku adresy IP"
 
 #: ../gio/ginetsocketaddress.c:203 ../gio/ginetsocketaddress.c:220
-#: ../gio/gnativesocketaddress.c:106 ../gio/gunixsocketaddress.c:216
+#: ../gio/gnativesocketaddress.c:106 ../gio/gunixsocketaddress.c:218
 msgid "Not enough space for socket address"
 msgstr "Adresa soketu nemá dostatek místa"
 
@@ -2272,62 +2272,66 @@ msgstr "Chyba při komprimaci souboru „%s“"
 msgid "text may not appear inside <%s>"
 msgstr "text nemůže být umístěn uvnitř <%s>"
 
-#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2037
+#: ../gio/glib-compile-resources.c:664 ../gio/glib-compile-schemas.c:2037
 msgid "Show program version and exit"
 msgstr "Zobrazit verzi programu a skončit"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:665
 msgid "name of the output file"
 msgstr "název výstupního souboru"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:666
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "Složka, ze které mají být čteny soubory (výchozí je aktuální složka)"
 
-#: ../gio/glib-compile-resources.c:623 ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-resources.c:666 ../gio/glib-compile-schemas.c:2038
 #: ../gio/glib-compile-schemas.c:2067
 msgid "DIRECTORY"
 msgstr "SLOŽKA"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:667
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Generovat výstup ve formátu vybraného podle přípony v názvu cílového souboru"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:668
 msgid "Generate source header"
 msgstr "Generovat hlavičkový soubor"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:669
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Generovat zdrojový kód, který se použije ve vašem zdrojovém kódu jako odkaz "
 "na soubor prostředků"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:670
 msgid "Generate dependency list"
 msgstr "Generovat seznam závislostí"
 
-#: ../gio/glib-compile-resources.c:628
+#: ../gio/glib-compile-resources.c:671
 msgid "name of the dependency file to generate"
 msgstr "název souboru se závislostmi, který se má vygenerovat"
 
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:672
+msgid "Include phony targets in the generated dependency file"
+msgstr "Do generovaných souborů závislostí zahrnout i fiktivní cíle"
+
+#: ../gio/glib-compile-resources.c:673
 msgid "Don’t automatically create and register resource"
 msgstr "Prostředek nevytvářet a neregistrovat automaticky"
 
-#: ../gio/glib-compile-resources.c:630
+#: ../gio/glib-compile-resources.c:674
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Neexportovat funkce; označit je za G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:631
+#: ../gio/glib-compile-resources.c:675
 msgid "C identifier name used for the generated source code"
 msgstr "Název identifikátoru C použitý ke generování zdrojového kódu"
 
-#: ../gio/glib-compile-resources.c:657
+#: ../gio/glib-compile-resources.c:701
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2337,7 +2341,7 @@ msgstr ""
 "Soubory se specifikacemi prostředků musí mít příponu .gschema.xml,\n"
 "a soubor prostředků musí mít příponu .gresource."
 
-#: ../gio/glib-compile-resources.c:679
+#: ../gio/glib-compile-resources.c:723
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Měl by být zadán právě jeden název souboru\n"
@@ -2963,7 +2967,8 @@ msgstr "připojené neumí vysouvací operaci „eject“"
 #. * don't implement any of unmount or unmount_with_operation.
 #: ../gio/gmount.c:547
 msgid "mount doesn’t implement “unmount” or “unmount_with_operation”"
-msgstr "připojené neumí odpojovací operaci „unmount“ nebo „unmount_with_operation“"
+msgstr ""
+"připojené neumí odpojovací operaci „unmount“ nebo „unmount_with_operation“"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -3422,145 +3427,145 @@ msgstr "Poskytnut prázdný název schématu\n"
 msgid "No such key “%s”\n"
 msgstr "Klíč „%s“ neexistuje\n"
 
-#: ../gio/gsocket.c:364
+#: ../gio/gsocket.c:369
 msgid "Invalid socket, not initialized"
 msgstr "Neplatný soket, nebyl spuštěn"
 
-#: ../gio/gsocket.c:371
+#: ../gio/gsocket.c:376
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Neplatný soket, spuštění selhalo kvůli: %s"
 
-#: ../gio/gsocket.c:379
+#: ../gio/gsocket.c:384
 msgid "Socket is already closed"
 msgstr "Soket je již ukončen"
 
-#: ../gio/gsocket.c:394 ../gio/gsocket.c:2751 ../gio/gsocket.c:3897
-#: ../gio/gsocket.c:3952
+#: ../gio/gsocket.c:399 ../gio/gsocket.c:2754 ../gio/gsocket.c:3939
+#: ../gio/gsocket.c:3995
 msgid "Socket I/O timed out"
 msgstr "Časový limit V/V soketu vypršel"
 
-#: ../gio/gsocket.c:526
+#: ../gio/gsocket.c:531
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "vytváří se GSocket z fd: %s"
 
-#: ../gio/gsocket.c:554 ../gio/gsocket.c:608 ../gio/gsocket.c:615
+#: ../gio/gsocket.c:559 ../gio/gsocket.c:613 ../gio/gsocket.c:620
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Nelze vytvořit soket: %s"
 
-#: ../gio/gsocket.c:608
+#: ../gio/gsocket.c:613
 msgid "Unknown family was specified"
 msgstr "Byla zadána neznámá rodina"
 
-#: ../gio/gsocket.c:615
+#: ../gio/gsocket.c:620
 msgid "Unknown protocol was specified"
 msgstr "Byl zadán neznámý protokol"
 
-#: ../gio/gsocket.c:1104
+#: ../gio/gsocket.c:1111
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr "Nelze používat datagramové operace na nedatagramovém soketu."
 
-#: ../gio/gsocket.c:1121
+#: ../gio/gsocket.c:1128
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr ""
 "Nelze používat datagramové operace na soketu s nastaveným časovým limitem."
 
-#: ../gio/gsocket.c:1925
+#: ../gio/gsocket.c:1932
 #, c-format
 msgid "could not get local address: %s"
 msgstr "nezdařilo se získat místní adresu: %s"
 
-#: ../gio/gsocket.c:1968
+#: ../gio/gsocket.c:1975
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "nezdařilo se získat vzdálenou adresu: %s"
 
-#: ../gio/gsocket.c:2034
+#: ../gio/gsocket.c:2041
 #, c-format
 msgid "could not listen: %s"
 msgstr "nezdařilo se naslouchání: %s"
 
-#: ../gio/gsocket.c:2133
+#: ../gio/gsocket.c:2140
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Chyba při propojení na adresu: %s"
 
-#: ../gio/gsocket.c:2248 ../gio/gsocket.c:2285
+#: ../gio/gsocket.c:2255 ../gio/gsocket.c:2292
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Chyba připojování ke skupině hromadného vysílání: %s"
 
-#: ../gio/gsocket.c:2249 ../gio/gsocket.c:2286
+#: ../gio/gsocket.c:2256 ../gio/gsocket.c:2293
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Chyba při opouštění skupiny hromadného vysílání: %s"
 
-#: ../gio/gsocket.c:2250
+#: ../gio/gsocket.c:2257
 msgid "No support for source-specific multicast"
 msgstr "Není podpora pro hromadné vysílání určené zdrojem"
 
-#: ../gio/gsocket.c:2470
+#: ../gio/gsocket.c:2477
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Chyba při přijímání spojení: %s"
 
-#: ../gio/gsocket.c:2593
+#: ../gio/gsocket.c:2598
 msgid "Connection in progress"
 msgstr "Probíhá spojení"
 
-#: ../gio/gsocket.c:2644
+#: ../gio/gsocket.c:2647
 msgid "Unable to get pending error: "
 msgstr "Nelze získat nevyřízenou chybu: "
 
-#: ../gio/gsocket.c:2816
+#: ../gio/gsocket.c:2817
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Chyba při získávání dat: %s"
 
-#: ../gio/gsocket.c:3013
+#: ../gio/gsocket.c:3012
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Chyba při odesílání dat: %s"
 
-#: ../gio/gsocket.c:3200
+#: ../gio/gsocket.c:3199
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Nelze ukončit soket: %s"
 
-#: ../gio/gsocket.c:3281
+#: ../gio/gsocket.c:3280
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Chyba při zavírání soketu: %s"
 
-#: ../gio/gsocket.c:3890
+#: ../gio/gsocket.c:3932
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Čeká se na stav soketu: %s"
 
-#: ../gio/gsocket.c:4362 ../gio/gsocket.c:4442 ../gio/gsocket.c:4620
+#: ../gio/gsocket.c:4404 ../gio/gsocket.c:4484 ../gio/gsocket.c:4662
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Chyba při odesílání zprávy: %s"
 
-#: ../gio/gsocket.c:4386
+#: ../gio/gsocket.c:4428
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage nepodporováno na Windows"
 
-#: ../gio/gsocket.c:4839 ../gio/gsocket.c:4912 ../gio/gsocket.c:5139
+#: ../gio/gsocket.c:4881 ../gio/gsocket.c:4954 ../gio/gsocket.c:5180
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Chyba při získávání zprávy: %s"
 
-#: ../gio/gsocket.c:5411
+#: ../gio/gsocket.c:5452
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Nelze číst pověření k soketu: %s"
 
-#: ../gio/gsocket.c:5420
+#: ../gio/gsocket.c:5461
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials není u tohoto OS implementováno"
 
@@ -3823,7 +3828,7 @@ msgstr "Chyba při čtení z popisovače souboru: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Chyba při zavírání popisovače souboru: %s"
 
-#: ../gio/gunixmounts.c:2364 ../gio/gunixmounts.c:2417
+#: ../gio/gunixmounts.c:2367 ../gio/gunixmounts.c:2420
 msgid "Filesystem root"
 msgstr "Kořen systému souborů"
 
@@ -3832,7 +3837,7 @@ msgstr "Kořen systému souborů"
 msgid "Error writing to file descriptor: %s"
 msgstr "Chyba při zápisu do popisovače souboru: %s"
 
-#: ../gio/gunixsocketaddress.c:239
+#: ../gio/gunixsocketaddress.c:241
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "V tomto systému nejsou podporovány abstraktní adresy soketů domén UNIX"
 
@@ -3984,37 +3989,37 @@ msgstr "Částečná posloupnost znaků na konci vstupu"
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "Nelze převést zálohu „%s“ do znakové sady „%s“"
 
-#: ../glib/gconvert.c:1567
+#: ../glib/gconvert.c:1566
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "Adresa URI „%s“ není absolutní URI používající schéma „file“"
 
-#: ../glib/gconvert.c:1577
+#: ../glib/gconvert.c:1576
 #, c-format
 msgid "The local file URI “%s” may not include a “#”"
 msgstr "Adresa URI „%s“ místního souboru nesmí obsahovat „#“"
 
-#: ../glib/gconvert.c:1594
+#: ../glib/gconvert.c:1593
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "Adresa URI „%s“ je neplatné"
 
-#: ../glib/gconvert.c:1606
+#: ../glib/gconvert.c:1605
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "Název počítače v adrese URI „%s“ je neplatný"
 
-#: ../glib/gconvert.c:1622
+#: ../glib/gconvert.c:1621
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "URI „%s“ obsahuje nesprávně změněné znaky"
 
-#: ../glib/gconvert.c:1717
+#: ../glib/gconvert.c:1716
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "Název cesty „%s“ není absolutní cestou"
 
-#: ../glib/gconvert.c:1727
+#: ../glib/gconvert.c:1726
 msgid "Invalid hostname"
 msgstr "Neplatný název počítače"
 
@@ -4708,12 +4713,14 @@ msgstr "Celočíselná hodnota „%s“ pro %s je mimo rozsah"
 #: ../glib/goption.c:1148
 #, c-format
 msgid "Cannot parse double value “%s” for %s"
-msgstr "Nelze zpracovat reálnou hodnotu s dvojitou přesností (double) „%s“ u %s"
+msgstr ""
+"Nelze zpracovat reálnou hodnotu s dvojitou přesností (double) „%s“ u %s"
 
 #: ../glib/goption.c:1156
 #, c-format
 msgid "Double value “%s” for %s out of range"
-msgstr "Reálná hodnota s dvojitou přesností (double) „%s“ pro %s je mimo rozsah"
+msgstr ""
+"Reálná hodnota s dvojitou přesností (double) „%s“ pro %s je mimo rozsah"
 
 #: ../glib/goption.c:1448 ../glib/goption.c:1527
 #, c-format
@@ -5350,4 +5357,3 @@ msgstr[2] "%s bajtů"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
-
