@@ -96,6 +96,7 @@ handle_set (int argc, char *argv[], gboolean do_help)
   if (do_help)
     {
       show_help (context, NULL);
+      g_option_context_free (context);
       return 0;
     }
 
@@ -103,18 +104,21 @@ handle_set (int argc, char *argv[], gboolean do_help)
     {
       show_help (context, error->message);
       g_error_free (error);
+      g_option_context_free (context);
       return 1;
     }
 
   if (argc < 2)
     {
       show_help (context, _("Location not specified"));
+      g_option_context_free (context);
       return 1;
     }
 
   if (argc < 3)
     {
       show_help (context, _("Attribute not specified"));
+      g_option_context_free (context);
       return 1;
     }
 
@@ -124,12 +128,14 @@ handle_set (int argc, char *argv[], gboolean do_help)
   if ((argc < 4) && (type != G_FILE_ATTRIBUTE_TYPE_INVALID))
     {
       show_help (context, _("Value not specified"));
+      g_option_context_free (context);
       return 1;
     }
 
   if ((argc > 4) && (type != G_FILE_ATTRIBUTE_TYPE_STRINGV))
     {
       show_help (context, _("Too many arguments"));
+      g_option_context_free (context);
       return 1;
     }
 

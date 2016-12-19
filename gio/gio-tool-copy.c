@@ -110,6 +110,7 @@ handle_copy (int argc, char *argv[], gboolean do_help)
   if (do_help)
     {
       show_help (context, NULL);
+      g_option_context_free (context);
       return 0;
     }
 
@@ -117,12 +118,14 @@ handle_copy (int argc, char *argv[], gboolean do_help)
     {
       show_help (context, error->message);
       g_error_free (error);
+      g_option_context_free (context);
       return 1;
     }
 
   if (argc < 3)
     {
       show_help (context, NULL);
+      g_option_context_free (context);
       return 1;
     }
 
@@ -132,6 +135,7 @@ handle_copy (int argc, char *argv[], gboolean do_help)
     {
       show_help (context, NULL);
       g_object_unref (dest);
+      g_option_context_free (context);
       return 1;
     }
 
@@ -144,6 +148,7 @@ handle_copy (int argc, char *argv[], gboolean do_help)
       show_help (context, message);
       g_free (message);
       g_object_unref (dest);
+      g_option_context_free (context);
       return 1;
     }
 

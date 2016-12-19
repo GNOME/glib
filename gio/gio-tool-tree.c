@@ -247,6 +247,7 @@ handle_tree (int argc, char *argv[], gboolean do_help)
   if (do_help)
     {
       show_help (context, NULL);
+      g_option_context_free (context);
       return 0;
     }
 
@@ -256,6 +257,7 @@ handle_tree (int argc, char *argv[], gboolean do_help)
     {
       show_help (context, error->message);
       g_error_free (error);
+      g_option_context_free (context);
       return 1;
     }
 

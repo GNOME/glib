@@ -211,6 +211,7 @@ handle_monitor (int argc, gchar *argv[], gboolean do_help)
   if (do_help)
     {
       show_help (context, NULL);
+      g_option_context_free (context);
       return 0;
     }
 
@@ -218,12 +219,14 @@ handle_monitor (int argc, gchar *argv[], gboolean do_help)
     {
       show_help (context, error->message);
       g_error_free (error);
+      g_option_context_free (context);
       return 1;
     }
 
   if (!watch_dirs || !watch_files || !watch_direct || !watch_silent || !watch_default)
     {
       show_help (context, _("No locations given"));
+      g_option_context_free (context);
       return 1;
     }
 
