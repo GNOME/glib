@@ -780,6 +780,7 @@ list_drives (GList *drives,
               g_object_unref (icon);
             }
 
+          g_print ("%*sis_removable=%d\n", indent + 2, "", g_drive_is_removable (drive));
           g_print ("%*sis_media_removable=%d\n", indent + 2, "", g_drive_is_media_removable (drive));
           g_print ("%*shas_media=%d\n", indent + 2, "", g_drive_has_media (drive));
           g_print ("%*sis_media_check_automatic=%d\n", indent + 2, "", g_drive_is_media_check_automatic (drive));
