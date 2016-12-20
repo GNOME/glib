@@ -128,6 +128,8 @@ $(top_builddir)/build/win32/vs12/$(1).vcxproj: Makefile
 
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs12/$(1).vcxprojin >$(top_builddir)/build/win32/vs12/$(1).vcxproj
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs12/$(1).vcxproj.filtersin >$(top_builddir)/build/win32/vs12/$(1).vcxproj.filters
+	$(RM) $(1).vs12.sourcefiles
+	$(RM) $(1).vs12.sourcefiles.filters
 
 $(top_builddir)/build/win32/vs12/$(1).vs12.headers: Makefile
 	-$(RM) $(top_builddir)/build/win32/vs12/$(1).vs12.headers
