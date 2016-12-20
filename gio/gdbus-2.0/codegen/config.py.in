@@ -19,7 +19,4 @@
 #
 # Author: David Zeuthen <davidz@redhat.com>
 
-DATADIR = "@datarootdir@"
-DATADIR = DATADIR.replace(
-    "${prefix}", "@prefix@")
 VERSION = "@VERSION@"

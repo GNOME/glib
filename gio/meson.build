@@ -1,24 +1,22 @@
 gio_c_args = [
   '-DG_LOG_DOMAIN="GLib-GIO"',
   '-DGIO_COMPILATION',
-  '-DGIO_MODULE_DIR="@0@/gio/modules"'.format(get_option('libdir')),
+  '-DGIO_MODULE_DIR="@0@"'.format(glib_giomodulesdir),
 ]
-
-# FIXME: subdir('gdbus-2.0/codegen')
 
 gnetworking_h_conf = configuration_data()
 
 gnetworking_h_wspiapi_include = ''
 gnetworking_h_nameser_compat_include = ''
 
-if host_machine.system() == 'windows'
+if host_system == 'windows'
   # <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for
   # inline workarounds for getaddrinfo, getnameinfo and freeaddrinfo if
   # they aren't present at run-time (on Windows 2000).
   gnetworking_h_wspiapi_include = '#include <wspiapi.h>'
 endif
 
-if host_machine.system().contains('android')
+if host_system.contains('android')
   # Android does not have C_IN in public headers, we define it wherever necessary
   if not cc.compiles('''#include <sys/types.h>
                         #include <arpa/nameser.h>
@@ -38,7 +36,7 @@ endif
 
 network_libs = [ ]
 network_args = [ ]
-if host_machine.system() != 'windows'
+if host_system != 'windows'
   # res_query()
   res_query_test = '''#include <resolv.h>
                       int main (int argc, char ** argv) {
@@ -50,10 +48,10 @@ if host_machine.system() != 'windows'
                         ''' + res_query_test
   if not cc.links(res_query_test_full, name : 'res_query()')
     if cc.links(res_query_test_full, args : '-lresolv', name : 'res_query() in -lresolv')
-      network_libs += [ find_library('resolv') ]
+      network_libs += [ cc.find_library('resolv') ]
       network_args += [ '-lresolv' ]
     elif cc.links(res_query_test, args : '-lbind', name : 'res_query() in -lbind')
-      network_libs += [ find_library('bind') ]
+      network_libs += [ cc.find_library('bind') ]
       network_args += [ '-lbind' ]
     else
       error('Could not find res_query()')
@@ -68,7 +66,7 @@ if host_machine.system() != 'windows'
                    }'''
   if not cc.links(socket_test, name : 'socket()')
     if cc.links(socket_test, args : '-lsocket', name : 'socket() in -lsocket')
-      network_libs += [ find_library('socket') ]
+      network_libs += [ cc.find_library('socket') ]
       network_args += [ '-lsocket' ]
     else
       error('Could not find socket()')
@@ -93,12 +91,18 @@ if host_machine.system() != 'windows'
   endif
 endif
 
+network_args_string = ''
+foreach arg : network_args
+  network_args_string += arg + ' '
+endforeach
+glib_conf.set('NETWORK_LIBS', network_args_string)
+
 gnetworking_h_conf.set('WSPIAPI_INCLUDE', gnetworking_h_wspiapi_include)
 gnetworking_h_conf.set('NAMESER_COMPAT_INCLUDE', gnetworking_h_nameser_compat_include)
 
 gnetworking_h = configure_file(input : 'gnetworking.h.in',
                                output : 'gnetworking.h',
-                               install_dir : 'include/glib-2.0/gio/',
+                               install_dir : 'include/glib-2.0/gio',
                                configuration : gnetworking_h_conf)
 
 gdbus_headers = [
@@ -156,16 +160,17 @@ gdbus_sources = [
   'gtestdbus.c',
 ]
 
-# FIXME: These are not built into the library yet
-#EXTRA_DIST += gdbusdaemon.c gdbusdaemon.h dbus-daemon.xml
-#gdbus-daemon-generated.h gdbus-daemon-generated.c: $(srcdir)/dbus-daemon.xml $(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in
-#  $(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) ',
-#    UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) ',
-#    $(PYTHON) $(srcdir)/gdbus-2.0/codegen/gdbus-codegen.in ',
-#    --interface-prefix org. ',
-#    --generate-c-code gdbus-daemon-generated ',
-#    --c-namespace _G ',
-#    $(srcdir)/dbus-daemon.xml
+# Generate gdbus-codegen
+subdir('gdbus-2.0/codegen')
+
+# Generate gdbus-generated.{c,h}
+gdbus_daemon_generated = custom_target('gdbus-daemon-generated',
+    input : ['dbus-daemon.xml'],
+    output : ['gdbus-daemon-generated.h', 'gdbus-daemon-generated.c'],
+    command : [python, gdbus_codegen,
+               '--interface-prefix', 'org.',
+               '--generate-c-code', '@OUTDIR@/gdbus-daemon-generated',
+               '--c-namespace', '_G', '@INPUT@'])
 
 settings_headers = [
   'gsettingsbackend.h',
@@ -185,7 +190,7 @@ settings_sources = [
   'gsettings.c',
 ]
 
-if host_machine.system() == 'windows'
+if host_system == 'windows'
   settings_sources += [ 'gregistrysettingsbackend.c' ]
 endif
 
@@ -267,37 +272,15 @@ local_sources = [
   'thumbnail-verify.c',
 ]
 
-platform_deps = [ ]
-internal_deps = [ ]
-appinfo_sources = [ ]
+platform_deps = []
+internal_deps = []
+appinfo_sources = []
 
-# inotify
-if glib_conf.has('HAVE_SYS_INOTIFY_H') and have_func_inotify_init1
-  subdir('inotify')
-  internal_deps += [ inotify_lib ]
-endif
-
-# kevent
-if have_func_kqueue and have_func_kevent
-  subdir('kqueue')
-  internal_deps += [ kqueue_lib ]
-endif
-
-if host_machine.system() == 'windows'
-  subdir('win32')
-  internal_deps += [ giowin32_lib ]
-endif
-
-# FIXME: FAM support
-#if HAVE_FAM
-#  subdir('fam')
-#endif
-
-unix_sources = [ ]
-if host_machine.system() != 'windows'
-  appinfo_sources += [ 'gdesktopappinfo.c' ]
+unix_sources = []
+if host_system != 'windows'
+  appinfo_sources += ['gdesktopappinfo.c']
   subdir('xdgmime')
-  internal_deps += [ xdgmime_lib ]
+  internal_deps += [xdgmime_lib]
   unix_sources = [
     'gfiledescriptorbased.c',
     'gunixconnection.c',
@@ -349,25 +332,24 @@ endif
 
 gdbus_daemon_sources = [
   'gdbusdaemon.c',
-  'gdbus-daemon-generated.c',
+  gdbus_daemon_generated,
 ]
 
-win32_actual_sources = gdbus_daemon_sources + [
-  'gwin32registrykey.c',
-  'gcontenttype-win32.c',
-  'gwin32mount.c',
-  'gwin32volumemonitor.c',
-  'gwin32inputstream.c',
-  'gwin32outputstream.c',
-]
-
-if host_machine.system() == 'windows'
-  appinfo_sources += [ 'gwin32appinfo.c' ]
-  platform_deps += [ find_library('shlwapi'),
-                     find_library('ws2_32'),
-                     find_library('dnsapi'),
-                     find_library('iphlpapi') ]
-  # win32_sources = $(win32_actual_sources)
+win32_sources = gdbus_daemon_sources
+if host_system == 'windows'
+  appinfo_sources += ['gwin32appinfo.c']
+  platform_deps += [cc.find_library('shlwapi'),
+                    cc.find_library('dnsapi'),
+                    cc.find_library('iphlpapi'),
+                    winsock2]
+  win32_sources += [
+    'gwin32registrykey.c',
+    'gcontenttype-win32.c',
+    'gwin32mount.c',
+    'gwin32volumemonitor.c',
+    'gwin32inputstream.c',
+    'gwin32outputstream.c',
+  ]
 
   gio_win32_include_headers = [
     'gwin32inputstream.h',
@@ -491,143 +473,36 @@ gio_sources = [
   'gvolumemonitor.c',
   'gzlibcompressor.c',
   'gzlibdecompressor.c',
-# FIXME  'gioenumtypes.c',
   'glistmodel.c',
   'gliststore.c',
 ]
 
-# FIXME
 gio_sources += appinfo_sources
 gio_sources += unix_sources
-#gio_sources += win32_sources
+gio_sources += win32_sources
 gio_sources += application_sources
 gio_sources += settings_sources
 gio_sources += gdbus_sources
 gio_sources += local_sources
 
-foo = '''
+MISSING_STUFF = '''
 if OS_WIN32_AND_DLL_COMPILATION
 gio_win32_res = gio-win32-res.o
 gio_win32_res_ldflag = -Wl,$(gio_win32_res)
 endif
 
-
-if OS_COCOA
-# This is dumb.  The ObjC source file should be properly named .m
-libgio_2_0_la_CFLAGS += -xobjective-c
-libgio_2_0_la_LDFLAGS += -Wl,-framework,Foundation -Wl,-framework,AppKit
-endif
-
-libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
-
 gio-win32-res.o: gio.rc
   '$(WINDRES) gio.rc $@
-
-gioincludedir=$(includedir)/glib-2.0/gio/
-gioinclude_HEADERS =',
-  '$(gio_headers)',
-  'gioenumtypes.h
-
-# these sources (also mentioned above) are generated.
-BUILT_SOURCES +=',
-  'gconstructor_as_data.h',
-  'gioenumtypes.h',
-  'gioenumtypes.c',
-  'gdbus-daemon-generated.c',
-  'gdbus-daemon-generated.h',
-  'gnetworking.h',
-  '$(NULL)
-
-BUILT_EXTRA_DIST +=',
-  'gio.rc
 
 # This is read by gobject-introspection/misc/ and gtk-doc
 gio-public-headers.txt: Makefile
   '$(AM_V_GEN) echo $(gioinclude_HEADERS) $(giowin32include_HEADERS) $(giounixinclude_HEADERS) > $@.tmp && mv $@.tmp $@
-
-all-local: gio-public-headers.txt
-
-gioenumtypes.h: $(gio_headers) gioenumtypes.h.template
-  '$(AM_V_GEN) $(top_builddir)/gobject/glib-mkenums --template $(filter %.template,$^) $(filter-out %.template,$^) >',
-  '    gioenumtypes.h.tmp && mv gioenumtypes.h.tmp gioenumtypes.h
-
-gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
-  '$(AM_V_GEN) $(top_builddir)/gobject/glib-mkenums --template $(filter %.template,$^) $(filter-out %.template,$^) >',
-  '    gioenumtypes.c.tmp && mv gioenumtypes.c.tmp gioenumtypes.c
 
 gio.def: libgio-2.0.la
   '$(AM_V_GEN) dumpbin.exe -exports .libs/libgio-2.0-0.dll | awk 'BEGIN { print "EXPORTS" } / +[[:digit:]]+ +[[:xdigit:]]+ +[[:xdigit:]]+/{ print $$4 }' > gio.def.tmp && mv gio.def.tmp gio.def
 
 gio-2.0.lib: libgio-2.0.la gio.def
   '$(AM_V_GEN) lib.exe -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gio.def -out:$@
-
-bin_PROGRAMS = gio-querymodules glib-compile-schemas glib-compile-resources gsettings
-
-glib_compile_resources_LDADD = libgio-2.0.la',
-  '$(top_builddir)/gobject/libgobject-2.0.la',
-  '$(top_builddir)/gmodule/libgmodule-2.0.la',
-  '$(top_builddir)/glib/libglib-2.0.la',
-  '$(NULL)
-
-glib_compile_resources_SOURCES =',
-  'gvdb/gvdb-format.h',
-  'gvdb/gvdb-builder.h',
-  'gvdb/gvdb-builder.c',
-  'glib-compile-resources.c
-
-gio_querymodules_SOURCES = gio-querymodules.c
-gio_querymodules_LDADD	 = libgio-2.0.la',
-  '$(top_builddir)/gobject/libgobject-2.0.la',
-  '$(top_builddir)/gmodule/libgmodule-2.0.la',
-  '$(top_builddir)/glib/libglib-2.0.la',
-  '$(NULL)
-
-gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c.pl
-  '$(AM_V_GEN) $(srcdir)/data-to-c.pl $(top_srcdir)/glib/gconstructor.h gconstructor_code > $@.tmp && mv $@.tmp $@
-
-glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
-glib_compile_schemas_SOURCES =',
-  'gconstructor_as_data.h',
-  'gvdb/gvdb-format.h',
-  'gvdb/gvdb-builder.h',
-  'gvdb/gvdb-builder.c',
-  'glib-compile-schemas.c
-
-gsettings_LDADD = libgio-2.0.la',
-  '$(top_builddir)/gobject/libgobject-2.0.la',
-  '$(top_builddir)/gmodule/libgmodule-2.0.la',
-  '$(top_builddir)/glib/libglib-2.0.la',
-  '$(NULL)
-gsettings_SOURCES = gsettings-tool.c
-
-schemadir = $(datadir)/glib-2.0/schemas
-dist_schema_DATA = gschema.dtd
-
-itsdir = $(datadir)/gettext/its
-dist_its_DATA = gschema.loc gschema.its
-
-# ------------------------------------------------------------------------
-# gdbus(1) tool
-
-bin_PROGRAMS += gdbus
-gdbus_SOURCES = gdbus-tool.c
-gdbus_LDADD = libgio-2.0.la',
-  '$(top_builddir)/gobject/libgobject-2.0.la',
-  '$(top_builddir)/gmodule/libgmodule-2.0.la',
-  '$(top_builddir)/glib/libglib-2.0.la',
-  '$(NULL)
-
-if OS_UNIX
-# ------------------------------------------------------------------------
-# gapplication(1) tool
-bin_PROGRAMS += gapplication
-gapplication_SOURCES = gapplication-tool.c
-gapplication_LDADD = libgio-2.0.la',
-  '$(top_builddir)/gobject/libgobject-2.0.la',
-  '$(top_builddir)/gmodule/libgmodule-2.0.la',
-  '$(top_builddir)/glib/libglib-2.0.la',
-  '$(NULL)
-endif
 
 completiondir = $(datadir)/bash-completion/completions
 completion_DATA =',
@@ -745,58 +620,146 @@ gio_headers = [
   'glistmodel.h',
   'gliststore.h',
 ]
-# FIXME: 'gnetworking.h', - generated? was in nodist_gioinclude_HEADERS
+
 gio_headers += application_headers
 gio_headers += settings_headers
 gio_headers += gdbus_headers
 install_headers(gio_headers, subdir : 'glib-2.0/gio/')
 
-gio_mkenums = find_program('build_mkenum.py')
+gio_build_mkenum = find_program('build_mkenum.py')
 
 gioenumtypes_h = custom_target('gioenumtypes_h',
   output : 'gioenumtypes.h',
   input : gio_headers,
   install : true,
   install_dir : 'include/glib-2.0/gio/',
-  depends : [ ],
-  command : [ gio_mkenums, '@OUTPUT@', meson.source_root(), '@INPUT@', gnetworking_h ])
+  depends : [],
+  command : [gio_build_mkenum, perl, glib_mkenums,
+             '@OUTPUT@', meson.current_source_dir(),
+             '@INPUT@', gnetworking_h])
 
 gioenumtypes_c = custom_target('gioenumtypes_c',
   output : 'gioenumtypes.c',
   input : gio_headers,
-  depends : [ gioenumtypes_h ],
-  command : [ gio_mkenums, '@OUTPUT@', meson.source_root(), '@INPUT@', gnetworking_h, ])
+  depends : [gioenumtypes_h],
+  command : [gio_build_mkenum, perl, glib_mkenums,
+             '@OUTPUT@', meson.current_source_dir(),
+             '@INPUT@', gnetworking_h])
 
-libgio = shared_library('gio',
+gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h])
+
+# inotify
+if glib_conf.has('HAVE_SYS_INOTIFY_H') and have_func_inotify_init1
+  subdir('inotify')
+  internal_deps += [ inotify_lib ]
+endif
+
+# kevent
+if have_func_kqueue and have_func_kevent
+  subdir('kqueue')
+  internal_deps += [ kqueue_lib ]
+endif
+
+if host_system == 'windows'
+  subdir('win32')
+  internal_deps += [ giowin32_lib ]
+endif
+
+# FIXME: FAM support
+#if HAVE_FAM
+#  subdir('fam')
+#endif
+
+libgio = shared_library('gio-2.0',
   gioenumtypes_h, gioenumtypes_c, gnetworking_h, gio_sources,
-  version : glib_version,
-  soversion : interface_version,
+  version : library_version,
+  soversion : soversion,
   install : true,
-  include_directories : inc_dirs,
-  link_with : [ libglib, libgobject, libgmodule ] + internal_deps,
+  include_directories : [configinc, gioinc],
+  link_with : internal_deps,
   #libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS)',
   #  '$(gio_win32_res_ldflag)',
-  #  '-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)',
-  #  '-export-dynamic $(no_undefined)
-  #$(ZLIB_LIBS)
   #$(SELINUX_LIBS)
-  #$(GLIB_LIBS)
   #$(XATTR_LIBS)
-  #$(NETWORK_LIBS)
-  dependencies : [ libz_dep, libdl_dep ] + platform_deps + network_libs,
-  c_args : gio_c_args
+  dependencies : [libintl, libz_dep, libdl_dep, libglib_dep, libgobject_dep,
+                  libgmodule_dep] + platform_deps + network_libs,
+  c_args : gio_c_args,
+  # intl.lib is not compatible with SAFESEH
+  link_args : noseh_link_args,
 )
 
-# gresource tool
+libgio_dep = declare_dependency(link_with : libgio,
+  dependencies : [gioenumtypes_dep],
+  # We sadly need to export configinc here because everyone includes <gio/*.h>
+  include_directories : [configinc, gioinc])
+
+# Dependencies used by executables below
 libelf = dependency('libelf', version : '>= 0.8.12', required : false)
 if libelf.found()
   glib_conf.set('HAVE_LIBELF', 1)
 endif
-executable('gresource', 'gresource-tool.c',
-  include_directories : inc_dirs,
-  c_args : [ '-DHAVE_CONFIG_H=1' ],
-  link_with : [ libgio, libgobject, libgmodule, libglib ],
-  dependencies : libelf,
-)
 
-subdir('tests')
+gconstructor_as_data_h = custom_target('gconstructor_as_data.h',
+    input : ['data-to-c.py', meson.source_root() + '/glib/gconstructor.h'],
+    output : ['gconstructor_as_data.h'],
+    command : [python, '@INPUT0@', '@INPUT1@', 'gconstructor_code', '@OUTPUT@'])
+
+# Several installed executables
+executable('gresource', 'gresource-tool.c',
+  install : true,
+  c_args : ['-DHAVE_CONFIG_H=1'],
+  # intl.lib is not compatible with SAFESEH
+  link_args : noseh_link_args,
+  dependencies : [libelf, libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+
+executable('gio-querymodules', 'gio-querymodules.c',
+  install : true,
+  c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+  # intl.lib is not compatible with SAFESEH
+  link_args : noseh_link_args,
+  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+
+executable('glib-compile-schemas',
+  [gconstructor_as_data_h, 'gvdb/gvdb-builder.c', 'glib-compile-schemas.c'],
+  install : true,
+  c_args : ['-DHAVE_CONFIG_H=1'],
+  # intl.lib is not compatible with SAFESEH
+  link_args : noseh_link_args,
+  dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+
+executable('glib-compile-resources',
+  [gconstructor_as_data_h, 'gvdb/gvdb-builder.c', 'glib-compile-resources.c'],
+  install : true,
+  c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+  # intl.lib is not compatible with SAFESEH
+  link_args : noseh_link_args,
+  dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+
+executable('gsettings', 'gsettings-tool.c',
+  install : true,
+  c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+  # intl.lib is not compatible with SAFESEH
+  link_args : noseh_link_args,
+  dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+install_data(['gschema.dtd', 'gschema.loc', 'gschema.its'],
+  install_dir : 'share/glib-2.0/schemas')
+
+executable('gdbus', 'gdbus-tool.c',
+  install : true,
+  c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+  # intl.lib is not compatible with SAFESEH
+  link_args : noseh_link_args,
+  dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+
+if host_system != 'windows'
+  executable('gapplication', 'gapplication-tool.c',
+    install : true,
+    c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+    # intl.lib is not compatible with SAFESEH
+    link_args : noseh_link_args,
+    dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+endif
+
+if host_system != 'windows'
+  subdir('tests')
+endif

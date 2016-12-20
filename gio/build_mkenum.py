@@ -7,15 +7,17 @@
 
 import sys, os, shutil, subprocess
 
-ofilename = sys.argv[1]
-template_file_dir = sys.argv[2]
-template_file_path = template_file_dir + '/' + ofilename + '.template'
-headers = sys.argv[3:]
+perl = sys.argv[1]
+glib_mkenums = sys.argv[2]
+ofilename = sys.argv[3]
+ofile_rel = os.path.basename(ofilename)
+template_file_dir = sys.argv[4]
+template_file_path = template_file_dir + '/' + ofile_rel + '.template'
+headers = sys.argv[5:]
 
-arg_array = ['--template', template_file_path ]
+arg_array = ['--template', template_file_path]
 
-# FIXME: should use $top_builddir/gobject/glib-mkenums
-cmd = [shutil.which('perl'), shutil.which('glib-mkenums')]
+cmd = [perl, glib_mkenums]
 pc = subprocess.Popen(cmd + arg_array + headers, stdout=subprocess.PIPE)
 (stdo, _) = pc.communicate()
 if pc.returncode != 0:

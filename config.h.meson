@@ -15,6 +15,9 @@
 /* poll doesn't work on devices */
 #mesondefine BROKEN_POLL
 
+/* Whether we're building a DLL and hence need symbols exported for a DLL */
+#mesondefine DLL_EXPORT
+
 /* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
    systems. This function is required for `alloca.c' support on those systems.
    */
@@ -316,8 +319,17 @@
 /* Have function pthread_attr_setstacksize */
 #mesondefine HAVE_PTHREAD_ATTR_SETSTACKSIZE
 
+/* Have function pthread_cond_timedwait_relative_np */
+#mesondefine HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP
+
 /* Have function pthread_condattr_setclock */
 #mesondefine HAVE_PTHREAD_CONDATTR_SETCLOCK
+
+/* Have function pthread_setname_np without TID as argument */
+#mesondefine HAVE_PTHREAD_SETNAME_NP_WITHOUT_TID
+
+/* Have function pthread_setname_np with TID as argument */
+#mesondefine HAVE_PTHREAD_SETNAME_NP_WITH_TID
 
 /* Define to 1 if the system has the type `ptrdiff_t'. */
 #mesondefine HAVE_PTRDIFF_T
@@ -510,9 +522,6 @@
 
 /* Define to 1 if you have the <sys/poll.h> header file. */
 #mesondefine HAVE_SYS_POLL_H
-
-/* Define to 1 if you have the <sys/prctl.h> header file. */
-#mesondefine HAVE_SYS_PRCTL_H
 
 /* Define to 1 if you have the <sys/resource.h> header file. */
 #mesondefine HAVE_SYS_RESOURCE_H

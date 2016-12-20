@@ -7,9 +7,11 @@ kqueue_sources = [
   'kqueue-utils.c',
   'kqueue-exclusions.c',
   'dep-list.c',
+  # gkqueuefilemonitor.h includes gio.h which includes this
+  gioenumtypes_h,
 ]
 
 kqueue_lib = static_library('kqueue',
   sources : kqueue_sources,
-  include_directories : inc_dirs,
+  include_directories : [configinc, glibinc, gmoduleinc],
   c_args : [ '-DHAVE_CONFIG_H', '-fPIC', '-DG_DISABLE_DEPRECATED' ] + gio_c_args)

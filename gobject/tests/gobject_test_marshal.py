@@ -4,14 +4,18 @@
 
 import sys, subprocess
 
-assert(len(sys.argv) == 3)
+if len(sys.argv) != 3:
+    print('Usage: {0} <listname> <outputfile>')
+    sys.exit(0)
 
-_, listname, outname = sys.argv
+glib_genmarshal = sys.argv[1]
+listname = sys.argv[2]
+outname = sys.argv[3]
 
 if outname.endswith('.h'):
     arg = '--header'
 else:
     arg = '--body'
 
-output = subprocess.check_output(['glib-genmarshal', '--prefix=test', '--valist-marshallers', arg, listname])
+output = subprocess.check_output([glib_genmarshal, '--prefix=test', '--valist-marshallers', arg, listname])
 open(outname, 'wb').write(output)

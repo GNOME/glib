@@ -88,57 +88,51 @@ test_env = [
   'G_TEST_BUILDDIR=' + meson.current_build_dir(),
 ]
 
+test_cargs = ['-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib"']
+
 foreach test_name : glib_tests
-  deps = [ libm, thread_dep ]
+  deps = [libm, thread_dep, libglib_dep]
   if test_name == 'regex'
-    deps += [ pcre ]
+    deps += [pcre]
   endif
   exe = executable(test_name, '@0@.c'.format(test_name),
-      include_directories : inc_dirs,
-      c_args : [ '-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib"' ],
-      link_with : libglib,
-      dependencies : deps,
-      install : false,
+    c_args : ['-DPCRE_STATIC'] + test_cargs,
+    dependencies : deps,
+    install : false,
   )
   test(test_name, exe, env : test_env)
 endforeach
 
-c_args_atomic = [ ]
+c_args_atomic = []
 if cc.get_id() == 'gcc'
-  c_args_atomic += [ '-Wstrict-aliasing=2' ]
+  c_args_atomic += ['-Wstrict-aliasing=2']
 endif
 
+deps = [libm, thread_dep, libglib_dep]
+
 exe = executable('atomic', 'atomic.c',
-  include_directories : inc_dirs,
-  c_args : [ '-DHAVE_CONFIG_H=1' ] + c_args_atomic,
-  link_with : libglib,
+  c_args : test_cargs + c_args_atomic,
   dependencies : deps,
 )
 test('atomic', exe, env : test_env)
 
 # FIXME: consolidate all of these into the array
 exe = executable('overflow-fallback', 'overflow.c',
-  include_directories : inc_dirs,
-  c_args : [ '-DHAVE_CONFIG_H=1', '-D_GLIB_TEST_OVERFLOW_FALLBACK' ],
-  link_with : libglib,
+  c_args : test_cargs + ['-D_GLIB_TEST_OVERFLOW_FALLBACK'],
   dependencies : deps,
   install : false,
 )
 test('overflow-fallback', exe, env : test_env)
 
 exe = executable('642026-ec', '642026.c',
-  include_directories : inc_dirs,
-  c_args : [ '-DHAVE_CONFIG_H=1', '-DG_ERRORCHECK_MUTEXES' ],
-  link_with : libglib,
+  c_args : test_cargs + ['-DG_ERRORCHECK_MUTEXES'],
   dependencies : deps,
   install : false,
 )
 test('642026-ec', exe, env : test_env)
 
 exe = executable('1bit-emufutex', '1bit-mutex.c',
-  include_directories : inc_dirs,
-  c_args : [ '-DHAVE_CONFIG_H=1', '-DTEST_EMULATED_FUTEX' ],
-  link_with : libglib,
+  c_args : test_cargs + ['-DTEST_EMULATED_FUTEX'],
   dependencies : deps,
   install : false,
 )
@@ -146,20 +140,16 @@ test('1bit-emufutex', exe, env : test_env)
 
 if glib_conf.has('HAVE_EVENTFD')
   exe = executable('gwakeup-fallback', 'gwakeuptest.c', '../gwakeup.c',
-    include_directories : inc_dirs,
-    c_args : [ '-DHAVE_CONFIG_H=1', '-DTEST_EVENTFD_FALLBACK' ],
-    link_with : libglib,
+    c_args : test_cargs + ['-DTEST_EVENTFD_FALLBACK'],
     dependencies : deps,
     install : false,
   )
   test('gwakeup-fallback', exe, env : test_env)
 endif
 
-# test-spawn-echo helper binary required by the spawn tests
+# test-spawn-echo helper binary required by the spawn tests above
 executable('test-spawn-echo', 'test-spawn-echo.c',
-           include_directories : inc_dirs,
-           c_args : [ '-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib"' ],
-           link_with : libglib,
-           dependencies : deps,
-           install : false,
+  c_args : test_cargs,
+  dependencies : deps,
+  install : false,
 )

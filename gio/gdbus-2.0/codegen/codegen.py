@@ -50,7 +50,7 @@ class CodeGenerator:
             self.ns_upper = ''
             self.ns_lower = ''
         self.interface_prefix = interface_prefix
-        self.header_guard = header_name.upper().replace('.', '_').replace('-', '_').replace('/', '_')
+        self.header_guard = header_name.upper().replace('.', '_').replace('-', '_').replace('/', '_').replace(':', '_')
 
     # ----------------------------------------------------------------------------------------------------
 
