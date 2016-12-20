@@ -3402,18 +3402,18 @@ g_file_copy (GFile                  *source,
 }
 
 /**
- * g_file_copy_async: (skip)
+ * g_file_copy_async:
  * @source: input #GFile
  * @destination: destination #GFile
  * @flags: set of #GFileCopyFlags
  * @io_priority: the [I/O priority][io-priority] of the request
  * @cancellable: (nullable): optional #GCancellable object,
  *     %NULL to ignore
- * @progress_callback: (nullable): function to callback with progress
+ * @progress_callback: (nullable) (scope notified): function to callback with progress
  *     information, or %NULL if progress information is not needed
- * @progress_callback_data: (closure): user data to pass to @progress_callback
- * @callback: a #GAsyncReadyCallback to call when the request is satisfied
- * @user_data: the data to pass to callback function
+ * @progress_callback_data: (closure progress_callback) (nullable): user data to pass to @progress_callback
+ * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: (closure callback): the data to pass to callback function
  *
  * Copies the file @source to the location specified by @destination
  * asynchronously. For details of the behaviour, see g_file_copy().
