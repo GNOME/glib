@@ -165,6 +165,22 @@ gdbus_sources = [
 # Generate gdbus-codegen
 subdir('gdbus-2.0/codegen')
 
+# Generate xdp-dbus.{c,h}
+xdp_dbus_generated = custom_target('xdp-dbus',
+    input : ['org.freedesktop.portal.Documents.xml',
+             'org.freedesktop.portal.NetworkMonitor.xml',
+             'org.freedesktop.portal.ProxyResolver.xml'],
+    output : ['xdp-dbus.h', 'xdp-dbus.c'],
+    command : [python, gdbus_codegen,
+               '--interface-prefix', 'org.freedesktop.portal.',
+               '--generate-c-code', '@OUTDIR@/xdp-dbus',
+               '--c-namespace', 'GXdp',
+               '--annotate', 'org.freedesktop.portal.Documents.Add()',
+                             'org.gtk.GDBus.C.UnixFD', 'true',
+               '--annotate', 'org.freedesktop.portal.Documents.AddNamed()',
+                             'org.gtk.GDBus.C.UnixFD', 'true',
+               '@INPUT@'])
+
 # Generate gdbus-generated.{c,h}
 gdbus_daemon_generated = custom_target('gdbus-daemon-generated',
     input : ['dbus-daemon.xml'],
@@ -247,38 +263,26 @@ application_sources = [
 
 local_sources = [
   'ghttpproxy.c',
-  'ghttpproxy.h',
   'glocalfile.c',
-  'glocalfile.h',
   'glocalfileenumerator.c',
-  'glocalfileenumerator.h',
   'glocalfileinfo.c',
-  'glocalfileinfo.h',
   'glocalfileinputstream.c',
-  'glocalfileinputstream.h',
   'glocalfilemonitor.c',
-  'glocalfilemonitor.h',
   'glocalfileoutputstream.c',
-  'glocalfileoutputstream.h',
   'glocalfileiostream.c',
-  'glocalfileiostream.h',
   'glocalvfs.c',
-  'glocalvfs.h',
   'gsocks4proxy.c',
-  'gsocks4proxy.h',
   'gsocks4aproxy.c',
-  'gsocks4aproxy.h',
   'gsocks5proxy.c',
-  'gsocks5proxy.h',
-  'thumbnail-verify.h',
   'thumbnail-verify.c',
 ]
 
 platform_deps = []
 internal_deps = []
 appinfo_sources = []
-
+portal_sources = []
 unix_sources = []
+
 if host_system != 'windows'
   appinfo_sources += ['gdesktopappinfo.c']
   subdir('xdgmime')
@@ -290,19 +294,24 @@ if host_system != 'windows'
     'gunixfdlist.c',
     'gunixfdmessage.c',
     'gunixmount.c',
-    'gunixmount.h',
     'gunixmounts.c',
     'gunixsocketaddress.c',
     'gunixvolume.c',
-    'gunixvolume.h',
     'gunixvolumemonitor.c',
-    'gunixvolumemonitor.h',
     'gunixinputstream.c',
     'gunixoutputstream.c',
     'gcontenttype.c',
-    'gcontenttypeprivate.h',
     'gfdonotificationbackend.c',
     'ggtknotificationbackend.c',
+  ]
+
+  portal_sources = [
+    'gdocumentportal.c',
+    'gnetworkmonitorportal.c',
+    'gproxyresolverportal.c',
+    'gportalsupport.c',
+    'gportalnotificationbackend.c',
+    xdp_dbus_generated
   ]
 
   # FIXME
@@ -485,6 +494,7 @@ gio_sources += win32_sources
 gio_sources += application_sources
 gio_sources += settings_sources
 gio_sources += gdbus_sources
+gio_sources += portal_sources
 gio_sources += local_sources
 
 MISSING_STUFF = '''
@@ -682,8 +692,8 @@ libgio = shared_library('gio-2.0',
   #  '$(gio_win32_res_ldflag)',
   #$(SELINUX_LIBS)
   #$(XATTR_LIBS)
-  dependencies : [libintl, libz_dep, libdl_dep, libglib_dep, libgobject_dep,
-                  libgmodule_dep] + platform_deps + network_libs,
+  dependencies : [libintl, libz_dep, libdl_dep, libmount_dep, libglib_dep,
+                  libgobject_dep, libgmodule_dep] + platform_deps + network_libs,
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
@@ -706,6 +716,34 @@ gconstructor_as_data_h = custom_target('gconstructor_as_data.h',
     command : [python, '@INPUT0@', '@INPUT1@', 'gconstructor_code', '@OUTPUT@'])
 
 # Several installed executables
+gio_tool_sources = [
+  'gio-tool.c',
+  'gio-tool.h',
+  'gio-tool-cat.c',
+  'gio-tool-copy.c',
+  'gio-tool-info.c',
+  'gio-tool-list.c',
+  'gio-tool-mime.c',
+  'gio-tool-mkdir.c',
+  'gio-tool-monitor.c',
+  'gio-tool-mount.c',
+  'gio-tool-move.c',
+  'gio-tool-open.c',
+  'gio-tool-rename.c',
+  'gio-tool-remove.c',
+  'gio-tool-save.c',
+  'gio-tool-set.c',
+  'gio-tool-trash.c',
+  'gio-tool-tree.c',
+]
+
+executable('gio', gio_tool_sources,
+  install : true,
+  c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+  # intl.lib is not compatible with SAFESEH
+  link_args : noseh_link_args,
+  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+
 executable('gresource', 'gresource-tool.c',
   install : true,
   c_args : ['-DHAVE_CONFIG_H=1'],

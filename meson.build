@@ -106,11 +106,11 @@ if get_option('default_library') != 'static'
     glib_conf.set('DLL_EXPORT', true)
     if cc.get_id() == 'msvc'
       glib_conf.set('_GLIB_EXTERN', '__declspec(dllexport) extern')
-    else
+    elif cc.has_argument('-fvisibility=hidden')
       glib_conf.set('_GLIB_EXTERN', '__attribute__((visibility("default"))) __declspec(dllexport) extern')
       add_global_arguments('-fvisibility=hidden', language : 'c')
     endif
-  else
+  elif cc.has_argument('-fvisibility=hidden')
     glib_conf.set('_GLIB_EXTERN', '__attribute__((visibility("default"))) extern')
     add_global_arguments('-fvisibility=hidden', language : 'c')
   endif
@@ -165,7 +165,7 @@ headers = [
   ['sys/mntctl.h', 'HAVE_SYS_mntctl_H'],
   ['fstab.h', 'HAVE_FSTAB_H'],
   ['linux/magic.h', 'HAVE_LINUX_MAGIC_H'],
-  ['sys/prctl.h', 'HAVE_SYS_PRCTL_H'],
+  ['termios.h', 'HAVE_TERMIOS_H'],
   ['dirent.h', 'HAVE_DIRENT_H'], # Some versions of MSC lack these
   ['sys/time.h', 'HAVE_SYS_TIME_H'], # Some versions of MSC lack these
   ['sys/times.h', 'HAVE_SYS_TIMES_H'],
@@ -454,7 +454,7 @@ if have_func_statfs
                         #endif
                         void some_func (void) {
                           struct statfs st;
-                          statfs(NULL, &st);
+                          statfs("/", &st);
                         }''', name : 'number of arguments to statfs() (n=2)')
     glib_conf.set('STATFS_ARGS', 2)
   elif cc.compiles(glib_conf_prefix + '''
@@ -473,7 +473,7 @@ if have_func_statfs
                           #endif
                           void some_func (void) {
                             struct statfs st;
-                            statfs(NULL, &st, sizeof (st), 0);
+                            statfs("/", &st, sizeof (st), 0);
                           }''', name : 'number of arguments to statfs() (n=4)')
     glib_conf.set('STATFS_ARGS', 4)
   else
@@ -872,6 +872,7 @@ glib_conf.set('ALIGNOF_GUINT64', guint64_align)
 
 if host_system == 'windows'
   glibconfig_conf.set('g_pid_type', 'void*')
+  glibconfig_conf.set('G_PID_FORMAT', '"p"')
   if host_machine.cpu_family() == 'x86_64'
     glibconfig_conf.set('g_pollfd_format', '"%#I64x"')
   else
@@ -879,6 +880,7 @@ if host_system == 'windows'
   endif
 else
   glibconfig_conf.set('g_pid_type', 'int')
+  glibconfig_conf.set('G_PID_FORMAT', '"i"')
   glibconfig_conf.set('g_pollfd_format', '"%d"')
 endif
 
@@ -1275,6 +1277,22 @@ libz_dep = dependency('zlib')
 # Only used on non-glibc targets
 libintl = cc.find_library('intl', required : false)
 
+# libmount is only used by gio, but we need to fetch the libs to generate the
+# pkg-config file below
+libmount_dep = []
+libmount_opt = get_option('enable-libmount')
+if libmount_opt != 'no'
+  libmount_dep = [dependency('mount', version : '>=2.28', required : false)]
+  if not libmount_dep[0].found()
+    libmount_dep = [cc.find_library('mount')]
+    libmount_h = cc.has_header('libmount/libmount.h')
+    libmount_needed = libmount_opt == 'yes' and host_system == 'linux'
+    if libmount_needed and (not libmount_dep[0].found() or not libmount_h)
+      error('Need libmount but couldn\'t find it')
+    endif
+  endif
+endif
+
 if host_system == 'windows'
   winsock2 = cc.find_library('ws2_32')
 endif
@@ -1310,6 +1328,9 @@ if libiconv.length() != 0
 endif
 if pcre.found()
   glib_conf.set('PCRE_LIBS', '-lpcre')
+endif
+if libmount_dep.length() == 1 and libmount_dep[0].found()
+  glib_conf.set('LIBMOUNT_LIBS', '-lmount')
 endif
 glib_conf.set('GIO_MODULE_DIR', '${libdir}/gio/modules')
 # FIXME: Missing:
@@ -1359,6 +1380,9 @@ configure_file(input : 'glib-gettextize.in',
 # Install m4 macros that other projects use
 install_data('m4macros/glib-2.0.m4', 'm4macros/glib-gettext.m4', 'm4macros/gsettings.m4',
   install_dir : join_paths(get_option('datadir'), 'aclocal'))
+# Install Valgrind suppression file
+install_data('glib.supp',
+  install_dir : join_paths(get_option('datadir'), 'glib-2.0', 'valgrind'))
 
 configure_file(input : 'config.h.meson',
   output : 'config.h',

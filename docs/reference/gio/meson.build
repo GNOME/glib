@@ -202,6 +202,15 @@ if get_option('with-man')
     install: true,
     install_dir: man1_dir,
   )
+
+  custom_target('gio',
+    input: 'gio.xml',
+    output: 'gio.1',
+    command: xsltproc_command,
+    install: true,
+    install_dir: man1_dir,
+  )
+
   custom_target('gdbus-codegen-man',
     input: 'gdbus-codegen.xml',
     output: 'gdbus-codegen.1',

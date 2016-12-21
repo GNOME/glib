@@ -252,7 +252,7 @@ else
 endif
 
 install_data('gtester-report', install_dir : get_option('bindir'))
-install_data('glib.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
+install_data('glib_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
 
 gdb_conf = configuration_data()
 gdb_conf.set('datadir', glib_datadir)

@@ -1,2 +1,3 @@
 option('with-docs', type : 'boolean', value : false)
 option('with-man', type : 'boolean', value : true)
+option('enable-libmount', type : 'combo', choices : ['auto', 'yes', 'no'], value : 'yes')
