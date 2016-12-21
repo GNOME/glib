@@ -890,7 +890,7 @@ int main ()
 AC_MSG_RESULT($glib_ssize_type)
 
 # Check for some functions
-AC_CHECK_FUNCS(lstat strsignal vsnprintf stpcpy strcasecmp strncasecmp poll vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk memmem)
+AC_CHECK_FUNCS(lstat strsignal vsnprintf stpcpy strcasecmp strncasecmp poll vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk)
 AC_CHECK_FUNCS(lchmod lchown fchmod fchown utimes getresuid)
 AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getfsstat getvfsstat fallocate)
 case $host_os in aix*) ac_cv_func_splice=no ;; esac # AIX splice() is something else
@@ -959,7 +959,7 @@ if $glib_failed ; then
   AC_MSG_ERROR([Could not determine values for MSG_* constants])
 fi
 
-AC_CHECK_FUNCS(getprotobyname_r endservent if_nametoindex if_indextoname sendmmsg recvmmsg)
+AC_CHECK_FUNCS(endservent if_nametoindex if_indextoname sendmmsg recvmmsg)
 
 AS_IF([test $glib_native_win32 = yes], [
   # <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for
