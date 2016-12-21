@@ -144,6 +144,12 @@ exe = executable('tls-certificate', 'tls-certificate.c', 'gtesttlsbackend.c',
 )
 test('tls-certificate', exe, env : test_env)
 
+exe = executable('tls-interaction', 'tls-interaction.c', 'gtesttlsbackend.c',
+  c_args : test_c_args,
+  dependencies : [libglib_dep, libgmodule_dep, libgio_dep],
+)
+test('tls-interaction', exe, env : test_env)
+
 exe = executable('socket-client', 'socket-client.c', 'gtlsconsoleinteraction.c',
   c_args : test_c_args,
   dependencies : [libglib_dep, libgmodule_dep, libgio_dep],
@@ -155,6 +161,8 @@ exe = executable('socket-client', 'socket-client.c', 'gtlsconsoleinteraction.c',
 #  dependencies : [libglib_dep, libgmodule_dep, libgio_dep],
 #)
 #test('gdbus-daemon', exe, env : test_env)
+
+# FIXME: Add resources test
 
 foo = '''
 c_args_atomic = [ ]

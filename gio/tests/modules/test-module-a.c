@@ -22,6 +22,8 @@
 
 #include <gio/gio.h>
 
+#include "symbol-visibility.h"
+
 typedef struct _TestA {
   GObject parent;
 } TestA;
@@ -42,7 +44,7 @@ test_a_init (TestA *self)
 {
 }
 
-void
+GLIB_TEST_EXPORT_SYMBOL void
 g_io_module_load (GIOModule *module)
 {
   g_io_extension_point_implement ("test-extension-point",
@@ -51,7 +53,7 @@ g_io_module_load (GIOModule *module)
                                   30);
 }
 
-void
+GLIB_TEST_EXPORT_SYMBOL void
 g_io_module_unload (GIOModule *module)
 {
 }
