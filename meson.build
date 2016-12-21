@@ -134,62 +134,66 @@ glibconfig_conf.set('glib_os', glib_os)
 # check for header files
 
 headers = [
-  ['stdlib.h', 'HAVE_STDLIB_H'],
-  ['string.h', 'HAVE_STRING_H'],
-  ['strings.h', 'HAVE_STRINGS_H'],
-  ['memory.h', 'HAVE_MEMORY_H'],
-  ['alloca.h', 'HAVE_ALLOCA_H'],
-  ['locale.h', 'HAVE_LOCALE_H'],
-  ['xlocale.h', 'HAVE_XLOCALE_H'],
-  ['float.h', 'HAVE_FLOAT_H'],
-  ['limits.h', 'HAVE_LIMITS_H'],
-  ['pwd.h', 'HAVE_PWD_H'],
-  ['grp.h', 'HAVE_GRP_H'],
-  ['poll.h', 'HAVE_POLL_H'],
-  ['sys/param.h', 'HAVE_SYS_PARAM_H'],
-  ['sys/resource.h', 'HAVE_SYS_RESOURCE_H'],
-  ['mach/mach_time.h', 'HAVE_MACH_MACH_TIME_H'],
-  ['sys/select.h', 'HAVE_SYS_SELECT_H'],
-  ['stdint.h', 'HAVE_STDINT_H'],
-  ['inttypes.h', 'HAVE_INTTYPES_H'],
-  ['sched.h', 'HAVE_SCHED_H'],
-  ['malloc.h', 'HAVE_MALLOC_H'],
-  ['sys/vfs.h', 'HAVE_SYS_VFS_H'],
-  ['sys/vmount.h', 'HAVE_SYS_VMOUNT_H'],
-  ['sys/statfs.h', 'HAVE_SYS_STATFS_H'],
-  ['sys/statvfs.h', 'HAVE_SYS_STATVFS_H'],
-  ['sys/filio.h', 'HAVE_SYS_FILIO_H'],
-  ['mntent.h', 'HAVE_MNTENT_H'],
-  ['sys/mnttab.h', 'HAVE_SYS_MNTTAB_H'],
-  ['sys/vfstab.h', 'HAVE_SYS_VFSTAB_H'],
-  ['sys/mntctl.h', 'HAVE_SYS_mntctl_H'],
-  ['fstab.h', 'HAVE_FSTAB_H'],
-  ['linux/magic.h', 'HAVE_LINUX_MAGIC_H'],
-  ['termios.h', 'HAVE_TERMIOS_H'],
-  ['dirent.h', 'HAVE_DIRENT_H'], # Some versions of MSC lack these
-  ['sys/time.h', 'HAVE_SYS_TIME_H'], # Some versions of MSC lack these
-  ['sys/times.h', 'HAVE_SYS_TIMES_H'],
-  ['sys/wait.h', 'HAVE_SYS_WAIT_H'],
-  ['unistd.h', 'HAVE_UNISTD_H'],
-  ['values.h', 'HAVE_VALUES_H'],
-  ['sys/types.h', 'HAVE_SYS_TYPES_H'],
-  ['sys/uio.h', 'HAVE_SYS_UIO_H'],
-  ['sys/mkdev.h', 'HAVE_SYS_MKDEV_H'],
-  ['sys/mount.h', 'HAVE_SYS_MOUNT_H'],
-  ['sys/sysctl.h', 'HAVE_SYS_SYSCTL_H'],
-  ['crt_externs.h', 'HAVE_CRT_EXTERNS_H'],
-  ['linux/netlink.h', 'HAVE_NETLINK'],
-  ['sys/inotify.h', 'HAVE_SYS_INOTIFY_H'],
-  ['sys/event.h', 'HAVE_SYS_EVENT_H'],
-  ['sys/stat.h', 'HAVE_SYS_STAT_H'],
+  'stdlib.h',
+  'string.h',
+  'strings.h',
+  'memory.h',
+  'alloca.h',
+  'locale.h',
+  'xlocale.h',
+  'float.h',
+  'limits.h',
+  'pwd.h',
+  'grp.h',
+  'poll.h',
+  'sys/param.h',
+  'sys/resource.h',
+  'mach/mach_time.h',
+  'sys/select.h',
+  'stdint.h',
+  'inttypes.h',
+  'sched.h',
+  'malloc.h',
+  'sys/vfs.h',
+  'sys/vmount.h',
+  'sys/statfs.h',
+  'sys/statvfs.h',
+  'sys/filio.h',
+  'mntent.h',
+  'sys/mnttab.h',
+  'sys/vfstab.h',
+  'sys/mntctl.h',
+  'fstab.h',
+  'linux/magic.h',
+  'termios.h',
+  'dirent.h', # Some versions of MSC lack these
+  'sys/time.h', # Some versions of MSC lack these
+  'sys/times.h',
+  'sys/wait.h',
+  'unistd.h',
+  'values.h',
+  'sys/types.h',
+  'sys/uio.h',
+  'sys/mkdev.h',
+  'sys/mount.h',
+  'sys/sysctl.h',
+  'crt_externs.h',
+  'sys/inotify.h',
+  'sys/event.h',
+  'sys/stat.h',
 ]
 
 foreach h : headers
-  if cc.has_header(h[0])
-    glib_conf.set(h[1], 1)
-    glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format(h[1])
+  if cc.has_header(h)
+    define = 'HAVE_' + h.underscorify().to_upper()
+    glib_conf.set(define, 1)
+    glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format(define)
   endif
 endforeach
+
+if cc.has_header('linux/netlink.h')
+  glib_conf.set('HAVE_NETLINK', 1)
+endif
 
 if glib_conf.has('HAVE_LOCALE_H')
   if cc.has_header_symbol('locale.h', 'LC_MESSAGES')
@@ -215,127 +219,127 @@ struct_stat_blkprefix = '''
 '''
 
 struct_members = [
-  [ 'stat', 'st_mtimensec', 'HAVE_STRUCT_STAT_ST_MTIMENSEC' ],
-  [ 'stat', 'st_mtim.tv_nsec', 'HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC' ],
-  [ 'stat', 'st_atimensec', 'HAVE_STRUCT_STAT_ST_ATIMENSEC' ],
-  [ 'stat', 'st_atim.tv_nsec', 'HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC' ],
-  [ 'stat', 'st_ctimensec', 'HAVE_STRUCT_STAT_ST_CTIMENSEC' ],
-  [ 'stat', 'st_ctim.tv_nsec', 'HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC' ],
-  [ 'stat', 'st_birthtime', 'HAVE_STRUCT_STAT_ST_BIRTHTIME' ],
-  [ 'stat', 'st_birthtimensec', 'HAVE_STRUCT_STAT_ST_BIRTHTIMENSEC' ],
-  [ 'stat', 'st_birthtim', 'HAVE_STRUCT_STAT_ST_BIRTHTIM' ],
-  [ 'stat', 'st_birthtim.tv_nsec', 'HAVE_STRUCT_STAT_ST_BIRTHTIME_TV_NSEC' ],
-  [ 'stat', 'st_blksize', 'HAVE_STRUCT_STAT_ST_BLKSIZE', struct_stat_blkprefix ],
-  [ 'stat', 'st_blocks', 'HAVE_STRUCT_STAT_ST_BLOCKS', struct_stat_blkprefix ],
-  [ 'statfs', 'f_fstypename', 'HAVE_STRUCT_STATFS_F_FSTYPENAME', struct_stat_blkprefix ],
-  [ 'statfs', 'f_bavail', 'HAVE_STRUCT_STATFS_F_BAVAIL', struct_stat_blkprefix ],
-  [ 'dirent', 'd_type', 'HAVE_STRUCT_DIRENT_D_TYPE', '''#include <sys/types.h>
-                                                        #include <dirent.h>''' ],
+  [ 'stat', 'st_mtimensec' ],
+  [ 'stat', 'st_mtim.tv_nsec' ],
+  [ 'stat', 'st_atimensec' ],
+  [ 'stat', 'st_atim.tv_nsec' ],
+  [ 'stat', 'st_ctimensec' ],
+  [ 'stat', 'st_ctim.tv_nsec' ],
+  [ 'stat', 'st_birthtime' ],
+  [ 'stat', 'st_birthtimensec' ],
+  [ 'stat', 'st_birthtim' ],
+  [ 'stat', 'st_birthtim.tv_nsec' ],
+  [ 'stat', 'st_blksize', struct_stat_blkprefix ],
+  [ 'stat', 'st_blocks', struct_stat_blkprefix ],
+  [ 'statfs', 'f_fstypename', struct_stat_blkprefix ],
+  [ 'statfs', 'f_bavail', struct_stat_blkprefix ],
+  [ 'dirent', 'd_type', '''#include <sys/types.h>
+                           #include <dirent.h>''' ],
 ]
 
 foreach m : struct_members
   header_check_prefix = glib_conf_prefix
-  if m.length() == 4
-    header_check_prefix = header_check_prefix + m[3]
+  if m.length() == 3
+    header_check_prefix = header_check_prefix + m[2]
   else
     header_check_prefix = header_check_prefix + '#include <sys/stat.h>'
   endif
   if cc.has_member('struct ' + m[0], m[1], prefix : header_check_prefix)
-    glib_conf.set(m[2], 1)
-    glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format(m[2])
+    define = 'HAVE_STRUCT_@0@_@1@'.format(m[0].to_upper(), m[1].underscorify().to_upper())
+    glib_conf.set(define, 1)
+    glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format(define)
   else
   endif
 endforeach
 
 functions = [
-  ['alloca', 'HAVE_ALLOCA'],
-  ['mmap', 'HAVE_MMAP'],
-  ['posix_memalign', 'HAVE_POSIX_MEMALIGN'],
-  ['memalign', 'HAVE_MEMALIGN'],
-  ['valloc', 'HAVE_VALLOC'],
-  ['fsync', 'HAVE_FSYNC'],
-  ['pipe2', 'HAVE_PIPE2'],
-  ['issetugid', 'HAVE_ISSETUGID'],
-  ['timegm', 'HAVE_TIMEGM'],
-  ['gmtime_r', 'HAVE_GMTIME_R'],
-  ['strerror_r', 'HAVE_STRERROR_R'],
-  ['lstat', 'HAVE_LSTAT'],
-  ['strsignal', 'HAVE_STRSIGNAL'],
-  ['vsnprintf', 'HAVE_VSNPRINTF'],
-  ['stpcpy', 'HAVE_STPCPY'],
-  ['poll', 'HAVE_POLL'],
-  ['vasprintf', 'HAVE_VASPRINTF'],
-  ['setenv', 'HAVE_SETENV'],
-  ['unsetenv', 'HAVE_UNSETENV'],
-  ['getc_unlocked', 'HAVE_GETC_UNLOCKED'],
-  ['readlink', 'HAVE_READLINK'],
-  ['symlink', 'HAVE_SYMLINK'],
-  ['fdwalk', 'HAVE_FDWALK'],
-  ['memmem', 'HAVE_MEMMEM'],
-  ['lchmod', 'HAVE_LCHMOD'],
-  ['lchown', 'HAVE_LCHOWN'],
-  ['fchmod', 'HAVE_FCHMOD'],
-  ['fchown', 'HAVE_FCHOWN'],
-  ['utimes', 'HAVE_UTIMES'],
-  ['getresuid', 'HAVE_GETRESUID'],
-  ['getmntent_r', 'HAVE_GETMNTENT_R'],
-  ['setmntent', 'HAVE_SETMNTENT'],
-  ['endmntent', 'HAVE_ENDMNTENT'],
-  ['hasmntopt', 'HAVE_HASMNTOPT'],
-  ['getfsstat', 'HAVE_GETFSSTAT'],
-  ['getvfsstat', 'HAVE_GETVFSSTAT'],
-  ['fallocate', 'HAVE_FALLOCATE'],
-  ['localtime_r', 'HAVE_LOCALTIME_R'],
-  ['gmtime_r', 'HAVE_GMTIME_R'],
-  ['getpwuid_r', 'HAVE_GETPWUID_R'],
-  ['getgrgid_r', 'HAVE_GETGRGID_R'],
-  ['prlimit', 'HAVE_PRLIMIT'],
-  ['strnlen', 'HAVE_STRNLEN'],
-  ['wcslen', 'HAVE_WCSLEN'],
-  ['wcsnlen', 'HAVE_WCSNLEN'],
-  ['mbrtowc', 'HAVE_MBRTOWC'],
-  ['wcrtomb', 'HAVE_WCRTOMB'],
-  ['newlocale', 'HAVE_NEWLOCALE'],
-  ['uselocale', 'HAVE_USELOCALE'],
-  ['strtod_l', 'HAVE_STRTOD_L'],
-  ['strtoll_l', 'HAVE_STRTOLL_L'],
-  ['strtoull_l', 'HAVE_STRTOULL_L'],
-  ['inotify_init1', 'HAVE_INOTIFY_INIT1'],
-  ['kqueue', 'HAVE_KQUEUE'],
-  ['kevent', 'HAVE_KEVENT'],
-  ['getservent', 'HAVE_GETSERVENT'],
-  ['getprotobyname_r', 'HAVE_GETPROTOBYNAME_R'],
-  ['if_indextoname', 'HAVE_IF_INDEXTONAME'],
-  ['if_nametoindex', 'HAVE_IF_NAMETOINDEX'],
-  ['sendmmsg', 'HAVE_SENDMMSG'],
-  ['recvmmsg', 'HAVE_RECVMMSG'],
+  'alloca',
+  'mmap',
+  'posix_memalign',
+  'memalign',
+  'valloc',
+  'fsync',
+  'pipe2',
+  'issetugid',
+  'timegm',
+  'gmtime_r',
+  'strerror_r',
+  'lstat',
+  'strsignal',
+  'vsnprintf',
+  'stpcpy',
+  'poll',
+  'vasprintf',
+  'setenv',
+  'unsetenv',
+  'getc_unlocked',
+  'readlink',
+  'symlink',
+  'fdwalk',
+  'memmem',
+  'lchmod',
+  'lchown',
+  'fchmod',
+  'fchown',
+  'utimes',
+  'getresuid',
+  'getmntent_r',
+  'setmntent',
+  'endmntent',
+  'hasmntopt',
+  'getfsstat',
+  'getvfsstat',
+  'fallocate',
+  'localtime_r',
+  'gmtime_r',
+  'getpwuid_r',
+  'getgrgid_r',
+  'prlimit',
+  'strnlen',
+  'wcslen',
+  'wcsnlen',
+  'mbrtowc',
+  'wcrtomb',
+  'newlocale',
+  'uselocale',
+  'strtod_l',
+  'strtoll_l',
+  'strtoull_l',
+  'inotify_init1',
+  'kqueue',
+  'kevent',
+  'endservent',
+  'getprotobyname_r',
+  'if_indextoname',
+  'if_nametoindex',
+  'sendmmsg',
+  'recvmmsg',
 ]
 
 if glib_conf.has('HAVE_SYS_STATVFS_H')
-  functions += [['statvfs', 'HAVE_STATVFS']]
+  functions += ['statvfs']
 else
   have_func_statvfs = false
 endif
 if glib_conf.has('HAVE_SYS_STATFS_H') or glib_conf.has('HAVE_SYS_MOUNT_H')
-  functions += [['statfs', 'HAVE_STATFS']]
+  functions += ['statfs']
 else
   have_func_statfs = false
 endif
 
 # AIX splice is something else
 if host_system != 'aix'
-  functions += [
-    [ 'splice', 'HAVE_SPLICE' ]
-  ]
+  functions += ['splice']
 endif
 
 foreach f : functions
-  if cc.has_function(f[0])
-    glib_conf.set(f[1], 1)
-    glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format(f[1])
-    set_variable('have_func_' + f[0], true)
+  if cc.has_function(f)
+    define = 'HAVE_' + f.underscorify().to_upper()
+    glib_conf.set(define, 1)
+    glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format(define)
+    set_variable('have_func_' + f, true)
   else
-    set_variable('have_func_' + f[0], false)
+    set_variable('have_func_' + f, false)
   endif
 endforeach
 
