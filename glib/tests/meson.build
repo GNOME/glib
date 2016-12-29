@@ -79,7 +79,7 @@ if host_machine.system() != 'windows'
   glib_tests += [ 'unix', 'include' ]
 endif
 
-if cc.get_id() == 'gcc'
+if cc.get_id() != 'msvc'
   glib_tests += [ 'autoptr' ]
 endif
 

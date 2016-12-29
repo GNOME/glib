@@ -66,7 +66,7 @@ if host_machine.system() != 'windows'
   ]
 endif
 
-if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+if cc.get_id() != 'msvc'
   gio_tests += [ 'autoptr' ]
 endif
 
