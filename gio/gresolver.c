@@ -29,6 +29,7 @@
 #include "gtask.h"
 #include "gsrvtarget.h"
 #include "gthreadedresolver.h"
+#include "gioerror.h"
 
 #ifdef G_OS_UNIX
 #include <sys/stat.h>
