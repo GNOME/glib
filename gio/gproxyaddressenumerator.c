@@ -93,7 +93,7 @@ save_userinfo (GProxyAddressEnumeratorPrivate *priv,
       priv->proxy_password = NULL;
     }
   
-  if (_g_uri_parse_authority (proxy, NULL, NULL, &userinfo))
+  if (_g_uri_parse_authority (proxy, NULL, NULL, &userinfo, NULL))
     {
       if (userinfo)
 	{

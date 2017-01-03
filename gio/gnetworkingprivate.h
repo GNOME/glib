@@ -26,7 +26,8 @@ G_BEGIN_DECLS
 gboolean _g_uri_parse_authority            (const char       *uri,
 					    char            **host,
 					    guint16          *port,
-					    char            **userinfo);
+					    char            **userinfo,
+					    GError          **error);
 gchar *  _g_uri_from_authority             (const gchar      *protocol,
 					    const gchar      *host,
 					    guint             port,
