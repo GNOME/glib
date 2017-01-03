@@ -79,13 +79,16 @@ verify_disposition (const gchar      *stream_name,
       if (n_bits)
         {
           GFlagsClass *class;
-          GFlagsValue *value;
+          guint i;
 
           class = g_type_class_peek (G_TYPE_SUBPROCESS_FLAGS);
-          while ((value = g_flags_get_first_value (class, filtered_flags)))
+
+          for (i = 0; i < class->n_values; i++)
             {
-              g_string_append_printf (err, " %s", value->value_name);
-              filtered_flags &= value->value;
+              const GFlagsValue *value = &class->values[i];
+
+              if (filtered_flags & value->value)
+                g_string_append_printf (err, " %s", value->value_name);
             }
 
           g_type_class_unref (class);
