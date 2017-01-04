@@ -1489,6 +1489,16 @@ dnl *** check whether we need preceeding underscores
   		G_MODULE_NEED_USCORE=0
 	fi
 
+        AC_CHECK_DECL([RTLD_LAZY],
+                      [AC_DEFINE(HAVE_RTLD_LAZY, 1, [Define to 1 if RTLD_LAZY is available])],
+                      [], [[#include <dlfcn.h>]])
+        AC_CHECK_DECL([RTLD_NOW],
+                      [AC_DEFINE(HAVE_RTLD_NOW, 1, [Define to 1 if RTLD_NOW is available])],
+                      [], [[#include <dlfcn.h>]])
+        AC_CHECK_DECL([RTLD_GLOBAL],
+                      [AC_DEFINE(HAVE_RTLD_GLOBAL, 1, [Define to 1 if RTLD_GLOBAL is available])],
+                      [], [[#include <dlfcn.h>]])
+
 	LDFLAGS="$LDFLAGS_orig"
 dnl *** check for having dlerror()
 	AC_CHECK_FUNC(dlerror,
