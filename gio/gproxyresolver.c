@@ -27,8 +27,10 @@
 
 #include "gasyncresult.h"
 #include "gcancellable.h"
+#include "gtask.h"
 #include "giomodule.h"
 #include "giomodule-priv.h"
+#include "gnetworkingprivate.h"
 
 /**
  * SECTION:gproxyresolver
@@ -145,6 +147,9 @@ g_proxy_resolver_lookup (GProxyResolver  *resolver,
   g_return_val_if_fail (G_IS_PROXY_RESOLVER (resolver), NULL);
   g_return_val_if_fail (uri != NULL, NULL);
 
+  if (!_g_uri_parse_authority (uri, NULL, NULL, NULL, error))
+    return NULL;
+
   iface = G_PROXY_RESOLVER_GET_IFACE (resolver);
 
   return (* iface->lookup) (resolver, uri, cancellable, error);
@@ -171,9 +176,18 @@ g_proxy_resolver_lookup_async (GProxyResolver      *resolver,
 			       gpointer             user_data)
 {
   GProxyResolverInterface *iface;
+  GError *error = NULL;
 
   g_return_if_fail (G_IS_PROXY_RESOLVER (resolver));
   g_return_if_fail (uri != NULL);
+
+  if (!_g_uri_parse_authority (uri, NULL, NULL, NULL, &error))
+    {
+      g_task_report_error (resolver, callback, user_data,
+                           g_proxy_resolver_lookup_async,
+                           g_steal_pointer (&error));
+      return;
+    }
 
   iface = G_PROXY_RESOLVER_GET_IFACE (resolver);
 
