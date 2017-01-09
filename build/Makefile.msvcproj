@@ -17,18 +17,19 @@
 #   MSVCPROJS = YourProject (can be multiple projects in a single srcdir)
 #   YourProject_FILES = $(libyourlib_1_0_SOURCES)
 #   YourProject_EXCLUDES = ... # list of sources to exclude, separated by '|', wildcards allowed; use random unsed value if none
+#   (the following 3 lines if headers need to be installed)
 #   YourProject_HEADERS_DIR = $(libyourlibincludedir)
 #   YourProject_HEADERS_INST = $(libyourlib_1_0_HEADERS)
 #   YourProject_HEADERS_EXCLUDES = ... # <list of headers to exclude from installation, separated by '|', wildcards allowed; use random unsed value if none>
 #
 #   dist-hook: \ # (or add to it if it is already there, note the vs9 items will also call the vs10 items in the process)
 #   	$(top_builddir)/build/win32/vs9/YourProject.vcproj	\
-#   	$(top_builddir)/build/win32/vs9/YourProject.headers
+#   	$(top_builddir)/build/win32/vs9/YourProject.headers	# if headers need to be installed
 #
 #   --or, if Visual Studio 2013 or later is required--
 #   dist-hook: \ # (or add to it if it is already there, this does -not- call other vs items in the process)
-#	$(top_builddir)/build/win32/vs12/gdk-4.vcxproj	\
-#	$(top_builddir)/build/win32/vs12/gdk-4.vs12.headers	\
+#	$(top_builddir)/build/win32/vs12/YourProject.vcxproj	\
+#	$(top_builddir)/build/win32/vs12/YourProject.vs12.headers	# if headers need to be installed
 
 # Private functions
 
