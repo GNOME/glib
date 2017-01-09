@@ -24,7 +24,11 @@
 #   dist-hook: \ # (or add to it if it is already there, note the vs9 items will also call the vs10 items in the process)
 #   	$(top_builddir)/build/win32/vs9/YourProject.vcproj	\
 #   	$(top_builddir)/build/win32/vs9/YourProject.headers
-
+#
+#   --or, if Visual Studio 2013 or later is required--
+#   dist-hook: \ # (or add to it if it is already there, this does -not- call other vs items in the process)
+#	$(top_builddir)/build/win32/vs12/gdk-4.vcxproj	\
+#	$(top_builddir)/build/win32/vs12/gdk-4.vs12.headers	\
 
 # Private functions
 
