@@ -466,9 +466,9 @@ glib_HEADERS_DIR = $(glibsubincludedir)
 glib_HEADERS_INST = $(deprecatedinclude_HEADERS) $(glibsubinclude_HEADERS)
 glib_HEADERS_EXCLUDES = dummy
 
-include $(top_srcdir)/build/Makefile.msvcproj
+include $(top_srcdir)/win32/Makefile.msvcproj
 
-dist-hook: $(BUILT_EXTRA_DIST) $(top_builddir)/build/win32/vs9/glib.vcproj $(top_builddir)/build/win32/vs9/glib.headers
+dist-hook: $(BUILT_EXTRA_DIST) $(top_builddir)/win32/vs9/glib.vcproj $(top_builddir)/win32/vs9/glib.headers
 	files='$(BUILT_EXTRA_DIST)'; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \

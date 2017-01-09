@@ -947,15 +947,15 @@ glib_compile_schemas_EXCLUDES = dummy
 gio_tool_FILES = $(gio_SOURCES)
 gio_tool_EXCLUDES = dummy
 
-include $(top_srcdir)/build/Makefile.msvcproj
+include $(top_srcdir)/win32/Makefile.msvcproj
 
 dist-hook: \
 	$(BUILT_EXTRA_DIST)						\
-	$(top_builddir)/build/win32/vs9/gio.vcproj			\
-	$(top_builddir)/build/win32/vs9/gio.headers			\
-	$(top_builddir)/build/win32/vs9/glib-compile-schemas.vcproj	\
-	$(top_builddir)/build/win32/vs9/glib-compile-resources.vcproj	\
-	$(top_builddir)/build/win32/vs9/gio-tool.vcproj
+	$(top_builddir)/win32/vs9/gio.vcproj			\
+	$(top_builddir)/win32/vs9/gio.headers			\
+	$(top_builddir)/win32/vs9/glib-compile-schemas.vcproj	\
+	$(top_builddir)/win32/vs9/glib-compile-resources.vcproj	\
+	$(top_builddir)/win32/vs9/gio-tool.vcproj
 	files='$(BUILT_EXTRA_DIST)'; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \

@@ -191,15 +191,15 @@ information. Note that you will need a libintl implementation, zlib, and
 libFFI.
 
 If you are building from a GIT checkout, you will first need to use some
-Unix-like environment or run build/win32/setup.py, 
+Unix-like environment or run win32/setup.py, 
 which will expand the VS 2008/2010 project files, the DLL resouce files and
-other miscellanious files required for the build.  Run build/win32/setup.py
+other miscellanious files required for the build.  Run win32/setup.py
 as follows:
 
-$python build/win32/setup.py --perl path_to_your_perl.exe
+$python win32/setup.py --perl path_to_your_perl.exe
 
 for more usage on this script, run
-$python build/win32/setup.py -h/--help
+$python win32/setup.py -h/--help
 
 Building with MSVC and NMAKE
 ============================
