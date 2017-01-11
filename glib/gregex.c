@@ -2294,7 +2294,6 @@ g_regex_split_full (const GRegex      *regex,
     {
       g_propagate_error (error, tmp_error);
       g_list_free_full (list, g_free);
-      match_info->pos = -1;
       return NULL;
     }
 
