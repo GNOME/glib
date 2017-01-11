@@ -828,8 +828,13 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
  * @error: return location for a #GError, or %NULL
  *
  * Loads a key file into an empty #GKeyFile structure.
- * If the file could not be loaded then @error is set to
- * either a #GFileError or #GKeyFileError.
+ *
+ * If the OS returns an error when opening or reading the file, a
+ * %G_FILE_ERROR is returned. If there is a problem parsing the file, a
+ * %G_KEY_FILE_ERROR is returned.
+ *
+ * This function will never return a %G_KEY_FILE_ERROR_NOT_FOUND error. If the
+ * @file is not found, %G_FILE_ERROR_NOENT is returned.
  *
  * Returns: %TRUE if a key file could be loaded, %FALSE otherwise
  *
@@ -967,9 +972,13 @@ g_key_file_load_from_bytes (GKeyFile       *key_file,
  *
  * This function looks for a key file named @file in the paths
  * specified in @search_dirs, loads the file into @key_file and
- * returns the file's full path in @full_path.  If the file could not
- * be loaded then an %error is set to either a #GFileError or
- * #GKeyFileError.
+ * returns the file's full path in @full_path.
+ *
+ * If the file could not be found in any of the @search_dirs,
+ * %G_KEY_FILE_ERROR_NOT_FOUND is returned. If
+ * the file is found but the OS returns an error when opening or reading the
+ * file, a %G_FILE_ERROR is returned. If there is a problem parsing the file, a
+ * %G_KEY_FILE_ERROR is returned.
  *
  * Returns: %TRUE if a key file could be loaded, %FALSE otherwise
  *
