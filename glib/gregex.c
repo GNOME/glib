@@ -1911,6 +1911,7 @@ g_regex_match_all_full (const GRegex      *regex,
   gboolean done;
   pcre *pcre_re;
   pcre_extra *extra;
+  gboolean retval;
 
   g_return_val_if_fail (regex != NULL, FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
@@ -1984,13 +1985,14 @@ g_regex_match_all_full (const GRegex      *regex,
 
   /* set info->pos to -1 so that a call to g_match_info_next() fails. */
   info->pos = -1;
+  retval = info->matches >= 0;
 
   if (match_info != NULL)
     *match_info = info;
   else
     g_match_info_free (info);
 
-  return info->matches >= 0;
+  return retval;
 }
 
 /**
