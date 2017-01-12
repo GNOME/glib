@@ -492,7 +492,7 @@ _g_uri_parse_authority (const char  *uri,
 		        char       **userinfo,
 		        GError     **error)
 {
-  char *tmp_str;
+  char *ascii_uri, *tmp_str;
   const char *start, *p, *at, *delim;
   char c;
 
@@ -507,6 +507,11 @@ _g_uri_parse_authority (const char  *uri,
   if (userinfo)
     *userinfo = NULL;
 
+  /* Catch broken URIs early by trying to convert to ASCII. */
+  ascii_uri = g_hostname_to_ascii (uri);
+  if (!ascii_uri)
+    goto error;
+
   /* From RFC 3986 Decodes:
    * URI          = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
    * hier-part    = "//" authority path-abempty
@@ -515,7 +520,7 @@ _g_uri_parse_authority (const char  *uri,
    */
 
   /* Check we have a valid scheme */
-  tmp_str = g_uri_parse_scheme (uri);
+  tmp_str = g_uri_parse_scheme (ascii_uri);
 
   if (tmp_str == NULL)
     goto error;
@@ -525,7 +530,7 @@ _g_uri_parse_authority (const char  *uri,
   /* Decode hier-part:
    *  hier-part   = "//" authority path-abempty
    */
-  p = uri;
+  p = ascii_uri;
   start = strstr (p, "//");
 
   if (start == NULL)
@@ -714,6 +719,8 @@ error:
       g_free (*userinfo);
       *userinfo = NULL;
     }
+
+  g_free (ascii_uri);
 
   return FALSE;
 }
