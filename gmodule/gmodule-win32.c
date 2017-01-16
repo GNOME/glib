@@ -70,6 +70,8 @@ _g_module_open (const gchar *file_name,
 {
   HINSTANCE handle;
   wchar_t *wfilename;
+  DWORD old_mode;
+  BOOL success;
 #ifdef G_WITH_CYGWIN
   gchar tmp[MAX_PATH];
 
@@ -78,7 +80,13 @@ _g_module_open (const gchar *file_name,
 #endif
   wfilename = g_utf8_to_utf16 (file_name, -1, NULL, NULL, NULL);
 
+  /* suppress error dialog */
+  success = SetThreadErrorMode (SEM_NOOPENFILEERRORBOX | SEM_FAILCRITICALERRORS, &old_mode);
+  if (!success)
+    set_error ("");
   handle = LoadLibraryW (wfilename);
+  if (success)
+    SetThreadErrorMode (old_mode, NULL);
   g_free (wfilename);
       
   if (!handle)
