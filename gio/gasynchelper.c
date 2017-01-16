@@ -44,7 +44,11 @@ _g_win32_overlap_wait_result (HANDLE           hfile,
   gboolean result = FALSE;
   gint num, npoll;
 
+#if GLIB_SIZEOF_VOID_P == 8
+  pollfd[0].fd = (gint64)overlap->hEvent;
+#else
   pollfd[0].fd = (gint)overlap->hEvent;
+#endif
   pollfd[0].events = G_IO_IN;
   num = 1;
 
