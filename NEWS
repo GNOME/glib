@@ -1,3 +1,53 @@
+Overview of changes in GLib 2.51.1
+==================================
+
+* glib-compile-resources grew a --generate-phony-targets flag
+
+* GLib now installs a valgrind suppressions file for GLib and GIO
+
+* Bugs fixed:
+ 666114 should have infrastructure to run its tests under valgrind
+ 729730 GDBusMessage: Fix segfault if DEBUG_SERIALIZER is enabled
+ 730932 statically assert that reasonable assumptions about enums are true
+ 735731 gobject: Document behaviour of GType checking macros on NULL
+ 736810 gdbus: Fix leak in g_dbus_message_print()
+ 762283 GSocket – Fix race conditions on Win32 if multiple threads are waiting on cond...
+ 767609 Test suite problems
+ 767952 g_dbus_method_invocation_return_*, g_dbus_method_invocation_take_error: They d...
+ 769672 Assert threads for testcase 642026 are sucessfully created
+ 769745 gtask: Add guards for public functions
+ 770175 Add command line argument to mkenums and genmarshal to write output to a file
+ 770646 glib: Namespace global tapset variables by soname
+ 772160 Add g_unix_mount_for() support
+ 772989 Totem allows invalid urls that might cause segfault that's irrecoverable
+ 773823 gio: Bump copy buffer size to 256k by default
+ 774086 fix g_main_context_check declaration
+ 774368 Dependency file output of resource scanner breaks Ninja
+ 774421 Two minor patches
+ 774520 GSocket allocates and processes control messages even if not requested
+ 775309 Crash in gdbusauth
+ 775468 Improve log write supports color method on windows
+ 775510 testing with -fsanitize=undefined reports various undefined behaviour
+ 775517 Password input is echoed in the terminal
+ 775621 gmessages: Fix compilation on Android
+ 775765 FDO notification withdrawal backend sends wrong ID to the server
+ 775913 subprocesslauncher: potential infinite loop in verify_disposition()
+ 776198 Stray semicolon after g_variant_print() function in gvariant.c
+ 776586 License headers cleanup
+ 777077 Use of memory after it is freed
+
+* Translation updates:
+ Brazilian Portuguese
+ Czech
+ Galician
+ German
+ Hebrew
+ Kazakh
+ Lithuanian
+ Spanish
+ Swedish
+
+
 Overview of changes in GLib 2.51.0
 ==================================
 
