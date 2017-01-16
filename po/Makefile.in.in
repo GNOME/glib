@@ -93,7 +93,7 @@ all-yes: $(CATALOGS)
 all-no:
 
 $(srcdir)/$(GETTEXT_PACKAGE).pot: $(POTFILES)
-	$(XGETTEXT) --default-domain=$(GETTEXT_PACKAGE) \
+	$(XGETTEXT) --default-domain=$(GETTEXT_PACKAGE) --from-code=UTF-8 \
 	  --msgid-bugs-address='http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general' \
 	  --add-comments --keyword=_ --keyword=N_ \
 	  --keyword=C_:1c,2 \
