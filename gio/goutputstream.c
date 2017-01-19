@@ -789,7 +789,7 @@ async_ready_write_callback_wrapper (GObject      *source_object,
  * value) will be executed before an outstanding request with lower 
  * priority. Default priority is %G_PRIORITY_DEFAULT.
  *
- * The asyncronous methods have a default fallback that uses threads 
+ * The asynchronous methods have a default fallback that uses threads
  * to implement asynchronicity, so they are optional for inheriting 
  * classes. However, if you override one you must override all.
  *
@@ -1469,7 +1469,7 @@ real_close_async_cb (GObject      *source_object,
  *
  * For behaviour details see g_output_stream_close().
  *
- * The asyncronous methods have a default fallback that uses threads 
+ * The asynchronous methods have a default fallback that uses threads
  * to implement asynchronicity, so they are optional for inheriting 
  * classes. However, if you override one you must override all.
  **/
@@ -1624,7 +1624,7 @@ g_output_stream_is_closing (GOutputStream *stream)
  * g_output_stream_has_pending:
  * @stream: a #GOutputStream.
  * 
- * Checks if an ouput stream has pending actions.
+ * Checks if an output stream has pending actions.
  * 
  * Returns: %TRUE if @stream has pending actions. 
  **/
@@ -1693,7 +1693,7 @@ g_output_stream_clear_pending (GOutputStream *stream)
  * g_output_stream_async_write_is_via_threads:
  * @stream: a #GOutputStream.
  *
- * Checks if an ouput stream's write_async function uses threads.
+ * Checks if an output stream's write_async function uses threads.
  *
  * Returns: %TRUE if @stream's write_async function uses threads.
  **/
