@@ -178,8 +178,13 @@ notify_signal (GDBusConnection *connection,
         }
     }
 
-  backend->notifications = g_slist_remove (backend->notifications, n);
-  freedesktop_notification_free (n);
+  /* Get the notification again in case the action redrew it */
+  n = g_fdo_notification_backend_find_notification_by_notify_id (backend, id);
+  if (n != NULL)
+    {
+      backend->notifications = g_slist_remove (backend->notifications, n);
+      freedesktop_notification_free (n);
+    }
 }
 
 /* Converts a GNotificationPriority to an urgency level as defined by
