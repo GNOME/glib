@@ -534,7 +534,26 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
  * Finishes handling a D-Bus method call by returning @parameters.
  * If the @parameters GVariant is floating, it is consumed.
  *
- * It is an error if @parameters is not of the right format.
+ * It is an error if @parameters is not of the right format: it must be a tuple
+ * containing the out-parameters of the D-Bus method. Even if the method has a
+ * single out-parameter, it must be contained in a tuple. If the method has no
+ * out-parameters, @parameters may be %NULL or an empty tuple.
+ *
+ * |[<!-- language="C" -->
+ * GDBusMethodInvocation *invocation = some_invocation;
+ * g_autofree gchar *result_string = NULL;
+ * g_autoptr (GError) error = NULL;
+ *
+ * result_string = calculate_result (&error);
+ *
+ * if (error != NULL)
+ *   g_dbus_method_invocation_return_gerror (invocation, error);
+ * else
+ *   g_dbus_method_invocation_return_value (invocation,
+ *                                          g_variant_new ("(s)", result_string));
+ *
+ * /<!-- -->* Do not free @invocation here; returning a value does that *<!-- -->/
+ * ]|
  *
  * This method will take ownership of @invocation. See
  * #GDBusInterfaceVTable for more information about the ownership of
