@@ -1349,7 +1349,7 @@ wrap_g_open (const gchar *filename,
 }
 
 /**
- * g_mkdtemp_full:
+ * g_mkdtemp_full: (skip)
  * @tmpl: (type filename): template directory name
  * @mode: permissions to create the temporary directory with
  *
@@ -1382,7 +1382,7 @@ g_mkdtemp_full (gchar *tmpl,
 }
 
 /**
- * g_mkdtemp:
+ * g_mkdtemp: (skip)
  * @tmpl: (type filename): template directory name
  *
  * Creates a temporary directory. See the mkdtemp() documentation
@@ -1410,7 +1410,7 @@ g_mkdtemp (gchar *tmpl)
 }
 
 /**
- * g_mkstemp_full:
+ * g_mkstemp_full: (skip)
  * @tmpl: (type filename): template filename
  * @flags: flags to pass to an open() call in addition to O_EXCL
  *     and O_CREAT, which are passed automatically
@@ -1446,7 +1446,7 @@ g_mkstemp_full (gchar *tmpl,
 }
 
 /**
- * g_mkstemp:
+ * g_mkstemp: (skip)
  * @tmpl: (type filename): template filename
  *
  * Opens a temporary file. See the mkstemp() documentation
