@@ -90,6 +90,7 @@
 #include <glib/gunicode.h>
 #include <glib/gurifuncs.h>
 #include <glib/gutils.h>
+#include <glib/guuid.h>
 #include <glib/gvarianttype.h>
 #include <glib/gvariant.h>
 #include <glib/gversion.h>

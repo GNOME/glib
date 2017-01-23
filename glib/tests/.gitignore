@@ -22,6 +22,7 @@ environment
 error
 fileutils
 gdatetime
+guuid
 gvariant
 gwakeup
 gwakeup-fallback

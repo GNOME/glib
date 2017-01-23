@@ -94,6 +94,7 @@
     <xi:include href="xml/testing.xml" />
     <xi:include href="xml/gunix.xml" />
     <xi:include href="xml/windows.xml" />
+    <xi:include href="xml/uuid.xml" />
   </chapter>
 
   <chapter id="glib-data-types">

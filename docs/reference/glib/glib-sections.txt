@@ -3403,3 +3403,10 @@ g_hostname_is_ascii_encoded
 <SUBSECTION>
 g_hostname_is_ip_address
 </SECTION>
+
+<SECTION>
+<FILE>uuid</FILE>
+<TITLE>GUuid</TITLE>
+g_uuid_string_is_valid
+g_uuid_string_random
+</SECTION>

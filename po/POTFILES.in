@@ -195,4 +195,5 @@ glib/gspawn.c
 glib/gspawn-win32.c
 glib/gutf8.c
 glib/gutils.c
+glib/guuid.c
 gobject/gbinding.c
