@@ -1365,6 +1365,10 @@ wrap_g_open (const gchar *filename,
  * in the GLib file name encoding. Most importantly, on Windows it
  * should be in UTF-8.
  *
+ * If you are going to be creating a temporary directory inside the
+ * directory returned by g_get_tmp_dir(), you might want to use
+ * g_dir_make_tmp() instead.
+ *
  * Returns: (nullable) (type filename): A pointer to @tmpl, which has been
  *     modified to hold the directory name. In case of errors, %NULL is
  *     returned, and %errno will be set.
@@ -1396,6 +1400,10 @@ g_mkdtemp_full (gchar *tmpl,
  * didn't exist.
  * The string should be in the GLib file name encoding. Most importantly,
  * on Windows it should be in UTF-8.
+ *
+ * If you are going to be creating a temporary directory inside the
+ * directory returned by g_get_tmp_dir(), you might want to use
+ * g_dir_make_tmp() instead.
  *
  * Returns: (nullable) (type filename): A pointer to @tmpl, which has been
  *     modified to hold the directory name.  In case of errors, %NULL is
