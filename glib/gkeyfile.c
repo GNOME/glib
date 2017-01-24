@@ -2543,7 +2543,8 @@ g_key_file_set_boolean_list (GKeyFile    *key_file,
  *
  * If @key cannot be found then 0 is returned and @error is set to
  * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the value associated
- * with @key cannot be interpreted as an integer then 0 is returned
+ * with @key cannot be interpreted as an integer, or is out of range
+ * for a #gint, then 0 is returned
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Returns: the value associated with the key as an integer, or
@@ -2793,7 +2794,8 @@ g_key_file_set_uint64 (GKeyFile    *key_file,
  *
  * If @key cannot be found then %NULL is returned and @error is set to
  * #G_KEY_FILE_ERROR_KEY_NOT_FOUND. Likewise, if the values associated
- * with @key cannot be interpreted as integers then %NULL is returned
+ * with @key cannot be interpreted as integers, or are out of range for
+ * #gint, then %NULL is returned
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
  * Returns: (array length=length) (element-type gint) (transfer container):
