@@ -473,8 +473,8 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  *
  * A key in the "time" namespace for getting the time the file was last
  * modified. Corresponding #GFileAttributeType is
- * %G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the UNIX time since the
- * file was modified.
+ * %G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the time since the
+ * file was modified, in seconds since the UNIX epoch.
  **/
 #define G_FILE_ATTRIBUTE_TIME_MODIFIED "time::modified"           /* uint64 */
 
@@ -493,8 +493,8 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  *
  * A key in the "time" namespace for getting the time the file was last
  * accessed. Corresponding #GFileAttributeType is
- * %G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the UNIX time since the
- * file was last accessed.
+ * %G_FILE_ATTRIBUTE_TYPE_UINT64, and contains the time since the
+ * file was last accessed, in seconds since the UNIX epoch.
  **/
 #define G_FILE_ATTRIBUTE_TIME_ACCESS "time::access"               /* uint64 */
 
@@ -513,7 +513,8 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  *
  * A key in the "time" namespace for getting the time the file was last
  * changed. Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64,
- * and contains the UNIX time since the file was last changed.
+ * and contains the time since the file was last changed, in seconds since the
+ * UNIX epoch.
  *
  * This corresponds to the traditional UNIX ctime.
  **/
@@ -534,7 +535,8 @@ typedef struct _GFileInfoClass   GFileInfoClass;
  *
  * A key in the "time" namespace for getting the time the file was created.
  * Corresponding #GFileAttributeType is %G_FILE_ATTRIBUTE_TYPE_UINT64,
- * and contains the UNIX time since the file was created.
+ * and contains the time since the file was created, in seconds since the UNIX
+ * epoch.
  *
  * This corresponds to the NTFS ctime.
  **/
