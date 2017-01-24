@@ -481,7 +481,7 @@ typedef struct _GFileInfoClass   GFileInfoClass;
 /**
  * G_FILE_ATTRIBUTE_TIME_MODIFIED_USEC:
  *
- * A key in the "time" namespace for getting the miliseconds of the time
+ * A key in the "time" namespace for getting the microseconds of the time
  * the file was last modified. This should be used in conjunction with
  * #G_FILE_ATTRIBUTE_TIME_MODIFIED. Corresponding #GFileAttributeType is
  * %G_FILE_ATTRIBUTE_TYPE_UINT32.
