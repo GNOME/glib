@@ -356,6 +356,234 @@ properties_construct (void)
   g_object_unref (obj);
 }
 
+static void
+properties_testv_with_no_properties (void)
+{
+  TestObject *test_obj;
+  const char *prop_names[4] = { "foo", "bar", "baz", "quux" };
+  GValue values_out[4] = { G_VALUE_INIT };
+  guint i;
+
+  /* Test newv_with_properties && getv */
+  test_obj = (TestObject *) g_object_new_with_properties (
+      test_object_get_type (), 0, NULL, NULL);
+  g_object_getv (G_OBJECT (test_obj), 4, prop_names, values_out);
+
+  /* It should have init values */
+  g_assert_cmpint (g_value_get_int (&values_out[0]), ==, 42);
+  g_assert_true (g_value_get_boolean (&values_out[1]));
+  g_assert_cmpstr (g_value_get_string (&values_out[2]), ==, "Hello");
+  g_assert_cmpstr (g_value_get_string (&values_out[3]), ==, NULL);
+
+  for (i = 0; i < 4; i++)
+    g_value_unset (&values_out[i]);
+  g_object_unref (test_obj);
+}
+
+static void
+properties_testv_with_valid_properties (void)
+{
+  TestObject *test_obj;
+  const char *prop_names[4] = { "foo", "bar", "baz", "quux" };
+
+  GValue values_in[4] = { G_VALUE_INIT };
+  GValue values_out[4] = { G_VALUE_INIT };
+  guint i;
+
+  g_value_init (&(values_in[0]), G_TYPE_INT);
+  g_value_set_int (&(values_in[0]), 100);
+
+  g_value_init (&(values_in[1]), G_TYPE_BOOLEAN);
+  g_value_set_boolean (&(values_in[1]), TRUE);
+
+  g_value_init (&(values_in[2]), G_TYPE_STRING);
+  g_value_set_string (&(values_in[2]), "pigs");
+
+  g_value_init (&(values_in[3]), G_TYPE_STRING);
+  g_value_set_string (&(values_in[3]), "fly");
+
+  /* Test newv_with_properties && getv */
+  test_obj = (TestObject *) g_object_new_with_properties (
+      test_object_get_type (), 4, prop_names, values_in);
+  g_object_getv (G_OBJECT (test_obj), 4, prop_names, values_out);
+
+  g_assert_cmpint (g_value_get_int (&values_out[0]), ==, 100);
+  g_assert_true (g_value_get_boolean (&values_out[1]));
+  g_assert_cmpstr (g_value_get_string (&values_out[2]), ==, "pigs");
+  g_assert_cmpstr (g_value_get_string (&values_out[3]), ==, "fly");
+
+  /* Test newv2 && getv */
+  g_value_set_string (&(values_in[2]), "Elmo knows");
+  g_value_set_string (&(values_in[3]), "where you live");
+  g_object_setv (G_OBJECT (test_obj), 4, prop_names, values_in);
+
+  g_object_getv (G_OBJECT (test_obj), 4, prop_names, values_out);
+
+  g_assert_cmpint (g_value_get_int (&values_out[0]), ==, 100);
+  g_assert_true (g_value_get_boolean (&values_out[1]));
+
+  g_assert_cmpstr (g_value_get_string (&values_out[2]), ==, "Elmo knows");
+  g_assert_cmpstr (g_value_get_string (&values_out[3]), ==, "where you live");
+
+
+  for (i = 0; i < 4; i++)
+    {
+      g_value_unset (&values_in[i]);
+      g_value_unset (&values_out[i]);
+    }
+
+  g_object_unref (test_obj);
+}
+
+static void
+properties_testv_with_invalid_property_type (void)
+{
+  if (g_test_subprocess ())
+    {
+      TestObject *test_obj;
+      const char *invalid_prop_names[1] = { "foo" };
+      GValue values_in[1] = { G_VALUE_INIT };
+
+      g_value_init (&(values_in[0]), G_TYPE_STRING);
+      g_value_set_string (&(values_in[0]), "fly");
+
+      test_obj = (TestObject *) g_object_new_with_properties (
+          test_object_get_type (), 1, invalid_prop_names, values_in);
+      /* should give a warning */
+
+      g_object_unref (test_obj);
+    }
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*WARNING*foo*gint*gchararray*");
+}
+
+
+static void
+properties_testv_with_invalid_property_names (void)
+{
+  if (g_test_subprocess ())
+    {
+      TestObject *test_obj;
+      const char *invalid_prop_names[4] = { "foo", "boo", "moo", "poo" };
+      GValue values_in[4] = { G_VALUE_INIT };
+
+      g_value_init (&(values_in[0]), G_TYPE_INT);
+      g_value_set_int (&(values_in[0]), 100);
+
+      g_value_init (&(values_in[1]), G_TYPE_BOOLEAN);
+      g_value_set_boolean (&(values_in[1]), TRUE);
+
+      g_value_init (&(values_in[2]), G_TYPE_STRING);
+      g_value_set_string (&(values_in[2]), "pigs");
+
+      g_value_init (&(values_in[3]), G_TYPE_STRING);
+      g_value_set_string (&(values_in[3]), "fly");
+
+      test_obj = (TestObject *) g_object_new_with_properties (
+          test_object_get_type (), 4, invalid_prop_names, values_in);
+      /* This call should give 3 Critical warnings. Actually, a critical warning
+       * shouldn't make g_object_new_with_properties to fail when a bad named
+       * property is given, because, it will just ignore that property. However,
+       * for test purposes, it is considered that the test doesn't pass.
+       */
+
+      g_object_unref (test_obj);
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*CRITICAL*g_object_new_is_valid_property*boo*");
+}
+
+static void
+properties_testv_getv (void)
+{
+  TestObject *test_obj;
+  const char *prop_names[4] = { "foo", "bar", "baz", "quux" };
+  GValue values_out_initialized[4] = { G_VALUE_INIT };
+  GValue values_out_uninitialized[4] = { G_VALUE_INIT };
+  guint i;
+
+  g_value_init (&(values_out_initialized[0]), G_TYPE_INT);
+  g_value_init (&(values_out_initialized[1]), G_TYPE_BOOLEAN);
+  g_value_init (&(values_out_initialized[2]), G_TYPE_STRING);
+  g_value_init (&(values_out_initialized[3]), G_TYPE_STRING);
+
+  test_obj = (TestObject *) g_object_new_with_properties (
+      test_object_get_type (), 0, NULL, NULL);
+
+  /* Test g_object_getv for an initialized values array */
+  g_object_getv (G_OBJECT (test_obj), 4, prop_names, values_out_initialized);
+  /* It should have init values */
+  g_assert_cmpint (g_value_get_int (&values_out_initialized[0]), ==, 42);
+  g_assert_true (g_value_get_boolean (&values_out_initialized[1]));
+  g_assert_cmpstr (g_value_get_string (&values_out_initialized[2]), ==, "Hello");
+  g_assert_cmpstr (g_value_get_string (&values_out_initialized[3]), ==, NULL);
+
+  /* Test g_object_getv for an uninitialized values array */
+  g_object_getv (G_OBJECT (test_obj), 4, prop_names, values_out_uninitialized);
+  /* It should have init values */
+  g_assert_cmpint (g_value_get_int (&values_out_uninitialized[0]), ==, 42);
+  g_assert_true (g_value_get_boolean (&values_out_uninitialized[1]));
+  g_assert_cmpstr (g_value_get_string (&values_out_uninitialized[2]), ==, "Hello");
+  g_assert_cmpstr (g_value_get_string (&values_out_uninitialized[3]), ==, NULL);
+
+  for (i = 0; i < 4; i++)
+    {
+      g_value_unset (&values_out_initialized[i]);
+      g_value_unset (&values_out_uninitialized[i]);
+    }
+  g_object_unref (test_obj);
+}
+
+static void
+properties_testv_notify_queue (void)
+{
+  TestObject *test_obj;
+  const char *prop_names[3] = { "foo", "bar", "baz" };
+  GValue values_in[3] = { G_VALUE_INIT };
+  Notifys n;
+  guint i;
+
+  g_value_init (&(values_in[0]), G_TYPE_INT);
+  g_value_set_int (&(values_in[0]), 100);
+
+  g_value_init (&(values_in[1]), G_TYPE_BOOLEAN);
+  g_value_set_boolean (&(values_in[1]), TRUE);
+
+  g_value_init (&(values_in[2]), G_TYPE_STRING);
+  g_value_set_string (&(values_in[2]), "");
+
+  /* Test newv_with_properties && getv */
+  test_obj = (TestObject *) g_object_new_with_properties (
+      test_object_get_type (), 0, NULL, NULL);
+
+  g_assert_nonnull (properties[PROP_FOO]);
+
+  n.pspec[0] = properties[PROP_BAZ];
+  n.pspec[1] = properties[PROP_BAR];
+  n.pspec[2] = properties[PROP_FOO];
+  n.pos = 0;
+
+  g_signal_connect (test_obj, "notify", G_CALLBACK (on_notify2), &n);
+
+  g_object_freeze_notify (G_OBJECT (test_obj));
+  {
+    g_object_setv (G_OBJECT (test_obj), 3, prop_names, values_in);
+
+    /* Set "foo" to 70 */
+    g_value_set_int (&(values_in[0]), 100);
+    g_object_setv (G_OBJECT (test_obj), 1, prop_names, values_in);
+  }
+  g_object_thaw_notify (G_OBJECT (test_obj));
+  g_assert_cmpint (n.pos, ==, 3);
+
+  for (i = 0; i < 3; i++)
+    g_value_unset (&values_in[i]);
+  g_object_unref (test_obj);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -367,6 +595,18 @@ main (int argc, char *argv[])
   g_test_add_func ("/properties/notify", properties_notify);
   g_test_add_func ("/properties/notify-queue", properties_notify_queue);
   g_test_add_func ("/properties/construct", properties_construct);
+
+  g_test_add_func ("/properties/testv_with_no_properties",
+      properties_testv_with_no_properties);
+  g_test_add_func ("/properties/testv_with_valid_properties",
+      properties_testv_with_valid_properties);
+  g_test_add_func ("/properties/testv_with_invalid_property_type",
+      properties_testv_with_invalid_property_type);
+  g_test_add_func ("/properties/testv_with_invalid_property_names",
+      properties_testv_with_invalid_property_names);
+  g_test_add_func ("/properties/testv_getv", properties_testv_getv);
+  g_test_add_func ("/properties/testv_notify_queue",
+      properties_testv_notify_queue);
 
   return g_test_run ();
 }
