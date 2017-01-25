@@ -56,6 +56,7 @@ gio_tests += [
 if host_machine.system() != 'windows'
   gio_tests += [
     'file',
+    #'gdbus-peer', Needs gdbus-object-manager-example/gdbus-example-objectmanager-generated.h
     'gdbus-peer-object-manager',
     'gdbus-unix-addresses',
     'live-g-file',
