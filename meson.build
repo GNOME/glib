@@ -146,6 +146,7 @@ headers = [
   'pwd.h',
   'grp.h',
   'poll.h',
+  'termios.h',
   'sys/param.h',
   'sys/resource.h',
   'mach/mach_time.h',
