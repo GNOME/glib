@@ -199,7 +199,16 @@ else
   platform_deps = []
 endif
 
+if enable_dtrace
+  glib_dtrace_obj = dtrace_obj_gen.process('glib_probes.d')
+  glib_dtrace_hdr = dtrace_hdr_gen.process('glib_probes.d')
+else
+  glib_dtrace_obj = []
+  glib_dtrace_hdr = []
+endif
+
 libglib = shared_library('glib-2.0',
+  glib_dtrace_obj, glib_dtrace_hdr,
   sources : [deprecated_sources, glib_sources, thread_src, plat_src],
   version : library_version,
   soversion : soversion,
@@ -263,6 +272,14 @@ configure_file(
   install: true,
   install_dir: join_paths(get_option('datadir'), 'gdb/auto-load' + glib_libdir)
 )
+
+if enable_systemtap
+  glib_stp = configure_file(input : 'glib.stp.in',
+    output : '@0@.stp'.format(libglib.full_path().split('/').get(-1)),
+    configuration : stp_cdata,
+    install_dir : tapset_install_dir,
+    install : true)
+endif
 
 # gtester doesn't work on native windows
 if cc.get_id() != 'msvc'

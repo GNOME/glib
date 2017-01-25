@@ -681,8 +681,17 @@ install_data([
 ],
 install_dir: join_paths(get_option('datadir'), 'bash-completion/completions'))
 
+if enable_dtrace
+  gio_dtrace_obj = dtrace_obj_gen.process('gio_probes.d')
+  gio_dtrace_hdr = dtrace_hdr_gen.process('gio_probes.d')
+else
+  gio_dtrace_obj = []
+  gio_dtrace_hdr = []
+endif
+
 libgio = shared_library('gio-2.0',
   gioenumtypes_h, gioenumtypes_c, gnetworking_h, gio_sources,
+  gio_dtrace_hdr, gio_dtrace_obj,
   version : library_version,
   soversion : soversion,
   install : true,
@@ -800,6 +809,14 @@ if host_system != 'windows'
     # intl.lib is not compatible with SAFESEH
     link_args : noseh_link_args,
     dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+endif
+
+if enable_systemtap
+  gio_stp = configure_file(input : 'gio.stp.in',
+    output : '@0@.stp'.format(libgio.full_path().split('/').get(-1)),
+    configuration : stp_cdata,
+    install_dir : tapset_install_dir,
+    install : true)
 endif
 
 if host_system != 'windows'

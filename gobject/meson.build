@@ -45,7 +45,16 @@ gobject_c_sources = [
   'gvaluetypes.c',
 ]
 
+if enable_dtrace
+  gobject_dtrace_obj = dtrace_obj_gen.process('gobject_probes.d')
+  gobject_dtrace_hdr = dtrace_hdr_gen.process('gobject_probes.d')
+else
+  gobject_dtrace_obj = []
+  gobject_dtrace_hdr = []
+endif
+
 libgobject = shared_library('gobject-2.0',
+  gobject_dtrace_obj, gobject_dtrace_hdr,
   sources : [gobject_c_sources],
   version : library_version,
   soversion : soversion,
@@ -93,5 +102,13 @@ configure_file(
   install: true,
   install_dir: join_paths(get_option('datadir'), 'gdb/auto-load/' + glib_libdir)
 )
+
+if enable_systemtap
+  gobject_stp = configure_file(input : 'gobject.stp.in',
+    output : '@0@.stp'.format(libgobject.full_path().split('/').get(-1)),
+    configuration : stp_cdata,
+    install_dir : tapset_install_dir,
+    install : true)
+endif
 
 subdir('tests')

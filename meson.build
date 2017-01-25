@@ -1340,6 +1340,50 @@ glib_conf.set('GIO_MODULE_DIR', '${libdir}/gio/modules')
 # @G_MODULE_LIBS@ @SELINUX_LIBS@ @COCOA_LIBS@ @CARBON_LIBS@ @G_LIBS_EXTRA@
 # @PCRE_REQUIRES@ @GLIB_EXTRA_CFLAGS@ @G_THREAD_CFLAGS@
 
+# Tracing: dtrace
+want_dtrace = get_option('enable-dtrace')
+enable_dtrace = false
+
+# Since dtrace support is opt-in we just error out if it was requested but
+# is not available. We don't bother with autodetection yet.
+if want_dtrace
+  if glib_have_carbon
+    error('GLib dtrace support not yet compatible with macOS dtrace')
+  endif
+  dtrace = find_program('dtrace', required : true) # error out if not found
+  if not cc.has_header('sys/sdt.h')
+    error('dtrace support needs sys/sdt.h header')
+  endif
+  # FIXME: autotools build also passes -fPIC -DPIC but is it needed in this case?
+  dtrace_obj_gen = generator(dtrace,
+    output : '@BASENAME@.o',
+    arguments : ['-G', '-s', '@INPUT@', '-o', '@OUTPUT@'])
+  # FIXME: $(SED) -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES,"
+  #               -e "s,define _SDT_HAS_SEMAPHORES 1,undef _SDT_HAS_SEMAPHORES,"
+  dtrace_hdr_gen = generator(dtrace,
+    output : '@BASENAME@.h',
+    arguments : ['-h', '-s', '@INPUT@', '-o', '@OUTPUT@'])
+  glib_conf.set('HAVE_DTRACE', 1)
+  enable_dtrace = true
+endif
+
+# systemtap
+want_systemtap = get_option('enable-systemtap')
+enable_systemtap = false
+
+if want_systemtap and enable_dtrace
+  tapset_install_dir = get_option('tapset-install-dir')
+  if tapset_install_dir == ''
+    tapset_install_dir = join_paths(get_option('datadir'), 'systemtap/tapset')
+  endif
+  stp_cdata = configuration_data()
+  stp_cdata.set('ABS_GLIB_RUNTIME_LIBDIR', glib_libdir)
+  stp_cdata.set('LT_CURRENT', minor_version.to_int() * 100)
+  stp_cdata.set('LT_REVISION', micro_version.to_int())
+  enable_systemtap = true
+endif
+
+
 subdir('glib')
 subdir('gobject')
 subdir('gthread')
