@@ -1168,11 +1168,11 @@ g_local_file_find_enclosing_mount (GFile         *file,
     return mount;
 
 error:
-  /* Translators: This is an error message when trying to find
-   * the enclosing (user visible) mount of a file, but none
-   * exists.
-   */
   g_set_io_error (error,
+		  /* Translators: This is an error message when trying to find
+		   * the enclosing (user visible) mount of a file, but none
+		   * exists.
+		   */
 		  _("Containing mount for file %s not found"),
                   file, 0);
 
