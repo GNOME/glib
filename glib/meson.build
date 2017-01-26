@@ -253,7 +253,7 @@ if host_system == 'windows'
       dependencies : [libglib_dep])
   endif
 else
-  executable('gtester', 'gtester.c',
+  gtester = executable('gtester', 'gtester.c',
     install : true,
     c_args : ['-DHAVE_CONFIG_H=1'],
     include_directories : configinc,

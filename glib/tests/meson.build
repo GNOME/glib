@@ -39,6 +39,7 @@ glib_tests = [
   'option-context',
   'option-argv0',
   'overflow',
+  # overflow-fallback handled separately below
   'pattern',
   'private',
   'protocol',
@@ -83,9 +84,16 @@ if cc.get_id() != 'msvc'
   glib_tests += [ 'autoptr' ]
 endif
 
+# FIXME: use new environment() object
+# Not entirely random of course, but at least it changes over time
+random_number = minor_version.to_int() + meson.version().split('.').get(1).to_int()
+
 test_env = [
   'G_TEST_SRCDIR=' + meson.current_source_dir(),
   'G_TEST_BUILDDIR=' + meson.current_build_dir(),
+  'G_DEBUG=gc-friendly',
+  'MALLOC_CHECK_=2',
+  'MALLOC_PERTURB_=@0@'.format(random_number % 256),
 ]
 
 test_cargs = ['-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib"']
@@ -138,6 +146,12 @@ exe = executable('1bit-emufutex', '1bit-mutex.c',
 )
 test('1bit-emufutex', exe, env : test_env)
 
+exe = executable('gwakeup', 'gwakeuptest.c', '../gwakeup.c',
+  c_args : test_cargs,
+  dependencies : deps,
+  install : false)
+test('gwakeup', exe, env : test_env)
+
 if glib_conf.has('HAVE_EVENTFD')
   exe = executable('gwakeup-fallback', 'gwakeuptest.c', '../gwakeup.c',
     c_args : test_cargs + ['-DTEST_EVENTFD_FALLBACK'],
@@ -153,3 +167,19 @@ executable('test-spawn-echo', 'test-spawn-echo.c',
   dependencies : deps,
   install : false,
 )
+
+# some testing of gtester functionality
+if not meson.is_cross_build() and meson.version().version_compare('> 0.37.9')
+  xmllint = find_program('xmllint')
+  if xmllint.found()
+    tmpsample_xml = custom_target('tmpsample.xml',
+      output : 'tmpsample.xml',
+      build_by_default : true, # hack around meson bug, see PR #1335
+      command : [ gtester, '-k', '--quiet', '-o', '@OUTPUT@',
+                  '--test-arg=--gtester-selftest', gtester])
+
+    test('gtester-xmllint-check', xmllint,
+      args : ['--noout', tmpsample_xml],
+      env : test_env)
+  endif
+endif
