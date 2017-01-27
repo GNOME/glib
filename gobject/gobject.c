@@ -1843,6 +1843,44 @@ g_object_new_internal (GObjectClass          *class,
   return object;
 }
 
+
+static inline gboolean
+g_object_new_is_valid_property (GType                  object_type,
+                                GParamSpec            *pspec,
+                                const char            *name,
+                                GObjectConstructParam *params,
+                                int                    n_params)
+{
+  gint i;
+  if (G_UNLIKELY (pspec == NULL))
+    {
+      g_critical ("%s: object class '%s' has no property named '%s'",
+                  G_STRFUNC, g_type_name (object_type), name);
+      return FALSE;
+    }
+
+  if (G_UNLIKELY (~pspec->flags & G_PARAM_WRITABLE))
+    {
+      g_critical ("%s: property '%s' of object class '%s' is not writable",
+                  G_STRFUNC, pspec->name, g_type_name (object_type));
+      return FALSE;
+    }
+
+  if (G_UNLIKELY (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
+    {
+      for (i = 0; i < n_params; i++)
+        if (params[i].pspec == pspec)
+          break;
+      if (G_UNLIKELY (i != n_params))
+        {
+          g_critical ("%s: property '%s' for type '%s' cannot be set twice",
+                      G_STRFUNC, name, g_type_name (object_type));
+          return FALSE;
+        }
+    }
+  return TRUE;
+}
+
 /**
  * g_object_newv: (rename-to g_object_new)
  * @object_type: the type id of the #GObject subtype to instantiate
@@ -1887,36 +1925,10 @@ g_object_newv (GType       object_type,
       for (i = 0; i < n_parameters; i++)
         {
           GParamSpec *pspec;
-          gint k;
 
           pspec = g_param_spec_pool_lookup (pspec_pool, parameters[i].name, object_type, TRUE);
-
-          if G_UNLIKELY (!pspec)
-            {
-              g_critical ("%s: object class '%s' has no property named '%s'",
-                          G_STRFUNC, g_type_name (object_type), parameters[i].name);
-              continue;
-            }
-
-          if G_UNLIKELY (~pspec->flags & G_PARAM_WRITABLE)
-            {
-              g_critical ("%s: property '%s' of object class '%s' is not writable",
-                          G_STRFUNC, pspec->name, g_type_name (object_type));
-              continue;
-            }
-
-          if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
-            {
-              for (k = 0; k < j; k++)
-                if (cparams[k].pspec == pspec)
-                    break;
-              if G_UNLIKELY (k != j)
-                {
-                  g_critical ("%s: construct property '%s' for type '%s' cannot be set twice",
-                              G_STRFUNC, parameters[i].name, g_type_name (object_type));
-                  continue;
-                }
-            }
+          if (!g_object_new_is_valid_property (object_type, pspec, parameters[i].name, cparams, j))
+            continue;
 
           cparams[j].pspec = pspec;
           cparams[j].value = &parameters[i].value;
@@ -1981,37 +1993,11 @@ g_object_new_valist (GType        object_type,
         {
           gchar *error = NULL;
           GParamSpec *pspec;
-          gint i;
 
           pspec = g_param_spec_pool_lookup (pspec_pool, name, object_type, TRUE);
 
-          if G_UNLIKELY (!pspec)
-            {
-              g_critical ("%s: object class '%s' has no property named '%s'",
-                          G_STRFUNC, g_type_name (object_type), name);
-              /* Can't continue because arg list will be out of sync. */
-              break;
-            }
-
-          if G_UNLIKELY (~pspec->flags & G_PARAM_WRITABLE)
-            {
-              g_critical ("%s: property '%s' of object class '%s' is not writable",
-                          G_STRFUNC, pspec->name, g_type_name (object_type));
-              break;
-            }
-
-          if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
-            {
-              for (i = 0; i < n_params; i++)
-                if (params[i].pspec == pspec)
-                    break;
-              if G_UNLIKELY (i != n_params)
-                {
-                  g_critical ("%s: property '%s' for type '%s' cannot be set twice",
-                              G_STRFUNC, name, g_type_name (object_type));
-                  break;
-                }
-            }
+          if (!g_object_new_is_valid_property (object_type, pspec, name, params, n_params))
+            break;
 
           if (n_params == 16)
             {
@@ -2097,6 +2083,32 @@ g_object_constructed (GObject *object)
   /* empty default impl to allow unconditional upchaining */
 }
 
+static inline gboolean
+g_object_set_is_valid_property (GObject         *object,
+                                GParamSpec      *pspec,
+                                const char      *property_name)
+{
+  if (G_UNLIKELY (pspec == NULL))
+    {
+      g_warning ("%s: object class '%s' has no property named '%s'",
+                 G_STRFUNC, G_OBJECT_TYPE_NAME (object), property_name);
+      return FALSE;
+    }
+  if (G_UNLIKELY (!(pspec->flags & G_PARAM_WRITABLE)))
+    {
+      g_warning ("%s: property '%s' of object class '%s' is not writable",
+                 G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
+      return FALSE;
+    }
+  if (G_UNLIKELY (((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction (object))))
+    {
+      g_warning ("%s: construct property \"%s\" for object '%s' can't be set after construction",
+                 G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
+      return FALSE;
+    }
+  return TRUE;
+}
+
 /**
  * g_object_set_valist: (skip)
  * @object: a #GObject
@@ -2130,28 +2142,9 @@ g_object_set_valist (GObject	 *object,
 					name,
 					G_OBJECT_TYPE (object),
 					TRUE);
-      if (!pspec)
-	{
-	  g_warning ("%s: object class '%s' has no property named '%s'",
-		     G_STRFUNC,
-		     G_OBJECT_TYPE_NAME (object),
-		     name);
-	  break;
-	}
-      if (!(pspec->flags & G_PARAM_WRITABLE))
-	{
-	  g_warning ("%s: property '%s' of object class '%s' is not writable",
-		     G_STRFUNC,
-		     pspec->name,
-		     G_OBJECT_TYPE_NAME (object));
-	  break;
-	}
-      if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction (object))
-        {
-          g_warning ("%s: construct property \"%s\" for object '%s' can't be set after construction",
-                     G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
-          break;
-        }
+
+      if (!g_object_set_is_valid_property (object, pspec, name))
+        break;
 
       G_VALUE_COLLECT_INIT (&value, pspec->value_type, var_args,
 			    0, &error);
@@ -2172,6 +2165,26 @@ g_object_set_valist (GObject	 *object,
 
   g_object_notify_queue_thaw (object, nqueue);
   g_object_unref (object);
+}
+
+static inline gboolean
+g_object_get_is_valid_property (GObject          *object,
+                                GParamSpec       *pspec,
+                                const char       *property_name)
+{
+  if (G_UNLIKELY (pspec == NULL))
+    {
+      g_warning ("%s: object class '%s' has no property named '%s'",
+                 G_STRFUNC, G_OBJECT_TYPE_NAME (object), property_name);
+      return FALSE;
+    }
+  if (G_UNLIKELY (!(pspec->flags & G_PARAM_READABLE)))
+    {
+      g_warning ("%s: property '%s' of object class '%s' is not readable",
+                 G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
+      return FALSE;
+    }
+  return TRUE;
 }
 
 /**
@@ -2212,22 +2225,9 @@ g_object_get_valist (GObject	 *object,
 					name,
 					G_OBJECT_TYPE (object),
 					TRUE);
-      if (!pspec)
-	{
-	  g_warning ("%s: object class '%s' has no property named '%s'",
-		     G_STRFUNC,
-		     G_OBJECT_TYPE_NAME (object),
-		     name);
-	  break;
-	}
-      if (!(pspec->flags & G_PARAM_READABLE))
-	{
-	  g_warning ("%s: property '%s' of object class '%s' is not readable",
-		     G_STRFUNC,
-		     pspec->name,
-		     G_OBJECT_TYPE_NAME (object));
-	  break;
-	}
+
+      if (!g_object_get_is_valid_property (object, pspec, name))
+        break;
       
       g_value_init (&value, pspec->value_type);
       
@@ -2352,20 +2352,7 @@ g_object_set_property (GObject	    *object,
 				    property_name,
 				    G_OBJECT_TYPE (object),
 				    TRUE);
-  if (!pspec)
-    g_warning ("%s: object class '%s' has no property named '%s'",
-	       G_STRFUNC,
-	       G_OBJECT_TYPE_NAME (object),
-	       property_name);
-  else if (!(pspec->flags & G_PARAM_WRITABLE))
-    g_warning ("%s: property '%s' of object class '%s' is not writable",
-               G_STRFUNC,
-               pspec->name,
-               G_OBJECT_TYPE_NAME (object));
-  else if ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) && !object_in_construction (object))
-    g_warning ("%s: construct property \"%s\" for object '%s' can't be set after construction",
-               G_STRFUNC, pspec->name, G_OBJECT_TYPE_NAME (object));
-  else
+  if (g_object_set_is_valid_property (object, pspec, property_name))
     {
       consider_issuing_property_deprecation_warning (pspec);
       object_set_property (object, pspec, value, nqueue);
@@ -2408,17 +2395,8 @@ g_object_get_property (GObject	   *object,
 				    property_name,
 				    G_OBJECT_TYPE (object),
 				    TRUE);
-  if (!pspec)
-    g_warning ("%s: object class '%s' has no property named '%s'",
-	       G_STRFUNC,
-	       G_OBJECT_TYPE_NAME (object),
-	       property_name);
-  else if (!(pspec->flags & G_PARAM_READABLE))
-    g_warning ("%s: property '%s' of object class '%s' is not readable",
-               G_STRFUNC,
-               pspec->name,
-               G_OBJECT_TYPE_NAME (object));
-  else
+
+  if (g_object_get_is_valid_property (object, pspec, property_name))
     {
       GValue *prop_value, tmp_value = G_VALUE_INIT;
       
