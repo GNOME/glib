@@ -425,7 +425,7 @@ GObject*    g_object_new_with_properties      (GType           object_type,
                                                guint           n_properties,
                                                const char     *names[],
                                                const GValue    values[]);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_52_FOR(g_object_new_with_properties)
 gpointer    g_object_newv		      (GType           object_type,
 					       guint	       n_parameters,
 					       GParameter     *parameters);

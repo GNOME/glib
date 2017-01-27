@@ -1620,7 +1620,7 @@ g_object_new (GType	   object_type,
   
   /* short circuit for calls supplying no properties */
   if (!first_property_name)
-    return g_object_newv (object_type, 0, NULL);
+    return g_object_new_with_properties (object_type, 0, NULL, NULL);
 
   va_start (var_args, first_property_name);
   object = g_object_new_valist (object_type, first_property_name, var_args);
@@ -1883,7 +1883,7 @@ g_object_new_is_valid_property (GType                  object_type,
 
 
 /**
- * g_object_new_with_properties:
+ * g_object_new_with_properties: (rename-to g_object_new)
  * @object_type: the object type to instantiate
  * @n_properties: the number of properties
  * @names: (array length=n_properties): the names of each property to be set
@@ -1957,7 +1957,7 @@ g_object_new_with_properties (GType          object_type,
 }
 
 /**
- * g_object_newv: (rename-to g_object_new)
+ * g_object_newv:
  * @object_type: the type id of the #GObject subtype to instantiate
  * @n_parameters: the length of the @parameters array
  * @parameters: (array length=n_parameters): an array of #GParameter
@@ -1969,6 +1969,9 @@ g_object_new_with_properties (GType          object_type,
  *
  * Returns: (type GObject.Object) (transfer full): a new instance of
  * @object_type
+ *
+ * Deprecated: 2.52: Use g_object_new_with_properties() instead.
+ * deprecated. See #GParameter for more information.
  */
 gpointer
 g_object_newv (GType       object_type,
