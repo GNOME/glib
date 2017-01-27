@@ -420,6 +420,11 @@ GLIB_AVAILABLE_IN_ALL
 gpointer    g_object_new                      (GType           object_type,
 					       const gchar    *first_property_name,
 					       ...);
+GLIB_AVAILABLE_IN_2_52
+GObject*    g_object_new_with_properties      (GType           object_type,
+                                               guint           n_properties,
+                                               const char     *names[],
+                                               const GValue    values[]);
 GLIB_AVAILABLE_IN_ALL
 gpointer    g_object_newv		      (GType           object_type,
 					       guint	       n_parameters,

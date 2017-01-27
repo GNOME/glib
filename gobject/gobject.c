@@ -1881,6 +1881,81 @@ g_object_new_is_valid_property (GType                  object_type,
   return TRUE;
 }
 
+
+/**
+ * g_object_new_with_properties:
+ * @object_type: the object type to instantiate
+ * @n_properties: the number of properties
+ * @names: (array length=n_properties): the names of each property to be set
+ * @values: (array length=n_properties): the values of each property to be set
+ *
+ * Creates a new instance of a #GObject subtype and sets its properties using
+ * the provided arrays. Both arrays must have exactly @n_properties elements,
+ * and the names and values correspond by index.
+ *
+ * Construction parameters (see %G_PARAM_CONSTRUCT, %G_PARAM_CONSTRUCT_ONLY)
+ * which are not explicitly specified are set to their default values.
+ *
+ * Returns: (type GObject.Object) (transfer full): a new instance of
+ * @object_type
+ *
+ * Since: 2.52
+ */
+GObject *
+g_object_new_with_properties (GType          object_type,
+                              guint          n_properties,
+                              const char    *names[],
+                              const GValue   values[])
+{
+  GObjectClass *class, *unref_class = NULL;
+  GObject *object;
+
+  g_return_val_if_fail (G_TYPE_IS_OBJECT (object_type), NULL);
+
+  /* Try to avoid thrashing the ref_count if we don't need to (since
+   * it's a locked operation).
+   */
+  class = g_type_class_peek_static (object_type);
+
+  if (class == NULL)
+    class = unref_class = g_type_class_ref (object_type);
+
+  if (n_properties > 0)
+    {
+      guint i, count = 0;
+      GObjectConstructParam *params;
+
+      params = g_newa (GObjectConstructParam, n_properties);
+      for (i = 0; i < n_properties; i++)
+        {
+          GParamSpec *pspec;
+          pspec = g_param_spec_pool_lookup (pspec_pool, names[i], object_type, TRUE);
+          if (!g_object_new_is_valid_property (object_type, pspec, names[i], params, count))
+            continue;
+          params[count].pspec = pspec;
+
+          /* Init GValue */
+          params[count].value = g_newa (GValue, 1);
+          memset (params[count].value, 0, sizeof (GValue));
+          g_value_init (params[count].value, G_VALUE_TYPE (&values[i]));
+
+          g_value_copy (&values[i], params[count].value);
+          count++;
+        }
+      object = g_object_new_internal (class, params, count);
+
+      while (count--)
+        g_value_unset (params[count].value);
+    }
+  else
+    object = g_object_new_internal (class, NULL, 0);
+
+  if (unref_class != NULL)
+    g_type_class_unref (unref_class);
+
+  return object;
+}
+
 /**
  * g_object_newv: (rename-to g_object_new)
  * @object_type: the type id of the #GObject subtype to instantiate
