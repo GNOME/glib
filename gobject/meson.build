@@ -1,4 +1,4 @@
-gobject_install_headers = [
+gobject_install_headers = files([
   'gobject-autocleanups.h',
   'glib-types.h',
   'gbinding.h',
@@ -19,7 +19,7 @@ gobject_install_headers = [
   'gvaluecollector.h',
   'gvaluetypes.h',
   'gobjectnotifyqueue.c', # sic
-]
+])
 install_headers(gobject_install_headers, subdir : 'glib-2.0/gobject')
 
 gobject_c_sources = [

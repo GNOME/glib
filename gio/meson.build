@@ -107,7 +107,7 @@ gnetworking_h = configure_file(input : 'gnetworking.h.in',
                                install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
                                configuration : gnetworking_h_conf)
 
-gdbus_headers = [
+gdbus_headers = files([
   'gdbusauthobserver.h',
   'gcredentials.h',
   'gdbusutils.h',
@@ -130,7 +130,7 @@ gdbus_headers = [
   'gdbusobjectmanagerclient.h',
   'gdbusobjectmanagerserver.h',
   'gtestdbus.h',
-]
+])
 
 gdbus_sources = [
   'gdbusutils.c',
@@ -190,11 +190,11 @@ gdbus_daemon_generated = custom_target('gdbus-daemon-generated',
                '--generate-c-code', '@OUTDIR@/gdbus-daemon-generated',
                '--c-namespace', '_G', '@INPUT@'])
 
-settings_headers = [
+settings_headers = files([
   'gsettingsbackend.h',
   'gsettingsschema.h',
   'gsettings.h',
-]
+])
 
 settings_sources = [
   'gvdb/gvdb-reader.c',
@@ -217,7 +217,7 @@ endif
 #settings_sources += [ 'gnextstepsettingsbackend.c' ]
 #endif
 
-application_headers = [
+application_headers = files([
   'gapplication.h',
   'gapplicationcommandline.h',
 
@@ -236,7 +236,7 @@ application_headers = [
   'gmenuexporter.h',
   'gdbusmenumodel.h',
   'gnotification.h',
-]
+])
 
 application_sources = [
   'gapplication.c',
@@ -517,7 +517,7 @@ gio-2.0.lib: libgio-2.0.la gio.def
   '$(AM_V_GEN) lib.exe -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gio.def -out:$@
 '''
 
-gio_headers = [
+gio_headers = files([
   'gappinfo.h',
   'gasyncinitable.h',
   'gasyncresult.h',
@@ -623,7 +623,7 @@ gio_headers = [
   'gzlibdecompressor.h',
   'glistmodel.h',
   'gliststore.h',
-]
+])
 
 gio_headers += application_headers
 gio_headers += settings_headers
