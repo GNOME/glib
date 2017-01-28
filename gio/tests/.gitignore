@@ -80,7 +80,7 @@ gdbus-unix-addresses
 glistmodel
 gio-du
 giomodule
-giotypefuncs.c
+giotypefuncs.inc
 gnotification
 gsubprocess
 gsubprocess-testprog

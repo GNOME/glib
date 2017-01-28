@@ -566,9 +566,9 @@ EXTRA_DIST += test.gresource.xml test1.txt test2.gresource.xml test2.txt test3.g
 CLEANFILES += test-generated.txt test_resources.c test_resources2.[ch] plugin_resources.c test.gresource
 endif # !CROSS_COMPILING
 
-BUILT_SOURCES += giotypefuncs.c
+BUILT_SOURCES += giotypefuncs.inc
 
-giotypefuncs.c: Makefile
+giotypefuncs.inc: Makefile
 	$(AM_V_GEN) echo '#include <gio/gio.h>' > xgen-giosrc.c && \
 	  echo "G_GNUC_BEGIN_IGNORE_DEPRECATIONS" > xgen-gio && \
 	  ${CPP} $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) xgen-giosrc.c | \
@@ -578,7 +578,7 @@ giotypefuncs.c: Makefile
 	  $(SED) -e 's/^/*tp++ = /' -e 's/$$/ ();/' >> xgen-gio && \
 	  cp xgen-gio $@ # && rm -f xgen-gio xgen-giosrc.c
 
-CLEANFILES += xgen-giosrc.c xgen-gio giotypefuncs.c
+CLEANFILES += xgen-giosrc.c xgen-gio giotypefuncs.inc
 
 if ENABLE_INSTALLED_TESTS
 if OS_UNIX

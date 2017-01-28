@@ -174,7 +174,7 @@ list_all_types (void)
       GType *tp;
       all_registered_types = g_new0 (GType, 1000);
       tp = all_registered_types;
-#include "giotypefuncs.c"
+#include "giotypefuncs.inc"
       *tp = 0;
     }
 
