@@ -341,8 +341,9 @@ if host_system != 'windows'
   endif
 endif
 
+# This is also used by tests/gdbus-daemon, so use files() to include the path
 gdbus_daemon_sources = [
-  'gdbusdaemon.c',
+  files('gdbusdaemon.c'),
   gdbus_daemon_generated,
 ]
 

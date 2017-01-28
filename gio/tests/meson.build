@@ -1,3 +1,12 @@
+subdir('gdbus-object-manager-example')
+
+gengiotypefuncs_prog = find_program('gengiotypefuncs.py')
+giotypefuncs_inc = custom_target(
+  'giotypefuncs.inc',
+  output : 'giotypefuncs.inc',
+  input : gio_headers + [gioenumtypes_h] + gobject_install_headers,
+  command: [gengiotypefuncs_prog, '@OUTPUT@', '@INPUT@'])
+
 #  Test programs buildable on all platforms
 gio_tests = [
   'appmonitor',
@@ -12,7 +21,7 @@ gio_tests = [
   'credentials',
   'data-input-stream',
   'data-output-stream',
-  #'defaultvalue',           # FIXME: needs giotypefuncs.c generated
+  'defaultvalue',
   'fileattributematcher',
   'filter-streams',
   'giomodule',
@@ -45,26 +54,39 @@ gio_tests = [
   'volumemonitor',
   'glistmodel',
   'testfilemonitor',
-]
-
-gio_tests += [
   'thumbnail-verification',
 ]
 
-#  Test programs buildable on UNIX only
+test_extra_programs = [
+  ['gdbus-connection-flush-helper'],
+  ['gdbus-testserver'],
+]
 
+#  Test programs buildable on UNIX only
 if host_machine.system() != 'windows'
   gio_tests += [
     'file',
-    #'gdbus-peer', Needs gdbus-object-manager-example/gdbus-example-objectmanager-generated.h
+    'gdbus-peer',
     'gdbus-peer-object-manager',
-    'gdbus-unix-addresses',
     'live-g-file',
     'socket-address',
     'stream-rw_all',
     'unix-fd',
     'unix-streams',
+    'mimeapps',
   ]
+
+  test_extra_programs += [
+    ['basic-application'],
+    ['dbus-launch'],
+    ['appinfo-test'],
+    ['apps'],
+  ]
+
+  have_dbus_daemon = find_program('dbus-daemon', required : false).found()
+  if have_dbus_daemon
+    gio_tests += ['gdbus-unix-addresses']
+  endif
 endif
 
 if cc.get_id() != 'msvc'
@@ -83,16 +105,22 @@ test_c_args = [
 ]
 
 foreach test_name : gio_tests
-  src_file = '@0@.c'.format(test_name)
+  extra_deps = []
+  srcs = ['@0@.c'.format(test_name)]
   # conflicts with glib/tests/autoptr, can't have two targets with same name
   if test_name == 'autoptr'
     test_name = 'autoptr-gio'
+  elif test_name == 'defaultvalue'
+    srcs += [giotypefuncs_inc]
+  elif test_name == 'gdbus-peer'
+    # This is peer to peer so it doesn't need a session bus, so we can run
+    # it automatically as a test by default
+    extra_deps = [libgdbus_example_objectmanager_dep]
   endif
-  exe = executable(test_name, src_file,
+  exe = executable(test_name, srcs,
       install : false,
       c_args : test_c_args,
-      dependencies : [libglib_dep, libgmodule_dep, libgio_dep],
-  )
+      dependencies : [libglib_dep, libgmodule_dep, libgio_dep] + extra_deps)
   if test_name == 'testfilemonitor'
     test(test_name, exe, env : test_env, timeout : 45)
   else
@@ -101,67 +129,58 @@ foreach test_name : gio_tests
 endforeach
 
 uninstalled_test_extra_programs = [
-  'gio-du',
-  'echo-server',
-  'filter-cat',
-  'gapplication-example-actions',
-  'gapplication-example-cmdline',
-  'gapplication-example-cmdline2',
-  'gapplication-example-cmdline3',
-  'gapplication-example-dbushooks',
-  'gapplication-example-open',
-  'gdbus-example-export',
-  'gdbus-example-own-name',
-  'gdbus-example-peer',
-  'gdbus-example-proxy-subclass',
-  'gdbus-example-server',
-  'gdbus-example-subtree',
-  'gdbus-example-watch-name',
-  'gdbus-example-watch-proxy',
-  'gsubprocess-testprog',
-  'httpd',
-  'proxy',
-  'resolver',
-  'send-data',
-  'socket-server',
+  ['gio-du'],
+  ['echo-server'],
+  ['filter-cat'],
+  ['gapplication-example-actions'],
+  ['gapplication-example-cmdline'],
+  ['gapplication-example-cmdline2'],
+  ['gapplication-example-cmdline3'],
+  ['gapplication-example-dbushooks'],
+  ['gapplication-example-open'],
+  ['gdbus-daemon', gdbus_daemon_sources],
+  ['gdbus-example-export'],
+  ['gdbus-example-own-name'],
+  ['gdbus-example-peer'],
+  ['gdbus-example-proxy-subclass'],
+  ['gdbus-example-server'],
+  ['gdbus-example-subtree'],
+  ['gdbus-example-watch-name'],
+  ['gdbus-example-watch-proxy'],
+  ['gsubprocess-testprog'],
+  ['httpd'],
+  ['proxy'],
+  ['resolver'],
+  ['send-data'],
+  ['socket-server'],
+  ['socket-client', ['gtlsconsoleinteraction.c']],
+  ['tls-certificate', ['gtesttlsbackend.c']],
+  ['tls-interaction', ['gtesttlsbackend.c']],
+  # These three are manual-run tests because they need a session bus but don't bring one up themselves
+  # FIXME: these build but don't seem to work!
+  ['gdbus-example-objectmanager-client', [], [libgdbus_example_objectmanager_dep]],
+  ['gdbus-example-objectmanager-server', [], [libgdbus_example_objectmanager_dep]],
+  ['gdbus-test-fixture', [], [libgdbus_example_objectmanager_dep]],
 ]
 
-foreach extra_program : uninstalled_test_extra_programs
-  exe = executable(extra_program, '@0@.c'.format(extra_program),
+if host_machine.system() != 'windows'
+  uninstalled_test_extra_programs += [['gdbus-example-unix-fd-client']]
+endif
+
+foreach extra_program : uninstalled_test_extra_programs + test_extra_programs
+  srcs = ['@0@.c'.format(extra_program[0])]
+  if extra_program.length() > 1
+    srcs += extra_program[1]
+  endif
+  extra_deps = []
+  if extra_program.length() > 2
+    extra_deps = extra_program[2]
+  endif
+  executable(extra_program[0], srcs,
       install : false,
       c_args : test_c_args,
-      dependencies : [libglib_dep, libgmodule_dep, libgio_dep],
-  )
+      dependencies : [libglib_dep, libgmodule_dep, libgio_dep] + extra_deps)
 endforeach
-
-test_extra_programs = [
-  'gdbus-connection-flush-helper',
-  'gdbus-testserver',
-]
-
-exe = executable('tls-certificate', 'tls-certificate.c', 'gtesttlsbackend.c',
-  c_args : test_c_args,
-  dependencies : [libglib_dep, libgmodule_dep, libgio_dep],
-)
-test('tls-certificate', exe, env : test_env)
-
-exe = executable('tls-interaction', 'tls-interaction.c', 'gtesttlsbackend.c',
-  c_args : test_c_args,
-  dependencies : [libglib_dep, libgmodule_dep, libgio_dep],
-)
-test('tls-interaction', exe, env : test_env)
-
-exe = executable('socket-client', 'socket-client.c', 'gtlsconsoleinteraction.c',
-  c_args : test_c_args,
-  dependencies : [libglib_dep, libgmodule_dep, libgio_dep],
-)
-
-#exe = executable('gdbus-daemon', 'gdbus-daemon.c', '../gdbusdaemon.c',
-#  #meson.build_root() + '/gio/gdbus-daemon-generated.c', # FIXME
-#  c_args : test_c_args,
-#  dependencies : [libglib_dep, libgmodule_dep, libgio_dep],
-#)
-#test('gdbus-daemon', exe, env : test_env)
 
 # FIXME: Add resources test
 
