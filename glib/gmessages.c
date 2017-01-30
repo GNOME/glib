@@ -273,19 +273,27 @@ myInvalidParameterHandler(const wchar_t *expression,
 /**
  * G_LOG_DOMAIN:
  *
- * Defines the log domain.
+ * Defines the log domain. See [Log Domains](#log-domains).
  *
  * Libraries should define this so that any messages
  * which they log can be differentiated from messages from other
  * libraries and application code. But be careful not to define
  * it in any public header files.
  *
- * For example, GTK+ uses this in its Makefile.am:
+ * Log domains must be unique, and it is recommended that they are the
+ * application or library name, optionally followed by a hyphen and a sub-domain
+ * name. For example, `bloatpad` or `bloatpad-io`.
+ *
+ * If undefined, it defaults to the default %NULL (or `""`) log domain; this is
+ * not advisable, as it cannot be filtered against using the `G_MESSAGES_DEBUG`
+ * environment variable.
+ *
+ * For example, GTK+ uses this in its `Makefile.am`:
  * |[
  * AM_CPPFLAGS = -DG_LOG_DOMAIN=\"Gtk\"
  * ]|
  *
- * Applications can choose to leave it as the default %NULL (or "")
+ * Applications can choose to leave it as the default %NULL (or `""`)
  * domain. However, defining the domain offers the same advantages as
  * above.
  *
