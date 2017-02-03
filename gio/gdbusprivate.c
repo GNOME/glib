@@ -1571,10 +1571,10 @@ schedule_writing_unlocked (GDBusWorker        *worker,
 static void
 schedule_pending_close (GDBusWorker *worker)
 {
-  if (!worker->pending_close_attempts)
-    return;
-
-  schedule_writing_unlocked (worker, NULL, NULL, NULL);
+  g_mutex_lock (&worker->write_lock);
+  if (worker->pending_close_attempts)
+    schedule_writing_unlocked (worker, NULL, NULL, NULL);
+  g_mutex_unlock (&worker->write_lock);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
