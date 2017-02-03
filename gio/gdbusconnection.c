@@ -3057,7 +3057,7 @@ g_dbus_connection_get_peer_credentials (GDBusConnection *connection)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static guint _global_filter_id = 1;
+static volatile guint _global_filter_id = 1;
 
 /**
  * g_dbus_connection_add_filter:
@@ -3114,7 +3114,7 @@ g_dbus_connection_add_filter (GDBusConnection            *connection,
 
   CONNECTION_LOCK (connection);
   data = g_new0 (FilterData, 1);
-  data->id = _global_filter_id++; /* TODO: overflow etc. */
+  data->id = g_atomic_int_add (&_global_filter_id, 1); /* TODO: overflow etc. */
   data->ref_count = 1;
   data->filter_function = filter_function;
   data->user_data = user_data;
@@ -3272,9 +3272,9 @@ args_to_rule (const gchar      *sender,
   return g_string_free (rule, FALSE);
 }
 
-static guint _global_subscriber_id = 1;
-static guint _global_registration_id = 1;
-static guint _global_subtree_registration_id = 1;
+static volatile guint _global_subscriber_id = 1;
+static volatile guint _global_registration_id = 1;
+static volatile guint _global_subtree_registration_id = 1;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -3466,7 +3466,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   subscriber.callback = callback;
   subscriber.user_data = user_data;
   subscriber.user_data_free_func = user_data_free_func;
-  subscriber.id = _global_subscriber_id++; /* TODO: overflow etc. */
+  subscriber.id = g_atomic_int_add (&_global_subscriber_id, 1); /* TODO: overflow etc. */
   subscriber.context = g_main_context_ref_thread_default ();
 
   /* see if we've already have this rule */
@@ -5156,7 +5156,7 @@ g_dbus_connection_register_object (GDBusConnection             *connection,
     }
 
   ei = g_new0 (ExportedInterface, 1);
-  ei->id = _global_registration_id++; /* TODO: overflow etc. */
+  ei->id = g_atomic_int_add (&_global_registration_id, 1); /* TODO: overflow etc. */
   ei->eo = eo;
   ei->user_data = user_data;
   ei->user_data_free_func = user_data_free_func;
@@ -6813,7 +6813,7 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
 
   es->vtable = _g_dbus_subtree_vtable_copy (vtable);
   es->flags = flags;
-  es->id = _global_subtree_registration_id++; /* TODO: overflow etc. */
+  es->id = g_atomic_int_add (&_global_subtree_registration_id, 1); /* TODO: overflow etc. */
   es->user_data = user_data;
   es->user_data_free_func = user_data_free_func;
   es->context = g_main_context_ref_thread_default ();
