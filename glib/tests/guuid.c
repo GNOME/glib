@@ -30,13 +30,13 @@ test_guuid_string (void)
   g_assert_false (g_uuid_string_is_valid ("00010203-0405-0607-0809"));
   g_assert_false (g_uuid_string_is_valid ("zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"));
   g_assert_false (g_uuid_string_is_valid ("000102030405060708090a0b0c0d0e0f"));
+  g_assert_false (g_uuid_string_is_valid ("{urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6}"));
+  g_assert_false (g_uuid_string_is_valid ("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6"));
 
   g_assert_true (g_uuid_string_is_valid ("00010203-0405-0607-0809-0a0b0c0d0e0f"));
   g_assert_true (g_uuid_string_is_valid ("7d444840-9dc0-11d1-b245-5ffdce74fad2"));
   g_assert_true (g_uuid_string_is_valid ("e902893a-9d22-3c7e-a7b8-d6e313b71d9f"));
   g_assert_true (g_uuid_string_is_valid ("6ba7b810-9dad-11d1-80b4-00c04fd430c8"));
-  g_assert_true (g_uuid_string_is_valid ("{urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6}"));
-  g_assert_true (g_uuid_string_is_valid ("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6"));
 }
 
 static void
