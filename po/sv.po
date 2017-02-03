@@ -1,17 +1,17 @@
 # Swedish messages for glib.
-# Copyright © 2001-2016 Free Software Foundation, Inc.
+# Copyright © 2001-2017 Free Software Foundation, Inc.
 # Christian Rose <menthos@menthos.com>, 2001-2005.
 # Daniel Nylander <po@danielnylander.se>, 2006-2012.
 # Sebastian Rasmussen <sebras@gmail.com>, 2014, 2015.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-10-12 19:31+0000\n"
-"PO-Revision-Date: 2016-10-24 17:54+0200\n"
+"POT-Creation-Date: 2016-12-08 10:06+0000\n"
+"PO-Revision-Date: 2017-02-03 11:37+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: ../gio/gapplication.c:493
 msgid "GApplication options"
@@ -114,8 +114,8 @@ msgstr "Kommandot att skriva ut detaljerad hjälp för"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Programidentifierare i D-Bus-format (t.ex: org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:622
-#: ../gio/glib-compile-resources.c:628 ../gio/glib-compile-resources.c:654
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:665
+#: ../gio/glib-compile-resources.c:671 ../gio/glib-compile-resources.c:698
 #: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "FIL"
@@ -314,7 +314,7 @@ msgstr "Ogiltig bytesekvens i konverteringsindata"
 msgid "Error during conversion: %s"
 msgstr "Fel vid konvertering: %s"
 
-#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:1078
+#: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:1085
 msgid "Cancellable initialization not supported"
 msgstr "Avbrytningsbar initiering stöds inte"
 
@@ -497,19 +497,19 @@ msgstr "Fel vid körning av kommandoraden ”%s”: "
 msgid "(Type any character to close this window)\n"
 msgstr "(Skriv vilket tecken som helst för att stänga detta fönster)\n"
 
-#: ../gio/gdbusaddress.c:1489
+#: ../gio/gdbusaddress.c:1491
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "Sessions-dbus kör inte, och autostart misslyckades"
 
-#: ../gio/gdbusaddress.c:1500
+#: ../gio/gdbusaddress.c:1502
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Kan inte fastställa adress för sessionsbuss (inte implementerat för detta "
 "operativsystem)"
 
-#: ../gio/gdbusaddress.c:1635 ../gio/gdbusconnection.c:7133
+#: ../gio/gdbusaddress.c:1637
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -518,7 +518,7 @@ msgstr ""
 "Kan inte fastställa bussadressen från miljövariabeln DBUS_STARTER_BUS_TYPE — "
 "okänt värde ”%s”"
 
-#: ../gio/gdbusaddress.c:1644 ../gio/gdbusconnection.c:7142
+#: ../gio/gdbusaddress.c:1646 ../gio/gdbusconnection.c:7142
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -526,7 +526,7 @@ msgstr ""
 "Kan inte fastställa bussadress därför att miljövariabeln "
 "DBUS_STARTER_BUS_TYPE inte är inställd"
 
-#: ../gio/gdbusaddress.c:1654
+#: ../gio/gdbusaddress.c:1656
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Okänd busstyp %d"
@@ -648,36 +648,36 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4109 ../gio/gdbusconnection.c:4456
 #, c-format
 msgid ""
-"No such interface “org.freedesktop.DBus.Properties” on object at path %s"
+"No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
-"Inget sådant gränssnitt ”org.freedesktop.DBus.Properties” på objekt med "
+"Inget sådant gränssnitt 'org.freedesktop.DBus.Properties' på objekt med "
 "sökvägen %s"
 
 #: ../gio/gdbusconnection.c:4251
 #, c-format
-msgid "No such property “%s”"
-msgstr "Ingen sådan egenskap ”%s”"
+msgid "No such property '%s'"
+msgstr "Ingen sådan egenskap '%s'"
 
 #: ../gio/gdbusconnection.c:4263
 #, c-format
-msgid "Property “%s” is not readable"
-msgstr "Egenskapen ”%s” är inte läsbar"
+msgid "Property '%s' is not readable"
+msgstr "Egenskapen '%s' är inte läsbar"
 
 #: ../gio/gdbusconnection.c:4274
 #, c-format
-msgid "Property “%s” is not writable"
-msgstr "Egenskapen ”%s” är inte skrivbar"
+msgid "Property '%s' is not writable"
+msgstr "Egenskapen '%s' är inte skrivbar"
 
 #: ../gio/gdbusconnection.c:4294
 #, c-format
-msgid "Error setting property “%s”: Expected type “%s” but got “%s”"
+msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
-"Fel vid inställning av egenskapen ”%s”: Förväntade typen ”%s” men fick ”%s”"
+"Fel vid inställning av egenskapen '%s': Förväntade typen '%s' men fick '%s'"
 
 #: ../gio/gdbusconnection.c:4399 ../gio/gdbusconnection.c:6573
 #, c-format
-msgid "No such interface “%s”"
-msgstr "Inget sådan gränssnitt ”%s”"
+msgid "No such interface '%s'"
+msgstr "Inget sådant gränssnitt '%s'"
 
 #: ../gio/gdbusconnection.c:4607
 msgid "No such interface"
@@ -685,18 +685,18 @@ msgstr "Inget sådant gränssnitt"
 
 #: ../gio/gdbusconnection.c:4825 ../gio/gdbusconnection.c:7082
 #, c-format
-msgid "No such interface “%s” on object at path %s"
-msgstr "Inget sådant gränssnitt ”%s” på objekt med sökvägen %s"
+msgid "No such interface '%s' on object at path %s"
+msgstr "Inget sådant gränssnitt '%s' på objekt med sökvägen %s"
 
 #: ../gio/gdbusconnection.c:4923
 #, c-format
-msgid "No such method “%s”"
-msgstr "Ingen sådan metod ”%s”"
+msgid "No such method '%s'"
+msgstr "Ingen sådan metod '%s'"
 
 #: ../gio/gdbusconnection.c:4954
 #, c-format
-msgid "Type of message, “%s”, does not match expected type “%s”"
-msgstr "Typ av meddelande, ”%s”, matchar inte förväntade typen ”%s”"
+msgid "Type of message, '%s', does not match expected type '%s'"
+msgstr "Typ av meddelande, '%s', matchar inte förväntade typen '%s'"
 
 #: ../gio/gdbusconnection.c:5152
 #, c-format
@@ -715,18 +715,27 @@ msgstr "Kunde inte sätta egenskap %s.%s"
 
 #: ../gio/gdbusconnection.c:5610
 #, c-format
-msgid "Method “%s” returned type “%s”, but expected “%s”"
-msgstr "Metoden ”%s” returnerade typen ”%s”, men förväntade ”%s”"
+msgid "Method '%s' returned type '%s', but expected '%s'"
+msgstr "Metoden '%s' returnerade typen '%s', men förväntade '%s'"
 
 #: ../gio/gdbusconnection.c:6684
 #, c-format
-msgid "Method “%s” on interface “%s” with signature “%s” does not exist"
-msgstr "Metoden ”%s” på gränssnittet ”%s” med signaturen ”%s” finns inte"
+msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
+msgstr "Metoden '%s' på gränssnittet '%s' med signaturen '%s' finns inte"
 
 #: ../gio/gdbusconnection.c:6805
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ett underträd har redan exporterats för %s"
+
+#: ../gio/gdbusconnection.c:7133
+#, c-format
+msgid ""
+"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
+"- unknown value '%s'"
+msgstr ""
+"Kan inte fastställa bussadressen från miljövariabeln DBUS_STARTER_BUS_TYPE - "
+"okänt värde '%s'"
 
 #: ../gio/gdbusmessage.c:1244
 msgid "type is INVALID"
@@ -1201,38 +1210,38 @@ msgstr "Objektsökväg att övervaka"
 msgid "Monitor a remote object."
 msgstr "Övervaka ett fjärrobjekt."
 
-#: ../gio/gdesktopappinfo.c:1994 ../gio/gdesktopappinfo.c:4501
+#: ../gio/gdesktopappinfo.c:1997 ../gio/gdesktopappinfo.c:4504
 msgid "Unnamed"
 msgstr "Namnlös"
 
-#: ../gio/gdesktopappinfo.c:2404
+#: ../gio/gdesktopappinfo.c:2407
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Skrivbordsfilen angav inget Exec-fält"
 
-#: ../gio/gdesktopappinfo.c:2689
+#: ../gio/gdesktopappinfo.c:2692
 msgid "Unable to find terminal required for application"
 msgstr "Kunde inte hitta terminal som krävs för programmet"
 
-#: ../gio/gdesktopappinfo.c:3097
+#: ../gio/gdesktopappinfo.c:3100
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Kan inte skapa programkonfigurationsmapp för användare %s: %s"
 
-#: ../gio/gdesktopappinfo.c:3101
+#: ../gio/gdesktopappinfo.c:3104
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Kan inte skapa MIME-konfigurationsmapp för användare %s: %s"
 
-#: ../gio/gdesktopappinfo.c:3341 ../gio/gdesktopappinfo.c:3365
+#: ../gio/gdesktopappinfo.c:3344 ../gio/gdesktopappinfo.c:3368
 msgid "Application information lacks an identifier"
 msgstr "Programinformation saknar en identifierare"
 
-#: ../gio/gdesktopappinfo.c:3599
+#: ../gio/gdesktopappinfo.c:3602
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Kan inte skapa skrivbordsfil för användare %s"
 
-#: ../gio/gdesktopappinfo.c:3733
+#: ../gio/gdesktopappinfo.c:3736
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Anpassad definition för %s"
@@ -1494,7 +1503,7 @@ msgid "Could not parse “%s” as IP address mask"
 msgstr "Kunde inte tolka ”%s” som IP-adressmask"
 
 #: ../gio/ginetsocketaddress.c:203 ../gio/ginetsocketaddress.c:220
-#: ../gio/gnativesocketaddress.c:106 ../gio/gunixsocketaddress.c:216
+#: ../gio/gnativesocketaddress.c:106 ../gio/gunixsocketaddress.c:218
 msgid "Not enough space for socket address"
 msgstr "Inte tillräckligt med utrymme för uttagsadress"
 
@@ -2265,59 +2274,63 @@ msgstr "Fel vid komprimering av filen %s"
 msgid "text may not appear inside <%s>"
 msgstr "text får inte vara inuti <%s>"
 
-#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2037
+#: ../gio/glib-compile-resources.c:664 ../gio/glib-compile-schemas.c:2037
 msgid "Show program version and exit"
 msgstr "Visa programversion och avsluta"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:665
 msgid "name of the output file"
 msgstr "namn på utmatningsfilen"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:666
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "Katalogerna där filer ska läsas från (standard är aktuell katalog)"
 
-#: ../gio/glib-compile-resources.c:623 ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-resources.c:666 ../gio/glib-compile-schemas.c:2038
 #: ../gio/glib-compile-schemas.c:2067
 msgid "DIRECTORY"
 msgstr "KATALOG"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:667
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Generera utmatning i formatet valt av målfilnamnets filändelse"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:668
 msgid "Generate source header"
 msgstr "Generera källkods-header"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:669
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Generera källkod som används för att länka in resursfilen i din kod"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:670
 msgid "Generate dependency list"
 msgstr "Generera beroendelista"
 
-#: ../gio/glib-compile-resources.c:628
+#: ../gio/glib-compile-resources.c:671
 msgid "name of the dependency file to generate"
 msgstr "namn på beroendefilen att generera"
 
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:672
+msgid "Include phony targets in the generated dependency file"
+msgstr "Inkludera phony-mål i den genererade beroendefilen"
+
+#: ../gio/glib-compile-resources.c:673
 msgid "Don’t automatically create and register resource"
 msgstr "Skapa och registrera inte resursen automatiskt"
 
-#: ../gio/glib-compile-resources.c:630
+#: ../gio/glib-compile-resources.c:674
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Exportera inte funktioner; deklarera dem som G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:631
+#: ../gio/glib-compile-resources.c:675
 msgid "C identifier name used for the generated source code"
 msgstr "C-identifierarnamn som används för den genererade källkoden"
 
-#: ../gio/glib-compile-resources.c:657
+#: ../gio/glib-compile-resources.c:701
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2327,7 +2340,7 @@ msgstr ""
 "Resursspecifikationsfiler har filändelsen .gresource.xml,\n"
 "och resursfilen har filändelsen .gresource."
 
-#: ../gio/glib-compile-resources.c:679
+#: ../gio/glib-compile-resources.c:723
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Du bör ange exakt ett filnamn\n"
@@ -2338,32 +2351,32 @@ msgstr "tomma namn tillåts inte"
 
 #: ../gio/glib-compile-schemas.c:794
 #, c-format
-msgid "invalid name “%s”: names must begin with a lowercase letter"
-msgstr "ogiltigt namn ”%s”: namn måste börja med en liten bokstav"
+msgid "invalid name '%s': names must begin with a lowercase letter"
+msgstr "ogiltigt namn '%s': namn måste börja med en liten bokstav"
 
 #: ../gio/glib-compile-schemas.c:806
 #, c-format
 msgid ""
-"invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
-"and hyphen (“-”) are permitted."
+"invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
+"and hyphen ('-') are permitted."
 msgstr ""
-"ogiltigt namn ”%s”: ogiltigt tecken ”%c”; endast gemena bokstäver, siffror "
-"och bindestreck (”-”) tillåts."
+"ogiltigt namn '%s': ogiltigt tecken '%c'; endast gemena bokstäver, siffror "
+"och bindestreck ('-') tillåts."
 
 #: ../gio/glib-compile-schemas.c:815
 #, c-format
-msgid "invalid name “%s”: two successive hyphens (“--”) are not permitted."
-msgstr "ogiltigt namn ”%s”: två efterföljande bindestreck (”--”) tillåts inte."
+msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
+msgstr "ogiltigt namn '%s': två efterföljande bindestreck ('--') tillåts inte."
 
 #: ../gio/glib-compile-schemas.c:824
 #, c-format
-msgid "invalid name “%s”: the last character may not be a hyphen (“-”)."
-msgstr "ogiltigt namn ”%s”: sista tecknet får inte vara ett bindestreck (”-”)."
+msgid "invalid name '%s': the last character may not be a hyphen ('-')."
+msgstr "ogiltigt namn '%s': sista tecknet får inte vara ett bindestreck ('-')."
 
 #: ../gio/glib-compile-schemas.c:832
 #, c-format
-msgid "invalid name “%s”: maximum length is 1024"
-msgstr "ogiltigt namn ”%s”: maximal längd är 1024"
+msgid "invalid name '%s': maximum length is 1024"
+msgstr "ogiltigt namn '%s': maximal längd är 1024"
 
 #: ../gio/glib-compile-schemas.c:901
 #, c-format
@@ -2371,8 +2384,8 @@ msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> redan angiven"
 
 #: ../gio/glib-compile-schemas.c:927
-msgid "cannot add keys to a “list-of” schema"
-msgstr "kan inte lägga till nycklar till ett ”list-of”-schema"
+msgid "cannot add keys to a 'list-of' schema"
+msgstr "kan inte lägga till nycklar till ett 'list-of'-schema"
 
 #: ../gio/glib-compile-schemas.c:938
 #, c-format
@@ -2391,10 +2404,10 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:967
 #, c-format
 msgid ""
-"exactly one of “type”, “enum” or “flags” must be specified as an attribute "
+"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr ""
-"exakt en av ”type”, ”enum” eller ”flags” måste anges som ett attribut till "
+"exakt en av 'type', 'enum' eller 'flags' måste anges som ett attribut till "
 "<key>"
 
 #: ../gio/glib-compile-schemas.c:986
@@ -2404,11 +2417,11 @@ msgstr "<%s id='%s'> inte (ännu) angiven."
 
 #: ../gio/glib-compile-schemas.c:1001
 #, c-format
-msgid "invalid GVariant type string “%s”"
-msgstr "ogiltig GVariant-typsträng ”%s”"
+msgid "invalid GVariant type string '%s'"
+msgstr "ogiltig GVariant-typsträng '%s'"
 
 #: ../gio/glib-compile-schemas.c:1031
-msgid "<override> given but schema isn’t extending anything"
+msgid "<override> given but schema isn't extending anything"
 msgstr "<override> angavs men schemat utökar inte någonting"
 
 #: ../gio/glib-compile-schemas.c:1044
@@ -2428,13 +2441,13 @@ msgstr "<schema id='%s'> redan angiven"
 
 #: ../gio/glib-compile-schemas.c:1137
 #, c-format
-msgid "<schema id='%s'> extends not yet existing schema “%s”"
-msgstr "<schema id='%s'> utökar ännu inte befintliga schemat ”%s”"
+msgid "<schema id='%s'> extends not yet existing schema '%s'"
+msgstr "<schema id='%s'> utökar ännu inte befintliga schemat '%s'"
 
 #: ../gio/glib-compile-schemas.c:1153
 #, c-format
-msgid "<schema id='%s'> is list of not yet existing schema “%s”"
-msgstr "<schema id='%s'> är listad av ännu inte befintliga schemat ”%s”"
+msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+msgstr "<schema id='%s'> är lista av ännu inte befintliga schemat '%s'"
 
 #: ../gio/glib-compile-schemas.c:1161
 #, c-format
@@ -2457,11 +2470,11 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1191
 #, c-format
 msgid ""
-"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
-"does not extend “%s”"
+"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
+"does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> utökar <schema id='%s' list-of='%s'> men ”%s” "
-"utökar inte ”%s”"
+"<schema id='%s' list-of='%s'> utökar <schema id='%s' list-of='%s'> men '%s' "
+"utökar inte '%s'"
 
 #: ../gio/glib-compile-schemas.c:1208
 #, c-format
@@ -2470,8 +2483,8 @@ msgstr "en sökväg, om angiven, måste börja och sluta med ett snedstreck"
 
 #: ../gio/glib-compile-schemas.c:1215
 #, c-format
-msgid "the path of a list must end with “:/”"
-msgstr "sökvägen för en lista måste sluta med ”:/”"
+msgid "the path of a list must end with ':/'"
+msgstr "sökvägen för en lista måste sluta med ':/'"
 
 #: ../gio/glib-compile-schemas.c:1247
 #, c-format
@@ -2507,9 +2520,9 @@ msgstr "Ignorerar denna fil.\n"
 
 #: ../gio/glib-compile-schemas.c:1901
 #, c-format
-msgid "No such key “%s” in schema “%s” as specified in override file “%s”"
+msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
 msgstr ""
-"Ingen sådan nyckel ”%s” i schemat ”%s” som angetts i åsidosättningsfilen ”%s”"
+"Ingen sådan nyckel '%s' i schemat '%s' som angetts i åsidosättningsfilen '%s'"
 
 #: ../gio/glib-compile-schemas.c:1907 ../gio/glib-compile-schemas.c:1965
 #: ../gio/glib-compile-schemas.c:1993
@@ -2526,10 +2539,10 @@ msgstr " och --strict angavs; avslutar.\n"
 #: ../gio/glib-compile-schemas.c:1927
 #, c-format
 msgid ""
-"error parsing key “%s” in schema “%s” as specified in override file “%s”: %s."
+"error parsing key '%s' in schema '%s' as specified in override file '%s': %s."
 msgstr ""
-"fel vid tolkning av nyckeln ”%s” i schemat ”%s” som angetts i "
-"åsidosättningsfilen ”%s”: %s."
+"fel vid tolkning av nyckeln '%s' i schemat '%s' som angetts i "
+"åsidosättningsfilen '%s': %s."
 
 #: ../gio/glib-compile-schemas.c:1937
 #, c-format
@@ -2539,19 +2552,19 @@ msgstr "Ignorerar åsidosättning för denna nyckel.\n"
 #: ../gio/glib-compile-schemas.c:1955
 #, c-format
 msgid ""
-"override for key “%s” in schema “%s” in override file “%s” is outside the "
+"override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
-"åsidosättning för nyckeln ”%s” i schemat ”%s” i åsidosättningsfilen ”%s” är "
+"åsidosättning för nyckeln '%s' i schemat '%s' i åsidosättningsfilen '%s' är "
 "utanför intervallet som anges i schemat"
 
 #: ../gio/glib-compile-schemas.c:1983
 #, c-format
 msgid ""
-"override for key “%s” in schema “%s” in override file “%s” is not in the "
+"override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"åsidosättning för nyckeln ”%s” i schemat ”%s” i åsidosättningsfilen ”%s” "
+"åsidosättning för nyckeln '%s' i schemat '%s' i åsidosättningsfilen '%s' "
 "finns inte i listan över giltiga val"
 
 #: ../gio/glib-compile-schemas.c:2038
@@ -3021,7 +3034,7 @@ msgstr "Utmatningsström har inte implementerat skrivning"
 msgid "Source stream is already closed"
 msgstr "Källströmmen är redan stängd"
 
-#: ../gio/gresolver.c:333 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:341 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
 msgid "Error resolving “%s”: %s"
@@ -3409,144 +3422,144 @@ msgstr "Tomt schemanamn angavs\n"
 msgid "No such key “%s”\n"
 msgstr "Ingen sådan nyckel ”%s”\n"
 
-#: ../gio/gsocket.c:364
+#: ../gio/gsocket.c:369
 msgid "Invalid socket, not initialized"
 msgstr "Ogiltigt uttag, inte initierat"
 
-#: ../gio/gsocket.c:371
+#: ../gio/gsocket.c:376
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Ogiltigt uttag, initiering misslyckades på grund av: %s"
 
-#: ../gio/gsocket.c:379
+#: ../gio/gsocket.c:384
 msgid "Socket is already closed"
 msgstr "Uttaget är redan stängt"
 
-#: ../gio/gsocket.c:394 ../gio/gsocket.c:2751 ../gio/gsocket.c:3897
-#: ../gio/gsocket.c:3952
+#: ../gio/gsocket.c:399 ../gio/gsocket.c:2754 ../gio/gsocket.c:3939
+#: ../gio/gsocket.c:3995
 msgid "Socket I/O timed out"
 msgstr "Tidsgräns för in/ut på uttaget överstegs"
 
-#: ../gio/gsocket.c:526
+#: ../gio/gsocket.c:531
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "skapar GSocket från fd: %s"
 
-#: ../gio/gsocket.c:554 ../gio/gsocket.c:608 ../gio/gsocket.c:615
+#: ../gio/gsocket.c:559 ../gio/gsocket.c:613 ../gio/gsocket.c:620
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Kunde inte skapa uttag: %s"
 
-#: ../gio/gsocket.c:608
+#: ../gio/gsocket.c:613
 msgid "Unknown family was specified"
 msgstr "Okänd familj angavs"
 
-#: ../gio/gsocket.c:615
+#: ../gio/gsocket.c:620
 msgid "Unknown protocol was specified"
 msgstr "Okänt protokoll angavs"
 
-#: ../gio/gsocket.c:1104
+#: ../gio/gsocket.c:1111
 #, c-format
 msgid "Cannot use datagram operations on a non-datagram socket."
 msgstr "Kan inte använda datagramåtgärder på ett icke-datagram-uttag."
 
-#: ../gio/gsocket.c:1121
+#: ../gio/gsocket.c:1128
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
 msgstr "Kan inte använda datagramåtgärder på ett uttag med en satt tidsgräns."
 
-#: ../gio/gsocket.c:1925
+#: ../gio/gsocket.c:1932
 #, c-format
 msgid "could not get local address: %s"
 msgstr "kunde inte få lokal adress: %s"
 
-#: ../gio/gsocket.c:1968
+#: ../gio/gsocket.c:1975
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "kunde inte få fjärradress: %s"
 
-#: ../gio/gsocket.c:2034
+#: ../gio/gsocket.c:2041
 #, c-format
 msgid "could not listen: %s"
 msgstr "kunde inte lyssna: %s"
 
-#: ../gio/gsocket.c:2133
+#: ../gio/gsocket.c:2140
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Fel vid bindning till adress: %s"
 
-#: ../gio/gsocket.c:2248 ../gio/gsocket.c:2285
+#: ../gio/gsocket.c:2255 ../gio/gsocket.c:2292
 #, c-format
 msgid "Error joining multicast group: %s"
 msgstr "Fel vid medlemskap i multicast-grupp: %s"
 
-#: ../gio/gsocket.c:2249 ../gio/gsocket.c:2286
+#: ../gio/gsocket.c:2256 ../gio/gsocket.c:2293
 #, c-format
 msgid "Error leaving multicast group: %s"
 msgstr "Fel vid lämnande av multicast-grupp: %s"
 
-#: ../gio/gsocket.c:2250
+#: ../gio/gsocket.c:2257
 msgid "No support for source-specific multicast"
 msgstr "Inget stöd för källspecifik multicast"
 
-#: ../gio/gsocket.c:2470
+#: ../gio/gsocket.c:2477
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Fel vid godkännande av anslutning: %s"
 
-#: ../gio/gsocket.c:2593
+#: ../gio/gsocket.c:2598
 msgid "Connection in progress"
 msgstr "Anslutningsförsök pågår"
 
-#: ../gio/gsocket.c:2644
+#: ../gio/gsocket.c:2647
 msgid "Unable to get pending error: "
 msgstr "Kunde inte få tag på väntande fel: "
 
-#: ../gio/gsocket.c:2816
+#: ../gio/gsocket.c:2817
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Fel vid mottagning av data: %s"
 
-#: ../gio/gsocket.c:3013
+#: ../gio/gsocket.c:3012
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Fel vid sändning av data: %s"
 
-#: ../gio/gsocket.c:3200
+#: ../gio/gsocket.c:3199
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Kunde inte stänga ner uttag: %s"
 
-#: ../gio/gsocket.c:3281
+#: ../gio/gsocket.c:3280
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Fel vid stängning av uttag: %s"
 
-#: ../gio/gsocket.c:3890
+#: ../gio/gsocket.c:3932
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Väntar på uttagstillstånd: %s"
 
-#: ../gio/gsocket.c:4362 ../gio/gsocket.c:4442 ../gio/gsocket.c:4620
+#: ../gio/gsocket.c:4404 ../gio/gsocket.c:4484 ../gio/gsocket.c:4662
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Fel vid sändning av meddelande: %s"
 
-#: ../gio/gsocket.c:4386
+#: ../gio/gsocket.c:4428
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage stöds inte på Windows"
 
-#: ../gio/gsocket.c:4839 ../gio/gsocket.c:4912 ../gio/gsocket.c:5139
+#: ../gio/gsocket.c:4881 ../gio/gsocket.c:4954 ../gio/gsocket.c:5180
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Fel vid mottagning av meddelande: %s"
 
-#: ../gio/gsocket.c:5411
+#: ../gio/gsocket.c:5452
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Kunde inte läsa uttagets inloggningsuppgifter: %s"
 
-#: ../gio/gsocket.c:5420
+#: ../gio/gsocket.c:5461
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials har inte implementerats för detta operativsystem"
@@ -3808,7 +3821,7 @@ msgstr "Fel vid läsning från filhandtag: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Fel vid stängning av filhandtag: %s"
 
-#: ../gio/gunixmounts.c:2364 ../gio/gunixmounts.c:2417
+#: ../gio/gunixmounts.c:2367 ../gio/gunixmounts.c:2420
 msgid "Filesystem root"
 msgstr "Filsystemsrot"
 
@@ -3817,7 +3830,7 @@ msgstr "Filsystemsrot"
 msgid "Error writing to file descriptor: %s"
 msgstr "Fel vid skrivning till filhandtag: %s"
 
-#: ../gio/gunixsocketaddress.c:239
+#: ../gio/gunixsocketaddress.c:241
 msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "Abstrakta UNIX-domänuttagsadresser stöds inte på detta system"
 
@@ -3970,37 +3983,37 @@ msgstr "Ofullständig teckensekvens vid slutet av indata"
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "Kan inte konvertera reservsträngen ”%s” till kodningen ”%s”"
 
-#: ../glib/gconvert.c:1567
+#: ../glib/gconvert.c:1566
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "URI:n ”%s” är ingen absolut URI som använder ”file”-schemat"
 
-#: ../glib/gconvert.c:1577
+#: ../glib/gconvert.c:1576
 #, c-format
 msgid "The local file URI “%s” may not include a “#”"
 msgstr "Lokala fil-URI:n ”%s” får inte innehålla en ”#”"
 
-#: ../glib/gconvert.c:1594
+#: ../glib/gconvert.c:1593
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "URI:n ”%s” är ogiltig"
 
-#: ../glib/gconvert.c:1606
+#: ../glib/gconvert.c:1605
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "Värdnamnet i URI:n ”%s” är ogiltigt"
 
-#: ../glib/gconvert.c:1622
+#: ../glib/gconvert.c:1621
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "URI:n ”%s” innehåller ogiltigt kodade tecken"
 
-#: ../glib/gconvert.c:1717
+#: ../glib/gconvert.c:1716
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "Sökvägen ”%s” är ingen absolut sökväg"
 
-#: ../glib/gconvert.c:1727
+#: ../glib/gconvert.c:1726
 msgid "Invalid hostname"
 msgstr "Ogiltigt värdnamn"
 
@@ -4465,18 +4478,18 @@ msgstr "Fel på rad %d tecken %d: "
 
 #: ../glib/gmarkup.c:462 ../glib/gmarkup.c:545
 #, c-format
-msgid "Invalid UTF-8 encoded text in name — not valid “%s”"
-msgstr "Ogiltig UTF-8-kodad text i namnet — inte giltig ”%s”"
+msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
+msgstr "Ogiltig UTF-8-kodad text i namnet - inte giltig '%s'"
 
 #: ../glib/gmarkup.c:473
 #, c-format
-msgid "“%s” is not a valid name"
-msgstr "”%s” är inte ett giltigt namn"
+msgid "'%s' is not a valid name"
+msgstr "'%s' är inte ett giltigt namn"
 
 #: ../glib/gmarkup.c:489
 #, c-format
-msgid "“%s” is not a valid name: “%c”"
-msgstr "”%s” är inte ett giltigt namn: ”%c”"
+msgid "'%s' is not a valid name: '%c'"
+msgstr "'%s' är inte ett giltigt namn: '%c'"
 
 #: ../glib/gmarkup.c:599
 #, c-format
@@ -4486,16 +4499,16 @@ msgstr "Fel på rad %d: %s"
 #: ../glib/gmarkup.c:676
 #, c-format
 msgid ""
-"Failed to parse “%-.*s”, which should have been a digit inside a character "
-"reference (&#234; for example) — perhaps the digit is too large"
+"Failed to parse '%-.*s', which should have been a digit inside a character "
+"reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Misslyckades med att tolka ”%-.*s”, som skulle ha varit en siffra inuti en "
+"Misslyckades med att tolka '%-.*s', som skulle ha varit en siffra inuti en "
 "teckenreferens (&#234; till exempel). Siffran är kanske för stor"
 
 #: ../glib/gmarkup.c:688
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity — escape ampersand "
+"ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
 "Teckenreferensen slutade inte med ett semikolon. Troligtvis använde du ett &-"
@@ -4503,25 +4516,25 @@ msgstr ""
 
 #: ../glib/gmarkup.c:714
 #, c-format
-msgid "Character reference “%-.*s” does not encode a permitted character"
-msgstr "Teckenreferensen ”%-.*s” kodar inte ett tillåtet tecken"
+msgid "Character reference '%-.*s' does not encode a permitted character"
+msgstr "Teckenreferensen '%-.*s' kodar inte ett tillåtet tecken"
 
 #: ../glib/gmarkup.c:752
 msgid ""
-"Empty entity “&;” seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"Tom entitet ”&;” hittades, giltiga entiteter är: &amp; &quot; &lt; &gt; "
+"Tom entitet '&;' hittades, giltiga entiteter är: &amp; &quot; &lt; &gt; "
 "&apos;"
 
 #: ../glib/gmarkup.c:760
 #, c-format
-msgid "Entity name “%-.*s” is not known"
-msgstr "Entitetsnamnet ”%-.*s” är okänt"
+msgid "Entity name '%-.*s' is not known"
+msgstr "Entitetsnamnet '%-.*s' är okänt"
 
 #: ../glib/gmarkup.c:765
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity — escape ampersand as &amp;"
+"character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "Entiteten slutade inte med ett semikolon. Troligtvis använde du ett &-tecken "
 "utan att avse att starta en entitet. Skriv om &-tecknet som &amp;"
@@ -4533,93 +4546,93 @@ msgstr "Dokumentet måste börja med ett element (exempelvis <book>)"
 #: ../glib/gmarkup.c:1211
 #, c-format
 msgid ""
-"“%s” is not a valid character following a “<” character; it may not begin an "
+"'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"”%s” är inte ett giltigt tecken efter ett ”<”-tecken. Det får inte inleda "
+"'%s' är inte ett giltigt tecken efter ett '<'-tecken. Det får inte inleda "
 "ett elementnamn"
 
 #: ../glib/gmarkup.c:1253
 #, c-format
 msgid ""
-"Odd character “%s”, expected a “>” character to end the empty-element tag "
-"“%s”"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
-"Konstigt tecken ”%s”, ett ”>”-tecken förväntades för att avsluta tomma "
-"elementtaggen ”%s”"
+"Konstigt tecken '%s', ett '>'-tecken förväntades för att avsluta tomma "
+"elementtaggen '%s'"
 
 #: ../glib/gmarkup.c:1334
 #, c-format
 msgid ""
-"Odd character “%s”, expected a “=” after attribute name “%s” of element “%s”"
+"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Konstigt tecken ”%s”, ett ”=” förväntades efter attributnamnet ”%s” till "
-"elementet ”%s”"
+"Konstigt tecken '%s', ett '=' förväntades efter attributnamnet '%s' till "
+"elementet '%s'"
 
 #: ../glib/gmarkup.c:1375
 #, c-format
 msgid ""
-"Odd character “%s”, expected a “>” or “/” character to end the start tag of "
-"element “%s”, or optionally an attribute; perhaps you used an invalid "
+"Odd character '%s', expected a '>' or '/' character to end the start tag of "
+"element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Konstigt tecken ”%s”, ett ”>”- eller ”/”-tecken förväntades för att avsluta "
-"starttaggen för elementet ”%s”, eller möjligtvis ett attribut. Du kanske "
+"Konstigt tecken '%s', ett '>'- eller '/'-tecken förväntades för att avsluta "
+"starttaggen för elementet '%s', eller möjligtvis ett attribut. Du kanske "
 "använde ett ogiltigt tecken i ett attributnamn"
 
 #: ../glib/gmarkup.c:1419
 #, c-format
 msgid ""
-"Odd character “%s”, expected an open quote mark after the equals sign when "
-"giving value for attribute “%s” of element “%s”"
+"Odd character '%s', expected an open quote mark after the equals sign when "
+"giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Konstigt tecken ”%s”, ett startcitationstecken förväntades efter "
-"likhetstecknet när värdet av attributet ”%s” till elementet ”%s” tilldelades"
+"Konstigt tecken '%s', ett startcitationstecken förväntades efter "
+"likhetstecknet när värdet av attributet '%s' till elementet '%s' tilldelades"
 
 #: ../glib/gmarkup.c:1552
 #, c-format
 msgid ""
-"“%s” is not a valid character following the characters “</”; “%s” may not "
+"'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"”%s” är inte ett giltigt tecken efter tecknen ”</”. ”%s” får inte inleda ett "
+"'%s' är inte ett giltigt tecken efter tecknen '</'. '%s' får inte inleda ett "
 "elementnamn"
 
 #: ../glib/gmarkup.c:1588
 #, c-format
 msgid ""
-"“%s” is not a valid character following the close element name “%s”; the "
-"allowed character is “>”"
+"'%s' is not a valid character following the close element name '%s'; the "
+"allowed character is '>'"
 msgstr ""
-"”%s” är inte ett giltigt tecken efter stängelementnamnet ”%s”. Det tillåtna "
-"tecknet är ”>”"
+"'%s' är inte ett giltigt tecken efter stängelementnamnet '%s'. Det tillåtna "
+"tecknet är '>'"
 
 #: ../glib/gmarkup.c:1599
 #, c-format
-msgid "Element “%s” was closed, no element is currently open"
-msgstr "Elementet ”%s” stängdes, inget element är öppet för tillfället"
+msgid "Element '%s' was closed, no element is currently open"
+msgstr "Elementet '%s' stängdes, inget element är öppet för tillfället"
 
 #: ../glib/gmarkup.c:1608
 #, c-format
-msgid "Element “%s” was closed, but the currently open element is “%s”"
+msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
-"Elementet ”%s” stängdes, men det element som är öppet för tillfället är ”%s”"
+"Elementet '%s' stängdes, men det element som är öppet för tillfället är '%s'"
 
 #: ../glib/gmarkup.c:1761
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentet var tomt eller innehöll endast tomrum"
 
 #: ../glib/gmarkup.c:1775
-msgid "Document ended unexpectedly just after an open angle bracket “<”"
-msgstr "Dokumentet tog oväntat slut efter ett öppningsklammer ”<”"
+msgid "Document ended unexpectedly just after an open angle bracket '<'"
+msgstr "Dokumentet tog oväntat slut efter ett öppningsklammer '<'"
 
 #: ../glib/gmarkup.c:1783 ../glib/gmarkup.c:1828
 #, c-format
 msgid ""
-"Document ended unexpectedly with elements still open — “%s” was the last "
+"Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Dokumentet tog oväntat slut då element fortfarande var öppna. ”%s” var det "
+"Dokumentet tog oväntat slut då element fortfarande var öppna. '%s' var det "
 "senast öppnade elementet"
 
 #: ../glib/gmarkup.c:1791
@@ -4657,8 +4670,8 @@ msgstr "Dokumentet tog oväntat slut inuti ett attributvärde"
 
 #: ../glib/gmarkup.c:1837
 #, c-format
-msgid "Document ended unexpectedly inside the close tag for element “%s”"
-msgstr "Dokumentet tog oväntat slut inuti stängningstaggen för elementet ”%s”"
+msgid "Document ended unexpectedly inside the close tag for element '%s'"
+msgstr "Dokumentet tog oväntat slut inuti stängningstaggen för elementet '%s'"
 
 #: ../glib/gmarkup.c:1843
 msgid "Document ended unexpectedly inside a comment or processing instruction"
@@ -5345,6 +5358,9 @@ msgstr[1] "%s byte"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+#~ msgid "No such interface “%s”"
+#~ msgstr "Inget sådan gränssnitt ”%s”"
 
 #~ msgid "Error creating directory '%s': %s"
 #~ msgstr "Fel vid skapandet av katalogen ”%s”: %s"
