@@ -77,7 +77,10 @@ typedef struct
   gboolean                  initialized;
 } Client;
 
-static guint next_global_id = 1;
+/* Must be accessed atomically. */
+static volatile guint next_global_id = 1;
+
+/* Must be accessed with @lock held. */
 static GHashTable *map_id_to_client = NULL;
 
 static Client *
@@ -562,7 +565,7 @@ g_bus_watch_name (GBusType                  bus_type,
 
   client = g_new0 (Client, 1);
   client->ref_count = 1;
-  client->id = next_global_id++; /* TODO: uh oh, handle overflow */
+  client->id = g_atomic_int_add (&next_global_id, 1); /* TODO: uh oh, handle overflow */
   client->name = g_strdup (name);
   client->flags = flags;
   client->name_appeared_handler = name_appeared_handler;
@@ -624,7 +627,7 @@ guint g_bus_watch_name_on_connection (GDBusConnection          *connection,
 
   client = g_new0 (Client, 1);
   client->ref_count = 1;
-  client->id = next_global_id++; /* TODO: uh oh, handle overflow */
+  client->id = g_atomic_int_add (&next_global_id, 1); /* TODO: uh oh, handle overflow */
   client->name = g_strdup (name);
   client->flags = flags;
   client->name_appeared_handler = name_appeared_handler;
