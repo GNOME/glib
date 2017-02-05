@@ -119,6 +119,7 @@ query_dir (const char *dirname)
         g_printerr ("Unable to unlink %s: %s\n", cachename, g_strerror (errno));
     }
 
+  g_free (cachename);
   g_string_free (data, TRUE);
 }
 
