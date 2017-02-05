@@ -650,8 +650,7 @@ cancellable_source_cancelled (GCancellable *cancellable,
 {
   GSource *source = user_data;
 
-  if (!g_source_is_destroyed (source))
-    g_source_set_ready_time (source, 0);
+  g_source_set_ready_time (source, 0);
 }
 
 static gboolean

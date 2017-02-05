@@ -1499,8 +1499,7 @@ g_subprocess_communicate_state_free (gpointer data)
 
   if (state->cancellable_source)
     {
-      if (!g_source_is_destroyed (state->cancellable_source))
-        g_source_destroy (state->cancellable_source);
+      g_source_destroy (state->cancellable_source);
       g_source_unref (state->cancellable_source);
     }
 
