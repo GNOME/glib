@@ -3063,6 +3063,12 @@ g_main_current_source (void)
  * }
  * ]|
  *
+ * Calls to this function from a thread other than the one acquired by the
+ * #GMainContext the #GSource is attached to are typically redundant, as the
+ * source could be destroyed immediately after this function returns. However,
+ * once a source is destroyed it cannot be un-destroyed, so this function can be
+ * used for opportunistic checks from any thread.
+ *
  * Returns: %TRUE if the source has been destroyed
  *
  * Since: 2.12
