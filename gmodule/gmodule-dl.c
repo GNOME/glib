@@ -111,8 +111,14 @@ _g_module_self (void)
   /* to query symbols from the program itself, special link options
    * are required on some systems.
    */
-  
-#ifdef __BIONIC__
+
+  /* On Android 32 bit (i.e. not __LP64__), dlopen(NULL)
+   * does not work reliable and generally no symbols are found
+   * at all. RTLD_DEFAULT works though.
+   * On Android 64 bit, dlopen(NULL) seems to work but RTLD_DEFAULT
+   * is NULL, which is considered an invalid module.
+   */
+#if defined(__BIONIC__) && !defined(__LP64__)
   handle = RTLD_DEFAULT;
 #else
   handle = dlopen (NULL, RTLD_GLOBAL | RTLD_LAZY);
@@ -129,9 +135,15 @@ _g_module_close (gpointer handle,
 {
   /* are there any systems out there that have dlopen()/dlclose()
    * without a reference count implementation?
+   *
+   * See above for the Android special case
    */
+#if defined(__BIONIC__) && !defined(__LP64__)
+  is_unref = (handle != RTLD_DEFAULT);
+#else
   is_unref |= 1;
-  
+#endif
+
   if (is_unref)
     {
       if (dlclose (handle) != 0)
