@@ -370,7 +370,7 @@ is_valid_tcp (const gchar  *address_entry,
  * @string: A string.
  * @error: Return location for error or %NULL.
  *
- * Like g_dbus_is_address() but also checks if the library suppors the
+ * Like g_dbus_is_address() but also checks if the library supports the
  * transports in @string and that key/value pairs for each transport
  * are valid. See the specification of the
  * [D-Bus address format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
