@@ -63,8 +63,9 @@
  * @include: gio/gio.h
  *
  * Routines for working with D-Bus addresses. A D-Bus address is a string
- * like "unix:tmpdir=/tmp/my-app-name". The exact format of addresses
- * is explained in detail in the [D-Bus specification](http://dbus.freedesktop.org/doc/dbus-specification.html\#addresses).
+ * like `unix:tmpdir=/tmp/my-app-name`. The exact format of addresses
+ * is explained in detail in the
+ * [D-Bus specification](http://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
  */
 
 static gchar *get_session_address_platform_specific (GError **error);
@@ -76,7 +77,8 @@ static gchar *get_session_address_dbus_launch       (GError **error);
  * g_dbus_is_address:
  * @string: A string.
  *
- * Checks if @string is a D-Bus address.
+ * Checks if @string is a
+ * [D-Bus address](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
  *
  * This doesn't check if @string is actually supported by #GDBusServer
  * or #GDBusConnection - use g_dbus_is_supported_address() to do more
@@ -370,7 +372,8 @@ is_valid_tcp (const gchar  *address_entry,
  *
  * Like g_dbus_is_address() but also checks if the library suppors the
  * transports in @string and that key/value pairs for each transport
- * are valid.
+ * are valid. See the specification of the
+ * [D-Bus address format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
  *
  * Returns: %TRUE if @string is a valid D-Bus address that is
  * supported by this library, %FALSE if @error is set.
@@ -839,7 +842,8 @@ get_stream_thread_func (GTask         *task,
  *
  * Asynchronously connects to an endpoint specified by @address and
  * sets up the connection so it is in a state to run the client-side
- * of the D-Bus authentication conversation.
+ * of the D-Bus authentication conversation. @address must be in the
+ * [D-Bus address format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
  *
  * When the operation is finished, @callback will be invoked. You can
  * then call g_dbus_address_get_stream_finish() to get the result of
@@ -917,7 +921,8 @@ g_dbus_address_get_stream_finish (GAsyncResult        *res,
  *
  * Synchronously connects to an endpoint specified by @address and
  * sets up the connection so it is in a state to run the client-side
- * of the D-Bus authentication conversation.
+ * of the D-Bus authentication conversation. @address must be in the
+ * [D-Bus address format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
  *
  * This is a synchronous failable function. See
  * g_dbus_address_get_stream() for the asynchronous version.
@@ -1548,6 +1553,9 @@ get_session_address_platform_specific (GError **error)
  * Synchronously looks up the D-Bus address for the well-known message
  * bus instance specified by @bus_type. This may involve using various
  * platform specific mechanisms.
+ *
+ * The returned address will be in the
+ * [D-Bus address format](https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
  *
  * Returns: a valid D-Bus address string for @bus_type or %NULL if
  *     @error is set
