@@ -1789,6 +1789,26 @@
  */
 
 /**
+ * G_APPROX_VALUE:
+ * @a: a numeric value
+ * @b: a numeric value
+ * @epsilon: a numeric value that expresses the tolerance between @a and @b
+ *
+ * Evaluates to a truth value if the absolute difference between @a and @b is
+ * smaller than @epsilon, and to a false value otherwise.
+ *
+ * For example,
+ * - `G_APPROX_VALUE (5, 6, 2)` evaluates to true
+ * - `G_APPROX_VALUE (3.14, 3.15, 0.001)` evaluates to false
+ * - `G_APPROX_VALUE (n, 0.f, FLT_EPSILON)` evaluates to true if `n` is within
+ *   the single precision floating point epsilon from zero
+ *
+ * Returns: %TRUE if the two values are within the desired range
+ *
+ * Since: 2.58
+ */
+
+/**
  * G_STRUCT_MEMBER:
  * @member_type: the type of the struct field
  * @struct_p: a pointer to a struct
