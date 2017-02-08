@@ -69,6 +69,13 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                  #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'f'); \
                                         } G_STMT_END
+#define g_assert_cmpfloat_with_epsilon(n1,n2,epsilon) \
+                                        G_STMT_START { \
+                                             double __n1 = (n1), __n2 = (n2), __epsilon = (epsilon); \
+                                             if (G_APPROX_VALUE (__n1,  __n2, __epsilon)) ; else \
+                                               g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
+                                                 #n1 " == " #n2 " (+/- " #epsilon ")", __n1, "==", __n2, 'f'); \
+                                        } G_STMT_END
 #define g_assert_cmpmem(m1, l1, m2, l2) G_STMT_START {\
                                              gconstpointer __m1 = m1, __m2 = m2; \
                                              int __l1 = l1, __l2 = l2; \
