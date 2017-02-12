@@ -498,22 +498,17 @@ _kh_add_sub (kqueue_sub *sub)
 gboolean
 _kh_cancel_sub (kqueue_sub *sub)
 {
-  gboolean missing = FALSE;
+  gboolean removed = FALSE;
   g_assert (kqueue_socket_pair[0] != -1);
   g_assert (sub != NULL);
 
+  _km_remove (sub);
+
   G_LOCK (hash_lock);
-  missing = !g_hash_table_remove (subs_hash_table, GINT_TO_POINTER (sub->fd));
+  removed = g_hash_table_remove (subs_hash_table, GINT_TO_POINTER (sub->fd));
   G_UNLOCK (hash_lock);
 
-  if (missing)
-    {
-      /* If there were no fd for this subscription, file is still
-       * missing. */
-      KH_W ("Removing subscription from missing");
-      _km_remove (sub);
-    }
-  else
+  if (removed)
     {
       /* fd will be closed in the kqueue thread */
       _kqueue_thread_remove_fd (sub->fd);
