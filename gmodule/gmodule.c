@@ -167,9 +167,15 @@
 /**
  * G_MODULE_EXPORT:
  *
- * Used to declare functions exported by modules. This is a no-op on Linux
- * and Unices, but when compiling for Windows, it marks a symbol to be
- * exported from the library or executable being built.
+ * Used to declare functions exported by libraries or modules.
+ *
+ * When compiling for Windows, it marks the symbol as `dllexport`.
+ *
+ * When compiling for Linux and Unices, it marks the symbol as having `default`
+ * visibility. This is no-op unless the code is being compiled with a
+ * non-default
+ * [visibility flag](https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html#index-fvisibility-1260)
+ * such as `hidden`.
  */
 
 /**
