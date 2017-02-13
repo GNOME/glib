@@ -35,7 +35,9 @@ G_BEGIN_DECLS
 #define	G_MODULE_IMPORT		extern
 #ifdef G_PLATFORM_WIN32
 #  define	G_MODULE_EXPORT		__declspec(dllexport)
-#else /* !G_PLATFORM_WIN32 */
+#elif __GNUC__ >= 4
+#  define	G_MODULE_EXPORT		__attribute__((visibility("default")))
+#else /* !G_PLATFORM_WIN32 && __GNUC__ < 4 */
 #  define	G_MODULE_EXPORT
 #endif /* !G_PLATFORM_WIN32 */
 
