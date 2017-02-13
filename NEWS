@@ -1,3 +1,16 @@
+Overview of changes in GLib 2.50.3
+==================================
+
+* Bugs fixed:
+ 775309 Crash in gdbusauth
+ 775468 Improve log write supports color method on windows
+ 775517 Password input is echoed in the terminal
+ 775765 FDO notification withdrawal backend sends wrong ID to the server
+
+* Translation updates:
+ Simplified Chinese
+
+
 Overview of changes in GLib 2.50.2
 ==================================
 
