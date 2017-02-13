@@ -1,3 +1,31 @@
+Overview of changes in GLib 2.51.2
+==================================
+
+* Minimal support for UUIDs has been added
+
+* A new file attribute, G_FILE_ATTRIBUTE_RECENT_MODIFIED has been added
+  to improve sorting of recent files
+
+* Bugs fixed:
+ 639078 UUID support feature request
+ 777135 gkeyfile: Be more specific about error codes in documentation
+ 777307 race condition between gdbus signal callback and g_bus_unwatch_name...
+ 777481 goutputstream: docs: fix typos
+ 777493 g_mkdtemp() not introspectable
+ 777507 Recent view sorting incorrectly
+ 777592 Add minor examples to GDBus and GVariant documentation
+ 778002 race in gdbusprivate.c detected by the ThreadSanitizer
+ 778096 race in gdbusconnection reported by TSan
+
+* Translation updates:
+ Norwegian bokmål
+ Polish
+ Simplified Chinese
+ Slovak
+ Spanish
+ Swedish
+
+
 Overview of changes in GLib 2.51.1
 ==================================
 
