@@ -1710,8 +1710,8 @@ class CodeGenerator:
                      '  GVariantIter iter;\n'
                      '  GVariant *child;\n'
                      '  GValue *paramv;\n'
-                     '  guint num_params;\n'
-                     '  guint n;\n'
+                     '  gsize num_params;\n'
+                     '  gsize n;\n'
                      '  guint signal_id;\n');
         # Note: info could be NULL if we are talking to a newer version of the interface
         self.c.write('  info = (_ExtendedGDBusSignalInfo *) g_dbus_interface_info_lookup_signal ((GDBusInterfaceInfo *) &_%s_interface_info.parent_struct, signal_name);\n'
@@ -2130,9 +2130,9 @@ class CodeGenerator:
                      '  GVariantIter iter;\n'
                      '  GVariant *child;\n'
                      '  GValue *paramv;\n'
-                     '  guint num_params;\n'
+                     '  gsize num_params;\n'
                      '  guint num_extra;\n'
-                     '  guint n;\n'
+                     '  gsize n;\n'
                      '  guint signal_id;\n'
                      '  GValue return_value = G_VALUE_INIT;\n'
                      %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper))
