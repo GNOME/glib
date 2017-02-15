@@ -8,14 +8,13 @@
 # Author: Fan, Chun-wei
 # November 05, 2012
 
-# MSVC_BASE_VER: Baseline MSVC 201x version to copy/process project files from (10 for 2010, 11 for 2012, 12 for 2013, 14 for 2015 and so on)
-# MSVC_BASE_VER_LONG: Long Version of baseline Visual Studio 201x version (2010, 2012, 2013, 14 and so on)
+# MSVC_BASE_VER: Baseline MSVC 201x version to copy/process project files from (100 for 2010, 120 for 2013)
+# MSVC_BASE_VER_LONG: Long Version of baseline Visual Studio 201x version (2010, 2012, 2013, 14, 15)
 # MSVC_VER_LONG: Long Version of Visual Studio (2012, 2013, 14 and so on)
-# MSVC_VER: Short Version of Visual Studio (11 for 2012, 12 for 2013, 14 for 2015 and so on)
-# MSVC_FORMAT_VER: Use 12 for MSVC 2012 through 2015
+# MSVC_VER: Short Version of Visual Studio (110 for 2012, 120 for 2013, 140 for 2015, 141 for 2017)
 
 %.sln:
-	sed 's/11\.00/$(MSVC_FORMAT_VER)\.00/g' < $(top_srcdir)/win32/vs$(MSVC_BASE_VER)/$@ > $(top_builddir)/win32/vs$(MSVC_VER)/$@.tmp
+	sed 's/11\.00/12\.00/g' < $(top_srcdir)/win32/vs$(MSVC_BASE_VER)/$@ > $(top_builddir)/win32/vs$(MSVC_VER)/$@.tmp
 	sed 's/$(MSVC_BASE_VER_LONG)/$(MSVC_VER_LONG)/g' < $(top_builddir)/win32/vs$(MSVC_VER)/$@.tmp > $(top_builddir)/win32/vs$(MSVC_VER)/$@
 	rm $(top_builddir)/win32/vs$(MSVC_VER)/$@.tmp
 
@@ -26,9 +25,9 @@
 
 %.vcxproj:
 	if test -e $(top_srcdir)/win32/vs$(MSVC_BASE_VER)/$@; then \
-		sed 's/v$(MSVC_BASE_VER)0/v$(MSVC_VER)0/g' < $(top_srcdir)/win32/vs$(MSVC_BASE_VER)/$@ > $(top_builddir)/win32/vs$(MSVC_VER)/$@; \
+		sed 's/v$(MSVC_BASE_VER)/v$(MSVC_VER)/g' < $(top_srcdir)/win32/vs$(MSVC_BASE_VER)/$@ > $(top_builddir)/win32/vs$(MSVC_VER)/$@; \
 	else \
-		sed 's/v$(MSVC_BASE_VER)0/v$(MSVC_VER)0/g' < $(top_builddir)/win32/vs$(MSVC_BASE_VER)/$@ > $(top_builddir)/win32/vs$(MSVC_VER)/$@; \
+		sed 's/v$(MSVC_BASE_VER)/v$(MSVC_VER)/g' < $(top_builddir)/win32/vs$(MSVC_BASE_VER)/$@ > $(top_builddir)/win32/vs$(MSVC_VER)/$@; \
 	fi
 
 %.props: $(top_builddir)/win32/vs$(MSVC_BASE_VER)/Makefile

@@ -3442,6 +3442,7 @@ win32/vs10/glib-version-paths.props
 win32/vs11/Makefile
 win32/vs12/Makefile
 win32/vs14/Makefile
+win32/vs15/Makefile
 glib/Makefile
 glib/libcharset/Makefile
 glib/gnulib/Makefile

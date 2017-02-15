@@ -61,6 +61,7 @@ glib-install.props: $(top_srcdir)/win32/vs10/glib-install.propsin $(MSVC10_HEADE
 	-$(RM) $(top_builddir)/win32/vs11/glib-install.props
 	-$(RM) $(top_builddir)/win32/vs12/glib-install.props
 	-$(RM) $(top_builddir)/win32/vs14/glib-install.props
+	-$(RM) $(top_builddir)/win32/vs15/glib-install.props
 	$(CPP) -P - <$(top_srcdir)/win32/vs10/glib-install.propsin >$@
 	rm $(MSVC10_HEADERS_LIST)
 
