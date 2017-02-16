@@ -4,6 +4,8 @@ gio_c_args = [
   '-DGIO_MODULE_DIR="@0@"'.format(glib_giomodulesdir),
 ]
 
+gio_c_args += glib_hidden_visibility_args
+
 # FIXME: Install empty glib_giomodulesdir
 
 gnetworking_h_conf = configuration_data()
@@ -747,6 +749,7 @@ gio_tool_sources = [
   'gio-tool-tree.c',
 ]
 
+# FIXME: are all these HAVE_CONFIG_H needed/used here?
 executable('gio', gio_tool_sources,
   install : true,
   c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,

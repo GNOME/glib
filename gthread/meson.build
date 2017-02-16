@@ -6,5 +6,4 @@ libgthread = shared_library('gthread-2.0',
   soversion : soversion,
   install : true,
   dependencies : [libglib_dep],
-  c_args : ['-DG_LOG_DOMAIN="GThread"' ],
-)
+  c_args : ['-DG_LOG_DOMAIN="GThread"' ] + glib_hidden_visibility_args)

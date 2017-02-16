@@ -99,6 +99,7 @@ if host_system == 'windows'
 endif
 
 # Detect and set symbol visibility
+glib_hidden_visibility_args = []
 if get_option('default_library') != 'static'
   if host_system == 'windows'
     glib_conf.set('DLL_EXPORT', true)
@@ -106,11 +107,11 @@ if get_option('default_library') != 'static'
       glib_conf.set('_GLIB_EXTERN', '__declspec(dllexport) extern')
     elif cc.has_argument('-fvisibility=hidden')
       glib_conf.set('_GLIB_EXTERN', '__attribute__((visibility("default"))) __declspec(dllexport) extern')
-      add_global_arguments('-fvisibility=hidden', language : 'c')
+      glib_hidden_visibility_args = ['-fvisibility=hidden']
     endif
   elif cc.has_argument('-fvisibility=hidden')
     glib_conf.set('_GLIB_EXTERN', '__attribute__((visibility("default"))) extern')
-    add_global_arguments('-fvisibility=hidden', language : 'c')
+    glib_hidden_visibility_args = ['-fvisibility=hidden']
   endif
 endif
 

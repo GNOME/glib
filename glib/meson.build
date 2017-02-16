@@ -218,7 +218,7 @@ libglib = shared_library('glib-2.0',
   include_directories : configinc,
   link_with : charset_lib,
   dependencies : [pcre, thread_dep, libintl, librt] + libiconv + platform_deps,
-  c_args : ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION', '-DPCRE_STATIC']
+  c_args : ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION', '-DPCRE_STATIC'] + glib_hidden_visibility_args
 )
 
 libglib_dep = declare_dependency(link_with : libglib,
