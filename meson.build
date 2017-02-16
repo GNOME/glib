@@ -15,7 +15,7 @@ if cc.get_id() == 'msvc'
   # If a warning is completely useless and spammy, use '/wdXXXX' to suppress it
   # If a warning is harmless but hard to fix, use '/woXXXX' so it's shown once
   # NOTE: Only add warnings here if you are sure they're spurious
-  add_global_arguments('/wd4244', '/wd4305', '/wd4035', '/wd4715', '/wd4116',
+  add_project_arguments('/wd4244', '/wd4305', '/wd4035', '/wd4715', '/wd4116',
     '/wd4046', '/wd4068', '/wo4090', language : 'c')
   # Disable SAFESEH with MSVC for plugins and libs that use external deps that
   # are built with MinGW
@@ -26,8 +26,6 @@ else
 endif
 
 host_system = host_machine.system()
-
-#add_global_arguments('-Werror', language : 'c') # FIXME
 
 glib_version = meson.project_version()
 glib_api_version = '2.0'
