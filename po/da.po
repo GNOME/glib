@@ -25,10 +25,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-10-06 20:10+0000\n"
-"PO-Revision-Date: 2016-10-08 00:22+0200\n"
+"Report-Msgid-Bugs-To: "
+"http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-11-20 18:36+0000\n"
+"PO-Revision-Date: 2017-02-16 00:53+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -50,7 +50,7 @@ msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "Indtast GApplication-tjenestetilstand (brug fra D-Bus-tjenestefiler)"
 
 #: ../gio/gapplication.c:550
-msgid "Override the application's ID"
+msgid "Override the application’s ID"
 msgstr "Tilsidesæt programmets id"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
@@ -90,8 +90,8 @@ msgid "Launch the application (with optional files to open)"
 msgstr "Kør programmet (med valgfri filer der skal åbnes)"
 
 #: ../gio/gapplication-tool.c:57
-msgid "APPID [FILE...]"
-msgstr "APPID [FIL...]"
+msgid "APPID [FILE…]"
+msgstr "APPID [FIL …]"
 
 #: ../gio/gapplication-tool.c:59
 msgid "Activate an action"
@@ -130,15 +130,16 @@ msgstr "Kommandoen, der skal vises uddybende hjælp for"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Programidentifikator i D-Bus-format (f.eks. org.eksempel.fremviser)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:622
-#: ../gio/glib-compile-resources.c:628 ../gio/glib-compile-resources.c:654
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:665
+#: ../gio/glib-compile-resources.c:671 ../gio/glib-compile-resources.c:698
 #: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "FIL"
 
 #: ../gio/gapplication-tool.c:72
 msgid "Optional relative or absolute filenames, or URIs to open"
-msgstr "Valgfri relative eller absolutte filnavne, eller URI'er der skal åbnes"
+msgstr ""
+"Valgfri relative eller absolutte filnavne, eller URI'er der skal åbnes"
 
 #: ../gio/gapplication-tool.c:73
 msgid "ACTION"
@@ -175,9 +176,9 @@ msgstr "Brug:\n"
 msgid "Arguments:\n"
 msgstr "Argumenter:\n"
 
-#: ../gio/gapplication-tool.c:133 ../gio/gio-tool.c:206
-msgid "[ARGS...]"
-msgstr "[ARG...]"
+#: ../gio/gapplication-tool.c:133
+msgid "[ARGS…]"
+msgstr "[ARG …]"
 
 #: ../gio/gapplication-tool.c:134
 #, c-format
@@ -188,7 +189,7 @@ msgstr "Kommandoer:\n"
 #: ../gio/gapplication-tool.c:146
 #, c-format
 msgid ""
-"Use '%s help COMMAND' to get detailed help.\n"
+"Use “%s help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
 "Brug \"%s help KOMMANDO\" for at få uddybende hjælp.\n"
@@ -205,14 +206,14 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:171
 #, c-format
-msgid "invalid application id: '%s'\n"
+msgid "invalid application id: “%s”\n"
 msgstr "ugyldig program-id: \"%s\"\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
 #: ../gio/gapplication-tool.c:182
 #, c-format
 msgid ""
-"'%s' takes no arguments\n"
+"“%s” takes no arguments\n"
 "\n"
 msgstr ""
 "\"%s\" tager ikke nogen argumenter\n"
@@ -236,8 +237,8 @@ msgstr "der skal gives et handlingsnavn efter program-id\n"
 #: ../gio/gapplication-tool.c:325
 #, c-format
 msgid ""
-"invalid action name: '%s'\n"
-"action names must consist of only alphanumerics, '-' and '.'\n"
+"invalid action name: “%s”\n"
+"action names must consist of only alphanumerics, “-” and “.”\n"
 msgstr ""
 "ugyldigt handlingsnavn: \"%s\"\n"
 "handlingsnavne kan kun bestå af alfanumeriske tegn, \"-\" og \".\"\n"
@@ -337,12 +338,12 @@ msgstr "Initialisering med mulighed for afbrydelse understøttes ikke"
 #: ../gio/gcharsetconverter.c:454 ../glib/gconvert.c:321
 #: ../glib/giochannel.c:1384
 #, c-format
-msgid "Conversion from character set '%s' to '%s' is not supported"
+msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "Konvertering fra tegnsæt \"%s\" til \"%s\" er ikke understøttet"
 
 #: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:325
 #, c-format
-msgid "Could not open converter from '%s' to '%s'"
+msgid "Could not open converter from “%s” to “%s”"
 msgstr "Kunne ikke konvertere fra \"%s\" til \"%s\""
 
 #: ../gio/gcontenttype.c:335
@@ -382,41 +383,43 @@ msgstr "Uventet tidlig strømafslutning"
 #: ../gio/gdbusaddress.c:153 ../gio/gdbusaddress.c:241
 #: ../gio/gdbusaddress.c:322
 #, c-format
-msgid "Unsupported key '%s' in address entry '%s'"
+msgid "Unsupported key “%s” in address entry “%s”"
 msgstr "Ikke-understøttet nøgle \"%s\" i adresseindgang \"%s\""
 
 #: ../gio/gdbusaddress.c:180
 #, c-format
 msgid ""
-"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address “%s” is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 "Adressen \"%s\" er ugyldig (kræver præcist en af nøglerne path, tmpdir eller "
 "abstract)"
 
 #: ../gio/gdbusaddress.c:193
 #, c-format
-msgid "Meaningless key/value pair combination in address entry '%s'"
+msgid "Meaningless key/value pair combination in address entry “%s”"
 msgstr "Meningsløst nøgle-/værdikombination i adresseindgang \"%s\""
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
-#, c-format
-msgid "Error in address '%s' - the port attribute is malformed"
+#, c-format, fuzzy
+#| msgid "Error in address '%s' - the port attribute is malformed"
+msgid "Error in address “%s” — the port attribute is malformed"
 msgstr "Fejl i adressen \"%s\" - portattributten er fejlformateret"
 
 #: ../gio/gdbusaddress.c:267 ../gio/gdbusaddress.c:348
-#, c-format
-msgid "Error in address '%s' - the family attribute is malformed"
+#, c-format, fuzzy
+#| msgid "Error in address '%s' - the family attribute is malformed"
+msgid "Error in address “%s” — the family attribute is malformed"
 msgstr "Fejl i adressen \"%s\" - familieattributten er fejlformateret"
 
 #: ../gio/gdbusaddress.c:457
 #, c-format
-msgid "Address element '%s' does not contain a colon (:)"
+msgid "Address element “%s” does not contain a colon (:)"
 msgstr "Adresseelementet \"%s\" indeholder intet kolon (:)"
 
 #: ../gio/gdbusaddress.c:478
 #, c-format
 msgid ""
-"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
+"Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
 "sign"
 msgstr ""
 "Nøgle-/værdiparret %d, \"%s\" i adresseelementet \"%s\" indeholder ikke et "
@@ -425,36 +428,44 @@ msgstr ""
 #: ../gio/gdbusaddress.c:492
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
-"'%s'"
+"Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
+"“%s”"
 msgstr ""
 "Fejl ved af-undvigelse af nøgle eller værdi i nøgle-/værdiparret %d, \"%s\" "
 "i adresseelementet \"%s\""
 
 #: ../gio/gdbusaddress.c:570
-#, c-format
+#, c-format, fuzzy
+#| msgid ""
+#| "Error in address '%s' - the unix transport requires exactly one of the keys "
+#| "'path' or 'abstract' to be set"
 msgid ""
-"Error in address '%s' - the unix transport requires exactly one of the keys "
-"'path' or 'abstract' to be set"
+"Error in address “%s” — the unix transport requires exactly one of the keys "
+"“path” or “abstract” to be set"
 msgstr ""
 "Fejl i adressen \"%s\" - unix-transporten kræver at præcist en af nøglerne "
 "\"path\" eller \"abstract\" er givet"
 
 #: ../gio/gdbusaddress.c:606
-#, c-format
-msgid "Error in address '%s' - the host attribute is missing or malformed"
+#, c-format, fuzzy
+#| msgid "Error in address '%s' - the host attribute is missing or malformed"
+msgid "Error in address “%s” — the host attribute is missing or malformed"
 msgstr ""
 "Fejl i adressen \"%s\" - værtsattributten mangler eller er fejlformateret"
 
 #: ../gio/gdbusaddress.c:620
-#, c-format
-msgid "Error in address '%s' - the port attribute is missing or malformed"
+#, c-format, fuzzy
+#| msgid "Error in address '%s' - the port attribute is missing or malformed"
+msgid "Error in address “%s” — the port attribute is missing or malformed"
 msgstr ""
 "Fejl i adressen \"%s\" - portattributten mangler eller er fejlformateret"
 
 #: ../gio/gdbusaddress.c:634
-#, c-format
-msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
+#, c-format, fuzzy
+#| msgid ""
+#| "Error in address '%s' - the noncefile attribute is missing or malformed"
+msgid ""
+"Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
 "Fejl i adressen \"%s\" - noncefile-attributten mangler eller er "
 "fejlformateret"
@@ -465,28 +476,28 @@ msgstr "Fejl ved automatisk opstart: "
 
 #: ../gio/gdbusaddress.c:663
 #, c-format
-msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgid "Unknown or unsupported transport “%s” for address “%s”"
 msgstr "Ukendt eller ikke-understøttet transport \"%s\" for adressen \"%s\""
 
 #: ../gio/gdbusaddress.c:699
 #, c-format
-msgid "Error opening nonce file '%s': %s"
+msgid "Error opening nonce file “%s”: %s"
 msgstr "Fejl ved åbning af \"nonce\"-filen \"%s\": %s"
 
 #: ../gio/gdbusaddress.c:717
 #, c-format
-msgid "Error reading from nonce file '%s': %s"
+msgid "Error reading from nonce file “%s”: %s"
 msgstr "Fejl ved læsning af \"nonce\"-filen \"%s\": %s"
 
 #: ../gio/gdbusaddress.c:726
 #, c-format
-msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
+msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr ""
 "Fejl ved læsning af \"nonce\"-filen \"%s\". Forventede 16 byte, fandt %d"
 
 #: ../gio/gdbusaddress.c:744
 #, c-format
-msgid "Error writing contents of nonce file '%s' to stream:"
+msgid "Error writing contents of nonce file “%s” to stream:"
 msgstr ""
 "Fejl under skrivning af indhold af \"nonce\"-filen \"%s\" til strømmen:"
 
@@ -511,7 +522,7 @@ msgstr "Kan ikke køre D-Bus automatisk uden $DISPLAY til X11"
 
 #: ../gio/gdbusaddress.c:1120
 #, c-format
-msgid "Error spawning command line '%s': "
+msgid "Error spawning command line “%s”: "
 msgstr "Fejl ved kørsel af kommandolinjen \"%s\": "
 
 #: ../gio/gdbusaddress.c:1337
@@ -531,11 +542,14 @@ msgstr ""
 "Kan ikke bestemme sessionsbussens adresse (ikke implementeret for dette "
 "operativsystem)"
 
-#: ../gio/gdbusaddress.c:1635 ../gio/gdbusconnection.c:7133
-#, c-format
+#: ../gio/gdbusaddress.c:1635
+#, c-format, fuzzy
+#| msgid ""
+#| "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
+#| "- unknown value '%s'"
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value '%s'"
+"— unknown value “%s”"
 msgstr ""
 "Kan ikke bestemme busadressen fra miljøvariablen DBUS_STARTER_BUS_TYPE - "
 "ukendt værdi \"%s\""
@@ -575,37 +589,38 @@ msgstr "Annulleret via GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:261
 #, c-format
-msgid "Error when getting information for directory '%s': %s"
+msgid "Error when getting information for directory “%s”: %s"
 msgstr "Fejl ved indhentning af oplysninger for mappen \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:273
 #, c-format
 msgid ""
-"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
+"Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 "Rettigheder for mappen \"%s\" er fejlformateret. Forventede tilstanden 0700, "
 "fandt 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:294
-#, c-format
-msgid "Error creating directory '%s': %s"
-msgstr "Fejl ved oprettelse af mappen \"%s\": %s"
+#, c-format, fuzzy
+#| msgid "Error creating directory %s: %s"
+msgid "Error creating directory “%s”: %s"
+msgstr "Fejl ved oprettelse af mappen %s: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:377
 #, c-format
-msgid "Error opening keyring '%s' for reading: "
+msgid "Error opening keyring “%s” for reading: "
 msgstr "Fejl ved åbning af nøgleringen \"%s\" til læsning: "
 
 #: ../gio/gdbusauthmechanismsha1.c:401 ../gio/gdbusauthmechanismsha1.c:714
 #, c-format
-msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
+msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "Linje %d i nøgleringen på \"%s\" med indholdet \"%s\" er fejlformateret"
 
 #: ../gio/gdbusauthmechanismsha1.c:415 ../gio/gdbusauthmechanismsha1.c:728
 #, c-format
 msgid ""
-"First token of line %d of the keyring at '%s' with content '%s' is malformed"
+"First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "Første symbol i linje %d af nøgleringen på \"%s\" med indholdet \"%s\" er "
 "fejlformateret"
@@ -613,44 +628,44 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:430 ../gio/gdbusauthmechanismsha1.c:742
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
+"Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "Andet symbol i linje %d af nøgleringen på \"%s\" med indholdet \"%s\" er "
 "fejlformateret"
 
 #: ../gio/gdbusauthmechanismsha1.c:454
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at '%s'"
+msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Fandt ingen cookie med id %d i nøgleringen på \"%s\""
 
 #: ../gio/gdbusauthmechanismsha1.c:532
 #, c-format
-msgid "Error deleting stale lock file '%s': %s"
+msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Fejl ved sletning af forældet låsefil \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:564
 #, c-format
-msgid "Error creating lock file '%s': %s"
+msgid "Error creating lock file “%s”: %s"
 msgstr "Fejl ved oprettelse af låsefil \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:594
 #, c-format
-msgid "Error closing (unlinked) lock file '%s': %s"
+msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Fejl ved lukning af (aflænket) låsefil \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:604
 #, c-format
-msgid "Error unlinking lock file '%s': %s"
+msgid "Error unlinking lock file “%s”: %s"
 msgstr "Fejl ved aflænkning af låsefil \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:681
 #, c-format
-msgid "Error opening keyring '%s' for writing: "
+msgid "Error opening keyring “%s” for writing: "
 msgstr "Fejl ved åbning af nøgleringen \"%s\" til skrivning: "
 
 #: ../gio/gdbusauthmechanismsha1.c:878
 #, c-format
-msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
+msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Yderligere kunne låsen for \"%s\" ikke opgives: %s) "
 
 #: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2377
@@ -751,6 +766,15 @@ msgstr "Metoden \"%s\" på grænsefladen \"%s\" med signatur \"%s\" findes ikke"
 msgid "A subtree is already exported for %s"
 msgstr "Der er allerede eksporteret et undertræ for %s"
 
+#: ../gio/gdbusconnection.c:7133
+#, c-format
+msgid ""
+"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
+"- unknown value '%s'"
+msgstr ""
+"Kan ikke bestemme busadressen fra miljøvariablen DBUS_STARTER_BUS_TYPE - "
+"ukendt værdi \"%s\""
+
 #: ../gio/gdbusmessage.c:1244
 msgid "type is INVALID"
 msgstr "typen er INVALID"
@@ -774,19 +798,19 @@ msgstr "SIGNALmeddelelse: Toptekstfeltet PATH, INTERFACE eller MEMBER mangler"
 
 #: ../gio/gdbusmessage.c:1299
 msgid ""
-"SIGNAL message: The PATH header field is using the reserved value /org/"
-"freedesktop/DBus/Local"
+"SIGNAL message: The PATH header field is using the reserved value "
+"/org/freedesktop/DBus/Local"
 msgstr ""
-"SIGNALmeddelelse: Toptekstfeltet PATH bruger den reserverede værdi /org/"
-"freedesktop/DBus/Local"
+"SIGNALmeddelelse: Toptekstfeltet PATH bruger den reserverede værdi "
+"/org/freedesktop/DBus/Local"
 
 #: ../gio/gdbusmessage.c:1307
 msgid ""
-"SIGNAL message: The INTERFACE header field is using the reserved value org."
-"freedesktop.DBus.Local"
+"SIGNAL message: The INTERFACE header field is using the reserved value "
+"org.freedesktop.DBus.Local"
 msgstr ""
-"SIGNALbesked: Toptekstfeltet INTERFACE bruger den reserverede værdi org."
-"freedesktop.DBus.Local"
+"SIGNALbesked: Toptekstfeltet INTERFACE bruger den reserverede værdi "
+"org.freedesktop.DBus.Local"
 
 #: ../gio/gdbusmessage.c:1355 ../gio/gdbusmessage.c:1415
 #, c-format
@@ -797,14 +821,14 @@ msgstr[1] "Ville læse %lu byte men fik kun %lu"
 
 #: ../gio/gdbusmessage.c:1369
 #, c-format
-msgid "Expected NUL byte after the string '%s' but found byte %d"
+msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "Forventede NUL-byte efter strengen \"%s\", men fandt byte %d"
 
 #: ../gio/gdbusmessage.c:1388
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was “%s”"
 msgstr ""
 "Forventede gyldig UTF-8-streng, men fandt ugyldige byte ved afsæt %d "
 "(strengens længde er %d). Den gyldige UTF-8-streng indtil dette punkt var "
@@ -812,12 +836,12 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1587
 #, c-format
-msgid "Parsed value '%s' is not a valid D-Bus object path"
+msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Den fortolkede værdi \"%s\" er ikke en gyldig objektsti til D-Bus"
 
 #: ../gio/gdbusmessage.c:1609
 #, c-format
-msgid "Parsed value '%s' is not a valid D-Bus signature"
+msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Fortolket værdi \"%s\" er ikke en gyldig D-Bus-signatur"
 
 #: ../gio/gdbusmessage.c:1656
@@ -836,7 +860,7 @@ msgstr[1] ""
 #: ../gio/gdbusmessage.c:1676
 #, c-format
 msgid ""
-"Encountered array of type 'a%c', expected to have a length a multiple of %u "
+"Encountered array of type “a%c”, expected to have a length a multiple of %u "
 "bytes, but found to be %u bytes in length"
 msgstr ""
 "Stødte på et array af typen \"a%c\", som ventes at have en længde som er et "
@@ -844,21 +868,21 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1843
 #, c-format
-msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
+msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Fortolket værdi \"%s\" for variant er ikke en gyldig D-Bus-signatur"
 
 #: ../gio/gdbusmessage.c:1867
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
-"Fejl ved deserialisering af GVariant med type-streng \"%s\" fra D-Bus-wire-"
-"formatet"
+"Fejl ved deserialisering af GVariant med type-streng \"%s\" fra "
+"D-Bus-wire-formatet"
 
 #: ../gio/gdbusmessage.c:2051
 #, c-format
 msgid ""
-"Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
+"Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
 "0x%02x"
 msgstr ""
 "Ugyldigt værdi for byterækkefølge (endianness). Forventede 0x6c (\"l\") "
@@ -871,13 +895,13 @@ msgstr "Igyldig hovedprotokolversion. Forventede 1 men fandt %d"
 
 #: ../gio/gdbusmessage.c:2120
 #, c-format
-msgid "Signature header with signature '%s' found but message body is empty"
+msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Signaturtoptekst med signaturen \"%s\" fundet, men beskedteksten er tom"
 
 #: ../gio/gdbusmessage.c:2134
 #, c-format
-msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
+msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Fortolket værdi \"%s\" er ikke en gyldig D-Bus-signatur (for tekst)"
 
 #: ../gio/gdbusmessage.c:2164
@@ -894,10 +918,10 @@ msgstr "Kan ikke deserialisere besked: "
 #: ../gio/gdbusmessage.c:2515
 #, c-format
 msgid ""
-"Error serializing GVariant with type string '%s' to the D-Bus wire format"
+"Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr ""
-"Fejl ved serialisering af GVariant med typestreng \"%s\" til D-Bus-wire-"
-"formatet"
+"Fejl ved serialisering af GVariant med typestreng \"%s\" til "
+"D-Bus-wire-formatet"
 
 #: ../gio/gdbusmessage.c:2652
 #, c-format
@@ -914,26 +938,26 @@ msgstr "Kan ikke serialisere besked: "
 
 #: ../gio/gdbusmessage.c:2704
 #, c-format
-msgid "Message body has signature '%s' but there is no signature header"
+msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Beskedteksten har signatur \"%s\", men der er ingen signaturtoptekst"
 
 #: ../gio/gdbusmessage.c:2714
 #, c-format
 msgid ""
-"Message body has type signature '%s' but signature in the header field is "
-"'%s'"
+"Message body has type signature “%s” but signature in the header field is "
+"“%s”"
 msgstr ""
 "Beskedteksten har typesignatur \"%s\", men signaturen i toptekstfeltet er "
 "\"%s\""
 
 #: ../gio/gdbusmessage.c:2730
 #, c-format
-msgid "Message body is empty but signature in the header field is '(%s)'"
+msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Beskedteksten er tom, men signaturen i toptekstfeltet er \"(%s)\""
 
 #: ../gio/gdbusmessage.c:3283
 #, c-format
-msgid "Error return with body of type '%s'"
+msgid "Error return with body of type “%s”"
 msgstr "Fejlagtig returværdi med beskedtekst af typen \"%s\""
 
 #: ../gio/gdbusmessage.c:3291
@@ -978,17 +1002,17 @@ msgstr "Kan ikke angive \"nonce\"-fil ved oprettelse af server"
 
 #: ../gio/gdbusserver.c:873
 #, c-format
-msgid "Error writing nonce file at '%s': %s"
+msgid "Error writing nonce file at “%s”: %s"
 msgstr "Fejl ved skrivning af \"nonce\"-fil i \"%s\": %s"
 
 #: ../gio/gdbusserver.c:1044
 #, c-format
-msgid "The string '%s' is not a valid D-Bus GUID"
+msgid "The string “%s” is not a valid D-Bus GUID"
 msgstr "Strengen \"%s\" er ikke en gyldig D-Bus-GUID"
 
 #: ../gio/gdbusserver.c:1084
 #, c-format
-msgid "Cannot listen on unsupported transport '%s'"
+msgid "Cannot listen on unsupported transport “%s”"
 msgstr "Kan ikke lytte på ikke-understøttet transport \"%s\""
 
 #: ../gio/gdbus-tool.c:95
@@ -1001,7 +1025,7 @@ msgid ""
 "  call         Invoke a method on a remote object\n"
 "  emit         Emit a signal\n"
 "\n"
-"Use \"%s COMMAND --help\" to get help on each command.\n"
+"Use “%s COMMAND --help” to get help on each command.\n"
 msgstr ""
 "Kommandoer:\n"
 "  help         Viser denne information\n"
@@ -1062,14 +1086,14 @@ msgstr "Flere slutpunkter for forbindelsen angivet"
 #: ../gio/gdbus-tool.c:471
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface '%s' does not exist\n"
+"Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr "Advarsel: Grænsefladen \"%s\" findes ikke ifølge introspektionsdata\n"
 
 #: ../gio/gdbus-tool.c:480
 #, c-format
 msgid ""
-"Warning: According to introspection data, method '%s' does not exist on "
-"interface '%s'\n"
+"Warning: According to introspection data, method “%s” does not exist on "
+"interface “%s”\n"
 msgstr ""
 "Advarsel: Metoden \"%s\" findes ikke i grænsefladen \"%s\" ifølge "
 "introspektionsdata\n"
@@ -1185,12 +1209,12 @@ msgstr "Fejl: Metodenavnet er ikke angivet\n"
 
 #: ../gio/gdbus-tool.c:950
 #, c-format
-msgid "Error: Method name '%s' is invalid\n"
+msgid "Error: Method name “%s” is invalid\n"
 msgstr "Fejl: Metodenavnet \"%s\" er ugyldigt\n"
 
 #: ../gio/gdbus-tool.c:1028
 #, c-format
-msgid "Error parsing parameter %d of type '%s': %s\n"
+msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Fejl ved fortolkning af parameter %d af typen \"%s\": %s\n"
 
 #: ../gio/gdbus-tool.c:1472
@@ -1234,7 +1258,7 @@ msgid "Unnamed"
 msgstr "Unavngivet"
 
 #: ../gio/gdesktopappinfo.c:2404
-msgid "Desktop file didn't specify Exec field"
+msgid "Desktop file didn’t specify Exec field"
 msgstr "Skrivebordsfil angav intet Exec-felt"
 
 #: ../gio/gdesktopappinfo.c:2689
@@ -1243,12 +1267,12 @@ msgstr "Kan ikke finde terminal krævet af dette program"
 
 #: ../gio/gdesktopappinfo.c:3097
 #, c-format
-msgid "Can't create user application configuration folder %s: %s"
+msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Kan ikke oprette konfigurationsfolder %s for brugerprogram: %s"
 
 #: ../gio/gdesktopappinfo.c:3101
 #, c-format
-msgid "Can't create user MIME configuration folder %s: %s"
+msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Kan ikke oprette bruger-MIME-konfigurationsfolder %s: %s"
 
 #: ../gio/gdesktopappinfo.c:3341 ../gio/gdesktopappinfo.c:3365
@@ -1257,7 +1281,7 @@ msgstr "Programinformation mangler en identifikator"
 
 #: ../gio/gdesktopappinfo.c:3599
 #, c-format
-msgid "Can't create user desktop file %s"
+msgid "Can’t create user desktop file %s"
 msgstr "Kan ikke oprette brugerskrivebords-fil %s"
 
 #: ../gio/gdesktopappinfo.c:3733
@@ -1266,26 +1290,26 @@ msgid "Custom definition for %s"
 msgstr "Tilpasset definition for %s"
 
 #: ../gio/gdrive.c:417
-msgid "drive doesn't implement eject"
+msgid "drive doesn’t implement eject"
 msgstr "drevet implementerer ikke eject"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gdrive.c:495
-msgid "drive doesn't implement eject or eject_with_operation"
+msgid "drive doesn’t implement eject or eject_with_operation"
 msgstr "drevet implementerer ikke eject eller eject_with_operation"
 
 #: ../gio/gdrive.c:571
-msgid "drive doesn't implement polling for media"
+msgid "drive doesn’t implement polling for media"
 msgstr "drevet implementerer ikke forespørgsel om medier"
 
 #: ../gio/gdrive.c:776
-msgid "drive doesn't implement start"
+msgid "drive doesn’t implement start"
 msgstr "drevet implementerer ikke start"
 
 #: ../gio/gdrive.c:878
-msgid "drive doesn't implement stop"
+msgid "drive doesn’t implement stop"
 msgstr "drevet implementerer ikke stop"
 
 #: ../gio/gdummytlsbackend.c:195 ../gio/gdummytlsbackend.c:317
@@ -1299,7 +1323,7 @@ msgstr "DTLS-understøttelse er ikke tilgængelig"
 
 #: ../gio/gemblem.c:323
 #, c-format
-msgid "Can't handle version %d of GEmblem encoding"
+msgid "Can’t handle version %d of GEmblem encoding"
 msgstr "Kan ikke håndtere version %d af GEmblem-kodning"
 
 #: ../gio/gemblem.c:333
@@ -1309,7 +1333,7 @@ msgstr "Forkert antal symboler (%d) i GEmblem-kodning"
 
 #: ../gio/gemblemedicon.c:362
 #, c-format
-msgid "Can't handle version %d of GEmblemedIcon encoding"
+msgid "Can’t handle version %d of GEmblemedIcon encoding"
 msgstr "Kan ikke håndtere version %d af GEmblemIcon-kodning"
 
 #: ../gio/gemblemedicon.c:372
@@ -1341,12 +1365,12 @@ msgstr "Operationen understøttes ikke"
 msgid "Containing mount does not exist"
 msgstr "Indeholdende montering findes ikke"
 
-#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2374
-msgid "Can't copy over directory"
+#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2375
+msgid "Can’t copy over directory"
 msgstr "Kan ikke kopiere over mappe"
 
 #: ../gio/gfile.c:2575
-msgid "Can't copy directory over directory"
+msgid "Can’t copy directory over directory"
 msgstr "Kan ikke kopiere mappe over mappe"
 
 #: ../gio/gfile.c:2583
@@ -1354,7 +1378,7 @@ msgid "Target file exists"
 msgstr "Målfilen findes"
 
 #: ../gio/gfile.c:2602
-msgid "Can't recursively copy directory"
+msgid "Can’t recursively copy directory"
 msgstr "Kan ikke kopiere mappe rekursivt"
 
 #: ../gio/gfile.c:2884
@@ -1375,11 +1399,11 @@ msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopiering (reflink/klon) er ikke understøttet eller ugyldigt"
 
 #: ../gio/gfile.c:3028
-msgid "Copy (reflink/clone) is not supported or didn't work"
+msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Kopiering (reflink/klon) er ikke understøttet eller virkede ikke"
 
 #: ../gio/gfile.c:3091
-msgid "Can't copy special file"
+msgid "Can’t copy special file"
 msgstr "Kan ikke kopiere specialfil"
 
 #: ../gio/gfile.c:3885
@@ -1393,11 +1417,11 @@ msgstr "Flyt til papirkurv understøttes ikke"
 
 #: ../gio/gfile.c:4158
 #, c-format
-msgid "File names cannot contain '%c'"
+msgid "File names cannot contain “%c”"
 msgstr "Filnavne kan ikke indeholder \"%c\""
 
 #: ../gio/gfile.c:6604 ../gio/gvolume.c:363
-msgid "volume doesn't implement mount"
+msgid "volume doesn’t implement mount"
 msgstr "diskenheden implementerer ikke montering"
 
 #: ../gio/gfile.c:6713
@@ -1420,7 +1444,7 @@ msgstr "Filoptæller er allerede lukket"
 
 #: ../gio/gfileicon.c:236
 #, c-format
-msgid "Can't handle version %d of GFileIcon encoding"
+msgid "Can’t handle version %d of GFileIcon encoding"
 msgstr "Kan ikke håndtere version %d af GFileIcon-kodning"
 
 #: ../gio/gfileicon.c:246
@@ -1430,7 +1454,7 @@ msgstr "Fejlformateret inddata til GFileIcon"
 #: ../gio/gfileinputstream.c:149 ../gio/gfileinputstream.c:394
 #: ../gio/gfileiostream.c:167 ../gio/gfileoutputstream.c:164
 #: ../gio/gfileoutputstream.c:497
-msgid "Stream doesn't support query_info"
+msgid "Stream doesn’t support query_info"
 msgstr "Strømmen understøtter ikke query_info"
 
 #: ../gio/gfileinputstream.c:325 ../gio/gfileiostream.c:379
@@ -1503,7 +1527,7 @@ msgstr ""
 "Typen %s implementerer ikke from_tokens(), som er del af GIcon-grænsefladen"
 
 #: ../gio/gicon.c:461
-msgid "Can't handle the supplied version of the icon encoding"
+msgid "Can’t handle the supplied version of the icon encoding"
 msgstr "Kan ikke håndtere den givne version af ikonkodningen"
 
 #: ../gio/ginetaddressmask.c:182
@@ -1521,7 +1545,7 @@ msgstr "Adressen har bit sat ud over præfikslængden"
 
 #: ../gio/ginetaddressmask.c:300
 #, c-format
-msgid "Could not parse '%s' as IP address mask"
+msgid "Could not parse “%s” as IP address mask"
 msgstr "Kunne ikke fortolke \"%s\" som en IP-adresse-maske"
 
 #: ../gio/ginetsocketaddress.c:203 ../gio/ginetsocketaddress.c:220
@@ -1534,7 +1558,7 @@ msgid "Unsupported socket address"
 msgstr "Sokkeladresse understøttes ikke"
 
 #: ../gio/ginputstream.c:188
-msgid "Input stream doesn't implement read"
+msgid "Input stream doesn’t implement read"
 msgstr "Inputstrøm implementerer ikke læsning"
 
 #. Translators: This is an error you get if there is already an
@@ -1557,7 +1581,7 @@ msgid "Keep with file when moved"
 msgstr "Behold med fil ved flytning"
 
 #: ../gio/gio-tool.c:187
-msgid "'version' takes no arguments"
+msgid "“version” takes no arguments"
 msgstr "\"version\" tager ikke nogen argumenter"
 
 #: ../gio/gio-tool.c:189 ../gio/gio-tool.c:205 ../glib/goption.c:857
@@ -1567,6 +1591,10 @@ msgstr "Brug:"
 #: ../gio/gio-tool.c:192
 msgid "Print version information and exit."
 msgstr "Udskriv versionsoplysninger og afslut."
+
+#: ../gio/gio-tool.c:206
+msgid "[ARGS...]"
+msgstr "[ARG …]"
 
 #: ../gio/gio-tool.c:208
 msgid "Commands:"
@@ -1664,8 +1692,8 @@ msgid ""
 "like smb://server/resource/file.txt as location."
 msgstr ""
 "gio cat virker som det traditionelle cat-værktøj, men bruger GIO-steder i "
-"stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
-"server/ressource/fil.txt som sted."
+"stedet for lokale filer. For eksempel kan du bruge noget i stil med "
+"smb://server/ressource/fil.txt som sted."
 
 #: ../gio/gio-tool-cat.c:151
 msgid "No files given"
@@ -1723,8 +1751,8 @@ msgid ""
 "like smb://server/resource/file.txt as location."
 msgstr ""
 "gio copy virker som det traditionelle cp-værktøj, men bruger GIO-steder i "
-"stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
-"server/ressource/fil.txt som sted."
+"stedet for lokale filer. For eksempel kan du bruge noget i stil med "
+"smb://server/ressource/fil.txt som sted."
 
 #: ../gio/gio-tool-copy.c:143
 #, c-format
@@ -1733,7 +1761,7 @@ msgstr "Destinationen %s er ikke en mappe"
 
 #: ../gio/gio-tool-copy.c:187 ../gio/gio-tool-move.c:181
 #, c-format
-msgid "%s: overwrite '%s'? "
+msgid "%s: overwrite “%s”? "
 msgstr "%s: overskriv \"%s\"? "
 
 #: ../gio/gio-tool-info.c:34
@@ -1753,7 +1781,7 @@ msgid "ATTRIBUTES"
 msgstr "ATTRIBUTTER"
 
 #: ../gio/gio-tool-info.c:37 ../gio/gio-tool-list.c:38 ../gio/gio-tool-set.c:34
-msgid "Don't follow symbolic links"
+msgid "Don’t follow symbolic links"
 msgstr "Følg ikke symbolske links"
 
 #: ../gio/gio-tool-info.c:75
@@ -1823,13 +1851,13 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location. File attributes can\n"
 "be specified with their GIO name, e.g. standard::icon, or just by\n"
-"namespace, e.g. unix, or by '*', which matches all attributes"
+"namespace, e.g. unix, or by “*”, which matches all attributes"
 msgstr ""
 "gio info virker som det traditionelle ls-værktøj, men bruger GIO-steder i "
-"stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
-"server/ressource/fil.txt som sted. Filattributter kan angives ved deres GIO-"
-"navn såsom standard::icon, eller blot ved navnerum som f.eks. unix, eller "
-"ved '*', som matcher alle attributter"
+"stedet for lokale filer. For eksempel kan du bruge noget i stil med "
+"smb://server/ressource/fil.txt som sted. Filattributter kan angives ved "
+"deres GIO-navn såsom standard::icon, eller blot ved navnerum som f.eks. "
+"unix, eller ved '*', som matcher alle attributter"
 
 #: ../gio/gio-tool-info.c:307 ../gio/gio-tool-mkdir.c:74
 msgid "No locations given"
@@ -1859,9 +1887,9 @@ msgid ""
 "be specified with their GIO name, e.g. standard::icon"
 msgstr ""
 "gio list virker som det traditionelle ls-værktøj, men bruger GIO-steder i "
-"stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
-"server/ressource/fil.txt som sted. Filattributter kan angives ved deres GIO-"
-"navn såsom standard::icon"
+"stedet for lokale filer. For eksempel kan du bruge noget i stil med "
+"smb://server/ressource/fil.txt som sted. Filattributter kan angives ved "
+"deres GIO-navn såsom standard::icon"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-mime.c:71
@@ -1892,12 +1920,12 @@ msgstr "Der skal angives en mimetype, og eventuelt en håndtering"
 
 #: ../gio/gio-tool-mime.c:113
 #, c-format
-msgid "No default applications for '%s'\n"
+msgid "No default applications for “%s”\n"
 msgstr "Ingen standardprogrammer for \"%s\"\n"
 
 #: ../gio/gio-tool-mime.c:119
 #, c-format
-msgid "Default application for '%s': %s\n"
+msgid "Default application for “%s”: %s\n"
 msgstr "Standardprogram for \"%s\": %s\n"
 
 #: ../gio/gio-tool-mime.c:124
@@ -1922,12 +1950,12 @@ msgstr "Ingen anbefalede programmer\n"
 
 #: ../gio/gio-tool-mime.c:159
 #, c-format
-msgid "Failed to load info for handler '%s'\n"
+msgid "Failed to load info for handler “%s”\n"
 msgstr "Kunne ikke indlæse info for håndteringen \"%s\"\n"
 
 #: ../gio/gio-tool-mime.c:165
 #, c-format
-msgid "Failed to set '%s' as the default handler for '%s': %s\n"
+msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
 msgstr "Kunne ikke angive \"%s\" som standardhåndtering for \"%s\": %s\n"
 
 #: ../gio/gio-tool-mkdir.c:31
@@ -1945,8 +1973,8 @@ msgid ""
 "like smb://server/resource/mydir as location."
 msgstr ""
 "gio mkdir virker som det traditionelle mkdir-værktøj, men bruger GIO-steder "
-"i stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
-"server/ressource/mappe som sted."
+"i stedet for lokale filer. For eksempel kan du bruge noget i stil med "
+"smb://server/ressource/mappe som sted."
 
 #: ../gio/gio-tool-monitor.c:37
 msgid "Monitor a directory (default: depends on type)"
@@ -1962,7 +1990,7 @@ msgstr ""
 "Overvåg en fil direkte (opdager ændringer som foretages gennem hårde links)"
 
 #: ../gio/gio-tool-monitor.c:43
-msgid "Monitors a file directly, but doesn't report changes"
+msgid "Monitors a file directly, but doesn’t report changes"
 msgstr "Overvåger en fil direkte, men rapporterer ikke ændringer"
 
 #: ../gio/gio-tool-monitor.c:45
@@ -2074,7 +2102,7 @@ msgid "Mount or unmount the locations."
 msgstr "Montér eller afmontér stederne."
 
 #: ../gio/gio-tool-move.c:42
-msgid "Don't use copy and delete fallback"
+msgid "Don’t use copy and delete fallback"
 msgstr "Brug ikke kopiering og sletning som nødplan"
 
 #: ../gio/gio-tool-move.c:99
@@ -2088,8 +2116,8 @@ msgid ""
 "like smb://server/resource/file.txt as location"
 msgstr ""
 "gio move virker som det traditionelle mv-værktøj, men bruger GIO-steder i "
-"stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
-"server/ressource/fil.txt som sted"
+"stedet for lokale filer. For eksempel kan du bruge noget i stil med "
+"smb://server/ressource/fil.txt som sted"
 
 #: ../gio/gio-tool-move.c:139
 #, c-format
@@ -2262,17 +2290,17 @@ msgstr "Filen %s findes flere steder i ressourcen"
 
 #: ../gio/glib-compile-resources.c:248
 #, c-format
-msgid "Failed to locate '%s' in any source directory"
+msgid "Failed to locate “%s” in any source directory"
 msgstr "Kunne ikke finde \"%s\" i nogen kildemappe"
 
 #: ../gio/glib-compile-resources.c:259
 #, c-format
-msgid "Failed to locate '%s' in current directory"
+msgid "Failed to locate “%s” in current directory"
 msgstr "Kunne ikke finde \"%s\" i det nuværende katalog"
 
 #: ../gio/glib-compile-resources.c:290
 #, c-format
-msgid "Unknown processing option \"%s\""
+msgid "Unknown processing option “%s”"
 msgstr "Ukendt behandlingstilvalg \"%s\""
 
 #: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:354
@@ -2295,60 +2323,64 @@ msgstr "Fejl ved komprimering af filen %s"
 msgid "text may not appear inside <%s>"
 msgstr "der må ikke være tekst inden i <%s>"
 
-#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2037
+#: ../gio/glib-compile-resources.c:664 ../gio/glib-compile-schemas.c:2037
 msgid "Show program version and exit"
 msgstr "Vis programversion og afslut"
 
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:665
 msgid "name of the output file"
 msgstr "navnet på outputfilen"
 
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:666
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr "Katalogerne hvorfra filer læses (som standard det nuværende katalog)"
 
-#: ../gio/glib-compile-resources.c:623 ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-resources.c:666 ../gio/glib-compile-schemas.c:2038
 #: ../gio/glib-compile-schemas.c:2067
 msgid "DIRECTORY"
 msgstr "KATALOG"
 
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:667
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "Generér output i formatet givet ved målets filendelse"
 
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:668
 msgid "Generate source header"
 msgstr "Generér kildeheader"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:669
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr ""
 "Generér kildekoden, der bruges til at lænke fra ressourcefilen ind i din kode"
 
-#: ../gio/glib-compile-resources.c:627
+#: ../gio/glib-compile-resources.c:670
 msgid "Generate dependency list"
 msgstr "Generér liste af afhængigheder"
 
-#: ../gio/glib-compile-resources.c:628
+#: ../gio/glib-compile-resources.c:671
 msgid "name of the dependency file to generate"
 msgstr "navn på afhængighedsfil som skal oprettes"
 
-#: ../gio/glib-compile-resources.c:629
-msgid "Don't automatically create and register resource"
+#: ../gio/glib-compile-resources.c:672
+msgid "Include phony targets in the generated dependency file"
+msgstr ""
+
+#: ../gio/glib-compile-resources.c:673
+msgid "Don’t automatically create and register resource"
 msgstr "Opret og registrér ikke ressource automatisk"
 
-#: ../gio/glib-compile-resources.c:630
-msgid "Don't export functions; declare them G_GNUC_INTERNAL"
+#: ../gio/glib-compile-resources.c:674
+msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Eksporter ikke funktioner; erklær dem G_GNUC_INTERNAL"
 
-#: ../gio/glib-compile-resources.c:631
+#: ../gio/glib-compile-resources.c:675
 msgid "C identifier name used for the generated source code"
 msgstr "C-identifikatornavn, der bruges til genereret kildekode"
 
-#: ../gio/glib-compile-resources.c:657
+#: ../gio/glib-compile-resources.c:701
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2358,7 +2390,7 @@ msgstr ""
 "Ressourcespecifikationsfiler har filendelsen .gresource.xml,\n"
 "og ressourcefilen har filendelsen .gresource."
 
-#: ../gio/glib-compile-resources.c:679
+#: ../gio/glib-compile-resources.c:723
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Du skal angive præcist ét filnavn\n"
@@ -2384,7 +2416,8 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:815
 #, c-format
 msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
-msgstr "ugyldigt navn \"%s\": To bindestreger i træk (\"--\") er ikke tilladt."
+msgstr ""
+"ugyldigt navn \"%s\": To bindestreger i træk (\"--\") er ikke tilladt."
 
 #: ../gio/glib-compile-schemas.c:824
 #, c-format
@@ -2467,7 +2500,8 @@ msgstr "<schema id='%s'> nedarver fra skemaet \"%s\", som ikke findes endnu"
 #: ../gio/glib-compile-schemas.c:1153
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr "<schema id='%s'> er en liste for skemaet \"%s\", der ikke findes endnu"
+msgstr ""
+"<schema id='%s'> er en liste for skemaet \"%s\", der ikke findes endnu"
 
 #: ../gio/glib-compile-schemas.c:1161
 #, c-format
@@ -2576,8 +2610,8 @@ msgid ""
 "override for key '%s' in schema '%s' in override file '%s' is outside the "
 "range given in the schema"
 msgstr ""
-"overskrivning for nøglen \"%s\" i skemaet \"%s\" i overskrivningsfilen \"%s"
-"\" er ikke i det interval, skemaet angiver"
+"overskrivning for nøglen \"%s\" i skemaet \"%s\" i overskrivningsfilen "
+"\"%s\" er ikke i det interval, skemaet angiver"
 
 #: ../gio/glib-compile-schemas.c:1983
 #, c-format
@@ -2585,8 +2619,8 @@ msgid ""
 "override for key '%s' in schema '%s' in override file '%s' is not in the "
 "list of valid choices"
 msgstr ""
-"overskrivningen for nøglen \"%s\" i skemaet \"%s\" i overskrivningsfilen \"%s"
-"\" er ikke i listen af gyldige valg"
+"overskrivningen for nøglen \"%s\" i skemaet \"%s\" i overskrivningsfilen "
+"\"%s\" er ikke i listen af gyldige valg"
 
 #: ../gio/glib-compile-schemas.c:2038
 msgid "where to store the gschemas.compiled file"
@@ -2634,133 +2668,133 @@ msgstr "gør intet.\n"
 msgid "removed existing output file.\n"
 msgstr "fjernede eksisterende uddatafil.\n"
 
-#: ../gio/glocalfile.c:642 ../gio/win32/gwinhttpfile.c:420
+#: ../gio/glocalfile.c:643 ../gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Ugyldigt filnavn %s"
 
-#: ../gio/glocalfile.c:1036
+#: ../gio/glocalfile.c:1037
 #, c-format
 msgid "Error getting filesystem info for %s: %s"
 msgstr "Fejl ved hentning af filsysteminfo for %s: %s"
 
-#: ../gio/glocalfile.c:1175
+#: ../gio/glocalfile.c:1176
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "Indeholdende montering for filen %s ikke fundet"
 
-#: ../gio/glocalfile.c:1198
-msgid "Can't rename root directory"
+#: ../gio/glocalfile.c:1199
+msgid "Can’t rename root directory"
 msgstr "Kan ikke omdøbe rodmappen"
 
-#: ../gio/glocalfile.c:1216 ../gio/glocalfile.c:1239
+#: ../gio/glocalfile.c:1217 ../gio/glocalfile.c:1240
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "Fejl ved omdøbning af filen %s: %s"
 
-#: ../gio/glocalfile.c:1223
-msgid "Can't rename file, filename already exists"
+#: ../gio/glocalfile.c:1224
+msgid "Can’t rename file, filename already exists"
 msgstr "Kan ikke omdøbe fil, filnavn findes allerede"
 
-#: ../gio/glocalfile.c:1236 ../gio/glocalfile.c:2250 ../gio/glocalfile.c:2278
-#: ../gio/glocalfile.c:2435 ../gio/glocalfileoutputstream.c:549
+#: ../gio/glocalfile.c:1237 ../gio/glocalfile.c:2251 ../gio/glocalfile.c:2279
+#: ../gio/glocalfile.c:2436 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "Ugyldigt filnavn"
 
-#: ../gio/glocalfile.c:1403 ../gio/glocalfile.c:1418
+#: ../gio/glocalfile.c:1404 ../gio/glocalfile.c:1419
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "Fejl ved åbning af filen %s: %s"
 
-#: ../gio/glocalfile.c:1543
+#: ../gio/glocalfile.c:1544
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "Fejl under fjernelse af filen %s: %s"
 
-#: ../gio/glocalfile.c:1926
+#: ../gio/glocalfile.c:1927
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "Fejl ved flytning af filen %s til papirkurv: %s"
 
-#: ../gio/glocalfile.c:1949
+#: ../gio/glocalfile.c:1950
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Kan ikke oprette papirkurvskatalog %s: %s"
 
-#: ../gio/glocalfile.c:1969
+#: ../gio/glocalfile.c:1970
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "Kan ikke finde topniveau-katalog til papirkurv %s"
 
-#: ../gio/glocalfile.c:2048 ../gio/glocalfile.c:2068
+#: ../gio/glocalfile.c:2049 ../gio/glocalfile.c:2069
 #, c-format
 msgid "Unable to find or create trash directory for %s"
 msgstr "Kan ikke finde eller oprette papirkurvskatalog for %s"
 
-#: ../gio/glocalfile.c:2102
+#: ../gio/glocalfile.c:2103
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "Kan ikke oprette papirkurvs-infofil for %s: %s"
 
-#: ../gio/glocalfile.c:2161
+#: ../gio/glocalfile.c:2162
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "Kan ikke smide filen %s ud på andet filsystem"
 
-#: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2221
+#: ../gio/glocalfile.c:2166 ../gio/glocalfile.c:2222
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "Kan ikke smide filen %s ud: %s"
 
-#: ../gio/glocalfile.c:2227
+#: ../gio/glocalfile.c:2228
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "Kan ikke smide filen %s ud"
 
-#: ../gio/glocalfile.c:2253
+#: ../gio/glocalfile.c:2254
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "Fejl ved oprettelse af mappen %s: %s"
 
-#: ../gio/glocalfile.c:2282
+#: ../gio/glocalfile.c:2283
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Filsystemet understøtter ikke symbolske henvisninger"
 
-#: ../gio/glocalfile.c:2285
+#: ../gio/glocalfile.c:2286
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "Fejl under oprettelse af symbolsk link %s: %s"
 
-#: ../gio/glocalfile.c:2291 ../glib/gfileutils.c:2064
+#: ../gio/glocalfile.c:2292 ../glib/gfileutils.c:2064
 msgid "Symbolic links not supported"
 msgstr "Symbolske henvisninger er ikke understøttet"
 
-#: ../gio/glocalfile.c:2346 ../gio/glocalfile.c:2381 ../gio/glocalfile.c:2438
+#: ../gio/glocalfile.c:2347 ../gio/glocalfile.c:2382 ../gio/glocalfile.c:2439
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "Fejl ved flytning af filen %s: %s"
 
-#: ../gio/glocalfile.c:2369
-msgid "Can't move directory over directory"
+#: ../gio/glocalfile.c:2370
+msgid "Can’t move directory over directory"
 msgstr "Kan ikke flytte mappe over mappe"
 
-#: ../gio/glocalfile.c:2395 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfile.c:2396 ../gio/glocalfileoutputstream.c:925
 #: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
 #: ../gio/glocalfileoutputstream.c:971 ../gio/glocalfileoutputstream.c:985
 msgid "Backup file creation failed"
 msgstr "Oprettelse af sikkerhedskopi mislykkedes"
 
-#: ../gio/glocalfile.c:2414
+#: ../gio/glocalfile.c:2415
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Fejl ved fjernelse af målfil: %s"
 
-#: ../gio/glocalfile.c:2428
+#: ../gio/glocalfile.c:2429
 msgid "Move between mounts not supported"
 msgstr "Flytning mellem monteringer understøttes ikke"
 
-#: ../gio/glocalfile.c:2619
+#: ../gio/glocalfile.c:2620
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "Kunne ikke bestemme diskforbruget af %s: %s"
@@ -2779,7 +2813,7 @@ msgstr "Ugyldigt udvidet attributnavn"
 
 #: ../gio/glocalfileinfo.c:775
 #, c-format
-msgid "Error setting extended attribute '%s': %s"
+msgid "Error setting extended attribute “%s”: %s"
 msgstr "Fejl ved indstilling af udvidet attribut \"%s\": %s"
 
 #: ../gio/glocalfileinfo.c:1575
@@ -2788,7 +2822,7 @@ msgstr " (ugyldig kodning)"
 
 #: ../gio/glocalfileinfo.c:1766 ../gio/glocalfileoutputstream.c:803
 #, c-format
-msgid "Error when getting information for file '%s': %s"
+msgid "Error when getting information for file “%s”: %s"
 msgstr "Fejl ved indhentning af oplysninger om filen \"%s\": %s"
 
 #: ../gio/glocalfileinfo.c:2017
@@ -2911,9 +2945,10 @@ msgstr "Fejl ved beskæring af filen: %s"
 
 #: ../gio/glocalfileoutputstream.c:555 ../gio/glocalfileoutputstream.c:785
 #: ../gio/glocalfileoutputstream.c:1035 ../gio/gsubprocess.c:360
-#, c-format
-msgid "Error opening file '%s': %s"
-msgstr "Fejl ved åbning af filen \"%s\": %s"
+#, c-format, fuzzy
+#| msgid "Error opening file %s: %s"
+msgid "Error opening file “%s”: %s"
+msgstr "Fejl ved åbning af filen %s: %s"
 
 #: ../gio/glocalfileoutputstream.c:816
 msgid "Target file is a directory"
@@ -2972,21 +3007,21 @@ msgstr "Forespurgte om søgning efter afslutning af strøm"
 #. * message for mount objects that
 #. * don't implement unmount.
 #: ../gio/gmount.c:393
-msgid "mount doesn't implement \"unmount\""
+msgid "mount doesn’t implement “unmount”"
 msgstr "monteringsobjekt implementerer ikke \"unmount\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: ../gio/gmount.c:469
-msgid "mount doesn't implement \"eject\""
+msgid "mount doesn’t implement “eject”"
 msgstr "monteringsobjekt implementerer ikke \"eject\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: ../gio/gmount.c:547
-msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
+msgid "mount doesn’t implement “unmount” or “unmount_with_operation”"
 msgstr ""
 "monteringsobjekt implementerer ikke \"unmount\" eller "
 "\"unmount_with_operation\""
@@ -2995,7 +3030,7 @@ msgstr ""
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gmount.c:632
-msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
+msgid "mount doesn’t implement “eject” or “eject_with_operation”"
 msgstr ""
 "monteringsobjekt implementerer ikke \"eject\" eller \"eject_with_operation\""
 
@@ -3003,26 +3038,26 @@ msgstr ""
 #. * message for mount objects that
 #. * don't implement remount.
 #: ../gio/gmount.c:720
-msgid "mount doesn't implement \"remount\""
+msgid "mount doesn’t implement “remount”"
 msgstr "monteringsobjekt implementerer ikke \"remount\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:802
-msgid "mount doesn't implement content type guessing"
+msgid "mount doesn’t implement content type guessing"
 msgstr "monteringsobjekt implementerer ikke gæt på indholdstype"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:889
-msgid "mount doesn't implement synchronous content type guessing"
+msgid "mount doesn’t implement synchronous content type guessing"
 msgstr "monteringsobjekt implementerer ikke synkrone gæt på indholdstype"
 
 #: ../gio/gnetworkaddress.c:378
 #, c-format
-msgid "Hostname '%s' contains '[' but not ']'"
+msgid "Hostname “%s” contains “[” but not “]”"
 msgstr "Værtsnavnet \"%s\" indeholder \"[\", men ikke \"]\""
 
 #: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:310
@@ -3053,17 +3088,17 @@ msgid "NetworkManager version too old"
 msgstr "Versionen af NetværksHåndtering er for gammel"
 
 #: ../gio/goutputstream.c:212 ../gio/goutputstream.c:560
-msgid "Output stream doesn't implement write"
+msgid "Output stream doesn’t implement write"
 msgstr "Uddatastrøm implementerer ikke write"
 
 #: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1224
 msgid "Source stream is already closed"
 msgstr "Kildestrømmen er allerede lukket"
 
-#: ../gio/gresolver.c:333 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:341 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
-msgid "Error resolving '%s': %s"
+msgid "Error resolving “%s”: %s"
 msgstr "Fejl ved opløsning af \"%s\": %s"
 
 #: ../gio/gresource.c:595 ../gio/gresource.c:846 ../gio/gresource.c:863
@@ -3071,21 +3106,21 @@ msgstr "Fejl ved opløsning af \"%s\": %s"
 #: ../gio/gresource.c:1202 ../gio/gresourcefile.c:453
 #: ../gio/gresourcefile.c:576 ../gio/gresourcefile.c:713
 #, c-format
-msgid "The resource at '%s' does not exist"
+msgid "The resource at “%s” does not exist"
 msgstr "Ressourcen på \"%s\" findes ikke"
 
 #: ../gio/gresource.c:760
 #, c-format
-msgid "The resource at '%s' failed to decompress"
+msgid "The resource at “%s” failed to decompress"
 msgstr "Ressourcen på \"%s\" kunne ikke afkomprimeres"
 
 #: ../gio/gresourcefile.c:709
 #, c-format
-msgid "The resource at '%s' is not a directory"
+msgid "The resource at “%s” is not a directory"
 msgstr "Ressourcen i \"%s\" er ikke et katalog"
 
 #: ../gio/gresourcefile.c:917
-msgid "Input stream doesn't implement seek"
+msgid "Input stream doesn’t implement seek"
 msgstr "Inputstrømmen implementerer ikke søgning"
 
 #: ../gio/gresource-tool.c:494
@@ -3134,7 +3169,7 @@ msgstr "FILSTI"
 #: ../gio/gresource-tool.c:534
 msgid ""
 "Usage:\n"
-"  gresource [--section SECTION] COMMAND [ARGS...]\n"
+"  gresource [--section SECTION] COMMAND [ARGS…]\n"
 "\n"
 "Commands:\n"
 "  help                      Show this information\n"
@@ -3143,11 +3178,11 @@ msgid ""
 "  details                   List resources with details\n"
 "  extract                   Extract a resource\n"
 "\n"
-"Use 'gresource help COMMAND' to get detailed help.\n"
+"Use “gresource help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
 "Brug:\n"
-"  gresource [--section SEKTION] KOMMANDO [ARG...]\n"
+"  gresource [--section SEKTION] KOMMANDO [ARG …]\n"
 "\n"
 "Kommandoer:\n"
 "  help                      Vis denne information\n"
@@ -3213,17 +3248,17 @@ msgstr "  STI       En ressourcesti\n"
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
 #: ../gio/gsettings-tool.c:851
 #, c-format
-msgid "No such schema '%s'\n"
+msgid "No such schema “%s”\n"
 msgstr "Intet sådant skema \"%s\"\n"
 
 #: ../gio/gsettings-tool.c:57
 #, c-format
-msgid "Schema '%s' is not relocatable (path must not be specified)\n"
+msgid "Schema “%s” is not relocatable (path must not be specified)\n"
 msgstr "Skemaet \"%s\" kan ikke flyttes (stien må ikke være angivet)\n"
 
 #: ../gio/gsettings-tool.c:78
 #, c-format
-msgid "Schema '%s' is relocatable (path must be specified)\n"
+msgid "Schema “%s” is relocatable (path must be specified)\n"
 msgstr "Skemaet \"%s\" kan flyttes (sti skal angives)\n"
 
 #: ../gio/gsettings-tool.c:92
@@ -3345,7 +3380,7 @@ msgstr "SKEMA[:STI] [NØGLE]"
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
-"  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
+"  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS…]\n"
 "\n"
 "Commands:\n"
 "  help                      Show this information\n"
@@ -3363,12 +3398,12 @@ msgid ""
 "  writable                  Check if a key is writable\n"
 "  monitor                   Watch for changes\n"
 "\n"
-"Use 'gsettings help COMMAND' to get detailed help.\n"
+"Use “gsettings help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
 "Brug:\n"
 "  gsettings --version\n"
-"  gsettings [--schemadir SKEMAKAT] KOMMANDO [ARG...]\n"
+"  gsettings [--schemadir SKEMAKAT] KOMMANDO [ARG …]\n"
 "\n"
 "Kommandoer:\n"
 "  help                      Vis denne information\n"
@@ -3445,7 +3480,7 @@ msgstr "Tomt skemanavn givet\n"
 
 #: ../gio/gsettings-tool.c:864
 #, c-format
-msgid "No such key '%s'\n"
+msgid "No such key “%s”\n"
 msgstr "Ingen sådan nøgle \"%s\"\n"
 
 #: ../gio/gsocket.c:364
@@ -3492,7 +3527,8 @@ msgstr "Kan ikke bruge datagramoperationer på en ikke-datagram-sokkel."
 #: ../gio/gsocket.c:1121
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
-msgstr "Kan ikke bruge datagramoperationer på en sokkel med angivet udløbstid."
+msgstr ""
+"Kan ikke bruge datagramoperationer på en sokkel med angivet udløbstid."
 
 #: ../gio/gsocket.c:1925
 #, c-format
@@ -3566,26 +3602,26 @@ msgstr "Fejl ved lukning af sokkel: %s"
 msgid "Waiting for socket condition: %s"
 msgstr "Venter på sokkelbetingelse: %s"
 
-#: ../gio/gsocket.c:4362 ../gio/gsocket.c:4442 ../gio/gsocket.c:4620
+#: ../gio/gsocket.c:4361 ../gio/gsocket.c:4441 ../gio/gsocket.c:4619
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Fejl ved afsendelse af meddelelse: %s"
 
-#: ../gio/gsocket.c:4386
+#: ../gio/gsocket.c:4385
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "GSocketControlMessage understøttes ikke af Windows"
 
-#: ../gio/gsocket.c:4839 ../gio/gsocket.c:4912 ../gio/gsocket.c:5139
+#: ../gio/gsocket.c:4838 ../gio/gsocket.c:4911 ../gio/gsocket.c:5138
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Fejl ved modtagelse af meddelelse: %s"
 
-#: ../gio/gsocket.c:5411
+#: ../gio/gsocket.c:5410
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "Kan ikke læse sokkelakkreditiver: %s"
 
-#: ../gio/gsocket.c:5420
+#: ../gio/gsocket.c:5419
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ikke implementeret på dette operativsystem"
 
@@ -3613,7 +3649,7 @@ msgstr "Brug af proxy over ikke-TCP-forbindelse understøttes ikke."
 
 #: ../gio/gsocketclient.c:1110 ../gio/gsocketclient.c:1561
 #, c-format
-msgid "Proxy protocol '%s' is not supported."
+msgid "Proxy protocol “%s” is not supported."
 msgstr "Proxyprotokollen \"%s\" understøttes ikke."
 
 # Relateret til ordlistens "(SMTP )listener -> *(SMTP-)modtager"
@@ -3627,7 +3663,7 @@ msgstr "Tilføjede sokkel er lukket"
 
 #: ../gio/gsocks4aproxy.c:118
 #, c-format
-msgid "SOCKSv4 does not support IPv6 address '%s'"
+msgid "SOCKSv4 does not support IPv6 address “%s”"
 msgstr "SOCKSv4 understøtter ikke IPv6-adressen \"%s\""
 
 #: ../gio/gsocks4aproxy.c:136
@@ -3636,7 +3672,7 @@ msgstr "Brugernavnet er for langt til SOCKSv4-protokollen"
 
 #: ../gio/gsocks4aproxy.c:153
 #, c-format
-msgid "Hostname '%s' is too long for SOCKSv4 protocol"
+msgid "Hostname “%s” is too long for SOCKSv4 protocol"
 msgstr "Værtsnavnet \"%s\" er for langt til SOCKSv4-protokollen"
 
 #: ../gio/gsocks4aproxy.c:179
@@ -3673,7 +3709,7 @@ msgstr ""
 
 #: ../gio/gsocks5proxy.c:286
 #, c-format
-msgid "Hostname '%s' is too long for SOCKSv5 protocol"
+msgid "Hostname “%s” is too long for SOCKSv5 protocol"
 msgstr "Værtsnavnet \"%s\" er for langt til SOCKSv5-protokollen"
 
 #: ../gio/gsocks5proxy.c:348
@@ -3701,7 +3737,7 @@ msgid "Connection refused through SOCKSv5 proxy."
 msgstr "Forbindelsen afslået gennem SOCKSv5-proxy."
 
 #: ../gio/gsocks5proxy.c:386
-msgid "SOCKSv5 proxy does not support 'connect' command."
+msgid "SOCKSv5 proxy does not support “connect” command."
 msgstr "SOCKSv5-proxy understøtter ikke \"connect\"-kommando."
 
 #: ../gio/gsocks5proxy.c:392
@@ -3714,7 +3750,7 @@ msgstr "Ukendt SOCKSv5-proxyfejl."
 
 #: ../gio/gthemedicon.c:518
 #, c-format
-msgid "Can't handle version %d of GThemedIcon encoding"
+msgid "Can’t handle version %d of GThemedIcon encoding"
 msgstr "Kan ikke håndtere version %d af GThemedIcon-kodningen"
 
 #: ../gio/gthreadedresolver.c:118
@@ -3723,23 +3759,23 @@ msgstr "Der blev ikke fundet nogen gyldige adresser"
 
 #: ../gio/gthreadedresolver.c:213
 #, c-format
-msgid "Error reverse-resolving '%s': %s"
+msgid "Error reverse-resolving “%s”: %s"
 msgstr "Fejl ved baglæns opløsning af \"%s\": %s"
 
 #: ../gio/gthreadedresolver.c:550 ../gio/gthreadedresolver.c:630
 #: ../gio/gthreadedresolver.c:728 ../gio/gthreadedresolver.c:778
 #, c-format
-msgid "No DNS record of the requested type for '%s'"
+msgid "No DNS record of the requested type for “%s”"
 msgstr "Ingen DNS-post af den forespurgte type for \"%s\""
 
 #: ../gio/gthreadedresolver.c:555 ../gio/gthreadedresolver.c:733
 #, c-format
-msgid "Temporarily unable to resolve '%s'"
+msgid "Temporarily unable to resolve “%s”"
 msgstr "Midlertidigt ude af stand til at opløse \"%s\""
 
 #: ../gio/gthreadedresolver.c:560 ../gio/gthreadedresolver.c:738
 #, c-format
-msgid "Error resolving '%s'"
+msgid "Error resolving “%s”"
 msgstr "Fejl ved opløsning af \"%s\""
 
 #: ../gio/gtlscertificate.c:250
@@ -3846,7 +3882,7 @@ msgstr "Fejl ved læsning fra fildeskriptor: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Fejl ved lukning af fildeskriptor: %s"
 
-#: ../gio/gunixmounts.c:2329 ../gio/gunixmounts.c:2382
+#: ../gio/gunixmounts.c:2364 ../gio/gunixmounts.c:2417
 msgid "Filesystem root"
 msgstr "Filsystemets rod"
 
@@ -3862,14 +3898,14 @@ msgstr "Abstrakte UNIX-domænesokkeladresser understøttes ikke af dette system"
 
 # eject og eject_with_operation må være funktionskald, så de bør ikke oversættes (naturligvis er det ikke en særlig brugervenlig fejlmeddelelse, men det er jo udviklerne der bestemmer dette)
 #: ../gio/gvolume.c:437
-msgid "volume doesn't implement eject"
+msgid "volume doesn’t implement eject"
 msgstr "diskenhed implementerer ikke eject"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gvolume.c:514
-msgid "volume doesn't implement eject or eject_with_operation"
+msgid "volume doesn’t implement eject or eject_with_operation"
 msgstr "diskenhed implementerer ikke eject eller eject_with_operation"
 
 #: ../gio/gwin32inputstream.c:185
@@ -3931,25 +3967,25 @@ msgstr "Forkerte argumenter\n"
 
 #: ../glib/gbookmarkfile.c:755
 #, c-format
-msgid "Unexpected attribute '%s' for element '%s'"
+msgid "Unexpected attribute “%s” for element “%s”"
 msgstr "Uventet attribut \"%s\" for elementet \"%s\""
 
 #: ../glib/gbookmarkfile.c:766 ../glib/gbookmarkfile.c:837
 #: ../glib/gbookmarkfile.c:847 ../glib/gbookmarkfile.c:954
 #, c-format
-msgid "Attribute '%s' of element '%s' not found"
+msgid "Attribute “%s” of element “%s” not found"
 msgstr "Attributten \"%s\" for elementet \"%s\" blev ikke fundet"
 
 #: ../glib/gbookmarkfile.c:1124 ../glib/gbookmarkfile.c:1189
 #: ../glib/gbookmarkfile.c:1253 ../glib/gbookmarkfile.c:1263
 #, c-format
-msgid "Unexpected tag '%s', tag '%s' expected"
+msgid "Unexpected tag “%s”, tag “%s” expected"
 msgstr "Uventet mærke \"%s\", forventede mærket \"%s\""
 
 #: ../glib/gbookmarkfile.c:1149 ../glib/gbookmarkfile.c:1163
 #: ../glib/gbookmarkfile.c:1231
 #, c-format
-msgid "Unexpected tag '%s' inside '%s'"
+msgid "Unexpected tag “%s” inside “%s”"
 msgstr "Uventet mærke \"%s\" inden i \"%s\""
 
 #: ../glib/gbookmarkfile.c:1757
@@ -3958,7 +3994,7 @@ msgstr "Ingen gyldig bogmærkefil blev fundet i datakatalogerne"
 
 #: ../glib/gbookmarkfile.c:1958
 #, c-format
-msgid "A bookmark for URI '%s' already exists"
+msgid "A bookmark for URI “%s” already exists"
 msgstr "Et bogmærke for URI'en \"%s\" findes allerede"
 
 #: ../glib/gbookmarkfile.c:2004 ../glib/gbookmarkfile.c:2162
@@ -3971,32 +4007,33 @@ msgstr "Et bogmærke for URI'en \"%s\" findes allerede"
 #: ../glib/gbookmarkfile.c:3434 ../glib/gbookmarkfile.c:3523
 #: ../glib/gbookmarkfile.c:3639
 #, c-format
-msgid "No bookmark found for URI '%s'"
+msgid "No bookmark found for URI “%s”"
 msgstr "Der blev intet bogmærke fundet for URI'en \"%s\""
 
 #: ../glib/gbookmarkfile.c:2336
 #, c-format
-msgid "No MIME type defined in the bookmark for URI '%s'"
+msgid "No MIME type defined in the bookmark for URI “%s”"
 msgstr "Ingen MIME-type er defineret i bogmærket for URI'en \"%s\""
 
 #: ../glib/gbookmarkfile.c:2421
 #, c-format
-msgid "No private flag has been defined in bookmark for URI '%s'"
+msgid "No private flag has been defined in bookmark for URI “%s”"
 msgstr "Intet privat flag er defineret i bogmærket for URI'en \"%s\""
 
 #: ../glib/gbookmarkfile.c:2800
 #, c-format
-msgid "No groups set in bookmark for URI '%s'"
+msgid "No groups set in bookmark for URI “%s”"
 msgstr "Ingen grupper er sat i bogmærket for URI'en \"%s\""
 
 #: ../glib/gbookmarkfile.c:3198 ../glib/gbookmarkfile.c:3355
 #, c-format
-msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr "Intet program med navnet \"%s\" har registreret et bogmærke for \"%s\""
+msgid "No application with name “%s” registered a bookmark for “%s”"
+msgstr ""
+"Intet program med navnet \"%s\" har registreret et bogmærke for \"%s\""
 
 #: ../glib/gbookmarkfile.c:3378
 #, c-format
-msgid "Failed to expand exec line '%s' with URI '%s'"
+msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Kunne ikke udvide eksekveringslinjen \"%s\" med URI'en \"%s\""
 
 #: ../glib/gconvert.c:477 ../glib/gutf8.c:851 ../glib/gutf8.c:1063
@@ -4006,37 +4043,37 @@ msgstr "Delvis tegnsekvens ved slutningen af inddata"
 
 #: ../glib/gconvert.c:742
 #, c-format
-msgid "Cannot convert fallback '%s' to codeset '%s'"
+msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "Kan ikke konvertere tilbagefaldet \"%s\" til tegnsæt \"%s\""
 
 #: ../glib/gconvert.c:1567
 #, c-format
-msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
+msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "URI'en \"%s\" er ikke en absolut URI, ved brug af \"fil\"-metoden"
 
 #: ../glib/gconvert.c:1577
 #, c-format
-msgid "The local file URI '%s' may not include a '#'"
+msgid "The local file URI “%s” may not include a “#”"
 msgstr "Den lokale fil-URI \"%s\" må ikke indeholde en \"#\""
 
 #: ../glib/gconvert.c:1594
 #, c-format
-msgid "The URI '%s' is invalid"
+msgid "The URI “%s” is invalid"
 msgstr "URI'en \"%s\" er ugyldig"
 
 #: ../glib/gconvert.c:1606
 #, c-format
-msgid "The hostname of the URI '%s' is invalid"
+msgid "The hostname of the URI “%s” is invalid"
 msgstr "Værtsnavnet for URI'en \"%s\" er ugyldig"
 
 #: ../glib/gconvert.c:1622
 #, c-format
-msgid "The URI '%s' contains invalidly escaped characters"
+msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "URI'en \"%s\" indeholder ugyldigt beskyttede tegn"
 
 #: ../glib/gconvert.c:1717
 #, c-format
-msgid "The pathname '%s' is not an absolute path"
+msgid "The pathname “%s” is not an absolute path"
 msgstr "Stinavnet \"%s\" er ikke en absolut sti"
 
 #: ../glib/gconvert.c:1727
@@ -4272,94 +4309,95 @@ msgstr "søn"
 
 #: ../glib/gdir.c:155
 #, c-format
-msgid "Error opening directory '%s': %s"
+msgid "Error opening directory “%s”: %s"
 msgstr "Fejl ved åbning af mappen \"%s\": %s"
 
 #: ../glib/gfileutils.c:701 ../glib/gfileutils.c:793
 #, c-format
-msgid "Could not allocate %lu byte to read file \"%s\""
-msgid_plural "Could not allocate %lu bytes to read file \"%s\""
+msgid "Could not allocate %lu byte to read file “%s”"
+msgid_plural "Could not allocate %lu bytes to read file “%s”"
 msgstr[0] "Kunne ikke allokere %lu byte til at læse filen \"%s\""
 msgstr[1] "Kunne ikke allokere %lu byte til at læse filen \"%s\""
 
 #: ../glib/gfileutils.c:718
-#, c-format
-msgid "Error reading file '%s': %s"
-msgstr "Fejl ved læsning af filen \"%s\": %s"
+#, c-format, fuzzy
+#| msgid "Error reading file %s: %s"
+msgid "Error reading file “%s”: %s"
+msgstr "Fejl ved læsning af filen %s: %s"
 
 #: ../glib/gfileutils.c:754
 #, c-format
-msgid "File \"%s\" is too large"
+msgid "File “%s” is too large"
 msgstr "Filen \"%s\" er for stor"
 
 #: ../glib/gfileutils.c:818
 #, c-format
-msgid "Failed to read from file '%s': %s"
+msgid "Failed to read from file “%s”: %s"
 msgstr "Kunne ikke læse fra filen \"%s\": %s"
 
 #: ../glib/gfileutils.c:866 ../glib/gfileutils.c:938
 #, c-format
-msgid "Failed to open file '%s': %s"
+msgid "Failed to open file “%s”: %s"
 msgstr "Kunne ikke åbne filen \"%s\": %s"
 
 #: ../glib/gfileutils.c:878
 #, c-format
-msgid "Failed to get attributes of file '%s': fstat() failed: %s"
+msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Kunne ikke læse attributter for filen \"%s\": fstat() mislykkedes: %s"
 
 #: ../glib/gfileutils.c:908
 #, c-format
-msgid "Failed to open file '%s': fdopen() failed: %s"
+msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Kunne ikke åbne filen \"%s\": fdopen() mislykkedes: %s"
 
 #: ../glib/gfileutils.c:1007
 #, c-format
-msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
+msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Kunne ikke omdøbe filen \"%s\" til \"%s\": g_rename() mislykkedes: %s"
 
 #: ../glib/gfileutils.c:1042 ../glib/gfileutils.c:1541
 #, c-format
-msgid "Failed to create file '%s': %s"
+msgid "Failed to create file “%s”: %s"
 msgstr "Fejl under oprettelse af filen \"%s\": %s"
 
 #: ../glib/gfileutils.c:1069
 #, c-format
-msgid "Failed to write file '%s': write() failed: %s"
+msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Kunne ikke skrive filen \"%s\": write() mislykkedes: %s"
 
 #: ../glib/gfileutils.c:1112
 #, c-format
-msgid "Failed to write file '%s': fsync() failed: %s"
+msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Kunne ikke skrive filen \"%s\": fsync() mislykkedes: %s"
 
 #: ../glib/gfileutils.c:1236
 #, c-format
-msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
+msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Den eksisterende fil \"%s\" kunne ikke fjernes: g_unlink() mislykkedes: %s"
 
 #: ../glib/gfileutils.c:1507
 #, c-format
-msgid "Template '%s' invalid, should not contain a '%s'"
+msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Skabelonen \"%s\" er ugyldig, må ikke indeholde en \"%s\""
 
 #: ../glib/gfileutils.c:1520
 #, c-format
-msgid "Template '%s' doesn't contain XXXXXX"
+msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Skabelonen \"%s\" indeholder ikke XXXXXX"
 
 #: ../glib/gfileutils.c:2045
 #, c-format
-msgid "Failed to read the symbolic link '%s': %s"
+msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Kunne ikke læse den symbolske henvisning \"%s\": %s"
 
 #: ../glib/giochannel.c:1388
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
+msgid "Could not open converter from “%s” to “%s”: %s"
 msgstr "Kunne ikke åbne konverterer fra \"%s\" til \"%s\": %s"
 
 #: ../glib/giochannel.c:1733
-msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr "Kan ikke foretage en rå læsning i g_io_channel_read_line_string"
 
 #: ../glib/giochannel.c:1780 ../glib/giochannel.c:2038
@@ -4372,7 +4410,7 @@ msgid "Channel terminates in a partial character"
 msgstr "Kanal afslutter med et ufuldendt tegn"
 
 #: ../glib/giochannel.c:1924
-msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "Kan ikke foretage en rå læsning i g_io_channel_read_to_end"
 
 #: ../glib/gkeyfile.c:737
@@ -4386,7 +4424,7 @@ msgstr "Ikke en almindelig fil"
 #: ../glib/gkeyfile.c:1204
 #, c-format
 msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+"Key file contains line “%s” which is not a key-value pair, group, or comment"
 msgstr ""
 "Nøglefilen indeholder linjen \"%s\" hvilken ikke er et nøgle-værdi-par, en "
 "gruppe eller en kommentar"
@@ -4407,31 +4445,31 @@ msgstr "Ugyldigt nøglenavn: %s"
 
 #: ../glib/gkeyfile.c:1336
 #, c-format
-msgid "Key file contains unsupported encoding '%s'"
+msgid "Key file contains unsupported encoding “%s”"
 msgstr "Nøglefilen indeholder kodningen \"%s\", der ikke understøttes"
 
 #: ../glib/gkeyfile.c:1579 ../glib/gkeyfile.c:1752 ../glib/gkeyfile.c:3130
 #: ../glib/gkeyfile.c:3193 ../glib/gkeyfile.c:3323 ../glib/gkeyfile.c:3453
 #: ../glib/gkeyfile.c:3597 ../glib/gkeyfile.c:3826 ../glib/gkeyfile.c:3893
 #, c-format
-msgid "Key file does not have group '%s'"
+msgid "Key file does not have group “%s”"
 msgstr "Nøglefilen indeholder ikke gruppen \"%s\""
 
 #: ../glib/gkeyfile.c:1707
 #, c-format
-msgid "Key file does not have key '%s' in group '%s'"
+msgid "Key file does not have key “%s” in group “%s”"
 msgstr "Nøglefilen har ikke nøglen \"%s\" i gruppen \"%s\""
 
 #: ../glib/gkeyfile.c:1869 ../glib/gkeyfile.c:1985
 #, c-format
-msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
+msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr ""
 "Nøglefilen indeholder nøglen \"%s\" med værdien \"%s\" der ikke er UTF-8"
 
 #: ../glib/gkeyfile.c:1889 ../glib/gkeyfile.c:2005 ../glib/gkeyfile.c:2374
 #, c-format
 msgid ""
-"Key file contains key '%s' which has a value that cannot be interpreted."
+"Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "Nøglefilen indeholder nøglen \"%s\", som har en værdi, der ikke kan "
 "fortolkes."
@@ -4439,7 +4477,7 @@ msgstr ""
 #: ../glib/gkeyfile.c:2591 ../glib/gkeyfile.c:2959
 #, c-format
 msgid ""
-"Key file contains key '%s' in group '%s' which has a value that cannot be "
+"Key file contains key “%s” in group “%s” which has a value that cannot be "
 "interpreted."
 msgstr ""
 "Nøglefilen indeholder nøglen \"%s\" i gruppen \"%s\", som har en værdi der "
@@ -4447,7 +4485,7 @@ msgstr ""
 
 #: ../glib/gkeyfile.c:2669 ../glib/gkeyfile.c:2746
 #, c-format
-msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
+msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr ""
 "Nøglen \"%s\" i gruppen \"%s\" har værdien \"%s\", mens %s blev forventet"
 
@@ -4457,32 +4495,32 @@ msgstr "Nøglefilen indeholder beskyttede tegn for enden af linjen"
 
 #: ../glib/gkeyfile.c:4155
 #, c-format
-msgid "Key file contains invalid escape sequence '%s'"
+msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Nøglefilen indeholder en ugyldig undvigesekvens \"%s\""
 
 #: ../glib/gkeyfile.c:4297
 #, c-format
-msgid "Value '%s' cannot be interpreted as a number."
+msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Værdien \"%s\" kan ikke fortolkes som et nummer."
 
 #: ../glib/gkeyfile.c:4311
 #, c-format
-msgid "Integer value '%s' out of range"
+msgid "Integer value “%s” out of range"
 msgstr "Heltalsværdien \"%s\" er ikke i gyldigt interval"
 
 #: ../glib/gkeyfile.c:4344
 #, c-format
-msgid "Value '%s' cannot be interpreted as a float number."
+msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Værdien \"%s\" kan ikke fortolkes som en float."
 
 #: ../glib/gkeyfile.c:4383
 #, c-format
-msgid "Value '%s' cannot be interpreted as a boolean."
+msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Værdien \"%s\" kan ikke fortolkes som en sandhedsværdi."
 
 #: ../glib/gmappedfile.c:129
 #, c-format
-msgid "Failed to get attributes of file '%s%s%s%s': fstat() failed: %s"
+msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
 msgstr ""
 "Kunne ikke læse attributter for filen \"%s%s%s%s\": fstat() mislykkedes: %s"
 
@@ -4493,7 +4531,7 @@ msgstr "Kunne ikke kortlægge %s%s%s%s: mmap() mislykkedes: %s"
 
 #: ../glib/gmappedfile.c:262
 #, c-format
-msgid "Failed to open file '%s': open() failed: %s"
+msgid "Failed to open file “%s”: open() failed: %s"
 msgstr "Kunne ikke åbne filen \"%s\": open() mislykkedes: %s"
 
 #: ../glib/gmarkup.c:398 ../glib/gmarkup.c:440
@@ -4562,9 +4600,9 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Entiteten sluttede ikke med et semikolon; du har sandsynligvis brugt et og-"
-"tegn uden at det var beregnet på at starte en entitet - dette undgås ved at "
-"bruge &amp; i stedet"
+"Entiteten sluttede ikke med et semikolon; du har sandsynligvis brugt et "
+"og-tegn uden at det var beregnet på at starte en entitet - dette undgås ved "
+"at bruge &amp; i stedet"
 
 #: ../glib/gmarkup.c:1171
 msgid "Document must begin with an element (e.g. <book>)"
@@ -4707,8 +4745,8 @@ msgstr ""
 "Dokumentet sluttede uventet inden i en kommentar eller behandlingsinstruktion"
 
 #: ../glib/goption.c:861
-msgid "[OPTION...]"
-msgstr "[TILVALG...]"
+msgid "[OPTION…]"
+msgstr "[TILVALG …]"
 
 #: ../glib/goption.c:977
 msgid "Help Options:"
@@ -4732,22 +4770,22 @@ msgstr "Tilvalg:"
 
 #: ../glib/goption.c:1113 ../glib/goption.c:1183
 #, c-format
-msgid "Cannot parse integer value '%s' for %s"
+msgid "Cannot parse integer value “%s” for %s"
 msgstr "Kan ikke fortolke heltalsværdien \"%s\" for %s"
 
 #: ../glib/goption.c:1123 ../glib/goption.c:1191
 #, c-format
-msgid "Integer value '%s' for %s out of range"
+msgid "Integer value “%s” for %s out of range"
 msgstr "Heltalsværdien \"%s\" for %s er ikke i gyldigt interval"
 
 #: ../glib/goption.c:1148
 #, c-format
-msgid "Cannot parse double value '%s' for %s"
+msgid "Cannot parse double value “%s” for %s"
 msgstr "Kan ikke fortolke double-værdien \"%s\" for %s"
 
 #: ../glib/goption.c:1156
 #, c-format
-msgid "Double value '%s' for %s out of range"
+msgid "Double value “%s” for %s out of range"
 msgstr "Double-værdien \"%s\" for %s er ikke i gyldigt interval"
 
 #: ../glib/goption.c:1448 ../glib/goption.c:1527
@@ -4936,7 +4974,7 @@ msgstr "POSIX-arrangerende elementer understøttes ikke"
 
 #: ../glib/gregex.c:419
 msgid "character value in \\x{...} sequence is too large"
-msgstr "tegnværdi i \\x{..}-sekvens er for stor"
+msgstr "tegnværdi i \\x{…}-sekvens er for stor"
 
 #: ../glib/gregex.c:422
 msgid "invalid condition (?(0)"
@@ -5070,7 +5108,7 @@ msgstr "navn er for langt i (*MARK), (*PRUNE), (*SKIP) eller (*THEN)"
 
 #: ../glib/gregex.c:523
 msgid "character value in \\u.... sequence is too large"
-msgstr "tegnværdi i \\u...-sekvens er for stor"
+msgstr "tegnværdi i \\u....-sekvens er for stor"
 
 #: ../glib/gregex.c:746 ../glib/gregex.c:1977
 #, c-format
@@ -5100,7 +5138,7 @@ msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Fejl under kompilering af det regulære udtryk %s ved tegn %d: %s"
 
 #: ../glib/gregex.c:2413
-msgid "hexadecimal digit or '}' expected"
+msgid "hexadecimal digit or “}” expected"
 msgstr "hexadecimalt ciffer eller \"}\" forventet"
 
 #: ../glib/gregex.c:2429
@@ -5108,7 +5146,7 @@ msgid "hexadecimal digit expected"
 msgstr "hexadecimalt ciffer forventet"
 
 #: ../glib/gregex.c:2469
-msgid "missing '<' in symbolic reference"
+msgid "missing “<” in symbolic reference"
 msgstr "manglende \"<\" i symbolsk reference"
 
 #: ../glib/gregex.c:2478
@@ -5128,7 +5166,7 @@ msgid "illegal symbolic reference"
 msgstr "ugyldig symbolsk reference"
 
 #: ../glib/gregex.c:2576
-msgid "stray final '\\'"
+msgid "stray final “\\”"
 msgstr "løst afsluttende \"\\\""
 
 #: ../glib/gregex.c:2580
@@ -5137,11 +5175,11 @@ msgstr "ukendt undvigesekvens"
 
 #: ../glib/gregex.c:2590
 #, c-format
-msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
+msgid "Error while parsing replacement text “%s” at char %lu: %s"
 msgstr "Fejl under fortolkning af erstatningstekst \"%s\" ved tegn %lu: %s"
 
 #: ../glib/gshell.c:96
-msgid "Quoted text doesn't begin with a quotation mark"
+msgid "Quoted text doesn’t begin with a quotation mark"
 msgstr "Anført tekst begynder ikke med anførselstegn"
 
 #: ../glib/gshell.c:186
@@ -5151,12 +5189,12 @@ msgstr ""
 
 #: ../glib/gshell.c:582
 #, c-format
-msgid "Text ended just after a '\\' character. (The text was '%s')"
+msgid "Text ended just after a “\\” character. (The text was “%s”)"
 msgstr "Tekst sluttede lige efter et \"\\\"-tegn. (Teksten var \"%s\")"
 
 #: ../glib/gshell.c:589
 #, c-format
-msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgid "Text ended before matching quote was found for %c. (The text was “%s”)"
 msgstr ""
 "Tekst sluttede før tilsvarende anførselstegn blev fundet for %c (teksten var "
 "\"%s\")"
@@ -5212,12 +5250,12 @@ msgstr "Fejl under fraspaltning af proces (%s)"
 
 #: ../glib/gspawn.c:1490 ../glib/gspawn-win32.c:370
 #, c-format
-msgid "Failed to change to directory '%s' (%s)"
+msgid "Failed to change to directory “%s” (%s)"
 msgstr "Fejl ved skift til mappen \"%s\" (%s)"
 
 #: ../glib/gspawn.c:1500
 #, c-format
-msgid "Failed to execute child process \"%s\" (%s)"
+msgid "Failed to execute child process “%s” (%s)"
 msgstr "Fejl under kørsel af underprocessen \"%s\" (%s)"
 
 #: ../glib/gspawn.c:1510
@@ -5232,7 +5270,7 @@ msgstr "Fejl ved fraspaltning af underprocess (%s)"
 
 #: ../glib/gspawn.c:1527
 #, c-format
-msgid "Unknown error executing child process \"%s\""
+msgid "Unknown error executing child process “%s”"
 msgstr "Ukendt fejl under kørsel af underprocessen \"%s\""
 
 #: ../glib/gspawn.c:1551
@@ -5392,6 +5430,15 @@ msgstr[1] "%s bytes"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+#~ msgid "Error creating directory '%s': %s"
+#~ msgstr "Fejl ved oprettelse af mappen \"%s\": %s"
+
+#~ msgid "Error opening file '%s': %s"
+#~ msgstr "Fejl ved åbning af filen \"%s\": %s"
+
+#~ msgid "Error reading file '%s': %s"
+#~ msgstr "Fejl ved læsning af filen \"%s\": %s"
+
 #~ msgid "Error renaming file: %s"
 #~ msgstr "Fejl ved omdøbning af fil: %s"
 
@@ -5434,8 +5481,7 @@ msgstr "%.1f KB"
 #~ msgstr "Kan ikke hente verserende fejl: %s"
 
 #~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-#~ msgstr ""
-#~ "Kunne ikke åbne filen \"%s\" til skrivning: fdopen() mislykkedes: %s"
+#~ msgstr "Kunne ikke åbne filen \"%s\" til skrivning: fdopen() mislykkedes: %s"
 
 #~ msgid "Failed to write file '%s': fflush() failed: %s"
 #~ msgstr "Kunne ikke skrive filen \"%s\": fflush() mislykkedes: %s"
@@ -5488,11 +5534,9 @@ msgstr "%.1f KB"
 #~ msgid "Error writing to unix: %s"
 #~ msgstr "Fejl ved skrivning til unix: %s"
 
-#~ msgid ""
-#~ "Key file contains key '%s' which has value that cannot be interpreted."
+#~ msgid "Key file contains key '%s' which has value that cannot be interpreted."
 #~ msgstr ""
-#~ "Nøglefilen indeholder nøglen \"%s\" som har en værdi der ikke kan "
-#~ "fortolkes."
+#~ "Nøglefilen indeholder nøglen \"%s\" som har en værdi der ikke kan fortolkes."
 
 #~ msgid "This option will be removed soon."
 #~ msgstr "Dette tilvalg vil snart blive fjernet."
@@ -5518,8 +5562,8 @@ msgstr "%.1f KB"
 #~ msgstr "Typen af returværdi er forkert - fik \"%s\", men forventede \"%s\""
 
 #~ msgid ""
-#~ "Trying to set property %s of type %s but according to the expected "
-#~ "interface the type is %s"
+#~ "Trying to set property %s of type %s but according to the expected interface "
+#~ "the type is %s"
 #~ msgstr ""
 #~ "Forsøger at ændre egenskaben %s af typen %s, men ifølge den forventede "
 #~ "grænseflade er typen %s"
@@ -5580,9 +5624,9 @@ msgstr "%.1f KB"
 #~ msgstr "skjul ikke poster"
 
 #~ msgid ""
-#~ "Character '%s' is not valid at the start of an entity name; the & "
-#~ "character begins an entity; if this ampersand isn't supposed to be an "
-#~ "entity, escape it as &amp;"
+#~ "Character '%s' is not valid at the start of an entity name; the & character "
+#~ "begins an entity; if this ampersand isn't supposed to be an entity, escape "
+#~ "it as &amp;"
 #~ msgstr ""
 #~ "Tegnet \"%s\" er ikke gyldigt ved starten af et entitetnavn; &-tegnet "
 #~ "starter en entitet; hvis dette og-tegn ikke er beregnet på at være en "
@@ -5654,3 +5698,4 @@ msgstr "%.1f KB"
 
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Kanalsætningsflag ikke understøttet"
+
