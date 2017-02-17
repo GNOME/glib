@@ -28,13 +28,15 @@ from . import dbustypes
 # ----------------------------------------------------------------------------------------------------
 
 class CodeGenerator:
-    def __init__(self, ifaces, namespace, interface_prefix, generate_objmanager, generate_autocleanup, docbook_gen, h, c):
+    def __init__(self, ifaces, namespace, interface_prefix, generate_objmanager,
+                 generate_autocleanup, docbook_gen, h, c, header_name):
         self.docbook_gen = docbook_gen
         self.generate_objmanager = generate_objmanager
         self.generate_autocleanup = generate_autocleanup
         self.ifaces = ifaces
         self.h = h
         self.c = c
+        self.header_name = header_name
         self.namespace = namespace
         if len(namespace) > 0:
             if utils.is_ugly_case(namespace):
@@ -48,7 +50,7 @@ class CodeGenerator:
             self.ns_upper = ''
             self.ns_lower = ''
         self.interface_prefix = interface_prefix
-        self.header_guard = self.h.name.upper().replace('.', '_').replace('-', '_').replace('/', '_')
+        self.header_guard = header_name.upper().replace('.', '_').replace('-', '_').replace('/', '_')
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -67,7 +69,7 @@ class CodeGenerator:
                      '#include "%s"\n'
                      '\n'
                      '#include <string.h>\n'
-                     %(self.h.name))
+                     %(self.header_name))
 
         self.c.write('#ifdef G_OS_UNIX\n'
                      '#  include <gio/gunixfdlist.h>\n'

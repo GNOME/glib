@@ -33,6 +33,7 @@
     <arg><option>--c-namespace</option> <replaceable>YourProject</replaceable></arg>
     <arg><option>--c-generate-object-manager</option></arg>
     <arg><option>--c-generate-autocleanup</option> none|objects|all</arg>
+    <arg><option>--output-directory</option> <replaceable>OUTDIR</replaceable></arg>
     <arg><option>--generate-docbook</option> <replaceable>OUTFILES</replaceable></arg>
     <arg><option>--xml-files</option> <replaceable>FILE</replaceable></arg>
     <group choice="plain" rep="repeat">
@@ -187,7 +188,12 @@
         <para>
           Generate C code for all D-Bus interfaces and put it in
           <filename>OUTFILES.c</filename> and
-          <filename>OUTFILES.h</filename>.
+          <filename>OUTFILES.h</filename> including any sub-directories. If you want the files to
+          be output in a different location use <option>--output-directory</option> as <filename>OUTFILES.h</filename>
+          including sub-directories will be referenced from <filename>OUTFILES.c</filename>.
+        </para>
+        <para>
+          The full paths would then be <literal>$(OUTDIR)/$(dirname $OUTFILES)/$(basename $OUTFILES).{c,h}</literal>.
         </para>
       </listitem>
     </varlistentry>
@@ -226,6 +232,15 @@
           due to a corner case in backwards compatibility with a few projects,
           but you should likely switch your project to use 'all'.
           This option was added in GLib 2.50.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--output-directory</option> <replaceable>OUTDIR</replaceable></term>
+      <listitem>
+        <para>
+          Directory to output generated source to. Equivalent to changing directory before generation.
         </para>
       </listitem>
     </varlistentry>
