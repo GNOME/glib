@@ -57,7 +57,7 @@ version is not supported.
 !endif
 
 VALID_CFGSET = FALSE
-!if "$(CFG)" == "release" || "$(CFG)" == "debug"
+!if "$(CFG)" == "release" || "$(CFG)" == "debug" || "$(CFG)" == "Release" || "$(CFG)" == "Debug"
 VALID_CFGSET = TRUE
 !endif
 
@@ -65,7 +65,7 @@ VALID_CFGSET = TRUE
 # using .pdb files for release builds
 CFLAGS_BASE = /Zi
 
-!if "$(CFG)" == "release"
+!if "$(CFG)" == "release" || "$(CFG)" == "Release"
 CFLAGS_ADD = /MD /O2 $(CFLAGS_BASE)
 !else
 CFLAGS_ADD = /MDd /Od $(CFLAGS_BASE)
