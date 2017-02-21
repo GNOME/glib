@@ -1132,6 +1132,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                   gchar *initial_response;
                   gsize initial_response_len;
 
+                  g_clear_object (&mech);
                   mech = g_object_new (auth_mech_to_use_gtype,
                                        "stream", auth->priv->stream,
                                        "credentials", credentials,
