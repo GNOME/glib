@@ -62,6 +62,31 @@ test_extra_programs = [
   ['gdbus-testserver'],
 ]
 
+test_env = [
+  'G_TEST_SRCDIR=' + meson.current_source_dir(),
+  'G_TEST_BUILDDIR=' + meson.current_build_dir(),
+]
+
+test_c_args = [
+  '-DHAVE_CONFIG_H=1',
+  '-DG_LOG_DOMAIN="GLib-GIO"',
+  '-DTEST_SERVICES="@0@/gio/tests/services"'.format(meson.build_root()),
+]
+
+# Check for libdbus1 - Optional - is only used in the GDBus test cases
+# 1.2.14 required for dbus_message_set_serial
+dbus1_dep = dependency('dbus-1', required : false, version : '>= 1.2.14')
+if dbus1_dep.found()
+  glib_conf.set('HAVE_DBUS1', 1)
+
+  exe = executable('gdbus-serialization',
+      'gdbus-serialization.c', 'gdbus-tests.c',
+      install : false,
+      c_args : test_c_args,
+      dependencies : [libglib_dep, libgmodule_dep, libgio_dep, dbus1_dep])
+  test('gdbus-serialization', exe, env : test_env)
+endif
+
 #  Test programs buildable on UNIX only
 if host_machine.system() != 'windows'
   gio_tests += [
@@ -83,26 +108,98 @@ if host_machine.system() != 'windows'
     ['apps'],
   ]
 
+  #  Test programs that need to bring up a session bus (requires dbus-daemon)
   have_dbus_daemon = find_program('dbus-daemon', required : false).found()
   if have_dbus_daemon
-    gio_tests += ['gdbus-unix-addresses']
+    # Generate gdbus-test-codegen-generated.{c,h}
+    gdbus_test_codegen_generated = custom_target('gdbus-test-codegen-generated',
+        input :   ['test-codegen.xml'],
+        output :  ['gdbus-test-codegen-generated.h',
+                   'gdbus-test-codegen-generated.c'],
+        command : [python, gdbus_codegen,
+                   '--interface-prefix', 'org.project.',
+                   '--generate-c-code', '@OUTDIR@/gdbus-test-codegen-generated',
+                   '--c-generate-object-manager',
+                   '--c-namespace', 'Foo_iGen',
+                   '--generate-docbook', 'gdbus-test-codegen-generated-doc',
+                   '--annotate', 'org.project.Bar', 'Key1', 'Value1',
+                   '--annotate', 'org.project.Bar', 'org.gtk.GDBus.Internal', 'Value2',
+                   '--annotate', 'org.project.Bar.HelloWorld()', 'Key3', 'Value3',
+                   '--annotate', 'org.project.Bar::TestSignal', 'Key4', 'Value4',
+                   '--annotate', 'org.project.Bar:ay', 'Key5', 'Value5',
+                   '--annotate', 'org.project.Bar.TestPrimitiveTypes()[val_int32]', 'Key6', 'Value6',
+                   '--annotate', 'org.project.Bar.TestPrimitiveTypes()[ret_uint32]', 'Key7', 'Value7',
+                   '--annotate', 'org.project.Bar::TestSignal[array_of_strings]', 'Key8', 'Value8',
+                   '@INPUT@'])
+
+    gio_dbus_tests = [
+      ['actions', [], []],
+      ['dbus-appinfo', [], []],
+      ['gdbus-auth', [], []],
+      ['gdbus-bz627724', [], []],
+      ['gdbus-close-pending', [], []],
+      ['gdbus-connection', [], []],
+      ['gdbus-connection-loss', [], []],
+      ['gdbus-connection-slow', [], []],
+      ['gdbus-error', [], []],
+      ['gdbus-exit-on-close', [], []],
+      ['gdbus-export', [], []],
+      ['gdbus-introspection', [], []],
+      ['gdbus-names', [], []],
+      ['gdbus-proxy', [], []],
+      ['gdbus-proxy-threads', [], [dbus1_dep]],
+      ['gdbus-proxy-well-known-name', [], []],
+      ['gdbus-test-codegen', [gdbus_test_codegen_generated], []],
+      ['gdbus-threading', [], []],
+      ['gmenumodel', [], []],
+      ['gnotification', ['gnotification-server.c'], []],
+    ]
+
+    # separate loop because extra source files for each test
+    foreach dbus_test : gio_dbus_tests
+      test_name = dbus_test[0]
+      extra_src = dbus_test[1]
+      extra_deps = dbus_test[2]
+      exe = executable(test_name, '@0@.c'.format(test_name),
+          'gdbus-sessionbus.c', 'gdbus-tests.c', extra_src,
+          install : false,
+          c_args : test_c_args,
+          dependencies : [libglib_dep, libgmodule_dep, libgio_dep] + extra_deps)
+      test(test_name, exe, env : test_env)
+    endforeach
+
+    exe = executable('gdbus-test-codegen-old', 'gdbus-test-codegen.c',
+          'gdbus-sessionbus.c', 'gdbus-tests.c', gdbus_test_codegen_generated,
+          install : false,
+          c_args : test_c_args + ['-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_36', '-DGLIB_VERSION_MAX_ALLOWED=GLIB_VERSION_2_36'],
+          dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
+    test('gdbus-test-codegen-old', exe, env : test_env)
+
+    # There is already a gapplication exe target in gio so need to use a
+    # different name for the unit test executable, since we can't have two
+    # targets of the same name even if in different directories
+    # (FIXME: just rename source file to gapplication-test.c)
+    exe = executable('gapplication-test', 'gapplication.c',
+          'gdbus-sessionbus.c', 'gdbus-tests.c',
+          install : false,
+          c_args : test_c_args,
+          dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
+    test('gapplication', exe, env : test_env)
+
+    if host_machine.system() != 'windows'
+      gio_tests += ['gdbus-unix-addresses']
+    endif
   endif
+endif
+
+#  Test programs buildable on Windows only
+if host_machine.system() == 'windows'
+  gio_tests += ['win32-streams']
 endif
 
 if cc.get_id() != 'msvc'
   gio_tests += [ 'autoptr' ]
 endif
-
-test_env = [
-  'G_TEST_SRCDIR=' + meson.current_source_dir(),
-  'G_TEST_BUILDDIR=' + meson.current_build_dir(),
-]
-
-test_c_args = [
-  '-DHAVE_CONFIG_H=1',
-  '-DG_LOG_DOMAIN="GLib-GIO"',
-  '-DTEST_SERVICES="@0@/gio/tests/services"'.format(meson.build_root()),
-]
 
 foreach test_name : gio_tests
   extra_deps = []
@@ -194,9 +291,13 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
                '--c-name', '_g_plugin',
                '@INPUT@'])
 
-  # -module -export-dynamic + on win32_platform -no-undefined
+  if host_system == 'windows'
+    resource_plugin_platform_link_args = ['-no-undefined']
+  else
+    resource_plugin_platform_link_args = []
+  endif
   shared_module ('resourceplugin', 'resourceplugin.c', plugin_resources_c,
-    link_args : ['-export-dynamic'],
+    link_args : ['-export-dynamic'] + resource_plugin_platform_link_args,
     dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
 
   test_gresource = custom_target('test.gresource',
@@ -294,4 +395,5 @@ executable('test-spawn-echo', 'test-spawn-echo.c',
 )
 '''
 
+# FIXME: subdir('services')
 subdir('modules')
