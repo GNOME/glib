@@ -182,7 +182,77 @@ foreach extra_program : uninstalled_test_extra_programs + test_extra_programs
       dependencies : [libglib_dep, libgmodule_dep, libgio_dep] + extra_deps)
 endforeach
 
-# FIXME: Add resources test
+if not meson.is_cross_build() or meson.has_exe_wrapper()
+
+  plugin_resources_c = custom_target('plugin-resources.c',
+    input : 'test4.gresource.xml',
+    output : 'plugin-resources.c',
+    command : [glib_compile_resources,
+               '--target=@OUTPUT@',
+               '--sourcedir=' + meson.current_source_dir(),
+               '--generate-source',
+               '--c-name', '_g_plugin',
+               '@INPUT@'])
+
+  # -module -export-dynamic + on win32_platform -no-undefined
+  shared_module ('resourceplugin', 'resourceplugin.c', plugin_resources_c,
+    link_args : ['-export-dynamic'],
+    dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
+
+  test_gresource = custom_target('test.gresource',
+    input : 'test.gresource.xml',
+    output : 'test.gresource',
+    command : [glib_compile_resources,
+               '--target=@OUTPUT@',
+               '--sourcedir=' + meson.current_source_dir(),
+               '--sourcedir=' + meson.current_build_dir(),
+               '@INPUT@'])
+
+  test_resources2_c = custom_target('test_resources2.c',
+    input : 'test3.gresource.xml',
+    output : 'test_resources2.c',
+    command : [glib_compile_resources,
+               '--target=@OUTPUT@',
+               '--sourcedir=' + meson.current_source_dir(),
+               '--generate',
+               '--c-name', '_g_test2',
+               '--manual-register',
+               '@INPUT@'])
+
+  test_resources2_h = custom_target('test_resources2.h',
+    input : 'test3.gresource.xml',
+    output : 'test_resources2.h',
+    command : [glib_compile_resources,
+               '--target=@OUTPUT@',
+               '--sourcedir=' + meson.current_source_dir(),
+               '--generate',
+               '--c-name', '_g_test2',
+               '--manual-register',
+               '@INPUT@'])
+
+  test_resources_c = custom_target('test_resources.c',
+    input : 'test2.gresource.xml',
+    output : 'test_resources.c',
+    command : [glib_compile_resources,
+               '--target=@OUTPUT@',
+               '--sourcedir=' + meson.current_source_dir(),
+               '--generate-source',
+               '--c-name', '_g_test1',
+               '@INPUT@'])
+
+  # referenced by test.gresource.xml
+  test_generated_txt = configure_file(input : 'test1.txt',
+    output : 'test-generated.txt',
+    configuration : configuration_data(),
+    install : false)
+
+  exe = executable('resources', 'resources.c', test_gresource,
+      test_resources_c, test_resources2_c, test_resources2_h,
+      install : false,
+      c_args : test_c_args,
+      dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
+  test('resources', exe, env : test_env)
+endif
 
 foo = '''
 c_args_atomic = [ ]

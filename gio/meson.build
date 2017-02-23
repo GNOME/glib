@@ -779,7 +779,7 @@ executable('glib-compile-schemas',
   link_args : noseh_link_args,
   dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
-executable('glib-compile-resources',
+glib_compile_resources = executable('glib-compile-resources',
   [gconstructor_as_data_h, 'gvdb/gvdb-builder.c', 'glib-compile-resources.c'],
   install : true,
   c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
