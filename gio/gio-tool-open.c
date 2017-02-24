@@ -146,16 +146,28 @@ handle_open (int argc, char *argv[], gboolean do_help)
   success = TRUE;
   for (i = 1; i < argc; i++)
     {
-      GFile *file;
-      char *uri;
+      char *uri = NULL;
+      char *uri_scheme;
 
-      file = g_file_new_for_commandline_arg (argv[i]);
-      uri = g_file_get_uri (file);
-      res = g_app_info_launch_default_for_uri (uri, NULL, &error);
+      /* Workaround to handle non-URI locations. We still use the original
+       * location for other cases, because GFile might modify the URI in ways
+       * we don't want. See:
+       * https://bugzilla.gnome.org/show_bug.cgi?id=779182 */
+      uri_scheme = g_uri_parse_scheme (argv[i]);
+      if (!uri_scheme || uri_scheme[0] == '\0')
+        {
+          GFile *file;
 
+          file = g_file_new_for_commandline_arg (argv[i]);
+          uri = g_file_get_uri (file);
+          g_object_unref (file);
+        }
+      g_free (uri_scheme);
+
+      res = g_app_info_launch_default_for_uri (uri ? uri : argv[i], NULL, &error);
       if (!res)
 	{
-          print_file_error (file, error->message);
+          print_error ("%s: %s", uri ? uri : argv[i], error->message);
 	  g_clear_error (&error);
 	  success = FALSE;
 	}
@@ -169,7 +181,7 @@ handle_open (int argc, char *argv[], gboolean do_help)
           char *bus_name = NULL;
           char *object_path = NULL;
 
-          if (get_bus_name_and_path_from_uri (uri, &bus_name, &object_path))
+          if (get_bus_name_and_path_from_uri (uri ? uri : argv[i], &bus_name, &object_path))
             {
               GDBusConnection *connection;
               connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
@@ -189,7 +201,6 @@ handle_open (int argc, char *argv[], gboolean do_help)
         }
 #endif
 
-      g_object_unref (file);
       g_free (uri);
     }
 
