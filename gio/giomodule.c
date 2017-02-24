@@ -1280,6 +1280,8 @@ lazy_load_modules (GIOExtensionPoint *extension_point)
 GList *
 g_io_extension_point_get_extensions (GIOExtensionPoint *extension_point)
 {
+  g_return_val_if_fail (extension_point != NULL, NULL);
+
   lazy_load_modules (extension_point);
   return extension_point->extensions;
 }
