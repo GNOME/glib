@@ -18,6 +18,7 @@
  */
 
 #include <glib/glib.h>
+#include <glib/gstdio.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 #include <stdlib.h>
@@ -759,7 +760,14 @@ int
 main (int   argc,
       char *argv[])
 {
+  const gchar *build_dir;
   gint result;
+
+  /* With Meson build we need to change into right directory, so that the
+   * appinfo-test binary can be found. */
+  build_dir = g_getenv ("G_TEST_BUILDDIR");
+  if (build_dir)
+    g_chdir (build_dir);
 
   g_test_init (&argc, &argv, NULL);
 

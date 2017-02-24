@@ -8,6 +8,8 @@
 
 #include "testenum.h"
 
+static const gchar *locale_dir = ".";
+
 static gboolean backend_set;
 
 /* These tests rely on the schemas in org.gtk.test.gschema.xml
@@ -732,7 +734,7 @@ test_l10n (void)
   gchar *str;
   gchar *locale;
 
-  bindtextdomain ("test", ".");
+  bindtextdomain ("test", locale_dir);
   bind_textdomain_codeset ("test", "UTF-8");
 
   locale = g_strdup (setlocale (LC_MESSAGES, NULL));
@@ -779,7 +781,7 @@ test_l10n_context (void)
   gchar *str;
   gchar *locale;
 
-  bindtextdomain ("test", ".");
+  bindtextdomain ("test", locale_dir);
   bind_textdomain_codeset ("test", "UTF-8");
 
   locale = g_strdup (setlocale (LC_MESSAGES, NULL));
@@ -2604,6 +2606,14 @@ main (int argc, char *argv[])
   gchar *enums;
   gint result;
 
+/* Meson build sets this */
+#ifdef TEST_LOCALE_PATH
+  if (g_str_has_suffix (TEST_LOCALE_PATH, "LC_MESSAGES"))
+    {
+      locale_dir = TEST_LOCALE_PATH G_DIR_SEPARATOR_S ".." G_DIR_SEPARATOR_S "..";
+    }
+#endif
+
   setlocale (LC_ALL, "");
 
   g_test_init (&argc, &argv, NULL);
@@ -2619,8 +2629,13 @@ main (int argc, char *argv[])
       if (!backend_set)
         g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
 
+/* Meson build defines this, autotools build does not */
+#ifndef GLIB_MKENUMS
+#define GLIB_MKENUMS "../../gobject/glib-mkenums"
+#endif
+
       g_remove ("org.gtk.test.enums.xml");
-      g_assert (g_spawn_command_line_sync ("../../gobject/glib-mkenums "
+      g_assert (g_spawn_command_line_sync (GLIB_MKENUMS " "
                                            "--template " SRCDIR "/enums.xml.template "
                                            SRCDIR "/testenum.h",
                                            &enums, NULL, &result, NULL));
@@ -2632,8 +2647,13 @@ main (int argc, char *argv[])
       g_assert (g_file_set_contents ("org.gtk.test.gschema.xml", schema_text, -1, NULL));
       g_free (schema_text);
 
+/* Meson build defines this, autotools build does not */
+#ifndef GLIB_COMPILE_SCHEMAS
+#define GLIB_COMPILE_SCHEMAS "../glib-compile-schemas"
+#endif
+
       g_remove ("gschemas.compiled");
-      g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. "
+      g_assert (g_spawn_command_line_sync (GLIB_COMPILE_SCHEMAS " --targetdir=. "
                                            "--schema-file=org.gtk.test.enums.xml "
                                            "--schema-file=org.gtk.test.gschema.xml",
                                            NULL, NULL, &result, NULL));
@@ -2641,7 +2661,7 @@ main (int argc, char *argv[])
 
       g_remove ("schema-source/gschemas.compiled");
       g_mkdir ("schema-source", 0777);
-      g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=schema-source "
+      g_assert (g_spawn_command_line_sync (GLIB_COMPILE_SCHEMAS " --targetdir=schema-source "
                                            "--schema-file=" SRCDIR "/org.gtk.schemasourcecheck.gschema.xml",
                                            NULL, NULL, &result, NULL));
       g_assert (result == 0);

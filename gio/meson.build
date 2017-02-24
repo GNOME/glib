@@ -773,7 +773,7 @@ executable('gio-querymodules', 'gio-querymodules.c',
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
-executable('glib-compile-schemas',
+glib_compile_schemas = executable('glib-compile-schemas',
   [gconstructor_as_data_h, 'gvdb/gvdb-builder.c', 'glib-compile-schemas.c'],
   install : true,
   c_args : ['-DHAVE_CONFIG_H=1'],

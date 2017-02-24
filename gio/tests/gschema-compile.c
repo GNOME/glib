@@ -11,6 +11,11 @@ typedef struct {
   const gchar *err;
 } SchemaTest;
 
+/* Meson build defines this, autotools build does not */
+#ifndef GLIB_COMPILE_SCHEMAS
+#define GLIB_COMPILE_SCHEMAS "../glib-compile-schemas"
+#endif
+
 static void
 test_schema_do_compile (gpointer data)
 {
@@ -18,7 +23,7 @@ test_schema_do_compile (gpointer data)
   gchar *filename = g_strconcat (test->name, ".gschema.xml", NULL);
   gchar *path = g_test_build_filename (G_TEST_DIST, "schema-tests", filename, NULL);
   gchar *argv[] = {
-    "../glib-compile-schemas",
+    GLIB_COMPILE_SCHEMAS,
     "--strict",
     "--dry-run",
     "--schema-file", path,

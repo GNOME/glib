@@ -71,6 +71,8 @@ test_c_args = [
   '-DHAVE_CONFIG_H=1',
   '-DG_LOG_DOMAIN="GLib-GIO"',
   '-DTEST_SERVICES="@0@/gio/tests/services"'.format(meson.build_root()),
+  '-DGLIB_MKENUMS="@0@"'.format(glib_mkenums),
+  '-DGLIB_COMPILE_SCHEMAS="@0@"'.format(glib_compile_schemas.full_path()),
 ]
 
 # Check for libdbus1 - Optional - is only used in the GDBus test cases
@@ -99,6 +101,14 @@ if host_machine.system() != 'windows'
     'unix-fd',
     'unix-streams',
     'mimeapps',
+    'gschema-compile',
+  ]
+
+  # Uninstalled because of the check-for-executable logic in DesktopAppInfo
+  # unable to find the installed executable
+  gio_tests += [
+    'appinfo',
+    'desktop-app-info',
   ]
 
   test_extra_programs += [
@@ -186,11 +196,44 @@ if host_machine.system() != 'windows'
           dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
     test('gapplication', exe, env : test_env)
 
-    if host_machine.system() != 'windows'
-      gio_tests += ['gdbus-unix-addresses']
-    endif
+    gio_tests += ['gdbus-unix-addresses']
+  endif # have_dbus_daemon
+
+  # This test is currently unreliable
+  executable('gdbus-overflow', 'gdbus-overflow.c',
+      install : false,
+      c_args : test_c_args,
+      dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
+
+  exe = executable('gdbus-connection-flush', 'gdbus-connection-flush.c',
+      'test-io-stream.c', 'test-pipe-unix.c',
+      install : false,
+      c_args : test_c_args,
+      dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
+  test('gdbus-connection-flush', exe, env : test_env)
+
+  exe = executable('gdbus-non-socket', 'gdbus-non-socket.c',
+      'gdbus-tests.c', 'test-io-stream.c', 'test-pipe-unix.c',
+      install : false,
+      c_args : test_c_args,
+      dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
+  test('gdbus-non-socket', exe, env : test_env)
+
+  # Generate test.mo from de.po using msgfmt
+  msgfmt = find_program('msgfmt', required : false)
+  if msgfmt.found()
+    subdir('de/LC_MESSAGES')
+    # gsettings target exe already exists in gio directory
+    exe = executable('gsettings-test', 'gsettings.c', test_mo,
+        install : false,
+        c_args : test_c_args + [
+                   '-DSRCDIR="@0@"'.format(meson.current_source_dir()),
+                   '-DTEST_LOCALE_PATH="@0@"'.format(test_mo_dir),
+                 ],
+        dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
+    test('gsettings', exe, env : test_env)
   endif
-endif
+endif # unix
 
 #  Test programs buildable on Windows only
 if host_machine.system() == 'windows'
