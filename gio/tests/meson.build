@@ -398,45 +398,5 @@ if not meson.is_cross_build() or meson.has_exe_wrapper()
   test('resources', exe, env : test_env)
 endif
 
-foo = '''
-c_args_atomic = [ ]
-if cc.get_id() == 'gcc'
-  c_args_atomic += [ '-Wstrict-aliasing=2' ]
-endif
-
-# FIXME: consolidate all of these into the array
-exe = executable('overflow-fallback', 'overflow.c',
-  c_args : [ '-DHAVE_CONFIG_H=1', '-D_GLIB_TEST_OVERFLOW_FALLBACK' ],
-  dependencies : [libglib_dep],
-)
-test('overflow-fallback', exe, env : test_env)
-
-exe = executable('642026-ec', '642026.c',
-  c_args : [ '-DHAVE_CONFIG_H=1', '-DG_ERRORCHECK_MUTEXES' ],
-  dependencies : [libglib_dep],
-)
-test('642026-ec', exe, env : test_env)
-
-exe = executable('1bit-emufutex', '1bit-mutex.c',
-  c_args : [ '-DHAVE_CONFIG_H=1', '-DTEST_EMULATED_FUTEX' ],
-  dependencies : [libglib_dep],
-)
-test('1bit-emufutex', exe, env : test_env)
-
-if glib_conf.has('HAVE_EVENTFD')
-  exe = executable('gwakeup-fallback', 'gwakeuptest.c', '../gwakeup.c',
-    c_args : [ '-DHAVE_CONFIG_H=1', '-DTEST_EVENTFD_FALLBACK' ],
-    dependencies : [libglib_dep],
-  )
-  test('gwakeup-fallback', exe, env : test_env)
-endif
-
-# test-spawn-echo helper binary required by the spawn tests
-executable('test-spawn-echo', 'test-spawn-echo.c',
-           c_args : [ '-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib"' ],
-           dependencies : [libglib_dep],
-)
-'''
-
 # FIXME: subdir('services')
 subdir('modules')
