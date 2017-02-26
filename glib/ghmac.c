@@ -50,7 +50,7 @@
  * Both the key and data are arbitrary byte arrays of bytes or characters.
  *
  * Support for HMAC Digests has been added in GLib 2.30, and support for SHA-512
- * in GLib 2.42. Support for SHA-384 was added in GLib 2.51.
+ * in GLib 2.42. Support for SHA-384 was added in GLib 2.52.
  */
 
 struct _GHmac
@@ -82,7 +82,7 @@ struct _GHmac
  * on it anymore.
  *
  * Support for digests of type %G_CHECKSUM_SHA512 has been added in GLib 2.42.
- * Support for %G_CHECKSUM_SHA384 was added in GLib 2.51.
+ * Support for %G_CHECKSUM_SHA384 was added in GLib 2.52.
  *
  * Returns: the newly created #GHmac, or %NULL.
  *   Use g_hmac_unref() to free the memory allocated by it.
