@@ -2438,6 +2438,8 @@ test_actions (void)
   g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "kthxbye");
 
   g_free (name);
+  g_variant_type_free (param_type);
+  g_variant_type_free (state_type);
   g_variant_unref (state);
 
   g_object_unref (string);
@@ -2627,6 +2629,7 @@ main (int argc, char *argv[])
 
       g_assert (g_file_get_contents (SRCDIR "/org.gtk.test.gschema.xml.orig", &schema_text, NULL, NULL));
       g_assert (g_file_set_contents ("org.gtk.test.gschema.xml", schema_text, -1, NULL));
+      g_free (schema_text);
 
       g_remove ("gschemas.compiled");
       g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. "
