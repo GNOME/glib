@@ -879,6 +879,7 @@ schema_state_free (gpointer data)
   g_free (state->path);
   g_free (state->gettext_domain);
   g_hash_table_unref (state->keys);
+  g_slice_free (SchemaState, state);
 }
 
 static void
@@ -1621,6 +1622,12 @@ gvdb_pair_init (GvdbPair *pair)
   pair->root = gvdb_hash_table_insert (pair->table, "");
 }
 
+static void
+gvdb_pair_clear (GvdbPair *pair)
+{
+  g_hash_table_unref (pair->table);
+}
+
 typedef struct
 {
   GHashTable *schema_table;
@@ -1643,6 +1650,7 @@ output_key (gpointer key,
   const gchar *name;
   KeyState *state;
   GvdbItem *item;
+  GVariant *serialised = NULL;
 
   name = key;
   state = value;
@@ -1650,7 +1658,9 @@ output_key (gpointer key,
 
   item = gvdb_hash_table_insert (data->pair.table, name);
   gvdb_item_set_parent (item, data->pair.root);
-  gvdb_item_set_value (item, key_state_serialise (state));
+  serialised = key_state_serialise (state);
+  gvdb_item_set_value (item, serialised);
+  g_variant_unref (serialised);
 
   if (state->l10n)
     data->l10n = TRUE;
@@ -1702,6 +1712,8 @@ output_schema (gpointer key,
     gvdb_hash_table_insert_string (data.pair.table,
                                    ".gettext-domain",
                                    state->gettext_domain);
+
+  gvdb_pair_clear (&data.pair);
 }
 
 static gboolean
@@ -1796,6 +1808,8 @@ parse_gschema_files (gchar    **files,
               g_hash_table_unref (state.flags_table);
               g_hash_table_unref (state.enum_table);
 
+              g_free (contents);
+
               return NULL;
             }
           else
@@ -1803,6 +1817,7 @@ parse_gschema_files (gchar    **files,
         }
 
       /* cleanup */
+      g_free (contents);
       g_markup_parse_context_free (context);
       g_slist_free (state.this_file_schemas);
       g_slist_free (state.this_file_flagss);
@@ -2020,19 +2035,20 @@ set_overrides (GHashTable  *schema_table,
 int
 main (int argc, char **argv)
 {
-  GError *error;
-  GHashTable *table;
-  GDir *dir;
+  GError *error = NULL;
+  GHashTable *table = NULL;
+  GDir *dir = NULL;
   const gchar *file;
-  gchar *srcdir;
+  const gchar *srcdir;
   gboolean show_version_and_exit = FALSE;
   gchar *targetdir = NULL;
-  gchar *target;
+  gchar *target = NULL;
   gboolean dry_run = FALSE;
   gboolean strict = FALSE;
   gchar **schema_files = NULL;
   gchar **override_files = NULL;
-  GOptionContext *context;
+  GOptionContext *context = NULL;
+  gint retval;
   GOptionEntry entries[] = {
     { "version", 0, 0, G_OPTION_ARG_NONE, &show_version_and_exit, N_("Show program version and exit"), NULL },
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
@@ -2046,7 +2062,7 @@ main (int argc, char **argv)
   };
 
 #ifdef G_OS_WIN32
-  gchar *tmp;
+  gchar *tmp = NULL;
 #endif
 
   setlocale (LC_ALL, "");
@@ -2055,7 +2071,6 @@ main (int argc, char **argv)
 #ifdef G_OS_WIN32
   tmp = _glib_get_locale_dir ();
   bindtextdomain (GETTEXT_PACKAGE, tmp);
-  g_free (tmp);
 #else
   bindtextdomain (GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
 #endif
@@ -2072,33 +2087,30 @@ main (int argc, char **argv)
        "and the cache file is called gschemas.compiled."));
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 
-  error = NULL;
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
       fprintf (stderr, "%s\n", error->message);
-      return 1;
+      retval = 1;
+      goto done;
     }
-
-  g_option_context_free (context);
 
   if (show_version_and_exit)
     {
       g_print (PACKAGE_VERSION "\n");
-      return 0;
+      retval = 0;
+      goto done;
     }
 
   if (!schema_files && argc != 2)
     {
       fprintf (stderr, _("You should give exactly one directory name\n"));
-      return 1;
+      retval = 1;
+      goto done;
     }
 
   srcdir = argv[1];
 
-  if (targetdir == NULL)
-    targetdir = srcdir;
-
-  target = g_build_filename (targetdir, "gschemas.compiled", NULL);
+  target = g_build_filename (targetdir ? targetdir : srcdir, "gschemas.compiled", NULL);
 
   if (!schema_files)
     {
@@ -2112,7 +2124,12 @@ main (int argc, char **argv)
       if (dir == NULL)
         {
           fprintf (stderr, "%s\n", error->message);
-          return 1;
+
+          g_ptr_array_unref (files);
+          g_ptr_array_unref (overrides);
+
+          retval = 1;
+          goto done;
         }
 
       while ((file = g_dir_read_name (dir)) != NULL)
@@ -2136,7 +2153,11 @@ main (int argc, char **argv)
           else
             fprintf (stdout, _("removed existing output file.\n"));
 
-          return 0;
+          g_ptr_array_unref (files);
+          g_ptr_array_unref (overrides);
+
+          retval = 0;
+          goto done;
         }
       g_ptr_array_sort (files, compare_strings);
       g_ptr_array_add (files, NULL);
@@ -2150,27 +2171,42 @@ main (int argc, char **argv)
 
   if ((table = parse_gschema_files (schema_files, strict)) == NULL)
     {
-      g_free (target);
-      return 1;
+      retval = 1;
+      goto done;
     }
 
   if (override_files != NULL &&
       !set_overrides (table, override_files, strict))
     {
-      g_free (target);
-      return 1;
+      retval = 1;
+      goto done;
     }
 
   if (!dry_run && !write_to_file (table, target, &error))
     {
       fprintf (stderr, "%s\n", error->message);
-      g_free (target);
-      return 1;
+      retval = 1;
+      goto done;
     }
 
-  g_free (target);
+  /* Success. */
+  retval = 0;
 
-  return 0;
+done:
+  g_clear_error (&error);
+  g_clear_pointer (&table, g_hash_table_unref);
+  g_clear_pointer (&dir, g_dir_close);
+  g_free (targetdir);
+  g_free (target);
+  g_strfreev (schema_files);
+  g_strfreev (override_files);
+  g_option_context_free (context);
+
+#ifdef G_OS_WIN32
+  g_free (tmp);
+#endif
+
+  return retval;
 }
 
 /* Epilogue {{{1 */
