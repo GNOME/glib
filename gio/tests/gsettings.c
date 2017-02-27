@@ -2373,10 +2373,8 @@ test_schema_list_keys (void)
                             "farewell",
                             NULL));
 
-
   g_strfreev (keys);
   g_settings_schema_unref (schema);
-  g_settings_schema_source_unref (src);
 }
 
 static void
