@@ -1,3 +1,23 @@
+Overview of changes in GLib 2.51.3
+==================================
+
+* Bugs fixed:
+ 771997 gchecksum: Add SHA-384 support
+ 778422 gsubprocesslauncher: Clarify the behavior of set_environ()
+ 778581 gdbus-codegen: Fix -Wconversion warning
+ 778801 gdbus-codegen: Add --outdir flag
+ 778991 Plug a mem leak in gdbusauth
+ 779183 g_io_extension_point_get_extensions should check for NULL pointer
+
+* Translation updates:
+ Basque
+ Chinese (Taiwan)
+ Danish
+ Indonesian
+ Italian
+ Serbian
+
+
 Overview of changes in GLib 2.51.2
 ==================================
 
