@@ -52,7 +52,7 @@
  * Support for checksums has been added in GLib 2.16
  **/
 
-#define IS_VALID_TYPE(type)     ((type) >= G_CHECKSUM_MD5 && (type) <= G_CHECKSUM_SHA512)
+#define IS_VALID_TYPE(type)     ((type) >= G_CHECKSUM_MD5 && (type) <= G_CHECKSUM_SHA384)
 
 /* The fact that these are lower case characters is part of the ABI */
 static const gchar hex_digits[] = "0123456789abcdef";
