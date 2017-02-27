@@ -3273,6 +3273,7 @@ g_settings_action_finalize (GObject *object)
 
   g_signal_handlers_disconnect_by_data (gsa->settings, gsa);
   g_object_unref (gsa->settings);
+  g_settings_schema_key_clear (&gsa->key);
 
   G_OBJECT_CLASS (g_settings_action_parent_class)
     ->finalize (object);
