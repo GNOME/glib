@@ -1571,6 +1571,7 @@ g_settings_set_value (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
+  g_variant_ref_sink (value);
   g_settings_schema_key_init (&skey, settings->priv->schema, key);
 
   if (!g_settings_schema_key_type_check (&skey, value))
@@ -1580,22 +1581,23 @@ g_settings_set_value (GSettings   *settings,
                   g_settings_schema_get_id (settings->priv->schema),
                   g_variant_type_peek_string (skey.type),
                   g_variant_get_type_string (value));
-
-        return FALSE;
-      }
-
-  if (!g_settings_schema_key_range_check (&skey, value))
+      success = FALSE;
+    }
+  else if (!g_settings_schema_key_range_check (&skey, value))
     {
       g_warning ("g_settings_set_value: value for key '%s' in schema '%s' "
                  "is outside of valid range",
                  key,
                  g_settings_schema_get_id (settings->priv->schema));
-
-        return FALSE;
+      success = FALSE;
+    }
+  else
+    {
+      success = g_settings_write_to_backend (settings, &skey, value);
     }
 
-  success = g_settings_write_to_backend (settings, &skey, value);
   g_settings_schema_key_clear (&skey);
+  g_variant_unref (value);
 
   return success;
 }
