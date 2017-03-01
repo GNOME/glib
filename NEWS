@@ -1,3 +1,10 @@
+Overview of changes in GLib 2.51.4
+==================================
+
+* Memory leak fixes
+* Fix the released tarball
+
+
 Overview of changes in GLib 2.51.3
 ==================================
 
