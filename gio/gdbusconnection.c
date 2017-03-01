@@ -3175,18 +3175,21 @@ g_dbus_connection_remove_filter (GDBusConnection *connection,
                                  guint            filter_id)
 {
   guint n;
+  gboolean found;
   FilterData *to_destroy;
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
   g_return_if_fail (check_initialized (connection));
 
   CONNECTION_LOCK (connection);
+  found = FALSE;
   to_destroy = NULL;
   for (n = 0; n < connection->filters->len; n++)
     {
       FilterData *data = connection->filters->pdata[n];
       if (data->id == filter_id)
         {
+          found = TRUE;
           g_ptr_array_remove_index (connection->filters, n);
           data->ref_count--;
           if (data->ref_count == 0)
@@ -3204,7 +3207,7 @@ g_dbus_connection_remove_filter (GDBusConnection *connection,
       g_main_context_unref (to_destroy->context);
       g_free (to_destroy);
     }
-  else
+  else if (!found)
     {
       g_warning ("g_dbus_connection_remove_filter: No filter found for filter_id %d", filter_id);
     }
