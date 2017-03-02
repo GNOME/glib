@@ -1206,7 +1206,7 @@ g_key_file_parse_line (GKeyFile     *key_file,
 				     &parse_error);
   else
     {
-      gchar *line_utf8 = g_utf8_make_valid (line);
+      gchar *line_utf8 = g_utf8_make_valid (line, length);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_PARSE,
                    _("Key file contains line “%s” which is not "
@@ -1338,7 +1338,7 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
     {
       if (g_ascii_strcasecmp (value, "UTF-8") != 0)
         {
-	  gchar *value_utf8 = g_utf8_make_valid (value);
+	  gchar *value_utf8 = g_utf8_make_valid (value, value_len);
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
                        _("Key file contains unsupported "
@@ -1871,7 +1871,7 @@ g_key_file_get_string (GKeyFile     *key_file,
 
   if (!g_utf8_validate (value, -1, NULL))
     {
-      gchar *value_utf8 = g_utf8_make_valid (value);
+      gchar *value_utf8 = g_utf8_make_valid (value, -1);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
                    _("Key file contains key “%s” with value “%s” "
@@ -1987,7 +1987,7 @@ g_key_file_get_string_list (GKeyFile     *key_file,
 
   if (!g_utf8_validate (value, -1, NULL))
     {
-      gchar *value_utf8 = g_utf8_make_valid (value);
+      gchar *value_utf8 = g_utf8_make_valid (value, -1);
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_UNKNOWN_ENCODING,
                    _("Key file contains key “%s” with value “%s” "
@@ -4301,7 +4301,7 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
 
   if (*value == '\0' || (*eof_int != '\0' && !g_ascii_isspace(*eof_int)))
     {
-      gchar *value_utf8 = g_utf8_make_valid (value);
+      gchar *value_utf8 = g_utf8_make_valid (value, -1);
       g_set_error (error, G_KEY_FILE_ERROR,
 		   G_KEY_FILE_ERROR_INVALID_VALUE,
 		   _("Value “%s” cannot be interpreted "
@@ -4314,7 +4314,7 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
   int_value = long_value;
   if (int_value != long_value || errno == ERANGE)
     {
-      gchar *value_utf8 = g_utf8_make_valid (value);
+      gchar *value_utf8 = g_utf8_make_valid (value, -1);
       g_set_error (error,
 		   G_KEY_FILE_ERROR, 
 		   G_KEY_FILE_ERROR_INVALID_VALUE,
@@ -4348,7 +4348,7 @@ g_key_file_parse_value_as_double  (GKeyFile     *key_file,
 
   if (*end_of_valid_d != '\0' || end_of_valid_d == value)
     {
-      gchar *value_utf8 = g_utf8_make_valid (value);
+      gchar *value_utf8 = g_utf8_make_valid (value, -1);
       g_set_error (error, G_KEY_FILE_ERROR,
 		   G_KEY_FILE_ERROR_INVALID_VALUE,
 		   _("Value “%s” cannot be interpreted "
@@ -4387,7 +4387,7 @@ g_key_file_parse_value_as_boolean (GKeyFile     *key_file,
   else if (strcmp_sized (value, length, "false") == 0 || strcmp_sized (value, length, "0") == 0)
     return FALSE;
 
-  value_utf8 = g_utf8_make_valid (value);
+  value_utf8 = g_utf8_make_valid (value, -1);
   g_set_error (error, G_KEY_FILE_ERROR,
                G_KEY_FILE_ERROR_INVALID_VALUE,
                _("Value “%s” cannot be interpreted "

@@ -422,7 +422,7 @@ set_error (GMarkupParseContext  *context,
   /* Make sure that the GError message is valid UTF-8
    * even if it is complaining about invalid UTF-8 in the markup
    */
-  s_valid = g_utf8_make_valid (s);
+  s_valid = g_utf8_make_valid (s, -1);
   set_error_literal (context, error, code, s);
 
   g_free (s);

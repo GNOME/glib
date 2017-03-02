@@ -1938,7 +1938,7 @@ g_filename_display_name (const gchar *filename)
    * by a question mark
    */
   if (!display_name) 
-    display_name = g_utf8_make_valid (filename);
+    display_name = g_utf8_make_valid (filename, -1);
 
   return display_name;
 }

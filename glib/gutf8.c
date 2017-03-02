@@ -1738,6 +1738,8 @@ g_utf8_strreverse (const gchar *str,
 /**
  * g_utf8_make_valid:
  * @str: string to coerce into UTF-8
+ * @len: the maximum length of @str to use, in bytes. If @len < 0,
+ *     then the string is nul-terminated.
  *
  * If the provided string is valid UTF-8, return a copy of it. If not,
  * return a copy in which bytes that could not be interpreted as valid Unicode
@@ -1754,17 +1756,21 @@ g_utf8_strreverse (const gchar *str,
  * Since: 2.52
  */
 gchar *
-g_utf8_make_valid (const gchar *str)
+g_utf8_make_valid (const gchar *str,
+                   gssize       len)
 {
   GString *string;
   const gchar *remainder, *invalid;
-  gint remaining_bytes, valid_bytes;
+  gsize remaining_bytes, valid_bytes;
 
   g_return_val_if_fail (str != NULL, NULL);
 
+  if (len < 0)
+    len = strlen (str);
+
   string = NULL;
   remainder = str;
-  remaining_bytes = strlen (str);
+  remaining_bytes = len;
 
   while (remaining_bytes != 0) 
     {
@@ -1784,11 +1790,12 @@ g_utf8_make_valid (const gchar *str)
     }
   
   if (string == NULL)
-    return g_strdup (str);
+    return g_strndup (str, len);
   
   g_string_append (string, remainder);
+  g_string_append_c (string, '\0');
 
   g_assert (g_utf8_validate (string->str, -1, NULL));
-  
+
   return g_string_free (string, FALSE);
 }
