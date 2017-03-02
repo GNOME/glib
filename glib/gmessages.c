@@ -1487,7 +1487,7 @@ win32_is_pipe_tty (int fd)
   gint length;
 
   /* XXX: Remove once XP support really dropped */
-#if _WINNT_WIN32 < 0x0600
+#if _WIN32_WINNT < 0x0600
   HANDLE h_kerneldll = NULL;
   fGetFileInformationByHandleEx *GetFileInformationByHandleEx;
 #endif
@@ -1501,7 +1501,7 @@ win32_is_pipe_tty (int fd)
   /* mintty uses a pipe, in the form of \{cygwin|msys}-xxxxxxxxxxxxxxxx-ptyN-{from|to}-master */
 
   /* XXX: Remove once XP support really dropped */
-#if _WINNT_WIN32 < 0x0600
+#if _WIN32_WINNT < 0x0600
   h_kerneldll = LoadLibraryW (L"kernel32.dll");
 
   if (h_kerneldll == NULL)
@@ -1562,7 +1562,7 @@ done_query:
     g_free (info);
 
   /* XXX: Remove once XP support really dropped */
-#if _WINNT_WIN32 < 0x0600
+#if _WIN32_WINNT < 0x0600
   if (h_kerneldll != NULL)
     FreeLibrary (h_kerneldll);
 #endif
