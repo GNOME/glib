@@ -89,6 +89,10 @@
  * space saving, if your set is large. The functions
  * g_hash_table_add() and g_hash_table_contains() are designed to be
  * used when using #GHashTable this way.
+ *
+ * #GHashTable is not designed to be statically initialised with keys and
+ * values known at compile time. To build a static hash table, use a tool such
+ * as [gperf](https://www.gnu.org/software/gperf/).
  */
 
 /**
