@@ -181,6 +181,9 @@
 #include <sys/un.h>
 #include <fcntl.h>
 #include <sys/uio.h>
+#if ((__MIPSEL__ == 1) || (__mips__ == 1))
+#define mkostemp(x,y) mkstemp(x)
+#endif
 #endif
 
 #include "glib-init.h"
