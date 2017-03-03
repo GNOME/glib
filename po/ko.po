@@ -4,7 +4,7 @@
 # Young-Ho Cha <ganadist@chollian.net>, 2002.
 # Eunju Kim <eukim@redhat.com>, 2007.
 # Seong-ho Cho <darkcircle.0426@gmail.com>, 2011-2012.
-# Changwoo Ryu <cwryu@debian.org>, 2002, 2004-2006, 2007-2011, 2013-2016.
+# Changwoo Ryu <cwryu@debian.org>, 2002, 2004-2006, 2007-2011, 2013-2017.
 #
 #
 # 용어:
@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-25 18:43+0000\n"
-"PO-Revision-Date: 2016-09-03 22:43+0900\n"
+"POT-Creation-Date: 2016-11-20 18:36+0000\n"
+"PO-Revision-Date: 2017-02-19 23:17+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -37,10 +37,10 @@ msgstr "GApplication 옵션을 표시합니다"
 
 #: ../gio/gapplication.c:538
 msgid "Enter GApplication service mode (use from D-Bus service files)"
-msgstr "GApplication 서비스 모드로 들어갑니다(D-버스 서비스 파일에서 사용)"
+msgstr "GApplication 서비스 모드로 들어갑니다 (D-버스 서비스 파일에서 사용)"
 
 #: ../gio/gapplication.c:550
-msgid "Override the application's ID"
+msgid "Override the application’s ID"
 msgstr "프로그램 ID를 직접 지정합니다"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
@@ -77,11 +77,11 @@ msgstr "프로그램 실행"
 
 #: ../gio/gapplication-tool.c:56
 msgid "Launch the application (with optional files to open)"
-msgstr "프로그램을 실행합니다(뒤에 열 파일을 추가해서)"
+msgstr "프로그램을 실행합니다 (뒤에 열 파일을 추가해서)"
 
 #: ../gio/gapplication-tool.c:57
-msgid "APPID [FILE...]"
-msgstr "<프로그램ID> [파일...]"
+msgid "APPID [FILE…]"
+msgstr "<프로그램ID> [파일…]"
 
 #: ../gio/gapplication-tool.c:59
 msgid "Activate an action"
@@ -101,7 +101,7 @@ msgstr "사용 가능 동작 목록"
 
 #: ../gio/gapplication-tool.c:64
 msgid "List static actions for an application (from .desktop file)"
-msgstr "프로그램의 고정된 동작 목록을 봅니다(.desktop 파일에서)"
+msgstr "프로그램의 고정된 동작 목록을 봅니다 (.desktop 파일에서)"
 
 #: ../gio/gapplication-tool.c:65 ../gio/gapplication-tool.c:71
 msgid "APPID"
@@ -120,8 +120,8 @@ msgstr "자세한 도움말을 표시하는 명령"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "D-버스 형식의 프로그램 ID (예: org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:620
-#: ../gio/glib-compile-resources.c:626 ../gio/glib-compile-resources.c:652
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:665
+#: ../gio/glib-compile-resources.c:671 ../gio/glib-compile-resources.c:698
 #: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "<파일>"
@@ -165,9 +165,9 @@ msgstr "사용법:\n"
 msgid "Arguments:\n"
 msgstr "인수:\n"
 
-#: ../gio/gapplication-tool.c:133 ../gio/gio-tool.c:206
-msgid "[ARGS...]"
-msgstr "[인수...]"
+#: ../gio/gapplication-tool.c:133
+msgid "[ARGS…]"
+msgstr "[인수…]"
 
 #: ../gio/gapplication-tool.c:134
 #, c-format
@@ -178,10 +178,10 @@ msgstr "명령어:\n"
 #: ../gio/gapplication-tool.c:146
 #, c-format
 msgid ""
-"Use '%s help COMMAND' to get detailed help.\n"
+"Use “%s help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
-"자세한 도움말을 보려면 '%s help <명령>'을 실행하십시오.\n"
+"자세한 도움말을 보려면 “%s help <명령>”을 실행하십시오.\n"
 "\n"
 
 #: ../gio/gapplication-tool.c:165
@@ -195,17 +195,17 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:171
 #, c-format
-msgid "invalid application id: '%s'\n"
-msgstr "잘못된 프로그램 ID: '%s'\n"
+msgid "invalid application id: “%s”\n"
+msgstr "잘못된 프로그램 ID: “%s”\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
 #: ../gio/gapplication-tool.c:182
 #, c-format
 msgid ""
-"'%s' takes no arguments\n"
+"“%s” takes no arguments\n"
 "\n"
 msgstr ""
-"'%s' 옵션은 인수를 받지 않습니다\n"
+"“%s” 옵션은 인수를 받지 않습니다\n"
 "\n"
 
 #: ../gio/gapplication-tool.c:266
@@ -226,11 +226,11 @@ msgstr "프로그램 ID 뒤에 동작 이름을 써야 합니다\n"
 #: ../gio/gapplication-tool.c:325
 #, c-format
 msgid ""
-"invalid action name: '%s'\n"
-"action names must consist of only alphanumerics, '-' and '.'\n"
+"invalid action name: “%s”\n"
+"action names must consist of only alphanumerics, “-” and “.”\n"
 msgstr ""
-"동작 이름이 잘못되었습니다: '%s'\n"
-"동작 이름은 알파벳, 숫자, '-', '.'만 쓸 수 있습니다\n"
+"동작 이름이 잘못되었습니다: “%s”\n"
+"동작 이름은 알파벳, 숫자, “-”, “.”만 쓸 수 있습니다\n"
 
 #: ../gio/gapplication-tool.c:344
 #, c-format
@@ -327,13 +327,13 @@ msgstr "취소 가능한 초기화를 지원하지 않습니다"
 #: ../gio/gcharsetconverter.c:454 ../glib/gconvert.c:321
 #: ../glib/giochannel.c:1384
 #, c-format
-msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "문자셋 '%s'에서 '%s'(으)로 변환은 지원되지 않습니다"
+msgid "Conversion from character set “%s” to “%s” is not supported"
+msgstr "문자셋 “%s”에서 “%s”(으)로 변환은 지원되지 않습니다"
 
 #: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:325
 #, c-format
-msgid "Could not open converter from '%s' to '%s'"
-msgstr "'%s'에서 '%s'(으)로 변환하는 변환기를 열 수 없습니다"
+msgid "Could not open converter from “%s” to “%s”"
+msgstr "“%s”에서 “%s”(으)로 변환하는 변환기를 열 수 없습니다"
 
 #: ../gio/gcontenttype.c:335
 #, c-format
@@ -372,74 +372,74 @@ msgstr "예기치 않게 일찍 스트림이 끝났습니다"
 #: ../gio/gdbusaddress.c:153 ../gio/gdbusaddress.c:241
 #: ../gio/gdbusaddress.c:322
 #, c-format
-msgid "Unsupported key '%s' in address entry '%s'"
-msgstr "'%s' 키를 주소 항목 '%s'에서 지원하지 않습니다"
+msgid "Unsupported key “%s” in address entry “%s”"
+msgstr "“%s” 키를 주소 항목 “%s”에서 지원하지 않습니다"
 
 #: ../gio/gdbusaddress.c:180
 #, c-format
 msgid ""
-"Address '%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+"Address “%s” is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
-"'%s' 주소는 올바르지 않습니다(정확히 1개의 경로, 임시 폴더, 절대 키 중 하나"
+"“%s” 주소는 올바르지 않습니다 (정확히 1개의 경로, 임시 폴더, 절대 키 중 하나"
 "가 필요합니다)"
 
 #: ../gio/gdbusaddress.c:193
 #, c-format
-msgid "Meaningless key/value pair combination in address entry '%s'"
-msgstr "'%s' 주소 항목에서 의미 없는 키/값의 쌍"
+msgid "Meaningless key/value pair combination in address entry “%s”"
+msgstr "“%s” 주소 항목에서 의미 없는 키/값의 쌍"
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, c-format
-msgid "Error in address '%s' - the port attribute is malformed"
-msgstr "'%s' 주소에서 오류 - 포트 속성의 형식이 잘못되었습니다"
+msgid "Error in address “%s” — the port attribute is malformed"
+msgstr "“%s” 주소에서 오류 - 포트 속성의 형식이 잘못되었습니다"
 
 #: ../gio/gdbusaddress.c:267 ../gio/gdbusaddress.c:348
 #, c-format
-msgid "Error in address '%s' - the family attribute is malformed"
-msgstr "'%s' 주소에서 오류 - 패밀리 속성의 형식이 잘못되었습니다"
+msgid "Error in address “%s” — the family attribute is malformed"
+msgstr "“%s” 주소에서 오류 - 패밀리 속성의 형식이 잘못되었습니다"
 
 #: ../gio/gdbusaddress.c:457
 #, c-format
-msgid "Address element '%s' does not contain a colon (:)"
-msgstr "주소 항목 '%s'에 콜론(:)이  없습니다"
+msgid "Address element “%s” does not contain a colon (:)"
+msgstr "주소 항목 “%s”에 콜론(:)이  없습니다"
 
 #: ../gio/gdbusaddress.c:478
 #, c-format
 msgid ""
-"Key/Value pair %d, '%s', in address element '%s' does not contain an equal "
+"Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
 "sign"
-msgstr "키/값 쌍 %d번에('%s', 주소 항목 '%s') 등호 기호가 없습니다"
+msgstr "키/값 쌍 %d번에 (“%s” 주소 항목 “%s”) 등호 기호가 없습니다"
 
 #: ../gio/gdbusaddress.c:492
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, '%s', in address element "
-"'%s'"
-msgstr "키/값 쌍 %d번에('%s', 주소 요소 '%s') 키/값의 이스케이프 제거 오류"
+"Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
+"“%s”"
+msgstr "키/값 쌍 %d번에 (“%s”, 주소 요소 “%s”) 키/값의 이스케이프 제거 오류"
 
 #: ../gio/gdbusaddress.c:570
 #, c-format
 msgid ""
-"Error in address '%s' - the unix transport requires exactly one of the keys "
-"'path' or 'abstract' to be set"
+"Error in address “%s” — the unix transport requires exactly one of the keys "
+"“path” or “abstract” to be set"
 msgstr ""
-"'%s' 주소에서 오류 - unix 트랜스포트에서는 'path'나 'abstract' 키 중 하나를 "
+"“%s” 주소에서 오류 - unix 트랜스포트에서는 'path'나 'abstract' 키 중 하나를 "
 "설정해야 합니다."
 
 #: ../gio/gdbusaddress.c:606
 #, c-format
-msgid "Error in address '%s' - the host attribute is missing or malformed"
-msgstr "'%s' 주소에서 오류 - host 속성이 없거나 형식이 잘못되었습니다"
+msgid "Error in address “%s” — the host attribute is missing or malformed"
+msgstr "“%s” 주소에서 오류 - host 속성이 없거나 형식이 잘못되었습니다"
 
 #: ../gio/gdbusaddress.c:620
 #, c-format
-msgid "Error in address '%s' - the port attribute is missing or malformed"
-msgstr "'%s' 주소에서 오류 - port 속성이 없거나 형식이 잘못되었습니다"
+msgid "Error in address “%s” — the port attribute is missing or malformed"
+msgstr "“%s” 주소에서 오류 - port 속성이 없거나 형식이 잘못되었습니다"
 
 #: ../gio/gdbusaddress.c:634
 #, c-format
-msgid "Error in address '%s' - the noncefile attribute is missing or malformed"
-msgstr "'%s' 주소에서 오류 - noncefile 속성이 없거나 형식이 잘못되었습니다"
+msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
+msgstr "“%s” 주소에서 오류 - noncefile 속성이 없거나 형식이 잘못되었습니다"
 
 #: ../gio/gdbusaddress.c:655
 msgid "Error auto-launching: "
@@ -447,29 +447,29 @@ msgstr "자동 실행 오류: "
 
 #: ../gio/gdbusaddress.c:663
 #, c-format
-msgid "Unknown or unsupported transport '%s' for address '%s'"
+msgid "Unknown or unsupported transport “%s” for address “%s”"
 msgstr ""
-"주소 '%2$s'에 대한 '%1$s' 트랜스포트는 알려지지 않았거나 지원하지 않습니다."
+"주소 “%2$s”에 대한 “%1$s” 트랜스포트는 알려지지 않았거나 지원하지 않습니다."
 
 #: ../gio/gdbusaddress.c:699
 #, c-format
-msgid "Error opening nonce file '%s': %s"
-msgstr "'%s' nonce 파일을 여는 중 오류: %s"
+msgid "Error opening nonce file “%s”: %s"
+msgstr "“%s” nonce 파일을 여는 중 오류: %s"
 
 #: ../gio/gdbusaddress.c:717
 #, c-format
-msgid "Error reading from nonce file '%s': %s"
-msgstr "'%s' nonce 파일을 읽는 중 오류: %s"
+msgid "Error reading from nonce file “%s”: %s"
+msgstr "“%s” nonce 파일을 읽는 중 오류: %s"
 
 #: ../gio/gdbusaddress.c:726
 #, c-format
-msgid "Error reading from nonce file '%s', expected 16 bytes, got %d"
-msgstr "'%s' nonce 파일을 읽는 중 오류, 16바이트가 있어야 하지만 %d바이트"
+msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
+msgstr "“%s” nonce 파일을 읽는 중 오류, 16바이트가 있어야 하지만 %d바이트"
 
 #: ../gio/gdbusaddress.c:744
 #, c-format
-msgid "Error writing contents of nonce file '%s' to stream:"
-msgstr "'%s' nonce 파일의 내용을 스트림에 쓰는 중 오류:"
+msgid "Error writing contents of nonce file “%s” to stream:"
+msgstr "“%s” nonce 파일의 내용을 스트림에 쓰는 중 오류:"
 
 #: ../gio/gdbusaddress.c:951
 msgid "The given address is empty"
@@ -491,8 +491,8 @@ msgstr "X11 $DISPLAY 없이 D-Bus 자동 실행할 수 없습니다"
 
 #: ../gio/gdbusaddress.c:1120
 #, c-format
-msgid "Error spawning command line '%s': "
-msgstr "'%s' 명령을 시작하는데 오류: "
+msgid "Error spawning command line “%s”: "
+msgstr "“%s” 명령을 시작하는데 오류: "
 
 #: ../gio/gdbusaddress.c:1337
 #, c-format
@@ -508,16 +508,16 @@ msgstr "dbus 세션이 실행중이 아니며, 자동실행에 실패했습니�
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
-"세션 버스 주소를 알아낼 수 없습니다(이 운영체제에서는 구현되지 않았습니다)"
+"세션 버스 주소를 알아낼 수 없습니다 (이 운영체제에서는 구현되지 않았습니다)"
 
-#: ../gio/gdbusaddress.c:1635 ../gio/gdbusconnection.c:7133
+#: ../gio/gdbusaddress.c:1635
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value '%s'"
+"— unknown value “%s”"
 msgstr ""
 "DBUS_STARTER_BUS_TYPE 환경 변수에서 세션 버스 주소를 알아낼 수 없습니다 - 알 "
-"수 없는 값 '%s'"
+"수 없는 값 “%s”"
 
 #: ../gio/gdbusaddress.c:1644 ../gio/gdbusconnection.c:7142
 msgid ""
@@ -530,7 +530,7 @@ msgstr ""
 #: ../gio/gdbusaddress.c:1654
 #, c-format
 msgid "Unknown bus type %d"
-msgstr "알 수 없는 버스 형식(%d)"
+msgstr "알 수 없는 버스 형식 (%d)"
 
 #: ../gio/gdbusauth.c:293
 msgid "Unexpected lack of content trying to read a line"
@@ -545,7 +545,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
-msgstr "사용 가능한 모든 인증 방법을 시도했습니다(시도: %s) (사용 가능: %s)"
+msgstr "사용 가능한 모든 인증 방법을 시도했습니다 (시도: %s) (사용 가능: %s)"
 
 #: ../gio/gdbusauth.c:1173
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
@@ -553,80 +553,80 @@ msgstr "GDBusAuthObserver::authorize-authenticated-peer를 통해 취소됨"
 
 #: ../gio/gdbusauthmechanismsha1.c:261
 #, c-format
-msgid "Error when getting information for directory '%s': %s"
-msgstr "디렉터리 '%s'의 정보를 가져오는 중 오류 : %s"
+msgid "Error when getting information for directory “%s”: %s"
+msgstr "디렉터리 “%s”의 정보를 가져오는 중 오류 : %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:273
 #, c-format
 msgid ""
-"Permissions on directory '%s' are malformed. Expected mode 0700, got 0%o"
-msgstr "'%s' 디렉터리의 권한이 잘못되었습니다. 0700이어야 하지만 0%o입니다"
+"Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
+msgstr "“%s” 디렉터리의 권한이 잘못되었습니다. 0700이어야 하지만 0%o입니다"
 
 #: ../gio/gdbusauthmechanismsha1.c:294
 #, c-format
-msgid "Error creating directory '%s': %s"
-msgstr "'%s' 디렉터리를 만드는 중 오류: %s"
+msgid "Error creating directory “%s”: %s"
+msgstr "“%s” 디렉터리를 만드는 중 오류: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:377
 #, c-format
-msgid "Error opening keyring '%s' for reading: "
-msgstr "'%s' 키 모음을 읽기 용도로 여는 중 오류: "
+msgid "Error opening keyring “%s” for reading: "
+msgstr "“%s” 키 모음을 읽기 용도로 여는 중 오류: "
 
 #: ../gio/gdbusauthmechanismsha1.c:401 ../gio/gdbusauthmechanismsha1.c:714
 #, c-format
-msgid "Line %d of the keyring at '%s' with content '%s' is malformed"
-msgstr "'%2$s'의 키 모음 %1$d번 줄의 내용 '%3$s'의 형식이 잘못되었습니다."
+msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
+msgstr "“%2$s”의 키 모음 %1$d번 줄의 내용 “%3$s”의 형식이 잘못되었습니다."
 
 #: ../gio/gdbusauthmechanismsha1.c:415 ../gio/gdbusauthmechanismsha1.c:728
 #, c-format
 msgid ""
-"First token of line %d of the keyring at '%s' with content '%s' is malformed"
+"First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
-"'%2$s'의 키 모음 %1$d번 줄의 첫번째 토큰의 내용 '%3$s'의 형식이 잘못되었습니"
+"'%2$s'의 키 모음 %1$d번 줄의 첫번째 토큰의 내용  “%3$s”의 형식이 잘못되었습니"
 "다."
 
 #: ../gio/gdbusauthmechanismsha1.c:430 ../gio/gdbusauthmechanismsha1.c:742
 #, c-format
 msgid ""
-"Second token of line %d of the keyring at '%s' with content '%s' is malformed"
+"Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
-"'%2$s'의 키 모음 %1$d번 줄의 두번째 토큰의 내용 '%3$s'의 형식이 잘못되었습니"
+"“%2$s”의 키 모음 %1$d번 줄의 두번째 토큰의 내용 “%3$s”의 형식이 잘못되었습니"
 "다."
 
 #: ../gio/gdbusauthmechanismsha1.c:454
 #, c-format
-msgid "Didn't find cookie with id %d in the keyring at '%s'"
-msgstr "'%2$s'의 키 모음 아이디 %1$d의 쿠키를 찾을 수 없습니다"
+msgid "Didn’t find cookie with id %d in the keyring at “%s”"
+msgstr "“%2$s”의 키 모음 아이디 %1$d의 쿠키를 찾을 수 없습니다"
 
 #: ../gio/gdbusauthmechanismsha1.c:532
 #, c-format
-msgid "Error deleting stale lock file '%s': %s"
-msgstr "오래된 '%s' 잠금 파일을 만드는 중 오류: %s"
+msgid "Error deleting stale lock file “%s”: %s"
+msgstr "오래된 “%s” 잠금 파일을 만드는 중 오류: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:564
 #, c-format
-msgid "Error creating lock file '%s': %s"
-msgstr "'%s' 잠금 파일을 만드는 중 오류: %s"
+msgid "Error creating lock file “%s”: %s"
+msgstr "“%s” 잠금 파일을 만드는 중 오류: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:594
 #, c-format
-msgid "Error closing (unlinked) lock file '%s': %s"
-msgstr "(링크가 끊어진) '%s' 잠금 파일을 닫는 중 오류: %s"
+msgid "Error closing (unlinked) lock file “%s”: %s"
+msgstr "(링크가 끊어진) “%s” 잠금 파일을 닫는 중 오류: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:604
 #, c-format
-msgid "Error unlinking lock file '%s': %s"
-msgstr "'%s' 잠금 파일을 삭제하는 중 오류: %s"
+msgid "Error unlinking lock file “%s”: %s"
+msgstr "“%s” 잠금 파일을 삭제하는 중 오류: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:681
 #, c-format
-msgid "Error opening keyring '%s' for writing: "
-msgstr "'%s' 키 모음을 쓰기 용도로 여는 중 오류: "
+msgid "Error opening keyring “%s” for writing: "
+msgstr "“%s” 키 모음을 쓰기 용도로 여는 중 오류: "
 
 #: ../gio/gdbusauthmechanismsha1.c:878
 #, c-format
-msgid "(Additionally, releasing the lock for '%s' also failed: %s) "
-msgstr "(추가로 '%s'에 대한 잠금 해제도 실패했습니다: %s)"
+msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
+msgstr "(추가로 “%s”에 대한 잠금 해제도 실패했습니다: %s)"
 
 #: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2377
 msgid "The connection is closed"
@@ -722,6 +722,15 @@ msgstr "'%3$s' 서명이 있는 '%2$s' 인터페이스의 '%1$s' 메서드가 �
 msgid "A subtree is already exported for %s"
 msgstr "하위 트리를 이미 %s 용도로 내보냈습니다"
 
+#: ../gio/gdbusconnection.c:7133
+#, c-format
+msgid ""
+"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
+"- unknown value '%s'"
+msgstr ""
+"DBUS_STARTER_BUS_TYPE 환경 변수에서 세션 버스 주소를 알아낼 수 없습니다 - 알 "
+"수 없는 값 '%s'"
+
 #: ../gio/gdbusmessage.c:1244
 msgid "type is INVALID"
 msgstr "형식이 올바르지 않습니다"
@@ -766,27 +775,27 @@ msgstr[0] "%lu 바이트를 읽어야 하지만 %lu 바이트만 받았습니다
 
 #: ../gio/gdbusmessage.c:1369
 #, c-format
-msgid "Expected NUL byte after the string '%s' but found byte %d"
-msgstr "'%s' 문자열 뒤에 NUL 바이트가 와야 하지만 %d바이트가 있습니다"
+msgid "Expected NUL byte after the string “%s” but found byte %d"
+msgstr "“%s” 문자열 뒤에 NUL 바이트가 와야 하지만 %d바이트가 있습니다"
 
 #: ../gio/gdbusmessage.c:1388
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that point was '%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was “%s”"
 msgstr ""
 "올바른 UTF-8 문자열이 와야 하지만 오프셋 %d에(문자열 길이 %d) 잘못된 바이트"
-"가 있습니다. 그 부분까지 올바른 UTF-8 문자열은 '%s'입니다."
+"가 있습니다. 그 부분까지 올바른 UTF-8 문자열은 “%s”입니다."
 
 #: ../gio/gdbusmessage.c:1587
 #, c-format
-msgid "Parsed value '%s' is not a valid D-Bus object path"
-msgstr "해석한 '%s' 값이 올바른 D-Bus 객체 경로가 아닙니다"
+msgid "Parsed value “%s” is not a valid D-Bus object path"
+msgstr "해석한 “%s” 값이 올바른 D-Bus 객체 경로가 아닙니다"
 
 #: ../gio/gdbusmessage.c:1609
 #, c-format
-msgid "Parsed value '%s' is not a valid D-Bus signature"
-msgstr "해석한 '%s' 값이 올바른 D-Bus 시그너쳐가 아닙니다"
+msgid "Parsed value “%s” is not a valid D-Bus signature"
+msgstr "해석한 “%s” 값이 올바른 D-Bus 시그너쳐가 아닙니다"
 
 #: ../gio/gdbusmessage.c:1656
 #, c-format
@@ -800,30 +809,30 @@ msgstr[0] ""
 #: ../gio/gdbusmessage.c:1676
 #, c-format
 msgid ""
-"Encountered array of type 'a%c', expected to have a length a multiple of %u "
+"Encountered array of type “a%c”, expected to have a length a multiple of %u "
 "bytes, but found to be %u bytes in length"
 msgstr ""
-"타입이 'a%c'인 배열은 길이가 %u 바이트의 배수여야 하지만, 길이가 %u 바이트입"
+"타입이 “a%c”인 배열은 길이가 %u 바이트의 배수여야 하지만, 길이가 %u 바이트입"
 "니다."
 
 #: ../gio/gdbusmessage.c:1843
 #, c-format
-msgid "Parsed value '%s' for variant is not a valid D-Bus signature"
-msgstr "variant에 대해 해석한 값 '%s'은(는) 올바른 D-Bus 시그너쳐가 아닙니다."
+msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
+msgstr "variant에 대해 해석한 값 “%s”은(는) 올바른 D-Bus 시그너쳐가 아닙니다."
 
 #: ../gio/gdbusmessage.c:1867
 #, c-format
 msgid ""
-"Error deserializing GVariant with type string '%s' from the D-Bus wire format"
-msgstr "'%s' 형식 문자열로 GVariant를 D-Bus 전송 형식에서 재구성하는데 오류"
+"Error deserializing GVariant with type string “%s” from the D-Bus wire format"
+msgstr "“%s” 형식 문자열로 GVariant를 D-Bus 전송 형식에서 재구성하는데 오류"
 
 #: ../gio/gdbusmessage.c:2051
 #, c-format
 msgid ""
-"Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
+"Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
 "0x%02x"
 msgstr ""
-"엔디안 값이 잘못되었습니다. 0x6c('l') 또는 0x42('B')가 와야 하지만 0x%02x 값"
+"엔디안 값이 잘못되었습니다. 0x6c(“l”) 또는 0x42 (“B”)가 와야 하지만 0x%02x 값"
 "이 있습니다"
 
 #: ../gio/gdbusmessage.c:2064
@@ -833,13 +842,13 @@ msgstr "메이저 프로토콜 버전이 잘못되었습니다. 1이어야 하�
 
 #: ../gio/gdbusmessage.c:2120
 #, c-format
-msgid "Signature header with signature '%s' found but message body is empty"
-msgstr "시그너쳐 '%s'인 시그너쳐 헤더가 있지만 메시지 본문이 비었습니다"
+msgid "Signature header with signature “%s” found but message body is empty"
+msgstr "시그너쳐 “%s”인 시그너쳐 헤더가 있지만 메시지 본문이 비었습니다"
 
 #: ../gio/gdbusmessage.c:2134
 #, c-format
-msgid "Parsed value '%s' is not a valid D-Bus signature (for body)"
-msgstr "해석한 '%s' 값이(본문에 대해) 올바른 D-Bus 시그너쳐가 아닙니다"
+msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
+msgstr "해석한 “%s” 값이 (본문에 대해) 올바른 D-Bus 시그너쳐가 아닙니다"
 
 #: ../gio/gdbusmessage.c:2164
 #, c-format
@@ -854,8 +863,8 @@ msgstr "메시지를 재구성할 수 없습니다: "
 #: ../gio/gdbusmessage.c:2515
 #, c-format
 msgid ""
-"Error serializing GVariant with type string '%s' to the D-Bus wire format"
-msgstr "'%s' 형식 문자열로 GVariant를 D-Bus 전송 형식으로 만드는데 오류"
+"Error serializing GVariant with type string “%s” to the D-Bus wire format"
+msgstr "“%s” 형식 문자열로 GVariant를 D-Bus 전송 형식으로 만드는데 오류"
 
 #: ../gio/gdbusmessage.c:2652
 #, c-format
@@ -870,26 +879,26 @@ msgstr "메시지를 전송 형식으로 만들 수 없습니다: "
 
 #: ../gio/gdbusmessage.c:2704
 #, c-format
-msgid "Message body has signature '%s' but there is no signature header"
-msgstr "메시지 본문에 '%s' 시그너쳐가 있지만 시그너쳐 헤더가 없습니다"
+msgid "Message body has signature “%s” but there is no signature header"
+msgstr "메시지 본문에 “%s” 시그너쳐가 있지만 시그너쳐 헤더가 없습니다"
 
 #: ../gio/gdbusmessage.c:2714
 #, c-format
 msgid ""
-"Message body has type signature '%s' but signature in the header field is "
-"'%s'"
+"Message body has type signature “%s” but signature in the header field is "
+"“%s”"
 msgstr ""
-"메시지 본문에 '%s' 형식 시그너쳐가 있지만 헤더 필드의 시그너쳐가 '%s'입니다"
+"메시지 본문에 “%s” 형식 시그너쳐가 있지만 헤더 필드의 시그너쳐가 “%s”입니다"
 
 #: ../gio/gdbusmessage.c:2730
 #, c-format
-msgid "Message body is empty but signature in the header field is '(%s)'"
-msgstr "메시지 본문이 비었지만 헤더 필드의 시그너쳐가 '(%s)'입니다"
+msgid "Message body is empty but signature in the header field is “(%s)”"
+msgstr "메시지 본문이 비었지만 헤더 필드의 시그너쳐가 “(%s)”입니다"
 
 #: ../gio/gdbusmessage.c:3283
 #, c-format
-msgid "Error return with body of type '%s'"
-msgstr "오류 리턴, '%s' 형식의 본문"
+msgid "Error return with body of type “%s”"
+msgstr "오류 리턴, “%s” 형식의 본문"
 
 #: ../gio/gdbusmessage.c:3291
 msgid "Error return with empty body"
@@ -932,18 +941,18 @@ msgstr "서버를 만들 때 nonce 파일을 지정할 수 없습니다"
 
 #: ../gio/gdbusserver.c:873
 #, c-format
-msgid "Error writing nonce file at '%s': %s"
-msgstr "'%s'의 nonce 파일에 쓰는 중 오류: %s"
+msgid "Error writing nonce file at “%s”: %s"
+msgstr "“%s”의 nonce 파일에 쓰는 중 오류: %s"
 
 #: ../gio/gdbusserver.c:1044
 #, c-format
-msgid "The string '%s' is not a valid D-Bus GUID"
-msgstr "'%s' 문자열은 올바른 D-BUS GUID가 아닙니다"
+msgid "The string “%s” is not a valid D-Bus GUID"
+msgstr "“%s” 문자열은 올바른 D-BUS GUID가 아닙니다"
 
 #: ../gio/gdbusserver.c:1084
 #, c-format
-msgid "Cannot listen on unsupported transport '%s'"
-msgstr "지원하지 않는 transport '%s'에서 연결을 받아들일 수 없습니다"
+msgid "Cannot listen on unsupported transport “%s”"
+msgstr "지원하지 않는 transport “%s”에서 연결을 받아들일 수 없습니다"
 
 #: ../gio/gdbus-tool.c:95
 #, c-format
@@ -955,7 +964,7 @@ msgid ""
 "  call         Invoke a method on a remote object\n"
 "  emit         Emit a signal\n"
 "\n"
-"Use \"%s COMMAND --help\" to get help on each command.\n"
+"Use “%s COMMAND --help” to get help on each command.\n"
 msgstr ""
 "명령:\n"
 "  help         이 정보를 표시합니다\n"
@@ -964,7 +973,7 @@ msgstr ""
 "  call         원격 객체를 메소드를 호출합니다\n"
 "  emit         시그널을 발생합니다\n"
 "\n"
-"각 명령어의 도움말을 보려면 \"%s <명령> --help\" 명령을 사용하십시오.\n"
+"각 명령어의 도움말을 보려면 “%s <명령> --help” 명령을 사용하십시오.\n"
 
 #: ../gio/gdbus-tool.c:164 ../gio/gdbus-tool.c:226 ../gio/gdbus-tool.c:298
 #: ../gio/gdbus-tool.c:322 ../gio/gdbus-tool.c:724 ../gio/gdbus-tool.c:1067
@@ -1016,21 +1025,21 @@ msgstr "여러 개의 연결 종점을 지정했습니다"
 #: ../gio/gdbus-tool.c:471
 #, c-format
 msgid ""
-"Warning: According to introspection data, interface '%s' does not exist\n"
-msgstr "경고: introspection 데이터에 따르면 '%s' 인터페이스가 없습니다\n"
+"Warning: According to introspection data, interface “%s” does not exist\n"
+msgstr "경고: introspection 데이터에 따르면 “%s” 인터페이스가 없습니다\n"
 
 #: ../gio/gdbus-tool.c:480
 #, c-format
 msgid ""
-"Warning: According to introspection data, method '%s' does not exist on "
-"interface '%s'\n"
+"Warning: According to introspection data, method “%s” does not exist on "
+"interface “%s”\n"
 msgstr ""
-"경고: introspection 데이터에 따르면 '%s' 메소드가 '%s' 인터페이스에 없습니"
+"경고: introspection 데이터에 따르면 “%s” 메소드가 “%s” 인터페이스에 없습니"
 "다\n"
 
 #: ../gio/gdbus-tool.c:542
 msgid "Optional destination for signal (unique name)"
-msgstr "추가로 지정할 수 있는 시그널의 대상(고유 이름)"
+msgstr "추가로 지정할 수 있는 시그널의 대상 (고유 이름)"
 
 #: ../gio/gdbus-tool.c:543
 msgid "Object path to emit signal on"
@@ -1139,13 +1148,13 @@ msgstr "오류: 메소드 이름을 지정하지 않았습니다\n"
 
 #: ../gio/gdbus-tool.c:950
 #, c-format
-msgid "Error: Method name '%s' is invalid\n"
-msgstr "오류: 메소드 이름 '%s'이(가) 올바르지 않습니다\n"
+msgid "Error: Method name “%s” is invalid\n"
+msgstr "오류: 메소드 이름 “%s”이(가) 올바르지 않습니다\n"
 
 #: ../gio/gdbus-tool.c:1028
 #, c-format
-msgid "Error parsing parameter %d of type '%s': %s\n"
-msgstr "형식 '%2$s'의 파라미터 %1$d번 해석 오류: %3$s\n"
+msgid "Error parsing parameter %d of type “%s”: %s\n"
+msgstr "형식 “%2$s”의 파라미터 %1$d번 해석 오류: %3$s\n"
 
 #: ../gio/gdbus-tool.c:1472
 msgid "Destination name to introspect"
@@ -1188,7 +1197,7 @@ msgid "Unnamed"
 msgstr "이름없음"
 
 #: ../gio/gdesktopappinfo.c:2404
-msgid "Desktop file didn't specify Exec field"
+msgid "Desktop file didn’t specify Exec field"
 msgstr "desktop 파일에 Exec 필드를 지정하지 않았습니다"
 
 #: ../gio/gdesktopappinfo.c:2689
@@ -1197,12 +1206,12 @@ msgstr "프로그램에 필요한 터미널을 찾을 수 없습니다"
 
 #: ../gio/gdesktopappinfo.c:3097
 #, c-format
-msgid "Can't create user application configuration folder %s: %s"
+msgid "Can’t create user application configuration folder %s: %s"
 msgstr "사용자 프로그램 설정 폴더(%s)를 만들 수 없습니다: %s"
 
 #: ../gio/gdesktopappinfo.c:3101
 #, c-format
-msgid "Can't create user MIME configuration folder %s: %s"
+msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "사용자 MIME 설정 폴더(%s)를 만들 수 없습니다: %s"
 
 #: ../gio/gdesktopappinfo.c:3341 ../gio/gdesktopappinfo.c:3365
@@ -1211,7 +1220,7 @@ msgstr "프로그램 정보에 아이디가 없습니다"
 
 #: ../gio/gdesktopappinfo.c:3599
 #, c-format
-msgid "Can't create user desktop file %s"
+msgid "Can’t create user desktop file %s"
 msgstr "%s 사용자 desktop 파일을 만들 수 없습니다"
 
 #: ../gio/gdesktopappinfo.c:3733
@@ -1220,26 +1229,26 @@ msgid "Custom definition for %s"
 msgstr "%s에 대한 사용자 설정 정의"
 
 #: ../gio/gdrive.c:417
-msgid "drive doesn't implement eject"
-msgstr "드라이브가 eject를 구현하지 않았습니다"
+msgid "drive doesn’t implement eject"
+msgstr "드라이브가 eject 기능을 구현하지 않았습니다"
 
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gdrive.c:495
-msgid "drive doesn't implement eject or eject_with_operation"
-msgstr "드라이브가 eject 기능을 구현하지 않았습니다"
+msgid "drive doesn’t implement eject or eject_with_operation"
+msgstr "드라이브가 eject 또는 eject_with_operation 기능을 구현하지 않았습니다"
 
 #: ../gio/gdrive.c:571
-msgid "drive doesn't implement polling for media"
-msgstr "드라이브가 미디어의 폴링을 구현하지 않았습니다"
+msgid "drive doesn’t implement polling for media"
+msgstr "드라이브가 미디어 폴링을 구현하지 않았습니다"
 
 #: ../gio/gdrive.c:776
-msgid "drive doesn't implement start"
+msgid "drive doesn’t implement start"
 msgstr "드라이브가 start 기능을 구현하지 않았습니다"
 
 #: ../gio/gdrive.c:878
-msgid "drive doesn't implement stop"
+msgid "drive doesn’t implement stop"
 msgstr "드라이브가 stop 기능을 구현하지 않았습니다"
 
 #: ../gio/gdummytlsbackend.c:195 ../gio/gdummytlsbackend.c:317
@@ -1253,7 +1262,7 @@ msgstr "DTLS 기능을 사용할 수 없습니다"
 
 #: ../gio/gemblem.c:323
 #, c-format
-msgid "Can't handle version %d of GEmblem encoding"
+msgid "Can’t handle version %d of GEmblem encoding"
 msgstr "GEmblem 인코딩의 %d 버전을 처리할 수 없습니다"
 
 #: ../gio/gemblem.c:333
@@ -1263,7 +1272,7 @@ msgstr "GEmblem 인코딩에서 토큰 수가(%d개) 잘못되었습니다"
 
 #: ../gio/gemblemedicon.c:362
 #, c-format
-msgid "Can't handle version %d of GEmblemedIcon encoding"
+msgid "Can’t handle version %d of GEmblemedIcon encoding"
 msgstr "GEmblemedIcon 인코딩의 %d 버전을 처리할 수 없습니다"
 
 #: ../gio/gemblemedicon.c:372
@@ -1295,12 +1304,12 @@ msgstr "동작을 지원하지 않습니다"
 msgid "Containing mount does not exist"
 msgstr "들어 있는 마운트가 없습니다"
 
-#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2374
-msgid "Can't copy over directory"
+#: ../gio/gfile.c:2515 ../gio/glocalfile.c:2375
+msgid "Can’t copy over directory"
 msgstr "디렉터리를 덮어 써서 복사할 수 없습니다"
 
 #: ../gio/gfile.c:2575
-msgid "Can't copy directory over directory"
+msgid "Can’t copy directory over directory"
 msgstr "디렉터리를 덮어 써서 디렉터리를 복사할 수 없습니다"
 
 #: ../gio/gfile.c:2583
@@ -1308,7 +1317,7 @@ msgid "Target file exists"
 msgstr "대상 파일이 있습니다"
 
 #: ../gio/gfile.c:2602
-msgid "Can't recursively copy directory"
+msgid "Can’t recursively copy directory"
 msgstr "디렉터리를 재귀적으로 복사할 수 없습니다"
 
 #: ../gio/gfile.c:2884
@@ -1330,11 +1339,11 @@ msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "복사(참조링크/클론)를 지원하지 않거나 잘못되었습니다"
 
 #: ../gio/gfile.c:3028
-msgid "Copy (reflink/clone) is not supported or didn't work"
+msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "복사(참조링크/클론)를 지원하지 않거나 동작하지 않았습니다."
 
 #: ../gio/gfile.c:3091
-msgid "Can't copy special file"
+msgid "Can’t copy special file"
 msgstr "특수 파일은 복사할 수 없습니다"
 
 #: ../gio/gfile.c:3885
@@ -1347,11 +1356,11 @@ msgstr "휴지통을 지원하지 않습니다"
 
 #: ../gio/gfile.c:4158
 #, c-format
-msgid "File names cannot contain '%c'"
-msgstr "파일 이름에 '%c' 문자가 들어갈 수 없습니다"
+msgid "File names cannot contain “%c”"
+msgstr "파일 이름에 “%c” 문자가 들어갈 수 없습니다"
 
 #: ../gio/gfile.c:6604 ../gio/gvolume.c:363
-msgid "volume doesn't implement mount"
+msgid "volume doesn’t implement mount"
 msgstr "볼륨이 mount를 구현하지 않았습니다"
 
 #: ../gio/gfile.c:6713
@@ -1373,7 +1382,7 @@ msgstr "파일 이뉴머레이터를 이미 닫았습니다"
 
 #: ../gio/gfileicon.c:236
 #, c-format
-msgid "Can't handle version %d of GFileIcon encoding"
+msgid "Can’t handle version %d of GFileIcon encoding"
 msgstr "GFileIcon 인코딩의 %d 버전을 처리할 수 없습니다"
 
 #: ../gio/gfileicon.c:246
@@ -1383,7 +1392,7 @@ msgstr "GFileIcon 입력 데이터의 형식이 잘못되었습니다"
 #: ../gio/gfileinputstream.c:149 ../gio/gfileinputstream.c:394
 #: ../gio/gfileiostream.c:167 ../gio/gfileoutputstream.c:164
 #: ../gio/gfileoutputstream.c:497
-msgid "Stream doesn't support query_info"
+msgid "Stream doesn’t support query_info"
 msgstr "스트림이 query_info를 지원하지 않습니다"
 
 #: ../gio/gfileinputstream.c:325 ../gio/gfileiostream.c:379
@@ -1427,7 +1436,7 @@ msgstr "HTTP 프록시 서버가 예상치 못하게 연결을 닫았습니다."
 #: ../gio/gicon.c:290
 #, c-format
 msgid "Wrong number of tokens (%d)"
-msgstr "토큰 수가(%d개) 잘못되었습니다"
+msgstr "토큰 수가 (%d개) 잘못되었습니다"
 
 #: ../gio/gicon.c:310
 #, c-format
@@ -1455,7 +1464,7 @@ msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "\"%s\" 형식은 GIcon 인터페이스에서 from_token()를 구현하지 않습니다"
 
 #: ../gio/gicon.c:461
-msgid "Can't handle the supplied version of the icon encoding"
+msgid "Can’t handle the supplied version of the icon encoding"
 msgstr "아이콘 인코딩에 저장한 버전을 처리할 수 없습니다"
 
 #: ../gio/ginetaddressmask.c:182
@@ -1473,8 +1482,8 @@ msgstr "주소에 접두어 길이보다 긴 비트 데이터가 들어 있습�
 
 #: ../gio/ginetaddressmask.c:300
 #, c-format
-msgid "Could not parse '%s' as IP address mask"
-msgstr "'%s'을(를) IP주소 마스크로 해석할 수 없습니다"
+msgid "Could not parse “%s” as IP address mask"
+msgstr "“%s”을(를) IP주소 마스크로 해석할 수 없습니다"
 
 #: ../gio/ginetsocketaddress.c:203 ../gio/ginetsocketaddress.c:220
 #: ../gio/gnativesocketaddress.c:106 ../gio/gunixsocketaddress.c:216
@@ -1486,7 +1495,7 @@ msgid "Unsupported socket address"
 msgstr "소켓 주소를 지원하지 않습니다"
 
 #: ../gio/ginputstream.c:188
-msgid "Input stream doesn't implement read"
+msgid "Input stream doesn’t implement read"
 msgstr "입력 스트림이 read를 구현하지 않았습니다"
 
 #. Translators: This is an error you get if there is already an
@@ -1509,8 +1518,8 @@ msgid "Keep with file when moved"
 msgstr "파일 옮길 때 유지"
 
 #: ../gio/gio-tool.c:187
-msgid "'version' takes no arguments"
-msgstr "'version' 옵션은 인수를 받지 않습니다"
+msgid "“version” takes no arguments"
+msgstr "“version” 옵션은 인수를 받지 않습니다"
 
 #: ../gio/gio-tool.c:189 ../gio/gio-tool.c:205 ../glib/goption.c:857
 msgid "Usage:"
@@ -1519,6 +1528,10 @@ msgstr "사용법:"
 #: ../gio/gio-tool.c:192
 msgid "Print version information and exit."
 msgstr "버전 정보를 표시하고 끝납니다."
+
+#: ../gio/gio-tool.c:206
+msgid "[ARGS...]"
+msgstr "[인수...]"
 
 #: ../gio/gio-tool.c:208
 msgid "Commands:"
@@ -1685,8 +1698,8 @@ msgstr "대상 %s이(가) 디렉터리가 아닙니다"
 
 #: ../gio/gio-tool-copy.c:187 ../gio/gio-tool-move.c:181
 #, c-format
-msgid "%s: overwrite '%s'? "
-msgstr "%s: '%s' 파일을 덮어씁니까? "
+msgid "%s: overwrite “%s”? "
+msgstr "%s: “%s” 파일을 덮어씁니까? "
 
 #: ../gio/gio-tool-info.c:34
 msgid "List writable attributes"
@@ -1705,8 +1718,8 @@ msgid "ATTRIBUTES"
 msgstr "<속성>"
 
 #: ../gio/gio-tool-info.c:37 ../gio/gio-tool-list.c:38 ../gio/gio-tool-set.c:34
-msgid "Don't follow symbolic links"
-msgstr "심볼릭 링크 허용하지 않기"
+msgid "Don’t follow symbolic links"
+msgstr "심볼릭 링크 따라가지 않기"
 
 #: ../gio/gio-tool-info.c:75
 #, c-format
@@ -1775,14 +1788,14 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location. File attributes can\n"
 "be specified with their GIO name, e.g. standard::icon, or just by\n"
-"namespace, e.g. unix, or by '*', which matches all attributes"
+"namespace, e.g. unix, or by “*”, which matches all attributes"
 msgstr ""
 "GIO info는 전통적인 ls 유틸리티와 비슷하지만, 로컬 파일\n"
 "대신 GIO 위치를 사용합니다. 예를 들어 위치로\n"
 "smb://server/resource/file.txt와 같이 쓸 수 있습니다.\n"
 "파일 속성은 GIO 이름으로도 지정할 수도 있고 (예: standard::icon),\n"
 "네임스페이스로 지정할 수도 있고 (예: unix), 모든 속성에 해당하는\n"
-"'*'로 지정할 수도 있습니다."
+"“*”로 지정할 수도 있습니다."
 
 #: ../gio/gio-tool-info.c:307 ../gio/gio-tool-mkdir.c:74
 msgid "No locations given"
@@ -1846,13 +1859,13 @@ msgstr "하나의 MIME 유형을 지정해야 하고, 설정할 경우 핸들러
 
 #: ../gio/gio-tool-mime.c:113
 #, c-format
-msgid "No default applications for '%s'\n"
-msgstr "'%s'에 대한 기본 프로그램이 없습니다.\n"
+msgid "No default applications for “%s”\n"
+msgstr "“%s”에 대한 기본 프로그램이 없습니다.\n"
 
 #: ../gio/gio-tool-mime.c:119
 #, c-format
-msgid "Default application for '%s': %s\n"
-msgstr "'%s'에 대한 기본 프로그램: %s\n"
+msgid "Default application for “%s”: %s\n"
+msgstr "“%s”에 대한 기본 프로그램: %s\n"
 
 #: ../gio/gio-tool-mime.c:124
 #, c-format
@@ -1876,13 +1889,13 @@ msgstr "추천 프로그램이 없습니다\n"
 
 #: ../gio/gio-tool-mime.c:159
 #, c-format
-msgid "Failed to load info for handler '%s'\n"
-msgstr "'%s' 핸들러 정보를 읽어들이는데 실패\n"
+msgid "Failed to load info for handler “%s”\n"
+msgstr "“%s” 핸들러 정보를 읽어들이는데 실패\n"
 
 #: ../gio/gio-tool-mime.c:165
 #, c-format
-msgid "Failed to set '%s' as the default handler for '%s': %s\n"
-msgstr "'%s'을(를) '%s'의 기본 핸들러로 설정하는데 실패: %s\n"
+msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
+msgstr "“%s”을(를) “%s”의 기본 핸들러로 설정하는데 실패: %s\n"
 
 #: ../gio/gio-tool-mkdir.c:31
 msgid "Create parent directories"
@@ -1915,7 +1928,7 @@ msgid "Monitor a file directly (notices changes made via hardlinks)"
 msgstr "파일을 직접 감시합니다 (하드 링크를 통해 변경된 사항을 알립니다)"
 
 #: ../gio/gio-tool-monitor.c:43
-msgid "Monitors a file directly, but doesn't report changes"
+msgid "Monitors a file directly, but doesn’t report changes"
 msgstr "파일을 직접 감시하지만, 변경 사항을 알리지 않습니다"
 
 #: ../gio/gio-tool-monitor.c:45
@@ -2024,7 +2037,7 @@ msgid "Mount or unmount the locations."
 msgstr "위치를 마운트하거나 해제합니다."
 
 #: ../gio/gio-tool-move.c:42
-msgid "Don't use copy and delete fallback"
+msgid "Don’t use copy and delete fallback"
 msgstr "복사 또는 삭제 대비책을 사용하지 않습니다"
 
 #: ../gio/gio-tool-move.c:99
@@ -2211,18 +2224,18 @@ msgstr "자원에서 %s 파일이 여러번 나타납니다"
 
 #: ../gio/glib-compile-resources.c:248
 #, c-format
-msgid "Failed to locate '%s' in any source directory"
-msgstr "임의의 소스 디렉터리에서 '%s'을(를) 지정하는데 실패"
+msgid "Failed to locate “%s” in any source directory"
+msgstr "임의의 소스 디렉터리에서 “%s”을(를) 지정하는데 실패"
 
 #: ../gio/glib-compile-resources.c:259
 #, c-format
-msgid "Failed to locate '%s' in current directory"
-msgstr "현재 디렉터리의 '%s' 지정 실패"
+msgid "Failed to locate “%s” in current directory"
+msgstr "현재 디렉터리의 “%s” 지정 실패"
 
 #: ../gio/glib-compile-resources.c:290
 #, c-format
-msgid "Unknown processing option \"%s\""
-msgstr "알 수 없는 처리 옵션 \"%s\""
+msgid "Unknown processing option “%s”"
+msgstr "알 수 없는 처리 옵션 “%s”"
 
 #: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:354
 #, c-format
@@ -2244,60 +2257,69 @@ msgstr "%s 파일 압축 중 오류"
 msgid "text may not appear inside <%s>"
 msgstr "<%s> 안에는 문자가 들어갈 수 없습니다"
 
-#: ../gio/glib-compile-resources.c:620
+#: ../gio/glib-compile-resources.c:664 ../gio/glib-compile-schemas.c:2037
+msgid "Show program version and exit"
+msgstr "프로그램 버전을 표시하고 끝납니다"
+
+#: ../gio/glib-compile-resources.c:665
 msgid "name of the output file"
 msgstr "출력 파일의 이름"
 
-#: ../gio/glib-compile-resources.c:621
+#: ../gio/glib-compile-resources.c:666
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
-msgstr "파일이 어디 있는지 읽어야 할 디렉터리(기본값은 현재 디렉터리)"
+msgstr "파일이 어디 있는지 읽어야 할 디렉터리 (기본값은 현재 디렉터리)"
 
-#: ../gio/glib-compile-resources.c:621 ../gio/glib-compile-schemas.c:2036
-#: ../gio/glib-compile-schemas.c:2065
+#: ../gio/glib-compile-resources.c:666 ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-schemas.c:2067
 msgid "DIRECTORY"
 msgstr "<디렉터리>"
 
 # 주의: 옵션 설명 - 문장으로 번역
-#: ../gio/glib-compile-resources.c:622
+#: ../gio/glib-compile-resources.c:667
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr "대상 파일 이름 확장자에 따라 선택한 형식으로 출력을 생성합니다"
 
 # 주의: 옵션 설명 - 문장으로 번역
-#: ../gio/glib-compile-resources.c:623
+#: ../gio/glib-compile-resources.c:668
 msgid "Generate source header"
 msgstr "소스 헤더를 생성합니다"
 
 # 주의: 옵션 설명 - 문장으로 번역
-#: ../gio/glib-compile-resources.c:624
+#: ../gio/glib-compile-resources.c:669
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "리소스 파일에 연결하는데 사용하는 소스 코드를 코드에 생성합니다"
 
 # 주의: 옵션 설명 - 문장으로 번역
-#: ../gio/glib-compile-resources.c:625
+#: ../gio/glib-compile-resources.c:670
 msgid "Generate dependency list"
 msgstr "의존성 목록을 생성합니다"
 
-#: ../gio/glib-compile-resources.c:626
+#: ../gio/glib-compile-resources.c:671
 msgid "name of the dependency file to generate"
 msgstr "생성할 의존성 파일의 이름"
 
+# makefile의 .PHONY target을 말함
+#: ../gio/glib-compile-resources.c:672
+msgid "Include phony targets in the generated dependency file"
+msgstr "만들어진 의존성 파일에 포니 타겟이 들어갑니다"
+
 # 주의: 옵션 설명 - 문장으로 번역
-#: ../gio/glib-compile-resources.c:627
-msgid "Don't automatically create and register resource"
+#: ../gio/glib-compile-resources.c:673
+msgid "Don’t automatically create and register resource"
 msgstr "자원을 자동으로 만들고 등록하지 않습니다"
 
-#: ../gio/glib-compile-resources.c:628
-msgid "Don't export functions; declare them G_GNUC_INTERNAL"
+#: ../gio/glib-compile-resources.c:674
+msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "함수를 내보내지 않고, G_GNU_INTERNAL로 선언합니다"
 
-#: ../gio/glib-compile-resources.c:629
+#: ../gio/glib-compile-resources.c:675
 msgid "C identifier name used for the generated source code"
 msgstr "C 식별자 이름은 생성한 소스코드에 대해 사용합니다"
 
-#: ../gio/glib-compile-resources.c:655
+#: ../gio/glib-compile-resources.c:701
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2307,7 +2329,7 @@ msgstr ""
 "자원 명세 파일은 .gresource.xml 확장자를 지니며,\n"
 "자원 파일은 .gresource라는 확장자를 지닙니다."
 
-#: ../gio/glib-compile-resources.c:671
+#: ../gio/glib-compile-resources.c:723
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "정확히 파일 이름을 하나 지정해야 합니다\n"
@@ -2343,7 +2365,7 @@ msgstr "잘못된 이름 '%s': 마지막 문자로서 빼기 기호('-')는 안�
 #: ../gio/glib-compile-schemas.c:832
 #, c-format
 msgid "invalid name '%s': maximum length is 1024"
-msgstr "이름이 올바르지 않습니다('%s'): 최대 길이는 1024입니다"
+msgstr "이름이 올바르지 않습니다 ('%s'): 최대 길이는 1024입니다"
 
 #: ../gio/glib-compile-schemas.c:901
 #, c-format
@@ -2487,7 +2509,7 @@ msgstr "이 파일을 무시합니다.\n"
 #: ../gio/glib-compile-schemas.c:1901
 #, c-format
 msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
-msgstr "'%s' 키가 '%s' 스키마에 없습니다(override 파일 '%s')"
+msgstr "'%s' 키가 '%s' 스키마에 없습니다 (override 파일 '%s')"
 
 #: ../gio/glib-compile-schemas.c:1907 ../gio/glib-compile-schemas.c:1965
 #: ../gio/glib-compile-schemas.c:1993
@@ -2530,26 +2552,26 @@ msgstr ""
 "override 파일 '%3$s', '%2$s' 스키마의 '%1$s' 키는 올바른 값 중 하나가 아닙니"
 "다"
 
-#: ../gio/glib-compile-schemas.c:2036
+#: ../gio/glib-compile-schemas.c:2038
 msgid "where to store the gschemas.compiled file"
 msgstr "gschemas.compiled 파일을 저장할 위치"
 
 # 옵션 설명
-#: ../gio/glib-compile-schemas.c:2037
+#: ../gio/glib-compile-schemas.c:2039
 msgid "Abort on any errors in schemas"
 msgstr "스키마에 오류가 하나라도 있으면 중지합니다"
 
 # 옵션 설명
-#: ../gio/glib-compile-schemas.c:2038
+#: ../gio/glib-compile-schemas.c:2040
 msgid "Do not write the gschema.compiled file"
 msgstr "gschema.compiled 파일을 쓰지 않습니다"
 
 # 옵션 설명
-#: ../gio/glib-compile-schemas.c:2039
+#: ../gio/glib-compile-schemas.c:2041
 msgid "Do not enforce key name restrictions"
 msgstr "키 이름을 제한하지 않습니다"
 
-#: ../gio/glib-compile-schemas.c:2068
+#: ../gio/glib-compile-schemas.c:2070
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2559,153 +2581,153 @@ msgstr ""
 "스키마 파일 확장자는 .schema.xml이어야 하고,\n"
 "캐시 파일 이름은 gschemas.compile이어야 합니다."
 
-#: ../gio/glib-compile-schemas.c:2084
+#: ../gio/glib-compile-schemas.c:2092
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "정확히 디렉터리 이름을 하나 지정해야 합니다\n"
 
-#: ../gio/glib-compile-schemas.c:2123
+#: ../gio/glib-compile-schemas.c:2131
 #, c-format
 msgid "No schema files found: "
 msgstr "스키마 파일이 없습니다: "
 
-#: ../gio/glib-compile-schemas.c:2126
+#: ../gio/glib-compile-schemas.c:2134
 #, c-format
 msgid "doing nothing.\n"
 msgstr "아무 것도 하지 않습니다.\n"
 
-#: ../gio/glib-compile-schemas.c:2129
+#: ../gio/glib-compile-schemas.c:2137
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "현재 출력 파일을 제거합니다.\n"
 
-#: ../gio/glocalfile.c:642 ../gio/win32/gwinhttpfile.c:420
+#: ../gio/glocalfile.c:643 ../gio/win32/gwinhttpfile.c:420
 #, c-format
 msgid "Invalid filename %s"
 msgstr "잘못된 파일 이름 %s"
 
-#: ../gio/glocalfile.c:1036
+#: ../gio/glocalfile.c:1037
 #, c-format
 msgid "Error getting filesystem info for %s: %s"
 msgstr "%s의 파일 시스템 정보를 가져오는 중 오류: %s"
 
-#: ../gio/glocalfile.c:1175
+#: ../gio/glocalfile.c:1176
 #, c-format
 msgid "Containing mount for file %s not found"
 msgstr "%s 파일이 들어 있는 마운트가 없습니다"
 
-#: ../gio/glocalfile.c:1198
-msgid "Can't rename root directory"
+#: ../gio/glocalfile.c:1199
+msgid "Can’t rename root directory"
 msgstr "루트 디렉터리의 이름을 바꿀 수 없습니다"
 
-#: ../gio/glocalfile.c:1216 ../gio/glocalfile.c:1239
+#: ../gio/glocalfile.c:1217 ../gio/glocalfile.c:1240
 #, c-format
 msgid "Error renaming file %s: %s"
 msgstr "%s 파일의 이름 바꾸는 중 오류: %s"
 
-#: ../gio/glocalfile.c:1223
-msgid "Can't rename file, filename already exists"
+#: ../gio/glocalfile.c:1224
+msgid "Can’t rename file, filename already exists"
 msgstr "파일 이름을 바꿀 수 없습니다. 파일이 이미 있습니다"
 
-#: ../gio/glocalfile.c:1236 ../gio/glocalfile.c:2250 ../gio/glocalfile.c:2278
-#: ../gio/glocalfile.c:2435 ../gio/glocalfileoutputstream.c:549
+#: ../gio/glocalfile.c:1237 ../gio/glocalfile.c:2251 ../gio/glocalfile.c:2279
+#: ../gio/glocalfile.c:2436 ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
 msgstr "잘못된 파일 이름"
 
-#: ../gio/glocalfile.c:1403 ../gio/glocalfile.c:1418
+#: ../gio/glocalfile.c:1404 ../gio/glocalfile.c:1419
 #, c-format
 msgid "Error opening file %s: %s"
 msgstr "%s 파일을 여는 중 오류: %s"
 
-#: ../gio/glocalfile.c:1543
+#: ../gio/glocalfile.c:1544
 #, c-format
 msgid "Error removing file %s: %s"
 msgstr "%s 파일 제거하는 중 오류: %s"
 
-#: ../gio/glocalfile.c:1926
+#: ../gio/glocalfile.c:1927
 #, c-format
 msgid "Error trashing file %s: %s"
 msgstr "%s 파일 버리는 중 오류: %s"
 
-#: ../gio/glocalfile.c:1949
+#: ../gio/glocalfile.c:1950
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "휴지통 디렉터리(%s)를 만들 수 없습니다: %s"
 
-#: ../gio/glocalfile.c:1969
+#: ../gio/glocalfile.c:1970
 #, c-format
 msgid "Unable to find toplevel directory to trash %s"
 msgstr "%s 휴지통의 상위 디렉터리를 찾을 수 없습니다"
 
-#: ../gio/glocalfile.c:2048 ../gio/glocalfile.c:2068
+#: ../gio/glocalfile.c:2049 ../gio/glocalfile.c:2069
 #, c-format
 msgid "Unable to find or create trash directory for %s"
 msgstr "%s 휴지통 디렉터리를 찾을 수 없거나 만들 수 없습니다"
 
-#: ../gio/glocalfile.c:2102
+#: ../gio/glocalfile.c:2103
 #, c-format
 msgid "Unable to create trashing info file for %s: %s"
 msgstr "%s에 대한 휴지통 정보 파일을 만들 수 없습니다: %s"
 
-#: ../gio/glocalfile.c:2161
+#: ../gio/glocalfile.c:2162
 #, c-format
 msgid "Unable to trash file %s across filesystem boundaries"
 msgstr "%s 파일을 파일 시스템 경계를 넘어서서 버릴 수 없습니다"
 
-#: ../gio/glocalfile.c:2165 ../gio/glocalfile.c:2221
+#: ../gio/glocalfile.c:2166 ../gio/glocalfile.c:2222
 #, c-format
 msgid "Unable to trash file %s: %s"
 msgstr "%s 파일을 버릴 수 없습니다: %s"
 
-#: ../gio/glocalfile.c:2227
+#: ../gio/glocalfile.c:2228
 #, c-format
 msgid "Unable to trash file %s"
 msgstr "%s 파일을 버릴 수 없습니다"
 
-#: ../gio/glocalfile.c:2253
+#: ../gio/glocalfile.c:2254
 #, c-format
 msgid "Error creating directory %s: %s"
 msgstr "%s 디렉터리를 만드는 중 오류: %s"
 
-#: ../gio/glocalfile.c:2282
+#: ../gio/glocalfile.c:2283
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "파일 시스템이 심볼릭 링크를 지원하지 않습니다"
 
-#: ../gio/glocalfile.c:2285
+#: ../gio/glocalfile.c:2286
 #, c-format
 msgid "Error making symbolic link %s: %s"
 msgstr "%s 심볼릭 링크를 만드는 중 오류: %s"
 
-#: ../gio/glocalfile.c:2291 ../glib/gfileutils.c:2064
+#: ../gio/glocalfile.c:2292 ../glib/gfileutils.c:2064
 msgid "Symbolic links not supported"
 msgstr "심볼릭 링크를 지원하지 않습니다"
 
-#: ../gio/glocalfile.c:2346 ../gio/glocalfile.c:2381 ../gio/glocalfile.c:2438
+#: ../gio/glocalfile.c:2347 ../gio/glocalfile.c:2382 ../gio/glocalfile.c:2439
 #, c-format
 msgid "Error moving file %s: %s"
 msgstr "%s 파일 옮기는 중 오류: %s"
 
-#: ../gio/glocalfile.c:2369
-msgid "Can't move directory over directory"
+#: ../gio/glocalfile.c:2370
+msgid "Can’t move directory over directory"
 msgstr "디렉터리를 덮어 써서 디렉터리를 옮길 수 없습니다"
 
-#: ../gio/glocalfile.c:2395 ../gio/glocalfileoutputstream.c:925
+#: ../gio/glocalfile.c:2396 ../gio/glocalfileoutputstream.c:925
 #: ../gio/glocalfileoutputstream.c:939 ../gio/glocalfileoutputstream.c:954
 #: ../gio/glocalfileoutputstream.c:971 ../gio/glocalfileoutputstream.c:985
 msgid "Backup file creation failed"
 msgstr "백업 파일 만들기가 실패했습니다"
 
-#: ../gio/glocalfile.c:2414
+#: ../gio/glocalfile.c:2415
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "대상 파일을 제거하는 중 오류: %s"
 
-#: ../gio/glocalfile.c:2428
+#: ../gio/glocalfile.c:2429
 msgid "Move between mounts not supported"
 msgstr "다른 마운트 사이에 옮기기는 지원하지 않습니다"
 
-#: ../gio/glocalfile.c:2619
+#: ../gio/glocalfile.c:2620
 #, c-format
 msgid "Could not determine the disk usage of %s: %s"
 msgstr "%s의 디스크 사용량을 알아낼 수 없습니다: %s"
@@ -2716,7 +2738,7 @@ msgstr "속성 값은 NULL이 아니어야 합니다"
 
 #: ../gio/glocalfileinfo.c:728
 msgid "Invalid attribute type (string expected)"
-msgstr "잘못된 속성 형식(문자열 필요)"
+msgstr "잘못된 속성 형식 (문자열 필요)"
 
 #: ../gio/glocalfileinfo.c:735
 msgid "Invalid extended attribute name"
@@ -2724,8 +2746,8 @@ msgstr "잘못된 확장 속성 이름"
 
 #: ../gio/glocalfileinfo.c:775
 #, c-format
-msgid "Error setting extended attribute '%s': %s"
-msgstr "확장 속성 '%s' 설정 중 오류: %s"
+msgid "Error setting extended attribute “%s”: %s"
+msgstr "확장 속성 “%s” 설정 중 오류: %s"
 
 #: ../gio/glocalfileinfo.c:1575
 msgid " (invalid encoding)"
@@ -2733,8 +2755,8 @@ msgstr " (잘못된 인코딩)"
 
 #: ../gio/glocalfileinfo.c:1766 ../gio/glocalfileoutputstream.c:803
 #, c-format
-msgid "Error when getting information for file '%s': %s"
-msgstr "'%s' 파일 정보를 가져오는 중 오류: %s"
+msgid "Error when getting information for file “%s”: %s"
+msgstr "“%s” 파일 정보를 가져오는 중 오류: %s"
 
 #: ../gio/glocalfileinfo.c:2017
 #, c-format
@@ -2743,15 +2765,15 @@ msgstr "파일 서술자 정보를 가져오는 중 오류: %s"
 
 #: ../gio/glocalfileinfo.c:2062
 msgid "Invalid attribute type (uint32 expected)"
-msgstr "잘못된 속성 형식(uint32 필요)"
+msgstr "잘못된 속성 형식 (uint32 필요)"
 
 #: ../gio/glocalfileinfo.c:2080
 msgid "Invalid attribute type (uint64 expected)"
-msgstr "잘못된 속성 형식(uint64 필요)"
+msgstr "잘못된 속성 형식 (uint64 필요)"
 
 #: ../gio/glocalfileinfo.c:2099 ../gio/glocalfileinfo.c:2118
 msgid "Invalid attribute type (byte string expected)"
-msgstr "잘못된 속성 형식(바이트 문자열 필요)"
+msgstr "잘못된 속성 형식 (바이트 문자열 필요)"
 
 #: ../gio/glocalfileinfo.c:2153
 msgid "Cannot set permissions on symlinks"
@@ -2855,8 +2877,8 @@ msgstr "파일을 자르는 중 오류: %s"
 #: ../gio/glocalfileoutputstream.c:555 ../gio/glocalfileoutputstream.c:785
 #: ../gio/glocalfileoutputstream.c:1035 ../gio/gsubprocess.c:360
 #, c-format
-msgid "Error opening file '%s': %s"
-msgstr "'%s' 파일을 여는 중 오류: %s"
+msgid "Error opening file “%s”: %s"
+msgstr "“%s” 파일을 여는 중 오류: %s"
 
 #: ../gio/glocalfileoutputstream.c:816
 msgid "Target file is a directory"
@@ -2913,58 +2935,57 @@ msgstr "요청한 파일 이동 위치가 스트림의 맨 뒤보다 더 뒤쪽�
 #. * message for mount objects that
 #. * don't implement unmount.
 #: ../gio/gmount.c:393
-msgid "mount doesn't implement \"unmount\""
-msgstr "마운트가 \"unmount\" 기능을 구현하지 않았습니다"
+msgid "mount doesn’t implement “unmount”"
+msgstr "마운트가 “unmount” 기능을 구현하지 않았습니다"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: ../gio/gmount.c:469
-msgid "mount doesn't implement \"eject\""
-msgstr "마운트가 \"eject\" 기능을 구현하지 않았습니다"
+msgid "mount doesn’t implement “eject”"
+msgstr "마운트가 “eject” 기능을 구현하지 않았습니다"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: ../gio/gmount.c:547
-msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
+msgid "mount doesn’t implement “unmount” or “unmount_with_operation”"
 msgstr ""
-"마운트가 \"unmount\" 혹은 \"unmount_with_operation\" 기능을 구현하지 않았습니"
-"다"
+"마운트가 “unmount” 혹은 “unmount_with_operation” 기능을 구현하지 않았습니다"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gmount.c:632
-msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
+msgid "mount doesn’t implement “eject” or “eject_with_operation”"
 msgstr ""
-"마운트가 \"eject\" 혹은 \"eject_with_operation\" 기능을 구현하지 않았습니다"
+"마운트가 “eject” 혹은 “eject_with_operation” 기능을 구현하지 않았습니다"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
 #: ../gio/gmount.c:720
-msgid "mount doesn't implement \"remount\""
-msgstr "마운트가 \"remount\" 기능을 구현하지 않았습니다"
+msgid "mount doesn’t implement “remount”"
+msgstr "마운트가 “remount” 기능을 구현하지 않았습니다"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:802
-msgid "mount doesn't implement content type guessing"
-msgstr "마운트가 \"content type guessing\" 기능을 구현하지 않았습니다"
+msgid "mount doesn’t implement content type guessing"
+msgstr "마운트가 컨텐트 타입 판별 기능을 구현하지 않았습니다"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
 #: ../gio/gmount.c:889
-msgid "mount doesn't implement synchronous content type guessing"
-msgstr "마운트가 동기식 content type guessing 기능을 구현하지 않았습니다"
+msgid "mount doesn’t implement synchronous content type guessing"
+msgstr "마운트가 동기식 컨텐트 타입 판별 기능을 구현하지 않았습니다"
 
 #: ../gio/gnetworkaddress.c:378
 #, c-format
-msgid "Hostname '%s' contains '[' but not ']'"
-msgstr "'%s' 호스트 이름에 '[' 괄호가 있는데 ']' 괄호가 없습니다"
+msgid "Hostname “%s” contains “[” but not “]”"
+msgstr "“%s” 호스트 이름에 “[” 괄호가 있는데 “]” 괄호가 없습니다"
 
 #: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:310
 msgid "Network unreachable"
@@ -2994,39 +3015,39 @@ msgid "NetworkManager version too old"
 msgstr "NetworkManager 버전이 너무 오래 됐습니다"
 
 #: ../gio/goutputstream.c:212 ../gio/goutputstream.c:560
-msgid "Output stream doesn't implement write"
+msgid "Output stream doesn’t implement write"
 msgstr "출력 스트림이 write를 구현하지 않았습니다"
 
 #: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1224
 msgid "Source stream is already closed"
 msgstr "원본 스트림을 이미 닫았습니다"
 
-#: ../gio/gresolver.c:330 ../gio/gthreadedresolver.c:116
+#: ../gio/gresolver.c:341 ../gio/gthreadedresolver.c:116
 #: ../gio/gthreadedresolver.c:126
 #, c-format
-msgid "Error resolving '%s': %s"
-msgstr "'%s'의 주소를 알아내는 데 오류: %s"
+msgid "Error resolving “%s”: %s"
+msgstr "“%s”의 주소를 알아내는 데 오류: %s"
 
 #: ../gio/gresource.c:595 ../gio/gresource.c:846 ../gio/gresource.c:863
 #: ../gio/gresource.c:987 ../gio/gresource.c:1059 ../gio/gresource.c:1132
 #: ../gio/gresource.c:1202 ../gio/gresourcefile.c:453
 #: ../gio/gresourcefile.c:576 ../gio/gresourcefile.c:713
 #, c-format
-msgid "The resource at '%s' does not exist"
-msgstr "'%s'에 있는 자원이 없습니다"
+msgid "The resource at “%s” does not exist"
+msgstr "“%s” 위치의 자원이 없습니다"
 
 #: ../gio/gresource.c:760
 #, c-format
-msgid "The resource at '%s' failed to decompress"
-msgstr "'%s'에 있는 자원에 대해 압축을 푸는데 실패했습니다"
+msgid "The resource at “%s” failed to decompress"
+msgstr "“%s” 위치의 자원에 대해 압축을 푸는데 실패했습니다"
 
 #: ../gio/gresourcefile.c:709
 #, c-format
-msgid "The resource at '%s' is not a directory"
-msgstr "'%s'에 있는 자원은 디렉터리가 아닙니다"
+msgid "The resource at “%s” is not a directory"
+msgstr "“%s” 위치의 자원은 디렉터리가 아닙니다"
 
 #: ../gio/gresourcefile.c:917
-msgid "Input stream doesn't implement seek"
+msgid "Input stream doesn’t implement seek"
 msgstr "입력 스트림에 탐색을 구현하지 않았습니다"
 
 #: ../gio/gresource-tool.c:494
@@ -3075,7 +3096,7 @@ msgstr "<파일 경로>"
 #: ../gio/gresource-tool.c:534
 msgid ""
 "Usage:\n"
-"  gresource [--section SECTION] COMMAND [ARGS...]\n"
+"  gresource [--section SECTION] COMMAND [ARGS…]\n"
 "\n"
 "Commands:\n"
 "  help                      Show this information\n"
@@ -3084,11 +3105,11 @@ msgid ""
 "  details                   List resources with details\n"
 "  extract                   Extract a resource\n"
 "\n"
-"Use 'gresource help COMMAND' to get detailed help.\n"
+"Use “gresource help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
 "Usage:\n"
-"  gresource [--section <섹션>] <명령> [<인수>...]\n"
+"  gresource [--section <섹션>] <명령> [<인수>…]\n"
 "\n"
 "명령:\n"
 "  help                      이 정보를 보여줍니다\n"
@@ -3097,7 +3118,7 @@ msgstr ""
 "  details                   자원을 세부적으로 나열합니다\n"
 "  extract                   자원을 추출합니다\n"
 "\n"
-"자세한 도움말을 보려면 'gresource help <명령>' 명령을 실행하십시오.\n"
+"자세한 도움말을 보려면 “gresource help <명령>” 명령을 실행하십시오.\n"
 "\n"
 
 #: ../gio/gresource-tool.c:548
@@ -3154,18 +3175,18 @@ msgstr "  <경로>    자원 경로\n"
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
 #: ../gio/gsettings-tool.c:851
 #, c-format
-msgid "No such schema '%s'\n"
-msgstr "'%s' 스키마가 없습니다\n"
+msgid "No such schema “%s”\n"
+msgstr "“%s” 스키마가 없습니다\n"
 
 #: ../gio/gsettings-tool.c:57
 #, c-format
-msgid "Schema '%s' is not relocatable (path must not be specified)\n"
-msgstr "'%s' 스키마는 이동 가능하지 않습니다(경로를 지정해서는 안 됩니다)\n"
+msgid "Schema “%s” is not relocatable (path must not be specified)\n"
+msgstr "“%s” 스키마는 이동 가능하지 않습니다 (경로를 지정해서는 안 됩니다)\n"
 
 #: ../gio/gsettings-tool.c:78
 #, c-format
-msgid "Schema '%s' is relocatable (path must be specified)\n"
-msgstr "'%s' 스키마는 이동 가능합니다(경로를 지정해야 합니다)\n"
+msgid "Schema “%s” is relocatable (path must be specified)\n"
+msgstr "“%s” 스키마는 이동 가능합니다 (경로를 지정해야 합니다)\n"
 
 #: ../gio/gsettings-tool.c:92
 #, c-format
@@ -3286,7 +3307,7 @@ msgstr "<스키마>[:<경로>] [<키>]"
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
-"  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS...]\n"
+"  gsettings [--schemadir SCHEMADIR] COMMAND [ARGS…]\n"
 "\n"
 "Commands:\n"
 "  help                      Show this information\n"
@@ -3304,12 +3325,12 @@ msgid ""
 "  writable                  Check if a key is writable\n"
 "  monitor                   Watch for changes\n"
 "\n"
-"Use 'gsettings help COMMAND' to get detailed help.\n"
+"Use “gsettings help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
 "사용법:\n"
 "  gsettings --version\n"
-"  gsettings [--schemadir <스키마 경로>] <명령> [<인수>...]\n"
+"  gsettings [--schemadir <스키마 경로>] <명령> [<인수>…]\n"
 "\n"
 "명령:\n"
 "  help                      이 정보를 표시합니다\n"
@@ -3327,7 +3348,7 @@ msgstr ""
 "  writable                  키가 쓰기 가능한지 검사합니다\n"
 "  monitor                   바뀌는 사항을 감시합니다\n"
 "\n"
-"자세한 도움말을 보려면 'gsettings help <명령>' 명령을 실행하십시오.\n"
+"자세한 도움말을 보려면 “gsettings help <명령>” 명령을 실행하십시오.\n"
 "\n"
 
 #: ../gio/gsettings-tool.c:644
@@ -3386,8 +3407,8 @@ msgstr "지정한 스키마 이름이 빈 문자열입니다\n"
 
 #: ../gio/gsettings-tool.c:864
 #, c-format
-msgid "No such key '%s'\n"
-msgstr "'%s' 키가 없습니다\n"
+msgid "No such key “%s”\n"
+msgstr "“%s” 키가 없습니다\n"
 
 #: ../gio/gsocket.c:364
 msgid "Invalid socket, not initialized"
@@ -3507,26 +3528,26 @@ msgstr "소켓을 닫는데 오류: %s"
 msgid "Waiting for socket condition: %s"
 msgstr "소켓 조건을 기다리는 중: %s"
 
-#: ../gio/gsocket.c:4362 ../gio/gsocket.c:4442 ../gio/gsocket.c:4620
+#: ../gio/gsocket.c:4361 ../gio/gsocket.c:4441 ../gio/gsocket.c:4619
 #, c-format
 msgid "Error sending message: %s"
 msgstr "메시지를 보내는 중 오류: %s"
 
-#: ../gio/gsocket.c:4386
+#: ../gio/gsocket.c:4385
 msgid "GSocketControlMessage not supported on Windows"
 msgstr "윈도우에서는 GSocketControlMessage를 지원하지 않습니다"
 
-#: ../gio/gsocket.c:4839 ../gio/gsocket.c:4912 ../gio/gsocket.c:5139
+#: ../gio/gsocket.c:4838 ../gio/gsocket.c:4911 ../gio/gsocket.c:5138
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "메시지를 받는데 오류: %s"
 
-#: ../gio/gsocket.c:5411
+#: ../gio/gsocket.c:5410
 #, c-format
 msgid "Unable to read socket credentials: %s"
 msgstr "소켓 암호 데이터를 읽을 수 없습니다: %s"
 
-#: ../gio/gsocket.c:5420
+#: ../gio/gsocket.c:5419
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials가 이 OS에서 구현되지 않았습니다"
 
@@ -3554,8 +3575,8 @@ msgstr "TCP가 아닌 프록시 연결은 지원하지 않습니다."
 
 #: ../gio/gsocketclient.c:1110 ../gio/gsocketclient.c:1561
 #, c-format
-msgid "Proxy protocol '%s' is not supported."
-msgstr "\"%s\" 프록시 프로토콜은 지원하지 않습니다."
+msgid "Proxy protocol “%s” is not supported."
+msgstr "“%s” 프록시 프로토콜은 지원하지 않습니다."
 
 #: ../gio/gsocketlistener.c:218
 msgid "Listener is already closed"
@@ -3567,8 +3588,8 @@ msgstr "추가한 소켓이 닫혔습니다"
 
 #: ../gio/gsocks4aproxy.c:118
 #, c-format
-msgid "SOCKSv4 does not support IPv6 address '%s'"
-msgstr "SOCKSv4는 '%s' IPv6 주소를 허용하지 않습니다"
+msgid "SOCKSv4 does not support IPv6 address “%s”"
+msgstr "SOCKSv4는 “%s” IPv6 주소를 허용하지 않습니다"
 
 #: ../gio/gsocks4aproxy.c:136
 msgid "Username is too long for SOCKSv4 protocol"
@@ -3576,8 +3597,8 @@ msgstr "SOCKSv4 프로토콜에 대한 사용자 이름이 너무 깁니다"
 
 #: ../gio/gsocks4aproxy.c:153
 #, c-format
-msgid "Hostname '%s' is too long for SOCKSv4 protocol"
-msgstr "SOCKSv4 프로토콜에 대한 호스트 이름 '%s'이(가) 너무 깁니다."
+msgid "Hostname “%s” is too long for SOCKSv4 protocol"
+msgstr "SOCKSv4 프로토콜에 대한 호스트 이름 “%s”이(가) 너무 깁니다."
 
 #: ../gio/gsocks4aproxy.c:179
 msgid "The server is not a SOCKSv4 proxy server."
@@ -3612,8 +3633,8 @@ msgstr "SOCKSv5 인증이 잘못된 사용자 이름이나 암호 때문에 실�
 
 #: ../gio/gsocks5proxy.c:286
 #, c-format
-msgid "Hostname '%s' is too long for SOCKSv5 protocol"
-msgstr "SOCKSv5 프로토콜에 대한 호스트 이름 '%s'이(가) 너무 깁니다"
+msgid "Hostname “%s” is too long for SOCKSv5 protocol"
+msgstr "SOCKSv5 프로토콜에 대한 호스트 이름 “%s”이(가) 너무 깁니다"
 
 #: ../gio/gsocks5proxy.c:348
 msgid "The SOCKSv5 proxy server uses unknown address type."
@@ -3640,8 +3661,8 @@ msgid "Connection refused through SOCKSv5 proxy."
 msgstr "SOCKSv5 프록시를 통한 연결이 거부되었습니다."
 
 #: ../gio/gsocks5proxy.c:386
-msgid "SOCKSv5 proxy does not support 'connect' command."
-msgstr "SOCKSv5 프록시가 'connect' 명령을 지원하지 않습니다."
+msgid "SOCKSv5 proxy does not support “connect” command."
+msgstr "SOCKSv5 프록시가 “connect” 명령을 지원하지 않습니다."
 
 #: ../gio/gsocks5proxy.c:392
 msgid "SOCKSv5 proxy does not support provided address type."
@@ -3653,7 +3674,7 @@ msgstr "알 수 없는 SOCKSv5 프록시 오류."
 
 #: ../gio/gthemedicon.c:518
 #, c-format
-msgid "Can't handle version %d of GThemedIcon encoding"
+msgid "Can’t handle version %d of GThemedIcon encoding"
 msgstr "GThemedIcon 인코딩의 %d 버전을 처리할 수 없습니다"
 
 #: ../gio/gthreadedresolver.c:118
@@ -3662,24 +3683,24 @@ msgstr "올바른 주소가 없습니다"
 
 #: ../gio/gthreadedresolver.c:213
 #, c-format
-msgid "Error reverse-resolving '%s': %s"
-msgstr "'%s' 주소의 호스트 이름을 알아내는 데 오류: %s"
+msgid "Error reverse-resolving “%s”: %s"
+msgstr "“%s” 주소의 호스트 이름을 알아내는 데 오류: %s"
 
 #: ../gio/gthreadedresolver.c:550 ../gio/gthreadedresolver.c:630
 #: ../gio/gthreadedresolver.c:728 ../gio/gthreadedresolver.c:778
 #, c-format
-msgid "No DNS record of the requested type for '%s'"
-msgstr "'%s'에 대한 요청 형식에 DNS 레코드가 없습니다"
+msgid "No DNS record of the requested type for “%s”"
+msgstr "“%s”에 대한 요청 형식에 DNS 레코드가 없습니다"
 
 #: ../gio/gthreadedresolver.c:555 ../gio/gthreadedresolver.c:733
 #, c-format
-msgid "Temporarily unable to resolve '%s'"
-msgstr "일시적으로 '%s' 주소를 알아낼 수 없습니다"
+msgid "Temporarily unable to resolve “%s”"
+msgstr "일시적으로 “%s” 주소를 알아낼 수 없습니다"
 
 #: ../gio/gthreadedresolver.c:560 ../gio/gthreadedresolver.c:738
 #, c-format
-msgid "Error resolving '%s'"
-msgstr "'%s'의 주소를 알아내는 데 오류"
+msgid "Error resolving “%s”"
+msgstr "“%s”의 주소를 알아내는 데 오류"
 
 #: ../gio/gtlscertificate.c:250
 msgid "Cannot decrypt PEM-encoded private key"
@@ -3777,7 +3798,7 @@ msgstr "파일 서술자로부터 읽어오는 중 오류: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "파일 서술자를 닫는 중 오류: %s"
 
-#: ../gio/gunixmounts.c:2329 ../gio/gunixmounts.c:2382
+#: ../gio/gunixmounts.c:2364 ../gio/gunixmounts.c:2417
 msgid "Filesystem root"
 msgstr "파일 시스템 루트"
 
@@ -3792,14 +3813,14 @@ msgid "Abstract UNIX domain socket addresses not supported on this system"
 msgstr "추상 유닉스 도메인 소켓 주소는 이 시스템에서 지원하지 않습니다"
 
 #: ../gio/gvolume.c:437
-msgid "volume doesn't implement eject"
-msgstr "볼륨이 eject를 구현하지 않았습니다"
+msgid "volume doesn’t implement eject"
+msgstr "볼륨이 eject 기능을 구현하지 않았습니다"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gvolume.c:514
-msgid "volume doesn't implement eject or eject_with_operation"
+msgid "volume doesn’t implement eject or eject_with_operation"
 msgstr "볼륨이 eject 혹은 eject_with_operation 기능을 구현하지 않았습니다"
 
 #: ../gio/gwin32inputstream.c:185
@@ -3861,26 +3882,26 @@ msgstr "잘못된 인자\n"
 
 #: ../glib/gbookmarkfile.c:755
 #, c-format
-msgid "Unexpected attribute '%s' for element '%s'"
-msgstr "예상치 못하게 '%2$s' 요소에 '%1$s' 속성이 있습니다"
+msgid "Unexpected attribute “%s” for element “%s”"
+msgstr "예상치 못하게 “%2$s” 요소에 '%1$s' 속성이 있습니다"
 
 #: ../glib/gbookmarkfile.c:766 ../glib/gbookmarkfile.c:837
 #: ../glib/gbookmarkfile.c:847 ../glib/gbookmarkfile.c:954
 #, c-format
-msgid "Attribute '%s' of element '%s' not found"
-msgstr "'%2$s' 요소에 '%1$s' 속성이 없습니다"
+msgid "Attribute “%s” of element “%s” not found"
+msgstr "“%2$s” 요소에 “%1$s” 속성이 없습니다"
 
 #: ../glib/gbookmarkfile.c:1124 ../glib/gbookmarkfile.c:1189
 #: ../glib/gbookmarkfile.c:1253 ../glib/gbookmarkfile.c:1263
 #, c-format
-msgid "Unexpected tag '%s', tag '%s' expected"
-msgstr "예상치 못하게 '%s' 태그가 있습니다. '%s' 태그가 있어야 합니다"
+msgid "Unexpected tag “%s”, tag “%s” expected"
+msgstr "예상치 못하게 “%s” 태그가 있습니다. “%s” 태그가 있어야 합니다"
 
 #: ../glib/gbookmarkfile.c:1149 ../glib/gbookmarkfile.c:1163
 #: ../glib/gbookmarkfile.c:1231
 #, c-format
-msgid "Unexpected tag '%s' inside '%s'"
-msgstr "예상치 못하게 '%2$s' 안에 '%1$s' 태그가 있습니다"
+msgid "Unexpected tag “%s” inside “%s”"
+msgstr "예상치 못하게 “%2$s” 안에 “%1$s” 태그가 있습니다"
 
 #: ../glib/gbookmarkfile.c:1757
 msgid "No valid bookmark file found in data dirs"
@@ -3888,8 +3909,8 @@ msgstr "데이터 디렉터리에 올바른 북마크 파일이 없습니다"
 
 #: ../glib/gbookmarkfile.c:1958
 #, c-format
-msgid "A bookmark for URI '%s' already exists"
-msgstr "'%s' URL에 대한 북마크가 이미 있습니다"
+msgid "A bookmark for URI “%s” already exists"
+msgstr "“%s” URL에 대한 북마크가 이미 있습니다"
 
 #: ../glib/gbookmarkfile.c:2004 ../glib/gbookmarkfile.c:2162
 #: ../glib/gbookmarkfile.c:2247 ../glib/gbookmarkfile.c:2327
@@ -3901,33 +3922,33 @@ msgstr "'%s' URL에 대한 북마크가 이미 있습니다"
 #: ../glib/gbookmarkfile.c:3434 ../glib/gbookmarkfile.c:3523
 #: ../glib/gbookmarkfile.c:3639
 #, c-format
-msgid "No bookmark found for URI '%s'"
-msgstr "'%s' URL에 대한 북마크가 없습니다"
+msgid "No bookmark found for URI “%s”"
+msgstr "“%s” URL에 대한 북마크가 없습니다"
 
 #: ../glib/gbookmarkfile.c:2336
 #, c-format
-msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr "'%s' URL에 대한 북마크에 MIME 형식이 없습니다"
+msgid "No MIME type defined in the bookmark for URI “%s”"
+msgstr "“%s” URL에 대한 북마크에 MIME 형식이 없습니다"
 
 #: ../glib/gbookmarkfile.c:2421
 #, c-format
-msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr "'%s' URL에 대한 북마크에 개인 플래그가 없습니다"
+msgid "No private flag has been defined in bookmark for URI “%s”"
+msgstr "“%s” URL에 대한 북마크에 개인 플래그가 없습니다"
 
 #: ../glib/gbookmarkfile.c:2800
 #, c-format
-msgid "No groups set in bookmark for URI '%s'"
-msgstr "'%s' URL에 대한 북마크에 그룹이 설정되어 있지 않습니다"
+msgid "No groups set in bookmark for URI “%s”"
+msgstr "“%s” URL에 대한 북마크에 그룹이 설정되어 있지 않습니다"
 
 #: ../glib/gbookmarkfile.c:3198 ../glib/gbookmarkfile.c:3355
 #, c-format
-msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr "'%s'에 대해 북마크를 등록한 '%s' 이름을 가진 프로그램이 없습니다"
+msgid "No application with name “%s” registered a bookmark for “%s”"
+msgstr "“%s”에 대해 북마크를 등록한 “%s” 이름을 가진 프로그램이 없습니다"
 
 #: ../glib/gbookmarkfile.c:3378
 #, c-format
-msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "URI '%s'을(를) 사용해 '%s' 실행줄 확장하기에 실패했습니다"
+msgid "Failed to expand exec line “%s” with URI “%s”"
+msgstr "URI “%s”을(를) 사용해 “%s” 실행 명령 확장하기에 실패했습니다"
 
 #: ../glib/gconvert.c:477 ../glib/gutf8.c:851 ../glib/gutf8.c:1063
 #: ../glib/gutf8.c:1200 ../glib/gutf8.c:1304
@@ -3936,38 +3957,38 @@ msgstr "입력의 끝에서 부분적인 문자 순서"
 
 #: ../glib/gconvert.c:742
 #, c-format
-msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "대체 코드셋 '%s'을(를) '%s'(으)로 변환할 수 없습니다"
+msgid "Cannot convert fallback “%s” to codeset “%s”"
+msgstr "대체 코드셋 “%s”을(를) “%s”(으)로 변환할 수 없습니다"
 
 #: ../glib/gconvert.c:1567
 #, c-format
-msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "URI '%s'은(는) \"file\" 스키마를 사용하는 절대 경로 URI가 아닙니다"
+msgid "The URI “%s” is not an absolute URI using the “file” scheme"
+msgstr "URI “%s”은(는) “file” 스키마를 사용하는 절대 경로 URI가 아닙니다"
 
 #: ../glib/gconvert.c:1577
 #, c-format
-msgid "The local file URI '%s' may not include a '#'"
-msgstr "로컬 파일 URI '%s'에는 '#'이 들어갈 수 없습니다"
+msgid "The local file URI “%s” may not include a “#”"
+msgstr "로컬 파일 URI “%s”에는 “#”이 들어갈 수 없습니다"
 
 #: ../glib/gconvert.c:1594
 #, c-format
-msgid "The URI '%s' is invalid"
-msgstr "URI '%s'이(가) 잘못되었습니다"
+msgid "The URI “%s” is invalid"
+msgstr "URI “%s”이(가) 잘못되었습니다"
 
 #: ../glib/gconvert.c:1606
 #, c-format
-msgid "The hostname of the URI '%s' is invalid"
-msgstr "URI '%s'의 호스트 이름이 잘못되었습니다"
+msgid "The hostname of the URI “%s” is invalid"
+msgstr "URI “%s”의 호스트 이름이 잘못되었습니다"
 
 #: ../glib/gconvert.c:1622
 #, c-format
-msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI '%s'은(는) 잘못된 이스케이프 문자가 들어 있습니다"
+msgid "The URI “%s” contains invalidly escaped characters"
+msgstr "URI “%s”은(는) 잘못된 이스케이프 문자가 들어 있습니다"
 
 #: ../glib/gconvert.c:1717
 #, c-format
-msgid "The pathname '%s' is not an absolute path"
-msgstr "경로이름 '%s'은(는) 절대 경로가 아닙니다"
+msgid "The pathname “%s” is not an absolute path"
+msgstr "경로이름 “%s”은(는) 절대 경로가 아닙니다"
 
 #: ../glib/gconvert.c:1727
 msgid "Invalid hostname"
@@ -4201,92 +4222,92 @@ msgstr "일"
 
 #: ../glib/gdir.c:155
 #, c-format
-msgid "Error opening directory '%s': %s"
-msgstr "디렉터리 '%s' 여는 중 오류 : %s"
+msgid "Error opening directory “%s”: %s"
+msgstr "디렉터리 “%s” 여는 중 오류 : %s"
 
 #: ../glib/gfileutils.c:701 ../glib/gfileutils.c:793
 #, c-format
-msgid "Could not allocate %lu byte to read file \"%s\""
-msgid_plural "Could not allocate %lu bytes to read file \"%s\""
-msgstr[0] "\"%2$s\" 파일을 읽는데 %1$lu 바이트를 할당할 수 없습니다"
+msgid "Could not allocate %lu byte to read file “%s”"
+msgid_plural "Could not allocate %lu bytes to read file “%s”"
+msgstr[0] "“%2$s” 파일을 읽는데 %1$lu 바이트를 할당할 수 없습니다"
 
 #: ../glib/gfileutils.c:718
 #, c-format
-msgid "Error reading file '%s': %s"
-msgstr "'%s' 파일을 읽는 중 오류: %s"
+msgid "Error reading file “%s”: %s"
+msgstr "“%s” 파일 읽는 중 오류: %s"
 
 #: ../glib/gfileutils.c:754
 #, c-format
-msgid "File \"%s\" is too large"
-msgstr "\"%s\" 파일이 너무 큽니다"
+msgid "File “%s” is too large"
+msgstr "“%s” 파일이 너무 큽니다"
 
 #: ../glib/gfileutils.c:818
 #, c-format
-msgid "Failed to read from file '%s': %s"
-msgstr "파일 '%s'에서 읽기 실패: %s"
+msgid "Failed to read from file “%s”: %s"
+msgstr "파일 “%s”에서 읽기 실패: %s"
 
 #: ../glib/gfileutils.c:866 ../glib/gfileutils.c:938
 #, c-format
-msgid "Failed to open file '%s': %s"
-msgstr "파일 '%s' 열기 실패: %s"
+msgid "Failed to open file “%s”: %s"
+msgstr "파일 “%s” 열기 실패: %s"
 
 #: ../glib/gfileutils.c:878
 #, c-format
-msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "파일 '%s'의 속성 가져오기 실패 : fstat() 실패: %s"
+msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
+msgstr "파일 “%s”의 속성 가져오기 실패: fstat() 실패: %s"
 
 #: ../glib/gfileutils.c:908
 #, c-format
-msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "파일 '%s' 열기 실패: fdopen() 실패: %s"
+msgid "Failed to open file “%s”: fdopen() failed: %s"
+msgstr "파일 “%s” 열기 실패: fdopen() 실패: %s"
 
 #: ../glib/gfileutils.c:1007
 #, c-format
-msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr "파일 '%s'의 이름을 '%s'(으)로 바꾸는데 실패: g_rename() 실패: %s"
+msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
+msgstr "파일 “%s”의 이름을 “%s”(으)로 바꾸는데 실패: g_rename() 실패: %s"
 
 #: ../glib/gfileutils.c:1042 ../glib/gfileutils.c:1541
 #, c-format
-msgid "Failed to create file '%s': %s"
-msgstr "파일 '%s' 만들기 실패: %s"
+msgid "Failed to create file “%s”: %s"
+msgstr "파일 “%s” 만들기 실패: %s"
 
 #: ../glib/gfileutils.c:1069
 #, c-format
-msgid "Failed to write file '%s': write() failed: %s"
-msgstr "파일 '%s' 쓰기 실패: write() 실패: %s"
+msgid "Failed to write file “%s”: write() failed: %s"
+msgstr "파일 “%s” 쓰기 실패: write() 실패: %s"
 
 #: ../glib/gfileutils.c:1112
 #, c-format
-msgid "Failed to write file '%s': fsync() failed: %s"
-msgstr "파일 '%s' 쓰기 실패: fsync() 실패: %s"
+msgid "Failed to write file “%s”: fsync() failed: %s"
+msgstr "파일 “%s” 쓰기 실패: fsync() 실패: %s"
 
 #: ../glib/gfileutils.c:1236
 #, c-format
-msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
-msgstr "기존의 '%s' 파일을 지울 수 없습니다: g_unlink() 실패: %s"
+msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
+msgstr "기존의 “%s” 파일을 지울 수 없습니다: g_unlink() 실패: %s"
 
 #: ../glib/gfileutils.c:1507
 #, c-format
-msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "'%s' 서식이 잘못되었습니다, '%s'이(가) 들어 있으면 안 됩니다"
+msgid "Template “%s” invalid, should not contain a “%s”"
+msgstr "“%s” 서식이 잘못되었습니다. “%s”이(가) 들어 있으면 안 됩니다"
 
 #: ../glib/gfileutils.c:1520
 #, c-format
-msgid "Template '%s' doesn't contain XXXXXX"
-msgstr "'%s' 서식에 XXXXXX가 없습니다"
+msgid "Template “%s” doesn’t contain XXXXXX"
+msgstr "“%s” 서식에 XXXXXX가 없습니다"
 
 #: ../glib/gfileutils.c:2045
 #, c-format
-msgid "Failed to read the symbolic link '%s': %s"
-msgstr "심볼릭 링크 '%s' 읽기 실패: %s"
+msgid "Failed to read the symbolic link “%s”: %s"
+msgstr "심볼릭 링크 “%s” 읽기 실패: %s"
 
 #: ../glib/giochannel.c:1388
 #, c-format
-msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "'%s'에서 '%s'(으)로 변환하는 변환기를 열 수 없음: %s"
+msgid "Could not open converter from “%s” to “%s”: %s"
+msgstr "“%s”에서 “%s”(으)로 변환하는 변환기를 열 수 없음: %s"
 
 #: ../glib/giochannel.c:1733
-msgid "Can't do a raw read in g_io_channel_read_line_string"
+msgid "Can’t do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string으로 raw 읽기를 할 수 없습니다"
 
 #: ../glib/giochannel.c:1780 ../glib/giochannel.c:2038
@@ -4299,7 +4320,7 @@ msgid "Channel terminates in a partial character"
 msgstr "일부 문자에서 채널 끝냄"
 
 #: ../glib/giochannel.c:1924
-msgid "Can't do a raw read in g_io_channel_read_to_end"
+msgid "Can’t do a raw read in g_io_channel_read_to_end"
 msgstr "g_io_channel_read_to_endi로 raw 읽기를 할 수 없습니다"
 
 #: ../glib/gkeyfile.c:737
@@ -4313,9 +4334,9 @@ msgstr "일반 파일이 아닙니다"
 #: ../glib/gkeyfile.c:1204
 #, c-format
 msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+"Key file contains line “%s” which is not a key-value pair, group, or comment"
 msgstr ""
-"키 파일에 들어 있는 '%s' 줄은 키-값 쌍도 아니고, 그룹도 아니고, 주석도 아닙니"
+"키 파일에 들어 있는 “%s” 줄은 키-값 쌍도 아니고, 그룹도 아니고, 주석도 아닙니"
 "다"
 
 #: ../glib/gkeyfile.c:1261
@@ -4334,45 +4355,46 @@ msgstr "잘못된 키 이름: %s"
 
 #: ../glib/gkeyfile.c:1336
 #, c-format
-msgid "Key file contains unsupported encoding '%s'"
-msgstr "키 파일에 지원하지 않는 '%s' 인코딩이 들어 있습니다"
+msgid "Key file contains unsupported encoding “%s”"
+msgstr "키 파일에 지원하지 않는 “%s” 인코딩이 들어 있습니다"
 
 #: ../glib/gkeyfile.c:1579 ../glib/gkeyfile.c:1752 ../glib/gkeyfile.c:3130
 #: ../glib/gkeyfile.c:3193 ../glib/gkeyfile.c:3323 ../glib/gkeyfile.c:3453
 #: ../glib/gkeyfile.c:3597 ../glib/gkeyfile.c:3826 ../glib/gkeyfile.c:3893
 #, c-format
-msgid "Key file does not have group '%s'"
-msgstr "키 파일에 '%s' 그룹이 없습니다"
+msgid "Key file does not have group “%s”"
+msgstr "키 파일에 “%s” 그룹이 없습니다"
 
 #: ../glib/gkeyfile.c:1707
 #, c-format
-msgid "Key file does not have key '%s' in group '%s'"
-msgstr "키 파일에 있는 '%2$s' 그룹의 '%1$s' 키가 없습니다"
+msgid "Key file does not have key “%s” in group “%s”"
+msgstr "키 파일에 있는 “%2$s” 그룹의 “%1$s” 키가 없습니다"
 
 #: ../glib/gkeyfile.c:1869 ../glib/gkeyfile.c:1985
 #, c-format
-msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "키 파일에 있는 '%s' 키와 '%s' 값은 UTF-8이 아닙니다"
+msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
+msgstr "키 파일에 있는 “%s” 키와 “%s” 값은 UTF-8이 아닙니다"
 
 #: ../glib/gkeyfile.c:1889 ../glib/gkeyfile.c:2005 ../glib/gkeyfile.c:2374
 #, c-format
 msgid ""
-"Key file contains key '%s' which has a value that cannot be interpreted."
-msgstr "키 파일에 있는 '%s' 키의 값을 해석할 수 없습니다."
+"Key file contains key “%s” which has a value that cannot be interpreted."
+msgstr "키 파일에 있는 “%s” 키의 값을 해석할 수 없습니다."
 
 #: ../glib/gkeyfile.c:2591 ../glib/gkeyfile.c:2959
 #, c-format
 msgid ""
-"Key file contains key '%s' in group '%s' which has a value that cannot be "
+"Key file contains key “%s” in group “%s” which has a value that cannot be "
 "interpreted."
 msgstr ""
-"키 파일에 해석할 수 없는 값을 지닌 '%2$s' 그룹의 '%1$s' 키가 키 파일에 있습니"
+"키 파일에 해석할 수 없는 값을 지닌 “%2$s” 그룹의 “%1$s” 키가 키 파일에 있습니"
 "다."
 
 #: ../glib/gkeyfile.c:2669 ../glib/gkeyfile.c:2746
 #, c-format
-msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
-msgstr "%4$s값이 있어야 할 '%2$s'그룹의 '%1$s'키가 '%3$s'값을 지니고 있습니다"
+msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
+msgstr ""
+"%4$s 값이 있어야 할 “%2$s” 그룹의 “%1$s” 키가 “%3$s” 값을 지니고 있습니다"
 
 #: ../glib/gkeyfile.c:4133
 msgid "Key file contains escape character at end of line"
@@ -4380,33 +4402,33 @@ msgstr "키 파일의 줄 끝에 이스케이프 문자가 있습니다"
 
 #: ../glib/gkeyfile.c:4155
 #, c-format
-msgid "Key file contains invalid escape sequence '%s'"
-msgstr "키 파일에 잘못된 이스케이프 시퀀스 '%s'이(가) 들어 있습니다"
+msgid "Key file contains invalid escape sequence “%s”"
+msgstr "키 파일에 잘못된 이스케이프 시퀀스 “%s”이(가) 들어 있습니다"
 
 #: ../glib/gkeyfile.c:4297
 #, c-format
-msgid "Value '%s' cannot be interpreted as a number."
-msgstr "값 '%s'을(를) 숫자로 해석할 수 없습니다."
+msgid "Value “%s” cannot be interpreted as a number."
+msgstr "값 “%s”을(를) 숫자로 해석할 수 없습니다."
 
 #: ../glib/gkeyfile.c:4311
 #, c-format
-msgid "Integer value '%s' out of range"
-msgstr "정수 값 '%s'이(가) 범위를 벗어났습니다"
+msgid "Integer value “%s” out of range"
+msgstr "정수 값 “%s”이(가) 범위를 벗어났습니다"
 
 #: ../glib/gkeyfile.c:4344
 #, c-format
-msgid "Value '%s' cannot be interpreted as a float number."
-msgstr "값 '%s'을(를) 단정도 실수로 해석할 수 없습니다."
+msgid "Value “%s” cannot be interpreted as a float number."
+msgstr "값 “%s”을(를) 단정도 실수로 해석할 수 없습니다."
 
 #: ../glib/gkeyfile.c:4383
 #, c-format
-msgid "Value '%s' cannot be interpreted as a boolean."
-msgstr "값 '%s'을(를) 불리언 값으로 해석할 수 없습니다."
+msgid "Value “%s” cannot be interpreted as a boolean."
+msgstr "값 “%s”을(를) 불리언 값으로 해석할 수 없습니다."
 
 #: ../glib/gmappedfile.c:129
 #, c-format
-msgid "Failed to get attributes of file '%s%s%s%s': fstat() failed: %s"
-msgstr "'%s%s%s%s'파일의 속성 가져오기 실패: fstat() 실패: %s"
+msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
+msgstr "“%s%s%s%s” 파일의 속성 가져오기 실패: fstat() 실패: %s"
 
 #: ../glib/gmappedfile.c:195
 #, c-format
@@ -4415,8 +4437,8 @@ msgstr "%s%s%s%s 매핑 실패: mmap() 실패: %s"
 
 #: ../glib/gmappedfile.c:262
 #, c-format
-msgid "Failed to open file '%s': open() failed: %s"
-msgstr "파일 '%s' 열기 실패: dopen() 실패: %s"
+msgid "Failed to open file “%s”: open() failed: %s"
+msgstr "파일 “%s” 열기 실패: dopen() 실패: %s"
 
 #: ../glib/gmarkup.c:398 ../glib/gmarkup.c:440
 #, c-format
@@ -4449,8 +4471,8 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"'%-.*s'의 구문 해석에 실패했습니다.  문자 참조에는 숫자를 써야 합니다(예를 들"
-"어 &#234;) - 숫자가 너무 클 수도 있습니다"
+"'%-.*s'의 구문 해석에 실패했습니다.  문자 참조에는 숫자를 써야 합니다 (예를 "
+"들어 &#234;) - 숫자가 너무 클 수도 있습니다"
 
 #: ../glib/gmarkup.c:688
 msgid ""
@@ -4488,7 +4510,7 @@ msgstr ""
 
 #: ../glib/gmarkup.c:1171
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr "문서는 요소로 시작하여야 합니다(예 <book>)"
+msgstr "문서는 요소로 시작하여야 합니다 (예 <book>)"
 
 #: ../glib/gmarkup.c:1211
 #, c-format
@@ -4622,8 +4644,8 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "주석문 혹은 처리 안내자 태그 안에서 문서가 갑작스럽게 끝났습니다"
 
 #: ../glib/goption.c:861
-msgid "[OPTION...]"
-msgstr "[옵션...]"
+msgid "[OPTION…]"
+msgstr "[옵션…]"
 
 #: ../glib/goption.c:977
 msgid "Help Options:"
@@ -4647,35 +4669,35 @@ msgstr "옵션:"
 
 #: ../glib/goption.c:1113 ../glib/goption.c:1183
 #, c-format
-msgid "Cannot parse integer value '%s' for %s"
-msgstr "%2$s에 대한 정수 값 '%1$s'을(를) 분석할 수 없습니다"
+msgid "Cannot parse integer value “%s” for %s"
+msgstr "%2$s에 대한 정수 값 “%1$s”을(를) 분석할 수 없습니다"
 
 #: ../glib/goption.c:1123 ../glib/goption.c:1191
 #, c-format
-msgid "Integer value '%s' for %s out of range"
-msgstr "%2$s에 대한 정수 값 '%1$s'이(가) 범위를 벗어났습니다"
+msgid "Integer value “%s” for %s out of range"
+msgstr "%2$s에 대한 정수 값 “%1$s”이(가) 범위를 벗어났습니다"
 
 #: ../glib/goption.c:1148
 #, c-format
-msgid "Cannot parse double value '%s' for %s"
-msgstr "%2$s에 대한 배정도 실수 값 '%1$s'을(를) 분석할 수 없습니다"
+msgid "Cannot parse double value “%s” for %s"
+msgstr "%2$s에 대한 배정도 실수 값 “%1$s”을(를) 분석할 수 없습니다"
 
 #: ../glib/goption.c:1156
 #, c-format
-msgid "Double value '%s' for %s out of range"
-msgstr "%2$s에 대한 배정도 실수 값 '%1$s'이(가) 범위를 벗어났습니다"
+msgid "Double value “%s” for %s out of range"
+msgstr "%2$s에 대한 배정도 실수 값 “%1$s”이(가) 범위를 벗어났습니다"
 
-#: ../glib/goption.c:1442 ../glib/goption.c:1521
+#: ../glib/goption.c:1448 ../glib/goption.c:1527
 #, c-format
 msgid "Error parsing option %s"
 msgstr "옵션 읽는 중에 오류: %s"
 
-#: ../glib/goption.c:1552 ../glib/goption.c:1665
+#: ../glib/goption.c:1558 ../glib/goption.c:1671
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s에 대한 인자가 빠졌습니다"
 
-#: ../glib/goption.c:2126
+#: ../glib/goption.c:2132
 #, c-format
 msgid "Unknown option %s"
 msgstr "알 수 없는 옵션 %s"
@@ -4885,11 +4907,11 @@ msgstr "\\P 혹은 \\p 다음에 속성 이름을 알 수 없습니다"
 
 #: ../glib/gregex.c:454
 msgid "subpattern name is too long (maximum 32 characters)"
-msgstr "하위 패턴 이름이 너무 깁니다(최대 32글자)"
+msgstr "하위 패턴 이름이 너무 깁니다 (최대 32글자)"
 
 #: ../glib/gregex.c:457
 msgid "too many named subpatterns (maximum 10,000)"
-msgstr "이름 있는 하위 패턴이 너무 많습니다(최대 10,000개)"
+msgstr "이름 있는 하위 패턴이 너무 많습니다 (최대 10,000개)"
 
 #: ../glib/gregex.c:460
 msgid "octal value is greater than \\377"
@@ -5008,16 +5030,16 @@ msgstr ""
 "정규 표현식 %s을(를) 컴파일하는 중 %d번째 문자에서 오류가 발생했습니다: %s"
 
 #: ../glib/gregex.c:2413
-msgid "hexadecimal digit or '}' expected"
-msgstr "16 진수 또는 '}'가 있어야 합니다"
+msgid "hexadecimal digit or “}” expected"
+msgstr "16 진수 또는 “}”가 있어야 합니다"
 
 #: ../glib/gregex.c:2429
 msgid "hexadecimal digit expected"
 msgstr "16 진수가 있어야 합니다"
 
 #: ../glib/gregex.c:2469
-msgid "missing '<' in symbolic reference"
-msgstr "심볼 참조에 '<' 기호가 없습니다"
+msgid "missing “<” in symbolic reference"
+msgstr "심볼 참조에 “<” 기호가 없습니다"
 
 #: ../glib/gregex.c:2478
 msgid "unfinished symbolic reference"
@@ -5036,8 +5058,8 @@ msgid "illegal symbolic reference"
 msgstr "심볼 참조가 잘못되었습니다"
 
 #: ../glib/gregex.c:2576
-msgid "stray final '\\'"
-msgstr "마지막 '\\'가 없습니다"
+msgid "stray final “\\”"
+msgstr "마지막 “\\”가 없습니다"
 
 #: ../glib/gregex.c:2580
 msgid "unknown escape sequence"
@@ -5045,13 +5067,13 @@ msgstr "알 수 없는 이스케이프 시퀀스"
 
 #: ../glib/gregex.c:2590
 #, c-format
-msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr "\"%s\" 바꿀 문자열을 읽는 중 %lu번째 문자에서 오류가 발생했습니다: %s"
+msgid "Error while parsing replacement text “%s” at char %lu: %s"
+msgstr "“%s” 바꿀 문자열을 읽는 중 %lu번째 문자에서 오류가 발생했습니다: %s"
 
 # g_shell_unquote()에 쓰임.  shell의 quoted text를 raw string으로 바꾸는 기능
 # FIXME: "quoted"라는 말을 어떻게 해야 할 것인가?
 #: ../glib/gshell.c:96
-msgid "Quoted text doesn't begin with a quotation mark"
+msgid "Quoted text doesn’t begin with a quotation mark"
 msgstr "따옴표된 텍스트가 따옴표로 시작하지 않습니다"
 
 # FIXME: 위 참조, "quoted"
@@ -5061,14 +5083,14 @@ msgstr "명령줄에서 따옴표가 맞지 않거나 셸 따옴표된 텍스트
 
 #: ../glib/gshell.c:582
 #, c-format
-msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "텍스트가 '\\' 문자 다음에 끝났습니다. (텍스트는 '%s'입니다)"
+msgid "Text ended just after a “\\” character. (The text was “%s”)"
+msgstr "텍스트가 “\\” 문자 다음에 끝났습니다. (텍스트는 “%s”입니다)"
 
 #: ../glib/gshell.c:589
 #, c-format
-msgid "Text ended before matching quote was found for %c. (The text was '%s')"
+msgid "Text ended before matching quote was found for %c. (The text was “%s”)"
 msgstr ""
-"텍스트가 %c에 대응되는 따옴표가 나타나기 전에 끝났습니다. (텍스트는 '%s'입니"
+"텍스트가 %c에 대응되는 따옴표가 나타나기 전에 끝났습니다. (텍스트는 “%s”입니"
 "다)"
 
 #: ../glib/gshell.c:601
@@ -5078,17 +5100,17 @@ msgstr "텍스트가 비어 있음(또는 공백만 들어 있음)"
 #: ../glib/gspawn.c:209
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "하위 프로세스에서 데이터를 읽기 실패(%s)"
+msgstr "하위 프로세스에서 데이터를 읽기 실패 (%s)"
 
 #: ../glib/gspawn.c:353
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "하위 프로세스에서 데이터를 읽는 중 select()에서 예상치 못한 오류(%s)"
+msgstr "하위 프로세스에서 데이터를 읽는 중 select()에서 예상치 못한 오류 (%s)"
 
 #: ../glib/gspawn.c:438
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr "waitpid()에서 예상치 못한 오류(%s)"
+msgstr "waitpid()에서 예상치 못한 오류 (%s)"
 
 #: ../glib/gspawn.c:844 ../glib/gspawn-win32.c:1233
 #, c-format
@@ -5113,22 +5135,22 @@ msgstr "하위 프로세스가 예기치 않게 끝났습니다"
 #: ../glib/gspawn.c:1271 ../glib/gspawn-win32.c:339 ../glib/gspawn-win32.c:347
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "하위 파이프로 부터 읽기 실패(%s)"
+msgstr "하위 파이프로 부터 읽기 실패 (%s)"
 
 #: ../glib/gspawn.c:1341
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr "포크 실패(%s)"
+msgstr "포크 실패 (%s)"
 
 #: ../glib/gspawn.c:1490 ../glib/gspawn-win32.c:370
 #, c-format
-msgid "Failed to change to directory '%s' (%s)"
-msgstr "디렉터리 '%s'(으)로 바꾸기 실패(%s)"
+msgid "Failed to change to directory “%s” (%s)"
+msgstr "디렉터리 “%s”(으)로 바꾸기 실패 (%s)"
 
 #: ../glib/gspawn.c:1500
 #, c-format
-msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "하위 프로세스 \"%s\"을(를) 실행하기 실패(%s)"
+msgid "Failed to execute child process “%s” (%s)"
+msgstr "하위 프로세스 “%s”을(를) 실행하기 실패 (%s)"
 
 #: ../glib/gspawn.c:1510
 #, c-format
@@ -5142,13 +5164,13 @@ msgstr "하위 프로세스(%s) 생성 실패"
 
 #: ../glib/gspawn.c:1527
 #, c-format
-msgid "Unknown error executing child process \"%s\""
-msgstr "하위 프로세스 \"%s\"을(를) 실행하는 중 알 수 없는 오류"
+msgid "Unknown error executing child process “%s”"
+msgstr "하위 프로세스 “%s”을(를) 실행하는 중 알 수 없는 오류"
 
 #: ../glib/gspawn.c:1551
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "하위 PID 파이프에서 필요한 데이터를 읽는데 실패했습니다(%s)"
+msgstr "하위 PID 파이프에서 필요한 데이터를 읽는데 실패했습니다 (%s)"
 
 #: ../glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
@@ -5157,12 +5179,12 @@ msgstr "하위 프로세스에서 데이터 읽기 실패"
 #: ../glib/gspawn-win32.c:300
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "하위 프로세스와 통신을 위한 파이프를 만드는 중 실패(%s)"
+msgstr "하위 프로세스와 통신을 위한 파이프를 만드는 중 실패 (%s)"
 
 #: ../glib/gspawn-win32.c:376 ../glib/gspawn-win32.c:495
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "하위 프로세스 실행 실패(%s)"
+msgstr "하위 프로세스 실행 실패 (%s)"
 
 #: ../glib/gspawn-win32.c:445
 #, c-format
@@ -5189,7 +5211,7 @@ msgstr "잘못된 현재 디렉터리: %s"
 #: ../glib/gspawn-win32.c:783
 #, c-format
 msgid "Failed to execute helper program (%s)"
-msgstr "도움 프로그램 실행 실패(%s)"
+msgstr "도움 프로그램 실행 실패 (%s)"
 
 #: ../glib/gspawn-win32.c:997
 msgid ""
