@@ -70,6 +70,8 @@ $(top_builddir)/build/win32/vs9/$(1).vcproj: Makefile
 	-$(RM) $(top_builddir)/build/win32/vs12/$(1).vcxproj.filters
 	-$(RM) $(top_builddir)/build/win32/vs14/$(1).vcxproj
 	-$(RM) $(top_builddir)/build/win32/vs14/$(1).vcxproj.filters
+	-$(RM) $(top_builddir)/build/win32/vs15/$(1).vcxproj
+	-$(RM) $(top_builddir)/build/win32/vs15/$(1).vcxproj.filters
 
 
 	for F in $(_proj_files); do \
