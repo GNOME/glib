@@ -261,7 +261,7 @@ distclean-local:
 
 # install gdb scripts
 gdbdir = $(datadir)/glib-2.0/gdb
-dist_gdb_SCRIPTS = gobject_gdb.py
+dist_gdb_DATA = gobject_gdb.py
 
 libgobject-gdb.py: libgobject-gdb.py.in
 	$(AM_V_GEN) $(SED) -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libgobject-gdb.py.in > $(builddir)/libgobject-gdb.py
