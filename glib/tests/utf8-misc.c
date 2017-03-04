@@ -130,6 +130,27 @@ test_utf8_substring (void)
   g_free (r);
 }
 
+static void
+test_utf8_make_valid (void)
+{
+  gchar *r;
+
+  /* valid UTF8 */
+  r = g_utf8_make_valid ("\xe2\x82\xa0gh\xe2\x82\xa4jl", -1);
+  g_assert_cmpstr (r, ==, "\xe2\x82\xa0gh\xe2\x82\xa4jl");
+  g_free (r);
+
+  /* invalid UTF8 */
+  r = g_utf8_make_valid ("\xe2\x82\xa0gh\xe2\xffjl", -1);
+  g_assert_cmpstr (r, ==, "\xe2\x82\xa0gh\xef\xbf\xbd\xef\xbf\xbdjl");
+  g_free (r);
+
+  /* invalid UTF8 with embedded nul */
+  r = g_utf8_make_valid ("\xe2\x82\xa0gh\xe2\x00jl", 9);
+  g_assert_cmpstr (r, ==, "\xe2\x82\xa0gh\xef\xbf\xbd\xef\xbf\xbdjl");
+  g_free (r);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -141,6 +162,7 @@ main (int   argc,
   g_test_add_func ("/utf8/strrchr", test_utf8_strrchr);
   g_test_add_func ("/utf8/reverse", test_utf8_reverse);
   g_test_add_func ("/utf8/substring", test_utf8_substring);
+  g_test_add_func ("/utf8/make-valid", test_utf8_make_valid);
 
   return g_test_run();
 }
