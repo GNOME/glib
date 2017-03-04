@@ -290,6 +290,8 @@ if (length($fhead)) {
     print "$prod\n";
 }
 
+@ARGV = sort @ARGV;
+
 while (<>) {
     if (eof) {
 	close (ARGV);		# reset line numbering
