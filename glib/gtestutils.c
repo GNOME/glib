@@ -2104,7 +2104,7 @@ g_test_queue_free (gpointer gfree_pointer)
  *
  * This function enqueus a callback @destroy_func to be executed
  * during the next test case teardown phase. This is most useful
- * to auto destruct allocted test resources at the end of a test run.
+ * to auto destruct allocated test resources at the end of a test run.
  * Resources are released in reverse queue order, that means enqueueing
  * callback A before callback B will cause B() to be called before
  * A() during teardown.
