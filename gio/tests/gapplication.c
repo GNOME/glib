@@ -437,6 +437,9 @@ appid (void)
   g_assert (!g_application_id_is_valid ("a\nb"));
   g_assert (!g_application_id_is_valid ("_a.b"));
   g_assert (!g_application_id_is_valid ("-a.b"));
+  g_assert (!g_application_id_is_valid ("emoji_picker"));
+  g_assert (!g_application_id_is_valid ("emoji-picker"));
+  g_assert (!g_application_id_is_valid ("emojipicker"));
   id = g_new0 (gchar, 261);
   memset (id, 'a', 260);
   id[1] = '.';
