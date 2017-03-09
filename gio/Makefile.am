@@ -281,7 +281,9 @@ unix_sources = \
 appinfo_sources += $(unix_appinfo_sources)
 
 if OS_COCOA
+if MAC_OS_X_9
 unix_sources += gcocoanotificationbackend.c
+endif
 endif
 
 giounixincludedir=$(includedir)/gio-unix-2.0/gio
