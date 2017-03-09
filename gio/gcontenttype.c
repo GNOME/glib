@@ -162,6 +162,26 @@ g_content_type_is_a (const gchar *type,
 }
 
 /**
+ * g_content_type_is_mime_type:
+ * @type: a content type string
+ * @mime_type: a mime type string
+ *
+ * Determines if @type is a subset of @mime_type.
+ * Convenience wrapper around g_content_type_is_a().
+ *
+ * Returns: %TRUE if @type is a kind of @mime_type,
+ *     %FALSE otherwise.
+ *
+ * Since: 2.52
+ */
+gboolean
+g_content_type_is_mime_type (const gchar *type,
+                             const gchar *mime_type)
+{
+  return g_content_type_is_a (type, mime_type);
+}
+
+/**
  * g_content_type_is_unknown:
  * @type: a content type string
  *

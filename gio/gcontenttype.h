@@ -35,6 +35,9 @@ gboolean g_content_type_equals            (const gchar  *type1,
 GLIB_AVAILABLE_IN_ALL
 gboolean g_content_type_is_a              (const gchar  *type,
                                            const gchar  *supertype);
+GLIB_AVAILABLE_IN_2_52
+gboolean g_content_type_is_mime_type      (const gchar *type,
+                                           const gchar *mime_type);
 GLIB_AVAILABLE_IN_ALL
 gboolean g_content_type_is_unknown        (const gchar  *type);
 GLIB_AVAILABLE_IN_ALL

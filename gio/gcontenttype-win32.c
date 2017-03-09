@@ -131,6 +131,23 @@ g_content_type_is_a (const gchar *type,
 }
 
 gboolean
+g_content_type_is_mime_type (const gchar *type,
+                             const gchar *mime_type)
+{
+  gchar *content_type;
+  gboolean ret;
+
+  g_return_val_if_fail (type != NULL, FALSE);
+  g_return_val_if_fail (mime_type != NULL, FALSE);
+
+  content_type = g_content_type_from_mime_type (mime_type);
+  ret = g_content_type_is_a (type, content_type);
+  g_free (content_type);
+
+  return ret;
+}
+
+gboolean
 g_content_type_is_unknown (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
