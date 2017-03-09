@@ -1115,7 +1115,7 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (g_registry_backend_get_type ());
 #endif
 #ifdef HAVE_COCOA
-      g_nextstep_settings_backend_get_type ();
+      g_type_ensure (g_nextstep_settings_backend_get_type ());
 #endif
 #ifdef G_OS_UNIX
       g_type_ensure (_g_unix_volume_monitor_get_type ());
