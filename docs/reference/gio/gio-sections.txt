@@ -1376,6 +1376,7 @@ g_io_error_quark
 <TITLE>GContentType</TITLE>
 g_content_type_equals
 g_content_type_is_a
+g_content_type_is_mime_type
 g_content_type_is_unknown
 g_content_type_get_description
 g_content_type_get_mime_type
