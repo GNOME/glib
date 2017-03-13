@@ -6,7 +6,7 @@
 
 # This can be used in various projects where
 # there is the need to generate .pc files,
-# and is copied from GLib's $(srcroot)/build/win32
+# and is copied from GLib's $(srcroot)/win32
 
 # Author: Fan, Chun-wei
 # Date: March 10, 2016
