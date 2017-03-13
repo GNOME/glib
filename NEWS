@@ -1,3 +1,27 @@
+Overview of changes in GLib 2.51.5
+==================================
+
+* OS X implementations of GContentType and GAppInfo
+  have been added
+
+* Bugs fixed:
+ 673047 gunicollate is broken on OS X (patch included!)
+ 734946 Implement GContentType on OSX
+ 747146 Implement GNotification on OSX
+ 769983 glib-mkenums generates non-reproducible Makefile snippets
+ 777203 gnulib license information is not correct in glib2.0
+ 778515 Crash in the gio kqueue backend
+ 779456 Make g_utf8_make_valid optionally take a length
+
+* Translation updates:
+ Danish
+ Friulian
+ German
+ Hungarian
+ Korean
+ Lithuanian
+
+
 Overview of changes in GLib 2.51.4
 ==================================
 
