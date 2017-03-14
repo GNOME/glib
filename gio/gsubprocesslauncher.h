@@ -45,7 +45,7 @@ GLIB_AVAILABLE_IN_2_40
 GSubprocess *           g_subprocess_launcher_spawn                     (GSubprocessLauncher   *self,
                                                                          GError               **error,
                                                                          const gchar           *argv0,
-                                                                         ...);
+                                                                         ...) G_GNUC_NULL_TERMINATED;
 
 GLIB_AVAILABLE_IN_2_40
 GSubprocess *           g_subprocess_launcher_spawnv                    (GSubprocessLauncher   *self,
