@@ -339,6 +339,7 @@ win32_actual_sources = \
 
 win32_more_sources_for_vcproj = \
 	gwin32appinfo.c \
+	gcontenttype-win32.c \
 	gregistrysettingsbackend.c \
 	win32/gwinhttpfile.c \
 	win32/gwinhttpfileinputstream.c \
