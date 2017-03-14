@@ -52,7 +52,7 @@ GLIB_AVAILABLE_IN_ALL
 GDBusMessage             *g_dbus_message_new_method_error   (GDBusMessage             *method_call_message,
                                                              const gchar              *error_name,
                                                              const gchar              *error_message_format,
-                                                             ...);
+                                                             ...) G_GNUC_PRINTF(3, 4);
 GLIB_AVAILABLE_IN_ALL
 GDBusMessage             *g_dbus_message_new_method_error_valist (GDBusMessage             *method_call_message,
                                                                   const gchar              *error_name,
