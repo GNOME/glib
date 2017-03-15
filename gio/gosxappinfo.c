@@ -274,7 +274,8 @@ create_urlspec_for_appinfo (GOsxAppInfo *info,
   LSLaunchURLSpec *urlspec = g_new0 (LSLaunchURLSpec, 1);
   gchar *app_cstr = g_osx_app_info_get_filename (info);
 
-  urlspec->appURL = create_url_from_cstr (app_cstr, are_files);
+  /* Strip file:// from app url but ensure filesystem url */
+  urlspec->appURL = create_url_from_cstr (app_cstr + 7, TRUE);
   urlspec->launchFlags = kLSLaunchDefaults;
   urlspec->itemURLs = create_url_list_from_glist (uris, are_files);
 
