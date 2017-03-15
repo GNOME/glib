@@ -203,7 +203,7 @@ url_escape_hostname (const char *url)
       else
         host = g_strdup (host_start);
 
-      hostname = g_hostname_to_ascii (host_start);
+      hostname = g_hostname_to_ascii (host);
 
       ret = g_strconcat (scheme, "://", hostname, host_end, NULL);
 
