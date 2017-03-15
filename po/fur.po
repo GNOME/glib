@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-05 21:24+0000\n"
-"PO-Revision-Date: 2017-03-07 23:26+0100\n"
+"POT-Creation-Date: 2017-03-07 22:27+0000\n"
+"PO-Revision-Date: 2017-03-15 05:46+0100\n"
+"Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "X-Generator: Poedit 1.8.12\n"
 
 #: ../gio/gapplication.c:493
@@ -64,15 +64,15 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:55
 msgid "Launch an application"
-msgstr ""
+msgstr "Invie une aplicazion"
 
 #: ../gio/gapplication-tool.c:56
 msgid "Launch the application (with optional files to open)"
-msgstr ""
+msgstr "Invie la aplicazion (cun file opzionâi di vierzi)"
 
 #: ../gio/gapplication-tool.c:57
 msgid "APPID [FILE…]"
-msgstr ""
+msgstr "APPID [FILE…]"
 
 #: ../gio/gapplication-tool.c:59
 msgid "Activate an action"
@@ -84,7 +84,7 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:61
 msgid "APPID ACTION [PARAMETER]"
-msgstr ""
+msgstr "APPID AZION [PARAMETRI]"
 
 #: ../gio/gapplication-tool.c:63
 msgid "List available actions"
@@ -96,7 +96,7 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:65 ../gio/gapplication-tool.c:71
 msgid "APPID"
-msgstr ""
+msgstr "APPID"
 
 #: ../gio/gapplication-tool.c:70 ../gio/gapplication-tool.c:133
 #: ../gio/gdbus-tool.c:90 ../gio/gio-tool.c:206
@@ -110,6 +110,7 @@ msgstr ""
 #: ../gio/gapplication-tool.c:71
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
+"Identificadôr aplicazion tal formât D-Bus (p.e. org.esempli.visualizadôr)"
 
 #: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:665
 #: ../gio/glib-compile-resources.c:671 ../gio/glib-compile-resources.c:698
@@ -119,7 +120,7 @@ msgstr "FILE"
 
 #: ../gio/gapplication-tool.c:72
 msgid "Optional relative or absolute filenames, or URIs to open"
-msgstr ""
+msgstr "Nons di file assolûts o relatîfs opzionâi opûr URI di vierzi"
 
 #: ../gio/gapplication-tool.c:73
 msgid "ACTION"
@@ -127,7 +128,7 @@ msgstr "AZION"
 
 #: ../gio/gapplication-tool.c:73
 msgid "The action name to invoke"
-msgstr ""
+msgstr "La azion di invocâ"
 
 #: ../gio/gapplication-tool.c:74
 msgid "PARAMETER"
@@ -144,6 +145,8 @@ msgid ""
 "Unknown command %s\n"
 "\n"
 msgstr ""
+"Comant no cognossût %s\n"
+"\n"
 
 #: ../gio/gapplication-tool.c:101
 msgid "Usage:\n"
@@ -156,7 +159,7 @@ msgstr "Argoments:\n"
 
 #: ../gio/gapplication-tool.c:133
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[ARGS…]"
 
 #: ../gio/gapplication-tool.c:134
 #, c-format
@@ -170,6 +173,8 @@ msgid ""
 "Use “%s help COMMAND” to get detailed help.\n"
 "\n"
 msgstr ""
+"Dopre “%s help COMANT” par vê un jutori detaiât.\n"
+"\n"
 
 #: ../gio/gapplication-tool.c:165
 #, c-format
@@ -177,11 +182,13 @@ msgid ""
 "%s command requires an application id to directly follow\n"
 "\n"
 msgstr ""
+"Il comant %s al domande un id di aplicazion di seguî in maniere direte\n"
+"\n"
 
 #: ../gio/gapplication-tool.c:171
 #, c-format
 msgid "invalid application id: “%s”\n"
-msgstr ""
+msgstr "id aplicazion no valit: “%s”\n"
 
 #. Translators: %s is replaced with a command name like 'list-actions'
 #: ../gio/gapplication-tool.c:182
@@ -190,21 +197,23 @@ msgid ""
 "“%s” takes no arguments\n"
 "\n"
 msgstr ""
+"“%s” no si spiete nissun argoment\n"
+"\n"
 
 #: ../gio/gapplication-tool.c:266
 #, c-format
 msgid "unable to connect to D-Bus: %s\n"
-msgstr ""
+msgstr "impussibil conetisi al D-Bus: %s\n"
 
 #: ../gio/gapplication-tool.c:286
 #, c-format
 msgid "error sending %s message to application: %s\n"
-msgstr ""
+msgstr "erôr tal inviâ il messaç %s ae aplicazion: %s\n"
 
 #: ../gio/gapplication-tool.c:317
 #, c-format
 msgid "action name must be given after application id\n"
-msgstr ""
+msgstr "si scugne furnî il non de azion dopo il id de aplicazion\n"
 
 #: ../gio/gapplication-tool.c:325
 #, c-format
@@ -212,16 +221,18 @@ msgid ""
 "invalid action name: “%s”\n"
 "action names must consist of only alphanumerics, “-” and “.”\n"
 msgstr ""
+"non azion no valit: “%s”\n"
+"i nons des azions a scugnin consisti nome di alfanumerics, “-” e “.”\n"
 
 #: ../gio/gapplication-tool.c:344
 #, c-format
 msgid "error parsing action parameter: %s\n"
-msgstr ""
+msgstr "erôr tal analizâ il parametri de azion: %s\n"
 
 #: ../gio/gapplication-tool.c:356
 #, c-format
 msgid "actions accept a maximum of one parameter\n"
-msgstr ""
+msgstr "lis azions a acetin un massim di un parametri\n"
 
 #: ../gio/gapplication-tool.c:411
 #, c-format
@@ -231,7 +242,7 @@ msgstr ""
 #: ../gio/gapplication-tool.c:421
 #, c-format
 msgid "unable to find desktop file for application %s\n"
-msgstr ""
+msgstr "impussibil cjatâ il file scritori pe aplicazion %s\n"
 
 #: ../gio/gapplication-tool.c:466
 #, c-format
@@ -252,72 +263,72 @@ msgstr ""
 #: ../gio/gbufferedinputstream.c:891 ../gio/gbufferedoutputstream.c:575
 #: ../gio/gdataoutputstream.c:562
 msgid "Seek not supported on base stream"
-msgstr ""
+msgstr "Ricercje no supuartade sul flus di base"
 
 #: ../gio/gbufferedinputstream.c:937
 msgid "Cannot truncate GBufferedInputStream"
-msgstr ""
+msgstr "Impussibil cjonçâ GBufferedInputStream"
 
 #: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1208
 #: ../gio/giostream.c:300 ../gio/goutputstream.c:1660
 msgid "Stream is already closed"
-msgstr ""
+msgstr "Il flus al è za sierât"
 
 #: ../gio/gbufferedoutputstream.c:612 ../gio/gdataoutputstream.c:592
 msgid "Truncate not supported on base stream"
-msgstr ""
+msgstr "Cjonçâ no supuartât sul flus di base"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1849
 #: ../gio/gdbusprivate.c:1377 ../gio/gsimpleasyncresult.c:870
 #: ../gio/gsimpleasyncresult.c:896
 #, c-format
 msgid "Operation was cancelled"
-msgstr ""
+msgstr "La operazion e jere anulade"
 
 #: ../gio/gcharsetconverter.c:260
 msgid "Invalid object, not initialized"
-msgstr ""
+msgstr "Ogjet no valit, no inizializât"
 
 #: ../gio/gcharsetconverter.c:281 ../gio/gcharsetconverter.c:309
 msgid "Incomplete multibyte sequence in input"
-msgstr ""
+msgstr "Secuence multibyte incomplete tal input"
 
 #: ../gio/gcharsetconverter.c:315 ../gio/gcharsetconverter.c:324
 msgid "Not enough space in destination"
-msgstr ""
+msgstr "No vonde spazi te destinazion"
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
 #: ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:438 ../glib/gconvert.c:845
 #: ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
 #: ../glib/giochannel.c:2442 ../glib/gutf8.c:855 ../glib/gutf8.c:1308
 msgid "Invalid byte sequence in conversion input"
-msgstr ""
+msgstr "Secuence byte no valide tal input di conversion"
 
 #: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:446 ../glib/gconvert.c:770
 #: ../glib/giochannel.c:1563 ../glib/giochannel.c:2454
 #, c-format
 msgid "Error during conversion: %s"
-msgstr ""
+msgstr "Erôr dilunc la conversion: %s"
 
 #: ../gio/gcharsetconverter.c:444 ../gio/gsocket.c:1085
 msgid "Cancellable initialization not supported"
-msgstr ""
+msgstr "Inizializazion anulabile no supuartade"
 
 #: ../gio/gcharsetconverter.c:454 ../glib/gconvert.c:321
 #: ../glib/giochannel.c:1384
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
-msgstr ""
+msgstr "Conversion de cumbinazion di caratars “%s” a “%s” no je supuartade"
 
 #: ../gio/gcharsetconverter.c:458 ../glib/gconvert.c:325
 #, c-format
 msgid "Could not open converter from “%s” to “%s”"
-msgstr ""
+msgstr "Impussibil vierzi il convertidôr di “%s” a “%s”"
 
 #: ../gio/gcontenttype.c:335
 #, c-format
 msgid "%s type"
-msgstr ""
+msgstr "gjenar %s"
 
 #: ../gio/gcontenttype-win32.c:160
 msgid "Unknown type"
@@ -326,19 +337,19 @@ msgstr "Gjenar no cognossût"
 #: ../gio/gcontenttype-win32.c:162
 #, c-format
 msgid "%s filetype"
-msgstr ""
+msgstr "gjenar di file %s"
 
 #: ../gio/gcredentials.c:312 ../gio/gcredentials.c:571
 msgid "GCredentials is not implemented on this OS"
-msgstr ""
+msgstr "GCredentials nol è implementât in chest SO"
 
 #: ../gio/gcredentials.c:467
 msgid "There is no GCredentials support for your platform"
-msgstr ""
+msgstr "Nol esist il supuart par GCredentials pe tô plateforme"
 
 #: ../gio/gcredentials.c:513
 msgid "GCredentials does not contain a process ID on this OS"
-msgstr ""
+msgstr "GCredentials nol conten un ID  di procès su chest SO"
 
 #: ../gio/gcredentials.c:565
 msgid "Credentials spoofing is not possible on this OS"
@@ -346,39 +357,42 @@ msgstr ""
 
 #: ../gio/gdatainputstream.c:304
 msgid "Unexpected early end-of-stream"
-msgstr ""
+msgstr "inspietât fin-dal-flus adore"
 
 #: ../gio/gdbusaddress.c:155 ../gio/gdbusaddress.c:243
 #: ../gio/gdbusaddress.c:324
 #, c-format
 msgid "Unsupported key “%s” in address entry “%s”"
-msgstr ""
+msgstr "Clâf “%s” no supuartade inte vôs di direzion “%s”"
 
 #: ../gio/gdbusaddress.c:182
 #, c-format
 msgid ""
 "Address “%s” is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
+"Direzion “%s” no valide (e covente juste une clâf astrate, tmpdir o di "
+"percors)"
 
 #: ../gio/gdbusaddress.c:195
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
 msgstr ""
+"Cumbinazion de cubie clâf/valôr cence significât inte vôs di direzion “%s”"
 
 #: ../gio/gdbusaddress.c:258 ../gio/gdbusaddress.c:339
 #, c-format
 msgid "Error in address “%s” — the port attribute is malformed"
-msgstr ""
+msgstr "Erôr inte direzion “%s” — l'atribût puarte al è malformât"
 
 #: ../gio/gdbusaddress.c:269 ../gio/gdbusaddress.c:350
 #, c-format
 msgid "Error in address “%s” — the family attribute is malformed"
-msgstr ""
+msgstr "Erôr inte direzion “%s” — l'atribût famee al è malformât"
 
 #: ../gio/gdbusaddress.c:460
 #, c-format
 msgid "Address element “%s” does not contain a colon (:)"
-msgstr ""
+msgstr "L'element direzion “%s” nol conten un doi ponts (:)"
 
 #: ../gio/gdbusaddress.c:481
 #, c-format
@@ -386,6 +400,8 @@ msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
 "sign"
 msgstr ""
+"Cubie clâf/valôr %d, “%s”, intal element direzion “%s” no conten un segn "
+"uguâl"
 
 #: ../gio/gdbusaddress.c:495
 #, c-format
@@ -447,7 +463,7 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:956
 msgid "The given address is empty"
-msgstr ""
+msgstr "La direzion furnide e je vueide"
 
 #: ../gio/gdbusaddress.c:1069
 #, c-format
@@ -471,17 +487,19 @@ msgstr ""
 #: ../gio/gdbusaddress.c:1342
 #, c-format
 msgid "(Type any character to close this window)\n"
-msgstr ""
+msgstr "(Scrîf cualsisei caratar par sierâ chest barcon)\n"
 
 #: ../gio/gdbusaddress.c:1496
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
-msgstr ""
+msgstr "Session dbus no je in esecuzion e l'inviament automatic al è falît"
 
 #: ../gio/gdbusaddress.c:1507
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
+"Impussibil determinâ la direzion dal bus di session (no implementade par "
+"chest SO)"
 
 #: ../gio/gdbusaddress.c:1645
 #, c-format
@@ -489,17 +507,21 @@ msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "— unknown value “%s”"
 msgstr ""
+"Impussibil determinâ la direzion dal bus de variabile di ambient "
+"DBUS_STARTER_BUS_TYPE — valôr “%s” no cognossût"
 
 #: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7144
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr ""
+"Impussibil determinâ la direzion dal bus parcè che la variabile di ambient "
+"DBUS_STARTER_BUS_TYPE no je stabilide"
 
 #: ../gio/gdbusaddress.c:1664
 #, c-format
 msgid "Unknown bus type %d"
-msgstr ""
+msgstr "Gjenar di bus %d no cognossût"
 
 #: ../gio/gdbusauth.c:293
 msgid "Unexpected lack of content trying to read a line"
@@ -517,12 +539,12 @@ msgstr ""
 
 #: ../gio/gdbusauth.c:1174
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
-msgstr ""
+msgstr "Anulât vie GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:261
 #, c-format
 msgid "Error when getting information for directory “%s”: %s"
-msgstr ""
+msgstr "Erôr tal vê informazions pe cartele “%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:273
 #, c-format
@@ -533,64 +555,68 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:294
 #, c-format
 msgid "Error creating directory “%s”: %s"
-msgstr ""
+msgstr "Erôr tal creâ la cartele “%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:377
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
-msgstr ""
+msgstr "Erôr tal lei il puarteclâfs “%s” pe leture: "
 
 #: ../gio/gdbusauthmechanismsha1.c:401 ../gio/gdbusauthmechanismsha1.c:714
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
-msgstr ""
+msgstr "Rie %d dal puarteclâfs su “%s” cun contignût “%s” e je malformade "
 
 #: ../gio/gdbusauthmechanismsha1.c:415 ../gio/gdbusauthmechanismsha1.c:728
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
+"Il prin token de rie %d dal puarteclâfs su “%s” cul contignût “%s” al è "
+"malformât"
 
 #: ../gio/gdbusauthmechanismsha1.c:430 ../gio/gdbusauthmechanismsha1.c:742
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
+"Il secont token de rie %d dal puarteclâfs su “%s” cul contignût “%s” al è "
+"malformât"
 
 #: ../gio/gdbusauthmechanismsha1.c:454
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
-msgstr ""
+msgstr "No si à cjatât il cookie cul id %d intal puarteclâfs su “%s”"
 
 #: ../gio/gdbusauthmechanismsha1.c:532
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
-msgstr ""
+msgstr "Erôr tal eliminâ il file di bloc passât “%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:564
 #, c-format
 msgid "Error creating lock file “%s”: %s"
-msgstr ""
+msgstr "Erôr tal creâ il file di bloc “%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:594
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
-msgstr ""
+msgstr "Erôr tal sierâ il file di bloc (cence colegament) “%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:604
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
-msgstr ""
+msgstr "Erôr tal discolegâ il file di bloc “%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:681
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
-msgstr ""
+msgstr "Erôr tal vierzi il puarteclâfs “%s” pe scriture:"
 
 #: ../gio/gdbusauthmechanismsha1.c:878
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
-msgstr ""
+msgstr "(In plui no si è rivâts ancje a molâ il bloc par “%s”: %s) "
 
 #: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2377
 msgid "The connection is closed"
@@ -619,17 +645,19 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4265
 #, c-format
 msgid "Property '%s' is not readable"
-msgstr ""
+msgstr "La proprietât '%s' no je leibile"
 
 #: ../gio/gdbusconnection.c:4276
 #, c-format
 msgid "Property '%s' is not writable"
-msgstr ""
+msgstr "La proprietât '%s' no je scrivibile"
 
 #: ../gio/gdbusconnection.c:4296
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
+"Erôr tal configurâ la proprietât '%s': si spietave gjenar '%s' ma si à vût "
+"'%s'"
 
 #: ../gio/gdbusconnection.c:4401 ../gio/gdbusconnection.c:6575
 #, c-format
@@ -653,7 +681,7 @@ msgstr ""
 #: ../gio/gdbusconnection.c:4956
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
-msgstr ""
+msgstr "Il gjenar di messaç, '%s', nol corispuint il gjenar spietât '%s'"
 
 #: ../gio/gdbusconnection.c:5154
 #, c-format
@@ -668,17 +696,17 @@ msgstr ""
 #: ../gio/gdbusconnection.c:5436
 #, c-format
 msgid "Unable to set property %s.%s"
-msgstr ""
+msgstr "Impussibil stabilî la proprietât %s.%s"
 
 #: ../gio/gdbusconnection.c:5612
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
-msgstr ""
+msgstr "Il metodi '%s' al à tornât il gjenar '%s', ma si spietave '%s'"
 
 #: ../gio/gdbusconnection.c:6686
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
-msgstr ""
+msgstr "Il metodi '%s' su la interface '%s' cun firme '%s' nol esist"
 
 #: ../gio/gdbusconnection.c:6807
 #, c-format
@@ -691,10 +719,12 @@ msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value '%s'"
 msgstr ""
+"Impussibil determinâ la direzion dal bus de variabile di ambient "
+"DBUS_STARTER_BUS_TYPE — valôr '%s' no cognossût"
 
 #: ../gio/gdbusmessage.c:1244
 msgid "type is INVALID"
-msgstr ""
+msgstr "il gjenar al è NO VALIT"
 
 #: ../gio/gdbusmessage.c:1255
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
@@ -707,6 +737,7 @@ msgstr ""
 #: ../gio/gdbusmessage.c:1278
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr ""
+"Messaç di ERÔR: il cjamp di intestazion REPLY_SERIAL o ERROR_NAME al mancje"
 
 #: ../gio/gdbusmessage.c:1291
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
