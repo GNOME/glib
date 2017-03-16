@@ -140,8 +140,6 @@ g_fam_file_monitor_is_supported (void)
 
   g_mutex_unlock (&fam_lock);
 
-  g_print ("II %d\n", fam_initialised);
-
   return fam_initialised;
 }
 
