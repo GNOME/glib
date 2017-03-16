@@ -66,8 +66,7 @@ typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
  * @supports_files: Indicates whether the application specified accepts filename arguments.
  * @launch_uris: Launches an application with a list of URIs.
  * @should_show: Returns whether an application should be shown (e.g. when getting a list of installed applications).
- * <ulink url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt">
- * <citetitle>FreeDesktop.Org Startup Notification Specification</citetitle></ulink>.
+ * [FreeDesktop.Org Startup Notification Specification](http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt).
  * @set_as_default_for_type: Sets an application as default for a given content type.
  * @set_as_default_for_extension: Sets an application as default for a given file extension.
  * @add_supports_type: Adds to the #GAppInfo information about supported file types.

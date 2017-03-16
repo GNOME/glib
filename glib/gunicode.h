@@ -111,7 +111,7 @@ typedef guint16 gunichar2;
  *
  * These are the possible character classifications from the
  * Unicode specification.
- * See <ulink url="http://www.unicode.org/reports/tr44/#General_Category_Values">Unicode Character Database</unlink>.
+ * See [Unicode Character Database](http://www.unicode.org/reports/tr44/#General_Category_Values).
  */
 typedef enum
 {
@@ -209,7 +209,7 @@ typedef enum
  * Since new unicode versions may add new types here, applications should be ready 
  * to handle unknown values. They may be regarded as %G_UNICODE_BREAK_UNKNOWN.
  *
- * See <ulink url="http://www.unicode.org/unicode/reports/tr14/">http://www.unicode.org/unicode/reports/tr14/</ulink>.
+ * See [Unicode Line Breaking Algorithm](http://www.unicode.org/unicode/reports/tr14/).
  */
 typedef enum
 {
@@ -419,9 +419,7 @@ typedef enum
  *
  * Note that new types may be added in the future. Applications
  * should be ready to handle unknown values.
- * See <ulink
- * url="http://www.unicode.org/reports/tr24/">Unicode Standard Annex
- * #24: Script names</ulink>.
+ * See [Unicode Standard Annex #24: Script names](http://www.unicode.org/reports/tr24/).
  */
 typedef enum
 {                         /* ISO 15924 code */

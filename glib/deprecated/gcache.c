@@ -154,12 +154,12 @@ g_cache_node_destroy (GCacheNode *node)
 
 /**
  * GCacheDupFunc:
- * @value: the #GCache key to destroy (<emphasis>not</emphasis> a
+ * @value: the #GCache key to destroy (__not__ a
  *         #GCache value as it seems)
  *
  * Specifies the type of the @key_dup_func function passed to
  * g_cache_new(). The function is passed a key
- * (<emphasis>not</emphasis> a value as the prototype implies) and
+ * (__not__ a value as the prototype implies) and
  * should return a duplicate of the key.
  *
  * Returns: a copy of the #GCache key
