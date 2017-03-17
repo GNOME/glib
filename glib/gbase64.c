@@ -222,6 +222,7 @@ g_base64_encode_close (gboolean  break_lines,
       goto skip;
     case 1:
       outptr[2] = '=';
+      c2 = 0;  /* saved state here is not relevant */
     skip:
       outptr [0] = base64_alphabet [ c1 >> 2 ];
       outptr [1] = base64_alphabet [ c2 >> 4 | ( (c1&0x3) << 4 )];
