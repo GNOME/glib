@@ -654,6 +654,10 @@ g_utf8_get_char_extended (const  gchar *p,
  * This function checks for incomplete characters, for invalid characters
  * such as characters that are out of the range of Unicode, and for
  * overlong encodings of valid characters.
+ *
+ * Note that g_utf8_get_char_validated() returns (gunichar)-2 if
+ * @max_len is positive and any of the bytes in the first UTF-8 character
+ * sequence are nul.
  * 
  * Returns: the resulting character. If @p points to a partial
  *     sequence at the end of a string that could begin a valid 

@@ -292,6 +292,57 @@ do_test (gconstpointer d)
     }
 }
 
+/* Test the behaviour of g_utf8_get_char_validated() with various inputs and
+ * length restrictions. */
+static void
+test_utf8_get_char_validated (void)
+{
+  const struct {
+    const gchar *buf;
+    gssize max_len;
+    gunichar expected_result;
+  } test_vectors[] = {
+    /* Bug #780095: */
+    { "\xC0\x00_45678", 8, (gunichar) -2 },
+    { "\xC0\x00_45678", -1, (gunichar) -2 },
+    /* It seems odd that the return value differs with the length input, but
+     * that’s how it’s documented: */
+    { "", 0, (gunichar) -2 },
+    { "", -1, (gunichar) 0 },
+    /* Normal inputs: */
+    { "hello", 5, (gunichar) 'h' },
+    { "hello", -1, (gunichar) 'h' },
+    { "\xD8\x9F", 2, 0x061F },
+    { "\xD8\x9F", -1, 0x061F },
+    { "\xD8\x9Fmore", 6, 0x061F },
+    { "\xD8\x9Fmore", -1, 0x061F },
+    { "\xE2\x96\xB3", 3, 0x25B3 },
+    { "\xE2\x96\xB3", -1, 0x25B3 },
+    { "\xE2\x96\xB3more", 7, 0x25B3 },
+    { "\xE2\x96\xB3more", -1, 0x25B3 },
+    { "\xF0\x9F\x92\xA9", 4, 0x1F4A9 },
+    { "\xF0\x9F\x92\xA9", -1, 0x1F4A9 },
+    { "\xF0\x9F\x92\xA9more", 8, 0x1F4A9 },
+    { "\xF0\x9F\x92\xA9more", -1, 0x1F4A9 },
+    /* Partial unichars: */
+    { "\xD8", -1, (gunichar) -2 },
+    { "\xD8\x9F", 1, (gunichar) -2 },
+    { "\xCE", -1, (gunichar) -2 },
+    { "\xCE", 1, (gunichar) -2 },
+  };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (test_vectors); i++)
+    {
+      gunichar actual_result;
+
+      g_test_message ("Vector %" G_GSIZE_FORMAT, i);
+      actual_result = g_utf8_get_char_validated (test_vectors[i].buf,
+                                                 test_vectors[i].max_len);
+      g_assert_cmpint (actual_result, ==, test_vectors[i].expected_result);
+    }
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -306,6 +357,8 @@ main (int argc, char *argv[])
       g_test_add_data_func (path, &test[i], do_test);
       g_free (path);
     }
+
+  g_test_add_func ("/utf8/get-char-validated", test_utf8_get_char_validated);
 
   return g_test_run ();
 }
