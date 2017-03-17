@@ -147,7 +147,7 @@ g_value_array_new (guint n_prealloced)
 }
 
 /**
- * g_value_array_free:
+ * g_value_array_free: (skip)
  * @value_array: #GValueArray to free
  *
  * Free a #GValueArray including its contents.
