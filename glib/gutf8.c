@@ -567,6 +567,8 @@ g_utf8_get_char_extended (const  gchar *p,
   guint i, len;
   gunichar min_code;
   gunichar wc = (guchar) *p;
+  const gunichar partial_sequence = (gunichar) -2;
+  const gunichar malformed_sequence = (gunichar) -1;
 
   if (wc < 0x80)
     {
@@ -574,7 +576,7 @@ g_utf8_get_char_extended (const  gchar *p,
     }
   else if (G_UNLIKELY (wc < 0xc0))
     {
-      return (gunichar)-1;
+      return malformed_sequence;
     }
   else if (wc < 0xe0)
     {
@@ -608,7 +610,7 @@ g_utf8_get_char_extended (const  gchar *p,
     }
   else
     {
-      return (gunichar)-1;
+      return malformed_sequence;
     }
 
   if (G_UNLIKELY (max_len >= 0 && len > max_len))
@@ -616,9 +618,9 @@ g_utf8_get_char_extended (const  gchar *p,
       for (i = 1; i < max_len; i++)
 	{
 	  if ((((guchar *)p)[i] & 0xc0) != 0x80)
-	    return (gunichar)-1;
+	    return malformed_sequence;
 	}
-      return (gunichar)-2;
+      return partial_sequence;
     }
 
   for (i = 1; i < len; ++i)
@@ -628,9 +630,9 @@ g_utf8_get_char_extended (const  gchar *p,
       if (G_UNLIKELY ((ch & 0xc0) != 0x80))
 	{
 	  if (ch)
-	    return (gunichar)-1;
+	    return malformed_sequence;
 	  else
-	    return (gunichar)-2;
+	    return partial_sequence;
 	}
 
       wc <<= 6;
@@ -638,7 +640,7 @@ g_utf8_get_char_extended (const  gchar *p,
     }
 
   if (G_UNLIKELY (wc < min_code))
-    return (gunichar)-1;
+    return malformed_sequence;
 
   return wc;
 }
