@@ -648,9 +648,8 @@ g_utf8_get_char_extended (const  gchar *p,
 /**
  * g_utf8_get_char_validated:
  * @p: a pointer to Unicode character encoded as UTF-8
- * @max_len: the maximum number of bytes to read, or -1, for no maximum or
- *     if @p is nul-terminated
- * 
+ * @max_len: the maximum number of bytes to read, or -1 if @p is nul-terminated
+ *
  * Convert a sequence of bytes encoded as UTF-8 to a Unicode character.
  * This function checks for incomplete characters, for invalid characters
  * such as characters that are out of the range of Unicode, and for
