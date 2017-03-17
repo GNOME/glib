@@ -192,6 +192,8 @@ g_base64_encode_step (const guchar *in,
  * be written to it. It will need up to 4 bytes, or up to 5 bytes if
  * line-breaking is enabled.
  *
+ * The @out array will not be automatically nul-terminated.
+ *
  * Returns: The number of bytes of output that was written
  *
  * Since: 2.12
