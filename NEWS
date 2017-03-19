@@ -1,3 +1,17 @@
+Overview of changes in GLib 2.52.0
+==================================
+
+* Bug fixes:
+ 779799 gdatetime test fails with tzdata 2017a
+ 780032 Add missing attributes to two functions
+ 780144 gio/fam: Remove leftover debug print
+
+* Translation updates:
+ French
+ Friulian
+ Latvian
+
+
 Overview of changes in GLib 2.51.5
 ==================================
 
