@@ -975,12 +975,15 @@ g_app_info_launch_default_for_uri (const char         *uri,
 				   GAppLaunchContext  *launch_context,
 				   GError            **error)
 {
+  if (launch_default_for_uri (uri, launch_context, error))
+    return TRUE;
+
 #ifdef G_OS_UNIX
   if (glib_should_use_portal ())
     return launch_default_with_portal (uri, launch_context, error);
-  else
 #endif
-    return launch_default_for_uri (uri, launch_context, error);
+
+  return FALSE;
 }
 
 /**
@@ -1011,15 +1014,15 @@ g_app_info_launch_default_for_uri_async (const char          *uri,
   GError *error = NULL;
   GTask *task;
 
+  res = launch_default_for_uri (uri, context, &error);
+
 #ifdef G_OS_UNIX
-  if (glib_should_use_portal ())
+  if (!res && glib_should_use_portal ())
     {
       launch_default_with_portal_async (uri, context, cancellable, callback, user_data);
       return;
     }
 #endif
-
-  res = launch_default_for_uri (uri, context, &error);
 
   task = g_task_new (context, cancellable, callback, user_data);
   if (!res)
