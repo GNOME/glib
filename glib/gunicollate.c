@@ -159,7 +159,7 @@ g_utf8_collate (const gchar *str1,
   return result;
 }
 
-#if defined(__STDC_ISO_10646__) || defined(HAVE_CARBON)
+#if defined(__STDC_ISO_10646__)
 /* We need UTF-8 encoding of numbers to encode the weights if
  * we are using wcsxfrm. However, we aren't encoding Unicode
  * characters, so we can't simply use g_unichar_to_utf8.
@@ -206,7 +206,7 @@ utf8_encode (char *buf, wchar_t val)
 
   return retval;
 }
-#endif /* __STDC_ISO_10646__ || HAVE_CARBON */
+#endif /* __STDC_ISO_10646__ */
 
 #ifdef HAVE_CARBON
 
