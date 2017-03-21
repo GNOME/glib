@@ -1,4 +1,4 @@
-if get_option('with-docs')
+if get_option('with-docs') != 'no'
   subdir('xml')
 
   ignore_headers = [
@@ -90,28 +90,14 @@ if get_option('with-docs')
                install: true)
 endif
 
-if get_option('with-man')
-  custom_target('glib-gettextize-man',
-    input: 'glib-gettextize.xml',
-    output: 'glib-gettextize.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('gtester-man',
-    input: 'gtester.xml',
-    output: 'gtester.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('gtester-report-man',
-    input: 'gtester-report.xml',
-    output: 'gtester-report.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
+if get_option('with-man') != 'no' and xsltproc.found()
+  manpages = ['glib-gettextize', 'gtester', 'gtester-report']
+  foreach page : manpages
+    custom_target(page + '-man',
+      input: page + '.xml',
+      output: page + '.1',
+      command: xsltproc_command,
+      install: true,
+      install_dir: man1_dir)
+  endforeach
 endif

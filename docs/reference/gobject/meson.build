@@ -1,4 +1,4 @@
-if get_option('with-docs')
+if get_option('with-docs') != 'no'
   subdir('xml')
 
   ignore_headers = [
@@ -51,28 +51,14 @@ if get_option('with-docs')
   )
 endif
 
-if get_option('with-man')
-  custom_target('glib-mkenums-man',
-    input: 'glib-mkenums.xml',
-    output: 'glib-mkenums.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('glib-genmarshal-man',
-    input: 'glib-genmarshal.xml',
-    output: 'glib-genmarshal.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('gobject-query-man',
-    input: 'gobject-query.xml',
-    output: 'gobject-query.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
+if get_option('with-man') != 'no' and xsltproc.found()
+  manpages = ['glib-mkenums', 'glib-genmarshal', 'gobject-query']
+  foreach page : manpages
+    custom_target(page + '-man',
+      input: page + '.xml',
+      output: page + '.1',
+      command: xsltproc_command,
+      install: true,
+      install_dir: man1_dir)
+  endforeach
 endif

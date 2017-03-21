@@ -1434,12 +1434,11 @@ configure_file(input : 'config.h.meson',
   output : 'config.h',
   configuration : glib_conf)
 
-if get_option('with-docs') and not meson.version().version_compare('>= 0.37.0')
-  error('In order to build docs you must have Meson >= 0.37.0')
-endif
-
-if get_option('with-man')
-  xsltproc = find_program('xsltproc')
+if get_option('with-man') != 'no'
+  xsltproc = find_program('xsltproc', required : false)
+  if not xsltproc.found() and get_option('with-man') == 'yes'
+    error('man pages enabled and xsltproc not found')
+  endif
   xsltproc_command = [
     xsltproc,
     '--nonet',

@@ -1,4 +1,4 @@
-if get_option('with-docs')
+if get_option('with-docs') != 'no'
   subdir('xml')
 
   ignore_headers = [
@@ -146,76 +146,16 @@ if get_option('with-docs')
 endif
 
 
-if get_option('with-man')
-  custom_target('gapplication-man',
-    input: 'gapplication.xml',
-    output: 'gapplication.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('gio-querymodules-man',
-    input: 'gio-querymodules.xml',
-    output: 'gio-querymodules.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('glib-compile-schemas-man',
-    input: 'glib-compile-schemas.xml',
-    output: 'glib-compile-schemas.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('glib-compile-resources-man',
-    input: 'glib-compile-resources.xml',
-    output: 'glib-compile-resources.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('gsettings-man',
-    input: 'gsettings.xml',
-    output: 'gsettings.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('gresource-man',
-    input: 'gresource.xml',
-    output: 'gresource.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('gdbus-man',
-    input: 'gdbus.xml',
-    output: 'gdbus.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('gio',
-    input: 'gio.xml',
-    output: 'gio.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
-
-  custom_target('gdbus-codegen-man',
-    input: 'gdbus-codegen.xml',
-    output: 'gdbus-codegen.1',
-    command: xsltproc_command,
-    install: true,
-    install_dir: man1_dir,
-  )
+if get_option('with-man') != 'no' and xsltproc.found()
+  manpages = ['gapplication', 'gio-querymodules', 'glib-compile-schemas',
+              'glib-compile-resources', 'gsettings', 'gresource', 'gdbus',
+              'gio', 'gdbus-codegen']
+  foreach page : manpages
+    custom_target(page + '-man',
+      input: page + '.xml',
+      output: page + '.1',
+      command: xsltproc_command,
+      install: true,
+      install_dir: man1_dir)
+  endforeach
 endif

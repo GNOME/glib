@@ -1,5 +1,5 @@
-option('with-docs', type : 'boolean', value : false)
-option('with-man', type : 'boolean', value : true)
+option('with-docs', type : 'combo', choices : ['auto', 'yes', 'no'], value : 'auto')
+option('with-man', type : 'combo', choices : ['auto', 'yes', 'no'], value : 'auto')
 option('enable-libmount', type : 'combo', choices : ['auto', 'yes', 'no'], value : 'yes')
 option('enable-dtrace', type : 'boolean', value : false,
   description : 'include tracing support for dtrace')
