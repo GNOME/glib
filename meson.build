@@ -1283,7 +1283,7 @@ libintl = cc.find_library('intl', required : false)
 # pkg-config file below
 libmount_dep = []
 libmount_opt = get_option('enable-libmount')
-if libmount_opt != 'no'
+if host_system == 'linux' and libmount_opt != 'no'
   libmount_dep = [dependency('mount', version : '>=2.28', required : false)]
   if not libmount_dep[0].found()
     libmount_dep = [cc.find_library('mount')]
