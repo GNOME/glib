@@ -1,6 +1,6 @@
 project('glib', 'c', 'cpp',
   version : '2.51.2',
-  meson_version : '>= 0.36.0',
+  meson_version : '>= 0.37.1',
   default_options : [
     'warning_level=1',
     'c_std=gnu89'
@@ -1274,8 +1274,8 @@ pcre = dependency('libpcre', required : false) # Should check for Unicode suppor
 glib_conf.set('USE_SYSTEM_PCRE', pcre.found())
 
 libm = cc.find_library('m', required : false)
-libffi_dep = dependency('libffi', version : '>= 3.0.0')
-libz_dep = dependency('zlib')
+libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
+libz_dep = dependency('zlib', fallback : ['zlib', 'zlib_dep'])
 # Only used on non-glibc targets
 libintl = cc.find_library('intl', required : false)
 
@@ -1302,13 +1302,7 @@ endif
 # Needed for glib-mkenums
 perl = find_program('perl')
 
-python = find_program('python3', required : false)
-if not python.found()
-  # All our scripts are compatible with python 2, so it's ok if this is Python 2
-  # Also, we don't check for 'python2' because if the user doesn't have Python
-  # installed, we want them to see that we want 'python', not 'python2'.
-  python = find_program('python')
-endif
+python = import('python3').find_python()
 
 # FIXME: defines in config.h that are not actually used anywhere
 # (we add them for now to minimise the diff)
