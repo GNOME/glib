@@ -1104,12 +1104,12 @@ else
   error('FIX POLL* defines')
 endif
 
-value_POLLIN = cc.run(templ.format('POLLIN')).stdout().strip()
-value_POLLOUT = cc.run(templ.format('POLLOUT')).stdout().strip()
-value_POLLPRI = cc.run(templ.format('POLLPRI')).stdout().strip()
-value_POLLERR = cc.run(templ.format('POLLERR')).stdout().strip()
-value_POLLHUP = cc.run(templ.format('POLLHUP')).stdout().strip()
-value_POLLNVAL = cc.run(templ.format('POLLNVAL')).stdout().strip()
+value_POLLIN = cc.run(templ.format('POLLIN'), name : 'POLLIN value').stdout().strip()
+value_POLLOUT = cc.run(templ.format('POLLOUT'), name : 'POLLOUT value').stdout().strip()
+value_POLLPRI = cc.run(templ.format('POLLPRI'), name : 'POLLPRI value').stdout().strip()
+value_POLLERR = cc.run(templ.format('POLLERR'), name : 'POLLERR value').stdout().strip()
+value_POLLHUP = cc.run(templ.format('POLLHUP'), name : 'POLLHUP value').stdout().strip()
+value_POLLNVAL = cc.run(templ.format('POLLNVAL'), name : 'POLLNVAL value').stdout().strip()
 
 glibconfig_conf.set('g_pollin', value_POLLIN)
 glibconfig_conf.set('g_pollout', value_POLLOUT)
@@ -1150,7 +1150,7 @@ int main(int argc, char **argv) {
   if not meson.has_exe_wrapper()
     error('Fix sys define detection for cross build')
   endif
-  val = cc.run(templ.format(glib_inet_includes, d[0])).stdout().strip()
+  val = cc.run(templ.format(glib_inet_includes, d[0]), name : d[0] + ' value').stdout().strip()
   glibconfig_conf.set(d[1], val)
 endforeach
 
