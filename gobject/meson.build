@@ -60,7 +60,7 @@ libgobject = shared_library('gobject-2.0',
   soversion : soversion,
   install : true,
   include_directories : [configinc],
-  dependencies : [libffi_dep, libglib_dep],
+  dependencies : [libintl, libffi_dep, libglib_dep],
   c_args : ['-DG_LOG_DOMAIN="GLib-GObject"', '-DGOBJECT_COMPILATION'] + glib_hidden_visibility_args)
 
 libgobject_dep = declare_dependency(link_with : libgobject,

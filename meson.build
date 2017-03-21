@@ -115,12 +115,6 @@ if get_option('default_library') != 'static'
   endif
 endif
 
-if run_command('xgettext', '--help').returncode() != 0
-  error('GNU Gettext required currently.')
-endif
-glib_conf.set('HAVE_GETTEXT', 1)
-glib_conf.set_quoted('GLIB_LOCALE_DIR', join_paths(glib_datadir, 'locale'))
-
 # FIXME: what about Cygwin (G_WITH_CYGWIN)
 if host_system == 'windows'
   glib_os = '''#define G_OS_WIN32
@@ -602,8 +596,6 @@ endif
 # Check whether the printf() family supports Unix98 %n$ positional parameters
 # AC_FUNC_PRINTF_UNIX98
 # Nothing uses HAVE_UNIX98_PRINTF
-
-glib_conf.set('HAVE_DCGETTEXT', cc.has_header_symbol('libintl.h', 'dcgettext'))
 
 # Check for nl_langinfo and CODESET
 # FIXME: Check for HAVE_BIND_TEXTDOMAIN_CODESET
@@ -1276,8 +1268,21 @@ glib_conf.set('USE_SYSTEM_PCRE', pcre.found())
 libm = cc.find_library('m', required : false)
 libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
 libz_dep = dependency('zlib', fallback : ['zlib', 'zlib_dep'])
+
 # Only used on non-glibc targets
 libintl = cc.find_library('intl', required : false)
+if host_system == 'windows' and not libintl.found()
+  # Used only when the gettext library is not available (MSVC, not MinGW)
+  libintl = subproject('proxy-libintl').get_variable('intl_dep')
+  glib_conf.set('HAVE_DCGETTEXT', 1)
+else
+  glib_conf.set('HAVE_DCGETTEXT', cc.has_header_symbol('libintl.h', 'dcgettext'))
+endif
+# We require gettext to always be present
+glib_conf.set('HAVE_GETTEXT', 1)
+glib_conf.set_quoted('GLIB_LOCALE_DIR', join_paths(glib_datadir, 'locale'))
+# xgettext is optional (on Windows for instance)
+xgettext = find_program('xgettext', required : false)
 
 # libmount is only used by gio, but we need to fetch the libs to generate the
 # pkg-config file below
@@ -1382,7 +1387,9 @@ subdir('gobject')
 subdir('gthread')
 subdir('gmodule')
 subdir('gio')
-subdir('po')
+if xgettext.found()
+  subdir('po')
+endif
 
 # Configure and install pkg-config files
 pc_files = [

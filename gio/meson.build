@@ -755,7 +755,7 @@ executable('gio', gio_tool_sources,
   c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
-  dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
+  dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 executable('gresource', 'gresource-tool.c',
   install : true,
