@@ -7,7 +7,7 @@
 
 import sys, os, shutil, subprocess
 
-perl = sys.argv[1]
+python = sys.argv[1]
 glib_mkenums = sys.argv[2]
 ofilename = sys.argv[3]
 ofile_rel = os.path.basename(ofilename)
@@ -17,7 +17,7 @@ headers = sys.argv[5:]
 
 arg_array = ['--template', template_file_path]
 
-cmd = [perl, glib_mkenums]
+cmd = [python, glib_mkenums]
 pc = subprocess.Popen(cmd + arg_array + headers, stdout=subprocess.PIPE)
 (stdo, _) = pc.communicate()
 if pc.returncode != 0:

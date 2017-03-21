@@ -640,7 +640,7 @@ gioenumtypes_h = custom_target('gioenumtypes_h',
   input : gio_headers,
   install : true,
   install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
-  command : [gio_build_mkenum, perl, glib_mkenums,
+  command : [gio_build_mkenum, python, glib_mkenums,
              '@OUTPUT@', meson.current_source_dir(),
              '@INPUT@', gnetworking_h])
 
@@ -648,7 +648,7 @@ gioenumtypes_c = custom_target('gioenumtypes_c',
   output : 'gioenumtypes.c',
   input : gio_headers,
   depends : [gioenumtypes_h],
-  command : [gio_build_mkenum, perl, glib_mkenums,
+  command : [gio_build_mkenum, python, glib_mkenums,
              '@OUTPUT@', meson.current_source_dir(),
              '@INPUT@', gnetworking_h])
 

@@ -1304,9 +1304,6 @@ if host_system == 'windows'
   winsock2 = cc.find_library('ws2_32')
 endif
 
-# Needed for glib-mkenums
-perl = find_program('perl')
-
 python = import('python3').find_python()
 
 # FIXME: defines in config.h that are not actually used anywhere

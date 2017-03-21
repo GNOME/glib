@@ -68,7 +68,6 @@ libgobject_dep = declare_dependency(link_with : libgobject,
 
 glib_mkenums_conf = configuration_data()
 glib_mkenums_conf.set('GLIB_VERSION', glib_version)
-glib_mkenums_conf.set('PERL_PATH', perl.path())
 
 # FIXME: Set permissions
 glib_mkenums = configure_file(input : 'glib-mkenums.in',
