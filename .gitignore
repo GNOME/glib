@@ -59,4 +59,4 @@ ChangeLog
 
 # Meson
 /meson-build/
-/subprojects/
+/subprojects/*/
