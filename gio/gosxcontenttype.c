@@ -218,6 +218,9 @@ g_content_type_can_be_executable (const gchar *type)
     ret = TRUE;
   else if (UTTypeConformsTo (uti, CFSTR("public.script")))
     ret = TRUE;
+  /* Our tests assert that all text can be executable... */
+  else if (UTTypeConformsTo (uti, CFSTR("public.text")))
+      ret = TRUE;
 
   CFRelease (uti);
   return ret;
@@ -263,10 +266,20 @@ g_content_type_from_mime_type (const gchar *mime_type)
   if (g_str_has_prefix (mime_type, "inode"))
     {
       if (g_str_has_suffix (mime_type, "directory"))
-        return g_strdup ("public.directory");
+        return g_strdup ("public.folder");
       if (g_str_has_suffix (mime_type, "symlink"))
         return g_strdup ("public.symlink");
     }
+
+  /* This is correct according to the Apple docs:
+     https://developer.apple.com/library/content/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html
+  */
+  if (strcmp (mime_type, "text/plain") == 0)
+    return g_strdup ("public.text");
+
+  /* Non standard type */
+  if (strcmp (mime_type, "application/x-executable") == 0)
+    return g_strdup ("public.executable");
 
   mime_str = create_cfstring_from_cstr (mime_type);
   uti_str = UTTypeCreatePreferredIdentifierForTag (kUTTagClassMIMEType, mime_str, NULL);
@@ -296,10 +309,12 @@ g_content_type_get_mime_type (const gchar *type)
         return g_strdup ("text/*");
       if (g_str_has_suffix (type, ".audio"))
         return g_strdup ("audio/*");
-      if (g_str_has_suffix (type, ".directory"))
+      if (g_str_has_suffix (type, ".folder"))
         return g_strdup ("inode/directory");
       if (g_str_has_suffix (type, ".symlink"))
         return g_strdup ("inode/symlink");
+      if (g_str_has_suffix (type, ".executable"))
+        return g_strdup ("application/x-executable");
     }
 
   uti_str = create_cfstring_from_cstr (type);
@@ -334,6 +349,7 @@ g_content_type_guess (const gchar  *filename,
   CFStringRef uti = NULL;
   gchar *cextension;
   CFStringRef extension;
+  int uncertain = -1;
 
   g_return_val_if_fail (data_size != (gsize) -1, NULL);
 
@@ -361,11 +377,13 @@ g_content_type_guess (const gchar  *filename,
                 {
                   CFRelease (uti);
                   uti = CFStringCreateCopy (NULL, kUTTypeFolder);
+                  uncertain = TRUE;
                 }
             }
           else
             {
               uti = CFStringCreateCopy (NULL, kUTTypeFolder);
+              uncertain = TRUE; /* Matches Unix backend */
             }
         }
       else
@@ -374,6 +392,10 @@ g_content_type_guess (const gchar  *filename,
           if (g_str_has_suffix (basename, ".ui"))
             {
               uti = CFStringCreateCopy (NULL, kUTTypeXML);
+            }
+          else if (g_str_has_suffix (basename, ".txt"))
+            {
+              uti = CFStringCreateCopy (NULL, CFSTR ("public.text"));
             }
           else if ((cextension = strrchr (basename, '.')) != NULL)
             {
@@ -387,14 +409,15 @@ g_content_type_guess (const gchar  *filename,
           g_free (dirname);
         }
     }
-  else if (data)
+  if (data && (!filename || !uti ||
+               CFStringCompare (uti, CFSTR ("public.data"), 0) == kCFCompareEqualTo))
     {
       if (looks_like_text (data, data_size))
         {
           if (g_str_has_prefix ((const gchar*)data, "#!/"))
             uti = CFStringCreateCopy (NULL, CFSTR ("public.script"));
           else
-            uti = CFStringCreateCopy (NULL, kUTTypePlainText);
+            uti = CFStringCreateCopy (NULL, CFSTR ("public.text"));
         }
     }
 
@@ -404,6 +427,10 @@ g_content_type_guess (const gchar  *filename,
       uti = CFStringCreateCopy (NULL, CFSTR ("public.data"));
       if (result_uncertain)
         *result_uncertain = TRUE;
+    }
+  else if (result_uncertain)
+    {
+      *result_uncertain = uncertain == -1 ? FALSE : uncertain;
     }
 
   return create_cstr_from_cfstring (uti);

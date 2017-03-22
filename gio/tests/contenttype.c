@@ -49,13 +49,6 @@ test_guess (void)
   g_free (res);
   g_free (expected);
 
-  res = g_content_type_guess ("foo.desktop", data, sizeof (data) - 1, &uncertain);
-  expected = g_content_type_from_mime_type ("application/x-desktop");
-  g_assert_content_type_equals (expected, res);
-  g_assert (!uncertain);
-  g_free (res);
-  g_free (expected);
-
   res = g_content_type_guess ("foo.txt", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
   g_assert_content_type_equals (expected, res);
@@ -65,6 +58,15 @@ test_guess (void)
 
   res = g_content_type_guess ("foo", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
+  g_assert_content_type_equals (expected, res);
+  g_assert (!uncertain);
+  g_free (res);
+  g_free (expected);
+
+/* Sadly OSX just doesn't have as large and robust of a mime type database as Linux */
+#ifndef __APPLE__
+  res = g_content_type_guess ("foo.desktop", data, sizeof (data) - 1, &uncertain);
+  expected = g_content_type_from_mime_type ("application/x-desktop");
   g_assert_content_type_equals (expected, res);
   g_assert (!uncertain);
   g_free (res);
@@ -115,6 +117,7 @@ test_guess (void)
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
+#endif
 }
 
 static void
@@ -160,6 +163,11 @@ test_list (void)
   GList *types;
   gchar *plain;
   gchar *xml;
+
+#ifdef __APPLE__
+  g_test_skip ("The OSX backend does not implement g_content_types_get_registered()");
+  return;
+#endif
 
   plain = g_content_type_from_mime_type ("text/plain");
   xml = g_content_type_from_mime_type ("application/xml");
@@ -298,6 +306,11 @@ test_tree (void)
   GFile *file;
   gchar **types;
   gint i;
+
+#ifdef __APPLE__
+  g_test_skip ("The OSX backend does not implement g_content_type_guess_for_tree()");
+  return;
+#endif
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
