@@ -36,6 +36,12 @@
 #include "gportalsupport.h"
 #endif
 
+#ifdef G_OS_UNIX
+#define FLATPAK_OPENURI_PORTAL_BUS_NAME "org.freedesktop.portal.Desktop"
+#define FLATPAK_OPENURI_PORTAL_PATH "/org/freedesktop/portal/desktop"
+#define FLATPAK_OPENURI_PORTAL_IFACE "org.freedesktop.portal.OpenURI"
+#define FLATPAK_OPENURI_PORTAL_METHOD "OpenURI"
+#endif
 
 /**
  * SECTION:gappinfo
@@ -745,6 +751,38 @@ open_uri_done (GObject      *source,
   g_variant_unref (res);
 }
 
+static char *
+real_uri_for_portal (const char          *uri,
+                     GAppLaunchContext   *context,
+                     GCancellable        *cancellable,
+                     GAsyncReadyCallback  callback,
+                     gpointer             user_data,
+                     GError             **error)
+{
+  GFile *file = NULL;
+  char *real_uri = NULL;
+
+  file = g_file_new_for_uri (uri);
+  if (g_file_is_native (file))
+    {
+      real_uri = g_document_portal_add_document (file, error);
+      g_object_unref (file);
+
+      if (real_uri == NULL)
+        {
+          g_task_report_error (context, callback, user_data, NULL, *error);
+          return NULL;
+        }
+    }
+  else
+    {
+      g_object_unref (file);
+      real_uri = g_strdup (uri);
+    }
+
+  return real_uri;
+}
+
 static void
 launch_default_with_portal_async (const char          *uri,
                                   GAppLaunchContext   *context,
@@ -755,7 +793,6 @@ launch_default_with_portal_async (const char          *uri,
   GDBusConnection *session_bus;
   GVariantBuilder opt_builder;
   const char *parent_window = NULL;
-  GFile *file;
   char *real_uri;
   GTask *task;
   GAsyncReadyCallback dbus_callback;
@@ -771,27 +808,14 @@ launch_default_with_portal_async (const char          *uri,
   if (context && context->priv->envp)
     parent_window = g_environ_getenv (context->priv->envp, "PARENT_WINDOW_ID");
 
+  real_uri = real_uri_for_portal (uri, context, cancellable, callback, user_data, &error);
+  if (real_uri == NULL)
+    {
+      g_object_unref (session_bus);
+      return;
+    }
+
   g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
-
-  file = g_file_new_for_uri (uri);
-
-  if (g_file_is_native (file))
-    {
-      real_uri = g_document_portal_add_document (file, &error);
-      g_object_unref (file);
-
-      if (real_uri == NULL)
-        {
-          g_task_report_error (context, callback, user_data, NULL, error);
-          g_object_unref (session_bus);
-          return;
-        }
-    }
-  else
-    {
-      g_object_unref (file);
-      real_uri = g_strdup (uri);
-    }
 
   if (callback)
     {
@@ -825,12 +849,70 @@ launch_default_with_portal_async (const char          *uri,
   g_free (real_uri);
 }
 
+static void
+launch_default_with_portal_sync (const char          *uri,
+                                 GAppLaunchContext   *context)
+{
+  GDBusConnection *session_bus;
+  GVariantBuilder opt_builder;
+  GVariant *res = NULL;
+  const char *parent_window = NULL;
+  char *real_uri;
+  GError *error = NULL;
+
+  session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  if (session_bus == NULL)
+    {
+      g_task_report_error (context, NULL, NULL, NULL, error);
+      return;
+    }
+
+  if (context && context->priv->envp)
+    parent_window = g_environ_getenv (context->priv->envp, "PARENT_WINDOW_ID");
+
+  real_uri = real_uri_for_portal (uri, context, NULL, NULL, NULL, &error);
+  if (real_uri == NULL)
+    {
+      g_object_unref (session_bus);
+      return;
+    }
+
+  g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
+
+  /* Calling the D-Bus method for the OpenURI portal "protects" the logic from
+   * not ever having the remote method running in case the xdg-desktop-portal
+   * process is not yet running and the caller quits quickly after the call.
+   */
+  res = g_dbus_connection_call_sync (session_bus,
+                                     FLATPAK_OPENURI_PORTAL_BUS_NAME,
+                                     FLATPAK_OPENURI_PORTAL_PATH,
+                                     FLATPAK_OPENURI_PORTAL_IFACE,
+                                     FLATPAK_OPENURI_PORTAL_METHOD,
+                                     g_variant_new ("(ss@a{sv})",
+                                                    parent_window ? parent_window : "",
+                                                    real_uri,
+                                                    g_variant_builder_end (&opt_builder)),
+                                     NULL,
+                                     G_DBUS_CALL_FLAGS_NONE,
+                                     G_MAXINT,
+                                     NULL,
+                                     &error);
+  if (res == NULL)
+    g_task_report_error (context, NULL, NULL, NULL, error);
+  else
+    g_variant_unref (res);
+
+  g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
+  g_object_unref (session_bus);
+  g_free (real_uri);
+}
+
 static gboolean
 launch_default_with_portal (const char         *uri,
                             GAppLaunchContext  *context,
                             GError            **error)
 {
-  launch_default_with_portal_async (uri, context, NULL, NULL, NULL);
+  launch_default_with_portal_sync (uri, context);
   return TRUE;
 }
 #endif
