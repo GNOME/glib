@@ -256,11 +256,13 @@ test_extra_programs += \
 	dbus-launch				\
 	$(NULL)
 
+if !OS_COCOA
 # Uninstalled because of the check-for-executable logic in DesktopAppInfo unable to find the installed executable
 uninstalled_test_programs += \
 	appinfo					\
 	desktop-app-info			\
 	$(NULL)
+endif
 
 home_desktop_files = \
 	epiphany-weather-for-toronto-island-9c6a4e022b17686306243dada811d550d25eb1fb.desktop	\
