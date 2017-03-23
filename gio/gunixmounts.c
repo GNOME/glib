@@ -130,6 +130,9 @@ struct _GUnixMountEntry {
   gboolean is_system_internal;
 };
 
+G_DEFINE_BOXED_TYPE (GUnixMountEntry, g_unix_mount_entry,
+                     g_unix_mount_copy, g_unix_mount_free)
+
 struct _GUnixMountPoint {
   char *mount_path;
   char *device_path;
@@ -139,6 +142,9 @@ struct _GUnixMountPoint {
   gboolean is_user_mountable;
   gboolean is_loopback;
 };
+
+G_DEFINE_BOXED_TYPE (GUnixMountPoint, g_unix_mount_point,
+                     g_unix_mount_point_copy, g_unix_mount_point_free)
 
 static GList *_g_get_unix_mounts (void);
 static GList *_g_get_unix_mount_points (void);
@@ -1389,7 +1395,7 @@ get_mount_points_timestamp (void)
 }
 
 /**
- * g_unix_mounts_get: (skip)
+ * g_unix_mounts_get:
  * @time_read: (out) (optional): guint64 to contain a timestamp, or %NULL
  *
  * Gets a #GList of #GUnixMountEntry containing the unix mounts.
@@ -1410,8 +1416,8 @@ g_unix_mounts_get (guint64 *time_read)
 }
 
 /**
- * g_unix_mount_at: (skip)
- * @mount_path: path for a possible unix mount.
+ * g_unix_mount_at:
+ * @mount_path: (type filename): path for a possible unix mount.
  * @time_read: (out) (optional): guint64 to contain a timestamp.
  * 
  * Gets a #GUnixMountEntry for a given mount path. If @time_read
@@ -1445,8 +1451,8 @@ g_unix_mount_at (const char *mount_path,
 }
 
 /**
- * g_unix_mount_for: (skip)
- * @file_path: file path on some unix mount.
+ * g_unix_mount_for:
+ * @file_path: (type filename): file path on some unix mount.
  * @time_read: (out) (optional): guint64 to contain a timestamp.
  *
  * Gets a #GUnixMountEntry for a given file path. If @time_read
@@ -1482,7 +1488,7 @@ g_unix_mount_for (const char *file_path,
 }
 
 /**
- * g_unix_mount_points_get: (skip)
+ * g_unix_mount_points_get:
  * @time_read: (out) (optional): guint64 to contain a timestamp.
  *
  * Gets a #GList of #GUnixMountPoint containing the unix mount points.
@@ -1865,6 +1871,33 @@ g_unix_mount_free (GUnixMountEntry *mount_entry)
 }
 
 /**
+ * g_unix_mount_copy:
+ * @mount_entry: a #GUnixMountEntry.
+ *
+ * Makes a copy of @mount_entry.
+ *
+ * Returns: (transfer full): a new #GUnixMountEntry
+ *
+ * Since: 2.54
+ */
+GUnixMountEntry *
+g_unix_mount_copy (GUnixMountEntry *mount_entry)
+{
+  GUnixMountEntry *copy;
+
+  g_return_val_if_fail (mount_entry != NULL, NULL);
+
+  copy = g_new0 (GUnixMountEntry, 1);
+  copy->mount_path = g_strdup (mount_entry->mount_path);
+  copy->device_path = g_strdup (mount_entry->device_path);
+  copy->filesystem_type = g_strdup (mount_entry->filesystem_type);
+  copy->is_read_only = mount_entry->is_read_only;
+  copy->is_system_internal = mount_entry->is_system_internal;
+
+  return copy;
+}
+
+/**
  * g_unix_mount_point_free:
  * @mount_point: unix mount point to free.
  * 
@@ -1880,6 +1913,35 @@ g_unix_mount_point_free (GUnixMountPoint *mount_point)
   g_free (mount_point->filesystem_type);
   g_free (mount_point->options);
   g_free (mount_point);
+}
+
+/**
+ * g_unix_mount_point_copy:
+ * @mount_point: a #GUnixMountPoint.
+ *
+ * Makes a copy of @mount_point.
+ *
+ * Returns: (transfer full): a new #GUnixMountPoint
+ *
+ * Since: 2.54
+ */
+GUnixMountPoint*
+g_unix_mount_point_copy (GUnixMountPoint *mount_point)
+{
+  GUnixMountPoint *copy;
+
+  g_return_val_if_fail (mount_point != NULL, NULL);
+
+  copy = g_new0 (GUnixMountPoint, 1);
+  copy->mount_path = g_strdup (mount_point->mount_path);
+  copy->device_path = g_strdup (mount_point->device_path);
+  copy->filesystem_type = g_strdup (mount_point->filesystem_type);
+  copy->options = g_strdup (mount_point->options);
+  copy->is_read_only = mount_point->is_read_only;
+  copy->is_user_mountable = mount_point->is_user_mountable;
+  copy->is_loopback = mount_point->is_loopback;
+
+  return copy;
 }
 
 /**

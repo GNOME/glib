@@ -144,7 +144,9 @@ g_unix_credentials_message_get_type
 g_unix_fd_list_get_type
 g_unix_fd_message_get_type
 g_unix_input_stream_get_type
+g_unix_mount_entry_get_type
 g_unix_mount_monitor_get_type
+g_unix_mount_point_get_type
 g_unix_output_stream_get_type
 g_unix_socket_address_get_type
 g_vfs_get_type

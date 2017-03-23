@@ -33,6 +33,10 @@ G_BEGIN_DECLS
  **/
 typedef struct _GUnixMountEntry GUnixMountEntry;
 
+#define G_TYPE_UNIX_MOUNT_ENTRY (g_unix_mount_entry_get_type ())
+GLIB_AVAILABLE_IN_2_54
+GType g_unix_mount_entry_get_type (void) G_GNUC_CONST;
+
 /**
  * GUnixMountPoint:
  *
@@ -40,6 +44,10 @@ typedef struct _GUnixMountEntry GUnixMountEntry;
  * This corresponds roughly to a fstab entry.
  **/
 typedef struct _GUnixMountPoint GUnixMountPoint;
+
+#define G_TYPE_UNIX_MOUNT_POINT (g_unix_mount_point_get_type ())
+GLIB_AVAILABLE_IN_2_54
+GType g_unix_mount_point_get_type (void) G_GNUC_CONST;
 
 /**
  * GUnixMountMonitor:
@@ -58,8 +66,12 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixMountMonitor, g_object_unref)
 
 GLIB_AVAILABLE_IN_ALL
 void           g_unix_mount_free                    (GUnixMountEntry    *mount_entry);
+GLIB_AVAILABLE_IN_2_54
+GUnixMountEntry *g_unix_mount_copy                  (GUnixMountEntry    *mount_entry);
 GLIB_AVAILABLE_IN_ALL
 void           g_unix_mount_point_free              (GUnixMountPoint    *mount_point);
+GLIB_AVAILABLE_IN_2_54
+GUnixMountPoint *g_unix_mount_point_copy            (GUnixMountPoint    *mount_point);
 GLIB_AVAILABLE_IN_ALL
 gint           g_unix_mount_compare                 (GUnixMountEntry    *mount1,
 						     GUnixMountEntry    *mount2);
