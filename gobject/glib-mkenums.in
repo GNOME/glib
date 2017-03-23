@@ -7,7 +7,7 @@
 # This is a manual conversion from the original Perl script to
 # Python. Improvements are welcome.
 
-import os, sys, re, argparse
+import os, sys, re, argparse, tempfile
 
 output_stream = sys.stdout
 
