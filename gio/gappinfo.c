@@ -783,6 +783,7 @@ launch_default_with_portal_async (const char          *uri,
       if (real_uri == NULL)
         {
           g_task_report_error (context, callback, user_data, NULL, error);
+          g_object_unref (session_bus);
           return;
         }
     }
