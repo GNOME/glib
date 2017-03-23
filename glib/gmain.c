@@ -1809,6 +1809,9 @@ g_source_get_priority (GSource *source)
  * for both sources is reached during the same main context iteration
  * then the order of dispatch is undefined.
  *
+ * It is a no-op to call this function on a #GSource which has already been
+ * destroyed with g_source_destroy().
+ *
  * This API is only intended to be used by implementations of #GSource.
  * Do not call this API on a #GSource that you did not create.
  *
