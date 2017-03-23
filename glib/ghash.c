@@ -663,7 +663,9 @@ g_hash_table_maybe_resize (GHashTable *hash_table)
  * and g_str_equal() functions are provided for the most common types
  * of keys. If @key_equal_func is %NULL, keys are compared directly in
  * a similar fashion to g_direct_equal(), but without the overhead of
- * a function call.
+ * a function call. @key_equal_func is called with the key from the hash table
+ * as its first parameter, and the user-provided key to check against as
+ * its second.
  *
  * Returns: a new #GHashTable
  */
