@@ -769,6 +769,54 @@ if cc.links('''#include <langinfo.h>
   glib_conf.set('HAVE_LANGINFO_OUTDIGIT', 1)
 endif
 
+# Check for nl_langinfo and alternative month names
+if cc.links('''#ifndef _GNU_SOURCE
+              # define _GNU_SOURCE
+              #endif
+              #include <langinfo.h>
+               int main (int argc, char ** argv) {
+                 char *str;
+                 str = nl_langinfo (ALTMON_1);
+                 str = nl_langinfo (ALTMON_2);
+                 str = nl_langinfo (ALTMON_3);
+                 str = nl_langinfo (ALTMON_4);
+                 str = nl_langinfo (ALTMON_5);
+                 str = nl_langinfo (ALTMON_6);
+                 str = nl_langinfo (ALTMON_7);
+                 str = nl_langinfo (ALTMON_8);
+                 str = nl_langinfo (ALTMON_9);
+                 str = nl_langinfo (ALTMON_10);
+                 str = nl_langinfo (ALTMON_11);
+                 str = nl_langinfo (ALTMON_12);
+                 return 0;
+               }''', name : 'nl_langinfo (ALTMON_n)')
+  glib_conf.set('HAVE_LANGINFO_ALTMON', 1)
+endif
+
+# Check for nl_langinfo and abbreviated alternative month names
+if cc.links('''#ifndef _GNU_SOURCE
+              # define _GNU_SOURCE
+              #endif
+              #include <langinfo.h>
+               int main (int argc, char ** argv) {
+                 char *str;
+                 str = nl_langinfo (_NL_ALTMON_1);
+                 str = nl_langinfo (_NL_ALTMON_2);
+                 str = nl_langinfo (_NL_ALTMON_3);
+                 str = nl_langinfo (_NL_ALTMON_4);
+                 str = nl_langinfo (_NL_ALTMON_5);
+                 str = nl_langinfo (_NL_ALTMON_6);
+                 str = nl_langinfo (_NL_ALTMON_7);
+                 str = nl_langinfo (_NL_ALTMON_8);
+                 str = nl_langinfo (_NL_ALTMON_9);
+                 str = nl_langinfo (_NL_ALTMON_10);
+                 str = nl_langinfo (_NL_ALTMON_11);
+                 str = nl_langinfo (_NL_ALTMON_12);
+                 return 0;
+               }''', name : 'nl_langinfo (_NL_ALTMON_n)')
+  glib_conf.set('HAVE_LANGINFO_ABALTMON', 1)
+endif
+
 # Check if C compiler supports the 'signed' keyword
 if not cc.compiles('''signed char x;''', name : 'signed')
   glib_conf.set('signed', '/* NOOP */')

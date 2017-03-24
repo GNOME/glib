@@ -1274,6 +1274,50 @@ AC_CACHE_CHECK([for nl_langinfo (_NL_CTYPE_OUTDIGITn_MB)], glib_cv_langinfo_outd
 if test x$glib_cv_langinfo_outdigit = xyes; then
   AC_DEFINE(HAVE_LANGINFO_OUTDIGIT,1,[Have nl_langinfo (_NL_CTYPE_OUTDIGITn_MB)])
 fi
+
+dnl Check for nl_langinfo and ALTMON_n
+AC_CACHE_CHECK([for nl_langinfo (ALTMON_n)], glib_cv_langinfo_altmon,[
+        AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <langinfo.h>],
+                [char *str;
+                 str = nl_langinfo (ALTMON_1);
+                 str = nl_langinfo (ALTMON_2);
+                 str = nl_langinfo (ALTMON_3);
+                 str = nl_langinfo (ALTMON_4);
+                 str = nl_langinfo (ALTMON_5);
+                 str = nl_langinfo (ALTMON_6);
+                 str = nl_langinfo (ALTMON_7);
+                 str = nl_langinfo (ALTMON_8);
+                 str = nl_langinfo (ALTMON_9);
+                 str = nl_langinfo (ALTMON_10);
+                 str = nl_langinfo (ALTMON_11);
+                 str = nl_langinfo (ALTMON_12);])],
+                [glib_cv_langinfo_altmon=yes],
+                [glib_cv_langinfo_altmon=no])])
+if test x$glib_cv_langinfo_altmon = xyes; then
+  AC_DEFINE(HAVE_LANGINFO_ALTMON,1,[Have nl_langinfo (ALTMON_n)])
+fi
+
+dnl Check for nl_langinfo and _NL_ABALTMON_n
+AC_CACHE_CHECK([for nl_langinfo (_NL_ABALTMON_n)], glib_cv_langinfo_abaltmon,[
+        AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <langinfo.h>],
+                [char *str;
+                 str = nl_langinfo (_NL_ABALTMON_1);
+                 str = nl_langinfo (_NL_ABALTMON_2);
+                 str = nl_langinfo (_NL_ABALTMON_3);
+                 str = nl_langinfo (_NL_ABALTMON_4);
+                 str = nl_langinfo (_NL_ABALTMON_5);
+                 str = nl_langinfo (_NL_ABALTMON_6);
+                 str = nl_langinfo (_NL_ABALTMON_7);
+                 str = nl_langinfo (_NL_ABALTMON_8);
+                 str = nl_langinfo (_NL_ABALTMON_9);
+                 str = nl_langinfo (_NL_ABALTMON_10);
+                 str = nl_langinfo (_NL_ABALTMON_11);
+                 str = nl_langinfo (_NL_ABALTMON_12);])],
+                [glib_cv_langinfo_abaltmon=yes],
+                [glib_cv_langinfo_abaltmon=no])])
+if test x$glib_cv_langinfo_abaltmon = xyes; then
+  AC_DEFINE(HAVE_LANGINFO_ABALTMON,1,[Have nl_langinfo (_NL_ABALTMON_n)])
+fi
 AC_LANG_RESTORE
 
 dnl ****************************************
