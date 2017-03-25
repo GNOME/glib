@@ -633,23 +633,25 @@ gio_headers += settings_headers
 gio_headers += gdbus_headers
 install_headers(gio_headers, subdir : 'glib-2.0/gio/')
 
-gio_build_mkenum = find_program('build_mkenum.py')
-
+# We can't use gnome.mkenums() because the GNOME module looks for glib-mkenums
+# in PATH, which means you can't bootstrap glib with its own glib-mkenums.
 gioenumtypes_h = custom_target('gioenumtypes_h',
   output : 'gioenumtypes.h',
+  capture : true,
   input : gio_headers,
   install : true,
   install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
-  command : [gio_build_mkenum, python, glib_mkenums,
-             '@OUTPUT@', meson.current_source_dir(),
+  command : [python, glib_mkenums,
+             '--template', meson.current_source_dir() + '/gioenumtypes.h.template',
              '@INPUT@', gnetworking_h])
 
 gioenumtypes_c = custom_target('gioenumtypes_c',
   output : 'gioenumtypes.c',
+  capture : true,
   input : gio_headers,
   depends : [gioenumtypes_h],
-  command : [gio_build_mkenum, python, glib_mkenums,
-             '@OUTPUT@', meson.current_source_dir(),
+  command : [python, glib_mkenums,
+             '--template', meson.current_source_dir() + '/gioenumtypes.c.template',
              '@INPUT@', gnetworking_h])
 
 gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h])
