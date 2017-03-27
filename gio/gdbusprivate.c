@@ -27,6 +27,8 @@
 #include "gsocket.h"
 #include "gdbusprivate.h"
 #include "gdbusmessage.h"
+#include "gdbusconnection.h"
+#include "gdbusproxy.h"
 #include "gdbuserror.h"
 #include "gdbusintrospection.h"
 #include "gtask.h"
