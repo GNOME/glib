@@ -1746,32 +1746,6 @@ g_io_channel_new_file (const gchar  *filename,
   return channel;
 }
 
-#if !defined (_WIN64)
-
-#undef g_io_channel_new_file
-
-/* Binary compatibility version. Not for newly compiled code. */
-
-GIOChannel *
-g_io_channel_new_file (const gchar  *filename,
-                       const gchar  *mode,
-                       GError      **error)
-{
-  gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, error);
-  GIOChannel *retval;
-
-  if (utf8_filename == NULL)
-    return NULL;
-
-  retval = g_io_channel_new_file_utf8 (utf8_filename, mode, error);
-
-  g_free (utf8_filename);
-
-  return retval;
-}
-
-#endif
-
 static GIOStatus
 g_io_win32_unimpl_set_flags (GIOChannel *channel,
 			     GIOFlags    flags,
@@ -2242,6 +2216,24 @@ GIOChannel *
 g_io_channel_win32_new_stream_socket (int socket)
 {
   return g_io_channel_win32_new_socket (socket);
+}
+
+#endif
+
+#ifdef G_OS_WIN32
+
+/* Binary compatibility versions. Not for newly compiled code. */
+
+_GLIB_EXTERN GIOChannel *g_io_channel_new_file_utf8 (const gchar  *filename,
+                                                     const gchar  *mode,
+                                                     GError      **error);
+
+GIOChannel *
+g_io_channel_new_file_utf8 (const gchar  *filename,
+                            const gchar  *mode,
+                            GError      **error)
+{
+  return g_io_channel_new_file (filename, mode, error);
 }
 
 #endif
