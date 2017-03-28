@@ -159,36 +159,6 @@ g_dir_open (const gchar  *path,
   return dir;
 }
 
-#if defined (G_OS_WIN32) && !defined (_WIN64)
-
-/* The above function actually is called g_dir_open_utf8, and it's
- * that what applications compiled with this GLib version will
- * use.
- */
-
-#undef g_dir_open
-
-/* Binary compatibility version. Not for newly compiled code. */
-
-GDir *
-g_dir_open (const gchar  *path,
-            guint         flags,
-            GError      **error)
-{
-  gchar *utf8_path = g_locale_to_utf8 (path, -1, NULL, NULL, error);
-  GDir *retval;
-
-  if (utf8_path == NULL)
-    return NULL;
-
-  retval = g_dir_open_utf8 (utf8_path, flags, error);
-
-  g_free (utf8_path);
-
-  return retval;
-}
-#endif
-
 /*< private >
  * g_dir_new_from_dirp:
  * @dirp: a #DIR* created by opendir() or fdopendir()
@@ -293,39 +263,6 @@ g_dir_read_name (GDir *dir)
 #endif
 }
 
-#if defined (G_OS_WIN32) && !defined (_WIN64)
-
-/* Ditto for g_dir_read_name */
-
-#undef g_dir_read_name
-
-/* Binary compatibility version. Not for newly compiled code. */
-
-const gchar *
-g_dir_read_name (GDir *dir)
-{
-  while (1)
-    {
-      const gchar *utf8_name = g_dir_read_name_utf8 (dir);
-      gchar *retval;
-      
-      if (utf8_name == NULL)
-	return NULL;
-
-      retval = g_locale_from_utf8 (utf8_name, -1, NULL, NULL, NULL);
-
-      if (retval != NULL)
-	{
-	  strcpy (dir->utf8_buf, retval);
-	  g_free (retval);
-
-	  return dir->utf8_buf;
-	}
-    }
-}
-
-#endif
-
 /**
  * g_dir_rewind:
  * @dir: a #GDir* created by g_dir_open()
@@ -363,3 +300,28 @@ g_dir_close (GDir *dir)
 #endif
   g_free (dir);
 }
+
+#ifdef G_OS_WIN32
+
+/* Binary compatibility versions. Not for newly compiled code. */
+
+_GLIB_EXTERN GDir        *g_dir_open_utf8      (const gchar  *path,
+                                                guint         flags,
+                                                GError      **error);
+_GLIB_EXTERN const gchar *g_dir_read_name_utf8 (GDir         *dir);
+
+GDir *
+g_dir_open_utf8 (const gchar  *path,
+                 guint         flags,
+                 GError      **error)
+{
+  return g_dir_open (path, flags, error);
+}
+
+const gchar *
+g_dir_read_name_utf8 (GDir *dir)
+{
+  return g_dir_read_name (dir);
+}
+
+#endif
