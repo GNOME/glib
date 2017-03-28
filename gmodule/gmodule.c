@@ -195,9 +195,6 @@
 struct _GModule
 {
   gchar	*file_name;
-#if defined (G_OS_WIN32) && !defined(_WIN64)
-  gchar *cp_file_name;
-#endif
   gpointer handle;
   guint ref_count : 31;
   guint is_resident : 1;
@@ -468,6 +465,28 @@ _g_module_debug_init (void)
 
 static GRecMutex g_module_global_lock;
 
+/**
+ * g_module_open:
+ * @file_name: (nullable): the name of the file containing the module, or %NULL
+ *     to obtain a #GModule representing the main program itself
+ * @flags: the flags used for opening the module. This can be the
+ *     logical OR of any of the #GModuleFlags
+ *
+ * Opens a module. If the module has already been opened,
+ * its reference count is incremented.
+ *
+ * First of all g_module_open() tries to open @file_name as a module.
+ * If that fails and @file_name has the ".la"-suffix (and is a libtool
+ * archive) it tries to open the corresponding module. If that fails
+ * and it doesn't have the proper module suffix for the platform
+ * (#G_MODULE_SUFFIX), this suffix will be appended and the corresponding
+ * module will be opended. If that fails and @file_name doesn't have the
+ * ".la"-suffix, this suffix is appended and g_module_open() tries to open
+ * the corresponding module. If eventually that fails as well, %NULL is
+ * returned.
+ *
+ * Returns: a #GModule on success, or %NULL on failure
+ */
 GModule*
 g_module_open (const gchar    *file_name,
 	       GModuleFlags    flags)
@@ -495,9 +514,6 @@ g_module_open (const gchar    *file_name,
 	    {
 	      main_module = g_new (GModule, 1);
 	      main_module->file_name = NULL;
-#if defined (G_OS_WIN32) && !defined(_WIN64)
-	      main_module->cp_file_name = NULL;
-#endif
 	      main_module->handle = handle;
 	      main_module->ref_count = 1;
 	      main_module->is_resident = TRUE;
@@ -610,10 +626,6 @@ g_module_open (const gchar    *file_name,
       
       module = g_new (GModule, 1);
       module->file_name = g_strdup (file_name);
-#if defined (G_OS_WIN32) && !defined(_WIN64)
-      module->cp_file_name = g_locale_from_utf8 (file_name, -1,
-						 NULL, NULL, NULL);
-#endif
       module->handle = handle;
       module->ref_count = 1;
       module->is_resident = FALSE;
@@ -654,61 +666,6 @@ g_module_open (const gchar    *file_name,
   g_rec_mutex_unlock (&g_module_global_lock);
   return module;
 }
-
-#if defined (G_OS_WIN32) && !defined(_WIN64)
-
-#undef g_module_open
-
-/**
- * GModuleFlags:
- * @G_MODULE_BIND_LAZY: specifies that symbols are only resolved when
- *     needed. The default action is to bind all symbols when the module
- *     is loaded.
- * @G_MODULE_BIND_LOCAL: specifies that symbols in the module should
- *     not be added to the global name space. The default action on most
- *     platforms is to place symbols in the module in the global name space,
- *     which may cause conflicts with existing symbols.
- * @G_MODULE_BIND_MASK: mask for all flags.
- *
- * Flags passed to g_module_open().
- * Note that these flags are not supported on all platforms.
- */
-
-/**
- * g_module_open:
- * @file_name: (nullable): the name of the file containing the module, or %NULL
- *     to obtain a #GModule representing the main program itself
- * @flags: the flags used for opening the module. This can be the
- *     logical OR of any of the #GModuleFlags
- *
- * Opens a module. If the module has already been opened,
- * its reference count is incremented.
- *
- * First of all g_module_open() tries to open @file_name as a module.
- * If that fails and @file_name has the ".la"-suffix (and is a libtool
- * archive) it tries to open the corresponding module. If that fails
- * and it doesn't have the proper module suffix for the platform
- * (#G_MODULE_SUFFIX), this suffix will be appended and the corresponding
- * module will be opended. If that fails and @file_name doesn't have the
- * ".la"-suffix, this suffix is appended and g_module_open() tries to open
- * the corresponding module. If eventually that fails as well, %NULL is
- * returned.
- *
- * Returns: a #GModule on success, or %NULL on failure
- */
-GModule *
-g_module_open (const gchar  *file_name,
-               GModuleFlags  flags)
-{
-  gchar *utf8_file_name = g_locale_to_utf8 (file_name, -1, NULL, NULL, NULL);
-  GModule *retval = g_module_open_utf8 (utf8_file_name, flags);
-
-  g_free (utf8_file_name);
-
-  return retval;
-}
-
-#endif
 
 /**
  * g_module_close:
@@ -764,9 +721,6 @@ g_module_close (GModule *module)
       
       _g_module_close (module->handle, FALSE);
       g_free (module->file_name);
-#if defined (G_OS_WIN32) && !defined(_WIN64)
-      g_free (module->cp_file_name);
-#endif
       g_free (module);
     }
   
@@ -878,23 +832,6 @@ g_module_name (GModule *module)
   return module->file_name;
 }
 
-#if defined (G_OS_WIN32) && !defined(_WIN64)
-
-#undef g_module_name
-
-const gchar *
-g_module_name (GModule *module)
-{
-  g_return_val_if_fail (module != NULL, NULL);
-  
-  if (module == main_module)
-    return "main";
-  
-  return module->cp_file_name;
-}
-
-#endif
-
 /**
  * g_module_build_path:
  * @directory: (nullable): the directory where the module is. This can be
@@ -927,3 +864,28 @@ g_module_build_path (const gchar *directory,
   
   return _g_module_build_path (directory, module_name);
 }
+
+
+#ifdef G_OS_WIN32
+
+/* Binary compatibility versions. Not for newly compiled code. */
+
+_GLIB_EXTERN GModule *    g_module_open_utf8 (const gchar  *file_name,
+                                              GModuleFlags  flags);
+
+_GLIB_EXTERN const gchar *g_module_name_utf8 (GModule      *module);
+
+GModule*
+g_module_open_utf8 (const gchar    *file_name,
+                    GModuleFlags    flags)
+{
+  return g_module_open (file_name, flags);
+}
+
+const gchar *
+g_module_name_utf8 (GModule *module)
+{
+  return g_module_name (module);
+}
+
+#endif
