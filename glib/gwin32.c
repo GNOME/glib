@@ -412,9 +412,9 @@ get_package_directory_from_module (const gchar *module_name)
  * g_win32_get_package_installation_directory_of_module() instead.
  **/
 
- gchar *
-g_win32_get_package_installation_directory_utf8 (const gchar *package,
-						 const gchar *dll_name)
+gchar *
+g_win32_get_package_installation_directory (const gchar *package,
+                                            const gchar *dll_name)
 {
   gchar *result = NULL;
 
@@ -429,38 +429,6 @@ g_win32_get_package_installation_directory_utf8 (const gchar *package,
 
   return result;
 }
-
-#if !defined (_WIN64)
-
-/* DLL ABI binary compatibility version that uses system codepage file names */
-
-gchar *
-g_win32_get_package_installation_directory (const gchar *package,
-					    const gchar *dll_name)
-{
-  gchar *utf8_package = NULL, *utf8_dll_name = NULL;
-  gchar *utf8_retval, *retval;
-
-  if (package != NULL)
-    utf8_package = g_locale_to_utf8 (package, -1, NULL, NULL, NULL);
-
-  if (dll_name != NULL)
-    utf8_dll_name = g_locale_to_utf8 (dll_name, -1, NULL, NULL, NULL);
-
-  utf8_retval =
-    g_win32_get_package_installation_directory_utf8 (utf8_package,
-						     utf8_dll_name);
-
-  retval = g_locale_from_utf8 (utf8_retval, -1, NULL, NULL, NULL);
-
-  g_free (utf8_package);
-  g_free (utf8_dll_name);
-  g_free (utf8_retval);
-
-  return retval;
-}
-
-#endif
 
 /**
  * g_win32_get_package_installation_subdirectory:
@@ -492,15 +460,15 @@ g_win32_get_package_installation_directory (const gchar *package,
  **/
 
 gchar *
-g_win32_get_package_installation_subdirectory_utf8 (const gchar *package,
-						    const gchar *dll_name,
-						    const gchar *subdir)
+g_win32_get_package_installation_subdirectory (const gchar *package,
+                                               const gchar *dll_name,
+                                               const gchar *subdir)
 {
   gchar *prefix;
   gchar *dirname;
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  prefix = g_win32_get_package_installation_directory_utf8 (package, dll_name);
+  prefix = g_win32_get_package_installation_directory (package, dll_name);
 G_GNUC_END_IGNORE_DEPRECATIONS
 
   dirname = g_build_filename (prefix, subdir, NULL);
@@ -508,30 +476,6 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
   return dirname;
 }
-
-#if !defined (_WIN64)
-
-/* DLL ABI binary compatibility version that uses system codepage file names */
-
-gchar *
-g_win32_get_package_installation_subdirectory (const gchar *package,
-					       const gchar *dll_name,
-					       const gchar *subdir)
-{
-  gchar *prefix;
-  gchar *dirname;
-
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  prefix = g_win32_get_package_installation_directory (package, dll_name);
-  G_GNUC_END_IGNORE_DEPRECATIONS
-
-  dirname = g_build_filename (prefix, subdir, NULL);
-  g_free (prefix);
-
-  return dirname;
-}
-
-#endif
 
 /**
  * g_win32_check_windows_version:
@@ -782,3 +726,37 @@ g_win32_get_command_line (void)
   LocalFree (args);
   return result;
 }
+
+#ifdef G_OS_WIN32
+
+/* Binary compatibility versions. Not for newly compiled code. */
+
+_GLIB_EXTERN gchar *g_win32_get_package_installation_directory_utf8    (const gchar *package,
+                                                                        const gchar *dll_name);
+
+_GLIB_EXTERN gchar *g_win32_get_package_installation_subdirectory_utf8 (const gchar *package,
+                                                                        const gchar *dll_name,
+                                                                        const gchar *subdir);
+
+gchar *
+g_win32_get_package_installation_directory_utf8 (const gchar *package,
+                                                 const gchar *dll_name)
+{
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  return g_win32_get_package_installation_directory (package, dll_name);
+G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
+gchar *
+g_win32_get_package_installation_subdirectory_utf8 (const gchar *package,
+                                                    const gchar *dll_name,
+                                                    const gchar *subdir)
+{
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  return g_win32_get_package_installation_subdirectory (package,
+                                                        dll_name,
+                                                        subdir);
+G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
+#endif
