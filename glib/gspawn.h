@@ -249,59 +249,6 @@ gboolean g_spawn_check_exit_status (gint      exit_status,
 GLIB_AVAILABLE_IN_ALL
 void g_spawn_close_pid (GPid pid);
 
-#ifndef __GTK_DOC_IGNORE__
-#ifdef G_OS_WIN32
-#define g_spawn_async              g_spawn_async_utf8
-#define g_spawn_async_with_pipes   g_spawn_async_with_pipes_utf8
-#define g_spawn_sync               g_spawn_sync_utf8
-#define g_spawn_command_line_sync  g_spawn_command_line_sync_utf8
-#define g_spawn_command_line_async g_spawn_command_line_async_utf8
-
-GLIB_AVAILABLE_IN_ALL
-gboolean g_spawn_async_utf8              (const gchar           *working_directory,
-                                          gchar                **argv,
-                                          gchar                **envp,
-                                          GSpawnFlags            flags,
-                                          GSpawnChildSetupFunc   child_setup,
-                                          gpointer               user_data,
-                                          GPid                  *child_pid,
-                                          GError               **error);
-GLIB_AVAILABLE_IN_ALL
-gboolean g_spawn_async_with_pipes_utf8   (const gchar           *working_directory,
-                                          gchar                **argv,
-                                          gchar                **envp,
-                                          GSpawnFlags            flags,
-                                          GSpawnChildSetupFunc   child_setup,
-                                          gpointer               user_data,
-                                          GPid                  *child_pid,
-                                          gint                  *standard_input,
-                                          gint                  *standard_output,
-                                          gint                  *standard_error,
-                                          GError               **error);
-GLIB_AVAILABLE_IN_ALL
-gboolean g_spawn_sync_utf8               (const gchar           *working_directory,
-                                          gchar                **argv,
-                                          gchar                **envp,
-                                          GSpawnFlags            flags,
-                                          GSpawnChildSetupFunc   child_setup,
-                                          gpointer               user_data,
-                                          gchar                **standard_output,
-                                          gchar                **standard_error,
-                                          gint                  *exit_status,
-                                          GError               **error);
-
-GLIB_AVAILABLE_IN_ALL
-gboolean g_spawn_command_line_sync_utf8  (const gchar           *command_line,
-                                          gchar                **standard_output,
-                                          gchar                **standard_error,
-                                          gint                  *exit_status,
-                                          GError               **error);
-GLIB_AVAILABLE_IN_ALL
-gboolean g_spawn_command_line_async_utf8 (const gchar           *command_line,
-                                          GError               **error);
-#endif
-#endif
-
 G_END_DECLS
 
 #endif /* __G_SPAWN_H__ */
