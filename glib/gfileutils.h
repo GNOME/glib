@@ -176,33 +176,6 @@ gchar *g_path_get_basename (const gchar *file_name) G_GNUC_MALLOC;
 GLIB_AVAILABLE_IN_ALL
 gchar *g_path_get_dirname  (const gchar *file_name) G_GNUC_MALLOC;
 
-#ifndef __GTK_DOC_IGNORE__
-#ifdef G_OS_WIN32
-#define g_file_test         g_file_test_utf8
-#define g_file_get_contents g_file_get_contents_utf8
-#define g_mkstemp           g_mkstemp_utf8
-#define g_file_open_tmp     g_file_open_tmp_utf8
-#define g_get_current_dir   g_get_current_dir_utf8
-
-GLIB_AVAILABLE_IN_ALL
-gboolean g_file_test_utf8         (const gchar  *filename,
-                                   GFileTest     test);
-GLIB_AVAILABLE_IN_ALL
-gboolean g_file_get_contents_utf8 (const gchar  *filename,
-                                   gchar       **contents,
-                                   gsize        *length,
-                                   GError      **error);
-GLIB_AVAILABLE_IN_ALL
-gint     g_mkstemp_utf8           (gchar        *tmpl);
-GLIB_AVAILABLE_IN_ALL
-gint     g_file_open_tmp_utf8     (const gchar  *tmpl,
-                                   gchar       **name_used,
-                                   GError      **error);
-GLIB_AVAILABLE_IN_ALL
-gchar   *g_get_current_dir_utf8   (void);
-#endif /* G_OS_WIN32 */
-#endif /* __GTK_DOC_IGNORE__ */
-
 G_END_DECLS
 
 #endif /* __G_FILEUTILS_H__ */

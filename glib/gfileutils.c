@@ -2515,114 +2515,57 @@ g_get_current_dir (void)
 #endif /* !G_OS_WIN32 */
 }
 
+#ifdef G_OS_WIN32
 
-/* NOTE : Keep this part last to ensure nothing in this file uses thn
- * below binary compatibility versions.
- */
-#if defined (G_OS_WIN32) && !defined (_WIN64)
+/* Binary compatibility versions. Not for newly compiled code. */
 
-/* Binary compatibility versions. Will be called by code compiled
- * against quite old (pre-2.8, I think) headers only, not from more
- * recently compiled code.
- */
+_GLIB_EXTERN gboolean g_file_test_utf8         (const gchar  *filename,
+                                                GFileTest     test);
+_GLIB_EXTERN gboolean g_file_get_contents_utf8 (const gchar  *filename,
+                                                gchar       **contents,
+                                                gsize        *length,
+                                                GError      **error);
+_GLIB_EXTERN gint     g_mkstemp_utf8           (gchar        *tmpl);
+_GLIB_EXTERN gint     g_file_open_tmp_utf8     (const gchar  *tmpl,
+                                                gchar       **name_used,
+                                                GError      **error);
+_GLIB_EXTERN gchar   *g_get_current_dir_utf8   (void);
 
-#undef g_file_test
-
-gboolean
-g_file_test (const gchar *filename,
-             GFileTest    test)
-{
-  gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
-  gboolean retval;
-
-  if (utf8_filename == NULL)
-    return FALSE;
-
-  retval = g_file_test_utf8 (utf8_filename, test);
-
-  g_free (utf8_filename);
-
-  return retval;
-}
-
-#undef g_file_get_contents
 
 gboolean
-g_file_get_contents (const gchar  *filename,
-                     gchar       **contents,
-                     gsize        *length,
-                     GError      **error)
+g_file_test_utf8 (const gchar *filename,
+                  GFileTest    test)
 {
-  gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, error);
-  gboolean retval;
-
-  if (utf8_filename == NULL)
-    return FALSE;
-
-  retval = g_file_get_contents_utf8 (utf8_filename, contents, length, error);
-
-  g_free (utf8_filename);
-
-  return retval;
+  return g_file_test (filename, test);
 }
 
-#undef g_mkstemp
-
-static gint
-wrap_libc_open (const gchar *filename,
-                int          flags,
-                int          mode)
+gboolean
+g_file_get_contents_utf8 (const gchar  *filename,
+                          gchar       **contents,
+                          gsize        *length,
+                          GError      **error)
 {
-  return open (filename, flags, mode);
+  return g_file_get_contents (filename, contents, length, error);
 }
 
 gint
-g_mkstemp (gchar *tmpl)
+g_mkstemp_utf8 (gchar *tmpl)
 {
-  /* This is the backward compatibility system codepage version,
-   * thus use normal open().
-   */
-  return get_tmp_file (tmpl, wrap_libc_open,
-		       O_RDWR | O_CREAT | O_EXCL, 0600);
+  return g_mkstemp (tmpl);
 }
-
-#undef g_file_open_tmp
 
 gint
-g_file_open_tmp (const gchar  *tmpl,
-		 gchar       **name_used,
-		 GError      **error)
+g_file_open_tmp_utf8 (const gchar  *tmpl,
+                      gchar       **name_used,
+                      GError      **error)
 {
-  gchar *utf8_tmpl = g_locale_to_utf8 (tmpl, -1, NULL, NULL, error);
-  gchar *utf8_name_used;
-  gint retval;
-
-  if (utf8_tmpl == NULL)
-    return -1;
-
-  retval = g_file_open_tmp_utf8 (utf8_tmpl, &utf8_name_used, error);
-  
-  if (retval == -1)
-    return -1;
-
-  if (name_used)
-    *name_used = g_locale_from_utf8 (utf8_name_used, -1, NULL, NULL, NULL);
-
-  g_free (utf8_name_used);
-
-  return retval;
+  return g_file_open_tmp (tmpl, name_used, error);
 }
-
-#undef g_get_current_dir
 
 gchar *
-g_get_current_dir (void)
+g_get_current_dir_utf8 (void)
 {
-  gchar *utf8_dir = g_get_current_dir_utf8 ();
-  gchar *dir = g_locale_from_utf8 (utf8_dir, -1, NULL, NULL, NULL);
-  g_free (utf8_dir);
-  return dir;
+  return g_get_current_dir ();
 }
 
 #endif
-
