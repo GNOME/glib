@@ -398,7 +398,6 @@ gdbus_sessionbus_sources = gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h g
 
 test_programs += \
 	actions					\
-	dbus-appinfo				\
 	defaultvalue				\
 	gapplication				\
 	gdbus-auth				\
@@ -425,6 +424,11 @@ test_programs += \
 
 if OS_UNIX
 test_programs += gdbus-unix-addresses
+
+if !OS_COCOA
+test_programs += dbus-appinfo
+endif
+
 endif
 
 gdbus_proxy_threads_CFLAGS = $(AM_CFLAGS) $(DBUS1_CFLAGS)
