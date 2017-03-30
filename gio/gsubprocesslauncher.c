@@ -240,8 +240,12 @@ g_subprocess_launcher_new (GSubprocessFlags flags)
  * As an alternative, you can use g_subprocess_launcher_setenv(),
  * g_subprocess_launcher_unsetenv(), etc.
  *
- * Pass %NULL to inherit the parent  process' environment. Pass an
- * empty array to set an empty environment.
+ * Pass an empty array to set an empty environment. Pass %NULL to inherit the
+ * parent process’ environment. As of GLib 2.54, the parent process’ environment
+ * will be copied when g_subprocess_launcher_set_environ() is called.
+ * Previously, it was copied when the subprocess was executed. This means the
+ * copied environment may now be modified (using g_subprocess_launcher_setenv(),
+ * etc.) before launching the subprocess.
  *
  * On UNIX, all strings in this array can be arbitrary byte strings.
  * On Windows, they should be in UTF-8.
@@ -254,6 +258,9 @@ g_subprocess_launcher_set_environ (GSubprocessLauncher  *self,
 {
   g_strfreev (self->envp);
   self->envp = g_strdupv (env);
+
+  if (self->envp == NULL)
+    self->envp = g_get_environ ();
 }
 
 /**
