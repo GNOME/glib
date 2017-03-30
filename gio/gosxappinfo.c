@@ -300,8 +300,8 @@ get_bundle_for_id (CFStringRef bundle_id)
   CFURLRef app_url;
   NSBundle *bundle;
 
-#ifdef AVAILABLE_MAC_OS_VERSION_10_10_OR_LATER
-  CSArrayRef urls = LSCopyApplicationURLsForBundleIdentifier (bundle_id, NULL);
+#ifdef AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
+  CFArrayRef urls = LSCopyApplicationURLsForBundleIdentifier (bundle_id, NULL);
   if (urls)
     {
       /* TODO: if there's multiple, we should perhaps prefer one thats in $HOME,
