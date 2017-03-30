@@ -24,6 +24,7 @@
 #include "gcontenttype.h"
 #include "gfile.h"
 #include "gfileicon.h"
+#include "gioerror.h"
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <Foundation/Foundation.h>
@@ -452,7 +453,7 @@ g_osx_app_info_launch_internal (GAppInfo  *appinfo,
   if ((ret = LSOpenFromURLSpec (urlspec, NULL)))
     {
       /* TODO: Better error codes */
-      g_set_error (error, G_IO_ERR, G_IO_ERROR_FAILED,
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Opening application failed with code %d", ret);
       success = FALSE;
     }
