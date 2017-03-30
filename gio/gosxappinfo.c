@@ -295,6 +295,20 @@ free_urlspec (LSLaunchURLSpec *urlspec)
 }
 
 static NSBundle *
+get_bundle_for_url (CFURLRef app_url)
+{
+  NSBundle *bundle = [NSBundle bundleWithURL: (NSURL*)app_url];
+
+  if (!bundle)
+    {
+      g_debug ("Bundle not found for url.");
+      return NULL;
+    }
+
+  return bundle;
+}
+
+static NSBundle *
 get_bundle_for_id (CFStringRef bundle_id)
 {
   CFURLRef app_url;
@@ -324,15 +338,8 @@ get_bundle_for_id (CFStringRef bundle_id)
       return NULL;
     }
 
-  bundle = [NSBundle bundleWithURL: (NSURL*)app_url];
+  bundle = get_bundle_for_url (app_url);
   CFRelease (app_url);
-
-  if (!bundle)
-    {
-      g_debug ("Bundle not found for url.");
-      return NULL;
-    }
-
   return bundle;
 }
 
@@ -650,24 +657,34 @@ GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
                                  gboolean    must_support_uris)
 {
-  gchar *type_cstr;
-  CFStringRef type, bundle_id;
+  CFStringRef type;
   NSBundle *bundle;
+#ifdef AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
+  CFURLRef bundle_id;
+#else
+  CFStringRef bundle_id;
+#endif
 
-  type_cstr = g_content_type_from_mime_type (content_type);
-  type = create_cfstring_from_cstr (type_cstr);
-  g_free (type_cstr);
+  type = create_cfstring_from_cstr (content_type);
 
+#ifdef AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
+  bundle_id = LSCopyDefaultApplicationURLForContentType (type, kLSRolesAll, NULL);
+#else
   bundle_id = LSCopyDefaultRoleHandlerForContentType (type, kLSRolesAll);
+#endif
   CFRelease (type);
 
   if (!bundle_id)
     {
-      g_warning ("No default handler found for mimetype '%s'.", content_type);
+      g_warning ("No default handler found for content type '%s'.", content_type);
       return NULL;
     }
 
+#ifdef AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
+  bundle = get_bundle_for_url (bundle_id);
+#else
   bundle = get_bundle_for_id (bundle_id);
+#endif
   CFRelease (bundle_id);
 
   if (!bundle)
