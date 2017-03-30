@@ -600,24 +600,25 @@ g_osx_app_info_get_all_for_scheme (const char *cscheme)
 GList *
 g_app_info_get_all_for_type (const char *content_type)
 {
-  gchar *type_cstr;
+  gchar *mime_type;
   CFArrayRef bundle_list;
   CFStringRef type;
   NSBundle *bundle;
   GList *info_list = NULL;
   gint i;
 
-  if (g_str_has_prefix (content_type, "x-scheme-handler/"))
+  mime_type = g_content_type_get_mime_type (content_type);
+  if (g_str_has_prefix (mime_type, "x-scheme-handler/"))
     {
-      gchar *scheme = strchr (content_type, '/') + 1;
+      gchar *scheme = strchr (mime_type, '/') + 1;
+      GList *ret = g_osx_app_info_get_all_for_scheme (scheme);
 
-      return g_osx_app_info_get_all_for_scheme (scheme);
+      g_free (mime_type);
+      return ret;
     }
+  g_free (mime_type);
 
-  type_cstr = g_content_type_from_mime_type (content_type);
-  type = create_cfstring_from_cstr (type_cstr);
-  g_free (type_cstr);
-
+  type = create_cfstring_from_cstr (content_type);
   bundle_list = LSCopyAllRoleHandlersForContentType (type, kLSRolesAll);
   CFRelease (type);
 
@@ -657,6 +658,7 @@ GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
                                  gboolean    must_support_uris)
 {
+  gchar *mime_type;
   CFStringRef type;
   NSBundle *bundle;
 #ifdef AVAILABLE_MAC_OS_X_VERSION_10_10_AND_LATER
@@ -664,6 +666,17 @@ g_app_info_get_default_for_type (const char *content_type,
 #else
   CFStringRef bundle_id;
 #endif
+
+  mime_type = g_content_type_get_mime_type (content_type);
+  if (g_str_has_prefix (mime_type, "x-scheme-handler/"))
+    {
+      gchar *scheme = strchr (mime_type, '/') + 1;
+      GAppInfo *ret = g_app_info_get_default_for_uri_scheme (scheme);
+
+      g_free (mime_type);
+      return ret;
+    }
+  g_free (mime_type);
 
   type = create_cfstring_from_cstr (content_type);
 
