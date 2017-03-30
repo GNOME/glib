@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-30 17:55+0300\n"
-"PO-Revision-Date: 2017-03-30 17:58+0300\n"
+"POT-Creation-Date: 2017-03-30 19:31+0300\n"
+"PO-Revision-Date: 2017-03-30 19:31+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -287,7 +287,7 @@ msgid "Truncate not supported on base stream"
 msgstr "Truncate not supported on base stream"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1849
-#: ../gio/gdbusprivate.c:1379 ../gio/gsimpleasyncresult.c:870
+#: ../gio/gdbusprivate.c:1377 ../gio/gsimpleasyncresult.c:870
 #: ../gio/gsimpleasyncresult.c:896
 #, c-format
 msgid "Operation was cancelled"
@@ -308,7 +308,7 @@ msgstr "Not enough space in destination"
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
 #: ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:438 ../glib/gconvert.c:845
 #: ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
-#: ../glib/giochannel.c:2442 ../glib/gutf8.c:856 ../glib/gutf8.c:1309
+#: ../glib/giochannel.c:2442 ../glib/gutf8.c:855 ../glib/gutf8.c:1308
 msgid "Invalid byte sequence in conversion input"
 msgstr "Invalid byte sequence in conversion input"
 
@@ -521,7 +521,7 @@ msgstr ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "— unknown value “%s”"
 
-#: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7153
+#: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7144
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -643,85 +643,85 @@ msgid ""
 msgstr ""
 "Unsupported flags encountered when constructing a client-side connection"
 
-#: ../gio/gdbusconnection.c:4120 ../gio/gdbusconnection.c:4467
+#: ../gio/gdbusconnection.c:4111 ../gio/gdbusconnection.c:4458
 #, c-format
 msgid ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 
-#: ../gio/gdbusconnection.c:4262
+#: ../gio/gdbusconnection.c:4253
 #, c-format
 msgid "No such property '%s'"
 msgstr "No such property '%s'"
 
-#: ../gio/gdbusconnection.c:4274
+#: ../gio/gdbusconnection.c:4265
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "Property '%s' is not readable"
 
-#: ../gio/gdbusconnection.c:4285
+#: ../gio/gdbusconnection.c:4276
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "Property '%s' is not writable"
 
-#: ../gio/gdbusconnection.c:4305
+#: ../gio/gdbusconnection.c:4296
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr "Error setting property '%s': Expected type '%s' but got '%s'"
 
-#: ../gio/gdbusconnection.c:4410 ../gio/gdbusconnection.c:4618
-#: ../gio/gdbusconnection.c:6584
+#: ../gio/gdbusconnection.c:4401 ../gio/gdbusconnection.c:4609
+#: ../gio/gdbusconnection.c:6575
 #, c-format
 msgid "No such interface '%s'"
 msgstr "No such interface '%s'"
 
-#: ../gio/gdbusconnection.c:4836 ../gio/gdbusconnection.c:7093
+#: ../gio/gdbusconnection.c:4827 ../gio/gdbusconnection.c:7084
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "No such interface '%s' on object at path %s"
 
-#: ../gio/gdbusconnection.c:4934
+#: ../gio/gdbusconnection.c:4925
 #, c-format
 msgid "No such method '%s'"
 msgstr "No such method '%s'"
 
-#: ../gio/gdbusconnection.c:4965
+#: ../gio/gdbusconnection.c:4956
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Type of message, '%s', does not match expected type '%s'"
 
-#: ../gio/gdbusconnection.c:5163
+#: ../gio/gdbusconnection.c:5154
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "An object is already exported for the interface %s at %s"
 
-#: ../gio/gdbusconnection.c:5389
+#: ../gio/gdbusconnection.c:5380
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Unable to retrieve property %s.%s"
 
-#: ../gio/gdbusconnection.c:5445
+#: ../gio/gdbusconnection.c:5436
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Unable to set property %s.%s"
 
-#: ../gio/gdbusconnection.c:5621
+#: ../gio/gdbusconnection.c:5612
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Method '%s' returned type '%s', but expected '%s'"
 
-#: ../gio/gdbusconnection.c:6695
+#: ../gio/gdbusconnection.c:6686
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Method '%s' on interface '%s' with signature '%s' does not exist"
 
-#: ../gio/gdbusconnection.c:6816
+#: ../gio/gdbusconnection.c:6807
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "A subtree is already exported for %s"
 
-#: ../gio/gdbusconnection.c:7144
+#: ../gio/gdbusconnection.c:7135
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -912,12 +912,12 @@ msgstr "Error return with body of type “%s”"
 msgid "Error return with empty body"
 msgstr "Error return with empty body"
 
-#: ../gio/gdbusprivate.c:2043
+#: ../gio/gdbusprivate.c:2038
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Unable to get Hardware profile: %s"
 
-#: ../gio/gdbusprivate.c:2088
+#: ../gio/gdbusprivate.c:2083
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 
@@ -931,7 +931,7 @@ msgstr "Error calling StartServiceByName for %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Unexpected reply %d from StartServiceByName(\"%s\") method"
 
-#: ../gio/gdbusproxy.c:2719 ../gio/gdbusproxy.c:2853
+#: ../gio/gdbusproxy.c:2713 ../gio/gdbusproxy.c:2847
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -971,7 +971,6 @@ msgid ""
 "  monitor      Monitor a remote object\n"
 "  call         Invoke a method on a remote object\n"
 "  emit         Emit a signal\n"
-"  wait         Wait for a bus name to appear\n"
 "\n"
 "Use “%s COMMAND --help” to get help on each command.\n"
 msgstr ""
@@ -981,65 +980,64 @@ msgstr ""
 "  monitor      Monitor a remote object\n"
 "  call         Invoke a method on a remote object\n"
 "  emit         Emit a signal\n"
-"  wait         Wait for a bus name to appear\n"
 "\n"
 "Use “%s COMMAND --help” to get help on each command.\n"
 
-#: ../gio/gdbus-tool.c:165 ../gio/gdbus-tool.c:227 ../gio/gdbus-tool.c:299
-#: ../gio/gdbus-tool.c:323 ../gio/gdbus-tool.c:725 ../gio/gdbus-tool.c:1068
-#: ../gio/gdbus-tool.c:1510 ../gio/gio-tool-rename.c:84
+#: ../gio/gdbus-tool.c:164 ../gio/gdbus-tool.c:226 ../gio/gdbus-tool.c:298
+#: ../gio/gdbus-tool.c:322 ../gio/gdbus-tool.c:724 ../gio/gdbus-tool.c:1067
+#: ../gio/gdbus-tool.c:1509 ../gio/gio-tool-rename.c:84
 #, c-format
 msgid "Error: %s\n"
 msgstr "Error: %s\n"
 
-#: ../gio/gdbus-tool.c:176 ../gio/gdbus-tool.c:240 ../gio/gdbus-tool.c:1526
+#: ../gio/gdbus-tool.c:175 ../gio/gdbus-tool.c:239 ../gio/gdbus-tool.c:1525
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Error parsing introspection XML: %s\n"
 
-#: ../gio/gdbus-tool.c:209
+#: ../gio/gdbus-tool.c:208
 #, c-format
 msgid "Error: %s is not a valid name\n"
 msgstr "Error: %s is not a valid name\n"
 
-#: ../gio/gdbus-tool.c:357
+#: ../gio/gdbus-tool.c:356
 msgid "Connect to the system bus"
 msgstr "Connect to the system bus"
 
-#: ../gio/gdbus-tool.c:358
+#: ../gio/gdbus-tool.c:357
 msgid "Connect to the session bus"
 msgstr "Connect to the session bus"
 
-#: ../gio/gdbus-tool.c:359
+#: ../gio/gdbus-tool.c:358
 msgid "Connect to given D-Bus address"
 msgstr "Connect to given D-Bus address"
 
-#: ../gio/gdbus-tool.c:369
+#: ../gio/gdbus-tool.c:368
 msgid "Connection Endpoint Options:"
 msgstr "Connection Endpoint Options:"
 
-#: ../gio/gdbus-tool.c:370
+#: ../gio/gdbus-tool.c:369
 msgid "Options specifying the connection endpoint"
 msgstr "Options specifying the connection endpoint"
 
-#: ../gio/gdbus-tool.c:392
+#: ../gio/gdbus-tool.c:391
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "No connection endpoint specified"
 
-#: ../gio/gdbus-tool.c:402
+#: ../gio/gdbus-tool.c:401
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Multiple connection endpoints specified"
 
-#: ../gio/gdbus-tool.c:472
+#: ../gio/gdbus-tool.c:471
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 
-#: ../gio/gdbus-tool.c:481
+#: ../gio/gdbus-tool.c:480
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
@@ -1048,196 +1046,160 @@ msgstr ""
 "Warning: According to introspection data, method “%s” does not exist on "
 "interface “%s”\n"
 
-#: ../gio/gdbus-tool.c:543
+#: ../gio/gdbus-tool.c:542
 msgid "Optional destination for signal (unique name)"
 msgstr "Optional destination for signal (unique name)"
 
-#: ../gio/gdbus-tool.c:544
+#: ../gio/gdbus-tool.c:543
 msgid "Object path to emit signal on"
 msgstr "Object path to emit signal on"
 
-#: ../gio/gdbus-tool.c:545
+#: ../gio/gdbus-tool.c:544
 msgid "Signal and interface name"
 msgstr "Signal and interface name"
 
-#: ../gio/gdbus-tool.c:579
+#: ../gio/gdbus-tool.c:578
 msgid "Emit a signal."
 msgstr "Emit a signal."
 
-#: ../gio/gdbus-tool.c:613 ../gio/gdbus-tool.c:858 ../gio/gdbus-tool.c:1616
-#: ../gio/gdbus-tool.c:1851 ../gio/gdbus-tool.c:2067
+#: ../gio/gdbus-tool.c:612 ../gio/gdbus-tool.c:857 ../gio/gdbus-tool.c:1615
+#: ../gio/gdbus-tool.c:1850
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Error connecting: %s\n"
 
-#: ../gio/gdbus-tool.c:625
+#: ../gio/gdbus-tool.c:624
 #, c-format
 msgid "Error: object path not specified.\n"
 msgstr "Error: object path not specified.\n"
 
-#: ../gio/gdbus-tool.c:630 ../gio/gdbus-tool.c:925 ../gio/gdbus-tool.c:1681
-#: ../gio/gdbus-tool.c:1917
+#: ../gio/gdbus-tool.c:629 ../gio/gdbus-tool.c:924 ../gio/gdbus-tool.c:1680
+#: ../gio/gdbus-tool.c:1916
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Error: %s is not a valid object path\n"
 
-#: ../gio/gdbus-tool.c:636
+#: ../gio/gdbus-tool.c:635
 #, c-format
 msgid "Error: signal not specified.\n"
 msgstr "Error: signal not specified.\n"
 
-#: ../gio/gdbus-tool.c:643
+#: ../gio/gdbus-tool.c:642
 #, c-format
 msgid "Error: signal must be the fully-qualified name.\n"
 msgstr "Error: signal must be the fully-qualified name.\n"
 
-#: ../gio/gdbus-tool.c:651
+#: ../gio/gdbus-tool.c:650
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Error: %s is not a valid interface name\n"
 
-#: ../gio/gdbus-tool.c:657
+#: ../gio/gdbus-tool.c:656
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Error: %s is not a valid member name\n"
 
-#: ../gio/gdbus-tool.c:663
+#: ../gio/gdbus-tool.c:662
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Error: %s is not a valid unique bus name.\n"
 
 #. Use the original non-"parse-me-harder" error
-#: ../gio/gdbus-tool.c:700 ../gio/gdbus-tool.c:1037
+#: ../gio/gdbus-tool.c:699 ../gio/gdbus-tool.c:1036
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Error parsing parameter %d: %s\n"
 
-#: ../gio/gdbus-tool.c:732
+#: ../gio/gdbus-tool.c:731
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Error flushing connection: %s\n"
 
-#: ../gio/gdbus-tool.c:759
+#: ../gio/gdbus-tool.c:758
 msgid "Destination name to invoke method on"
 msgstr "Destination name to invoke method on"
 
-#: ../gio/gdbus-tool.c:760
+#: ../gio/gdbus-tool.c:759
 msgid "Object path to invoke method on"
 msgstr "Object path to invoke method on"
 
-#: ../gio/gdbus-tool.c:761
+#: ../gio/gdbus-tool.c:760
 msgid "Method and interface name"
 msgstr "Method and interface name"
 
-#: ../gio/gdbus-tool.c:762
+#: ../gio/gdbus-tool.c:761
 msgid "Timeout in seconds"
 msgstr "Timeout in seconds"
 
-#: ../gio/gdbus-tool.c:803
+#: ../gio/gdbus-tool.c:802
 msgid "Invoke a method on a remote object."
 msgstr "Invoke a method on a remote object."
 
-#: ../gio/gdbus-tool.c:878 ../gio/gdbus-tool.c:1635 ../gio/gdbus-tool.c:1870
+#: ../gio/gdbus-tool.c:877 ../gio/gdbus-tool.c:1634 ../gio/gdbus-tool.c:1869
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Error: Destination is not specified\n"
 
-#: ../gio/gdbus-tool.c:890 ../gio/gdbus-tool.c:1652 ../gio/gdbus-tool.c:1882
+#: ../gio/gdbus-tool.c:889 ../gio/gdbus-tool.c:1651 ../gio/gdbus-tool.c:1881
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Error: %s is not a valid bus name\n"
 
-#: ../gio/gdbus-tool.c:905 ../gio/gdbus-tool.c:1661
+#: ../gio/gdbus-tool.c:904 ../gio/gdbus-tool.c:1660
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Error: Object path is not specified\n"
 
-#: ../gio/gdbus-tool.c:940
+#: ../gio/gdbus-tool.c:939
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Error: Method name is not specified\n"
 
-#: ../gio/gdbus-tool.c:951
+#: ../gio/gdbus-tool.c:950
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Error: Method name “%s” is invalid\n"
 
-#: ../gio/gdbus-tool.c:1029
+#: ../gio/gdbus-tool.c:1028
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Error parsing parameter %d of type “%s”: %s\n"
 
-#: ../gio/gdbus-tool.c:1473
+#: ../gio/gdbus-tool.c:1472
 msgid "Destination name to introspect"
 msgstr "Destination name to introspect"
 
-#: ../gio/gdbus-tool.c:1474
+#: ../gio/gdbus-tool.c:1473
 msgid "Object path to introspect"
 msgstr "Object path to introspect"
 
-#: ../gio/gdbus-tool.c:1475
+#: ../gio/gdbus-tool.c:1474
 msgid "Print XML"
 msgstr "Print XML"
 
-#: ../gio/gdbus-tool.c:1476
+#: ../gio/gdbus-tool.c:1475
 msgid "Introspect children"
 msgstr "Introspect children"
 
-#: ../gio/gdbus-tool.c:1477
+#: ../gio/gdbus-tool.c:1476
 msgid "Only print properties"
 msgstr "Only print properties"
 
-#: ../gio/gdbus-tool.c:1568
+#: ../gio/gdbus-tool.c:1567
 msgid "Introspect a remote object."
 msgstr "Introspect a remote object."
 
-#: ../gio/gdbus-tool.c:1773
+#: ../gio/gdbus-tool.c:1772
 msgid "Destination name to monitor"
 msgstr "Destination name to monitor"
 
-#: ../gio/gdbus-tool.c:1774
+#: ../gio/gdbus-tool.c:1773
 msgid "Object path to monitor"
 msgstr "Object path to monitor"
 
-#: ../gio/gdbus-tool.c:1803
+#: ../gio/gdbus-tool.c:1802
 msgid "Monitor a remote object."
 msgstr "corrupted object"
-
-#: ../gio/gdbus-tool.c:1980
-msgid "Service to activate before waiting for the other one (well-known name)"
-msgstr "Service to activate before waiting for the other one (well-known name)"
-
-#: ../gio/gdbus-tool.c:1983
-msgid ""
-"Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
-"(default)"
-msgstr ""
-"Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
-"(default)"
-
-#: ../gio/gdbus-tool.c:2033
-msgid "Wait for a bus name to appear."
-msgstr "Wait for a bus name to appear."
-
-#: ../gio/gdbus-tool.c:2109
-#, c-format
-msgid "Error: A service to activate for must be specified.\n"
-msgstr "Error: A service to activate for must be specified.\n"
-
-#: ../gio/gdbus-tool.c:2114
-#, c-format
-msgid "Error: A service to wait for must be specified.\n"
-msgstr "Error: A service to wait for must be specified.\n"
-
-#: ../gio/gdbus-tool.c:2119
-#, c-format
-msgid "Error: Too many arguments.\n"
-msgstr "Error: Too many arguments.\n"
-
-#: ../gio/gdbus-tool.c:2127 ../gio/gdbus-tool.c:2134
-#, c-format
-msgid "Error: %s is not a valid well-known bus name.\n"
-msgstr "Error: %s is not a valid well-known bus name.\n"
 
 #: ../gio/gdesktopappinfo.c:1997 ../gio/gdesktopappinfo.c:4504
 msgid "Unnamed"
@@ -3856,7 +3818,7 @@ msgstr "Error reading from file descriptor: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Error closing file descriptor: %s"
 
-#: ../gio/gunixmounts.c:2429 ../gio/gunixmounts.c:2482
+#: ../gio/gunixmounts.c:2367 ../gio/gunixmounts.c:2420
 msgid "Filesystem root"
 msgstr "Filesystem root"
 
@@ -4007,8 +3969,8 @@ msgstr "No application with name “%s” registered a bookmark for “%s”"
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Failed to expand exec line “%s” with URI “%s”"
 
-#: ../glib/gconvert.c:477 ../glib/gutf8.c:852 ../glib/gutf8.c:1064
-#: ../glib/gutf8.c:1201 ../glib/gutf8.c:1305
+#: ../glib/gconvert.c:477 ../glib/gutf8.c:851 ../glib/gutf8.c:1063
+#: ../glib/gutf8.c:1200 ../glib/gutf8.c:1304
 msgid "Partial character sequence at end of input"
 msgstr "Partial character sequence at end of input"
 
@@ -5270,20 +5232,20 @@ msgstr ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 
-#: ../glib/gutf8.c:798
+#: ../glib/gutf8.c:797
 msgid "Failed to allocate memory"
 msgstr "Failed to allocate memory"
 
-#: ../glib/gutf8.c:931
+#: ../glib/gutf8.c:930
 msgid "Character out of range for UTF-8"
 msgstr "Character out of range for UTF-8"
 
-#: ../glib/gutf8.c:1032 ../glib/gutf8.c:1041 ../glib/gutf8.c:1171
-#: ../glib/gutf8.c:1180 ../glib/gutf8.c:1319 ../glib/gutf8.c:1416
+#: ../glib/gutf8.c:1031 ../glib/gutf8.c:1040 ../glib/gutf8.c:1170
+#: ../glib/gutf8.c:1179 ../glib/gutf8.c:1318 ../glib/gutf8.c:1415
 msgid "Invalid sequence in conversion input"
 msgstr "Invalid sequence in conversion input"
 
-#: ../glib/gutf8.c:1330 ../glib/gutf8.c:1427
+#: ../glib/gutf8.c:1329 ../glib/gutf8.c:1426
 msgid "Character out of range for UTF-16"
 msgstr "Character out of range for UTF-16"
 
@@ -5371,6 +5333,33 @@ msgstr[1] "%s בתים"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f ק״ב"
+
+#~ msgid ""
+#~ "Service to activate before waiting for the other one (well-known name)"
+#~ msgstr ""
+#~ "Service to activate before waiting for the other one (well-known name)"
+
+#~ msgid ""
+#~ "Timeout to wait for before exiting with an error (seconds); 0 for no "
+#~ "timeout (default)"
+#~ msgstr ""
+#~ "Timeout to wait for before exiting with an error (seconds); 0 for no "
+#~ "timeout (default)"
+
+#~ msgid "Wait for a bus name to appear."
+#~ msgstr "Wait for a bus name to appear."
+
+#~ msgid "Error: A service to activate for must be specified.\n"
+#~ msgstr "Error: A service to activate for must be specified.\n"
+
+#~ msgid "Error: A service to wait for must be specified.\n"
+#~ msgstr "Error: A service to wait for must be specified.\n"
+
+#~ msgid "Error: Too many arguments.\n"
+#~ msgstr "Error: Too many arguments.\n"
+
+#~ msgid "Error: %s is not a valid well-known bus name.\n"
+#~ msgstr "Error: %s is not a valid well-known bus name.\n"
 
 #~ msgid "No such interface"
 #~ msgstr "No such interface"
