@@ -420,12 +420,12 @@ GLIB_AVAILABLE_IN_ALL
 gpointer    g_object_new                      (GType           object_type,
 					       const gchar    *first_property_name,
 					       ...);
-GLIB_AVAILABLE_IN_2_52
+GLIB_AVAILABLE_IN_2_54
 GObject*    g_object_new_with_properties      (GType           object_type,
                                                guint           n_properties,
                                                const char     *names[],
                                                const GValue    values[]);
-GLIB_DEPRECATED_IN_2_52_FOR(g_object_new_with_properties)
+GLIB_DEPRECATED_IN_2_54_FOR(g_object_new_with_properties)
 gpointer    g_object_newv		      (GType           object_type,
 					       guint	       n_parameters,
 					       GParameter     *parameters);
@@ -449,7 +449,7 @@ GLIB_AVAILABLE_IN_ALL
 void	    g_object_disconnect               (gpointer	       object,
 					       const gchar    *signal_spec,
 					       ...) G_GNUC_NULL_TERMINATED;
-GLIB_AVAILABLE_IN_2_52
+GLIB_AVAILABLE_IN_2_54
 void        g_object_setv                     (GObject        *object,
                                                guint           n_properties,
                                                const gchar    *names[],
@@ -458,7 +458,7 @@ GLIB_AVAILABLE_IN_ALL
 void        g_object_set_valist               (GObject        *object,
 					       const gchar    *first_property_name,
 					       va_list         var_args);
-GLIB_AVAILABLE_IN_2_52
+GLIB_AVAILABLE_IN_2_54
 void        g_object_getv                     (GObject        *object,
                                                guint           n_properties,
                                                const gchar    *names[],

@@ -1899,7 +1899,7 @@ g_object_new_is_valid_property (GType                  object_type,
  * Returns: (type GObject.Object) (transfer full): a new instance of
  * @object_type
  *
- * Since: 2.52
+ * Since: 2.54
  */
 GObject *
 g_object_new_with_properties (GType          object_type,
@@ -1970,7 +1970,7 @@ g_object_new_with_properties (GType          object_type,
  * Returns: (type GObject.Object) (transfer full): a new instance of
  * @object_type
  *
- * Deprecated: 2.52: Use g_object_new_with_properties() instead.
+ * Deprecated: 2.54: Use g_object_new_with_properties() instead.
  * deprecated. See #GParameter for more information.
  */
 gpointer
@@ -2199,7 +2199,7 @@ g_object_set_is_valid_property (GObject         *object,
  * valid. Warnings will be emitted and undefined behaviour may result if invalid
  * properties are passed in.
  *
- * Since: 2.52
+ * Since: 2.54
  */
 void
 g_object_setv (GObject       *object,
@@ -2325,7 +2325,7 @@ g_object_get_is_valid_property (GObject          *object,
  * Warnings will be emitted and undefined behaviour may result if invalid
  * properties are passed in.
  *
- * Since: 2.52
+ * Since: 2.54
  */
 void
 g_object_getv (GObject      *object,

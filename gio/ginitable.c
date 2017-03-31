@@ -184,7 +184,7 @@ g_initable_new (GType          object_type,
  *      #GObject, or %NULL on error
  *
  * Since: 2.22
- * Deprecated: 2.52: Use g_object_new_with_properties() and
+ * Deprecated: 2.54: Use g_object_new_with_properties() and
  * g_initable_init() instead. See #GParameter for more information.
  */
 gpointer

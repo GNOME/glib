@@ -366,7 +366,7 @@ g_async_initable_new_async (GType                object_type,
  * for any errors.
  *
  * Since: 2.22
- * Deprecated: 2.52: Use g_object_new_with_properties() and
+ * Deprecated: 2.54: Use g_object_new_with_properties() and
  * g_async_initable_init_async() instead. See #GParameter for more information.
  */
 void
