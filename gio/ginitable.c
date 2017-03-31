@@ -198,7 +198,9 @@ g_initable_newv (GType          object_type,
 
   g_return_val_if_fail (G_TYPE_IS_INITABLE (object_type), NULL);
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   obj = g_object_newv (object_type, n_parameters, parameters);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   if (!g_initable_init (G_INITABLE (obj), cancellable, error))
     {

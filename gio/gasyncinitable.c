@@ -382,7 +382,9 @@ g_async_initable_newv_async (GType                object_type,
 
   g_return_if_fail (G_TYPE_IS_ASYNC_INITABLE (object_type));
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   obj = g_object_newv (object_type, n_parameters, parameters);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
   g_async_initable_init_async (G_ASYNC_INITABLE (obj),
 			       io_priority, cancellable,

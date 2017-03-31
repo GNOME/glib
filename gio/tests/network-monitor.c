@@ -241,7 +241,8 @@ test_default (void)
   m = g_network_monitor_get_default ();
   g_assert (G_IS_NETWORK_MONITOR (m));
 
-  monitor = g_initable_newv (G_TYPE_NETWORK_MONITOR_BASE, 0, NULL, NULL,  &error);
+  monitor = g_object_new (G_TYPE_NETWORK_MONITOR_BASE, NULL);
+  g_initable_init (G_INITABLE (monitor), NULL, &error);
   g_assert_no_error (error);
 
   /* In the default configuration, all addresses are reachable */
