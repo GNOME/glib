@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-07 22:27+0000\n"
-"PO-Revision-Date: 2017-03-15 05:46+0100\n"
+"POT-Creation-Date: 2017-03-25 05:03+0000\n"
+"PO-Revision-Date: 2017-03-31 10:09+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -21,11 +21,11 @@ msgstr ""
 
 #: ../gio/gapplication.c:493
 msgid "GApplication options"
-msgstr ""
+msgstr "Opzions GApplication"
 
 #: ../gio/gapplication.c:493
 msgid "Show GApplication options"
-msgstr ""
+msgstr "Mostre lis opzions di GApplication"
 
 #: ../gio/gapplication.c:538
 msgid "Enter GApplication service mode (use from D-Bus service files)"
@@ -325,16 +325,16 @@ msgstr "Conversion de cumbinazion di caratars “%s” a “%s” no je supuarta
 msgid "Could not open converter from “%s” to “%s”"
 msgstr "Impussibil vierzi il convertidôr di “%s” a “%s”"
 
-#: ../gio/gcontenttype.c:335
+#: ../gio/gcontenttype.c:358
 #, c-format
 msgid "%s type"
 msgstr "gjenar %s"
 
-#: ../gio/gcontenttype-win32.c:160
+#: ../gio/gcontenttype-win32.c:177
 msgid "Unknown type"
 msgstr "Gjenar no cognossût"
 
-#: ../gio/gcontenttype-win32.c:162
+#: ../gio/gcontenttype-win32.c:179
 #, c-format
 msgid "%s filetype"
 msgstr "gjenar di file %s"
@@ -416,16 +416,18 @@ msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
 "“path” or “abstract” to be set"
 msgstr ""
+"Erôr inte direzion “%s” — il traspuart unix al domande di stabilî juste une "
+"des clâfs tra “path” o “abstract”"
 
 #: ../gio/gdbusaddress.c:609
 #, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
-msgstr ""
+msgstr "Erôr inte direzion “%s” — l'atribût host al mancje o al è malformât"
 
 #: ../gio/gdbusaddress.c:623
 #, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
-msgstr ""
+msgstr "Erôr inte direzion “%s” — l'atribût puarte al mancje o al è malformât"
 
 #: ../gio/gdbusaddress.c:637
 #, c-format
@@ -434,12 +436,12 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:658
 msgid "Error auto-launching: "
-msgstr ""
+msgstr "Erôr tal inviâ in automatic: "
 
 #: ../gio/gdbusaddress.c:666
 #, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
-msgstr ""
+msgstr "Traspuart “%s” no cognossût o no supuartât pe direzion “%s”"
 
 #: ../gio/gdbusaddress.c:702
 #, c-format
@@ -477,7 +479,7 @@ msgstr ""
 #: ../gio/gdbusaddress.c:1083
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
-msgstr ""
+msgstr "Impussibil inviâ in automatic D-Bus cence $DISPLAY X11"
 
 #: ../gio/gdbusaddress.c:1125
 #, c-format
@@ -525,17 +527,19 @@ msgstr "Gjenar di bus %d no cognossût"
 
 #: ../gio/gdbusauth.c:293
 msgid "Unexpected lack of content trying to read a line"
-msgstr ""
+msgstr "Mancjance di contignût inspietade cirint di lei une rie"
 
 #: ../gio/gdbusauth.c:337
 msgid "Unexpected lack of content trying to (safely) read a line"
-msgstr ""
+msgstr "Mancjance di contignût inspietade cirint di lei (in sigurece) une rie"
 
 #: ../gio/gdbusauth.c:508
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
+"Esaurîts ducj i mecanisims di autenticazion disponibii (provâts: %s) "
+"(disponibii: %s)"
 
 #: ../gio/gdbusauth.c:1174
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
@@ -551,6 +555,8 @@ msgstr "Erôr tal vê informazions pe cartele “%s”: %s"
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
+"I permès su pe cartele “%s” no son valits. Si spietave modalitât 0700, vût "
+"0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:294
 #, c-format
@@ -636,11 +642,13 @@ msgstr ""
 msgid ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
+"Interface 'org.freedesktop.DBus.Properties' inesistente sul ogjet tal "
+"percors %s"
 
 #: ../gio/gdbusconnection.c:4253
 #, c-format
 msgid "No such property '%s'"
-msgstr ""
+msgstr "Proprietât '%s' inesistente"
 
 #: ../gio/gdbusconnection.c:4265
 #, c-format
@@ -659,24 +667,21 @@ msgstr ""
 "Erôr tal configurâ la proprietât '%s': si spietave gjenar '%s' ma si à vût "
 "'%s'"
 
-#: ../gio/gdbusconnection.c:4401 ../gio/gdbusconnection.c:6575
+#: ../gio/gdbusconnection.c:4401 ../gio/gdbusconnection.c:4609
+#: ../gio/gdbusconnection.c:6575
 #, c-format
 msgid "No such interface '%s'"
-msgstr ""
-
-#: ../gio/gdbusconnection.c:4609
-msgid "No such interface"
-msgstr ""
+msgstr "Interface '%s' inesistente"
 
 #: ../gio/gdbusconnection.c:4827 ../gio/gdbusconnection.c:7084
 #, c-format
 msgid "No such interface '%s' on object at path %s"
-msgstr ""
+msgstr "Interface '%s' inesistente sul ogjet tal percors %s"
 
 #: ../gio/gdbusconnection.c:4925
 #, c-format
 msgid "No such method '%s'"
-msgstr ""
+msgstr "Metodi '%s' inesistent"
 
 #: ../gio/gdbusconnection.c:4956
 #, c-format
@@ -686,12 +691,12 @@ msgstr "Il gjenar di messaç, '%s', nol corispuint il gjenar spietât '%s'"
 #: ../gio/gdbusconnection.c:5154
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
-msgstr ""
+msgstr "Un ogjet al è za espuartât pe interface %s su %s"
 
 #: ../gio/gdbusconnection.c:5380
 #, c-format
 msgid "Unable to retrieve property %s.%s"
-msgstr ""
+msgstr "Impussibil recuperâ la proprietât %s.%s"
 
 #: ../gio/gdbusconnection.c:5436
 #, c-format
@@ -759,8 +764,8 @@ msgstr ""
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Si voleve lei %lu byte, ma si à vût dome %lu"
+msgstr[1] "Si voleve lei %lu byte, ma si à vût dome %lu"
 
 #: ../gio/gdbusmessage.c:1369
 #, c-format
@@ -777,12 +782,12 @@ msgstr ""
 #: ../gio/gdbusmessage.c:1587
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
-msgstr ""
+msgstr "Il valôr “%s” analizât nol è un percors di ogjet D-Bus valit"
 
 #: ../gio/gdbusmessage.c:1609
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
-msgstr ""
+msgstr "Il valôr “%s” analizât no je une firme D-Bus valide"
 
 #: ../gio/gdbusmessage.c:1656
 #, c-format
@@ -803,7 +808,7 @@ msgstr ""
 #: ../gio/gdbusmessage.c:1843
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
-msgstr ""
+msgstr "Il valôr “%s” analizât pal variant no je une firme D-Bus valide"
 
 #: ../gio/gdbusmessage.c:1867
 #, c-format
@@ -831,7 +836,7 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2134
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
-msgstr ""
+msgstr "Il valôr “%s” analizât no je une firme D-Bus valide (pal cuarp)"
 
 #: ../gio/gdbusmessage.c:2164
 #, c-format
@@ -864,7 +869,7 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2704
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
-msgstr ""
+msgstr "Il cuarp dal messaç al à firme “%s” ma no je la intestazion de firme"
 
 #: ../gio/gdbusmessage.c:2714
 #, c-format
@@ -877,6 +882,8 @@ msgstr ""
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
+"Il cuarp dal messaç al è vueit ma la firme tal cjamp de intestazion e je "
+"“(%s)”"
 
 #: ../gio/gdbusmessage.c:3283
 #, c-format
@@ -890,21 +897,21 @@ msgstr ""
 #: ../gio/gdbusprivate.c:2038
 #, c-format
 msgid "Unable to get Hardware profile: %s"
-msgstr ""
+msgstr "Impussibil otignî il profîl Hardware: %s"
 
 #: ../gio/gdbusprivate.c:2083
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
-msgstr ""
+msgstr "Impussibil cjariâ /var/lib/dbus/machine-id o /etc/machine-id: "
 
 #: ../gio/gdbusproxy.c:1611
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
-msgstr ""
+msgstr "Erôr tal clamâ StartServiceByName par %s: "
 
 #: ../gio/gdbusproxy.c:1634
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
-msgstr ""
+msgstr "Rispueste %d inspietade dal metodi StartServiceByName(\"%s\")"
 
 #: ../gio/gdbusproxy.c:2713 ../gio/gdbusproxy.c:2847
 msgid ""
@@ -928,12 +935,12 @@ msgstr ""
 #: ../gio/gdbusserver.c:1045
 #, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
-msgstr ""
+msgstr "La stringhe “%s” no je un valit GUID D-Bus"
 
 #: ../gio/gdbusserver.c:1085
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
-msgstr ""
+msgstr "Impussibil scoltâ o traspuart “%s” no supuartât"
 
 #: ../gio/gdbus-tool.c:95
 #, c-format
@@ -947,6 +954,14 @@ msgid ""
 "\n"
 "Use “%s COMMAND --help” to get help on each command.\n"
 msgstr ""
+"Comants:\n"
+"  help         Mostre chestis informazions\n"
+"  introspect   Introspezion di un ogjet rimot\n"
+"  monitor      Monitorâ un ogjet rimot\n"
+"  call         Invocâ un metodi suntun ogjet rimot\n"
+"  emit         Emet un segnâl\n"
+"\n"
+"Dopre “%s COMANT --help” par vê jutori su ogni comant.\n"
 
 #: ../gio/gdbus-tool.c:164 ../gio/gdbus-tool.c:226 ../gio/gdbus-tool.c:298
 #: ../gio/gdbus-tool.c:322 ../gio/gdbus-tool.c:724 ../gio/gdbus-tool.c:1067
@@ -967,15 +982,15 @@ msgstr "Erôr: %s nol è un non valit\n"
 
 #: ../gio/gdbus-tool.c:356
 msgid "Connect to the system bus"
-msgstr ""
+msgstr "Conet al bus di sisteme"
 
 #: ../gio/gdbus-tool.c:357
 msgid "Connect to the session bus"
-msgstr ""
+msgstr "Conet al bus di session"
 
 #: ../gio/gdbus-tool.c:358
 msgid "Connect to given D-Bus address"
-msgstr ""
+msgstr "Conet ae direzion D-Bus furnide"
 
 #: ../gio/gdbus-tool.c:368
 msgid "Connection Endpoint Options:"
@@ -1000,6 +1015,7 @@ msgstr ""
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr ""
+"Avertiment: In acuardi cui dâts di introspezion, la interface “%s” no esist\n"
 
 #: ../gio/gdbus-tool.c:480
 #, c-format
@@ -1007,70 +1023,72 @@ msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
 "interface “%s”\n"
 msgstr ""
+"Avertiment: In acuardi cui dâts di introspezion, il metodi “%s” nol esist su "
+"pe interface “%s”\n"
 
 #: ../gio/gdbus-tool.c:542
 msgid "Optional destination for signal (unique name)"
-msgstr ""
+msgstr "Destinazion opzionâl pal segnâl (non univoc)"
 
 #: ../gio/gdbus-tool.c:543
 msgid "Object path to emit signal on"
-msgstr ""
+msgstr "Percors ogjet dulà emeti il segnâl"
 
 #: ../gio/gdbus-tool.c:544
 msgid "Signal and interface name"
-msgstr ""
+msgstr "Segnâl e non interface"
 
 #: ../gio/gdbus-tool.c:578
 msgid "Emit a signal."
-msgstr ""
+msgstr "Emet un segnâl."
 
 #: ../gio/gdbus-tool.c:612 ../gio/gdbus-tool.c:857 ../gio/gdbus-tool.c:1615
 #: ../gio/gdbus-tool.c:1850
 #, c-format
 msgid "Error connecting: %s\n"
-msgstr ""
+msgstr "Erôr tal coneti: %s\n"
 
 #: ../gio/gdbus-tool.c:624
 #, c-format
 msgid "Error: object path not specified.\n"
-msgstr ""
+msgstr "Erôr: percors ogjet no specificât.\n"
 
 #: ../gio/gdbus-tool.c:629 ../gio/gdbus-tool.c:924 ../gio/gdbus-tool.c:1680
 #: ../gio/gdbus-tool.c:1916
 #, c-format
 msgid "Error: %s is not a valid object path\n"
-msgstr ""
+msgstr "Erôr: %s nol è un percors ogjet valit\n"
 
 #: ../gio/gdbus-tool.c:635
 #, c-format
 msgid "Error: signal not specified.\n"
-msgstr ""
+msgstr "Erôr: segnâl no specificât.\n"
 
 #: ../gio/gdbus-tool.c:642
-#, c-format
+#, fuzzy, c-format
 msgid "Error: signal must be the fully-qualified name.\n"
-msgstr ""
+msgstr "Erôr: il segnâl al scugne jessi il non cualificât-in-plen.\n"
 
 #: ../gio/gdbus-tool.c:650
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
-msgstr ""
+msgstr "Erôr: %s nol è un non interface valit\n"
 
 #: ../gio/gdbus-tool.c:656
 #, c-format
 msgid "Error: %s is not a valid member name\n"
-msgstr ""
+msgstr "Erôr: %s nol è un non membri valit\n"
 
 #: ../gio/gdbus-tool.c:662
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
-msgstr ""
+msgstr "Erôr: %s nol è un non bus univoc valit.\n"
 
 #. Use the original non-"parse-me-harder" error
 #: ../gio/gdbus-tool.c:699 ../gio/gdbus-tool.c:1036
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr ""
+msgstr "Erôr tal analizâ il parametri %d: %s\n"
 
 #: ../gio/gdbus-tool.c:731
 #, c-format
@@ -1087,11 +1105,11 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:760
 msgid "Method and interface name"
-msgstr ""
+msgstr "Metodi e non interface"
 
 #: ../gio/gdbus-tool.c:761
 msgid "Timeout in seconds"
-msgstr ""
+msgstr "Timp massim in seconts"
 
 #: ../gio/gdbus-tool.c:802
 msgid "Invoke a method on a remote object."
@@ -1100,32 +1118,32 @@ msgstr ""
 #: ../gio/gdbus-tool.c:877 ../gio/gdbus-tool.c:1634 ../gio/gdbus-tool.c:1869
 #, c-format
 msgid "Error: Destination is not specified\n"
-msgstr ""
+msgstr "Erôr: Destinazion no specificade\n"
 
 #: ../gio/gdbus-tool.c:889 ../gio/gdbus-tool.c:1651 ../gio/gdbus-tool.c:1881
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
-msgstr ""
+msgstr "Erôr: %s nol è un non bus valit\n"
 
 #: ../gio/gdbus-tool.c:904 ../gio/gdbus-tool.c:1660
 #, c-format
 msgid "Error: Object path is not specified\n"
-msgstr ""
+msgstr "Erôr: il percors ogjet nol è specificât\n"
 
 #: ../gio/gdbus-tool.c:939
 #, c-format
 msgid "Error: Method name is not specified\n"
-msgstr ""
+msgstr "Erôr: il non dal metodi nol è specificât\n"
 
 #: ../gio/gdbus-tool.c:950
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
-msgstr ""
+msgstr "Erôr: il non dal metodi “%s” nol è valit\n"
 
 #: ../gio/gdbus-tool.c:1028
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
-msgstr ""
+msgstr "Erôr tal analizâ il parametri %d di gjenar “%s”: %s\n"
 
 #: ../gio/gdbus-tool.c:1472
 msgid "Destination name to introspect"
@@ -1137,7 +1155,7 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:1474
 msgid "Print XML"
-msgstr ""
+msgstr "Stampe XML"
 
 #: ../gio/gdbus-tool.c:1475
 msgid "Introspect children"
