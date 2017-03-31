@@ -1118,6 +1118,19 @@ source_remove_from_context (GSource      *source,
     }
 }
 
+/* See https://bugzilla.gnome.org/show_bug.cgi?id=761102 for
+ * the introduction of this.
+ *
+ * The main optimization is to avoid waking up the main
+ * context if a change is made by the current owner.
+ */
+static void
+conditional_wakeup (GMainContext *context)
+{
+  if (context->owner && context->owner != G_THREAD_SELF)
+    g_wakeup_signal (context->wakeup);
+}
+
 static guint
 g_source_attach_unlocked (GSource      *source,
                           GMainContext *context,
@@ -1164,8 +1177,8 @@ g_source_attach_unlocked (GSource      *source,
   /* If another thread has acquired the context, wake it up since it
    * might be in poll() right now.
    */
-  if (do_wakeup && context->owner && context->owner != G_THREAD_SELF)
-    g_wakeup_signal (context->wakeup);
+  if (do_wakeup)
+    conditional_wakeup (context);
 
   return source->source_id;
 }
@@ -1839,8 +1852,7 @@ g_source_set_ready_time (GSource *source,
     {
       /* Quite likely that we need to change the timeout on the poll */
       if (!SOURCE_BLOCKED (source))
-        if (context->owner && context->owner != G_THREAD_SELF)
-          g_wakeup_signal (context->wakeup);
+        conditional_wakeup (context);
       UNLOCK_CONTEXT (context);
     }
 }
@@ -4352,8 +4364,7 @@ g_main_context_add_poll_unlocked (GMainContext *context,
   context->poll_changed = TRUE;
 
   /* Now wake up the main loop if it is waiting in the poll() */
-  if (context->owner && context->owner != G_THREAD_SELF)
-    g_wakeup_signal (context->wakeup);
+  conditional_wakeup (context);
 }
 
 /**
@@ -4411,10 +4422,9 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
     }
 
   context->poll_changed = TRUE;
-  
+
   /* Now wake up the main loop if it is waiting in the poll() */
-  if (context->owner && context->owner != G_THREAD_SELF)
-    g_wakeup_signal (context->wakeup);
+  conditional_wakeup (context);
 }
 
 /**
