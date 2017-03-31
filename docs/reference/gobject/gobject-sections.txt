@@ -261,6 +261,7 @@ g_object_interface_install_property
 g_object_interface_find_property
 g_object_interface_list_properties
 g_object_new
+g_object_new_with_properties
 g_object_newv
 GParameter
 g_object_ref
@@ -284,7 +285,9 @@ g_object_remove_toggle_ref
 g_object_connect
 g_object_disconnect
 g_object_set
+g_object_setv
 g_object_get
+g_object_getv
 g_object_notify
 g_object_notify_by_pspec
 g_object_freeze_notify
