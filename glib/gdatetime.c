@@ -194,11 +194,7 @@ static const gint month_item[2][12] =
 
 #else
 
-#define GET_AMPM(d)          ((g_date_time_get_hour (d) < 12)  \
-                                       /* Translators: 'before midday' indicator */ \
-                                ? C_("GDateTime", "AM") \
-                                  /* Translators: 'after midday' indicator */ \
-                                : C_("GDateTime", "PM"))
+#define GET_AMPM(d)          (get_fallback_ampm (g_date_time_get_hour (d)))
 
 /* Translators: this is the preferred format for expressing the date and the time */
 #define PREFERRED_DATE_TIME_FMT C_("GDateTime", "%a %b %e %H:%M:%S %Y")
@@ -346,6 +342,18 @@ get_weekday_name_abbr (gint day)
 }
 
 #endif  /* HAVE_LANGINFO_TIME */
+
+/* Format AM/PM indicator if the locale does not have a localized version. */
+static const gchar *
+get_fallback_ampm (gint hour)
+{
+  if (hour < 12)
+    /* Translators: 'before midday' indicator */
+    return C_("GDateTime", "AM");
+  else
+    /* Translators: 'after midday' indicator */
+    return C_("GDateTime", "PM");
+}
 
 static inline gint
 ymd_to_days (gint year,
