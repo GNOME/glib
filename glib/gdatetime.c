@@ -2210,11 +2210,12 @@ format_ampm (GDateTime *datetime,
              gboolean   locale_is_utf8,
              gboolean   uppercase)
 {
-  gchar    *ampm;
-  gchar    *tmp;
-  gsize     tmp_len;
+  const gchar *ampm;
+  gchar       *tmp, *ampm_dup;
+  gsize        len;
 
-  ampm = (gchar *) GET_AMPM (datetime);
+  ampm = GET_AMPM (datetime);
+
 #if defined (HAVE_LANGINFO_TIME)
   if (!locale_is_utf8)
     {
@@ -2225,23 +2226,23 @@ format_ampm (GDateTime *datetime,
     }
 #endif
   if (uppercase)
-    ampm = g_utf8_strup (ampm, -1);
+    ampm_dup = g_utf8_strup (ampm, -1);
   else
-    ampm = g_utf8_strdown (ampm, -1);
-  tmp_len = strlen (ampm);
+    ampm_dup = g_utf8_strdown (ampm, -1);
+  len = strlen (ampm_dup);
   if (!locale_is_utf8)
     {
 #if defined (HAVE_LANGINFO_TIME)
       g_free (tmp);
 #endif
-      tmp = g_locale_from_utf8 (ampm, -1, NULL, &tmp_len, NULL);
-      g_free (ampm);
+      tmp = g_locale_from_utf8 (ampm_dup, -1, NULL, &len, NULL);
+      g_free (ampm_dup);
       if (!tmp)
         return FALSE;
-      ampm = tmp;
+      ampm_dup = tmp;
     }
-  g_string_append_len (outstr, ampm, tmp_len);
-  g_free (ampm);
+  g_string_append_len (outstr, ampm_dup, len);
+  g_free (ampm_dup);
 
   return TRUE;
 }
