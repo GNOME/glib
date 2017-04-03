@@ -2216,6 +2216,9 @@ format_ampm (GDateTime *datetime,
 
   ampm = GET_AMPM (datetime);
 
+  if (!ampm || ampm[0] == '\0')
+    ampm = get_fallback_ampm (g_date_time_get_hour (datetime));
+
 #if defined (HAVE_LANGINFO_TIME)
   if (!locale_is_utf8)
     {
