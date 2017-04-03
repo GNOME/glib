@@ -2136,10 +2136,6 @@ handle_wait (gint        *argc,
       goto out;
     }
 
-  /* All done with completion now */
-  if (request_completion)
-    goto out;
-
   /* Start the prerequisite service if needed. */
   if (activate_service != NULL)
     {
