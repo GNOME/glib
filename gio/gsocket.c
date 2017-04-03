@@ -3857,7 +3857,7 @@ g_socket_condition_timed_wait (GSocket       *socket,
 
   if (socket->priv->timeout &&
       (timeout < 0 || socket->priv->timeout < timeout / G_USEC_PER_SEC))
-    timeout = socket->priv->timeout * 1000;
+    timeout = (gint64) socket->priv->timeout * 1000;
   else if (timeout != -1)
     timeout = timeout / 1000;
 
