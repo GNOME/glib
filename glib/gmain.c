@@ -1127,7 +1127,17 @@ source_remove_from_context (GSource      *source,
 static void
 conditional_wakeup (GMainContext *context)
 {
-  if (context->owner && context->owner != G_THREAD_SELF)
+  /* We want to signal wakeups in two cases:
+   *  1 When the context is owned by another thread
+   *  2 When the context owner is NULL (two subcases)
+   *   2a Possible if the context has never been acquired
+   *   2b Or if the context has no current owner
+   *
+   * At least case 2a) is necessary to ensure backwards compatibility with
+   * qemu's use of GMainContext.
+   * https://bugzilla.gnome.org/show_bug.cgi?id=761102#c14
+   */
+  if (context->owner != G_THREAD_SELF)
     g_wakeup_signal (context->wakeup);
 }
 
