@@ -2028,7 +2028,7 @@ handle_wait (gint        *argc,
 
   modify_argv0_for_command (argc, argv, "wait");
 
-  o = g_option_context_new (NULL);
+  o = g_option_context_new (_("[OPTION…] BUS-NAME"));
   g_option_context_set_help_enabled (o, FALSE);
   g_option_context_set_summary (o, _("Wait for a bus name to appear."));
   g_option_context_add_main_entries (o, wait_entries, GETTEXT_PACKAGE);
