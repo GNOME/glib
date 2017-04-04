@@ -182,12 +182,9 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\gio\gnetworking.h.win32">
-      <Message Condition="'$(Configuration)'=='Debug|Win32'">Copying gnetworking.h from gnetworking.h.win32...</Message>
-      <Command Condition="'$(Configuration)'=='Debug|Win32'">$(GenGNetworkingH)</Command>
-      <Outputs Condition="'$(Configuration)'=='Debug|Win32'">..\..\gio\gnetworking.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)'=='Release'">Copying gnetworking.h from gnetworking.h.win32...</Message>
-      <Command Condition="'$(Configuration)'=='Release'">$(GenGNetworkingH)</Command>
-      <Outputs Condition="'$(Configuration)'=='Release'">..\..\gio\gnetworking.h;%(Outputs)</Outputs>
+      <Message>Copying gnetworking.h from gnetworking.h.win32...</Message>
+      <Command>$(GenGNetworkingH)</Command>
+      <Outputs>..\..\gio\gnetworking.h;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
