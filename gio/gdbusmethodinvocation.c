@@ -105,6 +105,8 @@ g_dbus_method_invocation_finalize (GObject *object)
   g_free (invocation->method_name);
   if (invocation->method_info)
       g_dbus_method_info_unref (invocation->method_info);
+  if (invocation->property_info)
+      g_dbus_property_info_unref (invocation->property_info);
   g_object_unref (invocation->connection);
   g_object_unref (invocation->message);
   g_variant_unref (invocation->parameters);
