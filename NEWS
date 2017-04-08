@@ -1,3 +1,36 @@
+Overview of changes in GLib 2.52.1
+==================================
+
+* Bug fixes:
+ 674885 type initialisation deadlock in GObject
+ 698064 Add g_ptr_array_contains()
+ 725894 build: Include gettext libraries for static compilation on Mac OS X
+ 734946 Implement GContentType on OSX
+ 755046 gfileutils: Add precondition checks to g_file_test()
+ 775879 g_log_default_handler should not check G_MESSAGES_DEBUG
+ 777961 Documentation for g_app_info_equals() could be clearer
+ 778049 race in gsource detected by TSan
+ 778207 gio-querymodules: fix memory leak
+ 778287 G_MODULE_EXPORT and -fvisibility=hidden
+ 779409 Fix false positive g_warning() in remove_filter()
+ 780066 g_base64_encode_close() in glib/gbase64.c produces invalid base64 encoding
+ 780095 g_utf8_get_char_validated() stopping at nul byte even for length specified buffers
+ 780306 Unused function in gunicollate.c for CARBON
+ 780310 g_tls_database_verify_chain doesn't set the GError for failures other than cancellation
+ 780384 gio/tests/contenttype fails on OS X: "public.directory" != "public.folder"
+ 780441 Make the portal implementation of g_app_info_launch() synchronous
+ 780471 appinfo: Only use portal as fallback
+ 780924 Memory leak in gdbusmethodinvocation.c
+
+
+* Translation updates:
+ Friulian
+ Hebrew
+ Indonesian
+ Polish
+ Russian
+
+
 Overview of changes in GLib 2.52.0
 ==================================
 
