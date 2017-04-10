@@ -177,7 +177,7 @@ handle_set (int argc, char *argv[], gboolean do_help)
       break;
     case G_FILE_ATTRIBUTE_TYPE_OBJECT:
     default:
-      print_error (_("Invalid attribute type “%s“"), attr_type);
+      print_error (_("Invalid attribute type “%s”"), attr_type);
       return 1;
     }
 
