@@ -31,7 +31,7 @@
 
 
 void
-print_error (const char *format, ...)
+print_error (const gchar *format, ...)
 {
   gchar *message;
   va_list args;
@@ -45,21 +45,13 @@ print_error (const char *format, ...)
 }
 
 void
-print_file_error (GFile *file, const gchar *format, ...)
+print_file_error (GFile *file, const gchar *message)
 {
   gchar *uri;
-  gchar *message;
-  va_list args;
-
-  va_start (args, format);
-  message = g_strdup_vprintf (format, args);
-  va_end (args);
 
   uri = g_file_get_uri (file);
   print_error ("%s: %s", uri, message);
   g_free (uri);
-
-  g_free (message);
 }
 
 void

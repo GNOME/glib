@@ -21,10 +21,9 @@
 #define __GIO_TOOL_H__
 
 void print_error      (const gchar    *format,
-                       ...);
+                       ...) G_GNUC_PRINTF (1, 2);
 void print_file_error (GFile          *file,
-                       const gchar    *format,
-                       ...);
+                       const gchar    *message);
 void show_help        (GOptionContext *context,
                        const char     *message);
 

@@ -85,7 +85,7 @@ handle_rename (int argc, char *argv[], gboolean do_help)
 
   if (new_file == NULL)
     {
-      print_error (error->message);
+      print_error ("%s", error->message);
       g_error_free (error);
       retval = 1;
     }

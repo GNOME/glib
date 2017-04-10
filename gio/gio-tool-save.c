@@ -105,7 +105,7 @@ save (GFile *file)
 	      if (written == -1)
 		{
 		  save_res = FALSE;
-                  print_error (error->message);
+                  print_error ("%s", error->message);
 		  g_error_free (error);
 		  goto out;
 		}
@@ -116,7 +116,7 @@ save (GFile *file)
       else if (res < 0)
 	{
 	  save_res = FALSE;
-          print_error (_("Error reading from standard input"));
+          print_error ("%s", _("Error reading from standard input"));
 	  break;
 	}
       else if (res == 0)
@@ -129,7 +129,7 @@ save (GFile *file)
   if (!close_res)
     {
       save_res = FALSE;
-      print_error (error->message);
+      print_error ("%s", error->message);
       g_error_free (error);
     }
 

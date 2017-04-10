@@ -192,7 +192,7 @@ handle_set (int argc, char *argv[], gboolean do_help)
                                G_FILE_QUERY_INFO_NONE,
                              NULL, &error))
     {
-      print_error (error->message);
+      print_error ("%s", error->message);
       g_error_free (error);
       g_object_unref (file);
       return 1;
