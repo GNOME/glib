@@ -306,7 +306,7 @@ g_input_stream_read_all (GInputStream  *stream,
  *
  * On error %NULL is returned and @error is set accordingly.
  *
- * Returns: a new #GBytes, or %NULL on error
+ * Returns: (transfer full): a new #GBytes, or %NULL on error
  *
  * Since: 2.34
  **/
@@ -939,7 +939,7 @@ g_input_stream_read_bytes_async (GInputStream          *stream,
  *
  * Finishes an asynchronous stream read-into-#GBytes operation.
  *
- * Returns: the newly-allocated #GBytes, or %NULL on error
+ * Returns: (transfer full): the newly-allocated #GBytes, or %NULL on error
  *
  * Since: 2.34
  **/
