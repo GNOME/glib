@@ -84,7 +84,7 @@
  *     implementation returns %G_TLS_INTERACTION_HANDLED, then the connection
  *     argument should have been filled in by using
  *     g_tls_connection_set_certificate().
- * @request_certificate_async: ask for a certificate asyncronously.
+ * @request_certificate_async: ask for a certificate asynchronously.
  * @request_certificate_finish: complete operation to ask for a certificate
  *     asynchronously. If the implementation returns %G_TLS_INTERACTION_HANDLED,
  *     then the connection argument of the async method should have been

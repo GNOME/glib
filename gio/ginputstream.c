@@ -579,7 +579,7 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * be executed before an outstanding request with lower priority. Default
  * priority is %G_PRIORITY_DEFAULT.
  *
- * The asyncronous methods have a default fallback that uses threads to implement
+ * The asynchronous methods have a default fallback that uses threads to implement
  * asynchronicity, so they are optional for inheriting classes. However, if you
  * override one you must override all.
  **/
@@ -1081,7 +1081,7 @@ g_input_stream_skip_finish (GInputStream  *stream,
  *
  * For behaviour details see g_input_stream_close().
  *
- * The asyncronous methods have a default fallback that uses threads to implement
+ * The asynchronous methods have a default fallback that uses threads to implement
  * asynchronicity, so they are optional for inheriting classes. However, if you
  * override one you must override all.
  **/
