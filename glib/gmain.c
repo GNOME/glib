@@ -2677,7 +2677,7 @@ g_get_real_time (void)
  * Since: 2.28
  **/
 #if defined (G_OS_WIN32)
-static ULONGLONG (*g_GetTickCount64) (void) = NULL;
+static ULONGLONG (WINAPI *g_GetTickCount64) (void) = NULL;
 static guint32 g_win32_tick_epoch = 0;
 
 void
