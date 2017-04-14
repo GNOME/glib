@@ -89,18 +89,18 @@ typedef NTSTATUS
                          PULONG                result_size);
 
 typedef NTSTATUS
-(* NtNotifyChangeMultipleKeysFunc)(HANDLE             key_handle,
-                                   ULONG              subkey_count,
-                                   POBJECT_ATTRIBUTES subkeys,
-                                   HANDLE             event,
-                                   PIO_APC_ROUTINE    apc_routine,
-                                   PVOID              apc_closure,
-                                   PIO_STATUS_BLOCK   status_block,
-                                   ULONG              filter,
-                                   BOOLEAN            watch_tree,
-                                   PVOID              buffer,
-                                   ULONG              buffer_size,
-                                   BOOLEAN            async);
+(NTAPI * NtNotifyChangeMultipleKeysFunc)(HANDLE             key_handle,
+                                         ULONG              subkey_count,
+                                         POBJECT_ATTRIBUTES subkeys,
+                                         HANDLE             event,
+                                         PIO_APC_ROUTINE    apc_routine,
+                                         PVOID              apc_closure,
+                                         PIO_STATUS_BLOCK   status_block,
+                                         ULONG              filter,
+                                         BOOLEAN            watch_tree,
+                                         PVOID              buffer,
+                                         ULONG              buffer_size,
+                                         BOOLEAN            async);
 
 static NtQueryKeyFunc nt_query_key = NULL;
 static NtNotifyChangeMultipleKeysFunc nt_notify_change_multiple_keys = NULL;
