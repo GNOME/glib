@@ -317,6 +317,11 @@ gboolean
 g_file_test (const gchar *filename,
              GFileTest    test)
 {
+#ifdef G_OS_WIN32
+  int attributes;
+  wchar_t *wfilename;
+#endif
+
   g_return_val_if_fail (filename != NULL, FALSE);
 
 #ifdef G_OS_WIN32
@@ -327,8 +332,7 @@ g_file_test (const gchar *filename,
 #  ifndef FILE_ATTRIBUTE_DEVICE
 #    define FILE_ATTRIBUTE_DEVICE 64
 #  endif
-  int attributes;
-  wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
+  wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
 
   if (wfilename == NULL)
     return FALSE;
