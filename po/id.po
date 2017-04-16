@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-15 19:24+0000\n"
-"PO-Revision-Date: 2017-03-19 22:07+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"POT-Creation-Date: 2017-03-25 05:03+0000\n"
+"PO-Revision-Date: 2017-04-15 23:02+0700\n"
+"Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: ../gio/gapplication.c:493
 msgid "GApplication options"
@@ -1320,7 +1320,6 @@ msgid "Containing mount does not exist"
 msgstr "Kait yang memuat tak ada"
 
 #: ../gio/gfile.c:2515 ../gio/glocalfile.c:2375
-#, fuzzy
 msgid "Can’t copy over directory"
 msgstr "Tak bisa menyalin direktori atas direktori"
 
@@ -1643,15 +1642,14 @@ msgid "Concatenate files and print to standard output."
 msgstr "Sambung berkas berurutan dan cetak ke keluaran standar."
 
 #: ../gio/gio-tool-cat.c:131
-#, fuzzy
 msgid ""
 "gio cat works just like the traditional cat utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
-"gvfs-cat bekerja seperti utilitas cat tradisional, tapi memakai lokasi gvfs\n"
+"gio cat bekerja seperti utilitas cat tradisional, tapi memakai lokasi GIO\n"
 "sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
-" smb://server/sumberdaya/berkas.txt sebagai lokasi yang akan disambung."
+" smb://server/sumberdaya/berkas.txt sebagai lokasi."
 
 #: ../gio/gio-tool-cat.c:151
 msgid "No files given"
@@ -1708,6 +1706,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
+"gio copy mirip dengan utilitas cp tradisional, tapi memakai lokasi GIO\n"
+"sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
+"smb://server/sumberdaya/berkas.txt sebagai lokasi."
 
 #: ../gio/gio-tool-copy.c:143
 #, c-format
@@ -1808,6 +1809,12 @@ msgid ""
 "be specified with their GIO name, e.g. standard::icon, or just by\n"
 "namespace, e.g. unix, or by “*”, which matches all attributes"
 msgstr ""
+"gio info mirip dengan utilitas ls tradisional, tapi memakai lokasi GIO\n"
+"sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
+"smb://server/sumberdaya/berkas.txt sebagai lokasi. Atribut berkas dapat\n"
+"ditentukan dengan nama GIO mereka, misalnya standar::ikon, atau hanya "
+"dengan\n"
+"namespace, misalnya unix, atau dengan \"*\", yang cocok dengan semua atribut"
 
 #: ../gio/gio-tool-info.c:307 ../gio/gio-tool-mkdir.c:74
 msgid "No locations given"
@@ -1836,6 +1843,10 @@ msgid ""
 "like smb://server/resource/file.txt as location. File attributes can\n"
 "be specified with their GIO name, e.g. standard::icon"
 msgstr ""
+"gio list mirip dengan utilitas ls tradisional, tapi memakai lokasi GIO\n"
+"sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
+"smb://server/sumberdaya/berkas.txt sebagai lokasi. Atribut berkas dapat\n"
+"ditentukan dengan nama GIO mereka, misalnya standar::ikon"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-mime.c:71
@@ -1844,7 +1855,7 @@ msgstr "MIMETYPE"
 
 #: ../gio/gio-tool-mime.c:71
 msgid "HANDLER"
-msgstr "HANDLER"
+msgstr "PENANGAN"
 
 #: ../gio/gio-tool-mime.c:76
 msgid "Get or set the handler for a mimetype."
@@ -1856,10 +1867,13 @@ msgid ""
 "for the mimetype. If a handler is given, it is set as the default\n"
 "handler for the mimetype."
 msgstr ""
+"Jika tidak ada penangan yang diberikan, daftar aplikasi terdaftar dan\n"
+"direkomendasikan untuk mimetype. Jika penangan diberikan, ini disetel\n"
+"sebagai penangan bawaan untuk mimetype."
 
 #: ../gio/gio-tool-mime.c:98
 msgid "Must specify a single mimetype, and maybe a handler"
-msgstr ""
+msgstr "Harus menentukan mimetype tunggal, dan mungkin penangan"
 
 #: ../gio/gio-tool-mime.c:113
 #, c-format
@@ -1915,6 +1929,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/mydir as location."
 msgstr ""
+"gio mkdir mirip dengan utilitas mkdir tradisional, tapi memakai lokasi GIO\n"
+"sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
+"smb://server/sumberdaya/direktorisaya sebagai lokasi."
 
 #: ../gio/gio-tool-monitor.c:37
 msgid "Monitor a directory (default: depends on type)"
@@ -1927,6 +1944,8 @@ msgstr "Memantau suatu direktori (baku: bergantung kepada tipe)"
 #: ../gio/gio-tool-monitor.c:41
 msgid "Monitor a file directly (notices changes made via hardlinks)"
 msgstr ""
+"Pantau berkas secara langsung (pemberitahuan perubahan yang dilakukan "
+"melalui hardlinks)"
 
 #: ../gio/gio-tool-monitor.c:43
 msgid "Monitors a file directly, but doesn’t report changes"
@@ -1936,6 +1955,8 @@ msgstr ""
 #: ../gio/gio-tool-monitor.c:45
 msgid "Report moves and renames as simple deleted/created events"
 msgstr ""
+"Laporkan pergerakan dan mengganti nama menjadi acara yang dihapus/dibuat "
+"sederhana"
 
 #: ../gio/gio-tool-monitor.c:47
 msgid "Watch for mount events"
@@ -2040,7 +2061,6 @@ msgid "Mount or unmount the locations."
 msgstr "Kait atau lepas kait lokasi."
 
 #: ../gio/gio-tool-move.c:42
-#, fuzzy
 msgid "Don’t use copy and delete fallback"
 msgstr "Jangan gunakan fallback salin dan hapus"
 
@@ -2054,6 +2074,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location"
 msgstr ""
+"gio move mirip dengan utilitas mv tradisional, tapi memakai lokasi GIO\n"
+"sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
+"smb://server/sumberdaya/berkas.txt sebagai lokasi."
 
 #: ../gio/gio-tool-move.c:139
 #, c-format
@@ -2303,7 +2326,7 @@ msgstr "nama berkas kebergantungan yang akan dibuat"
 
 #: ../gio/glib-compile-resources.c:672
 msgid "Include phony targets in the generated dependency file"
-msgstr ""
+msgstr "Sertakan target palsu pada berkas dependensi yang dihasilkan"
 
 #: ../gio/glib-compile-resources.c:673
 msgid "Don’t automatically create and register resource"
@@ -3921,9 +3944,9 @@ msgid "No valid bookmark file found in data dirs"
 msgstr "Tak ditemukan penanda buku yang valid di direktori data"
 
 #: ../glib/gbookmarkfile.c:1957
-#, fuzzy, c-format
+#, c-format
 msgid "A bookmark for URI “%s” already exists"
-msgstr "Pengguna dengan nama '%s' telah ada."
+msgstr "Penanda taut untuk URI “%s” telah ada."
 
 #: ../glib/gbookmarkfile.c:2003 ../glib/gbookmarkfile.c:2161
 #: ../glib/gbookmarkfile.c:2246 ../glib/gbookmarkfile.c:2326
@@ -3934,30 +3957,32 @@ msgstr "Pengguna dengan nama '%s' telah ada."
 #: ../glib/gbookmarkfile.c:3176 ../glib/gbookmarkfile.c:3344
 #: ../glib/gbookmarkfile.c:3433 ../glib/gbookmarkfile.c:3522
 #: ../glib/gbookmarkfile.c:3638
-#, fuzzy, c-format
+#, c-format
 msgid "No bookmark found for URI “%s”"
-msgstr "Tak ditemukan penanda buku yang valid di direktori data"
+msgstr "Tak ditemukan penanda taut untuk URI “%s”"
 
 #: ../glib/gbookmarkfile.c:2335
-#, fuzzy, c-format
+#, c-format
 msgid "No MIME type defined in the bookmark for URI “%s”"
-msgstr "Tipe MIME tak didefinisikan pada penanda buku bagi URI '%s'"
+msgstr ""
+"Tidak ada jenis MIME yang didefinisikan pada penanda taut untuk URI \"%s\""
 
 #: ../glib/gbookmarkfile.c:2420
-#, fuzzy, c-format
+#, c-format
 msgid "No private flag has been defined in bookmark for URI “%s”"
-msgstr "Flag privat tak didefinisikan di penanda buku bagi URI '%s'"
+msgstr ""
+"Tidak ada flag privat yang ditetapkan dalam penanda taut untuk URI \"%s\""
 
 #: ../glib/gbookmarkfile.c:2799
-#, fuzzy, c-format
+#, c-format
 msgid "No groups set in bookmark for URI “%s”"
-msgstr "Gagal menata grup ke %ld: %s\n"
+msgstr "Tidak ada grup yang ditetapkan dalam penanda taut untuk URI \"%s\""
 
 #: ../glib/gbookmarkfile.c:3197 ../glib/gbookmarkfile.c:3354
-#, fuzzy, c-format
+#, c-format
 msgid "No application with name “%s” registered a bookmark for “%s”"
 msgstr ""
-"Tak ditemukan aplikasi terdaftar dengan nama '%s' bagi butir dengan URI '%s'"
+"Tak ditemukan aplikasi terdaftar dengan nama \"%s\" bagi penanda taut \"%s\""
 
 #: ../glib/gbookmarkfile.c:3377
 #, c-format
@@ -3970,9 +3995,9 @@ msgid "Partial character sequence at end of input"
 msgstr "Rangkaian karakter sebagian pada akhir input"
 
 #: ../glib/gconvert.c:742
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
-msgstr "Tidak bisa mengonversi '%s' ke suatu NSURL yang valid."
+msgstr "Tidak dapat mengonversi fallback \"%s\" menjadi codeset \"%s\""
 
 #: ../glib/gconvert.c:1566
 #, c-format
