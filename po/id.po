@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-15 19:24+0000\n"
-"PO-Revision-Date: 2017-03-19 22:07+0700\n"
+"POT-Creation-Date: 2017-04-11 17:30+0000\n"
+"PO-Revision-Date: 2017-04-17 13:44+0000\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Poedit 2.0.1\n"
 
 #: ../gio/gapplication.c:493
 msgid "GApplication options"
@@ -38,7 +38,7 @@ msgid "Override the application’s ID"
 msgstr "Timpa ID aplikasi"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
-#: ../gio/gio-tool.c:209 ../gio/gresource-tool.c:488
+#: ../gio/gio-tool.c:227 ../gio/gresource-tool.c:488
 #: ../gio/gsettings-tool.c:520
 msgid "Print help"
 msgstr "Cetak bantuan"
@@ -48,7 +48,7 @@ msgstr "Cetak bantuan"
 msgid "[COMMAND]"
 msgstr "[PERINTAH]"
 
-#: ../gio/gapplication-tool.c:49 ../gio/gio-tool.c:210
+#: ../gio/gapplication-tool.c:49 ../gio/gio-tool.c:228
 msgid "Print version"
 msgstr "Cetak versi"
 
@@ -103,7 +103,7 @@ msgid "APPID"
 msgstr "APPID"
 
 #: ../gio/gapplication-tool.c:70 ../gio/gapplication-tool.c:133
-#: ../gio/gdbus-tool.c:90 ../gio/gio-tool.c:206
+#: ../gio/gdbus-tool.c:90 ../gio/gio-tool.c:224
 msgid "COMMAND"
 msgstr "PERINTAH"
 
@@ -284,7 +284,7 @@ msgid "Truncate not supported on base stream"
 msgstr "Pemenggalan tak didukung pada stream basis"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1849
-#: ../gio/gdbusprivate.c:1377 ../gio/gsimpleasyncresult.c:870
+#: ../gio/gdbusprivate.c:1379 ../gio/gsimpleasyncresult.c:870
 #: ../gio/gsimpleasyncresult.c:896
 #, c-format
 msgid "Operation was cancelled"
@@ -305,7 +305,7 @@ msgstr "Tak cukup ruang di tujuan"
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
 #: ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:438 ../glib/gconvert.c:845
 #: ../glib/giochannel.c:1556 ../glib/giochannel.c:1598
-#: ../glib/giochannel.c:2442 ../glib/gutf8.c:855 ../glib/gutf8.c:1308
+#: ../glib/giochannel.c:2442 ../glib/gutf8.c:856 ../glib/gutf8.c:1309
 msgid "Invalid byte sequence in conversion input"
 msgstr "Rangkaian bita dalam input konversi tidak benar"
 
@@ -517,7 +517,7 @@ msgstr ""
 "Tak bisa menentukan alamat bus dari variabel lingkungan "
 "DBUS_STARTER_BUS_TYPE — nilai tak dikenal \"%s\""
 
-#: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7144
+#: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7156
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -643,86 +643,86 @@ msgid ""
 msgstr ""
 "Ditemui flag yang tak didukung ketika membangun sambungan di sisi klien"
 
-#: ../gio/gdbusconnection.c:4111 ../gio/gdbusconnection.c:4458
+#: ../gio/gdbusconnection.c:4123 ../gio/gdbusconnection.c:4470
 #, c-format
 msgid ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Tidak ada antarmuka 'org.freedesktop.DBus.Properties' pada objek pada path %s"
 
-#: ../gio/gdbusconnection.c:4253
+#: ../gio/gdbusconnection.c:4265
 #, c-format
 msgid "No such property '%s'"
 msgstr "Tak ada properti '%s'"
 
-#: ../gio/gdbusconnection.c:4265
+#: ../gio/gdbusconnection.c:4277
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "Properti '%s' tidak dapat dibaca"
 
-#: ../gio/gdbusconnection.c:4276
+#: ../gio/gdbusconnection.c:4288
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "Properti '%s' tidak dapat ditulisi"
 
-#: ../gio/gdbusconnection.c:4296
+#: ../gio/gdbusconnection.c:4308
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 "Galat menata properti '%s': Tipe yang diharapkan '%s' tapi diperoleh '%s'"
 
-#: ../gio/gdbusconnection.c:4401 ../gio/gdbusconnection.c:4609
-#: ../gio/gdbusconnection.c:6575
+#: ../gio/gdbusconnection.c:4413 ../gio/gdbusconnection.c:4621
+#: ../gio/gdbusconnection.c:6587
 #, c-format
 msgid "No such interface '%s'"
 msgstr "Tak ada antar muka '%s'"
 
-#: ../gio/gdbusconnection.c:4827 ../gio/gdbusconnection.c:7084
+#: ../gio/gdbusconnection.c:4839 ../gio/gdbusconnection.c:7096
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "Tak ada antar muka '%s' pada objek di lokasi %s"
 
-#: ../gio/gdbusconnection.c:4925
+#: ../gio/gdbusconnection.c:4937
 #, c-format
 msgid "No such method '%s'"
 msgstr "Tak ada metoda '%s'"
 
-#: ../gio/gdbusconnection.c:4956
+#: ../gio/gdbusconnection.c:4968
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Tipe pesan '%s' tak cocok dengan tipe yang diharapkan '%s'"
 
-#: ../gio/gdbusconnection.c:5154
+#: ../gio/gdbusconnection.c:5166
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Suatu objek telah diekspor bagi antar muka %s pada %s"
 
-#: ../gio/gdbusconnection.c:5380
+#: ../gio/gdbusconnection.c:5392
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Tak bisa mengambil properti %s.%s"
 
-#: ../gio/gdbusconnection.c:5436
+#: ../gio/gdbusconnection.c:5448
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Tak bisa menata properti %s.%s"
 
-#: ../gio/gdbusconnection.c:5612
+#: ../gio/gdbusconnection.c:5624
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Metoda '%s' mengembalikan tipe '%s', tapi yang diharapkan '%s'"
 
-#: ../gio/gdbusconnection.c:6686
+#: ../gio/gdbusconnection.c:6698
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Metoda '%s' pada antar muka '%s' dengan tanda tangan '%s' tak ada"
 
-#: ../gio/gdbusconnection.c:6807
+#: ../gio/gdbusconnection.c:6819
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Subtree telah diekspor bagi %s"
 
-#: ../gio/gdbusconnection.c:7135
+#: ../gio/gdbusconnection.c:7147
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -917,12 +917,12 @@ msgstr "Galat balikan dengan tubuh bertipe \"%s\""
 msgid "Error return with empty body"
 msgstr "Galat balikan dengan body kosong"
 
-#: ../gio/gdbusprivate.c:2038
+#: ../gio/gdbusprivate.c:2043
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Tak bisa mendapat profil perangkat keras: %s"
 
-#: ../gio/gdbusprivate.c:2083
+#: ../gio/gdbusprivate.c:2088
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Tak bisa memuat /var/lib/dbus/machine-id ata /etc/machine-id: "
 
@@ -936,7 +936,7 @@ msgstr "Galat sewaktu memanggil StartServiceByName untuk %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Balasan tak diharapkan %d dari metode StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2713 ../gio/gdbusproxy.c:2847
+#: ../gio/gdbusproxy.c:2719 ../gio/gdbusproxy.c:2853
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -944,25 +944,25 @@ msgstr ""
 "Tidak bisa menjalankan metoda; proksi adalah nama terkenal tanpa pemilik dan "
 "proksi dibangun dengan flag G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: ../gio/gdbusserver.c:709
+#: ../gio/gdbusserver.c:708
 msgid "Abstract name space not supported"
 msgstr "Ruang nama abstrak tak didukung"
 
-#: ../gio/gdbusserver.c:796
+#: ../gio/gdbusserver.c:795
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Tidak dapat menyatakan berkas nonce ketika membuat suatu server"
 
-#: ../gio/gdbusserver.c:874
+#: ../gio/gdbusserver.c:873
 #, c-format
 msgid "Error writing nonce file at “%s”: %s"
 msgstr "Galat saat menulis berkas nonce pada \"%s\": %s"
 
-#: ../gio/gdbusserver.c:1045
+#: ../gio/gdbusserver.c:1044
 #, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
 msgstr "String \"%s\" bukan suatu GUID D-Bus yang valid"
 
-#: ../gio/gdbusserver.c:1085
+#: ../gio/gdbusserver.c:1084
 #, c-format
 msgid "Cannot listen on unsupported transport “%s”"
 msgstr "Tidak dapat mendengarkan pada transport yang tak didukung \"%s\""
@@ -976,6 +976,7 @@ msgid ""
 "  monitor      Monitor a remote object\n"
 "  call         Invoke a method on a remote object\n"
 "  emit         Emit a signal\n"
+"  wait         Wait for a bus name to appear\n"
 "\n"
 "Use “%s COMMAND --help” to get help on each command.\n"
 msgstr ""
@@ -985,64 +986,65 @@ msgstr ""
 "  monitor      Pantau suatu objek jauh\n"
 "  call         Jalankan suatu metode pada suatu objek jauh\n"
 "  emit         Pancarkan sinyal\n"
+"  wait         Tunggu sebuah nama bus muncul\n"
 "\n"
 "Gunakan \"%s PERINTAH --help\" untuk memperoleh bantuan pada setiap "
 "perintah.\n"
 
-#: ../gio/gdbus-tool.c:164 ../gio/gdbus-tool.c:226 ../gio/gdbus-tool.c:298
-#: ../gio/gdbus-tool.c:322 ../gio/gdbus-tool.c:724 ../gio/gdbus-tool.c:1067
-#: ../gio/gdbus-tool.c:1509 ../gio/gio-tool-rename.c:84
+#: ../gio/gdbus-tool.c:165 ../gio/gdbus-tool.c:227 ../gio/gdbus-tool.c:299
+#: ../gio/gdbus-tool.c:323 ../gio/gdbus-tool.c:725 ../gio/gdbus-tool.c:1068
+#: ../gio/gdbus-tool.c:1510
 #, c-format
 msgid "Error: %s\n"
 msgstr "Galat: %s\n"
 
-#: ../gio/gdbus-tool.c:175 ../gio/gdbus-tool.c:239 ../gio/gdbus-tool.c:1525
+#: ../gio/gdbus-tool.c:176 ../gio/gdbus-tool.c:240 ../gio/gdbus-tool.c:1526
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Galat saat mengurai XML introspeksi: %s\n"
 
-#: ../gio/gdbus-tool.c:208
+#: ../gio/gdbus-tool.c:209
 #, c-format
 msgid "Error: %s is not a valid name\n"
 msgstr "Galat: %s bukan nama yang valid\n"
 
-#: ../gio/gdbus-tool.c:356
+#: ../gio/gdbus-tool.c:357
 msgid "Connect to the system bus"
 msgstr "Menyambung ke bus sistem"
 
-#: ../gio/gdbus-tool.c:357
+#: ../gio/gdbus-tool.c:358
 msgid "Connect to the session bus"
 msgstr "Menyambung ke bus sesi"
 
-#: ../gio/gdbus-tool.c:358
+#: ../gio/gdbus-tool.c:359
 msgid "Connect to given D-Bus address"
 msgstr "Menyambung ke alamat D-Bus yang diberikan"
 
-#: ../gio/gdbus-tool.c:368
+#: ../gio/gdbus-tool.c:369
 msgid "Connection Endpoint Options:"
 msgstr "Opsi Titik Ujung Sambungan:"
 
-#: ../gio/gdbus-tool.c:369
+#: ../gio/gdbus-tool.c:370
 msgid "Options specifying the connection endpoint"
 msgstr "Opsi yang menyatakan titik ujung sambungan"
 
-#: ../gio/gdbus-tool.c:391
+#: ../gio/gdbus-tool.c:392
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Titik ujung sambungan tak dinyatakan"
 
-#: ../gio/gdbus-tool.c:401
+#: ../gio/gdbus-tool.c:402
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Telah dinyatakan titik ujung sambungan berganda"
 
-#: ../gio/gdbus-tool.c:471
+#: ../gio/gdbus-tool.c:472
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr "Peringatan: Menurut data introspeksi, antar muka \"%s\" tak ada\n"
 
-#: ../gio/gdbus-tool.c:480
+#: ../gio/gdbus-tool.c:481
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
@@ -1051,160 +1053,202 @@ msgstr ""
 "Peringatan: Menurut data introspeksi, metoda \"%s\" tak ada pada antar muka "
 "\"%s\"\n"
 
-#: ../gio/gdbus-tool.c:542
+#: ../gio/gdbus-tool.c:543
 msgid "Optional destination for signal (unique name)"
 msgstr "Tujuan opsional bagi sinyal (nama unik)"
 
-#: ../gio/gdbus-tool.c:543
+#: ../gio/gdbus-tool.c:544
 msgid "Object path to emit signal on"
 msgstr "Path objek untuk dipancari sinyal"
 
-#: ../gio/gdbus-tool.c:544
+#: ../gio/gdbus-tool.c:545
 msgid "Signal and interface name"
 msgstr "Nama antar muka dan sinyal"
 
-#: ../gio/gdbus-tool.c:578
+#: ../gio/gdbus-tool.c:579
 msgid "Emit a signal."
 msgstr "Pancarkan sinyal."
 
-#: ../gio/gdbus-tool.c:612 ../gio/gdbus-tool.c:857 ../gio/gdbus-tool.c:1615
-#: ../gio/gdbus-tool.c:1850
+#: ../gio/gdbus-tool.c:613 ../gio/gdbus-tool.c:858 ../gio/gdbus-tool.c:1616
+#: ../gio/gdbus-tool.c:1851 ../gio/gdbus-tool.c:2067
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Galat saat menyambung: %s\n"
 
-#: ../gio/gdbus-tool.c:624
+#: ../gio/gdbus-tool.c:625
 #, c-format
 msgid "Error: object path not specified.\n"
 msgstr "Galat: path objek tak dinyatakan\n"
 
-#: ../gio/gdbus-tool.c:629 ../gio/gdbus-tool.c:924 ../gio/gdbus-tool.c:1680
-#: ../gio/gdbus-tool.c:1916
+#: ../gio/gdbus-tool.c:630 ../gio/gdbus-tool.c:925 ../gio/gdbus-tool.c:1681
+#: ../gio/gdbus-tool.c:1917
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Galat: '%s' bukan suatu lokasi objek yang valid\n"
 
-#: ../gio/gdbus-tool.c:635
+#: ../gio/gdbus-tool.c:636
 #, c-format
 msgid "Error: signal not specified.\n"
 msgstr "Galat: sinyal tak dinyatakan\n"
 
-#: ../gio/gdbus-tool.c:642
+#: ../gio/gdbus-tool.c:643
 #, c-format
 msgid "Error: signal must be the fully-qualified name.\n"
 msgstr "Galat: sinyal harus berupa nama yang berkualifikasi penuh.\n"
 
-#: ../gio/gdbus-tool.c:650
+#: ../gio/gdbus-tool.c:651
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Galat: '%s' bukan nama antar muka yang valid\n"
 
-#: ../gio/gdbus-tool.c:656
+#: ../gio/gdbus-tool.c:657
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Galat: '%s' bukan nama anggota yang valid\n"
 
-#: ../gio/gdbus-tool.c:662
+#: ../gio/gdbus-tool.c:663
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Galat: '%s' bukan nama bus unik yang valid\n"
 
 #. Use the original non-"parse-me-harder" error
-#: ../gio/gdbus-tool.c:699 ../gio/gdbus-tool.c:1036
+#: ../gio/gdbus-tool.c:700 ../gio/gdbus-tool.c:1037
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Galat saat mengurai parameter %d: %s\n"
 
-#: ../gio/gdbus-tool.c:731
+#: ../gio/gdbus-tool.c:732
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Galat saat menggelontor sambungan: %s\n"
 
-#: ../gio/gdbus-tool.c:758
+#: ../gio/gdbus-tool.c:759
 msgid "Destination name to invoke method on"
 msgstr "Nama tujuan tempat menjalankan metoda"
 
-#: ../gio/gdbus-tool.c:759
+#: ../gio/gdbus-tool.c:760
 msgid "Object path to invoke method on"
 msgstr "Lokasi objek tempat menjalankan metoda"
 
-#: ../gio/gdbus-tool.c:760
+#: ../gio/gdbus-tool.c:761
 msgid "Method and interface name"
 msgstr "Nama metoda dan antar muka"
 
-#: ../gio/gdbus-tool.c:761
+#: ../gio/gdbus-tool.c:762
 msgid "Timeout in seconds"
 msgstr "Tenggat waktu dalam detik"
 
-#: ../gio/gdbus-tool.c:802
+#: ../gio/gdbus-tool.c:803
 msgid "Invoke a method on a remote object."
 msgstr "Jalankan suatu metoda pada suatu objek jauh."
 
-#: ../gio/gdbus-tool.c:877 ../gio/gdbus-tool.c:1634 ../gio/gdbus-tool.c:1869
+#: ../gio/gdbus-tool.c:878 ../gio/gdbus-tool.c:1635 ../gio/gdbus-tool.c:1870
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Galat: Tujuan tak dinyatakan\n"
 
-#: ../gio/gdbus-tool.c:889 ../gio/gdbus-tool.c:1651 ../gio/gdbus-tool.c:1881
+#: ../gio/gdbus-tool.c:890 ../gio/gdbus-tool.c:1652 ../gio/gdbus-tool.c:1882
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Galat: %s bukan nama bus yang valid\n"
 
-#: ../gio/gdbus-tool.c:904 ../gio/gdbus-tool.c:1660
+#: ../gio/gdbus-tool.c:905 ../gio/gdbus-tool.c:1661
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Galat: Lokasi objek tak dinyatakan\n"
 
-#: ../gio/gdbus-tool.c:939
+#: ../gio/gdbus-tool.c:940
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Galat: Nama metoda tak dinyatakan\n"
 
-#: ../gio/gdbus-tool.c:950
+#: ../gio/gdbus-tool.c:951
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Galat: Nama metoda \"%s\" tak valid\n"
 
-#: ../gio/gdbus-tool.c:1028
+#: ../gio/gdbus-tool.c:1029
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Galat ketika mengurai parameter ke-%d bertipe \"%s\": %s\n"
 
-#: ../gio/gdbus-tool.c:1472
+#: ../gio/gdbus-tool.c:1473
 msgid "Destination name to introspect"
 msgstr "Nama tujuan untuk introspeksi"
 
-#: ../gio/gdbus-tool.c:1473
+#: ../gio/gdbus-tool.c:1474
 msgid "Object path to introspect"
 msgstr "Lokasi objek untuk introspeksi"
 
-#: ../gio/gdbus-tool.c:1474
+#: ../gio/gdbus-tool.c:1475
 msgid "Print XML"
 msgstr "Cetak XML"
 
-#: ../gio/gdbus-tool.c:1475
+#: ../gio/gdbus-tool.c:1476
 msgid "Introspect children"
 msgstr "Introspeksi anak"
 
-#: ../gio/gdbus-tool.c:1476
+#: ../gio/gdbus-tool.c:1477
 msgid "Only print properties"
 msgstr "Hanya cetak properti"
 
-#: ../gio/gdbus-tool.c:1567
+#: ../gio/gdbus-tool.c:1568
 msgid "Introspect a remote object."
 msgstr "Introspeksi suatu objek jauh."
 
-#: ../gio/gdbus-tool.c:1772
+#: ../gio/gdbus-tool.c:1773
 msgid "Destination name to monitor"
 msgstr "Nama tujuan untuk dipantau"
 
-#: ../gio/gdbus-tool.c:1773
+#: ../gio/gdbus-tool.c:1774
 msgid "Object path to monitor"
 msgstr "Lokasi objek untuk dipantau"
 
-#: ../gio/gdbus-tool.c:1802
+#: ../gio/gdbus-tool.c:1803
 msgid "Monitor a remote object."
 msgstr "Memantau suatu objek jauh."
+
+#: ../gio/gdbus-tool.c:1980
+msgid "Service to activate before waiting for the other one (well-known name)"
+msgstr ""
+"Layanan yang akan diaktifkan sebelum menunggu yang lain (nama yang dikenal "
+"baik)"
+
+#: ../gio/gdbus-tool.c:1983
+msgid ""
+"Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
+"(default)"
+msgstr ""
+"Tenggat waktu menunggu sebelum keluar dengan suatu kesalahan (detik); 0 "
+"untuk tanpa tenggat (baku)"
+
+#: ../gio/gdbus-tool.c:2031
+msgid "[OPTION…] BUS-NAME"
+msgstr "[OPSI…] NAMA-BUS"
+
+#: ../gio/gdbus-tool.c:2033
+msgid "Wait for a bus name to appear."
+msgstr "Tunggu suatu nama bus muncul."
+
+#: ../gio/gdbus-tool.c:2109
+#, c-format
+msgid "Error: A service to activate for must be specified.\n"
+msgstr "Galat: Suatu layanan yang akan diaktifkan mesti dinyatakan\n"
+
+#: ../gio/gdbus-tool.c:2114
+#, c-format
+msgid "Error: A service to wait for must be specified.\n"
+msgstr "Galat: Suatu layanan yang mesti ditunggu harus dinyatakan\n"
+
+#: ../gio/gdbus-tool.c:2119
+#, c-format
+msgid "Error: Too many arguments.\n"
+msgstr "Galat: Terlalu banyak argumen.\n"
+
+#: ../gio/gdbus-tool.c:2127 ../gio/gdbus-tool.c:2134
+#, c-format
+msgid "Error: %s is not a valid well-known bus name.\n"
+msgstr "Galat: %s bukan nama bus yang dikenal baik dan valid\n"
 
 #: ../gio/gdesktopappinfo.c:1997 ../gio/gdesktopappinfo.c:4504
 msgid "Unnamed"
@@ -1320,7 +1364,6 @@ msgid "Containing mount does not exist"
 msgstr "Kait yang memuat tak ada"
 
 #: ../gio/gfile.c:2515 ../gio/glocalfile.c:2375
-#, fuzzy
 msgid "Can’t copy over directory"
 msgstr "Tak bisa menyalin direktori atas direktori"
 
@@ -1424,7 +1467,7 @@ msgid "Truncate not supported on stream"
 msgstr "Pemenggalan tak didukung pada stream"
 
 #: ../gio/ghttpproxy.c:91 ../gio/gresolver.c:410 ../gio/gresolver.c:476
-#: ../glib/gconvert.c:1726
+#: ../glib/gconvert.c:1650
 msgid "Invalid hostname"
 msgstr "Nama host salah"
 
@@ -1529,109 +1572,113 @@ msgstr "Stream masukan tak mengimplementasi pembacaan"
 msgid "Stream has outstanding operation"
 msgstr "Stream memiliki operasi tertunda"
 
-#: ../gio/gio-tool.c:142
+#: ../gio/gio-tool.c:160
 msgid "Copy with file"
 msgstr "Salin dengan berkas"
 
-#: ../gio/gio-tool.c:146
+#: ../gio/gio-tool.c:164
 msgid "Keep with file when moved"
 msgstr "Pertahankan dengan berkas ketika dipindah"
 
-#: ../gio/gio-tool.c:187
+#: ../gio/gio-tool.c:205
 msgid "“version” takes no arguments"
 msgstr "\"version\" tak menerima argumen"
 
-#: ../gio/gio-tool.c:189 ../gio/gio-tool.c:205 ../glib/goption.c:857
+#: ../gio/gio-tool.c:207 ../gio/gio-tool.c:223 ../glib/goption.c:857
 msgid "Usage:"
 msgstr "Penggunaan:"
 
-#: ../gio/gio-tool.c:192
+#: ../gio/gio-tool.c:210
 msgid "Print version information and exit."
 msgstr "Cetak informasi versi dan keluar."
 
-#: ../gio/gio-tool.c:206
+#: ../gio/gio-tool.c:224
 msgid "[ARGS...]"
 msgstr "[ARG...]"
 
-#: ../gio/gio-tool.c:208
+#: ../gio/gio-tool.c:226
 msgid "Commands:"
 msgstr "Perintah:"
 
-#: ../gio/gio-tool.c:211
+#: ../gio/gio-tool.c:229
 msgid "Concatenate files to standard output"
 msgstr "Sambung berkas berurutan ke keluaran standar"
 
-#: ../gio/gio-tool.c:212
+#: ../gio/gio-tool.c:230
 msgid "Copy one or more files"
 msgstr "Salin satu berkas atau lebih"
 
-#: ../gio/gio-tool.c:213
+#: ../gio/gio-tool.c:231
 msgid "Show information about locations"
 msgstr "Tunjukkan informasi tentang lokasi"
 
-#: ../gio/gio-tool.c:214
+#: ../gio/gio-tool.c:232
 msgid "List the contents of locations"
 msgstr "Tampilkan daftar isi lokasi"
 
-#: ../gio/gio-tool.c:215
+#: ../gio/gio-tool.c:233
 msgid "Get or set the handler for a mimetype"
 msgstr "Ambil atau atur penangan bagi suatu mimetype"
 
-#: ../gio/gio-tool.c:216
+#: ../gio/gio-tool.c:234
 msgid "Create directories"
 msgstr "Buat direktori"
 
-#: ../gio/gio-tool.c:217
+#: ../gio/gio-tool.c:235
 msgid "Monitor files and directories for changes"
 msgstr "Pantau perubahan berkas dan direktori"
 
-#: ../gio/gio-tool.c:218
+#: ../gio/gio-tool.c:236
 msgid "Mount or unmount the locations"
 msgstr "Kait atau lepas kait lokasi"
 
-#: ../gio/gio-tool.c:219
+#: ../gio/gio-tool.c:237
 msgid "Move one or more files"
 msgstr "Pindah satu berkas atau lebih"
 
-#: ../gio/gio-tool.c:220
+#: ../gio/gio-tool.c:238
 msgid "Open files with the default application"
 msgstr "Buka berkas dengan aplikasi baku"
 
-#: ../gio/gio-tool.c:221
+#: ../gio/gio-tool.c:239
 msgid "Rename a file"
 msgstr "Ubah nama suatu berkas"
 
-#: ../gio/gio-tool.c:222
+#: ../gio/gio-tool.c:240
 msgid "Delete one or more files"
 msgstr "Hapus satu berkas atau lebih"
 
-#: ../gio/gio-tool.c:223
+#: ../gio/gio-tool.c:241
 msgid "Read from standard input and save"
 msgstr "Baca dari masukan standar dan simpan"
 
-#: ../gio/gio-tool.c:224
+#: ../gio/gio-tool.c:242
 msgid "Set a file attribute"
 msgstr "Atur atribut berkas"
 
-#: ../gio/gio-tool.c:225
+#: ../gio/gio-tool.c:243
 msgid "Move files or directories to the trash"
 msgstr "Pindahkan berkas atau direktori ke tong sampah"
 
-#: ../gio/gio-tool.c:226
+#: ../gio/gio-tool.c:244
 msgid "Lists the contents of locations in a tree"
 msgstr "Lihat daftar lokasi dalam suatu pohon"
 
-#: ../gio/gio-tool.c:228
+#: ../gio/gio-tool.c:246
 #, c-format
 msgid "Use %s to get detailed help.\n"
 msgstr "Gunakan %s untuk memperoleh bantuan terrinci.\n"
 
+#: ../gio/gio-tool-cat.c:80
+msgid "Error writing to stdout"
+msgstr "Galat saat menulis ke stdout"
+
 #. Translators: commandline placeholder
-#: ../gio/gio-tool-cat.c:124 ../gio/gio-tool-info.c:278
+#: ../gio/gio-tool-cat.c:124 ../gio/gio-tool-info.c:282
 #: ../gio/gio-tool-list.c:165 ../gio/gio-tool-mkdir.c:48
 #: ../gio/gio-tool-monitor.c:37 ../gio/gio-tool-monitor.c:39
 #: ../gio/gio-tool-monitor.c:41 ../gio/gio-tool-monitor.c:43
-#: ../gio/gio-tool-monitor.c:202 ../gio/gio-tool-mount.c:1132
+#: ../gio/gio-tool-monitor.c:203 ../gio/gio-tool-mount.c:1141
 #: ../gio/gio-tool-open.c:45 ../gio/gio-tool-remove.c:48
 #: ../gio/gio-tool-rename.c:45 ../gio/gio-tool-set.c:89
 #: ../gio/gio-tool-trash.c:81 ../gio/gio-tool-tree.c:239
@@ -1643,19 +1690,20 @@ msgid "Concatenate files and print to standard output."
 msgstr "Sambung berkas berurutan dan cetak ke keluaran standar."
 
 #: ../gio/gio-tool-cat.c:131
-#, fuzzy
 msgid ""
 "gio cat works just like the traditional cat utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
-"gvfs-cat bekerja seperti utilitas cat tradisional, tapi memakai lokasi gvfs\n"
+"gio cat bekerja seperti utilitas cat tradisional, tapi memakai lokasi GIO\n"
 "sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
-" smb://server/sumberdaya/berkas.txt sebagai lokasi yang akan disambung."
+"seperti smb://server/sumberdaya/berkas.txt sebagai lokasi."
 
-#: ../gio/gio-tool-cat.c:151
-msgid "No files given"
-msgstr "Tak ada berkas yang diberikan"
+#: ../gio/gio-tool-cat.c:153 ../gio/gio-tool-info.c:313
+#: ../gio/gio-tool-mkdir.c:76 ../gio/gio-tool-monitor.c:228
+#: ../gio/gio-tool-open.c:71 ../gio/gio-tool-remove.c:72
+msgid "No locations given"
+msgstr "Tidak ada lokasi yang diberikan"
 
 #: ../gio/gio-tool-copy.c:42 ../gio/gio-tool-move.c:38
 msgid "No target directory"
@@ -1708,13 +1756,16 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
+"gio copy mirip dengan utilitas cp tradisional, tapi memakai lokasi GIO\n"
+"sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
+"smb://server/sumberdaya/berkas.txt sebagai lokasi."
 
-#: ../gio/gio-tool-copy.c:143
+#: ../gio/gio-tool-copy.c:147
 #, c-format
 msgid "Destination %s is not a directory"
 msgstr "Tujuan %s bukan suatu direktori"
 
-#: ../gio/gio-tool-copy.c:187 ../gio/gio-tool-move.c:181
+#: ../gio/gio-tool-copy.c:192 ../gio/gio-tool-move.c:185
 #, c-format
 msgid "%s: overwrite “%s”? "
 msgstr "%s: timpa \"%s\"?"
@@ -1781,26 +1832,21 @@ msgstr "tersembunyi\n"
 msgid "uri: %s\n"
 msgstr "uri: %s\n"
 
-#: ../gio/gio-tool-info.c:221
-#, c-format
-msgid "Error getting writable attributes: %s\n"
-msgstr "Galat saat mengambil atribut yang dapat ditulisi: %s\n"
-
-#: ../gio/gio-tool-info.c:226
+#: ../gio/gio-tool-info.c:228
 #, c-format
 msgid "Settable attributes:\n"
 msgstr "Atribut yang dapat ditata:\n"
 
-#: ../gio/gio-tool-info.c:249
+#: ../gio/gio-tool-info.c:252
 #, c-format
 msgid "Writable attribute namespaces:\n"
 msgstr "Namespace atribut yang dapat ditulis:\n"
 
-#: ../gio/gio-tool-info.c:283
+#: ../gio/gio-tool-info.c:287
 msgid "Show information about locations."
 msgstr "Tunjukkan informasi tentang lokasi."
 
-#: ../gio/gio-tool-info.c:285
+#: ../gio/gio-tool-info.c:289
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1808,10 +1854,12 @@ msgid ""
 "be specified with their GIO name, e.g. standard::icon, or just by\n"
 "namespace, e.g. unix, or by “*”, which matches all attributes"
 msgstr ""
-
-#: ../gio/gio-tool-info.c:307 ../gio/gio-tool-mkdir.c:74
-msgid "No locations given"
-msgstr "Tidak ada lokasi yang diberikan"
+"gio info mirip dengan utilitas ls tradisional, tapi memakai lokasi GIO\n"
+"sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
+"smb://server/sumberdaya/berkas.txt sebagai lokasi. Atribut berkas dapat\n"
+"ditentukan dengan nama GIO mereka, misalnya standard::icon, atau hanya "
+"dengan\n"
+"namespace, misalnya unix, atau dengan \"*\", yang cocok dengan semua atribut"
 
 #: ../gio/gio-tool-list.c:36 ../gio/gio-tool-tree.c:32
 msgid "Show hidden files"
@@ -1836,6 +1884,10 @@ msgid ""
 "like smb://server/resource/file.txt as location. File attributes can\n"
 "be specified with their GIO name, e.g. standard::icon"
 msgstr ""
+"gio list mirip dengan utilitas ls tradisional, tapi memakai lokasi GIO\n"
+"sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
+"smb://server/sumberdaya/berkas.txt sebagai lokasi. Atribut berkas dapat\n"
+"ditentukan dengan nama GIO mereka, misalnya standard::icon"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-mime.c:71
@@ -1856,47 +1908,50 @@ msgid ""
 "for the mimetype. If a handler is given, it is set as the default\n"
 "handler for the mimetype."
 msgstr ""
+"Jika tidak ada penangan yang diberikan, daftar aplikasi terdaftar dan\n"
+"direkomendasikan untuk mimetype. Jika penangan diberikan, ini disetel\n"
+"sebagai penangan bawaan untuk mimetype."
 
-#: ../gio/gio-tool-mime.c:98
+#: ../gio/gio-tool-mime.c:100
 msgid "Must specify a single mimetype, and maybe a handler"
-msgstr ""
+msgstr "Harus menentukan mimetype tunggal, dan mungkin penangan"
 
-#: ../gio/gio-tool-mime.c:113
+#: ../gio/gio-tool-mime.c:116
 #, c-format
 msgid "No default applications for “%s”\n"
 msgstr "Tidak ada aplikasi baku bagi \"%s\"\n"
 
-#: ../gio/gio-tool-mime.c:119
+#: ../gio/gio-tool-mime.c:122
 #, c-format
 msgid "Default application for “%s”: %s\n"
 msgstr "Aplikasi baku bagi \"%s\": %s\n"
 
-#: ../gio/gio-tool-mime.c:124
+#: ../gio/gio-tool-mime.c:127
 #, c-format
 msgid "Registered applications:\n"
 msgstr "Aplikasi terdaftar:\n"
 
-#: ../gio/gio-tool-mime.c:126
+#: ../gio/gio-tool-mime.c:129
 #, c-format
 msgid "No registered applications\n"
 msgstr "Tak ada aplikasi terdaftar\n"
 
-#: ../gio/gio-tool-mime.c:137
+#: ../gio/gio-tool-mime.c:140
 #, c-format
 msgid "Recommended applications:\n"
 msgstr "Aplikasi yang direkomendasikan:\n"
 
-#: ../gio/gio-tool-mime.c:139
+#: ../gio/gio-tool-mime.c:142
 #, c-format
 msgid "No recommended applications\n"
 msgstr "Tidak ada aplikasi yang direkomendasikan\n"
 
-#: ../gio/gio-tool-mime.c:159
+#: ../gio/gio-tool-mime.c:162
 #, c-format
-msgid "Failed to load info for handler “%s”\n"
-msgstr "Gagal memuat info bagi penangan \"%s\"\n"
+msgid "Failed to load info for handler “%s”"
+msgstr "Gagal memuat info bagi penangan \"%s\""
 
-#: ../gio/gio-tool-mime.c:165
+#: ../gio/gio-tool-mime.c:168
 #, c-format
 msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
 msgstr "Gagal menata \"%s\" sebagai penangan baku bagi \"%s\": %s\n"
@@ -1915,6 +1970,9 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/mydir as location."
 msgstr ""
+"gio mkdir mirip dengan utilitas mkdir tradisional, tapi memakai lokasi GIO\n"
+"sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
+"smb://server/sumberdaya/direktorisaya sebagai lokasi."
 
 #: ../gio/gio-tool-monitor.c:37
 msgid "Monitor a directory (default: depends on type)"
@@ -1927,6 +1985,8 @@ msgstr "Memantau suatu direktori (baku: bergantung kepada tipe)"
 #: ../gio/gio-tool-monitor.c:41
 msgid "Monitor a file directly (notices changes made via hardlinks)"
 msgstr ""
+"Pantau berkas secara langsung (pemberitahuan perubahan yang dilakukan "
+"melalui hardlinks)"
 
 #: ../gio/gio-tool-monitor.c:43
 msgid "Monitors a file directly, but doesn’t report changes"
@@ -1936,12 +1996,14 @@ msgstr ""
 #: ../gio/gio-tool-monitor.c:45
 msgid "Report moves and renames as simple deleted/created events"
 msgstr ""
+"Laporkan pergerakan dan mengganti nama menjadi kejadian sederhana yang "
+"dihapus/dibuat"
 
 #: ../gio/gio-tool-monitor.c:47
 msgid "Watch for mount events"
 msgstr "Mengamati kejadian pengaitan"
 
-#: ../gio/gio-tool-monitor.c:207
+#: ../gio/gio-tool-monitor.c:208
 msgid "Monitor files or directories for changes."
 msgstr "Memantau perubahan berkas atau direktori."
 
@@ -1996,51 +2058,23 @@ msgid "Show extra information"
 msgstr "Tampilkan informasi ekstra"
 
 #: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
-#, c-format
-msgid "Error mounting location: Anonymous access denied\n"
-msgstr "Galat saat mengait lokasi: Akses anonim ditolak\n"
+msgid "Anonymous access denied"
+msgstr "Akses anonim ditolak"
 
-#: ../gio/gio-tool-mount.c:248 ../gio/gio-tool-mount.c:278
-#, c-format
-msgid "Error mounting location: %s\n"
-msgstr "Galat saat mengait lokasi: %s\n"
-
-#: ../gio/gio-tool-mount.c:341
-#, c-format
-msgid "Error unmounting mount: %s\n"
-msgstr "Galat saat melepas kait: %s\n"
-
-#: ../gio/gio-tool-mount.c:366 ../gio/gio-tool-mount.c:419
-#, c-format
-msgid "Error finding enclosing mount: %s\n"
-msgstr "Galat saat mencari kait yang melingkupi: %s\n"
-
-#: ../gio/gio-tool-mount.c:394
-#, c-format
-msgid "Error ejecting mount: %s\n"
-msgstr "Galat saat melepas kait: %s\n"
-
-#: ../gio/gio-tool-mount.c:875
-#, c-format
-msgid "Error mounting %s: %s\n"
-msgstr "Galat saat mengait %s: %s\n"
-
-#: ../gio/gio-tool-mount.c:891
+#: ../gio/gio-tool-mount.c:897
 #, c-format
 msgid "Mounted %s at %s\n"
 msgstr "%s dikait pada %s\n"
 
-#: ../gio/gio-tool-mount.c:941
-#, c-format
-msgid "No volume for device file %s\n"
-msgstr "Tidak ada volume bagi berkas perangkat %s\n"
+#: ../gio/gio-tool-mount.c:950
+msgid "No volume for device file"
+msgstr "Tidak ada volume bagi berkas perangkat"
 
-#: ../gio/gio-tool-mount.c:1136
+#: ../gio/gio-tool-mount.c:1145
 msgid "Mount or unmount the locations."
 msgstr "Kait atau lepas kait lokasi."
 
 #: ../gio/gio-tool-move.c:42
-#, fuzzy
 msgid "Don’t use copy and delete fallback"
 msgstr "Jangan gunakan fallback salin dan hapus"
 
@@ -2054,8 +2088,11 @@ msgid ""
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location"
 msgstr ""
+"gio move mirip dengan utilitas mv tradisional, tapi memakai lokasi GIO\n"
+"sebagai ganti berkas lokal: sebagai contoh Anda dapat memakai\n"
+"smb://server/sumberdaya/berkas.txt sebagai lokasi."
 
-#: ../gio/gio-tool-move.c:139
+#: ../gio/gio-tool-move.c:142
 #, c-format
 msgid "Target %s is not a directory"
 msgstr "Target %s bukan suatu direktori"
@@ -2068,10 +2105,6 @@ msgstr ""
 "Membuka berkas dengan aplikasi baku yang\n"
 "terdaftar untuk menangani jenis berkas ini."
 
-#: ../gio/gio-tool-open.c:69
-msgid "No files to open"
-msgstr "Tidak ada berkas yang akan dibuka"
-
 #: ../gio/gio-tool-remove.c:31 ../gio/gio-tool-trash.c:31
 msgid "Ignore nonexistent files, never prompt"
 msgstr "Abaikan berkas yang tidak ada, jangan pernah bertanya"
@@ -2079,10 +2112,6 @@ msgstr "Abaikan berkas yang tidak ada, jangan pernah bertanya"
 #: ../gio/gio-tool-remove.c:52
 msgid "Delete the given files."
 msgstr "Menghapus berkas yang diberikan."
-
-#: ../gio/gio-tool-remove.c:70
-msgid "No files to delete"
-msgstr "Tidak berkas yang akan dihapus"
 
 #: ../gio/gio-tool-rename.c:45
 msgid "NAME"
@@ -2092,16 +2121,16 @@ msgstr "NAMA"
 msgid "Rename a file."
 msgstr "Ubah nama berkas."
 
-#: ../gio/gio-tool-rename.c:68
+#: ../gio/gio-tool-rename.c:70
 msgid "Missing argument"
 msgstr "Kurang argumen"
 
-#: ../gio/gio-tool-rename.c:73 ../gio/gio-tool-save.c:192
-#: ../gio/gio-tool-set.c:134
+#: ../gio/gio-tool-rename.c:76 ../gio/gio-tool-save.c:195
+#: ../gio/gio-tool-set.c:137
 msgid "Too many arguments"
 msgstr "Terlalu banyak argumen"
 
-#: ../gio/gio-tool-rename.c:91
+#: ../gio/gio-tool-rename.c:95
 #, c-format
 msgid "Rename successful. New uri: %s\n"
 msgstr "Ubah nama sukses. Uri baru: %s\n"
@@ -2136,6 +2165,10 @@ msgstr "Etag berkas sedang ditimpa"
 msgid "ETAG"
 msgstr "ETAG"
 
+#: ../gio/gio-tool-save.c:119
+msgid "Error reading from standard input"
+msgstr "Galat saat membaca dari masukan standar"
+
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: ../gio/gio-tool-save.c:145
 #, c-format
@@ -2146,7 +2179,7 @@ msgstr "Etag tak tersedia\n"
 msgid "Read from standard input and save to DEST."
 msgstr "Baca dari masukan standar dan simpan ke TUJUAN."
 
-#: ../gio/gio-tool-save.c:186
+#: ../gio/gio-tool-save.c:188
 msgid "No destination given"
 msgstr "Tidak ada tujuan yang diberikan"
 
@@ -2170,27 +2203,22 @@ msgstr "NILAI"
 msgid "Set a file attribute of LOCATION."
 msgstr "Atur atribut berkas dari LOKASI."
 
-#: ../gio/gio-tool-set.c:111
+#: ../gio/gio-tool-set.c:113
 msgid "Location not specified"
 msgstr "Lokasi tak dinyatakan"
 
-#: ../gio/gio-tool-set.c:119
+#: ../gio/gio-tool-set.c:120
 msgid "Attribute not specified"
 msgstr "Atribut tak dinyatakan"
 
-#: ../gio/gio-tool-set.c:128
+#: ../gio/gio-tool-set.c:130
 msgid "Value not specified"
 msgstr "Nilai tak dinyatakan"
 
-#: ../gio/gio-tool-set.c:176
+#: ../gio/gio-tool-set.c:180
 #, c-format
-msgid "Invalid attribute type %s\n"
-msgstr "Tipe atribut tak valid %s\n"
-
-#: ../gio/gio-tool-set.c:189
-#, c-format
-msgid "Error setting attribute: %s\n"
-msgstr "Galat saat menata atribut: %s\n"
+msgid "Invalid attribute type “%s”"
+msgstr "Tipe atribut tidak valid \"%s\""
 
 #: ../gio/gio-tool-trash.c:32
 msgid "Empty the trash"
@@ -2303,7 +2331,7 @@ msgstr "nama berkas kebergantungan yang akan dibuat"
 
 #: ../gio/glib-compile-resources.c:672
 msgid "Include phony targets in the generated dependency file"
-msgstr ""
+msgstr "Sertakan target palsu pada berkas dependensi yang dihasilkan"
 
 #: ../gio/glib-compile-resources.c:673
 msgid "Don’t automatically create and register resource"
@@ -2705,7 +2733,7 @@ msgstr "Sistem berkas tak mendukung taut simbolik"
 msgid "Error making symbolic link %s: %s"
 msgstr "Galat saat membuat taut simbolis %s: %s"
 
-#: ../gio/glocalfile.c:2292 ../glib/gfileutils.c:2071
+#: ../gio/glocalfile.c:2292 ../glib/gfileutils.c:2073
 msgid "Symbolic links not supported"
 msgstr "Taut simbolik tidak didukung"
 
@@ -3015,7 +3043,7 @@ msgstr "Tak bisa membuat pemantau jaringan: "
 msgid "Could not get network status: "
 msgstr "Tak bisa mendapat status jaringan: "
 
-#: ../gio/gnetworkmonitornm.c:326
+#: ../gio/gnetworkmonitornm.c:329
 #, c-format
 msgid "NetworkManager version too old"
 msgstr "Versi NetworkManager terlalu tua"
@@ -3812,7 +3840,7 @@ msgstr "Galat saat membaca dari descriptor berkas: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Galat saat menutup descriptor berkas: %s"
 
-#: ../gio/gunixmounts.c:2367 ../gio/gunixmounts.c:2420
+#: ../gio/gunixmounts.c:2429 ../gio/gunixmounts.c:2482
 msgid "Filesystem root"
 msgstr "Akar sistem berkas"
 
@@ -3921,9 +3949,9 @@ msgid "No valid bookmark file found in data dirs"
 msgstr "Tak ditemukan penanda buku yang valid di direktori data"
 
 #: ../glib/gbookmarkfile.c:1957
-#, fuzzy, c-format
+#, c-format
 msgid "A bookmark for URI “%s” already exists"
-msgstr "Pengguna dengan nama '%s' telah ada."
+msgstr "Penanda taut untuk URI \"%s\" telah ada"
 
 #: ../glib/gbookmarkfile.c:2003 ../glib/gbookmarkfile.c:2161
 #: ../glib/gbookmarkfile.c:2246 ../glib/gbookmarkfile.c:2326
@@ -3934,379 +3962,381 @@ msgstr "Pengguna dengan nama '%s' telah ada."
 #: ../glib/gbookmarkfile.c:3176 ../glib/gbookmarkfile.c:3344
 #: ../glib/gbookmarkfile.c:3433 ../glib/gbookmarkfile.c:3522
 #: ../glib/gbookmarkfile.c:3638
-#, fuzzy, c-format
+#, c-format
 msgid "No bookmark found for URI “%s”"
-msgstr "Tak ditemukan penanda buku yang valid di direktori data"
+msgstr "Tak ditemukan penanda taut untuk URI \"%s\""
 
 #: ../glib/gbookmarkfile.c:2335
-#, fuzzy, c-format
+#, c-format
 msgid "No MIME type defined in the bookmark for URI “%s”"
-msgstr "Tipe MIME tak didefinisikan pada penanda buku bagi URI '%s'"
+msgstr ""
+"Tidak ada jenis MIME yang didefinisikan pada penanda taut untuk URI \"%s\""
 
 #: ../glib/gbookmarkfile.c:2420
-#, fuzzy, c-format
+#, c-format
 msgid "No private flag has been defined in bookmark for URI “%s”"
-msgstr "Flag privat tak didefinisikan di penanda buku bagi URI '%s'"
+msgstr ""
+"Tidak ada flag privat yang ditetapkan dalam penanda taut untuk URI \"%s\""
 
 #: ../glib/gbookmarkfile.c:2799
-#, fuzzy, c-format
+#, c-format
 msgid "No groups set in bookmark for URI “%s”"
-msgstr "Gagal menata grup ke %ld: %s\n"
+msgstr "Tidak ada grup yang ditetapkan dalam penanda taut untuk URI \"%s\""
 
 #: ../glib/gbookmarkfile.c:3197 ../glib/gbookmarkfile.c:3354
-#, fuzzy, c-format
+#, c-format
 msgid "No application with name “%s” registered a bookmark for “%s”"
 msgstr ""
-"Tak ditemukan aplikasi terdaftar dengan nama '%s' bagi butir dengan URI '%s'"
+"Tak ditemukan aplikasi terdaftar dengan nama \"%s\" bagi penanda taut \"%s\""
 
 #: ../glib/gbookmarkfile.c:3377
 #, c-format
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Gagal mengembangkan baris eksekusi \"%s\" dengan URI \"%s\""
 
-#: ../glib/gconvert.c:477 ../glib/gutf8.c:851 ../glib/gutf8.c:1063
-#: ../glib/gutf8.c:1200 ../glib/gutf8.c:1304
+#: ../glib/gconvert.c:477 ../glib/gutf8.c:852 ../glib/gutf8.c:1064
+#: ../glib/gutf8.c:1201 ../glib/gutf8.c:1305
 msgid "Partial character sequence at end of input"
 msgstr "Rangkaian karakter sebagian pada akhir input"
 
 #: ../glib/gconvert.c:742
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
-msgstr "Tidak bisa mengonversi '%s' ke suatu NSURL yang valid."
+msgstr "Tidak dapat mengonversi fallback \"%s\" menjadi codeset \"%s\""
 
-#: ../glib/gconvert.c:1566
+#: ../glib/gconvert.c:1513
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "URI \"%s\" bukanlah URI absolut dengan menggunakan skema \"file\""
 
-#: ../glib/gconvert.c:1576
+#: ../glib/gconvert.c:1523
 #, c-format
 msgid "The local file URI “%s” may not include a “#”"
 msgstr "URI berkas lokal \"%s\" tak boleh mengandung \"#\""
 
-#: ../glib/gconvert.c:1593
+#: ../glib/gconvert.c:1540
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "URI \"%s\" tidak valid"
 
-#: ../glib/gconvert.c:1605
+#: ../glib/gconvert.c:1552
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "Nama host dari URI \"%s\" tidak valid"
 
-#: ../glib/gconvert.c:1621
+#: ../glib/gconvert.c:1568
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "URI \"%s\" mengandung karakter yang di-escape secara tidak valid"
 
-#: ../glib/gconvert.c:1716
+#: ../glib/gconvert.c:1640
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "Nama path \"%s\" bukan lokasi absolut"
 
-#. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:199
-msgctxt "GDateTime"
-msgid "AM"
-msgstr "AM"
-
-#. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:201
-msgctxt "GDateTime"
-msgid "PM"
-msgstr "PM"
-
 #. Translators: this is the preferred format for expressing the date and the time
-#: ../glib/gdatetime.c:204
+#: ../glib/gdatetime.c:200
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %d %b %Y %r %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:203
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:210
+#: ../glib/gdatetime.c:206
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:209
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
 
-#: ../glib/gdatetime.c:226
+#: ../glib/gdatetime.c:222
 msgctxt "full month name"
 msgid "January"
 msgstr "Januari"
 
-#: ../glib/gdatetime.c:228
+#: ../glib/gdatetime.c:224
 msgctxt "full month name"
 msgid "February"
 msgstr "Februari"
 
-#: ../glib/gdatetime.c:230
+#: ../glib/gdatetime.c:226
 msgctxt "full month name"
 msgid "March"
 msgstr "Maret"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:228
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:230
 msgctxt "full month name"
 msgid "May"
 msgstr "Mei"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:232
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:234
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:236
 msgctxt "full month name"
 msgid "August"
 msgstr "Agustus"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:238
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:240
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:242
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:248
+#: ../glib/gdatetime.c:244
 msgctxt "full month name"
 msgid "December"
 msgstr "Desember"
 
-#: ../glib/gdatetime.c:263
+#: ../glib/gdatetime.c:259
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:265
+#: ../glib/gdatetime.c:261
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:263
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:265
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:267
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mei"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:269
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:271
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:273
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Ags"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:275
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:281
+#: ../glib/gdatetime.c:277
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:283
+#: ../glib/gdatetime.c:279
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:285
+#: ../glib/gdatetime.c:281
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Des"
 
-#: ../glib/gdatetime.c:300
+#: ../glib/gdatetime.c:296
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Senin"
 
-#: ../glib/gdatetime.c:302
+#: ../glib/gdatetime.c:298
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Selasa"
 
-#: ../glib/gdatetime.c:304
+#: ../glib/gdatetime.c:300
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Rabu"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:302
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Kamis"
 
-#: ../glib/gdatetime.c:308
+#: ../glib/gdatetime.c:304
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Jumat"
 
-#: ../glib/gdatetime.c:310
+#: ../glib/gdatetime.c:306
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sabtu"
 
-#: ../glib/gdatetime.c:312
+#: ../glib/gdatetime.c:308
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Minggu"
 
-#: ../glib/gdatetime.c:327
+#: ../glib/gdatetime.c:323
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Sen"
 
-#: ../glib/gdatetime.c:329
+#: ../glib/gdatetime.c:325
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Sel"
 
-#: ../glib/gdatetime.c:331
+#: ../glib/gdatetime.c:327
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Rab"
 
-#: ../glib/gdatetime.c:333
+#: ../glib/gdatetime.c:329
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Kam"
 
-#: ../glib/gdatetime.c:335
+#: ../glib/gdatetime.c:331
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Jum"
 
-#: ../glib/gdatetime.c:337
+#: ../glib/gdatetime.c:333
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sab"
 
-#: ../glib/gdatetime.c:339
+#: ../glib/gdatetime.c:335
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Min"
+
+#. Translators: 'before midday' indicator
+#: ../glib/gdatetime.c:352
+msgctxt "GDateTime"
+msgid "AM"
+msgstr "AM"
+
+#. Translators: 'after midday' indicator
+#: ../glib/gdatetime.c:355
+msgctxt "GDateTime"
+msgid "PM"
+msgstr "PM"
 
 #: ../glib/gdir.c:155
 #, c-format
 msgid "Error opening directory “%s”: %s"
 msgstr "Galat saat membuka direktori \"%s\": %s"
 
-#: ../glib/gfileutils.c:700 ../glib/gfileutils.c:792
+#: ../glib/gfileutils.c:702 ../glib/gfileutils.c:794
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
 msgstr[0] "Tidak dapat mengalokasikan %lu byte untuk membaca berkas \"%s\""
 
-#: ../glib/gfileutils.c:717
+#: ../glib/gfileutils.c:719
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Galat saat membaca berkas \"%s\": %s"
 
-#: ../glib/gfileutils.c:753
+#: ../glib/gfileutils.c:755
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Berkas \"%s\" terlalu besar"
 
-#: ../glib/gfileutils.c:817
+#: ../glib/gfileutils.c:819
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Gagal membaca dari berkas \"%s\": %s"
 
-#: ../glib/gfileutils.c:865 ../glib/gfileutils.c:937
+#: ../glib/gfileutils.c:867 ../glib/gfileutils.c:939
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Gagal membuka berkas \"%s\": %s"
 
-#: ../glib/gfileutils.c:877
+#: ../glib/gfileutils.c:879
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Gagal mendapat atribut berkas \"%s\": fstat() gagal: %s"
 
-#: ../glib/gfileutils.c:907
+#: ../glib/gfileutils.c:909
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Gagal membuka berkas \"%s\": fdopen() gagal: %s"
 
-#: ../glib/gfileutils.c:1006
+#: ../glib/gfileutils.c:1008
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Gagal mengubah nama berkas \"%s\" menjadi \"%s\": g_rename() gagal: %s"
 
-#: ../glib/gfileutils.c:1041 ../glib/gfileutils.c:1548
+#: ../glib/gfileutils.c:1043 ../glib/gfileutils.c:1550
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Gagal membuat berkas \"%s\": %s"
 
-#: ../glib/gfileutils.c:1068
+#: ../glib/gfileutils.c:1070
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Gagal menulis berkas \"%s\": write() gagal: %s"
 
-#: ../glib/gfileutils.c:1111
+#: ../glib/gfileutils.c:1113
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Gagal menulis berkas \"%s\": fsync() gagal: %s"
 
-#: ../glib/gfileutils.c:1235
+#: ../glib/gfileutils.c:1237
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Berkas \"%s\" yang ada tidak dapat dibuang: g_unlink() gagal: %s"
 
-#: ../glib/gfileutils.c:1514
+#: ../glib/gfileutils.c:1516
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Templat \"%s\" tidak valid, tidak boleh mengandung \"%s\""
 
-#: ../glib/gfileutils.c:1527
+#: ../glib/gfileutils.c:1529
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Templat \"%s\" tidak memuat XXXXXX"
 
-#: ../glib/gfileutils.c:2052
+#: ../glib/gfileutils.c:2054
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Gagal membaca taut simbolik \"%s\": %s"
@@ -5214,18 +5244,16 @@ msgid "Invalid program name: %s"
 msgstr "Nama program salah: %s"
 
 #: ../glib/gspawn-win32.c:453 ../glib/gspawn-win32.c:720
-#: ../glib/gspawn-win32.c:1295
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "String tidak benar pada vektor argumen pada %d: %s"
 
 #: ../glib/gspawn-win32.c:464 ../glib/gspawn-win32.c:735
-#: ../glib/gspawn-win32.c:1328
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "String tidak benar pada variabel lingkungan: %s"
 
-#: ../glib/gspawn-win32.c:716 ../glib/gspawn-win32.c:1276
+#: ../glib/gspawn-win32.c:716
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Direktori aktif salah: %s"
@@ -5243,20 +5271,20 @@ msgstr ""
 "Terjadi galat pada g_io_channel_win32_poll() ketika membaca data dari anak "
 "proses"
 
-#: ../glib/gutf8.c:797
+#: ../glib/gutf8.c:798
 msgid "Failed to allocate memory"
 msgstr "Gagal mengalokasikan memori"
 
-#: ../glib/gutf8.c:930
+#: ../glib/gutf8.c:931
 msgid "Character out of range for UTF-8"
 msgstr "Karakter di luar jangkauan UTF-8"
 
-#: ../glib/gutf8.c:1031 ../glib/gutf8.c:1040 ../glib/gutf8.c:1170
-#: ../glib/gutf8.c:1179 ../glib/gutf8.c:1318 ../glib/gutf8.c:1415
+#: ../glib/gutf8.c:1032 ../glib/gutf8.c:1041 ../glib/gutf8.c:1171
+#: ../glib/gutf8.c:1180 ../glib/gutf8.c:1319 ../glib/gutf8.c:1416
 msgid "Invalid sequence in conversion input"
 msgstr "Rangkaian input konversi salah"
 
-#: ../glib/gutf8.c:1329 ../glib/gutf8.c:1426
+#: ../glib/gutf8.c:1330 ../glib/gutf8.c:1427
 msgid "Character out of range for UTF-16"
 msgstr "Karakter di luar jangkauan UTF-16"
 
