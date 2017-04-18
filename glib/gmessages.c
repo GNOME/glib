@@ -1651,8 +1651,8 @@ done_query:
  * ]|
  *
  * Note also that, even if no other structured fields are specified, there
- * must always be a "MESSAGE" key before the format string. The "MESSAGE"-format
- * pair has to be the last of the key-value pairs, and "MESSAGE" is the only
+ * must always be a `MESSAGE` key before the format string. The `MESSAGE`-format
+ * pair has to be the last of the key-value pairs, and `MESSAGE` is the only
  * field for which printf()-style formatting is supported.
  *
  * The default writer function for `stdout` and `stderr` will automatically
