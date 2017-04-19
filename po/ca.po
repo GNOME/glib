@@ -429,7 +429,7 @@ msgstr ""
 "parella clau/valor %d, «%s», de l'element d'adreça «%s»"
 
 #: ../gio/gdbusaddress.c:573
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
 "“path” or “abstract” to be set"
@@ -439,20 +439,20 @@ msgstr ""
 "«abstract» (abstracte)"
 
 #: ../gio/gdbusaddress.c:609
-#, fuzzy, c-format
+#, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
 msgstr ""
 "Hi ha un error a l'adreça «%s»: manca o està mal formatat l'atribut del nom "
 "d'ordinador"
 
 #: ../gio/gdbusaddress.c:623
-#, fuzzy, c-format
+#, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
 msgstr ""
 "Hi ha un error a l'adreça «%s»: manca o està mal formatat l'atribut del port"
 
 #: ../gio/gdbusaddress.c:637
-#, fuzzy, c-format
+#, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
 "Hi ha un error a l'adreça «%s»: l'atribut noncefile no existeix o està mal "
@@ -463,30 +463,30 @@ msgid "Error auto-launching: "
 msgstr "S'ha produït un error en executar-se automàticament: "
 
 #: ../gio/gdbusaddress.c:666
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
 msgstr ""
 "El transport «%s» per a l'adreça «%s» és desconegut o no està implementat"
 
 #: ../gio/gdbusaddress.c:702
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening nonce file “%s”: %s"
 msgstr "S'ha produït un error en obrir el fitxer nonce «%s»: %s"
 
 #: ../gio/gdbusaddress.c:720
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from nonce file “%s”: %s"
 msgstr "S'ha produït un error en llegir el fitxer nonce «%s»: %s"
 
 #: ../gio/gdbusaddress.c:729
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr ""
 "S'ha produït un error en llegir el fitxer nonce «%s»: s'esperaven 16 bytes "
 "però se n'han obtingut %d"
 
 #: ../gio/gdbusaddress.c:747
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing contents of nonce file “%s” to stream:"
 msgstr ""
 "S'ha produït un error en escriure els continguts del fitxer nonce «%s» al "
@@ -514,7 +514,7 @@ msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
 msgstr "No es pot executar D-Bus automàticament sense X11 $DISPLAY"
 
 #: ../gio/gdbusaddress.c:1125
-#, fuzzy, c-format
+#, c-format
 msgid "Error spawning command line “%s”: "
 msgstr "S'ha produït un error en engendrar la línia d'ordres «%s»: "
 
@@ -538,7 +538,7 @@ msgstr ""
 "aquest sistema operatiu)"
 
 #: ../gio/gdbusaddress.c:1645
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "— unknown value “%s”"
@@ -583,12 +583,12 @@ msgstr ""
 "S'ha cancel·lat a través de GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:261
-#, fuzzy, c-format
+#, c-format
 msgid "Error when getting information for directory “%s”: %s"
 msgstr "S'ha produït un error en obtenir la informació del directori «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:273
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
@@ -596,24 +596,24 @@ msgstr ""
 "0700 però s'ha obtingut el 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:294
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating directory “%s”: %s"
 msgstr "S'ha produït un error en crear el directori %s: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:377
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "S'ha produït un error en obrir l'anell de claus «%s» per llegir-lo: "
 
 #: ../gio/gdbusauthmechanismsha1.c:401 ../gio/gdbusauthmechanismsha1.c:714
-#, fuzzy, c-format
+#, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
 "La línia %d de l'anell de claus a «%s» amb el contingut «%s» no està ben "
 "formatada"
 
 #: ../gio/gdbusauthmechanismsha1.c:415 ../gio/gdbusauthmechanismsha1.c:728
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
@@ -621,7 +621,7 @@ msgstr ""
 "contingut «%s» no està ben formatat"
 
 #: ../gio/gdbusauthmechanismsha1.c:430 ../gio/gdbusauthmechanismsha1.c:742
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr ""
@@ -629,40 +629,40 @@ msgstr ""
 "contingut «%s» no està ben formatat"
 
 #: ../gio/gdbusauthmechanismsha1.c:454
-#, fuzzy, c-format
+#, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr ""
 "No s'ha trobat la galeta amb l'identificador %d a l'anell de claus a «%s»"
 
 #: ../gio/gdbusauthmechanismsha1.c:532
-#, fuzzy, c-format
+#, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "S'ha produït un suprimir el fitxer de blocatge antic «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:564
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "S'ha produït un error en crear el fitxer de blocatge «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:594
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr ""
 "S'ha produït un error en tancar el fitxer (no enllaçat) de blocatge «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:604
-#, fuzzy, c-format
+#, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "S'ha produït un error en desenllaçar el fitxer de blocatge «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:681
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr ""
 "S'ha produït un error en obrir l'anell de claus «%s» per a escriptura: "
 
 #: ../gio/gdbusauthmechanismsha1.c:878
-#, fuzzy, c-format
+#, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr ""
 "(A més a més, l'alliberació del blocatge per a «%s» també ha fallat: %s) "
@@ -818,14 +818,14 @@ msgstr[0] "Es volia llegir %lu byte però només s'han rebut %lu"
 msgstr[1] "Es volien llegir %lu bytes però només s'han rebut %lu"
 
 #: ../gio/gdbusmessage.c:1369
-#, fuzzy, c-format
+#, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr ""
 "S'esperava el byte «NUL» després de la cadena «%s» però s'ha trobat el byte "
 "%d"
 
 #: ../gio/gdbusmessage.c:1388
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
 "(length of string is %d). The valid UTF-8 string up until that point was “%s”"
@@ -835,12 +835,12 @@ msgstr ""
 "aquell moment era «%s»"
 
 #: ../gio/gdbusmessage.c:1587
-#, fuzzy, c-format
+#, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "El valor analitzat «%s» no és un camí d'objecte D-Bus vàlid"
 
 #: ../gio/gdbusmessage.c:1609
-#, fuzzy, c-format
+#, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "El valor analitzat «%s» no és una signatura D-Bus vàlida"
 
@@ -858,7 +858,7 @@ msgstr[1] ""
 "bytes (64 MiB)."
 
 #: ../gio/gdbusmessage.c:1676
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
 "bytes, but found to be %u bytes in length"
@@ -867,12 +867,12 @@ msgstr ""
 "llargada múltiple de %u bytes, però en realitat és de %u bytes"
 
 #: ../gio/gdbusmessage.c:1843
-#, fuzzy, c-format
+#, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "El valor analitzat «%s» per variant no és una signatura D-Bus vàlida"
 
 #: ../gio/gdbusmessage.c:1867
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
@@ -880,7 +880,7 @@ msgstr ""
 "tipus de cadena «%s» del format de cable D-Bus"
 
 #: ../gio/gdbusmessage.c:2051
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
 "0x%02x"
@@ -894,14 +894,14 @@ msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Versió major del protocol no vàlida. S'esperava 1 però s'ha trobat %d"
 
 #: ../gio/gdbusmessage.c:2120
-#, fuzzy, c-format
+#, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "S'ha trobat la capçalera de la signatura amb la signatura «%s», però el cos "
 "és buit"
 
 #: ../gio/gdbusmessage.c:2134
-#, fuzzy, c-format
+#, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "El valor analitzat «%s» no és una signatura de D-Bus vàlida (pel cos)"
 
@@ -921,7 +921,7 @@ msgid "Cannot deserialize message: "
 msgstr "No s'ha pogut tornar a convertir el missatge a estructura de dades: "
 
 #: ../gio/gdbusmessage.c:2515
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr ""
@@ -942,14 +942,14 @@ msgid "Cannot serialize message: "
 msgstr "No s'ha pogut convertir a seqüència de bits el missatge: "
 
 #: ../gio/gdbusmessage.c:2704
-#, fuzzy, c-format
+#, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr ""
 "El cos del missatge té la signatura «%s» però no hi ha cap capçalera de "
 "signatura"
 
 #: ../gio/gdbusmessage.c:2714
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
 "“%s”"
@@ -958,14 +958,14 @@ msgstr ""
 "camp de la capçalera és «%s»"
 
 #: ../gio/gdbusmessage.c:2730
-#, fuzzy, c-format
+#, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "El cos del missatge és buit però la signatura en el camp de la capçalera és "
 "«(%s)»"
 
 #: ../gio/gdbusmessage.c:3283
-#, fuzzy, c-format
+#, c-format
 msgid "Error return with body of type “%s”"
 msgstr "S'ha retornat un error amb el cos de tipus «%s»"
 
@@ -1013,22 +1013,22 @@ msgid "Cannot specify nonce file when creating a server"
 msgstr "No es pot especificar el fitxer «nonce» quan es crea un servidor"
 
 #: ../gio/gdbusserver.c:874
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing nonce file at “%s”: %s"
 msgstr "S'ha produït un error en escriure el fitxer nonce a «%s»: %s"
 
 #: ../gio/gdbusserver.c:1045
-#, fuzzy, c-format
+#, c-format
 msgid "The string “%s” is not a valid D-Bus GUID"
 msgstr "La cadena «%s» no és un GUID vàlid de D-Bus"
 
 #: ../gio/gdbusserver.c:1085
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot listen on unsupported transport “%s”"
 msgstr "No es pot escoltar «%s», és un transport desconegut"
 
 #: ../gio/gdbus-tool.c:95
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Commands:\n"
 "  help         Shows this information\n"
@@ -1096,14 +1096,14 @@ msgid "Multiple connection endpoints specified"
 msgstr "S'han especificat més d'un punt final de connexió"
 
 #: ../gio/gdbus-tool.c:471
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr ""
 "Avís: d'acord amb les dades d'introspecció no existeix la interfície «%s»\n"
 
 #: ../gio/gdbus-tool.c:480
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
 "interface “%s”\n"
@@ -1221,12 +1221,12 @@ msgid "Error: Method name is not specified\n"
 msgstr "Error: no s'ha especificat el nom del mètode\n"
 
 #: ../gio/gdbus-tool.c:950
-#, fuzzy, c-format
+#, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Error: el nom del mètode «%s» no és vàlid\n"
 
 #: ../gio/gdbus-tool.c:1028
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr ""
 "S'ha produït un error en analitzar el paràmetre %d del tipus «%s»: %s\n"
@@ -1272,7 +1272,6 @@ msgid "Unnamed"
 msgstr "Sense nom"
 
 #: ../gio/gdesktopappinfo.c:2407
-#, fuzzy
 msgid "Desktop file didn’t specify Exec field"
 msgstr "El fitxer d'escriptori no especificava el camp d'execució"
 
@@ -1281,14 +1280,14 @@ msgid "Unable to find terminal required for application"
 msgstr "No s'ha pogut trobar el terminal que demanava l'aplicació"
 
 #: ../gio/gdesktopappinfo.c:3100
-#, fuzzy, c-format
+#, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "No s'ha pogut crear el directori de configuració de l'aplicació de l'usuari "
 "%s: %s"
 
 #: ../gio/gdesktopappinfo.c:3104
-#, fuzzy, c-format
+#, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr ""
 "No s'ha pogut crear el directori de configuració MIME de l'usuari %s: %s"
@@ -1298,7 +1297,7 @@ msgid "Application information lacks an identifier"
 msgstr "A la informació d'aplicació li manca un identificador"
 
 #: ../gio/gdesktopappinfo.c:3602
-#, fuzzy, c-format
+#, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "No s'ha pogut crear el fitxer d'escriptori de l'usuari %s"
 
@@ -1308,7 +1307,6 @@ msgid "Custom definition for %s"
 msgstr "Definició personalitzada per a %s"
 
 #: ../gio/gdrive.c:417
-#, fuzzy
 msgid "drive doesn’t implement eject"
 msgstr "la unitat no implementa l'expulsió"
 
@@ -1316,22 +1314,18 @@ msgstr "la unitat no implementa l'expulsió"
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gdrive.c:495
-#, fuzzy
 msgid "drive doesn’t implement eject or eject_with_operation"
 msgstr "la unitat no implementa l'expulsió o «eject_with_operation»"
 
 #: ../gio/gdrive.c:571
-#, fuzzy
 msgid "drive doesn’t implement polling for media"
 msgstr "la unitat no implementa el sondeig per si hi ha un suport"
 
 #: ../gio/gdrive.c:776
-#, fuzzy
 msgid "drive doesn’t implement start"
 msgstr "la unitat no implementa la inicialització"
 
 #: ../gio/gdrive.c:878
-#, fuzzy
 msgid "drive doesn’t implement stop"
 msgstr "la unitat no implementa l'aturada"
 
@@ -1345,7 +1339,7 @@ msgid "DTLS support is not available"
 msgstr "El DTLS no està implementat"
 
 #: ../gio/gemblem.c:323
-#, fuzzy, c-format
+#, c-format
 msgid "Can’t handle version %d of GEmblem encoding"
 msgstr "No es pot gestionar la versió %d de la codificació del GEmblem"
 
@@ -1357,7 +1351,7 @@ msgstr ""
 "correctament"
 
 #: ../gio/gemblemedicon.c:362
-#, fuzzy, c-format
+#, c-format
 msgid "Can’t handle version %d of GEmblemedIcon encoding"
 msgstr "No es pot gestionar la versió %d de la codificació del GEmblemedIcon"
 
@@ -1393,12 +1387,10 @@ msgid "Containing mount does not exist"
 msgstr "No existeix el punt de muntatge contenidor"
 
 #: ../gio/gfile.c:2515 ../gio/glocalfile.c:2375
-#, fuzzy
 msgid "Can’t copy over directory"
 msgstr "No es pot copiar al directori"
 
 #: ../gio/gfile.c:2575
-#, fuzzy
 msgid "Can’t copy directory over directory"
 msgstr "No es pot copiar el directori al directori"
 
@@ -1407,7 +1399,6 @@ msgid "Target file exists"
 msgstr "Ja existeix el fitxer de destinació"
 
 #: ../gio/gfile.c:2602
-#, fuzzy
 msgid "Can’t recursively copy directory"
 msgstr "No es pot copiar el directori de forma recursiva"
 
@@ -1430,13 +1421,11 @@ msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "No està implementada o no és vàlida la còpia (referències, clonacions)"
 
 #: ../gio/gfile.c:3033
-#, fuzzy
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr ""
 "No està implementada o no ha funcionat la còpia (referències, clonacions)"
 
 #: ../gio/gfile.c:3096
-#, fuzzy
 msgid "Can’t copy special file"
 msgstr "No es pot copiar el fitxer especial"
 
@@ -1449,12 +1438,11 @@ msgid "Trash not supported"
 msgstr "No es pot utilitzar la paperera"
 
 #: ../gio/gfile.c:4163
-#, fuzzy, c-format
+#, c-format
 msgid "File names cannot contain “%c”"
 msgstr "En els noms de fitxers no pot haver-hi «%c»"
 
 #: ../gio/gfile.c:6609 ../gio/gvolume.c:363
-#, fuzzy
 msgid "volume doesn’t implement mount"
 msgstr "el volum no implementa el muntatge"
 
@@ -1477,7 +1465,7 @@ msgid "File enumerator is already closed"
 msgstr "Ja està tancat l'enumerador de fitxer"
 
 #: ../gio/gfileicon.c:236
-#, fuzzy, c-format
+#, c-format
 msgid "Can’t handle version %d of GFileIcon encoding"
 msgstr "No es pot gestionar la versió %d de la codificació del GFileIcon"
 
@@ -1488,7 +1476,6 @@ msgstr "Les dades d'entrada pel GFileIcon no són formades correctament"
 #: ../gio/gfileinputstream.c:149 ../gio/gfileinputstream.c:394
 #: ../gio/gfileiostream.c:167 ../gio/gfileoutputstream.c:164
 #: ../gio/gfileoutputstream.c:497
-#, fuzzy
 msgid "Stream doesn’t support query_info"
 msgstr "El flux no implementa «query_info»"
 
@@ -1566,7 +1553,6 @@ msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "El tipus %s no implementa «from_tokens()» a la interfície GIcon"
 
 #: ../gio/gicon.c:461
-#, fuzzy
 msgid "Can’t handle the supplied version of the icon encoding"
 msgstr ""
 "No es pot gestionar la versió proporcionada de la codificació de la icona"
@@ -1585,7 +1571,7 @@ msgid "Address has bits set beyond prefix length"
 msgstr "L'adreça conté bits més enllà de la llargada del prefix"
 
 #: ../gio/ginetaddressmask.c:300
-#, fuzzy, c-format
+#, c-format
 msgid "Could not parse “%s” as IP address mask"
 msgstr "No s'ha pogut analitzar «%s» com a màscara d'adreça IP"
 
@@ -1599,7 +1585,6 @@ msgid "Unsupported socket address"
 msgstr "L'adreça de sòcol no és compatible"
 
 #: ../gio/ginputstream.c:188
-#, fuzzy
 msgid "Input stream doesn’t implement read"
 msgstr "El flux d'entrada no té implementada la lectura"
 
@@ -1623,7 +1608,6 @@ msgid "Keep with file when moved"
 msgstr "Mantén-lo amb el fitxer quan es mogui"
 
 #: ../gio/gio-tool.c:187
-#, fuzzy
 msgid "“version” takes no arguments"
 msgstr "«version» no té arguments"
 
@@ -1804,7 +1788,7 @@ msgid "Destination %s is not a directory"
 msgstr "La destinació «%s» no és un directori"
 
 #: ../gio/gio-tool-copy.c:187 ../gio/gio-tool-move.c:181
-#, fuzzy, c-format
+#, c-format
 msgid "%s: overwrite “%s”? "
 msgstr "%s: voleu sobreescriure «%s»?"
 
@@ -1825,7 +1809,6 @@ msgid "ATTRIBUTES"
 msgstr "ATRIBUTS"
 
 #: ../gio/gio-tool-info.c:37 ../gio/gio-tool-list.c:38 ../gio/gio-tool-set.c:34
-#, fuzzy
 msgid "Don’t follow symbolic links"
 msgstr "No segueixis els enllaços simbòlics"
 
@@ -1891,7 +1874,6 @@ msgid "Show information about locations."
 msgstr "Mostra informació sobre ubicacions."
 
 #: ../gio/gio-tool-info.c:285
-#, fuzzy
 msgid ""
 "gio info is similar to the traditional ls utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -2838,7 +2820,6 @@ msgid "Error moving file %s: %s"
 msgstr "S'ha produït un error en moure el fitxer %s: %s"
 
 #: ../gio/glocalfile.c:2370
-#, fuzzy
 msgid "Can’t move directory over directory"
 msgstr "No s'ha pogut moure el directori al directori"
 
@@ -5280,7 +5261,6 @@ msgstr ""
 "%lu: %s"
 
 #: ../glib/gshell.c:94
-#, fuzzy
 msgid "Quoted text doesn’t begin with a quotation mark"
 msgstr "El text citat no comença amb cometes"
 
@@ -5291,12 +5271,12 @@ msgstr ""
 "text entre cometes"
 
 #: ../glib/gshell.c:580
-#, fuzzy, c-format
+#, c-format
 msgid "Text ended just after a “\\” character. (The text was “%s”)"
 msgstr "El text acaba just després d'un caràcter «\\». (El text era «%s».)"
 
 #: ../glib/gshell.c:587
-#, fuzzy, c-format
+#, c-format
 msgid "Text ended before matching quote was found for %c. (The text was “%s”)"
 msgstr ""
 "El text ha acabat abans de trobar les cometes corresponents a %c. (El text "
@@ -5354,12 +5334,12 @@ msgid "Failed to fork (%s)"
 msgstr "No s'ha pogut bifurcar-se (%s)"
 
 #: ../glib/gspawn.c:1488 ../glib/gspawn-win32.c:368
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "No s'ha pogut canviar al directori «%s» (%s)"
 
 #: ../glib/gspawn.c:1498
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "No s'ha pogut executar el procés fill «%s» (%s)"
 
@@ -5374,7 +5354,7 @@ msgid "Failed to fork child process (%s)"
 msgstr "No s'ha pogut bifurcar el procés fill (%s)"
 
 #: ../glib/gspawn.c:1525
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "S'ha produït un error desconegut en executar el procés fill «%s»"
 
