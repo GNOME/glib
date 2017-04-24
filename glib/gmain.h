@@ -104,7 +104,10 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     are needed for this type of event source. The return value of the
  *     @dispatch function should be #G_SOURCE_REMOVE if the source should be
  *     removed or #G_SOURCE_CONTINUE to keep it.
- * @finalize: Called when the source is finalized.
+ * @finalize: Called when the source is finalized. At this point, the source
+ *     will have been destroyed, had its callback cleared, and have been removed
+ *     from its #GMainContext, but it will still have its final reference count;
+ *     so methods can be called on it from within this function.
  *
  * The `GSourceFuncs` struct contains a table of
  * functions used to handle event sources in a generic manner.
