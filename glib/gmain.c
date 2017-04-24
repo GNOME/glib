@@ -2112,11 +2112,15 @@ g_source_unref_internal (GSource      *source,
 
       if (source->source_funcs->finalize)
 	{
+          /* Temporarily increase the ref count again so that GSource methods
+           * can be called from finalize(). */
+          source->ref_count++;
 	  if (context)
 	    UNLOCK_CONTEXT (context);
 	  source->source_funcs->finalize (source);
 	  if (context)
 	    LOCK_CONTEXT (context);
+          source->ref_count--;
 	}
 
       g_free (source->name);
