@@ -376,7 +376,11 @@ generate_marshal (const gchar *signame,
     {
       g_fprintf (fout, "#define %s_%s\t%s_%s\n", marshaller_prefix, signame, std_marshaller_prefix, signame);
     }
-  if (gen_cheader && !have_std_marshaller)
+
+  /* We emit the prototype in both the header and the source, to pass
+   * without warnings when building with -Wmissing-prototypes
+   */
+  if (!have_std_marshaller)
     {
       ind = g_fprintf (fout, gen_internal ? "G_GNUC_INTERNAL " : "extern ");
       ind += g_fprintf (fout, "void ");
@@ -389,13 +393,15 @@ generate_marshal (const gchar *signame,
       g_fprintf (fout, "%sgpointer      marshal_data);\n",
                  indent (ind));
     }
+
   if (gen_cbody && !have_std_marshaller)
     {
       /* cfile marshal header */
       g_fprintf (fout, "void\n");
       ind = g_fprintf (fout, "%s_%s (", marshaller_prefix, signame);
       g_fprintf (fout,   "GClosure     *closure,\n");
-      g_fprintf (fout, "%sGValue       *return_value G_GNUC_UNUSED,\n", indent (ind));
+      g_fprintf (fout, "%sGValue       *return_value%s,\n", indent (ind),
+                 sig->rarg->setter ? "" : " G_GNUC_UNUSED");
       g_fprintf (fout, "%sguint         n_param_values,\n", indent (ind));
       g_fprintf (fout, "%sconst GValue *param_values,\n", indent (ind));
       g_fprintf (fout, "%sgpointer      invocation_hint G_GNUC_UNUSED,\n", indent (ind));
@@ -475,13 +481,14 @@ generate_marshal (const gchar *signame,
       g_fprintf (fout, "}\n");
     }
 
-
   /* vararg marshaller */
   if (gen_cheader && gen_valist && have_std_marshaller)
     {
       g_fprintf (fout, "#define %s_%sv\t%s_%sv\n", marshaller_prefix, signame, std_marshaller_prefix, signame);
     }
-  if (gen_cheader && gen_valist && !have_std_marshaller)
+
+  /* Like above, we generate the prototype for both the header and source */
+  if (gen_valist && !have_std_marshaller)
     {
       ind = g_fprintf (fout, gen_internal ? "G_GNUC_INTERNAL " : "extern ");
       ind += g_fprintf (fout, "void ");
@@ -494,6 +501,7 @@ generate_marshal (const gchar *signame,
       g_fprintf (fout, "%sint           n_params,\n", indent (ind));
       g_fprintf (fout, "%sGType        *param_types);\n", indent (ind));
     }
+
   if (gen_cbody && gen_valist && !have_std_marshaller)
     {
       gint i;
