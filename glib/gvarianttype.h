@@ -96,8 +96,8 @@ typedef struct _GVariantType GVariantType;
 /**
  * G_VARIANT_TYPE_UINT64:
  *
- * The type of an integer value that can range from 0 to
- * 18446744073709551616.  That's a really big number, but a Rubik's
+ * The type of an integer value that can range from 0
+ * to 18446744073709551616.  That's a really big number, but a Rubik's
  * cube can have a bit more than twice as many possible positions.
  **/
 #define G_VARIANT_TYPE_UINT64               ((const GVariantType *) "t")

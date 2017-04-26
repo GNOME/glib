@@ -133,7 +133,7 @@
  * - `s`: the type string of %G_VARIANT_TYPE_STRING; a string.
  * - `o`: the type string of %G_VARIANT_TYPE_OBJECT_PATH; a string in the form
  *   of a D-Bus object path.
- * - `g`: the type string of %G_VARIANT_TYPE_STRING; a string in the form of
+ * - `g`: the type string of %G_VARIANT_TYPE_SIGNATURE; a string in the form of
  *   a D-Bus type signature.
  * - `?`: the type string of %G_VARIANT_TYPE_BASIC; an indefinite type that
  *   is a supertype of any of the basic types.

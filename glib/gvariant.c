@@ -58,10 +58,10 @@
  * can use:
  *
  * |[<!-- language="C" -->
- *   GVariant *v = g_variant_new ('u', 40);
+ *   GVariant *v = g_variant_new ("u", 40);
  * ]|
  *
- * The string 'u' in the first argument tells #GVariant that the data passed to
+ * The string "u" in the first argument tells #GVariant that the data passed to
  * the constructor (40) is going to be an unsigned integer.
  *
  * More advanced examples of #GVariant in use can be found in documentation for
@@ -1177,10 +1177,10 @@ g_variant_get_fixed_array (GVariant *value,
  * @n_elements: the number of elements
  * @element_size: the size of each element
  *
- * Provides access to the serialised data for an array of fixed-sized
- * items.
+ * Constructs a new array #GVariant instance, where the elements are
+ * of @element_type type.
  *
- * @value must be an array with fixed-sized elements.  Numeric types are
+ * @elements must be an array with fixed-sized elements.  Numeric types are
  * fixed-size as are tuples containing only other fixed-sized types.
  *
  * @element_size must be the size of a single element in the array.
@@ -1189,8 +1189,7 @@ g_variant_get_fixed_array (GVariant *value,
  * of a double-check that the form of the serialised data matches the caller's
  * expectation.
  *
- * @n_elements, which must be non-%NULL is set equal to the number of
- * items in the array.
+ * @n_elements must be the length of the @elements array.
  *
  * Returns: (transfer none): a floating reference to a new array #GVariant instance
  *
@@ -5336,7 +5335,7 @@ g_variant_new (const gchar *format_string,
  *
  * Note that the arguments in @app must be of the correct width for their
  * types specified in @format_string when collected into the #va_list.
- * See the [GVariant varargs documentation][gvariant-varargs.
+ * See the [GVariant varargs documentation][gvariant-varargs].
  *
  * These two generalisations allow mixing of multiple calls to
  * g_variant_new_va() and g_variant_get_va() within a single actual
