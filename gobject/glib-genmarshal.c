@@ -1116,8 +1116,8 @@ print_blurb (FILE    *bout,
       g_fprintf (bout, "Utility Options:\n");
       g_fprintf (bout, "  --header                   Generate C headers\n");
       g_fprintf (bout, "  --body                     Generate C code\n");
-      g_fprintf (bout, "  --prefix=string            Specify marshaller prefix\n");
-      g_fprintf (bout, "  --output=file              Write output into the specified file\n");
+      g_fprintf (bout, "  --prefix=STRING            Specify marshaller prefix\n");
+      g_fprintf (bout, "  --output=FILE              Write output into the specified file\n");
       g_fprintf (bout, "  --skip-source              Skip source location comments\n");
       g_fprintf (bout, "  --stdinc, --nostdinc       Include/use standard marshallers\n");
       g_fprintf (bout, "  --internal                 Mark generated functions as internal\n");
