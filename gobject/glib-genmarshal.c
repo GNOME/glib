@@ -1020,7 +1020,7 @@ parse_args (gint    *argc_p,
       else if ((strcmp ("--prefix", argv[i]) == 0) ||
 	       (strncmp ("--prefix=", argv[i], 9) == 0))
 	{
-          gchar *equal = argv[i] + 8;
+          gchar *equal = argv[i] + strlen ("--prefix");
 
 	  if (*equal == '=')
 	    marshaller_prefix = equal + 1;
@@ -1035,7 +1035,7 @@ parse_args (gint    *argc_p,
       else if ((strcmp ("--output", argv[i]) == 0) ||
 	       (strncmp ("--output=", argv[i], 9) == 0))
 	{
-          gchar *equal = argv[i] + 8;
+          gchar *equal = argv[i] + strlen ("--output");
 
 	  if (*equal == '=')
 	    output_fn = equal + 1;
