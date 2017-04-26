@@ -120,8 +120,8 @@ static const GScannerConfig scanner_config_template =
   FALSE                 /* symbol_2_token */,
   FALSE                 /* scope_0_fallback */,
 };
-static gchar		* const std_marshaller_prefix = "g_cclosure_marshal";
-static gchar		*marshaller_prefix = "g_cclosure_user_marshal";
+static const char       *std_marshaller_prefix = "g_cclosure_marshal";
+static const char       *marshaller_prefix = "g_cclosure_user_marshal";
 static gchar		*output_fn = NULL;
 static gint		 output_fd = -1;
 static gchar		*output_tmpfn = NULL;
