@@ -27,15 +27,12 @@ static gboolean network_available;
 static void
 read_flatpak_info (void)
 {
-  char *path;
-
   if (flatpak_info_read)
     return;
 
   flatpak_info_read = TRUE;
 
-  path = g_build_filename (g_get_user_runtime_dir (), "flatpak-info", NULL);
-  if (g_file_test (path, G_FILE_TEST_EXISTS))
+  if (g_file_test ("/.flatpak-info", G_FILE_TEST_EXISTS))
     {
       GKeyFile *keyfile;
 
@@ -66,8 +63,6 @@ read_flatpak_info (void)
         use_portal = TRUE;
       network_available = TRUE;
     }
-
-  g_free (path);
 }
 
 gboolean
