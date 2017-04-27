@@ -1476,6 +1476,15 @@ g_ascii_formatd
 g_strtod
 
 <SUBSECTION>
+GNumberParserError
+G_NUMBER_PARSER_ERROR
+g_ascii_string_to_signed
+g_ascii_string_to_unsigned
+
+<SUBSECTION Private>
+g_number_parser_error_quark
+
+<SUBSECTION>
 g_strchug
 g_strchomp
 g_strstrip

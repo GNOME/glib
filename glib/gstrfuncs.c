@@ -3165,3 +3165,213 @@ g_strv_contains (const gchar * const *strv,
 
   return FALSE;
 }
+
+static gboolean
+str_has_sign (const gchar *str)
+{
+  return str[0] == '-' || str[0] == '+';
+}
+
+static gboolean
+str_has_hex_prefix (const gchar *str)
+{
+  return str[0] == '0' && g_ascii_tolower (str[1]) == 'x';
+}
+
+/**
+ * g_ascii_string_to_signed:
+ * @str: a string
+ * @base: base of a parsed number
+ * @min: a lower bound (inclusive)
+ * @max: an upper bound (inclusive)
+ * @out_num: (out) (optional): a return location for a number
+ * @error: a return location for #GError
+ *
+ * A convenience function for converting a string to a signed number.
+ *
+ * This function assumes that @str contains only a number of the given
+ * @base that is within inclusive bounds limited by @min and @max. If
+ * this is true, then the converted number is stored in @out_num. An
+ * empty string is not a valid input. A string with leading or
+ * trailing whitespace is also an invalid input.
+ *
+ * @base can be between 2 and 36 inclusive. Hexadecimal numbers must
+ * not be prefixed with "0x" or "0X". Such a problem does not exist
+ * for octal numbers, since they were usually prefixed with a zero
+ * which does not change the value of the parsed number.
+ *
+ * Parsing failures result in an error with the %G_NUMBER_PARSER_ERROR
+ * domain. If the input is invalid, the error code will be
+ * %G_NUMBER_PARSER_ERROR_INVALID. If the parsed number is out of
+ * bounds - %G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS.
+ *
+ * See g_ascii_strtoll() if you have more complex needs such as
+ * parsing a string which starts with a number, but then has other
+ * characters.
+ *
+ * Returns: %TRUE if @str was a number, otherwise %FALSE.
+ *
+ * Since: 2.54
+ */
+gboolean
+g_ascii_string_to_signed (const gchar  *str,
+                          guint         base,
+                          gint64        min,
+                          gint64        max,
+                          gint64       *out_num,
+                          GError      **error)
+{
+  gint64 number;
+  const gchar *end_ptr = NULL;
+  gint saved_errno = 0;
+
+  g_return_val_if_fail (str != NULL, FALSE);
+  g_return_val_if_fail (base >= 2 && base <= 36, FALSE);
+  g_return_val_if_fail (min <= max, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (str[0] == '\0')
+    {
+      g_set_error_literal (error,
+                           G_NUMBER_PARSER_ERROR, G_NUMBER_PARSER_ERROR_INVALID,
+                           _("Empty string is not a number"));
+      return FALSE;
+    }
+
+  errno = 0;
+  number = g_ascii_strtoll (str, (gchar **)&end_ptr, base);
+  saved_errno = errno;
+
+  if (/* We do not allow leading whitespace, but g_ascii_strtoll
+       * accepts it and just skips it, so we need to check for it
+       * ourselves.
+       */
+      g_ascii_isspace (str[0]) ||
+      /* We don't support hexadecimal numbers prefixed with 0x or
+       * 0X.
+       */
+      (base == 16 &&
+       (str_has_sign (str) ? str_has_hex_prefix (str + 1) : str_has_hex_prefix (str))) ||
+      (saved_errno != 0 && saved_errno != ERANGE) ||
+      end_ptr == NULL ||
+      *end_ptr != '\0')
+    {
+      g_set_error (error,
+                   G_NUMBER_PARSER_ERROR, G_NUMBER_PARSER_ERROR_INVALID,
+                   _("“%s” is not a signed number"), str);
+      return FALSE;
+    }
+  if (saved_errno == ERANGE || number < min || number > max)
+    {
+      g_set_error (error,
+                   G_NUMBER_PARSER_ERROR, G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS,
+                   _("Number “%" G_GINT64_FORMAT "” is out of bounds"
+                   " [%" G_GINT64_FORMAT ", %" G_GINT64_FORMAT "]"),
+                   number, min, max);
+      return FALSE;
+    }
+  if (out_num != NULL)
+    *out_num = number;
+  return TRUE;
+}
+
+/**
+ * g_ascii_string_to_unsigned:
+ * @str: a string
+ * @base: base of a parsed number
+ * @min: a lower bound (inclusive)
+ * @max: an upper bound (inclusive)
+ * @out_num: (out) (optional): a return location for a number
+ * @error: a return location for #GError
+ *
+ * A convenience function for converting a string to an unsigned number.
+ *
+ * This function assumes that @str contains only a number of the given
+ * @base that is within inclusive bounds limited by @min and @max. If
+ * this is true, then the converted number is stored in @out_num. An
+ * empty string is not a valid input. A string with leading or
+ * trailing whitespace is also an invalid input.
+ *
+ * @base can be between 2 and 36 inclusive. Hexadecimal numbers must
+ * not be prefixed with "0x" or "0X". Such a problem does not exist
+ * for octal numbers, since they were usually prefixed with a zero
+ * which does not change the value of the parsed number.
+ *
+ * Parsing failures result in an error with the %G_NUMBER_PARSER_ERROR
+ * domain. If the input is invalid, the error code will be
+ * %G_NUMBER_PARSER_ERROR_INVALID. If the parsed number is out of
+ * bounds - %G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS.
+ *
+ * See g_ascii_strtoull() if you have more complex needs such as
+ * parsing a string which starts with a number, but then has other
+ * characters.
+ *
+ * Returns: %TRUE if @str was a number, otherwise %FALSE.
+ *
+ * Since: 2.54
+ */
+gboolean
+g_ascii_string_to_unsigned (const gchar  *str,
+                            guint         base,
+                            guint64       min,
+                            guint64       max,
+                            guint64      *out_num,
+                            GError      **error)
+{
+  guint64 number;
+  const gchar *end_ptr = NULL;
+  gint saved_errno = 0;
+
+  g_return_val_if_fail (str != NULL, FALSE);
+  g_return_val_if_fail (base >= 2 && base <= 36, FALSE);
+  g_return_val_if_fail (min <= max, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (str[0] == '\0')
+    {
+      g_set_error_literal (error,
+                           G_NUMBER_PARSER_ERROR, G_NUMBER_PARSER_ERROR_INVALID,
+                           _("Empty string is not a number"));
+      return FALSE;
+    }
+
+  errno = 0;
+  number = g_ascii_strtoull (str, (gchar **)&end_ptr, base);
+  saved_errno = errno;
+
+  if (/* We do not allow leading whitespace, but g_ascii_strtoull
+       * accepts it and just skips it, so we need to check for it
+       * ourselves.
+       */
+      g_ascii_isspace (str[0]) ||
+      /* Unsigned number should have no sign.
+       */
+      str_has_sign (str) ||
+      /* We don't support hexadecimal numbers prefixed with 0x or
+       * 0X.
+       */
+      (base == 16 && str_has_hex_prefix (str)) ||
+      (saved_errno != 0 && saved_errno != ERANGE) ||
+      end_ptr == NULL ||
+      *end_ptr != '\0')
+    {
+      g_set_error (error,
+                   G_NUMBER_PARSER_ERROR, G_NUMBER_PARSER_ERROR_INVALID,
+                   _("“%s” is not an unsigned number"), str);
+      return FALSE;
+    }
+  if (saved_errno == ERANGE || number < min || number > max)
+    {
+      g_set_error (error,
+                   G_NUMBER_PARSER_ERROR, G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS,
+                   _("Number “%" G_GUINT64_FORMAT "” is out of bounds"
+                     " [%" G_GUINT64_FORMAT ", %" G_GUINT64_FORMAT "]"),
+                   number, min, max);
+      return FALSE;
+    }
+  if (out_num != NULL)
+    *out_num = number;
+  return TRUE;
+}
+
+G_DEFINE_QUARK (g-number-parser-error-quark, g_number_parser_error)

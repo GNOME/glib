@@ -32,6 +32,7 @@
 #include <stdarg.h>
 #include <glib/gmacros.h>
 #include <glib/gtypes.h>
+#include <glib/gerror.h>
 
 G_BEGIN_DECLS
 
@@ -305,6 +306,52 @@ gboolean                g_str_match_string                              (const g
 GLIB_AVAILABLE_IN_2_44
 gboolean              g_strv_contains  (const gchar * const *strv,
                                         const gchar         *str);
+
+/* Convenience ASCII string to number API */
+
+/**
+ * GNumberParserError:
+ * @G_NUMBER_PARSER_ERROR_INVALID: String was not a valid number.
+ * @G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS: String was a number, but out of bounds.
+ *
+ * Error codes returned by functions converting a string to a number.
+ *
+ * Since: 2.54
+ */
+typedef enum
+  {
+    G_NUMBER_PARSER_ERROR_INVALID,
+    G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS,
+  } GNumberParserError;
+
+/**
+ * G_NUMBER_PARSER_ERROR:
+ *
+ * Domain for errors returned by functions converting a string to a
+ * number.
+ *
+ * Since: 2.54
+ */
+#define G_NUMBER_PARSER_ERROR (g_number_parser_error_quark ())
+
+GLIB_AVAILABLE_IN_2_54
+GQuark                g_number_parser_error_quark  (void);
+
+GLIB_AVAILABLE_IN_2_54
+gboolean              g_ascii_string_to_signed     (const gchar  *str,
+                                                    guint         base,
+                                                    gint64        min,
+                                                    gint64        max,
+                                                    gint64       *out_num,
+                                                    GError      **error);
+
+GLIB_AVAILABLE_IN_2_54
+gboolean              g_ascii_string_to_unsigned   (const gchar  *str,
+                                                    guint         base,
+                                                    guint64       min,
+                                                    guint64       max,
+                                                    guint64      *out_num,
+                                                    GError      **error);
 
 G_END_DECLS
 
