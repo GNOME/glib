@@ -32,6 +32,8 @@
 #include <sys/mkdev.h>
 #elif MAJOR_IN_SYSMACROS
 #include <sys/sysmacros.h>
+#else
+#define MAJOR_MINOR_NOT_FOUND 1
 #endif
 
 #include "gdbusutils.h"
@@ -3475,8 +3477,10 @@ g_dbus_message_print (GDBusMessage *message,
               fs = g_string_new (NULL);
               if (fstat (fds[n], &statbuf) == 0)
                 {
+#ifndef MAJOR_MINOR_NOT_FOUND                       
                   g_string_append_printf (fs, "%s" "dev=%d:%d", fs->len > 0 ? "," : "",
                                           major (statbuf.st_dev), minor (statbuf.st_dev));
+#endif                  
                   g_string_append_printf (fs, "%s" "mode=0%o", fs->len > 0 ? "," : "",
                                           statbuf.st_mode);
                   g_string_append_printf (fs, "%s" "ino=%" G_GUINT64_FORMAT, fs->len > 0 ? "," : "",
@@ -3485,8 +3489,10 @@ g_dbus_message_print (GDBusMessage *message,
                                           (guint) statbuf.st_uid);
                   g_string_append_printf (fs, "%s" "gid=%u", fs->len > 0 ? "," : "",
                                           (guint) statbuf.st_gid);
+#ifndef MAJOR_MINOR_NOT_FOUND                     
                   g_string_append_printf (fs, "%s" "rdev=%d:%d", fs->len > 0 ? "," : "",
                                           major (statbuf.st_rdev), minor (statbuf.st_rdev));
+#endif                  
                   g_string_append_printf (fs, "%s" "size=%" G_GUINT64_FORMAT, fs->len > 0 ? "," : "",
                                           (guint64) statbuf.st_size);
                   g_string_append_printf (fs, "%s" "atime=%" G_GUINT64_FORMAT, fs->len > 0 ? "," : "",
