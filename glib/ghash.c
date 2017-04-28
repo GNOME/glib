@@ -770,7 +770,7 @@ g_hash_table_iter_init (GHashTableIter *iter,
  * g_hash_table_iter_next:
  * @iter: an initialized #GHashTableIter
  * @key: (out) (optional): a location to store the key
- * @value: (out) (optional): a location to store the value
+ * @value: (out) (optional) (nullable): a location to store the value
  *
  * Advances @iter and retrieves the key and/or value that are now
  * pointed to as a result of this advancement. If %FALSE is returned,
@@ -1158,7 +1158,7 @@ g_hash_table_lookup (GHashTable    *hash_table,
  * @hash_table: a #GHashTable
  * @lookup_key: the key to look up
  * @orig_key: (out) (optional): return location for the original key
- * @value: (out) (optional): return location for the value associated
+ * @value: (out) (optional) (nullable): return location for the value associated
  * with the key
  *
  * Looks up a key in the #GHashTable, returning the original key and the
