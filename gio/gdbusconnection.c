@@ -1758,7 +1758,7 @@ send_message_data_free (SendMessageData *data)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* can be called from any thread with lock held */
+/* can be called from any thread with lock held; @task is (transfer full) */
 static void
 send_message_with_reply_cleanup (GTask *task, gboolean remove)
 {
@@ -1794,7 +1794,7 @@ send_message_with_reply_cleanup (GTask *task, gboolean remove)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* Called from GDBus worker thread with lock held */
+/* Called from GDBus worker thread with lock held; @task is (transfer full). */
 static void
 send_message_data_deliver_reply_unlocked (GTask           *task,
                                           GDBusMessage    *reply)
@@ -1839,7 +1839,7 @@ send_message_data_deliver_error (GTask      *task,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* Called from a user thread, lock is not held */
+/* Called from a user thread, lock is not held; @task is (transfer full) */
 static gboolean
 send_message_with_reply_cancelled_idle_cb (gpointer user_data)
 {
@@ -1869,7 +1869,7 @@ send_message_with_reply_cancelled_cb (GCancellable *cancellable,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* Called from a user thread, lock is not held */
+/* Called from a user thread, lock is not held; @task is (transfer full) */
 static gboolean
 send_message_with_reply_timeout_cb (gpointer user_data)
 {
@@ -1942,7 +1942,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
 
   g_hash_table_insert (connection->map_method_serial_to_task,
                        GUINT_TO_POINTER (*out_serial),
-                       task);
+                       g_steal_pointer (&task));
 }
 
 /**
@@ -2283,6 +2283,7 @@ on_worker_message_received (GDBusWorker  *worker,
                                       GUINT_TO_POINTER (reply_serial));
           if (task != NULL)
             {
+              /* This removes @task from @map_method_serial_to_task. */
               //g_debug ("delivering reply/error for serial %d for %p", reply_serial, connection);
               send_message_data_deliver_reply_unlocked (task, message);
             }
