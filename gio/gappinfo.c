@@ -984,7 +984,12 @@ g_app_info_launch_default_for_uri (const char         *uri,
 
 #ifdef G_OS_UNIX
   if (glib_should_use_portal ())
-    return launch_default_with_portal (uri, launch_context, error);
+    {
+      /* Reset any error previously set by launch_default_for_uri */
+      g_clear_error (error);
+
+      return launch_default_with_portal (uri, launch_context, error);
+    }
 #endif
 
   return FALSE;
