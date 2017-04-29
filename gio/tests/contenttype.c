@@ -144,7 +144,7 @@ test_subtype (void)
   xml = g_content_type_from_mime_type ("application/xml");
 
   g_assert (g_content_type_is_a (xml, plain));
-  g_assert (g_content_type_is_mime_type (xml, plain));
+  g_assert (g_content_type_is_mime_type (xml, "text/plain"));
 
   g_free (plain);
   g_free (xml);
