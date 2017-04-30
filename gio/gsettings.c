@@ -2354,8 +2354,7 @@ g_settings_reset (GSettings *settings,
 /**
  * g_settings_sync:
  *
- * Ensures that all pending operations for the given are complete for
- * the default backend.
+ * Ensures that all pending operations are complete for the default backend.
  *
  * Writes made to a #GSettings are handled asynchronously.  For this
  * reason, it is very unlikely that the changes have it to disk by the
