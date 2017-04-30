@@ -68,6 +68,49 @@
  *
  * See #GSubprocess in GIO for a higher-level API that provides
  * stream interfaces for communication with child processes.
+ *
+ * An example of using g_spawn_async_with_pipes():
+ * |[<!-- language="C" -->
+ * const gchar * const argv[] = { "my-favourite-program", "--args", NULL };
+ * gint child_stdout, child_stderr;
+ * GPid child_pid;
+ * g_autoptr(GError) error = NULL;
+ *
+ * // Spawn child process.
+ * g_spawn_async_with_pipes (NULL, argv, NULL, G_SPAWN_DO_NOT_REAP_CHILD, NULL,
+ *                           NULL, &child_pid, NULL, &child_stdout,
+ *                           &child_stderr, &error);
+ * if (error != NULL)
+ *   {
+ *     g_error ("Spawning child failed: %s", error->message);
+ *     return;
+ *   }
+ *
+ * // Add a child watch function which will be called when the child process
+ * // exits.
+ * g_child_watch_add (child_pid, child_watch_cb, NULL);
+ *
+ * // You could watch for output on @child_stdout and @child_stderr using
+ * // #GUnixInputStream or #GIOChannel here.
+ *
+ * static void
+ * child_watch_cb (GPid     pid,
+ *                 gint     status,
+ *                 gpointer user_data)
+ * {
+ *   g_message ("Child %" G_PID_FORMAT " exited %s", pid,
+ *              g_spawn_check_exit_status (status, NULL) ? "normally" : "abnormally");
+ *
+ *   // Free any resources associated with the child here, such as I/O channels
+ *   // on its stdout and stderr FDs. If you have no code to put in the
+ *   // child_watch_cb() callback, you can remove it and the g_child_watch_add()
+ *   // call, but you must also remove the G_SPAWN_DO_NOT_REAP_CHILD flag,
+ *   // otherwise the child process will stay around as a zombie until this
+ *   // process exits.
+ *
+ *   g_spawn_close_pid (pid);
+ * }
+ * ]|
  */
 
 
@@ -535,10 +578,11 @@ g_spawn_sync (const gchar          *working_directory,
  *
  * @flags should be the bitwise OR of any flags you want to affect the
  * function's behaviour. The %G_SPAWN_DO_NOT_REAP_CHILD means that the
- * child will not automatically be reaped; you must use a child watch to
- * be notified about the death of the child process. Eventually you must
- * call g_spawn_close_pid() on the @child_pid, in order to free
- * resources which may be associated with the child process. (On Unix,
+ * child will not automatically be reaped; you must use a child watch
+ * (g_child_watch_add()) to be notified about the death of the child process,
+ * otherwise it will stay around as a zombie process until this process exits.
+ * Eventually you must call g_spawn_close_pid() on the @child_pid, in order to
+ * free resources which may be associated with the child process. (On Unix,
  * using a child watch is equivalent to calling waitpid() or handling
  * the %SIGCHLD signal manually. On Windows, calling g_spawn_close_pid()
  * is equivalent to calling CloseHandle() on the process handle returned
