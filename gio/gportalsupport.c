@@ -27,12 +27,14 @@ static gboolean network_available;
 static void
 read_flatpak_info (void)
 {
+  const gchar *path = "/.flatpak-info";
+
   if (flatpak_info_read)
     return;
 
   flatpak_info_read = TRUE;
 
-  if (g_file_test ("/.flatpak-info", G_FILE_TEST_EXISTS))
+  if (g_file_test (path, G_FILE_TEST_EXISTS))
     {
       GKeyFile *keyfile;
 
