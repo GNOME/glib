@@ -129,6 +129,8 @@ struct _GDateTime
   ((instant)/USEC_PER_SECOND - UNIX_EPOCH_START * SEC_PER_DAY)
 #define UNIX_TO_INSTANT(unix) \
   (((unix) + UNIX_EPOCH_START * SEC_PER_DAY) * USEC_PER_SECOND)
+#define UNIX_TO_INSTANT_IS_VALID(unix) \
+  ((gint64) (unix) <= INSTANT_TO_UNIX (G_MAXINT64))
 
 #define DAYS_IN_4YEARS    1461    /* days in 4 years */
 #define DAYS_IN_100YEARS  36524   /* days in 100 years */
@@ -650,6 +652,10 @@ static GDateTime *
 g_date_time_new_from_timeval (GTimeZone      *tz,
                               const GTimeVal *tv)
 {
+  if ((gint64) tv->tv_sec > G_MAXINT64 - 1 ||
+      !UNIX_TO_INSTANT_IS_VALID ((gint64) tv->tv_sec + 1))
+    return NULL;
+
   return g_date_time_from_instant (tz, tv->tv_usec +
                                    UNIX_TO_INSTANT (tv->tv_sec));
 }
@@ -679,6 +685,9 @@ static GDateTime *
 g_date_time_new_from_unix (GTimeZone *tz,
                            gint64     secs)
 {
+  if (!UNIX_TO_INSTANT_IS_VALID (secs))
+    return NULL;
+
   return g_date_time_from_instant (tz, UNIX_TO_INSTANT (secs));
 }
 

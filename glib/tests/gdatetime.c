@@ -139,6 +139,23 @@ test_GDateTime_new_from_unix (void)
   g_date_time_unref (dt);
 }
 
+/* Check that trying to create a #GDateTime too far in the future reliably
+ * fails. Previously, the checks for this overflowed and it silently returned
+ * an incorrect #GDateTime. */
+static void
+test_GDateTime_new_from_unix_overflow (void)
+{
+  GDateTime *dt;
+
+  g_test_bug ("782089");
+
+  dt = g_date_time_new_from_unix_utc (G_MAXINT64);
+  g_assert_null (dt);
+
+  dt = g_date_time_new_from_unix_local (G_MAXINT64);
+  g_assert_null (dt);
+}
+
 static void
 test_GDateTime_invalid (void)
 {
@@ -351,6 +368,71 @@ test_GDateTime_new_from_timeval (void)
   g_assert_cmpint (tv.tv_sec, ==, tv2.tv_sec);
   g_assert_cmpint (tv.tv_usec, ==, tv2.tv_usec);
   g_date_time_unref (dt);
+}
+
+static gint64
+find_maximum_supported_tv_sec (void)
+{
+  glong highest_success = 0, lowest_failure = G_MAXLONG;
+  GTimeVal tv;
+
+  tv.tv_usec = 0;
+
+  while (highest_success < lowest_failure - 1)
+    {
+      GDateTime *dt;
+
+      tv.tv_sec = (highest_success + lowest_failure) / 2;
+      dt = g_date_time_new_from_timeval_utc (&tv);
+
+      if (dt != NULL)
+        {
+          highest_success = tv.tv_sec;
+          g_date_time_unref (dt);
+        }
+      else
+        {
+          lowest_failure = tv.tv_sec;
+        }
+    }
+
+  return highest_success;
+}
+
+/* Check that trying to create a #GDateTime too far in the future reliably
+ * fails. With a #GTimeVal, this is subtle, as the tv_usec are added into the
+ * calculation part-way through. */
+static void
+test_GDateTime_new_from_timeval_overflow (void)
+{
+  GDateTime *dt;
+  GTimeVal tv;
+
+  g_test_bug ("782089");
+
+  tv.tv_sec = G_MAXLONG;
+  tv.tv_usec = 0;
+
+  dt = g_date_time_new_from_timeval_utc (&tv);
+  g_assert_null (dt);
+
+  dt = g_date_time_new_from_timeval_local (&tv);
+  g_assert_null (dt);
+
+  tv.tv_sec = find_maximum_supported_tv_sec ();
+  tv.tv_usec = G_USEC_PER_SEC - 1;
+
+  g_test_message ("Maximum supported GTimeVal.tv_sec = %lu", tv.tv_sec);
+
+  dt = g_date_time_new_from_timeval_utc (&tv);
+  g_assert_nonnull (dt);
+  g_date_time_unref (dt);
+
+  tv.tv_sec++;
+  tv.tv_usec = 0;
+
+  dt = g_date_time_new_from_timeval_utc (&tv);
+  g_assert_null (dt);
 }
 
 static void
@@ -1652,8 +1734,10 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/hash", test_GDateTime_hash);
   g_test_add_func ("/GDateTime/new_from_unix", test_GDateTime_new_from_unix);
   g_test_add_func ("/GDateTime/new_from_unix_utc", test_GDateTime_new_from_unix_utc);
+  g_test_add_func ("/GDateTime/new_from_unix/overflow", test_GDateTime_new_from_unix_overflow);
   g_test_add_func ("/GDateTime/new_from_timeval", test_GDateTime_new_from_timeval);
   g_test_add_func ("/GDateTime/new_from_timeval_utc", test_GDateTime_new_from_timeval_utc);
+  g_test_add_func ("/GDateTime/new_from_timeval/overflow", test_GDateTime_new_from_timeval_overflow);
   g_test_add_func ("/GDateTime/new_full", test_GDateTime_new_full);
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
