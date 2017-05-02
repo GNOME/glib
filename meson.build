@@ -1,6 +1,6 @@
 project('glib', 'c', 'cpp',
   version : '2.51.2',
-  meson_version : '>= 0.37.1',
+  meson_version : '>= 0.38.1',
   default_options : [
     'warning_level=1',
     'c_std=gnu89'
@@ -1387,6 +1387,7 @@ subdir('gio')
 if xgettext.found()
   subdir('po')
 endif
+subdir('tests')
 
 # Configure and install pkg-config files
 pc_files = [
