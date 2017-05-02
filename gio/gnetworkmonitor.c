@@ -35,8 +35,11 @@
  * @include: gio/gio.h
  *
  * #GNetworkMonitor provides an easy-to-use cross-platform API
- * for monitoring network connectivity. On Linux, the implementation
- * is based on the kernel's netlink interface.
+ * for monitoring network connectivity. On Linux, the available
+ * implementations are based on the kernel's netlink interface and
+ * on NetworkManager.
+ *
+ * There is also an implmeentation for use inside Flatpak sandboxes.
  */
 
 /**
