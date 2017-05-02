@@ -53,7 +53,7 @@ G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorPortal, g_network_monitor_portal, G_TYPE
                          g_io_extension_point_implement (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
                                                          g_define_type_id,
                                                          "portal",
-                                                         30))
+                                                         40))
 
 static void
 g_network_monitor_portal_init (GNetworkMonitorPortal *nm)
