@@ -1605,7 +1605,7 @@ g_object_get_type (void)
  * Construction parameters (see #G_PARAM_CONSTRUCT, #G_PARAM_CONSTRUCT_ONLY)
  * which are not explicitly specified are set to their default values.
  *
- * Returns: (transfer full) (type GObject.Object) : a new instance of
+ * Returns: (transfer full) (type GObject.Object): a new instance of
  *   @object_type
  */
 gpointer
