@@ -532,7 +532,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * @object_proxy: The #GDBusObjectProxy on which an interface has properties that are changing.
    * @interface_proxy: The #GDBusProxy that has properties that are changing.
    * @changed_properties: A #GVariant containing the properties that changed.
-   * @invalidated_properties: A %NULL terminated array of properties that was invalidated.
+   * @invalidated_properties: (array zero-terminated=1) (element-type utf8): A %NULL terminated
+   *   array of properties that were invalidated.
    *
    * Emitted when one or more D-Bus properties on proxy changes. The
    * local cache has already been updated when this signal fires. Note
