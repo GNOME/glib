@@ -408,9 +408,6 @@ _g_get_unix_mounts (void)
       unsigned long mount_flags = 0;
       gboolean is_read_only = FALSE;
 
-      if (!mnt_table_is_fs_mounted (table, fs))
-        continue;
-
       device_path = mnt_fs_get_source (fs);
       if (g_strcmp0 (device_path, "/dev/root") == 0)
         device_path = _resolve_dev_root ();
