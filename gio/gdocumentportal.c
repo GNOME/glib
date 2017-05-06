@@ -215,10 +215,6 @@ g_document_portal_add_documents (GList       *uris,
         as_is[i] = TRUE;
     }
 
-  g_variant_builder_add (&builder, "u", 1 << 2); /* as-needed-by-app */
-  g_variant_builder_add (&builder, "s", app_id);
-  g_variant_builder_add (&builder, "^as", permissions);
-
   if (g_unix_fd_list_get_length (fd_list) > 0)
     {
       if (!gxdp_documents_call_add_full_sync (documents,

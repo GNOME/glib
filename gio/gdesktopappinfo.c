@@ -36,6 +36,7 @@
 #include "gdesktopappinfo.h"
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
+#include "gunixfdlist.h"
 #endif
 #include "gfile.h"
 #include "gioerror.h"
@@ -47,6 +48,10 @@
 #include "gappinfo.h"
 #include "gappinfoprivate.h"
 #include "glocalfilemonitor.h"
+
+#ifdef G_OS_UNIX
+#include "gdocumentportal.h"
+#endif
 
 /**
  * SECTION:gdesktopappinfo
@@ -2835,16 +2840,14 @@ g_desktop_app_info_make_platform_data (GDesktopAppInfo   *info,
   return g_variant_builder_end (&builder);
 }
 
-static gboolean
-g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
-                                          GDBusConnection    *session_bus,
-                                          GList              *uris,
-                                          GAppLaunchContext  *launch_context)
+static void
+launch_uris_with_dbus (GDesktopAppInfo    *info,
+                       GDBusConnection    *session_bus,
+                       GList              *uris,
+                       GAppLaunchContext  *launch_context)
 {
   GVariantBuilder builder;
   gchar *object_path;
-
-  g_return_val_if_fail (info != NULL, FALSE);
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
 
@@ -2865,10 +2868,45 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
    * This is what startup-notification's job is...
    */
   object_path = object_path_from_appid (info->app_id);
+
   g_dbus_connection_call (session_bus, info->app_id, object_path, "org.freedesktop.Application",
                           uris ? "Open" : "Activate", g_variant_builder_end (&builder),
                           NULL, G_DBUS_CALL_FLAGS_NONE, -1, NULL, NULL, NULL);
+
   g_free (object_path);
+}
+
+#ifdef G_OS_UNIX
+static gboolean
+should_rewrite_uris_for_portal (GDesktopAppInfo  *info,
+                                char            **app_id)
+{
+  *app_id = g_desktop_app_info_get_string (info, "X-Flatpak");
+
+  return *app_id && (*app_id)[0];
+}
+#endif
+
+static gboolean
+g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
+                                          GDBusConnection    *session_bus,
+                                          GList              *uris,
+                                          GAppLaunchContext  *launch_context)
+{
+  GList *ruris = uris;
+  g_autofree char *app_id = NULL;
+
+  g_return_val_if_fail (info != NULL, FALSE);
+
+#ifdef G_OS_UNIX
+  if (should_rewrite_uris_for_portal (info, &app_id))
+    ruris = g_document_portal_add_documents (uris, app_id, NULL);
+#endif
+
+  launch_uris_with_dbus (info, session_bus, ruris, launch_context);
+
+  if (ruris != uris)
+    g_list_free_full (ruris, g_free);
 
   return TRUE;
 }
