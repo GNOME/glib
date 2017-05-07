@@ -48,7 +48,7 @@
 static void
 check_string (gchar *str, const gchar *expected)
 {
-  g_assert (str != NULL);
+  g_assert_nonnull (str);
   g_assert_cmpstr (str, ==, expected);
   g_free (str);
 }
@@ -122,7 +122,7 @@ test_build_pathv (void)
 {
   gchar *args[10];
 
-  g_assert (g_build_pathv ("", NULL) == NULL);
+  g_assert_null (g_build_pathv ("", NULL));
   args[0] = NULL;
   check_string (g_build_pathv ("", args), "");
   args[0] = ""; args[1] = NULL;
@@ -503,8 +503,8 @@ test_mkdir_with_parents (void)
   test_mkdir_with_parents_1 (cwd);
   g_free (cwd);
 
-  g_assert (g_mkdir_with_parents (NULL, 0) == -1);
-  g_assert (errno == EINVAL);
+  g_assert_cmpint (g_mkdir_with_parents (NULL, 0), ==, -1);
+  g_assert_cmpint (errno, ==, EINVAL);
 }
 
 static void
@@ -554,76 +554,76 @@ static void
 test_file_errors (void)
 {
 #ifdef EEXIST
-  g_assert (g_file_error_from_errno (EEXIST) == G_FILE_ERROR_EXIST);
+  g_assert_cmpint (g_file_error_from_errno (EEXIST), ==, G_FILE_ERROR_EXIST);
 #endif
 #ifdef EISDIR
-  g_assert (g_file_error_from_errno (EISDIR) == G_FILE_ERROR_ISDIR);
+  g_assert_cmpint (g_file_error_from_errno (EISDIR), ==, G_FILE_ERROR_ISDIR);
 #endif
 #ifdef EACCES
-  g_assert (g_file_error_from_errno (EACCES) == G_FILE_ERROR_ACCES);
+  g_assert_cmpint (g_file_error_from_errno (EACCES), ==, G_FILE_ERROR_ACCES);
 #endif
 #ifdef ENAMETOOLONG
-  g_assert (g_file_error_from_errno (ENAMETOOLONG) == G_FILE_ERROR_NAMETOOLONG);
+  g_assert_cmpint (g_file_error_from_errno (ENAMETOOLONG), ==, G_FILE_ERROR_NAMETOOLONG);
 #endif
 #ifdef ENOENT
-  g_assert (g_file_error_from_errno (ENOENT) == G_FILE_ERROR_NOENT);
+  g_assert_cmpint (g_file_error_from_errno (ENOENT), ==, G_FILE_ERROR_NOENT);
 #endif
 #ifdef ENOTDIR
-  g_assert (g_file_error_from_errno (ENOTDIR) == G_FILE_ERROR_NOTDIR);
+  g_assert_cmpint (g_file_error_from_errno (ENOTDIR), ==, G_FILE_ERROR_NOTDIR);
 #endif
 #ifdef ENXIO
-  g_assert (g_file_error_from_errno (ENXIO) == G_FILE_ERROR_NXIO);
+  g_assert_cmpint (g_file_error_from_errno (ENXIO), ==, G_FILE_ERROR_NXIO);
 #endif
 #ifdef ENODEV
-  g_assert (g_file_error_from_errno (ENODEV) == G_FILE_ERROR_NODEV);
+  g_assert_cmpint (g_file_error_from_errno (ENODEV), ==, G_FILE_ERROR_NODEV);
 #endif
 #ifdef EROFS
-  g_assert (g_file_error_from_errno (EROFS) == G_FILE_ERROR_ROFS);
+  g_assert_cmpint (g_file_error_from_errno (EROFS), ==, G_FILE_ERROR_ROFS);
 #endif
 #ifdef ETXTBSY
-  g_assert (g_file_error_from_errno (ETXTBSY) == G_FILE_ERROR_TXTBSY);
+  g_assert_cmpint (g_file_error_from_errno (ETXTBSY), ==, G_FILE_ERROR_TXTBSY);
 #endif
 #ifdef EFAULT
-  g_assert (g_file_error_from_errno (EFAULT) == G_FILE_ERROR_FAULT);
+  g_assert_cmpint (g_file_error_from_errno (EFAULT), ==, G_FILE_ERROR_FAULT);
 #endif
 #ifdef ELOOP
-  g_assert (g_file_error_from_errno (ELOOP) == G_FILE_ERROR_LOOP);
+  g_assert_cmpint (g_file_error_from_errno (ELOOP), ==, G_FILE_ERROR_LOOP);
 #endif
 #ifdef ENOSPC
-  g_assert (g_file_error_from_errno (ENOSPC) == G_FILE_ERROR_NOSPC);
+  g_assert_cmpint (g_file_error_from_errno (ENOSPC), ==, G_FILE_ERROR_NOSPC);
 #endif
 #ifdef ENOMEM
-  g_assert (g_file_error_from_errno (ENOMEM) == G_FILE_ERROR_NOMEM);
+  g_assert_cmpint (g_file_error_from_errno (ENOMEM), ==, G_FILE_ERROR_NOMEM);
 #endif
 #ifdef EMFILE
-  g_assert (g_file_error_from_errno (EMFILE) == G_FILE_ERROR_MFILE);
+  g_assert_cmpint (g_file_error_from_errno (EMFILE), ==, G_FILE_ERROR_MFILE);
 #endif
 #ifdef ENFILE
-  g_assert (g_file_error_from_errno (ENFILE) == G_FILE_ERROR_NFILE);
+  g_assert_cmpint (g_file_error_from_errno (ENFILE), ==, G_FILE_ERROR_NFILE);
 #endif
 #ifdef EBADF
-  g_assert (g_file_error_from_errno (EBADF) == G_FILE_ERROR_BADF);
+  g_assert_cmpint (g_file_error_from_errno (EBADF), ==, G_FILE_ERROR_BADF);
 #endif
 #ifdef EINVAL
-  g_assert (g_file_error_from_errno (EINVAL) == G_FILE_ERROR_INVAL);
+  g_assert_cmpint (g_file_error_from_errno (EINVAL), ==, G_FILE_ERROR_INVAL);
 #endif
 #ifdef EPIPE
-  g_assert (g_file_error_from_errno (EPIPE) == G_FILE_ERROR_PIPE);
+  g_assert_cmpint (g_file_error_from_errno (EPIPE), ==, G_FILE_ERROR_PIPE);
 #endif
 #ifdef EAGAIN
-  g_assert (g_file_error_from_errno (EAGAIN) == G_FILE_ERROR_AGAIN);
+  g_assert_cmpint (g_file_error_from_errno (EAGAIN), ==, G_FILE_ERROR_AGAIN);
 #endif
 #ifdef EINTR
-  g_assert (g_file_error_from_errno (EINTR) == G_FILE_ERROR_INTR);
+  g_assert_cmpint (g_file_error_from_errno (EINTR), ==, G_FILE_ERROR_INTR);
 #endif
 #ifdef EIO
-  g_assert (g_file_error_from_errno (EIO) == G_FILE_ERROR_IO);
+  g_assert_cmpint (g_file_error_from_errno (EIO), ==, G_FILE_ERROR_IO);
 #endif
 #ifdef EPERM
-  g_assert (g_file_error_from_errno (EPERM) == G_FILE_ERROR_PERM);
+  g_assert_cmpint (g_file_error_from_errno (EPERM), ==, G_FILE_ERROR_PERM);
 #endif
 #ifdef ENOSYS
-  g_assert (g_file_error_from_errno (ENOSYS) == G_FILE_ERROR_NOSYS);
+  g_assert_cmpint (g_file_error_from_errno (ENOSYS), ==, G_FILE_ERROR_NOSYS);
 #endif
 }
 
@@ -654,27 +654,27 @@ test_dir_make_tmp (void)
 
   name = g_dir_make_tmp ("testXXXXXXtest", &error);
   g_assert_no_error (error);
-  g_assert (g_file_test (name, G_FILE_TEST_IS_DIR));
+  g_assert_true (g_file_test (name, G_FILE_TEST_IS_DIR));
   ret = g_rmdir (name);
-  g_assert (ret == 0);
+  g_assert_cmpint (ret, ==, 0);
   g_free (name);
 
   name = g_dir_make_tmp (NULL, &error);
   g_assert_no_error (error);
-  g_assert (g_file_test (name, G_FILE_TEST_IS_DIR));
+  g_assert_true (g_file_test (name, G_FILE_TEST_IS_DIR));
   ret = g_rmdir (name);
-  g_assert (ret == 0);
+  g_assert_cmpint (ret, ==, 0);
   g_free (name);
 
   name = g_dir_make_tmp ("test/XXXXXX", &error);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
   g_clear_error (&error);
-  g_assert (name == NULL);
+  g_assert_null (name);
 
   name = g_dir_make_tmp ("XXXXxX", &error);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
   g_clear_error (&error);
-  g_assert (name == NULL);
+  g_assert_null (name);
 }
 
 static void
@@ -685,31 +685,31 @@ test_file_open_tmp (void)
   gint fd;
 
   fd = g_file_open_tmp ("testXXXXXXtest", &name, &error);
-  g_assert (fd != -1);
+  g_assert_cmpint (fd, !=, -1);
   g_assert_no_error (error);
-  g_assert (name != NULL);
+  g_assert_nonnull (name);
   unlink (name);
   g_free (name);
   close (fd);
 
   fd = g_file_open_tmp (NULL, &name, &error);
-  g_assert (fd != -1);
+  g_assert_cmpint (fd, !=, -1);
   g_assert_no_error (error);
-  g_assert (name != NULL);
+  g_assert_nonnull (name);
   g_unlink (name);
   g_free (name);
   close (fd);
 
   name = NULL;
   fd = g_file_open_tmp ("test/XXXXXX", &name, &error);
-  g_assert (fd == -1);
-  g_assert (name == NULL);
+  g_assert_cmpint (fd, ==, -1);
+  g_assert_null (name);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
   g_clear_error (&error);
 
   fd = g_file_open_tmp ("XXXXxX", &name, &error);
-  g_assert (fd == -1);
-  g_assert (name == NULL);
+  g_assert_cmpint (fd, ==, -1);
+  g_assert_null (name);
   g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_FAILED);
   g_clear_error (&error);
 }
@@ -722,15 +722,15 @@ test_mkstemp (void)
 
   name = g_strdup ("testXXXXXXtest"),
   fd = g_mkstemp (name);
-  g_assert (fd != -1);
-  g_assert (strstr (name, "XXXXXX") == NULL);
+  g_assert_cmpint (fd, !=, -1);
+  g_assert_null (strstr (name, "XXXXXX"));
   unlink (name);
   close (fd);
   g_free (name);
 
   name = g_strdup ("testYYYYYYtest"),
   fd = g_mkstemp (name);
-  g_assert (fd == -1);
+  g_assert_cmpint (fd, ==, -1);
   g_free (name);
 }
 
@@ -743,13 +743,13 @@ test_mkdtemp (void)
   name = g_strdup ("testXXXXXXtest"),
   ret = g_mkdtemp (name);
   g_assert (ret == name);
-  g_assert (strstr (name, "XXXXXX") == NULL);
+  g_assert_null (strstr (name, "XXXXXX"));
   g_rmdir (name);
   g_free (name);
 
   name = g_strdup ("testYYYYYYtest"),
   ret = g_mkdtemp (name);
-  g_assert (ret == NULL);
+  g_assert_null (ret);
   g_free (name);
 }
 
@@ -769,17 +769,17 @@ test_set_contents (void)
   close (fd);
 
   ret = g_file_get_contents (name, &buf, &len, &error);
-  g_assert (ret);
+  g_assert_true (ret);
   g_assert_no_error (error);
   g_assert_cmpstr (buf, ==, "a");
   g_free (buf);
 
   ret = g_file_set_contents (name, "b", 1, &error);
-  g_assert (ret);
+  g_assert_true (ret);
   g_assert_no_error (error);
 
   ret = g_file_get_contents (name, &buf, &len, &error);
-  g_assert (ret);
+  g_assert_true (ret);
   g_assert_no_error (error);
   g_assert_cmpstr (buf, ==, "b");
   g_free (buf);
@@ -808,7 +808,7 @@ test_read_link (void)
   badpath = g_build_filename (cwd, "4097-random-bytes", NULL);
   remove (newpath);
   ret = symlink (oldpath, newpath);
-  g_assert (ret == 0);
+  g_assert_cmpint (ret, ==, 0);
   path = g_file_read_link (newpath, &error);
   g_assert_no_error (error);
   g_assert_cmpstr (path, ==, oldpath);
@@ -816,7 +816,7 @@ test_read_link (void)
 
   remove (newpath);
   ret = symlink (badpath, newpath);
-  g_assert (ret == 0);
+  g_assert_cmpint (ret, ==, 0);
   path = g_file_read_link (newpath, &error);
   g_assert_no_error (error);
   g_assert_cmpstr (path, ==, badpath);
@@ -851,25 +851,25 @@ test_stdio_wrappers (void)
   g_rmdir ("mkdir-test");
 
   ret = g_stat ("mkdir-test", &buf);
-  g_assert (ret == -1);
+  g_assert_cmpint (ret, ==, -1);
   ret = g_mkdir ("mkdir-test", 0666);
-  g_assert (ret == 0);
+  g_assert_cmpint (ret, ==, 0);
   ret = g_stat ("mkdir-test", &buf);
-  g_assert (ret == 0);
-  g_assert (S_ISDIR (buf.st_mode));
+  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (S_ISDIR (buf.st_mode), !=, 0);
 
   cwd = g_get_current_dir ();
   path = g_build_filename (cwd, "mkdir-test", NULL);
   g_free (cwd);
   ret = g_chdir (path);
-  g_assert (errno == EACCES);
-  g_assert (ret == -1);
+  g_assert_cmpint (errno, ==, EACCES);
+  g_assert_cmpint (ret, ==, -1);
   ret = g_chmod (path, 0777);
-  g_assert (ret == 0);
+  g_assert_cmpint (ret, ==, 0);
   ret = g_chdir (path);
-  g_assert (ret == 0);
+  g_assert_cmpint (ret, ==, 0);
   cwd = g_get_current_dir ();
-  g_assert (g_str_equal (cwd, path));
+  g_assert_true (g_str_equal (cwd, path));
   g_free (cwd);
   g_free (path);
 
@@ -878,10 +878,10 @@ test_stdio_wrappers (void)
   g_assert_no_error (error);
 
   ret = g_access ("test-creat", F_OK);
-  g_assert (ret == 0);
+  g_assert_cmpint (ret, ==, 0);
 
   ret = g_rename ("test-creat", "test-create");
-  g_assert (ret == 0);
+  g_assert_cmpint (ret, ==, 0);
 
   ret = g_open ("test-create", O_RDONLY, 0666);
   g_close (ret, &error);
@@ -889,12 +889,12 @@ test_stdio_wrappers (void)
 
   ut.actime = ut.modtime = (time_t)0;
   ret = g_utime ("test-create", &ut);
-  g_assert (ret == 0);
+  g_assert_cmpint (ret, ==, 0);
 
   ret = g_lstat ("test-create", &buf);
-  g_assert (ret == 0);
-  g_assert (buf.st_atime == (time_t)0);
-  g_assert (buf.st_mtime == (time_t)0);
+  g_assert_cmpint (ret, ==, 0);
+  g_assert_cmpint (buf.st_atime, ==, (time_t)0);
+  g_assert_cmpint (buf.st_mtime, ==, (time_t)0);
 
   g_chdir ("..");
   g_remove ("mkdir-test/test-create");
