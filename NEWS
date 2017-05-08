@@ -1,3 +1,17 @@
+Overview of changes in GLib 2.52.2
+==================================
+
+* Bug fixes:
+ 734946 Implement GContentType on OSX
+ 761102 Increase performance for main loop
+ 780300 gio/gosxappinfo.c uses deprecated LSFindApplicationForInfo
+ 780309 gio/tests/appinfo build fails: gdesktopappinfo.c skipped on OS X
+ 781298 gfileutils.c:330:3: error: ISO C90 forbids mixed declarations and code
+
+* Translation updates:
+ Indonesian
+
+
 Overview of changes in GLib 2.52.1
 ==================================
 
