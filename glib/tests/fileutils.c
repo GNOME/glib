@@ -848,7 +848,8 @@ test_stdio_wrappers (void)
   GError *error = NULL;
 
   g_remove ("mkdir-test/test-create");
-  g_rmdir ("mkdir-test");
+  ret = g_rmdir ("mkdir-test");
+  g_assert (ret == 0 || errno == ENOENT);
 
   ret = g_stat ("mkdir-test", &buf);
   g_assert_cmpint (ret, ==, -1);
