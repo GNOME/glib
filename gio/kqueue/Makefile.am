@@ -4,11 +4,8 @@ noinst_LTLIBRARIES += libkqueue.la
 
 libkqueue_la_SOURCES = \
        gkqueuefilemonitor.c \
-       kqueue-helper.c \
-       kqueue-helper.h \
-       kqueue-missing.c \
-       dep-list.c \
-       dep-list.h \
+       kqueue_fnm.c \
+       kqueue_fnm.h \
        $(NULL)
 
 libkqueue_la_CFLAGS = \

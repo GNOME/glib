@@ -1,8 +1,6 @@
 kqueue_sources = [
   'gkqueuefilemonitor.c',
-  'kqueue-helper.c',
-  'kqueue-missing.c',
-  'dep-list.c',
+  'kqueue_fnm.c',
 ]
 
 kqueue_lib = static_library('kqueue',
