@@ -324,10 +324,26 @@ test_tree (void)
    }
 }
 
+static void
+test_type_is_a_special_case (void)
+{
+  gboolean res;
+
+  g_test_bug ("782311");
+
+  /* Everything but the inode type is application/octet-stream */
+  res = g_content_type_is_a ("inode/directory", "application/octet-stream");
+  g_assert_false (res);
+  res = g_content_type_is_a ("anything", "application/octet-stream");
+  g_assert_true (res);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+
+  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/contenttype/guess", test_guess);
   g_test_add_func ("/contenttype/unknown", test_unknown);
@@ -338,6 +354,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/contenttype/icon", test_icon);
   g_test_add_func ("/contenttype/symbolic-icon", test_symbolic_icon);
   g_test_add_func ("/contenttype/tree", test_tree);
+  g_test_add_func ("/contenttype/test_type_is_a_special_case",
+                   test_type_is_a_special_case);
 
   return g_test_run ();
 }
