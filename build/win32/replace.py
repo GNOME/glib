@@ -21,9 +21,15 @@ valid_actions = ['remove-prefix',
                  'replace-str',
                  'remove-str']
 
+def open_file(filename, mode):
+    if sys.version_info[0] < 3:
+        return open(filename, mode=mode)
+    else:
+        return open(filename, mode=mode, encoding='utf-8')
+
 def replace_multi(src, dest, replace_items):
-    with open(src, 'r') as s:
-        with open(dest, 'w') as d:
+    with open_file(src, 'r') as s:
+        with open_file(dest, 'w') as d:
             for line in s:
                 replace_dict = dict((re.escape(key), value) \
                                for key, value in replace_items.items())
