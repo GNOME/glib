@@ -41,7 +41,7 @@
  *
  * Implementations of #GProxyResolver based on libproxy and GNOME settings can
  * be found in glib-networking. GIO comes with an implementation for use inside
- * FLatpak portals.
+ * Flatpak portals.
  */
 
 /**

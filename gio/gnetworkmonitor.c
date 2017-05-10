@@ -39,7 +39,7 @@
  * implementations are based on the kernel's netlink interface and
  * on NetworkManager.
  *
- * There is also an implmeentation for use inside Flatpak sandboxes.
+ * There is also an implementation for use inside Flatpak sandboxes.
  */
 
 /**
