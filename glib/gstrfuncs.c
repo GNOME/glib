@@ -3263,11 +3263,15 @@ g_ascii_string_to_signed (const gchar  *str,
     }
   if (saved_errno == ERANGE || number < min || number > max)
     {
+      gchar *min_str = g_strdup_printf ("%" G_GINT64_FORMAT, min);
+      gchar *max_str = g_strdup_printf ("%" G_GINT64_FORMAT, max);
+
       g_set_error (error,
                    G_NUMBER_PARSER_ERROR, G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS,
-                   _("Number “%" G_GINT64_FORMAT "” is out of bounds"
-                   " [%" G_GINT64_FORMAT ", %" G_GINT64_FORMAT "]"),
-                   number, min, max);
+                   _("Number “%s” is out of bounds [%s, %s]"),
+                   str, min_str, max_str);
+      g_free (min_str);
+      g_free (max_str);
       return FALSE;
     }
   if (out_num != NULL)
@@ -3362,11 +3366,15 @@ g_ascii_string_to_unsigned (const gchar  *str,
     }
   if (saved_errno == ERANGE || number < min || number > max)
     {
+      gchar *min_str = g_strdup_printf ("%" G_GUINT64_FORMAT, min);
+      gchar *max_str = g_strdup_printf ("%" G_GUINT64_FORMAT, max);
+
       g_set_error (error,
                    G_NUMBER_PARSER_ERROR, G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS,
-                   _("Number “%" G_GUINT64_FORMAT "” is out of bounds"
-                     " [%" G_GUINT64_FORMAT ", %" G_GUINT64_FORMAT "]"),
-                   number, min, max);
+                   _("Number “%s” is out of bounds [%s, %s]"),
+                   str, min_str, max_str);
+      g_free (min_str);
+      g_free (max_str);
       return FALSE;
     }
   if (out_num != NULL)
