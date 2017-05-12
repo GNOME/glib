@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-04-19 20:54+0000\n"
-"PO-Revision-Date: 2017-03-05 18:55+0100\n"
+"POT-Creation-Date: 2017-05-12 09:06+0000\n"
+"PO-Revision-Date: 2017-05-12 17:22+0200\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Poedit 2.0.1\n"
 
 #: ../gio/gapplication.c:493
 msgid "GApplication options"
@@ -534,7 +534,7 @@ msgstr ""
 "Bus-Adresse konnte nicht über die Umgebungsvariable DBUS_STARTER_BUS_TYPE "
 "ermittelt werden – unbekannter Wert »%s«"
 
-#: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7156
+#: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7157
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -648,7 +648,7 @@ msgstr "Fehler beim Öffnen des Schlüsselbundes »%s« zum Schreiben: "
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Außerdem schlug das Entsperren von »%s« ebenso fehl: %s) "
 
-#: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2377
+#: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2378
 msgid "The connection is closed"
 msgstr "Verbindung ist geschlossen"
 
@@ -656,14 +656,14 @@ msgstr "Verbindung ist geschlossen"
 msgid "Timeout was reached"
 msgstr "Zeitüberschreitung wurde erreicht"
 
-#: ../gio/gdbusconnection.c:2499
+#: ../gio/gdbusconnection.c:2500
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Beim Erstellen einer client-seitigen Verbindung wurden nicht unterstützte "
 "Flags entdeckt"
 
-#: ../gio/gdbusconnection.c:4123 ../gio/gdbusconnection.c:4470
+#: ../gio/gdbusconnection.c:4124 ../gio/gdbusconnection.c:4471
 #, c-format
 msgid ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
@@ -671,80 +671,80 @@ msgstr ""
 "Keine derartige Schnittstelle »org.freedesktop.DBus.Properties« des Objekts "
 "im Pfad %s"
 
-#: ../gio/gdbusconnection.c:4265
+#: ../gio/gdbusconnection.c:4266
 #, c-format
 msgid "No such property '%s'"
 msgstr "Keine derartige Eigenschaft »%s«"
 
-#: ../gio/gdbusconnection.c:4277
+#: ../gio/gdbusconnection.c:4278
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "Eigenschaft »%s« ist nicht lesbar"
 
-#: ../gio/gdbusconnection.c:4288
+#: ../gio/gdbusconnection.c:4289
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "Eigenschaft »%s« ist nicht schreibbar"
 
-#: ../gio/gdbusconnection.c:4308
+#: ../gio/gdbusconnection.c:4309
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 "Fehler beim Setzen der Eigenschaft »%s«: Erwarteter Typ war »%s«, aber »%s« "
 "wurde erhalten"
 
-#: ../gio/gdbusconnection.c:4413 ../gio/gdbusconnection.c:4621
-#: ../gio/gdbusconnection.c:6587
+#: ../gio/gdbusconnection.c:4414 ../gio/gdbusconnection.c:4622
+#: ../gio/gdbusconnection.c:6588
 #, c-format
 msgid "No such interface '%s'"
 msgstr "Keine derartige Schnittstelle »%s«"
 
-#: ../gio/gdbusconnection.c:4839 ../gio/gdbusconnection.c:7096
+#: ../gio/gdbusconnection.c:4840 ../gio/gdbusconnection.c:7097
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "Keine derartige Schnittstelle »%s« des Objekts im Pfad %s"
 
-#: ../gio/gdbusconnection.c:4937
+#: ../gio/gdbusconnection.c:4938
 #, c-format
 msgid "No such method '%s'"
 msgstr "Keine derartige Methode »%s«"
 
-#: ../gio/gdbusconnection.c:4968
+#: ../gio/gdbusconnection.c:4969
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Der Nachrichtentyp »%s« entspricht nicht dem erwarteten Wert »%s«"
 
-#: ../gio/gdbusconnection.c:5166
+#: ../gio/gdbusconnection.c:5167
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Für die Schnittstelle %s auf %s wurde bereits ein Objekt exportiert"
 
-#: ../gio/gdbusconnection.c:5392
+#: ../gio/gdbusconnection.c:5393
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Eigenschaft kann nicht abgefragt werden: %s.%s"
 
-#: ../gio/gdbusconnection.c:5448
+#: ../gio/gdbusconnection.c:5449
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Eigenschaft kann nicht gesetzt werden: %s.%s"
 
-#: ../gio/gdbusconnection.c:5624
+#: ../gio/gdbusconnection.c:5625
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Methode »%s« gab Typ »%s« zurück, aber »%s« wurde erwartet"
 
-#: ../gio/gdbusconnection.c:6698
+#: ../gio/gdbusconnection.c:6699
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Methode »%s« in Schnittstelle »%s« mit Signatur »%s« existiert nicht"
 
-#: ../gio/gdbusconnection.c:6819
+#: ../gio/gdbusconnection.c:6820
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ein Unterbaum wurde bereits für %s exportiert"
 
-#: ../gio/gdbusconnection.c:7147
+#: ../gio/gdbusconnection.c:7148
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -753,27 +753,27 @@ msgstr ""
 "Bus-Adresse konnte nicht über die Umgebungsvariable DBUS_STARTER_BUS_TYPE "
 "ermittelt werden, unbekannter Wert »%s«"
 
-#: ../gio/gdbusmessage.c:1244
+#: ../gio/gdbusmessage.c:1246
 msgid "type is INVALID"
 msgstr "Typ ist UNGÜLTIG"
 
-#: ../gio/gdbusmessage.c:1255
+#: ../gio/gdbusmessage.c:1257
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "METHOD_CALL-Meldung: Kopfzeilenfeld PATH oder MEMBER fehlt"
 
-#: ../gio/gdbusmessage.c:1266
+#: ../gio/gdbusmessage.c:1268
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "METHOD_RETURN-Meldung: Kopfzeilenfeld REPLY_SERIAL fehlt"
 
-#: ../gio/gdbusmessage.c:1278
+#: ../gio/gdbusmessage.c:1280
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "ERROR-Meldung: Kopfzeilenfeld REPLY_SERIAL oder ERROR_NAME fehlt"
 
-#: ../gio/gdbusmessage.c:1291
+#: ../gio/gdbusmessage.c:1293
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "SIGNAL-Meldung: Kopfzeilenfeld PATH, INTERFACE oder MEMBER fehlt"
 
-#: ../gio/gdbusmessage.c:1299
+#: ../gio/gdbusmessage.c:1301
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -781,7 +781,7 @@ msgstr ""
 "SIGNAL-Meldung: Das Kopfzeilenfeld PATH verwendet den reservierten Wert /org/"
 "freedesktop/DBus/Local"
 
-#: ../gio/gdbusmessage.c:1307
+#: ../gio/gdbusmessage.c:1309
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -789,21 +789,21 @@ msgstr ""
 "SIGNAL-Meldung: Das Kopfzeilenfeld INTERFACE verwendet den reservierten Wert "
 "org.freedesktop.DBus.Local"
 
-#: ../gio/gdbusmessage.c:1355 ../gio/gdbusmessage.c:1415
+#: ../gio/gdbusmessage.c:1357 ../gio/gdbusmessage.c:1417
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "%lu Byte sollte gelesen werden, aber nur %lu erhalten"
 msgstr[1] "%lu Bytes sollten gelesen werden, aber nur %lu erhalten"
 
-#: ../gio/gdbusmessage.c:1369
+#: ../gio/gdbusmessage.c:1371
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr ""
 "Ein NUL-Byte wurde nach der Zeichenkette »%s« erwartet, aber es wurde Byte "
 "%d gefunden"
 
-#: ../gio/gdbusmessage.c:1388
+#: ../gio/gdbusmessage.c:1390
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -813,17 +813,17 @@ msgstr ""
 "Position %d gefunden (Länge der Zeichenkette ist %d). Die gültige UTF-8-"
 "Zeichenkette bis zu diesem Punkt war »%s«."
 
-#: ../gio/gdbusmessage.c:1587
+#: ../gio/gdbusmessage.c:1589
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Verarbeiteter Wert »%s« ist kein gültiger D-Bus-Objektpfad"
 
-#: ../gio/gdbusmessage.c:1609
+#: ../gio/gdbusmessage.c:1611
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Verarbeiteter Wert »%s« ist keine gültige D-Bus-Signatur"
 
-#: ../gio/gdbusmessage.c:1656
+#: ../gio/gdbusmessage.c:1658
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -836,7 +836,7 @@ msgstr[1] ""
 "Array der Länge %u Bytes wurde erkannt. Maximale Länge ist 2<<26 Bytes (64 "
 "MiB)."
 
-#: ../gio/gdbusmessage.c:1676
+#: ../gio/gdbusmessage.c:1678
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -845,12 +845,12 @@ msgstr ""
 "Es wurde ein Feld des Typs »a%c« gefunden. Erwartet wurde als Länge ein "
 "Vielfaches von %u Byte, aber es waren %u Byte Länge"
 
-#: ../gio/gdbusmessage.c:1843
+#: ../gio/gdbusmessage.c:1845
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Verarbeiteter Wert »%s« für Variante ist keine gültige D-Bus-Signatur"
 
-#: ../gio/gdbusmessage.c:1867
+#: ../gio/gdbusmessage.c:1869
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -858,7 +858,7 @@ msgstr ""
 "Fehler beim Deserialisieren von GVariant mit der Typenzeichenkette »%s« aus "
 "dem D-Bus Wire-Format"
 
-#: ../gio/gdbusmessage.c:2051
+#: ../gio/gdbusmessage.c:2053
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -867,25 +867,25 @@ msgstr ""
 "Ungültiger Wert für die Speicherreihenfolge. Es wird entweder 0x6c (»l«) "
 "oder 0x42 (»B«) erwartet, aber der Wert 0x%02x gefunden"
 
-#: ../gio/gdbusmessage.c:2064
+#: ../gio/gdbusmessage.c:2066
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Ungültige Version des Hauptprotokolls. Erwartet wurde 1, jedoch %d gefunden"
 
-#: ../gio/gdbusmessage.c:2120
+#: ../gio/gdbusmessage.c:2122
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Signatur-Kopfzeilenfeld mit Signatur »%s« gefunden, aber Nachrichtenrumpf "
 "ist leer"
 
-#: ../gio/gdbusmessage.c:2134
+#: ../gio/gdbusmessage.c:2136
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Verarbeiteter Wert »%s« ist keine gültige D-Bus-Signatur (für Rumpf)"
 
-#: ../gio/gdbusmessage.c:2164
+#: ../gio/gdbusmessage.c:2166
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -896,11 +896,11 @@ msgstr[1] ""
 "Kein Signatur-Kopfzeilenfeld in der Nachricht, aber der Nachrichtenrumpf ist "
 "%u Bytes groß"
 
-#: ../gio/gdbusmessage.c:2174
+#: ../gio/gdbusmessage.c:2176
 msgid "Cannot deserialize message: "
 msgstr "Meldung kann nicht deserialisiert werden:"
 
-#: ../gio/gdbusmessage.c:2515
+#: ../gio/gdbusmessage.c:2517
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -908,7 +908,7 @@ msgstr ""
 "Fehler beim Deserialisieren von GVariant mit der Typenzeichenkette »%s« in "
 "das D-Bus Wire-Format"
 
-#: ../gio/gdbusmessage.c:2652
+#: ../gio/gdbusmessage.c:2654
 #, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
@@ -917,18 +917,18 @@ msgstr ""
 "Meldung hat %d Dateideskriptoren, aber das Kopfzeilenfeld kündigt %d "
 "Dateideskriptoren an"
 
-#: ../gio/gdbusmessage.c:2660
+#: ../gio/gdbusmessage.c:2662
 msgid "Cannot serialize message: "
 msgstr "Meldung kann nicht serialisiert werden:"
 
-#: ../gio/gdbusmessage.c:2704
+#: ../gio/gdbusmessage.c:2706
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr ""
 "Nachrichtenrumpf hat den Signaturtyp »%s«, aber es gibt keine Signatur im "
 "Kopfzeilenfeld"
 
-#: ../gio/gdbusmessage.c:2714
+#: ../gio/gdbusmessage.c:2716
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -937,18 +937,18 @@ msgstr ""
 "Nachrichtenrumpf hat den Signaturtyp »%s«, aber die Signatur im "
 "Kopfzeilenfeld ist »%s«"
 
-#: ../gio/gdbusmessage.c:2730
+#: ../gio/gdbusmessage.c:2732
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr ""
 "Nachrichtenrumpf ist leer, aber die Signatur im Kopfzeilenfeld ist »(%s)«"
 
-#: ../gio/gdbusmessage.c:3283
+#: ../gio/gdbusmessage.c:3285
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Fehlerrückmeldung mit Inhalt des Typs »%s«"
 
-#: ../gio/gdbusmessage.c:3291
+#: ../gio/gdbusmessage.c:3293
 msgid "Error return with empty body"
 msgstr "Fehlerrückmeldung mit leerem Inhalt"
 
@@ -1249,22 +1249,25 @@ msgstr "Ein entferntes Objekt überwachen."
 #: ../gio/gdbus-tool.c:1980
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr ""
+"Zu aktivierender Dienst, bevor auf den anderen gewartet wird (allgemein "
+"bekannter Name)"
 
 #: ../gio/gdbus-tool.c:1983
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
 msgstr ""
+"Zeitspanne, die gewartet werden soll, bis mit einer Fehlermeldung "
+"abgebrochen wird (Sekunden); 0 für keine Zeitspanne (Voreinstellung)"
 
 #: ../gio/gdbus-tool.c:2031
-#, fuzzy
 #| msgid "[OPTION…]"
 msgid "[OPTION…] BUS-NAME"
-msgstr "[OPTION …]"
+msgstr "[OPTION …] BUS-NAME"
 
 #: ../gio/gdbus-tool.c:2033
 msgid "Wait for a bus name to appear."
-msgstr ""
+msgstr "Name eines Busses, auf dessen Verfügbarkeit gewartet werden soll."
 
 #: ../gio/gdbus-tool.c:2109
 #, c-format
@@ -1274,7 +1277,6 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:2114
 #, c-format
-#| msgid "Error: object path not specified.\n"
 msgid "Error: A service to wait for must be specified.\n"
 msgstr ""
 "Fehler: Es muss ein Dienst angegeben werden, auf den gewartet werden soll.\n"
@@ -3917,7 +3919,7 @@ msgstr "Fehler beim Lesen aus dem Dateideskriptor: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Fehler beim Schließen des Dateideskriptors: %s"
 
-#: ../gio/gunixmounts.c:2429 ../gio/gunixmounts.c:2482
+#: ../gio/gunixmounts.c:2422 ../gio/gunixmounts.c:2475
 msgid "Filesystem root"
 msgstr "Wurzelordner des Dateisystems"
 
@@ -4119,227 +4121,227 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "Der Pfadname »%s« ist kein absoluter Pfad"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: ../glib/gdatetime.c:200
+#: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %e. %b %Y %T %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:203
+#: ../glib/gdatetime.c:205
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d.%m.%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:206
+#: ../glib/gdatetime.c:208
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: ../glib/gdatetime.c:209
+#: ../glib/gdatetime.c:211
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S"
 
-#: ../glib/gdatetime.c:222
+#: ../glib/gdatetime.c:224
 msgctxt "full month name"
 msgid "January"
 msgstr "Januar"
 
-#: ../glib/gdatetime.c:224
+#: ../glib/gdatetime.c:226
 msgctxt "full month name"
 msgid "February"
 msgstr "Februar"
 
-#: ../glib/gdatetime.c:226
+#: ../glib/gdatetime.c:228
 msgctxt "full month name"
 msgid "March"
 msgstr "März"
 
-#: ../glib/gdatetime.c:228
+#: ../glib/gdatetime.c:230
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:230
+#: ../glib/gdatetime.c:232
 msgctxt "full month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:234
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:236
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:238
 msgctxt "full month name"
 msgid "August"
 msgstr "August"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:240
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:242
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:244
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:246
 msgctxt "full month name"
 msgid "December"
 msgstr "Dezember"
 
-#: ../glib/gdatetime.c:259
+#: ../glib/gdatetime.c:261
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:261
+#: ../glib/gdatetime.c:263
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:263
+#: ../glib/gdatetime.c:265
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mär"
 
-#: ../glib/gdatetime.c:265
+#: ../glib/gdatetime.c:267
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:269
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:271
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:273
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:275
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:277
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:279
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:281
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:281
+#: ../glib/gdatetime.c:283
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dez"
 
-#: ../glib/gdatetime.c:296
+#: ../glib/gdatetime.c:298
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Montag"
 
-#: ../glib/gdatetime.c:298
+#: ../glib/gdatetime.c:300
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Dienstag"
 
-#: ../glib/gdatetime.c:300
+#: ../glib/gdatetime.c:302
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Mittwoch"
 
-#: ../glib/gdatetime.c:302
+#: ../glib/gdatetime.c:304
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Donnerstag"
 
-#: ../glib/gdatetime.c:304
+#: ../glib/gdatetime.c:306
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Freitag"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:308
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Samstag"
 
-#: ../glib/gdatetime.c:308
+#: ../glib/gdatetime.c:310
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: ../glib/gdatetime.c:323
+#: ../glib/gdatetime.c:325
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Mo"
 
-#: ../glib/gdatetime.c:325
+#: ../glib/gdatetime.c:327
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Di"
 
-#: ../glib/gdatetime.c:327
+#: ../glib/gdatetime.c:329
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Mi"
 
-#: ../glib/gdatetime.c:329
+#: ../glib/gdatetime.c:331
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Do"
 
-#: ../glib/gdatetime.c:331
+#: ../glib/gdatetime.c:333
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Fr"
 
-#: ../glib/gdatetime.c:333
+#: ../glib/gdatetime.c:335
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sa"
 
-#: ../glib/gdatetime.c:335
+#: ../glib/gdatetime.c:337
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "So"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:352
+#: ../glib/gdatetime.c:354
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "a. m."
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:355
+#: ../glib/gdatetime.c:357
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "p. m."
@@ -5260,78 +5262,78 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Text war leer (oder enthielt nur Leerraum)"
 
-#: ../glib/gspawn.c:207
+#: ../glib/gspawn.c:250
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Daten vom Kindprozess konnten nicht gelesen werden (%s)"
 
-#: ../glib/gspawn.c:351
+#: ../glib/gspawn.c:394
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Unerwarteter Fehler in select() beim Lesen von Daten eines Kindprozesses (%s)"
 
-#: ../glib/gspawn.c:436
+#: ../glib/gspawn.c:479
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Unerwarteter Fehler in waitpid() (%s)"
 
-#: ../glib/gspawn.c:842 ../glib/gspawn-win32.c:1231
+#: ../glib/gspawn.c:886 ../glib/gspawn-win32.c:1231
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Der Kindprozess wurde mit Status %ld beendet"
 
-#: ../glib/gspawn.c:850
+#: ../glib/gspawn.c:894
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Der Kindprozess wurde mit Signal %ld beendet"
 
-#: ../glib/gspawn.c:857
+#: ../glib/gspawn.c:901
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Der Kindprozess wurde mit Signal %ld beendet"
 
-#: ../glib/gspawn.c:864
+#: ../glib/gspawn.c:908
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Der Kindprozess wurde gewaltsam beendet"
 
-#: ../glib/gspawn.c:1269 ../glib/gspawn-win32.c:337 ../glib/gspawn-win32.c:345
+#: ../glib/gspawn.c:1313 ../glib/gspawn-win32.c:337 ../glib/gspawn-win32.c:345
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lesen aus Weiterleitung zum Kind (%s) gescheitert"
 
-#: ../glib/gspawn.c:1339
+#: ../glib/gspawn.c:1383
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Abspalten gescheitert (%s)"
 
-#: ../glib/gspawn.c:1488 ../glib/gspawn-win32.c:368
+#: ../glib/gspawn.c:1532 ../glib/gspawn-win32.c:368
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "In Ordner »%s« (%s) konnte nicht gewechselt werden"
 
-#: ../glib/gspawn.c:1498
+#: ../glib/gspawn.c:1542
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Kindprozess »%s« konnte nicht ausgeführt werden (%s)"
 
-#: ../glib/gspawn.c:1508
+#: ../glib/gspawn.c:1552
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Umleiten der Ausgabe oder Eingabe des Kindprozesses (%s) gescheitert"
 
-#: ../glib/gspawn.c:1517
+#: ../glib/gspawn.c:1561
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Abspalten des Kindprozesses gescheitert (%s)"
 
-#: ../glib/gspawn.c:1525
+#: ../glib/gspawn.c:1569
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Unbekannter Fehler beim Ausführen des Kindprozesses »%s«"
 
-#: ../glib/gspawn.c:1549
+#: ../glib/gspawn.c:1593
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -5386,6 +5388,25 @@ msgid ""
 msgstr ""
 "Unerwarteter Fehler in g_io_channel_win32_poll() beim Lesen aus dem "
 "Kindprozess"
+
+#: ../glib/gstrfuncs.c:3237 ../glib/gstrfuncs.c:3338
+msgid "Empty string is not a number"
+msgstr "Leere Zeichenkette ist keine Zahl"
+
+#: ../glib/gstrfuncs.c:3261
+#, c-format
+msgid "“%s” is not a signed number"
+msgstr "»%s« ist keine vorzeichenbehaftete Zahl"
+
+#: ../glib/gstrfuncs.c:3271 ../glib/gstrfuncs.c:3374
+#, c-format
+msgid "Number “%s” is out of bounds [%s, %s]"
+msgstr "Zahl »%s« ist außerhalb des zulässigen Bereichs [%s, %s]"
+
+#: ../glib/gstrfuncs.c:3364
+#, c-format
+msgid "“%s” is not an unsigned number"
+msgstr "»%s« ist keine vorzeichenlose Zahl"
 
 #: ../glib/gutf8.c:798
 msgid "Failed to allocate memory"
@@ -5488,36 +5509,3 @@ msgstr[1] "%s Bytes"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
-
-#~ msgid "No such interface"
-#~ msgstr "Keine derartige Schnittstelle"
-
-#~ msgid "No files given"
-#~ msgstr "Keine Dateien angegeben"
-
-#~ msgid "Error getting writable attributes: %s\n"
-#~ msgstr "Fehler beim Lesen der schreibbaren Attribute: %s\n"
-
-#~ msgid "Error mounting location: %s\n"
-#~ msgstr "Fehler beim Einhängen des Ortes: %s\n"
-
-#~ msgid "Error unmounting mount: %s\n"
-#~ msgstr "Fehler beim Aushängen des Ortes: %s\n"
-
-#~ msgid "Error finding enclosing mount: %s\n"
-#~ msgstr "Fehler beim Suchen nach dem einschließenden Einhängepunkt: %s\n"
-
-#~ msgid "Error ejecting mount: %s\n"
-#~ msgstr "Fehler beim Aushängen des Ortes: %s\n"
-
-#~ msgid "Error mounting %s: %s\n"
-#~ msgstr "Fehler beim Einhängen von »%s«: %s\n"
-
-#~ msgid "No files to open"
-#~ msgstr "Keine Dateien zum Öffnen"
-
-#~ msgid "No files to delete"
-#~ msgstr "Keine Dateien zum Löschen"
-
-#~ msgid "Error setting attribute: %s\n"
-#~ msgstr "Fehler beim Setzen des Attributs: %s\n"
