@@ -558,7 +558,7 @@ pointer_array_find_empty (void)
   g_assert_false (g_ptr_array_find (array, "some-value", NULL));  /* NULL index */
   g_assert_false (g_ptr_array_find (array, "some-value", &idx));  /* non-NULL index */
   g_assert_false (g_ptr_array_find_with_equal_func (array, "some-value", g_str_equal, NULL));  /* NULL index */
-  g_assert_false (g_ptr_array_find_with_equal_func (array, "some-value", g_str_equal, &idx));  /* NULL index */
+  g_assert_false (g_ptr_array_find_with_equal_func (array, "some-value", g_str_equal, &idx));  /* non-NULL index */
 
   g_ptr_array_free (array, TRUE);
 }
