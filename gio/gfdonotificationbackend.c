@@ -222,6 +222,7 @@ call_notify (GDBusConnection     *con,
   GVariantBuilder hints_builder;
   GIcon *icon;
   GVariant *parameters;
+  const gchar *app_name;
   const gchar *body;
   guchar urgency;
 
@@ -287,17 +288,18 @@ call_notify (GDBusConnection     *con,
         }
     }
 
+  app_name = g_get_application_name ();
   body = g_notification_get_body (notification);
 
   parameters = g_variant_new ("(susssasa{sv}i)",
-                              "",           /* app name */
+                              app_name ? app_name : "",           /* app name */
                               replace_id,
-                              "",           /* app icon */
+                              "",                                 /* app icon */
                               g_notification_get_title (notification),
                               body ? body : "",
                               &action_builder,
                               &hints_builder,
-                              -1);          /* expire_timeout */
+                              -1);                                /* expire_timeout */
 
   g_dbus_connection_call (con, "org.freedesktop.Notifications", "/org/freedesktop/Notifications",
                           "org.freedesktop.Notifications", "Notify",
