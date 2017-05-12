@@ -1,0 +1,120 @@
+#
+# Display the number of contributors active in the past six months, per organization
+#
+# git log --no-merges --pretty='%aN <%aE>' --since '6 months ago' | sort | uniq | git -c mailmap.file=.organizationmap check-mailmap --stdin | sort | uniq -c | sort -rn | nl
+#     1	     71 FLOSS Contributor <contact@floss.cc>
+#     2	     18 GNOME Foundation <contact@gnome.org>
+#     3	     10 Red Hat <contact@redhat.com>
+# ...
+#
+# This is the primary source of information for https://www.wikidata.org/wiki/Q1137964
+#
+Canonical <contact@canonical.com> Lars Uebernickel <lars.uebernickel@canonical.com>
+Canonical <contact@canonical.com> Milo Casagrande <milo@ubuntu.com>
+Canonical <contact@canonical.com> Rico Tzschichholz <ricotz@ubuntu.com>
+Collabora <contact@collabora.com> Olivier Crête <olivier.crete@collabora.com>
+Collabora <contact@collabora.com> Philip Withnall <philip.withnall@collabora.co.uk>
+Collabora <contact@collabora.com> Simon McVittie <simon.mcvittie@collabora.co.uk>
+Collabora <contact@collabora.com> Xavier Claessens <xavier.claessens@collabora.com>
+Copyleft Solutions <contact@cl.no> Hans Petter Jansson <hpj@cl.no>
+FLOSS Contributor <contact@floss.cc> Alan Coopersmith <alan.coopersmith@oracle.com>
+FLOSS Contributor <contact@floss.cc> Alberts Muktupāvels <alberts.muktupavels@gmail.com>
+FLOSS Contributor <contact@floss.cc> Aleksander Morgado <aleksander@aleksander.es>
+FLOSS Contributor <contact@floss.cc> Alexander Shopov <ash@kambanaria.org>
+FLOSS Contributor <contact@floss.cc> Allison Ryan Lortie <desrt@desrt.ca>
+FLOSS Contributor <contact@floss.cc> Anders Jonsson <anders.jonsson@norsjovallen.se>
+FLOSS Contributor <contact@floss.cc> Artur de Aquino Morais <aamorais93.estudos@gmail.com>
+FLOSS Contributor <contact@floss.cc> Ask Hjorth Larsen <asklarsen@gmail.com>
+FLOSS Contributor <contact@floss.cc> Aurimas Černius <aurisc4@gmail.com>
+FLOSS Contributor <contact@floss.cc> Bastien Nocera <hadess@hadess.net>
+FLOSS Contributor <contact@floss.cc> Baurzhan Muftakhidinov <baurthefirst@gmail.com>
+FLOSS Contributor <contact@floss.cc> Benjamin Gilbert <bgilbert@backtick.net>
+FLOSS Contributor <contact@floss.cc> Cédric Valmary <cvalmary@yahoo.fr>
+FLOSS Contributor <contact@floss.cc> Changwoo Ryu <cwryu@debian.org>
+FLOSS Contributor <contact@floss.cc> Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>
+FLOSS Contributor <contact@floss.cc> Christoph Reiter <reiter.christoph@gmail.com>
+FLOSS Contributor <contact@floss.cc> Claude Paroz <claude@2xlibre.net>
+FLOSS Contributor <contact@floss.cc> Colin Walters <walters@verbum.org>
+FLOSS Contributor <contact@floss.cc> Cosimo Cecchi <cosimo@endlessm.com>
+FLOSS Contributor <contact@floss.cc> coypu <coypu@sdf.org>
+FLOSS Contributor <contact@floss.cc> Daniel Mustieles <daniel.mustieles@gmail.com>
+FLOSS Contributor <contact@floss.cc> Dušan Kazik <prescott66@gmail.com>
+FLOSS Contributor <contact@floss.cc> Emilio Pozuelo Monfort <pochu27@gmail.com>
+FLOSS Contributor <contact@floss.cc> Ernestas Kulik <ernestas.kulik@gmail.com>
+FLOSS Contributor <contact@floss.cc> Evan Nemerson <evan@nemerson.com>
+FLOSS Contributor <contact@floss.cc> Fran Dieguez <fran.dieguez@mabishu.com>
+FLOSS Contributor <contact@floss.cc> Gábor Kelemen <kelemeng@openscope.org>
+FLOSS Contributor <contact@floss.cc> Garrett Regier <garrettregier@gmail.com>
+FLOSS Contributor <contact@floss.cc> Georges Basile Stavracas Neto <georges.stavracas@gmail.com>
+FLOSS Contributor <contact@floss.cc> Gerald Combs <gerald@wireshark.org>
+FLOSS Contributor <contact@floss.cc> Giovanni Campagna <gcampagn@cs.stanford.edu>
+FLOSS Contributor <contact@floss.cc> Hanno Boeck <hanno@hboeck.de>
+FLOSS Contributor <contact@floss.cc> Hashem Nasarat <hashem@riseup.net>
+FLOSS Contributor <contact@floss.cc> Iain Lane <iain@orangesquash.org.uk>
+FLOSS Contributor <contact@floss.cc> Inaki Larranaga Murgoitio <dooteo@zundan.com>
+FLOSS Contributor <contact@floss.cc> Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+FLOSS Contributor <contact@floss.cc> Jiri Grönroos <jiri.gronroos@iki.fi>
+FLOSS Contributor <contact@floss.cc> John Ralls <jralls@ceridwen.us>
+FLOSS Contributor <contact@floss.cc> Jonatan Pålsson <jonatan.p@gmail.com>
+FLOSS Contributor <contact@floss.cc> Jordi Mas <jmas@softcatala.org>
+FLOSS Contributor <contact@floss.cc> Kang Hu <hukangustc@gmail.com>
+FLOSS Contributor <contact@floss.cc> Kjell Ahlstedt <kjell.ahlstedt@bredband.net>
+FLOSS Contributor <contact@floss.cc> Krzesimir Nowak <qdlacz@gmail.com>
+FLOSS Contributor <contact@floss.cc> Marc-André Lureau <marcandre.lureau@gmail.com>
+FLOSS Contributor <contact@floss.cc> Marc-Antoine Perennou <Marc-Antoine@Perennou.com>
+FLOSS Contributor <contact@floss.cc> Marek Černocký <marek@manet.cz>
+FLOSS Contributor <contact@floss.cc> Mario Blättermann <mario.blaettermann@gmail.com>
+FLOSS Contributor <contact@floss.cc> Muhammet Kara <muhammetk@gmail.com>
+FLOSS Contributor <contact@floss.cc> Nikita Churaev <lamefun.x0r@gmail.com>
+FLOSS Contributor <contact@floss.cc> Nirbheek Chauhan <nirbheek@centricular.com>
+FLOSS Contributor <contact@floss.cc> Philip Chimento <philip@endlessm.com>
+FLOSS Contributor <contact@floss.cc> Philip Withnall <philip@tecnocode.co.uk>
+FLOSS Contributor <contact@floss.cc> Phillip Wood <phillip.wood@dunelm.org.uk>
+FLOSS Contributor <contact@floss.cc> Piotr Drąg <piotrdrag@gmail.com>
+FLOSS Contributor <contact@floss.cc> Rafael Fontenelle <rffontenelle@gmail.com>
+FLOSS Contributor <contact@floss.cc> Sebastian Dröge <sebastian@centricular.com>
+FLOSS Contributor <contact@floss.cc> Sebastian Geiger <sbastig@gmx.net>
+FLOSS Contributor <contact@floss.cc> Simon McVittie <smcv@debian.org>
+FLOSS Contributor <contact@floss.cc> Stas Solovey <whats_up@tut.by>
+FLOSS Contributor <contact@floss.cc> Stephan Hesse <stephan@soundcloud.com>
+FLOSS Contributor <contact@floss.cc> suhail <psuhailp@gmail.com>
+FLOSS Contributor <contact@floss.cc> Thiago Macieira <thiago.macieira@intel.com>
+FLOSS Contributor <contact@floss.cc> Thomas Perl <m@thp.io>
+FLOSS Contributor <contact@floss.cc> Tiago Santos <tiagofsantos81@sapo.pt>
+FLOSS Contributor <contact@floss.cc> Tobias Nygren <tnn@NetBSD.org>
+FLOSS Contributor <contact@floss.cc> Tom Tromey <tom@tromey.com>
+FLOSS Contributor <contact@floss.cc> Trần Ngọc Quân <vnwildman@gmail.com>
+FLOSS Contributor <contact@floss.cc> Víctor Manuel Jáquez Leal <vjaquez@igalia.com>
+FLOSS Contributor <contact@floss.cc> Марко М. Костић <marko.m.kostic@gmail.com>
+FLOSS Contributor <contact@floss.cc> Мирослав Николић <miroslavnikolic@rocketmail.com>
+FLOSS Contributor <contact@floss.cc> Руслан Ижбулатов <lrn1986@gmail.com>
+GNOME Foundation <contact@gnome.org> Andika Triwidada <atriwidada@gnome.org>
+GNOME Foundation <contact@gnome.org> Antoine Jacoutot <ajacoutot@gnome.org>
+GNOME Foundation <contact@gnome.org> Bastian Ilsø <bastianilso@gnome.org>
+GNOME Foundation <contact@gnome.org> Christian Persch <chpe@gnome.org>
+GNOME Foundation <contact@gnome.org> Chun-wei Fan <fanchunwei@src.gnome.org>
+GNOME Foundation <contact@gnome.org> Dan Winship <danw@gnome.org>
+GNOME Foundation <contact@gnome.org> Debarshi Ray <debarshir@gnome.org>
+GNOME Foundation <contact@gnome.org> Emmanuele Bassi <ebassi@gnome.org>
+GNOME Foundation <contact@gnome.org> Florian Müllner <fmuellner@gnome.org>
+GNOME Foundation <contact@gnome.org> Ignacio Casal Quinteiro <icq@gnome.org>
+GNOME Foundation <contact@gnome.org> Matej Urbančič <mateju@svn.gnome.org>
+GNOME Foundation <contact@gnome.org> Michael Catanzaro <mcatanzaro@gnome.org>
+GNOME Foundation <contact@gnome.org> Rūdolfs Mazurs <rudolfsm@src.gnome.org>
+GNOME Foundation <contact@gnome.org> Sébastien Wilmet <swilmet@gnome.org>
+GNOME Foundation <contact@gnome.org> Ting-Wei Lan <lantw@src.gnome.org>
+GNOME Foundation <contact@gnome.org> Tom Tryfonidis <tomtryf@gnome.org>
+GNOME Foundation <contact@gnome.org> Yosef Or Boczko <yoseforb@src.gnome.org>
+GNOME Foundation <contact@gnome.org> YunQiang Su <yqsu@src.gnome.org>
+Intel <contact@intel.com> Ismo Puustinen <ismo.puustinen@intel.com>
+Parrot <contact@parrot.com> Aurélien Zanelli <aurelien.zanelli@parrot.com>
+Red Hat <contact@redhat.com> Christian Hergert <chergert@redhat.com>
+Red Hat <contact@redhat.com> Cole Robinson <crobinso@redhat.com>
+Red Hat <contact@redhat.com> Daniel P. Berrange <berrange@redhat.com>
+Red Hat <contact@redhat.com> Frediano Ziglio <fziglio@redhat.com>
+Red Hat <contact@redhat.com> Kalev Lember <klember@redhat.com>
+Red Hat <contact@redhat.com> Matthias Clasen <mclasen@redhat.com>
+Red Hat <contact@redhat.com> Milan Crha <mcrha@redhat.com>
+Red Hat <contact@redhat.com> Ondrej Holy <oholy@redhat.com>
+Red Hat <contact@redhat.com> Ray Strode <rstrode@redhat.com>
+Red Hat <contact@redhat.com> Stephan Bergmann <sbergman@redhat.com>
