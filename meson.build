@@ -1,5 +1,5 @@
 project('glib', 'c', 'cpp',
-  version : '2.51.2',
+  version : '2.53.1',
   meson_version : '>= 0.38.1',
   default_options : [
     'warning_level=1',
@@ -390,11 +390,31 @@ glib_have_carbon = cc.compiles('''#include <Carbon/Carbon.h>
                                   #include <CoreServices/CoreServices.h>''',
                                name : 'Mac OS X Carbon support')
 
+glib_have_os_x_9_or_later = false
+
 if glib_have_carbon
   glib_conf.set('HAVE_CARBON', true)
   CARBON_LIBS='-Wl,-framework,Carbon' # FIXME: propagate to .pc files as well
+  glib_have_os_x_9_or_later = cc.compiles('''#include <AvailabilityMacros.h>
+                                             #if MAC_OS_X_VERSION_MIN_REQUIRED < 1090
+                                             #error Compiling for minimum OS X version before 10.9
+                                             #endif''', name : 'OS X 9 or later')
 else
   CARBON_LIBS=''
+endif
+
+# Mac OS X Cocoa support
+glib_have_cocoa = cc.compiles('''#include <Cocoa/Cocoa.h>
+                                 #ifdef GNUSTEP_BASE_VERSION
+                                 #error "Detected GNUstep, not Cocoa"
+                                 #endif''',
+                              name : 'Mac OS X Cocoa support')
+
+if glib_have_cocoa
+  glib_conf.set('HAVE_COCOA', true)
+  COCOA_LIBS='-Wl,-framework,Foundation' # FIXME: propagate to .pc files as well
+else
+  COCOA_LIBS=''
 endif
 
 # Check for futex(2)

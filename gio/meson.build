@@ -282,13 +282,11 @@ local_sources = [
 platform_deps = []
 internal_deps = []
 appinfo_sources = []
+contenttype_sources = []
 portal_sources = []
 unix_sources = []
 
 if host_system != 'windows'
-  appinfo_sources += ['gdesktopappinfo.c']
-  subdir('xdgmime')
-  internal_deps += [xdgmime_lib]
   unix_sources = [
     'gfiledescriptorbased.c',
     'gunixconnection.c',
@@ -302,7 +300,6 @@ if host_system != 'windows'
     'gunixvolumemonitor.c',
     'gunixinputstream.c',
     'gunixoutputstream.c',
-    'gcontenttype.c',
     'gfdonotificationbackend.c',
     'ggtknotificationbackend.c',
   ]
@@ -316,13 +313,7 @@ if host_system != 'windows'
     xdp_dbus_generated
   ]
 
-  # FIXME
-  #if OS_COCOA
-  #unix_sources += gcocoanotificationbackend.c
-  #endif
-
   gio_unix_include_headers = [
-    'gdesktopappinfo.h',
     'gfiledescriptorbased.h',
     'gunixconnection.h',
     'gunixcredentialsmessage.h',
@@ -333,6 +324,21 @@ if host_system != 'windows'
     'gunixoutputstream.h',
     'gunixsocketaddress.h',
   ]
+
+  if glib_have_cocoa
+    contenttype_sources += ['gosxcontenttype.c']
+    appinfo_sources += ['gosxappinfo.c']
+    if glib_have_os_x_9_or_later
+      unix_sources += ['gcocoanotificationbackend.c']
+    endif
+  else
+    contenttype_sources += ['gcontenttype.c']
+    appinfo_sources += ['gdesktopappinfo.c']
+    gio_unix_include_headers += ['gdesktopappinfo.h']
+    subdir('xdgmime')
+    internal_deps += [xdgmime_lib]
+  endif
+
   install_headers(gio_unix_include_headers, subdir : 'gio-unix-2.0/gio')
 
   if glib_conf.has('HAVE_NETLINK')
@@ -352,13 +358,13 @@ gdbus_daemon_sources = [
 win32_sources = gdbus_daemon_sources
 if host_system == 'windows'
   appinfo_sources += ['gwin32appinfo.c']
+  contenttype_sources += ['gcontenttype-win32.c']
   platform_deps += [cc.find_library('shlwapi'),
                     cc.find_library('dnsapi'),
                     cc.find_library('iphlpapi'),
                     winsock2]
   win32_sources += [
     'gwin32registrykey.c',
-    'gcontenttype-win32.c',
     'gwin32mount.c',
     'gwin32volumemonitor.c',
     'gwin32inputstream.c',
@@ -492,6 +498,7 @@ gio_sources = [
 ]
 
 gio_sources += appinfo_sources
+gio_sources += contenttype_sources
 gio_sources += unix_sources
 gio_sources += win32_sources
 gio_sources += application_sources

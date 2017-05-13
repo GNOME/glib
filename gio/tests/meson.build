@@ -100,23 +100,28 @@ if host_machine.system() != 'windows'
     'stream-rw_all',
     'unix-fd',
     'unix-streams',
-    'mimeapps',
     'gschema-compile',
   ]
 
   # Uninstalled because of the check-for-executable logic in DesktopAppInfo
   # unable to find the installed executable
-  gio_tests += [
-    'appinfo',
-    'desktop-app-info',
-  ]
+  if not glib_have_cocoa
+    gio_tests += [
+      'appinfo',
+      'desktop-app-info',
+    ]
+  endif
 
   test_extra_programs += [
     ['basic-application'],
     ['dbus-launch'],
     ['appinfo-test'],
-    ['apps'],
   ]
+
+  if not glib_have_cocoa
+    test_extra_programs += [['apps']]
+    gio_tests += ['mimeapps']
+  endif
 
   #  Test programs that need to bring up a session bus (requires dbus-daemon)
   have_dbus_daemon = find_program('dbus-daemon', required : false).found()
@@ -144,7 +149,6 @@ if host_machine.system() != 'windows'
 
     gio_dbus_tests = [
       ['actions', [], []],
-      ['dbus-appinfo', [], []],
       ['gdbus-auth', [], []],
       ['gdbus-bz627724', [], []],
       ['gdbus-close-pending', [], []],
@@ -164,6 +168,10 @@ if host_machine.system() != 'windows'
       ['gmenumodel', [], []],
       ['gnotification', ['gnotification-server.c'], []],
     ]
+
+    if not glib_have_cocoa
+      gio_dbus_tests = [['dbus-appinfo', [], []]]
+    endif
 
     # separate loop because extra source files for each test
     foreach dbus_test : gio_dbus_tests
@@ -189,11 +197,13 @@ if host_machine.system() != 'windows'
     # different name for the unit test executable, since we can't have two
     # targets of the same name even if in different directories
     # (FIXME: just rename source file to gapplication-test.c)
-    exe = executable('gapplication-test', 'gapplication.c',
-          'gdbus-sessionbus.c', 'gdbus-tests.c',
-          install : false,
-          c_args : test_c_args,
-          dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
+    if not glib_have_cocoa
+      exe = executable('gapplication-test', 'gapplication.c',
+                       'gdbus-sessionbus.c', 'gdbus-tests.c',
+                       install : false,
+                       c_args : test_c_args,
+                       dependencies : [libglib_dep, libgmodule_dep, libgio_dep])
+    endif
     test('gapplication', exe, env : test_env)
 
     gio_tests += ['gdbus-unix-addresses']
