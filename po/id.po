@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-04-11 17:30+0000\n"
-"PO-Revision-Date: 2017-04-17 13:44+0000\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"POT-Creation-Date: 2017-05-12 09:06+0000\n"
+"PO-Revision-Date: 2017-05-15 12:13+0700\n"
+"Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: ../gio/gapplication.c:493
 msgid "GApplication options"
@@ -517,7 +517,7 @@ msgstr ""
 "Tak bisa menentukan alamat bus dari variabel lingkungan "
 "DBUS_STARTER_BUS_TYPE — nilai tak dikenal \"%s\""
 
-#: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7156
+#: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7157
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -629,7 +629,7 @@ msgstr "Galat saat membuka gantungan kunci \"%s\" untuk ditulisi: "
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Selain itu, melepas kunci bagi \"%s\" juga gagal: %s) "
 
-#: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2377
+#: ../gio/gdbusconnection.c:612 ../gio/gdbusconnection.c:2378
 msgid "The connection is closed"
 msgstr "Sambungan tertutup"
 
@@ -637,92 +637,92 @@ msgstr "Sambungan tertutup"
 msgid "Timeout was reached"
 msgstr "Kehabisan waktu"
 
-#: ../gio/gdbusconnection.c:2499
+#: ../gio/gdbusconnection.c:2500
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Ditemui flag yang tak didukung ketika membangun sambungan di sisi klien"
 
-#: ../gio/gdbusconnection.c:4123 ../gio/gdbusconnection.c:4470
+#: ../gio/gdbusconnection.c:4124 ../gio/gdbusconnection.c:4471
 #, c-format
 msgid ""
 "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Tidak ada antarmuka 'org.freedesktop.DBus.Properties' pada objek pada path %s"
 
-#: ../gio/gdbusconnection.c:4265
+#: ../gio/gdbusconnection.c:4266
 #, c-format
 msgid "No such property '%s'"
 msgstr "Tak ada properti '%s'"
 
-#: ../gio/gdbusconnection.c:4277
+#: ../gio/gdbusconnection.c:4278
 #, c-format
 msgid "Property '%s' is not readable"
 msgstr "Properti '%s' tidak dapat dibaca"
 
-#: ../gio/gdbusconnection.c:4288
+#: ../gio/gdbusconnection.c:4289
 #, c-format
 msgid "Property '%s' is not writable"
 msgstr "Properti '%s' tidak dapat ditulisi"
 
-#: ../gio/gdbusconnection.c:4308
+#: ../gio/gdbusconnection.c:4309
 #, c-format
 msgid "Error setting property '%s': Expected type '%s' but got '%s'"
 msgstr ""
 "Galat menata properti '%s': Tipe yang diharapkan '%s' tapi diperoleh '%s'"
 
-#: ../gio/gdbusconnection.c:4413 ../gio/gdbusconnection.c:4621
-#: ../gio/gdbusconnection.c:6587
+#: ../gio/gdbusconnection.c:4414 ../gio/gdbusconnection.c:4622
+#: ../gio/gdbusconnection.c:6588
 #, c-format
 msgid "No such interface '%s'"
 msgstr "Tak ada antar muka '%s'"
 
-#: ../gio/gdbusconnection.c:4839 ../gio/gdbusconnection.c:7096
+#: ../gio/gdbusconnection.c:4840 ../gio/gdbusconnection.c:7097
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "Tak ada antar muka '%s' pada objek di lokasi %s"
 
-#: ../gio/gdbusconnection.c:4937
+#: ../gio/gdbusconnection.c:4938
 #, c-format
 msgid "No such method '%s'"
 msgstr "Tak ada metoda '%s'"
 
-#: ../gio/gdbusconnection.c:4968
+#: ../gio/gdbusconnection.c:4969
 #, c-format
 msgid "Type of message, '%s', does not match expected type '%s'"
 msgstr "Tipe pesan '%s' tak cocok dengan tipe yang diharapkan '%s'"
 
-#: ../gio/gdbusconnection.c:5166
+#: ../gio/gdbusconnection.c:5167
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Suatu objek telah diekspor bagi antar muka %s pada %s"
 
-#: ../gio/gdbusconnection.c:5392
+#: ../gio/gdbusconnection.c:5393
 #, c-format
 msgid "Unable to retrieve property %s.%s"
 msgstr "Tak bisa mengambil properti %s.%s"
 
-#: ../gio/gdbusconnection.c:5448
+#: ../gio/gdbusconnection.c:5449
 #, c-format
 msgid "Unable to set property %s.%s"
 msgstr "Tak bisa menata properti %s.%s"
 
-#: ../gio/gdbusconnection.c:5624
+#: ../gio/gdbusconnection.c:5625
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Metoda '%s' mengembalikan tipe '%s', tapi yang diharapkan '%s'"
 
-#: ../gio/gdbusconnection.c:6698
+#: ../gio/gdbusconnection.c:6699
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Metoda '%s' pada antar muka '%s' dengan tanda tangan '%s' tak ada"
 
-#: ../gio/gdbusconnection.c:6819
+#: ../gio/gdbusconnection.c:6820
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Subtree telah diekspor bagi %s"
 
-#: ../gio/gdbusconnection.c:7147
+#: ../gio/gdbusconnection.c:7148
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -731,27 +731,27 @@ msgstr ""
 "Tak bisa menentukan alamat bus dari variabel lingkungan "
 "DBUS_STARTER_BUS_TYPE - nilai tak dikenal '%s'"
 
-#: ../gio/gdbusmessage.c:1244
+#: ../gio/gdbusmessage.c:1246
 msgid "type is INVALID"
 msgstr "jenisnya INVALID"
 
-#: ../gio/gdbusmessage.c:1255
+#: ../gio/gdbusmessage.c:1257
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "Pesan METHOD_CALL: ruas header PATH atau MEMBER hilang"
 
-#: ../gio/gdbusmessage.c:1266
+#: ../gio/gdbusmessage.c:1268
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "Pesan METHOD_RETURN: ruas header REPLY_SERIAL hilang"
 
-#: ../gio/gdbusmessage.c:1278
+#: ../gio/gdbusmessage.c:1280
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "Pesan ERROR: ruas header REPLY_SERIAL atau ERRORN_NAME hilang"
 
-#: ../gio/gdbusmessage.c:1291
+#: ../gio/gdbusmessage.c:1293
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "Pesan SIGNAL: ruas header PATH, INTERFACE, atau MEMBER hilang"
 
-#: ../gio/gdbusmessage.c:1299
+#: ../gio/gdbusmessage.c:1301
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -759,7 +759,7 @@ msgstr ""
 "Pesan SIGNAL: ruas header PATH memakai nilai khusus /org/freedesktop/DBus/"
 "Local"
 
-#: ../gio/gdbusmessage.c:1307
+#: ../gio/gdbusmessage.c:1309
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -767,18 +767,18 @@ msgstr ""
 "Pesan SIGNAL: ruas header INTERFACE memakai nilai khusus org.freedesktop."
 "DBus.Local"
 
-#: ../gio/gdbusmessage.c:1355 ../gio/gdbusmessage.c:1415
+#: ../gio/gdbusmessage.c:1357 ../gio/gdbusmessage.c:1417
 #, c-format
 msgid "Wanted to read %lu byte but only got %lu"
 msgid_plural "Wanted to read %lu bytes but only got %lu"
 msgstr[0] "Ingin membaca %lu bita tapi hanya memperoleh %lu"
 
-#: ../gio/gdbusmessage.c:1369
+#: ../gio/gdbusmessage.c:1371
 #, c-format
 msgid "Expected NUL byte after the string “%s” but found byte %d"
 msgstr "Mengharapkan byte NUL setelah string \"%s\" tapi menemui byte %d"
 
-#: ../gio/gdbusmessage.c:1388
+#: ../gio/gdbusmessage.c:1390
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -788,17 +788,17 @@ msgstr ""
 "%d (panjang string adalah %d). String UTF-8 yang valid sampai titik itu "
 "adalah \"%s\""
 
-#: ../gio/gdbusmessage.c:1587
+#: ../gio/gdbusmessage.c:1589
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus object path"
 msgstr "Nilai terurai \"%s\" bukan lokasi objek D-Bus yang valid"
 
-#: ../gio/gdbusmessage.c:1609
+#: ../gio/gdbusmessage.c:1611
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature"
 msgstr "Nilai terurai \"%s\" bukan tanda tangan D-Bus yang valid"
 
-#: ../gio/gdbusmessage.c:1656
+#: ../gio/gdbusmessage.c:1658
 #, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
@@ -808,7 +808,7 @@ msgstr[0] ""
 "Menjumpai larik dengan panjang %u bita. Panjang maksimal adalah 2<<26 bita "
 "(64 MiB). "
 
-#: ../gio/gdbusmessage.c:1676
+#: ../gio/gdbusmessage.c:1678
 #, c-format
 msgid ""
 "Encountered array of type “a%c”, expected to have a length a multiple of %u "
@@ -817,12 +817,12 @@ msgstr ""
 "Menemui larik bertipe \"a%c\", mengharapkan punya panjang kelipatan %u byte, "
 "tapi menemui panjang %u byte"
 
-#: ../gio/gdbusmessage.c:1843
+#: ../gio/gdbusmessage.c:1845
 #, c-format
 msgid "Parsed value “%s” for variant is not a valid D-Bus signature"
 msgstr "Nilai terurai \"%s\" bagi varian bukan tanda tangan D-Bus yang valid"
 
-#: ../gio/gdbusmessage.c:1867
+#: ../gio/gdbusmessage.c:1869
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
@@ -830,7 +830,7 @@ msgstr ""
 "Galat saat deserialisasi GVariant dengan type string \"%s\" dari format "
 "kabel D-Bus"
 
-#: ../gio/gdbusmessage.c:2051
+#: ../gio/gdbusmessage.c:2053
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c (“l”) or 0x42 (“B”) but found value "
@@ -839,24 +839,24 @@ msgstr ""
 "Nilai ke-endian-an tak valid. Berharap 0x6c (\"l\") atau (0x42) \"B\" tapi "
 "menemui 0x%02x"
 
-#: ../gio/gdbusmessage.c:2064
+#: ../gio/gdbusmessage.c:2066
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Versi protokol mayor tak valid. Berharap 1 tapi menemui %d"
 
-#: ../gio/gdbusmessage.c:2120
+#: ../gio/gdbusmessage.c:2122
 #, c-format
 msgid "Signature header with signature “%s” found but message body is empty"
 msgstr ""
 "Header tanda tangan dengan tanda tangan \"%s\" ditemukan tapi body pesan "
 "kosong"
 
-#: ../gio/gdbusmessage.c:2134
+#: ../gio/gdbusmessage.c:2136
 #, c-format
 msgid "Parsed value “%s” is not a valid D-Bus signature (for body)"
 msgstr "Nilai terurai \"%s\" bukan tanda tangan D-Bus yang valid (bagi body)"
 
-#: ../gio/gdbusmessage.c:2164
+#: ../gio/gdbusmessage.c:2166
 #, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
@@ -864,11 +864,11 @@ msgstr[0] ""
 "Tidak terdapat tajuk tanda tangan pada pesan, tetapi panjang badan pesan "
 "adalah %u bita"
 
-#: ../gio/gdbusmessage.c:2174
+#: ../gio/gdbusmessage.c:2176
 msgid "Cannot deserialize message: "
 msgstr "Tidak bisa men-deserialisasi pesan: "
 
-#: ../gio/gdbusmessage.c:2515
+#: ../gio/gdbusmessage.c:2517
 #, c-format
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
@@ -876,7 +876,7 @@ msgstr ""
 "Kesalahan serialisasi GVariant dengan type string \"%s\" ke format kabel D-"
 "Bus"
 
-#: ../gio/gdbusmessage.c:2652
+#: ../gio/gdbusmessage.c:2654
 #, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
@@ -885,16 +885,16 @@ msgstr ""
 "Pesan punya %d deskriptor berkas tapi ruas header mengindikasikan %d "
 "deskriptor berkas"
 
-#: ../gio/gdbusmessage.c:2660
+#: ../gio/gdbusmessage.c:2662
 msgid "Cannot serialize message: "
 msgstr "Tidak bisa men-serialisasi pesan: "
 
-#: ../gio/gdbusmessage.c:2704
+#: ../gio/gdbusmessage.c:2706
 #, c-format
 msgid "Message body has signature “%s” but there is no signature header"
 msgstr "Body pesan punya tanda tangan \"%s\" tapi tak ada header tanda tangan"
 
-#: ../gio/gdbusmessage.c:2714
+#: ../gio/gdbusmessage.c:2716
 #, c-format
 msgid ""
 "Message body has type signature “%s” but signature in the header field is "
@@ -903,17 +903,17 @@ msgstr ""
 "Tubuh pesan memiliki tanda tangan tipe \"%s\" tapi tanda tangan di ruas "
 "header adalah \"(%s)\""
 
-#: ../gio/gdbusmessage.c:2730
+#: ../gio/gdbusmessage.c:2732
 #, c-format
 msgid "Message body is empty but signature in the header field is “(%s)”"
 msgstr "Tubuh pesan kosong tapi tanda tangan pada ruas header adalah \"(%s)\""
 
-#: ../gio/gdbusmessage.c:3283
+#: ../gio/gdbusmessage.c:3285
 #, c-format
 msgid "Error return with body of type “%s”"
 msgstr "Galat balikan dengan tubuh bertipe \"%s\""
 
-#: ../gio/gdbusmessage.c:3291
+#: ../gio/gdbusmessage.c:3293
 msgid "Error return with empty body"
 msgstr "Galat balikan dengan body kosong"
 
@@ -2733,7 +2733,7 @@ msgstr "Sistem berkas tak mendukung taut simbolik"
 msgid "Error making symbolic link %s: %s"
 msgstr "Galat saat membuat taut simbolis %s: %s"
 
-#: ../gio/glocalfile.c:2292 ../glib/gfileutils.c:2073
+#: ../gio/glocalfile.c:2292 ../glib/gfileutils.c:2077
 msgid "Symbolic links not supported"
 msgstr "Taut simbolik tidak didukung"
 
@@ -3840,7 +3840,7 @@ msgstr "Galat saat membaca dari descriptor berkas: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Galat saat menutup descriptor berkas: %s"
 
-#: ../gio/gunixmounts.c:2429 ../gio/gunixmounts.c:2482
+#: ../gio/gunixmounts.c:2422 ../gio/gunixmounts.c:2475
 msgid "Filesystem root"
 msgstr "Akar sistem berkas"
 
@@ -4035,227 +4035,227 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "Nama path \"%s\" bukan lokasi absolut"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: ../glib/gdatetime.c:200
+#: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %d %b %Y %r %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:203
+#: ../glib/gdatetime.c:205
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:206
+#: ../glib/gdatetime.c:208
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: ../glib/gdatetime.c:209
+#: ../glib/gdatetime.c:211
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
 
-#: ../glib/gdatetime.c:222
+#: ../glib/gdatetime.c:224
 msgctxt "full month name"
 msgid "January"
 msgstr "Januari"
 
-#: ../glib/gdatetime.c:224
+#: ../glib/gdatetime.c:226
 msgctxt "full month name"
 msgid "February"
 msgstr "Februari"
 
-#: ../glib/gdatetime.c:226
+#: ../glib/gdatetime.c:228
 msgctxt "full month name"
 msgid "March"
 msgstr "Maret"
 
-#: ../glib/gdatetime.c:228
+#: ../glib/gdatetime.c:230
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:230
+#: ../glib/gdatetime.c:232
 msgctxt "full month name"
 msgid "May"
 msgstr "Mei"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:234
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:236
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:238
 msgctxt "full month name"
 msgid "August"
 msgstr "Agustus"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:240
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:242
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:244
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:246
 msgctxt "full month name"
 msgid "December"
 msgstr "Desember"
 
-#: ../glib/gdatetime.c:259
+#: ../glib/gdatetime.c:261
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:261
+#: ../glib/gdatetime.c:263
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:263
+#: ../glib/gdatetime.c:265
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:265
+#: ../glib/gdatetime.c:267
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:269
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mei"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:271
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:273
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:275
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Ags"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:277
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:279
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:281
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:281
+#: ../glib/gdatetime.c:283
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Des"
 
-#: ../glib/gdatetime.c:296
+#: ../glib/gdatetime.c:298
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Senin"
 
-#: ../glib/gdatetime.c:298
+#: ../glib/gdatetime.c:300
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Selasa"
 
-#: ../glib/gdatetime.c:300
+#: ../glib/gdatetime.c:302
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Rabu"
 
-#: ../glib/gdatetime.c:302
+#: ../glib/gdatetime.c:304
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Kamis"
 
-#: ../glib/gdatetime.c:304
+#: ../glib/gdatetime.c:306
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Jumat"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:308
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sabtu"
 
-#: ../glib/gdatetime.c:308
+#: ../glib/gdatetime.c:310
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Minggu"
 
-#: ../glib/gdatetime.c:323
+#: ../glib/gdatetime.c:325
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Sen"
 
-#: ../glib/gdatetime.c:325
+#: ../glib/gdatetime.c:327
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Sel"
 
-#: ../glib/gdatetime.c:327
+#: ../glib/gdatetime.c:329
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Rab"
 
-#: ../glib/gdatetime.c:329
+#: ../glib/gdatetime.c:331
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Kam"
 
-#: ../glib/gdatetime.c:331
+#: ../glib/gdatetime.c:333
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Jum"
 
-#: ../glib/gdatetime.c:333
+#: ../glib/gdatetime.c:335
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sab"
 
-#: ../glib/gdatetime.c:335
+#: ../glib/gdatetime.c:337
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Min"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:352
+#: ../glib/gdatetime.c:354
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:355
+#: ../glib/gdatetime.c:357
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -4265,78 +4265,78 @@ msgstr "PM"
 msgid "Error opening directory “%s”: %s"
 msgstr "Galat saat membuka direktori \"%s\": %s"
 
-#: ../glib/gfileutils.c:702 ../glib/gfileutils.c:794
+#: ../glib/gfileutils.c:706 ../glib/gfileutils.c:798
 #, c-format
 msgid "Could not allocate %lu byte to read file “%s”"
 msgid_plural "Could not allocate %lu bytes to read file “%s”"
 msgstr[0] "Tidak dapat mengalokasikan %lu byte untuk membaca berkas \"%s\""
 
-#: ../glib/gfileutils.c:719
+#: ../glib/gfileutils.c:723
 #, c-format
 msgid "Error reading file “%s”: %s"
 msgstr "Galat saat membaca berkas \"%s\": %s"
 
-#: ../glib/gfileutils.c:755
+#: ../glib/gfileutils.c:759
 #, c-format
 msgid "File “%s” is too large"
 msgstr "Berkas \"%s\" terlalu besar"
 
-#: ../glib/gfileutils.c:819
+#: ../glib/gfileutils.c:823
 #, c-format
 msgid "Failed to read from file “%s”: %s"
 msgstr "Gagal membaca dari berkas \"%s\": %s"
 
-#: ../glib/gfileutils.c:867 ../glib/gfileutils.c:939
+#: ../glib/gfileutils.c:871 ../glib/gfileutils.c:943
 #, c-format
 msgid "Failed to open file “%s”: %s"
 msgstr "Gagal membuka berkas \"%s\": %s"
 
-#: ../glib/gfileutils.c:879
+#: ../glib/gfileutils.c:883
 #, c-format
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
 msgstr "Gagal mendapat atribut berkas \"%s\": fstat() gagal: %s"
 
-#: ../glib/gfileutils.c:909
+#: ../glib/gfileutils.c:913
 #, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
 msgstr "Gagal membuka berkas \"%s\": fdopen() gagal: %s"
 
-#: ../glib/gfileutils.c:1008
+#: ../glib/gfileutils.c:1012
 #, c-format
 msgid "Failed to rename file “%s” to “%s”: g_rename() failed: %s"
 msgstr "Gagal mengubah nama berkas \"%s\" menjadi \"%s\": g_rename() gagal: %s"
 
-#: ../glib/gfileutils.c:1043 ../glib/gfileutils.c:1550
+#: ../glib/gfileutils.c:1047 ../glib/gfileutils.c:1554
 #, c-format
 msgid "Failed to create file “%s”: %s"
 msgstr "Gagal membuat berkas \"%s\": %s"
 
-#: ../glib/gfileutils.c:1070
+#: ../glib/gfileutils.c:1074
 #, c-format
 msgid "Failed to write file “%s”: write() failed: %s"
 msgstr "Gagal menulis berkas \"%s\": write() gagal: %s"
 
-#: ../glib/gfileutils.c:1113
+#: ../glib/gfileutils.c:1117
 #, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
 msgstr "Gagal menulis berkas \"%s\": fsync() gagal: %s"
 
-#: ../glib/gfileutils.c:1237
+#: ../glib/gfileutils.c:1241
 #, c-format
 msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "Berkas \"%s\" yang ada tidak dapat dibuang: g_unlink() gagal: %s"
 
-#: ../glib/gfileutils.c:1516
+#: ../glib/gfileutils.c:1520
 #, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
 msgstr "Templat \"%s\" tidak valid, tidak boleh mengandung \"%s\""
 
-#: ../glib/gfileutils.c:1529
+#: ../glib/gfileutils.c:1533
 #, c-format
 msgid "Template “%s” doesn’t contain XXXXXX"
 msgstr "Templat \"%s\" tidak memuat XXXXXX"
 
-#: ../glib/gfileutils.c:2054
+#: ../glib/gfileutils.c:2058
 #, c-format
 msgid "Failed to read the symbolic link “%s”: %s"
 msgstr "Gagal membaca taut simbolik \"%s\": %s"
@@ -5147,78 +5147,78 @@ msgstr ""
 msgid "Text was empty (or contained only whitespace)"
 msgstr "Teksnya kosong (atau hanya berisi whitespace)"
 
-#: ../glib/gspawn.c:207
+#: ../glib/gspawn.c:250
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Gagal saat membaca data dari proses child (%s)"
 
-#: ../glib/gspawn.c:351
+#: ../glib/gspawn.c:394
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Terjadi galat pada fungsi select() ketika membaca data dari anak proses (%s)"
 
-#: ../glib/gspawn.c:436
+#: ../glib/gspawn.c:479
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Terjadi galat pada fungsi waitpid() (%s)"
 
-#: ../glib/gspawn.c:842 ../glib/gspawn-win32.c:1231
+#: ../glib/gspawn.c:886 ../glib/gspawn-win32.c:1231
 #, c-format
 msgid "Child process exited with code %ld"
 msgstr "Proses anak keluar dengan kode %ld"
 
-#: ../glib/gspawn.c:850
+#: ../glib/gspawn.c:894
 #, c-format
 msgid "Child process killed by signal %ld"
 msgstr "Proses anak dimatikan oleh sinyal %ld"
 
-#: ../glib/gspawn.c:857
+#: ../glib/gspawn.c:901
 #, c-format
 msgid "Child process stopped by signal %ld"
 msgstr "Proses anak dihentikan oleh sinyal %ld"
 
-#: ../glib/gspawn.c:864
+#: ../glib/gspawn.c:908
 #, c-format
 msgid "Child process exited abnormally"
 msgstr "Proses anak keluar secara tak normal"
 
-#: ../glib/gspawn.c:1269 ../glib/gspawn-win32.c:337 ../glib/gspawn-win32.c:345
+#: ../glib/gspawn.c:1313 ../glib/gspawn-win32.c:337 ../glib/gspawn-win32.c:345
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Gagal saat membaca dari pipe child (%s)"
 
-#: ../glib/gspawn.c:1339
+#: ../glib/gspawn.c:1383
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Gagal saat fork (%s)"
 
-#: ../glib/gspawn.c:1488 ../glib/gspawn-win32.c:368
+#: ../glib/gspawn.c:1532 ../glib/gspawn-win32.c:368
 #, c-format
 msgid "Failed to change to directory “%s” (%s)"
 msgstr "Gagal pindah ke direktori \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1498
+#: ../glib/gspawn.c:1542
 #, c-format
 msgid "Failed to execute child process “%s” (%s)"
 msgstr "Gagal menjalankan proses anak \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1508
+#: ../glib/gspawn.c:1552
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Gagal mengarahkan output atau input pada proses child (%s)"
 
-#: ../glib/gspawn.c:1517
+#: ../glib/gspawn.c:1561
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Gagal saat fork proses child (%s)"
 
-#: ../glib/gspawn.c:1525
+#: ../glib/gspawn.c:1569
 #, c-format
 msgid "Unknown error executing child process “%s”"
 msgstr "Galat tak dikenal ketika menjalankan proses anak \"%s\""
 
-#: ../glib/gspawn.c:1549
+#: ../glib/gspawn.c:1593
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Gagal saat membaca data yang dibutuhkan dai pipe pid child (%s)"
@@ -5270,6 +5270,25 @@ msgid ""
 msgstr ""
 "Terjadi galat pada g_io_channel_win32_poll() ketika membaca data dari anak "
 "proses"
+
+#: ../glib/gstrfuncs.c:3237 ../glib/gstrfuncs.c:3338
+msgid "Empty string is not a number"
+msgstr "String kosong bukan angka"
+
+#: ../glib/gstrfuncs.c:3261
+#, c-format
+msgid "“%s” is not a signed number"
+msgstr "\"%s\" bukan bilangan bertanda"
+
+#: ../glib/gstrfuncs.c:3271 ../glib/gstrfuncs.c:3374
+#, c-format
+msgid "Number “%s” is out of bounds [%s, %s]"
+msgstr "Nomor \"%s\" berada di luar batas [%s, %s]"
+
+#: ../glib/gstrfuncs.c:3364
+#, c-format
+msgid "“%s” is not an unsigned number"
+msgstr "\"%s\" bukan bilangan tak bertanda"
 
 #: ../glib/gutf8.c:798
 msgid "Failed to allocate memory"
