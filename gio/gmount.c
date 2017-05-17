@@ -319,7 +319,7 @@ g_mount_get_drive (GMount *mount)
  * g_mount_can_unmount: 
  * @mount: a #GMount.
  * 
- * Checks if @mount can be mounted.
+ * Checks if @mount can be unmounted.
  * 
  * Returns: %TRUE if the @mount can be unmounted.
  **/
