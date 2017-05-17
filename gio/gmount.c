@@ -339,7 +339,7 @@ g_mount_can_unmount (GMount *mount)
  * g_mount_can_eject: 
  * @mount: a #GMount.
  * 
- * Checks if @mount can be eject.
+ * Checks if @mount can be ejected.
  * 
  * Returns: %TRUE if the @mount can be ejected.
  **/
