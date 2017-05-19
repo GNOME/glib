@@ -228,10 +228,30 @@ ensure_required_types (void)
 {
   g_assert (ensured_classes == NULL);
   ensured_classes = g_ptr_array_new ();
+  /* Generally in this list, you should initialize types which are used as
+   * properties first, then the class which has them. For example, GDBusProxy
+   * has a type of GDBusConnection, so we initialize GDBusConnection first.
+   * And because GDBusConnection has a property of type GDBusConnectionFlags,
+   * we initialize that first.
+   *
+   * Similarly, GSocket has a type of GSocketAddress.
+   *
+   * We don't fill out the whole dependency tree right now because in practice
+   * it tends to be just types that GDBus use that cause pain, and there
+   * is work on a more general approach in https://bugzilla.gnome.org/show_bug.cgi?id=674885
+   */
   ensure_type (G_TYPE_TASK);
   ensure_type (G_TYPE_MEMORY_INPUT_STREAM);
+  ensure_type (G_TYPE_DBUS_CONNECTION_FLAGS);
+  ensure_type (G_TYPE_DBUS_CAPABILITY_FLAGS);
+  ensure_type (G_TYPE_DBUS_AUTH_OBSERVER);
   ensure_type (G_TYPE_DBUS_CONNECTION);
   ensure_type (G_TYPE_DBUS_PROXY);
+  ensure_type (G_TYPE_SOCKET_FAMILY);
+  ensure_type (G_TYPE_SOCKET_TYPE);
+  ensure_type (G_TYPE_SOCKET_PROTOCOL);
+  ensure_type (G_TYPE_SOCKET_ADDRESS);
+  ensure_type (G_TYPE_SOCKET);
 }
 /* ---------------------------------------------------------------------------------------------------- */
 
