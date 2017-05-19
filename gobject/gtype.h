@@ -1943,7 +1943,8 @@ static void     type_name##_class_intern_init (gpointer klass) \
 }
 #endif /* GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_38 */
 
-#define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
+/* Added for _G_DEFINE_TYPE_EXTENDED_WITH_PRELUDE */
+#define _G_DEFINE_TYPE_EXTENDED_BEGIN_PRE(TypeName, type_name, TYPE_PARENT) \
 \
 static void     type_name##_init              (TypeName        *self); \
 static void     type_name##_class_init        (TypeName##Class *klass); \
@@ -1962,7 +1963,11 @@ type_name##_get_instance_private (TypeName *self) \
 GType \
 type_name##_get_type (void) \
 { \
-  static volatile gsize g_define_type_id__volatile = 0; \
+  static volatile gsize g_define_type_id__volatile = 0;
+  /* Prelude goes here */
+
+/* Added for _G_DEFINE_TYPE_EXTENDED_WITH_PRELUDE */
+#define _G_DEFINE_TYPE_EXTENDED_BEGIN_REGISTER(TypeName, type_name, TYPE_PARENT, flags) \
   if (g_once_init_enter (&g_define_type_id__volatile))  \
     { \
       GType g_define_type_id = \
@@ -1981,6 +1986,13 @@ type_name##_get_type (void) \
     }					\
   return g_define_type_id__volatile;	\
 } /* closes type_name##_get_type() */
+
+/* This was defined before we had G_DEFINE_TYPE_WITH_CODE_AND_PRELUDE, it's simplest
+ * to keep it.
+ */
+#define _G_DEFINE_TYPE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PARENT, flags) \
+  _G_DEFINE_TYPE_EXTENDED_BEGIN_PRE(TypeName, type_name, TYPE_PARENT) \
+  _G_DEFINE_TYPE_EXTENDED_BEGIN_REGISTER(TypeName, type_name, TYPE_PARENT, flags) \
 
 #define _G_DEFINE_INTERFACE_EXTENDED_BEGIN(TypeName, type_name, TYPE_PREREQ) \
 \

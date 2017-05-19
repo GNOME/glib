@@ -52,6 +52,9 @@
 #include <sys/uio.h>
 #endif
 
+#define GOBJECT_COMPILATION
+#include "gobject/gtype-private.h" /* For _PRELUDE type define */
+#undef GOBJECT_COMPILATION
 #include "gcancellable.h"
 #include "gdatagrambased.h"
 #include "gioenumtypes.h"
@@ -267,13 +270,20 @@ struct _GSocketPrivate
   } recv_addr_cache[RECV_ADDR_CACHE_SIZE];
 };
 
-G_DEFINE_TYPE_WITH_CODE (GSocket, g_socket, G_TYPE_OBJECT,
-                         G_ADD_PRIVATE (GSocket)
-			 g_networking_init ();
-			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-						g_socket_initable_iface_init);
-                         G_IMPLEMENT_INTERFACE (G_TYPE_DATAGRAM_BASED,
-                                                g_socket_datagram_based_iface_init));
+_G_DEFINE_TYPE_EXTENDED_WITH_PRELUDE (GSocket, g_socket, G_TYPE_OBJECT, 0,
+                                      /* Need a prelude for https://bugzilla.gnome.org/show_bug.cgi?id=674885 */
+                                      g_type_ensure (G_TYPE_SOCKET_FAMILY);
+                                      g_type_ensure (G_TYPE_SOCKET_TYPE);
+                                      g_type_ensure (G_TYPE_SOCKET_PROTOCOL);
+                                      g_type_ensure (G_TYPE_SOCKET_ADDRESS);
+                                      /* And networking init is appropriate for the prelude */
+                                      g_networking_init ();
+                                      , /* And now the regular type init code */
+                                      G_ADD_PRIVATE (GSocket)
+                                      G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                             g_socket_initable_iface_init);
+                                      G_IMPLEMENT_INTERFACE (G_TYPE_DATAGRAM_BASED,
+                                                             g_socket_datagram_based_iface_init));
 
 static int
 get_socket_errno (void)
