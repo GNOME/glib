@@ -77,10 +77,11 @@ main (gint   argc,
     { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, &namespaces, "The typelib to inspect", "NAMESPACE" },
     { NULL },
   };
+  GOptionContext *context = NULL;
 
   setlocale (LC_ALL, "");
 
-  GOptionContext *context = g_option_context_new ("- Inspect GI typelib");
+  context = g_option_context_new ("- Inspect GI typelib");
   g_option_context_add_main_entries (context, options, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
