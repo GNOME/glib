@@ -2613,6 +2613,7 @@ main (int argc, char *argv[])
       backend_set = g_getenv ("GSETTINGS_BACKEND") != NULL;
 
       g_setenv ("XDG_DATA_DIRS", ".", TRUE);
+      g_setenv ("XDG_DATA_HOME", ".", TRUE);
       g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
 
       if (!backend_set)

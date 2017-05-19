@@ -322,6 +322,14 @@ try_prepend_dir (const gchar *directory)
 }
 
 static void
+try_prepend_data_dir (const gchar *directory)
+{
+  const gchar *dirname = g_build_filename (directory, "glib-2.0", "schemas", NULL);
+  try_prepend_dir (dirname);
+  g_free (dirname);
+}
+
+static void
 initialise_schema_sources (void)
 {
   static gsize initialised;
@@ -340,13 +348,9 @@ initialise_schema_sources (void)
       for (i = 0; dirs[i]; i++);
 
       while (i--)
-        {
-          gchar *dirname;
+        try_prepend_data_dir (dirs[i]);
 
-          dirname = g_build_filename (dirs[i], "glib-2.0", "schemas", NULL);
-          try_prepend_dir (dirname);
-          g_free (dirname);
-        }
+      try_prepend_data_dir (g_get_user_data_dir ());
 
       if ((path = g_getenv ("GSETTINGS_SCHEMA_DIR")) != NULL)
         try_prepend_dir (path);
