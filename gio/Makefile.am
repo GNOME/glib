@@ -281,6 +281,8 @@ unix_sources = \
 	gportalnotificationbackend.c \
 	gdocumentportal.c	\
 	gdocumentportal.h	\
+	gopenuriportal.c	\
+	gopenuriportal.h	\
 	gportalsupport.c	\
 	gportalsupport.h	\
 	$(portal_sources)	\
@@ -368,6 +370,7 @@ CLEANFILES += $(xdp_dbus_built_sources)
 
 portal_interfaces = \
 	org.freedesktop.portal.Documents.xml \
+	org.freedesktop.portal.OpenURI.xml \
 	org.freedesktop.portal.NetworkMonitor.xml \
 	org.freedesktop.portal.ProxyResolver.xml \
 	$(NULL)
@@ -384,6 +387,7 @@ $(xdp_dbus_built_sources) : $(portal_interfaces)
 		--annotate "org.freedesktop.portal.Documents.Add()" "org.gtk.GDBus.C.UnixFD" "true" \
 		--annotate "org.freedesktop.portal.Documents.AddNamed()" "org.gtk.GDBus.C.UnixFD" "true" \
 		--annotate "org.freedesktop.portal.Documents.AddFull()" "org.gtk.GDBus.C.UnixFD" "true" \
+		--annotate "org.freedesktop.portal.OpenURI.OpenFile()" "org.gtk.GDBus.C.UnixFD" "true" \
 		$^
 
 portal_sources = \
