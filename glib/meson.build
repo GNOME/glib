@@ -90,6 +90,7 @@ glib_sub_headers = [
   'gtrashstack.h',
   'gtree.h',
   'gtypes.h',
+  'guuid.h',
   'gunicode.h',
   'gurifuncs.h',
   'gutils.h',
