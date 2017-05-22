@@ -1,3 +1,45 @@
+Overview of changes in GLib 2.53.2
+==================================
+
+* A few new number parsing functions have been added:
+  - g_ascii_string_to_signed
+  - g_ascii_string_to_unsigned
+  These have better error handling than the existing ones.
+
+* glib-mkenums now supports /*< private >*/ and /*< public >*/
+
+* GSettings now consider XDG_DATA_HOME in addition to XDG_DATA_DIRS.
+
+* Bugs fixed:
+ 674885 type initialisation deadlock in GObject
+ 698064 Add g_ptr_array_contains()
+ 732000 gdatetime: Remove an unnecessary NULL pointer check
+ 734946 Implement GContentType on OSX
+ 741335 Possible differences in use of XDG_DATA_DIRS versus XDG base directory specification
+ 748263 Use-after-free in g_dbus_connection_call_internal()
+ 776876 gmodule – Various Android bug-fixes
+ 777030 build error where minor() and major() cant be resolved in gio/gdbusmessage.c
+ 780300 gio/gosxappinfo.c uses deprecated LSFindApplicationForInfo
+ 780309 gio/tests/appinfo build fails: gdesktopappinfo.c skipped on OS X
+ 781755 Avoid compiler warnings in generated marshallers code
+ 781826 portal support: Read /.flatpak-info
+ 781830 Fix some typos and errors in GVariant documentation
+ 781847 Use-after-free under send_message_with_reply_cleanup():gdbusconnection.c:1792
+ 781867 various gvfsd-* wants to look in /boot/efi, causes unnecessary/inappropriate auto...
+ 782068 doc: Trivial typo fixes
+ 782075 gtimer: Handle gmtime() failure in g_time_val_to_iso8601()
+ 782089 gdatetime: Fix overflow checks when constructing from timestamps
+ 782162 Support public/private trigraph in glib-mkenums
+ 782237 make check error
+ 782311 inode/directory is treated as a subclass of application/octet-stream
+ 782628 libmount build dependency check not requiring the right version?
+
+* Translation updates:
+ Hungarian
+ Indonesian
+ Spanish
+
+
 Overview of changes in GLib 2.53.1
 ==================================
 
