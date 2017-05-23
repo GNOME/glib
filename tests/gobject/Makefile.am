@@ -34,7 +34,7 @@ noinst_PROGRAMS += \
 # This will cause them to be built even if installed tests are disabled.
 check_PROGRAMS += $(installed_test_programs) $(installed_test_extra_programs)
 TESTS += $(installed_test_programs)
-TESTS_ENVIRONMENT = \
+AM_TESTS_ENVIRONMENT = \
 	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset    \
 	MALLOC_CHECK_=2                                         \
 	MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256))

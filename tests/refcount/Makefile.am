@@ -20,7 +20,7 @@ TESTS += \
 	signal4					\
 	$(NULL)
 
-TESTS_ENVIRONMENT = srcdir=$(srcdir) \
+AM_TESTS_ENVIRONMENT = srcdir=$(srcdir) \
 	LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
 
 signal1_SOURCES = signals.c
