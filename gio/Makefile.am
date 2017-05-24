@@ -383,6 +383,7 @@ $(xdp_dbus_built_sources) : $(portal_interfaces)
 		--generate-c-code $(builddir)/xdp-dbus			\
 		--annotate "org.freedesktop.portal.Documents.Add()" "org.gtk.GDBus.C.UnixFD" "true" \
 		--annotate "org.freedesktop.portal.Documents.AddNamed()" "org.gtk.GDBus.C.UnixFD" "true" \
+		--annotate "org.freedesktop.portal.Documents.AddFull()" "org.gtk.GDBus.C.UnixFD" "true" \
 		$^
 
 portal_sources = \
