@@ -51,19 +51,19 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="glib-gen-srcs.props" />
+    <Import Project="glib-build-defines.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="glib-gen-srcs.props" />
+    <Import Project="glib-build-defines.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="glib-gen-srcs.props" />
+    <Import Project="glib-build-defines.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="glib-gen-srcs.props" />
+    <Import Project="glib-build-defines.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -170,16 +170,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
 #include "gobject.vs10.sourcefiles"
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\..\gobject\glib-mkenums.in">
-      <Message Condition="'$(Configuration)'=='Debug'">Generating glib-mkenums...</Message>
-      <Command Condition="'$(Configuration)'=='Debug'">$(GenGLibMKEnums)</Command>
-      <Outputs Condition="'$(Configuration)'=='Debug'">..\..\gobject\glib-mkenums;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)'=='Release'">Generating glib-mkenums...</Message>
-      <Command Condition="'$(Configuration)'=='Release'">$(GenGLibMKEnums)</Command>
-      <Outputs Condition="'$(Configuration)'=='Release'">..\..\gobject\glib-mkenums;%(Outputs)</Outputs>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\gobject\gobject.rc" />

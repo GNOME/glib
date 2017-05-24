@@ -89,13 +89,29 @@
       <Command Condition="'$(Configuration)'=='Release'">$(GlibGenPC)</Command>
       <Outputs Condition="'$(Configuration)'=='Release'">$(GlibPCFiles);%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\config.h.win32">
+    <CustomBuild Include="..\..\gobject\glib-mkenums.in">
+      <Message Condition="'$(Configuration)'=='Debug'">Generating glib-mkenums...</Message>
+      <Command Condition="'$(Configuration)'=='Debug'">$(GenGLibMKEnums)</Command>
+      <Outputs Condition="'$(Configuration)'=='Debug'">..\..\gobject\glib-mkenums;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)'=='Release'">Generating glib-mkenums...</Message>
+      <Command Condition="'$(Configuration)'=='Release'">$(GenGLibMKEnums)</Command>
+      <Outputs Condition="'$(Configuration)'=='Release'">..\..\gobject\glib-mkenums;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in">
+      <Message Condition="'$(Configuration)'=='Debug'">Generating gdbus-codegen...</Message>
+      <Command Condition="'$(Configuration)'=='Debug'">$(GenGDBusCodegen)</Command>
+      <Outputs Condition="'$(Configuration)'=='Debug'">..\..\gio\gdbus-2.0\codegen\gdbus-codegen;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)'=='Release'">Generating gdbus-codegen...</Message>
+      <Command Condition="'$(Configuration)'=='Release'">$(GenGDBusCodegen)</Command>
+      <Outputs Condition="'$(Configuration)'=='Release'">..\..\gio\gdbus-2.0\codegen\gdbus-codegen;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="glib_install_placeholder">
       <Message Condition="'$(Configuration)'=='Debug'">Installing Build Results...</Message>
-      <AdditionalInputs Condition="'$(Configuration)'=='Debug'">$(GlibPCFiles)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)'=='Debug'">$(GlibPCFiles);$(GlibUtilScripts)</AdditionalInputs>
       <Command Condition="'$(Configuration)'=='Debug'">$(GlibDoInstall)</Command>
       <Outputs Condition="'$(Configuration)'=='Debug'">blah;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)'=='Release'">Installing Build Results...</Message>
-      <AdditionalInputs Condition="'$(Configuration)'=='Release'">$(GlibPCFiles)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)'=='Release'">$(GlibPCFiles);$(GlibUtilScripts)</AdditionalInputs>
       <Command Condition="'$(Configuration)'=='Release'">$(GlibDoInstall)</Command>
       <Outputs Condition="'$(Configuration)'=='Release'">blah;%(Outputs)</Outputs>
     </CustomBuild>

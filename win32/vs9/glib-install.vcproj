@@ -114,6 +114,74 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File RelativePath="..\..\gobject\glib-mkenums.in">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib-mkenums..."
+						CommandLine="$(GenGLibMKEnums)"
+						Outputs="..\..\gobject\glib-mkenums"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib-mkenums..."
+						CommandLine="$(GenGLibMKEnums)"
+						Outputs="..\..\gobject\glib-mkenums"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib-mkenums..."
+						CommandLine="$(GenGLibMKEnums)"
+						Outputs="..\..\gobject\glib-mkenums"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib-mkenums..."
+						CommandLine="$(GenGLibMKEnums)"
+						Outputs="..\..\gobject\glib-mkenums"
+					/>
+				</FileConfiguration>
+			</File>
+			<File RelativePath="..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating gdbus-codegen..."
+						CommandLine="$(GenGDBusCodegen)"
+						Outputs="..\..\gio\gdbus-2.0\codegen\gdbus-codegen"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating gdbus-codegen..."
+						CommandLine="$(GenGDBusCodegen)"
+						Outputs="..\..\gio\gdbus-2.0\codegen\gdbus-codegen"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating gdbus-codegen..."
+						CommandLine="$(GenGDBusCodegen)"
+						Outputs="..\..\gio\gdbus-2.0\codegen\gdbus-codegen"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating gdbus-codegen..."
+						CommandLine="$(GenGDBusCodegen)"
+						Outputs="..\..\gio\gdbus-2.0\codegen\gdbus-codegen"
+					/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 	</Files>
 </VisualStudioProject>

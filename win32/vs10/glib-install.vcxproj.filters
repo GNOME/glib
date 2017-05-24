@@ -7,7 +7,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\config.h.win32"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\gobject\glib-mkenums.in"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="glib_install_placeholder"><Filter>Resource Files</Filter></CustomBuild>
     <CustomBuild Include="..\glibpc.py"><Filter>Resource Files</Filter></CustomBuild>
   </ItemGroup>
 </Project>
