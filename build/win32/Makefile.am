@@ -12,4 +12,5 @@ EXTRA_DIST = 		\
 	make.msc 	\
 	module.defs	\
 	pc_base.py	\
-	replace.py
+	replace.py	\
+	gen_util_scripts.py
