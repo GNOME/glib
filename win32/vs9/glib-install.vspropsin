@@ -38,7 +38,7 @@ copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gdbus.exe $(CopyDir)
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gdbus.pdb $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gio.exe $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gio.pdb $(CopyDir)\bin&#x0D;&#x0A;
-copy ..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in $(CopyDir)\bin\gdbus-codegen&#x0D;&#x0A;
+if exist ..\..\gio\gdbus-2.0\codegen\gdbus-codegen copy ..\..\gio\gdbus-2.0\codegen\gdbus-codegen $(CopyDir)\bin&#x0D;&#x0A;
 if exist ..\..\gobject\glib-mkenums copy ..\..\gobject\glib-mkenums $(CopyDir)\bin&#x0D;&#x0A;
 
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
@@ -84,6 +84,14 @@ copy ..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas&#x0D;&#x0
 mkdir $(CopyDir)\share\glib-$(ApiVersion)\codegen&#x0D;&#x0A;
 copy ..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\codegen&#x0D;&#x0A;
 "
+	/>
+	<UserMacro
+		Name="GenGLibMKEnums"
+		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\gen_util_scripts.py --type=glib-mkenums --version=$(GlibVersion)"
+	/>
+	<UserMacro
+		Name="GenGDBusCodegen"
+		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\gen_util_scripts.py --type=gdbus-codegen --version=$(GlibVersion)"
 	/>
 	<UserMacro
 		Name="GlibGenPC"
