@@ -21,6 +21,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <string.h>
 
 #include "gdocumentportal.h"
 #include "xdp-dbus.h"
@@ -105,7 +106,7 @@ g_document_portal_add_document (GFile   *file,
 
   if (!init_document_portal ())
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
                    "Document portal is not available");
       goto out;
     }
@@ -158,4 +159,127 @@ g_document_portal_add_document (GFile   *file,
   g_free (doc_id);
 
   return doc_uri;
+}
+
+/* Flags accepted by org.freedesktop.portal.Documents.AddFull */
+enum {
+  XDP_ADD_FLAGS_REUSE_EXISTING             =  (1 << 0),
+  XDP_ADD_FLAGS_PERSISTENT                 =  (1 << 1),
+  XDP_ADD_FLAGS_AS_NEEDED_BY_APP           =  (1 << 2),
+  XDP_ADD_FLAGS_FLAGS_ALL                  = ((1 << 3) - 1)
+};
+
+GList *
+g_document_portal_add_documents (GList       *uris,
+                                 const char  *app_id,
+                                 GError     **error)
+{
+  int length;
+  GList *ruris = NULL;
+  gboolean *as_is;
+  GVariantBuilder builder;
+  GUnixFDList *fd_list = NULL;
+  GList *l;
+  gsize i, j;
+  const char *permissions[] = { "read", "write", NULL };
+  char **doc_ids = NULL;
+  GVariant *extra_out = NULL;
+
+  if (!init_document_portal ())
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_INITIALIZED,
+                   "Document portal is not available");
+      return NULL;
+    }
+
+  length = g_list_length (uris);
+  as_is = g_new0 (gboolean, length);
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("ah"));
+
+  fd_list = g_unix_fd_list_new ();
+  for (l = uris, i = 0; l; l = l->next, i++)
+    {
+      const char *uri = l->data;
+      int idx = -1;
+      g_autofree char *path = NULL;
+
+      path = g_filename_from_uri (uri, NULL, NULL);
+      if (path != NULL)
+        {
+          int fd;
+
+          fd = g_open (path, O_CLOEXEC | O_PATH);
+          if (fd >= 0)
+            {
+#ifndef HAVE_O_CLOEXEC
+              fcntl (fd, F_SETFD, FD_CLOEXEC);
+#endif
+              idx = g_unix_fd_list_append (fd_list, fd, NULL);
+              close (fd);
+            }
+        }
+
+      if (idx != -1)
+        g_variant_builder_add (&builder, "h", idx);
+      else
+        as_is[i] = TRUE;
+    }
+
+  if (g_unix_fd_list_get_length (fd_list) > 0)
+    {
+      if (!gxdp_documents_call_add_full_sync (documents,
+                                              g_variant_builder_end (&builder),
+                                              XDP_ADD_FLAGS_AS_NEEDED_BY_APP,
+                                              app_id,
+                                              permissions,
+                                              fd_list,
+                                              &doc_ids,
+                                              &extra_out,
+                                              NULL,
+                                              NULL,
+                                              error))
+        goto out;
+
+      for (l = uris, i = 0, j = 0; l; l = l->next, i++)
+        {
+          const char *uri = l->data;
+          char *ruri;
+
+          if (as_is[i]) /* use as-is, not a file uri */
+            {
+              ruri = g_strdup (uri);
+            }
+          else if (strcmp (doc_ids[j], "") == 0) /* not rewritten */
+            {
+              ruri = g_strdup (uri);
+              j++;
+            }
+          else
+            {
+              char *basename = g_path_get_basename (uri + strlen ("file:"));
+              char *doc_path = g_build_filename (documents_mountpoint, doc_ids[j], basename, NULL);
+              ruri = g_strconcat ("file:", doc_path, NULL);
+              g_free (basename);
+              g_free (doc_path);
+              j++;
+            }
+
+          ruris = g_list_prepend (ruris, ruri);
+        }
+
+      ruris = g_list_reverse (ruris);
+    }
+  else
+    {
+      ruris = g_list_copy_deep (uris, (GCopyFunc)g_strdup, NULL);
+    }
+
+out:
+  g_clear_object (&fd_list);
+  g_clear_pointer (&extra_out, g_variant_unref);
+  g_clear_pointer (&doc_ids, g_strfreev);
+  g_free (as_is);
+
+  return ruris;
 }
