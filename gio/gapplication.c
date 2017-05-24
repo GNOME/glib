@@ -28,7 +28,6 @@
 #include "gapplicationimpl.h"
 #include "gactiongroup.h"
 #include "gactionmap.h"
-#include "gmenumodel.h"
 #include "gsettings.h"
 #include "gnotification-private.h"
 #include "gnotificationbackend.h"
@@ -225,8 +224,6 @@ struct _GApplicationPrivate
   gchar             *resource_path;
 
   GActionGroup      *actions;
-  GMenuModel        *app_menu;
-  GMenuModel        *menubar;
 
   guint              inactivity_timeout_id;
   guint              inactivity_timeout;
