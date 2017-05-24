@@ -7,6 +7,7 @@ import argparse
 from replace import replace_multi
 
 def main(argv):
+    srcroot = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
     parser = argparse.ArgumentParser(description='Generate Utility Scripts')
     parser.add_argument('-t', '--type', help='Script Type (glib-mkenums or gdbus-codegen)', required=True)
     parser.add_argument('--version', help='Package Version', required=True)
@@ -17,12 +18,12 @@ def main(argv):
                      '@GLIB_VERSION@': args.version}
 
     if args.type == 'glib-mkenums':
-        replace_multi('../gobject/glib-mkenums.in',
-                      '../gobject/glib-mkenums',
+        replace_multi(srcroot + '/gobject/glib-mkenums.in',
+                      srcroot + '/gobject/glib-mkenums',
                       replace_items)
     elif args.type == 'gdbus-codegen':
-        replace_multi('../gio/gdbus-2.0/codegen/gdbus-codegen.in',
-                      '../gio/gdbus-2.0/codegen/gdbus-codegen',
+        replace_multi(srcroot + '/gio/gdbus-2.0/codegen/gdbus-codegen.in',
+                      srcroot + '/gio/gdbus-2.0/codegen/gdbus-codegen',
                       replace_items)
 
     else:
