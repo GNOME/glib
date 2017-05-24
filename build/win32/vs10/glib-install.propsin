@@ -36,8 +36,8 @@ copy $(BinDir)\gdbus.exe $(CopyDir)\bin
 copy $(BinDir)\gdbus.pdb $(CopyDir)\bin
 copy $(BinDir)\gio.exe $(CopyDir)\bin
 copy $(BinDir)\gio.pdb $(CopyDir)\bin
-copy ..\..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in $(CopyDir)\bin\gdbus-codegen
 
+if exist ..\..\..\gio\gdbus-2.0\codegen\gdbus-codegen copy ..\..\..\gio\gdbus-2.0\codegen\gdbus-codegen $(CopyDir)\bin
 if exist ..\..\..\gobject\glib-mkenums copy ..\..\..\gobject\glib-mkenums $(CopyDir)\bin
 
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated
@@ -83,7 +83,10 @@ copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas
 mkdir $(CopyDir)\share\glib-$(ApiVersion)\codegen
 copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\codegen
 </GlibDoInstall>
+    <GlibUtilScripts>..\..\..\gobject\glib-mkenums;..\..\..\gio\gdbus-2.0\codegen\gdbus-codegen</GlibUtilScripts>
     <GlibPCFiles>..\gio-windows-2.0.pc;..\gio-2.0.pc;..\gobject-2.0.pc;..\gmodule-no-export-2.0.pc;..\gmodule-export-2.0.pc;..\gmodule-2.0.pc;..\gthread-2.0.pc;..\glib-2.0.pc</GlibPCFiles>
+    <GenGLibMKEnums>if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\gen_util_scripts.py --type=glib-mkenums --version=$(GlibVersion)</GenGLibMKEnums>
+    <GenGDBusCodegen>if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\gen_util_scripts.py --type=gdbus-codegen --version=$(GlibVersion)</GenGDBusCodegen>
     <GlibGenPC>(if not exist $(CopyDir) mkdir $(CopyDir)) &amp; (if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\glibpc.py --prefix=$(CopyDir) --version=$(GlibVersion))</GlibGenPC>
   </PropertyGroup>
   <PropertyGroup>
@@ -96,8 +99,17 @@ copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\cod
     <BuildMacro Include="GlibDoInstall">
       <Value>$(GlibDoInstall)</Value>
     </BuildMacro>
+    <BuildMacro Include="GlibUtilScripts">
+      <Value>$(GlibUtilScripts)</Value>
+    </BuildMacro>
     <BuildMacro Include="GlibPCFiles">
       <Value>$(GlibPCFiles)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenGLibMKEnums">
+      <Value>$(GenGLibMKEnums)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GenGDBusCodegen">
+      <Value>$(GenGDBusCodegen)</Value>
     </BuildMacro>
     <BuildMacro Include="GlibGenPC">
       <Value>$(GlibGenPC)</Value>

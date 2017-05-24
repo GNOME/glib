@@ -86,6 +86,14 @@ copy ..\..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\cod
 "
 	/>
 	<UserMacro
+		Name="GenGLibMKEnums"
+		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\gen_util_scripts.py --type=glib-mkenums --version=$(GlibVersion)"
+	/>
+	<UserMacro
+		Name="GenGDBusCodegen"
+		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\gen_util_scripts.py --type=gdbus-codegen --version=$(GlibVersion)"
+	/>
+	<UserMacro
 		Name="GlibGenPC"
 		Value="(if not exist $(CopyDir) mkdir $(CopyDir)) &amp; (if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\glibpc.py --prefix=$(CopyDir) --version=$(GlibVersion))"
 	/>
