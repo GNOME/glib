@@ -36,6 +36,7 @@
 #include "gioenumtypes.h"
 #include "gioenums.h"
 #include "gfile.h"
+#include "gicon.h"
 
 #include "glibintl.h"
 
@@ -240,6 +241,7 @@ struct _GApplicationPrivate
   GApplicationImpl   *impl;
 
   GNotificationBackend *notifications;
+  GIcon *status_icon;
 
   /* GOptionContext support */
   GOptionGroup       *main_options;
@@ -261,7 +263,8 @@ enum
   PROP_IS_REMOTE,
   PROP_INACTIVITY_TIMEOUT,
   PROP_ACTION_GROUP,
-  PROP_IS_BUSY
+  PROP_IS_BUSY,
+  PROP_STATUS_ICON
 };
 
 enum
@@ -1125,13 +1128,16 @@ g_application_set_property (GObject      *object,
       break;
 
     case PROP_INACTIVITY_TIMEOUT:
-      g_application_set_inactivity_timeout (application,
-                                            g_value_get_uint (value));
+      g_application_set_inactivity_timeout (application, g_value_get_uint (value));
       break;
 
     case PROP_ACTION_GROUP:
       g_clear_object (&application->priv->actions);
       application->priv->actions = g_value_dup_object (value);
+      break;
+
+    case PROP_STATUS_ICON:
+      g_application_set_status_icon (application, g_value_get_object (value));
       break;
 
     default:
@@ -1214,6 +1220,10 @@ g_application_get_property (GObject    *object,
       g_value_set_boolean (value, g_application_get_is_busy (application));
       break;
 
+    case PROP_STATUS_ICON:
+      g_value_set_object (value, g_application_get_status_icon (application));
+      break;
+
     default:
       g_assert_not_reached ();
     }
@@ -1270,8 +1280,9 @@ g_application_finalize (GObject *object)
 
   g_free (application->priv->resource_path);
 
-  G_OBJECT_CLASS (g_application_parent_class)
-    ->finalize (object);
+  g_clear_object (&application->priv->status_icon);
+
+  G_OBJECT_CLASS (g_application_parent_class)->finalize (object);
 }
 
 static void
@@ -1390,6 +1401,13 @@ g_application_class_init (GApplicationClass *class)
                           P_("Is busy"),
                           P_("If this application is currently marked busy"),
                           FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class, PROP_STATUS_ICON,
+    g_param_spec_object ("status-icon",
+                         P_("Status icon"),
+                         P_("The status icon for the application"),
+                         G_TYPE_ICON,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
    * GApplication::startup:
@@ -2925,6 +2943,30 @@ g_application_unbind_busy_property (GApplication *application,
     }
 
   g_signal_handler_disconnect (object, handler_id);
+}
+
+/* Status icon {{{1 */
+
+void
+g_application_set_status_icon (GApplication *application,
+                               GIcon        *icon)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (icon == NULL || G_IS_ICON (icon));
+
+  if (g_set_object (&application->priv->status_icon, icon))
+    {
+      g_application_impl_set_status_icon (application->priv->impl, icon);
+      g_object_notify (G_OBJECT (application), "status-icon");
+    }
+}
+
+GIcon *
+g_application_get_status_icon (GApplication *application)
+{
+  g_return_val_if_fail (G_IS_APPLICATION (application), NULL);
+
+  return application->priv->status_icon;
 }
 
 /* Epilogue {{{1 */

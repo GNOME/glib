@@ -66,6 +66,7 @@ static const gchar org_gtk_Application_xml[] =
         "<arg type='i' name='exit-status' direction='out'/>"
       "</method>"
     "<property name='Busy' type='b' access='read'/>"
+    "<property name='StatusIcon' type='v' access='read'/>"
     "</interface>"
   "</node>";
 
@@ -121,6 +122,8 @@ struct _GApplicationImpl
   gboolean         primary;
   gboolean         busy;
   GApplication    *app;
+
+  GIcon           *status_icon;
 };
 
 
@@ -140,6 +143,8 @@ g_application_impl_get_property (GDBusConnection *connection,
 
   if (strcmp (property_name, "Busy") == 0)
     return g_variant_new_boolean (impl->busy);
+  else if (strcmp (property_name, "StatusIcon") == 0)
+    return impl->status_icon ? g_icon_serialize (impl->status_icon) : g_variant_new_boolean (FALSE);
 
   g_assert_not_reached ();
 
@@ -152,9 +157,9 @@ send_property_change (GApplicationImpl *impl)
   GVariantBuilder builder;
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
-  g_variant_builder_add (&builder,
-                         "{sv}",
-                         "Busy", g_variant_new_boolean (impl->busy));
+  g_variant_builder_add (&builder, "{sv}", "Busy", g_variant_new_boolean (impl->busy));
+  if (impl->status_icon)
+    g_variant_builder_add (&builder, "{sv}", "StatusIcon", g_icon_serialize (impl->status_icon));
 
   g_dbus_connection_emit_signal (impl->session_bus,
                                  NULL,
@@ -499,6 +504,13 @@ g_application_impl_set_busy_state (GApplicationImpl *impl,
 }
 
 void
+g_application_impl_set_status_icon (GApplicationImpl *impl,
+                                    GIcon            *icon)
+{
+  if (g_set_object (&impl->status_icon, icon))
+    send_property_change (impl);
+}
+void
 g_application_impl_destroy (GApplicationImpl *impl)
 {
   g_application_impl_stop_primary (impl);
@@ -507,6 +519,10 @@ g_application_impl_destroy (GApplicationImpl *impl)
     g_object_unref (impl->session_bus);
 
   g_free (impl->object_path);
+
+  g_clear_object (&impl->status_icon);
+
+  g_clear_object (&impl->status_icon);
 
   g_slice_free (GApplicationImpl, impl);
 }

@@ -238,6 +238,13 @@ void                    g_application_unbind_busy_property              (GApplic
                                                                          gpointer                  object,
                                                                          const gchar              *property);
 
+GLIB_AVAILABLE_IN_2_54
+void                   g_application_set_status_icon                    (GApplication             *application,
+                                                                         GIcon                    *icon);
+
+GLIB_AVAILABLE_IN_2_54
+GIcon *                g_application_get_status_icon                    (GApplication             *application);
+
 G_END_DECLS
 
 #endif /* __G_APPLICATION_H__ */
