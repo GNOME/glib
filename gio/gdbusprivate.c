@@ -24,7 +24,9 @@
 #include <string.h>
 
 #include "giotypes.h"
+#include "gioenumtypes.h"
 #include "gsocket.h"
+#include "gdbusauthobserver.h"
 #include "gdbusprivate.h"
 #include "gdbusmessage.h"
 #include "gdbusconnection.h"
@@ -36,6 +38,7 @@
 #include "gmemoryinputstream.h"
 #include "giostream.h"
 #include "glib/gstdio.h"
+#include "gsocketaddress.h"
 #include "gsocketcontrolmessage.h"
 #include "gsocketconnection.h"
 #include "gsocketoutputstream.h"
