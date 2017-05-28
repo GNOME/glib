@@ -64,7 +64,7 @@ def parse_entries(file, file_name):
     for line in file:
         # read lines until we have no open comments
         while re.search(r'/\*([^*]|\*(?!/))*$', line):
-            line = file.readline()
+            line += file.readline()
 
         # strip comments w/o options
         line = re.sub(r'''/\*(?!<)
@@ -315,7 +315,7 @@ def process_file(curfilename):
     for line in curfile:
         # read lines until we have no open comments
         while re.search(r'/\*([^*]|\*(?!/))*$', line):
-            line = curfile.readline()
+            line += curfile.readline()
 
         # strip comments w/o options
         line = re.sub(r'''/\*(?!<)
