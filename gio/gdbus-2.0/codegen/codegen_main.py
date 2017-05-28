@@ -181,14 +181,15 @@ def codegen_main():
     for i in all_ifaces:
         i.post_process(opts.interface_prefix, opts.c_namespace)
 
+    outdir = opts.output_directory
+
     docbook = opts.generate_docbook
-    docbook_gen = codegen_docbook.DocbookCodeGenerator(all_ifaces, docbook);
+    docbook_gen = codegen_docbook.DocbookCodeGenerator(all_ifaces, docbook, outdir);
     if docbook:
         ret = docbook_gen.generate()
 
     c_code = opts.generate_c_code
     if c_code:
-        outdir = opts.output_directory
         header_name = c_code + '.h'
         h = open(path.join(outdir, header_name), 'w')
         c = open(path.join(outdir, c_code + '.c'), 'w')
