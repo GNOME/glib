@@ -238,6 +238,8 @@ parser.add_argument('--fhead', default='', dest='fhead',
                     help='Output file header')
 parser.add_argument('--ftail', default='', dest='ftail',
                     help='Per input file production')
+parser.add_argument('--fprod', default='', dest='fprod',
+                    help='Put out TEXT everytime a new input file is being processed.')
 parser.add_argument('--eprod', default='', dest='eprod',
                     help='Per enum text (produced prior to value iterations)')
 parser.add_argument('--vhead', default='', dest='vhead',
