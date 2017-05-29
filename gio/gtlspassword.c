@@ -112,7 +112,7 @@ g_tls_password_real_get_default_warning (GTlsPassword  *password)
   if (flags & G_TLS_PASSWORD_MANY_TRIES)
     /* Translators: This is not the 'This is the last chance' string. It is
      * displayed when more than one attempt is allowed. */
-    return _("Several password entered have been incorrect, and your access will be locked out after further failures.");
+    return _("Several passwords entered have been incorrect, and your access will be locked out after further failures.");
   if (flags & G_TLS_PASSWORD_RETRY)
     return _("The password entered is incorrect.");
 
