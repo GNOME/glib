@@ -3296,7 +3296,7 @@ g_variant_builder_ref (GVariantBuilder *builder)
  * #GVariantBuilder if you want to abort building the value part-way
  * through.  This function need not be called if you call
  * g_variant_builder_end() and it also doesn't need to be called on
- * builders allocated with g_variant_builder_new (see
+ * builders allocated with g_variant_builder_new() (see
  * g_variant_builder_unref() for that).
  *
  * This function leaves the #GVariantBuilder structure set to all-zeros.
