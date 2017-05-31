@@ -83,6 +83,13 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * set to the full path to the gdk-pixbuf-pixdata executable; otherwise the resource compiler will
  * abort.
  *
+ * Resource files will be exported in the GResource namespace using the
+ * combination of the given `prefix` and the filename from the `file` element.
+ * The `alias` attribute can be used to alter the filename to expose them at a
+ * different location in the resource namespace. Typically, this is used to
+ * include files from a different source directory without exposing the source
+ * directory in the resource namespace, as in the example below.
+ *
  * Resource bundles are created by the [glib-compile-resources][glib-compile-resources] program
  * which takes an XML file that describes the bundle, and a set of files that the XML references. These
  * are combined into a binary resource bundle.
@@ -95,6 +102,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *     <file>data/splashscreen.png</file>
  *     <file compressed="true">dialog.ui</file>
  *     <file preprocess="xml-stripblanks">menumarkup.xml</file>
+ *     <file alias="example.css">data/example.css</file>
  *   </gresource>
  * </gresources>
  * ]|
@@ -104,6 +112,7 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * /org/gtk/Example/data/splashscreen.png
  * /org/gtk/Example/dialog.ui
  * /org/gtk/Example/menumarkup.xml
+ * /org/gtk/Example/example.css
  * ]|
  *
  * Note that all resources in the process share the same namespace, so use Java-style
