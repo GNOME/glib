@@ -126,20 +126,18 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  *
  * There are two forms of the generated source, the default version uses the compiler support for constructor
  * and destructor functions (where available) to automatically create and register the #GResource on startup
- * or library load time. If you pass --manual-register two functions to register/unregister the resource is instead
- * created. This requires an explicit initialization call in your application/library, but it works on all platforms,
- * even on the minor ones where this is not available. (Constructor support is available for at least Win32, Mac OS and Linux.)
+ * or library load time. If you pass `--manual-register`, two functions to register/unregister the resource are created
+ * instead. This requires an explicit initialization call in your application/library, but it works on all platforms,
+ * even on the minor ones where constructors are not supported. (Constructor support is available for at least Win32, Mac OS and Linux.)
  *
  * Note that resource data can point directly into the data segment of e.g. a library, so if you are unloading libraries
  * during runtime you need to be very careful with keeping around pointers to data from a resource, as this goes away
  * when the library is unloaded. However, in practice this is not generally a problem, since most resource accesses
- * is for your own resources, and resource data is often used once, during parsing, and then released.
+ * are for your own resources, and resource data is often used once, during parsing, and then released.
  *
  * When debugging a program or testing a change to an installed version, it is often useful to be able to
  * replace resources in the program or library, without recompiling, for debugging or quick hacking and testing
- * purposes.
- *
- * Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment variable to selectively overlay
+ * purposes. Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment variable to selectively overlay
  * resources with replacements from the filesystem.  It is a colon-separated list of substitutions to perform
  * during resource lookups.
  *
