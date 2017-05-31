@@ -20,7 +20,7 @@ if get_option('with-docs') != 'no'
   gnome.gtkdoc('gobject',
     main_xml : 'gobject-docs.xml',
     namespace : 'g',
-    gobject_typesfile : 'gobject.types',
+    gobject_typesfile : join_paths(meson.current_source_dir(), 'gobject.types'),
     mode : 'none',
     dependencies : [libgobject_dep, libglib_dep],
     src_dir : 'gobject',
