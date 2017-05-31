@@ -107,6 +107,13 @@ g_openuri_portal_open_uri (const char  *uri,
       path = g_file_get_path (file);
 
       fd = g_open (path, O_PATH | O_CLOEXEC);
+      if (fd == -1)
+        {
+          g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errno),
+                       "Failed to open '%s'", path);
+          return FALSE;
+        }
+
 #ifndef HAVE_O_CLOEXEC
       fcntl (fd, F_SETFD, FD_CLOEXEC);
 #endif
@@ -262,6 +269,14 @@ g_openuri_portal_open_uri_async (const char          *uri,
 
       path = g_file_get_path (file);
       fd = g_open (path, O_PATH | O_CLOEXEC);
+      if (fd == -1)
+        {
+          g_task_report_new_error (NULL, callback, user_data, NULL,
+                                   G_IO_ERROR, g_io_error_from_errno (errno),
+                                   "OpenURI portal is not available");
+          return;
+        }
+
 #ifndef HAVE_O_CLOEXEC
       fcntl (fd, F_SETFD, FD_CLOEXEC);
 #endif
