@@ -133,6 +133,10 @@ G_DEFINE_BOXED_TYPE (GResource, g_resource, g_resource_ref, g_resource_unref)
  * to the data. You can also use URIs like "resource:///org/gtk/Example/data/splashscreen.png" with #GFile to access
  * the resource data.
  *
+ * Some higher-level APIs, such as #GtkApplication, will automatically load
+ * resources from certain well-known paths in the resource namespace as a
+ * convenience. See the documentation for those APIs for details.
+ *
  * There are two forms of the generated source, the default version uses the compiler support for constructor
  * and destructor functions (where available) to automatically create and register the #GResource on startup
  * or library load time. If you pass `--manual-register`, two functions to register/unregister the resource are created
