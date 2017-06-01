@@ -2680,131 +2680,45 @@ g_get_real_time (void)
  * Since: 2.28
  **/
 #if defined (G_OS_WIN32)
-static ULONGLONG (WINAPI *g_GetTickCount64) (void) = NULL;
-static guint32 g_win32_tick_epoch = 0;
+/* NOTE:
+ * time_usec = ticks_since_boot * usec_per_sec / ticks_per_sec
+ *
+ * Doing (ticks_since_boot * usec_per_sec) before the division can overflow 64 bits
+ * (ticks_since_boot  / ticks_per_sec) and then multiply would not be accurate enough.
+ * So for now we calculate (usec_per_sec / ticks_per_sec) and use floating point
+ */
+static gdouble g_monotonic_usec_per_tick = 0;
 
 void
 g_clock_win32_init (void)
 {
-  HMODULE kernel32;
+  LARGE_INTEGER freq;
 
-  g_GetTickCount64 = NULL;
-  kernel32 = GetModuleHandle ("KERNEL32.DLL");
-  if (kernel32 != NULL)
-    g_GetTickCount64 = (void *) GetProcAddress (kernel32, "GetTickCount64");
-  g_win32_tick_epoch = ((guint32)GetTickCount()) >> 31;
+  if (!QueryPerformanceFrequency (&freq) || freq.QuadPart == 0)
+    {
+      /* The documentation says that this should never happen */
+      g_assert_not_reached ();
+      return;
+    }
+
+  g_monotonic_usec_per_tick = (gdouble)G_USEC_PER_SEC / freq.QuadPart;
 }
 
 gint64
 g_get_monotonic_time (void)
 {
-  guint64 ticks;
-  guint32 ticks32;
-
-  /* There are four sources for the monotonic time on Windows:
-   *
-   * Three are based on a (1 msec accuracy, but only read periodically) clock chip:
-   * - GetTickCount (GTC)
-   *    32bit msec counter, updated each ~15msec, wraps in ~50 days
-   * - GetTickCount64 (GTC64)
-   *    Same as GetTickCount, but extended to 64bit, so no wrap
-   *    Only available in Vista or later
-   * - timeGetTime (TGT)
-   *    similar to GetTickCount by default: 15msec, 50 day wrap.
-   *    available in winmm.dll (thus known as the multimedia timers)
-   *    However apps can raise the system timer clock frequency using timeBeginPeriod()
-   *    increasing the accuracy up to 1 msec, at a cost in general system performance
-   *    and battery use.
-   *
-   * One is based on high precision clocks:
-   * - QueryPrecisionCounter (QPC)
-   *    This has much higher accuracy, but is not guaranteed monotonic, and
-   *    has lots of complications like clock jumps and different times on different
-   *    CPUs. It also has lower long term accuracy (i.e. it will drift compared to
-   *    the low precision clocks.
-   *
-   * Additionally, the precision available in the timer-based wakeup such as
-   * MsgWaitForMultipleObjectsEx (which is what the mainloop is based on) is based
-   * on the TGT resolution, so by default it is ~15msec, but can be increased by apps.
-   *
-   * The QPC timer has too many issues to be used as is. The only way it could be used
-   * is to use it to interpolate the lower precision clocks. Firefox does something like
-   * this:
-   *   https://bugzilla.mozilla.org/show_bug.cgi?id=363258
-   *
-   * However this seems quite complicated, so we're not doing this right now.
-   *
-   * The approach we take instead is to use the TGT timer, extending it to 64bit
-   * either by using the GTC64 value, or if that is not available, a process local
-   * time epoch that we increment when we detect a timer wrap (assumes that we read
-   * the time at least once every 50 days).
-   *
-   * This means that:
-   *  - We have a globally consistent monotonic clock on Vista and later
-   *  - We have a locally monotonic clock on XP
-   *  - Apps that need higher precision in timeouts and clock reads can call
-   *    timeBeginPeriod() to increase it as much as they want
-   */
-
-  if (g_GetTickCount64 != NULL)
+  if (G_LIKELY (g_monotonic_usec_per_tick != 0))
     {
-      guint32 ticks_as_32bit;
+      LARGE_INTEGER ticks;
 
-      ticks = g_GetTickCount64 ();
-      ticks32 = timeGetTime();
+      if (QueryPerformanceCounter (&ticks))
+        return (gint64)(ticks.QuadPart * g_monotonic_usec_per_tick);
 
-      /* GTC64 and TGT are sampled at different times, however they
-       * have the same base and source (msecs since system boot).
-       * They can differ by as much as -16 to +16 msecs.
-       * We can't just inject the low bits into the 64bit counter
-       * as one of the counters can have wrapped in 32bit space and
-       * the other not. Instead we calculate the signed difference
-       * in 32bit space and apply that difference to the 64bit counter.
-       */
-      ticks_as_32bit = (guint32)ticks;
-
-      /* We could do some 2's complement hack, but we play it safe */
-      if (ticks32 - ticks_as_32bit <= G_MAXINT32)
-        ticks += ticks32 - ticks_as_32bit;
-      else
-        ticks -= ticks_as_32bit - ticks32;
-    }
-  else
-    {
-      guint32 epoch;
-
-      epoch = g_atomic_int_get (&g_win32_tick_epoch);
-
-      /* Must read ticks after the epoch. Then we're guaranteed
-       * that the ticks value we read is higher or equal to any
-       * previous ones that lead to the writing of the epoch.
-       */
-      ticks32 = timeGetTime();
-
-      /* We store the MSB of the current time as the LSB
-       * of the epoch. Comparing these bits lets us detect when
-       * the 32bit counter has wrapped so we can increase the
-       * epoch.
-       *
-       * This will work as long as this function is called at
-       * least once every ~24 days, which is half the wrap time
-       * of a 32bit msec counter. I think this is pretty likely.
-       *
-       * Note that g_win32_tick_epoch is a process local state,
-       * so the monotonic clock will not be the same between
-       * processes.
-       */
-      if ((ticks32 >> 31) != (epoch & 1))
-        {
-          epoch++;
-          g_atomic_int_set (&g_win32_tick_epoch, epoch);
-        }
-
-
-      ticks = (guint64)ticks32 | ((guint64)epoch) << 31;
+      g_warning ("QueryPerformanceCounter Failed (%d)", GetLastError ());
+      g_monotonic_usec_per_tick = 0;
     }
 
-  return ticks * 1000;
+  return 0;
 }
 #elif defined(HAVE_MACH_MACH_TIME_H) /* Mac OS */
 gint64
