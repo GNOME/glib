@@ -831,7 +831,11 @@ gboolean
 g_app_info_launch_default_for_uri_finish (GAsyncResult  *result,
                                           GError       **error)
 {
+#ifdef G_OS_UNIX
   return g_openuri_portal_open_uri_finish (result, error);
+#else
+  return g_task_propagate_boolean (G_TASK (result), error);
+#endif
 }
 
 /**
