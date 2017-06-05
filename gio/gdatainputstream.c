@@ -723,7 +723,7 @@ scan_for_newline (GDataInputStream *stream,
 /**
  * g_data_input_stream_read_line:
  * @stream: a given #GDataInputStream.
- * @length: (out): a #gsize to get the length of the data read in.
+ * @length: (out) (optional): a #gsize to get the length of the data read in.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  *
@@ -809,7 +809,7 @@ g_data_input_stream_read_line (GDataInputStream  *stream,
 /**
  * g_data_input_stream_read_line_utf8:
  * @stream: a given #GDataInputStream.
- * @length: (out): a #gsize to get the length of the data read in.
+ * @length: (out) (optional): a #gsize to get the length of the data read in.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  *
@@ -895,7 +895,7 @@ scan_for_chars (GDataInputStream *stream,
  * g_data_input_stream_read_until:
  * @stream: a given #GDataInputStream.
  * @stop_chars: characters to terminate the read.
- * @length: (out): a #gsize to get the length of the data read in.
+ * @length: (out) (optional): a #gsize to get the length of the data read in.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  *
@@ -1191,7 +1191,7 @@ g_data_input_stream_read_until_async (GDataInputStream    *stream,
  * g_data_input_stream_read_line_finish:
  * @stream: a given #GDataInputStream.
  * @result: the #GAsyncResult that was provided to the callback.
- * @length: (out): a #gsize to get the length of the data read in.
+ * @length: (out) (optional): a #gsize to get the length of the data read in.
  * @error: #GError for error reporting.
  *
  * Finish an asynchronous call started by
@@ -1223,7 +1223,7 @@ g_data_input_stream_read_line_finish (GDataInputStream  *stream,
  * g_data_input_stream_read_line_finish_utf8:
  * @stream: a given #GDataInputStream.
  * @result: the #GAsyncResult that was provided to the callback.
- * @length: (out): a #gsize to get the length of the data read in.
+ * @length: (out) (optional): a #gsize to get the length of the data read in.
  * @error: #GError for error reporting.
  *
  * Finish an asynchronous call started by
@@ -1265,7 +1265,7 @@ g_data_input_stream_read_line_finish_utf8 (GDataInputStream  *stream,
  * g_data_input_stream_read_until_finish:
  * @stream: a given #GDataInputStream.
  * @result: the #GAsyncResult that was provided to the callback.
- * @length: (out): a #gsize to get the length of the data read in.
+ * @length: (out) (optional): a #gsize to get the length of the data read in.
  * @error: #GError for error reporting.
  *
  * Finish an asynchronous call started by
@@ -1295,7 +1295,7 @@ g_data_input_stream_read_until_finish (GDataInputStream  *stream,
  * @stop_chars: characters to terminate the read
  * @stop_chars_len: length of @stop_chars. May be -1 if @stop_chars is
  *     nul-terminated
- * @length: (out): a #gsize to get the length of the data read in
+ * @length: (out) (optional): a #gsize to get the length of the data read in
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore
  * @error: #GError for error reporting
  *
@@ -1430,7 +1430,7 @@ g_data_input_stream_read_upto_async (GDataInputStream    *stream,
  * g_data_input_stream_read_upto_finish:
  * @stream: a #GDataInputStream
  * @result: the #GAsyncResult that was provided to the callback
- * @length: (out): a #gsize to get the length of the data read in
+ * @length: (out) (optional): a #gsize to get the length of the data read in
  * @error: #GError for error reporting
  *
  * Finish an asynchronous call started by
