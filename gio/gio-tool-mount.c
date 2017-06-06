@@ -998,7 +998,7 @@ monitor_mount_added (GVolumeMonitor *volume_monitor, GMount *mount)
 {
   char *name;
   name = g_mount_get_name (mount);
-  g_print ("Mount added: '%s'\n", name);
+  g_print ("Mount added:        '%s'\n", name);
   g_free (name);
   monitor_print_mount (mount);
 }
@@ -1008,7 +1008,7 @@ monitor_mount_removed (GVolumeMonitor *volume_monitor, GMount *mount)
 {
   char *name;
   name = g_mount_get_name (mount);
-  g_print ("Mount removed: '%s'\n", name);
+  g_print ("Mount removed:      '%s'\n", name);
   g_free (name);
   monitor_print_mount (mount);
 }
@@ -1018,7 +1018,7 @@ monitor_mount_changed (GVolumeMonitor *volume_monitor, GMount *mount)
 {
   char *name;
   name = g_mount_get_name (mount);
-  g_print ("Mount changed: '%s'\n", name);
+  g_print ("Mount changed:      '%s'\n", name);
   g_free (name);
   monitor_print_mount (mount);
 }
