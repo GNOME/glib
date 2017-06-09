@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-05-12 09:06+0000\n"
-"PO-Revision-Date: 2017-05-12 17:22+0200\n"
+"POT-Creation-Date: 2017-06-02 16:12+0000\n"
+"PO-Revision-Date: 2017-06-09 21:34+0200\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -26,21 +26,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Poedit 2.0.2\n"
 
-#: ../gio/gapplication.c:493
+#: ../gio/gapplication.c:490
 msgid "GApplication options"
 msgstr "Optionen für GApplication"
 
-#: ../gio/gapplication.c:493
+#: ../gio/gapplication.c:490
 msgid "Show GApplication options"
 msgstr "Optionen für GApplication anzeigen"
 
-#: ../gio/gapplication.c:538
+#: ../gio/gapplication.c:535
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr "GApplication Dienstmodus starten (aus D-Bus Dienstdateien verwenden)"
 
-#: ../gio/gapplication.c:550
+#: ../gio/gapplication.c:547
 msgid "Override the application’s ID"
 msgstr "Anwendungskennung überschreiben"
 
@@ -291,7 +291,7 @@ msgid "Truncate not supported on base stream"
 msgstr "Abschneiden wird vom Basis-Datenstrom nicht unterstützt"
 
 #: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1849
-#: ../gio/gdbusprivate.c:1379 ../gio/gsimpleasyncresult.c:870
+#: ../gio/gdbusprivate.c:1402 ../gio/gsimpleasyncresult.c:870
 #: ../gio/gsimpleasyncresult.c:896
 #, c-format
 msgid "Operation was cancelled"
@@ -534,7 +534,7 @@ msgstr ""
 "Bus-Adresse konnte nicht über die Umgebungsvariable DBUS_STARTER_BUS_TYPE "
 "ermittelt werden – unbekannter Wert »%s«"
 
-#: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7157
+#: ../gio/gdbusaddress.c:1654 ../gio/gdbusconnection.c:7155
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -694,12 +694,12 @@ msgstr ""
 "wurde erhalten"
 
 #: ../gio/gdbusconnection.c:4414 ../gio/gdbusconnection.c:4622
-#: ../gio/gdbusconnection.c:6588
+#: ../gio/gdbusconnection.c:6586
 #, c-format
 msgid "No such interface '%s'"
 msgstr "Keine derartige Schnittstelle »%s«"
 
-#: ../gio/gdbusconnection.c:4840 ../gio/gdbusconnection.c:7097
+#: ../gio/gdbusconnection.c:4840 ../gio/gdbusconnection.c:7095
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "Keine derartige Schnittstelle »%s« des Objekts im Pfad %s"
@@ -734,17 +734,17 @@ msgstr "Eigenschaft kann nicht gesetzt werden: %s.%s"
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Methode »%s« gab Typ »%s« zurück, aber »%s« wurde erwartet"
 
-#: ../gio/gdbusconnection.c:6699
+#: ../gio/gdbusconnection.c:6697
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Methode »%s« in Schnittstelle »%s« mit Signatur »%s« existiert nicht"
 
-#: ../gio/gdbusconnection.c:6820
+#: ../gio/gdbusconnection.c:6818
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ein Unterbaum wurde bereits für %s exportiert"
 
-#: ../gio/gdbusconnection.c:7148
+#: ../gio/gdbusconnection.c:7146
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -952,12 +952,12 @@ msgstr "Fehlerrückmeldung mit Inhalt des Typs »%s«"
 msgid "Error return with empty body"
 msgstr "Fehlerrückmeldung mit leerem Inhalt"
 
-#: ../gio/gdbusprivate.c:2043
+#: ../gio/gdbusprivate.c:2066
 #, c-format
 msgid "Unable to get Hardware profile: %s"
 msgstr "Hardware-Profil konnte nicht ermittelt werden: %s"
 
-#: ../gio/gdbusprivate.c:2088
+#: ../gio/gdbusprivate.c:2111
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr ""
 "/var/lib/dbus/machine-id oder /etc/machine-id konnte nicht geladen werden: "
@@ -1261,7 +1261,6 @@ msgstr ""
 "abgebrochen wird (Sekunden); 0 für keine Zeitspanne (Voreinstellung)"
 
 #: ../gio/gdbus-tool.c:2031
-#| msgid "[OPTION…]"
 msgid "[OPTION…] BUS-NAME"
 msgstr "[OPTION …] BUS-NAME"
 
@@ -1291,41 +1290,41 @@ msgstr "Fehler: Zu viele Argumente.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Fehler: %s ist kein gültiger, bekannter Bus-Name\n"
 
-#: ../gio/gdesktopappinfo.c:1997 ../gio/gdesktopappinfo.c:4504
+#: ../gio/gdesktopappinfo.c:2001 ../gio/gdesktopappinfo.c:4533
 msgid "Unnamed"
 msgstr "Unbenannt"
 
-#: ../gio/gdesktopappinfo.c:2407
+#: ../gio/gdesktopappinfo.c:2411
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Desktop-Datei hat kein Exec-Feld angegeben"
 
-#: ../gio/gdesktopappinfo.c:2692
+#: ../gio/gdesktopappinfo.c:2696
 msgid "Unable to find terminal required for application"
 msgstr "Für die Anwendung benötigtes Terminal konnte nicht gefunden werden"
 
-#: ../gio/gdesktopappinfo.c:3100
+#: ../gio/gdesktopappinfo.c:3129
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "Konfigurationsordner %s für Benutzeranwendungen konnte nicht erstellt "
 "werden: %s"
 
-#: ../gio/gdesktopappinfo.c:3104
+#: ../gio/gdesktopappinfo.c:3133
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr ""
 "MIME-Konfigurationsordner %s des Benutzers konnte nicht erstellt werden: %s"
 
-#: ../gio/gdesktopappinfo.c:3344 ../gio/gdesktopappinfo.c:3368
+#: ../gio/gdesktopappinfo.c:3373 ../gio/gdesktopappinfo.c:3397
 msgid "Application information lacks an identifier"
 msgstr "Den Anwendungsinformationen fehlt ein Bezeichner"
 
-#: ../gio/gdesktopappinfo.c:3602
+#: ../gio/gdesktopappinfo.c:3631
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Benutzer-Desktop-Datei %s kann nicht erstellt werden"
 
-#: ../gio/gdesktopappinfo.c:3736
+#: ../gio/gdesktopappinfo.c:3765
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Benutzerdefinition für %s"
@@ -3124,15 +3123,15 @@ msgstr "Quelldatenstrom ist bereits geschlossen"
 msgid "Error resolving “%s”: %s"
 msgstr "Fehler beim Auflösen von »%s«: %s"
 
-#: ../gio/gresource.c:595 ../gio/gresource.c:846 ../gio/gresource.c:863
-#: ../gio/gresource.c:987 ../gio/gresource.c:1059 ../gio/gresource.c:1132
-#: ../gio/gresource.c:1202 ../gio/gresourcefile.c:453
+#: ../gio/gresource.c:606 ../gio/gresource.c:857 ../gio/gresource.c:874
+#: ../gio/gresource.c:998 ../gio/gresource.c:1070 ../gio/gresource.c:1143
+#: ../gio/gresource.c:1213 ../gio/gresourcefile.c:453
 #: ../gio/gresourcefile.c:576 ../gio/gresourcefile.c:713
 #, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "Die Ressource auf »%s« existiert nicht"
 
-#: ../gio/gresource.c:760
+#: ../gio/gresource.c:771
 #, c-format
 msgid "The resource at “%s” failed to decompress"
 msgstr "Die Ressource auf »%s« konnte nicht entpackt werden"
@@ -3842,15 +3841,17 @@ msgstr ""
 "Dies ist die letzte Möglichkeit, das Passwort korrekt einzugeben, bevor Ihr "
 "Zugang gesperrt wird."
 
-#: ../gio/gtlspassword.c:113
-msgid ""
-"Several password entered have been incorrect, and your access will be locked "
-"out after further failures."
-msgstr ""
-"Ein Passwort wurde mehrfach inkorrekt eingegeben, daher wird Ihr Zugriff "
-"nach weiteren Fehleingaben gesperrt."
-
+#. Translators: This is not the 'This is the last chance' string. It is
+#. * displayed when more than one attempt is allowed.
 #: ../gio/gtlspassword.c:115
+msgid ""
+"Several passwords entered have been incorrect, and your access will be "
+"locked out after further failures."
+msgstr ""
+"Passwörter wurden mehrfach inkorrekt eingegeben, daher wird Ihr Zugriff nach "
+"weiteren Fehleingaben gesperrt."
+
+#: ../gio/gtlspassword.c:117
 msgid "The password entered is incorrect."
 msgstr "Das eingegebene Passwort ist ungültig."
 
