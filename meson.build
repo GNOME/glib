@@ -1198,6 +1198,12 @@ else
 endif
 glibconfig_conf.set('G_ATOMIC_OP_MEMORY_BARRIER_NEEDED', glib_memory_barrier_needed)
 
+# Note that the atomic ops are only available with GCC on x86 when
+# using -march=i486 or higher.  If we detect that the atomic ops are
+# not available but would be available given the right flags, we want
+# to abort and advise the user to fix their CFLAGS.  It's better to do
+# that then to silently fall back on emulated atomic ops just because
+# the user had the wrong build environment.
 atomictest = '''void func() {
   volatile int atomic = 2;
   __sync_bool_compare_and_swap (&atomic, 2, 3);
@@ -1206,6 +1212,9 @@ atomictest = '''void func() {
 if cc.compiles(atomictest)
   glibconfig_conf.set('G_ATOMIC_LOCK_FREE', true)
 else
+  if host_machine.cpu_family() == 'x86' and cc.compiles(atomictest, args : '-march=i486')
+    error('GLib must be built with -march=i486 or later.')
+  endif
   glibconfig_conf.set('G_ATOMIC_LOCK_FREE', false)
 endif
 
