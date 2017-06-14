@@ -168,9 +168,9 @@ typedef unsigned __int64 guintptr;
 #define G_PLATFORM_WIN32
 @GLIB_WIN32_STATIC_COMPILATION_DEFINE@
 
-#ifndef _MSC_VER
+#if !defined (_MSC_VER) || (_MSC_VER >= 1800)
 #define G_VA_COPY	va_copy
-#endif /* not _MSC_VER */
+#endif /* not _MSC_VER or 2013 or later */
 
 #ifndef _MSC_VER
 #define G_HAVE_ISO_VARARGS 1

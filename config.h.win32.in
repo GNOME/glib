@@ -56,9 +56,9 @@
 #define GLIB_MINOR_VERSION @GLIB_MINOR_VERSION@
 
 /* A 'va_copy' style function */
-#ifndef _MSC_VER
+#if !defined (_MSC_VER) || (_MSC_VER >= 1800)
 #define G_VA_COPY va_copy
-#else /* _MSC_VER */
+#else /* _MSC_VER && _MSC_VER < 1800 */
 /* #undef G_VA_COPY */
 #endif /* _MSC_VER */
 
