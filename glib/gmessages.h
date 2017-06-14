@@ -179,6 +179,13 @@ struct _GLogField
  * but is provided separately for convenience of deciding whether or where to
  * output the log entry.
  *
+ * Writer functions should return %G_LOG_WRITER_HANDLED if they handled the log
+ * message successfully or if they deliberately ignored it. If there was an
+ * error handling the message (for example, if the writer function is meant to
+ * send messages to a remote logging server and there is a network error), it
+ * should return %G_LOG_WRITER_UNHANDLED. This allows writer functions to be
+ * chained and fall back to simpler handlers in case of failure.
+ *
  * Returns: %G_LOG_WRITER_HANDLED if the log entry was handled successfully;
  *    %G_LOG_WRITER_UNHANDLED otherwise
  * Since: 2.50

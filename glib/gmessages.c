@@ -1586,7 +1586,10 @@ done_query:
  * Log a message with structured data. The message will be passed through to
  * the log writer set by the application using g_log_set_writer_func(). If the
  * message is fatal (i.e. its log level is %G_LOG_LEVEL_ERROR), the program will
- * be aborted at the end of this function.
+ * be aborted at the end of this function. If the log writer returns
+ * %G_LOG_WRITER_UNHANDLED (failure), no other fallback writers will be tried.
+ * See the documentation for #GLogWriterFunc for information on chaining
+ * writers.
  *
  * The structured data is provided as key–value pairs, where keys are UTF-8
  * strings, and values are arbitrary pointers — typically pointing to UTF-8
