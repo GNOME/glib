@@ -84,9 +84,10 @@
  * from the point where it is called. g_simple_async_result_complete_in_idle()
  * will finish it from an idle handler in the 
  * [thread-default main context][g-main-context-push-thread-default]
- * . g_simple_async_result_run_in_thread() will run the
- * job in a separate thread and then deliver the result to the
- * thread-default main context.
+ * where the #GSimpleAsyncResult was created.
+ * g_simple_async_result_run_in_thread() will run the job in a
+ * separate thread and then use
+ * g_simple_async_result_complete_in_idle() to deliver the result.
  *
  * To set the results of an asynchronous function,
  * g_simple_async_result_set_op_res_gpointer(),
