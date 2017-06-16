@@ -128,7 +128,7 @@ struct _GDateTime
 #define INSTANT_TO_UNIX(instant) \
   ((instant)/USEC_PER_SECOND - UNIX_EPOCH_START * SEC_PER_DAY)
 #define UNIX_TO_INSTANT(unix) \
-  (((unix) + UNIX_EPOCH_START * SEC_PER_DAY) * USEC_PER_SECOND)
+  (((gint64) (unix) + UNIX_EPOCH_START * SEC_PER_DAY) * USEC_PER_SECOND)
 #define UNIX_TO_INSTANT_IS_VALID(unix) \
   ((gint64) (unix) <= INSTANT_TO_UNIX (G_MAXINT64))
 
