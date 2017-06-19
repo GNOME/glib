@@ -273,6 +273,13 @@ on_name_lost_or_acquired (GDBusConnection  *connection,
       g_strcmp0 (sender_name, "org.freedesktop.DBus") != 0)
     goto out;
 
+  if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(s)")))
+    {
+      g_warning ("%s signal had unexpected signature %s", signal_name,
+                 g_variant_get_type_string (parameters));
+      goto out;
+    }
+
   if (g_strcmp0 (signal_name, "NameLost") == 0)
     {
       g_variant_get (parameters, "(&s)", &name);
