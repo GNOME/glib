@@ -1243,9 +1243,22 @@ g_application_constructed (GObject *object)
 }
 
 static void
+g_application_dispose (GObject *object)
+{
+  GApplication *application = G_APPLICATION (object);
+
+  g_assert_null (application->priv->impl);
+
+  G_OBJECT_CLASS (g_application_parent_class)
+    ->dispose (object);
+}
+
+static void
 g_application_finalize (GObject *object)
 {
   GApplication *application = G_APPLICATION (object);
+
+  g_assert_null (application->priv->impl);
 
   g_slist_free_full (application->priv->option_groups, (GDestroyNotify) g_option_group_unref);
   if (application->priv->main_options)
@@ -1254,9 +1267,6 @@ g_application_finalize (GObject *object)
     g_hash_table_unref (application->priv->packed_options);
 
   g_slist_free_full (application->priv->option_strings, g_free);
-
-  if (application->priv->impl)
-    g_application_impl_destroy (application->priv->impl);
   g_free (application->priv->id);
 
   if (g_application_get_default () == application)
@@ -1314,6 +1324,7 @@ g_application_class_init (GApplicationClass *class)
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   object_class->constructed = g_application_constructed;
+  object_class->dispose = g_application_dispose;
   object_class->finalize = g_application_finalize;
   object_class->get_property = g_application_get_property;
   object_class->set_property = g_application_set_property;
