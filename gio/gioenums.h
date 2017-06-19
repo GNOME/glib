@@ -963,6 +963,8 @@ typedef enum
   G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT = (1<<0),  /*< nick=allow-replacement >*/
   G_BUS_NAME_OWNER_FLAGS_REPLACE = (1<<1)            /*< nick=replace >*/
 } GBusNameOwnerFlags;
+/* When adding new flags, their numeric values must currently match those
+ * used in the D-Bus Specification. */
 
 /**
  * GBusNameWatcherFlags:
