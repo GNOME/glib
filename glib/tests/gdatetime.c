@@ -370,19 +370,27 @@ test_GDateTime_new_from_timeval (void)
   g_date_time_unref (dt);
 }
 
-static gint64
+static glong
 find_maximum_supported_tv_sec (void)
 {
   glong highest_success = 0, lowest_failure = G_MAXLONG;
   GTimeVal tv;
+  GDateTime *dt = NULL;
 
   tv.tv_usec = 0;
 
+  /* Corner case of all glong values being valid. */
+  tv.tv_sec = G_MAXLONG;
+  dt = g_date_time_new_from_timeval_utc (&tv);
+  if (dt != NULL)
+    {
+      highest_success = tv.tv_sec;
+      g_date_time_unref (dt);
+    }
+
   while (highest_success < lowest_failure - 1)
     {
-      GDateTime *dt;
-
-      tv.tv_sec = (highest_success + lowest_failure) / 2;
+      tv.tv_sec = highest_success + (lowest_failure - highest_success) / 2;
       dt = g_date_time_new_from_timeval_utc (&tv);
 
       if (dt != NULL)
