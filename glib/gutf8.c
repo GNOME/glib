@@ -162,7 +162,13 @@ g_utf8_find_prev_char (const char *str,
  * is made to see if the character found is actually valid other than
  * it starts with an appropriate byte.
  * 
- * Returns: a pointer to the found character or %NULL
+ * If @end is %NULL, the return value will never be %NULL: if the end of the
+ * string is reached, a pointer to the terminating nul byte is returned. If
+ * @end is non-%NULL, the return value will be %NULL if the end of the string
+ * is reached.
+ *
+ * Returns: (nullable): a pointer to the found character or %NULL if @end is
+ *    set and is reached
  */
 gchar *
 g_utf8_find_next_char (const gchar *p,

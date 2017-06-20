@@ -128,6 +128,15 @@ test_find (void)
 
   q = g_utf8_find_next_char (str + strlen (str), NULL);
   g_assert (q == str + strlen (str) + 1);
+
+  /* Check return values when reaching the end of the string,
+   * with @end set and unset. */
+  q = g_utf8_find_next_char (str + 10, NULL);
+  g_assert_nonnull (q);
+  g_assert (*q == '\0');
+
+  q = g_utf8_find_next_char (str + 10, str + 11);
+  g_assert_null (q);
 }
 
 int main (int argc, char *argv[])
