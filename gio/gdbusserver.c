@@ -872,7 +872,7 @@ try_tcp (GDBusServer  *server,
                            g_io_error_from_errno (errno),
                            _("Error writing nonce file at “%s”: %s"),
                            server->nonce_file,
-                           strerror (errno));
+                           g_strerror (errno));
               goto out;
             }
           bytes_written += ret;

@@ -626,7 +626,7 @@ read_all_from_fd (gint fd, gsize *out_len, GError **error)
                        "Failed reading %d bytes into offset %d: %s",
                        (gint) sizeof (buf),
                        (gint) str->len,
-                       strerror (errno));
+                       g_strerror (errno));
           goto error;
         }
       else if (num_read > 0)

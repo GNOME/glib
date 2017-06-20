@@ -260,7 +260,7 @@ ensure_keyring_directory (GError **error)
                            g_io_error_from_errno (errno),
                            _("Error when getting information for directory “%s”: %s"),
                            path,
-                           strerror (errno));
+                           g_strerror (errno));
               g_free (path);
               path = NULL;
               goto out;
@@ -293,7 +293,7 @@ ensure_keyring_directory (GError **error)
                    g_io_error_from_errno (errno),
                    _("Error creating directory “%s”: %s"),
                    path,
-                   strerror (errno));
+                   g_strerror (errno));
       g_free (path);
       path = NULL;
       goto out;
@@ -531,7 +531,7 @@ keyring_acquire_lock (const gchar  *path,
                            g_io_error_from_errno (errno),
                            _("Error deleting stale lock file “%s”: %s"),
                            lock,
-                           strerror (errno));
+                           g_strerror (errno));
               goto out;
             }
           _log ("Deleted stale lock file '%s'", lock);
@@ -563,7 +563,7 @@ keyring_acquire_lock (const gchar  *path,
                    g_io_error_from_errno (errno),
                    _("Error creating lock file “%s”: %s"),
                    lock,
-                   strerror (errno));
+                   g_strerror (errno));
       goto out;
     }
 
@@ -593,7 +593,7 @@ keyring_release_lock (const gchar  *path,
                    g_io_error_from_errno (errno),
                    _("Error closing (unlinked) lock file “%s”: %s"),
                    lock,
-                   strerror (errno));
+                   g_strerror (errno));
       goto out;
     }
   if (g_unlink (lock) != 0)
@@ -603,7 +603,7 @@ keyring_release_lock (const gchar  *path,
                    g_io_error_from_errno (errno),
                    _("Error unlinking lock file “%s”: %s"),
                    lock,
-                   strerror (errno));
+                   g_strerror (errno));
       goto out;
     }
 

@@ -245,14 +245,14 @@ watcher_init (void)
       /* fork a child to clean up when we are killed */
       if (pipe (pipe_fds) != 0)
         {
-          g_warning ("pipe() failed: %s", strerror (errno));
+          g_warning ("pipe() failed: %s", g_strerror (errno));
           g_assert_not_reached ();
         }
 
       switch (fork ())
         {
         case -1:
-          g_warning ("fork() failed: %s", strerror (errno));
+          g_warning ("fork() failed: %s", g_strerror (errno));
           g_assert_not_reached ();
           break;
 

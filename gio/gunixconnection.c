@@ -501,7 +501,7 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
                      G_IO_ERROR,
                      g_io_error_from_errno (errno),
                      _("Error checking if SO_PASSCRED is enabled for socket: %s"),
-                     strerror (errno));
+                     g_strerror (errno));
         goto out;
       }
     if (opt_val == 0)
@@ -516,7 +516,7 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
                          G_IO_ERROR,
                          g_io_error_from_errno (errno),
                          _("Error enabling SO_PASSCRED: %s"),
-                         strerror (errno));
+                         g_strerror (errno));
             goto out;
           }
         turn_off_so_passcreds = TRUE;
@@ -609,7 +609,7 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
                        G_IO_ERROR,
                        g_io_error_from_errno (errno),
                        _("Error while disabling SO_PASSCRED: %s"),
-                       strerror (errno));
+                       g_strerror (errno));
           goto out;
         }
     }

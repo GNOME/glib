@@ -3504,7 +3504,7 @@ g_dbus_message_print (GDBusMessage *message,
                 }
               else
                 {
-                  g_string_append_printf (fs, "(fstat failed: %s)", strerror (errno));
+                  g_string_append_printf (fs, "(fstat failed: %s)", g_strerror (errno));
                 }
               g_string_append_printf (str, "%*s  fd %d: %s\n", indent, "", fds[n], fs->str);
               g_string_free (fs, TRUE);
