@@ -1,3 +1,36 @@
+Overview of changes in GLib 2.53.3
+==================================
+
+* Bugs fixed:
+ 658446 Add translation comment for wrong password notice string
+ 661926 Improve the default logging setup in GLib
+ 674885 type initialisation deadlock in GObject
+ 775593 GIO cannot write symlinks on FreeBSD and NetBSD
+ 776169 Various gio-tool fixes
+ 776333 Fix annotation on g_file_copy_async()
+ 776504 Upgrade license from LGPLv2+ to LGPLv2.1+
+ 777307 race condition between gdbus signal callback and g_bus_unwatch_name...
+ 778422 gsubprocesslauncher: Clarify the behavior of set_environ()
+ 781301 Stack pointer corrupted by incorrect call of NtNotifyChangeMultipleKeys
+ 782336 Add additional documentation of the GResource XML format
+ 782996 build: Use AM_TESTS_ENVIRONMENT rather than TESTS_ENVIRONMENT
+ 783061 GApplication: Remove some unused members
+ 783130 Make dbus activation sandbox-aware
+ 783193 Adapt to OpenURI api change
+ 783201 gdbus-codegen: Apply --output-directory to generated docs as well
+ 783340 win32: port monotonic times to use QPC
+ 783350 length parameter can be NULL g_data_input_stream_read_line
+ 783392 incorrect (out) annotation for g_dbus_interface_info_generate_xml
+ 783593 GGtkNotificationBackend should use /org/freedesktop/DBus to call Ge...
+
+* Translation updates:
+ Esperanto
+ German
+ Indonesian
+ Kazakh
+ Spanish
+
+
 Overview of changes in GLib 2.53.2
 ==================================
 
