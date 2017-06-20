@@ -1277,10 +1277,10 @@ g_strerror (gint errnum)
       msg = buf;
 #elif defined(HAVE_STRERROR_R)
       /* Match the condition in strerror_r(3) for glibc */
-#  if defined(__GLIBC__) && !((_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE)
+#  if defined(STRERROR_R_CHAR_P)
       msg = strerror_r (errnum, buf, sizeof (buf));
 #  else
-      strerror_r (errnum, buf, sizeof (buf));
+      (void) strerror_r (errnum, buf, sizeof (buf));
       msg = buf;
 #  endif /* HAVE_STRERROR_R */
 #else
