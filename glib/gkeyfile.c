@@ -1489,7 +1489,7 @@ g_key_file_flush_parse_buffer (GKeyFile  *key_file,
  * Note that this function never reports an error,
  * so it is safe to pass %NULL as @error.
  *
- * Returns: a newly allocated string holding
+ * Returns: (array length=length): a newly allocated string holding
  *   the contents of the #GKeyFile 
  *
  * Since: 2.6
@@ -1559,7 +1559,7 @@ g_key_file_to_data (GKeyFile  *key_file,
  * be found, %NULL is returned and @error is set to
  * #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
- * Returns: (array zero-terminated=1) (transfer full): a newly-allocated %NULL-terminated array of strings.
+ * Returns: (array zero-terminated=1 length=length) (transfer full): a newly-allocated %NULL-terminated array of strings.
  *     Use g_strfreev() to free it.
  *
  * Since: 2.6
@@ -1654,7 +1654,7 @@ g_key_file_get_start_group (GKeyFile *key_file)
  * The array of returned groups will be %NULL-terminated, so 
  * @length may optionally be %NULL.
  *
- * Returns: (array zero-terminated=1) (transfer full): a newly-allocated %NULL-terminated array of strings.
+ * Returns: (array zero-terminated=1 length=length) (transfer full): a newly-allocated %NULL-terminated array of strings.
  *   Use g_strfreev() to free it.
  * Since: 2.6
  **/
