@@ -3299,6 +3299,10 @@ file_copy_fallback (GFile                  *source,
  * will be copied as symlinks, otherwise the target of the
  * @source symlink will be copied.
  *
+ * If the flag #G_FILE_COPY_ALL_METADATA is specified then all the metadata
+ * that is possible to copy is copied, not just the default subset (which,
+ * for instance, does not include the owner, see #GFileInfo).
+ *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
