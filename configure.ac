@@ -3467,6 +3467,7 @@ glib/tests/Makefile
 gmodule/Makefile
 gmodule/gmoduleconf.h
 gobject/Makefile
+gobject/glib-genmarshal
 gobject/glib-mkenums
 gobject/tests/Makefile
 gthread/Makefile
@@ -3502,6 +3503,7 @@ m4macros/Makefile
 AC_CONFIG_COMMANDS([chmod-scripts],
 [chmod 0755 glib-zip
 chmod 0755 glib-gettextize
+chmod 0755 gobject/glib-genmarshal
 chmod 0755 gobject/glib-mkenums])
 
 # we want to invoke this macro solely so that the config.status script

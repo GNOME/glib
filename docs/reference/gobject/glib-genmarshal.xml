@@ -6,6 +6,11 @@
   <authorgroup>
     <author>
       <contrib>Developer</contrib>
+      <firstname>Emmanuele</firstname>
+      <surname>Bassi</surname>
+    </author>
+    <author>
+      <contrib>Original developer</contrib>
       <firstname>Tim</firstname>
       <surname>Janik</surname>
     </author>
@@ -43,8 +48,9 @@ collect its return value.
 </para>
 
 <para><command>glib-genmarshal</command> takes a list of marshallers to generate as
-input. The marshaller list is either read from standard input or from files
-passed as additional arguments on the command line.
+input. The marshaller list is either read from files passed as additional arguments
+on the command line; or from standard input, by using <literal>-</literal> as the
+input file.
 </para>
 
 <refsect2><title>Marshaller list format</title>
@@ -60,7 +66,6 @@ or a marshaller specification of the form
 <replaceable>RTYPE</replaceable>:<replaceable>PTYPE</replaceable>,<replaceable>PTYPE</replaceable>
 <replaceable>RTYPE</replaceable>:<replaceable>PTYPE</replaceable>,<replaceable>PTYPE</replaceable>,<replaceable>PTYPE</replaceable>
 </programlisting>
-(up to 16 <replaceable>PTYPE</replaceable>s may be present).
 </para>
 <para>
 The <replaceable>RTYPE</replaceable> part specifies the callback's return
@@ -239,21 +244,23 @@ deprecated alias for <replaceable>BOOLEAN</replaceable>
 <varlistentry>
 <term><option>--header</option></term>
 <listitem><para>
-Generate header file contents of the marshallers.
+Generate header file contents of the marshallers. This option is mutually
+exclusive with the <option>--body</option> option.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><option>--body</option></term>
 <listitem><para>
-Generate C code file contents of the marshallers.
+Generate C code file contents of the marshallers. This option is mutually
+exclusive with the <option>--header</option> option.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><option>--prefix=<replaceable>PREFIX</replaceable></option></term>
 <listitem><para>
-Specify marshaller prefix. The default prefix is <literal>`g_cclosure_marshal'</literal>.
+Specify marshaller prefix. The default prefix is <literal>`g_cclosure_user_marshal'</literal>.
 </para></listitem>
 </varlistentry>
 
@@ -268,7 +275,9 @@ Skip source location remarks in generated comments.
 <term><option>--stdinc</option></term>
 <listitem><para>
 Use the standard marshallers of the GObject library, and include
-<filename>gmarshal.h</filename> in generated header files.
+<filename>glib-object.h</filename> in generated header files. This
+option is mutually exclusive with the <option>--nostdinc</option>
+option.
 </para></listitem>
 </varlistentry>
 
@@ -276,21 +285,22 @@ Use the standard marshallers of the GObject library, and include
 <term><option>--nostdinc</option></term>
 <listitem><para>
 Do not use the standard marshallers of the GObject library, and skip
-<filename>gmarshal.h</filename> include directive in generated header files.
+<filename>glib-object.h</filename> include directive in generated header files.
+This option is mutually exclusive with the <option>--stdinc</option> option.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><option>--internal</option></term>
 <listitem><para>
-Mark generated functions as internal, using G_GNUC_INTERNAL.
+Mark generated functions as internal, using <literal>G_GNUC_INTERNAL</literal>.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><option>--valist-marshallers</option></term>
 <listitem><para>
-Generate valist marshallers, for use with g_signal_set_va_marshaller().
+Generate valist marshallers, for use with <function>g_signal_set_va_marshaller()</function>.
 </para></listitem>
 </varlistentry>
 
@@ -325,7 +335,76 @@ Print version and exit.
 <varlistentry>
 <term><option>--output=FILE</option></term>
 <listitem><para>
-Write output to FILE instead of stdout.
+Write output to <replaceable>FILE</replaceable> instead of the standard output.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>--prototypes</option></term>
+<listitem><para>
+Generate function prototypes before the function definition in the C source
+file, in order to avoid a <literal>missing-prototypes</literal> compiler
+warning. This option is only useful when using the <option>--body</option>
+option.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>--pragma-once</option></term>
+<listitem><para>
+Use the <literal>once</literal> pragma instead of an old style header guard
+when generating the C header file. This option is only useful when using the
+<option>--header</option> option.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>--include-header=<replaceable>HEADER</replaceable></option></term>
+<listitem><para>
+Adds a <literal>#include</literal> directive for the given file in the C
+source file. This option is only useful when using the <option>--body</option>
+option.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-D <replaceable>SYMBOL[=VALUE]</replaceable></option></term>
+<listitem><para>
+Adds a <literal>#define</literal> C pre-processor directive for
+<replaceable>SYMBOL</replaceable> and its given <replaceable>VALUE</replaceable>,
+or "1" if the value is unset. You can use this option multiple times; if you do,
+all the symbols will be defined in the same order given on the command line, before
+the symbols undefined using the <option>-U</option> option. This option is only
+useful when using the <option>--body</option> option.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>-U <replaceable>SYMBOL</replaceable></option></term>
+<listitem><para>
+Adds a <literal>#undef</literal> C pre-processor directive to undefine the
+given <replaceable>SYMBOL</replaceable>. You can use this option multiple times;
+if you do, all the symbols will be undefined in the same order given on the
+command line, after the symbols defined using the <option>-D</option> option.
+This option is only useful when using the <option>--body</option> option.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>--quiet</option></term>
+<listitem><para>
+Minimizes the output of <command>glib-genmarshal</command>, by printing only
+warnings and errors. This option is mutually exclusive with the
+<option>--verbose</option> option.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>--verbose</option></term>
+<listitem><para>
+Increases the verbosity of <command>glib-genmarshal</command>, by printing
+debugging information. This option is mutually exclusive with the
+<option>--quiet</option> option.
 </para></listitem>
 </varlistentry>
 
@@ -367,9 +446,9 @@ The generated marshallers have the arguments encoded in their function name.
 For this particular list, they are
 </para>
 <programlisting>
-g_cclosure_user_marshal_VOID__VOID(),
-g_cclosure_user_marshal_VOID__INT(),
-g_cclosure_user_marshal_FLOAT__BOOLEAN_UCHAR().
+g_cclosure_user_marshal_VOID__VOID(...),
+g_cclosure_user_marshal_VOID__INT(...),
+g_cclosure_user_marshal_FLOAT__BOOLEAN_UCHAR(...).
 </programlisting>
 <para>
 They can be used directly for GClosures or be passed in as the

@@ -145,9 +145,7 @@ endif
 # that don't serve as direct make target sources, i.e. they don't have
 # their own .lo rules and don't get publically installed
 gobject_extra_sources = \
-	gmarshal.list		\
-	gmarshal.strings
-
+	gmarshal.list
 
 #
 # setup GObject library sources and their dependancies
@@ -183,14 +181,6 @@ CLEANFILES += $(gen_sources)
 # ../configure will supress all autogeneration rules.
 
 
-gmarshal.strings: @REBUILD@ $(srcdir)/gmarshal.list
-	$(AM_V_GEN) grep '^[A-Z]' $(srcdir)/gmarshal.list \
-	| $(SED) -e 's/^/"g_cclosure_marshal_/' -e 's/:/__/' -e 's/,/_/g' -e 's/$$/",/' > xgen-gms \
-	&& cp xgen-gms gmarshal.strings \
-	&& rm -f xgen-gms xgen-gms~
-
-glib-genmarshal.o: gmarshal.strings
-
 # target platform:
 libgobjectinclude_HEADERS = $(gobject_target_headers)
 libgobject_2_0_la_SOURCES = $(gobject_target_sources)
@@ -198,14 +188,12 @@ libgobject_2_0_la_SOURCES = $(gobject_target_sources)
 #
 # programs to compile and install
 #
-bin_PROGRAMS = gobject-query glib-genmarshal
-bin_SCRIPTS = glib-mkenums
+bin_PROGRAMS = gobject-query
+bin_SCRIPTS = glib-mkenums glib-genmarshal
 # source files
 gobject_query_SOURCES = gobject-query.c
-glib_genmarshal_SOURCES = glib-genmarshal.c
 # link programs against libgobject
 progs_LDADD = ./libgobject-2.0.la $(libglib)
-glib_genmarshal_LDADD = $(libglib)
 gobject_query_LDADD = $(progs_LDADD)
 
 #
@@ -214,6 +202,7 @@ gobject_query_LDADD = $(progs_LDADD)
 EXTRA_DIST += 			\
 	gobject.rc.in		\
 	libgobject-gdb.py.in	\
+	glib-genmarshal.in	\
 	glib-mkenums.in
 
 CLEANFILES += libgobject-gdb.py
