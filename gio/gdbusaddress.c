@@ -44,8 +44,11 @@
 #ifdef G_OS_UNIX
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/socket.h>
 #include <sys/types.h>
 #include <gio/gunixsocketaddress.h>
+#include <gio/gunixinputstream.h>
+#include <gio/gunixoutputstream.h>
 #endif
 
 #ifdef G_OS_WIN32
@@ -287,6 +290,25 @@ is_valid_nonce_tcp (const gchar  *address_entry,
 }
 
 static gboolean
+is_valid_unixexec (const gchar  *address_entry,
+              GHashTable   *key_value_pairs,
+              GError      **error)
+{
+  gboolean ret = TRUE;
+  if (g_hash_table_contains (key_value_pairs, "path") != TRUE)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Error in address “%s” — missing variable “path”"),
+                   address_entry);
+      ret = FALSE;
+    }
+
+  return ret;
+}
+
+static gboolean
 is_valid_tcp (const gchar  *address_entry,
               GHashTable   *key_value_pairs,
               GError      **error)
@@ -415,6 +437,8 @@ g_dbus_is_supported_address (const gchar  *string,
         supported = is_valid_nonce_tcp (a[n], key_value_pairs, error);
       else if (g_strcmp0 (a[n], "autolaunch:") == 0)
         supported = TRUE;
+      else if (g_strcmp0 (transport_name, "unixexec") == 0)
+        supported = is_valid_unixexec (a[n], key_value_pairs, error);
 
       g_free (transport_name);
       g_hash_table_unref (key_value_pairs);
@@ -528,6 +552,13 @@ out:
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+static void
+g_dbus_close_socketpair (gpointer data)
+{
+  gint* s = (gint*)data;
+  g_assert (dup3(s[1], STDIN_FILENO, 0) == STDIN_FILENO);
+  g_assert (dup3(s[1], STDOUT_FILENO, 0) == STDOUT_FILENO);
+}
 
 static GIOStream *
 g_dbus_address_try_connect_one (const gchar   *address_entry,
@@ -588,6 +619,73 @@ g_dbus_address_connect (const gchar   *address_entry,
         {
           g_assert_not_reached ();
         }
+    }
+  else if (g_strcmp0 (transport_name, "unixexec") == 0)
+    {
+      gint s[2];
+      GInputStream *standardinput;
+      GOutputStream *standardoutput;
+      GPid child_pid;
+      gchar **command;
+      guint i = 0;
+      gchar *args;
+      guint argnum = 1;
+
+      if (socketpair(AF_UNIX, SOCK_STREAM|SOCK_NONBLOCK|SOCK_CLOEXEC, 0, s) < 0)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_FAILED,
+                       _("Failed to create socket pair"));
+
+          goto out;
+        }
+
+      command = g_malloc ( sizeof (gchar *) * (g_hash_table_size(key_value_pairs) + 1));
+      if (g_hash_table_contains (key_value_pairs, "argv0"))
+        {
+          command[i++] = g_strdup_printf ("%s/%s",
+                                          (gchar*)g_hash_table_lookup (key_value_pairs, "path"),
+                                          (gchar*)g_hash_table_lookup (key_value_pairs, "argv0"));
+        }
+      else
+        {
+          command[i++] = g_strdup (g_hash_table_lookup (key_value_pairs, "path"));
+        }
+      for (args = g_strdup_printf ("argv%u", argnum++); g_hash_table_contains (key_value_pairs, args);)
+        {
+          command[i++] = g_strdup (g_hash_table_lookup (key_value_pairs, args));
+          g_free (args);
+          args = g_strdup_printf ("argv%u", argnum++);
+        }
+      g_free (args);
+      command[i++] = NULL;
+
+      if (g_spawn_async_with_pipes (NULL,
+                                    command,
+                                    NULL,
+                                    G_SPAWN_SEARCH_PATH_FROM_ENVP |
+                                    G_SPAWN_SEARCH_PATH |
+                                    G_SPAWN_LEAVE_DESCRIPTORS_OPEN |
+                                    G_SPAWN_CHILD_INHERITS_STDIN,
+                                    g_dbus_close_socketpair,
+                                    s,
+                                    &child_pid,
+                                    NULL,
+                                    NULL,
+                                    NULL,
+                                    error) == FALSE)
+        {
+          close(s[0]);
+          close(s[1]);
+          goto out;
+        }
+
+      g_strfreev (command);
+      close(s[1]);
+      standardinput= g_unix_input_stream_new(s[0], FALSE);
+      standardoutput= g_unix_output_stream_new(s[0], FALSE);
+      ret = g_simple_io_stream_new(standardinput, standardoutput);
     }
 #endif
   else if (g_strcmp0 (transport_name, "tcp") == 0 || g_strcmp0 (transport_name, "nonce-tcp") == 0)
