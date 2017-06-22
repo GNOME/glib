@@ -1,3 +1,14 @@
+Overview of changes in GLib 2.52.3
+==================================
+
+* Bug fixes:
+ 781301 Stack pointer corrupted by incorrect call of NtNotifyChangeMultipleKeys
+ 781601 Race in g_dbus_server_stop causing spurious GDBus test failures
+ 781867 various gvfsd-* wants to look in /boot/efi, causes unnecessary/inappropriate...
+ 783130 Make dbus activation sandbox-aware
+ 783193 Adapt to OpenURI api change
+ 783201 gdbus-codegen: Apply --output-directory to generated docs as well
+
 Overview of changes in GLib 2.52.2
 ==================================
 
