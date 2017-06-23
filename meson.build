@@ -369,6 +369,18 @@ elif cc.has_header_symbol('sys/mkdev.h', 'major')
   glib_conf.set('MAJOR_IN_MKDEV', 1)
 endif
 
+if cc.has_header_symbol('dlfcn.h', 'RTLD_LAZY')
+  glib_conf.set('HAVE_RTLD_LAZY', 1)
+endif
+
+if cc.has_header_symbol('dlfcn.h', 'RTLD_NOW')
+  glib_conf.set('HAVE_RTLD_NOW', 1)
+endif
+
+if cc.has_header_symbol('dlfcn.h', 'RTLD_GLOBAL')
+  glib_conf.set('HAVE_RTLD_GLOBAL', 1)
+endif
+
 # Check whether to use statfs or statvfs
 # Some systems have both statfs and statvfs, pick the most "native" for these
 if have_func_statfs and have_func_statvfs
