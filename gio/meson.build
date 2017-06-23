@@ -732,7 +732,7 @@ if libelf.found()
 endif
 
 gconstructor_as_data_h = custom_target('gconstructor_as_data.h',
-    input : ['data-to-c.py', meson.source_root() + '/glib/gconstructor.h'],
+    input : ['data-to-c.py', files('../glib/gconstructor.h')],
     output : ['gconstructor_as_data.h'],
     command : [python, '@INPUT0@', '@INPUT1@', 'gconstructor_code', '@OUTPUT@'])
 
