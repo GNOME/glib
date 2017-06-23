@@ -363,6 +363,12 @@ elif cc.has_function('_strnicmp')
   glib_conf_prefix = glib_conf_prefix + '#define HAVE_STRNCASECMP ' + hack_define
 endif
 
+if cc.has_header_symbol('sys/sysmacros.h', 'major')
+  glib_conf.set('MAJOR_IN_SYSMACROS', 1)
+elif cc.has_header_symbol('sys/mkdev.h', 'major')
+  glib_conf.set('MAJOR_IN_MKDEV', 1)
+endif
+
 # Check whether to use statfs or statvfs
 # Some systems have both statfs and statvfs, pick the most "native" for these
 if have_func_statfs and have_func_statvfs

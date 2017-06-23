@@ -793,3 +793,6 @@
 #mesondefine size_t
 
 #mesondefine EXEEXT
+
+#mesondefine MAJOR_IN_MKDEV
+#mesondefine MAJOR_IN_SYSMACROS
