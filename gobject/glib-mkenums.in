@@ -131,7 +131,7 @@ def parse_entries(file, file_name):
 
             if options is not None:
                 options = parse_trigraph(options)
-                if 'skip' in options:
+                if 'skip' not in options:
                     entries.append((name, value, options['nick']));
             else:
                 entries.append((name, value))
