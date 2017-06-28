@@ -4901,7 +4901,7 @@ schedule_method_call (GDBusConnection            *connection,
                          call_in_idle_cb,
                          invocation,
                          g_object_unref);
-  g_source_set_name (idle_source, "[gio] call_in_idle_cb");
+  g_source_set_name (idle_source, "[gio, " __FILE__ "] call_in_idle_cb");
   g_source_attach (idle_source, main_context);
   g_source_unref (idle_source);
 }
