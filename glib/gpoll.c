@@ -235,9 +235,8 @@ poll_rest (gboolean  poll_msgs,
 	{
 	  /* Remove the handle that fired */
 	  int i;
-	  if (ready < nhandles - 1)
-	    for (i = ready - WAIT_OBJECT_0 + 1; i < nhandles; i++)
-	      handles[i-1] = handles[i];
+	  for (i = ready - WAIT_OBJECT_0 + 1; i < nhandles; i++)
+	    handles[i-1] = handles[i];
 	  nhandles--;
 	  recursed_result = poll_rest (FALSE, handles, nhandles, fds, nfds, 0);
 	  return (recursed_result == -1) ? -1 : 1 + recursed_result;
