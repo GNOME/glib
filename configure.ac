@@ -465,8 +465,8 @@ GLIB_GNU_GETTEXT
 
 if test "$gt_cv_have_gettext" != "yes" ; then
   AC_MSG_ERROR([
-*** You must have either have gettext support in your C library, or use the 
-*** GNU gettext library. (http://www.gnu.org/software/gettext/gettext.html
+*** You must have either have gettext support in your C library, or use the
+*** GNU gettext library. (http://www.gnu.org/software/gettext/gettext.html)
 ])
 fi
 
