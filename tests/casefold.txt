@@ -1,4 +1,4 @@
-# Test cases generated from Unicode 9.0.0 data
+# Test cases generated from Unicode 10.0.0 data
 # by gen-casefold-test.pl. Do not edit.
 #
 # Some special hand crafted tests
