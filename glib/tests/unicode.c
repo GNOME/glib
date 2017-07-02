@@ -293,6 +293,10 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_NEWA,                   0x11400 },
     { G_UNICODE_SCRIPT_OSAGE,                  0x104B0 },
     { G_UNICODE_SCRIPT_TANGUT,                 0x16FE0 },
+    { G_UNICODE_SCRIPT_MASARAM_GONDI,          0x11D00 },
+    { G_UNICODE_SCRIPT_NUSHU,                  0x1B170 },
+    { G_UNICODE_SCRIPT_SOYOMBO,                0x11A50 },
+    { G_UNICODE_SCRIPT_ZANABAZAR_SQUARE,       0x11A00 },
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     g_assert_cmpint (g_unichar_get_script (examples[i].c), ==, examples[i].script);
@@ -885,6 +889,12 @@ test_iso15924 (void)
     { G_UNICODE_SCRIPT_NEWA,                   "Newa" },
     { G_UNICODE_SCRIPT_OSAGE,                  "Osge" },
     { G_UNICODE_SCRIPT_TANGUT,                 "Tang" },
+
+    /* Unicode 10.0 additions */
+    { G_UNICODE_SCRIPT_MASARAM_GONDI,          "Gonm" },
+    { G_UNICODE_SCRIPT_NUSHU,                  "Nshu" },
+    { G_UNICODE_SCRIPT_SOYOMBO,                "Soyo" },
+    { G_UNICODE_SCRIPT_ZANABAZAR_SQUARE,       "Zanb" },
   };
   guint i;
 

@@ -1434,6 +1434,12 @@ static const guint32 iso15924_tags[] =
     PACK ('N','e','w','a'), /* G_UNICODE_SCRIPT_NEWA */
     PACK ('O','s','g','e'), /* G_UNICODE_SCRIPT_OSAGE */
     PACK ('T','a','n','g'), /* G_UNICODE_SCRIPT_TANGUT */
+
+  /* Unicode 10.0 additions */
+    PACK ('G','o','n','m'), /* G_UNICODE_SCRIPT_MASARAM_GONDI */
+    PACK ('N','s','h','u'), /* G_UNICODE_SCRIPT_NUSHU */
+    PACK ('S','o','y','o'), /* G_UNICODE_SCRIPT_SOYOMBO */
+    PACK ('Z','a','n','b'), /* G_UNICODE_SCRIPT_ZANABAZAR_SQUARE */
 #undef PACK
 };
 
