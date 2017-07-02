@@ -21,6 +21,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <string.h>
 
 #include "gopenuriportal.h"
 #include "xdp-dbus.h"
@@ -201,6 +202,7 @@ open_call_done (GObject      *source,
   gboolean open_file;
   gboolean res;
   char *path;
+  const char *handle;
   guint signal_id;
 
   open_file = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (task), "open-file"));
@@ -218,17 +220,24 @@ open_call_done (GObject      *source,
       return;
     }
 
-  signal_id = g_dbus_connection_signal_subscribe (connection,
-                                                  "org.freedesktop.portal.Desktop",
-                                                  "org.freedesktop.portal.Request",
-                                                  "Response",
-                                                  path,
-                                                  NULL,
-                                                  G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE,
-                                                  response_received,
-                                                  task,
-                                                  NULL);
-  g_object_set_data (G_OBJECT (task), "signal-id", GINT_TO_POINTER (signal_id));
+  handle = (const char *)g_object_get_data (G_OBJECT (task), "handle");
+  if (strcmp (handle, path) != 0)
+    {
+      signal_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (task), "signal-id"));
+      g_dbus_connection_signal_unsubscribe (connection, signal_id);
+
+      signal_id = g_dbus_connection_signal_subscribe (connection,
+                                                      "org.freedesktop.portal.Desktop",
+                                                      "org.freedesktop.portal.Request",
+                                                      "Response",
+                                                      path,
+                                                      NULL,
+                                                      G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE,
+                                                      response_received,
+                                                      task,
+                                                      NULL);
+      g_object_set_data (G_OBJECT (task), "signal-id", GINT_TO_POINTER (signal_id));
+    }
 }
 
 void
@@ -238,9 +247,15 @@ g_openuri_portal_open_uri_async (const char          *uri,
                                  GAsyncReadyCallback  callback,
                                  gpointer             user_data)
 {
+  GDBusConnection *connection;
   GTask *task;
   GFile *file;
   GVariantBuilder opt_builder;
+  char *token;
+  char *sender;
+  char *handle;
+  int i;
+  guint signal_id;
 
   if (!init_openuri_portal ())
     {
@@ -250,12 +265,40 @@ g_openuri_portal_open_uri_async (const char          *uri,
       return;
     }
 
+  connection = g_dbus_proxy_get_connection (G_DBUS_PROXY (openuri));
+
   if (callback)
-    task = g_task_new (NULL, cancellable, callback, user_data);
+    {
+      task = g_task_new (NULL, cancellable, callback, user_data);
+
+      token = g_strdup_printf ("gio%d", g_random_int_range (0, G_MAXINT));
+      sender = g_strdup (g_dbus_connection_get_unique_name (connection) + 1);
+      for (i = 0; sender[i]; i++)
+        if (sender[i] == '.')
+          sender[i] = '_';
+
+      handle = g_strdup_printf ("/org/fredesktop/portal/desktop/request/%s/%s", sender, token);
+      g_object_set_data_full (G_OBJECT (task), "handle", handle, g_free);
+      g_free (sender);
+
+      signal_id = g_dbus_connection_signal_subscribe (connection,
+                                                      "org.freedesktop.portal.Desktop",
+                                                      "org.freedesktop.portal.Request",
+                                                      "Response",
+                                                      handle,
+                                                      NULL,
+                                                      G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE,
+                                                      response_received,
+                                                      task,
+                                                      NULL);
+      g_object_set_data (G_OBJECT (task), "signal-id", GINT_TO_POINTER (signal_id));
+    }
   else
     task = NULL;
 
   g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
+  g_variant_builder_add (&opt_builder, "{sv}", "handle_token", g_variant_new_string (token));
+  g_free (token);
 
   file = g_file_new_for_uri (uri);
   if (g_file_is_native (file))
