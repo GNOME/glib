@@ -82,44 +82,6 @@ for f in $included_files; do
 done
 cat $IN/Makefile.am-2 >> Makefile.am
 
-# Generate makefile.msc
-cat > makefile.msc << EOF
-TOP = ..\..\..
-!INCLUDE ..\..\build\win32\make.msc
-
-INCLUDES = \\
-	-I ..\.. \\
-	-I ..
-	
-DEFINES = \\
-	-DPCRE_STATIC \\
-	-DHAVE_CONFIG_H \\
-	-DHAVE_LONG_LONG_FORMAT \\
-	-DSUPPORT_UCP \\
-	-DSUPPORT_UTF8 \\
-	-DNEWLINE=-1 \\
-	-DMATCH_LIMIT=10000000 \\
-	-DMATCH_LIMIT_RECURSION=10000000 \\
-	-DMAX_NAME_SIZE=32 \\
-	-DMAX_NAME_COUNT=10000 \\
-	-DMAX_DUPLENGTH=30000 \\
-	-DLINK_SIZE=2 \\
-	-DEBCDIC=0 \\
-	-DPOSIX_MALLOC_THRESHOLD=10
-
-OBJECTS = \\
-`
-for f in $all_files; do
-    echo "	$f.obj \\\\"
-done
-`
-
-all : pcre.lib
-
-pcre.lib : \$(OBJECTS)
-	lib -out:pcre.lib \$(OBJECTS)
-EOF
-
 echo "Patching PCRE"
 
 # Copy the license.

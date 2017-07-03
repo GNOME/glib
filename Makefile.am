@@ -49,7 +49,6 @@ EXTRA_DIST += 			\
 	glib-tap.mk		\
 	tap-driver.sh		\
 	tap-test		\
-	makefile.msc		\
 	msvc_recommended_pragmas.h \
 	config.h.win32.in	\
         po/po2tbl.sed.in        \

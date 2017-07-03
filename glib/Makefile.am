@@ -55,7 +55,6 @@ MIRRORING_TAB_SOURCE = 				\
 # The compilation of GRegex can be disabled, but the source files must
 # be distributed.
 EXTRA_DIST += 			\
-	makefile.msc.in		\
 	glib.rc.in		\
 	gen-unicode-tables.pl	\
 	glibconfig.h.win32.in	\
@@ -71,7 +70,6 @@ CLEANFILES += libglib-gdb.py
 
 # These may be in the builddir too
 BUILT_EXTRA_DIST += 		\
-	makefile.msc		\
 	glibconfig.h.win32	\
 	glib.rc
 

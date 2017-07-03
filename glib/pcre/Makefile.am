@@ -60,6 +60,4 @@ libpcre_la_SOURCES = \
 
 libpcre_la_LIBADD = $(DEP_LIBS)
 
-EXTRA_DIST +=				\
-		COPYING			\
-		makefile.msc
+EXTRA_DIST += COPYING

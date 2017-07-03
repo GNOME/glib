@@ -212,7 +212,6 @@ gobject_query_LDADD = $(progs_LDADD)
 # auxillary files
 #
 EXTRA_DIST += 			\
-	makefile.msc.in 	\
 	gobject.rc.in		\
 	libgobject-gdb.py.in	\
 	glib-mkenums.in
@@ -220,7 +219,6 @@ EXTRA_DIST += 			\
 CLEANFILES += libgobject-gdb.py
 
 BUILT_EXTRA_DIST += \
-	makefile.msc		\
 	gobject.rc
 
 gobject-win32-res.o: gobject.rc

@@ -757,7 +757,6 @@ EXTRA_DIST += 			\
 	data-to-c.pl		\
 	gioenumtypes.h.template	\
 	gioenumtypes.c.template	\
-	makefile.msc		\
 	gio.rc.in		\
 	gschema.dtd		\
 	gconstructor_as_data.h	\

@@ -10,7 +10,6 @@ AM_CPPFLAGS = 				\
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
 EXTRA_DIST +=				\
-		makefile.msc.in 	\
 		gmoduleconf.h.in 	\
 		gmodule-dl.c		\
 		gmodule-dyld.c		\
@@ -20,7 +19,6 @@ EXTRA_DIST +=				\
 		gmodule.rc.in
 
 BUILT_EXTRA_DIST += \
-		makefile.msc	\
 		gmodule.rc
 
 BUILT_SOURCES += gmoduleconf.h

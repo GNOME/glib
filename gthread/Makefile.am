@@ -10,12 +10,10 @@ AM_CPPFLAGS = 				\
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
 EXTRA_DIST +=				\
-		makefile.msc.in		\
 		gthread.def		\
 		gthread.rc.in
 
 BUILT_EXTRA_DIST += 			\
-		makefile.msc		\
 		gthread.rc
 
 libglib = $(top_builddir)/glib/libglib-2.0.la

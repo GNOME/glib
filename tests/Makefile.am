@@ -146,15 +146,11 @@ endif
 
 EXTRA_DIST += \
 	$(test_scripts)				\
-	makefile.msc.in				\
 	gen-casefold-txt.pl			\
 	gen-casemap-txt.pl			\
 	iochannel-test-infile			\
 	timeloop-basic.c			\
 	assert-msg-test.gdb
-
-BUILT_EXTRA_DIST +=				\
-	makefile.msc
 
 DISTCLEANFILES +=		\
 	iochannel-test-outfile	\

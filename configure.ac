@@ -3513,16 +3513,11 @@ if false; then
     README
     config.h.win32
     glib/glibconfig.h.win32
-    glib/makefile.msc
     glib/glib.rc
-    gmodule/makefile.msc
     gmodule/gmodule.rc
-    gobject/makefile.msc
     gobject/gobject.rc
-    gthread/makefile.msc
     gthread/gthread.rc
     gio/gio.rc
-    tests/makefile.msc
   ])
 fi
 
