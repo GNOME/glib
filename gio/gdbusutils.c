@@ -358,7 +358,11 @@ g_dbus_is_guid (const gchar *string)
  * Converts a #GVariant to a #GValue. If @value is floating, it is consumed.
  *
  * The rules specified in the g_dbus_gvalue_to_gvariant() function are
- * used - this function is essentially its reverse form.
+ * used - this function is essentially its reverse form. So, a #GVariant
+ * containing any basic or string array type will be converted to a #GValue
+ * containing a basic value or string array. Any other #GVariant (handle,
+ * variant, tuple, dict entry) will be converted to a #GValue containing that
+ * #GVariant.
  *
  * The conversion never fails - a valid #GValue is always returned in
  * @out_gvalue.
