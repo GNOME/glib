@@ -433,19 +433,12 @@ test_GDateTime_new_from_timeval_overflow (void)
   g_assert_nonnull (dt);
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_from_timeval_local (&tv);
-  g_assert_nonnull (dt);
-  g_date_time_unref (dt);
-
   if (tv.tv_sec < G_MAXLONG)
     {
       tv.tv_sec++;
       tv.tv_usec = 0;
 
       dt = g_date_time_new_from_timeval_utc (&tv);
-      g_assert_null (dt);
-
-      dt = g_date_time_new_from_timeval_local (&tv);
       g_assert_null (dt);
     }
 }
