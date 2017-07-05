@@ -1160,8 +1160,8 @@ g_resources_enumerate_children (const gchar           *path,
  * @lookup_flags: A #GResourceLookupFlags
  * @size:  (out) (optional): a location to place the length of the contents of the file,
  *    or %NULL if the length is not needed
- * @flags:  (out) (optional): a location to place the flags about the file,
- *    or %NULL if the length is not needed
+ * @flags:  (out) (optional): a location to place the #GResourceFlags about the file,
+ *    or %NULL if the flags are not needed
  * @error: return location for a #GError, or %NULL
  *
  * Looks for a file at the specified @path in the set of
