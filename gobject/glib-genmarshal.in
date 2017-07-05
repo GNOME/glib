@@ -92,7 +92,7 @@ UNBOX_UNTYPED_STR = \
 
 STD_PREFIX = 'g_cclosure_marshal'
 
-# Keep it in sync with gmarshal.list
+# These are part of our ABI; keep this in sync with gmarshal.h
 GOBJECT_MARSHALLERS = {
     'g_cclosure_marshal_VOID__VOID',
     'g_cclosure_marshal_VOID__BOOLEAN',

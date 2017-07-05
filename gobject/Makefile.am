@@ -144,8 +144,7 @@ endif
 # non-header sources (headers should be specified in the above variables)
 # that don't serve as direct make target sources, i.e. they don't have
 # their own .lo rules and don't get publically installed
-gobject_extra_sources = \
-	gmarshal.list
+gobject_extra_sources =
 
 #
 # setup GObject library sources and their dependancies
@@ -155,8 +154,7 @@ gobject_target_sources = $(gobject_c_sources)
 EXTRA_HEADERS =
 EXTRA_DIST += \
 	$(gobject_private_h_sources) 	\
-	$(gobject_extra_sources) 	\
-	marshal-genstrings.pl
+	$(gobject_extra_sources)
 
 # This is read by gobject-introspection/misc/ and gtk-doc
 gobject-public-headers.txt: Makefile

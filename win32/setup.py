@@ -297,26 +297,6 @@ def main(argv):
                os.path.join(srcroot, 'gobject', 'glib-mkenums'),
                mkenums_vars)
 
-    #gmarshal.strings
-    cwd = os.getcwd()
-    os.chdir(os.path.join(srcroot, 'gobject'))
-    with open(os.path.join(srcroot, 'gobject', 'gmarshal.strings'), 'w') as d:
-        with open(os.path.join(srcroot, 'gobject', 'gmarshal.list'), 'r') as s:
-            for i in s:
-                if i[0] not in string.ascii_uppercase: #^[A-Z]
-                    continue
-                line = '"g_cclosure_marshal_' # s/^/"g_cclosure_marshal_/
-                for c in i:
-                    if c == ':':
-                        line += '__'          # s/:/__
-                    elif c == ',':
-                        line += '_'           # s/,/_
-                    elif c not in '\r\n':
-                        line += c
-                d.write(line + '",\n')
-        #subprocess.Popen([opt.perl, 'marshal-genstrings.pl'], stdout=d).communicate()
-    os.chdir(cwd)
-
     generate_libgobject_sourcefiles(srcroot,
                                 os.path.join(srcroot, 'win32', 'libgobject.sourcefiles'), '9')
     generate_libgobject_sourcefiles(srcroot,
