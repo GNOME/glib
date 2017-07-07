@@ -275,6 +275,8 @@ gsettings_description (void)
 {
   const gchar *description;
   description = g_settings_schema_key_get_description (global_schema_key);
+  if (description == NULL)
+    description = g_settings_schema_key_get_summary (global_schema_key);
   g_print ("%s\n", description);
 }
 
