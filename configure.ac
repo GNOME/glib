@@ -2243,7 +2243,7 @@ AC_CACHE_CHECK([for lock-free atomic intrinsics], glib_cv_g_atomic_lock_free, [
         AC_TRY_LINK([],
                        [volatile int atomic = 2;\
                         __sync_bool_compare_and_swap (&atomic, 2, 3);],
-                       [AC_MSG_ERROR([GLib must be build with -march=i486 or later.])],
+                       [AC_MSG_ERROR([GLib must be built with -march=i486 or later.])],
                        [])
         CFLAGS="${SAVE_CFLAGS}"
       fi
