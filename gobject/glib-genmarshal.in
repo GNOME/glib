@@ -962,7 +962,7 @@ if __name__ == '__main__':
             if line == '\n' or line.startswith('#'):
                 continue
 
-            matches = re.match(r'^([A-Z0-9]+):([A-Z0-9,]+)$', line.strip())
+            matches = re.match(r'^([A-Z0-9]+)\s?:\s?([A-Z0-9,\s]+)$', line.strip())
             if not matches or len(matches.groups()) != 2:
                 print_warning('Invalid entry: "{}"'.format(line.strip()), args.fatal_warnings)
                 continue
@@ -972,8 +972,8 @@ if __name__ == '__main__':
             else:
                 location = None
 
-            retval = matches.group(1)
-            params = matches.group(2).split(',')
+            retval = matches.group(1).strip()
+            params = [x.strip() for x in matches.group(2).split(',')]
             check_args(retval, params, args.fatal_warnings)
 
             raw_marshaller = generate_marshaller_name(args.prefix, retval, params, False)
