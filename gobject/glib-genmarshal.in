@@ -733,7 +733,7 @@ def generate_body(retval, params, prefix, va_marshal=False):
 
     if va_marshal:
         boxed_args = [x for x in get_args if IN_ARGS[x].get('box', None) is not None]
-        if boxed_args:
+        if not boxed_args:
             body += ['']
         else:
             for idx, arg in enumerate(get_args):
