@@ -273,7 +273,7 @@
  *
  * To put the entire example together, for our dictionary mapping
  * strings to variants (with two entries, as given above), we are
- * using 91 bytes of memory for type information, 29 byes of memory
+ * using 91 bytes of memory for type information, 29 bytes of memory
  * for the serialised data, 16 bytes for buffer management and 24
  * bytes for the #GVariant instance, or a total of 160 bytes, plus
  * malloc overhead.  If we were to use g_variant_get_child_value() to
