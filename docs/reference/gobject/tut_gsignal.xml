@@ -250,7 +250,7 @@ guint g_signal_newv (const gchar        *signal_name,
 			  closures.
 			</para></listitem>
 		  <listitem><para>
-			  <parameter>accumulator_data</parameter>: this pointer will be passed down to each invocation of the
+			  <parameter>accu_data</parameter>: this pointer will be passed down to each invocation of the
 			  accumulator during emission.
 			</para></listitem>
 		  <listitem><para>
