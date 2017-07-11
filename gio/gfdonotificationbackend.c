@@ -200,9 +200,9 @@ urgency_from_priority (GNotificationPriority priority)
 
     default:
     case G_NOTIFICATION_PRIORITY_NORMAL:
+    case G_NOTIFICATION_PRIORITY_HIGH:
       return 1;
 
-    case G_NOTIFICATION_PRIORITY_HIGH:
     case G_NOTIFICATION_PRIORITY_URGENT:
       return 2;
     }
