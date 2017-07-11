@@ -650,7 +650,6 @@ def generate_body(retval, params, prefix, va_marshal=False):
 
     if retval_setter:
         body += ['  {} v_return;'.format(OUT_ARGS[retval]['ctype'])]
-        body += ['  g_return_if_fail (return_value != NULL);']
 
     if va_marshal:
         for idx, arg in enumerate(get_args):
@@ -680,7 +679,14 @@ def generate_body(retval, params, prefix, va_marshal=False):
                         body += [BOX_UNTYPED_STR.format(idx=idx, box_func=box_func)]
 
             body += ['  va_end (args_copy);']
-    else:
+
+    body += ['']
+
+    # Preconditions check
+    if retval_setter:
+        body += ['  g_return_if_fail (return_value != NULL);']
+
+    if not va_marshal:
         body += ['  g_return_if_fail (n_param_values == {:d});'.format(len(get_args) + 1)]
 
     body += ['']
