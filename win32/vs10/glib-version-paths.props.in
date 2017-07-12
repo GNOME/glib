@@ -12,7 +12,11 @@
     <GlibSeparateVSDllSuffix>-2-vs$(VSVer)</GlibSeparateVSDllSuffix>
     <GlibDllPrefix>$(GlibSeparateVSDllPrefix)</GlibDllPrefix>
     <GlibDllSuffix>$(GlibSeparateVSDllSuffix)</GlibDllSuffix>
-    <PythonPath>c:\python27</PythonPath>
+    <PythonPath Condition="'$(VisualStudioVersion)' == '10.0'">c:\python34</PythonPath>
+    <PythonPath Condition="'$(VisualStudioVersion)' == '11.0'">c:\python34</PythonPath>
+    <PythonPath Condition="'$(VisualStudioVersion)' == '12.0'">c:\python34</PythonPath>
+    <PythonPath Condition="'$(VisualStudioVersion)' == '14.0'">c:\python36</PythonPath>
+    <PythonPath Condition="'$(VisualStudioVersion)' == '15.0'">c:\python36</PythonPath>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>glibversionpathsprops</_PropertySheetDisplayName>
