@@ -651,7 +651,7 @@ gioenumtypes_h = custom_target('gioenumtypes_h',
   install : true,
   install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
   command : [python, glib_mkenums,
-             '--template', meson.current_source_dir() + '/gioenumtypes.h.template',
+             '--template', files('gioenumtypes.h.template'),
              '@INPUT@', gnetworking_h])
 
 gioenumtypes_c = custom_target('gioenumtypes_c',
@@ -660,7 +660,7 @@ gioenumtypes_c = custom_target('gioenumtypes_c',
   input : gio_headers,
   depends : [gioenumtypes_h],
   command : [python, glib_mkenums,
-             '--template', meson.current_source_dir() + '/gioenumtypes.c.template',
+             '--template', files('gioenumtypes.c.template'),
              '@INPUT@', gnetworking_h])
 
 gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h])
