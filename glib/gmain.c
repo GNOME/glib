@@ -2714,7 +2714,7 @@ g_get_monotonic_time (void)
       if (QueryPerformanceCounter (&ticks))
         return (gint64)(ticks.QuadPart * g_monotonic_usec_per_tick);
 
-      g_warning ("QueryPerformanceCounter Failed (%d)", GetLastError ());
+      g_warning ("QueryPerformanceCounter Failed (%lu)", GetLastError ());
       g_monotonic_usec_per_tick = 0;
     }
 
