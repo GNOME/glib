@@ -324,7 +324,7 @@ try_prepend_dir (const gchar *directory)
 static void
 try_prepend_data_dir (const gchar *directory)
 {
-  const gchar *dirname = g_build_filename (directory, "glib-2.0", "schemas", NULL);
+  gchar *dirname = g_build_filename (directory, "glib-2.0", "schemas", NULL);
   try_prepend_dir (dirname);
   g_free (dirname);
 }
