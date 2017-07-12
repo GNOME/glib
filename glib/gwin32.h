@@ -84,7 +84,6 @@ gchar* 		g_win32_getlocale  (void);
 GLIB_AVAILABLE_IN_ALL
 gchar*          g_win32_error_message (gint error);
 
-#ifndef _WIN64
 GLIB_DEPRECATED
 gchar*          g_win32_get_package_installation_directory (const gchar *package,
 							    const gchar *dll_name);
@@ -93,7 +92,6 @@ GLIB_DEPRECATED
 gchar*          g_win32_get_package_installation_subdirectory (const gchar *package,
 							       const gchar *dll_name,
 							       const gchar *subdir);
-#endif
 
 GLIB_AVAILABLE_IN_ALL
 gchar*          g_win32_get_package_installation_directory_of_module (gpointer hmodule);
