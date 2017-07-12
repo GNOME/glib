@@ -1238,8 +1238,6 @@ g_spawn_check_exit_status (gint      exit_status,
   return ret;
 }
 
-#endif /* !GSPAWN_HELPER */
-
 #ifdef G_OS_WIN32
 
 /* Binary compatibility versions. Not for newly compiled code. */
@@ -1372,4 +1370,6 @@ g_spawn_command_line_async_utf8 (const gchar *command_line,
   return g_spawn_command_line_async (command_line, error);
 }
 
-#endif
+#endif /* G_OS_WIN32 */
+
+#endif /* !GSPAWN_HELPER */
