@@ -20,8 +20,6 @@ copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\$(GlibDllPrefix)gobj
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\$(GlibDllPrefix)gobject$(GlibDllSuffix).pdb $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\$(GlibDllPrefix)gio$(GlibDllSuffix).dll $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\$(GlibDllPrefix)gio$(GlibDllSuffix).pdb $(CopyDir)\bin&#x0D;&#x0A;
-copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\glib-genmarshal.exe $(CopyDir)\bin&#x0D;&#x0A;
-copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\glib-genmarshal.pdb $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gspawn-win*-helper*.exe $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gspawn-win*-helper*.pdb $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\glib-compile-schemas.exe $(CopyDir)\bin&#x0D;&#x0A;
@@ -38,8 +36,9 @@ copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gdbus.exe $(CopyDir)
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gdbus.pdb $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gio.exe $(CopyDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gio.pdb $(CopyDir)\bin&#x0D;&#x0A;
-if exist ..\..\gio\gdbus-2.0\codegen\gdbus-codegen copy ..\..\gio\gdbus-2.0\codegen\gdbus-codegen $(CopyDir)\bin&#x0D;&#x0A;
-if exist ..\..\gobject\glib-mkenums copy ..\..\gobject\glib-mkenums $(CopyDir)\bin&#x0D;&#x0A;
+copy ..\..\gobject\glib-mkenums $(CopyDir)\bin&#x0D;&#x0A;
+copy ..\..\gobject\glib-genmarshal $(CopyDir)\bin&#x0D;&#x0A;
+copy ..\..\gio\gdbus-2.0\codegen\gdbus-codegen $(CopyDir)\bin&#x0D;&#x0A;
 
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib\deprecated&#x0D;&#x0A;
 copy ..\..\msvc_recommended_pragmas.h $(CopyDir)\include\glib-$(ApiVersion)&#x0D;&#x0A;
@@ -87,14 +86,18 @@ copy ..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\codege
 	/>
 	<UserMacro
 		Name="GenGLibMKEnums"
-		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\gen_util_scripts.py --type=glib-mkenums --version=$(GlibVersion)"
+		Value="$(PythonPath)\python.exe ..\gen_util_scripts.py --type=glib-mkenums --version=$(GlibVersion)"
+	/>
+	<UserMacro
+		Name="GenGLibGenmarshal"
+		Value="$(PythonPath)\python.exe ..\gen_util_scripts.py --type=glib-genmarshal --version=$(GlibVersion)"
 	/>
 	<UserMacro
 		Name="GenGDBusCodegen"
-		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\gen_util_scripts.py --type=gdbus-codegen --version=$(GlibVersion)"
+		Value="$(PythonPath)\python.exe ..\gen_util_scripts.py --type=gdbus-codegen --version=$(GlibVersion)"
 	/>
 	<UserMacro
 		Name="GlibGenPC"
-		Value="(if not exist $(CopyDir) mkdir $(CopyDir)) &amp; (if exist $(PythonPath)\python.exe $(PythonPath)\python.exe ..\glibpc.py --prefix=$(CopyDir) --version=$(GlibVersion))"
+		Value="(if not exist $(CopyDir) mkdir $(CopyDir)) &amp; ($(PythonPath)\python.exe ..\glibpc.py --prefix=$(CopyDir) --version=$(GlibVersion))"
 	/>
 </VisualStudioPropertySheet>

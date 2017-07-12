@@ -148,6 +148,40 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File RelativePath="..\..\gobject\glib-genmarshal.in">
+				<FileConfiguration Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib-genmarshal..."
+						CommandLine="$(GenGLibGenmarshal)"
+						Outputs="..\..\gobject\glib-genmarshal"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib-genmarshal..."
+						CommandLine="$(GenGLibGenmarshal)"
+						Outputs="..\..\gobject\glib-genmarshal"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib-genmarshal..."
+						CommandLine="$(GenGLibGenmarshal)"
+						Outputs="..\..\gobject\glib-genmarshal"
+					/>
+				</FileConfiguration>
+				<FileConfiguration Name="Release|x64">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib-genmarshal..."
+						CommandLine="$(GenGLibGenmarshal)"
+						Outputs="..\..\gobject\glib-genmarshal"
+					/>
+				</FileConfiguration>
+			</File>
 			<File RelativePath="..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in">
 				<FileConfiguration Name="Debug|Win32">
 					<Tool

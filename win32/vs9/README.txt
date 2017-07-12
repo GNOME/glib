@@ -22,7 +22,12 @@ proxy-libintl-dev and zlib-dev zipfiles from
 http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/ for 32-bit
 builds, and correspondingly
 http://ftp.gnome.org/pub/GNOME/binaries/win64/dependencies/ for 64-bit
-builds. 
+builds.
+
+A Python 2.7.x or 3.x interpreter is also required, in order to generate
+the utility scripts, as well as the pkg-config files for the build.  Please
+see the entry "PythonPath" in glib-version-paths.vsprops to verify that
+it is correct.
 
 One may wish to build his/her own ZLib-It is recommended that ZLib is
 built using the win32/Makefile.msc makefile with VS9 with the ASM routines

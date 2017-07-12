@@ -24,6 +24,11 @@ builds, and correspondingly
 http://ftp.gnome.org/pub/GNOME/binaries/win64/dependencies/ for 64-bit
 builds.
 
+A Python 2.7.x or 3.x interpreter is also required, in order to generate
+the utility scripts, as well as the pkg-config files for the build.  Please
+see the entry "PythonPath" in glib-version-paths.props to verify that
+it is correct.
+
 One may wish to build his/her own ZLib-It is recommended that ZLib is
 built using the win32/Makefile.msc makefile with VS10 with the ASM routines
 to avoid linking problems-see win32/Makefile.msc in ZLib for more details.

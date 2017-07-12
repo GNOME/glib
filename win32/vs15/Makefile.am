@@ -3,8 +3,6 @@ EXTRA_DIST = \
 	glib.sln \
 	glib.vcxproj \
 	glib.vcxproj.filters \
-	glib-genmarshal.vcxproj \
-	glib-genmarshal.vcxproj.filters \
 	gspawn-win32-helper-console.vcxproj \
 	gspawn-win32-helper-console.vcxproj.filters \
 	gspawn-win32-helper.vcxproj \

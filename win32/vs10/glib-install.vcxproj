@@ -97,6 +97,14 @@
       <Command Condition="'$(Configuration)'=='Release'">$(GenGLibMKEnums)</Command>
       <Outputs Condition="'$(Configuration)'=='Release'">..\..\gobject\glib-mkenums;%(Outputs)</Outputs>
     </CustomBuild>
+    <CustomBuild Include="..\..\gobject\glib-genmarshal.in">
+      <Message Condition="'$(Configuration)'=='Debug'">Generating glib-genmarshal...</Message>
+      <Command Condition="'$(Configuration)'=='Debug'">$(GenGLibGenmarshal)</Command>
+      <Outputs Condition="'$(Configuration)'=='Debug'">..\..\gobject\glib-genmarshal;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)'=='Release'">Generating glib-genmarshal...</Message>
+      <Command Condition="'$(Configuration)'=='Release'">$(GenGLibGenmarshal)</Command>
+      <Outputs Condition="'$(Configuration)'=='Release'">..\..\gobject\glib-genmarshal;%(Outputs)</Outputs>
+    </CustomBuild>
     <CustomBuild Include="..\..\gio\gdbus-2.0\codegen\gdbus-codegen.in">
       <Message Condition="'$(Configuration)'=='Debug'">Generating gdbus-codegen...</Message>
       <Command Condition="'$(Configuration)'=='Debug'">$(GenGDBusCodegen)</Command>
@@ -119,10 +127,6 @@
   <ItemGroup>
     <ProjectReference Include="gio.vcxproj">
       <Project>{f3d1583c-5613-4809-bd98-7cc1c1276f92}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="glib-genmarshal.vcxproj">
-      <Project>{bd12e835-5c52-4e5d-8234-1c579f33e27a}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="glib.vcxproj">

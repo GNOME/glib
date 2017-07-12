@@ -21,8 +21,6 @@ EXTRA_DIST = \
 	glib.sln			\
 	glib.vcxprojin			\
 	glib.vcxproj.filtersin		\
-	glib-genmarshal.vcxproj		\
-	glib-genmarshal.vcxproj.filters		\
 	gspawn-win32-helper-console.vcxproj	\
 	gspawn-win32-helper-console.vcxproj.filters	\
 	gspawn-win32-helper.vcxproj		\

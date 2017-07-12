@@ -14,7 +14,6 @@ EXTRA_DIST = \
 	README.txt		\
 	glib.sln		\
 	glib.vcprojin		\
-	glib-genmarshal.vcproj	\
 	gspawn-win32-helper-console.vcproj 	\
 	gspawn-win32-helper.vcproj	\
 	gmodule.vcproj		\
