@@ -86,18 +86,18 @@ copy ..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\codege
 	/>
 	<UserMacro
 		Name="GenGLibMKEnums"
-		Value="$(PythonPath)\python.exe ..\gen_util_scripts.py --type=glib-mkenums --version=$(GlibVersion)"
+		Value="$(PythonDir)\python.exe ..\gen_util_scripts.py --type=glib-mkenums --version=$(GlibVersion)"
 	/>
 	<UserMacro
 		Name="GenGLibGenmarshal"
-		Value="$(PythonPath)\python.exe ..\gen_util_scripts.py --type=glib-genmarshal --version=$(GlibVersion)"
+		Value="$(PythonDir)\python.exe ..\gen_util_scripts.py --type=glib-genmarshal --version=$(GlibVersion)"
 	/>
 	<UserMacro
 		Name="GenGDBusCodegen"
-		Value="$(PythonPath)\python.exe ..\gen_util_scripts.py --type=gdbus-codegen --version=$(GlibVersion)"
+		Value="$(PythonDir)\python.exe ..\gen_util_scripts.py --type=gdbus-codegen --version=$(GlibVersion)"
 	/>
 	<UserMacro
 		Name="GlibGenPC"
-		Value="(if not exist $(CopyDir) mkdir $(CopyDir)) &amp; ($(PythonPath)\python.exe ..\glibpc.py --prefix=$(CopyDir) --version=$(GlibVersion))"
+		Value="(if not exist $(CopyDir) mkdir $(CopyDir)) &amp; ($(PythonDir)\python.exe ..\glibpc.py --prefix=$(CopyDir) --version=$(GlibVersion))"
 	/>
 </VisualStudioPropertySheet>

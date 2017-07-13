@@ -26,7 +26,7 @@ builds.
 
 A Python 2.7.x or 3.x interpreter is also required, in order to generate
 the utility scripts, as well as the pkg-config files for the build.  Please
-see the entry "PythonPath" in glib-version-paths.props to verify that
+see the entry "PythonDir" in glib-version-paths.props to verify that
 it is correct.
 
 One may wish to build his/her own ZLib-It is recommended that ZLib is

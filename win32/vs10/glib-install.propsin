@@ -84,10 +84,10 @@ copy ..\..\gio\gdbus-2.0\codegen\*.py $(CopyDir)\share\glib-$(ApiVersion)\codege
 </GlibDoInstall>
     <GlibUtilScripts>..\..\gobject\glib-mkenums;..\..\gobject\glib-genmarshal;..\..\gio\gdbus-2.0\codegen\gdbus-codegen</GlibUtilScripts>
     <GlibPCFiles>..\gio-windows-2.0.pc;..\gio-2.0.pc;..\gobject-2.0.pc;..\gmodule-no-export-2.0.pc;..\gmodule-export-2.0.pc;..\gmodule-2.0.pc;..\gthread-2.0.pc;..\glib-2.0.pc</GlibPCFiles>
-    <GenGLibMKEnums>$(PythonPath)\python.exe ..\gen_util_scripts.py --type=glib-mkenums --version=$(GlibVersion)</GenGLibMKEnums>
-    <GenGLibGenmarshal>$(PythonPath)\python.exe ..\gen_util_scripts.py --type=glib-genmarshal --version=$(GlibVersion)</GenGLibGenmarshal>
-    <GenGDBusCodegen>$(PythonPath)\python.exe ..\gen_util_scripts.py --type=gdbus-codegen --version=$(GlibVersion)</GenGDBusCodegen>
-    <GlibGenPC>(if not exist $(CopyDir) mkdir $(CopyDir)) &amp; ($(PythonPath)\python.exe ..\glibpc.py --prefix=$(CopyDir) --version=$(GlibVersion))</GlibGenPC>
+    <GenGLibMKEnums>$(PythonDir)\python.exe ..\gen_util_scripts.py --type=glib-mkenums --version=$(GlibVersion)</GenGLibMKEnums>
+    <GenGLibGenmarshal>$(PythonDir)\python.exe ..\gen_util_scripts.py --type=glib-genmarshal --version=$(GlibVersion)</GenGLibGenmarshal>
+    <GenGDBusCodegen>$(PythonDir)\python.exe ..\gen_util_scripts.py --type=gdbus-codegen --version=$(GlibVersion)</GenGDBusCodegen>
+    <GlibGenPC>(if not exist $(CopyDir) mkdir $(CopyDir)) &amp; ($(PythonDir)\python.exe ..\glibpc.py --prefix=$(CopyDir) --version=$(GlibVersion))</GlibGenPC>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>glibinstallprops</_PropertySheetDisplayName>

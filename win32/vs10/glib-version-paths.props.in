@@ -12,11 +12,11 @@
     <GlibSeparateVSDllSuffix>-2-vs$(VSVer)</GlibSeparateVSDllSuffix>
     <GlibDllPrefix>$(GlibSeparateVSDllPrefix)</GlibDllPrefix>
     <GlibDllSuffix>$(GlibSeparateVSDllSuffix)</GlibDllSuffix>
-    <PythonPath Condition="'$(VisualStudioVersion)' == '10.0'">c:\python34</PythonPath>
-    <PythonPath Condition="'$(VisualStudioVersion)' == '11.0'">c:\python34</PythonPath>
-    <PythonPath Condition="'$(VisualStudioVersion)' == '12.0'">c:\python34</PythonPath>
-    <PythonPath Condition="'$(VisualStudioVersion)' == '14.0'">c:\python36</PythonPath>
-    <PythonPath Condition="'$(VisualStudioVersion)' == '15.0'">c:\python36</PythonPath>
+    <PythonDir Condition="'$(VisualStudioVersion)' == '10.0'">c:\python34</PythonDir>
+    <PythonDir Condition="'$(VisualStudioVersion)' == '11.0'">c:\python34</PythonDir>
+    <PythonDir Condition="'$(VisualStudioVersion)' == '12.0'">c:\python34</PythonDir>
+    <PythonDir Condition="'$(VisualStudioVersion)' == '14.0'">c:\python36</PythonDir>
+    <PythonDir Condition="'$(VisualStudioVersion)' == '15.0'">c:\python36</PythonDir>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>glibversionpathsprops</_PropertySheetDisplayName>
@@ -55,8 +55,8 @@
     <BuildMacro Include="GlibDllSuffix">
       <Value>$(GlibDllSuffix)</Value>
     </BuildMacro>
-    <BuildMacro Include="PythonPath">
-      <Value>$(PythonPath)</Value>
+    <BuildMacro Include="PythonDir">
+      <Value>$(PythonDir)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>
