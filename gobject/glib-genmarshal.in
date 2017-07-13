@@ -1,4 +1,4 @@
-#!@PYTHON@
+#!/usr/bin/env python3
 
 # pylint: disable=too-many-lines, missing-docstring, invalid-name
 

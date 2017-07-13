@@ -85,11 +85,13 @@ gmarshal_strings = custom_target('gmarshal.strings',
     output : ['gmarshal.strings'],
     command : [python, '@INPUT0@', '@INPUT1@', '@OUTPUT@'])
 
-glib_genmarshal = executable('glib-genmarshal',
-  gmarshal_strings, 'glib-genmarshal.c',
+glib_genmarshal_conf = configuration_data()
+glib_genmarshal_conf.set('VERSION', glib_version)
+
+glib_genmarshal = configure_file(input : 'glib-genmarshal.in',
+  output : 'glib-genmarshal',
   install : true,
-  c_args : ['-DHAVE_CONFIG_H=1'],
-  dependencies : [libglib_dep, libgobject_dep])
+  install_dir : 'bin', configuration : glib_genmarshal_conf)
 
 install_data('gobject_gdb.py', install_dir : join_paths(glib_pkgdatadir + 'gdb'))
 gdb_conf = configuration_data()
