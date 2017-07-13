@@ -672,6 +672,49 @@ g_win32_get_windows_version (void)
   return windows_version;
 }
 
+/*
+ * Doesn't use gettext (and gconv), preventing recursive calls when
+ * g_win32_locale_filename_from_utf8() is called during
+ * gettext initialization.
+ */
+static gchar *
+special_wchar_to_locale_enoding (wchar_t *wstring)
+{
+  int sizeof_output;
+  int wctmb_result;
+  char *result;
+  BOOL not_representable = FALSE;
+
+  sizeof_output = WideCharToMultiByte (CP_ACP,
+                                       WC_NO_BEST_FIT_CHARS,
+                                       wstring, -1,
+                                       NULL, 0,
+                                       NULL,
+                                       &not_representable);
+
+  if (not_representable ||
+      sizeof_output == 0 ||
+      sizeof_output > MAX_PATH)
+    return NULL;
+
+  result = g_malloc0 (sizeof_output + 1);
+
+  wctmb_result = WideCharToMultiByte (CP_ACP,
+                                      WC_NO_BEST_FIT_CHARS,
+                                      wstring, -1,
+                                      result, sizeof_output + 1,
+                                      NULL,
+                                      &not_representable);
+
+  if (wctmb_result == sizeof_output &&
+      not_representable == FALSE)
+    return result;
+
+  g_free (result);
+
+  return NULL;
+}
+
 /**
  * g_win32_locale_filename_from_utf8:
  * @utf8filename: a UTF-8 encoded filename.
@@ -704,26 +747,27 @@ g_win32_get_windows_version (void)
 gchar *
 g_win32_locale_filename_from_utf8 (const gchar *utf8filename)
 {
-  gchar *retval = g_locale_from_utf8 (utf8filename, -1, NULL, NULL, NULL);
+  gchar *retval;
+  wchar_t *wname;
+
+  wname = g_utf8_to_utf16 (utf8filename, -1, NULL, NULL, NULL);
+
+  if (wname == NULL)
+    return NULL;
+
+  retval = special_wchar_to_locale_enoding (wname);
 
   if (retval == NULL)
     {
-      /* Conversion failed, so convert to wide chars, check if there
-       * is a 8.3 version, and use that.
-       */
-      wchar_t *wname = g_utf8_to_utf16 (utf8filename, -1, NULL, NULL, NULL);
-      if (wname != NULL)
-	{
-	  wchar_t wshortname[MAX_PATH + 1];
-	  if (GetShortPathNameW (wname, wshortname, G_N_ELEMENTS (wshortname)))
-	    {
-	      gchar *tem = g_utf16_to_utf8 (wshortname, -1, NULL, NULL, NULL);
-	      retval = g_locale_from_utf8 (tem, -1, NULL, NULL, NULL);
-	      g_free (tem);
-	    }
-	  g_free (wname);
-	}
+      /* Conversion failed, so check if there is a 8.3 version, and use that. */
+      wchar_t wshortname[MAX_PATH + 1];
+
+      if (GetShortPathNameW (wname, wshortname, G_N_ELEMENTS (wshortname)))
+        retval = special_wchar_to_locale_enoding (wshortname);
     }
+
+  g_free (wname);
+
   return retval;
 }
 
