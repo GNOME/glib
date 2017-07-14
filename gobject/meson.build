@@ -68,6 +68,7 @@ libgobject_dep = declare_dependency(link_with : libgobject,
 
 glib_mkenums_conf = configuration_data()
 glib_mkenums_conf.set('GLIB_VERSION', glib_version)
+glib_mkenums_conf.set('PYTHON', python.path())
 
 # FIXME: Set permissions
 glib_mkenums = configure_file(input : 'glib-mkenums.in',
@@ -87,6 +88,7 @@ gmarshal_strings = custom_target('gmarshal.strings',
 
 glib_genmarshal_conf = configuration_data()
 glib_genmarshal_conf.set('VERSION', glib_version)
+glib_genmarshal_conf.set('PYTHON', python.path())
 
 glib_genmarshal = configure_file(input : 'glib-genmarshal.in',
   output : 'glib-genmarshal',
