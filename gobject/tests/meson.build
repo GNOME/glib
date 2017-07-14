@@ -20,7 +20,7 @@ gobject_tests = [
 # FIXME: use new environment() object
 # FIXME: put common bits of test environment() in one location
 # Not entirely random of course, but at least it changes over time
-random_number = minor_version.to_int() + meson.version().split('.').get(1).to_int()
+random_number = minor_version + meson.version().split('.').get(1).to_int()
 
 test_env = [
   'G_TEST_SRCDIR=' + meson.current_source_dir(),

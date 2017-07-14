@@ -30,14 +30,17 @@ host_system = host_machine.system()
 glib_version = meson.project_version()
 glib_api_version = '2.0'
 version_arr = glib_version.split('.')
-major_version = version_arr[0]
-minor_version = version_arr[1]
-micro_version = version_arr[2]
+major_version = version_arr[0].to_int()
+minor_version = version_arr[1].to_int()
+micro_version = version_arr[2].to_int()
+
+interface_age = minor_version.is_odd() ? 0 : micro_version
+binary_age = 100 * minor_version + micro_version
 
 soversion = 0
 # Maintain compatibility with previous libtool versioning
 # current = minor * 100 + micro
-library_version = '@0@.@1@.@2@'.format(soversion, minor_version.to_int() * 100, micro_version.to_int())
+library_version = '@0@.@1@.@2@'.format(soversion, binary_age - interface_age, interface_age)
 
 configinc = include_directories('.')
 glibinc = include_directories('glib')
@@ -68,8 +71,8 @@ glib_conf.set('GLIB_VERSION', glib_version)
 glib_conf.set('GLIB_MAJOR_VERSION', major_version)
 glib_conf.set('GLIB_MINOR_VERSION', minor_version)
 glib_conf.set('GLIB_MICRO_VERSION', micro_version)
-glib_conf.set('GLIB_INTERFACE_AGE', micro_version)
-glib_conf.set('GLIB_BINARY_AGE', 100 * minor_version.to_int() + micro_version.to_int())
+glib_conf.set('GLIB_INTERFACE_AGE', interface_age)
+glib_conf.set('GLIB_BINARY_AGE', binary_age)
 glib_conf.set_quoted('GETTEXT_PACKAGE', 'glib20')
 glib_conf.set_quoted('PACKAGE_BUGREPORT', 'http://bugzilla.gnome.org/enter_bug.cgi?product=glib')
 glib_conf.set_quoted('PACKAGE_NAME', 'glib')
