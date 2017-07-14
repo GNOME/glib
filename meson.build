@@ -53,9 +53,9 @@ glib_libdir = join_paths(glib_prefix, get_option('libdir'))
 glib_datadir = join_paths(glib_prefix, get_option('datadir'))
 glib_pkgdatadir = join_paths(glib_datadir, 'glib-2.0')
 glib_includedir = join_paths(glib_prefix, get_option('includedir'))
-glib_giomodulesdir = join_paths(glib_libdir + 'gio/modules')
+glib_giomodulesdir = join_paths(glib_libdir, 'gio', 'modules')
 
-glib_pkgconfigreldir = join_paths(get_option('libdir'), 'pkgconfig')
+glib_pkgconfigreldir = join_paths(glib_libdir, 'pkgconfig')
 
 ########################
 # Configuration begins #
