@@ -9,8 +9,9 @@ gdbus_example_objectmanager_generated = custom_target('gdbus-example-objectmanag
              '--interface-prefix', 'org.gtk.GDBus.Example.ObjectManager.',
              '--c-namespace', 'Example',
              '--c-generate-object-manager',
-             '--generate-c-code', '@OUTDIR@/gdbus-example-objectmanager-generated',
-             '--generate-docbook', '@OUTDIR@/gdbus-example-objectmanager-generated',
+             '--output-directory', '@OUTDIR@',
+             '--generate-c-code', 'gdbus-example-objectmanager-generated',
+             '--generate-docbook', 'gdbus-example-objectmanager-generated',
              '@INPUT@'])
 
 libgdbus_example_objectmanager = shared_library('libgdbus-example-objectmanager',
