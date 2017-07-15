@@ -9,7 +9,11 @@
 #
 from __future__ import print_function, unicode_literals
 
-import os, sys, re, argparse, tempfile
+import argparse
+import os
+import re
+import sys
+import tempfile
 
 output_stream = sys.stdout
 
@@ -49,7 +53,7 @@ def parse_trigraph(opts):
         opt = re.sub(r'^\s*', '', opt)
         opt = re.sub(r'\s*$', '', opt)
         m = re.search(r'(\w+)(?:=(.+))?', opt)
-        assert(m is not None)
+        assert m is not None
         groups = m.groups()
         key = groups[0]
         if len(groups) > 1:
@@ -82,7 +86,7 @@ def parse_entries(file, file_name):
         if looking_for_name:
             m = re.match('\s*(\w+)', line)
             if m:
-                enumname = m.group(1);
+                enumname = m.group(1)
                 return True
 
         # Handle include files
@@ -99,12 +103,12 @@ def parse_entries(file, file_name):
         m = re.match(r'\s*\}\s*(\w+)', line)
         if m:
             enumname = m.group(1)
-            enumindex+=1;
-            return 1;
+            enumindex += 1
+            return 1
 
         m = re.match(r'\s*\}', line)
         if m:
-            enumindex+=1;
+            enumindex += 1
             looking_for_name = True
             continue
 
@@ -134,7 +138,7 @@ def parse_entries(file, file_name):
             if options is not None:
                 options = parse_trigraph(options)
                 if 'skip' not in options:
-                    entries.append((name, value, options['nick']));
+                    entries.append((name, value, options['nick']))
             else:
                 entries.append((name, value))
         elif re.match('s*\#', line):
@@ -191,7 +195,7 @@ def read_template_file(file):
             'value-production': vprod,
             'value-tail': vtail,
             'comment': comment_tmpl,
-    }
+           }
     in_ = 'junk'
 
     ifile = open(file)
@@ -205,7 +209,7 @@ def read_template_file(file):
                 in_ = 'junk'
                 continue
             else:
-                sys.exit("Malformed template file " + file);
+                sys.exit("Malformed template file " + file)
 
         if in_ != 'junk':
             tmpl[in_] += line
@@ -304,7 +308,7 @@ def replace_specials(prod):
     return prod
 
 if len(fhead) > 0:
-    prod = fhead;
+    prod = fhead
     base = os.path.basename(options.args[0])
 
     prod = prod.replace('\u0040filename\u0040', options.args[0])
@@ -339,7 +343,7 @@ def process_file(curfilename):
         if m:
             groups = m.groups()
             if len(groups) >= 2 and groups[1] is not None:
-                options = parse_trigraph(groups[1]);
+                options = parse_trigraph(groups[1])
                 if 'skip' in options:
                     continue
                 enum_prefix = options.get('prefix', None)
@@ -366,11 +370,11 @@ def process_file(curfilename):
                     if re.match(r'\s*\{', line):
                         break
 
-            seenbitshift = 0;
-            entries = [];
+            seenbitshift = 0
+            entries = []
 
             # Now parse the entries
-            parse_entries(curfile, curfilename);
+            parse_entries(curfile, curfilename)
 
             # figure out if this was a flags or enums enumeration
             if not flags:
@@ -380,11 +384,11 @@ def process_file(curfilename):
             if enum_prefix is None:
                 for entry in entries:
                     if len(entry) < 3 or entry[2] is None:
-                        name = entry[0];
+                        name = entry[0]
                         if enum_prefix is not None:
                             enum_prefix = os.path.commonprefix([name, enum_prefix])
                         else:
-                            enum_prefix = name;
+                            enum_prefix = name
                 if enum_prefix is None:
                     enum_prefix = ""
                 else:
@@ -429,9 +433,9 @@ def process_file(curfilename):
                 enumsym = enspace.lower() + "_" + enumshort.lower()
 
                 if option_lowercase_name is not None:
-                    enumsym = option_lowercase_name;
+                    enumsym = option_lowercase_name
             else:
-                enumshort = enumname;
+                enumshort = enumname
                 if idprefix:
                     enumshort = re.sub(r'^' + idprefix, '', enumshort)
                 else:
@@ -439,7 +443,7 @@ def process_file(curfilename):
 
                 enumshort = re.sub(r'([^A-Z])([A-Z])', r'\1_\2', enumshort)
                 enumshort = re.sub(r'([A-Z][A-Z])([A-Z][0-9a-z])', r'\1_\2', enumshort)
-                enumshort = enumshort.upper();
+                enumshort = enumshort.upper()
 
                 if symprefix is not None:
                     enumname_prefix = symprefix.upper()
@@ -453,8 +457,8 @@ def process_file(curfilename):
                 firstenum = False
 
                 if len(fprod) > 0:
-                    prod = fprod;
-                    base = os.path.basename(curfilename);
+                    prod = fprod
+                    base = os.path.basename(curfilename)
 
                     prod = prod.replace('\u0040filename\u0040', curfilename)
                     prod = prod.replace('\u0040basename\u0040', base)
@@ -463,7 +467,7 @@ def process_file(curfilename):
                     write_output(prod)
 
             if len(eprod) > 0:
-                prod = eprod;
+                prod = eprod
 
                 prod = prod.replace('\u0040enum_name\u0040', enumsym)
                 prod = prod.replace('\u0040EnumName\u0040', enumname)
@@ -471,7 +475,7 @@ def process_file(curfilename):
                 prod = prod.replace('\u0040ENUMNAME\u0040', enumlong)
                 prod = prod.replace('\u0040ENUMPREFIX\u0040', enumname_prefix)
                 if flags:
-                    prod =~ prod.replace('\u0040type\u0040', 'flags')
+                    prod = ~prod.replace('\u0040type\u0040', 'flags')
                 else:
                     prod = prod.replace('\u0040type\u0040', 'enum')
                 if flags:
@@ -486,7 +490,7 @@ def process_file(curfilename):
                 write_output(prod)
 
             if len(vhead) > 0:
-                prod = vhead;
+                prod = vhead
                 prod = prod.replace('\u0040enum_name\u0040', enumsym)
                 prod = prod.replace('\u0040EnumName\u0040', enumname)
                 prod = prod.replace('\u0040ENUMSHORT\u0040', enumshort)
@@ -508,7 +512,7 @@ def process_file(curfilename):
                 write_output(prod)
 
             if len(vprod) > 0:
-                prod = vprod;
+                prod = vprod
                 next_num = 0
 
                 prod = replace_specials(prod)
@@ -521,7 +525,7 @@ def process_file(curfilename):
                         if num is not None:
                             # use sandboxed evaluation as a reasonable
                             # approximation to C constant folding
-                            inum = eval(num, {}, {});
+                            inum = eval(num, {}, {})
 
                             # make sure it parsed to an integer
                             if not isinstance(inum, int):
@@ -586,7 +590,7 @@ if len(ftail) > 0:
     write_output(prod)
 
 # put auto-generation comment
-comment = comment_tmpl;
+comment = comment_tmpl
 comment = comment.replace('\u0040comment\u0040', 'Generated data ends here')
 write_output("\n" + comment + "\n")
 
