@@ -95,7 +95,7 @@ glib_genmarshal = configure_file(input : 'glib-genmarshal.in',
   install : true,
   install_dir : 'bin', configuration : glib_genmarshal_conf)
 
-install_data('gobject_gdb.py', install_dir : join_paths(glib_pkgdatadir + 'gdb'))
+install_data('gobject_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
 gdb_conf = configuration_data()
 gdb_conf.set('datadir', glib_datadir)
 configure_file(
