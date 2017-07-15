@@ -395,7 +395,7 @@ def process_file(curfilename):
                 # canonicalize user defined prefixes
                 enum_prefix = enum_prefix.upper()
                 enum_prefix = enum_prefix.replace('-', '_')
-                enum_prefix = re.sub(r'(.*)([^_])$', r'\1\2_')
+                enum_prefix = re.sub(r'(.*)([^_])$', r'\1\2_', enum_prefix)
 
             fixed_entries = []
             for e in entries:
