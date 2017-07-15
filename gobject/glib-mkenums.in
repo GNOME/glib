@@ -84,7 +84,7 @@ def parse_entries(file, file_name):
             continue
 
         if looking_for_name:
-            m = re.match('\s*(\w+)', line)
+            m = re.match(r'\s*(\w+)', line)
             if m:
                 enumname = m.group(1)
                 return True
@@ -141,7 +141,7 @@ def parse_entries(file, file_name):
                     entries.append((name, value, options['nick']))
             else:
                 entries.append((name, value))
-        elif re.match('s*\#', line):
+        elif re.match(r's*\#', line):
             pass
         else:
             sys.exit("Failed to parse %s." % file_name)
