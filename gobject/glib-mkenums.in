@@ -230,9 +230,6 @@ def read_template_file(file):
     if comment_tmpl == "":
         comment_tmpl = "/* \u0040comment\u0040 */"
 
-if len(sys.argv) == 1:
-    usage()
-
 parser = argparse.ArgumentParser(epilog=help_epilog,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
 
