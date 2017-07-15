@@ -169,7 +169,7 @@ executable('test-spawn-echo', 'test-spawn-echo.c',
 )
 
 # some testing of gtester functionality
-if not meson.is_cross_build() and meson.version().version_compare('> 0.37.9')
+if not meson.is_cross_build() and host_system != 'windows'
   xmllint = find_program('xmllint')
   if xmllint.found()
     tmpsample_xml = custom_target('tmpsample.xml',
