@@ -268,16 +268,21 @@ if options.version:
 if options.template != '':
     read_template_file(options.template)
 
+def unescape_cmdline_args(arg):
+    arg = arg.replace('\\n', '\n')
+    arg = arg.replace('\\r', '\r')
+    return arg.replace('\\t', '\t')
+
 idprefix += options.idprefix
 symprefix += options.symprefix
-fhead += options.fhead
-ftail += options.ftail
-eprod += options.eprod
-vhead += options.vhead
-vprod += options.vprod
-vtail += options.vtail
+fhead += unescape_cmdline_args(options.fhead)
+ftail += unescape_cmdline_args(options.ftail)
+eprod += unescape_cmdline_args(options.eprod)
+vhead += unescape_cmdline_args(options.vhead)
+vprod += unescape_cmdline_args(options.vprod)
+vtail += unescape_cmdline_args(options.vtail)
 if options.comment_tmpl != '':
-    comment_tmpl = options.comment_tmpl
+    comment_tmpl = unescape_cmdline_args(options.comment_tmpl)
 output = options.output
 
 if output is not None:
