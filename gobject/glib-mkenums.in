@@ -6,6 +6,8 @@
 #
 # This is a manual conversion from the original Perl script to
 # Python. Improvements are welcome.
+#
+from __future__ import print_function, unicode_literals
 
 import os, sys, re, argparse, tempfile
 
