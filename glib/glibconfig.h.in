@@ -18,6 +18,9 @@
  */
 #mesondefine GLIB_USING_SYSTEM_PRINTF
 
+#mesondefine GLIB_STATIC_COMPILATION
+#mesondefine GOBJECT_STATIC_COMPILATION
+
 G_BEGIN_DECLS
 
 #define G_MINFLOAT	FLT_MIN
@@ -115,7 +118,6 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
 #define GLIB_MICRO_VERSION @GLIB_MICRO_VERSION@
 
 @glib_os@
-@glib_static_compilation@
 
 @glib_vacopy@
 

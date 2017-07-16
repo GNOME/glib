@@ -95,7 +95,7 @@ if host_system == 'windows'
   gmodule_sources += [gmodule_win_res]
 endif
 
-libgmodule = shared_library('gmodule-2.0',
+libgmodule = library('gmodule-2.0',
   sources : gmodule_sources,
   version : library_version,
   soversion : soversion,

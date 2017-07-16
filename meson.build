@@ -123,6 +123,11 @@ if get_option('default_library') != 'static'
   endif
 endif
 
+if host_system == 'windows' and get_option('default_library') == 'static'
+    glibconfig_conf.set('GLIB_STATIC_COMPILATION', '1')
+    glibconfig_conf.set('GOBJECT_STATIC_COMPILATION', '1')
+endif
+
 # FIXME: what about Cygwin (G_WITH_CYGWIN)
 if host_system == 'windows'
   glib_os = '''#define G_OS_WIN32

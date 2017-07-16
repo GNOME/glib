@@ -12,7 +12,7 @@ if host_system == 'windows'
   gthread_sources += [gthread_win_res]
 endif
 
-libgthread = shared_library('gthread-2.0',
+libgthread = library('gthread-2.0',
   sources : gthread_sources,
   version : library_version,
   soversion : soversion,

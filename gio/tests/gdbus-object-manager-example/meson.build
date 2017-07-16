@@ -14,7 +14,7 @@ gdbus_example_objectmanager_generated = custom_target('gdbus-example-objectmanag
              '--generate-docbook', 'gdbus-example-objectmanager-generated',
              '@INPUT@'])
 
-libgdbus_example_objectmanager = shared_library('libgdbus-example-objectmanager',
+libgdbus_example_objectmanager = library('libgdbus-example-objectmanager',
     gdbus_example_objectmanager_generated,
     c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
     dependencies : [libglib_dep, libgmodule_dep, libgobject_dep, libgio_dep],

@@ -61,7 +61,7 @@ else
   gobject_dtrace_hdr = []
 endif
 
-libgobject = shared_library('gobject-2.0',
+libgobject = library('gobject-2.0',
   gobject_dtrace_obj, gobject_dtrace_hdr,
   sources : gobject_sources,
   version : library_version,
