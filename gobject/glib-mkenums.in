@@ -237,19 +237,19 @@ parser.add_argument('--identifier-prefix', default='', dest='idprefix',
                     help='Identifier prefix')
 parser.add_argument('--symbol-prefix', default='', dest='symprefix',
                     help='symbol-prefix')
-parser.add_argument('--fhead', default='', dest='fhead',
+parser.add_argument('--fhead', default=[], dest='fhead', action='append',
                     help='Output file header')
-parser.add_argument('--ftail', default='', dest='ftail',
+parser.add_argument('--ftail', default=[], dest='ftail', action='append',
                     help='Per input file production')
-parser.add_argument('--fprod', default='', dest='fprod',
+parser.add_argument('--fprod', default=[], dest='fprod', action='append',
                     help='Put out TEXT everytime a new input file is being processed.')
-parser.add_argument('--eprod', default='', dest='eprod',
+parser.add_argument('--eprod', default=[], dest='eprod', action='append',
                     help='Per enum text (produced prior to value iterations)')
-parser.add_argument('--vhead', default='', dest='vhead',
+parser.add_argument('--vhead', default=[], dest='vhead', action='append',
                     help='Value header, produced before iterating over enum values')
-parser.add_argument('--vprod', default='', dest='vprod',
+parser.add_argument('--vprod', default=[], dest='vprod', action='append',
                     help='Value text, produced for each enum value.')
-parser.add_argument('--vtail', default='', dest='vtail',
+parser.add_argument('--vtail', default=[], dest='vtail', action='append',
                     help='Value tail, produced after iterating over enum values')
 parser.add_argument('--comments', default='', dest='comment_tmpl',
                     help='Comment structure')
@@ -275,12 +275,12 @@ def unescape_cmdline_args(arg):
 
 idprefix += options.idprefix
 symprefix += options.symprefix
-fhead += unescape_cmdline_args(options.fhead)
-ftail += unescape_cmdline_args(options.ftail)
-eprod += unescape_cmdline_args(options.eprod)
-vhead += unescape_cmdline_args(options.vhead)
-vprod += unescape_cmdline_args(options.vprod)
-vtail += unescape_cmdline_args(options.vtail)
+fhead += ''.join([unescape_cmdline_args(x) for x in options.fhead])
+ftail += ''.join([unescape_cmdline_args(x) for x in options.ftail])
+eprod += ''.join([unescape_cmdline_args(x) for x in options.eprod])
+vhead += ''.join([unescape_cmdline_args(x) for x in options.vhead])
+vprod += ''.join([unescape_cmdline_args(x) for x in options.vprod])
+vtail += ''.join([unescape_cmdline_args(x) for x in options.vtail])
 if options.comment_tmpl != '':
     comment_tmpl = unescape_cmdline_args(options.comment_tmpl)
 output = options.output
