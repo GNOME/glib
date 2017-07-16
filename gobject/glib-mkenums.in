@@ -477,7 +477,7 @@ def process_file(curfilename):
                 prod = prod.replace('\u0040ENUMNAME\u0040', enumlong)
                 prod = prod.replace('\u0040ENUMPREFIX\u0040', enumname_prefix)
                 if flags:
-                    prod = ~prod.replace('\u0040type\u0040', 'flags')
+                    prod = prod.replace('\u0040type\u0040', 'flags')
                 else:
                     prod = prod.replace('\u0040type\u0040', 'enum')
                 if flags:
