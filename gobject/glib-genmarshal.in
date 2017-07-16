@@ -931,11 +931,13 @@ if __name__ == '__main__':
     # it's not really a supported use case. We keep this behaviour by
     # forcing the --prototypes and --body arguments instead. We make this
     # warning non-fatal even with --g-fatal-warnings, as it's a deprecation
+    compatibility_mode = False
     if args.header and args.body:
         print_warning('Using --header and --body at the same time time is deprecated; ' +
                       'use --body --prototypes instead', False)
         args.prototypes = True
         args.header = False
+        compatibility_mode = True
 
     if args.header:
         generate_header_preamble(args.output,
@@ -1015,12 +1017,31 @@ if __name__ == '__main__':
             elif args.body:
                 if args.verbose:
                     print_info('Generating definition for {}'.format(line.strip()))
-                generate_marshallers_body(args.output, retval, params,
-                                          prefix=args.prefix,
-                                          internal=args.internal,
-                                          include_prototype=args.prototypes,
-                                          include_va=args.valist_marshallers,
-                                          source_location=location)
+                if compatibility_mode:
+                    generate_std_alias = False
+                    if args.stdinc:
+                        std_marshaller = generate_marshaller_name(STD_PREFIX, retval, params)
+                        if std_marshaller in GOBJECT_MARSHALLERS:
+                            if args.verbose:
+                                print_info('Skipping default marshaller {}'.format(line.strip()))
+                            generate_std_alias = True
+                marshaller = generate_marshaller_name(args.prefix, retval, params)
+                if compatibility_mode and generate_std_alias:
+                    generate_marshaller_alias(args.output, marshaller, std_marshaller,
+                                              source_location=location,
+                                              include_va=args.valist_marshallers)
+                else:
+                    generate_marshallers_body(args.output, retval, params,
+                                              prefix=args.prefix,
+                                              internal=args.internal,
+                                              include_prototype=args.prototypes,
+                                              include_va=args.valist_marshallers,
+                                              source_location=location)
+                if compatibility_mode and marshaller != raw_marshaller:
+                    if args.verbose:
+                        print_info('Generating alias for deprecated tokens')
+                    generate_marshaller_alias(args.output, raw_marshaller, marshaller,
+                                              include_va=args.valist_marshallers)
 
             seen_marshallers.add(raw_marshaller)
 
