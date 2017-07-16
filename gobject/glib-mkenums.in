@@ -447,7 +447,7 @@ def process_file(curfilename):
                 enumshort = re.sub(r'([A-Z][A-Z])([A-Z][0-9a-z])', r'\1_\2', enumshort)
                 enumshort = enumshort.upper()
 
-                if symprefix is not None:
+                if symprefix:
                     enumname_prefix = symprefix.upper()
                 else:
                     enumname_prefix = idprefix.upper()
