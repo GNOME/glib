@@ -15,8 +15,8 @@ if cc.get_id() == 'msvc'
   # If a warning is completely useless and spammy, use '/wdXXXX' to suppress it
   # If a warning is harmless but hard to fix, use '/woXXXX' so it's shown once
   # NOTE: Only add warnings here if you are sure they're spurious
-  add_project_arguments('/wd4244', '/wd4305', '/wd4035', '/wd4715', '/wd4116',
-    '/wd4046', '/wd4068', '/wo4090', language : 'c')
+  add_project_arguments('/wd4035', '/wd4715', '/wd4116',
+    '/wd4046', '/wd4068', '/wo4090', '/FImsvc_recommended_pragmas.h',language : 'c')
   # Disable SAFESEH with MSVC for plugins and libs that use external deps that
   # are built with MinGW
   noseh_link_args = ['/SAFESEH:NO']
@@ -163,8 +163,8 @@ headers = [
   'fstab.h',
   'linux/magic.h',
   'termios.h',
-  'dirent.h', # Some versions of MSC lack these
-  'sys/time.h', # Some versions of MSC lack these
+  'dirent.h', # MSC does not come with this by default
+  'sys/time.h', # MSC does not come with this by default
   'sys/times.h',
   'sys/wait.h',
   'unistd.h',
@@ -1017,9 +1017,13 @@ endif
 # we currently check for all three va_copy possibilities, so we get
 # all results in config.log for bug reports.
 
+va_copy_func = ''
 foreach try_func : [ '__va_copy', 'va_copy' ]
   if cc.compiles('''#include <stdarg.h>
                     #include <stdlib.h>
+                    #ifdef _MSC_VER
+                    # include "msvc_recommended_pragmas.h"
+                    #endif
                     void f (int i, ...) {
                     va_list args1, args2;
                     va_start (args1, i);
@@ -1036,8 +1040,12 @@ foreach try_func : [ '__va_copy', 'va_copy' ]
     va_copy_func = try_func
   endif
 endforeach
-glib_conf.set('G_VA_COPY', va_copy_func)
-glib_vacopy = '#define G_VA_COPY ' + va_copy_func
+if va_copy_func != ''
+  glib_conf.set('G_VA_COPY', va_copy_func)
+  glib_vacopy = '#define G_VA_COPY ' + va_copy_func
+else
+  glib_vacopy = '/* #undef G_VA_COPY */'
+endif
 
 va_list_val_copy_prog = '''
   #include <stdarg.h>
