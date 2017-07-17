@@ -192,7 +192,7 @@ def parse_entries(file, file_name):
         elif re.match(r's*\#', line):
             pass
         else:
-            sys.exit("Failed to parse %s." % file_name)
+            print_warning('Failed to parse "{}" in {}'.format(line, file_name))
     return False
 
 help_epilog = '''Production text substitutions:
