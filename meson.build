@@ -905,16 +905,17 @@ elif long_size == 8
   guint64_align = long_align
 elif long_long_size == 8
   gint64 = 'long long'
-  glib_extension=''
+  glib_extension='G_GNUC_EXTENSION '
   gint64_modifier=int64_m
   gint64_format=int64_m + 'i'
   guint64_format=int64_m + 'u'
-  gint64_constant='(val##LL)'
-  guint64_constant='(val##ULL)'
+  gint64_constant='(G_GNUC_EXTENSION (val##LL))'
+  guint64_constant='(G_GNUC_EXTENSION (val##ULL))'
   guint64_align = long_long_align
 else
   error('Compiler provides no native 64-bit integer type')
 endif
+glibconfig_conf.set('glib_extension', glib_extension)
 glibconfig_conf.set('gint64', gint64)
 glibconfig_conf.set_quoted('gint64_modifier', gint64_modifier)
 glibconfig_conf.set_quoted('gint64_format', gint64_format)
