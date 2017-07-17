@@ -348,7 +348,13 @@ if len(fhead) > 0:
 def process_file(curfilename):
     global entries, flags, seenbitshift, enum_prefix
     firstenum = True
-    curfile = open(curfilename)
+
+    try:
+        curfile = open(curfilename)
+    except FileNotFoundError:
+        sys.stderr.write('WARNING: No file "{}" found.'.format(curfilename))
+        return
+
     for line in curfile:
         # read lines until we have no open comments
         while re.search(r'/\*([^*]|\*(?!/))*$', line):
