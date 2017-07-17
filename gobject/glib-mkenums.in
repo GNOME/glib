@@ -341,6 +341,7 @@ symprefix += options.symprefix
 fhead = ''.join([unescape_cmdline_args(x) for x in options.fhead]) + fhead
 vhead = ''.join([unescape_cmdline_args(x) for x in options.vhead]) + vhead
 
+fprod += ''.join([unescape_cmdline_args(x) for x in options.fprod])
 eprod += ''.join([unescape_cmdline_args(x) for x in options.eprod])
 vprod += ''.join([unescape_cmdline_args(x) for x in options.vprod])
 
