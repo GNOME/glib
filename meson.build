@@ -925,7 +925,7 @@ glib_conf.set('ALIGNOF_GUINT64', guint64_align)
 
 if host_system == 'windows'
   glibconfig_conf.set('g_pid_type', 'void*')
-  glibconfig_conf.set('G_PID_FORMAT', '"p"')
+  glibconfig_conf.set('g_pid_format', '"p"')
   if host_machine.cpu_family() == 'x86_64'
     glibconfig_conf.set('g_pollfd_format', '"%#I64x"')
   else
@@ -933,7 +933,7 @@ if host_system == 'windows'
   endif
 else
   glibconfig_conf.set('g_pid_type', 'int')
-  glibconfig_conf.set('G_PID_FORMAT', '"i"')
+  glibconfig_conf.set('g_pid_format', '"i"')
   glibconfig_conf.set('g_pollfd_format', '"%d"')
 endif
 

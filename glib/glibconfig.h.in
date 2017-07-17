@@ -191,6 +191,7 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
 #define G_MODULE_SUFFIX "@g_module_suffix@"
 
 typedef @g_pid_type@ GPid;
+#define G_PID_FORMAT @g_pid_format@
 
 #define GLIB_SYSDEF_AF_UNIX @g_af_unix@
 #define GLIB_SYSDEF_AF_INET @g_af_inet@
