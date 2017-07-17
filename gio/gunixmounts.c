@@ -550,7 +550,15 @@ get_mtab_monitor_file (void)
     return mountinfo_path;
 
 #ifdef HAVE_LIBMOUNT
-  /* If using libmount we'll have the logic in place to read mountinfo */
+  /* The mtab file is still used by some distros, so it has to be monitored in
+   * order to avoid races between g_unix_mounts_get and "mounts-changed" signal:
+   * https://bugzilla.gnome.org/show_bug.cgi?id=782814
+   */
+  if (mnt_has_regular_mtab (&mountinfo_path, NULL))
+    {
+      return mountinfo_path;
+    }
+
   if (stat (PROC_MOUNTINFO_PATH, &buf) == 0)
     {
       mountinfo_path = PROC_MOUNTINFO_PATH;
