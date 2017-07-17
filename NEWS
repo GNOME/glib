@@ -1,3 +1,37 @@
+Overview of changes in GLib 2.53.4
+==================================
+
+* Unicode support has been updated to Unicode 10.0.0
+
+* glib-genmarshal and glib-mkenums have been rewritten in python.
+  Every effort has been made to keep compatibility. Please report
+  problems related to these tools
+
+* GLib can now be built with meson. autotools are still supported
+
+* Bugs fixed:
+ 722047 drop makefile.msc?
+ 733821 g_strerror() uses strerror(3) instead of strerror_r(3)
+ 773842 g_utf8_find_next_char() won't signal the end of a NUL-terminated string
+ 779332 Rewrite mkenums in Python
+ 780095 g_utf8_get_char_validated() stopping at nul byte even for length specified...
+ 780634 Remove remaining old codepage ABI comapt code
+ 783841 test_GDateTime_new_from_timeval_overflow fails on 32 bit systems
+ 784000 Improve strerror_r() detection
+ 784020 GKeyFile – Add array length annotations to to_data(), get_keys() and get_g...
+ 784037 gio: Mention the ALL_METADATA flag in g_file_copy()
+ 784433 gdbus-codegen with variant type parameters result in nested variant
+ 784456 Update to Unicode 10.0.0
+ 784528 Rewrite glib-genmarshal in Python
+ 784579 Calling g_dir_open on Missing Directory When Executable File Path Contains...
+ 784581 docs: Fix cut'n'paste error in g_resources_get_info() doc
+ 784739 Minor typo in configure error message
+ 784792 Just fixing a little typo in comments
+
+* Translation updates:
+ Hebrew
+
+
 Overview of changes in GLib 2.53.3
 ==================================
 
