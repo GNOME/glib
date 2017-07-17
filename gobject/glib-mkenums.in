@@ -115,7 +115,13 @@ def parse_entries(file, file_name):
     global entries, enumindex, enumname, seenbitshift, flags
     looking_for_name = False
 
-    for line in file:
+    while True:
+        line = file.readline()
+        if not line:
+            break
+
+        line = line.strip()
+
         # read lines until we have no open comments
         while re.search(r'/\*([^*]|\*(?!/))*$', line):
             line += file.readline()
@@ -396,7 +402,13 @@ def process_file(curfilename):
         print_warning('No file "{}" found.'.format(curfilename))
         return
 
-    for line in curfile:
+    while True:
+        line = curfile.readline()
+        if not line:
+            break
+
+        line = line.strip()
+
         # read lines until we have no open comments
         while re.search(r'/\*([^*]|\*(?!/))*$', line):
             line += curfile.readline()
