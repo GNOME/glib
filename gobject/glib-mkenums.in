@@ -265,24 +265,51 @@ options = parser.parse_args()
 if options.version:
     print_version()
 
-if options.template != '':
-    read_template_file(options.template)
-
 def unescape_cmdline_args(arg):
     arg = arg.replace('\\n', '\n')
     arg = arg.replace('\\r', '\r')
     return arg.replace('\\t', '\t')
 
+if options.template != '':
+    read_template_file(options.template)
+
 idprefix += options.idprefix
 symprefix += options.symprefix
-fhead += ''.join([unescape_cmdline_args(x) for x in options.fhead])
-ftail += ''.join([unescape_cmdline_args(x) for x in options.ftail])
+
+# This is a hack to maintain some semblance of backward compatibility with
+# the old, Perl-based glib-mkenums. The old tool had an implicit ordering
+# on the arguments and templates; each argument was parsed in order, and
+# all the strings appended. This allowed developers to write:
+#
+#   glib-mkenums \
+#     --fhead ... \
+#     --template a-template-file.c.in \
+#     --ftail ...
+#
+# And have the fhead be prepended to the file-head stanza in the template,
+# as well as the ftail be appended to the file-tail stanza in the template.
+# Short of throwing away ArgumentParser and going over sys.argv[] element
+# by element, we can simulate that behaviour by ensuring some ordering in
+# how we build the template strings:
+#
+#   - the head stanzas are always prepended to the template
+#   - the prod stanzas are always appended to the template
+#   - the tail stanzas are always appended to the template
+#
+# Within each instance of the command line argument, we append each value
+# to the array in the order in which it appears on the command line.
+fhead = ''.join([unescape_cmdline_args(x) for x in options.fhead]) + fhead
+vhead = ''.join([unescape_cmdline_args(x) for x in options.vhead]) + vhead
+
 eprod += ''.join([unescape_cmdline_args(x) for x in options.eprod])
-vhead += ''.join([unescape_cmdline_args(x) for x in options.vhead])
 vprod += ''.join([unescape_cmdline_args(x) for x in options.vprod])
-vtail += ''.join([unescape_cmdline_args(x) for x in options.vtail])
+
+ftail = ftail + ''.join([unescape_cmdline_args(x) for x in options.ftail])
+vtail = vtail + ''.join([unescape_cmdline_args(x) for x in options.vtail])
+
 if options.comment_tmpl != '':
     comment_tmpl = unescape_cmdline_args(options.comment_tmpl)
+
 output = options.output
 
 if output is not None:
