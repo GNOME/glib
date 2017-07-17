@@ -31,7 +31,7 @@ foreach t : gobject_tests
   test_timeout = t.get(3, 30)
 
   # FIXME? $(GLIB_DEBUG_FLAGS)
-  exe = executable(test_name, test_src,
+  exe = executable(test_name + '-gobject', test_src,
     c_args : test_cargs + test_extra_cargs + ['-DGLIB_DISABLE_DEPRECATION_WARNINGS'],
     dependencies : [libm, thread_dep, libglib_dep, libgobject_dep],
     install : false,

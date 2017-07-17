@@ -49,6 +49,7 @@ gmoduleinc = include_directories('gmodule')
 gioinc = include_directories('gio')
 
 glib_prefix = get_option('prefix')
+glib_bindir = join_paths(glib_prefix, get_option('bindir'))
 glib_libdir = join_paths(glib_prefix, get_option('libdir'))
 glib_datadir = join_paths(glib_prefix, get_option('datadir'))
 glib_pkgdatadir = join_paths(glib_datadir, 'glib-2.0')

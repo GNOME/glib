@@ -66,34 +66,33 @@ libgobject = shared_library('gobject-2.0',
 libgobject_dep = declare_dependency(link_with : libgobject,
   include_directories : gobjectinc)
 
-glib_mkenums_conf = configuration_data()
-glib_mkenums_conf.set('GLIB_VERSION', glib_version)
-glib_mkenums_conf.set('PYTHON', python.path())
+python_tools = [
+  'glib-genmarshal',
+  'glib-mkenums',
+]
 
-# FIXME: Set permissions
-glib_mkenums = configure_file(input : 'glib-mkenums.in',
-  output : 'glib-mkenums',
-  install : true,
-  install_dir : 'bin', configuration : glib_mkenums_conf)
+python_tools_conf = configuration_data()
+python_tools_conf.set('VERSION', glib_version)
+python_tools_conf.set('PYTHON', python.path())
+
+foreach tool: python_tools
+  # FIXME: Ensure we set the appropriate permissions
+  tool_bin = configure_file(
+    input : tool + '.in',
+    output : tool,
+    configuration : python_tools_conf,
+    install : true,
+    install_dir : glib_bindir,
+  )
+
+  # Set variables for later use
+  set_variable(tool.underscorify(), tool_bin)
+endforeach
 
 executable('gobject-query', 'gobject-query.c',
   install : true,
   c_args : ['-DHAVE_CONFIG_H=1'],
   dependencies : [libglib_dep, libgobject_dep])
-
-gmarshal_strings = custom_target('gmarshal.strings',
-    input : ['gmarshal-list-to-strings.py', 'gmarshal.list'],
-    output : ['gmarshal.strings'],
-    command : [python, '@INPUT0@', '@INPUT1@', '@OUTPUT@'])
-
-glib_genmarshal_conf = configuration_data()
-glib_genmarshal_conf.set('VERSION', glib_version)
-glib_genmarshal_conf.set('PYTHON', python.path())
-
-glib_genmarshal = configure_file(input : 'glib-genmarshal.in',
-  output : 'glib-genmarshal',
-  install : true,
-  install_dir : 'bin', configuration : glib_genmarshal_conf)
 
 install_data('gobject_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
 gdb_conf = configuration_data()

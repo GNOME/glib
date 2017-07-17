@@ -15,6 +15,13 @@ import re
 import sys
 import tempfile
 
+VERSION_STR = '''glib-mkenums version @VERSION@
+glib-genmarshal comes with ABSOLUTELY NO WARRANTY.
+You may redistribute copies of glib-genmarshal under the terms of
+the GNU General Public License which can be found in the
+GLib source package. Sources, examples and contact
+information are available at http://www.gtk.org'''
+
 output_stream = sys.stdout
 
 # pylint: disable=too-few-public-methods
@@ -63,8 +70,6 @@ def print_info(msg):
 def write_output(output):
     global output_stream
     print(output, file=output_stream)
-
-version = '@GLIB_VERSION@'
 
 # glib-mkenums.py
 # Information about the current enumeration
@@ -190,15 +195,6 @@ def parse_entries(file, file_name):
             sys.exit("Failed to parse %s." % file_name)
     return False
 
-def print_version():
-    print("glib-mkenums version glib-" + version)
-    print("glib-mkenums comes with ABSOLUTELY NO WARRANTY.")
-    print("You may redistribute copies of glib-mkenums under the terms of")
-    print("the GNU General Public License which can be found in the")
-    print("GLib source package. Sources, examples and contact")
-    print("information are available at http://www.gtk.org")
-    sys.exit(0)
-
 help_epilog = '''Production text substitutions:
   \u0040EnumName\u0040            PrefixTheXEnum
   \u0040enum_name\u0040           prefix_the_xenum
@@ -306,7 +302,8 @@ parser.add_argument('args', nargs='*')
 options = parser.parse_args()
 
 if options.version:
-    print_version()
+    print(VERSION_STR)
+    sys.exit(0)
 
 def unescape_cmdline_args(arg):
     arg = arg.replace('\\n', '\n')

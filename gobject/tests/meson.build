@@ -44,26 +44,37 @@ foreach test_name : gobject_tests
   test(test_name, exe, env : test_env)
 endforeach
 
-# The marshalers test requires running a binary, so we cannot build it when
-# cross-compiling
-if not meson.has_exe_wrapper()
-  genmarshal = find_program('gobject_test_marshal.py')
+marshalers_h = custom_target('marshalers_h',
+  output : 'marshalers.h',
+  input : 'marshalers.list',
+  command : [
+    python, glib_genmarshal,
+    '--prefix=test',
+    '--valist-marshallers',
+    '--output=@OUTPUT@',
+    '--quiet',
+    '--header',
+    '@INPUT@',
+  ],
+)
+marshalers_c = custom_target('marshalers_c',
+  output : 'marshalers.c',
+  input : 'marshalers.list',
+  command : [
+    python, glib_genmarshal,
+    '--prefix=test',
+    '--valist-marshallers',
+    '--include-header=marshalers.h',
+    '--output=@OUTPUT@',
+    '--quiet',
+    '--body',
+    '@INPUT@',
+  ],
+)
 
-  marshalers_h = custom_target('marshalers_h',
-    output : 'marshalers.h',
-    input : 'marshalers.list',
-    command : [genmarshal, glib_genmarshal, '@INPUT@', '@OUTPUT@'],
-  )
-  marshalers_c = custom_target('marshalers_c',
-    output : 'marshalers.c',
-    input : 'marshalers.list',
-    command : [genmarshal, glib_genmarshal, '@INPUT@', '@OUTPUT@'],
-  )
-
-  exe = executable('signals',
-      'signals.c', marshalers_h, marshalers_c,
-      c_args : ['-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib-GObject"'],
-      dependencies : deps,
-  )
-  test('signals', exe, env : test_env)
-endif
+exe = executable('signals',
+    'signals.c', marshalers_h, marshalers_c,
+    c_args : ['-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib-GObject"'],
+    dependencies : deps,
+)
+test('signals', exe, env : test_env)
