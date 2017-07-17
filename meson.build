@@ -84,7 +84,6 @@ glib_conf.set_quoted('PACKAGE_TARNAME', 'glib')
 glib_conf.set_quoted('PACKAGE_URL', '')
 glib_conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 glib_conf.set('ENABLE_NLS', 1)
-glib_conf.set('HAVE_GOOD_PRINTF', 1) # FIXME
 
 # Variables used in glib-gettextize and pkg-config files
 # These should not contain " quotes around the values
@@ -557,11 +556,15 @@ endif
 # AC_FUNC_VSNPRINTF_C99
 # Check whether there is a snprintf() function with C99 semantics installed.
 # AC_FUNC_SNPRINTF_C99
-if host_system == 'windows' and cc.get_id() == 'gcc'
-  # Unfortunately the mingw implementations of C99-style snprintf and vsnprintf
-  # don't seem to be quite good enough, at least not in mingw-runtime-3.14.
-  # (Sorry, I don't know exactly what is the problem, but it is related to
-  # floating point formatting and decimal point vs. comma.)
+
+have_good_vsnprintf = false
+have_good_snprintf = false
+
+if host_system == 'windows'
+  # Unfortunately the mingw and Visual Studio 2015+ implementations of C99-style
+  # snprintf and vsnprintf don't seem to be quite good enough, at least not in
+  # mingw-runtime-3.14.  (Sorry, I don't know exactly what is the problem,
+  # but it is related to floating point formatting and decimal point vs. comma.)
   # The simple tests in AC_FUNC_VSNPRINTF_C99 and AC_FUNC_SNPRINTF_C99 aren't
   # rigorous enough to notice, though.
   glib_conf.set('HAVE_C99_SNPRINTF', false)
@@ -608,6 +611,7 @@ main(void)
   rres = cc.run(vsnprintf_c99_test_code, name : 'C99 vsnprintf')
   if rres.compiled() and rres.returncode() == 0
     glib_conf.set('HAVE_C99_VSNPRINTF', 1)
+    have_good_vsnprintf = true
   endif
 
   snprintf_c99_test_code = '''
@@ -649,6 +653,7 @@ main(void)
   rres = cc.run(snprintf_c99_test_code, name : 'C99 snprintf')
   if rres.compiled() and rres.returncode() == 0
     glib_conf.set('HAVE_C99_SNPRINTF', 1)
+    have_good_snprintf = true
   endif
 endif
 
@@ -656,6 +661,13 @@ if host_system == 'windows'
   glib_conf.set_quoted('EXEEXT', '.exe')
 else
   glib_conf.set('EXEEXT', '')
+endif
+
+if have_good_vsnprintf and have_good_snprintf
+  # Our printf is 'good' only if vsnpintf()/snprintf() supports C99 well enough
+  glib_conf.set('HAVE_GOOD_PRINTF', 1) # FIXME: Check for HAVE_UNIX98_PRINTF?
+else
+  glib_conf.set('HAVE_VASPRINTF', 1)
 endif
 
 # Check whether the printf() family supports Unix98 %n$ positional parameters
