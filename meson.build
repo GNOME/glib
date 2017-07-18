@@ -255,6 +255,11 @@ foreach m : struct_members
   endif
 endforeach
 
+# Windows Support (Vista+)
+if host_system == 'windows'
+  glib_conf.set('_WIN32_WINNT', '0x0601')
+endif
+
 functions = [
   'alloca',
   'mmap',
@@ -311,8 +316,6 @@ functions = [
   'kqueue',
   'kevent',
   'endservent',
-  'if_indextoname',
-  'if_nametoindex',
   'sendmmsg',
   'recvmmsg',
 ]
@@ -326,6 +329,25 @@ if glib_conf.has('HAVE_SYS_STATFS_H') or glib_conf.has('HAVE_SYS_MOUNT_H')
   functions += ['statfs']
 else
   have_func_statfs = false
+endif
+
+if host_system == 'windows'
+  iphlpapi_dep = cc.find_library('iphlpapi')
+  iphlpapi_funcs = ['if_nametoindex', 'if_indextoname']
+  foreach ifunc : iphlpapi_funcs
+    if cc.has_function(ifunc,
+                       prefix : '#define _WIN32_WINNT 0x0601\n#include <winsock2.h>\n#include <iphlpapi.h>',
+                       dependencies : iphlpapi_dep)
+      idefine = 'HAVE_' + ifunc.underscorify().to_upper()
+      glib_conf.set(idefine, 1)
+      glib_conf_prefix = glib_conf_prefix + '#define @0@ 1\n'.format(idefine)
+      set_variable('have_func_' + ifunc, true)
+    else
+      set_variable('have_func_' + ifunc, false)
+    endif
+  endforeach
+else
+  functions += ['if_indextoname', 'if_nametoindex']
 endif
 
 # AIX splice is something else
@@ -673,6 +695,7 @@ endif
 # Check whether the printf() family supports Unix98 %n$ positional parameters
 # AC_FUNC_PRINTF_UNIX98
 # Nothing uses HAVE_UNIX98_PRINTF
+
 
 # Check for nl_langinfo and CODESET
 # FIXME: Check for HAVE_BIND_TEXTDOMAIN_CODESET

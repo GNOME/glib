@@ -768,7 +768,7 @@
 /* Define for large files, on AIX-style hosts. */
 #mesondefine _LARGE_FILES
 
-/* Target the Windows XP API */
+/* Target the Windows 7 API */
 #mesondefine _WIN32_WINNT
 
 /* Needed to get declarations for msg_control and msg_controllen on Solaris */

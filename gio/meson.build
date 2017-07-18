@@ -369,7 +369,7 @@ if host_system == 'windows'
   contenttype_sources += ['gcontenttype-win32.c']
   platform_deps += [cc.find_library('shlwapi'),
                     cc.find_library('dnsapi'),
-                    cc.find_library('iphlpapi'),
+                    iphlpapi_dep,
                     winsock2]
   win32_sources += [
     'gwin32registrykey.c',
