@@ -65,6 +65,45 @@ EXTRA_DIST += 			\
 	gtk-doc.make		\
 	$(NULL)
 
+meson_build_files = \
+	config.h.meson \
+	meson_options.txt \
+	meson.build \
+	docs/reference/gio/meson.build \
+	docs/reference/gio/xml/gtkdocentities.ent.in \
+	docs/reference/gio/xml/meson.build \
+	docs/reference/glib/meson.build \
+	docs/reference/glib/xml/gtkdocentities.ent.in \
+	docs/reference/glib/xml/meson.build \
+	docs/reference/gobject/meson.build \
+	docs/reference/gobject/xml/gtkdocentities.ent.in \
+	docs/reference/gobject/xml/meson.build \
+	gio/data-to-c.py \
+	gio/gdbus-2.0/codegen/meson.build \
+	gio/inotify/meson.build \
+	gio/kqueue/meson.build \
+	gio/meson.build \
+	gio/tests/meson.build \
+	gio/tests/modules/meson.build \
+	gio/tests/gdbus-object-manager-example/meson.build \
+	gio/tests/de/LC_MESSAGES/meson.build \
+	gio/win32/meson.build \
+	gio/xdgmime/meson.build \
+	glib/libcharset/meson.build \
+	glib/meson.build \
+	glib/pcre/meson.build \
+	glib/tests/meson.build \
+	gmodule/meson.build \
+	gobject/meson.build \
+	gobject/tests/meson.build \
+	gthread/meson.build \
+	po/meson.build
+	tests/refcount/meson.build \
+	tests/meson.build \
+	tests/gobject/meson.build \
+	$()
+
+EXTRA_DIST += $(meson_build_files)
 
 # These may be in the builddir too
 BUILT_EXTRA_DIST += 		\
