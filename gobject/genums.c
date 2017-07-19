@@ -218,6 +218,56 @@ g_enum_register_static (const gchar	 *name,
 }
 
 /**
+ * g_enum_type_register_static:
+ * @name: A nul-terminated string used as the name of the new type.
+ * @values: An array of #GEnumValue structs for the possible
+ *  enumeration values. The array is terminated by a struct with all
+ *  members being 0. GObject will copy the data.
+ *
+ * Registers a new static enumeration type with the name @name.
+ *
+ * It is normally more convenient to let [glib-mkenums][glib-mkenums],
+ * generate a my_enum_get_type() function from a usual C enumeration
+ * definition  than to write one yourself using g_enum_register_static().
+ *
+ * Returns: The new type identifier.
+ *
+ * Since: 2.54
+ */
+GType
+g_enum_type_register_static (const gchar      *name,
+                             const GEnumValue *values)
+{
+  GTypeInfo enum_type_info = {
+    sizeof (GEnumClass), /* class_size */
+    NULL,                /* base_init */
+    NULL,                /* base_finalize */
+    (GClassInitFunc) g_enum_class_init,
+    NULL,                /* class_finalize */
+    NULL,                /* class_data */
+    0,                   /* instance_size */
+    0,                   /* n_preallocs */
+    NULL,                /* instance_init */
+    NULL,		 /* value_table */
+  };
+  const GEnumValue *iter;
+  guint n_values = 0;
+  GType type;
+
+  g_return_val_if_fail (name != NULL, 0);
+  g_return_val_if_fail (values != NULL, 0);
+
+  for (iter = values; iter->value_name; iter++)
+    n_values += 1;
+
+  enum_type_info.class_data = g_memdup (values, n_values * sizeof (GEnumValue));
+
+  type = g_type_register_static (G_TYPE_ENUM, name, &enum_type_info, 0);
+
+  return type;
+}
+
+/**
  * g_flags_register_static:
  * @name: A nul-terminated string used as the name of the new type.
  * @const_static_values: An array of #GFlagsValue structs for the possible
@@ -252,11 +302,61 @@ g_flags_register_static (const gchar	   *name,
   
   g_return_val_if_fail (name != NULL, 0);
   g_return_val_if_fail (const_static_values != NULL, 0);
-  
+
   flags_type_info.class_data = const_static_values;
+
+  type = g_type_register_static (G_TYPE_FLAGS, name, &flags_type_info, 0);
+
+  return type;
+}
+
+/**
+ * g_flags_type_register_static:
+ * @name: A nul-terminated string used as the name of the new type.
+ * @values: An array of #GFlagsValue structs for the possible flags
+ *   values. The array is terminated by a struct with all members
+ *   being 0. GObject copies the data
+ *
+ * Registers a new static flags type with the name @name.
+ *
+ * It is normally more convenient to let [glib-mkenums][glib-mkenums]
+ * generate a my_flags_get_type() function from a usual C enumeration
+ * definition than to write one yourself using g_flags_register_static().
+ *
+ * Returns: The new type identifier.
+ *
+ * Since: 2.54
+ */
+GType
+g_flags_type_register_static (const gchar	*name,
+                              const GFlagsValue *values)
+{
+  GTypeInfo flags_type_info = {
+    sizeof (GFlagsClass), /* class_size */
+    NULL,                 /* base_init */
+    NULL,                 /* base_finalize */
+    (GClassInitFunc) g_flags_class_init,
+    NULL,                 /* class_finalize */
+    NULL,                 /* class_data */
+    0,                    /* instance_size */
+    0,                    /* n_preallocs */
+    NULL,                 /* instance_init */
+    NULL,		  /* value_table */
+  };
+  const GFlagsValue *iter;
+  guint n_values = 0;
+  GType type;
+  
+  g_return_val_if_fail (name != NULL, 0);
+  g_return_val_if_fail (values != NULL, 0);
+
+  for (iter = values; iter->value_name != NULL; iter++)
+    n_values += 1;
+
+  flags_type_info.class_data = g_memdup (values, n_values * sizeof (GFlagsValue));
   
   type = g_type_register_static (G_TYPE_FLAGS, name, &flags_type_info, 0);
-  
+
   return type;
 }
 

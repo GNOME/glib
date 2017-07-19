@@ -262,6 +262,14 @@ GType	g_enum_register_static	   (const gchar	      *name,
 GLIB_AVAILABLE_IN_ALL
 GType	g_flags_register_static	   (const gchar	      *name,
 				    const GFlagsValue *const_static_values);
+
+GLIB_AVAILABLE_IN_2_54
+GType   g_enum_type_register_static     (const gchar       *name,
+                                         const GEnumValue  *values);
+GLIB_AVAILABLE_IN_2_54
+GType   g_flags_type_register_static    (const gchar       *name,
+                                         const GFlagsValue *values);
+
 /* functions to complete the type information
  * for enums/flags implemented by plugins
  */
