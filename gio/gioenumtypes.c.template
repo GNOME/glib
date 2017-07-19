@@ -17,7 +17,7 @@ GType
 
   if (g_once_init_enter (&g_define_type_id__volatile))
     {
-      static const G@Type@Value values[] = {
+      const G@Type@Value values[] = {
 /*** END value-header ***/
 
 /*** BEGIN value-production ***/
@@ -28,7 +28,7 @@ GType
         { 0, NULL, NULL }
       };
       GType g_define_type_id =
-        g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
+        g_@type@_type_register_static (g_intern_static_string ("@EnumName@"), values);
       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
