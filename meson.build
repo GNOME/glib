@@ -339,6 +339,23 @@ foreach f : functions
   endif
 endforeach
 
+# Check whether strerror_r returns char *
+if have_func_strerror_r
+  if cc.compiles('''#define _GNU_SOURCE
+                    #include <string.h>
+                    int func (void) {
+                      char error_string[256];
+                      char *ptr = strerror_r (-2, error_string, 256);
+                      char c = *strerror_r (-2, error_string, 256);
+                      return c != 0 && ptr != (void*) 0L;
+                    }
+                 ''',
+                 name : 'strerror_r() returns char *')
+    glib_conf.set('STRERROR_R_CHAR_P', 1,
+                  description: 'Defined if strerror_r returns char *')
+  endif
+endif
+
 # Special-case these functions that have alternative names on Windows/MSVC
 if cc.has_function('snprintf') or cc.has_header_symbol('stdio.h', 'snprintf')
   glib_conf.set('HAVE_SNPRINTF', 1)

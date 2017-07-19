@@ -398,6 +398,9 @@
 /* Define to 1 if you have the `strerror_r' function. */
 #mesondefine HAVE_STRERROR_R
 
+/* Define if strerror_r returns char * */
+#mesondefine STRERROR_R_CHAR_P
+
 /* Define to 1 if you have the <strings.h> header file. */
 #mesondefine HAVE_STRINGS_H
 
