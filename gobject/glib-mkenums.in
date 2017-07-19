@@ -14,6 +14,7 @@ import os
 import re
 import sys
 import tempfile
+import io
 
 VERSION_STR = '''glib-mkenums version @VERSION@
 glib-genmarshal comes with ABSOLUTELY NO WARRANTY.
@@ -147,7 +148,7 @@ def parse_entries(file, file_name):
         m = re.match(r'\#include\s*<([^>]*)>', line)
         if m:
             newfilename = os.path.join("..", m.group(1))
-            newfile = open(newfilename)
+            newfile = io.open(newfilename, encoding="utf-8")
 
             if not parse_entries(newfile, newfilename):
                 return False
@@ -243,7 +244,7 @@ def read_template_file(file):
            }
     in_ = 'junk'
 
-    ifile = open(file)
+    ifile = io.open(file, encoding="utf-8")
     for line in ifile:
         m = re.match(r'\/\*\*\*\s+(BEGIN|END)\s+([\w-]+)\s+\*\*\*\/', line)
         if m:
@@ -397,7 +398,7 @@ def process_file(curfilename):
     firstenum = True
 
     try:
-        curfile = open(curfilename)
+        curfile = io.open(curfilename, encoding="utf-8")
     except FileNotFoundError:
         print_warning('No file "{}" found.'.format(curfilename))
         return
