@@ -15,6 +15,7 @@ import re
 import sys
 import tempfile
 import io
+import errno
 
 VERSION_STR = '''glib-mkenums version @VERSION@
 glib-genmarshal comes with ABSOLUTELY NO WARRANTY.
@@ -399,9 +400,11 @@ def process_file(curfilename):
 
     try:
         curfile = io.open(curfilename, encoding="utf-8")
-    except FileNotFoundError:
-        print_warning('No file "{}" found.'.format(curfilename))
-        return
+    except IOError as e:
+        if e.errno == errno.ENOENT:
+            print_warning('No file "{}" found.'.format(curfilename))
+            return
+        raise
 
     while True:
         line = curfile.readline()
