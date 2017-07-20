@@ -275,8 +275,7 @@ myInvalidParameterHandler(const wchar_t *expression,
  *
  * Defines the log domain.
  *
- * For applications, this is typically left as the default %NULL
- * (or "") domain. Libraries should define this so that any messages
+ * Libraries should define this so that any messages
  * which they log can be differentiated from messages from other
  * libraries and application code. But be careful not to define
  * it in any public header files.
@@ -285,6 +284,12 @@ myInvalidParameterHandler(const wchar_t *expression,
  * |[
  * AM_CPPFLAGS = -DG_LOG_DOMAIN=\"Gtk\"
  * ]|
+ *
+ * Applications can choose to leave it as the default %NULL (or "")
+ * domain. However, defining the domain offers the same advantages as
+ * above.
+ *
+
  */
 
 /**
