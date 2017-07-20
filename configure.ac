@@ -389,7 +389,7 @@ AC_ARG_WITH(python,
 if test x"$PYTHON" = xyes; then
   AC_MSG_ERROR([--with-python option requires a path or program argument])
 fi
-AM_PATH_PYTHON(2.5,,PYTHON="/usr/bin/env python2.5")
+AM_PATH_PYTHON(2.7,,PYTHON="python2.7")
 
 
 dnl ***********************
