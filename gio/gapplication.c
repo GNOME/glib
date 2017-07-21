@@ -1247,18 +1247,27 @@ g_application_dispose (GObject *object)
 {
   GApplication *application = G_APPLICATION (object);
 
-  g_assert_null (application->priv->impl);
+  if (application->priv->impl != NULL &&
+      G_APPLICATION_GET_CLASS (application)->dbus_unregister != g_application_real_dbus_unregister)
+    {
+      static gboolean warned;
 
-  G_OBJECT_CLASS (g_application_parent_class)
-    ->dispose (object);
+      if (!warned)
+        {
+          g_warning ("Your application did not unregister from D-Bus before destruction. "
+                     "Consider using g_application_run().");
+        }
+
+      warned = TRUE;
+    }
+
+  G_OBJECT_CLASS (g_application_parent_class)->dispose (object);
 }
 
 static void
 g_application_finalize (GObject *object)
 {
   GApplication *application = G_APPLICATION (object);
-
-  g_assert_null (application->priv->impl);
 
   g_slist_free_full (application->priv->option_groups, (GDestroyNotify) g_option_group_unref);
   if (application->priv->main_options)
@@ -1267,6 +1276,9 @@ g_application_finalize (GObject *object)
     g_hash_table_unref (application->priv->packed_options);
 
   g_slist_free_full (application->priv->option_strings, g_free);
+
+  if (application->priv->impl)
+    g_application_impl_destroy (application->priv->impl);
   g_free (application->priv->id);
 
   if (g_application_get_default () == application)
