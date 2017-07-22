@@ -366,7 +366,9 @@ if output is not None:
     out_suffix = '_' + os.path.splitext(out_fn)[1]
     if out_dir == '':
         out_dir = '.'
-    tmpfile = tempfile.NamedTemporaryFile(dir=out_dir, delete=False)
+    fd, filename = tempfile.mkstemp(dir=out_dir)
+    os.close(fd)
+    tmpfile = io.open(filename, "w", encoding="utf-8")
     output_stream = tmpfile
 else:
     tmpfile = None
