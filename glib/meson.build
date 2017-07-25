@@ -213,6 +213,12 @@ else
   glib_dtrace_hdr = []
 endif
 
+pcre_static_args = []
+
+if use_pcre_static_flag
+  pcre_static_args = ['-DPCRE_STATIC']
+endif
+
 libglib = shared_library('glib-2.0',
   glib_dtrace_obj, glib_dtrace_hdr,
   sources : [deprecated_sources, glib_sources, thread_src, plat_src],
@@ -224,7 +230,7 @@ libglib = shared_library('glib-2.0',
   include_directories : configinc,
   link_with : [charset_lib, gnulib_lib],
   dependencies : [pcre, thread_dep, libintl, librt] + libiconv + platform_deps,
-  c_args : ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION', '-DPCRE_STATIC'] + glib_hidden_visibility_args
+  c_args : ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args + glib_hidden_visibility_args
 )
 
 libglib_dep = declare_dependency(link_with : libglib,
