@@ -16,6 +16,8 @@ import sys
 import tempfile
 import io
 import errno
+import codecs
+import locale
 
 VERSION_STR = '''glib-mkenums version @VERSION@
 glib-genmarshal comes with ABSOLUTELY NO WARRANTY.
@@ -24,7 +26,13 @@ the GNU General Public License which can be found in the
 GLib source package. Sources, examples and contact
 information are available at http://www.gtk.org'''
 
-output_stream = sys.stdout
+# Python 2 defaults to ASCII in case stdout is redirected.
+# This should make it match Python 3, which uses the locale encoding.
+if sys.stdout.encoding is None:
+    output_stream = codecs.getwriter(
+        locale.getpreferredencoding())(sys.stdout)
+else:
+    output_stream = sys.stdout
 
 # pylint: disable=too-few-public-methods
 class Color:
