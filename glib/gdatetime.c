@@ -2220,7 +2220,7 @@ format_ampm (GDateTime *datetime,
              gboolean   uppercase)
 {
   const gchar *ampm;
-  gchar       *tmp, *ampm_dup;
+  gchar       *tmp = NULL, *ampm_dup;
   gsize        len;
 
   ampm = GET_AMPM (datetime);
