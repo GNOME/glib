@@ -274,6 +274,7 @@ else
 endif
 
 install_data('gtester-report', install_dir : get_option('bindir'))
+
 install_data('glib_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
 
 gdb_conf = configuration_data()
@@ -283,7 +284,7 @@ configure_file(
   output: 'libglib-2.0.so.@0@-gdb.py'.format(library_version),
   configuration: gdb_conf,
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'gdb/auto-load' + glib_libdir)
+  install_dir: join_paths(get_option('datadir'), 'gdb/auto-load' + get_option('libdir'))
 )
 
 if enable_systemtap

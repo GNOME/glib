@@ -693,13 +693,15 @@ endif
 #  subdir('fam')
 #endif
 
-install_data([
-  'completion/gapplication',
-  'completion/gdbus',
-  'completion/gsettings',
-  'completion/gresource'
-],
-install_dir: join_paths(get_option('datadir'), 'bash-completion/completions'))
+if have_bash
+  install_data([
+    'completion/gapplication',
+    'completion/gdbus',
+    'completion/gsettings',
+    'completion/gresource'
+  ],
+  install_dir: join_paths(get_option('datadir'), 'bash-completion/completions'))
+endif
 
 if enable_dtrace
   gio_dtrace_obj = dtrace_obj_gen.process('gio_probes.d')
