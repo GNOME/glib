@@ -1499,6 +1499,11 @@ endif
 
 python = import('python3').find_python()
 
+# Determine which user environment-dependent files that we want to install
+have_bash = find_program('bash', required : false).found() # For completion scripts
+have_m4 = find_program('m4', required : false).found() # For m4 macros
+have_sh = find_program('sh', required : false).found() # For glib-gettextize
+
 # FIXME: defines in config.h that are not actually used anywhere
 # (we add them for now to minimise the diff)
 glib_conf.set('HAVE_DLFCN_H', 1)
@@ -1608,19 +1613,27 @@ endforeach
 
 # NOTE: We skip glib-zip.in because the filenames it assumes don't match ours
 
-# Install glib-gettextize executable
-configure_file(input : 'glib-gettextize.in',
-  install : true,
-  install_dir : 'bin',
-  output : 'glib-gettextize',
-  configuration : glib_conf)
+# Install glib-gettextize executable, if a UNIX-style shell is found
+if have_sh
+  configure_file(input : 'glib-gettextize.in',
+    install : true,
+    install_dir : 'bin',
+    output : 'glib-gettextize',
+    configuration : glib_conf)
+endif
 
-# Install m4 macros that other projects use
-install_data('m4macros/glib-2.0.m4', 'm4macros/glib-gettext.m4', 'm4macros/gsettings.m4',
-  install_dir : join_paths(get_option('datadir'), 'aclocal'))
-# Install Valgrind suppression file
-install_data('glib.supp',
-  install_dir : join_paths(get_option('datadir'), 'glib-2.0', 'valgrind'))
+if have_m4
+  # Install m4 macros that other projects use
+  install_data('m4macros/glib-2.0.m4', 'm4macros/glib-gettext.m4', 'm4macros/gsettings.m4',
+    install_dir : join_paths(get_option('datadir'), 'aclocal'))
+endif
+
+if host_system != 'windows'
+  # Install Valgrind suppression file (except on Windows,
+  # as Valgrind is currently not supported on Windows)
+  install_data('glib.supp',
+    install_dir : join_paths(get_option('datadir'), 'glib-2.0', 'valgrind'))
+endif
 
 configure_file(input : 'config.h.meson',
   output : 'config.h',
