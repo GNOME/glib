@@ -164,10 +164,11 @@ poll_rest (gboolean  poll_msgs,
       if (timeout == INFINITE)
 	ready = WAIT_FAILED;
       else
-	{
-	  SleepEx (timeout, TRUE);
-	  ready = WAIT_TIMEOUT;
-	}
+        {
+          /* Wait for the current process to die, more efficient than SleepEx(). */
+          WaitForSingleObjectEx (GetCurrentProcess (), timeout, TRUE);
+          ready = WAIT_TIMEOUT;
+        }
     }
   else
     {
