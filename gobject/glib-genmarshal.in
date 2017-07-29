@@ -556,7 +556,7 @@ def generate_prototype(retval, params,
                        va_marshal=False):
     '''Generate a marshaller declaration with the given @visibility. If @va_marshal
     is True, the marshaller will use variadic arguments in place of a GValue array.'''
-    signature = []
+    signature = ['G_BEGIN_DECLS']
 
     if visibility == Visibility.INTERNAL:
         signature += ['G_GNUC_INTERNAL']
@@ -584,6 +584,8 @@ def generate_prototype(retval, params,
         signature += [indent('gpointer  marshal_data,', level=width, fill=' ')]
         signature += [indent('int       n_params,', level=width, fill=' ')]
         signature += [indent('GType    *param_types);', level=width, fill=' ')]
+
+    signature += ['G_END_DECLS']
 
     return signature
 
