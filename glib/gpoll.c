@@ -129,7 +129,7 @@ g_poll (GPollFD *fds,
 #ifdef G_OS_WIN32
 
 static int
-poll_rest (gboolean  poll_msgs,
+poll_rest (GPollFD  *msg_fd,
 	   HANDLE   *handles,
 	   gint      nhandles,
 	   GPollFD  *fds,
@@ -140,7 +140,7 @@ poll_rest (gboolean  poll_msgs,
   GPollFD *f;
   int recursed_result;
 
-  if (poll_msgs)
+  if (msg_fd != NULL)
     {
       /* Wait for either messages or handles
        * -> Use MsgWaitForMultipleObjectsEx
@@ -192,18 +192,16 @@ poll_rest (gboolean  poll_msgs,
 	     ready,
 	     (ready == WAIT_FAILED ? " (WAIT_FAILED)" :
 	      (ready == WAIT_TIMEOUT ? " (WAIT_TIMEOUT)" :
-	       (poll_msgs && ready == WAIT_OBJECT_0 + nhandles ? " (msg)" : ""))));
+	       (msg_fd != NULL && ready == WAIT_OBJECT_0 + nhandles ? " (msg)" : ""))));
 
   if (ready == WAIT_FAILED)
     return -1;
   else if (ready == WAIT_TIMEOUT ||
 	   ready == WAIT_IO_COMPLETION)
     return 0;
-  else if (poll_msgs && ready == WAIT_OBJECT_0 + nhandles)
+  else if (msg_fd != NULL && ready == WAIT_OBJECT_0 + nhandles)
     {
-      for (f = fds; f < &fds[nfds]; ++f)
-	if (f->fd == G_WIN32_MSG_HANDLE && f->events & G_IO_IN)
-	  f->revents |= G_IO_IN;
+      msg_fd->revents |= G_IO_IN;
 
       /* If we have a timeout, or no handles to poll, be satisfied
        * with just noticing we have messages waiting.
@@ -214,7 +212,7 @@ poll_rest (gboolean  poll_msgs,
       /* If no timeout and handles to poll, recurse to poll them,
        * too.
        */
-      recursed_result = poll_rest (FALSE, handles, nhandles, fds, nfds, 0);
+      recursed_result = poll_rest (NULL, handles, nhandles, fds, nfds, 0);
       return (recursed_result == -1) ? -1 : 1 + recursed_result;
     }
   else if (ready >= WAIT_OBJECT_0 && ready < WAIT_OBJECT_0 + nhandles)
@@ -239,7 +237,7 @@ poll_rest (gboolean  poll_msgs,
 	  for (i = ready - WAIT_OBJECT_0 + 1; i < nhandles; i++)
 	    handles[i-1] = handles[i];
 	  nhandles--;
-	  recursed_result = poll_rest (FALSE, handles, nhandles, fds, nfds, 0);
+	  recursed_result = poll_rest (NULL, handles, nhandles, fds, nfds, 0);
 	  return (recursed_result == -1) ? -1 : 1 + recursed_result;
 	}
       return 1;
@@ -254,7 +252,7 @@ g_poll (GPollFD *fds,
 	gint     timeout)
 {
   HANDLE handles[MAXIMUM_WAIT_OBJECTS];
-  gboolean poll_msgs = FALSE;
+  GPollFD *msg_fd = NULL;
   GPollFD *f;
   gint nhandles = 0;
   int retval;
@@ -266,9 +264,9 @@ g_poll (GPollFD *fds,
     {
       if (f->fd == G_WIN32_MSG_HANDLE && (f->events & G_IO_IN))
         {
-          if (_g_main_poll_debug && !poll_msgs)
+          if (_g_main_poll_debug && msg_fd == NULL)
             g_print (" MSG");
-          poll_msgs = TRUE;
+          msg_fd = f;
         }
       else if (f->fd > 0)
         {
@@ -294,26 +292,26 @@ g_poll (GPollFD *fds,
     timeout = INFINITE;
 
   /* Polling for several things? */
-  if (nhandles > 1 || (nhandles > 0 && poll_msgs))
+  if (nhandles > 1 || (nhandles > 0 && msg_fd != NULL))
     {
       /* First check if one or several of them are immediately
        * available
        */
-      retval = poll_rest (poll_msgs, handles, nhandles, fds, nfds, 0);
+      retval = poll_rest (msg_fd, handles, nhandles, fds, nfds, 0);
 
       /* If not, and we have a significant timeout, poll again with
        * timeout then. Note that this will return indication for only
        * one event, or only for messages.
        */
       if (retval == 0 && (timeout == INFINITE || timeout > 0))
-	retval = poll_rest (poll_msgs, handles, nhandles, fds, nfds, timeout);
+	retval = poll_rest (msg_fd, handles, nhandles, fds, nfds, timeout);
     }
   else
     {
       /* Just polling for one thing, so no need to check first if
        * available immediately
        */
-      retval = poll_rest (poll_msgs, handles, nhandles, fds, nfds, timeout);
+      retval = poll_rest (msg_fd, handles, nhandles, fds, nfds, timeout);
     }
 
   if (retval == -1)
