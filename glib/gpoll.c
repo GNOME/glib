@@ -226,15 +226,16 @@ poll_rest (GPollFD *msg_fd,
        */
       if (timeout == 0 && nhandles > 1)
 	{
-	  /* Remove the handle that fired */
-	  int i;
-          for (i = ready - WAIT_OBJECT_0 + 1; i < nhandles; i++)
-            {
-              handles[i-1] = handles[i];
-              handle_to_fd[i-1] = handle_to_fd[i];
-            }
-	  nhandles--;
-	  recursed_result = poll_rest (NULL, handles, handle_to_fd, nhandles, 0);
+	  /* Poll the handles with index > ready */
+          HANDLE  *shorter_handles;
+          GPollFD **shorter_handle_to_fd;
+          gint     shorter_nhandles;
+
+          shorter_handles = &handles[ready - WAIT_OBJECT_0 + 1];
+          shorter_handle_to_fd = &handle_to_fd[ready - WAIT_OBJECT_0 + 1];
+          shorter_nhandles = nhandles - (ready - WAIT_OBJECT_0 + 1);
+
+	  recursed_result = poll_rest (NULL, shorter_handles, shorter_handle_to_fd, shorter_nhandles, 0);
 	  return (recursed_result == -1) ? -1 : 1 + recursed_result;
 	}
       return 1;
