@@ -224,6 +224,10 @@ test_programs += \
 	$(NULL)
 endif
 
+if OS_WIN32
+test_programs += gpoll
+endif
+
 # -----------------------------------------------------------------------------
 
 if HAVE_EVENTFD
