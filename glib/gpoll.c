@@ -263,32 +263,32 @@ g_poll (GPollFD *fds,
     g_print ("g_poll: waiting for");
 
   for (f = fds; f < &fds[nfds]; ++f)
-    if (f->fd == G_WIN32_MSG_HANDLE && (f->events & G_IO_IN))
-      {
-	if (_g_main_poll_debug && !poll_msgs)
-	  g_print (" MSG");
-	poll_msgs = TRUE;
-      }
-    else if (f->fd > 0)
-      {
-        if (nhandles == MAXIMUM_WAIT_OBJECTS)
-          {
-            g_warning ("Too many handles to wait for!\n");
-            break;
-          }
-        else
-          {
-            if (_g_main_poll_debug)
-              g_print (" %p", (HANDLE) f->fd);
-            handles[nhandles++] = (HANDLE) f->fd;
-          }
-      }
+    {
+      if (f->fd == G_WIN32_MSG_HANDLE && (f->events & G_IO_IN))
+        {
+          if (_g_main_poll_debug && !poll_msgs)
+            g_print (" MSG");
+          poll_msgs = TRUE;
+        }
+      else if (f->fd > 0)
+        {
+          if (nhandles == MAXIMUM_WAIT_OBJECTS)
+            {
+              g_warning ("Too many handles to wait for!\n");
+              break;
+            }
+          else
+            {
+              if (_g_main_poll_debug)
+                g_print (" %p", (HANDLE) f->fd);
+              handles[nhandles++] = (HANDLE) f->fd;
+            }
+        }
+      f->revents = 0;
+    }
 
   if (_g_main_poll_debug)
     g_print ("\n");
-
-  for (f = fds; f < &fds[nfds]; ++f)
-    f->revents = 0;
 
   if (timeout == -1)
     timeout = INFINITE;
