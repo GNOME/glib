@@ -23,9 +23,10 @@ write_all (int           fd,
   while (len > 0)
     {
       gssize bytes_written = write (fd, buf, len);
+      int errsv = errno;
       if (bytes_written < 0)
 	g_error ("Failed to write to fd %d: %s",
-		 fd, g_strerror (errno));
+		 fd, g_strerror (errsv));
       buf += bytes_written;
       len -= bytes_written;
     }

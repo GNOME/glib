@@ -1918,10 +1918,11 @@ g_local_file_trash (GFile         *file,
   char *dirname, *globaldir;
   GVfsClass *class;
   GVfs *vfs;
+  int errsv;
 
   if (g_lstat (local->filename, &file_stat) != 0)
     {
-      int errsv = errno;
+      errsv = errno;
 
       g_set_io_error (error,
 		      _("Error trashing file %s: %s"),
@@ -1942,7 +1943,7 @@ g_local_file_trash (GFile         *file,
       if (g_mkdir_with_parents (trashdir, 0700) < 0)
 	{
           char *display_name;
-          int errsv = errno;
+          errsv = errno;
 
           display_name = g_filename_display_name (trashdir);
           g_set_error (error, G_IO_ERROR,
@@ -2085,14 +2086,15 @@ g_local_file_trash (GFile         *file,
     g_free (infoname);
 
     fd = g_open (infofile, O_CREAT | O_EXCL, 0666);
-  } while (fd == -1 && errno == EEXIST);
+    errsv = errno;
+  } while (fd == -1 && errsv == EEXIST);
 
   g_free (basename);
   g_free (infodir);
 
   if (fd == -1)
     {
-      int errsv = errno;
+      errsv = errno;
 
       g_free (filesdir);
       g_free (topdir);
@@ -2145,7 +2147,7 @@ g_local_file_trash (GFile         *file,
 
   if (g_rename (local->filename, trashfile) == -1)
     {
-      int errsv = errno;
+      errsv = errno;
 
       g_unlink (infofile);
 
@@ -2665,10 +2667,16 @@ g_local_file_measure_size_of_file (gint           parent_fd,
 
 #if defined (AT_FDCWD)
   if (fstatat (parent_fd, name->data, &buf, AT_SYMLINK_NOFOLLOW) != 0)
-    return g_local_file_measure_size_error (state->flags, errno, name, error);
+    {
+      int errsv = errno;
+      return g_local_file_measure_size_error (state->flags, errsv, name, error);
+    }
 #elif defined (HAVE_LSTAT) || !defined (G_OS_WIN32)
   if (g_lstat (name->data, &buf) != 0)
-    return g_local_file_measure_size_error (state->flags, errno, name, error);
+    {
+      int errsv = errno;
+      return g_local_file_measure_size_error (state->flags, errsv, name, error);
+    }
 #else
   {
     const char *filename = (const gchar *) name->data;
@@ -2759,6 +2767,7 @@ g_local_file_measure_size_of_file (gint           parent_fd,
   if (S_ISDIR (buf.st_mode))
     {
       int dir_fd = -1;
+      int errsv;
 
       if (g_cancellable_set_error_if_cancelled (state->cancellable, error))
         return FALSE;
@@ -2769,8 +2778,9 @@ g_local_file_measure_size_of_file (gint           parent_fd,
 #else
       dir_fd = openat (parent_fd, name->data, O_RDONLY);
 #endif
+      errsv = errno;
       if (dir_fd < 0)
-        return g_local_file_measure_size_error (state->flags, errno, name, error);
+        return g_local_file_measure_size_error (state->flags, errsv, name, error);
 #endif
 
       if (!g_local_file_measure_size_of_contents (dir_fd, name, state, error))

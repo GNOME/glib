@@ -232,8 +232,9 @@ run_tests (void)
 
       if ((k = read (pipeup[0], &n, sizeof (n))) != sizeof (n))
 	{
+	  int errsv = errno;
 	  if (k == -1)
-	    fprintf (stderr, "Read error: %s\n", g_strerror (errno));
+	    fprintf (stderr, "Read error: %s\n", g_strerror (errsv));
 	  else
 	    fprintf (stderr, "Wanted to read %d bytes, got %d\n",
 		     sizeof (n), k);
@@ -242,8 +243,9 @@ run_tests (void)
 
       if ((k = read (pipeup[0], buf, n)) != n)
 	{
+	  int errsv = errno;
 	  if (k == -1)
-	    fprintf (stderr, "Read error: %s\n", g_strerror (errno));
+	    fprintf (stderr, "Read error: %s\n", g_strerror (errsv));
 	  else
 	    fprintf (stderr, "Wanted to read %d bytes, got %d\n",
 		     n, k);
@@ -254,14 +256,16 @@ run_tests (void)
       if (write (pipedown[1], &n, sizeof (n)) == -1 ||
 	  write (pipedown[1], "Bye then", n) == -1)
 	{
-	  fprintf (stderr, "Write error: %s\n", g_strerror (errno));
+	  int errsv = errno;
+	  fprintf (stderr, "Write error: %s\n", g_strerror (errsv));
 	  exit (1);
 	}
 
       if ((k = read (pipeup[0], &n, sizeof (n))) != sizeof (n))
 	{
+	  int errsv = errno;
 	  if (k == -1)
-	    fprintf (stderr, "Read error: %s\n", g_strerror (errno));
+	    fprintf (stderr, "Read error: %s\n", g_strerror (errsv));
 	  else
 	    fprintf (stderr, "Wanted to read %d bytes, got %d\n",
 		     sizeof (n), k);
@@ -270,8 +274,9 @@ run_tests (void)
 
       if ((k = read (pipeup[0], buf, n)) != n)
 	{
+	  int errsv = errno;
 	  if (k == -1)
-	    fprintf (stderr, "Read error: %s\n", g_strerror (errno));
+	    fprintf (stderr, "Read error: %s\n", g_strerror (errsv));
 	  else
 	    fprintf (stderr, "Wanted to read %d bytes, got %d\n",
 		     n, k);

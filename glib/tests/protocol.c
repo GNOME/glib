@@ -143,7 +143,8 @@ test_message (void)
 
   if (0 > pipe (pipes))
     {
-      g_error ("error creating pipe: %s", g_strerror (errno));
+      int errsv = errno;
+      g_error ("error creating pipe: %s", g_strerror (errsv));
     }
 
   argv[1] = g_strdup_printf ("--GTestLogFD=%u", pipes[1]);
@@ -265,7 +266,8 @@ test_error (void)
 
       if (0 > pipe (pipes))
         {
-          g_error ("error creating pipe: %s", g_strerror (errno));
+          int errsv = errno;
+          g_error ("error creating pipe: %s", g_strerror (errsv));
         }
 
       argv[1] = g_strdup_printf ("--GTestLogFD=%u", pipes[1]);

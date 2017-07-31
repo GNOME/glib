@@ -862,17 +862,20 @@ try_tcp (GDBusServer  *server,
       while (bytes_remaining > 0)
         {
           gssize ret;
+          int errsv;
+
           ret = write (fd, server->nonce + bytes_written, bytes_remaining);
+          errsv = errno;
           if (ret == -1)
             {
-              if (errno == EINTR)
+              if (errsv == EINTR)
                 goto again;
               g_set_error (error,
                            G_IO_ERROR,
-                           g_io_error_from_errno (errno),
+                           g_io_error_from_errno (errsv),
                            _("Error writing nonce file at “%s”: %s"),
                            server->nonce_file,
-                           g_strerror (errno));
+                           g_strerror (errsv));
               goto out;
             }
           bytes_written += ret;

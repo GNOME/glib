@@ -116,7 +116,10 @@ query_dir (const char *dirname)
   else
     {
       if (g_unlink (cachename) != 0 && errno != ENOENT)
-        g_printerr ("Unable to unlink %s: %s\n", cachename, g_strerror (errno));
+        {
+          int errsv = errno;
+          g_printerr ("Unable to unlink %s: %s\n", cachename, g_strerror (errsv));
+        }
     }
 
   g_free (cachename);

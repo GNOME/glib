@@ -199,36 +199,49 @@ unset_cloexec (int fd)
 
   if (flags != -1)
     {
+      int errsv;
       flags &= (~FD_CLOEXEC);
       do
-        result = fcntl (fd, F_SETFD, flags);
-      while (result == -1 && errno == EINTR);
+        {
+          result = fcntl (fd, F_SETFD, flags);
+          errsv = errno;
+        }
+      while (result == -1 && errsv == EINTR);
     }
 }
 
 static int
 dupfd_cloexec (int parent_fd)
 {
-  int fd;
+  int fd, errsv;
 #ifdef F_DUPFD_CLOEXEC
   do
-    fd = fcntl (parent_fd, F_DUPFD_CLOEXEC, 3);
-  while (fd == -1 && errno == EINTR);
+    {
+      fd = fcntl (parent_fd, F_DUPFD_CLOEXEC, 3);
+      errsv = errno;
+    }
+  while (fd == -1 && errsv == EINTR);
 #else
   /* OS X Snow Lion and earlier don't have F_DUPFD_CLOEXEC:
    * https://bugzilla.gnome.org/show_bug.cgi?id=710962
    */
   int result, flags;
   do
-    fd = fcntl (parent_fd, F_DUPFD, 3);
-  while (fd == -1 && errno == EINTR);
+    {
+      fd = fcntl (parent_fd, F_DUPFD, 3);
+      errsv = errno;
+    }
+  while (fd == -1 && errsv == EINTR);
   flags = fcntl (fd, F_GETFD, 0);
   if (flags != -1)
     {
       flags |= FD_CLOEXEC;
       do
-        result = fcntl (fd, F_SETFD, flags);
-      while (result == -1 && errno == EINTR);
+        {
+          result = fcntl (fd, F_SETFD, flags);
+          errsv = errno;
+        }
+      while (result == -1 && errsv == EINTR);
     }
 #endif
   return fd;
@@ -245,6 +258,7 @@ child_setup (gpointer user_data)
   ChildData *child_data = user_data;
   gint i;
   gint result;
+  int errsv;
 
   /* We're on the child side now.  "Rename" the file descriptors in
    * child_data.fds[] to stdin/stdout/stderr.
@@ -257,8 +271,11 @@ child_setup (gpointer user_data)
     if (child_data->fds[i] != -1 && child_data->fds[i] != i)
       {
         do
-          result = dup2 (child_data->fds[i], i);
-        while (result == -1 && errno == EINTR);
+          {
+            result = dup2 (child_data->fds[i], i);
+            errsv = errno;
+          }
+        while (result == -1 && errsv == EINTR);
       }
 
   /* Basic fd assignments we can just unset FD_CLOEXEC */
@@ -301,8 +318,11 @@ child_setup (gpointer user_data)
           else
             {
               do
-                result = dup2 (parent_fd, child_fd);
-              while (result == -1 && errno == EINTR);
+                {
+                  result = dup2 (parent_fd, child_fd);
+                  errsv = errno;
+                }
+              while (result == -1 && errsv == EINTR);
               (void) close (parent_fd);
             }
         }

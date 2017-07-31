@@ -549,15 +549,16 @@ g_socket (gint     domain,
           gint     protocol,
           GError **error)
 {
-  int fd;
+  int fd, errsv;
 
 #ifdef SOCK_CLOEXEC
   fd = socket (domain, type | SOCK_CLOEXEC, protocol);
+  errsv = errno;
   if (fd != -1)
     return fd;
 
   /* It's possible that libc has SOCK_CLOEXEC but the kernel does not */
-  if (fd < 0 && (errno == EINVAL || errno == EPROTOTYPE))
+  if (fd < 0 && (errsv == EINVAL || errsv == EPROTOTYPE))
 #endif
     fd = socket (domain, type, protocol);
 
@@ -3984,8 +3985,10 @@ g_socket_condition_timed_wait (GSocket       *socket,
 
     while (TRUE)
       {
+	int errsv;
 	result = g_poll (poll_fd, num, timeout);
-	if (result != -1 || errno != EINTR)
+	errsv = errno;
+	if (result != -1 || errsv != EINTR)
 	  break;
 
 	if (timeout != -1)

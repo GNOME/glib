@@ -2694,9 +2694,12 @@ child_read (GIOChannel *io, GIOCondition cond, gpointer user_data)
     {
       for (total = 0; total < nread; total += nwrote)
         {
+          int errsv;
+
           nwrote = fwrite (buf + total, 1, nread - total, echo_file);
+          errsv = errno;
           if (nwrote == 0)
-            g_error ("write failed: %s", g_strerror (errno));
+            g_error ("write failed: %s", g_strerror (errsv));
         }
     }
 
@@ -2817,13 +2820,18 @@ g_test_trap_fork (guint64        usec_timeout,
 #ifdef G_OS_UNIX
   int stdout_pipe[2] = { -1, -1 };
   int stderr_pipe[2] = { -1, -1 };
+  int errsv;
 
   test_trap_clear();
   if (pipe (stdout_pipe) < 0 || pipe (stderr_pipe) < 0)
-    g_error ("failed to create pipes to fork test program: %s", g_strerror (errno));
+    {
+      errsv = errno;
+      g_error ("failed to create pipes to fork test program: %s", g_strerror (errsv));
+    }
   test_trap_last_pid = fork ();
+  errsv = errno;
   if (test_trap_last_pid < 0)
-    g_error ("failed to fork test program: %s", g_strerror (errno));
+    g_error ("failed to fork test program: %s", g_strerror (errsv));
   if (test_trap_last_pid == 0)  /* child */
     {
       int fd0 = -1;
@@ -2836,7 +2844,10 @@ g_test_trap_fork (guint64        usec_timeout,
             g_error ("failed to open /dev/null for stdin redirection");
         }
       if (sane_dup2 (stdout_pipe[1], 1) < 0 || sane_dup2 (stderr_pipe[1], 2) < 0 || (fd0 >= 0 && sane_dup2 (fd0, 0) < 0))
-        g_error ("failed to dup2() in forked test program: %s", g_strerror (errno));
+        {
+          errsv = errno;
+          g_error ("failed to dup2() in forked test program: %s", g_strerror (errsv));
+        }
       if (fd0 >= 3)
         close (fd0);
       if (stdout_pipe[1] >= 3)

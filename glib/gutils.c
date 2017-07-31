@@ -221,12 +221,14 @@ void
 g_atexit (GVoidFunc func)
 {
   gint result;
+  int errsv;
 
   result = atexit ((void (*)(void)) func);
+  errsv = errno;
   if (result)
     {
       g_error ("Could not register atexit() function: %s",
-               g_strerror (errno));
+               g_strerror (errsv));
     }
 }
 

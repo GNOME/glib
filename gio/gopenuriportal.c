@@ -103,14 +103,15 @@ g_openuri_portal_open_uri (const char  *uri,
     {
       char *path = NULL;
       GUnixFDList *fd_list = NULL;
-      int fd, fd_id;
+      int fd, fd_id, errsv;
 
       path = g_file_get_path (file);
 
       fd = g_open (path, O_PATH | O_CLOEXEC);
+      errsv = errno;
       if (fd == -1)
         {
-          g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errno),
+          g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
                        "Failed to open '%s'", path);
           return FALSE;
         }
@@ -305,17 +306,18 @@ g_openuri_portal_open_uri_async (const char          *uri,
     {
       char *path = NULL;
       GUnixFDList *fd_list = NULL;
-      int fd, fd_id;
+      int fd, fd_id, errsv;
 
       if (task)
         g_object_set_data (G_OBJECT (task), "open-file", GINT_TO_POINTER (TRUE));
 
       path = g_file_get_path (file);
       fd = g_open (path, O_PATH | O_CLOEXEC);
+      errsv = errno;
       if (fd == -1)
         {
           g_task_report_new_error (NULL, callback, user_data, NULL,
-                                   G_IO_ERROR, g_io_error_from_errno (errno),
+                                   G_IO_ERROR, g_io_error_from_errno (errsv),
                                    "OpenURI portal is not available");
           return;
         }

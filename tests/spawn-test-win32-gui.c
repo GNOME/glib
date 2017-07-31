@@ -60,7 +60,8 @@ WinMain (struct HINSTANCE__ *hInstance,
       if (write (outfd, &n, sizeof (n)) == -1 ||
 	  write (outfd, "Hello there", n) == -1)
 	{
-	  sprintf (buf, "spawn-test-win32-gui: Write: %s", strerror (errno));
+	  int errsv = errno;
+	  sprintf (buf, "spawn-test-win32-gui: Write: %s", strerror (errsv));
 	  MessageBox (NULL, buf, lpszCmdLine, MB_ICONERROR|MB_SYSTEMMODAL);
 	  exit (1);
 	}
@@ -81,8 +82,9 @@ WinMain (struct HINSTANCE__ *hInstance,
 
       if ((k = read (infd, buf, n)) != n)
 	{
+	  int errsv = errno;
 	  if (k == -1)
-	    sprintf (buf, "spawn-test-win32-gui: Read: %s", strerror (errno));
+	    sprintf (buf, "spawn-test-win32-gui: Read: %s", strerror (errsv));
 	  else
 	    sprintf (buf, "spawn-test-win32-gui: Got only %d bytes", k);
 	  MessageBox (NULL, buf, lpszCmdLine, MB_ICONERROR|MB_SYSTEMMODAL);
@@ -96,7 +98,8 @@ WinMain (struct HINSTANCE__ *hInstance,
       if (write (outfd, &n, sizeof (n)) == -1 ||
 	  write (outfd, "See ya", n) == -1)
 	{
-	  sprintf (buf, "spawn-test-win32-gui: Write: %s", strerror (errno));
+	  int errsv = errno;
+	  sprintf (buf, "spawn-test-win32-gui: Write: %s", strerror (errsv));
 	  MessageBox (NULL, buf, lpszCmdLine, MB_ICONERROR|MB_SYSTEMMODAL);
 	  exit (1);
 	}

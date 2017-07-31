@@ -615,18 +615,21 @@ read_all_from_fd (gint fd, gsize *out_len, GError **error)
 
   do
     {
+      int errsv;
+
       num_read = read (fd, buf, sizeof (buf));
+      errsv = errno;
       if (num_read == -1)
         {
-          if (errno == EAGAIN || errno == EWOULDBLOCK)
+          if (errsv == EAGAIN || errsv == EWOULDBLOCK)
             continue;
           g_set_error (error,
                        G_IO_ERROR,
-                       g_io_error_from_errno (errno),
+                       g_io_error_from_errno (errsv),
                        "Failed reading %d bytes into offset %d: %s",
                        (gint) sizeof (buf),
                        (gint) str->len,
-                       g_strerror (errno));
+                       g_strerror (errsv));
           goto error;
         }
       else if (num_read > 0)

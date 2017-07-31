@@ -759,9 +759,10 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
 
   if (fstat (fd, &stat_buf) < 0)
     {
+      int errsv = errno;
       g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errno),
-                           g_strerror (errno));
+                           g_file_error_from_errno (errsv),
+                           g_strerror (errsv));
       return FALSE;
     }
 
@@ -781,19 +782,22 @@ g_key_file_load_from_fd (GKeyFile       *key_file,
 
   do
     {
+      int errsv;
+
       bytes_read = read (fd, read_buf, 4096);
+      errsv = errno;
 
       if (bytes_read == 0)  /* End of File */
         break;
 
       if (bytes_read < 0)
         {
-          if (errno == EINTR || errno == EAGAIN)
+          if (errsv == EINTR || errsv == EAGAIN)
             continue;
 
           g_set_error_literal (error, G_FILE_ERROR,
-                               g_file_error_from_errno (errno),
-                               g_strerror (errno));
+                               g_file_error_from_errno (errsv),
+                               g_strerror (errsv));
           return FALSE;
         }
 
@@ -848,17 +852,19 @@ g_key_file_load_from_file (GKeyFile       *key_file,
 {
   GError *key_file_error = NULL;
   gint fd;
+  int errsv;
 
   g_return_val_if_fail (key_file != NULL, FALSE);
   g_return_val_if_fail (file != NULL, FALSE);
 
   fd = g_open (file, O_RDONLY, 0);
+  errsv = errno;
 
   if (fd == -1)
     {
       g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errno),
-                           g_strerror (errno));
+                           g_file_error_from_errno (errsv),
+                           g_strerror (errsv));
       return FALSE;
     }
 
@@ -4295,9 +4301,11 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
   gchar *eof_int;
   glong long_value;
   gint int_value;
+  int errsv;
 
   errno = 0;
   long_value = strtol (value, &eof_int, 10);
+  errsv = errno;
 
   if (*value == '\0' || (*eof_int != '\0' && !g_ascii_isspace(*eof_int)))
     {
@@ -4312,7 +4320,7 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
     }
 
   int_value = long_value;
-  if (int_value != long_value || errno == ERANGE)
+  if (int_value != long_value || errsv == ERANGE)
     {
       gchar *value_utf8 = g_utf8_make_valid (value, -1);
       g_set_error (error,

@@ -22,7 +22,8 @@ io_pipe (GIOChannel **channels)
 
   if (pipe(fds) < 0)
     {
-      fprintf (stderr, "Cannot create pipe %s\n", g_strerror (errno));
+      int errsv = errno;
+      fprintf (stderr, "Cannot create pipe %s\n", g_strerror (errsv));
       exit (1);
     }
 
@@ -136,7 +137,7 @@ input_callback (GIOChannel   *source,
 static void
 create_child (void)
 {
-  int pid;
+  int pid, errsv;
   GIOChannel *in_channels[2];
   GIOChannel *out_channels[2];
   
@@ -144,6 +145,7 @@ create_child (void)
   io_pipe (out_channels);
 
   pid = fork ();
+  errsv = errno;
 
   if (pid > 0)			/* Parent */
     {
@@ -166,7 +168,7 @@ create_child (void)
     }
   else				/* Error */
     {
-      fprintf (stderr, "Cannot fork: %s\n", g_strerror (errno));
+      fprintf (stderr, "Cannot fork: %s\n", g_strerror (errsv));
       exit (1);
     }
 }

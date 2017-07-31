@@ -124,8 +124,10 @@
  * foo_open_file (GError **error)
  * {
  *   gint fd;
+ *   int saved_errno;
  *
  *   fd = open ("file.txt", O_RDONLY);
+ *   saved_errno = errno;
  *
  *   if (fd < 0)
  *     {
@@ -133,7 +135,7 @@
  *                    FOO_ERROR,                 // error domain
  *                    FOO_ERROR_BLAH,            // error code
  *                    "Failed to open file: %s", // error message format string
- *                    g_strerror (errno));
+ *                    g_strerror (saved_errno));
  *       return -1;
  *     }
  *   else

@@ -1274,13 +1274,15 @@ allocator_add_slab (Allocator *allocator,
   SlabInfo *sinfo;
   gsize addr, padding, n_chunks, color = 0;
   gsize page_size = allocator_aligned_page_size (allocator, SLAB_BPAGE_SIZE (allocator, chunk_size));
+  int errsv;
   /* allocate 1 page for the chunks and the slab */
   gpointer aligned_memory = allocator_memalign (page_size, page_size - NATIVE_MALLOC_PADDING);
+  errsv = errno;
   guint8 *mem = aligned_memory;
   guint i;
   if (!mem)
     {
-      const gchar *syserr = strerror (errno);
+      const gchar *syserr = strerror (errsv);
       mem_error ("failed to allocate %u bytes (alignment: %u): %s\n",
                  (guint) (page_size - NATIVE_MALLOC_PADDING), (guint) page_size, syserr);
     }

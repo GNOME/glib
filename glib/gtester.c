@@ -678,9 +678,11 @@ main (int    argc,
 
   if (output_filename)
     {
+      int errsv;
       log_fd = g_open (output_filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+      errsv = errno;
       if (log_fd < 0)
-        g_error ("Failed to open log file '%s': %s", output_filename, g_strerror (errno));
+        g_error ("Failed to open log file '%s': %s", output_filename, g_strerror (errsv));
     }
 
   test_log_printfe ("<?xml version=\"1.0\"?>\n");

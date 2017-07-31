@@ -537,12 +537,14 @@ create_thread (GIOWin32Channel     *channel,
 	       unsigned (__stdcall *thread) (void *parameter))
 {
   HANDLE thread_handle;
+  int errsv;
 
   thread_handle = (HANDLE) _beginthreadex (NULL, 0, thread, channel, 0,
 					   &channel->thread_id);
+  errsv = errno;
   if (thread_handle == 0)
     g_warning ("Error creating thread: %s.",
-	       g_strerror (errno));
+	       g_strerror (errsv));
   else if (!CloseHandle (thread_handle))
     {
       gchar *emsg = g_win32_error_message (GetLastError ());
@@ -1193,6 +1195,7 @@ g_io_win32_fd_and_console_read (GIOChannel *channel,
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
+  int errsv;
   
   if (win32_channel->debug)
     g_print ("g_io_win32_fd_read: fd=%d count=%" G_GSIZE_FORMAT "\n",
@@ -1204,6 +1207,7 @@ g_io_win32_fd_and_console_read (GIOChannel *channel,
     }
 
   result = read (win32_channel->fd, buf, count);
+  errsv = errno;
 
   if (win32_channel->debug)
     g_print ("g_io_win32_fd_read: read() => %d\n", result);
@@ -1212,7 +1216,7 @@ g_io_win32_fd_and_console_read (GIOChannel *channel,
     {
       *bytes_read = 0;
 
-      switch (errno)
+      switch (errsv)
         {
 #ifdef EAGAIN
 	case EAGAIN:
@@ -1220,8 +1224,8 @@ g_io_win32_fd_and_console_read (GIOChannel *channel,
 #endif
 	default:
 	  g_set_error_literal (err, G_IO_CHANNEL_ERROR,
-                               g_io_channel_error_from_errno (errno),
-                               g_strerror (errno));
+                               g_io_channel_error_from_errno (errsv),
+                               g_strerror (errsv));
 	  return G_IO_STATUS_ERROR;
         }
     }
@@ -1240,6 +1244,7 @@ g_io_win32_fd_and_console_write (GIOChannel  *channel,
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
   gint result;
+  int errsv;
 
   if (win32_channel->thread_id)
     {
@@ -1247,6 +1252,8 @@ g_io_win32_fd_and_console_write (GIOChannel  *channel,
     }
   
   result = write (win32_channel->fd, buf, count);
+  errsv = errno;
+
   if (win32_channel->debug)
     g_print ("g_io_win32_fd_write: fd=%d count=%" G_GSIZE_FORMAT " => %d\n",
 	     win32_channel->fd, count, result);
@@ -1255,7 +1262,7 @@ g_io_win32_fd_and_console_write (GIOChannel  *channel,
     {
       *bytes_written = 0;
 
-      switch (errno)
+      switch (errsv)
         {
 #ifdef EAGAIN
 	case EAGAIN:
@@ -1263,8 +1270,8 @@ g_io_win32_fd_and_console_write (GIOChannel  *channel,
 #endif
 	default:
 	  g_set_error_literal (err, G_IO_CHANNEL_ERROR,
-                               g_io_channel_error_from_errno (errno),
-                               g_strerror (errno));
+                               g_io_channel_error_from_errno (errsv),
+                               g_strerror (errsv));
 	  return G_IO_STATUS_ERROR;
         }
     }
@@ -1281,7 +1288,7 @@ g_io_win32_fd_seek (GIOChannel *channel,
 		    GError    **err)
 {
   GIOWin32Channel *win32_channel = (GIOWin32Channel *)channel;
-  int whence;
+  int whence, errsv;
   off_t tmp_offset;
   off_t result;
   
@@ -1310,14 +1317,15 @@ g_io_win32_fd_seek (GIOChannel *channel,
                            g_strerror (EINVAL));
       return G_IO_STATUS_ERROR;
     }
-  
+
   result = lseek (win32_channel->fd, tmp_offset, whence);
+  errsv = errno;
   
   if (result < 0)
     {
       g_set_error_literal (err, G_IO_CHANNEL_ERROR,
-                           g_io_channel_error_from_errno (errno),
-                           g_strerror (errno));
+                           g_io_channel_error_from_errno (errsv),
+                           g_strerror (errsv));
       return G_IO_STATUS_ERROR;
     }
 
@@ -1411,9 +1419,10 @@ g_io_win32_console_close (GIOChannel *channel,
   
   if (close (win32_channel->fd) < 0)
     {
+      int errsv = errno;
       g_set_error_literal (err, G_IO_CHANNEL_ERROR,
-                           g_io_channel_error_from_errno (errno),
-                           g_strerror (errno));
+                           g_io_channel_error_from_errno (errsv),
+                           g_strerror (errsv));
       return G_IO_STATUS_ERROR;
     }
 
@@ -1628,7 +1637,7 @@ g_io_channel_new_file (const gchar  *filename,
     MODE_A = 1 << 2,
     MODE_PLUS = 1 << 3,
   };
-  int mode_num;
+  int mode_num, errsv;
 
   g_return_val_if_fail (filename != NULL, NULL);
   g_return_val_if_fail (mode != NULL, NULL);
@@ -1699,6 +1708,7 @@ g_io_channel_new_file (const gchar  *filename,
 
   /* always open 'untranslated' */
   fid = g_open (filename, flags | _O_BINARY, pmode);
+  errsv = errno;
 
   if (g_io_win32_get_debug_flag ())
     {
@@ -1710,8 +1720,8 @@ g_io_channel_new_file (const gchar  *filename,
   if (fid < 0)
     {
       g_set_error_literal (error, G_FILE_ERROR,
-                           g_file_error_from_errno (errno),
-                           g_strerror (errno));
+                           g_file_error_from_errno (errsv),
+                           g_strerror (errsv));
       return (GIOChannel *)NULL;
     }
 

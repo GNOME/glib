@@ -101,7 +101,7 @@ g_document_portal_add_document (GFile   *file,
   char *doc_uri = NULL;
   char *path = NULL;
   GUnixFDList *fd_list = NULL;
-  int fd, fd_in;
+  int fd, fd_in, errsv;
   gboolean ret;
 
   if (!init_document_portal ())
@@ -113,10 +113,11 @@ g_document_portal_add_document (GFile   *file,
 
   path = g_file_get_path (file);
   fd = g_open (path, O_PATH | O_CLOEXEC);
+  errsv = errno;
 
   if (fd == -1)
     {
-      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errno),
+      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
                    "Failed to open %s", path);
       goto out;
     }

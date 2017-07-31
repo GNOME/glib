@@ -110,14 +110,19 @@ g_unix_fd_message_deserialize (int      level,
    */
   for (i = 0; i < n; i++)
     {
+      int errsv;
+
       do
-        s = fcntl (fds[i], F_SETFD, FD_CLOEXEC);
-      while (s < 0 && errno == EINTR);
+        {
+          s = fcntl (fds[i], F_SETFD, FD_CLOEXEC);
+          errsv = errno;
+        }
+      while (s < 0 && errsv == EINTR);
 
       if (s < 0)
         {
           g_warning ("Error setting close-on-exec flag on incoming fd: %s",
-                     g_strerror (errno));
+                     g_strerror (errsv));
           return NULL;
         }
     }

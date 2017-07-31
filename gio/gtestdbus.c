@@ -237,6 +237,7 @@ watcher_init (void)
 {
   static gsize started = 0;
   static GIOChannel *channel = NULL;
+  int errsv;
 
   if (g_once_init_enter (&started))
     {
@@ -245,14 +246,16 @@ watcher_init (void)
       /* fork a child to clean up when we are killed */
       if (pipe (pipe_fds) != 0)
         {
-          g_warning ("pipe() failed: %s", g_strerror (errno));
+          errsv = errno;
+          g_warning ("pipe() failed: %s", g_strerror (errsv));
           g_assert_not_reached ();
         }
 
       switch (fork ())
         {
         case -1:
-          g_warning ("fork() failed: %s", g_strerror (errno));
+          errsv = errno;
+          g_warning ("fork() failed: %s", g_strerror (errsv));
           g_assert_not_reached ();
           break;
 

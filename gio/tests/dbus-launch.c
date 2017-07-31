@@ -39,6 +39,7 @@ write_all (const void *ptr,
   while (len > 0)
     {
       ssize_t done = write (STDOUT_FILENO, p, len);
+      int errsv = errno;
 
       if (done == 0)
         {
@@ -46,10 +47,10 @@ write_all (const void *ptr,
         }
       else if (done < 0)
         {
-          if (errno == EINTR)
+          if (errsv == EINTR)
             continue;
 
-          g_error ("%s: write: %s", ME, g_strerror (errno));
+          g_error ("%s: write: %s", ME, g_strerror (errsv));
         }
       else
         {

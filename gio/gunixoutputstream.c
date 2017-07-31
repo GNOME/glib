@@ -341,15 +341,18 @@ g_unix_output_stream_write (GOutputStream  *stream,
 
   while (1)
     {
+      int errsv;
+
       poll_fds[0].revents = poll_fds[1].revents = 0;
       do
-	poll_ret = g_poll (poll_fds, nfds, -1);
-      while (poll_ret == -1 && errno == EINTR);
+        {
+          poll_ret = g_poll (poll_fds, nfds, -1);
+          errsv = errno;
+        }
+      while (poll_ret == -1 && errsv == EINTR);
 
       if (poll_ret == -1)
 	{
-          int errsv = errno;
-
 	  g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errsv),
 		       _("Error writing to file descriptor: %s"),
@@ -364,10 +367,9 @@ g_unix_output_stream_write (GOutputStream  *stream,
 	continue;
 
       res = write (unix_stream->priv->fd, buffer, count);
+      errsv = errno;
       if (res == -1)
 	{
-          int errsv = errno;
-
 	  if (errsv == EINTR || errsv == EAGAIN)
 	    continue;
 

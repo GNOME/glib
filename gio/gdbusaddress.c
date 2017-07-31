@@ -691,9 +691,11 @@ g_dbus_address_connect (const gchar   *address_entry,
           gchar nonce_contents[16 + 1];
           size_t num_bytes_read;
           FILE *f;
+          int errsv;
 
           /* be careful to read only 16 bytes - we also check that the file is only 16 bytes long */
           f = fopen (nonce_file, "rb");
+          errsv = errno;
           if (f == NULL)
             {
               g_set_error (error,
@@ -701,7 +703,7 @@ g_dbus_address_connect (const gchar   *address_entry,
                            G_IO_ERROR_INVALID_ARGUMENT,
                            _("Error opening nonce file “%s”: %s"),
                            nonce_file,
-                           g_strerror (errno));
+                           g_strerror (errsv));
               g_object_unref (ret);
               ret = NULL;
               goto out;
@@ -710,6 +712,7 @@ g_dbus_address_connect (const gchar   *address_entry,
                                   sizeof (gchar),
                                   16 + 1,
                                   f);
+          errsv = errno;
           if (num_bytes_read != 16)
             {
               if (num_bytes_read == 0)
@@ -719,7 +722,7 @@ g_dbus_address_connect (const gchar   *address_entry,
                                G_IO_ERROR_INVALID_ARGUMENT,
                                _("Error reading from nonce file “%s”: %s"),
                                nonce_file,
-                               g_strerror (errno));
+                               g_strerror (errsv));
                 }
               else
                 {

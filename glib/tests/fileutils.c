@@ -444,7 +444,10 @@ test_mkdir_with_parents_1 (const gchar *base)
     g_error ("failed, %s exists, cannot test g_mkdir_with_parents\n", p2);
 
   if (g_mkdir_with_parents (p2, 0777) == -1)
-    g_error ("failed, g_mkdir_with_parents(%s) failed: %s\n", p2, g_strerror (errno));
+    {
+      int errsv = errno;
+      g_error ("failed, g_mkdir_with_parents(%s) failed: %s\n", p2, g_strerror (errsv));
+    }
 
   if (!g_file_test (p2, G_FILE_TEST_IS_DIR))
     g_error ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory\n", p2, p2);

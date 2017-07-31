@@ -202,7 +202,8 @@ io_pipe (GIOChannel **channels)
 
   if (pipe(fds) < 0)
     {
-      g_warning ("Cannot create pipe %s\n", g_strerror (errno));
+      int errsv = errno;
+      g_warning ("Cannot create pipe %s\n", g_strerror (errsv));
       exit (1);
     }
 

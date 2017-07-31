@@ -73,9 +73,12 @@ cat (GFile *file)
           p = buffer;
           while (res > 0)
             {
-              written = write (STDOUT_FILENO, p, res);
+              int errsv;
 
-              if (written == -1 && errno != EINTR)
+              written = write (STDOUT_FILENO, p, res);
+              errsv = errno;
+
+              if (written == -1 && errsv != EINTR)
                 {
                   print_file_error (file, _("Error writing to stdout"));
                   success = FALSE;

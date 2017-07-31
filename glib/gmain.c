@@ -4167,6 +4167,8 @@ g_main_context_poll (GMainContext *context,
 
   if (n_fds || timeout != 0)
     {
+      int ret, errsv;
+
 #ifdef	G_MAIN_POLL_DEBUG
       poll_timer = NULL;
       if (_g_main_poll_debug)
@@ -4180,13 +4182,15 @@ g_main_context_poll (GMainContext *context,
       LOCK_CONTEXT (context);
 
       poll_func = context->poll_func;
-      
+
       UNLOCK_CONTEXT (context);
-      if ((*poll_func) (fds, n_fds, timeout) < 0 && errno != EINTR)
+      ret = (*poll_func) (fds, n_fds, timeout);
+      errsv = errno;
+      if (ret < 0 && errsv != EINTR)
 	{
 #ifndef G_OS_WIN32
 	  g_warning ("poll(2) failed due to: %s.",
-		     g_strerror (errno));
+		     g_strerror (errsv));
 #else
 	  /* If g_poll () returns -1, it has already called g_warning() */
 #endif
