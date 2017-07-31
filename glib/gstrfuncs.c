@@ -1245,7 +1245,17 @@ g_ascii_strtoll (const gchar *nptr,
  *
  * Note that the string may be translated according to the current locale.
  *
- * The value of %errno will not be changed by this function.
+ * The value of %errno will not be changed by this function. However, it may
+ * be changed by intermediate function calls, so you should save its value
+ * as soon as the call returns:
+ * |[
+ *   int saved_errno;
+ *
+ *   ret = read (blah);
+ *   saved_errno = errno;
+ *
+ *   g_strerror (saved_errno);
+ * ]|
  *
  * Returns: a UTF-8 string describing the error code. If the error code
  *     is unknown, it returns a string like "unknown error (<code>)".

@@ -52,6 +52,18 @@ G_DEFINE_QUARK (g-io-error-quark, g_io_error)
  * handled (but note that future GLib releases may return a more
  * specific value instead).
  *
+ * As %errno is global and may be modified by intermediate function
+ * calls, you should save its value as soon as the call which sets it
+ * returns:
+ * |[
+ *   int saved_errno;
+ *
+ *   ret = read (blah);
+ *   saved_errno = errno;
+ *
+ *   g_io_error_from_errno (saved_errno);
+ * ]|
+ *
  * Returns: #GIOErrorEnum value for the given errno.h error number.
  **/
 GIOErrorEnum
