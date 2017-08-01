@@ -1394,6 +1394,21 @@ g_ptr_array_add (GPtrArray *array,
   rarray->pdata[rarray->len++] = data;
 }
 
+void
+g_ptr_array_add_array (GPtrArray *array,
+                       gpointer  *data, gint len)
+{
+  gint i=0;
+  GRealPtrArray *rarray = (GRealPtrArray *)array;
+  g_return_if_fail (rarray);
+  g_ptr_array_maybe_expand (rarray, len);
+  
+  for(i=0;i<len;i++)
+  {
+    rarray->pdata[rarray->len++] = data[i];
+  }
+}
+
 /**
  * g_ptr_array_insert:
  * @array: a #GPtrArray
