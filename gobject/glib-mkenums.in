@@ -450,6 +450,11 @@ def process_file(curfilename):
                     continue
                 enum_prefix = options.get('prefix', None)
                 flags = options.get('flags', None)
+                if 'flags' in options:
+                    if flags is None:
+                        flags = 1
+                    else:
+                        flags = int(flags)
                 option_lowercase_name = options.get('lowercase_name', None)
                 option_underscore_name = options.get('underscore_name', None)
             else:
