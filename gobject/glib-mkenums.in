@@ -83,7 +83,7 @@ def write_output(output):
 
 # glib-mkenums.py
 # Information about the current enumeration
-flags = False               # Is enumeration a bitmask?
+flags = None # Is enumeration a bitmask?
 option_underscore_name = '' # Overriden underscore variant of the enum name
                             # for example to fix the cases we don't get the
                             # mixed-case -> underscorized transform right.
@@ -196,7 +196,7 @@ def parse_entries(file, file_name):
                 value = groups[1]
             if len(groups) > 2:
                 options = groups[2]
-            if not flags and value is not None and '<<' in value:
+            if flags is None and value is not None and '<<' in value:
                 seenbitshift = 1
 
             if options is not None:
@@ -449,12 +449,12 @@ def process_file(curfilename):
                 if 'skip' in options:
                     continue
                 enum_prefix = options.get('prefix', None)
-                flags = 'flags' in options
+                flags = options.get('flags', None)
                 option_lowercase_name = options.get('lowercase_name', None)
                 option_underscore_name = options.get('underscore_name', None)
             else:
                 enum_prefix = None
-                flags = False
+                flags = None
                 option_lowercase_name = None
                 option_underscore_name = None
 
@@ -479,7 +479,7 @@ def process_file(curfilename):
             parse_entries(curfile, curfilename)
 
             # figure out if this was a flags or enums enumeration
-            if not flags:
+            if flags is None:
                 flags = seenbitshift
 
             # Autogenerate a prefix
