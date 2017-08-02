@@ -1739,6 +1739,13 @@ g_settings_get_mapped (GSettings           *settings,
       if (okay) goto okay;
     }
 
+  if ((value = g_settings_schema_key_get_per_desktop_default (&skey)))
+    {
+      okay = mapping (value, &result, user_data);
+      g_variant_unref (value);
+      if (okay) goto okay;
+    }
+
   if (mapping (skey.default_value, &result, user_data))
     goto okay;
 
@@ -2642,6 +2649,20 @@ g_settings_binding_key_changed (GSettings   *settings,
                      "was rejected by the binding mapping function",
                      binding->key.unparsed, binding->key.name,
                      g_settings_schema_get_id (binding->key.schema));
+          g_variant_unref (variant);
+          variant = NULL;
+        }
+    }
+
+  if (variant == NULL)
+    {
+      variant = g_settings_schema_key_get_per_desktop_default (&binding->key);
+      if (variant &&
+          !binding->get_mapping (&value, variant, binding->user_data))
+        {
+          g_error ("Per-desktop default value for key '%s' in schema '%s' "
+                   "was rejected by the binding mapping function.",
+                   binding->key.name, g_settings_schema_get_id (binding->key.schema));
           g_variant_unref (variant);
           variant = NULL;
         }
