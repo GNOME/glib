@@ -92,7 +92,7 @@ enum_state_add_value (EnumState    *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "nick must be a minimum of 2 characters");
+                   _("nick must be a minimum of 2 characters"));
       return;
     }
 
@@ -103,7 +103,7 @@ enum_state_add_value (EnumState    *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "invalid numeric value");
+                   _("invalid numeric value"));
       return;
     }
 
@@ -111,7 +111,7 @@ enum_state_add_value (EnumState    *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<value nick='%s'/> already specified", nick);
+                   _("<value nick='%s'/> already specified"), nick);
       return;
     }
 
@@ -119,7 +119,7 @@ enum_state_add_value (EnumState    *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "value='%s' already specified", valuestr);
+                   _("value='%s' already specified"), valuestr);
       return;
     }
 
@@ -133,7 +133,7 @@ enum_state_add_value (EnumState    *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "flags values must have at most 1 bit set");
+                   _("flags values must have at most 1 bit set"));
       return;
     }
 
@@ -158,7 +158,7 @@ enum_state_end (EnumState **state_ptr,
   if (state->strinfo->len == 0)
     g_set_error (error,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                 "<%s> must contain at least one <value>",
+                 _("<%s> must contain at least one <value>"),
                  state->is_flags ? "flags" : "enum");
 }
 
@@ -312,8 +312,8 @@ key_state_check_range (KeyState  *state,
             {
               g_set_error (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "<%s> is not contained in "
-                           "the specified range", tag);
+                           _("<%s> is not contained in "
+                           "the specified range"), tag);
             }
         }
 
@@ -324,20 +324,20 @@ key_state_check_range (KeyState  *state,
               if (state->is_enum)
                 g_set_error (error, G_MARKUP_ERROR,
                              G_MARKUP_ERROR_INVALID_CONTENT,
-                             "<%s> is not a valid member of "
-                             "the specified enumerated type", tag);
+                             _("<%s> is not a valid member of "
+                             "the specified enumerated type"), tag);
 
               else if (state->is_flags)
                 g_set_error (error, G_MARKUP_ERROR,
                              G_MARKUP_ERROR_INVALID_CONTENT,
-                             "<%s> contains string not in the "
-                             "specified flags type", tag);
+                             _("<%s> contains string not in the "
+                             "specified flags type"), tag);
 
               else
                 g_set_error (error, G_MARKUP_ERROR,
                              G_MARKUP_ERROR_INVALID_CONTENT,
-                             "<%s> contains string not in "
-                             "<choices>", tag);
+                             _("<%s> contains string not in "
+                             "<choices>"), tag);
             }
         }
     }
@@ -370,7 +370,7 @@ key_state_set_range (KeyState     *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "<range/> already specified for this key");
+                           _("<range/> already specified for this key"));
       return;
     }
 
@@ -388,7 +388,7 @@ key_state_set_range (KeyState     *state,
       gchar *type = g_variant_type_dup_string (state->type);
       g_set_error (error, G_MARKUP_ERROR,
                   G_MARKUP_ERROR_INVALID_CONTENT,
-                  "<range> not allowed for keys of type '%s'", type);
+                  _("<range> not allowed for keys of type '%s'"), type);
       g_free (type);
       return;
     }
@@ -405,7 +405,7 @@ key_state_set_range (KeyState     *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<range> specified minimum is greater than maxmimum");
+                   _("<range> specified minimum is greater than maxmimum"));
       return;
     }
 
@@ -430,7 +430,7 @@ key_state_start_default (KeyState     *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       "unsupported l10n category: %s", l10n);
+                       _("unsupported l10n category: %s"), l10n);
           return NULL;
         }
 
@@ -438,8 +438,8 @@ key_state_start_default (KeyState     *state,
         {
           g_set_error_literal (error, G_MARKUP_ERROR,
                                G_MARKUP_ERROR_INVALID_CONTENT,
-                               "l10n requested, but no "
-                               "gettext domain given");
+                               _("l10n requested, but no "
+                               "gettext domain given"));
           return NULL;
         }
 
@@ -450,8 +450,8 @@ key_state_start_default (KeyState     *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "translation context given for "
-                           " value without l10n enabled");
+                           _("translation context given for "
+                           " value without l10n enabled"));
       return NULL;
     }
 
@@ -489,8 +489,8 @@ key_state_start_choices (KeyState  *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "<choices> cannot be specified for keys "
-                           "tagged as having an enumerated type");
+                           _("<choices> cannot be specified for keys "
+                           "tagged as having an enumerated type"));
       return;
     }
 
@@ -498,7 +498,7 @@ key_state_start_choices (KeyState  *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "<choices> already specified for this key");
+                           _("<choices> already specified for this key"));
       return;
     }
 
@@ -510,7 +510,7 @@ key_state_start_choices (KeyState  *state,
       gchar *type_string = g_variant_type_dup_string (state->type);
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<choices> not allowed for keys of type '%s'",
+                   _("<choices> not allowed for keys of type '%s'"),
                    type_string);
       g_free (type_string);
       return;
@@ -526,7 +526,7 @@ key_state_add_choice (KeyState     *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<choice value='%s'/> already given", choice);
+                   _("<choice value='%s'/> already given"), choice);
       return;
     }
 
@@ -541,7 +541,7 @@ key_state_end_choices (KeyState  *state,
   if (!state->has_choices)
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<choices> must contain at least one <choice>");
+                   _("<choices> must contain at least one <choice>"));
       return;
     }
 
@@ -555,12 +555,12 @@ key_state_start_aliases (KeyState  *state,
   if (state->has_aliases)
     g_set_error_literal (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
-                         "<aliases> already specified for this key");
+                         _("<aliases> already specified for this key"));
   else if (!state->is_flags && !state->is_enum && !state->has_choices)
     g_set_error_literal (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
-                         "<aliases> can only be specified for keys with "
-                         "enumerated or flags types or after <choices>");
+                         _("<aliases> can only be specified for keys with "
+                         "enumerated or flags types or after <choices>"));
 }
 
 static void
@@ -578,21 +578,21 @@ key_state_add_alias (KeyState     *state,
           if (state->is_enum)
             g_set_error (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
-                         "<alias value='%s'/> given when '%s' is already "
-                         "a member of the enumerated type", alias, alias);
+                         _("<alias value='%s'/> given when '%s' is already "
+                         "a member of the enumerated type"), alias, alias);
 
           else
             g_set_error (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
-                         "<alias value='%s'/> given when "
-                         "<choice value='%s'/> was already given",
+                         _("<alias value='%s'/> given when "
+                         "<choice value='%s'/> was already given"),
                          alias, alias);
         }
 
       else
         g_set_error (error, G_MARKUP_ERROR,
                      G_MARKUP_ERROR_INVALID_CONTENT,
-                     "<alias value='%s'/> already specified", alias);
+                     _("<alias value='%s'/> already specified"), alias);
 
       return;
     }
@@ -601,8 +601,8 @@ key_state_add_alias (KeyState     *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "alias target '%s' is not in %s", target,
-                   state->is_enum ? "enumerated type" : "<choices>");
+                   _("alias target '%s' is not in %s"), target,
+                   state->is_enum ? _("enumerated type") : "<choices>");
       return;
     }
 
@@ -616,7 +616,7 @@ key_state_end_aliases (KeyState  *state,
   if (!state->has_aliases)
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<aliases> must contain at least one <alias>");
+                   _("<aliases> must contain at least one <alias>"));
       return;
     }
 }
@@ -1220,8 +1220,8 @@ parse_state_start_schema (ParseState  *state,
   if (path && (g_str_has_prefix (path, "/apps/") ||
                g_str_has_prefix (path, "/desktop/") ||
                g_str_has_prefix (path, "/system/")))
-    g_printerr ("warning: Schema '%s' has path '%s'.  Paths starting with "
-                "'/apps/', '/desktop/' or '/system/' are deprecated.\n", id, path);
+    g_printerr (_("warning: Schema '%s' has path '%s'.  Paths starting with "
+                "'/apps/', '/desktop/' or '/system/' are deprecated.\n"), id, path);
 
   state->schema_state = schema_state_new (path, gettext_domain,
                                           extends, extends_name, list_of);
@@ -1511,7 +1511,7 @@ key_state_end (KeyState **state_ptr,
     {
       g_set_error_literal (error,
                            G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                           "element <default> is required in <key>");
+                           _("element <default> is required in <key>"));
       return;
     }
 }
@@ -1667,7 +1667,7 @@ output_key (gpointer key,
 
   if (state->child_schema &&
       !g_hash_table_lookup (data->schema_table, state->child_schema))
-    g_printerr ("warning: undefined reference to <schema id='%s'/>\n",
+    g_printerr (_("warning: undefined reference to <schema id='%s'/>\n"),
                 state->child_schema);
 }
 
