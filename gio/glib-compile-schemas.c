@@ -179,6 +179,8 @@ typedef struct
   GString      *unparsed_default_value;
   GVariant     *default_value;
 
+  GVariantDict *desktop_overrides;
+
   GString      *strinfo;
   gboolean      is_enum;
   gboolean      is_flags;
@@ -731,6 +733,11 @@ key_state_serialise (KeyState *state)
             g_variant_builder_add (&builder, "(y(**))", 'r',
                                    state->minimum, state->maximum);
 
+          /* per-desktop overrides */
+          if (state->desktop_overrides)
+            g_variant_builder_add (&builder, "(y@a{sv})", 'd',
+                                   g_variant_dict_end (state->desktop_overrides));
+
           state->serialised = g_variant_builder_end (&builder);
         }
 
@@ -767,6 +774,9 @@ key_state_free (gpointer data)
 
   if (state->serialised)
     g_variant_unref (state->serialised);
+
+  if (state->desktop_overrides)
+    g_variant_dict_unref (state->desktop_overrides);
 
   g_slice_free (KeyState, state);
 }
@@ -1878,6 +1888,8 @@ set_overrides (GHashTable  *schema_table,
       gchar **groups;
       gint i;
 
+      g_debug ("Processing override file '%s'", filename);
+
       key_file = g_key_file_new ();
       if (!g_key_file_load_from_file (key_file, filename, 0, &error))
         {
@@ -1900,18 +1912,31 @@ set_overrides (GHashTable  *schema_table,
       for (i = 0; groups[i]; i++)
         {
           const gchar *group = groups[i];
+          const gchar *schema_name;
+          const gchar *desktop_id;
           SchemaState *schema;
+          gchar **pieces;
           gchar **keys;
           gint j;
 
-          schema = g_hash_table_lookup (schema_table, group);
+          pieces = g_strsplit (group, ":", 2);
+          schema_name = pieces[0];
+          desktop_id = pieces[1];
+
+          g_debug ("Processing group '%s' (schema '%s', %s)",
+                   group, schema_name, desktop_id ? desktop_id : "all desktops");
+
+          schema = g_hash_table_lookup (schema_table, schema_name);
 
           if (schema == NULL)
-            /* Having the schema not be installed is expected to be a
-             * common case.  Don't even emit an error message about
-             * that.
-             */
-            continue;
+            {
+              /* Having the schema not be installed is expected to be a
+               * common case.  Don't even emit an error message about
+               * that.
+               */
+              g_strfreev (pieces);
+              continue;
+            }
 
           keys = g_key_file_get_keys (key_file, group, NULL, NULL);
           g_assert (keys != NULL);
@@ -1939,6 +1964,32 @@ set_overrides (GHashTable  *schema_table,
 
                   fprintf (stderr, _(" and --strict was specified; exiting.\n"));
                   g_key_file_free (key_file);
+                  g_strfreev (pieces);
+                  g_strfreev (groups);
+                  g_strfreev (keys);
+
+                  return FALSE;
+                }
+
+              if (desktop_id != NULL && state->l10n)
+                {
+                  /* Let's avoid the n*m case of per-desktop localised
+                   * default values, and just forbid it.
+                   */
+                  fprintf (stderr,
+                           _("cannot provide per-desktop overrides for localised "
+                             "key '%s' in schema '%s' (override file '%s')"),
+                           key, group, filename);
+
+                  if (!strict)
+                    {
+                      fprintf (stderr, _("; ignoring override for this key.\n"));
+                      continue;
+                    }
+
+                  fprintf (stderr, _(" and --strict was specified; exiting.\n"));
+                  g_key_file_free (key_file);
+                  g_strfreev (pieces);
                   g_strfreev (groups);
                   g_strfreev (keys);
 
@@ -1969,6 +2020,7 @@ set_overrides (GHashTable  *schema_table,
 
                   fprintf (stderr, _("--strict was specified; exiting.\n"));
                   g_key_file_free (key_file);
+                  g_strfreev (pieces);
                   g_strfreev (groups);
                   g_strfreev (keys);
 
@@ -1997,6 +2049,7 @@ set_overrides (GHashTable  *schema_table,
 
                       fprintf (stderr, _(" and --strict was specified; exiting.\n"));
                       g_key_file_free (key_file);
+                      g_strfreev (pieces);
                       g_strfreev (groups);
                       g_strfreev (keys);
 
@@ -2025,6 +2078,7 @@ set_overrides (GHashTable  *schema_table,
 
                       fprintf (stderr, _(" and --strict was specified; exiting.\n"));
                       g_key_file_free (key_file);
+                      g_strfreev (pieces);
                       g_strfreev (groups);
                       g_strfreev (keys);
 
@@ -2032,11 +2086,24 @@ set_overrides (GHashTable  *schema_table,
                     }
                 }
 
-              g_variant_unref (state->default_value);
-              state->default_value = value;
+              if (desktop_id != NULL)
+                {
+                  if (state->desktop_overrides == NULL)
+                    state->desktop_overrides = g_variant_dict_new (NULL);
+
+                  g_variant_dict_insert_value (state->desktop_overrides, desktop_id, value);
+                  g_variant_unref (value);
+                }
+              else
+                {
+                  g_variant_unref (state->default_value);
+                  state->default_value = value;
+                }
+
               g_free (string);
             }
 
+          g_strfreev (pieces);
           g_strfreev (keys);
         }
 
