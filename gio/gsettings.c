@@ -1204,10 +1204,7 @@ g_settings_get_value (GSettings   *settings,
   value = g_settings_read_from_backend (settings, &skey, FALSE, FALSE);
 
   if (value == NULL)
-    value = g_settings_schema_key_get_translated_default (&skey);
-
-  if (value == NULL)
-    value = g_variant_ref (skey.default_value);
+    value = g_settings_schema_key_get_default_value (&skey);
 
   g_settings_schema_key_clear (&skey);
 
@@ -1304,10 +1301,7 @@ g_settings_get_default_value (GSettings   *settings,
   value = g_settings_read_from_backend (settings, &skey, FALSE, TRUE);
 
   if (value == NULL)
-    value = g_settings_schema_key_get_translated_default (&skey);
-
-  if (value == NULL)
-    value = g_variant_ref (skey.default_value);
+    value = g_settings_schema_key_get_default_value (&skey);
 
   g_settings_schema_key_clear (&skey);
 
@@ -1360,10 +1354,7 @@ g_settings_get_enum (GSettings   *settings,
   value = g_settings_read_from_backend (settings, &skey, FALSE, FALSE);
 
   if (value == NULL)
-    value = g_settings_schema_key_get_translated_default (&skey);
-
-  if (value == NULL)
-    value = g_variant_ref (skey.default_value);
+    value = g_settings_schema_key_get_default_value (&skey);
 
   result = g_settings_schema_key_to_enum (&skey, value);
   g_settings_schema_key_clear (&skey);
@@ -1473,10 +1464,7 @@ g_settings_get_flags (GSettings   *settings,
   value = g_settings_read_from_backend (settings, &skey, FALSE, FALSE);
 
   if (value == NULL)
-    value = g_settings_schema_key_get_translated_default (&skey);
-
-  if (value == NULL)
-    value = g_variant_ref (skey.default_value);
+    value = g_settings_schema_key_get_default_value (&skey);
 
   result = g_settings_schema_key_to_flags (&skey, value);
   g_settings_schema_key_clear (&skey);
