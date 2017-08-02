@@ -1739,6 +1739,13 @@ g_settings_get_mapped (GSettings           *settings,
       if (okay) goto okay;
     }
 
+  if ((value = g_settings_schema_key_get_per_desktop_default (&skey)))
+    {
+      okay = mapping (value, &result, user_data);
+      g_variant_unref (value);
+      if (okay) goto okay;
+    }
+
   if (mapping (skey.default_value, &result, user_data))
     goto okay;
 

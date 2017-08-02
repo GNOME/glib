@@ -37,6 +37,7 @@ struct _GSettingsSchemaKey
   const GVariantType *type;
   GVariant *minimum, *maximum;
   GVariant *default_value;
+  GVariant *desktop_overrides;
 
   gint ref_count;
 };
@@ -58,6 +59,7 @@ gboolean                g_settings_schema_key_type_check                (GSettin
 GVariant *              g_settings_schema_key_range_fixup               (GSettingsSchemaKey *key,
                                                                          GVariant           *value);
 GVariant *              g_settings_schema_key_get_translated_default    (GSettingsSchemaKey *key);
+GVariant *              g_settings_schema_key_get_per_desktop_default   (GSettingsSchemaKey *key);
 
 gint                    g_settings_schema_key_to_enum                   (GSettingsSchemaKey *key,
                                                                          GVariant           *value);
