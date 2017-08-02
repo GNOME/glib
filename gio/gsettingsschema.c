@@ -27,6 +27,7 @@
 #include <glibintl.h>
 #include <locale.h>
 #include <string.h>
+#include <stdlib.h>
 
 /**
  * SECTION:gsettingsschema
@@ -1283,6 +1284,11 @@ g_settings_schema_key_init (GSettingsSchemaKey *key,
           endian_fixup (&key->maximum);
           break;
 
+        case 'd':
+          g_variant_get (data, "@a{sv}", &key->desktop_overrides);
+          endian_fixup (&key->desktop_overrides);
+          break;
+
         default:
           g_warning ("unknown schema extension '%c'", code);
           break;
@@ -1302,6 +1308,9 @@ g_settings_schema_key_clear (GSettingsSchemaKey *key)
 
   if (key->maximum)
     g_variant_unref (key->maximum);
+
+  if (key->desktop_overrides)
+    g_variant_unref (key->desktop_overrides);
 
   g_variant_unref (key->default_value);
 
@@ -1406,6 +1415,35 @@ g_settings_schema_key_get_translated_default (GSettingsSchemaKey *key)
       g_variant_unref (value);
       value = NULL;
     }
+
+  return value;
+}
+
+GVariant *
+g_settings_schema_key_get_per_desktop_default (GSettingsSchemaKey *key)
+{
+  static const gchar * const *current_desktops;
+  GVariant *value = NULL;
+  gint i;
+
+  if (!key->desktop_overrides)
+    return NULL;
+
+  if (g_once_init_enter (&current_desktops))
+    {
+      const gchar *xdg_current_desktop = g_getenv ("XDG_CURRENT_DESKTOP");
+      gchar **tmp;
+
+      if (xdg_current_desktop != NULL && xdg_current_desktop[0] != '\0')
+        tmp = g_strsplit (xdg_current_desktop, G_SEARCHPATH_SEPARATOR_S, -1);
+      else
+        tmp = g_new0 (gchar *, 0 + 1);
+
+      g_once_init_leave (&current_desktops, (const gchar **) tmp);
+    }
+
+  for (i = 0; value == NULL && current_desktops[i] != NULL; i++)
+    value = g_variant_lookup_value (key->desktop_overrides, current_desktops[i], NULL);
 
   return value;
 }
@@ -1697,6 +1735,9 @@ g_settings_schema_key_get_default_value (GSettingsSchemaKey *key)
   g_return_val_if_fail (key, NULL);
 
   value = g_settings_schema_key_get_translated_default (key);
+
+  if (!value)
+    value = g_settings_schema_key_get_per_desktop_default (key);
 
   if (!value)
     value = g_variant_ref (key->default_value);
