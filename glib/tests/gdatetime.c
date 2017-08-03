@@ -745,6 +745,73 @@ test_GDateTime_new_full (void)
 #endif
   g_assert (!g_date_time_is_daylight_savings (dt));
   g_date_time_unref (dt);
+
+  /* Check month limits */
+  dt = g_date_time_new_utc (2016, 1, 31, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 1, 31);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 1, 32, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 2, 29, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 2, 29);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 2, 30, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2017, 2, 28, 22, 10, 42);
+  ASSERT_DATE (dt, 2017, 2, 28);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2017, 2, 29, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 3, 31, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 3, 31);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 3, 32, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 4, 30, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 4, 30);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 4, 31, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 5, 31, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 5, 31);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 5, 32, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 6, 30, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 6, 30);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 6, 31, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 7, 31, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 7, 31);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 7, 32, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 8, 31, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 8, 31);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 8, 32, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 9, 30, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 9, 30);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 9, 31, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 10, 31, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 10, 31);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 10, 32, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 11, 30, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 11, 30);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 11, 31, 22, 10, 42);
+  g_assert_null (dt);
+  dt = g_date_time_new_utc (2016, 12, 31, 22, 10, 42);
+  ASSERT_DATE (dt, 2016, 12, 31);
+  g_date_time_unref (dt);
+  dt = g_date_time_new_utc (2016, 12, 32, 22, 10, 42);
+  g_assert_null (dt);
 }
 
 static void
