@@ -437,7 +437,7 @@ _g_get_unix_mounts (void)
 
 #else
 
-static char *
+static const char *
 get_mtab_read_file (void)
 {
 #ifdef _PATH_MOUNTED
@@ -464,7 +464,7 @@ _g_get_unix_mounts (void)
 #endif
   struct mntent *mntent;
   FILE *file;
-  char *read_file;
+  const char *read_file;
   GUnixMountEntry *mount_entry;
   GHashTable *mounts_hash;
   GList *return_list;
@@ -538,10 +538,10 @@ _g_get_unix_mounts (void)
 
 #endif /* HAVE_LIBMOUNT */
 
-static char *
+static const char *
 get_mtab_monitor_file (void)
 {
-  static char *mountinfo_path = NULL;
+  static const char *mountinfo_path = NULL;
 #ifdef HAVE_LIBMOUNT
   struct stat buf;
 #endif
@@ -584,7 +584,7 @@ get_mtab_monitor_file (void)
 
 G_LOCK_DEFINE_STATIC(getmntent);
 
-static char *
+static const char *
 get_mtab_read_file (void)
 {
 #ifdef _PATH_MOUNTED
@@ -594,7 +594,7 @@ get_mtab_read_file (void)
 #endif
 }
 
-static char *
+static const char *
 get_mtab_monitor_file (void)
 {
   return get_mtab_read_file ();
@@ -605,7 +605,7 @@ _g_get_unix_mounts (void)
 {
   struct mnttab mntent;
   FILE *file;
-  char *read_file;
+  const char *read_file;
   GUnixMountEntry *mount_entry;
   GList *return_list;
   
@@ -645,7 +645,7 @@ _g_get_unix_mounts (void)
 /* mntctl.h (AIX) {{{2 */
 #elif defined(HAVE_SYS_MNTCTL_H) && defined(HAVE_SYS_VMOUNT_H) && defined(HAVE_SYS_VFS_H)
 
-static char *
+static const char *
 get_mtab_monitor_file (void)
 {
   return NULL;
@@ -713,7 +713,7 @@ _g_get_unix_mounts (void)
 /* sys/mount.h {{{2 */
 #elif (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
 
-static char *
+static const char *
 get_mtab_monitor_file (void)
 {
   return NULL;
@@ -784,7 +784,7 @@ _g_get_unix_mounts (void)
 /* Interix {{{2 */
 #elif defined(__INTERIX)
 
-static char *
+static const char *
 get_mtab_monitor_file (void)
 {
   return NULL;
