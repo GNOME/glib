@@ -3390,7 +3390,7 @@ AC_ARG_ENABLE(compile-warnings,
               [AS_HELP_STRING([--disable-compile-warnings],
                               [Don't use builtin compiler warnings])],,
 			      enable_compile_warnings=yes)
-AS_IF([test "x$enable_compile_warnings" = xyes], [
+AS_IF([test "x$enable_compile_warnings" != xno], [
   CC_CHECK_FLAGS_APPEND([GLIB_WARN_CFLAGS], [CFLAGS], [\
    -Wall -Wstrict-prototypes -Werror=declaration-after-statement \
    -Werror=missing-prototypes -Werror=implicit-function-declaration \
