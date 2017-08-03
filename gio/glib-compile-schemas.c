@@ -405,7 +405,7 @@ key_state_set_range (KeyState     *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("<range> specified minimum is greater than maxmimum"));
+                   _("<range> specified minimum is greater than maximum"));
       return;
     }
 
