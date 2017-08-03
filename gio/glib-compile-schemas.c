@@ -388,7 +388,7 @@ key_state_set_range (KeyState     *state,
       gchar *type = g_variant_type_dup_string (state->type);
       g_set_error (error, G_MARKUP_ERROR,
                   G_MARKUP_ERROR_INVALID_CONTENT,
-                  _("<range> not allowed for keys of type ‘%s’"), type);
+                  _("<range> not allowed for keys of type “%s”"), type);
       g_free (type);
       return;
     }
@@ -472,7 +472,7 @@ key_state_end_default (KeyState  *state,
   if (!state->default_value)
     {
       gchar *type = g_variant_type_dup_string (state->type);
-      g_prefix_error (error, _("Failed to parse <default> value of type ‘%s’: "), type);
+      g_prefix_error (error, _("Failed to parse <default> value of type “%s”: "), type);
       g_free (type);
     }
 
@@ -510,7 +510,7 @@ key_state_start_choices (KeyState  *state,
       gchar *type_string = g_variant_type_dup_string (state->type);
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("<choices> not allowed for keys of type ‘%s’"),
+                   _("<choices> not allowed for keys of type “%s”"),
                    type_string);
       g_free (type_string);
       return;
@@ -578,7 +578,7 @@ key_state_add_alias (KeyState     *state,
           if (state->is_enum)
             g_set_error (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
-                         _("<alias value='%s'/> given when ‘%s’ is already "
+                         _("<alias value='%s'/> given when “%s” is already "
                          "a member of the enumerated type"), alias, alias);
 
           else
@@ -602,8 +602,8 @@ key_state_add_alias (KeyState     *state,
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
                    state->is_enum ?
-                     _("alias target ‘%s’ is not in enumerated type") :
-                     _("alias target ‘%s’ is not in <choices>"),
+                     _("alias target “%s” is not in enumerated type") :
+                     _("alias target “%s” is not in <choices>"),
                    target);
       return;
     }
@@ -793,7 +793,7 @@ is_valid_keyname (const gchar  *key,
   if (!g_ascii_islower (key[0]))
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("Invalid name ‘%s’: names must begin "
+                   _("Invalid name “%s”: names must begin "
                      "with a lowercase letter"), key);
       return FALSE;
     }
@@ -805,8 +805,8 @@ is_valid_keyname (const gchar  *key,
           !g_ascii_isdigit (key[i]))
         {
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("Invalid name ‘%s’: invalid character ‘%c’; "
-                         "only lowercase letters, numbers and hyphen (‘-’) "
+                       _("Invalid name “%s”: invalid character “%c”; "
+                         "only lowercase letters, numbers and hyphen (“-”) "
                          "are permitted"), key, key[i]);
           return FALSE;
         }
@@ -814,7 +814,7 @@ is_valid_keyname (const gchar  *key,
       if (key[i] == '-' && key[i + 1] == '-')
         {
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("Invalid name ‘%s’: two successive hyphens (‘--’) "
+                       _("Invalid name “%s”: two successive hyphens (“--”) "
                          "are not permitted"), key);
           return FALSE;
         }
@@ -823,15 +823,15 @@ is_valid_keyname (const gchar  *key,
   if (key[i - 1] == '-')
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("Invalid name ‘%s’: the last character may not be a "
-                     "hyphen (‘-’)"), key);
+                   _("Invalid name “%s”: the last character may not be a "
+                     "hyphen (“-”)"), key);
       return FALSE;
     }
 
   if (i > 1024)
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("Invalid name ‘%s’: maximum length is 1024"), key);
+                   _("Invalid name “%s”: maximum length is 1024"), key);
       return FALSE;
     }
 
@@ -927,7 +927,7 @@ schema_state_add_key (SchemaState  *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           _("Cannot add keys to a ‘list-of’ schema"));
+                           _("Cannot add keys to a “list-of” schema"));
       return NULL;
     }
 
@@ -967,7 +967,7 @@ schema_state_add_key (SchemaState  *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_MISSING_ATTRIBUTE,
-                   _("Exactly one of ‘type’, ‘enum’ or ‘flags’ must "
+                   _("Exactly one of “type”, “enum” or “flags” must "
                      "be specified as an attribute to <key>"));
       return NULL;
     }
@@ -1001,7 +1001,7 @@ schema_state_add_key (SchemaState  *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       _("Invalid GVariant type string ‘%s’"), type_string);
+                       _("Invalid GVariant type string “%s”"), type_string);
           return NULL;
         }
 
@@ -1138,7 +1138,7 @@ parse_state_start_schema (ParseState  *state,
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
                        _("<schema id='%s'> extends not yet existing "
-                         "schema ‘%s’"), id, extends_name);
+                         "schema “%s”"), id, extends_name);
           return;
         }
     }
@@ -1154,7 +1154,7 @@ parse_state_start_schema (ParseState  *state,
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
                        _("<schema id='%s'> is list of not yet existing "
-                         "schema ‘%s’"), id, list_of);
+                         "schema “%s”"), id, list_of);
           return;
         }
 
@@ -1192,8 +1192,8 @@ parse_state_start_schema (ParseState  *state,
               g_set_error (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
                            _("<schema id='%s' list-of='%s'> extends <schema "
-                             "id='%s' list-of='%s'> but ‘%s’ does not "
-                             "extend ‘%s’"), id, list_of, extends_name,
+                             "id='%s' list-of='%s'> but “%s” does not "
+                             "extend “%s”"), id, list_of, extends_name,
                            extends->list_of, list_of, extends->list_of);
               return;
             }
@@ -1215,7 +1215,7 @@ parse_state_start_schema (ParseState  *state,
   if (path && list_of && !g_str_has_suffix (path, ":/"))
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("The path of a list must end with ‘:/’"));
+                   _("The path of a list must end with “:/”"));
       return;
     }
 
@@ -1224,9 +1224,9 @@ parse_state_start_schema (ParseState  *state,
                g_str_has_prefix (path, "/system/")))
     {
       gchar *message = NULL;
-      message = g_strdup_printf (_("Warning: Schema ‘%s’ has path ‘%s’.  "
+      message = g_strdup_printf (_("Warning: Schema “%s” has path “%s”.  "
                                    "Paths starting with "
-                                   "‘/apps/’, ‘/desktop/’ or ‘/system/’ are deprecated."),
+                                   "“/apps/”, “/desktop/” or “/system/” are deprecated."),
                                  id, path);
       g_printerr ("%s\n", message);
       g_free (message);
