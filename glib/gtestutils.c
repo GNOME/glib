@@ -1179,9 +1179,10 @@ g_test_init (int    *argc,
   /* sanity check */
   if (test_tap_log)
     {
-      if (test_paths || test_paths_skipped || test_startup_skip_count)
+      if (test_paths || test_startup_skip_count)
         {
-          g_printerr ("%s: options that skip some tests are incompatible with --tap\n",
+          /* Not invoking every test (even if SKIPped) breaks the "1..XX" plan */
+          g_printerr ("%s: -p and --GTestSkipCount options are incompatible with --tap\n",
                       (*argv)[0]);
           exit (1);
         }
@@ -1716,9 +1717,6 @@ g_test_add_vtable (const char       *testpath,
   g_return_if_fail (g_path_is_absolute (testpath));
   g_return_if_fail (fixture_test_func != NULL);
 
-  if (g_slist_find_custom (test_paths_skipped, testpath, (GCompareFunc)g_strcmp0))
-    return;
-
   suite = g_test_get_root();
   segments = g_strsplit (testpath, "/", -1);
   for (ui = 0; segments[ui] != NULL; ui++)
@@ -2153,25 +2151,30 @@ test_case_run (GTestCase *tc)
       test_run_success = G_TEST_RUN_SUCCESS;
       g_clear_pointer (&test_run_msg, g_free);
       g_test_log_set_fatal_handler (NULL, NULL);
-      g_timer_start (test_run_timer);
-      fixture = tc->fixture_size ? g_malloc0 (tc->fixture_size) : tc->test_data;
-      test_run_seed (test_run_seedstr);
-      if (tc->fixture_setup)
-        tc->fixture_setup (fixture, tc->test_data);
-      tc->fixture_test (fixture, tc->test_data);
-      test_trap_clear();
-      while (test_destroy_queue)
+      if (test_paths_skipped && g_slist_find_custom (test_paths_skipped, test_run_name, (GCompareFunc)g_strcmp0))
+        g_test_skip ("by request (-s option)");
+      else
         {
-          DestroyEntry *dentry = test_destroy_queue;
-          test_destroy_queue = dentry->next;
-          dentry->destroy_func (dentry->destroy_data);
-          g_slice_free (DestroyEntry, dentry);
+          g_timer_start (test_run_timer);
+          fixture = tc->fixture_size ? g_malloc0 (tc->fixture_size) : tc->test_data;
+          test_run_seed (test_run_seedstr);
+          if (tc->fixture_setup)
+            tc->fixture_setup (fixture, tc->test_data);
+          tc->fixture_test (fixture, tc->test_data);
+          test_trap_clear();
+          while (test_destroy_queue)
+            {
+              DestroyEntry *dentry = test_destroy_queue;
+              test_destroy_queue = dentry->next;
+              dentry->destroy_func (dentry->destroy_data);
+              g_slice_free (DestroyEntry, dentry);
+            }
+          if (tc->fixture_teardown)
+            tc->fixture_teardown (fixture, tc->test_data);
+          if (tc->fixture_size)
+            g_free (fixture);
+          g_timer_stop (test_run_timer);
         }
-      if (tc->fixture_teardown)
-        tc->fixture_teardown (fixture, tc->test_data);
-      if (tc->fixture_size)
-        g_free (fixture);
-      g_timer_stop (test_run_timer);
       success = test_run_success;
       test_run_success = G_TEST_RUN_FAILURE;
       largs[0] = success; /* OK */
