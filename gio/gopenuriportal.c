@@ -251,10 +251,7 @@ g_openuri_portal_open_uri_async (const char          *uri,
   GDBusConnection *connection;
   GTask *task;
   GFile *file;
-  GVariantBuilder opt_builder;
-  char *token;
-  char *sender;
-  char *handle;
+  GVariant *opts = NULL;
   int i;
   guint signal_id;
 
@@ -270,6 +267,11 @@ g_openuri_portal_open_uri_async (const char          *uri,
 
   if (callback)
     {
+      GVariantBuilder opt_builder;
+      char *token;
+      char *sender;
+      char *handle;
+
       task = g_task_new (NULL, cancellable, callback, user_data);
 
       token = g_strdup_printf ("gio%d", g_random_int_range (0, G_MAXINT));
@@ -293,13 +295,15 @@ g_openuri_portal_open_uri_async (const char          *uri,
                                                       task,
                                                       NULL);
       g_object_set_data (G_OBJECT (task), "signal-id", GINT_TO_POINTER (signal_id));
+
+      g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
+      g_variant_builder_add (&opt_builder, "{sv}", "handle_token", g_variant_new_string (token));
+      g_free (token);
+
+      opts = g_variant_builder_end (&opt_builder);
     }
   else
     task = NULL;
-
-  g_variant_builder_init (&opt_builder, G_VARIANT_TYPE_VARDICT);
-  g_variant_builder_add (&opt_builder, "{sv}", "handle_token", g_variant_new_string (token));
-  g_free (token);
 
   file = g_file_new_for_uri (uri);
   if (g_file_is_native (file))
@@ -332,7 +336,7 @@ g_openuri_portal_open_uri_async (const char          *uri,
       gxdp_open_uri_call_open_file (openuri,
                                     parent_window ? parent_window : "",
                                     g_variant_new ("h", fd_id),
-                                    g_variant_builder_end (&opt_builder),
+                                    opts,
                                     fd_list,
                                     cancellable,
                                     task ? open_call_done : NULL,
@@ -345,7 +349,7 @@ g_openuri_portal_open_uri_async (const char          *uri,
       gxdp_open_uri_call_open_uri (openuri,
                                    parent_window ? parent_window : "",
                                    uri,
-                                   g_variant_builder_end (&opt_builder),
+                                   opts,
                                    cancellable,
                                    task ? open_call_done : NULL,
                                    task);
