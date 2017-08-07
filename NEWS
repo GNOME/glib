@@ -1,3 +1,29 @@
+Overview of changes in GLib 2.53.5
+==================================
+
+* Bugs fixed:
+ 695573 Untranslatable strings in glib-compile-schemas
+ 725950 GApplication: call dbus_unregister only once, and before destruction
+ 731703 giomodule test misbuilds its test modules as libraries
+ 769135 External control for g_test_add/g_test_run
+ 779332 Rewrite mkenums in Python
+ 779607 Race between mounts-changed signal and g_unix_mounts_get() function
+ 784000 Improve strerror_r() detection
+ 784815 Map G_NOTIFICATION_PRIORITY_HIGH to NOTIFY_URGENCY_NORMAL
+ 784965 Use the glib preset for i18n in Meson
+ 784995 meson: some Windows improvements
+ 785113 glib-mkenums Python port fixes
+ 785130 G_LOG_DOMAIN shouldn't be left undefined for applications
+ 785438 Spurious -Wmaybe-uninitialized in gdatetime.c
+ 785468 glib/gpoll: Unnecessary if conditional included in the poll_rest() function
+ 785520 Replace advice to use removed gdk_spawn functions
+ 785577 clobbers errno while setting GError
+
+* Translation updates:
+ Slovenian
+ Spanish
+
+
 Overview of changes in GLib 2.53.4
 ==================================
 
