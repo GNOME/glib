@@ -130,7 +130,7 @@
  *
  * A convenience macro to get the previous element in a #GList.
  * Note that it is considered perfectly acceptable to access
- * @list->previous directly.
+ * @list->prev directly.
  *
  * Returns: the previous element, or %NULL if there are no previous
  *          elements
