@@ -95,6 +95,8 @@
  * @slist: an element in a #GSList.
  *
  * A convenience macro to get the next element in a #GSList.
+ * Note that it is considered perfectly acceptable to access
+ * @slist->next directly.
  *
  * Returns: the next element, or %NULL if there are no more elements.
  **/
