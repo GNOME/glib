@@ -1273,14 +1273,21 @@ else
     glib_conf.set('HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP', 1)
   endif
   if cc.links('''#include <pthread.h>
-                 int main() {
-                   pthread_setname_np("example");
-                 }''', name : 'pthread_setname_np(const char*)')
+              int main() {
+                pthread_setname_np("example");
+              }''',
+              name : 'pthread_setname_np(const char*)',
+              dependencies : thread_dep)
     glib_conf.set('HAVE_PTHREAD_SETNAME_NP_WITHOUT_TID', 1)
-  elif cc.links('''#include <pthread.h>
-                 int main() {
-                   pthread_setname_np(pthread_self(), "example");
-                 }''', name : 'pthread_setname_np(pthread_t, const char*)')
+  elif cc.links('''#ifndef _GNU_SOURCE
+                # define _GNU_SOURCE
+                #endif
+                #include <pthread.h>
+                int main() {
+                  pthread_setname_np(pthread_self(), "example");
+                }''',
+                name : 'pthread_setname_np(pthread_t, const char*)',
+                dependencies : thread_dep)
     glib_conf.set('HAVE_PTHREAD_SETNAME_NP_WITH_TID', 1)
   endif
 endif
