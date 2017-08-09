@@ -58,6 +58,8 @@ glib_giomodulesdir = join_paths(glib_libdir, 'gio', 'modules')
 
 glib_pkgconfigreldir = join_paths(glib_libdir, 'pkgconfig')
 
+add_project_arguments('-D_GNU_SOURCE', language: 'c')
+
 ########################
 # Configuration begins #
 ########################
