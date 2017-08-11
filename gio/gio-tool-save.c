@@ -58,12 +58,15 @@ static const GOptionEntry entries[] =
   { NULL }
 };
 
+/* 256k minus malloc overhead */
+#define STREAM_BUFFER_SIZE (1024*256 - 2*sizeof(gpointer))
+
 static gboolean
 save (GFile *file)
 {
   GOutputStream *out;
   GFileCreateFlags flags;
-  char buffer[1025];
+  char *buffer;
   char *p;
   gssize res;
   gboolean close_res;
@@ -88,11 +91,12 @@ save (GFile *file)
       return FALSE;
     }
 
+  buffer = g_malloc (STREAM_BUFFER_SIZE);
   save_res = TRUE;
 
   while (1)
     {
-      res = read (STDIN_FILENO, buffer, 1024);
+      res = read (STDIN_FILENO, buffer, STREAM_BUFFER_SIZE);
       if (res > 0)
 	{
 	  gssize written;
@@ -147,6 +151,7 @@ save (GFile *file)
     }
 
   g_object_unref (out);
+  g_free (buffer);
 
   return save_res;
 }
