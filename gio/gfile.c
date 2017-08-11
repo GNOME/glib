@@ -2777,9 +2777,10 @@ copy_stream_with_progress (GInputStream           *in,
                            gpointer                progress_callback_data,
                            GError                **error)
 {
-  gssize n_read, n_written;
+  gssize n_read;
+  gsize n_written;
   goffset current_size;
-  char *buffer, *p;
+  char *buffer;
   gboolean res;
   goffset total_size;
   GFileInfo *info;
@@ -2833,20 +2834,7 @@ copy_stream_with_progress (GInputStream           *in,
 
       current_size += n_read;
 
-      p = buffer;
-      while (n_read > 0)
-        {
-          n_written = g_output_stream_write (out, p, n_read, cancellable, error);
-          if (n_written == -1)
-            {
-              res = FALSE;
-              break;
-            }
-
-          p += n_written;
-          n_read -= n_written;
-        }
-
+      res = g_output_stream_write_all (out, buffer, n_read, &n_written, cancellable, error);
       if (!res)
         break;
 
