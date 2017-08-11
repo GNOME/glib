@@ -67,7 +67,6 @@ save (GFile *file)
   GOutputStream *out;
   GFileCreateFlags flags;
   char *buffer;
-  char *p;
   gssize res;
   gboolean close_res;
   GError *error;
@@ -99,23 +98,14 @@ save (GFile *file)
       res = read (STDIN_FILENO, buffer, STREAM_BUFFER_SIZE);
       if (res > 0)
 	{
-	  gssize written;
-
-	  p = buffer;
-	  while (res > 0)
-	    {
-	      error = NULL;
-	      written = g_output_stream_write (out, p, res, NULL, &error);
-	      if (written == -1)
-		{
-		  save_res = FALSE;
-                  print_error ("%s", error->message);
-                  g_clear_error (error);
-		  goto out;
-		}
-	      res -= written;
-	      p += written;
-	    }
+          g_output_stream_write_all (out, buffer, res, NULL, NULL, &error);
+          if (error != NULL)
+            {
+              save_res = FALSE;
+              print_error ("%", error->message);
+              g_clear_error (&error);
+              goto out;
+            }
 	}
       else if (res < 0)
 	{
