@@ -102,7 +102,7 @@ save (GFile *file)
           if (error != NULL)
             {
               save_res = FALSE;
-              print_error ("%", error->message);
+              print_file_error (file, error->message);
               g_clear_error (&error);
               goto out;
             }
@@ -123,7 +123,7 @@ save (GFile *file)
   if (!close_res)
     {
       save_res = FALSE;
-      print_error ("%s", error->message);
+      print_file_error (file, error->message);
       g_error_free (error);
     }
 

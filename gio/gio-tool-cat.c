@@ -84,7 +84,7 @@ cat (GFile *file)
 
               if (written == -1 && errsv != EINTR)
                 {
-                  print_file_error (file, _("Error writing to stdout"));
+                  print_error ("%s", _("Error writing to stdout"));
                   success = FALSE;
                   goto out;
                 }
