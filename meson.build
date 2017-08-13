@@ -1272,12 +1272,17 @@ else
   if cc.has_header_symbol('pthread.h', 'pthread_cond_timedwait_relative_np')
     glib_conf.set('HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP', 1)
   endif
-  if cc.links('''#include <pthread.h>
+  # Assume that pthread_setname_np is available in some form; same as configure
+  if cc.links('''#ifndef _GNU_SOURCE
+              # define _GNU_SOURCE
+              #endif
+              #include <pthread.h>
               int main() {
                 pthread_setname_np("example");
               }''',
               name : 'pthread_setname_np(const char*)',
               dependencies : thread_dep)
+    # macOS and iOS
     glib_conf.set('HAVE_PTHREAD_SETNAME_NP_WITHOUT_TID', 1)
   elif cc.links('''#ifndef _GNU_SOURCE
                 # define _GNU_SOURCE
@@ -1288,6 +1293,7 @@ else
                 }''',
                 name : 'pthread_setname_np(pthread_t, const char*)',
                 dependencies : thread_dep)
+    # Linux, Solaris, etc.
     glib_conf.set('HAVE_PTHREAD_SETNAME_NP_WITH_TID', 1)
   endif
 endif
