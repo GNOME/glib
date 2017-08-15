@@ -80,6 +80,18 @@ test_c_args = [
 # Check for libdbus1 - Optional - is only used in the GDBus test cases
 # 1.2.14 required for dbus_message_set_serial
 dbus1_dep = dependency('dbus-1', required : false, version : '>= 1.2.14')
+if not dbus1_dep.found()
+  if cc.get_id() == 'msvc'
+    # MSVC: Search for the DBus library by the configuration, which corresponds
+    # to the output of CMake builds of DBus.  Note that debugoptimized
+    # is really a Release build with .PDB files.
+    if buildtype == 'debug'
+      dbus1_dep = cc.find_library('dbus-1d', required : false)
+    else
+      dbus1_dep = cc.find_library('dbus-1', required : false)
+    endif
+  endif
+endif
 if dbus1_dep.found()
   glib_conf.set('HAVE_DBUS1', 1)
 

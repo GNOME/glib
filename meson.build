@@ -130,6 +130,10 @@ else
 endif
 glibconfig_conf.set('glib_os', glib_os)
 
+# We need to know the build type to determine what .lib files we need on Visual Studio
+# for dependencies that don't normally come with pkg-config files for Visual Studio builds
+buildtype = get_option('buildtype')
+
 # check for header files
 
 headers = [
@@ -1359,13 +1363,48 @@ if get_option('with-pcre') == 'internal'
   use_system_pcre = false
 else
   pcre = dependency('libpcre', required : false) # Should check for Unicode support, too. FIXME
+  if not pcre.found()
+    if cc.get_id() == 'msvc'
+    # MSVC: Search for the PCRE library by the configuration, which corresponds
+    # to the output of CMake builds of PCRE.  Note that debugoptimized
+    # is really a Release build with .PDB files.
+      if buildtype == 'debug'
+        pcre = cc.find_library('pcred', required : false)
+      else
+        pcre = cc.find_library('pcre', required : false)
+      endif
+    endif
+  endif
   use_system_pcre = pcre.found()
 endif
 glib_conf.set('USE_SYSTEM_PCRE', use_system_pcre)
 
 libm = cc.find_library('m', required : false)
 libffi_dep = dependency('libffi', version : '>= 3.0.0', fallback : ['libffi', 'ffi_dep'])
-libz_dep = dependency('zlib', fallback : ['zlib', 'zlib_dep'])
+zlib_libname = '-lz'
+if cc.get_id() != 'msvc'
+  libz_dep = dependency('zlib', fallback : ['zlib', 'zlib_dep'])
+else
+  # MSVC: Don't use the bundled ZLib sources until we are sure that we can't
+  # find the ZLib .lib
+  libz_dep = dependency('zlib', required : false)
+
+  # MSVC: Search for the ZLib .lib, which corresponds to the results of
+  # of using ZLib's win32/makefile.msc.
+  if not libz_dep.found()
+    libz_dep = cc.find_library('zlib1', required : false)
+    if libz_dep.found()
+      zlib_libname = '-lzlib1'
+    else
+      libz_dep = cc.find_library('zlib', required : false)
+      if libz_dep.found()
+        zlib_libname = '-lzlib'
+      else
+        zlib_dep = subproject('zlib').get_variable('zlib_dep')
+      endif
+    endif
+  endif
+endif
 
 # Only used on non-glibc targets
 libintl = cc.find_library('intl', required : false)
@@ -1414,7 +1453,7 @@ glib_conf.set('SIZEOF___INT64', 8)
 
 # Various substs needed for our pkg-config files
 # FIXME: Derive these from the dependency() objects (Meson support needed)
-glib_conf.set('ZLIB_LIBS', '-lz')
+glib_conf.set('ZLIB_LIBS', zlib_libname)
 glib_conf.set('LIBFFI_LIBS', '-lffi')
 if libintl.found()
   glib_conf.set('INTLLIBS', '-lintl')
