@@ -1570,6 +1570,10 @@ configure_file(input : 'config.h.meson',
   output : 'config.h',
   configuration : glib_conf)
 
+if host_system == 'windows'
+  install_headers([ 'msvc_recommended_pragmas.h' ], subdir : 'glib-2.0')
+endif
+
 if get_option('with-man') != 'no'
   xsltproc = find_program('xsltproc', required : false)
   if not xsltproc.found() and get_option('with-man') == 'yes'
