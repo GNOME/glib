@@ -182,6 +182,127 @@ test_exit1 (void)
   g_object_unref (proc);
 }
 
+typedef struct {
+  GMainLoop    *loop;
+  GCancellable *cancellable;
+  gboolean      cb_called;
+} TestExit1CancelData;
+
+static gboolean
+test_exit1_cancel_idle_quit_cb (gpointer user_data)
+{
+  GMainLoop *loop = user_data;
+  g_main_loop_quit (loop);
+  return G_SOURCE_REMOVE;
+}
+
+static void
+test_exit1_cancel_wait_check_cb (GObject      *source,
+                                 GAsyncResult *result,
+                                 gpointer      user_data)
+{
+  GSubprocess *subprocess = G_SUBPROCESS (source);
+  TestExit1CancelData *data = user_data;
+  gboolean ret;
+  GError *error = NULL;
+
+  g_assert_false (data->cb_called);
+  data->cb_called = TRUE;
+
+  ret = g_subprocess_wait_check_finish (subprocess, result, &error);
+  g_assert (!ret);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CANCELLED);
+  g_clear_error (&error);
+
+  g_idle_add (test_exit1_cancel_idle_quit_cb, data->loop);
+}
+
+static void
+test_exit1_cancel (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GPtrArray *args;
+  GSubprocess *proc;
+  TestExit1CancelData data = { 0 };
+
+  g_test_bug ("786456");
+
+  args = get_test_subprocess_args ("exit1", NULL);
+  proc = g_subprocess_newv ((const gchar * const *) args->pdata, G_SUBPROCESS_FLAGS_NONE, error);
+  g_ptr_array_free (args, TRUE);
+  g_assert_no_error (local_error);
+
+  data.loop = g_main_loop_new (NULL, FALSE);
+  data.cancellable = g_cancellable_new ();
+  g_subprocess_wait_check_async (proc, data.cancellable, test_exit1_cancel_wait_check_cb, &data);
+
+  g_subprocess_wait_check (proc, NULL, error);
+  g_assert_error (local_error, G_SPAWN_EXIT_ERROR, 1);
+  g_clear_error (error);
+
+  g_cancellable_cancel (data.cancellable);
+  g_main_loop_run (data.loop);
+
+  g_object_unref (proc);
+  g_main_loop_unref (data.loop);
+  g_clear_object (&data.cancellable);
+}
+
+static void
+test_exit1_cancel_in_cb_wait_check_cb (GObject      *source,
+                                       GAsyncResult *result,
+                                       gpointer      user_data)
+{
+  GSubprocess *subprocess = G_SUBPROCESS (source);
+  TestExit1CancelData *data = user_data;
+  gboolean ret;
+  GError *error = NULL;
+
+  g_assert_false (data->cb_called);
+  data->cb_called = TRUE;
+
+  ret = g_subprocess_wait_check_finish (subprocess, result, &error);
+  g_assert (!ret);
+  g_assert_error (error, G_SPAWN_EXIT_ERROR, 1);
+  g_clear_error (&error);
+
+  g_cancellable_cancel (data->cancellable);
+
+  g_idle_add (test_exit1_cancel_idle_quit_cb, data->loop);
+}
+
+static void
+test_exit1_cancel_in_cb (void)
+{
+  GError *local_error = NULL;
+  GError **error = &local_error;
+  GPtrArray *args;
+  GSubprocess *proc;
+  TestExit1CancelData data = { 0 };
+
+  g_test_bug ("786456");
+
+  args = get_test_subprocess_args ("exit1", NULL);
+  proc = g_subprocess_newv ((const gchar * const *) args->pdata, G_SUBPROCESS_FLAGS_NONE, error);
+  g_ptr_array_free (args, TRUE);
+  g_assert_no_error (local_error);
+
+  data.loop = g_main_loop_new (NULL, FALSE);
+  data.cancellable = g_cancellable_new ();
+  g_subprocess_wait_check_async (proc, data.cancellable, test_exit1_cancel_in_cb_wait_check_cb, &data);
+
+  g_subprocess_wait_check (proc, NULL, error);
+  g_assert_error (local_error, G_SPAWN_EXIT_ERROR, 1);
+  g_clear_error (error);
+
+  g_main_loop_run (data.loop);
+
+  g_object_unref (proc);
+  g_main_loop_unref (data.loop);
+  g_clear_object (&data.cancellable);
+}
+
 static gchar *
 splice_to_string (GInputStream   *stream,
                   GError        **error)
@@ -1285,6 +1406,7 @@ int
 main (int argc, char **argv)
 {
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("https://bugzilla.gnome.org/");
 
   g_test_add_func ("/gsubprocess/noop", test_noop);
   g_test_add_func ("/gsubprocess/noop-all-to-null", test_noop_all_to_null);
@@ -1295,6 +1417,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gsubprocess/signal", test_signal);
 #endif
   g_test_add_func ("/gsubprocess/exit1", test_exit1);
+  g_test_add_func ("/gsubprocess/exit1/cancel", test_exit1_cancel);
+  g_test_add_func ("/gsubprocess/exit1/cancel_in_cb", test_exit1_cancel_in_cb);
   g_test_add_func ("/gsubprocess/echo1", test_echo1);
 #ifdef G_OS_UNIX
   g_test_add_func ("/gsubprocess/echo-merged", test_echo_merged);
