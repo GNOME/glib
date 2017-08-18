@@ -1,4 +1,30 @@
 #include <gio/gio.h>
+#include <gstdio.h>
+
+typedef struct
+{
+  gchar *tmp_dir;
+} Fixture;
+
+static void
+setup (Fixture       *fixture,
+       gconstpointer  user_data)
+{
+  GError *error = NULL;
+
+  fixture->tmp_dir = g_dir_make_tmp ("gio-test-file-monitor_XXXXXX", &error);
+  g_assert_no_error (error);
+
+  g_test_message ("Using temporary directory: %s", fixture->tmp_dir);
+}
+
+static void
+teardown (Fixture       *fixture,
+          gconstpointer  user_data)
+{
+  g_assert_cmpint (g_rmdir (fixture->tmp_dir), ==, 0);
+  g_clear_pointer (&fixture->tmp_dir, g_free);
+}
 
 typedef struct {
   GFile *file;
@@ -127,9 +153,9 @@ file_changed_cb (GFileMonitor      *monitor,
 }
 
 static void
-test_directory_monitor (void)
+test_directory_monitor (Fixture       *fixture,
+                        gconstpointer  user_data)
 {
-  gchar *path;
   GFile *file;
   GFile *child;
   GFileMonitor *dir_monitor;
@@ -139,8 +165,7 @@ test_directory_monitor (void)
   gint state;
   GMainLoop *loop;
 
-  path = g_mkdtemp (g_strdup ("file_monitor_XXXXXX"));
-  file = g_file_new_for_path (path);
+  file = g_file_new_for_path (fixture->tmp_dir);
   dir_monitor = g_file_monitor_directory (file, 0, NULL, &error);
   g_assert_no_error (error);
 
@@ -170,7 +195,6 @@ test_directory_monitor (void)
   g_object_unref (file_monitor);
   g_object_unref (child);
   g_object_unref (file);
-  g_free (path);
 }
 
 int
@@ -178,7 +202,7 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/monitor/directory", test_directory_monitor);
+  g_test_add ("/monitor/directory", Fixture, NULL, setup, test_directory_monitor, teardown);
 
   return g_test_run ();
 }
