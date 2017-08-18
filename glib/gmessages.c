@@ -2114,6 +2114,12 @@ open_journal (void)
  * systemd journal, or something else (like a log file or `stdout` or
  * `stderr`).
  *
+ * Invalid file descriptors are accepted and return %FALSE, which allows for
+ * the following construct without needing any additional error handling:
+ * |[<!-- language="C" -->
+ *   is_journald = g_log_writer_is_journald (fileno (stderr));
+ * ]|
+ *
  * Returns: %TRUE if @output_fd points to the journal, %FALSE otherwise
  * Since: 2.50
  */
@@ -2127,7 +2133,8 @@ g_log_writer_is_journald (gint output_fd)
   static gsize initialized;
   static gboolean fd_is_journal = FALSE;
 
-  g_return_val_if_fail (output_fd >= 0, FALSE);
+  if (output_fd < 0)
+    return FALSE;
 
   if (g_once_init_enter (&initialized))
     {
