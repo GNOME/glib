@@ -97,11 +97,12 @@ test_app_monitor (void)
 int
 main (int argc, char *argv[])
 {
-  gchar *path;
+  gchar *path = NULL;
 
   path = g_mkdtemp (g_strdup ("app_monitor_XXXXXX"));
   g_setenv ("XDG_DATA_DIRS", path, TRUE);
   g_setenv ("XDG_DATA_HOME", path, TRUE);
+  g_free (path);
 
   g_test_init (&argc, &argv, NULL);
 
