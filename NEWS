@@ -1,3 +1,27 @@
+Overview of changes in GLib 2.53.6
+==================================
+
+* Bugs fixed:
+ 766358 glib doesn't respect XDG_* envvars on W32, ever
+ 783270 Improve Visual Studio support for Meson builds
+ 785955 pthread_setname_np misdetected with meson
+ 786060 Sequences documentation does not make it clear...
+ 786360 gobject: add autoptr support for GClosure
+ 786452 crash on Linux without stderr stream
+ 786460 gio-tool: Unify buffer sizes
+ 786462 Use g_output_stream_write_all instead of while
+ 786463 gio-tool-save: Prevent overwriting error
+
+* Translation updates:
+ Catalan
+ Galician
+ Hungarian
+ Indonesian
+ Lithuanian
+ Nepali
+ Serbian
+
+
 Overview of changes in GLib 2.53.5
 ==================================
 
