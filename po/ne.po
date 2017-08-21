@@ -10,10 +10,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Gnome Nepali Translation Project\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N"
-"+L10N&component=general\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2017-08-18 08:32+0000\n"
-"PO-Revision-Date: 2017-08-18 18:01+0545\n"
+"PO-Revision-Date: 2017-08-21 12:40+0545\n"
 "Last-Translator: Pawan Chitrakar <chautari@gmail.com>\n"
 "Language-Team: Nepali Translation Team <chautari@gmail.com>\n"
 "Language: ne\n"
@@ -31,7 +30,7 @@ msgstr "जि-अनुप्रयोग विकल्पहरू"
 #, fuzzy
 #| msgid "Application Options:"
 msgid "Show GApplication options"
-msgstr "जिनोम टर्मिनल विकल्पहरू देखाउनुहोस्"
+msgstr "जि-अनुप्रयोग विकल्पहरू"
 
 #: ../gio/gapplication.c:535
 msgid "Enter GApplication service mode (use from D-Bus service files)"
@@ -41,8 +40,8 @@ msgstr ""
 msgid "Override the application’s ID"
 msgstr "अनुप्रयोगको आईडी अधिलेखन गर्नुहोस्"
 
-#: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46 ../gio/gio-tool.c:227
-#: ../gio/gresource-tool.c:488 ../gio/gsettings-tool.c:522
+#: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46 ../gio/gio-tool.c:227 ../gio/gresource-tool.c:488
+#: ../gio/gsettings-tool.c:522
 msgid "Print help"
 msgstr "मद्दत मुद्रण गर्नुहोस्"
 
@@ -79,7 +78,7 @@ msgstr "फाइलहरू सुरुआत गर्न/खोल्न �
 #: ../gio/gapplication-tool.c:57
 #, fuzzy
 msgid "APPID [FILE…]"
-msgstr "यो फाइल"
+msgstr "फाइल छैन"
 
 #: ../gio/gapplication-tool.c:59
 #, fuzzy
@@ -93,7 +92,7 @@ msgstr "अनुप्रयोगमा एउटा कार्य आह्
 #: ../gio/gapplication-tool.c:61
 #, fuzzy
 msgid "APPID ACTION [PARAMETER]"
-msgstr "क्रिया"
+msgstr "फिल्टर पदवर्णन गर्दा त्रुटि: %s: %s\n"
 
 #: ../gio/gapplication-tool.c:63
 #, fuzzy
@@ -108,8 +107,7 @@ msgstr ""
 msgid "APPID"
 msgstr ""
 
-#: ../gio/gapplication-tool.c:70 ../gio/gapplication-tool.c:133 ../gio/gdbus-tool.c:90
-#: ../gio/gio-tool.c:224
+#: ../gio/gapplication-tool.c:70 ../gio/gapplication-tool.c:133 ../gio/gdbus-tool.c:90 ../gio/gio-tool.c:224
 msgid "COMMAND"
 msgstr "आदेश"
 
@@ -122,9 +120,8 @@ msgstr "मद्दत मुद्रण गर्नुहोस् (वा �
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr ""
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:665
-#: ../gio/glib-compile-resources.c:671 ../gio/glib-compile-resources.c:698
-#: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:665 ../gio/glib-compile-resources.c:671
+#: ../gio/glib-compile-resources.c:698 ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "फाइल"
 
@@ -139,7 +136,7 @@ msgstr "कार्य"
 #: ../gio/gapplication-tool.c:73
 #, fuzzy
 msgid "The action name to invoke"
-msgstr "कार्यका लागि अनौठो नाम"
+msgstr "अनुप्रयोगमा एउटा कार्य आह्वान गर्नुहोस्"
 
 #: ../gio/gapplication-tool.c:74
 msgid "PARAMETER"
@@ -167,8 +164,9 @@ msgid "Arguments:\n"
 msgstr "तर्कहरू:\n"
 
 #: ../gio/gapplication-tool.c:133
+#, fuzzy
 msgid "[ARGS…]"
-msgstr ""
+msgstr "प्रयोग: debconf [options] command [args]"
 
 #: ../gio/gapplication-tool.c:134
 #, c-format
@@ -208,7 +206,7 @@ msgstr ""
 #: ../gio/gapplication-tool.c:266
 #, fuzzy, c-format
 msgid "unable to connect to D-Bus: %s\n"
-msgstr "'%s' फाइल सिर्जना गर्न असफल: %s"
+msgstr "प्याकेज फाइल पद वर्णन गर्न असक्षम %s (%d)"
 
 #: ../gio/gapplication-tool.c:286
 #, c-format
@@ -255,36 +253,34 @@ msgid ""
 msgstr "'%s': %s आदेश चलाउन सकेन"
 
 #: ../gio/gbufferedinputstream.c:420 ../gio/gbufferedinputstream.c:498 ../gio/ginputstream.c:179
-#: ../gio/ginputstream.c:379 ../gio/ginputstream.c:617 ../gio/ginputstream.c:1019
-#: ../gio/goutputstream.c:203 ../gio/goutputstream.c:834 ../gio/gpollableinputstream.c:205
-#: ../gio/gpollableoutputstream.c:206
+#: ../gio/ginputstream.c:379 ../gio/ginputstream.c:617 ../gio/ginputstream.c:1019 ../gio/goutputstream.c:203
+#: ../gio/goutputstream.c:834 ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr ""
 
-#: ../gio/gbufferedinputstream.c:891 ../gio/gbufferedoutputstream.c:575
-#: ../gio/gdataoutputstream.c:562
+#: ../gio/gbufferedinputstream.c:891 ../gio/gbufferedoutputstream.c:575 ../gio/gdataoutputstream.c:562
 #, fuzzy
 msgid "Seek not supported on base stream"
 msgstr "स्ट्रिममा खोजी समर्थित छैन "
 
 #: ../gio/gbufferedinputstream.c:937
+#, fuzzy
 msgid "Cannot truncate GBufferedInputStream"
-msgstr ""
+msgstr "SoupBodyInputStream छोड्न सकिएन"
 
-#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1208 ../gio/giostream.c:300
-#: ../gio/goutputstream.c:1660
+#: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1208 ../gio/giostream.c:300 ../gio/goutputstream.c:1660
 #, fuzzy
 msgid "Stream is already closed"
-msgstr "स्ट्रिमको अन्त्य"
+msgstr "नेटवर्कको प्रवाह अकस्मात रूपमा बन्द भयो"
 
 #: ../gio/gbufferedoutputstream.c:612 ../gio/gdataoutputstream.c:592
 #, fuzzy
 msgid "Truncate not supported on base stream"
 msgstr "स्ट्रिममा खोजी समर्थित छैन "
 
-#: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1849 ../gio/gdbusprivate.c:1402
-#: ../gio/gsimpleasyncresult.c:870 ../gio/gsimpleasyncresult.c:896
+#: ../gio/gcancellable.c:317 ../gio/gdbusconnection.c:1849 ../gio/gdbusprivate.c:1402 ../gio/gsimpleasyncresult.c:870
+#: ../gio/gsimpleasyncresult.c:896
 #, c-format
 msgid "Operation was cancelled"
 msgstr "सञ्चालन रद्द भएको छ"
@@ -303,14 +299,14 @@ msgstr "अपूर्ण आगत"
 msgid "Not enough space in destination"
 msgstr "गन्तव्यमा पर्याप्त स्थान छैन"
 
-#: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848 ../gio/gdatainputstream.c:1257
-#: ../glib/gconvert.c:438 ../glib/gconvert.c:845 ../glib/giochannel.c:1556
-#: ../glib/giochannel.c:1598 ../glib/giochannel.c:2442 ../glib/gutf8.c:866 ../glib/gutf8.c:1319
+#: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848 ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:438
+#: ../glib/gconvert.c:845 ../glib/giochannel.c:1556 ../glib/giochannel.c:1598 ../glib/giochannel.c:2442
+#: ../glib/gutf8.c:866 ../glib/gutf8.c:1319
 msgid "Invalid byte sequence in conversion input"
 msgstr "रूपान्तरण आगतमा अवैध बाइट अनुक्रम"
 
-#: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:446 ../glib/gconvert.c:770
-#: ../glib/giochannel.c:1563 ../glib/giochannel.c:2454
+#: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:446 ../glib/gconvert.c:770 ../glib/giochannel.c:1563
+#: ../glib/giochannel.c:2454
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "रूपान्तरण अवधिमा त्रुटि: %s"
@@ -329,7 +325,7 @@ msgstr "क्यारेक्टर सेट '%s' बाट '%s' मा र�
 #, fuzzy, c-format
 #| msgid "Could not open converter from '%s' to '%s'"
 msgid "Could not open converter from “%s” to “%s”"
-msgstr "%s: खोल्न सकेन %s"
+msgstr "फाइल \"%s\" खोल्न सकिएन"
 
 #: ../gio/gcontenttype.c:358
 #, c-format
@@ -409,9 +405,7 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:573
 #, c-format
-msgid ""
-"Error in address “%s” — the unix transport requires exactly one of the keys “path” or “abstract” "
-"to be set"
+msgid "Error in address “%s” — the unix transport requires exactly one of the keys “path” or “abstract” to be set"
 msgstr ""
 
 #: ../gio/gdbusaddress.c:609
@@ -432,7 +426,7 @@ msgstr ""
 #: ../gio/gdbusaddress.c:658
 #, fuzzy
 msgid "Error auto-launching: "
-msgstr "मद्दत दृश्यकर्ता सुरुआत गर्दा त्यहाँ त्रुटि थियो: %s"
+msgstr "पूर्वावलोकन सुरुआत गर्दा त्रुटि"
 
 #: ../gio/gdbusaddress.c:666
 #, c-format
@@ -499,13 +493,11 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:1648
 #, c-format
-msgid ""
-"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable — unknown value “%s”"
+msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable — unknown value “%s”"
 msgstr ""
 
 #: ../gio/gdbusaddress.c:1657 ../gio/gdbusconnection.c:7155
-msgid ""
-"Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
+msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
 msgstr ""
 
 #: ../gio/gdbusaddress.c:1667
@@ -544,7 +536,7 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:296
 #, fuzzy, c-format
 msgid "Error creating directory “%s”: %s"
-msgstr "डाइरेक्टरी %s सिर्जना गर्दैछ... "
+msgstr "'%s' फोल्डर सिर्जना गर्दा त्रुटि: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:379
 #, fuzzy, c-format
@@ -574,7 +566,7 @@ msgstr ""
 #: ../gio/gdbusauthmechanismsha1.c:536
 #, fuzzy, c-format
 msgid "Error deleting stale lock file “%s”: %s"
-msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
+msgstr "'%s' फाइल मेट्दा त्रुटि: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:569
 #, fuzzy, c-format
@@ -589,7 +581,7 @@ msgstr "सत्र फाइल '%s' बन्द गर्दा त्रु
 #: ../gio/gdbusauthmechanismsha1.c:611
 #, fuzzy, c-format
 msgid "Error unlinking lock file “%s”: %s"
-msgstr "%s का लागि बन्द फाइल सिर्जना गर्न सकेन: %s"
+msgstr "ताल्चा मारिएको फाइल खोल्न सकिएन %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:688
 #, fuzzy, c-format
@@ -615,9 +607,9 @@ msgid "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 
 #: ../gio/gdbusconnection.c:4124 ../gio/gdbusconnection.c:4471
-#, c-format
+#, fuzzy, c-format
 msgid "No such interface 'org.freedesktop.DBus.Properties' on object at path %s"
-msgstr ""
+msgstr "बाटोमा रुपान्तरण गर्न <b>वस्तु(हरू)</b> चयन गर्नुहोस्"
 
 #: ../gio/gdbusconnection.c:4266
 #, c-format
@@ -627,12 +619,12 @@ msgstr "यस्तो '%s' गुण छैन"
 #: ../gio/gdbusconnection.c:4278
 #, fuzzy, c-format
 msgid "Property '%s' is not readable"
-msgstr "अज्ञात गुण %s"
+msgstr "'%s' गुण लेख्न योग्य छैन:%s\n"
 
 #: ../gio/gdbusconnection.c:4289
 #, fuzzy, c-format
 msgid "Property '%s' is not writable"
-msgstr "अज्ञात गुण %s"
+msgstr "यस्तो '%s' गुण छैन"
 
 #: ../gio/gdbusconnection.c:4309
 #, c-format
@@ -647,7 +639,7 @@ msgstr "यस्तो '%s' इन्टरफेस छैन"
 #: ../gio/gdbusconnection.c:4840 ../gio/gdbusconnection.c:7095
 #, fuzzy, c-format
 msgid "No such interface '%s' on object at path %s"
-msgstr "अवैध मार्ग %s"
+msgstr "त्रुटि:  निर्दिष्ट नगरेको प्रदायक\n"
 
 #: ../gio/gdbusconnection.c:4938
 #, c-format
@@ -667,17 +659,17 @@ msgstr "'%s' नाम सहितको वस्तु पहिल्यै 
 #: ../gio/gdbusconnection.c:5393
 #, fuzzy, c-format
 msgid "Unable to retrieve property %s.%s"
-msgstr "अज्ञात गुण %s"
+msgstr "'%s' गुण लेख्न योग्य छैन:%s\n"
 
 #: ../gio/gdbusconnection.c:5449
 #, fuzzy, c-format
 msgid "Unable to set property %s.%s"
-msgstr "गुण %s का लागि अवैध गुण प्रकार %s"
+msgstr "'%s' गुण लेख्न योग्य छैन:%s\n"
 
 #: ../gio/gdbusconnection.c:5625
-#, c-format
+#, fuzzy, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
-msgstr ""
+msgstr "अपेक्षा गरिएको (%s,%s) प्रकारको जोडा (%s,%s) प्रकार प्राप्त गरियो"
 
 #: ../gio/gdbusconnection.c:6697
 #, c-format
@@ -687,12 +679,11 @@ msgstr ""
 #: ../gio/gdbusconnection.c:6818
 #, fuzzy, c-format
 msgid "A subtree is already exported for %s"
-msgstr "फाइल:%s पहिले नै अवस्थित छ"
+msgstr "प्लगिन '%s' पहिले नै अवस्थित छ"
 
 #: ../gio/gdbusconnection.c:7146
 #, c-format
-msgid ""
-"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value '%s'"
+msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value '%s'"
 msgstr ""
 
 #: ../gio/gdbusmessage.c:1246
@@ -717,13 +708,11 @@ msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr ""
 
 #: ../gio/gdbusmessage.c:1301
-msgid ""
-"SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"
+msgid "SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"
 msgstr ""
 
 #: ../gio/gdbusmessage.c:1309
-msgid ""
-"SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"
+msgid "SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"
 msgstr ""
 
 #: ../gio/gdbusmessage.c:1357 ../gio/gdbusmessage.c:1417
@@ -741,8 +730,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:1390
 #, c-format
 msgid ""
-"Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). "
-"The valid UTF-8 string up until that point was “%s”"
+"Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 "
+"string up until that point was “%s”"
 msgstr ""
 
 #: ../gio/gdbusmessage.c:1589
@@ -765,8 +754,7 @@ msgstr[1] ""
 #: ../gio/gdbusmessage.c:1678
 #, c-format
 msgid ""
-"Encountered array of type “a%c”, expected to have a length a multiple of %u bytes, but found to "
-"be %u bytes in length"
+"Encountered array of type “a%c”, expected to have a length a multiple of %u bytes, but found to be %u bytes in length"
 msgstr ""
 
 #: ../gio/gdbusmessage.c:1845
@@ -856,7 +844,7 @@ msgstr "त्रुटि: XJT गुण फाइल '%s' खाली छ।"
 #: ../gio/gdbusprivate.c:2066
 #, fuzzy, c-format
 msgid "Unable to get Hardware profile: %s"
-msgstr "'%s' फाइल सिर्जना गर्न असफल: %s"
+msgstr "%s को लागि निर्माण-निर्भरता सूचना प्राप्त गर्न असक्षम भयो"
 
 #: ../gio/gdbusprivate.c:2111
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
@@ -874,8 +862,8 @@ msgstr ""
 
 #: ../gio/gdbusproxy.c:2719 ../gio/gdbusproxy.c:2853
 msgid ""
-"Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed "
-"with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
+"Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the "
+"G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
 
 #: ../gio/gdbusserver.c:708
@@ -935,7 +923,7 @@ msgstr "कार्य: %s अवैध नाम\n"
 #: ../gio/gdbus-tool.c:357
 #, fuzzy
 msgid "Connect to the system bus"
-msgstr "बस त्रुटि"
+msgstr "सिस्टम बस सँगको जडान त्रुटी : %s\n"
 
 #: ../gio/gdbus-tool.c:358
 #, fuzzy
@@ -954,7 +942,7 @@ msgstr "जडान विकल्पहरु"
 #: ../gio/gdbus-tool.c:370
 #, fuzzy
 msgid "Options specifying the connection endpoint"
-msgstr "शाखाको उर्ध्व ब्यवहारलाई विकल्पहरुले परिचित गराउँदैछ"
+msgstr "जडान विकल्पहरु"
 
 #: ../gio/gdbus-tool.c:392
 #, fuzzy, c-format
@@ -993,24 +981,23 @@ msgstr "एकल नाम"
 #: ../gio/gdbus-tool.c:579
 #, fuzzy
 msgid "Emit a signal."
-msgstr "सङ्केत:"
+msgstr "कुनै संकेत छैन"
 
-#: ../gio/gdbus-tool.c:613 ../gio/gdbus-tool.c:858 ../gio/gdbus-tool.c:1616
-#: ../gio/gdbus-tool.c:1851 ../gio/gdbus-tool.c:2067
+#: ../gio/gdbus-tool.c:613 ../gio/gdbus-tool.c:858 ../gio/gdbus-tool.c:1616 ../gio/gdbus-tool.c:1851
+#: ../gio/gdbus-tool.c:2067
 #, fuzzy, c-format
 msgid "Error connecting: %s\n"
-msgstr "IMAP सर्भर जडानमा त्रुटि भयो"
+msgstr "'%s' मा जडान हुदै..."
 
 #: ../gio/gdbus-tool.c:625
 #, c-format
 msgid "Error: object path not specified.\n"
 msgstr "डेटास्रोत कन्फिगरेसन त्रुटि:निर्दिष्ट नगरेको प्रदायक\n"
 
-#: ../gio/gdbus-tool.c:630 ../gio/gdbus-tool.c:925 ../gio/gdbus-tool.c:1681
-#: ../gio/gdbus-tool.c:1917
-#, c-format
+#: ../gio/gdbus-tool.c:630 ../gio/gdbus-tool.c:925 ../gio/gdbus-tool.c:1681 ../gio/gdbus-tool.c:1917
+#, fuzzy, c-format
 msgid "Error: %s is not a valid object path\n"
-msgstr ""
+msgstr "त्रुटि:  निर्दिष्ट नगरेको प्रदायक\n"
 
 #: ../gio/gdbus-tool.c:636
 #, c-format
@@ -1041,17 +1028,17 @@ msgstr "कार्य: %s अवैध नाम\n"
 #: ../gio/gdbus-tool.c:700 ../gio/gdbus-tool.c:1037
 #, fuzzy, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr "'%s' पद वर्णन गर्दा %d  लाइनमा त्रुटि: %s"
+msgstr "फिल्टर पदवर्णन गर्दा त्रुटि: %s: %s\n"
 
 #: ../gio/gdbus-tool.c:732
-#, fuzzy, c-format
+#, c-format
 msgid "Error flushing connection: %s\n"
-msgstr "त्रुटि: %s मा जडान खोल्न सकेन"
+msgstr "त्रुटि: %s मा जडान खोल्न सकेन\n"
 
 #: ../gio/gdbus-tool.c:759
 #, fuzzy
 msgid "Destination name to invoke method on"
-msgstr "_गन्तव्यको लागि नयाँ नाम चयन गर्नुहोस"
+msgstr "डेटास्रोत कन्फिगरेसन त्रुटि:निर्दिष्ट नगरेको प्रदायक"
 
 #: ../gio/gdbus-tool.c:760
 msgid "Object path to invoke method on"
@@ -1066,8 +1053,9 @@ msgid "Timeout in seconds"
 msgstr "सेकेण्डमा  समय समाप्ति"
 
 #: ../gio/gdbus-tool.c:803
+#, fuzzy
 msgid "Invoke a method on a remote object."
-msgstr ""
+msgstr "डेटास्रोत कन्फिगरेसन त्रुटि:निर्दिष्ट नगरेको प्रदायक"
 
 #: ../gio/gdbus-tool.c:878 ../gio/gdbus-tool.c:1635 ../gio/gdbus-tool.c:1870
 #, c-format
@@ -1097,7 +1085,7 @@ msgstr "त्रुटि: %s अवैध विधि नाम\n"
 #: ../gio/gdbus-tool.c:1029
 #, fuzzy, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
-msgstr "'%s' पद वर्णन गर्दा %d  लाइनमा त्रुटि: %s"
+msgstr "फिल्टर पदवर्णन गर्दा त्रुटि: %s: %s\n"
 
 #: ../gio/gdbus-tool.c:1473
 #, fuzzy
@@ -1121,12 +1109,14 @@ msgstr "शाखाहरु"
 #: ../gio/gdbus-tool.c:1477
 #, fuzzy
 msgid "Only print properties"
-msgstr "शैली सँग मात्र पूर्वनिर्धारित मुद्रण कक्ष"
+msgstr ""
+"मात्र चीजहरू\n"
+"मुद्रण अगाडी"
 
 #: ../gio/gdbus-tool.c:1568
 #, fuzzy
 msgid "Introspect a remote object."
-msgstr "वस्तु"
+msgstr "वस्तुObject"
 
 #: ../gio/gdbus-tool.c:1773
 #, fuzzy
@@ -1136,7 +1126,7 @@ msgstr "_गन्तव्यको लागि नयाँ नाम चय�
 #: ../gio/gdbus-tool.c:1774
 #, fuzzy
 msgid "Object path to monitor"
-msgstr "डेटास्रोत कन्फिगरेसन त्रुटि:निर्दिष्ट नगरेको प्रदायक\n"
+msgstr "बाटोमा वस्तु"
 
 #: ../gio/gdbus-tool.c:1803
 #, fuzzy
@@ -1174,7 +1164,7 @@ msgstr ""
 #: ../gio/gdbus-tool.c:2119
 #, fuzzy, c-format
 msgid "Error: Too many arguments.\n"
-msgstr "%s: निकै धेरै तर्कहरू"
+msgstr "धेरै तर्कहरु"
 
 #: ../gio/gdbus-tool.c:2127 ../gio/gdbus-tool.c:2134
 #, fuzzy, c-format
@@ -1190,8 +1180,9 @@ msgid "Desktop file didn’t specify Exec field"
 msgstr ""
 
 #: ../gio/gdesktopappinfo.c:2696
+#, fuzzy
 msgid "Unable to find terminal required for application"
-msgstr ""
+msgstr "अनुप्रयोग पिक्सम्याप फाइल पत्ता लगाउन सकेन: %s\n"
 
 #: ../gio/gdesktopappinfo.c:3129
 #, c-format
@@ -1273,15 +1264,13 @@ msgstr ""
 #: ../gio/gemblemedicon.c:395
 #, fuzzy
 msgid "Expected a GEmblem for GEmblemedIcon"
-msgstr "अपेक्षित SVG नेमस्पेस फाइलमा फेला परेन"
+msgstr "अपेक्षा गरिएको सूची, %s प्राप्त गरियो"
 
-#: ../gio/gfile.c:969 ../gio/gfile.c:1207 ../gio/gfile.c:1345 ../gio/gfile.c:1583
-#: ../gio/gfile.c:1638 ../gio/gfile.c:1696 ../gio/gfile.c:1780 ../gio/gfile.c:1837
-#: ../gio/gfile.c:1901 ../gio/gfile.c:1956 ../gio/gfile.c:3614 ../gio/gfile.c:3669
-#: ../gio/gfile.c:3905 ../gio/gfile.c:3947 ../gio/gfile.c:4415 ../gio/gfile.c:4826
-#: ../gio/gfile.c:4911 ../gio/gfile.c:5001 ../gio/gfile.c:5098 ../gio/gfile.c:5185
-#: ../gio/gfile.c:5286 ../gio/gfile.c:7827 ../gio/gfile.c:7917 ../gio/gfile.c:8001
-#: ../gio/win32/gwinhttpfile.c:437
+#: ../gio/gfile.c:969 ../gio/gfile.c:1207 ../gio/gfile.c:1345 ../gio/gfile.c:1583 ../gio/gfile.c:1638
+#: ../gio/gfile.c:1696 ../gio/gfile.c:1780 ../gio/gfile.c:1837 ../gio/gfile.c:1901 ../gio/gfile.c:1956
+#: ../gio/gfile.c:3614 ../gio/gfile.c:3669 ../gio/gfile.c:3905 ../gio/gfile.c:3947 ../gio/gfile.c:4415
+#: ../gio/gfile.c:4826 ../gio/gfile.c:4911 ../gio/gfile.c:5001 ../gio/gfile.c:5098 ../gio/gfile.c:5185
+#: ../gio/gfile.c:5286 ../gio/gfile.c:7827 ../gio/gfile.c:7917 ../gio/gfile.c:8001 ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "सञ्चालन समर्थित छैन"
 
@@ -1301,7 +1290,7 @@ msgstr "निर्देशिकामा प्रतिलिपि गर�
 #: ../gio/gfile.c:2575
 #, fuzzy
 msgid "Can’t copy directory over directory"
-msgstr "निर्देशिका खोल्न सकिएन"
+msgstr "निर्देशिकामा प्रतिलिपि गर्न सकिँदैन"
 
 #: ../gio/gfile.c:2583
 msgid "Target file exists"
@@ -1310,7 +1299,7 @@ msgstr "लक्ष्य फाइल अवस्थित छ"
 #: ../gio/gfile.c:2602
 #, fuzzy
 msgid "Can’t recursively copy directory"
-msgstr "निर्देशिका खोल्न सकिएन"
+msgstr "निर्देशिकामा प्रतिलिपि गर्न सकिँदैन"
 
 #: ../gio/gfile.c:2889
 #, fuzzy
@@ -1320,7 +1309,7 @@ msgstr "समर्थित छैन "
 #: ../gio/gfile.c:2893
 #, fuzzy, c-format
 msgid "Error splicing file: %s"
-msgstr "फाइल पढ्दा त्रुटि %s: %s"
+msgstr "'%s' फाइल मेट्दा त्रुटि: %s"
 
 #: ../gio/gfile.c:3025
 msgid "Copy (reflink/clone) between mounts is not supported"
@@ -1369,8 +1358,7 @@ msgstr "पूर्वनिर्धारित अनुप्रयोग �
 msgid "Enumerator is closed"
 msgstr "बन्द गरिएको"
 
-#: ../gio/gfileenumerator.c:219 ../gio/gfileenumerator.c:278 ../gio/gfileenumerator.c:377
-#: ../gio/gfileenumerator.c:476
+#: ../gio/gfileenumerator.c:219 ../gio/gfileenumerator.c:278 ../gio/gfileenumerator.c:377 ../gio/gfileenumerator.c:476
 msgid "File enumerator has outstanding operation"
 msgstr ""
 
@@ -1387,7 +1375,7 @@ msgstr ""
 #: ../gio/gfileicon.c:246
 #, fuzzy
 msgid "Malformed input data for GFileIcon"
-msgstr "पात्रो डेटा बचत गर्न सक्दैन: विकृत युआरआइ ।"
+msgstr "क्रमाङ्कन गरिएको डेटा विकृत छ"
 
 #: ../gio/gfileinputstream.c:149 ../gio/gfileinputstream.c:394 ../gio/gfileiostream.c:167
 #: ../gio/gfileoutputstream.c:164 ../gio/gfileoutputstream.c:497
@@ -1414,22 +1402,22 @@ msgstr "अवैध होस्टनाम "
 #: ../gio/ghttpproxy.c:143
 #, fuzzy
 msgid "Bad HTTP proxy reply"
-msgstr "HTTP प्रोक्सि पोर्ट"
+msgstr "एचटीटीपी प्रोक्सी प्रयोग गर्नुहोस्"
 
 #: ../gio/ghttpproxy.c:159
 #, fuzzy
 msgid "HTTP proxy connection not allowed"
-msgstr "HTTP प्रोक्सि पोर्ट"
+msgstr "एचटीटीपी प्रोक्सी प्रयोग गर्नुहोस्"
 
 #: ../gio/ghttpproxy.c:164
 #, fuzzy
 msgid "HTTP proxy authentication failed"
-msgstr "HTTP प्रोक्सि पोर्ट"
+msgstr "_HTTP प्रोक्सि"
 
 #: ../gio/ghttpproxy.c:167
 #, fuzzy
 msgid "HTTP proxy authentication required"
-msgstr "HTTP प्रोक्सि पोर्ट"
+msgstr "प्रोक्सी प्रमाणिकरण आवश्यक"
 
 #: ../gio/ghttpproxy.c:171
 #, c-format
@@ -1463,7 +1451,7 @@ msgstr "प्रकार: %s (%s)"
 #: ../gio/gicon.c:345
 #, fuzzy, c-format
 msgid "Malformed version number: %s"
-msgstr "कुञ्जी `%s' विकृत गरिएको छ"
+msgstr "संस्करण नम्बर"
 
 #: ../gio/gicon.c:359
 #, c-format
@@ -1479,9 +1467,9 @@ msgid "No address specified"
 msgstr "ठेगाना निर्दिष्ट गरिएको छैन"
 
 #: ../gio/ginetaddressmask.c:190
-#, c-format
+#, fuzzy, c-format
 msgid "Length %u is too long for address"
-msgstr ""
+msgstr "लाइन %u स्रोत सूचि %s मा अति लामो छ ।"
 
 #: ../gio/ginetaddressmask.c:223
 msgid "Address has bits set beyond prefix length"
@@ -1492,16 +1480,16 @@ msgstr ""
 msgid "Could not parse “%s” as IP address mask"
 msgstr ""
 
-#: ../gio/ginetsocketaddress.c:203 ../gio/ginetsocketaddress.c:220
-#: ../gio/gnativesocketaddress.c:106 ../gio/gunixsocketaddress.c:218
+#: ../gio/ginetsocketaddress.c:203 ../gio/ginetsocketaddress.c:220 ../gio/gnativesocketaddress.c:106
+#: ../gio/gunixsocketaddress.c:218
 #, fuzzy
 msgid "Not enough space for socket address"
-msgstr "भोल्युममा पर्याप्त स्थान छैन"
+msgstr "गन्तव्यमा पर्याप्त स्थान छैन"
 
 #: ../gio/ginetsocketaddress.c:235
 #, fuzzy
 msgid "Unsupported socket address"
-msgstr "ठेगाना"
+msgstr "सकेट"
 
 #: ../gio/ginputstream.c:188
 msgid "Input stream doesn’t implement read"
@@ -1514,8 +1502,9 @@ msgstr ""
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:1218 ../gio/giostream.c:310 ../gio/goutputstream.c:1670
+#, fuzzy
 msgid "Stream has outstanding operation"
-msgstr ""
+msgstr "अलार्ममा केहि अपुरो काम छ।"
 
 #: ../gio/gio-tool.c:160
 #, fuzzy
@@ -1539,13 +1528,13 @@ msgid "Usage:"
 msgstr "प्रयोग:"
 
 #: ../gio/gio-tool.c:210
-#, fuzzy
 msgid "Print version information and exit."
-msgstr "मुद्रण संस्करण विवरण अनि बाहिरनुहोस्"
+msgstr "संस्करण सूचना छाप्नुहोस् र बाहिर निस्कनुहोस्।"
 
 #: ../gio/gio-tool.c:224
+#, fuzzy
 msgid "[ARGS...]"
-msgstr ""
+msgstr "प्रयोग: debconf [options] command [args]"
 
 #: ../gio/gio-tool.c:226
 msgid "Commands:"
@@ -1569,11 +1558,12 @@ msgstr "इभोल्युसनका बारेमा सूचना द
 #: ../gio/gio-tool.c:232
 #, fuzzy
 msgid "List the contents of locations"
-msgstr "सामग्रीहरू:"
+msgstr "सामग्रीहरू (_C)"
 
 #: ../gio/gio-tool.c:233
+#, fuzzy
 msgid "Get or set the handler for a mimetype"
-msgstr ""
+msgstr "एकैसाथ प्राप्त गर्न र सेट/अनसेट गर्न सकिँदैन\n"
 
 #: ../gio/gio-tool.c:234
 msgid "Create directories"
@@ -1609,7 +1599,7 @@ msgstr "एक वा धेरै फाइलहरू मेट्नुह�
 #: ../gio/gio-tool.c:241
 #, fuzzy
 msgid "Read from standard input and save"
-msgstr "यसबाट लिनक्स आगत घटनाहरू पढ्ने यन्त्रको नाम"
+msgstr "मानक आगतमा त्रुटि पढ्नुहोस्"
 
 #: ../gio/gio-tool.c:242
 msgid "Set a file attribute"
@@ -1635,19 +1625,17 @@ msgid "Error writing to stdout"
 msgstr "'%s': %s लेख्दा त्रुटि"
 
 #. Translators: commandline placeholder
-#: ../gio/gio-tool-cat.c:127 ../gio/gio-tool-info.c:282 ../gio/gio-tool-list.c:165
-#: ../gio/gio-tool-mkdir.c:48 ../gio/gio-tool-monitor.c:37 ../gio/gio-tool-monitor.c:39
-#: ../gio/gio-tool-monitor.c:41 ../gio/gio-tool-monitor.c:43 ../gio/gio-tool-monitor.c:203
-#: ../gio/gio-tool-mount.c:1141 ../gio/gio-tool-open.c:45 ../gio/gio-tool-remove.c:48
-#: ../gio/gio-tool-rename.c:45 ../gio/gio-tool-set.c:89 ../gio/gio-tool-trash.c:81
-#: ../gio/gio-tool-tree.c:239
+#: ../gio/gio-tool-cat.c:127 ../gio/gio-tool-info.c:282 ../gio/gio-tool-list.c:165 ../gio/gio-tool-mkdir.c:48
+#: ../gio/gio-tool-monitor.c:37 ../gio/gio-tool-monitor.c:39 ../gio/gio-tool-monitor.c:41 ../gio/gio-tool-monitor.c:43
+#: ../gio/gio-tool-monitor.c:203 ../gio/gio-tool-mount.c:1141 ../gio/gio-tool-open.c:45 ../gio/gio-tool-remove.c:48
+#: ../gio/gio-tool-rename.c:45 ../gio/gio-tool-set.c:89 ../gio/gio-tool-trash.c:81 ../gio/gio-tool-tree.c:239
 msgid "LOCATION"
 msgstr "स्थान"
 
 #: ../gio/gio-tool-cat.c:132
 #, fuzzy
 msgid "Concatenate files and print to standard output."
-msgstr "मानक प्रतिफलमा मिल्दो स्थान मुद्रण गर्नुहोस्"
+msgstr "मानक प्रतिफलमा कुञ्जीको मान मुद्रण गर्नुहोस् ।"
 
 #: ../gio/gio-tool-cat.c:134
 msgid ""
@@ -1656,8 +1644,8 @@ msgid ""
 "like smb://server/resource/file.txt as location."
 msgstr ""
 
-#: ../gio/gio-tool-cat.c:156 ../gio/gio-tool-info.c:313 ../gio/gio-tool-mkdir.c:76
-#: ../gio/gio-tool-monitor.c:228 ../gio/gio-tool-open.c:71 ../gio/gio-tool-remove.c:72
+#: ../gio/gio-tool-cat.c:156 ../gio/gio-tool-info.c:313 ../gio/gio-tool-mkdir.c:76 ../gio/gio-tool-monitor.c:228
+#: ../gio/gio-tool-open.c:71 ../gio/gio-tool-remove.c:72
 #, fuzzy
 msgid "No locations given"
 msgstr "दिएको स्थानले कुनै छवि समावेश गर्दैन ।"
@@ -1665,7 +1653,7 @@ msgstr "दिएको स्थानले कुनै छवि समा�
 #: ../gio/gio-tool-copy.c:42 ../gio/gio-tool-move.c:38
 #, fuzzy
 msgid "No target directory"
-msgstr "लक्ष्य फाइल निर्देशिका हो"
+msgstr "उपयोग: %s <report> <target directory>"
 
 #: ../gio/gio-tool-copy.c:43 ../gio/gio-tool-move.c:39
 msgid "Show progress"
@@ -1679,7 +1667,7 @@ msgstr "बचत गर्नुभन्दा पहिलाको प्र
 #: ../gio/gio-tool-copy.c:45
 #, fuzzy
 msgid "Preserve all attributes"
-msgstr "बिषेषताहरु"
+msgstr "ज्योति सुरक्षित गर्नुहोस्"
 
 #: ../gio/gio-tool-copy.c:46 ../gio/gio-tool-move.c:41 ../gio/gio-tool-save.c:49
 #, fuzzy
@@ -1693,7 +1681,7 @@ msgstr "साङ्केतिक लिङ्क नपछ्याउनु�
 #: ../gio/gio-tool-copy.c:72 ../gio/gio-tool-move.c:67
 #, fuzzy, c-format
 msgid "Transferred %s out of %s (%s/s)"
-msgstr "मुद्रणयन्त्र\"%s\" मा कागज छैन ।"
+msgstr "स्थानान्तरण ठेगाना पुस्तिका फाइल पढ्दा त्रुटि :%s "
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
@@ -1719,12 +1707,12 @@ msgstr ""
 #: ../gio/gio-tool-copy.c:147
 #, fuzzy, c-format
 msgid "Destination %s is not a directory"
-msgstr "गन्तब्य फोल्डर सिर्जना गर्न सकेन: %s ।"
+msgstr "गन्तव्य निर्देशिका अवस्थित छ तथा खाली छैन"
 
 #: ../gio/gio-tool-copy.c:192 ../gio/gio-tool-move.c:185
 #, fuzzy, c-format
 msgid "%s: overwrite “%s”? "
-msgstr "फाइल '%s' को सामग्री अधिलेखन गर्न सकिएन"
+msgstr "%s को लागि संस्करन बिना अधिलेखन प्याकेज मेल खायो"
 
 #: ../gio/gio-tool-info.c:34
 msgid "List writable attributes"
@@ -1750,7 +1738,7 @@ msgstr "साङ्केतिक लिङ्क नपछ्याउनु�
 #: ../gio/gio-tool-info.c:75
 #, fuzzy, c-format
 msgid "attributes:\n"
-msgstr "विशेषताहरू"
+msgstr "विशेषताहरू:"
 
 #. Translators: This is a noun and represents and attribute of a file
 #: ../gio/gio-tool-info.c:127
@@ -1765,7 +1753,7 @@ msgid "edit name: %s\n"
 msgstr "नाम सम्पादन : %s\n"
 
 #: ../gio/gio-tool-info.c:138
-#, fuzzy, c-format
+#, c-format
 msgid "name: %s\n"
 msgstr "नाम: %s\n"
 
@@ -1792,7 +1780,7 @@ msgstr "uri: %s\n"
 #: ../gio/gio-tool-info.c:228
 #, fuzzy, c-format
 msgid "Settable attributes:\n"
-msgstr "विशेषताहरू"
+msgstr "विशेषताहरू:"
 
 #: ../gio/gio-tool-info.c:252
 #, fuzzy, c-format
@@ -1814,7 +1802,6 @@ msgid ""
 msgstr ""
 
 #: ../gio/gio-tool-list.c:36 ../gio/gio-tool-tree.c:32
-#, fuzzy
 msgid "Show hidden files"
 msgstr "लुकेका फाइलहरू देखाउनुहोस्"
 
@@ -1831,7 +1818,7 @@ msgstr "जहिलेपनि पूरा अभिव्यक्ति म
 #: ../gio/gio-tool-list.c:170
 #, fuzzy
 msgid "List the contents of the locations."
-msgstr "सामग्रीहरू:"
+msgstr "सामग्रीहरू (_C)"
 
 #: ../gio/gio-tool-list.c:172
 msgid ""
@@ -1852,8 +1839,9 @@ msgid "HANDLER"
 msgstr "ह्यान्डलर"
 
 #: ../gio/gio-tool-mime.c:76
+#, fuzzy
 msgid "Get or set the handler for a mimetype."
-msgstr ""
+msgstr "एकैसाथ प्राप्त गर्न र सेट/अनसेट गर्न सकिँदैन\n"
 
 #: ../gio/gio-tool-mime.c:78
 msgid ""
@@ -1879,12 +1867,12 @@ msgstr "%s (पूर्वनिर्धारित)"
 #: ../gio/gio-tool-mime.c:127
 #, fuzzy, c-format
 msgid "Registered applications:\n"
-msgstr "दर्ता"
+msgstr "दर्ता गरिएको"
 
 #: ../gio/gio-tool-mime.c:129
 #, fuzzy, c-format
 msgid "No registered applications\n"
-msgstr "दर्ता"
+msgstr "दर्ता गरिएको"
 
 #: ../gio/gio-tool-mime.c:140
 #, fuzzy, c-format
@@ -1900,12 +1888,15 @@ msgstr "सिफारिश गरिएको ग्राफिक्स अ
 #, fuzzy, c-format
 #| msgid "Failed to read from file '%s': %s"
 msgid "Failed to load info for handler “%s”"
-msgstr "प्रमाणपत्र लोड गर्न असफल: %s"
+msgstr ""
+"डेटा लोड गर्न असफल:\n"
+"\n"
+"%s"
 
 #: ../gio/gio-tool-mime.c:168
-#, c-format
+#, fuzzy, c-format
 msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
-msgstr ""
+msgstr "`%s' मा मोड सेट गर्न असफल: %s"
 
 #: ../gio/gio-tool-mkdir.c:31
 #, fuzzy
@@ -1947,7 +1938,7 @@ msgstr ""
 #: ../gio/gio-tool-monitor.c:47
 #, fuzzy
 msgid "Watch for mount events"
-msgstr "घटनाहरू"
+msgstr "यसमा माउन्ट गर्नुहोस्"
 
 #: ../gio/gio-tool-monitor.c:208
 #, fuzzy
@@ -1962,15 +1953,13 @@ msgstr "यसमा माउन्ट गर्नुहोस्"
 #: ../gio/gio-tool-mount.c:59
 #, fuzzy
 msgid "Mount volume with device file"
-msgstr "%s माउण्ट गर्न सकेन"
+msgstr "यन्त्र माउन्ट गर्नुहोस्"
 
 #: ../gio/gio-tool-mount.c:59
-#, fuzzy
 msgid "DEVICE"
-msgstr "यन्त्र:"
+msgstr "यन्त्र"
 
 #: ../gio/gio-tool-mount.c:60
-#, fuzzy
 msgid "Unmount"
 msgstr "अनमाउण्ट गर्नुहोस्"
 
@@ -2000,30 +1989,29 @@ msgid "List"
 msgstr "सुची"
 
 #: ../gio/gio-tool-mount.c:67
-#, fuzzy
 msgid "Monitor events"
-msgstr "मोनिटर"
+msgstr "घटनाहरू निगरानि गर्नुहोस्"
 
 #: ../gio/gio-tool-mount.c:68
 #, fuzzy
 #| msgid "Show help options"
 msgid "Show extra information"
-msgstr "अतिरिक्त"
+msgstr "थप डिबग्गिङ जानकारी"
 
 #: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
 #, fuzzy
 msgid "Anonymous access denied"
-msgstr "बेनामी पहुँच"
+msgstr "पहुँच अस्वीकृत भयो"
 
 #: ../gio/gio-tool-mount.c:897
 #, fuzzy, c-format
 msgid "Mounted %s at %s\n"
-msgstr "(माउन्ट भएन)"
+msgstr "माउन्ट गरिएको छैन"
 
 #: ../gio/gio-tool-mount.c:950
 #, fuzzy
 msgid "No volume for device file"
-msgstr "भोल्युम"
+msgstr "हार्डवयेर यन्त्रको भोल्युम"
 
 #: ../gio/gio-tool-mount.c:1145
 #, fuzzy
@@ -2048,7 +2036,7 @@ msgstr ""
 #: ../gio/gio-tool-move.c:142
 #, fuzzy, c-format
 msgid "Target %s is not a directory"
-msgstr "लक्ष्य फाइल निर्देशिका हो"
+msgstr "उपयोग: %s <report> <target directory>"
 
 #: ../gio/gio-tool-open.c:50
 msgid ""
@@ -2066,7 +2054,6 @@ msgid "Delete the given files."
 msgstr "दिइएको फाइल अनुक्रमणिका गर्नुहोस्"
 
 #: ../gio/gio-tool-rename.c:45
-#, fuzzy
 msgid "NAME"
 msgstr "नाम"
 
@@ -2082,7 +2069,7 @@ msgstr "छुटेको तर्क"
 #: ../gio/gio-tool-rename.c:76 ../gio/gio-tool-save.c:195 ../gio/gio-tool-set.c:137
 #, fuzzy
 msgid "Too many arguments"
-msgstr "%s: निकै धेरै तर्कहरू"
+msgstr "धेरै तर्कहरु"
 
 #: ../gio/gio-tool-rename.c:95
 #, c-format
@@ -2125,7 +2112,7 @@ msgstr ""
 #: ../gio/gio-tool-save.c:119
 #, fuzzy
 msgid "Error reading from standard input"
-msgstr "शाखाबाट पढ्दा त्रुटि: %s."
+msgstr "मानक आगतमा त्रुटि पढ्नुहोस्"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: ../gio/gio-tool-save.c:145
@@ -2143,9 +2130,8 @@ msgid "No destination given"
 msgstr "गन्तव्य:"
 
 #: ../gio/gio-tool-set.c:33
-#, fuzzy
 msgid "Type of the attribute"
-msgstr "अवैध विशेषता प्रकार"
+msgstr "विशेषताका  प्रकार"
 
 #: ../gio/gio-tool-set.c:33
 msgid "TYPE"
@@ -2156,9 +2142,8 @@ msgid "ATTRIBUTE"
 msgstr "विशेषता"
 
 #: ../gio/gio-tool-set.c:89
-#, fuzzy
 msgid "VALUE"
-msgstr "मान:"
+msgstr "मान"
 
 #: ../gio/gio-tool-set.c:93
 #, fuzzy
@@ -2168,17 +2153,15 @@ msgstr "फाइलविशेषता सेट गर्नुहोस्"
 #: ../gio/gio-tool-set.c:113
 #, fuzzy
 msgid "Location not specified"
-msgstr "स्थान:"
+msgstr "निर्दिष्ट गरिएको स्थान अमान्य छ ।"
 
 #: ../gio/gio-tool-set.c:120
-#, fuzzy
 msgid "Attribute not specified"
-msgstr "No \"gdatype\" <gda_array_field> मा निर्दिष्ट विशेषता छैन"
+msgstr " निर्दिष्ट विशेषता छैन"
 
 #: ../gio/gio-tool-set.c:130
-#, fuzzy
 msgid "Value not specified"
-msgstr "मानलाई:"
+msgstr "मान निर्दिष्ट नगरिएको"
 
 #: ../gio/gio-tool-set.c:180
 #, fuzzy, c-format
@@ -2212,7 +2195,7 @@ msgstr "<%s>तत्व भित्र <%s>तत्वलाई अनुम�
 #: ../gio/glib-compile-resources.c:146
 #, fuzzy, c-format
 msgid "Element <%s> not allowed at toplevel"
-msgstr "<%s>तत्व भित्र <%s>तत्वलाई अनुमति छैन"
+msgstr "<%s> तत्व <%s> तल अनुमति दिएको छैन"
 
 #: ../gio/glib-compile-resources.c:237
 #, c-format
@@ -2233,7 +2216,7 @@ msgstr "%s अस्थायी डाइरेक्टरी सिर्ज�
 #, fuzzy, c-format
 #| msgid "Unknown option %s"
 msgid "Unknown processing option “%s”"
-msgstr "अज्ञात विकल्प %s"
+msgstr "अज्ञात दवाब/अविस्कार विकल्प `%.*s"
 
 #: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:354
 #, fuzzy, c-format
@@ -2249,12 +2232,12 @@ msgstr "फाइल पढ्दा त्रुटि %s: %s"
 #: ../gio/glib-compile-resources.c:402
 #, fuzzy, c-format
 msgid "Error compressing file %s"
-msgstr "फाइल पढ्दा त्रुटि %s: %s"
+msgstr "%s फाइल बचत गर्दा त्रुटि"
 
 #: ../gio/glib-compile-resources.c:469
 #, fuzzy, c-format
 msgid "text may not appear inside <%s>"
-msgstr "<%s> तत्वभित्र कुनै पाठलाइ अनुमति छैन"
+msgstr "<%s> तत्व भित्र कुनै पाठलाई अनुमति दिइएको छैन"
 
 #: ../gio/glib-compile-resources.c:664 ../gio/glib-compile-schemas.c:2067
 #, fuzzy
@@ -2270,11 +2253,9 @@ msgstr "निर्गत फाइल:"
 msgid "The directories where files are to be read from (default to current directory)"
 msgstr ""
 
-#: ../gio/glib-compile-resources.c:666 ../gio/glib-compile-schemas.c:2068
-#: ../gio/glib-compile-schemas.c:2096
-#, fuzzy
+#: ../gio/glib-compile-resources.c:666 ../gio/glib-compile-schemas.c:2068 ../gio/glib-compile-schemas.c:2096
 msgid "DIRECTORY"
-msgstr "डाइरेक्टरी"
+msgstr "निर्देशिका"
 
 #: ../gio/glib-compile-resources.c:667
 msgid "Generate output in the format selected for by the target filename extension"
@@ -2338,14 +2319,14 @@ msgid "Invalid numeric value"
 msgstr "यो मान अवैध छ।."
 
 #: ../gio/glib-compile-schemas.c:114
-#, c-format
+#, fuzzy, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr ""
+msgstr "एउटा <%s> तत्व पहिल्यै नै निर्दिष्ट गरिएको छ"
 
 #: ../gio/glib-compile-schemas.c:122
-#, fuzzy, c-format
+#, c-format
 msgid "value='%s' already specified"
-msgstr "डाइरेक्टरी '%s' पहिले नै अवस्थित छ"
+msgstr "मान ='%s' पहिल्यै नै निर्दिष्ट गरिएको छ"
 
 #: ../gio/glib-compile-schemas.c:136
 #, c-format
@@ -2375,12 +2356,12 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:339
 #, fuzzy, c-format
 msgid "<%s> contains a string not in <choices>"
-msgstr "छवि फाइल '%s' मा डेटा छैन"
+msgstr "छानिएको: %s। विकल्पहरू:"
 
 #: ../gio/glib-compile-schemas.c:373
 #, fuzzy
 msgid "<range/> already specified for this key"
-msgstr "कुञ्जी`%s' पहिले नै अवस्थित छ"
+msgstr "तोकिएको दायरामा मात्र खोजी गर्नुहोस् र बदल्नुहोस्"
 
 #: ../gio/glib-compile-schemas.c:391
 #, c-format
@@ -2406,9 +2387,9 @@ msgid "translation context given for value without l10n enabled"
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:475
-#, c-format
+#, fuzzy, c-format
 msgid "Failed to parse <default> value of type “%s”: "
-msgstr ""
+msgstr "चेतावनी: पूर्वनिर्धारित `%s' मान स्किमा (%s) का लागि पद वर्णन गर्न असफल भयो\n"
 
 #: ../gio/glib-compile-schemas.c:492
 msgid "<choices> cannot be specified for keys tagged as having an enumerated type"
@@ -2417,7 +2398,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:501
 #, fuzzy
 msgid "<choices> already specified for this key"
-msgstr "यो कुञ्जी पहिले देखिने %s सित बाँधिएको छ ।"
+msgstr "चेतावनी: स्किमाका लागि कुनै कुञ्जी निर्दिष्ट गरिएको छैन\n"
 
 #: ../gio/glib-compile-schemas.c:513
 #, c-format
@@ -2437,7 +2418,7 @@ msgstr "विकासकर्ता समूहले कम्तीमा 
 #: ../gio/glib-compile-schemas.c:558
 #, fuzzy
 msgid "<aliases> already specified for this key"
-msgstr "यो कुञ्जी पहिले देखिने %s सित बाँधिएको छ ।"
+msgstr "चेतावनी: स्किमाका लागि कुनै कुञ्जी निर्दिष्ट गरिएको छैन\n"
 
 #: ../gio/glib-compile-schemas.c:562
 msgid "<aliases> can only be specified for keys with enumerated or flags types or after <choices>"
@@ -2454,9 +2435,9 @@ msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:595
-#, c-format
+#, fuzzy, c-format
 msgid "<alias value='%s'/> already specified"
-msgstr ""
+msgstr "एउटा <%s> तत्व पहिल्यै नै निर्दिष्ट गरिएको छ"
 
 #: ../gio/glib-compile-schemas.c:605
 #, c-format
@@ -2476,7 +2457,7 @@ msgstr "विकासकर्ता समूहले कम्तीमा 
 #: ../gio/glib-compile-schemas.c:786
 #, fuzzy
 msgid "Empty names are not permitted"
-msgstr "** खाली **"
+msgstr "सञ्चालन अनुमति प्राप्त छैन"
 
 #: ../gio/glib-compile-schemas.c:796
 #, c-format
@@ -2485,9 +2466,7 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:808
 #, c-format
-msgid ""
-"Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers and hyphen (“-”) are "
-"permitted"
+msgid "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers and hyphen (“-”) are permitted"
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:817
@@ -2508,7 +2487,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:904
 #, fuzzy, c-format
 msgid "<child name='%s'> already specified"
-msgstr "'%s' नाम पहिले नै प्रयोग भइसक्यो !"
+msgstr "एउटा <%s> तत्व पहिल्यै नै निर्दिष्ट गरिएको छ"
 
 #: ../gio/glib-compile-schemas.c:930
 msgid "Cannot add keys to a “list-of” schema"
@@ -2546,17 +2525,17 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1047
 #, fuzzy, c-format
 msgid "No <key name='%s'> to override"
-msgstr "कि सोच नाम"
+msgstr "अनुप्रयोगको आईडी अधिलेखन गर्नुहोस्"
 
 #: ../gio/glib-compile-schemas.c:1055
 #, fuzzy, c-format
 msgid "<override name='%s'> already specified"
-msgstr "'%s' नाम पहिले नै प्रयोग भइसक्यो !"
+msgstr "एउटा <%s> तत्व पहिल्यै नै निर्दिष्ट गरिएको छ"
 
 #: ../gio/glib-compile-schemas.c:1128
-#, c-format
+#, fuzzy, c-format
 msgid "<schema id='%s'> already specified"
-msgstr ""
+msgstr "एउटा <%s> तत्व पहिल्यै नै निर्दिष्ट गरिएको छ"
 
 #: ../gio/glib-compile-schemas.c:1140
 #, c-format
@@ -2571,12 +2550,12 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1164
 #, fuzzy, c-format
 msgid "Cannot be a list of a schema with a path"
-msgstr "फाईल सूची प्राप्त गर्न सक्दैन"
+msgstr "मानको रूपमा स्किमा सेट गर्न सकिँदैन\n"
 
 #: ../gio/glib-compile-schemas.c:1174
 #, fuzzy, c-format
 msgid "Cannot extend a schema with a path"
-msgstr "बाटो माथि उठाउन सकिँदैन।"
+msgstr "मानको रूपमा स्किमा सेट गर्न सकिँदैन\n"
 
 #: ../gio/glib-compile-schemas.c:1184
 #, c-format
@@ -2585,8 +2564,7 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1194
 #, c-format
-msgid ""
-"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” does not extend “%s”"
+msgid "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” does not extend “%s”"
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1211
@@ -2597,19 +2575,17 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1218
 #, fuzzy, c-format
 msgid "The path of a list must end with “:/”"
-msgstr "फाइल नाम '%s': '%s'सँग अन्त्य हुनुपर्दछ"
+msgstr "`%s' बुझिएन (सूची ']'सँग अन्त्य हुनुपर्दछ)"
 
 #: ../gio/glib-compile-schemas.c:1227
 #, c-format
-msgid ""
-"Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/desktop/” or “/system/” are "
-"deprecated."
+msgid "Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/desktop/” or “/system/” are deprecated."
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1257
 #, fuzzy, c-format
 msgid "<%s id='%s'> already specified"
-msgstr "%s; निर्माण :%s"
+msgstr "एउटा <%s> तत्व पहिल्यै नै निर्दिष्ट गरिएको छ"
 
 #: ../gio/glib-compile-schemas.c:1407 ../gio/glib-compile-schemas.c:1423
 #, fuzzy, c-format
@@ -2628,7 +2604,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1613
 #, fuzzy, c-format
 msgid "Text may not appear inside <%s>"
-msgstr "<%s> तत्वभित्र कुनै पाठलाइ अनुमति छैन"
+msgstr "<%s> तत्व भित्र कुनै पाठलाई अनुमति दिइएको छैन"
 
 #: ../gio/glib-compile-schemas.c:1681
 #, c-format
@@ -2636,11 +2612,10 @@ msgid "Warning: undefined reference to <schema id='%s'/>"
 msgstr ""
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1820 ../gio/glib-compile-schemas.c:1894
-#: ../gio/glib-compile-schemas.c:1970
+#: ../gio/glib-compile-schemas.c:1820 ../gio/glib-compile-schemas.c:1894 ../gio/glib-compile-schemas.c:1970
 #, fuzzy, c-format
 msgid "--strict was specified; exiting.\n"
-msgstr "डाय बन्द गर्दै"
+msgstr "कडा GOP"
 
 #: ../gio/glib-compile-schemas.c:1830
 #, fuzzy, c-format
@@ -2653,21 +2628,19 @@ msgid "Ignoring this file.\n"
 msgstr "नाम बिनाको पाना उपेक्षा गर्दैछ"
 
 #: ../gio/glib-compile-schemas.c:1930
-#, c-format
+#, fuzzy, c-format
 msgid "No such key '%s' in schema '%s' as specified in override file '%s'"
-msgstr ""
+msgstr "चेतावनी: (%s) निर्दिष्ट गरिएको कुञ्जी <value> अनतर्गत स्किमाका लागि - उपेक्षा गर्दै\n"
 
-#: ../gio/glib-compile-schemas.c:1936 ../gio/glib-compile-schemas.c:1994
-#: ../gio/glib-compile-schemas.c:2022
+#: ../gio/glib-compile-schemas.c:1936 ../gio/glib-compile-schemas.c:1994 ../gio/glib-compile-schemas.c:2022
 #, fuzzy, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "नाम बिनाको पाना उपेक्षा गर्दैछ"
 
-#: ../gio/glib-compile-schemas.c:1940 ../gio/glib-compile-schemas.c:1998
-#: ../gio/glib-compile-schemas.c:2026
+#: ../gio/glib-compile-schemas.c:1940 ../gio/glib-compile-schemas.c:1998 ../gio/glib-compile-schemas.c:2026
 #, fuzzy, c-format
 msgid " and --strict was specified; exiting.\n"
-msgstr "डाय बन्द गर्दै"
+msgstr "कडा GOP"
 
 #: ../gio/glib-compile-schemas.c:1956
 #, c-format
@@ -2681,21 +2654,18 @@ msgstr "नाम बिनाको पाना उपेक्षा गर�
 
 #: ../gio/glib-compile-schemas.c:1984
 #, c-format
-msgid ""
-"override for key '%s' in schema '%s' in override file '%s' is outside the range given in the "
-"schema"
+msgid "override for key '%s' in schema '%s' in override file '%s' is outside the range given in the schema"
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:2012
 #, c-format
-msgid ""
-"override for key '%s' in schema '%s' in override file '%s' is not in the list of valid choices"
+msgid "override for key '%s' in schema '%s' in override file '%s' is not in the list of valid choices"
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:2068
 #, fuzzy
 msgid "where to store the gschemas.compiled file"
-msgstr "डाटाबेस हुने स्थानमा डाइरेक्टरी"
+msgstr "पार्श्वरुप विवरण तोकिएको फाइलमा राख्नुहोस्"
 
 #: ../gio/glib-compile-schemas.c:2069
 msgid "Abort on any errors in schemas"
@@ -2704,7 +2674,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:2070
 #, fuzzy
 msgid "Do not write the gschema.compiled file"
-msgstr "निर्गत फाइल %s मा लेख्न अनुमति छैन\n"
+msgstr "हलकर्ता स्थिति लेख्न फाइल: "
 
 #: ../gio/glib-compile-schemas.c:2071
 msgid "Do not enforce key name restrictions"
@@ -2735,17 +2705,17 @@ msgstr "केही पनि होइन"
 #: ../gio/glib-compile-schemas.c:2168
 #, fuzzy, c-format
 msgid "removed existing output file.\n"
-msgstr "\"%s\" लाई फाइल प्रणालीबाट हटाइसकीएको थियो।"
+msgstr "फाइलबाट अवस्थित कुञ्जीहरू आयात गर्नुहोस्:"
 
 #: ../gio/glocalfile.c:643 ../gio/win32/gwinhttpfile.c:420
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid filename %s"
-msgstr "%s: %d: अवैध फाइल नाम"
+msgstr "%s अवैध फाइल नाम"
 
 #: ../gio/glocalfile.c:1037
 #, fuzzy, c-format
 msgid "Error getting filesystem info for %s: %s"
-msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
+msgstr "`%s' लागि मान प्राप्त गर्दा त्रुटि: %s"
 
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
@@ -2754,7 +2724,7 @@ msgstr "'%s' फाइल पढ्दा त्रुटि : %s"
 #: ../gio/glocalfile.c:1176
 #, fuzzy, c-format
 msgid "Containing mount for file %s not found"
-msgstr "छवि फाइल '%s' फेला परेन।\n"
+msgstr "फाइल फेला परेन: %s\n"
 
 #: ../gio/glocalfile.c:1199
 #, fuzzy
@@ -2764,17 +2734,16 @@ msgstr "निर्देशिका खोल्न सकिएन"
 #: ../gio/glocalfile.c:1217 ../gio/glocalfile.c:1240
 #, fuzzy, c-format
 msgid "Error renaming file %s: %s"
-msgstr "फाइलहरू पुन नामकरणमा एउटा त्रुटि"
+msgstr "फाइल \"%s\" पुन: नामाकरण गर्दा त्रुटि: %s"
 
 #: ../gio/glocalfile.c:1224
 msgid "Can’t rename file, filename already exists"
 msgstr ""
 
-#: ../gio/glocalfile.c:1237 ../gio/glocalfile.c:2253 ../gio/glocalfile.c:2281
-#: ../gio/glocalfile.c:2438 ../gio/glocalfileoutputstream.c:549
-#, fuzzy
+#: ../gio/glocalfile.c:1237 ../gio/glocalfile.c:2253 ../gio/glocalfile.c:2281 ../gio/glocalfile.c:2438
+#: ../gio/glocalfileoutputstream.c:549
 msgid "Invalid filename"
-msgstr "%s: %d: अवैध फाइल नाम"
+msgstr "अमान्य फाइलनाम"
 
 #: ../gio/glocalfile.c:1404 ../gio/glocalfile.c:1419
 #, fuzzy, c-format
@@ -2820,12 +2789,12 @@ msgstr "'%s' फाइल सिर्जना गर्न असफल: %s"
 #: ../gio/glocalfile.c:2168 ../gio/glocalfile.c:2224
 #, fuzzy, c-format
 msgid "Unable to trash file %s: %s"
-msgstr "फाइल खोल्न असक्षम: %s\n"
+msgstr "\"%s\" फाइललाई रद्दिको टोकरीमा सार्न सकिँदैन ।"
 
 #: ../gio/glocalfile.c:2230
 #, fuzzy, c-format
 msgid "Unable to trash file %s"
-msgstr "\"%s\" फाइललाई रद्दिको टोकरीमा सार्न सकिँदैन ।"
+msgstr "फाइल खोल्न असक्षम: %s\n"
 
 #: ../gio/glocalfile.c:2256
 #, fuzzy, c-format
@@ -2854,11 +2823,10 @@ msgstr "सन्देश सार्दा त्रुटि: %s"
 #: ../gio/glocalfile.c:2372
 #, fuzzy
 msgid "Can’t move directory over directory"
-msgstr "निर्देशिका खोल्न सकिएन"
+msgstr "निर्देशिकामा प्रतिलिपि गर्न सकिँदैन"
 
 #: ../gio/glocalfile.c:2398 ../gio/glocalfileoutputstream.c:933 ../gio/glocalfileoutputstream.c:947
-#: ../gio/glocalfileoutputstream.c:962 ../gio/glocalfileoutputstream.c:979
-#: ../gio/glocalfileoutputstream.c:993
+#: ../gio/glocalfileoutputstream.c:962 ../gio/glocalfileoutputstream.c:979 ../gio/glocalfileoutputstream.c:993
 #, fuzzy
 msgid "Backup file creation failed"
 msgstr "अस्थायी फाइल सिर्जना गर्दा असफल भयो ।"
@@ -2897,7 +2865,7 @@ msgstr "अवैध विशेषता प्रकार"
 #: ../gio/glocalfileinfo.c:785
 #, fuzzy, c-format
 msgid "Error setting extended attribute “%s”: %s"
-msgstr "%s: %s देखि %sमा सेट गर्दा त्रुटि"
+msgstr "मान सेटिङ गर्दा त्रुटि: %s\n"
 
 #: ../gio/glocalfileinfo.c:1586
 msgid " (invalid encoding)"
@@ -2935,7 +2903,7 @@ msgstr "स्वीकृति प्रधान गर्न अनुमत
 #: ../gio/glocalfileinfo.c:2180
 #, fuzzy, c-format
 msgid "Error setting permissions: %s"
-msgstr "%s: %s देखि %sमा सेट गर्दा त्रुटि"
+msgstr "%s को लागि इजाजतहरू स्थापन गर्दै"
 
 #: ../gio/glocalfileinfo.c:2231
 #, fuzzy, c-format
@@ -2943,17 +2911,19 @@ msgid "Error setting owner: %s"
 msgstr "%s: %s देखि %sमा सेट गर्दा त्रुटि"
 
 #: ../gio/glocalfileinfo.c:2254
+#, fuzzy
 msgid "symlink must be non-NULL"
-msgstr ""
+msgstr "सूची अनुक्रमणिका नेगेटिभ नभएको हुनुपर्दछ ।\n"
 
 #: ../gio/glocalfileinfo.c:2264 ../gio/glocalfileinfo.c:2283 ../gio/glocalfileinfo.c:2294
 #, fuzzy, c-format
 msgid "Error setting symlink: %s"
-msgstr "%s: %s देखि %sमा सेट गर्दा त्रुटि"
+msgstr "सिमलिङ्क `%.255s'को स्वामित्व सेट गर्दा त्रुटि"
 
 #: ../gio/glocalfileinfo.c:2273
+#, fuzzy
 msgid "Error setting symlink: file is not a symlink"
-msgstr ""
+msgstr "सिमलिङ्क `%.255s'को स्वामित्व सेट गर्दा त्रुटि"
 
 #: ../gio/glocalfileinfo.c:2399
 #, fuzzy, c-format
@@ -2972,27 +2942,25 @@ msgstr "%s: %s देखि %sमा सेट गर्दा त्रुट�
 #: ../gio/glocalfileinfo.c:2444
 #, fuzzy
 msgid "SELinux is not enabled on this system"
-msgstr "प्रणाली"
+msgstr "सिस्टम"
 
 #: ../gio/glocalfileinfo.c:2536
 #, fuzzy, c-format
 msgid "Setting attribute %s not supported"
-msgstr "%s: %s देखि %sमा सेट गर्दा त्रुटि"
+msgstr "<%s>तत्वमा विशेषता \"%s\" छैन"
 
 #: ../gio/glocalfileinputstream.c:168 ../gio/glocalfileoutputstream.c:694
 #, fuzzy, c-format
 msgid "Error reading from file: %s"
-msgstr "फाइलबाट पढ्ने क्रममा त्रुटि"
+msgstr "फाइल %.255s बाट %s पढ्दा त्रुटि"
 
-#: ../gio/glocalfileinputstream.c:199 ../gio/glocalfileinputstream.c:211
-#: ../gio/glocalfileinputstream.c:225 ../gio/glocalfileinputstream.c:333
-#: ../gio/glocalfileoutputstream.c:456 ../gio/glocalfileoutputstream.c:1011
+#: ../gio/glocalfileinputstream.c:199 ../gio/glocalfileinputstream.c:211 ../gio/glocalfileinputstream.c:225
+#: ../gio/glocalfileinputstream.c:333 ../gio/glocalfileoutputstream.c:456 ../gio/glocalfileoutputstream.c:1011
 #, fuzzy, c-format
 msgid "Error seeking in file: %s"
 msgstr "%s मा खोजी गर्दै"
 
-#: ../gio/glocalfileinputstream.c:255 ../gio/glocalfileoutputstream.c:246
-#: ../gio/glocalfileoutputstream.c:340
+#: ../gio/glocalfileinputstream.c:255 ../gio/glocalfileoutputstream.c:246 ../gio/glocalfileoutputstream.c:340
 #, fuzzy, c-format
 msgid "Error closing file: %s"
 msgstr "सत्र फाइल '%s' बन्द गर्दा त्रुटि: %s\n"
@@ -3001,8 +2969,7 @@ msgstr "सत्र फाइल '%s' बन्द गर्दा त्रु
 msgid "Unable to find default local file monitor type"
 msgstr ""
 
-#: ../gio/glocalfileoutputstream.c:194 ../gio/glocalfileoutputstream.c:226
-#: ../gio/glocalfileoutputstream.c:715
+#: ../gio/glocalfileoutputstream.c:194 ../gio/glocalfileoutputstream.c:226 ../gio/glocalfileoutputstream.c:715
 #, fuzzy, c-format
 msgid "Error writing to file: %s"
 msgstr "सत्र फाइल '%s' लेखनमा त्रुटि: %s\n"
@@ -3020,17 +2987,15 @@ msgstr "ब्याकअप फाइल सिर्जना गर्दा
 #: ../gio/glocalfileoutputstream.c:318
 #, fuzzy, c-format
 msgid "Error renaming temporary file: %s"
-msgstr ""
-"त्रुटि: अस्थायी कार्य फाइल अधिलेखन गर्न\n"
-"सक्दैन: %s"
+msgstr "फाइल \"%s\" पुन: नामाकरण गर्दा त्रुटि: %s"
 
 #: ../gio/glocalfileoutputstream.c:502 ../gio/glocalfileoutputstream.c:1062
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "फाइल '%s' खोल्ने क्रममा त्रुटि"
 
-#: ../gio/glocalfileoutputstream.c:555 ../gio/glocalfileoutputstream.c:793
-#: ../gio/glocalfileoutputstream.c:1043 ../gio/gsubprocess.c:380
+#: ../gio/glocalfileoutputstream.c:555 ../gio/glocalfileoutputstream.c:793 ../gio/glocalfileoutputstream.c:1043
+#: ../gio/gsubprocess.c:380
 #, fuzzy, c-format
 msgid "Error opening file “%s”: %s"
 msgstr "फाइल '%s' खोल्ने क्रममा त्रुटि"
@@ -3056,15 +3021,16 @@ msgstr "लक्ष्य फाइल हटाउँदा त्रुटि
 #: ../gio/gmemoryinputstream.c:474 ../gio/gmemoryoutputstream.c:772
 #, fuzzy
 msgid "Invalid GSeekType supplied"
-msgstr "पासवर्ड पूर्ति गरिएको छैन"
+msgstr "पासवर्ड दिइएको छैन"
 
 #: ../gio/gmemoryinputstream.c:484
 msgid "Invalid seek request"
 msgstr "अवैध खोजी अनुरोध"
 
 #: ../gio/gmemoryinputstream.c:508
+#, fuzzy
 msgid "Cannot truncate GMemoryInputStream"
-msgstr ""
+msgstr "SoupBodyInputStream छोड्न सकिएन"
 
 #: ../gio/gmemoryoutputstream.c:567
 msgid "Memory output stream not resizable"
@@ -3141,17 +3107,15 @@ msgid "Hostname “%s” contains “[” but not “]”"
 msgstr "होस्टनाम"
 
 #: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:310
-#, fuzzy
 msgid "Network unreachable"
 msgstr "सञ्जाल छैन"
 
 #: ../gio/gnetworkmonitorbase.c:244 ../gio/gnetworkmonitorbase.c:274
 #, fuzzy
 msgid "Host unreachable"
-msgstr "होस्ट:"
+msgstr "सञ्जाल छैन"
 
-#: ../gio/gnetworkmonitornetlink.c:96 ../gio/gnetworkmonitornetlink.c:108
-#: ../gio/gnetworkmonitornetlink.c:127
+#: ../gio/gnetworkmonitornetlink.c:96 ../gio/gnetworkmonitornetlink.c:108 ../gio/gnetworkmonitornetlink.c:127
 #, fuzzy, c-format
 msgid "Could not create network monitor: %s"
 msgstr "पाइप सिर्जना गर्न सकेन: %s"
@@ -3159,12 +3123,12 @@ msgstr "पाइप सिर्जना गर्न सकेन: %s"
 #: ../gio/gnetworkmonitornetlink.c:117
 #, fuzzy
 msgid "Could not create network monitor: "
-msgstr "सञ्जाल स्थान निगरानी"
+msgstr "मनिटरको कन्फिगरेसन बदल्न सकिएन"
 
 #: ../gio/gnetworkmonitornetlink.c:175
 #, fuzzy
 msgid "Could not get network status: "
-msgstr "खोजी परिणाम प्राप्त गर्न सकिएन"
+msgstr "प्रदर्शनपर्दाको जानकारी प्राप्त गर्न सकीएन"
 
 #: ../gio/gnetworkmonitornm.c:329
 #, fuzzy, c-format
@@ -3176,17 +3140,18 @@ msgid "Output stream doesn’t implement write"
 msgstr ""
 
 #: ../gio/goutputstream.c:521 ../gio/goutputstream.c:1224
+#, fuzzy
 msgid "Source stream is already closed"
-msgstr ""
+msgstr "नेटवर्कको प्रवाह अकस्मात रूपमा बन्द भयो"
 
 #: ../gio/gresolver.c:342 ../gio/gthreadedresolver.c:116 ../gio/gthreadedresolver.c:126
 #, fuzzy, c-format
 msgid "Error resolving “%s”: %s"
 msgstr "सर्भर ठेगाना समाधान गर्दै: %s"
 
-#: ../gio/gresource.c:606 ../gio/gresource.c:857 ../gio/gresource.c:874 ../gio/gresource.c:998
-#: ../gio/gresource.c:1070 ../gio/gresource.c:1143 ../gio/gresource.c:1213
-#: ../gio/gresourcefile.c:453 ../gio/gresourcefile.c:576 ../gio/gresourcefile.c:713
+#: ../gio/gresource.c:606 ../gio/gresource.c:857 ../gio/gresource.c:874 ../gio/gresource.c:998 ../gio/gresource.c:1070
+#: ../gio/gresource.c:1143 ../gio/gresource.c:1213 ../gio/gresourcefile.c:453 ../gio/gresourcefile.c:576
+#: ../gio/gresourcefile.c:713
 #, fuzzy, c-format
 msgid "The resource at “%s” does not exist"
 msgstr "फाइल ‘%s’ अवस्थित छैन ।"
@@ -3194,14 +3159,12 @@ msgstr "फाइल ‘%s’ अवस्थित छैन ।"
 #: ../gio/gresource.c:771
 #, fuzzy, c-format
 msgid "The resource at “%s” failed to decompress"
-msgstr ""
-"'%s' हटाउन असफल:\n"
-"%s"
+msgstr "सम्पूर्ण स्रोत क्यास गर्न असफल भयो"
 
 #: ../gio/gresourcefile.c:709
 #, fuzzy, c-format
 msgid "The resource at “%s” is not a directory"
-msgstr "संसाधन"
+msgstr "डाइरेक्टरी: %s\n"
 
 #: ../gio/gresourcefile.c:917
 msgid "Input stream doesn’t implement seek"
@@ -3260,14 +3223,14 @@ msgid ""
 msgstr ""
 
 #: ../gio/gresource-tool.c:548
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Usage:\n"
 "  gresource %s%s%s %s\n"
 "\n"
 "%s\n"
 "\n"
-msgstr ""
+msgstr "उपयोग: %s <report> <target directory>"
 
 #: ../gio/gresource-tool.c:555
 msgid "  SECTION   An (optional) elf section name\n"
@@ -3289,9 +3252,8 @@ msgid ""
 msgstr ""
 
 #: ../gio/gresource-tool.c:572
-#, fuzzy
 msgid "[PATH]"
-msgstr "मार्ग:"
+msgstr "[बाटो]"
 
 #: ../gio/gresource-tool.c:574
 msgid "  PATH      An (optional) resource path (may be partial)\n"
@@ -3309,7 +3271,7 @@ msgstr "संसाधन मार्ग"
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72 ../gio/gsettings-tool.c:853
 #, fuzzy, c-format
 msgid "No such schema “%s”\n"
-msgstr "स्किमा"
+msgstr "स्किमाका लागि पूर्वनिर्धारित मान पढ्दा असफल: %s"
 
 #: ../gio/gsettings-tool.c:57
 #, c-format
@@ -3362,7 +3324,7 @@ msgstr ""
 #: ../gio/gsettings-tool.c:546
 #, fuzzy
 msgid "List the keys in SCHEMA"
-msgstr "कुञ्जिहरू खोजसूची कार्य"
+msgstr "विश्वसनीय विक्रेताहरूको  सूची कुञ्जीको सुची"
 
 #: ../gio/gsettings-tool.c:547 ../gio/gsettings-tool.c:553 ../gio/gsettings-tool.c:596
 #, fuzzy
@@ -3388,13 +3350,13 @@ msgstr "स्किमा"
 #: ../gio/gsettings-tool.c:565
 #, fuzzy
 msgid "Get the value of KEY"
-msgstr "कर्सर मान प्राप्त गर्नुहोस्"
+msgstr "[कुञ्जी मान]"
 
-#: ../gio/gsettings-tool.c:566 ../gio/gsettings-tool.c:572 ../gio/gsettings-tool.c:578
-#: ../gio/gsettings-tool.c:590 ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:566 ../gio/gsettings-tool.c:572 ../gio/gsettings-tool.c:578 ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:602
 #, fuzzy
 msgid "SCHEMA[:PATH] KEY"
-msgstr "स्किमा"
+msgstr "यो कुञ्जीमा लागू गरिएको स्किमाको नाम प्राप्त गर्नुहोस्"
 
 #: ../gio/gsettings-tool.c:571
 msgid "Query the range of valid values for KEY"
@@ -3403,25 +3365,26 @@ msgstr ""
 #: ../gio/gsettings-tool.c:577
 #, fuzzy
 msgid "Query the description for KEY"
-msgstr "बर्णन"
+msgstr "वर्णन"
 
 #: ../gio/gsettings-tool.c:583
 #, fuzzy
 msgid "Set the value of KEY to VALUE"
-msgstr "यो मान प्रमुख प्रकार को लागि अवैध छ।."
+msgstr "कुञ्जीका लागि सेट गर्न कुनै मान छैन: `%s'\n"
 
 #: ../gio/gsettings-tool.c:584
 #, fuzzy
 msgid "SCHEMA[:PATH] KEY VALUE"
-msgstr "यो मान प्रमुख प्रकार को लागि अवैध छ।."
+msgstr "मानको रूपमा स्किमा सेट गर्न सकिँदैन\n"
 
 #: ../gio/gsettings-tool.c:589
 msgid "Reset KEY to its default value"
 msgstr ""
 
 #: ../gio/gsettings-tool.c:595
+#, fuzzy
 msgid "Reset all keys in SCHEMA to their defaults"
-msgstr ""
+msgstr "प्रणाली पुर्वनिर्धारितहरुमा सबै सेटिङ्हरू रिसेट गर्नुहोस्"
 
 #: ../gio/gsettings-tool.c:601
 #, fuzzy
@@ -3438,7 +3401,7 @@ msgstr ""
 #: ../gio/gsettings-tool.c:610
 #, fuzzy
 msgid "SCHEMA[:PATH] [KEY]"
-msgstr "स्किमा"
+msgstr "यो कुञ्जीमा लागू गरिएको स्किमाको नाम प्राप्त गर्नुहोस्"
 
 #: ../gio/gsettings-tool.c:622
 msgid ""
@@ -3489,43 +3452,43 @@ msgstr ""
 #: ../gio/gsettings-tool.c:665
 #, fuzzy
 msgid "  KEY       The (optional) key within the schema\n"
-msgstr "कुञ्जी वर्णन गरिरहेको वैकल्पिक टिप्पणी"
+msgstr "चेतावनी: स्किमाका लागि कुनै कुञ्जी निर्दिष्ट गरिएको छैन\n"
 
 #: ../gio/gsettings-tool.c:669
 #, fuzzy
 msgid "  KEY       The key within the schema\n"
-msgstr "कुञ्जी प्रतिध्वनि कुञ्जी कायम गरियो"
+msgstr "चेतावनी: स्किमाका लागि कुनै कुञ्जी निर्दिष्ट गरिएको छैन\n"
 
 #: ../gio/gsettings-tool.c:673
 #, fuzzy
 msgid "  VALUE     The value to set\n"
-msgstr "मान"
+msgstr "सुरुको मान सेट गर्नुहोस्"
 
 #: ../gio/gsettings-tool.c:728
 #, fuzzy, c-format
 #| msgid "Could not open converter from '%s' to '%s'"
 msgid "Could not load schemas from %s: %s\n"
-msgstr "'%s' बाट आईसीसी प्रोफाइल लोड गर्न सकेन"
+msgstr "%s बाट खेल लोड गर्न सकिएन"
 
 #: ../gio/gsettings-tool.c:740
 #, fuzzy, c-format
 msgid "No schemas installed\n"
-msgstr "स्थापित"
+msgstr "तर यो स्थापना भएन"
 
 #: ../gio/gsettings-tool.c:811
 #, fuzzy, c-format
 msgid "Empty schema name given\n"
-msgstr "फाइल नाम दिइएको छैन"
+msgstr "दिइएको नाम"
 
 #: ../gio/gsettings-tool.c:866
 #, fuzzy, c-format
 msgid "No such key “%s”\n"
-msgstr "कुञ्जी आयात गर्दै: %s"
+msgstr "\"%s\" कुञ्जीमा कुनै '/' छैन"
 
 #: ../gio/gsocket.c:379
 #, fuzzy
 msgid "Invalid socket, not initialized"
-msgstr "सकेटमा आकस्मिक अवस्था"
+msgstr "एनएसएस सुरक्षा प्रणाली प्रारम्भ हुन सकेन"
 
 #: ../gio/gsocket.c:386
 #, c-format
@@ -3535,11 +3498,12 @@ msgstr ""
 #: ../gio/gsocket.c:394
 #, fuzzy
 msgid "Socket is already closed"
-msgstr "स्थानीय सकेट"
+msgstr "बन्द गरिएको"
 
 #: ../gio/gsocket.c:409 ../gio/gsocket.c:2765 ../gio/gsocket.c:3950 ../gio/gsocket.c:4008
+#, fuzzy
 msgid "Socket I/O timed out"
-msgstr ""
+msgstr "डेटा सकेट समय सकियो"
 
 #: ../gio/gsocket.c:541
 #, fuzzy, c-format
@@ -3554,7 +3518,7 @@ msgstr "सकेट सिर्जना गर्न असफल"
 #: ../gio/gsocket.c:624
 #, fuzzy
 msgid "Unknown family was specified"
-msgstr "परिवार:"
+msgstr "अज्ञात ठेगाना परिवार %u (AF_*)"
 
 #: ../gio/gsocket.c:631
 #, fuzzy
@@ -3584,12 +3548,12 @@ msgstr "“%s” ठेगाना खोल्न सकेन"
 #: ../gio/gsocket.c:2052
 #, fuzzy, c-format
 msgid "could not listen: %s"
-msgstr "हटकिहरूको लागि सुन्नुहोस्"
+msgstr "सकेटमा सुन्न सकिएन"
 
 #: ../gio/gsocket.c:2151
 #, fuzzy, c-format
 msgid "Error binding to address: %s"
-msgstr "नसोचेको ठेगान पुस्तिका त्रुटि। यसलाई प्रतिवेदन गर्नुहोस्।"
+msgstr "ठेगाना %s"
 
 #: ../gio/gsocket.c:2266 ../gio/gsocket.c:2303
 #, fuzzy, c-format
@@ -3604,7 +3568,7 @@ msgstr "पद वर्णन विकल्पमा त्रुटि %s"
 #: ../gio/gsocket.c:2268
 #, fuzzy
 msgid "No support for source-specific multicast"
-msgstr "सङ्गीत स्रोतको रूपमा अडियो सीडी बजाउनका लागि समर्थन"
+msgstr "स्रोत फाइलनाम (पूर्वनिर्धारित: स्रोत ब्याकइन्डमा निर्दिष्ट)"
 
 #: ../gio/gsocket.c:2488
 #, fuzzy, c-format
@@ -3614,7 +3578,7 @@ msgstr "त्रुटि: %s मा जडान खोल्न सकेन"
 #: ../gio/gsocket.c:2609
 #, fuzzy
 msgid "Connection in progress"
-msgstr "प्रगति हुँदैछ"
+msgstr "जडान"
 
 #: ../gio/gsocket.c:2658
 #, fuzzy
@@ -3634,7 +3598,7 @@ msgstr " “%s”  %s लाई पठाउदा त्रुटि"
 #: ../gio/gsocket.c:3210
 #, fuzzy, c-format
 msgid "Unable to shutdown socket: %s"
-msgstr "सकेट सिर्जना गर्न असफल"
+msgstr "बन्द गर्दा त्रुटि: %s\n"
 
 #: ../gio/gsocket.c:3291
 #, fuzzy, c-format
@@ -3654,7 +3618,7 @@ msgstr "सन्देश पठाउदा त्रुटि: %s"
 #: ../gio/gsocket.c:4441
 #, fuzzy
 msgid "GSocketControlMessage not supported on Windows"
-msgstr "समर्थित छैन "
+msgstr "सञ्झ्यालहरू"
 
 #: ../gio/gsocket.c:4894 ../gio/gsocket.c:4967 ../gio/gsocket.c:5193
 #, fuzzy, c-format
@@ -3664,10 +3628,7 @@ msgstr " “%s” %s बाट प्राप्त गर्दा त्र�
 #: ../gio/gsocket.c:5465
 #, fuzzy, c-format
 msgid "Unable to read socket credentials: %s"
-msgstr ""
-"आदेश विवरणबाट\n"
-"\n"
-"निर्गत पढ्न असमर्थ: %s"
+msgstr "सिडी रोम डेटाबेस पढ्न असक्षम %s"
 
 #: ../gio/gsocket.c:5474
 msgid "g_socket_get_credentials not implemented for this OS"
@@ -3687,7 +3648,7 @@ msgstr "%s सम्पर्क स्थापना गर्न सकेन
 #: ../gio/gsocketclient.c:192
 #, fuzzy
 msgid "Could not connect: "
-msgstr "%s सम्पर्क स्थापना गर्न सकेन"
+msgstr "\"%s\" आदेशसँग जडान गर्न सकेन: %s"
 
 #: ../gio/gsocketclient.c:1027 ../gio/gsocketclient.c:1599
 #, fuzzy
@@ -3707,12 +3668,12 @@ msgstr "प्रोटोकल समर्थित छैन"
 #: ../gio/gsocketlistener.c:218
 #, fuzzy
 msgid "Listener is already closed"
-msgstr "बन्द गरिएको"
+msgstr "%lu स्रोता ID अवस्थित छैन"
 
 #: ../gio/gsocketlistener.c:264
 #, fuzzy
 msgid "Added socket is closed"
-msgstr "थपियो"
+msgstr "बन्द गरिएको"
 
 #: ../gio/gsocks4aproxy.c:118
 #, c-format
@@ -3722,7 +3683,7 @@ msgstr ""
 #: ../gio/gsocks4aproxy.c:136
 #, fuzzy
 msgid "Username is too long for SOCKSv4 protocol"
-msgstr "प्रयोगकर्ता नाम धेरै लामो भयो ।"
+msgstr "प्रयोगकर्ता नाम धेरै लामो छ"
 
 #: ../gio/gsocks4aproxy.c:153
 #, c-format
@@ -3732,7 +3693,7 @@ msgstr ""
 #: ../gio/gsocks4aproxy.c:179
 #, fuzzy
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr "प्रोक्सी सर्भर जडान गर्न सक्दैन"
+msgstr "प्रमाणीकरण प्रोक्सी सर्भर जडान"
 
 #: ../gio/gsocks4aproxy.c:186
 msgid "Connection through SOCKSv4 server was rejected"
@@ -3741,12 +3702,12 @@ msgstr ""
 #: ../gio/gsocks5proxy.c:153 ../gio/gsocks5proxy.c:324 ../gio/gsocks5proxy.c:334
 #, fuzzy
 msgid "The server is not a SOCKSv5 proxy server."
-msgstr "प्रोक्सी सर्भर जडान गर्न सक्दैन"
+msgstr "प्रमाणीकरण प्रोक्सी सर्भर जडान"
 
 #: ../gio/gsocks5proxy.c:167
 #, fuzzy
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr "सर्भरलाई प्रमाणीकरण आवश्यक छ"
+msgstr "प्रोक्सी प्रमाणिकरण आवश्यक"
 
 #: ../gio/gsocks5proxy.c:177
 msgid "The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
@@ -3827,7 +3788,7 @@ msgstr "वस्तु प्रकार '%s' यो प्रसङ्गम�
 #: ../gio/gthreadedresolver.c:555 ../gio/gthreadedresolver.c:733
 #, fuzzy, c-format
 msgid "Temporarily unable to resolve “%s”"
-msgstr "URI '%s' को लागि मिडिया समाधान गर्न सकेन"
+msgstr "निर्भरताहरू हल गर्न असक्षम भयो ।"
 
 #: ../gio/gthreadedresolver.c:560 ../gio/gthreadedresolver.c:738
 #, fuzzy, c-format
@@ -3862,9 +3823,7 @@ msgstr ""
 #. Translators: This is not the 'This is the last chance' string. It is
 #. * displayed when more than one attempt is allowed.
 #: ../gio/gtlspassword.c:115
-msgid ""
-"Several passwords entered have been incorrect, and your access will be locked out after further "
-"failures."
+msgid "Several passwords entered have been incorrect, and your access will be locked out after further failures."
 msgstr ""
 
 #: ../gio/gtlspassword.c:117
@@ -3894,7 +3853,7 @@ msgstr[1] ""
 #: ../gio/gunixconnection.c:219
 #, fuzzy
 msgid "Received invalid fd"
-msgstr "अमान्य उत्तर प्राप्त भयो"
+msgstr "अमान्य रङ डेटा प्राप्त भयो\n"
 
 #: ../gio/gunixconnection.c:355
 #, fuzzy
@@ -3928,7 +3887,7 @@ msgstr ""
 #: ../gio/gunixinputstream.c:372 ../gio/gunixinputstream.c:393
 #, fuzzy, c-format
 msgid "Error reading from file descriptor: %s"
-msgstr "'%s' बाट BMP फाइल शीर्षक पढ्ने क्रममा त्रुटि"
+msgstr "फाइल %.255s बाट %s पढ्दा त्रुटि"
 
 #: ../gio/gunixinputstream.c:426 ../gio/gunixoutputstream.c:411 ../gio/gwin32inputstream.c:217
 #: ../gio/gwin32outputstream.c:204
@@ -3975,7 +3934,7 @@ msgstr "परियोजना बन्द गर्दा त्रुटि
 #: ../gio/gwin32outputstream.c:172
 #, fuzzy, c-format
 msgid "Error writing to handle: %s"
-msgstr "'%s' मा लेख्दा त्रुटि: %s"
+msgstr "XCF लेख्दा त्रुटि: %s"
 
 #: ../gio/gzlibcompressor.c:394 ../gio/gzlibdecompressor.c:347
 msgid "Not enough memory"
@@ -3987,8 +3946,9 @@ msgid "Internal error: %s"
 msgstr "आन्तरिक त्रुटि: %s"
 
 #: ../gio/gzlibcompressor.c:414 ../gio/gzlibdecompressor.c:368
+#, fuzzy
 msgid "Need more input"
-msgstr ""
+msgstr "बढि"
 
 #: ../gio/gzlibdecompressor.c:340
 msgid "Invalid compressed data"
@@ -4000,9 +3960,8 @@ msgid "Address to listen on"
 msgstr "हटकिहरूको लागि सुन्नुहोस्"
 
 #: ../gio/tests/gdbus-daemon.c:19
-#, fuzzy
 msgid "Ignored, for compat with GTestDbus"
-msgstr "बेवास्ता फाइलहरू"
+msgstr ""
 
 #: ../gio/tests/gdbus-daemon.c:20
 #, fuzzy
@@ -4019,23 +3978,21 @@ msgid "Run a dbus service"
 msgstr "चलाउनुहोस्"
 
 #: ../gio/tests/gdbus-daemon.c:42
-#, fuzzy, c-format
+#, c-format
 msgid "Wrong args\n"
-msgstr "गलत SIM"
+msgstr "गलत तर्क\n"
 
 #: ../glib/gbookmarkfile.c:754
 #, fuzzy, c-format
 msgid "Unexpected attribute “%s” for element “%s”"
-msgstr "अनपेक्षित तत्व \"%s\""
+msgstr "<%s>तत्वमा विशेषता \"%s\" छैन"
 
-#: ../glib/gbookmarkfile.c:765 ../glib/gbookmarkfile.c:836 ../glib/gbookmarkfile.c:846
-#: ../glib/gbookmarkfile.c:953
+#: ../glib/gbookmarkfile.c:765 ../glib/gbookmarkfile.c:836 ../glib/gbookmarkfile.c:846 ../glib/gbookmarkfile.c:953
 #, fuzzy, c-format
 msgid "Attribute “%s” of element “%s” not found"
-msgstr "<%s> तत्वमा अज्ञात विशेषता \"%s\"=\"%s\""
+msgstr "\"%s\" विशेषता <%s> तत्वमा दुई एटक फेला परेको थियो"
 
-#: ../glib/gbookmarkfile.c:1123 ../glib/gbookmarkfile.c:1188 ../glib/gbookmarkfile.c:1252
-#: ../glib/gbookmarkfile.c:1262
+#: ../glib/gbookmarkfile.c:1123 ../glib/gbookmarkfile.c:1188 ../glib/gbookmarkfile.c:1252 ../glib/gbookmarkfile.c:1262
 #, fuzzy, c-format
 msgid "Unexpected tag “%s”, tag “%s” expected"
 msgstr "अपेक्षित ट्याग <gda_array_data>, <%s> प्राप्त गर्यो"
@@ -4043,7 +4000,7 @@ msgstr "अपेक्षित ट्याग <gda_array_data>, <%s> प्�
 #: ../glib/gbookmarkfile.c:1148 ../glib/gbookmarkfile.c:1162 ../glib/gbookmarkfile.c:1230
 #, fuzzy, c-format
 msgid "Unexpected tag “%s” inside “%s”"
-msgstr "अनपेक्षित विशेषता %s::%s == '%s'।"
+msgstr "%s भित्रपटि (%s) अनुमति दिएको छैन"
 
 #: ../glib/gbookmarkfile.c:1756
 #, fuzzy
@@ -4053,17 +4010,16 @@ msgstr "वैध कुञ्जी फाइल डेटा डाइरे�
 #: ../glib/gbookmarkfile.c:1957
 #, fuzzy, c-format
 msgid "A bookmark for URI “%s” already exists"
-msgstr "फोल्डर %s पहिले नै अवस्थित छ"
+msgstr "%s सर्टकट पहिल्यै अवस्थित छ"
 
-#: ../glib/gbookmarkfile.c:2003 ../glib/gbookmarkfile.c:2161 ../glib/gbookmarkfile.c:2246
-#: ../glib/gbookmarkfile.c:2326 ../glib/gbookmarkfile.c:2411 ../glib/gbookmarkfile.c:2494
-#: ../glib/gbookmarkfile.c:2572 ../glib/gbookmarkfile.c:2651 ../glib/gbookmarkfile.c:2693
-#: ../glib/gbookmarkfile.c:2790 ../glib/gbookmarkfile.c:2910 ../glib/gbookmarkfile.c:3100
-#: ../glib/gbookmarkfile.c:3176 ../glib/gbookmarkfile.c:3344 ../glib/gbookmarkfile.c:3433
-#: ../glib/gbookmarkfile.c:3522 ../glib/gbookmarkfile.c:3638
+#: ../glib/gbookmarkfile.c:2003 ../glib/gbookmarkfile.c:2161 ../glib/gbookmarkfile.c:2246 ../glib/gbookmarkfile.c:2326
+#: ../glib/gbookmarkfile.c:2411 ../glib/gbookmarkfile.c:2494 ../glib/gbookmarkfile.c:2572 ../glib/gbookmarkfile.c:2651
+#: ../glib/gbookmarkfile.c:2693 ../glib/gbookmarkfile.c:2790 ../glib/gbookmarkfile.c:2910 ../glib/gbookmarkfile.c:3100
+#: ../glib/gbookmarkfile.c:3176 ../glib/gbookmarkfile.c:3344 ../glib/gbookmarkfile.c:3433 ../glib/gbookmarkfile.c:3522
+#: ../glib/gbookmarkfile.c:3638
 #, fuzzy, c-format
 msgid "No bookmark found for URI “%s”"
-msgstr "%(uri)s लिङ्क %(file)s"
+msgstr "“%s” URI का लागि वस्तु फेला परेन"
 
 #: ../glib/gbookmarkfile.c:2335
 #, c-format
@@ -4090,8 +4046,7 @@ msgstr ""
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "सांकेतिक सम्बन्ध '%s' पढ्न असफल: %s"
 
-#: ../glib/gconvert.c:477 ../glib/gutf8.c:862 ../glib/gutf8.c:1074 ../glib/gutf8.c:1211
-#: ../glib/gutf8.c:1315
+#: ../glib/gconvert.c:477 ../glib/gutf8.c:862 ../glib/gutf8.c:1074 ../glib/gutf8.c:1211 ../glib/gutf8.c:1315
 msgid "Partial character sequence at end of input"
 msgstr "आगतको अन्त्यमा आंशिक क्यारेक्टर"
 
@@ -4123,7 +4078,7 @@ msgstr "URI “%s” अवैध"
 #, fuzzy, c-format
 #| msgid "The hostname of the URI '%s' is invalid"
 msgid "The hostname of the URI “%s” is invalid"
-msgstr "अवैध होस्टनाम "
+msgstr "URI “%s” अवैध"
 
 #: ../glib/gconvert.c:1568
 #, fuzzy, c-format
@@ -4392,7 +4347,7 @@ msgstr "%s: तर्क निकै ठूलो"
 #, fuzzy, c-format
 #| msgid "Failed to read from file '%s': %s"
 msgid "Failed to read from file “%s”: %s"
-msgstr "शाखा प्रक्रिया (%s) बाट डेटा पढ्न असफल"
+msgstr "क्यास फाइल पढ्न असफल %s: %s"
 
 #: ../glib/gfileutils.c:871 ../glib/gfileutils.c:943
 #, fuzzy, c-format
@@ -4404,13 +4359,12 @@ msgstr "फाइल '%s' खोल्न असफल: %s"
 #, fuzzy, c-format
 #| msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgid "Failed to get attributes of file “%s”: fstat() failed: %s"
-msgstr "'%s' फाइलको विशेषता पाउन असफल: fstat() असफल भयो: %s"
+msgstr "%s बाट कन्फिगरेसन फाइल मार्ग प्राप्त गर्न असफल भयो"
 
 #: ../glib/gfileutils.c:913
-#, fuzzy, c-format
-#| msgid "Failed to open file '%s': fdopen() failed: %s"
+#, c-format
 msgid "Failed to open file “%s”: fdopen() failed: %s"
-msgstr "कार्य फाइल %s: %s fdopen() गर्न असफल\n"
+msgstr "कार्य फाइल %s: %s fdopen() गर्न असफल"
 
 #: ../glib/gfileutils.c:1012
 #, fuzzy, c-format
@@ -4422,24 +4376,18 @@ msgstr "फाइल '%s लाई '%s' मा पुन: नामकरण ग
 #, fuzzy, c-format
 #| msgid "Failed to create file '%s': %s"
 msgid "Failed to create file “%s”: %s"
-msgstr "%s अस्थायी फाईल सिर्जना गर्न असफल"
+msgstr "`%s' फाइल सिर्जना गर्न असफल: %s"
 
 #: ../glib/gfileutils.c:1074
 #, fuzzy, c-format
 #| msgid "Failed to write file '%s': fwrite() failed: %s"
 msgid "Failed to write file “%s”: write() failed: %s"
-msgstr ""
-"त्रुटि: भिडियो अनुक्रमणिका फाइलमा लेख्न\n"
-"असफल:'%s'\n"
-"%s"
+msgstr "`%s' फाइल लेख्न असफल: %s"
 
 #: ../glib/gfileutils.c:1117
 #, fuzzy, c-format
 msgid "Failed to write file “%s”: fsync() failed: %s"
-msgstr ""
-"त्रुटि: भिडियो अनुक्रमणिका फाइलमा लेख्न\n"
-"असफल:'%s'\n"
-"%s"
+msgstr "`%s' फाइल लेख्न असफल: %s"
 
 #: ../glib/gfileutils.c:1241
 #, fuzzy, c-format
@@ -4448,10 +4396,9 @@ msgid "Existing file “%s” could not be removed: g_unlink() failed: %s"
 msgstr "अवस्थित फाइल '%s' हटाउन सकिएन:g_unlink() असफल: %s"
 
 #: ../glib/gfileutils.c:1520
-#, fuzzy, c-format
-#| msgid "Template '%s' invalid, should not contain a '%s'"
+#, c-format
 msgid "Template “%s” invalid, should not contain a “%s”"
-msgstr "अवैध टेम्प्लेट फाइल: %s"
+msgstr "टेम्प्लेट %s को #%s मा 'टेम्प्लेट:' लाइन समाविष्ट छैन"
 
 #: ../glib/gfileutils.c:1533
 #, fuzzy, c-format
@@ -4468,7 +4415,7 @@ msgstr "\"%s\" एउटा पुनरावर्ती सांकेति
 #, fuzzy, c-format
 #| msgid "Could not open converter from '%s' to '%s': %s"
 msgid "Could not open converter from “%s” to “%s”: %s"
-msgstr "फोल्डर खोल्न सकेन: %s: %s"
+msgstr "थम्बनेल '%s' खोल्न सकेन: %s"
 
 #: ../glib/giochannel.c:1733
 #, fuzzy
@@ -4508,7 +4455,7 @@ msgstr "कुञ्जी फाइलमा पङ्गति '%s' समा�
 #: ../glib/gkeyfile.c:1275
 #, fuzzy, c-format
 msgid "Invalid group name: %s"
-msgstr "अवैध कार्यक्रम नाम : %s"
+msgstr "अवैध समूह नाम '%s'\n"
 
 #: ../glib/gkeyfile.c:1297
 msgid "Key file does not start with a group"
@@ -4517,7 +4464,7 @@ msgstr "कुञ्जी फाइल एउटा समूहबाट स�
 #: ../glib/gkeyfile.c:1323
 #, fuzzy, c-format
 msgid "Invalid key name: %s"
-msgstr "अवैध कार्यक्रम नाम : %s"
+msgstr "%s: अवैध नाम: '%s'\n"
 
 #: ../glib/gkeyfile.c:1350
 #, fuzzy, c-format
@@ -4592,7 +4539,7 @@ msgstr "मान '%s' लाई सङ्ख्याको रूपमा व
 #, fuzzy, c-format
 #| msgid "Value '%s' cannot be interpreted as a boolean."
 msgid "Value “%s” cannot be interpreted as a boolean."
-msgstr "मान '%s' एउटा बुलिएनको रूपमा व्याख्या गर्न सकिँदैन।"
+msgstr "चेतावनी: `%s' बुलियन मान पदवर्णन गर्न असफल भयो\n"
 
 #: ../glib/gmappedfile.c:129
 #, fuzzy, c-format
@@ -4640,19 +4587,17 @@ msgstr "लाइन %d मा त्रुटि: %s"
 #: ../glib/gmarkup.c:675
 #, c-format
 msgid ""
-"Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for "
-"example) - perhaps the digit is too large"
-msgstr ""
-"'%-*s' पद वर्णन गर्न सकिएन, जुन एउटा क्यारेक्टर सन्दर्भ (उदाहरणका लागि; &#234) हुनु पर्थ्यो - संभवत अङ्क ज्यादै "
-"ठूलो छ"
+"Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps "
+"the digit is too large"
+msgstr "'%-*s' पद वर्णन गर्न सकिएन, जुन एउटा क्यारेक्टर सन्दर्भ (उदाहरणका लागि; &#234) हुनु पर्थ्यो - संभवत अङ्क ज्यादै ठूलो छ"
 
 #: ../glib/gmarkup.c:687
 msgid ""
-"Character reference did not end with a semicolon; most likely you used an ampersand character "
-"without intending to start an entity - escape ampersand as &amp;"
+"Character reference did not end with a semicolon; most likely you used an ampersand character without intending to "
+"start an entity - escape ampersand as &amp;"
 msgstr ""
-"क्यारेक्टर सन्दर्भ अर्धविराममा सकिएन;तपाईँले धेरैजसो ऐम्परसेण्ड क्यारेक्टरबाट एउटा अस्तित्व सुरु गर्नका लागि प्रयास "
-"नगरिकन सुरु गर्नुभयो - &amp; को रूपमा ऐम्परसेंन्ड निकास गर्नुहोस्"
+"क्यारेक्टर सन्दर्भ अर्धविराममा सकिएन;तपाईँले धेरैजसो ऐम्परसेण्ड क्यारेक्टरबाट एउटा अस्तित्व सुरु गर्नका लागि प्रयास नगरिकन सुरु गर्नुभयो - "
+"&amp; को रूपमा ऐम्परसेंन्ड निकास गर्नुहोस्"
 
 #: ../glib/gmarkup.c:713
 #, c-format
@@ -4666,15 +4611,15 @@ msgstr "खाली अस्तित्व '&;' देखियो; वैध
 #: ../glib/gmarkup.c:759
 #, fuzzy, c-format
 msgid "Entity name '%-.*s' is not known"
-msgstr "%s अहिले %s को रुपमा चिनिन्छ"
+msgstr "%s अब %s भएको छ"
 
 #: ../glib/gmarkup.c:764
 msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand character without "
-"intending to start an entity - escape ampersand as &amp;"
+"Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an "
+"entity - escape ampersand as &amp;"
 msgstr ""
-"अस्तित्व अर्धविराममा सकिएन; तपाईँले धेरैजसो ऐम्परसेण्ड क्यारेक्टरबाट एउटा अस्तित्व सुरु गर्नको लागि प्रयास नगरिकन "
-"सुरु गर्नुभयो - &amp; को रूपमा ऐम्परसेंन्ड निकास गर्नुहोस्"
+"अस्तित्व अर्धविराममा सकिएन; तपाईँले धेरैजसो ऐम्परसेण्ड क्यारेक्टरबाट एउटा अस्तित्व सुरु गर्नको लागि प्रयास नगरिकन सुरु गर्नुभयो - &amp; को "
+"रूपमा ऐम्परसेंन्ड निकास गर्नुहोस्"
 
 #: ../glib/gmarkup.c:1170
 msgid "Document must begin with an element (e.g. <book>)"
@@ -4698,31 +4643,28 @@ msgstr "विजोड क्यारेक्टर '%s' ले,'%s' तत�
 #: ../glib/gmarkup.c:1374
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or "
-"optionally an attribute; perhaps you used an invalid character in an attribute name"
+"Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an "
+"attribute; perhaps you used an invalid character in an attribute name"
 msgstr ""
-"बिजोड क्यारेक्टर '%s', तत्व '%s' को सुरु ट्याग अन्त्य गर्नलाई अपेक्षा गरिएको एउटा '>' वा '/'  क्यारेक्टर, वा "
-"वैकल्पिक रूपमा एउटा विशेषता ,सायद तपाईँले एउटा विशेषता नाममा अवैध क्यारेक्टर प्रयोग गर्नुभयो"
+"बिजोड क्यारेक्टर '%s', तत्व '%s' को सुरु ट्याग अन्त्य गर्नलाई अपेक्षा गरिएको एउटा '>' वा '/'  क्यारेक्टर, वा वैकल्पिक रूपमा एउटा "
+"विशेषता ,सायद तपाईँले एउटा विशेषता नाममा अवैध क्यारेक्टर प्रयोग गर्नुभयो"
 
 #: ../glib/gmarkup.c:1418
 #, c-format
 msgid ""
-"Odd character '%s', expected an open quote mark after the equals sign when giving value for "
-"attribute '%s' of element '%s'"
+"Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of "
+"element '%s'"
 msgstr ""
-"बिजोड क्यारेक्टर '%s',तत्व '%s' को '%s' विशेषताका लागि मान दिइएको बेला बराबर चिन्ह पछि खुला उद्धरण चिन्हको "
-"अपेक्षा गरेको हुन्छ।"
+"बिजोड क्यारेक्टर '%s',तत्व '%s' को '%s' विशेषताका लागि मान दिइएको बेला बराबर चिन्ह पछि खुला उद्धरण चिन्हको अपेक्षा गरेको हुन्छ।"
 
 #: ../glib/gmarkup.c:1551
 #, c-format
-msgid ""
-"'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
 msgstr "'%s' एउटा वैध क्यारेक्टर होइन निम्न क्यारेक्टरहरू '</'; '%s' एउटा तत्व नाम प्रारम्भ नगर्न सक्छन"
 
 #: ../glib/gmarkup.c:1587
 #, c-format
-msgid ""
-"'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
 msgstr "बन्द तत्व नाम '%s' को पछि लाग्ने '%s' मान्य क्यारेक्टर होइन; अनुमति पाएको क्यारेक्टर '>' हो।"
 
 #: ../glib/gmarkup.c:1598
@@ -4766,8 +4708,7 @@ msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "तत्व-खुल्ला ट्याग भित्र कागजात अपेक्षित रूपले समाप्त भयो।"
 
 #: ../glib/gmarkup.c:1813
-msgid ""
-"Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
+msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
 msgstr "बिशेषता नाम पछ्याउन बराबर चिन्ह पछि कागजातपत्र अप्रत्याशित रूपले समाप्त भयो; गुण मान होइन"
 
 #: ../glib/gmarkup.c:1820
@@ -4813,9 +4754,7 @@ msgstr "विकल्पहरू:"
 #, fuzzy, c-format
 #| msgid "Cannot parse integer value '%s' for %s"
 msgid "Cannot parse integer value “%s” for %s"
-msgstr ""
-"खोजी अभिव्यक्ति पद वर्णन गर्न सक्दैन: %s:\n"
-"%s"
+msgstr "यो लाइन पार्स गर्न गर्न सकिंदैन:%s"
 
 #: ../glib/goption.c:1123 ../glib/goption.c:1191
 #, fuzzy, c-format
@@ -4826,9 +4765,7 @@ msgstr "विशेषता %s का लागि, इन्टिजर '%s'
 #: ../glib/goption.c:1148
 #, fuzzy, c-format
 msgid "Cannot parse double value “%s” for %s"
-msgstr ""
-"खोजी अभिव्यक्ति पद वर्णन गर्न सक्दैन: %s:\n"
-"%s"
+msgstr "यो लाइन पार्स गर्न गर्न सकिंदैन:%s"
 
 #: ../glib/goption.c:1156
 #, fuzzy, c-format
@@ -4853,7 +4790,7 @@ msgstr "अज्ञात विकल्प %s"
 #: ../glib/gregex.c:257
 #, fuzzy
 msgid "corrupted object"
-msgstr "फाइल दूषित भयो"
+msgstr "संग्रह दूषित भयो"
 
 #: ../glib/gregex.c:259
 #, fuzzy
@@ -4863,7 +4800,7 @@ msgstr "आन्तरिक त्रुटि: अज्ञात त्र�
 #: ../glib/gregex.c:261
 #, fuzzy
 msgid "out of memory"
-msgstr "स्मृती बाहिर को"
+msgstr "स्मृतिबाट बाहिर"
 
 #: ../glib/gregex.c:266
 #, fuzzy
@@ -4894,22 +4831,21 @@ msgstr ""
 #: ../glib/gregex.c:301
 #, fuzzy
 msgid "bad offset"
-msgstr "अफसेट"
+msgstr "अफसेट:"
 
 #: ../glib/gregex.c:303
 #, fuzzy
 msgid "short utf8"
-msgstr "UTF8 वैध छैन"
+msgstr "छोटो"
 
 #: ../glib/gregex.c:305
 #, fuzzy
 msgid "recursion loop"
-msgstr "लूप"
+msgstr "लूप गर्नुहोस्"
 
 #: ../glib/gregex.c:309
-#, fuzzy
 msgid "unknown error"
-msgstr "अज्ञात  त्रुटी"
+msgstr "अज्ञात त्रुटि"
 
 #: ../glib/gregex.c:329
 #, fuzzy
@@ -4919,12 +4855,12 @@ msgstr "बाँन्की तहनामको अन्त्य हो"
 #: ../glib/gregex.c:332
 #, fuzzy
 msgid "\\c at end of pattern"
-msgstr "बाँन्की तहनामको अन्त्य हो"
+msgstr "अज्ञात बान्की प्रकार: %c"
 
 #: ../glib/gregex.c:335
 #, fuzzy
 msgid "unrecognized character following \\"
-msgstr "पहिचान नगरिएको"
+msgstr "अज्ञात वर्ण पछि (?<"
 
 #: ../glib/gregex.c:338
 msgid "numbers out of order in {} quantifier"
@@ -4933,7 +4869,7 @@ msgstr ""
 #: ../glib/gregex.c:341
 #, fuzzy
 msgid "number too big in {} quantifier"
-msgstr "यो फाइल निकै ठूलो छ । स्मृति बिभाजन गर्न असक्ष भयो ।"
+msgstr "अङ्क निकै ठूलो"
 
 #: ../glib/gregex.c:344
 #, fuzzy
@@ -4953,7 +4889,7 @@ msgstr "UTF-16 का लागि क्यारेक्टर दायर�
 #: ../glib/gregex.c:353
 #, fuzzy
 msgid "nothing to repeat"
-msgstr "दोहोर्याउनुहोस्"
+msgstr "दोहो-याउनु"
 
 #: ../glib/gregex.c:357
 #, fuzzy
@@ -4963,7 +4899,7 @@ msgstr "नदोहो-याउनु"
 #: ../glib/gregex.c:360
 #, fuzzy
 msgid "unrecognized character after (? or (?-"
-msgstr "पहिचान नगरिएको"
+msgstr "अज्ञात वर्ण पछि (?<"
 
 #: ../glib/gregex.c:363
 msgid "POSIX named classes are supported only within a class"
@@ -4972,7 +4908,7 @@ msgstr ""
 #: ../glib/gregex.c:366
 #, fuzzy
 msgid "missing terminating )"
-msgstr "नभेटिरहेको"
+msgstr "  हराइरहेको: "
 
 #: ../glib/gregex.c:369
 #, fuzzy
@@ -4987,12 +4923,11 @@ msgstr "यो लम्बाइ पछि टिप्पणी बेर्�
 #: ../glib/gregex.c:375
 #, fuzzy
 msgid "regular expression is too large"
-msgstr "खराब नियमित अभिव्यक्ति “{0}”."
+msgstr "धेरै ठूलो नियमित अभिव्यक्ति"
 
 #: ../glib/gregex.c:378
-#, fuzzy
 msgid "failed to get memory"
-msgstr "फोल्डर सूची प्राप्त गर्न असफल भयो"
+msgstr "स्मृति पाउन असफल"
 
 #: ../glib/gregex.c:382
 #, fuzzy
@@ -5000,9 +4935,8 @@ msgid ") without opening ("
 msgstr "खुल्दैछ"
 
 #: ../glib/gregex.c:386
-#, fuzzy
 msgid "code overflow"
-msgstr "थाक अधिप्रवाह"
+msgstr "सङ्केत अतिप्रवाह"
 
 #: ../glib/gregex.c:390
 msgid "unrecognized character after (?<"
@@ -5013,8 +4947,9 @@ msgid "lookbehind assertion is not fixed length"
 msgstr ""
 
 #: ../glib/gregex.c:396
+#, fuzzy
 msgid "malformed number or name after (?("
-msgstr ""
+msgstr "संस्करण नम्बरमा विराम पछि केहि पनि छैन"
 
 #: ../glib/gregex.c:399
 msgid "conditional group contains more than two branches"
@@ -5023,14 +4958,15 @@ msgstr ""
 #: ../glib/gregex.c:402
 #, fuzzy
 msgid "assertion expected after (?("
-msgstr "पछि छ"
+msgstr "-q= पछि अपेक्षित एउटा नम्बर\n"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
 #: ../glib/gregex.c:409
+#, fuzzy
 msgid "(?R or (?[+-]digits must be followed by )"
-msgstr ""
+msgstr "फाँट नाम `%.*s' विरामचिन्ह द्धारा साथ दिनु पर्छ"
 
 #: ../glib/gregex.c:412
 #, fuzzy
@@ -5077,7 +5013,7 @@ msgstr ""
 #: ../glib/gregex.c:447
 #, fuzzy
 msgid "malformed \\P or \\p sequence"
-msgstr "पि-खोजी:"
+msgstr "गुण…"
 
 #: ../glib/gregex.c:450
 msgid "unknown property name after \\P or \\p"
@@ -5117,8 +5053,7 @@ msgid "inconsistent NEWLINE options"
 msgstr "परस्परबिरोधि"
 
 #: ../glib/gregex.c:476
-msgid ""
-"\\g is not followed by a braced, angle-bracketed, or quoted name or number, or by a plain number"
+msgid "\\g is not followed by a braced, angle-bracketed, or quoted name or number, or by a plain number"
 msgstr ""
 
 #: ../glib/gregex.c:480
@@ -5140,7 +5075,7 @@ msgstr "अङ्क निकै ठूलो"
 #: ../glib/gregex.c:492
 #, fuzzy
 msgid "missing subpattern name after (?&"
-msgstr "हराइरहेको उपकरण नाम"
+msgstr "उपपट्टिको नाममा छुटेको टर्मिनेटर"
 
 #: ../glib/gregex.c:495
 msgid "digit expected after (?+"
@@ -5169,12 +5104,12 @@ msgstr ""
 #: ../glib/gregex.c:513
 #, fuzzy
 msgid "\\N is not supported in a class"
-msgstr "अनुमति छैन"
+msgstr "n/a"
 
 #: ../glib/gregex.c:516
 #, fuzzy
 msgid "too many forward references"
-msgstr "अति धेरै त्रुटि सन्देशहरू !"
+msgstr "चेतावनी: अति धेरै समूहहरू\n"
 
 #: ../glib/gregex.c:519
 msgid "name is too long in (*MARK), (*PRUNE), (*SKIP), or (*THEN)"
@@ -5185,9 +5120,9 @@ msgid "character value in \\u.... sequence is too large"
 msgstr ""
 
 #: ../glib/gregex.c:745 ../glib/gregex.c:1977
-#, c-format
+#, fuzzy, c-format
 msgid "Error while matching regular expression %s: %s"
-msgstr ""
+msgstr "नियमित अभिव्यक्ति कम्पाइल गर्दा त्रुटि \"%s\" ।"
 
 #: ../glib/gregex.c:1316
 msgid "PCRE library is compiled without UTF8 support"
@@ -5202,9 +5137,9 @@ msgid "PCRE library is compiled with incompatible options"
 msgstr ""
 
 #: ../glib/gregex.c:1357
-#, c-format
+#, fuzzy, c-format
 msgid "Error while optimizing regular expression %s: %s"
-msgstr ""
+msgstr "नियमित अभिव्यक्ति कम्पाइल गर्दा त्रुटि \"%s\" ।"
 
 #: ../glib/gregex.c:1437
 #, fuzzy, c-format
@@ -5214,12 +5149,12 @@ msgstr "लाइन %d क्यारेक्टर %d मा त्रुट
 #: ../glib/gregex.c:2413
 #, fuzzy
 msgid "hexadecimal digit or “}” expected"
-msgstr "हेक्साडेसिमल:"
+msgstr "(?+ पछि अङ्क अपेक्षित"
 
 #: ../glib/gregex.c:2429
 #, fuzzy
 msgid "hexadecimal digit expected"
-msgstr "हेक्साडेसिमल:"
+msgstr "(?+ पछि अङ्क अपेक्षित"
 
 #: ../glib/gregex.c:2469
 msgid "missing “<” in symbolic reference"
@@ -5230,8 +5165,9 @@ msgid "unfinished symbolic reference"
 msgstr "अधूरो प्रतीकात्मक सन्दर्भ"
 
 #: ../glib/gregex.c:2485
+#, fuzzy
 msgid "zero-length symbolic reference"
-msgstr ""
+msgstr "अधूरो प्रतीकात्मक सन्दर्भ"
 
 #: ../glib/gregex.c:2496
 msgid "digit expected"
@@ -5331,7 +5267,7 @@ msgstr "(%s) फोर्क गर्न असफल"
 #, fuzzy, c-format
 #| msgid "Failed to change to directory '%s' (%s)"
 msgid "Failed to change to directory “%s” (%s)"
-msgstr "'%s' मा कार्य गर्ने डाइरेक्टरी परिवर्तन गर्न सकिएन: %s"
+msgstr "'%s' मा मूल डाइरेकट्री परिवर्तन गर्न सकिदैन\n"
 
 #: ../glib/gspawn.c:1542
 #, fuzzy, c-format
@@ -5406,7 +5342,7 @@ msgstr "शाखा प्रक्रियाबाट डेटा पढ्
 #: ../glib/gstrfuncs.c:3247 ../glib/gstrfuncs.c:3348
 #, fuzzy
 msgid "Empty string is not a number"
-msgstr "STRING"
+msgstr "रित्तो स्ट्रिङ् होइन होला"
 
 #: ../glib/gstrfuncs.c:3271
 #, fuzzy, c-format
@@ -5431,8 +5367,8 @@ msgstr "स्मृति निर्धारण गर्न अक्षम
 msgid "Character out of range for UTF-8"
 msgstr "UTF-8 का लागि क्यारेक्टर दायरा भन्दा बाहिर छ"
 
-#: ../glib/gutf8.c:1042 ../glib/gutf8.c:1051 ../glib/gutf8.c:1181 ../glib/gutf8.c:1190
-#: ../glib/gutf8.c:1329 ../glib/gutf8.c:1426
+#: ../glib/gutf8.c:1042 ../glib/gutf8.c:1051 ../glib/gutf8.c:1181 ../glib/gutf8.c:1190 ../glib/gutf8.c:1329
+#: ../glib/gutf8.c:1426
 msgid "Invalid sequence in conversion input"
 msgstr "रूपान्तरण आगतमा अवैध अनुक्रम"
 
@@ -5581,11 +5517,11 @@ msgstr "%.1f KB"
 #~ msgstr "रूपान्तरण आगतमा अवैध अनुक्रम"
 
 #~ msgid ""
-#~ "Character '%s' is not valid at the start of an entity name; the & character begins an entity; "
-#~ "if this ampersand isn't supposed to be an entity, escape it as &amp;"
+#~ "Character '%s' is not valid at the start of an entity name; the & character begins an entity; if this ampersand "
+#~ "isn't supposed to be an entity, escape it as &amp;"
 #~ msgstr ""
-#~ "अस्तित्व नामको सुरुमा क्यारेक्टर '%s' वैध हुँदैन ; & क्यारेक्टरले एउटा अस्तित्वा सुरु गर्दछ ; यदि यो एम्परस्यान्ड "
-#~ "भएमा एउटा अस्तित्वको रूपमा मानिँदैन,यसलाई &amp; को रूपमा परित्याग गर्नुहोस्"
+#~ "अस्तित्व नामको सुरुमा क्यारेक्टर '%s' वैध हुँदैन ; & क्यारेक्टरले एउटा अस्तित्वा सुरु गर्दछ ; यदि यो एम्परस्यान्ड भएमा एउटा अस्तित्वको "
+#~ "रूपमा मानिँदैन,यसलाई &amp; को रूपमा परित्याग गर्नुहोस्"
 
 #~ msgid "Empty character reference; should include a digit such as &#454;"
 #~ msgstr "खाली क्यारेक्टर सन्दर्भ, &#454 जस्तो अङ्क समाहित हुनुपर्छ"
