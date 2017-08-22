@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-03 15:40+0000\n"
-"PO-Revision-Date: 2017-08-04 15:42+0200\n"
+"POT-Creation-Date: 2017-08-07 19:40+0000\n"
+"PO-Revision-Date: 2017-08-22 13:33+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -2425,30 +2425,27 @@ msgstr "Deberá proporcionar exactamente un nombre de archivo\n"
 #: ../gio/glib-compile-schemas.c:95
 #, c-format
 msgid "nick must be a minimum of 2 characters"
-msgstr ""
+msgstr "«nick» debe tener al menos dos caracteres"
 
 #: ../gio/glib-compile-schemas.c:106
 #, c-format
-#| msgid "Invalid symlink value given"
 msgid "Invalid numeric value"
 msgstr "Valor numérico no válido"
 
 #: ../gio/glib-compile-schemas.c:114
 #, c-format
-#| msgid "<%s id='%s'> already specified"
 msgid "<value nick='%s'/> already specified"
 msgstr "<value nick='%s'/> ya especificado"
 
 #: ../gio/glib-compile-schemas.c:122
 #, c-format
-#| msgid "<key name='%s'> already specified"
 msgid "value='%s' already specified"
 msgstr "value='%s' ya especificado"
 
 #: ../gio/glib-compile-schemas.c:136
 #, c-format
 msgid "flags values must have at most 1 bit set"
-msgstr ""
+msgstr "los valores de las opciones deben tener al menos 1 bit establecido"
 
 #: ../gio/glib-compile-schemas.c:161
 #, c-format
@@ -2456,15 +2453,15 @@ msgid "<%s> must contain at least one <value>"
 msgstr "<%s> debe contener al menos un <value>"
 
 #: ../gio/glib-compile-schemas.c:315
-#, fuzzy, c-format
+#, c-format
 #| msgid "No connection endpoint specified"
 msgid "<%s> is not contained in the specified range"
-msgstr "No se especificó ningún punto de conexión extremo"
+msgstr "<%s> no está dentro del rango especificado"
 
 #: ../gio/glib-compile-schemas.c:327
 #, c-format
 msgid "<%s> is not a valid member of the specified enumerated type"
-msgstr ""
+msgstr "<%s> no es un miembro válido del tipo enumerado especificado"
 
 #: ../gio/glib-compile-schemas.c:333
 #, c-format
@@ -2478,19 +2475,18 @@ msgid "<%s> contains a string not in <choices>"
 msgstr "<%s> contiene una cadena que no está en <choices>"
 
 #: ../gio/glib-compile-schemas.c:373
-#| msgid "<key name='%s'> already specified"
 msgid "<range/> already specified for this key"
 msgstr "<range/> ya especificada para esta clave"
 
 #: ../gio/glib-compile-schemas.c:391
 #, c-format
 msgid "<range> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<range> no permitido para las claves de tipo «%s»"
 
 #: ../gio/glib-compile-schemas.c:408
 #, c-format
 msgid "<range> specified minimum is greater than maximum"
-msgstr ""
+msgstr "<range> mínimo especificado es mayor que el máximo"
 
 #: ../gio/glib-compile-schemas.c:433
 #, c-format
@@ -2499,7 +2495,7 @@ msgstr "categoría l10n no soportada: %s"
 
 #: ../gio/glib-compile-schemas.c:441
 msgid "l10n requested, but no gettext domain given"
-msgstr ""
+msgstr "l10n solicitado, pero no se ha dado el dominio de gettext"
 
 #: ../gio/glib-compile-schemas.c:453
 msgid "translation context given for value without l10n enabled"
@@ -2507,7 +2503,6 @@ msgstr "contexto de traducción especificado sin tener l10n activado"
 
 #: ../gio/glib-compile-schemas.c:475
 #, c-format
-#| msgid "Failed to create file “%s”: %s"
 msgid "Failed to parse <default> value of type “%s”: "
 msgstr "Falló al analizar el valor <default> del tipo «%s»: "
 
@@ -2515,20 +2510,20 @@ msgstr "Falló al analizar el valor <default> del tipo «%s»: "
 msgid ""
 "<choices> cannot be specified for keys tagged as having an enumerated type"
 msgstr ""
+"<choices> no se puede especificar para tipos etiquetados como que tienen un "
+"tipo enumerado"
 
 #: ../gio/glib-compile-schemas.c:501
-#| msgid "<child name='%s'> already specified"
 msgid "<choices> already specified for this key"
 msgstr "<choices> ya especificado para esta clave"
 
 #: ../gio/glib-compile-schemas.c:513
 #, c-format
 msgid "<choices> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<choices> no permitido para las claves de tipo «%s»"
 
 #: ../gio/glib-compile-schemas.c:529
 #, c-format
-#| msgid "<child name='%s'> already specified"
 msgid "<choice value='%s'/> already given"
 msgstr "<choice value='%s'/> ya especificado"
 
@@ -2538,7 +2533,6 @@ msgid "<choices> must contain at least one <choice>"
 msgstr "<choices> debe contener al menos un <choice>"
 
 #: ../gio/glib-compile-schemas.c:558
-#| msgid "<child name='%s'> already specified"
 msgid "<aliases> already specified for this key"
 msgstr "<aliases> ya especificado por esta clave"
 
@@ -2547,6 +2541,8 @@ msgid ""
 "<aliases> can only be specified for keys with enumerated or flags types or "
 "after <choices>"
 msgstr ""
+"<aliases> sólo se puede especificar para claves con tipos enumerados, de "
+"opciones o después de <choices>"
 
 #: ../gio/glib-compile-schemas.c:581
 #, c-format
@@ -2554,28 +2550,28 @@ msgid ""
 "<alias value='%s'/> given when “%s” is already a member of the enumerated "
 "type"
 msgstr ""
+"<alias value='%s'/> dado cuando «%s» ya es un miembro del tipo enumerado"
 
 #: ../gio/glib-compile-schemas.c:587
 #, c-format
 msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
-msgstr ""
+msgstr "<alias value='%s'/> dado cuando ya se había dado <choice value='%s'/>"
 
 #: ../gio/glib-compile-schemas.c:595
 #, c-format
-#| msgid "<%s id='%s'> already specified"
 msgid "<alias value='%s'/> already specified"
 msgstr "<alias value='%s'/> ya especificado"
 
 #: ../gio/glib-compile-schemas.c:605
-#, fuzzy, c-format
+#, c-format
 #| msgid "“%s” is not a signed number"
 msgid "alias target “%s” is not in enumerated type"
-msgstr "«%s» no es un número con signo"
+msgstr "el alias del objetivo «%s» no está en el tipo enumerado"
 
 #: ../gio/glib-compile-schemas.c:606
 #, c-format
 msgid "alias target “%s” is not in <choices>"
-msgstr ""
+msgstr "el alias del objetivo «%s» no está en <choices>"
 
 #: ../gio/glib-compile-schemas.c:621
 #, c-format
@@ -2583,22 +2579,17 @@ msgid "<aliases> must contain at least one <alias>"
 msgstr "<aliases> debe contener al menos un <alias>"
 
 #: ../gio/glib-compile-schemas.c:786
-#| msgid "empty names are not permitted"
 msgid "Empty names are not permitted"
 msgstr "No se permiten nombres vacíos"
 
 #: ../gio/glib-compile-schemas.c:796
 #, c-format
-#| msgid "invalid name '%s': names must begin with a lowercase letter"
 msgid "Invalid name “%s”: names must begin with a lowercase letter"
 msgstr ""
 "Nombre «%s» no válido: los nombres deben comenzar por una letra minúscula"
 
 #: ../gio/glib-compile-schemas.c:808
 #, c-format
-#| msgid ""
-#| "invalid name '%s': invalid character '%c'; only lowercase letters, "
-#| "numbers and hyphen ('-') are permitted."
 msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
 "and hyphen (“-”) are permitted"
@@ -2608,19 +2599,16 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:817
 #, c-format
-#| msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
 msgstr "Nombre «%s» no válido: no se permiten dos guiones seguidos («--»)"
 
 #: ../gio/glib-compile-schemas.c:826
 #, c-format
-#| msgid "invalid name '%s': the last character may not be a hyphen ('-')."
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
 msgstr "Nombre «%s» no válido: el último carácter no puede ser un guión («-»)"
 
 #: ../gio/glib-compile-schemas.c:834
 #, c-format
-#| msgid "invalid name '%s': maximum length is 1024"
 msgid "Invalid name “%s”: maximum length is 1024"
 msgstr "Nombre «%s» no válido: la longitud máxima es 1024"
 
@@ -2630,7 +2618,6 @@ msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> ya especificado"
 
 #: ../gio/glib-compile-schemas.c:930
-#| msgid "cannot add keys to a 'list-of' schema"
 msgid "Cannot add keys to a “list-of” schema"
 msgstr "no se pueden añadir claves a un esquema «list-of»"
 
@@ -2650,9 +2637,6 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:970
 #, c-format
-#| msgid ""
-#| "exactly one of 'type', 'enum' or 'flags' must be specified as an "
-#| "attribute to <key>"
 msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
 "to <key>"
@@ -2667,18 +2651,15 @@ msgstr "<%s id='%s'> aún no especificado."
 
 #: ../gio/glib-compile-schemas.c:1004
 #, c-format
-#| msgid "invalid GVariant type string '%s'"
 msgid "Invalid GVariant type string “%s”"
 msgstr "Tipo de cadena GVariant «%s» no válida"
 
 #: ../gio/glib-compile-schemas.c:1034
-#| msgid "<override> given but schema isn't extending anything"
 msgid "<override> given but schema isn’t extending anything"
 msgstr "Se proporcionó <override> pero el esquema no extiende nada"
 
 #: ../gio/glib-compile-schemas.c:1047
 #, c-format
-#| msgid "no <key name='%s'> to override"
 msgid "No <key name='%s'> to override"
 msgstr "No existe <key name='%s'> para sobrescribir"
 
@@ -2694,25 +2675,21 @@ msgstr "<schema id='%s'> ya especificado"
 
 #: ../gio/glib-compile-schemas.c:1140
 #, c-format
-#| msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
 msgstr "<schema id='%s'> extiende el esquema «%s» que aún no existe"
 
 #: ../gio/glib-compile-schemas.c:1156
 #, c-format
-#| msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
 msgstr "<schema id='%s'> es una lista del esquema «%s» que aún no existe"
 
 #: ../gio/glib-compile-schemas.c:1164
 #, c-format
-#| msgid "Can not be a list of a schema with a path"
 msgid "Cannot be a list of a schema with a path"
 msgstr "No puede ser una lista de un esquema con una ruta"
 
 #: ../gio/glib-compile-schemas.c:1174
 #, c-format
-#| msgid "Can not extend a schema with a path"
 msgid "Cannot extend a schema with a path"
 msgstr "No se puede extender un esquema con una ruta"
 
@@ -2726,9 +2703,6 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1194
 #, c-format
-#| msgid ""
-#| "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but "
-#| "'%s' does not extend '%s'"
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
 "does not extend “%s”"
@@ -2738,13 +2712,11 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1211
 #, c-format
-#| msgid "a path, if given, must begin and end with a slash"
 msgid "A path, if given, must begin and end with a slash"
 msgstr "Si se especifica una ruta, debe comenzar y terminar con una barra"
 
 #: ../gio/glib-compile-schemas.c:1218
 #, c-format
-#| msgid "the path of a list must end with ':/'"
 msgid "The path of a list must end with “:/”"
 msgstr "La ruta de la lista debe terminar con «:/»"
 
@@ -2778,7 +2750,6 @@ msgstr "Se requiere el elemento <default> en <key>"
 
 #: ../gio/glib-compile-schemas.c:1613
 #, c-format
-#| msgid "text may not appear inside <%s>"
 msgid "Text may not appear inside <%s>"
 msgstr "El texto no debe aparecer dentro de <%s>"
 
