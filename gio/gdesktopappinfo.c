@@ -2490,8 +2490,6 @@ prepend_terminal_to_vector (int    *argc,
       if (check == NULL)
         check = g_find_program_in_path ("rxvt");
       if (check == NULL)
-        check = g_find_program_in_path ("xterm");
-      if (check == NULL)
         check = g_find_program_in_path ("dtterm");
       if (check == NULL)
         {
