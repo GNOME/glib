@@ -805,8 +805,7 @@ test_communicate (void)
   stdout_data = g_bytes_get_data (stdout, &stdout_len);
 
   g_assert_cmpmem (stdout_data, stdout_len, "hello world", 11);
-  g_bytes_unref (stdout);
-  
+
   g_bytes_unref (input);
   g_bytes_unref (stdout);
   g_object_unref (proc);
@@ -1067,6 +1066,7 @@ test_env (void)
   g_strfreev (split);
   g_free (result);
   g_object_unref (proc);
+  g_object_unref (launcher);
 }
 
 /* Test that explicitly inheriting and modifying the parent process’
@@ -1112,6 +1112,7 @@ test_env_inherit (void)
   g_strfreev (split);
   g_free (result);
   g_object_unref (proc);
+  g_object_unref (launcher);
 }
 
 static void
@@ -1145,6 +1146,7 @@ test_cwd (void)
 
   g_free (result);
   g_object_unref (proc);
+  g_object_unref (launcher);
 }
 #ifdef G_OS_UNIX
 static void
@@ -1400,6 +1402,8 @@ test_launcher_environment (void)
   g_free (out);
 
   g_object_unref (proc);
+  g_object_unref (launcher);
+  g_ptr_array_unref (args);
 }
 
 int
