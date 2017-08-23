@@ -1605,7 +1605,7 @@ static const GOptionEntry introspection_args[] = {
 };
 
 /**
- * g_irepository_get_option_group: (skip)
+ * g_irepository_get_option_group:
  *
  * Obtain the option group for girepository, it's used
  * by the dumper and for programs that wants to provide
