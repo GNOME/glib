@@ -830,21 +830,51 @@ g_subprocess_get_stderr_pipe (GSubprocess *subprocess)
   return subprocess->stderr_pipe;
 }
 
+/* Remove the first list element containing @data, and return %TRUE. If no
+ * such element is found, return %FALSE. */
+static gboolean
+slist_remove_if_present (GSList        **list,
+                         gconstpointer   data)
+{
+  GSList *l, *prev;
+
+  for (l = *list, prev = NULL; l != NULL; prev = l, l = prev->next)
+    {
+      if (l->data == data)
+        {
+          if (prev != NULL)
+            prev->next = l->next;
+          else
+            *list = l->next;
+
+          g_slist_free_1 (l);
+
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
 static void
 g_subprocess_wait_cancelled (GCancellable *cancellable,
                              gpointer      user_data)
 {
   GTask *task = user_data;
   GSubprocess *self;
+  gboolean task_was_pending;
 
   self = g_task_get_source_object (task);
 
   g_mutex_lock (&self->pending_waits_lock);
-  self->pending_waits = g_slist_remove (self->pending_waits, task);
+  task_was_pending = slist_remove_if_present (&self->pending_waits, task);
   g_mutex_unlock (&self->pending_waits_lock);
 
-  g_task_return_boolean (task, FALSE);
-  g_object_unref (task);
+  if (task_was_pending)
+    {
+      g_task_return_boolean (task, FALSE);
+      g_object_unref (task);  /* ref from pending_waits */
+    }
 }
 
 /**
