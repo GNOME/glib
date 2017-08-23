@@ -275,17 +275,16 @@ returned by functions like <function>strftime()</function>.
 </refsect2>
 
 <para>
-glib ships with a set of python macros for the gdb debugger. These includes pretty
-printers for lists, hashtables and gobject types. It also has a backtrace filter
+GLib ships with a set of Python macros for the GDB debugger. These includes pretty
+printers for lists, hashtables and GObject types. It also has a backtrace filter
 that makes backtraces with signal emissions easier to read.
 </para>
 
 <para>
-To use this you need a recent enough gdb that supports python scripting. Gdb 7.0
-should be recent enough, but branches of the "archer" gdb tree as used in Fedora 11
-and Fedora 12 should work too. You then need to install glib in the same prefix as
-gdb so that the python gdb autoloaded files get installed in the right place for
-gdb to pick up.
+To use this you need a version of GDB that supports Python scripting; anything
+from 7.0 should be fine. You then need to install GLib in the same prefix as
+GDB so that the Python GDB autoloaded files get installed in the right place
+for GDB to pick up.
 </para>
 
 <para>
