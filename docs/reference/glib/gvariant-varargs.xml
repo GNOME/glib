@@ -817,31 +817,6 @@ value2 = g_variant_new ("()");
    </refsect3>
   </refsect2>
 
-  <refsect2 id='gvariant-format-strings-dictionaries'>
-   <title>Dictionaries</title>
-   <para>
-    <emphasis role='strong'>
-     Characters: <code>{}</code>
-    </emphasis>
-   </para>
-
-   <para>
-    Dictionary entries are handled by handling first the key, then the value.  Each is handled in the usual way.
-   </para>
-
-   <refsect3>
-    <title>Examples</title>
-    <informalexample><programlisting>
-<![CDATA[GVariantBuilder *b;
-GVariant *dict;
-
-b = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
-g_variant_builder_add (b, "{sv}", "name", g_variant_new_string ("foo"));
-g_variant_builder_add (b, "{sv}", "timeout", g_variant_new_int32 (10));
-dict = g_variant_builder_end (b);]]></programlisting></informalexample>
-   </refsect3>
-  </refsect2>
-
   <refsect2 id='gvariant-format-strings-gvariant'>
    <title>GVariant *</title>
    <para>
@@ -905,6 +880,61 @@ value2 = g_variant_new ("(@(iii)*)", value1, g_variant_new_string ("foo"));
   g_free (string);
 }]]></programlisting></informalexample>
    </refsect3>
+  </refsect2>
+
+  <refsect2 id='gvariant-format-strings-dictionaries'>
+   <title>Dictionaries</title>
+   <para>
+    <emphasis role='strong'>
+     Characters: <code>{}</code>
+    </emphasis>
+   </para>
+
+   <para>
+    Dictionary entries are handled by handling first the key, then the value.  Each is handled in the usual way.
+   </para>
+
+   <refsect3>
+    <title>Examples</title>
+    <informalexample><programlisting>
+<![CDATA[GVariantBuilder *b;
+GVariant *dict;
+
+b = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
+g_variant_builder_add (b, "{sv}", "name", g_variant_new_string ("foo"));
+g_variant_builder_add (b, "{sv}", "timeout", g_variant_new_int32 (10));
+dict = g_variant_builder_end (b);]]></programlisting></informalexample>
+   </refsect3>
+
+   <para>
+    To extract data from nested dictionaries you can go through a vardict.
+   </para>
+
+   <refsect3>
+    <title>Examples</title>
+    <informalexample><programlisting>
+<![CDATA[GVariant *data;
+gint value = 1;
+gint max = 3;
+
+/* type (oa{sa{sv}) */
+data = g_variant_new_parsed ("(%o, {'brightness': {'value': <%i>, 'max': <%i>}})",
+                             "/object/path", value, max);
+{
+  GVariant *params;
+  GVariant *p_brightness;
+  gchar *obj
+  gint p_max;
+
+  g_variant_get (data, "(o@a{?*})", &obj, &params);
+  g_print ("object_path: %s\n", obj);
+
+  p_brightness = g_variant_lookup_value (params, "brightness", G_VARIANT_TYPE_VARDICT);
+  g_variant_lookup (p_brightness, "max", "i", &p_max);
+  g_print ("max: %d\n", p_max);
+}]]></programlisting></informalexample>
+   </refsect3>
+
   </refsect2>
 
   <refsect2 id='gvariant-format-strings-pointers'>
