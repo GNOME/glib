@@ -556,7 +556,7 @@ def generate_prototype(retval, params,
                        va_marshal=False):
     '''Generate a marshaller declaration with the given @visibility. If @va_marshal
     is True, the marshaller will use variadic arguments in place of a GValue array.'''
-    signature = ['G_BEGIN_DECLS']
+    signature = []
 
     if visibility == Visibility.INTERNAL:
         signature += ['G_GNUC_INTERNAL']
@@ -584,8 +584,6 @@ def generate_prototype(retval, params,
         signature += [indent('gpointer  marshal_data,', level=width, fill=' ')]
         signature += [indent('int       n_params,', level=width, fill=' ')]
         signature += [indent('GType    *param_types);', level=width, fill=' ')]
-
-    signature += ['G_END_DECLS']
 
     return signature
 
@@ -822,7 +820,11 @@ def generate_marshallers_body(outfile, retval, params,
         else:
             decl_visibility = Visibility.EXTERN
         proto = ['/* Prototype for -Wmissing-prototypes */']
+        # Add C++ guards in case somebody compiles the generated code
+        # with a C++ compiler
+        proto += ['G_BEGIN_DECLS']
         proto += generate_prototype(retval, params, prefix, decl_visibility, False)
+        proto += ['G_END_DECLS']
         outfile.write('\n'.join(proto))
         outfile.write('\n')
 
@@ -838,7 +840,10 @@ def generate_marshallers_body(outfile, retval, params,
             else:
                 decl_visibility = Visibility.EXTERN
             proto = ['/* Prototype for -Wmissing-prototypes */']
+            # Add C++ guards here as well
+            proto += ['G_BEGIN_DECLS']
             proto += generate_prototype(retval, params, prefix, decl_visibility, True)
+            proto += ['G_END_DECLS']
             outfile.write('\n'.join(proto))
             outfile.write('\n')
 
