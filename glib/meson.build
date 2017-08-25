@@ -184,6 +184,7 @@ glib_sources = [
   'gunidecomp.c',
   'gurifuncs.c',
   'gutils.c',
+  'guuid.c',
   'gvariant.c',
   'gvariant-core.c',
   'gvariant-parser.c',
