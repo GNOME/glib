@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2017-08-07 06:44+0000\n"
-"PO-Revision-Date: 2017-08-25 10:48+0200\n"
+"PO-Revision-Date: 2017-08-25 12:22+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -1699,19 +1699,19 @@ msgstr ""
 #: ../gio/gio-tool-mkdir.c:76 ../gio/gio-tool-monitor.c:228
 #: ../gio/gio-tool-open.c:71 ../gio/gio-tool-remove.c:72
 msgid "No locations given"
-msgstr ""
+msgstr "Nissune posizion furnide"
 
 #: ../gio/gio-tool-copy.c:42 ../gio/gio-tool-move.c:38
 msgid "No target directory"
-msgstr ""
+msgstr "Nissune cartele di destinazion"
 
 #: ../gio/gio-tool-copy.c:43 ../gio/gio-tool-move.c:39
 msgid "Show progress"
-msgstr ""
+msgstr "Mostre avanzament"
 
 #: ../gio/gio-tool-copy.c:44 ../gio/gio-tool-move.c:40
 msgid "Prompt before overwrite"
-msgstr ""
+msgstr "Domande prime di sorescrivi"
 
 #: ../gio/gio-tool-copy.c:45
 msgid "Preserve all attributes"
@@ -1724,27 +1724,27 @@ msgstr ""
 
 #: ../gio/gio-tool-copy.c:47
 msgid "Never follow symbolic links"
-msgstr ""
+msgstr "No sta mai lâ daûr ai colegaments simbolics"
 
 #: ../gio/gio-tool-copy.c:72 ../gio/gio-tool-move.c:67
 #, c-format
 msgid "Transferred %s out of %s (%s/s)"
-msgstr ""
+msgstr "Trasferîts %s di %s (%s/s)"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
 msgid "SOURCE"
-msgstr ""
+msgstr "SORZINT"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
 #: ../gio/gio-tool-save.c:165
 msgid "DESTINATION"
-msgstr ""
+msgstr "DESTINAZION"
 
 #: ../gio/gio-tool-copy.c:103
 msgid "Copy one or more files from SOURCE to DESTINATION."
-msgstr ""
+msgstr "Copie un o plui file de SORZINT ae DESTINAZION."
 
 #: ../gio/gio-tool-copy.c:105
 msgid ""
@@ -1756,24 +1756,24 @@ msgstr ""
 #: ../gio/gio-tool-copy.c:147
 #, c-format
 msgid "Destination %s is not a directory"
-msgstr ""
+msgstr "La destinazion %s no je une cartele"
 
 #: ../gio/gio-tool-copy.c:192 ../gio/gio-tool-move.c:185
 #, c-format
 msgid "%s: overwrite “%s”? "
-msgstr ""
+msgstr "%s: sorescrivi “%s”? "
 
 #: ../gio/gio-tool-info.c:34
 msgid "List writable attributes"
-msgstr ""
+msgstr "Liste i atribûts scrivibii"
 
 #: ../gio/gio-tool-info.c:35
 msgid "Get file system info"
-msgstr ""
+msgstr "Oten informazions sul file-system"
 
 #: ../gio/gio-tool-info.c:36 ../gio/gio-tool-list.c:35
 msgid "The attributes to get"
-msgstr ""
+msgstr "I atribûts di otignî"
 
 #: ../gio/gio-tool-info.c:36 ../gio/gio-tool-list.c:35
 msgid "ATTRIBUTES"
@@ -1781,7 +1781,7 @@ msgstr "ATRIBÛTS"
 
 #: ../gio/gio-tool-info.c:37 ../gio/gio-tool-list.c:38 ../gio/gio-tool-set.c:34
 msgid "Don’t follow symbolic links"
-msgstr ""
+msgstr "No sta lâ daûr ai colegaments simbolics"
 
 #: ../gio/gio-tool-info.c:75
 #, c-format
@@ -1792,13 +1792,13 @@ msgstr "atribûts:\n"
 #: ../gio/gio-tool-info.c:127
 #, c-format
 msgid "display name: %s\n"
-msgstr ""
+msgstr "non di mostrâ: %s\n"
 
 #. Translators: This is a noun and represents and attribute of a file
 #: ../gio/gio-tool-info.c:132
 #, c-format
 msgid "edit name: %s\n"
-msgstr ""
+msgstr "non di modificâ: %s\n"
 
 #: ../gio/gio-tool-info.c:138
 #, c-format
@@ -1837,7 +1837,7 @@ msgstr ""
 
 #: ../gio/gio-tool-info.c:287
 msgid "Show information about locations."
-msgstr ""
+msgstr "Mostre informazions su lis posizions."
 
 #: ../gio/gio-tool-info.c:289
 msgid ""
@@ -1850,19 +1850,19 @@ msgstr ""
 
 #: ../gio/gio-tool-list.c:36 ../gio/gio-tool-tree.c:32
 msgid "Show hidden files"
-msgstr ""
+msgstr "Mostre file platâts"
 
 #: ../gio/gio-tool-list.c:37
 msgid "Use a long listing format"
-msgstr ""
+msgstr "Dopre un formât di liste prolìs"
 
 #: ../gio/gio-tool-list.c:39
 msgid "Print full URIs"
-msgstr ""
+msgstr "Stampe i URI complets"
 
 #: ../gio/gio-tool-list.c:170
 msgid "List the contents of the locations."
-msgstr ""
+msgstr "Liste i contignûts des posizions."
 
 #: ../gio/gio-tool-list.c:172
 msgid ""
@@ -1875,15 +1875,15 @@ msgstr ""
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-mime.c:71
 msgid "MIMETYPE"
-msgstr ""
+msgstr "GJENARMIME"
 
 #: ../gio/gio-tool-mime.c:71
 msgid "HANDLER"
-msgstr ""
+msgstr "GJESTÔR"
 
 #: ../gio/gio-tool-mime.c:76
 msgid "Get or set the handler for a mimetype."
-msgstr ""
+msgstr "Oten o stabilìs il gjestôr par un gjenar di mime."
 
 #: ../gio/gio-tool-mime.c:78
 msgid ""
@@ -1891,58 +1891,63 @@ msgid ""
 "for the mimetype. If a handler is given, it is set as the default\n"
 "handler for the mimetype."
 msgstr ""
+"Se nissun gjestôr al è furnît, al liste lis aplicazions regjistradis e "
+"conseadis\n"
+"par un gjenar di mime. Se un gjestôr al ven furnît, chel al ven stabilît "
+"come gjestôr\n"
+"predefinît pal gjenar mime."
 
 #: ../gio/gio-tool-mime.c:100
 msgid "Must specify a single mimetype, and maybe a handler"
-msgstr ""
+msgstr "Si scugne specificâ un singul gjenar mime e se si vûl un gjestôr"
 
 #: ../gio/gio-tool-mime.c:116
 #, c-format
 msgid "No default applications for “%s”\n"
-msgstr ""
+msgstr "Nissune aplicazion predefinide par “%s”\n"
 
 #: ../gio/gio-tool-mime.c:122
 #, c-format
 msgid "Default application for “%s”: %s\n"
-msgstr ""
+msgstr "Aplicazion predefinide par “%s”: %s\n"
 
 #: ../gio/gio-tool-mime.c:127
 #, c-format
 msgid "Registered applications:\n"
-msgstr ""
+msgstr "Aplicazions regjistradis:\n"
 
 #: ../gio/gio-tool-mime.c:129
 #, c-format
 msgid "No registered applications\n"
-msgstr ""
+msgstr "Nissune aplicazion regjistrade\n"
 
 #: ../gio/gio-tool-mime.c:140
 #, c-format
 msgid "Recommended applications:\n"
-msgstr ""
+msgstr "Aplicazions conseadis:\n"
 
 #: ../gio/gio-tool-mime.c:142
 #, c-format
 msgid "No recommended applications\n"
-msgstr ""
+msgstr "Nissune aplicazion conseade\n"
 
 #: ../gio/gio-tool-mime.c:162
 #, c-format
 msgid "Failed to load info for handler “%s”"
-msgstr ""
+msgstr "No si è rivâts a cjariâ lis informazion pal gjestôr “%s”"
 
 #: ../gio/gio-tool-mime.c:168
 #, c-format
 msgid "Failed to set “%s” as the default handler for “%s”: %s\n"
-msgstr ""
+msgstr "No si è rivâts a stabilî “%s” come gjestôr predefinît par “%s”: %s\n"
 
 #: ../gio/gio-tool-mkdir.c:31
 msgid "Create parent directories"
-msgstr ""
+msgstr "Cree cartelis superiôrs"
 
 #: ../gio/gio-tool-mkdir.c:52
 msgid "Create directories."
-msgstr ""
+msgstr "Cree cartelis."
 
 #: ../gio/gio-tool-mkdir.c:54
 msgid ""
@@ -1953,15 +1958,17 @@ msgstr ""
 
 #: ../gio/gio-tool-monitor.c:37
 msgid "Monitor a directory (default: depends on type)"
-msgstr ""
+msgstr "Ten di voli une cartele (predefinît: al dipent dal gjenar)"
 
 #: ../gio/gio-tool-monitor.c:39
 msgid "Monitor a file (default: depends on type)"
-msgstr ""
+msgstr "Ten di voli un file (predefinît: al dipent dal gjenar)"
 
 #: ../gio/gio-tool-monitor.c:41
 msgid "Monitor a file directly (notices changes made via hardlinks)"
 msgstr ""
+"Ten di voli un file in maniere direte (si vise des modifichis fatis par mieç "
+"di colegaments permanents)"
 
 #: ../gio/gio-tool-monitor.c:43
 msgid "Monitors a file directly, but doesn’t report changes"
