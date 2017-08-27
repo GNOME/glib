@@ -137,7 +137,7 @@ struct _GSettingsBackendClosure
                     gchar            **names);
 
   GMainContext      *context;
-  GObject           *target;
+  GWeakRef          *target_ref;
   GSettingsBackend  *backend;
   gchar             *name;
   gpointer           origin_tag;
@@ -208,8 +208,9 @@ g_settings_backend_watch (GSettingsBackend              *backend,
    * GSettings object in a thread other than the one that is doing the
    * dispatching is as follows:
    *
-   *  1) hold a GObject reference on the GSettings during an outstanding
-   *     dispatch.  This ensures that the delivery is always possible.
+   *  1) hold a thread-safe GWeakRef on the GSettings during an outstanding
+   *     dispatch.  This ensures that the delivery is always possible while
+   *     the GSettings object is alive.
    *
    *  2) hold a weak reference on the GSettings at other times.  This
    *     allows us to receive early notification of pending destruction
@@ -224,12 +225,8 @@ g_settings_backend_watch (GSettingsBackend              *backend,
    * possible to keep the object alive using g_object_ref() and we would
    * have no way of knowing this.
    *
-   * Note also that we do not need to hold a reference on the main
-   * context here since the GSettings instance does that for us and we
-   * will receive the weak notify long before it is dropped.  We don't
-   * even need to hold it during dispatches because our reference on the
-   * GSettings will prevent the finalize from running and dropping the
-   * ref on the context.
+   * Note also that we need to hold a reference on the main context here
+   * since the GSettings instance may be finalized before the closure runs.
    *
    * All access to the list holds a mutex.  We have some strategies to
    * avoid some of the pain that would be associated with that.
@@ -263,12 +260,20 @@ static gboolean
 g_settings_backend_invoke_closure (gpointer user_data)
 {
   GSettingsBackendClosure *closure = user_data;
+  GObject *target = g_weak_ref_get (closure->target_ref);
 
-  closure->function (closure->target, closure->backend, closure->name,
-                     closure->origin_tag, closure->names);
+  if (target)
+    {
+      closure->function (target, closure->backend, closure->name,
+                         closure->origin_tag, closure->names);
+      g_object_unref (target);
+    }
 
+  if (closure->context)
+    g_main_context_unref (closure->context);
   g_object_unref (closure->backend);
-  g_object_unref (closure->target);
+  g_weak_ref_clear (closure->target_ref);
+  g_free (closure->target_ref);
   g_strfreev (closure->names);
   g_free (closure->name);
 
@@ -302,8 +307,11 @@ g_settings_backend_dispatch_signal (GSettingsBackend    *backend,
 
       closure = g_slice_new (GSettingsBackendClosure);
       closure->context = watch->context;
+      if (closure->context)
+        g_main_context_ref (closure->context);
       closure->backend = g_object_ref (backend);
-      closure->target = g_object_ref (watch->target);
+      closure->target_ref = g_new (GWeakRef, 1);
+      g_weak_ref_init (closure->target_ref, watch->target);
       closure->function = G_STRUCT_MEMBER (void *, watch->vtable,
                                            function_offset);
       closure->name = g_strdup (name);
