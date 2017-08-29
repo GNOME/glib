@@ -44,6 +44,12 @@ GTask        *g_task_new                   (gpointer             source_object,
                                             GCancellable        *cancellable,
                                             GAsyncReadyCallback  callback,
                                             gpointer             callback_data);
+GLIB_AVAILABLE_IN_2_54
+GTask        *g_task_new_with_caller       (gpointer             source_object,
+                                            GCancellable        *cancellable,
+                                            GAsyncReadyCallback  callback,
+                                            gpointer             callback_data,
+                                            gpointer             caller);
 
 GLIB_AVAILABLE_IN_2_36
 void          g_task_report_error          (gpointer             source_object,
@@ -154,6 +160,9 @@ GLIB_AVAILABLE_IN_2_36
 gboolean      g_task_had_error                 (GTask           *task);
 GLIB_AVAILABLE_IN_2_44
 gboolean      g_task_get_completed             (GTask           *task);
+
+
+#define g_task_new(_o,_c,_cb,_cbd) g_task_new_with_caller(_o,_c,_cb,_cbd,__builtin_return_address(0))
 
 G_END_DECLS
 

@@ -27,6 +27,8 @@
 
 #include "glibintl.h"
 
+#undef g_task_new
+
 /**
  * SECTION:gtask
  * @short_description: Cancellable synchronous or asynchronous task
@@ -544,6 +546,11 @@ struct _GTask {
   gpointer task_data;
   GDestroyNotify task_data_destroy;
 
+  GTask *invoke_stack_parent;
+  GTask *parent;
+  guint n_children;
+  gpointer caller;
+
   GMainContext *context;
   gint64 creation_time;
   gint priority;
@@ -601,6 +608,32 @@ static GSource *task_pool_manager;
 static guint64 task_wait_time;
 static gint tasks_running;
 
+__thread GTask *g_task_invoke_stack = NULL;
+
+static void
+g_task_push (GTask *task)
+{
+  g_assert (task->invoke_stack_parent == NULL);
+  task->invoke_stack_parent = g_task_invoke_stack;
+  g_task_invoke_stack = task;
+}
+
+static void
+g_task_pop (GTask *task)
+{
+  g_assert (g_task_invoke_stack == task);
+  g_task_invoke_stack = task->invoke_stack_parent;
+  task->invoke_stack_parent = NULL;
+}
+
+GTask * g_task_peek (void);
+
+GTask *
+g_task_peek (void)
+{
+  return g_task_invoke_stack;
+}
+
 /* When the task pool fills up and blocks, and the program keeps
  * queueing more tasks, we will slowly add more threads to the pool
  * (in case the existing tasks are trying to queue subtasks of their
@@ -617,16 +650,67 @@ static gint tasks_running;
 #define G_TASK_WAIT_TIME_MULTIPLIER 1.03
 #define G_TASK_WAIT_TIME_MAX (30 * 60 * 1000000)
 
+static GList *all_tasks = NULL;
+G_LOCK_DEFINE_STATIC (all_tasks);
+
+static int
+g_task_depth (GTask *task)
+{
+  if (task->parent)
+    return 1 + g_task_depth (task->parent);
+  return 1;
+}
+
 static void
 g_task_init (GTask *task)
 {
+  GTask *parent;
+
+  G_LOCK (all_tasks);
+  all_tasks = g_list_prepend (all_tasks, task);
+  G_UNLOCK (all_tasks);
+
   task->check_cancellable = TRUE;
+  parent = g_task_peek ();
+  if (parent)
+    {
+      task->parent = g_object_ref (parent);
+      parent->n_children++;
+      g_print ("GTask %p created with parent %p (depth %d)\n", task, parent, g_task_depth (task));
+    }
+}
+
+gpointer * g_tasks_get (void);
+
+gpointer *
+g_tasks_get (void)
+{
+  GPtrArray *array = g_ptr_array_new ();
+  GList *l;
+
+  G_LOCK (all_tasks);
+  for (l = all_tasks; l != NULL; l = l->next)
+    g_ptr_array_add (array, l->data);
+  g_ptr_array_add (array, NULL);
+  G_UNLOCK (all_tasks);
+
+  return g_ptr_array_free (array, FALSE);
 }
 
 static void
 g_task_finalize (GObject *object)
 {
   GTask *task = G_TASK (object);
+
+  G_LOCK (all_tasks);
+  all_tasks = g_list_remove (all_tasks, task);
+  G_UNLOCK (all_tasks);
+  if (task->parent)
+    {
+      g_print ("GTask %p freed with parent %p\n", task, task->parent);
+      task->parent->n_children--;
+      g_clear_object (&task->parent);
+    }
 
   g_clear_object (&task->source_object);
   g_clear_object (&task->cancellable);
@@ -651,6 +735,35 @@ g_task_finalize (GObject *object)
 
   G_OBJECT_CLASS (g_task_parent_class)->finalize (object);
 }
+
+GTask *
+g_task_new_with_caller (gpointer              source_object,
+                        GCancellable         *cancellable,
+                        GAsyncReadyCallback   callback,
+                        gpointer              callback_data,
+                        gpointer              caller)
+{
+  GTask *task;
+  GSource *source;
+
+  task = g_object_new (G_TYPE_TASK, NULL);
+  task->source_object = source_object ? g_object_ref (source_object) : NULL;
+  task->cancellable = cancellable ? g_object_ref (cancellable) : NULL;
+  task->caller = caller;
+  task->callback = callback;
+  task->callback_data = callback_data;
+  task->context = g_main_context_ref_thread_default ();
+
+  source = g_main_current_source ();
+  if (source)
+    task->creation_time = g_source_get_time (source);
+
+  TRACE (GIO_TASK_NEW (task, source_object, cancellable,
+                       callback, callback_data));
+
+  return task;
+}
+
 
 /**
  * g_task_new:
@@ -687,24 +800,7 @@ g_task_new (gpointer              source_object,
             GAsyncReadyCallback   callback,
             gpointer              callback_data)
 {
-  GTask *task;
-  GSource *source;
-
-  task = g_object_new (G_TYPE_TASK, NULL);
-  task->source_object = source_object ? g_object_ref (source_object) : NULL;
-  task->cancellable = cancellable ? g_object_ref (cancellable) : NULL;
-  task->callback = callback;
-  task->callback_data = callback_data;
-  task->context = g_main_context_ref_thread_default ();
-
-  source = g_main_current_source ();
-  if (source)
-    task->creation_time = g_source_get_time (source);
-
-  TRACE (GIO_TASK_NEW (task, source_object, cancellable,
-                       callback, callback_data));
-
-  return task;
+  return g_task_new_with_caller (source_object, cancellable, callback, callback_data, NULL);
 }
 
 /**
@@ -1131,7 +1227,6 @@ g_task_get_source_tag (GTask *task)
   return task->source_tag;
 }
 
-
 static void
 g_task_return_now (GTask *task)
 {
@@ -1139,6 +1234,7 @@ g_task_return_now (GTask *task)
                                  task->callback_data));
 
   g_main_context_push_thread_default (task->context);
+  g_task_push (task);
 
   if (task->callback != NULL)
     {
@@ -1150,6 +1246,7 @@ g_task_return_now (GTask *task)
   task->completed = TRUE;
   g_object_notify (G_OBJECT (task), "completed");
 
+  g_task_pop (task);
   g_main_context_pop_thread_default (task->context);
 }
 

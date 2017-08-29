@@ -259,3 +259,32 @@ class ForeachCommand (gdb.Command):
         func(var, container, command)
 
 ForeachCommand ()
+
+
+class GTaskBacktrace (gdb.Command):
+      """GTask backtrace"""
+      def __init__ (self):
+            super (GTaskBacktrace, self).__init__ ("gtask-bt", gdb.COMMAND_STACK)
+      def decode_pc_function(self, value):
+            block = gdb.block_for_pc(int(value))
+            return block.function.name
+      def decode_pc(self, value):
+            f = self.decode_pc_function(value)
+            sal = gdb.find_pc_line(int(value))
+            return "%s (%s:%d)" % (f, sal.symtab.filename, sal.line)
+      def print_task_frame(self, frame, task):
+            print ("#%d GTask %s - %s\n     %s -> %s" % (
+                  frame,
+                  hex(int(task)),
+                  self.decode_pc(task["caller"]),
+                  self.decode_pc_function(task["source_tag"]),
+                  self.decode_pc_function(task["callback"])))
+      def invoke (self, arg, from_tty):
+            task = gdb.lookup_global_symbol("g_task_invoke_stack").value()
+            frame = 1
+            while int(task) != 0:
+                  self.print_task_frame(frame, task)
+                  task = task["parent"]
+                  frame = frame + 1
+
+GTaskBacktrace()
