@@ -42,6 +42,7 @@ query_dir (const char *dirname)
 {
   GString *data;
   GDir *dir;
+  GList *list = NULL, *iterator = NULL;
   const char *name;
   char *cachename;
   char **(* query)  (void);
@@ -63,11 +64,16 @@ query_dir (const char *dirname)
   data = g_string_new ("");
 
   while ((name = g_dir_read_name (dir)))
+    list = g_list_prepend (list, g_strdup (name));
+
+  list = g_list_sort (list, (GCompareFunc) g_strcmp0);
+  for (iterator = list; iterator; iterator = iterator->next)
     {
       GModule *module;
       gchar     *path;
       char **extension_points;
 
+      name = iterator->data;
       if (!is_valid_module_name (name))
 	continue;
 
@@ -100,6 +106,7 @@ query_dir (const char *dirname)
     }
 
   g_dir_close (dir);
+  g_list_free_full (list, g_free);
 
   cachename = g_build_filename (dirname, "giomodule.cache", NULL);
 
