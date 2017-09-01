@@ -1786,7 +1786,7 @@ g_source_set_priority (GSource  *source,
     LOCK_CONTEXT (context);
   g_source_set_priority_unlocked (source, context, priority);
   if (context)
-    UNLOCK_CONTEXT (source->context);
+    UNLOCK_CONTEXT (context);
 }
 
 /**
