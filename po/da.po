@@ -25,10 +25,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: "
-"https://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-07 06:44+0000\n"
-"PO-Revision-Date: 2017-02-26 18:35+0100\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-08-26 16:44+0000\n"
+"PO-Revision-Date: 2017-09-03 17:45+0200\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -138,8 +138,7 @@ msgstr "FIL"
 
 #: ../gio/gapplication-tool.c:72
 msgid "Optional relative or absolute filenames, or URIs to open"
-msgstr ""
-"Valgfri relative eller absolutte filnavne, eller URI'er der skal åbnes"
+msgstr "Valgfri relative eller absolutte filnavne, eller URI'er der skal åbnes"
 
 #: ../gio/gapplication-tool.c:73
 msgid "ACTION"
@@ -402,12 +401,12 @@ msgstr "Meningsløst nøgle-/værdikombination i adresseindgang “%s”"
 #: ../gio/gdbusaddress.c:258 ../gio/gdbusaddress.c:339
 #, c-format
 msgid "Error in address “%s” — the port attribute is malformed"
-msgstr "Fejl i adressen “%s” — portattributten er fejlformateret"
+msgstr "Fejl i adressen “%s” — attributten port er fejlformateret"
 
 #: ../gio/gdbusaddress.c:269 ../gio/gdbusaddress.c:350
 #, c-format
 msgid "Error in address “%s” — the family attribute is malformed"
-msgstr "Fejl i adressen “%s” — familieattributten er fejlformateret"
+msgstr "Fejl i adressen “%s” — attributten family er fejlformateret"
 
 #: ../gio/gdbusaddress.c:460
 #, c-format
@@ -450,13 +449,11 @@ msgstr ""
 #: ../gio/gdbusaddress.c:623
 #, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
-msgstr ""
-"Fejl i adressen “%s” — portattributten mangler eller er fejlformateret"
+msgstr "Fejl i adressen “%s” — portattributten mangler eller er fejlformateret"
 
 #: ../gio/gdbusaddress.c:637
 #, c-format
-msgid ""
-"Error in address “%s” — the noncefile attribute is missing or malformed"
+msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
 "Fejl i adressen “%s” — noncefile-attributten mangler eller er fejlformateret"
 
@@ -777,19 +774,19 @@ msgstr "SIGNALmeddelelse: Toptekstfeltet PATH, INTERFACE eller MEMBER mangler"
 
 #: ../gio/gdbusmessage.c:1301
 msgid ""
-"SIGNAL message: The PATH header field is using the reserved value "
-"/org/freedesktop/DBus/Local"
+"SIGNAL message: The PATH header field is using the reserved value /org/"
+"freedesktop/DBus/Local"
 msgstr ""
-"SIGNALmeddelelse: Toptekstfeltet PATH bruger den reserverede værdi "
-"/org/freedesktop/DBus/Local"
+"SIGNALmeddelelse: Toptekstfeltet PATH bruger den reserverede værdi /org/"
+"freedesktop/DBus/Local"
 
 #: ../gio/gdbusmessage.c:1309
 msgid ""
-"SIGNAL message: The INTERFACE header field is using the reserved value "
-"org.freedesktop.DBus.Local"
+"SIGNAL message: The INTERFACE header field is using the reserved value org."
+"freedesktop.DBus.Local"
 msgstr ""
-"SIGNALbesked: Toptekstfeltet INTERFACE bruger den reserverede værdi "
-"org.freedesktop.DBus.Local"
+"SIGNALbesked: Toptekstfeltet INTERFACE bruger den reserverede værdi org."
+"freedesktop.DBus.Local"
 
 #: ../gio/gdbusmessage.c:1357 ../gio/gdbusmessage.c:1417
 #, c-format
@@ -855,8 +852,8 @@ msgstr "Fortolket værdi “%s” for variant er ikke en gyldig D-Bus-signatur"
 msgid ""
 "Error deserializing GVariant with type string “%s” from the D-Bus wire format"
 msgstr ""
-"Fejl ved deserialisering af GVariant med type-streng “%s” fra "
-"D-Bus-wire-formatet"
+"Fejl ved deserialisering af GVariant med type-streng “%s” fra D-Bus-wire-"
+"formatet"
 
 #: ../gio/gdbusmessage.c:2053
 #, c-format
@@ -898,8 +895,8 @@ msgstr "Kan ikke deserialisere besked: "
 msgid ""
 "Error serializing GVariant with type string “%s” to the D-Bus wire format"
 msgstr ""
-"Fejl ved serialisering af GVariant med typestreng “%s” til "
-"D-Bus-wire-formatet"
+"Fejl ved serialisering af GVariant med typestreng “%s” til D-Bus-wire-"
+"formatet"
 
 #: ../gio/gdbusmessage.c:2654
 #, c-format
@@ -993,16 +990,7 @@ msgid "Cannot listen on unsupported transport “%s”"
 msgstr "Kan ikke lytte på ikke-understøttet transport “%s”"
 
 #: ../gio/gdbus-tool.c:95
-#, c-format, fuzzy
-#| msgid ""
-#| "Commands:\n"
-#| "  help         Shows this information\n"
-#| "  introspect   Introspect a remote object\n"
-#| "  monitor      Monitor a remote object\n"
-#| "  call         Invoke a method on a remote object\n"
-#| "  emit         Emit a signal\n"
-#| "\n"
-#| "Use “%s COMMAND --help” to get help on each command.\n"
+#, c-format
 msgid ""
 "Commands:\n"
 "  help         Shows this information\n"
@@ -1020,6 +1008,7 @@ msgstr ""
 "  monitor      Overvåg et fjernobjekt\n"
 "  call         Kald en metode på et fjernobjekt\n"
 "  emit         Udsend et signal\n"
+"  wait         Vent på at et busnavn fremkommer\n"
 "\n"
 "Brug “%s KOMMANDO --help” for at få hjælp om hver kommando.\n"
 
@@ -1242,49 +1231,43 @@ msgstr "Overvåg et fjernobjekt."
 
 #: ../gio/gdbus-tool.c:1980
 msgid "Service to activate before waiting for the other one (well-known name)"
-msgstr ""
+msgstr "Tjeneste som skal aktiveres, før den anden afventes (velkendt navn)"
 
 #: ../gio/gdbus-tool.c:1983
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
-msgstr ""
+msgstr "Ventetid før afslutning med fejl (sekunder); 0 for ingen tidsgrænse (standard)"
 
 #: ../gio/gdbus-tool.c:2031
-#, fuzzy
-#| msgid "[OPTION…]"
 msgid "[OPTION…] BUS-NAME"
-msgstr "[TILVALG …]"
+msgstr "[TILVALG…] BUSNAVN"
 
 #: ../gio/gdbus-tool.c:2033
 msgid "Wait for a bus name to appear."
-msgstr ""
+msgstr "Vent på at et busnavn fremkommer."
 
 #: ../gio/gdbus-tool.c:2109
-#, c-format, fuzzy
-#| msgid "Error: object path not specified.\n"
+#, c-format
 msgid "Error: A service to activate for must be specified.\n"
-msgstr "Fejl: Objektstien er ikke angivet.\n"
+msgstr "Fejl: Der skal angives en tjeneste at aktivere for.\n"
 
 #: ../gio/gdbus-tool.c:2114
-#, c-format, fuzzy
-#| msgid "Error: object path not specified.\n"
+#, c-format
 msgid "Error: A service to wait for must be specified.\n"
-msgstr "Fejl: Objektstien er ikke angivet.\n"
+msgstr "Fejl: Der skal angives en tjeneste at vente på.\n"
 
 #: ../gio/gdbus-tool.c:2119
-#, c-format, fuzzy
-#| msgid "Too many arguments"
+#, c-format
 msgid "Error: Too many arguments.\n"
-msgstr "For mange argumenter"
+msgstr "Fejl: For mange argumenter.\n"
 
 #: ../gio/gdbus-tool.c:2127 ../gio/gdbus-tool.c:2134
-#, c-format, fuzzy
-#| msgid "Error: %s is not a valid bus name\n"
+#, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
-msgstr "Fejl: %s er ikke et gyldigt busnavn\n"
+msgstr "Fejl: %s er ikke et gyldigt velkendt busnavn.\n"
 
-#: ../gio/gdesktopappinfo.c:2001 ../gio/gdesktopappinfo.c:4533
+#: ../gio/gdesktopappinfo.c:2001 ../gio/gdesktopappinfo.c:4531
 msgid "Unnamed"
 msgstr "Unavngivet"
 
@@ -1292,30 +1275,30 @@ msgstr "Unavngivet"
 msgid "Desktop file didn’t specify Exec field"
 msgstr "Skrivebordsfil angav intet Exec-felt"
 
-#: ../gio/gdesktopappinfo.c:2696
+#: ../gio/gdesktopappinfo.c:2694
 msgid "Unable to find terminal required for application"
 msgstr "Kan ikke finde terminal krævet af dette program"
 
-#: ../gio/gdesktopappinfo.c:3129
+#: ../gio/gdesktopappinfo.c:3127
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr "Kan ikke oprette konfigurationsfolder %s for brugerprogram: %s"
 
-#: ../gio/gdesktopappinfo.c:3133
+#: ../gio/gdesktopappinfo.c:3131
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr "Kan ikke oprette bruger-MIME-konfigurationsfolder %s: %s"
 
-#: ../gio/gdesktopappinfo.c:3373 ../gio/gdesktopappinfo.c:3397
+#: ../gio/gdesktopappinfo.c:3371 ../gio/gdesktopappinfo.c:3395
 msgid "Application information lacks an identifier"
 msgstr "Programinformation mangler en identifikator"
 
-#: ../gio/gdesktopappinfo.c:3631
+#: ../gio/gdesktopappinfo.c:3629
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "Kan ikke oprette brugerskrivebords-fil %s"
 
-#: ../gio/gdesktopappinfo.c:3765
+#: ../gio/gdesktopappinfo.c:3763
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Tilpasset definition for %s"
@@ -1379,11 +1362,11 @@ msgstr "Forventede et GEmblem til GEmblemedIcon"
 #: ../gio/gfile.c:969 ../gio/gfile.c:1207 ../gio/gfile.c:1345
 #: ../gio/gfile.c:1583 ../gio/gfile.c:1638 ../gio/gfile.c:1696
 #: ../gio/gfile.c:1780 ../gio/gfile.c:1837 ../gio/gfile.c:1901
-#: ../gio/gfile.c:1956 ../gio/gfile.c:3614 ../gio/gfile.c:3669
-#: ../gio/gfile.c:3905 ../gio/gfile.c:3947 ../gio/gfile.c:4415
-#: ../gio/gfile.c:4826 ../gio/gfile.c:4911 ../gio/gfile.c:5001
-#: ../gio/gfile.c:5098 ../gio/gfile.c:5185 ../gio/gfile.c:5286
-#: ../gio/gfile.c:7827 ../gio/gfile.c:7917 ../gio/gfile.c:8001
+#: ../gio/gfile.c:1956 ../gio/gfile.c:3602 ../gio/gfile.c:3657
+#: ../gio/gfile.c:3893 ../gio/gfile.c:3935 ../gio/gfile.c:4403
+#: ../gio/gfile.c:4814 ../gio/gfile.c:4899 ../gio/gfile.c:4989
+#: ../gio/gfile.c:5086 ../gio/gfile.c:5173 ../gio/gfile.c:5274
+#: ../gio/gfile.c:7815 ../gio/gfile.c:7905 ../gio/gfile.c:7989
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Operationen understøttes ikke"
@@ -1412,50 +1395,50 @@ msgstr "Målfilen findes"
 msgid "Can’t recursively copy directory"
 msgstr "Kan ikke kopiere mappe rekursivt"
 
-#: ../gio/gfile.c:2889
+#: ../gio/gfile.c:2877
 msgid "Splice not supported"
 msgstr "Splejsning understøttes ikke"
 
-#: ../gio/gfile.c:2893
+#: ../gio/gfile.c:2881
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Fejl ved splejsning af fil: %s"
 
-#: ../gio/gfile.c:3025
+#: ../gio/gfile.c:3013
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Kopiering (reflink/klon) mellem monteringer understøttes ikke"
 
-#: ../gio/gfile.c:3029
+#: ../gio/gfile.c:3017
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Kopiering (reflink/klon) er ikke understøttet eller ugyldigt"
 
-#: ../gio/gfile.c:3034
+#: ../gio/gfile.c:3022
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Kopiering (reflink/klon) er ikke understøttet eller virkede ikke"
 
-#: ../gio/gfile.c:3097
+#: ../gio/gfile.c:3085
 msgid "Can’t copy special file"
 msgstr "Kan ikke kopiere specialfil"
 
-#: ../gio/gfile.c:3895
+#: ../gio/gfile.c:3883
 msgid "Invalid symlink value given"
 msgstr "Ugyldig værdi givet for symbolsk henvisning"
 
 # I koden er det en funktion der hedder g_file_trash, som kan give dette som en fejlmeddelelse
-#: ../gio/gfile.c:4056
+#: ../gio/gfile.c:4044
 msgid "Trash not supported"
 msgstr "Flyt til papirkurv understøttes ikke"
 
-#: ../gio/gfile.c:4168
+#: ../gio/gfile.c:4156
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Filnavne kan ikke indeholder “%c”"
 
-#: ../gio/gfile.c:6614 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6602 ../gio/gvolume.c:363
 msgid "volume doesn’t implement mount"
 msgstr "diskenheden implementerer ikke montering"
 
-#: ../gio/gfile.c:6723
+#: ../gio/gfile.c:6711
 msgid "No application is registered as handling this file"
 msgstr "Intet program er registreret til håndtering af denne fil"
 
@@ -1705,14 +1688,12 @@ msgstr "Viser indholdet af stederne i et træ"
 msgid "Use %s to get detailed help.\n"
 msgstr "Brug “%s help KOMMANDO” for at få uddybende hjælp.\n"
 
-#: ../gio/gio-tool-cat.c:83
-#, fuzzy
-#| msgid "Error writing to file: %s"
+#: ../gio/gio-tool-cat.c:87
 msgid "Error writing to stdout"
-msgstr "Fejl under skrivning til filen: %s"
+msgstr "Fejl under skrivning til stdout"
 
 #. Translators: commandline placeholder
-#: ../gio/gio-tool-cat.c:127 ../gio/gio-tool-info.c:282
+#: ../gio/gio-tool-cat.c:133 ../gio/gio-tool-info.c:282
 #: ../gio/gio-tool-list.c:165 ../gio/gio-tool-mkdir.c:48
 #: ../gio/gio-tool-monitor.c:37 ../gio/gio-tool-monitor.c:39
 #: ../gio/gio-tool-monitor.c:41 ../gio/gio-tool-monitor.c:43
@@ -1723,21 +1704,21 @@ msgstr "Fejl under skrivning til filen: %s"
 msgid "LOCATION"
 msgstr "STED"
 
-#: ../gio/gio-tool-cat.c:132
+#: ../gio/gio-tool-cat.c:138
 msgid "Concatenate files and print to standard output."
 msgstr "Sammenkæd filer og udskriv til standard-output."
 
-#: ../gio/gio-tool-cat.c:134
+#: ../gio/gio-tool-cat.c:140
 msgid ""
 "gio cat works just like the traditional cat utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
 "like smb://server/resource/file.txt as location."
 msgstr ""
 "gio cat virker som det traditionelle cat-værktøj, men bruger GIO-steder i "
-"stedet for lokale filer. For eksempel kan du bruge noget i stil med "
-"smb://server/ressource/fil.txt som sted."
+"stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
+"server/ressource/fil.txt som sted."
 
-#: ../gio/gio-tool-cat.c:156 ../gio/gio-tool-info.c:313
+#: ../gio/gio-tool-cat.c:162 ../gio/gio-tool-info.c:313
 #: ../gio/gio-tool-mkdir.c:76 ../gio/gio-tool-monitor.c:228
 #: ../gio/gio-tool-open.c:71 ../gio/gio-tool-remove.c:72
 msgid "No locations given"
@@ -1780,7 +1761,7 @@ msgstr "KILDE"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
-#: ../gio/gio-tool-save.c:165
+#: ../gio/gio-tool-save.c:160
 msgid "DESTINATION"
 msgstr "DESTINATION"
 
@@ -1795,8 +1776,8 @@ msgid ""
 "like smb://server/resource/file.txt as location."
 msgstr ""
 "gio copy virker som det traditionelle cp-værktøj, men bruger GIO-steder i "
-"stedet for lokale filer. For eksempel kan du bruge noget i stil med "
-"smb://server/ressource/fil.txt som sted."
+"stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
+"server/ressource/fil.txt som sted."
 
 #: ../gio/gio-tool-copy.c:147
 #, c-format
@@ -1893,10 +1874,10 @@ msgid ""
 "namespace, e.g. unix, or by “*”, which matches all attributes"
 msgstr ""
 "gio info virker som det traditionelle ls-værktøj, men bruger GIO-steder i "
-"stedet for lokale filer. For eksempel kan du bruge noget i stil med "
-"smb://server/ressource/fil.txt som sted. Filattributter kan angives ved "
-"deres GIO-navn såsom standard::icon, eller blot ved navnerum som f.eks. "
-"unix, eller ved '*', som matcher alle attributter"
+"stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
+"server/ressource/fil.txt som sted. Filattributter kan angives ved deres GIO-"
+"navn såsom standard::icon, eller blot ved navnerum som f.eks. unix, eller "
+"ved '*', som matcher alle attributter"
 
 #: ../gio/gio-tool-list.c:36 ../gio/gio-tool-tree.c:32
 msgid "Show hidden files"
@@ -1922,9 +1903,9 @@ msgid ""
 "be specified with their GIO name, e.g. standard::icon"
 msgstr ""
 "gio list virker som det traditionelle ls-værktøj, men bruger GIO-steder i "
-"stedet for lokale filer. For eksempel kan du bruge noget i stil med "
-"smb://server/ressource/fil.txt som sted. Filattributter kan angives ved "
-"deres GIO-navn såsom standard::icon"
+"stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
+"server/ressource/fil.txt som sted. Filattributter kan angives ved deres GIO-"
+"navn såsom standard::icon"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-mime.c:71
@@ -1984,10 +1965,9 @@ msgid "No recommended applications\n"
 msgstr "Ingen anbefalede programmer\n"
 
 #: ../gio/gio-tool-mime.c:162
-#, c-format, fuzzy
-#| msgid "Failed to load info for handler “%s”\n"
+#, c-format
 msgid "Failed to load info for handler “%s”"
-msgstr "Kunne ikke indlæse info for håndteringen “%s”\n"
+msgstr "Kunne ikke indlæse info for håndteringen “%s”"
 
 #: ../gio/gio-tool-mime.c:168
 #, c-format
@@ -2009,8 +1989,8 @@ msgid ""
 "like smb://server/resource/mydir as location."
 msgstr ""
 "gio mkdir virker som det traditionelle mkdir-værktøj, men bruger GIO-steder "
-"i stedet for lokale filer. For eksempel kan du bruge noget i stil med "
-"smb://server/ressource/mappe som sted."
+"i stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
+"server/ressource/mappe som sted."
 
 #: ../gio/gio-tool-monitor.c:37
 msgid "Monitor a directory (default: depends on type)"
@@ -2094,10 +2074,8 @@ msgid "Show extra information"
 msgstr "Vis yderligere oplysninger"
 
 #: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
-#, fuzzy
-#| msgid "Error mounting location: Anonymous access denied\n"
 msgid "Anonymous access denied"
-msgstr "Fejl ved montering af sted: Anonym adgang nægtet\n"
+msgstr "Anonym adgang nægtet"
 
 #: ../gio/gio-tool-mount.c:897
 #, c-format
@@ -2105,10 +2083,8 @@ msgid "Mounted %s at %s\n"
 msgstr "Monterede %s på %s\n"
 
 #: ../gio/gio-tool-mount.c:950
-#, fuzzy
-#| msgid "No volume for device file %s\n"
 msgid "No volume for device file"
-msgstr "Ingen diskenhed for enhedsfilen %s\n"
+msgstr "Ingen diskenhed for enhedsfilen"
 
 #: ../gio/gio-tool-mount.c:1145
 msgid "Mount or unmount the locations."
@@ -2129,8 +2105,8 @@ msgid ""
 "like smb://server/resource/file.txt as location"
 msgstr ""
 "gio move virker som det traditionelle mv-værktøj, men bruger GIO-steder i "
-"stedet for lokale filer. For eksempel kan du bruge noget i stil med "
-"smb://server/ressource/fil.txt som sted"
+"stedet for lokale filer. For eksempel kan du bruge noget i stil med smb://"
+"server/ressource/fil.txt som sted"
 
 #: ../gio/gio-tool-move.c:142
 #, c-format
@@ -2165,7 +2141,7 @@ msgstr "Omdøb en fil."
 msgid "Missing argument"
 msgstr "Mangler argument"
 
-#: ../gio/gio-tool-rename.c:76 ../gio/gio-tool-save.c:195
+#: ../gio/gio-tool-rename.c:76 ../gio/gio-tool-save.c:190
 #: ../gio/gio-tool-set.c:137
 msgid "Too many arguments"
 msgstr "For mange argumenter"
@@ -2206,23 +2182,21 @@ msgstr "Etag for filen, som overskrives"
 msgid "ETAG"
 msgstr "ETAG"
 
-#: ../gio/gio-tool-save.c:119
-#, fuzzy
-#| msgid "Error reading from handle: %s"
+#: ../gio/gio-tool-save.c:113
 msgid "Error reading from standard input"
-msgstr "Fejl ved læsning fra håndtag: %s"
+msgstr "Fejl ved læsning fra standard-input"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
-#: ../gio/gio-tool-save.c:145
+#: ../gio/gio-tool-save.c:139
 #, c-format
 msgid "Etag not available\n"
 msgstr "Etag er ikke tilgængeligt\n"
 
-#: ../gio/gio-tool-save.c:168
+#: ../gio/gio-tool-save.c:163
 msgid "Read from standard input and save to DEST."
 msgstr "Læs fra standard-input og gem til DEST."
 
-#: ../gio/gio-tool-save.c:188
+#: ../gio/gio-tool-save.c:183
 msgid "No destination given"
 msgstr "Ingen destination givet"
 
@@ -2259,10 +2233,9 @@ msgid "Value not specified"
 msgstr "Værdi ikke angivet"
 
 #: ../gio/gio-tool-set.c:180
-#, c-format, fuzzy
-#| msgid "Invalid attribute type %s\n"
+#, c-format
 msgid "Invalid attribute type “%s”"
-msgstr "Ugyldig attributtype %s\n"
+msgstr "Ugyldig attributtype “%s”"
 
 #: ../gio/gio-tool-trash.c:32
 msgid "Empty the trash"
@@ -2406,206 +2379,183 @@ msgstr "Du skal angive præcist ét filnavn\n"
 #: ../gio/glib-compile-schemas.c:95
 #, c-format
 msgid "nick must be a minimum of 2 characters"
-msgstr ""
+msgstr "kaldenavn (nick) skal være på mindst 2 tegn"
 
 #: ../gio/glib-compile-schemas.c:106
-#, c-format, fuzzy
-#| msgid "Invalid symlink value given"
+#, c-format
 msgid "Invalid numeric value"
-msgstr "Ugyldig værdi givet for symbolsk henvisning"
+msgstr "Ugyldig numerisk værdi"
 
 #: ../gio/glib-compile-schemas.c:114
-#, c-format, fuzzy
-#| msgid "<%s id='%s'> already specified"
+#, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "<%s id='%s'> allerede angivet"
+msgstr "<value nick='%s'/> allerede angivet"
 
 #: ../gio/glib-compile-schemas.c:122
-#, c-format, fuzzy
-#| msgid "<key name='%s'> already specified"
+#, c-format
 msgid "value='%s' already specified"
-msgstr "<key name='%s'> allerede angivet"
+msgstr "value='%s' allerede angivet"
 
 #: ../gio/glib-compile-schemas.c:136
 #, c-format
 msgid "flags values must have at most 1 bit set"
-msgstr ""
+msgstr "værdier til flag må højst have 1 bit sat"
 
+# value eller værdi?
 #: ../gio/glib-compile-schemas.c:161
 #, c-format
 msgid "<%s> must contain at least one <value>"
-msgstr ""
+msgstr "<%s> skal indeholde mindst én <value>"
 
 #: ../gio/glib-compile-schemas.c:315
-#, c-format, fuzzy
-#| msgid "No connection endpoint specified"
+#, c-format
 msgid "<%s> is not contained in the specified range"
-msgstr "Intet slutpunkt for forbindelsen angivet"
+msgstr "<%s> indgår ikke i det givne interval"
 
 #: ../gio/glib-compile-schemas.c:327
 #, c-format
 msgid "<%s> is not a valid member of the specified enumerated type"
-msgstr ""
+msgstr "<%s> er ikke et gyldigt medlem af den angivne numererede type"
 
 #: ../gio/glib-compile-schemas.c:333
 #, c-format
 msgid "<%s> contains string not in the specified flags type"
-msgstr ""
+msgstr "<%s> indeholder en streng, som ikke tilhører den angivne flagtype"
 
+# oversæt choices?
 #: ../gio/glib-compile-schemas.c:339
 #, c-format
 msgid "<%s> contains a string not in <choices>"
-msgstr ""
+msgstr "<%s> indeholder en streng, som ikke er blandt <choices>"
 
 #: ../gio/glib-compile-schemas.c:373
-#, fuzzy
-#| msgid "<key name='%s'> already specified"
 msgid "<range/> already specified for this key"
-msgstr "<key name='%s'> allerede angivet"
+msgstr "<range/> er allerede angivet for denne nøgle"
 
 #: ../gio/glib-compile-schemas.c:391
 #, c-format
 msgid "<range> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<range> er ikke tilladt for nøgler af typen “%s”"
 
 #: ../gio/glib-compile-schemas.c:408
 #, c-format
 msgid "<range> specified minimum is greater than maximum"
-msgstr ""
+msgstr "<range>-minimum er større end maksimum"
 
 #: ../gio/glib-compile-schemas.c:433
 #, c-format
 msgid "unsupported l10n category: %s"
-msgstr ""
+msgstr "l10n-kategori ikke understøttet: %s"
 
 #: ../gio/glib-compile-schemas.c:441
 msgid "l10n requested, but no gettext domain given"
-msgstr ""
+msgstr "l10n blev forespurgt, men intet gettext-domæne givet"
 
 #: ../gio/glib-compile-schemas.c:453
 msgid "translation context given for value without l10n enabled"
-msgstr ""
+msgstr "oversættelseskontekst givet for værdi uden at l10n er slået til"
 
 #: ../gio/glib-compile-schemas.c:475
-#, c-format, fuzzy
-#| msgid "Failed to create file “%s”: %s"
+#, c-format
 msgid "Failed to parse <default> value of type “%s”: "
-msgstr "Fejl under oprettelse af filen “%s”: %s"
+msgstr "Kunne ikke fortolke <default>-værdi for typen “%s”: "
 
 #: ../gio/glib-compile-schemas.c:492
 msgid ""
 "<choices> cannot be specified for keys tagged as having an enumerated type"
-msgstr ""
+msgstr "<choices> kan ikke angives for nøgler, der er markeret som havende en nummereret type"
 
 #: ../gio/glib-compile-schemas.c:501
-#, fuzzy
-#| msgid "<child name='%s'> already specified"
 msgid "<choices> already specified for this key"
-msgstr "<child name='%s'> allerede angivet"
+msgstr "<choices> er allerede givet for denne nøgle"
 
 #: ../gio/glib-compile-schemas.c:513
 #, c-format
 msgid "<choices> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<choices> er ikke tilladt for nøgler af typen “%s”"
 
 #: ../gio/glib-compile-schemas.c:529
-#, c-format, fuzzy
-#| msgid "<child name='%s'> already specified"
+#, c-format
 msgid "<choice value='%s'/> already given"
-msgstr "<child name='%s'> allerede angivet"
+msgstr "<choice value='%s'/> er allerede givet"
 
 #: ../gio/glib-compile-schemas.c:544
 #, c-format
 msgid "<choices> must contain at least one <choice>"
-msgstr ""
+msgstr "<choices> skal indeholde mindst én <choice>"
 
 #: ../gio/glib-compile-schemas.c:558
-#, fuzzy
-#| msgid "<child name='%s'> already specified"
 msgid "<aliases> already specified for this key"
-msgstr "<child name='%s'> allerede angivet"
+msgstr "<aliases> er allerede angivet for denne nøgle"
 
 #: ../gio/glib-compile-schemas.c:562
 msgid ""
 "<aliases> can only be specified for keys with enumerated or flags types or "
 "after <choices>"
-msgstr ""
+msgstr "<aliases> kan kun angives for nøgler af nummereret type eller flagtype, eller efter <choices>"
 
 #: ../gio/glib-compile-schemas.c:581
 #, c-format
 msgid ""
 "<alias value='%s'/> given when “%s” is already a member of the enumerated "
 "type"
-msgstr ""
+msgstr "<alias value='%s'/> givet mens “%s” allerede er medlem i nummereret type"
 
 #: ../gio/glib-compile-schemas.c:587
 #, c-format
 msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
-msgstr ""
+msgstr "<alias value='%s'/> givet mens <choice value='%s'/> allerede var givet"
 
 #: ../gio/glib-compile-schemas.c:595
-#, c-format, fuzzy
-#| msgid "<%s id='%s'> already specified"
+#, c-format
 msgid "<alias value='%s'/> already specified"
-msgstr "<%s id='%s'> allerede angivet"
+msgstr "<alias value='%s'/> er allerede givet"
 
 #: ../gio/glib-compile-schemas.c:605
-#, c-format, fuzzy
-#| msgid "The pathname “%s” is not an absolute path"
+#, c-format
 msgid "alias target “%s” is not in enumerated type"
-msgstr "Stinavnet “%s” er ikke en absolut sti"
+msgstr "alias-målet “%s” er ikke en nummereret type"
 
 #: ../gio/glib-compile-schemas.c:606
 #, c-format
 msgid "alias target “%s” is not in <choices>"
-msgstr ""
+msgstr "alias-målet “%s” er ikke i <choices>"
 
 #: ../gio/glib-compile-schemas.c:621
 #, c-format
 msgid "<aliases> must contain at least one <alias>"
-msgstr ""
+msgstr "<aliases> skal indeholde mindst én <alias>"
 
 #: ../gio/glib-compile-schemas.c:786
-#, fuzzy
-#| msgid "empty names are not permitted"
 msgid "Empty names are not permitted"
-msgstr "tomme navne tillades ikke"
+msgstr "Tomme navne er ikke tilladt"
 
 #: ../gio/glib-compile-schemas.c:796
-#, c-format, fuzzy
-#| msgid "invalid name '%s': names must begin with a lowercase letter"
+#, c-format
 msgid "Invalid name “%s”: names must begin with a lowercase letter"
-msgstr "ugyldigt navn “%s”: Navne skal begynde med et lille bogstav"
+msgstr "Ugyldigt navn “%s”: Navne skal begynde med et lille bogstav"
 
 #: ../gio/glib-compile-schemas.c:808
-#, c-format, fuzzy
-#| msgid ""
-#| "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
-#| "and hyphen ('-') are permitted."
+#, c-format
 msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
 "and hyphen (“-”) are permitted"
-msgstr ""
-"ugyldigt navn “%s”: ugyldigt tegn “%c”; kun små bogstaver, tal og bindestreg "
-"(“-”) er tilladt."
+msgstr "Ugyldigt navn “%s”: ugyldigt tegn “%c”; kun små bogstaver, tal og bindestreg (“-”) er tilladt"
 
 #: ../gio/glib-compile-schemas.c:817
-#, c-format, fuzzy
-#| msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
+#, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
-msgstr "ugyldigt navn “%s”: To bindestreger i træk (“--”) er ikke tilladt."
+msgstr "Ugyldigt navn “%s”: To bindestreger i træk (“--”) er ikke tilladt"
 
 #: ../gio/glib-compile-schemas.c:826
-#, c-format, fuzzy
-#| msgid "invalid name '%s': the last character may not be a hyphen ('-')."
+#, c-format
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
-msgstr "ugyldigt navn “%s”: Sidste tegn må ikke være en bindestreg (“-”)."
+msgstr "Ugyldigt navn “%s”: Sidste tegn må ikke være en bindestreg (“-”)"
 
 #: ../gio/glib-compile-schemas.c:834
-#, c-format, fuzzy
-#| msgid "invalid name '%s': maximum length is 1024"
+#, c-format
 msgid "Invalid name “%s”: maximum length is 1024"
-msgstr "ugyldigt navn “%s”: maksimale længde er 1024"
+msgstr "Ugyldigt navn “%s”: maksimale længde er 1024"
 
 #: ../gio/glib-compile-schemas.c:904
 #, c-format
@@ -2613,10 +2563,8 @@ msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> allerede angivet"
 
 #: ../gio/glib-compile-schemas.c:930
-#, fuzzy
-#| msgid "cannot add keys to a 'list-of' schema"
 msgid "Cannot add keys to a “list-of” schema"
-msgstr "kan ikke føje nøgler til et “list-of”-skema"
+msgstr "Kan ikke føje nøgler til et “list-of”-skema"
 
 #: ../gio/glib-compile-schemas.c:941
 #, c-format
@@ -2633,16 +2581,11 @@ msgstr ""
 "<override> for at ændre værdi"
 
 #: ../gio/glib-compile-schemas.c:970
-#, c-format, fuzzy
-#| msgid ""
-#| "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
-#| "to <key>"
+#, c-format
 msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
 "to <key>"
-msgstr ""
-"præcist en af 'type', 'enum' eller 'flags' skal være angivet som attribut "
-"for <key>"
+msgstr "Præcist en af “type”, “enum” eller “flags” skal være angivet som attribut for <key>"
 
 #: ../gio/glib-compile-schemas.c:989
 #, c-format
@@ -2650,59 +2593,50 @@ msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> (endnu) ikke defineret."
 
 #: ../gio/glib-compile-schemas.c:1004
-#, c-format, fuzzy
-#| msgid "invalid GVariant type string '%s'"
+#, c-format
 msgid "Invalid GVariant type string “%s”"
-msgstr "ugyldig typestreng “%s” for GVariant"
+msgstr "Ugyldig typestreng “%s” for GVariant"
 
 # override og extend bruges i forbindelse med nedarvning i forbindelse med objektorienteret programmering
 #: ../gio/glib-compile-schemas.c:1034
-#, fuzzy
-#| msgid "<override> given but schema isn't extending anything"
 msgid "<override> given but schema isn’t extending anything"
 msgstr "<override> givet, men skemaet nedarver ikke fra noget"
 
 #: ../gio/glib-compile-schemas.c:1047
-#, c-format, fuzzy
-#| msgid "no <key name='%s'> to override"
+#, c-format
 msgid "No <key name='%s'> to override"
-msgstr "ingen <key name='%s'> at overskrive"
+msgstr "Ingen <key name='%s'> at overskrive"
 
 #: ../gio/glib-compile-schemas.c:1055
 #, c-format
 msgid "<override name='%s'> already specified"
-msgstr "<override name='%s'> allerede angivet"
+msgstr "<override name='%s'> er allerede angivet"
 
 #: ../gio/glib-compile-schemas.c:1128
 #, c-format
 msgid "<schema id='%s'> already specified"
-msgstr "<schema id='%s'> allerede angivet"
+msgstr "<schema id='%s'> er allerede angivet"
 
 #: ../gio/glib-compile-schemas.c:1140
-#, c-format, fuzzy
-#| msgid "<schema id='%s'> extends not yet existing schema '%s'"
+#, c-format
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
-msgstr "<schema id='%s'> nedarver fra skemaet \"%s\", som ikke findes endnu"
+msgstr "<schema id='%s'> nedarver fra skemaet “%s”, som ikke findes endnu"
 
 # list of?
 #: ../gio/glib-compile-schemas.c:1156
-#, c-format, fuzzy
-#| msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+#, c-format
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
-msgstr ""
-"<schema id='%s'> er en liste for skemaet \"%s\", der ikke findes endnu"
+msgstr "<schema id='%s'> er en liste for skemaet “%s”, som ikke findes endnu"
 
 #: ../gio/glib-compile-schemas.c:1164
-#, c-format, fuzzy
-#| msgid "Can not be a list of a schema with a path"
+#, c-format
 msgid "Cannot be a list of a schema with a path"
 msgstr "Kan ikke være en liste for et skema med en sti"
 
 #: ../gio/glib-compile-schemas.c:1174
-#, c-format, fuzzy
-#| msgid "Can not extend a schema with a path"
+#, c-format
 msgid "Cannot extend a schema with a path"
-msgstr "Kan ikke udvide et skema med en sti"
+msgstr "Kan ikke nedarve fra et skema med en sti"
 
 #: ../gio/glib-compile-schemas.c:1184
 #, c-format
@@ -2713,35 +2647,28 @@ msgstr ""
 "en liste"
 
 #: ../gio/glib-compile-schemas.c:1194
-#, c-format, fuzzy
-#| msgid ""
-#| "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
-#| "does not extend '%s'"
+#, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
 "does not extend “%s”"
-msgstr ""
-"<schema id='%s' list-of='%s'> nedarver fra <schema id='%s' list-of='%s'>, "
-"men \"%s\" nedarver ikke fra \"%s\""
+msgstr "<schema id='%s' list-of='%s'> nedarver fra <schema id='%s' list-of='%s'>, men “%s” nedarver ikke fra “%s”"
 
 #: ../gio/glib-compile-schemas.c:1211
-#, c-format, fuzzy
-#| msgid "a path, if given, must begin and end with a slash"
+#, c-format
 msgid "A path, if given, must begin and end with a slash"
-msgstr "en sti, hvis givet, skal starte og slutte med skråstreg"
+msgstr "En sti, hvis givet, skal starte og slutte med skråstreg"
 
 #: ../gio/glib-compile-schemas.c:1218
-#, c-format, fuzzy
-#| msgid "the path of a list must end with ':/'"
+#, c-format
 msgid "The path of a list must end with “:/”"
-msgstr "stien for en liste skal slutte med “:/”"
+msgstr "Stien for en liste skal slutte med “:/”"
 
 #: ../gio/glib-compile-schemas.c:1227
 #, c-format
 msgid ""
-"Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, "
-"“/desktop/” or “/system/” are deprecated."
-msgstr ""
+"Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
+"desktop/” or “/system/” are deprecated."
+msgstr "Advarsel: Skemaet “%s” har stien “%s”.  Stier som begynder med “/apps/”, “/desktop/” eller “/system/” er forældede."
 
 #: ../gio/glib-compile-schemas.c:1257
 #, c-format
@@ -2760,18 +2687,17 @@ msgstr "Elementet <%s> er ikke tilladt i topniveau"
 
 #: ../gio/glib-compile-schemas.c:1523
 msgid "Element <default> is required in <key>"
-msgstr ""
+msgstr "Elementet <default> er påkrævet i <key>"
 
 #: ../gio/glib-compile-schemas.c:1613
-#, c-format, fuzzy
-#| msgid "text may not appear inside <%s>"
+#, c-format
 msgid "Text may not appear inside <%s>"
-msgstr "der må ikke være tekst inden i <%s>"
+msgstr "Der må ikke være tekst inden i <%s>"
 
 #: ../gio/glib-compile-schemas.c:1681
 #, c-format
 msgid "Warning: undefined reference to <schema id='%s'/>"
-msgstr ""
+msgstr "Advarsel: udefineret reference til <schema id='%s'/>"
 
 #. Translators: Do not translate "--strict".
 #: ../gio/glib-compile-schemas.c:1820 ../gio/glib-compile-schemas.c:1894
@@ -3746,8 +3672,7 @@ msgstr "Kan ikke bruge datagramoperationer på en ikke-datagram-sokkel."
 #: ../gio/gsocket.c:1139
 #, c-format
 msgid "Cannot use datagram operations on a socket with a timeout set."
-msgstr ""
-"Kan ikke bruge datagramoperationer på en sokkel med angivet udløbstid."
+msgstr "Kan ikke bruge datagramoperationer på en sokkel med angivet udløbstid."
 
 #: ../gio/gsocket.c:1943
 #, c-format
@@ -4028,10 +3953,6 @@ msgstr ""
 #. Translators: This is not the 'This is the last chance' string. It is
 #. * displayed when more than one attempt is allowed.
 #: ../gio/gtlspassword.c:115
-#, fuzzy
-#| msgid ""
-#| "Several password entered have been incorrect, and your access will be locked "
-#| "out after further failures."
 msgid ""
 "Several passwords entered have been incorrect, and your access will be "
 "locked out after further failures."
@@ -4815,9 +4736,9 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Entiteten sluttede ikke med et semikolon; du har sandsynligvis brugt et "
-"og-tegn uden at det var beregnet på at starte en entitet - dette undgås ved "
-"at bruge &amp; i stedet"
+"Entiteten sluttede ikke med et semikolon; du har sandsynligvis brugt et og-"
+"tegn uden at det var beregnet på at starte en entitet - dette undgås ved at "
+"bruge &amp; i stedet"
 
 #: ../glib/gmarkup.c:1170
 msgid "Document must begin with an element (e.g. <book>)"
@@ -5540,24 +5461,22 @@ msgstr ""
 
 #: ../glib/gstrfuncs.c:3247 ../glib/gstrfuncs.c:3348
 msgid "Empty string is not a number"
-msgstr ""
+msgstr "Tom streng er ikke et tal"
 
 #: ../glib/gstrfuncs.c:3271
-#, c-format, fuzzy
-#| msgid "'%s' is not a valid name"
+#, c-format
 msgid "“%s” is not a signed number"
-msgstr "“%s” er ikke et gyldigt navn"
+msgstr "“%s” er ikke et tal med fortegn"
 
 #: ../glib/gstrfuncs.c:3281 ../glib/gstrfuncs.c:3384
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
-msgstr ""
+msgstr "Tallet “%s” er uden for det gyldige interval [%s, %s]"
 
 #: ../glib/gstrfuncs.c:3374
-#, c-format, fuzzy
-#| msgid "'%s' is not a valid name"
+#, c-format
 msgid "“%s” is not an unsigned number"
-msgstr "“%s” er ikke et gyldigt navn"
+msgstr "“%s” er ikke et tal uden fortegn"
 
 #: ../glib/gutf8.c:808
 msgid "Failed to allocate memory"
@@ -5576,75 +5495,75 @@ msgstr "Ugyldig sekvens i konverteringsinddata"
 msgid "Character out of range for UTF-16"
 msgstr "Tegn uden for gyldigt interval for UTF-16"
 
-#: ../glib/gutils.c:2149 ../glib/gutils.c:2176 ../glib/gutils.c:2282
+#: ../glib/gutils.c:2209 ../glib/gutils.c:2236 ../glib/gutils.c:2342
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: ../glib/gutils.c:2155
+#: ../glib/gutils.c:2215
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2157
+#: ../glib/gutils.c:2217
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2160
+#: ../glib/gutils.c:2220
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2163
+#: ../glib/gutils.c:2223
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2166
+#: ../glib/gutils.c:2226
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2169
+#: ../glib/gutils.c:2229
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2182
+#: ../glib/gutils.c:2242
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gutils.c:2185 ../glib/gutils.c:2300
+#: ../glib/gutils.c:2245 ../glib/gutils.c:2360
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2188 ../glib/gutils.c:2305
+#: ../glib/gutils.c:2248 ../glib/gutils.c:2365
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2190 ../glib/gutils.c:2310
+#: ../glib/gutils.c:2250 ../glib/gutils.c:2370
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2193 ../glib/gutils.c:2315
+#: ../glib/gutils.c:2253 ../glib/gutils.c:2375
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2196 ../glib/gutils.c:2320
+#: ../glib/gutils.c:2256 ../glib/gutils.c:2380
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2233
+#: ../glib/gutils.c:2293
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -5656,7 +5575,7 @@ msgstr[1] "%s bytes"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2295
+#: ../glib/gutils.c:2355
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
@@ -5767,7 +5686,8 @@ msgstr "%.1f KB"
 #~ msgstr "Unormal programafslutning ved start af kommandolinje “%s”: %s"
 
 #~ msgid "Command line '%s' exited with non-zero exit status %d: %s"
-#~ msgstr "Kommandolinjen “%s” afsluttede med fejlstatus %d forskellig fra 0: %s"
+#~ msgstr ""
+#~ "Kommandolinjen “%s” afsluttede med fejlstatus %d forskellig fra 0: %s"
 
 #~ msgid "No service record for '%s'"
 #~ msgstr "Ingen tjenestejournal for “%s”"
@@ -5797,7 +5717,8 @@ msgstr "%.1f KB"
 #~ msgid "Error writing to unix: %s"
 #~ msgstr "Fejl ved skrivning til unix: %s"
 
-#~ msgid "Key file contains key '%s' which has value that cannot be interpreted."
+#~ msgid ""
+#~ "Key file contains key '%s' which has value that cannot be interpreted."
 #~ msgstr ""
 #~ "Nøglefilen indeholder nøglen “%s” som har en værdi der ikke kan fortolkes."
 
@@ -5825,8 +5746,8 @@ msgstr "%.1f KB"
 #~ msgstr "Typen af returværdi er forkert - fik “%s”, men forventede “%s”"
 
 #~ msgid ""
-#~ "Trying to set property %s of type %s but according to the expected interface "
-#~ "the type is %s"
+#~ "Trying to set property %s of type %s but according to the expected "
+#~ "interface the type is %s"
 #~ msgstr ""
 #~ "Forsøger at ændre egenskaben %s af typen %s, men ifølge den forventede "
 #~ "grænseflade er typen %s"
@@ -5887,13 +5808,13 @@ msgstr "%.1f KB"
 #~ msgstr "skjul ikke poster"
 
 #~ msgid ""
-#~ "Character '%s' is not valid at the start of an entity name; the & character "
-#~ "begins an entity; if this ampersand isn't supposed to be an entity, escape "
-#~ "it as &amp;"
+#~ "Character '%s' is not valid at the start of an entity name; the & "
+#~ "character begins an entity; if this ampersand isn't supposed to be an "
+#~ "entity, escape it as &amp;"
 #~ msgstr ""
-#~ "Tegnet “%s” er ikke gyldigt ved starten af et entitetnavn; &-tegnet starter "
-#~ "en entitet; hvis dette og-tegn ikke er beregnet på at være en entitet, så "
-#~ "undgå dette ved at bruge &amp; i stedet"
+#~ "Tegnet “%s” er ikke gyldigt ved starten af et entitetnavn; &-tegnet "
+#~ "starter en entitet; hvis dette og-tegn ikke er beregnet på at være en "
+#~ "entitet, så undgå dette ved at bruge &amp; i stedet"
 
 #~ msgid "Character '%s' is not valid inside an entity name"
 #~ msgstr "Tegnet “%s” er ikke gyldigt inde i et entitetsnavn"
@@ -5961,5 +5882,3 @@ msgstr "%.1f KB"
 
 #~ msgid "Channel set flags unsupported"
 #~ msgstr "Kanalsætningsflag ikke understøttet"
-
-
