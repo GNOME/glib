@@ -7,21 +7,23 @@
 # Jordi Serratosa <jordis@softcatala.cat>, 2012.
 # Gil Forcada <gilforcada@guifi.net>, 2008-2013, 2013, 2014, 2016.
 # Jordi Mas i Hernàndez <jmas@softcatala.org>, 2016, 2017
+# Xavi Ivars <xavi.ivars@gmail.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-07 19:40+0000\n"
-"PO-Revision-Date: 2017-03-22 07:37+0100\n"
-"Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
-"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"POT-Creation-Date: 2017-09-03 19:50+0000\n"
+"PO-Revision-Date: 2017-09-03 22:07+0200\n"
+"Last-Translator: Xavi Ivars <xavi.ivars@gmail.com>\n"
+"Language-Team: Xavi Ivars\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.9\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+"X-Project-Style: gnome\n"
 
 #: ../gio/gapplication.c:490
 msgid "GApplication options"
@@ -1272,13 +1274,15 @@ msgstr "Fes el seguiment a un objecte remot."
 
 #: ../gio/gdbus-tool.c:1980
 msgid "Service to activate before waiting for the other one (well-known name)"
-msgstr ""
+msgstr "Servei a activar abans d'esperar a un altra (nom conegut)"
 
 #: ../gio/gdbus-tool.c:1983
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
 msgstr ""
+"Temps d'espera abans de sortir amb un error (segons); 0 si no voleu temps "
+"d'espera (predeterminat)"
 
 #: ../gio/gdbus-tool.c:2031
 msgid "[OPTION…] BUS-NAME"
@@ -1286,7 +1290,7 @@ msgstr "[OPCIÓ...] NOM-DEL-BUS"
 
 #: ../gio/gdbus-tool.c:2033
 msgid "Wait for a bus name to appear."
-msgstr ""
+msgstr "Espera a que aparegui el nom del bus."
 
 #: ../gio/gdbus-tool.c:2109
 #, c-format
@@ -1300,17 +1304,16 @@ msgstr "Error: no s'ha especificat el servei a esperar.\n"
 
 #: ../gio/gdbus-tool.c:2119
 #, c-format
-#| msgid "Too many arguments"
 msgid "Error: Too many arguments.\n"
 msgstr "Error: massa arguments.\n"
 
 #: ../gio/gdbus-tool.c:2127 ../gio/gdbus-tool.c:2134
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error: %s is not a valid bus name\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
-msgstr "Error: %s no és un nom de bus vàlid\n"
+msgstr "Error: %s no és un nom de bus conegut vàlid\n"
 
-#: ../gio/gdesktopappinfo.c:2001 ../gio/gdesktopappinfo.c:4533
+#: ../gio/gdesktopappinfo.c:2001 ../gio/gdesktopappinfo.c:4531
 msgid "Unnamed"
 msgstr "Sense nom"
 
@@ -1318,33 +1321,33 @@ msgstr "Sense nom"
 msgid "Desktop file didn’t specify Exec field"
 msgstr "El fitxer d'escriptori no especificava el camp d'execució"
 
-#: ../gio/gdesktopappinfo.c:2696
+#: ../gio/gdesktopappinfo.c:2694
 msgid "Unable to find terminal required for application"
 msgstr "No s'ha pogut trobar el terminal que demanava l'aplicació"
 
-#: ../gio/gdesktopappinfo.c:3129
+#: ../gio/gdesktopappinfo.c:3127
 #, c-format
 msgid "Can’t create user application configuration folder %s: %s"
 msgstr ""
 "No s'ha pogut crear el directori de configuració de l'aplicació de l'usuari "
 "%s: %s"
 
-#: ../gio/gdesktopappinfo.c:3133
+#: ../gio/gdesktopappinfo.c:3131
 #, c-format
 msgid "Can’t create user MIME configuration folder %s: %s"
 msgstr ""
 "No s'ha pogut crear el directori de configuració MIME de l'usuari %s: %s"
 
-#: ../gio/gdesktopappinfo.c:3373 ../gio/gdesktopappinfo.c:3397
+#: ../gio/gdesktopappinfo.c:3371 ../gio/gdesktopappinfo.c:3395
 msgid "Application information lacks an identifier"
 msgstr "A la informació d'aplicació li manca un identificador"
 
-#: ../gio/gdesktopappinfo.c:3631
+#: ../gio/gdesktopappinfo.c:3629
 #, c-format
 msgid "Can’t create user desktop file %s"
 msgstr "No s'ha pogut crear el fitxer d'escriptori de l'usuari %s"
 
-#: ../gio/gdesktopappinfo.c:3765
+#: ../gio/gdesktopappinfo.c:3763
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definició personalitzada per a %s"
@@ -1412,11 +1415,11 @@ msgstr "S'esperava un GEmblem per a un GEmblemedIcon"
 #: ../gio/gfile.c:969 ../gio/gfile.c:1207 ../gio/gfile.c:1345
 #: ../gio/gfile.c:1583 ../gio/gfile.c:1638 ../gio/gfile.c:1696
 #: ../gio/gfile.c:1780 ../gio/gfile.c:1837 ../gio/gfile.c:1901
-#: ../gio/gfile.c:1956 ../gio/gfile.c:3614 ../gio/gfile.c:3669
-#: ../gio/gfile.c:3905 ../gio/gfile.c:3947 ../gio/gfile.c:4415
-#: ../gio/gfile.c:4826 ../gio/gfile.c:4911 ../gio/gfile.c:5001
-#: ../gio/gfile.c:5098 ../gio/gfile.c:5185 ../gio/gfile.c:5286
-#: ../gio/gfile.c:7827 ../gio/gfile.c:7917 ../gio/gfile.c:8001
+#: ../gio/gfile.c:1956 ../gio/gfile.c:3602 ../gio/gfile.c:3657
+#: ../gio/gfile.c:3893 ../gio/gfile.c:3935 ../gio/gfile.c:4403
+#: ../gio/gfile.c:4814 ../gio/gfile.c:4899 ../gio/gfile.c:4989
+#: ../gio/gfile.c:5086 ../gio/gfile.c:5173 ../gio/gfile.c:5274
+#: ../gio/gfile.c:7815 ../gio/gfile.c:7905 ../gio/gfile.c:7989
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "L'operació no està implementada"
@@ -1445,51 +1448,51 @@ msgstr "Ja existeix el fitxer de destinació"
 msgid "Can’t recursively copy directory"
 msgstr "No es pot copiar el directori de forma recursiva"
 
-#: ../gio/gfile.c:2889
+#: ../gio/gfile.c:2877
 msgid "Splice not supported"
 msgstr "No es pot empalmar"
 
-#: ../gio/gfile.c:2893
+#: ../gio/gfile.c:2881
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "S'ha produït un error en empalmar el fitxer: %s"
 
-#: ../gio/gfile.c:3025
+#: ../gio/gfile.c:3013
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr ""
 "No està implementada la còpia (referències, clonacions) entre muntatges"
 
-#: ../gio/gfile.c:3029
+#: ../gio/gfile.c:3017
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "No està implementada o no és vàlida la còpia (referències, clonacions)"
 
-#: ../gio/gfile.c:3034
+#: ../gio/gfile.c:3022
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr ""
 "No està implementada o no ha funcionat la còpia (referències, clonacions)"
 
-#: ../gio/gfile.c:3097
+#: ../gio/gfile.c:3085
 msgid "Can’t copy special file"
 msgstr "No es pot copiar el fitxer especial"
 
-#: ../gio/gfile.c:3895
+#: ../gio/gfile.c:3883
 msgid "Invalid symlink value given"
 msgstr "El valor donat per a l'enllaç simbòlic no és vàlid"
 
-#: ../gio/gfile.c:4056
+#: ../gio/gfile.c:4044
 msgid "Trash not supported"
 msgstr "No es pot utilitzar la paperera"
 
-#: ../gio/gfile.c:4168
+#: ../gio/gfile.c:4156
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "En els noms de fitxers no pot haver-hi «%c»"
 
-#: ../gio/gfile.c:6614 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6602 ../gio/gvolume.c:363
 msgid "volume doesn’t implement mount"
 msgstr "el volum no implementa el muntatge"
 
-#: ../gio/gfile.c:6723
+#: ../gio/gfile.c:6711
 msgid "No application is registered as handling this file"
 msgstr ""
 "No hi ha cap aplicació que s'hagi registrat per gestionar aquest fitxer"
@@ -1739,14 +1742,14 @@ msgstr "Llista els continguts de les ubicacions en un arbre"
 msgid "Use %s to get detailed help.\n"
 msgstr "Feu servir %s per obtenir ajuda detallada.\n"
 
-#: ../gio/gio-tool-cat.c:83
-#, fuzzy
+#: ../gio/gio-tool-cat.c:87
+#
 #| msgid "Error writing to file: %s"
 msgid "Error writing to stdout"
-msgstr "S'ha produït un error en escriure al fitxer: %s"
+msgstr "S'ha produït un error en escriure a la sortida estàndard"
 
 #. Translators: commandline placeholder
-#: ../gio/gio-tool-cat.c:127 ../gio/gio-tool-info.c:282
+#: ../gio/gio-tool-cat.c:133 ../gio/gio-tool-info.c:282
 #: ../gio/gio-tool-list.c:165 ../gio/gio-tool-mkdir.c:48
 #: ../gio/gio-tool-monitor.c:37 ../gio/gio-tool-monitor.c:39
 #: ../gio/gio-tool-monitor.c:41 ../gio/gio-tool-monitor.c:43
@@ -1757,11 +1760,11 @@ msgstr "S'ha produït un error en escriure al fitxer: %s"
 msgid "LOCATION"
 msgstr "UBICACIÓ"
 
-#: ../gio/gio-tool-cat.c:132
+#: ../gio/gio-tool-cat.c:138
 msgid "Concatenate files and print to standard output."
 msgstr "Concatena fitxers i els mostra per la sortida estàndard."
 
-#: ../gio/gio-tool-cat.c:134
+#: ../gio/gio-tool-cat.c:140
 msgid ""
 "gio cat works just like the traditional cat utility, but using GIO\n"
 "locations instead of local files: for example, you can use something\n"
@@ -1771,7 +1774,7 @@ msgstr ""
 "en comptes de fitxers locals: per exemple, podeu usar quelcom com ara\n"
 "smb://servidor/recurs/fitxer.txt com a ubicació."
 
-#: ../gio/gio-tool-cat.c:156 ../gio/gio-tool-info.c:313
+#: ../gio/gio-tool-cat.c:162 ../gio/gio-tool-info.c:313
 #: ../gio/gio-tool-mkdir.c:76 ../gio/gio-tool-monitor.c:228
 #: ../gio/gio-tool-open.c:71 ../gio/gio-tool-remove.c:72
 msgid "No locations given"
@@ -1815,7 +1818,7 @@ msgstr "FONT"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
-#: ../gio/gio-tool-save.c:165
+#: ../gio/gio-tool-save.c:160
 msgid "DESTINATION"
 msgstr "DESTINACIÓ"
 
@@ -2022,10 +2025,10 @@ msgid "No recommended applications\n"
 msgstr "No hi ha cap aplicació recomanada\n"
 
 #: ../gio/gio-tool-mime.c:162
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to load info for handler “%s”\n"
 msgid "Failed to load info for handler “%s”"
-msgstr "No s'ha pogut carregar la informació del gestor «%s»\n"
+msgstr "No s'ha pogut carregar la informació del gestor «%s»"
 
 #: ../gio/gio-tool-mime.c:168
 #, c-format
@@ -2200,7 +2203,7 @@ msgstr "Canvia el nom del fitxer."
 msgid "Missing argument"
 msgstr "Manca l'argument"
 
-#: ../gio/gio-tool-rename.c:76 ../gio/gio-tool-save.c:195
+#: ../gio/gio-tool-rename.c:76 ../gio/gio-tool-save.c:190
 #: ../gio/gio-tool-set.c:137
 msgid "Too many arguments"
 msgstr "Massa arguments"
@@ -2240,21 +2243,21 @@ msgstr "L'etag del fitxer que s'està sobreescrivint"
 msgid "ETAG"
 msgstr "ETAG"
 
-#: ../gio/gio-tool-save.c:119
+#: ../gio/gio-tool-save.c:113
 msgid "Error reading from standard input"
 msgstr "S'ha produït un error en llegir de l'entrada estàndard"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
-#: ../gio/gio-tool-save.c:145
+#: ../gio/gio-tool-save.c:139
 #, c-format
 msgid "Etag not available\n"
 msgstr "L'etag no està disponible\n"
 
-#: ../gio/gio-tool-save.c:168
+#: ../gio/gio-tool-save.c:163
 msgid "Read from standard input and save to DEST."
 msgstr "Llegeix de l'entrada estàndard i desa-ho a la DESTINACIÓ."
 
-#: ../gio/gio-tool-save.c:188
+#: ../gio/gio-tool-save.c:183
 msgid "No destination given"
 msgstr "No s'ha donat una destinació"
 
@@ -2409,7 +2412,7 @@ msgstr "nom del fitxer de dependència a generar"
 
 #: ../gio/glib-compile-resources.c:672
 msgid "Include phony targets in the generated dependency file"
-msgstr ""
+msgstr "Inclou destinacions falses en el fitxer de dependències generat"
 
 #: ../gio/glib-compile-resources.c:673
 msgid "Don’t automatically create and register resource"
@@ -2442,11 +2445,10 @@ msgstr "Heu de donar un sol nom de fitxer\n"
 #: ../gio/glib-compile-schemas.c:95
 #, c-format
 msgid "nick must be a minimum of 2 characters"
-msgstr ""
+msgstr "el nom ha de ser com a mínim de 2 caràcters"
 
 #: ../gio/glib-compile-schemas.c:106
 #, c-format
-#| msgid "Invalid symlink value given"
 msgid "Invalid numeric value"
 msgstr "El valor numèric no és vàlid"
 
@@ -2463,107 +2465,112 @@ msgstr "value='%s' ja s'ha especificat"
 #: ../gio/glib-compile-schemas.c:136
 #, c-format
 msgid "flags values must have at most 1 bit set"
-msgstr ""
+msgstr "els indicadors han de tenir com a mínim 1 bit establert"
 
 #: ../gio/glib-compile-schemas.c:161
 #, c-format
 msgid "<%s> must contain at least one <value>"
-msgstr ""
+msgstr "<%s> ha de contenir com a minim un <value>"
 
 #: ../gio/glib-compile-schemas.c:315
-#, fuzzy, c-format
+#, c-format
 #| msgid "No connection endpoint specified"
 msgid "<%s> is not contained in the specified range"
-msgstr "No s'ha especificat el punt final de connexió"
+msgstr "<%s> no està en el rang especificat"
 
 #: ../gio/glib-compile-schemas.c:327
 #, c-format
 msgid "<%s> is not a valid member of the specified enumerated type"
-msgstr ""
+msgstr "<%s> no és un membre vàlid del tipus enumerat especificat"
 
 #: ../gio/glib-compile-schemas.c:333
 #, c-format
 msgid "<%s> contains string not in the specified flags type"
-msgstr ""
+msgstr "<%s> conté una cadena no especificada en el dipus d'indicadors"
 
 #: ../gio/glib-compile-schemas.c:339
 #, c-format
 msgid "<%s> contains a string not in <choices>"
-msgstr ""
+msgstr "<%s> conté una cadena que no està a <choices>"
 
 #: ../gio/glib-compile-schemas.c:373
-#, fuzzy
+#
 #| msgid "<key name='%s'> already specified"
 msgid "<range/> already specified for this key"
-msgstr "ja està especificat <key name='%s'>"
+msgstr "el <range/> ja està especificat per a aquesta clau"
 
 #: ../gio/glib-compile-schemas.c:391
 #, c-format
 msgid "<range> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<range> no està permés per a claus del tipus «%s»"
 
 #: ../gio/glib-compile-schemas.c:408
 #, c-format
 msgid "<range> specified minimum is greater than maximum"
-msgstr ""
+msgstr "el miním especificat per al <range> és major que el màxim"
 
 #: ../gio/glib-compile-schemas.c:433
 #, c-format
 msgid "unsupported l10n category: %s"
-msgstr ""
+msgstr "categoria de l10n no admesa: %s"
 
 #: ../gio/glib-compile-schemas.c:441
 msgid "l10n requested, but no gettext domain given"
-msgstr ""
+msgstr "l10n demanada, però no s'ha especificat un domini de gettext"
 
 #: ../gio/glib-compile-schemas.c:453
 msgid "translation context given for value without l10n enabled"
 msgstr ""
+"s'ha especificat un context de traducció per al valor sense l10n habilitat"
 
 #: ../gio/glib-compile-schemas.c:475
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to create file “%s”: %s"
 msgid "Failed to parse <default> value of type “%s”: "
-msgstr "No s'ha pogut crear el fitxer «%s»: %s"
+msgstr "No s'ha pogut analitzar el valor <default> del tipus «%s»"
 
 #: ../gio/glib-compile-schemas.c:492
 msgid ""
 "<choices> cannot be specified for keys tagged as having an enumerated type"
 msgstr ""
+"<choices> no es pot especificar per als tipus etiquetats que contenen un "
+"tipus enumerat"
 
 #: ../gio/glib-compile-schemas.c:501
-#, fuzzy
+#
 #| msgid "<child name='%s'> already specified"
 msgid "<choices> already specified for this key"
-msgstr "ja està especificat <child name='%s'>"
+msgstr "<choices> ja està especificat per a aquesta clau"
 
 #: ../gio/glib-compile-schemas.c:513
 #, c-format
 msgid "<choices> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<choices> no està permés per a claus del tipus «%s»"
 
 #: ../gio/glib-compile-schemas.c:529
-#, fuzzy, c-format
+#, c-format
 #| msgid "<child name='%s'> already specified"
 msgid "<choice value='%s'/> already given"
-msgstr "ja està especificat <child name='%s'>"
+msgstr "ja està especificat <choice value='%s'>"
 
 #: ../gio/glib-compile-schemas.c:544
 #, c-format
 msgid "<choices> must contain at least one <choice>"
-msgstr ""
+msgstr "<choices> ha de contenir com a minim un <choice>"
 
 #: ../gio/glib-compile-schemas.c:558
-#, fuzzy
+#
 #| msgid "<child name='%s'> already specified"
 msgid "<aliases> already specified for this key"
-msgstr "ja està especificat <child name='%s'>"
+msgstr "<aliases> ja està especificat per a aquesta clau"
 
 #: ../gio/glib-compile-schemas.c:562
 msgid ""
 "<aliases> can only be specified for keys with enumerated or flags types or "
 "after <choices>"
 msgstr ""
+"<alises> només es poden especificar per a claus amb tipus enumerats o "
+"d'indicadors després de <choices>"
 
 #: ../gio/glib-compile-schemas.c:581
 #, c-format
@@ -2571,49 +2578,53 @@ msgid ""
 "<alias value='%s'/> given when “%s” is already a member of the enumerated "
 "type"
 msgstr ""
+"s'ha especificat <alias value='%s'/> quan «%s» ja és membre del tipus "
+"enumerat"
 
 #: ../gio/glib-compile-schemas.c:587
 #, c-format
 msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
 msgstr ""
+"s'ha especificat <alias value='%s'/> quan <choice value='%s'/> ja s'havia "
+"proporcionat"
 
 #: ../gio/glib-compile-schemas.c:595
-#, fuzzy, c-format
+#, c-format
 #| msgid "<%s id='%s'> already specified"
 msgid "<alias value='%s'/> already specified"
-msgstr "ja s'ha especificat <%s id='%s'>"
+msgstr "ja està especificat <alias value='%s'/>"
 
 #: ../gio/glib-compile-schemas.c:605
-#, fuzzy, c-format
+#, c-format
 #| msgid "The pathname “%s” is not an absolute path"
 msgid "alias target “%s” is not in enumerated type"
-msgstr "El nom de camí «%s» no és un camí absolut"
+msgstr "l'àlias de destinació «%s» no està en el tipus enumerat"
 
 #: ../gio/glib-compile-schemas.c:606
 #, c-format
 msgid "alias target “%s” is not in <choices>"
-msgstr ""
+msgstr "l'alias de destinació «%s» no està a <choices>"
 
 #: ../gio/glib-compile-schemas.c:621
 #, c-format
 msgid "<aliases> must contain at least one <alias>"
-msgstr ""
+msgstr "<aliases> ha de contenir com a minim un <alias>"
 
 #: ../gio/glib-compile-schemas.c:786
-#, fuzzy
+#
 #| msgid "empty names are not permitted"
 msgid "Empty names are not permitted"
-msgstr "o es permet utilitzar noms buits"
+msgstr "No es permet utilitzar noms buits"
 
 #: ../gio/glib-compile-schemas.c:796
-#, fuzzy, c-format
+#, c-format
 #| msgid "invalid name '%s': names must begin with a lowercase letter"
 msgid "Invalid name “%s”: names must begin with a lowercase letter"
 msgstr ""
-"el nom «%s» no és vàlid: els noms han de començar amb una lletra minúscula"
+"El nom «%s» no és vàlid: els noms han de començar amb una lletra minúscula"
 
 #: ../gio/glib-compile-schemas.c:808
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "invalid name '%s': invalid character '%c'; only lowercase letters, "
 #| "numbers and hyphen ('-') are permitted."
@@ -2621,27 +2632,27 @@ msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
 "and hyphen (“-”) are permitted"
 msgstr ""
-"el nom «%s» no és vàlid: el caràcter «%c» no és vàlid. Només es permeten "
+"El nom «%s» no és vàlid: el caràcter «%c» no és vàlid. Només es permeten "
 "lletres minúscules, nombres i el guionet («-»)."
 
 #: ../gio/glib-compile-schemas.c:817
-#, fuzzy, c-format
+#, c-format
 #| msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
 msgstr ""
-"el nom «%s» no és vàlid: no es poden posar dos guionets seguits («--»)."
+"El nom «%s» no és vàlid: no es poden posar dos guionets seguits («--»)."
 
 #: ../gio/glib-compile-schemas.c:826
-#, fuzzy, c-format
+#, c-format
 #| msgid "invalid name '%s': the last character may not be a hyphen ('-')."
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
-msgstr "el nom «%s» no és vàlid: l'últim caràcter no pot ser un guionet («-»)."
+msgstr "El nom «%s» no és vàlid: l'últim caràcter no pot ser un guionet («-»)."
 
 #: ../gio/glib-compile-schemas.c:834
-#, fuzzy, c-format
+#, c-format
 #| msgid "invalid name '%s': maximum length is 1024"
 msgid "Invalid name “%s”: maximum length is 1024"
-msgstr "el nom «%s» no és vàlid: la llargada màxima és de 1024"
+msgstr "El nom «%s» no és vàlid: la llargada màxima és de 1024"
 
 #: ../gio/glib-compile-schemas.c:904
 #, c-format
@@ -2649,10 +2660,10 @@ msgid "<child name='%s'> already specified"
 msgstr "ja està especificat <child name='%s'>"
 
 #: ../gio/glib-compile-schemas.c:930
-#, fuzzy
+#
 #| msgid "cannot add keys to a 'list-of' schema"
 msgid "Cannot add keys to a “list-of” schema"
-msgstr "no es poden afegir claus a un esquema del tipus «list-of»"
+msgstr "No es poden afegir claus a un esquema del tipus «list-of»"
 
 #: ../gio/glib-compile-schemas.c:941
 #, c-format
@@ -2669,7 +2680,7 @@ msgstr ""
 "Utilitzeu <override> per modificar-ne el valor."
 
 #: ../gio/glib-compile-schemas.c:970
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "exactly one of 'type', 'enum' or 'flags' must be specified as an "
 #| "attribute to <key>"
@@ -2677,7 +2688,7 @@ msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
 "to <key>"
 msgstr ""
-"l'atribut de la <key> ha de ser necessàriament «type», «enum» o «flags»"
+"L'atribut de la <key> ha de ser necessàriament «type», «enum» o «flags»"
 
 #: ../gio/glib-compile-schemas.c:989
 #, c-format
@@ -2685,22 +2696,22 @@ msgid "<%s id='%s'> not (yet) defined."
 msgstr "(encara) no s'ha definit <%s id='%s'>."
 
 #: ../gio/glib-compile-schemas.c:1004
-#, fuzzy, c-format
+#, c-format
 #| msgid "invalid GVariant type string '%s'"
 msgid "Invalid GVariant type string “%s”"
-msgstr "el tipus de cadena GVariant «%s» no és vàlid"
+msgstr "El tipus de cadena GVariant «%s» no és vàlid"
 
 #: ../gio/glib-compile-schemas.c:1034
-#, fuzzy
+#
 #| msgid "<override> given but schema isn't extending anything"
 msgid "<override> given but schema isn’t extending anything"
-msgstr "s'ha indicat <override> però l'esquema no està ampliant res"
+msgstr "S'ha indicat <override> però l'esquema no està ampliant res"
 
 #: ../gio/glib-compile-schemas.c:1047
-#, fuzzy, c-format
+#, c-format
 #| msgid "no <key name='%s'> to override"
 msgid "No <key name='%s'> to override"
-msgstr "no hi ha cap <key name='%s'> a sobreescriure"
+msgstr "No hi ha cap <key name='%s'> a sobreescriure"
 
 #: ../gio/glib-compile-schemas.c:1055
 #, c-format
@@ -2713,26 +2724,26 @@ msgid "<schema id='%s'> already specified"
 msgstr "ja s'ha especificat <schema id='%s'>"
 
 #: ../gio/glib-compile-schemas.c:1140
-#, fuzzy, c-format
+#, c-format
 #| msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
-msgstr "el <schema id='%s'> amplia l'esquema «%s» que encara no existeix"
+msgstr "El <schema id='%s'> amplia l'esquema «%s» que encara no existeix"
 
 #: ../gio/glib-compile-schemas.c:1156
-#, fuzzy, c-format
+#, c-format
 #| msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
 msgstr ""
-"el <schema id='%s'> és una llista d'un esquema «%s» que encara no existeix"
+"El <schema id='%s'> és una llista d'un esquema «%s» que encara no existeix"
 
 #: ../gio/glib-compile-schemas.c:1164
-#, fuzzy, c-format
+#, c-format
 #| msgid "Can not be a list of a schema with a path"
 msgid "Cannot be a list of a schema with a path"
 msgstr "No pot ser una llista d'un esquema amb un camí"
 
 #: ../gio/glib-compile-schemas.c:1174
-#, fuzzy, c-format
+#, c-format
 #| msgid "Can not extend a schema with a path"
 msgid "Cannot extend a schema with a path"
 msgstr "No es pot ampliar un esquema amb un camí"
@@ -2746,7 +2757,7 @@ msgstr ""
 "llista"
 
 #: ../gio/glib-compile-schemas.c:1194
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but "
 #| "'%s' does not extend '%s'"
@@ -2758,16 +2769,16 @@ msgstr ""
 "però «%s» no amplia «%s»"
 
 #: ../gio/glib-compile-schemas.c:1211
-#, fuzzy, c-format
+#, c-format
 #| msgid "a path, if given, must begin and end with a slash"
 msgid "A path, if given, must begin and end with a slash"
-msgstr "si es dóna un camí ha de començar i acabar amb una barra inclinada"
+msgstr "Si es dóna un camí ha de començar i acabar amb una barra inclinada"
 
 #: ../gio/glib-compile-schemas.c:1218
-#, fuzzy, c-format
+#, c-format
 #| msgid "the path of a list must end with ':/'"
 msgid "The path of a list must end with “:/”"
-msgstr "el camí d'una llista ha d'acabar amb «:/»"
+msgstr "El camí d'una llista ha d'acabar amb «:/»"
 
 #: ../gio/glib-compile-schemas.c:1227
 #, c-format
@@ -2775,6 +2786,8 @@ msgid ""
 "Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
 "desktop/” or “/system/” are deprecated."
 msgstr ""
+"Avís: l'esquema «%s» conté el camí «%s». Els camins que comencen amb «/"
+"apps/», «/desktop/» o «/system/» estan obsolets."
 
 #: ../gio/glib-compile-schemas.c:1257
 #, c-format
@@ -2793,18 +2806,18 @@ msgstr "No es permet posar l'element <%s> al primer nivell"
 
 #: ../gio/glib-compile-schemas.c:1523
 msgid "Element <default> is required in <key>"
-msgstr ""
+msgstr "L'element <default> està requerit a <key>"
 
 #: ../gio/glib-compile-schemas.c:1613
-#, fuzzy, c-format
+#, c-format
 #| msgid "text may not appear inside <%s>"
 msgid "Text may not appear inside <%s>"
-msgstr "no pot haver-hi text dins de <%s>"
+msgstr "No pot haver-hi text dins de <%s>"
 
 #: ../gio/glib-compile-schemas.c:1681
 #, c-format
 msgid "Warning: undefined reference to <schema id='%s'/>"
-msgstr ""
+msgstr "Avís: referència no definida a <schema id='%s'/>"
 
 #. Translators: Do not translate "--strict".
 #: ../gio/glib-compile-schemas.c:1820 ../gio/glib-compile-schemas.c:1894
@@ -5633,7 +5646,7 @@ msgstr ""
 
 #: ../glib/gstrfuncs.c:3247 ../glib/gstrfuncs.c:3348
 msgid "Empty string is not a number"
-msgstr ""
+msgstr "La cadena buida no és un número"
 
 #: ../glib/gstrfuncs.c:3271
 #, c-format
@@ -5643,7 +5656,7 @@ msgstr "«%s» no és un nombre amb signe"
 #: ../glib/gstrfuncs.c:3281 ../glib/gstrfuncs.c:3384
 #, c-format
 msgid "Number “%s” is out of bounds [%s, %s]"
-msgstr ""
+msgstr "El número «%s» està fora de rangs [%s, %s]"
 
 #: ../glib/gstrfuncs.c:3374
 #, c-format
@@ -5667,75 +5680,75 @@ msgstr "Seqüència no vàlida a l'entrada de la conversió"
 msgid "Character out of range for UTF-16"
 msgstr "El caràcter és fora de l'interval d'UTF-16"
 
-#: ../glib/gutils.c:2149 ../glib/gutils.c:2176 ../glib/gutils.c:2282
+#: ../glib/gutils.c:2209 ../glib/gutils.c:2236 ../glib/gutils.c:2342
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: ../glib/gutils.c:2155
+#: ../glib/gutils.c:2215
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gutils.c:2157
+#: ../glib/gutils.c:2217
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gutils.c:2160
+#: ../glib/gutils.c:2220
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gutils.c:2163
+#: ../glib/gutils.c:2223
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gutils.c:2166
+#: ../glib/gutils.c:2226
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gutils.c:2169
+#: ../glib/gutils.c:2229
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gutils.c:2182
+#: ../glib/gutils.c:2242
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gutils.c:2185 ../glib/gutils.c:2300
+#: ../glib/gutils.c:2245 ../glib/gutils.c:2360
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gutils.c:2188 ../glib/gutils.c:2305
+#: ../glib/gutils.c:2248 ../glib/gutils.c:2365
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gutils.c:2190 ../glib/gutils.c:2310
+#: ../glib/gutils.c:2250 ../glib/gutils.c:2370
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gutils.c:2193 ../glib/gutils.c:2315
+#: ../glib/gutils.c:2253 ../glib/gutils.c:2375
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gutils.c:2196 ../glib/gutils.c:2320
+#: ../glib/gutils.c:2256 ../glib/gutils.c:2380
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gutils.c:2233
+#: ../glib/gutils.c:2293
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -5747,7 +5760,7 @@ msgstr[1] "%s bytes"
 #. * compatibility.  Users will not see this string unless a program is using this deprecated function.
 #. * Please translate as literally as possible.
 #.
-#: ../glib/gutils.c:2295
+#: ../glib/gutils.c:2355
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
