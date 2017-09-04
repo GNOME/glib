@@ -1,3 +1,33 @@
+Overview of changes in GLib 2.53.7
+==================================
+
+* Bugs fixed:
+ 736710 remove unnecessary executions of libtool from configure
+ 785260 gio/tests/appmonitor fails if local dir not writeable
+ 786456 g_subprocess_wait[_check]_async() breaks when cancelled...
+ 786555 g_array_free() is not thread safe w.r.t. g_array_unref()
+ 786580 gdesktopappinfo.c: Add Tilix as a fallback terminal
+ 786807 g_uuid_string_random undefined when built with meson
+
+* Translation updates:
+ Brazilian Portuguese
+ Catalan
+ Czech
+ Danish
+ Finnish
+ French
+ Friulian
+ German
+ Italian
+ Kazakh
+ Korean
+ Latvian
+ Nepali
+ Polish
+ Spanish
+ Turkish
+
+
 Overview of changes in GLib 2.53.6
 ==================================
 
