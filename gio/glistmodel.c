@@ -96,6 +96,22 @@ G_DEFINE_INTERFACE (GListModel, g_list_model, G_TYPE_OBJECT)
  */
 
 /**
+ * GListModelInterface::get_item:
+ * @list: a #GListModel
+ * @position: the position of the item to fetch
+ *
+ * Get the item at @position. If @position is greater than the number of
+ * items in @list, %NULL is returned.
+ *
+ * %NULL is never returned for an index that is smaller than the length
+ * of the list.  See g_list_model_get_n_items().
+ *
+ * Returns: (type GObject) (transfer full) (nullable): the object at @position.
+ *
+ * Since: 2.44
+ */
+
+/**
  * GListModel:
  *
  * #GListModel is an opaque data structure and can only be accessed
@@ -186,7 +202,7 @@ g_list_model_get_n_items (GListModel *list)
  * %NULL is never returned for an index that is smaller than the length
  * of the list.  See g_list_model_get_n_items().
  *
- * Returns: (transfer full) (nullable) (type GObject): the item at @position.
+ * Returns: (transfer full) (nullable): the item at @position.
  *
  * Since: 2.44
  */
