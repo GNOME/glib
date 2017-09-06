@@ -1547,7 +1547,7 @@ g_application_class_init (GApplicationClass *class)
  *   "[A-Z][a-z][0-9]_-." and must not begin with a digit.
  *
  * - Application identifiers must contain at least one '.' (period)
- *   character (and thus at least three elements).
+ *   character (and thus at least two elements).
  *
  * - Application identifiers must not begin or end with a '.' (period)
  *   character.
