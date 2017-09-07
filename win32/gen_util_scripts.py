@@ -32,7 +32,7 @@ def main(argv):
                       replace_items)
 
     else:
-        raise ValueError('Type must be glib-mkenums or gdbus-codegen')
+        raise ValueError('Type must be glib-mkenums, glib-genmarshal or gdbus-codegen')
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
