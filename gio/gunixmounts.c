@@ -148,6 +148,7 @@ G_DEFINE_BOXED_TYPE (GUnixMountPoint, g_unix_mount_point,
 
 static GList *_g_get_unix_mounts (void);
 static GList *_g_get_unix_mount_points (void);
+static gboolean proc_mounts_watch_is_running (void);
 
 static guint64 mount_poller_time = 0;
 
@@ -1368,14 +1369,25 @@ get_mounts_timestamp (void)
   struct stat buf;
 
   monitor_file = get_mtab_monitor_file ();
-  if (monitor_file)
+  /* Don't return mtime for /proc/ files */
+  if (monitor_file && !g_str_has_prefix (monitor_file, "/proc/"))
     {
       if (stat (monitor_file, &buf) == 0)
         return (guint64)buf.st_mtime;
     }
+  else if (proc_mounts_watch_is_running ())
+    {
+      /* it's being monitored by poll, so return mount_poller_time */
+      return mount_poller_time;
+    }
   else
     {
-      return mount_poller_time;
+      /* Case of /proc/ file not being monitored - Be on the safe side and
+       * send a new timestamp to force g_unix_mounts_changed_since() to
+       * return TRUE so any application caches depending on it (like eg.
+       * the one in GIO) get invalidated and don't hold possibly outdated
+       * data - see Bug 787731 */
+     return (guint64) g_get_monotonic_time ();
     }
   return 0;
 }
@@ -1566,6 +1578,13 @@ static GFileMonitor          *mtab_monitor;
 static GSource               *proc_mounts_watch_source;
 static GList                 *mount_poller_mounts;
 
+static gboolean
+proc_mounts_watch_is_running (void)
+{
+  return proc_mounts_watch_source != NULL &&
+         !g_source_is_destroyed (proc_mounts_watch_source);
+}
+
 static void
 fstab_file_changed (GFileMonitor      *monitor,
                     GFile             *file,
@@ -1602,7 +1621,10 @@ proc_mounts_changed (GIOChannel   *channel,
                      gpointer      user_data)
 {
   if (cond & G_IO_ERR)
-    g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTS_CHANGED]);
+    {
+      mount_poller_time = (guint64) g_get_monotonic_time ();
+      g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTS_CHANGED]);
+    }
 
   return TRUE;
 }
@@ -1652,7 +1674,10 @@ mount_monitor_stop (void)
     }
 
   if (proc_mounts_watch_source != NULL)
-    g_source_destroy (proc_mounts_watch_source);
+    {
+      g_source_destroy (proc_mounts_watch_source);
+      proc_mounts_watch_source = NULL;
+    }
 
   if (mtab_monitor)
     {
