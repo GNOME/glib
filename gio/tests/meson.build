@@ -114,6 +114,7 @@ if host_machine.system() != 'windows'
     'stream-rw_all',
     'unix-fd',
     'unix-streams',
+    'g-file-info-filesystem-readonly',
     'gschema-compile',
   ]
 

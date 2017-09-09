@@ -249,6 +249,7 @@ test_programs += \
 	stream-rw_all				\
 	unix-fd					\
 	unix-streams				\
+	g-file-info-filesystem-readonly		\
 	$(NULL)
 
 test_extra_programs += \
