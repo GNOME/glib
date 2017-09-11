@@ -1,3 +1,20 @@
+Overview of changes in GLib 2.54.0
+==================================
+
+* Bugs fixed:
+ 780861 Crash in GnomeWallClock
+ 786983 Please make the output of gio-querymodules deterministic
+ 787109 Valgrind false positive in ioctl() in btrfs file copy
+ 787123 glib: Slighty update GIOChannel documentation
+ 787146 GMainLoop: match of parameter pair of LOCK_CONTEXT/UNLOCK_CONTEXT
+
+* Translation updates:
+ Basque
+ Catalan
+ Romanian
+ Swedish
+
+
 Overview of changes in GLib 2.53.7
 ==================================
 
