@@ -143,10 +143,8 @@ g_tls_backend_supports_dtls (GTlsBackend *backend)
 {
   if (G_TLS_BACKEND_GET_INTERFACE (backend)->supports_dtls)
     return G_TLS_BACKEND_GET_INTERFACE (backend)->supports_dtls (backend);
-  else if (G_IS_DUMMY_TLS_BACKEND (backend))
-    return FALSE;
-  else
-    return TRUE;
+
+  return FALSE;
 }
 
 /**
