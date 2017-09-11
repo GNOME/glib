@@ -551,8 +551,13 @@ g_object_class_install_property (GObjectClass *class,
 				 guint	       property_id,
 				 GParamSpec   *pspec)
 {
+  GType oclass_type, parent_type;
+
   g_return_if_fail (G_IS_OBJECT_CLASS (class));
   g_return_if_fail (property_id > 0);
+
+  oclass_type = G_OBJECT_CLASS_TYPE (class);
+  parent_type = g_type_parent (oclass_type);
 
   if (CLASS_HAS_DERIVED_CLASS (class))
     g_error ("Attempt to add property %s::%s to class after it was derived", G_OBJECT_CLASS_NAME (class), pspec->name);
@@ -570,7 +575,7 @@ g_object_class_install_property (GObjectClass *class,
     g_return_if_fail (pspec->flags & G_PARAM_WRITABLE);
 
   class->flags |= CLASS_HAS_PROPS_FLAG;
-  install_property_internal (G_OBJECT_CLASS_TYPE (class), property_id, pspec);
+  install_property_internal (oclass_type, property_id, pspec);
 
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     class->construct_properties = g_slist_append (class->construct_properties, pspec);
@@ -578,7 +583,7 @@ g_object_class_install_property (GObjectClass *class,
   /* for property overrides of construct properties, we have to get rid
    * of the overidden inherited construct property
    */
-  pspec = g_param_spec_pool_lookup (pspec_pool, pspec->name, g_type_parent (G_OBJECT_CLASS_TYPE (class)), TRUE);
+  pspec = g_param_spec_pool_lookup (pspec_pool, pspec->name, parent_type, TRUE);
   if (pspec && pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     class->construct_properties = g_slist_remove (class->construct_properties, pspec);
 }
