@@ -511,7 +511,7 @@ g_object_do_class_init (GObjectClass *class)
   g_type_add_interface_check (NULL, object_interface_check_properties);
 }
 
-static inline void
+static inline gboolean
 install_property_internal (GType       g_type,
 			   guint       property_id,
 			   GParamSpec *pspec)
@@ -521,12 +521,13 @@ install_property_internal (GType       g_type,
       g_warning ("When installing property: type '%s' already has a property named '%s'",
 		 g_type_name (g_type),
 		 pspec->name);
-      return;
+      return FALSE;
     }
 
   g_param_spec_ref_sink (pspec);
   PARAM_SPEC_SET_PARAM_ID (pspec, property_id);
   g_param_spec_pool_insert (pspec_pool, pspec, g_type);
+  return TRUE;
 }
 
 static gboolean
@@ -549,19 +550,22 @@ validate_and_install_class_property (GObjectClass *class,
     g_return_val_if_fail (pspec->flags & G_PARAM_WRITABLE, FALSE);
 
   class->flags |= CLASS_HAS_PROPS_FLAG;
-  install_property_internal (oclass_type, property_id, pspec);
+  if (install_property_internal (oclass_type, property_id, pspec))
+    {
+      if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+        class->construct_properties = g_slist_append (class->construct_properties, pspec);
 
-  if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
-    class->construct_properties = g_slist_append (class->construct_properties, pspec);
+      /* for property overrides of construct properties, we have to get rid
+       * of the overidden inherited construct property
+       */
+      pspec = g_param_spec_pool_lookup (pspec_pool, pspec->name, parent_type, TRUE);
+      if (pspec && pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+        class->construct_properties = g_slist_remove (class->construct_properties, pspec);
 
-  /* for property overrides of construct properties, we have to get rid
-   * of the overidden inherited construct property
-   */
-  pspec = g_param_spec_pool_lookup (pspec_pool, pspec->name, parent_type, TRUE);
-  if (pspec && pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
-    class->construct_properties = g_slist_remove (class->construct_properties, pspec);
-
-  return TRUE;
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
 /**
@@ -751,7 +755,7 @@ g_object_interface_install_property (gpointer      g_iface,
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     g_return_if_fail (pspec->flags & G_PARAM_WRITABLE);
 
-  install_property_internal (iface_class->g_type, 0, pspec);
+  (void) install_property_internal (iface_class->g_type, 0, pspec);
 }
 
 /**
