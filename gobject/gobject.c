@@ -552,25 +552,24 @@ g_object_class_install_property (GObjectClass *class,
 				 GParamSpec   *pspec)
 {
   g_return_if_fail (G_IS_OBJECT_CLASS (class));
-  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+  g_return_if_fail (property_id > 0);
 
   if (CLASS_HAS_DERIVED_CLASS (class))
     g_error ("Attempt to add property %s::%s to class after it was derived", G_OBJECT_CLASS_NAME (class), pspec->name);
 
-  class->flags |= CLASS_HAS_PROPS_FLAG;
-
+  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
   g_return_if_fail (pspec->flags & (G_PARAM_READABLE | G_PARAM_WRITABLE));
   if (pspec->flags & G_PARAM_WRITABLE)
     g_return_if_fail (class->set_property != NULL);
   if (pspec->flags & G_PARAM_READABLE)
     g_return_if_fail (class->get_property != NULL);
-  g_return_if_fail (property_id > 0);
   g_return_if_fail (PARAM_SPEC_PARAM_ID (pspec) == 0);	/* paranoid */
   if (pspec->flags & G_PARAM_CONSTRUCT)
     g_return_if_fail ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) == 0);
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     g_return_if_fail (pspec->flags & G_PARAM_WRITABLE);
 
+  class->flags |= CLASS_HAS_PROPS_FLAG;
   install_property_internal (G_OBJECT_CLASS_TYPE (class), property_id, pspec);
 
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
@@ -679,8 +678,8 @@ g_object_class_install_properties (GObjectClass  *oclass,
     {
       GParamSpec *pspec = pspecs[i];
 
-      g_return_if_fail (pspec != NULL);
-
+      g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+      g_return_if_fail (pspec->flags & (G_PARAM_READABLE | G_PARAM_WRITABLE));
       if (pspec->flags & G_PARAM_WRITABLE)
         g_return_if_fail (oclass->set_property != NULL);
       if (pspec->flags & G_PARAM_READABLE)
