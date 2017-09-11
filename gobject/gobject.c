@@ -539,15 +539,16 @@ validate_and_install_class_property (GObjectClass *class,
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
   g_return_val_if_fail (pspec->flags & (G_PARAM_READABLE | G_PARAM_WRITABLE), FALSE);
-  if (pspec->flags & G_PARAM_WRITABLE)
-    g_return_val_if_fail (class->set_property != NULL, FALSE);
-  if (pspec->flags & G_PARAM_READABLE)
-    g_return_val_if_fail (class->get_property != NULL, FALSE);
   g_return_val_if_fail (PARAM_SPEC_PARAM_ID (pspec) == 0, FALSE);	/* paranoid */
   if (pspec->flags & G_PARAM_CONSTRUCT)
     g_return_val_if_fail ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) == 0, FALSE);
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     g_return_val_if_fail (pspec->flags & G_PARAM_WRITABLE, FALSE);
+
+  if (pspec->flags & G_PARAM_WRITABLE)
+    g_return_val_if_fail (class->set_property != NULL, FALSE);
+  if (pspec->flags & G_PARAM_READABLE)
+    g_return_val_if_fail (class->get_property != NULL, FALSE);
 
   class->flags |= CLASS_HAS_PROPS_FLAG;
   if (install_property_internal (oclass_type, property_id, pspec))
