@@ -830,7 +830,7 @@ g_settings_class_init (GSettingsClass *class)
                   NULL, G_TYPE_BOOLEAN, 1, G_TYPE_UINT);
 
   /**
-   * GSettings:context:
+   * GSettings:backend:
    *
    * The name of the context that the settings are stored in.
    */
