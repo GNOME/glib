@@ -230,14 +230,22 @@ g_tls_backend_get_server_connection_type (GTlsBackend *backend)
  * Gets the #GType of @backend’s #GDtlsClientConnection implementation.
  *
  * Returns: the #GType of @backend’s #GDtlsClientConnection
- *   implementation.
+ *   implementation, or %G_TYPE_INVALID if this backend doesn’t support DTLS.
  *
  * Since: 2.48
  */
 GType
 g_tls_backend_get_dtls_client_connection_type (GTlsBackend *backend)
 {
-  return G_TLS_BACKEND_GET_INTERFACE (backend)->get_dtls_client_connection_type ();
+  GTlsBackendInterface *iface;
+
+  g_return_val_if_fail (G_IS_TLS_BACKEND (backend), G_TYPE_INVALID);
+
+  iface = G_TLS_BACKEND_GET_INTERFACE (backend);
+  if (iface->get_dtls_client_connection_type == NULL)
+    return G_TYPE_INVALID;
+
+  return iface->get_dtls_client_connection_type ();
 }
 
 /**
@@ -247,14 +255,22 @@ g_tls_backend_get_dtls_client_connection_type (GTlsBackend *backend)
  * Gets the #GType of @backend’s #GDtlsServerConnection implementation.
  *
  * Returns: the #GType of @backend’s #GDtlsServerConnection
- *   implementation.
+ *   implementation, or %G_TYPE_INVALID if this backend doesn’t support DTLS.
  *
  * Since: 2.48
  */
 GType
 g_tls_backend_get_dtls_server_connection_type (GTlsBackend *backend)
 {
-  return G_TLS_BACKEND_GET_INTERFACE (backend)->get_dtls_server_connection_type ();
+  GTlsBackendInterface *iface;
+
+  g_return_val_if_fail (G_IS_TLS_BACKEND (backend), G_TYPE_INVALID);
+
+  iface = G_TLS_BACKEND_GET_INTERFACE (backend);
+  if (iface->get_dtls_server_connection_type == NULL)
+    return G_TYPE_INVALID;
+
+  return iface->get_dtls_server_connection_type ();
 }
 
 /**
