@@ -325,6 +325,77 @@ test_slist_concat (void)
   g_assert (s == NULL);
 }
 
+static void
+test_slist_copy (void)
+{
+  GSList *slist = NULL, *copy;
+  GSList *s1, *s2;
+  guint nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  gsize i;
+
+  /* Copy and test a many-element list. */
+  for (i = 0; i < 10; i++)
+    slist = g_slist_append (slist, &nums[i]);
+
+  copy = g_slist_copy (slist);
+
+  g_assert_cmpuint (g_slist_length (copy), ==, g_slist_length (slist));
+
+  for (s1 = copy, s2 = slist; s1 != NULL && s2 != NULL; s1 = s1->next, s2 = s2->next)
+    g_assert (s1->data == s2->data);
+
+  g_slist_free (copy);
+  g_slist_free (slist);
+
+  /* Copy a NULL list. */
+  copy = g_slist_copy (NULL);
+  g_assert_null (copy);
+}
+
+static gpointer
+copy_and_count_string (gconstpointer src,
+                       gpointer      data)
+{
+  const gchar *str = src;
+  gsize *count = data;
+
+  *count = *count + 1;
+  return g_strdup (str);
+}
+
+static void
+test_slist_copy_deep (void)
+{
+  GSList *slist = NULL, *copy;
+  GSList *s1, *s2;
+  gsize count;
+
+  /* Deep-copy a simple list. */
+  slist = g_slist_append (slist, "a");
+  slist = g_slist_append (slist, "b");
+  slist = g_slist_append (slist, "c");
+
+  count = 0;
+  copy = g_slist_copy_deep (slist, copy_and_count_string, &count);
+
+  g_assert_cmpuint (count, ==, g_slist_length (slist));
+  g_assert_cmpuint (g_slist_length (copy), ==, count);
+  for (s1 = slist, s2 = copy; s1 != NULL && s2 != NULL; s1 = s1->next, s2 = s2->next)
+    {
+      g_assert_cmpstr (s1->data, ==, s2->data);
+      g_assert (s1->data != s2->data);
+    }
+
+  g_slist_free_full (copy, g_free);
+  g_slist_free (slist);
+
+  /* Try with an empty list. */
+  count = 0;
+  copy = g_slist_copy_deep (NULL, copy_and_count_string, &count);
+  g_assert_cmpuint (count, ==, 0);
+  g_assert_null (copy);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -347,6 +418,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/slist/insert", test_slist_insert);
   g_test_add_func ("/slist/position", test_slist_position);
   g_test_add_func ("/slist/concat", test_slist_concat);
+  g_test_add_func ("/slist/copy", test_slist_copy);
+  g_test_add_func ("/slist/copy/deep", test_slist_copy_deep);
 
   return g_test_run ();
 }
