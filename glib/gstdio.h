@@ -22,9 +22,6 @@
 #include <glib/gprintf.h>
 
 #include <sys/stat.h>
-#ifdef G_OS_UNIX
-#include <fcntl.h>
-#endif
 
 G_BEGIN_DECLS
 
