@@ -1324,7 +1324,7 @@ g_option_error_quark
 <SECTION>
 <TITLE>File Utilities</TITLE>
 <FILE>fileutils</FILE>
-<INCLUDE>glib.h,glib/gstdio.h</INCLUDE>
+<INCLUDE>glib.h,glib/gstdio.h,fcntl.h,sys/types.h,sys/stat.h</INCLUDE>
 GFileError
 G_FILE_ERROR
 GFileTest

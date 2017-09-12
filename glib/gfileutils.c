@@ -62,12 +62,21 @@
  * @title: File Utilities
  * @short_description: various file-related functions
  *
+ * Do not use these APIs unless you are porting a POSIX application to Windows.
+ * A more high-level file access API is provided as GIO — see the documentation
+ * for #GFile.
+ *
  * There is a group of functions which wrap the common POSIX functions
  * dealing with filenames (g_open(), g_rename(), g_mkdir(), g_stat(),
  * g_unlink(), g_remove(), g_fopen(), g_freopen()). The point of these
  * wrappers is to make it possible to handle file names with any Unicode
  * characters in them on Windows without having to use ifdefs and the
  * wide character API in the application code.
+ *
+ * On some Unix systems, these APIs may be defined as identical to their POSIX
+ * counterparts. For this reason, you must check for and include the necessary
+ * header files (such as `fcntl.h`) before using functions like g_creat(). You
+ * must also define the relevant feature test macros.
  *
  * The pathname argument should be in the GLib file name encoding.
  * On POSIX this is the actual on-disk encoding which might correspond
