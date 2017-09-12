@@ -21,7 +21,7 @@ CLEANFILES += gdbus-codegen
 EXTRA_DIST += gdbus-codegen.in
 
 gdbus-codegen: gdbus-codegen.in Makefile $(codegen_PYTHON)
-	$(AM_V_GEN) sed -e 's,@datadir\@,$(datadir),' -e 's,@PYTHON\@,$(PYTHON),' $< > $@.tmp && mv $@.tmp $@
+	$(AM_V_GEN) sed -e 's,@DATADIR\@,$(datadir),' -e 's,@PYTHON\@,$(PYTHON),' $< > $@.tmp && mv $@.tmp $@
 	@chmod a+x $@
 
 clean-local:
