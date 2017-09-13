@@ -89,6 +89,8 @@ meson_build_files = \
 	gio/tests/de/LC_MESSAGES/meson.build \
 	gio/win32/meson.build \
 	gio/xdgmime/meson.build \
+	glib/glibconfig.h.in \
+	glib/gnulib/meson.build \
 	glib/libcharset/meson.build \
 	glib/meson.build \
 	glib/pcre/meson.build \
@@ -97,7 +99,7 @@ meson_build_files = \
 	gobject/meson.build \
 	gobject/tests/meson.build \
 	gthread/meson.build \
-	po/meson.build
+	po/meson.build \
 	tests/refcount/meson.build \
 	tests/meson.build \
 	tests/gobject/meson.build \
