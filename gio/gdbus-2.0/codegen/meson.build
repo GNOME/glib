@@ -14,7 +14,6 @@ gdbus_codegen_conf.set('PYTHON', python.path())
 gdbus_codegen_conf.set('DATADIR', glib_datadir)
 
 # Install gdbus-codegen executable
-# FIXME: Set permissions
 gdbus_codegen = configure_file(input : 'gdbus-codegen.in',
   output : 'gdbus-codegen',
   install : true,

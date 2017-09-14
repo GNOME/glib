@@ -76,7 +76,6 @@ python_tools_conf.set('VERSION', glib_version)
 python_tools_conf.set('PYTHON', python.path())
 
 foreach tool: python_tools
-  # FIXME: Ensure we set the appropriate permissions
   tool_bin = configure_file(
     input : tool + '.in',
     output : tool,
