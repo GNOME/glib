@@ -788,7 +788,8 @@
 #endif
 
 /* using the system-supplied PCRE library */
-#define USE_SYSTEM_PCRE
+/* This is determined in the MSVC projects */
+/* #undef USE_SYSTEM_PCRE */
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
