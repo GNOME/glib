@@ -57,16 +57,16 @@
 
 /* A 'va_copy' style function */
 #if !defined (_MSC_VER) || (_MSC_VER >= 1800)
-#define G_VA_COPY va_copy
+# define G_VA_COPY va_copy
 #else /* _MSC_VER && _MSC_VER < 1800 */
 /* #undef G_VA_COPY */
-#endif /* _MSC_VER */
+#endif
 
 /* 'va_lists' cannot be copies as values */
 /* #undef G_VA_COPY_AS_ARRAY */
 
 /* Define to 1 if you have `alloca', as a function or macro. */
-#define HAVE_ALLOCA 1
+/* #undef HAVE_ALLOCA */
 
 /* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
    */
@@ -78,15 +78,13 @@
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #define HAVE_BIND_TEXTDOMAIN_CODESET 1
 
-#if (_MSC_VER >= 1900)
 /* Define if you have a version of the snprintf function with semantics as
    specified by the ISO C99 standard. */
-#define HAVE_C99_SNPRINTF 1
+#undef HAVE_C99_SNPRINTF
 
 /* Define if you have a version of the vsnprintf function with semantics as
    specified by the ISO C99 standard. */
-#define HAVE_C99_VSNPRINTF 1
-#endif
+#undef HAVE_C99_VSNPRINTF
 
 /* define to 1 if Carbon is available */
 /* #undef HAVE_CARBON */
@@ -112,9 +110,9 @@
 /* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
    */
 #ifndef _MSC_VER
-#define HAVE_DIRENT_H 1
+# define HAVE_DIRENT_H 1
 #else
-/* #undef HAVE_DIRENT_H */
+/* # undef HAVE_DIRENT_H */
 #endif
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
@@ -168,11 +166,17 @@
 /* Define to 1 if you have the `getfsstat' function. */
 /* #undef HAVE_GETFSSTAT */
 
+/* Define to 1 if you have the `getgrgid_r' function. */
+/* #undef HAVE_GETGRGID_R */
+
 /* Define to 1 if you have the `getmntent_r' function. */
 /* #undef HAVE_GETMNTENT_R */
 
 /* Define to 1 if you have the `getprotobyname_r' function. */
 /* #undef HAVE_GETPROTOBYNAME_R */
+
+/* Define to 1 if you have the `getpwuid_r' function. */
+/* #undef HAVE_GETPWUID_R */
 
 /* Define to 1 if you have the `getresuid' function. */
 /* #undef HAVE_GETRESUID */
@@ -192,52 +196,33 @@
 /* Define to 1 if you have the `hasmntopt' function. */
 /* #undef HAVE_HASMNTOPT */
 
-/* Target the Windows XP API */
-#ifndef _WIN32_WINNT
-#define _WIN32_WINNT 0x0501
-#endif
-
-#if _WIN32_WINNT >= 0x0600
-/* if_indextoname() and if_nametoindex() are available on Windows Vista/Server
- * 2008 or later, so we can make use of them when building agaist Vista/Server
- * 2008 or later.
- */
-
 /* Define to 1 if you have the `if_indextoname' function. */
 #define HAVE_IF_INDEXTONAME 1
 
 /* Define to 1 if you have the `if_nametoindex' function. */
 #define HAVE_IF_NAMETOINDEX 1
 
-#endif
-
 /* Define to 1 if you have the `inotify_init1' function. */
 /* #undef HAVE_INOTIFY_INIT1 */
 
 /* define to support printing 64-bit integers with format I64 */
-#define HAVE_INT64_AND_I64 1
+/* #undef HAVE_INT64_AND_I64 */
 
 /* Define if you have the 'intmax_t' type in <stdint.h> or <inttypes.h>. */
 #if !defined (_MSC_VER) || (_MSC_VER >= 1600)
-#define HAVE_INTMAX_T 1
-#else /* !_MSC_VER || _MSC_VER >= 1600 */
-/* #undef HAVE_INTMAX_T */
-#endif /* _MSC_VER < 1600 */
+# define HAVE_INTMAX_T 1
+#endif
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #if !defined (_MSC_VER) || (_MSC_VER >= 1800)
-#define HAVE_INTTYPES_H 1
-#else /* !_MSC_VER || _MSC_VER >= 1800 */
-/* #undef HAVE_INTTYPES_H */
-#endif /* _MSC_VER < 1800 */
+# define HAVE_INTTYPES_H 1
+#endif
 
 /* Define if <inttypes.h> exists, doesn't clash with <sys/types.h>, and
    declares uintmax_t. */
-#ifndef _MSC_VER
-#define HAVE_INTTYPES_H_WITH_UINTMAX 1
-#else /* !_MSC_VER */
-/* #undef HAVE_INTTYPES_H_WITH_UINTMAX */
-#endif /* _MSC_VER */
+#if !defined (_MSC_VER) || (_MSC_VER >= 1800)
+# define HAVE_INTTYPES_H_WITH_UINTMAX 1
+#endif
 
 /* Define if we have struct ip_mreqn */
 /* #undef HAVE_IP_MREQN */
@@ -291,7 +276,7 @@
 #define HAVE_LONG_LONG 1
 
 /* define if system printf can print long long */
-#define HAVE_LONG_LONG_FORMAT 1
+/* #undef HAVE_LONG_LONG_FORMAT */
 
 /* Define to 1 if you have the `lstat' function. */
 /* #undef HAVE_LSTAT */
@@ -301,6 +286,9 @@
 
 /* Define to 1 if you have the <malloc.h> header file. */
 #define HAVE_MALLOC_H 1
+
+/* Define to 1 if you have the `mbrtowc' function. */
+#define HAVE_MBRTOWC 1
 
 /* Define to 1 if you have the `memalign' function. */
 /* #undef HAVE_MEMALIGN */
@@ -326,12 +314,6 @@
 /* Define to 1 if you have the `newlocale' function. */
 /* #undef HAVE_NEWLOCALE */
 
-/* Have non-POSIX function getgrgid_r */
-/* #undef HAVE_NONPOSIX_GETGRGID_R */
-
-/* Have non-POSIX function getpwuid_r */
-/* #undef HAVE_NONPOSIX_GETPWUID_R */
-
 /* open option O_DIRECTORY */
 /* #undef HAVE_OPEN_O_DIRECTORY */
 
@@ -340,12 +322,6 @@
 
 /* Define to 1 if you have the `poll' function. */
 /* #undef HAVE_POLL */
-
-/* Have POSIX function getgrgid_r */
-/* #undef HAVE_POSIX_GETGRGID_R */
-
-/* Have POSIX function getpwuid_r */
-/* #undef HAVE_POSIX_GETPWUID_R */
 
 /* Define to 1 if you have the `posix_memalign' function. */
 /* #undef HAVE_POSIX_MEMALIGN */
@@ -356,17 +332,26 @@
 /* Have function pthread_attr_setstacksize */
 /* #undef HAVE_PTHREAD_ATTR_SETSTACKSIZE */
 
+/* Have function pthread_cond_timedwait_relative_np */
+/* #undef HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP */
+
 /* Have function pthread_condattr_setclock */
 /* #undef HAVE_PTHREAD_CONDATTR_SETCLOCK */
 
-/* Have function pthread_cond_timedwait_relative_np */
-/* #undef HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE_NP */
+/* Have function pthread_setname_np without TID as argument */
+/* #undef HAVE_PTHREAD_SETNAME_NP_WITHOUT_TID */
+
+/* Have function pthread_setname_np with TID as argument */
+/* #undef HAVE_PTHREAD_SETNAME_NP_WITH_TID */
 
 /* Define to 1 if the system has the type `ptrdiff_t'. */
 #define HAVE_PTRDIFF_T 1
 
 /* Define to 1 if you have the `readlink' function. */
 /* #undef HAVE_READLINK */
+
+/* Define to 1 if you have the `recvmmsg' function. */
+/* #undef HAVE_RECVMMSG */
 
 /* Define to 1 if you have the 'res_init' function. */
 /* #undef HAVE_RES_INIT */
@@ -377,14 +362,11 @@
 /* Define to 1 if libselinux is available */
 /* #undef HAVE_SELINUX */
 
-/* Define to 1 if you have the `sendmmsg` function */
-/* #undef HAVE_SENDMMSG */
-
-/* Define to 1 if you have the `recvmmsg` function */
-/* #undef HAVE_RECVMMSG */
-
 /* Define to 1 if you have the <selinux/selinux.h> header file. */
 /* #undef HAVE_SELINUX_SELINUX_H */
+
+/* Define to 1 if you have the `sendmmsg' function. */
+/* #undef HAVE_SENDMMSG */
 
 /* Define to 1 if you have the `setenv' function. */
 /* #undef HAVE_SETENV */
@@ -396,14 +378,10 @@
 #define HAVE_SIG_ATOMIC_T 1
 
 /* Define to 1 if you have the `snprintf' function. */
-#if !defined (_MSC_VER) || (_MSC_VER >= 1900)
 #define HAVE_SNPRINTF 1
-#ifdef __DMC__
-#define snprintf _snprintf
+#if defined (_MSC_VER) && (_MSC_VER < 1900)
+# define snprintf _snprintf
 #endif
-#else /* !_MSC_VER || _MSC_VER >= 1900 */
-/* #undef HAVE_SNPRINTF */
-#endif /* _MSC_VER < 1900 */
 
 /* Define to 1 if you have the `splice' function. */
 /* #undef HAVE_SPLICE */
@@ -414,60 +392,57 @@
 /* Define to 1 if you have the `statvfs' function. */
 /* #undef HAVE_STATVFS */
 
+/* Define to 1 if you have the <stddef.h> header file. */
+#define HAVE_STDDEF_H 1
+
 /* Define to 1 if you have the <stdint.h> header file. */
-#ifndef _MSC_VER
-#define HAVE_STDINT_H 1
-#else /* _MSC_VER */
-#if (_MSC_VER >= 1600) /*VS 2010 ships with stdint.h*/
-#define HAVE_STDINT_H 1
-#else
-/* #undef HAVE_STDINT_H */
+#if !defined (_MSC_VER) || (_MSC_VER >= 1600)
+# define HAVE_STDINT_H 1
 #endif
-#endif /* _MSC_VER */
 
 /* Define if <stdint.h> exists, doesn't clash with <sys/types.h>, and declares
    uintmax_t. */
-#ifndef _MSC_VER
-#define HAVE_STDINT_H_WITH_UINTMAX 1
-#else /* _MSC_VER */
-#if (_MSC_VER >= 1600)
-#define HAVE_STDINT_H_WITH_UINTMAX 1
-#else
-/* #undef HAVE_STDINT_H_WITH_UINTMAX */
+#if !defined (_MSC_VER) || (_MSC_VER >= 1600)
+# define HAVE_STDINT_H_WITH_UINTMAX 1
 #endif
-#endif /* _MSC_VER */
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#define HAVE_STDLIB_H 1
 
 /* Define to 1 if you have the `stpcpy' function. */
 /* #undef HAVE_STPCPY */
 
 /* Define to 1 if you have the `strcasecmp' function. */
-#if defined(_MSC_VER)
-#define strcasecmp _stricmp
-#endif /* _MSC_VER uses _stricmp, which is identical to strcasecmp */
-
-#if !defined(__DMC__)
 #define HAVE_STRCASECMP 1
-#endif /* _MSC_VER or __gcc__ */
+#ifdef _MSC_VER
+# define strcasecmp _stricmp
+#endif
+
+/* Define to 1 if you have the `strerror_r' function. */
+/* #undef HAVE_STRERROR_R */
+
+/* Define if strerror_r returns char * */
+/* #undef STRERROR_R_CHAR_P */
 
 /* Define to 1 if you have the <strings.h> header file. */
-#if !defined(_MSC_VER) && !defined(__DMC__)
-#define HAVE_STRINGS_H 1
-#else /* _MSC_VER or __DMC__ */
-/* #undef HAVE_STRINGS_H */
-#endif /* _MSC_VER or __DMC__ */
+#ifndef _MSC_VER
+# define HAVE_STRINGS_H 1
+#endif
+
+/* Define to 1 if you have the <string.h> header file. */
+#define HAVE_STRING_H 1
 
 /* Have functions strlcpy and strlcat */
 /* #undef HAVE_STRLCPY */
 
 /* Define to 1 if you have the `strncasecmp' function. */
-#if !defined(__DMC__)
-#if defined(_MSC_VER)
-#define strncasecmp _strnicmp
-#endif /* _MSC_VER uses _strnicmp, which is identical to strncasecmp */
 #define HAVE_STRNCASECMP 1
-#else /* __DMC__ */
-/* #undef HAVE_STRNCASECMP */
-#endif /* __DMC__ */
+#ifdef _MSC_VER
+# define strncasecmp _strnicmp
+#endif
+
+/* Define to 1 if you have the `strnlen' function. */
+#define HAVE_STRNLEN 1
 
 /* Define to 1 if you have the `strsignal' function. */
 /* #undef HAVE_STRSIGNAL */
@@ -502,6 +477,18 @@
 /* Define to 1 if `st_atim.tv_nsec' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC */
 
+/* Define to 1 if `st_birthtim' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_BIRTHTIM */
+
+/* Define to 1 if `st_birthtime' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_BIRTHTIME */
+
+/* Define to 1 if `st_birthtimensec' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_BIRTHTIMENSEC */
+
+/* Define to 1 if `st_birthtim.tv_nsec' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_BIRTHTIM_TV_NSEC */
+
 /* Define to 1 if `st_blksize' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_BLKSIZE */
 
@@ -520,7 +507,7 @@
 /* Define to 1 if `st_mtim.tv_nsec' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC */
 
-/* Define to 1 if `tm_gmtoff' is a a member of `struct tm'. */
+/* Define to 1 if `tm_gmtoff' is a member of `struct tm'. */
 /* #undef HAVE_STRUCT_TM_TM_GMTOFF */
 
 /* Define to 1 if `__tm_gmtoff' is a member of `struct tm'. */
@@ -545,6 +532,9 @@
 /* Define to 1 if you have the <sys/inotify.h> header file. */
 /* #undef HAVE_SYS_INOTIFY_H */
 
+/* Define to 1 if you have the <sys/mkdev.h> header file. */
+/* #undef HAVE_SYS_MKDEV_H */
+
 /* Define to 1 if you have the <sys/mntctl.h> header file. */
 /* #undef HAVE_SYS_MNTCTL_H */
 
@@ -559,14 +549,12 @@
 /* #undef HAVE_SYS_NDIR_H */
 
 /* Define to 1 if you have the <sys/param.h> header file. */
-#if !defined(_MSC_VER) && !defined(__DMC__)
-#define HAVE_SYS_PARAM_H 1
-#else /* _MSC_VER or __DMC__ */
-/* #undef HAVE_SYS_PARAM_H */
-#endif /* _MSC_VER or __DMC__ */
+#ifndef _MSC_VER
+# define HAVE_SYS_PARAM_H 1
+#endif
 
-/* Define to 1 if you have the <sys/prctl.h> header file. */
-/* #undef HAVE_SYS_PRCTL_H */
+/* Define to 1 if you have the <sys/poll.h> header file. */
+/* #undef HAVE_SYS_POLL_H */
 
 /* Define to 1 if you have the <sys/resource.h> header file. */
 /* #undef HAVE_SYS_RESOURCE_H */
@@ -586,12 +574,19 @@
 /* Define to 1 if you have the <sys/sysctl.h> header file. */
 /* #undef HAVE_SYS_SYSCTL_H */
 
+/* Define to 1 if you have the <sys/times.h> header file. */
+/* #undef HAVE_SYS_TIMES_H */
+
 /* Define to 1 if you have the <sys/time.h> header file. */
 #ifndef _MSC_VER
-#define HAVE_SYS_TIME_H 1
-#else /* _MSC_VER */
-/* #undef HAVE_SYS_TIME_H */
-#endif /* _MSC_VER */
+# define HAVE_SYS_TIME_H 1
+#endif
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#define HAVE_SYS_TYPES_H 1
+
+/* Define to 1 if you have the <sys/uio.h> header file. */
+/* #undef HAVE_SYS_UIO_H */
 
 /* Define to 1 if you have the <sys/vfstab.h> header file. */
 /* #undef HAVE_SYS_VFSTAB_H */
@@ -602,11 +597,19 @@
 /* Define to 1 if you have the <sys/vmount.h> header file. */
 /* #undef HAVE_SYS_VMOUNT_H */
 
+/* Define to 1 if you have the <sys/wait.h> header file. */
+/* #undef HAVE_SYS_WAIT_H */
+
 /* Define to 1 if you have the <sys/xattr.h> header file. */
 /* #undef HAVE_SYS_XATTR_H */
 
 /* Define to 1 if you have the `timegm' function. */
 /* #undef HAVE_TIMEGM */
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#ifndef _MSC_VER
+# define HAVE_UNISTD_H 1
+#endif
 
 /* Define if your printf function family supports positional parameters as
    specified by Unix98. */
@@ -625,24 +628,15 @@
 /* #undef HAVE_VALLOC */
 
 /* Define to 1 if you have the <values.h> header file. */
-#if !defined(_MSC_VER) && !defined(__DMC__)
-#define HAVE_VALUES_H 1
-#else /* _MSC_VER or __DMC__ */
-/* #undef HAVE_VALUES_H */
-#endif /* _MSC_VER or __DMC__ */
+#ifdef _MSC_VER
+# define HAVE_VALUES_H 1
+#endif
 
 /* Define to 1 if you have the `vasprintf' function. */
 #define HAVE_VASPRINTF 1
 
 /* Define to 1 if you have the `vsnprintf' function. */
-#if !defined (_MSC_VER) || (_MSC_VER >= 1500)
 #define HAVE_VSNPRINTF 1
-#ifdef __DMC__
-#define vsnprintf _vsnprintf
-#endif
-#else /* !_MSC_VER || _MSC_VER >= 1500 */
-/* #undef HAVE_VSNPRINTF */
-#endif /* _MSC_VER < 1500 */
 
 /* Define if you have the 'wchar_t' type. */
 #define HAVE_WCHAR_T 1
@@ -652,6 +646,9 @@
 
 /* Define if you have the 'wint_t' type. */
 #define HAVE_WINT_T 1
+
+/* Have a working bcopy */
+/* #undef HAVE_WORKING_BCOPY */
 
 /* Define to 1 if xattr is available */
 /* #undef HAVE_XATTR */
@@ -665,23 +662,14 @@
 /* Define to 1 if you have the `_NSGetEnviron' function. */
 /* #undef HAVE__NSGETENVIRON */
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
-#define LT_OBJDIR ".libs/"
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
+#define LT_OBJDIR ""
 
-/* Define to 1 if `major', `minor', and `makedev' are declared in <mkdev.h>.
-   */
-/* #undef MAJOR_IN_MKDEV */
-
-/* Define to 1 if `major', `minor', and `makedev' are declared in
-   <sysmacros.h>. */
-/* #undef MAJOR_IN_SYSMACROS */
+/* Do we cache iconv descriptors */
+/* #undef NEED_ICONV_CACHE */
 
 /* didn't find fd_set */
-#define NO_FD_SET 1
-
-/* Define to 1 if your C compiler doesn't accept -c and -o together. */
-/* #undef NO_MINUS_C_MINUS_O */
+/* #undef NO_FD_SET */
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "http://bugzilla.gnome.org/enter_bug.cgi?product=glib"
@@ -714,27 +702,30 @@
 #define SIZEOF_LONG 4
 
 /* The size of `long long', as computed by sizeof. */
-#ifndef _MSC_VER
 #define SIZEOF_LONG_LONG 8
-#else /* _MSC_VER */
-#define SIZEOF_LONG_LONG 0
-#endif /* _MSC_VER */
 
 /* The size of `short', as computed by sizeof. */
 #define SIZEOF_SHORT 2
 
 /* The size of `size_t', as computed by sizeof. */
-#define SIZEOF_SIZE_T 4
+#ifdef _WIN64
+# define SIZEOF_SIZE_T 8
+#else
+# define SIZEOF_SIZE_T 4
+#endif
+
+/* The size of `ssize_t', as computed by sizeof. */
+#ifdef _WIN64
+# define SIZEOF_SSIZE_T 8
+#else
+# define SIZEOF_SSIZE_T 4
+#endif
 
 /* The size of `void *', as computed by sizeof. */
-#ifdef _MSC_VER
-#if (defined(_M_X64) || defined(_M_AMD64))
-#define SIZEOF_VOID_P 8
-#elif (defined(_M_IX86))
-#define SIZEOF_VOID_P 4
-#endif
+#ifdef _WIN64
+# define SIZEOF_VOID_P 8
 #else
-#define SIZEOF_VOID_P 4
+# define SIZEOF_VOID_P 4
 #endif
 
 /* The size of `__int64', as computed by sizeof. */
@@ -777,28 +768,27 @@
 
 /* Enable extensions on AIX 3, Interix.  */
 #ifndef _ALL_SOURCE
-/* # undef _ALL_SOURCE */
+/* #undef _ALL_SOURCE */
 #endif
 /* Enable GNU extensions on systems that have them.  */
 #ifndef _GNU_SOURCE
-/* # undef _GNU_SOURCE */
+#define _GNU_SOURCE 1
 #endif
 /* Enable threading extensions on Solaris.  */
 #ifndef _POSIX_PTHREAD_SEMANTICS
-/* # undef _POSIX_PTHREAD_SEMANTICS */
+/* #undef _POSIX_PTHREAD_SEMANTICS */
 #endif
 /* Enable extensions on HP NonStop.  */
 #ifndef _TANDEM_SOURCE
-/* # undef _TANDEM_SOURCE */
+/* #undef _TANDEM_SOURCE */
 #endif
 /* Enable general extensions on Solaris.  */
 #ifndef __EXTENSIONS__
-/* # undef __EXTENSIONS__ */
+#define __EXTENSIONS__ 1
 #endif
 
 /* using the system-supplied PCRE library */
-/* This is defined in the *_PCRE MSVC project configs */
-/* #undef USE_SYSTEM_PCRE */
+#define USE_SYSTEM_PCRE
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
@@ -808,13 +798,13 @@
 # endif
 #else
 # ifndef WORDS_BIGENDIAN
-/* #  undef WORDS_BIGENDIAN */
+#  undef WORDS_BIGENDIAN
 # endif
 #endif
 
 /* Enable large inode numbers on Mac OS X 10.5.  */
 #ifndef _DARWIN_USE_64_BIT_INODE
-/* # define _DARWIN_USE_64_BIT_INODE 1 */
+# define _DARWIN_USE_64_BIT_INODE 1
 #endif
 
 /* Number of bits in a file offset, on hosts where this is settable. */
@@ -822,23 +812,16 @@
 
 /* defines how to decorate public symbols while building */
 #ifdef _MSC_VER
-#define _GLIB_EXTERN __declspec (dllexport) extern
+# define _GLIB_EXTERN __declspec (dllexport) extern
 #else
-#define _GLIB_EXTERN __attribute__((visibility("default"))) __declspec (dllexport) extern
+# define _GLIB_EXTERN __attribute__((visibility("default"))) __declspec (dllexport) extern
 #endif
 
 /* Define for large files, on AIX-style hosts. */
 /* #undef _LARGE_FILES */
 
-/* Define to 1 if on MINIX. */
-/* #undef _MINIX */
-
-/* Define to 2 if the system does not provide POSIX.1 features except with
-   this defined. */
-/* #undef _POSIX_1_SOURCE */
-
-/* Define to 1 if you need to in order for `stat' and other things to work. */
-/* #undef _POSIX_SOURCE */
+/* Target the Windows 7 API */
+#define _WIN32_WINNT 0x0601
 
 /* Needed to get declarations for msg_control and msg_controllen on Solaris */
 /* #undef _XOPEN_SOURCE */
@@ -847,7 +830,7 @@
 /* #undef _XOPEN_SOURCE_EXTENDED */
 
 /* Needed to get declarations for msg_control and msg_controllen on Solaris */
-/* #undef __EXTENSIONS__ */
+#define __EXTENSIONS__ 1
 
 /* compiler supports atomic operations */
 /* #undef __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 */
@@ -863,3 +846,11 @@
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 /* #undef size_t */
+
+#define EXEEXT ".exe"
+
+/* #undef MAJOR_IN_MKDEV */
+/* #undef MAJOR_IN_SYSMACROS */
+/* #undef HAVE_RTLD_LAZY */
+/* #undef HAVE_RTLD_NOW */
+/* #undef HAVE_RTLD_GLOBAL */
