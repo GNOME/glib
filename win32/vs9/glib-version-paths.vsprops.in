@@ -25,30 +25,12 @@
 		Value="$(GlibEtcInstallRoot)"
 	/>
 	<UserMacro
-		Name="GlibLibtoolCompatibleDllPrefix"
-		Value="lib"
-	/>
-	<UserMacro
-		Name="GlibLibtoolCompatibleDllSuffix"
-		Value="-$(ApiVersion)-0"
-	/>
-	<UserMacro
-		Name="GlibSeparateVSDllPrefix"
+		Name="GlibDllPrefix"
 		Value=""
 	/>
 	<UserMacro
-		Name="GlibSeparateVSDllSuffix"
-		Value="-2-vs$(VSVer)"
-	/>
-	<!-- Change these two to GlibLibtoolCompatibleDllPrefix and
-	GlibLibtoolCompatibleDllSuffix if that is what you want -->
-	<UserMacro
-		Name="GlibDllPrefix"
-		Value="$(GlibSeparateVSDllPrefix)"
-	/>
-	<UserMacro
 		Name="GlibDllSuffix"
-		Value="$(GlibSeparateVSDllSuffix)"
+		Value="-2.0-0"
 	/>
 	<UserMacro
 		Name="PythonDir"
