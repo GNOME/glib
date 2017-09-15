@@ -78,15 +78,13 @@
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #define HAVE_BIND_TEXTDOMAIN_CODESET 1
 
-#if (_MSC_VER >= 1900)
 /* Define if you have a version of the snprintf function with semantics as
    specified by the ISO C99 standard. */
-#define HAVE_C99_SNPRINTF 1
+/* #undef HAVE_C99_SNPRINTF */
 
 /* Define if you have a version of the vsnprintf function with semantics as
    specified by the ISO C99 standard. */
-#define HAVE_C99_VSNPRINTF 1
-#endif
+/* #undef HAVE_C99_VSNPRINTF */
 
 /* define to 1 if Carbon is available */
 /* #undef HAVE_CARBON */
@@ -168,11 +166,17 @@
 /* Define to 1 if you have the `getfsstat' function. */
 /* #undef HAVE_GETFSSTAT */
 
+/* Define to 1 if you have the `getgrgid_r' function. */
+/* #undef HAVE_GETGRGID_R */
+
 /* Define to 1 if you have the `getmntent_r' function. */
 /* #undef HAVE_GETMNTENT_R */
 
 /* Define to 1 if you have the `getprotobyname_r' function. */
 /* #undef HAVE_GETPROTOBYNAME_R */
+
+/* Define to 1 if you have the `getpwuid_r' function. */
+/* #undef HAVE_GETPWUID_R */
 
 /* Define to 1 if you have the `getresuid' function. */
 /* #undef HAVE_GETRESUID */
@@ -301,6 +305,9 @@
 
 /* Define to 1 if you have the <malloc.h> header file. */
 #define HAVE_MALLOC_H 1
+
+/* Define to 1 if you have the `mbrtowc' function. */
+#define HAVE_MBRTOWC 1
 
 /* Define to 1 if you have the `memalign' function. */
 /* #undef HAVE_MEMALIGN */
@@ -502,6 +509,18 @@
 /* Define to 1 if `st_atim.tv_nsec' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC */
 
+/* Define to 1 if `st_birthtim' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_BIRTHTIM */
+
+/* Define to 1 if `st_birthtime' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_BIRTHTIME */
+
+/* Define to 1 if `st_birthtimensec' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_BIRTHTIMENSEC */
+
+/* Define to 1 if `st_birthtim.tv_nsec' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_BIRTHTIM_TV_NSEC */
+
 /* Define to 1 if `st_blksize' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_BLKSIZE */
 
@@ -545,6 +564,9 @@
 /* Define to 1 if you have the <sys/inotify.h> header file. */
 /* #undef HAVE_SYS_INOTIFY_H */
 
+/* Define to 1 if you have the <sys/mkdev.h> header file. */
+/* #undef HAVE_SYS_MKDEV_H */
+
 /* Define to 1 if you have the <sys/mntctl.h> header file. */
 /* #undef HAVE_SYS_MNTCTL_H */
 
@@ -586,12 +608,21 @@
 /* Define to 1 if you have the <sys/sysctl.h> header file. */
 /* #undef HAVE_SYS_SYSCTL_H */
 
+/* Define to 1 if you have the <sys/times.h> header file. */
+/* #undef HAVE_SYS_TIMES_H */
+
 /* Define to 1 if you have the <sys/time.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_SYS_TIME_H 1
 #else /* _MSC_VER */
 /* #undef HAVE_SYS_TIME_H */
 #endif /* _MSC_VER */
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#define HAVE_SYS_TYPES_H 1
+
+/* Define to 1 if you have the <sys/uio.h> header file. */
+/* #undef HAVE_SYS_UIO_H */
 
 /* Define to 1 if you have the <sys/vfstab.h> header file. */
 /* #undef HAVE_SYS_VFSTAB_H */
@@ -602,11 +633,19 @@
 /* Define to 1 if you have the <sys/vmount.h> header file. */
 /* #undef HAVE_SYS_VMOUNT_H */
 
+/* Define to 1 if you have the <sys/wait.h> header file. */
+/* #undef HAVE_SYS_WAIT_H */
+
 /* Define to 1 if you have the <sys/xattr.h> header file. */
 /* #undef HAVE_SYS_XATTR_H */
 
 /* Define to 1 if you have the `timegm' function. */
 /* #undef HAVE_TIMEGM */
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#ifndef _MSC_VER
+# define HAVE_UNISTD_H 1
+#endif
 
 /* Define if your printf function family supports positional parameters as
    specified by Unix98. */
@@ -653,6 +692,9 @@
 /* Define if you have the 'wint_t' type. */
 #define HAVE_WINT_T 1
 
+/* Have a working bcopy */
+/* #undef HAVE_WORKING_BCOPY */
+
 /* Define to 1 if xattr is available */
 /* #undef HAVE_XATTR */
 
@@ -669,19 +711,11 @@
    */
 #define LT_OBJDIR ".libs/"
 
-/* Define to 1 if `major', `minor', and `makedev' are declared in <mkdev.h>.
-   */
-/* #undef MAJOR_IN_MKDEV */
-
-/* Define to 1 if `major', `minor', and `makedev' are declared in
-   <sysmacros.h>. */
-/* #undef MAJOR_IN_SYSMACROS */
+/* Do we cache iconv descriptors */
+/* #undef NEED_ICONV_CACHE */
 
 /* didn't find fd_set */
-#define NO_FD_SET 1
-
-/* Define to 1 if your C compiler doesn't accept -c and -o together. */
-/* #undef NO_MINUS_C_MINUS_O */
+/* #undef NO_FD_SET */
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "http://bugzilla.gnome.org/enter_bug.cgi?product=glib"
@@ -714,17 +748,24 @@
 #define SIZEOF_LONG 4
 
 /* The size of `long long', as computed by sizeof. */
-#ifndef _MSC_VER
 #define SIZEOF_LONG_LONG 8
-#else /* _MSC_VER */
-#define SIZEOF_LONG_LONG 0
-#endif /* _MSC_VER */
 
 /* The size of `short', as computed by sizeof. */
 #define SIZEOF_SHORT 2
 
 /* The size of `size_t', as computed by sizeof. */
-#define SIZEOF_SIZE_T 4
+#if (defined(_M_X64) || defined(_M_AMD64))
+# define SIZEOF_SIZE_T 8
+#else
+# define SIZEOF_SIZE_T 4
+#endif
+
+/* The size of `ssize_t', as computed by sizeof. */
+#if (defined(_M_X64) || defined(_M_AMD64))
+# define SIZEOF_SSIZE_T 8
+#else
+# define SIZEOF_SSIZE_T 4
+#endif
 
 /* The size of `void *', as computed by sizeof. */
 #ifdef _MSC_VER
