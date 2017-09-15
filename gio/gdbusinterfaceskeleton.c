@@ -97,7 +97,7 @@ g_dbus_interface_skeleton_finalize (GObject *object)
 {
   GDBusInterfaceSkeleton *interface = G_DBUS_INTERFACE_SKELETON (object);
 
-  /* Hold the lock just incase any code we call verifies that the lock is held */
+  /* Hold the lock just in case any code we call verifies that the lock is held */
   g_mutex_lock (&interface->priv->lock);
 
   /* unexport from all connections if we're exported anywhere */

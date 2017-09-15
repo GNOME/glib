@@ -5025,7 +5025,7 @@ dispatch_unix_signals_unlocked (void)
   GSList *node;
   gint i;
 
-  /* clear this first incase another one arrives while we're processing */
+  /* clear this first in case another one arrives while we're processing */
   any_unix_signal_pending = FALSE;
 
   /* We atomically test/clear the bit from the global array in case
@@ -5676,7 +5676,7 @@ g_main_context_invoke (GMainContext *context,
  * invocation of @function.
  *
  * This function is the same as g_main_context_invoke() except that it
- * lets you specify the priority incase @function ends up being
+ * lets you specify the priority in case @function ends up being
  * scheduled as an idle and also lets you give a #GDestroyNotify for @data.
  *
  * @notify should not assume that it is called from any particular
