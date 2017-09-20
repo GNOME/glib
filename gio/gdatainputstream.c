@@ -1292,7 +1292,7 @@ g_data_input_stream_read_until_finish (GDataInputStream  *stream,
 /**
  * g_data_input_stream_read_upto:
  * @stream: a #GDataInputStream
- * @stop_chars: characters to terminate the read
+ * @stop_chars: (array length=stop_chars_len): characters to terminate the read
  * @stop_chars_len: length of @stop_chars. May be -1 if @stop_chars is
  *     nul-terminated
  * @length: (out) (optional): a #gsize to get the length of the data read in
@@ -1384,7 +1384,7 @@ g_data_input_stream_read_upto (GDataInputStream  *stream,
 /**
  * g_data_input_stream_read_upto_async:
  * @stream: a #GDataInputStream
- * @stop_chars: characters to terminate the read
+ * @stop_chars: (array length=stop_chars_len): characters to terminate the read
  * @stop_chars_len: length of @stop_chars. May be -1 if @stop_chars is
  *     nul-terminated
  * @io_priority: the [I/O priority][io-priority] of the request

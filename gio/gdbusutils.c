@@ -313,7 +313,7 @@ g_dbus_generate_guid (void)
 
 /**
  * g_dbus_is_guid:
- * @string: The string to check.
+ * @string: (array fixed-size=33): The string to check.
  *
  * Checks if @string is a D-Bus GUID.
  *

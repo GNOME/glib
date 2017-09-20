@@ -266,7 +266,7 @@ g_tls_password_get_value (GTlsPassword  *password,
 /**
  * g_tls_password_set_value:
  * @password: a #GTlsPassword object
- * @value: the new password value
+ * @value: (array length=length): the new password value
  * @length: the length of the password, or -1
  *
  * Set the value for this password. The @value will be copied by the password
