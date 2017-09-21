@@ -295,7 +295,7 @@ g_tls_password_set_value (GTlsPassword  *password,
 /**
  * g_tls_password_set_value_full:
  * @password: a #GTlsPassword object
- * @value: the value for the password
+ * @value: (array length=length): the value for the password
  * @length: the length of the password, or -1
  * @destroy: (nullable): a function to use to free the password.
  *
