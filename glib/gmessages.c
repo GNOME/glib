@@ -846,7 +846,7 @@ g_log_set_handler (const gchar	 *log_domain,
  * @user_data: data passed to the log handler
  * @destroy: destroy notify for @user_data, or %NULL
  *
- * Like g_log_sets_handler(), but takes a destroy notify for the @user_data.
+ * Like g_log_set_handler(), but takes a destroy notify for the @user_data.
  *
  * This has no effect if structured logging is enabled; see
  * [Using Structured Logging][using-structured-logging].
