@@ -992,19 +992,19 @@ _g_ir_node_param_direction_string (GIrNodeParam * node)
 static gint64
 parse_int_value (const gchar *str)
 {
-  return strtoll (str, NULL, 0);
+  return g_ascii_strtoll (str, NULL, 0);
 }
 
 static guint64
 parse_uint_value (const gchar *str)
 {
-  return strtoull (str, NULL, 0);
+  return g_ascii_strtoull (str, NULL, 0);
 }
 
 static gdouble
 parse_float_value (const gchar *str)
 {
-  return strtod (str, NULL);
+  return g_ascii_strtod (str, NULL);
 }
 
 static gboolean
