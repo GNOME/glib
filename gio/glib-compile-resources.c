@@ -789,6 +789,7 @@ main (int argc, char **argv)
     {
       g_free (target);
       g_free (c_name);
+      g_hash_table_unref (files);
       return 1;
     }
 
@@ -858,6 +859,7 @@ main (int argc, char **argv)
               g_string_free (dep_string, TRUE);
               g_free (dependency_file);
               g_error_free (error);
+              g_hash_table_unref (files);
               return 1;
             }
         }
@@ -890,6 +892,7 @@ main (int argc, char **argv)
 	    {
 	      g_printerr ("Can't open temp file\n");
 	      g_free (c_name);
+              g_hash_table_unref (files);
 	      return 1;
 	    }
 	  close (fd);
@@ -936,6 +939,7 @@ main (int argc, char **argv)
       g_printerr ("%s\n", error->message);
       g_free (target);
       g_free (c_name);
+      g_hash_table_unref (files);
       return 1;
     }
 
@@ -948,6 +952,7 @@ main (int argc, char **argv)
 	{
 	  g_printerr ("can't write to file %s", target);
 	  g_free (c_name);
+          g_hash_table_unref (files);
 	  return 1;
 	}
 
@@ -985,6 +990,7 @@ main (int argc, char **argv)
 	{
 	  g_printerr ("can't read back temporary file");
 	  g_free (c_name);
+          g_hash_table_unref (files);
 	  return 1;
 	}
       g_unlink (binary_target);
@@ -994,6 +1000,7 @@ main (int argc, char **argv)
 	{
 	  g_printerr ("can't write to file %s", target);
 	  g_free (c_name);
+          g_hash_table_unref (files);
 	  return 1;
 	}
 
@@ -1090,6 +1097,7 @@ main (int argc, char **argv)
   g_hash_table_destroy (table);
   g_free (xmllint);
   g_free (c_name);
+  g_hash_table_unref (files);
 
   return 0;
 }
