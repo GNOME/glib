@@ -2655,6 +2655,20 @@ g_settings_binding_key_changed (GSettings   *settings,
 
   if (variant == NULL)
     {
+      variant = g_settings_schema_key_get_per_desktop_default (&binding->key);
+      if (variant &&
+          !binding->get_mapping (&value, variant, binding->user_data))
+        {
+          g_error ("Per-desktop default value for key '%s' in schema '%s' "
+                   "was rejected by the binding mapping function.",
+                   binding->key.name, g_settings_schema_get_id (binding->key.schema));
+          g_variant_unref (variant);
+          variant = NULL;
+        }
+    }
+
+  if (variant == NULL)
+    {
       variant = g_variant_ref (binding->key.default_value);
       if (!binding->get_mapping (&value, variant, binding->user_data))
         g_error ("The schema default value for key '%s' in schema '%s' "
