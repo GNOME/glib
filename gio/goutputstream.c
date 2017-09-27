@@ -234,7 +234,7 @@ g_output_stream_write (GOutputStream  *stream,
  * @stream: a #GOutputStream.
  * @buffer: (array length=count) (element-type guint8): the buffer containing the data to write. 
  * @count: the number of bytes to write
- * @bytes_written: (out): location to store the number of bytes that was 
+ * @bytes_written: (out) (optional): location to store the number of bytes that was
  *     written to the stream
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
@@ -302,7 +302,7 @@ g_output_stream_write_all (GOutputStream  *stream,
 /**
  * g_output_stream_printf:
  * @stream: a #GOutputStream.
- * @bytes_written: (out): location to store the number of bytes that was
+ * @bytes_written: (out) (optional): location to store the number of bytes that was
  *     written to the stream
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
@@ -348,7 +348,7 @@ g_output_stream_printf (GOutputStream  *stream,
 /**
  * g_output_stream_vprintf:
  * @stream: a #GOutputStream.
- * @bytes_written: (out): location to store the number of bytes that was
+ * @bytes_written: (out) (optional): location to store the number of bytes that was
  *     written to the stream
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occurring, or %NULL to ignore
@@ -1019,7 +1019,7 @@ g_output_stream_write_all_async (GOutputStream       *stream,
  * g_output_stream_write_all_finish:
  * @stream: a #GOutputStream
  * @result: a #GAsyncResult
- * @bytes_written: (out): location to store the number of bytes that was written to the stream
+ * @bytes_written: (out) (optional): location to store the number of bytes that was written to the stream
  * @error: a #GError location to store the error occurring, or %NULL to ignore.
  *
  * Finishes an asynchronous stream write operation started with
