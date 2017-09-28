@@ -115,10 +115,11 @@ _g_module_self (void)
   /* On Android 32 bit (i.e. not __LP64__), dlopen(NULL)
    * does not work reliable and generally no symbols are found
    * at all. RTLD_DEFAULT works though.
-   * On Android 64 bit, dlopen(NULL) seems to work but RTLD_DEFAULT
-   * is NULL, which is considered an invalid module.
+   * On Android 64 bit, dlopen(NULL) seems to work but dlsym(handle)
+   * always returns 'undefined symbol'. Only if RTLD_DEFAULT or 
+   * NULL is given, dlsym returns an appropriate pointer.
    */
-#if defined(__BIONIC__) && !defined(__LP64__)
+#if defined(__BIONIC__)
   handle = RTLD_DEFAULT;
 #else
   handle = dlopen (NULL, RTLD_GLOBAL | RTLD_LAZY);
@@ -138,7 +139,7 @@ _g_module_close (gpointer handle,
    *
    * See above for the Android special case
    */
-#if defined(__BIONIC__) && !defined(__LP64__)
+#if defined(__BIONIC__)
   is_unref = (handle != RTLD_DEFAULT);
 #else
   is_unref |= 1;
