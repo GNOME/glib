@@ -144,7 +144,7 @@ case "$host" in
       ;;
     esac
 
-    AC_DEFINE([_WIN32_WINNT], [0x0501], [Target the Windows XP API])
+    AC_DEFINE([_WIN32_WINNT], [0x0601], [Target the Windows 7 API])
     ;;
   *)
     glib_native_win32=no
