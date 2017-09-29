@@ -23,6 +23,7 @@
 
 #include <gio/gfileinfo.h>
 #include <gio/gfile.h>
+#include <glib/gstdioprivate.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -40,8 +41,8 @@ typedef struct
 } GLocalParentFileInfo;
 
 #ifdef G_OS_WIN32
-/* We want 64-bit file size support */
-#define GLocalFileStat struct _stati64
+/* We want 64-bit file size, file ID and symlink support */
+#define GLocalFileStat GWin32PrivateStat
 #else
 #define GLocalFileStat struct stat
 #endif

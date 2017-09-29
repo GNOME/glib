@@ -40,6 +40,8 @@
 #include "gfiledescriptorbased.h"
 #endif
 
+#include "glib-private.h"
+
 #ifdef G_OS_WIN32
 #include <io.h>
 #ifndef S_ISDIR
@@ -234,7 +236,7 @@ _g_local_file_output_stream_really_close (GLocalFileOutputStream *file,
   /* Must close before renaming on Windows, so just do the close first
    * in all cases for now.
    */
-  if (_fstati64 (file->priv->fd, &final_stat) == 0)
+  if (GLIB_PRIVATE_CALL (g_win32_fstat) (file->priv->fd, &final_stat) == 0)
     file->priv->etag = _g_local_file_info_create_etag (&final_stat);
 
   if (!g_close (file->priv->fd, NULL))
@@ -797,7 +799,7 @@ handle_overwrite_open (const char    *filename,
     }
   
 #ifdef G_OS_WIN32
-  res = _fstati64 (fd, &original_stat);
+  res = GLIB_PRIVATE_CALL (g_win32_fstat) (fd, &original_stat);
 #else
   res = fstat (fd, &original_stat);
 #endif
@@ -891,7 +893,7 @@ handle_overwrite_open (const char    *filename,
           int tres;
 
 #ifdef G_OS_WIN32
-          tres = _fstati64 (tmpfd, &tmp_statbuf);
+          tres = GLIB_PRIVATE_CALL (g_win32_fstat) (tmpfd, &tmp_statbuf);
 #else
           tres = fstat (tmpfd, &tmp_statbuf);
 #endif

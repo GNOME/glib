@@ -53,6 +53,7 @@
 #endif /* HAVE_XATTR */
 
 #include <glib/gstdio.h>
+#include <glib/gstdioprivate.h>
 #include <gfileattribute-priv.h>
 #include <gfileinfo-priv.h>
 #include <gvfs.h>
@@ -60,8 +61,9 @@
 #ifdef G_OS_UNIX
 #include <unistd.h>
 #include "glib-unix.h"
-#include "glib-private.h"
 #endif
+
+#include "glib-private.h"
 
 #include "thumbnail-verify.h"
 
@@ -136,9 +138,15 @@ _g_local_file_info_create_etag (GLocalFileStat *statbuf)
 static char *
 _g_local_file_info_create_file_id (GLocalFileStat *statbuf)
 {
+  guint64 ino;
+#ifdef G_OS_WIN32
+  ino = statbuf->file_index;
+#else
+  ino = statbuf->st_ino;
+#endif
   return g_strdup_printf ("l%" G_GUINT64_FORMAT ":%" G_GUINT64_FORMAT,
 			  (guint64) statbuf->st_dev, 
-			  (guint64) statbuf->st_ino);
+			  ino);
 }
 
 static char *
@@ -148,13 +156,12 @@ _g_local_file_info_create_fs_id (GLocalFileStat *statbuf)
 			  (guint64) statbuf->st_dev);
 }
 
-
-#ifdef S_ISLNK
+#if defined (S_ISLNK) || defined (G_OS_WIN32)
 
 static gchar *
 read_link (const gchar *full_name)
 {
-#ifdef HAVE_READLINK
+#if defined (HAVE_READLINK) || defined (G_OS_WIN32)
   gchar *buffer;
   guint size;
   
@@ -165,7 +172,11 @@ read_link (const gchar *full_name)
     {
       int read_size;
       
+#ifndef G_OS_WIN32
       read_size = readlink (full_name, buffer, size);
+#else
+      read_size = GLIB_PRIVATE_CALL (g_win32_readlink_utf8) (full_name, buffer, size);
+#endif
       if (read_size < 0)
 	{
 	  g_free (buffer);
@@ -184,7 +195,7 @@ read_link (const gchar *full_name)
 #endif
 }
 
-#endif  /* S_ISLNK */
+#endif  /* S_ISLNK || G_OS_WIN32 */
 
 #ifdef HAVE_SELINUX
 /* Get the SELinux security context */
@@ -938,6 +949,9 @@ set_info_from_stat (GFileInfo             *info,
 #ifdef S_ISLNK
   else if (S_ISLNK (statbuf->st_mode))
     file_type = G_FILE_TYPE_SYMBOLIC_LINK;
+#elif defined (G_OS_WIN32)
+  if (statbuf->reparse_tag == IO_REPARSE_TAG_SYMLINK)
+    file_type = G_FILE_TYPE_SYMBOLIC_LINK;
 #endif
 
   g_file_info_set_file_type (info, file_type);
@@ -960,7 +974,11 @@ set_info_from_stat (GFileInfo             *info,
 #if defined (HAVE_STRUCT_STAT_ST_BLOCKS)
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_BLOCKS, statbuf->st_blocks);
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_ALLOCATED_SIZE,
-                                          statbuf->st_blocks * G_GUINT64_CONSTANT (512));
+                                           statbuf->st_blocks * G_GUINT64_CONSTANT (512));
+#elif defined (G_OS_WIN32)
+  _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_ALLOCATED_SIZE,
+                                           statbuf->allocated_size);
+
 #endif
   
   _g_file_info_set_attribute_uint64_by_id (info, G_FILE_ATTRIBUTE_ID_TIME_MODIFIED, statbuf->st_mtime);
@@ -1711,13 +1729,12 @@ _g_local_file_info_get (const char             *basename,
   GLocalFileStat statbuf;
 #ifdef S_ISLNK
   struct stat statbuf2;
+#elif defined (G_OS_WIN32)
+  GWin32PrivateStat statbuf2;
 #endif
   int res;
   gboolean stat_ok;
   gboolean is_symlink, symlink_broken;
-#ifdef G_OS_WIN32
-  DWORD dos_attributes;
-#endif
   char *symlink_target;
   GVfs *vfs;
   GVfsClass *class;
@@ -1739,28 +1756,7 @@ _g_local_file_info_get (const char             *basename,
 #ifndef G_OS_WIN32
   res = g_lstat (path, &statbuf);
 #else
-  {
-    wchar_t *wpath = g_utf8_to_utf16 (path, -1, NULL, NULL, error);
-    int len;
-
-    if (wpath == NULL)
-      {
-        g_object_unref (info);
-        return NULL;
-      }
-
-    len = wcslen (wpath);
-    while (len > 0 && G_IS_DIR_SEPARATOR (wpath[len-1]))
-      len--;
-    if (len > 0 &&
-        (!g_path_is_absolute (path) || len > g_path_skip_root (path) - path))
-      wpath[len] = '\0';
-
-    res = _wstati64 (wpath, &statbuf);
-    dos_attributes = GetFileAttributesW (wpath);
-
-    g_free (wpath);
-  }
+  res = GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (path, &statbuf);
 #endif
 
   if (res == -1)
@@ -1791,11 +1787,14 @@ _g_local_file_info_get (const char             *basename,
 
 #ifdef S_ISLNK
   is_symlink = stat_ok && S_ISLNK (statbuf.st_mode);
+#elif defined (G_OS_WIN32)
+  /* glib already checked the FILE_ATTRIBUTE_REPARSE_POINT for us */
+  is_symlink = stat_ok && statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK; 
 #else
   is_symlink = FALSE;
 #endif
   symlink_broken = FALSE;
-#ifdef S_ISLNK
+
   if (is_symlink)
     {
       g_file_info_set_is_symlink (info, TRUE);
@@ -1803,7 +1802,11 @@ _g_local_file_info_get (const char             *basename,
       /* Unless NOFOLLOW was set we default to following symlinks */
       if (!(flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS))
 	{
+#ifndef G_OS_WIN32
 	  res = stat (path, &statbuf2);
+#else
+	  res = GLIB_PRIVATE_CALL (g_win32_stat_utf8) (path, &statbuf2);
+#endif
 
 	  /* Report broken links as symlinks */
 	  if (res != -1)
@@ -1815,7 +1818,6 @@ _g_local_file_info_get (const char             *basename,
 	    symlink_broken = TRUE;
 	}
     }
-#endif
 
   if (stat_ok)
     set_info_from_stat (info, &statbuf, attribute_matcher);
@@ -1839,27 +1841,28 @@ _g_local_file_info_get (const char             *basename,
       (stat_ok && S_ISREG (statbuf.st_mode)))
     _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_IS_BACKUP, TRUE);
 #else
-  if (dos_attributes & FILE_ATTRIBUTE_HIDDEN)
+  if (statbuf.attributes & FILE_ATTRIBUTE_HIDDEN)
     g_file_info_set_is_hidden (info, TRUE);
 
-  if (dos_attributes & FILE_ATTRIBUTE_ARCHIVE)
+  if (statbuf.attributes & FILE_ATTRIBUTE_ARCHIVE)
     _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_IS_ARCHIVE, TRUE);
 
-  if (dos_attributes & FILE_ATTRIBUTE_SYSTEM)
+  if (statbuf.attributes & FILE_ATTRIBUTE_SYSTEM)
     _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_DOS_IS_SYSTEM, TRUE);
 #endif
 
   symlink_target = NULL;
-#ifdef S_ISLNK
   if (is_symlink)
     {
+#if defined (S_ISLNK) || defined (G_OS_WIN32)
       symlink_target = read_link (path);
+#endif
       if (symlink_target &&
           _g_file_attribute_matcher_matches_id (attribute_matcher,
                                                 G_FILE_ATTRIBUTE_ID_STANDARD_SYMLINK_TARGET))
         g_file_info_set_symlink_target (info, symlink_target);
     }
-#endif
+
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
 					    G_FILE_ATTRIBUTE_ID_STANDARD_CONTENT_TYPE) ||
       _g_file_attribute_matcher_matches_id (attribute_matcher,
@@ -2014,7 +2017,7 @@ _g_local_file_info_get_from_fd (int         fd,
   GFileInfo *info;
   
 #ifdef G_OS_WIN32
-#define FSTAT _fstati64
+#define FSTAT GLIB_PRIVATE_CALL (g_win32_fstat)
 #else
 #define FSTAT fstat
 #endif
@@ -2148,16 +2151,26 @@ set_unix_mode (char                       *filename,
   if (!get_uint32 (value, &val, error))
     return FALSE;
 
-#ifdef HAVE_SYMLINK
+#if defined (HAVE_SYMLINK) || defined (G_OS_WIN32)
   if (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) {
 #ifdef HAVE_LCHMOD
     res = lchmod (filename, val);
 #else
+    gboolean is_symlink;
+#ifndef G_OS_WIN32
     struct stat statbuf;
     /* Calling chmod on a symlink changes permissions on the symlink.
      * We don't want to do this, so we need to check for a symlink */
     res = g_lstat (filename, &statbuf);
-    if (res == 0 && S_ISLNK (statbuf.st_mode))
+    is_symlink = (res == 0 && S_ISLNK (statbuf.st_mode));
+#else
+    /* FIXME: implement lchmod for W32, should be doable */
+    GWin32PrivateStat statbuf;
+
+    res = GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (filename, &statbuf);
+    is_symlink = (res == 0 && statbuf.reparse_tag == IO_REPARSE_TAG_SYMLINK);
+#endif
+    if (is_symlink)
       {
         g_set_error_literal (error, G_IO_ERROR,
                              G_IO_ERROR_NOT_SUPPORTED,

@@ -48,6 +48,13 @@ glib__private__ (void)
     g_dir_new_from_dirp,
 
     glib_init,
+
+#ifdef G_OS_WIN32
+    g_win32_stat_utf8,
+    g_win32_lstat_utf8,
+    g_win32_readlink_utf8,
+    g_win32_fstat,
+#endif
   };
 
   return &table;

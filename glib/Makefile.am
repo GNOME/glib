@@ -161,6 +161,7 @@ libglib_2_0_la_SOURCES = 	\
 	gslice.c		\
 	gslist.c		\
 	gstdio.c		\
+	gstdioprivate.h		\
 	gstrfuncs.c		\
 	gstring.c		\
 	gstringchunk.c		\

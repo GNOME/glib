@@ -49,6 +49,7 @@
 #include "gfileutils.h"
 
 #include "gstdio.h"
+#include "gstdioprivate.h"
 #include "glibintl.h"
 
 #ifdef HAVE_LINUX_MAGIC_H /* for btrfs check */
@@ -2052,7 +2053,7 @@ gchar *
 g_file_read_link (const gchar  *filename,
 	          GError      **error)
 {
-#ifdef HAVE_READLINK
+#if defined (HAVE_READLINK) || defined (G_OS_WIN32)
   gchar *buffer;
   size_t size;
   gssize read_size;
@@ -2065,7 +2066,11 @@ g_file_read_link (const gchar  *filename,
   
   while (TRUE) 
     {
+#ifndef G_OS_WIN32
       read_size = readlink (filename, buffer, size);
+#else
+      read_size = g_win32_readlink_utf8 (filename, buffer, size);
+#endif
       if (read_size < 0)
         {
           int saved_errno = errno;

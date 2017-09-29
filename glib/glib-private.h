@@ -20,6 +20,7 @@
 
 #include <glib.h>
 #include "gwakeup.h"
+#include "gstdioprivate.h"
 
 #if defined(__GNUC__)
 # define _g_alignof(type) (__alignof__ (type))
@@ -63,6 +64,23 @@ typedef struct {
 
   /* See glib-init.c */
   void                  (* glib_init)                   (void);
+
+  /* See gstdio.c */
+#ifdef G_OS_WIN32
+  int                   (* g_win32_stat_utf8)           (const gchar       *filename,
+                                                         GWin32PrivateStat *buf);
+
+  int                   (* g_win32_lstat_utf8)          (const gchar       *filename,
+                                                         GWin32PrivateStat *buf);
+
+  int                   (* g_win32_readlink_utf8)       (const gchar *filename,
+                                                         gchar       *buf,
+                                                         gsize        buf_size);
+
+  int                   (* g_win32_fstat)               (int                fd,
+                                                         GWin32PrivateStat *buf);
+#endif
+
 
   /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;

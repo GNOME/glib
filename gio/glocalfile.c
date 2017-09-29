@@ -62,11 +62,11 @@
 #include "gunixmounts.h"
 #include "gioerror.h"
 #include <glib/gstdio.h>
+#include <glib/gstdioprivate.h>
 #include "glibintl.h"
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
 #endif
-#include "glib-private.h"
 
 #include "glib-private.h"
 
@@ -1395,7 +1395,8 @@ g_local_file_read (GFile         *file,
 #ifdef G_OS_WIN32
       if (errsv == EACCES)
 	{
-	  ret = _stati64 (local->filename, &buf);
+	  /* Exploit the fact that on W32 the glib filename encoding is UTF8 */
+	  ret = GLIB_PRIVATE_CALL (g_win32_stat_utf8) (local->filename, &buf);
 	  if (ret == 0 && S_ISDIR (buf.st_mode))
             errsv = EISDIR;
 	}
@@ -1407,7 +1408,7 @@ g_local_file_read (GFile         *file,
     }
 
 #ifdef G_OS_WIN32
-  ret = _fstati64 (fd, &buf);
+  ret = GLIB_PRIVATE_CALL (g_win32_fstat) (fd, &buf);
 #else
   ret = fstat (fd, &buf);
 #endif
@@ -2677,33 +2678,12 @@ g_local_file_measure_size_of_file (gint           parent_fd,
       int errsv = errno;
       return g_local_file_measure_size_error (state->flags, errsv, name, error);
     }
-#else
-  {
-    const char *filename = (const gchar *) name->data;
-    wchar_t *wfilename = g_utf8_to_utf16 (filename, -1, NULL, NULL, NULL);
-    int retval;
-    int save_errno;
-    int len;
-
-    if (wfilename == NULL)
-      return g_local_file_measure_size_error (state->flags, errno, name, error);
-
-    len = wcslen (wfilename);
-    while (len > 0 && G_IS_DIR_SEPARATOR (wfilename[len-1]))
-      len--;
-    if (len > 0 &&
-        (!g_path_is_absolute (filename) || len > g_path_skip_root (filename) - filename))
-      wfilename[len] = '\0';
-
-    retval = _wstati64 (wfilename, &buf);
-    save_errno = errno;
-
-    g_free (wfilename);
-
-    errno = save_errno;
-    if (retval != 0)
-      return g_local_file_measure_size_error (state->flags, errno, name, error);
-  }
+#else /* !AT_FDCWD && !HAVE_LSTAT && G_OS_WIN32 */
+  if (GLIB_PRIVATE_CALL (g_win32_lstat_utf8) (name->data, &buf) != 0)
+    {
+      int errsv = errno;
+      return g_local_file_measure_size_error (state->flags, errsv, name, error);
+    }
 #endif
 
   if (name->next)
@@ -2722,7 +2702,11 @@ g_local_file_measure_size_of_file (gint           parent_fd,
       state->contained_on = buf.st_dev;
     }
 
-#if defined (HAVE_STRUCT_STAT_ST_BLOCKS)
+#if defined (G_OS_WIN32)
+  if (~state->flags & G_FILE_MEASURE_APPARENT_SIZE)
+    state->disk_usage += buf.allocated_size;
+  else
+#elif defined (HAVE_STRUCT_STAT_ST_BLOCKS)
   if (~state->flags & G_FILE_MEASURE_APPARENT_SIZE)
     state->disk_usage += buf.st_blocks * G_GUINT64_CONSTANT (512);
   else
