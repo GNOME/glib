@@ -1542,6 +1542,13 @@ add_interfaces (GDBusObjectManagerClient *manager,
       g_variant_unref (properties);
     }
 
+  if (added)
+    {
+      g_hash_table_insert (manager->priv->map_object_path_to_object_proxy,
+                           g_strdup (object_path),
+                           op);
+    }
+
   g_mutex_unlock (&manager->priv->lock);
 
   /* now that we don't hold the lock any more, emit signals */
@@ -1555,12 +1562,8 @@ add_interfaces (GDBusObjectManagerClient *manager,
   g_list_free (interface_added_signals);
 
   if (added)
-    {
-      g_hash_table_insert (manager->priv->map_object_path_to_object_proxy,
-                           g_strdup (object_path),
-                           op);
-      g_signal_emit_by_name (manager, "object-added", op);
-    }
+    g_signal_emit_by_name (manager, "object-added", op);
+
   g_object_unref (manager);
   g_object_unref (op);
 }
