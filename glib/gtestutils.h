@@ -48,32 +48,33 @@ typedef void (*GTestFixtureFunc) (gpointer      fixture,
                                              gint64 __n1 = (n1), __n2 = (n2); \
                                              if (__n1 cmp __n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'i'); \
+                                                 #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'i'); \
                                         } G_STMT_END
 #define g_assert_cmpuint(n1, cmp, n2)   G_STMT_START { \
                                              guint64 __n1 = (n1), __n2 = (n2); \
                                              if (__n1 cmp __n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'i'); \
+                                                 #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'i'); \
                                         } G_STMT_END
 #define g_assert_cmphex(n1, cmp, n2)    G_STMT_START {\
                                              guint64 __n1 = (n1), __n2 = (n2); \
                                              if (__n1 cmp __n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'x'); \
+                                                 #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'x'); \
                                         } G_STMT_END
 #define g_assert_cmpfloat(n1,cmp,n2)    G_STMT_START { \
                                              long double __n1 = (n1), __n2 = (n2); \
                                              if (__n1 cmp __n2) ; else \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                 #n1 " " #cmp " " #n2, __n1, #cmp, __n2, 'f'); \
+                                                 #n1 " " #cmp " " #n2, (long double) __n1, #cmp, (long double) __n2, 'f'); \
                                         } G_STMT_END
 #define g_assert_cmpmem(m1, l1, m2, l2) G_STMT_START {\
                                              gconstpointer __m1 = m1, __m2 = m2; \
                                              int __l1 = l1, __l2 = l2; \
                                              if (__l1 != __l2) \
                                                g_assertion_message_cmpnum (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
-                                                                           #l1 " (len(" #m1 ")) == " #l2 " (len(" #m2 "))", __l1, "==", __l2, 'i'); \
+                                                                           #l1 " (len(" #m1 ")) == " #l2 " (len(" #m2 "))", \
+                                                                           (long double) __l1, "==", (long double) __l2, 'i'); \
                                              else if (__l1 != 0 && memcmp (__m1, __m2, __l1) != 0) \
                                                g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                                                                     "assertion failed (" #m1 " == " #m2 ")"); \
