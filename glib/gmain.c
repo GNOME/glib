@@ -2413,6 +2413,40 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
     return FALSE;
 }
 
+/**
+ * g_clear_handle_id: (skip)
+ * @tag_ptr: (not nullable): a pointer to the handler ID
+ * @clear_func: (not nullable): the function to call to clear the handler
+ *
+ * Clears a numeric handler, such as a #GSource ID.
+ *
+ * @tag_ptr must be a valid pointer to the variable holding the handler.
+ *
+ * If the ID is zero then this function does nothing.
+ * Otherwise, clear_func() is called with the ID as a parameter, and the tag is
+ * set to zero.
+ *
+ * A macro is also included that allows this function to be used without
+ * pointer casts.
+ *
+ * Since: 2.56
+ */
+#undef g_clear_handle_id
+void
+g_clear_handle_id (guint            *tag_ptr,
+                   GClearHandleFunc  clear_func)
+{
+  guint _handle_id;
+
+  _handle_id = *tag_ptr;
+  if (_handle_id > 0)
+    {
+      *tag_ptr = 0;
+      if (clear_func != NULL)
+        clear_func (_handle_id);
+    }
+}
+
 #ifdef G_OS_UNIX
 /**
  * g_source_add_unix_fd:

@@ -633,6 +633,8 @@ g_source_get_current_time
 g_source_remove
 g_source_remove_by_funcs_user_data
 g_source_remove_by_user_data
+GClearHandleFunc
+g_clear_handle_id
 
 <SUBSECTION Private>
 GLIB_HAVE_ALLOCA_H
