@@ -885,7 +885,7 @@ _g_get_unix_mount_points (void)
   GList *return_list = NULL;
 
   table = mnt_new_table ();
-  if (mnt_table_parse_mtab (table, NULL) < 0)
+  if (mnt_table_parse_fstab (table, NULL) < 0)
     goto out;
 
   iter = mnt_new_iter (MNT_ITER_FORWARD);
