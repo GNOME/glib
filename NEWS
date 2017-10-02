@@ -1,3 +1,17 @@
+Overview of changes in GLib 2.54.1
+==================================
+
+* Bugs fixed:
+ 786737 No g_variant_get() example for dicts
+ 787551 Factor out some duplicated code in GParamSpec validation
+ 783270 Improve Visual Studio support for Meson builds
+ 783210 build: Switch to sassc for generating style
+ 781867 various gvfsd-* wants to look in /boot/efi, causes unnecessary/inappro...
+
+* Translation updates:
+ Slovenian
+
+
 Overview of changes in GLib 2.54.0
 ==================================
 
