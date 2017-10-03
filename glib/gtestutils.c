@@ -808,7 +808,7 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_START_BINARY:
       if (test_tap_log)
         g_print ("# random seed: %s\n", string2);
-      else if (g_test_verbose())
+      else if (g_test_verbose ())
         g_print ("GTest: random seed: %s\n", string2);
       break;
     case G_TEST_LOG_START_SUITE:
@@ -840,15 +840,15 @@ g_test_log (GTestLogType lbit,
           else
             g_print ("\n");
         }
-      else if (g_test_verbose())
+      else if (g_test_verbose ())
         g_print ("GTest: result: %s\n", g_test_result_names[result]);
-      else if (!g_test_quiet())
+      else if (!g_test_quiet ())
         g_print ("%s\n", g_test_result_names[result]);
       if (fail && test_mode_fatal)
         {
           if (test_tap_log)
             g_print ("Bail out!\n");
-          g_abort();
+          g_abort ();
         }
       if (result == G_TEST_RUN_SKIPPED)
         test_skipped_count++;
@@ -856,25 +856,25 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_MIN_RESULT:
       if (test_tap_log)
         g_print ("# min perf: %s\n", string1);
-      else if (g_test_verbose())
+      else if (g_test_verbose ())
         g_print ("(MINPERF:%s)\n", string1);
       break;
     case G_TEST_LOG_MAX_RESULT:
       if (test_tap_log)
         g_print ("# max perf: %s\n", string1);
-      else if (g_test_verbose())
+      else if (g_test_verbose ())
         g_print ("(MAXPERF:%s)\n", string1);
       break;
     case G_TEST_LOG_MESSAGE:
       if (test_tap_log)
         g_print ("# %s\n", string1);
-      else if (g_test_verbose())
+      else if (g_test_verbose ())
         g_print ("(MSG: %s)\n", string1);
       break;
     case G_TEST_LOG_ERROR:
       if (test_tap_log)
         g_print ("Bail out! %s\n", string1);
-      else if (g_test_verbose())
+      else if (g_test_verbose ())
         g_print ("(ERROR: %s)\n", string1);
       break;
     default: ;
@@ -896,9 +896,9 @@ g_test_log (GTestLogType lbit,
     case G_TEST_LOG_START_CASE:
       if (test_tap_log)
         ;
-      else if (g_test_verbose())
+      else if (g_test_verbose ())
         g_print ("GTest: run: %s\n", string1);
-      else if (!g_test_quiet())
+      else if (!g_test_quiet ())
         g_print ("%s: ", string1);
       break;
     default: ;
