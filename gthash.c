@@ -158,7 +158,7 @@ _gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint
   g_return_if_fail (builder->buildable);
 
   g_assert (len >= builder->packed_size);
-  g_assert ((((unsigned long)mem) & 0x3) == 0);
+  g_assert ((((size_t)mem) & 0x3) == 0);
 
   memset (mem, 0, len);
 
@@ -202,7 +202,7 @@ _gi_typelib_hash_search (guint8* memory, const char *str, guint n_entries)
   guint32 dirmap_offset;
   guint32 offset;
 
-  g_assert ((((unsigned long)memory) & 0x3) == 0);
+  g_assert ((((size_t)memory) & 0x3) == 0);
   mph = ((guint32*)memory)+1;
 
   offset = cmph_search_packed (mph, str, strlen (str));

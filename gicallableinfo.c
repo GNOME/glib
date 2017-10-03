@@ -535,7 +535,7 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
                 arg->v_int32 = (gint32) ffi_value->v_long;
                 break;
             default:
-                arg->v_pointer = (gpointer) ffi_value->v_ulong;
+                arg->v_pointer = (gpointer) ffi_value->v_pointer;
                 break;
             }
 
@@ -543,7 +543,7 @@ gi_type_info_extract_ffi_return_value (GITypeInfo                  *return_info,
         }
         break;
     default:
-        arg->v_pointer = (gpointer) ffi_value->v_ulong;
+        arg->v_pointer = (gpointer) ffi_value->v_pointer;
         break;
     }
 }
