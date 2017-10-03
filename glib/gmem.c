@@ -475,7 +475,8 @@ g_mem_is_system_malloc (void)
  * in GLib and GIO, because those use the GLib allocators before main is
  * reached. Therefore this function is now deprecated and is just a stub.
  *
- * Deprecated: 2.46: Use other memory profiling tools instead
+ * Deprecated: 2.46: This function now does nothing. Use other memory
+ * profiling tools instead
  */
 void
 g_mem_set_vtable (GMemVTable *vtable)
