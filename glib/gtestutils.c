@@ -712,6 +712,7 @@ static char       *test_argv0_dirname;
 static const char *test_disted_files_dir;
 static const char *test_built_files_dir;
 static char       *test_initial_cwd = NULL;
+static gboolean    test_in_forked_child = FALSE;
 static gboolean    test_in_subprocess = FALSE;
 static GTestConfig mutable_test_config_vars = {
   FALSE,        /* test_initialized */
@@ -865,11 +866,16 @@ g_test_log (GTestLogType lbit,
         g_print ("(MAXPERF:%s)\n", string1);
       break;
     case G_TEST_LOG_MESSAGE:
-    case G_TEST_LOG_ERROR:
       if (test_tap_log)
         g_print ("# %s\n", string1);
       else if (g_test_verbose())
         g_print ("(MSG: %s)\n", string1);
+      break;
+    case G_TEST_LOG_ERROR:
+      if (test_tap_log)
+        g_print ("Bail out! %s\n", string1);
+      else if (g_test_verbose())
+        g_print ("(ERROR: %s)\n", string1);
       break;
     default: ;
     }
@@ -2405,7 +2411,12 @@ g_assertion_message (const char     *domain,
                    " ", message, NULL);
   g_printerr ("**\n%s\n", s);
 
-  g_test_log (G_TEST_LOG_ERROR, s, NULL, 0, NULL);
+  /* Don't print a fatal error indication if assertions are non-fatal, or
+   * if we are a child process that might be sharing the parent's stdout. */
+  if (test_nonfatal_assertions || test_in_subprocess || test_in_forked_child)
+    g_test_log (G_TEST_LOG_MESSAGE, s, NULL, 0, NULL);
+  else
+    g_test_log (G_TEST_LOG_ERROR, s, NULL, 0, NULL);
 
   if (test_nonfatal_assertions)
     {
@@ -2838,6 +2849,7 @@ g_test_trap_fork (guint64        usec_timeout,
   if (test_trap_last_pid == 0)  /* child */
     {
       int fd0 = -1;
+      test_in_forked_child = TRUE;
       close (stdout_pipe[0]);
       close (stderr_pipe[0]);
       if (!(test_trap_flags & G_TEST_TRAP_INHERIT_STDIN))
