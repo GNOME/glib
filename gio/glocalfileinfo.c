@@ -1618,12 +1618,12 @@ get_icon_name (const char *path,
   const char *name = NULL;
   gboolean with_fallbacks = TRUE;
 
-  if (strcmp (path, g_get_home_dir ()) == 0)
+  if (g_strcmp0 (path, g_get_home_dir ()) == 0)
     {
       name = use_symbolic ? "user-home-symbolic" : "user-home";
       with_fallbacks = FALSE;
     }
-  else if (strcmp (path, g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP)) == 0)
+  else if (g_strcmp0 (path, g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP)) == 0)
     {
       name = use_symbolic ? "user-desktop-symbolic" : "user-desktop";
       with_fallbacks = FALSE;
