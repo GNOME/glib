@@ -2043,8 +2043,8 @@ g_io_channel_win32_new_fd_internal (gint             fd,
  * same C runtime as GLib uses, which is msvcrt.dll. Note that in
  * current Microsoft compilers it is near impossible to convince it to
  * build code that would use msvcrt.dll. The last Microsoft compiler
- * version that supported using msvcrt.dll as the C runtime was version
- * 6. The GNU compiler and toolchain for Windows, also known as Mingw,
+ * version that supported using msvcrt.dll as the C runtime was version 6.
+ * The GNU compiler and toolchain for Windows, also known as Mingw,
  * fully supports msvcrt.dll.
  *
  * If you have created a #GIOChannel for a file descriptor and started
