@@ -94,10 +94,6 @@
  * variants over plain g_assert() is that the assertion messages can be
  * more elaborate, and include the values of the compared entities.
  *
- * GLib ships with two utilities called [gtester][gtester] and
- * [gtester-report][gtester-report] to facilitate running tests and producing
- * nicely formatted test reports.
- *
  * A full example of creating a test suite with two tests using fixtures:
  * |[<!-- language="C" -->
  * #include <glib.h>
@@ -161,6 +157,78 @@
  *   return g_test_run ();
  * }
  * ]|
+ *
+ * ### Integrating GTest in your project
+ *
+ * If you are using the [Meson](http://mesonbuild.com) build system, you will
+ * typically use the provided `test()` primitive to call the test binaries,
+ * e.g.:
+ *
+ * |[<!-- language="plain" -->
+ *   test(
+ *     'foo',
+ *     executable('foo', 'foo.c', dependencies: deps),
+ *     env: [
+ *       'G_TEST_SRCDIR=@0@'.format(meson.current_source_dir()),
+ *       'G_TEST_BUILDDIR=@0@'.format(meson.current_build_dir()),
+ *     ],
+ *   )
+ *
+ *   test(
+ *     'bar',
+ *     executable('bar', 'bar.c', dependencies: deps),
+ *     env: [
+ *       'G_TEST_SRCDIR=@0@'.format(meson.current_source_dir()),
+ *       'G_TEST_BUILDDIR=@0@'.format(meson.current_build_dir()),
+ *     ],
+ *   )
+ * ]|
+ *
+ * If you are using Autotools, you're strongly encouraged to use the Automake
+ * [TAP](https://testanything.org/) harness; GLib provides template files for
+ * easily integrating with it:
+ *
+ *   - [glib-tap.mk](https://git.gnome.org/browse/glib/tree/glib-tap.mk)
+ *   - [tap-test](https://git.gnome.org/browse/glib/tree/tap-test)
+ *   - [tap-driver.sh](https://git.gnome.org/browse/glib/tree/tap-driver.sh)
+ *
+ * You can copy these files in your own project's root directory, and then
+ * set up your `Makefile.am` file to reference them, for instance:
+ *
+ * |[<!-- language="plain" -->
+ * include $(top_srcdir)/glib-tap.mk
+ *
+ * # test binaries
+ * test_programs = \
+ *   foo \
+ *   bar
+ *
+ * # data distributed in the tarball
+ * dist_test_data = \
+ *   foo.data.txt \
+ *   bar.data.txt
+ *
+ * # data not distributed in the tarball
+ * test_data = \
+ *   blah.data.txt
+ * ]|
+ *
+ * Make sure to distribute the TAP files, using something like the following
+ * in your top-level `Makefile.am`:
+ *
+ * |[<!-- language="plain" -->
+ * EXTRA_DIST += \
+ *   tap-driver.sh \
+ *   tap-test
+ * ]|
+ *
+ * `glib-tap.mk` will be distributed implicitly due to being included in a
+ * `Makefile.am`. All three files should be added to version control.
+ *
+ * If you don't have access to the Autotools TAP harness, you can use the
+ * [gtester][gtester] and [gtester-report][gtester-report] tools, and use
+ * the [glib.mk](https://git.gnome.org/browse/glib/tree/glib.mk) Automake
+ * template provided by GLib.
  */
 
 /**
