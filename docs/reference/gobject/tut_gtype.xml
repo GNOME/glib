@@ -677,7 +677,7 @@ viewer_editable_save (ViewerEditable  *self,
   g_return_if_fail (VIEWER_IS_EDITABLE (self));
   g_return_if_fail (error == NULL || *error == NULL);
 
-  iface = VIEWER_EDITABLE_GET_INTERFACE (self);
+  iface = VIEWER_EDITABLE_GET_IFACE (self);
   g_return_if_fail (iface->save != NULL);
   iface->save (self);
 }
