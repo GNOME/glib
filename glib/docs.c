@@ -32,18 +32,20 @@
  *     and portability
  *
  * GLib defines a number of commonly used types, which can be divided
- * into 4 groups:
+ * into several groups:
  * - New types which are not part of standard C (but are defined in
- *   various C standard library header files) - #gboolean, #gsize,
- *   #gssize, #goffset, #gintptr, #guintptr.
+ *   various C standard library header files) — #gboolean, #gssize.
  * - Integer types which are guaranteed to be the same size across
- *   all platforms - #gint8, #guint8, #gint16, #guint16, #gint32,
+ *   all platforms — #gint8, #guint8, #gint16, #guint16, #gint32,
  *   #guint32, #gint64, #guint64.
  * - Types which are easier to use than their standard C counterparts -
  *   #gpointer, #gconstpointer, #guchar, #guint, #gushort, #gulong.
  * - Types which correspond exactly to standard C types, but are
- *   included for completeness - #gchar, #gint, #gshort, #glong,
+ *   included for completeness — #gchar, #gint, #gshort, #glong,
  *   #gfloat, #gdouble.
+ * - Types which correspond exactly to standard C99 types, but are available
+ *   to use even if your compiler does not support C99 — #gsize, #goffset,
+ *   #gintptr, #guintptr.
  *
  * GLib also defines macros for the limits of some of the standard
  * integer and floating point types, as well as macros for suitable
