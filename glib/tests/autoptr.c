@@ -17,6 +17,8 @@ test_autofree (void)
       g_autofree gchar *alwaysnull_again = NULL;
 
       buf[0] = 1;
+
+      g_assert_null (alwaysnull_again);
     }
 
   if (TRUE)
@@ -25,6 +27,8 @@ test_autofree (void)
 
       buf2[255] = 42;
     }
+
+  g_assert_null (alwaysnull);
 }
 
 static void
@@ -226,6 +230,7 @@ test_g_queue (void)
   g_autoptr(GQueue) val = g_queue_new ();
   g_auto(GQueue) stackval = G_QUEUE_INIT;
   g_assert (val != NULL);
+  g_assert_null (stackval.head);
 }
 
 static void
