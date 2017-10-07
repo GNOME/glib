@@ -20,7 +20,11 @@
 #include "config.h"
 
 #include <gio/gio.h>
+
+#if defined(G_OS_UNIX) && !defined(HAVE_COCOA)
 #include <gio/gdesktopappinfo.h>
+#endif
+
 #include <gi18n.h>
 
 #include "gio-tool.h"
@@ -30,6 +34,7 @@ static const GOptionEntry entries[] = {
   { NULL }
 };
 
+#if defined(G_OS_UNIX) && !defined(HAVE_COCOA)
 static gboolean
 get_bus_name_and_path_from_uri (const char *uri,
                                 char **bus_name_out,
@@ -90,6 +95,7 @@ out:
 
   return got_name;
 }
+#endif
 
 int
 handle_open (int argc, char *argv[], gboolean do_help)
@@ -154,6 +160,7 @@ handle_open (int argc, char *argv[], gboolean do_help)
 	  success = FALSE;
 	}
 
+#if defined(G_OS_UNIX) && !defined(HAVE_COCOA)
       /* FIXME: This chunk of madness is a workaround for a dbus-daemon bug.
        * See https://bugzilla.gnome.org/show_bug.cgi?id=780296
        */
@@ -180,6 +187,7 @@ handle_open (int argc, char *argv[], gboolean do_help)
               g_free (object_path);
             }
         }
+#endif
 
       g_object_unref (file);
       g_free (uri);
