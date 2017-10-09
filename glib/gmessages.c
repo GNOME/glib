@@ -2276,7 +2276,12 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
   return g_string_free (gstring, FALSE);
 }
 
-#if defined(__linux__) && !defined(__BIONIC__)
+/* Enable support for the journal if we're on a recent enough Linux */
+#if defined(__linux__) && !defined(__BIONIC__) && defined(HAVE_MKOSTEMP) && defined(O_CLOEXEC)
+#define ENABLE_JOURNAL_SENDV
+#endif
+
+#ifdef ENABLE_JOURNAL_SENDV
 static int
 journal_sendv (struct iovec *iov,
                gsize         iovlen)
@@ -2360,7 +2365,7 @@ retry2:
 
   return -1;
 }
-#endif
+#endif /* ENABLE_JOURNAL_SENDV */
 
 /**
  * g_log_writer_journald:
@@ -2390,7 +2395,7 @@ g_log_writer_journald (GLogLevelFlags   log_level,
                        gsize            n_fields,
                        gpointer         user_data)
 {
-#if defined(__linux__) && !defined(__BIONIC__)
+#ifdef ENABLE_JOURNAL_SENDV
   const char equals = '=';
   const char newline = '\n';
   gsize i, k;
@@ -2470,7 +2475,7 @@ g_log_writer_journald (GLogLevelFlags   log_level,
   return retval == 0 ? G_LOG_WRITER_HANDLED : G_LOG_WRITER_UNHANDLED;
 #else
   return G_LOG_WRITER_UNHANDLED;
-#endif
+#endif /* ENABLE_JOURNAL_SENDV */
 }
 
 /**
