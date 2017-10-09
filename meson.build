@@ -451,6 +451,14 @@ else
 endif
 message('Checking whether to use statfs or statvfs .. ' + stat_func_to_use)
 
+if host_system == 'linux'
+  if cc.has_function('mkostemp',
+                     prefix: '''#define _GNU_SOURCE
+                                #include <stdlib.h>''')
+    glib_conf.set('HAVE_MKOSTEMP', 1)
+  endif
+endif
+
 # Mac OS X Carbon support
 glib_have_carbon = cc.compiles('''#include <Carbon/Carbon.h>
                                   #include <CoreServices/CoreServices.h>''',
