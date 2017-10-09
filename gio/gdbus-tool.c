@@ -862,27 +862,23 @@ handle_call (gint        *argc,
     }
 
   /* validate and complete destination (bus name) */
-  if (g_dbus_connection_get_unique_name (c) != NULL)
+  if (complete_names)
     {
-      /* this only makes sense on message bus connections */
-      if (complete_names)
-        {
-          print_names (c, FALSE);
-          goto out;
-        }
-      if (opt_call_dest == NULL)
-        {
-          if (request_completion)
-            g_print ("--dest \n");
-          else
-            g_printerr (_("Error: Destination is not specified\n"));
-          goto out;
-        }
-      if (request_completion && g_strcmp0 ("--dest", completion_prev) == 0)
-        {
-          print_names (c, g_str_has_prefix (opt_call_dest, ":"));
-          goto out;
-        }
+      print_names (c, FALSE);
+      goto out;
+    }
+  if (opt_call_dest == NULL)
+    {
+      if (request_completion)
+        g_print ("--dest \n");
+      else
+        g_printerr (_("Error: Destination is not specified\n"));
+      goto out;
+    }
+  if (request_completion && g_strcmp0 ("--dest", completion_prev) == 0)
+    {
+      print_names (c, g_str_has_prefix (opt_call_dest, ":"));
+      goto out;
     }
 
   if (!request_completion && !g_dbus_is_name (opt_call_dest))
@@ -1619,28 +1615,26 @@ handle_introspect (gint        *argc,
       goto out;
     }
 
-  if (g_dbus_connection_get_unique_name (c) != NULL)
+  if (complete_names)
     {
-      if (complete_names)
-        {
-          print_names (c, FALSE);
-          goto out;
-        }
-      /* this only makes sense on message bus connections */
-      if (opt_introspect_dest == NULL)
-        {
-          if (request_completion)
-            g_print ("--dest \n");
-          else
-            g_printerr (_("Error: Destination is not specified\n"));
-          goto out;
-        }
-      if (request_completion && g_strcmp0 ("--dest", completion_prev) == 0)
-        {
-          print_names (c, g_str_has_prefix (opt_introspect_dest, ":"));
-          goto out;
-        }
+      print_names (c, FALSE);
+      goto out;
     }
+  /* this only makes sense on message bus connections */
+  if (opt_introspect_dest == NULL)
+    {
+      if (request_completion)
+        g_print ("--dest \n");
+      else
+        g_printerr (_("Error: Destination is not specified\n"));
+      goto out;
+    }
+  if (request_completion && g_strcmp0 ("--dest", completion_prev) == 0)
+    {
+      print_names (c, g_str_has_prefix (opt_introspect_dest, ":"));
+      goto out;
+    }
+
   if (complete_paths)
     {
       print_paths (c, opt_introspect_dest, "/");
@@ -1854,27 +1848,32 @@ handle_monitor (gint        *argc,
       goto out;
     }
 
-  if (g_dbus_connection_get_unique_name (c) != NULL)
+  /* Monitoring doesn’t make sense on a non-message-bus connection. */
+  if (g_dbus_connection_get_unique_name (c) == NULL)
     {
-      if (complete_names)
-        {
-          print_names (c, FALSE);
-          goto out;
-        }
-      /* this only makes sense on message bus connections */
-      if (opt_monitor_dest == NULL)
-        {
-          if (request_completion)
-            g_print ("--dest \n");
-          else
-            g_printerr (_("Error: Destination is not specified\n"));
-          goto out;
-        }
-      if (request_completion && g_strcmp0 ("--dest", completion_prev) == 0)
-        {
-          print_names (c, g_str_has_prefix (opt_monitor_dest, ":"));
-          goto out;
-        }
+      if (!request_completion)
+        g_printerr (_("Error: can’t monitor a non-message-bus connection\n"));
+      goto out;
+    }
+
+  if (complete_names)
+    {
+      print_names (c, FALSE);
+      goto out;
+    }
+  /* this only makes sense on message bus connections */
+  if (opt_monitor_dest == NULL)
+    {
+      if (request_completion)
+        g_print ("--dest \n");
+      else
+        g_printerr (_("Error: Destination is not specified\n"));
+      goto out;
+    }
+  if (request_completion && g_strcmp0 ("--dest", completion_prev) == 0)
+    {
+      print_names (c, g_str_has_prefix (opt_monitor_dest, ":"));
+      goto out;
     }
 
   if (!request_completion && !g_dbus_is_name (opt_monitor_dest))
