@@ -292,7 +292,6 @@ def main(argv):
 
     #------------ submodule gobject -------------------
     mkenums_vars = ver.copy()
-    mkenums_vars.update({'PERL_PATH': opt.perl})
     process_in(os.path.join(srcroot, 'gobject', 'glib-mkenums.in'),
                os.path.join(srcroot, 'gobject', 'glib-mkenums'),
                mkenums_vars)

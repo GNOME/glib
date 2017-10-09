@@ -369,16 +369,6 @@ if test "x$enable_rebuilds" = "xyes" && \
 fi
 AC_SUBST(REBUILD)
 
-# Need full path to Perl for glib-mkenums
-#
-if test "x$PERL" != x ; then
-  AC_PATH_PROG(PERL_PATH, [$PERL])
-fi
-if test "x$PERL_PATH" = x ; then
-  PERL_PATH="/usr/bin/env perl"
-fi
-AC_SUBST(PERL_PATH)
-
 # option to specify python interpreter to use; this just sets $PYTHON, so that
 # we will fallback to reading $PYTHON if --with-python is not given, and
 # python.m4 will get the expected input
