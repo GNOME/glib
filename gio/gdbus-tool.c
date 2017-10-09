@@ -1643,7 +1643,7 @@ handle_introspect (gint        *argc,
 
   if (!request_completion && !g_dbus_is_name (opt_introspect_dest))
     {
-        g_printerr (_("Error: %s is not a valid bus name\n"), opt_introspect_dest);
+      g_printerr (_("Error: %s is not a valid bus name\n"), opt_introspect_dest);
       goto out;
     }
 
