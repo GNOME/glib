@@ -38,7 +38,7 @@ write_all (const void *ptr,
 
   while (len > 0)
     {
-      ssize_t done = write (STDOUT_FILENO, p, len);
+      gssize done = write (STDOUT_FILENO, p, len);
       int errsv = errno;
 
       if (done == 0)

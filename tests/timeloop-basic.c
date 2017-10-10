@@ -35,7 +35,7 @@ int
 read_all (int fd, char *buf, int len)
 {
   size_t bytes_read = 0;
-  ssize_t count;
+  gssize count;
 
   while (bytes_read < len)
     {
@@ -58,7 +58,7 @@ int
 write_all (int fd, char *buf, int len)
 {
   size_t bytes_written = 0;
-  ssize_t count;
+  gssize count;
 
   while (bytes_written < len)
     {

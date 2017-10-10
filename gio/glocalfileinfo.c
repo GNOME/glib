@@ -236,7 +236,7 @@ get_selinux_context (const char            *path,
 #define g_setxattr(path,name,value,size) setxattr(path,name,value,size,0)
 #endif
 
-static ssize_t
+static gssize
 g_getxattr (const char *path, const char *name, void *value, size_t size,
             gboolean follow_symlinks)
 {
@@ -250,7 +250,7 @@ g_getxattr (const char *path, const char *name, void *value, size_t size,
 #endif
 }
 
-static ssize_t
+static gssize
 g_listxattr(const char *path, char *namebuf, size_t size,
             gboolean follow_symlinks)
 {
@@ -400,7 +400,7 @@ get_one_xattr (const char *path,
 {
   char value[64];
   char *value_p;
-  ssize_t len;
+  gssize len;
   int errsv;
 
   len = g_getxattr (path, xattr, value, sizeof (value)-1, follow_symlinks);
@@ -450,7 +450,7 @@ get_xattrs (const char            *path,
 #ifdef HAVE_XATTR
   gboolean all;
   gsize list_size;
-  ssize_t list_res_size;
+  gssize list_res_size;
   size_t len;
   char *list;
   const char *attr, *attr2;
@@ -562,7 +562,7 @@ get_one_xattr_from_fd (int         fd,
 {
   char value[64];
   char *value_p;
-  ssize_t len;
+  gssize len;
   int errsv;
 
   len = g_fgetxattr (fd, xattr, value, sizeof (value) - 1);
@@ -610,7 +610,7 @@ get_xattrs_from_fd (int                    fd,
 #ifdef HAVE_XATTR
   gboolean all;
   gsize list_size;
-  ssize_t list_res_size;
+  gssize list_res_size;
   size_t len;
   char *list;
   const char *attr, *attr2;
@@ -1289,7 +1289,7 @@ get_content_type (const char          *basename,
 
 	  if (fd != -1)
 	    {
-	      ssize_t res;
+	      gssize res;
 	      
 	      res = read (fd, sniff_buffer, sniff_length);
 	      (void) g_close (fd, NULL);

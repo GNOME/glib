@@ -32,7 +32,7 @@ test_pipe (void)
   GError *error = NULL;
   int pipefd[2];
   char buf[1024];
-  ssize_t bytes_read;
+  gssize bytes_read;
   gboolean res;
 
   res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);

@@ -1577,7 +1577,7 @@ expand_symlink (const char *link)
   char symlink_value[4096];
 #ifdef G_OS_WIN32
 #else
-  ssize_t res;
+  gssize res;
 #endif
   
 #ifdef G_OS_WIN32

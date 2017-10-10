@@ -2055,7 +2055,7 @@ g_file_read_link (const gchar  *filename,
 #ifdef HAVE_READLINK
   gchar *buffer;
   size_t size;
-  ssize_t read_size;
+  gssize read_size;
   
   g_return_val_if_fail (filename != NULL, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
