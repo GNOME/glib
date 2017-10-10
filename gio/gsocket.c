@@ -1952,7 +1952,7 @@ g_socket_get_local_address (GSocket  *socket,
  * @socket: a #GSocket.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Try to get the remove address of a connected socket. This is only
+ * Try to get the remote address of a connected socket. This is only
  * useful for connection oriented sockets that have been connected.
  *
  * Returns: (transfer full): a #GSocketAddress or %NULL on error.
