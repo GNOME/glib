@@ -1492,7 +1492,7 @@ libmount_opt = get_option('enable-libmount')
 if host_system == 'linux' and libmount_opt != 'no'
   libmount_dep = [dependency('mount', version : '>=2.28', required : false)]
   if not libmount_dep[0].found()
-    libmount_dep = [cc.find_library('mount')]
+    libmount_dep = [cc.find_library('mount', required : false)]
     libmount_h = cc.has_header('libmount/libmount.h')
     libmount_needed = libmount_opt == 'yes' and host_system == 'linux'
     if libmount_needed and (not libmount_dep[0].found() or not libmount_h)
