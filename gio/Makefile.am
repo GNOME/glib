@@ -3,9 +3,7 @@ include $(top_srcdir)/glib.mk
 SUBDIRS = gdbus-2.0/codegen
 
 if OS_UNIX
-if !OS_COCOA
 SUBDIRS += xdgmime
-endif
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
@@ -262,10 +260,9 @@ SUBDIRS += fam
 endif
 
 if OS_UNIX
-if !OS_COCOA
 platform_libadd += xdgmime/libxdgmime.la
 platform_deps += xdgmime/libxdgmime.la
-
+if !OS_COCOA
 appinfo_headers += gdesktopappinfo.h
 endif
 

@@ -25,6 +25,12 @@
 
 #include <CoreServices/CoreServices.h>
 
+#define XDG_PREFIX _gio_xdg
+#include "xdgmime/xdgmime.h"
+
+/* We lock this mutex whenever we modify global state in this module.  */
+G_LOCK_DEFINE_STATIC (gio_xdgmime);
+
 
 /*< internal >
  * create_cfstring_from_cstr:
@@ -429,7 +435,17 @@ g_content_type_guess (const gchar  *filename,
   if (data && (!filename || !uti ||
                CFStringCompare (uti, CFSTR ("public.data"), 0) == kCFCompareEqualTo))
     {
-      if (looks_like_text (data, data_size))
+      const char *sniffed_mimetype;
+      G_LOCK (gio_xdgmime);
+      sniffed_mimetype = xdg_mime_get_mime_type_for_data (data, data_size, NULL);
+      G_UNLOCK (gio_xdgmime);
+      if (sniffed_mimetype != XDG_MIME_TYPE_UNKNOWN)
+        {
+          gchar *uti_str = g_content_type_from_mime_type (sniffed_mimetype);
+          uti = create_cfstring_from_cstr (uti_str);
+          g_free (uti_str);
+        }
+      if (!uti && looks_like_text (data, data_size))
         {
           if (g_str_has_prefix ((const gchar*)data, "#!/"))
             uti = CFStringCreateCopy (NULL, CFSTR ("public.script"));
