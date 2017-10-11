@@ -978,7 +978,7 @@ g_task_set_source_tag (GTask    *task,
  * Gets the source object from @task. Like
  * g_async_result_get_source_object(), but does not ref the object.
  *
- * Returns: (transfer none) (type GObject): @task's source object, or %NULL
+ * Returns: (transfer none) (nullable) (type GObject): @task's source object, or %NULL
  *
  * Since: 2.36
  */
