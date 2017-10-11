@@ -68,7 +68,7 @@
  *   ...
  *
  *   plugin->schema_source =
- *     g_settings_new_schema_source_from_directory (dir,
+ *     g_settings_schema_source_new_from_directory (dir,
  *       g_settings_schema_source_get_default (), FALSE, NULL);
  *
  *   ...
