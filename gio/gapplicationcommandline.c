@@ -463,8 +463,8 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
  * The return value is %NULL-terminated and should be freed using
  * g_strfreev().
  *
- * Returns: (array length=argc) (transfer full): the string array
- * containing the arguments (the argv)
+ * Returns: (array length=argc) (element-type filename) (transfer full)
+ *      the string array containing the arguments (the argv)
  *
  * Since: 2.28
  **/
@@ -582,8 +582,8 @@ g_application_command_line_get_cwd (GApplicationCommandLine *cmdline)
  * See g_application_command_line_getenv() if you are only interested
  * in the value of a single environment variable.
  *
- * Returns: (array zero-terminated=1) (transfer none): the environment
- * strings, or %NULL if they were not sent
+ * Returns: (array zero-terminated=1) (element-type filename) (transfer none):
+ *     the environment strings, or %NULL if they were not sent
  *
  * Since: 2.28
  **/
@@ -596,7 +596,7 @@ g_application_command_line_get_environ (GApplicationCommandLine *cmdline)
 /**
  * g_application_command_line_getenv:
  * @cmdline: a #GApplicationCommandLine
- * @name: the environment variable to get
+ * @name: (type filename): the environment variable to get
  *
  * Gets the value of a particular environment variable of the command
  * line invocation, as would be returned by g_getenv().  The strings may
@@ -805,7 +805,7 @@ g_application_command_line_get_platform_data (GApplicationCommandLine *cmdline)
 /**
  * g_application_command_line_create_file_for_arg:
  * @cmdline: a #GApplicationCommandLine
- * @arg: an argument from @cmdline
+ * @arg: (type filename): an argument from @cmdline
  *
  * Creates a #GFile corresponding to a filename that was given as part
  * of the invocation of @cmdline.

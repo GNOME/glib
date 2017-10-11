@@ -188,7 +188,7 @@ unquote_string_inplace (gchar* str, gchar** end, GError** err)
 
 /**
  * g_shell_quote:
- * @unquoted_string: a literal string
+ * @unquoted_string: (type filename): a literal string
  * 
  * Quotes a string so that the shell (/bin/sh) will interpret the
  * quoted string to mean @unquoted_string. If you pass a filename to
@@ -197,7 +197,7 @@ unquote_string_inplace (gchar* str, gchar** end, GError** err)
  * quoting style used is undefined (single or double quotes may be
  * used).
  * 
- * Returns: quoted string
+ * Returns: (type filename): quoted string
  **/
 gchar*
 g_shell_quote (const gchar *unquoted_string)
@@ -238,7 +238,7 @@ g_shell_quote (const gchar *unquoted_string)
 
 /**
  * g_shell_unquote:
- * @quoted_string: shell-quoted string
+ * @quoted_string: (type filename): shell-quoted string
  * @error: error return location or NULL
  * 
  * Unquotes a string as the shell (/bin/sh) would. Only handles
@@ -263,7 +263,7 @@ g_shell_quote (const gchar *unquoted_string)
  * be escaped with backslash. Otherwise double quotes preserve things
  * literally.
  *
- * Returns: an unquoted string
+ * Returns: (type filename): an unquoted string
  **/
 gchar*
 g_shell_unquote (const gchar *quoted_string,
@@ -616,10 +616,10 @@ tokenize_command_line (const gchar *command_line,
 
 /**
  * g_shell_parse_argv:
- * @command_line: command line to parse
+ * @command_line: (type filename): command line to parse
  * @argcp: (out) (optional): return location for number of args
- * @argvp: (out) (optional) (array length=argcp zero-terminated=1): return
- *   location for array of args
+ * @argvp: (out) (optional) (array length=argcp zero-terminated=1) (element-type filename):
+ *   return location for array of args
  * @error: (optional): return location for error
  * 
  * Parses a command line into an argument vector, in much the same way

@@ -146,9 +146,12 @@ G_DEFINE_QUARK (g-spawn-exit-error-quark, g_spawn_exit_error)
 
 /**
  * g_spawn_async:
- * @working_directory: (type filename) (nullable): child's current working directory, or %NULL to inherit parent's
- * @argv: (array zero-terminated=1): child's argument vector
- * @envp: (array zero-terminated=1) (nullable): child's environment, or %NULL to inherit parent's
+ * @working_directory: (type filename) (nullable): child's current working
+ *     directory, or %NULL to inherit parent's
+ * @argv: (array zero-terminated=1) (element-type filename):
+ *     child's argument vector
+ * @envp: (array zero-terminated=1) (element-type filename) (nullable):
+ *     child's environment, or %NULL to inherit parent's
  * @flags: flags from #GSpawnFlags
  * @child_setup: (scope async) (nullable): function to run in the child just before exec()
  * @user_data: (closure): user data for @child_setup
@@ -256,9 +259,12 @@ read_data (GString *str,
 
 /**
  * g_spawn_sync:
- * @working_directory: (type filename) (nullable): child's current working directory, or %NULL to inherit parent's
- * @argv: (array zero-terminated=1): child's argument vector
- * @envp: (array zero-terminated=1) (nullable): child's environment, or %NULL to inherit parent's
+ * @working_directory: (type filename) (nullable): child's current working
+ *     directory, or %NULL to inherit parent's
+ * @argv: (array zero-terminated=1) (element-type filename):
+ *     child's argument vector
+ * @envp: (array zero-terminated=1) (element-type filename) (nullable):
+ *     child's environment, or %NULL to inherit parent's
  * @flags: flags from #GSpawnFlags
  * @child_setup: (scope async) (nullable): function to run in the child just before exec()
  * @user_data: (closure): user data for @child_setup
@@ -509,9 +515,13 @@ g_spawn_sync (const gchar          *working_directory,
 
 /**
  * g_spawn_async_with_pipes:
- * @working_directory: (type filename) (nullable): child's current working directory, or %NULL to inherit parent's, in the GLib file name encoding
- * @argv: (array zero-terminated=1): child's argument vector, in the GLib file name encoding
- * @envp: (array zero-terminated=1) (nullable): child's environment, or %NULL to inherit parent's, in the GLib file name encoding
+ * @working_directory: (type filename) (nullable): child's current working
+ *     directory, or %NULL to inherit parent's, in the GLib file name encoding
+ * @argv: (array zero-terminated=1) (element-type filename): child's argument
+ *     vector, in the GLib file name encoding
+ * @envp: (array zero-terminated=1) (element-type filename) (nullable):
+ *     child's environment, or %NULL to inherit parent's, in the GLib file
+ *     name encoding
  * @flags: flags from #GSpawnFlags
  * @child_setup: (scope async) (nullable): function to run in the child just before exec()
  * @user_data: (closure): user data for @child_setup
@@ -719,7 +729,7 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
 
 /**
  * g_spawn_command_line_sync:
- * @command_line: a command line 
+ * @command_line: (type filename): a command line
  * @standard_output: (out) (array zero-terminated=1) (element-type guint8) (optional): return location for child output
  * @standard_error: (out) (array zero-terminated=1) (element-type guint8) (optional): return location for child errors
  * @exit_status: (out) (optional): return location for child exit status, as returned by waitpid()
@@ -784,7 +794,7 @@ g_spawn_command_line_sync (const gchar  *command_line,
 
 /**
  * g_spawn_command_line_async:
- * @command_line: a command line
+ * @command_line: (type filename): a command line
  * @error: return location for errors
  * 
  * A simple version of g_spawn_async() that parses a command line with

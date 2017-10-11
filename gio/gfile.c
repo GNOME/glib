@@ -6498,7 +6498,7 @@ new_for_cmdline_arg (const gchar *arg,
 
 /**
  * g_file_new_for_commandline_arg:
- * @arg: a command line string
+ * @arg: (type filename): a command line string
  *
  * Creates a #GFile with the given argument from the command line.
  * The value of @arg can be either a URI, an absolute path or a
@@ -6528,7 +6528,7 @@ g_file_new_for_commandline_arg (const char *arg)
 
 /**
  * g_file_new_for_commandline_arg_and_cwd:
- * @arg: a command line string
+ * @arg: (type filename): a command line string
  * @cwd: (type filename): the current working directory of the commandline
  *
  * Creates a #GFile with the given argument from the command line.

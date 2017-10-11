@@ -3706,7 +3706,7 @@ g_desktop_app_info_delete (GAppInfo *appinfo)
 /* Create for commandline {{{2 */
 /**
  * g_app_info_create_from_commandline:
- * @commandline: the commandline to use
+ * @commandline: (type filename): the commandline to use
  * @application_name: (nullable): the application name, or %NULL to use @commandline
  * @flags: flags that can specify details of the created #GAppInfo
  * @error: a #GError location to store the error occurring, %NULL to ignore.
