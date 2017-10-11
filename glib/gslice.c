@@ -972,7 +972,7 @@ thread_memory_magazine2_free (ThreadMemory *tmem,
  * @block_size: the number of bytes to allocate
  *
  * Allocates a block of memory from the slice allocator.
- * The block adress handed out can be expected to be aligned
+ * The block address handed out can be expected to be aligned
  * to at least 1 * sizeof (void*),
  * though in general slices are 2 * sizeof (void*) bytes aligned,
  * if a malloc() fallback implementation is used instead,
@@ -1492,18 +1492,18 @@ static void
 smc_notify_alloc (void   *pointer,
                   size_t  size)
 {
-  size_t adress = (size_t) pointer;
+  size_t address = (size_t) pointer;
   if (pointer)
-    smc_tree_insert (adress, size);
+    smc_tree_insert (address, size);
 }
 
 #if 0
 static void
 smc_notify_ignore (void *pointer)
 {
-  size_t adress = (size_t) pointer;
+  size_t address = (size_t) pointer;
   if (pointer)
-    smc_tree_remove (adress);
+    smc_tree_remove (address);
 }
 #endif
 
@@ -1511,13 +1511,13 @@ static int
 smc_notify_free (void   *pointer,
                  size_t  size)
 {
-  size_t adress = (size_t) pointer;
+  size_t address = (size_t) pointer;
   SmcVType real_size;
   gboolean found_one;
 
   if (!pointer)
     return 1; /* ignore */
-  found_one = smc_tree_lookup (adress, &real_size);
+  found_one = smc_tree_lookup (address, &real_size);
   if (!found_one)
     {
       fprintf (stderr, "GSlice: MemChecker: attempt to release non-allocated block: %p size=%" G_GSIZE_FORMAT "\n", pointer, size);
@@ -1528,7 +1528,7 @@ smc_notify_free (void   *pointer,
       fprintf (stderr, "GSlice: MemChecker: attempt to release block with invalid size: %p size=%" G_GSIZE_FORMAT " invalid-size=%" G_GSIZE_FORMAT "\n", pointer, real_size, size);
       return 0;
     }
-  if (!smc_tree_remove (adress))
+  if (!smc_tree_remove (address))
     {
       fprintf (stderr, "GSlice: MemChecker: attempt to release non-allocated block: %p size=%" G_GSIZE_FORMAT "\n", pointer, size);
       return 0;
