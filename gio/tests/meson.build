@@ -146,6 +146,7 @@ if host_machine.system() != 'windows'
         input :   ['test-codegen.xml'],
         output :  ['gdbus-test-codegen-generated.h',
                    'gdbus-test-codegen-generated.c'],
+        depend_files : gdbus_codegen_built_files,
         command : [python, gdbus_codegen,
                    '--interface-prefix', 'org.project.',
                    '--output-directory', '@OUTDIR@',
