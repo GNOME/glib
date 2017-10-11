@@ -56,6 +56,8 @@ test_guess (void)
   g_free (res);
   g_free (expected);
 
+  /* Sadly OSX just doesn't have as large and robust of a mime type database as Linux */
+#ifndef __APPLE__
   res = g_content_type_guess ("foo", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("text/plain");
   g_assert_content_type_equals (expected, res);
@@ -63,8 +65,6 @@ test_guess (void)
   g_free (res);
   g_free (expected);
 
-/* Sadly OSX just doesn't have as large and robust of a mime type database as Linux */
-#ifndef __APPLE__
   res = g_content_type_guess ("foo.desktop", data, sizeof (data) - 1, &uncertain);
   expected = g_content_type_from_mime_type ("application/x-desktop");
   g_assert_content_type_equals (expected, res);
@@ -110,6 +110,7 @@ test_guess (void)
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
+#endif
 
   res = g_content_type_guess (NULL, (guchar *)"%!PS-Adobe-2.0 EPSF-1.2", 23, &uncertain);
   expected = g_content_type_from_mime_type ("image/x-eps");
@@ -117,7 +118,6 @@ test_guess (void)
   g_assert (!uncertain);
   g_free (res);
   g_free (expected);
-#endif
 }
 
 static void
@@ -338,6 +338,30 @@ test_type_is_a_special_case (void)
   g_assert_true (res);
 }
 
+static void
+test_guess_svg_from_data (void)
+{
+  const guchar svgfilecontent[] = "<svg  xmlns=\"http://www.w3.org/2000/svg\"\
+      xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n\
+    <rect x=\"10\" y=\"10\" height=\"100\" width=\"100\"\n\
+          style=\"stroke:#ff0000; fill: #0000ff\"/>\n\
+</svg>\n";
+
+  gboolean uncertain = TRUE;
+  gchar *res = g_content_type_guess(NULL, svgfilecontent, sizeof (svgfilecontent) - 1, &uncertain);
+#ifdef __APPLE__
+  g_assert_cmpstr (res, ==, "public.svg-image");
+#elif defined(G_OS_WIN32)
+  /* g_assert_cmpstr (res, ==, ".svg"); */
+  g_assert_cmpstr (res, ==, ".txt");
+  g_test_skip ("svg type detection from content is not implemented on WIN32");
+#else
+  g_assert_cmpstr (res, ==, "image/svg+xml");
+#endif
+  g_assert (!uncertain);
+  g_free (res);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -346,6 +370,7 @@ main (int argc, char *argv[])
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/contenttype/guess", test_guess);
+  g_test_add_func ("/contenttype/guess_svg_from_data", test_guess_svg_from_data);
   g_test_add_func ("/contenttype/unknown", test_unknown);
   g_test_add_func ("/contenttype/subtype", test_subtype);
   g_test_add_func ("/contenttype/list", test_list);
