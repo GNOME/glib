@@ -380,7 +380,7 @@ initialise_schema_sources (void)
  *
  * Since: 2.32
  **/
- GSettingsSchemaSource *
+GSettingsSchemaSource *
 g_settings_schema_source_get_default (void)
 {
   initialise_schema_sources ();
