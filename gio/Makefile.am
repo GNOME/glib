@@ -100,7 +100,7 @@ GDBUS_PYTHON_DEPS = 					\
 	$(srcdir)/gdbus-2.0/codegen/codegen.py 		\
 	$(srcdir)/gdbus-2.0/codegen/__init__.py 	\
 	$(srcdir)/gdbus-2.0/codegen/dbustypes.py 	\
-	$(srcdir)/gdbus-2.0/codegen/config.py 		\
+	$(builddir)/gdbus-2.0/codegen/config.py 	\
 	$(srcdir)/gdbus-2.0/codegen/utils.py
 
 gdbus-daemon-generated.h gdbus-daemon-generated.c: $(srcdir)/dbus-daemon.xml $(GDBUS_PYTHON_DEPS)
