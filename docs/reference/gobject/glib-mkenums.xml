@@ -208,30 +208,54 @@ typedef enum /*&lt; flags,prefix=PREFIX &gt;*/
 <varlistentry>
 <term><option>--fhead</option> <replaceable>TEXT</replaceable></term>
 <listitem><para>
-Put out <replaceable>TEXT</replaceable> prior to processing input files.
+Emits <replaceable>TEXT</replaceable> prior to processing input files.
+</para>
+<para>
+You can specify this option multiple times, and the <replaceable>TEXT</replaceable>
+will be concatenated.
+</para>
+<para>
+When used along with a template file, <replaceable>TEXT</replaceable>
+will be prepended to the template's <literal>file-header</literal> section.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><option>--fprod</option> <replaceable>TEXT</replaceable></term>
 <listitem><para>
-Put out <replaceable>TEXT</replaceable> everytime a new input file
+Emits <replaceable>TEXT</replaceable> every time a new input file
 is being processed.
+</para>
+<para>
+You can specify this option multiple times, and the <replaceable>TEXT</replaceable>
+will be concatenated.
+</para>
+<para>
+When used along with a template file, <replaceable>TEXT</replaceable>
+will be appended to the template's <literal>file-production</literal> section.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><option>--ftail</option> <replaceable>TEXT</replaceable></term>
 <listitem><para>
-Put out <replaceable>TEXT</replaceable> after all input files have been
+Emits <replaceable>TEXT</replaceable> after all input files have been
 processed.
+</para>
+<para>
+You can specify this option multiple times, and the <replaceable>TEXT</replaceable>
+will be concatenated.
+</para>
+<para>
+When used along with a template file, <replaceable>TEXT</replaceable>
+will be appended to the template's <literal>file-tail</literal> section.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><option>--eprod</option> <replaceable>TEXT</replaceable></term>
 <listitem><para>
-Put out <replaceable>TEXT</replaceable> everytime an enum is encountered
+Emits <replaceable>TEXT</replaceable> everytime an enum is encountered
 in the input files.
 </para></listitem>
 </varlistentry>
@@ -239,23 +263,47 @@ in the input files.
 <varlistentry>
 <term><option>--vhead</option> <replaceable>TEXT</replaceable></term>
 <listitem><para>
-Put out <replaceable>TEXT</replaceable> before iterating over the set of
+Emits <replaceable>TEXT</replaceable> before iterating over the set of
 values of an enum.
+</para>
+<para>
+You can specify this option multiple times, and the <replaceable>TEXT</replaceable>
+will be concatenated.
+</para>
+<para>
+When used along with a template file, <replaceable>TEXT</replaceable>
+will be prepended to the template's <literal>value-header</literal> section.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><option>--vprod</option> <replaceable>TEXT</replaceable></term>
 <listitem><para>
-Put out <replaceable>TEXT</replaceable> for every value of an enum.
+Emits <replaceable>TEXT</replaceable> for every value of an enum.
+</para>
+<para>
+You can specify this option multiple times, and the <replaceable>TEXT</replaceable>
+will be concatenated.
+</para>
+<para>
+When used along with a template file, <replaceable>TEXT</replaceable>
+will be appended to the template's <literal>value-production</literal> section.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><option>--vtail</option> <replaceable>TEXT</replaceable></term>
 <listitem><para>
-Put out <replaceable>TEXT</replaceable> after iterating over all values
+Emits <replaceable>TEXT</replaceable> after iterating over all values
 of an enum.
+</para>
+<para>
+You can specify this option multiple times, and the <replaceable>TEXT</replaceable>
+will be concatenated.
+</para>
+<para>
+When used along with a template file, <replaceable>TEXT</replaceable>
+will be appended to the template's <literal>value-tail</literal> section.
 </para></listitem>
 </varlistentry>
 
@@ -330,6 +378,125 @@ Write output to FILE instead of stdout.
 </varlistentry>
 
 </variablelist>
+</refsect1>
+
+<refsect1><title>Using glib-mkenums with Autotools</title>
+<para>
+<para>
+In order to use <command>glib-mkenums</command> in your project when using
+Autotools as the build system, you will first need to modify your
+<filename>configure.ac</filename> file to ensure you find the appropriate
+command using <command>pkg-config</command>, similarly as to how you discover
+the compiler and linker flags for GLib.
+</para>
+<informalexample><programlisting>
+PKG_PROG_PKG_CONFIG([0.28])
+
+PKG_CHECK_VAR([GLIB_MKENUMS], [glib-2.0], [glib_mkenums])
+</programlisting></informalexample>
+<para>
+In your <filename>Makefile.am</filename> file you will typically use rules
+like these:
+</para>
+<informalexample><programlisting>
+# A list of headers to inspect
+project_headers = \
+        project-foo.h \
+        project-bar.h \
+        project-baz.h
+
+enum-types.h: $(project_headers) enum-types.h.in
+        $(AM_V_GEN)$(GLIB_MKENUMS) \
+                --template=enum-types.h.in \
+                --output=$@ \
+                $(project_headers)
+
+enum-types.c: $(project_headers) enum-types.c.in enum-types.h
+        $(AM_V_GEN)$(GLIB_MKENUMS) \
+                --template=enum-types.c.in \
+                --output=$@ \
+                $(project_headers)
+
+BUILT_SOURCES += enum-types.h enum-types.c
+CLEANFILES += enum-types.h enum-types.c
+EXTRA_DIST += enum-types.h.in enum-types.c.in
+</programlisting></informalexample>
+<para>
+In the example above, we have a variable called <literal>project_headers</literal>
+where we reference all header files we want to inspect for generating enumeration
+GTypes. In the <filename>enum-types.h</filename> rule we use <command>glib-mkenums</command>
+with a template called <filename>enum-types.h.in</filename> in order to generate the
+header file; a header template file will typically look like this:
+</para>
+<informalexample><programlisting>
+/*** BEGIN file-header ***/
+#pragma once
+
+/* Include the main project header */
+#include "project.h"
+
+G_BEGIN_DECLS
+/*** END file-header ***/
+
+/*** BEGIN file-production ***/
+
+/* enumerations from "@filename@" */
+/*** END file-production ***/
+
+/*** BEGIN value-header ***/
+GType @enum_name@_get_type (void) G_GNUC_CONST;
+#define @ENUMPREFIX@_TYPE_@ENUMSHORT@ (@enum_name@_get_type ())
+/*** END value-header ***/
+
+/*** BEGIN file-tail ***/
+G_END_DECLS
+/*** END file-tail ***/
+</programlisting></informalexample>
+<para>
+The <filename>enum-types.c</filename> rule is similar to the rule for the
+header file, but will use a different <filename>enum-types.c.in</filename> template
+file, similar to this:
+</para>
+<informalexample><programlisting>
+/*** BEGIN file-header ***/
+#include "config.h"
+#include "enum-types.h"
+
+/*** END file-header ***/
+
+/*** BEGIN file-production ***/
+/* enumerations from "@filename@" */
+/*** END file-production ***/
+
+/*** BEGIN value-header ***/
+GType
+@enum_name@_get_type (void)
+{
+  static volatile gsize g_@type@_type_id__volatile;
+
+  if (g_once_init_enter (&amp;g_define_type_id__volatile))
+    {
+      static const G@Type@Value values[] = {
+/*** END value-header ***/
+
+/*** BEGIN value-production ***/
+            { @VALUENAME@, "@VALUENAME@", "@valuenick@" },
+/*** END value-production ***/
+
+/*** BEGIN value-tail ***/
+            { 0, NULL, NULL }
+      };
+
+      GType g_@type@_type_id =
+        g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
+
+      g_once_init_leave (&amp;g_@type@_type_id__volatile, g_@type@_type_id);
+    }
+  return g_@type@_type_id__volatile;
+}
+
+/*** END value-tail ***/
+</programlisting></informalexample>
 </refsect1>
 
 <refsect1><title>See also</title>
