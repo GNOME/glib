@@ -411,6 +411,50 @@ debugging information. This option is mutually exclusive with the
 </variablelist>
 </refsect1>
 
+<refsect1><title>Using glib-genmarshal with Autotools</title>
+<para>
+In order to use <command>glib-genmarshal</command> in your project when using
+Autotools as the build system, you will first need to modify your
+<filename>configure.ac</filename> file to ensure you find the appropriate
+command using <command>pkg-config</command>, similarly as to how you discover
+the compiler and linker flags for GLib.
+</para>
+<informalexample><programlisting>
+PKG_PROG_PKG_CONFIG([0.28])
+
+PKG_CHECK_VAR([GLIB_GENMARSHAL], [glib-2.0], [glib_genmarshal])
+</programlisting></informalexample>
+<para>
+In your <filename>Makefile.am</filename> file you will typically need very
+simple rules to generate the C files needed for the build.
+</para>
+<informalexample><programlisting>
+marshal.h: marshal.list
+        $(AM_V_GEN)$(GLIB_GENMARSHAL) \
+                --header \
+                --output=$@ \
+                $&lt;
+
+marshal.c: marshal.list marshal.h
+        $(AM_V_GEN)$(GLIB_GENMARSHAL) \
+                --include-header=marshal.h \
+                --body \
+                --output=$@ \
+                $&lt;
+
+BUILT_SOURCES += marshal.h marshal.c
+CLEANFILES += marshal.h marshal.c
+EXTRA_DIST += marshal.list
+</programlisting></informalexample>
+<para>
+In the example above, the first rule generates the header file and depends on
+a <filename>marshal.list</filename> file in order to regenerate the result in
+case the marshallers list is updated. The second rule generates the source file
+for the same <filename>marshal.list</filename>, and includes the file generated
+by the header rule.
+</para>
+</refsect1>
+
 <refsect1><title>Example</title>
 <para>
 To generate marshallers for the following callback functions:
