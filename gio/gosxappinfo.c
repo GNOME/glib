@@ -175,14 +175,44 @@ static gchar *
 create_cstr_from_cfstring (CFStringRef str)
 {
   const gchar *cstr;
+  CFIndex length = CFStringGetLength (str);
+  char *buffer = NULL;
 
   if (str == NULL)
     return NULL;
 
   cstr = CFStringGetCStringPtr (str, kCFStringEncodingUTF8);
+  /* CFStringGetCStringPtr returns "NULL if the internal storage of
+   * theString does not allow [a pointer] to be returned efficiently".
+   * (Apple's docs don't say what that means). In that case we must
+   * use CFStringGetCString as a fallback.
+   */
+  if (cstr != NULL)
+    {
+        CFRelease (str);
+        return g_strdup (cstr);
+    }
+  
+  buffer = g_malloc0 (length + 1);
+  /* Start off with a buffer size sufficient for the most likely case
+   * that the CFString is ASCII so the UTF8 representation will be 1
+   * byte per code point. Keep trying up to 4 bytes per code point,
+   * the max allowed by RFC3629.
+   */
+  for (int i = 1; i <= 4; ++i)
+    {
+      if (CFStringGetCString (str, buffer, length, kCFStringEncodingUTF8))
+      {
+        CFRelease (str);
+        return buffer;
+      }
+      length += length;
+      buffer = g_realloc (buffer, length + 1);
+    }
+  
+  g_free (buffer);
   CFRelease (str);
-
-  return g_strdup (cstr);
+  return NULL;
 }
 
 static char *
