@@ -6,7 +6,7 @@ include $(top_srcdir)/glib.mk
 
 ACLOCAL_AMFLAGS = -I m4macros ${ACLOCAL_FLAGS}
 
-SUBDIRS = . m4macros glib gmodule gthread gobject gio po docs tests
+SUBDIRS = . m4macros glib gmodule gthread gobject gio po docs tests subprojects
 DIST_SUBDIRS = $(SUBDIRS) build win32
 
 bin_SCRIPTS = glib-gettextize

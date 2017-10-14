@@ -3615,6 +3615,7 @@ tests/Makefile
 tests/gobject/Makefile
 tests/refcount/Makefile
 m4macros/Makefile
+subprojects/Makefile
 ])
 
 # We need this command because the configure script will not preserve
