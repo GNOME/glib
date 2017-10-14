@@ -231,11 +231,29 @@ socket_client_SOURCES = \
 EXTRA_DIST += socket-common.c
 
 uninstalled_test_extra_programs += gdbus-daemon
+gdbus_daemon_SOURCES = gdbus-daemon.c
 nodist_gdbus_daemon_SOURCES = \
-	$(top_builddir)/gio/gdbus-daemon-generated.c
-gdbus_daemon_SOURCES = \
-	gdbus-daemon.c				\
-	$(top_srcdir)/gio/gdbusdaemon.c
+	gdbus-daemon-generated.c \
+	gdbus-daemon-impl.c
+CLEANFILES += gdbus-daemon-impl.c gdbus-daemon-generated.c gdbus-daemon-generated.h
+
+# With subdir-objects we need to create a link to the original
+# file in the right directory, otherwise libtool will complain
+# that it cannot find the wrapper file
+gdbus-daemon-impl.c: $(top_srcdir)/gio/gdbusdaemon.c
+	$(AM_V_GEN) $(LN_S) $^ $@
+
+# These files are only generated on Windows builds inside GIO,
+# but we want them on non-Windows builds for the tests
+gdbus-daemon-generated.h gdbus-daemon-generated.c: $(top_srcdir)/gio/dbus-daemon.xml $(GDBUS_PYTHON_DEPS)
+	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
+		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
+		$(PYTHON) $(top_srcdir)/gio/gdbus-2.0/codegen/gdbus-codegen.in \
+		--interface-prefix org. \
+		--generate-c-code gdbus-daemon-generated \
+		--c-namespace _G \
+		$(top_srcdir)/gio/dbus-daemon.xml \
+		$(NULL)
 
 # -----------------------------------------------------------------------------
 #  Test programs buildable on UNIX only
