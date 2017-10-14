@@ -382,7 +382,6 @@ Write output to FILE instead of stdout.
 
 <refsect1><title>Using glib-mkenums with Autotools</title>
 <para>
-<para>
 In order to use <command>glib-mkenums</command> in your project when using
 Autotools as the build system, you will first need to modify your
 <filename>configure.ac</filename> file to ensure you find the appropriate
