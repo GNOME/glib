@@ -58,15 +58,21 @@ create_cfstring_from_cstr (const gchar *cstr)
 static gchar *
 create_cstr_from_cfstring (CFStringRef str)
 {
-  const gchar *cstr;
+  g_return_val_if_fail (str != NULL, NULL);
 
-  if (str == NULL)
-    return NULL;
-
-  cstr = CFStringGetCStringPtr (str, kCFStringEncodingUTF8);
+  CFIndex length = CFStringGetLength (str);
+  CFIndex maxlen = CFStringGetMaximumSizeForEncoding (length, kCFStringEncodingUTF8);
+  gchar *buffer = g_malloc (maxlen + 1);
+  Boolean success = CFStringGetCString (str, (char *) buffer, maxlen,
+                                        kCFStringEncodingUTF8);
   CFRelease (str);
-
-  return g_strdup (cstr);
+  if (success)
+    return buffer;
+  else
+    {
+      g_free (buffer);
+      return NULL;
+    }
 }
 
 /*< internal >
