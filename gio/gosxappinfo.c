@@ -335,13 +335,18 @@ get_bundle_for_id (CFStringRef bundle_id)
     }
   else
 #else
-  if (LSFindApplicationForInfo (kLSUnknownCreator, bundle_id, NULL, NULL, &app_url))
+  if (LSFindApplicationForInfo (kLSUnknownCreator, bundle_id, NULL, NULL, &app_url) == kLSApplicationNotFoundErr)
 #endif
     {
 #ifdef G_ENABLE_DEBUG /* This can fail often, no reason to alloc strings */
       gchar *id_str = create_cstr_from_cfstring (bundle_id);
-      g_debug ("Application not found for id \"%s\".", id_str);
-      g_free (id_str);
+      if (id_str)
+        {
+          g_debug ("Application not found for id \"%s\".", id_str);
+          g_free (id_str);
+        }
+      else
+        g_debug ("Application not found for unconvertable bundle id.");
 #endif
       return NULL;
     }
@@ -601,7 +606,7 @@ g_osx_app_info_get_all_for_scheme (const char *cscheme)
       info = G_APP_INFO (g_osx_app_info_new (bundle));
       info_list = g_list_append (info_list, info);
     }
-
+  CFRelease (bundle_list);
   return info_list;
 }
 
@@ -646,7 +651,7 @@ g_app_info_get_all_for_type (const char *content_type)
       info = G_APP_INFO (g_osx_app_info_new (bundle));
       info_list = g_list_append (info_list, info);
     }
-
+  CFRelease (bundle_list);
   return info_list;
 }
 
