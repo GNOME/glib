@@ -20,8 +20,8 @@ import codecs
 import locale
 
 VERSION_STR = '''glib-mkenums version @VERSION@
-glib-genmarshal comes with ABSOLUTELY NO WARRANTY.
-You may redistribute copies of glib-genmarshal under the terms of
+glib-mkenums comes with ABSOLUTELY NO WARRANTY.
+You may redistribute copies of glib-mkenums under the terms of
 the GNU General Public License which can be found in the
 GLib source package. Sources, examples and contact
 information are available at http://www.gtk.org'''
