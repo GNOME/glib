@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2017-09-28 19:20+0200\n"
-"PO-Revision-Date: 2017-09-28 19:20+0200\n"
+"PO-Revision-Date: 2017-10-17 20:52+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: ../gio/gapplication.c:490
 msgid "GApplication options"
@@ -229,8 +229,7 @@ msgid ""
 "action names must consist of only alphanumerics, “-” and “.”\n"
 msgstr ""
 "neveljavno ime dejanja: »%s«\n"
-"imena dejanj lahko tvorijo le alfanumerični znaki, vezaj » - « in pika » . "
-"«.\n"
+"imena dejanj lahko tvorijo le številke in črke, vezaj » - « in pika » . «.\n"
 
 #: ../gio/gapplication-tool.c:344
 #, c-format
@@ -446,7 +445,7 @@ msgstr ""
 #, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
-"Napaka v naslovu »%s« –  atribut enkratne datoteke manjka ali pa je "
+"Napaka v naslovu »%s« – atribut enkratne datoteke manjka ali pa je "
 "nepravilno oblikovan"
 
 #: ../gio/gdbusaddress.c:658
@@ -496,7 +495,7 @@ msgstr "Ni mogoče oživiti vodila sporočila brez predmeta machine-id:"
 #: ../gio/gdbusaddress.c:1086
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
-msgstr "Ni mogoče samodejno zagnati vodila D-Bus brez nastaviteve X11 $DISPLAY"
+msgstr "Ni mogoče samodejno zagnati vodila D-Bus brez nastavitve X11 $DISPLAY"
 
 #: ../gio/gdbusaddress.c:1128
 #, c-format
@@ -570,7 +569,7 @@ msgstr "Napaka med pridobivanjem podrobnosti mape »%s«: %s"
 msgid ""
 "Permissions on directory “%s” are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Dovoljenja na mapi »%s« so napalno oblikovana. Pričakovano je dovoljenje "
+"Dovoljenja na mapi »%s« so napačno oblikovana. Pričakovano je dovoljenje "
 "0700, pridobljeno pa 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:296
@@ -761,7 +760,7 @@ msgstr "Sporočilo ERROR: manjka polje glave REPLY_SERIAL ali ERROR_NAME"
 
 #: ../gio/gdbusmessage.c:1293
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
-msgstr "Sporočilo SIGNAL: mankja polje glave PATH, INTERFACE ali MEMBER"
+msgstr "Sporočilo SIGNAL: manjka polje glave PATH, INTERFACE ali MEMBER"
 
 #: ../gio/gdbusmessage.c:1301
 msgid ""
@@ -996,16 +995,7 @@ msgid "Cannot listen on unsupported transport “%s”"
 msgstr "Na nepodprtem načinu prenosa »%s« ni mogoče poslušati"
 
 #: ../gio/gdbus-tool.c:95
-#, fuzzy, c-format
-#| msgid ""
-#| "Commands:\n"
-#| "  help         Shows this information\n"
-#| "  introspect   Introspect a remote object\n"
-#| "  monitor      Monitor a remote object\n"
-#| "  call         Invoke a method on a remote object\n"
-#| "  emit         Emit a signal\n"
-#| "\n"
-#| "Use “%s COMMAND --help” to get help on each command.\n"
+#, c-format
 msgid ""
 "Commands:\n"
 "  help         Shows this information\n"
@@ -1021,8 +1011,9 @@ msgstr ""
 "  help         Prikaže te podrobnosti\n"
 "  introspect   Samo-preveri oddaljen predmet\n"
 "  monitor      Nadzoruje oddaljen predmet\n"
-"  call         Pokliči metodo nad oddaljenim predmetom\n"
-"  emit         Oddaj signal\n"
+"  call         Pokliče metodo nad oddaljenim predmetom\n"
+"  emit         Odda signal\n"
+"  wait         Zahteva prikaz imena vodila\n"
 "\n"
 "Uporabite »%s COMMAND --help« za pomoč o posameznem ukazu.\n"
 
@@ -1167,7 +1158,7 @@ msgstr "Pot do predmeta za sklicanje načina"
 
 #: ../gio/gdbus-tool.c:761
 msgid "Method and interface name"
-msgstr "Ime načina in  vmesnika"
+msgstr "Ime načina in vmesnika"
 
 #: ../gio/gdbus-tool.c:762
 msgid "Timeout in seconds"
@@ -1245,13 +1236,15 @@ msgstr "Nadzoruj oddaljeni predmet."
 
 #: ../gio/gdbus-tool.c:1980
 msgid "Service to activate before waiting for the other one (well-known name)"
-msgstr ""
+msgstr "Storitev, ki naj se začne, preden začne program čakati na drugo (ime)"
 
 #: ../gio/gdbus-tool.c:1983
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
 msgstr ""
+"Časovni zamik, po katerem je program končan z napako (v sekundah); vrednost "
+"0 onemogoči zamik (privzeto)"
 
 #: ../gio/gdbus-tool.c:2031
 msgid "[OPTION…] BUS-NAME"
@@ -1262,28 +1255,26 @@ msgid "Wait for a bus name to appear."
 msgstr "Počakaj na izpis imena vodila."
 
 #: ../gio/gdbus-tool.c:2109
-#, fuzzy, c-format
-#| msgid "Error: object path not specified.\n"
+#, c-format
 msgid "Error: A service to activate for must be specified.\n"
-msgstr "Napaka: pot predmeta ni določena.\n"
+msgstr "Napaka: storitev za omogočanje mora biti določena.\n"
 
 #: ../gio/gdbus-tool.c:2114
-#, fuzzy, c-format
-#| msgid "Error: object path not specified.\n"
+#, c-format
 msgid "Error: A service to wait for must be specified.\n"
-msgstr "Napaka: pot predmeta ni določena.\n"
+msgstr ""
+"Napaka: storitev za čakanje mora biti določena.\n"
+"\n"
 
 #: ../gio/gdbus-tool.c:2119
-#, fuzzy, c-format
-#| msgid "Too many arguments"
+#, c-format
 msgid "Error: Too many arguments.\n"
-msgstr "Navedenih je preveč argumentov"
+msgstr "Napaka: navedenih je preveč argumentov.\n"
 
 #: ../gio/gdbus-tool.c:2127 ../gio/gdbus-tool.c:2134
-#, fuzzy, c-format
-#| msgid "Error: %s is not a valid bus name\n"
+#, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
-msgstr "Napaka: %s ni veljavno ime vodila\n"
+msgstr "Napaka: %s ni veljavno enoznačno ime vodila.\n"
 
 #: ../gio/gdesktopappinfo.c:2001 ../gio/gdesktopappinfo.c:4531
 msgid "Unnamed"
@@ -1705,10 +1696,8 @@ msgid "Use %s to get detailed help.\n"
 msgstr "Z ukazom %s se izpiše podrobna pomoč.\n"
 
 #: ../gio/gio-tool-cat.c:87
-#, fuzzy
-#| msgid "Error writing to file: %s"
 msgid "Error writing to stdout"
-msgstr "Napaka med pisanjem v datoteko: %s"
+msgstr "Napaka med pisanjem v standardni odvod"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-cat.c:133 ../gio/gio-tool-info.c:282
@@ -1983,10 +1972,9 @@ msgid "No recommended applications\n"
 msgstr "Ni priporočenih programov.\n"
 
 #: ../gio/gio-tool-mime.c:162
-#, fuzzy, c-format
-#| msgid "Failed to load info for handler “%s”\n"
+#, c-format
 msgid "Failed to load info for handler “%s”"
-msgstr "Nalaganje podrobnosti ročnika »%s« je spodletelo.\n"
+msgstr "Nalaganje podrobnosti ročnika »%s« je spodletelo."
 
 #: ../gio/gio-tool-mime.c:168
 #, c-format
@@ -2092,10 +2080,8 @@ msgid "Show extra information"
 msgstr "Pokaži dodatne podrobnosti"
 
 #: ../gio/gio-tool-mount.c:246 ../gio/gio-tool-mount.c:276
-#, fuzzy
-#| msgid "Error mounting location: Anonymous access denied\n"
 msgid "Anonymous access denied"
-msgstr "Napaka med priklapljanjem: brezimni dostop ni dovoljen.\n"
+msgstr "Brezimen dostop ni dovoljen!"
 
 #: ../gio/gio-tool-mount.c:897
 #, c-format
@@ -2103,10 +2089,8 @@ msgid "Mounted %s at %s\n"
 msgstr "Priklopljen %s na %s\n"
 
 #: ../gio/gio-tool-mount.c:950
-#, fuzzy
-#| msgid "No volume for device file %s\n"
 msgid "No volume for device file"
-msgstr "Ni pogona za datoteko naprave %s\n"
+msgstr "Ni določenega nosilca za datoteko naprave"
 
 #: ../gio/gio-tool-mount.c:1145
 msgid "Mount or unmount the locations."
@@ -2204,10 +2188,8 @@ msgid "ETAG"
 msgstr "ETAG"
 
 #: ../gio/gio-tool-save.c:113
-#, fuzzy
-#| msgid "Error reading from handle: %s"
 msgid "Error reading from standard input"
-msgstr "Napaka branja iz ročnika: %s"
+msgstr "Napaka branja prek standardnega dovoda"
 
 #. Translators: The "etag" is a token allowing to verify whether a file has been modified
 #: ../gio/gio-tool-save.c:139
@@ -2256,10 +2238,9 @@ msgid "Value not specified"
 msgstr "Vrednost ni določena"
 
 #: ../gio/gio-tool-set.c:180
-#, fuzzy, c-format
-#| msgid "Invalid attribute type %s\n"
+#, c-format
 msgid "Invalid attribute type “%s”"
-msgstr "Neveljavna vrsta atributa %s\n"
+msgstr "Neveljavna vrsta atributa »%s«"
 
 #: ../gio/gio-tool-trash.c:32
 msgid "Empty the trash"
@@ -2402,132 +2383,122 @@ msgstr "Podati je treba natanko eno ime datoteke\n"
 #: ../gio/glib-compile-schemas.c:95
 #, c-format
 msgid "nick must be a minimum of 2 characters"
-msgstr ""
+msgstr "vzdevek mora vsebovati najmanj 2 znaka"
 
 #: ../gio/glib-compile-schemas.c:106
-#, fuzzy, c-format
-#| msgid "Invalid symlink value given"
+#, c-format
 msgid "Invalid numeric value"
-msgstr "Neveljavna vrednost simbolne povezave"
+msgstr "Neveljavna številčna vrednost"
 
 #: ../gio/glib-compile-schemas.c:114
-#, fuzzy, c-format
-#| msgid "<%s id='%s'> already specified"
+#, c-format
 msgid "<value nick='%s'/> already specified"
-msgstr "<%s id='%s'> je že določeno"
+msgstr "<alias value='%s'/> je že določeno"
 
 #: ../gio/glib-compile-schemas.c:122
-#, fuzzy, c-format
-#| msgid "<key name='%s'> already specified"
+#, c-format
 msgid "value='%s' already specified"
-msgstr "<key name='%s'> je že določeno"
+msgstr "<alias value='%s'/> je že določena"
 
 #: ../gio/glib-compile-schemas.c:136
 #, c-format
 msgid "flags values must have at most 1 bit set"
-msgstr ""
+msgstr "zastavice morajo biti nastavljene vsaj kot 1 bitni niz"
 
 #: ../gio/glib-compile-schemas.c:161
 #, c-format
 msgid "<%s> must contain at least one <value>"
-msgstr ""
+msgstr "<%s> oznaka mora vsebovati vsaj eno <value>"
 
 #: ../gio/glib-compile-schemas.c:315
-#, fuzzy, c-format
-#| msgid "No connection endpoint specified"
+#, c-format
 msgid "<%s> is not contained in the specified range"
-msgstr "Ni določene končne točke povezave"
+msgstr "<%s> ni znotraj določenega obsega"
 
 #: ../gio/glib-compile-schemas.c:327
-#, fuzzy, c-format
-#| msgid "No connection endpoint specified"
+#, c-format
 msgid "<%s> is not a valid member of the specified enumerated type"
-msgstr "Ni določene končne točke povezave"
+msgstr "<%s> ni veljavni član določene oštevilčene vrste"
 
 #: ../gio/glib-compile-schemas.c:333
-#, fuzzy, c-format
-#| msgid "No connection endpoint specified"
+#, c-format
 msgid "<%s> contains string not in the specified flags type"
-msgstr "Ni določene končne točke povezave"
+msgstr "<%s> vsebuje niz, ki ni med določenimi vrstami zastavic"
 
 #: ../gio/glib-compile-schemas.c:339
 #, c-format
 msgid "<%s> contains a string not in <choices>"
-msgstr ""
+msgstr "<%s> vsebuje niz, ki ni med izbirami <choices>"
 
 #: ../gio/glib-compile-schemas.c:373
-#, fuzzy
-#| msgid "<key name='%s'> already specified"
 msgid "<range/> already specified for this key"
-msgstr "<key name='%s'> je že določeno"
+msgstr "<range/> je za ta ključ že določen"
 
 #: ../gio/glib-compile-schemas.c:391
 #, c-format
 msgid "<range> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<range> ni dovoljena vrednost vrste »%s«"
 
 #: ../gio/glib-compile-schemas.c:408
 #, c-format
 msgid "<range> specified minimum is greater than maximum"
-msgstr ""
+msgstr "najmanjša vrednost <range> je večja od največje vrednosti"
 
 #: ../gio/glib-compile-schemas.c:433
 #, c-format
 msgid "unsupported l10n category: %s"
-msgstr ""
+msgstr "nepodprta kategorija l10n: %s"
 
 #: ../gio/glib-compile-schemas.c:441
 msgid "l10n requested, but no gettext domain given"
-msgstr ""
+msgstr "zahtevan je predmet l10n, vendar pa ni podana domena gettext"
 
 #: ../gio/glib-compile-schemas.c:453
 msgid "translation context given for value without l10n enabled"
-msgstr ""
+msgstr "podan je prevod, ni pa omogočena podpora za l10n"
 
 #: ../gio/glib-compile-schemas.c:475
-#, fuzzy, c-format
-#| msgid "Failed to set '%s' as the default handler for '%s': %s\n"
+#, c-format
 msgid "Failed to parse <default> value of type “%s”: "
-msgstr "Določanje »%s« kot privzet ročnik za »%s« je spodletelo: %s\n"
+msgstr "Razčlenjevanje vrednosti <default> vrste »%s« je spodletelo:"
 
 #: ../gio/glib-compile-schemas.c:492
 msgid ""
 "<choices> cannot be specified for keys tagged as having an enumerated type"
-msgstr ""
+msgstr "<choices> ni mogoče določiti za ključe, označene kot oštevilčene vrste"
 
 #: ../gio/glib-compile-schemas.c:501
-#, fuzzy
-#| msgid "<child name='%s'> already specified"
 msgid "<choices> already specified for this key"
-msgstr "<child name='%s'> je že določeno"
+msgstr "<choices> so za ta ključ že določene"
 
 #: ../gio/glib-compile-schemas.c:513
 #, c-format
 msgid "<choices> not allowed for keys of type “%s”"
-msgstr ""
+msgstr "<choices> ni dovoljena vrednost vrste »%s«"
 
 #: ../gio/glib-compile-schemas.c:529
-#, fuzzy, c-format
+#, c-format
 #| msgid "<child name='%s'> already specified"
 msgid "<choice value='%s'/> already given"
-msgstr "<child name='%s'> je že določeno"
+msgstr "<choice value='%s'/> je že podano"
 
 #: ../gio/glib-compile-schemas.c:544
 #, c-format
 msgid "<choices> must contain at least one <choice>"
-msgstr ""
+msgstr "vrednost <choices> mora vsebovati vsaj en <choice>"
 
 #: ../gio/glib-compile-schemas.c:558
-#, fuzzy
 #| msgid "<child name='%s'> already specified"
 msgid "<aliases> already specified for this key"
-msgstr "<child name='%s'> je že določeno"
+msgstr "<aliases> je za ta ključ že določen"
 
 #: ../gio/glib-compile-schemas.c:562
 msgid ""
 "<aliases> can only be specified for keys with enumerated or flags types or "
 "after <choices>"
 msgstr ""
+"<aliases> je mogoče določiti le za ključe z oštevilčenimi vrednostmi, z "
+"vrsto zastavic ali za <choices>"
 
 #: ../gio/glib-compile-schemas.c:581
 #, c-format
@@ -2535,52 +2506,48 @@ msgid ""
 "<alias value='%s'/> given when “%s” is already a member of the enumerated "
 "type"
 msgstr ""
+"vrednost <alias value='%s'/> je podana, čeprav je »%s« že veljaven član "
+"oštevilčene vrste"
 
 #: ../gio/glib-compile-schemas.c:587
-#, fuzzy, c-format
+#, c-format
 #| msgid "<child name='%s'> already specified"
 msgid "<alias value='%s'/> given when <choice value='%s'/> was already given"
-msgstr "<child name='%s'> je že določeno"
+msgstr ""
+"<alias value='%s'/> je podano, vendar je <choice value='%s'/> že podan given"
 
 #: ../gio/glib-compile-schemas.c:595
-#, fuzzy, c-format
+#, c-format
 #| msgid "<%s id='%s'> already specified"
 msgid "<alias value='%s'/> already specified"
-msgstr "<%s id='%s'> je že določeno"
+msgstr "<alias value='%s'/> je že določeno"
 
 #: ../gio/glib-compile-schemas.c:605
-#, fuzzy, c-format
-#| msgid "“%s” is not a signed number"
+#, c-format
 msgid "alias target “%s” is not in enumerated type"
-msgstr "»%s« ni podpisano število"
+msgstr "cilj vzdevka »%s« ni oštevilčene vrste"
 
 #: ../gio/glib-compile-schemas.c:606
 #, c-format
 msgid "alias target “%s” is not in <choices>"
-msgstr ""
+msgstr "cilj vzdevka »%s« ni med izbirami <choices>"
 
 #: ../gio/glib-compile-schemas.c:621
 #, c-format
 msgid "<aliases> must contain at least one <alias>"
-msgstr ""
+msgstr "vrednost <aliases> mora vsebovati vsaj en <alias>"
 
 #: ../gio/glib-compile-schemas.c:786
-#, fuzzy
-#| msgid "empty names are not permitted"
 msgid "Empty names are not permitted"
-msgstr "prazna imena niso dovoljena"
+msgstr "Prazna polja imen niso dovoljena."
 
 #: ../gio/glib-compile-schemas.c:796
-#, fuzzy, c-format
-#| msgid "invalid name '%s': names must begin with a lowercase letter"
+#, c-format
 msgid "Invalid name “%s”: names must begin with a lowercase letter"
-msgstr "neveljavno ime »%s«: imena se morajo začeti z malo črko"
+msgstr "Neveljavno ime »%s«: imena se morajo začeti z malo črko."
 
 #: ../gio/glib-compile-schemas.c:808
-#, fuzzy, c-format
-#| msgid ""
-#| "invalid name '%s': invalid character '%c'; only lowercase letters, "
-#| "numbers and hyphen ('-') are permitted."
+#, c-format
 msgid ""
 "Invalid name “%s”: invalid character “%c”; only lowercase letters, numbers "
 "and hyphen (“-”) are permitted"
@@ -2589,22 +2556,19 @@ msgstr ""
 "številke in vezaj (» - «)."
 
 #: ../gio/glib-compile-schemas.c:817
-#, fuzzy, c-format
-#| msgid "invalid name '%s': two successive hyphens ('--') are not permitted."
+#, c-format
 msgid "Invalid name “%s”: two successive hyphens (“--”) are not permitted"
 msgstr "Neveljavno ime »%s«: zaporedna vezaja (» -- «) nista dovoljena."
 
 #: ../gio/glib-compile-schemas.c:826
-#, fuzzy, c-format
-#| msgid "invalid name '%s': the last character may not be a hyphen ('-')."
+#, c-format
 msgid "Invalid name “%s”: the last character may not be a hyphen (“-”)"
 msgstr "Neveljavno ime »%s«: zadnji znak ne sme biti vezaj (» - «)."
 
 #: ../gio/glib-compile-schemas.c:834
-#, fuzzy, c-format
-#| msgid "invalid name '%s': maximum length is 1024"
+#, c-format
 msgid "Invalid name “%s”: maximum length is 1024"
-msgstr "neveljavno ime »%s«: največja dolžina je 1024"
+msgstr "Neveljavno ime »%s«: največja dolžina je 1024"
 
 #: ../gio/glib-compile-schemas.c:904
 #, c-format
@@ -2612,10 +2576,8 @@ msgid "<child name='%s'> already specified"
 msgstr "<child name=»%s«> je že določeno"
 
 #: ../gio/glib-compile-schemas.c:930
-#, fuzzy
-#| msgid "cannot add keys to a 'list-of' schema"
 msgid "Cannot add keys to a “list-of” schema"
-msgstr "ključev ni mogoče dodati shemi »list-of«"
+msgstr "Shemi »list-of« ni mogoče dodati ključev."
 
 #: ../gio/glib-compile-schemas.c:941
 #, c-format
@@ -2632,15 +2594,12 @@ msgstr ""
 "vrednosti uporabite <override>"
 
 #: ../gio/glib-compile-schemas.c:970
-#, fuzzy, c-format
-#| msgid ""
-#| "exactly one of 'type', 'enum' or 'flags' must be specified as an "
-#| "attribute to <key>"
+#, c-format
 msgid ""
 "Exactly one of “type”, “enum” or “flags” must be specified as an attribute "
 "to <key>"
 msgstr ""
-"natančno ena izmed možnosti »vrste«, »enum« ali »zastavice« mora biti "
+"Natanko ena izmed možnosti »vrste«, »enum« ali »zastavice« mora biti "
 "določena kot lastnost ključa <key>"
 
 #: ../gio/glib-compile-schemas.c:989
@@ -2649,20 +2608,16 @@ msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id=»%s«> (še) ni določen."
 
 #: ../gio/glib-compile-schemas.c:1004
-#, fuzzy, c-format
-#| msgid "invalid GVariant type string '%s'"
+#, c-format
 msgid "Invalid GVariant type string “%s”"
-msgstr "neveljavna  vrsta niza GVariant »%s«"
+msgstr "Neveljavna vrsta niza GVariant »%s«"
 
 #: ../gio/glib-compile-schemas.c:1034
-#, fuzzy
-#| msgid "<override> given but schema isn't extending anything"
 msgid "<override> given but schema isn’t extending anything"
 msgstr "<override> je podan, vendar shema ne razširja ničesar"
 
 #: ../gio/glib-compile-schemas.c:1047
-#, fuzzy, c-format
-#| msgid "no <key name='%s'> to override"
+#, c-format
 msgid "No <key name='%s'> to override"
 msgstr "<key name='%s'> za prepis ni na voljo"
 
@@ -2677,26 +2632,22 @@ msgid "<schema id='%s'> already specified"
 msgstr "<schema id=»%s«> je že določeno"
 
 #: ../gio/glib-compile-schemas.c:1140
-#, fuzzy, c-format
-#| msgid "<schema id='%s'> extends not yet existing schema '%s'"
+#, c-format
 msgid "<schema id='%s'> extends not yet existing schema “%s”"
 msgstr "<schema id='%s'> razširja še neobstoječo shemo »%s«"
 
 #: ../gio/glib-compile-schemas.c:1156
-#, fuzzy, c-format
-#| msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+#, c-format
 msgid "<schema id='%s'> is list of not yet existing schema “%s”"
 msgstr "<schema id='%s'> je seznam še neobstoječe sheme »%s«"
 
 #: ../gio/glib-compile-schemas.c:1164
-#, fuzzy, c-format
-#| msgid "Can not be a list of a schema with a path"
+#, c-format
 msgid "Cannot be a list of a schema with a path"
 msgstr "Seznam sheme s potjo ni mogoč"
 
 #: ../gio/glib-compile-schemas.c:1174
-#, fuzzy, c-format
-#| msgid "Can not extend a schema with a path"
+#, c-format
 msgid "Cannot extend a schema with a path"
 msgstr "Sheme ni mogoče razširiti s potjo"
 
@@ -2707,10 +2658,7 @@ msgid ""
 msgstr "<schema id=»%s«> je seznam, ki razširja <schema id=»%s«>, ki ni seznam"
 
 #: ../gio/glib-compile-schemas.c:1194
-#, fuzzy, c-format
-#| msgid ""
-#| "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but "
-#| "'%s' does not extend '%s'"
+#, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but “%s” "
 "does not extend “%s”"
@@ -2719,16 +2667,14 @@ msgstr ""
 "»%s« ne razširja »%s«"
 
 #: ../gio/glib-compile-schemas.c:1211
-#, fuzzy, c-format
-#| msgid "a path, if given, must begin and end with a slash"
+#, c-format
 msgid "A path, if given, must begin and end with a slash"
-msgstr "pot, če je podana, se mora začeti in končati s poševnico"
+msgstr "Pot, če je podana, se mora začeti in končati s poševnico"
 
 #: ../gio/glib-compile-schemas.c:1218
-#, fuzzy, c-format
-#| msgid "the path of a list must end with ':/'"
+#, c-format
 msgid "The path of a list must end with “:/”"
-msgstr "pot seznama se mora končati z » :/ «"
+msgstr "Pot seznama se mora končati z » :/ «"
 
 #: ../gio/glib-compile-schemas.c:1227
 #, c-format
@@ -2736,6 +2682,8 @@ msgid ""
 "Warning: Schema “%s” has path “%s”.  Paths starting with “/apps/”, “/"
 "desktop/” or “/system/” are deprecated."
 msgstr ""
+"Opozorilo: shema »%s« ima določeno pot »%s«. Poti, ki se začnejo z »/apps/«, "
+"»/desktop/« ali »/system/« so opuščene."
 
 #: ../gio/glib-compile-schemas.c:1257
 #, c-format
@@ -2754,7 +2702,7 @@ msgstr "Predmet <%s> na vrhnji ravni ni dovoljen"
 
 #: ../gio/glib-compile-schemas.c:1523
 msgid "Element <default> is required in <key>"
-msgstr "Prednet <default> mora biti zapisan v ključu <key>"
+msgstr "Predmet <default> mora biti zapisan v ključu <key>"
 
 #: ../gio/glib-compile-schemas.c:1613
 #, c-format
@@ -2838,7 +2786,7 @@ msgstr "kje naj se shrani datoteka gschemas.compiled"
 
 #: ../gio/glib-compile-schemas.c:2069
 msgid "Abort on any errors in schemas"
-msgstr "Prekini ob vsakršnji napaki v shemi"
+msgstr "Prekini ob vsakršni napaki v shemi"
 
 #: ../gio/glib-compile-schemas.c:2070
 msgid "Do not write the gschema.compiled file"
@@ -3093,7 +3041,7 @@ msgstr "Napaka med določanjem sprememb ali časa dostopa: %s"
 
 #: ../gio/glocalfileinfo.c:2422
 msgid "SELinux context must be non-NULL"
-msgstr "SELinux atributa ni mogoče določiti kot NULL"
+msgstr "Atributa SELinux ni mogoče določiti kot NULL"
 
 #: ../gio/glocalfileinfo.c:2437
 #, c-format
@@ -3327,7 +3275,7 @@ msgstr "Vira »%s« ni mogoče razširiti"
 #: ../gio/gresourcefile.c:709
 #, c-format
 msgid "The resource at “%s” is not a directory"
-msgstr "VIr »%s« ni mapa."
+msgstr "Vir »%s« ni mapa."
 
 #: ../gio/gresourcefile.c:917
 msgid "Input stream doesn’t implement seek"
@@ -3528,7 +3476,7 @@ msgid ""
 "If no SCHEMA is given, list all keys\n"
 msgstr ""
 "Rekurzivno izpiši ključe in vrednosti,\n"
-"če ni podanana SHEMA, pa izpiši vse ključe\n"
+"če ni podana SHEMA, pa izpiši vse ključe\n"
 
 #: ../gio/gsettings-tool.c:560
 msgid "[SCHEMA[:PATH]]"
@@ -3906,7 +3854,7 @@ msgstr "Posredniški strežnik SOCKSv5 zahteva overitev."
 msgid ""
 "The SOCKSv5 proxy requires an authentication method that is not supported by "
 "GLib."
-msgstr "SOCKSv5 zahteva overitveni način, ki ni podprt v GLib."
+msgstr "Strežnik SOCKSv5 zahteva overitveni način, ki ni podprt v GLib."
 
 #: ../gio/gsocks5proxy.c:206
 msgid "Username or password is too long for SOCKSv5 protocol."
@@ -4019,16 +3967,12 @@ msgstr ""
 #. Translators: This is not the 'This is the last chance' string. It is
 #. * displayed when more than one attempt is allowed.
 #: ../gio/gtlspassword.c:115
-#, fuzzy
-#| msgid ""
-#| "Several password entered have been incorrect, and your access will be "
-#| "locked out after further failures."
 msgid ""
 "Several passwords entered have been incorrect, and your access will be "
 "locked out after further failures."
 msgstr ""
-"Več poskusov vnosa gesla je bilo neuspešnih, zato bo dostop ob nadaljnjih "
-"napakah zaklenjen."
+"Neuspešnih je bilo več poskusov vnosa gesla, zato bo dostop ob naslednjem "
+"napačnem vnosu zaklenjen."
 
 #: ../gio/gtlspassword.c:117
 msgid "The password entered is incorrect."
@@ -4740,7 +4684,7 @@ msgstr "Vrednosti »%s« ni mogoče obravnavati kot logično Boolovo vrednost."
 #, c-format
 msgid "Failed to get attributes of file “%s%s%s%s”: fstat() failed: %s"
 msgstr ""
-"Ni mogoče pridobiti atributov datoteke »%s%s%s%s«:  ukaz fstat() je "
+"Ni mogoče pridobiti atributov datoteke »%s%s%s%s«: ukaz fstat() je "
 "spodletel: %s"
 
 #: ../glib/gmappedfile.c:195
@@ -4762,7 +4706,7 @@ msgstr "Napaka v vrstici %d, znak %d:"
 #: ../glib/gmarkup.c:461 ../glib/gmarkup.c:544
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
-msgstr "Neveljavno UTF-8 kodirano besedilo imena - neveljaven »%s«"
+msgstr "Neveljavno UTF-8 kodirano besedilo imena – neveljaven »%s«"
 
 #: ../glib/gmarkup.c:472
 #, c-format
@@ -4786,7 +4730,7 @@ msgid ""
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
 "Ni mogoče razčleniti '%-.*s', ki bi morala določati številko znotraj sklica "
-"znaka (na primer &#234;) - morda je številka prevelika"
+"znaka (na primer &#234;) – morda je številka prevelika"
 
 #: ../glib/gmarkup.c:687
 msgid ""
@@ -4795,7 +4739,7 @@ msgid ""
 "as &amp;"
 msgstr ""
 "Sklic znaka se ni končal s podpičjem; najverjetneje je uporabljen znak '&' "
-"brez povezave z entiteto - znak '&' mora biti zapisan kot '&amp;'"
+"brez povezave z entiteto – znak '&' mora biti zapisan kot '&amp;'"
 
 #: ../glib/gmarkup.c:713
 #, c-format
@@ -4820,7 +4764,7 @@ msgid ""
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "Entiteta se ne zaključi s podpičjem; najverjetneje je uporabljen znak '&' "
-"brez povezave z entiteto - znak '&' mora biti zapisan kot '&amp;'"
+"brez povezave z entiteto – znak '&' mora biti zapisan kot '&amp;'"
 
 #: ../glib/gmarkup.c:1170
 msgid "Document must begin with an element (e.g. <book>)"
@@ -5115,7 +5059,7 @@ msgstr "neprepoznan znak za (? ali (?-"
 
 #: ../glib/gregex.c:363
 msgid "POSIX named classes are supported only within a class"
-msgstr "POSIX razredi so podprti le znotraj razreda"
+msgstr "razredi POSIX so podprti le znotraj razreda"
 
 #: ../glib/gregex.c:366
 msgid "missing terminating )"
@@ -5174,11 +5118,11 @@ msgstr "(?R ali (?[+-] številom mora slediti )"
 
 #: ../glib/gregex.c:412
 msgid "unknown POSIX class name"
-msgstr "neznano POSIX ime razreda"
+msgstr "neznano ime razreda POSIX"
 
 #: ../glib/gregex.c:415
 msgid "POSIX collating elements are not supported"
-msgstr "POSIX zbirni predmeti niso podprti"
+msgstr "zbirni predmeti POSIX niso podprti"
 
 #: ../glib/gregex.c:418
 msgid "character value in \\x{...} sequence is too large"
@@ -5253,8 +5197,8 @@ msgid ""
 "\\g is not followed by a braced, angle-bracketed, or quoted name or number, "
 "or by a plain number"
 msgstr ""
-"\\g ne sledi ime oz. število v oklepajih, oglatih oklepajih ali narekovajih, "
-"niti navadno število"
+"\\g ne sledi ime oziroma število v oklepajih, oglatih oklepajih ali "
+"narekovajih, niti navadno število"
 
 #: ../glib/gregex.c:480
 msgid "a numbered reference must not be zero"
@@ -5353,7 +5297,7 @@ msgstr "pričakovano šestnajstiško število"
 
 #: ../glib/gregex.c:2469
 msgid "missing “<” in symbolic reference"
-msgstr "manjkaja znak » < « v simbolni povezavi"
+msgstr "manjka znak » < « v simbolni povezavi"
 
 #: ../glib/gregex.c:2478
 msgid "unfinished symbolic reference"
@@ -5401,7 +5345,7 @@ msgstr "Besedilo je končano takoj za znakom » \\ « (besedilo je »%s«)."
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was “%s”)"
 msgstr ""
-"Besedilo je končano pred zaključnim narekovajem za %c (besedilo je  »%s«)."
+"Besedilo je končano pred zaključnim narekovajem za %c (besedilo je »%s«)."
 
 #: ../glib/gshell.c:599
 msgid "Text was empty (or contained only whitespace)"
