@@ -2767,7 +2767,7 @@ g_settings_bind_invert_boolean_set_mapping (const GValue       *value,
  * a boolean property by that name). See g_settings_bind_writable()
  * for more details about writable bindings.
  *
- * Note that the lifecycle of the binding is tied to the object,
+ * Note that the lifecycle of the binding is tied to @object,
  * and that you can have only one binding per object property.
  * If you bind the same property twice on the same object, the second
  * binding overrides the first one.
@@ -2817,7 +2817,7 @@ g_settings_bind (GSettings          *settings,
  * The binding uses the provided mapping functions to map between
  * settings and property values.
  *
- * Note that the lifecycle of the binding is tied to the object,
+ * Note that the lifecycle of the binding is tied to @object,
  * and that you can have only one binding per object property.
  * If you bind the same property twice on the same object, the second
  * binding overrides the first one.
@@ -3034,7 +3034,7 @@ g_settings_binding_writable_changed (GSettings   *settings,
  * value as it passes from the setting to the object, i.e. @property
  * will be set to %TRUE if the key is not writable.
  *
- * Note that the lifecycle of the binding is tied to the object,
+ * Note that the lifecycle of the binding is tied to @object,
  * and that you can have only one binding per object property.
  * If you bind the same property twice on the same object, the second
  * binding overrides the first one.
