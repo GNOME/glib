@@ -111,7 +111,6 @@
       <OutputFile>$(OutDir)gio.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <ProgramDatabaseFile>$(OutDir)gio.pdb</ProgramDatabaseFile>
@@ -158,7 +157,6 @@
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <ProgramDatabaseFile>$(OutDir)gio.pdb</ProgramDatabaseFile>
