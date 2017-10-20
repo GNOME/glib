@@ -181,7 +181,8 @@ typedef enum
 {
   G_FORMAT_SIZE_DEFAULT     = 0,
   G_FORMAT_SIZE_LONG_FORMAT = 1 << 0,
-  G_FORMAT_SIZE_IEC_UNITS   = 1 << 1
+  G_FORMAT_SIZE_IEC_UNITS   = 1 << 1,
+  G_FORMAT_SIZE_BITS        = 1 << 2
 } GFormatSizeFlags;
 
 GLIB_AVAILABLE_IN_2_30
