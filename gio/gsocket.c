@@ -3744,24 +3744,38 @@ typedef struct {
   GIOCondition  condition;
 } GSocketSource;
 
-#ifdef G_OS_WIN32
 static gboolean
-socket_source_prepare_win32 (GSource *source,
-                             gint    *timeout)
+socket_source_prepare (GSource *source,
+                       gint    *timeout)
 {
   GSocketSource *socket_source = (GSocketSource *)source;
 
   *timeout = -1;
 
+#ifdef G_OS_WIN32
+  if ((socket_source->pollfd.revents & G_IO_NVAL) != 0)
+    return TRUE;
+
+  if (g_socket_is_closed (socket_source->socket))
+    {
+      g_source_remove_poll (source, &socket_source->pollfd);
+      socket_source->pollfd.revents = G_IO_NVAL;
+      return TRUE;
+    }
+
   return (update_condition (socket_source->socket) & socket_source->condition) != 0;
+#else
+  return g_socket_is_closed (socket_source->socket) && socket_source->fd_tag != NULL;
+#endif
 }
 
+#ifdef G_OS_WIN32
 static gboolean
 socket_source_check_win32 (GSource *source)
 {
   int timeout;
 
-  return socket_source_prepare_win32 (source, &timeout);
+  return socket_source_prepare (source, &timeout);
 }
 #endif
 
@@ -3780,11 +3794,20 @@ socket_source_dispatch (GSource     *source,
 #ifdef G_OS_WIN32
   events = update_condition (socket_source->socket);
 #else
-  events = g_source_query_unix_fd (source, socket_source->fd_tag);
+  if (g_socket_is_closed (socket_source->socket))
+    {
+      socket_source->fd_tag = NULL;
+      events = G_IO_NVAL;
+    }
+  else
+    {
+      events = g_source_query_unix_fd (source, socket_source->fd_tag);
+    }
 #endif
 
   timeout = g_source_get_ready_time (source);
-  if (timeout >= 0 && timeout < g_source_get_time (source))
+  if (timeout >= 0 && timeout < g_source_get_time (source) &&
+      !g_socket_is_closed (socket_source->socket))
     {
       socket->priv->timed_out = TRUE;
       events |= (G_IO_IN | G_IO_OUT);
@@ -3792,7 +3815,7 @@ socket_source_dispatch (GSource     *source,
 
   ret = (*func) (socket, events & socket_source->condition, user_data);
 
-  if (socket->priv->timeout)
+  if (socket->priv->timeout && !g_socket_is_closed (socket_source->socket))
     g_source_set_ready_time (source, g_get_monotonic_time () + socket->priv->timeout * 1000000);
   else
     g_source_set_ready_time (source, -1);
@@ -3845,11 +3868,11 @@ socket_source_closure_callback (GSocket      *socket,
 
 static GSourceFuncs socket_source_funcs =
 {
+  socket_source_prepare,
 #ifdef G_OS_WIN32
-  socket_source_prepare_win32,
   socket_source_check_win32,
 #else
-  NULL, NULL, /* check, prepare */
+  NULL,
 #endif
   socket_source_dispatch,
   socket_source_finalize,
