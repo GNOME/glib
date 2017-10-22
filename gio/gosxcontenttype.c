@@ -90,9 +90,10 @@ static gchar *
 create_cstr_from_cfstring_with_fallback (CFStringRef  str,
                                          const gchar *fallback)
 {
-  gchar *cstr;
+  gchar *cstr = NULL;
 
-  cstr = create_cstr_from_cfstring (str);
+  if (str)
+    cstr = create_cstr_from_cfstring (str);
   if (!cstr)
     return g_strdup (fallback);
 
