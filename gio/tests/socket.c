@@ -1386,6 +1386,53 @@ test_unix_connection_ancillary_data (void)
    * g_unix_connection_receive_credentials().
    */
 }
+
+static gboolean
+postmortem_source_cb (GSocket      *socket,
+                      GIOCondition  condition,
+                      gpointer      user_data)
+{
+  gboolean *been_here = user_data;
+
+  g_assert_cmpint (condition, ==, G_IO_NVAL);
+
+  *been_here = TRUE;
+  return FALSE;
+}
+
+static void
+test_source_postmortem (void)
+{
+  GMainContext *context;
+  GSocket *socket;
+  GSource *source;
+  GError *error = NULL;
+  gboolean callback_visited = FALSE;
+
+  socket = g_socket_new (G_SOCKET_FAMILY_UNIX, G_SOCKET_TYPE_STREAM, G_SOCKET_PROTOCOL_DEFAULT, &error);
+  g_assert_no_error (error);
+
+  context = g_main_context_new ();
+
+  source = g_socket_create_source (socket, G_IO_IN, NULL);
+  g_source_set_callback (source, (GSourceFunc) postmortem_source_cb,
+                         &callback_visited, NULL);
+  g_source_attach (source, context);
+  g_source_unref (source);
+
+  g_socket_close (socket, &error);
+  g_assert_no_error (error);
+  g_object_unref (socket);
+
+  /* Test that, after a socket is closed, its source callback should be called
+   * exactly once. */
+  g_main_context_iteration (context, FALSE);
+  g_assert (callback_visited);
+  g_assert (!g_main_context_pending (context));
+
+  g_main_context_unref (context);
+}
+
 #endif /* G_OS_UNIX */
 
 static void
@@ -1643,6 +1690,7 @@ main (int   argc,
   g_test_add_func ("/socket/unix-from-fd", test_unix_from_fd);
   g_test_add_func ("/socket/unix-connection", test_unix_connection);
   g_test_add_func ("/socket/unix-connection-ancillary-data", test_unix_connection_ancillary_data);
+  g_test_add_func ("/socket/source-postmortem", test_source_postmortem);
 #endif
   g_test_add_func ("/socket/reuse/tcp", test_reuse_tcp);
   g_test_add_func ("/socket/reuse/udp", test_reuse_udp);
