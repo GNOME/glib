@@ -26,14 +26,6 @@ the GNU General Public License which can be found in the
 GLib source package. Sources, examples and contact
 information are available at http://www.gtk.org'''
 
-# Python 2 defaults to ASCII in case stdout is redirected.
-# This should make it match Python 3, which uses the locale encoding.
-if sys.stdout.encoding is None:
-    output_stream = codecs.getwriter(
-        locale.getpreferredencoding())(sys.stdout)
-else:
-    output_stream = sys.stdout
-
 # pylint: disable=too-few-public-methods
 class Color:
     '''ANSI Terminal colors'''
@@ -80,6 +72,29 @@ def print_info(msg):
 def write_output(output):
     global output_stream
     print(output, file=output_stream)
+
+
+# Python 2 defaults to ASCII in case stdout is redirected.
+# This should make it match Python 3, which uses the locale encoding.
+if sys.stdout.encoding is None:
+    output_stream = codecs.getwriter(
+        locale.getpreferredencoding())(sys.stdout)
+else:
+    output_stream = sys.stdout
+
+
+# Some source files aren't UTF-8 and the old perl version didn't care.
+# Replace invalid data with a replacement character to keep things working.
+# https://bugzilla.gnome.org/show_bug.cgi?id=785113#c20
+def replace_and_warn(err):
+    # 7 characters of context either side of the offending character
+    print_warning('UnicodeWarning: {} at {} ({})'.format(
+        err.reason, err.start,
+        err.object[err.start - 7:err.end + 7]))
+    return ('?', err.end)
+
+codecs.register_error('replace_and_warn', replace_and_warn)
+
 
 # glib-mkenums.py
 # Information about the current enumeration
@@ -157,7 +172,8 @@ def parse_entries(file, file_name):
         m = re.match(r'\#include\s*<([^>]*)>', line)
         if m:
             newfilename = os.path.join("..", m.group(1))
-            newfile = io.open(newfilename, encoding="utf-8")
+            newfile = io.open(newfilename, encoding="utf-8",
+                              errors="replace_and_warn")
 
             if not parse_entries(newfile, newfilename):
                 return False
@@ -253,7 +269,7 @@ def read_template_file(file):
            }
     in_ = 'junk'
 
-    ifile = io.open(file, encoding="utf-8")
+    ifile = io.open(file, encoding="utf-8", errors="replace_and_warn")
     for line in ifile:
         m = re.match(r'\/\*\*\*\s+(BEGIN|END)\s+([\w-]+)\s+\*\*\*\/', line)
         if m:
@@ -413,7 +429,8 @@ def process_file(curfilename):
     firstenum = True
 
     try:
-        curfile = io.open(curfilename, encoding="utf-8")
+        curfile = io.open(curfilename, encoding="utf-8",
+                          errors="replace_and_warn")
     except IOError as e:
         if e.errno == errno.ENOENT:
             print_warning('No file "{}" found.'.format(curfilename))
