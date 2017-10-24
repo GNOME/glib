@@ -90,7 +90,7 @@ dnl
 #include <stdlib.h>
 
 int 
-main ()
+main (void)
 {
   unsigned int major, minor, micro;
 
