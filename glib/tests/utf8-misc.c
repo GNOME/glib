@@ -145,6 +145,11 @@ test_utf8_make_valid (void)
   g_assert_cmpstr (r, ==, "\xe2\x82\xa0gh\xef\xbf\xbd\xef\xbf\xbdjl");
   g_free (r);
 
+  /* invalid UTF8 without nul terminator followed by something unfortunate */
+  r = g_utf8_make_valid ("Bj\xc3\xb8", 3);
+  g_assert_cmpstr (r, ==, "Bj\xef\xbf\xbd");
+  g_free (r);
+
   /* invalid UTF8 with embedded nul */
   r = g_utf8_make_valid ("\xe2\x82\xa0gh\xe2\x00jl", 9);
   g_assert_cmpstr (r, ==, "\xe2\x82\xa0gh\xef\xbf\xbd\xef\xbf\xbdjl");

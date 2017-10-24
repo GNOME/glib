@@ -1803,7 +1803,7 @@ g_utf8_make_valid (const gchar *str,
   if (string == NULL)
     return g_strndup (str, len);
   
-  g_string_append (string, remainder);
+  g_string_append_len (string, remainder, remaining_bytes);
   g_string_append_c (string, '\0');
 
   g_assert (g_utf8_validate (string->str, -1, NULL));
