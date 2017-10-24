@@ -683,7 +683,7 @@ def process_file(curfilename):
                 prod = replace_specials(prod)
                 write_output(prod)
 
-for fname in options.args:
+for fname in sorted(options.args):
     process_file(fname)
 
 if len(ftail) > 0:
