@@ -1,3 +1,6 @@
+# Increment this whenever this file is changed.
+#serial 1
+
 dnl GLIB_TESTS
 dnl
 

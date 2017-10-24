@@ -1,3 +1,6 @@
+# Increment this whenever this file is changed.
+#serial 1
+
 dnl GLIB_GSETTINGS
 dnl Defines GSETTINGS_SCHEMAS_INSTALL which controls whether
 dnl the schema should be compiled
