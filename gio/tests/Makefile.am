@@ -266,6 +266,7 @@ test_programs += \
 	socket-address				\
 	stream-rw_all				\
 	unix-fd					\
+	unix-mounts				\
 	unix-streams				\
 	g-file-info-filesystem-readonly		\
 	$(NULL)

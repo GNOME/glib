@@ -151,6 +151,10 @@ void               g_unix_mount_monitor_set_rate_limit (GUnixMountMonitor *mount
 
 GLIB_AVAILABLE_IN_ALL
 gboolean g_unix_is_mount_path_system_internal (const char *mount_path);
+GLIB_AVAILABLE_IN_2_56
+gboolean g_unix_is_system_fs_type             (const char *fs_type);
+GLIB_AVAILABLE_IN_2_56
+gboolean g_unix_is_system_device_path         (const char *device_path);
 
 G_END_DECLS
 

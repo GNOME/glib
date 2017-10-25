@@ -281,10 +281,23 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
   return FALSE;
 }
 
-static gboolean
-guess_system_internal (const char *mountpoint,
-		       const char *fs,
-		       const char *device)
+/**
+ * g_unix_is_system_fs_type:
+ * @fs_type: a file system type, e.g. `procfs` or `tmpfs`
+ *
+ * Determines if @fs_type is considered a type of file system which is only
+ * used in implementation of the OS. This is primarily used for hiding
+ * mounted volumes that are intended as APIs for programs to read, and system
+ * administrators at a shell; rather than something that should, for example,
+ * appear in a GUI. For example, the Linux `/proc` filesystem.
+ *
+ * The list of file system types considered ‘system’ ones may change over time.
+ *
+ * Returns: %TRUE if @fs_type is considered an implementation detail of the OS.
+ * Since: 2.56
+ */
+gboolean
+g_unix_is_system_fs_type (const char *fs_type)
 {
   const char *ignore_fs[] = {
     "adfs",
@@ -336,6 +349,31 @@ guess_system_internal (const char *mountpoint,
     "zfs",
     NULL
   };
+
+  g_return_val_if_fail (fs_type != NULL && *fs_type != '\0', FALSE);
+
+  return is_in (fs_type, ignore_fs);
+}
+
+/**
+ * g_unix_is_system_device_path:
+ * @fs_type: a device path, e.g. `/dev/loop0` or `nfsd`
+ *
+ * Determines if @device_path is considered a block device path which is only
+ * used in implementation of the OS. This is primarily used for hiding
+ * mounted volumes that are intended as APIs for programs to read, and system
+ * administrators at a shell; rather than something that should, for example,
+ * appear in a GUI. For example, the Linux `/proc` filesystem.
+ *
+ * The list of device paths considered ‘system’ ones may change over time.
+ *
+ * Returns: %TRUE if @device_path is considered an implementation detail of
+ *    the OS.
+ * Since: 2.56
+ */
+gboolean
+g_unix_is_system_device_path (const char *device_path)
+{
   const char *ignore_devices[] = {
     "none",
     "sunrpc",
@@ -345,11 +383,21 @@ guess_system_internal (const char *mountpoint,
     "/dev/vn",
     NULL
   };
-  
-  if (is_in (fs, ignore_fs))
+
+  g_return_val_if_fail (device_path != NULL && *device_path != '\0', FALSE);
+
+  return is_in (device_path, ignore_devices);
+}
+
+static gboolean
+guess_system_internal (const char *mountpoint,
+		       const char *fs,
+		       const char *device)
+{
+  if (g_unix_is_system_fs_type (fs))
     return TRUE;
   
-  if (is_in (device, ignore_devices))
+  if (g_unix_is_system_device_path (device))
     return TRUE;
 
   if (g_unix_is_mount_path_system_internal (mountpoint))
@@ -2105,9 +2153,14 @@ g_unix_mount_is_readonly (GUnixMountEntry *mount_entry)
 /**
  * g_unix_mount_is_system_internal:
  * @mount_entry: a #GUnixMount.
+ *
+ * Checks if a Unix mount is a system mount. This is the Boolean OR of
+ * g_unix_is_system_fs_type(), g_unix_is_system_device_path() and
+ * g_unix_is_mount_path_system_internal() on @mount_entry’s properties.
  * 
- * Checks if a unix mount is a system path.
- * 
+ * The definition of what a ‘system’ mount entry is may change over time as new
+ * file system types and device paths are ignored.
+ *
  * Returns: %TRUE if the unix mount is for a system path.
  */
 gboolean

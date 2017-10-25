@@ -113,6 +113,7 @@ if host_machine.system() != 'windows'
     'socket-address',
     'stream-rw_all',
     'unix-fd',
+    'unix-mounts',
     'unix-streams',
     'g-file-info-filesystem-readonly',
     'gschema-compile',

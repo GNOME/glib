@@ -1571,6 +1571,8 @@ g_unix_mount_monitor_get
 g_unix_mount_monitor_new
 g_unix_mount_monitor_set_rate_limit
 g_unix_is_mount_path_system_internal
+g_unix_is_system_fs_type
+g_unix_is_system_device_path
 <SUBSECTION Standard>
 GUnixMountMonitorClass
 G_UNIX_MOUNT_MONITOR
