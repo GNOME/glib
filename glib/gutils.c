@@ -2197,98 +2197,63 @@ gchar *
 g_format_size_full (guint64          size,
                     GFormatSizeFlags flags)
 {
-  struct Format
-  {
-    guint64 factor;
-    const char string[8];
-  };
-
-  struct FormatPlural
-  {
-    const char singular[8];
-    const char plural[9];
-  };
-
-  typedef enum
-  {
-    FORMAT_BYTES,
-    FORMAT_BYTES_IEC
-  } FormatIndex;
-
-  struct FormatPlural format_plurals[2] =
-    {
-      { N_("%u byte"), N_("%u bytes") },
-      { N_("%u byte"), N_("%u bytes") }
-    };
-
-  struct Format formats[2][6] = {
-    {
-      { KILOBYTE_FACTOR, N_("%.1f kB") },
-      { MEGABYTE_FACTOR, N_("%.1f MB") },
-      { GIGABYTE_FACTOR, N_("%.1f GB") },
-      { TERABYTE_FACTOR, N_("%.1f TB") },
-      { PETABYTE_FACTOR, N_("%.1f PB") },
-      { EXABYTE_FACTOR,  N_("%.1f EB") }
-    },
-    {
-      { KIBIBYTE_FACTOR, N_("%.1f KiB") },
-      { MEBIBYTE_FACTOR, N_("%.1f MiB") },
-      { GIBIBYTE_FACTOR, N_("%.1f GiB") },
-      { TEBIBYTE_FACTOR, N_("%.1f TiB") },
-      { PEBIBYTE_FACTOR, N_("%.1f PiB") },
-      { EXBIBYTE_FACTOR, N_("%.1f EiB") }
-    }
-  };
-
   GString *string;
-  FormatIndex index;
 
   string = g_string_new (NULL);
 
-
   if (flags & G_FORMAT_SIZE_IEC_UNITS)
     {
-      index = FORMAT_BYTES_IEC;
-    }
-  else
-    {
-      index = FORMAT_BYTES;
-    }
-
-
-  if (size < formats[index][0].factor)
-    {
-      const struct FormatPlural * const f = &format_plurals[index];
-      g_string_printf (string,
-                       g_dngettext (GETTEXT_PACKAGE,
-                                    _(f->singular),
-                                    _(f->plural),
-                                    (guint) size),
-                       (guint) size);
-      flags &= ~G_FORMAT_SIZE_LONG_FORMAT;
-    }
-  else
-    {
-      const gsize n = G_N_ELEMENTS (formats[index]);
-      gsize i;
-
-      /*
-       * Point the last format (the highest unit) by default
-       * and then then scan all formats, starting with the 2nd one
-       * because the 1st is already managed by with the plural form
-       */
-      const struct Format * f = &formats[index][n - 1];
-
-      for (i = 1; i < n; i++)
+      if (size < KIBIBYTE_FACTOR)
         {
-          if (size < formats[index][i].factor)
-            {
-              f = &formats[index][i - 1];
-              break;
-            }
+          g_string_printf (string,
+                           g_dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size),
+                           (guint) size);
+          flags &= ~G_FORMAT_SIZE_LONG_FORMAT;
         }
 
-      g_string_printf (string, _(f->string), (gdouble) size / (gdouble) f->factor);
+      else if (size < MEBIBYTE_FACTOR)
+        g_string_printf (string, _("%.1f KiB"), (gdouble) size / (gdouble) KIBIBYTE_FACTOR);
+      else if (size < GIBIBYTE_FACTOR)
+        g_string_printf (string, _("%.1f MiB"), (gdouble) size / (gdouble) MEBIBYTE_FACTOR);
+
+      else if (size < TEBIBYTE_FACTOR)
+        g_string_printf (string, _("%.1f GiB"), (gdouble) size / (gdouble) GIBIBYTE_FACTOR);
+
+      else if (size < PEBIBYTE_FACTOR)
+        g_string_printf (string, _("%.1f TiB"), (gdouble) size / (gdouble) TEBIBYTE_FACTOR);
+
+      else if (size < EXBIBYTE_FACTOR)
+        g_string_printf (string, _("%.1f PiB"), (gdouble) size / (gdouble) PEBIBYTE_FACTOR);
+
+      else
+        g_string_printf (string, _("%.1f EiB"), (gdouble) size / (gdouble) EXBIBYTE_FACTOR);
+    }
+  else
+    {
+      if (size < KILOBYTE_FACTOR)
+        {
+          g_string_printf (string,
+                           g_dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size),
+                           (guint) size);
+          flags &= ~G_FORMAT_SIZE_LONG_FORMAT;
+        }
+
+      else if (size < MEGABYTE_FACTOR)
+        g_string_printf (string, _("%.1f kB"), (gdouble) size / (gdouble) KILOBYTE_FACTOR);
+
+      else if (size < GIGABYTE_FACTOR)
+        g_string_printf (string, _("%.1f MB"), (gdouble) size / (gdouble) MEGABYTE_FACTOR);
+
+      else if (size < TERABYTE_FACTOR)
+        g_string_printf (string, _("%.1f GB"), (gdouble) size / (gdouble) GIGABYTE_FACTOR);
+      else if (size < PETABYTE_FACTOR)
+        g_string_printf (string, _("%.1f TB"), (gdouble) size / (gdouble) TERABYTE_FACTOR);
+
+      else if (size < EXABYTE_FACTOR)
+        g_string_printf (string, _("%.1f PB"), (gdouble) size / (gdouble) PETABYTE_FACTOR);
+
+      else
+        g_string_printf (string, _("%.1f EB"), (gdouble) size / (gdouble) EXABYTE_FACTOR);
     }
 
   if (flags & G_FORMAT_SIZE_LONG_FORMAT)
