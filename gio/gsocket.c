@@ -3796,6 +3796,8 @@ socket_source_dispatch (GSource     *source,
 #else
   if (g_socket_is_closed (socket_source->socket))
     {
+      if (socket_source->fd_tag)
+        g_source_remove_unix_fd (source, socket_source->fd_tag);
       socket_source->fd_tag = NULL;
       events = G_IO_NVAL;
     }
