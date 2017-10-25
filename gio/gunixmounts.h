@@ -96,6 +96,8 @@ GIcon *        g_unix_mount_guess_icon              (GUnixMountEntry    *mount_e
 GLIB_AVAILABLE_IN_ALL
 GIcon *        g_unix_mount_guess_symbolic_icon     (GUnixMountEntry    *mount_entry);
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixMountEntry, g_unix_mount_free)
+G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUnixMountPoint, g_unix_mount_point_free)
 
 GLIB_AVAILABLE_IN_ALL
 gint           g_unix_mount_point_compare           (GUnixMountPoint    *mount1,
