@@ -712,7 +712,7 @@ g_scanner_scope_add_symbol (GScanner	*scanner,
 	      c++;
 	    }
 	}
-      g_hash_table_insert (scanner->symbol_table, key, key);
+      g_hash_table_add (scanner->symbol_table, key);
     }
   else
     key->value = value;

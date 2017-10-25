@@ -343,7 +343,7 @@ test_GDateTime_hash (void)
   h = g_hash_table_new_full (g_date_time_hash, g_date_time_equal,
                              (GDestroyNotify)g_date_time_unref,
                              NULL);
-  g_hash_table_insert (h, g_date_time_new_now_local (), NULL);
+  g_hash_table_add (h, g_date_time_new_now_local ());
   g_hash_table_remove_all (h);
   g_hash_table_destroy (h);
 }

@@ -248,7 +248,7 @@ g_string_chunk_insert_const (GStringChunk *chunk,
   if (!lookup)
     {
       lookup = g_string_chunk_insert (chunk, string);
-      g_hash_table_insert (chunk->const_table, lookup, lookup);
+      g_hash_table_add (chunk->const_table, lookup);
     }
 
   return lookup;

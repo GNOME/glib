@@ -785,18 +785,21 @@ g_settings_schema_source_list_schemas (GSettingsSchemaSource   *source,
 
       for (i = 0; list[i]; i++)
         {
-          if (!g_hash_table_lookup (single, list[i]) &&
-              !g_hash_table_lookup (reloc, list[i]))
+          if (!g_hash_table_contains (single, list[i]) &&
+              !g_hash_table_contains (reloc, list[i]))
             {
+              gchar *schema;
               GvdbTable *table;
+
+              schema = g_strdup (list[i]);
 
               table = gvdb_table_get_table (s->table, list[i]);
               g_assert (table != NULL);
 
               if (gvdb_table_has_value (table, ".path"))
-                g_hash_table_insert (single, g_strdup (list[i]), NULL);
+                g_hash_table_add (single, schema);
               else
-                g_hash_table_insert (reloc, g_strdup (list[i]), NULL);
+                g_hash_table_add (reloc, schema);
 
               gvdb_table_unref (table);
             }

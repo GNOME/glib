@@ -635,7 +635,7 @@ g_dbus_connection_dispose (GObject *object)
   else
     {
       if (alive_connections != NULL)
-        g_warn_if_fail (g_hash_table_lookup (alive_connections, connection) == NULL);
+        g_warn_if_fail (!g_hash_table_contains (alive_connections, connection));
     }
   CONNECTION_UNLOCK (connection);
   G_UNLOCK (message_bus_lock);
@@ -2226,7 +2226,7 @@ on_worker_message_received (GDBusWorker  *worker,
   gboolean alive;
 
   G_LOCK (message_bus_lock);
-  alive = (g_hash_table_lookup (alive_connections, user_data) != NULL);
+  alive = g_hash_table_contains (alive_connections, user_data);
   if (!alive)
     {
       G_UNLOCK (message_bus_lock);
@@ -2324,7 +2324,7 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
   gboolean alive;
 
   G_LOCK (message_bus_lock);
-  alive = (g_hash_table_lookup (alive_connections, user_data) != NULL);
+  alive = g_hash_table_contains (alive_connections, user_data);
   if (!alive)
     {
       G_UNLOCK (message_bus_lock);
@@ -2397,7 +2397,7 @@ on_worker_closed (GDBusWorker *worker,
   guint old_atomic_flags;
 
   G_LOCK (message_bus_lock);
-  alive = (g_hash_table_lookup (alive_connections, user_data) != NULL);
+  alive = g_hash_table_contains (alive_connections, user_data);
   if (!alive)
     {
       G_UNLOCK (message_bus_lock);
@@ -2572,7 +2572,7 @@ initable_init (GInitable     *initable,
   G_LOCK (message_bus_lock);
   if (alive_connections == NULL)
     alive_connections = g_hash_table_new (g_direct_hash, g_direct_equal);
-  g_hash_table_insert (alive_connections, connection, connection);
+  g_hash_table_add (alive_connections, connection);
   G_UNLOCK (message_bus_lock);
 
   connection->worker = _g_dbus_worker_new (connection->stream,
@@ -4708,8 +4708,8 @@ maybe_add_path (const gchar *path, gsize path_len, const gchar *object_path, GHa
       else
         s = g_strdup (begin);
 
-      if (g_hash_table_lookup (set, s) == NULL)
-        g_hash_table_insert (set, s, GUINT_TO_POINTER (1));
+      if (!g_hash_table_contains (set, s))
+        g_hash_table_add (set, s);
       else
         g_free (s);
     }

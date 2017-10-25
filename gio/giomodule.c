@@ -202,14 +202,14 @@ g_io_module_scope_block (GIOModuleScope *scope,
   g_return_if_fail (basename != NULL);
 
   key = g_strdup (basename);
-  g_hash_table_insert (scope->basenames, key, key);
+  g_hash_table_add (scope->basenames, key);
 }
 
 static gboolean
 _g_io_module_scope_contains (GIOModuleScope *scope,
                              const gchar    *basename)
 {
-  return g_hash_table_lookup (scope->basenames, basename) ? TRUE : FALSE;
+  return g_hash_table_contains (scope->basenames, basename);
 }
 
 struct _GIOModule {

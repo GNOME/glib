@@ -948,7 +948,7 @@ g_param_spec_pool_insert (GParamSpecPool *pool,
       g_mutex_lock (&pool->mutex);
       pspec->owner_type = owner_type;
       g_param_spec_ref (pspec);
-      g_hash_table_insert (pool->hash_table, pspec, pspec);
+      g_hash_table_add (pool->hash_table, pspec);
       g_mutex_unlock (&pool->mutex);
     }
   else
