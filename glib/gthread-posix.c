@@ -944,7 +944,7 @@ g_cond_wait_until (GCond  *cond,
  * A macro to assist with the static initialisation of a #GPrivate.
  *
  * This macro is useful for the case that a #GDestroyNotify function
- * should be associated the key.  This is needed when the key will be
+ * should be associated with the key.  This is needed when the key will be
  * used to point at memory that should be deallocated when the thread
  * exits.
  *
