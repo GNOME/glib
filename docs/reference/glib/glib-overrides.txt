@@ -288,10 +288,6 @@ gint *atomic
 gint *atomic
 </FUNCTION>
 
-<STRUCT>
-<NAME>GIConv</NAME>
-</STRUCT>
-
 <MACRO>
 <NAME>G_VA_COPY</NAME>
 #define G_VA_COPY(ap1,ap2)    
