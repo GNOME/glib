@@ -192,25 +192,59 @@ g_content_type_get_description (const gchar *type)
 }
 
 static GIcon *
-g_content_type_get_icon_internal (const gchar *type,
+g_content_type_get_icon_internal (const gchar *uti,
                                   gboolean     symbolic)
 {
-  GIcon *icon = NULL;
-  gchar *name;
+  char *mimetype_icon;
+  char *type;
+  char *generic_mimetype_icon = NULL;
+  char *q;
+  char *icon_names[6];
+  int n = 0;
+  GIcon *themed_icon;
+  const char  *xdg_icon;
+  int i;
 
-  g_return_val_if_fail (type != NULL, NULL);
+  g_return_val_if_fail (uti != NULL, NULL);
 
-  /* TODO: Show mimetype icons. */
-  if (g_content_type_can_be_executable (type))
-    name = "gtk-execute";
-  else if (g_content_type_is_a (type, "public.directory"))
-    name = symbolic ? "inode-directory-symbolic" : "inode-directory";
-  else
-    name = "gtk-file";
+  type = g_content_type_get_mime_type (uti);
 
-  icon = g_themed_icon_new_with_default_fallbacks (name);
+  G_LOCK (gio_xdgmime);
+  xdg_icon = xdg_mime_get_icon (type);
+  G_UNLOCK (gio_xdgmime);
 
-  return icon;
+  if (xdg_icon)
+    icon_names[n++] = g_strdup (xdg_icon);
+
+  mimetype_icon = g_strdup (type);
+  while ((q = strchr (mimetype_icon, '/')) != NULL)
+    *q = '-';
+
+  icon_names[n++] = mimetype_icon;
+
+  generic_mimetype_icon = g_content_type_get_generic_icon_name (type);
+  if (generic_mimetype_icon)
+    icon_names[n++] = generic_mimetype_icon;
+
+  if (symbolic)
+    {
+      for (i = 0; i < n; i++)
+        {
+          icon_names[n + i] = icon_names[i];
+          icon_names[i] = g_strconcat (icon_names[i], "-symbolic", NULL);
+        }
+
+      n += n;
+    }
+
+  themed_icon = g_themed_icon_new_from_names (icon_names, n);
+ 
+  for (i = 0; i < n; i++)
+    g_free (icon_names[i]);
+ 
+  g_free(type);
+ 
+  return themed_icon;
 }
 
 GIcon *

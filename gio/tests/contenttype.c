@@ -233,8 +233,12 @@ test_icon (void)
       const gchar *const *names;
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
+#ifdef __APPLE__
+      g_assert (g_strv_contains (names, "text-*"));
+#else
       g_assert (g_strv_contains (names, "text-plain"));
       g_assert (g_strv_contains (names, "text-x-generic"));
+#endif
     }
   g_object_unref (icon);
   g_free (type);
@@ -248,7 +252,9 @@ test_icon (void)
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
       g_assert (g_strv_contains (names, "application-rtf"));
+#ifndef __APPLE__
       g_assert (g_strv_contains (names, "x-office-document"));
+#endif
     }
   g_object_unref (icon);
   g_free (type);
@@ -269,10 +275,15 @@ test_symbolic_icon (void)
       const gchar *const *names;
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
+#ifdef __APPLE__
+      g_assert (g_strv_contains (names, "text-*-symbolic"));
+      g_assert (g_strv_contains (names, "text-*"));
+#else
       g_assert (g_strv_contains (names, "text-plain-symbolic"));
       g_assert (g_strv_contains (names, "text-x-generic-symbolic"));
       g_assert (g_strv_contains (names, "text-plain"));
       g_assert (g_strv_contains (names, "text-x-generic"));
+#endif
     }
   g_object_unref (icon);
   g_free (type);
@@ -286,9 +297,11 @@ test_symbolic_icon (void)
 
       names = g_themed_icon_get_names (G_THEMED_ICON (icon));
       g_assert (g_strv_contains (names, "application-rtf-symbolic"));
-      g_assert (g_strv_contains (names, "x-office-document-symbolic"));
       g_assert (g_strv_contains (names, "application-rtf"));
+#ifndef __APPLE__
+      g_assert (g_strv_contains (names, "x-office-document-symbolic"));
       g_assert (g_strv_contains (names, "x-office-document"));
+#endif
     }
   g_object_unref (icon);
   g_free (type);
@@ -334,8 +347,10 @@ test_type_is_a_special_case (void)
   /* Everything but the inode type is application/octet-stream */
   res = g_content_type_is_a ("inode/directory", "application/octet-stream");
   g_assert_false (res);
+#ifndef __APPLE__
   res = g_content_type_is_a ("anything", "application/octet-stream");
   g_assert_true (res);
+#endif
 }
 
 static void
