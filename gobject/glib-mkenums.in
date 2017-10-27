@@ -708,5 +708,11 @@ write_output("\n" + comment + "\n")
 if tmpfile is not None:
     tmpfilename = tmpfile.name
     tmpfile.close()
-    os.unlink(options.output)
+
+    try:
+        os.unlink(options.output)
+    except OSError as error:
+        if error.errno != errno.ENOENT:
+            raise error
+
     os.rename(tmpfilename, options.output)
