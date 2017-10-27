@@ -1,3 +1,16 @@
+Overview of changes in GLib 2.54.2
+==================================
+
+* Bugs fixed:
+ 780296 Fix a race in gio open
+
+* Translation updates:
+ Catalan (Valencian)
+ Nepali
+ Slovak
+ Slovenian
+
+
 Overview of changes in GLib 2.54.1
 ==================================
 
