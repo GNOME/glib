@@ -247,6 +247,9 @@
 /* Define if libelf is available */
 #mesondefine HAVE_LIBELF
 
+/* Define if libmount is available */
+#mesondefine HAVE_LIBMOUNT
+
 /* Define to 1 if you have the <linux/magic.h> header file. */
 #mesondefine HAVE_LINUX_MAGIC_H
 
