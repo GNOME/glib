@@ -970,6 +970,8 @@ g_get_tmp_dir (void)
  * name can be determined, a default fixed string "localhost" is
  * returned.
  *
+ * The encoding of the returned string is UTF-8.
+ *
  * Returns: the host name of the machine.
  *
  * Since: 2.8
@@ -982,16 +984,23 @@ g_get_host_name (void)
   if (g_once_init_enter (&hostname))
     {
       gboolean failed;
-      gchar tmp[100];
+      gchar *utmp;
 
 #ifndef G_OS_WIN32
-      failed = (gethostname (tmp, sizeof (tmp)) == -1);
+      gchar *tmp = g_malloc (sizeof (gchar) * 100);
+      failed = (gethostname (tmp, sizeof (gchar) * 100) == -1);
+      utmp = tmp;
 #else
-      DWORD size = sizeof (tmp);
-      failed = (!GetComputerName (tmp, &size));
+      wchar_t tmp[MAX_COMPUTERNAME_LENGTH + 1];
+      DWORD size = sizeof (tmp) / sizeof (tmp[0]);
+      failed = (!GetComputerNameW (tmp, &size));
+      if (!failed)
+        utmp = g_utf16_to_utf8 (tmp, size, NULL, NULL, NULL);
+      if (utmp == NULL)
+        failed = TRUE;
 #endif
 
-      g_once_init_leave (&hostname, g_strdup (failed ? "localhost" : tmp));
+      g_once_init_leave (&hostname, failed ? g_strdup ("localhost") : utmp);
     }
 
   return hostname;

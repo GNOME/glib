@@ -391,6 +391,7 @@ test_hostname (void)
   name = g_get_host_name ();
 
   g_assert (name != NULL);
+  g_assert_true (g_utf8_validate (name, -1, NULL));
 }
 
 #ifdef G_OS_UNIX
