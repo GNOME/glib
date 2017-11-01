@@ -505,7 +505,7 @@ _g_get_unix_mounts (void)
   mnt_free_iter (iter);
 
  out:
-  mnt_unref_table (table);
+  mnt_free_table (table);
 
   return g_list_reverse (return_list);
 }
@@ -1029,7 +1029,7 @@ _g_get_unix_mount_points (void)
   mnt_free_iter (iter);
 
  out:
-  mnt_unref_table (table);
+  mnt_free_table (table);
 
   return g_list_reverse (return_list);
 }

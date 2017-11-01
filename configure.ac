@@ -1760,8 +1760,10 @@ AS_IF([ test $have_libmount = maybe ], [
   glib_save_LIBS=$LIBS
   AC_CHECK_HEADER([libmount/libmount.h], [:], [have_libmount=no])
 
-  # Check for a recent enough libmount
-  AC_CHECK_LIB([mount], [mnt_unref_table], [:], [have_libmount=no])
+  # We used to check for mnt_unref_table(), but now for compat with
+  # e.g. RHEL7 just use mnt_free_table().  Let's keep this check
+  # anyways.
+  AC_CHECK_LIB([mount], [mnt_free_table], [:], [have_libmount=no])
   LIBS=$glib_save_LIBS
 
   if test $have_libmount != no; then
