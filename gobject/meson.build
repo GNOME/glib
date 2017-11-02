@@ -100,12 +100,7 @@ configure_file(
   input: 'libgobject-gdb.py.in',
   output: 'libgobject-2.0.so.@0@-gdb.py'.format(library_version),
   configuration: gdb_conf,
-  # XXX: We add a leading './' because glib_libdir is an absolute path and we
-  # need it to be a relative path so that join_paths appends it to the end.
-  install_dir: join_paths(glib_datadir, 'gdb', 'auto-load', './' + glib_libdir)
-  # FIXME: Cannot install on Windows because the path will contain a drive
-  # letter and colons are not allowed in paths.
-  install: host_system != 'windows',
+  install_dir: gdb_install_dir,
 )
 
 if enable_systemtap

@@ -279,16 +279,21 @@ install_data('glib_gdb.py', install_dir : join_paths(glib_pkgdatadir, 'gdb'))
 
 gdb_conf = configuration_data()
 gdb_conf.set('datadir', glib_datadir)
+# This is also used in gobject/meson.build
+if host_system != 'windows'
+  # XXX: We add a leading './' because glib_libdir is an absolute path and we
+  # need it to be a relative path so that join_paths appends it to the end.
+  gdb_install_dir = join_paths(glib_datadir, 'gdb', 'auto-load', './' + glib_libdir)
+else
+  # FIXME: Cannot install on Windows because the path will contain a drive
+  # letter and colons are not allowed in paths.
+  gdb_install_dir = false
+endif
 configure_file(
   input: 'libglib-gdb.py.in',
   output: 'libglib-2.0.so.@0@-gdb.py'.format(library_version),
   configuration: gdb_conf,
-  # XXX: We add a leading './' because glib_libdir is an absolute path and we
-  # need it to be a relative path so that join_paths appends it to the end.
-  install_dir: join_paths(glib_datadir, 'gdb', 'auto-load', './' + glib_libdir)
-  # FIXME: Cannot install on Windows because the path will contain a drive
-  # letter and colons are not allowed in paths.
-  install: host_system != 'windows',
+  install_dir: gdb_install_dir,
 )
 
 if enable_systemtap
