@@ -283,9 +283,12 @@ configure_file(
   input: 'libglib-gdb.py.in',
   output: 'libglib-2.0.so.@0@-gdb.py'.format(library_version),
   configuration: gdb_conf,
-  # FIXME: Figure out how to install this on Windows
-  install: host_system != 'windows',
+  # XXX: We add a leading './' because glib_libdir is an absolute path and we
+  # need it to be a relative path so that join_paths appends it to the end.
   install_dir: join_paths(glib_datadir, 'gdb', 'auto-load', './' + glib_libdir)
+  # FIXME: Cannot install on Windows because the path will contain a drive
+  # letter and colons are not allowed in paths.
+  install: host_system != 'windows',
 )
 
 if enable_systemtap
