@@ -538,7 +538,10 @@ g_rw_lock_clear (GRWLock *rw_lock)
 void
 g_rw_lock_writer_lock (GRWLock *rw_lock)
 {
-  pthread_rwlock_wrlock (g_rw_lock_get_impl (rw_lock));
+  int retval = pthread_rwlock_wrlock (g_rw_lock_get_impl (rw_lock));
+
+  if (retval != 0)
+    g_critical ("Failed to get RW lock %p: %s", rw_lock, g_strerror (retval));
 }
 
 /**
@@ -588,14 +591,18 @@ g_rw_lock_writer_unlock (GRWLock *rw_lock)
  * thread will block. Read locks can be taken recursively.
  *
  * It is implementation-defined how many threads are allowed to
- * hold read locks on the same lock simultaneously.
+ * hold read locks on the same lock simultaneously. If the limit is hit,
+ * or if a deadlock is detected, a critical warning will be emitted.
  *
  * Since: 2.32
  */
 void
 g_rw_lock_reader_lock (GRWLock *rw_lock)
 {
-  pthread_rwlock_rdlock (g_rw_lock_get_impl (rw_lock));
+  int retval = pthread_rwlock_rdlock (g_rw_lock_get_impl (rw_lock));
+
+  if (retval != 0)
+    g_critical ("Failed to get RW lock %p: %s", rw_lock, g_strerror (retval));
 }
 
 /**
