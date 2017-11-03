@@ -192,12 +192,69 @@ g_content_type_get_description (const gchar *type)
   return create_cstr_from_cfstring_with_fallback (desc_str, "unknown");
 }
 
+/* <internal>
+ * _get_generic_icon_name_from_mime_type
+ *
+ * This function produces a generic icon name from a @mime_type.
+ * If no generic icon name is found in the xdg mime database, the
+ * generic icon name is constructed.
+ *
+ * Background:
+ * generic-icon elements specify the icon to use as a generic icon for this
+ * particular mime-type, given by the name attribute. This is used if there
+ * is no specific icon (see icon for how these are found). These are used
+ * for categories of similar types (like spreadsheets or archives) that can
+ * use a common icon. The Icon Naming Specification lists a set of such
+ * icon names. If this element is not specified then the mimetype is used
+ * to generate the generic icon by using the top-level media type
+ * (e.g. "video" in "video/ogg") and appending "-x-generic"
+ * (i.e. "video-x-generic" in the previous example).
+ *
+ * From: https://specifications.freedesktop.org/shared-mime-info-spec/shared-mime-info-spec-0.18.html
+ */
+
+static gchar *
+_get_generic_icon_name_from_mime_type (const gchar *mime_type)
+{
+  const gchar *xdg_icon_name;
+  gchar *icon_name;
+
+  G_LOCK (gio_xdgmime);
+  xdg_icon_name = xdg_mime_get_generic_icon (mime_type);
+  G_UNLOCK (gio_xdgmime);
+
+  if (xdg_icon_name == NULL)
+    {
+      const char *p;
+      const char *suffix = "-x-generic";
+      gsize prefix_len;
+
+      p = strchr (mime_type, '/');
+      if (p == NULL)
+        prefix_len = strlen (mime_type);
+      else
+        prefix_len = p - mime_type;
+
+      icon_name = g_malloc (prefix_len + strlen (suffix) + 1);
+      memcpy (icon_name, mime_type, prefix_len);
+      memcpy (icon_name + prefix_len, suffix, strlen (suffix));
+      icon_name[prefix_len + strlen (suffix)] = 0;
+    }
+  else
+    {
+      icon_name = g_strdup (xdg_icon_name);
+    }
+
+  return icon_name;
+}
+
+
 static GIcon *
 g_content_type_get_icon_internal (const gchar *uti,
                                   gboolean     symbolic)
 {
   char *mimetype_icon;
-  char *type;
+  char *mime_type;
   char *generic_mimetype_icon = NULL;
   char *q;
   char *icon_names[6];
@@ -208,22 +265,23 @@ g_content_type_get_icon_internal (const gchar *uti,
 
   g_return_val_if_fail (uti != NULL, NULL);
 
-  type = g_content_type_get_mime_type (uti);
+  mime_type = g_content_type_get_mime_type (uti);
 
   G_LOCK (gio_xdgmime);
-  xdg_icon = xdg_mime_get_icon (type);
+  xdg_icon = xdg_mime_get_icon (mime_type);
   G_UNLOCK (gio_xdgmime);
 
   if (xdg_icon)
     icon_names[n++] = g_strdup (xdg_icon);
 
-  mimetype_icon = g_strdup (type);
+  mimetype_icon = g_strdup (mime_type);
   while ((q = strchr (mimetype_icon, '/')) != NULL)
     *q = '-';
 
   icon_names[n++] = mimetype_icon;
 
-  generic_mimetype_icon = g_content_type_get_generic_icon_name (type);
+  generic_mimetype_icon = _get_generic_icon_name_from_mime_type (mime_type);
+
   if (generic_mimetype_icon)
     icon_names[n++] = generic_mimetype_icon;
 
@@ -243,7 +301,7 @@ g_content_type_get_icon_internal (const gchar *uti,
   for (i = 0; i < n; i++)
     g_free (icon_names[i]);
  
-  g_free(type);
+  g_free(mime_type);
  
   return themed_icon;
 }
