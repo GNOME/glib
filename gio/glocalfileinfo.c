@@ -1656,7 +1656,7 @@ get_icon_name (const char *path,
     {
       name = use_symbolic ? "folder-videos-symbolic" : "folder-videos";
     }
-  else if (g_strcmp0 (content_type, "inode/directory") == 0)
+  else if (g_content_type_is_mime_type (content_type,"inode/directory"))
     {
       name = use_symbolic ? "folder-symbolic" : "folder";
     }
