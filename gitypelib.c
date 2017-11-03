@@ -467,7 +467,7 @@ is_aligned (guint32 offset)
   return offset == ALIGN_VALUE (offset, 4);
 }
 
-#define MAX_NAME_LEN 200
+#define MAX_NAME_LEN 2048
 
 static const char *
 get_string (GITypelib *typelib, guint32 offset, GError **error)
