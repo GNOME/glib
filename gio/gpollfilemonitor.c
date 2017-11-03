@@ -145,7 +145,8 @@ poll_file_timeout (gpointer data)
 {
   GPollFileMonitor* poll_monitor = data;
 
-  poll_monitor->timeout = FALSE;
+  g_source_unref (poll_monitor->timeout);
+  poll_monitor->timeout = NULL;
 
   g_file_query_info_async (poll_monitor->file, G_FILE_ATTRIBUTE_ETAG_VALUE "," G_FILE_ATTRIBUTE_STANDARD_SIZE,
 			 0, 0, NULL, got_new_info, g_object_ref (poll_monitor));
