@@ -248,6 +248,7 @@ distclean-local:
 gdbdir = $(datadir)/glib-2.0/gdb
 dist_gdb_DATA = gobject_gdb.py
 
+all-local: libgobject-gdb.py
 libgobject-gdb.py: libgobject-gdb.py.in
 	$(AM_V_GEN) $(SED) -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libgobject-gdb.py.in > $(builddir)/libgobject-gdb.py
 
