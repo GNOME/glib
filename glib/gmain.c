@@ -1129,9 +1129,9 @@ source_remove_from_context (GSource      *source,
 static void
 conditional_wakeup (GMainContext *context)
 {
-  /* This flag is set if at the start of prepare() we have no other ready
-   * sources, and hence would wait in poll(). In that case, any other threads
-   * attaching sources will need to signal a wakeup.
+  /* This flag is set whenever an added source could be missed by
+   * g_main_context_prepare, g_main_context_query, and therefore
+   * g_main_context_poll could hang without knowing about the added new source.
    */
   if (context->need_wakeup)
     g_wakeup_signal (context->wakeup);
@@ -3383,9 +3383,11 @@ g_main_context_prepare (GMainContext *context,
   
   LOCK_CONTEXT (context);
 
-  /* context->need_wakeup is protected by LOCK_CONTEXT/UNLOCK_CONTEXT,
-   * so need not set it yet.
+  /* The context lock is released within this function (when prepare functions
+   * are called), so it is unsafe to allow scheduling new sources without the
+   * wakeup signal after this point.
    */
+  context->need_wakeup = TRUE;
 
   context->time_is_fresh = FALSE;
 
@@ -3512,8 +3514,6 @@ g_main_context_prepare (GMainContext *context,
 	}
     }
   g_source_iter_clear (&iter);
-  /* See conditional_wakeup() where this is used */
-  context->need_wakeup = (n_ready == 0);
 
   TRACE (GLIB_MAIN_CONTEXT_AFTER_PREPARE (context, current_priority, n_ready));
 
@@ -3648,8 +3648,8 @@ g_main_context_check (GMainContext *context,
 
   TRACE (GLIB_MAIN_CONTEXT_BEFORE_CHECK (context, max_priority, fds, n_fds));
 
-  /* We don't need to wakeup during check or dispatch, because
-   * all sources will be re-evaluated during prepare/query.
+  /* We don't need to wakeup after check or dispatch, because all sources will
+   * be re-evaluated during prepare/query.
    */
   context->need_wakeup = FALSE;
 
