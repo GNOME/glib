@@ -606,6 +606,9 @@ GFile *                 g_file_new_tmp                    (const char           
                                                            GError                    **error);
 GLIB_AVAILABLE_IN_ALL
 GFile *                 g_file_parse_name                 (const char                 *parse_name);
+GLIB_AVAILABLE_IN_2_56
+GFile *                 g_file_new_build_filename         (const gchar                *first_element,
+                                                           ...) G_GNUC_NULL_TERMINATED;
 GLIB_AVAILABLE_IN_ALL
 GFile *                 g_file_dup                        (GFile                      *file);
 GLIB_AVAILABLE_IN_ALL

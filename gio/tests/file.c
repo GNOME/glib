@@ -8,12 +8,10 @@
 #endif
 
 static void
-test_basic (void)
+test_basic_for_file (GFile       *file,
+                     const gchar *suffix)
 {
-  GFile *file;
   gchar *s;
-
-  file = g_file_new_for_path ("./some/directory/testfile");
 
   s = g_file_get_basename (file);
   g_assert_cmpstr (s, ==, "testfile");
@@ -21,14 +19,36 @@ test_basic (void)
 
   s = g_file_get_uri (file);
   g_assert (g_str_has_prefix (s, "file://"));
-  g_assert (g_str_has_suffix (s, "/some/directory/testfile"));
+  g_assert (g_str_has_suffix (s, suffix));
   g_free (s);
 
   g_assert (g_file_has_uri_scheme (file, "file"));
   s = g_file_get_uri_scheme (file);
   g_assert_cmpstr (s, ==, "file");
   g_free (s);
+}
 
+static void
+test_basic (void)
+{
+  GFile *file;
+
+  file = g_file_new_for_path ("./some/directory/testfile");
+  test_basic_for_file (file, "/some/directory/testfile");
+  g_object_unref (file);
+}
+
+static void
+test_build_filename (void)
+{
+  GFile *file;
+
+  file = g_file_new_build_filename (".", "some", "directory", "testfile", NULL);
+  test_basic_for_file (file, "/some/directory/testfile");
+  g_object_unref (file);
+
+  file = g_file_new_build_filename ("testfile", NULL);
+  test_basic_for_file (file, "/testfile");
   g_object_unref (file);
 }
 
@@ -1051,6 +1071,7 @@ main (int argc, char *argv[])
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/file/basic", test_basic);
+  g_test_add_func ("/file/build-filename", test_build_filename);
   g_test_add_func ("/file/parent", test_parent);
   g_test_add_func ("/file/child", test_child);
   g_test_add_func ("/file/type", test_type);
