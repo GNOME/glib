@@ -159,7 +159,7 @@ g_seekable_can_truncate (GSeekable *seekable)
 }
 
 /**
- * g_seekable_truncate:
+ * g_seekable_truncate: (virtual truncate_fn)
  * @seekable: a #GSeekable.
  * @offset: new length for @seekable, in bytes.
  * @cancellable: (nullable): optional #GCancellable object, %NULL to ignore. 
