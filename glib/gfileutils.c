@@ -1965,6 +1965,22 @@ g_build_pathname_va (const gchar  *first_element,
 
 #endif
 
+static gchar *
+g_build_filename_va (const gchar  *first_argument,
+                     va_list      *args,
+                     gchar       **str_array)
+{
+  gchar *str;
+
+#ifndef G_OS_WIN32
+  str = g_build_path_va (G_DIR_SEPARATOR_S, first_argument, args, str_array);
+#else
+  str = g_build_pathname_va (first_argument, args, str_array);
+#endif
+
+  return str;
+}
+
 /**
  * g_build_filenamev:
  * @args: (array zero-terminated=1) (element-type filename): %NULL-terminated
@@ -1982,15 +1998,7 @@ g_build_pathname_va (const gchar  *first_element,
 gchar *
 g_build_filenamev (gchar **args)
 {
-  gchar *str;
-
-#ifndef G_OS_WIN32
-  str = g_build_path_va (G_DIR_SEPARATOR_S, NULL, NULL, args);
-#else
-  str = g_build_pathname_va (NULL, NULL, args);
-#endif
-
-  return str;
+  return g_build_filename_va (NULL, NULL, args);
 }
 
 /**
@@ -2025,11 +2033,7 @@ g_build_filename (const gchar *first_element,
   va_list args;
 
   va_start (args, first_element);
-#ifndef G_OS_WIN32
-  str = g_build_path_va (G_DIR_SEPARATOR_S, first_element, &args, NULL);
-#else
-  str = g_build_pathname_va (first_element, &args, NULL);
-#endif
+  str = g_build_filename_va (first_element, &args, NULL);
   va_end (args);
 
   return str;
