@@ -989,6 +989,8 @@ g_get_host_name (void)
 #ifndef G_OS_WIN32
       gchar *tmp = g_malloc (sizeof (gchar) * 100);
       failed = (gethostname (tmp, sizeof (gchar) * 100) == -1);
+      if (failed)
+        g_clear_pointer (&tmp, g_free);
       utmp = tmp;
 #else
       wchar_t tmp[MAX_COMPUTERNAME_LENGTH + 1];
