@@ -131,6 +131,9 @@ gchar   *g_build_filename     (const gchar *first_element,
                                ...) G_GNUC_MALLOC G_GNUC_NULL_TERMINATED;
 GLIB_AVAILABLE_IN_ALL
 gchar   *g_build_filenamev    (gchar      **args) G_GNUC_MALLOC;
+GLIB_AVAILABLE_IN_2_56
+gchar   *g_build_filename_valist (const gchar  *first_element,
+                                  va_list      *args) G_GNUC_MALLOC;
 
 GLIB_AVAILABLE_IN_ALL
 gint     g_mkdir_with_parents (const gchar *pathname,

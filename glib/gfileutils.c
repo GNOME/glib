@@ -1982,6 +1982,28 @@ g_build_filename_va (const gchar  *first_argument,
 }
 
 /**
+ * g_build_filename_valist:
+ * @first_element: (type filename): the first element in the path
+ * @args: va_list of remaining elements in path
+ *
+ * Behaves exactly like g_build_filename(), but takes the path elements
+ * as a va_list. This function is mainly meant for language bindings.
+ *
+ * Returns: (type filename): a newly-allocated string that must be freed
+ *     with g_free().
+ *
+ * Since: 2.56
+ */
+gchar *
+g_build_filename_valist (const gchar  *first_element,
+                         va_list      *args)
+{
+  g_return_val_if_fail (first_element != NULL, NULL);
+
+  return g_build_filename_va (first_element, args, NULL);
+}
+
+/**
  * g_build_filenamev:
  * @args: (array zero-terminated=1) (element-type filename): %NULL-terminated
  *     array of strings containing the path elements.
