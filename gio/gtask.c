@@ -507,7 +507,7 @@
  *   whether the task's callback can be invoked directly, or
  *   if it needs to be sent to another #GMainContext, or delayed
  *   until the next iteration of the current #GMainContext.)
- * - The "finish" functions for #GTask-based operations are generally
+ * - The "finish" functions for #GTask based operations are generally
  *   much simpler than #GSimpleAsyncResult ones, normally consisting
  *   of only a single call to g_task_propagate_pointer() or the like.
  *   Since g_task_propagate_pointer() "steals" the return value from

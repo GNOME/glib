@@ -1999,6 +1999,8 @@
 
 /**
  * G_GNUC_CHECK_VERSION:
+ * @major: major version to check against
+ * @minor: minor version to check against
  *
  * Expands to a a check for a compiler with __GNUC__ defined and a version
  * greater than or equal to the major and minor numbers provided. For example,

@@ -357,7 +357,7 @@ g_unix_is_system_fs_type (const char *fs_type)
 
 /**
  * g_unix_is_system_device_path:
- * @fs_type: a device path, e.g. `/dev/loop0` or `nfsd`
+ * @device_path: a device path, e.g. `/dev/loop0` or `nfsd`
  *
  * Determines if @device_path is considered a block device path which is only
  * used in implementation of the OS. This is primarily used for hiding

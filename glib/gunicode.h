@@ -411,10 +411,10 @@ typedef enum
  * @G_UNICODE_SCRIPT_NEWA:                 Newa. Since: 2.50
  * @G_UNICODE_SCRIPT_OSAGE:                Osage. Since: 2.50
  * @G_UNICODE_SCRIPT_TANGUT:               Tangut. Since: 2.50
- * @G_UNICODE_SCRIPT_MASARAM_GONDI,        Masaram Gondi. Since: 2.54
- * @G_UNICODE_SCRIPT_NUSHU,                Nushu. Since: 2.54
- * @G_UNICODE_SCRIPT_SOYOMBO,              Soyombo. Since: 2.54
- * @G_UNICODE_SCRIPT_ZANABAZAR_SQUARE      Zanabazar Square. Since: 2.54
+ * @G_UNICODE_SCRIPT_MASARAM_GONDI:        Masaram Gondi. Since: 2.54
+ * @G_UNICODE_SCRIPT_NUSHU:                Nushu. Since: 2.54
+ * @G_UNICODE_SCRIPT_SOYOMBO:              Soyombo. Since: 2.54
+ * @G_UNICODE_SCRIPT_ZANABAZAR_SQUARE:     Zanabazar Square. Since: 2.54
  *
  * The #GUnicodeScript enumeration identifies different writing
  * systems. The values correspond to the names as defined in the

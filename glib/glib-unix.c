@@ -392,7 +392,7 @@ g_unix_fd_add_full (gint              priority,
  * g_unix_fd_add:
  * @fd: a file descriptor
  * @condition: IO conditions to watch for on @fd
- * @function: a #GPollFDFunc
+ * @function: a #GUnixFDSourceFunc
  * @user_data: data to pass to @function
  *
  * Sets a function to be called when the IO condition, as specified by

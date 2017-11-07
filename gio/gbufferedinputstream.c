@@ -524,7 +524,7 @@ g_buffered_input_stream_fill_async (GBufferedInputStream *stream,
  *
  * Finishes an asynchronous read.
  *
- * Returns: a #gssize of the read stream, or %-1 on an error.
+ * Returns: a #gssize of the read stream, or `-1` on an error.
  */
 gssize
 g_buffered_input_stream_fill_finish (GBufferedInputStream  *stream,

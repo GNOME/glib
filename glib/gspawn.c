@@ -167,7 +167,7 @@ G_DEFINE_QUARK (g-spawn-exit-error-quark, g_spawn_exit_error)
  * If you are writing a GTK+ application, and the program you are spawning is a
  * graphical application too, then to ensure that the spawned program opens its
  * windows on the right screen, you may want to use #GdkAppLaunchContext,
- * #GAppLaunchcontext, or set the %DISPLAY environment variable.
+ * #GAppLaunchContext, or set the %DISPLAY environment variable.
  *
  * Note that the returned @child_pid on Windows is a handle to the child
  * process and not its identifier. Process handles and process identifiers
@@ -680,7 +680,7 @@ g_spawn_sync (const gchar          *working_directory,
  * If you are writing a GTK+ application, and the program you are spawning is a
  * graphical application too, then to ensure that the spawned program opens its
  * windows on the right screen, you may want to use #GdkAppLaunchContext,
- * #GAppLaunchcontext, or set the %DISPLAY environment variable.
+ * #GAppLaunchContext, or set the %DISPLAY environment variable.
  * 
  * Returns: %TRUE on success, %FALSE if an error was set
  */

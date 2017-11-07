@@ -594,7 +594,7 @@ g_cancellable_connect (GCancellable   *cancellable,
 /**
  * g_cancellable_disconnect:
  * @cancellable: (nullable): A #GCancellable or %NULL.
- * @handler_id: Handler id of the handler to be disconnected, or %0.
+ * @handler_id: Handler id of the handler to be disconnected, or `0`.
  *
  * Disconnects a handler from a cancellable instance similar to
  * g_signal_handler_disconnect().  Additionally, in the event that a
@@ -608,7 +608,7 @@ g_cancellable_connect (GCancellable   *cancellable,
  * signal handler is removed. See #GCancellable::cancelled for
  * details on how to use this.
  *
- * If @cancellable is %NULL or @handler_id is %0 this function does
+ * If @cancellable is %NULL or @handler_id is `0` this function does
  * nothing.
  *
  * Since: 2.22
