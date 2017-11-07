@@ -536,11 +536,11 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * g_app_info_launch:
  * @appinfo: a #GAppInfo
  * @files: (nullable) (element-type GFile): a #GList of #GFile objects
- * @launch_context: (nullable): a #GAppLaunchContext or %NULL
+ * @context: (nullable): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
  * Launches the application. Passes @files to the launched application
- * as arguments, using the optional @launch_context to get information
+ * as arguments, using the optional @context to get information
  * about the details of the launcher (like what screen it is on).
  * On error, @error will be set accordingly.
  *
@@ -565,7 +565,7 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * process. This can be used to ignore `GIO_LAUNCHED_DESKTOP_FILE`,
  * should it be inherited by further processes. The `DISPLAY` and
  * `DESKTOP_STARTUP_ID` environment variables are also set, based
- * on information provided in @launch_context.
+ * on information provided in @context.
  *
  * Returns: %TRUE on successful launch, %FALSE otherwise.
  **/
@@ -631,11 +631,11 @@ g_app_info_supports_files (GAppInfo *appinfo)
  * g_app_info_launch_uris:
  * @appinfo: a #GAppInfo
  * @uris: (nullable) (element-type utf8): a #GList containing URIs to launch.
- * @launch_context: (nullable): a #GAppLaunchContext or %NULL
+ * @context: (nullable): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
  * Launches the application. This passes the @uris to the launched application
- * as arguments, using the optional @launch_context to get information
+ * as arguments, using the optional @context to get information
  * about the details of the launcher (like what screen it is on).
  * On error, @error will be set accordingly.
  *
@@ -727,7 +727,7 @@ launch_default_for_uri (const char         *uri,
 /**
  * g_app_info_launch_default_for_uri:
  * @uri: the uri to show
- * @launch_context: (nullable): an optional #GAppLaunchContext
+ * @context: (nullable): an optional #GAppLaunchContext
  * @error: (nullable): return location for an error, or %NULL
  *
  * Utility function that launches the default application

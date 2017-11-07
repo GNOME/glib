@@ -99,13 +99,13 @@ struct _GAppInfoIface
   GIcon *      (* get_icon)                     (GAppInfo           *appinfo);
   gboolean     (* launch)                       (GAppInfo           *appinfo,
                                                  GList              *files,
-                                                 GAppLaunchContext  *launch_context,
+                                                 GAppLaunchContext  *context,
                                                  GError            **error);
   gboolean     (* supports_uris)                (GAppInfo           *appinfo);
   gboolean     (* supports_files)               (GAppInfo           *appinfo);
   gboolean     (* launch_uris)                  (GAppInfo           *appinfo,
                                                  GList              *uris,
-                                                 GAppLaunchContext  *launch_context,
+                                                 GAppLaunchContext  *context,
                                                  GError            **error);
   gboolean     (* should_show)                  (GAppInfo           *appinfo);
 
@@ -162,7 +162,7 @@ GIcon *     g_app_info_get_icon                     (GAppInfo             *appin
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_app_info_launch                       (GAppInfo             *appinfo,
                                                      GList                *files,
-                                                     GAppLaunchContext    *launch_context,
+                                                     GAppLaunchContext    *context,
                                                      GError              **error);
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_app_info_supports_uris                (GAppInfo             *appinfo);
@@ -171,7 +171,7 @@ gboolean    g_app_info_supports_files               (GAppInfo             *appin
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_app_info_launch_uris                  (GAppInfo             *appinfo,
                                                      GList                *uris,
-                                                     GAppLaunchContext    *launch_context,
+                                                     GAppLaunchContext    *context,
                                                      GError              **error);
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_app_info_should_show                  (GAppInfo             *appinfo);
@@ -226,12 +226,12 @@ GAppInfo *g_app_info_get_default_for_uri_scheme  (const char  *uri_scheme);
 
 GLIB_AVAILABLE_IN_ALL
 gboolean  g_app_info_launch_default_for_uri      (const char              *uri,
-                                                  GAppLaunchContext       *launch_context,
+                                                  GAppLaunchContext       *context,
                                                   GError                 **error);
 
 GLIB_AVAILABLE_IN_2_50
 void      g_app_info_launch_default_for_uri_async  (const char           *uri,
-                                                    GAppLaunchContext    *launch_context,
+                                                    GAppLaunchContext    *context,
                                                     GCancellable         *cancellable,
                                                     GAsyncReadyCallback   callback,
                                                     gpointer              user_data);
