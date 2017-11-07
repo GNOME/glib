@@ -690,7 +690,7 @@ AM_CONDITIONAL(HAVE_SUNSTUDIO_VISIBILITY, [test x$g_have_sunstudio_visibility = 
 # check for bytesex stuff
 AC_C_BIGENDIAN
 if test x$ac_cv_c_bigendian = xuniversal ; then
-  AC_MSG_ERROR([Universal builds not supported: see https://bugs.gnome.org/742548])
+  AC_MSG_ERROR([Universal builds not supported: see https://bugzilla.gnome.org/show_bug.cgi?id=742548])
 fi
 
 
