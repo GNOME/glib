@@ -329,7 +329,7 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugs.gnome.org/");
+  g_test_bug_base ("https://bugzilla.gnome.org/");
 
   g_test_add_func ("/bytes/new", test_new);
   g_test_add_func ("/bytes/new-take", test_new_take);
