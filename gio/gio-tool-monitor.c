@@ -223,7 +223,7 @@ handle_monitor (int argc, gchar *argv[], gboolean do_help)
       return 1;
     }
 
-  if (!watch_dirs || !watch_files || !watch_direct || !watch_silent || !watch_default)
+  if (!watch_dirs && !watch_files && !watch_direct && !watch_silent && !watch_default)
     {
       show_help (context, _("No locations given"));
       g_option_context_free (context);
