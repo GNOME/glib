@@ -411,7 +411,7 @@ void g_assert_warning         (const char *log_domain,
 static void g_error (const gchar *format, ...) G_GNUC_NORETURN G_ANALYZER_NORETURN;
 static void g_critical (const gchar *format, ...) G_ANALYZER_NORETURN;
 
-static void
+static inline void
 g_error (const gchar *format,
          ...)
 {
@@ -422,7 +422,7 @@ g_error (const gchar *format,
 
   for(;;) ;
 }
-static void
+static inline void
 g_message (const gchar *format,
            ...)
 {
@@ -431,7 +431,7 @@ g_message (const gchar *format,
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, format, args);
   va_end (args);
 }
-static void
+static inline void
 g_critical (const gchar *format,
             ...)
 {
@@ -440,7 +440,7 @@ g_critical (const gchar *format,
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, format, args);
   va_end (args);
 }
-static void
+static inline void
 g_warning (const gchar *format,
            ...)
 {
@@ -449,7 +449,7 @@ g_warning (const gchar *format,
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING, format, args);
   va_end (args);
 }
-static void
+static inline void
 g_info (const gchar *format,
         ...)
 {
@@ -458,7 +458,7 @@ g_info (const gchar *format,
   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_INFO, format, args);
   va_end (args);
 }
-static void
+static inline void
 g_debug (const gchar *format,
          ...)
 {
