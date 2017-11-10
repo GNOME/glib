@@ -533,7 +533,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  * the result is usually that a critical message is logged and the current
  * function returns.
  *
- * If G_DISABLE_CHECKS is defined then the check is not performed.  You
+ * If `G_DISABLE_CHECKS` is defined then the check is not performed.  You
  * should therefore not depend on any side effects of @expr.
  */
 #define g_return_if_fail(expr) G_STMT_START{ (void)0; }G_STMT_END
@@ -557,7 +557,7 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  * the result is usually that a critical message is logged and @val is
  * returned from the current function.
  *
- * If G_DISABLE_CHECKS is defined then the check is not performed.  You
+ * If `G_DISABLE_CHECKS` is defined then the check is not performed.  You
  * should therefore not depend on any side effects of @expr.
  */
 #define g_return_val_if_fail(expr,val) G_STMT_START{ (void)0; }G_STMT_END
