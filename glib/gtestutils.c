@@ -2377,7 +2377,6 @@ g_test_suite_count (GTestSuite *suite)
  * test path arguments (`-p testpath` and `-s testpath`) as parsed by
  * g_test_init(). See the g_test_run() documentation for more
  * information on the order that tests are run in.
-
  *
  * g_test_run_suite() or g_test_run() may only be called once
  * in a program.

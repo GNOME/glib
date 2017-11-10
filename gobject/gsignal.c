@@ -76,7 +76,7 @@
  * 4. Invocation of user provided signal handlers (where the @after flag is set)
  *
  * 5. Invocation of the object method handler for %G_SIGNAL_RUN_CLEANUP signals
- 
+ *
  * The user-provided signal handlers are called in the order they were
  * connected in.
  *

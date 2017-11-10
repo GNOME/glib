@@ -633,7 +633,7 @@ g_volume_enumerate_identifiers (GVolume *volume)
  * then the expression
  * |[<!-- language="C" -->
  *   (g_file_has_prefix (volume_activation_root, mount_root) ||
-      g_file_equal (volume_activation_root, mount_root))
+ *    g_file_equal (volume_activation_root, mount_root))
  * ]|
  * will always be %TRUE.
  *

@@ -761,7 +761,7 @@ g_open (const gchar *filename,
  * A wrapper for the POSIX creat() function. The creat() function is
  * used to convert a pathname into a file descriptor, creating a file
  * if necessary.
-
+ *
  * On POSIX systems file descriptors are implemented by the operating
  * system. On Windows, it's the C library that implements creat() and
  * file descriptors. The actual Windows API for opening files is

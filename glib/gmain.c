@@ -755,7 +755,7 @@ static GPrivate thread_context_stack = G_PRIVATE_INIT (free_context_stack);
  * g_main_context_push_thread_default() / g_main_context_pop_thread_default()
  * pair, otherwise threads that are re-used will end up never explicitly
  * releasing the #GMainContext reference they hold.
-
+ *
  * In some cases you may want to schedule a single operation in a
  * non-default context, or temporarily use a non-default context in
  * the main thread. In that case, you can wrap the call to the

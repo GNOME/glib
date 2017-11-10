@@ -70,7 +70,7 @@ typedef struct _GSourcePrivate          GSourcePrivate;
  * @unref: Called when a reference to the callback object is dropped
  * @get: Called to extract the callback function and data from the
  *     callback object.
-
+ *
  * The `GSourceCallbackFuncs` struct contains
  * functions for managing callback objects.
  */

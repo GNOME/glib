@@ -136,7 +136,7 @@
  * @hook: a #GHook
  *
  * Returns %TRUE if the #GHook is not in a #GHookList.
- 
+ *
  * Returns: %TRUE if the #GHook is not in a #GHookList
  */
 

@@ -6126,7 +6126,7 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  * operation will fail with %G_IO_ERROR_CANCELLED. If @parameters
  * contains a value not compatible with the D-Bus protocol, the operation
  * fails with %G_IO_ERROR_INVALID_ARGUMENT.
-
+ *
  * If @reply_type is non-%NULL then the reply will be checked for having
  * this type and an error will be raised if it does not match.  Said
  * another way, if you give a @reply_type then any non-%NULL return

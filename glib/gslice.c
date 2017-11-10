@@ -118,7 +118,7 @@
  *
  * // Allocate one block, using the g_slice_new() macro.
  * array = g_slice_new (GRealArray);
-
+ *
  * // We can now use array just like a normal pointer to a structure.
  * array->data            = NULL;
  * array->len             = 0;

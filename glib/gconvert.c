@@ -128,7 +128,6 @@
  * ## Checklist for Application Writers
  *
  * This section is a practical summary of the detailed
- 
  * things to do to make sure your applications process file
  * name encodings correctly.
  * 
@@ -583,8 +582,8 @@ g_convert (const gchar *str,
  * @fallback:     UTF-8 string to use in place of character not
  *                present in the target encoding. (The string must be
  *                representable in the target encoding). 
-                  If %NULL, characters not in the target encoding will 
-                  be represented as Unicode escapes \uxxxx or \Uxxxxyyyy.
+ *                If %NULL, characters not in the target encoding will 
+ *                be represented as Unicode escapes \uxxxx or \Uxxxxyyyy.
  * @bytes_read:   location to store the number of bytes in the
  *                input string that were successfully converted, or %NULL.
  *                Even if the conversion was successful, this may be 

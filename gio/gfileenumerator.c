@@ -318,7 +318,7 @@ next_async_callback_wrapper (GObject      *source_object,
  * Request information for a number of files from the enumerator asynchronously.
  * When all i/o for the operation is finished the @callback will be called with
  * the requested information. 
-
+ *
  * See the documentation of #GFileEnumerator for information about the
  * order of returned files.
  *

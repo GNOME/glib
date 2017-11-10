@@ -246,7 +246,7 @@ g_mutex_unlock (GMutex *mutex)
  * non-recursive.  As such, calling g_mutex_lock() on a #GMutex that has
  * already been locked by the same thread results in undefined behaviour
  * (including but not limited to deadlocks or arbitrary return values).
-
+ *
  * Returns: %TRUE if @mutex could be locked
  */
 gboolean
