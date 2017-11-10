@@ -84,6 +84,7 @@ meson_build_files = \
 	gio/kqueue/meson.build \
 	gio/meson.build \
 	gio/tests/meson.build \
+	gio/tests/gengiotypefuncs.py \
 	gio/tests/modules/meson.build \
 	gio/tests/gdbus-object-manager-example/meson.build \
 	gio/tests/de/LC_MESSAGES/meson.build \
