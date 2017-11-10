@@ -97,8 +97,10 @@ convert_kqueue_events_to_gio (uint32_t flags, gboolean *done)
     }
   if (flags & NOTE_RENAME)
     {
+      /* Since there’s apparently no way to get the new name of the file out of
+       * kqueue(), all we can do is say that this one has been deleted. */
       *done = TRUE;
-      return G_FILE_MONITOR_EVENT_MOVED;
+      return G_FILE_MONITOR_EVENT_DELETED;
     }
   if (flags & NOTE_REVOKE)
     {
