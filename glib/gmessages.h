@@ -535,6 +535,17 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  *
  * If `G_DISABLE_CHECKS` is defined then the check is not performed.  You
  * should therefore not depend on any side effects of @expr.
+ *
+ * To debug failure of a g_return_if_fail() check, run the code under a debugger
+ * with `G_DEBUG=fatal-criticals` or `G_DEBUG=fatal-warnings` defined in the
+ * environment (see [Running GLib Applications](glib-running.html)):
+ *
+ * |[
+ *   G_DEBUG=fatal-warnings gdb ./my-program
+ * ]|
+ *
+ * Any unrelated failures can be skipped over in
+ * [gdb](https://www.gnu.org/software/gdb/) using the `continue` command.
  */
 #define g_return_if_fail(expr) G_STMT_START{ (void)0; }G_STMT_END
 
@@ -559,6 +570,8 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  *
  * If `G_DISABLE_CHECKS` is defined then the check is not performed.  You
  * should therefore not depend on any side effects of @expr.
+ *
+ * See g_return_if_fail() for guidance on how to debug failure of this check.
  */
 #define g_return_val_if_fail(expr,val) G_STMT_START{ (void)0; }G_STMT_END
 
@@ -567,6 +580,8 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  *
  * Logs a critical message and returns from the current function.
  * This can only be used in functions which do not return a value.
+ *
+ * See g_return_if_fail() for guidance on how to debug failure of this check.
  */
 #define g_return_if_reached() G_STMT_START{ return; }G_STMT_END
 
@@ -575,6 +590,8 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  * @val: the value to return from the current function
  *
  * Logs a critical message and returns @val.
+ *
+ * See g_return_if_fail() for guidance on how to debug failure of this check.
  */
 #define g_return_val_if_reached(val) G_STMT_START{ return (val); }G_STMT_END
 

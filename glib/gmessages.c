@@ -389,7 +389,14 @@ myInvalidParameterHandler(const wchar_t *expression,
  *
  * You can make warnings fatal at runtime by setting the `G_DEBUG`
  * environment variable (see
- * [Running GLib Applications](glib-running.html)).
+ * [Running GLib Applications](glib-running.html)):
+ *
+ * |[
+ *   G_DEBUG=fatal-warnings gdb ./my-program
+ * ]|
+ *
+ * Any unrelated failures can be skipped over in
+ * [gdb](https://www.gnu.org/software/gdb/) using the `continue` command.
  *
  * If g_log_default_handler() is used as the log handler function,
  * a newline character will automatically be appended to @..., and
@@ -414,7 +421,14 @@ myInvalidParameterHandler(const wchar_t *expression,
  *
  * You can also make critical warnings fatal at runtime by
  * setting the `G_DEBUG` environment variable (see
- * [Running GLib Applications](glib-running.html)).
+ * [Running GLib Applications](glib-running.html)):
+ *
+ * |[
+ *   G_DEBUG=fatal-warnings gdb ./my-program
+ * ]|
+ *
+ * Any unrelated failures can be skipped over in
+ * [gdb](https://www.gnu.org/software/gdb/) using the `continue` command.
  *
  * The message should typically *not* be translated to the
  * user's language.
