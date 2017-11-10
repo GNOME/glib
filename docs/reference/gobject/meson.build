@@ -72,12 +72,15 @@ if get_option('with-docs') != 'no'
     configuration: version_conf
   )
 
+  gtkdocincl = include_directories('.')
+
   gnome.gtkdoc('gobject',
     main_xml : 'gobject-docs.xml',
     namespace : 'g',
     gobject_typesfile : join_paths(meson.current_source_dir(), 'gobject.types'),
     mode : 'none',
     dependencies : [libgobject_dep, libglib_dep],
+    include_directories : [gtkdocincl],
     src_dir : 'gobject',
     scan_args : [
       '--deprecated-guards=G_DISABLE_DEPRECATED',
