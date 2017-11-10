@@ -762,7 +762,7 @@ BUILT_SOURCES += 		\
 	$(NULL)
 
 EXTRA_DIST += 			\
-	data-to-c.pl		\
+	data-to-c.py		\
 	gioenumtypes.h.template	\
 	gioenumtypes.c.template	\
 	gio.rc.in		\
@@ -822,8 +822,8 @@ gio_querymodules_LDADD	 = libgio-2.0.la 		\
 	$(top_builddir)/glib/libglib-2.0.la		\
 	$(NULL)
 
-gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c.pl
-	$(AM_V_GEN) $(srcdir)/data-to-c.pl $(top_srcdir)/glib/gconstructor.h gconstructor_code > $@.tmp && mv $@.tmp $@
+gconstructor_as_data.h: $(top_srcdir)/glib/gconstructor.h data-to-c.py
+	$(AM_V_GEN) $(srcdir)/data-to-c.py $(top_srcdir)/glib/gconstructor.h gconstructor_code $@
 
 glib_compile_schemas_LDADD = $(top_builddir)/glib/libglib-2.0.la
 glib_compile_schemas_SOURCES = \
