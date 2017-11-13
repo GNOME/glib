@@ -134,6 +134,32 @@ test_resource (GResource *resource)
   g_assert_no_error (error);
   g_assert_cmpint (g_strv_length (children), ==, 2);
   g_strfreev (children);
+
+  /* Test the preferred lookup where we have a trailing slash. */
+  children = g_resource_enumerate_children  (resource,
+					     "/a_prefix/",
+					     G_RESOURCE_LOOKUP_FLAGS_NONE,
+					     &error);
+  g_assert (children != NULL);
+  g_assert_no_error (error);
+  g_assert_cmpint (g_strv_length (children), ==, 2);
+  g_strfreev (children);
+
+  /* test with a path > 256 and no trailing slash to test the
+   * slow path of resources where we allocate a modified path.
+   */
+  children = g_resource_enumerate_children  (resource,
+					     "/not/here/not/here/not/here/not/here/not/here/not/here/not/here"
+					     "/not/here/not/here/not/here/not/here/not/here/not/here/not/here"
+					     "/not/here/not/here/not/here/not/here/not/here/not/here/not/here"
+					     "/not/here/not/here/not/here/not/here/not/here/not/here/not/here"
+					     "/not/here/not/here/not/here/not/here/not/here/not/here/not/here"
+					     "/with/no/trailing/slash",
+					     G_RESOURCE_LOOKUP_FLAGS_NONE,
+					     &error);
+  g_assert (children == NULL);
+  g_assert_error (error, G_RESOURCE_ERROR, G_RESOURCE_ERROR_NOT_FOUND);
+  g_clear_error (&error);
 }
 
 static void
