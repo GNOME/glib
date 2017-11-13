@@ -524,6 +524,9 @@ g_resource_new_from_table (GvdbTable *table)
  * If you want to use this resource in the global resource namespace you need
  * to register it with g_resources_register().
  *
+ * Note: @data must be backed by memory that is at least pointer aligned.
+ * Otherwise this function will fail and exit the process.
+ *
  * Returns: (transfer full): a new #GResource, or %NULL on error
  *
  * Since: 2.32
