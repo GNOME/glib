@@ -3099,7 +3099,7 @@ g_str_tokenize_and_fold (const gchar   *string,
  * "Smith, Fred" and also "Frédéric".  Searching for "Fréd" would match
  * "Frédéric" but not "Frederic" (due to the one-directional nature of
  * accent matching).  Searching "fo" would match "Foo" and "Bar Foo
- * Baz", but not "SFO" (because no word as "fo" as a prefix).
+ * Baz", but not "SFO" (because no word has "fo" as a prefix).
  *
  * Returns: %TRUE if @potential_hit is a hit
  *
