@@ -1251,6 +1251,22 @@ gboolean g_file_replace_contents_finish      (GFile                  *file,
 GLIB_AVAILABLE_IN_ALL
 gboolean g_file_supports_thread_contexts     (GFile                  *file);
 
+GLIB_AVAILABLE_IN_2_56
+GBytes  *g_file_load_bytes                   (GFile                  *file,
+                                              GCancellable           *cancellable,
+                                              gchar                 **etag_out,
+                                              GError                **error);
+GLIB_AVAILABLE_IN_2_56
+void     g_file_load_bytes_async             (GFile                  *file,
+                                              GCancellable           *cancellable,
+                                              GAsyncReadyCallback     callback,
+                                              gpointer                user_data);
+GLIB_AVAILABLE_IN_2_56
+GBytes  *g_file_load_bytes_finish            (GFile                  *file,
+                                              GAsyncResult           *result,
+                                              gchar                 **etag_out,
+                                              GError                **error);
+
 G_END_DECLS
 
 #endif /* __G_FILE_H__ */
