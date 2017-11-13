@@ -181,6 +181,36 @@ test_resource_data (void)
 }
 
 static void
+test_resource_data_unaligned (void)
+{
+  GResource *resource;
+  GError *error = NULL;
+  gboolean loaded_file;
+  char *content, *content_copy;
+  gsize content_size;
+  GBytes *data;
+
+  loaded_file = g_file_get_contents (g_test_get_filename (G_TEST_BUILT, "test.gresource", NULL),
+                                     &content, &content_size, NULL);
+  g_assert (loaded_file);
+
+  content_copy = g_new (char, content_size + 1);
+  memcpy (content_copy + 1, content, content_size);
+
+  data = g_bytes_new_with_free_func (content_copy + 1, content_size,
+                                     (GDestroyNotify) g_free, content_copy);
+  g_free (content);
+  resource = g_resource_new_from_data (data, &error);
+  g_bytes_unref (data);
+  g_assert (resource != NULL);
+  g_assert_no_error (error);
+
+  test_resource (resource);
+
+  g_resource_unref (resource);
+}
+
+static void
 test_resource_registered (void)
 {
   GResource *resource;
@@ -644,6 +674,7 @@ main (int   argc,
 
   g_test_add_func ("/resource/file", test_resource_file);
   g_test_add_func ("/resource/data", test_resource_data);
+  g_test_add_func ("/resource/data_unaligned", test_resource_data_unaligned);
   g_test_add_func ("/resource/registered", test_resource_registered);
   g_test_add_func ("/resource/manual", test_resource_manual);
   g_test_add_func ("/resource/manual2", test_resource_manual2);

@@ -525,7 +525,8 @@ g_resource_new_from_table (GvdbTable *table)
  * to register it with g_resources_register().
  *
  * Note: @data must be backed by memory that is at least pointer aligned.
- * Otherwise this function will fail and exit the process.
+ * Otherwise this function will internally create a copy of the memory since
+ * GLib 2.56, or in older versions fail and exit the process.
  *
  * Returns: (transfer full): a new #GResource, or %NULL on error
  *
@@ -536,6 +537,14 @@ g_resource_new_from_data (GBytes  *data,
                           GError **error)
 {
   GvdbTable *table;
+  gboolean unref_data = FALSE;
+
+  if (((guintptr) g_bytes_get_data (data, NULL)) % sizeof (gpointer) != 0)
+    {
+      data = g_bytes_new (g_bytes_get_data (data, NULL),
+                          g_bytes_get_size (data));
+      unref_data = TRUE;
+    }
 
   table = gvdb_table_new_from_data (g_bytes_get_data (data, NULL),
                                     g_bytes_get_size (data),
@@ -544,6 +553,9 @@ g_resource_new_from_data (GBytes  *data,
                                     (GvdbRefFunc)g_bytes_ref,
                                     (GDestroyNotify)g_bytes_unref,
                                     error);
+
+  if (unref_data)
+    g_bytes_unref (data);
 
   if (table == NULL)
     return NULL;
