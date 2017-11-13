@@ -3095,11 +3095,11 @@ g_str_tokenize_and_fold (const gchar   *string,
  * call g_str_tokenize_and_fold() on the search term and
  * perform lookups into that index.
  *
- * As some examples, searching for "fred" would match the potential hit
- * "Smith, Fred" and also "Frédéric".  Searching for "Fréd" would match
- * "Frédéric" but not "Frederic" (due to the one-directional nature of
- * accent matching).  Searching "fo" would match "Foo" and "Bar Foo
- * Baz", but not "SFO" (because no word has "fo" as a prefix).
+ * As some examples, searching for ‘fred’ would match the potential hit
+ * ‘Smith, Fred’ and also ‘Frédéric’.  Searching for ‘Fréd’ would match
+ * ‘Frédéric’ but not ‘Frederic’ (due to the one-directional nature of
+ * accent matching).  Searching ‘fo’ would match ‘Foo’ and ‘Bar Foo
+ * Baz’, but not ‘SFO’ (because no word has ‘fo’ as a prefix).
  *
  * Returns: %TRUE if @potential_hit is a hit
  *
