@@ -138,69 +138,92 @@ g_resource_file_init (GResourceFile *resource)
 {
 }
 
-static char *
-canonicalize_filename (const char *filename)
+static inline gchar *
+scan_backwards (const gchar *begin,
+                const gchar *end,
+                gchar        c)
 {
-  char *canon, *start, *p, *q;
-
-  /* Skip multiple inital slashes */
-  while (filename[0] == '/' && filename[1] == '/')
-    filename++;
-
-  if (*filename != '/')
-    canon = g_strconcat ("/", filename, NULL);
-  else
-    canon = g_strdup (filename);
-
-  start = canon + 1;
-
-  p = start;
-  while (*p != 0)
+  while (end >= begin)
     {
-      if (p[0] == '.' && (p[1] == 0 || p[1] == '/'))
-	{
-	  memmove (p, p+1, strlen (p+1)+1);
-	}
-      else if (p[0] == '.' && p[1] == '.' && (p[2] == 0 || p[2] == '/'))
-	{
-	  q = p + 2;
-	  /* Skip previous separator */
-	  p = p - 2;
-	  if (p < start)
-	    p = start;
-	  while (p > start && *p != '/')
-	    p--;
-	  if (*p == '/')
-	    *p++ = '/';
-	  memmove (p, q, strlen (q)+1);
-	}
-      else
-	{
-	  /* Skip until next separator */
-	  while (*p != 0 && *p != '/')
-	    p++;
-
-	  if (*p != 0)
-	    {
-	      /* Canonicalize one separator */
-	      *p++ = '/';
-	    }
-	}
-
-      /* Remove additional separators */
-      q = p;
-      while (*q && *q == '/')
-	q++;
-
-      if (p != q)
-	memmove (p, q, strlen (q)+1);
+      if (*end == c)
+        return (gchar *)end;
+      end--;
     }
 
-  /* Remove trailing slashes */
-  if (p > start && *(p-1) == '/')
-    *(p-1) = 0;
+  return NULL;
+}
 
-  return canon;
+static inline void
+pop_to_previous_part (const gchar  *begin,
+                      gchar       **out)
+{
+  if (*out > begin)
+    *out = scan_backwards (begin, *out - 1, '/');
+}
+
+/*
+ * canonicalize_filename:
+ * @in: the path to be canonicalized
+ *
+ * The path @in may contain non-canonical path pieces such as "../"
+ * or duplicated "/". This will resolve those into a form that only
+ * contains a single / at a time and resolves all "../". The resulting
+ * path must also start with a /.
+ *
+ * Returns: the canonical form of the path
+ */
+static char *
+canonicalize_filename (const char *in)
+{
+  gchar *bptr;
+  char *out;
+
+  bptr = out = g_malloc (strlen (in) + 2);
+  *out = '/';
+
+  while (*in != 0)
+    {
+      g_assert (*out == '/');
+
+      /* move past slashes */
+      while (*in == '/')
+        in++;
+
+      /* Handle ./ ../ .\0 ..\0 */
+      if (*in == '.')
+        {
+          /* If this is ../ or ..\0 move up */
+          if (in[1] == '.' && (in[2] == '/' || in[2] == 0))
+            {
+              pop_to_previous_part (bptr, &out);
+              in += 2;
+              continue;
+            }
+
+          /* If this is ./ skip past it */
+          if (in[1] == '/' || in[1] == 0)
+            {
+              in += 1;
+              continue;
+            }
+        }
+
+      /* Scan to the next path piece */
+      while (*in != 0 && *in != '/')
+        *(++out) = *(in++);
+
+      /* Add trailing /, compress the rest on the next go round. */
+      if (*in == '/')
+        *(++out) = *(in++);
+    }
+
+  /* Trim trailing / from path */
+  if (out > bptr && *out == '/')
+    *out = 0;
+  else
+    *(++out) = 0;
+
+  return bptr;
 }
 
 static GFile *
