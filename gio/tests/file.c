@@ -1063,6 +1063,91 @@ test_measure_async (void)
                                    measure_done, data);
 }
 
+static void
+test_load_bytes (void)
+{
+  gchar filename[] = "g_file_load_bytes_XXXXXX";
+  GError *error = NULL;
+  GBytes *bytes;
+  GFile *file;
+  int len;
+  int fd;
+  int ret;
+
+  fd = g_mkstemp (filename);
+  g_assert_cmpint (fd, !=, -1);
+  len = strlen ("test_load_bytes");
+  ret = write (fd, "test_load_bytes", len);
+  g_assert_cmpint (ret, ==, len);
+  close (fd);
+
+  file = g_file_new_for_path (filename);
+  bytes = g_file_load_bytes (file, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (bytes != NULL);
+  g_assert_cmpint (len, ==, g_bytes_get_size (bytes));
+  g_assert_cmpstr ("test_load_bytes", ==, (gchar *)g_bytes_get_data (bytes, NULL));
+
+  g_file_delete (file, NULL, NULL);
+
+  g_bytes_unref (bytes);
+  g_object_unref (file);
+}
+
+typedef struct
+{
+  GMainLoop *main_loop;
+  GFile *file;
+  GBytes *bytes;
+} LoadBytesAsyncData;
+
+static void
+test_load_bytes_cb (GObject      *object,
+                    GAsyncResult *result,
+                    gpointer      user_data)
+{
+  GFile *file = G_FILE (object);
+  LoadBytesAsyncData *data = user_data;
+  GError *error = NULL;
+
+  data->bytes = g_file_load_bytes_finish (file, result, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (data->bytes != NULL);
+
+  g_main_loop_quit (data->main_loop);
+}
+
+static void
+test_load_bytes_async (void)
+{
+  LoadBytesAsyncData data = { 0 };
+  gchar filename[] = "g_file_load_bytes_XXXXXX";
+  int len;
+  int fd;
+  int ret;
+
+  fd = g_mkstemp (filename);
+  g_assert_cmpint (fd, !=, -1);
+  len = strlen ("test_load_bytes_async");
+  ret = write (fd, "test_load_bytes_async", len);
+  g_assert_cmpint (ret, ==, len);
+  close (fd);
+
+  data.main_loop = g_main_loop_new (NULL, FALSE);
+  data.file = g_file_new_for_path (filename);
+
+  g_file_load_bytes_async (data.file, NULL, test_load_bytes_cb, &data);
+  g_main_loop_run (data.main_loop);
+
+  g_assert_cmpint (len, ==, g_bytes_get_size (data.bytes));
+  g_assert_cmpstr ("test_load_bytes_async", ==, (gchar *)g_bytes_get_data (data.bytes, NULL));
+
+  g_file_delete (data.file, NULL, NULL);
+  g_object_unref (data.file);
+  g_bytes_unref (data.bytes);
+  g_main_loop_unref (data.main_loop);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1089,6 +1174,8 @@ main (int argc, char *argv[])
 #endif
   g_test_add_func ("/file/measure", test_measure);
   g_test_add_func ("/file/measure-async", test_measure_async);
+  g_test_add_func ("/file/load-bytes", test_load_bytes);
+  g_test_add_func ("/file/load-bytes-async", test_load_bytes_async);
 
   return g_test_run ();
 }
