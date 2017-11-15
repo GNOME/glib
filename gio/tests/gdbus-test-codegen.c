@@ -897,6 +897,11 @@ check_bar_proxy (FooiGenBar *proxy,
   g_assert_no_error (error);
   g_assert (ret);
 
+  g_clear_pointer (&ret_val_string, g_free);
+  g_clear_pointer (&ret_val_objpath, g_free);
+  g_clear_pointer (&ret_val_signature, g_free);
+  g_clear_pointer (&ret_val_bytestring, g_free);
+
   error = NULL;
   array_of_signatures = g_variant_ref_sink (g_variant_new_parsed ("[@g 'ass', 'git']"));
   ret = foo_igen_bar_call_test_non_primitive_types_sync (proxy,
