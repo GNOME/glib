@@ -1281,7 +1281,7 @@ g_value_take_variant (GValue   *value,
  *
  * Get the contents of a variant #GValue.
  *
- * Returns: variant contents of @value
+ * Returns: (nullable): variant contents of @value (may be %NULL)
  *
  * Since: 2.26
  */
@@ -1297,10 +1297,11 @@ g_value_get_variant (const GValue *value)
  * g_value_dup_variant:
  * @value: a valid #GValue of type %G_TYPE_VARIANT
  *
- * Get the contents of a variant #GValue, increasing its refcount.
+ * Get the contents of a variant #GValue, increasing its refcount. The returned
+ * #GVariant is never floating.
  *
- * Returns: variant contents of @value, should be unrefed using
- *   g_variant_unref() when no longer needed
+ * Returns: (transfer full) (nullable): variant contents of @value (may be %NULL);
+ *    should be unreffed using g_variant_unref() when no longer needed
  *
  * Since: 2.26
  */
