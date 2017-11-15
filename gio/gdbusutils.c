@@ -685,7 +685,7 @@ g_dbus_gvalue_to_gvariant (const GValue       *gvalue,
     {
       GVariant *untrusted_empty;
       untrusted_empty = g_variant_new_from_data (type, NULL, 0, FALSE, NULL, NULL);
-      ret = g_variant_ref_sink (g_variant_get_normal_form (untrusted_empty));
+      ret = g_variant_take_ref (g_variant_get_normal_form (untrusted_empty));
       g_variant_unref (untrusted_empty);
     }
 
