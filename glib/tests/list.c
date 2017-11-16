@@ -69,6 +69,38 @@ test_list_sort_with_data (void)
   g_list_free (list);
 }
 
+/* Test that the sort is stable. */
+static void
+test_list_sort_stable (void)
+{
+  GList *list = NULL;  /* (element-type utf8) */
+  GList *copy = NULL;  /* (element-type utf8) */
+  gsize i;
+
+  /* Build a test list, already ordered. */
+  for (i = 0; i < SIZE; i++)
+    list = g_list_append (list, g_strdup_printf ("%" G_GSIZE_FORMAT, i / 5));
+
+  /* Take a copy and sort it. */
+  copy = g_list_copy (list);
+  copy = g_list_sort (copy, (GCompareFunc) g_strcmp0);
+
+  /* Compare the two lists, checking pointers are equal to ensure the elements
+   * have been kept stable. */
+  for (i = 0; i < SIZE; i++)
+    {
+      gpointer p1, p2;
+
+      p1 = g_list_nth_data (list, i);
+      p2 = g_list_nth_data (list, i);
+
+      g_assert (p1 == p2);
+    }
+
+  g_list_free (copy);
+  g_list_free_full (list, g_free);
+}
+
 static void
 test_list_insert_sorted (void)
 {
@@ -529,6 +561,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/list/sort", test_list_sort);
   g_test_add_func ("/list/sort-with-data", test_list_sort_with_data);
+  g_test_add_func ("/list/sort/stable", test_list_sort_stable);
   g_test_add_func ("/list/insert-sorted", test_list_insert_sorted);
   g_test_add_func ("/list/insert-sorted-with-data", test_list_insert_sorted_with_data);
   g_test_add_func ("/list/reverse", test_list_reverse);
