@@ -1034,7 +1034,8 @@ g_slist_sort_real (GSList   *list,
  *     first element comes before the second, or a positive value if
  *     the first element comes after the second.
  *
- * Sorts a #GSList using the given comparison function.
+ * Sorts a #GSList using the given comparison function. The algorithm
+ * used is a stable sort.
  *
  * Returns: the start of the sorted #GSList
  */
