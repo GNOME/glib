@@ -1818,6 +1818,27 @@ test_strftime (void)
 }
 #pragma GCC diagnostic pop
 
+/* Check that g_date_time_format() correctly returns %NULL for format
+ * placeholders which are not supported in the current locale. */
+static void
+test_GDateTime_strftime_error_handling (void)
+{
+  gchar *oldlocale;
+
+  oldlocale = g_strdup (setlocale (LC_ALL, NULL));
+  setlocale (LC_ALL, "de_DE.utf-8");
+  if (strstr (setlocale (LC_ALL, NULL), "de_DE") != NULL)
+    {
+      /* de_DE doesn’t ever write time in 12-hour notation, so %r is
+       * unsupported for it. */
+      TEST_PRINTF_TIME (23, 0, 0, "%r", NULL);
+    }
+  else
+    g_test_skip ("locale de_DE not available, skipping error handling tests");
+  setlocale (LC_ALL, oldlocale);
+  g_free (oldlocale);
+}
+
 static void
 test_find_interval (void)
 {
@@ -2141,6 +2162,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
   g_test_add_func ("/GDateTime/non_utf8_printf", test_non_utf8_printf);
   g_test_add_func ("/GDateTime/strftime", test_strftime);
+  g_test_add_func ("/GDateTime/strftime/error_handling", test_GDateTime_strftime_error_handling);
   g_test_add_func ("/GDateTime/modifiers", test_modifiers);
   g_test_add_func ("/GDateTime/to_local", test_GDateTime_to_local);
   g_test_add_func ("/GDateTime/to_unix", test_GDateTime_to_unix);

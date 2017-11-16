@@ -2695,6 +2695,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	{
 	case 'a':
 	  name = WEEKDAY_ABBR (datetime);
+          if (g_strcmp0 (name, "") == 0)
+            return FALSE;
 #if !defined (HAVE_LANGINFO_TIME)
 	  if (!locale_is_utf8)
 	    {
@@ -2712,6 +2714,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  break;
 	case 'A':
 	  name = WEEKDAY_FULL (datetime);
+          if (g_strcmp0 (name, "") == 0)
+            return FALSE;
 #if !defined (HAVE_LANGINFO_TIME)
 	  if (!locale_is_utf8)
 	    {
@@ -2729,6 +2733,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  break;
 	case 'b':
 	  name = MONTH_ABBR (datetime);
+          if (g_strcmp0 (name, "") == 0)
+            return FALSE;
 #if !defined (HAVE_LANGINFO_TIME)
 	  if (!locale_is_utf8)
 	    {
@@ -2746,6 +2752,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  break;
 	case 'B':
 	  name = MONTH_FULL (datetime);
+          if (g_strcmp0 (name, "") == 0)
+            return FALSE;
 #if !defined (HAVE_LANGINFO_TIME)
 	  if (!locale_is_utf8)
 	    {
@@ -2763,6 +2771,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  break;
 	case 'c':
 	  {
+            if (g_strcmp0 (PREFERRED_DATE_TIME_FMT, "") == 0)
+              return FALSE;
 	    if (!g_date_time_locale_format_locale (datetime, PREFERRED_DATE_TIME_FMT,
 						   outstr, locale_is_utf8))
 	      return FALSE;
@@ -2796,6 +2806,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  break;
 	case 'h':
 	  name = MONTH_ABBR (datetime);
+          if (g_strcmp0 (name, "") == 0)
+            return FALSE;
 #if !defined (HAVE_LANGINFO_TIME)
 	  if (!locale_is_utf8)
 	    {
@@ -2855,6 +2867,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  break;
 	case 'r':
 	  {
+            if (g_strcmp0 (PREFERRED_12HR_TIME_FMT, "") == 0)
+              return FALSE;
 	    if (!g_date_time_locale_format_locale (datetime, PREFERRED_12HR_TIME_FMT,
 						   outstr, locale_is_utf8))
 	      return FALSE;
@@ -2895,6 +2909,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  break;
 	case 'x':
 	  {
+            if (g_strcmp0 (PREFERRED_DATE_FMT, "") == 0)
+              return FALSE;
 	    if (!g_date_time_locale_format_locale (datetime, PREFERRED_DATE_FMT,
 						   outstr, locale_is_utf8))
 	      return FALSE;
@@ -2902,6 +2918,8 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  break;
 	case 'X':
 	  {
+            if (g_strcmp0 (PREFERRED_TIME_FMT, "") == 0)
+              return FALSE;
 	    if (!g_date_time_locale_format_locale (datetime, PREFERRED_TIME_FMT,
 						   outstr, locale_is_utf8))
 	      return FALSE;
@@ -3059,7 +3077,8 @@ g_date_time_format_locale (GDateTime   *datetime,
  *   for the specifier.
  *
  * Returns: a newly allocated string formatted to the requested format
- *     or %NULL in the case that there was an error. The string
+ *     or %NULL in the case that there was an error (such as a format specifier
+ *     not being supported in the current locale). The string
  *     should be freed with g_free().
  *
  * Since: 2.26
