@@ -175,7 +175,6 @@ static const guint16 days_in_year[2][13] =
 #define PREFERRED_DATE_TIME_FMT nl_langinfo (D_T_FMT)
 #define PREFERRED_DATE_FMT nl_langinfo (D_FMT)
 #define PREFERRED_TIME_FMT nl_langinfo (T_FMT)
-#define PREFERRED_TIME_FMT nl_langinfo (T_FMT)
 #define PREFERRED_12HR_TIME_FMT nl_langinfo (T_FMT_AMPM)
 
 static const gint weekday_item[2][7] =
