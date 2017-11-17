@@ -1082,7 +1082,7 @@ class CodeGenerator:
                         '   * @invocation: A #GDBusMethodInvocation.\n'
                         %(i.camel_name, m.name_hyphen, i.camel_name), False))
                 if unix_fd:
-                    self.c.write ('   * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
+                    self.c.write ('   * @fd_list: (nullable): A #GUnixFDList or %NULL.\n')
                 for a in m.in_args:
                     self.c.write ('   * @arg_%s: Argument passed by remote caller.\n'%(a.name))
                 self.c.write(self.docbook_gen.expand(
@@ -1343,9 +1343,9 @@ class CodeGenerator:
             for a in m.in_args:
                 self.c.write(' * @arg_%s: Argument to pass with the method invocation.\n'%(a.name))
             if unix_fd:
-                self.c.write(' * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
+                self.c.write(' * @fd_list: (nullable): A #GUnixFDList or %NULL.\n')
             self.c.write(self.docbook_gen.expand(
-                    ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                    ' * @cancellable: (nullable): A #GCancellable or %%NULL.\n'
                     ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %%NULL.\n'
                     ' * @user_data: User data to pass to @callback.\n'
                     ' *\n'
@@ -1448,13 +1448,13 @@ class CodeGenerator:
             for a in m.in_args:
                 self.c.write(' * @arg_%s: Argument to pass with the method invocation.\n'%(a.name))
             if unix_fd:
-                self.c.write(' * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
+                self.c.write(' * @fd_list: (nullable): A #GUnixFDList or %NULL.\n')
             for a in m.out_args:
                 self.c.write(' * @out_%s: (out): Return location for return parameter or %%NULL to ignore.\n'%(a.name))
             if unix_fd:
                 self.c.write(' * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.\n')
             self.c.write(self.docbook_gen.expand(
-                    ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                    ' * @cancellable: (nullable): A #GCancellable or %%NULL.\n'
                     ' * @error: Return location for error or %%NULL.\n'
                     ' *\n'
                     ' * Synchronously invokes the %s.%s() D-Bus method on @proxy. The calling thread is blocked until a reply is received.\n'
@@ -1528,7 +1528,7 @@ class CodeGenerator:
                          ' * @invocation: (transfer full): A #GDBusMethodInvocation.\n'
                          %(i.name_lower, m.name_lower, i.camel_name))
             if unix_fd:
-                self.c.write (' * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
+                self.c.write (' * @fd_list: (nullable): A #GUnixFDList or %NULL.\n')
             for a in m.out_args:
                 self.c.write(' * @%s: Parameter to return.\n'%(a.name))
             self.c.write(self.docbook_gen.expand(
@@ -1888,9 +1888,9 @@ class CodeGenerator:
                 ' * %s_proxy_new:\n'
                 ' * @connection: A #GDBusConnection.\n'
                 ' * @flags: Flags from the #GDBusProxyFlags enumeration.\n'
-                ' * @name: (allow-none): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
+                ' * @name: (nullable): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
                 ' * @object_path: An object path.\n'
-                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @cancellable: (nullable): A #GCancellable or %%NULL.\n'
                 ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied.\n'
                 ' * @user_data: User data to pass to @callback.\n'
                 ' *\n'
@@ -1948,9 +1948,9 @@ class CodeGenerator:
                 ' * %s_proxy_new_sync:\n'
                 ' * @connection: A #GDBusConnection.\n'
                 ' * @flags: Flags from the #GDBusProxyFlags enumeration.\n'
-                ' * @name: (allow-none): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
+                ' * @name: (nullable): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
                 ' * @object_path: An object path.\n'
-                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @cancellable: (nullable): A #GCancellable or %%NULL.\n'
                 ' * @error: Return location for error or %%NULL\n'
                 ' *\n'
                 ' * Synchronously creates a proxy for the D-Bus interface #%s. See g_dbus_proxy_new_sync() for more details.\n'
@@ -1988,7 +1988,7 @@ class CodeGenerator:
                 ' * @flags: Flags from the #GDBusProxyFlags enumeration.\n'
                 ' * @name: A bus name (well-known or unique).\n'
                 ' * @object_path: An object path.\n'
-                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @cancellable: (nullable): A #GCancellable or %%NULL.\n'
                 ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied.\n'
                 ' * @user_data: User data to pass to @callback.\n'
                 ' *\n'
@@ -2048,7 +2048,7 @@ class CodeGenerator:
                 ' * @flags: Flags from the #GDBusProxyFlags enumeration.\n'
                 ' * @name: A bus name (well-known or unique).\n'
                 ' * @object_path: An object path.\n'
-                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @cancellable: (nullable): A #GCancellable or %%NULL.\n'
                 ' * @error: Return location for error or %%NULL\n'
                 ' *\n'
                 ' * Like %s_proxy_new_sync() but takes a #GBusType instead of a #GDBusConnection.\n'
@@ -3076,7 +3076,7 @@ class CodeGenerator:
                     '/**\n'
                     ' * %sobject_skeleton_set_%s:\n'
                     ' * @object: A #%sObjectSkeleton.\n'
-                    ' * @interface_: (allow-none): A #%s or %%NULL to clear the interface.\n'
+                    ' * @interface_: (nullable): A #%s or %%NULL to clear the interface.\n'
                     ' *\n'
                     ' * Sets the #%s instance for the D-Bus interface #%s on @object.\n'
                     %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name, i.camel_name, i.name), False))
@@ -3150,7 +3150,7 @@ class CodeGenerator:
                 ' * %sobject_manager_client_get_proxy_type:\n'
                 ' * @manager: A #GDBusObjectManagerClient.\n'
                 ' * @object_path: The object path of the remote object (unused).\n'
-                ' * @interface_name: (allow-none): Interface name of the remote object or %%NULL to get the object proxy #GType.\n'
+                ' * @interface_name: (nullable): Interface name of the remote object or %%NULL to get the object proxy #GType.\n'
                 ' * @user_data: User data (unused).\n'
                 ' *\n'
                 ' * A #GDBusProxyTypeFunc that maps @interface_name to the generated #GDBusObjectProxy<!-- -->- and #GDBusProxy<!-- -->-derived types.\n'
@@ -3190,9 +3190,9 @@ class CodeGenerator:
                 ' * %sobject_manager_client_new:\n'
                 ' * @connection: A #GDBusConnection.\n'
                 ' * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.\n'
-                ' * @name: (allow-none): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
+                ' * @name: (nullable): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
                 ' * @object_path: An object path.\n'
-                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @cancellable: (nullable): A #GCancellable or %%NULL.\n'
                 ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied.\n'
                 ' * @user_data: User data to pass to @callback.\n'
                 ' *\n'
@@ -3250,9 +3250,9 @@ class CodeGenerator:
                 ' * %sobject_manager_client_new_sync:\n'
                 ' * @connection: A #GDBusConnection.\n'
                 ' * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.\n'
-                ' * @name: (allow-none): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
+                ' * @name: (nullable): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
                 ' * @object_path: An object path.\n'
-                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @cancellable: (nullable): A #GCancellable or %%NULL.\n'
                 ' * @error: Return location for error or %%NULL\n'
                 ' *\n'
                 ' * Synchronously creates #GDBusObjectManagerClient using %sobject_manager_client_get_proxy_type() as the #GDBusProxyTypeFunc. See g_dbus_object_manager_client_new_sync() for more details.\n'
@@ -3290,7 +3290,7 @@ class CodeGenerator:
                 ' * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.\n'
                 ' * @name: A bus name (well-known or unique).\n'
                 ' * @object_path: An object path.\n'
-                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @cancellable: (nullable): A #GCancellable or %%NULL.\n'
                 ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied.\n'
                 ' * @user_data: User data to pass to @callback.\n'
                 ' *\n'
@@ -3350,7 +3350,7 @@ class CodeGenerator:
                 ' * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.\n'
                 ' * @name: A bus name (well-known or unique).\n'
                 ' * @object_path: An object path.\n'
-                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @cancellable: (nullable): A #GCancellable or %%NULL.\n'
                 ' * @error: Return location for error or %%NULL\n'
                 ' *\n'
                 ' * Like %sobject_manager_client_new_sync() but takes a #GBusType instead of a #GDBusConnection.\n'
