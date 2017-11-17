@@ -657,7 +657,10 @@ get_xattrs_from_fd (int                    fd,
 	}
 
       if (list_res_size == -1)
-	return;
+        {
+          g_free (list);
+          return;
+        }
 
       attr = list;
       while (list_res_size > 0)
