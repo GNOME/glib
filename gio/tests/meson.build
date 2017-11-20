@@ -67,6 +67,7 @@ test_extra_programs = [
 test_env = [
   'G_TEST_SRCDIR=' + meson.current_source_dir(),
   'G_TEST_BUILDDIR=' + meson.current_build_dir(),
+  'GIO_MODULE_DIR=',
 ]
 
 test_c_args = [
