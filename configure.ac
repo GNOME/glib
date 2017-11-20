@@ -729,6 +729,12 @@ AC_STRUCT_DIRENT_D_TYPE
 # Checks for libcharset
 AM_LANGINFO_CODESET
 gl_GLIBC21
+AC_ARG_WITH(charsetalias-dir,
+            AS_HELP_STRING([--with-charsetalias-dir=DIR], [directory for charset.alias file [LIBDIR]]),
+           [],
+           [with_charsetalias_dir='${libdir}'])
+GLIB_CHARSETALIAS_DIR=$with_charsetalias_dir
+AC_SUBST(GLIB_CHARSETALIAS_DIR)
 
 # check additional type sizes
 AC_CHECK_SIZEOF(size_t)

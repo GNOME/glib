@@ -1,8 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/glib.mk
 
-AM_CPPFLAGS = 				\
-	-DLIBDIR=\"$(libdir)\" 		\
+AM_CPPFLAGS = 							\
+	$(gmodule_INCLUDES)					\
+	-DGLIB_CHARSETALIAS_DIR=\"$(GLIB_CHARSETALIAS_DIR)\"	\
 	$(config_h_INCLUDES)
 
 noinst_LTLIBRARIES += libcharset.la
@@ -24,10 +25,10 @@ EXTRA_DIST += 			\
 	make-patch.sh		\
 	libcharset-glib.patch
 
-charset_alias = $(DESTDIR)$(libdir)/charset.alias
-charset_tmp = $(DESTDIR)$(libdir)/charset.tmp
+charset_alias = $(DESTDIR)$(GLIB_CHARSETALIAS_DIR)/charset.alias
+charset_tmp = $(DESTDIR)$(GLIB_CHARSETALIAS_DIR)/charset.tmp
 install-exec-local: all-local
-	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	$(mkinstalldirs) $(DESTDIR)$(GLIB_CHARSETALIAS_DIR)
 	if test -f $(charset_alias); then \
 	  sed -f ref-add.sed $(charset_alias) > $(charset_tmp) ; \
 	  $(INSTALL_DATA) $(charset_tmp) $(charset_alias) ; \
