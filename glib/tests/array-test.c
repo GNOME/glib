@@ -39,6 +39,64 @@ sum_up (gpointer data,
   *sum += GPOINTER_TO_INT (data);
 }
 
+/* Check that expanding an array with g_array_set_size() clears the new elements
+ * if @clear_ was specified during construction. */
+static void
+array_new_cleared (void)
+{
+  GArray *garray;
+  gsize i;
+
+  garray = g_array_new (FALSE, TRUE, sizeof (gint));
+  g_assert_cmpuint (garray->len, ==, 0);
+
+  g_array_set_size (garray, 5);
+  g_assert_cmpuint (garray->len, ==, 5);
+
+  for (i = 0; i < 5; i++)
+    g_assert_cmpint (g_array_index (garray, gint, i), ==, 0);
+
+  g_array_unref (garray);
+}
+
+/* As with array_new_cleared(), but with a sized array. */
+static void
+array_new_sized_cleared (void)
+{
+  GArray *garray;
+  gsize i;
+
+  garray = g_array_sized_new (FALSE, TRUE, sizeof (gint), 10);
+  g_assert_cmpuint (garray->len, ==, 0);
+
+  g_array_set_size (garray, 5);
+  g_assert_cmpuint (garray->len, ==, 5);
+
+  for (i = 0; i < 5; i++)
+    g_assert_cmpint (g_array_index (garray, gint, i), ==, 0);
+
+  g_array_unref (garray);
+}
+
+/* Check that a zero-terminated array does actually have a zero terminator. */
+static void
+array_new_zero_terminated (void)
+{
+  GArray *garray;
+  gchar *out_str = NULL;
+
+  garray = g_array_new (TRUE, FALSE, sizeof (gchar));
+  g_assert_cmpuint (garray->len, ==, 0);
+
+  g_array_append_vals (garray, "hello", strlen ("hello"));
+  g_assert_cmpuint (garray->len, ==, 5);
+  g_assert_cmpstr (garray->data, ==, "hello");
+
+  out_str = g_array_free (garray, FALSE);
+  g_assert_cmpstr (out_str, ==, "hello");
+  g_free (out_str);
+}
+
 static void
 array_append (void)
 {
@@ -890,6 +948,9 @@ main (int argc, char *argv[])
   g_test_bug_base ("https://bugzilla.gnome.org/");
 
   /* array tests */
+  g_test_add_func ("/array/new/cleared", array_new_cleared);
+  g_test_add_func ("/array/new/sized-cleared", array_new_sized_cleared);
+  g_test_add_func ("/array/new/zero-terminated", array_new_zero_terminated);
   g_test_add_func ("/array/append", array_append);
   g_test_add_func ("/array/prepend", array_prepend);
   g_test_add_func ("/array/remove", array_remove);
