@@ -1415,14 +1415,13 @@ test_non_utf8_printf (void)
   setlocale (LC_ALL, "ja_JP.eucjp");
   if (strstr (setlocale (LC_ALL, NULL), "ja_JP") == NULL)
     {
-      g_test_message ("locale ja_JP.eucjp not available, skipping non-UTF8 tests");
+      g_test_skip ("locale ja_JP.eucjp not available, skipping non-UTF8 tests");
       g_free (oldlocale);
       return;
     }
   if (g_get_charset (NULL))
     {
-      g_test_message ("locale ja_JP.eucjp may be available, but glib seems to think that it's equivalent to UTF-8, skipping non-UTF-8 tests.");
-      g_test_message ("This is a known issue on Darwin");
+      g_test_skip ("locale ja_JP.eucjp may be available, but glib seems to think that it's equivalent to UTF-8, skipping non-UTF-8 tests. This is a known issue on Darwin");
       setlocale (LC_ALL, oldlocale);
       g_free (oldlocale);
       return;
@@ -1545,7 +1544,7 @@ test_modifiers (void)
       TEST_PRINTF_DATE (2011, 7, 1, "%_Om", " \333\267");        /* ' 7' */
     }
   else
-    g_test_message ("locale fa_IR not available, skipping O modifier tests");
+    g_test_skip ("locale fa_IR not available, skipping O modifier tests");
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
 }
