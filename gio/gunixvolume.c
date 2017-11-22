@@ -252,7 +252,7 @@ g_unix_volume_get_mount (GVolume *volume)
   GUnixVolume *unix_volume = G_UNIX_VOLUME (volume);
 
   if (unix_volume->mount != NULL)
-    return g_object_ref (unix_volume->mount);
+    return g_object_ref (G_MOUNT (unix_volume->mount));
 
   return NULL;
 }

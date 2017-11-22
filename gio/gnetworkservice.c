@@ -729,7 +729,7 @@ g_network_service_connectable_enumerate (GSocketConnectable *connectable)
   GNetworkServiceAddressEnumerator *srv_enum;
 
   srv_enum = g_object_new (G_TYPE_NETWORK_SERVICE_ADDRESS_ENUMERATOR, NULL);
-  srv_enum->srv = g_object_ref (connectable);
+  srv_enum->srv = g_object_ref (G_NETWORK_SERVICE (connectable));
   srv_enum->resolver = g_resolver_get_default ();
   srv_enum->use_proxy = FALSE;
 

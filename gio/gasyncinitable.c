@@ -457,7 +457,7 @@ g_async_initable_new_finish (GAsyncInitable  *initable,
 			     GError         **error)
 {
   if (g_async_initable_init_finish (initable, res, error))
-    return g_object_ref (initable);
+    return g_object_ref (G_OBJECT (initable));
   else
     return NULL;
 }

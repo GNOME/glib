@@ -375,7 +375,7 @@ g_socket_address_connectable_enumerate (GSocketConnectable *connectable)
   GSocketAddressAddressEnumerator *sockaddr_enum;
 
   sockaddr_enum = g_object_new (G_TYPE_SOCKET_ADDRESS_ADDRESS_ENUMERATOR, NULL);
-  sockaddr_enum->sockaddr = g_object_ref (connectable);
+  sockaddr_enum->sockaddr = g_object_ref (G_SOCKET_ADDRESS (connectable));
 
   return (GSocketAddressEnumerator *)sockaddr_enum;
 }

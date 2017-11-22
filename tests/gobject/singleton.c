@@ -46,7 +46,7 @@ my_singleton_constructor (GType                  type,
                           GObjectConstructParam *construct_properties)
 {
   if (the_one_and_only)
-    return g_object_ref (the_one_and_only);
+    return g_object_ref (G_OBJECT (the_one_and_only));
   else
     return G_OBJECT_CLASS (my_singleton_parent_class)->constructor (type, n_construct_properties, construct_properties);
 }

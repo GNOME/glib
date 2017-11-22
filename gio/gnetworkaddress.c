@@ -1088,7 +1088,7 @@ g_network_address_connectable_enumerate (GSocketConnectable *connectable)
   GNetworkAddressAddressEnumerator *addr_enum;
 
   addr_enum = g_object_new (G_TYPE_NETWORK_ADDRESS_ADDRESS_ENUMERATOR, NULL);
-  addr_enum->addr = g_object_ref (connectable);
+  addr_enum->addr = g_object_ref (G_NETWORK_ADDRESS (connectable));
 
   return (GSocketAddressEnumerator *)addr_enum;
 }
