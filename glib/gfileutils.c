@@ -1111,16 +1111,14 @@ write_to_temp_file (const gchar  *contents,
 
 #ifdef HAVE_FSYNC
   {
-    struct stat statbuf;
-
     errno = 0;
-    /* If the final destination exists and is > 0 bytes, we want to sync the
+    /* We want to sync the
      * newly written file to ensure the data is on disk when we rename over
      * the destination. Otherwise if we get a system crash we can lose both
      * the new and the old file on some filesystems. (I.E. those that don't
      * guarantee the data is written to the disk before the metadata.)
      */
-    if (g_lstat (dest_file, &statbuf) == 0 && statbuf.st_size > 0 && fsync (fd) != 0)
+    if (fsync (fd) != 0)
       {
         int saved_errno = errno;
         set_file_error (err,
@@ -1173,16 +1171,11 @@ write_to_temp_file (const gchar  *contents,
  *   lists, metadata etc. may be lost. If @filename is a symbolic link,
  *   the link itself will be replaced, not the linked file.
  *
- * - On UNIX, if @filename already exists and is non-empty, and if the system
- *   supports it (via a journalling filesystem or equivalent), the fsync()
- *   call (or equivalent) will be used to ensure atomic replacement: @filename
- *   will contain either its old contents or @contents, even in the face of
- *   system power loss, the disk being unsafely removed, etc.
- *
- * - On UNIX, if @filename does not already exist or is empty, there is a
- *   possibility that system power loss etc. after calling this function will
- *   leave @filename empty or full of NUL bytes, depending on the underlying
- *   filesystem.
+ * - On UNIX, if the filesystem is uncleanly unmounted after a successful call
+ *   to this function, it is guaranteed that @filename will contain either its
+ *   old contents, or @contents. In particular, if @filename did not previously
+ *   exist, following a crash it will either not exist or contain its new
+ *   @contents.
  *
  * - On Windows renaming a file will not remove an existing file with the
  *   new name, so on Windows there is a race condition between the existing
