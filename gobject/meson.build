@@ -1,4 +1,4 @@
-gobject_install_headers = files([
+gobject_install_headers = files(
   'gobject-autocleanups.h',
   'glib-types.h',
   'gbinding.h',
@@ -19,11 +19,10 @@ gobject_install_headers = files([
   'gvaluecollector.h',
   'gvaluetypes.h',
   'gobjectnotifyqueue.c', # sic
-])
+)
 install_headers(gobject_install_headers, subdir : 'glib-2.0/gobject')
 
-gobject_c_sources = [
-#  'gobject_probes.d',
+gobject_sources = files(
   'gatomicarray.c',
   'gbinding.c',
   'gboxed.c',
@@ -31,7 +30,6 @@ gobject_c_sources = [
   'genums.c',
   'gmarshal.c',
   'gobject.c',
-  'gobject_trace.h',
   'gparam.c',
   'gparamspecs.c',
   'gsignal.c',
@@ -43,7 +41,7 @@ gobject_c_sources = [
   'gvaluearray.c',
   'gvaluetransform.c',
   'gvaluetypes.c',
-]
+)
 
 if enable_dtrace
   gobject_dtrace_obj = dtrace_obj_gen.process('gobject_probes.d')
@@ -55,7 +53,7 @@ endif
 
 libgobject = shared_library('gobject-2.0',
   gobject_dtrace_obj, gobject_dtrace_hdr,
-  sources : [gobject_c_sources],
+  sources : gobject_sources,
   version : library_version,
   soversion : soversion,
   install : true,

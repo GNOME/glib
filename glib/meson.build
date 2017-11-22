@@ -13,24 +13,24 @@ else
   subdir('gnulib')
 endif
 
-glib_headers = [
+glib_headers = files(
   'glib.h',
   'glib-unix.h',
   'glib-object.h',
-]
+)
 install_headers(glib_headers, subdir : 'glib-2.0')
 
-glib_deprecated_headers = [
+glib_deprecated_headers = files(
   'deprecated/gallocator.h',
   'deprecated/gcache.h',
   'deprecated/gcompletion.h',
   'deprecated/gmain.h',
   'deprecated/grel.h',
   'deprecated/gthread.h',
-]
+)
 install_headers(glib_deprecated_headers, subdir : 'glib-2.0/glib/deprecated')
 
-glib_sub_headers = [
+glib_sub_headers = files(
   'glib-autocleanups.h',
   'galloca.h',
   'garray.h',
@@ -105,18 +105,18 @@ glib_sub_headers = [
   'gversionmacros.h',
   'gwin32.h',
   'gprintf.h',
-]
+)
 install_headers(glib_sub_headers, subdir : 'glib-2.0/glib')
 
-deprecated_sources = [
+deprecated_sources = files(
   'deprecated/gallocator.c',
   'deprecated/gcache.c',
   'deprecated/gcompletion.c',
   'deprecated/grel.c',
   'deprecated/gthread-deprecated.c'
-]
+)
 
-glib_sources = [
+glib_sources = files(
   'garray.c',
   'gasyncqueue.c',
   'gatomic.c',
@@ -194,15 +194,15 @@ glib_sources = [
   'gversion.c',
   'gwakeup.c',
   'gprintf.c',
-]
+)
 
 if host_system == 'windows'
-  thread_src = ['gthread-win32.c']
-  plat_src = ['gwin32.c', 'gspawn-win32.c', 'giowin32.c']
+  glib_sources += files('gthread-win32.c')
+  glib_sources += files('gwin32.c', 'gspawn-win32.c', 'giowin32.c')
   platform_deps = [winsock2, cc.find_library('winmm')]
 else
-  thread_src = ['gthread-posix.c']
-  plat_src = ['glib-unix.c', 'gspawn.c', 'giounix.c']
+  glib_sources += files('gthread-posix.c')
+  glib_sources += files('glib-unix.c', 'gspawn.c', 'giounix.c')
   platform_deps = []
 endif
 
@@ -222,7 +222,7 @@ endif
 
 libglib = shared_library('glib-2.0',
   glib_dtrace_obj, glib_dtrace_hdr,
-  sources : [deprecated_sources, glib_sources, thread_src, plat_src],
+  sources : [deprecated_sources, glib_sources],
   version : library_version,
   soversion : soversion,
   install : true,
