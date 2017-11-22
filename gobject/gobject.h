@@ -508,6 +508,12 @@ GLIB_AVAILABLE_IN_ALL
 void        g_object_remove_weak_pointer      (GObject        *object, 
                                                gpointer       *weak_pointer_location);
 
+#if defined(__GNUC__) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_56
+/* Make reference APIs type safe with macros */
+#define g_object_ref(Obj)      ((typeof(Obj)) (g_object_ref) (Obj))
+#define g_object_ref_sink(Obj) ((typeof(Obj)) (g_object_ref_sink) (Obj))
+#endif
+
 /**
  * GToggleNotify:
  * @data: Callback data passed to g_object_add_toggle_ref()

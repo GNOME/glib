@@ -2980,12 +2980,15 @@ g_object_is_floating (gpointer _object)
  * count unchanged.  If the object is not floating, then this call
  * adds a new normal reference increasing the reference count by one.
  *
+ * Since GLib 2.56, the type of @object will be propagated to the return type
+ * under the same conditions as for g_object_ref().
+ *
  * Since: 2.10
  *
  * Returns: (type GObject.Object) (transfer none): @object
  */
 gpointer
-g_object_ref_sink (gpointer _object)
+(g_object_ref_sink) (gpointer _object)
 {
   GObject *object = _object;
   gboolean was_floating;
@@ -3185,10 +3188,15 @@ g_object_remove_toggle_ref (GObject       *object,
  *
  * Increases the reference count of @object.
  *
+ * Since GLib 2.56, if `GLIB_VERSION_MAX_ALLOWED` is 2.56 or greater, the type
+ * of @object will be propagated to the return type (using the GCC typeof()
+ * extension), so any casting the caller needs to do on the return type must be
+ * explicit.
+ *
  * Returns: (type GObject.Object) (transfer none): the same @object
  */
 gpointer
-g_object_ref (gpointer _object)
+(g_object_ref) (gpointer _object)
 {
   GObject *object = _object;
   gint old_val;
