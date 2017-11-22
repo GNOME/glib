@@ -1173,6 +1173,17 @@ write_to_temp_file (const gchar  *contents,
  *   lists, metadata etc. may be lost. If @filename is a symbolic link,
  *   the link itself will be replaced, not the linked file.
  *
+ * - On UNIX, if @filename already exists and is non-empty, and if the system
+ *   supports it (via a journalling filesystem or equivalent), the fsync()
+ *   call (or equivalent) will be used to ensure atomic replacement: @filename
+ *   will contain either its old contents or @contents, even in the face of
+ *   system power loss, the disk being unsafely removed, etc.
+ *
+ * - On UNIX, if @filename does not already exist or is empty, there is a
+ *   possibility that system power loss etc. after calling this function will
+ *   leave @filename empty or full of NUL bytes, depending on the underlying
+ *   filesystem.
+ *
  * - On Windows renaming a file will not remove an existing file with the
  *   new name, so on Windows there is a race condition between the existing
  *   file being removed and the temporary file being renamed.
