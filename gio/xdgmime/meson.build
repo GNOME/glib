@@ -1,4 +1,4 @@
-xdgmime_sources = [
+xdgmime_sources = files(
   'xdgmime.c',
   'xdgmimealias.c',
   'xdgmimecache.c',
@@ -7,7 +7,7 @@ xdgmime_sources = [
   'xdgmimeint.c',
   'xdgmimemagic.c',
   'xdgmimeparent.c',
-]
+)
 
 xdgmime_lib = static_library('xdgmime',
   sources : xdgmime_sources,

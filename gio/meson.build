@@ -121,7 +121,7 @@ gnetworking_h = configure_file(input : 'gnetworking.h.in',
                                install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
                                configuration : gnetworking_h_conf)
 
-gdbus_headers = files([
+gdbus_headers = files(
   'gdbusauthobserver.h',
   'gcredentials.h',
   'gdbusutils.h',
@@ -144,9 +144,9 @@ gdbus_headers = files([
   'gdbusobjectmanagerclient.h',
   'gdbusobjectmanagerserver.h',
   'gtestdbus.h',
-])
+)
 
-gdbus_sources = [
+gdbus_sources = files(
   'gdbusutils.c',
   'gdbusaddress.c',
   'gdbusauthobserver.c',
@@ -174,7 +174,7 @@ gdbus_sources = [
   'gdbusobjectmanagerclient.c',
   'gdbusobjectmanagerserver.c',
   'gtestdbus.c',
-]
+)
 
 # Generate gdbus-codegen
 subdir('gdbus-2.0/codegen')
@@ -213,13 +213,13 @@ gdbus_daemon_generated = custom_target('gdbus-daemon-generated',
                '--generate-c-code', 'gdbus-daemon-generated',
                '--c-namespace', '_G', '@INPUT@'])
 
-settings_headers = files([
+settings_headers = files(
   'gsettingsbackend.h',
   'gsettingsschema.h',
   'gsettings.h',
-])
+)
 
-settings_sources = [
+settings_sources = files(
   'gvdb/gvdb-reader.c',
   'gdelayedsettingsbackend.c',
   'gkeyfilesettingsbackend.c',
@@ -229,7 +229,7 @@ settings_sources = [
   'gsettingsschema.c',
   'gsettings-mapping.c',
   'gsettings.c',
-]
+)
 
 if host_system == 'windows'
   settings_sources += [ 'gregistrysettingsbackend.c' ]
@@ -240,7 +240,7 @@ endif
 #settings_sources += [ 'gnextstepsettingsbackend.c' ]
 #endif
 
-application_headers = files([
+application_headers = files(
   'gapplication.h',
   'gapplicationcommandline.h',
 
@@ -259,9 +259,9 @@ application_headers = files([
   'gmenuexporter.h',
   'gdbusmenumodel.h',
   'gnotification.h',
-])
+)
 
-application_sources = [
+application_sources = files(
   'gapplication.c',
   'gapplicationcommandline.c',
   'gapplicationimpl-dbus.c',
@@ -282,9 +282,9 @@ application_sources = [
   'gdbusmenumodel.c',
   'gnotification.c',
   'gnotificationbackend.c',
-]
+)
 
-local_sources = [
+local_sources = files(
   'ghttpproxy.c',
   'glocalfile.c',
   'glocalfileenumerator.c',
@@ -298,7 +298,7 @@ local_sources = [
   'gsocks4aproxy.c',
   'gsocks5proxy.c',
   'thumbnail-verify.c',
-]
+)
 
 platform_deps = []
 internal_deps = []
@@ -308,7 +308,7 @@ portal_sources = []
 unix_sources = []
 
 if host_system != 'windows'
-  unix_sources = [
+  unix_sources = files(
     'gfiledescriptorbased.c',
     'gunixconnection.c',
     'gunixcredentialsmessage.c',
@@ -323,19 +323,19 @@ if host_system != 'windows'
     'gunixoutputstream.c',
     'gfdonotificationbackend.c',
     'ggtknotificationbackend.c',
-  ]
+  )
 
-  portal_sources = [
+  portal_sources = [files(
     'gdocumentportal.c',
     'gopenuriportal.c',
     'gnetworkmonitorportal.c',
     'gproxyresolverportal.c',
     'gportalsupport.c',
-    'gportalnotificationbackend.c',
+    'gportalnotificationbackend.c'),
     xdp_dbus_generated
   ]
 
-  gio_unix_include_headers = [
+  gio_unix_include_headers = files(
     'gfiledescriptorbased.h',
     'gunixconnection.h',
     'gunixcredentialsmessage.h',
@@ -345,18 +345,18 @@ if host_system != 'windows'
     'gunixinputstream.h',
     'gunixoutputstream.h',
     'gunixsocketaddress.h',
-  ]
+  )
 
   if glib_have_cocoa
-    contenttype_sources += ['gosxcontenttype.c']
-    appinfo_sources += ['gosxappinfo.c']
+    contenttype_sources += files('gosxcontenttype.c')
+    appinfo_sources += files('gosxappinfo.c')
     if glib_have_os_x_9_or_later
-      unix_sources += ['gcocoanotificationbackend.c']
+      unix_sources += files('gcocoanotificationbackend.c')
     endif
   else
-    contenttype_sources += ['gcontenttype.c']
-    appinfo_sources += ['gdesktopappinfo.c']
-    gio_unix_include_headers += ['gdesktopappinfo.h']
+    contenttype_sources += files('gcontenttype.c')
+    appinfo_sources += files('gdesktopappinfo.c')
+    gio_unix_include_headers += files('gdesktopappinfo.h')
     subdir('xdgmime')
     internal_deps += [xdgmime_lib]
   endif
@@ -364,10 +364,10 @@ if host_system != 'windows'
   install_headers(gio_unix_include_headers, subdir : 'gio-unix-2.0/gio')
 
   if glib_conf.has('HAVE_NETLINK')
-    unix_sources += [
+    unix_sources += files(
       'gnetworkmonitornetlink.c',
       'gnetworkmonitornm.c',
-    ]
+    )
   endif
 endif
 
@@ -379,28 +379,28 @@ gdbus_daemon_sources = [
 
 win32_sources = gdbus_daemon_sources
 if host_system == 'windows'
-  appinfo_sources += ['gwin32appinfo.c']
-  contenttype_sources += ['gcontenttype-win32.c']
+  appinfo_sources += files('gwin32appinfo.c')
+  contenttype_sources += files('gcontenttype-win32.c')
   platform_deps += [cc.find_library('shlwapi'),
                     cc.find_library('dnsapi'),
                     iphlpapi_dep,
                     winsock2]
-  win32_sources += [
+  win32_sources += files(
     'gwin32registrykey.c',
     'gwin32mount.c',
     'gwin32volumemonitor.c',
     'gwin32inputstream.c',
     'gwin32outputstream.c',
-  ]
+  )
 
-  gio_win32_include_headers = [
+  gio_win32_include_headers = files(
     'gwin32inputstream.h',
     'gwin32outputstream.h',
-  ]
+  )
   install_headers(gio_win32_include_headers, subdir : 'gio-win32-2.0/gio')
 endif
 
-gio_sources = [
+gio_sources = files(
   'gappinfo.c',
   'gasynchelper.c',
   'gasyncinitable.c',
@@ -517,7 +517,7 @@ gio_sources = [
   'gzlibdecompressor.c',
   'glistmodel.c',
   'gliststore.c',
-]
+)
 
 gio_sources += appinfo_sources
 gio_sources += contenttype_sources
@@ -549,7 +549,7 @@ gio-2.0.lib: libgio-2.0.la gio.def
   '$(AM_V_GEN) lib.exe -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gio.def -out:$@
 '''
 
-gio_headers = files([
+gio_headers = files(
   'gappinfo.h',
   'gasyncinitable.h',
   'gasyncresult.h',
@@ -655,7 +655,7 @@ gio_headers = files([
   'gzlibdecompressor.h',
   'glistmodel.h',
   'gliststore.h',
-])
+)
 
 gio_headers += application_headers
 gio_headers += settings_headers
