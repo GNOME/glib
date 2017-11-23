@@ -2,16 +2,18 @@ subdir('cmph')
 
 girepo_gthash_lib = static_library('girepository-gthash',
   sources: 'gthash.c',
+  include_directories : configinc,
   c_args: gi_hidden_visibility_cflags,
   dependencies: [
     cmph_dep,
-    gobject_dep,
+    glib_dep,
+    gmodule_dep,
   ],
 )
 
 girepo_gthash_dep = declare_dependency(
   link_with: girepo_gthash_lib,
-  dependencies: gobject_dep,
+  dependencies: [glib_dep, gmodule_dep],
   include_directories: include_directories('.'),
 )
 
@@ -24,6 +26,7 @@ girepo_internals_lib = static_library('girepository-internals',
     'girwriter.c',
   ],
   c_args: gi_hidden_visibility_cflags,
+  include_directories : configinc,
   dependencies: [girepo_gthash_dep, libffi_dep],
 )
 
@@ -125,13 +128,10 @@ install_headers(girepo_headers, subdir: 'gobject-introspection-1.0')
 
 girepo_lib = shared_library('girepository-1.0',
   sources: girepo_sources,
+  include_directories : configinc,
   c_args: gi_hidden_visibility_cflags + ['-DG_IREPOSITORY_COMPILATION'],
-  dependencies: [
-    gio_dep,
-    gmodule_dep,
-    girepo_internals_dep,
-    dependency('gio-2.0'),
-  ],
+  dependencies: [glib_dep, gobject_dep, gmodule_dep,
+                 gio_dep, girepo_internals_dep],
   version: '1.0.0',
   install: true,
 )
@@ -142,7 +142,7 @@ install_data('gdump.c',
 
 girepo_dep = declare_dependency(
   link_with: girepo_lib,
-  dependencies: gio_dep,
+  dependencies: [glib_dep, gobject_dep, gio_dep, gmodule_dep],
   include_directories: include_directories('.'),
 )
 
@@ -154,10 +154,5 @@ test('gthash-test', gthash_test)
 
 if giounix_dep.found()
   executable('gi-dump-types', 'gi-dump-types.c',
-    dependencies: [
-      girepo_dep,
-      gmodule_dep,
-      giounix_dep,
-    ]
-  )
+    dependencies: [girepo_dep, giounix_dep])
 endif
