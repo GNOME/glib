@@ -232,12 +232,12 @@ settings_sources = files(
 )
 
 if host_system == 'windows'
-  settings_sources += [ 'gregistrysettingsbackend.c' ]
+  settings_sources += files('gregistrysettingsbackend.c')
 endif
 
 # FIXME:
 #if OS_COCOA
-#settings_sources += [ 'gnextstepsettingsbackend.c' ]
+#settings_sources += files('gnextstepsettingsbackend.c')
 #endif
 
 application_headers = files(
@@ -306,6 +306,13 @@ appinfo_sources = []
 contenttype_sources = []
 portal_sources = []
 unix_sources = []
+win32_sources = []
+
+# This is also used by tests/gdbus-daemon, so use files() to include the path
+gdbus_daemon_sources = [
+  files('gdbusdaemon.c'),
+  gdbus_daemon_generated,
+]
 
 if host_system != 'windows'
   unix_sources = files(
@@ -369,16 +376,7 @@ if host_system != 'windows'
       'gnetworkmonitornm.c',
     )
   endif
-endif
-
-# This is also used by tests/gdbus-daemon, so use files() to include the path
-gdbus_daemon_sources = [
-  files('gdbusdaemon.c'),
-  gdbus_daemon_generated,
-]
-
-win32_sources = gdbus_daemon_sources
-if host_system == 'windows'
+else
   appinfo_sources += files('gwin32appinfo.c')
   contenttype_sources += files('gcontenttype-win32.c')
   platform_deps += [cc.find_library('shlwapi'),
@@ -521,6 +519,7 @@ gio_sources = files(
 
 gio_sources += appinfo_sources
 gio_sources += contenttype_sources
+gio_sources += gdbus_daemon_sources
 gio_sources += unix_sources
 gio_sources += win32_sources
 gio_sources += application_sources
@@ -748,6 +747,15 @@ libgio_dep = declare_dependency(link_with : libgio,
   dependencies : [gioenumtypes_dep],
   # We sadly need to export configinc here because everyone includes <gio/*.h>
   include_directories : [configinc, gioinc])
+
+if host_system == 'windows'
+  # Hack till https://github.com/mesonbuild/meson/issues/2324 is fixed
+  libgiounix_dep = dependency('', required : false)
+  libgiowin32_dep = libgio_dep
+else
+  libgiowin32_dep = dependency('', required : false)
+  libgiounix_dep = libgio_dep
+endif
 
 # Dependencies used by executables below
 libelf = dependency('libelf', version : '>= 0.8.12', required : false)
