@@ -156,8 +156,11 @@ ih_event_callback (ik_event_t  *event,
                    gboolean     file_event)
 {
   gboolean interesting;
+  GFileMonitorEvent event_flags;
 
   g_assert (!file_event); /* XXX hardlink support */
+
+  event_flags = ih_mask_to_EventFlags (event->mask);
 
   if (event->mask & IN_MOVE)
     {
@@ -187,17 +190,22 @@ ih_event_callback (ik_event_t  *event,
           else
             other = NULL;
 
-          /* this is either an incoming or outgoing move */
-          interesting = g_file_monitor_source_handle_event (sub->user_data, ih_mask_to_EventFlags (event->mask),
+          /* This is either an incoming or outgoing move. Since we checked the
+           * event->mask above, it should have converted to a #GFileMonitorEvent
+           * properly. If not, the assumption we have made about event->mask
+           * only ever having a single bit set (apart from IN_ISDIR) is false.
+           * The kernel documentation is lacking here. */
+          g_assert (event_flags != -1);
+          interesting = g_file_monitor_source_handle_event (sub->user_data, event_flags
                                                             event->name, NULL, other, event->timestamp);
 
           if (other)
             g_object_unref (other);
         }
     }
-  else
+  else if (event_flags != -1)
     /* unpaired event -- no 'other' field */
-    interesting = g_file_monitor_source_handle_event (sub->user_data, ih_mask_to_EventFlags (event->mask),
+    interesting = g_file_monitor_source_handle_event (sub->user_data, event_flags
                                                       event->name, NULL, NULL, event->timestamp);
 
   if (event->mask & IN_CREATE)
