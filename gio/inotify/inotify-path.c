@@ -532,8 +532,9 @@ ip_event_callback (ik_event_t *event)
   GList* dir_list = NULL;
   GList *file_list = NULL;
 
-  /* We can ignore the IGNORED events */
-  if (event->mask & IN_IGNORED)
+  /* We can ignore the IGNORED events. Likewise, if the event queue overflowed,
+   * there is not much we can do to recover. */
+  if (event->mask & (IN_IGNORED | IN_Q_OVERFLOW))
     {
       _ik_event_free (event);
       return TRUE;
