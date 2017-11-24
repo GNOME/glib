@@ -1665,7 +1665,9 @@ g_utf8_validate (const char   *str,
 
 {
   const gchar *p;
-
+  
+  g_return_val_if_fail (str != NULL, FALSE);  
+  
   if (max_len < 0)
     p = fast_validate (str);
   else
