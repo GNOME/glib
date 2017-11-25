@@ -860,7 +860,7 @@ b_method_to_call (B *obj, gint some_param)
 
   <para>
     The first step is to get the header right. This interface
-    defines two methods:
+    defines three methods:
 <informalexample><programlisting>
 /*
  * Copyright/Licensing information.
