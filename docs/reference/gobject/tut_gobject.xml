@@ -105,9 +105,9 @@ ViewerFile *file = g_object_new (VIEWER_TYPE_FILE, NULL);
       This will make sure the class structure of this new object is
       correctly initialized. Here, <function>viewer_file_class_init</function>
       is expected to override the object's class methods and setup the
-      class' own methods. In the example above, the constructor method is
-      the only overridden method: it is set to
-      <function>viewer_file_constructor</function>.
+      class' own methods. In the example above, the <literal>constructed</literal>
+      method is the only overridden method: it is set to
+      <function>viewer_file_constructed</function>.
     </para>
 
     <para>
