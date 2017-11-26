@@ -36,6 +36,7 @@
 #include <string.h>
 #include <wchar.h>
 #include <errno.h>
+#include <fcntl.h>
 
 #define STRICT			/* Strict typing, please */
 #include <windows.h>
@@ -68,6 +69,7 @@
 
 #include "glib.h"
 #include "gthreadprivate.h"
+#include "glib-init.h"
 
 #ifdef G_WITH_CYGWIN
 #include <sys/cygwin.h>
@@ -801,6 +803,185 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
                                                         dll_name,
                                                         subdir);
 G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
+#endif
+
+#ifdef G_OS_WIN32
+
+void
+g_console_win32_init (void)
+{
+  const gchar *attach_envvar;
+
+  /* Note: it's not a very good practice to use DllMain()
+   * to call any functions not in Kernel32.dll.
+   * The following only works if there are no weird
+   * circular DLL dependencies that could cause glib DllMain()
+   * to be called before CRT DllMain().
+   */
+
+  if (g_strcmp0 (g_getenv ("G_WIN32_ALLOC_CONSOLE"), "1") == 0)
+    AllocConsole (); /* no error handling, fails if console already exists */
+
+  attach_envvar = g_getenv ("G_WIN32_ATTACH_CONSOLE");
+
+  if (attach_envvar)
+    {
+      gint       i;
+#define NUM_STREAMS 3
+      gboolean   streams_todo[NUM_STREAMS] = { FALSE, FALSE, FALSE }; /* IN, OUT, ERR */
+      gchar    **attach_strs = g_strsplit (attach_envvar, ",", -1);
+
+      /* Re-use parent console, if we don't have our own */
+      if (GetConsoleWindow () == NULL)
+         AttachConsole (ATTACH_PARENT_PROCESS);
+
+      for (i = 0; attach_strs[i]; i++)
+        {
+          if (g_strcmp0 (attach_strs[i], "stdout") == 0)
+            streams_todo[1] = TRUE;
+          else if (g_strcmp0 (attach_strs[i], "stderr") == 0)
+            streams_todo[2] = TRUE;
+          else if (g_strcmp0 (attach_strs[i], "stdin") == 0)
+            streams_todo[0] = TRUE;
+          else
+            g_warning ("Unrecognized stream name %s", attach_strs[i]);
+        }
+
+      for (i = 0; i < NUM_STREAMS; i++)
+        {
+          FILE        *stream = NULL;
+          const gchar *stream_name;
+          int          old_fd;
+          int          backup_fd;
+          int          new_fd;
+          int          flags;
+          int          preferred_fd = i;
+          HANDLE       std_handle;
+          errno_t      error = 0;
+          const char  *mode = NULL;
+
+          if (!streams_todo[i])
+            continue;
+
+          switch (i)
+            {
+            case 1:
+              stream = stdout;
+              stream_name = "stdout";
+              std_handle = GetStdHandle (STD_OUTPUT_HANDLE);
+              flags = 0;
+              mode = "wb";
+              break;
+            case 2:
+              stream = stderr;
+              stream_name = "stderr";
+              std_handle = GetStdHandle (STD_ERROR_HANDLE);
+              flags = 0;
+              mode = "wb";
+              break;
+            case 0:
+              stream = stdin;
+              stream_name = "stdin";
+              std_handle = GetStdHandle (STD_INPUT_HANDLE);
+              flags = _O_RDONLY;
+              mode = "rb";
+              break;
+            }
+
+          if (ferror (stream) != 0)
+            {
+              g_warning ("Stream %s is in error state", stream_name);
+              continue;
+            }
+
+          old_fd = fileno (stream);
+
+          if (old_fd < 0)
+            {
+              if (freopen ("NUL", mode, stream) == NULL)
+                {
+                  error = errno;
+                  g_warning ("Failed to redirect %s: %d - %s",
+                             stream_name,
+                             error,
+                             strerror (error));
+                  continue;
+                }
+
+              old_fd = fileno (stream);
+
+              if (old_fd < 0)
+                {
+                  g_warning ("Stream %s does not have a valid fd", stream_name);
+                  continue;
+                }
+            }
+
+          if (std_handle == INVALID_HANDLE_VALUE)
+            {
+              DWORD gle = GetLastError ();
+              g_warning ("Standard handle for %s can't be obtained: %lu",
+                         stream_name, gle);
+              continue;
+            }
+
+          new_fd = _open_osfhandle ((intptr_t) std_handle, flags);
+
+          if (new_fd < 0)
+            {
+              g_warning ("Failed to create new fd for stream %s", stream_name);
+              continue;
+            }
+
+          backup_fd = dup (old_fd);
+
+          if (backup_fd < 0)
+            g_warning ("Failed to backup old fd %d for stream %s", old_fd, stream_name);
+
+          errno = 0;
+
+          if (dup2 (new_fd, old_fd) == 0)
+            {
+              if (backup_fd >= 0)
+                close (backup_fd);
+
+              /* Sadly, there's no way to check that preferred_fd
+               * is currently valid, so we can't back it up.
+               * Doing operations on invalid FDs invokes invalid
+               * parameter handler, which is bad for us.
+               */
+              if (old_fd != preferred_fd)
+                if (dup2 (new_fd, preferred_fd) != 0)
+                  g_warning ("Failed to dup fd %d into fd %d", new_fd, preferred_fd);
+
+              close (new_fd);
+
+              continue;
+            }
+
+          error = errno;
+          g_warning ("Failed to substitute fd %d for stream %s: %d : %s",
+                     old_fd, stream_name, error, strerror (error));
+
+          close (new_fd);
+
+          if (backup_fd < 0)
+            continue;
+
+          errno = 0;
+
+          if (dup2 (backup_fd, old_fd) != 0)
+            {
+              error = errno;
+              g_warning ("Failed to restore fd %d for stream %s: %d : %s",
+                         old_fd, stream_name, error, strerror (error));
+            }
+
+          close (backup_fd);
+        }
+    }
 }
 
 #endif

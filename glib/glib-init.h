@@ -34,6 +34,7 @@ void g_quark_init (void);
 void g_thread_win32_process_detach (void);
 void g_thread_win32_thread_detach (void);
 void g_thread_win32_init (void);
+void g_console_win32_init (void);
 void g_clock_win32_init (void);
 extern HMODULE glib_dll;
 #endif
