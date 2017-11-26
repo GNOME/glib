@@ -292,6 +292,8 @@ DllMain (HINSTANCE hinstDLL,
       g_thread_win32_init ();
 #endif
       glib_init ();
+      /* must go after glib_init */
+      g_console_win32_init ();
       break;
 
     case DLL_THREAD_DETACH:

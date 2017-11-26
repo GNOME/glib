@@ -36,6 +36,7 @@
 #include <string.h>
 #include <wchar.h>
 #include <errno.h>
+#include <fcntl.h>
 
 #define STRICT			/* Strict typing, please */
 #include <windows.h>
@@ -68,6 +69,7 @@
 
 #include "glib.h"
 #include "gthreadprivate.h"
+#include "glib-init.h"
 
 #ifdef G_WITH_CYGWIN
 #include <sys/cygwin.h>
@@ -801,6 +803,219 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
                                                         dll_name,
                                                         subdir);
 G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
+#endif
+
+#ifdef G_OS_WIN32
+
+/* This function looks up two environment
+ * variables, G_WIN32_ALLOC_CONSOLE and G_WIN32_ATTACH_CONSOLE.
+ * G_WIN32_ALLOC_CONSOLE, if set to 1, makes the process
+ * call AllocConsole(). This is useful for binaries that
+ * are compiled to run without automatically-allocated console
+ * (like most GUI applications).
+ * G_WIN32_ATTACH_CONSOLE, if set to a comma-separated list
+ * of one or more strings "stdout", "stdin" and "stderr",
+ * makes the process reopen the corresponding standard streams
+ * to ensure that they are attached to the files that
+ * GetStdHandle() returns, which, hopefully, would be
+ * either a file handle or a console handle.
+ *
+ * This function is called automatically when glib DLL is
+ * attached to a process, from DllMain().
+ */
+void
+g_console_win32_init (void)
+{
+  struct
+    {
+      gboolean     redirect;
+      FILE        *stream;
+      const gchar *stream_name;
+      DWORD        std_handle_type;
+      int          flags;
+      const gchar *mode;
+    }
+  streams[] =
+    {
+      { FALSE, stdin, "stdin", STD_INPUT_HANDLE, _O_RDONLY, "rb" },
+      { FALSE, stdout, "stdout", STD_OUTPUT_HANDLE, 0, "wb" },
+      { FALSE, stderr, "stderr", STD_ERROR_HANDLE, 0, "wb" },
+    };
+
+  const gchar  *attach_envvar;
+  guint         i;
+  gchar       **attach_strs;
+
+  /* Note: it's not a very good practice to use DllMain()
+   * to call any functions not in Kernel32.dll.
+   * The following only works if there are no weird
+   * circular DLL dependencies that could cause glib DllMain()
+   * to be called before CRT DllMain().
+   */
+
+  if (g_strcmp0 (g_getenv ("G_WIN32_ALLOC_CONSOLE"), "1") == 0)
+    AllocConsole (); /* no error handling, fails if console already exists */
+
+  attach_envvar = g_getenv ("G_WIN32_ATTACH_CONSOLE");
+
+  if (attach_envvar == NULL)
+    return;
+
+  /* Re-use parent console, if we don't have our own.
+   * If we do, it will fail, so just ignore the error.
+   */
+  AttachConsole (ATTACH_PARENT_PROCESS);
+
+  attach_strs = g_strsplit (attach_envvar, ",", -1);
+
+  for (i = 0; attach_strs[i]; i++)
+    {
+      if (g_strcmp0 (attach_strs[i], "stdout") == 0)
+        streams[1].redirect = TRUE;
+      else if (g_strcmp0 (attach_strs[i], "stderr") == 0)
+        streams[2].redirect = TRUE;
+      else if (g_strcmp0 (attach_strs[i], "stdin") == 0)
+        streams[0].redirect = TRUE;
+      else
+        g_warning ("Unrecognized stream name %s", attach_strs[i]);
+    }
+
+  g_strfreev (attach_strs);
+
+  for (i = 0; i < G_N_ELEMENTS (streams); i++)
+    {
+      int          old_fd;
+      int          backup_fd;
+      int          new_fd;
+      int          preferred_fd = i;
+      HANDLE       std_handle;
+      errno_t      errsv = 0;
+
+      if (!streams[i].redirect)
+        continue;
+
+      if (ferror (streams[i].stream) != 0)
+        {
+          g_warning ("Stream %s is in error state", streams[i].stream_name);
+          continue;
+        }
+
+      std_handle = GetStdHandle (streams[i].std_handle_type);
+
+      if (std_handle == INVALID_HANDLE_VALUE)
+        {
+          DWORD gle = GetLastError ();
+          g_warning ("Standard handle for %s can't be obtained: %lu",
+                     streams[i].stream_name, gle);
+          continue;
+        }
+
+      old_fd = fileno (streams[i].stream);
+
+      /* We need the stream object to be associated with
+       * any valid integer fd for the code to work.
+       * If it isn't, reopen it with NUL (/dev/null) to
+       * ensure that it is.
+       */
+      if (old_fd < 0)
+        {
+          if (freopen ("NUL", streams[i].mode, streams[i].stream) == NULL)
+            {
+              errsv = errno;
+              g_warning ("Failed to redirect %s: %d - %s",
+                         streams[i].stream_name,
+                         errsv,
+                         strerror (errsv));
+              continue;
+            }
+
+          old_fd = fileno (streams[i].stream);
+
+          if (old_fd < 0)
+            {
+              g_warning ("Stream %s does not have a valid fd",
+                         streams[i].stream_name);
+              continue;
+            }
+        }
+
+      new_fd = _open_osfhandle ((intptr_t) std_handle, streams[i].flags);
+
+      if (new_fd < 0)
+        {
+          g_warning ("Failed to create new fd for stream %s",
+                     streams[i].stream_name);
+          continue;
+        }
+
+      backup_fd = dup (old_fd);
+
+      if (backup_fd < 0)
+        g_warning ("Failed to backup old fd %d for stream %s",
+                   old_fd, streams[i].stream_name);
+
+      errno = 0;
+
+      /* Force old_fd to be associated with the same file
+       * as new_fd, i.e with the standard handle we need
+       * (or, rather, with the same kernel object; handle
+       * value will be different, but the kernel object
+       * won't be).
+       */
+      /* NOTE: MSDN claims that _dup2() returns 0 on success and -1 on error,
+       * POSIX claims that dup2() reurns new FD on success and -1 on error.
+       * The "< 0" check satisfies the error condition for either implementation.
+       */
+      if (_dup2 (new_fd, old_fd) < 0)
+        {
+          errsv = errno;
+          g_warning ("Failed to substitute fd %d for stream %s: %d : %s",
+                     old_fd, streams[i].stream_name, errsv, strerror (errsv));
+
+          _close (new_fd);
+
+          if (backup_fd < 0)
+            continue;
+
+          errno = 0;
+
+          /* Try to restore old_fd back to its previous
+           * handle, in case the _dup2() call above succeeded partially.
+           */
+          if (_dup2 (backup_fd, old_fd) < 0)
+            {
+              errsv = errno;
+              g_warning ("Failed to restore fd %d for stream %s: %d : %s",
+                         old_fd, streams[i].stream_name, errsv, strerror (errsv));
+            }
+
+          _close (backup_fd);
+
+          continue;
+        }
+
+      /* Success, drop the backup */
+      if (backup_fd >= 0)
+        _close (backup_fd);
+
+      /* Sadly, there's no way to check that preferred_fd
+       * is currently valid, so we can't back it up.
+       * Doing operations on invalid FDs invokes invalid
+       * parameter handler, which is bad for us.
+       */
+      if (old_fd != preferred_fd)
+        /* This extra code will also try to ensure that
+         * the expected file descriptors 0, 1 and 2 are
+         * associated with the appropriate standard
+         * handles.
+         */
+        if (_dup2 (new_fd, preferred_fd) < 0)
+          g_warning ("Failed to dup fd %d into fd %d", new_fd, preferred_fd);
+
+      _close (new_fd);
+    }
 }
 
 #endif
