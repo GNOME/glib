@@ -41,6 +41,10 @@
 
 #include <string.h>
 
+#ifdef G_OS_WIN32
+#include <Windows.h>
+#endif
+
 /**
  * SECTION:gapplication
  * @title: GApplication
