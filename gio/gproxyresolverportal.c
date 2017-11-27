@@ -42,9 +42,15 @@ G_DEFINE_TYPE_WITH_CODE (GProxyResolverPortal, g_proxy_resolver_portal, G_TYPE_O
                                                          "portal",
                                                          90))
 
-static void
-g_proxy_resolver_portal_init (GProxyResolverPortal *resolver)
+static gboolean
+ensure_resolver_proxy (GProxyResolverPortal *resolver)
 {
+  if (resolver->resolver)
+    return TRUE;
+
+  if (!glib_should_use_portal ())
+    return FALSE;
+
   resolver->resolver = gxdp_proxy_resolver_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
                                                                    G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START,
                                                                    "org.freedesktop.portal.Desktop",
@@ -53,6 +59,13 @@ g_proxy_resolver_portal_init (GProxyResolverPortal *resolver)
                                                                    NULL);
 
   resolver->network_available = glib_network_available_in_sandbox ();
+
+  return resolver->resolver != NULL;
+}
+
+static void
+g_proxy_resolver_portal_init (GProxyResolverPortal *resolver)
+{
 }
 
 static gboolean
@@ -62,7 +75,7 @@ g_proxy_resolver_portal_is_supported (GProxyResolver *object)
   char *name_owner;
   gboolean has_portal;
 
-  if (!glib_should_use_portal () || !resolver->resolver)
+  if (!ensure_resolver_proxy (resolver))
     return FALSE;
 
   name_owner = g_dbus_proxy_get_name_owner (G_DBUS_PROXY (resolver->resolver));
@@ -82,6 +95,9 @@ g_proxy_resolver_portal_lookup (GProxyResolver *proxy_resolver,
 {
   GProxyResolverPortal *resolver = G_PROXY_RESOLVER_PORTAL (proxy_resolver);
   char **proxy = NULL;
+
+  ensure_resolver_proxy (resolver);
+  g_assert (resolver->resolver);
 
   if (!gxdp_proxy_resolver_call_lookup_sync (resolver->resolver,
                                              uri,
@@ -128,6 +144,9 @@ g_proxy_resolver_portal_lookup_async (GProxyResolver      *proxy_resolver,
 {
   GProxyResolverPortal *resolver = G_PROXY_RESOLVER_PORTAL (proxy_resolver);
   GTask *task;
+
+  ensure_resolver_proxy (resolver);
+  g_assert (resolver->resolver);
 
   task = g_task_new (proxy_resolver, cancellable, callback, user_data);
   gxdp_proxy_resolver_call_lookup (resolver->resolver,
