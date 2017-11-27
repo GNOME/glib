@@ -2494,7 +2494,7 @@ prepend_terminal_to_vector (int    *argc,
       if (check == NULL)
         {
           check = g_strdup ("xterm");
-          g_warning ("couldn't find a terminal, falling back to xterm");
+          g_debug ("Couldn’t find a terminal: falling back to xterm");
         }
       term_argv[0] = check;
       term_argv[1] = g_strdup ("-e");
