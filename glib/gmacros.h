@@ -37,11 +37,14 @@
  */
 #include <stddef.h>
 
+#ifdef __GNUC__
 #define G_GNUC_CHECK_VERSION(major, minor) \
-    (defined(__GNUC__) && \
-     ((__GNUC__ > (major)) || \
-      ((__GNUC__ == (major)) && \
-       (__GNUC_MINOR__ >= (minor)))))
+    ((__GNUC__ > (major)) || \
+     ((__GNUC__ == (major)) && \
+      (__GNUC_MINOR__ >= (minor))))
+#else
+#define G_GNUC_CHECK_VERSION(major, minor) 0
+#endif
 
 /* Here we provide G_GNUC_EXTENSION as an alias for __extension__,
  * where this is valid. This allows for warningless compilation of
