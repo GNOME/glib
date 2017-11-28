@@ -87,8 +87,8 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     the @timeout_ values returned which were >= 0.  Since 2.36 this may
  *     be %NULL, in which case the effect is as if the function always returns
  *     %FALSE with a timeout of -1.  If @prepare returns a
- *     timeout and the source also has a 'ready time' set then the
- *     nearer of the two will be used.
+ *     timeout and the source also has a ready time set, then the
+ *     lower of the two will be used.
  * @check: Called after all the file descriptors are polled. The source
  *     should return %TRUE if it is ready to be dispatched. Note that some
  *     time may have passed since the previous prepare function was called,
@@ -96,17 +96,17 @@ typedef struct _GSourceCallbackFuncs    GSourceCallbackFuncs;
  *     be %NULL, in which case the effect is as if the function always returns
  *     %FALSE.
  * @dispatch: Called to dispatch the event source, after it has returned
- *     %TRUE in either its @prepare or its @check function. The @dispatch
- *     function is passed in a callback function and data. The callback
- *     function may be %NULL if the source was never connected to a callback
- *     using g_source_set_callback(). The @dispatch function should call the
- *     callback function with @user_data and whatever additional parameters
- *     are needed for this type of event source. The return value of the
- *     @dispatch function should be #G_SOURCE_REMOVE if the source should be
- *     removed or #G_SOURCE_CONTINUE to keep it.
+ *     %TRUE in either its @prepare or its @check function, or if a ready time
+ *     has been reached. The @dispatch function receives a callback function and
+ *     user data. The callback function may be %NULL if the source was never
+ *     connected to a callback using g_source_set_callback(). The @dispatch
+ *     function should call the callback function with @user_data and whatever
+ *     additional parameters are needed for this type of event source. The
+ *     return value of the @dispatch function should be #G_SOURCE_REMOVE if the
+ *     source should be removed or #G_SOURCE_CONTINUE to keep it.
  * @finalize: Called when the source is finalized. At this point, the source
  *     will have been destroyed, had its callback cleared, and have been removed
- *     from its #GMainContext, but it will still have its final reference count;
+ *     from its #GMainContext, but it will still have its final reference count,
  *     so methods can be called on it from within this function.
  *
  * The `GSourceFuncs` struct contains a table of
