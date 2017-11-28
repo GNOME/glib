@@ -196,7 +196,7 @@ ih_event_callback (ik_event_t  *event,
            * only ever having a single bit set (apart from IN_ISDIR) is false.
            * The kernel documentation is lacking here. */
           g_assert (event_flags != -1);
-          interesting = g_file_monitor_source_handle_event (sub->user_data, event_flags
+          interesting = g_file_monitor_source_handle_event (sub->user_data, event_flags,
                                                             event->name, NULL, other, event->timestamp);
 
           if (other)
@@ -205,7 +205,7 @@ ih_event_callback (ik_event_t  *event,
     }
   else if (event_flags != -1)
     /* unpaired event -- no 'other' field */
-    interesting = g_file_monitor_source_handle_event (sub->user_data, event_flags
+    interesting = g_file_monitor_source_handle_event (sub->user_data, event_flags,
                                                       event->name, NULL, NULL, event->timestamp);
 
   if (event->mask & IN_CREATE)
