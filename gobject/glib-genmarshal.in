@@ -1034,19 +1034,20 @@ if __name__ == '__main__':
             elif args.body:
                 if args.verbose:
                     print_info('Generating definition for {}'.format(line.strip()))
-                if compatibility_mode:
-                    generate_std_alias = False
-                    if args.stdinc:
-                        std_marshaller = generate_marshaller_name(STD_PREFIX, retval, params)
-                        if std_marshaller in GOBJECT_MARSHALLERS:
-                            if args.verbose:
-                                print_info('Skipping default marshaller {}'.format(line.strip()))
-                            generate_std_alias = True
+                generate_std_alias = False
+                if args.stdinc:
+                    std_marshaller = generate_marshaller_name(STD_PREFIX, retval, params)
+                    if std_marshaller in GOBJECT_MARSHALLERS:
+                        if args.verbose:
+                            print_info('Skipping default marshaller {}'.format(line.strip()))
+                        generate_std_alias = True
                 marshaller = generate_marshaller_name(args.prefix, retval, params)
-                if compatibility_mode and generate_std_alias:
-                    generate_marshaller_alias(args.output, marshaller, std_marshaller,
-                                              source_location=location,
-                                              include_va=args.valist_marshallers)
+                if generate_std_alias:
+                    # We need to generate the alias if we are in compatibility mode
+                    if compatibility_mode:
+                        generate_marshaller_alias(args.output, marshaller, std_marshaller,
+                                                  source_location=location,
+                                                  include_va=args.valist_marshallers)
                 else:
                     generate_marshallers_body(args.output, retval, params,
                                               prefix=args.prefix,
