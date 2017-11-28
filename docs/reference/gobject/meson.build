@@ -1,4 +1,4 @@
-if get_option('with-docs') != 'no'
+if get_option('gtk_doc')
   subdir('xml')
 
   ignore_headers = [
@@ -109,7 +109,7 @@ if get_option('with-docs') != 'no'
   )
 endif
 
-if get_option('with-man') != 'no' and xsltproc.found()
+if get_option('man')
   manpages = ['glib-mkenums', 'glib-genmarshal', 'gobject-query']
   foreach page : manpages
     custom_target(page + '-man',

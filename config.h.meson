@@ -352,9 +352,6 @@
 /* Define to 1 if libselinux is available */
 #mesondefine HAVE_SELINUX
 
-/* Define to 1 if you have the <selinux/selinux.h> header file. */
-#mesondefine HAVE_SELINUX_SELINUX_H
-
 /* Define to 1 if you have the `sendmmsg' function. */
 #mesondefine HAVE_SENDMMSG
 

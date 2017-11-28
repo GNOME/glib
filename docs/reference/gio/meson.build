@@ -1,4 +1,4 @@
-if get_option('with-docs') != 'no'
+if get_option('gtk_doc')
   subdir('xml')
 
   ignore_headers = [
@@ -205,7 +205,7 @@ if get_option('with-docs') != 'no'
 endif
 
 
-if get_option('with-man') != 'no' and xsltproc.found()
+if get_option('man')
   manpages = ['gapplication', 'gio-querymodules', 'glib-compile-schemas',
               'glib-compile-resources', 'gsettings', 'gresource', 'gdbus',
               'gio', 'gdbus-codegen']

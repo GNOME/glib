@@ -1,4 +1,4 @@
-if get_option('with-docs') != 'no'
+if get_option('gtk_doc')
   subdir('xml')
 
   ignore_headers = [
@@ -145,7 +145,7 @@ if get_option('with-docs') != 'no'
                install: true)
 endif
 
-if get_option('with-man') != 'no' and xsltproc.found()
+if get_option('man')
   manpages = ['glib-gettextize', 'gtester', 'gtester-report']
   foreach page : manpages
     custom_target(page + '-man',

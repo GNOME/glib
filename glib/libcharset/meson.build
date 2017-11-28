@@ -1,4 +1,4 @@
-charsetalias_dir = get_option('charsetalias-dir')
+charsetalias_dir = get_option('charsetalias_dir')
 if charsetalias_dir == ''
   charsetalias_dir = get_option('libdir')
 endif

@@ -733,10 +733,9 @@ libgio = shared_library('gio-2.0',
   link_with : internal_deps,
   #libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS)',
   #  '$(gio_win32_res_ldflag)',
-  #$(SELINUX_LIBS)
-  #$(XATTR_LIBS)
   dependencies : [libintl, libz_dep, libdl_dep, libmount_dep, libglib_dep,
-                  libgobject_dep, libgmodule_dep] + platform_deps + network_libs,
+                  libgobject_dep, libgmodule_dep, selinux_dep, xattr_dep,
+                  platform_deps, network_libs],
   c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
