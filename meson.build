@@ -1576,7 +1576,7 @@ enable_systemtap = false
 if want_systemtap and enable_dtrace
   tapset_install_dir = get_option('tapset-install-dir')
   if tapset_install_dir == ''
-    tapset_install_dir = join_paths(get_option('datadir'), 'systemtap/tapset')
+    tapset_install_dir = join_paths(get_option('datadir'), 'systemtap/tapset', host_machine.cpu_family())
   endif
   stp_cdata = configuration_data()
   stp_cdata.set('ABS_GLIB_RUNTIME_LIBDIR', glib_libdir)
