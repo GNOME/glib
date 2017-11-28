@@ -731,12 +731,6 @@ static void     gtest_default_log_handler       (const gchar    *log_domain,
                                                  gpointer        unused_data);
 
 
-typedef enum {
-  G_TEST_RUN_SUCCESS,
-  G_TEST_RUN_SKIPPED,
-  G_TEST_RUN_FAILURE,
-  G_TEST_RUN_INCOMPLETE
-} GTestResult;
 static const char * const g_test_result_names[] = {
   "OK",
   "SKIP",

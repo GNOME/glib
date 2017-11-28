@@ -355,6 +355,13 @@ GLIB_VAR const GTestConfig * const g_test_config_vars;
 
 /* internal logging API */
 typedef enum {
+  G_TEST_RUN_SUCCESS,
+  G_TEST_RUN_SKIPPED,
+  G_TEST_RUN_FAILURE,
+  G_TEST_RUN_INCOMPLETE
+} GTestResult;
+
+typedef enum {
   G_TEST_LOG_NONE,
   G_TEST_LOG_ERROR,             /* s:msg */
   G_TEST_LOG_START_BINARY,      /* s:binaryname s:seed */

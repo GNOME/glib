@@ -102,21 +102,37 @@ testcase_close (long double duration,
                 gint        exit_status,
                 guint       n_forks)
 {
+  gboolean success;
+
   g_return_if_fail (testcase_open > 0);
   test_log_printfe ("%s<duration>%.6Lf</duration>\n", sindent (log_indent), duration);
+  success = exit_status == G_TEST_RUN_SUCCESS || exit_status == G_TEST_RUN_SKIPPED;
   test_log_printfe ("%s<status exit-status=\"%d\" n-forks=\"%d\" result=\"%s\"/>\n",
                     sindent (log_indent), exit_status, n_forks,
-                    exit_status ? "failed" : "success");
+                    success ? "failed" : "success");
   log_indent -= 2;
   test_log_printfe ("%s</testcase>\n", sindent (log_indent));
   testcase_open--;
   if (gtester_verbose)
-    g_print ("%s\n", exit_status ? "FAIL" : "OK");
-  if (exit_status && subtest_last_seed)
+    {
+      switch (exit_status)
+        {
+        case G_TEST_RUN_SUCCESS:
+          g_print ("OK\n");
+          break;
+        case G_TEST_RUN_SKIPPED:
+          g_print ("SKIP\n");
+          break;
+        default:
+          g_print ("FAIL\n");
+          break;
+        }
+    }
+  if (!success && subtest_last_seed)
     g_print ("GTester: last random seed: %s\n", subtest_last_seed);
-  if (exit_status)
+  if (!success)
     testcase_fail_count += 1;
-  if (subtest_mode_fatal && exit_status)
+  if (subtest_mode_fatal && !success)
     terminate();
 }
 
