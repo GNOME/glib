@@ -258,7 +258,7 @@ g_source_set_closure (GSource  *source,
       source->source_funcs != &g_timeout_funcs &&
       source->source_funcs != &g_idle_funcs)
     {
-      g_critical (G_STRLOC ": closure can not be set on closure without GSourceFuncs::closure_callback\n");
+      g_critical (G_STRLOC ": closure cannot be set on GSource without GSourceFuncs::closure_callback\n");
       return;
     }
 
