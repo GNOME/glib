@@ -52,8 +52,8 @@
  * to a function and maybe a data argument, and the marshaller
  * converts between #GValue and native C types. The GObject
  * library provides the #GCClosure type for this purpose. Bindings for
- * other languages need marshallers which convert between #GValue<!--
- * -->s and suitable representations in the runtime of the language in
+ * other languages need marshallers which convert between #GValues
+ * and suitable representations in the runtime of the language in
  * order to use functions written in that languages as callbacks.
  *
  * Within GObject, closures play an important role in the

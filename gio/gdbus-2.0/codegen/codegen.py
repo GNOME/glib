@@ -993,7 +993,7 @@ class CodeGenerator:
             self.c.write(self.docbook_gen.expand(
                     '/**\n'
                     ' * %s_override_properties:\n'
-                    ' * @klass: The class structure for a #GObject<!-- -->-derived class.\n'
+                    ' * @klass: The class structure for a #GObject derived class.\n'
                     ' * @property_id_begin: The property id to assign to the first overridden property.\n'
                     ' *\n'
                     ' * Overrides all #GObject properties in the #%s interface for a concrete class.\n'
@@ -3153,9 +3153,9 @@ class CodeGenerator:
                 ' * @interface_name: (nullable): Interface name of the remote object or %%NULL to get the object proxy #GType.\n'
                 ' * @user_data: User data (unused).\n'
                 ' *\n'
-                ' * A #GDBusProxyTypeFunc that maps @interface_name to the generated #GDBusObjectProxy<!-- -->- and #GDBusProxy<!-- -->-derived types.\n'
+                ' * A #GDBusProxyTypeFunc that maps @interface_name to the generated #GDBusObjectProxy derived and #GDBusProxy derived types.\n'
                 ' *\n'
-                ' * Returns: A #GDBusProxy<!-- -->-derived #GType if @interface_name is not %%NULL, otherwise the #GType for #%sObjectProxy.\n'
+                ' * Returns: A #GDBusProxy derived #GType if @interface_name is not %%NULL, otherwise the #GType for #%sObjectProxy.\n'
                 %(self.ns_lower, self.namespace), False))
         self.c.write(' */\n')
         self.c.write('GType\n'
