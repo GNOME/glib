@@ -441,6 +441,7 @@ gio_sources = files(
   'ginputstream.c',
   'gioerror.c',
   'giomodule.c',
+  'giomodule-priv.c',
   'gioscheduler.c',
   'giostream.c',
   'gloadableicon.c',
@@ -803,7 +804,7 @@ executable('gresource', 'gresource-tool.c',
   link_args : noseh_link_args,
   dependencies : [libelf, libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
-executable('gio-querymodules', 'gio-querymodules.c',
+executable('gio-querymodules', 'gio-querymodules.c', 'giomodule-priv.c',
   install : true,
   c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
   # intl.lib is not compatible with SAFESEH

@@ -41,6 +41,9 @@ GType    _g_io_module_get_default_type (const gchar *extension_point,
 void *_g_io_win32_get_module (void);
 #endif
 
+gchar *_g_io_module_extract_name (const char *filename);
+
+
 G_END_DECLS
 
 #endif /* __G_IO_MODULE_PRIV_H__ */

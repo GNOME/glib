@@ -112,6 +112,14 @@ GTypeClass*        g_io_extension_ref_class                   (GIOExtension     
  * This function is run after the module has been loaded into GIO,
  * to initialize the module. Typically, this function will call
  * g_io_extension_point_implement().
+ *
+ * Since 2.56, this function should be named `g_io_<modulename>_load`, where
+ * `modulename` is the plugin’s filename with the `lib` or `libgio` prefix and
+ * everything after the first dot removed, and with `-` replaced with `_`
+ * throughout. For example, `libgiognutls-helper.so` becomes `gnutls_helper`.
+ * Using the new symbol names avoids name clashes when building modules
+ * statically. The old symbol names continue to be supported, but cannot be used
+ * for static builds.
  **/
 GLIB_AVAILABLE_IN_ALL
 void   g_io_module_load   (GIOModule *module);
@@ -124,6 +132,14 @@ void   g_io_module_load   (GIOModule *module);
  *
  * This function is run when the module is being unloaded from GIO,
  * to finalize the module.
+ *
+ * Since 2.56, this function should be named `g_io_<modulename>_unload`, where
+ * `modulename` is the plugin’s filename with the `lib` or `libgio` prefix and
+ * everything after the first dot removed, and with `-` replaced with `_`
+ * throughout. For example, `libgiognutls-helper.so` becomes `gnutls_helper`.
+ * Using the new symbol names avoids name clashes when building modules
+ * statically. The old symbol names continue to be supported, but cannot be used
+ * for static builds.
  **/
 GLIB_AVAILABLE_IN_ALL
 void   g_io_module_unload (GIOModule *module);
@@ -154,6 +170,14 @@ void   g_io_module_unload (GIOModule *module);
  * When installing a module that implements g_io_module_query() you must
  * run gio-querymodules in order to build the cache files required for
  * lazy loading.
+ *
+ * Since 2.56, this function should be named `g_io_<modulename>_query`, where
+ * `modulename` is the plugin’s filename with the `lib` or `libgio` prefix and
+ * everything after the first dot removed, and with `-` replaced with `_`
+ * throughout. For example, `libgiognutls-helper.so` becomes `gnutls_helper`.
+ * Using the new symbol names avoids name clashes when building modules
+ * statically. The old symbol names continue to be supported, but cannot be used
+ * for static builds.
  *
  * Returns: (transfer full): A %NULL-terminated array of strings,
  *     listing the supported extension points of the module. The array

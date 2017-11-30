@@ -291,6 +291,43 @@ g_io_module_finalize (GObject *object)
 }
 
 static gboolean
+load_symbols (GIOModule *module)
+{
+  gchar *name;
+  gchar *load_symname;
+  gchar *unload_symname;
+  gboolean ret;
+
+  name = _g_io_module_extract_name (module->filename);
+  load_symname = g_strconcat ("g_io_", name, "_load", NULL);
+  unload_symname = g_strconcat ("g_io_", name, "_unload", NULL);
+
+  ret = g_module_symbol (module->library,
+                         load_symname,
+                         (gpointer) &module->load) &&
+        g_module_symbol (module->library,
+                         unload_symname,
+                         (gpointer) &module->unload);
+
+  if (!ret)
+    {
+      /* Fallback to old names */
+      ret = g_module_symbol (module->library,
+                             "g_io_module_load",
+                             (gpointer) &module->load) &&
+            g_module_symbol (module->library,
+                             "g_io_module_unload",
+                             (gpointer) &module->unload);
+    }
+
+  g_free (name);
+  g_free (load_symname);
+  g_free (unload_symname);
+
+  return ret;
+}
+
+static gboolean
 g_io_module_load_module (GTypeModule *gmodule)
 {
   GIOModule *module = G_IO_MODULE (gmodule);
@@ -310,12 +347,7 @@ g_io_module_load_module (GTypeModule *gmodule)
     }
 
   /* Make sure that the loaded library contains the required methods */
-  if (! g_module_symbol (module->library,
-                         "g_io_module_load",
-                         (gpointer) &module->load) ||
-      ! g_module_symbol (module->library,
-                         "g_io_module_unload",
-                         (gpointer) &module->unload))
+  if (!load_symbols (module))
     {
       g_printerr ("%s\n", g_module_error ());
       g_module_close (module->library);
