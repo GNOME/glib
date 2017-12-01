@@ -344,7 +344,7 @@ g_type_module_complete_interface_info (GTypePlugin    *plugin,
 
 /**
  * g_type_module_register_type:
- * @module: a #GTypeModule
+ * @module: (nullable): a #GTypeModule
  * @parent_type: the type for the parent class
  * @type_name: name for the type
  * @type_info: type information structure
@@ -362,6 +362,9 @@ g_type_module_complete_interface_info (GTypePlugin    *plugin,
  * As long as any instances of the type exist, the type plugin will
  * not be unloaded.
  *
+ * Since 2.56 if @module is %NULL this will call g_type_register_static()
+ * instead. This can be used when making a static build of the module.
+ *
  * Returns: the new or existing type ID
  */
 GType
@@ -374,9 +377,21 @@ g_type_module_register_type (GTypeModule     *module,
   ModuleTypeInfo *module_type_info = NULL;
   GType type;
   
-  g_return_val_if_fail (module != NULL, 0);
   g_return_val_if_fail (type_name != NULL, 0);
   g_return_val_if_fail (type_info != NULL, 0);
+
+  if (module == NULL)
+    {
+      /* Cannot pass type_info directly to g_type_register_static() here because
+       * it has class_finalize != NULL and that's forbidden for static types */
+      return g_type_register_static_simple (parent_type,
+                                            type_name,
+                                            type_info->class_size,
+                                            type_info->class_init,
+                                            type_info->instance_size,
+                                            type_info->instance_init,
+                                            flags);
+    }
 
   type = g_type_from_name (type_name);
   if (type)
@@ -429,7 +444,7 @@ g_type_module_register_type (GTypeModule     *module,
 
 /**
  * g_type_module_add_interface:
- * @module: a #GTypeModule
+ * @module: (nullable): a #GTypeModule
  * @instance_type: type to which to add the interface.
  * @interface_type: interface type to add
  * @interface_info: type information structure
@@ -440,6 +455,9 @@ g_type_module_register_type (GTypeModule     *module,
  *
  * As long as any instances of the type exist, the type plugin will
  * not be unloaded.
+ *
+ * Since 2.56 if @module is %NULL this will call g_type_add_interface_static()
+ * instead. This can be used when making a static build of the module.
  */
 void
 g_type_module_add_interface (GTypeModule          *module,
@@ -448,9 +466,14 @@ g_type_module_add_interface (GTypeModule          *module,
 			     const GInterfaceInfo *interface_info)
 {
   ModuleInterfaceInfo *module_interface_info = NULL;
-  
-  g_return_if_fail (module != NULL);
+
   g_return_if_fail (interface_info != NULL);
+
+  if (module == NULL)
+    {
+      g_type_add_interface_static (instance_type, interface_type, interface_info);
+      return;
+    }
 
   if (g_type_is_a (instance_type, interface_type))
     {
@@ -492,7 +515,7 @@ g_type_module_add_interface (GTypeModule          *module,
 
 /**
  * g_type_module_register_enum:
- * @module: a #GTypeModule
+ * @module: (nullable): a #GTypeModule
  * @name: name for the type
  * @const_static_values: an array of #GEnumValue structs for the
  *                       possible enumeration values. The array is
@@ -507,6 +530,9 @@ g_type_module_add_interface (GTypeModule          *module,
  * As long as any instances of the type exist, the type plugin will
  * not be unloaded.
  *
+ * Since 2.56 if @module is %NULL this will call g_type_register_static()
+ * instead. This can be used when making a static build of the module.
+ *
  * Since: 2.6
  *
  * Returns: the new or existing type ID
@@ -518,7 +544,7 @@ g_type_module_register_enum (GTypeModule      *module,
 {
   GTypeInfo enum_type_info = { 0, };
 
-  g_return_val_if_fail (G_IS_TYPE_MODULE (module), 0);
+  g_return_val_if_fail (module == NULL || G_IS_TYPE_MODULE (module), 0);
   g_return_val_if_fail (name != NULL, 0);
   g_return_val_if_fail (const_static_values != NULL, 0);
 
@@ -531,7 +557,7 @@ g_type_module_register_enum (GTypeModule      *module,
 
 /**
  * g_type_module_register_flags:
- * @module: a #GTypeModule
+ * @module: (nullable): a #GTypeModule
  * @name: name for the type
  * @const_static_values: an array of #GFlagsValue structs for the
  *                       possible flags values. The array is
@@ -546,6 +572,9 @@ g_type_module_register_enum (GTypeModule      *module,
  * As long as any instances of the type exist, the type plugin will
  * not be unloaded.
  *
+ * Since 2.56 if @module is %NULL this will call g_type_register_static()
+ * instead. This can be used when making a static build of the module.
+ *
  * Since: 2.6
  *
  * Returns: the new or existing type ID
@@ -557,7 +586,7 @@ g_type_module_register_flags (GTypeModule      *module,
 {
   GTypeInfo flags_type_info = { 0, };
 
-  g_return_val_if_fail (G_IS_TYPE_MODULE (module), 0);
+  g_return_val_if_fail (module == NULL || G_IS_TYPE_MODULE (module), 0);
   g_return_val_if_fail (name != NULL, 0);
   g_return_val_if_fail (const_static_values != NULL, 0);
 
