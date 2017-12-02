@@ -2268,7 +2268,7 @@ g_log_writer_format_fields (GLogLevelFlags   log_level,
 
   /* Timestamp */
   now = g_get_real_time ();
-  now_secs = (time_t) now / 1000000;
+  now_secs = (time_t) (now / 1000000);
   now_tm = localtime (&now_secs);
   strftime (time_buf, sizeof (time_buf), "%H:%M:%S", now_tm);
 
