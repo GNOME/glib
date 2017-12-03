@@ -67,7 +67,6 @@
 
 /* Get GLIB_CHARSETALIAS_DIR.  */
 #ifndef GLIB_CHARSETALIAS_DIR
-# include "configmake.h"
 # define GLIB_CHARSETALIAS_DIR LIBDIR
 #endif
 
