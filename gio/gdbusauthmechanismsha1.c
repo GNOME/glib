@@ -284,7 +284,7 @@ ensure_keyring_directory (GError **error)
 #endif
 #endif
         }
-        goto out;
+      goto out;
     }
 
   if (g_mkdir (path, 0700) != 0)
