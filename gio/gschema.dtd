@@ -47,7 +47,8 @@
 
 <!-- range is only allowed for keys with numeric type -->
 <!ELEMENT range EMPTY >
-<!-- min and max must be parseable as values of the key type and min < max -->
+<!-- min and max must be parseable as values of the key type and
+     min must be less than or equal to max -->
 <!ATTLIST range min CDATA #REQUIRED
                 max CDATA #REQUIRED >
 
