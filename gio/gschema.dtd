@@ -1,4 +1,4 @@
-<!ELEMENT schemalist (schema|enum)* >
+<!ELEMENT schemalist (schema|enum|flags)* >
 <!ATTLIST schemalist gettext-domain CDATA #IMPLIED >
 
 <!ELEMENT schema (key|child|override)* >
