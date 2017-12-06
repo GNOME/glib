@@ -75,7 +75,7 @@ def attribute_as_text (node, aname, node_name = None):
 def html_indent_string (n):
   uncollapsible_space = ' &nbsp;' # HTML won't compress alternating sequences of ' ' and '&nbsp;'
   string = ''
-  for i in range (0, (n + 1) / 2):
+  for i in range (0, int((n + 1) / 2)):
     string += uncollapsible_space
   return string
 
