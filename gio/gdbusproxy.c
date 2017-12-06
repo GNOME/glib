@@ -59,8 +59,7 @@
  * well-known name, the property cache is flushed when the name owner
  * vanishes and reloaded when a name owner appears.
  *
- * If a #GDBusProxy is used for a well-known name, the owner of the
- * name is tracked and can be read from
+ * The unique name owner of the proxy's name is tracked and can be read from
  * #GDBusProxy:g-name-owner. Connect to the #GObject::notify signal to
  * get notified of changes. Additionally, only signals and property
  * changes emitted from the current name owner are considered and
@@ -1769,7 +1768,7 @@ async_initable_init_first (GAsyncInitable *initable)
                                             (GDestroyNotify) signal_subscription_unref);
     }
 
-  if (proxy->priv->name != NULL && !g_dbus_is_unique_name (proxy->priv->name))
+  if (proxy->priv->name != NULL)
     {
       proxy->priv->name_owner_changed_subscription_id =
         g_dbus_connection_signal_subscribe (proxy->priv->connection,
