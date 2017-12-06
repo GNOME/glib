@@ -449,6 +449,7 @@ test_programs += \
 	gdbus-peer				\
 	gdbus-proxy				\
 	gdbus-proxy-threads			\
+	gdbus-proxy-unique-name			\
 	gdbus-proxy-well-known-name		\
 	gdbus-test-codegen			\
 	gdbus-test-codegen-old			\
@@ -483,6 +484,7 @@ gdbus_introspection_SOURCES              = $(gdbus_sessionbus_sources) gdbus-int
 gdbus_names_SOURCES                      = $(gdbus_sessionbus_sources) gdbus-names.c
 gdbus_proxy_SOURCES                      = $(gdbus_sessionbus_sources) gdbus-proxy.c
 gdbus_proxy_threads_SOURCES              = $(gdbus_sessionbus_sources) gdbus-proxy-threads.c
+gdbus_proxy_unique_name_SOURCES          = $(gdbus_sessionbus_sources) gdbus-proxy-unique-name.c
 gdbus_proxy_well_known_name_SOURCES      = $(gdbus_sessionbus_sources) gdbus-proxy-well-known-name.c
 gdbus_test_codegen_SOURCES               = $(gdbus_sessionbus_sources) gdbus-test-codegen.c
 nodist_gdbus_test_codegen_SOURCES        = gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
