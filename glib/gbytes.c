@@ -294,7 +294,7 @@ g_bytes_ref (GBytes *bytes)
  * @bytes: (nullable): a #GBytes
  *
  * Releases a reference on @bytes.  This may result in the bytes being
- * freed.
+ * freed. If @bytes is %NULL, it will return immediately.
  *
  * Since: 2.32
  */
