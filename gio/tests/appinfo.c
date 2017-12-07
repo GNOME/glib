@@ -7,9 +7,8 @@
 #include <gio/gdesktopappinfo.h>
 
 static void
-test_launch (void)
+test_launch_for_app_info (GAppInfo *appinfo)
 {
-  GAppInfo *appinfo;
   GError *error;
   GFile *file;
   GList *l;
@@ -22,10 +21,6 @@ test_launch (void)
       return;
     }
 
-  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
-  appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
-  g_assert (appinfo != NULL);
-
   error = NULL;
   g_assert (g_app_info_launch (appinfo, NULL, NULL, &error));
   g_assert_no_error (error);
@@ -33,6 +28,7 @@ test_launch (void)
   g_assert (g_app_info_launch_uris (appinfo, NULL, NULL, &error));
   g_assert_no_error (error);
 
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
   file = g_file_new_for_path (path);
   l = NULL;
   l = g_list_append (l, file);
@@ -51,8 +47,81 @@ test_launch (void)
   g_assert_no_error (error);
   g_list_free (l);
   g_free (uri);
+}
 
+static void
+test_launch (void)
+{
+  GAppInfo *appinfo;
+  const gchar *path;
+
+  path = g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL);
+  appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (path);
+  g_assert (appinfo != NULL);
+
+  test_launch_for_app_info (appinfo);
   g_object_unref (appinfo);
+}
+
+static void
+test_launch_no_app_id (void)
+{
+  const gchar desktop_file_base_contents[] =
+    "[Desktop Entry]\n"
+    "Type=Application\n"
+    "GenericName=generic-appinfo-test\n"
+    "Name=appinfo-test\n"
+    "Name[de]=appinfo-test-de\n"
+    "X-GNOME-FullName=example\n"
+    "X-GNOME-FullName[de]=Beispiel\n"
+    "Comment=GAppInfo example\n"
+    "Comment[de]=GAppInfo Beispiel\n"
+    "Icon=testicon.svg\n"
+    "Terminal=true\n"
+    "StartupNotify=true\n"
+    "StartupWMClass=appinfo-class\n"
+    "MimeType=image/png;image/jpeg;\n"
+    "Keywords=keyword1;test keyword;\n"
+    "Categories=GNOME;GTK;\n";
+
+  const char *exec_line_variants[] = {
+    "Exec=./appinfo-test --option %U %i --name %c --filename %k %m %%",
+    "Exec=./appinfo-test --option %u %i --name %c --filename %k %m %%"
+  };
+
+  gsize i;
+
+  g_test_bug ("791337");
+
+  for (i = 0; i < G_N_ELEMENTS (exec_line_variants); i++)
+  {
+    gchar *desktop_file_contents;
+    GKeyFile *fake_desktop_file;
+    GAppInfo *appinfo;
+    gboolean loaded;
+
+    g_test_message ("Exec line variant #%" G_GSIZE_FORMAT, i);
+
+    desktop_file_contents = g_strdup_printf ("%s\n%s",
+                                             desktop_file_base_contents,
+                                             exec_line_variants[i]);
+
+    /* We load a desktop file from memory to force the app not
+     * to have an app ID, which would check different codepaths.
+     */
+    fake_desktop_file = g_key_file_new ();
+    loaded = g_key_file_load_from_data (fake_desktop_file, desktop_file_contents, -1, G_KEY_FILE_NONE, NULL);
+    g_assert_true (loaded);
+
+    appinfo = (GAppInfo*)g_desktop_app_info_new_from_keyfile (fake_desktop_file);
+    g_assert (appinfo != NULL);
+
+    test_launch_for_app_info (appinfo);
+
+    g_free (desktop_file_contents);
+    g_object_unref (appinfo);
+    g_key_file_unref (fake_desktop_file);
+  }
 }
 
 static void
@@ -480,6 +549,7 @@ main (int argc, char *argv[])
   g_setenv ("XDG_CURRENT_DESKTOP", "GNOME", TRUE);
 
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
   /* With Meson build we need to change into right directory, so that the
    * appinfo-test binary can be found. */
@@ -490,6 +560,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/basic", test_basic);
   g_test_add_func ("/appinfo/text", test_text);
   g_test_add_func ("/appinfo/launch", test_launch);
+  g_test_add_func ("/appinfo/launch/no-appid", test_launch_no_app_id);
   g_test_add_func ("/appinfo/show-in", test_show_in);
   g_test_add_func ("/appinfo/commandline", test_commandline);
   g_test_add_func ("/appinfo/launch-context", test_launch_context);
