@@ -2658,6 +2658,8 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
 {
   gboolean completed = FALSE;
   GList *old_uris;
+  GList *dup_uris;
+
   char **argv, **envp;
   int argc;
   ChildSetupData data;
@@ -2671,6 +2673,11 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
   else
     envp = g_get_environ ();
 
+  /* The GList* passed to expand_application_parameters() will be modified
+   * internally by expand_macro(), so we need to pass a copy of it instead,
+   * and also use that copy to control the exit condition of the loop below.
+   */
+  dup_uris = g_list_copy (uris);
   do
     {
       GPid pid;
@@ -2678,13 +2685,13 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       GList *iter;
       char *sn_id = NULL;
 
-      old_uris = uris;
-      if (!expand_application_parameters (info, exec_line, &uris, &argc, &argv, error))
+      old_uris = dup_uris;
+      if (!expand_application_parameters (info, exec_line, &dup_uris, &argc, &argv, error))
         goto out;
 
       /* Get the subset of URIs we're launching with this process */
       launched_uris = NULL;
-      for (iter = old_uris; iter != NULL && iter != uris; iter = iter->next)
+      for (iter = old_uris; iter != NULL && iter != dup_uris; iter = iter->next)
         launched_uris = g_list_prepend (launched_uris, iter->data);
       launched_uris = g_list_reverse (launched_uris);
 
@@ -2780,11 +2787,12 @@ g_desktop_app_info_launch_uris_with_spawn (GDesktopAppInfo            *info,
       g_strfreev (argv);
       argv = NULL;
     }
-  while (uris != NULL);
+  while (dup_uris != NULL);
 
   completed = TRUE;
 
  out:
+  g_list_free (dup_uris);
   g_strfreev (argv);
   g_strfreev (envp);
 
