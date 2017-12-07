@@ -1975,7 +1975,11 @@ _g_local_file_info_get (const char             *basename,
   get_xattrs (path, FALSE, info, attribute_matcher, (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) == 0);
 
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
-					    G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH))
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAIL_PATH) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAIL_IS_VALID) ||
+      _g_file_attribute_matcher_matches_id (attribute_matcher,
+                                            G_FILE_ATTRIBUTE_ID_THUMBNAILING_FAILED))
     {
       if (stat_ok)
           get_thumbnail_attributes (path, info, &statbuf);
