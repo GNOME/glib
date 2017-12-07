@@ -2199,7 +2199,7 @@ g_desktop_app_info_get_show_in (GDesktopAppInfo *info,
 /* Launching... {{{2 */
 
 static char *
-expand_macro_single (char macro, char *uri)
+expand_macro_single (char macro, const char *uri)
 {
   GFile *file;
   char *result = NULL;
@@ -2248,6 +2248,29 @@ expand_macro_single (char macro, char *uri)
   return result;
 }
 
+static char *
+expand_macro_uri (char macro, const char *uri, gboolean force_file_uri, char force_file_uri_macro)
+{
+  char *expanded = NULL;
+
+  g_return_val_if_fail (uri != NULL, NULL);
+
+  if (!force_file_uri ||
+      /* Pass URI if it contains an anchor */
+      strchr (uri, '#') != NULL)
+    {
+      expanded = expand_macro_single (macro, uri);
+    }
+  else
+    {
+      expanded = expand_macro_single (force_file_uri_macro, uri);
+      if (expanded == NULL)
+        expanded = expand_macro_single (macro, uri);
+    }
+
+  return expanded;
+}
+
 static void
 expand_macro (char              macro,
               GString          *exec,
@@ -2255,10 +2278,10 @@ expand_macro (char              macro,
               GList           **uri_list)
 {
   GList *uris = *uri_list;
-  char *expanded;
+  char *expanded = NULL;
   gboolean force_file_uri;
   char force_file_uri_macro;
-  char *uri;
+  const char *uri;
 
   g_return_if_fail (exec != NULL);
 
@@ -2295,19 +2318,8 @@ expand_macro (char              macro,
       if (uris)
         {
           uri = uris->data;
-          if (!force_file_uri ||
-              /* Pass URI if it contains an anchor */
-              strchr (uri, '#') != NULL)
-            {
-              expanded = expand_macro_single (macro, uri);
-            }
-          else
-            {
-              expanded = expand_macro_single (force_file_uri_macro, uri);
-              if (expanded == NULL)
-                expanded = expand_macro_single (macro, uri);
-            }
-
+          expanded = expand_macro_uri (macro, uri,
+                                       force_file_uri, force_file_uri_macro);
           if (expanded)
             {
               g_string_append (exec, expanded);
@@ -2325,20 +2337,8 @@ expand_macro (char              macro,
       while (uris)
         {
           uri = uris->data;
-
-          if (!force_file_uri ||
-              /* Pass URI if it contains an anchor */
-              strchr (uri, '#') != NULL)
-            {
-              expanded = expand_macro_single (macro, uri);
-            }
-          else
-            {
-              expanded = expand_macro_single (force_file_uri_macro, uri);
-              if (expanded == NULL)
-                expanded = expand_macro_single (macro, uri);
-            }
-
+          expanded = expand_macro_uri (macro, uri,
+                                       force_file_uri, force_file_uri_macro);
           if (expanded)
             {
               g_string_append (exec, expanded);
