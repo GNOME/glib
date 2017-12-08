@@ -1798,7 +1798,9 @@ g_object_get_type (void)
  *
  * Since GLib 2.72, all #GObjects are guaranteed to be aligned to at least the
  * alignment of the largest basic GLib type (typically this is #guint64 or
- * #gdouble).
+ * #gdouble). If you need larger alignment for an element in a #GObject, you
+ * should allocate it on the heap (aligned), or arrange for your #GObject to be
+ * appropriately padded.
  *
  * Returns: (transfer full) (type GObject.Object): a new instance of
  *   @object_type

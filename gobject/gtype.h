@@ -1983,7 +1983,9 @@ guint     g_type_get_type_registration_serial (void);
  *
  * Since GLib 2.72, the returned `MyObjectPrivate` pointer is guaranteed to be
  * aligned to at least the alignment of the largest basic GLib type (typically
- * this is #guint64 or #gdouble).
+ * this is #guint64 or #gdouble). If you need larger alignment for an element in
+ * the struct, you should allocate it on the heap (aligned), or arrange for your
+ * `MyObjectPrivate` struct to be appropriately padded.
  *
  * Note that this macro can only be used together with the `G_DEFINE_TYPE_*`
  * macros, since it depends on variable names from those macros.
