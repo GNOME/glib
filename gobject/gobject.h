@@ -508,7 +508,7 @@ GLIB_AVAILABLE_IN_ALL
 void        g_object_remove_weak_pointer      (GObject        *object, 
                                                gpointer       *weak_pointer_location);
 
-#if defined(__GNUC__) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_56
+#if defined(__GNUC__) && !defined(__cplusplus) && GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_56
 /* Make reference APIs type safe with macros */
 #define g_object_ref(Obj)      ((__typeof__(Obj)) (g_object_ref) (Obj))
 #define g_object_ref_sink(Obj) ((__typeof__(Obj)) (g_object_ref_sink) (Obj))
