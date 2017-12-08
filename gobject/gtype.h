@@ -2418,9 +2418,9 @@ const gchar *    g_type_name_from_class         (GTypeClass	*g_class);
 /* --- implementation bits --- */
 #ifndef G_DISABLE_CAST_CHECKS
 #  define _G_TYPE_CIC(ip, gt, ct) \
-    ((ct*) g_type_check_instance_cast ((GTypeInstance*) ip, gt))
+    ((ct*) (void *) g_type_check_instance_cast ((GTypeInstance*) ip, gt))
 #  define _G_TYPE_CCC(cp, gt, ct) \
-    ((ct*) g_type_check_class_cast ((GTypeClass*) cp, gt))
+    ((ct*) (void *) g_type_check_class_cast ((GTypeClass*) cp, gt))
 #else /* G_DISABLE_CAST_CHECKS */
 #  define _G_TYPE_CIC(ip, gt, ct)       ((ct*) ip)
 #  define _G_TYPE_CCC(cp, gt, ct)       ((ct*) cp)
