@@ -1,6 +1,6 @@
 project('glib', 'c', 'cpp',
   version : '2.57.0',
-  meson_version : '>= 0.44.0',
+  meson_version : '>= 0.45.0',
   default_options : [
     'warning_level=1',
     'c_std=gnu89'
@@ -1734,8 +1734,8 @@ if libmount_dep.length() != 0
 endif
 glib_conf.set('GIO_MODULE_DIR', glib_giomodulesdir)
 # FIXME: Missing:
-# @G_MODULE_LIBS@ @COCOA_LIBS@ @CARBON_LIBS@ @G_LIBS_EXTRA@
-# @PCRE_REQUIRES@ @GLIB_EXTRA_CFLAGS@ @G_THREAD_CFLAGS@
+# @COCOA_LIBS@ @CARBON_LIBS@ @G_LIBS_EXTRA@ @GLIB_EXTRA_CFLAGS@
+# @G_MODULE_LDFLAGS@
 
 # Tracing: dtrace
 want_dtrace = get_option('dtrace')
@@ -1781,6 +1781,7 @@ if want_systemtap and enable_dtrace
 endif
 
 
+pkg = import('pkgconfig')
 windows = import('windows')
 subdir('glib')
 subdir('gobject')
@@ -1791,30 +1792,6 @@ if xgettext.found()
   subdir('po')
 endif
 subdir('tests')
-
-# Configure and install pkg-config files
-pc_files = [
-  'gobject-2.0.pc',
-  'glib-2.0.pc',
-  'gthread-2.0.pc',
-  'gmodule-2.0.pc',
-  'gmodule-export-2.0.pc',
-  'gmodule-no-export-2.0.pc',
-  'gio-2.0.pc',
-]
-if host_system == 'windows'
-  pc_files += ['gio-windows-2.0.pc']
-else
-  pc_files += ['gio-unix-2.0.pc']
-endif
-
-foreach pc : pc_files
-  configure_file(input : pc + '.in',
-    install : true,
-    install_dir : glib_pkgconfigreldir,
-    output : pc,
-    configuration : glib_conf)
-endforeach
 
 # NOTE: We skip glib-zip.in because the filenames it assumes don't match ours
 

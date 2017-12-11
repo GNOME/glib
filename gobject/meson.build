@@ -71,6 +71,15 @@ libgobject = library('gobject-2.0',
   dependencies : [libintl, libffi_dep, libglib_dep],
   c_args : ['-DG_LOG_DOMAIN="GLib-GObject"', '-DGOBJECT_COMPILATION'] + glib_hidden_visibility_args)
 
+pkg.generate(libraries : libgobject,
+  requires : ['glib-2.0'],
+  version : glib_version,
+  install_dir : glib_pkgconfigreldir,
+  filebase : 'gobject-2.0',
+  name : 'GObject',
+  description : 'GLib Type, Object, Parameter and Signal Library',
+)
+
 libgobject_dep = declare_dependency(link_with : libgobject,
   include_directories : gobjectinc)
 

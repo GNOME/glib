@@ -104,5 +104,37 @@ libgmodule = library('gmodule-2.0',
   dependencies : [libdl_dep, libglib_dep],
   c_args : ['-DG_LOG_DOMAIN="GModule"', '-DG_DISABLE_DEPRECATED'] + glib_hidden_visibility_args)
 
+supported_var = 'gmodule_supported=@0@'.format(g_module_impl != '0')
+
+pkg.generate(libraries : [libgmodule, thread_dep],
+  requires : ['glib-2.0'],
+  version : glib_version,
+  variables : [supported_var],
+  install_dir : glib_pkgconfigreldir,
+  filebase : 'gmodule-no-export-2.0',
+  name : 'GModule',
+  description : 'Dynamic module loader for GLib',
+)
+
+pkg.generate(libraries : [libgmodule],
+  requires : ['glib-2.0'],
+  version : glib_version,
+  variables : [supported_var],
+  install_dir : glib_pkgconfigreldir,
+  filebase : 'gmodule-export-2.0',
+  name : 'GModule',
+  description : 'Dynamic module loader for GLib',
+)
+
+pkg.generate(libraries : [libgmodule],
+  requires : ['glib-2.0'],
+  version : glib_version,
+  variables : [supported_var],
+  install_dir : glib_pkgconfigreldir,
+  filebase : 'gmodule-2.0',
+  name : 'GModule',
+  description : 'Dynamic module loader for GLib',
+)
+
 libgmodule_dep = declare_dependency(link_with : libgmodule,
   include_directories : gmoduleinc)

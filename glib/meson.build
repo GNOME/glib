@@ -249,6 +249,20 @@ libglib_dep = declare_dependency(
   # We sadly need to export configinc here because everyone includes <glib/*.h>
   include_directories : [configinc, glibinc])
 
+pkg.generate(libraries : libglib,
+  subdirs : ['glib-2.0'],
+  extra_cflags : ['-I${libdir}/glib-2.0/include'],
+  variables : ['bindir=' + join_paths('${prefix}', get_option('bindir')),
+               'glib_genmarshal=' + join_paths('${bindir}', 'glib-genmarshal'),
+               'gobject_query=' + join_paths('${bindir}', 'gobject-query'),
+               'glib_mkenums=' + join_paths('${bindir}', 'glib-mkenums')],
+  version : glib_version,
+  install_dir : glib_pkgconfigreldir,
+  filebase : 'glib-2.0',
+  name : 'GLib',
+  description : 'C Utility Library',
+)
+
 # On Windows, glib needs a spawn helper for g_spawn* API
 if host_system == 'windows'
   if host_machine.cpu_family() == 'x86'

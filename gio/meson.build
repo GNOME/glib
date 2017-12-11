@@ -794,6 +794,45 @@ libgio = library('gio-2.0',
   link_args : noseh_link_args,
 )
 
+giomodulesdir = get_option('gio_module_dir')
+if giomodulesdir == ''
+  giomodulesdir = join_paths('${libdir}', 'gio', 'modules')
+endif
+
+pkg.generate(libraries : libgio,
+  requires : ['glib-2.0', 'gobject-2.0'],
+  variables : ['bindir=' + join_paths('${prefix}', get_option('bindir')),
+               'giomoduledir=' + giomodulesdir,
+               'glib_compile_schemas=' + join_paths('${bindir}', 'glib-compile-schemas'),
+               'glib_compile_resources=' + join_paths('${bindir}', 'glib-compile-resources'),
+               'gdbus_codegen=' + join_paths('${bindir}', 'gdbus-codegen')],
+  version : glib_version,
+  install_dir : glib_pkgconfigreldir,
+  filebase : 'gio-2.0',
+  name : 'GIO',
+  description : 'glib I/O library',
+)
+
+if host_system == 'windows'
+  pkg.generate(requires : ['gobject-2.0', 'gmodule-no-export-2.0', 'gio-2.0'],
+    subdirs : ['gio-win32-2.0'],
+    version : glib_version,
+    install_dir : glib_pkgconfigreldir,
+    filebase : 'gio-windows-2.0',
+    name : 'GIO Windows specific APIs',
+    description : 'Windows specific headers for glib I/O library',
+  )
+else
+  pkg.generate(requires : ['gobject-2.0', 'gio-2.0'],
+    subdirs : ['gio-unix-2.0'],
+    version : glib_version,
+    install_dir : glib_pkgconfigreldir,
+    filebase : 'gio-unix-2.0',
+    name : 'GIO unix specific APIs',
+    description : 'unix specific headers for glib I/O library',
+  )
+endif
+
 libgio_dep = declare_dependency(link_with : libgio,
   dependencies : [gioenumtypes_dep],
   # We sadly need to export configinc here because everyone includes <gio/*.h>
