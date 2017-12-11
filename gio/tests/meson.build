@@ -1,5 +1,9 @@
 common_gio_tests_deps = [libglib_dep, libgmodule_dep, libgobject_dep, libgio_dep]
 
+if host_system == 'darwin'
+common_gio_tests_deps += [libintl]
+endif
+
 subdir('gdbus-object-manager-example')
 
 gengiotypefuncs_prog = find_program('gengiotypefuncs.py')
