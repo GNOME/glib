@@ -167,6 +167,8 @@
       <xi:include href="xml/gproxyresolver.xml"/>
       <xi:include href="xml/gsimpleproxyresolver.xml"/>
       <xi:include href="xml/gsocketconnectable.xml"/>
+      <xi:include href="xml/gsocketaddressenumerator.xml"/>
+      <xi:include href="xml/gproxyaddressenumerator.xml"/>
       <xi:include href="xml/gnetworkaddress.xml"/>
       <xi:include href="xml/gnetworkservice.xml"/>
       <xi:include href="xml/gsrvtarget.xml"/>
