@@ -27,6 +27,7 @@
 #include <glib/gstring.h>
 #include <glib/gerror.h>
 #include <glib/gslist.h>
+#include <string.h>
 
 G_BEGIN_DECLS
 
