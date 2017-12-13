@@ -22,6 +22,7 @@
 #include <gio/gio.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
+#include <glib.h>
 #include <glib/glib-unix.h>
 #include <signal.h>
 #include <stdlib.h>
@@ -29,7 +30,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#define DATA "abcdefghijklmnopqrstuvwxyz"
+static const gchar *DATA = "abcdefghijklmnopqrstuvwxyz";
+#define DATA_LEN 27  /* including nul terminator */
 
 int writer_pipe[2], reader_pipe[2];
 GCancellable *writer_cancel, *reader_cancel, *main_cancel;
@@ -50,10 +52,10 @@ writer_thread (gpointer user_data)
       g_usleep (10);
 
       offset = 0;
-      while (offset < (gssize) sizeof (DATA))
+      while (offset < (gssize) DATA_LEN)
 	{
 	  nwrote = g_output_stream_write (out, DATA + offset,
-					  sizeof (DATA) - offset,
+					  DATA_LEN - offset,
 					  writer_cancel, &err);
 	  if (nwrote <= 0 || err != NULL)
 	    break;
@@ -82,14 +84,14 @@ reader_thread (gpointer user_data)
   GInputStream *in;
   gssize nread = 0, total;
   GError *err = NULL;
-  char buf[sizeof (DATA)];
+  char buf[DATA_LEN];
 
   in = g_unix_input_stream_new (reader_pipe[0], TRUE);
 
   do
     {
       total = 0;
-      while (total < (gssize) sizeof (DATA))
+      while (total < (gssize) DATA_LEN)
 	{
 	  nread = g_input_stream_read (in, buf + total, sizeof (buf) - total,
 				       reader_cancel, &err);
@@ -118,8 +120,8 @@ reader_thread (gpointer user_data)
   g_assert_not_reached ();
 }
 
-char main_buf[sizeof (DATA)];
-gssize main_len, main_offset;
+static char main_buf[DATA_LEN];
+static gssize main_len, main_offset;
 
 static void main_thread_read (GObject *source, GAsyncResult *res, gpointer user_data);
 static void main_thread_skipped (GObject *source, GAsyncResult *res, gpointer user_data);
@@ -186,7 +188,7 @@ main_thread_read (GObject *source, GAsyncResult *res, gpointer user_data)
   g_assert_no_error (err);
 
   main_offset += nread;
-  if (main_offset == sizeof (DATA))
+  if (main_offset == DATA_LEN)
     {
       main_len = main_offset;
       main_offset = 0;
