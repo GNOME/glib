@@ -48,7 +48,7 @@ struct _GNetworkMonitorInterface {
   GTypeInterface g_iface;
 
   void     (*network_changed)  (GNetworkMonitor      *monitor,
-				gboolean              available);
+				gboolean              network_available);
 
   gboolean (*can_reach)        (GNetworkMonitor      *monitor,
 				GSocketConnectable   *connectable,

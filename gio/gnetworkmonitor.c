@@ -309,13 +309,9 @@ g_network_monitor_default_init (GNetworkMonitorInterface *iface)
   /**
    * GNetworkMonitor::network-changed:
    * @monitor: a #GNetworkMonitor
-   * @available: the current value of #GNetworkMonitor:network-available
+   * @network_available: the current value of #GNetworkMonitor:network-available
    *
-   * Emitted when the network configuration changes. If @available is
-   * %TRUE, then some hosts may be reachable that were not reachable
-   * before, while others that were reachable before may no longer be
-   * reachable. If @available is %FALSE, then no remote hosts are
-   * reachable.
+   * Emitted when the network configuration changes.
    *
    * Since: 2.32
    */
