@@ -390,6 +390,14 @@ else
     'gwin32outputstream.c',
   )
 
+  gio_win_rc = configure_file(
+    input: 'gio.rc.in',
+    output: 'gio.rc',
+    configuration: glibconfig_conf,
+  )
+  gio_win_res = windows.compile_resources(gio_win_rc)
+  win32_sources += [gio_win_res]
+
   gio_win32_include_headers = files(
     'gwin32inputstream.h',
     'gwin32outputstream.h',
@@ -529,14 +537,6 @@ gio_sources += portal_sources
 gio_sources += local_sources
 
 MISSING_STUFF = '''
-if OS_WIN32_AND_DLL_COMPILATION
-gio_win32_res = gio-win32-res.o
-gio_win32_res_ldflag = -Wl,$(gio_win32_res)
-endif
-
-gio-win32-res.o: gio.rc
-  '$(WINDRES) gio.rc $@
-
 # This is read by gobject-introspection/misc/ and gtk-doc
 gio-public-headers.txt: Makefile
   '$(AM_V_GEN) echo $(gioinclude_HEADERS) $(giowin32include_HEADERS) $(giounixinclude_HEADERS) > $@.tmp && mv $@.tmp $@

@@ -17,7 +17,7 @@ VS_VERSION_INFO VERSIONINFO
 	VALUE "FileDescription", "GThread"
 	VALUE "FileVersion", "@GLIB_VERSION@.0"
 	VALUE "InternalName", "libgthread-2.0-@LT_CURRENT_MINUS_AGE@"
-	VALUE "LegalCopyright", "Copyright © 1995-2011 Peter Mattis, Spencer Kimball, Josh MacDonald, Sebastian Wilhelmi and others."
+	VALUE "LegalCopyright", "Copyright 1995-2011 Peter Mattis, Spencer Kimball, Josh MacDonald, Sebastian Wilhelmi and others."
 	VALUE "OriginalFilename", "libgthread-2.0-@LT_CURRENT_MINUS_AGE@.dll"
 	VALUE "ProductName", "GLib"
 	VALUE "ProductVersion", "@GLIB_VERSION@"

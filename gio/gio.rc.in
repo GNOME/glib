@@ -17,7 +17,7 @@ VS_VERSION_INFO VERSIONINFO
 	VALUE "FileDescription", "Gio"
 	VALUE "FileVersion", "@GLIB_VERSION@.0"
 	VALUE "InternalName", "libgio-2.0-@LT_CURRENT_MINUS_AGE@"
-	VALUE "LegalCopyright", "Copyright © 2006-2011 Red Hat, Inc. and others."
+	VALUE "LegalCopyright", "Copyright 2006-2011 Red Hat, Inc. and others."
 	VALUE "OriginalFilename", "libgio-2.0-@LT_CURRENT_MINUS_AGE@.dll"
 	VALUE "ProductName", "GLib"
 	VALUE "ProductVersion", "@GLIB_VERSION@"

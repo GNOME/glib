@@ -1073,6 +1073,7 @@ glibconfig_conf.set('g_module_suffix', g_module_suffix)
 glibconfig_conf.set('GLIB_MAJOR_VERSION', major_version)
 glibconfig_conf.set('GLIB_MINOR_VERSION', minor_version)
 glibconfig_conf.set('GLIB_MICRO_VERSION', micro_version)
+glibconfig_conf.set('GLIB_VERSION', glib_version)
 
 glibconfig_conf.set('glib_void_p', voidp_size)
 glibconfig_conf.set('glib_long', long_size)
@@ -1645,6 +1646,7 @@ if want_systemtap and enable_dtrace
 endif
 
 
+windows = import('windows')
 subdir('glib')
 subdir('gobject')
 subdir('gthread')

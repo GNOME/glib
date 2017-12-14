@@ -84,8 +84,19 @@ gmoduleconf_h = configure_file(input : 'gmoduleconf.h.in',
 
 install_headers(['gmodule.h'], subdir : 'glib-2.0')
 
+gmodule_sources = ['gmodule.c']
+if host_system == 'windows'
+  gmodule_win_rc = configure_file(
+    input: 'gmodule.rc.in',
+    output: 'gmodule.rc',
+    configuration: glibconfig_conf,
+  )
+  gmodule_win_res = windows.compile_resources(gmodule_win_rc)
+  gmodule_sources += [gmodule_win_res]
+endif
+
 libgmodule = shared_library('gmodule-2.0',
-  sources : ['gmodule.c'],
+  sources : gmodule_sources,
   version : library_version,
   soversion : soversion,
   install : true,

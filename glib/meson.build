@@ -197,6 +197,13 @@ glib_sources = files(
 )
 
 if host_system == 'windows'
+  glib_win_rc = configure_file(
+    input: 'glib.rc.in',
+    output: 'glib.rc',
+    configuration: glibconfig_conf,
+  )
+  glib_win_res = windows.compile_resources(glib_win_rc)
+  glib_sources += [glib_win_res]
   glib_sources += files('gthread-win32.c')
   glib_sources += files('gwin32.c', 'gspawn-win32.c', 'giowin32.c')
   platform_deps = [winsock2, cc.find_library('winmm')]

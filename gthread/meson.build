@@ -1,7 +1,19 @@
 # Just a skeleton lib for backwards compatibility since all the functionaliy
 # has been moved into glib now
+
+gthread_sources = ['gthread-impl.c']
+if host_system == 'windows'
+  gthread_win_rc = configure_file(
+    input: 'gthread.rc.in',
+    output: 'gthread.rc',
+    configuration: glibconfig_conf,
+  )
+  gthread_win_res = windows.compile_resources(gthread_win_rc)
+  gthread_sources += [gthread_win_res]
+endif
+
 libgthread = shared_library('gthread-2.0',
-  sources : [ 'gthread-impl.c' ],
+  sources : gthread_sources,
   version : library_version,
   soversion : soversion,
   install : true,
