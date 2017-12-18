@@ -259,7 +259,11 @@ main (int    argc,
   thread1 = g_thread_create (thread1_main, closure, TRUE, NULL);
   thread2 = g_thread_create (thread2_main, closure, TRUE, NULL);
 
+#if defined(__aarch64__) || defined(__arm__)
+  for (i = 0; i < 100000; i++)
+#else
   for (i = 0; i < 1000000; i++)
+#endif
     {
       static guint count = 0;
       test_emissions (object);
