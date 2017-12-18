@@ -5,6 +5,33 @@
 
 #include "gdbus-sessionbus.h"
 
+static gboolean
+time_out (gpointer unused G_GNUC_UNUSED)
+{
+  g_error ("Timed out");
+  /* not reached */
+  return FALSE;
+}
+
+static guint
+add_timeout (guint seconds)
+{
+#ifdef G_OS_UNIX
+  /* Safety-catch against the main loop having blocked */
+  alarm (seconds + 5);
+#endif
+  return g_timeout_add_seconds (seconds, time_out, NULL);
+}
+
+static void
+cancel_timeout (guint timeout_id)
+{
+#ifdef G_OS_UNIX
+  alarm (0);
+#endif
+  g_source_remove (timeout_id);
+}
+
 /* Markup printing {{{1 */
 
 /* This used to be part of GLib, but it was removed before the stable
@@ -1017,7 +1044,9 @@ do_subscriptions (GDBusConnection *exporter_connection,
   GMainLoop *loop;
   GError *error = NULL;
   guint export_id;
+  guint timeout_id;
 
+  timeout_id = add_timeout (60);
   loop = g_main_loop_new (NULL, FALSE);
 
   menu = g_menu_new ();
@@ -1084,6 +1113,7 @@ do_subscriptions (GDBusConnection *exporter_connection,
   g_object_unref (menu);
 
   g_main_loop_unref (loop);
+  cancel_timeout (timeout_id);
 }
 
 static void
