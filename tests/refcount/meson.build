@@ -54,6 +54,13 @@ foreach test_name, extra_args : refcount_tests
 
   suite = ['refcount'] + extra_args.get('suite', [])
   timeout = suite.contains('slow') ? test_timeout_slow : test_timeout
+
+  # https://gitlab.gnome.org/GNOME/glib/issues/1316
+  # aka https://bugs.debian.org/880883
+  if test_name == 'closures' and ['arm', 'aarch64'].contains(host_cpu_family)
+    timeout = timeout * 10
+  endif
+
   # FIXME? TESTS_ENVIRONMENT = LIBCHARSET_ALIAS_DIR=$(top_builddir)/glib/libcharset
   test(test_name, exe, env : test_env, timeout : timeout, suite : suite)
 endforeach
