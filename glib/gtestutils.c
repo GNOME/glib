@@ -248,6 +248,10 @@
  * Exactly one of g_test_quick() and g_test_slow() is active in any run;
  * there is no "medium speed".
  *
+ * By default, tests are run in quick mode. In tests that use
+ * g_test_init(), the options `-m quick`, `-m slow` and `-m thorough`
+ * can be used to change this.
+ *
  * Returns: %TRUE if in quick mode
  */
 
@@ -258,6 +262,10 @@
  * Exactly one of g_test_quick() and g_test_slow() is active in any run;
  * there is no "medium speed".
  *
+ * By default, tests are run in quick mode. In tests that use
+ * g_test_init(), the options `-m quick`, `-m slow` and `-m thorough`
+ * can be used to change this.
+ *
  * Returns: the opposite of g_test_quick()
  */
 
@@ -267,6 +275,10 @@
  * Returns %TRUE if tests are run in thorough mode, equivalent to
  * g_test_slow().
  *
+ * By default, tests are run in quick mode. In tests that use
+ * g_test_init(), the options `-m quick`, `-m slow` and `-m thorough`
+ * can be used to change this.
+ *
  * Returns: the same thing as g_test_slow()
  */
 
@@ -274,6 +286,10 @@
  * g_test_perf:
  *
  * Returns %TRUE if tests are run in performance mode.
+ *
+ * By default, tests are run in quick mode. In tests that use
+ * g_test_init(), the option `-m perf` enables performance tests, while
+ * `-m quick` disables them.
  *
  * Returns: %TRUE if in performance mode
  */
@@ -283,7 +299,10 @@
  *
  * Returns %TRUE if tests may provoke assertions and other formally-undefined
  * behaviour, to verify that appropriate warnings are given. It might, in some
- * cases, be useful to turn this off if running tests under valgrind.
+ * cases, be useful to turn this off with if running tests under valgrind;
+ * in tests that use g_test_init(), the option `-m no-undefined` disables
+ * those tests, while `-m undefined` explicitly enables them (the default
+ * behaviour).
  *
  * Returns: %TRUE if tests may provoke programming errors
  */
@@ -292,6 +311,8 @@
  * g_test_verbose:
  *
  * Returns %TRUE if tests are run in verbose mode.
+ * In tests that use g_test_init(), the option `--verbose` enables this,
+ * while `-q` or `--quiet` disables it.
  * The default is neither g_test_verbose() nor g_test_quiet().
  *
  * Returns: %TRUE if in verbose mode
@@ -301,6 +322,8 @@
  * g_test_quiet:
  *
  * Returns %TRUE if tests are run in quiet mode.
+ * In tests that use g_test_init(), the option `-q` or `--quiet` enables
+ * this, while `--verbose` disables it.
  * The default is neither g_test_verbose() nor g_test_quiet().
  *
  * Returns: %TRUE if in quiet mode
@@ -1191,15 +1214,16 @@ parse_args (gint    *argc_p,
  *   be skipped (ie, a test whose name contains "/subprocess").
  * - `-m {perf|slow|thorough|quick|undefined|no-undefined}`: Execute tests according to these test modes:
  *
- *   `perf`: Performance tests, may take long and report results.
+ *   `perf`: Performance tests, may take long and report results (off by default).
  *
- *   `slow`, `thorough`: Slow and thorough tests, may take quite long and maximize coverage.
+ *   `slow`, `thorough`: Slow and thorough tests, may take quite long and maximize coverage
+ *   (off by default).
  *
- *   `quick`: Quick tests, should run really quickly and give good coverage.
+ *   `quick`: Quick tests, should run really quickly and give good coverage (the default).
  *
  *   `undefined`: Tests for undefined behaviour, may provoke programming errors
  *   under g_test_trap_subprocess() or g_test_expect_message() to check
- *   that appropriate assertions or warnings are given
+ *   that appropriate assertions or warnings are given (the default).
  *
  *   `no-undefined`: Avoid tests for undefined behaviour
  *
