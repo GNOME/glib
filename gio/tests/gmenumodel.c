@@ -868,32 +868,42 @@ test_dbus_subscriptions (void)
 
   g_assert_cmpint (items_changed_count, ==, 0);
 
+  /* We don't subscribe to change-notification until we look at the items */
   g_timeout_add (100, stop_loop, loop);
   g_main_loop_run (loop);
 
+  /* Looking at the items triggers subscription */
   g_menu_model_get_n_items (G_MENU_MODEL (proxy));
 
-  g_timeout_add (100, stop_loop, loop);
-  g_main_loop_run (loop);
+  while (items_changed_count < 1)
+    g_main_context_iteration (NULL, TRUE);
 
+  /* We get all three items in one batch */
   g_assert_cmpint (items_changed_count, ==, 1);
   g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (proxy)), ==, 3);
 
+  /* If we wait, we don't get any more */
   g_timeout_add (100, stop_loop, loop);
   g_main_loop_run (loop);
+  g_assert_cmpint (items_changed_count, ==, 1);
+  g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (proxy)), ==, 3);
 
+  /* Now we're subscribed, we get changes individually */
   g_menu_append (menu, "item4", NULL);
   g_menu_append (menu, "item5", NULL);
   g_menu_append (menu, "item6", NULL);
   g_menu_remove (menu, 0);
   g_menu_remove (menu, 0);
 
-  g_timeout_add (200, stop_loop, loop);
-  g_main_loop_run (loop);
+  while (items_changed_count < 6)
+    g_main_context_iteration (NULL, TRUE);
 
   g_assert_cmpint (items_changed_count, ==, 6);
 
   g_assert_cmpint (g_menu_model_get_n_items (G_MENU_MODEL (proxy)), ==, 4);
+
+  /* After destroying the proxy and waiting a bit, we don't get any more
+   * items-changed signals */
   g_object_unref (proxy);
 
   g_timeout_add (100, stop_loop, loop);
