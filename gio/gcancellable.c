@@ -644,6 +644,18 @@ typedef struct {
   guint         cancelled_handler;
 } GCancellableSource;
 
+/*
+ * We can't guarantee that the source still has references, so we are
+ * relying on the fact that g_source_set_ready_time() no longer makes
+ * assertions about the reference count - the source might be in the
+ * window between last-unref and finalize, during which its refcount
+ * is officially 0. However, we *can* guarantee that it's OK to
+ * dereference it in a limited way, because we know we haven't yet reached
+ * cancellable_source_finalize() - if we had, then we would have waited
+ * for signal emission to finish, then disconnected the signal handler
+ * under the lock.
+ * See https://bugzilla.gnome.org/show_bug.cgi?id=791754
+ */
 static void
 cancellable_source_cancelled (GCancellable *cancellable,
 			      gpointer      user_data)

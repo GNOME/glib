@@ -1846,7 +1846,15 @@ g_source_set_ready_time (GSource *source,
   GMainContext *context;
 
   g_return_if_fail (source != NULL);
-  g_return_if_fail (source->ref_count > 0);
+  /* We deliberately don't check for ref_count > 0 here, because that
+   * breaks cancellable_source_cancelled() in GCancellable: it has no
+   * way to find out that the last-unref has happened until the
+   * finalize() function is called, but that's too late, because the
+   * ref_count already has already reached 0 before that time.
+   * However, priv is only poisoned (set to NULL) after finalize(),
+   * so we can use this as a simple guard against use-after-free.
+   * See https://bugzilla.gnome.org/show_bug.cgi?id=791754 */
+  g_return_if_fail (source->priv != NULL);
 
   context = source->context;
 
