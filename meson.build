@@ -63,6 +63,10 @@ glib_pkgconfigreldir = join_paths(glib_libdir, 'pkgconfig')
 
 add_project_arguments('-D_GNU_SOURCE', language: 'c')
 
+# Disable strict aliasing;
+# see https://bugzilla.gnome.org/show_bug.cgi?id=791622
+add_project_arguments('-fno-strict-aliasing', language: 'c')
+
 ########################
 # Configuration begins #
 ########################

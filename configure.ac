@@ -2630,6 +2630,14 @@ AS_IF([ test "x$use_gcov" = "xyes"], [
   LDFLAGS="$LDFLAGS -lgcov"
 ])
 
+dnl *******************************
+dnl *** Disable strict aliasing ***
+dnl *******************************
+dnl See https://bugzilla.gnome.org/show_bug.cgi?id=791622
+AS_IF([test "${GCC}" = "yes"],[
+  CFLAGS="$CFLAGS -fno-strict-aliasing"
+])
+
 dnl ******************************
 dnl *** output the whole stuff ***
 dnl ******************************
