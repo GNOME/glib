@@ -421,7 +421,10 @@ check_timeout (GSocket *socket,
 static void
 g_socket_details_from_fd (GSocket *socket)
 {
-  struct sockaddr_storage address;
+  union {
+    struct sockaddr_storage storage;
+    struct sockaddr sa;
+  } address;
   gint fd;
   guint addrlen;
   int value, family;
@@ -454,7 +457,7 @@ g_socket_details_from_fd (GSocket *socket)
     }
 
   addrlen = sizeof address;
-  if (getsockname (fd, (struct sockaddr *) &address, &addrlen) != 0)
+  if (getsockname (fd, &address.sa, &addrlen) != 0)
     {
       errsv = get_socket_errno ();
       goto err;
@@ -463,8 +466,8 @@ g_socket_details_from_fd (GSocket *socket)
   if (addrlen > 0)
     {
       g_assert (G_STRUCT_OFFSET (struct sockaddr, sa_family) +
-		sizeof address.ss_family <= addrlen);
-      family = address.ss_family;
+		sizeof address.storage.ss_family <= addrlen);
+      family = address.storage.ss_family;
     }
   else
     {
@@ -488,7 +491,7 @@ g_socket_details_from_fd (GSocket *socket)
     {
      case G_SOCKET_FAMILY_IPV4:
      case G_SOCKET_FAMILY_IPV6:
-       socket->priv->family = address.ss_family;
+       socket->priv->family = address.storage.ss_family;
        switch (socket->priv->type)
 	 {
 	 case G_SOCKET_TYPE_STREAM:
@@ -521,7 +524,7 @@ g_socket_details_from_fd (GSocket *socket)
   if (socket->priv->family != G_SOCKET_FAMILY_INVALID)
     {
       addrlen = sizeof address;
-      if (getpeername (fd, (struct sockaddr *) &address, &addrlen) >= 0)
+      if (getpeername (fd, &address.sa, &addrlen) >= 0)
         {
           socket->priv->connected_read = TRUE;
           socket->priv->connected_write = TRUE;
@@ -1936,12 +1939,15 @@ GSocketAddress *
 g_socket_get_local_address (GSocket  *socket,
 			    GError  **error)
 {
-  struct sockaddr_storage buffer;
+  union {
+    struct sockaddr_storage storage;
+    struct sockaddr sa;
+  } buffer;
   guint len = sizeof (buffer);
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
-  if (getsockname (socket->priv->fd, (struct sockaddr *) &buffer, &len) < 0)
+  if (getsockname (socket->priv->fd, &buffer.sa, &len) < 0)
     {
       int errsv = get_socket_errno ();
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
@@ -1949,7 +1955,7 @@ g_socket_get_local_address (GSocket  *socket,
       return NULL;
     }
 
-  return g_socket_address_new_from_native (&buffer, len);
+  return g_socket_address_new_from_native (&buffer.storage, len);
 }
 
 /**
@@ -1969,7 +1975,10 @@ GSocketAddress *
 g_socket_get_remote_address (GSocket  *socket,
 			     GError  **error)
 {
-  struct sockaddr_storage buffer;
+  union {
+    struct sockaddr_storage storage;
+    struct sockaddr sa;
+  } buffer;
   guint len = sizeof (buffer);
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
@@ -1984,7 +1993,7 @@ g_socket_get_remote_address (GSocket  *socket,
 
   if (!socket->priv->remote_address)
     {
-      if (getpeername (socket->priv->fd, (struct sockaddr *) &buffer, &len) < 0)
+      if (getpeername (socket->priv->fd, &buffer.sa, &len) < 0)
 	{
 	  int errsv = get_socket_errno ();
 	  g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
@@ -1992,7 +2001,7 @@ g_socket_get_remote_address (GSocket  *socket,
 	  return NULL;
 	}
 
-      socket->priv->remote_address = g_socket_address_new_from_native (&buffer, len);
+      socket->priv->remote_address = g_socket_address_new_from_native (&buffer.storage, len);
     }
 
   return g_object_ref (socket->priv->remote_address);
@@ -2104,7 +2113,10 @@ g_socket_bind (GSocket         *socket,
 	       gboolean         reuse_address,
 	       GError         **error)
 {
-  struct sockaddr_storage addr;
+  union {
+    struct sockaddr_storage storage;
+    struct sockaddr sa;
+  } addr;
   gboolean so_reuseaddr;
 #ifdef SO_REUSEPORT
   gboolean so_reuseport;
@@ -2115,7 +2127,7 @@ g_socket_bind (GSocket         *socket,
   if (!check_socket (socket, error))
     return FALSE;
 
-  if (!g_socket_address_to_native (address, &addr, sizeof addr, error))
+  if (!g_socket_address_to_native (address, &addr.storage, sizeof addr, error))
     return FALSE;
 
   /* On Windows, SO_REUSEADDR has the semantics we want for UDP
@@ -2147,7 +2159,7 @@ g_socket_bind (GSocket         *socket,
   g_socket_set_option (socket, SOL_SOCKET, SO_REUSEPORT, so_reuseport, NULL);
 #endif
 
-  if (bind (socket->priv->fd, (struct sockaddr *) &addr,
+  if (bind (socket->priv->fd, &addr.sa,
 	    g_socket_address_get_native_size (address)) < 0)
     {
       int errsv = get_socket_errno ();
@@ -2793,14 +2805,17 @@ g_socket_connect (GSocket         *socket,
 		  GCancellable    *cancellable,
 		  GError         **error)
 {
-  struct sockaddr_storage buffer;
+  union {
+    struct sockaddr_storage storage;
+    struct sockaddr sa;
+  } buffer;
 
   g_return_val_if_fail (G_IS_SOCKET (socket) && G_IS_SOCKET_ADDRESS (address), FALSE);
 
   if (!check_socket (socket, error))
     return FALSE;
 
-  if (!g_socket_address_to_native (address, &buffer, sizeof buffer, error))
+  if (!g_socket_address_to_native (address, &buffer.storage, sizeof buffer, error))
     return FALSE;
 
   if (socket->priv->remote_address)
@@ -2811,7 +2826,7 @@ g_socket_connect (GSocket         *socket,
     {
       win32_unset_event_mask (socket, FD_CONNECT);
 
-      if (connect (socket->priv->fd, (struct sockaddr *) &buffer,
+      if (connect (socket->priv->fd, &buffer.sa,
 		   g_socket_address_get_native_size (address)) < 0)
 	{
 	  int errsv = get_socket_errno ();

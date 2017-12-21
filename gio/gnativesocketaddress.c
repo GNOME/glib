@@ -47,7 +47,10 @@
 struct _GNativeSocketAddressPrivate
 {
   struct sockaddr *sockaddr;
-  struct sockaddr_storage storage;
+  union {
+    struct sockaddr_storage storage;
+    struct sockaddr sa;
+  } storage;
   gsize sockaddr_len;
 };
 
@@ -58,7 +61,7 @@ g_native_socket_address_dispose (GObject *object)
 {
   GNativeSocketAddress *address = G_NATIVE_SOCKET_ADDRESS (object);
 
-  if (address->priv->sockaddr != (struct sockaddr *)&address->priv->storage)
+  if (address->priv->sockaddr != &address->priv->storage.sa)
     g_free (address->priv->sockaddr);
 
   G_OBJECT_CLASS (g_native_socket_address_parent_class)->dispose (object);
@@ -150,7 +153,7 @@ g_native_socket_address_new (gpointer        native,
   addr = g_object_new (G_TYPE_NATIVE_SOCKET_ADDRESS, NULL);
 
   if (len <= sizeof(addr->priv->storage))
-    addr->priv->sockaddr = (struct sockaddr*)&addr->priv->storage;
+    addr->priv->sockaddr = &addr->priv->storage.sa;
   else
     addr->priv->sockaddr = g_malloc (len);
 
