@@ -433,6 +433,8 @@
 #define GLIB_UNAVAILABLE(maj,min) G_UNAVAILABLE(maj,min) _GLIB_EXTERN
 #endif
 
+#ifndef __GI_SCANNER__
+
 #ifdef __GNUC__
 
 /* these macros are private */
@@ -484,6 +486,16 @@
 #define G_DEFINE_AUTO_CLEANUP_FREE_FUNC(TypeName, func, none)
 
 /* no declaration of g_auto() or g_autoptr() here */
-#endif
+#endif /* __GNUC__ */
+
+#else
+
+#define _GLIB_DEFINE_AUTOPTR_CHAINUP(ModuleObjName, ParentName)
+
+#define G_DEFINE_AUTOPTR_CLEANUP_FUNC(TypeName, func)
+#define G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(TypeName, func)
+#define G_DEFINE_AUTO_CLEANUP_FREE_FUNC(TypeName, func, none)
+
+#endif /* __GI_SCANNER__ */
 
 #endif /* __G_MACROS_H__ */
