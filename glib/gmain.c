@@ -1848,13 +1848,18 @@ g_source_set_ready_time (GSource *source,
   g_return_if_fail (source != NULL);
   g_return_if_fail (source->ref_count > 0);
 
-  if (source->priv->ready_time == ready_time)
-    return;
-
   context = source->context;
 
   if (context)
     LOCK_CONTEXT (context);
+
+  if (source->priv->ready_time == ready_time)
+    {
+      if (context)
+        UNLOCK_CONTEXT (context);
+
+      return;
+    }
 
   source->priv->ready_time = ready_time;
 
