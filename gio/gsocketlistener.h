@@ -62,7 +62,7 @@ struct _GSocketListenerClass
   void (* changed) (GSocketListener *listener);
 
   void (* event) (GSocketListener      *listener,
-                  GSocketListenerEvent *event,
+                  GSocketListenerEvent  event,
                   GSocket              *socket);
 
   /* Padding for future expansion */
