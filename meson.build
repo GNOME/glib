@@ -1510,7 +1510,7 @@ xgettext = find_program('xgettext', required : false)
 # libmount is only used by gio, but we need to fetch the libs to generate the
 # pkg-config file below
 libmount_dep = []
-if get_option('libmount')
+if host_system == 'linux' and get_option('libmount')
   libmount_dep = [dependency('mount', version : '>=2.28', required : false)]
   if not libmount_dep[0].found()
     libmount_dep = [cc.find_library('mount', required : true)]
@@ -1525,14 +1525,14 @@ if host_system == 'windows'
 endif
 
 selinux_dep = []
-if get_option('selinux')
+if host_system == 'linux' and get_option('selinux')
   selinux_dep = [dependency('libselinux')]
   glib_conf.set('SELINUX_LIBS', '-lselinux')
   glib_conf.set('HAVE_SELINUX', 1)
 endif
 
 xattr_dep = []
-if get_option('xattr')
+if host_system != 'windows' and get_option('xattr')
   # either glibc or libattr can provide xattr support
   # for both of them, we check for getxattr being in
   # the library and a valid xattr header.
