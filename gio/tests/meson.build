@@ -309,6 +309,7 @@ uninstalled_test_extra_programs = [
   ['gapplication-example-cmdline'],
   ['gapplication-example-cmdline2'],
   ['gapplication-example-cmdline3'],
+  ['gapplication-example-cmdline4'],
   ['gapplication-example-dbushooks'],
   ['gapplication-example-open'],
   ['gdbus-daemon', gdbus_daemon_sources],

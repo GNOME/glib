@@ -175,7 +175,15 @@ void                    g_application_add_main_option                   (GApplic
 GLIB_AVAILABLE_IN_2_40
 void                    g_application_add_option_group                  (GApplication             *application,
                                                                          GOptionGroup             *group);
-
+GLIB_AVAILABLE_IN_2_56
+void                    g_application_set_option_context_parameter_string (GApplication             *application,
+                                                                           const gchar              *parameter_string);
+GLIB_AVAILABLE_IN_2_56
+void                    g_application_set_option_context_summary        (GApplication             *application,
+                                                                         const gchar              *summary);
+GLIB_AVAILABLE_IN_2_56
+void                    g_application_set_option_context_description    (GApplication             *application,
+                                                                         const gchar              *description);
 GLIB_AVAILABLE_IN_ALL
 gboolean                g_application_get_is_registered                 (GApplication             *application);
 GLIB_AVAILABLE_IN_ALL

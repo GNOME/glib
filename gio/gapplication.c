@@ -246,6 +246,9 @@ struct _GApplicationPrivate
   GSList             *option_groups;
   GHashTable         *packed_options;
   gboolean            options_parsed;
+  gchar              *parameter_string;
+  gchar              *summary;
+  gchar              *description;
 
   /* Allocated option strings, from g_application_add_main_option() */
   GSList             *option_strings;
@@ -484,7 +487,9 @@ g_application_parse_command_line (GApplication   *application,
    */
   g_return_val_if_fail (!application->priv->options_parsed, NULL);
 
-  context = g_option_context_new (NULL);
+  context = g_option_context_new (application->priv->parameter_string);
+  g_option_context_set_summary (context, application->priv->summary);
+  g_option_context_set_description (context, application->priv->description);
 
   gapplication_group = g_option_group_new ("gapplication",
                                            _("GApplication options"), _("Show GApplication options"),
@@ -813,6 +818,77 @@ g_application_add_option_group (GApplication *application,
 
   application->priv->option_groups = g_slist_prepend (application->priv->option_groups, group);
 }
+
+/**
+ * g_application_set_option_context_parameter_string:
+ * @application: the #GApplication
+ * @parameter_string: (nullable): a string which is displayed
+ *   in the first line of `--help` output, after the usage summary `programname [OPTION...]`.
+ *
+ * Sets the parameter string to be used by the commandline handling of @application.
+ *
+ * This function registers the argument to be passed to g_option_context_new()
+ * when the internal #GOptionContext of @application is created.
+ *
+ * See g_option_context_new() for more information about @parameter_string.
+ *
+ * Since: 2.56
+ */
+void
+g_application_set_option_context_parameter_string (GApplication *application,
+                                                   const gchar  *parameter_string)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+
+  g_free (application->priv->parameter_string);
+  application->priv->parameter_string = g_strdup (parameter_string);
+}
+
+/**
+ * g_application_set_option_context_summary:
+ * @application: the #GApplication
+ * @summary: (nullable): a string to be shown in `--help` output
+ *  before the list of options, or %NULL
+ *
+ * Adds a summary to the @application option context.
+ *
+ * See g_option_context_set_summary() for more information.
+ *
+ * Since: 2.56
+ */
+void
+g_application_set_option_context_summary (GApplication *application,
+                                          const gchar  *summary)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+
+  g_free (application->priv->summary);
+  application->priv->summary = g_strdup (summary);
+}
+
+/**
+ * g_application_set_option_context_description:
+ * @application: the #GApplication
+ * @description: (nullable): a string to be shown in `--help` output
+ *  after the list of options, or %NULL
+ *
+ * Adds a description to the @application option context.
+ *
+ * See g_option_context_set_description() for more information.
+ *
+ * Since: 2.56
+ */
+void
+g_application_set_option_context_description (GApplication *application,
+                                              const gchar  *description)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+
+  g_free (application->priv->description);
+  application->priv->description = g_strdup (description);
+
+}
+
 
 /* vfunc defaults {{{1 */
 static void
@@ -1274,6 +1350,10 @@ g_application_finalize (GObject *object)
     g_option_group_unref (application->priv->main_options);
   if (application->priv->packed_options)
     g_hash_table_unref (application->priv->packed_options);
+
+  g_free (application->priv->parameter_string);
+  g_free (application->priv->summary);
+  g_free (application->priv->description);
 
   g_slist_free_full (application->priv->option_strings, g_free);
 
