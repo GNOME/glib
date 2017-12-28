@@ -2999,6 +2999,7 @@ splice_stream_with_progress (GInputStream           *in,
                              GError                **error)
 {
   int buffer[2] = { -1, -1 };
+  int buffer_size;
   gboolean res;
   goffset total_size;
   loff_t offset_in;
@@ -3010,6 +3011,25 @@ splice_stream_with_progress (GInputStream           *in,
 
   if (!g_unix_open_pipe (buffer, FD_CLOEXEC, error))
     return FALSE;
+
+  /* Try a 1MiB buffer for improved throughput. If that fails, use the default
+   * pipe size. See: https://bugzilla.gnome.org/791457 */
+  buffer_size = fcntl (buffer[1], F_SETPIPE_SZ, 1024 * 1024);
+  if (buffer_size <= 0)
+    {
+      int errsv;
+      buffer_size = fcntl (buffer[1], F_GETPIPE_SZ);
+      errsv = errno;
+
+      if (buffer_size <= 0)
+        {
+          g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
+                       _("Error splicing file: %s"), g_strerror (errsv));
+          return FALSE;
+        }
+    }
+
+  g_assert (buffer_size > 0);
 
   total_size = -1;
   /* avoid performance impact of querying total size when it's not needed */
@@ -3034,7 +3054,7 @@ splice_stream_with_progress (GInputStream           *in,
       if (g_cancellable_set_error_if_cancelled (cancellable, error))
         break;
 
-      if (!do_splice (fd_in, &offset_in, buffer[1], NULL, 1024*64, &n_read, error))
+      if (!do_splice (fd_in, &offset_in, buffer[1], NULL, buffer_size, &n_read, error))
         break;
 
       if (n_read == 0)
