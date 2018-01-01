@@ -331,18 +331,6 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-regex</systemitem> and
-        <systemitem>--enable-regex</systemitem></title>
-
-      <para>
-        Do not compile GLib with regular expression support.
-        GLib will be smaller because it will not need the
-        PCRE library. This is however not recommended, as
-        programs may need GRegex.
-      </para>
-    </formalpara>
-
-    <formalpara>
       <title><systemitem>--with-pcre</systemitem></title>
 
       <para>
