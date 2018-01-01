@@ -405,7 +405,7 @@ on_handle_get_self (FooiGenMethodThreads   *object,
                     gpointer                user_data)
 {
   gchar *s;
-  s = g_strdup_printf ("%p", g_thread_self ());
+  s = g_strdup_printf ("%p", (void *)g_thread_self ());
   foo_igen_method_threads_complete_get_self (object, invocation, s);
   g_free (s);
   return TRUE;
