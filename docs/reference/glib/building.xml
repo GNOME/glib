@@ -43,7 +43,7 @@
     </para>
     <para>
       The GTK+ documentation contains
-      <ulink url="../gtk/gtk-building.html">further details</ulink>
+      <ulink url="https://developer.gnome.org/gtk3/stable/gtk-building.html">further details</ulink>
       about the build process and ways to influence it.
     </para>
   </refsect1>
@@ -52,26 +52,23 @@
     <para>
       Before you can compile the GLib library, you need to have
       various other tools and libraries installed on your system.
-      Beyond a C compiler (which must implement C90, but does not need
-      to implement C99), the two tools needed during the build process
-      (as differentiated from the tools used in when creating GLib
-      mentioned above such as <application>autoconf</application>) are
-      <command>pkg-config</command> and GNU make.
+      If you are building from a release archive, you will need
+      <ulink url="https://wiki.gnome.org/Projects/GLib/CompilerRequirements">a compliant C toolchain</ulink>,
+      GNU Make, and <application>pkg-config</application>;
+      if you are building directly from a Git repository clone
+      of GLib, you will also need the GNU Autotools mentioned
+      above.
     </para>
     <itemizedlist>
       <listitem>
         <para>
-          <ulink url="http://www.freedesktop.org/software/pkgconfig/">pkg-config</ulink>
+          <ulink url="https://www.freedesktop.org/wiki/Software/pkg-config/">pkg-config</ulink>
           is a tool for tracking the compilation flags needed for
           libraries that are used by the GLib library. (For each
           library, a small <literal>.pc</literal> text file is
           installed in a standard location that contains the compilation
           flags needed for that library along with version number
-          information.) The version of <command>pkg-config</command>
-          needed to build GLib is mirrored in the
-          <filename>dependencies</filename> directory
-          on the <ulink url="ftp://ftp.gtk.org/pub/gtk/v2.2/">GTK+ FTP
-          site.</ulink>
+          information).
         </para>
       </listitem>
       <listitem>
@@ -107,7 +104,7 @@
         <para>
           If your system has an <function>iconv()</function> implementation but
           you want to use libiconv instead, you can pass the
-          --with-libiconv option to configure. This forces
+          <option>--with-libiconv</option> option to configure. This forces
           libiconv to be used.
         </para>
         <para>
@@ -151,20 +148,21 @@
       <listitem>
         <para>
           GRegex uses the <ulink url="http://www.pcre.org/">PCRE library</ulink>
-          for regular expression matching. The default is to use the internal
-          version of PCRE that is patched to use GLib for memory management
-          and Unicode handling. If you prefer to use the system-supplied PCRE
-          library  you can pass the <option>--with-pcre=system</option> option
-          to, but it is not recommended.
+          for regular expression matching. The default is to use the system
+          version of PCRE, to reduce the chances of security fixes going out
+          of sync. GLib additionally provides an internal copy of PCRE in case
+          the system version is too old, or does not support UTF-8; the internal
+          copy is patched to use GLib for memory management and to share the
+          same Unicode tables.
         </para>
       </listitem>
       <listitem>
         <para>
           The optional extended attribute support in GIO requires the
-          getxattr() family of functions that may be provided by glibc or
-          by the standalone libattr library. To build GLib without extended
-          attribute support, use the <option>--disable-xattr</option>
-          option.
+          <function>getxattr()</function> family of functions that may be
+          provided by the C library or by the standalone libattr library. To
+          build GLib without extended attribute support, use the
+          <option>--disable-xattr</option> option.
         </para>
       </listitem>
       <listitem>
@@ -187,7 +185,9 @@
           The optional support for
           <ulink url="http://sourceware.org/systemtap/">SystemTap</ulink>
           can be disabled with the <option>--disable-systemtap</option>
-          configure option.
+          configure option. Additionally, you can control the location
+          where GLib installs the SystemTap probes, using the
+          <option>--with-tapset-install-dir=DIR</option> configure option.
         </para>
       </listitem>
     </itemizedlist>
@@ -203,15 +203,16 @@
     </para>
 
     <formalpara>
-      <title><systemitem>--enable-debug</systemitem></title>
+      <title><option>--enable-debug</option></title>
 
       <para>
         Turns on various amounts of debugging support. Setting this to 'no'
-        disables g_assert(), g_return_if_fail(), g_return_val_if_fail() and
-        all cast checks between different object types. Setting it to 'minimum'         disables only cast checks. Setting it to 'yes' enables
-        <link linkend="G-DEBUG:CAPS">runtime debugging</link>.
-        The default is 'minimum'.
-        Note that 'no' is fast, but dangerous as it tends to destabilize
+        disables <function>g_assert()</function>, <function>g_return_if_fail()</function>,
+        <function>g_return_val_if_fail()</function> and all cast checks
+        between different object types. Setting it to 'minimum' disables
+        only cast checks. Setting it to 'yes' enables <link linkend="G-DEBUG:CAPS">runtime debugging</link>.
+        The default is 'minimum' for stable releases, and 'yes' for development
+        snapshots. Note that 'no' is fast, but dangerous as it tends to destabilize
         even mostly bug-free software by changing the effect of many bugs
         from simple warnings into fatal crashes. Thus
         <option>--enable-debug=no</option> should <emphasis>not</emphasis>
@@ -220,26 +221,26 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-gc-friendly</systemitem> and
-        <systemitem>--enable-gc-friendly</systemitem></title>
+      <title><option>--disable-gc-friendly</option> and
+        <option>--enable-gc-friendly</option></title>
 
       <para>
-        By default, and with <systemitem>--disable-gc-friendly</systemitem>
-        as well, Glib does not clear the memory for certain objects before
-        they are freed. For example, Glib may decide to recycle GList nodes
+        By default, and with <option>--disable-gc-friendly</option>
+        as well, GLib does not clear the memory for certain objects before
+        they are freed. For example, GLib may decide to recycle GList nodes
         by putting them in a free list. However, memory profiling and debugging
         tools like <ulink url="http://www.valgrind.org">Valgrind</ulink> work
         better if an application does not keep dangling pointers to freed
         memory (even though these pointers are no longer dereferenced), or
         invalid pointers inside uninitialized memory.
-        The <systemitem>--enable-gc-friendly</systemitem> option makes Glib
+        The <option>--enable-gc-friendly</option> option makes GLib
         clear memory in these situations:
       </para>
 
       <itemizedlist>
         <listitem>
           <para>
-            When shrinking a GArray, Glib will clear the memory no longer
+            When shrinking a GArray, GLib will clear the memory no longer
             available in the array: shrink an array from 10 bytes to 7, and
             the last 3 bytes will be cleared. This includes removals of single
             and multiple elements.
@@ -247,7 +248,7 @@
         </listitem>
         <listitem>
           <para>
-            When growing a GArray, Glib will clear the new chunk of memory.
+            When growing a GArray, GLib will clear the new chunk of memory.
             Grow an array from 7 bytes to 10 bytes, and the last 3 bytes will
             be cleared.
           </para>
@@ -259,14 +260,14 @@
         </listitem>
         <listitem>
           <para>
-            When freeing a node from a GHashTable, Glib will first clear
+            When freeing a node from a GHashTable, GLib will first clear
             the node, which used to have pointers to the key and the value
             stored at that node.
           </para>
         </listitem>
         <listitem>
           <para>
-            When destroying or removing a GTree node, Glib will clear the node,
+            When destroying or removing a GTree node, GLib will clear the node,
             which used to have pointers to the node's value, and the left and
             right subnodes.
           </para>
@@ -275,13 +276,13 @@
 
       <para>
         Since clearing the memory has a cost,
-        <systemitem>--disable-gc-friendly</systemitem> is the default.
+        <option>--disable-gc-friendly</option> is the default.
       </para>
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-mem-pools</systemitem> and
-        <systemitem>--enable-mem-pools</systemitem></title>
+      <title><option>--disable-mem-pools</option> and
+        <option>--enable-mem-pools</option></title>
 
       <para>
         Many small chunks of memory are often allocated via collective pools
@@ -321,7 +322,7 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--with-threads</systemitem></title>
+      <title><option>--with-threads</option></title>
 
       <para>
         Specify a thread implementation to use. Available options are
@@ -331,7 +332,7 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--with-pcre</systemitem></title>
+      <title><option>--with-pcre</option></title>
 
       <para>
         Specify whether to use the internal or the system-supplied
@@ -346,30 +347,34 @@
           <listitem>
             <para>
               'system' means that GRegex will be compiled to use
-              the system-supplied PCRE library.
+              the system-supplied PCRE library; this is the default
+              setting.
             </para>
           </listitem>
         </itemizedlist>
-        Using the internal PCRE is the preferred solution:
+        Using the internal PCRE is the preferred solution if:
         <itemizedlist>
           <listitem>
             <para>
-              System-supplied PCRE has a separated copy of the big tables
-              used for Unicode handling.
+              your system has strict resource constraints; the system-supplied
+              PCRE has a separated copy of the tables used for Unicode
+              handling, whereas the internal copy shares the Unicode tables
+              used by GLib.
             </para>
           </listitem>
           <listitem>
             <para>
-              Some systems have PCRE libraries compiled without some needed
-              features, such as UTF-8 and Unicode support.
+              your system has PCRE built without some needed features,
+              such as UTF-8 and Unicode support.
             </para>
           </listitem>
           <listitem>
             <para>
-              PCRE uses some global variables for memory management and
-              other features. In the rare case of a program using both
-              GRegex and PCRE (maybe indirectly through a library),
-              this variables could lead to problems when they are modified.
+              you are planning to use both GRegex and PCRE API at the same
+              time, either directly or indirectly through a dependency; PCRE
+              uses some global variables for memory management and
+              other features, and if both GLib and PCRE try to access them
+              at the same time, this could lead to undefined behavior.
             </para>
           </listitem>
         </itemizedlist>
@@ -377,31 +382,34 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-included-printf</systemitem> and
-        <systemitem>--enable-included-printf</systemitem></title>
+      <title><option>--disable-included-printf</option> and
+        <option>--enable-included-printf</option></title>
 
       <para>
         By default the <command>configure</command> script will try
         to auto-detect whether the C library provides a suitable set
-        of printf() functions. In detail, <command>configure</command>
-        checks that the semantics of snprintf() are as specified by C99
+        of <function>printf()</function> functions. In detail,
+        <command>configure</command> checks that the semantics of
+        <function>snprintf()</function> are as specified by C99
         and that positional parameters as specified in the Single Unix
         Specification are supported. If this not the case, GLib will
-        include an implementation of the printf() family.
+        include an implementation of the <function>printf()</function>
+        family.
       </para>
       <para>
         These options can be used to explicitly control whether
-        an implementation of the printf() family should be included or not.
+        an implementation of the <function>printf()</function> family
+        should be included or not.
       </para>
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-Bsymbolic</systemitem> and
-        <systemitem>--enable-Bsymbolic</systemitem></title>
+      <title><option>--disable-Bsymbolic</option> and
+        <option>--enable-Bsymbolic</option></title>
 
       <para>
-        By default, GLib uses the -Bsymbolic-functions linker
-        flag to avoid intra-library PLT jumps. A side-effect
+        By default, GLib uses the <option>-Bsymbolic-functions</option>
+        linker flag to avoid intra-library PLT jumps. A side-effect
         of this is that it is no longer possible to override
         internal uses of GLib functions with
         <envar>LD_PRELOAD</envar>. Therefore, it may make
@@ -412,8 +420,8 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-gtk-doc</systemitem> and
-        <systemitem>--enable-gtk-doc</systemitem></title>
+      <title><option>--disable-gtk-doc</option> and
+        <option>--enable-gtk-doc</option></title>
 
       <para>
         By default the <command>configure</command> script will try
@@ -430,8 +438,8 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-man</systemitem> and
-        <systemitem>--enable-man</systemitem></title>
+      <title><option>--disable-man</option> and
+        <option>--enable-man</option></title>
 
       <para>
         By default the <command>configure</command> script will try
@@ -446,23 +454,24 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-xattr</systemitem> and
-        <systemitem>--enable-xattr</systemitem></title>
+      <title><option>--disable-xattr</option> and
+        <option>--enable-xattr</option></title>
 
       <para>
         By default the <command>configure</command> script will try
-        to auto-detect whether the getxattr() family of functions
-        is available. If it is, then extended attribute support
-        will be included in GIO. These options can be used to
-        explicitly control whether extended attribute support
-        should be included or not. getxattr() and friends can
-        be provided by glibc or by the standalone libattr library.
+        to auto-detect whether the <function>getxattr()</function>
+        family of functions is available. If it is, then extended
+        attribute support will be included in GIO. These options can
+        be used to explicitly control whether extended attribute
+        support should be included or not. <function>getxattr()</function>
+        and friends can be provided by glibc or by the standalone
+        libattr library.
       </para>
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-selinux</systemitem> and
-        <systemitem>--enable-selinux</systemitem></title>
+      <title><option>--disable-selinux</option> and
+        <option>--enable-selinux</option></title>
 
       <para>
         By default the <command>configure</command> script will
@@ -474,8 +483,8 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-dtrace</systemitem> and
-        <systemitem>--enable-dtrace</systemitem></title>
+      <title><option>--disable-dtrace</option> and
+        <option>--enable-dtrace</option></title>
 
       <para>
         By default the <command>configure</command> script will
@@ -484,8 +493,8 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--disable-systemtap</systemitem> and
-        <systemitem>--enable-systemtap</systemitem></title>
+      <title><option>--disable-systemtap</option> and
+        <option>--enable-systemtap</option></title>
 
       <para>
         This option requires DTrace support. If it is available, then
@@ -495,8 +504,8 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--enable-coverage</systemitem> and
-        <systemitem>--disable-coverage</systemitem></title>
+      <title><option>--enable-coverage</option> and
+        <option>--disable-coverage</option></title>
 
       <para>
         Enable the generation of coverage reports for the GLib tests.
@@ -508,7 +517,7 @@
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--with-runtime-libdir=RELPATH</systemitem></title>
+      <title><option>--with-runtime-libdir=RELPATH</option></title>
 
       <para>
         Allows specifying a relative path to where to install the runtime
@@ -516,21 +525,21 @@
         GLib applications). This can be used in operating system setups where
         programs using GLib needs to run before e.g. <filename>/usr</filename>
         is mounted.
-        For example, if LIBDIR is <filename>/usr/lib</filename> and
+        For example, if <varname>LIBDIR</varname> is <filename>/usr/lib</filename> and
         <filename>../../lib</filename> is passed to
-        <systemitem>--with-runtime-libdir</systemitem> then the
+        <option>--with-runtime-libdir</option> then the
         runtime libraries are installed into <filename>/lib</filename> rather
         than <filename>/usr/lib</filename>.
       </para>
     </formalpara>
 
     <formalpara>
-      <title><systemitem>--with-python</systemitem></title>
+      <title><option>--with-python=PATH</option></title>
 
       <para>
         Allows specifying the Python interpreter to use, either as an absolute path,
-        or as a program name. GLib can be built with Python 2 (at least version 2.5)
-        or Python 3.
+        or as a program name. GLib can be built with Python 2 (at least version 2.7)
+        or, preferably, with Python 3.
       </para>
     </formalpara>
   </refsect1>
