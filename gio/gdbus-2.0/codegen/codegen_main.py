@@ -19,8 +19,8 @@
 #
 # Author: David Zeuthen <davidz@redhat.com>
 
+import argparse
 import sys
-import optparse
 from os import path
 
 from . import config
@@ -28,7 +28,7 @@ from . import dbustypes
 from . import parser
 from . import codegen
 from . import codegen_docbook
-from .utils import print_error
+from .utils import print_error, print_warning
 
 def find_arg(arg_list, arg_name):
     for a in arg_list:
@@ -146,58 +146,62 @@ def apply_annotations(iface_list, annotation_list):
                     apply_annotation(iface_list, iface, None, None, None, None, key, value)
 
 def codegen_main():
-    arg_parser = optparse.OptionParser('%prog [options]')
-    arg_parser.add_option('', '--xml-files', metavar='FILE', action='append',
-                          help='D-Bus introspection XML file')
-    arg_parser.add_option('', '--interface-prefix', metavar='PREFIX', default='',
+    arg_parser = argparse.ArgumentParser(description='D-Bus code and documentation generator')
+    arg_parser.add_argument('files', metavar='FILE', nargs='*',
+                            help='D-Bus introspection XML file')
+    arg_parser.add_argument('--xml-files', metavar='FILE', action='append', default=[],
+                            help='D-Bus introspection XML file')
+    arg_parser.add_argument('--interface-prefix', metavar='PREFIX', default='',
                             help='String to strip from D-Bus interface names for code and docs')
-    arg_parser.add_option('', '--c-namespace', metavar='NAMESPACE', default='',
+    arg_parser.add_argument('--c-namespace', metavar='NAMESPACE', default='',
                             help='The namespace to use for generated C code')
-    arg_parser.add_option('', '--c-generate-object-manager', action='store_true',
+    arg_parser.add_argument('--c-generate-object-manager', action='store_true',
                             help='Generate a GDBusObjectManagerClient subclass when generating C code')
-    arg_parser.add_option('', '--generate-c-code', metavar='OUTFILES',
-                          help='Generate C code in OUTFILES.[ch]')
-    arg_parser.add_option('', '--c-generate-autocleanup', type='choice', choices=['none', 'objects', 'all'], default='objects',
-                             help='Generate autocleanup support')
-    arg_parser.add_option('', '--generate-docbook', metavar='OUTFILES',
-                          help='Generate Docbook in OUTFILES-org.Project.IFace.xml')
-    arg_parser.add_option('', '--annotate', nargs=3, action='append', metavar='WHAT KEY VALUE',
-                          help='Add annotation (may be used several times)')
-    arg_parser.add_option('', '--output-directory', metavar='OUTDIR', default='',
-                          help='Location to output generated files')
-    (opts, args) = arg_parser.parse_args();
+    arg_parser.add_argument('--generate-c-code', metavar='OUTFILES',
+                            help='Generate C code in OUTFILES.[ch]')
+    arg_parser.add_argument('--c-generate-autocleanup', choices=['none', 'objects', 'all'], default='objects',
+                            help='Generate autocleanup support')
+    arg_parser.add_argument('--generate-docbook', metavar='OUTFILES',
+                            help='Generate Docbook in OUTFILES-org.Project.IFace.xml')
+    arg_parser.add_argument('--annotate', nargs=3, action='append', metavar='WHAT KEY VALUE',
+                            help='Add annotation (may be used several times)')
+    arg_parser.add_argument('--output-directory', metavar='OUTDIR', default='',
+                            help='Location to output generated files')
+    args = arg_parser.parse_args();
+
+    if len(args.xml_files) > 0:
+        print_warning('The "--xml-files" option is deprecated; use positional arguments instead')
 
     all_ifaces = []
-    for fname in args:
-        f = open(fname, 'rb')
-        xml_data = f.read()
-        f.close()
+    for fname in args.files + args.xml_files:
+        with open(fname, 'rb') as f:
+            xml_data = f.read()
         parsed_ifaces = parser.parse_dbus_xml(xml_data)
         all_ifaces.extend(parsed_ifaces)
 
-    if opts.annotate != None:
-        apply_annotations(all_ifaces, opts.annotate)
+    if args.annotate != None:
+        apply_annotations(all_ifaces, args.annotate)
 
     for i in all_ifaces:
-        i.post_process(opts.interface_prefix, opts.c_namespace)
+        i.post_process(args.interface_prefix, args.c_namespace)
 
-    outdir = opts.output_directory
+    outdir = args.output_directory
 
-    docbook = opts.generate_docbook
+    docbook = args.generate_docbook
     docbook_gen = codegen_docbook.DocbookCodeGenerator(all_ifaces, docbook, outdir);
     if docbook:
         ret = docbook_gen.generate()
 
-    c_code = opts.generate_c_code
+    c_code = args.generate_c_code
     if c_code:
         header_name = c_code + '.h'
         h = open(path.join(outdir, header_name), 'w')
         c = open(path.join(outdir, c_code + '.c'), 'w')
         gen = codegen.CodeGenerator(all_ifaces,
-                                    opts.c_namespace,
-                                    opts.interface_prefix,
-                                    opts.c_generate_object_manager,
-                                    opts.c_generate_autocleanup,
+                                    args.c_namespace,
+                                    args.interface_prefix,
+                                    args.c_generate_object_manager,
+                                    args.c_generate_autocleanup,
                                     docbook_gen,
                                     h, c,
                                     header_name)

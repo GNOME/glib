@@ -55,11 +55,15 @@
   <title>Description</title>
   <para>
     <command>gdbus-codegen</command> is used to generate code and/or
-    documentation for one or more D-Bus interfaces. The tool reads
+    documentation for one or more D-Bus interfaces.
+  </para>
+  <para>
+    <command>gdbus-codegen</command> reads
     <ulink
     url="http://dbus.freedesktop.org/doc/dbus-specification.html#introspection-format">D-Bus
-    Introspection XML</ulink> files and generates output files. The
-    tool currently supports generating C code (via
+    Introspection XML</ulink> from files passed as additional
+    arguments on the command line and generates output files.
+    It currently supports generating C code (via
     <option>--generate-c-code</option>) and Docbook XML (via
     <option>--generate-docbook</option>).
   </para>
@@ -152,6 +156,7 @@
       <term><option>--xml-files</option> <replaceable>FILE</replaceable></term>
       <listitem>
         <para>
+          This option is deprecated; use positional arguments instead.
           The D-Bus introspection XML file.
         </para>
       </listitem>
