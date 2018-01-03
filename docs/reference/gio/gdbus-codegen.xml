@@ -35,6 +35,7 @@
     <arg><option>--c-generate-autocleanup</option> none|objects|all</arg>
     <arg><option>--output-directory</option> <replaceable>OUTDIR</replaceable></arg>
     <arg><option>--generate-docbook</option> <replaceable>OUTFILES</replaceable></arg>
+    <arg><option>--pragma-once</option></arg>
     <arg><option>--xml-files</option> <replaceable>FILE</replaceable></arg>
     <group choice="plain" rep="repeat">
       <arg>
@@ -211,6 +212,17 @@
           to be in <ulink
           url="http://en.wikipedia.org/wiki/CamelCase">CamelCase</ulink>
           or <emphasis>Ugly_Case</emphasis> (see above).
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--pragma-once</option></term>
+      <listitem>
+        <para>
+          If this option is passed, the
+          <ulink url="https://en.wikipedia.org/wiki/Pragma_once">&#35;pragma once</ulink>
+          preprocessor directive is used instead of include guards.
         </para>
       </listitem>
     </varlistentry>

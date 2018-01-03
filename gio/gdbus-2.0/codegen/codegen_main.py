@@ -163,6 +163,8 @@ def codegen_main():
                             help='Generate autocleanup support')
     arg_parser.add_argument('--generate-docbook', metavar='OUTFILES',
                             help='Generate Docbook in OUTFILES-org.Project.IFace.xml')
+    arg_parser.add_argument('--pragma-once', action='store_true',
+                            help='Use "pragma once" as the inclusion guard')
     arg_parser.add_argument('--annotate', nargs=3, action='append', metavar='WHAT KEY VALUE',
                             help='Add annotation (may be used several times)')
     arg_parser.add_argument('--output-directory', metavar='OUTDIR', default='',
@@ -204,7 +206,8 @@ def codegen_main():
                                     args.c_generate_autocleanup,
                                     docbook_gen,
                                     h, c,
-                                    header_name)
+                                    header_name,
+                                    args.pragma_once)
         ret = gen.generate()
         h.close()
         c.close()

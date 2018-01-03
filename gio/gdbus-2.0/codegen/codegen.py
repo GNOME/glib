@@ -37,7 +37,8 @@ LICENSE_STR = '''/*
 
 class CodeGenerator:
     def __init__(self, ifaces, namespace, interface_prefix, generate_objmanager,
-                 generate_autocleanup, docbook_gen, h, c, header_name):
+                 generate_autocleanup, docbook_gen, h, c, header_name,
+                 use_pragma):
         self.docbook_gen = docbook_gen
         self.generate_objmanager = generate_objmanager
         self.generate_autocleanup = generate_autocleanup
@@ -59,6 +60,7 @@ class CodeGenerator:
             self.ns_lower = ''
         self.interface_prefix = interface_prefix
         self.header_guard = header_name.upper().replace('.', '_').replace('-', '_').replace('/', '_').replace(':', '_')
+        self.use_pragma = use_pragma
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -224,8 +226,13 @@ class CodeGenerator:
 
         self.h.write(LICENSE_STR.format(config.VERSION))
         self.h.write('\n')
-        self.h.write('#ifndef __{!s}__\n'.format(self.header_guard))
-        self.h.write('#define __{!s}__\n'.format(self.header_guard))
+
+        if self.use_pragma:
+            self.h.write('#pragma once\n')
+        else:
+            self.h.write('#ifndef __{!s}__\n'.format(self.header_guard))
+            self.h.write('#define __{!s}__\n'.format(self.header_guard))
+
         self.h.write('\n')
         self.h.write('#include <gio/gio.h>\n')
         self.h.write('\n')
@@ -746,10 +753,12 @@ class CodeGenerator:
     # ----------------------------------------------------------------------------------------------------
 
     def generate_outro(self):
-        self.h.write('\n'
-                     'G_END_DECLS\n'
-                     '\n'
-                     '#endif /* __%s__ */\n'%(self.header_guard))
+        self.h.write('\n')
+        self.h.write('G_END_DECLS\n')
+
+        if not self.use_pragma:
+            self.h.write('\n')
+            self.h.write('#endif /* __{!s}__ */\n'.format(self.header_guard))
 
     # ----------------------------------------------------------------------------------------------------
 
