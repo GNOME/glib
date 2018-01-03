@@ -277,8 +277,7 @@ struct _GMainContext
 
   guint next_id;
   GList *source_lists;
-  gboolean in_check_or_prepare;
-  gboolean need_wakeup;
+  gint in_check_or_prepare;
 
   GPollRec *poll_records;
   guint n_poll_records;
@@ -652,7 +651,6 @@ g_main_context_new (void)
   
   context->pending_dispatches = g_ptr_array_new ();
   
-  context->need_wakeup = FALSE;
   context->time_is_fresh = FALSE;
   
   context->wakeup = g_wakeup_new ();
@@ -1129,11 +1127,17 @@ source_remove_from_context (GSource      *source,
 static void
 conditional_wakeup (GMainContext *context)
 {
-  /* This flag is set if at the start of prepare() we have no other ready
-   * sources, and hence would wait in poll(). In that case, any other threads
-   * attaching sources will need to signal a wakeup.
+  /* We want to signal wakeups in two cases:
+   *  1 When the context is owned by another thread
+   *  2 When the context owner is NULL (two subcases)
+   *   2a Possible if the context has never been acquired
+   *   2b Or if the context has no current owner
+   *
+   * At least case 2a) is necessary to ensure backwards compatibility with
+   * qemu's use of GMainContext.
+   * https://bugzilla.gnome.org/show_bug.cgi?id=761102#c14
    */
-  if (context->need_wakeup)
+  if (context->owner != G_THREAD_SELF)
     g_wakeup_signal (context->wakeup);
 }
 
@@ -3418,10 +3422,6 @@ g_main_context_prepare (GMainContext *context,
   
   LOCK_CONTEXT (context);
 
-  /* context->need_wakeup is protected by LOCK_CONTEXT/UNLOCK_CONTEXT,
-   * so need not set it yet.
-   */
-
   context->time_is_fresh = FALSE;
 
   if (context->in_check_or_prepare)
@@ -3547,8 +3547,6 @@ g_main_context_prepare (GMainContext *context,
 	}
     }
   g_source_iter_clear (&iter);
-  /* See conditional_wakeup() where this is used */
-  context->need_wakeup = (n_ready == 0);
 
   TRACE (GLIB_MAIN_CONTEXT_AFTER_PREPARE (context, current_priority, n_ready));
 
@@ -3683,12 +3681,6 @@ g_main_context_check (GMainContext *context,
 
   TRACE (GLIB_MAIN_CONTEXT_BEFORE_CHECK (context, max_priority, fds, n_fds));
 
-  /* We don't need to wakeup during check or dispatch, because
-   * all sources will be re-evaluated during prepare/query.
-   */
-  context->need_wakeup = FALSE;
-
-  /* And if we have a wakeup pending, acknowledge it */
   for (i = 0; i < n_fds; i++)
     {
       if (fds[i].fd == context->wake_up_rec.fd)
