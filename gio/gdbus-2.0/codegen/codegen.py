@@ -64,166 +64,7 @@ class CodeGenerator:
 
     # ----------------------------------------------------------------------------------------------------
 
-    def generate_intro(self):
-        self.c.write(LICENSE_STR.format(config.VERSION))
-        self.c.write('\n')
-        self.c.write('#ifdef HAVE_CONFIG_H\n'
-                     '#  include "config.h"\n'
-                     '#endif\n'
-                     '\n'
-                     '#include "%s"\n'
-                     '\n'
-                     '#include <string.h>\n'
-                     %(self.header_name))
-
-        self.c.write('#ifdef G_OS_UNIX\n'
-                     '#  include <gio/gunixfdlist.h>\n'
-                     '#endif\n'
-                     '\n')
-
-        self.c.write('typedef struct\n'
-                     '{\n'
-                     '  GDBusArgInfo parent_struct;\n'
-                     '  gboolean use_gvariant;\n'
-                     '} _ExtendedGDBusArgInfo;\n'
-                     '\n')
-
-        self.c.write('typedef struct\n'
-                     '{\n'
-                     '  GDBusMethodInfo parent_struct;\n'
-                     '  const gchar *signal_name;\n'
-                     '  gboolean pass_fdlist;\n'
-                     '} _ExtendedGDBusMethodInfo;\n'
-                     '\n')
-
-        self.c.write('typedef struct\n'
-                     '{\n'
-                     '  GDBusSignalInfo parent_struct;\n'
-                     '  const gchar *signal_name;\n'
-                     '} _ExtendedGDBusSignalInfo;\n'
-                     '\n')
-
-        self.c.write('typedef struct\n'
-                     '{\n'
-                     '  GDBusPropertyInfo parent_struct;\n'
-                     '  const gchar *hyphen_name;\n'
-                     '  gboolean use_gvariant;\n'
-                     '} _ExtendedGDBusPropertyInfo;\n'
-                     '\n')
-
-        self.c.write('typedef struct\n'
-                     '{\n'
-                     '  GDBusInterfaceInfo parent_struct;\n'
-                     '  const gchar *hyphen_name;\n'
-                     '} _ExtendedGDBusInterfaceInfo;\n'
-                     '\n')
-
-        self.c.write('typedef struct\n'
-                     '{\n'
-                     '  const _ExtendedGDBusPropertyInfo *info;\n'
-                     '  guint prop_id;\n'
-                     '  GValue orig_value; /* the value before the change */\n'
-                     '} ChangedProperty;\n'
-                     '\n'
-                     'static void\n'
-                     '_changed_property_free (ChangedProperty *data)\n'
-                     '{\n'
-                     '  g_value_unset (&data->orig_value);\n'
-                     '  g_free (data);\n'
-                     '}\n'
-                     '\n')
-
-        self.c.write('static gboolean\n'
-                     '_g_strv_equal0 (gchar **a, gchar **b)\n'
-                     '{\n'
-                     '  gboolean ret = FALSE;\n'
-                     '  guint n;\n'
-                     '  if (a == NULL && b == NULL)\n'
-                     '    {\n'
-                     '      ret = TRUE;\n'
-                     '      goto out;\n'
-                     '    }\n'
-                     '  if (a == NULL || b == NULL)\n'
-                     '    goto out;\n'
-                     '  if (g_strv_length (a) != g_strv_length (b))\n'
-                     '    goto out;\n'
-                     '  for (n = 0; a[n] != NULL; n++)\n'
-                     '    if (g_strcmp0 (a[n], b[n]) != 0)\n'
-                     '      goto out;\n'
-                     '  ret = TRUE;\n'
-                     'out:\n'
-                     '  return ret;\n'
-                     '}\n'
-                     '\n')
-
-        self.c.write('static gboolean\n'
-                     '_g_variant_equal0 (GVariant *a, GVariant *b)\n'
-                     '{\n'
-                     '  gboolean ret = FALSE;\n'
-                     '  if (a == NULL && b == NULL)\n'
-                     '    {\n'
-                     '      ret = TRUE;\n'
-                     '      goto out;\n'
-                     '    }\n'
-                     '  if (a == NULL || b == NULL)\n'
-                     '    goto out;\n'
-                     '  ret = g_variant_equal (a, b);\n'
-                     'out:\n'
-                     '  return ret;\n'
-                     '}\n'
-                     '\n')
-
-        # simplified - only supports the types we use
-        self.c.write('G_GNUC_UNUSED static gboolean\n'
-                     '_g_value_equal (const GValue *a, const GValue *b)\n'
-                     '{\n'
-                     '  gboolean ret = FALSE;\n'
-                     '  g_assert (G_VALUE_TYPE (a) == G_VALUE_TYPE (b));\n'
-                     '  switch (G_VALUE_TYPE (a))\n'
-                     '    {\n'
-                     '      case G_TYPE_BOOLEAN:\n'
-                     '        ret = (g_value_get_boolean (a) == g_value_get_boolean (b));\n'
-                     '        break;\n'
-                     '      case G_TYPE_UCHAR:\n'
-                     '        ret = (g_value_get_uchar (a) == g_value_get_uchar (b));\n'
-                     '        break;\n'
-                     '      case G_TYPE_INT:\n'
-                     '        ret = (g_value_get_int (a) == g_value_get_int (b));\n'
-                     '        break;\n'
-                     '      case G_TYPE_UINT:\n'
-                     '        ret = (g_value_get_uint (a) == g_value_get_uint (b));\n'
-                     '        break;\n'
-                     '      case G_TYPE_INT64:\n'
-                     '        ret = (g_value_get_int64 (a) == g_value_get_int64 (b));\n'
-                     '        break;\n'
-                     '      case G_TYPE_UINT64:\n'
-                     '        ret = (g_value_get_uint64 (a) == g_value_get_uint64 (b));\n'
-                     '        break;\n'
-                     '      case G_TYPE_DOUBLE:\n'
-                     '        {\n'
-                     '          /* Avoid -Wfloat-equal warnings by doing a direct bit compare */\n'
-                     '          gdouble da = g_value_get_double (a);\n'
-                     '          gdouble db = g_value_get_double (b);\n'
-                     '          ret = memcmp (&da, &db, sizeof (gdouble)) == 0;\n'
-                     '        }\n'
-                     '        break;\n'
-                     '      case G_TYPE_STRING:\n'
-                     '        ret = (g_strcmp0 (g_value_get_string (a), g_value_get_string (b)) == 0);\n'
-                     '        break;\n'
-                     '      case G_TYPE_VARIANT:\n'
-                     '        ret = _g_variant_equal0 (g_value_get_variant (a), g_value_get_variant (b));\n'
-                     '        break;\n'
-                     '      default:\n'
-                     '        if (G_VALUE_TYPE (a) == G_TYPE_STRV)\n'
-                     '          ret = _g_strv_equal0 (g_value_get_boxed (a), g_value_get_boxed (b));\n'
-                     '        else\n'
-                     '          g_critical ("_g_value_equal() does not handle type %s", g_type_name (G_VALUE_TYPE (a)));\n'
-                     '        break;\n'
-                     '    }\n'
-                     '  return ret;\n'
-                     '}\n'
-                     '\n')
-
+    def generate_header_preamble(self):
         self.h.write(LICENSE_STR.format(config.VERSION))
         self.h.write('\n')
 
@@ -752,7 +593,7 @@ class CodeGenerator:
 
     # ----------------------------------------------------------------------------------------------------
 
-    def generate_outro(self):
+    def generate_header_postamble(self):
         self.h.write('\n')
         self.h.write('G_END_DECLS\n')
 
@@ -761,6 +602,166 @@ class CodeGenerator:
             self.h.write('#endif /* __{!s}__ */\n'.format(self.header_guard))
 
     # ----------------------------------------------------------------------------------------------------
+
+    def generate_body_preamble(self):
+        self.c.write(LICENSE_STR.format(config.VERSION))
+        self.c.write('\n')
+        self.c.write('#ifdef HAVE_CONFIG_H\n'
+                     '#  include "config.h"\n'
+                     '#endif\n'
+                     '\n'
+                     '#include "%s"\n'
+                     '\n'
+                     '#include <string.h>\n'
+                     %(self.header_name))
+
+        self.c.write('#ifdef G_OS_UNIX\n'
+                     '#  include <gio/gunixfdlist.h>\n'
+                     '#endif\n'
+                     '\n')
+
+        self.c.write('typedef struct\n'
+                     '{\n'
+                     '  GDBusArgInfo parent_struct;\n'
+                     '  gboolean use_gvariant;\n'
+                     '} _ExtendedGDBusArgInfo;\n'
+                     '\n')
+
+        self.c.write('typedef struct\n'
+                     '{\n'
+                     '  GDBusMethodInfo parent_struct;\n'
+                     '  const gchar *signal_name;\n'
+                     '  gboolean pass_fdlist;\n'
+                     '} _ExtendedGDBusMethodInfo;\n'
+                     '\n')
+
+        self.c.write('typedef struct\n'
+                     '{\n'
+                     '  GDBusSignalInfo parent_struct;\n'
+                     '  const gchar *signal_name;\n'
+                     '} _ExtendedGDBusSignalInfo;\n'
+                     '\n')
+
+        self.c.write('typedef struct\n'
+                     '{\n'
+                     '  GDBusPropertyInfo parent_struct;\n'
+                     '  const gchar *hyphen_name;\n'
+                     '  gboolean use_gvariant;\n'
+                     '} _ExtendedGDBusPropertyInfo;\n'
+                     '\n')
+
+        self.c.write('typedef struct\n'
+                     '{\n'
+                     '  GDBusInterfaceInfo parent_struct;\n'
+                     '  const gchar *hyphen_name;\n'
+                     '} _ExtendedGDBusInterfaceInfo;\n'
+                     '\n')
+
+        self.c.write('typedef struct\n'
+                     '{\n'
+                     '  const _ExtendedGDBusPropertyInfo *info;\n'
+                     '  guint prop_id;\n'
+                     '  GValue orig_value; /* the value before the change */\n'
+                     '} ChangedProperty;\n'
+                     '\n'
+                     'static void\n'
+                     '_changed_property_free (ChangedProperty *data)\n'
+                     '{\n'
+                     '  g_value_unset (&data->orig_value);\n'
+                     '  g_free (data);\n'
+                     '}\n'
+                     '\n')
+
+        self.c.write('static gboolean\n'
+                     '_g_strv_equal0 (gchar **a, gchar **b)\n'
+                     '{\n'
+                     '  gboolean ret = FALSE;\n'
+                     '  guint n;\n'
+                     '  if (a == NULL && b == NULL)\n'
+                     '    {\n'
+                     '      ret = TRUE;\n'
+                     '      goto out;\n'
+                     '    }\n'
+                     '  if (a == NULL || b == NULL)\n'
+                     '    goto out;\n'
+                     '  if (g_strv_length (a) != g_strv_length (b))\n'
+                     '    goto out;\n'
+                     '  for (n = 0; a[n] != NULL; n++)\n'
+                     '    if (g_strcmp0 (a[n], b[n]) != 0)\n'
+                     '      goto out;\n'
+                     '  ret = TRUE;\n'
+                     'out:\n'
+                     '  return ret;\n'
+                     '}\n'
+                     '\n')
+
+        self.c.write('static gboolean\n'
+                     '_g_variant_equal0 (GVariant *a, GVariant *b)\n'
+                     '{\n'
+                     '  gboolean ret = FALSE;\n'
+                     '  if (a == NULL && b == NULL)\n'
+                     '    {\n'
+                     '      ret = TRUE;\n'
+                     '      goto out;\n'
+                     '    }\n'
+                     '  if (a == NULL || b == NULL)\n'
+                     '    goto out;\n'
+                     '  ret = g_variant_equal (a, b);\n'
+                     'out:\n'
+                     '  return ret;\n'
+                     '}\n'
+                     '\n')
+
+        # simplified - only supports the types we use
+        self.c.write('G_GNUC_UNUSED static gboolean\n'
+                     '_g_value_equal (const GValue *a, const GValue *b)\n'
+                     '{\n'
+                     '  gboolean ret = FALSE;\n'
+                     '  g_assert (G_VALUE_TYPE (a) == G_VALUE_TYPE (b));\n'
+                     '  switch (G_VALUE_TYPE (a))\n'
+                     '    {\n'
+                     '      case G_TYPE_BOOLEAN:\n'
+                     '        ret = (g_value_get_boolean (a) == g_value_get_boolean (b));\n'
+                     '        break;\n'
+                     '      case G_TYPE_UCHAR:\n'
+                     '        ret = (g_value_get_uchar (a) == g_value_get_uchar (b));\n'
+                     '        break;\n'
+                     '      case G_TYPE_INT:\n'
+                     '        ret = (g_value_get_int (a) == g_value_get_int (b));\n'
+                     '        break;\n'
+                     '      case G_TYPE_UINT:\n'
+                     '        ret = (g_value_get_uint (a) == g_value_get_uint (b));\n'
+                     '        break;\n'
+                     '      case G_TYPE_INT64:\n'
+                     '        ret = (g_value_get_int64 (a) == g_value_get_int64 (b));\n'
+                     '        break;\n'
+                     '      case G_TYPE_UINT64:\n'
+                     '        ret = (g_value_get_uint64 (a) == g_value_get_uint64 (b));\n'
+                     '        break;\n'
+                     '      case G_TYPE_DOUBLE:\n'
+                     '        {\n'
+                     '          /* Avoid -Wfloat-equal warnings by doing a direct bit compare */\n'
+                     '          gdouble da = g_value_get_double (a);\n'
+                     '          gdouble db = g_value_get_double (b);\n'
+                     '          ret = memcmp (&da, &db, sizeof (gdouble)) == 0;\n'
+                     '        }\n'
+                     '        break;\n'
+                     '      case G_TYPE_STRING:\n'
+                     '        ret = (g_strcmp0 (g_value_get_string (a), g_value_get_string (b)) == 0);\n'
+                     '        break;\n'
+                     '      case G_TYPE_VARIANT:\n'
+                     '        ret = _g_variant_equal0 (g_value_get_variant (a), g_value_get_variant (b));\n'
+                     '        break;\n'
+                     '      default:\n'
+                     '        if (G_VALUE_TYPE (a) == G_TYPE_STRV)\n'
+                     '          ret = _g_strv_equal0 (g_value_get_boxed (a), g_value_get_boxed (b));\n'
+                     '        else\n'
+                     '          g_critical ("_g_value_equal() does not handle type %s", g_type_name (G_VALUE_TYPE (a)));\n'
+                     '        break;\n'
+                     '    }\n'
+                     '  return ret;\n'
+                     '}\n'
+                     '\n')
 
     def generate_annotations(self, prefix, annotations):
         if annotations == None:
@@ -3435,8 +3436,11 @@ class CodeGenerator:
         self.c.write('\n')
 
     def generate(self):
-        self.generate_intro()
+        self.generate_header_preamble()
         self.declare_types()
+        self.generate_header_postamble()
+
+        self.generate_body_preamble()
         for i in self.ifaces:
             self.generate_interface_intro(i)
             self.generate_introspection_for_interface(i)
@@ -3450,5 +3454,3 @@ class CodeGenerator:
         if self.generate_objmanager:
             self.generate_object()
             self.generate_object_manager_client()
-
-        self.generate_outro()
