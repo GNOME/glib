@@ -1770,7 +1770,21 @@ if libmount_dep.length() != 0
   glib_conf.set('HAVE_LIBMOUNT', 1)
 endif
 glib_conf.set('GIO_MODULE_DIR', glib_giomodulesdir)
-# FIXME: Missing: @G_MODULE_LDFLAGS@
+
+# Sadly Meson does not expose this value:
+# https://github.com/mesonbuild/meson/pull/3460
+if host_system == 'windows'
+  # Autotools explicitly removed --Wl,--export-all-symbols from windows builds,
+  # with no explanation. Do the same here for now but this could be revisited if
+  # if causes issues.
+  export_dynamic_ldflags = []
+elif host_system == 'cygwin'
+  export_dynamic_ldflags = ['-Wl,--export-all-symbols']
+elif host_system == 'darwin'
+  export_dynamic_ldflags = []
+else
+  export_dynamic_ldflags = ['-Wl,--export-dynamic']
+endif
 
 win32_cflags = []
 win32_ldflags = []
