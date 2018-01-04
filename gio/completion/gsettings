@@ -37,6 +37,10 @@ __gsettings() {
         list-keys|list-children|list-recursively|reset-recursively)
           choices="$(gsettings $schemadir list-schemas 2> /dev/null)"$'\n'"$(gsettings $schemadir list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"
           ;;
+        list-schemas)
+          COMPREPLY=($(compgen -W "--print-paths" -- ${COMP_WORDS[${COMP_CWORD}]}))
+          return 0
+          ;;
 
         get|range|set|reset|writable|monitor|describe)
           choices="$(gsettings $schemadir list-schemas 2> /dev/null | sed -e 's.$. .')"$'\n'"$(gsettings $schemadir list-relocatable-schemas 2> /dev/null | sed -e 's.$.:/.')"

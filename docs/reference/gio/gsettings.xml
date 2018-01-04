@@ -75,6 +75,7 @@
   <cmdsynopsis>
     <command>gsettings</command>
     <arg choice="plain">list-schemas</arg>
+    <arg choice="opt">--print-paths</arg>
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gsettings</command>
@@ -198,7 +199,8 @@ Reset all keys under the given <replaceable>SCHEMA</replaceable>.
 <listitem><para>
 Lists the installed, non-relocatable schemas.
 See <option>list-relocatable-schemas</option> if you are interested in
-relocatable schemas.
+relocatable schemas. If <optional><option>--print-paths</option></optional>
+is given, the path where each schema is mapped is also printed.
 </para></listitem>
 </varlistentry>
 
