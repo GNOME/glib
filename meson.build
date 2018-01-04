@@ -1,5 +1,5 @@
 project('glib', 'c', 'cpp',
-  version : '2.55.0',
+  version : '2.55.1',
   meson_version : '>= 0.44.0',
   default_options : [
     'warning_level=1',
