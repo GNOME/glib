@@ -3,6 +3,7 @@
 # GDBus - GLib D-Bus Library
 #
 # Copyright (C) 2008-2011 Red Hat, Inc.
+# Copyright (C) 2018 Iñigo Martínez <inigomartinez@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -20,8 +21,8 @@
 # Author: David Zeuthen <davidz@redhat.com>
 
 import argparse
+import os
 import sys
-from os import path
 
 from . import config
 from . import dbustypes
@@ -157,8 +158,6 @@ def codegen_main():
                             help='The namespace to use for generated C code')
     arg_parser.add_argument('--c-generate-object-manager', action='store_true',
                             help='Generate a GDBusObjectManagerClient subclass when generating C code')
-    arg_parser.add_argument('--generate-c-code', metavar='OUTFILES',
-                            help='Generate C code in OUTFILES.[ch]')
     arg_parser.add_argument('--c-generate-autocleanup', choices=['none', 'objects', 'all'], default='objects',
                             help='Generate autocleanup support')
     arg_parser.add_argument('--generate-docbook', metavar='OUTFILES',
@@ -167,12 +166,48 @@ def codegen_main():
                             help='Use "pragma once" as the inclusion guard')
     arg_parser.add_argument('--annotate', nargs=3, action='append', metavar='WHAT KEY VALUE',
                             help='Add annotation (may be used several times)')
-    arg_parser.add_argument('--output-directory', metavar='OUTDIR', default='',
-                            help='Location to output generated files')
+
+    group = arg_parser.add_mutually_exclusive_group()
+    group.add_argument('--generate-c-code', metavar='OUTFILES',
+                       help='Generate C code in OUTFILES.[ch]')
+    group.add_argument('--header', action='store_true',
+                       help='Generate C headers')
+    group.add_argument('--body', action='store_true',
+                       help='Generate C code')
+
+    group = arg_parser.add_mutually_exclusive_group()
+    group.add_argument('--output', metavar='FILE',
+                       help='Write output into the specified file')
+    group.add_argument('--output-directory', metavar='OUTDIR', default='',
+                       help='Location to output generated files')
+
     args = arg_parser.parse_args();
 
     if len(args.xml_files) > 0:
         print_warning('The "--xml-files" option is deprecated; use positional arguments instead')
+
+    if ((args.generate_c_code is not None or args.generate_docbook is not None) and
+            args.output is not None):
+        print_error('Using --generate-c-code or --generate-docbook and '
+                    '--output at the same time is not allowed')
+
+    if args.generate_c_code:
+        outdir = args.output_directory
+        header_name = args.generate_c_code + '.h'
+        h_file = os.path.join(outdir, header_name)
+        args.header = True
+        c_file = os.path.join(outdir, args.generate_c_code + '.c')
+        args.body = True
+    else:
+        if args.output is None:
+            print_error('Using --header or --body requires --output')
+
+        if args.header:
+            h_file = args.output
+            header_name = os.path.basename(h_file)
+        elif args.body:
+            c_file = args.output
+            header_name = os.path.splitext(c_file)[0] + '.h'
 
     all_ifaces = []
     for fname in args.files + args.xml_files:
@@ -187,17 +222,13 @@ def codegen_main():
     for i in all_ifaces:
         i.post_process(args.interface_prefix, args.c_namespace)
 
-    outdir = args.output_directory
-
     docbook = args.generate_docbook
     docbook_gen = codegen_docbook.DocbookCodeGenerator(all_ifaces);
     if docbook:
         ret = docbook_gen.generate(docbook, outdir)
 
-    c_code = args.generate_c_code
-    if c_code:
-        header_name = c_code + '.h'
-        with open(path.join(outdir, header_name), 'w') as outfile:
+    if args.header:
+        with open(h_file, 'w') as outfile:
             gen = codegen.HeaderCodeGenerator(all_ifaces,
                                               args.c_namespace,
                                               args.c_generate_object_manager,
@@ -207,7 +238,8 @@ def codegen_main():
                                               outfile)
             gen.generate()
 
-        with open(path.join(outdir, c_code + '.c'), 'w') as outfile:
+    if args.body:
+        with open(c_file, 'w') as outfile:
             gen = codegen.CodeGenerator(all_ifaces,
                                         args.c_namespace,
                                         args.c_generate_object_manager,

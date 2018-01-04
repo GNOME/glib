@@ -37,6 +37,9 @@
     <arg><option>--generate-docbook</option> <replaceable>OUTFILES</replaceable></arg>
     <arg><option>--pragma-once</option></arg>
     <arg><option>--xml-files</option> <replaceable>FILE</replaceable></arg>
+    <arg><option>--header</option></arg>
+    <arg><option>--body</option></arg>
+    <arg><option>--output</option> <replaceable>OUTFILE</replaceable></arg>
     <group choice="plain" rep="repeat">
       <arg>
         <option>--annotate</option>
@@ -258,6 +261,55 @@
       <listitem>
         <para>
           Directory to output generated source to. Equivalent to changing directory before generation.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--header</option></term>
+      <listitem>
+        <para>
+          If this option is passed, it will generate the header code and write it to the disk by
+          using the path and file name provided by <option>--output</option>.
+        </para>
+        <para>
+          Using <option>--generate-c-code</option>, <option>--generate-docbook</option> or
+          <option>--output-directory</option> are not allowed to be used along with
+          <option>--header</option> and <option>--body</option> options, because these options
+          are used to generate only one file.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--body</option></term>
+      <listitem>
+        <para>
+          If this option is passed, it will generate the source code and write it to the disk by
+          using the path and file name provided by <option>--output</option>.
+        </para>
+        <para>
+          Using <option>--generate-c-code</option>, <option>--generate-docbook</option> or
+          <option>--output-directory</option> are not allowed to be used along with
+          <option>--header</option> and <option>--body</option> options, because these options
+          are used to generate only one file.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--output</option> <replaceable>OUTFILE</replaceable></term>
+      <listitem>
+        <para>
+          The full path where the header (<option>--header</option>) or the source code
+          (<option>--body</option>) will be written, using the path and filename provided by
+          <option>--output</option>. The full path could be something like
+          <literal>$($OUTFILE).{c,h}</literal>.
+        </para>
+        <para>
+          Using <option>--generate-c-code</option>, <option>--generate-docbook</option> or
+          <option>--output-directory</option> is not allowed along with
+          <option>--output</option>, because the latter is used to generate only one file.
         </para>
       </listitem>
     </varlistentry>
