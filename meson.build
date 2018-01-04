@@ -551,7 +551,7 @@ if host_system == 'linux'
   endif
 endif
 
-platform_ldflags=[]
+osx_ldflags = []
 
 # Mac OS X Carbon support
 glib_have_carbon = cc.compiles('''#include <Carbon/Carbon.h>
@@ -562,14 +562,11 @@ glib_have_os_x_9_or_later = false
 
 if glib_have_carbon
   glib_conf.set('HAVE_CARBON', true)
-  CARBON_LIBS='-Wl,-framework,Carbon' # FIXME: propagate to .pc files as well
-  platform_ldflags += [CARBON_LIBS]
+  osx_ldflags += '-Wl,-framework,Carbon'
   glib_have_os_x_9_or_later = cc.compiles('''#include <AvailabilityMacros.h>
                                              #if MAC_OS_X_VERSION_MIN_REQUIRED < 1090
                                              #error Compiling for minimum OS X version before 10.9
                                              #endif''', name : 'OS X 9 or later')
-else
-  CARBON_LIBS=''
 endif
 
 # Mac OS X Cocoa support
@@ -581,11 +578,10 @@ glib_have_cocoa = cc.compiles('''#include <Cocoa/Cocoa.h>
 
 if glib_have_cocoa
   glib_conf.set('HAVE_COCOA', true)
-  COCOA_LIBS='-Wl,-framework,Foundation -Wl,-framework,AppKit' # FIXME: propagate to .pc files as well
-  platform_ldflags += [COCOA_LIBS]
-else
-  COCOA_LIBS=''
+  osx_ldflags += '-Wl,-framework,Foundation -Wl,-framework,AppKit'
 endif
+
+add_project_link_arguments(osx_ldflags, language : 'c')
 
 # Check for futex(2)
 if cc.links('''#include <linux/futex.h>

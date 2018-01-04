@@ -800,6 +800,7 @@ if giomodulesdir == ''
 endif
 
 pkg.generate(libraries : libgio,
+  libraries_private : [osx_ldflags],
   requires : ['glib-2.0', 'gobject-2.0'],
   variables : ['bindir=' + join_paths('${prefix}', get_option('bindir')),
                'giomoduledir=' + giomodulesdir,
