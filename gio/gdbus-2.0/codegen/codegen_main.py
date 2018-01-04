@@ -197,20 +197,24 @@ def codegen_main():
     c_code = args.generate_c_code
     if c_code:
         header_name = c_code + '.h'
-        h = open(path.join(outdir, header_name), 'w')
-        c = open(path.join(outdir, c_code + '.c'), 'w')
-        gen = codegen.CodeGenerator(all_ifaces,
-                                    args.c_namespace,
-                                    args.interface_prefix,
-                                    args.c_generate_object_manager,
-                                    args.c_generate_autocleanup,
-                                    docbook_gen,
-                                    h, c,
-                                    header_name,
-                                    args.pragma_once)
-        ret = gen.generate()
-        h.close()
-        c.close()
+        with open(path.join(outdir, header_name), 'w') as outfile:
+            gen = codegen.HeaderCodeGenerator(all_ifaces,
+                                              args.c_namespace,
+                                              args.c_generate_object_manager,
+                                              args.c_generate_autocleanup,
+                                              header_name,
+                                              args.pragma_once,
+                                              outfile)
+            gen.generate()
+
+        with open(path.join(outdir, c_code + '.c'), 'w') as outfile:
+            gen = codegen.CodeGenerator(all_ifaces,
+                                        args.c_namespace,
+                                        args.c_generate_object_manager,
+                                        header_name,
+                                        docbook_gen,
+                                        outfile)
+            gen.generate()
 
     sys.exit(0)
 
