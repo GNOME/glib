@@ -61,6 +61,12 @@
  * g_sequence_move_range() will not invalidate the iterators pointing
  * to it. The only operation that will invalidate an iterator is when
  * the element it points to is removed from any sequence.
+ *
+ * To sort the data, either use g_sequence_insert_sorted() or
+ * g_sequence_insert_sorted_iter() to add data to the #GSequence or, if
+ * you want to add a large amount of data, it is more efficient to call
+ * g_sequence_sort() or g_sequence_sort_iter() after doing unsorted
+ * insertions.
  */
 
 /**
@@ -707,6 +713,10 @@ g_sequence_sort (GSequence        *seq,
  * if the first item comes before the second, and a positive value
  * if the second  item comes before the first.
  *
+ * Note that when adding a large amount of data to a #GSequence,
+ * it is more efficient to do unsorted insertions and then call
+ * g_sequence_sort() or g_sequence_sort_iter().
+ *
  * Returns: (transfer none): a #GSequenceIter pointing to the new item.
  *
  * Since: 2.14
@@ -788,10 +798,7 @@ g_sequence_sort_changed (GSequenceIter    *iter,
  * consider using g_sequence_lookup().
  *
  * This function will fail if the data contained in the sequence is
- * unsorted.  Use g_sequence_insert_sorted() or
- * g_sequence_insert_sorted_iter() to add data to your sequence or, if
- * you want to add a large amount of data, call g_sequence_sort() after
- * doing unsorted insertions.
+ * unsorted.
  *
  * Returns: (transfer none): an #GSequenceIter pointing to the position where @data
  *     would have been inserted according to @cmp_func and @cmp_data
@@ -835,10 +842,7 @@ g_sequence_search (GSequence        *seq,
  * the second item comes before the first.
  *
  * This function will fail if the data contained in the sequence is
- * unsorted.  Use g_sequence_insert_sorted() or
- * g_sequence_insert_sorted_iter() to add data to your sequence or, if
- * you want to add a large amount of data, call g_sequence_sort() after
- * doing unsorted insertions.
+ * unsorted.
  *
  * Returns: (transfer none) (nullable): an #GSequenceIter pointing to the position of the
  *     first item found equal to @data according to @cmp_func and
@@ -1002,6 +1006,10 @@ g_sequence_sort_changed_iter (GSequenceIter            *iter,
  * first iterator comes before the second, and a positive value
  * if the second iterator comes before the first.
  *
+ * Note that when adding a large amount of data to a #GSequence,
+ * it is more efficient to do unsorted insertions and then call
+ * g_sequence_sort() or g_sequence_sort_iter().
+ *
  * Returns: (transfer none): a #GSequenceIter pointing to the new item
  *
  * Since: 2.14
@@ -1068,10 +1076,7 @@ g_sequence_insert_sorted_iter (GSequence                *seq,
  * consider using g_sequence_lookup_iter().
  *
  * This function will fail if the data contained in the sequence is
- * unsorted.  Use g_sequence_insert_sorted() or
- * g_sequence_insert_sorted_iter() to add data to your sequence or, if
- * you want to add a large amount of data, call g_sequence_sort() after
- * doing unsorted insertions.
+ * unsorted.
  *
  * Returns: (transfer none): a #GSequenceIter pointing to the position in @seq
  *     where @data would have been inserted according to @iter_cmp
@@ -1126,10 +1131,7 @@ g_sequence_search_iter (GSequence                *seq,
  * value if the second iterator comes before the first.
  *
  * This function will fail if the data contained in the sequence is
- * unsorted.  Use g_sequence_insert_sorted() or
- * g_sequence_insert_sorted_iter() to add data to your sequence or, if
- * you want to add a large amount of data, call g_sequence_sort() after
- * doing unsorted insertions.
+ * unsorted.
  *
  * Returns: (transfer none) (nullable): an #GSequenceIter pointing to the position of
  *     the first item found equal to @data according to @cmp_func
