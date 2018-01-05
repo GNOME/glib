@@ -705,8 +705,7 @@ g_error_add_prefix (gchar       **string,
  * nothing.
  *
  * If *@err is %NULL (ie: an error variable is present but there is no
- * error condition) then also do nothing. Whether or not it makes sense
- * to take advantage of this feature is up to you.
+ * error condition) then also do nothing.
  *
  * Since: 2.16
  */
