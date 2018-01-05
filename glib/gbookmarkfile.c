@@ -1612,7 +1612,8 @@ g_bookmark_file_free (GBookmarkFile *bookmark)
 /**
  * g_bookmark_file_load_from_data:
  * @bookmark: an empty #GBookmarkFile struct
- * @data: desktop bookmarks loaded in memory
+ * @data: (array length=length) (element-type guint8): desktop bookmarks
+ *    loaded in memory
  * @length: the length of @data in bytes
  * @error: return location for a #GError, or %NULL
  *
@@ -1766,7 +1767,7 @@ find_file_in_data_dirs (const gchar   *file,
  * g_bookmark_file_load_from_data_dirs:
  * @bookmark: a #GBookmarkFile
  * @file: (type filename): a relative path to a filename to open and parse
- * @full_path: (type filename) (nullable): return location for a string
+ * @full_path: (out) (optional) (type filename): return location for a string
  *    containing the full path of the file, or %NULL
  * @error: return location for a #GError, or %NULL
  *
@@ -1852,8 +1853,8 @@ g_bookmark_file_load_from_data_dirs (GBookmarkFile  *bookmark,
  *
  * This function outputs @bookmark as a string.
  *
- * Returns: a newly allocated string holding
- *   the contents of the #GBookmarkFile
+ * Returns: (array length=length) (element-type guint8):
+ *   a newly allocated string holding the contents of the #GBookmarkFile
  *
  * Since: 2.12
  */
@@ -2822,7 +2823,8 @@ g_bookmark_file_remove_group (GBookmarkFile  *bookmark,
  * g_bookmark_file_set_groups:
  * @bookmark: a #GBookmarkFile
  * @uri: an item's URI
- * @groups: (nullable): an array of group names, or %NULL to remove all groups
+ * @groups: (nullable) (array length=length) (element-type utf8): an array of
+ *    group names, or %NULL to remove all groups
  * @length: number of group name values in @groups
  *
  * Sets a list of group names for the item with URI @uri.  Each previously
