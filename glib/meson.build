@@ -241,7 +241,11 @@ libglib = library('glib-2.0',
   c_args : ['-DG_LOG_DOMAIN="GLib"', '-DGLIB_COMPILATION'] + pcre_static_args + glib_hidden_visibility_args
 )
 
-libglib_dep = declare_dependency(link_with : libglib,
+libglib_dep = declare_dependency(
+  link_with : libglib,
+  # thread_dep doesn't get pulled in from libglib atm,
+  # see https://github.com/mesonbuild/meson/issues/1426
+  dependencies : [thread_dep],
   # We sadly need to export configinc here because everyone includes <glib/*.h>
   include_directories : [configinc, glibinc])
 
