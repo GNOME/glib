@@ -101,9 +101,9 @@
  * of %G_IO_ERROR_DBUS_ERROR. Note that GDBus clients can still recover
  * org.project.Foo.Bar.Error.AnotherError using g_dbus_error_get_remote_error().
  *
- * Note that errors in the %G_DBUS_ERROR error domain is intended only
+ * Note that the %G_DBUS_ERROR error domain is intended only
  * for returning errors from a remote message bus process. Errors
- * generated locally in-process by e.g. #GDBusConnection is from the
+ * generated locally in-process by e.g. #GDBusConnection should use the
  * %G_IO_ERROR domain.
  */
 

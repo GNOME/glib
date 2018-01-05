@@ -36,9 +36,9 @@ G_BEGIN_DECLS
  * in this domain will be from the #GDBusError enumeration.  See
  * #GError for more information on error domains.
  *
- * Note that errors in this error domain is intended only for
+ * Note that this error domain is intended only for
  * returning errors from a remote message bus process. Errors
- * generated locally in-process by e.g. #GDBusConnection is from the
+ * generated locally in-process by e.g. #GDBusConnection should use the
  * %G_IO_ERROR domain.
  *
  * Since: 2.26
