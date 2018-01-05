@@ -346,6 +346,18 @@
 /* Define to 1 if you have the 'res_init' function. */
 #mesondefine HAVE_RES_INIT
 
+/* Define to 1 if you have the 'res_nclose' function. */
+#mesondefine HAVE_RES_NCLOSE
+
+/* Define to 1 if you have the 'res_ndestroy' function. */
+#mesondefine HAVE_RES_NDESTROY
+
+/* Define to 1 if you have the 'res_ninit' function. */
+#mesondefine HAVE_RES_NINIT
+
+/* Define to 1 if you have the 'res_nquery' function. */
+#mesondefine HAVE_RES_NQUERY
+
 /* Define to 1 if you have the <sched.h> header file. */
 #mesondefine HAVE_SCHED_H
 

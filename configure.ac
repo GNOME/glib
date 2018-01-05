@@ -1016,6 +1016,7 @@ AS_IF([test $glib_native_win32 = yes], [
 				        [AC_MSG_ERROR(Could not find socket())]))
   save_libs="$LIBS"
   LIBS="$LIBS $NETWORK_LIBS"
+
   AC_MSG_CHECKING([for res_init])
   AC_TRY_LINK([#include <sys/types.h>
 	       #include <netinet/in.h>
@@ -1025,6 +1026,54 @@ AS_IF([test $glib_native_win32 = yes], [
 	       res_init();
               ],[AC_MSG_RESULT([yes])
 	         AC_DEFINE(HAVE_RES_INIT, 1, [Define to 1 if you have the 'res_init' function.])
+	      ],[AC_MSG_RESULT([no])])
+
+  AC_MSG_CHECKING([for res_nclose])
+  AC_TRY_LINK([#include <sys/types.h>
+	       #include <netinet/in.h>
+	       #include <arpa/nameser.h>
+	       #include <resolv.h>
+              ],[
+               struct __res_state res;
+	       res_nclose(&res);
+              ],[AC_MSG_RESULT([yes])
+	         AC_DEFINE(HAVE_RES_NCLOSE, 1, [Define to 1 if you have the 'res_nclose' function.])
+	      ],[AC_MSG_RESULT([no])])
+
+  AC_MSG_CHECKING([for res_ndestroy])
+  AC_TRY_LINK([#include <sys/types.h>
+	       #include <netinet/in.h>
+	       #include <arpa/nameser.h>
+	       #include <resolv.h>
+              ],[
+               struct __res_state res;
+	       res_ndestroy(&res);
+              ],[AC_MSG_RESULT([yes])
+	         AC_DEFINE(HAVE_RES_NDESTROY, 1, [Define to 1 if you have the 'res_ndestroy' function.])
+	      ],[AC_MSG_RESULT([no])])
+
+  AC_MSG_CHECKING([for res_ninit])
+  AC_TRY_LINK([#include <sys/types.h>
+	       #include <netinet/in.h>
+	       #include <arpa/nameser.h>
+	       #include <resolv.h>
+              ],[
+               struct __res_state res;
+	       res_ninit(&res);
+              ],[AC_MSG_RESULT([yes])
+	         AC_DEFINE(HAVE_RES_NINIT, 1, [Define to 1 if you have the 'res_ninit' function.])
+	      ],[AC_MSG_RESULT([no])])
+
+  AC_MSG_CHECKING([for res_nquery])
+  AC_TRY_LINK([#include <sys/types.h>
+	       #include <netinet/in.h>
+	       #include <arpa/nameser.h>
+	       #include <resolv.h>
+              ],[
+               struct __res_state res;
+	       res_nquery(&res, "test", 0, 0, (void *)0, 0);
+              ],[AC_MSG_RESULT([yes])
+	         AC_DEFINE(HAVE_RES_NQUERY, 1, [Define to 1 if you have the 'res_nquery' function.])
 	      ],[AC_MSG_RESULT([no])])
   LIBS="$save_libs"
 ])

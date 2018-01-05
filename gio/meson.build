@@ -87,6 +87,54 @@ if host_system != 'windows'
     glib_conf.set('HAVE_RES_INIT', 1)
   endif
 
+  # res_nclose()
+  if cc.links('''#include <sys/types.h>
+                 #include <netinet/in.h>
+                 #include <arpa/nameser.h>
+                 #include <resolv.h>
+                 int main (int argc, char ** argv) {
+                   struct __res_state res;
+                   return res_nclose(&res);
+                 }''', args : network_args, name : 'res_nclose()')
+    glib_conf.set('HAVE_RES_NCLOSE', 1)
+  endif
+
+  # res_ndestroy()
+  if cc.links('''#include <sys/types.h>
+                 #include <netinet/in.h>
+                 #include <arpa/nameser.h>
+                 #include <resolv.h>
+                 int main (int argc, char ** argv) {
+                   struct __res_state res;
+                   return res_ndestroy(&res);
+                 }''', args : network_args, name : 'res_ndestroy()')
+    glib_conf.set('HAVE_RES_NDESTROY', 1)
+  endif
+
+  # res_ninit()
+  if cc.links('''#include <sys/types.h>
+                 #include <netinet/in.h>
+                 #include <arpa/nameser.h>
+                 #include <resolv.h>
+                 int main (int argc, char ** argv) {
+                   struct __res_state res;
+                   return res_ninit(&res);
+                 }''', args : network_args, name : 'res_ninit()')
+    glib_conf.set('HAVE_RES_NINIT', 1)
+  endif
+
+  # res_nquery()
+  if cc.links('''#include <sys/types.h>
+                 #include <netinet/in.h>
+                 #include <arpa/nameser.h>
+                 #include <resolv.h>
+                 int main (int argc, char ** argv) {
+                   struct __res_state res;
+                   return res_nquery(&res, "test", 0, 0, (void *)0, 0);
+                 }''', args : network_args, name : 'res_nquery()')
+    glib_conf.set('HAVE_RES_NQUERY', 1)
+  endif
+
   if cc.compiles('''#include <netinet/in.h>
                     struct ip_mreqn foo;''',
                  name : 'struct ip_mreqn')
