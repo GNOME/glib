@@ -4417,6 +4417,33 @@ g_desktop_app_info_get_string (GDesktopAppInfo *info,
 }
 
 /**
+ * g_desktop_app_info_get_locale_string:
+ * @info: a #GDesktopAppInfo
+ * @key: the key to look up
+ *
+ * Looks up a localized string value in the keyfile backing @info
+ * translated to the current locale.
+ *
+ * The @key is looked up in the "Desktop Entry" group.
+ *
+ * Returns: (nullable): a newly allocated string, or %NULL if the key
+ *     is not found
+ *
+ * Since: 2.56
+ */
+char *
+g_desktop_app_info_get_locale_string (GDesktopAppInfo *info,
+                                      const char      *key)
+{
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), NULL);
+  g_return_val_if_fail (key != NULL && *key != '\0', NULL);
+
+  return g_key_file_get_locale_string (info->keyfile,
+                                       G_KEY_FILE_DESKTOP_GROUP,
+                                       key, NULL, NULL);
+}
+
+/**
  * g_desktop_app_info_get_boolean:
  * @info: a #GDesktopAppInfo
  * @key: the key to look up

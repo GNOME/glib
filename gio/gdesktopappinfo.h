@@ -82,6 +82,9 @@ gboolean         g_desktop_app_info_has_key           (GDesktopAppInfo *info,
 GLIB_AVAILABLE_IN_2_36
 char *           g_desktop_app_info_get_string        (GDesktopAppInfo *info,
                                                        const char      *key);
+GLIB_AVAILABLE_IN_2_56
+char *           g_desktop_app_info_get_locale_string (GDesktopAppInfo *info,
+                                                       const char      *key);
 GLIB_AVAILABLE_IN_2_36
 gboolean         g_desktop_app_info_get_boolean       (GDesktopAppInfo *info,
                                                        const char      *key);

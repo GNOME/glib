@@ -15,3 +15,5 @@ StartupWMClass=appinfo-class
 MimeType=image/png;image/jpeg;
 Keywords=keyword1;test keyword;
 Categories=GNOME;GTK;
+X-JunkFood=Burger
+X-JunkFood[de]=Bratwurst

@@ -17,6 +17,8 @@
  * Author: Matthias Clasen
  */
 
+#include <locale.h>
+
 #include <glib/glib.h>
 #include <glib/gstdio.h>
 #include <gio/gio.h>
@@ -346,8 +348,13 @@ static void
 test_extra_getters (void)
 {
   GDesktopAppInfo *appinfo;
+  const gchar *lang;
   gchar *s;
   gboolean b;
+
+  lang = setlocale (LC_ALL, NULL);
+  g_setenv ("LANGUAGE", "de_DE.UTF8", TRUE);
+  setlocale (LC_ALL, "");
 
   appinfo = g_desktop_app_info_new_from_filename (g_test_get_filename (G_TEST_DIST, "appinfo-test.desktop", NULL));
   g_assert (appinfo != NULL);
@@ -359,10 +366,24 @@ test_extra_getters (void)
   g_assert_cmpstr (s, ==, "appinfo-class");
   g_free (s);
 
+  s = g_desktop_app_info_get_locale_string (appinfo, "X-JunkFood");
+  g_assert_cmpstr (s, ==, "Bratwurst");
+  g_free (s);
+
+  g_setenv ("LANGUAGE", "sv_SV.UTF8", TRUE);
+  setlocale (LC_ALL, "");
+
+  s = g_desktop_app_info_get_locale_string (appinfo, "X-JunkFood");
+  g_assert_cmpstr (s, ==, "Burger"); /* fallback */
+  g_free (s);
+
   b = g_desktop_app_info_get_boolean (appinfo, "Terminal");
   g_assert (b);
 
   g_object_unref (appinfo);
+
+  g_setenv ("LANGUAGE", lang, TRUE);
+  setlocale (LC_ALL, "");
 }
 
 static void
