@@ -103,16 +103,16 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
   /**
    * GTlsClientConnection:use-ssl3:
    *
-   * If %TRUE, tells the connection to use a fallback version of TLS
+   * If %TRUE, forces the connection to use a fallback version of TLS
    * or SSL, rather than trying to negotiate the best version of TLS
    * to use. This can be used when talking to servers that don't
    * implement version negotiation correctly and therefore refuse to
-   * handshake at all with a "modern" TLS handshake.
+   * handshake at all with a modern TLS handshake.
    *
-   * Despite the property name, the fallback version is not
-   * necessarily SSL 3.0; if SSL 3.0 has been disabled, the
-   * #GTlsClientConnection will use the next highest available version
-   * (normally TLS 1.0) as the fallback version.
+   * Despite the property name, the fallback version is usually not
+   * SSL 3.0, because SSL 3.0 is generally disabled by the #GTlsBackend.
+   * #GTlsClientConnection will use the next-highest available version
+   * as the fallback version.
    *
    * Since: 2.28
    */
@@ -273,11 +273,11 @@ g_tls_client_connection_set_server_identity (GTlsClientConnection *conn,
  * g_tls_client_connection_get_use_ssl3:
  * @conn: the #GTlsClientConnection
  *
- * Gets whether @conn will use SSL 3.0 rather than the
- * highest-supported version of TLS; see
- * g_tls_client_connection_set_use_ssl3().
+ * Gets whether @conn will force the lowest-supported TLS protocol
+ * version rather than attempt to negotiate the highest mutually-
+ * supported version of TLS; see g_tls_client_connection_set_use_ssl3().
  *
- * Returns: whether @conn will use SSL 3.0
+ * Returns: whether @conn will use the lowest-supported TLS protocol version
  *
  * Since: 2.28
  */
@@ -295,13 +295,16 @@ g_tls_client_connection_get_use_ssl3 (GTlsClientConnection *conn)
 /**
  * g_tls_client_connection_set_use_ssl3:
  * @conn: the #GTlsClientConnection
- * @use_ssl3: whether to use SSL 3.0
+ * @use_ssl3: whether to use the lowest-supported protocol version
  *
- * If @use_ssl3 is %TRUE, this forces @conn to use SSL 3.0 rather than
- * trying to properly negotiate the right version of TLS or SSL to use.
- * This can be used when talking to servers that do not implement the
- * fallbacks correctly and which will therefore fail to handshake with
- * a "modern" TLS handshake attempt.
+ * If @use_ssl3 is %TRUE, this forces @conn to use the lowest-supported
+ * TLS protocol version rather than trying to properly negotiate the
+ * highest mutually-supported protocol version with the peer. This can
+ * be used when talking to broken TLS servers that exhibit protocol
+ * version intolerance.
+ *
+ * Be aware that SSL 3.0 is generally disabled by the #GTlsBackend, so
+ * the lowest-supported protocol version is probably not SSL 3.0.
  *
  * Since: 2.28
  */
