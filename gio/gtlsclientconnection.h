@@ -69,9 +69,9 @@ GSocketConnectable   *g_tls_client_connection_get_server_identity  (GTlsClientCo
 GLIB_AVAILABLE_IN_ALL
 void                  g_tls_client_connection_set_server_identity  (GTlsClientConnection    *conn,
 								    GSocketConnectable      *identity);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_56
 gboolean              g_tls_client_connection_get_use_ssl3         (GTlsClientConnection    *conn);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_56
 void                  g_tls_client_connection_set_use_ssl3         (GTlsClientConnection    *conn,
 								    gboolean                 use_ssl3);
 GLIB_AVAILABLE_IN_ALL
