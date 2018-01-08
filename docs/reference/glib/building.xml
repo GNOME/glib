@@ -42,6 +42,13 @@
       the standard options.
     </para>
     <para>
+      GLib is compiled with
+      <ulink url="https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#index-fstrict-aliasing">strict aliasing</ulink>
+      disabled. It is strongly recommended that this is not re-enabled by
+      overriding the compiler flags, as GLib has not been tested with strict
+      aliasing and cannot be guaranteed to work.
+    </para>
+    <para>
       The GTK+ documentation contains
       <ulink url="https://developer.gnome.org/gtk3/stable/gtk-building.html">further details</ulink>
       about the build process and ways to influence it.
