@@ -1,3 +1,36 @@
+Overview of changes in GLib 2.54.3
+==================================
+
+* Bugs fixed:
+ 691436 glib-mkenums output arch dependent
+ 761102 Increase performance for main loop
+ 776147 gio/glocalfilemonitor.c doesn't handle case G_FILE_MONITOR_EVENT_MOVE...
+ 779182 xdg-open fails with gio open for some uris
+ 782057 Unit tests fail in run-assert-msg-test.sh
+ 785113 glib-mkenums Python port fixes
+ 788990 Include licensing information in output from glib-mkenums, glib-genma...
+ 789637 glib-mkenums: Fails when --ouput file does not exist
+ 789894 Text tool has color from previous line, when overwriting existing text
+ 790030 GResource/GVariant fails to load from non-pointer aligned memory
+ 790093 gio-tool: fix inverted logic in monitor tool
+ 790126 gengiotypefuncs.py is missing from tarballs
+ 790829 glib-genmarshal --body must not generate alias implementations
+ 790934 gtester doesn't handle skipped tests
+ 791235 Fix gschema.dtd regarding flags.
+ 791267 Make gschema.dtd usable.
+ 791296 gtester-report: fix range usage when running as python3 app
+ 791325 Gio handling of thumbnail:: attribute namespace causes inconsistent b...
+ 791334 gbinding.c:898: The target object of type GNetworkAddress has no prop...
+ 791337 Crash opening URIs with g_desktop_app_info_launch_uris_with_spawn()
+ 791720 Criticals in gio/xdp-dbus.h leading to crash under flatpak
+ 791744 gmenumodel test sometimes fails: assertion failed (items_changed_coun...
+ 791754 gdbus-peer test intermittently fails: assertion 'source->ref_count > ...
+ 791906 GSocketListenerClass.event has wrong signature
+
+* Translation updates:
+ Norwegian bokmål
+
+
 Overview of changes in GLib 2.54.2
 ==================================
 
