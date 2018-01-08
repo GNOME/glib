@@ -2183,6 +2183,10 @@ g_key_file_set_locale_string (GKeyFile     *key_file,
  * translated in the given @locale if available.  If @locale is
  * %NULL then the current locale is assumed. 
  *
+ * If @locale is to be non-%NULL, or if the current locale will change over
+ * the lifetime of the #GKeyFile, it must be loaded with
+ * %G_KEY_FILE_KEEP_TRANSLATIONS in order to load strings for all locales.
+ *
  * If @key cannot be found then %NULL is returned and @error is set 
  * to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the value associated
  * with @key cannot be interpreted or no suitable translation can
@@ -2270,6 +2274,10 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
  * Returns the values associated with @key under @group_name
  * translated in the given @locale if available.  If @locale is
  * %NULL then the current locale is assumed.
+ *
+ * If @locale is to be non-%NULL, or if the current locale will change over
+ * the lifetime of the #GKeyFile, it must be loaded with
+ * %G_KEY_FILE_KEEP_TRANSLATIONS in order to load strings for all locales.
  *
  * If @key cannot be found then %NULL is returned and @error is set 
  * to #G_KEY_FILE_ERROR_KEY_NOT_FOUND. If the values associated
