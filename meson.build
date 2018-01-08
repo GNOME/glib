@@ -1293,7 +1293,7 @@ if host_cpu_family == 'x86' or host_cpu_family == 'x86_64' or host_cpu_family ==
 elif host_cpu_family.startswith('sparc') or host_cpu_family.startswith('alpha') or host_cpu_family.startswith('powerpc') or host_cpu_family == 'ia64'
   glib_memory_barrier_needed = true
 else
-  error('Unknown host cpu: ' + host_cpu_family)
+  warning('Unknown host cpu: ' + host_cpu_family)
   glib_memory_barrier_needed = true
 endif
 glibconfig_conf.set('G_ATOMIC_OP_MEMORY_BARRIER_NEEDED', glib_memory_barrier_needed)
