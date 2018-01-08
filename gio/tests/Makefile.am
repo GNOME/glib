@@ -140,6 +140,7 @@ schema_tests = \
 	enum-with-chained-alias.gschema.xml		\
 	enum-with-choice.gschema.xml			\
 	enum-with-invalid-alias.gschema.xml		\
+	enum-with-invalid-value.gschema.xml		\
 	enum-with-repeated-alias.gschema.xml		\
 	enum-with-repeated-nick.gschema.xml		\
 	enum-with-repeated-value.gschema.xml		\
