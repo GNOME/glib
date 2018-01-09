@@ -367,32 +367,6 @@ test_boxed_datetime (void)
 }
 
 static void
-test_boxed_uuid (void)
-{
-  GUuid v;
-  GUuid *v1;
-  GUuid *v2;
-  GValue value = G_VALUE_INIT;
-
-  g_value_init (&value, G_TYPE_UUID);
-  g_assert (G_VALUE_HOLDS_BOXED (&value));
-
-  g_uuid_generate_v4 (&v);
-  g_value_set_boxed (&value, &v);
-
-  v1 = g_value_dup_boxed (&value);
-  g_assert (v1 != &v); /* uuids are copied values */
-  g_assert (g_uuid_equal (v1, &v));
-  g_value_reset (&value);
-
-  g_value_take_boxed (&value, v1);
-  v2 = g_value_get_boxed (&value);
-  g_assert (v2 == v1);
-
-  g_value_unset (&value);
-}
-
-static void
 test_boxed_error (void)
 {
   GError *v;
@@ -670,7 +644,6 @@ main (int argc, char *argv[])
   g_test_add_func ("/boxed/markup", test_boxed_markup);
   g_test_add_func ("/boxed/thread", test_boxed_thread);
   g_test_add_func ("/boxed/checksum", test_boxed_checksum);
-  g_test_add_func ("/boxed/uuid", test_boxed_uuid);
 
   return g_test_run ();
 }
