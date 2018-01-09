@@ -94,26 +94,8 @@ uuid_parse_string (const gchar *str,
   gint i, j, hi, lo;
   guint expected_len = 36;
 
-  if (g_str_has_prefix (str, "urn:uuid:"))
-    str += 9;
-  else if (g_str_has_prefix (str, "{urn:uuid:"))
-    expected_len += 11;
-  else if (str[0] == '{')
-    expected_len += 2;
-
   if (strlen (str) != expected_len)
     return FALSE;
-
-  if (str[0] == '{')
-    {
-      if (str[expected_len - 1] != '}')
-        return FALSE;
-
-      str++;
-    }
-
-  if (g_str_has_prefix (str, "urn:uuid:"))
-    str += 9;
 
   for (i = 0, j = 0; i < 16;)
     {
@@ -146,12 +128,9 @@ uuid_parse_string (const gchar *str,
  *
  * Parses the string @str and verify if it is a UUID.
  *
- * The function accepts the following syntaxes:
+ * The function accepts the following syntax:
  *
  * - simple forms (e.g. `f81d4fae-7dec-11d0-a765-00a0c91e6bf6`)
- * - simple forms with curly braces (e.g.
- *   `{urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6}`)
- * - URN (e.g. `urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6`)
  *
  * Note that hyphens are required within the UUID string itself,
  * as per the aforementioned RFC.
