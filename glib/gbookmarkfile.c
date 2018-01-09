@@ -2860,7 +2860,7 @@ g_bookmark_file_set_groups (GBookmarkFile  *bookmark,
   
   if (groups)
     {
-      for (i = 0; groups[i] != NULL && i < length; i++)
+      for (i = 0; i < length && groups[i] != NULL; i++)
         item->metadata->groups = g_list_append (item->metadata->groups,
 					        g_strdup (groups[i]));
     }
