@@ -6006,7 +6006,8 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
  * @method_name: the name of the method to invoke
  * @parameters: (nullable): a #GVariant tuple with parameters for the method
  *     or %NULL if not passing parameters
- * @reply_type: (nullable): the expected type of the reply, or %NULL
+ * @reply_type: (nullable): the expected type of the reply (which will be a
+ *     tuple), or %NULL
  * @flags: flags from the #GDBusCallFlags enumeration
  * @timeout_msec: the timeout in milliseconds, -1 to use the default
  *     timeout or %G_MAXINT for no timeout
@@ -6028,7 +6029,9 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
  *
  * If @reply_type is non-%NULL then the reply will be checked for having this type and an
  * error will be raised if it does not match.  Said another way, if you give a @reply_type
- * then any non-%NULL return value will be of this type.
+ * then any non-%NULL return value will be of this type. Unless it’s
+ * %G_VARIANT_TYPE_UNIT, the @reply_type will be a tuple containing one or more
+ * values.
  *
  * If the @parameters #GVariant is floating, it is consumed. This allows
  * convenient 'inline' use of g_variant_new(), e.g.:
