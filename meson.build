@@ -997,7 +997,7 @@ if host_system == 'windows'
   else
     glibconfig_conf.set_quoted('g_pollfd_format', '%#x')
   endif
-  glibconfig_conf.set('g_dir_separator', '\\')
+  glibconfig_conf.set('g_dir_separator', '\\\\')
   glibconfig_conf.set('g_searchpath_separator', ';')
 else
   glibconfig_conf.set('g_pid_type', 'int')
