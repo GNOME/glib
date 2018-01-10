@@ -665,7 +665,7 @@ g_setenv_utf8 (const gchar *variable,
 void
 g_unsetenv_utf8 (const gchar *variable)
 {
-  return g_unsetenv (variable);
+  g_unsetenv (variable);
 }
 
 #endif
