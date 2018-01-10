@@ -32,11 +32,11 @@
 </refsynopsisdiv>
 
 <refsect1><title>Description</title>
-<para><command>glib-mkenums</command> is a small perl-script utility that
-parses C code to extract enum definitions and produces enum descriptions based
-on text templates specified by the user. Most frequently this script is used to
-produce C code that contains enum values as strings so programs can provide
-value name strings for introspection.
+<para><command>glib-mkenums</command> is a small utility that parses C code to
+extract enum definitions and produces enum descriptions based on text templates
+specified by the user. Most frequently this script is used to produce C code
+that contains enum values as strings so programs can provide value name strings
+for introspection.
 </para>
 
 <para><command>glib-mkenums</command> takes a list of valid C code files as
@@ -121,12 +121,10 @@ minus (e.g. the-xvalue).
 <varlistentry>
 <term>@valuenum@</term>
 <listitem><para>
-The integer value for the enum value currently being processed.  This is
-calculated by using <command>perl</command> to attempt to evaluate the
-expression as it appears in the C source code.  If evaluation fails then
-<command>glib-mkenums</command> will exit with an error status, but this
-only happens if <literal>@valuenum@</literal> appears in your value
-production template.  (Since: 2.26)
+The integer value for the enum value currently being processed. If the
+evaluation fails then <command>glib-mkenums</command> will exit with an
+error status, but this only happens if <literal>@valuenum@</literal>
+appears in your value production template. (Since: 2.26)
 </para></listitem>
 </varlistentry>
 
