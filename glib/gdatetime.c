@@ -928,7 +928,7 @@ static gboolean
 get_iso8601_seconds (const gchar *text, gsize length, gdouble *value)
 {
   gint i;
-  gdouble multiplier = 0.1, v = 0;
+  gdouble divisor = 1, v = 0;
 
   if (length < 2)
     return FALSE;
@@ -952,11 +952,11 @@ get_iso8601_seconds (const gchar *text, gsize length, gdouble *value)
       const gchar c = text[i];
       if (c < '0' || c > '9')
         return FALSE;
-      v += (c - '0') * multiplier;
-      multiplier *= 0.1;
+      v = v * 10 + (c - '0');
+      divisor *= 10;
     }
 
-  *value = v;
+  *value = v / divisor;
   return TRUE;
 }
 
