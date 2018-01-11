@@ -362,7 +362,7 @@ close_converter (GIConv cd)
  * Converts a string from one character set to another. 
  * 
  * Note that you should use g_iconv() for streaming conversions. 
- * Despite the fact that @byes_read can return information about partial 
+ * Despite the fact that @bytes_read can return information about partial
  * characters, the g_convert_... functions are not generally suitable
  * for streaming. If the underlying converter maintains internal state,
  * then this won't be preserved across successive calls to g_convert(),
@@ -516,7 +516,7 @@ g_convert_with_iconv (const gchar *str,
  * Converts a string from one character set to another.
  *
  * Note that you should use g_iconv() for streaming conversions. 
- * Despite the fact that @byes_read can return information about partial 
+ * Despite the fact that @bytes_read can return information about partial
  * characters, the g_convert_... functions are not generally suitable
  * for streaming. If the underlying converter maintains internal state,
  * then this won't be preserved across successive calls to g_convert(),
@@ -603,7 +603,7 @@ g_convert (const gchar *str,
  * in which case GLib will simply return that approximate conversion.
  *
  * Note that you should use g_iconv() for streaming conversions. 
- * Despite the fact that @byes_read can return information about partial 
+ * Despite the fact that @bytes_read can return information about partial
  * characters, the g_convert_... functions are not generally suitable
  * for streaming. If the underlying converter maintains internal state,
  * then this won't be preserved across successive calls to g_convert(),
