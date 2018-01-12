@@ -604,7 +604,7 @@ void             g_dbus_connection_signal_unsubscribe         (GDBusConnection  
  *                 gboolean         incoming,
  *                 gpointer         user_data)
  * {
- *   /<!-- -->* inspect @message *<!-- -->/
+ *   // inspect @message
  *   return message;
  * }
  * ]|
@@ -637,10 +637,10 @@ void             g_dbus_connection_signal_unsubscribe         (GDBusConnection  
  *
  *   error = NULL;
  *   copy = g_dbus_message_copy (message, &error);
- *   /<!-- -->* handle @error being is set *<!-- -->/
+ *   // handle @error being set
  *   g_object_unref (message);
  *
- *   /<!-- -->* modify @copy *<!-- -->/
+ *   // modify @copy
  *
  *   return copy;
  * }

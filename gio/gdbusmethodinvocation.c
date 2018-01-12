@@ -554,7 +554,7 @@ g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocatio
  *   g_dbus_method_invocation_return_value (invocation,
  *                                          g_variant_new ("(s)", result_string));
  *
- * /<!-- -->* Do not free @invocation here; returning a value does that *<!-- -->/
+ * // Do not free @invocation here; returning a value does that
  * ]|
  *
  * This method will take ownership of @invocation. See

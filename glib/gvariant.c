@@ -5282,7 +5282,7 @@ g_variant_valist_get (const gchar **str,
  * GVariant *new_variant;
  *
  * new_variant = g_variant_new ("(t^as)",
- *                              /<!-- -->* This cast is required. *<!-- -->/
+ *                              // This cast is required.
  *                              (guint64) some_flags,
  *                              some_strings);
  * ]|

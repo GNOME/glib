@@ -118,7 +118,7 @@
  * g_direct_hash() is also the appropriate hash function for keys
  * of the form `GINT_TO_POINTER (n)` (or similar macros).
  *
- * <!-- FIXME: Need more here. --> A good hash functions should produce
+ * A good hash functions should produce
  * hash values that are evenly distributed over a fairly large range.
  * The modulus is taken with the hash table size (a prime number) to
  * find the 'bucket' to place each key into. The function should also

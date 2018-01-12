@@ -850,7 +850,7 @@ ensure_schema_lists (void)
 /**
  * g_settings_list_schemas:
  *
- * <!-- -->
+ * Deprecated.
  *
  * Returns: (element-type utf8) (transfer none):  a list of #GSettings
  *   schemas that are available.  The list must not be modified or
@@ -874,7 +874,7 @@ g_settings_list_schemas (void)
 /**
  * g_settings_list_relocatable_schemas:
  *
- * <!-- -->
+ * Deprecated.
  *
  * Returns: (element-type utf8) (transfer none): a list of relocatable
  *   #GSettings schemas that are available.  The list must not be

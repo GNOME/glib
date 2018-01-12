@@ -93,7 +93,7 @@ struct _GTypeModuleClass
  * A convenience macro for dynamic type implementations, which declares a
  * class initialization function, an instance initialization function (see 
  * #GTypeInfo for information about these) and a static variable named 
- * @t_n<!-- -->_parent_class pointing to the parent class. Furthermore, 
+ * `t_n`_parent_class pointing to the parent class. Furthermore,
  * it defines a `*_get_type()` and a static `*_register_type()` functions
  * for use in your `module_init()`.
  *
