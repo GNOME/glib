@@ -20,6 +20,7 @@
 # Author: David Zeuthen <davidz@redhat.com>
 
 from . import utils
+from .utils import print_error
 
 class Annotation:
     def __init__(self, key, value):
@@ -322,7 +323,7 @@ class Property:
         elif self.access == 'write':
             self.writable = True
         else:
-            raise RuntimeError('Invalid access type %s'%self.access)
+            print_error('Invalid access type "{}"'.format(self.access))
         self.doc_string = ''
         self.since = ''
         self.deprecated = False
@@ -399,7 +400,7 @@ class Interface:
             self.name_lower = cns_lower + overridden_name.lower()
             self.name_upper = overridden_name.upper()
 
-            #raise RuntimeError('handle Ugly_Case ', overridden_name)
+            #print_error('handle Ugly_Case "{}"'.format(overridden_name))
         else:
             if overridden_name:
                 name = overridden_name

@@ -20,6 +20,46 @@
 # Author: David Zeuthen <davidz@redhat.com>
 
 import distutils.version
+import os
+import sys
+
+# pylint: disable=too-few-public-methods
+class Color:
+    '''ANSI Terminal colors'''
+    GREEN = '\033[1;32m'
+    BLUE = '\033[1;34m'
+    YELLOW = '\033[1;33m'
+    RED = '\033[1;31m'
+    END = '\033[0m'
+
+def print_color(msg, color=Color.END, prefix='MESSAGE'):
+    '''Print a string with a color prefix'''
+    if os.isatty(sys.stderr.fileno()):
+        real_prefix = '{start}{prefix}{end}'.format(start=color, prefix=prefix, end=Color.END)
+    else:
+        real_prefix = prefix
+    sys.stderr.write('{prefix}: {msg}\n'.format(prefix=real_prefix, msg=msg))
+
+def print_error(msg):
+    '''Print an error, and terminate'''
+    print_color(msg, color=Color.RED, prefix='ERROR')
+    sys.exit(1)
+
+def print_warning(msg, fatal=False):
+    '''Print a warning, and optionally terminate'''
+    if fatal:
+        color = Color.RED
+        prefix = 'ERROR'
+    else:
+        color = Color.YELLOW
+        prefix = 'WARNING'
+    print_color(msg, color, prefix)
+    if fatal:
+        sys.exit(1)
+
+def print_info(msg):
+    '''Print a message'''
+    print_color(msg, color=Color.GREEN, prefix='INFO')
 
 def strip_dots(s):
     ret = ''

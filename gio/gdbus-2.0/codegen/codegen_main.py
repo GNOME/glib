@@ -24,11 +24,11 @@ import optparse
 from os import path
 
 from . import config
-from . import utils
 from . import dbustypes
 from . import parser
 from . import codegen
 from . import codegen_docbook
+from .utils import print_error
 
 def find_arg(arg_list, arg_name):
     for a in arg_list:
@@ -62,38 +62,38 @@ def apply_annotation(iface_list, iface, method, signal, prop, arg, key, value):
             break
 
     if iface_obj == None:
-        raise RuntimeError('No interface %s'%iface)
+        print_error('No interface "{}"'.format(iface))
 
     target_obj = None
 
     if method:
         method_obj = find_method(iface_obj, method)
         if method_obj == None:
-            raise RuntimeError('No method %s on interface %s'%(method, iface))
+            print_error('No method "{}" on interface "{}"'.format(method, iface))
         if arg:
             arg_obj = find_arg(method_obj.in_args, arg)
             if (arg_obj == None):
                 arg_obj = find_arg(method_obj.out_args, arg)
                 if (arg_obj == None):
-                    raise RuntimeError('No arg %s on method %s on interface %s'%(arg, method, iface))
+                    print_error('No arg "{}" on method "{}" on interface "{}"'.format(arg, method, iface))
             target_obj = arg_obj
         else:
             target_obj = method_obj
     elif signal:
         signal_obj = find_signal(iface_obj, signal)
         if signal_obj == None:
-            raise RuntimeError('No signal %s on interface %s'%(signal, iface))
+            print_error('No signal "{}" on interface "{}"'.format(signal, iface))
         if arg:
             arg_obj = find_arg(signal_obj.args, arg)
             if (arg_obj == None):
-                raise RuntimeError('No arg %s on signal %s on interface %s'%(arg, signal, iface))
+                print_error('No arg "{}" on signal "{}" on interface "{}"'.format(arg, signal, iface))
             target_obj = arg_obj
         else:
             target_obj = signal_obj
     elif prop:
         prop_obj = find_prop(iface_obj, prop)
         if prop_obj == None:
-            raise RuntimeError('No property %s on interface %s'%(prop, iface))
+            print_error('No property "{}" on interface "{}"'.format(prop, iface))
         target_obj = prop_obj
     else:
         target_obj = iface_obj
