@@ -1294,7 +1294,11 @@ g_date_time_new (GTimeZone *tz,
 {
   GDateTime *datetime;
   gint64 full_time;
-  gint64 usec;
+  /* keep these variables as volatile. We do not want them ending up in
+   * registers - them doing so may cause us to hit precision problems on i386.
+   * See: https://bugzilla.gnome.org/show_bug.cgi?id=792410 */
+  volatile gint64 usec;
+  volatile gdouble usecd;
 
   g_return_val_if_fail (tz != NULL, NULL);
 
@@ -1328,7 +1332,8 @@ g_date_time_new (GTimeZone *tz,
    * FP numbers work.
    * See https://bugzilla.gnome.org/show_bug.cgi?id=697715. */
   usec = seconds * USEC_PER_SECOND;
-  if ((usec + 1) * 1e-6 <= seconds) {
+  usecd = (usec + 1) * 1e-6;
+  if (usecd <= seconds) {
     usec++;
   }
 
