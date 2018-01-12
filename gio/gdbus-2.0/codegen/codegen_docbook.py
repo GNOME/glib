@@ -31,10 +31,8 @@ from . import parser
 # ----------------------------------------------------------------------------------------------------
 
 class DocbookCodeGenerator:
-    def __init__(self, ifaces, docbook, outdir):
+    def __init__(self, ifaces):
         self.ifaces = ifaces
-        self.docbook = docbook
-        self.outdir = outdir
         self.generate_expand_dicts()
 
     def print_method_prototype(self, i, m, in_synopsis):
@@ -270,9 +268,9 @@ class DocbookCodeGenerator:
         self.expand_member_dict_keys = sorted(self.expand_member_dict.keys(), reverse=True)
         self.expand_iface_dict_keys = sorted(self.expand_iface_dict.keys(), reverse=True)
 
-    def generate(self):
+    def generate(self, docbook, outdir):
         for i in self.ifaces:
-            self.out = open(path.join(self.outdir, '%s-%s.xml'%(self.docbook, i.name)), 'w')
+            self.out = open(path.join(outdir, '%s-%s.xml'%(docbook, i.name)), 'w')
             self.out.write(''%())
             self.out.write('<?xml version="1.0" encoding="utf-8"?>\n'%())
             self.out.write('<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"\n'%())

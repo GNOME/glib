@@ -190,9 +190,9 @@ def codegen_main():
     outdir = args.output_directory
 
     docbook = args.generate_docbook
-    docbook_gen = codegen_docbook.DocbookCodeGenerator(all_ifaces, docbook, outdir);
+    docbook_gen = codegen_docbook.DocbookCodeGenerator(all_ifaces);
     if docbook:
-        ret = docbook_gen.generate()
+        ret = docbook_gen.generate(docbook, outdir)
 
     c_code = args.generate_c_code
     if c_code:
