@@ -823,20 +823,31 @@ g_convert_with_fallback (const gchar *str,
  * 
  */
 
+/*
+ * Validate @string as UTF-8. @len can be negative if @string is
+ * nul-terminated, or a non-negative value in bytes. If @string ends in an
+ * incomplete sequence, or contains any illegal sequences or nul codepoints,
+ * %NULL will be returned and the error set to
+ * %G_CONVERT_ERROR_ILLEGAL_SEQUENCE.
+ * On success, @bytes_read and @bytes_written, if provided, will be set to
+ * the number of bytes in @string up to @len or the terminating nul byte.
+ * On error, @bytes_read will be set to the byte offset after the last valid
+ * and non-nul UTF-8 sequence in @string, and @bytes_written will be set to 0.
+ */
 static gchar *
 strdup_len (const gchar *string,
 	    gssize       len,
-	    gsize       *bytes_written,
 	    gsize       *bytes_read,
-	    GError      **error)
-	 
+	    gsize       *bytes_written,
+	    GError     **error)
 {
   gsize real_len;
+  const gchar *end_valid;
 
-  if (!g_utf8_validate (string, len, NULL))
+  if (!g_utf8_validate (string, len, &end_valid))
     {
       if (bytes_read)
-	*bytes_read = 0;
+	*bytes_read = end_valid - string;
       if (bytes_written)
 	*bytes_written = 0;
 
@@ -844,17 +855,9 @@ strdup_len (const gchar *string,
                            _("Invalid byte sequence in conversion input"));
       return NULL;
     }
-  
-  if (len < 0)
-    real_len = strlen (string);
-  else
-    {
-      real_len = 0;
-      
-      while (real_len < len && string[real_len])
-	real_len++;
-    }
-  
+
+  real_len = end_valid - string;
+
   if (bytes_read)
     *bytes_read = real_len;
   if (bytes_written)
