@@ -43,6 +43,9 @@ G_BEGIN_DECLS
  * @G_CONVERT_ERROR_BAD_URI: URI is invalid.
  * @G_CONVERT_ERROR_NOT_ABSOLUTE_PATH: Pathname is not an absolute path.
  * @G_CONVERT_ERROR_NO_MEMORY: No memory available. Since: 2.40
+ * @G_CONVERT_ERROR_EMBEDDED_NUL: An embedded NUL character is present in
+ *     conversion output where a NUL-terminated string is expected.
+ *     Since: 2.56
  *
  * Error codes returned by character set conversion routines.
  */
@@ -54,7 +57,8 @@ typedef enum
   G_CONVERT_ERROR_PARTIAL_INPUT,
   G_CONVERT_ERROR_BAD_URI,
   G_CONVERT_ERROR_NOT_ABSOLUTE_PATH,
-  G_CONVERT_ERROR_NO_MEMORY
+  G_CONVERT_ERROR_NO_MEMORY,
+  G_CONVERT_ERROR_EMBEDDED_NUL
 } GConvertError;
 
 /**
