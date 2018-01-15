@@ -1,4 +1,5 @@
 # -*- Mode: Python -*-
+# coding=utf-8
 
 # GDBus - GLib D-Bus Library
 #
