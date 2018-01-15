@@ -1656,6 +1656,7 @@ static GFileMonitor          *fstab_monitor;
 static GFileMonitor          *mtab_monitor;
 static GSource               *proc_mounts_watch_source;
 static GList                 *mount_poller_mounts;
+static guint                  mtab_file_changed_id;
 
 static gboolean
 proc_mounts_watch_is_running (void)
@@ -1679,6 +1680,15 @@ fstab_file_changed (GFileMonitor      *monitor,
   g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTPOINTS_CHANGED]);
 }
 
+static gboolean
+mtab_file_changed_cb (gpointer user_data)
+{
+  mtab_file_changed_id = 0;
+  g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTS_CHANGED]);
+
+  return G_SOURCE_REMOVE;
+}
+
 static void
 mtab_file_changed (GFileMonitor      *monitor,
                    GFile             *file,
@@ -1691,7 +1701,14 @@ mtab_file_changed (GFileMonitor      *monitor,
       event_type != G_FILE_MONITOR_EVENT_DELETED)
     return;
 
-  g_context_specific_group_emit (&mount_monitor_group, signals[MOUNTS_CHANGED]);
+  /* Skip accumulated events from file monitor which we are not able to handle
+   * in a real time instead of emitting mounts_changed signal several times.
+   * This should behave equally to GIOChannel based monitoring. See Bug 792235.
+   */
+  if (mtab_file_changed_id > 0)
+    return;
+
+  mtab_file_changed_id = g_idle_add (mtab_file_changed_cb, NULL);
 }
 
 static gboolean
