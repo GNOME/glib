@@ -127,7 +127,7 @@ case "$host" in
     glib_pid_type='void *'
     glib_pid_format='p'
     glib_pollfd_format='%#x'
-    glib_dir_separator='\\'
+    glib_dir_separator='\\\\'
     glib_searchpath_separator=';'
     glib_cv_stack_grows=no
     # Unfortunately the mingw implementations of C99-style snprintf and vsnprintf
