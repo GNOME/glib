@@ -119,6 +119,7 @@
     <xi:include href="xml/gvariant.xml"/>
     <xi:include href="gvariant-varargs.xml"/>
     <xi:include href="gvariant-text.xml"/>
+    <xi:include href="xml/refcount.xml"/>
   </chapter>
 
   <chapter id="deprecated">
