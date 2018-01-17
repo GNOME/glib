@@ -866,28 +866,67 @@ strdup_len (const gchar *string,
   return g_strndup (string, real_len);
 }
 
-static gchar *
-convert_to_utf8 (const gchar *opsysstring,
-                 gssize       len,
-                 const gchar *charset,
-                 gsize       *bytes_read,
-                 gsize       *bytes_written,
-                 GError     **error)
+typedef enum
 {
-  gchar *utf8;
+  CONVERT_CHECK_NO_NULS_IN_INPUT  = 1 << 0,
+  CONVERT_CHECK_NO_NULS_IN_OUTPUT = 1 << 1
+} ConvertCheckFlags;
+
+/*
+ * Convert from @string in the encoding identified by @from_codeset,
+ * returning a string in the encoding identifed by @to_codeset.
+ * @len can be negative if @string is nul-terminated, or a non-negative
+ * value in bytes. Flags defined in #ConvertCheckFlags can be set in @flags
+ * to check the input, the output, or both, for embedded nul bytes.
+ * On success, @bytes_read, if provided, will be set to the number of bytes
+ * in @string up to @len or the terminating nul byte, and @bytes_written, if
+ * provided, will be set to the number of output bytes written into the
+ * returned buffer, excluding the terminating nul sequence.
+ * On error, @bytes_read will be set to the byte offset after the last valid
+ * sequence in @string, and @bytes_written will be set to 0.
+ */
+static gchar *
+convert_checked (const gchar      *string,
+                 gssize            len,
+                 const gchar      *to_codeset,
+                 const gchar      *from_codeset,
+                 ConvertCheckFlags flags,
+                 gsize            *bytes_read,
+                 gsize            *bytes_written,
+                 GError          **error)
+{
+  gchar *out;
   gsize outbytes;
 
-  utf8 = g_convert (opsysstring, len, "UTF-8", charset,
-                    bytes_read, &outbytes, error);
-  if (utf8 == NULL)
+  if ((flags & CONVERT_CHECK_NO_NULS_IN_INPUT) && len > 0)
+    {
+      const gchar *early_nul = memchr (string, '\0', len);
+      if (early_nul != NULL)
+        {
+          if (bytes_read)
+            *bytes_read = early_nul - string;
+          if (bytes_written)
+            *bytes_written = 0;
+
+          g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+                               _("Embedded NUL byte in conversion input"));
+          return NULL;
+        }
+    }
+
+  out = g_convert (string, len, to_codeset, from_codeset,
+                   bytes_read, &outbytes, error);
+  if (out == NULL)
     {
       if (bytes_written)
         *bytes_written = 0;
       return NULL;
     }
-  if (memchr (utf8, '\0', outbytes) != NULL)
+
+  if ((flags & CONVERT_CHECK_NO_NULS_IN_OUTPUT)
+      && memchr (out, '\0', outbytes) != NULL)
     {
-      g_free (utf8);
+      g_free (out);
       if (bytes_written)
         *bytes_written = 0;
       g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_EMBEDDED_NUL,
@@ -897,7 +936,7 @@ convert_to_utf8 (const gchar *opsysstring,
 
   if (bytes_written)
     *bytes_written = outbytes;
-  return utf8;
+  return out;
 }
 
 /**
@@ -948,7 +987,8 @@ g_locale_to_utf8 (const gchar  *opsysstring,
   if (g_get_charset (&charset))
     return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
   else
-    return convert_to_utf8 (opsysstring, len, charset,
+    return convert_checked (opsysstring, len, "UTF-8", charset,
+                            CONVERT_CHECK_NO_NULS_IN_OUTPUT,
                             bytes_read, bytes_written, error);
 }
 
@@ -975,8 +1015,8 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  * system) in the [current locale][setlocale]. On Windows this means
  * the system codepage.
  *
- * The input string should not contain nul characters even if the @len
- * argument is positive. A nul character found inside the string may result
+ * The input string shall not contain nul characters even if the @len
+ * argument is positive. A nul character found inside the string will result
  * in error %G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Use g_convert() to convert
  * input that may contain embedded nul characters.
  *
@@ -995,8 +1035,9 @@ g_locale_from_utf8 (const gchar *utf8string,
   if (g_get_charset (&charset))
     return strdup_len (utf8string, len, bytes_read, bytes_written, error);
   else
-    return g_convert (utf8string, len,
-		      charset, "UTF-8", bytes_read, bytes_written, error);
+    return convert_checked (utf8string, len, charset, "UTF-8",
+                            CONVERT_CHECK_NO_NULS_IN_INPUT,
+                            bytes_read, bytes_written, error);
 }
 
 #ifndef G_PLATFORM_WIN32
@@ -1184,12 +1225,12 @@ get_filename_charset (const gchar **filename_charset)
  * for filenames; on other platforms, this function indirectly depends on 
  * the [current locale][setlocale].
  *
+ * The input string shall not contain nul characters even if the @len
+ * argument is positive. A nul character found inside the string will result
+ * in error %G_CONVERT_ERROR_ILLEGAL_SEQUENCE.
  * If the source encoding is not UTF-8 and the conversion output contains a
  * nul character, the error %G_CONVERT_ERROR_EMBEDDED_NUL is set and the
- * function returns %NULL.
- * If the source encoding is UTF-8, an embedded nul character is treated with
- * the %G_CONVERT_ERROR_ILLEGAL_SEQUENCE error for backward compatibility with
- * earlier versions of this library. Use g_convert() to produce output that
+ * function returns %NULL. Use g_convert() to produce output that
  * may contain embedded nul characters.
  * 
  * Returns: The converted string, or %NULL on an error.
@@ -1208,7 +1249,9 @@ g_filename_to_utf8 (const gchar *opsysstring,
   if (get_filename_charset (&charset))
     return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
   else
-    return convert_to_utf8 (opsysstring, len, charset,
+    return convert_checked (opsysstring, len, "UTF-8", charset,
+                            CONVERT_CHECK_NO_NULS_IN_INPUT |
+                            CONVERT_CHECK_NO_NULS_IN_OUTPUT,
                             bytes_read, bytes_written, error);
 }
 
@@ -1235,8 +1278,8 @@ g_filename_to_utf8 (const gchar *opsysstring,
  * on other platforms, this function indirectly depends on the 
  * [current locale][setlocale].
  *
- * The input string should not contain nul characters even if the @len
- * argument is positive. A nul character found inside the string may result
+ * The input string shall not contain nul characters even if the @len
+ * argument is positive. A nul character found inside the string will result
  * in error %G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Note that nul bytes are
  * prohibited in all filename encodings that GLib is known to work with.
  *
@@ -1255,8 +1298,10 @@ g_filename_from_utf8 (const gchar *utf8string,
   if (get_filename_charset (&charset))
     return strdup_len (utf8string, len, bytes_read, bytes_written, error);
   else
-    return g_convert (utf8string, len,
-		      charset, "UTF-8", bytes_read, bytes_written, error);
+    return convert_checked (utf8string, len, charset, "UTF-8",
+                            CONVERT_CHECK_NO_NULS_IN_INPUT |
+                            CONVERT_CHECK_NO_NULS_IN_OUTPUT,
+                            bytes_read, bytes_written, error);
 }
 
 /* Test of haystack has the needle prefix, comparing case
