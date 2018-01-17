@@ -964,7 +964,7 @@ extern GType g_cocoa_notification_backend_get_type (void);
 #ifdef G_PLATFORM_WIN32
 
 #include <windows.h>
-extern GType _g_network_monitor_windows_get_type (void);
+extern GType _g_win32_network_monitor_get_type (void);
 
 static HMODULE gio_dll = NULL;
 
@@ -1182,7 +1182,7 @@ _g_io_modules_ensure_loaded (void)
       g_type_ensure (_g_network_monitor_nm_get_type ());
 #endif
 #ifdef G_OS_WIN32
-      g_type_ensure (_g_network_monitor_windows_get_type ());
+      g_type_ensure (_g_win32_network_monitor_get_type ());
 #endif
     }
 

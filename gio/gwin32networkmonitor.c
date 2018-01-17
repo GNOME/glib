@@ -40,10 +40,10 @@
 #include "gnetworkmonitor.h"
 #include "gioerror.h"
 
-static void g_network_monitor_windows_iface_init (GNetworkMonitorInterface *iface);
-static void g_network_monitor_windows_initable_iface_init (GInitableIface *iface);
+static void g_win32_network_monitor_iface_init (GNetworkMonitorInterface *iface);
+static void g_win32_network_monitor_initable_iface_init (GInitableIface *iface);
 
-struct _GNetworkMonitorWindowsPrivate
+struct _GWin32NetworkMonitorPrivate
 {
   gboolean initialized;
   GError *init_error;
@@ -52,23 +52,23 @@ struct _GNetworkMonitorWindowsPrivate
   HANDLE handle;
 };
 
-#define g_network_monitor_windows_get_type _g_network_monitor_windows_get_type
-G_DEFINE_TYPE_WITH_CODE (GNetworkMonitorWindows, g_network_monitor_windows, G_TYPE_NETWORK_MONITOR_BASE,
-                         G_ADD_PRIVATE (GNetworkMonitorWindows)
+#define g_win32_network_monitor_get_type _g_win32_network_monitor_get_type
+G_DEFINE_TYPE_WITH_CODE (GWin32NetworkMonitor, g_win32_network_monitor, G_TYPE_NETWORK_MONITOR_BASE,
+                         G_ADD_PRIVATE (GWin32NetworkMonitor)
                          G_IMPLEMENT_INTERFACE (G_TYPE_NETWORK_MONITOR,
-                                                g_network_monitor_windows_iface_init)
+                                                g_win32_network_monitor_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
-                                                g_network_monitor_windows_initable_iface_init)
+                                                g_win32_network_monitor_initable_iface_init)
                          _g_io_modules_ensure_extension_points_registered ();
                          g_io_extension_point_implement (G_NETWORK_MONITOR_EXTENSION_POINT_NAME,
                                                          g_define_type_id,
-                                                         "windows",
+                                                         "win32",
                                                          20))
 
 static void
-g_network_monitor_windows_init (GNetworkMonitorWindows *win)
+g_win32_network_monitor_init (GWin32NetworkMonitor *win)
 {
-  win->priv = g_network_monitor_windows_get_instance_private (win);
+  win->priv = g_win32_network_monitor_get_instance_private (win);
 }
 
 static gboolean
@@ -118,7 +118,7 @@ get_network_mask (GSocketFamily  family,
 }
 
 static gboolean
-win_network_monitor_process_table (GNetworkMonitorWindows  *win,
+win_network_monitor_process_table (GWin32NetworkMonitor  *win,
                                    GError                 **error)
 {
   DWORD ret = 0;
@@ -164,10 +164,10 @@ win_network_monitor_process_table (GNetworkMonitorWindows  *win,
 }
 
 static void
-add_network (GNetworkMonitorWindows *win,
-             GSocketFamily           family,
-             const guint8           *dest,
-             gsize                   dest_len)
+add_network (GWin32NetworkMonitor *win,
+             GSocketFamily         family,
+             const guint8         *dest,
+             gsize                 dest_len)
 {
   GInetAddressMask *network;
 
@@ -180,10 +180,10 @@ add_network (GNetworkMonitorWindows *win,
 }
 
 static void
-remove_network (GNetworkMonitorWindows *win,
-                GSocketFamily           family,
-                const guint8           *dest,
-                gsize                   dest_len)
+remove_network (GWin32NetworkMonitor *win,
+                GSocketFamily         family,
+                const guint8         *dest,
+                gsize                 dest_len)
 {
   GInetAddressMask *network;
 
@@ -198,7 +198,7 @@ remove_network (GNetworkMonitorWindows *win,
 typedef struct {
   PMIB_IPFORWARD_ROW2 route;
   MIB_NOTIFICATION_TYPE type;
-  GNetworkMonitorWindows *win;
+  GWin32NetworkMonitor *win;
 } RouteData;
 
 static gboolean
@@ -236,7 +236,7 @@ win_network_monitor_route_changed_cb (PVOID                 context,
                                       PMIB_IPFORWARD_ROW2   route,
                                       MIB_NOTIFICATION_TYPE type)
 {
-  GNetworkMonitorWindows *win = context;
+  GWin32NetworkMonitor *win = context;
   RouteData *route_data;
 
   route_data = g_new0 (RouteData, 1);
@@ -255,11 +255,11 @@ win_network_monitor_route_changed_cb (PVOID                 context,
 }
 
 static gboolean
-g_network_monitor_windows_initable_init (GInitable     *initable,
-                                         GCancellable  *cancellable,
-                                         GError       **error)
+g_win32_network_monitor_initable_init (GInitable     *initable,
+                                       GCancellable  *cancellable,
+                                       GError       **error)
 {
-  GNetworkMonitorWindows *win = G_NETWORK_MONITOR_WINDOWS (initable);
+  GWin32NetworkMonitor *win = G_WIN32_NETWORK_MONITOR (initable);
   NTSTATUS status;
   gboolean read;
 
@@ -292,9 +292,9 @@ g_network_monitor_windows_initable_init (GInitable     *initable,
 }
 
 static void
-g_network_monitor_windows_finalize (GObject *object)
+g_win32_network_monitor_finalize (GObject *object)
 {
-  GNetworkMonitorWindows *win = G_NETWORK_MONITOR_WINDOWS (object);
+  GWin32NetworkMonitor *win = G_WIN32_NETWORK_MONITOR (object);
 
   /* Cancel notification event */
   if (win->priv->handle)
@@ -310,24 +310,24 @@ g_network_monitor_windows_finalize (GObject *object)
 
   g_main_context_unref (win->priv->main_context);
 
-  G_OBJECT_CLASS (g_network_monitor_windows_parent_class)->finalize (object);
+  G_OBJECT_CLASS (g_win32_network_monitor_parent_class)->finalize (object);
 }
 
 static void
-g_network_monitor_windows_class_init (GNetworkMonitorWindowsClass *win_class)
+g_win32_network_monitor_class_init (GWin32NetworkMonitorClass *win_class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (win_class);
 
-  gobject_class->finalize = g_network_monitor_windows_finalize;
+  gobject_class->finalize = g_win32_network_monitor_finalize;
 }
 
 static void
-g_network_monitor_windows_iface_init (GNetworkMonitorInterface *monitor_iface)
+g_win32_network_monitor_iface_init (GNetworkMonitorInterface *monitor_iface)
 {
 }
 
 static void
-g_network_monitor_windows_initable_iface_init (GInitableIface *iface)
+g_win32_network_monitor_initable_iface_init (GInitableIface *iface)
 {
-  iface->init = g_network_monitor_windows_initable_init;
+  iface->init = g_win32_network_monitor_initable_init;
 }
