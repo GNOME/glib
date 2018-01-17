@@ -41,7 +41,7 @@
 #include "gthread.h"
 #include "gmessages.h"
 #include "gqsort.h"
-
+#include "grefcount.h"
 
 /**
  * SECTION:arrays
@@ -106,7 +106,7 @@ struct _GRealArray
   guint   elt_size;
   guint   zero_terminated : 1;
   guint   clear : 1;
-  gint    ref_count;
+  gatomicrefcount ref_count;
   GDestroyNotify clear_func;
 };
 
@@ -199,8 +199,9 @@ g_array_sized_new (gboolean zero_terminated,
   array->zero_terminated = (zero_terminated ? 1 : 0);
   array->clear           = (clear ? 1 : 0);
   array->elt_size        = elt_size;
-  array->ref_count       = 1;
   array->clear_func      = NULL;
+
+  g_atomic_ref_count_init (&array->ref_count);
 
   if (array->zero_terminated || reserved_size != 0)
     {
@@ -256,7 +257,7 @@ g_array_ref (GArray *array)
   GRealArray *rarray = (GRealArray*) array;
   g_return_val_if_fail (array, NULL);
 
-  g_atomic_int_inc (&rarray->ref_count);
+  g_atomic_ref_count_inc (&rarray->ref_count);
 
   return array;
 }
@@ -286,7 +287,7 @@ g_array_unref (GArray *array)
   GRealArray *rarray = (GRealArray*) array;
   g_return_if_fail (array);
 
-  if (g_atomic_int_dec_and_test (&rarray->ref_count))
+  if (g_atomic_ref_count_dec (&rarray->ref_count))
     array_free (rarray, FREE_SEGMENT);
 }
 
@@ -345,7 +346,7 @@ g_array_free (GArray   *farray,
   flags = (free_segment ? FREE_SEGMENT : 0);
 
   /* if others are holding a reference, preserve the wrapper but do free/return the data */
-  if (!g_atomic_int_dec_and_test (&array->ref_count))
+  if (!g_atomic_ref_count_dec (&array->ref_count))
     flags |= PRESERVE_WRAPPER;
 
   return array_free (array, flags);
@@ -862,7 +863,7 @@ struct _GRealPtrArray
   gpointer       *pdata;
   guint           len;
   guint           alloc;
-  gint            ref_count;
+  gatomicrefcount ref_count;
   GDestroyNotify  element_free_func;
 };
 
@@ -916,8 +917,9 @@ g_ptr_array_sized_new (guint reserved_size)
   array->pdata = NULL;
   array->len = 0;
   array->alloc = 0;
-  array->ref_count = 1;
   array->element_free_func = NULL;
+
+  g_atomic_ref_count_init (&array->ref_count);
 
   if (reserved_size != 0)
     g_ptr_array_maybe_expand (array, reserved_size);
@@ -1021,7 +1023,7 @@ g_ptr_array_ref (GPtrArray *array)
 
   g_return_val_if_fail (array, NULL);
 
-  g_atomic_int_inc (&rarray->ref_count);
+  g_atomic_ref_count_inc (&rarray->ref_count);
 
   return array;
 }
@@ -1046,7 +1048,7 @@ g_ptr_array_unref (GPtrArray *array)
 
   g_return_if_fail (array);
 
-  if (g_atomic_int_dec_and_test (&rarray->ref_count))
+  if (g_atomic_ref_count_dec (&rarray->ref_count))
     ptr_array_free (array, FREE_SEGMENT);
 }
 
@@ -1087,7 +1089,7 @@ g_ptr_array_free (GPtrArray *array,
   /* if others are holding a reference, preserve the wrapper but
    * do free/return the data
    */
-  if (!g_atomic_int_dec_and_test (&rarray->ref_count))
+  if (!g_atomic_ref_count_dec (&rarray->ref_count))
     flags |= PRESERVE_WRAPPER;
 
   return ptr_array_free (array, flags);
