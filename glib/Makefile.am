@@ -153,6 +153,7 @@ libglib_2_0_la_SOURCES = 	\
 	gquark.c		\
 	gqueue.c		\
 	grand.c			\
+	grefcount.c		\
 	gregex.c		\
 	gscanner.c		\
 	gscripttable.h		\
@@ -287,6 +288,7 @@ glibsubinclude_HEADERS = \
 	gquark.h	\
 	gqueue.h	\
 	grand.h		\
+	grefcount.h	\
 	gregex.h	\
 	gscanner.h	\
 	gsequence.h	\
