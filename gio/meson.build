@@ -388,8 +388,8 @@ else
     'gwin32volumemonitor.c',
     'gwin32inputstream.c',
     'gwin32outputstream.c',
-    'gnetworkmonitorwindows.c',
-    'gnetworkmonitorwindows.h',
+    'gwin32networkmonitor.c',
+    'gwin32networkmonitor.h',
   )
 
   gio_win_rc = configure_file(

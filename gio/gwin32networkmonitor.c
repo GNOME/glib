@@ -28,7 +28,7 @@
 #include <iphlpapi.h>
 #include <stdio.h>
 
-#include "gnetworkmonitorwindows.h"
+#include "gwin32networkmonitor.h"
 #include "ginetaddress.h"
 #include "ginetaddressmask.h"
 #include "ginitable.h"
