@@ -1830,9 +1830,9 @@ class CodeGenerator:
             # for details
             #
             free_container = False;
-            if p.arg.gvariant_get == 'g_variant_get_strv' or p.arg.gvariant_get == 'g_variant_get_objpathv' or p.arg.gvariant_get == 'g_variant_get_bytestring_array':
+            if p.arg.gvariant_get == 'g_variant_get_strv' or p.arg.gvariant_get == 'g_variant_get_objv' or p.arg.gvariant_get == 'g_variant_get_bytestring_array':
                 free_container = True;
-            # If already using an old value for strv, objpathv, bytestring_array (see below),
+            # If already using an old value for strv, objv, bytestring_array (see below),
             # then just return that... that way the result from multiple consecutive calls
             # to the getter are valid as long as they're freed
             #
