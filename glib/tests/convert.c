@@ -684,6 +684,24 @@ test_filename_display (void)
   g_free (display);
 }
 
+/* g_convert() should accept and produce text buffers with embedded
+ * nul bytes/characters.
+ */
+static void
+test_convert_embedded_nul (void)
+{
+  gchar *res;
+  gsize bytes_read, bytes_written;
+  GError *error = NULL;
+
+  res = g_convert ("ab\0\xf6", 4, "UTF-8", "ISO-8859-1",
+                   &bytes_read, &bytes_written, &error);
+  g_assert_no_error (error);
+  g_assert_cmpuint (bytes_read, ==, 4);
+  g_assert_cmpmem (res, bytes_written, "ab\0\xc3\xb6", 5);
+  g_free (res);
+}
+
 static void
 test_locale_to_utf8_embedded_nul (void)
 {
@@ -919,6 +937,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/conversion/unicode", test_unicode_conversions);
   g_test_add_func ("/conversion/filename-utf8", test_filename_utf8);
   g_test_add_func ("/conversion/filename-display", test_filename_display);
+  g_test_add_func ("/conversion/convert-embedded-nul", test_convert_embedded_nul);
   g_test_add_func ("/conversion/locale-to-utf8/embedded-nul", test_locale_to_utf8_embedded_nul);
   g_test_add_func ("/conversion/locale-to-utf8/embedded-nul/subprocess/utf8", test_locale_to_utf8_embedded_nul_utf8);
   g_test_add_func ("/conversion/locale-to-utf8/embedded-nul/subprocess/iconv", test_locale_to_utf8_embedded_nul_iconv);
