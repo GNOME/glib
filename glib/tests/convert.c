@@ -58,13 +58,13 @@ test_iconv_state (void)
 static void 
 test_one_half (void)
 {
-  gchar *in = "\xc2\xbd";
+  const gchar *in_utf8 = "\xc2\xbd";
   gchar *out;
   gsize bytes_read = 0;
   gsize bytes_written = 0;
   GError *error = NULL;  
 
-  out = g_convert (in, -1, 
+  out = g_convert (in_utf8, -1,
 		   "ISO-8859-1", "UTF-8",
 		   &bytes_read, &bytes_written,
 		   &error);
@@ -75,7 +75,7 @@ test_one_half (void)
   g_assert_cmpstr (out, ==, "\xbd");
   g_free (out);
 
-  out = g_convert (in, -1, 
+  out = g_convert (in_utf8, -1,
 		   "ISO-8859-15", "UTF-8",
 		   &bytes_read, &bytes_written,
 		   &error);
@@ -87,7 +87,7 @@ test_one_half (void)
   g_clear_error (&error);
   g_free (out);
 
-  out = g_convert_with_fallback (in, -1, 
+  out = g_convert_with_fallback (in_utf8, -1,
 				 "ISO8859-15", "UTF-8",
 				 "a",
 				 &bytes_read, &bytes_written,
