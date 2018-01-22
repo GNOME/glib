@@ -89,31 +89,31 @@
  * Hex code:   50 72 65 73 65 6e 74 61 63 69 c3 b3 6e 2e 73 78 69
  * ]|
  * Glib uses UTF-8 for its strings, and GUI toolkits like GTK+ that use
- * Glib do the same thing. If you get a file name from the file system,
+ * GLib do the same thing. If you get a file name from the file system,
  * for example, from readdir() or from g_dir_read_name(), and you wish
  * to display the file name to the user, you  will need to convert it
  * into UTF-8. The opposite case is when the user types the name of a
- * file he wishes to save: the toolkit will give you that string in
+ * file they wish to save: the toolkit will give you that string in
  * UTF-8 encoding, and you will need to convert it to the character
  * set used for file names before you can create the file with open()
  * or fopen().
  *
- * By default, Glib assumes that file names on disk are in UTF-8
+ * By default, GLib assumes that file names on disk are in UTF-8
  * encoding. This is a valid assumption for file systems which
  * were created relatively recently: most applications use UTF-8
  * encoding for their strings, and that is also what they use for
  * the file names they create. However, older file systems may
  * still contain file names created in "older" encodings, such as
  * ISO-8859-1. In this case, for compatibility reasons, you may want
- * to instruct Glib to use that particular encoding for file names
+ * to instruct GLib to use that particular encoding for file names
  * rather than UTF-8. You can do this by specifying the encoding for
  * file names in the [`G_FILENAME_ENCODING`][G_FILENAME_ENCODING]
  * environment variable. For example, if your installation uses
- * ISO-8859-1 for file names, you can put this in your `~/.profile`
+ * ISO-8859-1 for file names, you can put this in your `~/.profile`:
  * |[
  * export G_FILENAME_ENCODING=ISO-8859-1
  * ]|
- * Glib provides the functions g_filename_to_utf8() and
+ * GLib provides the functions g_filename_to_utf8() and
  * g_filename_from_utf8() to perform the necessary conversions.
  * These functions convert file names from the encoding specified
  * in `G_FILENAME_ENCODING` to UTF-8 and vice-versa. This
@@ -579,7 +579,7 @@ g_convert (const gchar *str,
  *                 for the @len parameter is unsafe)
  * @to_codeset:   name of character set into which to convert @str
  * @from_codeset: character set of @str.
- * @fallback:     UTF-8 string to use in place of character not
+ * @fallback:     UTF-8 string to use in place of characters not
  *                present in the target encoding. (The string must be
  *                representable in the target encoding). 
  *                If %NULL, characters not in the target encoding will 
