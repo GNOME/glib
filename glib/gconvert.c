@@ -76,7 +76,7 @@
  * in it ("/"). However, displaying file names may require conversion:
  * from the character set in which they were created, to the character
  * set in which the application operates. Consider the Spanish file name
- * "Presentaci&oacute;n.sxi". If the application which created it uses
+ * "Presentación.sxi". If the application which created it uses
  * ISO-8859-1 for its encoding,
  * |[
  * Character:  P  r  e  s  e  n  t  a  c  i  ó  n  .  s  x  i
