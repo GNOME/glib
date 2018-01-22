@@ -203,6 +203,12 @@ g_bytes_new_with_free_func (gconstpointer  data,
  * A reference to @bytes will be held by the newly created #GBytes until
  * the byte data is no longer needed.
  *
+ * Since 2.56, if @offset is 0 and @length matches the size of @bytes, then
+ * @bytes will be returned with the reference count incremented by 1. If @bytes
+ * is a slice of another #GBytes, then the resulting #GBytes will reference
+ * the same #GBytes instead of @bytes. This allows consumers to simplify the
+ * usage of #GBytes when asynchronously writing to streams.
+ *
  * Returns: (transfer full): a new #GBytes
  *
  * Since: 2.32
@@ -212,12 +218,31 @@ g_bytes_new_from_bytes (GBytes  *bytes,
                         gsize    offset,
                         gsize    length)
 {
+  gchar *base;
+
   /* Note that length may be 0. */
   g_return_val_if_fail (bytes != NULL, NULL);
   g_return_val_if_fail (offset <= bytes->size, NULL);
   g_return_val_if_fail (offset + length <= bytes->size, NULL);
 
-  return g_bytes_new_with_free_func ((gchar *)bytes->data + offset, length,
+  /* Avoid an extra GBytes if all bytes were requested */
+  if (offset == 0 && length == bytes->size)
+    return g_bytes_ref (bytes);
+
+  base = (gchar *)bytes->data + offset;
+
+  /* Avoid referencing intermediate GBytes. In practice, this should
+   * only loop once.
+   */
+  while (bytes->free_func == (gpointer)g_bytes_unref)
+    bytes = bytes->user_data;
+
+  g_return_val_if_fail (bytes != NULL, NULL);
+  g_return_val_if_fail (base >= (gchar *)bytes->data, NULL);
+  g_return_val_if_fail (base <= (gchar *)bytes->data + bytes->size, NULL);
+  g_return_val_if_fail (base + length <= (gchar *)bytes->data + bytes->size, NULL);
+
+  return g_bytes_new_with_free_func (base, length,
                                      (GDestroyNotify)g_bytes_unref, g_bytes_ref (bytes));
 }
 
