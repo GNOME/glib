@@ -17,6 +17,16 @@
 #include <string.h>
 #include "glib.h"
 
+/* Keep in sync with glib/gbytes.c */
+struct _GBytes
+{
+  gconstpointer data;
+  gsize size;
+  gint ref_count;
+  GDestroyNotify free_func;
+  gpointer user_data;
+};
+
 static const gchar *NYAN = "nyannyan";
 static const gsize N_NYAN = 8;
 
@@ -88,6 +98,59 @@ test_new_from_bytes (void)
 
   g_assert_cmpmem (g_bytes_get_data (sub, NULL), g_bytes_get_size (sub), "wave", 4);
   g_bytes_unref (sub);
+}
+
+/* Verify that creating slices of GBytes reference the top-most bytes
+ * at the correct offset. Ensure that intermediate GBytes are not referenced.
+ */
+static void
+test_new_from_bytes_slice (void)
+{
+  GBytes *bytes = g_bytes_new_static ("Some stupid data", strlen ("Some stupid data") + 1);
+  GBytes *bytes1 = g_bytes_new_from_bytes (bytes, 4, 13);
+  GBytes *bytes2 = g_bytes_new_from_bytes (bytes1, 1, 12);
+  GBytes *bytes3 = g_bytes_new_from_bytes (bytes2, 0, 6);
+
+  g_assert_cmpint (bytes->ref_count, ==, 4);
+  g_assert_cmpint (bytes1->ref_count, ==, 1);
+  g_assert_cmpint (bytes2->ref_count, ==, 1);
+  g_assert_cmpint (bytes3->ref_count, ==, 1);
+
+  g_assert_null (bytes->user_data);
+  g_assert (bytes1->user_data == bytes);
+  g_assert (bytes2->user_data == bytes);
+  g_assert (bytes3->user_data == bytes);
+
+  g_assert_cmpint (17, ==, g_bytes_get_size (bytes));
+  g_assert_cmpint (13, ==, g_bytes_get_size (bytes1));
+  g_assert_cmpint (12, ==, g_bytes_get_size (bytes2));
+  g_assert_cmpint (6, ==, g_bytes_get_size (bytes3));
+
+  g_assert_cmpint (0, ==, strncmp ("Some stupid data", (gchar *)bytes->data, 17));
+  g_assert_cmpint (0, ==, strncmp (" stupid data", (gchar *)bytes1->data, 13));
+  g_assert_cmpint (0, ==, strncmp ("stupid data", (gchar *)bytes2->data, 12));
+  g_assert_cmpint (0, ==, strncmp ("stupid", (gchar *)bytes3->data, 6));
+
+  g_bytes_unref (bytes);
+  g_bytes_unref (bytes1);
+  g_bytes_unref (bytes2);
+  g_bytes_unref (bytes3);
+}
+
+/* Ensure that referencing an entire GBytes just returns the same bytes
+ * instance (with incremented reference count) instead of a new instance.
+ */
+static void
+test_new_from_bytes_shared_ref (void)
+{
+  GBytes *bytes = g_bytes_new_static ("Some data", strlen ("Some data") + 1);
+  GBytes *other = g_bytes_new_from_bytes (bytes, 0, g_bytes_get_size (bytes));
+
+  g_assert (bytes == other);
+  g_assert_cmpint (bytes->ref_count, ==, 2);
+
+  g_bytes_unref (bytes);
+  g_bytes_unref (other);
 }
 
 static void
@@ -336,6 +399,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/bytes/new-static", test_new_static);
   g_test_add_func ("/bytes/new-with-free-func", test_new_with_free_func);
   g_test_add_func ("/bytes/new-from-bytes", test_new_from_bytes);
+  g_test_add_func ("/bytes/new-from-bytes-slice", test_new_from_bytes_slice);
+  g_test_add_func ("/bytes/new-from-bytes-shared-ref", test_new_from_bytes_shared_ref);
   g_test_add_func ("/bytes/hash", test_hash);
   g_test_add_func ("/bytes/equal", test_equal);
   g_test_add_func ("/bytes/compare", test_compare);

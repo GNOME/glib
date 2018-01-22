@@ -64,6 +64,7 @@
  * Since: 2.32
  **/
 
+/* Keep in sync with glib/tests/bytes.c */
 struct _GBytes
 {
   gconstpointer data;  /* may be NULL iff (size == 0) */
