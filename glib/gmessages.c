@@ -1476,17 +1476,17 @@ log_level_to_color (GLogLevelFlags log_level,
     return "";
 
   if (log_level & G_LOG_LEVEL_ERROR)
-    return "\033[1;31m";
+    return "\033[1;31m"; /* red */
   else if (log_level & G_LOG_LEVEL_CRITICAL)
-    return "\033[1;35m";
+    return "\033[1;35m"; /* magenta */
   else if (log_level & G_LOG_LEVEL_WARNING)
-    return "\033[1;33m";
+    return "\033[1;33m"; /* yellow */
   else if (log_level & G_LOG_LEVEL_MESSAGE)
-    return "\033[1;32m";
+    return "\033[1;32m"; /* green */
   else if (log_level & G_LOG_LEVEL_INFO)
-    return "\033[1;32m";
+    return "\033[1;32m"; /* green */
   else if (log_level & G_LOG_LEVEL_DEBUG)
-    return "\033[1;32m";
+    return "\033[1;32m"; /* green */
 
   /* No color for custom log levels. */
   return "";
