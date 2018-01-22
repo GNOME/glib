@@ -54,7 +54,9 @@ test_iconv_state (void)
   g_free (out);
 }
 
-/* some tests involving "vulgar fraction one half" */
+/* Some tests involving "vulgar fraction one half" (U+00BD). This is
+ * represented in UTF-8 as \xC2\xBD, in ISO-8859-1 as \xBD, and is not
+ * represented in ISO-8859-15. */
 static void 
 test_one_half (void)
 {
