@@ -319,7 +319,9 @@ g_notification_set_urgent (GNotification *notification,
 {
   g_return_if_fail (G_IS_NOTIFICATION (notification));
 
-  g_notification_set_priority (notification, G_NOTIFICATION_PRIORITY_URGENT);
+  notification->priority = urgent ?
+      G_NOTIFICATION_PRIORITY_URGENT :
+      G_NOTIFICATION_PRIORITY_NORMAL;
 }
 
 /**
