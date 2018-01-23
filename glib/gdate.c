@@ -2137,17 +2137,42 @@ static void
 append_month_name (GArray     *result,
 		   LCID        lcid,
 		   SYSTEMTIME *systemtime,
-		   gboolean    abbreviated)
+		   gboolean    abbreviated,
+		   gboolean    alternative)
 {
   int n;
   WORD base;
+  LPCWSTR lpFormat;
 
-  base = abbreviated ? LOCALE_SABBREVMONTHNAME1 : LOCALE_SMONTHNAME1;
-  n = GetLocaleInfoW (lcid, base + systemtime->wMonth - 1, NULL, 0);
-  g_array_set_size (result, result->len + n);
-  GetLocaleInfoW (lcid, base + systemtime->wMonth - 1,
-		  ((wchar_t *) result->data) + result->len - n, n);
-  g_array_set_size (result, result->len - 1);
+  if (alternative)
+    {
+      base = abbreviated ? LOCALE_SABBREVMONTHNAME1 : LOCALE_SMONTHNAME1;
+      n = GetLocaleInfoW (lcid, base + systemtime->wMonth - 1, NULL, 0);
+      g_array_set_size (result, result->len + n);
+      GetLocaleInfoW (lcid, base + systemtime->wMonth - 1,
+		      ((wchar_t *) result->data) + result->len - n, n);
+      g_array_set_size (result, result->len - 1);
+    }
+  else
+    {
+      /* According to MSDN, this is the correct method to obtain
+       * the form of the month name used when formatting a full
+       * date; it must be a genitive case in some languages.
+       */
+      lpFormat = abbreviated ? L"ddMMM" : L"ddMMMM";
+      n = GetDateFormatW (lcid, 0, systemtime, lpFormat, NULL, 0);
+      g_array_set_size (result, result->len + n);
+      GetDateFormatW (lcid, 0, systemtime, lpFormat,
+		      ((wchar_t *) result->data) + result->len - n, n);
+      /* We have obtained a day number as two digits and the month name.
+       * Now let's get rid of those two digits: overwrite them with the
+       * month name.
+       */
+      memmove (((wchar_t *) result->data) + result->len - n,
+	       ((wchar_t *) result->data) + result->len - n + 2,
+	       (n - 2) * sizeof (wchar_t));
+      g_array_set_size (result, result->len - 3);
+    }
 }
 
 static gsize
@@ -2163,7 +2188,7 @@ win32_strftime_helper (const GDate     *d,
   int n, k;
   GArray *result;
   const gchar *p;
-  gunichar c;
+  gunichar c, modifier;
   const wchar_t digits[] = L"0123456789";
   gchar *convbuf;
   glong convlen = 0;
@@ -2195,17 +2220,21 @@ win32_strftime_helper (const GDate     *d,
 
 	      return 0;
 	    }
-	  
+
+	  modifier = '\0';
 	  c = g_utf8_get_char (p);
 	  if (c == 'E' || c == 'O')
 	    {
-	      /* Ignore modified conversion specifiers for now. */
+	      /* "%OB", "%Ob", and "%Oh" are supported, ignore other modified
+	       * conversion specifiers for now.
+	       */
+	      modifier = c;
 	      p = g_utf8_next_char (p);
 	      if (!*p)
 		{
 		  s[0] = '\0';
 		  g_array_free (result, TRUE);
-		  
+
 		  return 0;
 		}
 
@@ -2236,10 +2265,12 @@ win32_strftime_helper (const GDate     *d,
 	      break;
 	    case 'b':
 	    case 'h':
-	      append_month_name (result, lcid, &systemtime, TRUE);
+	      append_month_name (result, lcid, &systemtime, TRUE,
+				 modifier == 'O');
 	      break;
 	    case 'B':
-	      append_month_name (result, lcid, &systemtime, FALSE);
+	      append_month_name (result, lcid, &systemtime, FALSE,
+				 modifier == 'O');
 	      break;
 	    case 'c':
 	      n = GetDateFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
