@@ -178,6 +178,9 @@ g_pollable_output_stream_default_write_nonblocking (GPollableOutputStream  *stre
  * may happen if you call this method after a source triggers due
  * to having been cancelled.
  *
+ * Also note that if %G_IO_ERROR_WOULD_BLOCK is returned some underlying
+ * transports like D/TLS require that you send the same @buffer and @count.
+ *
  * Virtual: write_nonblocking
  * Returns: the number of bytes written, or -1 on error (including
  *   %G_IO_ERROR_WOULD_BLOCK).
