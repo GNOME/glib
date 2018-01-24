@@ -193,22 +193,23 @@ def codegen_main():
                     '--output at the same time is not allowed')
 
     if args.generate_c_code:
-        outdir = args.output_directory
         header_name = args.generate_c_code + '.h'
-        h_file = os.path.join(outdir, header_name)
+        h_file = os.path.join(args.output_directory, header_name)
         args.header = True
-        c_file = os.path.join(outdir, args.generate_c_code + '.c')
+        c_file = os.path.join(args.output_directory, args.generate_c_code + '.c')
         args.body = True
-    else:
+    elif args.header:
         if args.output is None:
-            print_error('Using --header or --body requires --output')
+            print_error('Using --header requires --output')
 
-        if args.header:
-            h_file = args.output
-            header_name = os.path.basename(h_file)
-        elif args.body:
-            c_file = args.output
-            header_name = os.path.splitext(c_file)[0] + '.h'
+        h_file = args.output
+        header_name = os.path.basename(h_file)
+    elif args.body:
+        if args.output is None:
+            print_error('Using --body requires --output')
+
+        c_file = args.output
+        header_name = os.path.splitext(c_file)[0] + '.h'
 
     all_ifaces = []
     for fname in args.files + args.xml_files:
@@ -226,7 +227,7 @@ def codegen_main():
     docbook = args.generate_docbook
     docbook_gen = codegen_docbook.DocbookCodeGenerator(all_ifaces);
     if docbook:
-        ret = docbook_gen.generate(docbook, outdir)
+        ret = docbook_gen.generate(docbook, args.output_directory)
 
     if args.header:
         with open(h_file, 'w') as outfile:
