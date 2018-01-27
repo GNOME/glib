@@ -67,9 +67,9 @@
     url="http://dbus.freedesktop.org/doc/dbus-specification.html#introspection-format">D-Bus
     Introspection XML</ulink> from files passed as additional
     arguments on the command line and generates output files.
-    It currently supports generating C code (via
-    <option>--generate-c-code</option>) and Docbook XML (via
-    <option>--generate-docbook</option>).
+    It currently supports generating C source code (via
+    <option>--body</option>) or header (via <option>--header</option>)
+    and Docbook XML (via <option>--generate-docbook</option>).
   </para>
 </refsect1>
 
@@ -87,6 +87,20 @@
     #GDBusInterfaceSkeleton type making it easy to export on a
     #GDBusConnection either directly or via a
     #GDBusObjectManagerServer instance.
+  </para>
+  <para>
+    For C code generation either <option>--body</option> that
+    generates source code, or <option>--header</option> that
+    generates headers, can be used. These options must be used along with
+    <option>--output</option>, which is used to specify the file to output to.
+  </para>
+  <para>
+    Both files can be generated at the same time by using
+    <option>--generate-c-code</option>, but this option is deprecated.
+    In this case <option>--output</option> cannot be used due to the
+    generation of multiple files. Instead pass
+    <option>--output-directory</option> to specify the directory to put
+    the output files in. By default the current directory will be used.
   </para>
   <para>
     The name of each generated C type is derived from the D-Bus
@@ -188,6 +202,11 @@
           <literal>NAME</literal> is a place-holder for the interface
           name, e.g. <literal>net.Corp.FooBar</literal> and so on.
         </para>
+        <para>
+          Pass <option>--output-directory</option> to specify the directory
+          to put the output files in. By default the current directory
+          will be used.
+        </para>
       </listitem>
     </varlistentry>
 
@@ -262,6 +281,11 @@
         <para>
           Directory to output generated source to. Equivalent to changing directory before generation.
         </para>
+        <para>
+          This option cannot be used with neither <option>--body</option> nor
+          <option>--header</option>, and <option>--output</option> must be used.
+        </para>
+
       </listitem>
     </varlistentry>
 
