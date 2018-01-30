@@ -154,7 +154,7 @@ g_union_info_is_discriminated (GIUnionInfo *info)
  *
  * Returns offset of the discriminator field in the structure.
  *
- * Returns: (transfer full): offset in bytes of the discriminator
+ * Returns: offset in bytes of the discriminator
  */
 gint
 g_union_info_get_discriminator_offset (GIUnionInfo *info)
