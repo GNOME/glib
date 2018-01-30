@@ -41,6 +41,17 @@
  *
  * #GIRepository is used to manage repositories of namespaces. Namespaces
  * are represented on disk by type libraries (.typelib files).
+ *
+ * ### Discovery of type libraries
+ *
+ * #GIRepository will typically look for a `girepository-1.0` directory
+ * under the library directory used when compiling gobject-introspection.
+ *
+ * It is possible to control the search paths programmatically, using
+ * g_irepository_prepend_search_path(). It is also possible to modify
+ * the search paths by using the `GI_TYPELIB_PATH` environment variable.
+ * The environment variable takes precedence over the default search path
+ * and the g_irepository_prepend_search_path() calls.
  */
 
 
@@ -198,7 +209,8 @@ init_globals (void)
  *   search path
  *
  * Prepends @directory to the typelib search path.
- * See g_irepository_get_search_path().
+ *
+ * See also: g_irepository_get_search_path().
  */
 void
 g_irepository_prepend_search_path (const char *directory)
@@ -1369,7 +1381,7 @@ find_namespace_latest (const gchar  *namespace,
  */
 GList *
 g_irepository_enumerate_versions (GIRepository *repository,
-			 const gchar  *namespace_)
+                                  const gchar  *namespace_)
 {
   GList *ret = NULL;
   GSList *candidates, *link;
