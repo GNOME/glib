@@ -3516,6 +3516,8 @@ tests/refcount/Makefile
 m4macros/Makefile
 ])
 
+# We need this command because the configure script will not preserve
+# the same attributes of the template files
 AC_CONFIG_COMMANDS([chmod-scripts],
 [chmod 0755 glib-zip
 chmod 0755 glib-gettextize
