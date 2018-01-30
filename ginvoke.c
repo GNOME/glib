@@ -233,7 +233,7 @@ g_value_from_ffi_value (GValue           *gvalue,
 }
 
 /**
- * gi_cclosure_marshal_generic:
+ * gi_cclosure_marshal_generic: (skip)
  * @closure: TODO
  * @return_gvalue: TODO
  * @n_param_values: TODO
