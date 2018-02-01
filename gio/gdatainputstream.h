@@ -135,20 +135,20 @@ char *                 g_data_input_stream_read_line_finish_utf8(GDataInputStrea
                                                                  GAsyncResult            *result,
                                                                  gsize                   *length,
                                                                  GError                 **error);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_56_FOR (g_data_input_stream_read_upto)
 char *                 g_data_input_stream_read_until           (GDataInputStream        *stream,
                                                                  const gchar             *stop_chars,
                                                                  gsize                   *length,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_56_FOR (g_data_input_stream_read_upto_async)
 void                   g_data_input_stream_read_until_async     (GDataInputStream        *stream,
                                                                  const gchar             *stop_chars,
                                                                  gint                     io_priority,
                                                                  GCancellable            *cancellable,
                                                                  GAsyncReadyCallback      callback,
                                                                  gpointer                 user_data);
-GLIB_AVAILABLE_IN_ALL
+GLIB_DEPRECATED_IN_2_56_FOR (g_data_input_stream_read_upto_finish)
 char *                 g_data_input_stream_read_until_finish    (GDataInputStream        *stream,
                                                                  GAsyncResult            *result,
                                                                  gsize                   *length,

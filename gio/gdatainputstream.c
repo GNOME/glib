@@ -915,6 +915,8 @@ scan_for_chars (GDataInputStream *stream,
  *     before encountering any of the stop characters. Set @length to
  *     a #gsize to get the length of the string. This function will
  *     return %NULL on an error.
+ * Deprecated: 2.56: Use g_data_input_stream_read_upto() instead, which has more
+ *     consistent behaviour regarding the stop character.
  */
 char *
 g_data_input_stream_read_until (GDataInputStream  *stream,
@@ -1170,6 +1172,8 @@ g_data_input_stream_read_line_async (GDataInputStream    *stream,
  * g_data_input_stream_read_upto_async() instead.
  *
  * Since: 2.20
+ * Deprecated: 2.56: Use g_data_input_stream_read_upto_async() instead, which
+ *     has more consistent behaviour regarding the stop character.
  */
 void
 g_data_input_stream_read_until_async (GDataInputStream    *stream,
@@ -1277,6 +1281,8 @@ g_data_input_stream_read_line_finish_utf8 (GDataInputStream  *stream,
  *     before encountering any of the stop characters. Set @length to
  *     a #gsize to get the length of the string. This function will
  *     return %NULL on an error.
+ * Deprecated: 2.56: Use g_data_input_stream_read_upto_finish() instead, which
+ *     has more consistent behaviour regarding the stop character.
  */
 gchar *
 g_data_input_stream_read_until_finish (GDataInputStream  *stream,

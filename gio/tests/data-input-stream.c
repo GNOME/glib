@@ -222,6 +222,8 @@ test_read_lines_LF_invalid_utf8 (void)
   g_object_unref (stream);
 }
 
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+
 static void
 test_read_until (void)
 {
@@ -267,6 +269,8 @@ test_read_until (void)
   g_object_unref (base_stream);
   g_object_unref (stream);
 }
+
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 static void
 test_read_upto (void)
