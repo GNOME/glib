@@ -2653,7 +2653,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Message has %d file descriptors but the header field indicates %d file descriptors"),
+                   _("Number of file descriptors in message (%d) differs from header field (%d)"),
                    num_fds_in_message,
                    num_fds_according_to_header);
       goto out;
