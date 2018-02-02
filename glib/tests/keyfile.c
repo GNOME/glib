@@ -378,14 +378,16 @@ test_comments (void)
     "key2 = value2\n"
     "# line end check\r\n"
     "key3 = value3\n"
+    "# single line comment\n"
     "key4 = value4\n"
     "# group comment\n"
     "# group comment, continued\n"
     "[group2]\n";
 
-  const gchar *top_comment= " top comment\n top comment, continued\n";
-  const gchar *group_comment= " group comment\n group comment, continued\n";
-  const gchar *key_comment= " key comment\n key comment, continued\n";
+  const gchar *top_comment = " top comment\n top comment, continued";
+  const gchar *group_comment = " group comment\n group comment, continued";
+  const gchar *key_comment = " key comment\n key comment, continued";
+  const gchar *key4_comment = " single line comment";
 
   keyfile = load_data (data, 0);
 
@@ -435,6 +437,11 @@ test_comments (void)
   comment = g_key_file_get_comment (keyfile, "group1", "key2", &error);
   check_no_error (&error);
   g_assert (comment == NULL);
+
+  comment = g_key_file_get_comment (keyfile, "group1", "key4", &error);
+  check_no_error (&error);
+  check_name ("key comment", comment, key4_comment, 0);
+  g_free (comment);
 
   comment = g_key_file_get_comment (keyfile, "group2", NULL, &error);
   check_no_error (&error);
