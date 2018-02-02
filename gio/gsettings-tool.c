@@ -262,10 +262,28 @@ list_recursively (GSettings *settings)
   children = g_settings_list_children (settings);
   for (i = 0; children[i]; i++)
     {
+      gboolean will_see_elsewhere = FALSE;
       GSettings *child;
 
       child = g_settings_get_child (settings, children[i]);
-      list_recursively (child);
+
+      if (global_settings == NULL)
+        {
+	  /* we're listing all non-relocatable settings objects from the
+	   * top-level, so if this one is non-relocatable, don't recurse,
+	   * because we will pick it up later on.
+	   */
+
+	  GSettingsSchema *child_schema;
+
+	  g_object_get (child, "settings-schema", &child_schema, NULL);
+	  will_see_elsewhere = !is_relocatable_schema (child_schema);
+	  g_settings_schema_unref (child_schema);
+        }
+
+      if (!will_see_elsewhere)
+        list_recursively (child);
+
       g_object_unref (child);
     }
 
