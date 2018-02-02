@@ -509,6 +509,24 @@ test_delay_apply (void)
   g_assert_true (changed_cb_called);
   g_assert_false (changed_cb_called2);
 
+  /* Try resetting the key and ensure a notification is emitted on the delayed #GSettings object. */
+  changed_cb_called = FALSE;
+  changed_cb_called2 = FALSE;
+
+  g_settings_reset (settings, "greeting");
+
+  g_assert_true (changed_cb_called);
+  g_assert_false (changed_cb_called2);
+
+  /* Locally change the greeting again. */
+  changed_cb_called = FALSE;
+  changed_cb_called2 = FALSE;
+
+  g_settings_set (settings, "greeting", "s", "greetings from test_delay_apply");
+
+  g_assert_true (changed_cb_called);
+  g_assert_false (changed_cb_called2);
+
   writable = g_settings_is_writable (settings, "greeting");
   g_assert_true (writable);
 
