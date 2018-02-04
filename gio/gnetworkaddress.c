@@ -702,6 +702,8 @@ _g_uri_parse_authority (const char  *uri,
 	*port = (guint16) tmp;
     }
 
+  g_free (ascii_uri);
+
   return TRUE;
 
 error:
