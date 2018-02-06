@@ -1,3 +1,53 @@
+Overview of changes in GLib 2.55.2
+==================================
+
+* GFile now has API to get the path without copying
+
+* A network monitor implementation for Windows has been added
+
+* Bugs fixed:
+ 520116 g_utf8_strlcpy()
+ 584284 g_data_input_stream_read_until_async behaves confusingly different f...
+ 605700 request for g_key_file_get_locale()
+ 658713 ngettext (plural forms) needed for "Message has %d file descriptors ...
+ 685442 windows GNetworkMonitor implementation
+ 723003 gsettings list-recursively reports some keys multiple times
+ 749583 GSequence performance improvements
+ 757284 Move G_DIR_SEPARATOR* and G_SEARCHPATH_SEPARATOR* into glibconfig.h
+ 760324 [PATCH] gkeyfile.c: find_file_in_data_dirs fails to return the path ...
+ 761102 Increase performance for main loop
+ 767976 GFile: Add g_file_peek_path()
+ 770335 gdbus-codegen: generated getter for 'ao' property is actually (trans...
+ 772989 Totem allows invalid urls that might cause segfault that's irrecover...
+ 790698 convert: test failure on NetBSD
+ 791015 gdbus-codegen: Split generation of header and source
+ 791622 Disable strict-aliasing in GLib
+ 792050 GResolver is not thread-safe
+ 792217 Deprecate GTlsClientConnection:use-ssl3
+ 792338 meson, autotools: figure out if mem barrier is needed for arm64 host...
+ 792351 gbookmarkfile: check length before dereferencing groups
+ 792364 gdbus-threading test method-calls-in-thread: assertion failed (elaps...
+ 792370 GNetworkMonitor: Rename "network-changed" signal argument
+ 792410 GDateTime new_from_iso8601 test broken in 2.55 on i386
+ 792432 flush stdout after logging (debug) messages
+ 792455 Improve docs of GSequence
+ 792499 deadlock on startup with TCP session bus
+ 792516 gconvert: More consistent handling of embedded NUL bytes
+ 792777 g_notification_set_urgent() unconditionally sets G_NOTIFICATION_PRIO...
+ 792780 gbytes should reference toplevel bytes when slicing with g_bytes_new...
+ 792856 off64_t isn't a part of C standard
+ 792862 gpollableoutputstream: document side effects of WOULD_BLOCK on D/TLS
+ 792903 Clarification between g_try_.. functions and their counterparts
+ 793006 High CPU load for GUnixMountsMonitor consumers
+ 793026 possible mem leak in g_mutex_impl_new
+ 793074 g_message() does not get -Wformat warnings when compiling with G_LOG...
+
+* Translation updates:
+ Hungarian
+ Indonesian
+ Polish
+
+
 Overview of changes in GLib 2.55.1
 ==================================
 
