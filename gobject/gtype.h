@@ -1790,7 +1790,7 @@ guint     g_type_get_type_registration_serial (void);
  */
 #define G_IMPLEMENT_INTERFACE(TYPE_IFACE, iface_init)       { \
   const GInterfaceInfo g_implement_interface_info = { \
-    (GInterfaceInitFunc) iface_init, NULL, NULL \
+    (GInterfaceInitFunc)(void (*)(void)) iface_init, NULL, NULL \
   }; \
   g_type_add_interface_static (g_define_type_id, TYPE_IFACE, &g_implement_interface_info); \
 }
@@ -1974,9 +1974,9 @@ type_name##_get_type (void) \
         g_type_register_static_simple (TYPE_PARENT, \
                                        g_intern_static_string (#TypeName), \
                                        sizeof (TypeName##Class), \
-                                       (GClassInitFunc) type_name##_class_intern_init, \
+                                       (GClassInitFunc)(void (*)(void)) type_name##_class_intern_init, \
                                        sizeof (TypeName), \
-                                       (GInstanceInitFunc) type_name##_init, \
+                                       (GInstanceInitFunc)(void (*)(void)) type_name##_init, \
                                        (GTypeFlags) flags); \
       { /* custom code follows */
 #define _G_DEFINE_TYPE_EXTENDED_END()	\
@@ -2008,7 +2008,7 @@ type_name##_get_type (void) \
         g_type_register_static_simple (G_TYPE_INTERFACE, \
                                        g_intern_static_string (#TypeName), \
                                        sizeof (TypeName##Interface), \
-                                       (GClassInitFunc)type_name##_default_init, \
+                                       (GClassInitFunc)(GVoidFunc)type_name##_default_init, \
                                        0, \
                                        (GInstanceInitFunc)NULL, \
                                        (GTypeFlags) 0); \
