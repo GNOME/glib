@@ -48,8 +48,8 @@
 
   <repository>
     <GitRepository>
-        <browse rdf:resource="http://git.gnome.org/browse/glib/"/>
-      <location rdf:resource="git://git.gnome.org/glib"/>
+      <browse rdf:resource="https://gitlab.gnome.org/GNOME/glib/tree/master"/>
+      <location rdf:resource="https://gitlab.gnome.org/GNOME/glib.git"/>
     </GitRepository>
   </repository>
 
