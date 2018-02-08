@@ -56,7 +56,7 @@ G_BEGIN_DECLS
  *
  * Returns: the #GType.
  */
-#define	G_VALUE_TYPE(value)		(((value))->g_type)
+#define	G_VALUE_TYPE(value)		(((GValue*) (value))->g_type)
 /**
  * G_VALUE_TYPE_NAME:
  * @value: A #GValue structure.
