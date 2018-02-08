@@ -1287,7 +1287,7 @@ g_filename_to_utf8 (const gchar *opsysstring,
 
 /**
  * g_filename_from_utf8:
- * @utf8string:    a UTF-8 encoded string.
+ * @utf8string:    (type utf8): a UTF-8 encoded string.
  * @len:           the length of the string, or -1 if the string is
  *                 nul-terminated.
  * @bytes_read:    (out) (optional): location to store the number of bytes in
@@ -1310,10 +1310,11 @@ g_filename_to_utf8 (const gchar *opsysstring,
  *
  * The input string shall not contain nul characters even if the @len
  * argument is positive. A nul character found inside the string will result
- * in error %G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Note that nul bytes are
- * prohibited in all filename encodings that GLib is known to work with.
+ * in error %G_CONVERT_ERROR_ILLEGAL_SEQUENCE. If the filename encoding is
+ * not UTF-8 and the conversion output contains a nul character, the error
+ * %G_CONVERT_ERROR_EMBEDDED_NUL is set and the function returns %NULL.
  *
- * Returns: (array length=bytes_written) (element-type guint8) (transfer full):
+ * Returns: (type filename):
  *               The converted string, or %NULL on an error.
  **/
 gchar*
