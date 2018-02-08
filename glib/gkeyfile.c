@@ -2300,7 +2300,10 @@ g_key_file_get_locale_for_key (GKeyFile    *key_file,
   g_return_val_if_fail (key != NULL, NULL);
 
   if (locale != NULL)
-    languages = languages_allocated = g_get_locale_variants (locale);
+    {
+      languages_allocated = g_get_locale_variants (locale);
+      languages = (const gchar * const *) languages_allocated;
+    }
   else
     languages = g_get_language_names ();
 
