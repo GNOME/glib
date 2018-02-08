@@ -1816,12 +1816,12 @@ typedef enum /*< flags >*/ {
  *   spawned process that can be accessed with
  *   g_subprocess_get_stdout_pipe().
  * @G_SUBPROCESS_FLAGS_STDOUT_SILENCE: silence the stdout of the spawned
- *   process (ie: redirect to /dev/null).
+ *   process (ie: redirect to `/dev/null`).
  * @G_SUBPROCESS_FLAGS_STDERR_PIPE: create a pipe for the stderr of the
  *   spawned process that can be accessed with
  *   g_subprocess_get_stderr_pipe().
  * @G_SUBPROCESS_FLAGS_STDERR_SILENCE: silence the stderr of the spawned
- *   process (ie: redirect to /dev/null).
+ *   process (ie: redirect to `/dev/null`).
  * @G_SUBPROCESS_FLAGS_STDERR_MERGE: merge the stderr of the spawned
  *   process with whatever the stdout happens to be.  This is a good way
  *   of directing both streams to a common log file, for example.
@@ -1832,7 +1832,7 @@ typedef enum /*< flags >*/ {
  *
  * Flags to define the behaviour of a #GSubprocess.
  *
- * Note that the default for stdin is to redirect from /dev/null.  For
+ * Note that the default for stdin is to redirect from `/dev/null`.  For
  * stdout and stderr the default are for them to inherit the
  * corresponding descriptor from the calling process.
  *

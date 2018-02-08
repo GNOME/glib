@@ -616,7 +616,7 @@ g_spawn_sync (const gchar          *working_directory,
  * standard error. If you use this flag, @standard_error must be %NULL.
  * %G_SPAWN_CHILD_INHERITS_STDIN means that the child will inherit the parent's
  * standard input (by default, the child's standard input is attached to
- * /dev/null). If you use this flag, @standard_input must be %NULL.
+ * `/dev/null`). If you use this flag, @standard_input must be %NULL.
  * %G_SPAWN_FILE_AND_ARGV_ZERO means that the first element of @argv is
  * the file to execute, while the remaining elements are the actual
  * argument vector to pass to the file. Normally g_spawn_async_with_pipes()
@@ -653,8 +653,8 @@ g_spawn_sync (const gchar          *working_directory,
  * when they are no longer in use. If these parameters are %NULL, the
  * corresponding pipe won't be created.
  *
- * If @standard_input is NULL, the child's standard input is attached to 
- * /dev/null unless %G_SPAWN_CHILD_INHERITS_STDIN is set.
+ * If @standard_input is %NULL, the child's standard input is attached to
+ * `/dev/null` unless %G_SPAWN_CHILD_INHERITS_STDIN is set.
  *
  * If @standard_error is NULL, the child's standard error goes to the same 
  * location as the parent's standard error unless %G_SPAWN_STDERR_TO_DEV_NULL 
