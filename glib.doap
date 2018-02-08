@@ -37,6 +37,15 @@
     </foaf:Person>
   </maintainer>
 
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Philip Withnall</foaf:name>
+      <foaf:mbox rdf:resource="mailto:philip@tecnocode.co.uk"/>
+      <foaf:mbox rdf:resource="mailto:withnall@endlessm.com"/>
+      <gnome:userid>pwithnall</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
   <repository>
     <GitRepository>
         <browse rdf:resource="http://git.gnome.org/browse/glib/"/>
