@@ -1250,6 +1250,10 @@ g_hash_table_insert_internal (GHashTable *hash_table,
  * @key_destroy_func when creating the #GHashTable, the passed
  * key is freed using that function.
  *
+ * Starting from GLib 2.40, this function returns a boolean value to
+ * indicate whether the newly added value was already in the hash table
+ * or not.
+ *
  * Returns: %TRUE if the key did not exist yet
  */
 gboolean
@@ -1274,6 +1278,10 @@ g_hash_table_insert (GHashTable *hash_table,
  * If you supplied a @key_destroy_func when creating the
  * #GHashTable, the old key is freed using that function.
  *
+ * Starting from GLib 2.40, this function returns a boolean value to
+ * indicate whether the newly added value was already in the hash table
+ * or not.
+ *
  * Returns: %TRUE if the key did not exist yet
  */
 gboolean
@@ -1296,6 +1304,10 @@ g_hash_table_replace (GHashTable *hash_table,
  * When a hash table only ever contains keys that have themselves as the
  * corresponding value it is able to be stored more efficiently.  See
  * the discussion in the section description.
+ *
+ * Starting from GLib 2.40, this function returns a boolean value to
+ * indicate whether the newly added value was already in the hash table
+ * or not.
  *
  * Returns: %TRUE if the key did not exist yet
  *
