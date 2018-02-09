@@ -1628,8 +1628,8 @@ g_subprocess_communicate_internal (GSubprocess         *subprocess,
  * @subprocess: a #GSubprocess
  * @stdin_buf: (nullable): data to send to the stdin of the subprocess, or %NULL
  * @cancellable: a #GCancellable
- * @stdout_buf: (out): data read from the subprocess stdout
- * @stderr_buf: (out): data read from the subprocess stderr
+ * @stdout_buf: (out) (nullable) (optional) (transfer full): data read from the subprocess stdout
+ * @stderr_buf: (out) (nullable) (optional) (transfer full): data read from the subprocess stderr
  * @error: a pointer to a %NULL #GError pointer, or %NULL
  *
  * Communicate with the subprocess until it terminates, and all input
@@ -1733,8 +1733,8 @@ g_subprocess_communicate_async (GSubprocess         *subprocess,
  * g_subprocess_communicate_finish:
  * @subprocess: Self
  * @result: Result
- * @stdout_buf: (out): Return location for stdout data
- * @stderr_buf: (out): Return location for stderr data
+ * @stdout_buf: (out) (nullable) (optional) (transfer full): Return location for stdout data
+ * @stderr_buf: (out) (nullable) (optional) (transfer full): Return location for stderr data
  * @error: Error
  *
  * Complete an invocation of g_subprocess_communicate_async().
@@ -1761,9 +1761,9 @@ g_subprocess_communicate_finish (GSubprocess   *subprocess,
   if (success)
     {
       if (stdout_buf)
-        *stdout_buf = g_memory_output_stream_steal_as_bytes (state->stdout_buf);
+        *stdout_buf = (state->stdout_buf != NULL) ? g_memory_output_stream_steal_as_bytes (state->stdout_buf) : NULL;
       if (stderr_buf)
-        *stderr_buf = g_memory_output_stream_steal_as_bytes (state->stderr_buf);
+        *stderr_buf = (state->stderr_buf != NULL) ? g_memory_output_stream_steal_as_bytes (state->stderr_buf) : NULL;
     }
 
   g_object_unref (result);
@@ -1775,8 +1775,8 @@ g_subprocess_communicate_finish (GSubprocess   *subprocess,
  * @subprocess: a #GSubprocess
  * @stdin_buf: (nullable): data to send to the stdin of the subprocess, or %NULL
  * @cancellable: a #GCancellable
- * @stdout_buf: (out): data read from the subprocess stdout
- * @stderr_buf: (out): data read from the subprocess stderr
+ * @stdout_buf: (out) (nullable) (optional) (transfer full): data read from the subprocess stdout
+ * @stderr_buf: (out) (nullable) (optional) (transfer full): data read from the subprocess stderr
  * @error: a pointer to a %NULL #GError pointer, or %NULL
  *
  * Like g_subprocess_communicate(), but validates the output of the
@@ -1882,8 +1882,8 @@ communicate_result_validate_utf8 (const char            *stream_name,
  * g_subprocess_communicate_utf8_finish:
  * @subprocess: Self
  * @result: Result
- * @stdout_buf: (out): Return location for stdout data
- * @stderr_buf: (out): Return location for stderr data
+ * @stdout_buf: (out) (nullable) (optional) (transfer full): Return location for stdout data
+ * @stderr_buf: (out) (nullable) (optional) (transfer full): Return location for stderr data
  * @error: Error
  *
  * Complete an invocation of g_subprocess_communicate_utf8_async().
