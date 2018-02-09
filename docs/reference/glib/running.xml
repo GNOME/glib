@@ -244,6 +244,16 @@ How to run and debug your GLib application
   </para>
 </formalpara>
 
+<formalpara id="G_ENABLE_DIAGNOSTIC">
+  <title><envar>G_ENABLE_DIAGNOSTIC</envar></title>
+
+  <para>
+    If set to a non-zero value, this environment variable enables
+    diagnostic messages, like deprecation messages for GObject properties
+    and signals.
+  </para>
+</formalpara>
+
 </refsect2>
 
 <refsect2 id="setlocale">
