@@ -122,11 +122,14 @@ test_GDateTime_new_from_unix (void)
   g_assert_cmpint (g_date_time_get_second (dt), ==, tm.tm_sec);
   g_date_time_unref (dt);
 
+  /* Choose 1990-01-01 04:00:00 because no DST leaps happened then. The more
+   * obvious 1990-01-01 00:00:00 was a DST leap in America/Lima (which has,
+   * confusingly, since stopped using DST). */
   memset (&tm, 0, sizeof (tm));
   tm.tm_year = 90;
   tm.tm_mday = 1;
   tm.tm_mon = 0;
-  tm.tm_hour = 0;
+  tm.tm_hour = 4;
   tm.tm_min = 0;
   tm.tm_sec = 0;
   tm.tm_isdst = -1;
@@ -136,7 +139,7 @@ test_GDateTime_new_from_unix (void)
   g_assert_cmpint (g_date_time_get_year (dt), ==, 1990);
   g_assert_cmpint (g_date_time_get_month (dt), ==, 1);
   g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, 1);
-  g_assert_cmpint (g_date_time_get_hour (dt), ==, 0);
+  g_assert_cmpint (g_date_time_get_hour (dt), ==, 4);
   g_assert_cmpint (g_date_time_get_minute (dt), ==, 0);
   g_assert_cmpint (g_date_time_get_second (dt), ==, 0);
   g_date_time_unref (dt);
