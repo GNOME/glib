@@ -94,7 +94,8 @@ if host_system != 'windows'
                  #include <resolv.h>
                  int main (int argc, char ** argv) {
                    struct __res_state res;
-                   return res_nclose(&res);
+                   res_nclose(&res);
+                   return 0;
                  }''', args : network_args, name : 'res_nclose()')
     glib_conf.set('HAVE_RES_NCLOSE', 1)
   endif
@@ -106,7 +107,8 @@ if host_system != 'windows'
                  #include <resolv.h>
                  int main (int argc, char ** argv) {
                    struct __res_state res;
-                   return res_ndestroy(&res);
+                   res_ndestroy(&res);
+                   return 0;
                  }''', args : network_args, name : 'res_ndestroy()')
     glib_conf.set('HAVE_RES_NDESTROY', 1)
   endif
