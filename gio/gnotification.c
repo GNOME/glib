@@ -77,6 +77,7 @@ struct _GNotification
   GPtrArray *buttons;
   gchar *default_action;
   GVariant *default_action_target;
+  gchar *sound_name;
 };
 
 typedef struct
@@ -122,6 +123,7 @@ g_notification_finalize (GObject *object)
   if (notification->default_action_target)
     g_variant_unref (notification->default_action_target);
   g_ptr_array_free (notification->buttons, TRUE);
+  g_free (notification->sound_name);
 
   G_OBJECT_CLASS (g_notification_parent_class)->finalize (object);
 }
@@ -784,5 +786,54 @@ g_notification_serialize (GNotification *notification)
       g_variant_builder_add (&builder, "{sv}", "buttons", g_variant_builder_end (&actions_builder));
     }
 
+  if (notification->sound_name)
+    g_variant_builder_add (&builder, "{sv}", "sound-name", g_variant_new_string (notification->sound_name));
+
   return g_variant_builder_end (&builder);
+}
+
+/*< private >
+ * g_notification_get_sound_name:
+ * @notification: a #GNotification
+ *
+ * Gets the title of @notification.
+ *
+ * Returns: (nullable): the sound requested to be played when showing the @notification
+ *
+ * Since: 2.56
+ */
+const gchar *
+g_notification_get_sound_name (GNotification *notification)
+{
+  g_return_val_if_fail (G_IS_NOTIFICATION (notification), NULL);
+
+  return notification->sound_name;
+}
+
+/**
+ * g_notification_set_sound_name:
+ * @notification: a #GNotification
+ * @sound_name: (nullable): the name of the sound requested to be played when 
+ * showing the @notification, or %NULL to play the default sound
+ *
+ * Sets the name of the sound played when showing of @notification to
+ * @sound_name. The name of the sound should follow the freedesktop sound theme
+ * specification (See https://freedesktop.org/wiki/Specifications/sound-theme-spec/
+ * for further information).
+ *
+ * If @sound_name is NULL, the default sound will be played.
+ *
+ * Since: 2.56
+ */
+void
+g_notification_set_sound_name (GNotification *notification,
+                               const gchar   *sound_name)
+{
+  g_return_if_fail (G_IS_NOTIFICATION (notification));
+
+  g_free (notification->sound_name);
+  if (sound_name)
+    {
+      notification->sound_name = g_strdup (sound_name);
+    }
 }

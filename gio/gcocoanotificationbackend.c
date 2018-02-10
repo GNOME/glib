@@ -202,7 +202,7 @@ g_cocoa_notification_backend_send_notification (GNotificationBackend *backend,
                                                 const gchar          *cstr_id,
                                                 GNotification        *notification)
 {
-  NSString *str_title = nil, *str_text = nil, *str_id = nil;
+  NSString *str_title = nil, *str_text = nil, *str_id = nil, *str_sound_name = nil;
   NSImage *content = nil;
   const char *cstr;
   GIcon *icon;
@@ -215,6 +215,8 @@ g_cocoa_notification_backend_send_notification (GNotificationBackend *backend,
     str_text = nsstring_from_cstr (cstr);
   if (cstr_id != NULL)
     str_id = nsstring_from_cstr (cstr_id);
+  if ((cstr = g_notification_get_sound_name (notification)))
+    str_sound_name = nsstring_from_cstr (cstr);
   if ((icon = g_notification_get_icon (notification)))
     content = nsimage_from_gicon (icon);
   /* NOTE: There is no priority */
@@ -224,6 +226,11 @@ g_cocoa_notification_backend_send_notification (GNotificationBackend *backend,
   userNotification.informativeText = str_text;
   userNotification.identifier = str_id;
   userNotification.contentImage = content;
+  if (!str_sound_name)
+    userNotification.soundName = str_sound_name;
+  else
+    userNotification.soundName = NSUserNotificationDefaultSoundName;
+
   /* NOTE: Buttons only show up if your bundle has NSUserNotificationAlertStyle set to "alerts" */
   add_actions_to_notification (userNotification, notification);
 

@@ -223,6 +223,7 @@ call_notify (GDBusConnection     *con,
   GIcon *icon;
   GVariant *parameters;
   const gchar *body;
+  const gchar *sound_name;
   guchar urgency;
 
   g_variant_builder_init (&action_builder, G_VARIANT_TYPE_STRING_ARRAY);
@@ -267,6 +268,13 @@ call_notify (GDBusConnection     *con,
                          g_variant_new_string (g_application_get_application_id (app)));
   urgency = urgency_from_priority (g_notification_get_priority (notification));
   g_variant_builder_add (&hints_builder, "{sv}", "urgency", g_variant_new_byte (urgency));
+  sound_name = g_notification_get_sound_name (app);
+  if (sound_name != NULL)
+    {
+      g_variant_builder_add (&hints_builder, "{sv}", "sound-name",
+                             g_variant_new_string (sound_name));
+    }
+
   icon = g_notification_get_icon (notification);
   if (icon != NULL)
     {

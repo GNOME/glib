@@ -49,4 +49,6 @@ gboolean                g_notification_get_default_action               (GNotifi
 
 GVariant *              g_notification_serialize                        (GNotification *notification);
 
+const gchar *           g_notification_get_sound_name                   (GNotification *notification);
+
 #endif

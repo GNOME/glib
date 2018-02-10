@@ -92,6 +92,10 @@ void                 g_notification_set_default_action_and_target_value (GNotifi
                                                                          const gchar   *action,
                                                                          GVariant      *target);
 
+GLIB_AVAILABLE_IN_2_56
+void                 g_notification_set_sound_name                      (GNotification *notification,
+                                                                         const gchar   *sound_name);
+
 G_END_DECLS
 
 #endif
