@@ -159,7 +159,7 @@ static guint64 mount_poller_time = 0;
 #ifdef HAVE_MNTENT_H
 #include <mntent.h>
 #ifdef HAVE_LIBMOUNT
-#include <libmount/libmount.h>
+#include <libmount.h>
 #endif
 #elif defined (HAVE_SYS_MNTTAB_H)
 #include <sys/mnttab.h>

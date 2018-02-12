@@ -1798,22 +1798,7 @@ AC_ARG_ENABLE(libmount,
                               [build with libmount support [default for Linux]])],,
               [enable_libmount=$enable_libmount_default])
 AS_IF([ test "x$enable_libmount" = "xyes"],[
-PKG_CHECK_MODULES([LIBMOUNT], [mount >= 2.28], [have_libmount=yes], [have_libmount=maybe])
-AS_IF([ test $have_libmount = maybe ], [
-  glib_save_LIBS=$LIBS
-  AC_CHECK_HEADER([libmount/libmount.h], [:], [have_libmount=no])
-
-  # We used to check for mnt_unref_table(), but now for compat with
-  # e.g. RHEL7 just use mnt_free_table().  Let's keep this check
-  # anyways.
-  AC_CHECK_LIB([mount], [mnt_free_table], [:], [have_libmount=no])
-  LIBS=$glib_save_LIBS
-
-  if test $have_libmount != no; then
-    LIBMOUNT_LIBS=-lmount
-    have_libmount=yes
-  fi
-])
+PKG_CHECK_MODULES([LIBMOUNT], [mount >= 2.28], [have_libmount=yes], [have_libmount=no])
 if test $have_libmount = no ; then
    AC_MSG_ERROR([*** Could not find libmount])
 fi

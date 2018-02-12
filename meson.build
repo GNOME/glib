@@ -1521,13 +1521,7 @@ xgettext = find_program('xgettext', required : false)
 # pkg-config file below
 libmount_dep = []
 if host_system == 'linux' and get_option('libmount')
-  libmount_dep = [dependency('mount', version : '>=2.28', required : false)]
-  if not libmount_dep[0].found()
-    libmount_dep = [cc.find_library('mount', required : true)]
-    if not cc.has_header('libmount/libmount.h')
-      error('libmount support needs libmount/libmount.h header')
-    endif
-  endif
+  libmount_dep = [dependency('mount', version : '>=2.28', required : true)]
 endif
 
 if host_system == 'windows'
