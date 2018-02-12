@@ -1649,8 +1649,8 @@ if want_systemtap and enable_dtrace
   endif
   stp_cdata = configuration_data()
   stp_cdata.set('ABS_GLIB_RUNTIME_LIBDIR', glib_libdir)
-  stp_cdata.set('LT_CURRENT', minor_version.to_int() * 100)
-  stp_cdata.set('LT_REVISION', micro_version.to_int())
+  stp_cdata.set('LT_CURRENT', minor_version * 100)
+  stp_cdata.set('LT_REVISION', micro_version)
   enable_systemtap = true
 endif
 
