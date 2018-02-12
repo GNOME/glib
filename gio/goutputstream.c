@@ -1340,6 +1340,7 @@ g_output_stream_flush_async (GOutputStream       *stream,
   
   if (class->flush_async == NULL)
     {
+      g_output_stream_clear_pending (stream);
       g_task_return_boolean (task, TRUE);
       g_object_unref (task);
       return;
