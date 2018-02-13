@@ -1521,7 +1521,7 @@ xgettext = find_program('xgettext', required : false)
 # pkg-config file below
 libmount_dep = []
 if host_system == 'linux' and get_option('libmount')
-  libmount_dep = [dependency('mount', version : '>=2.28', required : true)]
+  libmount_dep = [dependency('mount', version : '>=2.23', required : true)]
 endif
 
 if host_system == 'windows'

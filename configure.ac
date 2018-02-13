@@ -1798,7 +1798,7 @@ AC_ARG_ENABLE(libmount,
                               [build with libmount support [default for Linux]])],,
               [enable_libmount=$enable_libmount_default])
 AS_IF([ test "x$enable_libmount" = "xyes"],[
-PKG_CHECK_MODULES([LIBMOUNT], [mount >= 2.28], [have_libmount=yes], [have_libmount=no])
+PKG_CHECK_MODULES([LIBMOUNT], [mount >= 2.23], [have_libmount=yes], [have_libmount=no])
 if test $have_libmount = no ; then
    AC_MSG_ERROR([*** Could not find libmount])
 fi
