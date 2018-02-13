@@ -307,6 +307,11 @@
  * Constructs a new trusted #GVariant instance from the provided data.
  * This is used to implement g_variant_new_* for all the basic types.
  *
+ * Note: @data must be backed by memory that is aligned appropriately for the
+ * @type being loaded. Otherwise this function will internally create a copy of
+ * the memory (since GLib 2.60) or (in older versions) fail and exit the
+ * process.
+ *
  * Returns: a new floating #GVariant
  */
 static GVariant *
@@ -5985,6 +5990,11 @@ g_variant_byteswap (GVariant *value)
  * @notify will be called with @user_data when @data is no longer
  * needed.  The exact time of this call is unspecified and might even be
  * before this function returns.
+ *
+ * Note: @data must be backed by memory that is aligned appropriately for the
+ * @type being loaded. Otherwise this function will internally create a copy of
+ * the memory (since GLib 2.60) or (in older versions) fail and exit the
+ * process.
  *
  * Returns: (transfer none): a new floating #GVariant of type @type
  *

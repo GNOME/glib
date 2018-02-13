@@ -506,6 +506,10 @@ g_variant_alloc (const GVariantType *type,
  *
  * A reference is taken on @bytes.
  *
+ * The data in @bytes must be aligned appropriately for the @type being loaded.
+ * Otherwise this function will internally create a copy of the memory (since
+ * GLib 2.60) or (in older versions) fail and exit the process.
+ *
  * Returns: (transfer none): a new #GVariant with a floating reference
  *
  * Since: 2.36
@@ -518,13 +522,49 @@ g_variant_new_from_bytes (const GVariantType *type,
   GVariant *value;
   guint alignment;
   gsize size;
+  GBytes *owned_bytes = NULL;
 
   value = g_variant_alloc (type, TRUE, trusted);
 
-  value->contents.serialised.bytes = g_bytes_ref (bytes);
-
   g_variant_type_info_query (value->type_info,
                              &alignment, &size);
+
+  /* Ensure the alignment is correct. This is a huge performance hit if it’s
+   * not correct, but that’s better than aborting if a caller provides data
+   * with the wrong alignment (which is likely to happen very occasionally, and
+   * only cause an abort on some architectures — so is unlikely to be caught
+   * in testing). Callers can always actively ensure they use the correct
+   * alignment to avoid the performance hit. */
+  if ((alignment & (gsize) g_bytes_get_data (bytes, NULL)) != 0)
+    {
+#ifdef HAVE_POSIX_MEMALIGN
+      gpointer aligned_data = NULL;
+      gsize aligned_size = g_bytes_get_size (bytes);
+
+      /* posix_memalign() requires the alignment to be a multiple of
+       * sizeof(void*), and a power of 2. See g_variant_type_info_query() for
+       * details on the alignment format. */
+      if (posix_memalign (&aligned_data, MAX (sizeof (void *), alignment + 1),
+                          aligned_size) != 0)
+        g_error ("posix_memalign failed");
+
+      memcpy (aligned_data, g_bytes_get_data (bytes, NULL), aligned_size);
+
+      bytes = owned_bytes = g_bytes_new_with_free_func (aligned_data,
+                                                        aligned_size,
+                                                        free, aligned_data);
+      aligned_data = NULL;
+#else
+      /* NOTE: there may be platforms that lack posix_memalign() and also
+       * have malloc() that returns non-8-aligned.  if so, we need to try
+       * harder here.
+       */
+      bytes = owned_bytes = g_bytes_new (g_bytes_get_data (bytes, NULL),
+                                         g_bytes_get_size (bytes));
+#endif
+    }
+
+  value->contents.serialised.bytes = g_bytes_ref (bytes);
 
   if (size && g_bytes_get_size (bytes) != size)
     {
@@ -542,6 +582,8 @@ g_variant_new_from_bytes (const GVariantType *type,
     {
       value->contents.serialised.data = g_bytes_get_data (bytes, &value->size);
     }
+
+  g_clear_pointer (&owned_bytes, g_bytes_unref);
 
   return value;
 }

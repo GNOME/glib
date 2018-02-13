@@ -4965,6 +4965,51 @@ test_normal_checking_empty_object_path (void)
   g_variant_unref (variant);
 }
 
+/* Test that constructing a #GVariant from data which is not correctly aligned
+ * for the variant type is OK, by loading a variant from data at various offsets
+ * which are aligned and unaligned. When unaligned, a slow construction path
+ * should be taken. */
+static void
+test_unaligned_construction (void)
+{
+  const guint8 data[] = {
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+    0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+  };
+  GVariant *variant = NULL;
+  GVariant *normal_variant = NULL;
+  gsize i, offset;
+  const struct {
+    const GVariantType *type;
+    gsize size;
+    gsize max_offset;
+  } vectors[] = {
+    { G_VARIANT_TYPE_UINT64, sizeof (guint64), sizeof (guint64) },
+    { G_VARIANT_TYPE_UINT32, sizeof (guint32), sizeof (guint32) },
+    { G_VARIANT_TYPE_UINT16, sizeof (guint16), sizeof (guint16) },
+    { G_VARIANT_TYPE_BYTE, sizeof (guint8), 3 },
+  };
+
+  G_STATIC_ASSERT (sizeof (guint64) * 2 <= sizeof (data));
+
+  for (i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      for (offset = 0; offset < vectors[i].max_offset; offset++)
+        {
+          variant = g_variant_new_from_data (vectors[i].type, data + offset,
+                                             vectors[i].size,
+                                             FALSE, NULL, NULL);
+          g_assert_nonnull (variant);
+
+          normal_variant = g_variant_get_normal_form (variant);
+          g_assert_nonnull (normal_variant);
+
+          g_variant_unref (normal_variant);
+          g_variant_unref (variant);
+        }
+    }
+}
+
 int
 main (int argc, char **argv)
 {
@@ -5044,6 +5089,9 @@ main (int argc, char **argv)
                    test_recursion_limits_variant_in_variant);
   g_test_add_func ("/gvariant/recursion-limits/array-in-variant",
                    test_recursion_limits_array_in_variant);
+
+  g_test_add_func ("/gvariant/unaligned-construction",
+                   test_unaligned_construction);
 
   return g_test_run ();
 }
