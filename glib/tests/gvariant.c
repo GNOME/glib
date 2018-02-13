@@ -4965,6 +4965,36 @@ test_normal_checking_empty_object_path (void)
   g_variant_unref (variant);
 }
 
+/* Test that constructing a #GVariant from data which is not correctly aligned
+ * for the variant type is OK. When unaligned, a slow construction path should
+ * be taken. */
+static void
+test_unaligned_construction (void)
+{
+  const guint8 data[] = {
+    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
+  };
+  gsize size = sizeof (guint64);
+  gsize n_iterations = 3;
+  G_STATIC_ASSERT (size + n_iterations <= sizeof (data));
+  GVariant *variant = NULL;
+  GVariant *normal_variant = NULL;
+  gsize i;
+
+  for (i = 0; i < n_iterations; i++)
+    {
+      variant = g_variant_new_from_data (G_VARIANT_TYPE_UINT64, data + i, size,
+                                         FALSE, NULL, NULL);
+      g_assert_nonnull (variant);
+
+      normal_variant = g_variant_get_normal_form (variant);
+      g_assert_nonnull (normal_variant);
+
+      g_variant_unref (normal_variant);
+      g_variant_unref (variant);
+    }
+}
+
 int
 main (int argc, char **argv)
 {
@@ -5044,6 +5074,9 @@ main (int argc, char **argv)
                    test_recursion_limits_variant_in_variant);
   g_test_add_func ("/gvariant/recursion-limits/array-in-variant",
                    test_recursion_limits_array_in_variant);
+
+  g_test_add_func ("/gvariant/unaligned-construction",
+                   test_unaligned_construction);
 
   return g_test_run ();
 }
