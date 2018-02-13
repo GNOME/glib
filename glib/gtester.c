@@ -322,10 +322,8 @@ launch_test_binary (const char *binary,
     argc++;
   if (!subtest_mode_fatal)
     argc++;
-  if (subtest_mode_quick)
-    argc++;
-  else
-    argc++;
+  /* Either -m=quick or -m=slow is always appended. */
+  argc++;
   if (subtest_mode_perf)
     argc++;
   if (!subtest_mode_undefined)
