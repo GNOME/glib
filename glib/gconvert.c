@@ -360,7 +360,7 @@ close_converter (GIConv cd)
  *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
  *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte offset after the last valid
+ *                 stored will be the byte offset after the last valid
  *                 input sequence.
  * @bytes_written: (out) (optional): the number of bytes stored in
  *                 the output buffer (not including the terminating nul).
@@ -531,7 +531,7 @@ g_convert_with_iconv (const gchar *str,
  *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
  *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte offset after the last valid
+ *                 stored will be the byte offset after the last valid
  *                 input sequence.
  * @bytes_written: (out) (optional): the number of bytes stored in
  *                 the output buffer (not including the terminating nul).
@@ -982,7 +982,7 @@ convert_checked (const gchar      *string,
  *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
  *                 %G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte offset after the last valid
+ *                 stored will be the byte offset after the last valid
  *                 input sequence.
  * @bytes_written: (out) (optional): the number of bytes stored in the output
  *                 buffer (not including the terminating nul).
@@ -1031,7 +1031,7 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
  *                 %G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte offset after the last valid
+ *                 stored will be the byte offset after the last valid
  *                 input sequence.
  * @bytes_written: (out) (optional): the number of bytes stored in the output
  *                 buffer (not including the terminating nul).
@@ -1243,7 +1243,7 @@ get_filename_charset (const gchar **filename_charset)
  *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
  *                 %G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte offset after the last valid
+ *                 stored will be the byte offset after the last valid
  *                 input sequence.
  * @bytes_written: (out) (optional): the number of bytes stored in the output
  *                 buffer (not including the terminating nul).
@@ -1296,7 +1296,7 @@ g_filename_to_utf8 (const gchar *opsysstring,
  *                 less than @len if there were partial characters
  *                 at the end of the input. If the error
  *                 %G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
- *                 stored will the byte offset after the last valid
+ *                 stored will be the byte offset after the last valid
  *                 input sequence.
  * @bytes_written: (out) (optional): the number of bytes stored in
  *                 the output buffer (not including the terminating nul).
