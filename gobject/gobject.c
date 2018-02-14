@@ -749,6 +749,8 @@ g_object_class_install_properties (GObjectClass  *oclass,
  * #GTypeInfo.) It must not be called after after @class_init has
  * been called for any object types implementing this interface.
  *
+ * If @pspec is a floating reference, it will be consumed.
+ *
  * Since: 2.4
  */
 void
