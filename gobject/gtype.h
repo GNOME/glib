@@ -2008,7 +2008,7 @@ type_name##_get_type (void) \
         g_type_register_static_simple (G_TYPE_INTERFACE, \
                                        g_intern_static_string (#TypeName), \
                                        sizeof (TypeName##Interface), \
-                                       (GClassInitFunc)(GVoidFunc)type_name##_default_init, \
+                                       (GClassInitFunc)(void (*)(void)) type_name##_default_init, \
                                        0, \
                                        (GInstanceInitFunc)NULL, \
                                        (GTypeFlags) 0); \
