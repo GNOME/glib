@@ -24,6 +24,7 @@
 #include "config.h"
 
 #include "gkeyfile.h"
+#include "grefcount.h"
 #include "gutils.h"
 
 #include <errno.h>
@@ -512,7 +513,7 @@ struct _GKeyFile
 
   gchar **locales;
 
-  volatile gint ref_count;
+  gatomicrefcount ref_count;
 };
 
 typedef struct _GKeyFileKeyValuePair GKeyFileKeyValuePair;
@@ -690,7 +691,7 @@ g_key_file_new (void)
   GKeyFile *key_file;
 
   key_file = g_slice_new0 (GKeyFile);
-  key_file->ref_count = 1;
+  g_atomic_ref_count_init (&key_file->ref_count);
   g_key_file_init (key_file);
 
   return key_file;
@@ -1170,7 +1171,7 @@ g_key_file_ref (GKeyFile *key_file)
 {
   g_return_val_if_fail (key_file != NULL, NULL);
 
-  g_atomic_int_inc (&key_file->ref_count);
+  g_atomic_ref_count_inc (&key_file->ref_count);
 
   return key_file;
 }
@@ -1208,7 +1209,7 @@ g_key_file_unref (GKeyFile *key_file)
 {
   g_return_if_fail (key_file != NULL);
 
-  if (g_atomic_int_dec_and_test (&key_file->ref_count))
+  if (g_atomic_ref_count_dec (&key_file->ref_count))
     {
       g_key_file_clear (key_file);
       g_slice_free (GKeyFile, key_file);
