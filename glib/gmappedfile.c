@@ -48,15 +48,16 @@
 
 #endif
 
+#include "gatomic.h"
 #include "gconvert.h"
 #include "gerror.h"
 #include "gfileutils.h"
 #include "gmappedfile.h"
 #include "gmem.h"
 #include "gmessages.h"
+#include "grefcount.h"
 #include "gstdio.h"
 #include "gstrfuncs.h"
-#include "gatomic.h"
 
 #include "glibintl.h"
 
@@ -82,7 +83,7 @@ struct _GMappedFile
   gchar *contents;
   gsize  length;
   gpointer free_func;
-  int    ref_count;
+  gatomicrefcount ref_count;
 #ifdef G_OS_WIN32
   HANDLE mapping;
 #endif
@@ -115,7 +116,7 @@ mapped_file_new_from_fd (int           fd,
   struct stat st;
 
   file = g_slice_new0 (GMappedFile);
-  file->ref_count = 1;
+  g_atomic_ref_count_init (&file->ref_count);
   file->free_func = g_mapped_file_destroy;
 
   if (fstat (fd, &st) == -1)
@@ -378,7 +379,7 @@ g_mapped_file_ref (GMappedFile *file)
 {
   g_return_val_if_fail (file != NULL, NULL);
 
-  g_atomic_int_inc (&file->ref_count);
+  g_atomic_ref_count_inc (&file->ref_count);
 
   return file;
 }
@@ -399,7 +400,7 @@ g_mapped_file_unref (GMappedFile *file)
 {
   g_return_if_fail (file != NULL);
 
-  if (g_atomic_int_dec_and_test (&file->ref_count))
+  if (g_atomic_ref_count_dec (&file->ref_count))
     g_mapped_file_destroy (file);
 }
 
