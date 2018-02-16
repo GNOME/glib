@@ -28,6 +28,7 @@
 #include "gatomic.h"
 #include "gslice.h"
 #include "gmem.h"
+#include "grefcount.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gtypes.h"
@@ -55,7 +56,7 @@
 
 struct _GHmac
 {
-  int ref_count;
+  gatomicrefcount ref_count;
   GChecksumType digest_type;
   GChecksum *digesti;
   GChecksum *digesto;
@@ -122,7 +123,7 @@ g_hmac_new (GChecksumType  digest_type,
     }
 
   hmac = g_slice_new0 (GHmac);
-  hmac->ref_count = 1;
+  g_atomic_ref_count_init (&hmac->ref_count);
   hmac->digest_type = digest_type;
   hmac->digesti = checksum;
   hmac->digesto = g_checksum_new (digest_type);
@@ -181,7 +182,7 @@ g_hmac_copy (const GHmac *hmac)
   g_return_val_if_fail (hmac != NULL, NULL);
 
   copy = g_slice_new (GHmac);
-  copy->ref_count = 1;
+  g_atomic_ref_count_init (&copy->ref_count);
   copy->digest_type = hmac->digest_type;
   copy->digesti = g_checksum_copy (hmac->digesti);
   copy->digesto = g_checksum_copy (hmac->digesto);
@@ -206,7 +207,7 @@ g_hmac_ref (GHmac *hmac)
 {
   g_return_val_if_fail (hmac != NULL, NULL);
 
-  g_atomic_int_inc (&hmac->ref_count);
+  g_atomic_ref_count_inc (&hmac->ref_count);
 
   return hmac;
 }
@@ -229,7 +230,7 @@ g_hmac_unref (GHmac *hmac)
 {
   g_return_if_fail (hmac != NULL);
 
-  if (g_atomic_int_dec_and_test (&hmac->ref_count))
+  if (g_atomic_ref_count_dec (&hmac->ref_count))
     {
       g_checksum_free (hmac->digesti);
       g_checksum_free (hmac->digesto);
