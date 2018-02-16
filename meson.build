@@ -269,6 +269,27 @@ foreach m : struct_members
   endif
 endforeach
 
+# Compiler flags
+if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+  test_c_args = [
+    '-Wall',
+    '-Wduplicated-branches',
+    '-Wstrict-prototypes',
+    '-Werror=declaration-after-statement',
+    '-Werror=format=2',
+    '-Werror=format-security',
+    '-Werror=implicit-function-declaration',
+    '-Werror=init-self',
+    '-Werror=missing-include-dirs',
+    '-Werror=missing-prototypes',
+    '-Werror=pointer-arith',
+  ]
+else
+  test_c_args = []
+endif
+
+add_project_arguments(cc.get_supported_arguments(test_c_args), language: 'c')
+
 # Windows Support (Vista+)
 if host_system == 'windows'
   glib_conf.set('_WIN32_WINNT', '0x0601')
