@@ -30,6 +30,7 @@
 #include "gmain.h"
 #include "gmem.h"
 #include "gqueue.h"
+#include "grefcount.h"
 #include "gtestutils.h"
 #include "gtimer.h"
 #include "gthread.h"
@@ -99,7 +100,7 @@ struct _GAsyncQueue
   GQueue queue;
   GDestroyNotify item_free_func;
   guint waiting_threads;
-  gint ref_count;
+  gatomicrefcount ref_count;
 };
 
 typedef struct
@@ -142,8 +143,8 @@ g_async_queue_new_full (GDestroyNotify item_free_func)
   g_mutex_init (&queue->mutex);
   g_cond_init (&queue->cond);
   g_queue_init (&queue->queue);
+  g_atomic_ref_count_init (&queue->ref_count);
   queue->waiting_threads = 0;
-  queue->ref_count = 1;
   queue->item_free_func = item_free_func;
 
   return queue;
@@ -163,7 +164,7 @@ g_async_queue_ref (GAsyncQueue *queue)
 {
   g_return_val_if_fail (queue, NULL);
 
-  g_atomic_int_inc (&queue->ref_count);
+  g_atomic_ref_count_inc (&queue->ref_count);
 
   return queue;
 }
@@ -183,7 +184,7 @@ g_async_queue_ref_unlocked (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
 
-  g_atomic_int_inc (&queue->ref_count);
+  g_atomic_ref_count_inc (&queue->ref_count);
 }
 
 /**
@@ -224,7 +225,7 @@ g_async_queue_unref (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
 
-  if (g_atomic_int_dec_and_test (&queue->ref_count))
+  if (g_atomic_ref_count_dec (&queue->ref_count))
     {
       g_return_if_fail (queue->waiting_threads == 0);
       g_mutex_clear (&queue->mutex);
