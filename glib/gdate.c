@@ -2133,6 +2133,23 @@ g_date_order (GDate *date1,
 }
 
 #ifdef G_OS_WIN32
+static void
+append_month_name (GArray     *result,
+		   LCID        lcid,
+		   SYSTEMTIME *systemtime,
+		   gboolean    abbreviated)
+{
+  int n;
+  WORD base;
+
+  base = abbreviated ? LOCALE_SABBREVMONTHNAME1 : LOCALE_SMONTHNAME1;
+  n = GetLocaleInfoW (lcid, base + systemtime->wMonth - 1, NULL, 0);
+  g_array_set_size (result, result->len + n);
+  GetLocaleInfoW (lcid, base + systemtime->wMonth - 1,
+		  ((wchar_t *) result->data) + result->len - n, n);
+  g_array_set_size (result, result->len - 1);
+}
+
 static gsize
 win32_strftime_helper (const GDate     *d,
 		       const gchar     *format,
@@ -2219,16 +2236,10 @@ win32_strftime_helper (const GDate     *d,
 	      break;
 	    case 'b':
 	    case 'h':
-	      n = GetLocaleInfoW (lcid, LOCALE_SABBREVMONTHNAME1+systemtime.wMonth-1, NULL, 0);
-	      g_array_set_size (result, result->len + n);
-	      GetLocaleInfoW (lcid, LOCALE_SABBREVMONTHNAME1+systemtime.wMonth-1, ((wchar_t *) result->data) + result->len - n, n);
-	      g_array_set_size (result, result->len - 1);
+	      append_month_name (result, lcid, &systemtime, TRUE);
 	      break;
 	    case 'B':
-	      n = GetLocaleInfoW (lcid, LOCALE_SMONTHNAME1+systemtime.wMonth-1, NULL, 0);
-	      g_array_set_size (result, result->len + n);
-	      GetLocaleInfoW (lcid, LOCALE_SMONTHNAME1+systemtime.wMonth-1, ((wchar_t *) result->data) + result->len - n, n);
-	      g_array_set_size (result, result->len - 1);
+	      append_month_name (result, lcid, &systemtime, FALSE);
 	      break;
 	    case 'c':
 	      n = GetDateFormatW (lcid, 0, &systemtime, NULL, NULL, 0);
