@@ -3025,7 +3025,8 @@ splice_stream_with_progress (GInputStream           *in,
         {
           g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
                        _("Error splicing file: %s"), g_strerror (errsv));
-          return FALSE;
+          res = FALSE;
+          goto out;
         }
     }
 
