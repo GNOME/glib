@@ -879,9 +879,19 @@ static gchar *long_month_names[13] =
   NULL,
 };
 
+static gchar *long_month_names_alternative[13] =
+{
+  NULL,
+};
+
 static gchar *short_month_names[13] = 
 {
   NULL, 
+};
+
+static gchar *short_month_names_alternative[13] =
+{
+  NULL,
 };
 
 /* This tells us if we need to update the parse info */
@@ -974,6 +984,11 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
       i = 1;
       while (i < 13)
         {
+          /* Here month names will be in a genitive case.
+           * Examples of how January may look in some languages:
+           * Catalan: "de gener", Croatian: "siječnja", Polish: "stycznia",
+           * Upper Sorbian: "januara".
+           */
           if (long_month_names[i] != NULL) 
             {
               const gchar *found = strstr (normalized, long_month_names[i]);
@@ -984,7 +999,27 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
 		  break;
                 }
             }
-	  
+
+          /* Here month names will be in a nominative case.
+           * Examples of how January may look in some languages:
+           * Catalan: "gener", Croatian: "Siječanj", Polish: "styczeń",
+           * Upper Sorbian: "Januar".
+           */
+          if (long_month_names_alternative[i] != NULL)
+            {
+              const gchar *found = strstr (normalized, long_month_names_alternative[i]);
+
+              if (found != NULL)
+                {
+                  pt->month = i;
+                  break;
+                }
+            }
+
+          /* Differences between abbreviated nominative and abbreviated
+           * genitive month names are visible in very few languages but
+           * let's handle them.
+           */
           if (short_month_names[i] != NULL) 
             {
               const gchar *found = strstr (normalized, short_month_names[i]);
@@ -993,6 +1028,17 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
                 {
                   pt->month = i;
 		  break;
+                }
+            }
+
+          if (short_month_names_alternative[i] != NULL)
+            {
+              const gchar *found = strstr (normalized, short_month_names_alternative[i]);
+
+              if (found != NULL)
+                {
+                  pt->month = i;
+                  break;
                 }
             }
 
@@ -1053,6 +1099,18 @@ g_date_prepare_to_parse (const gchar      *str,
           long_month_names[i] = g_utf8_normalize (casefold, -1, G_NORMALIZE_ALL);
 	  g_free (casefold);
           
+          g_date_strftime (buf, 127, "%Ob", &d);
+          casefold = g_utf8_casefold (buf, -1);
+          g_free (short_month_names_alternative[i]);
+          short_month_names_alternative[i] = g_utf8_normalize (casefold, -1, G_NORMALIZE_ALL);
+          g_free (casefold);
+
+          g_date_strftime (buf, 127, "%OB", &d);
+          casefold = g_utf8_casefold (buf, -1);
+          g_free (long_month_names_alternative[i]);
+          long_month_names_alternative[i] = g_utf8_normalize (casefold, -1, G_NORMALIZE_ALL);
+          g_free (casefold);
+
           ++i;
         }
       
@@ -1097,6 +1155,13 @@ g_date_prepare_to_parse (const gchar      *str,
       while (i < 13) 
         {
           DEBUG_MSG (("  %s   %s", long_month_names[i], short_month_names[i]));
+          ++i;
+        }
+      DEBUG_MSG (("Alternative month names:"));
+      i = 1;
+      while (i < 13)
+        {
+          DEBUG_MSG (("  %s   %s", long_month_names_alternative[i], short_month_names_alternative[i]));
           ++i;
         }
       if (using_twodigit_years)
