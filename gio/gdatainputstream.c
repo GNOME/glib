@@ -1316,6 +1316,8 @@ g_data_input_stream_read_until_finish (GDataInputStream  *stream,
  * Note that @stop_chars may contain '\0' if @stop_chars_len is
  * specified.
  *
+ * The returned string will always be nul-terminated on success.
+ *
  * Returns: (transfer full): a string with the data that was read
  *     before encountering any of the stop characters. Set @length to
  *     a #gsize to get the length of the string. This function will
@@ -1445,6 +1447,8 @@ g_data_input_stream_read_upto_async (GDataInputStream    *stream,
  * Note that this function does not consume the stop character. You
  * have to use g_data_input_stream_read_byte() to get it before calling
  * g_data_input_stream_read_upto_async() again.
+ *
+ * The returned string will always be nul-terminated on success.
  *
  * Returns: (transfer full): a string with the data that was read
  *     before encountering any of the stop characters. Set @length to
