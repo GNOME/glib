@@ -337,14 +337,15 @@ enum TestDataType {
   TEST_DATA_UINT64
 };
 
+/* The order is reversed to avoid -Wduplicated-branches. */
 #define TEST_DATA_RETYPE_BUFF(a, t, v)	\
-	 (a == TEST_DATA_BYTE	? (t) *(guchar*)v : \
-	 (a == TEST_DATA_INT16	? (t) *(gint16*)v :	 \
-	 (a == TEST_DATA_UINT16	? (t) *(guint16*)v : \
-	 (a == TEST_DATA_INT32	? (t) *(gint32*)v :	 \
-	 (a == TEST_DATA_UINT32	? (t) *(guint32*)v : \
-	 (a == TEST_DATA_INT64	? (t) *(gint64*)v :	 \
-	 (t) *(guint64*)v )))))) 
+	 (a == TEST_DATA_UINT64	? (t) *(guint64*)v :	\
+	 (a == TEST_DATA_INT64	? (t) *(gint64*)v :	\
+	 (a == TEST_DATA_UINT32	? (t) *(guint32*)v :	\
+	 (a == TEST_DATA_INT32	? (t) *(gint32*)v :	\
+	 (a == TEST_DATA_UINT16	? (t) *(guint16*)v :	\
+	 (a == TEST_DATA_INT16	? (t) *(gint16*)v :	\
+	 (t) *(guchar*)v ))))))
 
 
 static void
