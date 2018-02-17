@@ -174,6 +174,209 @@ test_parse (void)
 }
 
 static void
+test_month_names (void)
+{
+  GDate *gdate;
+  gchar buf[101];
+  gchar *oldlocale;
+#ifdef G_OS_WIN32
+  LCID old_lcid;
+#endif
+
+#define TEST_DATE(d,m,y,f,o)                                    \
+  g_date_set_dmy (gdate, d, m, y);                              \
+  g_date_strftime (buf, 100, f, gdate);                         \
+  g_assert_cmpstr (buf, ==, (o));                               \
+  g_date_set_parse (gdate, buf);                                \
+  g_assert (g_date_valid (gdate));                              \
+  g_assert_cmpint (g_date_get_day (gdate), ==, d);              \
+  g_assert_cmpint (g_date_get_month (gdate), ==, m);            \
+  g_assert_cmpint (g_date_get_year (gdate), ==, y);
+
+  g_test_bug ("749206");
+
+  oldlocale = g_strdup (setlocale (LC_ALL, NULL));
+#ifdef G_OS_WIN32
+  old_lcid = GetThreadLocale ();
+#endif
+
+  gdate = g_date_new ();
+
+  /* Note: Windows implementation of g_date_strftime() does not support
+   * "-" format modifier (e.g., "%-d", "%-e") so we will not use it.
+   */
+
+  /* Make sure that nothing has been changed in western European languages.  */
+  setlocale (LC_ALL, "en_GB.utf-8");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_ENGLISH, SUBLANG_ENGLISH_UK), SORT_DEFAULT));
+#endif
+  if (strstr (setlocale (LC_ALL, NULL), "en_GB") != NULL)
+    {
+      TEST_DATE (1,  1, 2018, "%B %d, %Y", "January 01, 2018");
+      TEST_DATE (1,  2, 2018,    "%OB %Y",    "February 2018");
+      TEST_DATE (1,  3, 2018,  "%e %b %Y",      " 1 Mar 2018");
+      TEST_DATE (1,  4, 2018,    "%Ob %Y",         "Apr 2018");
+      TEST_DATE (1,  5, 2018,  "%d %h %Y",      "01 May 2018");
+      TEST_DATE (1,  6, 2018,    "%Oh %Y",         "Jun 2018");
+    }
+  else
+    g_test_incomplete ("locale en_GB not available, skipping English month names test");
+
+  setlocale (LC_ALL, "de_DE.utf-8");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_GERMAN, SUBLANG_GERMAN), SORT_DEFAULT));
+#endif
+  if (strstr (setlocale (LC_ALL, NULL), "de_DE") != NULL)
+    {
+      TEST_DATE (16,  7, 2018, "%d. %B %Y", "16. Juli 2018");
+      TEST_DATE ( 1,  8, 2018,    "%OB %Y",   "August 2018");
+      TEST_DATE (18,  9, 2018, "%e. %b %Y",  "18. Sep 2018");
+      TEST_DATE ( 1, 10, 2018,    "%Ob %Y",      "Okt 2018");
+      TEST_DATE (20, 11, 2018, "%d. %h %Y",  "20. Nov 2018");
+      TEST_DATE ( 1, 12, 2018,    "%Oh %Y",      "Dez 2018");
+    }
+  else
+    g_test_incomplete ("locale de_DE not available, skipping German month names test");
+
+
+  setlocale (LC_ALL, "es_ES.utf-8");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_SPANISH, SUBLANG_SPANISH_MODERN), SORT_DEFAULT));
+#endif
+  if (strstr (setlocale (LC_ALL, NULL), "es_ES") != NULL)
+    {
+      TEST_DATE ( 9,  1, 2018, "%d de %B de %Y", "09 de enero de 2018");
+      TEST_DATE ( 1,  2, 2018,      "%OB de %Y",     "febrero de 2018");
+      TEST_DATE (10,  3, 2018, "%e de %b de %Y",   "10 de mar de 2018");
+      TEST_DATE ( 1,  4, 2018,      "%Ob de %Y",         "abr de 2018");
+      TEST_DATE (11,  5, 2018, "%d de %h de %Y",   "11 de may de 2018");
+      TEST_DATE ( 1,  6, 2018,      "%Oh de %Y",         "jun de 2018");
+    }
+  else
+    g_test_incomplete ("locale es_ES not available, skipping Spanish month names test");
+
+  setlocale (LC_ALL, "fr_FR.utf-8");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_FRENCH, SUBLANG_FRENCH), SORT_DEFAULT));
+#endif
+  if (strstr (setlocale (LC_ALL, NULL), "fr_FR") != NULL)
+    {
+      TEST_DATE (31,  7, 2018, "%d %B %Y", "31 juillet 2018");
+      TEST_DATE ( 1,  8, 2018,   "%OB %Y",       "août 2018");
+      TEST_DATE (30,  9, 2018, "%e %b %Y",   "30 sept. 2018");
+      TEST_DATE ( 1, 10, 2018,   "%Ob %Y",       "oct. 2018");
+      TEST_DATE (29, 11, 2018, "%d %h %Y",    "29 nov. 2018");
+      TEST_DATE ( 1, 12, 2018,   "%Oh %Y",       "déc. 2018");
+    }
+  else
+    g_test_incomplete ("locale fr_FR not available, skipping French month names test");
+
+  /* Make sure that there are visible changes in some European languages.  */
+  setlocale (LC_ALL, "el_GR.utf-8");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_GREEK, SUBLANG_GREEK_GREECE), SORT_DEFAULT));
+#endif
+  if (strstr (setlocale (LC_ALL, NULL), "el_GR") != NULL)
+    {
+      TEST_DATE ( 2,  1, 2018, "%d %B %Y",  "02 Ιανουαρίου 2018");
+      TEST_DATE ( 4,  2, 2018, "%e %B %Y", " 4 Φεβρουαρίου 2018");
+      TEST_DATE (15,  3, 2018, "%d %B %Y",     "15 Μαρτίου 2018");
+      TEST_DATE ( 1,  4, 2018,   "%OB %Y",       "Απρίλιος 2018");
+      TEST_DATE ( 1,  5, 2018,   "%OB %Y",          "Μάιος 2018");
+      TEST_DATE ( 1,  6, 2018,   "%OB %Y",        "Ιούνιος 2018");
+      TEST_DATE (16,  7, 2018, "%e %b %Y",        "16 Ιούλ 2018");
+      TEST_DATE ( 1,  8, 2018,   "%Ob %Y",            "Αύγ 2018");
+    }
+  else
+    g_test_incomplete ("locale el_GR not available, skipping Greek month names test");
+
+  setlocale (LC_ALL, "hr_HR.utf-8");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_CROATIAN, SUBLANG_CROATIAN_CROATIA), SORT_DEFAULT));
+#endif
+  if (strstr (setlocale (LC_ALL, NULL), "hr_HR") != NULL)
+    {
+      TEST_DATE ( 8,  5, 2018, "%d. %B %Y", "08. svibnja 2018");
+      TEST_DATE ( 9,  6, 2018, "%e. %B %Y",  " 9. lipnja 2018");
+      TEST_DATE (10,  7, 2018, "%d. %B %Y",  "10. srpnja 2018");
+      TEST_DATE ( 1,  8, 2018,    "%OB %Y",     "Kolovoz 2018");
+      TEST_DATE ( 1,  9, 2018,    "%OB %Y",       "Rujan 2018");
+      TEST_DATE ( 1, 10, 2018,    "%OB %Y",    "Listopad 2018");
+      TEST_DATE (11, 11, 2018, "%e. %b %Y",     "11. Stu 2018");
+      TEST_DATE ( 1, 12, 2018,    "%Ob %Y",         "Pro 2018");
+    }
+  else
+    g_test_incomplete ("locale hr_HR not available, skipping Croatian month names test");
+
+  setlocale (LC_ALL, "lt_LT.utf-8");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_LITHUANIAN, SUBLANG_LITHUANIAN_LITHUANIA), SORT_DEFAULT));
+#endif
+  if (strstr (setlocale (LC_ALL, NULL), "lt_LT") != NULL)
+    {
+      TEST_DATE ( 1,  1, 2018, "%Y m. %B %d d.",  "2018 m. sausio 01 d.");
+      TEST_DATE ( 2,  2, 2018, "%Y m. %B %e d.", "2018 m. vasario  2 d.");
+      TEST_DATE ( 3,  3, 2018, "%Y m. %B %d d.",    "2018 m. kovo 03 d.");
+      TEST_DATE ( 1,  4, 2018,      "%Y m. %OB",      "2018 m. balandis");
+      TEST_DATE ( 1,  5, 2018,      "%Y m. %OB",        "2018 m. gegužė");
+      TEST_DATE ( 1,  6, 2018,      "%Y m. %OB",      "2018 m. birželis");
+      TEST_DATE (17,  7, 2018, "%Y m. %b %e d.",     "2018 m. Lie 17 d.");
+      TEST_DATE ( 1,  8, 2018,      "%Y m. %Ob",           "2018 m. Rgp");
+    }
+  else
+    g_test_incomplete ("locale lt_LT not available, skipping Lithuanian month names test");
+
+  setlocale (LC_ALL, "pl_PL.utf-8");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_POLISH, SUBLANG_POLISH_POLAND), SORT_DEFAULT));
+#endif
+  if (strstr (setlocale (LC_ALL, NULL), "pl_PL") != NULL)
+    {
+      TEST_DATE ( 3,  5, 2018, "%d %B %Y",     "03 maja 2018");
+      TEST_DATE ( 4,  6, 2018, "%e %B %Y",  " 4 czerwca 2018");
+      TEST_DATE (20,  7, 2018, "%d %B %Y",    "20 lipca 2018");
+      TEST_DATE ( 1,  8, 2018,   "%OB %Y",    "sierpień 2018");
+      TEST_DATE ( 1,  9, 2018,   "%OB %Y",    "wrzesień 2018");
+      TEST_DATE ( 1, 10, 2018,   "%OB %Y", "październik 2018");
+      TEST_DATE (25, 11, 2018, "%e %b %Y",      "25 lis 2018");
+      TEST_DATE ( 1, 12, 2018,   "%Ob %Y",         "gru 2018");
+    }
+  else
+    g_test_incomplete ("locale pl_PL not available, skipping Polish month names test");
+
+  setlocale (LC_ALL, "ru_RU.utf-8");
+#ifdef G_OS_WIN32
+  SetThreadLocale (MAKELCID (MAKELANGID (LANG_RUSSIAN, SUBLANG_RUSSIAN_RUSSIA), SORT_DEFAULT));
+#endif
+  if (strstr (setlocale (LC_ALL, NULL), "ru_RU") != NULL)
+    {
+      TEST_DATE ( 3,  1, 2018,      "%d %B %Y",  "03 января 2018");
+      TEST_DATE ( 4,  2, 2018,      "%e %B %Y", " 4 февраля 2018");
+      TEST_DATE (23,  3, 2018,      "%d %B %Y",   "23 марта 2018");
+      TEST_DATE ( 1,  4, 2018,        "%OB %Y",     "Апрель 2018");
+      TEST_DATE ( 1,  5, 2018,        "%OB %Y",        "Май 2018");
+      TEST_DATE ( 1,  6, 2018,        "%OB %Y",       "Июнь 2018");
+      TEST_DATE (24,  7, 2018,      "%e %b %Y",     "24 июл 2018");
+      TEST_DATE ( 1,  8, 2018,        "%Ob %Y",        "авг 2018");
+      /* This difference is very important in Russian:  */
+      TEST_DATE (19,  5, 2018,      "%e %b %Y",     "19 мая 2018");
+      TEST_DATE (20,  5, 2018, "%Ob, %d-е, %Y", "май, 20-е, 2018");
+    }
+  else
+    g_test_incomplete ("locale ru_RU not available, skipping Russian month names test");
+
+  g_date_free (gdate);
+
+  setlocale (LC_ALL, oldlocale);
+#ifdef G_OS_WIN32
+  SetThreadLocale (old_lcid);
+#endif
+  g_free (oldlocale);
+
+}
+
+static void
 test_year (gconstpointer t)
 {
   GDateYear y = GPOINTER_TO_INT (t);
@@ -412,6 +615,7 @@ main (int argc, char** argv)
 #endif
 
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/date/basic", test_basic);
   g_test_add_func ("/date/empty", test_empty_constructor);
@@ -419,6 +623,7 @@ main (int argc, char** argv)
   g_test_add_func ("/date/julian", test_julian_constructor);
   g_test_add_func ("/date/dates", test_dates);
   g_test_add_func ("/date/parse", test_parse);
+  g_test_add_func ("/date/month_names", test_month_names);
   g_test_add_func ("/date/clamp", test_clamp);
   g_test_add_func ("/date/order", test_order);
   for (i = 0; i < G_N_ELEMENTS (check_years); i++)
