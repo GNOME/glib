@@ -1,0 +1,44 @@
+image: fedora:27
+
+before_script:
+  - dnf install -y gcc gcc-c++ ccache meson gettext itstool git gtk-doc
+  - mkdir -p _ccache
+  - export CCACHE_BASEDIR=${PWD}
+  - export CCACHE_DIR=${PWD}/_ccache
+
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+    - _ccache/
+
+build-job:
+  stage: build
+  script:
+    - meson --prefix /usr --libdir /usr/lib64 -Dgtk_doc=true _build .
+    - ninja -C _build
+
+test-job:
+  stage: test
+  script:
+    - meson test -C _build
+
+dist-job:
+  stage: deploy
+  script:
+    - ninja -C _build dist
+    - ninja -C _build glib-doc
+    - tar -c -f glib-docs.tar.xz -C _build/docs/reference/glib html
+    - tar -c -f gobject-docs.tar.xz -C _build/docs/reference/gobject html
+    - tar -c -f gio-docs.tar.xz -C _build/docs/reference/gio html
+  only:
+    - tags
+  artifacts:
+    paths:
+      - glib-docs.tar.xz
+      - gobject-docs.tar.xz
+      - gio-docs.tar.xz
+      - _build/meson-dist/glib-*.tar.xz
