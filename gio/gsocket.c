@@ -5951,6 +5951,41 @@ g_socket_get_credentials (GSocket   *socket,
                                   native_creds_buf);
       }
   }
+#elif G_CREDENTIALS_USE_APPLE_XUCRED
+  {
+    struct xucred cred;
+    socklen_t optlen = sizeof (cred);
+
+    if (getsockopt (socket->priv->fd,
+                    0,
+                    LOCAL_PEERCRED,
+                    &cred,
+                    &optlen) == 0)
+      {
+        if (cred.cr_version == XUCRED_VERSION)
+          {
+            ret = g_credentials_new ();
+            g_credentials_set_native (ret,
+                                      G_CREDENTIALS_NATIVE_TYPE,
+                                      &cred);
+          }
+        else
+          {
+            g_set_error (error,
+                         G_IO_ERROR,
+                         G_IO_ERROR_NOT_SUPPORTED,
+                         /* No point in translating this! */
+                         "struct xucred cr_version %u != %u",
+                         cred.cr_version, XUCRED_VERSION);
+            /* Reuse a translatable string we already have */
+            g_prefix_error (error,
+                            _("Unable to read socket credentials: %s"),
+                            "");
+
+            return NULL;
+          }
+      }
+  }
 #elif G_CREDENTIALS_USE_NETBSD_UNPCBID
   {
     struct unpcbid cred;
@@ -6137,4 +6172,3 @@ g_socket_set_option (GSocket  *socket,
 #endif
   return FALSE;
 }
-

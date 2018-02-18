@@ -96,6 +96,7 @@ g_unix_credentials_message_get_msg_type (GSocketControlMessage *message)
 #elif G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED
   #error "G_CREDENTIALS_UNIX_CREDENTIALS_MESSAGE_SUPPORTED is set but there is no msg_type defined for this platform"
 #else
+  /* includes G_CREDENTIALS_USE_APPLE_XUCRED */
   return 0;
 #endif
 }
