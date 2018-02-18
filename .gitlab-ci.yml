@@ -1,0 +1,42 @@
+image: fedora:27
+
+before_script:
+  - dnf install -y ccache elfutils-libelf-devel gcc gcc-c++ gettext glibc-devel git gtk-doc itstool libattr-devel libffi-devel libmount-devel libselinux-devel meson pcre-devel zlib-devel
+  - mkdir -p _ccache
+  - export CCACHE_BASEDIR=${PWD}
+  - export CCACHE_DIR=${PWD}/_ccache
+
+stages:
+  - build
+
+cache:
+  paths:
+    - _ccache/
+
+build-job:
+  stage: build
+  script:
+    - meson --prefix /usr --libdir /usr/lib64 _build .
+    - ninja -C _build
+    - meson test -C _build
+  except:
+    - tags
+
+dist-job:
+  stage: build
+  only:
+    - tags
+  script:
+    - meson --prefix /usr --libdir /usr/lib64 -Dgtk_doc=true _build .
+    - cd _build
+    - ninja dist
+    - ninja glib-doc
+    - tar -c -f glib-docs-$CI_COMMIT_TAG.tar.xz -C docs/reference/glib html
+    - tar -c -f gobject-docs-$CI_COMMIT_TAG.tar.xz -C docs/reference/gobject html
+    - tar -c -f gio-docs-$CI_COMMIT_TAG.tar.xz -C docs/reference/gio html
+  artifacts:
+    paths:
+      - glib-docs.tar.xz
+      - gobject-docs.tar.xz
+      - gio-docs.tar.xz
+      - _build/meson-dist/glib-*.tar.xz
