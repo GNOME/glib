@@ -303,6 +303,7 @@ g_bit_storage_impl (gulong number)
 /* Crashes the program. */
 #if GLIB_VERSION_MAX_ALLOWED >= GLIB_VERSION_2_50
 #ifndef G_OS_WIN32
+#  include <stdlib.h>
 #  define g_abort() abort ()
 #else
 GLIB_AVAILABLE_IN_2_50
