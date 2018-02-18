@@ -4,22 +4,22 @@
 #
 # Mohammad DAMT <mdamt@bisnisweb.com>, 2005.
 # Dirgita <dirgitadevina@yahoo.co.id>, 2010, 2012.
-# Andika Triwidada <andika@gmail.com>, 2010-2013, 2015.
+# Andika Triwidada <andika@gmail.com>, 2010-2013, 2015, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-02-03 11:13+0000\n"
-"PO-Revision-Date: 2018-02-05 12:10+0700\n"
-"Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
+"POT-Creation-Date: 2018-02-16 20:43+0000\n"
+"PO-Revision-Date: 2018-02-18 15:19+0700\n"
+"Last-Translator: Andika Triwidada <atriwidada@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: ../gio/gapplication.c:495
 msgid "GApplication options"
@@ -275,7 +275,7 @@ msgid "Cannot truncate GBufferedInputStream"
 msgstr "Tak bisa memenggal GBufferedInputStream"
 
 #: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1208
-#: ../gio/giostream.c:300 ../gio/goutputstream.c:1660
+#: ../gio/giostream.c:300 ../gio/goutputstream.c:1661
 msgid "Stream is already closed"
 msgstr "Stream telah ditutup"
 
@@ -303,13 +303,13 @@ msgid "Not enough space in destination"
 msgstr "Tak cukup ruang di tujuan"
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
-#: ../gio/gdatainputstream.c:1261 ../glib/gconvert.c:452 ../glib/gconvert.c:877
+#: ../gio/gdatainputstream.c:1261 ../glib/gconvert.c:454 ../glib/gconvert.c:883
 #: ../glib/giochannel.c:1557 ../glib/giochannel.c:1599
 #: ../glib/giochannel.c:2443 ../glib/gutf8.c:869 ../glib/gutf8.c:1322
 msgid "Invalid byte sequence in conversion input"
 msgstr "Rangkaian bita dalam input konversi tidak benar"
 
-#: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:460 ../glib/gconvert.c:791
+#: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:462 ../glib/gconvert.c:797
 #: ../glib/giochannel.c:1564 ../glib/giochannel.c:2455
 #, c-format
 msgid "Error during conversion: %s"
@@ -517,7 +517,7 @@ msgstr ""
 "Tak bisa menentukan alamat bus dari variabel lingkungan "
 "DBUS_STARTER_BUS_TYPE — nilai tak dikenal \"%s\""
 
-#: ../gio/gdbusaddress.c:1667 ../gio/gdbusconnection.c:7158
+#: ../gio/gdbusaddress.c:1667 ../gio/gdbusconnection.c:7160
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -672,12 +672,12 @@ msgstr ""
 "Galat menata properti '%s': Tipe yang diharapkan '%s' tapi diperoleh '%s'"
 
 #: ../gio/gdbusconnection.c:4414 ../gio/gdbusconnection.c:4622
-#: ../gio/gdbusconnection.c:6589
+#: ../gio/gdbusconnection.c:6591
 #, c-format
 msgid "No such interface '%s'"
 msgstr "Tak ada antar muka '%s'"
 
-#: ../gio/gdbusconnection.c:4840 ../gio/gdbusconnection.c:7098
+#: ../gio/gdbusconnection.c:4840 ../gio/gdbusconnection.c:7100
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "Tak ada antar muka '%s' pada objek di lokasi %s"
@@ -707,22 +707,22 @@ msgstr "Tak bisa mengambil properti %s.%s"
 msgid "Unable to set property %s.%s"
 msgstr "Tak bisa menata properti %s.%s"
 
-#: ../gio/gdbusconnection.c:5625
+#: ../gio/gdbusconnection.c:5627
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "Metoda '%s' mengembalikan tipe '%s', tapi yang diharapkan '%s'"
 
-#: ../gio/gdbusconnection.c:6700
+#: ../gio/gdbusconnection.c:6702
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "Metoda '%s' pada antar muka '%s' dengan tanda tangan '%s' tak ada"
 
-#: ../gio/gdbusconnection.c:6821
+#: ../gio/gdbusconnection.c:6823
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Subtree telah diekspor bagi %s"
 
-#: ../gio/gdbusconnection.c:7149
+#: ../gio/gdbusconnection.c:7151
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -924,17 +924,17 @@ msgstr "Tak bisa mendapat profil perangkat keras: %s"
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Tak bisa memuat /var/lib/dbus/machine-id ata /etc/machine-id: "
 
-#: ../gio/gdbusproxy.c:1611
+#: ../gio/gdbusproxy.c:1612
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Galat sewaktu memanggil StartServiceByName untuk %s: "
 
-#: ../gio/gdbusproxy.c:1634
+#: ../gio/gdbusproxy.c:1635
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Balasan tak diharapkan %d dari metode StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2719 ../gio/gdbusproxy.c:2853
+#: ../gio/gdbusproxy.c:2726 ../gio/gdbusproxy.c:2860
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -1345,11 +1345,11 @@ msgstr "Berharap suatu GEmblem bagi GEmblemedIcon"
 #: ../gio/gfile.c:1071 ../gio/gfile.c:1309 ../gio/gfile.c:1447
 #: ../gio/gfile.c:1685 ../gio/gfile.c:1740 ../gio/gfile.c:1798
 #: ../gio/gfile.c:1882 ../gio/gfile.c:1939 ../gio/gfile.c:2003
-#: ../gio/gfile.c:2058 ../gio/gfile.c:3704 ../gio/gfile.c:3759
-#: ../gio/gfile.c:3995 ../gio/gfile.c:4037 ../gio/gfile.c:4505
-#: ../gio/gfile.c:4916 ../gio/gfile.c:5001 ../gio/gfile.c:5091
-#: ../gio/gfile.c:5188 ../gio/gfile.c:5275 ../gio/gfile.c:5376
-#: ../gio/gfile.c:7954 ../gio/gfile.c:8044 ../gio/gfile.c:8128
+#: ../gio/gfile.c:2058 ../gio/gfile.c:3725 ../gio/gfile.c:3780
+#: ../gio/gfile.c:4016 ../gio/gfile.c:4058 ../gio/gfile.c:4526
+#: ../gio/gfile.c:4937 ../gio/gfile.c:5022 ../gio/gfile.c:5112
+#: ../gio/gfile.c:5209 ../gio/gfile.c:5296 ../gio/gfile.c:5397
+#: ../gio/gfile.c:7975 ../gio/gfile.c:8065 ../gio/gfile.c:8149
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Operasi tak didukung"
@@ -1382,45 +1382,45 @@ msgstr "Tak bisa menyalin direktori secara rekursif"
 msgid "Splice not supported"
 msgstr "Splice tidak didukung"
 
-#: ../gio/gfile.c:2983
+#: ../gio/gfile.c:2983 ../gio/gfile.c:3027
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Galat saat men-splice berkas: %s"
 
-#: ../gio/gfile.c:3115
+#: ../gio/gfile.c:3136
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "Menyalin (reflink/clone) antar kait tak didukung"
 
-#: ../gio/gfile.c:3119
+#: ../gio/gfile.c:3140
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Menyalin (reflink/clone) tak didukung atau tak valid"
 
-#: ../gio/gfile.c:3124
+#: ../gio/gfile.c:3145
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Menyalin (reflink/clone) tak didukung atau tak bekerja"
 
-#: ../gio/gfile.c:3187
+#: ../gio/gfile.c:3208
 msgid "Can’t copy special file"
 msgstr "Tak bisa menyalin berkas spesial"
 
-#: ../gio/gfile.c:3985
+#: ../gio/gfile.c:4006
 msgid "Invalid symlink value given"
 msgstr "Diberikan nilai link simbolik yang tak valid"
 
-#: ../gio/gfile.c:4146
+#: ../gio/gfile.c:4167
 msgid "Trash not supported"
 msgstr "Tong sampah tak didukung"
 
-#: ../gio/gfile.c:4258
+#: ../gio/gfile.c:4279
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Nama berkas tak boleh mengandung \"%c\""
 
-#: ../gio/gfile.c:6739 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6760 ../gio/gvolume.c:363
 msgid "volume doesn’t implement mount"
 msgstr "volume tak mengimplementasi pengaitan"
 
-#: ../gio/gfile.c:6848
+#: ../gio/gfile.c:6869
 msgid "No application is registered as handling this file"
 msgstr "Tak ada aplikasi terdaftar yang menangani berkas ini"
 
@@ -1466,7 +1466,7 @@ msgid "Truncate not supported on stream"
 msgstr "Pemenggalan tak didukung pada stream"
 
 #: ../gio/ghttpproxy.c:91 ../gio/gresolver.c:410 ../gio/gresolver.c:476
-#: ../glib/gconvert.c:1777
+#: ../glib/gconvert.c:1786
 msgid "Invalid hostname"
 msgstr "Nama host salah"
 
@@ -1567,7 +1567,7 @@ msgstr "Stream masukan tak mengimplementasi pembacaan"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:1218 ../gio/giostream.c:310
-#: ../gio/goutputstream.c:1670
+#: ../gio/goutputstream.c:1671
 msgid "Stream has outstanding operation"
 msgstr "Stream memiliki operasi tertunda"
 
@@ -4210,280 +4210,467 @@ msgstr ""
 msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Gagal mengembangkan baris eksekusi \"%s\" dengan URI \"%s\""
 
-#: ../glib/gconvert.c:471
+#: ../glib/gconvert.c:473
 msgid "Unrepresentable character in conversion input"
 msgstr "Karakter yang tidak dapat diterima dalam masukan konversi"
 
-#: ../glib/gconvert.c:498 ../glib/gutf8.c:865 ../glib/gutf8.c:1077
+#: ../glib/gconvert.c:500 ../glib/gutf8.c:865 ../glib/gutf8.c:1077
 #: ../glib/gutf8.c:1214 ../glib/gutf8.c:1318
 msgid "Partial character sequence at end of input"
 msgstr "Rangkaian karakter sebagian pada akhir input"
 
-#: ../glib/gconvert.c:763
+#: ../glib/gconvert.c:769
 #, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "Tidak dapat mengonversi fallback \"%s\" menjadi codeset \"%s\""
 
-#: ../glib/gconvert.c:934
+#: ../glib/gconvert.c:940
 msgid "Embedded NUL byte in conversion input"
 msgstr "NUL bita tertanam dalam masukan konversi"
 
-#: ../glib/gconvert.c:955
+#: ../glib/gconvert.c:961
 msgid "Embedded NUL byte in conversion output"
 msgstr "NUL bita tertanam dalam keluaran konversi"
 
-#: ../glib/gconvert.c:1640
+#: ../glib/gconvert.c:1649
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "URI \"%s\" bukanlah URI absolut dengan menggunakan skema \"file\""
 
-#: ../glib/gconvert.c:1650
+#: ../glib/gconvert.c:1659
 #, c-format
 msgid "The local file URI “%s” may not include a “#”"
 msgstr "URI berkas lokal \"%s\" tak boleh mengandung \"#\""
 
-#: ../glib/gconvert.c:1667
+#: ../glib/gconvert.c:1676
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "URI \"%s\" tidak valid"
 
-#: ../glib/gconvert.c:1679
+#: ../glib/gconvert.c:1688
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "Nama host dari URI \"%s\" tidak valid"
 
-#: ../glib/gconvert.c:1695
+#: ../glib/gconvert.c:1704
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr "URI \"%s\" mengandung karakter yang di-escape secara tidak valid"
 
-#: ../glib/gconvert.c:1767
+#: ../glib/gconvert.c:1776
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "Nama path \"%s\" bukan lokasi absolut"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: ../glib/gdatetime.c:202
+#: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%a %d %b %Y %r %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:210
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:208
+#: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: ../glib/gdatetime.c:211
+#: ../glib/gdatetime.c:216
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%I:%M:%S %p"
 
-#: ../glib/gdatetime.c:224
+#. Translators: Some languages (Baltic, Slavic, Greek, and some more)
+#. * need different grammatical forms of month names depending on whether
+#. * they are standalone or in a complete date context, with the day
+#. * number.  Some other languages may prefer starting with uppercase when
+#. * they are standalone and with lowercase when they are in a complete
+#. * date context.  Here are full month names in a form appropriate when
+#. * they are used standalone.  If your system is Linux with the glibc
+#. * version 2.27 (released Feb 1, 2018) or newer or if it is from the BSD
+#. * family (which includes OS X) then you can refer to the date command
+#. * line utility and see what the command `date +%OB' produces.  Also in
+#. * the latest Linux the command `locale alt_mon' in your native locale
+#. * produces a complete list of month names almost ready to copy and
+#. * paste here.  Note that in most of the languages (western European,
+#. * non-European) there is no difference between the standalone and
+#. * complete date form.
+#.
+#: ../glib/gdatetime.c:251
 msgctxt "full month name"
 msgid "January"
 msgstr "Januari"
 
-#: ../glib/gdatetime.c:226
+#: ../glib/gdatetime.c:253
 msgctxt "full month name"
 msgid "February"
 msgstr "Februari"
 
-#: ../glib/gdatetime.c:228
+#: ../glib/gdatetime.c:255
 msgctxt "full month name"
 msgid "March"
 msgstr "Maret"
 
-#: ../glib/gdatetime.c:230
+#: ../glib/gdatetime.c:257
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:259
 msgctxt "full month name"
 msgid "May"
 msgstr "Mei"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:261
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:263
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:265
 msgctxt "full month name"
 msgid "August"
 msgstr "Agustus"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:267
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:271
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:273
 msgctxt "full month name"
 msgid "December"
 msgstr "Desember"
 
-#: ../glib/gdatetime.c:261
+#. Translators: Some languages need different grammatical forms of
+#. * month names depending on whether they are standalone or in a complete
+#. * date context, with the day number.  Some may prefer starting with
+#. * uppercase when they are standalone and with lowercase when they are
+#. * in a full date context.  However, as these names are abbreviated
+#. * the grammatical difference is visible probably only in Belarusian
+#. * and Russian.  In other languages there is no difference between
+#. * the standalone and complete date form when they are abbreviated.
+#. * If your system is Linux with the glibc version 2.27 (released
+#. * Feb 1, 2018) or newer then you can refer to the date command line
+#. * utility and see what the command `date +%Ob' produces.  Also in
+#. * the latest Linux the command `locale ab_alt_mon' in your native
+#. * locale produces a complete list of month names almost ready to copy
+#. * and paste here.  Note that this feature is not yet supported by any
+#. * other platform.  Here are abbreviated month names in a form
+#. * appropriate when they are used standalone.
+#.
+#: ../glib/gdatetime.c:305
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:263
+#: ../glib/gdatetime.c:307
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:265
+#: ../glib/gdatetime.c:309
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:311
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:313
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mei"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:315
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:317
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:319
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Ags"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:321
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:323
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:281
+#: ../glib/gdatetime.c:325
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:283
+#: ../glib/gdatetime.c:327
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Des"
 
-#: ../glib/gdatetime.c:298
+#: ../glib/gdatetime.c:342
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Senin"
 
-#: ../glib/gdatetime.c:300
+#: ../glib/gdatetime.c:344
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Selasa"
 
-#: ../glib/gdatetime.c:302
+#: ../glib/gdatetime.c:346
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Rabu"
 
-#: ../glib/gdatetime.c:304
+#: ../glib/gdatetime.c:348
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Kamis"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:350
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Jumat"
 
-#: ../glib/gdatetime.c:308
+#: ../glib/gdatetime.c:352
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sabtu"
 
-#: ../glib/gdatetime.c:310
+#: ../glib/gdatetime.c:354
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Minggu"
 
-#: ../glib/gdatetime.c:325
+#: ../glib/gdatetime.c:369
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Sen"
 
-#: ../glib/gdatetime.c:327
+#: ../glib/gdatetime.c:371
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Sel"
 
-#: ../glib/gdatetime.c:329
+#: ../glib/gdatetime.c:373
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Rab"
 
-#: ../glib/gdatetime.c:331
+#: ../glib/gdatetime.c:375
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Kam"
 
-#: ../glib/gdatetime.c:333
+#: ../glib/gdatetime.c:377
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Jum"
 
-#: ../glib/gdatetime.c:335
+#: ../glib/gdatetime.c:379
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sab"
 
-#: ../glib/gdatetime.c:337
+#: ../glib/gdatetime.c:381
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Min"
 
+#. Translators: Some languages need different grammatical forms of
+#. * month names depending on whether they are standalone or in a full
+#. * date context, with the day number.  Some may prefer starting with
+#. * uppercase when they are standalone and with lowercase when they are
+#. * in a full date context.  Here are full month names in a form
+#. * appropriate when they are used in a full date context, with the
+#. * day number.  If your system is Linux with the glibc version 2.27
+#. * (released Feb 1, 2018) or newer or if it is from the BSD family
+#. * (which includes OS X) then you can refer to the date command line
+#. * utility and see what the command `date +%B' produces.  Also in
+#. * the latest Linux the command `locale mon' in your native locale
+#. * produces a complete list of month names almost ready to copy and
+#. * paste here.  In older Linux systems due to a bug the result is
+#. * incorrect in some languages.  Note that in most of the languages
+#. * (western European, non-European) there is no difference between the
+#. * standalone and complete date form.
+#.
+#: ../glib/gdatetime.c:441
+msgctxt "full month name with day"
+msgid "January"
+msgstr "Januari"
+
+#: ../glib/gdatetime.c:443
+msgctxt "full month name with day"
+msgid "February"
+msgstr "Februari"
+
+#: ../glib/gdatetime.c:445
+msgctxt "full month name with day"
+msgid "March"
+msgstr "Maret"
+
+#: ../glib/gdatetime.c:447
+msgctxt "full month name with day"
+msgid "April"
+msgstr "April"
+
+#: ../glib/gdatetime.c:449
+msgctxt "full month name with day"
+msgid "May"
+msgstr "Mei"
+
+#: ../glib/gdatetime.c:451
+msgctxt "full month name with day"
+msgid "June"
+msgstr "Juni"
+
+#: ../glib/gdatetime.c:453
+msgctxt "full month name with day"
+msgid "July"
+msgstr "Juli"
+
+#: ../glib/gdatetime.c:455
+msgctxt "full month name with day"
+msgid "August"
+msgstr "Agustus"
+
+#: ../glib/gdatetime.c:457
+msgctxt "full month name with day"
+msgid "September"
+msgstr "September"
+
+#: ../glib/gdatetime.c:459
+msgctxt "full month name with day"
+msgid "October"
+msgstr "Oktober"
+
+#: ../glib/gdatetime.c:461
+msgctxt "full month name with day"
+msgid "November"
+msgstr "November"
+
+#: ../glib/gdatetime.c:463
+msgctxt "full month name with day"
+msgid "December"
+msgstr "Desember"
+
+#. Translators: Some languages need different grammatical forms of
+#. * month names depending on whether they are standalone or in a full
+#. * date context, with the day number.  Some may prefer starting with
+#. * uppercase when they are standalone and with lowercase when they are
+#. * in a full date context.  Here are abbreviated month names in a form
+#. * appropriate when they are used in a full date context, with the
+#. * day number.  However, as these names are abbreviated the grammatical
+#. * difference is visible probably only in Belarusian and Russian.
+#. * In other languages there is no difference between the standalone
+#. * and complete date form when they are abbreviated.  If your system
+#. * is Linux with the glibc version 2.27 (released Feb 1, 2018) or newer
+#. * then you can refer to the date command line utility and see what the
+#. * command `date +%b' produces.  Also in the latest Linux the command
+#. * `locale abmon' in your native locale produces a complete list of
+#. * month names almost ready to copy and paste here.  In other systems
+#. * due to a bug the result is incorrect in some languages.
+#.
+#: ../glib/gdatetime.c:524
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "Jan"
+
+#: ../glib/gdatetime.c:526
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "Feb"
+
+#: ../glib/gdatetime.c:528
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "Mar"
+
+#: ../glib/gdatetime.c:530
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "Apr"
+
+#: ../glib/gdatetime.c:532
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "Mei"
+
+#: ../glib/gdatetime.c:534
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "Jun"
+
+#: ../glib/gdatetime.c:536
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "Jul"
+
+#: ../glib/gdatetime.c:538
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "Ags"
+
+#: ../glib/gdatetime.c:540
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "Sep"
+
+#: ../glib/gdatetime.c:542
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "Okt"
+
+#: ../glib/gdatetime.c:544
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "Nov"
+
+#: ../glib/gdatetime.c:546
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "Des"
+
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:354
+#: ../glib/gdatetime.c:563
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:357
+#: ../glib/gdatetime.c:566
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
@@ -4627,9 +4814,9 @@ msgstr "Nama kunci tak valid: %s"
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "Berkas kunci mengandung enkoding \"%s\" yang tidak didukung"
 
-#: ../glib/gkeyfile.c:1645 ../glib/gkeyfile.c:1818 ../glib/gkeyfile.c:3206
-#: ../glib/gkeyfile.c:3269 ../glib/gkeyfile.c:3399 ../glib/gkeyfile.c:3529
-#: ../glib/gkeyfile.c:3673 ../glib/gkeyfile.c:3902 ../glib/gkeyfile.c:3969
+#: ../glib/gkeyfile.c:1645 ../glib/gkeyfile.c:1818 ../glib/gkeyfile.c:3271
+#: ../glib/gkeyfile.c:3334 ../glib/gkeyfile.c:3464 ../glib/gkeyfile.c:3594
+#: ../glib/gkeyfile.c:3738 ../glib/gkeyfile.c:3967 ../glib/gkeyfile.c:4034
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "Berkas kunci tidak memiliki grup \"%s\""
@@ -4645,14 +4832,14 @@ msgid "Key file contains key “%s” with value “%s” which is not UTF-8"
 msgstr ""
 "Berkas kunci mengandung kunci \"%s\" dengan nilai \"%s\" yang bukan UTF-8"
 
-#: ../glib/gkeyfile.c:1955 ../glib/gkeyfile.c:2071 ../glib/gkeyfile.c:2448
+#: ../glib/gkeyfile.c:1955 ../glib/gkeyfile.c:2071 ../glib/gkeyfile.c:2513
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "Berkas kunci mengandung kunci \"%s\" yang nilainya tidak dapat diterjemahkan."
 
-#: ../glib/gkeyfile.c:2666 ../glib/gkeyfile.c:3035
+#: ../glib/gkeyfile.c:2731 ../glib/gkeyfile.c:3100
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -4661,36 +4848,36 @@ msgstr ""
 "Berkas kunci mengandung kunci \"%s\" dalam grup \"%s\" yang nilainya tidak "
 "dapat diterjemahkan."
 
-#: ../glib/gkeyfile.c:2744 ../glib/gkeyfile.c:2821
+#: ../glib/gkeyfile.c:2809 ../glib/gkeyfile.c:2886
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr "Kunci \"%s\" dalam grup \"%s\" bernilai \"%s\" padahal diharapkan %s"
 
-#: ../glib/gkeyfile.c:4209
+#: ../glib/gkeyfile.c:4274
 msgid "Key file contains escape character at end of line"
 msgstr "Berkas kunci mengandung karakter escape pada akhir baris"
 
-#: ../glib/gkeyfile.c:4231
+#: ../glib/gkeyfile.c:4296
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "Berkas kunci memuat urutan escape \"%s\" yang tidak valid"
 
-#: ../glib/gkeyfile.c:4375
+#: ../glib/gkeyfile.c:4440
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "Nilai \"%s\" tidak bisa diterjemahkan sebagai sebuah bilangan."
 
-#: ../glib/gkeyfile.c:4389
+#: ../glib/gkeyfile.c:4454
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "Nilai bilangan bulat \"%s\" di luar jangkauan"
 
-#: ../glib/gkeyfile.c:4422
+#: ../glib/gkeyfile.c:4487
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "Nilai \"%s\" tidak dapat diterjemahkan sebagai sebuah bilangan float."
 
-#: ../glib/gkeyfile.c:4461
+#: ../glib/gkeyfile.c:4526
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "Nilai \"%s\" tidak dapat diterjemahkan sebagai sebuah boolean."
@@ -5690,19 +5877,3 @@ msgstr[0] "%s bita"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
-
-#~ msgid ""
-#~ "Message has %d file descriptors but the header field indicates %d file "
-#~ "descriptors"
-#~ msgstr ""
-#~ "Pesan punya %d deskriptor berkas tapi ruas header mengindikasikan %d "
-#~ "deskriptor berkas"
-
-#~ msgid "Error: object path not specified.\n"
-#~ msgstr "Galat: path objek tak dinyatakan\n"
-
-#~ msgid "Error: signal not specified.\n"
-#~ msgstr "Galat: sinyal tak dinyatakan\n"
-
-#~ msgid "Error: signal must be the fully-qualified name.\n"
-#~ msgstr "Galat: sinyal harus berupa nama yang berkualifikasi penuh.\n"
