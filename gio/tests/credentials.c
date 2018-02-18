@@ -92,6 +92,14 @@ test_basic (void)
           g_assert_cmpuint (native->uid, ==, geteuid ());
           g_assert_cmpuint (native->pid, ==, getpid ());
         }
+#elif G_CREDENTIALS_USE_APPLE_XUCRED
+        {
+          struct xucred *native = g_credentials_get_native (creds,
+              G_CREDENTIALS_TYPE_APPLE_XUCRED);
+
+          g_assert_cmpuint (native->cr_version, ==, XUCRED_VERSION);
+          g_assert_cmpuint (native->cr_uid, ==, geteuid ());
+        }
 #elif G_CREDENTIALS_USE_FREEBSD_CMSGCRED
         {
           struct cmsgcred *native = g_credentials_get_native (creds,
