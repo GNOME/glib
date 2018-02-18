@@ -1,0 +1,38 @@
+image: ebassi/gitlab-glib:latest
+
+stages:
+  - build
+
+build-job:
+  stage: build
+  script:
+    - meson --prefix /usr --libdir /usr/lib64 --buildtype debug --werror -Dsystemtap=true -Ddtrace=true _build .
+    - cd _build
+    - ninja
+    - meson test
+  except:
+    - tags
+  artifacts:
+    when: on_failure
+    name: "glib-_${CI_COMMIT_REF_NAME}"
+    paths:
+      - "${CI_PROJECT_DIR}/_build/meson-logs"
+
+dist-job:
+  stage: build
+  only:
+    - tags
+  script:
+    - meson --prefix /usr --libdir /usr/lib64 --buildtype release -Dgtk_doc=true -Dman=true _build .
+    - cd _build
+    - ninja dist
+    - ninja glib-doc
+    - tar -c -f "glib-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/glib html
+    - tar -c -f "gobject-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gobject html
+    - tar -c -f "gio-docs-$CI_COMMIT_TAG.tar.xz" -C docs/reference/gio html
+  artifacts:
+    paths:
+      - "${CI_PROJECT_DIR}/_build/glib-docs.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/gobject-docs.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/gio-docs.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/meson-dist/glib-*.tar.xz"
