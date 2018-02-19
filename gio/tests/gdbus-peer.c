@@ -1682,6 +1682,7 @@ codegen_test_peer (void)
                                   NULL, &error);
   g_assert_no_error (error);
   g_variant_get (value, "(&s)", &s);
+  g_test_message ("Machine ID: %s", s);
   g_assert (g_dbus_is_guid (s));
   g_variant_unref (value);
   
