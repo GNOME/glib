@@ -38,7 +38,7 @@ foreach test_name : gobject_tests
     test_name = 'gobject-private'
   endif
   exe = executable(test_name, test_src,
-      c_args : ['-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib-GObject"'],
+      c_args : ['-DG_LOG_DOMAIN="GLib-GObject"'],
       dependencies : deps,
   )
   test(test_name, exe, env : test_env)
@@ -74,7 +74,7 @@ marshalers_c = custom_target('marshalers_c',
 
 exe = executable('signals',
     'signals.c', marshalers_h, marshalers_c,
-    c_args : ['-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib-GObject"'],
+    c_args : ['-DG_LOG_DOMAIN="GLib-GObject"'],
     dependencies : deps,
 )
 test('signals', exe, env : test_env)

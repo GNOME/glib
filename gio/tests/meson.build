@@ -75,7 +75,6 @@ test_env = [
 ]
 
 test_c_args = [
-  '-DHAVE_CONFIG_H=1',
   '-DG_LOG_DOMAIN="GLib-GIO"',
   '-DTEST_SERVICES="@0@/gio/tests/services"'.format(meson.build_root()),
   '-DGLIB_MKENUMS="@0@"'.format(glib_mkenums),

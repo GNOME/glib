@@ -12,4 +12,4 @@ inotify_lib = static_library('inotify',
   include_directories : [configinc, glibinc, gmoduleinc],
   dependencies : [gioenumtypes_dep],
   pic : true,
-  c_args : [ '-DHAVE_CONFIG_H', '-DG_DISABLE_DEPRECATED' ] + gio_c_args)
+  c_args : [ '-DG_DISABLE_DEPRECATED' ] + gio_c_args)

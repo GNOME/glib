@@ -27,9 +27,7 @@
      STATIC             Set to 'static' to declare the function static.
      ENABLE_UNISTDIO    Set to 1 to enable the unistdio extensions.  */
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
+#include <config.h>
 
 #include "g-gnulib.h"
 

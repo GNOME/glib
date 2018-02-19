@@ -7,7 +7,7 @@ test_env = [
   'MALLOC_CHECK_=2',
 ]
 
-test_cargs = ['-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib"']
+test_cargs = ['-DG_LOG_DOMAIN="GLib"']
 
 subdir('gobject')
 subdir('refcount')

@@ -72,9 +72,7 @@ in others, so I abandoned this code. */
 
 
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #define NLBLOCK md             /* Block containing newline information */
 #define PSSTART start_subject  /* Field containing processed string start */

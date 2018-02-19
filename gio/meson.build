@@ -841,24 +841,22 @@ gio_tool_sources = [
   'gio-tool-tree.c',
 ]
 
-# FIXME: are all these HAVE_CONFIG_H needed/used here?
 executable('gio', gio_tool_sources,
   install : true,
-  c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+  c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 executable('gresource', 'gresource-tool.c',
   install : true,
-  c_args : ['-DHAVE_CONFIG_H=1'],
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libelf, libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 executable('gio-querymodules', 'gio-querymodules.c', 'giomodule-priv.c',
   install : true,
-  c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+  c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
@@ -866,7 +864,6 @@ executable('gio-querymodules', 'gio-querymodules.c', 'giomodule-priv.c',
 glib_compile_schemas = executable('glib-compile-schemas',
   [gconstructor_as_data_h, 'gvdb/gvdb-builder.c', 'glib-compile-schemas.c'],
   install : true,
-  c_args : ['-DHAVE_CONFIG_H=1'],
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
@@ -874,14 +871,14 @@ glib_compile_schemas = executable('glib-compile-schemas',
 glib_compile_resources = executable('glib-compile-resources',
   [gconstructor_as_data_h, 'gvdb/gvdb-builder.c', 'glib-compile-resources.c'],
   install : true,
-  c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+  c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
 
 executable('gsettings', 'gsettings-tool.c',
   install : true,
-  c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+  c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
@@ -893,7 +890,7 @@ install_data(['gschema.loc', 'gschema.its'],
 
 executable('gdbus', 'gdbus-tool.c',
   install : true,
-  c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+  c_args : gio_c_args,
   # intl.lib is not compatible with SAFESEH
   link_args : noseh_link_args,
   dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])
@@ -901,7 +898,7 @@ executable('gdbus', 'gdbus-tool.c',
 if host_system != 'windows'
   executable('gapplication', 'gapplication-tool.c',
     install : true,
-    c_args : ['-DHAVE_CONFIG_H=1'] + gio_c_args,
+    c_args : gio_c_args,
     # intl.lib is not compatible with SAFESEH
     link_args : noseh_link_args,
     dependencies : [libintl, libgio_dep, libgobject_dep, libgmodule_dep, libglib_dep])

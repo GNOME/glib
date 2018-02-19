@@ -255,31 +255,28 @@ if host_system == 'windows'
     executable('gspawn-win32-helper', 'gspawn-win32-helper.c',
       install : true,
       gui_app : true,
-      c_args : ['-DHAVE_CONFIG_H=1'],
       include_directories : configinc,
       dependencies : [libintl, libglib_dep])
     executable('gspawn-win32-helper-console', 'gspawn-win32-helper.c',
       install : true,
-      c_args : ['-DHAVE_CONFIG_H=1', '-DHELPER_CONSOLE'],
+      c_args : ['-DHELPER_CONSOLE'],
       include_directories : configinc,
       dependencies : [libintl, libglib_dep])
   else
     executable('gspawn-win64-helper', 'gspawn-win32-helper.c',
       install : true,
       gui_app : true,
-      c_args : ['-DHAVE_CONFIG_H=1'],
       include_directories : configinc,
       dependencies : [libintl, libglib_dep])
     executable('gspawn-win64-helper-console', 'gspawn-win32-helper.c',
       install : true,
-      c_args : ['-DHAVE_CONFIG_H=1', '-DHELPER_CONSOLE'],
+      c_args : ['-DHELPER_CONSOLE'],
       include_directories : configinc,
       dependencies : [libintl, libglib_dep])
   endif
 else
   gtester = executable('gtester', 'gtester.c',
     install : true,
-    c_args : ['-DHAVE_CONFIG_H=1'],
     include_directories : configinc,
     dependencies : [libglib_dep])
 endif

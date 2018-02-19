@@ -96,7 +96,7 @@ test_env = [
   'MALLOC_PERTURB_=@0@'.format(random_number % 256),
 ]
 
-test_cargs = ['-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib"']
+test_cargs = ['-DG_LOG_DOMAIN="GLib"']
 
 # Tests that consistently time out on the CI infrastructure
 slow_tests = [

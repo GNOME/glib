@@ -10,7 +10,7 @@
 	<Tool
 		Name="VCCLCompilerTool"
 		AdditionalIncludeDirectories="..\..;..\..\glib;$(GlibEtcInstallRoot)\include"
-		PreprocessorDefinitions="HAVE_CONFIG_H"
+		PreprocessorDefinitions=""
 		ForcedIncludeFiles="msvc_recommended_pragmas.h"
 		AdditionalOptions="/MP"
 	/>

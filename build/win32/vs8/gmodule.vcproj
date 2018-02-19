@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../glib;../../.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;GModule\&quot;;G_DISABLE_DEPRECATED"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;G_LOG_DOMAIN=\&quot;GModule\&quot;;G_DISABLE_DEPRECATED"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -123,7 +123,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../../glib;../../.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;HAVE_CONFIG_H;G_LOG_DOMAIN=\&quot;GModule\&quot;;G_DISABLE_DEPRECATED"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;G_LOG_DOMAIN=\&quot;GModule\&quot;;G_DISABLE_DEPRECATED"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
