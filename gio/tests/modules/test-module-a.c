@@ -32,6 +32,8 @@ typedef struct _TestAClass {
   GObjectClass parent_class;
 } TestAClass;
 
+GType test_a_get_type (void);
+
 G_DEFINE_TYPE (TestA, test_a, G_TYPE_OBJECT)
 
 static void
