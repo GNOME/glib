@@ -98,6 +98,12 @@ test_env = [
 
 test_cargs = ['-DHAVE_CONFIG_H=1', '-DG_LOG_DOMAIN="GLib"']
 
+# Tests that consistently time out on the CI infrastructure
+slow_tests = [
+  'sequence',
+  '642026',
+]
+
 foreach test_name : glib_tests
   deps = [libm, thread_dep, libglib_dep]
   if test_name == 'regex'
@@ -108,7 +114,12 @@ foreach test_name : glib_tests
     dependencies : deps,
     install : false,
   )
-  test(test_name, exe, env : test_env)
+  # These tests may take more than 30 seconds to run on the CI infrastructure
+  if slow_tests.contains(test_name)
+    test(test_name, exe, env : test_env, timeout : 45)
+  else
+    test(test_name, exe, env : test_env)
+  endif
 endforeach
 
 c_args_atomic = []
@@ -137,7 +148,7 @@ exe = executable('642026-ec', '642026.c',
   dependencies : deps,
   install : false,
 )
-test('642026-ec', exe, env : test_env)
+test('642026-ec', exe, env : test_env, timeout : 45)
 
 exe = executable('1bit-emufutex', '1bit-mutex.c',
   c_args : test_cargs + ['-DTEST_EMULATED_FUTEX'],
