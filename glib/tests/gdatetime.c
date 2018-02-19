@@ -1575,7 +1575,7 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018,  6,  1, "%Oh", "Jun");
     }
   else
-    g_test_incomplete ("locale en_GB not available, skipping English month names test");
+    g_test_skip ("locale en_GB not available, skipping English month names test");
 
   setlocale (LC_ALL, "de_DE.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "de_DE") != NULL)
@@ -1588,7 +1588,7 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018, 12,  1, "%Oh", "Dez");
     }
   else
-    g_test_incomplete ("locale de_DE not available, skipping German month names test");
+    g_test_skip ("locale de_DE not available, skipping German month names test");
 
   setlocale (LC_ALL, "es_ES.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "es_ES") != NULL)
@@ -1601,7 +1601,7 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018,  6,  1, "%Oh", "jun");
     }
   else
-    g_test_incomplete ("locale es_ES not available, skipping Spanish month names test");
+    g_test_skip ("locale es_ES not available, skipping Spanish month names test");
 
   setlocale (LC_ALL, "fr_FR.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "fr_FR") != NULL)
@@ -1614,7 +1614,7 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018, 12,  1, "%Oh", "déc.");
     }
   else
-    g_test_incomplete ("locale fr_FR not available, skipping French month names test");
+    g_test_skip ("locale fr_FR not available, skipping French month names test");
 
   /* Make sure that there are visible changes in some European languages.  */
   setlocale (LC_ALL, "el_GR.utf-8");
@@ -1630,7 +1630,7 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018,  8,  1, "%Ob", "Αύγ");
     }
   else
-    g_test_incomplete ("locale el_GR not available, skipping Greek month names test");
+    g_test_skip ("locale el_GR not available, skipping Greek month names test");
 
   setlocale (LC_ALL, "hr_HR.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "hr_HR") != NULL)
@@ -1645,7 +1645,7 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018, 12,  1, "%Ob", "Pro");
     }
   else
-    g_test_incomplete ("locale hr_HR not available, skipping Croatian month names test");
+    g_test_skip ("locale hr_HR not available, skipping Croatian month names test");
 
   setlocale (LC_ALL, "lt_LT.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "lt_LT") != NULL)
@@ -1660,7 +1660,7 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018,  8,  1, "%Ob", "Rgp");
     }
   else
-    g_test_incomplete ("locale lt_LT not available, skipping Lithuanian month names test");
+    g_test_skip ("locale lt_LT not available, skipping Lithuanian month names test");
 
   setlocale (LC_ALL, "pl_PL.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "pl_PL") != NULL)
@@ -1675,7 +1675,7 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018, 12,  1, "%Ob", "gru");
     }
   else
-    g_test_incomplete ("locale pl_PL not available, skipping Polish month names test");
+    g_test_skip ("locale pl_PL not available, skipping Polish month names test");
 
   setlocale (LC_ALL, "ru_RU.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "ru_RU") != NULL)
@@ -1693,7 +1693,7 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018,  5,  1, "%Ob", "май");
     }
   else
-    g_test_incomplete ("locale ru_RU not available, skipping Russian month names test");
+    g_test_skip ("locale ru_RU not available, skipping Russian month names test");
 
   setlocale (LC_ALL, oldlocale);
   g_free (oldlocale);
