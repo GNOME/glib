@@ -1683,7 +1683,10 @@ codegen_test_peer (void)
   g_assert_no_error (error);
   g_variant_get (value, "(&s)", &s);
   g_test_message ("Machine ID: %s", s);
-  g_assert (g_dbus_is_guid (s));
+  /* It's valid for machine-id inside containers to be empty, so we
+   * need to test for that possibility
+   */
+  g_assert ((s == NULL || *s == '\0') || g_dbus_is_guid (s));
   g_variant_unref (value);
   
   /* Poke server and make sure animal is updated */
