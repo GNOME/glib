@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-02-20 13:47+0000\n"
-"PO-Revision-Date: 2018-02-20 16:36+0100\n"
+"POT-Creation-Date: 2018-02-20 15:37+0000\n"
+"PO-Revision-Date: 2018-02-20 17:05+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -4394,57 +4394,57 @@ msgstr "enero"
 #: ../glib/gdatetime.c:253
 msgctxt "full month name"
 msgid "February"
-msgstr "Febrero"
+msgstr "febrero"
 
 #: ../glib/gdatetime.c:255
 msgctxt "full month name"
 msgid "March"
-msgstr "Marzo"
+msgstr "marzo"
 
 #: ../glib/gdatetime.c:257
 msgctxt "full month name"
 msgid "April"
-msgstr "Abril"
+msgstr "abril"
 
 #: ../glib/gdatetime.c:259
 msgctxt "full month name"
 msgid "May"
-msgstr "Mayo"
+msgstr "mayo"
 
 #: ../glib/gdatetime.c:261
 msgctxt "full month name"
 msgid "June"
-msgstr "Junio"
+msgstr "junio"
 
 #: ../glib/gdatetime.c:263
 msgctxt "full month name"
 msgid "July"
-msgstr "Julio"
+msgstr "julio"
 
 #: ../glib/gdatetime.c:265
 msgctxt "full month name"
 msgid "August"
-msgstr "Agosto"
+msgstr "agosto"
 
 #: ../glib/gdatetime.c:267
 msgctxt "full month name"
 msgid "September"
-msgstr "Septiembre"
+msgstr "septiembre"
 
 #: ../glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "October"
-msgstr "Octubre"
+msgstr "octubre"
 
 #: ../glib/gdatetime.c:271
 msgctxt "full month name"
 msgid "November"
-msgstr "Noviembre"
+msgstr "noviembre"
 
 #: ../glib/gdatetime.c:273
 msgctxt "full month name"
 msgid "December"
-msgstr "Diciembre"
+msgstr "diciembre"
 
 #. Translators: Some languages need different grammatical forms of
 #. * month names depending on whether they are standalone or in a complete
