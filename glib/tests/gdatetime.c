@@ -20,6 +20,7 @@
 
 #include <string.h>
 #include <time.h>
+#include <gi18n.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <locale.h>
@@ -2276,6 +2277,7 @@ main (gint   argc,
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
   /* GDateTime Tests */
+  bind_textdomain_codeset ("glib20", "UTF-8");
 
   g_test_add_func ("/GDateTime/invalid", test_GDateTime_invalid);
   g_test_add_func ("/GDateTime/add_days", test_GDateTime_add_days);
