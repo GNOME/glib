@@ -21,7 +21,10 @@
 #include "config.h"
 
 #include <errno.h>
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
