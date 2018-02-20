@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-02-16 20:43+0000\n"
-"PO-Revision-Date: 2018-02-19 18:40+0100\n"
+"POT-Creation-Date: 2018-02-19 17:45+0000\n"
+"PO-Revision-Date: 2018-02-20 14:46+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -3312,7 +3312,6 @@ msgid "Error resolving “%s”: %s"
 msgstr "Error al resolver «%s»: %s"
 
 #: ../gio/gresolver.c:729 ../gio/gresolver.c:781
-#| msgid "Invalid hostname"
 msgid "Invalid domain"
 msgstr "Dominio no válido"
 
@@ -4296,7 +4295,6 @@ msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Falló la expansión de lalinea ejecutable «%s» con el URI «%s»"
 
 #: ../glib/gconvert.c:473
-#| msgid "Invalid sequence in conversion input"
 msgid "Unrepresentable character in conversion input"
 msgstr "Carácter no representable en entrada de conversión"
 
@@ -4311,12 +4309,10 @@ msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "No se puede convertir el fallback «%s» al conjunto de códigos «%s»"
 
 #: ../glib/gconvert.c:940
-#| msgid "Invalid byte sequence in conversion input"
 msgid "Embedded NUL byte in conversion input"
 msgstr "Tipo NUL empotrado en la entrada de conversión"
 
 #: ../glib/gconvert.c:961
-#| msgid "Invalid byte sequence in conversion input"
 msgid "Embedded NUL byte in conversion output"
 msgstr "Tipo NUL empotrado en la salida de conversión"
 
@@ -4393,7 +4389,7 @@ msgstr "%I:%M:%S %p"
 #: ../glib/gdatetime.c:251
 msgctxt "full month name"
 msgid "January"
-msgstr "Enero"
+msgstr "enero"
 
 #: ../glib/gdatetime.c:253
 msgctxt "full month name"
@@ -4615,88 +4611,64 @@ msgstr "Dom"
 #. * standalone and complete date form.
 #.
 #: ../glib/gdatetime.c:441
-#| msgctxt "full month name"
-#| msgid "January"
 msgctxt "full month name with day"
 msgid "January"
-msgstr "Enero"
+msgstr "enero"
 
 #: ../glib/gdatetime.c:443
-#| msgctxt "full month name"
-#| msgid "February"
 msgctxt "full month name with day"
 msgid "February"
-msgstr "Febrero"
+msgstr "febrero"
 
 #: ../glib/gdatetime.c:445
-#| msgctxt "full month name"
-#| msgid "March"
 msgctxt "full month name with day"
 msgid "March"
-msgstr "Marzo"
+msgstr "marzo"
 
 #: ../glib/gdatetime.c:447
-#| msgctxt "full month name"
-#| msgid "April"
 msgctxt "full month name with day"
 msgid "April"
-msgstr "Abril"
+msgstr "abril"
 
 #: ../glib/gdatetime.c:449
-#| msgctxt "full month name"
-#| msgid "May"
 msgctxt "full month name with day"
 msgid "May"
-msgstr "Mayo"
+msgstr "mayo"
 
 #: ../glib/gdatetime.c:451
-#| msgctxt "full month name"
-#| msgid "June"
 msgctxt "full month name with day"
 msgid "June"
-msgstr "Junio"
+msgstr "junio"
 
 #: ../glib/gdatetime.c:453
-#| msgctxt "full month name"
-#| msgid "July"
 msgctxt "full month name with day"
 msgid "July"
-msgstr "Julio"
+msgstr "julio"
 
 #: ../glib/gdatetime.c:455
-#| msgctxt "full month name"
-#| msgid "August"
 msgctxt "full month name with day"
 msgid "August"
-msgstr "Agosto"
+msgstr "agosto"
 
 #: ../glib/gdatetime.c:457
-#| msgctxt "full month name"
-#| msgid "September"
 msgctxt "full month name with day"
 msgid "September"
-msgstr "Septiembre"
+msgstr "septiembre"
 
 #: ../glib/gdatetime.c:459
-#| msgctxt "full month name"
-#| msgid "October"
 msgctxt "full month name with day"
 msgid "October"
-msgstr "Octubre"
+msgstr "octubre"
 
 #: ../glib/gdatetime.c:461
-#| msgctxt "full month name"
-#| msgid "November"
 msgctxt "full month name with day"
 msgid "November"
-msgstr "Noviembre"
+msgstr "noviembre"
 
 #: ../glib/gdatetime.c:463
-#| msgctxt "full month name"
-#| msgid "December"
 msgctxt "full month name with day"
 msgid "December"
-msgstr "Diciembre"
+msgstr "diciembre"
 
 #. Translators: Some languages need different grammatical forms of
 #. * month names depending on whether they are standalone or in a full
@@ -4716,85 +4688,61 @@ msgstr "Diciembre"
 #. * due to a bug the result is incorrect in some languages.
 #.
 #: ../glib/gdatetime.c:524
-#| msgctxt "abbreviated month name"
-#| msgid "Jan"
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "Ene"
 
 #: ../glib/gdatetime.c:526
-#| msgctxt "abbreviated month name"
-#| msgid "Feb"
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "Feb"
 
 #: ../glib/gdatetime.c:528
-#| msgctxt "abbreviated month name"
-#| msgid "Mar"
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "Mar"
 
 #: ../glib/gdatetime.c:530
-#| msgctxt "abbreviated month name"
-#| msgid "Apr"
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "Abr"
 
 #: ../glib/gdatetime.c:532
-#| msgctxt "full month name"
-#| msgid "May"
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "Mayo"
 
 #: ../glib/gdatetime.c:534
-#| msgctxt "abbreviated month name"
-#| msgid "Jun"
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "Jun"
 
 #: ../glib/gdatetime.c:536
-#| msgctxt "abbreviated month name"
-#| msgid "Jul"
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "Jul"
 
 #: ../glib/gdatetime.c:538
-#| msgctxt "abbreviated month name"
-#| msgid "Aug"
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "Ago"
 
 #: ../glib/gdatetime.c:540
-#| msgctxt "abbreviated month name"
-#| msgid "Sep"
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "Sep"
 
 #: ../glib/gdatetime.c:542
-#| msgctxt "abbreviated month name"
-#| msgid "Oct"
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "Oct"
 
 #: ../glib/gdatetime.c:544
-#| msgctxt "abbreviated month name"
-#| msgid "Nov"
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "Nov"
 
 #: ../glib/gdatetime.c:546
-#| msgctxt "abbreviated month name"
-#| msgid "Dec"
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "Dic"
