@@ -176,6 +176,7 @@ static const guint16 days_in_year[2][13] =
 #define GET_AMPM(d) ((g_date_time_get_hour (d) < 12) ? \
                      nl_langinfo (AM_STR) : \
                      nl_langinfo (PM_STR))
+#define GET_AMPM_IS_LOCALE TRUE
 
 #define PREFERRED_DATE_TIME_FMT nl_langinfo (D_T_FMT)
 #define PREFERRED_DATE_FMT nl_langinfo (D_FMT)
@@ -195,13 +196,18 @@ static const gint month_item[2][12] =
 };
 
 #define WEEKDAY_ABBR(d) nl_langinfo (weekday_item[0][g_date_time_get_day_of_week (d) - 1])
+#define WEEKDAY_ABBR_IS_LOCALE TRUE
 #define WEEKDAY_FULL(d) nl_langinfo (weekday_item[1][g_date_time_get_day_of_week (d) - 1])
+#define WEEKDAY_FULL_IS_LOCALE TRUE
 #define MONTH_ABBR(d) nl_langinfo (month_item[0][g_date_time_get_month (d) - 1])
+#define MONTH_ABBR_IS_LOCALE TRUE
 #define MONTH_FULL(d) nl_langinfo (month_item[1][g_date_time_get_month (d) - 1])
+#define MONTH_FULL_IS_LOCALE TRUE
 
 #else
 
 #define GET_AMPM(d)          (get_fallback_ampm (g_date_time_get_hour (d)))
+#define GET_AMPM_IS_LOCALE   FALSE
 
 /* Translators: this is the preferred format for expressing the date and the time */
 #define PREFERRED_DATE_TIME_FMT C_("GDateTime", "%a %b %e %H:%M:%S %Y")
@@ -216,6 +222,7 @@ static const gint month_item[2][12] =
 #define PREFERRED_12HR_TIME_FMT C_("GDateTime", "%I:%M:%S %p")
 
 #define WEEKDAY_ABBR(d)       (get_weekday_name_abbr (g_date_time_get_day_of_week (d)))
+#define WEEKDAY_ABBR_IS_LOCALE FALSE
 #define WEEKDAY_FULL(d)       (get_weekday_name (g_date_time_get_day_of_week (d)))
 /* We don't yet know if nl_langinfo (MON_n) returns standalone or complete-date
  * format forms but if nl_langinfo (ALTMON_n) is not supported then we will
@@ -224,7 +231,9 @@ static const gint month_item[2][12] =
  * supported then we will use MONTH_ABBR as standalone.
  */
 #define MONTH_ABBR(d)         (get_month_name_abbr_standalone (g_date_time_get_month (d)))
+#define MONTH_ABBR_IS_LOCALE  FALSE
 #define MONTH_FULL(d)         (get_month_name_standalone (g_date_time_get_month (d)))
+#define MONTH_FULL_IS_LOCALE  FALSE
 
 static const gchar *
 get_month_name_standalone (gint month)
@@ -396,6 +405,7 @@ get_weekday_name_abbr (gint day)
  */
 
 #define MONTH_FULL_WITH_DAY(d) MONTH_FULL(d)
+#define MONTH_FULL_WITH_DAY_IS_LOCALE MONTH_FULL_IS_LOCALE
 
 static const gint alt_month_item[12] =
 {
@@ -404,6 +414,7 @@ static const gint alt_month_item[12] =
 };
 
 #define MONTH_FULL_STANDALONE(d) nl_langinfo (alt_month_item[g_date_time_get_month (d) - 1])
+#define MONTH_FULL_STANDALONE_IS_LOCALE TRUE
 
 #else
 
@@ -413,7 +424,9 @@ static const gint alt_month_item[12] =
  */
 
 #define MONTH_FULL_STANDALONE(d) MONTH_FULL(d)
+#define MONTH_FULL_STANDALONE_IS_LOCALE MONTH_FULL_IS_LOCALE
 #define MONTH_FULL_WITH_DAY(d) (get_month_name_with_day (g_date_time_get_month (d)))
+#define MONTH_FULL_WITH_DAY_IS_LOCALE FALSE
 
 static const gchar *
 get_month_name_with_day (gint month)
@@ -478,6 +491,7 @@ get_month_name_with_day (gint month)
  */
 
 #define MONTH_ABBR_WITH_DAY(d) MONTH_ABBR(d)
+#define MONTH_ABBR_WITH_DAY_IS_LOCALE MONTH_ABBR_IS_LOCALE
 
 static const gint ab_alt_month_item[12] =
 {
@@ -487,6 +501,7 @@ static const gint ab_alt_month_item[12] =
 };
 
 #define MONTH_ABBR_STANDALONE(d) nl_langinfo (ab_alt_month_item[g_date_time_get_month (d) - 1])
+#define MONTH_ABBR_STANDALONE_IS_LOCALE TRUE
 
 #else
 
@@ -496,7 +511,9 @@ static const gint ab_alt_month_item[12] =
  */
 
 #define MONTH_ABBR_STANDALONE(d) MONTH_ABBR(d)
+#define MONTH_ABBR_STANDALONE_IS_LOCALE MONTH_ABBR_IS_LOCALE
 #define MONTH_ABBR_WITH_DAY(d) (get_month_name_abbr_with_day (g_date_time_get_month (d)))
+#define MONTH_ABBR_WITH_DAY_IS_LOCALE FALSE
 
 static const gchar *
 get_month_name_abbr_with_day (gint month)
@@ -2797,25 +2814,21 @@ format_ampm (GDateTime *datetime,
   if (!ampm || ampm[0] == '\0')
     ampm = get_fallback_ampm (g_date_time_get_hour (datetime));
 
-#if defined (HAVE_LANGINFO_TIME)
-  if (!locale_is_utf8)
+  if (!locale_is_utf8 && GET_AMPM_IS_LOCALE)
     {
       /* This assumes that locale encoding can't have embedded NULs */
       ampm = tmp = g_locale_to_utf8 (ampm, -1, NULL, NULL, NULL);
       if (!tmp)
         return FALSE;
     }
-#endif
   if (uppercase)
     ampm_dup = g_utf8_strup (ampm, -1);
   else
     ampm_dup = g_utf8_strdown (ampm, -1);
   len = strlen (ampm_dup);
-  if (!locale_is_utf8)
+  if (!locale_is_utf8 && GET_AMPM_IS_LOCALE)
     {
-#if defined (HAVE_LANGINFO_TIME)
       g_free (tmp);
-#endif
       tmp = g_locale_from_utf8 (ampm_dup, -1, NULL, &len, NULL);
       g_free (ampm_dup);
       if (!tmp)
@@ -2918,8 +2931,7 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  name = WEEKDAY_ABBR (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-#if !defined (HAVE_LANGINFO_TIME)
-	  if (!locale_is_utf8)
+	  if (!locale_is_utf8 && !WEEKDAY_ABBR_IS_LOCALE)
 	    {
 	      tmp = g_locale_from_utf8 (name, -1, NULL, &tmp_len, NULL);
 	      if (!tmp)
@@ -2928,7 +2940,6 @@ g_date_time_format_locale (GDateTime   *datetime,
 	      g_free (tmp);
 	    }
 	  else
-#endif
 	    {
 	      g_string_append (outstr, name);
 	    }
@@ -2937,8 +2948,7 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  name = WEEKDAY_FULL (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-#if !defined (HAVE_LANGINFO_TIME)
-	  if (!locale_is_utf8)
+	  if (!locale_is_utf8 && !WEEKDAY_FULL_IS_LOCALE)
 	    {
 	      tmp = g_locale_from_utf8 (name, -1, NULL, &tmp_len, NULL);
 	      if (!tmp)
@@ -2947,7 +2957,6 @@ g_date_time_format_locale (GDateTime   *datetime,
 	      g_free (tmp);
 	    }
 	  else
-#endif
 	    {
 	      g_string_append (outstr, name);
 	    }
@@ -2957,8 +2966,9 @@ g_date_time_format_locale (GDateTime   *datetime,
 			    : MONTH_ABBR_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-#if !defined (HAVE_LANGINFO_TIME)
-	  if (!locale_is_utf8)
+	  if (!locale_is_utf8 &&
+	      ((alt_digits && !MONTH_ABBR_STANDALONE_IS_LOCALE) ||
+	       (!alt_digits && !MONTH_ABBR_WITH_DAY_IS_LOCALE)))
 	    {
 	      tmp = g_locale_from_utf8 (name, -1, NULL, &tmp_len, NULL);
 	      if (!tmp)
@@ -2967,7 +2977,6 @@ g_date_time_format_locale (GDateTime   *datetime,
 	      g_free (tmp);
 	    }
 	  else
-#endif
 	    {
 	      g_string_append (outstr, name);
 	    }
@@ -2977,8 +2986,9 @@ g_date_time_format_locale (GDateTime   *datetime,
 			    : MONTH_FULL_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-#if !defined (HAVE_LANGINFO_TIME)
-	  if (!locale_is_utf8)
+	  if (!locale_is_utf8 &&
+	      ((alt_digits && !MONTH_FULL_STANDALONE_IS_LOCALE) ||
+	       (!alt_digits && !MONTH_FULL_WITH_DAY_IS_LOCALE)))
 	    {
 	      tmp = g_locale_from_utf8 (name, -1, NULL, &tmp_len, NULL);
 	      if (!tmp)
@@ -2987,7 +2997,6 @@ g_date_time_format_locale (GDateTime   *datetime,
 	      g_free (tmp);
 	    }
 	  else
-#endif
 	    {
 	      g_string_append (outstr, name);
 	    }
@@ -3032,8 +3041,9 @@ g_date_time_format_locale (GDateTime   *datetime,
 			    : MONTH_ABBR_WITH_DAY (datetime);
           if (g_strcmp0 (name, "") == 0)
             return FALSE;
-#if !defined (HAVE_LANGINFO_TIME)
-	  if (!locale_is_utf8)
+	  if (!locale_is_utf8 &&
+	      ((alt_digits && !MONTH_ABBR_STANDALONE_IS_LOCALE) ||
+	       (!alt_digits && !MONTH_ABBR_WITH_DAY_IS_LOCALE)))
 	    {
 	      tmp = g_locale_from_utf8 (name, -1, NULL, &tmp_len, NULL);
 	      if (!tmp)
@@ -3042,7 +3052,6 @@ g_date_time_format_locale (GDateTime   *datetime,
 	      g_free (tmp);
 	    }
 	  else
-#endif
 	    {
 	      g_string_append (outstr, name);
 	    }
