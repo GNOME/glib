@@ -176,12 +176,27 @@ test_parse (void)
 static void
 test_month_names (void)
 {
+#if defined(HAVE_LANGINFO_ABALTMON) || defined(G_OS_WIN32)
   GDate *gdate;
   gchar buf[101];
   gchar *oldlocale;
 #ifdef G_OS_WIN32
   LCID old_lcid;
 #endif
+#endif  /* defined(HAVE_LANGINFO_ABALTMON) || defined(G_OS_WIN32) */
+
+  g_test_bug ("749206");
+
+  /* This test can only work (on non-Windows platforms) if libc supports the %OB
+   * (etc.) format placeholders. If it doesn’t, strftime() (and hence
+   * g_date_strftime()) will return the placeholder unsubstituted.
+   * g_date_strftime() explicitly documents that it doesn’t provide any more
+   * format placeholders than the system strftime(), so we should skip the test
+   * in that case. If people need %OB support, they should depend on a suitable
+   * version of libc, or use g_date_time_format(). */
+#if !defined(HAVE_LANGINFO_ABALTMON) && !defined(G_OS_WIN32)
+  g_test_skip ("libc doesn’t support alternate month names");
+#else
 
 #define TEST_DATE(d,m,y,f,o)                                    \
   g_date_set_dmy (gdate, d, m, y);                              \
@@ -192,8 +207,6 @@ test_month_names (void)
   g_assert_cmpint (g_date_get_day (gdate), ==, d);              \
   g_assert_cmpint (g_date_get_month (gdate), ==, m);            \
   g_assert_cmpint (g_date_get_year (gdate), ==, y);
-
-  g_test_bug ("749206");
 
   oldlocale = g_strdup (setlocale (LC_ALL, NULL));
 #ifdef G_OS_WIN32
@@ -373,7 +386,7 @@ test_month_names (void)
   SetThreadLocale (old_lcid);
 #endif
   g_free (oldlocale);
-
+#endif  /* defined(HAVE_LANGINFO_ABALTMON) || defined(G_OS_WIN32) */
 }
 
 static void
