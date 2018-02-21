@@ -134,6 +134,24 @@ modify_argv0_for_command (gint *argc, gchar **argv[], const gchar *command)
   g_free (program_name);
 }
 
+static GOptionContext *
+command_option_context_new (const gchar        *parameter_string,
+                            const gchar        *summary,
+                            const GOptionEntry *entries,
+                            gboolean            request_completion)
+{
+  GOptionContext *o = NULL;
+
+  o = g_option_context_new (parameter_string);
+  if (request_completion)
+    g_option_context_set_ignore_unknown_options (o, TRUE);
+  g_option_context_set_help_enabled (o, FALSE);
+  g_option_context_set_summary (o, summary);
+  g_option_context_add_main_entries (o, entries, GETTEXT_PACKAGE);
+
+  return g_steal_pointer (&o);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
@@ -582,12 +600,8 @@ handle_emit (gint        *argc,
 
   modify_argv0_for_command (argc, argv, "emit");
 
-  o = g_option_context_new (NULL);
-  if (request_completion)
-    g_option_context_set_ignore_unknown_options (o, TRUE);
-  g_option_context_set_help_enabled (o, FALSE);
-  g_option_context_set_summary (o, _("Emit a signal."));
-  g_option_context_add_main_entries (o, emit_entries, GETTEXT_PACKAGE);
+  o = command_option_context_new (NULL, _("Emit a signal."),
+                                  emit_entries, request_completion);
   g_option_context_add_group (o, connection_get_group ());
 
   complete_names = FALSE;
@@ -893,10 +907,8 @@ handle_call (gint        *argc,
 
   modify_argv0_for_command (argc, argv, "call");
 
-  o = g_option_context_new (NULL);
-  g_option_context_set_help_enabled (o, FALSE);
-  g_option_context_set_summary (o, _("Invoke a method on a remote object."));
-  g_option_context_add_main_entries (o, call_entries, GETTEXT_PACKAGE);
+  o = command_option_context_new (NULL, _("Invoke a method on a remote object."),
+                                  call_entries, request_completion);
   g_option_context_add_group (o, connection_get_group ());
 
   complete_names = FALSE;
@@ -1652,12 +1664,8 @@ handle_introspect (gint        *argc,
 
   modify_argv0_for_command (argc, argv, "introspect");
 
-  o = g_option_context_new (NULL);
-  if (request_completion)
-    g_option_context_set_ignore_unknown_options (o, TRUE);
-  g_option_context_set_help_enabled (o, FALSE);
-  g_option_context_set_summary (o, _("Introspect a remote object."));
-  g_option_context_add_main_entries (o, introspect_entries, GETTEXT_PACKAGE);
+  o = command_option_context_new (NULL, _("Introspect a remote object."),
+                                  introspect_entries, request_completion);
   g_option_context_add_group (o, connection_get_group ());
 
   complete_names = FALSE;
@@ -1885,12 +1893,8 @@ handle_monitor (gint        *argc,
 
   modify_argv0_for_command (argc, argv, "monitor");
 
-  o = g_option_context_new (NULL);
-  if (request_completion)
-    g_option_context_set_ignore_unknown_options (o, TRUE);
-  g_option_context_set_help_enabled (o, FALSE);
-  g_option_context_set_summary (o, _("Monitor a remote object."));
-  g_option_context_add_main_entries (o, monitor_entries, GETTEXT_PACKAGE);
+  o = command_option_context_new (NULL, _("Monitor a remote object."),
+                                  monitor_entries, request_completion);
   g_option_context_add_group (o, connection_get_group ());
 
   complete_names = FALSE;
@@ -2122,10 +2126,9 @@ handle_wait (gint        *argc,
 
   modify_argv0_for_command (argc, argv, "wait");
 
-  o = g_option_context_new (_("[OPTION…] BUS-NAME"));
-  g_option_context_set_help_enabled (o, FALSE);
-  g_option_context_set_summary (o, _("Wait for a bus name to appear."));
-  g_option_context_add_main_entries (o, wait_entries, GETTEXT_PACKAGE);
+  o = command_option_context_new (_("[OPTION…] BUS-NAME"),
+                                  _("Wait for a bus name to appear."),
+                                  wait_entries, request_completion);
   g_option_context_add_group (o, connection_get_group ());
 
   if (!g_option_context_parse (o, argc, argv, NULL))
