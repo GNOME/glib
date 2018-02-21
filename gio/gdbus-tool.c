@@ -715,10 +715,17 @@ handle_emit (gint        *argc,
     }
   if (opt_emit_signal == NULL)
     {
+      /* don't keep repeatedly completing --signal */
       if (request_completion)
-        g_print ("--signal \n");
+        {
+          if (g_strcmp0 ("--signal", completion_prev) != 0)
+            g_print ("--signal \n");
+        }
       else
-        g_printerr (_("Error: Signal name is not specified\n"));
+        {
+          g_printerr (_("Error: Signal name is not specified\n"));
+        }
+
       goto out;
     }
   if (request_completion && opt_emit_dest != NULL && opt_emit_object_path != NULL &&
