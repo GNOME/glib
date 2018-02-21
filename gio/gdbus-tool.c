@@ -653,28 +653,24 @@ handle_emit (gint        *argc,
       print_names (c, FALSE);
       goto out;
     }
-  if (opt_emit_dest == NULL)
-    {
-      if (request_completion)
-        g_print ("--dest \n");
-      else
-        g_printerr (_("Error: Destination is not specified\n"));
-      goto out;
-    }
-  if (request_completion && g_strcmp0 ("--dest", completion_prev) == 0)
+  if (request_completion && opt_emit_dest != NULL && g_strcmp0 ("--dest", completion_prev) == 0)
     {
       print_names (c, g_str_has_prefix (opt_emit_dest, ":"));
       goto out;
     }
 
-  if (!request_completion && !g_dbus_is_unique_name (opt_emit_dest))
+  if (!request_completion && opt_emit_dest != NULL && !g_dbus_is_unique_name (opt_emit_dest))
     {
       g_printerr (_("Error: %s is not a valid unique bus name.\n"), opt_emit_dest);
       goto out;
     }
 
+  if (opt_emit_dest == NULL && opt_emit_object_path == NULL && request_completion)
+    {
+      g_print ("--dest \n");
+    }
   /* validate and complete object path */
-  if (complete_paths)
+  if (opt_emit_dest != NULL && complete_paths)
     {
       print_paths (c, opt_emit_dest, "/");
       goto out;
@@ -689,17 +685,20 @@ handle_emit (gint        *argc,
     }
   if (request_completion && g_strcmp0 ("--object-path", completion_prev) == 0)
     {
-      gchar *p;
-      s = g_strdup (opt_emit_object_path);
-      p = strrchr (s, '/');
-      if (p != NULL)
+      if (opt_emit_dest != NULL)
         {
-          if (p == s)
-            p++;
-          *p = '\0';
+          gchar *p;
+          s = g_strdup (opt_emit_object_path);
+          p = strrchr (s, '/');
+          if (p != NULL)
+            {
+              if (p == s)
+                p++;
+              *p = '\0';
+            }
+          print_paths (c, opt_emit_dest, s);
+          g_free (s);
         }
-      print_paths (c, opt_emit_dest, s);
-      g_free (s);
       goto out;
     }
   if (!request_completion && !g_variant_is_object_path (opt_emit_object_path))
@@ -709,7 +708,7 @@ handle_emit (gint        *argc,
     }
 
   /* validate and complete signal (interface + signal name) */
-  if (complete_signals)
+  if (opt_emit_dest != NULL && opt_emit_object_path != NULL && complete_signals)
     {
       print_methods_and_signals (c, opt_emit_dest, opt_emit_object_path, FALSE, TRUE);
       goto out;
@@ -722,7 +721,8 @@ handle_emit (gint        *argc,
         g_printerr (_("Error: Signal name is not specified\n"));
       goto out;
     }
-  if (request_completion && g_strcmp0 ("--signal", completion_prev) == 0)
+  if (request_completion && opt_emit_dest != NULL && opt_emit_object_path != NULL &&
+      g_strcmp0 ("--signal", completion_prev) == 0)
     {
       print_methods_and_signals (c, opt_emit_dest, opt_emit_object_path, FALSE, TRUE);
       goto out;
