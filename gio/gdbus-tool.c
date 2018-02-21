@@ -583,6 +583,8 @@ handle_emit (gint        *argc,
   modify_argv0_for_command (argc, argv, "emit");
 
   o = g_option_context_new (NULL);
+  if (request_completion)
+    g_option_context_set_ignore_unknown_options (o, TRUE);
   g_option_context_set_help_enabled (o, FALSE);
   g_option_context_set_summary (o, _("Emit a signal."));
   g_option_context_add_main_entries (o, emit_entries, GETTEXT_PACKAGE);
