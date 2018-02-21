@@ -4690,62 +4690,62 @@ msgstr "diciembre"
 #: ../glib/gdatetime.c:524
 msgctxt "abbreviated month name with day"
 msgid "Jan"
-msgstr "Ene"
+msgstr "ene"
 
 #: ../glib/gdatetime.c:526
 msgctxt "abbreviated month name with day"
 msgid "Feb"
-msgstr "Feb"
+msgstr "feb"
 
 #: ../glib/gdatetime.c:528
 msgctxt "abbreviated month name with day"
 msgid "Mar"
-msgstr "Mar"
+msgstr "mar"
 
 #: ../glib/gdatetime.c:530
 msgctxt "abbreviated month name with day"
 msgid "Apr"
-msgstr "Abr"
+msgstr "abr"
 
 #: ../glib/gdatetime.c:532
 msgctxt "abbreviated month name with day"
 msgid "May"
-msgstr "Mayo"
+msgstr "may"
 
 #: ../glib/gdatetime.c:534
 msgctxt "abbreviated month name with day"
 msgid "Jun"
-msgstr "Jun"
+msgstr "jun"
 
 #: ../glib/gdatetime.c:536
 msgctxt "abbreviated month name with day"
 msgid "Jul"
-msgstr "Jul"
+msgstr "jul"
 
 #: ../glib/gdatetime.c:538
 msgctxt "abbreviated month name with day"
 msgid "Aug"
-msgstr "Ago"
+msgstr "ago"
 
 #: ../glib/gdatetime.c:540
 msgctxt "abbreviated month name with day"
 msgid "Sep"
-msgstr "Sep"
+msgstr "sep"
 
 #: ../glib/gdatetime.c:542
 msgctxt "abbreviated month name with day"
 msgid "Oct"
-msgstr "Oct"
+msgstr "oct"
 
 #: ../glib/gdatetime.c:544
 msgctxt "abbreviated month name with day"
 msgid "Nov"
-msgstr "Nov"
+msgstr "nov"
 
 #: ../glib/gdatetime.c:546
 msgctxt "abbreviated month name with day"
 msgid "Dec"
-msgstr "Dic"
+msgstr "dic"
 
 #. Translators: 'before midday' indicator
 #: ../glib/gdatetime.c:563
