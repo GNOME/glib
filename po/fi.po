@@ -4515,7 +4515,7 @@ msgstr "Polku ”%s” ei ole absoluuttinen"
 #: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "%a %e. %Bta %Y %H.%M.%S"
+msgstr "%a %e. %B %Y %H.%M.%S"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:205
@@ -5957,6 +5957,102 @@ msgstr[1] "%s tavua"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f kt"
+
+msgctxt "full month name with day"
+msgid "January"
+msgstr "tammikuuta"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "helmikuuta"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "maaliskuuta"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "huhtikuuta"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "toukokuuta"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "kesäkuuta"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "heinäkuuta"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "elokuuta"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "syyskuuta"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "lokakuuta"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "marraskuuta"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "joulukuuta"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "tam"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "hel"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "maa"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "huh"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "tou"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "kes"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "hei"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "elo"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "syy"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "lok"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "mar"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "jou"
 
 #~ msgid "Error creating directory '%s': %s"
 #~ msgstr "Virhe luotaessa hakemistoa ”%s”: %s"
