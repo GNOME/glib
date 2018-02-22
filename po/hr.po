@@ -2868,27 +2868,27 @@ msgstr "Srpanj"
 #: ../glib/gdatetime.c:242
 msgctxt "full month name"
 msgid "August"
-msgstr ""
+msgstr "Kolovoz"
 
 #: ../glib/gdatetime.c:244
 msgctxt "full month name"
 msgid "September"
-msgstr ""
+msgstr "Rujan"
 
 #: ../glib/gdatetime.c:246
 msgctxt "full month name"
 msgid "October"
-msgstr ""
+msgstr "Listopad"
 
 #: ../glib/gdatetime.c:248
 msgctxt "full month name"
 msgid "November"
-msgstr ""
+msgstr "Studeni"
 
 #: ../glib/gdatetime.c:250
 msgctxt "full month name"
 msgid "December"
-msgstr ""
+msgstr "Prosinac"
 
 #: ../glib/gdatetime.c:265
 msgctxt "abbreviated month name"
@@ -2928,27 +2928,27 @@ msgstr "Srp"
 #: ../glib/gdatetime.c:279
 msgctxt "abbreviated month name"
 msgid "Aug"
-msgstr ""
+msgstr "Kol"
 
 #: ../glib/gdatetime.c:281
 msgctxt "abbreviated month name"
 msgid "Sep"
-msgstr ""
+msgstr "Ruj"
 
 #: ../glib/gdatetime.c:283
 msgctxt "abbreviated month name"
 msgid "Oct"
-msgstr ""
+msgstr "Lis"
 
 #: ../glib/gdatetime.c:285
 msgctxt "abbreviated month name"
 msgid "Nov"
-msgstr ""
+msgstr "Stu"
 
 #: ../glib/gdatetime.c:287
 msgctxt "abbreviated month name"
 msgid "Dec"
-msgstr ""
+msgstr "Pro"
 
 #: ../glib/gdatetime.c:302
 msgctxt "full weekday name"
@@ -4054,3 +4054,99 @@ msgstr[1] ""
 #, c-format
 msgid "%.1f KB"
 msgstr ""
+
+msgctxt "full month name with day"
+msgid "January"
+msgstr "siječnja"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "veljače"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "ožujka"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "travnja"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "svibnja"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "lipnja"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "srpnja"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "kolovoza"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "rujna"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "listopada"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "studenoga"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "prosinca"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "sij"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "vel"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "ožu"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "tra"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "svi"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "lip"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "srp"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "kol"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "ruj"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "lis"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "stu"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "pro"
