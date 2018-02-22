@@ -5359,3 +5359,99 @@ msgstr[3] "%s baidht"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+msgctxt "full month name with day"
+msgid "January"
+msgstr "dhen Fhaoilleach"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "dhen Ghearran"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "dhen Mhàrt"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "dhen Ghiblean"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "dhen Chèitean"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "dhen Ògmhios"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "dhen Iuchar"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "dhen Lùnastal"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "dhen t-Sultain"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "dhen Dàmhair"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "dhen t-Samhain"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "dhen Dùbhlachd"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "Faoi"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "Gearr"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "Màrt"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "Gibl"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "Cèit"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "Ògmh"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "Iuch"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "Lùna"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "Sult"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "Dàmh"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "Samh"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "Dùbh"
