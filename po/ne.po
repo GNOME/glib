@@ -5497,6 +5497,102 @@ msgstr[1] "%s बाइट"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "जनवरी"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "फेब्रुअरी"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "मार्च"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "अप्रेल"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "मे"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "जून"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "जुलाई"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "अगस्ट"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "सेप्टेम्बर"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "अक्टोबर"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "नोभेम्बर"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "डिसेम्बर"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "जनवरी"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "फेब्रुअरी"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "मार्च"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "अप्रेल"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "मे"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "जून"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "जुलाई"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "अगस्ट"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "सेप्टेम्बर"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "अक्टोबर"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "नोभेम्बर"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "डिसेम्बर"
+
 #~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 #~ msgstr "लेख्नका लागि '%s' फाइल खोल्न असफल : fdopen() असफल : %s"
 
