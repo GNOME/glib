@@ -4789,6 +4789,102 @@ msgstr[1] "%s bytes"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "Ιανουαρίου"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "Φεβρουαρίου"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "Μαρτίου"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "Απριλίου"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "Μαΐου"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "Ιουνίου"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "Ιουλίου"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "Αυγούστου"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "Σεπτεμβρίου"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "Οκτωβρίου"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "Νοεμβρίου"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "Δεκεμβρίου"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "Ιαν"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "Φεβ"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "Μαρ"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "Απρ"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "Μαΐ"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "Ιουν"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "Ιουλ"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "Αυγ"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "Σεπ"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "Οκτ"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "Νοε"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "Δεκ"
+
 #~ msgid "Unable to find default local directory monitor type"
 #~ msgstr ""
 #~ "Δε βρέθηκε ο τύπος παρακολούθησης του προεπιλεγμένου τοπικού καταλόγου"
