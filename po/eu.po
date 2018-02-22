@@ -4436,7 +4436,7 @@ msgstr "Apr."
 #: ../glib/gdatetime.c:269
 msgctxt "abbreviated month name"
 msgid "May"
-msgstr "mai"
+msgstr "Mai"
 
 #: ../glib/gdatetime.c:271
 msgctxt "abbreviated month name"
@@ -5702,6 +5702,102 @@ msgstr[1] "%s byte"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+msgctxt "full month name with day"
+msgid "January"
+msgstr "Urtarrila"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "Otsaila"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "Martxoa"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "Apirila"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "Maiatza"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "Ekaina"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "Uztaila"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "Abuztua"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "Iraila"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "Urria"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "Azaroa"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "Abendua"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "Urt."
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "Ots."
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "Mar."
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "Apr."
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "Mai"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "Eka."
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "Uzt."
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "Abu."
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "Ira."
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "Urr."
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "Aza."
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "Abe."
 
 #~ msgid "No such interface"
 #~ msgstr "Ez dago halako interfazerik"
