@@ -6027,6 +6027,102 @@ msgstr[2] "%u de octeți"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "Ianuarie"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "Februarie"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "Martie"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "Aprilie"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "Mai"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "Iunie"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "Iulie"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "August"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "Septembrie"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "Octombrie"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "Noiembrie"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "Decembrie"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "Ian"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "Feb"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "Mar"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "Apr"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "Mai"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "Iun"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "Iul"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "Aug"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "Sep"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "Oct"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "Noi"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "Dec"
+
 #~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 #~ msgstr ""
 #~ "Nu s-a putut deschide fișierul „%s” pentru scriere, fdopen() a eșuat: %s"
