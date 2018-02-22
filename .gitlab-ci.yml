@@ -3,6 +3,10 @@ image: ebassi/gitlab-glib:latest
 stages:
   - build
 
+cache:
+  paths:
+    - _ccache/
+
 build-job:
   stage: build
   script:
@@ -17,6 +21,17 @@ build-job:
     name: "glib-_${CI_COMMIT_REF_NAME}"
     paths:
       - "${CI_PROJECT_DIR}/_build/meson-logs"
+
+msys2-mingw32:
+  stage: build
+  tags:
+    - win32
+  variables:
+    MSYSTEM: "MINGW32"
+    CHERE_INVOKING: "yes"
+  script:
+    - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
+    - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
 
 dist-job:
   stage: build
