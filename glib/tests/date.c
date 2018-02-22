@@ -4,6 +4,8 @@
 /* We are testing some deprecated APIs here */
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 
+#include "config.h"
+
 #include "glib.h"
 
 #include <stdio.h>
