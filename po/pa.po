@@ -4569,6 +4569,102 @@ msgstr[1] "%s ਬਾਈਟ"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "ਜਨਵਰੀ"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "ਫਰਵਰੀ"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "ਮਾਰਚ"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "ਅਪਰੈਲ"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "ਮਈ"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "ਜੂਨ"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "ਜੁਲਾਈ"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "ਅਗਸਤ"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "ਸਤੰਬਰ"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "ਅਕਤੂਬਰ"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "ਨਵੰਬਰ"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "ਦਸੰਬਰ"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "ਜਨ"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "ਫਰ"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "ਮਾਰ"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "ਅਪ"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "ਮਈ"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "ਜੂਨ"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "ਜੁਲ"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "ਅਗ"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "ਸਤੰ"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "ਅਕ"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "ਨਵੰ"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "ਦਸੰ"
+
 #~ msgid "URIs not supported"
 #~ msgstr "URI ਸਹਿਯੋਗੀ ਨਹੀਂ"
 
