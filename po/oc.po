@@ -5088,6 +5088,102 @@ msgstr[1] "%s octets"
 msgid "%.1f KB"
 msgstr "%.1f Ko"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "genièr"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "febrièr"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "març"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "abril"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "mai"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "junh"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "julhet"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "agost"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "setembre"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "octobre"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "novembre"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "decembre"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "gen."
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "febr."
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "març"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "abril"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "mai"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "junh"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "julh."
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "agost"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "set."
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "oct."
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "nov."
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "dec."
+
 #~ msgid "Error getting filesystem info: %s"
 #~ msgstr "Impossible d'obténer las informacions del sistèma de fichièrs : %s"
 
