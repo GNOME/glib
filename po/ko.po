@@ -5519,3 +5519,99 @@ msgstr[0] "%s 바이트"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+msgctxt "full month name with day"
+msgid "January"
+msgstr "1월"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "2월"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "3월"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "4월"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "5월"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "6월"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "7월"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "8월"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "9월"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "10월"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "11월"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "12월"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "1월"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "2월"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "3월"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "4월"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "5월"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "6월"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "7월"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "8월"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "9월"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "10월"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "11월"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "12월"
