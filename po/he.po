@@ -5637,6 +5637,102 @@ msgstr[1] "%s סיביות"
 msgid "%.1f KB"
 msgstr "%.1f ק״ב"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "ינואר"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "פברואר"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "מרץ"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "אפריל"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "מאי"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "יוני"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "יולי"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "אוגוסט"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "ספטמבר"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "אוקטובר"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "נובמבר"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "דצמבר"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "ינו"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "פבר"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "מרץ"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "אפר"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "מאי"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "יונ"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "יול"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "אוג"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "ספט"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "אוק"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "נוב"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "דצמ"
+
 #~ msgid "Error: object path not specified.\n"
 #~ msgstr "Error: object path not specified.\n"
 
