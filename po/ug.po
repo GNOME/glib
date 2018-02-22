@@ -4207,6 +4207,102 @@ msgstr[0] "%s بايت"
 msgid "%.1f KB"
 msgstr "%.1f كىلوبايت"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "قەھرىتان"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "ھۇت"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "نەۋرۇز"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "ئۈمىد"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "باھار"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "سەپەر"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "چىللە"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "تومۇز"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "مىزان"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "ئوغۇز"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "ئوغلاق"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "كۆنەك"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "قەھرىتان"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "ھۇت"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "نەۋرۇز"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "ئومۇت"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "باھار"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "سەپەر"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "چىللە"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "تومۇز"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "مىزان"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "ئوغۇز"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "ئوغلاق"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "كۆنەك"
+
 #~ msgid "Abnormal program termination spawning command line '%s': %s"
 #~ msgstr "بۇيرۇق '%s' بىنورمال پروگرامما توختىتىلدى:  %s"
 
