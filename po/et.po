@@ -3287,6 +3287,102 @@ msgstr[1] "%s baiti"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "jaanuar"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "veebruar"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "märts"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "aprill"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "mai"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "juuni"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "juuli"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "august"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "september"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "oktoober"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "november"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "detsember"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "jaan"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "veebr"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "märts"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "apr"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "mai"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "juun"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "juul"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "aug"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "sept"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "okt"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "nov"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "dets"
+
 #~ msgid "Unexpected error in waitpid() (%s)"
 #~ msgstr "Ootamatu viga funktsioonis waitpid() (%s)"
 
