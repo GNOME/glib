@@ -5632,6 +5632,102 @@ msgstr[2] "%s baitų"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "sausio"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "vasario"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "kovo"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "balandžio"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "gegužės"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "birželio"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "liepos"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "rugpjūčio"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "rugsėjo"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "spalio"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "lapkričio"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "gruodžio"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "sau"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "vas"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "kov"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "bal"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "geg"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "bir"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "lie"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "rgp"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "rgs"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "spa"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "lap"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "grd"
+
 #~ msgid "No such interface"
 #~ msgstr "Nėra tokios sąsajos"
 
