@@ -5690,6 +5690,102 @@ msgstr[2] "%s bajty"
 msgid "%.1f KB"
 msgstr "%.1f kB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "januára"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "februára"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "marca"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "apríla"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "mája"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "júna"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "júla"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "augusta"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "septembra"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "októbra"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "novembra"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "decembra"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "jan"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "feb"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "mar"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "apr"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "máj"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "jún"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "júl"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "aug"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "sep"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "okt"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "nov"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "dec"
+
 #~ msgid "No such interface"
 #~ msgstr "Také rozhranie neexistuje"
 
