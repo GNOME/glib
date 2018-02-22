@@ -5617,6 +5617,102 @@ msgstr[2] "%s baitu"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "janvāris"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "februāris"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "marts"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "aprīlis"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "maijs"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "jūnijs"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "jūlijs"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "augusts"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "septembris"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "oktobris"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "novembris"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "decembris"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "jan"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "feb"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "mar"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "apr"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "mai"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "jūn"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "jūl"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "aug"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "sep"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "oct"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "nov"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "dec"
+
 #~ msgid "No such interface"
 #~ msgstr "Nav tādas saskarnes"
 
