@@ -4394,97 +4394,61 @@ msgstr "Dom"
 #. * standalone and complete date form.
 #.
 #: ../glib/gdatetime.c:441
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "January"
 msgctxt "full month name with day"
 msgid "January"
 msgstr "Zenâr"
 
 #: ../glib/gdatetime.c:443
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "February"
 msgctxt "full month name with day"
 msgid "February"
 msgstr "Fevrâr"
 
 #: ../glib/gdatetime.c:445
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "March"
 msgctxt "full month name with day"
 msgid "March"
 msgstr "Març"
 
 #: ../glib/gdatetime.c:447
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "April"
 msgctxt "full month name with day"
 msgid "April"
 msgstr "Avrîl"
 
 #: ../glib/gdatetime.c:449
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "May"
 msgctxt "full month name with day"
 msgid "May"
 msgstr "Mai"
 
 #: ../glib/gdatetime.c:451
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "June"
 msgctxt "full month name with day"
 msgid "June"
 msgstr "Jugn"
 
 #: ../glib/gdatetime.c:453
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "July"
 msgctxt "full month name with day"
 msgid "July"
 msgstr "Lui"
 
 #: ../glib/gdatetime.c:455
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "August"
 msgctxt "full month name with day"
 msgid "August"
 msgstr "Avost"
 
 #: ../glib/gdatetime.c:457
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "September"
 msgctxt "full month name with day"
 msgid "September"
 msgstr "Setembar"
 
 #: ../glib/gdatetime.c:459
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "October"
 msgctxt "full month name with day"
 msgid "October"
 msgstr "Otubar"
 
 #: ../glib/gdatetime.c:461
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "November"
 msgctxt "full month name with day"
 msgid "November"
 msgstr "Novembar"
 
 #: ../glib/gdatetime.c:463
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "December"
 msgctxt "full month name with day"
 msgid "December"
 msgstr "Dicembar"
@@ -4507,97 +4471,61 @@ msgstr "Dicembar"
 #. * due to a bug the result is incorrect in some languages.
 #.
 #: ../glib/gdatetime.c:524
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Jan"
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "Zen"
 
 #: ../glib/gdatetime.c:526
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Feb"
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "Fev"
 
 #: ../glib/gdatetime.c:528
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Mar"
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "Mar"
 
 #: ../glib/gdatetime.c:530
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Apr"
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "Avr"
 
 #: ../glib/gdatetime.c:532
-#, fuzzy
-#| msgctxt "full month name"
-#| msgid "May"
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "Mai"
 
 #: ../glib/gdatetime.c:534
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Jun"
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "Jug"
 
 #: ../glib/gdatetime.c:536
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Jul"
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "Lui"
 
 #: ../glib/gdatetime.c:538
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Aug"
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "Avo"
 
 #: ../glib/gdatetime.c:540
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Sep"
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "Set"
 
 #: ../glib/gdatetime.c:542
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Oct"
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "Otu"
 
 #: ../glib/gdatetime.c:544
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Nov"
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "Nov"
 
 #: ../glib/gdatetime.c:546
-#, fuzzy
-#| msgctxt "abbreviated month name"
-#| msgid "Dec"
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "Dic"
