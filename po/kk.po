@@ -5298,6 +5298,102 @@ msgstr[0] "%s байт"
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "қаңтар"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "ақпан"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "наурыз"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "сәуір"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "мамыр"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "маусым"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "шілде"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "тамыз"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "қыркүйек"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "қазан"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "қараша"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "желтоқсан"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "қаң"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "ақп"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "нау"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "сәу"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "мам"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "мау"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "шіл"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "там"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "қыр"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "қаз"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "қар"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "жел"
+
 #~ msgid "No files given"
 #~ msgstr "Файлдар көрсетілмеген"
 
