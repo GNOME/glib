@@ -5661,6 +5661,102 @@ msgstr[3] "Jedan bajt"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "Januar"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "Februar"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "Mart"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "April"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "Maj"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "Jun"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "Jul"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "Avgust"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "Septembar"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "Oktobar"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "Novembar"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "Decembar"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "Jan"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "Feb"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "Mar"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "Apr"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "Maj"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "Jun"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "Jul"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "Avg"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "Sep"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "Okt"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "Nov"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "Dec"
+
 #~ msgid "No such interface"
 #~ msgstr "Nema takvog interfejsa"
 
