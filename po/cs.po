@@ -5667,3 +5667,101 @@ msgstr[2] "%s bitů"
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
+
+msgctxt "full month name with day"
+msgid "January"
+msgstr "ledna"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "února"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "března"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "dubna"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "května"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "června"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "července"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "srpna"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "září"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "října"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "listopadu"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "prosince"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "led"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "úno"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "bře"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "dub"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "kvě"
+
+# Might be e.g. "čer" as well.
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "čen"
+
+# Might be e.g. "čvc" as well.
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "čec"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "srp"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "zář"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "říj"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "lis"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "pro"
