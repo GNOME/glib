@@ -6002,6 +6002,102 @@ msgstr[0] "%s bayt"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "Ocak"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "Şubat"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "Mart"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "Nisan"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "Mayıs"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "Haziran"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "Temmuz"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "Ağustos"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "Eylül"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "Ekim"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "Kasım"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "Aralık"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "Oca"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "Şub"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "Mar"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "Nis"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "May"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "Haz"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "Tem"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "Ağu"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "Eyl"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "Eki"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "Kas"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "Ara"
+
 #, fuzzy
 #~| msgid "No such interface '%s'"
 #~ msgid "No such interface “%s”"
