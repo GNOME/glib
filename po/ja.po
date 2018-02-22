@@ -4182,6 +4182,102 @@ msgstr[0] "%u バイト"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "1月"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "2月"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "3月"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "4月"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "5月"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "6月"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "7月"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "8月"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "9月"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "10月"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "11月"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "12月"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr " 1月"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr " 2月"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr " 3月"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr " 4月"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr " 5月"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr " 6月"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr " 7月"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr " 8月"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr " 9月"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "10月"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "11月"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "12月"
+
 #~ msgid "Unable to get pending error: %s"
 #~ msgstr "エラーをペンディングできません: %s"
 
