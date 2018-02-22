@@ -5443,6 +5443,102 @@ msgstr[2] "%s байт"
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "января"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "февраля"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "марта"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "апреля"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "мая"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "июня"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "июля"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "августа"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "сентября"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "октября"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "ноября"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "декабря"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "янв"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "фев"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "мар"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "апр"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "мая"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "июн"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "июл"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "авг"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "сен"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "окт"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "ноя"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "дек"
+
 #~ msgid "No such interface"
 #~ msgstr "Интерфейс отсутствует"
 
