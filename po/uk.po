@@ -4603,6 +4603,102 @@ msgstr[2] "%s байтів"
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
+msgctxt "full month name with day"
+msgid "January"
+msgstr "січня"
+
+msgctxt "full month name with day"
+msgid "February"
+msgstr "лютого"
+
+msgctxt "full month name with day"
+msgid "March"
+msgstr "березня"
+
+msgctxt "full month name with day"
+msgid "April"
+msgstr "квітня"
+
+msgctxt "full month name with day"
+msgid "May"
+msgstr "травня"
+
+msgctxt "full month name with day"
+msgid "June"
+msgstr "червня"
+
+msgctxt "full month name with day"
+msgid "July"
+msgstr "липня"
+
+msgctxt "full month name with day"
+msgid "August"
+msgstr "серпня"
+
+msgctxt "full month name with day"
+msgid "September"
+msgstr "вересня"
+
+msgctxt "full month name with day"
+msgid "October"
+msgstr "жовтня"
+
+msgctxt "full month name with day"
+msgid "November"
+msgstr "листопада"
+
+msgctxt "full month name with day"
+msgid "December"
+msgstr "грудня"
+
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "січ"
+
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "лют"
+
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "бер"
+
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "квіт"
+
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "трав"
+
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "черв"
+
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "лип"
+
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "серп"
+
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "вер"
+
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "жовт"
+
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "лист"
+
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "груд"
+
 #~ msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 #~ msgstr "Помилка відкривання файлу \"%s\" для запису: помилка fdopen(): %s"
 
