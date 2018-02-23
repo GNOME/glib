@@ -220,7 +220,8 @@ g_array_sized_new (gboolean zero_terminated,
  *
  * The @clear_func will be called when an element in the array
  * data segment is removed and when the array is freed and data
- * segment is deallocated as well.
+ * segment is deallocated as well. @clear_func will be passed a
+ * pointer to the element to clear, rather than the element itself.
  *
  * Note that in contrast with other uses of #GDestroyNotify
  * functions, @clear_func is expected to clear the contents of
