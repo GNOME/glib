@@ -11,17 +11,17 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-01-19 12:11+0000\n"
-"PO-Revision-Date: 2018-01-21 21:59+0100\n"
-"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
+"POT-Creation-Date: 2018-02-16 20:43+0000\n"
+"PO-Revision-Date: 2018-02-18 17:00+0100\n"
+"Last-Translator: Meskó Balázs <mesko.balazs@fsf.hu>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Loco-Source-Locale: de_AT\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Poedit 2.0.3\n"
 "X-Loco-Parser: loco_parse_po\n"
 
 #: ../gio/gapplication.c:495
@@ -44,7 +44,7 @@ msgstr "Alkalmazások azonosítójának felülbírálása"
 
 #: ../gio/gapplication-tool.c:45 ../gio/gapplication-tool.c:46
 #: ../gio/gio-tool.c:227 ../gio/gresource-tool.c:488
-#: ../gio/gsettings-tool.c:551
+#: ../gio/gsettings-tool.c:569
 msgid "Print help"
 msgstr "Súgó kiírása"
 
@@ -57,7 +57,7 @@ msgstr "[PARANCS]"
 msgid "Print version"
 msgstr "Verzió kiírása"
 
-#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:557
+#: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:575
 msgid "Print version information and exit"
 msgstr "Verzióinformációk kiírása és kilépés"
 
@@ -147,7 +147,7 @@ msgid "Optional parameter to the action invocation, in GVariant format"
 msgstr "A művelethívás elhagyható paramétere GVariant formátumban"
 
 #: ../gio/gapplication-tool.c:96 ../gio/gresource-tool.c:526
-#: ../gio/gsettings-tool.c:643
+#: ../gio/gsettings-tool.c:661
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -161,7 +161,7 @@ msgid "Usage:\n"
 msgstr "Használat:\n"
 
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:551
-#: ../gio/gsettings-tool.c:678
+#: ../gio/gsettings-tool.c:696
 msgid "Arguments:\n"
 msgstr "Argumentumok:\n"
 
@@ -266,7 +266,7 @@ msgstr ""
 #: ../gio/ginputstream.c:179 ../gio/ginputstream.c:379
 #: ../gio/ginputstream.c:617 ../gio/ginputstream.c:1019
 #: ../gio/goutputstream.c:203 ../gio/goutputstream.c:834
-#: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:206
+#: ../gio/gpollableinputstream.c:205 ../gio/gpollableoutputstream.c:209
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Túl nagy számérték került átadásra ennek: %s"
@@ -281,7 +281,7 @@ msgid "Cannot truncate GBufferedInputStream"
 msgstr "A GBufferedInputStream nem csonkítható"
 
 #: ../gio/gbufferedinputstream.c:982 ../gio/ginputstream.c:1208
-#: ../gio/giostream.c:300 ../gio/goutputstream.c:1660
+#: ../gio/giostream.c:300 ../gio/goutputstream.c:1661
 msgid "Stream is already closed"
 msgstr "Az adatfolyam már le van zárva"
 
@@ -309,13 +309,13 @@ msgid "Not enough space in destination"
 msgstr "Nincs elég hely a célon"
 
 #: ../gio/gcharsetconverter.c:342 ../gio/gdatainputstream.c:848
-#: ../gio/gdatainputstream.c:1257 ../glib/gconvert.c:437 ../glib/gconvert.c:855
+#: ../gio/gdatainputstream.c:1261 ../glib/gconvert.c:454 ../glib/gconvert.c:883
 #: ../glib/giochannel.c:1557 ../glib/giochannel.c:1599
-#: ../glib/giochannel.c:2443 ../glib/gutf8.c:866 ../glib/gutf8.c:1319
+#: ../glib/giochannel.c:2443 ../glib/gutf8.c:869 ../glib/gutf8.c:1322
 msgid "Invalid byte sequence in conversion input"
 msgstr "Érvénytelen bájtsorrend az átalakítás bemenetében"
 
-#: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:445 ../glib/gconvert.c:769
+#: ../gio/gcharsetconverter.c:347 ../glib/gconvert.c:462 ../glib/gconvert.c:797
 #: ../glib/giochannel.c:1564 ../glib/giochannel.c:2455
 #, c-format
 msgid "Error during conversion: %s"
@@ -325,13 +325,13 @@ msgstr "Hiba az átalakításkor: %s"
 msgid "Cancellable initialization not supported"
 msgstr "A megszakítható előkészítés nem támogatott"
 
-#: ../gio/gcharsetconverter.c:456 ../glib/gconvert.c:320
+#: ../gio/gcharsetconverter.c:456 ../glib/gconvert.c:327
 #: ../glib/giochannel.c:1385
 #, c-format
 msgid "Conversion from character set “%s” to “%s” is not supported"
 msgstr "A(z) „%s” és „%s” karakterkészletek közötti átalakítás nem támogatott"
 
-#: ../gio/gcharsetconverter.c:460 ../glib/gconvert.c:324
+#: ../gio/gcharsetconverter.c:460 ../glib/gconvert.c:331
 #, c-format
 msgid "Could not open converter from “%s” to “%s”"
 msgstr ""
@@ -372,13 +372,13 @@ msgstr "A hitelesítési adatok hamisítása nincs megvalósítva ezen a rendsze
 msgid "Unexpected early end-of-stream"
 msgstr "Váratlan korai adatfolyam vége"
 
-#: ../gio/gdbusaddress.c:155 ../gio/gdbusaddress.c:243
-#: ../gio/gdbusaddress.c:324
+#: ../gio/gdbusaddress.c:158 ../gio/gdbusaddress.c:246
+#: ../gio/gdbusaddress.c:327
 #, c-format
 msgid "Unsupported key “%s” in address entry “%s”"
 msgstr "Nem támogatott „%s” kulcs a(z) „%s” címbejegyzésben"
 
-#: ../gio/gdbusaddress.c:182
+#: ../gio/gdbusaddress.c:185
 #, c-format
 msgid ""
 "Address “%s” is invalid (need exactly one of path, tmpdir or abstract keys)"
@@ -386,34 +386,34 @@ msgstr ""
 "A(z) „%s” cím érvénytelen (csak az útvonal, tmp könyvtár vagy absztrakt "
 "kulcs egyike lehet)"
 
-#: ../gio/gdbusaddress.c:195
+#: ../gio/gdbusaddress.c:198
 #, c-format
 msgid "Meaningless key/value pair combination in address entry “%s”"
 msgstr "Értelmetlen kulcs/érték párkombináció a(z) „%s” címbejegyzésben"
 
-#: ../gio/gdbusaddress.c:258 ../gio/gdbusaddress.c:339
+#: ../gio/gdbusaddress.c:261 ../gio/gdbusaddress.c:342
 #, c-format
 msgid "Error in address “%s” — the port attribute is malformed"
 msgstr "Hiba a(z) „%s” címben – a port attribútum rosszul formázott"
 
-#: ../gio/gdbusaddress.c:269 ../gio/gdbusaddress.c:350
+#: ../gio/gdbusaddress.c:272 ../gio/gdbusaddress.c:353
 #, c-format
 msgid "Error in address “%s” — the family attribute is malformed"
 msgstr "Hiba a(z) „%s” címben – a család attribútum rosszul formázott"
 
-#: ../gio/gdbusaddress.c:460
+#: ../gio/gdbusaddress.c:463
 #, c-format
 msgid "Address element “%s” does not contain a colon (:)"
 msgstr "A(z) „%s” címelem nem tartalmaz kettőspontot (:)"
 
-#: ../gio/gdbusaddress.c:481
+#: ../gio/gdbusaddress.c:484
 #, c-format
 msgid ""
 "Key/Value pair %d, “%s”, in address element “%s” does not contain an equal "
 "sign"
 msgstr "%d. kulcspár: „%s” a(z) „%s” címelemben nem tartalmaz egyenlőségjelet"
 
-#: ../gio/gdbusaddress.c:495
+#: ../gio/gdbusaddress.c:498
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, “%s”, in address element "
@@ -422,7 +422,7 @@ msgstr ""
 "Hiba a(z) „%3$s” címelemben található a(z) %1$d. kulcspárban lévő „%2$s” "
 "kulcs vagy érték értelmezésekor"
 
-#: ../gio/gdbusaddress.c:573
+#: ../gio/gdbusaddress.c:576
 #, c-format
 msgid ""
 "Error in address “%s” — the unix transport requires exactly one of the keys "
@@ -431,96 +431,96 @@ msgstr ""
 "Hiba a(z) „%s” címben – a unix szállítás a „path” vagy „abstract” kulcsok "
 "pontosan egyikének jelenlétét igényli"
 
-#: ../gio/gdbusaddress.c:609
+#: ../gio/gdbusaddress.c:612
 #, c-format
 msgid "Error in address “%s” — the host attribute is missing or malformed"
 msgstr ""
 "Hiba a(z) „%s” címben – a host attribútum hiányzik vagy rosszul formázott"
 
-#: ../gio/gdbusaddress.c:623
+#: ../gio/gdbusaddress.c:626
 #, c-format
 msgid "Error in address “%s” — the port attribute is missing or malformed"
 msgstr ""
 "Hiba a(z) „%s” címben – a port attribútum hiányzik vagy rosszul formázott"
 
-#: ../gio/gdbusaddress.c:637
+#: ../gio/gdbusaddress.c:640
 #, c-format
 msgid "Error in address “%s” — the noncefile attribute is missing or malformed"
 msgstr ""
 "Hiba a(z) „%s” címben – a noncefile attribútum hiányzik vagy rosszul "
 "formázott"
 
-#: ../gio/gdbusaddress.c:658
+#: ../gio/gdbusaddress.c:661
 msgid "Error auto-launching: "
 msgstr "Hiba az automatikus indításkor: "
 
-#: ../gio/gdbusaddress.c:666
+#: ../gio/gdbusaddress.c:669
 #, c-format
 msgid "Unknown or unsupported transport “%s” for address “%s”"
 msgstr "Ismeretlen vagy nem támogatott szállítás („%s”) a címhez („%s”)"
 
-#: ../gio/gdbusaddress.c:704
+#: ../gio/gdbusaddress.c:714
 #, c-format
 msgid "Error opening nonce file “%s”: %s"
 msgstr "Hiba a(z) „%s” ideiglenes fájl megnyitásakor: %s"
 
-#: ../gio/gdbusaddress.c:723
+#: ../gio/gdbusaddress.c:733
 #, c-format
 msgid "Error reading from nonce file “%s”: %s"
 msgstr "Hiba a(z) „%s” ideiglenes fájl olvasásakor: %s"
 
-#: ../gio/gdbusaddress.c:732
+#: ../gio/gdbusaddress.c:742
 #, c-format
 msgid "Error reading from nonce file “%s”, expected 16 bytes, got %d"
 msgstr ""
 "Hiba a(z) „%s” ideiglenes fájl olvasásakor, a várt 16 bájt helyett %d "
 "érkezett"
 
-#: ../gio/gdbusaddress.c:750
+#: ../gio/gdbusaddress.c:760
 #, c-format
 msgid "Error writing contents of nonce file “%s” to stream:"
 msgstr "Hiba az ideiglenes fájl („%s”) tartalmának írásakor az adatfolyamba:"
 
-#: ../gio/gdbusaddress.c:959
+#: ../gio/gdbusaddress.c:969
 msgid "The given address is empty"
 msgstr "A megadott cím üres"
 
-#: ../gio/gdbusaddress.c:1072
+#: ../gio/gdbusaddress.c:1082
 #, c-format
 msgid "Cannot spawn a message bus when setuid"
 msgstr "Nem indítható üzenetbusz setuid módban"
 
-#: ../gio/gdbusaddress.c:1079
+#: ../gio/gdbusaddress.c:1089
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Nem indítható üzenetbusz gépazonosító nélkül: "
 
-#: ../gio/gdbusaddress.c:1086
+#: ../gio/gdbusaddress.c:1096
 #, c-format
 msgid "Cannot autolaunch D-Bus without X11 $DISPLAY"
 msgstr "Nem indítható automatikusan a D-Bus X11 $DISPLAY nélkül"
 
-#: ../gio/gdbusaddress.c:1128
+#: ../gio/gdbusaddress.c:1138
 #, c-format
 msgid "Error spawning command line “%s”: "
 msgstr "Hiba a(z) „%s” parancssor indításakor: "
 
-#: ../gio/gdbusaddress.c:1345
+#: ../gio/gdbusaddress.c:1355
 #, c-format
 msgid "(Type any character to close this window)\n"
 msgstr "(Az ablak bezárásához nyomjon le egy gombot)\n"
 
-#: ../gio/gdbusaddress.c:1499
+#: ../gio/gdbusaddress.c:1509
 #, c-format
 msgid "Session dbus not running, and autolaunch failed"
 msgstr "A munkamenet D-Bus nem fut, és az automatikus indítás sikertelen"
 
-#: ../gio/gdbusaddress.c:1510
+#: ../gio/gdbusaddress.c:1520
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Nem határozható meg a munkamenetbusz címe (nincs megvalósítva erre az OS-re)"
 
-#: ../gio/gdbusaddress.c:1648
+#: ../gio/gdbusaddress.c:1658
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -529,7 +529,7 @@ msgstr ""
 "Nem határozható meg a busz címe a DBUS_STARTER_BUS_TYPE környezeti "
 "változóból – ismeretlen „%s” érték"
 
-#: ../gio/gdbusaddress.c:1657 ../gio/gdbusconnection.c:7158
+#: ../gio/gdbusaddress.c:1667 ../gio/gdbusconnection.c:7160
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -537,7 +537,7 @@ msgstr ""
 "Nem határozható meg a busz címe, mivel a DBUS_STARTER_BUS_TYPE környezeti "
 "változó nincs beállítva"
 
-#: ../gio/gdbusaddress.c:1667
+#: ../gio/gdbusaddress.c:1677
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Ismeretlen busztípus: %d"
@@ -687,12 +687,12 @@ msgstr ""
 "érkezett"
 
 #: ../gio/gdbusconnection.c:4414 ../gio/gdbusconnection.c:4622
-#: ../gio/gdbusconnection.c:6589
+#: ../gio/gdbusconnection.c:6591
 #, c-format
 msgid "No such interface '%s'"
 msgstr "Nincs ilyen interfész: „%s”"
 
-#: ../gio/gdbusconnection.c:4840 ../gio/gdbusconnection.c:7098
+#: ../gio/gdbusconnection.c:4840 ../gio/gdbusconnection.c:7100
 #, c-format
 msgid "No such interface '%s' on object at path %s"
 msgstr "Nincs „%s” interfész a(z) %s útvonalon lévő objektumon"
@@ -722,22 +722,22 @@ msgstr "Nem sikerült lekérni a tulajdonságot: %s.%s"
 msgid "Unable to set property %s.%s"
 msgstr "Nem sikerült beállítani a tulajdonságot: %s.%s"
 
-#: ../gio/gdbusconnection.c:5625
+#: ../gio/gdbusconnection.c:5627
 #, c-format
 msgid "Method '%s' returned type '%s', but expected '%s'"
 msgstr "A metódus („%s”) a(z) „%s” típust adta vissza a várt „%s” helyett"
 
-#: ../gio/gdbusconnection.c:6700
+#: ../gio/gdbusconnection.c:6702
 #, c-format
 msgid "Method '%s' on interface '%s' with signature '%s' does not exist"
 msgstr "A(z) „%s” metódus nem létezik a(z) „%s” interfészen „%s” aláírással"
 
-#: ../gio/gdbusconnection.c:6821
+#: ../gio/gdbusconnection.c:6823
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Egy részfa már exportálva van a következőhöz: %s"
 
-#: ../gio/gdbusconnection.c:7149
+#: ../gio/gdbusconnection.c:7151
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -891,10 +891,9 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2656
 #, c-format
 msgid ""
-"Message has %d file descriptors but the header field indicates %d file "
-"descriptors"
+"Number of file descriptors in message (%d) differs from header field (%d)"
 msgstr ""
-"Az üzenethez %d fájlleíró tartozik, de a fejlécmező %d fájlleírót jelez"
+"Az üzenetben található fájlleírók száma (%d) eltér a fejléc mezőtől (%d)"
 
 #: ../gio/gdbusmessage.c:2664
 msgid "Cannot serialize message: "
@@ -937,17 +936,17 @@ msgstr "Nem kérhető le hardverprofil: %s"
 msgid "Unable to load /var/lib/dbus/machine-id or /etc/machine-id: "
 msgstr "Nem tölthető be a /var/lib/dbus/machine-id vagy az /etc/machine-id: "
 
-#: ../gio/gdbusproxy.c:1611
+#: ../gio/gdbusproxy.c:1612
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Hiba a StartServiceByName hívásakor ehhez: %s: "
 
-#: ../gio/gdbusproxy.c:1634
+#: ../gio/gdbusproxy.c:1635
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Váratlan válasz (%d) a StartServiceByName(\"%s\") metódustól"
 
-#: ../gio/gdbusproxy.c:2719 ../gio/gdbusproxy.c:2853
+#: ../gio/gdbusproxy.c:2726 ../gio/gdbusproxy.c:2860
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -1110,13 +1109,11 @@ msgstr "Hiba: a(z) %s nem érvényes objektumútvonal\n"
 
 #: ../gio/gdbus-tool.c:720
 #, c-format
-#| msgid "Error: Method name is not specified\n"
 msgid "Error: Signal name is not specified\n"
 msgstr "Hiba: a szignálnév nincs megadva\n"
 
 #: ../gio/gdbus-tool.c:731
 #, c-format
-#| msgid "Error: Method name “%s” is invalid\n"
 msgid "Error: Signal name “%s” is invalid\n"
 msgstr "Hiba: a szignálnév („%s”) érvénytelen\n"
 
@@ -1359,11 +1356,11 @@ msgstr "Egy GEmblem kellene a GEmblemedIconhoz"
 #: ../gio/gfile.c:1071 ../gio/gfile.c:1309 ../gio/gfile.c:1447
 #: ../gio/gfile.c:1685 ../gio/gfile.c:1740 ../gio/gfile.c:1798
 #: ../gio/gfile.c:1882 ../gio/gfile.c:1939 ../gio/gfile.c:2003
-#: ../gio/gfile.c:2058 ../gio/gfile.c:3704 ../gio/gfile.c:3759
-#: ../gio/gfile.c:3995 ../gio/gfile.c:4037 ../gio/gfile.c:4505
-#: ../gio/gfile.c:4916 ../gio/gfile.c:5001 ../gio/gfile.c:5091
-#: ../gio/gfile.c:5188 ../gio/gfile.c:5275 ../gio/gfile.c:5376
-#: ../gio/gfile.c:7954 ../gio/gfile.c:8044 ../gio/gfile.c:8128
+#: ../gio/gfile.c:2058 ../gio/gfile.c:3725 ../gio/gfile.c:3780
+#: ../gio/gfile.c:4016 ../gio/gfile.c:4058 ../gio/gfile.c:4526
+#: ../gio/gfile.c:4937 ../gio/gfile.c:5022 ../gio/gfile.c:5112
+#: ../gio/gfile.c:5209 ../gio/gfile.c:5296 ../gio/gfile.c:5397
+#: ../gio/gfile.c:7975 ../gio/gfile.c:8065 ../gio/gfile.c:8149
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "A művelet nem támogatott"
@@ -1396,45 +1393,45 @@ msgstr "A könyvtár nem másolható rekurzívan"
 msgid "Splice not supported"
 msgstr "A fájlillesztés nem támogatott"
 
-#: ../gio/gfile.c:2983
+#: ../gio/gfile.c:2983 ../gio/gfile.c:3027
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Hiba a fájl illesztésekor: %s"
 
-#: ../gio/gfile.c:3115
+#: ../gio/gfile.c:3136
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr "A csatolások közti másolás (reflink/clone) nem támogatott"
 
-#: ../gio/gfile.c:3119
+#: ../gio/gfile.c:3140
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "A másolás (reflink/clone) nem támogatott vagy érvénytelen"
 
-#: ../gio/gfile.c:3124
+#: ../gio/gfile.c:3145
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "A másolás (reflink/clone) nem támogatott vagy nem működött"
 
-#: ../gio/gfile.c:3187
+#: ../gio/gfile.c:3208
 msgid "Can’t copy special file"
 msgstr "A speciális fájl nem másolható"
 
-#: ../gio/gfile.c:3985
+#: ../gio/gfile.c:4006
 msgid "Invalid symlink value given"
 msgstr "Érvénytelen szimbolikus link érték került megadásra"
 
-#: ../gio/gfile.c:4146
+#: ../gio/gfile.c:4167
 msgid "Trash not supported"
 msgstr "A Kuka nem támogatott"
 
-#: ../gio/gfile.c:4258
+#: ../gio/gfile.c:4279
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "A fájlnevek nem tartalmazhatnak „%c” karaktert"
 
-#: ../gio/gfile.c:6739 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6760 ../gio/gvolume.c:363
 msgid "volume doesn’t implement mount"
 msgstr "a kötet nem valósítja meg a csatolást"
 
-#: ../gio/gfile.c:6848
+#: ../gio/gfile.c:6869
 msgid "No application is registered as handling this file"
 msgstr "Nincs alkalmazás regisztrálva a fájl kezeléséhez"
 
@@ -1480,7 +1477,7 @@ msgid "Truncate not supported on stream"
 msgstr "Az adatfolyam csonkítása nem engedélyezett"
 
 #: ../gio/ghttpproxy.c:91 ../gio/gresolver.c:410 ../gio/gresolver.c:476
-#: ../glib/gconvert.c:1755
+#: ../glib/gconvert.c:1786
 msgid "Invalid hostname"
 msgstr "Érvénytelen gépnév"
 
@@ -1582,7 +1579,7 @@ msgstr "A bemeneti adatfolyam nem valósítja meg az olvasást"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:1218 ../gio/giostream.c:310
-#: ../gio/goutputstream.c:1670
+#: ../gio/goutputstream.c:1671
 msgid "Stream has outstanding operation"
 msgstr "Az adatfolyam hátralévő művelettel rendelkezik"
 
@@ -3251,6 +3248,10 @@ msgstr "A forrás adatfolyam már le van zárva"
 msgid "Error resolving “%s”: %s"
 msgstr "Hiba a(z) „%s” feloldásakor: %s"
 
+#: ../gio/gresolver.c:729 ../gio/gresolver.c:781
+msgid "Invalid domain"
+msgstr "Érvénytelen tartomány"
+
 #: ../gio/gresource.c:621 ../gio/gresource.c:880 ../gio/gresource.c:919
 #: ../gio/gresource.c:1043 ../gio/gresource.c:1115 ../gio/gresource.c:1188
 #: ../gio/gresource.c:1258 ../gio/gresourcefile.c:476
@@ -3366,7 +3367,7 @@ msgstr ""
 msgid "  SECTION   An (optional) elf section name\n"
 msgstr "  SZAKASZ   Egy elhagyható elf szakasznév\n"
 
-#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:685
+#: ../gio/gresource-tool.c:559 ../gio/gsettings-tool.c:703
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  PARANCS   A megmagyarázandó (elhagyható) parancs\n"
 
@@ -3400,7 +3401,7 @@ msgid "  PATH      A resource path\n"
 msgstr "  ÚTVONAL   Egy erőforrás-útvonal\n"
 
 #: ../gio/gsettings-tool.c:51 ../gio/gsettings-tool.c:72
-#: ../gio/gsettings-tool.c:890
+#: ../gio/gsettings-tool.c:908
 #, c-format
 msgid "No such schema “%s”\n"
 msgstr "Nincs „%s” séma\n"
@@ -3435,38 +3436,38 @@ msgstr "Az útvonalnak osztásjellel (/) kell végződnie\n"
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "Az útvonal nem tartalmazhat két szomszédos osztásjelet (//)\n"
 
-#: ../gio/gsettings-tool.c:520
+#: ../gio/gsettings-tool.c:538
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "A megadott érték kívül esik az érvényes tartományon\n"
 
-#: ../gio/gsettings-tool.c:527
+#: ../gio/gsettings-tool.c:545
 #, c-format
 msgid "The key is not writable\n"
 msgstr "A kulcs nem írható\n"
 
-#: ../gio/gsettings-tool.c:563
+#: ../gio/gsettings-tool.c:581
 msgid "List the installed (non-relocatable) schemas"
 msgstr "A telepített (át nem helyezhető) sémák felsorolása"
 
-#: ../gio/gsettings-tool.c:569
+#: ../gio/gsettings-tool.c:587
 msgid "List the installed relocatable schemas"
 msgstr "A telepített áthelyezhető sémák felsorolása"
 
-#: ../gio/gsettings-tool.c:575
+#: ../gio/gsettings-tool.c:593
 msgid "List the keys in SCHEMA"
 msgstr "A SÉMA kulcsainak felsorolása"
 
-#: ../gio/gsettings-tool.c:576 ../gio/gsettings-tool.c:582
-#: ../gio/gsettings-tool.c:625
+#: ../gio/gsettings-tool.c:594 ../gio/gsettings-tool.c:600
+#: ../gio/gsettings-tool.c:643
 msgid "SCHEMA[:PATH]"
 msgstr "SÉMA[:ÚTVONAL]"
 
-#: ../gio/gsettings-tool.c:581
+#: ../gio/gsettings-tool.c:599
 msgid "List the children of SCHEMA"
 msgstr "A SÉMA gyermekeinek felsorolása"
 
-#: ../gio/gsettings-tool.c:587
+#: ../gio/gsettings-tool.c:605
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3474,49 +3475,49 @@ msgstr ""
 "Kulcsok és értékek rekurzív felsorolása\n"
 "Ha nincs megadva SÉMA, az összes kulcs felsorolása\n"
 
-#: ../gio/gsettings-tool.c:589
+#: ../gio/gsettings-tool.c:607
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SÉMA[:ÚTVONAL]]"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:612
 msgid "Get the value of KEY"
 msgstr "A KULCS értékének lekérése"
 
-#: ../gio/gsettings-tool.c:595 ../gio/gsettings-tool.c:601
-#: ../gio/gsettings-tool.c:607 ../gio/gsettings-tool.c:619
-#: ../gio/gsettings-tool.c:631
+#: ../gio/gsettings-tool.c:613 ../gio/gsettings-tool.c:619
+#: ../gio/gsettings-tool.c:625 ../gio/gsettings-tool.c:637
+#: ../gio/gsettings-tool.c:649
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SÉMA[:ÚTVONAL] KULCS"
 
-#: ../gio/gsettings-tool.c:600
+#: ../gio/gsettings-tool.c:618
 msgid "Query the range of valid values for KEY"
 msgstr "A KULCS érvényes értékei tartományának lekérése"
 
-#: ../gio/gsettings-tool.c:606
+#: ../gio/gsettings-tool.c:624
 msgid "Query the description for KEY"
 msgstr "A KULCS leírásának lekérése"
 
-#: ../gio/gsettings-tool.c:612
+#: ../gio/gsettings-tool.c:630
 msgid "Set the value of KEY to VALUE"
 msgstr "A KULCS értékének beállítása az ÉRTÉKRE"
 
-#: ../gio/gsettings-tool.c:613
+#: ../gio/gsettings-tool.c:631
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SÉMA[:ÚTVONAL] KULCS ÉRTÉK"
 
-#: ../gio/gsettings-tool.c:618
+#: ../gio/gsettings-tool.c:636
 msgid "Reset KEY to its default value"
 msgstr "A KULCS visszaállítása az alapértékére"
 
-#: ../gio/gsettings-tool.c:624
+#: ../gio/gsettings-tool.c:642
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "A SÉMA minden kulcsának visszaállítása az alapértékekre"
 
-#: ../gio/gsettings-tool.c:630
+#: ../gio/gsettings-tool.c:648
 msgid "Check if KEY is writable"
 msgstr "A KULCS írhatóságának ellenőrzése"
 
-#: ../gio/gsettings-tool.c:636
+#: ../gio/gsettings-tool.c:654
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3526,11 +3527,11 @@ msgstr ""
 "Ha nincs megadva KULCS, akkor a SÉMA összes kulcsának figyelése.\n"
 "A figyelés befejezéséhez nyomja meg a ^C kombinációt.\n"
 
-#: ../gio/gsettings-tool.c:639
+#: ../gio/gsettings-tool.c:657
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SÉMA[:ÚTVONAL] [KULCS]"
 
-#: ../gio/gsettings-tool.c:651
+#: ../gio/gsettings-tool.c:669
 msgid ""
 "Usage:\n"
 "  gsettings --version\n"
@@ -3579,7 +3580,7 @@ msgstr ""
 "Részletes segítségért adja ki a „gsettings help PARANCS” parancsot.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:675
+#: ../gio/gsettings-tool.c:693
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3594,11 +3595,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:681
+#: ../gio/gsettings-tool.c:699
 msgid "  SCHEMADIR A directory to search for additional schemas\n"
 msgstr "  SÉMAKVT    További sémák keresése ebben a könyvtárban\n"
 
-#: ../gio/gsettings-tool.c:689
+#: ../gio/gsettings-tool.c:707
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3606,34 +3607,34 @@ msgstr ""
 "  SÉMA      A séma neve\n"
 "  ÚTVONAL   Az áthelyezhető sémák útvonala\n"
 
-#: ../gio/gsettings-tool.c:694
+#: ../gio/gsettings-tool.c:712
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KULCS     A sémán belüli (elhagyható) kulcs\n"
 
-#: ../gio/gsettings-tool.c:698
+#: ../gio/gsettings-tool.c:716
 msgid "  KEY       The key within the schema\n"
 msgstr "  KULCS     A sémán belüli kulcs\n"
 
-#: ../gio/gsettings-tool.c:702
+#: ../gio/gsettings-tool.c:720
 msgid "  VALUE     The value to set\n"
 msgstr "  ÉRTÉK     A beállítandó érték\n"
 
-#: ../gio/gsettings-tool.c:757
+#: ../gio/gsettings-tool.c:775
 #, c-format
 msgid "Could not load schemas from %s: %s\n"
 msgstr "Nem lehet sémákat betölteni ebből: %s: %s\n"
 
-#: ../gio/gsettings-tool.c:769
+#: ../gio/gsettings-tool.c:787
 #, c-format
 msgid "No schemas installed\n"
 msgstr "Nincsenek telepítve sémák\n"
 
-#: ../gio/gsettings-tool.c:848
+#: ../gio/gsettings-tool.c:866
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Üres sémanevet adott meg\n"
 
-#: ../gio/gsettings-tool.c:903
+#: ../gio/gsettings-tool.c:921
 #, c-format
 msgid "No such key “%s”\n"
 msgstr "Nincs „%s” kulcs\n"
@@ -3725,7 +3726,6 @@ msgid "No support for source-specific multicast"
 msgstr "A forrásspecifikus multicast nem támogatott"
 
 #: ../gio/gsocket.c:2375
-#| msgid "Unsupported socket address"
 msgid "Unsupported socket family"
 msgstr "Nem támogatott foglalatcsalád"
 
@@ -3744,12 +3744,10 @@ msgid "Interface name too long"
 msgstr "Az interfésznév túl hosszú"
 
 #: ../gio/gsocket.c:2463
-#| msgid "No support for source-specific multicast"
 msgid "No support for IPv4 source-specific multicast"
 msgstr "Az IPv4 forrásspecifikus multicast nem támogatott"
 
 #: ../gio/gsocket.c:2521
-#| msgid "No support for source-specific multicast"
 msgid "No support for IPv6 source-specific multicast"
 msgstr "Az IPv6 forrásspecifikus multicast nem támogatott"
 
@@ -3962,6 +3960,7 @@ msgid "Temporarily unable to resolve “%s”"
 msgstr "Ideiglenesen nem oldható fel: „%s”"
 
 #: ../gio/gthreadedresolver.c:559 ../gio/gthreadedresolver.c:736
+#: ../gio/gthreadedresolver.c:842
 #, c-format
 msgid "Error resolving “%s”"
 msgstr "Hiba a(z) „%s” feloldásakor"
@@ -4073,7 +4072,7 @@ msgstr "Hiba a fájlleíróból olvasáskor: %s"
 msgid "Error closing file descriptor: %s"
 msgstr "Hiba a fájlleíró lezárásakor: %s"
 
-#: ../gio/gunixmounts.c:2539 ../gio/gunixmounts.c:2592
+#: ../gio/gunixmounts.c:2556 ../gio/gunixmounts.c:2609
 msgid "Filesystem root"
 msgstr "Fájlrendszer gyökere"
 
@@ -4229,279 +4228,468 @@ msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr ""
 "Nem sikerült kiterjeszteni a(z) „%s” végrehajtási sort a(z) „%s” URL címmel"
 
-#: ../glib/gconvert.c:476 ../glib/gutf8.c:862 ../glib/gutf8.c:1074
-#: ../glib/gutf8.c:1211 ../glib/gutf8.c:1315
+#: ../glib/gconvert.c:473
+msgid "Unrepresentable character in conversion input"
+msgstr "Nem ábrázolható karakter az átalakítási bemenetben"
+
+#: ../glib/gconvert.c:500 ../glib/gutf8.c:865 ../glib/gutf8.c:1077
+#: ../glib/gutf8.c:1214 ../glib/gutf8.c:1318
 msgid "Partial character sequence at end of input"
 msgstr "Részleges karaktersorozat a bemenet végén"
 
-#: ../glib/gconvert.c:741
+#: ../glib/gconvert.c:769
 #, c-format
 msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "Nem alakítható át a tartalék „%s” a(z) „%s” kódkészletre"
 
-#: ../glib/gconvert.c:912
-#| msgid "Invalid byte sequence in conversion input"
+#: ../glib/gconvert.c:940
 msgid "Embedded NUL byte in conversion input"
 msgstr "Beágyazott NUL bájt az átalakítás bemenetében"
 
-#: ../glib/gconvert.c:933
-#| msgid "Invalid byte sequence in conversion input"
+#: ../glib/gconvert.c:961
 msgid "Embedded NUL byte in conversion output"
 msgstr "Beágyazott NUL bájt az átalakítás kimenetében"
 
-#: ../glib/gconvert.c:1618
+#: ../glib/gconvert.c:1649
 #, c-format
 msgid "The URI “%s” is not an absolute URI using the “file” scheme"
 msgstr "A(z) „%s” URI nem abszolút, a „file” sémát használó URI"
 
-#: ../glib/gconvert.c:1628
+#: ../glib/gconvert.c:1659
 #, c-format
 msgid "The local file URI “%s” may not include a “#”"
 msgstr "A(z) „%s” helyi fájl URI nem tartalmazhat „#” karaktert"
 
-#: ../glib/gconvert.c:1645
+#: ../glib/gconvert.c:1676
 #, c-format
 msgid "The URI “%s” is invalid"
 msgstr "A(z) „%s” URI érvénytelen"
 
-#: ../glib/gconvert.c:1657
+#: ../glib/gconvert.c:1688
 #, c-format
 msgid "The hostname of the URI “%s” is invalid"
 msgstr "A(z) „%s” gépneve érvénytelen"
 
-#: ../glib/gconvert.c:1673
+#: ../glib/gconvert.c:1704
 #, c-format
 msgid "The URI “%s” contains invalidly escaped characters"
 msgstr ""
 "A(z) „%s” URI érvénytelen, escape sorozatként megadott karaktereket tartalmaz"
 
-#: ../glib/gconvert.c:1745
+#: ../glib/gconvert.c:1776
 #, c-format
 msgid "The pathname “%s” is not an absolute path"
 msgstr "A(z) „%s” elérési út neve nem abszolút útvonal"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: ../glib/gdatetime.c:202
+#: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%Y. %b. %e., %A, %H.%M.%S %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:210
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%y. %m %e."
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:208
+#: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%k.%M.%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: ../glib/gdatetime.c:211
+#: ../glib/gdatetime.c:216
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%H.%M.%S"
 
-#: ../glib/gdatetime.c:224
+#. Translators: Some languages (Baltic, Slavic, Greek, and some more)
+#. * need different grammatical forms of month names depending on whether
+#. * they are standalone or in a complete date context, with the day
+#. * number.  Some other languages may prefer starting with uppercase when
+#. * they are standalone and with lowercase when they are in a complete
+#. * date context.  Here are full month names in a form appropriate when
+#. * they are used standalone.  If your system is Linux with the glibc
+#. * version 2.27 (released Feb 1, 2018) or newer or if it is from the BSD
+#. * family (which includes OS X) then you can refer to the date command
+#. * line utility and see what the command `date +%OB' produces.  Also in
+#. * the latest Linux the command `locale alt_mon' in your native locale
+#. * produces a complete list of month names almost ready to copy and
+#. * paste here.  Note that in most of the languages (western European,
+#. * non-European) there is no difference between the standalone and
+#. * complete date form.
+#.
+#: ../glib/gdatetime.c:251
 msgctxt "full month name"
 msgid "January"
 msgstr "Január"
 
-#: ../glib/gdatetime.c:226
+#: ../glib/gdatetime.c:253
 msgctxt "full month name"
 msgid "February"
 msgstr "Február"
 
-#: ../glib/gdatetime.c:228
+#: ../glib/gdatetime.c:255
 msgctxt "full month name"
 msgid "March"
 msgstr "Március"
 
-#: ../glib/gdatetime.c:230
+#: ../glib/gdatetime.c:257
 msgctxt "full month name"
 msgid "April"
 msgstr "Április"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:259
 msgctxt "full month name"
 msgid "May"
 msgstr "Május"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:261
 msgctxt "full month name"
 msgid "June"
 msgstr "Június"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:263
 msgctxt "full month name"
 msgid "July"
 msgstr "Július"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:265
 msgctxt "full month name"
 msgid "August"
 msgstr "Augusztus"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:267
 msgctxt "full month name"
 msgid "September"
 msgstr "Szeptember"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "October"
 msgstr "Október"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:271
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:273
 msgctxt "full month name"
 msgid "December"
 msgstr "December"
 
-#: ../glib/gdatetime.c:261
+#. Translators: Some languages need different grammatical forms of
+#. * month names depending on whether they are standalone or in a complete
+#. * date context, with the day number.  Some may prefer starting with
+#. * uppercase when they are standalone and with lowercase when they are
+#. * in a full date context.  However, as these names are abbreviated
+#. * the grammatical difference is visible probably only in Belarusian
+#. * and Russian.  In other languages there is no difference between
+#. * the standalone and complete date form when they are abbreviated.
+#. * If your system is Linux with the glibc version 2.27 (released
+#. * Feb 1, 2018) or newer then you can refer to the date command line
+#. * utility and see what the command `date +%Ob' produces.  Also in
+#. * the latest Linux the command `locale ab_alt_mon' in your native
+#. * locale produces a complete list of month names almost ready to copy
+#. * and paste here.  Note that this feature is not yet supported by any
+#. * other platform.  Here are abbreviated month names in a form
+#. * appropriate when they are used standalone.
+#.
+#: ../glib/gdatetime.c:305
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:263
+#: ../glib/gdatetime.c:307
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Febr"
 
-#: ../glib/gdatetime.c:265
+#: ../glib/gdatetime.c:309
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Már"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:311
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Ápr"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:313
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Máj"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:315
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jún"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:317
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Júl"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:319
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:321
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Szept"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:323
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:281
+#: ../glib/gdatetime.c:325
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:283
+#: ../glib/gdatetime.c:327
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dec"
 
-#: ../glib/gdatetime.c:298
+#: ../glib/gdatetime.c:342
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Hétfő"
 
-#: ../glib/gdatetime.c:300
+#: ../glib/gdatetime.c:344
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Kedd"
 
-#: ../glib/gdatetime.c:302
+#: ../glib/gdatetime.c:346
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Szerda"
 
-#: ../glib/gdatetime.c:304
+#: ../glib/gdatetime.c:348
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Csütörtök"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:350
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Péntek"
 
-#: ../glib/gdatetime.c:308
+#: ../glib/gdatetime.c:352
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Szombat"
 
-#: ../glib/gdatetime.c:310
+#: ../glib/gdatetime.c:354
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Vasárnap"
 
-#: ../glib/gdatetime.c:325
+#: ../glib/gdatetime.c:369
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Hé"
 
-#: ../glib/gdatetime.c:327
+#: ../glib/gdatetime.c:371
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Ke"
 
-#: ../glib/gdatetime.c:329
+#: ../glib/gdatetime.c:373
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Sze"
 
-#: ../glib/gdatetime.c:331
+#: ../glib/gdatetime.c:375
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Csü"
 
-#: ../glib/gdatetime.c:333
+#: ../glib/gdatetime.c:377
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Pé"
 
-#: ../glib/gdatetime.c:335
+#: ../glib/gdatetime.c:379
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Szo"
 
-#: ../glib/gdatetime.c:337
+#: ../glib/gdatetime.c:381
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Va"
 
+#. Translators: Some languages need different grammatical forms of
+#. * month names depending on whether they are standalone or in a full
+#. * date context, with the day number.  Some may prefer starting with
+#. * uppercase when they are standalone and with lowercase when they are
+#. * in a full date context.  Here are full month names in a form
+#. * appropriate when they are used in a full date context, with the
+#. * day number.  If your system is Linux with the glibc version 2.27
+#. * (released Feb 1, 2018) or newer or if it is from the BSD family
+#. * (which includes OS X) then you can refer to the date command line
+#. * utility and see what the command `date +%B' produces.  Also in
+#. * the latest Linux the command `locale mon' in your native locale
+#. * produces a complete list of month names almost ready to copy and
+#. * paste here.  In older Linux systems due to a bug the result is
+#. * incorrect in some languages.  Note that in most of the languages
+#. * (western European, non-European) there is no difference between the
+#. * standalone and complete date form.
+#.
+#: ../glib/gdatetime.c:441
+msgctxt "full month name with day"
+msgid "January"
+msgstr "január"
+
+#: ../glib/gdatetime.c:443
+msgctxt "full month name with day"
+msgid "February"
+msgstr "február"
+
+#: ../glib/gdatetime.c:445
+msgctxt "full month name with day"
+msgid "March"
+msgstr "március"
+
+#: ../glib/gdatetime.c:447
+msgctxt "full month name with day"
+msgid "April"
+msgstr "április"
+
+#: ../glib/gdatetime.c:449
+msgctxt "full month name with day"
+msgid "May"
+msgstr "május"
+
+#: ../glib/gdatetime.c:451
+msgctxt "full month name with day"
+msgid "June"
+msgstr "június"
+
+#: ../glib/gdatetime.c:453
+msgctxt "full month name with day"
+msgid "July"
+msgstr "július"
+
+#: ../glib/gdatetime.c:455
+msgctxt "full month name with day"
+msgid "August"
+msgstr "augusztus"
+
+#: ../glib/gdatetime.c:457
+msgctxt "full month name with day"
+msgid "September"
+msgstr "szeptember"
+
+#: ../glib/gdatetime.c:459
+msgctxt "full month name with day"
+msgid "October"
+msgstr "október"
+
+#: ../glib/gdatetime.c:461
+msgctxt "full month name with day"
+msgid "November"
+msgstr "november"
+
+#: ../glib/gdatetime.c:463
+msgctxt "full month name with day"
+msgid "December"
+msgstr "december"
+
+#. Translators: Some languages need different grammatical forms of
+#. * month names depending on whether they are standalone or in a full
+#. * date context, with the day number.  Some may prefer starting with
+#. * uppercase when they are standalone and with lowercase when they are
+#. * in a full date context.  Here are abbreviated month names in a form
+#. * appropriate when they are used in a full date context, with the
+#. * day number.  However, as these names are abbreviated the grammatical
+#. * difference is visible probably only in Belarusian and Russian.
+#. * In other languages there is no difference between the standalone
+#. * and complete date form when they are abbreviated.  If your system
+#. * is Linux with the glibc version 2.27 (released Feb 1, 2018) or newer
+#. * then you can refer to the date command line utility and see what the
+#. * command `date +%b' produces.  Also in the latest Linux the command
+#. * `locale abmon' in your native locale produces a complete list of
+#. * month names almost ready to copy and paste here.  In other systems
+#. * due to a bug the result is incorrect in some languages.
+#.
+#: ../glib/gdatetime.c:524
+msgctxt "abbreviated month name with day"
+msgid "Jan"
+msgstr "jan"
+
+#: ../glib/gdatetime.c:526
+msgctxt "abbreviated month name with day"
+msgid "Feb"
+msgstr "febr"
+
+#: ../glib/gdatetime.c:528
+msgctxt "abbreviated month name with day"
+msgid "Mar"
+msgstr "márc"
+
+#: ../glib/gdatetime.c:530
+msgctxt "abbreviated month name with day"
+msgid "Apr"
+msgstr "ápr"
+
+#: ../glib/gdatetime.c:532
+msgctxt "abbreviated month name with day"
+msgid "May"
+msgstr "máj"
+
+#: ../glib/gdatetime.c:534
+msgctxt "abbreviated month name with day"
+msgid "Jun"
+msgstr "jún"
+
+#: ../glib/gdatetime.c:536
+msgctxt "abbreviated month name with day"
+msgid "Jul"
+msgstr "júl"
+
+#: ../glib/gdatetime.c:538
+msgctxt "abbreviated month name with day"
+msgid "Aug"
+msgstr "aug"
+
+#: ../glib/gdatetime.c:540
+msgctxt "abbreviated month name with day"
+msgid "Sep"
+msgstr "szept"
+
+#: ../glib/gdatetime.c:542
+msgctxt "abbreviated month name with day"
+msgid "Oct"
+msgstr "okt"
+
+#: ../glib/gdatetime.c:544
+msgctxt "abbreviated month name with day"
+msgid "Nov"
+msgstr "nov"
+
+#: ../glib/gdatetime.c:546
+msgctxt "abbreviated month name with day"
+msgid "Dec"
+msgstr "dec"
+
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:354
+#: ../glib/gdatetime.c:563
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "DE"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:357
+#: ../glib/gdatetime.c:566
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "DU"
@@ -4649,9 +4837,9 @@ msgstr "Érvénytelen kulcsnév: %s"
 msgid "Key file contains unsupported encoding “%s”"
 msgstr "A kulcsfájl a nem támogatott „%s” kódolást tartalmazza"
 
-#: ../glib/gkeyfile.c:1645 ../glib/gkeyfile.c:1818 ../glib/gkeyfile.c:3206
-#: ../glib/gkeyfile.c:3269 ../glib/gkeyfile.c:3399 ../glib/gkeyfile.c:3529
-#: ../glib/gkeyfile.c:3673 ../glib/gkeyfile.c:3902 ../glib/gkeyfile.c:3969
+#: ../glib/gkeyfile.c:1645 ../glib/gkeyfile.c:1818 ../glib/gkeyfile.c:3271
+#: ../glib/gkeyfile.c:3334 ../glib/gkeyfile.c:3464 ../glib/gkeyfile.c:3594
+#: ../glib/gkeyfile.c:3738 ../glib/gkeyfile.c:3967 ../glib/gkeyfile.c:4034
 #, c-format
 msgid "Key file does not have group “%s”"
 msgstr "A kulcsfájlból hiányzik a(z) „%s” csoport"
@@ -4668,14 +4856,14 @@ msgstr ""
 "A kulcsfájl tartalmazza a(z) „%s” kulcsot „%s” értékkel, amelyik azonban nem "
 "UTF-8"
 
-#: ../glib/gkeyfile.c:1955 ../glib/gkeyfile.c:2071 ../glib/gkeyfile.c:2448
+#: ../glib/gkeyfile.c:1955 ../glib/gkeyfile.c:2071 ../glib/gkeyfile.c:2513
 #, c-format
 msgid ""
 "Key file contains key “%s” which has a value that cannot be interpreted."
 msgstr ""
 "A kulcsfájl tartalmazza a(z) „%s” kulcsot, amelynek értéke nem értelmezhető."
 
-#: ../glib/gkeyfile.c:2666 ../glib/gkeyfile.c:3035
+#: ../glib/gkeyfile.c:2731 ../glib/gkeyfile.c:3100
 #, c-format
 msgid ""
 "Key file contains key “%s” in group “%s” which has a value that cannot be "
@@ -4684,38 +4872,38 @@ msgstr ""
 "A kulcsfájl tartalmazza a(z) „%s” kulcsot a(z) „%s” csoportban, amelynek "
 "értéke nem értelmezhető."
 
-#: ../glib/gkeyfile.c:2744 ../glib/gkeyfile.c:2821
+#: ../glib/gkeyfile.c:2809 ../glib/gkeyfile.c:2886
 #, c-format
 msgid "Key “%s” in group “%s” has value “%s” where %s was expected"
 msgstr ""
 "A(z) „%s” kulcs a(z) „%s” csoportban „%s” értékkel rendelkezik a várt %s "
 "helyett"
 
-#: ../glib/gkeyfile.c:4209
+#: ../glib/gkeyfile.c:4274
 msgid "Key file contains escape character at end of line"
 msgstr "A kulcsfájl escape sorozattal megadott karaktert tartalmaz a sor végén"
 
-#: ../glib/gkeyfile.c:4231
+#: ../glib/gkeyfile.c:4296
 #, c-format
 msgid "Key file contains invalid escape sequence “%s”"
 msgstr "A kulcsfájl érvénytelen escape sorozatot tartalmaz („%s”)"
 
-#: ../glib/gkeyfile.c:4375
+#: ../glib/gkeyfile.c:4440
 #, c-format
 msgid "Value “%s” cannot be interpreted as a number."
 msgstr "A(z) „%s” érték nem értelmezhető számként."
 
-#: ../glib/gkeyfile.c:4389
+#: ../glib/gkeyfile.c:4454
 #, c-format
 msgid "Integer value “%s” out of range"
 msgstr "A(z) „%s” egész érték a tartományon kívülre esik"
 
-#: ../glib/gkeyfile.c:4422
+#: ../glib/gkeyfile.c:4487
 #, c-format
 msgid "Value “%s” cannot be interpreted as a float number."
 msgstr "A(z) „%s” érték nem értelmezhető lebegőpontos számként."
 
-#: ../glib/gkeyfile.c:4461
+#: ../glib/gkeyfile.c:4526
 #, c-format
 msgid "Value “%s” cannot be interpreted as a boolean."
 msgstr "A(z) „%s” érték nem értelmezhető logikai értékként."
@@ -5550,20 +5738,20 @@ msgstr "A(z) „%s” a(z) [%s, %s]  intervallumon kívül esik."
 msgid "“%s” is not an unsigned number"
 msgstr "„%s” nem érvényes név"
 
-#: ../glib/gutf8.c:808
+#: ../glib/gutf8.c:811
 msgid "Failed to allocate memory"
 msgstr "Nem sikerült memóriát lefoglalni"
 
-#: ../glib/gutf8.c:941
+#: ../glib/gutf8.c:944
 msgid "Character out of range for UTF-8"
 msgstr "A karakter az UTF-8 tartományon kívülre esik"
 
-#: ../glib/gutf8.c:1042 ../glib/gutf8.c:1051 ../glib/gutf8.c:1181
-#: ../glib/gutf8.c:1190 ../glib/gutf8.c:1329 ../glib/gutf8.c:1426
+#: ../glib/gutf8.c:1045 ../glib/gutf8.c:1054 ../glib/gutf8.c:1184
+#: ../glib/gutf8.c:1193 ../glib/gutf8.c:1332 ../glib/gutf8.c:1429
 msgid "Invalid sequence in conversion input"
 msgstr "Érvénytelen sorozat az átalakítási bemenetben"
 
-#: ../glib/gutf8.c:1340 ../glib/gutf8.c:1437
+#: ../glib/gutf8.c:1343 ../glib/gutf8.c:1440
 msgid "Character out of range for UTF-16"
 msgstr "A karakter az UTF-16 tartományon kívülre esik"
 
@@ -5629,73 +5817,61 @@ msgstr "%.1f EiB"
 
 #: ../glib/gutils.c:2245
 #, c-format
-#| msgid "%.1f kB"
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #: ../glib/gutils.c:2246
 #, c-format
-#| msgid "%.1f MB"
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #: ../glib/gutils.c:2247
 #, c-format
-#| msgid "%.1f GB"
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #: ../glib/gutils.c:2248
 #, c-format
-#| msgid "%.1f TB"
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #: ../glib/gutils.c:2249
 #, c-format
-#| msgid "%.1f PB"
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #: ../glib/gutils.c:2250
 #, c-format
-#| msgid "%.1f EB"
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #: ../glib/gutils.c:2253
 #, c-format
-#| msgid "%.1f KiB"
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #: ../glib/gutils.c:2254
 #, c-format
-#| msgid "%.1f MiB"
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #: ../glib/gutils.c:2255
 #, c-format
-#| msgid "%.1f GiB"
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #: ../glib/gutils.c:2256
 #, c-format
-#| msgid "%.1f TiB"
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #: ../glib/gutils.c:2257
 #, c-format
-#| msgid "%.1f PiB"
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #: ../glib/gutils.c:2258
 #, c-format
-#| msgid "%.1f EiB"
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
@@ -5708,8 +5884,6 @@ msgstr[1] "%u bájt"
 
 #: ../glib/gutils.c:2296
 #, c-format
-#| msgid "%u byte"
-#| msgid_plural "%u bytes"
 msgid "%u bit"
 msgid_plural "%u bits"
 msgstr[0] "%u bit"
@@ -5726,8 +5900,6 @@ msgstr[1] "%s bájt"
 #. Translators: the %s in "%s bits" will always be replaced by a number.
 #: ../glib/gutils.c:2368
 #, c-format
-#| msgid "%s byte"
-#| msgid_plural "%s bytes"
 msgid "%s bit"
 msgid_plural "%s bits"
 msgstr[0] "%s bit"
@@ -5743,3 +5915,8 @@ msgstr[1] "%s bit"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
+#~ msgid ""
+#~ "Message has %d file descriptors but the header field indicates %d file "
+#~ "descriptors"
+#~ msgstr ""
+#~ "Az üzenethez %d fájlleíró tartozik, de a fejlécmező %d fájlleírót jelez"
