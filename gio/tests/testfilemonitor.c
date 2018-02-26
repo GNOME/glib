@@ -247,6 +247,7 @@ change_step (gpointer user_data)
       g_assert_no_error (error);
       g_output_stream_close (stream, NULL, &error);
       g_assert_no_error (error);
+      g_object_unref (stream);
       break;
     case 2:
       record_event (data, -1, NULL, NULL, 2);
