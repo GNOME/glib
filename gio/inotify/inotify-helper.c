@@ -158,8 +158,6 @@ ih_event_callback (ik_event_t  *event,
   gboolean interesting;
   GFileMonitorEvent event_flags;
 
-  g_assert (!file_event); /* XXX hardlink support */
-
   event_flags = ih_mask_to_EventFlags (event->mask);
 
   if (event->mask & IN_MOVE)
