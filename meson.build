@@ -353,6 +353,7 @@ functions = [
   'endservent',
   'sendmmsg',
   'recvmmsg',
+  'link',
 ]
 
 if glib_conf.has('HAVE_SYS_STATVFS_H')
