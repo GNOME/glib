@@ -289,12 +289,6 @@ unix_sources = \
 	$(portal_sources)	\
 	$(NULL)
 
-if OS_COCOA
-if MAC_OS_X_9
-unix_sources += gcocoanotificationbackend.c
-endif
-endif
-
 giounixincludedir=$(includedir)/gio-unix-2.0/gio
 giounixinclude_HEADERS = \
 	gfiledescriptorbased.h  \
@@ -400,11 +394,6 @@ portal_sources = \
 	gproxyresolverportal.h		\
 	$(xdp_dbus_built_sources)	\
 	$(NULL)
-
-if OS_COCOA
-contenttype_sources += gosxcontenttype.c
-appinfo_sources += gosxappinfo.c gosxappinfo.h
-endif
 
 if OS_UNIX
 if !OS_COCOA
@@ -619,7 +608,12 @@ if OS_COCOA
 libgio_objc_2_0_la_CFLAGS = $(libgio_2_0_la_CFLAGS) -xobjective-c
 libgio_objc_2_0_la_CPPFLAGS = $(libgio_2_0_la_CPPFLAGS)
 libgio_objc_2_0_la_LDFLAGS = $(libgio_2_0_la_LDFLAGS) -Wl,-framework,Foundation -Wl,-framework,AppKit
-libgio_objc_2_0_la_SOURCES = gnextstepsettingsbackend.c
+libgio_objc_2_0_la_SOURCES = \
+	gnextstepsettingsbackend.c \
+	gosxcontenttype.c \
+	gosxappinfo.c \
+	gosxappinfo.h \
+	gcocoanotificationbackend.c
 
 noinst_LTLIBRARIES += libgio-objc-2.0.la
 libgio_2_0_la_LIBADD += libgio-objc-2.0.la
