@@ -229,8 +229,14 @@ g_file_monitor_source_queue_event (GFileMonitorSource *fms,
 
   event = g_slice_new (QueuedEvent);
   event->event_type = event_type;
-  if (child)
+  if (child != NULL && fms->dirname != NULL)
     event->child = g_local_file_new_from_dirname_and_basename (fms->dirname, child);
+  else if (child != NULL)
+    {
+      gchar *dirname = g_path_get_dirname (fms->filename);
+      event->child = g_local_file_new_from_dirname_and_basename (dirname, child);
+      g_free (dirname);
+    }
   else if (fms->dirname)
     event->child = _g_local_file_new (fms->dirname);
   else if (fms->filename)
@@ -394,23 +400,29 @@ g_file_monitor_source_handle_event (GFileMonitorSource *fms,
 
     case G_FILE_MONITOR_EVENT_RENAMED:
       g_assert (!other && rename_to);
-      if (fms->flags & G_FILE_MONITOR_WATCH_MOVES)
+      if (fms->flags & (G_FILE_MONITOR_WATCH_MOVES | G_FILE_MONITOR_SEND_MOVED))
         {
           GFile *other;
+          const gchar *dirname;
+          gchar *allocated_dirname = NULL;
+          GFileMonitorEvent event;
 
-          other = g_local_file_new_from_dirname_and_basename (fms->dirname, rename_to);
-          g_file_monitor_source_file_changes_done (fms, rename_to);
-          g_file_monitor_source_send_event (fms, G_FILE_MONITOR_EVENT_RENAMED, child, other);
-          g_object_unref (other);
-        }
-      else if (fms->flags & G_FILE_MONITOR_SEND_MOVED)
-        {
-          GFile *other;
+          event = (fms->flags & G_FILE_MONITOR_WATCH_MOVES) ? G_FILE_MONITOR_EVENT_RENAMED : G_FILE_MONITOR_EVENT_MOVED;
 
-          other = g_local_file_new_from_dirname_and_basename (fms->dirname, rename_to);
+          if (fms->dirname != NULL)
+            dirname = fms->dirname;
+          else
+            {
+              allocated_dirname = g_path_get_dirname (fms->filename);
+              dirname = allocated_dirname;
+            }
+
+          other = g_local_file_new_from_dirname_and_basename (dirname, rename_to);
           g_file_monitor_source_file_changes_done (fms, rename_to);
-          g_file_monitor_source_send_event (fms, G_FILE_MONITOR_EVENT_MOVED, child, other);
+          g_file_monitor_source_send_event (fms, event, child, other);
+
           g_object_unref (other);
+          g_free (allocated_dirname);
         }
       else
         {
