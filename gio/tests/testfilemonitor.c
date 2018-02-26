@@ -1,3 +1,6 @@
+#include "config.h"
+
+#include <errno.h>
 #include <stdlib.h>
 #include <gio/gio.h>
 
@@ -29,6 +32,7 @@ typedef struct
   GMainLoop *loop;
   gint step;
   GList *events;
+  GFileOutputStream *output_stream;
 } TestData;
 
 #if 0
@@ -652,16 +656,171 @@ test_cross_dir_moves (void)
   g_object_unref (data[1].file);
 }
 
+static gboolean
+file_hard_links_step (gpointer user_data)
+{
+  gboolean retval = G_SOURCE_CONTINUE;
+  TestData *data = user_data;
+  GError *error = NULL;
+
+  gchar *filename = g_file_get_path (data->file);
+  gchar *hard_link_name = g_strdup_printf ("%s2", filename);
+  GFile *hard_link_file = g_file_new_for_path (hard_link_name);
+
+  switch (data->step)
+    {
+    case 0:
+      record_event (data, -1, NULL, NULL, 0);
+      g_output_stream_write_all (G_OUTPUT_STREAM (data->output_stream),
+                                 "hello, step 0", 13, NULL, NULL, &error);
+      g_assert_no_error (error);
+      g_output_stream_close (G_OUTPUT_STREAM (data->output_stream), NULL, &error);
+      g_assert_no_error (error);
+      break;
+    case 1:
+      record_event (data, -1, NULL, NULL, 1);
+      g_file_replace_contents (data->file, "step 1", 6, NULL, FALSE,
+                               G_FILE_CREATE_NONE, NULL, NULL, &error);
+      g_assert_no_error (error);
+      break;
+    case 2:
+      record_event (data, -1, NULL, NULL, 2);
+#ifdef HAVE_LINK
+      if (link (filename, hard_link_name) < 0)
+        {
+          g_error ("link(%s, %s) failed: %s", filename, hard_link_name, g_strerror (errno));
+        }
+#endif  /* HAVE_LINK */
+      break;
+    case 3:
+      record_event (data, -1, NULL, NULL, 3);
+#ifdef HAVE_LINK
+      {
+        GOutputStream *hard_link_stream = NULL;
+
+        /* Deliberately don’t do an atomic swap on the hard-linked file. */
+        hard_link_stream = G_OUTPUT_STREAM (g_file_append_to (hard_link_file,
+                                                              G_FILE_CREATE_NONE,
+                                                              NULL, &error));
+        g_assert_no_error (error);
+        g_output_stream_write_all (hard_link_stream, " step 3", 7, NULL, NULL, &error);
+        g_assert_no_error (error);
+        g_output_stream_close (hard_link_stream, NULL, &error);
+        g_assert_no_error (error);
+        g_object_unref (hard_link_stream);
+      }
+#endif  /* HAVE_LINK */
+      break;
+    case 4:
+      record_event (data, -1, NULL, NULL, 4);
+      g_file_delete (data->file, NULL, &error);
+      g_assert_no_error (error);
+      break;
+    case 5:
+      record_event (data, -1, NULL, NULL, 5);
+#ifdef HAVE_LINK
+      g_file_delete (hard_link_file, NULL, &error);
+      g_assert_no_error (error);
+#endif  /* HAVE_LINK */
+      break;
+    case 6:
+      record_event (data, -1, NULL, NULL, 6);
+      g_main_loop_quit (data->loop);
+      retval = G_SOURCE_REMOVE;
+      break;
+    }
+
+  if (retval != G_SOURCE_REMOVE)
+    data->step++;
+
+  g_object_unref (hard_link_file);
+  g_free (hard_link_name);
+  g_free (filename);
+
+  return retval;
+}
+
+static RecordedEvent file_hard_links_output[] = {
+  { -1, NULL, NULL, 0 },
+  { G_FILE_MONITOR_EVENT_CHANGED, "testfilemonitor.db", NULL, -1 },
+  { G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT, "testfilemonitor.db", NULL, -1 },
+  { -1, NULL, NULL, 1 },
+  { G_FILE_MONITOR_EVENT_RENAMED, NULL  /* .goutputstream-XXXXXX */, "testfilemonitor.db", -1 },
+  { -1, NULL, NULL, 2 },
+  { -1, NULL, NULL, 3 },
+  /* FIXME: There should be a EVENT_CHANGED and EVENT_CHANGES_DONE_HINT here
+   * from the modification of the hard link. */
+  { -1, NULL, NULL, 4 },
+  { G_FILE_MONITOR_EVENT_DELETED, "testfilemonitor.db", NULL, -1 },
+  { -1, NULL, NULL, 5 },
+  { -1, NULL, NULL, 6 },
+};
+
+static void
+test_file_hard_links (void)
+{
+  GError *error = NULL;
+  TestData data;
+
+  g_test_bug ("755721");
+
+#ifdef HAVE_LINK
+  g_test_message ("Running with hard link tests");
+#else  /* if !HAVE_LINK */
+  g_test_message ("Running without hard link tests");
+#endif  /* !HAVE_LINK */
+
+  data.step = 0;
+  data.events = NULL;
+
+  /* Create a file which exists and is not a directory. */
+  data.file = g_file_new_for_path ("testfilemonitor.db");
+  data.output_stream = g_file_replace (data.file, NULL, FALSE,
+                                       G_FILE_CREATE_NONE, NULL, &error);
+  g_assert_no_error (error);
+
+  /* Monitor it. Creating the monitor should not crash (bug #755721). */
+  data.monitor = g_file_monitor_file (data.file,
+                                      G_FILE_MONITOR_WATCH_MOUNTS |
+                                      G_FILE_MONITOR_WATCH_MOVES |
+                                      G_FILE_MONITOR_WATCH_HARD_LINKS,
+                                      NULL,
+                                      &error);
+  g_assert_no_error (error);
+  g_assert_nonnull (data.monitor);
+
+  /* Change the file a bit. */
+  g_file_monitor_set_rate_limit (data.monitor, 200);
+  g_signal_connect (data.monitor, "changed", (GCallback) monitor_changed, &data);
+
+  data.loop = g_main_loop_new (NULL, TRUE);
+  g_timeout_add (500, file_hard_links_step, &data);
+  g_main_loop_run (data.loop);
+
+  /* output_events (data.events); */
+  check_expected_events (file_hard_links_output,
+                         G_N_ELEMENTS (file_hard_links_output), data.events);
+
+  g_list_free_full (data.events, (GDestroyNotify) free_recorded_event);
+  g_main_loop_unref (data.loop);
+  g_object_unref (data.monitor);
+  g_object_unref (data.file);
+  g_object_unref (data.output_stream);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+
+  g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
   g_test_add_func ("/monitor/atomic-replace", test_atomic_replace);
   g_test_add_func ("/monitor/file-changes", test_file_changes);
   g_test_add_func ("/monitor/dir-monitor", test_dir_monitor);
   g_test_add_func ("/monitor/dir-not-existent", test_dir_non_existent);
   g_test_add_func ("/monitor/cross-dir-moves", test_cross_dir_moves);
+  g_test_add_func ("/monitor/file/hard-links", test_file_hard_links);
 
   return g_test_run ();
 }

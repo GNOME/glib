@@ -260,6 +260,9 @@
 /* Define if libelf is available */
 /* #undef HAVE_LIBELF */
 
+/* Define to 1 if you have the `link' function. */
+/* #undef HAVE_LINK */
+
 /* Define to 1 if you have the <linux/magic.h> header file. */
 /* #undef HAVE_LINUX_MAGIC_H */
 

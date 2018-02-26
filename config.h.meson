@@ -250,6 +250,9 @@
 /* Define if libmount is available */
 #mesondefine HAVE_LIBMOUNT
 
+/* Define to 1 if you have the `link' function. */
+#mesondefine HAVE_LINK
+
 /* Define to 1 if you have the <linux/magic.h> header file. */
 #mesondefine HAVE_LINUX_MAGIC_H
 
