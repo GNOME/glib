@@ -453,6 +453,7 @@ g_network_monitor_netlink_finalize (GObject *object)
     }
 
   g_clear_pointer (&nl->priv->context, g_main_context_unref);
+  g_clear_pointer (&nl->priv->dump_networks, g_ptr_array_unref);
 
   G_OBJECT_CLASS (g_network_monitor_netlink_parent_class)->finalize (object);
 }
