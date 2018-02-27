@@ -212,11 +212,10 @@ queue_request_dump (GNetworkMonitorNetlink *nl)
   g_source_attach (nl->priv->dump_source, nl->priv->context);
 }
 
-static void
-add_network (GNetworkMonitorNetlink *nl,
-             GSocketFamily           family,
-             gint                    dest_len,
-             guint8                 *dest)
+static GInetAddressMask *
+create_inet_address_mask (GSocketFamily  family,
+                          const guint8  *dest,
+                          gsize          dest_len)
 {
   GInetAddress *dest_addr;
   GInetAddressMask *network;
@@ -227,32 +226,34 @@ add_network (GNetworkMonitorNetlink *nl,
     dest_addr = g_inet_address_new_any (family);
   network = g_inet_address_mask_new (dest_addr, dest_len, NULL);
   g_object_unref (dest_addr);
+
+  return network;
+}
+
+static void
+add_network (GNetworkMonitorNetlink *nl,
+             GSocketFamily           family,
+             const guint8           *dest,
+             gsize                   dest_len)
+{
+  GInetAddressMask *network = create_inet_address_mask (family, dest, dest_len);
   g_return_if_fail (network != NULL);
 
   if (nl->priv->dump_networks)
-    g_ptr_array_add (nl->priv->dump_networks, network);
+    g_ptr_array_add (nl->priv->dump_networks, g_object_ref (network));
   else
-    {
-      g_network_monitor_base_add_network (G_NETWORK_MONITOR_BASE (nl), network);
-      g_object_unref (network);
-    }
+    g_network_monitor_base_add_network (G_NETWORK_MONITOR_BASE (nl), network);
+
+  g_object_unref (network);
 }
 
 static void
 remove_network (GNetworkMonitorNetlink *nl,
                 GSocketFamily           family,
-                gint                    dest_len,
-                guint8                 *dest)
+                const guint8           *dest,
+                gsize                   dest_len)
 {
-  GInetAddress *dest_addr;
-  GInetAddressMask *network;
-
-  if (dest)
-    dest_addr = g_inet_address_new_from_bytes (dest, family);
-  else
-    dest_addr = g_inet_address_new_any (family);
-  network = g_inet_address_mask_new (dest_addr, dest_len, NULL);
-  g_object_unref (dest_addr);
+  GInetAddressMask *network = create_inet_address_mask (family, dest, dest_len);
   g_return_if_fail (network != NULL);
 
   if (nl->priv->dump_networks)
@@ -265,13 +266,13 @@ remove_network (GNetworkMonitorNetlink *nl,
           if (g_inet_address_mask_equal (network, dump_networks[i]))
             g_ptr_array_remove_index_fast (nl->priv->dump_networks, i--);
         }
-      g_object_unref (network);
     }
   else
     {
       g_network_monitor_base_remove_network (G_NETWORK_MONITOR_BASE (nl), network);
-      g_object_unref (network);
     }
+
+  g_object_unref (network);
 }
 
 static void
@@ -397,9 +398,9 @@ read_netlink_messages (GSocket      *socket,
                 continue;
 
               if (msg->nlmsg_type == RTM_NEWROUTE)
-                add_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest);
+                add_network (nl, rtmsg->rtm_family, dest, rtmsg->rtm_dst_len);
               else
-                remove_network (nl, rtmsg->rtm_family, rtmsg->rtm_dst_len, dest);
+                remove_network (nl, rtmsg->rtm_family, dest, rtmsg->rtm_dst_len);
               queue_request_dump (nl);
             }
           break;
