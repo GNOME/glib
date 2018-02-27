@@ -46,6 +46,7 @@ struct _GNetworkMonitorNetlinkPrivate
 {
   GSocket *sock;
   GSource *source, *dump_source;
+  GMainContext *context;
 
   GPtrArray *dump_networks;
 };
@@ -74,7 +75,6 @@ g_network_monitor_netlink_init (GNetworkMonitorNetlink *nl)
 {
   nl->priv = g_network_monitor_netlink_get_instance_private (nl);
 }
-
 
 static gboolean
 g_network_monitor_netlink_initable_init (GInitable     *initable,
@@ -143,11 +143,11 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
     }
 
   g_socket_set_blocking (nl->priv->sock, FALSE);
+  nl->priv->context = g_main_context_ref_thread_default ();
   nl->priv->source = g_socket_create_source (nl->priv->sock, G_IO_IN, NULL);
   g_source_set_callback (nl->priv->source,
                          (GSourceFunc) read_netlink_messages, nl, NULL);
-  g_source_attach (nl->priv->source,
-                   g_main_context_get_thread_default ());
+  g_source_attach (nl->priv->source, nl->priv->context);
 
   return TRUE;
 }
@@ -209,8 +209,7 @@ queue_request_dump (GNetworkMonitorNetlink *nl)
   nl->priv->dump_source = g_timeout_source_new (1000);
   g_source_set_callback (nl->priv->dump_source,
                          (GSourceFunc) timeout_request_dump, nl, NULL);
-  g_source_attach (nl->priv->dump_source,
-                   g_main_context_get_thread_default ());
+  g_source_attach (nl->priv->dump_source, nl->priv->context);
 }
 
 static void
@@ -457,6 +456,8 @@ g_network_monitor_netlink_finalize (GObject *object)
       g_source_unref (nl->priv->dump_source);
     }
 
+  g_clear_pointer (&nl->priv->context, g_main_context_unref);
+
   G_OBJECT_CLASS (g_network_monitor_netlink_parent_class)->finalize (object);
 }
 
@@ -465,7 +466,7 @@ g_network_monitor_netlink_class_init (GNetworkMonitorNetlinkClass *nl_class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (nl_class);
 
-  gobject_class->finalize  = g_network_monitor_netlink_finalize;
+  gobject_class->finalize = g_network_monitor_netlink_finalize;
 }
 
 static void
