@@ -228,6 +228,7 @@ update_cached_property (GDBusProxy   *proxy,
   if (!v)
     return;
   g_dbus_proxy_set_cached_property (proxy, property_name, v);
+  g_variant_unref (v);
 }
 
 static void
@@ -248,6 +249,7 @@ proxy_signal_cb (GDBusProxy        *proxy,
     return;
 
   dict = g_variant_dict_new (asv);
+  g_variant_unref (asv);
   if (!dict)
     {
       g_warning ("Failed to handle PropertiesChanged signal from NetworkManager");
