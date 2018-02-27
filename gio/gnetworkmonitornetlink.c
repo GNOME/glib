@@ -206,7 +206,7 @@ queue_request_dump (GNetworkMonitorNetlink *nl)
       g_source_unref (nl->priv->dump_source);
     }
 
-  nl->priv->dump_source = g_timeout_source_new (1000);
+  nl->priv->dump_source = g_timeout_source_new_seconds (1);
   g_source_set_callback (nl->priv->dump_source,
                          (GSourceFunc) timeout_request_dump, nl, NULL);
   g_source_attach (nl->priv->dump_source, nl->priv->context);
