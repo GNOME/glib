@@ -313,10 +313,9 @@ read_netlink_messages (GSocket      *socket,
   if (len < 0)
     {
       g_warning ("Error on netlink socket: %s", error->message);
-      g_error_free (error);
-      if (nl->priv->dump_networks)
-        finish_dump (nl);
-      return FALSE;
+      g_clear_error (&error);
+      retval = FALSE;
+      goto done;
     }
 
   iv.buffer = g_malloc (len);
@@ -326,21 +325,17 @@ read_netlink_messages (GSocket      *socket,
   if (len < 0)
     {
       g_warning ("Error on netlink socket: %s", error->message);
-      g_clear_object (&addr);
-      g_error_free (error);
-      if (nl->priv->dump_networks)
-        finish_dump (nl);
-      return FALSE;
+      g_clear_error (&error);
+      retval = FALSE;
+      goto done;
     }
 
   if (!g_socket_address_to_native (addr, &source_sockaddr, sizeof (source_sockaddr), &error))
     {
       g_warning ("Error on netlink socket: %s", error->message);
-      g_clear_object (&addr);
-      g_error_free (error);
-      if (nl->priv->dump_networks)
-        finish_dump (nl);
-      return FALSE;
+      g_clear_error (&error);
+      retval = FALSE;
+      goto done;
     }
 
   /* If the sender port id is 0 (not fakeable) then the message is from the kernel */
