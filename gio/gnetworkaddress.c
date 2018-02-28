@@ -340,7 +340,7 @@ g_network_address_new_loopback (guint16 port)
  * used as the port number to connect to.
  *
  * In general, @host_and_port is expected to be provided by the user
- * (allowing them to give the hostname, and a port overide if necessary)
+ * (allowing them to give the hostname, and a port override if necessary)
  * and @default_port is expected to be provided by the application.
  *
  * (The port component of @host_and_port can also be specified as a
