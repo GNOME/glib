@@ -435,11 +435,10 @@ appid (void)
   g_assert_false (g_application_id_is_valid ("a/b"));
   g_assert_false (g_application_id_is_valid ("a\nb"));
   g_assert_false (g_application_id_is_valid ("a\nb"));
-  g_assert_false (g_application_id_is_valid ("_a.b"));
-  g_assert_false (g_application_id_is_valid ("-a.b"));
   g_assert_false (g_application_id_is_valid ("emoji_picker"));
   g_assert_false (g_application_id_is_valid ("emoji-picker"));
   g_assert_false (g_application_id_is_valid ("emojipicker"));
+  g_assert_false (g_application_id_is_valid ("my.Terminal.0123"));
   id = g_new0 (gchar, 261);
   memset (id, 'a', 260);
   id[1] = '.';
@@ -451,7 +450,13 @@ appid (void)
   g_assert_true (g_application_id_is_valid ("A.B"));
   g_assert_true (g_application_id_is_valid ("A-.B"));
   g_assert_true (g_application_id_is_valid ("a_b.c-d"));
+  g_assert_true (g_application_id_is_valid ("_a.b"));
+  g_assert_true (g_application_id_is_valid ("-a.b"));
   g_assert_true (g_application_id_is_valid ("org.gnome.SessionManager"));
+  g_assert_true (g_application_id_is_valid ("my.Terminal._0123"));
+  g_assert_true (g_application_id_is_valid ("com.example.MyApp"));
+  g_assert_true (g_application_id_is_valid ("com.example.internal_apps.Calculator"));
+  g_assert_true (g_application_id_is_valid ("org._7_zip.Archiver"));
 }
 
 static gboolean nodbus_activated;

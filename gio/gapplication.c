@@ -85,10 +85,11 @@
  * instance and g_application_run() promptly returns. See the code
  * examples below.
  *
- * If used, the expected form of an application identifier is very close
- * to that of of a
- * [D-Bus bus name](http://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-interface).
- * Examples include: "com.example.MyApp", "org.example.internal-apps.Calculator".
+ * If used, the expected form of an application identifier is the same as
+ * that of of a
+ * [D-Bus well-known bus name](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus).
+ * Examples include: `com.example.MyApp`, `org.example.internal_apps.Calculator`,
+ * `org._7_zip.Archiver`.
  * For details on valid application identifiers, see g_application_id_is_valid().
  *
  * On Linux, the application identifier is claimed as a well-known bus name
@@ -1640,67 +1641,54 @@ g_application_class_init (GApplicationClass *class)
  * A valid ID is required for calls to g_application_new() and
  * g_application_set_application_id().
  *
+ * Application identifiers follow the same format as
+ * [D-Bus well-known bus names](https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-bus).
  * For convenience, the restrictions on application identifiers are
  * reproduced here:
  *
- * - Application identifiers must contain only the ASCII characters
- *   "[A-Z][a-z][0-9]_-." and must not begin with a digit.
+ * - Application identifiers are composed of 1 or more elements separated by a
+ *   period (`.`) character. All elements must contain at least one character.
  *
- * - Application identifiers must contain at least one '.' (period)
- *   character (and thus at least two elements).
+ * - Each element must only contain the ASCII characters `[A-Z][a-z][0-9]_-`,
+ *   with `-` discouraged in new application identifiers. Each element must not
+ *   begin with a digit.
  *
- * - Application identifiers must not begin or end with a '.' (period)
- *   character.
+ * - Application identifiers must contain at least one `.` (period) character
+ *   (and thus at least two elements).
  *
- * - Application identifiers must not contain consecutive '.' (period)
- *   characters.
+ * - Application identifiers must not begin with a `.` (period) character.
  *
  * - Application identifiers must not exceed 255 characters.
+ *
+ * Note that the hyphen (`-`) character is allowed in application identifiers,
+ * but is problematic or not allowed in various specifications and APIs that
+ * refer to D-Bus, such as
+ * [Flatpak application IDs](http://docs.flatpak.org/en/latest/introduction.html#identifiers),
+ * the
+ * [`DBusActivatable` interface in the Desktop Entry Specification](https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#dbus),
+ * and the convention that an application's "main" interface and object path
+ * resemble its application identifier and bus name. To avoid situations that
+ * require special-case handling, it is recommended that new application
+ * identifiers consistently replace hyphens with underscores.
+ *
+ * Like D-Bus interface names, application identifiers should start with the
+ * reversed DNS domain name of the author of the interface (in lower-case), and
+ * it is conventional for the rest of the application identifier to consist of
+ * words run together, with initial capital letters.
+ *
+ * As with D-Bus interface names, if the author's DNS domain name contains
+ * hyphen/minus characters they should be replaced by underscores, and if it
+ * contains leading digits they should be escaped by prepending an underscore.
+ * For example, if the owner of 7-zip.org used an application identifier for an
+ * archiving application, it might be named `org._7_zip.Archiver`.
  *
  * Returns: %TRUE if @application_id is valid
  */
 gboolean
 g_application_id_is_valid (const gchar *application_id)
 {
-  gsize len;
-  gboolean allow_dot;
-  gboolean has_dot;
-
-  len = strlen (application_id);
-
-  if (len > 255)
-    return FALSE;
-
-  if (!g_ascii_isalpha (application_id[0]))
-    return FALSE;
-
-  if (application_id[len-1] == '.')
-    return FALSE;
-
-  application_id++;
-  allow_dot = TRUE;
-  has_dot = FALSE;
-  for (; *application_id; application_id++)
-    {
-      if (g_ascii_isalnum (*application_id) ||
-          (*application_id == '-') ||
-          (*application_id == '_'))
-        {
-          allow_dot = TRUE;
-        }
-      else if (allow_dot && *application_id == '.')
-        {
-          has_dot = TRUE;
-          allow_dot = FALSE;
-        }
-      else
-        return FALSE;
-    }
-
-  if (!has_dot)
-    return FALSE;
-
-  return TRUE;
+  return g_dbus_is_name (application_id) &&
+         !g_dbus_is_unique_name (application_id);
 }
 
 /* Public Constructor {{{1 */
