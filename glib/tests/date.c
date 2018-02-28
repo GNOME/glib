@@ -187,15 +187,20 @@ test_month_names (void)
 
   g_test_bug ("749206");
 
-  /* This test can only work (on non-Windows platforms) if libc supports the %OB
-   * (etc.) format placeholders. If it doesn’t, strftime() (and hence
+  /* This test can only work (on non-Windows platforms) if libc supports
+   * the %OB (etc.) format placeholders. If it doesn’t, strftime() (and hence
    * g_date_strftime()) will return the placeholder unsubstituted.
    * g_date_strftime() explicitly documents that it doesn’t provide any more
    * format placeholders than the system strftime(), so we should skip the test
    * in that case. If people need %OB support, they should depend on a suitable
-   * version of libc, or use g_date_time_format(). */
+   * version of libc, or use g_date_time_format(). Note: a test for a support
+   * of _NL_ABALTMON_* is not strictly the same as checking for %OB support.
+   * Some platforms (BSD, OS X) support %OB while _NL_ABALTMON_* and %Ob
+   * are supported only by glibc 2.27 and newer. But we don’t care about BSD
+   * here, the aim of this test is to make sure that our custom implementation
+   * for Windows works the same as glibc 2.27 native implementation. */
 #if !defined(HAVE_LANGINFO_ABALTMON) && !defined(G_OS_WIN32)
-  g_test_skip ("libc doesn’t support alternate month names");
+  g_test_skip ("libc doesn’t support all alternative month names");
 #else
 
 #define TEST_DATE(d,m,y,f,o)                                    \

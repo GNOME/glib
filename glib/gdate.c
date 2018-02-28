@@ -984,10 +984,14 @@ g_date_fill_parse_tokens (const gchar *str, GDateParseTokens *pt)
       i = 1;
       while (i < 13)
         {
-          /* Here month names will be in a genitive case.
+          /* Here month names may be in a genitive case if the language
+           * grammatical rules require it.
            * Examples of how January may look in some languages:
            * Catalan: "de gener", Croatian: "siječnja", Polish: "stycznia",
            * Upper Sorbian: "januara".
+           * Note that most of the languages can't or don't use the the
+           * genitive case here so they use nominative everywhere.
+           * For example, English always uses "January".
            */
           if (long_month_names[i] != NULL) 
             {
