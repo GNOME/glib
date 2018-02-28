@@ -1658,6 +1658,9 @@ g_date_time_add (GDateTime *datetime,
  * Creates a copy of @datetime and adds the specified number of years to the
  * copy. Add negative values to subtract years.
  *
+ * As with g_date_time_add_months(), if the resulting date would be 29th
+ * February on a non-leap year, the day will be clamped to 28th February.
+ *
  * Returns: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
  *
@@ -1692,6 +1695,11 @@ g_date_time_add_years (GDateTime *datetime,
  *
  * Creates a copy of @datetime and adds the specified number of months to the
  * copy. Add negative values to subtract months.
+ *
+ * The day of the month of the resulting #GDateTime is clamped to the number
+ * of days in the updated calendar month. For example, if adding 1 month to
+ * 31st January 2018, the result would be 28th February 2018. In 2020 (a leap
+ * year), the result would be 29th February.
  *
  * Returns: the newly created #GDateTime which should be freed with
  *   g_date_time_unref().
