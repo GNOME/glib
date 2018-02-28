@@ -425,33 +425,33 @@ appid (void)
 {
   gchar *id;
 
-  g_assert (!g_application_id_is_valid (""));
-  g_assert (!g_application_id_is_valid ("."));
-  g_assert (!g_application_id_is_valid ("a"));
-  g_assert (!g_application_id_is_valid ("abc"));
-  g_assert (!g_application_id_is_valid (".abc"));
-  g_assert (!g_application_id_is_valid ("abc."));
-  g_assert (!g_application_id_is_valid ("a..b"));
-  g_assert (!g_application_id_is_valid ("a/b"));
-  g_assert (!g_application_id_is_valid ("a\nb"));
-  g_assert (!g_application_id_is_valid ("a\nb"));
-  g_assert (!g_application_id_is_valid ("_a.b"));
-  g_assert (!g_application_id_is_valid ("-a.b"));
-  g_assert (!g_application_id_is_valid ("emoji_picker"));
-  g_assert (!g_application_id_is_valid ("emoji-picker"));
-  g_assert (!g_application_id_is_valid ("emojipicker"));
+  g_assert_false (g_application_id_is_valid (""));
+  g_assert_false (g_application_id_is_valid ("."));
+  g_assert_false (g_application_id_is_valid ("a"));
+  g_assert_false (g_application_id_is_valid ("abc"));
+  g_assert_false (g_application_id_is_valid (".abc"));
+  g_assert_false (g_application_id_is_valid ("abc."));
+  g_assert_false (g_application_id_is_valid ("a..b"));
+  g_assert_false (g_application_id_is_valid ("a/b"));
+  g_assert_false (g_application_id_is_valid ("a\nb"));
+  g_assert_false (g_application_id_is_valid ("a\nb"));
+  g_assert_false (g_application_id_is_valid ("_a.b"));
+  g_assert_false (g_application_id_is_valid ("-a.b"));
+  g_assert_false (g_application_id_is_valid ("emoji_picker"));
+  g_assert_false (g_application_id_is_valid ("emoji-picker"));
+  g_assert_false (g_application_id_is_valid ("emojipicker"));
   id = g_new0 (gchar, 261);
   memset (id, 'a', 260);
   id[1] = '.';
   id[260] = 0;
-  g_assert (!g_application_id_is_valid (id));
+  g_assert_false (g_application_id_is_valid (id));
   g_free (id);
 
-  g_assert (g_application_id_is_valid ("a.b"));
-  g_assert (g_application_id_is_valid ("A.B"));
-  g_assert (g_application_id_is_valid ("A-.B"));
-  g_assert (g_application_id_is_valid ("a_b.c-d"));
-  g_assert (g_application_id_is_valid ("org.gnome.SessionManager"));
+  g_assert_true (g_application_id_is_valid ("a.b"));
+  g_assert_true (g_application_id_is_valid ("A.B"));
+  g_assert_true (g_application_id_is_valid ("A-.B"));
+  g_assert_true (g_application_id_is_valid ("a_b.c-d"));
+  g_assert_true (g_application_id_is_valid ("org.gnome.SessionManager"));
 }
 
 static gboolean nodbus_activated;
