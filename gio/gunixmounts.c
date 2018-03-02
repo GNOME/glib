@@ -2688,18 +2688,29 @@ g_unix_mount_guess_should_display (GUnixMountEntry *mount_entry)
   mount_path = mount_entry->mount_path;
   if (mount_path != NULL)
     {
+      const gboolean running_as_root = (getuid () == 0);
       gboolean is_in_runtime_dir = FALSE;
+
       /* Hide mounts within a dot path, suppose it was a purpose to hide this mount */
       if (g_strstr_len (mount_path, -1, "/.") != NULL)
         return FALSE;
 
-      /* Check /run/media/$USER/ */
-      user_name = g_get_user_name ();
-      user_name_len = strlen (user_name);
-      if (strncmp (mount_path, "/run/media/", sizeof ("/run/media/") - 1) == 0 &&
-          strncmp (mount_path + sizeof ("/run/media/") - 1, user_name, user_name_len) == 0 &&
-          mount_path[sizeof ("/run/media/") - 1 + user_name_len] == '/')
-        is_in_runtime_dir = TRUE;
+      /* Check /run/media/$USER/. If running as root, display any mounts below
+       * /run/media/. */
+      if (running_as_root)
+        {
+          if (strncmp (mount_path, "/run/media/", strlen ("/run/media/")) == 0)
+            is_in_runtime_dir = TRUE;
+        }
+      else
+        {
+          user_name = g_get_user_name ();
+          user_name_len = strlen (user_name);
+          if (strncmp (mount_path, "/run/media/", strlen ("/run/media/")) == 0 &&
+              strncmp (mount_path + strlen ("/run/media/"), user_name, user_name_len) == 0 &&
+              mount_path[strlen ("/run/media/") + user_name_len] == '/')
+            is_in_runtime_dir = TRUE;
+        }
 
       if (is_in_runtime_dir || g_str_has_prefix (mount_path, "/media/"))
         {
