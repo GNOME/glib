@@ -34,6 +34,9 @@ gchar *               g_get_codeset         (void);
 
 GLIB_AVAILABLE_IN_ALL
 const gchar * const * g_get_language_names  (void);
+GLIB_AVAILABLE_IN_2_58
+const gchar * const * g_get_language_names_with_category
+                                            (const gchar *category_name);
 GLIB_AVAILABLE_IN_ALL
 gchar **              g_get_locale_variants (const gchar *locale);
 

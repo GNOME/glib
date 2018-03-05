@@ -6,6 +6,7 @@ glib_tests = [
   'bookmarkfile',
   'bytes',
   'cache',
+  'charset',
   'checksum',
   'collate',
   'cond',

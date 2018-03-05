@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include "gcharset.h"
 #include "gcharsetprivate.h"
 
 #include "garray.h"
@@ -553,44 +554,77 @@ language_names_cache_free (gpointer data)
  *    that must not be modified or freed.
  *
  * Since: 2.6
- **/
+ */
 const gchar * const *
 g_get_language_names (void)
 {
-  static GPrivate cache_private = G_PRIVATE_INIT (language_names_cache_free);
-  GLanguageNamesCache *cache = g_private_get (&cache_private);
-  const gchar *value;
+  return g_get_language_names_with_category ("LC_MESSAGES");
+}
+
+/**
+ * g_get_language_names_with_category:
+ * @category_name: a locale category name
+ *
+ * Computes a list of applicable locale names with a locale category name,
+ * which can be used to construct the fallback locale-dependent filenames
+ * or search paths. The returned list is sorted from most desirable to
+ * least desirable and always contains the default locale "C".
+ *
+ * This function consults the environment variables `LANGUAGE`, `LC_ALL`,
+ * @category_name, and `LANG` to find the list of locales specified by the
+ * user.
+ *
+ * g_get_language_names() returns g_get_language_names_with_category("LC_MESSAGES").
+ *
+ * Returns: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib
+ *    that must not be modified or freed.
+ *
+ * Since: 2.58
+ */
+const gchar * const *
+g_get_language_names_with_category (const gchar *category_name)
+{
+  static GPrivate cache_private = G_PRIVATE_INIT ((void (*)(gpointer)) g_hash_table_remove_all);
+  GHashTable *cache = g_private_get (&cache_private);
+  const gchar *languages;
+  GLanguageNamesCache *name_cache;
+
+  g_return_val_if_fail (category_name != NULL, NULL);
 
   if (!cache)
     {
-      cache = g_new0 (GLanguageNamesCache, 1);
+      cache = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                     g_free, language_names_cache_free);
       g_private_set (&cache_private, cache);
     }
 
-  value = guess_category_value ("LC_MESSAGES");
-  if (!value)
-    value = "C";
+  languages = guess_category_value (category_name);
+  if (!languages)
+    languages = "C";
 
-  if (!(cache->languages && strcmp (cache->languages, value) == 0))
+  name_cache = (GLanguageNamesCache *) g_hash_table_lookup (cache, category_name);
+  if (!(name_cache && name_cache->languages &&
+        strcmp (name_cache->languages, languages) == 0))
     {
       GPtrArray *array;
       gchar **alist, **a;
 
-      g_free (cache->languages);
-      g_strfreev (cache->language_names);
-      cache->languages = g_strdup (value);
+      g_hash_table_remove (cache, category_name);
 
       array = g_ptr_array_sized_new (8);
 
-      alist = g_strsplit (value, ":", 0);
+      alist = g_strsplit (languages, ":", 0);
       for (a = alist; *a; a++)
         append_locale_variants (array, unalias_lang (*a));
       g_strfreev (alist);
       g_ptr_array_add (array, g_strdup ("C"));
       g_ptr_array_add (array, NULL);
 
-      cache->language_names = (gchar **) g_ptr_array_free (array, FALSE);
+      name_cache = g_new0 (GLanguageNamesCache, 1);
+      name_cache->languages = g_strdup (languages);
+      name_cache->language_names = (gchar **) g_ptr_array_free (array, FALSE);
+      g_hash_table_insert (cache, g_strdup (category_name), name_cache);
     }
 
-  return (const gchar * const *) cache->language_names;
+  return (const gchar * const *) name_cache->language_names;
 }
