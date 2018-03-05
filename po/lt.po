@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2018-03-03 11:23+0000\n"
-"PO-Revision-Date: 2018-03-05 22:43+0200\n"
+"PO-Revision-Date: 2018-03-05 22:56+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -4395,62 +4395,62 @@ msgstr "gruodis"
 #: ../glib/gdatetime.c:305
 msgctxt "abbreviated month name"
 msgid "Jan"
-msgstr "Sau"
+msgstr "saus."
 
 #: ../glib/gdatetime.c:307
 msgctxt "abbreviated month name"
 msgid "Feb"
-msgstr "Vas"
+msgstr "vas."
 
 #: ../glib/gdatetime.c:309
 msgctxt "abbreviated month name"
 msgid "Mar"
-msgstr "Kov"
+msgstr "kov."
 
 #: ../glib/gdatetime.c:311
 msgctxt "abbreviated month name"
 msgid "Apr"
-msgstr "Bal"
+msgstr "bal."
 
 #: ../glib/gdatetime.c:313
 msgctxt "abbreviated month name"
 msgid "May"
-msgstr "Geg"
+msgstr "geg."
 
 #: ../glib/gdatetime.c:315
 msgctxt "abbreviated month name"
 msgid "Jun"
-msgstr "Bir"
+msgstr "birž."
 
 #: ../glib/gdatetime.c:317
 msgctxt "abbreviated month name"
 msgid "Jul"
-msgstr "Lie"
+msgstr "liep."
 
 #: ../glib/gdatetime.c:319
 msgctxt "abbreviated month name"
 msgid "Aug"
-msgstr "Rgp"
+msgstr "rugp."
 
 #: ../glib/gdatetime.c:321
 msgctxt "abbreviated month name"
 msgid "Sep"
-msgstr "Rgs"
+msgstr "rugs."
 
 #: ../glib/gdatetime.c:323
 msgctxt "abbreviated month name"
 msgid "Oct"
-msgstr "Spa"
+msgstr "spal."
 
 #: ../glib/gdatetime.c:325
 msgctxt "abbreviated month name"
 msgid "Nov"
-msgstr "Lap"
+msgstr "lapkr."
 
 #: ../glib/gdatetime.c:327
 msgctxt "abbreviated month name"
 msgid "Dec"
-msgstr "Grd"
+msgstr "gruod."
 
 #: ../glib/gdatetime.c:342
 msgctxt "full weekday name"
@@ -4619,62 +4619,62 @@ msgstr "gruodžio"
 #: ../glib/gdatetime.c:524
 msgctxt "abbreviated month name with day"
 msgid "Jan"
-msgstr "sau"
+msgstr "saus."
 
 #: ../glib/gdatetime.c:526
 msgctxt "abbreviated month name with day"
 msgid "Feb"
-msgstr "vas"
+msgstr "vas."
 
 #: ../glib/gdatetime.c:528
 msgctxt "abbreviated month name with day"
 msgid "Mar"
-msgstr "kov"
+msgstr "kov."
 
 #: ../glib/gdatetime.c:530
 msgctxt "abbreviated month name with day"
 msgid "Apr"
-msgstr "bal"
+msgstr "bal."
 
 #: ../glib/gdatetime.c:532
 msgctxt "abbreviated month name with day"
 msgid "May"
-msgstr "geg"
+msgstr "geg."
 
 #: ../glib/gdatetime.c:534
 msgctxt "abbreviated month name with day"
 msgid "Jun"
-msgstr "bir"
+msgstr "birž."
 
 #: ../glib/gdatetime.c:536
 msgctxt "abbreviated month name with day"
 msgid "Jul"
-msgstr "lie"
+msgstr "liep."
 
 #: ../glib/gdatetime.c:538
 msgctxt "abbreviated month name with day"
 msgid "Aug"
-msgstr "rgp"
+msgstr "rugp."
 
 #: ../glib/gdatetime.c:540
 msgctxt "abbreviated month name with day"
 msgid "Sep"
-msgstr "rgs"
+msgstr "rugs."
 
 #: ../glib/gdatetime.c:542
 msgctxt "abbreviated month name with day"
 msgid "Oct"
-msgstr "spa"
+msgstr "spal."
 
 #: ../glib/gdatetime.c:544
 msgctxt "abbreviated month name with day"
 msgid "Nov"
-msgstr "lap"
+msgstr "lapkr."
 
 #: ../glib/gdatetime.c:546
 msgctxt "abbreviated month name with day"
 msgid "Dec"
-msgstr "grd"
+msgstr "gruod."
 
 #. Translators: 'before midday' indicator
 #: ../glib/gdatetime.c:563
