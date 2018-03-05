@@ -3515,7 +3515,7 @@ msgstr "Φεβ"
 #: ../glib/gdatetime.c:269
 msgctxt "abbreviated month name"
 msgid "Mar"
-msgstr "Μαρ"
+msgstr "Μάρ"
 
 #: ../glib/gdatetime.c:271
 msgctxt "abbreviated month name"
@@ -3525,22 +3525,22 @@ msgstr "Απρ"
 #: ../glib/gdatetime.c:273
 msgctxt "abbreviated month name"
 msgid "May"
-msgstr "Μαϊ"
+msgstr "Μάι"
 
 #: ../glib/gdatetime.c:275
 msgctxt "abbreviated month name"
 msgid "Jun"
-msgstr "Ιουν"
+msgstr "Ιούν"
 
 #: ../glib/gdatetime.c:277
 msgctxt "abbreviated month name"
 msgid "Jul"
-msgstr "Ιουλ"
+msgstr "Ιούλ"
 
 #: ../glib/gdatetime.c:279
 msgctxt "abbreviated month name"
 msgid "Aug"
-msgstr "Αυγ"
+msgstr "Αύγ"
 
 #: ../glib/gdatetime.c:281
 msgctxt "abbreviated month name"
@@ -3555,7 +3555,7 @@ msgstr "Οκτ"
 #: ../glib/gdatetime.c:285
 msgctxt "abbreviated month name"
 msgid "Nov"
-msgstr "Νοε"
+msgstr "Νοέ"
 
 #: ../glib/gdatetime.c:287
 msgctxt "abbreviated month name"
