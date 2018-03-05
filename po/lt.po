@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-03-02 12:50+0000\n"
-"PO-Revision-Date: 2018-03-03 13:21+0200\n"
+"POT-Creation-Date: 2018-03-03 11:23+0000\n"
+"PO-Revision-Date: 2018-03-05 22:43+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -4318,62 +4318,62 @@ msgstr "%I:%M:%S"
 #: ../glib/gdatetime.c:251
 msgctxt "full month name"
 msgid "January"
-msgstr "Sausis"
+msgstr "sausis"
 
 #: ../glib/gdatetime.c:253
 msgctxt "full month name"
 msgid "February"
-msgstr "Vasaris"
+msgstr "vasaris"
 
 #: ../glib/gdatetime.c:255
 msgctxt "full month name"
 msgid "March"
-msgstr "Kovas"
+msgstr "kovas"
 
 #: ../glib/gdatetime.c:257
 msgctxt "full month name"
 msgid "April"
-msgstr "Balandis"
+msgstr "balandis"
 
 #: ../glib/gdatetime.c:259
 msgctxt "full month name"
 msgid "May"
-msgstr "Gegužė"
+msgstr "gegužė"
 
 #: ../glib/gdatetime.c:261
 msgctxt "full month name"
 msgid "June"
-msgstr "Birželis"
+msgstr "birželis"
 
 #: ../glib/gdatetime.c:263
 msgctxt "full month name"
 msgid "July"
-msgstr "Liepa"
+msgstr "liepa"
 
 #: ../glib/gdatetime.c:265
 msgctxt "full month name"
 msgid "August"
-msgstr "Rugpjūtis"
+msgstr "rugpjūtis"
 
 #: ../glib/gdatetime.c:267
 msgctxt "full month name"
 msgid "September"
-msgstr "Rugsėjis"
+msgstr "rugsėjis"
 
 #: ../glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "October"
-msgstr "Spalis"
+msgstr "spalis"
 
 #: ../glib/gdatetime.c:271
 msgctxt "full month name"
 msgid "November"
-msgstr "Lapkritis"
+msgstr "lapkritis"
 
 #: ../glib/gdatetime.c:273
 msgctxt "full month name"
 msgid "December"
-msgstr "Gruodis"
+msgstr "gruodis"
 
 #. Translators: Some languages need different grammatical forms of
 #. * month names depending on whether they are standalone or in a complete
