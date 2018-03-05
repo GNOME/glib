@@ -230,7 +230,7 @@ AC_SUBST([CARBON_LIBS])
 ac_cv_have_os_x_9_or_later="no"
 AS_IF([test "x$glib_have_cocoa" = "xyes"], [
   AC_DEFINE(HAVE_COCOA, 1, [define to 1 if Cocoa is available])
-  COCOA_LIBS="-Wl,-framework,Foundation"
+  COCOA_LIBS="-Wl,-framework,Foundation -Wl,-framework,AppKit"
   LDFLAGS="$LDFLAGS $COCOA_LIBS"
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <AvailabilityMacros.h>

@@ -524,7 +524,7 @@ glib_have_cocoa = cc.compiles('''#include <Cocoa/Cocoa.h>
 
 if glib_have_cocoa
   glib_conf.set('HAVE_COCOA', true)
-  COCOA_LIBS='-Wl,-framework,Foundation' # FIXME: propagate to .pc files as well
+  COCOA_LIBS='-Wl,-framework,Foundation -Wl,-framework,AppKit' # FIXME: propagate to .pc files as well
   platform_ldflags += [COCOA_LIBS]
 else
   COCOA_LIBS=''
