@@ -417,15 +417,15 @@ hexdecode (const gchar  *str,
    return ret;
 }
 
-/* TODO: take len */
 static gchar *
-hexencode (const gchar *str)
+hexencode (const gchar *str,
+           gsize        str_len)
 {
   guint n;
   GString *s;
 
   s = g_string_new (NULL);
-  for (n = 0; str[n] != '\0'; n++)
+  for (n = 0; n < str_len; n++)
     {
       gint val;
       gint upper_nibble;
@@ -536,7 +536,7 @@ client_choose_mech_and_send_initial_response (GDBusAuth           *auth,
       goto again;
     }
 
-  initial_response_len = -1;
+  initial_response_len = 0;
   initial_response = _g_dbus_auth_mechanism_client_initiate (mech,
                                                              &initial_response_len);
 #if 0
@@ -548,7 +548,7 @@ client_choose_mech_and_send_initial_response (GDBusAuth           *auth,
   if (initial_response != NULL)
     {
       //g_printerr ("initial_response = '%s'\n", initial_response);
-      encoded = hexencode (initial_response);
+      encoded = hexencode (initial_response, initial_response_len);
       s = g_strdup_printf ("AUTH %s %s\r\n",
                            _g_dbus_auth_mechanism_get_name (auth_mech_to_use_gtype),
                            encoded);
@@ -840,7 +840,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
                   gsize data_len;
                   gchar *encoded_data;
                   data = _g_dbus_auth_mechanism_client_data_send (mech, &data_len);
-                  encoded_data = hexencode (data);
+                  encoded_data = hexencode (data, data_len);
                   s = g_strdup_printf ("DATA %s\r\n", encoded_data);
                   g_free (encoded_data);
                   g_free (data);
@@ -1215,7 +1215,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                           {
                             gchar *encoded_data;
 
-                            encoded_data = hexencode (data);
+                            encoded_data = hexencode (data, data_len);
                             s = g_strdup_printf ("DATA %s\r\n", encoded_data);
                             g_free (encoded_data);
                             g_free (data);
