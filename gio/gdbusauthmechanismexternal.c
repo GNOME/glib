@@ -337,7 +337,7 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
   m->priv->is_client = TRUE;
   m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED;
 
-  *out_initial_response_len = -1;
+  *out_initial_response_len = 0;
 
   credentials = _g_dbus_auth_mechanism_get_credentials (mechanism);
   g_assert (credentials != NULL);

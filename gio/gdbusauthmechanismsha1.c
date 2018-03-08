@@ -1118,7 +1118,7 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
   m->priv->is_client = TRUE;
   m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_WAITING_FOR_DATA;
 
-  *out_initial_response_len = -1;
+  *out_initial_response_len = 0;
 
 #ifdef G_OS_UNIX
   initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, (gint64) getuid ());
