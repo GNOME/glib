@@ -262,6 +262,7 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
                            gsize                *out_initial_response_len)
 {
   GDBusAuthMechanismAnon *m = G_DBUS_AUTH_MECHANISM_ANON (mechanism);
+  gchar *result;
 
   g_return_val_if_fail (G_IS_DBUS_AUTH_MECHANISM_ANON (mechanism), NULL);
   g_return_val_if_fail (!m->priv->is_server && !m->priv->is_client, NULL);
@@ -269,10 +270,11 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
   m->priv->is_client = TRUE;
   m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED;
 
-  *out_initial_response_len = -1;
-
   /* just return our library name and version */
-  return g_strdup ("GDBus 0.1");
+  result = g_strdup ("GDBus 0.1");
+  *out_initial_response_len = strlen (result);
+
+  return result;
 }
 
 static void

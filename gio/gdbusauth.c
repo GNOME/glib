@@ -404,13 +404,17 @@ hexdecode (const gchar  *str,
       g_string_append_c (s, value);
     }
 
+  *out_len = s->len;
   ret = g_string_free (s, FALSE);
   s = NULL;
 
  out:
   if (s != NULL)
-    g_string_free (s, TRUE);
-  return ret;
+    {
+      *out_len = 0;
+      g_string_free (s, TRUE);
+    }
+   return ret;
 }
 
 /* TODO: take len */

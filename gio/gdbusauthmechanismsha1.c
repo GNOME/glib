@@ -949,7 +949,7 @@ mechanism_server_initiate (GDBusAuthMechanism   *mechanism,
   m->priv->is_server = TRUE;
   m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
 
-  if (initial_response != NULL && strlen (initial_response) > 0)
+  if (initial_response != NULL && initial_response_len > 0)
     {
 #ifdef G_OS_UNIX
       gint64 uid;
@@ -1035,6 +1035,7 @@ mechanism_server_data_send (GDBusAuthMechanism   *mechanism,
   g_return_val_if_fail (m->priv->state == G_DBUS_AUTH_MECHANISM_STATE_HAVE_DATA_TO_SEND, NULL);
 
   s = NULL;
+  *out_data_len = 0;
 
   /* TODO: use GDBusAuthObserver here to get the cookie context to use? */
   cookie_context = "org_gtk_gdbus_general";
@@ -1057,6 +1058,7 @@ mechanism_server_data_send (GDBusAuthMechanism   *mechanism,
                        cookie_context,
                        cookie_id,
                        m->priv->server_challenge);
+  *out_data_len = strlen (s);
 
   m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_WAITING_FOR_DATA;
 
@@ -1120,8 +1122,10 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
 
 #ifdef G_OS_UNIX
   initial_response = g_strdup_printf ("%" G_GINT64_FORMAT, (gint64) getuid ());
+  *out_initial_response_len = strlen (initial_response);
 #elif defined (G_OS_WIN32)
-initial_response = _g_dbus_win32_get_user_sid ();
+  initial_response = _g_dbus_win32_get_user_sid ();
+  *out_initial_response_len = strlen (initial_response);
 #else
 #error Please implement for your OS
 #endif
@@ -1208,6 +1212,7 @@ mechanism_client_data_send (GDBusAuthMechanism   *mechanism,
 
   m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED;
 
+  *out_data_len = strlen (m->priv->to_send);
   return g_strdup (m->priv->to_send);
 }
 
