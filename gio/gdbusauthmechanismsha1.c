@@ -307,42 +307,6 @@ out:
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static void
-append_nibble (GString *s, gint val)
-{
-  g_string_append_c (s, val >= 10 ? ('a' + val - 10) : ('0' + val));
-}
-
-static gchar *
-hexencode (const gchar *str,
-           gssize       len)
-{
-  guint n;
-  GString *s;
-
-  if (len == -1)
-    len = strlen (str);
-
-  s = g_string_new (NULL);
-  for (n = 0; n < len; n++)
-    {
-      gint val;
-      gint upper_nibble;
-      gint lower_nibble;
-
-      val = ((const guchar *) str)[n];
-      upper_nibble = val >> 4;
-      lower_nibble = val & 0x0f;
-
-      append_nibble (s, upper_nibble);
-      append_nibble (s, lower_nibble);
-    }
-
-  return g_string_free (s, FALSE);
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
-
 /* looks up an entry in the keyring */
 static gchar *
 keyring_lookup_entry (const gchar  *cookie_context,
@@ -836,7 +800,7 @@ keyring_generate_entry (const gchar  *cookie_context,
       gchar *raw_cookie;
       *out_id = max_line_id + 1;
       raw_cookie = random_blob (32);
-      *out_cookie = hexencode (raw_cookie, 32);
+      *out_cookie = _g_dbus_hexencode (raw_cookie, 32);
       g_free (raw_cookie);
 
       g_string_append_printf (new_contents,

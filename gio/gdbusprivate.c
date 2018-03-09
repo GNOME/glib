@@ -2232,3 +2232,38 @@ _g_signal_accumulator_false_handled (GSignalInvocationHint *ihint,
 
   return continue_emission;
 }
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static void
+append_nibble (GString *s, gint val)
+{
+  g_string_append_c (s, val >= 10 ? ('a' + val - 10) : ('0' + val));
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+gchar *
+_g_dbus_hexencode (const gchar *str,
+                   gsize        str_len)
+{
+  gsize n;
+  GString *s;
+
+  s = g_string_new (NULL);
+  for (n = 0; n < str_len; n++)
+    {
+      gint val;
+      gint upper_nibble;
+      gint lower_nibble;
+
+      val = ((const guchar *) str)[n];
+      upper_nibble = val >> 4;
+      lower_nibble = val & 0x0f;
+
+      append_nibble (s, upper_nibble);
+      append_nibble (s, lower_nibble);
+    }
+
+  return g_string_free (s, FALSE);
+}

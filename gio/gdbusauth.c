@@ -365,12 +365,6 @@ _my_g_input_stream_read_line_safe (GInputStream  *i,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static void
-append_nibble (GString *s, gint val)
-{
-  g_string_append_c (s, val >= 10 ? ('a' + val - 10) : ('0' + val));
-}
-
 static gchar *
 hexdecode (const gchar  *str,
            gsize        *out_len,
@@ -415,31 +409,6 @@ hexdecode (const gchar  *str,
       g_string_free (s, TRUE);
     }
    return ret;
-}
-
-static gchar *
-hexencode (const gchar *str,
-           gsize        str_len)
-{
-  guint n;
-  GString *s;
-
-  s = g_string_new (NULL);
-  for (n = 0; n < str_len; n++)
-    {
-      gint val;
-      gint upper_nibble;
-      gint lower_nibble;
-
-      val = ((const guchar *) str)[n];
-      upper_nibble = val >> 4;
-      lower_nibble = val & 0x0f;
-
-      append_nibble (s, upper_nibble);
-      append_nibble (s, lower_nibble);
-    }
-
-  return g_string_free (s, FALSE);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -548,7 +517,7 @@ client_choose_mech_and_send_initial_response (GDBusAuth           *auth,
   if (initial_response != NULL)
     {
       //g_printerr ("initial_response = '%s'\n", initial_response);
-      encoded = hexencode (initial_response, initial_response_len);
+      encoded = _g_dbus_hexencode (initial_response, initial_response_len);
       s = g_strdup_printf ("AUTH %s %s\r\n",
                            _g_dbus_auth_mechanism_get_name (auth_mech_to_use_gtype),
                            encoded);
@@ -840,7 +809,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
                   gsize data_len;
                   gchar *encoded_data;
                   data = _g_dbus_auth_mechanism_client_data_send (mech, &data_len);
-                  encoded_data = hexencode (data, data_len);
+                  encoded_data = _g_dbus_hexencode (data, data_len);
                   s = g_strdup_printf ("DATA %s\r\n", encoded_data);
                   g_free (encoded_data);
                   g_free (data);
@@ -1215,7 +1184,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
                           {
                             gchar *encoded_data;
 
-                            encoded_data = hexencode (data, data_len);
+                            encoded_data = _g_dbus_hexencode (data, data_len);
                             s = g_strdup_printf ("DATA %s\r\n", encoded_data);
                             g_free (encoded_data);
                             g_free (data);
