@@ -28,7 +28,7 @@ def g_type_to_name (gtype):
         val = read_global_var ("static_fundamental_type_nodes")
         if val == None:
             return None
-        return val[typenode >> 2].address()
+        return val[typenode >> 2].address
 
     gtype = long(gtype)
     typenode = gtype - gtype % 4
