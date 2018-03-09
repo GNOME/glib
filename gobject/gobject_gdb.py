@@ -21,7 +21,7 @@ except ImportError:
 def read_global_var (symname):
     return gdb.selected_frame().read_var(symname)
 
-def g_type_to_name (gtype):
+def g_type_to_typenode (gtype):
     def lookup_fundamental_type (typenode):
         if typenode == 0:
             return None
@@ -36,6 +36,10 @@ def g_type_to_name (gtype):
         typenode = gdb.Value(typenode).cast (gdb.lookup_type("TypeNode").pointer())
     else:
         typenode = lookup_fundamental_type (typenode)
+    return typenode
+
+def g_type_to_name (gtype):
+    typenode = g_type_to_typenode(gtype)
     if typenode != None:
         return glib_gdb.g_quark_to_string (typenode["qname"])
     return None
@@ -88,9 +92,42 @@ class GTypePrettyPrinter:
             return ("0x%x [%s]")% (long(self.val), name)
         return  ("0x%x") % (long(self.val))
 
+def is_g_type_class_instance (val):
+    type = val.type
+    if type.code != gdb.TYPE_CODE_PTR:
+        return False
+    return str(type.target()) == "GTypeClass"
+
+class GTypeHandlePrettyPrinter:
+    "Prints a GType instance"
+
+    def __init__ (self, val, hint = ""):
+        self.val = val
+        self.hint = hint
+
+    def to_string (self):
+        typenode = g_type_to_typenode(self.val)
+        if typenode != None:
+            name = glib_gdb.g_quark_to_string (typenode["qname"])
+            s = ("0x%x [%s%s")% (long(self.val), self.hint, name)
+            for i in range (1, int(typenode["n_supers"])):
+                node = g_type_to_typenode(typenode["supers"][i])
+                if node:
+                    name = glib_gdb.g_quark_to_string(node["qname"])
+                else:
+                    name = "???"
+                s += "/" + name
+            return s + "]"
+        else:
+            return  ("0x%x") % (long(self.val))
+
 def pretty_printer_lookup (val):
     if is_g_type_instance (val):
         return GTypePrettyPrinter (val)
+    if str(val.type) == "GType":
+        return GTypeHandlePrettyPrinter (val)
+    if is_g_type_class_instance (val):
+        return GTypeHandlePrettyPrinter (val["g_type"], "g_type: ")
 
     return None
 
