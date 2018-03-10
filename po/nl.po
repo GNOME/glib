@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-02-16 14:39+0000\n"
-"PO-Revision-Date: 2018-03-03 22:36+0100\n"
+"POT-Creation-Date: 2018-03-04 13:50+0000\n"
+"PO-Revision-Date: 2018-03-10 16:44+0100\n"
 "Last-Translator: Justin van Steijn <jvs@fsfe.org>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
@@ -23,16 +23,12 @@ msgstr ""
 "X-Generator: Poedit 1.8.11\n"
 
 #: ../gio/gapplication.c:495
-#, fuzzy
-#| msgid "Application Options:"
 msgid "GApplication options"
-msgstr "Programmaopties:"
+msgstr "GApplication-opties"
 
 #: ../gio/gapplication.c:495
-#, fuzzy
-#| msgid "Application Options:"
 msgid "Show GApplication options"
-msgstr "Programmaopties:"
+msgstr "GApplication-opties tonen"
 
 #: ../gio/gapplication.c:540
 msgid "Enter GApplication service mode (use from D-Bus service files)"
@@ -46,51 +42,44 @@ msgstr ""
 #: ../gio/gio-tool.c:227 ../gio/gresource-tool.c:488
 #: ../gio/gsettings-tool.c:569
 msgid "Print help"
-msgstr ""
+msgstr "Hulp tonen"
 
 #: ../gio/gapplication-tool.c:47 ../gio/gresource-tool.c:489
 #: ../gio/gresource-tool.c:557
-#, fuzzy
 msgid "[COMMAND]"
-msgstr "OPDRACHT"
+msgstr "[OPDRACHT]"
 
 #: ../gio/gapplication-tool.c:49 ../gio/gio-tool.c:228
-#, fuzzy
-#| msgid "Print address"
 msgid "Print version"
-msgstr "Adres tonen"
+msgstr "Versie tonen"
 
 #: ../gio/gapplication-tool.c:50 ../gio/gsettings-tool.c:575
 msgid "Print version information and exit"
-msgstr ""
+msgstr "Versie-informatie tonen en afsluiten"
 
 #: ../gio/gapplication-tool.c:52
-#, fuzzy
-#| msgid "Can't find application"
 msgid "List applications"
-msgstr "Kan het programma niet vinden"
+msgstr "Toepassingen tonen"
 
 #: ../gio/gapplication-tool.c:53
 msgid "List the installed D-Bus activatable applications (by .desktop files)"
 msgstr ""
 
 #: ../gio/gapplication-tool.c:55
-#, fuzzy
-#| msgid "Can't find application"
 msgid "Launch an application"
-msgstr "Kan het programma niet vinden"
+msgstr "Een toepassing starten"
 
 #: ../gio/gapplication-tool.c:56
 msgid "Launch the application (with optional files to open)"
-msgstr ""
+msgstr "De toepassing starten (met optioneel te openen bestanden)"
 
 #: ../gio/gapplication-tool.c:57
 msgid "APPID [FILE…]"
-msgstr ""
+msgstr "APPID [BESTAND…]"
 
 #: ../gio/gapplication-tool.c:59
 msgid "Activate an action"
-msgstr ""
+msgstr "Een actie activeren"
 
 #: ../gio/gapplication-tool.c:60
 msgid "Invoke an action on the application"
@@ -98,11 +87,11 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:61
 msgid "APPID ACTION [PARAMETER]"
-msgstr ""
+msgstr "APPID ACTIE [PARAMETER]"
 
 #: ../gio/gapplication-tool.c:63
 msgid "List available actions"
-msgstr ""
+msgstr "Beschikbare acties tonen"
 
 #: ../gio/gapplication-tool.c:64
 msgid "List static actions for an application (from .desktop file)"
@@ -110,7 +99,7 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:65 ../gio/gapplication-tool.c:71
 msgid "APPID"
-msgstr ""
+msgstr "APPID"
 
 #: ../gio/gapplication-tool.c:70 ../gio/gapplication-tool.c:133
 #: ../gio/gdbus-tool.c:90 ../gio/gio-tool.c:224
@@ -137,18 +126,16 @@ msgstr ""
 
 #: ../gio/gapplication-tool.c:73
 msgid "ACTION"
-msgstr ""
+msgstr "ACTIE"
 
 # opsomming/teller
 #: ../gio/gapplication-tool.c:73
-#, fuzzy
-#| msgid "The connection is closed"
 msgid "The action name to invoke"
-msgstr "De verbinding is gesloten"
+msgstr "De actienaam om aan te roepen"
 
 #: ../gio/gapplication-tool.c:74
 msgid "PARAMETER"
-msgstr ""
+msgstr "PARAMETER"
 
 #: ../gio/gapplication-tool.c:74
 msgid "Optional parameter to the action invocation, in GVariant format"
@@ -171,16 +158,16 @@ msgstr "Gebruik:\n"
 #: ../gio/gapplication-tool.c:114 ../gio/gresource-tool.c:551
 #: ../gio/gsettings-tool.c:696
 msgid "Arguments:\n"
-msgstr ""
+msgstr "Argumenten:\n"
 
 #: ../gio/gapplication-tool.c:133
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[ARGUMENTEN…]"
 
 #: ../gio/gapplication-tool.c:134
 #, c-format
 msgid "Commands:\n"
-msgstr ""
+msgstr "Opdrachten:\n"
 
 #. Translators: do not translate 'help', but please translate 'COMMAND'.
 #: ../gio/gapplication-tool.c:146
@@ -209,6 +196,8 @@ msgid ""
 "“%s” takes no arguments\n"
 "\n"
 msgstr ""
+"‘%s’ verwacht geen argumenten\n"
+"\n"
 
 # Openen van converteerder van '%s' naar '%s' mislukt: %s
 #: ../gio/gapplication-tool.c:266
@@ -1041,267 +1030,264 @@ msgid ""
 "Use “%s COMMAND --help” to get help on each command.\n"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:167 ../gio/gdbus-tool.c:234 ../gio/gdbus-tool.c:306
-#: ../gio/gdbus-tool.c:330 ../gio/gdbus-tool.c:811 ../gio/gdbus-tool.c:1150
-#: ../gio/gdbus-tool.c:1592
+#: ../gio/gdbus-tool.c:185 ../gio/gdbus-tool.c:252 ../gio/gdbus-tool.c:324
+#: ../gio/gdbus-tool.c:348 ../gio/gdbus-tool.c:834 ../gio/gdbus-tool.c:1171
+#: ../gio/gdbus-tool.c:1613
 #, c-format
 msgid "Error: %s\n"
 msgstr "Fout: %s\n"
 
-#: ../gio/gdbus-tool.c:178 ../gio/gdbus-tool.c:247 ../gio/gdbus-tool.c:1608
+#: ../gio/gdbus-tool.c:196 ../gio/gdbus-tool.c:265 ../gio/gdbus-tool.c:1629
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Fout bij verwerken van introspectie-XML %s\n"
 
-#: ../gio/gdbus-tool.c:216
-#, fuzzy, c-format
-#| msgid "Error: %s is not a valid member name\n"
+#: ../gio/gdbus-tool.c:234
+#, c-format
 msgid "Error: %s is not a valid name\n"
-msgstr "Fout: ‘%s’ is geen geldige member-naam\n"
+msgstr "Fout: %s is geen geldige naam\n"
 
-#: ../gio/gdbus-tool.c:364
+#: ../gio/gdbus-tool.c:382
 msgid "Connect to the system bus"
 msgstr "Verbinden met systeembus"
 
-#: ../gio/gdbus-tool.c:365
+#: ../gio/gdbus-tool.c:383
 msgid "Connect to the session bus"
 msgstr "Verbinden met sessiebus"
 
-#: ../gio/gdbus-tool.c:366
+#: ../gio/gdbus-tool.c:384
 msgid "Connect to given D-Bus address"
 msgstr "Verbinden met opgegeven D-Bus-adres"
 
-#: ../gio/gdbus-tool.c:376
+#: ../gio/gdbus-tool.c:394
 msgid "Connection Endpoint Options:"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:377
+#: ../gio/gdbus-tool.c:395
 msgid "Options specifying the connection endpoint"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:399
+#: ../gio/gdbus-tool.c:417
 #, c-format
 msgid "No connection endpoint specified"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:409
+#: ../gio/gdbus-tool.c:427
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:479
+#: ../gio/gdbus-tool.c:497
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:488
+#: ../gio/gdbus-tool.c:506
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
 "interface “%s”\n"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:550
+#: ../gio/gdbus-tool.c:568
 msgid "Optional destination for signal (unique name)"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:551
+#: ../gio/gdbus-tool.c:569
 #, fuzzy
 msgid "Object path to emit signal on"
 msgstr "Te monitoren object-pad"
 
-#: ../gio/gdbus-tool.c:552
+#: ../gio/gdbus-tool.c:570
 msgid "Signal and interface name"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:587
+#: ../gio/gdbus-tool.c:603
 msgid "Emit a signal."
 msgstr ""
 
 # openen/lezen
-#: ../gio/gdbus-tool.c:642 ../gio/gdbus-tool.c:944 ../gio/gdbus-tool.c:1698
-#: ../gio/gdbus-tool.c:1931 ../gio/gdbus-tool.c:2152
+#: ../gio/gdbus-tool.c:658 ../gio/gdbus-tool.c:965 ../gio/gdbus-tool.c:1715
+#: ../gio/gdbus-tool.c:1944 ../gio/gdbus-tool.c:2164
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Fout bij verbinden: %s\n"
 
-#: ../gio/gdbus-tool.c:659 ../gio/gdbus-tool.c:961 ../gio/gdbus-tool.c:1715
-#: ../gio/gdbus-tool.c:1956
-#, c-format
-msgid "Error: Destination is not specified\n"
-msgstr "Fout: bestemming is niet opgegeven\n"
-
-#: ../gio/gdbus-tool.c:670
+#: ../gio/gdbus-tool.c:678
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Fout: %s is geen geldige unieke busnaam.\n"
 
-#: ../gio/gdbus-tool.c:685 ../gio/gdbus-tool.c:987 ../gio/gdbus-tool.c:1741
+#: ../gio/gdbus-tool.c:697 ../gio/gdbus-tool.c:1008 ../gio/gdbus-tool.c:1758
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:705 ../gio/gdbus-tool.c:1007 ../gio/gdbus-tool.c:1761
-#: ../gio/gdbus-tool.c:2002
+#: ../gio/gdbus-tool.c:720 ../gio/gdbus-tool.c:1028 ../gio/gdbus-tool.c:1778
+#: ../gio/gdbus-tool.c:2015
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:720
+#: ../gio/gdbus-tool.c:740
 #, fuzzy, c-format
 #| msgid "Error: Method name is not specified\n"
 msgid "Error: Signal name is not specified\n"
 msgstr "Fout: methodenaam is niet opgegeven\n"
 
-#: ../gio/gdbus-tool.c:731
+#: ../gio/gdbus-tool.c:754
 #, fuzzy, c-format
 #| msgid "Error: Method name '%s' is invalid\n"
 msgid "Error: Signal name “%s” is invalid\n"
 msgstr "Fout: methodenaam ‘%s’ is ongeldig\n"
 
-#: ../gio/gdbus-tool.c:743
+#: ../gio/gdbus-tool.c:766
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Fout: ‘%s’ is geen geldige interface-naam\n"
 
-#: ../gio/gdbus-tool.c:749
+#: ../gio/gdbus-tool.c:772
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Fout: ‘%s’ is geen geldige member-naam\n"
 
 #. Use the original non-"parse-me-harder" error
-#: ../gio/gdbus-tool.c:786 ../gio/gdbus-tool.c:1119
+#: ../gio/gdbus-tool.c:809 ../gio/gdbus-tool.c:1140
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Fout bij ontleden van parameter %d: %s\n"
 
-#: ../gio/gdbus-tool.c:818
+#: ../gio/gdbus-tool.c:841
 #, fuzzy, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Fout bij accepteren van verbinding: %s"
 
-#: ../gio/gdbus-tool.c:845
+#: ../gio/gdbus-tool.c:868
 msgid "Destination name to invoke method on"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:846
+#: ../gio/gdbus-tool.c:869
 msgid "Object path to invoke method on"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:847
+#: ../gio/gdbus-tool.c:870
 msgid "Method and interface name"
-msgstr ""
+msgstr "Methode en interfacenaam"
 
-#: ../gio/gdbus-tool.c:848
+#: ../gio/gdbus-tool.c:871
 msgid "Timeout in seconds"
 msgstr "Tijdslimiet in seconden"
 
-#: ../gio/gdbus-tool.c:889
+#: ../gio/gdbus-tool.c:910
 msgid "Invoke a method on a remote object."
 msgstr "Methode aanroepen op een object op afstand"
 
-#: ../gio/gdbus-tool.c:972 ../gio/gdbus-tool.c:1732 ../gio/gdbus-tool.c:1967
-#, fuzzy, c-format
-#| msgid "Error: %s is not a valid member name\n"
-msgid "Error: %s is not a valid bus name\n"
-msgstr "Fout: ‘%s’ is geen geldige member-naam\n"
+#: ../gio/gdbus-tool.c:982 ../gio/gdbus-tool.c:1732 ../gio/gdbus-tool.c:1969
+#, c-format
+msgid "Error: Destination is not specified\n"
+msgstr "Fout: bestemming is niet opgegeven\n"
 
-#: ../gio/gdbus-tool.c:1022
+#: ../gio/gdbus-tool.c:993 ../gio/gdbus-tool.c:1749 ../gio/gdbus-tool.c:1980
+#, c-format
+msgid "Error: %s is not a valid bus name\n"
+msgstr "Fout: %s is geen geldige busnaam\n"
+
+#: ../gio/gdbus-tool.c:1043
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Fout: methodenaam is niet opgegeven\n"
 
-#: ../gio/gdbus-tool.c:1033
+#: ../gio/gdbus-tool.c:1054
 #, fuzzy, c-format
 #| msgid "Error: Method name '%s' is invalid\n"
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Fout: methodenaam ‘%s’ is ongeldig\n"
 
-#: ../gio/gdbus-tool.c:1111
+#: ../gio/gdbus-tool.c:1132
 #, fuzzy, c-format
 #| msgid "Error parsing parameter %d: %s\n"
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Fout bij ontleden van parameter %d: %s\n"
 
-#: ../gio/gdbus-tool.c:1555
+#: ../gio/gdbus-tool.c:1576
 msgid "Destination name to introspect"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:1556
+#: ../gio/gdbus-tool.c:1577
 msgid "Object path to introspect"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:1557
+#: ../gio/gdbus-tool.c:1578
 msgid "Print XML"
 msgstr "XML tonen"
 
-#: ../gio/gdbus-tool.c:1558
+#: ../gio/gdbus-tool.c:1579
 msgid "Introspect children"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:1559
+#: ../gio/gdbus-tool.c:1580
 msgid "Only print properties"
 msgstr "Alleen eigenschappen tonen"
 
 # Ugh, anglicisme :(  (Wouter Bolsterlee)
-#: ../gio/gdbus-tool.c:1650
+#: ../gio/gdbus-tool.c:1667
 msgid "Introspect a remote object."
 msgstr "Een object op afstand introspecteren"
 
-#: ../gio/gdbus-tool.c:1853
+#: ../gio/gdbus-tool.c:1870
 msgid "Destination name to monitor"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:1854
+#: ../gio/gdbus-tool.c:1871
 msgid "Object path to monitor"
 msgstr "Te monitoren object-pad"
 
-#: ../gio/gdbus-tool.c:1883
+#: ../gio/gdbus-tool.c:1896
 msgid "Monitor a remote object."
 msgstr "Een object op afstand monitoren."
 
-#: ../gio/gdbus-tool.c:1941
+#: ../gio/gdbus-tool.c:1954
 #, c-format
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:2065
+#: ../gio/gdbus-tool.c:2078
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:2068
+#: ../gio/gdbus-tool.c:2081
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
 msgstr ""
 
-#: ../gio/gdbus-tool.c:2116
+#: ../gio/gdbus-tool.c:2129
 msgid "[OPTION…] BUS-NAME"
-msgstr ""
+msgstr "[OPTIE…] BUS-NAAM"
 
-#: ../gio/gdbus-tool.c:2118
+#: ../gio/gdbus-tool.c:2130
 msgid "Wait for a bus name to appear."
 msgstr ""
 
-#: ../gio/gdbus-tool.c:2194
+#: ../gio/gdbus-tool.c:2206
 #, fuzzy, c-format
 #| msgid "Error: Destination is not specified\n"
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Fout: bestemming is niet opgegeven\n"
 
-#: ../gio/gdbus-tool.c:2199
+#: ../gio/gdbus-tool.c:2211
 #, fuzzy, c-format
 #| msgid "Error: Destination is not specified\n"
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Fout: bestemming is niet opgegeven\n"
 
-#: ../gio/gdbus-tool.c:2204
+#: ../gio/gdbus-tool.c:2216
 #, c-format
 msgid "Error: Too many arguments.\n"
-msgstr ""
+msgstr "Fout: te veel argumenten.\n"
 
-#: ../gio/gdbus-tool.c:2212 ../gio/gdbus-tool.c:2219
+#: ../gio/gdbus-tool.c:2224 ../gio/gdbus-tool.c:2231
 #, fuzzy, c-format
 #| msgid "Error: %s is not a valid unique bus name.\n"
 msgid "Error: %s is not a valid well-known bus name.\n"
@@ -1714,11 +1700,11 @@ msgstr ""
 
 #: ../gio/gio-tool.c:224
 msgid "[ARGS...]"
-msgstr ""
+msgstr "[ARGUMENTEN…]"
 
 #: ../gio/gio-tool.c:226
 msgid "Commands:"
-msgstr ""
+msgstr "Opdrachten:"
 
 #: ../gio/gio-tool.c:229
 msgid "Concatenate files to standard output"
@@ -1726,7 +1712,7 @@ msgstr ""
 
 #: ../gio/gio-tool.c:230
 msgid "Copy one or more files"
-msgstr ""
+msgstr "Een of meerdere bestanden kopiëren"
 
 #: ../gio/gio-tool.c:231
 msgid "Show information about locations"
@@ -1764,11 +1750,11 @@ msgstr ""
 
 #: ../gio/gio-tool.c:239
 msgid "Rename a file"
-msgstr ""
+msgstr "Een bestand hernoemen"
 
 #: ../gio/gio-tool.c:240
 msgid "Delete one or more files"
-msgstr ""
+msgstr "Eén of meerdere bestanden verwijderen"
 
 #: ../gio/gio-tool.c:241
 msgid "Read from standard input and save"
@@ -1807,7 +1793,7 @@ msgstr "Fout bij het schrijven naar bestand: %s"
 #: ../gio/gio-tool-rename.c:45 ../gio/gio-tool-set.c:89
 #: ../gio/gio-tool-trash.c:81 ../gio/gio-tool-tree.c:239
 msgid "LOCATION"
-msgstr ""
+msgstr "LOCATIE"
 
 #: ../gio/gio-tool-cat.c:138
 msgid "Concatenate files and print to standard output."
@@ -1834,26 +1820,24 @@ msgstr "Doelbestand is geen map"
 
 #: ../gio/gio-tool-copy.c:43 ../gio/gio-tool-move.c:39
 msgid "Show progress"
-msgstr ""
+msgstr "Voortgang tonen"
 
 #: ../gio/gio-tool-copy.c:44 ../gio/gio-tool-move.c:40
 msgid "Prompt before overwrite"
-msgstr ""
+msgstr "Vragen voor overschrijven"
 
 #: ../gio/gio-tool-copy.c:45
 msgid "Preserve all attributes"
-msgstr ""
+msgstr "Alle attributen behouden"
 
 #: ../gio/gio-tool-copy.c:46 ../gio/gio-tool-move.c:41
 #: ../gio/gio-tool-save.c:49
-#, fuzzy
-#| msgid "Backup file creation failed"
 msgid "Backup existing destination files"
-msgstr "Aanmaken van backupbestand is mislukt"
+msgstr "Reservekopie maken van bestaande bestemmingsbestanden"
 
 #: ../gio/gio-tool-copy.c:47
 msgid "Never follow symbolic links"
-msgstr ""
+msgstr "Symbolische verwijzingen nooit volgen"
 
 #: ../gio/gio-tool-copy.c:72 ../gio/gio-tool-move.c:67
 #, c-format
@@ -1863,17 +1847,17 @@ msgstr ""
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
 msgid "SOURCE"
-msgstr ""
+msgstr "BRON"
 
 #. Translators: commandline placeholder
 #: ../gio/gio-tool-copy.c:98 ../gio/gio-tool-move.c:94
 #: ../gio/gio-tool-save.c:160
 msgid "DESTINATION"
-msgstr ""
+msgstr "DOEL"
 
 #: ../gio/gio-tool-copy.c:103
 msgid "Copy one or more files from SOURCE to DESTINATION."
-msgstr ""
+msgstr "Kopieer één of meerdere bestanden van BRON naar DOEL."
 
 #: ../gio/gio-tool-copy.c:105
 msgid ""
@@ -1883,79 +1867,76 @@ msgid ""
 msgstr ""
 
 #: ../gio/gio-tool-copy.c:147
-#, fuzzy, c-format
+#, c-format
 msgid "Destination %s is not a directory"
-msgstr "Doelbestand is geen map"
+msgstr "Doel %s is geen map"
 
 #: ../gio/gio-tool-copy.c:192 ../gio/gio-tool-move.c:185
 #, c-format
 msgid "%s: overwrite “%s”? "
-msgstr ""
+msgstr "%s: ‘%s’ overschrijven? "
 
 #: ../gio/gio-tool-info.c:34
 msgid "List writable attributes"
-msgstr ""
+msgstr "Beschrijfbare attributen tonen"
 
 #: ../gio/gio-tool-info.c:35
-#, fuzzy
-#| msgid "Error getting filesystem info: %s"
 msgid "Get file system info"
-msgstr "Fout bij het ophalen van informatie over bestandssysteem: %s"
+msgstr "Bestandssysteeminformatie verkrijgen"
 
 #: ../gio/gio-tool-info.c:36 ../gio/gio-tool-list.c:35
 msgid "The attributes to get"
-msgstr ""
+msgstr "De attributen om te verkrijgen"
 
 #: ../gio/gio-tool-info.c:36 ../gio/gio-tool-list.c:35
 msgid "ATTRIBUTES"
-msgstr ""
+msgstr "ATTRIBUTEN"
 
 #: ../gio/gio-tool-info.c:37 ../gio/gio-tool-list.c:38 ../gio/gio-tool-set.c:34
 msgid "Don’t follow symbolic links"
-msgstr ""
+msgstr "Symbolische verwijzingen niet volgen"
 
 #: ../gio/gio-tool-info.c:75
 #, c-format
 msgid "attributes:\n"
-msgstr ""
+msgstr "attributen:\n"
 
 #. Translators: This is a noun and represents and attribute of a file
 #: ../gio/gio-tool-info.c:127
 #, c-format
 msgid "display name: %s\n"
-msgstr ""
+msgstr "weergavenaam: %s\n"
 
 #. Translators: This is a noun and represents and attribute of a file
 #: ../gio/gio-tool-info.c:132
 #, c-format
 msgid "edit name: %s\n"
-msgstr ""
+msgstr "bewerkersnaam: %s\n"
 
 #: ../gio/gio-tool-info.c:138
 #, c-format
 msgid "name: %s\n"
-msgstr ""
+msgstr "naam: %s\n"
 
 #: ../gio/gio-tool-info.c:145
 #, c-format
 msgid "type: %s\n"
-msgstr ""
+msgstr "type: %s\n"
 
 #: ../gio/gio-tool-info.c:151
 #, c-format
 msgid "size: "
-msgstr ""
+msgstr "grootte:"
 
 #: ../gio/gio-tool-info.c:156
 #, c-format
 msgid "hidden\n"
-msgstr ""
+msgstr "verborgen\n"
 
 #: ../gio/gio-tool-info.c:159
-#, fuzzy, c-format
-#| msgid "Error: %s\n"
+#, c-format
 msgid "uri: %s\n"
-msgstr "Fout: %s\n"
+msgstr "uri: %s\n"
 
 #: ../gio/gio-tool-info.c:228
 #, c-format
@@ -3355,11 +3336,11 @@ msgstr ""
 msgid "Hostname “%s” contains “[” but not “]”"
 msgstr "Host-naam ‘%s’ bevat ‘[’ maar geen ‘]’"
 
-#: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:310
+#: ../gio/gnetworkmonitorbase.c:212 ../gio/gnetworkmonitorbase.c:316
 msgid "Network unreachable"
 msgstr "Netwerk onbereikbaar"
 
-#: ../gio/gnetworkmonitorbase.c:244 ../gio/gnetworkmonitorbase.c:274
+#: ../gio/gnetworkmonitorbase.c:250 ../gio/gnetworkmonitorbase.c:280
 msgid "Host unreachable"
 msgstr "Host onbereikbaar"
 
@@ -3377,7 +3358,7 @@ msgstr ""
 msgid "Could not get network status: "
 msgstr "Kon geen netwerkstatus verkrijgen: "
 
-#: ../gio/gnetworkmonitornm.c:329
+#: ../gio/gnetworkmonitornm.c:322
 #, c-format
 msgid "NetworkManager version too old"
 msgstr ""
@@ -4706,85 +4687,61 @@ msgstr "zo"
 #. * standalone and complete date form.
 #.
 #: ../glib/gdatetime.c:441
-#| msgctxt "full month name"
-#| msgid "January"
 msgctxt "full month name with day"
 msgid "January"
 msgstr "januari"
 
 #: ../glib/gdatetime.c:443
-#| msgctxt "full month name"
-#| msgid "February"
 msgctxt "full month name with day"
 msgid "February"
 msgstr "februari"
 
 #: ../glib/gdatetime.c:445
-#| msgctxt "full month name"
-#| msgid "March"
 msgctxt "full month name with day"
 msgid "March"
 msgstr "maart"
 
 #: ../glib/gdatetime.c:447
-#| msgctxt "full month name"
-#| msgid "April"
 msgctxt "full month name with day"
 msgid "April"
 msgstr "april"
 
 #: ../glib/gdatetime.c:449
-#| msgctxt "full month name"
-#| msgid "May"
 msgctxt "full month name with day"
 msgid "May"
 msgstr "mei"
 
 #: ../glib/gdatetime.c:451
-#| msgctxt "full month name"
-#| msgid "June"
 msgctxt "full month name with day"
 msgid "June"
 msgstr "juni"
 
 #: ../glib/gdatetime.c:453
-#| msgctxt "full month name"
-#| msgid "July"
 msgctxt "full month name with day"
 msgid "July"
 msgstr "juli"
 
 #: ../glib/gdatetime.c:455
-#| msgctxt "full month name"
-#| msgid "August"
 msgctxt "full month name with day"
 msgid "August"
 msgstr "augustus"
 
 #: ../glib/gdatetime.c:457
-#| msgctxt "full month name"
-#| msgid "September"
 msgctxt "full month name with day"
 msgid "September"
 msgstr "september"
 
 #: ../glib/gdatetime.c:459
-#| msgctxt "full month name"
-#| msgid "October"
 msgctxt "full month name with day"
 msgid "October"
 msgstr "oktober"
 
 #: ../glib/gdatetime.c:461
-#| msgctxt "full month name"
-#| msgid "November"
 msgctxt "full month name with day"
 msgid "November"
 msgstr "november"
 
 #: ../glib/gdatetime.c:463
-#| msgctxt "full month name"
-#| msgid "December"
 msgctxt "full month name with day"
 msgid "December"
 msgstr "december"
@@ -4807,85 +4764,61 @@ msgstr "december"
 #. * due to a bug the result is incorrect in some languages.
 #.
 #: ../glib/gdatetime.c:524
-#| msgctxt "abbreviated month name"
-#| msgid "Jan"
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "jan"
 
 #: ../glib/gdatetime.c:526
-#| msgctxt "abbreviated month name"
-#| msgid "Feb"
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "feb"
 
 #: ../glib/gdatetime.c:528
-#| msgctxt "abbreviated month name"
-#| msgid "Mar"
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "mrt"
 
 #: ../glib/gdatetime.c:530
-#| msgctxt "abbreviated month name"
-#| msgid "Apr"
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "apr"
 
 #: ../glib/gdatetime.c:532
-#| msgctxt "full month name"
-#| msgid "May"
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "mei"
 
 #: ../glib/gdatetime.c:534
-#| msgctxt "abbreviated month name"
-#| msgid "Jun"
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "jun"
 
 #: ../glib/gdatetime.c:536
-#| msgctxt "abbreviated month name"
-#| msgid "Jul"
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "jul"
 
 #: ../glib/gdatetime.c:538
-#| msgctxt "abbreviated month name"
-#| msgid "Aug"
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "aug"
 
 #: ../glib/gdatetime.c:540
-#| msgctxt "abbreviated month name"
-#| msgid "Sep"
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "sep"
 
 #: ../glib/gdatetime.c:542
-#| msgctxt "abbreviated month name"
-#| msgid "Oct"
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "okt"
 
 #: ../glib/gdatetime.c:544
-#| msgctxt "abbreviated month name"
-#| msgid "Nov"
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "nov"
 
 #: ../glib/gdatetime.c:546
-#| msgctxt "abbreviated month name"
-#| msgid "Dec"
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "dec"
@@ -5515,7 +5448,6 @@ msgstr "\\c aan het einde van het patroon"
 
 # onbekend/niet herkend
 #: ../glib/gregex.c:335
-#, fuzzy
 msgid "unrecognized character following \\"
 msgstr "onbekend teken volgt na \\"
 
@@ -6119,73 +6051,61 @@ msgstr "%.1f EiB"
 
 #: ../glib/gutils.c:2245
 #, c-format
-#| msgid "%.1f kB"
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #: ../glib/gutils.c:2246
 #, c-format
-#| msgid "%.1f MB"
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #: ../glib/gutils.c:2247
 #, c-format
-#| msgid "%.1f GB"
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #: ../glib/gutils.c:2248
 #, c-format
-#| msgid "%.1f TB"
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #: ../glib/gutils.c:2249
 #, c-format
-#| msgid "%.1f PB"
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #: ../glib/gutils.c:2250
 #, c-format
-#| msgid "%.1f EB"
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #: ../glib/gutils.c:2253
 #, c-format
-#| msgid "%.1f KiB"
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #: ../glib/gutils.c:2254
 #, c-format
-#| msgid "%.1f MiB"
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #: ../glib/gutils.c:2255
 #, c-format
-#| msgid "%.1f GiB"
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #: ../glib/gutils.c:2256
 #, c-format
-#| msgid "%.1f TiB"
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #: ../glib/gutils.c:2257
 #, c-format
-#| msgid "%.1f PiB"
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #: ../glib/gutils.c:2258
 #, c-format
-#| msgid "%.1f EiB"
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
