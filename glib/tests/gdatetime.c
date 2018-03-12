@@ -1638,7 +1638,7 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018,  4,  1, "%OB", "Απρίλιος");
       TEST_PRINTF_DATE (2018,  5,  1, "%OB", "Μάιος");
       TEST_PRINTF_DATE (2018,  6,  1, "%OB", "Ιούνιος");
-      TEST_PRINTF_DATE (2018,  7,  1,  "%b", "Ιούλ");
+      TEST_PRINTF_DATE (2018,  7,  1,  "%b", "Ιουλ");
       TEST_PRINTF_DATE (2018,  8,  1, "%Ob", "Αύγ");
     }
   else
@@ -1668,8 +1668,8 @@ test_month_names (void)
       TEST_PRINTF_DATE (2018,  4,  1, "%OB", "balandis");
       TEST_PRINTF_DATE (2018,  5,  1, "%OB", "gegužė");
       TEST_PRINTF_DATE (2018,  6,  1, "%OB", "birželis");
-      TEST_PRINTF_DATE (2018,  7,  1,  "%b", "Lie");
-      TEST_PRINTF_DATE (2018,  8,  1, "%Ob", "Rgp");
+      TEST_PRINTF_DATE (2018,  7,  1,  "%b", "liep.");
+      TEST_PRINTF_DATE (2018,  8,  1, "%Ob", "rugp.");
     }
   else
     g_test_skip ("locale lt_LT not available, skipping Lithuanian month names test");
