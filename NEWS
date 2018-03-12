@@ -1,3 +1,52 @@
+Overview of changes in GLib 2.56.0
+==================================
+
+* Bugs fixed:
+ 672777 Error in gdummyfile.c
+ 732184 GObject: warn on use of deprecated properties
+ 733338 Don't segfault in GNetworkMonitor when IPv6 support is unavailable
+ 742124 g_data_input_stream_read_upto()'s documentation should say that the...
+ 749206 GDateTime: month names in the genitive case
+ 768507 simplify qguark functions
+ 791457 Slow transfer rate when writing to smb/cifs
+ 793272 fix GCC 8.0's -Wcast-function-type warnings
+ 793300 g_hash_table_add() return value change in 2.40 not mentioned in docs
+ 793399 Fix some cases of -Wduplicated-branches
+ 793555 -Wimplicit-function-declaration when using g_abort()
+ 793565 GLib does not compile on macOS 10.13 due to .m file naming
+ 793597 gdbus-tool: Make --dest optional for emit again
+ 793635 Enable CI for GLib
+ 793880 gnetworkmonitor: Minor fixes based on code review 
+ 793578 gdatetime tests depend on Japanese translation of month names 
+ 794180 test_month_names fails unless installed
+
+* Translation updates:
+ Brazilian Portuguese
+ British English
+ Catalan
+ Czech
+ Danish
+ Dutch
+ Finnish
+ French
+ Friulian
+ Galician
+ German
+ Hungarian
+ Indonesian
+ Italian
+ Kazakh
+ Korean
+ Lithuanian
+ Polish
+ Scottish Gaelic
+ Serbian
+ Serbian Latin
+ Spanish
+ Swedish
+ Turkish
+
+
 Overview of changes in GLib 2.55.2
 ==================================
 
