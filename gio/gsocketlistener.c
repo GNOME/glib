@@ -50,8 +50,8 @@
  * socket, either sync or async.
  *
  * If you want to implement a network server, also look at #GSocketService
- * and #GThreadedSocketService which are subclass of #GSocketListener
- * that makes this even easier.
+ * and #GThreadedSocketService which are subclasses of #GSocketListener
+ * that make this even easier.
  *
  * Since: 2.22
  */
