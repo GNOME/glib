@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-02-20 15:37+0000\n"
-"PO-Revision-Date: 2018-02-20 17:05+0100\n"
+"POT-Creation-Date: 2018-03-01 10:38+0000\n"
+"PO-Revision-Date: 2018-03-13 09:15+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -1041,54 +1041,54 @@ msgstr ""
 "\n"
 "Use «%s COMANDO --help» para obtener ayuda de cada comando.\n"
 
-#: ../gio/gdbus-tool.c:167 ../gio/gdbus-tool.c:234 ../gio/gdbus-tool.c:306
-#: ../gio/gdbus-tool.c:330 ../gio/gdbus-tool.c:811 ../gio/gdbus-tool.c:1150
-#: ../gio/gdbus-tool.c:1592
+#: ../gio/gdbus-tool.c:185 ../gio/gdbus-tool.c:252 ../gio/gdbus-tool.c:324
+#: ../gio/gdbus-tool.c:348 ../gio/gdbus-tool.c:834 ../gio/gdbus-tool.c:1171
+#: ../gio/gdbus-tool.c:1613
 #, c-format
 msgid "Error: %s\n"
 msgstr "Error: %s\n"
 
-#: ../gio/gdbus-tool.c:178 ../gio/gdbus-tool.c:247 ../gio/gdbus-tool.c:1608
+#: ../gio/gdbus-tool.c:196 ../gio/gdbus-tool.c:265 ../gio/gdbus-tool.c:1629
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Error al analizar la introspección XML: %s\n"
 
-#: ../gio/gdbus-tool.c:216
+#: ../gio/gdbus-tool.c:234
 #, c-format
 msgid "Error: %s is not a valid name\n"
 msgstr "Error: %s no es un nombre válido\n"
 
-#: ../gio/gdbus-tool.c:364
+#: ../gio/gdbus-tool.c:382
 msgid "Connect to the system bus"
 msgstr "Conectar con el bus del sistema"
 
-#: ../gio/gdbus-tool.c:365
+#: ../gio/gdbus-tool.c:383
 msgid "Connect to the session bus"
 msgstr "Conectar con el bus de sesión"
 
-#: ../gio/gdbus-tool.c:366
+#: ../gio/gdbus-tool.c:384
 msgid "Connect to given D-Bus address"
 msgstr "Conectar con la dirección de D-Bus proporcionada"
 
-#: ../gio/gdbus-tool.c:376
+#: ../gio/gdbus-tool.c:394
 msgid "Connection Endpoint Options:"
 msgstr "Opciones de conexión del extremo:"
 
-#: ../gio/gdbus-tool.c:377
+#: ../gio/gdbus-tool.c:395
 msgid "Options specifying the connection endpoint"
 msgstr "Opciones para especificar la conexión del extremo:"
 
-#: ../gio/gdbus-tool.c:399
+#: ../gio/gdbus-tool.c:417
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "No se especificó ningún punto de conexión extremo"
 
-#: ../gio/gdbus-tool.c:409
+#: ../gio/gdbus-tool.c:427
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Se especificaron varios puntos de conexión extremos"
 
-#: ../gio/gdbus-tool.c:479
+#: ../gio/gdbus-tool.c:497
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
@@ -1096,7 +1096,7 @@ msgstr ""
 "Advertencia: según la introspección de los datos, la interfaz «%s» no "
 "existe\n"
 
-#: ../gio/gdbus-tool.c:488
+#: ../gio/gdbus-tool.c:506
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
@@ -1105,168 +1105,167 @@ msgstr ""
 "Advertencia: según la introspección de los datos, el método «%s» no existe "
 "en la interfaz «%s»\n"
 
-#: ../gio/gdbus-tool.c:550
+#: ../gio/gdbus-tool.c:568
 msgid "Optional destination for signal (unique name)"
 msgstr "Destino opcional para la señal (nombre único)"
 
-#: ../gio/gdbus-tool.c:551
+#: ../gio/gdbus-tool.c:569
 msgid "Object path to emit signal on"
 msgstr "Ruta del objeto sobre el que emitir la señal"
 
-#: ../gio/gdbus-tool.c:552
+#: ../gio/gdbus-tool.c:570
 msgid "Signal and interface name"
 msgstr "Nombres de la interfaz y señal"
 
-#: ../gio/gdbus-tool.c:587
+#: ../gio/gdbus-tool.c:603
 msgid "Emit a signal."
 msgstr "Emitir una señal."
 
-#: ../gio/gdbus-tool.c:642 ../gio/gdbus-tool.c:944 ../gio/gdbus-tool.c:1698
-#: ../gio/gdbus-tool.c:1931 ../gio/gdbus-tool.c:2152
+#: ../gio/gdbus-tool.c:658 ../gio/gdbus-tool.c:965 ../gio/gdbus-tool.c:1715
+#: ../gio/gdbus-tool.c:1944 ../gio/gdbus-tool.c:2164
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Error al conectar: %s\n"
 
-#: ../gio/gdbus-tool.c:659 ../gio/gdbus-tool.c:961 ../gio/gdbus-tool.c:1715
-#: ../gio/gdbus-tool.c:1956
-#, c-format
-msgid "Error: Destination is not specified\n"
-msgstr "Error: el destino no está especificado\n"
-
-#: ../gio/gdbus-tool.c:670
+#: ../gio/gdbus-tool.c:678
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Error: %s no es un nombre de bus único válido.\n"
 
-#: ../gio/gdbus-tool.c:685 ../gio/gdbus-tool.c:987 ../gio/gdbus-tool.c:1741
+#: ../gio/gdbus-tool.c:697 ../gio/gdbus-tool.c:1008 ../gio/gdbus-tool.c:1758
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Error: no se especificó la ruta del objeto\n"
 
-#: ../gio/gdbus-tool.c:705 ../gio/gdbus-tool.c:1007 ../gio/gdbus-tool.c:1761
-#: ../gio/gdbus-tool.c:2002
+#: ../gio/gdbus-tool.c:720 ../gio/gdbus-tool.c:1028 ../gio/gdbus-tool.c:1778
+#: ../gio/gdbus-tool.c:2015
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Error: %s no es una ruta de objeto válida\n"
 
-#: ../gio/gdbus-tool.c:720
+#: ../gio/gdbus-tool.c:740
 #, c-format
 msgid "Error: Signal name is not specified\n"
 msgstr "Error: no se especificó el nombre de la señal\n"
 
-#: ../gio/gdbus-tool.c:731
+#: ../gio/gdbus-tool.c:754
 #, c-format
 msgid "Error: Signal name “%s” is invalid\n"
 msgstr "Error: el nombre de la señal «%s» no es válido\n"
 
-#: ../gio/gdbus-tool.c:743
+#: ../gio/gdbus-tool.c:766
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Error: %s no es un nombre de interfaz válida\n"
 
-#: ../gio/gdbus-tool.c:749
+#: ../gio/gdbus-tool.c:772
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Error: %s no es un nombre de miembro válido\n"
 
 #. Use the original non-"parse-me-harder" error
-#: ../gio/gdbus-tool.c:786 ../gio/gdbus-tool.c:1119
+#: ../gio/gdbus-tool.c:809 ../gio/gdbus-tool.c:1140
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Error al analizar el parámetro %d: %s\n"
 
-#: ../gio/gdbus-tool.c:818
+#: ../gio/gdbus-tool.c:841
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Error al limpiar la conexión: %s\n"
 
-#: ../gio/gdbus-tool.c:845
+#: ../gio/gdbus-tool.c:868
 msgid "Destination name to invoke method on"
 msgstr "Nombre del detino sobre el que invocar elmétodo"
 
-#: ../gio/gdbus-tool.c:846
+#: ../gio/gdbus-tool.c:869
 msgid "Object path to invoke method on"
 msgstr "Ruta del objeto sobre la que invocar el método"
 
-#: ../gio/gdbus-tool.c:847
+#: ../gio/gdbus-tool.c:870
 msgid "Method and interface name"
 msgstr "Nombre de la interfaz y método"
 
-#: ../gio/gdbus-tool.c:848
+#: ../gio/gdbus-tool.c:871
 msgid "Timeout in seconds"
 msgstr "Tiempo de expiración en segundos"
 
-#: ../gio/gdbus-tool.c:889
+#: ../gio/gdbus-tool.c:910
 msgid "Invoke a method on a remote object."
 msgstr "Invocar un método en un objeto remoto."
 
-#: ../gio/gdbus-tool.c:972 ../gio/gdbus-tool.c:1732 ../gio/gdbus-tool.c:1967
+#: ../gio/gdbus-tool.c:982 ../gio/gdbus-tool.c:1732 ../gio/gdbus-tool.c:1969
+#, c-format
+msgid "Error: Destination is not specified\n"
+msgstr "Error: el destino no está especificado\n"
+
+#: ../gio/gdbus-tool.c:993 ../gio/gdbus-tool.c:1749 ../gio/gdbus-tool.c:1980
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Error: %s no es un nombre de bus válido\n"
 
-#: ../gio/gdbus-tool.c:1022
+#: ../gio/gdbus-tool.c:1043
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Error: no se especificó el nombre del método\n"
 
-#: ../gio/gdbus-tool.c:1033
+#: ../gio/gdbus-tool.c:1054
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Error: el nombre del método «%s» no es válido\n"
 
-#: ../gio/gdbus-tool.c:1111
+#: ../gio/gdbus-tool.c:1132
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Error al analizar el parámetro %d del tipo «%s»: %s\n"
 
-#: ../gio/gdbus-tool.c:1555
+#: ../gio/gdbus-tool.c:1576
 msgid "Destination name to introspect"
 msgstr "Nombre de destino que introspeccionar"
 
-#: ../gio/gdbus-tool.c:1556
+#: ../gio/gdbus-tool.c:1577
 msgid "Object path to introspect"
 msgstr "Ruta del objeto que introspeccionar"
 
-#: ../gio/gdbus-tool.c:1557
+#: ../gio/gdbus-tool.c:1578
 msgid "Print XML"
 msgstr "Imprimir XML"
 
-#: ../gio/gdbus-tool.c:1558
+#: ../gio/gdbus-tool.c:1579
 msgid "Introspect children"
 msgstr "Introspeccionar hijo"
 
-#: ../gio/gdbus-tool.c:1559
+#: ../gio/gdbus-tool.c:1580
 msgid "Only print properties"
 msgstr "Solo mostrar propiedades"
 
-#: ../gio/gdbus-tool.c:1650
+#: ../gio/gdbus-tool.c:1667
 msgid "Introspect a remote object."
 msgstr "Introspeccionar un objeto remoto."
 
-#: ../gio/gdbus-tool.c:1853
+#: ../gio/gdbus-tool.c:1870
 msgid "Destination name to monitor"
 msgstr "Nombre de destino para monitorizar"
 
-#: ../gio/gdbus-tool.c:1854
+#: ../gio/gdbus-tool.c:1871
 msgid "Object path to monitor"
 msgstr "Ruta objeto para monitorizar"
 
-#: ../gio/gdbus-tool.c:1883
+#: ../gio/gdbus-tool.c:1896
 msgid "Monitor a remote object."
 msgstr "Monitorizar un objeto remoto."
 
-#: ../gio/gdbus-tool.c:1941
+#: ../gio/gdbus-tool.c:1954
 #, c-format
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr ""
 "Error: no se puede monitorizar una conexión que no sea de mensajes del bus\n"
 
-#: ../gio/gdbus-tool.c:2065
+#: ../gio/gdbus-tool.c:2078
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr "Servicio que activar antes de esperar a otro (nombre conocido)"
 
-#: ../gio/gdbus-tool.c:2068
+#: ../gio/gdbus-tool.c:2081
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
@@ -1274,30 +1273,30 @@ msgstr ""
 "Tiempo que esperar antes de salir con un error (en segundos); 0 para que no "
 "haya tiempo de expiración (predeterminado)"
 
-#: ../gio/gdbus-tool.c:2116
+#: ../gio/gdbus-tool.c:2129
 msgid "[OPTION…] BUS-NAME"
 msgstr "[OPCIÓN…] NOMBRE-BUS"
 
-#: ../gio/gdbus-tool.c:2118
+#: ../gio/gdbus-tool.c:2130
 msgid "Wait for a bus name to appear."
 msgstr "Esperar a que aparezca el nombre del bus."
 
-#: ../gio/gdbus-tool.c:2194
+#: ../gio/gdbus-tool.c:2206
 #, c-format
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Error: se debe especificar un servicio que activar.\n"
 
-#: ../gio/gdbus-tool.c:2199
+#: ../gio/gdbus-tool.c:2211
 #, c-format
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Error: se debe especificar un servicio al que esperar.\n"
 
-#: ../gio/gdbus-tool.c:2204
+#: ../gio/gdbus-tool.c:2216
 #, c-format
 msgid "Error: Too many arguments.\n"
 msgstr "Demasiados argumentos.\n"
 
-#: ../gio/gdbus-tool.c:2212 ../gio/gdbus-tool.c:2219
+#: ../gio/gdbus-tool.c:2224 ../gio/gdbus-tool.c:2231
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Error: %s no es un nombre de bus conocido válido\n"
@@ -3270,11 +3269,11 @@ msgstr ""
 msgid "Hostname “%s” contains “[” but not “]”"
 msgstr "El nombre del equipo «%s» contiene «[» pero no «]»"
 
-#: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:310
+#: ../gio/gnetworkmonitorbase.c:212 ../gio/gnetworkmonitorbase.c:316
 msgid "Network unreachable"
 msgstr "Red no alcanzable"
 
-#: ../gio/gnetworkmonitorbase.c:244 ../gio/gnetworkmonitorbase.c:274
+#: ../gio/gnetworkmonitorbase.c:250 ../gio/gnetworkmonitorbase.c:280
 msgid "Host unreachable"
 msgstr "Equipo no alcanzable"
 
@@ -3292,7 +3291,7 @@ msgstr "No se pudo crear el monitor de red: "
 msgid "Could not get network status: "
 msgstr "No se pudo obtener el estado de la red: "
 
-#: ../gio/gnetworkmonitornm.c:329
+#: ../gio/gnetworkmonitornm.c:322
 #, c-format
 msgid "NetworkManager version too old"
 msgstr "Versión de NetworkManager demasiado antigua"
@@ -4481,7 +4480,7 @@ msgstr "mar"
 #: ../glib/gdatetime.c:311
 msgctxt "abbreviated month name"
 msgid "Apr"
-msgstr "mbr"
+msgstr "abr"
 
 #: ../glib/gdatetime.c:313
 msgctxt "abbreviated month name"
