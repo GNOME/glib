@@ -76,6 +76,7 @@ typedef struct
 
 static gchar **sourcedirs = NULL;
 static gchar *xmllint = NULL;
+static gchar *jsonformat = NULL;
 static gchar *gdk_pixbuf_pixdata = NULL;
 
 static void
@@ -274,6 +275,7 @@ end_element (GMarkupParseContext  *context,
           gchar **options;
           guint i;
           gboolean xml_stripblanks = FALSE;
+          gboolean json_stripblanks = FALSE;
           gboolean to_pixdata = FALSE;
 
           options = g_strsplit (state->preproc_options, ",", -1);
@@ -284,6 +286,8 @@ end_element (GMarkupParseContext  *context,
                 xml_stripblanks = TRUE;
               else if (!strcmp (options[i], "to-pixdata"))
                 to_pixdata = TRUE;
+              else if (!strcmp (options[i], "json-stripblanks"))
+                json_stripblanks = TRUE;
               else
                 {
                   g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
@@ -328,6 +332,44 @@ end_element (GMarkupParseContext  *context,
                 }
 
 	      g_object_unref (proc);
+
+              real_file = g_strdup (tmp_file);
+            }
+
+          if (json_stripblanks && jsonformat != NULL)
+            {
+              int fd;
+              GSubprocess *proc;
+
+              tmp_file = g_strdup ("resource-XXXXXXXX");
+              if ((fd = g_mkstemp (tmp_file)) == -1)
+                {
+                  int errsv = errno;
+
+                  g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
+                               _("Failed to create temp file: %s"),
+                              g_strerror (errsv));
+                  g_free (tmp_file);
+                  tmp_file = NULL;
+                  goto cleanup;
+                }
+              close (fd);
+
+              proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE, error,
+                                       jsonformat, "--output", tmp_file, real_file, NULL);
+              g_free (real_file);
+              real_file = NULL;
+
+              if (!proc)
+                goto cleanup;
+
+              if (!g_subprocess_wait_check (proc, NULL, error))
+                {
+                  g_object_unref (proc);
+                  goto cleanup;
+                }
+
+              g_object_unref (proc);
 
               real_file = g_strdup (tmp_file);
             }
@@ -736,6 +778,12 @@ main (int argc, char **argv)
   if (xmllint == NULL)
     g_printerr ("XMLLINT not set and xmllint not found in path; skipping xml preprocessing.\n");
 
+  jsonformat = g_strdup (g_getenv ("JSON_GLIB_FORMAT"));
+  if (jsonformat == NULL)
+    jsonformat = g_find_program_in_path ("json-glib-format");
+  if (jsonformat == NULL)
+    g_printerr ("JSON_GLIB_FORMAT not set and json-glib-format not found in path; skipping json pre-processing.\n");
+
   gdk_pixbuf_pixdata = g_strdup (g_getenv ("GDK_PIXBUF_PIXDATA"));
   if (gdk_pixbuf_pixdata == NULL)
     gdk_pixbuf_pixdata = g_find_program_in_path ("gdk-pixbuf-pixdata");
@@ -1096,6 +1144,7 @@ main (int argc, char **argv)
   g_free (target);
   g_hash_table_destroy (table);
   g_free (xmllint);
+  g_free (jsonformat);
   g_free (c_name);
   g_hash_table_unref (files);
 

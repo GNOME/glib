@@ -216,6 +216,16 @@ environment variable is not set, gdk-pixbuf-pixdata is searched in the
 </para></listitem>
 </varlistentry>
 
+<varlistentry>
+<term><envar>JSON_GLIB_FORMAT</envar></term>
+<listitem><para>
+The full path to the json-glib-format executable. This is used to preprocess
+resources with the <literal>json-stripblanks</literal> preprocessing option.
+If this environment variable is not set, json-glib-format is searched in the
+<envar>PATH</envar>.
+</para></listitem>
+</varlistentry>
+
 </variablelist>
 </refsect1>
 </refentry>
