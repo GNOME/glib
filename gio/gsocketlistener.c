@@ -49,6 +49,13 @@
  * of server sockets and helps you accept sockets from any of the
  * socket, either sync or async.
  *
+ * Add addresses and ports to listen on using g_socket_listener_add_address()
+ * and g_socket_listener_add_inet_port(). These will be listened on until
+ * g_socket_listener_close() is called. Dropping your final reference to the
+ * #GSocketListener will not cause g_socket_listener_close() to be called
+ * implicitly, as some references to the #GSocketListener may be held
+ * internally.
+ *
  * If you want to implement a network server, also look at #GSocketService
  * and #GThreadedSocketService which are subclasses of #GSocketListener
  * that make this even easier.
@@ -309,6 +316,10 @@ g_socket_listener_add_socket (GSocketListener  *listener,
  * requesting a binding to port 0 (ie: "any port").  This address, if
  * requested, belongs to the caller and must be freed.
  *
+ * Call g_socket_listener_close() to stop listening on @address; this will not
+ * be done automatically when you drop your final reference to @listener, as
+ * references may be held internally.
+ *
  * Returns: %TRUE on success, %FALSE on error.
  *
  * Since: 2.22
@@ -403,6 +414,10 @@ g_socket_listener_add_address (GSocketListener  *listener,
  * to accept to identify this particular source, which is
  * useful if you're listening on multiple addresses and do
  * different things depending on what address is connected to.
+ *
+ * Call g_socket_listener_close() to stop listening on @port; this will not
+ * be done automatically when you drop your final reference to @listener, as
+ * references may be held internally.
  *
  * Returns: %TRUE on success, %FALSE on error.
  *
