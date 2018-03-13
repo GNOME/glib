@@ -1330,8 +1330,12 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
 #define TEST_PRINTF_DATE(y,m,d,f,o)             G_STMT_START {  \
   GDateTime *dt = g_date_time_new_local (y, m, d, 0, 0, 0);     \
   gchar *p = g_date_time_format (dt, (f));                      \
-  g_assert_cmpstr (p, ==, (o));                                 \
+  gchar *o_casefold = g_utf8_casefold (o, -1);                  \
+  gchar *p_casefold = g_utf8_casefold (p, -1);                  \
+  g_assert_cmpstr (p_casefold, ==, (o_casefold));               \
   g_date_time_unref (dt);                                       \
+  g_free (p_casefold);                                          \
+  g_free (o_casefold);                                          \
   g_free (p);                                   } G_STMT_END
 
 #define TEST_PRINTF_TIME(h,m,s,f,o)             G_STMT_START { \
