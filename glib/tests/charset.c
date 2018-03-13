@@ -9,9 +9,6 @@
  * See the included COPYING file for more information.
  */
 
-#undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
-
 #include "glib.h"
 
 #define TEST_LOCALE "fr_FR.UTF-8@latin:en_US.UTF-8"

@@ -48,6 +48,7 @@ test_programs = \
 	bookmarkfile			\
 	bytes				\
 	cache				\
+	charset				\
 	checksum			\
 	collate				\
 	cond				\
