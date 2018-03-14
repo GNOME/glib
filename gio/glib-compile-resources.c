@@ -220,7 +220,6 @@ end_element (GMarkupParseContext  *context,
       gchar *key;
       FileData *data = NULL;
       char *tmp_file = NULL;
-      char *tmp_file2 = NULL;
 
       file = state->string->str;
       key = file;
@@ -300,59 +299,43 @@ end_element (GMarkupParseContext  *context,
 
           if (xml_stripblanks && xmllint != NULL)
             {
+              GSubprocess *proc;
               int fd;
-	      GSubprocess *proc;
 
-              tmp_file = g_strdup ("resource-XXXXXXXX");
-              if ((fd = g_mkstemp (tmp_file)) == -1)
-                {
-                  int errsv = errno;
+              fd = g_file_open_tmp ("resource-XXXXXXXX", &tmp_file, error);
+              if (fd < 0)
+                goto cleanup;
 
-                  g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-                               _("Failed to create temp file: %s"),
-                              g_strerror (errsv));
-                  g_free (tmp_file);
-                  tmp_file = NULL;
-                  goto cleanup;
-                }
               close (fd);
 
               proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE, error,
                                        xmllint, "--nonet", "--noblanks", "--output", tmp_file, real_file, NULL);
               g_free (real_file);
-	      real_file = NULL;
+              real_file = NULL;
 
-	      if (!proc)
-		goto cleanup;
+              if (!proc)
+                goto cleanup;
 
-	      if (!g_subprocess_wait_check (proc, NULL, error))
-		{
-		  g_object_unref (proc);
+              if (!g_subprocess_wait_check (proc, NULL, error))
+                {
+                  g_object_unref (proc);
                   goto cleanup;
                 }
 
-	      g_object_unref (proc);
+              g_object_unref (proc);
 
               real_file = g_strdup (tmp_file);
             }
 
           if (json_stripblanks && jsonformat != NULL)
             {
-              int fd;
               GSubprocess *proc;
+              int fd;
 
-              tmp_file = g_strdup ("resource-XXXXXXXX");
-              if ((fd = g_mkstemp (tmp_file)) == -1)
-                {
-                  int errsv = errno;
+              fd = g_file_open_tmp ("resource-XXXXXXXX", &tmp_file, error);
+              if (fd < 0)
+                goto cleanup;
 
-                  g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-                               _("Failed to create temp file: %s"),
-                              g_strerror (errsv));
-                  g_free (tmp_file);
-                  tmp_file = NULL;
-                  goto cleanup;
-                }
               close (fd);
 
               proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE, error,
@@ -376,8 +359,8 @@ end_element (GMarkupParseContext  *context,
 
           if (to_pixdata)
             {
-              int fd;
 	      GSubprocess *proc;
+              int fd;
 
               if (gdk_pixbuf_pixdata == NULL)
                 {
@@ -387,22 +370,14 @@ end_element (GMarkupParseContext  *context,
                   goto cleanup;
                 }
 
-              tmp_file2 = g_strdup ("resource-XXXXXXXX");
-              if ((fd = g_mkstemp (tmp_file2)) == -1)
-                {
-                  int errsv = errno;
+              fd = g_file_open_tmp ("resource-XXXXXXXX", &tmp_file, error);
+              if (fd < 0)
+                goto cleanup;
 
-                  g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errsv),
-                               _("Failed to create temp file: %s"),
-			       g_strerror (errsv));
-                  g_free (tmp_file2);
-                  tmp_file2 = NULL;
-                  goto cleanup;
-                }
               close (fd);
 
               proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE, error,
-                                       gdk_pixbuf_pixdata, real_file, tmp_file2, NULL);
+                                       gdk_pixbuf_pixdata, real_file, tmp_file, NULL);
               g_free (real_file);
               real_file = NULL;
 
@@ -414,7 +389,7 @@ end_element (GMarkupParseContext  *context,
 
 	      g_object_unref (proc);
 
-              real_file = g_strdup (tmp_file2);
+              real_file = g_strdup (tmp_file);
             }
 	}
 
@@ -477,12 +452,6 @@ done:
         {
           unlink (tmp_file);
           g_free (tmp_file);
-        }
-
-      if (tmp_file2)
-        {
-          unlink (tmp_file2);
-          g_free (tmp_file2);
         }
 
       if (data != NULL)
