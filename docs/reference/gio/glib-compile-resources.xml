@@ -199,30 +199,30 @@ be used with <literal>make</literal>.
 <varlistentry>
 <term><envar>XMLLINT</envar></term>
 <listitem><para>
-The full path to the xmllint executable. This is used to preprocess resources
-with the <literal>xml-stripblanks</literal> preprocessing option. If this
-environment variable is not set, xmllint is searched in the
-<envar>PATH</envar>.
+The full path to the <command>xmllint</command> executable. This is used to
+preprocess resources with the <literal>xml-stripblanks</literal> preprocessing
+option. If this environment variable is not set, <command>xmllint</command> is
+searched for in the <envar>PATH</envar>.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><envar>GDK_PIXBUF_PIXDATA</envar></term>
 <listitem><para>
-The full path to the gdk-pixbuf-pixdata executable. This is used to preprocess
-resources with the <literal>to-pixdata</literal> preprocessing option. If this
-environment variable is not set, gdk-pixbuf-pixdata is searched in the
-<envar>PATH</envar>.
+The full path to the <command>gdk-pixbuf-pixdata</command> executable. This is
+used to preprocess resources with the <literal>to-pixdata</literal> preprocessing
+option. If this environment variable is not set, <command>gdk-pixbuf-pixdata</command>
+is searched for in the <envar>PATH</envar>.
 </para></listitem>
 </varlistentry>
 
 <varlistentry>
 <term><envar>JSON_GLIB_FORMAT</envar></term>
 <listitem><para>
-The full path to the json-glib-format executable. This is used to preprocess
-resources with the <literal>json-stripblanks</literal> preprocessing option.
-If this environment variable is not set, json-glib-format is searched in the
-<envar>PATH</envar>.
+The full path to the <command>json-glib-format</command> executable. This is used
+to preprocess resources with the <literal>json-stripblanks</literal> preprocessing
+option. If this environment variable is not set, <command>json-glib-format</command>
+is searched for in the <envar>PATH</envar>.
 </para></listitem>
 </varlistentry>
 
