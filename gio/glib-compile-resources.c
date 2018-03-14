@@ -297,64 +297,116 @@ end_element (GMarkupParseContext  *context,
             }
           g_strfreev (options);
 
-          if (xml_stripblanks && xmllint != NULL)
+          if (xml_stripblanks)
             {
-              GSubprocess *proc;
-              int fd;
-
-              fd = g_file_open_tmp ("resource-XXXXXXXX", &tmp_file, error);
-              if (fd < 0)
-                goto cleanup;
-
-              close (fd);
-
-              proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE, error,
-                                       xmllint, "--nonet", "--noblanks", "--output", tmp_file, real_file, NULL);
-              g_free (real_file);
-              real_file = NULL;
-
-              if (!proc)
-                goto cleanup;
-
-              if (!g_subprocess_wait_check (proc, NULL, error))
+              /* This is not fatal: pretty-printed XML is still valid XML */
+              if (xmllint == NULL)
                 {
-                  g_object_unref (proc);
-                  goto cleanup;
+                  static gboolean xmllint_warned = FALSE;
+
+                  if (!xmllint_warned)
+                    {
+                      /* Translators: the first %s is a gresource XML attribute,
+                       * the second %s is an environment variable, and the third
+                       * %s is a command line tool
+                       */
+                      char *warn = g_strdup_printf (_("%s preprocessing requested, but %s is not set, and %s is not in PATH"),
+                                                    "xml-stripblanks",
+                                                    "XMLLINT",
+                                                    "xmllint");
+                      g_printerr ("%s\n", warn);
+                      g_free (warn);
+
+                      /* Only warn once */
+                      xmllint_warned = TRUE;
+                    }
                 }
+              else
+                {
+                  GSubprocess *proc;
+                  int fd;
 
-              g_object_unref (proc);
+                  fd = g_file_open_tmp ("resource-XXXXXXXX", &tmp_file, error);
+                  if (fd < 0)
+                    goto cleanup;
 
-              real_file = g_strdup (tmp_file);
+                  close (fd);
+
+                  proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE, error,
+                                           xmllint, "--nonet", "--noblanks", "--output", tmp_file, real_file, NULL);
+                  g_free (real_file);
+                  real_file = NULL;
+
+                  if (!proc)
+                    goto cleanup;
+
+                  if (!g_subprocess_wait_check (proc, NULL, error))
+                    {
+                      g_object_unref (proc);
+                      goto cleanup;
+                    }
+
+                  g_object_unref (proc);
+
+                  real_file = g_strdup (tmp_file);
+                }
             }
 
-          if (json_stripblanks && jsonformat != NULL)
+          if (json_stripblanks)
             {
-              GSubprocess *proc;
-              int fd;
-
-              fd = g_file_open_tmp ("resource-XXXXXXXX", &tmp_file, error);
-              if (fd < 0)
-                goto cleanup;
-
-              close (fd);
-
-              proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE, error,
-                                       jsonformat, "--output", tmp_file, real_file, NULL);
-              g_free (real_file);
-              real_file = NULL;
-
-              if (!proc)
-                goto cleanup;
-
-              if (!g_subprocess_wait_check (proc, NULL, error))
+              /* As above, this is not fatal: pretty-printed JSON is still
+               * valid JSON
+               */
+              if (jsonformat == NULL)
                 {
-                  g_object_unref (proc);
-                  goto cleanup;
+                  static gboolean jsonformat_warned = FALSE;
+
+                  if (!jsonformat_warned)
+                    {
+                      /* Translators: the first %s is a gresource XML attribute,
+                       * the second %s is an environment variable, and the third
+                       * %s is a command line tool
+                       */
+                      char *warn = g_strdup_printf (_("%s preprocessing requested, but %s is not set, and %s is not in PATH"),
+                                                    "json-stripblanks",
+                                                    "JSON_GLIB_FORMAT",
+                                                    "json-glib-format");
+                      g_printerr ("%s\n", warn);
+                      g_free (warn);
+
+                      /* Only warn once */
+                      jsonformat_warned = TRUE;
+                    }
                 }
+              else
+                {
+                  GSubprocess *proc;
+                  int fd;
 
-              g_object_unref (proc);
+                  fd = g_file_open_tmp ("resource-XXXXXXXX", &tmp_file, error);
+                  if (fd < 0)
+                    goto cleanup;
 
-              real_file = g_strdup (tmp_file);
+                  close (fd);
+
+                  proc = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_SILENCE, error,
+                                           jsonformat, "--output", tmp_file, real_file, NULL);
+                  g_free (real_file);
+                  real_file = NULL;
+
+                  if (!proc)
+                    goto cleanup;
+
+                  if (!g_subprocess_wait_check (proc, NULL, error))
+                    {
+                      g_object_unref (proc);
+                      goto cleanup;
+                    }
+
+                  g_object_unref (proc);
+
+                  real_file = g_strdup (tmp_file);
+                }
             }
 
           if (to_pixdata)
@@ -362,11 +414,20 @@ end_element (GMarkupParseContext  *context,
 	      GSubprocess *proc;
               int fd;
 
+              /* This is a fatal error: if to-pixdata is used it means that
+               * the code loading the GResource expects a specific data format
+               */
               if (gdk_pixbuf_pixdata == NULL)
                 {
-                  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                                       "to-pixbuf preprocessing requested but GDK_PIXBUF_PIXDATA "
-                                       "not set and gdk-pixbuf-pixdata not found in path");
+                  /* Translators: the first %s is a gresource XML attribute,
+                   * the second %s is an environment variable, and the third
+                   * %s is a command line tool
+                   */
+                  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                               _("%s preprocessing requested, but %s is not set, and %s is not in PATH"),
+                               "to-pixdata",
+                               "GDK_PIXBUF_PIXDATA",
+                               "gdk-pixbuf-pixdata");
                   goto cleanup;
                 }
 
@@ -744,14 +805,10 @@ main (int argc, char **argv)
   xmllint = g_strdup (g_getenv ("XMLLINT"));
   if (xmllint == NULL)
     xmllint = g_find_program_in_path ("xmllint");
-  if (xmllint == NULL)
-    g_printerr ("XMLLINT not set and xmllint not found in path; skipping xml preprocessing.\n");
 
   jsonformat = g_strdup (g_getenv ("JSON_GLIB_FORMAT"));
   if (jsonformat == NULL)
     jsonformat = g_find_program_in_path ("json-glib-format");
-  if (jsonformat == NULL)
-    g_printerr ("JSON_GLIB_FORMAT not set and json-glib-format not found in path; skipping json pre-processing.\n");
 
   gdk_pixbuf_pixdata = g_strdup (g_getenv ("GDK_PIXBUF_PIXDATA"));
   if (gdk_pixbuf_pixdata == NULL)
