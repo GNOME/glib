@@ -612,8 +612,11 @@ libgio_objc_2_0_la_SOURCES = \
 	gnextstepsettingsbackend.c \
 	gosxcontenttype.c \
 	gosxappinfo.c \
-	gosxappinfo.h \
+	gosxappinfo.h
+if MAC_OS_X_9
+libgio_objc_2_0_la_SOURCES += \
 	gcocoanotificationbackend.c
+endif
 
 noinst_LTLIBRARIES += libgio-objc-2.0.la
 libgio_2_0_la_LIBADD += libgio-objc-2.0.la
