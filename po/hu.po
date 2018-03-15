@@ -11,9 +11,9 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-02-16 20:43+0000\n"
-"PO-Revision-Date: 2018-02-18 17:00+0100\n"
-"Last-Translator: Meskó Balázs <mesko.balazs@fsf.hu>\n"
+"POT-Creation-Date: 2018-03-14 15:07+0000\n"
+"PO-Revision-Date: 2018-03-15 15:29+0100\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
@@ -21,24 +21,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Loco-Source-Locale: de_AT\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Lokalize 1.2\n"
 "X-Loco-Parser: loco_parse_po\n"
 
-#: ../gio/gapplication.c:495
+#: ../gio/gapplication.c:496
 msgid "GApplication options"
 msgstr "GApplication kapcsolói"
 
-#: ../gio/gapplication.c:495
+#: ../gio/gapplication.c:496
 msgid "Show GApplication options"
 msgstr "A GApplication kapcsolóinak megjelenítése"
 
-#: ../gio/gapplication.c:540
+#: ../gio/gapplication.c:541
 msgid "Enter GApplication service mode (use from D-Bus service files)"
 msgstr ""
 "Belépés GApplication szolgáltatásmódba (használja D-Bus "
 "szolgáltatásfájlokból)"
 
-#: ../gio/gapplication.c:552
+#: ../gio/gapplication.c:553
 msgid "Override the application’s ID"
 msgstr "Alkalmazások azonosítójának felülbírálása"
 
@@ -120,8 +120,8 @@ msgstr "Részletes súgó kiírása ezen parancshoz"
 msgid "Application identifier in D-Bus format (eg: org.example.viewer)"
 msgstr "Alkalmazásazonosító D-Bus formátumban (például: org.example.viewer)"
 
-#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:665
-#: ../gio/glib-compile-resources.c:671 ../gio/glib-compile-resources.c:698
+#: ../gio/gapplication-tool.c:72 ../gio/glib-compile-resources.c:737
+#: ../gio/glib-compile-resources.c:743 ../gio/glib-compile-resources.c:770
 #: ../gio/gresource-tool.c:495 ../gio/gresource-tool.c:561
 msgid "FILE"
 msgstr "FÁJL"
@@ -550,7 +550,7 @@ msgstr "A tartalom váratlanul hiányzik a sor olvasásakor"
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr "A tartalom váratlanul hiányzik a sor (biztonságos) olvasásakor"
 
-#: ../gio/gdbusauth.c:508
+#: ../gio/gdbusauth.c:481
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
@@ -558,7 +558,7 @@ msgstr ""
 "Minden elérhető hitelesítési mechanizmus kimerítve (próbálva: %s, elérhető: "
 "%s)"
 
-#: ../gio/gdbusauth.c:1171
+#: ../gio/gdbusauth.c:1144
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr ""
 "Megszakítva a GDBusAuthObserver::authorize-authenticated-peer használatával"
@@ -581,17 +581,17 @@ msgstr ""
 msgid "Error creating directory “%s”: %s"
 msgstr "Hiba a(z) %s könyvtár létrehozásakor: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:379
+#: ../gio/gdbusauthmechanismsha1.c:343
 #, c-format
 msgid "Error opening keyring “%s” for reading: "
 msgstr "Hiba a(z) „%s” kulcstartó megnyitásakor olvasásra: "
 
-#: ../gio/gdbusauthmechanismsha1.c:402 ../gio/gdbusauthmechanismsha1.c:720
+#: ../gio/gdbusauthmechanismsha1.c:366 ../gio/gdbusauthmechanismsha1.c:684
 #, c-format
 msgid "Line %d of the keyring at “%s” with content “%s” is malformed"
 msgstr "A(z) „%2$s” kulcstartó „%3$s” tartalmú „%1$d”. sora rosszul formázott"
 
-#: ../gio/gdbusauthmechanismsha1.c:416 ../gio/gdbusauthmechanismsha1.c:734
+#: ../gio/gdbusauthmechanismsha1.c:380 ../gio/gdbusauthmechanismsha1.c:698
 #, c-format
 msgid ""
 "First token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -599,7 +599,7 @@ msgstr ""
 "A(z) „%2$s” kulcstartó „%3$s” tartalmú „%1$d”. sorának első egysége rosszul "
 "formázott"
 
-#: ../gio/gdbusauthmechanismsha1.c:430 ../gio/gdbusauthmechanismsha1.c:748
+#: ../gio/gdbusauthmechanismsha1.c:394 ../gio/gdbusauthmechanismsha1.c:712
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at “%s” with content “%s” is malformed"
@@ -607,37 +607,37 @@ msgstr ""
 "A(z) „%2$s” kulcstartó „%3$s” tartalmú „%1$d”. sorának második egysége "
 "rosszul formázott"
 
-#: ../gio/gdbusauthmechanismsha1.c:454
+#: ../gio/gdbusauthmechanismsha1.c:418
 #, c-format
 msgid "Didn’t find cookie with id %d in the keyring at “%s”"
 msgstr "Nem található %d azonosítójú süti a kulcstartóban itt: „%s ”"
 
-#: ../gio/gdbusauthmechanismsha1.c:536
+#: ../gio/gdbusauthmechanismsha1.c:500
 #, c-format
 msgid "Error deleting stale lock file “%s”: %s"
 msgstr "Hiba az elavult „%s” zárolásfájl törlésekor: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:568
+#: ../gio/gdbusauthmechanismsha1.c:532
 #, c-format
 msgid "Error creating lock file “%s”: %s"
 msgstr "Hiba a(z) „%s” zárolási fájl létrehozásakor: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:599
+#: ../gio/gdbusauthmechanismsha1.c:563
 #, c-format
 msgid "Error closing (unlinked) lock file “%s”: %s"
 msgstr "Hiba a (törölt) „%s” zárolási fájl lezárásakor: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:610
+#: ../gio/gdbusauthmechanismsha1.c:574
 #, c-format
 msgid "Error unlinking lock file “%s”: %s"
 msgstr "Hiba a(z) „%s” zárolási fájl törlésekor: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:687
+#: ../gio/gdbusauthmechanismsha1.c:651
 #, c-format
 msgid "Error opening keyring “%s” for writing: "
 msgstr "Hiba a(z) „%s” kulcstartó írásra való megnyitásakor: "
 
-#: ../gio/gdbusauthmechanismsha1.c:883
+#: ../gio/gdbusauthmechanismsha1.c:847
 #, c-format
 msgid "(Additionally, releasing the lock for “%s” also failed: %s) "
 msgstr "(Ezen kívül a(z) „%s” zárolásának feloldása is meghiúsult: %s) "
@@ -999,54 +999,54 @@ msgstr ""
 "\n"
 "Az egyes parancsok súgója a „%s PARANCS --help” kiadásával érhető el.\n"
 
-#: ../gio/gdbus-tool.c:167 ../gio/gdbus-tool.c:234 ../gio/gdbus-tool.c:306
-#: ../gio/gdbus-tool.c:330 ../gio/gdbus-tool.c:811 ../gio/gdbus-tool.c:1150
-#: ../gio/gdbus-tool.c:1592
+#: ../gio/gdbus-tool.c:185 ../gio/gdbus-tool.c:252 ../gio/gdbus-tool.c:324
+#: ../gio/gdbus-tool.c:348 ../gio/gdbus-tool.c:834 ../gio/gdbus-tool.c:1171
+#: ../gio/gdbus-tool.c:1613
 #, c-format
 msgid "Error: %s\n"
 msgstr "Hiba: %s\n"
 
-#: ../gio/gdbus-tool.c:178 ../gio/gdbus-tool.c:247 ../gio/gdbus-tool.c:1608
+#: ../gio/gdbus-tool.c:196 ../gio/gdbus-tool.c:265 ../gio/gdbus-tool.c:1629
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Hiba a betekintési XML feldolgozásakor: %s\n"
 
-#: ../gio/gdbus-tool.c:216
+#: ../gio/gdbus-tool.c:234
 #, c-format
 msgid "Error: %s is not a valid name\n"
 msgstr "Hiba: a(z) %s nem érvényes név\n"
 
-#: ../gio/gdbus-tool.c:364
+#: ../gio/gdbus-tool.c:382
 msgid "Connect to the system bus"
 msgstr "Csatlakozás a rendszerbuszhoz"
 
-#: ../gio/gdbus-tool.c:365
+#: ../gio/gdbus-tool.c:383
 msgid "Connect to the session bus"
 msgstr "Csatlakozás a munkamenetbuszhoz"
 
-#: ../gio/gdbus-tool.c:366
+#: ../gio/gdbus-tool.c:384
 msgid "Connect to given D-Bus address"
 msgstr "Csatlakozás a megadott D-Bus címhez"
 
-#: ../gio/gdbus-tool.c:376
+#: ../gio/gdbus-tool.c:394
 msgid "Connection Endpoint Options:"
 msgstr "Kapcsolatvégpont beállításai:"
 
-#: ../gio/gdbus-tool.c:377
+#: ../gio/gdbus-tool.c:395
 msgid "Options specifying the connection endpoint"
 msgstr "A kapcsolat végpontját megadó beállítások"
 
-#: ../gio/gdbus-tool.c:399
+#: ../gio/gdbus-tool.c:417
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Nincs megadva kapcsolatvégpont"
 
-#: ../gio/gdbus-tool.c:409
+#: ../gio/gdbus-tool.c:427
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Több kapcsolatvégpontot adott meg"
 
-#: ../gio/gdbus-tool.c:479
+#: ../gio/gdbus-tool.c:497
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface “%s” does not exist\n"
@@ -1054,7 +1054,7 @@ msgstr ""
 "Figyelmeztetés: a betekintési adatok szerint a(z) „%s” interfész nem "
 "létezik\n"
 
-#: ../gio/gdbus-tool.c:488
+#: ../gio/gdbus-tool.c:506
 #, c-format
 msgid ""
 "Warning: According to introspection data, method “%s” does not exist on "
@@ -1063,167 +1063,166 @@ msgstr ""
 "Figyelmeztetés: a betekintési adatok szerint a(z) „%2$s” interfészen nem "
 "létezik „%1$s” metódus\n"
 
-#: ../gio/gdbus-tool.c:550
+#: ../gio/gdbus-tool.c:568
 msgid "Optional destination for signal (unique name)"
 msgstr "A szignál elhagyható célja (egyedi név)"
 
-#: ../gio/gdbus-tool.c:551
+#: ../gio/gdbus-tool.c:569
 msgid "Object path to emit signal on"
 msgstr "Szignál kibocsátása ezen az objektumútvonalon"
 
-#: ../gio/gdbus-tool.c:552
+#: ../gio/gdbus-tool.c:570
 msgid "Signal and interface name"
 msgstr "Szignál és interfész neve"
 
-#: ../gio/gdbus-tool.c:587
+#: ../gio/gdbus-tool.c:603
 msgid "Emit a signal."
 msgstr "Szignál kibocsátása."
 
-#: ../gio/gdbus-tool.c:642 ../gio/gdbus-tool.c:944 ../gio/gdbus-tool.c:1698
-#: ../gio/gdbus-tool.c:1931 ../gio/gdbus-tool.c:2152
+#: ../gio/gdbus-tool.c:658 ../gio/gdbus-tool.c:965 ../gio/gdbus-tool.c:1715
+#: ../gio/gdbus-tool.c:1944 ../gio/gdbus-tool.c:2164
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Hiba a csatlakozáskor: %s\n"
 
-#: ../gio/gdbus-tool.c:659 ../gio/gdbus-tool.c:961 ../gio/gdbus-tool.c:1715
-#: ../gio/gdbus-tool.c:1956
-#, c-format
-msgid "Error: Destination is not specified\n"
-msgstr "Hiba: a cél nincs megadva\n"
-
-#: ../gio/gdbus-tool.c:670
+#: ../gio/gdbus-tool.c:678
 #, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Hiba: a(z) %s nem érvényes egyedi busznév.\n"
 
-#: ../gio/gdbus-tool.c:685 ../gio/gdbus-tool.c:987 ../gio/gdbus-tool.c:1741
+#: ../gio/gdbus-tool.c:697 ../gio/gdbus-tool.c:1008 ../gio/gdbus-tool.c:1758
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Hiba: az objektumútvonal nincs megadva\n"
 
-#: ../gio/gdbus-tool.c:705 ../gio/gdbus-tool.c:1007 ../gio/gdbus-tool.c:1761
-#: ../gio/gdbus-tool.c:2002
+#: ../gio/gdbus-tool.c:720 ../gio/gdbus-tool.c:1028 ../gio/gdbus-tool.c:1778
+#: ../gio/gdbus-tool.c:2015
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Hiba: a(z) %s nem érvényes objektumútvonal\n"
 
-#: ../gio/gdbus-tool.c:720
+#: ../gio/gdbus-tool.c:740
 #, c-format
 msgid "Error: Signal name is not specified\n"
 msgstr "Hiba: a szignálnév nincs megadva\n"
 
-#: ../gio/gdbus-tool.c:731
+#: ../gio/gdbus-tool.c:754
 #, c-format
 msgid "Error: Signal name “%s” is invalid\n"
 msgstr "Hiba: a szignálnév („%s”) érvénytelen\n"
 
-#: ../gio/gdbus-tool.c:743
+#: ../gio/gdbus-tool.c:766
 #, c-format
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Hiba: a(z) %s nem érvényes interfésznév\n"
 
-#: ../gio/gdbus-tool.c:749
+#: ../gio/gdbus-tool.c:772
 #, c-format
 msgid "Error: %s is not a valid member name\n"
 msgstr "Hiba: a(z) %s nem érvényes tagnév\n"
 
 #. Use the original non-"parse-me-harder" error
-#: ../gio/gdbus-tool.c:786 ../gio/gdbus-tool.c:1119
+#: ../gio/gdbus-tool.c:809 ../gio/gdbus-tool.c:1140
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Hiba a(z) %d. paraméter feldolgozásakor: %s\n"
 
-#: ../gio/gdbus-tool.c:818
+#: ../gio/gdbus-tool.c:841
 #, c-format
 msgid "Error flushing connection: %s\n"
 msgstr "Hiba a kapcsolat kiürítésekor: %s\n"
 
-#: ../gio/gdbus-tool.c:845
+#: ../gio/gdbus-tool.c:868
 msgid "Destination name to invoke method on"
 msgstr "A cél neve a metódushíváshoz"
 
-#: ../gio/gdbus-tool.c:846
+#: ../gio/gdbus-tool.c:869
 msgid "Object path to invoke method on"
 msgstr "Objektum útvonala a metódushíváshoz"
 
-#: ../gio/gdbus-tool.c:847
+#: ../gio/gdbus-tool.c:870
 msgid "Method and interface name"
 msgstr "Metódus és interfész neve"
 
-#: ../gio/gdbus-tool.c:848
+#: ../gio/gdbus-tool.c:871
 msgid "Timeout in seconds"
 msgstr "Időkorlát másodpercben"
 
-#: ../gio/gdbus-tool.c:889
+#: ../gio/gdbus-tool.c:910
 msgid "Invoke a method on a remote object."
 msgstr "Metódus hívása távoli objektumon."
 
-#: ../gio/gdbus-tool.c:972 ../gio/gdbus-tool.c:1732 ../gio/gdbus-tool.c:1967
+#: ../gio/gdbus-tool.c:982 ../gio/gdbus-tool.c:1732 ../gio/gdbus-tool.c:1969
+#, c-format
+msgid "Error: Destination is not specified\n"
+msgstr "Hiba: a cél nincs megadva\n"
+
+#: ../gio/gdbus-tool.c:993 ../gio/gdbus-tool.c:1749 ../gio/gdbus-tool.c:1980
 #, c-format
 msgid "Error: %s is not a valid bus name\n"
 msgstr "Hiba: a(z) %s nem érvényes busznév\n"
 
-#: ../gio/gdbus-tool.c:1022
+#: ../gio/gdbus-tool.c:1043
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Hiba: a metódusnév nincs megadva\n"
 
-#: ../gio/gdbus-tool.c:1033
+#: ../gio/gdbus-tool.c:1054
 #, c-format
 msgid "Error: Method name “%s” is invalid\n"
 msgstr "Hiba: a metódusnév („%s”) érvénytelen\n"
 
-#: ../gio/gdbus-tool.c:1111
+#: ../gio/gdbus-tool.c:1132
 #, c-format
 msgid "Error parsing parameter %d of type “%s”: %s\n"
 msgstr "Hiba a(z) „%2$s” típusú %1$d. paraméter feldolgozásakor: %3$s\n"
 
-#: ../gio/gdbus-tool.c:1555
+#: ../gio/gdbus-tool.c:1576
 msgid "Destination name to introspect"
 msgstr "A cél neve a betekintéshez"
 
-#: ../gio/gdbus-tool.c:1556
+#: ../gio/gdbus-tool.c:1577
 msgid "Object path to introspect"
 msgstr "Az objektumútvonal a betekintéshez"
 
-#: ../gio/gdbus-tool.c:1557
+#: ../gio/gdbus-tool.c:1578
 msgid "Print XML"
 msgstr "XML kiírása"
 
-#: ../gio/gdbus-tool.c:1558
+#: ../gio/gdbus-tool.c:1579
 msgid "Introspect children"
 msgstr "Betekintés gyermekekbe"
 
-#: ../gio/gdbus-tool.c:1559
+#: ../gio/gdbus-tool.c:1580
 msgid "Only print properties"
 msgstr "Csak a tulajdonságok kiírása"
 
-#: ../gio/gdbus-tool.c:1650
+#: ../gio/gdbus-tool.c:1667
 msgid "Introspect a remote object."
 msgstr "Betekintés távoli objektumba."
 
-#: ../gio/gdbus-tool.c:1853
+#: ../gio/gdbus-tool.c:1870
 msgid "Destination name to monitor"
 msgstr "Megfigyelendő cél neve"
 
-#: ../gio/gdbus-tool.c:1854
+#: ../gio/gdbus-tool.c:1871
 msgid "Object path to monitor"
 msgstr "Megfigyelendő objektumútvonal"
 
-#: ../gio/gdbus-tool.c:1883
+#: ../gio/gdbus-tool.c:1896
 msgid "Monitor a remote object."
 msgstr "Távoli objektum megfigyelése."
 
-#: ../gio/gdbus-tool.c:1941
+#: ../gio/gdbus-tool.c:1954
 #, c-format
 msgid "Error: can’t monitor a non-message-bus connection\n"
 msgstr "Hiba: nem figyelhető meg a nem üzenetbusz kapcsolat\n"
 
-#: ../gio/gdbus-tool.c:2065
+#: ../gio/gdbus-tool.c:2078
 msgid "Service to activate before waiting for the other one (well-known name)"
 msgstr "Az aktiválandó szolgáltatás, mielőtt a másikra várna (ismert név)"
 
-#: ../gio/gdbus-tool.c:2068
+#: ../gio/gdbus-tool.c:2081
 msgid ""
 "Timeout to wait for before exiting with an error (seconds); 0 for no timeout "
 "(default)"
@@ -1231,30 +1230,30 @@ msgstr ""
 "Az időtúllépés, mielőtt hibával kilépne (másodpercben); 0, ha nincs "
 "időtúllépés (alapértelmezett)"
 
-#: ../gio/gdbus-tool.c:2116
+#: ../gio/gdbus-tool.c:2129
 msgid "[OPTION…] BUS-NAME"
 msgstr "[KAPCSOLÓ…] BUSZNÉV"
 
-#: ../gio/gdbus-tool.c:2118
+#: ../gio/gdbus-tool.c:2130
 msgid "Wait for a bus name to appear."
 msgstr "Várakozás egy busznévre."
 
-#: ../gio/gdbus-tool.c:2194
+#: ../gio/gdbus-tool.c:2206
 #, c-format
 msgid "Error: A service to activate for must be specified.\n"
 msgstr "Hiba: az objektumútvonal nincs megadva.\n"
 
-#: ../gio/gdbus-tool.c:2199
+#: ../gio/gdbus-tool.c:2211
 #, c-format
 msgid "Error: A service to wait for must be specified.\n"
 msgstr "Hiba: az objektumútvonal nincs megadva.\n"
 
-#: ../gio/gdbus-tool.c:2204
+#: ../gio/gdbus-tool.c:2216
 #, c-format
 msgid "Error: Too many arguments.\n"
 msgstr "Hiba: Túl sok argumentum.\n"
 
-#: ../gio/gdbus-tool.c:2212 ../gio/gdbus-tool.c:2219
+#: ../gio/gdbus-tool.c:2224 ../gio/gdbus-tool.c:2231
 #, c-format
 msgid "Error: %s is not a valid well-known bus name.\n"
 msgstr "Hiba: a(z) %s nem érvényes busznév\n"
@@ -2245,12 +2244,12 @@ msgstr "Szimbolikus linkek, csatolások és indítóikonok követése"
 msgid "List contents of directories in a tree-like format."
 msgstr "Könyvtárak tartalmának felsorolása fa-szerű formátumban."
 
-#: ../gio/glib-compile-resources.c:142 ../gio/glib-compile-schemas.c:1501
+#: ../gio/glib-compile-resources.c:143 ../gio/glib-compile-schemas.c:1501
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "<%s> elem nem engedélyezett ezen belül: <%s>"
 
-#: ../gio/glib-compile-resources.c:146
+#: ../gio/glib-compile-resources.c:147
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "<%s> elem nem engedélyezett a felső szinten"
@@ -2270,90 +2269,97 @@ msgstr "A(z) „%s” nem található egyik forráskönyvtárban sem"
 msgid "Failed to locate “%s” in current directory"
 msgstr "A(z) „%s” nem található a jelenlegi könyvtárban"
 
-#: ../gio/glib-compile-resources.c:290
+#: ../gio/glib-compile-resources.c:293
 #, c-format
 msgid "Unknown processing option “%s”"
 msgstr "Ismeretlen feldolgozási kapcsoló: „%s”"
 
-#: ../gio/glib-compile-resources.c:308 ../gio/glib-compile-resources.c:354
+#. Translators: the first %s is a gresource XML attribute,
+#. * the second %s is an environment variable, and the third
+#. * %s is a command line tool
+#.
+#: ../gio/glib-compile-resources.c:313 ../gio/glib-compile-resources.c:370
+#: ../gio/glib-compile-resources.c:427
 #, c-format
-msgid "Failed to create temp file: %s"
-msgstr "Nem sikerült létrehozni az ideiglenes fájlt: %s"
+msgid "%s preprocessing requested, but %s is not set, and %s is not in PATH"
+msgstr ""
+"A(z) %s előfeldolgozása szükséges, de a(z) %s nincs beállítva, és a(z) %s "
+"nincs a PATH környezeti változóban"
 
-#: ../gio/glib-compile-resources.c:382
+#: ../gio/glib-compile-resources.c:460
 #, c-format
 msgid "Error reading file %s: %s"
 msgstr "Hiba a(z) %s fájl olvasásakor: %s"
 
-#: ../gio/glib-compile-resources.c:402
+#: ../gio/glib-compile-resources.c:480
 #, c-format
 msgid "Error compressing file %s"
 msgstr "Hiba a fájl tömörítésekor: %s"
 
-#: ../gio/glib-compile-resources.c:469
+#: ../gio/glib-compile-resources.c:541
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "nem jelenhet meg szöveg ezen belül: <%s>"
 
-#: ../gio/glib-compile-resources.c:664 ../gio/glib-compile-schemas.c:2067
+#: ../gio/glib-compile-resources.c:736 ../gio/glib-compile-schemas.c:2067
 msgid "Show program version and exit"
 msgstr "A programverzió megjelenítése és kilépés"
 
-#: ../gio/glib-compile-resources.c:665
+#: ../gio/glib-compile-resources.c:737
 msgid "name of the output file"
 msgstr "a kimeneti fájl neve"
 
-#: ../gio/glib-compile-resources.c:666
+#: ../gio/glib-compile-resources.c:738
 msgid ""
 "The directories where files are to be read from (default to current "
 "directory)"
 msgstr ""
 "A fájlok olvasása ebből a könyvtárból (alapértelmezett: aktuális könyvtár)"
 
-#: ../gio/glib-compile-resources.c:666 ../gio/glib-compile-schemas.c:2068
+#: ../gio/glib-compile-resources.c:738 ../gio/glib-compile-schemas.c:2068
 #: ../gio/glib-compile-schemas.c:2096
 msgid "DIRECTORY"
 msgstr "KÖNYVTÁR"
 
-#: ../gio/glib-compile-resources.c:667
+#: ../gio/glib-compile-resources.c:739
 msgid ""
 "Generate output in the format selected for by the target filename extension"
 msgstr ""
 "Kimenet előállítása a célfájl kiterjesztése által kiválasztott formátumban"
 
-#: ../gio/glib-compile-resources.c:668
+#: ../gio/glib-compile-resources.c:740
 msgid "Generate source header"
 msgstr "Forrásfejléc előállítása"
 
-#: ../gio/glib-compile-resources.c:669
+#: ../gio/glib-compile-resources.c:741
 msgid "Generate sourcecode used to link in the resource file into your code"
 msgstr "Az erőforrásfájl kódba linkelésére használt forráskód előállítása"
 
-#: ../gio/glib-compile-resources.c:670
+#: ../gio/glib-compile-resources.c:742
 msgid "Generate dependency list"
 msgstr "Függőséglista előállítása"
 
-#: ../gio/glib-compile-resources.c:671
+#: ../gio/glib-compile-resources.c:743
 msgid "name of the dependency file to generate"
 msgstr "az előállítandó függőségfájl neve"
 
-#: ../gio/glib-compile-resources.c:672
+#: ../gio/glib-compile-resources.c:744
 msgid "Include phony targets in the generated dependency file"
 msgstr "A „phony” célok bevétele a generált függőségi fájlba"
 
-#: ../gio/glib-compile-resources.c:673
+#: ../gio/glib-compile-resources.c:745
 msgid "Don’t automatically create and register resource"
 msgstr "Ne hozza létre és ne regisztrálja automatikusan az erőforrást"
 
-#: ../gio/glib-compile-resources.c:674
+#: ../gio/glib-compile-resources.c:746
 msgid "Don’t export functions; declare them G_GNUC_INTERNAL"
 msgstr "Ne exportáljon függvényeket; deklarálja azokat G_GNUC_INTERNAL-ként"
 
-#: ../gio/glib-compile-resources.c:675
+#: ../gio/glib-compile-resources.c:747
 msgid "C identifier name used for the generated source code"
 msgstr "Az előállított forráskódhoz használt C azonosító neve"
 
-#: ../gio/glib-compile-resources.c:701
+#: ../gio/glib-compile-resources.c:773
 msgid ""
 "Compile a resource specification into a resource file.\n"
 "Resource specification files have the extension .gresource.xml,\n"
@@ -2363,7 +2369,7 @@ msgstr ""
 "Az erőforrás-specifikációs fájlok kiterjesztése .gresource.xml,\n"
 "az erőforrásfájl kiterjesztése pedig .gresource."
 
-#: ../gio/glib-compile-resources.c:723
+#: ../gio/glib-compile-resources.c:795
 #, c-format
 msgid "You should give exactly one file name\n"
 msgstr "Pontosan egy fájlnevet kell megadnia\n"
@@ -3207,11 +3213,11 @@ msgstr "A csatolás nem valósítja meg a tartalomtípus szinkron meghatározás
 msgid "Hostname “%s” contains “[” but not “]”"
 msgstr "A gépnév („%s”) „[” karaktert tartalmaz „]” nélkül"
 
-#: ../gio/gnetworkmonitorbase.c:206 ../gio/gnetworkmonitorbase.c:310
+#: ../gio/gnetworkmonitorbase.c:212 ../gio/gnetworkmonitorbase.c:316
 msgid "Network unreachable"
 msgstr "A hálózat elérhetetlen"
 
-#: ../gio/gnetworkmonitorbase.c:244 ../gio/gnetworkmonitorbase.c:274
+#: ../gio/gnetworkmonitorbase.c:250 ../gio/gnetworkmonitorbase.c:280
 msgid "Host unreachable"
 msgstr "A gép elérhetetlen"
 
@@ -3229,7 +3235,7 @@ msgstr "Nem hozható létre a hálózatfigyelő: "
 msgid "Could not get network status: "
 msgstr "Nem kérhető le a hálózat állapota: "
 
-#: ../gio/gnetworkmonitornm.c:329
+#: ../gio/gnetworkmonitornm.c:322
 #, c-format
 msgid "NetworkManager version too old"
 msgstr "A Hálózatkezelő verziója túl régi"
@@ -4282,25 +4288,25 @@ msgid "The pathname “%s” is not an absolute path"
 msgstr "A(z) „%s” elérési út neve nem abszolút útvonal"
 
 #. Translators: this is the preferred format for expressing the date and the time
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
 msgstr "%Y. %b. %e., %A, %H.%M.%S %Z"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:210
+#: ../glib/gdatetime.c:216
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%y. %m %e."
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:219
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%k.%M.%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
-#: ../glib/gdatetime.c:216
+#: ../glib/gdatetime.c:222
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%H.%M.%S"
@@ -4321,62 +4327,62 @@ msgstr "%H.%M.%S"
 #. * non-European) there is no difference between the standalone and
 #. * complete date form.
 #.
-#: ../glib/gdatetime.c:251
+#: ../glib/gdatetime.c:261
 msgctxt "full month name"
 msgid "January"
 msgstr "Január"
 
-#: ../glib/gdatetime.c:253
+#: ../glib/gdatetime.c:263
 msgctxt "full month name"
 msgid "February"
 msgstr "Február"
 
-#: ../glib/gdatetime.c:255
+#: ../glib/gdatetime.c:265
 msgctxt "full month name"
 msgid "March"
 msgstr "Március"
 
-#: ../glib/gdatetime.c:257
+#: ../glib/gdatetime.c:267
 msgctxt "full month name"
 msgid "April"
 msgstr "Április"
 
-#: ../glib/gdatetime.c:259
+#: ../glib/gdatetime.c:269
 msgctxt "full month name"
 msgid "May"
 msgstr "Május"
 
-#: ../glib/gdatetime.c:261
+#: ../glib/gdatetime.c:271
 msgctxt "full month name"
 msgid "June"
 msgstr "Június"
 
-#: ../glib/gdatetime.c:263
+#: ../glib/gdatetime.c:273
 msgctxt "full month name"
 msgid "July"
 msgstr "Július"
 
-#: ../glib/gdatetime.c:265
+#: ../glib/gdatetime.c:275
 msgctxt "full month name"
 msgid "August"
 msgstr "Augusztus"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:277
 msgctxt "full month name"
 msgid "September"
 msgstr "Szeptember"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:279
 msgctxt "full month name"
 msgid "October"
 msgstr "Október"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:281
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:283
 msgctxt "full month name"
 msgid "December"
 msgstr "December"
@@ -4398,132 +4404,132 @@ msgstr "December"
 #. * other platform.  Here are abbreviated month names in a form
 #. * appropriate when they are used standalone.
 #.
-#: ../glib/gdatetime.c:305
+#: ../glib/gdatetime.c:315
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:307
+#: ../glib/gdatetime.c:317
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Febr"
 
-#: ../glib/gdatetime.c:309
+#: ../glib/gdatetime.c:319
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Már"
 
-#: ../glib/gdatetime.c:311
+#: ../glib/gdatetime.c:321
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Ápr"
 
-#: ../glib/gdatetime.c:313
+#: ../glib/gdatetime.c:323
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Máj"
 
-#: ../glib/gdatetime.c:315
+#: ../glib/gdatetime.c:325
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jún"
 
-#: ../glib/gdatetime.c:317
+#: ../glib/gdatetime.c:327
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Júl"
 
-#: ../glib/gdatetime.c:319
+#: ../glib/gdatetime.c:329
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: ../glib/gdatetime.c:321
+#: ../glib/gdatetime.c:331
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Szept"
 
-#: ../glib/gdatetime.c:323
+#: ../glib/gdatetime.c:333
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:325
+#: ../glib/gdatetime.c:335
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:327
+#: ../glib/gdatetime.c:337
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dec"
 
-#: ../glib/gdatetime.c:342
+#: ../glib/gdatetime.c:352
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Hétfő"
 
-#: ../glib/gdatetime.c:344
+#: ../glib/gdatetime.c:354
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Kedd"
 
-#: ../glib/gdatetime.c:346
+#: ../glib/gdatetime.c:356
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Szerda"
 
-#: ../glib/gdatetime.c:348
+#: ../glib/gdatetime.c:358
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Csütörtök"
 
-#: ../glib/gdatetime.c:350
+#: ../glib/gdatetime.c:360
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Péntek"
 
-#: ../glib/gdatetime.c:352
+#: ../glib/gdatetime.c:362
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Szombat"
 
-#: ../glib/gdatetime.c:354
+#: ../glib/gdatetime.c:364
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Vasárnap"
 
-#: ../glib/gdatetime.c:369
+#: ../glib/gdatetime.c:379
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Hé"
 
-#: ../glib/gdatetime.c:371
+#: ../glib/gdatetime.c:381
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Ke"
 
-#: ../glib/gdatetime.c:373
+#: ../glib/gdatetime.c:383
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Sze"
 
-#: ../glib/gdatetime.c:375
+#: ../glib/gdatetime.c:385
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Csü"
 
-#: ../glib/gdatetime.c:377
+#: ../glib/gdatetime.c:387
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Pé"
 
-#: ../glib/gdatetime.c:379
+#: ../glib/gdatetime.c:389
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Szo"
 
-#: ../glib/gdatetime.c:381
+#: ../glib/gdatetime.c:391
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Va"
@@ -4545,62 +4551,62 @@ msgstr "Va"
 #. * (western European, non-European) there is no difference between the
 #. * standalone and complete date form.
 #.
-#: ../glib/gdatetime.c:441
+#: ../glib/gdatetime.c:455
 msgctxt "full month name with day"
 msgid "January"
 msgstr "január"
 
-#: ../glib/gdatetime.c:443
+#: ../glib/gdatetime.c:457
 msgctxt "full month name with day"
 msgid "February"
 msgstr "február"
 
-#: ../glib/gdatetime.c:445
+#: ../glib/gdatetime.c:459
 msgctxt "full month name with day"
 msgid "March"
 msgstr "március"
 
-#: ../glib/gdatetime.c:447
+#: ../glib/gdatetime.c:461
 msgctxt "full month name with day"
 msgid "April"
 msgstr "április"
 
-#: ../glib/gdatetime.c:449
+#: ../glib/gdatetime.c:463
 msgctxt "full month name with day"
 msgid "May"
 msgstr "május"
 
-#: ../glib/gdatetime.c:451
+#: ../glib/gdatetime.c:465
 msgctxt "full month name with day"
 msgid "June"
 msgstr "június"
 
-#: ../glib/gdatetime.c:453
+#: ../glib/gdatetime.c:467
 msgctxt "full month name with day"
 msgid "July"
 msgstr "július"
 
-#: ../glib/gdatetime.c:455
+#: ../glib/gdatetime.c:469
 msgctxt "full month name with day"
 msgid "August"
 msgstr "augusztus"
 
-#: ../glib/gdatetime.c:457
+#: ../glib/gdatetime.c:471
 msgctxt "full month name with day"
 msgid "September"
 msgstr "szeptember"
 
-#: ../glib/gdatetime.c:459
+#: ../glib/gdatetime.c:473
 msgctxt "full month name with day"
 msgid "October"
 msgstr "október"
 
-#: ../glib/gdatetime.c:461
+#: ../glib/gdatetime.c:475
 msgctxt "full month name with day"
 msgid "November"
 msgstr "november"
 
-#: ../glib/gdatetime.c:463
+#: ../glib/gdatetime.c:477
 msgctxt "full month name with day"
 msgid "December"
 msgstr "december"
@@ -4622,74 +4628,74 @@ msgstr "december"
 #. * month names almost ready to copy and paste here.  In other systems
 #. * due to a bug the result is incorrect in some languages.
 #.
-#: ../glib/gdatetime.c:524
+#: ../glib/gdatetime.c:542
 msgctxt "abbreviated month name with day"
 msgid "Jan"
 msgstr "jan"
 
-#: ../glib/gdatetime.c:526
+#: ../glib/gdatetime.c:544
 msgctxt "abbreviated month name with day"
 msgid "Feb"
 msgstr "febr"
 
-#: ../glib/gdatetime.c:528
+#: ../glib/gdatetime.c:546
 msgctxt "abbreviated month name with day"
 msgid "Mar"
 msgstr "márc"
 
-#: ../glib/gdatetime.c:530
+#: ../glib/gdatetime.c:548
 msgctxt "abbreviated month name with day"
 msgid "Apr"
 msgstr "ápr"
 
-#: ../glib/gdatetime.c:532
+#: ../glib/gdatetime.c:550
 msgctxt "abbreviated month name with day"
 msgid "May"
 msgstr "máj"
 
-#: ../glib/gdatetime.c:534
+#: ../glib/gdatetime.c:552
 msgctxt "abbreviated month name with day"
 msgid "Jun"
 msgstr "jún"
 
-#: ../glib/gdatetime.c:536
+#: ../glib/gdatetime.c:554
 msgctxt "abbreviated month name with day"
 msgid "Jul"
 msgstr "júl"
 
-#: ../glib/gdatetime.c:538
+#: ../glib/gdatetime.c:556
 msgctxt "abbreviated month name with day"
 msgid "Aug"
 msgstr "aug"
 
-#: ../glib/gdatetime.c:540
+#: ../glib/gdatetime.c:558
 msgctxt "abbreviated month name with day"
 msgid "Sep"
 msgstr "szept"
 
-#: ../glib/gdatetime.c:542
+#: ../glib/gdatetime.c:560
 msgctxt "abbreviated month name with day"
 msgid "Oct"
 msgstr "okt"
 
-#: ../glib/gdatetime.c:544
+#: ../glib/gdatetime.c:562
 msgctxt "abbreviated month name with day"
 msgid "Nov"
 msgstr "nov"
 
-#: ../glib/gdatetime.c:546
+#: ../glib/gdatetime.c:564
 msgctxt "abbreviated month name with day"
 msgid "Dec"
 msgstr "dec"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:563
+#: ../glib/gdatetime.c:581
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "DE"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:566
+#: ../glib/gdatetime.c:584
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "DU"
@@ -5915,8 +5921,3 @@ msgstr[1] "%s bit"
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#~ msgid ""
-#~ "Message has %d file descriptors but the header field indicates %d file "
-#~ "descriptors"
-#~ msgstr ""
-#~ "Az üzenethez %d fájlleíró tartozik, de a fejlécmező %d fájlleírót jelez"
