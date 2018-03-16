@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\glib\gspawn-win32-helper-console.c">
+    <ClCompile Include="..\..\glib\gspawn-win32-helper.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

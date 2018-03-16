@@ -10,5 +10,8 @@
     <ClCompile Include="..\..\gio\gio-querymodules.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\gio\giomodule-priv.c" >
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

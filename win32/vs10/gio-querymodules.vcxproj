@@ -157,6 +157,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\gio\gio-querymodules.c" />
+    <ClCompile Include="..\..\gio\giomodule-priv.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="gio.vcxproj">
