@@ -28,7 +28,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;$(GLibInBuildMacro)"
+				PreprocessorDefinitions="_DEBUG;$(GLibInBuildMacro);HELPER_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -55,7 +55,7 @@
 			>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="$(GLibInBuildMacro)"
+				PreprocessorDefinitions="$(GLibInBuildMacro);HELPER_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -82,7 +82,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;$(GLibInBuildMacro)"
+				PreprocessorDefinitions="_DEBUG;$(GLibInBuildMacro);HELPER_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -110,7 +110,7 @@
 			>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="$(GLibInBuildMacro)"
+				PreprocessorDefinitions="$(GLibInBuildMacro);HELPER_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -139,7 +139,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\glib\gspawn-win32-helper-console.c"
+				RelativePath="..\..\glib\gspawn-win32-helper.c"
 				>
 			</File>
 		</Filter>

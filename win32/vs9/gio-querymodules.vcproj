@@ -146,6 +146,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File RelativePath="..\..\gio\gio-querymodules.c" />
+			<File RelativePath="..\..\gio\giomodule-priv.c" />
 		</Filter>
 	</Files>
 	<Globals>
