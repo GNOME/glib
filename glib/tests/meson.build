@@ -150,7 +150,7 @@ exe = executable('642026-ec', '642026.c',
   dependencies : deps,
   install : false,
 )
-test('642026-ec', exe, env : test_env, timeout : 45)
+test('642026-ec', exe, env : test_env, timeout : 90)
 
 exe = executable('1bit-emufutex', '1bit-mutex.c',
   c_args : test_cargs + ['-DTEST_EMULATED_FUTEX'],
