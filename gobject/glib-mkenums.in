@@ -495,6 +495,8 @@ def process_file(curfilename):
             if groups[0] is None and (len(groups) < 4 or groups[3] is None):
                 while True:
                     line = curfile.readline()
+                    if not line:
+                        print_error("Syntax error when looking for opening { in enum")
                     if re.match(r'\s*\{', line):
                         break
 
