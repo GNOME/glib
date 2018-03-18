@@ -457,7 +457,7 @@ def process_file(curfilename):
         if re.match(r'\s*typedef\s+enum.*;', line):
             continue
 
-        m = re.match(r'''\s*typedef\s+enum\s*
+        m = re.match(r'''\s*typedef\s+enum\s*[_A-Za-z]*[_A-Za-z0-9]*\s*
                ({)?\s*
                (?:/\*<
                  (([^*]|\*(?!/))*)
