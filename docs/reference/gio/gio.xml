@@ -665,10 +665,6 @@
                 <listitem><para>Show hidden files.</para></listitem>
               </varlistentry>
               <varlistentry>
-                <term><option>-h</option>, <option>--hidden</option></term>
-                <listitem><para>Show hidden files.</para></listitem>
-              </varlistentry>
-              <varlistentry>
                 <term><option>-l</option>, <option>--follow-symlinks</option></term>
                 <listitem><para>Follow symbolic links.</para></listitem>
               </varlistentry>
