@@ -300,8 +300,8 @@ g_hmac_get_string (GHmac *hmac)
 /**
  * g_hmac_get_digest:
  * @hmac: a #GHmac
- * @buffer: output buffer
- * @digest_len: an inout parameter. The caller initializes it to the
+ * @buffer: (array length=digest_len): output buffer
+ * @digest_len: (inout): an inout parameter. The caller initializes it to the
  *   size of @buffer. After the call it contains the length of the digest
  *
  * Gets the digest from @checksum as a raw binary array and places it

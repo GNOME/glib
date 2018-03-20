@@ -1682,8 +1682,8 @@ g_checksum_get_string (GChecksum *checksum)
 /**
  * g_checksum_get_digest: (skip)
  * @checksum: a #GChecksum
- * @buffer: output buffer
- * @digest_len: an inout parameter. The caller initializes it to the size of @buffer.
+ * @buffer: (array length=digest_len): output buffer
+ * @digest_len: (inout): an inout parameter. The caller initializes it to the size of @buffer.
  *   After the call it contains the length of the digest.
  *
  * Gets the digest from @checksum as a raw binary vector and places it
