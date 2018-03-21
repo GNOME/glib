@@ -613,7 +613,7 @@ g_drive_poll_for_media_finish (GDrive        *drive,
  *
  * Gets the identifier of the given kind for @drive.
  *
- * Returns: a newly allocated string containing the
+ * Returns: (nullable) (transfer full): a newly allocated string containing the
  *     requested identfier, or %NULL if the #GDrive
  *     doesn't have this kind of identifier.
  */
@@ -921,7 +921,7 @@ g_drive_stop_finish (GDrive        *drive,
  *
  * Gets the sort key for @drive, if any.
  *
- * Returns: Sorting key for @drive or %NULL if no such key is available.
+ * Returns: (nullable): Sorting key for @drive or %NULL if no such key is available.
  *
  * Since: 2.32
  */

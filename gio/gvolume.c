@@ -195,7 +195,8 @@ g_volume_get_symbolic_icon (GVolume *volume)
  * considered an opaque string. Returns %NULL if there is no UUID
  * available.
  * 
- * Returns: the UUID for @volume or %NULL if no UUID can be computed.
+ * Returns: (nullable) (transfer full): the UUID for @volume or %NULL if no UUID
+ *     can be computed.
  *     The returned string should be freed with g_free() 
  *     when no longer needed.
  */
@@ -216,8 +217,8 @@ g_volume_get_uuid (GVolume *volume)
  * @volume: a #GVolume
  * 
  * Gets the drive for the @volume.
- * 
- * Returns: (transfer full): a #GDrive or %NULL if @volume is not
+ *
+ * Returns: (transfer full) (nullable): a #GDrive or %NULL if @volume is not
  *     associated with a drive. The returned object should be unreffed
  *     with g_object_unref() when no longer needed.
  */
@@ -238,8 +239,8 @@ g_volume_get_drive (GVolume *volume)
  * @volume: a #GVolume
  * 
  * Gets the mount for the @volume.
- * 
- * Returns: (transfer full): a #GMount or %NULL if @volume isn't mounted.
+ *
+ * Returns: (transfer full) (nullable): a #GMount or %NULL if @volume isn't mounted.
  *     The returned object should be unreffed with g_object_unref()
  *     when no longer needed.
  */
@@ -565,7 +566,7 @@ g_volume_eject_with_operation_finish (GVolume        *volume,
  * See the [introduction][volume-identifier] for more
  * information about volume identifiers.
  *
- * Returns: a newly allocated string containing the
+ * Returns: (nullable) (transfer full): a newly allocated string containing the
  *     requested identfier, or %NULL if the #GVolume
  *     doesn't have this kind of identifier
  */
@@ -666,7 +667,7 @@ g_volume_get_activation_root (GVolume *volume)
  *
  * Gets the sort key for @volume, if any.
  *
- * Returns: Sorting key for @volume or %NULL if no such key is available
+ * Returns: (nullable): Sorting key for @volume or %NULL if no such key is available
  *
  * Since: 2.32
  */
