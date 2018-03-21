@@ -575,6 +575,7 @@ struct _GTask {
   GDestroyNotify result_destroy;
   gboolean had_error;
   gboolean result_set;
+  gboolean ever_returned;
 };
 
 #define G_TASK_IS_THREADED(task) ((task)->task_func != NULL)
@@ -1176,6 +1177,9 @@ g_task_return (GTask           *task,
 {
   GSource *source;
 
+  if (type != G_TASK_RETURN_FROM_THREAD)
+    task->ever_returned = TRUE;
+
   if (type == G_TASK_RETURN_SUCCESS)
     task->result_set = TRUE;
 
@@ -1596,7 +1600,7 @@ g_task_return_pointer (GTask          *task,
                        GDestroyNotify  result_destroy)
 {
   g_return_if_fail (G_IS_TASK (task));
-  g_return_if_fail (task->result_set == FALSE);
+  g_return_if_fail (!task->ever_returned);
 
   task->result.pointer = result;
   task->result_destroy = result_destroy;
@@ -1654,7 +1658,7 @@ g_task_return_int (GTask  *task,
                    gssize  result)
 {
   g_return_if_fail (G_IS_TASK (task));
-  g_return_if_fail (task->result_set == FALSE);
+  g_return_if_fail (!task->ever_returned);
 
   task->result.size = result;
 
@@ -1709,7 +1713,7 @@ g_task_return_boolean (GTask    *task,
                        gboolean  result)
 {
   g_return_if_fail (G_IS_TASK (task));
-  g_return_if_fail (task->result_set == FALSE);
+  g_return_if_fail (!task->ever_returned);
 
   task->result.boolean = result;
 
@@ -1772,7 +1776,7 @@ g_task_return_error (GTask  *task,
                      GError *error)
 {
   g_return_if_fail (G_IS_TASK (task));
-  g_return_if_fail (task->result_set == FALSE);
+  g_return_if_fail (!task->ever_returned);
   g_return_if_fail (error != NULL);
 
   task->error = error;
@@ -1833,7 +1837,7 @@ g_task_return_error_if_cancelled (GTask *task)
   GError *error = NULL;
 
   g_return_val_if_fail (G_IS_TASK (task), FALSE);
-  g_return_val_if_fail (task->result_set == FALSE, FALSE);
+  g_return_val_if_fail (!task->ever_returned, FALSE);
 
   if (g_cancellable_set_error_if_cancelled (task->cancellable, &error))
     {
