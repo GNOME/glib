@@ -99,7 +99,7 @@ codecs.register_error('replace_and_warn', replace_and_warn)
 # glib-mkenums.py
 # Information about the current enumeration
 flags = None # Is enumeration a bitmask?
-option_underscore_name = '' # Overriden underscore variant of the enum name
+option_underscore_name = '' # Overridden underscore variant of the enum name
                             # for example to fix the cases we don't get the
                             # mixed-case -> underscorized transform right.
 option_lowercase_name = ''  # DEPRECATED.  A lower case name to use as part
@@ -486,7 +486,7 @@ def process_file(curfilename):
 
             if option_lowercase_name is not None:
                 if option_underscore_name is not None:
-                    print_warning("lowercase_name overriden with underscore_name")
+                    print_warning("lowercase_name overridden with underscore_name")
                     option_lowercase_name = None
                 else:
                     print_warning("lowercase_name is deprecated, use underscore_name")
