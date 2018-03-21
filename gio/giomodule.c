@@ -722,8 +722,8 @@ try_class (GIOExtension *extension,
  * The result is cached after it is generated the first time, and
  * the function is thread-safe.
  *
- * Returns: (transfer none): an object implementing
- *     @extension_point, or %NULL if there are no usable
+ * Returns: (transfer none): the type to instantiate to implement
+ *     @extension_point, or %G_TYPE_INVALID if there are no usable
  *     implementations.
  */
 GType
