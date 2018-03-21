@@ -440,6 +440,7 @@ else
     'gwin32outputstream.c',
     'gwin32networkmonitor.c',
     'gwin32networkmonitor.h',
+    'gwin32notificationbackend.c',
   )
 
   gio_win_rc = configure_file(
