@@ -384,7 +384,7 @@ typedef const gchar *   (*GTranslateFunc)       (const gchar   *str,
 /* https://bugzilla.gnome.org/show_bug.cgi?id=769104 */
 #if __GNUC__ >= 5 && !defined(__INTEL_COMPILER)
 #define _GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS
-#elif __has_builtin(__builtin_uadd_overflow)
+#elif g_macro__has_builtin(__builtin_uadd_overflow)
 #define _GLIB_HAVE_BUILTIN_OVERFLOW_CHECKS
 #endif
 #endif

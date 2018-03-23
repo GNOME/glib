@@ -108,21 +108,36 @@
 #define G_GNUC_NULL_TERMINATED
 #endif
 
-/* Clang feature detection: http://clang.llvm.org/docs/LanguageExtensions.html */
-#ifndef __has_attribute
-#define __has_attribute(x) 0
+/*
+ * Clang feature detection: http://clang.llvm.org/docs/LanguageExtensions.html
+ * These are not available on GCC, but since the pre-processor doesn't do
+ * operator short-circuiting, we can't use it in a statement or we'll get:
+ *
+ * error: missing binary operator before token "("
+ *
+ * So we define it to 0 to satisfy the pre-processor.
+ */
+
+#ifdef __has_attribute
+#define g_macro__has_attribute __has_attribute
+#else
+#define g_macro__has_attribute(x) 0
 #endif
 
-#ifndef __has_feature
-#define __has_feature(x) 0
+#ifdef __has_feature
+#define g_macro__has_feature __has_feature
+#else
+#define g_macro__has_feature(x) 0
 #endif
 
-#ifndef __has_builtin
-#define __has_builtin(x) 0
+#ifdef __has_builtin
+#define g_macro__has_builtin __has_builtin
+#else
+#define g_macro__has_builtin(x) 0
 #endif
 
 #if     (!defined(__clang__) && ((__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))) || \
-        (defined(__clang__) && __has_attribute(__alloc_size__))
+        (defined(__clang__) && g_macro__has_attribute(__alloc_size__))
 #define G_GNUC_ALLOC_SIZE(x) __attribute__((__alloc_size__(x)))
 #define G_GNUC_ALLOC_SIZE2(x,y) __attribute__((__alloc_size__(x,y)))
 #else
@@ -223,7 +238,7 @@
 #endif  /* !__GNUC__ */
 #endif  /* !G_DISABLE_DEPRECATED */
 
-#if __has_feature(attribute_analyzer_noreturn) && defined(__clang_analyzer__)
+#if g_macro__has_feature(attribute_analyzer_noreturn) && defined(__clang_analyzer__)
 #define G_ANALYZER_ANALYZING 1
 #define G_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
 #else
