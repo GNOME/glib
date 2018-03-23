@@ -112,6 +112,47 @@ if host_system == 'windows'
   glib_conf.set('BROKEN_POLL', true)
 endif
 
+# Check for GNU visibility attributes
+g_have_gnuc_visibility = cc.compiles('''
+  void
+  __attribute__ ((visibility ("hidden")))
+       f_hidden (void)
+  {
+  }
+  void
+  __attribute__ ((visibility ("internal")))
+       f_internal (void)
+  {
+  }
+  void
+  __attribute__ ((visibility ("protected")))
+       f_protected (void)
+  {
+  }
+  void
+  __attribute__ ((visibility ("default")))
+       f_default (void)
+  {
+  }
+  int main (void)
+  {
+    f_hidden();
+    f_internal();
+    f_protected();
+    f_default();
+    return 0;
+  }
+  ''',
+  # Not supported by MSVC, but MSVC also won't support visibility,
+  # so it's OK to pass -Werror explicitly. Replace with
+  # override_options : 'werror=true' once that is supported
+  args: ['-Werror'],
+  name : 'GNU C visibility attributes test')
+
+if g_have_gnuc_visibility
+  glibconfig_conf.set('G_HAVE_GNUC_VISIBILITY', '1')
+endif
+
 # Detect and set symbol visibility
 glib_hidden_visibility_args = []
 if get_option('default_library') != 'static'
