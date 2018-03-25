@@ -203,7 +203,7 @@ open_call_done (GObject      *source,
   GError *error = NULL;
   gboolean open_file;
   gboolean res;
-  char *path;
+  char *path = NULL;
   const char *handle;
   guint signal_id;
 
@@ -224,7 +224,7 @@ open_call_done (GObject      *source,
     }
 
   handle = (const char *)g_object_get_data (G_OBJECT (task), "handle");
-  if (strcmp (handle, path) != 0)
+  if (g_strcmp0 (handle, path) != 0)
     {
       signal_id = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (task), "signal-id"));
       g_dbus_connection_signal_unsubscribe (connection, signal_id);
