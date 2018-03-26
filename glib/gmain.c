@@ -4697,7 +4697,7 @@ g_timeout_source_new (guint interval)
  * The scheduling granularity/accuracy of this timeout source will be
  * in seconds.
  *
- * The interval given in terms of monotonic time, not wall clock time.
+ * The interval given is in terms of monotonic time, not wall clock time.
  * See g_get_monotonic_time().
  *
  * Returns: the newly-created timeout source
@@ -4751,7 +4751,7 @@ g_timeout_source_new_seconds (guint interval)
  * context. You can do these steps manually if you need greater control or to
  * use a custom main context.
  *
- * The interval given in terms of monotonic time, not wall clock time.
+ * The interval given is in terms of monotonic time, not wall clock time.
  * See g_get_monotonic_time().
  * 
  * Returns: the ID (greater than 0) of the event source.
