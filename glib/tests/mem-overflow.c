@@ -23,6 +23,8 @@
 
 #ifdef __GNUC__
 #pragma GCC optimize (1)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Walloc-size-larger-than="
 #endif
 
 #include "glib.h"
@@ -196,6 +198,10 @@ empty_alloc (void)
   g_test_trap_subprocess ("/mem/empty-alloc/subprocess", 0, 0);
   g_test_trap_assert_passed ();
 }
+#endif
+
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
 #endif
 
 int
