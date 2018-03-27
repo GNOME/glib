@@ -29,7 +29,7 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
 {
   GFileInfo *file_info;
   GFile *mounted_file;
-  GUnixMountMonitor *mount_monitor;
+  GUnixMountMonitor *mount_monitor = NULL;
   gchar *bindfs, *fusermount;
   gchar *command_mount, *command_mount_ro, *command_umount;
   gchar *curdir, *dir_to_mount, *dir_mountpoint;
@@ -62,9 +62,7 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
     }
 
   if (with_mount_monitor)
-    {
-      mount_monitor = g_unix_mount_monitor_get ();
-    }
+    mount_monitor = g_unix_mount_monitor_get ();
 
   /* Use bindfs, which does not need root privileges, to mount the contents of one dir
    * into another dir (and do the mount as readonly as per passed '-o ro' option) */
@@ -125,9 +123,7 @@ test_filesystem_readonly (gconstpointer with_mount_monitor)
     }
 
   /* Clean up */
-  if (with_mount_monitor)
-    g_clear_object (&mount_monitor);
-
+  g_clear_object (&mount_monitor);
   g_clear_object (&file_info);
   g_clear_object (&mounted_file);
   g_spawn_command_line_sync (command_umount, NULL, NULL, NULL, NULL); /* unmount */
