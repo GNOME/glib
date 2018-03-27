@@ -203,7 +203,7 @@ g_document_portal_add_documents (GList       *uris,
     {
       const char *uri = l->data;
       int idx = -1;
-      g_autofree char *path = NULL;
+      char *path = NULL;
 
       path = g_filename_from_uri (uri, NULL, NULL);
       if (path != NULL)
@@ -220,6 +220,8 @@ g_document_portal_add_documents (GList       *uris,
               close (fd);
             }
         }
+
+      g_free (path);
 
       if (idx != -1)
         g_variant_builder_add (&builder, "h", idx);

@@ -2886,7 +2886,7 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
                                           GAppLaunchContext  *launch_context)
 {
   GList *ruris = uris;
-  g_autofree char *app_id = NULL;
+  char *app_id = NULL;
 
   g_return_val_if_fail (info != NULL, FALSE);
 
@@ -2904,6 +2904,8 @@ g_desktop_app_info_launch_uris_with_dbus (GDesktopAppInfo    *info,
 
   if (ruris != uris)
     g_list_free_full (ruris, g_free);
+
+  g_free (app_id);
 
   return TRUE;
 }
