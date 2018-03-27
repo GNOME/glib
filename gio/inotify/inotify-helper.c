@@ -207,6 +207,8 @@ ih_event_callback (ik_event_t  *event,
     /* unpaired event -- no 'other' field */
     interesting = g_file_monitor_source_handle_event (sub->user_data, event_flags,
                                                       event->name, NULL, NULL, event->timestamp);
+  else
+    interesting = FALSE;
 
   if (event->mask & IN_CREATE)
     {
