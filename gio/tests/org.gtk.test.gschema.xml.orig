@@ -131,6 +131,10 @@
     <key name="flags" flags="org.gtk.test.TestFlags">
       <default>['mourning', 'laughing']</default>
     </key>
+    <key name="range" type='u'>
+      <default>33</default>
+      <range min="2" max="44"/>
+    </key>
   </schema>
 
   <schema id='org.gtk.test.enums' path='/tests/enums/'>

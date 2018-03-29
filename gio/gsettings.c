@@ -2682,6 +2682,7 @@ g_settings_binding_property_changed (GObject          *object,
   GSettingsBinding *binding = user_data;
   GValue value = G_VALUE_INIT;
   GVariant *variant;
+  gboolean valid = TRUE;
 
   g_assert (object == binding->object);
   g_assert (pspec == binding->property);
@@ -2700,24 +2701,33 @@ g_settings_binding_property_changed (GObject          *object,
 
       if (!g_settings_schema_key_type_check (&binding->key, variant))
         {
+          gchar *type_str;
+          type_str = g_variant_type_dup_string (binding->key.type);
           g_critical ("binding mapping function for key '%s' returned "
                       "GVariant of type '%s' when type '%s' was requested",
                       binding->key.name, g_variant_get_type_string (variant),
-                      g_variant_type_dup_string (binding->key.type));
-          return;
+                      type_str);
+          g_free (type_str);
+          valid = FALSE;
         }
 
-      if (!g_settings_schema_key_range_check (&binding->key, variant))
+      if (valid && !g_settings_schema_key_range_check (&binding->key, variant))
         {
+          gchar *variant_str;
+          variant_str = g_variant_print (variant, TRUE);
           g_critical ("GObject property '%s' on a '%s' object is out of "
                       "schema-specified range for key '%s' of '%s': %s",
                       binding->property->name, g_type_name (binding->property->owner_type),
                       binding->key.name, g_settings_schema_get_id (binding->key.schema),
-                      g_variant_print (variant, TRUE));
-          return;
+                      variant_str);
+          g_free (variant_str);
+          valid = FALSE;
         }
 
-      g_settings_write_to_backend (binding->settings, &binding->key, variant);
+      if (valid)
+        {
+          g_settings_write_to_backend (binding->settings, &binding->key, variant);
+        }
       g_variant_unref (variant);
     }
   g_value_unset (&value);

@@ -1324,6 +1324,33 @@ test_simple_binding (void)
   g_object_get (obj, "flags", &i, NULL);
   g_assert_cmpint (i, ==, TEST_FLAGS_MOURNING | TEST_FLAGS_WALKING);
 
+  g_settings_bind (settings, "uint", obj, "uint", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "uint", 12345, NULL);
+  g_assert_cmpuint (g_settings_get_uint (settings, "uint"), ==, 12345);
+
+  g_settings_set_uint (settings, "uint", 54321);
+  u = 1111;
+  g_object_get (obj, "uint", &u, NULL);
+  g_assert_cmpuint (u, ==, 54321);
+
+  g_settings_bind (settings, "range", obj, "uint", G_SETTINGS_BIND_DEFAULT);
+  g_object_set (obj, "uint", 22, NULL);
+  u = 1111;
+  g_assert_cmpuint (g_settings_get_uint (settings, "range"), ==, 22);
+  g_object_get (obj, "uint", &u, NULL);
+  g_assert_cmpuint (u, ==, 22);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "* is out of schema-specified range for*");
+  g_object_set (obj, "uint", 45, NULL);
+  g_test_assert_expected_messages ();
+  u = 1111;
+  g_object_get (obj, "uint", &u, NULL);
+  g_assert_cmpuint (g_settings_get_uint (settings, "range"), ==, 22);
+  /* The value of the object is currently not reset back to its initial value
+  g_assert_cmpuint (u, ==, 22); */
+
   g_object_unref (obj);
   g_object_unref (settings);
 }
@@ -1472,6 +1499,14 @@ bool_to_string (const GValue       *value,
     return g_variant_new_string ("false");
 }
 
+static GVariant *
+bool_to_bool (const GValue       *value,
+              const GVariantType *expected_type,
+              gpointer            user_data)
+{
+  return g_variant_new_boolean (g_value_get_boolean (value));
+}
+
 /* Test custom bindings.
  * Translate strings to booleans and back
  */
@@ -1507,6 +1542,17 @@ test_custom_binding (void)
   s = g_settings_get_string (settings, "string");
   g_assert_cmpstr (s, ==, "true");
   g_free (s);
+
+  g_settings_bind_with_mapping (settings, "string",
+                                obj, "bool",
+                                G_SETTINGS_BIND_DEFAULT,
+                                string_to_bool, bool_to_bool,
+                                NULL, NULL);
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL,
+                         "*binding mapping function for key 'string' returned"
+                         " GVariant of type 'b' when type 's' was requested*");
+  g_object_set (obj, "bool", FALSE, NULL);
+  g_test_assert_expected_messages ();
 
   g_object_unref (obj);
   g_object_unref (settings);
