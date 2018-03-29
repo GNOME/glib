@@ -543,6 +543,16 @@ main (int argc, char **argv)
 
   g_test_init (&argc, &argv, NULL);
 
+  /* GNetworkMonitor will resolve addresses through a proxy if one is set and a
+   * GIO module is available to handle it. In these tests we deliberately
+   * change the idea of a reachable network to exclude the proxy, which will
+   * lead to negative results. We're not trying to test the proxy-resolving
+   * functionality (that would be for e.g. glib-networking's testsuite), so
+   * let's just use the dummy proxy resolver, which always pretends the
+   * passed-in URL is directly resolvable.
+   */
+  g_setenv ("GIO_USE_PROXY_RESOLVER", "dummy", TRUE);
+
   init_test (&net127);
   init_test (&net10);
   init_test (&net192);
