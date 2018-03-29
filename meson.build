@@ -2,6 +2,7 @@ project('glib', 'c', 'cpp',
   version : '2.57.0',
   meson_version : '>= 0.45.0',
   default_options : [
+    'buildtype=debugoptimized',
     'warning_level=1',
     'c_std=gnu89'
   ]
@@ -189,6 +190,15 @@ glibconfig_conf.set('glib_os', glib_os)
 # We need to know the build type to determine what .lib files we need on Visual Studio
 # for dependencies that don't normally come with pkg-config files for Visual Studio builds
 buildtype = get_option('buildtype')
+
+glib_debug_cflags = []
+if buildtype.startswith('debug')
+  glib_debug_cflags += ['-DG_ENABLE_DEBUG']
+elif buildtype == 'release'
+  glib_debug_cflags += ['-DG_DISABLE_CAST_CHECKS']
+endif
+
+add_project_arguments(glib_debug_cflags, language: 'c')
 
 # check for header files
 
