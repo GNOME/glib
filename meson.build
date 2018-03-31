@@ -1371,17 +1371,30 @@ else
 endif
 
 poll_defines = [
-  [ 'POLLIN', 'g_pollin' ],
-  [ 'POLLOUT', 'g_pollout' ],
-  [ 'POLLPRI', 'g_pollpri' ],
-  [ 'POLLERR', 'g_pollerr' ],
-  [ 'POLLHUP', 'g_pollhup' ],
-  [ 'POLLNVAL', 'g_pollnval' ],
+  [ 'POLLIN', 'g_pollin', 1 ],
+  [ 'POLLOUT', 'g_pollout', 4 ],
+  [ 'POLLPRI', 'g_pollpri', 2 ],
+  [ 'POLLERR', 'g_pollerr', 8 ],
+  [ 'POLLHUP', 'g_pollhup', 16 ],
+  [ 'POLLNVAL', 'g_pollnval', 32 ],
 ]
-foreach d : poll_defines
-  val = cc.compute_int(d[0], prefix: poll_includes)
-  glibconfig_conf.set(d[1], val)
-endforeach
+
+if has_syspoll and has_systypes
+  foreach d : poll_defines
+    val = cc.compute_int(d[0], prefix: poll_includes)
+    glibconfig_conf.set(d[1], val)
+  endforeach
+elif has_winsock2
+  # Due to a missed bug in configure.ac the poll test
+  # never succeeded on Windows and used some pre-defined
+  # values as a fallback. Keep using them to maintain
+  # ABI compatibility with autotools builds of glibs
+  # and with *any* glib-using code compiled against them,
+  # since these values end up in a public header glibconfig.h.
+  foreach d : poll_defines
+    glibconfig_conf.set(d[1], d[2])
+  endforeach
+endif
 
 # Internet address families
 # FIXME: what about Cygwin (G_WITH_CYGWIN)
