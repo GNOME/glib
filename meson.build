@@ -10,6 +10,8 @@ project('glib', 'c', 'cpp',
 cc = meson.get_compiler('c')
 cxx = meson.get_compiler('cpp')
 
+cc_can_run = not meson.is_cross_build() or meson.has_exe_wrapper()
+
 if cc.get_id() == 'msvc'
   # Ignore several spurious warnings for things glib does very commonly
   # If a warning is completely useless and spammy, use '/wdXXXX' to suppress it
@@ -731,10 +733,15 @@ main(void)
   exit(1);
 }'''
 
-  rres = cc.run(vsnprintf_c99_test_code, name : 'C99 vsnprintf')
-  if rres.compiled() and rres.returncode() == 0
-    glib_conf.set('HAVE_C99_VSNPRINTF', 1)
-    have_good_vsnprintf = true
+  if cc_can_run
+    rres = cc.run(vsnprintf_c99_test_code, name : 'C99 vsnprintf')
+    if rres.compiled() and rres.returncode() == 0
+      glib_conf.set('HAVE_C99_VSNPRINTF', 1)
+      have_good_vsnprintf = true
+    endif
+  else
+      have_good_vsnprintf = meson.get_cross_property('have_c99_vsnprintf', false)
+      glib_conf.set('HAVE_C99_VSNPRINTF', have_good_vsnprintf)
   endif
 
   snprintf_c99_test_code = '''
@@ -773,10 +780,15 @@ main(void)
   exit(1);
 }'''
 
-  rres = cc.run(snprintf_c99_test_code, name : 'C99 snprintf')
-  if rres.compiled() and rres.returncode() == 0
-    glib_conf.set('HAVE_C99_SNPRINTF', 1)
-    have_good_snprintf = true
+  if cc_can_run
+    rres = cc.run(snprintf_c99_test_code, name : 'C99 snprintf')
+    if rres.compiled() and rres.returncode() == 0
+      glib_conf.set('HAVE_C99_SNPRINTF', 1)
+      have_good_snprintf = true
+    endif
+  else
+      have_good_snprintf = meson.get_cross_property('have_c99_snprintf', false)
+      glib_conf.set('HAVE_C99_SNPRINTF', have_good_snprintf)
   endif
 endif
 
@@ -1277,16 +1289,13 @@ va_list_val_copy_prog = '''
     return 0;
   }'''
 
-# We do this in two steps so if compilation fails already it looks less alarming
-glib_va_val_copy = false
-if cc.compiles(va_list_val_copy_prog, name : 'va_lists can be copied as values')
-  # FIXME: what to do when cross-compiling?
-  if cc.run(va_list_val_copy_prog, name : 'va_lists can be copied as values').returncode() == 0
-    glib_va_val_copy = true
-  endif
+if cc_can_run
+  rres = cc.run(va_list_val_copy_prog, name : 'va_lists can be copied as values')
+  glib_va_val_copy = rres.returncode() == 0
+else
+  glib_va_val_copy = meson.get_cross_property('va_val_copy', true)
 endif
 if not glib_va_val_copy
-  glib_va_val_copy = false
   glib_vacopy = glib_vacopy + '\n#define G_VA_COPY_AS_ARRAY 1'
   glib_conf.set('G_VA_COPY_AS_ARRAY', 1)
 endif
@@ -1470,7 +1479,6 @@ else
   endif
 endif
 
-# FIXME: how to do this when cross-compiling?
 # FIXME: we should make it print the result and always return 0, so that
 # the output in meson shows up as green
 stack_grows_check_prog = '''
@@ -1488,12 +1496,15 @@ stack_grows_check_prog = '''
     f (100);
     return b > a ? 0 : 1;
   }'''
-stack_grows_run_result = cc.run(stack_grows_check_prog, name : 'stack grows check')
-if stack_grows_run_result.compiled() and stack_grows_run_result.returncode() == 0
-  glibconfig_conf.set('G_HAVE_GROWING_STACK', 1)
+
+if cc_can_run
+  rres = cc.run(stack_grows_check_prog, name : 'stack grows check')
+  growing_stack = rres.returncode() == 0
 else
-  glibconfig_conf.set('G_HAVE_GROWING_STACK', 0)
+  growing_stack = meson.get_cross_property('growing_stack', false)
 endif
+
+glibconfig_conf.set('G_HAVE_GROWING_STACK', growing_stack)
 
 # Tests for iconv
 #
