@@ -823,6 +823,7 @@ g_test_dbus_down (GTestDBus *self)
     _g_object_dispose_and_wait_weak_notify (connection);
 
   g_test_dbus_unset ();
+  _g_bus_forget_singleton (G_BUS_TYPE_SESSION);
   self->priv->up = FALSE;
 }
 

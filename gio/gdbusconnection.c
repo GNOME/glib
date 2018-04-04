@@ -7233,6 +7233,22 @@ _g_bus_get_singleton_if_exists (GBusType bus_type)
   return ret;
 }
 
+/* May be called from any thread. Must not hold message_bus_lock. */
+void
+_g_bus_forget_singleton (GBusType bus_type)
+{
+  GWeakRef *singleton;
+
+  G_LOCK (message_bus_lock);
+
+  singleton = message_bus_get_singleton (bus_type, NULL);
+
+  if (singleton != NULL)
+    g_weak_ref_set (singleton, NULL);
+
+  G_UNLOCK (message_bus_lock);
+}
+
 /**
  * g_bus_get_sync:
  * @bus_type: a #GBusType

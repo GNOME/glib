@@ -146,6 +146,7 @@ gchar *_g_dbus_hexencode (const gchar *str,
 
 /* Implemented in gdbusconnection.c */
 GDBusConnection *_g_bus_get_singleton_if_exists (GBusType bus_type);
+void             _g_bus_forget_singleton        (GBusType bus_type);
 
 G_END_DECLS
 
