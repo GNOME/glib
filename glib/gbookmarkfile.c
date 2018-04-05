@@ -3360,8 +3360,8 @@ expand_exec_line (const gchar *exec_fmt,
  * @stamp: (out) (optional): return location for the last registration time, or %NULL
  * @error: return location for a #GError, or %NULL
  *
- * Gets the registration informations of @app_name for the bookmark for
- * @uri.  See g_bookmark_file_set_app_info() for more informations about
+ * Gets the registration information of @app_name for the bookmark for
+ * @uri.  See g_bookmark_file_set_app_info() for more information about
  * the returned data.
  *
  * The string returned in @app_exec must be freed.
