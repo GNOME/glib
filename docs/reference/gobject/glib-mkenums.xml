@@ -253,7 +253,7 @@ will be appended to the template's <literal>file-tail</literal> section.
 <varlistentry>
 <term><option>--eprod</option> <replaceable>TEXT</replaceable></term>
 <listitem><para>
-Emits <replaceable>TEXT</replaceable> everytime an enum is encountered
+Emits <replaceable>TEXT</replaceable> every time an enum is encountered
 in the input files.
 </para></listitem>
 </varlistentry>
