@@ -1853,7 +1853,7 @@ FUNC_NO_LOCALTIME_R="the 'g_date_set_time' function will not be MT-safe
 
 AIX_COMPILE_INFO="AIX's C compiler needs to be called by a different name, when
 		linking threaded applications. As GLib cannot do that 
-		automatically, you will get an linkg error everytime you are 
+		automatically, you will get an linking error every time you are
 		not using the right compiler. In that case you have to relink 
 		with the right compiler. Ususally just '_r' is appended 
 		to the compiler name."
