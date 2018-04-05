@@ -115,7 +115,7 @@ attribute_type_to_string (GFileAttributeType type)
     case G_FILE_ATTRIBUTE_TYPE_OBJECT:
       return "object";
     default:
-      return "uknown type";
+      return "unknown type";
     }
 }
 
