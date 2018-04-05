@@ -869,7 +869,7 @@ my_app_frobber_proxy_new_sync   (GDBusConnection     *connection,
       subclass. For example, to handle
       <function>HelloWorld()</function> method invocations, set the
       vfunc for <function>handle_hello_hello_world()</function> in the
-      <type>MyAppFrobberIface</type> structure. Similary, to handle
+      <type>MyAppFrobberIface</type> structure. Similarly, to handle
       the <parameter>net.Corp.MyApp.Frobber:Verbose</parameter>
       property override the <parameter>:verbose</parameter> #GObject
       property from the subclass. To emit a signal, use
