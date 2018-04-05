@@ -621,7 +621,7 @@ _g_mount_get_for_mount_path (const gchar  *mount_path,
  * also listen for the "removed" signal on the returned object
  * and give up its reference when handling that signal
  * 
- * Similary, if implementing g_volume_monitor_adopt_orphan_mount(),
+ * Similarly, if implementing g_volume_monitor_adopt_orphan_mount(),
  * the implementor must take a reference to @mount and return it in
  * its g_volume_get_mount() implemented. Also, the implementor must
  * listen for the "unmounted" signal on @mount and give up its

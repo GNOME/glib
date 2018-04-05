@@ -3088,7 +3088,7 @@ static volatile guint _global_filter_id = 1;
  * dispatched anywhere else - not even the standard dispatch machinery
  * (that API such as g_dbus_connection_signal_subscribe() and
  * g_dbus_connection_send_message_with_reply() relies on) will see the
- * message. Similary, if a filter consumes an outgoing message, the
+ * message. Similarly, if a filter consumes an outgoing message, the
  * message will not be sent to the other peer.
  *
  * If @user_data_free_func is non-%NULL, it will be called (in the
