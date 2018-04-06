@@ -1339,54 +1339,43 @@ endif
 has_winsock2 = cc.has_header('winsock2.h')
 
 if has_syspoll and has_systypes
-  templ = '''#include<sys/poll.h>
-#include<sys/types.h>
-#include<stdio.h>
-int main(int argc, char **argv) {
-  printf("%d\n", (int)@0@);
-  return 0;
-}'''
+  poll_includes = '''
+      #include<sys/poll.h>
+      #include<sys/types.h>'''
 elif has_winsock2
-  templ = '''#define _WIN32_WINNT 0x0600
-#include <stdio.h>
-#include <winsock2.h>
-int main(int argc, char **argv) {
-  printf("%d\n", (int)@0@);
-  return 0;
-}'''
+  poll_includes = '''
+      #define _WIN32_WINNT 0x0600
+      #include <winsock2.h>'''
 else
   # FIXME?
   error('FIX POLL* defines')
 endif
 
-value_POLLIN = cc.run(templ.format('POLLIN'), name : 'POLLIN value').stdout().strip()
-value_POLLOUT = cc.run(templ.format('POLLOUT'), name : 'POLLOUT value').stdout().strip()
-value_POLLPRI = cc.run(templ.format('POLLPRI'), name : 'POLLPRI value').stdout().strip()
-value_POLLERR = cc.run(templ.format('POLLERR'), name : 'POLLERR value').stdout().strip()
-value_POLLHUP = cc.run(templ.format('POLLHUP'), name : 'POLLHUP value').stdout().strip()
-value_POLLNVAL = cc.run(templ.format('POLLNVAL'), name : 'POLLNVAL value').stdout().strip()
-
-glibconfig_conf.set('g_pollin', value_POLLIN)
-glibconfig_conf.set('g_pollout', value_POLLOUT)
-glibconfig_conf.set('g_pollpri', value_POLLPRI)
-glibconfig_conf.set('g_pollerr', value_POLLERR)
-glibconfig_conf.set('g_pollhup', value_POLLHUP)
-glibconfig_conf.set('g_pollnval', value_POLLNVAL)
+poll_defines = [
+  [ 'POLLIN', 'g_pollin' ],
+  [ 'POLLOUT', 'g_pollout' ],
+  [ 'POLLPRI', 'g_pollpri' ],
+  [ 'POLLERR', 'g_pollerr' ],
+  [ 'POLLHUP', 'g_pollhup' ],
+  [ 'POLLNVAL', 'g_pollnval' ],
+]
+foreach d : poll_defines
+  val = cc.compute_int(d[0], prefix: poll_includes)
+  glibconfig_conf.set(d[1], val)
+endforeach
 
 # Internet address families
 # FIXME: what about Cygwin (G_WITH_CYGWIN)
 if host_system == 'windows'
-  glib_inet_includes= '''
-#include <winsock2.h>
-'''
+  inet_includes = '''
+      #include <winsock2.h>'''
 else
-  glib_inet_includes='''
-#include <sys/types.h>
-#include <sys/socket.h>
-'''
+  inet_includes = '''
+      #include <sys/types.h>
+      #include <sys/socket.h>'''
 endif
 
-net_defines = [
+inet_defines = [
   [ 'AF_UNIX', 'g_af_unix' ],
   [ 'AF_INET', 'g_af_inet' ],
   [ 'AF_INET6', 'g_af_inet6' ],
@@ -1394,18 +1383,8 @@ net_defines = [
   [ 'MSG_PEEK', 'g_msg_peek' ],
   [ 'MSG_DONTROUTE', 'g_msg_dontroute' ],
 ]
-foreach d : net_defines
-  templ = '''@0@
-#include <stdio.h>
-int main(int argc, char **argv) {
-  printf("%d\n", (int)@1@);
-  return 0;
-}'''
-  # FIXME: fix for cross-compilation
-  if not meson.has_exe_wrapper()
-    error('Fix sys define detection for cross build')
-  endif
-  val = cc.run(templ.format(glib_inet_includes, d[0]), name : d[0] + ' value').stdout().strip()
+foreach d : inet_defines
+  val = cc.compute_int(d[0], prefix: inet_includes)
   glibconfig_conf.set(d[1], val)
 endforeach
 
