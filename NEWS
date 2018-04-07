@@ -1,3 +1,23 @@
+Overview of changes in GLib 2.56.1
+==================================
+
+* Bug fixes:
+ 793400	g_application_id_is_valid() not strict enough
+ 793578	gdatetime tests depend on Japanese translation of month names
+ 793645	test_month_names: Updated translations needed for el_GR, hr_HR, ru_RU
+ 794194 gobject_gdb.py: 'address' is a property of gdb.Value not a function
+ 794473 Remove duplicated option in gio.xml
+ 794506	glib-mkenums: Enters infinite loop if using typedef enum SomeIdentifier
+ 794528	Fix segfault caused by use-after-free in GPollFileMonitor
+ 794606	glib-2.56.0 fails to compile when res_nquery is not available
+ 794686	Date (except weekday) displayed in English 
+
+* Translation updates:
+ Slovak
+ Slovenian
+ Spanish
+
+
 Overview of changes in GLib 2.56.0
 ==================================
 
