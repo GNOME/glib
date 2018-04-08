@@ -371,7 +371,8 @@ g_simple_action_class_init (GSimpleActionClass *class)
   /**
    * GSimpleAction::activate:
    * @simple: the #GSimpleAction
-   * @parameter: (nullable): the parameter to the activation
+   * @parameter: (nullable): the parameter to the activation, or %NULL if it has
+   *   no parameter
    *
    * Indicates that the action was just activated.
    *
@@ -591,7 +592,8 @@ g_simple_action_set_state_hint (GSimpleAction *simple,
 /**
  * g_simple_action_new:
  * @name: the name of the action
- * @parameter_type: (nullable): the type of parameter to the activate function
+ * @parameter_type: (nullable): the type of parameter that will be passed to
+ *   handlers for the #GSimpleAction::activate signal, or %NULL for no parameter
  *
  * Creates a new action.
  *
@@ -616,7 +618,8 @@ g_simple_action_new (const gchar        *name,
 /**
  * g_simple_action_new_stateful:
  * @name: the name of the action
- * @parameter_type: (nullable): the type of the parameter to the activate function
+ * @parameter_type: (nullable): the type of the parameter that will be passed to
+ *   handlers for the #GSimpleAction::activate signal, or %NULL for no parameter
  * @state: the initial state of the action
  *
  * Creates a new stateful action.
