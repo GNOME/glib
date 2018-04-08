@@ -600,7 +600,8 @@ g_simple_action_set_state_hint (GSimpleAction *simple,
  *
  * Creates a new action.
  *
- * The created action is stateless.  See g_simple_action_new_stateful().
+ * The created action is stateless. See g_simple_action_new_stateful() to create
+ * an action that has state.
  *
  * Returns: a new #GSimpleAction
  *
@@ -627,10 +628,10 @@ g_simple_action_new (const gchar        *name,
  *
  * Creates a new stateful action.
  *
- * @state is the initial state of the action.  All future state values
- * must have the same #GVariantType as the initial state.
+ * All future state values must have the same #GVariantType as the initial
+ * @state.
  *
- * If the @state GVariant is floating, it is consumed.
+ * If the @state #GVariant is floating, it is consumed.
  *
  * Returns: a new #GSimpleAction
  *
