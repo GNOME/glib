@@ -111,6 +111,9 @@ foreach test_name : glib_tests
   if test_name == 'regex'
     deps += [pcre]
   endif
+  if test_name == 'gdatetime'
+    deps += [libintl]
+  endif
   exe = executable(test_name, '@0@.c'.format(test_name),
     c_args : ['-DPCRE_STATIC'] + test_cargs,
     dependencies : deps,
