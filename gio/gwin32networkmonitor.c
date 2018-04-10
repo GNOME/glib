@@ -43,6 +43,7 @@
 #include "gnetworkmonitor.h"
 #include "gioerror.h"
 
+static GInitableIface *initable_parent_iface;
 static void g_win32_network_monitor_iface_init (GNetworkMonitorInterface *iface);
 static void g_win32_network_monitor_initable_iface_init (GInitableIface *iface);
 
@@ -291,7 +292,7 @@ g_win32_network_monitor_initable_init (GInitable     *initable,
       return FALSE;
     }
 
-  return TRUE;
+  return initable_parent_iface->init (initable, cancellable, error);
 }
 
 static void
@@ -332,5 +333,7 @@ g_win32_network_monitor_iface_init (GNetworkMonitorInterface *monitor_iface)
 static void
 g_win32_network_monitor_initable_iface_init (GInitableIface *iface)
 {
+  initable_parent_iface = g_type_interface_peek_parent (iface);
+
   iface->init = g_win32_network_monitor_initable_init;
 }

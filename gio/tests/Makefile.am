@@ -49,6 +49,7 @@ test_programs = \
 	monitor					\
 	network-address				\
 	network-monitor				\
+	network-monitor-race			\
 	permission				\
 	pollable				\
 	proxy-test				\

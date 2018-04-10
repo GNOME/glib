@@ -39,6 +39,7 @@
 #include <linux/netlink.h>
 #include <linux/rtnetlink.h>
 
+static GInitableIface *initable_parent_iface;
 static void g_network_monitor_netlink_iface_init (GNetworkMonitorInterface *iface);
 static void g_network_monitor_netlink_initable_iface_init (GInitableIface *iface);
 
@@ -149,7 +150,7 @@ g_network_monitor_netlink_initable_init (GInitable     *initable,
                          (GSourceFunc) read_netlink_messages, nl, NULL);
   g_source_attach (nl->priv->source, nl->priv->context);
 
-  return TRUE;
+  return initable_parent_iface->init (initable, cancellable, error);
 }
 
 static gboolean
@@ -474,5 +475,7 @@ g_network_monitor_netlink_iface_init (GNetworkMonitorInterface *monitor_iface)
 static void
 g_network_monitor_netlink_initable_iface_init (GInitableIface *iface)
 {
+  initable_parent_iface = g_type_interface_peek_parent (iface);
+
   iface->init = g_network_monitor_netlink_initable_init;
 }
