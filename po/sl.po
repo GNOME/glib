@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-03-27 18:50+0000\n"
-"PO-Revision-Date: 2018-03-27 22:01+0200\n"
+"POT-Creation-Date: 2018-04-07 09:53+0000\n"
+"PO-Revision-Date: 2018-04-09 20:34+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -910,7 +910,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Number of file descriptors in message (%d) differs from header field (%d)"
-msgstr ""
+msgstr "Število opisnikov v sporočilu (%d) se razlikuje od polja glave (%d)"
 
 #: ../gio/gdbusmessage.c:2664
 msgid "Cannot serialize message: "
@@ -1117,16 +1117,14 @@ msgid "Error: %s is not a valid object path\n"
 msgstr "Napaka: %s ni veljavna pot predmeta\n"
 
 #: ../gio/gdbus-tool.c:740
-#, fuzzy, c-format
-#| msgid "Error: Method name is not specified\n"
+#, c-format
 msgid "Error: Signal name is not specified\n"
-msgstr "Napaka: ime načina ni določeno\n"
+msgstr "Napaka: ime signala ni določeno\n"
 
 #: ../gio/gdbus-tool.c:754
-#, fuzzy, c-format
-#| msgid "Error: Method name “%s” is invalid\n"
+#, c-format
 msgid "Error: Signal name “%s” is invalid\n"
-msgstr "Napaka: ime načina »%s« ni veljavno\n"
+msgstr "Napaka: ime signala »%s« ni veljavno\n"
 
 #: ../gio/gdbus-tool.c:766
 #, c-format
@@ -1233,7 +1231,7 @@ msgstr "Nadzoruj oddaljeni predmet."
 #: ../gio/gdbus-tool.c:1954
 #, c-format
 msgid "Error: can’t monitor a non-message-bus connection\n"
-msgstr ""
+msgstr "Napaka: ni mogoče nadzirati povezav mimo sporočilnega vtiča\n"
 
 #: ../gio/gdbus-tool.c:2078
 msgid "Service to activate before waiting for the other one (well-known name)"
@@ -3734,7 +3732,7 @@ msgstr "Nepodprta skupina vtiča"
 
 #: ../gio/gsocket.c:2393
 msgid "source-specific not an IPv4 address"
-msgstr ""
+msgstr "določeno po viru in ne po naslovu IPv4"
 
 #: ../gio/gsocket.c:2411 ../gio/gsocket.c:2440 ../gio/gsocket.c:2487
 #, c-format
@@ -3747,16 +3745,12 @@ msgid "Interface name too long"
 msgstr "Ime vmesnika je predolgo"
 
 #: ../gio/gsocket.c:2463
-#, fuzzy
-#| msgid "No support for source-specific multicast"
 msgid "No support for IPv4 source-specific multicast"
-msgstr "Ni podpore za večsmerno oddajanje lastno viru"
+msgstr "Ni podpore za večsmerno oddajanje v protokolu IPv4"
 
 #: ../gio/gsocket.c:2521
-#, fuzzy
-#| msgid "No support for source-specific multicast"
 msgid "No support for IPv6 source-specific multicast"
-msgstr "Ni podpore za večsmerno oddajanje lastno viru"
+msgstr "Ni podpore za večsmerno oddajanje v protokolu IPv6"
 
 #: ../gio/gsocket.c:2730
 #, c-format
@@ -4234,10 +4228,8 @@ msgid "Failed to expand exec line “%s” with URI “%s”"
 msgstr "Razširjanje ukazne vrstice »%s« z naslovom URI »%s« je spodletelo."
 
 #: ../glib/gconvert.c:473
-#, fuzzy
-#| msgid "Invalid sequence in conversion input"
 msgid "Unrepresentable character in conversion input"
-msgstr "Neveljavno zaporedje na vhodu pretvorbe"
+msgstr "Nepredstavljiv znak na dovodu pretvorbe"
 
 #: ../glib/gconvert.c:500 ../glib/gutf8.c:865 ../glib/gutf8.c:1077
 #: ../glib/gutf8.c:1214 ../glib/gutf8.c:1318
@@ -4250,16 +4242,12 @@ msgid "Cannot convert fallback “%s” to codeset “%s”"
 msgstr "Ni mogoče pretvoriti »%s« v nabor znakov »%s«"
 
 #: ../glib/gconvert.c:940
-#, fuzzy
-#| msgid "Invalid byte sequence in conversion input"
 msgid "Embedded NUL byte in conversion input"
-msgstr "Neveljavno zaporedje bajtov na vhodu pretvorbe"
+msgstr "Vstavljeno je prazno zaporedje bajtov na dovod pretvorbe"
 
 #: ../glib/gconvert.c:961
-#, fuzzy
-#| msgid "Invalid byte sequence in conversion input"
 msgid "Embedded NUL byte in conversion output"
-msgstr "Neveljavno zaporedje bajtov na vhodu pretvorbe"
+msgstr "Vstavljeno je prazno zaporedje bajtov na odvod pretvorbe"
 
 #: ../glib/gconvert.c:1649
 #, c-format
@@ -5814,73 +5802,61 @@ msgstr "%.1f EiB"
 
 #: ../glib/gutils.c:2245
 #, c-format
-#| msgid "%.1f kB"
 msgid "%.1f kb"
 msgstr "%.1f kb"
 
 #: ../glib/gutils.c:2246
 #, c-format
-#| msgid "%.1f MB"
 msgid "%.1f Mb"
 msgstr "%.1f Mb"
 
 #: ../glib/gutils.c:2247
 #, c-format
-#| msgid "%.1f GB"
 msgid "%.1f Gb"
 msgstr "%.1f Gb"
 
 #: ../glib/gutils.c:2248
 #, c-format
-#| msgid "%.1f TB"
 msgid "%.1f Tb"
 msgstr "%.1f Tb"
 
 #: ../glib/gutils.c:2249
 #, c-format
-#| msgid "%.1f PB"
 msgid "%.1f Pb"
 msgstr "%.1f Pb"
 
 #: ../glib/gutils.c:2250
 #, c-format
-#| msgid "%.1f EB"
 msgid "%.1f Eb"
 msgstr "%.1f Eb"
 
 #: ../glib/gutils.c:2253
 #, c-format
-#| msgid "%.1f KiB"
 msgid "%.1f Kib"
 msgstr "%.1f Kib"
 
 #: ../glib/gutils.c:2254
 #, c-format
-#| msgid "%.1f MiB"
 msgid "%.1f Mib"
 msgstr "%.1f Mib"
 
 #: ../glib/gutils.c:2255
 #, c-format
-#| msgid "%.1f GiB"
 msgid "%.1f Gib"
 msgstr "%.1f Gib"
 
 #: ../glib/gutils.c:2256
 #, c-format
-#| msgid "%.1f TiB"
 msgid "%.1f Tib"
 msgstr "%.1f Tib"
 
 #: ../glib/gutils.c:2257
 #, c-format
-#| msgid "%.1f PiB"
 msgid "%.1f Pib"
 msgstr "%.1f Pib"
 
 #: ../glib/gutils.c:2258
 #, c-format
-#| msgid "%.1f EiB"
 msgid "%.1f Eib"
 msgstr "%.1f Eib"
 
