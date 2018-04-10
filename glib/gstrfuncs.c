@@ -2882,7 +2882,7 @@ g_str_has_prefix (const gchar *str,
  * @str_array: a %NULL-terminated array of strings
  *
  * Returns the length of the given %NULL-terminated
- * string array @str_array.
+ * string array @str_array. @str_array must not be %NULL.
  *
  * Returns: length of @str_array.
  *
