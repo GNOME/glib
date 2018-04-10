@@ -1905,7 +1905,7 @@ g_object_new_is_valid_property (GType                  object_type,
 
 
 /**
- * g_object_new_with_properties: (rename-to g_object_new)
+ * g_object_new_with_properties: (skip)
  * @object_type: the object type to instantiate
  * @n_properties: the number of properties
  * @names: (array length=n_properties): the names of each property to be set
