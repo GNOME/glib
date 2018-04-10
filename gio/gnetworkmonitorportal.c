@@ -25,7 +25,7 @@
 #include "xdp-dbus.h"
 #include "gportalsupport.h"
 
-
+static GInitableIface *initable_parent_iface;
 static void g_network_monitor_portal_iface_init (GNetworkMonitorInterface *iface);
 static void g_network_monitor_portal_initable_iface_init (GInitableIface *iface);
 
@@ -148,7 +148,7 @@ g_network_monitor_portal_initable_init (GInitable     *initable,
   nm->priv->proxy = proxy;
   nm->priv->network_available = glib_network_available_in_sandbox ();
 
-  return TRUE;
+  return initable_parent_iface->init (initable, cancellable, error);
 }
 
 static void
@@ -182,5 +182,7 @@ g_network_monitor_portal_iface_init (GNetworkMonitorInterface *monitor_iface)
 static void
 g_network_monitor_portal_initable_iface_init (GInitableIface *iface)
 {
+  initable_parent_iface = g_type_interface_peek_parent (iface);
+
   iface->init = g_network_monitor_portal_initable_init;
 }

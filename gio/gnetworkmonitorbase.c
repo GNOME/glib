@@ -81,7 +81,6 @@ g_network_monitor_base_init (GNetworkMonitorBase *monitor)
     g_main_context_ref (monitor->priv->context);
 
   monitor->priv->initializing = TRUE;
-  queue_network_changed (monitor);
 }
 
 static void
@@ -349,6 +348,10 @@ g_network_monitor_base_initable_init (GInitable     *initable,
                                       GCancellable  *cancellable,
                                       GError       **error)
 {
+  GNetworkMonitorBase *base = G_NETWORK_MONITOR_BASE (initable);
+
+  base->priv->initializing = FALSE;
+
   return TRUE;
 }
 
@@ -364,22 +367,20 @@ emit_network_changed (gpointer user_data)
   GNetworkMonitorBase *monitor = user_data;
   gboolean is_available;
 
+  if (g_source_is_destroyed (g_main_current_source ()))
+    return FALSE;
+
   g_object_ref (monitor);
 
-  if (monitor->priv->initializing)
-    monitor->priv->initializing = FALSE;
-  else
+  is_available = (monitor->priv->have_ipv4_default_route ||
+                  monitor->priv->have_ipv6_default_route);
+  if (monitor->priv->is_available != is_available)
     {
-      is_available = (monitor->priv->have_ipv4_default_route ||
-                      monitor->priv->have_ipv6_default_route);
-      if (monitor->priv->is_available != is_available)
-        {
-          monitor->priv->is_available = is_available;
-          g_object_notify (G_OBJECT (monitor), "network-available");
-        }
-
-      g_signal_emit (monitor, network_changed_signal, 0, is_available);
+      monitor->priv->is_available = is_available;
+      g_object_notify (G_OBJECT (monitor), "network-available");
     }
+
+  g_signal_emit (monitor, network_changed_signal, 0, is_available);
 
   g_source_unref (monitor->priv->network_changed_source);
   monitor->priv->network_changed_source = NULL;
@@ -391,7 +392,8 @@ emit_network_changed (gpointer user_data)
 static void
 queue_network_changed (GNetworkMonitorBase *monitor)
 {
-  if (!monitor->priv->network_changed_source)
+  if (!monitor->priv->network_changed_source &&
+      !monitor->priv->initializing)
     {
       GSource *source;
 
