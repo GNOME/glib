@@ -2362,6 +2362,40 @@ test_identifier (void)
   g_free (old_tz);
 }
 
+/* Test various calls to g_time_zone_new_offset(). */
+static void
+test_new_offset (void)
+{
+  const gint32 vectors[] =
+    {
+      -10000,
+      -3600,
+      -61,
+      -60,
+      -59,
+      0,
+      59,
+      60,
+      61,
+      3600,
+      10000,
+    };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      GTimeZone *tz = NULL;
+
+      g_test_message ("Vector %" G_GSIZE_FORMAT ": %d", i, vectors[i]);
+
+      tz = g_time_zone_new_offset (vectors[i]);
+      g_assert_nonnull (tz);
+      g_assert_cmpstr (g_time_zone_get_identifier (tz), !=, "UTC");
+      g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, vectors[i]);
+      g_time_zone_unref (tz);
+    }
+}
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -2424,6 +2458,7 @@ main (gint   argc,
   g_test_add_func ("/GTimeZone/posix-parse", test_posix_parse);
   g_test_add_func ("/GTimeZone/floating-point", test_GDateTime_floating_point);
   g_test_add_func ("/GTimeZone/identifier", test_identifier);
+  g_test_add_func ("/GTimeZone/new-offset", test_new_offset);
 
   return g_test_run ();
 }

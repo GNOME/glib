@@ -1648,6 +1648,7 @@ g_time_zone_ref
 g_time_zone_new
 g_time_zone_new_local
 g_time_zone_new_utc
+g_time_zone_new_offset
 <SUBSECTION>
 GTimeType
 g_time_zone_find_interval

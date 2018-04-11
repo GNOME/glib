@@ -58,6 +58,8 @@ GLIB_AVAILABLE_IN_ALL
 GTimeZone *             g_time_zone_new_utc                             (void);
 GLIB_AVAILABLE_IN_ALL
 GTimeZone *             g_time_zone_new_local                           (void);
+GLIB_AVAILABLE_IN_2_58
+GTimeZone *             g_time_zone_new_offset                          (gint32       seconds);
 
 GLIB_AVAILABLE_IN_ALL
 GTimeZone *             g_time_zone_ref                                 (GTimeZone   *tz);
