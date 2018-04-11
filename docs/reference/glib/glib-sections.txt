@@ -1743,6 +1743,7 @@ g_date_time_to_timeval
 
 <SUBSECTION>
 g_date_time_get_utc_offset
+g_date_time_get_timezone
 g_date_time_get_timezone_abbreviation
 g_date_time_is_daylight_savings
 

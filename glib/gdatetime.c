@@ -2567,6 +2567,24 @@ g_date_time_get_utc_offset (GDateTime *datetime)
 }
 
 /**
+ * g_date_time_get_timezone:
+ * @datetime: a #GDateTime
+ *
+ * Get the time zone for this @datetime.
+ *
+ * Returns: (transfer none): the time zone
+ * Since: 2.58
+ */
+GTimeZone *
+g_date_time_get_timezone (GDateTime *datetime)
+{
+  g_return_val_if_fail (datetime != NULL, NULL);
+
+  g_assert (datetime->tz != NULL);
+  return datetime->tz;
+}
+
+/**
  * g_date_time_get_timezone_abbreviation:
  * @datetime: a #GDateTime
  *

@@ -244,6 +244,8 @@ gboolean                g_date_time_to_timeval                          (GDateTi
 
 GLIB_AVAILABLE_IN_ALL
 GTimeSpan               g_date_time_get_utc_offset                      (GDateTime      *datetime);
+GLIB_AVAILABLE_IN_2_58
+GTimeZone *             g_date_time_get_timezone                        (GDateTime      *datetime);
 GLIB_AVAILABLE_IN_ALL
 const gchar *           g_date_time_get_timezone_abbreviation           (GDateTime      *datetime);
 GLIB_AVAILABLE_IN_ALL
