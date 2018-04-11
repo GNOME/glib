@@ -1653,6 +1653,7 @@ GTimeType
 g_time_zone_find_interval
 g_time_zone_adjust_time
 <SUBSECTION>
+g_time_zone_get_identifier
 g_time_zone_get_abbreviation
 g_time_zone_get_offset
 g_time_zone_is_dst

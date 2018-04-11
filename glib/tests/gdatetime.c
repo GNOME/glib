@@ -1024,7 +1024,7 @@ test_GDateTime_get_second (void)
 static void
 test_GDateTime_new_full (void)
 {
-  GTimeZone *tz;
+  GTimeZone *tz, *dt_tz;
   GDateTime *dt;
 
   dt = g_date_time_new_utc (2009, 12, 11, 12, 11, 10);
@@ -1042,7 +1042,11 @@ test_GDateTime_new_full (void)
   tz = g_time_zone_new ("Pacific Standard Time");
 #endif
   dt = g_date_time_new (tz, 2010, 11, 24, 8, 4, 0);
-  g_time_zone_unref (tz);
+
+  dt_tz = g_date_time_get_timezone (dt);
+  g_assert_cmpstr (g_time_zone_get_identifier (dt_tz), ==,
+                   g_time_zone_get_identifier (tz));
+
   g_assert_cmpint (2010, ==, g_date_time_get_year (dt));
   g_assert_cmpint (11, ==, g_date_time_get_month (dt));
   g_assert_cmpint (24, ==, g_date_time_get_day_of_month (dt));
@@ -1051,12 +1055,16 @@ test_GDateTime_new_full (void)
   g_assert_cmpint (0, ==, g_date_time_get_second (dt));
 #ifdef G_OS_UNIX
   g_assert_cmpstr ("PST", ==, g_date_time_get_timezone_abbreviation (dt));
+  g_assert_cmpstr ("America/Tijuana", ==, g_time_zone_get_identifier (dt_tz));
 #elif defined G_OS_WIN32
   g_assert_cmpstr ("Pacific Standard Time", ==,
                     g_date_time_get_timezone_abbreviation (dt));
+  g_assert_cmpstr ("Pacific Standard Time", ==,
+                   g_time_zone_get_identifier (dt_tz));
 #endif
   g_assert (!g_date_time_is_daylight_savings (dt));
   g_date_time_unref (dt);
+  g_time_zone_unref (tz);
 
   /* Check month limits */
   dt = g_date_time_new_utc (2016, 1, 31, 22, 10, 42);
@@ -2084,6 +2092,7 @@ test_no_header (void)
 
   tz = g_time_zone_new ("blabla");
 
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "UTC");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 0);
   g_assert (!g_time_zone_is_dst (tz, 0));
@@ -2098,12 +2107,14 @@ test_posix_parse (void)
   GDateTime *gdt1, *gdt2;
 
   tz = g_time_zone_new ("PST");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "UTC");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 0);
   g_assert (!g_time_zone_is_dst (tz, 0));
   g_time_zone_unref (tz);
 
   tz = g_time_zone_new ("PST8");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "PST8");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "PST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, - 8 * 3600);
   g_assert (!g_time_zone_is_dst (tz, 0));
@@ -2113,6 +2124,7 @@ test_posix_parse (void)
  * but passes anyway because PST8PDT is a zone name.
  */
   tz = g_time_zone_new ("PST8PDT");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "PST8PDT");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "PST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, - 8 * 3600);
   g_assert (!g_time_zone_is_dst (tz, 0));
@@ -2123,6 +2135,7 @@ test_posix_parse (void)
 
   tz = g_time_zone_new ("PST8PDT6:32:15");
 #ifdef G_OS_WIN32
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "PST8PDT6:32:15");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "PST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, - 8 * 3600);
   g_assert (!g_time_zone_is_dst (tz, 0));
@@ -2138,6 +2151,7 @@ test_posix_parse (void)
   g_date_time_unref (gdt1);
   g_date_time_unref (gdt2);
 #else
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "UTC");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 0);
   g_assert (!g_time_zone_is_dst (tz, 0));
@@ -2145,6 +2159,7 @@ test_posix_parse (void)
   g_time_zone_unref (tz);
 
   tz = g_time_zone_new ("NZST-12:00:00NZDT-13:00:00,M10.1.0,M3.3.0");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "NZST-12:00:00NZDT-13:00:00,M10.1.0,M3.3.0");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "NZST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 12 * 3600);
   g_assert (!g_time_zone_is_dst (tz, 0));
@@ -2170,6 +2185,7 @@ test_posix_parse (void)
   g_time_zone_unref (tz);
 
   tz = g_time_zone_new ("NZST-12:00:00NZDT-13:00:00,280,77");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "NZST-12:00:00NZDT-13:00:00,280,77");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "NZST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 12 * 3600);
   g_assert (!g_time_zone_is_dst (tz, 0));
@@ -2195,6 +2211,7 @@ test_posix_parse (void)
   g_time_zone_unref (tz);
 
   tz = g_time_zone_new ("NZST-12:00:00NZDT-13:00:00,J279,J76");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "NZST-12:00:00NZDT-13:00:00,J279,J76");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "NZST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 12 * 3600);
   g_assert (!g_time_zone_is_dst (tz, 0));
@@ -2220,6 +2237,7 @@ test_posix_parse (void)
   g_time_zone_unref (tz);
 
   tz = g_time_zone_new ("NZST-12:00:00NZDT-13:00:00,M10.1.0/07:00,M3.3.0/07:00");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "NZST-12:00:00NZDT-13:00:00,M10.1.0/07:00,M3.3.0/07:00");
   g_assert_cmpstr (g_time_zone_get_abbreviation (tz, 0), ==, "NZST");
   g_assert_cmpint (g_time_zone_get_offset (tz, 0), ==, 12 * 3600);
   g_assert (!g_time_zone_is_dst (tz, 0));
@@ -2278,10 +2296,70 @@ test_GDateTime_floating_point (void)
   g_test_bug ("697715");
 
   tz = g_time_zone_new ("-03:00");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "-03:00");
   dt = g_date_time_new (tz, 2010, 5, 24,  8, 0, 1.000001);
   g_time_zone_unref (tz);
   g_assert_cmpint (g_date_time_get_microsecond (dt), ==, 1);
   g_date_time_unref (dt);
+}
+
+/* Check that g_time_zone_get_identifier() returns the identifier given to
+ * g_time_zone_new(), or "UTC" if loading the timezone failed. */
+static void
+test_identifier (void)
+{
+  GTimeZone *tz;
+  gchar *old_tz = g_strdup (g_getenv ("TZ"));
+
+  tz = g_time_zone_new ("UTC");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
+  g_time_zone_unref (tz);
+
+  tz = g_time_zone_new_utc ();
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
+  g_time_zone_unref (tz);
+
+  tz = g_time_zone_new ("some rubbish");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
+  g_time_zone_unref (tz);
+
+  tz = g_time_zone_new ("Z");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "Z");
+  g_time_zone_unref (tz);
+
+  tz = g_time_zone_new ("+03:15");
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "+03:15");
+  g_time_zone_unref (tz);
+
+  /* System timezone. We can’t change this, but we can at least assert that
+   * the identifier is non-NULL and doesn’t start with a slash. */
+  tz = g_time_zone_new (NULL);
+  g_assert_nonnull (g_time_zone_get_identifier (tz));
+  g_assert_cmpstr (g_time_zone_get_identifier (tz), !=, "");
+  g_assert_true (*g_time_zone_get_identifier (tz) != '/');
+  g_time_zone_unref (tz);
+
+  /* Local timezone tests. */
+  if (g_setenv ("TZ", "America/Recife", TRUE))
+    {
+      tz = g_time_zone_new_local ();
+      g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "America/Recife");
+      g_time_zone_unref (tz);
+    }
+
+  if (g_setenv ("TZ", "some rubbish", TRUE))
+    {
+      tz = g_time_zone_new_local ();
+      g_assert_cmpstr (g_time_zone_get_identifier (tz), ==, "UTC");
+      g_time_zone_unref (tz);
+    }
+
+  if (old_tz != NULL)
+    g_assert_true (g_setenv ("TZ", old_tz, TRUE));
+  else
+    g_unsetenv ("TZ");
+
+  g_free (old_tz);
 }
 
 gint
@@ -2345,6 +2423,7 @@ main (gint   argc,
   g_test_add_func ("/GTimeZone/no-header", test_no_header);
   g_test_add_func ("/GTimeZone/posix-parse", test_posix_parse);
   g_test_add_func ("/GTimeZone/floating-point", test_GDateTime_floating_point);
+  g_test_add_func ("/GTimeZone/identifier", test_identifier);
 
   return g_test_run ();
 }

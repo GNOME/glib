@@ -52,10 +52,17 @@
  * #GTimeZone is a structure that represents a time zone, at no
  * particular point in time.  It is refcounted and immutable.
  *
+ * Each time zone has an identifier (for example, ‘Europe/London’) which is
+ * platform dependent. See g_time_zone_new() for information on the identifier
+ * formats. The identifier of a time zone can be retrieved using
+ * g_time_zone_get_identifier().
+ *
  * A time zone contains a number of intervals.  Each interval has
- * an abbreviation to describe it, an offet to UTC and a flag indicating
- * if the daylight savings time is in effect during that interval.  A
- * time zone always has at least one interval -- interval 0.
+ * an abbreviation to describe it (for example, ‘PDT’), an offet to UTC and a
+ * flag indicating if the daylight savings time is in effect during that
+ * interval.  A time zone always has at least one interval — interval 0. Note
+ * that interval abbreviations are not the same as time zone identifiers
+ * (apart from ‘UTC’), and cannot be passed to g_time_zone_new().
  *
  * Every UTC time is contained within exactly one interval, but a given
  * local time may be contained within zero, one or two intervals (due to
@@ -384,7 +391,7 @@ zone_for_constant_offset (GTimeZone *gtz, const gchar *name)
   info.is_dst = FALSE;
   info.abbrev =  g_strdup (name);
 
-
+  gtz->name = g_strdup (name);
   gtz->t_info = g_array_sized_new (FALSE, TRUE, sizeof (TransitionInfo), 1);
   g_array_append_val (gtz->t_info, info);
 
@@ -394,11 +401,18 @@ zone_for_constant_offset (GTimeZone *gtz, const gchar *name)
 
 #ifdef G_OS_UNIX
 static GBytes*
-zone_info_unix (const gchar *identifier)
+zone_info_unix (const gchar  *identifier,
+                gchar       **out_identifier)
 {
   gchar *filename;
   GMappedFile *file = NULL;
   GBytes *zoneinfo = NULL;
+  gchar *resolved_identifier = NULL;
+  const gchar *tzdir;
+
+  tzdir = getenv ("TZDIR");
+  if (tzdir == NULL)
+    tzdir = "/usr/share/zoneinfo";
 
   /* identifier can be a relative or absolute path name;
      if relative, it is interpreted starting from /usr/share/zoneinfo
@@ -406,11 +420,7 @@ zone_info_unix (const gchar *identifier)
      glibc allows both syntaxes, so we should too */
   if (identifier != NULL)
     {
-      const gchar *tzdir;
-
-      tzdir = getenv ("TZDIR");
-      if (tzdir == NULL)
-        tzdir = "/usr/share/zoneinfo";
+      resolved_identifier = g_strdup (identifier);
 
       if (*identifier == ':')
         identifier ++;
@@ -421,7 +431,33 @@ zone_info_unix (const gchar *identifier)
         filename = g_build_filename (tzdir, identifier, NULL);
     }
   else
-    filename = g_strdup ("/etc/localtime");
+    {
+      gsize prefix_len = 0;
+
+      filename = g_strdup ("/etc/localtime");
+
+      /* Resolve the actual timezone pointed to by /etc/localtime. */
+      resolved_identifier = g_file_read_link (filename, NULL);
+      if (resolved_identifier == NULL)
+        {
+          /* Error */
+          if (out_identifier != NULL)
+            *out_identifier = NULL;
+          return NULL;
+        }
+
+      /* Strip the prefix and slashes if possible. */
+      if (g_str_has_prefix (resolved_identifier, tzdir))
+        {
+          prefix_len = strlen (tzdir);
+          while (*(resolved_identifier + prefix_len) == '/')
+            prefix_len++;
+        }
+
+      if (prefix_len > 0)
+        memmove (resolved_identifier, resolved_identifier + prefix_len,
+                 strlen (resolved_identifier) - prefix_len + 1  /* nul terminator */);
+    }
 
   file = g_mapped_file_new (filename, FALSE, NULL);
   if (file != NULL)
@@ -433,11 +469,18 @@ zone_info_unix (const gchar *identifier)
       g_mapped_file_unref (file);
     }
   g_free (filename);
+
+  g_assert (resolved_identifier != NULL);
+  if (out_identifier != NULL)
+    *out_identifier = g_steal_pointer (&resolved_identifier);
+
   return zoneinfo;
 }
 
 static void
-init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
+init_zone_from_iana_info (GTimeZone *gtz,
+                          GBytes    *zoneinfo,
+                          gchar     *identifier  /* (transfer full) */)
 {
   gsize size;
   guint index;
@@ -471,6 +514,7 @@ init_zone_from_iana_info (GTimeZone *gtz, GBytes *zoneinfo)
   tz_ttinfo = tz_type_index + time_count;
   tz_abbrs = tz_ttinfo + sizeof (struct ttinfo) * type_count;
 
+  gtz->name = g_steal_pointer (&identifier);
   gtz->t_info = g_array_sized_new (FALSE, TRUE, sizeof (TransitionInfo),
                                    type_count);
   gtz->transitions = g_array_sized_new (FALSE, TRUE, sizeof (Transition),
@@ -611,7 +655,9 @@ register_tzi_to_tzi (RegTZI *reg, TIME_ZONE_INFORMATION *tzi)
 }
 
 static gint
-rules_from_windows_time_zone (const gchar *identifier, TimeZoneRule **rules)
+rules_from_windows_time_zone (const gchar   *identifier,
+                              gchar        **out_identifier,
+                              TimeZoneRule **rules)
 {
   HKEY key;
   gchar *subkey, *subkey_dynamic;
@@ -623,6 +669,10 @@ rules_from_windows_time_zone (const gchar *identifier, TimeZoneRule **rules)
   gint rules_num = 0;
   RegTZI regtzi, regtzi_prev;
 
+  g_assert (out_identifier != NULL);
+  g_assert (rules != NULL);
+
+  *out_identifier = NULL;
   *rules = NULL;
   key_name = NULL;
 
@@ -720,7 +770,6 @@ failed:
 
   g_free (subkey_dynamic);
   g_free (subkey);
-  g_free (key_name);
 
   if (*rules)
     {
@@ -730,10 +779,14 @@ failed:
       else
         (*rules)[rules_num - 1].start_year = (*rules)[rules_num - 2].start_year + 1;
 
+      *out_identifier = g_steal_pointer (&key_name);
+
       return rules_num;
     }
-  else
-    return 0;
+
+  g_free (key_name);
+
+  return 0;
 }
 
 #endif
@@ -834,7 +887,8 @@ fill_transition_info_from_rule (TransitionInfo *info,
 static void
 init_zone_from_rules (GTimeZone    *gtz,
                       TimeZoneRule *rules,
-                      gint          rules_num)
+                      gint          rules_num,
+                      gchar        *identifier  /* (transfer full) */)
 {
   guint type_count = 0, trans_count = 0, info_index = 0;
   guint ri; /* rule index */
@@ -859,6 +913,7 @@ init_zone_from_rules (GTimeZone    *gtz,
         type_count++;
     }
 
+  gtz->name = g_steal_pointer (&identifier);
   gtz->t_info = g_array_sized_new (FALSE, TRUE, sizeof (TransitionInfo), type_count);
   gtz->transitions = g_array_sized_new (FALSE, TRUE, sizeof (Transition), trans_count);
 
@@ -1217,10 +1272,17 @@ parse_identifier_boundaries (gchar **pos, TimeZoneRule *tzr)
  */
 static gint
 rules_from_identifier (const gchar   *identifier,
+                       gchar        **out_identifier,
                        TimeZoneRule **rules)
 {
   gchar *pos;
   TimeZoneRule tzr;
+
+  g_assert (out_identifier != NULL);
+  g_assert (rules != NULL);
+
+  *out_identifier = NULL;
+  *rules = NULL;
 
   if (!identifier)
     return 0;
@@ -1233,7 +1295,10 @@ rules_from_identifier (const gchar   *identifier,
     return 0;
 
   if (*pos == 0)
-    return create_ruleset_from_rule (rules, &tzr);
+    {
+      *out_identifier = g_strdup (identifier);
+      return create_ruleset_from_rule (rules, &tzr);
+    }
 
   /* Format 2 */
   if (!(set_tz_name (&pos, tzr.dlt_name, NAME_SIZE)))
@@ -1251,6 +1316,7 @@ rules_from_identifier (const gchar   *identifier,
 
       /* Use US rules, Windows' default is Pacific Standard Time */
       if ((rules_num = rules_from_windows_time_zone ("Pacific Standard Time",
+                                                     out_identifier,
                                                      rules)))
         {
           for (i = 0; i < rules_num - 1; i++)
@@ -1273,6 +1339,7 @@ rules_from_identifier (const gchar   *identifier,
   if (!parse_identifier_boundaries (&pos, &tzr))
     return 0;
 
+  *out_identifier = g_strdup (identifier);
   return create_ruleset_from_rule (rules, &tzr);
 }
 
@@ -1355,6 +1422,7 @@ g_time_zone_new (const gchar *identifier)
   GTimeZone *tz = NULL;
   TimeZoneRule *rules;
   gint rules_num;
+  gchar *resolved_identifier = NULL;
 
   G_LOCK (time_zones);
   if (time_zones == NULL)
@@ -1372,42 +1440,41 @@ g_time_zone_new (const gchar *identifier)
     }
 
   tz = g_slice_new0 (GTimeZone);
-  tz->name = g_strdup (identifier);
   tz->ref_count = 0;
 
   zone_for_constant_offset (tz, identifier);
 
   if (tz->t_info == NULL &&
-      (rules_num = rules_from_identifier (identifier, &rules)))
+      (rules_num = rules_from_identifier (identifier, &resolved_identifier, &rules)))
     {
-      init_zone_from_rules (tz, rules, rules_num);
+      init_zone_from_rules (tz, rules, rules_num, g_steal_pointer (&resolved_identifier));
       g_free (rules);
     }
 
   if (tz->t_info == NULL)
     {
 #ifdef G_OS_UNIX
-      GBytes *zoneinfo = zone_info_unix (identifier);
-      if (!zoneinfo)
-        zone_for_constant_offset (tz, "UTC");
-      else
+      GBytes *zoneinfo = zone_info_unix (identifier, &resolved_identifier);
+      if (zoneinfo != NULL)
         {
-          init_zone_from_iana_info (tz, zoneinfo);
+          init_zone_from_iana_info (tz, zoneinfo, g_steal_pointer (&resolved_identifier));
           g_bytes_unref (zoneinfo);
         }
 #elif defined (G_OS_WIN32)
-      if ((rules_num = rules_from_windows_time_zone (identifier, &rules)))
+      if ((rules_num = rules_from_windows_time_zone (identifier,
+                                                     &resolved_identifier,
+                                                     &rules)))
         {
-          init_zone_from_rules (tz, rules, rules_num);
+          init_zone_from_rules (tz, rules, rules_num, g_steal_pointer (&resolved_identifier));
           g_free (rules);
         }
+#endif
     }
 
+#if defined (G_OS_WIN32)
   if (tz->t_info == NULL)
     {
-      if (identifier)
-        zone_for_constant_offset (tz, "UTC");
-      else
+      if (identifier == NULL)
         {
           TIME_ZONE_INFORMATION tzi;
 
@@ -1423,13 +1490,22 @@ g_time_zone_new (const gchar *identifier)
               rules[0].start_year = MIN_TZYEAR;
               rules[1].start_year = MAX_TZYEAR;
 
-              init_zone_from_rules (tz, rules, 2);
+              init_zone_from_rules (tz, rules, 2, windows_default_tzname ());
 
               g_free (rules);
             }
         }
-#endif
     }
+#endif
+
+  g_free (resolved_identifier);
+
+  /* Always fall back to UTC. */
+  if (tz->t_info == NULL)
+    zone_for_constant_offset (tz, "UTC");
+
+  g_assert (tz->name != NULL);
+  g_assert (tz->t_info != NULL);
 
   if (tz->t_info != NULL)
     {
@@ -1833,6 +1909,30 @@ g_time_zone_is_dst (GTimeZone *tz,
     return FALSE;
 
   return interval_isdst (tz, (guint)interval);
+}
+
+/**
+ * g_time_zone_get_identifier:
+ * @tz: a #GTimeZone
+ *
+ * Get the identifier of this #GTimeZone, as passed to g_time_zone_new().
+ * If the identifier passed at construction time was not recognised, `UTC` will
+ * be returned. If it was %NULL, the identifier of the local timezone at
+ * construction time will be returned.
+ *
+ * The identifier will be returned in the same format as provided at
+ * construction time: if provided as a time offset, that will be returned by
+ * this function.
+ *
+ * Returns: identifier for this timezone
+ * Since: 2.58
+ */
+const gchar *
+g_time_zone_get_identifier (GTimeZone *tz)
+{
+  g_return_val_if_fail (tz != NULL, NULL);
+
+  return tz->name;
 }
 
 /* Epilogue {{{1 */
