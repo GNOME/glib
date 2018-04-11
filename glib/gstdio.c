@@ -199,7 +199,8 @@ _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
 
   if (!succeeded_so_far)
     {
-      CloseHandle (file_handle);
+      if (fd < 0)
+        CloseHandle (file_handle);
       errno = w32_error_to_errno (error_code);
       return -1;
     }
