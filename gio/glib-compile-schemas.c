@@ -745,6 +745,8 @@ key_state_free (gpointer data)
 {
   KeyState *state = data;
 
+  g_free (state->child_schema);
+
   if (state->type)
     g_variant_type_free (state->type);
 
@@ -880,6 +882,8 @@ schema_state_free (gpointer data)
 
   g_free (state->path);
   g_free (state->gettext_domain);
+  g_free (state->extends_name);
+  g_free (state->list_of);
   g_hash_table_unref (state->keys);
   g_slice_free (SchemaState, state);
 }
