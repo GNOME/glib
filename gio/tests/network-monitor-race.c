@@ -18,7 +18,7 @@
 #include <glib/glib.h>
 #include <gio/gio.h>
 
-#define MAX_RUNS 333
+#define MAX_RUNS 20
 
 static gboolean
 quit_loop (gpointer user_data)
