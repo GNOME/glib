@@ -210,18 +210,23 @@ _g_win32_stat_utf16_no_trailing_slashes (const gunichar2    *filename,
    */
   if (fd < 0)
     {
-      HANDLE tmp = FindFirstFileW (filename,
-                                   &finddata);
+      memset (&finddata, 0, sizeof (finddata));
 
-      if (tmp == INVALID_HANDLE_VALUE)
+      if (handle_info.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT)
         {
-          error_code = GetLastError ();
-          errno = w32_error_to_errno (error_code);
-          CloseHandle (file_handle);
-          return -1;
-        }
+          HANDLE tmp = FindFirstFileW (filename,
+                                       &finddata);
 
-      FindClose (tmp);
+          if (tmp == INVALID_HANDLE_VALUE)
+            {
+              error_code = GetLastError ();
+              errno = w32_error_to_errno (error_code);
+              CloseHandle (file_handle);
+              return -1;
+            }
+
+          FindClose (tmp);
+        }
 
       if (is_symlink && !for_symlink)
         {
