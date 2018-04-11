@@ -1216,6 +1216,8 @@ g_date_time_new_week (GTimeZone *tz, gint year, gint week, gint week_day, gint h
 
   dt = g_date_time_new (tz, year, 1, 4, 0, 0, 0);
   g_date_time_get_week_number (dt, NULL, &jan4_week_day, NULL);
+  g_date_time_unref (dt);
+
   ordinal_day = (week * 7) + week_day - (jan4_week_day + 3);
   if (ordinal_day < 0)
     {
