@@ -606,6 +606,48 @@ test_copy (void)
   g_date_free (d);
 }
 
+/* Check the results of g_date_valid_dmy() for various inputs. */
+static void
+test_valid_dmy (void)
+{
+  const struct
+    {
+      GDateDay day;
+      GDateMonth month;
+      GDateYear year;
+      gboolean expected_valid;
+    }
+  vectors[] =
+    {
+      /* Lower bounds */
+      { 0, 0, 0, FALSE },
+      { 1, 1, 1, TRUE },
+      { 1, 1, 0, FALSE },
+      /* Leap year month lengths */
+      { 30, 2, 2000, FALSE },
+      { 29, 2, 2000, TRUE },
+      { 29, 2, 2001, FALSE },
+      /* Maximum year */
+      { 1, 1, G_MAXUINT16, TRUE },
+    };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      gboolean valid;
+      g_test_message ("Vector %" G_GSIZE_FORMAT ": %04u-%02u-%02u, %s",
+                      i, vectors[i].year, vectors[i].month, vectors[i].day,
+                      vectors[i].expected_valid ? "valid" : "invalid");
+
+      valid = g_date_valid_dmy (vectors[i].day, vectors[i].month, vectors[i].year);
+
+      if (vectors[i].expected_valid)
+        g_assert_true (valid);
+      else
+        g_assert_false (valid);
+    }
+}
+
 int
 main (int argc, char** argv)
 {
@@ -653,6 +695,7 @@ main (int argc, char** argv)
       g_free (path);
     }
   g_test_add_func ("/date/copy", test_copy);
+  g_test_add_func ("/date/valid-dmy", test_valid_dmy);
 
   return g_test_run ();
 }

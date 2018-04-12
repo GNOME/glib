@@ -494,6 +494,8 @@ g_date_valid_dmy (GDateDay   d,
                   GDateMonth m, 
 		  GDateYear  y)
 {
+  /* No need to check the upper bound of @y, because #GDateYear is 16 bits wide,
+   * just like #GDate.year. */
   return ( (m > G_DATE_BAD_MONTH) &&
            (m < 13)               && 
            (d > G_DATE_BAD_DAY)   && 
