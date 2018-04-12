@@ -1667,6 +1667,7 @@ g_date_add_days (GDate *d,
     g_date_update_julian (d);
 
   g_return_if_fail (d->julian);
+  g_return_if_fail (ndays <= G_MAXUINT32 - d->julian_days);
   
   d->julian_days += ndays;
   d->dmy = FALSE;
@@ -1720,13 +1721,16 @@ g_date_add_months (GDate *d,
   if (!d->dmy) 
     g_date_update_dmy (d);
 
-  g_return_if_fail (d->dmy);  
-  
+  g_return_if_fail (d->dmy);
+  g_return_if_fail (nmonths <= G_MAXUINT - (d->month - 1));
+
   nmonths += d->month - 1;
   
   years  = nmonths/12;
   months = nmonths%12;
-  
+
+  g_return_if_fail (years <= G_MAXUINT16 - d->year);
+
   d->month = months + 1;
   d->year  += years;
   
@@ -1808,8 +1812,9 @@ g_date_add_years (GDate *d,
   if (!d->dmy) 
     g_date_update_dmy (d);
 
-  g_return_if_fail (d->dmy);  
-  
+  g_return_if_fail (d->dmy);
+  g_return_if_fail (nyears <= G_MAXUINT16 - d->year);
+
   d->year += nyears;
   
   if (d->month == 2 && d->day == 29)
