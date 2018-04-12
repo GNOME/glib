@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-03-26 14:58+0000\n"
-"PO-Revision-Date: 2018-04-12 14:39+0300\n"
+"POT-Creation-Date: 2018-04-12 11:42+0000\n"
+"PO-Revision-Date: 2018-04-12 14:44+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -1381,11 +1381,11 @@ msgstr "Для GEmblemedIcon ожидается GEmblem"
 #: ../gio/gfile.c:1071 ../gio/gfile.c:1309 ../gio/gfile.c:1447
 #: ../gio/gfile.c:1685 ../gio/gfile.c:1740 ../gio/gfile.c:1798
 #: ../gio/gfile.c:1882 ../gio/gfile.c:1939 ../gio/gfile.c:2003
-#: ../gio/gfile.c:2058 ../gio/gfile.c:3725 ../gio/gfile.c:3780
-#: ../gio/gfile.c:4016 ../gio/gfile.c:4058 ../gio/gfile.c:4526
-#: ../gio/gfile.c:4937 ../gio/gfile.c:5022 ../gio/gfile.c:5112
-#: ../gio/gfile.c:5209 ../gio/gfile.c:5296 ../gio/gfile.c:5397
-#: ../gio/gfile.c:7975 ../gio/gfile.c:8065 ../gio/gfile.c:8149
+#: ../gio/gfile.c:2058 ../gio/gfile.c:3733 ../gio/gfile.c:3788
+#: ../gio/gfile.c:4024 ../gio/gfile.c:4066 ../gio/gfile.c:4534
+#: ../gio/gfile.c:4945 ../gio/gfile.c:5030 ../gio/gfile.c:5120
+#: ../gio/gfile.c:5217 ../gio/gfile.c:5304 ../gio/gfile.c:5405
+#: ../gio/gfile.c:7983 ../gio/gfile.c:8073 ../gio/gfile.c:8157
 #: ../gio/win32/gwinhttpfile.c:437
 msgid "Operation not supported"
 msgstr "Действие не поддерживается"
@@ -1418,46 +1418,46 @@ msgstr "Не удалось рекурсивно скопировать ката
 msgid "Splice not supported"
 msgstr "Соединение не поддерживается"
 
-#: ../gio/gfile.c:2983 ../gio/gfile.c:3027
+#: ../gio/gfile.c:2983 ../gio/gfile.c:3028
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Произошла ошибка при соединении файла: %s"
 
-#: ../gio/gfile.c:3136
+#: ../gio/gfile.c:3144
 msgid "Copy (reflink/clone) between mounts is not supported"
 msgstr ""
 "Копирование (reflink/clone) между точками монтирования не поддерживается"
 
-#: ../gio/gfile.c:3140
+#: ../gio/gfile.c:3148
 msgid "Copy (reflink/clone) is not supported or invalid"
 msgstr "Копирование (reflink/clone) не поддерживается или некорректно"
 
-#: ../gio/gfile.c:3145
+#: ../gio/gfile.c:3153
 msgid "Copy (reflink/clone) is not supported or didn’t work"
 msgstr "Копирование (reflink/clone) не поддерживается или не работает"
 
-#: ../gio/gfile.c:3208
+#: ../gio/gfile.c:3216
 msgid "Can’t copy special file"
 msgstr "Нельзя скопировать специальный файл"
 
-#: ../gio/gfile.c:4006
+#: ../gio/gfile.c:4014
 msgid "Invalid symlink value given"
 msgstr "Дано неверное значение символьной ссылки"
 
-#: ../gio/gfile.c:4167
+#: ../gio/gfile.c:4175
 msgid "Trash not supported"
 msgstr "Корзина не поддерживается"
 
-#: ../gio/gfile.c:4279
+#: ../gio/gfile.c:4287
 #, c-format
 msgid "File names cannot contain “%c”"
 msgstr "Имена файлов не могут содержать «%c»"
 
-#: ../gio/gfile.c:6760 ../gio/gvolume.c:363
+#: ../gio/gfile.c:6768 ../gio/gvolume.c:363
 msgid "volume doesn’t implement mount"
 msgstr "том не поддерживает присоединение"
 
-#: ../gio/gfile.c:6869
+#: ../gio/gfile.c:6877
 msgid "No application is registered as handling this file"
 msgstr "Нет зарегистрированного приложения для обработки данного файла"
 
@@ -4394,7 +4394,7 @@ msgstr "%a, %-d %b %Y, %H∶%M∶%S"
 #: ../glib/gdatetime.c:216
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
-msgstr "%-d %b %Y"
+msgstr "%d.%m.%y"
 
 #. Translators: this is the preferred format for expressing the time
 #: ../glib/gdatetime.c:219
