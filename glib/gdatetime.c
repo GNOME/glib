@@ -3197,6 +3197,7 @@ g_date_time_format_locale (GDateTime   *datetime,
 	  break;
 	case 'Z':
 	  tz = g_date_time_get_timezone_abbreviation (datetime);
+	  tmp = NULL;
 	  tmp_len = strlen (tz);
 	  if (!locale_is_utf8)
 	    {
@@ -3205,8 +3206,7 @@ g_date_time_format_locale (GDateTime   *datetime,
 		return FALSE;
 	    }
 	  g_string_append_len (outstr, tz, tmp_len);
-	  if (!locale_is_utf8)
-	    g_free (tmp);
+	  g_free (tmp);
 	  break;
 	case '%':
 	  g_string_append_c (outstr, '%');
