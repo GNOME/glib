@@ -880,6 +880,13 @@ test_stdio_wrappers (void)
   struct utimbuf ut;
   GError *error = NULL;
 
+  /* The permissions tests here don’t work when running as root. */
+  if (getuid () == 0 || geteuid () == 0)
+    {
+      g_test_skip ("File permissions tests cannot be run as root");
+      return;
+    }
+
   g_remove ("mkdir-test/test-create");
   ret = g_rmdir ("mkdir-test");
   g_assert (ret == 0 || errno == ENOENT);
