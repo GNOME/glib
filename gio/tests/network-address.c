@@ -123,11 +123,6 @@ static ResolveTest address_tests[] = {
   { "192.168.1.2",         TRUE,  TRUE,  TRUE },
   { "fe80::42",            TRUE,  TRUE,  TRUE },
 
-  /* GResolver accepts this by ignoring the scope ID. This was not
-   * intentional, but it's best to not "fix" it at this point.
-   */
-  { "fe80::42%1",          TRUE,  TRUE,  FALSE },
-
   /* g_network_address_parse() accepts these, but they are not
    * (just) IP addresses.
    */
