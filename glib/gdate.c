@@ -514,7 +514,7 @@ g_date_update_julian (const GDate *const_d)
   gint idx;
   
   g_return_if_fail (d != NULL);
-  g_return_if_fail (d->dmy);
+  g_return_if_fail (d->dmy != 0);
   g_return_if_fail (!d->julian);
   g_return_if_fail (g_date_valid_dmy (d->day, d->month, d->year));
   
@@ -1721,7 +1721,7 @@ g_date_add_months (GDate *d,
   if (!d->dmy) 
     g_date_update_dmy (d);
 
-  g_return_if_fail (d->dmy);
+  g_return_if_fail (d->dmy != 0);
   g_return_if_fail (nmonths <= G_MAXUINT - (d->month - 1));
 
   nmonths += d->month - 1;
@@ -1766,7 +1766,7 @@ g_date_subtract_months (GDate *d,
   if (!d->dmy) 
     g_date_update_dmy (d);
 
-  g_return_if_fail (d->dmy);  
+  g_return_if_fail (d->dmy != 0);
   
   years  = nmonths/12;
   months = nmonths%12;
@@ -1812,7 +1812,7 @@ g_date_add_years (GDate *d,
   if (!d->dmy) 
     g_date_update_dmy (d);
 
-  g_return_if_fail (d->dmy);
+  g_return_if_fail (d->dmy != 0);
   g_return_if_fail (nyears <= G_MAXUINT16 - d->year);
 
   d->year += nyears;
@@ -1846,7 +1846,7 @@ g_date_subtract_years (GDate *d,
   if (!d->dmy) 
     g_date_update_dmy (d);
 
-  g_return_if_fail (d->dmy);  
+  g_return_if_fail (d->dmy != 0);
   g_return_if_fail (d->year > nyears);
   
   d->year -= nyears;
@@ -2058,7 +2058,7 @@ g_date_to_struct_tm (const GDate *d,
   if (!d->dmy) 
     g_date_update_dmy (d);
 
-  g_return_if_fail (d->dmy);
+  g_return_if_fail (d->dmy != 0);
   
   /* zero all the irrelevant fields to be sure they're valid */
   
