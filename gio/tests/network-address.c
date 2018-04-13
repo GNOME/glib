@@ -154,6 +154,8 @@ test_resolve_address (gconstpointer d)
   GSocketAddress *addr;
   GError *error = NULL;
 
+  g_test_message ("Input: %s", test->input);
+
   g_assert_cmpint (test->valid_ip, ==, g_hostname_is_ip_address (test->input));
 
   connectable = g_network_address_parse (test->input, 1234, &error);
@@ -192,6 +194,8 @@ test_resolve_address_gresolver (gconstpointer d)
   GInetAddress *iaddr;
   GError *error = NULL;
 
+  g_test_message ("Input: %s", test->input);
+
   resolver = g_resolver_get_default ();
   addrs = g_resolver_lookup_by_name (resolver, test->input, NULL, &error);
   g_object_unref (resolver);
@@ -209,6 +213,8 @@ test_resolve_address_gresolver (gconstpointer d)
     }
   else
     {
+      g_assert_nonnull (error);
+      g_test_message ("Error: %s", error->message);
       g_assert_false (test->valid_resolve);
 
       if (!test->valid_parse)
