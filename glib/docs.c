@@ -2049,6 +2049,25 @@
  */
 
 /**
+ * G_GNUC_NO_INLINE:
+ *
+ * Expands to the GNU C `noinline` function attribute if the compiler is gcc.
+ * If the compiler is not gcc, this macro expands to nothing.
+ *
+ * Declaring a function as `noinline` prevents the function from being
+ * considered for inlining.
+ *
+ * The attribute may be placed before the declaration, right before the
+ * `static` keyword.
+ *
+ * See the
+ * [GNU C documentation](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-noinline-function-attribute)
+ * for more details.
+ *
+ * Since: 2.58
+ */
+
+/**
  * G_GNUC_MALLOC:
  *
  * Expands to the GNU C malloc function attribute if the compiler is gcc.

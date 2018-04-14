@@ -97,9 +97,11 @@
 #if    __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
 #define G_GNUC_PURE __attribute__((__pure__))
 #define G_GNUC_MALLOC __attribute__((__malloc__))
+#define G_GNUC_NO_INLINE __attribute__((noinline))
 #else
 #define G_GNUC_PURE
 #define G_GNUC_MALLOC
+#define G_GNUC_NO_INLINE
 #endif
 
 #if     __GNUC__ >= 4
