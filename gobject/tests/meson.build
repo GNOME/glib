@@ -44,33 +44,15 @@ foreach test_name : gobject_tests
   test(test_name, exe, env : test_env)
 endforeach
 
-marshalers_h = custom_target('marshalers_h',
-  output : 'marshalers.h',
-  input : 'marshalers.list',
-  command : [
-    python, glib_genmarshal,
-    '--prefix=test',
-    '--valist-marshallers',
-    '--output=@OUTPUT@',
-    '--quiet',
-    '--header',
-    '@INPUT@',
-  ],
+marshalers = gnome.genmarshal('marshalers',
+  sources : 'marshalers.list',
+  prefix : 'test',
+  valist_marshallers : true,
+  extra_args : ['--quiet']
 )
-marshalers_c = custom_target('marshalers_c',
-  output : 'marshalers.c',
-  input : 'marshalers.list',
-  command : [
-    python, glib_genmarshal,
-    '--prefix=test',
-    '--valist-marshallers',
-    '--include-header=marshalers.h',
-    '--output=@OUTPUT@',
-    '--quiet',
-    '--body',
-    '@INPUT@',
-  ],
-)
+
+marshalers_c = marshalers[0]
+marshalers_h = marshalers[1]
 
 exe = executable('signals',
     'signals.c', marshalers_h, marshalers_c,
