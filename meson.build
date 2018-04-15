@@ -1,6 +1,6 @@
 project('glib', 'c', 'cpp',
   version : '2.57.0',
-  meson_version : '>= 0.45.0',
+  meson_version : '>= 0.46.0',
   default_options : [
     'warning_level=1',
     'c_std=gnu89'
@@ -1776,9 +1776,10 @@ if want_systemtap and enable_dtrace
   enable_systemtap = true
 endif
 
-
 pkg = import('pkgconfig')
 windows = import('windows')
+gnome = import('gnome')
+
 subdir('glib')
 subdir('gobject')
 subdir('gthread')
@@ -1838,7 +1839,6 @@ if get_option('man')
   man1_dir = get_option('mandir') + '/man1'
 endif
 
-gnome = import('gnome')
 subdir('docs/reference/glib')
 subdir('docs/reference/gobject')
 subdir('docs/reference/gio')

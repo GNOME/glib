@@ -20,6 +20,9 @@ gdbus_codegen = configure_file(input : 'gdbus-codegen.in',
   install_dir : get_option('bindir'),
   configuration : gdbus_codegen_conf
 )
+# Provide gdbus-codegen for us (GNOME module)
+# and for others when we're a subproject
+meson.override_find_program('gdbus-codegen', gdbus_codegen)
 
 codegen_dir = join_paths(get_option('datadir'), 'glib-2.0/codegen')
 
