@@ -229,38 +229,24 @@ gdbus_sources = files(
 subdir('gdbus-2.0/codegen')
 
 # Generate xdp-dbus.{c,h}
-xdp_dbus_generated = custom_target('xdp-dbus',
-    input : ['org.freedesktop.portal.Documents.xml',
-             'org.freedesktop.portal.OpenURI.xml',
-             'org.freedesktop.portal.NetworkMonitor.xml',
-             'org.freedesktop.portal.ProxyResolver.xml'],
-    output : ['xdp-dbus.h', 'xdp-dbus.c'],
-    depend_files : gdbus_codegen_built_files,
-    command : [python, gdbus_codegen,
-               '--interface-prefix', 'org.freedesktop.portal.',
-               '--output-directory', '@OUTDIR@',
-               '--generate-c-code', 'xdp-dbus',
-               '--c-namespace', 'GXdp',
-               '--annotate', 'org.freedesktop.portal.Documents.Add()',
-                             'org.gtk.GDBus.C.UnixFD', 'true',
-               '--annotate', 'org.freedesktop.portal.Documents.AddNamed()',
-                             'org.gtk.GDBus.C.UnixFD', 'true',
-               '--annotate', 'org.freedesktop.portal.Documents.AddFull()',
-                             'org.gtk.GDBus.C.UnixFD', 'true',
-               '--annotate', 'org.freedesktop.portal.OpenURI.OpenFile()',
-                             'org.gtk.GDBus.C.UnixFD', 'true',
-               '@INPUT@'])
+xdp_dbus_generated = gnome.gdbus_codegen('xdp-dbus',
+    sources : ['org.freedesktop.portal.Documents.xml',
+               'org.freedesktop.portal.OpenURI.xml',
+               'org.freedesktop.portal.NetworkMonitor.xml',
+               'org.freedesktop.portal.ProxyResolver.xml'],
+    interface_prefix : 'org.freedesktop.portal.',
+    namespace: 'GXdp',
+    annotations : [
+        ['org.freedesktop.portal.Documents.Add()', 'org.gtk.GDBus.C.UnixFD', 'true'],
+        ['org.freedesktop.portal.Documents.AddNamed()', 'org.gtk.GDBus.C.UnixFD', 'true'],
+        ['org.freedesktop.portal.Documents.AddFull()', 'org.gtk.GDBus.C.UnixFD', 'true'],
+        ['org.freedesktop.portal.OpenURI.OpenFile()', 'org.gtk.GDBus.C.UnixFD', 'true']])
 
 # Generate gdbus-generated.{c,h}
-gdbus_daemon_generated = custom_target('gdbus-daemon-generated',
-    input : ['dbus-daemon.xml'],
-    output : ['gdbus-daemon-generated.h', 'gdbus-daemon-generated.c'],
-    depend_files : gdbus_codegen_built_files,
-    command : [python, gdbus_codegen,
-               '--interface-prefix', 'org.',
-               '--output-directory', '@OUTDIR@',
-               '--generate-c-code', 'gdbus-daemon-generated',
-               '--c-namespace', '_G', '@INPUT@'])
+gdbus_daemon_generated = gnome.gdbus_codegen('gdbus-daemon-generated',
+    'dbus-daemon.xml',
+    interface_prefix: 'org.',
+    namespace: '_G')
 
 settings_headers = files(
   'gsettingsbackend.h',
@@ -714,27 +700,15 @@ gio_headers += settings_headers
 gio_headers += gdbus_headers
 install_headers(gio_headers, subdir : 'glib-2.0/gio/')
 
-# We can't use gnome.mkenums() because the GNOME module looks for glib-mkenums
-# in PATH, which means you can't bootstrap glib with its own glib-mkenums.
-gioenumtypes_h = custom_target('gioenumtypes_h',
-  output : 'gioenumtypes.h',
-  capture : true,
-  input : gio_headers,
-  install : true,
-  install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'),
-  command : [python, glib_mkenums,
-             '--template', files('gioenumtypes.h.template'),
-             '@INPUT@', gnetworking_h])
+gioenumtypes = gnome.mkenums('gioenumtypes',
+  sources : gio_headers,
+  h_template : 'gioenumtypes.h.template',
+  c_template : 'gioenumtypes.c.template',
+  install_header : true,
+  install_dir : join_paths(get_option('includedir'), 'glib-2.0/gio'))
 
-gioenumtypes_c = custom_target('gioenumtypes_c',
-  output : 'gioenumtypes.c',
-  capture : true,
-  input : gio_headers,
-  depends : [gioenumtypes_h],
-  command : [python, glib_mkenums,
-             '--template', files('gioenumtypes.c.template'),
-             '@INPUT@', gnetworking_h])
-
+gioenumtypes_c = gioenumtypes[0]
+gioenumtypes_h = gioenumtypes[1]
 gioenumtypes_dep = declare_dependency(sources : [gioenumtypes_h])
 
 # inotify

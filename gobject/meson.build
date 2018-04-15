@@ -100,9 +100,10 @@ foreach tool: python_tools
     install : true,
     install_dir : glib_bindir,
   )
-
-  # Set variables for later use
+  # Set variables for later use; by gio/tests/meson.build for example
   set_variable(tool.underscorify(), tool_bin)
+  # Provide tools for us (GNOME module), and for others when we're a subproject
+  meson.override_find_program(tool, tool_bin)
 endforeach
 
 executable('gobject-query', 'gobject-query.c',
