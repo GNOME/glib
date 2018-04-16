@@ -1422,6 +1422,67 @@ g_hash_table_steal (GHashTable    *hash_table,
 }
 
 /**
+ * g_hash_table_steal_extended:
+ * @hash_table: a #GHashTable
+ * @lookup_key: the key to look up
+ * @stolen_key: (out) (optional) (transfer full): return location for the
+ *    original key
+ * @stolen_value: (out) (optional) (nullable) (transfer full): return location
+ *    for the value associated with the key
+ *
+ * Looks up a key in the #GHashTable, stealing the original key and the
+ * associated value and returning %TRUE if the key was found. If the key was
+ * not found, %FALSE is returned.
+ *
+ * If found, the stolen key and value are removed from the hash table without
+ * calling the key and value destroy functions, and ownership is transferred to
+ * the caller of this method; as with g_hash_table_steal().
+ *
+ * You can pass %NULL for @lookup_key, provided the hash and equal functions
+ * of @hash_table are %NULL-safe.
+ *
+ * Returns: %TRUE if the key was found in the #GHashTable
+ * Since: 2.58
+ */
+gboolean
+g_hash_table_steal_extended (GHashTable    *hash_table,
+                             gconstpointer  lookup_key,
+                             gpointer      *stolen_key,
+                             gpointer      *stolen_value)
+{
+  guint node_index;
+  guint node_hash;
+
+  g_return_val_if_fail (hash_table != NULL, FALSE);
+
+  node_index = g_hash_table_lookup_node (hash_table, lookup_key, &node_hash);
+
+  if (!HASH_IS_REAL (hash_table->hashes[node_index]))
+    {
+      if (stolen_key != NULL)
+        *stolen_key = NULL;
+      if (stolen_value != NULL)
+        *stolen_value = NULL;
+      return FALSE;
+    }
+
+  if (stolen_key != NULL)
+    *stolen_key = g_steal_pointer (&hash_table->keys[node_index]);
+
+  if (stolen_value != NULL)
+    *stolen_value = g_steal_pointer (&hash_table->values[node_index]);
+
+  g_hash_table_remove_node (hash_table, node_index, FALSE);
+  g_hash_table_maybe_resize (hash_table);
+
+#ifndef G_DISABLE_ASSERT
+  hash_table->version++;
+#endif
+
+  return TRUE;
+}
+
+/**
  * g_hash_table_remove_all:
  * @hash_table: a #GHashTable
  *

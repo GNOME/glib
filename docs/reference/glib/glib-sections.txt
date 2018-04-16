@@ -2453,6 +2453,7 @@ g_hash_table_find
 GHFunc
 g_hash_table_remove
 g_hash_table_steal
+g_hash_table_steal_extended
 g_hash_table_foreach_remove
 g_hash_table_foreach_steal
 g_hash_table_remove_all

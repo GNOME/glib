@@ -1189,6 +1189,50 @@ test_foreach_steal (void)
   g_hash_table_unref (hash2);
 }
 
+/* Test g_hash_table_steal_extended() works properly with existing and
+ * non-existing keys. */
+static void
+test_steal_extended (void)
+{
+  GHashTable *hash;
+  gchar *stolen_key = NULL, *stolen_value = NULL;
+
+  hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+
+  g_hash_table_insert (hash, g_strdup ("a"), g_strdup ("A"));
+  g_hash_table_insert (hash, g_strdup ("b"), g_strdup ("B"));
+  g_hash_table_insert (hash, g_strdup ("c"), g_strdup ("C"));
+  g_hash_table_insert (hash, g_strdup ("d"), g_strdup ("D"));
+  g_hash_table_insert (hash, g_strdup ("e"), g_strdup ("E"));
+  g_hash_table_insert (hash, g_strdup ("f"), g_strdup ("F"));
+
+  g_assert_true (g_hash_table_steal_extended (hash, "a",
+                                              (gpointer *) &stolen_key,
+                                              (gpointer *) &stolen_value));
+  g_assert_cmpstr (stolen_key, ==, "a");
+  g_assert_cmpstr (stolen_value, ==, "A");
+  g_clear_pointer (&stolen_key, g_free);
+  g_clear_pointer (&stolen_value, g_free);
+
+  g_assert_cmpuint (g_hash_table_size (hash), ==, 5);
+
+  g_assert_false (g_hash_table_steal_extended (hash, "a",
+                                               (gpointer *) &stolen_key,
+                                               (gpointer *) &stolen_value));
+  g_assert_null (stolen_key);
+  g_assert_null (stolen_value);
+
+  g_assert_false (g_hash_table_steal_extended (hash, "never a key",
+                                               (gpointer *) &stolen_key,
+                                               (gpointer *) &stolen_value));
+  g_assert_null (stolen_key);
+  g_assert_null (stolen_value);
+
+  g_assert_cmpuint (g_hash_table_size (hash), ==, 5);
+
+  g_hash_table_unref (hash);
+}
+
 struct _GHashTable
 {
   gint             size;
@@ -1513,6 +1557,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/find", test_find);
   g_test_add_func ("/hash/foreach", test_foreach);
   g_test_add_func ("/hash/foreach-steal", test_foreach_steal);
+  g_test_add_func ("/hash/steal-extended", test_steal_extended);
 
   /* tests for individual bugs */
   g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);

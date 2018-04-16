@@ -82,6 +82,11 @@ void        g_hash_table_remove_all        (GHashTable     *hash_table);
 GLIB_AVAILABLE_IN_ALL
 gboolean    g_hash_table_steal             (GHashTable     *hash_table,
                                             gconstpointer   key);
+GLIB_AVAILABLE_IN_2_58
+gboolean    g_hash_table_steal_extended    (GHashTable     *hash_table,
+                                            gconstpointer   lookup_key,
+                                            gpointer       *stolen_key,
+                                            gpointer       *stolen_value);
 GLIB_AVAILABLE_IN_ALL
 void        g_hash_table_steal_all         (GHashTable     *hash_table);
 GLIB_AVAILABLE_IN_ALL
