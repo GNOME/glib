@@ -610,6 +610,286 @@ class HeaderCodeGenerator:
 
 # ----------------------------------------------------------------------------------------------------
 
+class InterfaceInfoHeaderCodeGenerator:
+    def __init__(self, ifaces, namespace, header_name, use_pragma, outfile):
+        self.ifaces = ifaces
+        self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
+        self.header_guard = header_name.upper().replace('.', '_').replace('-', '_').replace('/', '_').replace(':', '_')
+        self.use_pragma = use_pragma
+        self.outfile = outfile
+
+    # ----------------------------------------------------------------------------------------------------
+
+    def generate_header_preamble(self):
+        self.outfile.write(LICENSE_STR.format(config.VERSION))
+        self.outfile.write('\n')
+
+        if self.use_pragma:
+            self.outfile.write('#pragma once\n')
+        else:
+            self.outfile.write('#ifndef __{!s}__\n'.format(self.header_guard))
+            self.outfile.write('#define __{!s}__\n'.format(self.header_guard))
+
+        self.outfile.write('\n')
+        self.outfile.write('#include <gio/gio.h>\n')
+        self.outfile.write('\n')
+        self.outfile.write('G_BEGIN_DECLS\n')
+        self.outfile.write('\n')
+
+    # ----------------------------------------------------------------------------------------------------
+
+    def declare_infos(self):
+        for i in self.ifaces:
+            self.outfile.write('extern const GDBusInterfaceInfo %s_interface;\n' % i.name_lower)
+
+    # ----------------------------------------------------------------------------------------------------
+
+    def generate_header_postamble(self):
+        self.outfile.write('\n')
+        self.outfile.write('G_END_DECLS\n')
+
+        if not self.use_pragma:
+            self.outfile.write('\n')
+            self.outfile.write('#endif /* __{!s}__ */\n'.format(self.header_guard))
+
+    # ----------------------------------------------------------------------------------------------------
+
+    def generate(self):
+        self.generate_header_preamble()
+        self.declare_infos()
+        self.generate_header_postamble()
+
+# ----------------------------------------------------------------------------------------------------
+
+class InterfaceInfoBodyCodeGenerator:
+    def __init__(self, ifaces, namespace, header_name, outfile):
+        self.ifaces = ifaces
+        self.namespace, self.ns_upper, self.ns_lower = generate_namespace(namespace)
+        self.header_name = header_name
+        self.outfile = outfile
+
+    # ----------------------------------------------------------------------------------------------------
+
+    def generate_body_preamble(self):
+        self.outfile.write(LICENSE_STR.format(config.VERSION))
+        self.outfile.write('\n')
+        self.outfile.write('#ifdef HAVE_CONFIG_H\n'
+                           '#  include "config.h"\n'
+                           '#endif\n'
+                           '\n'
+                           '#include "%s"\n'
+                           '\n'
+                           '#include <string.h>\n'
+                           % (self.header_name))
+        self.outfile.write('\n')
+
+    # ----------------------------------------------------------------------------------------------------
+
+    def generate_array(self, array_name_lower, element_type, elements):
+        self.outfile.write('const %s * const %s[] =\n' % (element_type, array_name_lower))
+        self.outfile.write('{\n')
+        for (_, name) in sorted(elements, key=utils.version_cmp_key):
+            self.outfile.write('  &%s,\n' % name)
+        self.outfile.write('  NULL,\n')
+        self.outfile.write('};\n')
+        self.outfile.write('\n')
+
+    def define_annotations(self, array_name_lower, annotations):
+        if len(annotations) == 0:
+            return
+
+        annotation_pointers = []
+
+        for a in annotations:
+            # Skip internal annotations.
+            if a.key.startswith('org.gtk.GDBus'):
+                continue
+
+            self.define_annotations('%s__%s_annotations' % (array_name_lower, a.key_lower), a.annotations)
+
+            self.outfile.write('const GDBusAnnotationInfo %s__%s_annotation =\n' % (array_name_lower, a.key_lower))
+            self.outfile.write('{\n')
+            self.outfile.write('  -1,  /* ref count */\n')
+            self.outfile.write('  (gchar *) "%s",\n' % a.key)
+            self.outfile.write('  (gchar *) "%s",\n' % a.value)
+            if len(a.annotations) > 0:
+                self.outfile.write('  (GDBusAnnotationInfo **) %s__%s_annotations,\n' % (array_name_lower, a.key_lower))
+            else:
+                self.outfile.write('  NULL,  /* no annotations */\n')
+            self.outfile.write('};\n')
+            self.outfile.write('\n')
+
+            key = (a.since, '%s__%s_annotation' % (array_name_lower, a.key_lower))
+            annotation_pointers.append(key)
+
+        self.generate_array(array_name_lower, 'GDBusAnnotationInfo',
+                            annotation_pointers)
+
+    def define_args(self, array_name_lower, args):
+        if len(args) == 0:
+            return
+
+        arg_pointers = []
+
+        for a in args:
+            self.define_annotations('%s__%s_arg_annotations' % (array_name_lower, a.name), a.annotations)
+
+            self.outfile.write('const GDBusArgInfo %s__%s_arg =\n' % (array_name_lower, a.name))
+            self.outfile.write('{\n')
+            self.outfile.write('  -1,  /* ref count */\n')
+            self.outfile.write('  (gchar *) "%s",\n' % a.name)
+            self.outfile.write('  (gchar *) "%s",\n' % a.signature)
+            if len(a.annotations) > 0:
+                self.outfile.write('  (GDBusAnnotationInfo **) %s__%s_arg_annotations,\n' % (array_name_lower, a.name))
+            else:
+                self.outfile.write('  NULL,  /* no annotations */\n')
+            self.outfile.write('};\n')
+            self.outfile.write('\n')
+
+            key = (a.since, '%s__%s_arg' % (array_name_lower, a.name))
+            arg_pointers.append(key)
+
+        self.generate_array(array_name_lower, 'GDBusArgInfo', arg_pointers)
+
+    def define_infos(self):
+        for i in self.ifaces:
+            self.outfile.write('/* ------------------------------------------------------------------------ */\n')
+            self.outfile.write('/* Definitions for %s */\n' % i.name)
+            self.outfile.write('\n')
+
+            # GDBusMethodInfos.
+            if len(i.methods) > 0:
+                method_pointers = []
+
+                for m in i.methods:
+                    self.define_args('%s_interface__%s_method_in_args' % (i.name_lower, m.name_lower), m.in_args)
+                    self.define_args('%s_interface__%s_method_out_args' % (i.name_lower, m.name_lower), m.out_args)
+                    self.define_annotations('%s_interface__%s_method_annotations' % (i.name_lower, m.name_lower), m.annotations)
+
+                    self.outfile.write('const GDBusMethodInfo %s_interface__%s_method =\n' % (i.name_lower, m.name_lower))
+                    self.outfile.write('{\n')
+                    self.outfile.write('  -1,  /* ref count */\n')
+                    self.outfile.write('  (gchar *) "%s",\n' % m.name)
+                    if len(m.in_args) > 0:
+                        self.outfile.write('  (GDBusArgInfo **) %s_interface__%s_method_in_args,\n' % (i.name_lower, m.name_lower))
+                    else:
+                        self.outfile.write('  NULL,  /* no in args */\n')
+                    if len(m.out_args) > 0:
+                        self.outfile.write('  (GDBusArgInfo **) %s_interface__%s_method_out_args,\n' % (i.name_lower, m.name_lower))
+                    else:
+                        self.outfile.write('  NULL,  /* no out args */\n')
+                    if len(m.annotations) > 0:
+                        self.outfile.write('  (GDBusAnnotationInfo **) %s_interface__%s_method_annotations,\n' % (i.name_lower, m.name_lower))
+                    else:
+                        self.outfile.write('  NULL,  /* no annotations */\n')
+                    self.outfile.write('};\n')
+                    self.outfile.write('\n')
+
+                    key = (m.since, '%s_interface__%s_method' % (i.name_lower, m.name_lower))
+                    method_pointers.append(key)
+
+                self.generate_array('%s_interface_methods' % i.name_lower,
+                                    'GDBusMethodInfo', method_pointers)
+
+            # GDBusSignalInfos.
+            if len(i.signals) > 0:
+                signal_pointers = []
+
+                for s in i.signals:
+                    self.define_args('%s_interface__%s_signal_args' % (i.name_lower, s.name_lower), s.args)
+                    self.define_annotations('%s_interface__%s_signal_annotations' % (i.name_lower, s.name_lower), s.annotations)
+
+                    self.outfile.write('const GDBusSignalInfo %s_interface__%s_signal =\n' % (i.name_lower, s.name_lower))
+                    self.outfile.write('{\n')
+                    self.outfile.write('  -1,  /* ref count */\n')
+                    self.outfile.write('  (gchar *) "%s",\n' % s.name)
+                    if len(s.args) > 0:
+                        self.outfile.write('  (GDBusArgInfo **) %s_interface__%s_signal_args,\n' % (i.name_lower, s.name_lower))
+                    else:
+                        self.outfile.write('  NULL,  /* no args */\n')
+                    if len(s.annotations) > 0:
+                        self.outfile.write('  (GDBusAnnotationInfo **) %s_interface__%s_signal_annotations,\n' % (i.name_lower, s.name_lower))
+                    else:
+                        self.outfile.write('  NULL,  /* no annotations */\n')
+                    self.outfile.write('};\n')
+                    self.outfile.write('\n')
+
+                    key = (m.since, '%s_interface__%s_signal' % (i.name_lower, s.name_lower))
+                    signal_pointers.append(key)
+
+                self.generate_array('%s_interface_signals' % i.name_lower,
+                                    'GDBusSignalInfo', signal_pointers)
+
+            # GDBusPropertyInfos.
+            if len(i.properties) > 0:
+                property_pointers = []
+
+                for p in i.properties:
+                    if p.readable and p.writable:
+                        flags = 'G_DBUS_PROPERTY_INFO_FLAGS_READABLE | G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE'
+                    elif p.readable:
+                        flags = 'G_DBUS_PROPERTY_INFO_FLAGS_READABLE'
+                    elif p.writable:
+                        flags = 'G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE'
+                    else:
+                        flags = 'G_DBUS_PROPERTY_INFO_FLAGS_NONE'
+
+                    self.define_annotations('%s_interface__%s_property_annotations' % (i.name_lower, p.name_lower), p.annotations)
+
+                    self.outfile.write('const GDBusPropertyInfo %s_interface__%s_property =\n' % (i.name_lower, p.name_lower))
+                    self.outfile.write('{\n')
+                    self.outfile.write('  -1,  /* ref count */\n')
+                    self.outfile.write('  (gchar *) "%s",\n' % p.name)
+                    self.outfile.write('  (gchar *) "%s",\n' % p.signature)
+                    self.outfile.write('  %s,\n' % flags)
+                    if len(p.annotations) > 0:
+                        self.outfile.write('  (GDBusAnnotationInfo **) %s_interface__%s_property_annotations,\n' % (i.name_lower, p.name_lower))
+                    else:
+                        self.outfile.write('  NULL,  /* no annotations */\n')
+                    self.outfile.write('};\n')
+                    self.outfile.write('\n')
+
+                    key = (m.since, '%s_interface__%s_property' % (i.name_lower, p.name_lower))
+                    property_pointers.append(key)
+
+                self.generate_array('%s_interface_properties' % i.name_lower,
+                                    'GDBusPropertyInfo', property_pointers)
+
+            # Finally the GDBusInterfaceInfo.
+            self.define_annotations('%s_interface_annotations' % i.name_lower,
+                                    i.annotations)
+
+            self.outfile.write('const GDBusInterfaceInfo %s_interface =\n' % i.name_lower)
+            self.outfile.write('{\n')
+            self.outfile.write('  -1,  /* ref count */\n')
+            self.outfile.write('  (gchar *) "%s",\n' % i.name)
+            if len(i.methods) > 0:
+                self.outfile.write('  (GDBusMethodInfo **) %s_interface_methods,\n' % i.name_lower)
+            else:
+                self.outfile.write('  NULL,  /* no methods */\n')
+            if len(i.signals) > 0:
+                self.outfile.write('  (GDBusSignalInfo **) %s_interface_signals,\n' % i.name_lower)
+            else:
+                self.outfile.write('  NULL,  /* no signals */\n')
+            if len(i.properties) > 0:
+                self.outfile.write('  (GDBusPropertyInfo **) %s_interface_properties,\n' % i.name_lower)
+            else:
+                self.outfile.write(  'NULL,  /* no properties */\n')
+            if len(i.annotations) > 0:
+                self.outfile.write('  (GDBusAnnotationInfo **) %s_interface_annotations,\n' % i.name_lower)
+            else:
+                self.outfile.write('  NULL,  /* no annotations */\n')
+            self.outfile.write('};\n')
+            self.outfile.write('\n')
+
+    # ----------------------------------------------------------------------------------------------------
+
+    def generate(self):
+        self.generate_body_preamble()
+        self.define_infos()
+
+# ----------------------------------------------------------------------------------------------------
+
 class CodeGenerator:
     def __init__(self, ifaces, namespace, generate_objmanager, header_name,
                  docbook_gen, outfile):

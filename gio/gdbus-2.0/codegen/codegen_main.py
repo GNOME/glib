@@ -175,6 +175,10 @@ def codegen_main():
                        help='Generate C headers')
     group.add_argument('--body', action='store_true',
                        help='Generate C code')
+    group.add_argument('--interface-info-header', action='store_true',
+                       help='Generate GDBusInterfaceInfo C header')
+    group.add_argument('--interface-info-body', action='store_true',
+                       help='Generate GDBusInterfaceInfo C code')
 
     group = arg_parser.add_mutually_exclusive_group()
     group.add_argument('--output', metavar='FILE',
@@ -207,6 +211,24 @@ def codegen_main():
     elif args.body:
         if args.output is None:
             print_error('Using --body requires --output')
+
+        c_file = args.output
+        header_name = os.path.splitext(os.path.basename(c_file))[0] + '.h'
+    elif args.interface_info_header:
+        if args.output is None:
+            print_error('Using --interface-info-header requires --output')
+        if args.c_generate_object_manager:
+            print_error('--c-generate-object-manager is incompatible with '
+                        '--interface-info-header')
+
+        h_file = args.output
+        header_name = os.path.basename(h_file)
+    elif args.interface_info_body:
+        if args.output is None:
+            print_error('Using --interface-info-body requires --output')
+        if args.c_generate_object_manager:
+            print_error('--c-generate-object-manager is incompatible with '
+                        '--interface-info-body')
 
         c_file = args.output
         header_name = os.path.splitext(os.path.basename(c_file))[0] + '.h'
@@ -248,6 +270,23 @@ def codegen_main():
                                         header_name,
                                         docbook_gen,
                                         outfile)
+            gen.generate()
+
+    if args.interface_info_header:
+        with open(h_file, 'w') as outfile:
+            gen = codegen.InterfaceInfoHeaderCodeGenerator(all_ifaces,
+                                                           args.c_namespace,
+                                                           header_name,
+                                                           args.pragma_once,
+                                                           outfile)
+            gen.generate()
+
+    if args.interface_info_body:
+        with open(c_file, 'w') as outfile:
+            gen = codegen.InterfaceInfoBodyCodeGenerator(all_ifaces,
+                                                         args.c_namespace,
+                                                         header_name,
+                                                         outfile)
             gen.generate()
 
     sys.exit(0)

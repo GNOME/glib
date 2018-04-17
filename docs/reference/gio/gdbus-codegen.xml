@@ -39,6 +39,8 @@
     <arg><option>--xml-files</option> <replaceable>FILE</replaceable></arg>
     <arg><option>--header</option></arg>
     <arg><option>--body</option></arg>
+    <arg><option>--interface-info-header</option></arg>
+    <arg><option>--interface-info-body</option></arg>
     <arg><option>--output</option> <replaceable>OUTFILE</replaceable></arg>
     <group choice="plain" rep="repeat">
       <arg>
@@ -69,7 +71,11 @@
     arguments on the command line and generates output files.
     It currently supports generating C source code (via
     <option>--body</option>) or header (via <option>--header</option>)
-    and Docbook XML (via <option>--generate-docbook</option>).
+    and Docbook XML (via <option>--generate-docbook</option>). Alternatively,
+    more restricted C source code and headers can be generated, which just
+    contain the interface information (as <type>GDBusInterfaceInfo</type>
+    structures) using <option>--interface-info-body</option> and
+    <option>--interface-info-header</option>.
   </para>
 </refsect1>
 
@@ -90,8 +96,11 @@
   </para>
   <para>
     For C code generation either <option>--body</option> that
-    generates source code, or <option>--header</option> that
-    generates headers, can be used. These options must be used along with
+    generates source code, <option>--header</option> that
+    generates headers, <option>--interface-info-body</option> that generates
+    interface information source code, or
+    <option>--interface-info-header</option> that generates interface information
+    headers, can be used. These options must be used along with
     <option>--output</option>, which is used to specify the file to output to.
   </para>
   <para>
@@ -282,8 +291,10 @@
           Directory to output generated source to. Equivalent to changing directory before generation.
         </para>
         <para>
-          This option cannot be used with neither <option>--body</option> nor
-          <option>--header</option>, and <option>--output</option> must be used.
+          This option cannot be used with <option>--body</option>,
+          <option>--header</option>, <option>--interface-info-body</option> or
+          <option>--interface-info-header</option>; and
+          <option>--output</option> must be used.
         </para>
 
       </listitem>
@@ -322,11 +333,51 @@
     </varlistentry>
 
     <varlistentry>
+      <term><option>--interface-info-header</option></term>
+      <listitem>
+        <para>
+          If this option is passed, it will generate the header code for the
+          <type>GDBusInterfaceInfo</type> structures only and will write it to
+          the disk by using the path and file name provided by
+          <option>--output</option>.
+        </para>
+        <para>
+          Using <option>--generate-c-code</option>, <option>--generate-docbook</option> or
+          <option>--output-directory</option> are not allowed to be used along with
+          the <option>--interface-info-header</option> and
+          <option>--interface-info-body</option> options, because these options
+          are used to generate only one file.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--interface-info-body</option></term>
+      <listitem>
+        <para>
+          If this option is passed, it will generate the source code for the
+          <type>GDBusInterfaceInfo</type> structures only and will write it to
+          the disk by using the path and file name provided by
+          <option>--output</option>.
+        </para>
+        <para>
+          Using <option>--generate-c-code</option>, <option>--generate-docbook</option> or
+          <option>--output-directory</option> are not allowed to be used along with
+          the <option>--interface-info-header</option> and
+          <option>--interface-info-body</option> options, because these options
+          are used to generate only one file.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term><option>--output</option> <replaceable>OUTFILE</replaceable></term>
       <listitem>
         <para>
-          The full path where the header (<option>--header</option>) or the source code
-          (<option>--body</option>) will be written, using the path and filename provided by
+          The full path where the header (<option>--header</option>,
+          <option>--interface-info-header</option>) or the source code
+          (<option>--body</option>, <option>--interface-info-body</option>) will
+          be written, using the path and filename provided by
           <option>--output</option>. The full path could be something like
           <literal>$($OUTFILE).{c,h}</literal>.
         </para>
