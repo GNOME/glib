@@ -240,7 +240,7 @@ def codegen_main():
         parsed_ifaces = parser.parse_dbus_xml(xml_data)
         all_ifaces.extend(parsed_ifaces)
 
-    if args.annotate != None:
+    if args.annotate is not None:
         apply_annotations(all_ifaces, args.annotate)
 
     for i in all_ifaces:
