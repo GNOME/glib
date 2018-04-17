@@ -27,6 +27,25 @@ class Annotation:
         self.key = key
         self.value = value
         self.annotations = []
+        self.since = ''
+
+    def post_process(self, interface_prefix, cns, cns_upper, cns_lower, container):
+        key = self.key
+        overridden_key = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.Name')
+        if utils.is_ugly_case(overridden_key):
+            self.key_lower = overridden_key.lower()
+        else:
+            if overridden_key:
+                key = overridden_key
+            self.key_lower = utils.camel_case_to_uscore(key).lower().replace('-', '_').replace('.', '_')
+
+        if len(self.since) == 0:
+            self.since = utils.lookup_since(self.annotations)
+            if len(self.since) == 0:
+                self.since = container.since
+
+        for a in self.annotations:
+            a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
 
 class Arg:
     def __init__(self, name, signature):
@@ -229,6 +248,8 @@ class Arg:
                 self.gvalue_get = 'g_value_get_boxed'
                 self.array_annotation = '(array zero-terminated=1)'
 
+        for a in self.annotations:
+            a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
 
 class Method:
     def __init__(self, name):
@@ -270,6 +291,9 @@ class Method:
         if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
             self.deprecated = True
 
+        for a in self.annotations:
+            a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
+
 class Signal:
     def __init__(self, name):
         self.name = name
@@ -304,6 +328,9 @@ class Signal:
 
         if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
             self.deprecated = True
+
+        for a in self.annotations:
+            a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
 
 class Property:
     def __init__(self, name, signature, access):
@@ -356,6 +383,9 @@ class Property:
 
         if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
             self.deprecated = True
+
+        for a in self.annotations:
+            a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
 
         # FIXME: for now we only support 'false' and 'const' on the signal itself, see #674913 and
         # http://dbus.freedesktop.org/doc/dbus-specification.html#introspection-format
@@ -436,3 +466,6 @@ class Interface:
 
         for p in self.properties:
             p.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
+
+        for a in self.annotations:
+            a.post_process(interface_prefix, cns, cns_upper, cns_lower, self)
