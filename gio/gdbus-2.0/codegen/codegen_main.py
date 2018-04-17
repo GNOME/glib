@@ -152,7 +152,7 @@ def codegen_main():
     arg_parser.add_argument('files', metavar='FILE', nargs='*',
                             help='D-Bus introspection XML file')
     arg_parser.add_argument('--xml-files', metavar='FILE', action='append', default=[],
-                            help='D-Bus introspection XML file')
+                            help=argparse.SUPPRESS)
     arg_parser.add_argument('--interface-prefix', metavar='PREFIX', default='',
                             help='String to strip from D-Bus interface names for code and docs')
     arg_parser.add_argument('--c-namespace', metavar='NAMESPACE', default='',
