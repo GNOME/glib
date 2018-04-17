@@ -242,7 +242,7 @@ def codegen_main():
         all_ifaces.extend(parsed_ifaces)
         input_files_basenames.append(os.path.basename(fname))
 
-    if args.annotate != None:
+    if args.annotate is not None:
         apply_annotations(all_ifaces, args.annotate)
 
     for i in all_ifaces:
