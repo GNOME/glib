@@ -1191,6 +1191,38 @@ g_ptr_array_set_size  (GPtrArray *array,
   rarray->len = length;
 }
 
+static gpointer
+ptr_array_remove_index (GPtrArray *array,
+                        guint      index_,
+                        gboolean   fast)
+{
+  GRealPtrArray *rarray = (GRealPtrArray *) array;
+  gpointer result;
+
+  g_return_val_if_fail (rarray, NULL);
+  g_return_val_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL), NULL);
+
+  g_return_val_if_fail (index_ < rarray->len, NULL);
+
+  result = rarray->pdata[index_];
+
+  if (rarray->element_free_func != NULL)
+    rarray->element_free_func (rarray->pdata[index_]);
+
+  if (index_ != rarray->len - 1 && !fast)
+    memmove (rarray->pdata + index_, rarray->pdata + index_ + 1,
+             sizeof (gpointer) * (rarray->len - index_ - 1));
+  else if (index_ != rarray->len - 1)
+    rarray->pdata[index_] = rarray->pdata[rarray->len - 1];
+
+  rarray->len -= 1;
+
+  if (G_UNLIKELY (g_mem_gc_friendly))
+    rarray->pdata[rarray->len] = NULL;
+
+  return result;
+}
+
 /**
  * g_ptr_array_remove_index:
  * @array: a #GPtrArray
@@ -1207,29 +1239,7 @@ gpointer
 g_ptr_array_remove_index (GPtrArray *array,
                           guint      index_)
 {
-  GRealPtrArray *rarray = (GRealPtrArray *)array;
-  gpointer result;
-
-  g_return_val_if_fail (rarray, NULL);
-  g_return_val_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL), NULL);
-
-  g_return_val_if_fail (index_ < rarray->len, NULL);
-
-  result = rarray->pdata[index_];
-  
-  if (rarray->element_free_func != NULL)
-    rarray->element_free_func (rarray->pdata[index_]);
-
-  if (index_ != rarray->len - 1)
-    memmove (rarray->pdata + index_, rarray->pdata + index_ + 1,
-             sizeof (gpointer) * (rarray->len - index_ - 1));
-  
-  rarray->len -= 1;
-
-  if (G_UNLIKELY (g_mem_gc_friendly))
-    rarray->pdata[rarray->len] = NULL;
-
-  return result;
+  return ptr_array_remove_index (array, index_, FALSE);
 }
 
 /**
@@ -1249,28 +1259,7 @@ gpointer
 g_ptr_array_remove_index_fast (GPtrArray *array,
                                guint      index_)
 {
-  GRealPtrArray *rarray = (GRealPtrArray *)array;
-  gpointer result;
-
-  g_return_val_if_fail (rarray, NULL);
-  g_return_val_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL), NULL);
-
-  g_return_val_if_fail (index_ < rarray->len, NULL);
-
-  result = rarray->pdata[index_];
-
-  if (rarray->element_free_func != NULL)
-    rarray->element_free_func (rarray->pdata[index_]);
-
-  if (index_ != rarray->len - 1)
-    rarray->pdata[index_] = rarray->pdata[rarray->len - 1];
-
-  rarray->len -= 1;
-
-  if (G_UNLIKELY (g_mem_gc_friendly))
-    rarray->pdata[rarray->len] = NULL;
-
-  return result;
+  return ptr_array_remove_index (array, index_, TRUE);
 }
 
 /**
