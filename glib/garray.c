@@ -1231,9 +1231,10 @@ ptr_array_remove_index (GPtrArray *array,
  * Removes the pointer at the given index from the pointer array.
  * The following elements are moved down one place. If @array has
  * a non-%NULL #GDestroyNotify function it is called for the removed
- * element.
+ * element. If so, the return value from this function will potentially point
+ * to freed memory (depending on the #GDestroyNotify implementation).
  *
- * Returns: the pointer which was removed
+ * Returns: (nullable): the pointer which was removed
  */
 gpointer
 g_ptr_array_remove_index (GPtrArray *array,
@@ -1251,9 +1252,11 @@ g_ptr_array_remove_index (GPtrArray *array,
  * The last element in the array is used to fill in the space, so
  * this function does not preserve the order of the array. But it
  * is faster than g_ptr_array_remove_index(). If @array has a non-%NULL
- * #GDestroyNotify function it is called for the removed element.
+ * #GDestroyNotify function it is called for the removed element. If so, the
+ * return value from this function will potentially point to freed memory
+ * (depending on the #GDestroyNotify implementation).
  *
- * Returns: the pointer which was removed
+ * Returns: (nullable): the pointer which was removed
  */
 gpointer
 g_ptr_array_remove_index_fast (GPtrArray *array,
