@@ -1500,7 +1500,7 @@ sync_close_cb (GObject *source_object,
  * @cancellable: (nullable): a #GCancellable or %NULL
  * @error: return location for error or %NULL
  *
- * Synchronously closees @connection. The calling thread is blocked
+ * Synchronously closes @connection. The calling thread is blocked
  * until this is done. See g_dbus_connection_close() for the
  * asynchronous version of this method and more details about what it
  * does.
