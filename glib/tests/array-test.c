@@ -659,6 +659,59 @@ pointer_array_find_non_empty (void)
 }
 
 static void
+steal_destroy_notify (gpointer data)
+{
+  guint *counter = data;
+  *counter = *counter + 1;
+}
+
+/* Test that g_ptr_array_steal_index() and g_ptr_array_steal_index_fast() can
+ * remove elements from a pointer array without the #GDestroyNotify being called. */
+static void
+pointer_array_steal (void)
+{
+  guint i1 = 0, i2 = 0, i3 = 0, i4 = 0;
+  gpointer out1, out2;
+  GPtrArray *array = g_ptr_array_new_with_free_func (steal_destroy_notify);
+
+  g_ptr_array_add (array, &i1);
+  g_ptr_array_add (array, &i2);
+  g_ptr_array_add (array, &i3);
+  g_ptr_array_add (array, &i4);
+
+  g_assert_cmpuint (array->len, ==, 4);
+
+  /* Remove a single element. */
+  out1 = g_ptr_array_steal_index (array, 0);
+  g_assert_true (out1 == &i1);
+  g_assert_cmpuint (i1, ==, 0);  /* should not have been destroyed */
+
+  /* Following elements should have been moved down. */
+  g_assert_cmpuint (array->len, ==, 3);
+  g_assert_true (g_ptr_array_index (array, 0) == &i2);
+  g_assert_true (g_ptr_array_index (array, 1) == &i3);
+  g_assert_true (g_ptr_array_index (array, 2) == &i4);
+
+  /* Remove another element, quickly. */
+  out2 = g_ptr_array_steal_index_fast (array, 0);
+  g_assert_true (out2 == &i2);
+  g_assert_cmpuint (i2, ==, 0);  /* should not have been destroyed */
+
+  /* Last element should have been swapped in place. */
+  g_assert_cmpuint (array->len, ==, 2);
+  g_assert_true (g_ptr_array_index (array, 0) == &i4);
+  g_assert_true (g_ptr_array_index (array, 1) == &i3);
+
+  /* Check that destroying the pointer array doesn’t affect the stolen elements. */
+  g_ptr_array_unref (array);
+
+  g_assert_cmpuint (i1, ==, 0);
+  g_assert_cmpuint (i2, ==, 0);
+  g_assert_cmpuint (i3, ==, 1);
+  g_assert_cmpuint (i4, ==, 1);
+}
+
+static void
 byte_array_append (void)
 {
   GByteArray *gbarray;
@@ -970,6 +1023,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/pointerarray/sort-with-data", pointer_array_sort_with_data);
   g_test_add_func ("/pointerarray/find/empty", pointer_array_find_empty);
   g_test_add_func ("/pointerarray/find/non-empty", pointer_array_find_non_empty);
+  g_test_add_func ("/pointerarray/steal", pointer_array_steal);
 
   /* byte arrays */
   g_test_add_func ("/bytearray/append", byte_array_append);

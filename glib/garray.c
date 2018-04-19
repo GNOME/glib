@@ -1194,7 +1194,8 @@ g_ptr_array_set_size  (GPtrArray *array,
 static gpointer
 ptr_array_remove_index (GPtrArray *array,
                         guint      index_,
-                        gboolean   fast)
+                        gboolean   fast,
+                        gboolean   free_element)
 {
   GRealPtrArray *rarray = (GRealPtrArray *) array;
   gpointer result;
@@ -1206,7 +1207,7 @@ ptr_array_remove_index (GPtrArray *array,
 
   result = rarray->pdata[index_];
 
-  if (rarray->element_free_func != NULL)
+  if (rarray->element_free_func != NULL && free_element)
     rarray->element_free_func (rarray->pdata[index_]);
 
   if (index_ != rarray->len - 1 && !fast)
@@ -1240,7 +1241,7 @@ gpointer
 g_ptr_array_remove_index (GPtrArray *array,
                           guint      index_)
 {
-  return ptr_array_remove_index (array, index_, FALSE);
+  return ptr_array_remove_index (array, index_, FALSE, TRUE);
 }
 
 /**
@@ -1262,7 +1263,49 @@ gpointer
 g_ptr_array_remove_index_fast (GPtrArray *array,
                                guint      index_)
 {
-  return ptr_array_remove_index (array, index_, TRUE);
+  return ptr_array_remove_index (array, index_, TRUE, TRUE);
+}
+
+/**
+ * g_ptr_array_steal_index:
+ * @array: a #GPtrArray
+ * @index_: the index of the pointer to steal
+ *
+ * Removes the pointer at the given index from the pointer array.
+ * The following elements are moved down one place. The #GDestroyNotify for
+ * @array is *not* called on the removed element; ownership is transferred to
+ * the caller of this function.
+ *
+ * Returns: (transfer full) (nullable): the pointer which was removed
+ * Since: 2.58
+ */
+gpointer
+g_ptr_array_steal_index (GPtrArray *array,
+                         guint      index_)
+{
+  return ptr_array_remove_index (array, index_, FALSE, FALSE);
+}
+
+/**
+ * g_ptr_array_steal_index_fast:
+ * @array: a #GPtrArray
+ * @index_: the index of the pointer to steal
+ *
+ * Removes the pointer at the given index from the pointer array.
+ * The last element in the array is used to fill in the space, so
+ * this function does not preserve the order of the array. But it
+ * is faster than g_ptr_array_steal_index(). The #GDestroyNotify for @array is
+ * *not* called on the removed element; ownership is transferred to the caller
+ * of this function.
+ *
+ * Returns: (transfer full) (nullable): the pointer which was removed
+ * Since: 2.58
+ */
+gpointer
+g_ptr_array_steal_index_fast (GPtrArray *array,
+                              guint      index_)
+{
+  return ptr_array_remove_index (array, index_, TRUE, FALSE);
 }
 
 /**

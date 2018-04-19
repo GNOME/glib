@@ -154,6 +154,12 @@ gpointer   g_ptr_array_remove_index       (GPtrArray        *array,
 GLIB_AVAILABLE_IN_ALL
 gpointer   g_ptr_array_remove_index_fast  (GPtrArray        *array,
 					   guint             index_);
+GLIB_AVAILABLE_IN_2_58
+gpointer   g_ptr_array_steal_index        (GPtrArray        *array,
+                                           guint             index_);
+GLIB_AVAILABLE_IN_2_58
+gpointer   g_ptr_array_steal_index_fast   (GPtrArray        *array,
+                                           guint             index_);
 GLIB_AVAILABLE_IN_ALL
 gboolean   g_ptr_array_remove             (GPtrArray        *array,
 					   gpointer          data);
