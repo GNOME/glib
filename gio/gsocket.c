@@ -2379,7 +2379,7 @@ g_socket_multicast_group_operation_ssm (GSocket       *socket,
 
     case G_SOCKET_FAMILY_IPV4:
       {
-#ifdef IP_ADD_SOURCE_MEMBERSHIP
+#if defined (IP_ADD_SOURCE_MEMBERSHIP) && !defined(HAVE_IP_MREQN)
         gint optname;
         struct ip_mreq_source mc_req_src;
 
@@ -2462,7 +2462,7 @@ g_socket_multicast_group_operation_ssm (GSocket       *socket,
             _("Error leaving multicast group: %s"),
             _("No support for IPv4 source-specific multicast"));
         return FALSE;
-#endif  /* IP_ADD_SOURCE_MEMBERSHIP */
+#endif  /* IP_ADD_SOURCE_MEMBERSHIP && !HAVE_IP_MREQN*/
       }
       break;
 
