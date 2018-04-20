@@ -881,11 +881,13 @@ test_stdio_wrappers (void)
   GError *error = NULL;
 
   /* The permissions tests here don’t work when running as root. */
+#ifdef G_OS_UNIX
   if (getuid () == 0 || geteuid () == 0)
     {
       g_test_skip ("File permissions tests cannot be run as root");
       return;
     }
+#endif
 
   g_remove ("mkdir-test/test-create");
   ret = g_rmdir ("mkdir-test");
