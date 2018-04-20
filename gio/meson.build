@@ -137,10 +137,8 @@ if host_system != 'windows'
     glib_conf.set('HAVE_RES_NQUERY', 1)
   endif
 
-  if cc.compiles('''#include <netinet/in.h>
-                    struct ip_mreqn foo;''',
-                 name : 'struct ip_mreqn')
-    glib_conf.set('HAVE_IP_MREQN', '/**/')
+  if cc.has_type('struct ip_mreqn', prefix : '#include <netinet/in.h>')
+    glib_conf.set('HAVE_IP_MREQN', 1)
   endif
 
   if cc.compiles('''#include <sys/ioctl.h>
