@@ -333,7 +333,7 @@ test_echo1 (void)
   GError **error = &local_error;
   GSubprocess *proc;
   GPtrArray *args;
-  GInputStream *stdout;
+  GInputStream *stdout_stream;
   gchar *result;
 
   args = get_test_subprocess_args ("echo", "hello", "world!", NULL);
@@ -341,9 +341,9 @@ test_echo1 (void)
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 
-  stdout = g_subprocess_get_stdout_pipe (proc);
+  stdout_stream = g_subprocess_get_stdout_pipe (proc);
 
-  result = splice_to_string (stdout, error);
+  result = splice_to_string (stdout_stream, error);
   g_assert_no_error (local_error);
 
   g_assert_cmpstr (result, ==, "hello" LINEEND "world!" LINEEND);
@@ -360,7 +360,7 @@ test_echo_merged (void)
   GError **error = &local_error;
   GSubprocess *proc;
   GPtrArray *args;
-  GInputStream *stdout;
+  GInputStream *stdout_stream;
   gchar *result;
 
   args = get_test_subprocess_args ("echo-stdout-and-stderr", "merge", "this", NULL);
@@ -370,8 +370,8 @@ test_echo_merged (void)
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 
-  stdout = g_subprocess_get_stdout_pipe (proc);
-  result = splice_to_string (stdout, error);
+  stdout_stream = g_subprocess_get_stdout_pipe (proc);
+  result = splice_to_string (stdout_stream, error);
   g_assert_no_error (local_error);
 
   g_assert_cmpstr (result, ==, "merge\nmerge\nthis\nthis\n");
@@ -1087,7 +1087,7 @@ test_env (void)
   GSubprocessLauncher *launcher;
   GSubprocess *proc;
   GPtrArray *args;
-  GInputStream *stdout;
+  GInputStream *stdout_stream;
   gchar *result;
   gchar *envp[] = { "ONE=1", "TWO=1", "THREE=3", "FOUR=1", NULL };
   gchar **split;
@@ -1106,9 +1106,9 @@ test_env (void)
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 
-  stdout = g_subprocess_get_stdout_pipe (proc);
+  stdout_stream = g_subprocess_get_stdout_pipe (proc);
 
-  result = splice_to_string (stdout, error);
+  result = splice_to_string (stdout_stream, error);
   split = g_strsplit (result, "\n", -1);
   g_assert_cmpstr (g_environ_getenv (split, "ONE"), ==, "1");
   g_assert_cmpstr (g_environ_getenv (split, "TWO"), ==, "2");
@@ -1131,7 +1131,7 @@ test_env_inherit (void)
   GSubprocessLauncher *launcher;
   GSubprocess *proc;
   GPtrArray *args;
-  GInputStream *stdout;
+  GInputStream *stdout_stream;
   gchar *result;
   gchar **split;
 
@@ -1153,9 +1153,9 @@ test_env_inherit (void)
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 
-  stdout = g_subprocess_get_stdout_pipe (proc);
+  stdout_stream = g_subprocess_get_stdout_pipe (proc);
 
-  result = splice_to_string (stdout, error);
+  result = splice_to_string (stdout_stream, error);
   split = g_strsplit (result, "\n", -1);
   g_assert_null (g_environ_getenv (split, "TEST_ENV_INHERIT1"));
   g_assert_cmpstr (g_environ_getenv (split, "TEST_ENV_INHERIT2"), ==, "2");
@@ -1175,7 +1175,7 @@ test_cwd (void)
   GSubprocessLauncher *launcher;
   GSubprocess *proc;
   GPtrArray *args;
-  GInputStream *stdout;
+  GInputStream *stdout_stream;
   gchar *result;
   const char *basename;
 
@@ -1188,9 +1188,9 @@ test_cwd (void)
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 
-  stdout = g_subprocess_get_stdout_pipe (proc);
+  stdout_stream = g_subprocess_get_stdout_pipe (proc);
 
-  result = splice_to_string (stdout, error);
+  result = splice_to_string (stdout_stream, error);
 
   basename = g_strrstr (result, "/");
   g_assert (basename != NULL);
@@ -1211,7 +1211,7 @@ test_stdout_file (void)
   GPtrArray *args;
   GFile *tmpfile;
   GFileIOStream *iostream;
-  GOutputStream *stdin;
+  GOutputStream *stdin_stream;
   const char *test_data = "this is some test data\n";
   char *tmp_contents;
   char *tmp_file_path;
@@ -1229,12 +1229,12 @@ test_stdout_file (void)
   g_ptr_array_free (args, TRUE);
   g_assert_no_error (local_error);
 
-  stdin = g_subprocess_get_stdin_pipe (proc);
+  stdin_stream = g_subprocess_get_stdin_pipe (proc);
 
-  g_output_stream_write_all (stdin, test_data, strlen (test_data), NULL, NULL, error);
+  g_output_stream_write_all (stdin_stream, test_data, strlen (test_data), NULL, NULL, error);
   g_assert_no_error (local_error);
 
-  g_output_stream_close (stdin, NULL, error);
+  g_output_stream_close (stdin_stream, NULL, error);
   g_assert_no_error (local_error);
 
   g_subprocess_wait_check (proc, NULL, error);
@@ -1264,7 +1264,7 @@ test_stdout_fd (void)
   GFile *tmpfile;
   GFileIOStream *iostream;
   GFileDescriptorBased *descriptor_stream;
-  GOutputStream *stdin;
+  GOutputStream *stdin_stream;
   const char *test_data = "this is some test data\n";
   char *tmp_contents;
 
@@ -1281,12 +1281,12 @@ test_stdout_fd (void)
 
   g_clear_object (&iostream);
 
-  stdin = g_subprocess_get_stdin_pipe (proc);
+  stdin_stream = g_subprocess_get_stdin_pipe (proc);
 
-  g_output_stream_write_all (stdin, test_data, strlen (test_data), NULL, NULL, error);
+  g_output_stream_write_all (stdin_stream, test_data, strlen (test_data), NULL, NULL, error);
   g_assert_no_error (local_error);
 
-  g_output_stream_close (stdin, NULL, error);
+  g_output_stream_close (stdin_stream, NULL, error);
   g_assert_no_error (local_error);
 
   g_subprocess_wait_check (proc, NULL, error);
@@ -1320,7 +1320,7 @@ test_child_setup (void)
   GPtrArray *args;
   GFile *tmpfile;
   GFileIOStream *iostream;
-  GOutputStream *stdin;
+  GOutputStream *stdin_stream;
   const char *test_data = "this is some test data\n";
   char *tmp_contents;
   int fd;
@@ -1339,12 +1339,12 @@ test_child_setup (void)
 
   g_clear_object (&iostream);
 
-  stdin = g_subprocess_get_stdin_pipe (proc);
+  stdin_stream = g_subprocess_get_stdin_pipe (proc);
 
-  g_output_stream_write_all (stdin, test_data, strlen (test_data), NULL, NULL, error);
+  g_output_stream_write_all (stdin_stream, test_data, strlen (test_data), NULL, NULL, error);
   g_assert_no_error (local_error);
 
-  g_output_stream_close (stdin, NULL, error);
+  g_output_stream_close (stdin_stream, NULL, error);
   g_assert_no_error (local_error);
 
   g_subprocess_wait_check (proc, NULL, error);
