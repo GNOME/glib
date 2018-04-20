@@ -1103,9 +1103,21 @@ ptr_array_free (GPtrArray      *array,
 
   if (flags & FREE_SEGMENT)
     {
+      /* Data here is stolen and freed manually. It is an
+       * error to attempt to access the array data (including
+       * mutating the array bounds) during destruction).
+       *
+       * https://bugzilla.gnome.org/show_bug.cgi?id=769064
+       */
+      gpointer *stolen_pdata = g_steal_pointer (&rarray->pdata);
       if (rarray->element_free_func != NULL)
-        g_ptr_array_foreach (array, (GFunc) rarray->element_free_func, NULL);
-      g_free (rarray->pdata);
+        {
+          gsize i;
+          for (i = 0; i < rarray->len; ++i)
+            rarray->element_free_func (stolen_pdata[i]);
+        }
+
+      g_free (stolen_pdata);
       segment = NULL;
     }
   else
@@ -1158,6 +1170,7 @@ g_ptr_array_set_size  (GPtrArray *array,
   GRealPtrArray *rarray = (GRealPtrArray *)array;
 
   g_return_if_fail (rarray);
+  g_return_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL));
 
   if (length > rarray->len)
     {
@@ -1198,6 +1211,7 @@ g_ptr_array_remove_index (GPtrArray *array,
   gpointer result;
 
   g_return_val_if_fail (rarray, NULL);
+  g_return_val_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL), NULL);
 
   g_return_val_if_fail (index_ < rarray->len, NULL);
 
@@ -1239,6 +1253,7 @@ g_ptr_array_remove_index_fast (GPtrArray *array,
   gpointer result;
 
   g_return_val_if_fail (rarray, NULL);
+  g_return_val_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL), NULL);
 
   g_return_val_if_fail (index_ < rarray->len, NULL);
 
@@ -1282,6 +1297,7 @@ g_ptr_array_remove_range (GPtrArray *array,
   guint n;
 
   g_return_val_if_fail (rarray != NULL, NULL);
+  g_return_val_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL), NULL);
   g_return_val_if_fail (index_ <= rarray->len, NULL);
   g_return_val_if_fail (index_ + length <= rarray->len, NULL);
 
@@ -1332,6 +1348,7 @@ g_ptr_array_remove (GPtrArray *array,
   guint i;
 
   g_return_val_if_fail (array, FALSE);
+  g_return_val_if_fail (array->len == 0 || (array->len != 0 && array->pdata != NULL), FALSE);
 
   for (i = 0; i < array->len; i += 1)
     {
@@ -1369,6 +1386,7 @@ g_ptr_array_remove_fast (GPtrArray *array,
   guint i;
 
   g_return_val_if_fail (rarray, FALSE);
+  g_return_val_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL), FALSE);
 
   for (i = 0; i < rarray->len; i += 1)
     {
@@ -1397,6 +1415,7 @@ g_ptr_array_add (GPtrArray *array,
   GRealPtrArray *rarray = (GRealPtrArray *)array;
 
   g_return_if_fail (rarray);
+  g_return_if_fail (rarray->len == 0 || (rarray->len != 0 && rarray->pdata != NULL));
 
   g_ptr_array_maybe_expand (rarray, 1);
 
