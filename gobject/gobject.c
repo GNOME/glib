@@ -487,7 +487,7 @@ g_object_do_class_init (GObjectClass *class)
    * in ::notify being emitted, even if the new value is the same as the old.
    * If they did pass %G_PARAM_EXPLICIT_NOTIFY, then this signal is emitted only
    * when they explicitly call g_object_notify() or g_object_notify_by_pspec(),
-   * and common practice is to avoid doing so if the value remained unchanged.
+   * and common practice is to do that only when the value has actually changed.
    *
    * This signal is typically used to obtain change notification for a
    * single property, by specifying the property name as a detail in the
