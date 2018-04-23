@@ -387,6 +387,17 @@ const gchar desktop_key_match_category[N_DESKTOP_KEYS] = {
   [DESKTOP_KEY_Comment]          = 6
 };
 
+const char * exec_key_match_blacklist[] = {
+  "flatpak",
+  "gjs",
+  "pkexec",
+  "python",
+  "python2",
+  "python3",
+  "wine",
+  NULL
+};
+
 static gchar *
 desktop_key_get_name (guint key_id)
 {
@@ -1081,6 +1092,7 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
                   /* Special handling: only match basename of first field */
                   gchar *space;
                   gchar *slash;
+                  const gchar **blacklisted;
 
                   /* Remove extra arguments, if any */
                   space = raw + strcspn (raw, " \t\n"); /* IFS */
@@ -1089,6 +1101,18 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
                   /* Skip the pathname, if any */
                   if ((slash = strrchr (raw, '/')))
                     value = slash + 1;
+
+                  /* Don't match on blacklisted binaries like interpretors */
+                  for (blacklisted = exec_key_match_blacklist;
+                       *blacklisted;
+                       blacklisted++)
+                    {
+                      if (strcmp (value, *blacklisted) == 0)
+                        {
+                          value = NULL;
+                          break;
+                        }
+                    }
                 }
 
               if (value)
