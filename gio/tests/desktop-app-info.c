@@ -626,7 +626,7 @@ assert_implementations (const gchar *interface,
 }
 
 #define ALL_USR_APPS  "evince-previewer.desktop nautilus-classic.desktop gnome-font-viewer.desktop "         \
-                      "baobab.desktop yelp.desktop eog.desktop cheese.desktop gnome-clocks.desktop "         \
+                      "baobab.desktop yelp.desktop eog.desktop cheese.desktop org.gnome.clocks.desktop "         \
                       "gnome-contacts.desktop kde4-kate.desktop gcr-prompter.desktop totem.desktop "         \
                       "gnome-terminal.desktop nautilus-autorun-software.desktop gcr-viewer.desktop "         \
                       "nautilus-connect-server.desktop kde4-dolphin.desktop gnome-music.desktop "            \
@@ -685,7 +685,7 @@ test_search (void)
    * yelp and gnome-contacts, though.
    */
   assert_search ("gnome", "eog.desktop\n"
-                          "gnome-clocks.desktop\n"
+                          "org.gnome.clocks.desktop\n"
                           "yelp.desktop gnome-contacts.desktop\n", TRUE, TRUE, NULL, NULL);
 
   /* eog has exec name 'false' in usr only */

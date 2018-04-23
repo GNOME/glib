@@ -304,7 +304,6 @@ usr_desktop_files = \
 	gcr-viewer.desktop			\
 	gedit.desktop				\
 	glade.desktop				\
-	gnome-clocks.desktop			\
 	gnome-contacts.desktop			\
 	gnome-font-viewer.desktop		\
 	gnome-music.desktop			\
@@ -319,6 +318,7 @@ usr_desktop_files = \
 	nautilus-classic.desktop		\
 	nautilus-connect-server.desktop		\
 	nautilus.desktop			\
+	org.gnome.clocks.desktop		\
 	totem.desktop				\
 	yelp.desktop
 
