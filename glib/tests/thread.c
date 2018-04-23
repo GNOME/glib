@@ -174,7 +174,7 @@ test_thread5 (void)
 static gpointer
 thread6_func (gpointer data)
 {
-#ifdef HAVE_PTHREAD_SETNAME_NP_WITH_TID
+#if defined (HAVE_PTHREAD_SETNAME_NP_WITH_TID) && defined (HAVE_PTHREAD_GETNAME_NP)
   char name[16];
 
   pthread_getname_np (pthread_self(), name, 16);

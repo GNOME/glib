@@ -340,6 +340,9 @@
 /* Have function pthread_setname_np with TID as argument */
 #mesondefine HAVE_PTHREAD_SETNAME_NP_WITH_TID
 
+/* Have function pthread_getname_np */
+#mesondefine HAVE_PTHREAD_GETNAME_NP
+
 /* Define to 1 if the system has the type `ptrdiff_t'. */
 #mesondefine HAVE_PTRDIFF_T
 
