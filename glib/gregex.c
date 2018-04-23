@@ -213,7 +213,7 @@ struct _GMatchInfo
   gint *workspace;              /* workspace for pcre_dfa_exec() */
   gint n_workspace;             /* number of workspace elements */
   const gchar *string;          /* string passed to the match function */
-  gssize string_len;            /* length of string */
+  gssize string_len;            /* length of string, in bytes */
 };
 
 struct _GRegex
@@ -1719,7 +1719,7 @@ g_regex_match (const GRegex      *regex,
  * g_regex_match_full:
  * @regex: a #GRegex structure from g_regex_new()
  * @string: (array length=string_len): the string to scan for matches
- * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: match options
  * @match_info: (out) (optional): pointer to location where to store
@@ -1850,7 +1850,7 @@ g_regex_match_all (const GRegex      *regex,
  * g_regex_match_all_full:
  * @regex: a #GRegex structure from g_regex_new()
  * @string: (array length=string_len): the string to scan for matches
- * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: match options
  * @match_info: (out) (optional): pointer to location where to store
@@ -2123,7 +2123,7 @@ g_regex_split (const GRegex     *regex,
  * g_regex_split_full:
  * @regex: a #GRegex structure
  * @string: (array length=string_len): the string to split with the pattern
- * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: match time option flags
  * @max_tokens: the maximum number of tokens to split @string into.
@@ -2752,7 +2752,7 @@ interpolation_list_needs_match (GList *list)
  * g_regex_replace:
  * @regex: a #GRegex structure
  * @string: (array length=string_len): the string to perform matches against
- * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @replacement: text to replace each match with
  * @match_options: options for the match
@@ -2843,7 +2843,7 @@ literal_replacement (const GMatchInfo *match_info,
  * g_regex_replace_literal:
  * @regex: a #GRegex structure
  * @string: (array length=string_len): the string to perform matches against
- * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @replacement: text to replace each match with
  * @match_options: options for the match
@@ -2886,7 +2886,7 @@ g_regex_replace_literal (const GRegex      *regex,
  * g_regex_replace_eval:
  * @regex: a #GRegex structure from g_regex_new()
  * @string: (array length=string_len): string to perform matches against
- * @string_len: the length of @string, or -1 if @string is nul-terminated
+ * @string_len: the length of @string, in bytes, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match, in bytes
  * @match_options: options for the match
  * @eval: a function to call for each match
@@ -3110,7 +3110,7 @@ g_regex_escape_nul (const gchar *string,
 /**
  * g_regex_escape_string:
  * @string: (array length=length): the string to escape
- * @length: the length of @string, or -1 if @string is nul-terminated
+ * @length: the length of @string, in bytes, or -1 if @string is nul-terminated
  *
  * Escapes the special characters used for regular expressions
  * in @string, for instance "a.b*c" becomes "a\.b\*c". This
