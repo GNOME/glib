@@ -154,6 +154,16 @@ if host_system != 'windows'
     glib_conf.set('HAVE_SIOCGIFADDR', '/**/')
   endif
 
+  if not cc.compiles('''#include <netinet/in.h>
+                        int main(int argc, char ** argv) {
+                          struct ip_mreq_source mc_req_src;
+                          mc_req_src.imr_interface.s_addr = 0;
+                          return 0;
+                        }''',
+                        name : 'ip_mreq_source.imr_interface has s_addr member')
+    glib_conf.set('BROKEN_IP_MREQ_SOURCE_STRUCT', 1)
+  endif
+
 endif
 
 network_args_string = ''

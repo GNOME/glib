@@ -15,6 +15,9 @@
 /* poll doesn't work on devices */
 #mesondefine BROKEN_POLL
 
+/* struct ip_mreq_source definition is broken on Android NDK <= r16 */
+#mesondefine BROKEN_IP_MREQ_SOURCE_STRUCT
+
 /* Whether we're building a DLL and hence need symbols exported for a DLL */
 #mesondefine DLL_EXPORT
 

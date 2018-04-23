@@ -2380,6 +2380,13 @@ g_socket_multicast_group_operation_ssm (GSocket       *socket,
     case G_SOCKET_FAMILY_IPV4:
       {
 #ifdef IP_ADD_SOURCE_MEMBERSHIP
+
+#ifdef BROKEN_IP_MREQ_SOURCE_STRUCT
+#define S_ADDR_FIELD(src) src.imr_interface
+#else
+#define S_ADDR_FIELD(src) src.imr_interface.s_addr
+#endif
+
         gint optname;
         struct ip_mreq_source mc_req_src;
 
@@ -2397,7 +2404,7 @@ g_socket_multicast_group_operation_ssm (GSocket       *socket,
         memset (&mc_req_src, 0, sizeof (mc_req_src));
 
         /* By default use the default IPv4 multicast interface. */
-        mc_req_src.imr_interface.s_addr = g_htonl (INADDR_ANY);
+        S_ADDR_FIELD(mc_req_src) = g_htonl (INADDR_ANY);
 
         if (iface)
           {
@@ -2412,7 +2419,7 @@ g_socket_multicast_group_operation_ssm (GSocket       *socket,
                 return FALSE;
               }
             /* (0.0.0.iface_index) only works on Windows. */
-            mc_req_src.imr_interface.s_addr = g_htonl (iface_index);
+            S_ADDR_FIELD(mc_req_src) = g_htonl (iface_index);
 #elif defined (HAVE_SIOCGIFADDR)
             int ret;
             struct ifreq ifr;
@@ -2442,7 +2449,7 @@ g_socket_multicast_group_operation_ssm (GSocket       *socket,
               }
 
             iface_addr = (struct sockaddr_in *) &ifr.ifr_addr;
-            mc_req_src.imr_interface.s_addr = iface_addr->sin_addr.s_addr;
+            S_ADDR_FIELD(mc_req_src) = iface_addr->sin_addr.s_addr;
 #endif  /* defined(G_OS_WIN32) && defined (HAVE_IF_NAMETOINDEX) */
           }
         memcpy (&mc_req_src.imr_multiaddr, g_inet_address_to_bytes (group),
@@ -2455,6 +2462,9 @@ g_socket_multicast_group_operation_ssm (GSocket       *socket,
             join_group ? IP_ADD_SOURCE_MEMBERSHIP : IP_DROP_SOURCE_MEMBERSHIP;
         result = setsockopt (socket->priv->fd, IPPROTO_IP, optname,
                              &mc_req_src, sizeof (mc_req_src));
+
+#undef S_ADDR_FIELD
+
 #else
         g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
             join_group ?
