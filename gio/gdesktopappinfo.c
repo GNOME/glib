@@ -387,6 +387,22 @@ const gchar desktop_key_match_category[N_DESKTOP_KEYS] = {
   [DESKTOP_KEY_Comment]          = 6
 };
 
+/* Common prefix commands to ignore from Exec= lines */
+const char * const exec_key_match_blacklist[] = {
+  "bash",
+  "env",
+  "flatpak",
+  "gjs",
+  "pkexec",
+  "python",
+  "python2",
+  "python3",
+  "sh",
+  "wine",
+  "wine64",
+  NULL
+};
+
 static gchar *
 desktop_key_get_name (guint key_id)
 {
@@ -1089,6 +1105,10 @@ desktop_file_dir_unindexed_setup_search (DesktopFileDir *dir)
                   /* Skip the pathname, if any */
                   if ((slash = strrchr (raw, '/')))
                     value = slash + 1;
+
+                  /* Don't match on blacklisted binaries like interpreters */
+                  if (g_strv_contains (exec_key_match_blacklist, value))
+		    value = NULL;
                 }
 
               if (value)

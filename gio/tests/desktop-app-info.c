@@ -667,6 +667,11 @@ test_search (void)
   assert_search ("image viewer", "", FALSE, TRUE, NULL, NULL);
   assert_search ("image viewer", "", TRUE, TRUE, NULL, NULL);
 
+  /* There're flatpak apps installed as well - they should *not* match
+   * the "flatpak" command in the Exec= line though.
+   */
+  assert_search ("flatpak", "", TRUE, FALSE, NULL, NULL);
+
   /* Obvious multi-word search */
   assert_search ("gno hel", "yelp.desktop\n", TRUE, TRUE, NULL, NULL);
 
