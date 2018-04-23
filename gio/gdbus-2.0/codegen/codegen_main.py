@@ -212,11 +212,13 @@ def codegen_main():
         header_name = os.path.splitext(c_file)[0] + '.h'
 
     all_ifaces = []
+    input_files_basenames = []
     for fname in args.files + args.xml_files:
         with open(fname, 'rb') as f:
             xml_data = f.read()
         parsed_ifaces = parser.parse_dbus_xml(xml_data)
         all_ifaces.extend(parsed_ifaces)
+        input_files_basenames.append(os.path.basename(fname))
 
     if args.annotate != None:
         apply_annotations(all_ifaces, args.annotate)
@@ -236,6 +238,7 @@ def codegen_main():
                                               args.c_generate_object_manager,
                                               args.c_generate_autocleanup,
                                               header_name,
+                                              input_files_basenames,
                                               args.pragma_once,
                                               outfile)
             gen.generate()
@@ -246,6 +249,7 @@ def codegen_main():
                                         args.c_namespace,
                                         args.c_generate_object_manager,
                                         header_name,
+                                        input_files_basenames,
                                         docbook_gen,
                                         outfile)
             gen.generate()
