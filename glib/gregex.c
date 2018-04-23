@@ -1667,6 +1667,8 @@ g_regex_match_simple (const gchar        *pattern,
  * when the @regex structure was created, letting you have more
  * flexibility in reusing #GRegex structures.
  *
+ * Unless %G_REGEX_RAW is specified in the options, @string must be valid UTF-8.
+ *
  * A #GMatchInfo structure, used to get information on the match,
  * is stored in @match_info if not %NULL. Note that if @match_info
  * is not %NULL then it is created even if the function returns %FALSE,
@@ -1734,6 +1736,8 @@ g_regex_match (const GRegex      *regex,
  * Setting @start_position differs from just passing over a shortened
  * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
+ *
+ * Unless %G_REGEX_RAW is specified in the options, @string must be valid UTF-8.
  *
  * A #GMatchInfo structure, used to get information on the match, is
  * stored in @match_info if not %NULL. Note that if @match_info is
@@ -1883,6 +1887,8 @@ g_regex_match_all (const GRegex      *regex,
  * Setting @start_position differs from just passing over a shortened
  * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
+ *
+ * Unless %G_REGEX_RAW is specified in the options, @string must be valid UTF-8.
  *
  * A #GMatchInfo structure, used to get information on the match, is
  * stored in @match_info if not %NULL. Note that if @match_info is
