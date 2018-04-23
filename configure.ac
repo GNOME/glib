@@ -2245,6 +2245,15 @@ AS_IF([ test x"$have_threads" = xposix], [
              AC_DEFINE(HAVE_PTHREAD_SETNAME_NP_WITH_TID,1,
                 [Have function pthread_setname_np(pthread_t, const char*)])],
             [AC_MSG_RESULT(no)])
+        AC_MSG_CHECKING(for pthread_getname_np(pthread_t, name, len))
+        AC_LINK_IFELSE(
+            [AC_LANG_PROGRAM(
+                [#include <pthread.h>],
+                [[char name[16]; pthread_getname_np(pthread_self(), name, 16);]])],
+            [AC_MSG_RESULT(yes)
+             AC_DEFINE(HAVE_PTHREAD_GETNAME_NP,1,
+                [Have function pthread_getname_np(pthread_t, name, len)])],
+            [AC_MSG_RESULT(no)])
         CPPFLAGS="$glib_save_CPPFLAGS"
 ])
 
