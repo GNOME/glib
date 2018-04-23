@@ -1662,7 +1662,7 @@ g_regex_match_simple (const gchar        *pattern,
  * @match_info: (out) (optional): pointer to location where to store
  *     the #GMatchInfo, or %NULL if you do not need it
  *
- * Scans for a match in string for the pattern in @regex.
+ * Scans for a match in @string for the pattern in @regex.
  * The @match_options are combined with the match options specified
  * when the @regex structure was created, letting you have more
  * flexibility in reusing #GRegex structures.
@@ -1726,7 +1726,7 @@ g_regex_match (const GRegex      *regex,
  *     the #GMatchInfo, or %NULL if you do not need it
  * @error: location to store the error occurring, or %NULL to ignore errors
  *
- * Scans for a match in string for the pattern in @regex.
+ * Scans for a match in @string for the pattern in @regex.
  * The @match_options are combined with the match options specified
  * when the @regex structure was created, letting you have more
  * flexibility in reusing #GRegex structures.
@@ -1858,7 +1858,7 @@ g_regex_match_all (const GRegex      *regex,
  * @error: location to store the error occurring, or %NULL to ignore errors
  *
  * Using the standard algorithm for regular expression matching only
- * the longest match in the string is retrieved, it is not possible
+ * the longest match in the @string is retrieved, it is not possible
  * to obtain all the available matches. For instance matching
  * "<a> <b> <c>" against the pattern "<.*>"
  * you get "<a> <b> <c>".
