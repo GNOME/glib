@@ -477,7 +477,6 @@ g_list_store_splice (GListStore *store,
     {
       gint i;
 
-      it = g_sequence_iter_next (it);
       for (i = 0; i < n_additions; i++)
         {
           if G_UNLIKELY (!g_type_is_a (G_OBJECT_TYPE (additions[i]), store->item_type))
@@ -488,6 +487,7 @@ g_list_store_splice (GListStore *store,
             }
 
           it = g_sequence_insert_before (it, g_object_ref (additions[i]));
+          it = g_sequence_iter_next (it);
         }
     }
 

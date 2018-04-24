@@ -216,13 +216,120 @@ test_store_sorted (void)
   g_object_unref (store);
 }
 
+/* Test that using splice() to replace the middle element in a list store works. */
+static void
+test_store_splice_replace_middle (void)
+{
+  GListStore *store;
+  GListModel *model;
+  GAction *item;
+  GPtrArray *array;
+
+  g_test_bug ("795307");
+
+  store = g_list_store_new (G_TYPE_SIMPLE_ACTION);
+  model = G_LIST_MODEL (store);
+
+  array = g_ptr_array_new_full (0, g_object_unref);
+  g_ptr_array_add (array, g_simple_action_new ("1", NULL));
+  g_ptr_array_add (array, g_simple_action_new ("2", NULL));
+  g_ptr_array_add (array, g_simple_action_new ("3", NULL));
+  g_ptr_array_add (array, g_simple_action_new ("4", NULL));
+  g_ptr_array_add (array, g_simple_action_new ("5", NULL));
+
+  /* Add three items through splice */
+  g_list_store_splice (store, 0, 0, array->pdata, 3);
+  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 3);
+
+  item = g_list_model_get_item (model, 0);
+  g_assert_cmpstr (g_action_get_name (item), ==, "1");
+  g_object_unref (item);
+  item = g_list_model_get_item (model, 1);
+  g_assert_cmpstr (g_action_get_name (item), ==, "2");
+  g_object_unref (item);
+  item = g_list_model_get_item (model, 2);
+  g_assert_cmpstr (g_action_get_name (item), ==, "3");
+  g_object_unref (item);
+
+  /* Replace the middle one with two new items */
+  g_list_store_splice (store, 1, 1, array->pdata + 3, 2);
+  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 4);
+
+  item = g_list_model_get_item (model, 0);
+  g_assert_cmpstr (g_action_get_name (item), ==, "1");
+  g_object_unref (item);
+  item = g_list_model_get_item (model, 1);
+  g_assert_cmpstr (g_action_get_name (item), ==, "4");
+  g_object_unref (item);
+  item = g_list_model_get_item (model, 2);
+  g_assert_cmpstr (g_action_get_name (item), ==, "5");
+  g_object_unref (item);
+  item = g_list_model_get_item (model, 3);
+  g_assert_cmpstr (g_action_get_name (item), ==, "3");
+  g_object_unref (item);
+
+  g_ptr_array_unref (array);
+  g_object_unref (store);
+}
+
+/* Test that using splice() to replace the whole list store works. */
+static void
+test_store_splice_replace_all (void)
+{
+  GListStore *store;
+  GListModel *model;
+  GPtrArray *array;
+  GAction *item;
+
+  g_test_bug ("795307");
+
+  store = g_list_store_new (G_TYPE_SIMPLE_ACTION);
+  model = G_LIST_MODEL (store);
+
+  array = g_ptr_array_new_full (0, g_object_unref);
+  g_ptr_array_add (array, g_simple_action_new ("1", NULL));
+  g_ptr_array_add (array, g_simple_action_new ("2", NULL));
+  g_ptr_array_add (array, g_simple_action_new ("3", NULL));
+  g_ptr_array_add (array, g_simple_action_new ("4", NULL));
+
+  /* Add the first two */
+  g_list_store_splice (store, 0, 0, array->pdata, 2);
+
+  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 2);
+  item = g_list_model_get_item (model, 0);
+  g_assert_cmpstr (g_action_get_name (item), ==, "1");
+  g_object_unref (item);
+  item = g_list_model_get_item (model, 1);
+  g_assert_cmpstr (g_action_get_name (item), ==, "2");
+  g_object_unref (item);
+
+  /* Replace all with the last two */
+  g_list_store_splice (store, 0, 2, array->pdata + 2, 2);
+
+  g_assert_cmpuint (g_list_model_get_n_items (model), ==, 2);
+  item = g_list_model_get_item (model, 0);
+  g_assert_cmpstr (g_action_get_name (item), ==, "3");
+  g_object_unref (item);
+  item = g_list_model_get_item (model, 1);
+  g_assert_cmpstr (g_action_get_name (item), ==, "4");
+  g_object_unref (item);
+
+  g_ptr_array_unref (array);
+  g_object_unref (store);
+}
+
 int main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("https://bugzilla.gnome.org/");
 
   g_test_add_func ("/glistmodel/store/boundaries", test_store_boundaries);
   g_test_add_func ("/glistmodel/store/refcounts", test_store_refcounts);
   g_test_add_func ("/glistmodel/store/sorted", test_store_sorted);
+  g_test_add_func ("/glistmodel/store/splice-replace-middle",
+                   test_store_splice_replace_middle);
+  g_test_add_func ("/glistmodel/store/splice-replace-all",
+                   test_store_splice_replace_all);
 
   return g_test_run ();
 }
