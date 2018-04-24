@@ -672,6 +672,11 @@ test_search (void)
    */
   assert_search ("sh", "gnome-terminal.desktop\n", TRUE, FALSE, NULL, NULL);
 
+  /* This matches "frobnicator.desktop", but the file should be ignored
+   * because the binary is missing
+   */
+  assert_search ("frobnicator", "", TRUE, FALSE, NULL, NULL);
+
   /* Obvious multi-word search */
   assert_search ("gno hel", "yelp.desktop\n", TRUE, TRUE, NULL, NULL);
 

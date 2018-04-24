@@ -300,6 +300,7 @@ usr_desktop_files = \
 	evince-previewer.desktop		\
 	evince.desktop				\
 	file-roller.desktop			\
+	frobnicator.desktop			\
 	gcr-prompter.desktop			\
 	gcr-viewer.desktop			\
 	gedit.desktop				\
