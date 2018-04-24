@@ -3441,27 +3441,25 @@ dnl we also try to check for the --fatal-warnings linker flag if
 dnl auto-detecting.
 dnl
 
-AC_ARG_ENABLE([znodelete],
-              [AS_HELP_STRING([--disable-znodelete],
-                              [avoid linking with -z,nodelete])],,
-              [SAVED_CFLAGS="${CFLAGS}" SAVED_LDFLAGS="${LDFLAGS}" SAVED_LIBS="${LIBS}"
-               AC_MSG_CHECKING([for --fatal-warnings linker flag])
-               CFLAGS="${SAVED_CFLAGS} ${shared_flag:- -shared}"
-               LDFLAGS=-Wl,--fatal-warnings
-               LIBS=
-               AC_TRY_LINK([], [return 0],
-                           AC_MSG_RESULT(yes)
-                           [ldflags_fatal=-Wl,--fatal-warnings],
-                           AC_MSG_RESULT(no)
-                           ldflags_fatal=)
-               AC_MSG_CHECKING([for -z,nodelete linker flag])
-               LDFLAGS="$ldflags_fatal -Wl,-z,nodelete"
-               AC_TRY_LINK([], [return 0],
-                           AC_MSG_RESULT(yes)
-                           enable_znodelete=yes,
-                           AC_MSG_RESULT(no)
-                           enable_znodelete=no)
-               CFLAGS="${SAVED_CFLAGS}" LDFLAGS="${SAVED_LDFLAGS}" LIBS="${SAVED_LIBS}"])
+SAVED_CFLAGS="${CFLAGS}" SAVED_LDFLAGS="${LDFLAGS}" SAVED_LIBS="${LIBS}"
+AC_MSG_CHECKING([for --fatal-warnings linker flag])
+CFLAGS="${SAVED_CFLAGS} ${shared_flag:- -shared}"
+LDFLAGS=-Wl,--fatal-warnings
+LIBS=
+AC_TRY_LINK([], [return 0],
+            AC_MSG_RESULT(yes)
+            [ldflags_fatal=-Wl,--fatal-warnings],
+            AC_MSG_RESULT(no)
+            ldflags_fatal=)
+
+AC_MSG_CHECKING([for -z,nodelete linker flag])
+LDFLAGS="$ldflags_fatal -Wl,-z,nodelete"
+AC_TRY_LINK([], [return 0],
+            AC_MSG_RESULT(yes)
+            enable_znodelete=yes,
+            AC_MSG_RESULT(no)
+            enable_znodelete=no)
+CFLAGS="${SAVED_CFLAGS}" LDFLAGS="${SAVED_LDFLAGS}" LIBS="${SAVED_LIBS}"
 
 if test "x${enable_znodelete}" = "xyes"; then
   GLIB_LINK_FLAGS="$GLIB_LINK_FLAGS -Wl,-z,nodelete"
