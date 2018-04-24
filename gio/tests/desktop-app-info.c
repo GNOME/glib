@@ -485,6 +485,14 @@ run_apps (const gchar *command,
 
   envp = g_get_environ ();
 
+    {
+      gchar *tmp1 = g_test_build_filename (G_TEST_DIST, "desktop-files", "usr", "bin", NULL);
+      gchar *tmp2 = g_strdup_printf ("%s:%s", g_getenv("PATH"), tmp1);
+      envp = g_environ_setenv (envp, "PATH", tmp2, TRUE);
+      g_free (tmp1);
+      g_free (tmp2);
+    }
+
   if (with_usr)
     {
       gchar *tmp = g_test_build_filename (G_TEST_DIST, "desktop-files", "usr", NULL);

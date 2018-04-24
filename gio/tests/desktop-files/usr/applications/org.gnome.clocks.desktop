@@ -342,7 +342,7 @@ Keywords[zh_HK]=time;timer;alarm;world clock;stopwatch;time zone;時間;計時�
 Keywords[zh_TW]=time;timer;alarm;world clock;stopwatch;time zone;時間;倒數;計時器;鬧鐘;鬧鈴;世界時鐘;碼表;時區;
 Keywords[ug]=time;timer;alarm;world clock;stopwatch;time zone;ۋاقىت;ئۆلچىگۈچ;قوڭغۇراق;دۇنيا سائىتى;ۋاقىت رايونى;
 Keywords=time;timer;alarm;world clock;stopwatch;time zone;
-Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=gnome-clocks org.gnome.clocks
+Exec=flatpak run --branch=stable --arch=x86_64 --command=gnome-clocks org.gnome.clocks
 Icon=org.gnome.clocks
 Terminal=false
 Type=Application
