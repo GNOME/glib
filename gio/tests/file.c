@@ -962,7 +962,7 @@ test_measure (void)
   if (size > 0)
     g_assert_cmpuint (num_bytes, ==, size);
   g_assert_cmpuint (num_dirs, ==, 6);
-  g_assert_cmpuint (num_files, ==, 30);
+  g_assert_cmpuint (num_files, ==, 31);
 
   g_object_unref (file);
   g_free (path);
@@ -1056,7 +1056,7 @@ test_measure_async (void)
   g_free (path);
 
   data->expected_dirs = 6;
-  data->expected_files = 30;
+  data->expected_files = 31;
 
   g_file_measure_disk_usage_async (file,
                                    G_FILE_MEASURE_APPARENT_SIZE,

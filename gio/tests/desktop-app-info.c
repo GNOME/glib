@@ -672,6 +672,12 @@ test_search (void)
    */
   assert_search ("sh", "gnome-terminal.desktop\n", TRUE, FALSE, NULL, NULL);
 
+  /* "frobnicator.desktop" is ignored by get_all() because the binary is
+   * missing, but search should still find it (to avoid either stale results
+   * from the cache or expensive stat() calls for each potential result)
+   */
+  assert_search ("frobni", "frobnicator.desktop\n", TRUE, FALSE, NULL, NULL);
+
   /* Obvious multi-word search */
   assert_search ("gno hel", "yelp.desktop\n", TRUE, TRUE, NULL, NULL);
 
