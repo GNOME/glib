@@ -1,6 +1,6 @@
 project('glib', 'c', 'cpp',
   version : '2.57.0',
-  meson_version : '>= 0.45.0',
+  meson_version : '>= 0.46.0',
   default_options : [
     'buildtype=debugoptimized',
     'warning_level=1',
@@ -337,11 +337,19 @@ if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
     '-Werror=missing-prototypes',
     '-Werror=pointer-arith',
   ]
+  test_c_link_args = [
+    '-Wl,-z,nodelete',
+  ]
+  if get_option('bsymbolic_functions')
+    test_c_link_args += ['-Wl,-Bsymbolic-functions']
+  endif
 else
   test_c_args = []
+  test_c_link_args = []
 endif
 
 add_project_arguments(cc.get_supported_arguments(test_c_args), language: 'c')
+add_project_link_arguments(cc.get_supported_link_arguments(test_c_link_args), language: 'c')
 
 # Windows Support (Vista+)
 if host_system == 'windows'

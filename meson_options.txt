@@ -63,3 +63,8 @@ option('gtk_doc',
        type : 'boolean',
        value : false,
        description : 'use gtk-doc to build documentation')
+
+option('bsymbolic_functions',
+       type : 'boolean',
+       value : true,
+       description : 'link with -Bsymbolic-functions if supported')
