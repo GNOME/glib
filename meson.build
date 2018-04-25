@@ -453,12 +453,21 @@ foreach f : functions
   endif
 endforeach
 
+if cc.get_id() == 'gcc' or cc.get_id() == 'clang'
+    no_builtin_args = cc.get_supported_arguments(['-fno-builtin'])
+else
+    no_builtin_args = []
+endif
+
 # Check that stpcpy() is not a builtin
 if cc.links('''#include <string.h>
                int main (int argc, char ** argv) {
                  char p[10];
                  return stpcpy (p, argv[0]) != NULL;
-               }''', name : 'stpcpy() is not a builtin')
+               }
+            ''',
+            args : no_builtin_args,
+            name : 'stpcpy() is not a builtin')
   glib_conf.set('HAVE_STPCPY', 1)
 endif
 
@@ -467,7 +476,10 @@ if cc.links('''#include <stdlib.h>
                int main (int argc, char ** argv) {
                  void *p;
                  return posix_memalign (&p, 16, argc);
-               }''', name : 'posix_memalign() is not a builtin')
+               }
+            ''',
+            args : no_builtin_args,
+            name : 'posix_memalign() is not a builtin')
   glib_conf.set('HAVE_POSIX_MEMALIGN', 1)
 endif
 
