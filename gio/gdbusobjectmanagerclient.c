@@ -531,7 +531,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * @manager: The #GDBusObjectManagerClient emitting the signal.
    * @object_proxy: The #GDBusObjectProxy on which an interface has properties that are changing.
    * @interface_proxy: The #GDBusProxy that has properties that are changing.
-   * @changed_properties: A #GVariant containing the properties that changed.
+   * @changed_properties: A #GVariant containing the properties that changed (type: `a{sv}`).
    * @invalidated_properties: (array zero-terminated=1) (element-type utf8): A %NULL terminated
    *   array of properties that were invalidated.
    *
