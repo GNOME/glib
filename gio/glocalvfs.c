@@ -129,7 +129,7 @@ g_local_vfs_parse_name (GVfs       *vfs,
   GFile *file;
   char *filename;
   char *user_prefix;
-  const char *user_start, *user_end;
+  const char *user_end;
   char *rest;
   
   g_return_val_if_fail (G_IS_VFS (vfs), NULL);
@@ -141,19 +141,22 @@ g_local_vfs_parse_name (GVfs       *vfs,
     {
       if (*parse_name == '~')
 	{
+#ifdef G_OS_UNIX
+	  const char *user_start;
+	  user_start = parse_name + 1;
+#endif
 	  parse_name ++;
-	  user_start = parse_name;
 	  
 	  while (*parse_name != 0 && *parse_name != '/')
 	    parse_name++;
 	  
 	  user_end = parse_name;
 
+#ifdef G_OS_UNIX
 	  if (user_end == user_start)
 	    user_prefix = g_strdup (g_get_home_dir ());
 	  else
 	    {
-#ifdef G_OS_UNIX
               struct passwd *passwd_file_entry;
               char *user_name;
 
@@ -165,9 +168,11 @@ g_local_vfs_parse_name (GVfs       *vfs,
 		  passwd_file_entry->pw_dir != NULL)
 		user_prefix = g_strdup (passwd_file_entry->pw_dir);
 	      else
-#endif
 		user_prefix = g_strdup (g_get_home_dir ());
 	    }
+#else
+	  user_prefix = g_strdup (g_get_home_dir ());
+#endif
 
 	  rest = NULL;
 	  if (*user_end != 0)

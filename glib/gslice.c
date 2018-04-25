@@ -1432,11 +1432,15 @@ allocator_memalign (gsize alignment,
           guint8 *amem = (guint8*) ALIGN ((gsize) mem, sys_page_size);
           if (amem != mem)
             i--;        /* mem wasn't page aligned */
+          G_GNUC_BEGIN_IGNORE_DEPRECATIONS
           while (--i >= 0)
             g_trash_stack_push (&compat_valloc_trash, amem + i * sys_page_size);
+          G_GNUC_END_IGNORE_DEPRECATIONS
         }
     }
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   aligned_memory = g_trash_stack_pop (&compat_valloc_trash);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 #endif
   if (!aligned_memory)
     errno = err;
@@ -1451,7 +1455,9 @@ allocator_memfree (gsize    memsize,
   free (mem);
 #else
   mem_assert (memsize <= sys_page_size);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_trash_stack_push (&compat_valloc_trash, mem);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 #endif
 }
 

@@ -1,6 +1,7 @@
 # glib enables -Werror=format-nonliteral by default, but the embedded gnulib
 # needs to handle user provided format strings.
-extra_gnulib_args = cc.get_supported_arguments(['-Wno-format-nonliteral'])
+extra_gnulib_args = cc.get_supported_arguments([
+  '-Wno-format-nonliteral', '-Wno-duplicated-branches'])
 
 gnulib_lib = static_library('gnulib', 'asnprintf.c', 'printf.c', 'printf-args.c', 'printf-parse.c', 'vasnprintf.c',
   include_directories : [configinc, glibinc],

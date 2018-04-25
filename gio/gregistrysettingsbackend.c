@@ -1800,7 +1800,7 @@ watch_thread_function (LPVOID parameter)
            * likely to block (only when changing notification subscriptions).
            */
           event = g_slice_new (RegistryEvent);
-          event->self = g_object_ref (self->owner);
+          event->self = G_REGISTRY_BACKEND (g_object_ref (self->owner));
           event->prefix = g_strdup (prefix);
           event->items = g_ptr_array_new_with_free_func (g_free);
 

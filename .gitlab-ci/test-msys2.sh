@@ -26,8 +26,7 @@ mkdir -p _ccache
 export CCACHE_BASEDIR="$(pwd)"
 export CCACHE_DIR="${CCACHE_BASEDIR}/_ccache"
 
-# FIXME: Add --werror
-meson --buildtype debug _build
+meson --werror --buildtype debug _build
 cd _build
 ninja
 

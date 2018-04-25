@@ -2819,7 +2819,9 @@ g_local_file_measure_size_of_file (gint           parent_fd,
   if (S_ISDIR (buf.st_mode))
     {
       int dir_fd = -1;
+#ifdef AT_FDCWD
       int errsv;
+#endif
 
       if (g_cancellable_set_error_if_cancelled (state->cancellable, error))
         return FALSE;

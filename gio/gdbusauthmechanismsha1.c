@@ -280,7 +280,10 @@ ensure_keyring_directory (GError **error)
             }
 #else
 #ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic warning "-Wcpp"
 #warning Please implement permission checking on this non-UNIX platform
+#pragma GCC diagnostic pop
 #endif
 #endif
         }

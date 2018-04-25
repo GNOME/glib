@@ -95,7 +95,10 @@ struct _GCredentials
   ucred_t *native;
 #else
   #ifdef __GNUC__
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic warning "-Wcpp"
   #warning Please add GCredentials support for your OS
+  #pragma GCC diagnostic pop
   #endif
 #endif
 };

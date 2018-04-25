@@ -1533,7 +1533,6 @@ static gboolean
 win32_is_pipe_tty (int fd)
 {
   gboolean result = FALSE;
-  int error;
   HANDLE h_fd;
   FILE_NAME_INFO *info = NULL;
   gint info_size = sizeof (FILE_NAME_INFO) + sizeof (WCHAR) * MAX_PATH;

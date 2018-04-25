@@ -897,19 +897,21 @@ get_access_rights (GFileAttributeMatcher *attribute_matcher,
       writable = FALSE;
       if (parent_info->writable)
 	{
+#ifdef G_OS_WIN32
+	  writable = TRUE;
+#else
 	  if (parent_info->is_sticky)
 	    {
-#ifndef G_OS_WIN32
 	      uid_t uid = geteuid ();
 
 	      if (uid == statbuf->st_uid ||
 		  uid == parent_info->owner ||
 		  uid == 0)
-#endif
 		writable = TRUE;
 	    }
 	  else
 	    writable = TRUE;
+#endif
 	}
 
       if (_g_file_attribute_matcher_matches_id (attribute_matcher, G_FILE_ATTRIBUTE_ID_ACCESS_CAN_RENAME))

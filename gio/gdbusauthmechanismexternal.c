@@ -348,7 +348,10 @@ mechanism_client_initiate (GDBusAuthMechanism   *mechanism,
  *out_initial_response_len = strlen (initial_response);
 #elif defined(G_OS_WIN32)
 #ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic warning "-Wcpp"
 #warning Dont know how to send credentials on this OS. The EXTERNAL D-Bus authentication mechanism will not work.
+#pragma GCC diagnostic pop
 #endif
   m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_REJECTED;
 #endif

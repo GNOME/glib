@@ -1150,6 +1150,7 @@ read_bytes (gint         fd,
   return TRUE;
 }
 
+#ifdef G_OS_UNIX
 static void
 test_unix_fd (void)
 {
@@ -1206,6 +1207,7 @@ test_unix_fd (void)
   close (fds[1]);
   close (fds[0]);
 }
+#endif
 
 static void
 assert_main_context_state (gint n_to_poll,
@@ -1513,6 +1515,7 @@ test_unix_file_poll (void)
 
 #endif
 
+#ifdef G_OS_UNIX
 static gboolean
 timeout_cb (gpointer data)
 {
@@ -1564,6 +1567,7 @@ test_mainloop_wait (void)
 
   g_main_context_unref (context);
 }
+#endif
 
 static gboolean
 nfds_in_cb (GIOChannel   *io,

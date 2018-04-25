@@ -572,7 +572,7 @@ g_socket (gint     domain,
 
   if (fd < 0)
     {
-      int errsv = get_socket_errno ();
+      errsv = get_socket_errno ();
 
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
 		   _("Unable to create socket: %s"), socket_strerror (errsv));
@@ -3251,7 +3251,7 @@ g_socket_send_with_timeout (GSocket       *socket,
     {
       win32_unset_event_mask (socket, FD_WRITE);
 
-      if ((ret = send (socket->priv->fd, buffer, size, G_SOCKET_DEFAULT_SEND_FLAGS)) < 0)
+      if ((ret = send (socket->priv->fd, (const char *)buffer, size, G_SOCKET_DEFAULT_SEND_FLAGS)) < 0)
 	{
 	  int errsv = get_socket_errno ();
 

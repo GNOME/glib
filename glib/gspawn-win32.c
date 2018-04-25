@@ -544,7 +544,6 @@ do_spawn_with_pipes (gint                 *exit_status,
   GError *conv_error = NULL;
   gint conv_error_index;
   gchar *helper_process;
-  CONSOLE_CURSOR_INFO cursor_info;
   wchar_t *whelper, **wargv, **wenvp;
   gchar *glib_dll_directory;
 
