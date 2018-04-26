@@ -81,6 +81,8 @@ GLIB_AVAILABLE_IN_ALL
 const char *   g_unix_mount_get_device_path         (GUnixMountEntry    *mount_entry);
 GLIB_AVAILABLE_IN_ALL
 const char *   g_unix_mount_get_fs_type             (GUnixMountEntry    *mount_entry);
+GLIB_AVAILABLE_IN_2_58
+const char *   g_unix_mount_get_options             (GUnixMountEntry    *mount_entry);
 GLIB_AVAILABLE_IN_ALL
 gboolean       g_unix_mount_is_readonly             (GUnixMountEntry    *mount_entry);
 GLIB_AVAILABLE_IN_ALL
