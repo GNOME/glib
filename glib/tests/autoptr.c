@@ -97,7 +97,13 @@ test_g_hmac (void)
 static void
 test_g_io_channel (void)
 {
-  g_autoptr(GIOChannel) val = g_io_channel_new_file ("/dev/null", "r", NULL);
+#ifdef G_OS_WIN32
+  const gchar *devnull = "nul";
+#else
+  const gchar *devnull = "/dev/null";
+#endif
+
+  g_autoptr(GIOChannel) val = g_io_channel_new_file (devnull, "r", NULL);
   g_assert (val != NULL);
 }
 
