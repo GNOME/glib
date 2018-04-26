@@ -7,7 +7,7 @@ cache:
   paths:
     - _ccache/
 
-build-job:
+fedora-meson-x86_64:
   stage: build
   script:
     - meson --prefix /usr --libdir /usr/lib64 --buildtype debug --werror -Dsystemtap=true -Ddtrace=true _build .
