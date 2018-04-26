@@ -389,8 +389,9 @@ g_unix_is_system_device_path (const char *device_path)
 
 static gboolean
 guess_system_internal (const char *mountpoint,
-		       const char *fs,
-		       const char *device)
+                       const char *fs,
+                       const char *device,
+                       const char *root)
 {
   if (g_unix_is_system_fs_type (fs))
     return TRUE;
@@ -400,7 +401,29 @@ guess_system_internal (const char *mountpoint,
 
   if (g_unix_is_mount_path_system_internal (mountpoint))
     return TRUE;
-  
+
+  /* It is not possible to reliably detect mounts which were created by bind
+   * operation. mntent-based _g_get_unix_mounts() implementation blindly skips
+   * mounts with a device path that is repeated (e.g. mounts created by bind
+   * operation, btrfs subvolumes). This usually chooses the most important
+   * mounts (i.e. which points to the root of filesystem), but it doesn't work
+   * in all cases and also it is not ideal that those mounts are completely
+   * ignored (e.g. x-gvfs-show doesn't work for them, trash backend can't handle
+   * files on btrfs subvolumes). libmount-based _g_get_unix_mounts()
+   * implementation provides a root path. So there is no need to completely
+   * ignore those mounts, because e.g. our volume monitors can use the root path
+   * to not mengle those mounts with the "regular" mounts (i.e. which points to
+   * the root). But because those mounts usually just duplicate other mounts and
+   * are completely ignored with mntend-based implementation, let's mark them as
+   * system internal. Given the different approches it doesn't mean that all
+   * mounts which were ignored will be system internal now, but this should work
+   * in most cases. For more info, see g_unix_mount_get_root_path() annotation,
+   * comment in mntent-based _g_get_unix_mounts() implementation and the
+   * https://gitlab.gnome.org/GNOME/glib/issues/1271 issue.
+   */
+  if (root != NULL && g_strcmp0 (root, "/") != 0)
+    return TRUE;
+
   return FALSE;
 }
 
@@ -427,7 +450,9 @@ create_unix_mount_entry (const char *device_path,
   mount_entry->is_system_internal =
     guess_system_internal (mount_entry->mount_path,
                            mount_entry->filesystem_type,
-                           mount_entry->device_path);
+                           mount_entry->device_path,
+                           mount_entry->root_path);
+
   return mount_entry;
 }
 
