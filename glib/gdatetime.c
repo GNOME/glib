@@ -2767,11 +2767,11 @@ format_z (GString *outstr,
 }
 
 static void
-format_number (GString  *str,
-               gboolean  use_alt_digits,
-               gchar    *pad,
-               gint      width,
-               guint32   number)
+format_number (GString     *str,
+               gboolean     use_alt_digits,
+               const gchar *pad,
+               gint         width,
+               guint32      number)
 {
   const gchar *ascii_digits[10] = {
     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
@@ -2909,7 +2909,7 @@ g_date_time_format_locale (GDateTime   *datetime,
   gunichar  c;
   gboolean  alt_digits = FALSE;
   gboolean  pad_set = FALSE;
-  gchar    *pad = "";
+  const gchar *pad = "";
   const gchar *name;
   const gchar *tz;
 

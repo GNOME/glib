@@ -204,7 +204,7 @@ name_lookup (GDBusDaemon *daemon, const char *str)
 }
 
 static gboolean
-is_key (const char *key_start, const char *key_end, char *value)
+is_key (const char *key_start, const char *key_end, const char *value)
 {
   gsize len = strlen (value);
 
@@ -1463,7 +1463,7 @@ filter_function (GDBusConnection *connection,
 		 gpointer         user_data)
 {
   Client *client = user_data;
-  char *types[] = {"invalid", "method_call", "method_return", "error", "signal" };
+  const char *types[] = {"invalid", "method_call", "method_return", "error", "signal" };
 
   if (0)
     g_printerr ("%s%s %s %d(%d) sender: %s destination: %s %s %s.%s\n",

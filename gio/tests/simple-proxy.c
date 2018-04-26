@@ -32,7 +32,7 @@ static void
 test_uris (void)
 {
   GProxyResolver *resolver;
-  gchar *ignore_hosts[2] = { "127.0.0.1", NULL };
+  const gchar *ignore_hosts[2] = { "127.0.0.1", NULL };
   gchar **proxies;
   GError *error = NULL;
   const gchar *uri;
@@ -41,7 +41,7 @@ test_uris (void)
 
   /* Valid URI. */
   uri = "http://%E0%B4%A8%E0%B4%B2:80/";
-  resolver = g_simple_proxy_resolver_new (NULL, ignore_hosts);
+  resolver = g_simple_proxy_resolver_new (NULL, (char **) ignore_hosts);
 
   proxies = g_proxy_resolver_lookup (resolver, uri, NULL, &error);
   g_assert_no_error (error);
@@ -60,7 +60,7 @@ test_uris (void)
   /* Invalid URI. */
   uri = "%E0%B4%A8%E0%B4%B2";
   str = g_strdup_printf ("Invalid URI ‘%s’", uri);
-  resolver = g_simple_proxy_resolver_new (NULL, ignore_hosts);
+  resolver = g_simple_proxy_resolver_new (NULL, (char **) ignore_hosts);
 
   proxies = g_proxy_resolver_lookup (resolver, uri, NULL, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
@@ -81,7 +81,7 @@ test_uris (void)
   g_object_unref (resolver);
   g_free (str);
 
-  resolver = g_simple_proxy_resolver_new ("default://", ignore_hosts);
+  resolver = g_simple_proxy_resolver_new ("default://", (char **) ignore_hosts);
   g_simple_proxy_resolver_set_uri_proxy (G_SIMPLE_PROXY_RESOLVER (resolver),
                                          "http", "http://proxy.example.com");
   g_simple_proxy_resolver_set_uri_proxy (G_SIMPLE_PROXY_RESOLVER (resolver),
@@ -136,11 +136,11 @@ static void
 test_socks (void)
 {
   GProxyResolver *resolver;
-  gchar *ignore_hosts[2] = { "127.0.0.1", NULL };
+  const gchar *ignore_hosts[2] = { "127.0.0.1", NULL };
   gchar **proxies;
   GError *error = NULL;
 
-  resolver = g_simple_proxy_resolver_new ("socks://proxy.example.com", ignore_hosts);
+  resolver = g_simple_proxy_resolver_new ("socks://proxy.example.com", (char **) ignore_hosts);
 
   proxies = g_proxy_resolver_lookup (resolver, "http://one.example.com/",
                                      NULL, &error);
@@ -160,7 +160,7 @@ test_socks (void)
 
   g_object_unref (resolver);
 
-  resolver = g_simple_proxy_resolver_new ("default-proxy://", ignore_hosts);
+  resolver = g_simple_proxy_resolver_new ("default-proxy://", (char **) ignore_hosts);
   g_simple_proxy_resolver_set_uri_proxy (G_SIMPLE_PROXY_RESOLVER (resolver),
                                          "http", "socks://proxy.example.com");
 

@@ -61,7 +61,7 @@ check_source_readability_callback (gpointer user_data)
 static gboolean
 write_callback (gpointer user_data)
 {
-  char *buf = "x";
+  const char *buf = "x";
   gssize nwrote;
   GError *error = NULL;
 

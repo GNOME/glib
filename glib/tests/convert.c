@@ -34,8 +34,8 @@
 static void
 test_iconv_state (void)
 {
-  gchar *in = "\xf4\xe5\xf8\xe5\xed";
-  gchar *expected = "\xd7\xa4\xd7\x95\xd7\xa8\xd7\x95\xd7\x9d";
+  const gchar *in = "\xf4\xe5\xf8\xe5\xed";
+  const gchar *expected = "\xd7\xa4\xd7\x95\xd7\xa8\xd7\x95\xd7\x9d";
   gchar *out;
   gsize bytes_read = 0;
   gsize bytes_written = 0;
@@ -107,7 +107,7 @@ test_byte_order (void)
 {
   gchar in_be[4] = { 0xfe, 0xff, 0x03, 0x93}; /* capital gamma */
   gchar in_le[4] = { 0xff, 0xfe, 0x93, 0x03};
-  gchar *expected = "\xce\x93";
+  const gchar *expected = "\xce\x93";
   gchar *out;
   gsize bytes_read = 0;
   gsize bytes_written = 0;
@@ -588,7 +588,7 @@ check_utf16_to_ucs4 (const gunichar2 *utf16,
 static void
 test_unicode_conversions (void)
 {
-  char *utf8;
+  const char *utf8;
   gunichar ucs4[100];
   gunichar2 utf16[100];
 
@@ -913,7 +913,7 @@ test_filename_from_utf8_embedded_nul_iconv (void)
 static void
 test_no_conv (void)
 {
-  gchar *in = "";
+  const gchar *in = "";
   gchar *out G_GNUC_UNUSED;
   gsize bytes_read = 0;
   gsize bytes_written = 0;

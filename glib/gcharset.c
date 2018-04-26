@@ -235,8 +235,8 @@ g_get_codeset (void)
 
 /* read an alias file for the locales */
 static void
-read_aliases (gchar      *file,
-              GHashTable *alias_table)
+read_aliases (const gchar *file,
+              GHashTable  *alias_table)
 {
   FILE *fp;
   char buf[256];

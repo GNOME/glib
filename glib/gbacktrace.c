@@ -226,7 +226,7 @@ g_on_error_stack_trace (const gchar *prg_name)
 #if defined(G_OS_UNIX)
   pid_t pid;
   gchar buf[16];
-  gchar *args[4] = { "gdb", NULL, NULL, NULL };
+  const gchar *args[4] = { "gdb", NULL, NULL, NULL };
   int status;
 
   if (!prg_name)
@@ -234,7 +234,7 @@ g_on_error_stack_trace (const gchar *prg_name)
 
   _g_sprintf (buf, "%u", (guint) getpid ());
 
-  args[1] = (gchar*) prg_name;
+  args[1] = prg_name;
   args[2] = buf;
 
   pid = fork ();

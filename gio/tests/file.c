@@ -153,9 +153,9 @@ typedef struct
   gint monitor_created;
   gint monitor_deleted;
   gint monitor_changed;
-  gchar *monitor_path;
+  const gchar *monitor_path;
   gint pos;
-  gchar *data;
+  const gchar *data;
   gchar *buffer;
   guint timeout;
 } CreateDeleteData;

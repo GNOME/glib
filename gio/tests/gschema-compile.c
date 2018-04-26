@@ -22,17 +22,17 @@ test_schema_do_compile (gpointer data)
   SchemaTest *test = (SchemaTest *) data;
   gchar *filename = g_strconcat (test->name, ".gschema.xml", NULL);
   gchar *path = g_test_build_filename (G_TEST_DIST, "schema-tests", filename, NULL);
-  gchar *argv[] = {
+  const gchar *argv[] = {
     GLIB_COMPILE_SCHEMAS,
     "--strict",
     "--dry-run",
     "--schema-file", path,
-    (gchar *)test->opt,
+    test->opt,
     NULL
   };
   gchar *envp[] = { NULL };
 
-  execve (argv[0], argv, envp);
+  execve (argv[0], (char **) argv, envp);
   g_assert_not_reached ();
 }
 
