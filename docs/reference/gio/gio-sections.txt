@@ -1552,6 +1552,7 @@ g_unix_mount_compare
 g_unix_mount_copy
 g_unix_mount_get_mount_path
 g_unix_mount_get_device_path
+g_unix_mount_get_root_path
 g_unix_mount_get_fs_type
 g_unix_mount_get_options
 g_unix_mount_is_readonly
