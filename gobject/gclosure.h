@@ -200,7 +200,7 @@ struct _GClosure
 
   /*< private >*/	GClosureNotifyData *notifiers;
 
-  /* invariants/constrains:
+  /* invariants/constraints:
    * - ->marshal and ->data are _invalid_ as soon as ->is_invalid==TRUE
    * - invocation of all inotifiers occours prior to fnotifiers
    * - order of inotifiers is random

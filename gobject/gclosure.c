@@ -54,7 +54,9 @@
  * library provides the #GCClosure type for this purpose. Bindings for
  * other languages need marshallers which convert between #GValues
  * and suitable representations in the runtime of the language in
- * order to use functions written in that languages as callbacks.
+ * order to use functions written in that language as callbacks. Use
+ * g_closure_set_marshal() to set the marshaller on such a custom
+ * closure implementation.
  *
  * Within GObject, closures play an important role in the
  * implementation of signals. When a signal is registered, the
