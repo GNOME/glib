@@ -389,8 +389,9 @@ g_unix_is_system_device_path (const char *device_path)
 
 static gboolean
 guess_system_internal (const char *mountpoint,
-		       const char *fs,
-		       const char *device)
+                       const char *fs,
+                       const char *device,
+                       const char *root)
 {
   if (g_unix_is_system_fs_type (fs))
     return TRUE;
@@ -400,7 +401,14 @@ guess_system_internal (const char *mountpoint,
 
   if (g_unix_is_mount_path_system_internal (mountpoint))
     return TRUE;
-  
+
+  /* Mounts created by bind operation, or btrfs subvolumes just usually
+   * duplicate content of other mounts, so let's mark them as system internal
+   * by default.
+   */
+  if (root != NULL && g_strcmp0 (root, "/") != 0)
+    return TRUE;
+
   return FALSE;
 }
 
@@ -427,7 +435,9 @@ create_unix_mount_entry (const char *device_path,
   mount_entry->is_system_internal =
     guess_system_internal (mount_entry->mount_path,
                            mount_entry->filesystem_type,
-                           mount_entry->device_path);
+                           mount_entry->device_path,
+                           mount_entry->root_path);
+
   return mount_entry;
 }
 
