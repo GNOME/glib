@@ -81,7 +81,7 @@
 
 
 #ifndef G_OS_WIN32
-static void stack_trace (char **args);
+static void stack_trace (const char * const *args);
 #endif
 
 /* People want to hit this from their debugger... */
@@ -269,7 +269,7 @@ stack_trace_sigchld (int signum)
 }
 
 static void
-stack_trace (char **args)
+stack_trace (const char * const *args)
 {
   pid_t pid;
   int in_fd[2];
@@ -301,7 +301,7 @@ stack_trace (char **args)
       close (1); dup (out_fd[1]);  /* set the stdout to the out pipe */
       close (2); dup (out_fd[1]);  /* set the stderr to the out pipe */
 
-      execvp (args[0], args);      /* exec gdb */
+      execvp (args[0], (char **) args);      /* exec gdb */
 
       /* Print failure to original stderr */
       close (2); dup (old_err);

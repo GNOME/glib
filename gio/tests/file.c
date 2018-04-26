@@ -153,7 +153,7 @@ typedef struct
   gint monitor_created;
   gint monitor_deleted;
   gint monitor_changed;
-  const gchar *monitor_path;
+  gchar *monitor_path;
   gint pos;
   const gchar *data;
   gchar *buffer;
