@@ -883,6 +883,18 @@ g_get_home_dir (void)
           tmp = entry->home_dir;
         }
 
+      /* If we have been denied access to /etc/passwd (for example, by an
+       * overly-zealous LSM), make up a junk value. The return value at this
+       * point is explicitly documented as ‘undefined’. Memory management is as
+       * immediately above: strictly this should be copied, but we know not
+       * copying it is OK. */
+      if (tmp == NULL)
+        {
+          g_warning ("Could not find home directory: $HOME is not set, and "
+                     "user database could not be read.");
+          tmp = "/";
+        }
+
       g_once_init_leave (&home_dir, tmp);
     }
 
