@@ -510,7 +510,7 @@ test_create_delete (gconstpointer d)
  skip:
   g_object_unref (data->monitor);
   g_object_unref (data->file);
-  free (data->monitor_path);
+  g_free (data->monitor_path);
   g_free (data->buffer);
   g_free (data);
 }
