@@ -172,6 +172,10 @@ gchar *g_path_get_basename (const gchar *file_name) G_GNUC_MALLOC;
 GLIB_AVAILABLE_IN_ALL
 gchar *g_path_get_dirname  (const gchar *file_name) G_GNUC_MALLOC;
 
+GLIB_AVAILABLE_IN_2_58
+gchar *g_canonicalize_filename (const gchar *filename,
+                                const gchar *relative_to) G_GNUC_MALLOC;
+
 G_END_DECLS
 
 #endif /* __G_FILEUTILS_H__ */

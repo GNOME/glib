@@ -838,6 +838,43 @@ test_paths (void)
     { "", NULL },
   };
   const guint n_skip_root_checks = G_N_ELEMENTS (skip_root_checks);
+  struct {
+    gchar *cwd;
+    gchar *relative_path;
+    gchar *canonical_path;
+  } canonicalize_filename_checks[] = {
+    { "/etc", "../usr/share", "/usr/share" },
+    { "/", "/foo/bar", "/foo/bar" },
+    { "/usr/bin", "../../foo/bar", "/foo/bar" },
+    { "/", "../../foo/bar", "/foo/bar" },
+    { "/double//dash", "../../foo/bar", "/foo/bar" },
+    { "/usr/share/foo", ".././././bar", "/usr/share/bar" },
+    { "/foo/bar", "../bar/./.././bar", "/foo/bar" },
+    { "/test///dir", "../../././foo/bar", "/foo/bar" },
+    { "/test///dir", "../../././/foo///bar", "/foo/bar" },
+    { "/etc", "///triple/slash", "/triple/slash" },
+    { "/etc", "//double/slash", "//double/slash" },
+    { "///triple/slash", ".", "/triple/slash" },
+    { "//double/slash", ".", "//double/slash" },
+    { "/cwd/../with/./complexities/", "./hello", "/with/complexities/hello" },
+#ifdef G_OS_WIN32
+    { "\\etc", "..\\usr\\share", "\\usr\\share" },
+    { "\\", "\\foo\\bar", "\\foo\\bar" },
+    { "\\usr\\bin", "..\\..\\foo\\bar", "\\foo\\bar" },
+    { "\\", "..\\..\\foo\\bar", "\\foo\\bar" },
+    { "\\double\\\\dash", "..\\..\\foo\\bar", "\\foo\\bar" },
+    { "\\usr\\share\\foo", "..\\.\\.\\.\\bar", "\\usr\\share\\bar" },
+    { "\\foo\\bar", "..\\bar\\.\\..\\.\\bar", "\\foo\\bar" },
+    { "\\test\\\\\\dir", "..\\..\\.\\.\\foo\\bar", "\\foo\\bar" },
+    { "\\test\\\\\\dir", "..\\..\\.\\.\\\\foo\\\\\\bar", "\\foo\\bar" },
+    { "\\etc", "\\\\\\triple\\slash", "\\triple\\slash" },
+    { "\\etc", "\\\\double\\slash", "\\\\double\\slash" },
+    { "\\\\\\triple\\slash", ".", "\\triple\\slash" },
+    { "\\\\double\\slash", ".", "\\\\double\\slash" },
+    { "\\cwd\\..\\with\\.\\complexities\\", ".\\hello", "\\cwd\\with\\complexities\\hello" },
+#endif
+  };
+  const guint n_canonicalize_filename_checks = G_N_ELEMENTS (canonicalize_filename_checks);
   gchar *string;
   guint i;
   if (g_test_verbose())
@@ -895,6 +932,43 @@ test_paths (void)
 	}
     }
   if (g_test_verbose())
+    g_printerr ("ok\n");
+
+  if (g_test_verbose ())
+    g_printerr ("checking g_canonicalize_filename()...");
+  for (i = 0; i < n_canonicalize_filename_checks; i++)
+    {
+      gchar *canonical_path = g_canonicalize_filename (canonicalize_filename_checks[i].relative_path,
+                                                       canonicalize_filename_checks[i].cwd);
+      if (g_strcmp0 (canonical_path, canonicalize_filename_checks[i].canonical_path) != 0)
+        {
+          g_error ("\nfailed for \"%s\"==\"%s\" (returned: \"%s\")\n",
+                   canonicalize_filename_checks[i].relative_path,
+                   canonicalize_filename_checks[i].canonical_path,
+                   canonical_path);
+        }
+      g_free (canonical_path);
+    }
+  if (g_test_verbose ())
+    g_printerr ("ok\n");
+
+  if (g_test_verbose ())
+    g_printerr ("checking g_canonicalize_filename() supports NULL...");
+
+    {
+      const gchar *relative_path = "./";
+      gchar *canonical_path = g_canonicalize_filename (relative_path, NULL);
+      gchar *cwd = g_get_current_dir ();
+      if (g_strcmp0 (canonical_path, cwd) != 0)
+        {
+          g_error ("\nfailed for \"%s\"==\"%s\" (returned: \"%s\")\n",
+                   relative_path, cwd, canonical_path);
+        }
+      g_free (cwd);
+      g_free (canonical_path);
+    }
+
+  if (g_test_verbose ())
     g_printerr ("ok\n");
 }
 

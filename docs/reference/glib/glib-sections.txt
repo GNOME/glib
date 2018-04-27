@@ -1852,6 +1852,7 @@ g_get_tmp_dir
 g_get_current_dir
 g_basename
 g_dirname
+g_canonicalize_filename
 g_path_is_absolute
 g_path_skip_root
 g_path_get_basename
