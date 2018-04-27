@@ -199,112 +199,13 @@ _g_local_file_get_filename (GLocalFile *file)
   return file->filename;
 }
 
-static char *
-canonicalize_filename (const char *filename)
-{
-  char *canon, *start, *p, *q;
-  char *cwd;
-  int i;
-  
-  if (!g_path_is_absolute (filename))
-    {
-      cwd = g_get_current_dir ();
-      canon = g_build_filename (cwd, filename, NULL);
-      g_free (cwd);
-    }
-  else
-    canon = g_strdup (filename);
-
-  start = (char *)g_path_skip_root (canon);
-
-  if (start == NULL)
-    {
-      /* This shouldn't really happen, as g_get_current_dir() should
-	 return an absolute pathname, but bug 573843 shows this is
-	 not always happening */
-      g_free (canon);
-      return g_build_filename (G_DIR_SEPARATOR_S, filename, NULL);
-    }
-  
-  /* POSIX allows double slashes at the start to
-   * mean something special (as does windows too).
-   * So, "//" != "/", but more than two slashes
-   * is treated as "/".
-   */
-  i = 0;
-  for (p = start - 1;
-       (p >= canon) &&
-	 G_IS_DIR_SEPARATOR (*p);
-       p--)
-    i++;
-  if (i > 2)
-    {
-      i -= 1;
-      start -= i;
-      memmove (start, start+i, strlen (start+i)+1);
-    }
-
-  /* Make sure we're using the canonical dir separator */
-  p++;
-  while (p < start && G_IS_DIR_SEPARATOR (*p))
-    *p++ = G_DIR_SEPARATOR;
-  
-  p = start;
-  while (*p != 0)
-    {
-      if (p[0] == '.' && (p[1] == 0 || G_IS_DIR_SEPARATOR (p[1])))
-	{
-	  memmove (p, p+1, strlen (p+1)+1);
-	}
-      else if (p[0] == '.' && p[1] == '.' && (p[2] == 0 || G_IS_DIR_SEPARATOR (p[2])))
-	{
-	  q = p + 2;
-	  /* Skip previous separator */
-	  p = p - 2;
-	  if (p < start)
-	    p = start;
-	  while (p > start && !G_IS_DIR_SEPARATOR (*p))
-	    p--;
-	  if (G_IS_DIR_SEPARATOR (*p))
-	    *p++ = G_DIR_SEPARATOR;
-	  memmove (p, q, strlen (q)+1);
-	}
-      else
-	{
-	  /* Skip until next separator */
-	  while (*p != 0 && !G_IS_DIR_SEPARATOR (*p))
-	    p++;
-	  
-	  if (*p != 0)
-	    {
-	      /* Canonicalize one separator */
-	      *p++ = G_DIR_SEPARATOR;
-	    }
-	}
-
-      /* Remove additional separators */
-      q = p;
-      while (*q && G_IS_DIR_SEPARATOR (*q))
-	q++;
-
-      if (p != q)
-	memmove (p, q, strlen (q)+1);
-    }
-
-  /* Remove trailing slashes */
-  if (p > start && G_IS_DIR_SEPARATOR (*(p-1)))
-    *(p-1) = 0;
-  
-  return canon;
-}
-
 GFile *
 _g_local_file_new (const char *filename)
 {
   GLocalFile *local;
 
   local = g_object_new (G_TYPE_LOCAL_FILE, NULL);
-  local->filename = canonicalize_filename (filename);
+  local->filename = g_canonicalize_filename (filename, NULL);
   
   return G_FILE (local);
 }
@@ -1659,7 +1560,7 @@ expand_symlink (const char *link)
 #endif
   
   if (g_path_is_absolute (symlink_value))
-    return canonicalize_filename (symlink_value);
+    return g_canonicalize_filename (symlink_value, NULL);
   else
     {
       link2 = strip_trailing_slashes (link);
@@ -1669,7 +1570,7 @@ expand_symlink (const char *link)
       resolved = g_build_filename (parent, symlink_value, NULL);
       g_free (parent);
       
-      canonical = canonicalize_filename (resolved);
+      canonical = g_canonicalize_filename (resolved, NULL);
       
       g_free (resolved);
 
