@@ -2,6 +2,8 @@ image: registry.gitlab.gnome.org/gnome/glib/master:v1
 
 stages:
   - build
+  - coverage
+  - deploy
 
 cache:
   paths:
@@ -9,18 +11,23 @@ cache:
 
 fedora-meson-x86_64:
   stage: build
+  variables:
+   CFLAGS: "-coverage -ftest-coverage -fprofile-arcs"
   script:
     - meson --prefix /usr --libdir /usr/lib64 --buildtype debug --werror -Dsystemtap=true -Ddtrace=true _build .
     - cd _build
     - ninja
     - meson test
+    - cd ..
+    - mkdir -p _coverage
+    - lcov --rc lcov_branch_coverage=1 --directory . --capture --no-external --output-file "_coverage/${CI_JOB_NAME}.lcov"
   except:
     - tags
   artifacts:
-    when: on_failure
     name: "glib-_${CI_COMMIT_REF_NAME}"
     paths:
       - "${CI_PROJECT_DIR}/_build/meson-logs"
+      - "${CI_PROJECT_DIR}/_coverage"
 
 msys2-mingw32:
   stage: build
@@ -32,6 +39,27 @@ msys2-mingw32:
   script:
     - C:\msys64\usr\bin\pacman --noconfirm -Syyuu --ask 20
     - C:\msys64\usr\bin\bash -lc "bash -x ./.gitlab-ci/test-msys2.sh"
+  artifacts:
+    paths:
+      - _coverage/
+
+coverage:
+  stage: coverage
+  artifacts:
+    paths:
+      - _coverage/
+  script:
+    - bash -x ./.gitlab-ci/coverage-docker.sh
+
+pages:
+  stage: deploy
+  script:
+    - mv _coverage/ public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
 
 dist-job:
   stage: build

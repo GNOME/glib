@@ -3,6 +3,7 @@ FROM fedora:27
 RUN dnf -y install \
     desktop-file-utils \
     elfutils-libelf-devel \
+    findutils \
     gcc \
     gcc-c++ \
     gettext \
@@ -11,6 +12,7 @@ RUN dnf -y install \
     glibc-headers \
     gtk-doc \
     itstool \
+    lcov \
     libattr-devel \
     libffi-devel \
     libmount-devel \
