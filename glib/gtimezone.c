@@ -433,6 +433,7 @@ zone_info_unix (const gchar  *identifier,
   else
     {
       gsize prefix_len = 0;
+      gchar *canonical_path = NULL;
 
       filename = g_strdup ("/etc/localtime");
 
@@ -446,6 +447,11 @@ zone_info_unix (const gchar  *identifier,
           return NULL;
         }
 
+      /* Resolve relative path */
+      canonical_path = g_canonicalize_filename (resolved_identifier, "/etc");
+      g_free (resolved_identifier);
+      resolved_identifier = g_steal_pointer (&canonical_path);
+
       /* Strip the prefix and slashes if possible. */
       if (g_str_has_prefix (resolved_identifier, tzdir))
         {
@@ -457,6 +463,8 @@ zone_info_unix (const gchar  *identifier,
       if (prefix_len > 0)
         memmove (resolved_identifier, resolved_identifier + prefix_len,
                  strlen (resolved_identifier) - prefix_len + 1  /* nul terminator */);
+
+      g_free (canonical_path);
     }
 
   file = g_mapped_file_new (filename, FALSE, NULL);
