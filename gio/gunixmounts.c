@@ -461,6 +461,18 @@ create_unix_mount_point (const char *device_path,
  */
 #define PROC_MOUNTINFO_PATH "/proc/self/mountinfo"
 
+static int
+uniq_fs_source_cmp (struct libmnt_table *table G_GNUC_UNUSED,
+                    struct libmnt_fs *a,
+                    struct libmnt_fs *b)
+{
+  if (mnt_fs_is_pseudofs (a) || mnt_fs_is_netfs (a) ||
+      mnt_fs_is_pseudofs (b) || mnt_fs_is_netfs (b))
+    return 1;
+
+  return !mnt_fs_streq_srcpath (a, mnt_fs_get_srcpath (b));
+}
+
 static GList *
 _g_get_unix_mounts (void)
 {
@@ -481,6 +493,11 @@ _g_get_unix_mounts (void)
       char *mount_options = NULL;
       unsigned long mount_flags = 0;
       gboolean is_read_only = FALSE;
+
+      /* Use only the first mount for device, see comment from _g_get_unix_mounts
+       * in #else branch.
+       */
+      mnt_table_uniq_fs (table, MNT_UNIQ_FORWARD, uniq_fs_source_cmp);
 
       device_path = mnt_fs_get_source (fs);
       if (g_strcmp0 (device_path, "/dev/root") == 0)
