@@ -123,7 +123,7 @@ large_message_timeout_cb (gpointer data)
 {
   (void)data;
 
-  g_error ("Error: timeout waiting for dbus name to appear\n");
+  g_error ("Error: timeout waiting for dbus name to appear");
 
   return FALSE;
 }

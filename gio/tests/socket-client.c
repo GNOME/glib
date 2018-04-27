@@ -173,7 +173,7 @@ make_connection (const char       *argument,
 
       if (g_socket_connect (*socket, *address, cancellable, &err))
         break;
-      g_message ("Connection to %s failed: %s, trying next\n", socket_address_to_string (*address), err->message);
+      g_message ("Connection to %s failed: %s, trying next", socket_address_to_string (*address), err->message);
       g_clear_error (&err);
 
       g_object_unref (*address);

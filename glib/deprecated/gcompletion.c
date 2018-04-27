@@ -461,14 +461,14 @@ main (int   argc,
   
   if (argc < 3)
     {
-      g_warning ("Usage: %s filename prefix1 [prefix2 ...]\n", argv[0]);
+      g_warning ("Usage: %s filename prefix1 [prefix2 ...]", argv[0]);
       return 1;
     }
   
   file = fopen (argv[1], "r");
   if (!file)
     {
-      g_warning ("Cannot open %s\n", argv[1]);
+      g_warning ("Cannot open %s", argv[1]);
       return 1;
     }
   

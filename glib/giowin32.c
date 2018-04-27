@@ -963,7 +963,7 @@ g_io_win32_dispatch (GSource     *source,
   
   if (!func)
     {
-      g_warning ("IO Watch dispatched without callback\n"
+      g_warning ("IO Watch dispatched without callback. "
 		 "You must call g_source_connect().");
       return FALSE;
     }

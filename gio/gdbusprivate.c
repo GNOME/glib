@@ -752,7 +752,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
               g_warning ("Error decoding D-Bus message of %" G_GSIZE_FORMAT " bytes\n"
                          "The error is: %s\n"
                          "The payload is as follows:\n"
-                         "%s\n",
+                         "%s",
                          worker->read_buffer_cur_size,
                          error->message,
                          s);

@@ -271,7 +271,7 @@ g_poll (GPollFD *fds,
         {
           if (nhandles == MAXIMUM_WAIT_OBJECTS)
             {
-              g_warning ("Too many handles to wait for!\n");
+              g_warning ("Too many handles to wait for!");
               break;
             }
           else

@@ -435,47 +435,47 @@ test_mkdir_with_parents_1 (const gchar *base)
   g_remove (p0);
 
   if (g_file_test (p0, G_FILE_TEST_EXISTS))
-    g_error ("failed, %s exists, cannot test g_mkdir_with_parents\n", p0);
+    g_error ("failed, %s exists, cannot test g_mkdir_with_parents", p0);
 
   if (g_file_test (p1, G_FILE_TEST_EXISTS))
-    g_error ("failed, %s exists, cannot test g_mkdir_with_parents\n", p1);
+    g_error ("failed, %s exists, cannot test g_mkdir_with_parents", p1);
 
   if (g_file_test (p2, G_FILE_TEST_EXISTS))
-    g_error ("failed, %s exists, cannot test g_mkdir_with_parents\n", p2);
+    g_error ("failed, %s exists, cannot test g_mkdir_with_parents", p2);
 
   if (g_mkdir_with_parents (p2, 0777) == -1)
     {
       int errsv = errno;
-      g_error ("failed, g_mkdir_with_parents(%s) failed: %s\n", p2, g_strerror (errsv));
+      g_error ("failed, g_mkdir_with_parents(%s) failed: %s", p2, g_strerror (errsv));
     }
 
   if (!g_file_test (p2, G_FILE_TEST_IS_DIR))
-    g_error ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory\n", p2, p2);
+    g_error ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory", p2, p2);
 
   if (!g_file_test (p1, G_FILE_TEST_IS_DIR))
-    g_error ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory\n", p2, p1);
+    g_error ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory", p2, p1);
 
   if (!g_file_test (p0, G_FILE_TEST_IS_DIR))
-    g_error ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory\n", p2, p0);
+    g_error ("failed, g_mkdir_with_parents(%s) succeeded, but %s is not a directory", p2, p0);
 
   g_rmdir (p2);
   if (g_file_test (p2, G_FILE_TEST_EXISTS))
-    g_error ("failed, did g_rmdir(%s), but %s is still there\n", p2, p2);
+    g_error ("failed, did g_rmdir(%s), but %s is still there", p2, p2);
 
   g_rmdir (p1);
   if (g_file_test (p1, G_FILE_TEST_EXISTS))
-    g_error ("failed, did g_rmdir(%s), but %s is still there\n", p1, p1);
+    g_error ("failed, did g_rmdir(%s), but %s is still there", p1, p1);
 
   f = g_fopen (p1, "w");
   if (f == NULL)
-    g_error ("failed, couldn't create file %s\n", p1);
+    g_error ("failed, couldn't create file %s", p1);
   fclose (f);
 
   if (g_mkdir_with_parents (p1, 0666) == 0)
-    g_error ("failed, g_mkdir_with_parents(%s) succeeded, even if %s is a file\n", p1, p1);
+    g_error ("failed, g_mkdir_with_parents(%s) succeeded, even if %s is a file", p1, p1);
 
   if (g_mkdir_with_parents (p2, 0666) == 0)
-    g_error("failed, g_mkdir_with_parents(%s) succeeded, even if %s is a file\n", p2, p1);
+    g_error("failed, g_mkdir_with_parents(%s) succeeded, even if %s is a file", p2, p1);
 
   g_remove (p2);
   g_remove (p1);

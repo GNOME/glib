@@ -1052,7 +1052,7 @@ read_tree_magic_from_directory (const gchar *prefix)
                 }
               else
                 {
-                  g_warning ("%s: header corrupt; skipping\n", filename);
+                  g_warning ("%s: header corrupt; skipping", filename);
                   break;
                 }
             }
@@ -1060,7 +1060,7 @@ read_tree_magic_from_directory (const gchar *prefix)
           g_strfreev (lines);
         }
       else
-        g_warning ("%s: header not found, skipping\n", filename);
+        g_warning ("%s: header not found, skipping", filename);
 
       g_free (text);
     }

@@ -90,7 +90,7 @@ g_zlib_compressor_set_gzheader (GZlibCompressor *compressor)
                                                 G_FILE_ATTRIBUTE_TIME_MODIFIED);
 
   if (deflateSetHeader (&compressor->zstream, &compressor->gzheader) != Z_OK)
-    g_warning ("unexpected zlib error: %s\n", compressor->zstream.msg);
+    g_warning ("unexpected zlib error: %s", compressor->zstream.msg);
 #endif /* !G_OS_WIN32 || ZLIB >= 1.2.4 */
 }
 
@@ -211,7 +211,7 @@ g_zlib_compressor_constructed (GObject *object)
     g_error ("GZlibCompressor: Not enough memory for zlib use");
 
   if (res != Z_OK)
-    g_warning ("unexpected zlib error: %s\n", compressor->zstream.msg);
+    g_warning ("unexpected zlib error: %s", compressor->zstream.msg);
 
   g_zlib_compressor_set_gzheader (compressor);
 }
@@ -351,7 +351,7 @@ g_zlib_compressor_reset (GConverter *converter)
 
   res = deflateReset (&compressor->zstream);
   if (res != Z_OK)
-    g_warning ("unexpected zlib error: %s\n", compressor->zstream.msg);
+    g_warning ("unexpected zlib error: %s", compressor->zstream.msg);
 
   /* deflateReset reset the header too, so re-set it */
   g_zlib_compressor_set_gzheader (compressor);

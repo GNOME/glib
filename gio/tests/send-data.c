@@ -170,7 +170,7 @@ main (int argc, char *argv[])
       if (!g_output_stream_write_all (out, buffer, strlen (buffer),
 				      NULL, cancellable, &error))
 	{
-	  g_warning ("send error: %s\n",  error->message);
+	  g_warning ("send error: %s",  error->message);
 	  g_error_free (error);
 	  error = NULL;
 	}
@@ -187,7 +187,7 @@ main (int argc, char *argv[])
 				     res, &error))
 	{
 	  g_object_unref (res);
-	  g_warning ("close error: %s\n",  error->message);
+	  g_warning ("close error: %s",  error->message);
 	  return 1;
 	}
       g_object_unref (res);
@@ -196,7 +196,7 @@ main (int argc, char *argv[])
     {
       if (!g_io_stream_close (G_IO_STREAM (connection), cancellable, &error))
 	{
-	  g_warning ("close error: %s\n",  error->message);
+	  g_warning ("close error: %s",  error->message);
 	  return 1;
 	}
     }

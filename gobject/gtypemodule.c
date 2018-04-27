@@ -253,7 +253,7 @@ g_type_module_use (GTypeModule *module)
 	  ModuleTypeInfo *type_info = tmp_list->data;
 	  if (!type_info->loaded)
 	    {
-	      g_warning ("plugin '%s' failed to register type '%s'\n",
+	      g_warning ("plugin '%s' failed to register type '%s'",
 			 module->name ? module->name : "(unknown)",
 			 g_type_name (type_info->type));
 	      module->use_count--;
@@ -309,7 +309,7 @@ g_type_module_use_plugin (GTypePlugin *plugin)
 
   if (!g_type_module_use (module))
     {
-      g_warning ("Fatal error - Could not reload previously loaded plugin '%s'\n",
+      g_warning ("Fatal error - Could not reload previously loaded plugin '%s'",
 		 module->name ? module->name : "(unknown)");
       exit (1);
     }
@@ -413,7 +413,7 @@ g_type_module_register_type (GTypeModule     *module,
 	{
 	  const gchar *parent_type_name = g_type_name (parent_type);
 	  
-	  g_warning ("Type '%s' recreated with different parent type.\n"
+	  g_warning ("Type '%s' recreated with different parent type."
 		     "(was '%s', now '%s')", type_name,
 		     g_type_name (module_type_info->parent_type),
 		     parent_type_name ? parent_type_name : "(unknown)");

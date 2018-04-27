@@ -4642,7 +4642,7 @@ g_timeout_dispatch (GSource     *source,
 
   if (!callback)
     {
-      g_warning ("Timeout source dispatched without callback\n"
+      g_warning ("Timeout source dispatched without callback. "
                  "You must call g_source_set_callback().");
       return FALSE;
     }
@@ -5188,7 +5188,7 @@ g_unix_signal_watch_dispatch (GSource    *source,
 
   if (!callback)
     {
-      g_warning ("Unix signal source dispatched without callback\n"
+      g_warning ("Unix signal source dispatched without callback. "
 		 "You must call g_source_set_callback().");
       return FALSE;
     }
@@ -5291,7 +5291,7 @@ g_child_watch_dispatch (GSource    *source,
 
   if (!callback)
     {
-      g_warning ("Child watch source dispatched without callback\n"
+      g_warning ("Child watch source dispatched without callback. "
 		 "You must call g_source_set_callback().");
       return FALSE;
     }
@@ -5527,7 +5527,7 @@ g_idle_dispatch (GSource    *source,
 
   if (!callback)
     {
-      g_warning ("Idle source dispatched without callback\n"
+      g_warning ("Idle source dispatched without callback. "
 		 "You must call g_source_set_callback().");
       return FALSE;
     }

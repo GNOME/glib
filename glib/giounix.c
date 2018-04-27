@@ -157,7 +157,7 @@ g_io_unix_dispatch (GSource     *source,
 
   if (!func)
     {
-      g_warning ("IO watch dispatched without callback\n"
+      g_warning ("IO watch dispatched without callback. "
 		 "You must call g_source_connect().");
       return FALSE;
     }
@@ -406,7 +406,7 @@ g_io_unix_get_flags (GIOChannel *channel)
   if (fcntl_flags == -1)
     {
       int err = errno;
-      g_warning (G_STRLOC "Error while getting flags for FD: %s (%d)\n",
+      g_warning (G_STRLOC "Error while getting flags for FD: %s (%d)",
 		 g_strerror (err), err);
       return 0;
     }
@@ -476,7 +476,7 @@ g_io_channel_new_file (const gchar *filename,
         mode_num = MODE_A;
         break;
       default:
-        g_warning ("Invalid GIOFileMode %s.\n", mode);
+        g_warning ("Invalid GIOFileMode %s.", mode);
         return NULL;
     }
 
@@ -492,7 +492,7 @@ g_io_channel_new_file (const gchar *filename,
           }
         /* Fall through */
       default:
-        g_warning ("Invalid GIOFileMode %s.\n", mode);
+        g_warning ("Invalid GIOFileMode %s.", mode);
         return NULL;
     }
 

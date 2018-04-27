@@ -93,7 +93,7 @@ glist_test (void)
 
   for (i = 0; i < 10; i++)
     if (g_list_position (list, g_list_nth (list, i)) != i)
-      g_error ("g_list_position does not seem to be the inverse of g_list_nth\n");
+      g_error ("g_list_position does not seem to be the inverse of g_list_nth");
 
   g_list_free (list);
   list = NULL;
@@ -469,7 +469,7 @@ my_hash_callback_remove_test (gpointer key,
   int *d = value;
 
   if ((*d) % 2)
-    g_error ("hash table entry %d should have been removed already\n", *d);
+    g_error ("hash table entry %d should have been removed already", *d);
 }
 
 static void
@@ -867,7 +867,7 @@ test_paths (void)
       gchar *dirname = g_path_get_dirname (dirname_checks[i].filename);
       if (strcmp (dirname, dirname_checks[i].dirname) != 0)
 	{
-	  g_error ("\nfailed for \"%s\"==\"%s\" (returned: \"%s\")\n",
+	  g_error ("failed for \"%s\"==\"%s\" (returned: \"%s\")",
 		   dirname_checks[i].filename,
 		   dirname_checks[i].dirname,
 		   dirname);
@@ -887,7 +887,7 @@ test_paths (void)
 	  ((skipped && skip_root_checks[i].without_root) &&
 	   strcmp (skipped, skip_root_checks[i].without_root)))
 	{
-	  g_error ("\nfailed for \"%s\"==\"%s\" (returned: \"%s\")\n",
+	  g_error ("failed for \"%s\"==\"%s\" (returned: \"%s\")",
 		   skip_root_checks[i].filename,
 		   (skip_root_checks[i].without_root ?
 		    skip_root_checks[i].without_root : "<NULL>"),
@@ -918,25 +918,25 @@ test_file_functions (void)
   strcpy (template, "fooXXXXXX");
   fd = g_mkstemp (template);
   if (fd == -1)
-    g_error ("g_mkstemp didn't work for template %s\n", template);
+    g_error ("g_mkstemp didn't work for template %s", template);
   n = write (fd, hello, hellolen);
   errsv = errno;
   if (n == -1)
-    g_error ("write() failed: %s\n", g_strerror (errsv));
+    g_error ("write() failed: %s", g_strerror (errsv));
   else if (n != hellolen)
-    g_error ("write() should have written %d bytes, wrote %d\n", hellolen, n);
+    g_error ("write() should have written %d bytes, wrote %d", hellolen, n);
 
   lseek (fd, 0, 0);
   n = read (fd, chars, sizeof (chars));
   errsv = errno;
   if (n == -1)
-    g_error ("read() failed: %s\n", g_strerror (errsv));
+    g_error ("read() failed: %s", g_strerror (errsv));
   else if (n != hellolen)
-    g_error ("read() should have read %d bytes, got %d\n", hellolen, n);
+    g_error ("read() should have read %d bytes, got %d", hellolen, n);
 
   chars[n] = 0;
   if (strcmp (chars, hello) != 0)
-    g_error ("wrote '%s', but got '%s'\n", hello, chars);
+    g_error ("wrote '%s', but got '%s'", hello, chars);
   if (fd != -1)
     close (fd);
   remove (template);
@@ -978,7 +978,7 @@ test_file_functions (void)
   name_used = NULL;
   fd = g_file_open_tmp (template, &name_used, &error);
   if (fd == -1)
-    g_error ("g_file_open_tmp didn't work for template '%s': %s\n", template, error->message);
+    g_error ("g_file_open_tmp didn't work for template '%s': %s", template, error->message);
   else if (g_test_verbose())
     g_printerr ("g_file_open_tmp for template '%s' used name '%s'\n", template, name_used);
   if (fd != -1)
@@ -990,7 +990,7 @@ test_file_functions (void)
   name_used = NULL;
   fd = g_file_open_tmp (NULL, &name_used, &error);
   if (fd == -1)
-    g_error ("g_file_open_tmp didn't work for a NULL template: %s\n", error->message);
+    g_error ("g_file_open_tmp didn't work for a NULL template: %s", error->message);
   else
     close (fd);
   g_clear_error (&error);
@@ -1011,7 +1011,7 @@ test_arrays (void)
     g_ptr_array_add (gparray, GINT_TO_POINTER (i));
   for (i = 0; i < 10000; i++)
     if (g_ptr_array_index (gparray, i) != GINT_TO_POINTER (i))
-      g_error ("array fails: %p ( %p )\n", g_ptr_array_index (gparray, i), GINT_TO_POINTER (i));
+      g_error ("array fails: %p ( %p )", g_ptr_array_index (gparray, i), GINT_TO_POINTER (i));
   g_ptr_array_free (gparray, TRUE);
 
   gbarray = g_byte_array_new ();
@@ -1031,7 +1031,7 @@ test_arrays (void)
     g_array_append_val (garray, i);
   for (i = 0; i < 10000; i++)
     if (g_array_index (garray, gint, i) != i)
-      g_error ("failure: %d ( %d )\n", g_array_index (garray, gint, i), i);
+      g_error ("failure: %d ( %d )", g_array_index (garray, gint, i), i);
   g_array_free (garray, TRUE);
 
   garray = g_array_new (FALSE, FALSE, sizeof (gint));
@@ -1039,7 +1039,7 @@ test_arrays (void)
     g_array_prepend_val (garray, i);
   for (i = 0; i < 100; i++)
     if (g_array_index (garray, gint, i) != (100 - i - 1))
-      g_error ("failure: %d ( %d )\n", g_array_index (garray, gint, i), 100 - i - 1);
+      g_error ("failure: %d ( %d )", g_array_index (garray, gint, i), 100 - i - 1);
   g_array_free (garray, TRUE);
 }
 
@@ -1064,7 +1064,7 @@ hash_table_tests (void)
   g_hash_table_foreach (hash_table, my_hash_callback, NULL);
   for (i = 0; i < 10000; i++)
     if (array[i] == 0)
-      g_error ("hashtable-test: wrong value: %d\n", i);
+      g_error ("hashtable-test: wrong value: %d", i);
   for (i = 0; i < 10000; i++)
     g_hash_table_remove (hash_table, &array[i]);
   for (i = 0; i < 10000; i++)
@@ -1074,7 +1074,7 @@ hash_table_tests (void)
     }
   if (g_hash_table_foreach_remove (hash_table, my_hash_callback_remove, NULL) != 5000 ||
       g_hash_table_size (hash_table) != 5000)
-    g_error ("hashtable removal failed\n");
+    g_error ("hashtable removal failed");
   g_hash_table_foreach (hash_table, my_hash_callback_remove_test, NULL);
   g_hash_table_destroy (hash_table);
 }
@@ -1308,7 +1308,7 @@ various_string_tests (void)
     {
       tmp_string = g_string_chunk_insert (string_chunk, "hi pete");
       if (strcmp ("hi pete", tmp_string) != 0)
-	g_error ("string chunks are broken.\n");
+	g_error ("string chunks are broken.");
     }
   tmp_string_2 = g_string_chunk_insert_const (string_chunk, tmp_string);
   g_assert (tmp_string_2 != tmp_string && strcmp (tmp_string_2, tmp_string) == 0);

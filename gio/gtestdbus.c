@@ -96,7 +96,7 @@ _g_object_dispose_and_wait_weak_notify (gpointer object)
 
   if (data.timed_out)
     {
-      g_warning ("Weak notify timeout, object ref_count=%d\n",
+      g_warning ("Weak notify timeout, object ref_count=%d",
           G_OBJECT (object)->ref_count);
     }
   else

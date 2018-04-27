@@ -587,7 +587,7 @@ g_settings_set_property (GObject      *object,
             settings->priv->schema = g_settings_schema_source_lookup (default_source, schema_id, TRUE);
 
             if (settings->priv->schema == NULL)
-              g_error ("Settings schema '%s' is not installed\n", schema_id);
+              g_error ("Settings schema '%s' is not installed", schema_id);
           }
       }
       break;

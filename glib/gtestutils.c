@@ -3092,7 +3092,7 @@ g_test_trap_subprocess (const char           *test_path,
                                  &pid, NULL, &stdout_fd, &stderr_fd,
                                  &error))
     {
-      g_error ("g_test_trap_subprocess() failed: %s\n",
+      g_error ("g_test_trap_subprocess() failed: %s",
                error->message);
     }
   g_ptr_array_free (argv, TRUE);

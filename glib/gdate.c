@@ -579,7 +579,7 @@ g_date_update_dmy (const GDate *const_d)
   
 #ifdef G_ENABLE_DEBUG
   if (!g_date_valid_dmy (day, m, y)) 
-    g_warning ("\nOOPS julian: %u  computed dmy: %u %u %u\n", 
+    g_warning ("OOPS julian: %u  computed dmy: %u %u %u",
 	       d->julian_days, day, m, y);
 #endif
   
@@ -2628,7 +2628,7 @@ g_date_strftime (gchar       *s,
 
   if (error)
     {
-      g_warning (G_STRLOC "Error converting format to locale encoding: %s\n", error->message);
+      g_warning (G_STRLOC "Error converting format to locale encoding: %s", error->message);
       g_error_free (error);
 
       s[0] = '\0';
@@ -2653,7 +2653,7 @@ g_date_strftime (gchar       *s,
 
           if (tmpbufsize > 65536)
             {
-              g_warning (G_STRLOC "Maximum buffer size for g_date_strftime exceeded: giving up\n");
+              g_warning (G_STRLOC "Maximum buffer size for g_date_strftime exceeded: giving up");
               g_free (locale_format);
 
               s[0] = '\0';
@@ -2670,7 +2670,7 @@ g_date_strftime (gchar       *s,
 
   if (error)
     {
-      g_warning (G_STRLOC "Error converting results of strftime to UTF-8: %s\n", error->message);
+      g_warning (G_STRLOC "Error converting results of strftime to UTF-8: %s", error->message);
       g_error_free (error);
 
       s[0] = '\0';

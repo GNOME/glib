@@ -1250,7 +1250,7 @@ assert_main_context_state (gint n_to_poll,
           }
 
       if (j == n)
-        g_error ("Unable to find fd %d (index %d) with events 0x%x\n", expected_fd, i, (guint) expected_events);
+        g_error ("Unable to find fd %d (index %d) with events 0x%x", expected_fd, i, (guint) expected_events);
     }
   va_end (ap);
 

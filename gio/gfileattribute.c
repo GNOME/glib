@@ -612,7 +612,7 @@ _g_file_attribute_value_set_from_pointer (GFileAttributeValue *value,
       break;
 
     default:
-      g_warning ("Unknown type specified in g_file_info_set_attribute\n");
+      g_warning ("Unknown type specified in g_file_info_set_attribute");
       break;
     }
 }

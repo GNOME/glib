@@ -738,7 +738,7 @@ _g_get_unix_mounts (void)
   
   if (mntctl (MCTL_QUERY, sizeof (vmount_size), &vmount_size) != 0)
     {
-      g_warning ("Unable to know the number of mounted volumes\n");
+      g_warning ("Unable to know the number of mounted volumes");
       
       return NULL;
     }
@@ -748,11 +748,11 @@ _g_get_unix_mounts (void)
   vmount_number = mntctl (MCTL_QUERY, vmount_size, vmount_info);
   
   if (vmount_info->vmt_revision != VMT_REVISION)
-    g_warning ("Bad vmount structure revision number, want %d, got %d\n", VMT_REVISION, vmount_info->vmt_revision);
+    g_warning ("Bad vmount structure revision number, want %d, got %d", VMT_REVISION, vmount_info->vmt_revision);
 
   if (vmount_number < 0)
     {
-      g_warning ("Unable to recover mounted volumes information\n");
+      g_warning ("Unable to recover mounted volumes information");
       
       g_free (vmount_info);
       return NULL;

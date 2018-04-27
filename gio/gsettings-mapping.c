@@ -498,7 +498,7 @@ g_settings_get_mapping (GValue   *value,
              return TRUE;
             }
 
-          g_warning ("Unable to lookup enum nick '%s' via GType\n", nick);
+          g_warning ("Unable to lookup enum nick '%s' via GType", nick);
           return FALSE;
         }
     }
@@ -530,7 +530,7 @@ g_settings_get_mapping (GValue   *value,
 
               else
                 {
-                  g_warning ("Unable to lookup flags nick '%s' via GType\n",
+                  g_warning ("Unable to lookup flags nick '%s' via GType",
                              nick);
                   return FALSE;
                 }

@@ -72,7 +72,7 @@ org_gtk_Menus_get_interface (void)
                                            "  </interface>"
                                            "</node>", &error);
       if (info == NULL)
-        g_error ("%s\n", error->message);
+        g_error ("%s", error->message);
       interface_info = g_dbus_node_info_lookup_interface (info, "org.gtk.Menus");
       g_assert (interface_info != NULL);
       g_dbus_interface_info_ref (interface_info);

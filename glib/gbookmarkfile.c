@@ -547,7 +547,7 @@ bookmark_item_dump (BookmarkItem *item)
    */
   if (!item->metadata || !item->metadata->applications)
     {
-      g_warning ("Item for URI '%s' has no registered applications: skipping.\n", item->uri);
+      g_warning ("Item for URI '%s' has no registered applications: skipping.", item->uri);
       return NULL;
     }
   
