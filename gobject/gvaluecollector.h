@@ -195,16 +195,16 @@ G_STMT_START {										\
 
 /**
  * G_VALUE_LCOPY:
- * @value: a #GValue return location. @value is supposed to be initialized 
- *  according to the value type to be collected
+ * @value: a #GValue to store into the @var_args; this must be initialized
+ *  and set
  * @var_args: the va_list variable; it may be evaluated multiple times
  * @flags: flags which are passed on to the lcopy_value() function of
  *  the #GTypeValueTable of @value.
  * @__error: a #gchar** variable that will be modified to hold a g_new()
  *  allocated error messages if something fails
- * 
- * Collects a value's variable argument locations from a va_list. Usage is
- * analogous to G_VALUE_COLLECT().
+ *
+ * Stores a value’s value into one or more argument locations from a va_list.
+ * This is the inverse of G_VALUE_COLLECT().
  */
 #define G_VALUE_LCOPY(value, var_args, flags, __error)					\
 G_STMT_START {										\
