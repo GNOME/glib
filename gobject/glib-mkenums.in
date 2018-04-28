@@ -218,7 +218,7 @@ def parse_entries(file, file_name):
             if options is not None:
                 options = parse_trigraph(options)
                 if 'skip' not in options:
-                    entries.append((name, value, options['nick']))
+                    entries.append((name, value, options.get('nick')))
             else:
                 entries.append((name, value))
         elif re.match(r's*\#', line):
