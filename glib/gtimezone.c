@@ -434,23 +434,41 @@ zone_info_unix (const gchar  *identifier,
     {
       gsize prefix_len = 0;
       gchar *canonical_path = NULL;
+      GError *read_link_err = NULL;
 
       filename = g_strdup ("/etc/localtime");
 
       /* Resolve the actual timezone pointed to by /etc/localtime. */
-      resolved_identifier = g_file_read_link (filename, NULL);
+      resolved_identifier = g_file_read_link (filename, &read_link_err);
       if (resolved_identifier == NULL)
         {
-          /* Error */
-          if (out_identifier != NULL)
-            *out_identifier = NULL;
-          return NULL;
-        }
+          gboolean not_a_symlink = g_error_matches (read_link_err,
+                                                    G_FILE_ERROR,
+                                                    G_FILE_ERROR_INVAL);
+          g_clear_error (&read_link_err);
 
-      /* Resolve relative path */
-      canonical_path = g_canonicalize_filename (resolved_identifier, "/etc");
-      g_free (resolved_identifier);
-      resolved_identifier = g_steal_pointer (&canonical_path);
+          /* Fallback to the content of /var/db/zoneinfo if /etc/localtime is
+           * not a symlink. This is where 'tzsetup' program on FreeBSD and
+           * DragonflyBSD stores the timezone chosen by the user. */
+          if (not_a_symlink && g_file_get_contents ("/var/db/zoneinfo",
+                                                    &resolved_identifier,
+                                                    NULL, NULL))
+            g_strchomp (resolved_identifier);
+          else
+            {
+              /* Error */
+              if (out_identifier != NULL)
+                *out_identifier = NULL;
+              return NULL;
+            }
+        }
+      else
+        {
+          /* Resolve relative path */
+          canonical_path = g_canonicalize_filename (resolved_identifier, "/etc");
+          g_free (resolved_identifier);
+          resolved_identifier = g_steal_pointer (&canonical_path);
+        }
 
       /* Strip the prefix and slashes if possible. */
       if (g_str_has_prefix (resolved_identifier, tzdir))
