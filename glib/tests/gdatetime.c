@@ -1324,6 +1324,7 @@ test_GDateTime_printf (void)
  * that long, and it will cause the test to fail if dst isn't big
  * enough.
  */
+  gchar *old_lc_messages;
   gchar dst[64];
   struct tm tt;
   time_t t;
@@ -1352,6 +1353,9 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   g_assert_cmpstr (p, ==, (o));                                 \
   g_date_time_unref (dt);                                       \
   g_free (p);                                   } G_STMT_END
+
+  old_lc_messages = g_strdup (g_getenv ("LC_MESSAGES"));
+  g_setenv ("LC_MESSAGES", "C", TRUE);
 
   /*
    * This is a little helper to make sure we can compare timezones to
@@ -1420,6 +1424,12 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
 #elif defined G_OS_WIN32
   TEST_PRINTF ("%Z", "Pacific Standard Time");
 #endif
+
+  if (old_lc_messages != NULL)
+    g_setenv ("LC_MESSAGES", old_lc_messages, TRUE);
+  else
+    g_unsetenv ("LC_MESSAGES");
+  g_free (old_lc_messages);
 }
 
 static void
