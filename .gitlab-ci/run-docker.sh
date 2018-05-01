@@ -2,8 +2,10 @@
 
 set -e
 
-sudo docker build --build-arg HOST_USER_ID="$UID" --tag "gitlab-glib" \
+TAG="registry.gitlab.gnome.org/gnome/glib/master:v1"
+
+sudo docker build --build-arg HOST_USER_ID="$UID" --tag "${TAG}" \
     --file "Dockerfile" .
 sudo docker run --rm \
     --volume "$(pwd)/..:/home/user/app" --workdir "/home/user/app" \
-    --tty --interactive "gitlab-glib" bash
+    --tty --interactive "${TAG}" bash
