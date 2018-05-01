@@ -2500,6 +2500,7 @@ g_path_get_dirname (const gchar *file_name)
  *
  * Returns: (type filename) (transfer full): a newly allocated string with the
  * canonical file path
+ * Since: 2.58
  */
 gchar *
 g_canonicalize_filename (const gchar *filename,
