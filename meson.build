@@ -349,7 +349,14 @@ else
 endif
 
 add_project_arguments(cc.get_supported_arguments(test_c_args), language: 'c')
-add_project_link_arguments(cc.get_supported_link_arguments(test_c_link_args), language: 'c')
+
+# FIXME: We cannot build some of the GResource tests with -z nodelete, which
+# means we cannot use that flag in add_project_link_arguments(), and must add
+# it to the relevant targets manually. We do the same with -Bsymbolic-functions
+# because that is what the autotools build did.
+# See https://github.com/mesonbuild/meson/pull/3520 for a way to eventually
+# improve this.
+glib_link_flags = cc.get_supported_link_arguments(test_c_link_args)
 
 # Windows Support (Vista+)
 if host_system == 'windows'

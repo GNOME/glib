@@ -18,7 +18,9 @@ libgthread = library('gthread-2.0',
   soversion : soversion,
   install : true,
   dependencies : [libglib_dep],
-  c_args : ['-DG_LOG_DOMAIN="GThread"' ] + glib_hidden_visibility_args)
+  c_args : ['-DG_LOG_DOMAIN="GThread"' ] + glib_hidden_visibility_args,
+  link_args : glib_link_flags,
+)
 
 pkg.generate(libraries : [libgthread, thread_dep],
   requires : ['glib-2.0'],
