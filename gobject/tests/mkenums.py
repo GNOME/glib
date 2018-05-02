@@ -359,6 +359,20 @@ comment: {standard_bottom_comment}
             # The output should be the same.
             self.assertEqual(out1, out2)
 
+    def test_no_nick(self):
+        """Test trigraphs with a desc but no nick. Issue #1360."""
+        h_contents = '''
+        typedef enum {
+          GEGL_SAMPLER_NEAREST = 0,   /*< desc="nearest"      >*/
+        } GeglSamplerType;
+        '''
+        (info, out, err, subs) = self.runMkenumsWithHeader(h_contents)
+        self.assertEqual('', err)
+        self.assertSingleEnum(out, subs, 'GeglSamplerType',
+                              'gegl_sampler_type', 'GEGL_SAMPLER_TYPE',
+                              'SAMPLER_TYPE', 'GEGL', 'enum', 'Enum',
+                              'ENUM', 'GEGL_SAMPLER_NEAREST', 'nearest', '0')
+
 
 if __name__ == '__main__':
     unittest.main(testRunner=taptestrunner.TAPTestRunner())
