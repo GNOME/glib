@@ -185,3 +185,18 @@ _xdg_reverse_ucs4 (xdg_unichar_t *source, int len)
     }
 }
 
+const char *
+_xdg_binary_or_text_fallback(const void *data, size_t len)
+{
+  unsigned char *chardata;
+  int i;
+
+  chardata = (unsigned char *) data;
+  for (i = 0; i < 128 && i < len; ++i)
+    {
+       if (chardata[i] < 32 && chardata[i] != 9 && chardata[i] != 10 && chardata[i] != 13)
+         return XDG_MIME_TYPE_UNKNOWN; /* binary data */
+    }
+
+  return XDG_MIME_TYPE_TEXTPLAIN;
+}

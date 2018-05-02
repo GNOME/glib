@@ -760,12 +760,11 @@ cache_get_mime_type_for_data (const void *data,
 
   for (n = 0; n < n_mime_types; n++)
     {
-      
       if (mime_types[n])
 	return mime_types[n];
     }
 
-  return XDG_MIME_TYPE_UNKNOWN;
+  return NULL;
 }
 
 const char *
@@ -812,6 +811,9 @@ _xdg_mime_cache_get_mime_type_for_file (const char  *file_name,
       statbuf = &buf;
     }
 
+  if (statbuf->st_size == 0)
+    return XDG_MIME_TYPE_EMPTY;
+
   if (!S_ISREG (statbuf->st_mode))
     return XDG_MIME_TYPE_UNKNOWN;
 
@@ -840,6 +842,9 @@ _xdg_mime_cache_get_mime_type_for_file (const char  *file_name,
 
   mime_type = cache_get_mime_type_for_data (data, bytes_read, NULL,
 					    mime_types, n);
+
+  if (!mime_type)
+    mime_type = _xdg_binary_or_text_fallback(data, bytes_read);
 
   free (data);
   fclose (file);
