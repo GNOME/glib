@@ -1,3 +1,6 @@
+py3_mod = import('python3')
+py3 = py3_mod.find_python()
+
 gobject_tests = [
   'qdata',
   'boxed',
@@ -78,3 +81,11 @@ exe = executable('signals',
     dependencies : deps,
 )
 test('signals', exe, env : test_env, suite : ['gobject'])
+
+test(
+  'mkenums.py',
+  py3,
+  args: files('mkenums.py'),
+  env: test_env,
+  suite: ['gobject'],
+)
