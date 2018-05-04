@@ -1147,6 +1147,20 @@ param_variant_validate (GParamSpec *pspec,
   return FALSE;
 }
 
+/* g_variant_compare() can only be used with scalar types. */
+static gboolean
+variant_is_incomparable (GVariant *v)
+{
+  GVariantClass v_class = g_variant_classify (v);
+
+  return (v_class == G_VARIANT_CLASS_HANDLE ||
+          v_class == G_VARIANT_CLASS_VARIANT ||
+          v_class ==  G_VARIANT_CLASS_MAYBE||
+          v_class == G_VARIANT_CLASS_ARRAY ||
+          v_class ==  G_VARIANT_CLASS_TUPLE ||
+          v_class == G_VARIANT_CLASS_DICT_ENTRY);
+}
+
 static gint
 param_variant_values_cmp (GParamSpec   *pspec,
                           const GValue *value1,
@@ -1155,7 +1169,19 @@ param_variant_values_cmp (GParamSpec   *pspec,
   GVariant *v1 = value1->data[0].v_pointer;
   GVariant *v2 = value2->data[0].v_pointer;
 
-  return v1 < v2 ? -1 : v2 > v1;
+  if (v1 == NULL && v2 == NULL)
+    return 0;
+  else if (v1 == NULL && v2 != NULL)
+    return -1;
+  else if (v1 != NULL && v2 == NULL)
+    return 1;
+
+  if (!g_variant_type_equal (g_variant_get_type (v1), g_variant_get_type (v2)) ||
+      variant_is_incomparable (v1) ||
+      variant_is_incomparable (v2))
+    return g_variant_equal (v1, v2) ? 0 : (v1 < v2 ? -1 : 1);
+
+  return g_variant_compare (v1, v2);
 }
 
 /* --- type initialization --- */

@@ -228,6 +228,10 @@ test_param_spec_variant (void)
 {
   GParamSpec *pspec;
   GValue value = G_VALUE_INIT;
+  GValue value2 = G_VALUE_INIT;
+  GValue value3 = G_VALUE_INIT;
+  GValue value4 = G_VALUE_INIT;
+  GValue value5 = G_VALUE_INIT;
   gboolean modified;
 
   pspec = g_param_spec_variant ("variant", "nick", "blurb",
@@ -238,19 +242,112 @@ test_param_spec_variant (void)
   g_value_init (&value, G_TYPE_VARIANT);
   g_value_set_variant (&value, g_variant_new_int32 (42));
 
-  g_assert (g_param_value_defaults (pspec, &value));
+  g_value_init (&value2, G_TYPE_VARIANT);
+  g_value_set_variant (&value2, g_variant_new_int32 (43));
+
+  g_value_init (&value3, G_TYPE_VARIANT);
+  g_value_set_variant (&value3, g_variant_new_int16 (42));
+
+  g_value_init (&value4, G_TYPE_VARIANT);
+  g_value_set_variant (&value4, g_variant_new_parsed ("[@u 15, @u 10]"));
+
+  g_value_init (&value5, G_TYPE_VARIANT);
+  g_value_set_variant (&value5, NULL);
+
+  g_assert_true (g_param_value_defaults (pspec, &value));
+  g_assert_false (g_param_value_defaults (pspec, &value2));
+  g_assert_false (g_param_value_defaults (pspec, &value3));
+  g_assert_false (g_param_value_defaults (pspec, &value4));
+  g_assert_false (g_param_value_defaults (pspec, &value5));
 
   modified = g_param_value_validate (pspec, &value);
-  g_assert (!modified);
+  g_assert_false (modified);
 
   g_value_reset (&value);
   g_value_set_variant (&value, g_variant_new_uint32 (41));
   modified = g_param_value_validate (pspec, &value);
-  g_assert (modified);
+  g_assert_true (modified);
   g_assert_cmpint (g_variant_get_int32 (g_value_get_variant (&value)), ==, 42);
   g_value_unset (&value);
 
+  g_value_unset (&value5);
+  g_value_unset (&value4);
+  g_value_unset (&value3);
+  g_value_unset (&value2);
+
   g_param_spec_unref (pspec);
+}
+
+/* Test g_param_values_cmp() for #GParamSpecVariant. */
+static void
+test_param_spec_variant_cmp (void)
+{
+  const struct
+    {
+      const GVariantType *pspec_type;
+      const gchar *v1;
+      enum
+        {
+          LESS_THAN = -1,
+          EQUAL = 0,
+          GREATER_THAN = 1,
+          NOT_EQUAL,
+        } expected_result;
+      const gchar *v2;
+    }
+  vectors[] =
+    {
+      { G_VARIANT_TYPE ("i"), "@i 1", LESS_THAN, "@i 2" },
+      { G_VARIANT_TYPE ("i"), "@i 2", EQUAL, "@i 2" },
+      { G_VARIANT_TYPE ("i"), "@i 3", GREATER_THAN, "@i 2" },
+      { G_VARIANT_TYPE ("i"), NULL, LESS_THAN, "@i 2" },
+      { G_VARIANT_TYPE ("i"), NULL, EQUAL, NULL },
+      { G_VARIANT_TYPE ("i"), "@i 1", GREATER_THAN, NULL },
+      { G_VARIANT_TYPE ("i"), "@u 1", LESS_THAN, "@u 2" },
+      { G_VARIANT_TYPE ("i"), "@as ['hi']", NOT_EQUAL, "@u 2" },
+      { G_VARIANT_TYPE ("i"), "@as ['hi']", NOT_EQUAL, "@as ['there']" },
+      { G_VARIANT_TYPE ("i"), "@as ['hi']", EQUAL, "@as ['hi']" },
+    };
+  gsize i;
+
+  for (i = 0; i < G_N_ELEMENTS (vectors); i++)
+    {
+      GParamSpec *pspec;
+      GValue v1 = G_VALUE_INIT;
+      GValue v2 = G_VALUE_INIT;
+      gint cmp;
+
+      pspec = g_param_spec_variant ("variant", "nick", "blurb",
+                                    vectors[i].pspec_type,
+                                    NULL,
+                                    G_PARAM_READWRITE);
+
+      g_value_init (&v1, G_TYPE_VARIANT);
+      g_value_set_variant (&v1, (vectors[i].v1 != NULL) ? g_variant_new_parsed (vectors[i].v1) : NULL);
+
+      g_value_init (&v2, G_TYPE_VARIANT);
+      g_value_set_variant (&v2, (vectors[i].v2 != NULL) ? g_variant_new_parsed (vectors[i].v2) : NULL);
+
+      cmp = g_param_values_cmp (pspec, &v1, &v2);
+
+      switch (vectors[i].expected_result)
+        {
+        case LESS_THAN:
+        case EQUAL:
+        case GREATER_THAN:
+          g_assert_cmpint (cmp, ==, vectors[i].expected_result);
+          break;
+        case NOT_EQUAL:
+          g_assert_cmpint (cmp, !=, 0);
+          break;
+        default:
+          g_assert_not_reached ();
+        }
+
+      g_value_unset (&v2);
+      g_value_unset (&v1);
+      g_param_spec_unref (pspec);
+    }
 }
 
 int
@@ -263,6 +360,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/paramspec/override", test_param_spec_override);
   g_test_add_func ("/paramspec/gtype", test_param_spec_gtype);
   g_test_add_func ("/paramspec/variant", test_param_spec_variant);
+  g_test_add_func ("/paramspec/variant/cmp", test_param_spec_variant_cmp);
 
   return g_test_run ();
 }
