@@ -209,7 +209,7 @@ def codegen_main():
             print_error('Using --body requires --output')
 
         c_file = args.output
-        header_name = os.path.splitext(c_file)[0] + '.h'
+        header_name = os.path.splitext(os.path.basename(c_file))[0] + '.h'
 
     all_ifaces = []
     for fname in args.files + args.xml_files:
