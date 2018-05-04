@@ -1858,7 +1858,7 @@ g_desktop_app_info_load_file (GDesktopAppInfo *self)
  *
  * Creates a new #GDesktopAppInfo.
  *
- * Returns: a new #GDesktopAppInfo or %NULL on error.
+ * Returns: (nullable): a new #GDesktopAppInfo or %NULL on error.
  *
  * Since: 2.18
  **/
@@ -1884,7 +1884,7 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
  *
  * Creates a new #GDesktopAppInfo.
  *
- * Returns: a new #GDesktopAppInfo or %NULL on error.
+ * Returns: (nullable): a new #GDesktopAppInfo or %NULL on error.
  **/
 GDesktopAppInfo *
 g_desktop_app_info_new_from_filename (const char *filename)
@@ -1916,7 +1916,8 @@ g_desktop_app_info_new_from_filename (const char *filename)
  * (i.e. a desktop id of kde-foo.desktop will match
  * `/usr/share/applications/kde/foo.desktop`).
  *
- * Returns: a new #GDesktopAppInfo, or %NULL if no desktop file with that id
+ * Returns: (nullable): a new #GDesktopAppInfo, or %NULL if no desktop
+ *     file with that id exists.
  */
 GDesktopAppInfo *
 g_desktop_app_info_new (const char *desktop_id)
