@@ -1155,7 +1155,7 @@ param_variant_values_cmp (GParamSpec   *pspec,
   GVariant *v1 = value1->data[0].v_pointer;
   GVariant *v2 = value2->data[0].v_pointer;
 
-  return v1 < v2 ? -1 : v1 > v2;
+  return v1 < v2 ? -1 : v2 > v1;
 }
 
 /* --- type initialization --- */
