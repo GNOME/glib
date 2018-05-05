@@ -50,6 +50,12 @@
  * GLib also defines macros for the limits of some of the standard
  * integer and floating point types, as well as macros for suitable
  * printf() formats for these types.
+ *
+ * Note that depending on the platform and build configuration, the format
+ * macros might not be compatible with the system provided printf() function,
+ * because GLib might use a different printf() implementation internally.
+ * The format macros will always work with GLib API (like g_print()), and with
+ * any C99 compatible printf() implementation.
  */
 
 /**
