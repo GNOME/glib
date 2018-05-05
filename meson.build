@@ -1043,14 +1043,7 @@ else
   ssizet_size = cc.sizeof('ssize_t')
 endif
 
-# On Windows, MSVC supports both ll and I64 as format specifiers for 64-bit
-# integers, but some versions (at least 4.7.x) of MinGW only support I64.
-if host_system == 'windows'
-  int64_m = 'I64'
-else
-  int64_m = 'll'
-endif
-
+int64_m = 'll'
 char_align = cc.alignment('char')
 short_align = cc.alignment('short')
 int_align = cc.alignment('int')
@@ -1160,7 +1153,7 @@ if host_system == 'windows'
   glibconfig_conf.set('g_pid_type', 'void*')
   glibconfig_conf.set_quoted('g_pid_format', 'p')
   if host_machine.cpu_family() == 'x86_64'
-    glibconfig_conf.set_quoted('g_pollfd_format', '%#I64x')
+    glibconfig_conf.set_quoted('g_pollfd_format', '%#' + int64_m + 'x')
   else
     glibconfig_conf.set_quoted('g_pollfd_format', '%#x')
   endif

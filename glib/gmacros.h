@@ -146,10 +146,17 @@
 #endif
 
 #if     __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
+#if !defined (__clang__) && G_GNUC_CHECK_VERSION (4, 4)
+#define G_GNUC_PRINTF( format_idx, arg_idx )    \
+  __attribute__((__format__ (gnu_printf, format_idx, arg_idx)))
+#define G_GNUC_SCANF( format_idx, arg_idx )     \
+  __attribute__((__format__ (gnu_scanf, format_idx, arg_idx)))
+#else
 #define G_GNUC_PRINTF( format_idx, arg_idx )    \
   __attribute__((__format__ (__printf__, format_idx, arg_idx)))
 #define G_GNUC_SCANF( format_idx, arg_idx )     \
   __attribute__((__format__ (__scanf__, format_idx, arg_idx)))
+#endif
 #define G_GNUC_FORMAT( arg_idx )                \
   __attribute__((__format_arg__ (arg_idx)))
 #define G_GNUC_NORETURN                         \
