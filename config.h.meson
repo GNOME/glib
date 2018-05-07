@@ -226,6 +226,12 @@
 /* Define to 1 if you have the `kqueue' function. */
 #mesondefine HAVE_KQUEUE
 
+/* Check for nl_langinfo and abbreviated alternative month names */
+#mesondefine HAVE_LANGINFO_ABALTMON
+
+/* Check for nl_langinfo and alternative month names */
+#mesondefine HAVE_LANGINFO_ALTMON
+
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
 #mesondefine HAVE_LANGINFO_CODESET
 
@@ -631,6 +637,9 @@
 
 /* Define if you have the 'wchar_t' type. */
 #mesondefine HAVE_WCHAR_T
+
+/* Define if you Have wcrtomb() */
+#mesondefine HAVE_WCRTOMB
 
 /* Define to 1 if you have the `wcslen' function. */
 #mesondefine HAVE_WCSLEN
