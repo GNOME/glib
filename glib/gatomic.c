@@ -549,9 +549,21 @@ void
 }
 
 void
+(g_atomic_int16_inc) (volatile gint16 *atomic)
+{
+  InterlockedIncrement16 (atomic);
+}
+
+void
 (g_atomic_int_inc) (volatile gint *atomic)
 {
   InterlockedIncrement (atomic);
+}
+
+gboolean
+(g_atomic_int16_dec_and_test) (volatile gint16 *atomic)
+{
+  return InterlockedDecrement16 (atomic) == 0;
 }
 
 gboolean
@@ -710,11 +722,31 @@ void
 }
 
 void
+(g_atomic_int16_inc) (volatile gint16 *atomic)
+{
+  pthread_mutex_lock (&g_atomic_lock);
+  (*atomic)++;
+  pthread_mutex_unlock (&g_atomic_lock);
+}
+
+void
 (g_atomic_int_inc) (volatile gint *atomic)
 {
   pthread_mutex_lock (&g_atomic_lock);
   (*atomic)++;
   pthread_mutex_unlock (&g_atomic_lock);
+}
+
+gboolean
+(g_atomic_int16_dec_and_test) (volatile gint16 *atomic)
+{
+  gboolean is_zero;
+
+  pthread_mutex_lock (&g_atomic_lock);
+  is_zero = --(*atomic) == 0;
+  pthread_mutex_unlock (&g_atomic_lock);
+
+  return is_zero;
 }
 
 gboolean

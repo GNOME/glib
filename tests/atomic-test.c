@@ -12,16 +12,28 @@ main (int   argc,
 {
   gint i;
   gint atomic = -5;
+  gint16 atomic16 = -5;
   gpointer atomic_pointer = NULL;
   gpointer biggest_pointer = (gpointer)((gsize)atomic_pointer - 1);
 
-  for (i = 0; i < 15; i++)
+  for (i = 0; i < 15; i++) {
     g_atomic_int_inc (&atomic);
+    g_atomic_int16_inc (&atomic16);
+  }
+
   g_assert (atomic == 10);
-  for (i = 0; i < 9; i++)
+  g_assert (atomic16 == 10);
+
+  for (i = 0; i < 9; i++) {
     g_assert (!g_atomic_int_dec_and_test (&atomic));
+    g_assert (!g_atomic_int16_dec_and_test (&atomic16));
+  }
+
   g_assert (g_atomic_int_dec_and_test (&atomic));
   g_assert (atomic == 0);
+
+  g_assert (g_atomic_int16_dec_and_test (&atomic16));
+  g_assert (atomic16 == 0);
 
   g_assert (g_atomic_int_add (&atomic, 5) == 0);
   g_assert (atomic == 5);

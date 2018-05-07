@@ -916,7 +916,9 @@ G_ATOMIC_LOCK_FREE
 <SUBSECTION>
 g_atomic_int_get
 g_atomic_int_set
+g_atomic_int16_inc
 g_atomic_int_inc
+g_atomic_int16_dec_and_test
 g_atomic_int_dec_and_test
 g_atomic_int_compare_and_exchange
 g_atomic_int_add

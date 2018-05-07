@@ -172,11 +172,23 @@ G_END_DECLS
 
 #endif /* !defined(__ATOMIC_SEQ_CST) */
 
+#define g_atomic_int16_inc(atomic) \
+  (G_GNUC_EXTENSION ({                                                       \
+    G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint16));                   \
+    (void) (0 ? *(atomic) ^ *(atomic) : 1);                                  \
+    (void) __sync_fetch_and_add ((atomic), 1);                               \
+  }))
 #define g_atomic_int_inc(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ *(atomic) : 1);                                  \
     (void) __sync_fetch_and_add ((atomic), 1);                               \
+  }))
+#define g_atomic_int16_dec_and_test(atomic) \
+  (G_GNUC_EXTENSION ({                                                       \
+    G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint16));                   \
+    (void) (0 ? *(atomic) ^ *(atomic) : 1);                                  \
+    __sync_fetch_and_sub ((atomic), 1) == 1;                                 \
   }))
 #define g_atomic_int_dec_and_test(atomic) \
   (G_GNUC_EXTENSION ({                                                       \
