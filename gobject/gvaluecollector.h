@@ -201,7 +201,7 @@ G_STMT_START {										\
  * @flags: flags which are passed on to the lcopy_value() function of
  *  the #GTypeValueTable of @value.
  * @__error: a #gchar** variable that will be modified to hold a g_new()
- *  allocated error messages if something fails
+ *  allocated error message if something fails
  *
  * Stores a value’s value into one or more argument locations from a va_list.
  * This is the inverse of G_VALUE_COLLECT().
