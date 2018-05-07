@@ -1465,10 +1465,10 @@ atomictest = '''void func() {
   __sync_bool_compare_and_swap (&atomic, 2, 3);
 }
 '''
-if cc.compiles(atomictest)
+if cc.links(atomictest, name : 'atomic ops')
   glibconfig_conf.set('G_ATOMIC_LOCK_FREE', true)
 else
-  if host_machine.cpu_family() == 'x86' and cc.compiles(atomictest, args : '-march=i486')
+  if host_machine.cpu_family() == 'x86' and cc.links(atomictest, args : '-march=i486')
     error('GLib must be built with -march=i486 or later.')
   endif
   glibconfig_conf.set('G_ATOMIC_LOCK_FREE', false)
