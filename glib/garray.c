@@ -506,6 +506,11 @@ g_array_prepend_vals (GArray        *farray,
  *
  * Inserts @len elements into a #GArray at the given index.
  *
+ * If @index_ is greater than the array’s current length, the array is expanded.
+ * The elements between the old end of the array and the newly inserted elements
+ * will be initialised to zero if the array was configured to clear elements;
+ * otherwise their values will be undefined.
+ *
  * @data may be %NULL if (and only if) @len is zero. If @len is zero, this
  * function is a no-op.
  *
@@ -537,6 +542,11 @@ g_array_insert_vals (GArray        *farray,
 
   if (len == 0)
     return farray;
+
+  /* Is the index off the end of the array, and hence do we need to over-allocate
+   * and clear some elements? */
+  if (index_ >= array->len)
+      return g_array_append_vals (g_array_set_size (farray, index_), data, len);
 
   g_array_maybe_expand (array, len);
 
