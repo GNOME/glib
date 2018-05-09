@@ -506,6 +506,11 @@ g_array_prepend_vals (GArray        *farray,
  *
  * Inserts @len elements into a #GArray at the given index.
  *
+ * If @index_ is greater than the array’s current length, the array is expanded.
+ * The elements between the old end of the array and the newly inserted elements
+ * will be initialised to zero if the array was configured to clear elements;
+ * otherwise their values will be undefined.
+ *
  * @data may be %NULL if (and only if) @len is zero. If @len is zero, this
  * function is a no-op.
  *
@@ -532,21 +537,32 @@ g_array_insert_vals (GArray        *farray,
                      guint          len)
 {
   GRealArray *array = (GRealArray*) farray;
+  guint cleared_len;
 
   g_return_val_if_fail (array, NULL);
 
   if (len == 0)
     return farray;
 
-  g_array_maybe_expand (array, len);
+  /* Is the index off the end of the array, and hence do we need to over-allocate
+   * and clear some elements? */
+  if (index_ > array->len)
+    cleared_len = index_ - array->len;
+  else
+    cleared_len = 0;
 
-  memmove (g_array_elt_pos (array, len + index_),
-           g_array_elt_pos (array, index_),
-           g_array_elt_len (array, array->len - index_));
+  g_array_maybe_expand (array, cleared_len + len);
+
+  if (array->clear && cleared_len > 0)
+    g_array_elt_zero (array, array->len, cleared_len);
+  else if (cleared_len == 0)
+    memmove (g_array_elt_pos (array, len + index_),
+             g_array_elt_pos (array, index_),
+             g_array_elt_len (array, array->len - index_));
 
   memcpy (g_array_elt_pos (array, index_), data, g_array_elt_len (array, len));
 
-  array->len += len;
+  array->len += cleared_len + len;
 
   g_array_zero_terminate (array);
 
