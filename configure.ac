@@ -130,6 +130,7 @@ case "$host" in
     glib_dir_separator='\\\\'
     glib_searchpath_separator=';'
     glib_cv_stack_grows=no
+    glib_jemalloc_default=no
     # Unfortunately the mingw implementations of C99-style snprintf and vsnprintf
     # don't seem to be quite good enough, at least not in mingw-runtime-3.14.
     # (Sorry, I don't know exactly what is the problem, but it is related to
@@ -155,6 +156,7 @@ case "$host" in
     glib_pollfd_format='%d'
     glib_dir_separator='/'
     glib_searchpath_separator=':'
+    glib_jemalloc_default=yes
     ;;
 esac
 case $host in
@@ -256,6 +258,10 @@ AC_ARG_ENABLE(mem_pools,
               [AS_HELP_STRING([--disable-mem-pools],
 			      [disable all glib memory pools])],,
 	      [disable_mem_pools=no])
+AC_ARG_ENABLE(jemalloc,
+              [AS_HELP_STRING([--disable-jemalloc],
+                              [disable jemalloc])],,
+              [enable_jemalloc="$glib_jemalloc_default"])
 
 GLIB_TESTS
 
@@ -272,6 +278,24 @@ AS_IF([test "x$disable_mem_pools" = "xno"], [
   AC_DEFINE(DISABLE_MEM_POOLS, [1], [Whether to disable memory pools])
   AC_MSG_RESULT([yes])
 ])
+
+PKG_CHECK_MODULES(JEMALLOC, [jemalloc], [has_jemalloc=yes], [has_jemalloc=no])
+AC_MSG_CHECKING([whether jemalloc should be used in GSlice])
+AS_IF([test "x$enable_jemalloc" = xyes], [
+  AS_IF([test "x$has_jemalloc" = xyes], [
+    AC_DEFINE(ENABLE_JEMALLOC, 1, [Whether to enable jemalloc as the GSlice allocator])
+    AC_MSG_RESULT([yes])
+    JEMALLOC_REQUIRES="jemalloc"
+  ], [
+    AC_MSG_ERROR([jemalloc is not available])
+  ])
+], [
+  AC_MSG_RESULT([no])
+  JEMALLOC_REQUIRES=""
+])
+AC_SUBST(JEMALLOC_CFLAGS)
+AC_SUBST(JEMALLOC_LIBS)
+AC_SUBST(JEMALLOC_REQUIRES)
 
 dnl location to install runtime libraries, e.g. ../../lib to install
 dnl to /lib if libdir is /usr/lib

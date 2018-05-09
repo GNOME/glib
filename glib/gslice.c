@@ -19,6 +19,12 @@
 #include "config.h"
 #include "glibconfig.h"
 
+#ifdef ENABLE_JEMALLOC
+/* Do not demangle; it's cleaner to use the je_* API */
+# define JEMALLOC_NO_DEMANGLE
+# include <jemalloc/jemalloc.h>
+#endif
+
 #if     defined HAVE_POSIX_MEMALIGN && defined POSIX_MEMALIGN_WITH_COMPLIANT_ALLOCS
 #  define HAVE_COMPLIANT_POSIX_MEMALIGN 1
 #endif
@@ -238,6 +244,7 @@ typedef struct {
 } ThreadMemory;
 typedef struct {
   gboolean always_malloc;
+  gboolean use_jemalloc;
   gboolean bypass_magazines;
   gboolean debug_blocks;
   gsize    working_set_msecs;
@@ -286,6 +293,7 @@ static gsize       sys_page_size = 0;
 static Allocator   allocator[1] = { { 0, }, };
 static SliceConfig slice_config = {
   FALSE,        /* always_malloc */
+  FALSE,        /* use_jemalloc */
   FALSE,        /* bypass_magazines */
   FALSE,        /* debug_blocks */
   15 * 1000,    /* working_set_msecs */
@@ -303,6 +311,9 @@ g_slice_set_config (GSliceConfig ckey,
     {
     case G_SLICE_CONFIG_ALWAYS_MALLOC:
       slice_config.always_malloc = value != 0;
+      break;
+    case G_SLICE_CONFIG_USE_JEMALLOC:
+      slice_config.use_jemalloc = value != 0;
       break;
     case G_SLICE_CONFIG_BYPASS_MAGAZINES:
       slice_config.bypass_magazines = value != 0;
@@ -323,6 +334,8 @@ g_slice_get_config (GSliceConfig ckey)
     {
     case G_SLICE_CONFIG_ALWAYS_MALLOC:
       return slice_config.always_malloc;
+    case G_SLICE_CONFIG_USE_JEMALLOC:
+      return slice_config.use_jemalloc;
     case G_SLICE_CONFIG_BYPASS_MAGAZINES:
       return slice_config.bypass_magazines;
     case G_SLICE_CONFIG_WORKING_SET_MSECS:
@@ -372,6 +385,9 @@ slice_config_init (SliceConfig *config)
       const GDebugKey keys[] = {
         { "always-malloc", 1 << 0 },
         { "debug-blocks",  1 << 1 },
+#ifdef ENABLE_JEMALLOC
+        { "use-jemalloc",  1 << 2 },
+#endif
       };
 
       flags = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
@@ -379,6 +395,8 @@ slice_config_init (SliceConfig *config)
         config->always_malloc = TRUE;
       if (flags & (1 << 1))
         config->debug_blocks = TRUE;
+      if (flags & (1 << 2))
+        config->use_jemalloc = TRUE;
     }
   else
     {
@@ -389,7 +407,10 @@ slice_config_init (SliceConfig *config)
        * valgrind just by setting G_SLICE to the empty string.
        */
       if (RUNNING_ON_VALGRIND)
-        config->always_malloc = TRUE;
+        {
+          config->always_malloc = TRUE;
+          config->use_jemalloc = FALSE;
+        }
     }
 }
 
@@ -429,7 +450,7 @@ g_slice_init_nomessage (void)
   /* we can only align to system page size */
   allocator->max_page_size = sys_page_size;
 #endif
-  if (allocator->config.always_malloc)
+  if (allocator->config.always_malloc || allocator->config.use_jemalloc)
     {
       allocator->contention_counters = NULL;
       allocator->magazines = NULL;
@@ -449,7 +470,7 @@ g_slice_init_nomessage (void)
   magazine_cache_update_stamp();
   /* values cached for performance reasons */
   allocator->max_slab_chunk_size_for_magazine_cache = MAX_SLAB_CHUNK_SIZE (allocator);
-  if (allocator->config.always_malloc || allocator->config.bypass_magazines)
+  if (allocator->config.always_malloc || allocator->config.bypass_magazines || allocator->config.use_jemalloc)
     allocator->max_slab_chunk_size_for_magazine_cache = 0;      /* non-optimized cases */
 }
 
@@ -459,6 +480,9 @@ allocator_categorize (gsize aligned_chunk_size)
   /* speed up the likely path */
   if (G_LIKELY (aligned_chunk_size && aligned_chunk_size <= allocator->max_slab_chunk_size_for_magazine_cache))
     return 1;           /* use magazine cache */
+
+  if (allocator->config.use_jemalloc)
+    return 3;
 
   if (!allocator->config.always_malloc &&
       aligned_chunk_size &&
@@ -1021,6 +1045,12 @@ g_slice_alloc (gsize mem_size)
       mem = slab_allocator_alloc_chunk (chunk_size);
       g_mutex_unlock (&allocator->slab_mutex);
     }
+#ifdef ENABLE_JEMALLOC
+  else if (acat == 3)
+    {
+      mem = je_malloc (mem_size);
+    }
+#endif
   else                          /* delegate to system malloc */
     mem = g_malloc (mem_size);
   if (G_UNLIKELY (allocator->config.debug_blocks))
@@ -1129,6 +1159,14 @@ g_slice_free1 (gsize    mem_size,
       slab_allocator_free_chunk (chunk_size, mem_block);
       g_mutex_unlock (&allocator->slab_mutex);
     }
+#ifdef ENABLE_JEMALLOC
+  else if (acat == 3)
+    {
+      if (G_UNLIKELY (g_mem_gc_friendly))
+        memset (mem_block, 0, mem_size);
+      je_free (mem_block);
+    }
+#endif
   else                                  /* delegate to system malloc */
     {
       if (G_UNLIKELY (g_mem_gc_friendly))
@@ -1219,18 +1257,37 @@ g_slice_free_chain_with_offset (gsize    mem_size,
         }
       g_mutex_unlock (&allocator->slab_mutex);
     }
-  else                                  /* delegate to system malloc */
-    while (slice)
-      {
-        guint8 *current = slice;
-        slice = *(gpointer*) (current + next_offset);
-        if (G_UNLIKELY (allocator->config.debug_blocks) &&
-            !smc_notify_free (current, mem_size))
-          abort();
-        if (G_UNLIKELY (g_mem_gc_friendly))
-          memset (current, 0, mem_size);
-        g_free (current);
-      }
+#ifdef ENABLE_JEMALLOC
+  else if (acat == 3)
+    {
+      while (slice)
+        {
+          guint8 *current = slice;
+          slice = *(gpointer*) (current + next_offset);
+          if (G_UNLIKELY (allocator->config.debug_blocks) &&
+              !smc_notify_free (current, mem_size))
+            abort();
+          if (G_UNLIKELY (g_mem_gc_friendly))
+            memset (current, 0, mem_size);
+          je_free (current);
+        }
+    }
+#endif
+  else
+    {
+      /* delegate to system malloc */
+      while (slice)
+        {
+          guint8 *current = slice;
+          slice = *(gpointer*) (current + next_offset);
+          if (G_UNLIKELY (allocator->config.debug_blocks) &&
+              !smc_notify_free (current, mem_size))
+            abort();
+          if (G_UNLIKELY (g_mem_gc_friendly))
+            memset (current, 0, mem_size);
+          g_free (current);
+        }
+    }
 }
 
 /* --- single page allocator --- */
