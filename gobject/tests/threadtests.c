@@ -247,6 +247,12 @@ test_threaded_weak_ref (void)
   else
     n = NUM_COUNTER_INCREMENTS / 20;
 
+#ifdef G_OS_WIN32
+  /* On Windows usleep has millisecond resolution and gets rounded up
+   * leading to the test running for a long time. */
+  n /= 10;
+#endif
+
   for (i = 0; i < n; i++)
     {
       UnrefInThreadData data;

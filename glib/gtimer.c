@@ -251,7 +251,8 @@ void
 g_usleep (gulong microseconds)
 {
 #ifdef G_OS_WIN32
-  Sleep (microseconds / 1000);
+  /* Round up to the next millisecond */
+  Sleep (microseconds ? (1 + (microseconds - 1) / 1000) : 0);
 #else
   struct timespec request, remaining;
   request.tv_sec = microseconds / G_USEC_PER_SEC;
