@@ -2142,19 +2142,13 @@ append_escaped_text (GString     *str,
                      const gchar *text,
                      gssize       length)
 {
-  const gchar *p;
-  const gchar *end;
-  gunichar c;
+  gchar c;
 
-  p = text;
-  end = text + length;
-
-  while (p < end)
+  while (*text)
     {
-      const gchar *next;
-      next = g_utf8_next_char (p);
+      c = *text;
 
-      switch (*p)
+      switch (c)
         {
         case '&':
           g_string_append (str, "&amp;");
@@ -2177,19 +2171,16 @@ append_escaped_text (GString     *str,
           break;
 
         default:
-          c = g_utf8_get_char (p);
           if ((0x1 <= c && c <= 0x8) ||
               (0xb <= c && c  <= 0xc) ||
-              (0xe <= c && c <= 0x1f) ||
-              (0x7f <= c && c <= 0x84) ||
-              (0x86 <= c && c <= 0x9f))
+              (0xe <= c && c <= 0x1f))
             g_string_append_printf (str, "&#x%x;", c);
           else
-            g_string_append_len (str, p, next - p);
+            g_string_append_c (str, c);
           break;
         }
 
-      p = next;
+      text++;
     }
 }
 
