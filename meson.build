@@ -722,10 +722,10 @@ endif
 have_good_vsnprintf = false
 have_good_snprintf = false
 
-if host_system == 'windows'
-  # Unfortunately the mingw and Visual Studio 2015+ implementations of C99-style
-  # snprintf and vsnprintf don't seem to be quite good enough, at least not in
-  # mingw-runtime-3.14.  (Sorry, I don't know exactly what is the problem,
+if host_system == 'windows' and cc.get_id() == 'msvc'
+  # Unfortunately the Visual Studio 2015+ implementations of C99-style
+  # snprintf and vsnprintf don't seem to be quite good enough.
+  # (Sorry, I don't know exactly what is the problem,
   # but it is related to floating point formatting and decimal point vs. comma.)
   # The simple tests in AC_FUNC_VSNPRINTF_C99 and AC_FUNC_SNPRINTF_C99 aren't
   # rigorous enough to notice, though.
