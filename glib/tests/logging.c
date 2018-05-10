@@ -428,14 +428,21 @@ test_structured_logging_roundtrip1 (void)
 {
   gpointer some_pointer = GUINT_TO_POINTER (0x100);
   gint some_integer = 123;
-  const GLogField fields[] = {
+  gchar message[200];
+  GLogField fields[] = {
     { "GLIB_DOMAIN", "some-domain", -1 },
     { "PRIORITY", "5", -1 },
-    { "MESSAGE", "This is a debug message about pointer 0x100 and integer 123.", -1 },
+    { "MESSAGE", "String assigned using g_snprintf() below", -1 },
     { "MESSAGE_ID", "fcfb2e1e65c3494386b74878f1abf893", -1 },
     { "MY_APPLICATION_CUSTOM_FIELD", "some debug string", -1 }
   };
   ExpectedMessage expected = { fields, 5 };
+
+  /* %p format is implementation defined and depends on the platform */
+  g_snprintf (message, sizeof (message),
+              "This is a debug message about pointer %p and integer %u.",
+              some_pointer, some_integer);
+  fields[2].value = message;
 
   expected_messages = g_slist_append (NULL, &expected);
   g_log_set_writer_func (expect_log_writer, NULL, NULL);
