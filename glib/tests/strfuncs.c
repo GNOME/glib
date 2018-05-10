@@ -1324,23 +1324,29 @@ test_strip_context (void)
   g_assert (s == msgval + 7);
 }
 
+/* Test the strings returned by g_strerror() are valid and unique. On Windows,
+ * fewer than 200 error numbers are used, so we expect some strings to
+ * return a generic ‘unknown error code’ message. */
 static void
 test_strerror (void)
 {
   GHashTable *strs;
   gint i;
-  const gchar *str;
+  const gchar *str, *unknown_str;
   GHashTableIter iter;
 
   setlocale (LC_ALL, "C");
 
+  unknown_str = g_strerror (-1);
   strs = g_hash_table_new (g_str_hash, g_str_equal);
   for (i = 1; i < 200; i++)
     {
+      gboolean is_unknown;
       str = g_strerror (i);
+      is_unknown = (strcmp (str, unknown_str) == 0);
       g_assert (str != NULL);
       g_assert (g_utf8_validate (str, -1, NULL));
-      g_assert_false (g_hash_table_contains (strs, str));
+      g_assert_true (!g_hash_table_contains (strs, str) || is_unknown);
       g_hash_table_add (strs, (char *)str);
     }
 
