@@ -2137,59 +2137,70 @@ g_markup_parse_context_pop (GMarkupParseContext *context)
   return user_data;
 }
 
+
 static void
 append_escaped_text (GString     *str,
                      const gchar *text,
                      gssize       length)
 {
-  const gchar *p;
+  guchar c;
+  gunichar u;
   const gchar *end;
-  gunichar c;
 
-  p = text;
   end = text + length;
 
-  while (p < end)
+  while (text < end)
     {
-      const gchar *next;
-      next = g_utf8_next_char (p);
+      c = (guchar) *text;
 
-      switch (*p)
+      switch (c)
         {
         case '&':
-          g_string_append (str, "&amp;");
+          g_string_append_len (str, "&amp;", 5);
           break;
 
         case '<':
-          g_string_append (str, "&lt;");
+          g_string_append_len (str, "&lt;", 4);
           break;
 
         case '>':
-          g_string_append (str, "&gt;");
+          g_string_append_len (str, "&gt;", 4);
           break;
 
         case '\'':
-          g_string_append (str, "&apos;");
+          g_string_append_len (str, "&apos;", 6);
           break;
 
         case '"':
-          g_string_append (str, "&quot;");
+          g_string_append_len (str, "&quot;", 6);
           break;
 
         default:
-          c = g_utf8_get_char (p);
           if ((0x1 <= c && c <= 0x8) ||
               (0xb <= c && c  <= 0xc) ||
               (0xe <= c && c <= 0x1f) ||
-              (0x7f <= c && c <= 0x84) ||
-              (0x86 <= c && c <= 0x9f))
+              (c == 0x7f))
             g_string_append_printf (str, "&#x%x;", c);
+          /* The utf-8 control characters we have to escape begins with 0xc2 byte */
+          else if (c == 0xc2)
+            {
+              u = g_utf8_get_char (text);
+
+              if ((0x7f < u && u <= 0x84) ||
+                  (0x86 <= u && u <= 0x9f))
+                {
+                  g_string_append_printf (str, "&#x%x;", u);
+                  text++;
+                }
+              else
+                g_string_append_c (str, c);
+            }
           else
-            g_string_append_len (str, p, next - p);
+            g_string_append_c (str, c);
           break;
         }
 
-      p = next;
+      text++;
     }
 }
 
