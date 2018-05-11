@@ -823,3 +823,21 @@
 #mesondefine HAVE_RTLD_LAZY
 #mesondefine HAVE_RTLD_NOW
 #mesondefine HAVE_RTLD_GLOBAL
+
+#mesondefine DBL_EXPBIT0_WORD
+#mesondefine DBL_EXPBIT0_BIT
+#mesondefine NEED_PRINTF_UNBOUNDED_PRECISION
+#mesondefine NEED_PRINTF_ENOMEM
+#mesondefine NEED_PRINTF_FLAG_LEFTADJUST
+#mesondefine NEED_PRINTF_FLAG_ZERO
+#mesondefine NEED_PRINTF_FLAG_GROUPING
+#mesondefine NEED_PRINTF_DIRECTIVE_A
+#mesondefine NEED_PRINTF_DIRECTIVE_F
+#mesondefine NEED_PRINTF_DIRECTIVE_LS
+#mesondefine NEED_PRINTF_DOUBLE
+#mesondefine NEED_PRINTF_LONG_DOUBLE
+#mesondefine NEED_PRINTF_INFINITE_DOUBLE
+#mesondefine NEED_PRINTF_INFINITE_LONG_DOUBLE
+
+@gl_unused@
+@gl_extern_inline@
